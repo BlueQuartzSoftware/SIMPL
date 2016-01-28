@@ -75,14 +75,14 @@ set(SIMPLib_Geometry_SRCS
   ${SIMPLib_SOURCE_DIR}/Geometry/ShapeOps/SuperEllipsoidOps.cpp
 )
 
-cmp_IDE_SOURCE_PROPERTIES( "Geometry" "${SIMPLib_Geometry_HDRS}" "${SIMPLib_Geometry_SRCS}" "0")
+cmp_IDE_SOURCE_PROPERTIES( "SIMPLib/Geometry" "${SIMPLib_Geometry_HDRS}" "${SIMPLib_Geometry_SRCS}" "${PROJECT_INSTALL_HEADERS}")
 
 set(SIMPLib_Geometry_HDRS
   ${SIMPLib_Geometry_HDRS}
 )
 
-if( ${PROJECT_INSTALL_HEADERS} EQUAL 1 )
-    INSTALL (FILES ${SIMPLib_Geometry_HDRS}
-            DESTINATION include/DREAM3D/Geometry
-            COMPONENT Headers   )
-endif()
+#if( ${PROJECT_INSTALL_HEADERS} EQUAL 1 )
+#    INSTALL (FILES ${SIMPLib_Geometry_HDRS}
+#            DESTINATION include/DREAM3D/Geometry
+#            COMPONENT Headers   )
+#endif()

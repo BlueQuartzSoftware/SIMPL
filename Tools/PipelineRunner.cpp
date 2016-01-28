@@ -41,13 +41,6 @@
 // C++ Includes
 #include <iostream>
 
-// TCLAP Includes
-#include <tclap/CmdLine.h>
-#include <tclap/ValueArg.h>
-
-// Boost includes
-#include <boost/assert.hpp>
-
 // Qt Includes
 #include <QtCore/QtDebug>
 #include <QtCore/QCoreApplication>
@@ -55,6 +48,8 @@
 #include <QtCore/QDir>
 #include <QtCore/QFile>
 #include <QtCore/QSettings>
+#include <QtCore/QCommandLineOption>
+#include <QtCore/QCommandLineParser>
 
 // DREAM3DLib includes
 #include "SIMPLib/SIMPLib.h"
@@ -116,6 +111,26 @@ int main (int argc, char*  argv[])
   QCoreApplication::setOrganizationName("BlueQuartz Software");
   QCoreApplication::setOrganizationDomain("bluequartz.net");
   QCoreApplication::setApplicationName("PipelineRunner");
+  QCoreApplication::setApplicationVersion(SIMPLib::Version::Major() + "." + SIMPLib::Version::Minor() + "." + SIMPLib::Version::Patch());
+
+  QCommandLineParser parser;
+  QString str;
+  QTextStream ss(&str);
+  ss << "Pipeline Runner (" << SIMPLib::Version::Major() << "." << SIMPLib::Version::Minor() << "."
+     << SIMPLib::Version::Patch()
+     << "): This application will run a DREAM.3D pipeline stored in a JSON formatted pipeline file. ";
+  parser.setApplicationDescription(str);
+  parser.addHelpOption();
+  parser.addVersionOption();
+
+  // A boolean option with a single name (-p)
+  QCommandLineOption pipelineFileArg(QStringList() << "p" << "pipeline", "Pipeline File as a JSON file.", "");
+  parser.addOption(pipelineFileArg);
+
+  // Process the actual command line arguments given by the user
+  parser.process(app);
+
+  QString pipelineFile = parser.value(pipelineFileArg);
 
   std::cout << "PipelineRunner Starting. Version " << SIMPLib::Version::PackageComplete().toStdString() << std::endl;
 
@@ -126,34 +141,6 @@ int main (int argc, char*  argv[])
 
   // Send progress messages from PipelineBuilder to this object for display
   QMetaObjectUtilities::RegisterMetaTypes();
-
-  QString pipelineFile;
-  try
-  {
-    // Handle program options passed on command line.
-    TCLAP::CmdLine cmd("PipelineRunner", ' ', SIMPLib::Version::Complete().toStdString());
-
-    TCLAP::ValueArg<std::string> pipelineFileArg( "p", "pipeline", "Pipeline File", true, "", "Pipeline Input File (*.txt or *.ini)");
-    cmd.add(pipelineFileArg);
-
-    // Parse the argv array.
-    cmd.parse(argc, argv);
-    if (argc == 1)
-    {
-      qDebug() << "PipelineRunner program was not provided any arguments. Use the --help argument to show the help listing.";
-      return EXIT_FAILURE;
-    }
-    // Extract the file path passed in by the user.
-    pipelineFile = QString::fromStdString(pipelineFileArg.getValue());
-  }
-  catch (TCLAP::ArgException& e) // catch any exceptions
-  {
-    std::cerr << " error: " << e.error() << " for arg " << e.argId();
-    return EXIT_FAILURE;
-  }
-
-
-
 
   int err = 0;
 

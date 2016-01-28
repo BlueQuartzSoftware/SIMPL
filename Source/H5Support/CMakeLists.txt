@@ -34,7 +34,7 @@
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
 # set project's name
-PROJECT( H5Support VERSION ${DREAM3DProj_VERSION_MAJOR}.${DREAM3DProj_VERSION_MINOR})
+PROJECT( H5Support VERSION ${SIMPLProj_VERSION_MAJOR}.${SIMPLProj_VERSION_MINOR})
 
 set(H5Support_BUILT_AS_DYNAMIC_LIB)
 if(BUILD_SHARED_LIBS)
@@ -167,7 +167,7 @@ endif()
 
 
 # ------- Enable the CTest testing. Use make test to run all tests ---------------
-if(DREAM3D_BUILD_TESTING)
+if(SIMPL_BUILD_TESTING)
     add_subdirectory(${H5Support_SOURCE_DIR}/Test ${H5Support_BINARY_DIR}/Test)
 endif()
 

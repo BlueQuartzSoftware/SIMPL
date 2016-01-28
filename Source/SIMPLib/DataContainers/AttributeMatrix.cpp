@@ -47,9 +47,6 @@
 #include "H5Support/QH5Lite.h"
 #include "H5Support/HDF5ScopedFileSentinel.h"
 
-// EbsdLib Includes
-#include "EbsdLib/EbsdConstants.h"
-
 // DREAM3D Includes
 #include "SIMPLib/Math/SIMPLibMath.h"
 #include "SIMPLib/Utilities/SIMPLibRandom.h"

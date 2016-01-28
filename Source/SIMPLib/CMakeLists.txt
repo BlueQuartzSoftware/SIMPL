@@ -34,7 +34,7 @@
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
 # set project's name
-PROJECT( SIMPLib VERSION ${DREAM3DProj_VERSION_MAJOR}.${DREAM3DProj_VERSION_MINOR})
+PROJECT( SIMPLib VERSION ${SIMPLProj_VERSION_MAJOR}.${SIMPLProj_VERSION_MINOR})
 
 
 set(SIMPLib_BUILT_AS_DYNAMIC_LIB)
@@ -47,7 +47,7 @@ endif(BUILD_SHARED_LIBS)
 
 
 set(PROJECT_PREFIX "SIMPLib" CACHE STRING "The Prefix to be used for Preprocessor definitions")
-set(PROJECT_INSTALL_HEADERS 0)
+set(PROJECT_INSTALL_HEADERS 1)
 #-------------------------------------------------------------------------------
 # Include the cmp project to perform all the basic configuration tests for the
 # project.
@@ -69,7 +69,7 @@ set(SIMPLib_FILTER_DOC_DIR ${SIMPLib_SOURCE_DIR}/Documentation/SIMPLibFilters)
 include(${CMP_SOURCE_DIR}/cmpProject.cmake)
 
 cmpConfigureFileWithMD5Check(CONFIGURED_TEMPLATE_PATH ${SIMPLib_SOURCE_DIR}/SIMPLibConfiguration.h.in
-                            GENERATED_FILE_PATH ${DREAM3DProj_BINARY_DIR}/SIMPLib/${CMP_TOP_HEADER_FILE})
+                            GENERATED_FILE_PATH ${SIMPLProj_BINARY_DIR}/SIMPLib/${CMP_TOP_HEADER_FILE})
 
 cmp_IDE_GENERATED_PROPERTIES("Generated"
                              "${CMP_HEADER_DIR}/${CMP_TOP_HEADER_FILE};${CMP_HEADER_DIR}/${CMP_TYPES_FILE_NAME};${CMP_HEADER_DIR}/${CMP_CONFIGURATION_FILE_NAME};${CMP_HEADER_DIR}/${CMP_VERSION_HEADER_FILE_NAME}"

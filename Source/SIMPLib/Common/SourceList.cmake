@@ -91,7 +91,7 @@ set(SIMPLib_${SUBDIR_NAME}_SRCS
   ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/ThresholdFilterHelper.cpp
 )
 
-cmp_IDE_SOURCE_PROPERTIES( "${SUBDIR_NAME}" "${SIMPLib_${SUBDIR_NAME}_HDRS};${SIMPLib_${SUBDIR_NAME}_Moc_HDRS}" "${SIMPLib_${SUBDIR_NAME}_SRCS}" "0")
+cmp_IDE_SOURCE_PROPERTIES( "SIMPLib/${SUBDIR_NAME}" "${SIMPLib_${SUBDIR_NAME}_HDRS};${SIMPLib_${SUBDIR_NAME}_Moc_HDRS}" "${SIMPLib_${SUBDIR_NAME}_SRCS}" "${PROJECT_INSTALL_HEADERS}")
 cmp_IDE_SOURCE_PROPERTIES( "Generated/SIMPLib/${SUBDIR_NAME}" "" "${SIMPLib_${SUBDIR_NAME}_Generated_MOC_SRCS}" "0")
 
 set(SIMPLib_${SUBDIR_NAME}_HDRS
@@ -106,14 +106,6 @@ set(SIMPLib_${SUBDIR_NAME}_SRCS
 
 # -- Add the binary directory for this subdirectory to the include path which is where the moc files are generated
 include_directories( ${SIMPLib_BINARY_DIR}/${SUBDIR_NAME})
-
-
-if( ${PROJECT_INSTALL_HEADERS} EQUAL 1 )
-    INSTALL (FILES ${SIMPLib_${SUBDIR_NAME}_HDRS}
-                   ${SIMPLib_${SUBDIR_NAME}_Moc_HDRS}
-            DESTINATION include/SIMPLib/${SUBDIR_NAME}
-            COMPONENT Headers   )
-endif()
 
 if(MSVC)
   set_source_files_properties(${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/FilterManager.cpp PROPERTIES COMPILE_FLAGS /bigobj)

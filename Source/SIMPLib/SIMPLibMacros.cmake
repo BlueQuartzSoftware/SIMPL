@@ -2,25 +2,36 @@
 
 #-------------------------------------------------------------------------------
 # Macro START_FILTER_GROUP
-macro(START_FILTER_GROUP WidgetsBinaryDir filterGroup humanGroup)
-   file(APPEND ${AllFiltersHeaderFile} "\n/* ------ ${filterGroup} --------- */\n")
- #  file(APPEND ${CodeGeneratorFile} "//----- ${filterGroup} --------------- \n")
- #  file(APPEND ${AllFilterWidgetsHeaderFile} "\n/* ------ ${filterGroup} --------- */\n")
- #  file(APPEND ${RegisterKnownFilterWidgetsFile} "\n    /* ------ ${filterGroup} --------- */\n")
-   file(APPEND ${RegisterKnownFiltersFile} "\n    /* ------ ${filterGroup} --------- */\n")
+# macro(START_FILTER_GROUP WidgetsBinaryDir filterGroup humanGroup)
+#    file(APPEND ${AllFiltersHeaderFile} "\n/* ------ ${filterGroup} --------- */\n")
+#    file(APPEND ${RegisterKnownFiltersFile} "\n    /* ------ ${filterGroup} --------- */\n")
+#    file(APPEND "${DREAM3DProj_BINARY_DIR}/DREAM3DDocGroupList" "${filterGroup}\n")
+#    file(WRITE "${DREAM3DProj_BINARY_DIR}/DREAM3DDoc_${filterGroup}" "")
+# endmacro()
 
-   file(APPEND "${DREAM3DProj_BINARY_DIR}/DREAM3DDocGroupList" "${filterGroup}\n")
-   file(WRITE "${DREAM3DProj_BINARY_DIR}/DREAM3DDoc_${filterGroup}" "")
-#   FILE(WRITE ${PluginAutoMocSourceFile} "/* This file is Auto Generated. Do Not Edit */\n")
-endmacro()
+function(SIMPL_START_FILTER_GROUP)
+
+  set(options)
+  set(oneValueArgs ALL_FILTERS_HEADERFILE REGISTER_KNOWN_FILTERS_FILE FILTER_GROUP BINARY_DIR)
+  set(multiValueArgs)
+
+  cmake_parse_arguments(P "${options}" "${oneValueArgs}" "${multiValueArgs}" ${ARGN} )
+
+  file(APPEND ${P_ALL_FILTERS_HEADERFILE} "\n/* ------ ${P_FILTER_GROUP} --------- */\n")
+  file(APPEND ${P_REGISTER_KNOWN_FILTERS_FILE} "\n    /* ------ ${P_FILTER_GROUP} --------- */\n")
+  file(APPEND "${P_BINARY_DIR}/DREAM3DDocGroupList" "${P_FILTER_GROUP}\n")
+  file(WRITE "${P_BINARY_DIR}/DREAM3DDoc_${P_FILTER_GROUP}" "")
+
+endfunction()
 
 #-------------------------------------------------------------------------------
 # Macro END_FILTER_GROUP
-macro(END_FILTER_GROUP WidgetsBinaryDir filterGroup humanGroup)
-#    file(APPEND ${DREAM3DProj_SOURCE_DIR}/Source/Applications/DREAM3D/Help/Filters/${filterGroup}/${filterGroup}.dox "\n*/\n")
-endmacro(END_FILTER_GROUP  WidgetsBinaryDir filterGroup)
+macro(SIMPL_END_FILTER_GROUP WidgetsBinaryDir filterGroup humanGroup)
+endmacro()
 
-
+#-------------------------------------------------------------------------------
+# Macro MAKE_CONSTANTS_HEADER
+# @param PLUGIN_NAME
 macro(MAKE_CONSTANTS_HEADER PLUGIN_NAME)
   set(PLUGIN_NAME ${PLUGIN_NAME})
   set(ConstantsFile ${${PLUGIN_NAME}_SOURCE_DIR}/${PLUGIN_NAME}Constants.h)
@@ -35,16 +46,16 @@ endmacro()
 
 
 #-------------------------------------------------------------------------------
-# Macro ADD_DREAM3D_SUPPORT_HEADER
-macro(ADD_DREAM3D_SUPPORT_HEADER SourceDir filterGroup headerFileName)
+# Macro ADD_SIMPL_SUPPORT_HEADER
+macro(ADD_SIMPL_SUPPORT_HEADER SourceDir filterGroup headerFileName)
     set(Project_SRCS ${Project_SRCS}
                     ${SourceDir}/${filterGroup}/${headerFileName})
     cmp_IDE_SOURCE_PROPERTIES( "${filterGroup}" "${SourceDir}/${filterGroup}/${headerFileName}" "" "0")
 endmacro()
 
 #-------------------------------------------------------------------------------
-# Macro ADD_DREAM3D_SUPPORT_MOC_HEADER
-macro(ADD_DREAM3D_SUPPORT_MOC_HEADER SourceDir filterGroup headerFileName)
+# Macro ADD_SIMPL_SUPPORT_MOC_HEADER
+macro(ADD_SIMPL_SUPPORT_MOC_HEADER SourceDir filterGroup headerFileName)
   QT5_WRAP_CPP( _moc_filter_source  ${SourceDir}/${filterGroup}/${headerFileName})
   set_source_files_properties( ${_moc_filter_source} PROPERTIES GENERATED TRUE)
   set_source_files_properties( ${_moc_filter_source} PROPERTIES HEADER_FILE_ONLY TRUE)
@@ -56,23 +67,23 @@ macro(ADD_DREAM3D_SUPPORT_MOC_HEADER SourceDir filterGroup headerFileName)
 endmacro()
 
 #-------------------------------------------------------------------------------
-# Macro ADD_DREAM3D_SUPPORT_HEADER_SUBDIR
-macro(ADD_DREAM3D_SUPPORT_HEADER_SUBDIR SourceDir filterGroup headerFileName subdir)
+# Macro ADD_SIMPL_SUPPORT_HEADER_SUBDIR
+macro(ADD_SIMPL_SUPPORT_HEADER_SUBDIR SourceDir filterGroup headerFileName subdir)
     set(Project_SRCS ${Project_SRCS}
                     ${SourceDir}/${filterGroup}/${subdir}/${headerFileName})
     cmp_IDE_SOURCE_PROPERTIES( "${filterGroup}/${subdir}" "${SourceDir}/${filterGroup}/${subdir}/${headerFileName}" "" "0")
 endmacro()
 
 #-------------------------------------------------------------------------------
-# Macro ADD_DREAM3D_SUPPORT_SOURCE
-macro(ADD_DREAM3D_SUPPORT_SOURCE SourceDir filterGroup sourceFileName)
+# Macro ADD_SIMPL_SUPPORT_SOURCE
+macro(ADD_SIMPL_SUPPORT_SOURCE SourceDir filterGroup sourceFileName)
     set(Project_SRCS ${Project_SRCS}
                     ${SourceDir}/${filterGroup}/${sourceFileName})
     cmp_IDE_SOURCE_PROPERTIES( "${filterGroup}" "" "${SourceDir}/${filterGroup}/${sourceFileName}" "0")
 endmacro()
 #-------------------------------------------------------------------------------
-# Macro ADD_DREAM3D_SUPPORT_CLASS
-macro(ADD_DREAM3D_SUPPORT_CLASS SourceDir filterGroup className)
+# Macro ADD_SIMPL_SUPPORT_CLASS
+macro(ADD_SIMPL_SUPPORT_CLASS SourceDir filterGroup className)
     set(Project_SRCS ${Project_SRCS}
                     ${SourceDir}/${filterGroup}/${className}.h
                     ${SourceDir}/${filterGroup}/${className}.cpp)
@@ -81,44 +92,43 @@ endmacro()
 
 
 #-------------------------------------------------------------------------------
-# Macro ADD_DREAM3D_FILTER
-macro(ADD_DREAM3D_FILTER FilterLib WidgetLib filterGroup filterName filterDocPath publicFilter)
-    QT5_WRAP_CPP( _moc_filter_source  ${${FilterLib}_SOURCE_DIR}/${filterGroup}/${filterName}.h)
-    set_source_files_properties( ${_moc_filter_source} PROPERTIES GENERATED TRUE)
-    set_source_files_properties( ${_moc_filter_source} PROPERTIES HEADER_FILE_ONLY TRUE)
+# Macro ADD_SIMPL_FILTER
+macro(ADD_SIMPL_FILTER FilterLib WidgetLib filterGroup filterName filterDocPath publicFilter BinaryDir)
 
-    set(Project_SRCS ${Project_SRCS}
-                    ${${FilterLib}_SOURCE_DIR}/${filterGroup}/${filterName}.h
-                    ${${FilterLib}_SOURCE_DIR}/${filterGroup}/${filterName}.cpp
-                    ${_moc_filter_source}
-                    )
-    #--- Organize inside the Visual Studio/Xcode Projects
-    cmp_IDE_SOURCE_PROPERTIES( "${filterGroup}" "${${FilterLib}_SOURCE_DIR}/${filterGroup}/${filterName}.h" "${${FilterLib}_SOURCE_DIR}/${filterGroup}/${filterName}.cpp" "0")
-    cmp_IDE_GENERATED_PROPERTIES ( "Generated/${FilterLib}/${filterGroup}" "" "${_moc_filter_source}" "0")
+  QT5_WRAP_CPP( _moc_filter_source  ${${FilterLib}_SOURCE_DIR}/${filterGroup}/${filterName}.h)
+  set_source_files_properties( ${_moc_filter_source} PROPERTIES GENERATED TRUE)
+  set_source_files_properties( ${_moc_filter_source} PROPERTIES HEADER_FILE_ONLY TRUE)
 
-    #-- Create an Install Rule for the headers
-    if( ${PROJECT_INSTALL_HEADERS} EQUAL 1 )
-        INSTALL (FILES ${${FilterLib}_SOURCE_DIR}/${filterGroup}/${filterName}.h
-            DESTINATION include/${filterGroup}
-            COMPONENT Headers   )
-    endif()
+  set(Project_SRCS ${Project_SRCS}
+                  ${${FilterLib}_SOURCE_DIR}/${filterGroup}/${filterName}.h
+                  ${${FilterLib}_SOURCE_DIR}/${filterGroup}/${filterName}.cpp
+                  ${_moc_filter_source}
+                  )
+  #--- Organize inside the Visual Studio/Xcode Projects
+  cmp_IDE_SOURCE_PROPERTIES( "${FilterLib}/${filterGroup}" "${${FilterLib}_SOURCE_DIR}/${filterGroup}/${filterName}.h" "${${FilterLib}_SOURCE_DIR}/${filterGroup}/${filterName}.cpp" ${PROJECT_INSTALL_HEADERS})
+  cmp_IDE_GENERATED_PROPERTIES ( "Generated/${FilterLib}/${filterGroup}" "" "${_moc_filter_source}" "0")
 
-    file(APPEND ${AllFiltersHeaderFile} "#include \"${FilterLib}/${filterGroup}/${filterName}.h\"\n")
+  #-- Create an Install Rule for the headers
+#  if( ${PROJECT_INSTALL_HEADERS} EQUAL 1 )
+#      INSTALL (FILES ${${FilterLib}_SOURCE_DIR}/${filterGroup}/${filterName}.h
+#          DESTINATION include/${FilterLib}/${filterGroup}
+#          COMPONENT Headers)
+#  endif()
 
-    if( ${publicFilter} STREQUAL TRUE)
-        #message(STATUS "    ${filterName}")
-        #file(APPEND ${CodeGeneratorFile} "  ${filterName}::Pointer _${filterName} = ${filterName}::New();\n")
-        file(APPEND ${RegisterKnownFiltersFile} "   FilterFactory<${filterName}>::Pointer ${filterName}Factory = FilterFactory<${filterName}>::New();\n")
-        file(APPEND ${RegisterKnownFiltersFile} "   fm->addFilterFactory(\"${filterName}\",${filterName}Factory);\n\n")
+  file(APPEND ${AllFiltersHeaderFile} "#include \"${FilterLib}/${filterGroup}/${filterName}.h\"\n")
 
-       #-- Check to make sure we have a Documentation file for the filter
-        if(NOT EXISTS ${filterDocPath} )
-          message(FATAL_ERROR "*** Missing Documenation File for ${filterDocPath}")
-        endif()
+  if( ${publicFilter} STREQUAL TRUE)
+      file(APPEND ${RegisterKnownFiltersFile} "   FilterFactory<${filterName}>::Pointer ${filterName}Factory = FilterFactory<${filterName}>::New();\n")
+      file(APPEND ${RegisterKnownFiltersFile} "   fm->addFilterFactory(\"${filterName}\",${filterName}Factory);\n\n")
 
-        file(APPEND ${DREAM3DProj_BINARY_DIR}/DREAM3DDoc_${filterGroup} "${filterDocPath}\n")
+      #-- Check to make sure we have a Documentation file for the filter
+      if(NOT EXISTS ${filterDocPath} )
+        message(FATAL_ERROR "*** Missing Documenation File for ${filterDocPath}")
+      endif()
 
-    endif()
+      file(APPEND ${BinaryDir}/DREAM3DDoc_${filterGroup} "${filterDocPath}\n")
+
+  endif()
 endmacro()
 
 #-------------------------------------------------------------------------------

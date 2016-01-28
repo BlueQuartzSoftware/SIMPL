@@ -37,8 +37,6 @@
 #define _GenericExample_H_
 
 #include <QtCore/QString>
-// Needed for AxisAngle_t
-#include "EbsdLib/EbsdConstants.h"
 
 #include "SIMPLib/SIMPLib.h"
 #include "SIMPLib/Common/AbstractFilter.h"
@@ -46,6 +44,7 @@
 #include "SIMPLib/DataArrays/IDataArray.h"
 #include "SIMPLib/FilterParameters/FloatVec3FilterParameter.h"
 #include "SIMPLib/FilterParameters/IntVec3FilterParameter.h"
+#include "SIMPLib/FilterParameters/AxisAngleFilterParameter.h"
 
 /**
  * @class GenericExample GenericExample.h ExamplePlugin/Code/ExamplePluginFilters/GenericExample.h
