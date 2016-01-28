@@ -111,7 +111,7 @@ void TestEbsdColoring()
 
   double refDir[3] = {0.0, 0.0, 1.0};
   double dEuler[3] = {207.1653, 44.2854, 146.5178};
-  DREAM3D::Rgb argb = 0x00000000;
+  SIMPL::Rgb argb = 0x00000000;
   size_t idx = 0;
   argb = ops[idx++]->generateIPFColor(dEuler, refDir, false);
   argb = ops[idx++]->generateIPFColor(dEuler, refDir, false);

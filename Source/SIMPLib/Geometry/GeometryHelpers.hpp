@@ -67,12 +67,12 @@ namespace GeometryHelpers
         herr_t err = 0;
         unsigned int spatialDims = 0;
         QString geomName = "";
-        err = QH5Lite::readScalarAttribute(parentId, DREAM3D::Geometry::Geometry, DREAM3D::Geometry::SpatialDimensionality, spatialDims);
+        err = QH5Lite::readScalarAttribute(parentId, SIMPL::Geometry::Geometry, SIMPL::Geometry::SpatialDimensionality, spatialDims);
         if (err < 0)
         {
           return err;
         }
-        err = QH5Lite::readStringAttribute(parentId, DREAM3D::Geometry::Geometry, DREAM3D::Geometry::GeometryName, geomName);
+        err = QH5Lite::readStringAttribute(parentId, SIMPL::Geometry::Geometry, SIMPL::Geometry::GeometryName, geomName);
         if (err < 0)
         {
           return err;

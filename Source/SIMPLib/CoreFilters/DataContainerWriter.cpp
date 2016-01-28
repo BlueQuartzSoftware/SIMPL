@@ -158,7 +158,7 @@ void DataContainerWriter::dataCheck()
   QDir parentPath(fi.path());
   if (parentPath.exists() == false)
   {
-    ss = QObject::tr("The directory path for the output file does not exist. DREAM.3D will attempt to create this path during execution of the filter");
+    ss = QObject::tr("The directory path for the output file does not exist. SIMPLView will attempt to create this path during execution of the filter");
     notifyWarningMessage(getHumanLabel(), ss, -1);
   }
   if (fi.suffix().compare("") == 0)
@@ -238,8 +238,8 @@ void DataContainerWriter::execute()
   HDF5ScopedFileSentinel scopedFileSentinel(&m_FileId, true);
 
   // Write our File Version string to the Root "/" group
-  QH5Lite::writeStringAttribute(m_FileId, "/", DREAM3D::HDF5::FileVersionName, DREAM3D::HDF5::FileVersion);
-  QH5Lite::writeStringAttribute(m_FileId, "/", DREAM3D::HDF5::DREAM3DVersion, SIMPLib::Version::Complete() );
+  QH5Lite::writeStringAttribute(m_FileId, "/", SIMPL::HDF5::FileVersionName, SIMPL::HDF5::FileVersion);
+  QH5Lite::writeStringAttribute(m_FileId, "/", SIMPL::HDF5::DREAM3DVersion, SIMPLib::Version::Complete() );
   QFile xdmfFile;
   QTextStream xdmfOut(&xdmfFile);
   if (m_WriteXdmfFile == true)
@@ -264,15 +264,15 @@ void DataContainerWriter::execute()
   // Write the Pipeline to the File
   err = writePipeline();
 
-  err = H5Utilities::createGroupsFromPath(DREAM3D::StringConstants::DataContainerGroupName.toLatin1().data(), m_FileId);
+  err = H5Utilities::createGroupsFromPath(SIMPL::StringConstants::DataContainerGroupName.toLatin1().data(), m_FileId);
   if (err < 0)
   {
-    QString ss = QObject::tr("Error creating HDF5 Group '%1'").arg(DREAM3D::StringConstants::DataContainerGroupName);
+    QString ss = QObject::tr("Error creating HDF5 Group '%1'").arg(SIMPL::StringConstants::DataContainerGroupName);
     setErrorCondition(-60);
     notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
     return;
   }
-  hid_t dcaGid = H5Gopen(m_FileId, DREAM3D::StringConstants::DataContainerGroupName.toLatin1().data(), H5P_DEFAULT );
+  hid_t dcaGid = H5Gopen(m_FileId, SIMPL::StringConstants::DataContainerGroupName.toLatin1().data(), H5P_DEFAULT );
   scopedFileSentinel.addGroupId(&dcaGid);
 
   QList<QString> dcNames = getDataContainerArray()->getDataContainerNames();
@@ -347,15 +347,15 @@ void DataContainerWriter::execute()
 // -----------------------------------------------------------------------------
 int DataContainerWriter::writeDataContainerBundles(hid_t fileId)
 {
-  int err = QH5Utilities::createGroupsFromPath(DREAM3D::StringConstants::DataContainerBundleGroupName, m_FileId);
+  int err = QH5Utilities::createGroupsFromPath(SIMPL::StringConstants::DataContainerBundleGroupName, m_FileId);
   if (err < 0)
   {
-    QString ss = QObject::tr("Error creating HDF5 Group '%1'").arg(DREAM3D::StringConstants::DataContainerBundleGroupName);
+    QString ss = QObject::tr("Error creating HDF5 Group '%1'").arg(SIMPL::StringConstants::DataContainerBundleGroupName);
     setErrorCondition(-61);
     notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
     return -1;
   }
-  hid_t dcbGid = H5Gopen(m_FileId, DREAM3D::StringConstants::DataContainerBundleGroupName.toLatin1().data(), H5P_DEFAULT );
+  hid_t dcbGid = H5Gopen(m_FileId, SIMPL::StringConstants::DataContainerBundleGroupName.toLatin1().data(), H5P_DEFAULT );
 
   Detail::H5GroupAutoCloser groupCloser(&dcbGid);
 
@@ -403,7 +403,7 @@ int DataContainerWriter::writePipeline()
 {
   // WRITE THE PIPELINE TO THE HDF5 FILE
   H5FilterParametersWriter::Pointer parametersWriter = H5FilterParametersWriter::New();
-  hid_t pipelineGroupId = QH5Utilities::createGroup(m_FileId, DREAM3D::StringConstants::PipelineGroupName);
+  hid_t pipelineGroupId = QH5Utilities::createGroup(m_FileId, SIMPL::StringConstants::PipelineGroupName);
   parametersWriter->setGroupId(pipelineGroupId);
 
   // Now start walking BACKWARDS through the pipeline to find the first filter.
@@ -430,10 +430,10 @@ int DataContainerWriter::writePipeline()
     currentFilter = currentFilter->getNextFilter().lock();
   }
 
-  int err = QH5Lite::writeScalarAttribute(m_FileId, DREAM3D::StringConstants::PipelineGroupName, DREAM3D::Settings::NumFilters, index);
+  int err = QH5Lite::writeScalarAttribute(m_FileId, SIMPL::StringConstants::PipelineGroupName, SIMPL::Settings::NumFilters, index);
   if (err < 0)
   {
-    QString ss = QObject::tr("Error writing HDF5 scalar attribute '%1' on HDF5 Group '%2'").arg(DREAM3D::Settings::NumFilters).arg(DREAM3D::StringConstants::PipelineGroupName);
+    QString ss = QObject::tr("Error writing HDF5 scalar attribute '%1' on HDF5 Group '%2'").arg(SIMPL::Settings::NumFilters).arg(SIMPL::StringConstants::PipelineGroupName);
     setErrorCondition(-12324323);
     notifyErrorMessage(getHumanLabel(), ss, getErrorCondition() );
   }
@@ -516,16 +516,16 @@ const QString DataContainerWriter::getFilterVersion()
 //
 // -----------------------------------------------------------------------------
 const QString DataContainerWriter::getGroupName()
-{ return DREAM3D::FilterGroups::IOFilters; }
+{ return SIMPL::FilterGroups::IOFilters; }
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
 const QString DataContainerWriter::getSubGroupName()
-{ return DREAM3D::FilterSubGroups::OutputFilters; }
+{ return SIMPL::FilterSubGroups::OutputFilters; }
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
 const QString DataContainerWriter::getHumanLabel()
-{ return "Write DREAM.3D Data File"; }
+{ return "Write SIMPLView Data File"; }

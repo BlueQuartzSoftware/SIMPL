@@ -421,7 +421,7 @@ class QuaternionMath
      * @param q Input Quaternion
      * @param v Input Vector
      * @param out Output Vector
-     * DREAM.3D uses
+     * SIMPLView uses
      * PASSIVE rotations by default.
      */
     static void MultiplyQuatVec(const Quaternion q, T* v, T* out)

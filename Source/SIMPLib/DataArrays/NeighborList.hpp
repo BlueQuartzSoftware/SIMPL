@@ -675,12 +675,12 @@ class NeighborList : public IDataArray
           return -605;
         }
 
-        err = QH5Lite::writeScalarAttribute(parentId, getName(), DREAM3D::HDF5::DataArrayVersion, getClassVersion());
+        err = QH5Lite::writeScalarAttribute(parentId, getName(), SIMPL::HDF5::DataArrayVersion, getClassVersion());
         if(err < 0)
         {
           return -604;
         }
-        err = QH5Lite::writeStringAttribute(parentId, getName(), DREAM3D::HDF5::ObjectType, getNameOfClass());
+        err = QH5Lite::writeStringAttribute(parentId, getName(), SIMPL::HDF5::ObjectType, getNameOfClass());
         if(err < 0)
         {
           return -607;
@@ -688,7 +688,7 @@ class NeighborList : public IDataArray
 
         // Write the tuple dimensions as an attribute
         hsize_t size = tDims.size();
-        err = QH5Lite::writePointerAttribute(parentId, getName(), DREAM3D::HDF5::TupleDimensions, 1, &size, tDims.data());
+        err = QH5Lite::writePointerAttribute(parentId, getName(), SIMPL::HDF5::TupleDimensions, 1, &size, tDims.data());
         if (err < 0)
         {
           return -609;
@@ -697,7 +697,7 @@ class NeighborList : public IDataArray
         QVector<size_t> cDims = getComponentDimensions();
         // write the component dimensions as  an attribute
         size = cDims.size();
-        err = QH5Lite::writePointerAttribute(parentId, getName(), DREAM3D::HDF5::ComponentDimensions, 1, &size, cDims.data());
+        err = QH5Lite::writePointerAttribute(parentId, getName(), SIMPL::HDF5::ComponentDimensions, 1, &size, cDims.data());
         if (err < 0)
         {
           return -610;
@@ -741,11 +741,11 @@ class NeighborList : public IDataArray
      * @return Returns a formatted string that contains general infomation about
      * the instance of the object.
      */
-    virtual QString getInfoString(DREAM3D::InfoStringFormat format)
+    virtual QString getInfoString(SIMPL::InfoStringFormat format)
     {
       QString info;
       QTextStream ss (&info);
-      if(format == DREAM3D::HtmlFormat)
+      if(format == SIMPL::HtmlFormat)
       {
         ss << "<html><head></head>\n";
         ss << "<body>\n";
@@ -1006,7 +1006,7 @@ class NeighborList : public IDataArray
      * @brief NeighborList
      */
     NeighborList(size_t numTuples, const QString name) :
-      m_NumNeighborsArrayName(DREAM3D::FeatureData::NumNeighbors),
+      m_NumNeighborsArrayName(SIMPL::FeatureData::NumNeighbors),
       m_Name(name),
       m_NumTuples(numTuples),
       m_IsAllocated(false)

@@ -111,9 +111,9 @@ int getZEndIndex() { return 250; }
 DataArray<unsigned int>::Pointer getPhaseTypes()
 {
   DataArray<unsigned int>::Pointer phaseTypes
-    = DataArray<unsigned int>::CreateArray(2, DREAM3D::EnsembleData::PhaseTypes);
-  phaseTypes->SetValue(0, DREAM3D::PhaseType::UnknownPhaseType);
-  phaseTypes->SetValue(1, DREAM3D::PhaseType::PrimaryPhase);
+    = DataArray<unsigned int>::CreateArray(2, SIMPL::EnsembleData::PhaseTypes);
+  phaseTypes->SetValue(0, SIMPL::PhaseType::UnknownPhaseType);
+  phaseTypes->SetValue(1, SIMPL::PhaseType::PrimaryPhase);
   return phaseTypes;
 }
 
@@ -199,7 +199,7 @@ void TestFindNeighbors()
   FilterPipeline::Pointer pipeline = FilterPipeline::New();
 
   typedef DataArray<unsigned int> XTalStructArrayType;
-  XTalStructArrayType::Pointer xtal = XTalStructArrayType::CreateArray(2, DREAM3D::EnsembleData::CrystalStructures);
+  XTalStructArrayType::Pointer xtal = XTalStructArrayType::CreateArray(2, SIMPL::EnsembleData::CrystalStructures);
   xtal->SetValue(0, Ebsd::CrystalStructure::UnknownCrystalStructure);
   xtal->SetValue(1, Ebsd::CrystalStructure::Cubic);
 
@@ -292,21 +292,21 @@ void TestDataContainerReader()
 
 #if 0
   IDataArray* iDataPtr = NULL;
-  iDataPtr = m->getFeatureData(DREAM3D::EnsembleData::CrystalStructures).get();
+  iDataPtr = m->getFeatureData(SIMPL::EnsembleData::CrystalStructures).get();
   UInt32ArrayType* data = UInt32ArrayType::SafeObjectDownCast<IDataArray*, UInt32ArrayType*>(iDataPtr);
   m_CrystalStructure = data->GetValue(index);
 #endif
 
   FindSizes::Pointer find_sizes = FindSizes::New();
-  find_sizes->setDistributionType(DREAM3D::DistributionType::LogNormal);
+  find_sizes->setDistributionType(SIMPL::DistributionType::LogNormal);
   pipeline->pushBack(find_sizes);
 
   FindShapes::Pointer find_shapes = FindShapes::New();
-  find_shapes->setDistributionType(DREAM3D::DistributionType::Beta);
+  find_shapes->setDistributionType(SIMPL::DistributionType::Beta);
   pipeline->pushBack(find_shapes);
 
   FindNeighborhoods::Pointer find_neighborhoods = FindNeighborhoods::New();
-  find_neighborhoods->setDistributionType(DREAM3D::DistributionType::LogNormal);
+  find_neighborhoods->setDistributionType(SIMPL::DistributionType::LogNormal);
   pipeline->pushBack(find_neighborhoods);
 
   FindNeighbors::Pointer find_neighbors = FindNeighbors::New();
@@ -360,7 +360,7 @@ void OtherTest()
   reader->execute();
   err = reader->getErrorCondition();
 
-  IDataArray::Pointer iPtr = m->getEnsembleData(DREAM3D::EnsembleData::CrystalStructures);
+  IDataArray::Pointer iPtr = m->getEnsembleData(SIMPL::EnsembleData::CrystalStructures);
   DREAM3D_REQUIRE_NE(NULL, iPtr.get());
 
 

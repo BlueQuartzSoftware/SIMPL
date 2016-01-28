@@ -139,7 +139,7 @@ class SIMPLib_EXPORT DataContainerReader : public AbstractFilter
 
     /**
      * @brief readExistingPipelineFromFile Reads the existing pipeline that is stored in the file and store it
-     * in the class instance for later writing to another DREAM.3D data file
+     * in the class instance for later writing to another SIMPLView data file
      * @param fileId HDF5 group Id for pipeline
      * @return Integer error value
      */
@@ -147,7 +147,7 @@ class SIMPLib_EXPORT DataContainerReader : public AbstractFilter
 
     /**
      * @brief writeExistingPipelineToFile Writes the filter parameters of the existing pipline to a
-     * DREAM.3D file
+     * SIMPLView file
      * @param writer AbstractFilterParametersWriter instance pointer
      * @param index Group index
      * @return Integer error value
@@ -157,7 +157,7 @@ class SIMPLib_EXPORT DataContainerReader : public AbstractFilter
     /**
      * @brief readDataContainerArrayStructure Reads the structure of the DataContainerArray from the HDF5 based .dream3d file. For this method to work
      * the member variable for the file path should have been set prior to calling this method.
-     * @param path The file path to the DREAM.3D file
+     * @param path The file path to the SIMPLView file
      * @return DataContainerArrayProxy instance
      */
     DataContainerArrayProxy readDataContainerArrayStructure(const QString& path);

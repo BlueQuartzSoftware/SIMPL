@@ -90,9 +90,9 @@ FilterPipeline::Pointer QFilterParametersReader::ReadPipelineFromFile(QString fi
   QFilterParametersReader::Pointer paramsReader = QFilterParametersReader::New();
   paramsReader->openFile(filePath, format);
   QSettings* prefs = paramsReader->getPrefs();
-  prefs->beginGroup(DREAM3D::Settings::PipelineBuilderGroup);
+  prefs->beginGroup(SIMPL::Settings::PipelineBuilderGroup);
   bool ok = false;
-  int filterCount = prefs->value(DREAM3D::Settings::NumFilters).toInt(&ok);
+  int filterCount = prefs->value(SIMPL::Settings::NumFilters).toInt(&ok);
   prefs->endGroup();
 
   FilterPipeline::Pointer pipeline = FilterPipeline::New();
@@ -110,7 +110,7 @@ FilterPipeline::Pointer QFilterParametersReader::ReadPipelineFromFile(QString fi
     // Open the group to get the name of the filter then close again.
     //qDebug() << " Current QSettings Group: " << prefs->group();
     prefs->beginGroup(gName);
-    QString filterName = prefs->value(DREAM3D::Settings::FilterName, "").toString();
+    QString filterName = prefs->value(SIMPL::Settings::FilterName, "").toString();
     prefs->endGroup();
     //qDebug() << "Group: " << gName << " FilterName: " << filterName;
     if(filterName.isEmpty() == false)
@@ -1555,7 +1555,7 @@ QVector<DataArrayPath> QFilterParametersReader::readDataArrayPathVector(const QS
   for (int i = 0; i < size; ++i)
   {
     m_Prefs->setArrayIndex(i);
-    QString pathStr = m_Prefs->value(DREAM3D::IO::DAPSettingsHeader).toString();
+    QString pathStr = m_Prefs->value(SIMPL::IO::DAPSettingsHeader).toString();
     DataArrayPath path = DataArrayPath::Deserialize(pathStr, "|");
     vector.append(path);
   }

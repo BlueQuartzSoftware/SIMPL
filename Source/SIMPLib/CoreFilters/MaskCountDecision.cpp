@@ -71,7 +71,7 @@ MaskCountDecision::~MaskCountDecision()
 void MaskCountDecision::setupFilterParameters()
 {
   FilterParameterVector parameters = getFilterParameters();
-  DataArraySelectionFilterParameter::RequirementType req = DataArraySelectionFilterParameter::CreateRequirement(DREAM3D::TypeNames::Bool, 1, DREAM3D::Defaults::AnyAttributeMatrix, DREAM3D::Defaults::AnyGeometry);
+  DataArraySelectionFilterParameter::RequirementType req = DataArraySelectionFilterParameter::CreateRequirement(SIMPL::TypeNames::Bool, 1, SIMPL::Defaults::AnyAttributeMatrix, SIMPL::Defaults::AnyGeometry);
   parameters.push_back(DataArraySelectionFilterParameter::New("Mask", "MaskArrayPath", getMaskArrayPath(), FilterParameter::RequiredArray, req));
   parameters.push_back(IntFilterParameter::New("Number of True Instances", "NumberOfTrues", getNumberOfTrues(), FilterParameter::Parameter, 0));
   setFilterParameters(parameters);
@@ -228,13 +228,13 @@ const QString MaskCountDecision::getCompiledLibraryName()
 //
 // -----------------------------------------------------------------------------
 const QString MaskCountDecision::getGroupName()
-{ return DREAM3D::FilterGroups::CoreFilters; }
+{ return SIMPL::FilterGroups::CoreFilters; }
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
 const QString MaskCountDecision::getSubGroupName()
-{ return DREAM3D::FilterSubGroups::MiscFilters; }
+{ return SIMPL::FilterSubGroups::MiscFilters; }
 
 // -----------------------------------------------------------------------------
 //

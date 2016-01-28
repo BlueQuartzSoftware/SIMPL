@@ -40,7 +40,7 @@
 SharedVertexList::Pointer GEOM_CLASS_NAME::CreateSharedVertexList(int64_t numVertices)
 {
   QVector<size_t> vertDims(1, 3);
-  SharedVertexList::Pointer vertices = SharedVertexList::CreateArray(numVertices, vertDims, DREAM3D::Geometry::SharedVertexList);
+  SharedVertexList::Pointer vertices = SharedVertexList::CreateArray(numVertices, vertDims, SIMPL::Geometry::SharedVertexList);
   vertices->initializeWithZeros();
   return vertices;
 }
@@ -60,9 +60,9 @@ void GEOM_CLASS_NAME::setVertices(SharedVertexList::Pointer vertices)
 {
   if (vertices.get() != NULL)
   {
-    if (vertices->getName().compare(DREAM3D::Geometry::SharedVertexList) != 0)
+    if (vertices->getName().compare(SIMPL::Geometry::SharedVertexList) != 0)
     {
-      vertices->setName(DREAM3D::Geometry::SharedVertexList);
+      vertices->setName(SIMPL::Geometry::SharedVertexList);
     }
   }
   m_VertexList = vertices;

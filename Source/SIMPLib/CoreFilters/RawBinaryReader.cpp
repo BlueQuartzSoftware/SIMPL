@@ -379,7 +379,7 @@ void RawBinaryReader::dataCheck()
   {
 
     QString ss = QObject::tr("The file size is %1 but the number of bytes needed to fill the array is %2 which is less than the size of the file."
-                             " DREAM.3D will read only the first part of the file into the array").arg(fileSize).arg(allocatedBytes);
+                             " SIMPLView will read only the first part of the file into the array").arg(fileSize).arg(allocatedBytes);
     notifyWarningMessage(getHumanLabel(), ss, RBR_FILE_TOO_BIG);
   }
 
@@ -580,13 +580,13 @@ const QString RawBinaryReader::getFilterVersion()
 //
 // -----------------------------------------------------------------------------
 const QString RawBinaryReader::getGroupName()
-{ return DREAM3D::FilterGroups::IOFilters; }
+{ return SIMPL::FilterGroups::IOFilters; }
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
 const QString RawBinaryReader::getSubGroupName()
-{ return DREAM3D::FilterSubGroups::InputFilters; }
+{ return SIMPL::FilterSubGroups::InputFilters; }
 
 // -----------------------------------------------------------------------------
 //

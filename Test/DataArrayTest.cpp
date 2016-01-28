@@ -588,7 +588,7 @@ QString TypeToString(T v)
   {
 
     QVector<size_t> tDims(10);
-    AttributeMatrix::Pointer am = AttributeMatrix::New(tDims, "AttributeMatrix", DREAM3D::AttributeMatrixType::Cell);
+    AttributeMatrix::Pointer am = AttributeMatrix::New(tDims, "AttributeMatrix", SIMPL::AttributeMatrixType::Cell);
 
     typename NeighborList<T>::Pointer neiList = NeighborList<T>::CreateArray(10, "NeighborList");
 

@@ -1126,14 +1126,14 @@ class DataArray : public IDataArray
      * @return Returns a formatted string that contains general infomation about
      * the instance of the object.
      */
-    virtual QString getInfoString(DREAM3D::InfoStringFormat format)
+    virtual QString getInfoString(SIMPL::InfoStringFormat format)
     {
 
       QLocale usa(QLocale::English, QLocale::UnitedStates);
 
       QString info;
       QTextStream ss (&info);
-      if(format == DREAM3D::HtmlFormat)
+      if(format == SIMPL::HtmlFormat)
       {
         ss << "<html><head></head>\n";
         ss << "<body>\n";

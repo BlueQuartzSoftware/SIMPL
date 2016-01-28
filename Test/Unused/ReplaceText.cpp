@@ -420,7 +420,7 @@ void fixDataCheck(QString hFile, QString cppFile)
           }
           if(needCellAttrCreate)
           {
-            out << "  AttributeMatrix::Pointer cellEnsembleAttrMat = m->createNonPrereqAttributeMatrix<AbstractFilter>(this, getCellEnsembleAttributeMatrixName(), DREAM3D::AttributeMatrixType::CellEnsemble);\n";
+            out << "  AttributeMatrix::Pointer cellEnsembleAttrMat = m->createNonPrereqAttributeMatrix<AbstractFilter>(this, getCellEnsembleAttributeMatrixName(), SIMPL::AttributeMatrixType::CellEnsemble);\n";
             out << "  if(getErrorCondition() < 0) { return; }\n";
           }
 

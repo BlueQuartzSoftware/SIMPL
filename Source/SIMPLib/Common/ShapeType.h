@@ -71,19 +71,19 @@ class SIMPLib_EXPORT ShapeType
     {
       switch(ShapeType)
       {
-        case DREAM3D::ShapeType::EllipsoidShape:
+        case SIMPL::ShapeType::EllipsoidShape:
           return EllipsoidStr();
-        case DREAM3D::ShapeType::SuperEllipsoidShape:
+        case SIMPL::ShapeType::SuperEllipsoidShape:
           return SuperEllipsoid();
-        case DREAM3D::ShapeType::CubeOctahedronShape:
+        case SIMPL::ShapeType::CubeOctahedronShape:
           return CubeOctahedronStr();
-        case DREAM3D::ShapeType::CylinderAShape:
+        case SIMPL::ShapeType::CylinderAShape:
           return CylinderAStr();
-        case DREAM3D::ShapeType::CylinderBShape:
+        case SIMPL::ShapeType::CylinderBShape:
           return CylinderBStr();
-        case DREAM3D::ShapeType::CylinderCShape:
+        case SIMPL::ShapeType::CylinderCShape:
           return CylinderCStr();
-        case DREAM3D::ShapeType::UnknownShapeType:
+        case SIMPL::ShapeType::UnknownShapeType:
           return UnknownShapeTypeStr();
         default:
           break;
@@ -95,29 +95,29 @@ class SIMPLib_EXPORT ShapeType
     {
       if (EllipsoidStr().compare(str) == 0)
       {
-        return DREAM3D::ShapeType::EllipsoidShape;
+        return SIMPL::ShapeType::EllipsoidShape;
       }
       else if (SuperEllipsoid().compare(str) == 0)
       {
-        return DREAM3D::ShapeType::SuperEllipsoidShape;
+        return SIMPL::ShapeType::SuperEllipsoidShape;
       }
       else if (CubeOctahedronStr().compare(str) == 0)
       {
-        return DREAM3D::ShapeType::CubeOctahedronShape;
+        return SIMPL::ShapeType::CubeOctahedronShape;
       }
       else if (CylinderAStr().compare(str) == 0)
       {
-        return DREAM3D::ShapeType::CylinderAShape;
+        return SIMPL::ShapeType::CylinderAShape;
       }
       else if (CylinderBStr().compare(str) == 0)
       {
-        return DREAM3D::ShapeType::CylinderBShape;
+        return SIMPL::ShapeType::CylinderBShape;
       }
       else if (CylinderCStr().compare(str) == 0)
       {
-        return DREAM3D::ShapeType::CylinderCShape;
+        return SIMPL::ShapeType::CylinderCShape;
       }
-      return DREAM3D::ShapeType::UnknownShapeType;
+      return SIMPL::ShapeType::UnknownShapeType;
     }
 
 
@@ -136,25 +136,25 @@ class SIMPLib_EXPORT ShapeType
     static void getShapeTypeEnums(QVector<unsigned int>& types)
     {
       types.clear();
-      types.push_back(DREAM3D::ShapeType::EllipsoidShape);
-      types.push_back(DREAM3D::ShapeType::SuperEllipsoidShape);
-      types.push_back(DREAM3D::ShapeType::CubeOctahedronShape);
-      types.push_back(DREAM3D::ShapeType::CylinderAShape);
-      types.push_back(DREAM3D::ShapeType::CylinderBShape);
-      types.push_back(DREAM3D::ShapeType::CylinderCShape);
-      types.push_back(DREAM3D::ShapeType::UnknownShapeType);
+      types.push_back(SIMPL::ShapeType::EllipsoidShape);
+      types.push_back(SIMPL::ShapeType::SuperEllipsoidShape);
+      types.push_back(SIMPL::ShapeType::CubeOctahedronShape);
+      types.push_back(SIMPL::ShapeType::CylinderAShape);
+      types.push_back(SIMPL::ShapeType::CylinderBShape);
+      types.push_back(SIMPL::ShapeType::CylinderCShape);
+      types.push_back(SIMPL::ShapeType::UnknownShapeType);
     }
 
     static void getShapeTypeMap(QMap<int, QString>& map)
     {
       map.clear();
-      map[DREAM3D::ShapeType::EllipsoidShape] = EllipsoidStr();
-      map[DREAM3D::ShapeType::SuperEllipsoidShape] = SuperEllipsoid();
-      map[DREAM3D::ShapeType::CubeOctahedronShape] = CubeOctahedronStr();
-      map[DREAM3D::ShapeType::CylinderAShape] = CylinderAStr();
-      map[DREAM3D::ShapeType::CylinderBShape] = CylinderBStr();
-      map[DREAM3D::ShapeType::CylinderCShape] = CylinderCStr();
-      map[DREAM3D::ShapeType::UnknownShapeType] = UnknownShapeTypeStr();
+      map[SIMPL::ShapeType::EllipsoidShape] = EllipsoidStr();
+      map[SIMPL::ShapeType::SuperEllipsoidShape] = SuperEllipsoid();
+      map[SIMPL::ShapeType::CubeOctahedronShape] = CubeOctahedronStr();
+      map[SIMPL::ShapeType::CylinderAShape] = CylinderAStr();
+      map[SIMPL::ShapeType::CylinderBShape] = CylinderBStr();
+      map[SIMPL::ShapeType::CylinderCShape] = CylinderCStr();
+      map[SIMPL::ShapeType::UnknownShapeType] = UnknownShapeTypeStr();
     }
   protected:
     ShapeType();

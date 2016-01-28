@@ -224,7 +224,7 @@ DataContainerArray::Pointer initializeDataContainerArray()
   int32_t initVal = 10;
 
   //Make Cell AM
-  AttributeMatrix::Pointer cellAttrMat = AttributeMatrix::New(tDims, "cellAttrMat", DREAM3D::AttributeMatrixType::Cell);
+  AttributeMatrix::Pointer cellAttrMat = AttributeMatrix::New(tDims, "cellAttrMat", SIMPL::AttributeMatrixType::Cell);
   m->addAttributeMatrix("cellAttrMat", cellAttrMat);
 
   //Create 2 featureIds arrays in the Cell AM
@@ -252,14 +252,14 @@ DataContainerArray::Pointer initializeDataContainerArray()
   //Make a feature and ensemble AM for the first featureIds array and add some arrays
   tDims.resize(1);
   tDims[0] = 3;
-  AttributeMatrix::Pointer featureAttrMat1 = AttributeMatrix::New(tDims, "featureAttrMat1", DREAM3D::AttributeMatrixType::CellFeature);
+  AttributeMatrix::Pointer featureAttrMat1 = AttributeMatrix::New(tDims, "featureAttrMat1", SIMPL::AttributeMatrixType::CellFeature);
   m->addAttributeMatrix("featureAttrMat1", featureAttrMat1);
   QString fAM1AA1 = "ensembleIds";
   QString fAM1AA2 = "sizes";
   CREATE_DATA_ARRAY(int32_t, featureAttrMat1, tDims, cDims, initVal, fAM1AA1, err);
   CREATE_DATA_ARRAY(float, featureAttrMat1, tDims, cDims, initVal, fAM1AA2, err);
   tDims[0] = 2;
-  AttributeMatrix::Pointer ensembleAttrMat1 = AttributeMatrix::New(tDims, "ensembleAttrMat1", DREAM3D::AttributeMatrixType::CellEnsemble);
+  AttributeMatrix::Pointer ensembleAttrMat1 = AttributeMatrix::New(tDims, "ensembleAttrMat1", SIMPL::AttributeMatrixType::CellEnsemble);
   m->addAttributeMatrix("ensembleAttrMat1", ensembleAttrMat1);
   QString eAM1AA1 = "crystalStructures";
   CREATE_DATA_ARRAY(int32_t, ensembleAttrMat1, tDims, cDims, initVal, eAM1AA1, err);
@@ -283,14 +283,14 @@ DataContainerArray::Pointer initializeDataContainerArray()
 
   //Make a feature and ensemble AM for the second featureIds array and add some arrays
   tDims[0] = 3;
-  AttributeMatrix::Pointer featureAttrMat2 = AttributeMatrix::New(tDims, "featureAttrMat2", DREAM3D::AttributeMatrixType::CellFeature);
+  AttributeMatrix::Pointer featureAttrMat2 = AttributeMatrix::New(tDims, "featureAttrMat2", SIMPL::AttributeMatrixType::CellFeature);
   m->addAttributeMatrix("featureAttrMat2", featureAttrMat2);
   QString fAM2AA1 = "ensembleIds";
   QString fAM2AA2 = "surfaceFeatures";
   CREATE_DATA_ARRAY(int32_t, featureAttrMat2, tDims, cDims, initVal, fAM2AA1, err);
   CREATE_DATA_ARRAY(bool, featureAttrMat2, tDims, cDims, initVal, fAM2AA2, err);
   tDims[0] = 2;
-  AttributeMatrix::Pointer ensembleAttrMat2 = AttributeMatrix::New(tDims, "ensembleAttrMat2", DREAM3D::AttributeMatrixType::CellEnsemble);
+  AttributeMatrix::Pointer ensembleAttrMat2 = AttributeMatrix::New(tDims, "ensembleAttrMat2", SIMPL::AttributeMatrixType::CellEnsemble);
   m->addAttributeMatrix("ensembleAttrMat2", ensembleAttrMat2);
   QString eAM2AA1 = "crystalStructures";
   CREATE_DATA_ARRAY(int32_t, ensembleAttrMat2, tDims, cDims, initVal, eAM2AA1, err);

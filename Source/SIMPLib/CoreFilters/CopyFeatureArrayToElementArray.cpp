@@ -81,13 +81,13 @@ void CopyFeatureArrayToElementArray::setupFilterParameters()
   parameters.push_back(SeparatorFilterParameter::New("Feature Data", FilterParameter::RequiredArray));
 
   {
-    DataArraySelectionFilterParameter::RequirementType req = DataArraySelectionFilterParameter::CreateCategoryRequirement(DREAM3D::Defaults::AnyPrimitive, DREAM3D::Defaults::AnyComponentSize, DREAM3D::AttributeMatrixObjectType::Feature);
+    DataArraySelectionFilterParameter::RequirementType req = DataArraySelectionFilterParameter::CreateCategoryRequirement(SIMPL::Defaults::AnyPrimitive, SIMPL::Defaults::AnyComponentSize, SIMPL::AttributeMatrixObjectType::Feature);
     parameters.push_back(DataArraySelectionFilterParameter::New("Feature Data to Copy to Element Data", "SelectedFeatureArrayPath", getSelectedFeatureArrayPath(), FilterParameter::RequiredArray, req));
   }
   parameters.push_back(SeparatorFilterParameter::New("Element Data", FilterParameter::RequiredArray));
 
   {
-    DataArraySelectionFilterParameter::RequirementType req = DataArraySelectionFilterParameter::CreateCategoryRequirement(DREAM3D::TypeNames::Int32, 1, DREAM3D::AttributeMatrixObjectType::Element);
+    DataArraySelectionFilterParameter::RequirementType req = DataArraySelectionFilterParameter::CreateCategoryRequirement(SIMPL::TypeNames::Int32, 1, SIMPL::AttributeMatrixObjectType::Element);
     parameters.push_back(DataArraySelectionFilterParameter::New("Feature Ids", "FeatureIdsArrayPath", getFeatureIdsArrayPath(), FilterParameter::RequiredArray, req));
   }
   parameters.push_back(SeparatorFilterParameter::New("Element Data", FilterParameter::CreatedArray));
@@ -353,13 +353,13 @@ const QString CopyFeatureArrayToElementArray::getFilterVersion()
 //
 // -----------------------------------------------------------------------------
 const QString CopyFeatureArrayToElementArray::getGroupName()
-{ return DREAM3D::FilterGroups::CoreFilters; }
+{ return SIMPL::FilterGroups::CoreFilters; }
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
 const QString CopyFeatureArrayToElementArray::getSubGroupName()
-{ return DREAM3D::FilterSubGroups::MemoryManagementFilters; }
+{ return SIMPL::FilterSubGroups::MemoryManagementFilters; }
 
 // -----------------------------------------------------------------------------
 //

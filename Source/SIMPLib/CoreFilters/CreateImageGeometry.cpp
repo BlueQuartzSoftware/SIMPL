@@ -227,13 +227,13 @@ const QString CreateImageGeometry::getFilterVersion()
 //
 // -----------------------------------------------------------------------------
 const QString CreateImageGeometry::getGroupName()
-{ return DREAM3D::FilterGroups::CoreFilters; }
+{ return SIMPL::FilterGroups::CoreFilters; }
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
 const QString CreateImageGeometry::getSubGroupName()
-{ return DREAM3D::FilterSubGroups::GenerationFilters; }
+{ return SIMPL::FilterSubGroups::GenerationFilters; }
 
 // -----------------------------------------------------------------------------
 //

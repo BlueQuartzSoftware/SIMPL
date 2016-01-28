@@ -64,30 +64,35 @@ set(SIMPLProj_RELEASE_TYPE "Development")
 include(CMakeParseArguments)
 
 # ---------- Setup output Directories -------------------------
-set(CMAKE_LIBRARY_OUTPUT_DIRECTORY
-  ${PROJECT_BINARY_DIR}/Bin
-  CACHE PATH
-  "Single Directory for all Libraries"
-  )
+if(NOT DEFINED CMAKE_LIBRARY_OUTPUT_DIRECTORY)
+  set(CMAKE_LIBRARY_OUTPUT_DIRECTORY
+    ${SIMPLViewProj_BINARY_DIR}/Bin
+    CACHE PATH
+    "Single Directory for all Libraries"
+    )
+endif()
 
 # --------- Setup the Executable output Directory -------------
-set(CMAKE_RUNTIME_OUTPUT_DIRECTORY
-  ${PROJECT_BINARY_DIR}/Bin
-  CACHE PATH
-  "Single Directory for all Executables."
-  )
+if(NOT DEFINED CMAKE_RUNTIME_OUTPUT_DIRECTORY)
+  set(CMAKE_RUNTIME_OUTPUT_DIRECTORY
+    ${SIMPLViewProj_BINARY_DIR}/Bin
+    CACHE PATH
+    "Single Directory for all Executables."
+    )
+endif()
 
 # --------- Setup the Executable output Directory -------------
-set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY
-  ${PROJECT_BINARY_DIR}/Bin
-  CACHE PATH
-  "Single Directory for all static libraries."
-  )
+if(NOT DEFINED CMAKE_ARCHIVE_OUTPUT_DIRECTORY)
+  set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY
+    ${SIMPLViewProj_BINARY_DIR}/Bin
+    CACHE PATH
+    "Single Directory for all static libraries."
+    )
+endif()
 
 
 #Enable use of Solution Folders
 set_property(GLOBAL PROPERTY USE_FOLDERS ON)
-#set_property(GLOBAL PROPERTY USE_FOLDERS OFF)
 set(PROJECT_CODE_DIR ${PROJECT_SOURCE_DIR}/Source)
 set(PROJECT_RESOURCES_DIR ${SIMPLProj_SOURCE_DIR}/Resources)
 set(EXE_DEBUG_EXTENSION "_debug")
@@ -111,7 +116,7 @@ endif()
 set(CMP_CONFIGURED_FILES_SOURCE_DIR ${CMP_SOURCE_DIR}/ConfiguredFiles)
 INCLUDE (${CMP_SOURCE_DIR}/cmpCMakeMacros.cmake )
 set(CMP_ENABLE_PLUGINS "1")
-set(CMP_PLUGIN_LIST_FILE ${PROJECT_BINARY_DIR}/SIMPLib_PluginList.txt)
+set(CMP_PLUGIN_LIST_FILE ${PROJECT_BINARY_DIR}/SIMPLView_PluginList.txt)
 file(WRITE ${CMP_PLUGIN_LIST_FILE} "")
 set(CMP_PLUGIN_SEARCHDIR_FILE ${PROJECT_BINARY_DIR}/libsearchdirs.txt)
 file(WRITE ${CMP_PLUGIN_SEARCHDIR_FILE} "${PROJECT_BINARY_DIR}/Bin/plugins;")
@@ -161,9 +166,9 @@ endif(BUILD_SHARED_LIBS)
 # --------------------------------------------------------------------
 # Find and Use the Qt5 Libraries
 include(${CMP_SOURCE_DIR}/ExtLib/Qt5Support.cmake)
-set(Qt5_COMPONENTS Core )
+set(SIMPL_Qt5_COMPONENTS Core )
 set(USE_QtWebEngine FALSE)
-CMP_AddQt5Support( "${Qt5_COMPONENTS}" ${USE_QtWebEngine} ${SIMPLProj_BINARY_DIR})
+CMP_AddQt5Support( "${SIMPL_Qt5_COMPONENTS}" "${USE_QtWebEngine}" "${SIMPLProj_BINARY_DIR}" "SIMPL")
 
 
 # --------------------------------------------------------------------
@@ -189,12 +194,12 @@ LINK_DIRECTORIES(${Boost_LIBRARY_DIRS})
 # --------------------------------------------------------------------
 # Should we use Intel Threading Building Blocks
 # --------------------------------------------------------------------
-set(SIMPLib_USE_PARALLEL_ALGORITHMS "")
-option(SIMPLib_USE_MULTITHREADED_ALGOS "Use MultiThreaded Algorithms" ON)
-if(SIMPLib_USE_MULTITHREADED_ALGOS)
+set(SIMPLView_USE_PARALLEL_ALGORITHMS "")
+option(SIMPLView_USE_MULTITHREADED_ALGOS "Use MultiThreaded Algorithms" ON)
+if(SIMPLView_USE_MULTITHREADED_ALGOS)
     find_package(TBB)
     if(TBB_FOUND)
-        set(SIMPLib_USE_PARALLEL_ALGORITHMS "1")
+        set(SIMPLView_USE_PARALLEL_ALGORITHMS "1")
         include_directories(${TBB_INCLUDE_DIRS} )
         CMP_COPY_DEPENDENT_LIBRARIES("tbb;tbb_malloc")
         # Append the locations of the TBB libraries to our Library Search Paths
@@ -209,12 +214,12 @@ endif()
 # --------------------------------------------------------------------
 # DREAM3D needs the Eigen library for Least Squares fit and Eigen
 # value/vector calculations.
-set(SIMPLib_USE_EIGEN "")
+set(SIMPLView_USE_EIGEN "")
 Find_Package(Eigen REQUIRED)
 if(EIGEN_FOUND)
   message(STATUS "Found Eigen Library")
   include_directories( ${EIGEN_INCLUDE_DIRS} )
-  set(SIMPLib_USE_EIGEN "1")
+  set(SIMPLView_USE_EIGEN "1")
 else()
   message(WARNING "The Eigen Library is required for some algorithms to execute. These algorithms will be disabled.")
 endif()
@@ -280,7 +285,7 @@ ENDif(CMAKE_COMPILER_IS_GNUCXX)
 if(MSVC)
  add_definitions(-D_CRT_SECURE_NO_WARNINGS)
  add_definitions(-D_SCL_SECURE_NO_WARNINGS)
- option(SIMPLib_DISABLE_MSVC_WARNINGS "Disable some MSVC Compiler warnings" OFF)
+ option(SIMPLView_DISABLE_MSVC_WARNINGS "Disable some MSVC Compiler warnings" OFF)
 endif()
 
 
@@ -297,7 +302,6 @@ file(WRITE ${SIMPLProj_BINARY_DIR}/DREAM3DDocGroupList "")
 # ------- Enable the CTest testing. Use make test to run all tests ---------------
 OPTION(DREAM3D_BUILD_TESTING "Compile the test programs" ON)
 if(DREAM3D_BUILD_TESTING)
-    #ENABLE_TESTING()
     include( CTest )
 endif()
 
@@ -320,35 +324,32 @@ add_subdirectory( ${SIMPLProj_SOURCE_DIR}/Source/SIMPLib/ ${PROJECT_BINARY_DIR}/
 
 # add the Command line utilities
 # Figure out here if we are going to build the command line tools
-option(SIMPLib_BUILD_CLI_TOOLS "Build the command line versions of the applications" ON)
-if( SIMPLib_BUILD_CLI_TOOLS )
-    add_subdirectory(${SIMPLProj_SOURCE_DIR}/Tools ${PROJECT_BINARY_DIR}/Tools)
-endif()
+add_subdirectory(${SIMPLProj_SOURCE_DIR}/Tools ${PROJECT_BINARY_DIR}/Tools)
 
 if(0)
 #-------------------------------------------------------------------------------
 # Should we build the documentation using DOxygen
-option(SIMPLib_BUILD_DOCUMENTATION "Build the DREAM3D documentation" ON)
-if(SIMPLib_BUILD_DOCUMENTATION)
+option(SIMPLView_BUILD_DOCUMENTATION "Build the DREAM3D documentation" ON)
+if(SIMPLView_BUILD_DOCUMENTATION)
   set(DOCUMENTATION_RESOURCES_DIR ${PROJECT_RESOURCES_DIR}/DocConfigFiles)
 
   set(DOX_GENERATE_RTF "NO")
-  option(SIMPLib_GENERATE_RTF "Generate RTF Documentation" OFF)
-  if(SIMPLib_GENERATE_RTF STREQUAL "ON")
+  option(SIMPLView_GENERATE_RTF "Generate RTF Documentation" OFF)
+  if(SIMPLView_GENERATE_RTF STREQUAL "ON")
     set(DOX_GENERATE_RTF "YES")
   endif()
 
   # By default we generate the Documentation in HTML format
   set(DOX_GENERATE_HTML "NO")
-  option(SIMPLib_GENERATE_HTML "Generate HTML Documentation" ON)
-  if(SIMPLib_GENERATE_HTML STREQUAL "ON")
+  option(SIMPLView_GENERATE_HTML "Generate HTML Documentation" ON)
+  if(SIMPLView_GENERATE_HTML STREQUAL "ON")
     set(DOX_GENERATE_HTML "YES")
   endif()
 
   #most windows machines do NOT have LATEX built in so default this to OFF
   set(DOX_GENERATE_LATEX "NO")
-  option(SIMPLib_GENERATE_LATEX "Generate PDF Documentation" OFF)
-  if(SIMPLib_GENERATE_LATEX STREQUAL "ON")
+  option(SIMPLView_GENERATE_LATEX "Generate PDF Documentation" OFF)
+  if(SIMPLView_GENERATE_LATEX STREQUAL "ON")
     set(DOX_GENERATE_LATEX "YES")
     # Check for existence of LaTex executable files
     INCLUDE( ${DOCUMENTATION_RESOURCES_DIR}/CMake/UseLATEX.cmake)

@@ -177,7 +177,7 @@ class CombineAttributeArraysTemplatePrivate
 CombineAttributeArrays::CombineAttributeArrays() :
   AbstractFilter(),
   m_SelectedDataArrayPaths(QVector<DataArrayPath>()),
-  m_StackedDataArrayName(DREAM3D::GeneralData::CombinedData),
+  m_StackedDataArrayName(SIMPL::GeneralData::CombinedData),
   m_StandardizeData(false),
   m_StackedData(NULL)
 {
@@ -199,7 +199,7 @@ void CombineAttributeArrays::setupFilterParameters()
   FilterParameterVector parameters;
   parameters.push_back(BooleanFilterParameter::New("Standardize Data", "StandardizeData", getStandardizeData(), FilterParameter::Parameter));
   {
-    MultiDataArraySelectionFilterParameter::RequirementType req = MultiDataArraySelectionFilterParameter::CreateRequirement(DREAM3D::Defaults::AnyPrimitive, DREAM3D::Defaults::AnyComponentSize, DREAM3D::Defaults::AnyAttributeMatrix, DREAM3D::Defaults::AnyGeometry);
+    MultiDataArraySelectionFilterParameter::RequirementType req = MultiDataArraySelectionFilterParameter::CreateRequirement(SIMPL::Defaults::AnyPrimitive, SIMPL::Defaults::AnyComponentSize, SIMPL::Defaults::AnyAttributeMatrix, SIMPL::Defaults::AnyGeometry);
     parameters.push_back(MultiDataArraySelectionFilterParameter::New("Attribute Arrays to Combine", "SelectedDataArrayPaths", getSelectedDataArrayPaths(), FilterParameter::RequiredArray, req));
   }
   parameters.push_back(StringFilterParameter::New("Combined Data", "StackedDataArrayName", getStackedDataArrayName(), FilterParameter::CreatedArray));
@@ -367,13 +367,13 @@ const QString CombineAttributeArrays::getFilterVersion()
 //
 // -----------------------------------------------------------------------------
 const QString CombineAttributeArrays::getGroupName()
-{ return DREAM3D::FilterGroups::CoreFilters; }
+{ return SIMPL::FilterGroups::CoreFilters; }
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
 const QString CombineAttributeArrays::getSubGroupName()
-{ return DREAM3D::FilterSubGroups::MemoryManagementFilters; }
+{ return SIMPL::FilterSubGroups::MemoryManagementFilters; }
 
 // -----------------------------------------------------------------------------
 //

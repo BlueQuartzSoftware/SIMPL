@@ -214,69 +214,69 @@ void CreateDataArray::checkInitialization()
   bool ok = false;
   switch (m_ScalarType) // check user input value to data type
   {
-    case DREAM3D::TypeEnums::Int8:
+    case SIMPL::TypeEnums::Int8:
     {
       int val = m_InitializationValue.toInt(&ok);
       if(val < -128 || val > 127) { ok = false; }
       checkInitializationInt<int8_t>(this, m_OutputArrayPtr.lock(), static_cast<int8_t>(val), ok, -4050);
       break;
     }
-    case DREAM3D::TypeEnums::UInt8:
+    case SIMPL::TypeEnums::UInt8:
     {
       uint32_t val = m_InitializationValue.toUInt(&ok);
       if( val > 255) { ok = false; }
       checkInitializationInt<uint8_t>(this, m_OutputArrayPtr.lock(), static_cast<uint8_t>(val), ok, -4051);
       break;
     }
-    case DREAM3D::TypeEnums::Int16:
+    case SIMPL::TypeEnums::Int16:
     {
       int16_t i16 = static_cast<int16_t>(m_InitializationValue.toShort(&ok));
       checkInitializationInt<int16_t>(this, m_OutputArrayPtr.lock(), i16, ok, -4052);
       break;
     }
-    case DREAM3D::TypeEnums::UInt16:
+    case SIMPL::TypeEnums::UInt16:
     {
       uint16_t ui16 = static_cast<uint16_t>(m_InitializationValue.toUShort(&ok));
       checkInitializationInt<uint16_t>(this, m_OutputArrayPtr.lock(), ui16, ok, -4053);
       break;
     }
-    case DREAM3D::TypeEnums::Int32:
+    case SIMPL::TypeEnums::Int32:
     {
       int32_t i32 = static_cast<int32_t>(m_InitializationValue.toInt(&ok));
       checkInitializationInt<int32_t>(this, m_OutputArrayPtr.lock(), i32, ok, -4054);
       break;
     }
-    case DREAM3D::TypeEnums::UInt32:
+    case SIMPL::TypeEnums::UInt32:
     {
       uint32_t ui32 = static_cast<uint32_t>(m_InitializationValue.toUInt(&ok));
       checkInitializationInt<uint32_t>(this, m_OutputArrayPtr.lock(), ui32, ok, -4055);
       break;
     }
-    case DREAM3D::TypeEnums::Int64:
+    case SIMPL::TypeEnums::Int64:
     {
       int64_t i64 = static_cast<int64_t>(m_InitializationValue.toLongLong(&ok));
       checkInitializationInt<int64_t>(this, m_OutputArrayPtr.lock(), i64, ok, -4056);
       break;
     }
-    case DREAM3D::TypeEnums::UInt64:
+    case SIMPL::TypeEnums::UInt64:
     {
       uint64_t ui64 = static_cast<uint64_t>(m_InitializationValue.toULongLong(&ok));
       checkInitializationInt<uint64_t>(this, m_OutputArrayPtr.lock(), ui64, ok, -4057);
       break;
     }
-    case DREAM3D::TypeEnums::Float:
+    case SIMPL::TypeEnums::Float:
     {
       float f = static_cast<float>(m_InitializationValue.toFloat(&ok));
       checkInitializationFloatDouble<float>(this, m_OutputArrayPtr.lock(), f, ok, -4058);
       break;
     }
-    case DREAM3D::TypeEnums::Double:
+    case SIMPL::TypeEnums::Double:
     {
       double d = static_cast<double>(m_InitializationValue.toFloat(&ok));
       checkInitializationFloatDouble<double>(this, m_OutputArrayPtr.lock(), d, ok, -4059);
       break;
     }
-    case DREAM3D::TypeEnums::Bool:
+    case SIMPL::TypeEnums::Bool:
     {
       int8_t b = static_cast<int8_t>(m_InitializationValue.toInt(&ok));
       if (b != 0)
@@ -396,13 +396,13 @@ const QString CreateDataArray::getFilterVersion()
 //
 // -----------------------------------------------------------------------------
 const QString CreateDataArray::getGroupName()
-{ return DREAM3D::FilterGroups::CoreFilters; }
+{ return SIMPL::FilterGroups::CoreFilters; }
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
 const QString CreateDataArray::getSubGroupName()
-{ return DREAM3D::FilterSubGroups::GenerationFilters; }
+{ return SIMPL::FilterSubGroups::GenerationFilters; }
 
 // -----------------------------------------------------------------------------
 //

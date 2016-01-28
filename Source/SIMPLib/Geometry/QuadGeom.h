@@ -273,7 +273,7 @@ class SIMPLib_EXPORT QuadGeom : public IGeometry2D
      * @return Returns a formatted string that contains general infomation about
      * the instance of the object.
      */
-    virtual QString getInfoString(DREAM3D::InfoStringFormat format);
+    virtual QString getInfoString(SIMPL::InfoStringFormat format);
 
     /**
      * @brief setMessagePrefix

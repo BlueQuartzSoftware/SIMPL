@@ -74,13 +74,13 @@ void RemoveTestFiles()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void initializeOmega3(StatsData::Pointer statsData, int count, uint32_t distType = DREAM3D::DistributionType::Beta)
+void initializeOmega3(StatsData::Pointer statsData, int count, uint32_t distType = SIMPL::DistributionType::Beta)
 {
   float alpha, beta;
   SIMPL_RANDOMNG_NEW()
   VectorOfFloatArray data;
-  FloatArrayType::Pointer alphas = FloatArrayType::CreateArray(count, DREAM3D::StringConstants::Alpha);
-  FloatArrayType::Pointer betas = FloatArrayType::CreateArray(count, DREAM3D::StringConstants::Beta);
+  FloatArrayType::Pointer alphas = FloatArrayType::CreateArray(count, SIMPL::StringConstants::Alpha);
+  FloatArrayType::Pointer betas = FloatArrayType::CreateArray(count, SIMPL::StringConstants::Beta);
 
   for (int32_t i = 0; i < count; ++i)
   {
@@ -97,13 +97,13 @@ void initializeOmega3(StatsData::Pointer statsData, int count, uint32_t distType
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void initializeBOverA(StatsData::Pointer statsData, int count, uint32_t distType = DREAM3D::DistributionType::Beta)
+void initializeBOverA(StatsData::Pointer statsData, int count, uint32_t distType = SIMPL::DistributionType::Beta)
 {
   float alpha, beta;
   SIMPL_RANDOMNG_NEW()
   VectorOfFloatArray data;
-  FloatArrayType::Pointer alphas = FloatArrayType::CreateArray(count, DREAM3D::StringConstants::Alpha);
-  FloatArrayType::Pointer betas = FloatArrayType::CreateArray(count, DREAM3D::StringConstants::Beta);
+  FloatArrayType::Pointer alphas = FloatArrayType::CreateArray(count, SIMPL::StringConstants::Alpha);
+  FloatArrayType::Pointer betas = FloatArrayType::CreateArray(count, SIMPL::StringConstants::Beta);
 
   for (int32_t i = 0; i < count; ++i)
   {
@@ -120,13 +120,13 @@ void initializeBOverA(StatsData::Pointer statsData, int count, uint32_t distType
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void initializeCOverA(StatsData::Pointer statsData, int count, uint32_t distType = DREAM3D::DistributionType::Beta)
+void initializeCOverA(StatsData::Pointer statsData, int count, uint32_t distType = SIMPL::DistributionType::Beta)
 {
   float alpha, beta;
   SIMPL_RANDOMNG_NEW()
   VectorOfFloatArray data;
-  FloatArrayType::Pointer alphas = FloatArrayType::CreateArray(count, DREAM3D::StringConstants::Alpha);
-  FloatArrayType::Pointer betas = FloatArrayType::CreateArray(count, DREAM3D::StringConstants::Beta);
+  FloatArrayType::Pointer alphas = FloatArrayType::CreateArray(count, SIMPL::StringConstants::Alpha);
+  FloatArrayType::Pointer betas = FloatArrayType::CreateArray(count, SIMPL::StringConstants::Beta);
 
   for (int32_t i = 0; i < count; ++i)
   {
@@ -143,16 +143,16 @@ void initializeCOverA(StatsData::Pointer statsData, int count, uint32_t distType
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void initializeNeighbors(StatsData::Pointer statsData, std::vector<float> binNumbers, uint32_t distType = DREAM3D::DistributionType::Power)
+void initializeNeighbors(StatsData::Pointer statsData, std::vector<float> binNumbers, uint32_t distType = SIMPL::DistributionType::Power)
 {
   float alpha, k, beta;
   int32_t count = binNumbers.size();
 
   SIMPL_RANDOMNG_NEW()
   VectorOfFloatArray data;
-  FloatArrayType::Pointer alphas = FloatArrayType::CreateArray(count, DREAM3D::StringConstants::Alpha);
-  FloatArrayType::Pointer betas = FloatArrayType::CreateArray(count, DREAM3D::StringConstants::Beta);
-  FloatArrayType::Pointer ks = FloatArrayType::CreateArray(count, DREAM3D::StringConstants::Exp_k);
+  FloatArrayType::Pointer alphas = FloatArrayType::CreateArray(count, SIMPL::StringConstants::Alpha);
+  FloatArrayType::Pointer betas = FloatArrayType::CreateArray(count, SIMPL::StringConstants::Beta);
+  FloatArrayType::Pointer ks = FloatArrayType::CreateArray(count, SIMPL::StringConstants::Exp_k);
 
   int middlebin = count / 2;
 
@@ -189,7 +189,7 @@ void initializeODF_MDF(StatsData::Pointer statsData)
   Texture::calculateCubicODFData(e1s, e2s, e3s, weights, sigmas, true, odf);
 
   // Stupid, but copy the data from the vector to the DataArray<float> instance
-  FloatArrayType::Pointer odfData = FloatArrayType::CreateArray(odf.size(), DREAM3D::StringConstants::ODF);
+  FloatArrayType::Pointer odfData = FloatArrayType::CreateArray(odf.size(), SIMPL::StringConstants::ODF);
   for (size_t i = 0; i < odf.size(); ++i)
   {
     odfData->SetValue(i, odf[i]);
@@ -199,15 +199,15 @@ void initializeODF_MDF(StatsData::Pointer statsData)
   statsData->setODF(odfData);
 
   {
-    FloatArrayType::Pointer euler1 = FloatArrayType::CreateArray(1, DREAM3D::StringConstants::Euler1);
+    FloatArrayType::Pointer euler1 = FloatArrayType::CreateArray(1, SIMPL::StringConstants::Euler1);
     euler1->SetValue(0, 10.0f);
-    FloatArrayType::Pointer euler2 = FloatArrayType::CreateArray(1, DREAM3D::StringConstants::Euler2);
+    FloatArrayType::Pointer euler2 = FloatArrayType::CreateArray(1, SIMPL::StringConstants::Euler2);
     euler2->SetValue(0, 10.0f);
-    FloatArrayType::Pointer euler3 = FloatArrayType::CreateArray(1, DREAM3D::StringConstants::Euler3);
+    FloatArrayType::Pointer euler3 = FloatArrayType::CreateArray(1, SIMPL::StringConstants::Euler3);
     euler3->SetValue(0, 10.0f);
-    FloatArrayType::Pointer sigma = FloatArrayType::CreateArray(1, DREAM3D::StringConstants::Sigma);
+    FloatArrayType::Pointer sigma = FloatArrayType::CreateArray(1, SIMPL::StringConstants::Sigma);
     sigma->SetValue(0, 0.99f);
-    FloatArrayType::Pointer weight = FloatArrayType::CreateArray(1, DREAM3D::StringConstants::Weight);
+    FloatArrayType::Pointer weight = FloatArrayType::CreateArray(1, SIMPL::StringConstants::Weight);
     weight->SetValue(0, 2.0f);
 
     VectorOfFloatArray odfWeights;
@@ -223,20 +223,20 @@ void initializeODF_MDF(StatsData::Pointer statsData)
   Texture::calculateMDFData<std::vector<float>, CubicOps>(angles, axes, weights, odf, mdf);
 
   // Stupid, but copy the data from the vector to the DataArray<float> instance
-  FloatArrayType::Pointer mdfData = FloatArrayType::CreateArray(mdf.size(), DREAM3D::StringConstants::MisorientationBins);
+  FloatArrayType::Pointer mdfData = FloatArrayType::CreateArray(mdf.size(), SIMPL::StringConstants::MisorientationBins);
   for (size_t i = 0; i < mdf.size(); ++i)
   {
     mdfData->SetValue(i, mdf[i]);
   }
   {
-    FloatArrayType::Pointer angles = FloatArrayType::CreateArray(1, DREAM3D::StringConstants::Angle);
+    FloatArrayType::Pointer angles = FloatArrayType::CreateArray(1, SIMPL::StringConstants::Angle);
     angles->SetValue(0, 45.0f);
-    FloatArrayType::Pointer axis = FloatArrayType::CreateArray(3, DREAM3D::StringConstants::Axis);
+    FloatArrayType::Pointer axis = FloatArrayType::CreateArray(3, SIMPL::StringConstants::Axis);
     axis->SetNumberOfComponents(3);
     axis->SetComponent(0, 0, 1.0f);
     axis->SetComponent(0, 1, 2.0f);
     axis->SetComponent(0, 2, 3.0f);
-    FloatArrayType::Pointer weight = FloatArrayType::CreateArray(1, DREAM3D::StringConstants::Weight);
+    FloatArrayType::Pointer weight = FloatArrayType::CreateArray(1, SIMPL::StringConstants::Weight);
     weight->SetValue(0, 2.1254f);
     VectorOfFloatArray mdfWeights;
     mdfWeights.push_back(angles);
@@ -264,7 +264,7 @@ void initializeAxisODF(StatsData::Pointer statsData)
   Texture::calculateOrthoRhombicODFData(e1s, e2s, e3s, weights, sigmas, true, aodf);
 
   // Stupid, but copy the data from the vector to the DataArray<float> instance
-  FloatArrayType::Pointer aodfData = FloatArrayType::CreateArray(aodf.size(), DREAM3D::StringConstants::AxisOrientation);
+  FloatArrayType::Pointer aodfData = FloatArrayType::CreateArray(aodf.size(), SIMPL::StringConstants::AxisOrientation);
   for (size_t i = 0; i < aodf.size(); ++i)
   {
     aodfData->SetValue(i, aodf[i]);
@@ -367,7 +367,7 @@ StatsDataArray::Pointer createStatsDataArray()
 
   size_t nBins = binsizes.size();
   // Copy this into the DataArray<float>
-  FloatArrayType::Pointer binNumbers = FloatArrayType::CreateArray(nBins, DREAM3D::StringConstants::BinNumber);
+  FloatArrayType::Pointer binNumbers = FloatArrayType::CreateArray(nBins, SIMPL::StringConstants::BinNumber);
   ::memcpy(binNumbers->getVoidPointer(0), &(binsizes.front()), binsizes.size() * sizeof(float));
 
 
@@ -452,25 +452,25 @@ void TestWriteData()
 
   // Create a data container and set the StatsArray
   VoxelDataContainer::Pointer m = VoxelDataContainer::New();
-  m->addEnsembleData(DREAM3D::EnsembleData::Statistics, statsArray);
+  m->addEnsembleData(SIMPL::EnsembleData::Statistics, statsArray);
 
-  DataArray<unsigned int>::Pointer crystalStructures = DataArray<unsigned int>::CreateArray(3, DREAM3D::EnsembleData::CrystalStructures);
+  DataArray<unsigned int>::Pointer crystalStructures = DataArray<unsigned int>::CreateArray(3, SIMPL::EnsembleData::CrystalStructures);
   crystalStructures->SetValue(0, Ebsd::CrystalStructure::UnknownCrystalStructure);
   crystalStructures->SetValue(1, Ebsd::CrystalStructure::Cubic);
   crystalStructures->SetValue(2, Ebsd::CrystalStructure::Cubic);
-  m->addEnsembleData(DREAM3D::EnsembleData::CrystalStructures, crystalStructures);
+  m->addEnsembleData(SIMPL::EnsembleData::CrystalStructures, crystalStructures);
 
-  DataArray<unsigned int>::Pointer phaseTypes = DataArray<unsigned int>::CreateArray(3, DREAM3D::EnsembleData::PhaseTypes);
-  phaseTypes->SetValue(0, DREAM3D::PhaseType::UnknownPhaseType);
-  phaseTypes->SetValue(1, DREAM3D::PhaseType::PrimaryPhase);
-  phaseTypes->SetValue(2, DREAM3D::PhaseType::PrimaryPhase);
-  m->addEnsembleData(DREAM3D::EnsembleData::PhaseTypes, phaseTypes);
+  DataArray<unsigned int>::Pointer phaseTypes = DataArray<unsigned int>::CreateArray(3, SIMPL::EnsembleData::PhaseTypes);
+  phaseTypes->SetValue(0, SIMPL::PhaseType::UnknownPhaseType);
+  phaseTypes->SetValue(1, SIMPL::PhaseType::PrimaryPhase);
+  phaseTypes->SetValue(2, SIMPL::PhaseType::PrimaryPhase);
+  m->addEnsembleData(SIMPL::EnsembleData::PhaseTypes, phaseTypes);
 
-  DataArray<unsigned int>::Pointer shapeTypes = DataArray<unsigned int>::CreateArray(3, DREAM3D::EnsembleData::ShapeTypes);
-  shapeTypes->SetValue(0, DREAM3D::ShapeType::UnknownShapeType);
-  shapeTypes->SetValue(1, DREAM3D::ShapeType::EllipsoidShape);
-  shapeTypes->SetValue(2, DREAM3D::ShapeType::EllipsoidShape);
-  m->addEnsembleData(DREAM3D::EnsembleData::ShapeTypes, shapeTypes);
+  DataArray<unsigned int>::Pointer shapeTypes = DataArray<unsigned int>::CreateArray(3, SIMPL::EnsembleData::ShapeTypes);
+  shapeTypes->SetValue(0, SIMPL::ShapeType::UnknownShapeType);
+  shapeTypes->SetValue(1, SIMPL::ShapeType::EllipsoidShape);
+  shapeTypes->SetValue(2, SIMPL::ShapeType::EllipsoidShape);
+  m->addEnsembleData(SIMPL::EnsembleData::ShapeTypes, shapeTypes);
 
 
   DataContainerWriter::Pointer writer = DataContainerWriter::New();
@@ -485,15 +485,15 @@ void TestWriteData()
   // and being able to do something meaningful with it.
   // Since StatsDataArray subclasses the IDataArray there are some simple things you
   // can do like ask how many StatsData instances are being stored:
-  int numStatsData = m->getEnsembleData(DREAM3D::EnsembleData::Statistics)->GetSize(); // This works because the
+  int numStatsData = m->getEnsembleData(SIMPL::EnsembleData::Statistics)->GetSize(); // This works because the
   // size of each Tuple is 1
-  numStatsData = m->getEnsembleData(DREAM3D::EnsembleData::Statistics)->GetNumberOfTuples();
+  numStatsData = m->getEnsembleData(SIMPL::EnsembleData::Statistics)->GetNumberOfTuples();
   // This also works. Either way the value at this point should be '3'
   DREAM3D_REQUIRE_EQUAL(3, numStatsData);
 
   // This will get us a Pointer to the instance of StatsDataArray class that is stored
   // in the DataContainer.
-  StatsDataArray* statsArrayPtr = StatsDataArray::SafeObjectDownCast<IDataArray*, StatsDataArray*>(m->getEnsembleData(DREAM3D::EnsembleData::Statistics).get());
+  StatsDataArray* statsArrayPtr = StatsDataArray::SafeObjectDownCast<IDataArray*, StatsDataArray*>(m->getEnsembleData(SIMPL::EnsembleData::Statistics).get());
 
   // Unfortunately we can NOT use the operator [] with a pointer so sometimes creating
   // a reference variable can be help. We do this by dereferencing the pointer and
@@ -546,7 +546,7 @@ void TestReadData()
   }
   DREAM3D_REQUIRE( err >= 0);
 
-  IDataArray::Pointer p = m->getEnsembleData(DREAM3D::EnsembleData::Statistics);
+  IDataArray::Pointer p = m->getEnsembleData(SIMPL::EnsembleData::Statistics);
   DREAM3D_REQUIRE_EQUAL(p->GetNumberOfTuples(), 3);
 
   DataContainerWriter::Pointer writer = DataContainerWriter::New();

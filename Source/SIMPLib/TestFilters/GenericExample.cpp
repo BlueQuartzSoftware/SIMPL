@@ -78,10 +78,10 @@ GenericExample::GenericExample() :
   m_OutputPath("/Some/Path"),
   m_WriteAlignmentShifts(false),
   m_ConversionType(0),
-  m_FeatureIdsArrayPath(DREAM3D::Defaults::DataContainerName, DREAM3D::Defaults::CellAttributeMatrixName, "Garbly Gook"),
-  m_AttributeMatrixPath(DREAM3D::Defaults::DataContainerName, DREAM3D::Defaults::NewCellFeatureAttributeMatrixName, ""),
-  m_DataContainerName(DREAM3D::Defaults::StatsGenerator),
-  m_CreatedDataArray(DREAM3D::Defaults::DataContainerName, DREAM3D::Defaults::CellAttributeMatrixName, DREAM3D::CellData::EulerColor),
+  m_FeatureIdsArrayPath(SIMPL::Defaults::DataContainerName, SIMPL::Defaults::CellAttributeMatrixName, "Garbly Gook"),
+  m_AttributeMatrixPath(SIMPL::Defaults::DataContainerName, SIMPL::Defaults::NewCellFeatureAttributeMatrixName, ""),
+  m_DataContainerName(SIMPL::Defaults::StatsGenerator),
+  m_CreatedDataArray(SIMPL::Defaults::DataContainerName, SIMPL::Defaults::CellAttributeMatrixName, SIMPL::CellData::EulerColor),
   m_Bool1(false),
   m_Bool2(false),
   m_AlgorithmSelection(0),
@@ -383,7 +383,7 @@ const QString GenericExample::getCompiledLibraryName()
 // -----------------------------------------------------------------------------
 const QString GenericExample::getGroupName()
 {
-  return DREAM3D::FilterGroups::TestFilters;
+  return SIMPL::FilterGroups::TestFilters;
 }
 
 

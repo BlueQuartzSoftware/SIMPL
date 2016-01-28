@@ -230,7 +230,7 @@ const QString RequiredZThickness::getCompiledLibraryName()
 // -----------------------------------------------------------------------------
 const QString RequiredZThickness::getGroupName()
 {
-  return DREAM3D::FilterGroups::CoreFilters;
+  return SIMPL::FilterGroups::CoreFilters;
 }
 
 // -----------------------------------------------------------------------------
@@ -238,7 +238,7 @@ const QString RequiredZThickness::getGroupName()
 // -----------------------------------------------------------------------------
 const QString RequiredZThickness::getSubGroupName()
 {
-  return DREAM3D::FilterSubGroups::MiscFilters;
+  return SIMPL::FilterSubGroups::MiscFilters;
 }
 
 // -----------------------------------------------------------------------------

@@ -206,13 +206,13 @@ const QString RenameAttributeMatrix::getFilterVersion()
 //
 // -----------------------------------------------------------------------------
 const QString RenameAttributeMatrix::getGroupName()
-{ return DREAM3D::FilterGroups::CoreFilters; }
+{ return SIMPL::FilterGroups::CoreFilters; }
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
 const QString RenameAttributeMatrix::getSubGroupName()
-{ return DREAM3D::FilterSubGroups::MemoryManagementFilters; }
+{ return SIMPL::FilterSubGroups::MemoryManagementFilters; }
 
 // -----------------------------------------------------------------------------
 //

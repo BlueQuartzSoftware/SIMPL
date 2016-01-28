@@ -90,37 +90,37 @@ DataArraySelectionFilterParameter::RequirementType DataArraySelectionFilterParam
   typedef QVector<size_t> QVectorOfSizeType;
   DataArraySelectionFilterParameter::RequirementType req;
   QVector<unsigned int> amTypes;
-  if(attributeMatrixCategory == DREAM3D::AttributeMatrixObjectType::Element)
+  if(attributeMatrixCategory == SIMPL::AttributeMatrixObjectType::Element)
   {
-    amTypes.push_back(DREAM3D::AttributeMatrixType::Cell);
-    amTypes.push_back(DREAM3D::AttributeMatrixType::Face);
-    amTypes.push_back(DREAM3D::AttributeMatrixType::Edge);
-    amTypes.push_back(DREAM3D::AttributeMatrixType::Vertex);
+    amTypes.push_back(SIMPL::AttributeMatrixType::Cell);
+    amTypes.push_back(SIMPL::AttributeMatrixType::Face);
+    amTypes.push_back(SIMPL::AttributeMatrixType::Edge);
+    amTypes.push_back(SIMPL::AttributeMatrixType::Vertex);
   }
-  else if(attributeMatrixCategory == DREAM3D::AttributeMatrixObjectType::Feature)
+  else if(attributeMatrixCategory == SIMPL::AttributeMatrixObjectType::Feature)
   {
-    amTypes.push_back(DREAM3D::AttributeMatrixType::CellFeature);
-    amTypes.push_back(DREAM3D::AttributeMatrixType::FaceFeature);
-    amTypes.push_back(DREAM3D::AttributeMatrixType::EdgeFeature);
-    amTypes.push_back(DREAM3D::AttributeMatrixType::VertexFeature);
+    amTypes.push_back(SIMPL::AttributeMatrixType::CellFeature);
+    amTypes.push_back(SIMPL::AttributeMatrixType::FaceFeature);
+    amTypes.push_back(SIMPL::AttributeMatrixType::EdgeFeature);
+    amTypes.push_back(SIMPL::AttributeMatrixType::VertexFeature);
   }
-  else if(attributeMatrixCategory == DREAM3D::AttributeMatrixObjectType::Ensemble)
+  else if(attributeMatrixCategory == SIMPL::AttributeMatrixObjectType::Ensemble)
   {
-    amTypes.push_back(DREAM3D::AttributeMatrixType::CellEnsemble);
-    amTypes.push_back(DREAM3D::AttributeMatrixType::FaceEnsemble);
-    amTypes.push_back(DREAM3D::AttributeMatrixType::EdgeEnsemble);
-    amTypes.push_back(DREAM3D::AttributeMatrixType::VertexEnsemble);
+    amTypes.push_back(SIMPL::AttributeMatrixType::CellEnsemble);
+    amTypes.push_back(SIMPL::AttributeMatrixType::FaceEnsemble);
+    amTypes.push_back(SIMPL::AttributeMatrixType::EdgeEnsemble);
+    amTypes.push_back(SIMPL::AttributeMatrixType::VertexEnsemble);
   }
   req.amTypes = amTypes;
-  if(primitiveType.compare(DREAM3D::Defaults::AnyPrimitive) != 0)
+  if(primitiveType.compare(SIMPL::Defaults::AnyPrimitive) != 0)
   {
     req.daTypes = QVector<QString>(1, primitiveType);
   }
-  if(DREAM3D::Defaults::AnyComponentSize != allowedCompDim)
+  if(SIMPL::Defaults::AnyComponentSize != allowedCompDim)
   {
     req.componentDimensions = QVector<QVectorOfSizeType>(1, QVectorOfSizeType(1, allowedCompDim));
   }
-//  if(DREAM3D::GeometryType::UnknownGeometry != geometryType)
+//  if(SIMPL::GeometryType::UnknownGeometry != geometryType)
 //  {
 //    req.dcGeometryTypes = QVector<unsigned int>(1, geometryType);
 //  }
@@ -137,20 +137,20 @@ DataArraySelectionFilterParameter::RequirementType DataArraySelectionFilterParam
 {
   typedef QVector<size_t> QVectorOfSizeType;
   DataArraySelectionFilterParameter::RequirementType req;
-  if(primitiveType.compare(DREAM3D::Defaults::AnyPrimitive) != 0)
+  if(primitiveType.compare(SIMPL::Defaults::AnyPrimitive) != 0)
   {
     req.daTypes = QVector<QString>(1, primitiveType);
   }
-  if(DREAM3D::Defaults::AnyComponentSize != allowedCompDim)
+  if(SIMPL::Defaults::AnyComponentSize != allowedCompDim)
   {
     req.componentDimensions = QVector<QVectorOfSizeType>(1, QVectorOfSizeType(1, allowedCompDim));
   }
-  if(DREAM3D::Defaults::AnyAttributeMatrix != attributeMatrixType)
+  if(SIMPL::Defaults::AnyAttributeMatrix != attributeMatrixType)
   {
     QVector<unsigned int> amTypes(1, attributeMatrixType);
     req.amTypes = amTypes;
   }
-  if(DREAM3D::Defaults::AnyGeometry != geometryType)
+  if(SIMPL::Defaults::AnyGeometry != geometryType)
   {
     req.dcGeometryTypes = QVector<unsigned int>(1, geometryType);
   }

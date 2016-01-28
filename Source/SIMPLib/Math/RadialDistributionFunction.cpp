@@ -45,7 +45,7 @@
 RdfData::RdfData() :
   m_MinDistance(0.0f),
   m_MaxDistance(0.0f),
-  m_DistributionType(DREAM3D::StringConstants::UnknownDistribution)
+  m_DistributionType(SIMPL::StringConstants::UnknownDistribution)
 {
 
 }

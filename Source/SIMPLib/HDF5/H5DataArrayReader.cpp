@@ -97,13 +97,13 @@ int H5DataArrayReader::ReadRequiredAttributes(hid_t gid, const QString& name, QS
 {
   int err = 0;
   int retErr = 0;
-  err = QH5Lite::readStringAttribute(gid, name, DREAM3D::HDF5::ObjectType, objType);
+  err = QH5Lite::readStringAttribute(gid, name, SIMPL::HDF5::ObjectType, objType);
   if (err < 0)
   {
     retErr = err;
   }
 
-  err = QH5Lite::readScalarAttribute(gid, name, DREAM3D::HDF5::DataArrayVersion, version);
+  err = QH5Lite::readScalarAttribute(gid, name, SIMPL::HDF5::DataArrayVersion, version);
   if(err < 0)
   {
     retErr = err;
@@ -111,7 +111,7 @@ int H5DataArrayReader::ReadRequiredAttributes(hid_t gid, const QString& name, QS
   }
 
   // Read the tuple dimensions as an attribute
-  err = QH5Lite::readVectorAttribute(gid, name, DREAM3D::HDF5::TupleDimensions, tDims);
+  err = QH5Lite::readVectorAttribute(gid, name, SIMPL::HDF5::TupleDimensions, tDims);
   if (err < 0)
   {
     retErr = err;
@@ -119,7 +119,7 @@ int H5DataArrayReader::ReadRequiredAttributes(hid_t gid, const QString& name, QS
   }
 
   // Read the component dimensions as  an attribute
-  err = QH5Lite::readVectorAttribute(gid, name, DREAM3D::HDF5::ComponentDimensions, cDims);
+  err = QH5Lite::readVectorAttribute(gid, name, SIMPL::HDF5::ComponentDimensions, cDims);
   if (err < 0)
   {
     retErr = err;

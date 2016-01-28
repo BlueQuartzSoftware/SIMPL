@@ -54,7 +54,7 @@ class AttributeMatrixProxy
     AttributeMatrixProxy() :
       flag(0),
       name(""),
-      amType(DREAM3D::AttributeMatrixType::Unknown)
+      amType(SIMPL::AttributeMatrixType::Unknown)
     {}
 
     /**
@@ -63,7 +63,7 @@ class AttributeMatrixProxy
      * @param read_am
      * @param am_type
      */
-    AttributeMatrixProxy(QString am_name, uint8_t read_am = Qt::Checked, unsigned int am_type = DREAM3D::AttributeMatrixType::Unknown) :
+    AttributeMatrixProxy(QString am_name, uint8_t read_am = Qt::Checked, unsigned int am_type = SIMPL::AttributeMatrixType::Unknown) :
       flag(read_am),
       name(am_name),
       amType(am_type)

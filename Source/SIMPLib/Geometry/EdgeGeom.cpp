@@ -125,9 +125,9 @@ class FindEdgeDerivativesImpl
 // -----------------------------------------------------------------------------
 EdgeGeom::EdgeGeom()
 {
-  m_GeometryTypeName = DREAM3D::Geometry::EdgeGeometry;
-  m_GeometryType = DREAM3D::GeometryType::EdgeGeometry;
-  m_XdmfGridType = DREAM3D::XdmfGridType::PolyData;
+  m_GeometryTypeName = SIMPL::Geometry::EdgeGeometry;
+  m_GeometryType = SIMPL::GeometryType::EdgeGeometry;
+  m_XdmfGridType = SIMPL::XdmfGridType::PolyData;
   m_MessagePrefix = "";
   m_MessageTitle = "";
   m_MessageLabel = "";
@@ -319,7 +319,7 @@ void EdgeGeom::deleteElementNeighbors()
 int EdgeGeom::findElementCentroids()
 {
   QVector<size_t> cDims(1, 3);
-  m_EdgeCentroids = FloatArrayType::CreateArray(getNumberOfEdges(), cDims, DREAM3D::StringConstants::EdgeCentroids);
+  m_EdgeCentroids = FloatArrayType::CreateArray(getNumberOfEdges(), cDims, SIMPL::StringConstants::EdgeCentroids);
   GeometryHelpers::Topology::FindElementCentroids<int64_t>(m_EdgeList, m_VertexList, m_EdgeCentroids);
   if (m_EdgeCentroids.get() == NULL)
   {
@@ -443,7 +443,7 @@ int EdgeGeom::writeGeometryToHDF5(hid_t parentId, bool SIMPL_NOT_USED(writeXdmf)
   if (m_EdgeNeighbors.get() != NULL)
   {
     size_t numEdges = getNumberOfEdges();
-    err = GeometryHelpers::GeomIO::WriteDynamicListToHDF5<uint16_t, int64_t>(parentId, m_EdgeNeighbors, numEdges, DREAM3D::StringConstants::EdgeNeighbors);
+    err = GeometryHelpers::GeomIO::WriteDynamicListToHDF5<uint16_t, int64_t>(parentId, m_EdgeNeighbors, numEdges, SIMPL::StringConstants::EdgeNeighbors);
     if (err < 0)
     {
       return err;
@@ -453,7 +453,7 @@ int EdgeGeom::writeGeometryToHDF5(hid_t parentId, bool SIMPL_NOT_USED(writeXdmf)
   if (m_EdgesContainingVert.get() != NULL)
   {
     size_t numVerts = getNumberOfVertices();
-    err = GeometryHelpers::GeomIO::WriteDynamicListToHDF5<uint16_t, int64_t>(parentId, m_EdgesContainingVert, numVerts, DREAM3D::StringConstants::EdgesContainingVert);
+    err = GeometryHelpers::GeomIO::WriteDynamicListToHDF5<uint16_t, int64_t>(parentId, m_EdgesContainingVert, numVerts, SIMPL::StringConstants::EdgesContainingVert);
     if (err < 0)
     {
       return err;
@@ -476,7 +476,7 @@ int EdgeGeom::writeXdmf(QTextStream& out, QString dcName, QString hdfFileName)
 
   out << "    <Topology TopologyType=\"Polyline\" NodesPerElement=\"2\" NumberOfElements=\"" << getNumberOfEdges() << "\">" << "\n";
   out << "      <DataItem Format=\"HDF\" NumberType=\"Int\" Dimensions=\"" << getNumberOfEdges() << " 2\">" << "\n";
-  out << "        " << hdfFileName << ":/DataContainers/" << dcName << "/" << DREAM3D::Geometry::Geometry << "/" << DREAM3D::Geometry::SharedEdgeList << "\n";
+  out << "        " << hdfFileName << ":/DataContainers/" << dcName << "/" << SIMPL::Geometry::Geometry << "/" << SIMPL::Geometry::SharedEdgeList << "\n";
   out << "      </DataItem>" << "\n";
   out << "    </Topology>" << "\n";
 
@@ -493,7 +493,7 @@ int EdgeGeom::writeXdmf(QTextStream& out, QString dcName, QString hdfFileName)
   {
     out << "    <Geometry Type=\"XYZ\">" << "\n";
     out << "      <DataItem Format=\"HDF\"  Dimensions=\"" << getNumberOfVertices() << " 3\" NumberType=\"Float\" Precision=\"4\">" << "\n";
-    out << "        " << hdfFileName << ":/DataContainers/" << dcName << "/" << DREAM3D::Geometry::Geometry << "/" << DREAM3D::Geometry::SharedVertexList << "\n";
+    out << "        " << hdfFileName << ":/DataContainers/" << dcName << "/" << SIMPL::Geometry::Geometry << "/" << SIMPL::Geometry::SharedVertexList << "\n";
     out << "      </DataItem>" << "\n";
     out << "    </Geometry>" << "\n";
     out << "" << "\n";
@@ -505,12 +505,12 @@ int EdgeGeom::writeXdmf(QTextStream& out, QString dcName, QString hdfFileName)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-QString EdgeGeom::getInfoString(DREAM3D::InfoStringFormat format)
+QString EdgeGeom::getInfoString(SIMPL::InfoStringFormat format)
 {
   QString info;
   QTextStream ss (&info);
 
-  if(format == DREAM3D::HtmlFormat)
+  if(format == SIMPL::HtmlFormat)
   {
     ss << "<tr bgcolor=\"#D3D8E0\"><th colspan=2>Edge Geometry Info</th></tr>";
     ss << "<tr bgcolor=\"#C3C8D0\"><th align=\"right\">Number of Edges</th><td>" << getNumberOfEdges() << "</td></tr>";
@@ -530,25 +530,25 @@ QString EdgeGeom::getInfoString(DREAM3D::InfoStringFormat format)
 int EdgeGeom::readGeometryFromHDF5(hid_t parentId, bool preflight)
 {
   herr_t err = 0;
-  SharedVertexList::Pointer vertices = GeometryHelpers::GeomIO::ReadListFromHDF5<SharedVertexList>(DREAM3D::Geometry::SharedVertexList, parentId, preflight, err);
-  SharedEdgeList::Pointer edges = GeometryHelpers::GeomIO::ReadListFromHDF5<SharedEdgeList>(DREAM3D::Geometry::SharedEdgeList, parentId, preflight, err);
+  SharedVertexList::Pointer vertices = GeometryHelpers::GeomIO::ReadListFromHDF5<SharedVertexList>(SIMPL::Geometry::SharedVertexList, parentId, preflight, err);
+  SharedEdgeList::Pointer edges = GeometryHelpers::GeomIO::ReadListFromHDF5<SharedEdgeList>(SIMPL::Geometry::SharedEdgeList, parentId, preflight, err);
   if (edges.get() == NULL || vertices.get() == NULL)
   {
     return -1;
   }
   size_t numEdges = edges->getNumberOfTuples();
   size_t numVerts = vertices->getNumberOfTuples();
-  FloatArrayType::Pointer edgeCentroids = GeometryHelpers::GeomIO::ReadListFromHDF5<FloatArrayType>(DREAM3D::StringConstants::EdgeCentroids, parentId, preflight, err);
+  FloatArrayType::Pointer edgeCentroids = GeometryHelpers::GeomIO::ReadListFromHDF5<FloatArrayType>(SIMPL::StringConstants::EdgeCentroids, parentId, preflight, err);
   if (err < 0 && err != -2)
   {
     return -1;
   }
-  ElementDynamicList::Pointer edgeNeighbors = GeometryHelpers::GeomIO::ReadDynamicListFromHDF5<uint16_t, int64_t>(DREAM3D::StringConstants::EdgeNeighbors, parentId, numEdges, preflight, err);
+  ElementDynamicList::Pointer edgeNeighbors = GeometryHelpers::GeomIO::ReadDynamicListFromHDF5<uint16_t, int64_t>(SIMPL::StringConstants::EdgeNeighbors, parentId, numEdges, preflight, err);
   if (err < 0 && err != -2)
   {
     return -1;
   }
-  ElementDynamicList::Pointer edgesContainingVert = GeometryHelpers::GeomIO::ReadDynamicListFromHDF5<uint16_t, int64_t>(DREAM3D::StringConstants::EdgesContainingVert, parentId, numVerts, preflight, err);
+  ElementDynamicList::Pointer edgesContainingVert = GeometryHelpers::GeomIO::ReadDynamicListFromHDF5<uint16_t, int64_t>(SIMPL::StringConstants::EdgesContainingVert, parentId, numVerts, preflight, err);
   if (err < 0 && err != -2)
   {
     return -1;

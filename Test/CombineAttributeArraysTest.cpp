@@ -74,7 +74,7 @@ void initializeData(IDataArray::Pointer inputPtr)
 
   for (size_t i = 0; i < numTuples; i++)
   {
-    if (!type.compare(DREAM3D::TypeNames::Bool))
+    if (!type.compare(SIMPL::TypeNames::Bool))
     {
       if (numComps == 1)
       {
@@ -111,7 +111,7 @@ DataContainerArray::Pointer initializeDataContainerArray()
   m->setName("CombineAttributeArraysTest");
 
   QVector<size_t> tDims(1, 100);
-  AttributeMatrix::Pointer attrMat = AttributeMatrix::New(tDims, "CombineAttributeArraysTest", DREAM3D::AttributeMatrixType::Cell);
+  AttributeMatrix::Pointer attrMat = AttributeMatrix::New(tDims, "CombineAttributeArraysTest", SIMPL::AttributeMatrixType::Cell);
   m->addAttributeMatrix("CombineAttributeArraysTest", attrMat);
   dca->addDataContainer(m);
 

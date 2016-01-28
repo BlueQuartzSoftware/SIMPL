@@ -50,9 +50,9 @@
 // -----------------------------------------------------------------------------
 VertexGeom::VertexGeom()
 {
-  m_GeometryTypeName = DREAM3D::Geometry::VertexGeometry;
-  m_GeometryType = DREAM3D::GeometryType::VertexGeometry;
-  m_XdmfGridType = DREAM3D::XdmfGridType::PolyData;
+  m_GeometryTypeName = SIMPL::Geometry::VertexGeometry;
+  m_GeometryType = SIMPL::GeometryType::VertexGeometry;
+  m_XdmfGridType = SIMPL::XdmfGridType::PolyData;
   m_MessagePrefix = "";
   m_MessageTitle = "";
   m_MessageLabel = "";
@@ -288,7 +288,7 @@ int VertexGeom::writeGeometryToHDF5(hid_t parentId, bool writeXdmf)
     if(writeXdmf == true)
     {
       QVector<size_t> cDims(1, 1);
-      DataArray<int64_t>::Pointer vertsPtr = DataArray<int64_t>::CreateArray(getNumberOfVertices(), cDims, DREAM3D::StringConstants::VertsName);
+      DataArray<int64_t>::Pointer vertsPtr = DataArray<int64_t>::CreateArray(getNumberOfVertices(), cDims, SIMPL::StringConstants::VertsName);
       int64_t* verts = vertsPtr->getPointer(0);
       for(size_t i = 0; i < vertsPtr->getNumberOfTuples(); i++)
       {
@@ -325,13 +325,13 @@ int VertexGeom::writeXdmf(QTextStream& out, QString dcName, QString hdfFileName)
 
   out << "    <Topology TopologyType=\"Polyvertex\" NumberOfElements=\"" << getNumberOfVertices() << "\">" << "\n";
   out << "      <DataItem Format=\"HDF\" NumberType=\"Int\" Dimensions=\"" << getNumberOfVertices() << "\">" << "\n";
-  out << "        " << hdfFileName << ":/DataContainers/" << dcName << "/" << DREAM3D::Geometry::Geometry << "/" << "Verts" << "\n";
+  out << "        " << hdfFileName << ":/DataContainers/" << dcName << "/" << SIMPL::Geometry::Geometry << "/" << "Verts" << "\n";
   out << "      </DataItem>" << "\n";
   out << "    </Topology>" << "\n";
 
   out << "    <Geometry Type=\"XYZ\">" << "\n";
   out << "      <DataItem Format=\"HDF\"  Dimensions=\"" << getNumberOfVertices() << " 3\" NumberType=\"Float\" Precision=\"4\">" << "\n";
-  out << "        " << hdfFileName << ":/DataContainers/" << dcName << "/" << DREAM3D::Geometry::Geometry << "/" << DREAM3D::Geometry::SharedVertexList << "\n";
+  out << "        " << hdfFileName << ":/DataContainers/" << dcName << "/" << SIMPL::Geometry::Geometry << "/" << SIMPL::Geometry::SharedVertexList << "\n";
   out << "      </DataItem>" << "\n";
   out << "    </Geometry>" << "\n";
   out << "" << "\n";
@@ -342,12 +342,12 @@ int VertexGeom::writeXdmf(QTextStream& out, QString dcName, QString hdfFileName)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-QString VertexGeom::getInfoString(DREAM3D::InfoStringFormat format)
+QString VertexGeom::getInfoString(SIMPL::InfoStringFormat format)
 {
   QString info;
   QTextStream ss (&info);
 
-  if(format == DREAM3D::HtmlFormat)
+  if(format == SIMPL::HtmlFormat)
   {
     ss << "<tr bgcolor=\"#D3D8E0\"><th colspan=2>Vertex Geometry Info</th></tr>";
     ss << "<tr bgcolor=\"#C3C8D0\"><th align=\"right\">Number of Vertices</th><td>" << getNumberOfVertices() << "</td></tr>";
@@ -368,7 +368,7 @@ int VertexGeom::readGeometryFromHDF5(hid_t parentId, bool preflight)
 {
   herr_t err = 0;
   SharedVertexList::Pointer vertices = SharedVertexList::NullPointer();
-  vertices = GeometryHelpers::GeomIO::ReadListFromHDF5<SharedVertexList>(DREAM3D::Geometry::SharedVertexList, parentId, preflight, err);
+  vertices = GeometryHelpers::GeomIO::ReadListFromHDF5<SharedVertexList>(SIMPL::Geometry::SharedVertexList, parentId, preflight, err);
   if (vertices.get() == NULL)
   {
     return -1;

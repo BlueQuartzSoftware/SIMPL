@@ -90,8 +90,8 @@ int CreateFeatureArrayFromElementArrayTest()
 
       DataContainer::Pointer dc = DataContainer::New("DataContainer");
 
-      AttributeMatrix::Pointer cellAttr = AttributeMatrix::New(QVector<size_t>(1, 16), "Cell Attribute Matrix", DREAM3D::AttributeMatrixType::Cell);
-      AttributeMatrix::Pointer featureAttr = AttributeMatrix::New(QVector<size_t>(1, 5), "Feature Attribute Matrix", DREAM3D::AttributeMatrixType::Cell);
+      AttributeMatrix::Pointer cellAttr = AttributeMatrix::New(QVector<size_t>(1, 16), "Cell Attribute Matrix", SIMPL::AttributeMatrixType::Cell);
+      AttributeMatrix::Pointer featureAttr = AttributeMatrix::New(QVector<size_t>(1, 5), "Feature Attribute Matrix", SIMPL::AttributeMatrixType::Cell);
 
       DataArray<int32_t>::Pointer featureIds = DataArray<int32_t>::CreateArray(16, "FeatureIds");
       size_t numTuples = featureIds->getNumberOfTuples();
@@ -171,8 +171,8 @@ int CreateFeatureArrayFromElementArrayTest()
 
       DataContainer::Pointer dc = DataContainer::New("DataContainer");
 
-      AttributeMatrix::Pointer cellAttr = AttributeMatrix::New(QVector<size_t>(1, 16), "Cell Attribute Matrix", DREAM3D::AttributeMatrixType::Cell);
-      AttributeMatrix::Pointer featureAttr = AttributeMatrix::New(QVector<size_t>(1, 5), "Feature Attribute Matrix", DREAM3D::AttributeMatrixType::Cell);
+      AttributeMatrix::Pointer cellAttr = AttributeMatrix::New(QVector<size_t>(1, 16), "Cell Attribute Matrix", SIMPL::AttributeMatrixType::Cell);
+      AttributeMatrix::Pointer featureAttr = AttributeMatrix::New(QVector<size_t>(1, 5), "Feature Attribute Matrix", SIMPL::AttributeMatrixType::Cell);
 
       DataArray<int32_t>::Pointer featureIds = DataArray<int32_t>::CreateArray(16, "FeatureIds");
       size_t numTuples = featureIds->getNumberOfTuples();
@@ -253,8 +253,8 @@ int CreateFeatureArrayFromElementArrayTest()
 
       DataContainer::Pointer dc = DataContainer::New("DataContainer");
 
-      AttributeMatrix::Pointer cellAttr = AttributeMatrix::New(QVector<size_t>(1, 16), "Cell Attribute Matrix", DREAM3D::AttributeMatrixType::Cell);
-      AttributeMatrix::Pointer featureAttr = AttributeMatrix::New(QVector<size_t>(1, 5), "Feature Attribute Matrix", DREAM3D::AttributeMatrixType::Cell);
+      AttributeMatrix::Pointer cellAttr = AttributeMatrix::New(QVector<size_t>(1, 16), "Cell Attribute Matrix", SIMPL::AttributeMatrixType::Cell);
+      AttributeMatrix::Pointer featureAttr = AttributeMatrix::New(QVector<size_t>(1, 5), "Feature Attribute Matrix", SIMPL::AttributeMatrixType::Cell);
 
       DataArray<int32_t>::Pointer featureIds = DataArray<int32_t>::CreateArray(16, "FeatureIds");
       featureIds->initializeTuple(0, 1);

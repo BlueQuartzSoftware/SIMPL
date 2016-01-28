@@ -71,7 +71,7 @@ namespace Detail
 //
 // -----------------------------------------------------------------------------
 DataContainerBundle::DataContainerBundle() :
-  m_MetaDataAMName(DREAM3D::StringConstants::MetaData)
+  m_MetaDataAMName(SIMPL::StringConstants::MetaData)
 {
 
 }
@@ -88,7 +88,7 @@ DataContainerBundle::~DataContainerBundle()
 // -----------------------------------------------------------------------------
 QString DataContainerBundle::GetMetaDataName()
 {
-  return DREAM3D::StringConstants::MetaData;
+  return SIMPL::StringConstants::MetaData;
 }
 
 // -----------------------------------------------------------------------------
@@ -228,7 +228,7 @@ QVector<DataArrayPath> DataContainerBundle::findCommonDataArrayPaths(bool filter
         {
           match = true;
         }
-        if(filterMetaData == true && (path.getAttributeMatrixName() == DREAM3D::StringConstants::MetaData) )
+        if(filterMetaData == true && (path.getAttributeMatrixName() == SIMPL::StringConstants::MetaData) )
         {
           match = false;
         }
@@ -267,7 +267,7 @@ int DataContainerBundle::writeH5Data(hid_t groupId)
   char sep = 0x1E; // Use the ASCII 'record separator' value (Decimal value 30) to separate the names
   // Write the Names of the Data Containers that this bundle holds
   QString nameList = dcNameList.join(QString(sep));
-  int err = QH5Lite::writeStringDataset(bundleId, DREAM3D::StringConstants::DataContainerNames, nameList);
+  int err = QH5Lite::writeStringDataset(bundleId, SIMPL::StringConstants::DataContainerNames, nameList);
   if(err < 0)
   {
     return err;
@@ -275,7 +275,7 @@ int DataContainerBundle::writeH5Data(hid_t groupId)
 
   // Write the names of the Meta Data Attribute Arrays that this bundle uses for grouping
   QString metaNameList = m_MetaDataArrays.join(QString(sep));
-  err = QH5Lite::writeStringDataset(bundleId, DREAM3D::StringConstants::MetaDataArrays, metaNameList);
+  err = QH5Lite::writeStringDataset(bundleId, SIMPL::StringConstants::MetaDataArrays, metaNameList);
   if(err < 0)
   {
     return err;

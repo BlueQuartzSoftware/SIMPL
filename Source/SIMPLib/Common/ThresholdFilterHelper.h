@@ -49,7 +49,7 @@
 class SIMPLib_EXPORT ThresholdFilterHelper : public IDataArrayFilter
 {
   public:
-    ThresholdFilterHelper(DREAM3D::Comparison::Enumeration compType,
+    ThresholdFilterHelper(SIMPL::Comparison::Enumeration compType,
                           double compValue,
                           BoolArrayType* output);
 
@@ -113,7 +113,7 @@ class SIMPLib_EXPORT ThresholdFilterHelper : public IDataArrayFilter
     int execute(IDataArray* input, IDataArray* output);
 
   private:
-    DREAM3D::Comparison::Enumeration comparisonOperator;
+    SIMPL::Comparison::Enumeration comparisonOperator;
     double comparisonValue;
     BoolArrayType* m_Output;
 

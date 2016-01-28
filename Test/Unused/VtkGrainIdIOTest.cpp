@@ -108,7 +108,7 @@ class GenerateGrainIds : public AbstractFilter
   protected:
     GenerateGrainIds() :
       AbstractFilter(),
-      m_GrainIdsArrayName(DREAM3D::CellData::GrainIds),
+      m_GrainIdsArrayName(SIMPL::CellData::GrainIds),
       m_GrainIds(NULL)
     {
     }
@@ -201,7 +201,7 @@ int TestVtkGrainIdReader()
   DREAM3D_REQUIRE_EQUAL(err, 0);
   m->getDimensions(nx, ny, nz);
 
-  IDataArray::Pointer mdata = reader->getVoxelDataContainer()->getCellData(DREAM3D::CellData::GrainIds);
+  IDataArray::Pointer mdata = reader->getVoxelDataContainer()->getCellData(SIMPL::CellData::GrainIds);
 
 
   DREAM3D_REQUIRE_EQUAL(nx, UnitTest::VtkGrainIdIOTest::XSize);

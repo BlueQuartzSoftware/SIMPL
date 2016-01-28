@@ -340,7 +340,7 @@ class SIMPLib_EXPORT StatsDataArray : public IDataArray
      * @param format
      * @return
      */
-    virtual QString getInfoString(DREAM3D::InfoStringFormat format);
+    virtual QString getInfoString(SIMPL::InfoStringFormat format);
 
   protected:
     StatsDataArray();

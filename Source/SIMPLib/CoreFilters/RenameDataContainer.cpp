@@ -202,13 +202,13 @@ const QString RenameDataContainer::getFilterVersion()
 //
 // -----------------------------------------------------------------------------
 const QString RenameDataContainer::getGroupName()
-{ return DREAM3D::FilterGroups::CoreFilters; }
+{ return SIMPL::FilterGroups::CoreFilters; }
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
 const QString RenameDataContainer::getSubGroupName()
-{ return DREAM3D::FilterSubGroups::MemoryManagementFilters; }
+{ return SIMPL::FilterSubGroups::MemoryManagementFilters; }
 
 // -----------------------------------------------------------------------------
 //

@@ -133,7 +133,7 @@ void ScaleVolume::setupFilterParameters()
   parameters.push_back(LinkedBooleanFilterParameter::New("Apply to Image Geometry", "ApplyToVoxelVolume", getApplyToVoxelVolume(), linkedProps, FilterParameter::Parameter));
   {
     DataContainerSelectionFilterParameter::RequirementType req;
-    req.dcGeometryTypes = QVector<unsigned int>(1, DREAM3D::GeometryType::ImageGeometry);
+    req.dcGeometryTypes = QVector<unsigned int>(1, SIMPL::GeometryType::ImageGeometry);
     parameters.push_back(DataContainerSelectionFilterParameter::New("Data Container Image Geometry to Scale", "DataContainerName", getDataContainerName(), FilterParameter::RequiredArray, req));
   }
   linkedProps.clear();
@@ -142,8 +142,8 @@ void ScaleVolume::setupFilterParameters()
   {
     DataContainerSelectionFilterParameter::RequirementType req;
     QVector<unsigned int> dcGeometryTypes;
-    dcGeometryTypes.push_back(DREAM3D::GeometryType::TriangleGeometry);
-    dcGeometryTypes.push_back(DREAM3D::GeometryType::QuadGeometry);
+    dcGeometryTypes.push_back(SIMPL::GeometryType::TriangleGeometry);
+    dcGeometryTypes.push_back(SIMPL::GeometryType::QuadGeometry);
     req.dcGeometryTypes = dcGeometryTypes;
     parameters.push_back(DataContainerSelectionFilterParameter::New("Data Container Surface Geometry to Scale", "SurfaceDataContainerName", getSurfaceDataContainerName(), FilterParameter::RequiredArray, req));
   }
@@ -350,13 +350,13 @@ const QString ScaleVolume::getFilterVersion()
 //
 // -----------------------------------------------------------------------------
 const QString ScaleVolume::getGroupName()
-{ return DREAM3D::FilterGroups::CoreFilters; }
+{ return SIMPL::FilterGroups::CoreFilters; }
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
 const QString ScaleVolume::getSubGroupName()
-{ return DREAM3D::FilterSubGroups::SpatialFilters; }
+{ return SIMPL::FilterSubGroups::SpatialFilters; }
 
 // -----------------------------------------------------------------------------
 //

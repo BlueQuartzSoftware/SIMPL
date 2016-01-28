@@ -103,7 +103,7 @@ class SIMPLib_EXPORT BoundaryStatsData : public StatsData
     /**
      * @brief Creates the Vector of FloatArrayType for a give distribution type
      * and sized according to numBins
-     * @param distributionType The type of distribution as laid out in the DREAM3D::DistributionType
+     * @param distributionType The type of distribution as laid out in the SIMPL::DistributionType
      * namespace which should be found in Constants.h.
      * @param numBins The number of bins that the array should be sized to
      * @return a VectorOfFloatArray object which could be empty if an unrecognized

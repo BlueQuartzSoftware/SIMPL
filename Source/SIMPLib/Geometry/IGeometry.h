@@ -193,7 +193,7 @@ class SIMPLib_EXPORT IGeometry : public Observable
      * @return Returns a formatted string that contains general infomation about
      * the instance of the object.
      */
-    virtual QString getInfoString(DREAM3D::InfoStringFormat) = 0;
+    virtual QString getInfoString(SIMPL::InfoStringFormat) = 0;
 
     /**
      * @brief setMessagePrefix

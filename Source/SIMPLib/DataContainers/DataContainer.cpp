@@ -312,13 +312,13 @@ int DataContainer::writeAttributeMatricesToHDF5(hid_t parentId)
     attributeMatrixId = H5Gopen(parentId, iter.key().toLatin1().data(), H5P_DEFAULT);
     HDF5ScopedGroupSentinel gSentinel(&attributeMatrixId, false);
 
-    err = QH5Lite::writeScalarAttribute(parentId, iter.key(), DREAM3D::StringConstants::AttributeMatrixType, (*iter)->getType());
+    err = QH5Lite::writeScalarAttribute(parentId, iter.key(), SIMPL::StringConstants::AttributeMatrixType, (*iter)->getType());
     if(err < 0)
     {
       return err;
     }
     hsize_t size = (*iter)->getTupleDimensions().size();
-    err = QH5Lite::writePointerAttribute(parentId, iter.key(), DREAM3D::HDF5::TupleDimensions, 1, &size, (*iter)->getTupleDimensions().data());
+    err = QH5Lite::writePointerAttribute(parentId, iter.key(), SIMPL::HDF5::TupleDimensions, 1, &size, (*iter)->getTupleDimensions().data());
     if(err < 0)
     {
       return err;
@@ -341,7 +341,7 @@ int DataContainer::readAttributeMatricesFromHDF5(bool preflight, hid_t dcGid, co
   QVector<size_t> tDims;
 
   QMap<QString, AttributeMatrixProxy> attrMatsToRead = dcProxy.attributeMatricies;
-  unsigned int amType = DREAM3D::AttributeMatrixType::Unknown;
+  unsigned int amType = SIMPL::AttributeMatrixType::Unknown;
   QString amName;
   for(QMap<QString, AttributeMatrixProxy>::iterator iter = attrMatsToRead.begin(); iter != attrMatsToRead.end(); ++iter)
   {
@@ -350,9 +350,9 @@ int DataContainer::readAttributeMatricesFromHDF5(bool preflight, hid_t dcGid, co
       continue;
     }
     amName = iter.key();
-    amType = DREAM3D::AttributeMatrixType::Unknown;
-    err = QH5Lite::readScalarAttribute(dcGid, amName, DREAM3D::StringConstants::AttributeMatrixType, amType);
-    err = QH5Lite::readVectorAttribute(dcGid, amName, DREAM3D::HDF5::TupleDimensions, tDims);
+    amType = SIMPL::AttributeMatrixType::Unknown;
+    err = QH5Lite::readScalarAttribute(dcGid, amName, SIMPL::StringConstants::AttributeMatrixType, amType);
+    err = QH5Lite::readVectorAttribute(dcGid, amName, SIMPL::HDF5::TupleDimensions, tDims);
     if (err < 0)
     {
       return -1;
@@ -414,12 +414,12 @@ int DataContainer::writeMeshToHDF5(hid_t dcGid, bool writeXdmf)
 {
   int err;
   hid_t geometryId;
-  err = QH5Utilities::createGroupsFromPath(DREAM3D::Geometry::Geometry, dcGid);
+  err = QH5Utilities::createGroupsFromPath(SIMPL::Geometry::Geometry, dcGid);
   if (err < 0)
   {
     return err;
   }
-  geometryId = H5Gopen(dcGid, DREAM3D::Geometry::Geometry.toLatin1().data(), H5P_DEFAULT);
+  geometryId = H5Gopen(dcGid, SIMPL::Geometry::Geometry.toLatin1().data(), H5P_DEFAULT);
   if (geometryId < 0)
   {
     return -1;
@@ -428,12 +428,12 @@ int DataContainer::writeMeshToHDF5(hid_t dcGid, bool writeXdmf)
 
   if (NULL == m_Geometry.get())
   {
-    err = QH5Lite::writeScalarAttribute(dcGid, DREAM3D::Geometry::Geometry, DREAM3D::Geometry::GeometryType, DREAM3D::GeometryType::UnknownGeometry);
+    err = QH5Lite::writeScalarAttribute(dcGid, SIMPL::Geometry::Geometry, SIMPL::Geometry::GeometryType, SIMPL::GeometryType::UnknownGeometry);
     if (err < 0)
     {
       return err;
     }
-    err = QH5Lite::writeStringAttribute(dcGid, DREAM3D::Geometry::Geometry, DREAM3D::Geometry::GeometryTypeName, DREAM3D::Geometry::UnknownGeometry);
+    err = QH5Lite::writeStringAttribute(dcGid, SIMPL::Geometry::Geometry, SIMPL::Geometry::GeometryTypeName, SIMPL::Geometry::UnknownGeometry);
     if (err < 0)
     {
       return err;
@@ -441,27 +441,27 @@ int DataContainer::writeMeshToHDF5(hid_t dcGid, bool writeXdmf)
   }
   else
   {
-    err = QH5Lite::writeScalarAttribute(dcGid, DREAM3D::Geometry::Geometry, DREAM3D::Geometry::GeometryType, m_Geometry->getGeometryType());
+    err = QH5Lite::writeScalarAttribute(dcGid, SIMPL::Geometry::Geometry, SIMPL::Geometry::GeometryType, m_Geometry->getGeometryType());
     if (err < 0)
     {
       return err;
     }
-    err = QH5Lite::writeStringAttribute(dcGid, DREAM3D::Geometry::Geometry, DREAM3D::Geometry::GeometryTypeName, m_Geometry->getGeometryTypeAsString());
+    err = QH5Lite::writeStringAttribute(dcGid, SIMPL::Geometry::Geometry, SIMPL::Geometry::GeometryTypeName, m_Geometry->getGeometryTypeAsString());
     if (err < 0)
     {
       return err;
     }
-    err = QH5Lite::writeStringAttribute(dcGid, DREAM3D::Geometry::Geometry, DREAM3D::Geometry::GeometryName, m_Geometry->getName());
+    err = QH5Lite::writeStringAttribute(dcGid, SIMPL::Geometry::Geometry, SIMPL::Geometry::GeometryName, m_Geometry->getName());
     if (err < 0)
     {
       return err;
     }
-    err = QH5Lite::writeScalarAttribute(dcGid, DREAM3D::Geometry::Geometry, DREAM3D::Geometry::UnitDimensionality, m_Geometry->getUnitDimensionality());
+    err = QH5Lite::writeScalarAttribute(dcGid, SIMPL::Geometry::Geometry, SIMPL::Geometry::UnitDimensionality, m_Geometry->getUnitDimensionality());
     if (err < 0)
     {
       return err;
     }
-    err = QH5Lite::writeScalarAttribute(dcGid, DREAM3D::Geometry::Geometry, DREAM3D::Geometry::SpatialDimensionality, m_Geometry->getSpatialDimensionality());
+    err = QH5Lite::writeScalarAttribute(dcGid, SIMPL::Geometry::Geometry, SIMPL::Geometry::SpatialDimensionality, m_Geometry->getSpatialDimensionality());
     if (err < 0)
     {
       return err;
@@ -500,82 +500,82 @@ int DataContainer::writeXdmf(QTextStream& out, QString hdfFileName)
     uint32_t amType = attrMat->getType();
     switch(geomType)
     {
-      case DREAM3D::GeometryType::VertexGeometry:
+      case SIMPL::GeometryType::VertexGeometry:
         switch(amType)
         {
           //FIXME: There are more AttributeMatrix Types that should be implemented
-          case DREAM3D::AttributeMatrixType::Vertex:
-            xdmfCenter = DREAM3D::XdmfCenterType::Node;
+          case SIMPL::AttributeMatrixType::Vertex:
+            xdmfCenter = SIMPL::XdmfCenterType::Node;
             break;
           default:
             break;
         }
-      case DREAM3D::GeometryType::EdgeGeometry:
+      case SIMPL::GeometryType::EdgeGeometry:
         switch(amType)
         {
           //FIXME: There are more AttributeMatrix Types that should be implemented
-          case DREAM3D::AttributeMatrixType::Vertex:
-            xdmfCenter = DREAM3D::XdmfCenterType::Node;
+          case SIMPL::AttributeMatrixType::Vertex:
+            xdmfCenter = SIMPL::XdmfCenterType::Node;
             break;
-          case DREAM3D::AttributeMatrixType::Edge:
-            xdmfCenter = DREAM3D::XdmfCenterType::Cell;
+          case SIMPL::AttributeMatrixType::Edge:
+            xdmfCenter = SIMPL::XdmfCenterType::Cell;
             break;
           default:
             break;
         }
-      case DREAM3D::GeometryType::TriangleGeometry:
+      case SIMPL::GeometryType::TriangleGeometry:
         switch(amType)
         {
           //FIXME: There are more AttributeMatrix Types that should be implemented
-          case DREAM3D::AttributeMatrixType::Vertex:
-            xdmfCenter = DREAM3D::XdmfCenterType::Node;
+          case SIMPL::AttributeMatrixType::Vertex:
+            xdmfCenter = SIMPL::XdmfCenterType::Node;
             break;
-          case DREAM3D::AttributeMatrixType::Edge:
-            xdmfCenter = DREAM3D::XdmfCenterType::Cell;
+          case SIMPL::AttributeMatrixType::Edge:
+            xdmfCenter = SIMPL::XdmfCenterType::Cell;
             break;
-          case DREAM3D::AttributeMatrixType::Face:
-            xdmfCenter = DREAM3D::XdmfCenterType::Cell;
+          case SIMPL::AttributeMatrixType::Face:
+            xdmfCenter = SIMPL::XdmfCenterType::Cell;
             break;
-          case DREAM3D::AttributeMatrixType::Cell:
-            xdmfCenter = DREAM3D::XdmfCenterType::Cell;
+          case SIMPL::AttributeMatrixType::Cell:
+            xdmfCenter = SIMPL::XdmfCenterType::Cell;
             break;
           default:
             break;
         }
-      case DREAM3D::GeometryType::QuadGeometry:
+      case SIMPL::GeometryType::QuadGeometry:
         switch(amType)
         {
           //FIXME: There are more AttributeMatrix Types that should be implemented
-          case DREAM3D::AttributeMatrixType::Vertex:
-            xdmfCenter = DREAM3D::XdmfCenterType::Node;
+          case SIMPL::AttributeMatrixType::Vertex:
+            xdmfCenter = SIMPL::XdmfCenterType::Node;
             break;
-          case DREAM3D::AttributeMatrixType::Edge:
-            xdmfCenter = DREAM3D::XdmfCenterType::Cell;
+          case SIMPL::AttributeMatrixType::Edge:
+            xdmfCenter = SIMPL::XdmfCenterType::Cell;
             break;
-          case DREAM3D::AttributeMatrixType::Face:
-            xdmfCenter = DREAM3D::XdmfCenterType::Cell;
+          case SIMPL::AttributeMatrixType::Face:
+            xdmfCenter = SIMPL::XdmfCenterType::Cell;
             break;
-          case DREAM3D::AttributeMatrixType::Cell:
-            xdmfCenter = DREAM3D::XdmfCenterType::Cell;
+          case SIMPL::AttributeMatrixType::Cell:
+            xdmfCenter = SIMPL::XdmfCenterType::Cell;
             break;
           default:
             break;
         }
-      case DREAM3D::GeometryType::ImageGeometry:
+      case SIMPL::GeometryType::ImageGeometry:
         switch(amType)
         {
           //FIXME: There are more AttributeMatrix Types that should be implemented
-          case DREAM3D::AttributeMatrixType::Vertex:
-            xdmfCenter = DREAM3D::XdmfCenterType::Node;
+          case SIMPL::AttributeMatrixType::Vertex:
+            xdmfCenter = SIMPL::XdmfCenterType::Node;
             break;
-          case DREAM3D::AttributeMatrixType::Edge:
-            xdmfCenter = DREAM3D::XdmfCenterType::Cell;
+          case SIMPL::AttributeMatrixType::Edge:
+            xdmfCenter = SIMPL::XdmfCenterType::Cell;
             break;
-          case DREAM3D::AttributeMatrixType::Face:
-            xdmfCenter = DREAM3D::XdmfCenterType::Cell;
+          case SIMPL::AttributeMatrixType::Face:
+            xdmfCenter = SIMPL::XdmfCenterType::Cell;
             break;
-          case DREAM3D::AttributeMatrixType::Cell:
-            xdmfCenter = DREAM3D::XdmfCenterType::Cell;
+          case SIMPL::AttributeMatrixType::Cell:
+            xdmfCenter = SIMPL::XdmfCenterType::Cell;
             break;
           default:
             break;
@@ -609,15 +609,15 @@ void DataContainer::writeXdmfFooter(QTextStream& xdmf)
 int DataContainer::readMeshDataFromHDF5(hid_t dcGid, bool preflight)
 {
   herr_t err = 0;
-  QString geometryTypeName = DREAM3D::Geometry::UnknownGeometry;
+  QString geometryTypeName = SIMPL::Geometry::UnknownGeometry;
 
-  err = QH5Lite::readStringAttribute(dcGid, DREAM3D::Geometry::Geometry, DREAM3D::Geometry::GeometryTypeName, geometryTypeName);
+  err = QH5Lite::readStringAttribute(dcGid, SIMPL::Geometry::Geometry, SIMPL::Geometry::GeometryTypeName, geometryTypeName);
   if (err < 0)
   {
     return err;
   }
 
-  hid_t geometryId = H5Gopen(dcGid, DREAM3D::Geometry::Geometry.toLatin1().data(), H5P_DEFAULT);
+  hid_t geometryId = H5Gopen(dcGid, SIMPL::Geometry::Geometry.toLatin1().data(), H5P_DEFAULT);
   if (geometryId < 0)
   {
     return -1;
@@ -628,49 +628,49 @@ int DataContainer::readMeshDataFromHDF5(hid_t dcGid, bool preflight)
 
   if (NULL == m_Geometry.get())
   {
-    if (geometryTypeName.compare(DREAM3D::Geometry::ImageGeometry) == 0)
+    if (geometryTypeName.compare(SIMPL::Geometry::ImageGeometry) == 0)
     {
       ImageGeom::Pointer image = ImageGeom::New();
       err = image->readGeometryFromHDF5(geometryId, preflight);
       err = GeometryHelpers::GeomIO::ReadMetaDataFromHDF5(dcGid, image);
       setGeometry(image);
     }
-    else if (geometryTypeName.compare(DREAM3D::Geometry::RectGridGeometry) == 0)
+    else if (geometryTypeName.compare(SIMPL::Geometry::RectGridGeometry) == 0)
     {
       RectGridGeom::Pointer rectGrid = RectGridGeom::New();
       err = rectGrid->readGeometryFromHDF5(geometryId, preflight);
       err = GeometryHelpers::GeomIO::ReadMetaDataFromHDF5(dcGid, rectGrid);
       setGeometry(rectGrid);
     }
-    else if (geometryTypeName.compare(DREAM3D::Geometry::VertexGeometry) == 0)
+    else if (geometryTypeName.compare(SIMPL::Geometry::VertexGeometry) == 0)
     {
       VertexGeom::Pointer vertices = VertexGeom::New();
       err = vertices->readGeometryFromHDF5(geometryId, preflight);
       err = GeometryHelpers::GeomIO::ReadMetaDataFromHDF5(dcGid, vertices);
       setGeometry(vertices);
     }
-    else if (geometryTypeName.compare(DREAM3D::Geometry::EdgeGeometry) == 0)
+    else if (geometryTypeName.compare(SIMPL::Geometry::EdgeGeometry) == 0)
     {
       EdgeGeom::Pointer edges = EdgeGeom::New();
       err = edges->readGeometryFromHDF5(geometryId, preflight);
       err = GeometryHelpers::GeomIO::ReadMetaDataFromHDF5(dcGid, edges);
       setGeometry(edges);
     }
-    else if (geometryTypeName.compare(DREAM3D::Geometry::TriangleGeometry) == 0)
+    else if (geometryTypeName.compare(SIMPL::Geometry::TriangleGeometry) == 0)
     {
       TriangleGeom::Pointer triangles = TriangleGeom::New();
       err = triangles->readGeometryFromHDF5(geometryId, preflight);
       err = GeometryHelpers::GeomIO::ReadMetaDataFromHDF5(dcGid, triangles);
       setGeometry(triangles);
     }
-    else if (geometryTypeName.compare(DREAM3D::Geometry::QuadGeometry) == 0)
+    else if (geometryTypeName.compare(SIMPL::Geometry::QuadGeometry) == 0)
     {
       QuadGeom::Pointer quads = QuadGeom::New();
       err = quads->readGeometryFromHDF5(geometryId, preflight);
       err = GeometryHelpers::GeomIO::ReadMetaDataFromHDF5(dcGid, quads);
       setGeometry(quads);
     }
-    else if (geometryTypeName.compare(DREAM3D::Geometry::UnknownGeometry) == 0)
+    else if (geometryTypeName.compare(SIMPL::Geometry::UnknownGeometry) == 0)
     {
       setGeometry(geomPtr);
     }
@@ -709,11 +709,11 @@ QVector<DataArrayPath> DataContainer::getAllDataArrayPaths()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-QString DataContainer::getInfoString(DREAM3D::InfoStringFormat format)
+QString DataContainer::getInfoString(SIMPL::InfoStringFormat format)
 {
   QString info;
   QTextStream ss (&info);
-  if(format == DREAM3D::HtmlFormat)
+  if(format == SIMPL::HtmlFormat)
   {
     ss << "<html><head></head>\n";
     ss << "<body>\n";
@@ -726,7 +726,7 @@ QString DataContainer::getInfoString(DREAM3D::InfoStringFormat format)
     ss << "<tr><td></td><td></td></tr>";
     if(getGeometry().get() != NULL)
     {
-      ss << getGeometry()->getInfoString(DREAM3D::HtmlFormat);
+      ss << getGeometry()->getInfoString(SIMPL::HtmlFormat);
     }
 
     ss << "</tbody></table>\n";

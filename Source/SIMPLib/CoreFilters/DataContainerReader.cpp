@@ -258,15 +258,15 @@ void DataContainerReader::readData(bool preflight, DataContainerArrayProxy& prox
   HDF5ScopedFileSentinel scopedFileSentinel(&fileId, true);
 
   // Check to see if version of .dream3d file is prior to new data container names
-  err = QH5Lite::readStringAttribute(fileId, "/", DREAM3D::HDF5::FileVersionName, m_FileVersion);
+  err = QH5Lite::readStringAttribute(fileId, "/", SIMPL::HDF5::FileVersionName, m_FileVersion);
   fVersion = m_FileVersion.toFloat(&check);
   if (fVersion < 5.0 || err < 0)
   {
     QH5Utilities::closeFile(fileId);
     fileId = QH5Utilities::openFile(m_InputFile, false); // Re-Open the file as Read/Write
-    err = H5Lmove(fileId, "VoxelDataContainer", fileId, DREAM3D::Defaults::DataContainerName.toLatin1().data(), H5P_DEFAULT, H5P_DEFAULT);
-    err = H5Lmove(fileId, "SurfaceMeshDataContainer", fileId, DREAM3D::Defaults::DataContainerName.toLatin1().data(), H5P_DEFAULT, H5P_DEFAULT);
-    err = QH5Lite::writeStringAttribute(fileId, "/", DREAM3D::HDF5::FileVersionName, "5.0");
+    err = H5Lmove(fileId, "VoxelDataContainer", fileId, SIMPL::Defaults::DataContainerName.toLatin1().data(), H5P_DEFAULT, H5P_DEFAULT);
+    err = H5Lmove(fileId, "SurfaceMeshDataContainer", fileId, SIMPL::Defaults::DataContainerName.toLatin1().data(), H5P_DEFAULT, H5P_DEFAULT);
+    err = QH5Lite::writeStringAttribute(fileId, "/", SIMPL::HDF5::FileVersionName, "5.0");
     QH5Utilities::closeFile(fileId);
     fileId = QH5Utilities::openFile(m_InputFile, true); // Re-Open the file as Read Only
   }
@@ -277,11 +277,11 @@ void DataContainerReader::readData(bool preflight, DataContainerArrayProxy& prox
     notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
     return;
   }
-  hid_t dcaGid = H5Gopen(fileId, DREAM3D::StringConstants::DataContainerGroupName.toLatin1().data(), 0);
+  hid_t dcaGid = H5Gopen(fileId, SIMPL::StringConstants::DataContainerGroupName.toLatin1().data(), 0);
   if (dcaGid < 0)
   {
     setErrorCondition(-1923123);
-    QString ss = QObject::tr("Error attempting to open the HDF5 Group '%1'").arg(DREAM3D::StringConstants::DataContainerGroupName);
+    QString ss = QObject::tr("Error attempting to open the HDF5 Group '%1'").arg(SIMPL::StringConstants::DataContainerGroupName);
     notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
     return;
   }
@@ -327,7 +327,7 @@ DataContainerArrayProxy DataContainerReader::readDataContainerArrayStructure(con
   QFileInfo fi(path);
   if (path.isEmpty() == true)
   {
-    QString ss = QObject::tr("DREAM.3D File Path is empty");
+    QString ss = QObject::tr("SIMPLView File Path is empty");
     setErrorCondition(-70);
     notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
     return proxy;
@@ -344,7 +344,7 @@ DataContainerArrayProxy DataContainerReader::readDataContainerArrayStructure(con
   hid_t fileId = QH5Utilities::openFile(path, true);
   if(fileId < 0)
   {
-    QString ss = QObject::tr("Error opening DREAM.3D file location at %1").arg(path);
+    QString ss = QObject::tr("Error opening SIMPLView file location at %1").arg(path);
     setErrorCondition(-71);
     notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
     return proxy;
@@ -353,43 +353,43 @@ DataContainerArrayProxy DataContainerReader::readDataContainerArrayStructure(con
 
   // Check the DREAM3D File Version to make sure we are reading the proper version
   QString d3dVersion;
-  err = QH5Lite::readStringAttribute(fileId, "/", DREAM3D::HDF5::DREAM3DVersion, d3dVersion);
+  err = QH5Lite::readStringAttribute(fileId, "/", SIMPL::HDF5::DREAM3DVersion, d3dVersion);
   if (err < 0)
   {
-    QString ss = QObject::tr("HDF5 Attribute '%1' was not found on the HDF5 root node and this is required").arg(DREAM3D::HDF5::DREAM3DVersion);
+    QString ss = QObject::tr("HDF5 Attribute '%1' was not found on the HDF5 root node and this is required").arg(SIMPL::HDF5::DREAM3DVersion);
     setErrorCondition(-72);
     notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
     return proxy;
   }
   //  else {
-  //    std::cout << DREAM3D::HDF5::DREAM3DVersion.toStdString() << ":" << d3dVersion.toStdString() << std::endl;
+  //    std::cout << SIMPL::HDF5::DREAM3DVersion.toStdString() << ":" << d3dVersion.toStdString() << std::endl;
   //  }
 
   QString fileVersion;
-  err = QH5Lite::readStringAttribute(fileId, "/", DREAM3D::HDF5::FileVersionName, fileVersion);
+  err = QH5Lite::readStringAttribute(fileId, "/", SIMPL::HDF5::FileVersionName, fileVersion);
   if (err < 0)
   {
-    //std::cout << "Attribute '" << DREAM3D::HDF5::FileVersionName.toStdString() << " was not found" << std::endl;
-    QString ss = QObject::tr("HDF5 Attribute '%1' was not found on the HDF5 root node and this is required").arg(DREAM3D::HDF5::FileVersionName);
+    //std::cout << "Attribute '" << SIMPL::HDF5::FileVersionName.toStdString() << " was not found" << std::endl;
+    QString ss = QObject::tr("HDF5 Attribute '%1' was not found on the HDF5 root node and this is required").arg(SIMPL::HDF5::FileVersionName);
     setErrorCondition(-73);
     notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
     return proxy;
   }
   //  else {
-  //    std::cout << DREAM3D::HDF5::FileVersionName.toStdString() << ":" << fileVersion.toStdString() << std::endl;
+  //    std::cout << SIMPL::HDF5::FileVersionName.toStdString() << ":" << fileVersion.toStdString() << std::endl;
   //  }
 
-  hid_t dcArrayGroupId = H5Gopen(fileId, DREAM3D::StringConstants::DataContainerGroupName.toLatin1().constData(), H5P_DEFAULT);
+  hid_t dcArrayGroupId = H5Gopen(fileId, SIMPL::StringConstants::DataContainerGroupName.toLatin1().constData(), H5P_DEFAULT);
   if (dcArrayGroupId < 0)
   {
-    QString ss = QObject::tr("Error opening HDF5 Group '%1'").arg(DREAM3D::StringConstants::DataContainerGroupName);
+    QString ss = QObject::tr("Error opening HDF5 Group '%1'").arg(SIMPL::StringConstants::DataContainerGroupName);
     setErrorCondition(-74);
     notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
     return proxy;
   }
   sentinel.addGroupId(&dcArrayGroupId);
 
-  QString h5InternalPath = QString("/") + DREAM3D::StringConstants::DataContainerGroupName;
+  QString h5InternalPath = QString("/") + SIMPL::StringConstants::DataContainerGroupName;
 
   // Read the entire structure of the file into the proxy
   DataContainer::ReadDataContainerStructure(dcArrayGroupId, proxy, h5InternalPath);
@@ -408,7 +408,7 @@ int DataContainerReader::readExistingPipelineFromFile(hid_t fileId)
   H5FilterParametersReader::Pointer reader = H5FilterParametersReader::New();
 
   // HDF5: Open the "Pipeline" Group
-  hid_t pipelineGroupId = H5Gopen(fileId, DREAM3D::StringConstants::PipelineGroupName.toLatin1().data(), H5P_DEFAULT);
+  hid_t pipelineGroupId = H5Gopen(fileId, SIMPL::StringConstants::PipelineGroupName.toLatin1().data(), H5P_DEFAULT);
   reader->setPipelineGroupId(pipelineGroupId);
 
   // Use QH5Lite to ask how many "groups" are in the "Pipeline Group"
@@ -466,12 +466,12 @@ int DataContainerReader::writeExistingPipelineToFile(AbstractFilterParametersWri
 int DataContainerReader::readDataContainerBundles(hid_t fileId, DataContainerArray::Pointer dca)
 {
   herr_t err = 0;
-  hid_t dcbGroupId = H5Gopen(fileId, DREAM3D::StringConstants::DataContainerBundleGroupName.toLatin1().constData(), H5P_DEFAULT);
+  hid_t dcbGroupId = H5Gopen(fileId, SIMPL::StringConstants::DataContainerBundleGroupName.toLatin1().constData(), H5P_DEFAULT);
   if (dcbGroupId < 0)
   {
     // NO Bundles are available to read so just return.
 
-    //    QString ss = QObject::tr("Error opening HDF5 Group '%1' ").arg(DREAM3D::StringConstants::DataContainerBundleGroupName);
+    //    QString ss = QObject::tr("Error opening HDF5 Group '%1' ").arg(SIMPL::StringConstants::DataContainerBundleGroupName);
     //    setErrorCondition(-75);
     //    notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
     return 0;
@@ -483,7 +483,7 @@ int DataContainerReader::readDataContainerBundles(hid_t fileId, DataContainerArr
   err = QH5Utilities::getGroupObjects(dcbGroupId, H5Utilities::H5Support_GROUP, groupNames);
   if (err < 0)
   {
-    QString ss = QObject::tr("Error getting group objects from HDF5 group '%1' ").arg(DREAM3D::StringConstants::DataContainerBundleGroupName);
+    QString ss = QObject::tr("Error getting group objects from HDF5 group '%1' ").arg(SIMPL::StringConstants::DataContainerBundleGroupName);
     setErrorCondition(-76);
     notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
     return err;
@@ -501,7 +501,7 @@ int DataContainerReader::readDataContainerBundles(hid_t fileId, DataContainerArr
 
     // Read in the Data Container Names
     QString dcNames;
-    err = QH5Lite::readStringDataset(bundleId, DREAM3D::StringConstants::DataContainerNames, dcNames);
+    err = QH5Lite::readStringDataset(bundleId, SIMPL::StringConstants::DataContainerNames, dcNames);
     if (err < 0)
     {
       QString ss = QObject::tr("Error reading DataContainer group names from HDF5 group '%1' ").arg(bundleName);
@@ -525,7 +525,7 @@ int DataContainerReader::readDataContainerBundles(hid_t fileId, DataContainerArr
 
 
     QString metaArrays;
-    err = QH5Lite::readStringDataset(bundleId, DREAM3D::StringConstants::MetaDataArrays, metaArrays);
+    err = QH5Lite::readStringDataset(bundleId, SIMPL::StringConstants::MetaDataArrays, metaArrays);
     if (err < 0)
     {
       QString ss = QObject::tr("Error reading DataContainerBundle meta data arrays from HDF5 group '%1' ").arg(bundleName);
@@ -618,16 +618,16 @@ const QString DataContainerReader::getFilterVersion()
 //
 // -----------------------------------------------------------------------------
 const QString DataContainerReader::getGroupName()
-{ return DREAM3D::FilterGroups::IOFilters; }
+{ return SIMPL::FilterGroups::IOFilters; }
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
 const QString DataContainerReader::getSubGroupName()
-{ return DREAM3D::FilterSubGroups::InputFilters; }
+{ return SIMPL::FilterSubGroups::InputFilters; }
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
 const QString DataContainerReader::getHumanLabel()
-{ return "Read DREAM.3D Data File"; }
+{ return "Read SIMPLView Data File"; }

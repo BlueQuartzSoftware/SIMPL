@@ -48,7 +48,7 @@
 #include <QtCore/QString>
 #include <QtCore/QTextStream>
 
-namespace DREAM3D
+namespace SIMPL
 {
   namespace unittest
   {
@@ -173,22 +173,22 @@ class TestException : public std::exception
 // -----------------------------------------------------------------------------
 void TestPassed(const std::string& test)
 {
-  ::memset(DREAM3D::unittest::TestMessage, ' ', NUM_COLS); // Splat Spaces across the entire message
-  DREAM3D::unittest::TestMessage[NUM_COLS] = 0;  // Make sure it is null terminated
+  ::memset(SIMPL::unittest::TestMessage, ' ', NUM_COLS); // Splat Spaces across the entire message
+  SIMPL::unittest::TestMessage[NUM_COLS] = 0;  // Make sure it is null terminated
 
-  std::string::size_type size = NUM_COLS - DREAM3D::unittest::SizeOfPassed;
-  ::strncpy( &(DREAM3D::unittest::TestMessage[size]) , DREAM3D::unittest::Passed, DREAM3D::unittest::SizeOfPassed );
+  std::string::size_type size = NUM_COLS - SIMPL::unittest::SizeOfPassed;
+  ::strncpy( &(SIMPL::unittest::TestMessage[size]) , SIMPL::unittest::Passed, SIMPL::unittest::SizeOfPassed );
   if (test.length() < size )
   {
-    ::strncpy(DREAM3D::unittest::TestMessage, test.c_str(), test.length());
+    ::strncpy(SIMPL::unittest::TestMessage, test.c_str(), test.length());
   }
   else
   {
-    ::strncpy(DREAM3D::unittest::TestMessage, test.substr(0, size).c_str(), size);
+    ::strncpy(SIMPL::unittest::TestMessage, test.substr(0, size).c_str(), size);
   }
-  DREAM3D::unittest::TestMessage[NUM_COLS] = 0;  // Make sure it is null terminated
-  std::cout << DREAM3D::unittest::TestMessage << std::endl;
-  DREAM3D::unittest::numTestsPass++;
+  SIMPL::unittest::TestMessage[NUM_COLS] = 0;  // Make sure it is null terminated
+  std::cout << SIMPL::unittest::TestMessage << std::endl;
+  SIMPL::unittest::numTestsPass++;
 }
 
 // -----------------------------------------------------------------------------
@@ -196,22 +196,22 @@ void TestPassed(const std::string& test)
 // -----------------------------------------------------------------------------
 void TestFailed(const std::string& test)
 {
-  ::memset(DREAM3D::unittest::TestMessage, ' ', NUM_COLS); // Splat Spaces across the entire message
-  DREAM3D::unittest::TestMessage[NUM_COLS] = 0;  // Make sure it is null terminated
+  ::memset(SIMPL::unittest::TestMessage, ' ', NUM_COLS); // Splat Spaces across the entire message
+  SIMPL::unittest::TestMessage[NUM_COLS] = 0;  // Make sure it is null terminated
 
-  std::string::size_type size = NUM_COLS - DREAM3D::unittest::SizeOfFailed;
-  ::strncpy( &(DREAM3D::unittest::TestMessage[size]) , DREAM3D::unittest::Failed, DREAM3D::unittest::SizeOfFailed );
+  std::string::size_type size = NUM_COLS - SIMPL::unittest::SizeOfFailed;
+  ::strncpy( &(SIMPL::unittest::TestMessage[size]) , SIMPL::unittest::Failed, SIMPL::unittest::SizeOfFailed );
   if (test.length() < size )
   {
-    ::strncpy(DREAM3D::unittest::TestMessage, test.c_str(), test.length());
+    ::strncpy(SIMPL::unittest::TestMessage, test.c_str(), test.length());
   }
   else
   {
-    ::strncpy(DREAM3D::unittest::TestMessage, test.substr(0, size).c_str(), size);
+    ::strncpy(SIMPL::unittest::TestMessage, test.substr(0, size).c_str(), size);
   }
-  DREAM3D::unittest::TestMessage[NUM_COLS] = 0;  // Make sure it is null terminated
-  std::cout << DREAM3D::unittest::TestMessage << std::endl;
-  DREAM3D::unittest::numTestFailed++;
+  SIMPL::unittest::TestMessage[NUM_COLS] = 0;  // Make sure it is null terminated
+  std::cout << SIMPL::unittest::TestMessage << std::endl;
+  SIMPL::unittest::numTestFailed++;
 }
 
 
@@ -460,13 +460,13 @@ bool AlmostEqualUlpsFinal(float* A, float* B, int maxUlps)
 
 
 #define DREAM3D_ENTER_TEST( test )\
-  DREAM3D::unittest::CurrentMethod = #test;\
-  DREAM3D::unittest::numTests++;
+  SIMPL::unittest::CurrentMethod = #test;\
+  SIMPL::unittest::numTests++;
 
 
 #define DREAM3D_LEAVE_TEST( test )\
   TestPassed(#test);\
-  DREAM3D::unittest::CurrentMethod = "";
+  SIMPL::unittest::CurrentMethod = "";
 
 
 #define DREAM3D_REGISTER_TEST( test )\
@@ -476,17 +476,17 @@ bool AlmostEqualUlpsFinal(float* A, float* B, int maxUlps)
     DREAM3D_LEAVE_TEST(test)\
   } catch (TestException& e)\
   {\
-    TestFailed(DREAM3D::unittest::CurrentMethod);\
+    TestFailed(SIMPL::unittest::CurrentMethod);\
     std::cout << e.what() << std::endl;\
     err = EXIT_FAILURE;\
   }
 
 #define PRINT_TEST_SUMMARY()\
   std::cout << "Test Summary:" << std::endl;\
-  std::cout << "  Tests Passed: " << DREAM3D::unittest::numTestsPass << std::endl;\
-  std::cout << "  Tests Failed: " << DREAM3D::unittest::numTestFailed << std::endl;\
-  std::cout << "  Total Tests:  " << DREAM3D::unittest::numTests << std::endl;\
-  if (DREAM3D::unittest::numTestFailed > 0)\
+  std::cout << "  Tests Passed: " << SIMPL::unittest::numTestsPass << std::endl;\
+  std::cout << "  Tests Failed: " << SIMPL::unittest::numTestFailed << std::endl;\
+  std::cout << "  Total Tests:  " << SIMPL::unittest::numTests << std::endl;\
+  if (SIMPL::unittest::numTestFailed > 0)\
   {\
     err = EXIT_FAILURE;\
   }\

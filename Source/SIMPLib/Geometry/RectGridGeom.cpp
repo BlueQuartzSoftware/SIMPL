@@ -401,9 +401,9 @@ class FindRectGridDerivativesImpl
 // -----------------------------------------------------------------------------
 RectGridGeom::RectGridGeom()
 {
-  m_GeometryTypeName = DREAM3D::Geometry::RectGridGeometry;
-  m_GeometryType = DREAM3D::GeometryType::RectGridGeometry;
-  m_XdmfGridType = DREAM3D::XdmfGridType::RectilinearGrid;
+  m_GeometryTypeName = SIMPL::Geometry::RectGridGeometry;
+  m_GeometryType = SIMPL::GeometryType::RectGridGeometry;
+  m_XdmfGridType = SIMPL::XdmfGridType::RectilinearGrid;
   m_MessagePrefix = "";
   m_MessageTitle = "";
   m_MessageLabel = "";
@@ -446,9 +446,9 @@ void RectGridGeom::setXBounds(FloatArrayType::Pointer xBnds)
 {
   if (xBnds.get() != NULL)
   {
-    if (xBnds->getName().compare(DREAM3D::Geometry::xBoundsList))
+    if (xBnds->getName().compare(SIMPL::Geometry::xBoundsList))
     {
-      xBnds->setName(DREAM3D::Geometry::xBoundsList);
+      xBnds->setName(SIMPL::Geometry::xBoundsList);
     }
   }
   m_xBounds = xBnds;
@@ -461,9 +461,9 @@ void RectGridGeom::setYBounds(FloatArrayType::Pointer yBnds)
 {
   if (yBnds.get() != NULL)
   {
-    if (yBnds->getName().compare(DREAM3D::Geometry::yBoundsList))
+    if (yBnds->getName().compare(SIMPL::Geometry::yBoundsList))
     {
-      yBnds->setName(DREAM3D::Geometry::yBoundsList);
+      yBnds->setName(SIMPL::Geometry::yBoundsList);
     }
   }
   m_yBounds = yBnds;
@@ -476,9 +476,9 @@ void RectGridGeom::setZBounds(FloatArrayType::Pointer zBnds)
 {
   if (zBnds.get() != NULL)
   {
-    if (zBnds->getName().compare(DREAM3D::Geometry::zBoundsList))
+    if (zBnds->getName().compare(SIMPL::Geometry::zBoundsList))
     {
-      zBnds->setName(DREAM3D::Geometry::zBoundsList);
+      zBnds->setName(SIMPL::Geometry::zBoundsList);
     }
   }
   m_zBounds = zBnds;
@@ -865,13 +865,13 @@ int RectGridGeom::writeXdmf(QTextStream& out, QString dcName, QString hdfFileNam
   out << "    <Topology TopologyType=\"3DRectMesh\" Dimensions=\"" << volDims[2] + 1 << " " << volDims[1] + 1 << " " << volDims[0] + 1 << " \"></Topology>" << "\n";
   out << "    <Geometry Type=\"VxVyVz\">" << "\n";
   out << "    <DataItem Format=\"HDF\" Dimensions=\"" << m_xBounds->getNumberOfTuples() << "\" NumberType=\"Float\" Precision=\"4\">" << "\n";
-  out << "      " << hdfFileName << ":/DataContainers/" << dcName << "/" << DREAM3D::Geometry::Geometry << "/" << DREAM3D::Geometry::xBoundsList << "\n";
+  out << "      " << hdfFileName << ":/DataContainers/" << dcName << "/" << SIMPL::Geometry::Geometry << "/" << SIMPL::Geometry::xBoundsList << "\n";
   out << "    </DataItem>" << "\n";
   out << "    <DataItem Format=\"HDF\" Dimensions=\"" << m_yBounds->getNumberOfTuples() << "\" NumberType=\"Float\" Precision=\"4\">" << "\n";
-  out << "      " << hdfFileName << ":/DataContainers/" << dcName << "/" << DREAM3D::Geometry::Geometry << "/" << DREAM3D::Geometry::yBoundsList << "\n";
+  out << "      " << hdfFileName << ":/DataContainers/" << dcName << "/" << SIMPL::Geometry::Geometry << "/" << SIMPL::Geometry::yBoundsList << "\n";
   out << "    </DataItem>" << "\n";
   out << "    <DataItem Format=\"HDF\" Dimensions=\"" << m_zBounds->getNumberOfTuples() << "\" NumberType=\"Float\" Precision=\"4\">" << "\n";
-  out << "      " << hdfFileName << ":/DataContainers/" << dcName << "/" << DREAM3D::Geometry::Geometry << "/" << DREAM3D::Geometry::zBoundsList << "\n";
+  out << "      " << hdfFileName << ":/DataContainers/" << dcName << "/" << SIMPL::Geometry::Geometry << "/" << SIMPL::Geometry::zBoundsList << "\n";
   out << "    </DataItem>" << "\n";
   out << "    </Geometry>" << "\n";
 
@@ -881,7 +881,7 @@ int RectGridGeom::writeXdmf(QTextStream& out, QString dcName, QString hdfFileNam
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-QString RectGridGeom::getInfoString(DREAM3D::InfoStringFormat format)
+QString RectGridGeom::getInfoString(SIMPL::InfoStringFormat format)
 {
   QString info;
   QTextStream ss (&info);
@@ -889,7 +889,7 @@ QString RectGridGeom::getInfoString(DREAM3D::InfoStringFormat format)
   int64_t volDims[3] =
   { static_cast<int64_t>(getXPoints()), static_cast<int64_t>(getYPoints()), static_cast<int64_t>(getZPoints()) };
 
-  if(format == DREAM3D::HtmlFormat)
+  if(format == SIMPL::HtmlFormat)
   {
     ss << "<tr bgcolor=\"#D3D8E0\"><th colspan=2>RectGrid Geometry Info</th></tr>";
     ss << "<tr bgcolor=\"#C3C8D0\"><th align=\"right\">Dimensions:</th><td>" << volDims[0] << " x " << volDims[1] << " x " << volDims[2] << "</td></tr>";
@@ -951,17 +951,17 @@ int RectGridGeom::gatherMetaData(hid_t parentId, size_t volDims[3], bool preflig
   {
     return err;
   }
-  FloatArrayType::Pointer xBnds = GeometryHelpers::GeomIO::ReadListFromHDF5<FloatArrayType>(DREAM3D::Geometry::xBoundsList, parentId, preflight, err);
+  FloatArrayType::Pointer xBnds = GeometryHelpers::GeomIO::ReadListFromHDF5<FloatArrayType>(SIMPL::Geometry::xBoundsList, parentId, preflight, err);
   if (err < 0 && err != -2)
   {
     return -1;
   }
-  FloatArrayType::Pointer yBnds = GeometryHelpers::GeomIO::ReadListFromHDF5<FloatArrayType>(DREAM3D::Geometry::yBoundsList, parentId, preflight, err);
+  FloatArrayType::Pointer yBnds = GeometryHelpers::GeomIO::ReadListFromHDF5<FloatArrayType>(SIMPL::Geometry::yBoundsList, parentId, preflight, err);
   if (err < 0 && err != -2)
   {
     return -1;
   }
-  FloatArrayType::Pointer zBnds = GeometryHelpers::GeomIO::ReadListFromHDF5<FloatArrayType>(DREAM3D::Geometry::zBoundsList, parentId, preflight, err);
+  FloatArrayType::Pointer zBnds = GeometryHelpers::GeomIO::ReadListFromHDF5<FloatArrayType>(SIMPL::Geometry::zBoundsList, parentId, preflight, err);
   if (err < 0 && err != -2)
   {
     return -1;

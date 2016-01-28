@@ -85,7 +85,7 @@ void RemoveComponentFromArray::setupFilterParameters()
 
   parameters.push_back(IntFilterParameter::New("Component Number to Remove", "CompNumber", getCompNumber(), FilterParameter::Parameter));
 
-  DataArraySelectionFilterParameter::RequirementType req = DataArraySelectionFilterParameter::CreateCategoryRequirement(DREAM3D::Defaults::AnyPrimitive, DREAM3D::Defaults::AnyComponentSize, DREAM3D::AttributeMatrixObjectType::Any);
+  DataArraySelectionFilterParameter::RequirementType req = DataArraySelectionFilterParameter::CreateCategoryRequirement(SIMPL::Defaults::AnyPrimitive, SIMPL::Defaults::AnyComponentSize, SIMPL::AttributeMatrixObjectType::Any);
   parameters.push_back(DataArraySelectionFilterParameter::New("Multicomponent Attribute Array", "SelectedArrayPath", getSelectedArrayPath(), FilterParameter::RequiredArray, req));
 
   parameters.push_back(StringFilterParameter::New("Removed Component Attribute Array", "NewArrayArrayName", getNewArrayArrayName(), FilterParameter::CreatedArray));
@@ -341,13 +341,13 @@ const QString RemoveComponentFromArray::getFilterVersion()
 //
 // -----------------------------------------------------------------------------
 const QString RemoveComponentFromArray::getGroupName()
-{ return DREAM3D::FilterGroups::CoreFilters; }
+{ return SIMPL::FilterGroups::CoreFilters; }
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
 const QString RemoveComponentFromArray::getSubGroupName()
-{ return DREAM3D::FilterSubGroups::MemoryManagementFilters; }
+{ return SIMPL::FilterSubGroups::MemoryManagementFilters; }
 
 // -----------------------------------------------------------------------------
 //

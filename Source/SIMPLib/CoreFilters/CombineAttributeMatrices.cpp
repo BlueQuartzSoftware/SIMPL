@@ -84,15 +84,15 @@ void CombineAttributeMatrices::setupFilterParameters()
     AttributeMatrixSelectionFilterParameter::RequirementType req;
     QVector<uint32_t> dcGeomTypes;
     QVector<uint32_t> amTypes;
-    amTypes.push_back(DREAM3D::AttributeMatrixType::CellEnsemble);
-    amTypes.push_back(DREAM3D::AttributeMatrixType::CellFeature);
-    amTypes.push_back(DREAM3D::AttributeMatrixType::EdgeEnsemble);
-    amTypes.push_back(DREAM3D::AttributeMatrixType::EdgeFeature);
-    amTypes.push_back(DREAM3D::AttributeMatrixType::FaceEnsemble);
-    amTypes.push_back(DREAM3D::AttributeMatrixType::FaceFeature);
-    amTypes.push_back(DREAM3D::AttributeMatrixType::VertexEnsemble);
-    amTypes.push_back(DREAM3D::AttributeMatrixType::VertexFeature);
-    dcGeomTypes.push_back(DREAM3D::Defaults::AnyGeometry);
+    amTypes.push_back(SIMPL::AttributeMatrixType::CellEnsemble);
+    amTypes.push_back(SIMPL::AttributeMatrixType::CellFeature);
+    amTypes.push_back(SIMPL::AttributeMatrixType::EdgeEnsemble);
+    amTypes.push_back(SIMPL::AttributeMatrixType::EdgeFeature);
+    amTypes.push_back(SIMPL::AttributeMatrixType::FaceEnsemble);
+    amTypes.push_back(SIMPL::AttributeMatrixType::FaceFeature);
+    amTypes.push_back(SIMPL::AttributeMatrixType::VertexEnsemble);
+    amTypes.push_back(SIMPL::AttributeMatrixType::VertexFeature);
+    dcGeomTypes.push_back(SIMPL::Defaults::AnyGeometry);
     req.amTypes = amTypes;
     req.dcGeometryTypes = dcGeomTypes;
     parameters.push_back(AttributeMatrixSelectionFilterParameter::New("First Feature/Ensemble Attribute Matrix", "FirstAttributeMatrixPath", getFirstAttributeMatrixPath(), FilterParameter::RequiredArray, req));
@@ -103,16 +103,16 @@ void CombineAttributeMatrices::setupFilterParameters()
     QVector<uint32_t> dcGeomTypes;
     req.dcGeometryTypes = dcGeomTypes;
     QVector<uint32_t> amTypes;
-    amTypes.push_back(DREAM3D::AttributeMatrixType::Cell);
-    amTypes.push_back(DREAM3D::AttributeMatrixType::CellFeature);
-    amTypes.push_back(DREAM3D::AttributeMatrixType::Edge);
-    amTypes.push_back(DREAM3D::AttributeMatrixType::EdgeFeature);
-    amTypes.push_back(DREAM3D::AttributeMatrixType::Face);
-    amTypes.push_back(DREAM3D::AttributeMatrixType::FaceFeature);
-    amTypes.push_back(DREAM3D::AttributeMatrixType::Vertex);
-    amTypes.push_back(DREAM3D::AttributeMatrixType::VertexFeature);
+    amTypes.push_back(SIMPL::AttributeMatrixType::Cell);
+    amTypes.push_back(SIMPL::AttributeMatrixType::CellFeature);
+    amTypes.push_back(SIMPL::AttributeMatrixType::Edge);
+    amTypes.push_back(SIMPL::AttributeMatrixType::EdgeFeature);
+    amTypes.push_back(SIMPL::AttributeMatrixType::Face);
+    amTypes.push_back(SIMPL::AttributeMatrixType::FaceFeature);
+    amTypes.push_back(SIMPL::AttributeMatrixType::Vertex);
+    amTypes.push_back(SIMPL::AttributeMatrixType::VertexFeature);
     QVector<QString> daTypes;
-    daTypes.push_back(DREAM3D::TypeNames::Int32);
+    daTypes.push_back(SIMPL::TypeNames::Int32);
     QVector<QVector<size_t> > compDims;
     compDims.resize(1);
     compDims[0].resize(1);
@@ -387,7 +387,7 @@ const QString CombineAttributeMatrices::getFilterVersion()
 // -----------------------------------------------------------------------------
 const QString CombineAttributeMatrices::getGroupName()
 {
-  return DREAM3D::FilterGroups::CoreFilters;
+  return SIMPL::FilterGroups::CoreFilters;
 }
 
 // -----------------------------------------------------------------------------
@@ -395,7 +395,7 @@ const QString CombineAttributeMatrices::getGroupName()
 // -----------------------------------------------------------------------------
 const QString CombineAttributeMatrices::getSubGroupName()
 {
-  return DREAM3D::FilterSubGroups::MemoryManagementFilters;
+  return SIMPL::FilterSubGroups::MemoryManagementFilters;
 }
 
 // -----------------------------------------------------------------------------

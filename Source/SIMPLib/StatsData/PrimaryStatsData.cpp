@@ -65,7 +65,7 @@ PrimaryStatsData::~PrimaryStatsData()
 // -----------------------------------------------------------------------------
 QString PrimaryStatsData::getStatsType()
 {
-  return DREAM3D::StringConstants::PrimaryStatsData;
+  return SIMPL::StringConstants::PrimaryStatsData;
 }
 
 // -----------------------------------------------------------------------------
@@ -73,7 +73,7 @@ QString PrimaryStatsData::getStatsType()
 // -----------------------------------------------------------------------------
 unsigned int PrimaryStatsData::getPhaseType()
 {
-  return DREAM3D::PhaseType::PrimaryPhase;
+  return SIMPL::PhaseType::PrimaryPhase;
 }
 
 
@@ -83,11 +83,11 @@ unsigned int PrimaryStatsData::getPhaseType()
 // -----------------------------------------------------------------------------
 void PrimaryStatsData::initialize()
 {
-  m_FeatureSize_DistType = DREAM3D::DistributionType::LogNormal;
-  m_BOverA_DistType = DREAM3D::DistributionType::Beta;
-  m_COverA_DistType = DREAM3D::DistributionType::Beta;
-  m_Neighbors_DistType = DREAM3D::DistributionType::LogNormal;
-  m_Omegas_DistType = DREAM3D::DistributionType::Beta;
+  m_FeatureSize_DistType = SIMPL::DistributionType::LogNormal;
+  m_BOverA_DistType = SIMPL::DistributionType::Beta;
+  m_COverA_DistType = SIMPL::DistributionType::Beta;
+  m_Neighbors_DistType = SIMPL::DistributionType::LogNormal;
+  m_Omegas_DistType = SIMPL::DistributionType::Beta;
 }
 // -----------------------------------------------------------------------------
 //
@@ -105,7 +105,7 @@ FloatArrayType::Pointer PrimaryStatsData::generateBinNumbers()
     d = d + featureDiameterInfo[0];
   }
   // Copy this into the DataArray<float>
-  m_BinNumbers = FloatArrayType::CreateArray(bins.size(), DREAM3D::StringConstants::BinNumber );
+  m_BinNumbers = FloatArrayType::CreateArray(bins.size(), SIMPL::StringConstants::BinNumber );
   ::memcpy(m_BinNumbers->getVoidPointer(0), &(bins.front()), bins.size() * sizeof(float));
   return m_BinNumbers;
 }

@@ -50,7 +50,7 @@
 ArraySelectionExample::ArraySelectionExample() :
   AbstractFilter()
   //  m_SelectedArrayName(""),
-  //  m_DataContainerName(DREAM3D::Defaults::DataContainerName)
+  //  m_DataContainerName(SIMPL::Defaults::DataContainerName)
 {
   setupFilterParameters();
 }
@@ -180,7 +180,7 @@ const QString ArraySelectionExample::getCompiledLibraryName()
 // -----------------------------------------------------------------------------
 const QString ArraySelectionExample::getGroupName()
 {
-  return DREAM3D::FilterGroups::TestFilters;
+  return SIMPL::FilterGroups::TestFilters;
 }
 
 

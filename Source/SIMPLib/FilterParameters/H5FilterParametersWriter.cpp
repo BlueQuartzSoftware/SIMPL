@@ -100,10 +100,10 @@ int H5FilterParametersWriter::WritePipelineToFile(FilterPipeline::Pointer pipeli
   HDF5ScopedFileSentinel scopedFileSentinel(&fileId, true);
 
   // Write our File Version string to the Root "/" group
-  QH5Lite::writeStringAttribute(fileId, "/", DREAM3D::HDF5::FileVersionName, DREAM3D::HDF5::FileVersion);
-  QH5Lite::writeStringAttribute(fileId, "/", DREAM3D::HDF5::DREAM3DVersion, SIMPLib::Version::Complete() );
+  QH5Lite::writeStringAttribute(fileId, "/", SIMPL::HDF5::FileVersionName, SIMPL::HDF5::FileVersion);
+  QH5Lite::writeStringAttribute(fileId, "/", SIMPL::HDF5::DREAM3DVersion, SIMPLib::Version::Complete() );
 
-  hid_t pipelineGroupId = QH5Utilities::createGroup(fileId, DREAM3D::StringConstants::PipelineGroupName);
+  hid_t pipelineGroupId = QH5Utilities::createGroup(fileId, SIMPL::StringConstants::PipelineGroupName);
   scopedFileSentinel.addGroupId(&pipelineGroupId);
   writer->setGroupId(pipelineGroupId);
 
@@ -732,7 +732,7 @@ int H5FilterParametersWriter::writeValue(const QString name, const DataContainer
         dIter.next();
 
         const DataArrayProxy& daProxy = dIter.value();
-        if(daProxy.flag == DREAM3D::Unchecked)
+        if(daProxy.flag == SIMPL::Unchecked)
         {
           continue;    // Skip to the next DataArray if not reading this one
         }

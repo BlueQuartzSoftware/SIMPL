@@ -24,10 +24,10 @@
 #cmakedefine SIMPLib_USE_ITK
 
 /* Is DREAM.3D going to use QtWebEngine or Send help requests to the users Web Browser */
-#cmakedefine DREAM3D_USE_QtWebEngine
+#cmakedefine SIMPL_USE_QtWebEngine
 
 /* Defines the type of Release that is being built */
-#define DREAM3DProj_RELEASE_TYPE "@DREAM3DProj_RELEASE_TYPE@"
+#define SIMPLProj_RELEASE_TYPE "@SIMPLProj_RELEASE_TYPE@"
 
 /* Include the Overall Configuration header file */
 #include "@PROJECT_NAME@/@CMP_CONFIGURATION_FILE_NAME@"

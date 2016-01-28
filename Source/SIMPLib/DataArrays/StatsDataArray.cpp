@@ -51,7 +51,7 @@
 //
 // -----------------------------------------------------------------------------
 StatsDataArray::StatsDataArray() :
-  m_Name(DREAM3D::EnsembleData::Statistics)
+  m_Name(SIMPL::EnsembleData::Statistics)
 {
   m_IsAllocated = true;
 }
@@ -74,7 +74,7 @@ StatsDataArray::Pointer StatsDataArray::CreateArray(size_t numElements, const QS
   }
   StatsDataArray::Pointer ptr = StatsDataArray::New();
   ptr->setName(name);
-  std::vector<unsigned int> phase_types(numElements, DREAM3D::PhaseType::UnknownPhaseType);
+  std::vector<unsigned int> phase_types(numElements, SIMPL::PhaseType::UnknownPhaseType);
   if(allocate) { ptr->fillArrayWithNewStatsData(numElements, &(phase_types.front()) ); }
   return ptr;
 }
@@ -90,7 +90,7 @@ StatsDataArray::Pointer StatsDataArray::CreateArray(size_t numTuples, int rank, 
   }
   StatsDataArray::Pointer ptr = StatsDataArray::New();
   ptr->setName(name);
-  std::vector<unsigned int> phase_types(numTuples, DREAM3D::PhaseType::UnknownPhaseType);
+  std::vector<unsigned int> phase_types(numTuples, SIMPL::PhaseType::UnknownPhaseType);
   if(allocate) { ptr->fillArrayWithNewStatsData(numTuples, &(phase_types.front()) ); }
   return ptr;
 }
@@ -106,7 +106,7 @@ StatsDataArray::Pointer StatsDataArray::CreateArray(size_t numTuples, std::vecto
   }
   StatsDataArray::Pointer ptr = StatsDataArray::New();
   ptr->setName(name);
-  std::vector<unsigned int> phase_types(numTuples, DREAM3D::PhaseType::UnknownPhaseType);
+  std::vector<unsigned int> phase_types(numTuples, SIMPL::PhaseType::UnknownPhaseType);
   if(allocate) { ptr->fillArrayWithNewStatsData(numTuples, &(phase_types.front()) ); }
   return ptr;
 }
@@ -122,7 +122,7 @@ StatsDataArray::Pointer StatsDataArray::CreateArray(size_t numTuples, QVector<si
   }
   StatsDataArray::Pointer ptr = StatsDataArray::New();
   ptr->setName(name);
-  std::vector<unsigned int> phase_types(numTuples, DREAM3D::PhaseType::UnknownPhaseType);
+  std::vector<unsigned int> phase_types(numTuples, SIMPL::PhaseType::UnknownPhaseType);
   if(allocate) { ptr->fillArrayWithNewStatsData(numTuples, &(phase_types.front()) ); }
   return ptr;
 }
@@ -144,7 +144,7 @@ StatsDataArray::Pointer StatsDataArray::CreateArray(QVector<size_t> tDims, QVect
   }
   StatsDataArray::Pointer ptr = StatsDataArray::New();
   ptr->setName(name);
-  std::vector<unsigned int> phase_types(numTuples, DREAM3D::PhaseType::UnknownPhaseType);
+  std::vector<unsigned int> phase_types(numTuples, SIMPL::PhaseType::UnknownPhaseType);
   if(allocate) { ptr->fillArrayWithNewStatsData(numTuples, &(phase_types.front()) ); }
   return ptr;
 }
@@ -451,8 +451,8 @@ int StatsDataArray::writeH5Data(hid_t parentId, QVector<size_t> tDims)
     {
       QString indexString = QString::number(i);
       hid_t tupleId = QH5Utilities::createGroup(gid, indexString);
-      err = QH5Lite::writeStringAttribute(gid, indexString, DREAM3D::StringConstants::StatsType, m_StatsDataArray[i]->getStatsType() );
-      err = QH5Lite::writeScalarAttribute(gid, indexString, DREAM3D::StringConstants::PhaseType, m_StatsDataArray[i]->getPhaseType() );
+      err = QH5Lite::writeStringAttribute(gid, indexString, SIMPL::StringConstants::StatsType, m_StatsDataArray[i]->getStatsType() );
+      err = QH5Lite::writeScalarAttribute(gid, indexString, SIMPL::StringConstants::PhaseType, m_StatsDataArray[i]->getPhaseType() );
       err = m_StatsDataArray[i]->writeHDF5Data(tupleId);
       err = QH5Utilities::closeHDF5Object(tupleId);
     }
@@ -491,38 +491,38 @@ int StatsDataArray::readH5Data(hid_t parentId)
     statsType = "";
 
     index = QString(*iter).toInt(&ok, 10);
-    QH5Lite::readStringAttribute(gid, *iter, DREAM3D::StringConstants::StatsType, statsType);
+    QH5Lite::readStringAttribute(gid, *iter, SIMPL::StringConstants::StatsType, statsType);
     hid_t statId = QH5Utilities::openHDF5Object(gid, *iter);
     if(statId < 0)
     {
       continue;
       err |= -1;
     }
-    if(statsType.compare(DREAM3D::StringConstants::PrimaryStatsData) == 0)
+    if(statsType.compare(SIMPL::StringConstants::PrimaryStatsData) == 0)
     {
       PrimaryStatsData::Pointer data = PrimaryStatsData::New();
       data->readHDF5Data(statId);
       setStatsData(index, data);
     }
-    else if(statsType.compare(DREAM3D::StringConstants::PrecipitateStatsData) == 0)
+    else if(statsType.compare(SIMPL::StringConstants::PrecipitateStatsData) == 0)
     {
       PrecipitateStatsData::Pointer data = PrecipitateStatsData::New();
       data->readHDF5Data(statId);
       setStatsData(index, data);
     }
-    else if(statsType.compare(DREAM3D::StringConstants::TransformationStatsData) == 0)
+    else if(statsType.compare(SIMPL::StringConstants::TransformationStatsData) == 0)
     {
       TransformationStatsData::Pointer data = TransformationStatsData::New();
       data->readHDF5Data(statId);
       setStatsData(index, data);
     }
-    else if(statsType.compare(DREAM3D::StringConstants::MatrixStatsData) == 0)
+    else if(statsType.compare(SIMPL::StringConstants::MatrixStatsData) == 0)
     {
       MatrixStatsData::Pointer data = MatrixStatsData::New();
       data->readHDF5Data(statId);
       setStatsData(index, data);
     }
-    else if(statsType.compare(DREAM3D::StringConstants::BoundaryStatsData) == 0)
+    else if(statsType.compare(SIMPL::StringConstants::BoundaryStatsData) == 0)
     {
       BoundaryStatsData::Pointer data = BoundaryStatsData::New();
       data->readHDF5Data(statId);
@@ -555,11 +555,11 @@ int StatsDataArray::writeXdmfAttribute(QTextStream& out, int64_t* volDims, const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-QString StatsDataArray::getInfoString(DREAM3D::InfoStringFormat format)
+QString StatsDataArray::getInfoString(SIMPL::InfoStringFormat format)
 {
   QString info;
   QTextStream ss (&info);
-  if(format == DREAM3D::HtmlFormat)
+  if(format == SIMPL::HtmlFormat)
   {
     ss << "<html><head></head>\n";
     ss << "<body>\n";
@@ -655,11 +655,11 @@ void StatsDataArray::fillArrayWithNewStatsData(size_t n, unsigned int* phase_typ
   {
     if (phase_types != NULL)
     {
-      if(phase_types[i] == DREAM3D::PhaseType::PrimaryPhase) { m_StatsDataArray[i] = PrimaryStatsData::New(); }
-      else if(phase_types[i] == DREAM3D::PhaseType::PrecipitatePhase) { m_StatsDataArray[i] = PrecipitateStatsData::New(); }
-      else if(phase_types[i] == DREAM3D::PhaseType::TransformationPhase) { m_StatsDataArray[i] = TransformationStatsData::New(); }
-      else if(phase_types[i] == DREAM3D::PhaseType::BoundaryPhase) { m_StatsDataArray[i] = BoundaryStatsData::New(); }
-      else if(phase_types[i] == DREAM3D::PhaseType::MatrixPhase) { m_StatsDataArray[i] = MatrixStatsData::New(); }
+      if(phase_types[i] == SIMPL::PhaseType::PrimaryPhase) { m_StatsDataArray[i] = PrimaryStatsData::New(); }
+      else if(phase_types[i] == SIMPL::PhaseType::PrecipitatePhase) { m_StatsDataArray[i] = PrecipitateStatsData::New(); }
+      else if(phase_types[i] == SIMPL::PhaseType::TransformationPhase) { m_StatsDataArray[i] = TransformationStatsData::New(); }
+      else if(phase_types[i] == SIMPL::PhaseType::BoundaryPhase) { m_StatsDataArray[i] = BoundaryStatsData::New(); }
+      else if(phase_types[i] == SIMPL::PhaseType::MatrixPhase) { m_StatsDataArray[i] = MatrixStatsData::New(); }
       else { m_StatsDataArray[i] = StatsData::New(); }
     }
     if(phase_types == NULL) { m_StatsDataArray[i] = StatsData::New(); }

@@ -151,7 +151,7 @@ void RemoveTestFiles()
 // -----------------------------------------------------------------------------
 QString getCellAttributeMatrixName()
 {
-  return DREAM3D::Defaults::CellAttributeMatrixName;
+  return SIMPL::Defaults::CellAttributeMatrixName;
 }
 
 // -----------------------------------------------------------------------------
@@ -159,7 +159,7 @@ QString getCellAttributeMatrixName()
 // -----------------------------------------------------------------------------
 QString getCellFeatureAttributeMatrixName()
 {
-  return DREAM3D::Defaults::CellFeatureAttributeMatrixName;
+  return SIMPL::Defaults::CellFeatureAttributeMatrixName;
 }
 
 // -----------------------------------------------------------------------------
@@ -167,7 +167,7 @@ QString getCellFeatureAttributeMatrixName()
 // -----------------------------------------------------------------------------
 QString getCellEnsembleAttributeMatrixName()
 {
-  return DREAM3D::Defaults::CellEnsembleAttributeMatrixName;
+  return SIMPL::Defaults::CellEnsembleAttributeMatrixName;
 }
 
 // -----------------------------------------------------------------------------
@@ -235,7 +235,7 @@ void FillAttributeMatrix(AttributeMatrix::Pointer attrMat, QVector<size_t> compD
 void PopulateVolumeDataContainer(DataContainer::Pointer dc, QVector<size_t> tupleDims, const QString& name)
 {
   // Create the attribute matrix with the dimensions and name
-  AttributeMatrix::Pointer attrMat = AttributeMatrix::New(tupleDims, name, DREAM3D::AttributeMatrixType::Cell);
+  AttributeMatrix::Pointer attrMat = AttributeMatrix::New(tupleDims, name, SIMPL::AttributeMatrixType::Cell);
   QVector<size_t> compDims(1, 1); // Create a Single Scalar Component (numComp = 1) Data Array
   FillAttributeMatrix(attrMat, compDims);
 
@@ -254,7 +254,7 @@ void PopulateVolumeDataContainer(DataContainer::Pointer dc, QVector<size_t> tupl
 
 
   QString autoAddName = name + QString::fromLatin1("_Auto");
-  AttributeMatrix::Pointer autoAttrMat = dc->createNonPrereqAttributeMatrix<AbstractFilter>(NULL, autoAddName, tupleDims, DREAM3D::AttributeMatrixType::Cell);
+  AttributeMatrix::Pointer autoAttrMat = dc->createNonPrereqAttributeMatrix<AbstractFilter>(NULL, autoAddName, tupleDims, SIMPL::AttributeMatrixType::Cell);
   compDims.resize(0);
   compDims.push_back(1);
   FillAttributeMatrix(autoAttrMat, compDims);
@@ -315,49 +315,49 @@ void TestDataContainerWriter()
 
 
   // A DataContainer that mimics some real data
-  DataContainer::Pointer m = DataContainer::New(DREAM3D::Defaults::DataContainerName);
+  DataContainer::Pointer m = DataContainer::New(SIMPL::Defaults::DataContainerName);
   dca->addDataContainer(m);
   m->setGeometry(image);
 
-  AttributeMatrix::Pointer attrMatrix = AttributeMatrix::New(tupleDims, getCellFeatureAttributeMatrixName(), DREAM3D::AttributeMatrixType::CellFeature);
+  AttributeMatrix::Pointer attrMatrix = AttributeMatrix::New(tupleDims, getCellFeatureAttributeMatrixName(), SIMPL::AttributeMatrixType::CellFeature);
   m->addAttributeMatrix(getCellFeatureAttributeMatrixName(), attrMatrix);
 
   int size = nx * ny * nz;
-  Int32ArrayType::Pointer featureIds = Int32ArrayType::CreateArray(size, DREAM3D::CellData::FeatureIds);
+  Int32ArrayType::Pointer featureIds = Int32ArrayType::CreateArray(size, SIMPL::CellData::FeatureIds);
   for (int i = 0; i < size; ++i)
   {
     featureIds->setValue(i, i + DataContainerIOTest::Offset);
   }
-  attrMatrix->addAttributeArray(DREAM3D::CellData::FeatureIds, featureIds);
+  attrMatrix->addAttributeArray(SIMPL::CellData::FeatureIds, featureIds);
 
-  BoolArrayType::Pointer boolArray = BoolArrayType::CreateArray(size, DREAM3D::CellData::BoundaryCells);
+  BoolArrayType::Pointer boolArray = BoolArrayType::CreateArray(size, SIMPL::CellData::BoundaryCells);
   for (int i = 0; i < size; ++i)
   {
     boolArray->setValue(i, i + DataContainerIOTest::Offset);
   }
-  attrMatrix->addAttributeArray(DREAM3D::CellData::BoundaryCells, boolArray);
+  attrMatrix->addAttributeArray(SIMPL::CellData::BoundaryCells, boolArray);
 
   QVector<size_t> dims(1, 3);
-  FloatArrayType::Pointer avgEuler = FloatArrayType::CreateArray(size, dims, DREAM3D::FeatureData::AxisEulerAngles);
+  FloatArrayType::Pointer avgEuler = FloatArrayType::CreateArray(size, dims, SIMPL::FeatureData::AxisEulerAngles);
   for(int32_t i = 0; i < size; ++i)
   {
     avgEuler->setComponent(i, 0, i * 0.665f);
     avgEuler->setComponent(i, 1, i * 0.325f);
     avgEuler->setComponent(i, 2, i * 0.165f);
   }
-  m->getAttributeMatrix(getCellFeatureAttributeMatrixName())->addAttributeArray(DREAM3D::FeatureData::AxisEulerAngles, avgEuler);
+  m->getAttributeMatrix(getCellFeatureAttributeMatrixName())->addAttributeArray(SIMPL::FeatureData::AxisEulerAngles, avgEuler);
 
   tupleDims.resize(1);
   tupleDims[0] = 4;
-  AttributeMatrix::Pointer ensemAttrMat = AttributeMatrix::New(tupleDims, getCellEnsembleAttributeMatrixName(), DREAM3D::AttributeMatrixType::CellEnsemble);
+  AttributeMatrix::Pointer ensemAttrMat = AttributeMatrix::New(tupleDims, getCellEnsembleAttributeMatrixName(), SIMPL::AttributeMatrixType::CellEnsemble);
   m->addAttributeMatrix(getCellEnsembleAttributeMatrixName(), ensemAttrMat);
 
-  FloatArrayType::Pointer surfArea = FloatArrayType::CreateArray(4, DREAM3D::EnsembleData::TotalSurfaceAreas);
+  FloatArrayType::Pointer surfArea = FloatArrayType::CreateArray(4, SIMPL::EnsembleData::TotalSurfaceAreas);
   for (int i = 0; i < 4; ++i)
   {
     surfArea->setValue(i, i + 41.2f);
   }
-  m->getAttributeMatrix(getCellEnsembleAttributeMatrixName())->addAttributeArray(DREAM3D::EnsembleData::TotalSurfaceAreas, surfArea);
+  m->getAttributeMatrix(getCellEnsembleAttributeMatrixName())->addAttributeArray(SIMPL::EnsembleData::TotalSurfaceAreas, surfArea);
 
   Observer obs;
   // Send progress messages from PipelineBuilder to this object for display
@@ -422,11 +422,11 @@ void TestDataContainerReader()
   DREAM3D_REQUIRE_EQUAL(err, 0);
 
   QMap<QString, DataContainerProxy>& dcsToRead = dcaProxy.dataContainers;
-  //uint32_t dcType = DREAM3D::DataContainerType::UnknownDataContainer;
+  //uint32_t dcType = SIMPL::DataContainerType::UnknownDataContainer;
   for (QMap<QString, DataContainerProxy>::iterator iter = dcsToRead.begin(); iter != dcsToRead.end(); ++iter)
   {
     DataContainerProxy& dcProxy = iter.value();
-    if (dcProxy.name.compare(DREAM3D::Defaults::DataContainerName) != 0) { dcProxy.flag = Qt::Unchecked; }
+    if (dcProxy.name.compare(SIMPL::Defaults::DataContainerName) != 0) { dcProxy.flag = Qt::Unchecked; }
     else
     {
       QMap<QString, AttributeMatrixProxy>& attrMatsToRead = dcProxy.attributeMatricies;
@@ -440,7 +440,7 @@ void TestDataContainerReader()
           QMap<QString, DataArrayProxy>& dasToRead = iter.value().dataArrays;
           for (QMap<QString, DataArrayProxy>::iterator iter2 = dasToRead.begin(); iter2 != dasToRead.end(); ++iter2)
           {
-            if(iter2->name.compare(DREAM3D::CellData::FeatureIds) != 0 && iter2->name.compare(DREAM3D::FeatureData::AxisEulerAngles) != 0) { iter2->flag = DREAM3D::Unchecked; }
+            if(iter2->name.compare(SIMPL::CellData::FeatureIds) != 0 && iter2->name.compare(SIMPL::FeatureData::AxisEulerAngles) != 0) { iter2->flag = SIMPL::Unchecked; }
           }
         }
       }
@@ -480,7 +480,7 @@ void insertDeleteArray(DataContainer::Pointer m)
 
   // Now add an AttributeMatrix to the DataContainer
   QVector<size_t> tDims(1, 0);
-  AttributeMatrix::Pointer attrMat = m->createAndAddAttributeMatrix(tDims, getCellAttributeMatrixName(), DREAM3D::AttributeMatrixType::Cell);
+  AttributeMatrix::Pointer attrMat = m->createAndAddAttributeMatrix(tDims, getCellAttributeMatrixName(), SIMPL::AttributeMatrixType::Cell);
   DREAM3D_REQUIRE_VALID_POINTER(attrMat.get())
 
   // Now create an Array and add it to the Attribute Matrix
@@ -562,12 +562,12 @@ void TestDataContainerArrayProxy()
   // Now write the proxy to an HDF5/DREAM3D file
   hid_t fid = QH5Utilities::createFile(DataContainerIOTest::H5File() );
   H5FilterParametersWriter::Pointer parametersWriter = H5FilterParametersWriter::New();
-  hid_t pipelineGroupId = QH5Utilities::createGroup(fid, DREAM3D::StringConstants::PipelineGroupName);
+  hid_t pipelineGroupId = QH5Utilities::createGroup(fid, SIMPL::StringConstants::PipelineGroupName);
   parametersWriter->setGroupId(pipelineGroupId);
 
   int index = reader->writeFilterParameters(parametersWriter.get(), 0);
 
-  int err = QH5Lite::writeScalarAttribute(fid, DREAM3D::StringConstants::PipelineGroupName, DREAM3D::Settings::NumFilters, index);
+  int err = QH5Lite::writeScalarAttribute(fid, SIMPL::StringConstants::PipelineGroupName, SIMPL::Settings::NumFilters, index);
   DREAM3D_REQUIRE(err >= 0)
 
 
@@ -592,7 +592,7 @@ void TestDataContainerArrayProxy()
 // -----------------------------------------------------------------------------
 void TestInsertDelete()
 {
-  DataContainer::Pointer m = DataContainer::New(DREAM3D::Defaults::DataContainerName);
+  DataContainer::Pointer m = DataContainer::New(SIMPL::Defaults::DataContainerName);
 
   QList<QString> nameList;
 
@@ -770,7 +770,7 @@ void _arrayCreation(VolumeDataContainer::Pointer m)
 void TestArrayCreation()
 {
   VolumeDataContainer::Pointer m = VolumeDataContainer::New();
-  m->setName(DREAM3D::Defaults::DataContainerName);
+  m->setName(SIMPL::Defaults::DataContainerName);
   QList<QString> nameList;
 
   _arrayCreation<int8_t, Int8ArrayType>(m);
@@ -830,7 +830,7 @@ void TestDataContainer()
   std::cout << "Number of Entries for Feature Id[5]: " << neighborList->getListSize(5) << std::endl;
   std::cout << "Value for [5][3]: " << neighborList->getValue(5, 3, ok) << std::endl;
 
-  VolumeDataContainer::Pointer dataContainer = VolumeDataContainer::New(DREAM3D::Defaults::DataContainerName);
+  VolumeDataContainer::Pointer dataContainer = VolumeDataContainer::New(SIMPL::Defaults::DataContainerName);
   dataContainer->addCellData("NeighborList", iDataArray);
   {
     MAKE_ARRAY(int8_t, "int8_t_Array" );

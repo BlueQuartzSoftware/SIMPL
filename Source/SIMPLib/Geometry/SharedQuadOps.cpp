@@ -40,7 +40,7 @@
 SharedQuadList::Pointer GEOM_CLASS_NAME::CreateSharedQuadList(int64_t numQuads)
 {
   QVector<size_t> quadDims(1, 4);
-  SharedQuadList::Pointer quads = SharedEdgeList::CreateArray(numQuads, quadDims, DREAM3D::Geometry::SharedQuadList);
+  SharedQuadList::Pointer quads = SharedEdgeList::CreateArray(numQuads, quadDims, SIMPL::Geometry::SharedQuadList);
   quads->initializeWithZeros();
   return quads;
 }
@@ -60,9 +60,9 @@ void GEOM_CLASS_NAME::setQuads(SharedQuadList::Pointer quads)
 {
   if (quads.get() != NULL)
   {
-    if (quads->getName().compare(DREAM3D::Geometry::SharedQuadList) != 0)
+    if (quads->getName().compare(SIMPL::Geometry::SharedQuadList) != 0)
     {
-      quads->setName(DREAM3D::Geometry::SharedQuadList);
+      quads->setName(SIMPL::Geometry::SharedQuadList);
     }
   }
   m_QuadList = quads;

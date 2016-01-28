@@ -135,10 +135,10 @@ void QFilterParametersWriter::openFile(QString filename, QSettings::Format forma
     m_Prefs = NULL;
   }
   m_Prefs = new QSettings(filename, format);
-  m_Prefs->beginGroup(DREAM3D::Settings::PipelineBuilderGroup);
+  m_Prefs->beginGroup(SIMPL::Settings::PipelineBuilderGroup);
   m_Prefs->setValue("Name", "Unnamed Pipeline");
-  m_Prefs->setValue(DREAM3D::Settings::NumFilters, 0);
-  m_Prefs->setValue(DREAM3D::Settings::Version, SIMPLib::Version::Package() );
+  m_Prefs->setValue(SIMPL::Settings::NumFilters, 0);
+  m_Prefs->setValue(SIMPL::Settings::Version, SIMPLib::Version::Package() );
   m_Prefs->endGroup();
 }
 
@@ -156,8 +156,8 @@ void QFilterParametersWriter::closeFile()
 // -----------------------------------------------------------------------------
 void QFilterParametersWriter::setNumberOfFilters(int numFilters)
 {
-  m_Prefs->beginGroup(DREAM3D::Settings::PipelineBuilderGroup);
-  m_Prefs->setValue(DREAM3D::Settings::NumFilters, numFilters);
+  m_Prefs->beginGroup(SIMPL::Settings::PipelineBuilderGroup);
+  m_Prefs->setValue(SIMPL::Settings::NumFilters, numFilters);
   m_Prefs->endGroup();
 }
 
@@ -166,7 +166,7 @@ void QFilterParametersWriter::setNumberOfFilters(int numFilters)
 // -----------------------------------------------------------------------------
 void QFilterParametersWriter::setPipelineName(const QString& pipelineName)
 {
-  m_Prefs->beginGroup(DREAM3D::Settings::PipelineBuilderGroup);
+  m_Prefs->beginGroup(SIMPL::Settings::PipelineBuilderGroup);
   m_Prefs->setValue("Name", pipelineName);
   m_Prefs->endGroup();
 }
@@ -180,8 +180,8 @@ int QFilterParametersWriter::openFilterGroup(AbstractFilter* unused, int index)
   int err = 0;
   QString gName = QString::number(index);
   m_Prefs->beginGroup(gName);
-  m_Prefs->setValue(DREAM3D::Settings::FilterName, unused->getNameOfClass());
-  m_Prefs->setValue(DREAM3D::Settings::HumanLabel, unused->getHumanLabel());
+  m_Prefs->setValue(SIMPL::Settings::FilterName, unused->getNameOfClass());
+  m_Prefs->setValue(SIMPL::Settings::HumanLabel, unused->getHumanLabel());
   return err;
 }
 
@@ -791,7 +791,7 @@ int QFilterParametersWriter::writeValue(const QString name, const DataContainerA
           dIter.next();
 
           const DataArrayProxy& daProxy = dIter.value();
-          //if(daProxy.flag == DREAM3D::Unchecked) { continue; } // Skip to the next DataArray if not reading this one
+          //if(daProxy.flag == SIMPL::Unchecked) { continue; } // Skip to the next DataArray if not reading this one
 
           QString path = QString("%1|%2|%3").arg(dcProxy.name).arg(amProxy.name).arg(daProxy.name);
           flat << path;
@@ -864,7 +864,7 @@ int QFilterParametersWriter::writeValue(const QString name, const QVector<DataAr
   for (int i = 0; i < v.size(); ++i)
   {
     m_Prefs->setArrayIndex(i);
-    m_Prefs->setValue(DREAM3D::IO::DAPSettingsHeader, v.at(i).serialize("|"));
+    m_Prefs->setValue(SIMPL::IO::DAPSettingsHeader, v.at(i).serialize("|"));
   }
   m_Prefs->endArray();
 

@@ -184,7 +184,7 @@ const QString EmptyFilter::getFilterVersion()
 // -----------------------------------------------------------------------------
 const QString EmptyFilter::getGroupName()
 {
-  return DREAM3D::FilterGroups::CoreFilters;
+  return SIMPL::FilterGroups::CoreFilters;
 }
 
 // -----------------------------------------------------------------------------
@@ -192,7 +192,7 @@ const QString EmptyFilter::getGroupName()
 // -----------------------------------------------------------------------------
 const QString EmptyFilter::getSubGroupName()
 {
-  return DREAM3D::FilterSubGroups::MiscFilters;
+  return SIMPL::FilterSubGroups::MiscFilters;
 }
 
 // -----------------------------------------------------------------------------

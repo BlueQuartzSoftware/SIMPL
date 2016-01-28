@@ -153,11 +153,11 @@ void TestSyntheticBuilder()
   VoxelDataContainer::Pointer m = VoxelDataContainer::New();
   pipeline->setVoxelDataContainer(m);
 
-  ShapeTypeArrayType::Pointer m_ShapeTypes = ShapeTypeArrayType::CreateArray(4, DREAM3D::EnsembleData::ShapeTypes);
-  m_ShapeTypes->SetValue(0, DREAM3D::ShapeType::UnknownShapeType);
-  m_ShapeTypes->SetValue(1, DREAM3D::ShapeType::EllipsoidShape);
-  m_ShapeTypes->SetValue(2, DREAM3D::ShapeType::EllipsoidShape);
-  m_ShapeTypes->SetValue(3, DREAM3D::ShapeType::EllipsoidShape);
+  ShapeTypeArrayType::Pointer m_ShapeTypes = ShapeTypeArrayType::CreateArray(4, SIMPL::EnsembleData::ShapeTypes);
+  m_ShapeTypes->SetValue(0, SIMPL::ShapeType::UnknownShapeType);
+  m_ShapeTypes->SetValue(1, SIMPL::ShapeType::EllipsoidShape);
+  m_ShapeTypes->SetValue(2, SIMPL::ShapeType::EllipsoidShape);
+  m_ShapeTypes->SetValue(3, SIMPL::ShapeType::EllipsoidShape);
 
   InitializeSyntheticVolume::Pointer init_volume = InitializeSyntheticVolume::New();
   init_volume->setShapeTypes(m_ShapeTypes);
@@ -174,11 +174,11 @@ void TestSyntheticBuilder()
   pack_grains->setPeriodicBoundaries(m_PeriodicBoundary);
   pack_grains->setNeighborhoodErrorWeight(m_NeighborhoodErrorWeight);
 #if PACK_GRAINS_ERROR_TXT_OUT
-  MAKE_OUTPUT_FILE_PATH( errorFile, DREAM3D::SyntheticBuilder::ErrorFile)
+  MAKE_OUTPUT_FILE_PATH( errorFile, SIMPL::SyntheticBuilder::ErrorFile)
   pack_grains->setErrorOutputFile(errorFile);
 #endif
 #if PACK_GRAINS_VTK_FILE_OUT
-  MAKE_OUTPUT_FILE_PATH( vtkFile, DREAM3D::SyntheticBuilder::VtkFile)
+  MAKE_OUTPUT_FILE_PATH( vtkFile, SIMPL::SyntheticBuilder::VtkFile)
   pack_grains->setVtkOutputFile(vtkFile);
 #endif
   pipeline->pushBack(pack_grains);

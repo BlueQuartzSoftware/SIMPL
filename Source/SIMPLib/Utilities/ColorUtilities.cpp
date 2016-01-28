@@ -52,7 +52,7 @@ ColorUtilities::~ColorUtilities()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-DREAM3D::Rgb ColorUtilities::convertHSVtoRgb(float h, float s, float v)
+SIMPL::Rgb ColorUtilities::convertHSVtoRgb(float h, float s, float v)
 {
 //hsv to rgb (from wikipedia hsv/hsl page)
   float c = v * s;

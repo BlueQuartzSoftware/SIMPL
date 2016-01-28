@@ -122,7 +122,7 @@ class SIMPLib_EXPORT DataContainer : public Observable
     /**
      * @param format The format of the string to be returned.
      */
-    virtual QString getInfoString(DREAM3D::InfoStringFormat format);
+    virtual QString getInfoString(SIMPL::InfoStringFormat format);
 
     /**
     * @brief Adds/overwrites the data for a named array
@@ -290,12 +290,12 @@ class SIMPLib_EXPORT DataContainer : public Observable
         return attributeMatrix;
       }
 
-      if (attributeMatrixName.compare(DREAM3D::Geometry::Geometry) == 0)
+      if (attributeMatrixName.compare(SIMPL::Geometry::Geometry) == 0)
       {
         if(filter)
         {
           filter->setErrorCondition(-10003);
-          ss = QObject::tr("%1 is a protected name.  Please provide a different name for this Attribute Matrix.").arg(DREAM3D::Geometry::Geometry);
+          ss = QObject::tr("%1 is a protected name.  Please provide a different name for this Attribute Matrix.").arg(SIMPL::Geometry::Geometry);
           filter->notifyErrorMessage(filter->getHumanLabel(), ss, filter->getErrorCondition());
         }
         return attributeMatrix;

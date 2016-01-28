@@ -56,7 +56,7 @@
 CreateAttributeMatrix::CreateAttributeMatrix() :
   AbstractFilter(),
   m_CreatedAttributeMatrix("", "AttributeMatrix", ""),
-  m_AttributeMatrixType(DREAM3D::AttributeMatrixType::Generic),
+  m_AttributeMatrixType(SIMPL::AttributeMatrixType::Generic),
   m_TupleDimensions()
 {
   setupFilterParameters();
@@ -238,7 +238,7 @@ const QString CreateAttributeMatrix::getFilterVersion()
 //
 // -----------------------------------------------------------------------------
 const QString CreateAttributeMatrix::getGroupName()
-{ return DREAM3D::FilterGroups::CoreFilters; }
+{ return SIMPL::FilterGroups::CoreFilters; }
 
 // -----------------------------------------------------------------------------
 //
@@ -250,5 +250,5 @@ const QString CreateAttributeMatrix::getHumanLabel()
 //
 // -----------------------------------------------------------------------------
 const QString CreateAttributeMatrix::getSubGroupName()
-{ return DREAM3D::FilterSubGroups::GenerationFilters; }
+{ return SIMPL::FilterSubGroups::GenerationFilters; }
 

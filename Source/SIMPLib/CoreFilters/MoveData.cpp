@@ -285,13 +285,13 @@ const QString MoveData::getFilterVersion()
 //
 // -----------------------------------------------------------------------------
 const QString MoveData::getGroupName()
-{ return DREAM3D::FilterGroups::CoreFilters; }
+{ return SIMPL::FilterGroups::CoreFilters; }
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
 const QString MoveData::getSubGroupName()
-{ return DREAM3D::FilterSubGroups::MemoryManagementFilters;}
+{ return SIMPL::FilterSubGroups::MemoryManagementFilters;}
 
 // -----------------------------------------------------------------------------
 //

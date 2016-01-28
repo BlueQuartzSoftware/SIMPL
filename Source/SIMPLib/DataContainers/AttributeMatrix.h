@@ -561,10 +561,10 @@ class SIMPLib_EXPORT AttributeMatrix : public Observable
     /**
      * @brief getInfoString Returns a text string in the given format that has information
      * about the attribute Matrix
-     * @param format A value from the DREAM3D::InfoStringFormat enumeration
+     * @param format A value from the SIMPL::InfoStringFormat enumeration
      * @return
      */
-    virtual QString getInfoString(DREAM3D::InfoStringFormat format);
+    virtual QString getInfoString(SIMPL::InfoStringFormat format);
 
   protected:
     AttributeMatrix(QVector<size_t> tDims, const QString& name, unsigned int attrType);

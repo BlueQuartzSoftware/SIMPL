@@ -75,7 +75,7 @@ void FeatureCountDecision::setupFilterParameters()
   FilterParameterVector parameters = getFilterParameters();
   parameters.push_back(SeparatorFilterParameter::New("Cell Ensemble Data", FilterParameter::RequiredArray));
   {
-    DataArraySelectionFilterParameter::RequirementType req = DataArraySelectionFilterParameter::CreateRequirement(DREAM3D::TypeNames::Int32, 1, DREAM3D::AttributeMatrixType::CellEnsemble, DREAM3D::Defaults::AnyGeometry);
+    DataArraySelectionFilterParameter::RequirementType req = DataArraySelectionFilterParameter::CreateRequirement(SIMPL::TypeNames::Int32, 1, SIMPL::AttributeMatrixType::CellEnsemble, SIMPL::Defaults::AnyGeometry);
     parameters.push_back(DataArraySelectionFilterParameter::New("Feature Ids", "FeatureIdsArrayPath", getFeatureIdsArrayPath(), FilterParameter::RequiredArray, req));
   }
   parameters.push_back(IntFilterParameter::New("Maximum Number of Features", "MaxGrains", getMaxGrains(), FilterParameter::Parameter, 0));
@@ -214,13 +214,13 @@ const QString FeatureCountDecision::getCompiledLibraryName()
 //
 // -----------------------------------------------------------------------------
 const QString FeatureCountDecision::getGroupName()
-{ return DREAM3D::FilterGroups::CoreFilters; }
+{ return SIMPL::FilterGroups::CoreFilters; }
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
 const QString FeatureCountDecision::getSubGroupName()
-{ return DREAM3D::FilterSubGroups::MiscFilters; }
+{ return SIMPL::FilterSubGroups::MiscFilters; }
 
 // -----------------------------------------------------------------------------
 //

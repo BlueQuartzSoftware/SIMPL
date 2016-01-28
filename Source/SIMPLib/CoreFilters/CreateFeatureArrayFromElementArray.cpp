@@ -82,16 +82,16 @@ void CreateFeatureArrayFromElementArray::setupFilterParameters()
   FilterParameterVector parameters;
   parameters.push_back(SeparatorFilterParameter::New("Element Data", FilterParameter::RequiredArray));
   {
-    DataArraySelectionFilterParameter::RequirementType req = DataArraySelectionFilterParameter::CreateCategoryRequirement(DREAM3D::Defaults::AnyPrimitive, DREAM3D::Defaults::AnyComponentSize, DREAM3D::AttributeMatrixObjectType::Element);
+    DataArraySelectionFilterParameter::RequirementType req = DataArraySelectionFilterParameter::CreateCategoryRequirement(SIMPL::Defaults::AnyPrimitive, SIMPL::Defaults::AnyComponentSize, SIMPL::AttributeMatrixObjectType::Element);
     parameters.push_back(DataArraySelectionFilterParameter::New("Element Data to Copy to Feature Data", "SelectedCellArrayPath", getSelectedCellArrayPath(), FilterParameter::RequiredArray, req));
   }
   {
-    DataArraySelectionFilterParameter::RequirementType req = DataArraySelectionFilterParameter::CreateCategoryRequirement(DREAM3D::TypeNames::Int32, 1, DREAM3D::AttributeMatrixObjectType::Element);
+    DataArraySelectionFilterParameter::RequirementType req = DataArraySelectionFilterParameter::CreateCategoryRequirement(SIMPL::TypeNames::Int32, 1, SIMPL::AttributeMatrixObjectType::Element);
     parameters.push_back(DataArraySelectionFilterParameter::New("Feature Ids", "FeatureIdsArrayPath", getFeatureIdsArrayPath(), FilterParameter::RequiredArray, req));
   }
   parameters.push_back(SeparatorFilterParameter::New("Feature Data", FilterParameter::CreatedArray));
   {
-    AttributeMatrixSelectionFilterParameter::RequirementType req = AttributeMatrixSelectionFilterParameter::CreateRequirement(DREAM3D::AttributeMatrixType::CellFeature, DREAM3D::Defaults::AnyGeometry);
+    AttributeMatrixSelectionFilterParameter::RequirementType req = AttributeMatrixSelectionFilterParameter::CreateRequirement(SIMPL::AttributeMatrixType::CellFeature, SIMPL::Defaults::AnyGeometry);
     parameters.push_back(AttributeMatrixSelectionFilterParameter::New("Feature Attribute Matrix", "CellFeatureAttributeMatrixName", getCellFeatureAttributeMatrixName(), FilterParameter::CreatedArray, req));
   }
   parameters.push_back(StringFilterParameter::New("Copied Attribute Array", "CreatedArrayName", getCreatedArrayName(), FilterParameter::CreatedArray));
@@ -382,7 +382,7 @@ const QString CreateFeatureArrayFromElementArray::getFilterVersion()
 // -----------------------------------------------------------------------------
 const QString CreateFeatureArrayFromElementArray::getGroupName()
 {
-  return DREAM3D::FilterGroups::CoreFilters;
+  return SIMPL::FilterGroups::CoreFilters;
 }
 
 
@@ -391,7 +391,7 @@ const QString CreateFeatureArrayFromElementArray::getGroupName()
 // -----------------------------------------------------------------------------
 const QString CreateFeatureArrayFromElementArray::getSubGroupName()
 {
-  return DREAM3D::FilterSubGroups::MemoryManagementFilters;
+  return SIMPL::FilterSubGroups::MemoryManagementFilters;
 }
 
 

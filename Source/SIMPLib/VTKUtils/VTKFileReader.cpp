@@ -56,7 +56,7 @@
 // -----------------------------------------------------------------------------
 VTKFileReader::VTKFileReader() :
   FileReader(),
-  m_DataContainerName(DREAM3D::Defaults::DataContainerName),
+  m_DataContainerName(SIMPL::Defaults::DataContainerName),
   m_InputFile("")
 {
 }

@@ -131,7 +131,7 @@ void SetOriginResolutionImageGeom::setupFilterParameters()
   FilterParameterVector parameters;
   {
     DataContainerSelectionFilterParameter::RequirementType req;
-    req.dcGeometryTypes = QVector<unsigned int>(1, DREAM3D::GeometryType::ImageGeometry);
+    req.dcGeometryTypes = QVector<unsigned int>(1, SIMPL::GeometryType::ImageGeometry);
     parameters.push_back(DataContainerSelectionFilterParameter::New("Data Container Image Geometry to Modify", "DataContainerName", getDataContainerName(), FilterParameter::RequiredArray, req));
   }
 
@@ -268,13 +268,13 @@ const QString SetOriginResolutionImageGeom::getFilterVersion()
 //
 // -----------------------------------------------------------------------------
 const QString SetOriginResolutionImageGeom::getGroupName()
-{ return DREAM3D::FilterGroups::CoreFilters; }
+{ return SIMPL::FilterGroups::CoreFilters; }
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
 const QString SetOriginResolutionImageGeom::getSubGroupName()
-{ return DREAM3D::FilterSubGroups::SpatialFilters; }
+{ return SIMPL::FilterSubGroups::SpatialFilters; }
 
 // -----------------------------------------------------------------------------
 //

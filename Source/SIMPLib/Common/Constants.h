@@ -51,7 +51,7 @@
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-namespace DREAM3D
+namespace SIMPL
 {
 
   typedef uint32_t Rgb;
@@ -70,12 +70,12 @@ namespace DREAM3D
     UnknownFormat
   };
 
-  namespace BlueQuartz
-  {
-    const QString VendorName("BlueQuartz Software, LLC");
-    const QString URL("http://www.bluequartz.net");
-    const QString Copyright("(C) 2015 BlueQuartz Software, LLC");
-  }
+//  namespace BlueQuartz
+//  {
+//    const QString VendorName("BlueQuartz Software, LLC");
+//    const QString URL("http://www.bluequartz.net");
+//    const QString Copyright("(C) 2015 BlueQuartz Software, LLC");
+//  }
 
   namespace TypeNames
   {

@@ -125,9 +125,9 @@ class FindQuadDerivativesImpl
 // -----------------------------------------------------------------------------
 QuadGeom::QuadGeom()
 {
-  m_GeometryTypeName = DREAM3D::Geometry::QuadGeometry;
-  m_GeometryType = DREAM3D::GeometryType::QuadGeometry;
-  m_XdmfGridType = DREAM3D::XdmfGridType::PolyData;
+  m_GeometryTypeName = SIMPL::Geometry::QuadGeometry;
+  m_GeometryType = SIMPL::GeometryType::QuadGeometry;
+  m_XdmfGridType = SIMPL::XdmfGridType::PolyData;
   m_MessagePrefix = "";
   m_MessageTitle = "";
   m_MessageLabel = "";
@@ -347,7 +347,7 @@ void QuadGeom::deleteElementNeighbors()
 int QuadGeom::findElementCentroids()
 {
   QVector<size_t> cDims(1, 3);
-  m_QuadCentroids = FloatArrayType::CreateArray(getNumberOfQuads(), cDims, DREAM3D::StringConstants::QuadCentroids);
+  m_QuadCentroids = FloatArrayType::CreateArray(getNumberOfQuads(), cDims, SIMPL::StringConstants::QuadCentroids);
   GeometryHelpers::Topology::FindElementCentroids<int64_t>(m_QuadList, m_VertexList, m_QuadCentroids);
   if (m_QuadCentroids.get() == NULL)
   {
@@ -386,7 +386,7 @@ void QuadGeom::deleteElementCentroids()
 int QuadGeom::findUnsharedEdges()
 {
   QVector<size_t> cDims(1, 2);
-  m_UnsharedEdgeList = SharedEdgeList::CreateArray(0, cDims, DREAM3D::Geometry::UnsharedEdgeList);
+  m_UnsharedEdgeList = SharedEdgeList::CreateArray(0, cDims, SIMPL::Geometry::UnsharedEdgeList);
   GeometryHelpers::Connectivity::Find2DUnsharedEdges<int64_t>(m_QuadList, m_UnsharedEdgeList);
   if (m_UnsharedEdgeList.get() == NULL)
   {
@@ -538,7 +538,7 @@ int QuadGeom::writeGeometryToHDF5(hid_t parentId, bool SIMPL_NOT_USED(writeXdmf)
   if (m_QuadNeighbors.get() != NULL)
   {
     size_t numQuads = getNumberOfQuads();
-    err = GeometryHelpers::GeomIO::WriteDynamicListToHDF5<uint16_t, int64_t>(parentId, m_QuadNeighbors, numQuads, DREAM3D::StringConstants::QuadNeighbors);
+    err = GeometryHelpers::GeomIO::WriteDynamicListToHDF5<uint16_t, int64_t>(parentId, m_QuadNeighbors, numQuads, SIMPL::StringConstants::QuadNeighbors);
     if (err < 0)
     {
       return err;
@@ -548,7 +548,7 @@ int QuadGeom::writeGeometryToHDF5(hid_t parentId, bool SIMPL_NOT_USED(writeXdmf)
   if (m_QuadsContainingVert.get() != NULL)
   {
     size_t numVerts = getNumberOfVertices();
-    err = GeometryHelpers::GeomIO::WriteDynamicListToHDF5<uint16_t, int64_t>(parentId, m_QuadsContainingVert, numVerts, DREAM3D::StringConstants::QuadsContainingVert);
+    err = GeometryHelpers::GeomIO::WriteDynamicListToHDF5<uint16_t, int64_t>(parentId, m_QuadsContainingVert, numVerts, SIMPL::StringConstants::QuadsContainingVert);
     if (err < 0)
     {
       return err;
@@ -570,7 +570,7 @@ int QuadGeom::writeXdmf(QTextStream& out, QString dcName, QString hdfFileName)
 
   out << "    <Topology TopologyType=\"Quadrilateral\" NumberOfElements=\"" << getNumberOfQuads() << "\">" << "\n";
   out << "      <DataItem Format=\"HDF\" NumberType=\"Int\" Dimensions=\"" << getNumberOfQuads() << " 4\">" << "\n";
-  out << "        " << hdfFileName << ":/DataContainers/" << dcName << "/" << DREAM3D::Geometry::Geometry << "/" << DREAM3D::Geometry::SharedQuadList << "\n";
+  out << "        " << hdfFileName << ":/DataContainers/" << dcName << "/" << SIMPL::Geometry::Geometry << "/" << SIMPL::Geometry::SharedQuadList << "\n";
   out << "      </DataItem>" << "\n";
   out << "    </Topology>" << "\n";
 
@@ -587,7 +587,7 @@ int QuadGeom::writeXdmf(QTextStream& out, QString dcName, QString hdfFileName)
   {
     out << "    <Geometry Type=\"XYZ\">" << "\n";
     out << "      <DataItem Format=\"HDF\"  Dimensions=\"" << getNumberOfVertices() << " 3\" NumberType=\"Float\" Precision=\"4\">" << "\n";
-    out << "        " << hdfFileName << ":/DataContainers/" << dcName << "/" << DREAM3D::Geometry::Geometry << "/" << DREAM3D::Geometry::SharedVertexList << "\n";
+    out << "        " << hdfFileName << ":/DataContainers/" << dcName << "/" << SIMPL::Geometry::Geometry << "/" << SIMPL::Geometry::SharedVertexList << "\n";
     out << "      </DataItem>" << "\n";
     out << "    </Geometry>" << "\n";
     out << "" << "\n";
@@ -599,12 +599,12 @@ int QuadGeom::writeXdmf(QTextStream& out, QString dcName, QString hdfFileName)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-QString QuadGeom::getInfoString(DREAM3D::InfoStringFormat format)
+QString QuadGeom::getInfoString(SIMPL::InfoStringFormat format)
 {
   QString info;
   QTextStream ss (&info);
 
-  if (format == DREAM3D::HtmlFormat)
+  if (format == SIMPL::HtmlFormat)
   {
     ss << "<tr bgcolor=\"#D3D8E0\"><th colspan=2>Quad Geometry Info</th></tr>";
     ss << "<tr bgcolor=\"#C3C8D0\"><th align=\"right\">Number of Quads</th><td>" << getNumberOfQuads() << "</td></tr>";
@@ -624,35 +624,35 @@ QString QuadGeom::getInfoString(DREAM3D::InfoStringFormat format)
 int QuadGeom::readGeometryFromHDF5(hid_t parentId, bool preflight)
 {
   herr_t err = 0;
-  SharedVertexList::Pointer vertices = GeometryHelpers::GeomIO::ReadListFromHDF5<SharedVertexList>(DREAM3D::Geometry::SharedVertexList, parentId, preflight, err);
-  SharedQuadList::Pointer quads = GeometryHelpers::GeomIO::ReadListFromHDF5<SharedQuadList>(DREAM3D::Geometry::SharedQuadList, parentId, preflight, err);
+  SharedVertexList::Pointer vertices = GeometryHelpers::GeomIO::ReadListFromHDF5<SharedVertexList>(SIMPL::Geometry::SharedVertexList, parentId, preflight, err);
+  SharedQuadList::Pointer quads = GeometryHelpers::GeomIO::ReadListFromHDF5<SharedQuadList>(SIMPL::Geometry::SharedQuadList, parentId, preflight, err);
   if (quads.get() == NULL || vertices.get() == NULL)
   {
     return -1;
   }
   size_t numQuads = quads->getNumberOfTuples();
   size_t numVerts = vertices->getNumberOfTuples();
-  SharedEdgeList::Pointer edges = GeometryHelpers::GeomIO::ReadListFromHDF5<SharedEdgeList>(DREAM3D::Geometry::SharedEdgeList, parentId, preflight, err);
+  SharedEdgeList::Pointer edges = GeometryHelpers::GeomIO::ReadListFromHDF5<SharedEdgeList>(SIMPL::Geometry::SharedEdgeList, parentId, preflight, err);
   if (err < 0 && err != -2)
   {
     return -1;
   }
-  SharedEdgeList::Pointer bEdges = GeometryHelpers::GeomIO::ReadListFromHDF5<SharedEdgeList>(DREAM3D::Geometry::UnsharedEdgeList, parentId, preflight, err);
+  SharedEdgeList::Pointer bEdges = GeometryHelpers::GeomIO::ReadListFromHDF5<SharedEdgeList>(SIMPL::Geometry::UnsharedEdgeList, parentId, preflight, err);
   if (err < 0 && err != -2)
   {
     return -1;
   }
-  FloatArrayType::Pointer quadCentroids = GeometryHelpers::GeomIO::ReadListFromHDF5<FloatArrayType>(DREAM3D::StringConstants::QuadCentroids, parentId, preflight, err);
+  FloatArrayType::Pointer quadCentroids = GeometryHelpers::GeomIO::ReadListFromHDF5<FloatArrayType>(SIMPL::StringConstants::QuadCentroids, parentId, preflight, err);
   if (err < 0 && err != -2)
   {
     return -1;
   }
-  ElementDynamicList::Pointer quadNeighbors = GeometryHelpers::GeomIO::ReadDynamicListFromHDF5<uint16_t, int64_t>(DREAM3D::StringConstants::QuadNeighbors, parentId, numQuads, preflight, err);
+  ElementDynamicList::Pointer quadNeighbors = GeometryHelpers::GeomIO::ReadDynamicListFromHDF5<uint16_t, int64_t>(SIMPL::StringConstants::QuadNeighbors, parentId, numQuads, preflight, err);
   if (err < 0 && err != -2)
   {
     return -1;
   }
-  ElementDynamicList::Pointer quadsContainingVert = GeometryHelpers::GeomIO::ReadDynamicListFromHDF5<uint16_t, int64_t>(DREAM3D::StringConstants::QuadsContainingVert, parentId, numVerts, preflight, err);
+  ElementDynamicList::Pointer quadsContainingVert = GeometryHelpers::GeomIO::ReadDynamicListFromHDF5<uint16_t, int64_t>(SIMPL::StringConstants::QuadsContainingVert, parentId, numVerts, preflight, err);
   if (err < 0 && err != -2)
   {
     return -1;

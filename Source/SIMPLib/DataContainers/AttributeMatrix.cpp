@@ -84,7 +84,7 @@ void AttributeMatrix::ReadAttributeMatrixStructure(hid_t containerId, DataContai
   QH5Utilities::getGroupObjects(containerId, H5Utilities::H5Support_GROUP, attributeMatrixNames);
   foreach(QString attributeMatrixName, attributeMatrixNames)
   {
-    if (attributeMatrixName.compare(DREAM3D::Geometry::Geometry) != 0)
+    if (attributeMatrixName.compare(SIMPL::Geometry::Geometry) != 0)
     {
       if(__SHOW_DEBUG_MSG__)
       {
@@ -100,7 +100,7 @@ void AttributeMatrix::ReadAttributeMatrixStructure(hid_t containerId, DataContai
       AttributeMatrixProxy amProxy(attributeMatrixName);
       amProxy.name = attributeMatrixName;
       amProxy.flag = Qt::Checked;
-      herr_t err = QH5Lite::readScalarAttribute(containerId, attributeMatrixName, DREAM3D::StringConstants::AttributeMatrixType, amProxy.amType);
+      herr_t err = QH5Lite::readScalarAttribute(containerId, attributeMatrixName, SIMPL::StringConstants::AttributeMatrixType, amProxy.amType);
       if(err < 0)
       {
         std::cout << "Error Reading the AttributeMatrix Type for AttributeMatrix " << attributeMatrixName.toStdString() << std::endl;
@@ -276,10 +276,10 @@ bool AttributeMatrix::removeInactiveObjects(QVector<bool> activeObjects, Int32Ar
 {
   bool acceptableMatrix = false;
   //Only valid for feature or ensemble type matrices
-  if(m_Type == DREAM3D::AttributeMatrixType::VertexFeature || m_Type == DREAM3D::AttributeMatrixType::VertexEnsemble ||
-      m_Type == DREAM3D::AttributeMatrixType::EdgeFeature || m_Type == DREAM3D::AttributeMatrixType::EdgeEnsemble ||
-      m_Type == DREAM3D::AttributeMatrixType::FaceFeature || m_Type == DREAM3D::AttributeMatrixType::FaceEnsemble ||
-      m_Type == DREAM3D::AttributeMatrixType::CellFeature || m_Type == DREAM3D::AttributeMatrixType::CellEnsemble)
+  if(m_Type == SIMPL::AttributeMatrixType::VertexFeature || m_Type == SIMPL::AttributeMatrixType::VertexEnsemble ||
+      m_Type == SIMPL::AttributeMatrixType::EdgeFeature || m_Type == SIMPL::AttributeMatrixType::EdgeEnsemble ||
+      m_Type == SIMPL::AttributeMatrixType::FaceFeature || m_Type == SIMPL::AttributeMatrixType::FaceEnsemble ||
+      m_Type == SIMPL::AttributeMatrixType::CellFeature || m_Type == SIMPL::AttributeMatrixType::CellEnsemble)
   {
     acceptableMatrix = true;
   }
@@ -437,7 +437,7 @@ int AttributeMatrix::addAttributeArrayFromHDF5Path(hid_t gid, QString name, bool
 {
   int err = 0;
   QString classType;
-  QH5Lite::readStringAttribute(gid, name, DREAM3D::HDF5::ObjectType, classType);
+  QH5Lite::readStringAttribute(gid, name, SIMPL::HDF5::ObjectType, classType);
   //   qDebug() << groupName << " Array: " << *iter << " with C++ ClassType of " << classType << "\n";
   IDataArray::Pointer dPtr = IDataArray::NullPointer();
 
@@ -469,10 +469,10 @@ int AttributeMatrix::addAttributeArrayFromHDF5Path(hid_t gid, QString name, bool
       dPtr->resize(getNumTuples());
     }
   }
-  else if ( name.compare(DREAM3D::EnsembleData::Statistics) == 0)
+  else if ( name.compare(SIMPL::EnsembleData::Statistics) == 0)
   {
     StatsDataArray::Pointer statsData = StatsDataArray::New();
-    statsData->setName(DREAM3D::EnsembleData::Statistics);
+    statsData->setName(SIMPL::EnsembleData::Statistics);
     statsData->readH5Data(gid);
     dPtr = statsData;
     if (preflight == true)
@@ -500,11 +500,11 @@ int AttributeMatrix::readAttributeArraysFromHDF5(hid_t amGid, bool preflight, At
   for (QMap<QString, DataArrayProxy>::iterator iter = dasToRead.begin(); iter != dasToRead.end(); ++iter)
   {
     //qDebug() << "Reading the " << iter->name << " Array from the " << m_Name << " Attribute Matrix \n";
-    if(iter->flag == DREAM3D::Unchecked)
+    if(iter->flag == SIMPL::Unchecked)
     {
       continue;
     }
-    QH5Lite::readStringAttribute(amGid, iter->name, DREAM3D::HDF5::ObjectType, classType);
+    QH5Lite::readStringAttribute(amGid, iter->name, SIMPL::HDF5::ObjectType, classType);
     //   qDebug() << groupName << " Array: " << *iter << " with C++ ClassType of " << classType << "\n";
     IDataArray::Pointer dPtr = IDataArray::NullPointer();
 
@@ -531,10 +531,10 @@ int AttributeMatrix::readAttributeArraysFromHDF5(hid_t amGid, bool preflight, At
       statsData->readH5Data(amGid);
       dPtr = statsData;
     }
-    //    else if ( (iter->name).compare(DREAM3D::EnsembleData::Statistics) == 0)
+    //    else if ( (iter->name).compare(SIMPL::EnsembleData::Statistics) == 0)
     //    {
     //      StatsDataArray::Pointer statsData = StatsDataArray::New();
-    //      statsData->setName(DREAM3D::EnsembleData::Statistics);
+    //      statsData->setName(SIMPL::EnsembleData::Statistics);
     //      statsData->readH5Data(amGid);
     //      dPtr = statsData;
     //    }
@@ -570,11 +570,11 @@ QString AttributeMatrix::generateXdmfText(const QString& centering, const QStrin
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-QString AttributeMatrix::getInfoString(DREAM3D::InfoStringFormat format)
+QString AttributeMatrix::getInfoString(SIMPL::InfoStringFormat format)
 {
   QString info;
   QTextStream ss (&info);
-  if(format == DREAM3D::HtmlFormat)
+  if(format == SIMPL::HtmlFormat)
   {
     ss << "<html><head></head>\n";
     ss << "<body>\n";
@@ -587,46 +587,46 @@ QString AttributeMatrix::getInfoString(DREAM3D::InfoStringFormat format)
     QString typeString;
     switch(m_Type)
     {
-      case DREAM3D::AttributeMatrixType::Vertex:
+      case SIMPL::AttributeMatrixType::Vertex:
         typeString = "Vertex";
         break;
-      case DREAM3D::AttributeMatrixType::Edge:
+      case SIMPL::AttributeMatrixType::Edge:
         typeString = "Edge";
         break;
-      case DREAM3D::AttributeMatrixType::Face:
+      case SIMPL::AttributeMatrixType::Face:
         typeString = "Face";
         break;
-      case DREAM3D::AttributeMatrixType::Cell:
+      case SIMPL::AttributeMatrixType::Cell:
         typeString = "Cell";
         break;
-      case DREAM3D::AttributeMatrixType::VertexFeature:
+      case SIMPL::AttributeMatrixType::VertexFeature:
         typeString = "Vertex Feature";
         break;
-      case DREAM3D::AttributeMatrixType::EdgeFeature:
+      case SIMPL::AttributeMatrixType::EdgeFeature:
         typeString = "Edge Feature";
         break;
-      case DREAM3D::AttributeMatrixType::FaceFeature:
+      case SIMPL::AttributeMatrixType::FaceFeature:
         typeString = "Face Feature";
         break;
-      case DREAM3D::AttributeMatrixType::CellFeature:
+      case SIMPL::AttributeMatrixType::CellFeature:
         typeString = "Cell Feature";
         break;
-      case DREAM3D::AttributeMatrixType::VertexEnsemble:
+      case SIMPL::AttributeMatrixType::VertexEnsemble:
         typeString = "Vertex Ensemble";
         break;
-      case DREAM3D::AttributeMatrixType::EdgeEnsemble:
+      case SIMPL::AttributeMatrixType::EdgeEnsemble:
         typeString = "Edge Ensemble";
         break;
-      case DREAM3D::AttributeMatrixType::FaceEnsemble:
+      case SIMPL::AttributeMatrixType::FaceEnsemble:
         typeString = "Face Ensemble";
         break;
-      case DREAM3D::AttributeMatrixType::CellEnsemble:
+      case SIMPL::AttributeMatrixType::CellEnsemble:
         typeString = "Cell Ensemble";
         break;
-      case DREAM3D::AttributeMatrixType::MetaData:
+      case SIMPL::AttributeMatrixType::MetaData:
         typeString = "MetaData";
         break;
-      case DREAM3D::AttributeMatrixType::Generic:
+      case SIMPL::AttributeMatrixType::Generic:
         typeString = "Generic";
       default:
         typeString = "Unknown";

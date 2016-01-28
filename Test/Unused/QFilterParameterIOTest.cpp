@@ -83,9 +83,9 @@ void writePipeline(FilterPipeline::Pointer pipeline)
   QVariant filterCount = pipeline->getFilterContainer().size();
   int count = pipeline->getFilterContainer().size();
   QSettings* prefs = writer->getPrefs();
-  prefs->beginGroup(DREAM3D::Settings::PipelineBuilderGroup);
-  prefs->setValue(DREAM3D::Settings::NumFilters, filterCount);
-  prefs->setValue(DREAM3D::Settings::Version, SIMPLib::Version::Complete());
+  prefs->beginGroup(SIMPL::Settings::PipelineBuilderGroup);
+  prefs->setValue(SIMPL::Settings::NumFilters, filterCount);
+  prefs->setValue(SIMPL::Settings::Version, SIMPLib::Version::Complete());
   prefs->endGroup();
 
   for (int i = 0; i < count; ++i)
@@ -113,11 +113,11 @@ void TestWriteQSettingsBasedFile()
   dcr->setReadAllCellEnsembleArrays(true);
 
   QSet<QString> cellArrays;
-  cellArrays << DREAM3D::CellData::FeatureIds;
+  cellArrays << SIMPL::CellData::FeatureIds;
   QSet<QString> featureArrays;
-  featureArrays << DREAM3D::FeatureData::Centroids;
+  featureArrays << SIMPL::FeatureData::Centroids;
   QSet<QString> ensembleArrays;
-  ensembleArrays << DREAM3D::EnsembleData::CrystalStructures;
+  ensembleArrays << SIMPL::EnsembleData::CrystalStructures;
   QSet<QString> blank;
   dcr->setVolumeSelectedArrayNames(blank, blank, blank, cellArrays, featureArrays, ensembleArrays);
 
@@ -133,9 +133,9 @@ void readPipeline(QFilterParametersReader::Pointer paramsReader, FilterPipeline:
 {
   FilterManager::Pointer filtManager = FilterManager::Instance();
   QSettings* prefs = paramsReader->getPrefs();
-  prefs->beginGroup(DREAM3D::Settings::PipelineBuilderGroup);
+  prefs->beginGroup(SIMPL::Settings::PipelineBuilderGroup);
   bool ok = false;
-  int filterCount = prefs->value(DREAM3D::Settings::NumFilters).toInt(&ok);
+  int filterCount = prefs->value(SIMPL::Settings::NumFilters).toInt(&ok);
   prefs->endGroup();
   if (false == ok) {filterCount = 0;}
 
@@ -145,7 +145,7 @@ void readPipeline(QFilterParametersReader::Pointer paramsReader, FilterPipeline:
 
     // Open the group to get the name of the filter then close again.
     prefs->beginGroup(gName);
-    QString filterName = prefs->value(DREAM3D::Settings::FilterName, "").toString();
+    QString filterName = prefs->value(SIMPL::Settings::FilterName, "").toString();
     prefs->endGroup();
     //  qDebug() << filterName;
 

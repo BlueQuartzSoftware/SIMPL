@@ -77,11 +77,11 @@ void ConditionalSetValue::setupFilterParameters()
   FilterParameterVector parameters;
   parameters.push_back(DoubleFilterParameter::New("New Value", "ReplaceValue", getReplaceValue(), FilterParameter::Parameter));
   {
-    DataArraySelectionFilterParameter::RequirementType req = DataArraySelectionFilterParameter::CreateCategoryRequirement(DREAM3D::TypeNames::Bool, 1, DREAM3D::AttributeMatrixObjectType::Any);
+    DataArraySelectionFilterParameter::RequirementType req = DataArraySelectionFilterParameter::CreateCategoryRequirement(SIMPL::TypeNames::Bool, 1, SIMPL::AttributeMatrixObjectType::Any);
     parameters.push_back(DataArraySelectionFilterParameter::New("Conditional Array", "ConditionalArrayPath", getConditionalArrayPath(), FilterParameter::RequiredArray, req));
   }
   {
-    DataArraySelectionFilterParameter::RequirementType req = DataArraySelectionFilterParameter::CreateCategoryRequirement(DREAM3D::Defaults::AnyPrimitive, 1, DREAM3D::AttributeMatrixObjectType::Any);
+    DataArraySelectionFilterParameter::RequirementType req = DataArraySelectionFilterParameter::CreateCategoryRequirement(SIMPL::Defaults::AnyPrimitive, 1, SIMPL::AttributeMatrixObjectType::Any);
     parameters.push_back(DataArraySelectionFilterParameter::New("Attribute Array", "SelectedArrayPath", getSelectedArrayPath(), FilterParameter::RequiredArray, req));
   }
   setFilterParameters(parameters);
@@ -200,17 +200,17 @@ void ConditionalSetValue::dataCheck()
   getDataContainerArray()->validateNumberOfTuples<AbstractFilter>(this, dataArrayPaths);
 
   QString dType = m_ArrayPtr.lock()->getTypeAsString();
-  if (dType.compare(DREAM3D::TypeNames::Int8) == 0) { checkValuesInt<int8_t>(this, m_ReplaceValue, DREAM3D::TypeNames::Int8); }
-  else if (dType.compare(DREAM3D::TypeNames::UInt8) == 0) { checkValuesInt<uint8_t>(this, m_ReplaceValue, DREAM3D::TypeNames::UInt8); }
-  else if (dType.compare(DREAM3D::TypeNames::Int16) == 0) { checkValuesInt<int16_t>(this, m_ReplaceValue, DREAM3D::TypeNames::Int16); }
-  else if (dType.compare(DREAM3D::TypeNames::UInt16) == 0) { checkValuesInt<uint16_t>(this, m_ReplaceValue, DREAM3D::TypeNames::UInt16); }
-  else if (dType.compare(DREAM3D::TypeNames::Int32) == 0) { checkValuesInt<int32_t>(this, m_ReplaceValue, DREAM3D::TypeNames::Int32); }
-  else if (dType.compare(DREAM3D::TypeNames::UInt32) == 0) { checkValuesInt<uint32_t>(this, m_ReplaceValue, DREAM3D::TypeNames::UInt32); }
-  else if (dType.compare(DREAM3D::TypeNames::Int64) == 0) { checkValuesInt<int64_t>(this, m_ReplaceValue, DREAM3D::TypeNames::Int64); }
-  else if (dType.compare(DREAM3D::TypeNames::UInt64) == 0) { checkValuesInt<uint64_t>(this, m_ReplaceValue, DREAM3D::TypeNames::UInt64); }
-  else if (dType.compare(DREAM3D::TypeNames::Float) == 0) { checkValuesFloatDouble<float>(this, m_ReplaceValue, DREAM3D::TypeNames::Float); }
-  else if (dType.compare(DREAM3D::TypeNames::Double) == 0) { checkValuesFloatDouble<double>(this, m_ReplaceValue, DREAM3D::TypeNames::Double); }
-  else if (dType.compare(DREAM3D::TypeNames::Bool) == 0)
+  if (dType.compare(SIMPL::TypeNames::Int8) == 0) { checkValuesInt<int8_t>(this, m_ReplaceValue, SIMPL::TypeNames::Int8); }
+  else if (dType.compare(SIMPL::TypeNames::UInt8) == 0) { checkValuesInt<uint8_t>(this, m_ReplaceValue, SIMPL::TypeNames::UInt8); }
+  else if (dType.compare(SIMPL::TypeNames::Int16) == 0) { checkValuesInt<int16_t>(this, m_ReplaceValue, SIMPL::TypeNames::Int16); }
+  else if (dType.compare(SIMPL::TypeNames::UInt16) == 0) { checkValuesInt<uint16_t>(this, m_ReplaceValue, SIMPL::TypeNames::UInt16); }
+  else if (dType.compare(SIMPL::TypeNames::Int32) == 0) { checkValuesInt<int32_t>(this, m_ReplaceValue, SIMPL::TypeNames::Int32); }
+  else if (dType.compare(SIMPL::TypeNames::UInt32) == 0) { checkValuesInt<uint32_t>(this, m_ReplaceValue, SIMPL::TypeNames::UInt32); }
+  else if (dType.compare(SIMPL::TypeNames::Int64) == 0) { checkValuesInt<int64_t>(this, m_ReplaceValue, SIMPL::TypeNames::Int64); }
+  else if (dType.compare(SIMPL::TypeNames::UInt64) == 0) { checkValuesInt<uint64_t>(this, m_ReplaceValue, SIMPL::TypeNames::UInt64); }
+  else if (dType.compare(SIMPL::TypeNames::Float) == 0) { checkValuesFloatDouble<float>(this, m_ReplaceValue, SIMPL::TypeNames::Float); }
+  else if (dType.compare(SIMPL::TypeNames::Double) == 0) { checkValuesFloatDouble<double>(this, m_ReplaceValue, SIMPL::TypeNames::Double); }
+  else if (dType.compare(SIMPL::TypeNames::Bool) == 0)
   {
     if (m_ReplaceValue != 0.0)
     {
@@ -296,13 +296,13 @@ const QString ConditionalSetValue::getFilterVersion()
 //
 // -----------------------------------------------------------------------------
 const QString ConditionalSetValue::getGroupName()
-{ return DREAM3D::FilterGroups::CoreFilters; }
+{ return SIMPL::FilterGroups::CoreFilters; }
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
 const QString ConditionalSetValue::getSubGroupName()
-{ return DREAM3D::FilterSubGroups::MemoryManagementFilters; }
+{ return SIMPL::FilterSubGroups::MemoryManagementFilters; }
 
 // -----------------------------------------------------------------------------
 //

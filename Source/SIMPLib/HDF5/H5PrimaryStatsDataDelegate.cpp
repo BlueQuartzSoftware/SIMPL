@@ -60,8 +60,8 @@ H5PrimaryStatsDataDelegate::~H5PrimaryStatsDataDelegate()
 // -----------------------------------------------------------------------------
 VectorOfFloatArray H5PrimaryStatsDataDelegate::createBetaDistributionArrays()
 {
-  FloatArrayType::Pointer alphas = FloatArrayType::CreateArray(0, DREAM3D::StringConstants::Alpha);
-  FloatArrayType::Pointer betas = FloatArrayType::CreateArray(0, DREAM3D::StringConstants::Beta);
+  FloatArrayType::Pointer alphas = FloatArrayType::CreateArray(0, SIMPL::StringConstants::Alpha);
+  FloatArrayType::Pointer betas = FloatArrayType::CreateArray(0, SIMPL::StringConstants::Beta);
   QVector<FloatArrayType::Pointer> vect;
   vect.push_back(alphas);
   vect.push_back(betas);
@@ -70,9 +70,9 @@ VectorOfFloatArray H5PrimaryStatsDataDelegate::createBetaDistributionArrays()
 
 VectorOfFloatArray H5PrimaryStatsDataDelegate::createPowerDistributionArrays()
 {
-  FloatArrayType::Pointer alphas = FloatArrayType::CreateArray(0, DREAM3D::StringConstants::Alpha);
-  FloatArrayType::Pointer ks = FloatArrayType::CreateArray(0, DREAM3D::StringConstants::Exp_k);
-  FloatArrayType::Pointer betas = FloatArrayType::CreateArray(0, DREAM3D::StringConstants::Beta);
+  FloatArrayType::Pointer alphas = FloatArrayType::CreateArray(0, SIMPL::StringConstants::Alpha);
+  FloatArrayType::Pointer ks = FloatArrayType::CreateArray(0, SIMPL::StringConstants::Exp_k);
+  FloatArrayType::Pointer betas = FloatArrayType::CreateArray(0, SIMPL::StringConstants::Beta);
   QVector<FloatArrayType::Pointer> vect;
   vect.push_back(alphas);
   vect.push_back(ks);
@@ -82,8 +82,8 @@ VectorOfFloatArray H5PrimaryStatsDataDelegate::createPowerDistributionArrays()
 
 VectorOfFloatArray H5PrimaryStatsDataDelegate::createLogNormalDistributionArrays()
 {
-  FloatArrayType::Pointer avgs = FloatArrayType::CreateArray(0, DREAM3D::StringConstants::Average);
-  FloatArrayType::Pointer sd = FloatArrayType::CreateArray(0, DREAM3D::StringConstants::StandardDeviation);
+  FloatArrayType::Pointer avgs = FloatArrayType::CreateArray(0, SIMPL::StringConstants::Average);
+  FloatArrayType::Pointer sd = FloatArrayType::CreateArray(0, SIMPL::StringConstants::StandardDeviation);
   QVector<FloatArrayType::Pointer> vect;
   vect.push_back(avgs);
   vect.push_back(sd);
@@ -96,15 +96,15 @@ VectorOfFloatArray H5PrimaryStatsDataDelegate::createLogNormalDistributionArrays
 // -----------------------------------------------------------------------------
 VectorOfFloatArray H5PrimaryStatsDataDelegate::createDistributionVector(unsigned int distType)
 {
-  if (distType == DREAM3D::DistributionType::Beta)
+  if (distType == SIMPL::DistributionType::Beta)
   {
     return createBetaDistributionArrays();
   }
-  else if (distType == DREAM3D::DistributionType::Power)
+  else if (distType == SIMPL::DistributionType::Power)
   {
     return createPowerDistributionArrays();
   }
-  else if (distType == DREAM3D::DistributionType::LogNormal)
+  else if (distType == SIMPL::DistributionType::LogNormal)
   {
     return createLogNormalDistributionArrays();
   }
@@ -129,50 +129,50 @@ int H5PrimaryStatsDataDelegate::readPrimaryStatsData(PrimaryStatsData* data, hid
   err = readFeatureDiameterInfo(data, groupId);
 
   // Read the Feature Size Distribution
-  uint32_t dType = readDistributionType(groupId, DREAM3D::StringConstants::Feature_Size_Distribution);
+  uint32_t dType = readDistributionType(groupId, SIMPL::StringConstants::Feature_Size_Distribution);
   data->setFeatureSize_DistType(dType);
   data->setFeatureSizeDistribution(createDistributionVector(data->getFeatureSize_DistType()));
   err = readDistributionData(groupId,
-                             DREAM3D::StringConstants::Feature_Size_Distribution,
+                             SIMPL::StringConstants::Feature_Size_Distribution,
                              data->getFeatureSizeDistribution());
 
   // Read the Bin Numbers
   err = readBinNumbers(data, groupId);
 
   // Read the B Over A
-  dType = readDistributionType(groupId, DREAM3D::StringConstants::Feature_SizeVBoverA_Distributions);
+  dType = readDistributionType(groupId, SIMPL::StringConstants::Feature_SizeVBoverA_Distributions);
   data->setBOverA_DistType(dType);
   data->setFeatureSize_BOverA( createDistributionVector(data->getBOverA_DistType()));
   err = readDistributionData(groupId,
-                             DREAM3D::StringConstants::Feature_SizeVBoverA_Distributions,
+                             SIMPL::StringConstants::Feature_SizeVBoverA_Distributions,
                              data->getFeatureSize_BOverA());
 
   // Read the C Over A
-  dType = readDistributionType(groupId, DREAM3D::StringConstants::Feature_SizeVCoverA_Distributions);
+  dType = readDistributionType(groupId, SIMPL::StringConstants::Feature_SizeVCoverA_Distributions);
   data->setCOverA_DistType(dType);
   data->setFeatureSize_COverA( createDistributionVector(data->getCOverA_DistType()));
   err = readDistributionData(groupId,
-                             DREAM3D::StringConstants::Feature_SizeVCoverA_Distributions,
+                             SIMPL::StringConstants::Feature_SizeVCoverA_Distributions,
                              data->getFeatureSize_COverA());
 
   // Read the Neighbors
-  dType = readDistributionType(groupId, DREAM3D::StringConstants::Feature_SizeVNeighbors_Distributions);
+  dType = readDistributionType(groupId, SIMPL::StringConstants::Feature_SizeVNeighbors_Distributions);
   data->setNeighbors_DistType(dType);
   data->setFeatureSize_Neighbors( createDistributionVector(data->getNeighbors_DistType()));
   err = readDistributionData(groupId,
-                             DREAM3D::StringConstants::Feature_SizeVNeighbors_Distributions,
+                             SIMPL::StringConstants::Feature_SizeVNeighbors_Distributions,
                              data->getFeatureSize_Neighbors());
 
   // Read the Omegas
-  dType = readDistributionType(groupId, DREAM3D::StringConstants::Feature_SizeVOmega3_Distributions);
+  dType = readDistributionType(groupId, SIMPL::StringConstants::Feature_SizeVOmega3_Distributions);
   data->setOmegas_DistType(dType);
   data->setFeatureSize_Omegas( createDistributionVector(data->getOmegas_DistType()));
   err = readDistributionData(groupId,
-                             DREAM3D::StringConstants::Feature_SizeVOmega3_Distributions,
+                             SIMPL::StringConstants::Feature_SizeVOmega3_Distributions,
                              data->getFeatureSize_Omegas());
 
   // Read the Misorientation Bins
-  FloatArrayType::Pointer misoBins = FloatArrayType::CreateArray(0, DREAM3D::StringConstants::MisorientationBins);
+  FloatArrayType::Pointer misoBins = FloatArrayType::CreateArray(0, SIMPL::StringConstants::MisorientationBins);
   err = misoBins->readH5Data(groupId);
   if (err < 0)
   {
@@ -182,7 +182,7 @@ int H5PrimaryStatsDataDelegate::readPrimaryStatsData(PrimaryStatsData* data, hid
   err = readMDFWeights(groupId, data);
 
   // Read the ODF Data
-  FloatArrayType::Pointer odfBins = FloatArrayType::CreateArray(0, DREAM3D::StringConstants::ODF);
+  FloatArrayType::Pointer odfBins = FloatArrayType::CreateArray(0, SIMPL::StringConstants::ODF);
   err = odfBins->readH5Data(groupId);
   if (err < 0)
   {
@@ -192,7 +192,7 @@ int H5PrimaryStatsDataDelegate::readPrimaryStatsData(PrimaryStatsData* data, hid
   err = readODFWeights(groupId, data);
 
   // Read the Axis ODF Data
-  FloatArrayType::Pointer axisOdfBins = FloatArrayType::CreateArray(0, DREAM3D::StringConstants::AxisOrientation);
+  FloatArrayType::Pointer axisOdfBins = FloatArrayType::CreateArray(0, SIMPL::StringConstants::AxisOrientation);
   err = axisOdfBins->readH5Data(groupId);
   if (err < 0)
   {
@@ -236,7 +236,7 @@ int H5PrimaryStatsDataDelegate::writePrimaryStatsData(PrimaryStatsData* data, hi
   // Write the Feature Size Distribution
   err = writeDistributionData(groupId,
                               data->getFeatureSize_DistType(),
-                              DREAM3D::StringConstants::Feature_Size_Distribution,
+                              SIMPL::StringConstants::Feature_Size_Distribution,
                               data->getFeatureSizeDistribution());
 
   // Write the Bin Numbers
@@ -245,25 +245,25 @@ int H5PrimaryStatsDataDelegate::writePrimaryStatsData(PrimaryStatsData* data, hi
   // Write the B Over A
   err = writeDistributionData(groupId,
                               data->getBOverA_DistType(),
-                              DREAM3D::StringConstants::Feature_SizeVBoverA_Distributions,
+                              SIMPL::StringConstants::Feature_SizeVBoverA_Distributions,
                               data->getFeatureSize_BOverA());
 
   // Write the C Over A
   err = writeDistributionData(groupId,
                               data->getCOverA_DistType(),
-                              DREAM3D::StringConstants::Feature_SizeVCoverA_Distributions,
+                              SIMPL::StringConstants::Feature_SizeVCoverA_Distributions,
                               data->getFeatureSize_COverA());
 
   // Write the Neighbors
   err = writeDistributionData(groupId,
                               data->getNeighbors_DistType(),
-                              DREAM3D::StringConstants::Feature_SizeVNeighbors_Distributions,
+                              SIMPL::StringConstants::Feature_SizeVNeighbors_Distributions,
                               data->getFeatureSize_Neighbors());
 
   // Write the Omegas
   err = writeDistributionData(groupId,
                               data->getOmegas_DistType(),
-                              DREAM3D::StringConstants::Feature_SizeVOmega3_Distributions,
+                              SIMPL::StringConstants::Feature_SizeVOmega3_Distributions,
                               data->getFeatureSize_Omegas());
 
   // Write the Misorientation Bins
@@ -273,7 +273,7 @@ int H5PrimaryStatsDataDelegate::writePrimaryStatsData(PrimaryStatsData* data, hi
     err = data->getMisorientationBins()->writeH5Data(groupId, tDims);
   }
 
-  err = writeWeightsData(groupId, DREAM3D::StringConstants::MDFWeights, data->getMDF_Weights());
+  err = writeWeightsData(groupId, SIMPL::StringConstants::MDFWeights, data->getMDF_Weights());
 
 
   // Write the ODF
@@ -282,7 +282,7 @@ int H5PrimaryStatsDataDelegate::writePrimaryStatsData(PrimaryStatsData* data, hi
     QVector<size_t> tDims(1, data->getODF()->getNumberOfTuples());
     err = data->getODF()->writeH5Data(groupId, tDims);
   }
-  err = writeWeightsData(groupId, DREAM3D::StringConstants::ODFWeights, data->getODF_Weights());
+  err = writeWeightsData(groupId, SIMPL::StringConstants::ODFWeights, data->getODF_Weights());
 
 
   // Write the Axis ODF
@@ -291,7 +291,7 @@ int H5PrimaryStatsDataDelegate::writePrimaryStatsData(PrimaryStatsData* data, hi
     QVector<size_t> tDims(1, data->getAxisOrientation()->getNumberOfTuples());
     err = data->getAxisOrientation()->writeH5Data(groupId, tDims);
   }
-  err = writeWeightsData(groupId, DREAM3D::StringConstants::AxisODFWeights, data->getAxisODF_Weights());
+  err = writeWeightsData(groupId, SIMPL::StringConstants::AxisODFWeights, data->getAxisODF_Weights());
 
   return err;
 }
@@ -360,17 +360,17 @@ int H5PrimaryStatsDataDelegate::readMDFWeights(hid_t pid, PrimaryStatsData* data
 {
   int err = 0;
   QVector<size_t> dims(1, 1);
-  FloatArrayType::Pointer angles = FloatArrayType::CreateArray(1, dims, DREAM3D::StringConstants::Angle);
-  FloatArrayType::Pointer weight = FloatArrayType::CreateArray(1, DREAM3D::StringConstants::Weight);
+  FloatArrayType::Pointer angles = FloatArrayType::CreateArray(1, dims, SIMPL::StringConstants::Angle);
+  FloatArrayType::Pointer weight = FloatArrayType::CreateArray(1, SIMPL::StringConstants::Weight);
   dims[0] = 3;
-  FloatArrayType::Pointer axis = FloatArrayType::CreateArray(3, dims, DREAM3D::StringConstants::Axis);
+  FloatArrayType::Pointer axis = FloatArrayType::CreateArray(3, dims, SIMPL::StringConstants::Axis);
 
   VectorOfFloatArray mdfWeights;
   mdfWeights.push_back(angles);
   mdfWeights.push_back(axis);
   mdfWeights.push_back(weight);
 
-  hid_t groupId = QH5Utilities::openHDF5Object(pid, DREAM3D::StringConstants::MDFWeights);
+  hid_t groupId = QH5Utilities::openHDF5Object(pid, SIMPL::StringConstants::MDFWeights);
   if (groupId > 0)
   {
     err = readVectorOfArrays(groupId, mdfWeights);
@@ -391,11 +391,11 @@ int H5PrimaryStatsDataDelegate::readODFWeights(hid_t pid, PrimaryStatsData* data
 
   int err = 0;
 
-  FloatArrayType::Pointer euler1 = FloatArrayType::CreateArray(0, DREAM3D::StringConstants::Euler1);
-  FloatArrayType::Pointer euler2 = FloatArrayType::CreateArray(0, DREAM3D::StringConstants::Euler2);
-  FloatArrayType::Pointer euler3 = FloatArrayType::CreateArray(0, DREAM3D::StringConstants::Euler3);
-  FloatArrayType::Pointer weight = FloatArrayType::CreateArray(0, DREAM3D::StringConstants::Weight);
-  FloatArrayType::Pointer sigma = FloatArrayType::CreateArray(0, DREAM3D::StringConstants::Sigma);
+  FloatArrayType::Pointer euler1 = FloatArrayType::CreateArray(0, SIMPL::StringConstants::Euler1);
+  FloatArrayType::Pointer euler2 = FloatArrayType::CreateArray(0, SIMPL::StringConstants::Euler2);
+  FloatArrayType::Pointer euler3 = FloatArrayType::CreateArray(0, SIMPL::StringConstants::Euler3);
+  FloatArrayType::Pointer weight = FloatArrayType::CreateArray(0, SIMPL::StringConstants::Weight);
+  FloatArrayType::Pointer sigma = FloatArrayType::CreateArray(0, SIMPL::StringConstants::Sigma);
 
   VectorOfFloatArray odfWeights;
   odfWeights.push_back(euler1);
@@ -404,7 +404,7 @@ int H5PrimaryStatsDataDelegate::readODFWeights(hid_t pid, PrimaryStatsData* data
   odfWeights.push_back(weight);
   odfWeights.push_back(sigma);
 
-  hid_t groupId = QH5Utilities::openHDF5Object(pid, DREAM3D::StringConstants::ODFWeights);
+  hid_t groupId = QH5Utilities::openHDF5Object(pid, SIMPL::StringConstants::ODFWeights);
   if(groupId > 0)
   {
     err = readVectorOfArrays(groupId, odfWeights);
@@ -427,11 +427,11 @@ int H5PrimaryStatsDataDelegate::readAxisODFWeights(hid_t pid, PrimaryStatsData* 
 
   int err = 0;
 
-  FloatArrayType::Pointer euler1 = FloatArrayType::CreateArray(0, DREAM3D::StringConstants::Euler1);
-  FloatArrayType::Pointer euler2 = FloatArrayType::CreateArray(0, DREAM3D::StringConstants::Euler2);
-  FloatArrayType::Pointer euler3 = FloatArrayType::CreateArray(0, DREAM3D::StringConstants::Euler3);
-  FloatArrayType::Pointer sigma = FloatArrayType::CreateArray(0, DREAM3D::StringConstants::Sigma);
-  FloatArrayType::Pointer weight = FloatArrayType::CreateArray(0, DREAM3D::StringConstants::Weight);
+  FloatArrayType::Pointer euler1 = FloatArrayType::CreateArray(0, SIMPL::StringConstants::Euler1);
+  FloatArrayType::Pointer euler2 = FloatArrayType::CreateArray(0, SIMPL::StringConstants::Euler2);
+  FloatArrayType::Pointer euler3 = FloatArrayType::CreateArray(0, SIMPL::StringConstants::Euler3);
+  FloatArrayType::Pointer sigma = FloatArrayType::CreateArray(0, SIMPL::StringConstants::Sigma);
+  FloatArrayType::Pointer weight = FloatArrayType::CreateArray(0, SIMPL::StringConstants::Weight);
 
   VectorOfFloatArray odfWeights;
   odfWeights.push_back(euler1);
@@ -440,7 +440,7 @@ int H5PrimaryStatsDataDelegate::readAxisODFWeights(hid_t pid, PrimaryStatsData* 
   odfWeights.push_back(sigma);
   odfWeights.push_back(weight);
 
-  hid_t groupId = QH5Utilities::openHDF5Object(pid, DREAM3D::StringConstants::AxisODFWeights);
+  hid_t groupId = QH5Utilities::openHDF5Object(pid, SIMPL::StringConstants::AxisODFWeights);
   if (groupId > 0)
   {
     err = readVectorOfArrays(groupId, odfWeights);
@@ -491,27 +491,27 @@ int H5PrimaryStatsDataDelegate::writeDistributionData(hid_t pid,
   QString disTypeStr;
   switch(disType)
   {
-    case DREAM3D::DistributionType::Beta:
-      disTypeStr = DREAM3D::StringConstants::BetaDistribution;
+    case SIMPL::DistributionType::Beta:
+      disTypeStr = SIMPL::StringConstants::BetaDistribution;
       break;
-    case DREAM3D::DistributionType::LogNormal:
-      disTypeStr = DREAM3D::StringConstants::LogNormalDistribution;
+    case SIMPL::DistributionType::LogNormal:
+      disTypeStr = SIMPL::StringConstants::LogNormalDistribution;
       break;
-    case DREAM3D::DistributionType::Power:
-      disTypeStr = DREAM3D::StringConstants::PowerLawDistribution;
+    case SIMPL::DistributionType::Power:
+      disTypeStr = SIMPL::StringConstants::PowerLawDistribution;
       break;
-    case DREAM3D::DistributionType::UnknownDistributionType:
-      disTypeStr = DREAM3D::StringConstants::UnknownDistribution;
+    case SIMPL::DistributionType::UnknownDistributionType:
+      disTypeStr = SIMPL::StringConstants::UnknownDistribution;
       break;
     default:
-      disTypeStr = DREAM3D::StringConstants::UnknownDistribution;
+      disTypeStr = SIMPL::StringConstants::UnknownDistribution;
   }
 
   // Create the Group Folder
   hid_t disId = QH5Utilities::createGroup(pid, hdf5GroupName);
   if (disId > 0)
   {
-    err = QH5Lite::writeStringAttribute(pid, hdf5GroupName, DREAM3D::StringConstants::DistributionType, disTypeStr);
+    err = QH5Lite::writeStringAttribute(pid, hdf5GroupName, SIMPL::StringConstants::DistributionType, disTypeStr);
     if(err >= 0)
     {
       err |= writeVectorOfArrays(disId, colData);
@@ -537,25 +537,25 @@ int H5PrimaryStatsDataDelegate::writeDistributionData(hid_t pid,
 uint32_t H5PrimaryStatsDataDelegate::readDistributionType(hid_t pid, const QString& hdf5GroupName)
 {
   int err = 0;
-  uint32_t dType = DREAM3D::DistributionType::UnknownDistributionType;
+  uint32_t dType = SIMPL::DistributionType::UnknownDistributionType;
 
   QString disTypeStr;
-  err = QH5Lite::readStringAttribute(pid, hdf5GroupName, DREAM3D::StringConstants::DistributionType, disTypeStr);
+  err = QH5Lite::readStringAttribute(pid, hdf5GroupName, SIMPL::StringConstants::DistributionType, disTypeStr);
   if(err < 0)
   {
     return dType;
   }
-  if (disTypeStr.compare(DREAM3D::StringConstants::BetaDistribution) == 0)
+  if (disTypeStr.compare(SIMPL::StringConstants::BetaDistribution) == 0)
   {
-    dType = DREAM3D::DistributionType::Beta;
+    dType = SIMPL::DistributionType::Beta;
   }
-  else   if (disTypeStr.compare(DREAM3D::StringConstants::LogNormalDistribution) == 0)
+  else   if (disTypeStr.compare(SIMPL::StringConstants::LogNormalDistribution) == 0)
   {
-    dType = DREAM3D::DistributionType::LogNormal;
+    dType = SIMPL::DistributionType::LogNormal;
   }
-  else   if (disTypeStr.compare(DREAM3D::StringConstants::PowerLawDistribution) == 0)
+  else   if (disTypeStr.compare(SIMPL::StringConstants::PowerLawDistribution) == 0)
   {
-    dType = DREAM3D::DistributionType::Power;
+    dType = SIMPL::DistributionType::Power;
   }
   return dType;
 }
@@ -591,7 +591,7 @@ int H5PrimaryStatsDataDelegate::readDistributionData(hid_t pid,
 int H5PrimaryStatsDataDelegate::writeBoundaryArea(PrimaryStatsData* data, hid_t pid)
 {
   float BoundaryArea = data->getBoundaryArea();
-  return QH5Lite::writeScalarDataset(pid, DREAM3D::StringConstants::BoundaryArea, BoundaryArea);
+  return QH5Lite::writeScalarDataset(pid, SIMPL::StringConstants::BoundaryArea, BoundaryArea);
 }
 
 // -----------------------------------------------------------------------------
@@ -600,7 +600,7 @@ int H5PrimaryStatsDataDelegate::writeBoundaryArea(PrimaryStatsData* data, hid_t 
 int H5PrimaryStatsDataDelegate::readBoundaryArea(PrimaryStatsData* data, hid_t pid)
 {
   float BoundaryArea = 0.0f;
-  int err = QH5Lite::readScalarDataset(pid, DREAM3D::StringConstants::BoundaryArea, BoundaryArea);
+  int err = QH5Lite::readScalarDataset(pid, SIMPL::StringConstants::BoundaryArea, BoundaryArea);
   data->setBoundaryArea(BoundaryArea);
   return err;
 }
@@ -610,7 +610,7 @@ int H5PrimaryStatsDataDelegate::readBoundaryArea(PrimaryStatsData* data, hid_t p
 int H5PrimaryStatsDataDelegate::writePhaseFraction(PrimaryStatsData* data, hid_t pid)
 {
   float phaseFraction = data->getPhaseFraction();
-  return QH5Lite::writeScalarDataset(pid, DREAM3D::StringConstants::PhaseFraction, phaseFraction);
+  return QH5Lite::writeScalarDataset(pid, SIMPL::StringConstants::PhaseFraction, phaseFraction);
 }
 
 // -----------------------------------------------------------------------------
@@ -619,7 +619,7 @@ int H5PrimaryStatsDataDelegate::writePhaseFraction(PrimaryStatsData* data, hid_t
 int H5PrimaryStatsDataDelegate::readPhaseFraction(PrimaryStatsData* data, hid_t pid)
 {
   float phaseFraction = 0.0f;
-  int err = QH5Lite::readScalarDataset(pid, DREAM3D::StringConstants::PhaseFraction, phaseFraction);
+  int err = QH5Lite::readScalarDataset(pid, SIMPL::StringConstants::PhaseFraction, phaseFraction);
   data->setPhaseFraction(phaseFraction);
   return err;
 }
@@ -638,7 +638,7 @@ int H5PrimaryStatsDataDelegate::writeFeatureDiameterInfo(PrimaryStatsData* data,
   float featureDiameterInfo[3];
   data->getFeatureDiameterInfo(featureDiameterInfo);
 
-  return QH5Lite::writePointerDataset(pid, DREAM3D::StringConstants::Feature_Diameter_Info, rank, dims, featureDiameterInfo);
+  return QH5Lite::writePointerDataset(pid, SIMPL::StringConstants::Feature_Diameter_Info, rank, dims, featureDiameterInfo);
 }
 
 // -----------------------------------------------------------------------------
@@ -653,7 +653,7 @@ int H5PrimaryStatsDataDelegate::readFeatureDiameterInfo(PrimaryStatsData* data, 
   float featureDiameterInfo[3] =
   { 0.0f, 0.0f, 0.0f };
 
-  err = QH5Lite::readPointerDataset(groupId, DREAM3D::StringConstants::Feature_Diameter_Info, featureDiameterInfo);
+  err = QH5Lite::readPointerDataset(groupId, SIMPL::StringConstants::Feature_Diameter_Info, featureDiameterInfo);
   data->setFeatureDiameterInfo(featureDiameterInfo);
   return err;
 }
@@ -678,7 +678,7 @@ int H5PrimaryStatsDataDelegate::writeBinNumbers(PrimaryStatsData* data, hid_t gr
 int H5PrimaryStatsDataDelegate::readBinNumbers(PrimaryStatsData* data, hid_t groupId)
 {
   int err = 0;
-  FloatArrayType::Pointer p = FloatArrayType::CreateArray(1, DREAM3D::StringConstants::BinNumber);
+  FloatArrayType::Pointer p = FloatArrayType::CreateArray(1, SIMPL::StringConstants::BinNumber);
   err = p->readH5Data(groupId);
   data->setBinNumbers(p);
   return err;

@@ -251,7 +251,7 @@ namespace TemplateHelpers
         }
         else
         {
-          QString msg = QObject::tr("The created array '%1' is of unsupported type. The following types are supported: %3").arg(arrayPath.getDataArrayName()).arg(DREAM3D::TypeNames::SupportedTypeList);
+          QString msg = QObject::tr("The created array '%1' is of unsupported type. The following types are supported: %3").arg(arrayPath.getDataArrayName()).arg(SIMPL::TypeNames::SupportedTypeList);
           f->setErrorCondition(Errors::UnsupportedType);
           f->notifyErrorMessage(f->getHumanLabel(), msg, f->getErrorCondition());
         }
@@ -277,41 +277,41 @@ namespace TemplateHelpers
 
         switch(arrayType)
         {
-          case DREAM3D::TypeEnums::Int8:
+          case SIMPL::TypeEnums::Int8:
             ptr = f->getDataContainerArray()->createNonPrereqArrayFromPath<DataArray<int8_t>, AbstractFilter, int8_t>(f, arrayPath, static_cast<int8_t>(initValue), compDims);
             break;
-          case DREAM3D::TypeEnums::UInt8:
+          case SIMPL::TypeEnums::UInt8:
             ptr = f->getDataContainerArray()->createNonPrereqArrayFromPath<DataArray<uint8_t>, AbstractFilter, uint8_t>(f, arrayPath, static_cast<uint8_t>(initValue), compDims);
             break;
-          case DREAM3D::TypeEnums::Int16:
+          case SIMPL::TypeEnums::Int16:
             ptr = f->getDataContainerArray()->createNonPrereqArrayFromPath<DataArray<int16_t>, AbstractFilter, int16_t>(f, arrayPath, static_cast<int16_t>(initValue), compDims);
             break;
-          case DREAM3D::TypeEnums::UInt16:
+          case SIMPL::TypeEnums::UInt16:
             ptr = f->getDataContainerArray()->createNonPrereqArrayFromPath<DataArray<uint16_t>, AbstractFilter, uint16_t>(f, arrayPath, static_cast<uint16_t>(initValue), compDims);
             break;
-          case DREAM3D::TypeEnums::Int32:
+          case SIMPL::TypeEnums::Int32:
             ptr = f->getDataContainerArray()->createNonPrereqArrayFromPath<DataArray<int32_t>, AbstractFilter, int32_t>(f, arrayPath, static_cast<int32_t>(initValue), compDims);
             break;
-          case DREAM3D::TypeEnums::UInt32:
+          case SIMPL::TypeEnums::UInt32:
             ptr = f->getDataContainerArray()->createNonPrereqArrayFromPath<DataArray<uint32_t>, AbstractFilter, uint32_t>(f, arrayPath, static_cast<uint32_t>(initValue), compDims);
             break;
-          case DREAM3D::TypeEnums::Int64:
+          case SIMPL::TypeEnums::Int64:
             ptr = f->getDataContainerArray()->createNonPrereqArrayFromPath<DataArray<int64_t>, AbstractFilter, int64_t>(f, arrayPath, static_cast<int64_t>(initValue), compDims);
             break;
-          case DREAM3D::TypeEnums::UInt64:
+          case SIMPL::TypeEnums::UInt64:
             ptr = f->getDataContainerArray()->createNonPrereqArrayFromPath<DataArray<uint64_t>, AbstractFilter, uint64_t>(f, arrayPath, static_cast<uint64_t>(initValue), compDims);
             break;
-          case DREAM3D::TypeEnums::Float:
+          case SIMPL::TypeEnums::Float:
             ptr = f->getDataContainerArray()->createNonPrereqArrayFromPath<DataArray<float>, AbstractFilter, float>(f, arrayPath, static_cast<float>(initValue), compDims);
             break;
-          case DREAM3D::TypeEnums::Double:
+          case SIMPL::TypeEnums::Double:
             ptr = f->getDataContainerArray()->createNonPrereqArrayFromPath<DataArray<double>, AbstractFilter, double>(f, arrayPath, static_cast<double>(initValue), compDims);
             break;
-          case DREAM3D::TypeEnums::Bool:
+          case SIMPL::TypeEnums::Bool:
             ptr = f->getDataContainerArray()->createNonPrereqArrayFromPath<DataArray<bool>, AbstractFilter, bool>(f, arrayPath, static_cast<bool>(initValue), compDims);
             break;
           default:
-            QString msg = QObject::tr("The created array '%1' is of unsupported type. The following types are supported: %3").arg(arrayPath.getDataArrayName()).arg(DREAM3D::TypeEnums::SupportedTypeList);
+            QString msg = QObject::tr("The created array '%1' is of unsupported type. The following types are supported: %3").arg(arrayPath.getDataArrayName()).arg(SIMPL::TypeEnums::SupportedTypeList);
             f->setErrorCondition(Errors::UnsupportedType);
             f->notifyErrorMessage(f->getHumanLabel(), msg, f->getErrorCondition());
             break;
@@ -420,43 +420,43 @@ namespace TemplateHelpers
       {
         IDataArray::Pointer ptr = IDataArray::NullPointer();
 
-        if(type.compare(DREAM3D::TypeNames::Float) == 0)
+        if(type.compare(SIMPL::TypeNames::Float) == 0)
         {
           ptr = FloatArrayType::CreateArray(tupleDims, compDims, arrayName, allocate);
         }
-        else if(type.compare(DREAM3D::TypeNames::Double) == 0)
+        else if(type.compare(SIMPL::TypeNames::Double) == 0)
         {
           ptr = DoubleArrayType::CreateArray(tupleDims, compDims, arrayName, allocate);
         }
-        else if(type.compare(DREAM3D::TypeNames::Int8) == 0)
+        else if(type.compare(SIMPL::TypeNames::Int8) == 0)
         {
           ptr = Int8ArrayType::CreateArray(tupleDims, compDims, arrayName, allocate);
         }
-        else if(type.compare(DREAM3D::TypeNames::UInt8) == 0)
+        else if(type.compare(SIMPL::TypeNames::UInt8) == 0)
         {
           ptr = UInt8ArrayType::CreateArray(tupleDims, compDims, arrayName, allocate);
         }
-        else if(type.compare(DREAM3D::TypeNames::Int16) == 0)
+        else if(type.compare(SIMPL::TypeNames::Int16) == 0)
         {
           ptr = Int16ArrayType::CreateArray(tupleDims, compDims, arrayName, allocate);
         }
-        else if(type.compare(DREAM3D::TypeNames::UInt16) == 0)
+        else if(type.compare(SIMPL::TypeNames::UInt16) == 0)
         {
           ptr = UInt16ArrayType::CreateArray(tupleDims, compDims, arrayName, allocate);
         }
-        else if(type.compare(DREAM3D::TypeNames::Int32) == 0)
+        else if(type.compare(SIMPL::TypeNames::Int32) == 0)
         {
           ptr = Int32ArrayType::CreateArray(tupleDims, compDims, arrayName, allocate);
         }
-        else if(type.compare(DREAM3D::TypeNames::UInt32) == 0)
+        else if(type.compare(SIMPL::TypeNames::UInt32) == 0)
         {
           ptr = UInt32ArrayType::CreateArray(tupleDims, compDims, arrayName, allocate);
         }
-        else if(type.compare(DREAM3D::TypeNames::Int64) == 0)
+        else if(type.compare(SIMPL::TypeNames::Int64) == 0)
         {
           ptr = Int64ArrayType::CreateArray(tupleDims, compDims, arrayName, allocate);
         }
-        else if(type.compare(DREAM3D::TypeNames::UInt64) == 0)
+        else if(type.compare(SIMPL::TypeNames::UInt64) == 0)
         {
           ptr = UInt64ArrayType::CreateArray(tupleDims, compDims, arrayName, allocate);
         }
@@ -559,7 +559,7 @@ namespace TemplateHelpers
         }
         else
         {
-          QString ss = QObject::tr("The input array %1 is of unsupported type '%2'. The following types are supported: %3").arg(arrayPath.getDataArrayName()).arg(i_data_array->getTypeAsString()).arg(DREAM3D::TypeNames::SupportedTypeList);
+          QString ss = QObject::tr("The input array %1 is of unsupported type '%2'. The following types are supported: %3").arg(arrayPath.getDataArrayName()).arg(i_data_array->getTypeAsString()).arg(SIMPL::TypeNames::SupportedTypeList);
           f->setErrorCondition(Errors::UnsupportedType);
           f->notifyErrorMessage(f->getHumanLabel(), ss, f->getErrorCondition());
         }

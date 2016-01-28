@@ -58,7 +58,7 @@ class DataArrayProxy
      * @brief DataArrayProxy
      */
     DataArrayProxy() :
-      flag(DREAM3D::Unchecked),
+      flag(SIMPL::Unchecked),
       version(0),
       path(""),
       name(""),
@@ -73,7 +73,7 @@ class DataArrayProxy
      * @param da_objectType
      * @param da_version
      */
-    DataArrayProxy(QString da_path, QString da_name, uint8_t da_flag = DREAM3D::Checked, QString da_objectType = "NOT_DEFINED", int da_version = 0) :
+    DataArrayProxy(QString da_path, QString da_name, uint8_t da_flag = SIMPL::Checked, QString da_objectType = "NOT_DEFINED", int da_version = 0) :
       flag(da_flag),
       version(da_version),
       path(da_path),
@@ -152,18 +152,18 @@ class DataArrayProxy
         if(__SHOW_DEBUG_MSG__)
         { std::cout << "        DataArray: " << dataArrayName.toStdString()  << std::endl; }
 
-        DataArrayProxy proxy(h5InternalPath, dataArrayName, DREAM3D::Checked);
+        DataArrayProxy proxy(h5InternalPath, dataArrayName, SIMPL::Checked);
 
-        herr_t err = QH5Lite::readVectorAttribute(attrMatGid, dataArrayName, DREAM3D::HDF5::TupleDimensions, proxy.tupleDims);
+        herr_t err = QH5Lite::readVectorAttribute(attrMatGid, dataArrayName, SIMPL::HDF5::TupleDimensions, proxy.tupleDims);
         if(err < 0) { std::cout << "Error Reading the Tuple Dimensions for DataArray " << dataArrayName.toStdString() << std::endl; }
 
-        err = QH5Lite::readVectorAttribute(attrMatGid, dataArrayName, DREAM3D::HDF5::ComponentDimensions, proxy.compDims);
+        err = QH5Lite::readVectorAttribute(attrMatGid, dataArrayName, SIMPL::HDF5::ComponentDimensions, proxy.compDims);
         if(err < 0) { std::cout << "Error Reading the Component Dimensions for DataArray " << dataArrayName.toStdString() << std::endl; }
 
-        err = QH5Lite::readScalarAttribute(attrMatGid, dataArrayName, DREAM3D::HDF5::DataArrayVersion, proxy.version);
+        err = QH5Lite::readScalarAttribute(attrMatGid, dataArrayName, SIMPL::HDF5::DataArrayVersion, proxy.version);
         if(err < 0) { std::cout << "Error Reading the Version for DataArray " << dataArrayName.toStdString() << std::endl; }
 
-        err = QH5Lite::readStringAttribute(attrMatGid, dataArrayName, DREAM3D::HDF5::ObjectType, proxy.objectType);
+        err = QH5Lite::readStringAttribute(attrMatGid, dataArrayName, SIMPL::HDF5::ObjectType, proxy.objectType);
         if(err < 0) { std::cout << "Error Reading the Object Type for DataArray " << dataArrayName.toStdString() << std::endl; }
 
         dataArrays.insert(dataArrayName, proxy);

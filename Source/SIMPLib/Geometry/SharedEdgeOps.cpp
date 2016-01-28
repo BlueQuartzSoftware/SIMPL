@@ -40,7 +40,7 @@
 SharedEdgeList::Pointer GEOM_CLASS_NAME::CreateSharedEdgeList(int64_t numEdges)
 {
   QVector<size_t> edgeDims(1, 2);
-  SharedEdgeList::Pointer edges = SharedEdgeList::CreateArray(numEdges, edgeDims, DREAM3D::Geometry::SharedEdgeList);
+  SharedEdgeList::Pointer edges = SharedEdgeList::CreateArray(numEdges, edgeDims, SIMPL::Geometry::SharedEdgeList);
   edges->initializeWithZeros();
   return edges;
 }
@@ -60,9 +60,9 @@ void GEOM_CLASS_NAME::setEdges(SharedEdgeList::Pointer edges)
 {
   if (edges.get() != NULL)
   {
-    if (edges->getName().compare(DREAM3D::Geometry::SharedEdgeList) != 0)
+    if (edges->getName().compare(SIMPL::Geometry::SharedEdgeList) != 0)
     {
-      edges->setName(DREAM3D::Geometry::SharedEdgeList);
+      edges->setName(SIMPL::Geometry::SharedEdgeList);
     }
   }
   m_EdgeList = edges;

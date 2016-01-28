@@ -37,7 +37,7 @@ class SIMPLib_EXPORT Filt0 : public AbstractFilter
     * a different group if you want. The string returned here will be displayed
     * in the GUI for the filter
     */
-    virtual const QString getGroupName() { return DREAM3D::FilterGroups::TestFilters; }
+    virtual const QString getGroupName() { return SIMPL::FilterGroups::TestFilters; }
 
     /**
     * @brief This returns a string that is displayed in the GUI. It should be readable

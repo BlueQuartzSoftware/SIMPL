@@ -54,16 +54,16 @@
 // -----------------------------------------------------------------------------
 MakeDataContainer::MakeDataContainer() :
   AbstractFilter(),
-  m_DataContainerName(DREAM3D::Defaults::DataContainerName),
-  m_CellEnsembleAttributeMatrixName(DREAM3D::Defaults::CellEnsembleAttributeMatrixName),
-  m_CellAttributeMatrixName(DREAM3D::Defaults::CellAttributeMatrixName),
+  m_DataContainerName(SIMPL::Defaults::DataContainerName),
+  m_CellEnsembleAttributeMatrixName(SIMPL::Defaults::CellEnsembleAttributeMatrixName),
+  m_CellAttributeMatrixName(SIMPL::Defaults::CellAttributeMatrixName),
   m_PhaseNameArrayName("Phase"),
-  m_MaterialNameArrayName(DREAM3D::EnsembleData::MaterialName),
-  m_FeatureIdsArrayName(DREAM3D::CellData::FeatureIds),
-  m_CellEulerAnglesArrayName(DREAM3D::CellData::EulerAngles),
-  m_CellPhasesArrayName(DREAM3D::CellData::Phases),
-  m_CrystalStructuresArrayName(DREAM3D::EnsembleData::CrystalStructures),
-  m_LatticeConstantsArrayName(DREAM3D::EnsembleData::LatticeConstants),
+  m_MaterialNameArrayName(SIMPL::EnsembleData::MaterialName),
+  m_FeatureIdsArrayName(SIMPL::CellData::FeatureIds),
+  m_CellEulerAnglesArrayName(SIMPL::CellData::EulerAngles),
+  m_CellPhasesArrayName(SIMPL::CellData::Phases),
+  m_CrystalStructuresArrayName(SIMPL::EnsembleData::CrystalStructures),
+  m_LatticeConstantsArrayName(SIMPL::EnsembleData::LatticeConstants),
   m_FeatureIds(NULL),
   m_CellPhases(NULL),
   m_CellEulerAngles(NULL),
@@ -135,14 +135,14 @@ void MakeDataContainer::dataCheck()
     return;
   }
   QVector<size_t> tDims(3, 64);
-  AttributeMatrix::Pointer cellAttrMat = m->createNonPrereqAttributeMatrix<AbstractFilter>(this, getCellAttributeMatrixName(), tDims, DREAM3D::AttributeMatrixType::Cell);
+  AttributeMatrix::Pointer cellAttrMat = m->createNonPrereqAttributeMatrix<AbstractFilter>(this, getCellAttributeMatrixName(), tDims, SIMPL::AttributeMatrixType::Cell);
   if (getErrorCondition() < 0)
   {
     return;
   }
   //  tDims.resize(1);
   //  tDims[0] = 0;
-  //  AttributeMatrix::Pointer cellEnsembleAttrMat = m->createNonPrereqAttributeMatrix<AbstractFilter>(this, getCellEnsembleAttributeMatrixName(), tDims, DREAM3D::AttributeMatrixType::CellEnsemble);
+  //  AttributeMatrix::Pointer cellEnsembleAttrMat = m->createNonPrereqAttributeMatrix<AbstractFilter>(this, getCellEnsembleAttributeMatrixName(), tDims, SIMPL::AttributeMatrixType::CellEnsemble);
   //  if(getErrorCondition() < 0)
   //  {
   //    return;
@@ -261,7 +261,7 @@ const QString MakeDataContainer::getCompiledLibraryName()
 // -----------------------------------------------------------------------------
 const QString MakeDataContainer::getGroupName()
 {
-  return DREAM3D::FilterGroups::TestFilters;
+  return SIMPL::FilterGroups::TestFilters;
 }
 
 

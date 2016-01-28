@@ -44,7 +44,7 @@ class SIMPLib_EXPORT ColorUtilities
   public:
     ~ColorUtilities();
 
-    static DREAM3D::Rgb convertHSVtoRgb(float h, float s, float v);
+    static SIMPL::Rgb convertHSVtoRgb(float h, float s, float v);
 
   protected:
     ColorUtilities();

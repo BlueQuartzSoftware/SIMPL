@@ -102,7 +102,7 @@ DataArrayPath::DataArrayPath(const QString& dcName, const QString& amName, const
 DataArrayPath::DataArrayPath(const QString& path) :
   d_ptr(new DataArrayPathPrivate(this))
 {
-  QStringList tokens = path.split(DREAM3D::PathSep);
+  QStringList tokens = path.split(SIMPL::PathSep);
 
   if(tokens.size() > 0)
   {

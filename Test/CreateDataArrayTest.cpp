@@ -170,10 +170,10 @@ int TestCreateDataContainerAndAttributeMatrix ()
 DataContainerArray::Pointer CreateDataContainerArray()
 {
   DataContainerArray::Pointer dca = DataContainerArray::New();
-  DataContainer::Pointer m = DataContainer::New(DREAM3D::Defaults::DataContainerName);
+  DataContainer::Pointer m = DataContainer::New(SIMPL::Defaults::DataContainerName);
   dca->addDataContainer(m);
-  AttributeMatrix::Pointer attrMatrix = AttributeMatrix::New(QVector<size_t>(1, 1), DREAM3D::Defaults::AttributeMatrixName, DREAM3D::AttributeMatrixType::Generic);
-  m->addAttributeMatrix(DREAM3D::Defaults::AttributeMatrixName, attrMatrix);
+  AttributeMatrix::Pointer attrMatrix = AttributeMatrix::New(QVector<size_t>(1, 1), SIMPL::Defaults::AttributeMatrixName, SIMPL::AttributeMatrixType::Generic);
+  m->addAttributeMatrix(SIMPL::Defaults::AttributeMatrixName, attrMatrix);
   return dca;
 }
 
@@ -222,7 +222,7 @@ void TestScalarType(AbstractFilter::Pointer filter, DataArrayPath path, int scal
   DREAM3D_REQUIRE_EQUAL(err, NO_ERROR);
 
   {
-    IDataArray::Pointer testArrayPtr = dca->getDataContainer(DREAM3D::Defaults::DataContainerName)->getAttributeMatrix(path.getAttributeMatrixName())->getAttributeArray(path.getDataArrayName());
+    IDataArray::Pointer testArrayPtr = dca->getDataContainer(SIMPL::Defaults::DataContainerName)->getAttributeMatrix(path.getAttributeMatrixName())->getAttributeArray(path.getDataArrayName());
     typedef DataArray<T> DataArrayType;
     typename DataArrayType::Pointer inputArray = std::dynamic_pointer_cast<DataArrayType>(testArrayPtr);
     DREAM3D_REQUIRE_VALID_POINTER(inputArray.get());
@@ -251,7 +251,7 @@ void TestScalarType(AbstractFilter::Pointer filter, DataArrayPath path, int scal
   DREAM3D_REQUIRE_EQUAL(err, NO_ERROR);
 
   {
-    IDataArray::Pointer testArrayPtr = dca->getDataContainer(DREAM3D::Defaults::DataContainerName)->getAttributeMatrix(path.getAttributeMatrixName())->getAttributeArray(path.getDataArrayName());
+    IDataArray::Pointer testArrayPtr = dca->getDataContainer(SIMPL::Defaults::DataContainerName)->getAttributeMatrix(path.getAttributeMatrixName())->getAttributeArray(path.getDataArrayName());
     typedef DataArray<T> DataArrayType;
     typename DataArrayType::Pointer inputArray = std::dynamic_pointer_cast<DataArrayType>(testArrayPtr);
     DREAM3D_REQUIRE_VALID_POINTER(inputArray.get());
@@ -280,8 +280,8 @@ int TestCreateDataArray()
     // If we get this far, the Factory is good so creating the filter should not fail unless something has
     // horribly gone wrong in which case the system is going to come down quickly after this.
     AbstractFilter::Pointer filter = filterFactory->create();
-    DataArrayPath path = DataArrayPath(DREAM3D::Defaults::DataContainerName, DREAM3D::Defaults::AttributeMatrixName, "testArray");
-    DataArrayPath path1 = DataArrayPath(DREAM3D::Defaults::DataContainerName, DREAM3D::Defaults::AttributeMatrixName, "testArray");
+    DataArrayPath path = DataArrayPath(SIMPL::Defaults::DataContainerName, SIMPL::Defaults::AttributeMatrixName, "testArray");
+    DataArrayPath path1 = DataArrayPath(SIMPL::Defaults::DataContainerName, SIMPL::Defaults::AttributeMatrixName, "testArray");
 
     TestScalarType<int8_t>(filter, path, 0);
     TestScalarType<uint8_t>(filter, path, 1);

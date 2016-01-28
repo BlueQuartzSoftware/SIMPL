@@ -59,7 +59,7 @@ endif()
 message(STATUS "SIMPL_VERSION_SHORT: ${SIMPL_VERSION_SHORT}")
 
 
-SET(CPACK_PACKAGE_DESCRIPTION_SUMMARY "DREAM.3D Tools")
+SET(CPACK_PACKAGE_DESCRIPTION_SUMMARY "SIMPLView Tools")
 SET(CPACK_PACKAGE_VENDOR "BlueQuartz Software, LLC")
 SET(CPACK_PACKAGE_DESCRIPTION_FILE "${PROJECT_BINARY_DIR}/ReadMe.md")
 SET(CPACK_RESOURCE_FILE_LICENSE "${PROJECT_RESOURCES_DIR}/SIMPL/SIMPLLicense.txt")
@@ -127,7 +127,7 @@ endif()
 if(WIN32 AND NOT UNIX)
   # There is a bug in NSIS that does not handle full unix paths properly. Make
   # sure there is at least one set of four (4) backlasshes.
-  SET(CPACK_NSIS_DISPLAY_NAME "DREAM.3D Software Tools")
+  SET(CPACK_NSIS_DISPLAY_NAME "SIMPLView Software Tools")
   SET(CPACK_NSIS_HELP_LINK "http:\\\\\\\\dream3d.bluequartz.net")
   SET(CPACK_NSIS_URL_INFO_ABOUT "http:\\\\\\\\dream3d.bluequartz.net")
   SET(CPACK_NSIS_CONTACT "dream3d@bluequartz.net")

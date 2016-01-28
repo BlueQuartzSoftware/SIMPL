@@ -82,7 +82,7 @@ H5FilterParametersReader::Pointer H5FilterParametersReader::OpenDREAM3DFileForRe
   }
 
   H5FilterParametersReader::Pointer reader = H5FilterParametersReader::New();
-  hid_t pipelineGroupId = H5Gopen(fid, DREAM3D::StringConstants::PipelineGroupName.toLatin1().data(), H5P_DEFAULT);
+  hid_t pipelineGroupId = H5Gopen(fid, SIMPL::StringConstants::PipelineGroupName.toLatin1().data(), H5P_DEFAULT);
   if (pipelineGroupId < 0)
   {
     H5Fclose(fid);
@@ -109,7 +109,7 @@ FilterPipeline::Pointer H5FilterParametersReader::ReadPipelineFromFile(QString f
 
 
   // Open the Pipeline Group
-  hid_t pipelineGroupId = H5Gopen(fid, DREAM3D::StringConstants::PipelineGroupName.toLatin1().data(), H5P_DEFAULT);
+  hid_t pipelineGroupId = H5Gopen(fid, SIMPL::StringConstants::PipelineGroupName.toLatin1().data(), H5P_DEFAULT);
   if (pipelineGroupId < 0)
   {
     H5Fclose(fid);
@@ -929,7 +929,7 @@ DataContainerArrayProxy H5FilterParametersReader::readDataContainerArrayProxy(co
         return defValue;
       }
       QStringList arrayNames = data.split('\n');
-      QString path = DREAM3D::StringConstants::DataContainerGroupName + "/" + dcProxy.name + "/" + amProxy.name;
+      QString path = SIMPL::StringConstants::DataContainerGroupName + "/" + dcProxy.name + "/" + amProxy.name;
       for(int k = 0; k < arrayNames.size(); k++)
       {
         DataArrayProxy daProxy(path, arrayNames.at(k), true);

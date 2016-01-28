@@ -65,7 +65,7 @@ StatsData::~StatsData()
 // -----------------------------------------------------------------------------
 QString StatsData::getStatsType()
 {
-  return DREAM3D::StringConstants::StatsData;
+  return SIMPL::StringConstants::StatsData;
 }
 
 // -----------------------------------------------------------------------------
@@ -73,7 +73,7 @@ QString StatsData::getStatsType()
 // -----------------------------------------------------------------------------
 unsigned int StatsData::getPhaseType()
 {
-  return DREAM3D::PhaseType::UnknownPhaseType;
+  return SIMPL::PhaseType::UnknownPhaseType;
 }
 
 // -----------------------------------------------------------------------------
@@ -82,36 +82,36 @@ unsigned int StatsData::getPhaseType()
 VectorOfFloatArray StatsData::CreateCorrelatedDistributionArrays(uint32_t distributionType, size_t numBins)
 {
   VectorOfFloatArray v;
-  if(distributionType == DREAM3D::DistributionType::Beta)
+  if(distributionType == SIMPL::DistributionType::Beta)
   {
-    v.resize(DREAM3D::DistributionType::BetaColumnCount);
-    v[0] = FloatArrayType::CreateArray(numBins, DREAM3D::StringConstants::Alpha);
+    v.resize(SIMPL::DistributionType::BetaColumnCount);
+    v[0] = FloatArrayType::CreateArray(numBins, SIMPL::StringConstants::Alpha);
     v[0]->initializeWithZeros();
-    v[1] = FloatArrayType::CreateArray(numBins, DREAM3D::StringConstants::Beta);
+    v[1] = FloatArrayType::CreateArray(numBins, SIMPL::StringConstants::Beta);
     v[1]->initializeWithZeros();
   }
-  else if(distributionType == DREAM3D::DistributionType::LogNormal)
+  else if(distributionType == SIMPL::DistributionType::LogNormal)
   {
-    v.resize(DREAM3D::DistributionType::LogNormalColumnCount);
-    v[0] = FloatArrayType::CreateArray(numBins, DREAM3D::StringConstants::Average);
+    v.resize(SIMPL::DistributionType::LogNormalColumnCount);
+    v[0] = FloatArrayType::CreateArray(numBins, SIMPL::StringConstants::Average);
     v[0]->initializeWithZeros();
-    v[1] = FloatArrayType::CreateArray(numBins, DREAM3D::StringConstants::StandardDeviation);
+    v[1] = FloatArrayType::CreateArray(numBins, SIMPL::StringConstants::StandardDeviation);
     v[1]->initializeWithZeros();
   }
-  else if(distributionType == DREAM3D::DistributionType::Power)
+  else if(distributionType == SIMPL::DistributionType::Power)
   {
-    v.resize(DREAM3D::DistributionType::LogNormalColumnCount);
-    v[0] = FloatArrayType::CreateArray(numBins, DREAM3D::StringConstants::Alpha);
+    v.resize(SIMPL::DistributionType::LogNormalColumnCount);
+    v[0] = FloatArrayType::CreateArray(numBins, SIMPL::StringConstants::Alpha);
     v[0]->initializeWithZeros();
-    v[1] = FloatArrayType::CreateArray(numBins, DREAM3D::StringConstants::MinimumValue);
+    v[1] = FloatArrayType::CreateArray(numBins, SIMPL::StringConstants::MinimumValue);
     v[1]->initializeWithZeros();
   }
-  else if(distributionType == DREAM3D::DistributionType::UnknownDistributionType)
+  else if(distributionType == SIMPL::DistributionType::UnknownDistributionType)
   {
-    v.resize(DREAM3D::DistributionType::LogNormalColumnCount);
-    v[0] = FloatArrayType::CreateArray(numBins, DREAM3D::StringConstants::Alpha);
+    v.resize(SIMPL::DistributionType::LogNormalColumnCount);
+    v[0] = FloatArrayType::CreateArray(numBins, SIMPL::StringConstants::Alpha);
     v[0]->initializeWithZeros();
-    v[1] = FloatArrayType::CreateArray(numBins, DREAM3D::StringConstants::Beta);
+    v[1] = FloatArrayType::CreateArray(numBins, SIMPL::StringConstants::Beta);
     v[1]->initializeWithZeros();
   }
   return v;
@@ -123,19 +123,19 @@ VectorOfFloatArray StatsData::CreateCorrelatedDistributionArrays(uint32_t distri
 FloatArrayType::Pointer StatsData::CreateDistributionArrays(uint32_t distributionType)
 {
   FloatArrayType::Pointer v;
-  if(distributionType == DREAM3D::DistributionType::Beta)
+  if(distributionType == SIMPL::DistributionType::Beta)
   {
-    v = FloatArrayType::CreateArray(DREAM3D::DistributionType::BetaColumnCount, DREAM3D::StringConstants::Feature_Size_Distribution);
+    v = FloatArrayType::CreateArray(SIMPL::DistributionType::BetaColumnCount, SIMPL::StringConstants::Feature_Size_Distribution);
     v->initializeWithZeros();
   }
-  else if(distributionType == DREAM3D::DistributionType::LogNormal)
+  else if(distributionType == SIMPL::DistributionType::LogNormal)
   {
-    v = FloatArrayType::CreateArray(DREAM3D::DistributionType::LogNormalColumnCount, DREAM3D::StringConstants::Feature_Size_Distribution);
+    v = FloatArrayType::CreateArray(SIMPL::DistributionType::LogNormalColumnCount, SIMPL::StringConstants::Feature_Size_Distribution);
     v->initializeWithZeros();
   }
-  else if(distributionType == DREAM3D::DistributionType::Power)
+  else if(distributionType == SIMPL::DistributionType::Power)
   {
-    v = FloatArrayType::CreateArray(DREAM3D::DistributionType::PowerLawColumnCount, DREAM3D::StringConstants::Feature_Size_Distribution);
+    v = FloatArrayType::CreateArray(SIMPL::DistributionType::PowerLawColumnCount, SIMPL::StringConstants::Feature_Size_Distribution);
     v->initializeWithZeros();
   }
   return v;

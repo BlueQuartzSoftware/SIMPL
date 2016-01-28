@@ -64,7 +64,7 @@ PrecipitateStatsData::~PrecipitateStatsData()
 // -----------------------------------------------------------------------------
 QString PrecipitateStatsData::getStatsType()
 {
-  return DREAM3D::StringConstants::PrecipitateStatsData;
+  return SIMPL::StringConstants::PrecipitateStatsData;
 }
 
 // -----------------------------------------------------------------------------
@@ -72,7 +72,7 @@ QString PrecipitateStatsData::getStatsType()
 // -----------------------------------------------------------------------------
 unsigned int PrecipitateStatsData::getPhaseType()
 {
-  return DREAM3D::PhaseType::PrecipitatePhase;
+  return SIMPL::PhaseType::PrecipitatePhase;
 }
 
 
@@ -92,7 +92,7 @@ FloatArrayType::Pointer PrecipitateStatsData::generateBinNumbers()
     d = d + featureDiameterInfo[0];
   }
   // Copy this into the DataArray<float>
-  m_BinNumbers = FloatArrayType::CreateArray(bins.size(), DREAM3D::StringConstants::BinNumber );
+  m_BinNumbers = FloatArrayType::CreateArray(bins.size(), SIMPL::StringConstants::BinNumber );
   ::memcpy(m_BinNumbers->getVoidPointer(0), &(bins.front()), bins.size() * sizeof(float));
   return m_BinNumbers;
 }
@@ -102,12 +102,12 @@ FloatArrayType::Pointer PrecipitateStatsData::generateBinNumbers()
 // -----------------------------------------------------------------------------
 void PrecipitateStatsData::initialize()
 {
-  m_FeatureSize_DistType = DREAM3D::DistributionType::LogNormal;
-//  m_RadialDistFunctionType = DREAM3D::DistributionType::UnknownDistributionType;
-  m_BOverA_DistType = DREAM3D::DistributionType::Beta;
-  m_COverA_DistType = DREAM3D::DistributionType::Beta;
-  m_Clustering_DistType = DREAM3D::DistributionType::LogNormal;
-  m_Omegas_DistType = DREAM3D::DistributionType::Beta;
+  m_FeatureSize_DistType = SIMPL::DistributionType::LogNormal;
+//  m_RadialDistFunctionType = SIMPL::DistributionType::UnknownDistributionType;
+  m_BOverA_DistType = SIMPL::DistributionType::Beta;
+  m_COverA_DistType = SIMPL::DistributionType::Beta;
+  m_Clustering_DistType = SIMPL::DistributionType::LogNormal;
+  m_Omegas_DistType = SIMPL::DistributionType::Beta;
   m_PrecipBoundaryFraction = 0.0;
 }
 

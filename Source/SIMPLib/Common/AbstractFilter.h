@@ -54,7 +54,7 @@ class ISIMPLibPlugin;
 /**
  * @class AbstractFilter AbstractFilter.h DREAM3DLib/Common/AbstractFilter.h
  * @brief This class is the basic class to subclass when creating a new Filter for
- * DREAM.3D. The subclass must implement at least the  execute method. If an
+ * SIMPLView. The subclass must implement at least the  execute method. If an
  * error occurs during the execution of the filter set the errorCondition to
  * a non zero value and optionally use the setErrorMessage() method to explain what the
  * error was. This class also inherits from Observable so that the filter can

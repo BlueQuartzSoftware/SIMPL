@@ -262,7 +262,7 @@ class SIMPLib_EXPORT IDataArray
      * @return Returns a formatted string that contains general infomation about
      * the instance of the object.
      */
-    virtual QString getInfoString(DREAM3D::InfoStringFormat format) = 0;
+    virtual QString getInfoString(SIMPL::InfoStringFormat format) = 0;
 
   protected:
 

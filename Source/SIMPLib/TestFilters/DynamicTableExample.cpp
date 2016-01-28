@@ -209,7 +209,7 @@ const QString DynamicTableExample::getCompiledLibraryName()
 // -----------------------------------------------------------------------------
 const QString DynamicTableExample::getGroupName()
 {
-  return DREAM3D::FilterGroups::TestFilters;
+  return SIMPL::FilterGroups::TestFilters;
 }
 
 

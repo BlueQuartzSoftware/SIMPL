@@ -49,8 +49,8 @@
 // -----------------------------------------------------------------------------
 ThresholdExample::ThresholdExample() :
   AbstractFilter(),
-  m_DataContainerName(DREAM3D::Defaults::DataContainerName),
-  m_CellAttributeMatrixName(DREAM3D::Defaults::CellAttributeMatrixName)
+  m_DataContainerName(SIMPL::Defaults::DataContainerName),
+  m_CellAttributeMatrixName(SIMPL::Defaults::CellAttributeMatrixName)
 {
   setupFilterParameters();
 }
@@ -240,7 +240,7 @@ const QString ThresholdExample::getCompiledLibraryName()
 // -----------------------------------------------------------------------------
 const QString ThresholdExample::getGroupName()
 {
-  return DREAM3D::FilterGroups::TestFilters;
+  return SIMPL::FilterGroups::TestFilters;
 }
 
 

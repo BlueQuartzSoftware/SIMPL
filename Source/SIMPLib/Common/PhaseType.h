@@ -71,17 +71,17 @@ class SIMPLib_EXPORT PhaseType
     {
       switch(phaseType)
       {
-        case DREAM3D::PhaseType::PrimaryPhase:
+        case SIMPL::PhaseType::PrimaryPhase:
           return PrimaryStr();
-        case DREAM3D::PhaseType::PrecipitatePhase:
+        case SIMPL::PhaseType::PrecipitatePhase:
           return PrecipitateStr();
-        case DREAM3D::PhaseType::TransformationPhase:
+        case SIMPL::PhaseType::TransformationPhase:
           return TransformationStr();
-        case DREAM3D::PhaseType::MatrixPhase:
+        case SIMPL::PhaseType::MatrixPhase:
           return MatrixStr();
-        case DREAM3D::PhaseType::BoundaryPhase:
+        case SIMPL::PhaseType::BoundaryPhase:
           return BoundaryStr();
-        case DREAM3D::PhaseType::UnknownPhaseType:
+        case SIMPL::PhaseType::UnknownPhaseType:
           return UnknownPhaseTypeStr();
         default:
           break;
@@ -93,25 +93,25 @@ class SIMPLib_EXPORT PhaseType
     {
       if (PrimaryStr().compare(str) == 0)
       {
-        return DREAM3D::PhaseType::PrimaryPhase;
+        return SIMPL::PhaseType::PrimaryPhase;
       }
       else if (PrecipitateStr().compare(str) == 0)
       {
-        return DREAM3D::PhaseType::PrecipitatePhase;
+        return SIMPL::PhaseType::PrecipitatePhase;
       }
       else if (TransformationStr().compare(str) == 0)
       {
-        return DREAM3D::PhaseType::TransformationPhase;
+        return SIMPL::PhaseType::TransformationPhase;
       }
       else if (MatrixStr().compare(str) == 0)
       {
-        return DREAM3D::PhaseType::MatrixPhase;
+        return SIMPL::PhaseType::MatrixPhase;
       }
       else if (BoundaryStr().compare(str) == 0)
       {
-        return DREAM3D::PhaseType::BoundaryPhase;
+        return SIMPL::PhaseType::BoundaryPhase;
       }
-      return DREAM3D::PhaseType::UnknownPhaseType;
+      return SIMPL::PhaseType::UnknownPhaseType;
     }
 
 
@@ -129,23 +129,23 @@ class SIMPLib_EXPORT PhaseType
     static void getPhaseTypeEnums(QVector<unsigned int>& types)
     {
       types.clear();
-      types.push_back(DREAM3D::PhaseType::PrimaryPhase);
-      types.push_back(DREAM3D::PhaseType::PrecipitatePhase);
-      types.push_back(DREAM3D::PhaseType::TransformationPhase);
-      types.push_back(DREAM3D::PhaseType::MatrixPhase);
-      types.push_back(DREAM3D::PhaseType::BoundaryPhase);
-      types.push_back(DREAM3D::PhaseType::UnknownPhaseType);
+      types.push_back(SIMPL::PhaseType::PrimaryPhase);
+      types.push_back(SIMPL::PhaseType::PrecipitatePhase);
+      types.push_back(SIMPL::PhaseType::TransformationPhase);
+      types.push_back(SIMPL::PhaseType::MatrixPhase);
+      types.push_back(SIMPL::PhaseType::BoundaryPhase);
+      types.push_back(SIMPL::PhaseType::UnknownPhaseType);
     }
 
     static void getPhaseTypeMap(QMap<int, QString>& map)
     {
       map.clear();
-      map[DREAM3D::PhaseType::PrimaryPhase] = PrimaryStr();
-      map[DREAM3D::PhaseType::PrecipitatePhase] = PrecipitateStr();
-      map[DREAM3D::PhaseType::TransformationPhase] = TransformationStr();
-      map[DREAM3D::PhaseType::MatrixPhase] = MatrixStr();
-      map[DREAM3D::PhaseType::BoundaryPhase] = BoundaryStr();
-      map[DREAM3D::PhaseType::UnknownPhaseType] = UnknownPhaseTypeStr();
+      map[SIMPL::PhaseType::PrimaryPhase] = PrimaryStr();
+      map[SIMPL::PhaseType::PrecipitatePhase] = PrecipitateStr();
+      map[SIMPL::PhaseType::TransformationPhase] = TransformationStr();
+      map[SIMPL::PhaseType::MatrixPhase] = MatrixStr();
+      map[SIMPL::PhaseType::BoundaryPhase] = BoundaryStr();
+      map[SIMPL::PhaseType::UnknownPhaseType] = UnknownPhaseTypeStr();
     }
 
   protected:

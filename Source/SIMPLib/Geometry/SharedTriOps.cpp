@@ -40,7 +40,7 @@
 SharedTriList::Pointer GEOM_CLASS_NAME::CreateSharedTriList(int64_t numTris)
 {
   QVector<size_t> triDims(1, 3);
-  SharedTriList::Pointer triangles = SharedEdgeList::CreateArray(numTris, triDims, DREAM3D::Geometry::SharedTriList);
+  SharedTriList::Pointer triangles = SharedEdgeList::CreateArray(numTris, triDims, SIMPL::Geometry::SharedTriList);
   triangles->initializeWithZeros();
   return triangles;
 }
@@ -60,9 +60,9 @@ void GEOM_CLASS_NAME::setTriangles(SharedTriList::Pointer triangles)
 {
   if (triangles.get() != NULL)
   {
-    if (triangles->getName().compare(DREAM3D::Geometry::SharedTriList) != 0)
+    if (triangles->getName().compare(SIMPL::Geometry::SharedTriList) != 0)
     {
-      triangles->setName(DREAM3D::Geometry::SharedTriList);
+      triangles->setName(SIMPL::Geometry::SharedTriList);
     }
   }
   m_TriList = triangles;

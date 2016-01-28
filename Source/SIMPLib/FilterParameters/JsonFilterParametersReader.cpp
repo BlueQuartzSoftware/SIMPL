@@ -117,8 +117,8 @@ FilterPipeline::Pointer JsonFilterParametersReader::ReadPipeline(JsonFilterParam
   FilterFactory<EmptyFilter>::Pointer emptyFilterFactory = FilterFactory<EmptyFilter>::New();
   filtManager->addFilterFactory("EmptyFilter", emptyFilterFactory);
 
-  reader->openGroup(DREAM3D::Settings::PipelineBuilderGroup);
-  int filterCount = reader->readValue(DREAM3D::Settings::NumFilters, 0);
+  reader->openGroup(SIMPL::Settings::PipelineBuilderGroup);
+  int filterCount = reader->readValue(SIMPL::Settings::NumFilters, 0);
   reader->closeGroup();
 
   FilterPipeline::Pointer pipeline = FilterPipeline::New();
@@ -130,7 +130,7 @@ FilterPipeline::Pointer JsonFilterParametersReader::ReadPipeline(JsonFilterParam
     int err = reader->openFilterGroup(NULL, i);
     if (err == 0)
     {
-      filterName = reader->readString(DREAM3D::Settings::FilterName, "");
+      filterName = reader->readString(SIMPL::Settings::FilterName, "");
     }
     reader->closeFilterGroup();
     //qDebug() << "Group: " << gName << " FilterName: " << filterName;
@@ -222,9 +222,9 @@ void JsonFilterParametersReader::ReadNameOfPipelineFromFile(QString filePath, QS
     return;
   }
 
-  err = reader->openGroup(DREAM3D::Settings::PipelineBuilderGroup);
-  name = reader->readString(DREAM3D::Settings::PipelineName, "");
-  version = reader->readString(DREAM3D::Settings::Version, "Unknown DREAM3D Version");
+  err = reader->openGroup(SIMPL::Settings::PipelineBuilderGroup);
+  name = reader->readString(SIMPL::Settings::PipelineName, "");
+  version = reader->readString(SIMPL::Settings::Version, "Unknown DREAM3D Version");
   reader->closeGroup();
 }
 

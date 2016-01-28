@@ -73,7 +73,7 @@ void readPipeline(QFilterParametersReader::Pointer paramsReader, FilterPipeline:
 {
   FilterManager* filtManager = FilterManager::Instance();
   QSettings* prefs = paramsReader->getPrefs();
-  prefs->beginGroup(DREAM3D::Settings::PipelineBuilderGroup);
+  prefs->beginGroup(SIMPL::Settings::PipelineBuilderGroup);
   bool ok = false;
   int filterCount = prefs->value("Number_Filters").toInt(&ok);
   prefs->endGroup();
@@ -118,7 +118,7 @@ int main (int argc, char*  argv[])
   QTextStream ss(&str);
   ss << "Pipeline Runner (" << SIMPLib::Version::Major() << "." << SIMPLib::Version::Minor() << "."
      << SIMPLib::Version::Patch()
-     << "): This application will run a DREAM.3D pipeline stored in a JSON formatted pipeline file. ";
+     << "): This application will run a SIMPLView pipeline stored in a JSON formatted pipeline file. ";
   parser.setApplicationDescription(str);
   parser.addHelpOption();
   parser.addVersionOption();

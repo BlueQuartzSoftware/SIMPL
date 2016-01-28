@@ -400,9 +400,9 @@ class FindImageDerivativesImpl
 // -----------------------------------------------------------------------------
 ImageGeom::ImageGeom()
 {
-  m_GeometryTypeName = DREAM3D::Geometry::ImageGeometry;
-  m_GeometryType = DREAM3D::GeometryType::ImageGeometry;
-  m_XdmfGridType = DREAM3D::XdmfGridType::RectilinearGrid;
+  m_GeometryTypeName = SIMPL::Geometry::ImageGeometry;
+  m_GeometryType = SIMPL::GeometryType::ImageGeometry;
+  m_XdmfGridType = SIMPL::XdmfGridType::RectilinearGrid;
   m_MessagePrefix = "";
   m_MessageTitle = "";
   m_MessageLabel = "";
@@ -804,7 +804,7 @@ int ImageGeom::writeXdmf(QTextStream& out, QString dcName, QString hdfFileName)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-QString ImageGeom::getInfoString(DREAM3D::InfoStringFormat format)
+QString ImageGeom::getInfoString(SIMPL::InfoStringFormat format)
 {
   QString info;
   QTextStream ss (&info);
@@ -817,7 +817,7 @@ QString ImageGeom::getInfoString(DREAM3D::InfoStringFormat format)
   { 0.0f, 0.0f, 0.0f };
   getOrigin(origin);
 
-  if(format == DREAM3D::HtmlFormat)
+  if(format == SIMPL::HtmlFormat)
   {
     ss << "<tr bgcolor=\"#D3D8E0\"><th colspan=2>Image Geometry Info</th></tr>";
     ss << "<tr bgcolor=\"#C3C8D0\"><th align=\"right\">Dimensions:</th><td>" << volDims[0] << " x " << volDims[1] << " x " << volDims[2] << "</td></tr>";

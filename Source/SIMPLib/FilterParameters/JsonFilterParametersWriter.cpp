@@ -172,22 +172,22 @@ QJsonDocument JsonFilterParametersWriter::toDocument()
 {
   // Write our File Version and DREAM3D Version strings
   QJsonObject meta;
-  meta[DREAM3D::Settings::PipelineName] = m_PipelineName;
-  meta[DREAM3D::Settings::Version] = SIMPLib::Version::Package();
+  meta[SIMPL::Settings::PipelineName] = m_PipelineName;
+  meta[SIMPL::Settings::Version] = SIMPLib::Version::Package();
 
   if (m_Root.size() > 0)
   {
-    meta[DREAM3D::Settings::NumFilters] = m_CurrentIndex + 1;
+    meta[SIMPL::Settings::NumFilters] = m_CurrentIndex + 1;
   }
   else
   {
-    meta[DREAM3D::Settings::NumFilters] = 0;
+    meta[SIMPL::Settings::NumFilters] = 0;
   }
 
-  m_Root[DREAM3D::Settings::PipelineBuilderGroup] = meta;
+  m_Root[SIMPL::Settings::PipelineBuilderGroup] = meta;
   QJsonDocument doc(m_Root);
 
-  m_Root.remove(DREAM3D::Settings::PipelineBuilderGroup);
+  m_Root.remove(SIMPL::Settings::PipelineBuilderGroup);
 
   return doc;
 }
@@ -209,8 +209,8 @@ int JsonFilterParametersWriter::openFilterGroup(AbstractFilter* filter, int inde
     m_CurrentFilterIndex = QJsonObject();
     if(filter)
     {
-      writeValue(DREAM3D::Settings::FilterName, filter->getNameOfClass());
-      writeValue(DREAM3D::Settings::HumanLabel, filter->getHumanLabel());
+      writeValue(SIMPL::Settings::FilterName, filter->getNameOfClass());
+      writeValue(SIMPL::Settings::HumanLabel, filter->getHumanLabel());
     }
   }
 

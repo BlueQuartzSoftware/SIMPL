@@ -186,7 +186,7 @@ const QString CreateDataContainer::getFilterVersion()
 //
 // -----------------------------------------------------------------------------
 const QString CreateDataContainer::getGroupName()
-{ return DREAM3D::FilterGroups::CoreFilters; }
+{ return SIMPL::FilterGroups::CoreFilters; }
 
 // -----------------------------------------------------------------------------
 //
@@ -198,5 +198,5 @@ const QString CreateDataContainer::getHumanLabel()
 //
 // -----------------------------------------------------------------------------
 const QString CreateDataContainer::getSubGroupName()
-{ return DREAM3D::FilterSubGroups::GenerationFilters; }
+{ return SIMPL::FilterSubGroups::GenerationFilters; }
 

@@ -72,7 +72,7 @@ void MatrixStatsData::initialize()
 // -----------------------------------------------------------------------------
 QString MatrixStatsData::getStatsType()
 {
-  return DREAM3D::StringConstants::MatrixStatsData;
+  return SIMPL::StringConstants::MatrixStatsData;
 }
 
 // -----------------------------------------------------------------------------
@@ -80,7 +80,7 @@ QString MatrixStatsData::getStatsType()
 // -----------------------------------------------------------------------------
 unsigned int MatrixStatsData::getPhaseType()
 {
-  return DREAM3D::PhaseType::MatrixPhase;
+  return SIMPL::PhaseType::MatrixPhase;
 }
 
 // -----------------------------------------------------------------------------

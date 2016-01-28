@@ -73,7 +73,7 @@ void BoundaryStatsData::initialize()
 // -----------------------------------------------------------------------------
 QString BoundaryStatsData::getStatsType()
 {
-  return DREAM3D::StringConstants::BoundaryStatsData;
+  return SIMPL::StringConstants::BoundaryStatsData;
 }
 
 
@@ -82,7 +82,7 @@ QString BoundaryStatsData::getStatsType()
 // -----------------------------------------------------------------------------
 unsigned int BoundaryStatsData::getPhaseType()
 {
-  return DREAM3D::PhaseType::BoundaryPhase;
+  return SIMPL::PhaseType::BoundaryPhase;
 }
 
 
