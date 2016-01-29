@@ -43,66 +43,84 @@
 
 #include "SIMPLTestFileLocations.h"
 
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-void RemoveTestFiles()
+class ErrorMessageTest
 {
-
-}
-
-
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-void TestErrorMessage()
-{
-  PipelineMessage e0;
-
-  QString a0("Some Class Name");
-  QString a1("Description");
-  int eCode = -10;
-  PipelineMessage e1;
+  public:
+    ErrorMessageTest() {}
+    virtual ~ErrorMessageTest() {}
 
 
-  PipelineMessage e2(a0, a1, eCode);
+    // -----------------------------------------------------------------------------
+    //
+    // -----------------------------------------------------------------------------
+    void RemoveTestFiles()
+    {
 
-  AbstractFilter::Pointer f = AbstractFilter::New();
-  f->notifyErrorMessage("Some Test", a1, eCode);
-  f->notifyErrorMessage("Another Test", "A description", -10);
+    }
 
-  PipelineMessage pm("Joey's Test", "Testing Warning Message...", -23, PipelineMessage::Warning);
-  PipelineMessage pm1("Joey's Test", "Testing Error Message...", -23, PipelineMessage::Error);
-  PipelineMessage pm2("Joey's Test", "Testing Status Message...", -23, PipelineMessage::StatusMessage);
-  PipelineMessage pm3("Joey's Test", "Testing Status Message...", -23, PipelineMessage::ProgressValue, 23);
-  f->broadcastPipelineMessage(pm);
-  f->broadcastPipelineMessage(pm1);
-  f->broadcastPipelineMessage(pm2);
 
-  if (true)
-  { return; }
 
-}
+    // -----------------------------------------------------------------------------
+    //
+    // -----------------------------------------------------------------------------
+    void TestErrorMessage()
+    {
+      PipelineMessage e0;
+
+      QString a0("Some Class Name");
+      QString a1("Description");
+      int eCode = -10;
+      PipelineMessage e1;
+
+
+      PipelineMessage e2(a0, a1, eCode);
+
+      AbstractFilter::Pointer f = AbstractFilter::New();
+      f->notifyErrorMessage("Some Test", a1, eCode);
+      f->notifyErrorMessage("Another Test", "A description", -10);
+
+      PipelineMessage pm("Joey's Test", "Testing Warning Message...", -23, PipelineMessage::Warning);
+      PipelineMessage pm1("Joey's Test", "Testing Error Message...", -23, PipelineMessage::Error);
+      PipelineMessage pm2("Joey's Test", "Testing Status Message...", -23, PipelineMessage::StatusMessage);
+      PipelineMessage pm3("Joey's Test", "Testing Status Message...", -23, PipelineMessage::ProgressValue, 23);
+      f->broadcastPipelineMessage(pm);
+      f->broadcastPipelineMessage(pm1);
+      f->broadcastPipelineMessage(pm2);
+
+      if (true)
+      { return; }
+
+    }
+
+    void operator()()
+    {
+      int err = EXIT_SUCCESS;
+
+#if !REMOVE_TEST_FILES
+      DREAM3D_REGISTER_TEST( RemoveTestFiles() )
+    #endif
+          DREAM3D_REGISTER_TEST( TestErrorMessage() )
+
+    #if REMOVE_TEST_FILES
+          DREAM3D_REGISTER_TEST( RemoveTestFiles() )
+    #endif
+    }
+
+  private:
+    ErrorMessageTest(const ErrorMessageTest&); // Copy Constructor Not Implemented
+    void operator=(const ErrorMessageTest&); // Operator '=' Not Implemented
+};
+
 
 // -----------------------------------------------------------------------------
 //  Use test framework
 // -----------------------------------------------------------------------------
-int main(int argc, char** argv)
-{
+//int main(int argc, char** argv)
+//{
 
-  int err = EXIT_SUCCESS;
 
-#if !REMOVE_TEST_FILES
-  DREAM3D_REGISTER_TEST( RemoveTestFiles() )
-#endif
-  DREAM3D_REGISTER_TEST( TestErrorMessage() )
-
-#if REMOVE_TEST_FILES
-  DREAM3D_REGISTER_TEST( RemoveTestFiles() )
-#endif
-  PRINT_TEST_SUMMARY();
-  return err;
-}
+//  PRINT_TEST_SUMMARY();
+//  return err;
+//}
 
 

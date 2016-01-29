@@ -310,762 +310,779 @@ namespace DynamicTableDataTest
   QString ColumnHeader8 = "Column 8";
 };
 
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-void RemoveTestFiles()
+
+class FilterParametersRWTest
 {
-#if REMOVE_TEST_FILES
-  QFile::remove(UnitTest::FilterParametersRWTest::OutputFile);
-#endif
-}
-
-
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-int TestJsonWriter()
-{
-  JsonFilterParametersWriter::Pointer writer = JsonFilterParametersWriter::New();
-  writer->setFileName(UnitTest::FilterParametersRWTest::OutputFile);
-  writer->setPipelineName("TestPipelineName");
-
-  int err = 0;
-
-  err = writer->openFilterGroup(NULL, 0);
-  DREAM3D_REQUIRE_EQUAL(err, 0)
-
-  // QString write test
-  {
-    err = writer->writeValue(StringTest::Key, StringTest::Value);
-    DREAM3D_REQUIRE_EQUAL(err, 0)
-  }
-
-  // QVector<QString> write test
-  {
-    QVector<QString> vector;
-    vector.push_back(StringVectorTest::Value1);
-    vector.push_back(StringVectorTest::Value2);
-    vector.push_back(StringVectorTest::Value3);
-    vector.push_back(StringVectorTest::Value4);
-    err = writer->writeValue(StringVectorTest::Key, vector);
-    DREAM3D_REQUIRE_EQUAL(err, 0)
-  }
-
-  // IntVec3_t write test
-  {
-    IntVec3_t vec3;
-    vec3.x = IntVec3Test::X;
-    vec3.y = IntVec3Test::Y;
-    vec3.z = IntVec3Test::Z;
-    err = writer->writeValue(IntVec3Test::Key, vec3);
-    DREAM3D_REQUIRE_EQUAL(err, 0)
-  }
-
-  // FloatVec3_t write test
-  {
-    FloatVec3_t vec3;
-    vec3.x = FloatVec3Test::X;
-    vec3.y = FloatVec3Test::Y;
-    vec3.z = FloatVec3Test::Z;
-    err = writer->writeValue(FloatVec3Test::Key, vec3);
-    DREAM3D_REQUIRE_EQUAL(err, 0)
-  }
-
-  // Float2ndOrderPoly_t write test
-  {
-    Float2ndOrderPoly_t poly;
-    poly.c20 = Float2ndOrderPolyTest::Val1;
-    poly.c02 = Float2ndOrderPolyTest::Val2;
-    poly.c11 = Float2ndOrderPolyTest::Val3;
-    poly.c10 = Float2ndOrderPolyTest::Val4;
-    poly.c01 = Float2ndOrderPolyTest::Val5;
-    poly.c00 = Float2ndOrderPolyTest::Val6;
-
-    err = writer->writeValue(Float2ndOrderPolyTest::Key, poly);
-    DREAM3D_REQUIRE_EQUAL(err, 0)
-  }
-
-  // Float3rdOrderPoly_t write test
-  {
-    Float3rdOrderPoly_t poly;
-    poly.c30 = Float3rdOrderPolyTest::Val1;
-    poly.c03 = Float3rdOrderPolyTest::Val2;
-    poly.c21 = Float3rdOrderPolyTest::Val3;
-    poly.c12 = Float3rdOrderPolyTest::Val4;
-    poly.c20 = Float3rdOrderPolyTest::Val5;
-    poly.c02 = Float3rdOrderPolyTest::Val6;
-    poly.c11 = Float3rdOrderPolyTest::Val7;
-    poly.c10 = Float3rdOrderPolyTest::Val8;
-    poly.c01 = Float3rdOrderPolyTest::Val9;
-    poly.c00 = Float3rdOrderPolyTest::Val10;
-
-    err = writer->writeValue(Float3rdOrderPolyTest::Key, poly);
-    DREAM3D_REQUIRE_EQUAL(err, 0)
-  }
-
-  // Float4thOrderPoly_t write test
-  {
-    Float4thOrderPoly_t poly;
-    poly.c02 = Float4thOrderPolyTest::Val1;
-    poly.c11 = Float4thOrderPolyTest::Val2;
-    poly.c10 = Float4thOrderPolyTest::Val3;
-    poly.c01 = Float4thOrderPolyTest::Val4;
-    poly.c00 = Float4thOrderPolyTest::Val5;
-    poly.c40 = Float4thOrderPolyTest::Val6;
-    poly.c04 = Float4thOrderPolyTest::Val7;
-    poly.c31 = Float4thOrderPolyTest::Val8;
-    poly.c13 = Float4thOrderPolyTest::Val9;
-    poly.c22 = Float4thOrderPolyTest::Val10;
-    poly.c30 = Float4thOrderPolyTest::Val11;
-    poly.c03 = Float4thOrderPolyTest::Val12;
-    poly.c21 = Float4thOrderPolyTest::Val13;
-    poly.c12 = Float4thOrderPolyTest::Val14;
-    poly.c20 = Float4thOrderPolyTest::Val15;
-
-    err = writer->writeValue(Float4thOrderPolyTest::Key, poly);
-    DREAM3D_REQUIRE_EQUAL(err, 0)
-  }
-
-  // FileListInfo_t write test
-  {
-    FileListInfo_t info;
-    info.PaddingDigits = FileListInfoTest::PaddingDigits;
-    info.Ordering = FileListInfoTest::Ordering;
-    info.StartIndex = FileListInfoTest::StartIndex;
-    info.EndIndex = FileListInfoTest::EndIndex;
-    info.InputPath = FileListInfoTest::InputPath;
-    info.FilePrefix = FileListInfoTest::FilePrefix;
-    info.FileSuffix = FileListInfoTest::FileSuffix;
-    info.FileExtension = FileListInfoTest::FileExtension;
-
-    err = writer->writeValue(FileListInfoTest::Key, info);
-    DREAM3D_REQUIRE_EQUAL(err, 0)
-  }
-
-  // ComparisonInput_t write test
-  {
-    ComparisonInput_t input;
-    input.dataContainerName = ComparisonInputTest::DataContainerName;
-    input.attributeMatrixName = ComparisonInputTest::AttributeMatrixName;
-    input.attributeArrayName = ComparisonInputTest::AttributeArrayName;
-    input.compOperator = ComparisonInputTest::CompOperator;
-    input.compValue = ComparisonInputTest::CompValue;
-
-    err = writer->writeValue(ComparisonInputTest::Key, input);
-    DREAM3D_REQUIRE_EQUAL(err, 0)
-  }
-
-  // ComparisonInputs write test
-  {
-    ComparisonInputs inputs;
-
-    ComparisonInput_t input1;
-    input1.dataContainerName = MultipleComparisonInputTest::DataContainerName1;
-    input1.attributeMatrixName = MultipleComparisonInputTest::AttributeMatrixName1;
-    input1.attributeArrayName = MultipleComparisonInputTest::AttributeArrayName1;
-    input1.compOperator = MultipleComparisonInputTest::CompOperator1;
-    input1.compValue = MultipleComparisonInputTest::CompValue1;
-    inputs.addInput(input1);
-
-    ComparisonInput_t input2;
-    input2.dataContainerName = MultipleComparisonInputTest::DataContainerName2;
-    input2.attributeMatrixName = MultipleComparisonInputTest::AttributeMatrixName2;
-    input2.attributeArrayName = MultipleComparisonInputTest::AttributeArrayName2;
-    input2.compOperator = MultipleComparisonInputTest::CompOperator2;
-    input2.compValue = MultipleComparisonInputTest::CompValue2;
-    inputs.addInput(input2);
-
-    err = writer->writeValue(MultipleComparisonInputTest::Key, inputs);
-    DREAM3D_REQUIRE_EQUAL(err, 0)
-  }
-
-  // QVector<AxisAngleInput_t> write test
-  {
-    QVector<AxisAngleInput_t> inputs;
-
-    AxisAngleInput_t input1;
-    input1.angle = MultipleAxisAngleInputTest::Angle1;
-    input1.h = MultipleAxisAngleInputTest::H1;
-    input1.k = MultipleAxisAngleInputTest::K1;
-    input1.l = MultipleAxisAngleInputTest::L1;
-    inputs.push_back(input1);
-
-    AxisAngleInput_t input2;
-    input2.angle = MultipleAxisAngleInputTest::Angle2;
-    input2.h = MultipleAxisAngleInputTest::H2;
-    input2.k = MultipleAxisAngleInputTest::K2;
-    input2.l = MultipleAxisAngleInputTest::L2;
-    inputs.push_back(input2);
-
-    err = writer->writeValue(MultipleAxisAngleInputTest::Key, inputs);
-    DREAM3D_REQUIRE_EQUAL(err, 0)
-  }
-
-  // AxisAngleInput_t write test
-  {
-    AxisAngleInput_t input;
-    input.angle = AxisAngleInputTest::Angle;
-    input.h = AxisAngleInputTest::H;
-    input.k = AxisAngleInputTest::K;
-    input.l = AxisAngleInputTest::L;
-
-    err = writer->writeValue(AxisAngleInputTest::Key, input);
-    DREAM3D_REQUIRE_EQUAL(err, 0)
-  }
-
-  // QSet<QString> write test
-  {
-    QSet<QString> set;
-    set << StringSetTest::String1 << StringSetTest::String2 << StringSetTest::String3 << StringSetTest::String4;
-
-    err = writer->writeArraySelections(StringSetTest::Key, set);
-    DREAM3D_REQUIRE_EQUAL(err, 0)
-  }
-
-  // DataContainerArrayProxy write test
-  {
-    DataContainerArrayProxy proxy;
-    DataContainerProxy dcProxy(DataContainerArrayProxyTest::DcProxyName);
-    AttributeMatrixProxy amProxy1(DataContainerArrayProxyTest::AmProxyName1);
-    AttributeMatrixProxy amProxy2(DataContainerArrayProxyTest::AmProxyName2);
-    DataArrayProxy daProxy1(DataContainerArrayProxyTest::DaProxyName1, DataContainerArrayProxyTest::DaProxyName1);
-    DataArrayProxy daProxy2(DataContainerArrayProxyTest::DaProxyName2, DataContainerArrayProxyTest::DaProxyName2);
-    DataArrayProxy daProxy3(DataContainerArrayProxyTest::DaProxyName3, DataContainerArrayProxyTest::DaProxyName3);
-    amProxy1.dataArrays.insert(daProxy1.name, daProxy1);
-    amProxy1.dataArrays.insert(daProxy2.name, daProxy2);
-    amProxy2.dataArrays.insert(daProxy3.name, daProxy3);
-    dcProxy.attributeMatricies.insert(amProxy1.name, amProxy1);
-    dcProxy.attributeMatricies.insert(amProxy2.name, amProxy2);
-    proxy.dataContainers.insert(dcProxy.name, dcProxy);
-
-    err = writer->writeValue(DataContainerArrayProxyTest::Key, proxy);
-    DREAM3D_REQUIRE_EQUAL(err, 0)
-  }
-
-  // DataArrayPath write test
-  {
-    DataArrayPath path(DataArrayPathTest::DCName, DataArrayPathTest::AMName, DataArrayPathTest::DAName);
-
-    err = writer->writeValue(DataArrayPathTest::Key, path);
-    DREAM3D_REQUIRE_EQUAL(err, 0)
-  }
-
-  // QVector<DataArrayPath> write test
-  {
-    QVector<DataArrayPath> paths;
-    paths.push_back(DataArrayPath(MultipleDataArrayPathTest::DCName1, MultipleDataArrayPathTest::AMName1, MultipleDataArrayPathTest::DAName1));
-    paths.push_back(DataArrayPath(MultipleDataArrayPathTest::DCName2, MultipleDataArrayPathTest::AMName2, MultipleDataArrayPathTest::DAName2));
-
-    err = writer->writeValue(MultipleDataArrayPathTest::Key, paths);
-    DREAM3D_REQUIRE_EQUAL(err, 0)
-  }
-
-  // DynamicTableData write test
-  {
-    QStringList rHeaders, cHeaders;
-    rHeaders << DynamicTableDataTest::RowHeader1 << DynamicTableDataTest::RowHeader2 << DynamicTableDataTest::RowHeader3 << DynamicTableDataTest::RowHeader4;
-    rHeaders << DynamicTableDataTest::RowHeader5 << DynamicTableDataTest::RowHeader6;
-    cHeaders << DynamicTableDataTest::ColumnHeader1 << DynamicTableDataTest::ColumnHeader2 << DynamicTableDataTest::ColumnHeader3 << DynamicTableDataTest::ColumnHeader4;
-    cHeaders << DynamicTableDataTest::ColumnHeader5 << DynamicTableDataTest::ColumnHeader6 << DynamicTableDataTest::ColumnHeader7 << DynamicTableDataTest::ColumnHeader8;
-    DynamicTableData data(DynamicTableDataTest::NumRows, DynamicTableDataTest::NumColumns, rHeaders, cHeaders);
-
-    err = writer->writeValue(DynamicTableDataTest::Key, data);
-    DREAM3D_REQUIRE_EQUAL(err, 0)
-  }
-
-
-  err = writer->closeFilterGroup();
-  DREAM3D_REQUIRE_EQUAL(err, 0)
-
-  return EXIT_SUCCESS;
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-int TestJsonReader()
-{
-  JsonFilterParametersReader::Pointer reader = JsonFilterParametersReader::New();
-  int err = reader->openFile(UnitTest::FilterParametersRWTest::OutputFile);
-  DREAM3D_REQUIRE_EQUAL(err, 0)
-
-  err = reader->openFilterGroup(NULL, 0);
-  DREAM3D_REQUIRE_EQUAL(err, 0)
-
-  // QString read test
-  {
-    QString str = reader->readString(StringTest::Key, "");
-    DREAM3D_REQUIRE_EQUAL(str, StringTest::Value)
-  }
-
-  // QVector<QString> read test
-  {
-    QVector<QString> vector = reader->readStrings(StringVectorTest::Key, QVector<QString>());
-    DREAM3D_REQUIRE_EQUAL(vector.size(), 4)
-    DREAM3D_REQUIRE_EQUAL(vector[0], StringVectorTest::Value1)
-    DREAM3D_REQUIRE_EQUAL(vector[1], StringVectorTest::Value2)
-    DREAM3D_REQUIRE_EQUAL(vector[2], StringVectorTest::Value3)
-    DREAM3D_REQUIRE_EQUAL(vector[3], StringVectorTest::Value4)
-  }
-
-  // IntVec3_t read test
-  {
-    IntVec3_t intvec3 = reader->readIntVec3(IntVec3Test::Key, IntVec3_t());
-    DREAM3D_REQUIRE_EQUAL(intvec3.x, IntVec3Test::X)
-    DREAM3D_REQUIRE_EQUAL(intvec3.y, IntVec3Test::Y)
-    DREAM3D_REQUIRE_EQUAL(intvec3.z, IntVec3Test::Z)
-  }
-
-  // FloatVec3_t read test
-  {
-    FloatVec3_t floatvec3 = reader->readFloatVec3(FloatVec3Test::Key, FloatVec3_t());
-    DREAM3D_REQUIRE_EQUAL(floatvec3.x, FloatVec3Test::X)
-    DREAM3D_REQUIRE_EQUAL(floatvec3.y, FloatVec3Test::Y)
-    DREAM3D_REQUIRE_EQUAL(floatvec3.z, FloatVec3Test::Z)
-  }
-
-  // Float2ndOrderPoly_t read test
-  {
-    Float2ndOrderPoly_t floatPoly = reader->readFloat2ndOrderPoly(Float2ndOrderPolyTest::Key, Float2ndOrderPoly_t());
-    DREAM3D_REQUIRE_EQUAL(floatPoly.c20, Float2ndOrderPolyTest::Val1)
-    DREAM3D_REQUIRE_EQUAL(floatPoly.c02, Float2ndOrderPolyTest::Val2)
-    DREAM3D_REQUIRE_EQUAL(floatPoly.c11, Float2ndOrderPolyTest::Val3)
-    DREAM3D_REQUIRE_EQUAL(floatPoly.c10, Float2ndOrderPolyTest::Val4)
-    DREAM3D_REQUIRE_EQUAL(floatPoly.c01, Float2ndOrderPolyTest::Val5)
-    DREAM3D_REQUIRE_EQUAL(floatPoly.c00, Float2ndOrderPolyTest::Val6)
-  }
-
-  // Float3rdOrderPoly_t read test
-  {
-    Float3rdOrderPoly_t floatPoly = reader->readFloat3rdOrderPoly(Float3rdOrderPolyTest::Key, Float3rdOrderPoly_t());
-    DREAM3D_REQUIRE_EQUAL(floatPoly.c30, Float3rdOrderPolyTest::Val1)
-    DREAM3D_REQUIRE_EQUAL(floatPoly.c03, Float3rdOrderPolyTest::Val2)
-    DREAM3D_REQUIRE_EQUAL(floatPoly.c21, Float3rdOrderPolyTest::Val3)
-    DREAM3D_REQUIRE_EQUAL(floatPoly.c12, Float3rdOrderPolyTest::Val4)
-    DREAM3D_REQUIRE_EQUAL(floatPoly.c20, Float3rdOrderPolyTest::Val5)
-    DREAM3D_REQUIRE_EQUAL(floatPoly.c02, Float3rdOrderPolyTest::Val6)
-    DREAM3D_REQUIRE_EQUAL(floatPoly.c11, Float3rdOrderPolyTest::Val7)
-    DREAM3D_REQUIRE_EQUAL(floatPoly.c10, Float3rdOrderPolyTest::Val8)
-    DREAM3D_REQUIRE_EQUAL(floatPoly.c01, Float3rdOrderPolyTest::Val9)
-    DREAM3D_REQUIRE_EQUAL(floatPoly.c00, Float3rdOrderPolyTest::Val10)
-  }
-
-  // Float4thOrderPoly_t read test
-  {
-    Float4thOrderPoly_t floatPoly = reader->readFloat4thOrderPoly(Float4thOrderPolyTest::Key, Float4thOrderPoly_t());
-    DREAM3D_REQUIRE_EQUAL(floatPoly.c02, Float4thOrderPolyTest::Val1)
-    DREAM3D_REQUIRE_EQUAL(floatPoly.c11, Float4thOrderPolyTest::Val2)
-    DREAM3D_REQUIRE_EQUAL(floatPoly.c10, Float4thOrderPolyTest::Val3)
-    DREAM3D_REQUIRE_EQUAL(floatPoly.c01, Float4thOrderPolyTest::Val4)
-    DREAM3D_REQUIRE_EQUAL(floatPoly.c00, Float4thOrderPolyTest::Val5)
-    DREAM3D_REQUIRE_EQUAL(floatPoly.c40, Float4thOrderPolyTest::Val6)
-    DREAM3D_REQUIRE_EQUAL(floatPoly.c04, Float4thOrderPolyTest::Val7)
-    DREAM3D_REQUIRE_EQUAL(floatPoly.c31, Float4thOrderPolyTest::Val8)
-    DREAM3D_REQUIRE_EQUAL(floatPoly.c13, Float4thOrderPolyTest::Val9)
-    DREAM3D_REQUIRE_EQUAL(floatPoly.c22, Float4thOrderPolyTest::Val10)
-    DREAM3D_REQUIRE_EQUAL(floatPoly.c30, Float4thOrderPolyTest::Val11)
-    DREAM3D_REQUIRE_EQUAL(floatPoly.c03, Float4thOrderPolyTest::Val12)
-    DREAM3D_REQUIRE_EQUAL(floatPoly.c21, Float4thOrderPolyTest::Val13)
-    DREAM3D_REQUIRE_EQUAL(floatPoly.c12, Float4thOrderPolyTest::Val14)
-    DREAM3D_REQUIRE_EQUAL(floatPoly.c20, Float4thOrderPolyTest::Val15)
-  }
-
-  // FileListInfo_t read test
-  {
-    FileListInfo_t fileListInfo = reader->readFileListInfo(FileListInfoTest::Key, FileListInfo_t());
-    DREAM3D_REQUIRE_EQUAL(fileListInfo.EndIndex, FileListInfoTest::EndIndex)
-    DREAM3D_REQUIRE_EQUAL(fileListInfo.FileExtension, FileListInfoTest::FileExtension)
-    DREAM3D_REQUIRE_EQUAL(fileListInfo.FilePrefix, FileListInfoTest::FilePrefix)
-    DREAM3D_REQUIRE_EQUAL(fileListInfo.FileSuffix, FileListInfoTest::FileSuffix)
-    DREAM3D_REQUIRE_EQUAL(fileListInfo.InputPath, FileListInfoTest::InputPath)
-    DREAM3D_REQUIRE_EQUAL(fileListInfo.Ordering, FileListInfoTest::Ordering)
-    DREAM3D_REQUIRE_EQUAL(fileListInfo.PaddingDigits, FileListInfoTest::PaddingDigits)
-    DREAM3D_REQUIRE_EQUAL(fileListInfo.StartIndex, FileListInfoTest::StartIndex)
-  }
-
-  // ComparisonInputs read test
-  {
-    ComparisonInputs inputs = reader->readComparisonInputs(MultipleComparisonInputTest::Key, ComparisonInputs());
-    DREAM3D_REQUIRE_EQUAL(inputs.size(), 2)
-
-    DREAM3D_REQUIRE_EQUAL(inputs[0].attributeArrayName, MultipleComparisonInputTest::AttributeArrayName1)
-    DREAM3D_REQUIRE_EQUAL(inputs[0].attributeMatrixName, MultipleComparisonInputTest::AttributeMatrixName1)
-    DREAM3D_REQUIRE_EQUAL(inputs[0].compOperator, MultipleComparisonInputTest::CompOperator1)
-    DREAM3D_REQUIRE_EQUAL(inputs[0].compValue, MultipleComparisonInputTest::CompValue1)
-    DREAM3D_REQUIRE_EQUAL(inputs[0].dataContainerName, MultipleComparisonInputTest::DataContainerName1)
-
-    DREAM3D_REQUIRE_EQUAL(inputs[1].attributeArrayName, MultipleComparisonInputTest::AttributeArrayName2)
-    DREAM3D_REQUIRE_EQUAL(inputs[1].attributeMatrixName, MultipleComparisonInputTest::AttributeMatrixName2)
-    DREAM3D_REQUIRE_EQUAL(inputs[1].compOperator, MultipleComparisonInputTest::CompOperator2)
-    DREAM3D_REQUIRE_EQUAL(inputs[1].compValue, MultipleComparisonInputTest::CompValue2)
-    DREAM3D_REQUIRE_EQUAL(inputs[1].dataContainerName, MultipleComparisonInputTest::DataContainerName2)
-  }
-
-  // ComparisonInput_t read test
-  {
-    ComparisonInput_t input = reader->readComparisonInput(MultipleComparisonInputTest::Key, ComparisonInput_t(), 0);
-    DREAM3D_REQUIRE_EQUAL(input.attributeArrayName, MultipleComparisonInputTest::AttributeArrayName1)
-    DREAM3D_REQUIRE_EQUAL(input.attributeMatrixName, MultipleComparisonInputTest::AttributeMatrixName1)
-    DREAM3D_REQUIRE_EQUAL(input.compOperator, MultipleComparisonInputTest::CompOperator1)
-    DREAM3D_REQUIRE_EQUAL(input.compValue, MultipleComparisonInputTest::CompValue1)
-    DREAM3D_REQUIRE_EQUAL(input.dataContainerName, MultipleComparisonInputTest::DataContainerName1)
-  }
-
-  // QVector<AxisAngleInput_t> read test
-  {
-    QVector<AxisAngleInput_t> inputs = reader->readAxisAngles(MultipleAxisAngleInputTest::Key, QVector<AxisAngleInput_t>());
-    DREAM3D_REQUIRE_EQUAL(inputs.size(), 2)
-
-    DREAM3D_REQUIRE_EQUAL(inputs[0].angle, MultipleAxisAngleInputTest::Angle1)
-    DREAM3D_REQUIRE_EQUAL(inputs[0].h, MultipleAxisAngleInputTest::H1)
-    DREAM3D_REQUIRE_EQUAL(inputs[0].k, MultipleAxisAngleInputTest::K1)
-    DREAM3D_REQUIRE_EQUAL(inputs[0].l, MultipleAxisAngleInputTest::L1)
-
-    DREAM3D_REQUIRE_EQUAL(inputs[1].angle, MultipleAxisAngleInputTest::Angle2)
-    DREAM3D_REQUIRE_EQUAL(inputs[1].h, MultipleAxisAngleInputTest::H2)
-    DREAM3D_REQUIRE_EQUAL(inputs[1].k, MultipleAxisAngleInputTest::K2)
-    DREAM3D_REQUIRE_EQUAL(inputs[1].l, MultipleAxisAngleInputTest::L2)
-  }
-
-  // AxisAngleInput_t read test
-  {
-    AxisAngleInput_t input = reader->readAxisAngle(AxisAngleInputTest::Key, AxisAngleInput_t(), 0);
-    DREAM3D_REQUIRE_EQUAL(input.angle, AxisAngleInputTest::Angle)
-    DREAM3D_REQUIRE_EQUAL(input.h, AxisAngleInputTest::H)
-    DREAM3D_REQUIRE_EQUAL(input.k, AxisAngleInputTest::K)
-    DREAM3D_REQUIRE_EQUAL(input.l, AxisAngleInputTest::L)
-  }
-
-  // QSet<QString> read test
-  {
-    QSet<QString> strings = reader->readArraySelections(StringSetTest::Key, QSet<QString>());
-    DREAM3D_REQUIRE_EQUAL(strings.size(), 4)
-
-    DREAM3D_REQUIRE_EQUAL(strings.contains(StringSetTest::String1), true)
-    DREAM3D_REQUIRE_EQUAL(strings.contains(StringSetTest::String2), true)
-    DREAM3D_REQUIRE_EQUAL(strings.contains(StringSetTest::String3), true)
-    DREAM3D_REQUIRE_EQUAL(strings.contains(StringSetTest::String4), true)
-  }
-
-  // DataContainerArrayProxy read test
-  {
-    DataContainerArrayProxy proxy = reader->readDataContainerArrayProxy(DataContainerArrayProxyTest::Key, DataContainerArrayProxy());
-    QMap<QString, DataContainerProxy> dcMap = proxy.dataContainers;
-    DREAM3D_REQUIRE_EQUAL(dcMap.size(), 1)
-    DREAM3D_REQUIRE_EQUAL(dcMap.contains(DataContainerArrayProxyTest::DcProxyName), true)
-
-    QMap<QString, AttributeMatrixProxy> amMap = dcMap.value(DataContainerArrayProxyTest::DcProxyName).attributeMatricies;
-    DREAM3D_REQUIRE_EQUAL(amMap.size(), 2)
-    DREAM3D_REQUIRE_EQUAL(amMap.contains(DataContainerArrayProxyTest::AmProxyName1), true)
-    DREAM3D_REQUIRE_EQUAL(amMap.contains(DataContainerArrayProxyTest::AmProxyName2), true)
-
-    QMap<QString, DataArrayProxy> daMap1 = amMap.value(DataContainerArrayProxyTest::AmProxyName1).dataArrays;
-    DREAM3D_REQUIRE_EQUAL(daMap1.size(), 2)
-    DREAM3D_REQUIRE_EQUAL(daMap1.contains(DataContainerArrayProxyTest::DaProxyName1), true)
-    DREAM3D_REQUIRE_EQUAL(daMap1.contains(DataContainerArrayProxyTest::DaProxyName2), true)
-
-    QMap<QString, DataArrayProxy> daMap2 = amMap.value(DataContainerArrayProxyTest::AmProxyName2).dataArrays;
-    DREAM3D_REQUIRE_EQUAL(daMap2.size(), 1)
-    DREAM3D_REQUIRE_EQUAL(daMap2.contains(DataContainerArrayProxyTest::DaProxyName3), true)
-  }
-
-  // DataArrayPath read test
-  {
-    DataArrayPath path = reader->readDataArrayPath(DataArrayPathTest::Key, DataArrayPath());
-    DREAM3D_REQUIRE_EQUAL(path.isEmpty(), false)
-
-    DREAM3D_REQUIRE_EQUAL(path.getDataContainerName(), DataArrayPathTest::DCName)
-    DREAM3D_REQUIRE_EQUAL(path.getAttributeMatrixName(), DataArrayPathTest::AMName)
-    DREAM3D_REQUIRE_EQUAL(path.getDataArrayName(), DataArrayPathTest::DAName)
-  }
-
-  // QVector<DataArrayPath> read test
-  {
-    QVector<DataArrayPath> paths = reader->readDataArrayPathVector(MultipleDataArrayPathTest::Key, QVector<DataArrayPath>());
-    DREAM3D_REQUIRE_EQUAL(paths.size(), 2)
-
-    DREAM3D_REQUIRE_EQUAL(paths[0].getDataContainerName(), MultipleDataArrayPathTest::DCName1)
-    DREAM3D_REQUIRE_EQUAL(paths[0].getAttributeMatrixName(), MultipleDataArrayPathTest::AMName1)
-    DREAM3D_REQUIRE_EQUAL(paths[0].getDataArrayName(), MultipleDataArrayPathTest::DAName1)
-
-    DREAM3D_REQUIRE_EQUAL(paths[1].getDataContainerName(), MultipleDataArrayPathTest::DCName2)
-    DREAM3D_REQUIRE_EQUAL(paths[1].getAttributeMatrixName(), MultipleDataArrayPathTest::AMName2)
-    DREAM3D_REQUIRE_EQUAL(paths[1].getDataArrayName(), MultipleDataArrayPathTest::DAName2)
-  }
-
-  // DynamicTableData read test
-  {
-    DynamicTableData data = reader->readDynamicTableData(DynamicTableDataTest::Key, DynamicTableData());
-    DREAM3D_REQUIRE_EQUAL(data.isEmpty(), false)
-
-    QStringList rowHeaders = data.getRowHeaders();
-    DREAM3D_REQUIRE_EQUAL(rowHeaders.size(), 6)
-    DREAM3D_REQUIRE_EQUAL(rowHeaders[0], DynamicTableDataTest::RowHeader1)
-    DREAM3D_REQUIRE_EQUAL(rowHeaders[1], DynamicTableDataTest::RowHeader2)
-    DREAM3D_REQUIRE_EQUAL(rowHeaders[2], DynamicTableDataTest::RowHeader3)
-    DREAM3D_REQUIRE_EQUAL(rowHeaders[3], DynamicTableDataTest::RowHeader4)
-    DREAM3D_REQUIRE_EQUAL(rowHeaders[4], DynamicTableDataTest::RowHeader5)
-    DREAM3D_REQUIRE_EQUAL(rowHeaders[5], DynamicTableDataTest::RowHeader6)
-
-    QStringList colHeaders = data.getColHeaders();
-    DREAM3D_REQUIRE_EQUAL(colHeaders.size(), 8)
-    DREAM3D_REQUIRE_EQUAL(colHeaders[0], DynamicTableDataTest::ColumnHeader1)
-    DREAM3D_REQUIRE_EQUAL(colHeaders[1], DynamicTableDataTest::ColumnHeader2)
-    DREAM3D_REQUIRE_EQUAL(colHeaders[2], DynamicTableDataTest::ColumnHeader3)
-    DREAM3D_REQUIRE_EQUAL(colHeaders[3], DynamicTableDataTest::ColumnHeader4)
-    DREAM3D_REQUIRE_EQUAL(colHeaders[4], DynamicTableDataTest::ColumnHeader5)
-    DREAM3D_REQUIRE_EQUAL(colHeaders[5], DynamicTableDataTest::ColumnHeader6)
-    DREAM3D_REQUIRE_EQUAL(colHeaders[6], DynamicTableDataTest::ColumnHeader7)
-    DREAM3D_REQUIRE_EQUAL(colHeaders[7], DynamicTableDataTest::ColumnHeader8)
-
-    std::vector<std::vector<double> > tableData = data.getTableData();
-    DREAM3D_REQUIRE_EQUAL(tableData.size(), rowHeaders.size())
-    foreach(std::vector<double> vector, tableData)
+  public:
+    FilterParametersRWTest() {}
+    virtual ~FilterParametersRWTest() {}
+
+
+    // -----------------------------------------------------------------------------
+    //
+    // -----------------------------------------------------------------------------
+    void RemoveTestFiles()
     {
-      DREAM3D_REQUIRE_EQUAL(vector.size(), colHeaders.size())
-      foreach(double i, vector)
-      {
-        DREAM3D_REQUIRE_EQUAL(vector[i], 0)
-      }
+#if REMOVE_TEST_FILES
+      QFile::remove(UnitTest::FilterParametersRWTest::OutputFile);
+#endif
     }
-  }
-
-  err = reader->closeFilterGroup();
-  DREAM3D_REQUIRE_EQUAL(err, 0)
-
-  return EXIT_SUCCESS;
-}
 
 
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-template<typename T>
-void RWIntegerTest()
-{
-  int err = 0;
+
+    // -----------------------------------------------------------------------------
+    //
+    // -----------------------------------------------------------------------------
+    int TestJsonWriter()
+    {
+      JsonFilterParametersWriter::Pointer writer = JsonFilterParametersWriter::New();
+      writer->setFileName(UnitTest::FilterParametersRWTest::OutputFile);
+      writer->setPipelineName("TestPipelineName");
+
+      int err = 0;
+
+      err = writer->openFilterGroup(NULL, 0);
+      DREAM3D_REQUIRE_EQUAL(err, 0)
+
+          // QString write test
+      {
+        err = writer->writeValue(StringTest::Key, StringTest::Value);
+        DREAM3D_REQUIRE_EQUAL(err, 0)
+      }
+
+      // QVector<QString> write test
+      {
+        QVector<QString> vector;
+        vector.push_back(StringVectorTest::Value1);
+        vector.push_back(StringVectorTest::Value2);
+        vector.push_back(StringVectorTest::Value3);
+        vector.push_back(StringVectorTest::Value4);
+        err = writer->writeValue(StringVectorTest::Key, vector);
+        DREAM3D_REQUIRE_EQUAL(err, 0)
+      }
+
+      // IntVec3_t write test
+      {
+        IntVec3_t vec3;
+        vec3.x = IntVec3Test::X;
+        vec3.y = IntVec3Test::Y;
+        vec3.z = IntVec3Test::Z;
+        err = writer->writeValue(IntVec3Test::Key, vec3);
+        DREAM3D_REQUIRE_EQUAL(err, 0)
+      }
+
+      // FloatVec3_t write test
+      {
+        FloatVec3_t vec3;
+        vec3.x = FloatVec3Test::X;
+        vec3.y = FloatVec3Test::Y;
+        vec3.z = FloatVec3Test::Z;
+        err = writer->writeValue(FloatVec3Test::Key, vec3);
+        DREAM3D_REQUIRE_EQUAL(err, 0)
+      }
+
+      // Float2ndOrderPoly_t write test
+      {
+        Float2ndOrderPoly_t poly;
+        poly.c20 = Float2ndOrderPolyTest::Val1;
+        poly.c02 = Float2ndOrderPolyTest::Val2;
+        poly.c11 = Float2ndOrderPolyTest::Val3;
+        poly.c10 = Float2ndOrderPolyTest::Val4;
+        poly.c01 = Float2ndOrderPolyTest::Val5;
+        poly.c00 = Float2ndOrderPolyTest::Val6;
+
+        err = writer->writeValue(Float2ndOrderPolyTest::Key, poly);
+        DREAM3D_REQUIRE_EQUAL(err, 0)
+      }
+
+      // Float3rdOrderPoly_t write test
+      {
+        Float3rdOrderPoly_t poly;
+        poly.c30 = Float3rdOrderPolyTest::Val1;
+        poly.c03 = Float3rdOrderPolyTest::Val2;
+        poly.c21 = Float3rdOrderPolyTest::Val3;
+        poly.c12 = Float3rdOrderPolyTest::Val4;
+        poly.c20 = Float3rdOrderPolyTest::Val5;
+        poly.c02 = Float3rdOrderPolyTest::Val6;
+        poly.c11 = Float3rdOrderPolyTest::Val7;
+        poly.c10 = Float3rdOrderPolyTest::Val8;
+        poly.c01 = Float3rdOrderPolyTest::Val9;
+        poly.c00 = Float3rdOrderPolyTest::Val10;
+
+        err = writer->writeValue(Float3rdOrderPolyTest::Key, poly);
+        DREAM3D_REQUIRE_EQUAL(err, 0)
+      }
+
+      // Float4thOrderPoly_t write test
+      {
+        Float4thOrderPoly_t poly;
+        poly.c02 = Float4thOrderPolyTest::Val1;
+        poly.c11 = Float4thOrderPolyTest::Val2;
+        poly.c10 = Float4thOrderPolyTest::Val3;
+        poly.c01 = Float4thOrderPolyTest::Val4;
+        poly.c00 = Float4thOrderPolyTest::Val5;
+        poly.c40 = Float4thOrderPolyTest::Val6;
+        poly.c04 = Float4thOrderPolyTest::Val7;
+        poly.c31 = Float4thOrderPolyTest::Val8;
+        poly.c13 = Float4thOrderPolyTest::Val9;
+        poly.c22 = Float4thOrderPolyTest::Val10;
+        poly.c30 = Float4thOrderPolyTest::Val11;
+        poly.c03 = Float4thOrderPolyTest::Val12;
+        poly.c21 = Float4thOrderPolyTest::Val13;
+        poly.c12 = Float4thOrderPolyTest::Val14;
+        poly.c20 = Float4thOrderPolyTest::Val15;
+
+        err = writer->writeValue(Float4thOrderPolyTest::Key, poly);
+        DREAM3D_REQUIRE_EQUAL(err, 0)
+      }
+
+      // FileListInfo_t write test
+      {
+        FileListInfo_t info;
+        info.PaddingDigits = FileListInfoTest::PaddingDigits;
+        info.Ordering = FileListInfoTest::Ordering;
+        info.StartIndex = FileListInfoTest::StartIndex;
+        info.EndIndex = FileListInfoTest::EndIndex;
+        info.InputPath = FileListInfoTest::InputPath;
+        info.FilePrefix = FileListInfoTest::FilePrefix;
+        info.FileSuffix = FileListInfoTest::FileSuffix;
+        info.FileExtension = FileListInfoTest::FileExtension;
+
+        err = writer->writeValue(FileListInfoTest::Key, info);
+        DREAM3D_REQUIRE_EQUAL(err, 0)
+      }
+
+      // ComparisonInput_t write test
+      {
+        ComparisonInput_t input;
+        input.dataContainerName = ComparisonInputTest::DataContainerName;
+        input.attributeMatrixName = ComparisonInputTest::AttributeMatrixName;
+        input.attributeArrayName = ComparisonInputTest::AttributeArrayName;
+        input.compOperator = ComparisonInputTest::CompOperator;
+        input.compValue = ComparisonInputTest::CompValue;
+
+        err = writer->writeValue(ComparisonInputTest::Key, input);
+        DREAM3D_REQUIRE_EQUAL(err, 0)
+      }
+
+      // ComparisonInputs write test
+      {
+        ComparisonInputs inputs;
+
+        ComparisonInput_t input1;
+        input1.dataContainerName = MultipleComparisonInputTest::DataContainerName1;
+        input1.attributeMatrixName = MultipleComparisonInputTest::AttributeMatrixName1;
+        input1.attributeArrayName = MultipleComparisonInputTest::AttributeArrayName1;
+        input1.compOperator = MultipleComparisonInputTest::CompOperator1;
+        input1.compValue = MultipleComparisonInputTest::CompValue1;
+        inputs.addInput(input1);
+
+        ComparisonInput_t input2;
+        input2.dataContainerName = MultipleComparisonInputTest::DataContainerName2;
+        input2.attributeMatrixName = MultipleComparisonInputTest::AttributeMatrixName2;
+        input2.attributeArrayName = MultipleComparisonInputTest::AttributeArrayName2;
+        input2.compOperator = MultipleComparisonInputTest::CompOperator2;
+        input2.compValue = MultipleComparisonInputTest::CompValue2;
+        inputs.addInput(input2);
+
+        err = writer->writeValue(MultipleComparisonInputTest::Key, inputs);
+        DREAM3D_REQUIRE_EQUAL(err, 0)
+      }
+
+      // QVector<AxisAngleInput_t> write test
+      {
+        QVector<AxisAngleInput_t> inputs;
+
+        AxisAngleInput_t input1;
+        input1.angle = MultipleAxisAngleInputTest::Angle1;
+        input1.h = MultipleAxisAngleInputTest::H1;
+        input1.k = MultipleAxisAngleInputTest::K1;
+        input1.l = MultipleAxisAngleInputTest::L1;
+        inputs.push_back(input1);
+
+        AxisAngleInput_t input2;
+        input2.angle = MultipleAxisAngleInputTest::Angle2;
+        input2.h = MultipleAxisAngleInputTest::H2;
+        input2.k = MultipleAxisAngleInputTest::K2;
+        input2.l = MultipleAxisAngleInputTest::L2;
+        inputs.push_back(input2);
+
+        err = writer->writeValue(MultipleAxisAngleInputTest::Key, inputs);
+        DREAM3D_REQUIRE_EQUAL(err, 0)
+      }
+
+      // AxisAngleInput_t write test
+      {
+        AxisAngleInput_t input;
+        input.angle = AxisAngleInputTest::Angle;
+        input.h = AxisAngleInputTest::H;
+        input.k = AxisAngleInputTest::K;
+        input.l = AxisAngleInputTest::L;
+
+        err = writer->writeValue(AxisAngleInputTest::Key, input);
+        DREAM3D_REQUIRE_EQUAL(err, 0)
+      }
+
+      // QSet<QString> write test
+      {
+        QSet<QString> set;
+        set << StringSetTest::String1 << StringSetTest::String2 << StringSetTest::String3 << StringSetTest::String4;
+
+        err = writer->writeArraySelections(StringSetTest::Key, set);
+        DREAM3D_REQUIRE_EQUAL(err, 0)
+      }
+
+      // DataContainerArrayProxy write test
+      {
+        DataContainerArrayProxy proxy;
+        DataContainerProxy dcProxy(DataContainerArrayProxyTest::DcProxyName);
+        AttributeMatrixProxy amProxy1(DataContainerArrayProxyTest::AmProxyName1);
+        AttributeMatrixProxy amProxy2(DataContainerArrayProxyTest::AmProxyName2);
+        DataArrayProxy daProxy1(DataContainerArrayProxyTest::DaProxyName1, DataContainerArrayProxyTest::DaProxyName1);
+        DataArrayProxy daProxy2(DataContainerArrayProxyTest::DaProxyName2, DataContainerArrayProxyTest::DaProxyName2);
+        DataArrayProxy daProxy3(DataContainerArrayProxyTest::DaProxyName3, DataContainerArrayProxyTest::DaProxyName3);
+        amProxy1.dataArrays.insert(daProxy1.name, daProxy1);
+        amProxy1.dataArrays.insert(daProxy2.name, daProxy2);
+        amProxy2.dataArrays.insert(daProxy3.name, daProxy3);
+        dcProxy.attributeMatricies.insert(amProxy1.name, amProxy1);
+        dcProxy.attributeMatricies.insert(amProxy2.name, amProxy2);
+        proxy.dataContainers.insert(dcProxy.name, dcProxy);
+
+        err = writer->writeValue(DataContainerArrayProxyTest::Key, proxy);
+        DREAM3D_REQUIRE_EQUAL(err, 0)
+      }
+
+      // DataArrayPath write test
+      {
+        DataArrayPath path(DataArrayPathTest::DCName, DataArrayPathTest::AMName, DataArrayPathTest::DAName);
+
+        err = writer->writeValue(DataArrayPathTest::Key, path);
+        DREAM3D_REQUIRE_EQUAL(err, 0)
+      }
+
+      // QVector<DataArrayPath> write test
+      {
+        QVector<DataArrayPath> paths;
+        paths.push_back(DataArrayPath(MultipleDataArrayPathTest::DCName1, MultipleDataArrayPathTest::AMName1, MultipleDataArrayPathTest::DAName1));
+        paths.push_back(DataArrayPath(MultipleDataArrayPathTest::DCName2, MultipleDataArrayPathTest::AMName2, MultipleDataArrayPathTest::DAName2));
+
+        err = writer->writeValue(MultipleDataArrayPathTest::Key, paths);
+        DREAM3D_REQUIRE_EQUAL(err, 0)
+      }
+
+      // DynamicTableData write test
+      {
+        QStringList rHeaders, cHeaders;
+        rHeaders << DynamicTableDataTest::RowHeader1 << DynamicTableDataTest::RowHeader2 << DynamicTableDataTest::RowHeader3 << DynamicTableDataTest::RowHeader4;
+        rHeaders << DynamicTableDataTest::RowHeader5 << DynamicTableDataTest::RowHeader6;
+        cHeaders << DynamicTableDataTest::ColumnHeader1 << DynamicTableDataTest::ColumnHeader2 << DynamicTableDataTest::ColumnHeader3 << DynamicTableDataTest::ColumnHeader4;
+        cHeaders << DynamicTableDataTest::ColumnHeader5 << DynamicTableDataTest::ColumnHeader6 << DynamicTableDataTest::ColumnHeader7 << DynamicTableDataTest::ColumnHeader8;
+        DynamicTableData data(DynamicTableDataTest::NumRows, DynamicTableDataTest::NumColumns, rHeaders, cHeaders);
+
+        err = writer->writeValue(DynamicTableDataTest::Key, data);
+        DREAM3D_REQUIRE_EQUAL(err, 0)
+      }
 
 
-  typename DataArray<T>::Pointer data = DataArray<T>::CreateArray(1, "Junk");
-  QString primType = data->getTypeAsString();
+      err = writer->closeFilterGroup();
+      DREAM3D_REQUIRE_EQUAL(err, 0)
 
-  QString jsonFile = UnitTest::FilterParametersRWTest::OutputDir + primType + ".json";
+          return EXIT_SUCCESS;
+    }
+
+    // -----------------------------------------------------------------------------
+    //
+    // -----------------------------------------------------------------------------
+    int TestJsonReader()
+    {
+      JsonFilterParametersReader::Pointer reader = JsonFilterParametersReader::New();
+      int err = reader->openFile(UnitTest::FilterParametersRWTest::OutputFile);
+      DREAM3D_REQUIRE_EQUAL(err, 0)
+
+          err = reader->openFilterGroup(NULL, 0);
+      DREAM3D_REQUIRE_EQUAL(err, 0)
+
+          // QString read test
+      {
+        QString str = reader->readString(StringTest::Key, "");
+        DREAM3D_REQUIRE_EQUAL(str, StringTest::Value)
+      }
+
+      // QVector<QString> read test
+      {
+        QVector<QString> vector = reader->readStrings(StringVectorTest::Key, QVector<QString>());
+        DREAM3D_REQUIRE_EQUAL(vector.size(), 4)
+            DREAM3D_REQUIRE_EQUAL(vector[0], StringVectorTest::Value1)
+            DREAM3D_REQUIRE_EQUAL(vector[1], StringVectorTest::Value2)
+            DREAM3D_REQUIRE_EQUAL(vector[2], StringVectorTest::Value3)
+            DREAM3D_REQUIRE_EQUAL(vector[3], StringVectorTest::Value4)
+      }
+
+      // IntVec3_t read test
+      {
+        IntVec3_t intvec3 = reader->readIntVec3(IntVec3Test::Key, IntVec3_t());
+        DREAM3D_REQUIRE_EQUAL(intvec3.x, IntVec3Test::X)
+            DREAM3D_REQUIRE_EQUAL(intvec3.y, IntVec3Test::Y)
+            DREAM3D_REQUIRE_EQUAL(intvec3.z, IntVec3Test::Z)
+      }
+
+      // FloatVec3_t read test
+      {
+        FloatVec3_t floatvec3 = reader->readFloatVec3(FloatVec3Test::Key, FloatVec3_t());
+        DREAM3D_REQUIRE_EQUAL(floatvec3.x, FloatVec3Test::X)
+            DREAM3D_REQUIRE_EQUAL(floatvec3.y, FloatVec3Test::Y)
+            DREAM3D_REQUIRE_EQUAL(floatvec3.z, FloatVec3Test::Z)
+      }
+
+      // Float2ndOrderPoly_t read test
+      {
+        Float2ndOrderPoly_t floatPoly = reader->readFloat2ndOrderPoly(Float2ndOrderPolyTest::Key, Float2ndOrderPoly_t());
+        DREAM3D_REQUIRE_EQUAL(floatPoly.c20, Float2ndOrderPolyTest::Val1)
+            DREAM3D_REQUIRE_EQUAL(floatPoly.c02, Float2ndOrderPolyTest::Val2)
+            DREAM3D_REQUIRE_EQUAL(floatPoly.c11, Float2ndOrderPolyTest::Val3)
+            DREAM3D_REQUIRE_EQUAL(floatPoly.c10, Float2ndOrderPolyTest::Val4)
+            DREAM3D_REQUIRE_EQUAL(floatPoly.c01, Float2ndOrderPolyTest::Val5)
+            DREAM3D_REQUIRE_EQUAL(floatPoly.c00, Float2ndOrderPolyTest::Val6)
+      }
+
+      // Float3rdOrderPoly_t read test
+      {
+        Float3rdOrderPoly_t floatPoly = reader->readFloat3rdOrderPoly(Float3rdOrderPolyTest::Key, Float3rdOrderPoly_t());
+        DREAM3D_REQUIRE_EQUAL(floatPoly.c30, Float3rdOrderPolyTest::Val1)
+            DREAM3D_REQUIRE_EQUAL(floatPoly.c03, Float3rdOrderPolyTest::Val2)
+            DREAM3D_REQUIRE_EQUAL(floatPoly.c21, Float3rdOrderPolyTest::Val3)
+            DREAM3D_REQUIRE_EQUAL(floatPoly.c12, Float3rdOrderPolyTest::Val4)
+            DREAM3D_REQUIRE_EQUAL(floatPoly.c20, Float3rdOrderPolyTest::Val5)
+            DREAM3D_REQUIRE_EQUAL(floatPoly.c02, Float3rdOrderPolyTest::Val6)
+            DREAM3D_REQUIRE_EQUAL(floatPoly.c11, Float3rdOrderPolyTest::Val7)
+            DREAM3D_REQUIRE_EQUAL(floatPoly.c10, Float3rdOrderPolyTest::Val8)
+            DREAM3D_REQUIRE_EQUAL(floatPoly.c01, Float3rdOrderPolyTest::Val9)
+            DREAM3D_REQUIRE_EQUAL(floatPoly.c00, Float3rdOrderPolyTest::Val10)
+      }
+
+      // Float4thOrderPoly_t read test
+      {
+        Float4thOrderPoly_t floatPoly = reader->readFloat4thOrderPoly(Float4thOrderPolyTest::Key, Float4thOrderPoly_t());
+        DREAM3D_REQUIRE_EQUAL(floatPoly.c02, Float4thOrderPolyTest::Val1)
+            DREAM3D_REQUIRE_EQUAL(floatPoly.c11, Float4thOrderPolyTest::Val2)
+            DREAM3D_REQUIRE_EQUAL(floatPoly.c10, Float4thOrderPolyTest::Val3)
+            DREAM3D_REQUIRE_EQUAL(floatPoly.c01, Float4thOrderPolyTest::Val4)
+            DREAM3D_REQUIRE_EQUAL(floatPoly.c00, Float4thOrderPolyTest::Val5)
+            DREAM3D_REQUIRE_EQUAL(floatPoly.c40, Float4thOrderPolyTest::Val6)
+            DREAM3D_REQUIRE_EQUAL(floatPoly.c04, Float4thOrderPolyTest::Val7)
+            DREAM3D_REQUIRE_EQUAL(floatPoly.c31, Float4thOrderPolyTest::Val8)
+            DREAM3D_REQUIRE_EQUAL(floatPoly.c13, Float4thOrderPolyTest::Val9)
+            DREAM3D_REQUIRE_EQUAL(floatPoly.c22, Float4thOrderPolyTest::Val10)
+            DREAM3D_REQUIRE_EQUAL(floatPoly.c30, Float4thOrderPolyTest::Val11)
+            DREAM3D_REQUIRE_EQUAL(floatPoly.c03, Float4thOrderPolyTest::Val12)
+            DREAM3D_REQUIRE_EQUAL(floatPoly.c21, Float4thOrderPolyTest::Val13)
+            DREAM3D_REQUIRE_EQUAL(floatPoly.c12, Float4thOrderPolyTest::Val14)
+            DREAM3D_REQUIRE_EQUAL(floatPoly.c20, Float4thOrderPolyTest::Val15)
+      }
+
+      // FileListInfo_t read test
+      {
+        FileListInfo_t fileListInfo = reader->readFileListInfo(FileListInfoTest::Key, FileListInfo_t());
+        DREAM3D_REQUIRE_EQUAL(fileListInfo.EndIndex, FileListInfoTest::EndIndex)
+            DREAM3D_REQUIRE_EQUAL(fileListInfo.FileExtension, FileListInfoTest::FileExtension)
+            DREAM3D_REQUIRE_EQUAL(fileListInfo.FilePrefix, FileListInfoTest::FilePrefix)
+            DREAM3D_REQUIRE_EQUAL(fileListInfo.FileSuffix, FileListInfoTest::FileSuffix)
+            DREAM3D_REQUIRE_EQUAL(fileListInfo.InputPath, FileListInfoTest::InputPath)
+            DREAM3D_REQUIRE_EQUAL(fileListInfo.Ordering, FileListInfoTest::Ordering)
+            DREAM3D_REQUIRE_EQUAL(fileListInfo.PaddingDigits, FileListInfoTest::PaddingDigits)
+            DREAM3D_REQUIRE_EQUAL(fileListInfo.StartIndex, FileListInfoTest::StartIndex)
+      }
+
+      // ComparisonInputs read test
+      {
+        ComparisonInputs inputs = reader->readComparisonInputs(MultipleComparisonInputTest::Key, ComparisonInputs());
+        DREAM3D_REQUIRE_EQUAL(inputs.size(), 2)
+
+            DREAM3D_REQUIRE_EQUAL(inputs[0].attributeArrayName, MultipleComparisonInputTest::AttributeArrayName1)
+            DREAM3D_REQUIRE_EQUAL(inputs[0].attributeMatrixName, MultipleComparisonInputTest::AttributeMatrixName1)
+            DREAM3D_REQUIRE_EQUAL(inputs[0].compOperator, MultipleComparisonInputTest::CompOperator1)
+            DREAM3D_REQUIRE_EQUAL(inputs[0].compValue, MultipleComparisonInputTest::CompValue1)
+            DREAM3D_REQUIRE_EQUAL(inputs[0].dataContainerName, MultipleComparisonInputTest::DataContainerName1)
+
+            DREAM3D_REQUIRE_EQUAL(inputs[1].attributeArrayName, MultipleComparisonInputTest::AttributeArrayName2)
+            DREAM3D_REQUIRE_EQUAL(inputs[1].attributeMatrixName, MultipleComparisonInputTest::AttributeMatrixName2)
+            DREAM3D_REQUIRE_EQUAL(inputs[1].compOperator, MultipleComparisonInputTest::CompOperator2)
+            DREAM3D_REQUIRE_EQUAL(inputs[1].compValue, MultipleComparisonInputTest::CompValue2)
+            DREAM3D_REQUIRE_EQUAL(inputs[1].dataContainerName, MultipleComparisonInputTest::DataContainerName2)
+      }
+
+      // ComparisonInput_t read test
+      {
+        ComparisonInput_t input = reader->readComparisonInput(MultipleComparisonInputTest::Key, ComparisonInput_t(), 0);
+        DREAM3D_REQUIRE_EQUAL(input.attributeArrayName, MultipleComparisonInputTest::AttributeArrayName1)
+            DREAM3D_REQUIRE_EQUAL(input.attributeMatrixName, MultipleComparisonInputTest::AttributeMatrixName1)
+            DREAM3D_REQUIRE_EQUAL(input.compOperator, MultipleComparisonInputTest::CompOperator1)
+            DREAM3D_REQUIRE_EQUAL(input.compValue, MultipleComparisonInputTest::CompValue1)
+            DREAM3D_REQUIRE_EQUAL(input.dataContainerName, MultipleComparisonInputTest::DataContainerName1)
+      }
+
+      // QVector<AxisAngleInput_t> read test
+      {
+        QVector<AxisAngleInput_t> inputs = reader->readAxisAngles(MultipleAxisAngleInputTest::Key, QVector<AxisAngleInput_t>());
+        DREAM3D_REQUIRE_EQUAL(inputs.size(), 2)
+
+            DREAM3D_REQUIRE_EQUAL(inputs[0].angle, MultipleAxisAngleInputTest::Angle1)
+            DREAM3D_REQUIRE_EQUAL(inputs[0].h, MultipleAxisAngleInputTest::H1)
+            DREAM3D_REQUIRE_EQUAL(inputs[0].k, MultipleAxisAngleInputTest::K1)
+            DREAM3D_REQUIRE_EQUAL(inputs[0].l, MultipleAxisAngleInputTest::L1)
+
+            DREAM3D_REQUIRE_EQUAL(inputs[1].angle, MultipleAxisAngleInputTest::Angle2)
+            DREAM3D_REQUIRE_EQUAL(inputs[1].h, MultipleAxisAngleInputTest::H2)
+            DREAM3D_REQUIRE_EQUAL(inputs[1].k, MultipleAxisAngleInputTest::K2)
+            DREAM3D_REQUIRE_EQUAL(inputs[1].l, MultipleAxisAngleInputTest::L2)
+      }
+
+      // AxisAngleInput_t read test
+      {
+        AxisAngleInput_t input = reader->readAxisAngle(AxisAngleInputTest::Key, AxisAngleInput_t(), 0);
+        DREAM3D_REQUIRE_EQUAL(input.angle, AxisAngleInputTest::Angle)
+            DREAM3D_REQUIRE_EQUAL(input.h, AxisAngleInputTest::H)
+            DREAM3D_REQUIRE_EQUAL(input.k, AxisAngleInputTest::K)
+            DREAM3D_REQUIRE_EQUAL(input.l, AxisAngleInputTest::L)
+      }
+
+      // QSet<QString> read test
+      {
+        QSet<QString> strings = reader->readArraySelections(StringSetTest::Key, QSet<QString>());
+        DREAM3D_REQUIRE_EQUAL(strings.size(), 4)
+
+            DREAM3D_REQUIRE_EQUAL(strings.contains(StringSetTest::String1), true)
+            DREAM3D_REQUIRE_EQUAL(strings.contains(StringSetTest::String2), true)
+            DREAM3D_REQUIRE_EQUAL(strings.contains(StringSetTest::String3), true)
+            DREAM3D_REQUIRE_EQUAL(strings.contains(StringSetTest::String4), true)
+      }
+
+      // DataContainerArrayProxy read test
+      {
+        DataContainerArrayProxy proxy = reader->readDataContainerArrayProxy(DataContainerArrayProxyTest::Key, DataContainerArrayProxy());
+        QMap<QString, DataContainerProxy> dcMap = proxy.dataContainers;
+        DREAM3D_REQUIRE_EQUAL(dcMap.size(), 1)
+            DREAM3D_REQUIRE_EQUAL(dcMap.contains(DataContainerArrayProxyTest::DcProxyName), true)
+
+            QMap<QString, AttributeMatrixProxy> amMap = dcMap.value(DataContainerArrayProxyTest::DcProxyName).attributeMatricies;
+        DREAM3D_REQUIRE_EQUAL(amMap.size(), 2)
+            DREAM3D_REQUIRE_EQUAL(amMap.contains(DataContainerArrayProxyTest::AmProxyName1), true)
+            DREAM3D_REQUIRE_EQUAL(amMap.contains(DataContainerArrayProxyTest::AmProxyName2), true)
+
+            QMap<QString, DataArrayProxy> daMap1 = amMap.value(DataContainerArrayProxyTest::AmProxyName1).dataArrays;
+        DREAM3D_REQUIRE_EQUAL(daMap1.size(), 2)
+            DREAM3D_REQUIRE_EQUAL(daMap1.contains(DataContainerArrayProxyTest::DaProxyName1), true)
+            DREAM3D_REQUIRE_EQUAL(daMap1.contains(DataContainerArrayProxyTest::DaProxyName2), true)
+
+            QMap<QString, DataArrayProxy> daMap2 = amMap.value(DataContainerArrayProxyTest::AmProxyName2).dataArrays;
+        DREAM3D_REQUIRE_EQUAL(daMap2.size(), 1)
+            DREAM3D_REQUIRE_EQUAL(daMap2.contains(DataContainerArrayProxyTest::DaProxyName3), true)
+      }
+
+      // DataArrayPath read test
+      {
+        DataArrayPath path = reader->readDataArrayPath(DataArrayPathTest::Key, DataArrayPath());
+        DREAM3D_REQUIRE_EQUAL(path.isEmpty(), false)
+
+            DREAM3D_REQUIRE_EQUAL(path.getDataContainerName(), DataArrayPathTest::DCName)
+            DREAM3D_REQUIRE_EQUAL(path.getAttributeMatrixName(), DataArrayPathTest::AMName)
+            DREAM3D_REQUIRE_EQUAL(path.getDataArrayName(), DataArrayPathTest::DAName)
+      }
+
+      // QVector<DataArrayPath> read test
+      {
+        QVector<DataArrayPath> paths = reader->readDataArrayPathVector(MultipleDataArrayPathTest::Key, QVector<DataArrayPath>());
+        DREAM3D_REQUIRE_EQUAL(paths.size(), 2)
+
+            DREAM3D_REQUIRE_EQUAL(paths[0].getDataContainerName(), MultipleDataArrayPathTest::DCName1)
+            DREAM3D_REQUIRE_EQUAL(paths[0].getAttributeMatrixName(), MultipleDataArrayPathTest::AMName1)
+            DREAM3D_REQUIRE_EQUAL(paths[0].getDataArrayName(), MultipleDataArrayPathTest::DAName1)
+
+            DREAM3D_REQUIRE_EQUAL(paths[1].getDataContainerName(), MultipleDataArrayPathTest::DCName2)
+            DREAM3D_REQUIRE_EQUAL(paths[1].getAttributeMatrixName(), MultipleDataArrayPathTest::AMName2)
+            DREAM3D_REQUIRE_EQUAL(paths[1].getDataArrayName(), MultipleDataArrayPathTest::DAName2)
+      }
+
+      // DynamicTableData read test
+      {
+        DynamicTableData data = reader->readDynamicTableData(DynamicTableDataTest::Key, DynamicTableData());
+        DREAM3D_REQUIRE_EQUAL(data.isEmpty(), false)
+
+            QStringList rowHeaders = data.getRowHeaders();
+        DREAM3D_REQUIRE_EQUAL(rowHeaders.size(), 6)
+            DREAM3D_REQUIRE_EQUAL(rowHeaders[0], DynamicTableDataTest::RowHeader1)
+            DREAM3D_REQUIRE_EQUAL(rowHeaders[1], DynamicTableDataTest::RowHeader2)
+            DREAM3D_REQUIRE_EQUAL(rowHeaders[2], DynamicTableDataTest::RowHeader3)
+            DREAM3D_REQUIRE_EQUAL(rowHeaders[3], DynamicTableDataTest::RowHeader4)
+            DREAM3D_REQUIRE_EQUAL(rowHeaders[4], DynamicTableDataTest::RowHeader5)
+            DREAM3D_REQUIRE_EQUAL(rowHeaders[5], DynamicTableDataTest::RowHeader6)
+
+            QStringList colHeaders = data.getColHeaders();
+        DREAM3D_REQUIRE_EQUAL(colHeaders.size(), 8)
+            DREAM3D_REQUIRE_EQUAL(colHeaders[0], DynamicTableDataTest::ColumnHeader1)
+            DREAM3D_REQUIRE_EQUAL(colHeaders[1], DynamicTableDataTest::ColumnHeader2)
+            DREAM3D_REQUIRE_EQUAL(colHeaders[2], DynamicTableDataTest::ColumnHeader3)
+            DREAM3D_REQUIRE_EQUAL(colHeaders[3], DynamicTableDataTest::ColumnHeader4)
+            DREAM3D_REQUIRE_EQUAL(colHeaders[4], DynamicTableDataTest::ColumnHeader5)
+            DREAM3D_REQUIRE_EQUAL(colHeaders[5], DynamicTableDataTest::ColumnHeader6)
+            DREAM3D_REQUIRE_EQUAL(colHeaders[6], DynamicTableDataTest::ColumnHeader7)
+            DREAM3D_REQUIRE_EQUAL(colHeaders[7], DynamicTableDataTest::ColumnHeader8)
+
+            std::vector<std::vector<double> > tableData = data.getTableData();
+        DREAM3D_REQUIRE_EQUAL(tableData.size(), rowHeaders.size())
+            foreach(std::vector<double> vector, tableData)
+        {
+          DREAM3D_REQUIRE_EQUAL(vector.size(), colHeaders.size())
+              foreach(double i, vector)
+          {
+            DREAM3D_REQUIRE_EQUAL(vector[i], 0)
+          }
+        }
+      }
+
+      err = reader->closeFilterGroup();
+      DREAM3D_REQUIRE_EQUAL(err, 0)
+
+          return EXIT_SUCCESS;
+    }
 
 
-  JsonFilterParametersWriter::Pointer writer = JsonFilterParametersWriter::New();
-  writer->setFileName(jsonFile);
-  writer->setPipelineName("TestPipelineName");
-
-  err = writer->openFilterGroup(NULL, 0);
-  DREAM3D_REQUIRE_EQUAL(err, 0)
-
-  err = writer->writeValue(primType + QString("_min"), std::numeric_limits<T>::min() );
-  DREAM3D_REQUIRE_EQUAL(err, 0)
-
-  err = writer->writeValue(primType + QString("_max"), std::numeric_limits<T>::max() );
-  DREAM3D_REQUIRE_EQUAL(err, 0)
-
-  err = writer->writeValue(primType + QString("_zero"), static_cast<T>(0) );
-  DREAM3D_REQUIRE_EQUAL(err, 0)
-
-  // QVector<T> write test
-  {
-    QVector<T> vector;
-    vector.push_back(std::numeric_limits<T>::min());
-    vector.push_back(std::numeric_limits<T>::max());
-    vector.push_back(static_cast<T>(0));
-    vector.push_back(std::numeric_limits<T>::min() + 1);
-    vector.push_back(std::numeric_limits<T>::max() - 1);
-    err = writer->writeValue(primType + QString("_vector"), vector);
-    DREAM3D_REQUIRE_EQUAL(err, 0)
-  }
+    // -----------------------------------------------------------------------------
+    //
+    // -----------------------------------------------------------------------------
+    template<typename T>
+    void RWIntegerTest()
+    {
+      int err = 0;
 
 
-  err = writer->closeFilterGroup();
-  DREAM3D_REQUIRE_EQUAL(err, 0)
+      typename DataArray<T>::Pointer data = DataArray<T>::CreateArray(1, "Junk");
+      QString primType = data->getTypeAsString();
 
-  writer = JsonFilterParametersWriter::NullPointer();
-
-
-  JsonFilterParametersReader::Pointer reader = JsonFilterParametersReader::New();
-  err = reader->openFile(jsonFile);
-  DREAM3D_REQUIRE_EQUAL(err, 0)
-
-  err = reader->openFilterGroup(NULL, 0);
-  DREAM3D_REQUIRE_EQUAL(err, 0)
-
-  T def = std::numeric_limits<T>::max() - 10;
-
-  T val = reader->readValue(primType + QString("_min"), def);
-  DREAM3D_REQUIRE_EQUAL(val, std::numeric_limits<T>::min() )
-
-  val = reader->readValue(primType + QString("_max"), def);
-  DREAM3D_REQUIRE_EQUAL(val, std::numeric_limits<T>::max() )
-
-  val = reader->readValue(primType + QString("_zero"), def);
-  DREAM3D_REQUIRE_EQUAL(val, 0 )
+      QString jsonFile = UnitTest::FilterParametersRWTest::OutputDir + primType + ".json";
 
 
-  // QVector<T> read test
-  {
-    QVector<T> vector = reader->readArray(primType + QString("_vector"), QVector<T>());
-    DREAM3D_REQUIRE_EQUAL(vector.size(), 5)
-    DREAM3D_REQUIRE_EQUAL(vector[0], std::numeric_limits<T>::min())
-    DREAM3D_REQUIRE_EQUAL(vector[1], std::numeric_limits<T>::max())
-    DREAM3D_REQUIRE_EQUAL(vector[2], 0)
-    DREAM3D_REQUIRE_EQUAL(vector[3], std::numeric_limits<T>::min() + 1)
-    DREAM3D_REQUIRE_EQUAL(vector[4], std::numeric_limits<T>::max() - 1)
-  }
+      JsonFilterParametersWriter::Pointer writer = JsonFilterParametersWriter::New();
+      writer->setFileName(jsonFile);
+      writer->setPipelineName("TestPipelineName");
 
-  err = reader->closeFilterGroup();
-  DREAM3D_REQUIRE_EQUAL(err, 0)
+      err = writer->openFilterGroup(NULL, 0);
+      DREAM3D_REQUIRE_EQUAL(err, 0)
 
-  reader = JsonFilterParametersReader::NullPointer();
+          err = writer->writeValue(primType + QString("_min"), std::numeric_limits<T>::min() );
+      DREAM3D_REQUIRE_EQUAL(err, 0)
+
+          err = writer->writeValue(primType + QString("_max"), std::numeric_limits<T>::max() );
+      DREAM3D_REQUIRE_EQUAL(err, 0)
+
+          err = writer->writeValue(primType + QString("_zero"), static_cast<T>(0) );
+      DREAM3D_REQUIRE_EQUAL(err, 0)
+
+          // QVector<T> write test
+      {
+        QVector<T> vector;
+        vector.push_back(std::numeric_limits<T>::min());
+        vector.push_back(std::numeric_limits<T>::max());
+        vector.push_back(static_cast<T>(0));
+        vector.push_back(std::numeric_limits<T>::min() + 1);
+        vector.push_back(std::numeric_limits<T>::max() - 1);
+        err = writer->writeValue(primType + QString("_vector"), vector);
+        DREAM3D_REQUIRE_EQUAL(err, 0)
+      }
+
+
+      err = writer->closeFilterGroup();
+      DREAM3D_REQUIRE_EQUAL(err, 0)
+
+          writer = JsonFilterParametersWriter::NullPointer();
+
+
+      JsonFilterParametersReader::Pointer reader = JsonFilterParametersReader::New();
+      err = reader->openFile(jsonFile);
+      DREAM3D_REQUIRE_EQUAL(err, 0)
+
+          err = reader->openFilterGroup(NULL, 0);
+      DREAM3D_REQUIRE_EQUAL(err, 0)
+
+          T def = std::numeric_limits<T>::max() - 10;
+
+      T val = reader->readValue(primType + QString("_min"), def);
+      DREAM3D_REQUIRE_EQUAL(val, std::numeric_limits<T>::min() )
+
+          val = reader->readValue(primType + QString("_max"), def);
+      DREAM3D_REQUIRE_EQUAL(val, std::numeric_limits<T>::max() )
+
+          val = reader->readValue(primType + QString("_zero"), def);
+      DREAM3D_REQUIRE_EQUAL(val, 0 )
+
+
+          // QVector<T> read test
+      {
+        QVector<T> vector = reader->readArray(primType + QString("_vector"), QVector<T>());
+        DREAM3D_REQUIRE_EQUAL(vector.size(), 5)
+            DREAM3D_REQUIRE_EQUAL(vector[0], std::numeric_limits<T>::min())
+            DREAM3D_REQUIRE_EQUAL(vector[1], std::numeric_limits<T>::max())
+            DREAM3D_REQUIRE_EQUAL(vector[2], 0)
+            DREAM3D_REQUIRE_EQUAL(vector[3], std::numeric_limits<T>::min() + 1)
+            DREAM3D_REQUIRE_EQUAL(vector[4], std::numeric_limits<T>::max() - 1)
+      }
+
+      err = reader->closeFilterGroup();
+      DREAM3D_REQUIRE_EQUAL(err, 0)
+
+          reader = JsonFilterParametersReader::NullPointer();
 
 #if REMOVE_TEST_FILES
-  QFile::remove(jsonFile);
+      QFile::remove(jsonFile);
 #endif
-}
+    }
 
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-template<typename T>
-void RWFloatTest()
-{
-  int err = 0;
-
-
-  typename DataArray<T>::Pointer data = DataArray<T>::CreateArray(1, "Junk");
-  QString primType = data->getTypeAsString();
-
-  QString jsonFile = UnitTest::FilterParametersRWTest::OutputDir + primType + ".json";
+    // -----------------------------------------------------------------------------
+    //
+    // -----------------------------------------------------------------------------
+    template<typename T>
+    void RWFloatTest()
+    {
+      int err = 0;
 
 
-  JsonFilterParametersWriter::Pointer writer = JsonFilterParametersWriter::New();
-  writer->setFileName(jsonFile);
-  writer->setPipelineName("TestPipelineName");
+      typename DataArray<T>::Pointer data = DataArray<T>::CreateArray(1, "Junk");
+      QString primType = data->getTypeAsString();
 
-  err = writer->openFilterGroup(NULL, 0);
-  DREAM3D_REQUIRE_EQUAL(err, 0)
-
-  err = writer->writeValue(primType + QString("_min"), std::numeric_limits<T>::min() );
-  DREAM3D_REQUIRE_EQUAL(err, 0)
-
-  err = writer->writeValue(primType + QString("_max"), std::numeric_limits<T>::max() );
-  DREAM3D_REQUIRE_EQUAL(err, 0)
-
-  err = writer->writeValue(primType + QString("_zero"), static_cast<T>(0) );
-  DREAM3D_REQUIRE_EQUAL(err, 0)
-
-  // QVector<T> write test
-  {
-    QVector<T> vector;
-    vector.push_back(std::numeric_limits<T>::min());
-    vector.push_back(std::numeric_limits<T>::max());
-    vector.push_back(static_cast<T>(0.0));
-    vector.push_back(std::numeric_limits<T>::min() + 1);
-    vector.push_back(std::numeric_limits<T>::max() - 1);
-    err = writer->writeValue(primType + QString("_vector"), vector);
-    DREAM3D_REQUIRE_EQUAL(err, 0)
-  }
+      QString jsonFile = UnitTest::FilterParametersRWTest::OutputDir + primType + ".json";
 
 
-  err = writer->closeFilterGroup();
-  DREAM3D_REQUIRE_EQUAL(err, 0)
+      JsonFilterParametersWriter::Pointer writer = JsonFilterParametersWriter::New();
+      writer->setFileName(jsonFile);
+      writer->setPipelineName("TestPipelineName");
 
-  writer = JsonFilterParametersWriter::NullPointer();
+      err = writer->openFilterGroup(NULL, 0);
+      DREAM3D_REQUIRE_EQUAL(err, 0)
+
+          err = writer->writeValue(primType + QString("_min"), std::numeric_limits<T>::min() );
+      DREAM3D_REQUIRE_EQUAL(err, 0)
+
+          err = writer->writeValue(primType + QString("_max"), std::numeric_limits<T>::max() );
+      DREAM3D_REQUIRE_EQUAL(err, 0)
+
+          err = writer->writeValue(primType + QString("_zero"), static_cast<T>(0) );
+      DREAM3D_REQUIRE_EQUAL(err, 0)
+
+          // QVector<T> write test
+      {
+        QVector<T> vector;
+        vector.push_back(std::numeric_limits<T>::min());
+        vector.push_back(std::numeric_limits<T>::max());
+        vector.push_back(static_cast<T>(0.0));
+        vector.push_back(std::numeric_limits<T>::min() + 1);
+        vector.push_back(std::numeric_limits<T>::max() - 1);
+        err = writer->writeValue(primType + QString("_vector"), vector);
+        DREAM3D_REQUIRE_EQUAL(err, 0)
+      }
 
 
-  JsonFilterParametersReader::Pointer reader = JsonFilterParametersReader::New();
-  err = reader->openFile(jsonFile);
-  DREAM3D_REQUIRE_EQUAL(err, 0)
+      err = writer->closeFilterGroup();
+      DREAM3D_REQUIRE_EQUAL(err, 0)
 
-  err = reader->openFilterGroup(NULL, 0);
-  DREAM3D_REQUIRE_EQUAL(err, 0)
-
-  T def = std::numeric_limits<T>::max() - static_cast<T>(10.0);
-
-  T val = reader->readValue(primType + QString("_min"), def);
-  DREAM3D_REQUIRE_EQUAL(val, std::numeric_limits<T>::min() )
-
-  val = reader->readValue(primType + QString("_max"), def);
-  DREAM3D_REQUIRE_EQUAL(val, std::numeric_limits<T>::max() )
-
-  val = reader->readValue(primType + QString("_zero"), def);
-  DREAM3D_REQUIRE_EQUAL(val, 0 )
+          writer = JsonFilterParametersWriter::NullPointer();
 
 
-  // QVector<T> read test
-  {
-    QVector<T> vector = reader->readArray(primType + QString("_vector"), QVector<T>());
-    DREAM3D_REQUIRE_EQUAL(vector.size(), 5)
-    DREAM3D_REQUIRE_EQUAL(vector[0], std::numeric_limits<T>::min())
-    DREAM3D_REQUIRE_EQUAL(vector[1], std::numeric_limits<T>::max())
-    DREAM3D_REQUIRE_EQUAL(vector[2], static_cast<T>(0.0))
-    DREAM3D_REQUIRE_EQUAL(vector[3], std::numeric_limits<T>::min() + 1)
-    DREAM3D_REQUIRE_EQUAL(vector[4], std::numeric_limits<T>::max() - 1)
-  }
+      JsonFilterParametersReader::Pointer reader = JsonFilterParametersReader::New();
+      err = reader->openFile(jsonFile);
+      DREAM3D_REQUIRE_EQUAL(err, 0)
 
-  err = reader->closeFilterGroup();
-  DREAM3D_REQUIRE_EQUAL(err, 0)
+          err = reader->openFilterGroup(NULL, 0);
+      DREAM3D_REQUIRE_EQUAL(err, 0)
 
-  reader = JsonFilterParametersReader::NullPointer();
+          T def = std::numeric_limits<T>::max() - static_cast<T>(10.0);
+
+      T val = reader->readValue(primType + QString("_min"), def);
+      DREAM3D_REQUIRE_EQUAL(val, std::numeric_limits<T>::min() )
+
+          val = reader->readValue(primType + QString("_max"), def);
+      DREAM3D_REQUIRE_EQUAL(val, std::numeric_limits<T>::max() )
+
+          val = reader->readValue(primType + QString("_zero"), def);
+      DREAM3D_REQUIRE_EQUAL(val, 0 )
+
+
+          // QVector<T> read test
+      {
+        QVector<T> vector = reader->readArray(primType + QString("_vector"), QVector<T>());
+        DREAM3D_REQUIRE_EQUAL(vector.size(), 5)
+            DREAM3D_REQUIRE_EQUAL(vector[0], std::numeric_limits<T>::min())
+            DREAM3D_REQUIRE_EQUAL(vector[1], std::numeric_limits<T>::max())
+            DREAM3D_REQUIRE_EQUAL(vector[2], static_cast<T>(0.0))
+            DREAM3D_REQUIRE_EQUAL(vector[3], std::numeric_limits<T>::min() + 1)
+            DREAM3D_REQUIRE_EQUAL(vector[4], std::numeric_limits<T>::max() - 1)
+      }
+
+      err = reader->closeFilterGroup();
+      DREAM3D_REQUIRE_EQUAL(err, 0)
+
+          reader = JsonFilterParametersReader::NullPointer();
 
 #if REMOVE_TEST_FILES
-  QFile::remove(jsonFile);
+      QFile::remove(jsonFile);
 #endif
-}
+    }
 
 
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-void loadFilterPlugins()
-{
-  // Register all the filters including trying to load those from Plugins
-  FilterManager* fm = FilterManager::Instance();
-  SIMPLibPluginLoader::LoadPluginFilters(fm);
+    // -----------------------------------------------------------------------------
+    //
+    // -----------------------------------------------------------------------------
+    //void loadFilterPlugins()
+    //{
+    //  // Register all the filters including trying to load those from Plugins
+    //  FilterManager* fm = FilterManager::Instance();
+    //  SIMPLibPluginLoader::LoadPluginFilters(fm);
 
-  // Send progress messages from PipelineBuilder to this object for display
-  QMetaObjectUtilities::RegisterMetaTypes();
-}
+    //  // Send progress messages from PipelineBuilder to this object for display
+    //  QMetaObjectUtilities::RegisterMetaTypes();
+    //}
 
+
+    void operator()()
+    {
+      int err = EXIT_SUCCESS;
+
+      DREAM3D_REGISTER_TEST(RWIntegerTest<uint8_t>())
+      DREAM3D_REGISTER_TEST(RWIntegerTest<int8_t>())
+      DREAM3D_REGISTER_TEST(RWIntegerTest<uint16_t>())
+      DREAM3D_REGISTER_TEST(RWIntegerTest<int16_t>())
+      DREAM3D_REGISTER_TEST(RWIntegerTest<uint32_t>())
+      DREAM3D_REGISTER_TEST(RWIntegerTest<int32_t>())
+      DREAM3D_REGISTER_TEST(RWIntegerTest<uint64_t>())
+      DREAM3D_REGISTER_TEST(RWIntegerTest<int64_t>())
+
+      DREAM3D_REGISTER_TEST(RWFloatTest<float>())
+      DREAM3D_REGISTER_TEST(RWFloatTest<double>())
+
+      DREAM3D_REGISTER_TEST(TestJsonWriter())
+      DREAM3D_REGISTER_TEST(TestJsonReader())
+
+      DREAM3D_REGISTER_TEST(RemoveTestFiles())
+    }
+
+  private:
+    FilterParametersRWTest(const FilterParametersRWTest&); // Copy Constructor Not Implemented
+    void operator=(const FilterParametersRWTest&); // Operator '=' Not Implemented
+};
 
 // -----------------------------------------------------------------------------
 //  Use test framework
 // -----------------------------------------------------------------------------
-int main(int argc, char** argv)
-{
-  // Instantiate the QCoreApplication that we need to get the current path and load plugins.
-  QCoreApplication app(argc, argv);
-  QCoreApplication::setOrganizationName("BlueQuartz Software");
-  QCoreApplication::setOrganizationDomain("bluequartz.net");
-  QCoreApplication::setApplicationName("FilterParametersRWTest");
+//int main(int argc, char** argv)
+//{
+//  // Instantiate the QCoreApplication that we need to get the current path and load plugins.
+//  QCoreApplication app(argc, argv);
+//  QCoreApplication::setOrganizationName("BlueQuartz Software");
+//  QCoreApplication::setOrganizationDomain("bluequartz.net");
+//  QCoreApplication::setApplicationName("FilterParametersRWTest");
 
-  int err = EXIT_SUCCESS;
-  DREAM3D_REGISTER_TEST(loadFilterPlugins());
 
-  DREAM3D_REGISTER_TEST(RWIntegerTest<uint8_t>())
-  DREAM3D_REGISTER_TEST(RWIntegerTest<int8_t>())
-  DREAM3D_REGISTER_TEST(RWIntegerTest<uint16_t>())
-  DREAM3D_REGISTER_TEST(RWIntegerTest<int16_t>())
-  DREAM3D_REGISTER_TEST(RWIntegerTest<uint32_t>())
-  DREAM3D_REGISTER_TEST(RWIntegerTest<int32_t>())
-  DREAM3D_REGISTER_TEST(RWIntegerTest<uint64_t>())
-  DREAM3D_REGISTER_TEST(RWIntegerTest<int64_t>())
+//  PRINT_TEST_SUMMARY();
 
-  DREAM3D_REGISTER_TEST(RWFloatTest<float>())
-  DREAM3D_REGISTER_TEST(RWFloatTest<double>())
-
-  DREAM3D_REGISTER_TEST(TestJsonWriter())
-  DREAM3D_REGISTER_TEST(TestJsonReader())
-
-  DREAM3D_REGISTER_TEST(RemoveTestFiles())
-  PRINT_TEST_SUMMARY();
-
-  return err;
-}
+//  return err;
+//}
 

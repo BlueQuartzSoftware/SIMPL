@@ -39,7 +39,7 @@ set(${_filterGroupName}_FILTERS_HDRS "")
 SIMPL_START_FILTER_GROUP(
   ALL_FILTERS_HEADERFILE ${AllFiltersHeaderFile}
   REGISTER_KNOWN_FILTERS_FILE ${RegisterKnownFiltersFile}
-  FILTER_GROUP" ${_filterGroupName}"
+  FILTER_GROUP "${_filterGroupName}"
   BINARY_DIR ${SIMPLProj_BINARY_DIR}
   )
 

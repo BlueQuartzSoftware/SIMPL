@@ -36,74 +36,40 @@
 #ifndef _AxisAngleFilterParameter_H_
 #define _AxisAngleFilterParameter_H_
 
-#include <QtCore/QJsonObject>
 
 
+#include "SIMPLib/Common/SIMPLibSetGetMacros.h"
 #include "SIMPLib/FilterParameters/FilterParameter.h"
-
-/**
-* @brief
-*/
-typedef struct
-{
-  float angle;
-  float h;
-  float k;
-  float l;
-
-  void writeJson(QJsonObject& json)
-  {
-    json["angle"] = angle;
-    json["h"] = h;
-    json["k"] = k;
-    json["l"] = l;
-  }
-
-  bool readJson(QJsonObject& json)
-  {
-    if (json["angle"].isDouble() && json["h"].isDouble() && json["k"].isDouble() && json["l"].isDouble())
-    {
-      angle = static_cast<float>(json["angle"].toDouble());
-      h = static_cast<float>(json["h"].toDouble());
-      k = static_cast<float>(json["k"].toDouble());
-      l = static_cast<float>(json["l"].toDouble());
-      return true;
-    }
-    return false;
-  }
-
-} AxisAngleInput_t;
-
-Q_DECLARE_METATYPE(AxisAngleInput_t)
+#include "SIMPLib/FilterParameters/AxisAngleInput.h"
 
 /**
  * @brief The AxisAngleFilterParameter class
  */
 class SIMPLib_EXPORT AxisAngleFilterParameter : public FilterParameter
 {
-public:
-  SIMPL_SHARED_POINTERS(AxisAngleFilterParameter)
+  public:
+    SIMPL_SHARED_POINTERS(AxisAngleFilterParameter)
     SIMPL_STATIC_NEW_MACRO(AxisAngleFilterParameter)
     SIMPL_TYPE_MACRO(AxisAngleFilterParameter)
 
     static Pointer New(const QString& humanLabel, const QString& propertyName,
-    const AxisAngleInput_t& defaultValue, Category category,
-     int groupIndex = -1);
+                       const AxisAngleInput_t& defaultValue, Category category,
+                       int groupIndex = -1);
 
-  virtual ~AxisAngleFilterParameter();
+    virtual ~AxisAngleFilterParameter();
 
-  /**
+    /**
    * @brief getWidgetType Returns the type of widget that displays and controls
    * this FilterParameter subclass
    * @return
    */
-  QString getWidgetType();
-protected:
-  AxisAngleFilterParameter();
+    QString getWidgetType();
+  protected:
+    AxisAngleFilterParameter();
 
-private:
-  AxisAngleFilterParameter(const AxisAngleFilterParameter&); // Copy Constructor Not Implemented
-  void operator=(const AxisAngleFilterParameter&); // Operator '=' Not Implemented
+  private:
+    AxisAngleFilterParameter(const AxisAngleFilterParameter&); // Copy Constructor Not Implemented
+    void operator=(const AxisAngleFilterParameter&); // Operator '=' Not Implemented
 };
 
 #endif /* _AxisAngleFilterParameter_H_ */

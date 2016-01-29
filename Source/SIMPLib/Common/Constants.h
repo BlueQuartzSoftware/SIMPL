@@ -70,12 +70,14 @@ namespace SIMPL
     UnknownFormat
   };
 
-//  namespace BlueQuartz
-//  {
-//    const QString VendorName("BlueQuartz Software, LLC");
-//    const QString URL("http://www.bluequartz.net");
-//    const QString Copyright("(C) 2015 BlueQuartz Software, LLC");
-//  }
+
+  /** @brief Constants defined for the Stacking order of images into a 3D Volume */
+  namespace RefFrameZDir
+  {
+    static const unsigned int LowtoHigh = 0;
+    static const unsigned int HightoLow = 1;
+    static const unsigned int UnknownRefFrameZDirection = 2;
+  }
 
   namespace TypeNames
   {

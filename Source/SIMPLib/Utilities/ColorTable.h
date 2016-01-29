@@ -94,11 +94,11 @@ class SIMPLib_EXPORT RgbColor
  * @date Aug 1 2013
  * @version 1.0
  */
-class SIMPLib_EXPORT DREAM3DColorTable
+class SIMPLib_EXPORT SIMPLColorTable
 {
   public:
-    DREAM3DColorTable();
-    virtual ~DREAM3DColorTable();
+    SIMPLColorTable();
+    virtual ~SIMPLColorTable();
 
     /**
     * @brief Assumes you've already generated min and max -- the extrema for the data
@@ -117,8 +117,8 @@ class SIMPLib_EXPORT DREAM3DColorTable
     static void GetColorTable(int numColors, QVector<float>& colors);
 
   private:
-    DREAM3DColorTable(const DREAM3DColorTable&); // Copy Constructor Not Implemented
-    void operator=(const DREAM3DColorTable&); // Operator '=' Not Implemented
+    SIMPLColorTable(const SIMPLColorTable&); // Copy Constructor Not Implemented
+    void operator=(const SIMPLColorTable&); // Operator '=' Not Implemented
 
 };
 #endif /* _ColorTable_H_ */

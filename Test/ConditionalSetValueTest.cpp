@@ -51,53 +51,65 @@
 
 #include "SIMPLTestFileLocations.h"
 
+#ifdef CREATE_DATA_ARRAY
+#undef CREATE_DATA_ARRAY
+#endif
+
 #define CREATE_DATA_ARRAY(type, attrMat, tDims, cDims, initVal, comps, err)\
   DataArray<type>::Pointer _##type##_##comps##_##attrMat##Array = DataArray<type>::CreateArray(tDims, cDims, #type#comps, true);\
   err = attrMat->addAttributeArray(#type#comps, _##type##_##comps##_##attrMat##Array);\
   _##type##_##comps##_##attrMat##Array->initializeWithValue(initVal);\
   DREAM3D_REQUIRE(err >= 0);
 
+#ifdef SET_PROPERTIES_AND_CHECK_NE
+#undef SET_PROPERTIES_AND_CHECK_NE
+#endif
+
 #define SET_PROPERTIES_AND_CHECK_NE(filter, replaceValue, selectedArray, conditionalArray, errVal)\
   var.setValue(selectedArray);\
   propWasSet = filter->setProperty("SelectedArrayPath", var);\
   if(false == propWasSet)\
-    {\
-    qDebug() << "Unable to set property SelectedArrayPath";\
-    }\
+{\
+  qDebug() << "Unable to set property SelectedArrayPath";\
+  }\
   var.setValue(conditionalArray);\
   propWasSet = filter->setProperty("ConditionalArrayPath", var);\
   if(false == propWasSet)\
-    {\
-    qDebug() << "Unable to set property ConditionalArrayPath";\
-    }\
+{\
+  qDebug() << "Unable to set property ConditionalArrayPath";\
+  }\
   var.setValue(replaceValue);\
   propWasSet = filter->setProperty("ReplaceValue", var);\
   if(false == propWasSet)\
-  {\
-    qDebug() << "Unable to set property ReplaceValue";\
+{\
+  qDebug() << "Unable to set property ReplaceValue";\
   }\
   filter->execute();\
   err = filter->getErrorCondition();\
   DREAM3D_REQUIRE_EQUAL(err, errVal);
 
+#ifdef SET_PROPERTIES_AND_CHECK_EQ
+#undef SET_PROPERTIES_AND_CHECK_EQ
+#endif
+
 #define SET_PROPERTIES_AND_CHECK_EQ(filter, replaceValue, selectedArray, conditionalArray, dataArray, condArray, type)\
   var.setValue(selectedArray);\
   propWasSet = filter->setProperty("SelectedArrayPath", var);\
   if(false == propWasSet)\
-  {\
-    qDebug() << "Unable to set property SelectedArrayPath";\
+{\
+  qDebug() << "Unable to set property SelectedArrayPath";\
   }\
   var.setValue(conditionalArray);\
   propWasSet = filter->setProperty("ConditionalArrayPath", var);\
   if(false == propWasSet)\
-  {\
-    qDebug() << "Unable to set property ConditionalArrayPath";\
+{\
+  qDebug() << "Unable to set property ConditionalArrayPath";\
   }\
   var.setValue(replaceValue);\
   propWasSet = filter->setProperty("ReplaceValue", var);\
   if(false == propWasSet)\
-  {\
-    qDebug() << "Unable to set property ReplaceValue";\
+{\
+  qDebug() << "Unable to set property ReplaceValue";\
   }\
   filter->execute();\
   err = filter->getErrorCondition();\
@@ -108,235 +120,237 @@
   DREAM3D_REQUIRE_EQUAL(err, 0);\
   validateReplacedValues<type>(dataArray, condArray);
 
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-int TestFilterAvailability()
+class ConditionalSetValueTest
 {
-  // Now instantiate the FindDifferenceMapTest Filter from the FilterManager
-  QString filtName = "ConditionalSetValue";
-  FilterManager* fm = FilterManager::Instance();
-  IFilterFactory::Pointer filterFactory = fm->getFactoryForFilter(filtName);
-  if (NULL == filterFactory.get())
-  {
-    std::stringstream ss;
-    ss << "The ConditionalSetValueTest Requires the use of the " << filtName.toStdString() << " filter which is found in Core Filters";
-    DREAM3D_TEST_THROW_EXCEPTION(ss.str())
-  }
-  return 0;
-}
+  public:
+    ConditionalSetValueTest() {}
+    virtual ~ConditionalSetValueTest() {}
 
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-DataContainerArray::Pointer initializeDataContainerArray()
-{
-  int err = 0;
 
-  DataContainerArray::Pointer dca = DataContainerArray::New();
 
-  DataContainer::Pointer m = DataContainer::New();
-  m->setName("ConditionalSetValueTest");
+    // -----------------------------------------------------------------------------
+    //
+    // -----------------------------------------------------------------------------
+    int TestFilterAvailability()
+    {
+      // Now instantiate the FindDifferenceMapTest Filter from the FilterManager
+      QString filtName = "ConditionalSetValue";
+      FilterManager* fm = FilterManager::Instance();
+      IFilterFactory::Pointer filterFactory = fm->getFactoryForFilter(filtName);
+      if (NULL == filterFactory.get())
+      {
+        std::stringstream ss;
+        ss << "The ConditionalSetValueTest Requires the use of the " << filtName.toStdString() << " filter which is found in Core Filters";
+        DREAM3D_TEST_THROW_EXCEPTION(ss.str())
+      }
+      return 0;
+    }
 
-  // Create Attribute Matrices with different tDims to test validation of tuple compatibility
-  QVector<size_t> tDims(1, 10);
-  AttributeMatrix::Pointer attrMat = AttributeMatrix::New(tDims, "ConditionalSetValueAttrMat", 3);
+    // -----------------------------------------------------------------------------
+    //
+    // -----------------------------------------------------------------------------
+    DataContainerArray::Pointer initializeDataContainerArray()
+    {
+      int err = 0;
 
-  m->addAttributeMatrix("ConditionalSetValueAttrMat", attrMat);
+      DataContainerArray::Pointer dca = DataContainerArray::New();
 
-  dca->addDataContainer(m);
+      DataContainer::Pointer m = DataContainer::New();
+      m->setName("ConditionalSetValueTest");
 
-  QVector<size_t> cDims(1, 3);
-  int32_t initVal = 10;
+      // Create Attribute Matrices with different tDims to test validation of tuple compatibility
+      QVector<size_t> tDims(1, 10);
+      AttributeMatrix::Pointer attrMat = AttributeMatrix::New(tDims, "ConditionalSetValueAttrMat", 3);
 
-  CREATE_DATA_ARRAY(uint8_t, attrMat, tDims, cDims, initVal, 3, err);
-  CREATE_DATA_ARRAY(int8_t, attrMat, tDims, cDims, initVal, 3, err);
-  CREATE_DATA_ARRAY(uint16_t, attrMat, tDims, cDims, initVal, 3, err);
-  CREATE_DATA_ARRAY(int16_t, attrMat, tDims, cDims, initVal, 3, err);
-  CREATE_DATA_ARRAY(uint32_t, attrMat, tDims, cDims, initVal, 3, err);
-  CREATE_DATA_ARRAY(int32_t, attrMat, tDims, cDims, initVal, 3, err);
-  CREATE_DATA_ARRAY(uint64_t, attrMat, tDims, cDims, initVal, 3, err);
-  CREATE_DATA_ARRAY(int64_t, attrMat, tDims, cDims, initVal, 3, err);
-  CREATE_DATA_ARRAY(double, attrMat, tDims, cDims, initVal, 3, err);
-  CREATE_DATA_ARRAY(float, attrMat, tDims, cDims, initVal, 3, err);
-  CREATE_DATA_ARRAY(bool, attrMat, tDims, cDims, true, 3, err);
+      m->addAttributeMatrix("ConditionalSetValueAttrMat", attrMat);
 
-  cDims[0] = 1;
+      dca->addDataContainer(m);
 
-  CREATE_DATA_ARRAY(uint8_t, attrMat, tDims, cDims, initVal, 1, err);
-  CREATE_DATA_ARRAY(int8_t, attrMat, tDims, cDims, initVal, 1, err);
-  CREATE_DATA_ARRAY(uint16_t, attrMat, tDims, cDims, initVal, 1, err);
-  CREATE_DATA_ARRAY(int16_t, attrMat, tDims, cDims, initVal, 1, err);
-  CREATE_DATA_ARRAY(uint32_t, attrMat, tDims, cDims, initVal, 1, err);
-  CREATE_DATA_ARRAY(int32_t, attrMat, tDims, cDims, initVal, 1, err);
-  CREATE_DATA_ARRAY(uint64_t, attrMat, tDims, cDims, initVal, 1, err);
-  CREATE_DATA_ARRAY(int64_t, attrMat, tDims, cDims, initVal, 1, err);
-  CREATE_DATA_ARRAY(double, attrMat, tDims, cDims, initVal, 1, err);
-  CREATE_DATA_ARRAY(float, attrMat, tDims, cDims, initVal, 1, err);
-  CREATE_DATA_ARRAY(bool, attrMat, tDims, cDims, true, 1, err);
+      QVector<size_t> cDims(1, 3);
+      int32_t initVal = 10;
 
-  //this is the conditional array
-  QString name = "ConditionalArray";
-  BoolArrayType::Pointer condArrayPtr = BoolArrayType::CreateArray(tDims, cDims, name);
-  attrMat->addAttributeArray(name, condArrayPtr);
-  condArrayPtr->initializeWithValue(true);
-  //Set some of the values to false int he conditional array
-  bool* condArray = condArrayPtr->getPointer(0);
-  for (size_t iter = 0; iter < tDims[0]; iter++)
-  {
-    if (iter % 2 == 0) condArray[iter] = false;
-  }
+      CREATE_DATA_ARRAY(uint8_t, attrMat, tDims, cDims, initVal, 3, err);
+      CREATE_DATA_ARRAY(int8_t, attrMat, tDims, cDims, initVal, 3, err);
+      CREATE_DATA_ARRAY(uint16_t, attrMat, tDims, cDims, initVal, 3, err);
+      CREATE_DATA_ARRAY(int16_t, attrMat, tDims, cDims, initVal, 3, err);
+      CREATE_DATA_ARRAY(uint32_t, attrMat, tDims, cDims, initVal, 3, err);
+      CREATE_DATA_ARRAY(int32_t, attrMat, tDims, cDims, initVal, 3, err);
+      CREATE_DATA_ARRAY(uint64_t, attrMat, tDims, cDims, initVal, 3, err);
+      CREATE_DATA_ARRAY(int64_t, attrMat, tDims, cDims, initVal, 3, err);
+      CREATE_DATA_ARRAY(double, attrMat, tDims, cDims, initVal, 3, err);
+      CREATE_DATA_ARRAY(float, attrMat, tDims, cDims, initVal, 3, err);
+      CREATE_DATA_ARRAY(bool, attrMat, tDims, cDims, true, 3, err);
 
-  return dca;
-}
+      cDims[0] = 1;
 
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-template<typename T>
-void validateReplacedValues(IDataArray::Pointer iArray, IDataArray::Pointer cArray)
-{
-  typename DataArray<T>::Pointer dataArrayPtr = std::dynamic_pointer_cast<DataArray<T> >(iArray);
-  typename DataArray<bool>::Pointer condArrayPtr = std::dynamic_pointer_cast<DataArray<bool> >(cArray);
-  T* dataArray = dataArrayPtr->getPointer(0);
-  bool* condArray = condArrayPtr->getPointer(0);
-  size_t numTuples = dataArrayPtr->getNumberOfTuples();
+      CREATE_DATA_ARRAY(uint8_t, attrMat, tDims, cDims, initVal, 1, err);
+      CREATE_DATA_ARRAY(int8_t, attrMat, tDims, cDims, initVal, 1, err);
+      CREATE_DATA_ARRAY(uint16_t, attrMat, tDims, cDims, initVal, 1, err);
+      CREATE_DATA_ARRAY(int16_t, attrMat, tDims, cDims, initVal, 1, err);
+      CREATE_DATA_ARRAY(uint32_t, attrMat, tDims, cDims, initVal, 1, err);
+      CREATE_DATA_ARRAY(int32_t, attrMat, tDims, cDims, initVal, 1, err);
+      CREATE_DATA_ARRAY(uint64_t, attrMat, tDims, cDims, initVal, 1, err);
+      CREATE_DATA_ARRAY(int64_t, attrMat, tDims, cDims, initVal, 1, err);
+      CREATE_DATA_ARRAY(double, attrMat, tDims, cDims, initVal, 1, err);
+      CREATE_DATA_ARRAY(float, attrMat, tDims, cDims, initVal, 1, err);
+      CREATE_DATA_ARRAY(bool, attrMat, tDims, cDims, true, 1, err);
 
-  for (size_t i = 0; i < numTuples; i++)
-  {
-    if (condArray[i] == true) { DREAM3D_REQUIRE_EQUAL(dataArray[i], 5.0); }
-    else if (condArray[i] == false) { DREAM3D_REQUIRE_EQUAL(dataArray[i], 10.0); }
-  }
-}
+      //this is the conditional array
+      QString name = "ConditionalArray";
+      BoolArrayType::Pointer condArrayPtr = BoolArrayType::CreateArray(tDims, cDims, name);
+      attrMat->addAttributeArray(name, condArrayPtr);
+      condArrayPtr->initializeWithValue(true);
+      //Set some of the values to false int he conditional array
+      bool* condArray = condArrayPtr->getPointer(0);
+      for (size_t iter = 0; iter < tDims[0]; iter++)
+      {
+        if (iter % 2 == 0) condArray[iter] = false;
+      }
 
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-void removeArrayFromDataContainerArray(DataContainerArray::Pointer dca, DataArrayPath path)
-{
-  dca->getDataContainer(path.getDataContainerName())->getAttributeMatrix(path.getAttributeMatrixName())->removeAttributeArray(path.getDataArrayName());
-}
+      return dca;
+    }
 
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-void validateReplaceValue(AbstractFilter::Pointer filter, DataContainerArray::Pointer dca)
-{
-  QVariant var;
-  bool propWasSet;
-  int err = 0;
+    // -----------------------------------------------------------------------------
+    //
+    // -----------------------------------------------------------------------------
+    template<typename T>
+    void validateReplacedValues(IDataArray::Pointer iArray, IDataArray::Pointer cArray)
+    {
+      typename DataArray<T>::Pointer dataArrayPtr = std::dynamic_pointer_cast<DataArray<T> >(iArray);
+      typename DataArray<bool>::Pointer condArrayPtr = std::dynamic_pointer_cast<DataArray<bool> >(cArray);
+      T* dataArray = dataArrayPtr->getPointer(0);
+      bool* condArray = condArrayPtr->getPointer(0);
+      size_t numTuples = dataArrayPtr->getNumberOfTuples();
 
-  DataContainer::Pointer dc = dca->getDataContainer("ConditionalSetValueTest");
-  IDataArray::Pointer dataArray;
-  IDataArray::Pointer condArray;
+      for (size_t i = 0; i < numTuples; i++)
+      {
+        if (condArray[i] == true) { DREAM3D_REQUIRE_EQUAL(dataArray[i], 5.0); }
+        else if (condArray[i] == false) { DREAM3D_REQUIRE_EQUAL(dataArray[i], 10.0); }
+      }
+    }
 
-  DataArrayPath attrMat_uint8_3("ConditionalSetValueTest", "ConditionalSetValueAttrMat", "uint8_t3");
-  DataArrayPath attrMat_int8_3("ConditionalSetValueTest", "ConditionalSetValueAttrMat", "int8_t3");
-  DataArrayPath attrMat_uint16_3("ConditionalSetValueTest", "ConditionalSetValueAttrMat", "uint16_t3");
-  DataArrayPath attrMat_int16_3("ConditionalSetValueTest", "ConditionalSetValueAttrMat", "int16_t3");
-  DataArrayPath attrMat_uint32_3("ConditionalSetValueTest", "ConditionalSetValueAttrMat", "uint32_t3");
-  DataArrayPath attrMat_int32_3("ConditionalSetValueTest", "ConditionalSetValueAttrMat", "int32_t3");
-  DataArrayPath attrMat_uint64_3("ConditionalSetValueTest", "ConditionalSetValueAttrMat", "uint64t3");
-  DataArrayPath attrMat_int64_3("ConditionalSetValueTest", "ConditionalSetValueAttrMat", "int64_t3");
-  DataArrayPath attrMat_float_3("ConditionalSetValueTest", "ConditionalSetValueAttrMat", "float3");
-  DataArrayPath attrMat_double_3("ConditionalSetValueTest", "ConditionalSetValueAttrMat", "double3");
-  DataArrayPath attrMat_bool_3("ConditionalSetValueTest", "ConditionalSetValueAttrMat", "bool3");
+    // -----------------------------------------------------------------------------
+    //
+    // -----------------------------------------------------------------------------
+    void removeArrayFromDataContainerArray(DataContainerArray::Pointer dca, DataArrayPath path)
+    {
+      dca->getDataContainer(path.getDataContainerName())->getAttributeMatrix(path.getAttributeMatrixName())->removeAttributeArray(path.getDataArrayName());
+    }
 
-  DataArrayPath attrMat_uint8_1("ConditionalSetValueTest", "ConditionalSetValueAttrMat", "uint8_t1");
-  DataArrayPath attrMat_int8_1("ConditionalSetValueTest", "ConditionalSetValueAttrMat", "int8_t1");
-  DataArrayPath attrMat_uint16_1("ConditionalSetValueTest", "ConditionalSetValueAttrMat", "uint16_t1");
-  DataArrayPath attrMat_int16_1("ConditionalSetValueTest", "ConditionalSetValueAttrMat", "int16_t1");
-  DataArrayPath attrMat_uint32_1("ConditionalSetValueTest", "ConditionalSetValueAttrMat", "uint32_t1");
-  DataArrayPath attrMat_int32_1("ConditionalSetValueTest", "ConditionalSetValueAttrMat", "int32_t1");
-  DataArrayPath attrMat_uint64_1("ConditionalSetValueTest", "ConditionalSetValueAttrMat", "uint64_t1");
-  DataArrayPath attrMat_int64_1("ConditionalSetValueTest", "ConditionalSetValueAttrMat", "int64_t1");
-  DataArrayPath attrMat_float_1("ConditionalSetValueTest", "ConditionalSetValueAttrMat", "float1");
-  DataArrayPath attrMat_double_1("ConditionalSetValueTest", "ConditionalSetValueAttrMat", "double1");
-  DataArrayPath attrMat_bool_1("ConditionalSetValueTest", "ConditionalSetValueAttrMat", "bool");
+    // -----------------------------------------------------------------------------
+    //
+    // -----------------------------------------------------------------------------
+    void validateReplaceValue(AbstractFilter::Pointer filter, DataContainerArray::Pointer dca)
+    {
+      QVariant var;
+      bool propWasSet;
+      int err = 0;
 
-  DataArrayPath conditionalArray("ConditionalSetValueTest", "ConditionalSetValueAttrMat", "ConditionalArray");
+      DataContainer::Pointer dc = dca->getDataContainer("ConditionalSetValueTest");
+      IDataArray::Pointer dataArray;
+      IDataArray::Pointer condArray;
 
-  // Fail if an input array is not scalar
-  SET_PROPERTIES_AND_CHECK_NE(filter, 5.0, attrMat_uint8_3, conditionalArray, -11002)
+      DataArrayPath attrMat_uint8_3("ConditionalSetValueTest", "ConditionalSetValueAttrMat", "uint8_t3");
+      DataArrayPath attrMat_int8_3("ConditionalSetValueTest", "ConditionalSetValueAttrMat", "int8_t3");
+      DataArrayPath attrMat_uint16_3("ConditionalSetValueTest", "ConditionalSetValueAttrMat", "uint16_t3");
+      DataArrayPath attrMat_int16_3("ConditionalSetValueTest", "ConditionalSetValueAttrMat", "int16_t3");
+      DataArrayPath attrMat_uint32_3("ConditionalSetValueTest", "ConditionalSetValueAttrMat", "uint32_t3");
+      DataArrayPath attrMat_int32_3("ConditionalSetValueTest", "ConditionalSetValueAttrMat", "int32_t3");
+      DataArrayPath attrMat_uint64_3("ConditionalSetValueTest", "ConditionalSetValueAttrMat", "uint64t3");
+      DataArrayPath attrMat_int64_3("ConditionalSetValueTest", "ConditionalSetValueAttrMat", "int64_t3");
+      DataArrayPath attrMat_float_3("ConditionalSetValueTest", "ConditionalSetValueAttrMat", "float3");
+      DataArrayPath attrMat_double_3("ConditionalSetValueTest", "ConditionalSetValueAttrMat", "double3");
+      DataArrayPath attrMat_bool_3("ConditionalSetValueTest", "ConditionalSetValueAttrMat", "bool3");
 
-  // Fail if the replace value is out of range
-  SET_PROPERTIES_AND_CHECK_NE(filter, 256.0, attrMat_uint8_1, conditionalArray, -100)
-  SET_PROPERTIES_AND_CHECK_NE(filter, 128.0, attrMat_int8_1, conditionalArray, -100)
-  SET_PROPERTIES_AND_CHECK_NE(filter, 65536.0, attrMat_uint16_1, conditionalArray, -100)
-  SET_PROPERTIES_AND_CHECK_NE(filter, 32768.0, attrMat_int16_1, conditionalArray, -100)
-  SET_PROPERTIES_AND_CHECK_NE(filter, 4294967296.0, attrMat_uint32_1, conditionalArray, -100)
-  SET_PROPERTIES_AND_CHECK_NE(filter, 2147483648.0, attrMat_int32_1, conditionalArray, -100)
-  SET_PROPERTIES_AND_CHECK_NE(filter, 20000000000000000000.0, attrMat_uint64_1, conditionalArray, -100)
-  SET_PROPERTIES_AND_CHECK_NE(filter, 10000000000000000000.0, attrMat_int64_1, conditionalArray, -100)
-  SET_PROPERTIES_AND_CHECK_NE(filter, 3.41e38, attrMat_float_1, conditionalArray, -101)
-  //not checking double, because cannot make a value outside of the range
+      DataArrayPath attrMat_uint8_1("ConditionalSetValueTest", "ConditionalSetValueAttrMat", "uint8_t1");
+      DataArrayPath attrMat_int8_1("ConditionalSetValueTest", "ConditionalSetValueAttrMat", "int8_t1");
+      DataArrayPath attrMat_uint16_1("ConditionalSetValueTest", "ConditionalSetValueAttrMat", "uint16_t1");
+      DataArrayPath attrMat_int16_1("ConditionalSetValueTest", "ConditionalSetValueAttrMat", "int16_t1");
+      DataArrayPath attrMat_uint32_1("ConditionalSetValueTest", "ConditionalSetValueAttrMat", "uint32_t1");
+      DataArrayPath attrMat_int32_1("ConditionalSetValueTest", "ConditionalSetValueAttrMat", "int32_t1");
+      DataArrayPath attrMat_uint64_1("ConditionalSetValueTest", "ConditionalSetValueAttrMat", "uint64_t1");
+      DataArrayPath attrMat_int64_1("ConditionalSetValueTest", "ConditionalSetValueAttrMat", "int64_t1");
+      DataArrayPath attrMat_float_1("ConditionalSetValueTest", "ConditionalSetValueAttrMat", "float1");
+      DataArrayPath attrMat_double_1("ConditionalSetValueTest", "ConditionalSetValueAttrMat", "double1");
+      DataArrayPath attrMat_bool_1("ConditionalSetValueTest", "ConditionalSetValueAttrMat", "bool");
 
-  // Succeed for all possible test combinations
-  SET_PROPERTIES_AND_CHECK_EQ(filter, 5.0, attrMat_uint8_1, conditionalArray, dataArray, condArray, uint8_t)
-  SET_PROPERTIES_AND_CHECK_EQ(filter, 5.0, attrMat_int8_1, conditionalArray, dataArray, condArray, int8_t)
-  SET_PROPERTIES_AND_CHECK_EQ(filter, 5.0, attrMat_uint16_1, conditionalArray, dataArray, condArray, uint16_t)
-  SET_PROPERTIES_AND_CHECK_EQ(filter, 5.0, attrMat_int16_1, conditionalArray, dataArray, condArray, int16_t)
-  SET_PROPERTIES_AND_CHECK_EQ(filter, 5.0, attrMat_uint32_1, conditionalArray, dataArray, condArray, uint32_t)
-  SET_PROPERTIES_AND_CHECK_EQ(filter, 5.0, attrMat_int32_1, conditionalArray, dataArray, condArray, int32_t)
-  SET_PROPERTIES_AND_CHECK_EQ(filter, 5.0, attrMat_uint64_1, conditionalArray, dataArray, condArray, uint64_t)
-  SET_PROPERTIES_AND_CHECK_EQ(filter, 5.0, attrMat_int64_1, conditionalArray, dataArray, condArray, int64_t)
-  SET_PROPERTIES_AND_CHECK_EQ(filter, 5.0, attrMat_float_1, conditionalArray, dataArray, condArray, float)
-  SET_PROPERTIES_AND_CHECK_EQ(filter, 5.0, attrMat_double_1, conditionalArray, dataArray, condArray, double)
-}
+      DataArrayPath conditionalArray("ConditionalSetValueTest", "ConditionalSetValueAttrMat", "ConditionalArray");
 
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-int ReplaceValueTest()
-{
-  DataContainerArray::Pointer dca = initializeDataContainerArray();
+      // Fail if an input array is not scalar
+      SET_PROPERTIES_AND_CHECK_NE(filter, 5.0, attrMat_uint8_3, conditionalArray, -11002)
 
-  QString filtName = "ConditionalSetValue";
-  FilterManager* fm = FilterManager::Instance();
-  IFilterFactory::Pointer factory = fm->getFactoryForFilter(filtName);
-  DREAM3D_REQUIRE(factory.get() != NULL)
+          // Fail if the replace value is out of range
+          SET_PROPERTIES_AND_CHECK_NE(filter, 256.0, attrMat_uint8_1, conditionalArray, -100)
+          SET_PROPERTIES_AND_CHECK_NE(filter, 128.0, attrMat_int8_1, conditionalArray, -100)
+          SET_PROPERTIES_AND_CHECK_NE(filter, 65536.0, attrMat_uint16_1, conditionalArray, -100)
+          SET_PROPERTIES_AND_CHECK_NE(filter, 32768.0, attrMat_int16_1, conditionalArray, -100)
+          SET_PROPERTIES_AND_CHECK_NE(filter, 4294967296.0, attrMat_uint32_1, conditionalArray, -100)
+          SET_PROPERTIES_AND_CHECK_NE(filter, 2147483648.0, attrMat_int32_1, conditionalArray, -100)
+          SET_PROPERTIES_AND_CHECK_NE(filter, 20000000000000000000.0, attrMat_uint64_1, conditionalArray, -100)
+          SET_PROPERTIES_AND_CHECK_NE(filter, 10000000000000000000.0, attrMat_int64_1, conditionalArray, -100)
+          SET_PROPERTIES_AND_CHECK_NE(filter, 3.41e38, attrMat_float_1, conditionalArray, -101)
+          //not checking double, because cannot make a value outside of the range
 
-  AbstractFilter::Pointer conditionalSetValueFilter = factory->create();
-  DREAM3D_REQUIRE(conditionalSetValueFilter.get() != NULL)
+          // Succeed for all possible test combinations
+          SET_PROPERTIES_AND_CHECK_EQ(filter, 5.0, attrMat_uint8_1, conditionalArray, dataArray, condArray, uint8_t)
+          SET_PROPERTIES_AND_CHECK_EQ(filter, 5.0, attrMat_int8_1, conditionalArray, dataArray, condArray, int8_t)
+          SET_PROPERTIES_AND_CHECK_EQ(filter, 5.0, attrMat_uint16_1, conditionalArray, dataArray, condArray, uint16_t)
+          SET_PROPERTIES_AND_CHECK_EQ(filter, 5.0, attrMat_int16_1, conditionalArray, dataArray, condArray, int16_t)
+          SET_PROPERTIES_AND_CHECK_EQ(filter, 5.0, attrMat_uint32_1, conditionalArray, dataArray, condArray, uint32_t)
+          SET_PROPERTIES_AND_CHECK_EQ(filter, 5.0, attrMat_int32_1, conditionalArray, dataArray, condArray, int32_t)
+          SET_PROPERTIES_AND_CHECK_EQ(filter, 5.0, attrMat_uint64_1, conditionalArray, dataArray, condArray, uint64_t)
+          SET_PROPERTIES_AND_CHECK_EQ(filter, 5.0, attrMat_int64_1, conditionalArray, dataArray, condArray, int64_t)
+          SET_PROPERTIES_AND_CHECK_EQ(filter, 5.0, attrMat_float_1, conditionalArray, dataArray, condArray, float)
+          SET_PROPERTIES_AND_CHECK_EQ(filter, 5.0, attrMat_double_1, conditionalArray, dataArray, condArray, double)
+    }
 
-  conditionalSetValueFilter->setDataContainerArray(dca);
+    // -----------------------------------------------------------------------------
+    //
+    // -----------------------------------------------------------------------------
+    int ReplaceValueTest()
+    {
+      DataContainerArray::Pointer dca = initializeDataContainerArray();
 
-  validateReplaceValue(conditionalSetValueFilter, dca);
+      QString filtName = "ConditionalSetValue";
+      FilterManager* fm = FilterManager::Instance();
+      IFilterFactory::Pointer factory = fm->getFactoryForFilter(filtName);
+      DREAM3D_REQUIRE(factory.get() != NULL)
 
-  return EXIT_SUCCESS;
-}
+          AbstractFilter::Pointer conditionalSetValueFilter = factory->create();
+      DREAM3D_REQUIRE(conditionalSetValueFilter.get() != NULL)
 
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-void loadFilterPlugins()
-{
-  // Register all the filters including trying to load those from Plugins
-  FilterManager* fm = FilterManager::Instance();
-  SIMPLibPluginLoader::LoadPluginFilters(fm);
+          conditionalSetValueFilter->setDataContainerArray(dca);
 
-  // Send progress messages from PipelineBuilder to this object for display
-  QMetaObjectUtilities::RegisterMetaTypes();
-}
+      validateReplaceValue(conditionalSetValueFilter, dca);
 
+      return EXIT_SUCCESS;
+    }
+
+    void operator()()
+    {
+      int err = EXIT_SUCCESS;
+      DREAM3D_REGISTER_TEST( TestFilterAvailability() );
+      DREAM3D_REGISTER_TEST( ReplaceValueTest() )
+    }
+
+  private:
+    ConditionalSetValueTest(const ConditionalSetValueTest&); // Copy Constructor Not Implemented
+    void operator=(const ConditionalSetValueTest&); // Operator '=' Not Implemented
+};
 
 // -----------------------------------------------------------------------------
 //  Use test framework
 // -----------------------------------------------------------------------------
-int main(int argc, char** argv)
-{
-  // Instantiate the QCoreApplication that we need to get the current path and load plugins.
-  QCoreApplication app(argc, argv);
-  QCoreApplication::setOrganizationName("BlueQuartz Software");
-  QCoreApplication::setOrganizationDomain("bluequartz.net");
-  QCoreApplication::setApplicationName("ConditionalSetValueTest");
+//int main(int argc, char** argv)
+//{
+//  // Instantiate the QCoreApplication that we need to get the current path and load plugins.
+//  QCoreApplication app(argc, argv);
+//  QCoreApplication::setOrganizationName("BlueQuartz Software");
+//  QCoreApplication::setOrganizationDomain("bluequartz.net");
+//  QCoreApplication::setApplicationName("ConditionalSetValueTest");
 
-  int err = EXIT_SUCCESS;
-  DREAM3D_REGISTER_TEST( loadFilterPlugins() );
-  DREAM3D_REGISTER_TEST( TestFilterAvailability() );
 
-  DREAM3D_REGISTER_TEST( ReplaceValueTest() )
 
-  PRINT_TEST_SUMMARY();
-  return err;
-}
+//  PRINT_TEST_SUMMARY();
+//  return err;
+//}

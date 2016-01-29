@@ -51,6 +51,7 @@ set(SIMPLib_${SUBDIR_NAME}_HDRS
   ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/AttributeMatrixCreationFilterParameter.h
   ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/AttributeMatrixSelectionFilterParameter.h
   ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/AxisAngleFilterParameter.h
+  ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/AxisAngleInput.h
   ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/BooleanFilterParameter.h
   ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/ChoiceFilterParameter.h
   ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/ComparisonSelectionFilterParameter.h

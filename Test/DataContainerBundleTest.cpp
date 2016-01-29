@@ -52,106 +52,122 @@
 
 #include "Test/SIMPLTestFileLocations.h"
 
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-void RemoveTestFiles()
+class DataContainerBundleTest
 {
+  public:
+    DataContainerBundleTest() {}
+    virtual ~DataContainerBundleTest() {}
+
+
+
+    // -----------------------------------------------------------------------------
+    //
+    // -----------------------------------------------------------------------------
+    void RemoveTestFiles()
+    {
 #if REMOVE_TEST_FILES
-  QFile::remove(UnitTest::DataContainerBundleTest::TestFile);
+      QFile::remove(UnitTest::DataContainerBundleTest::TestFile);
 #endif
-}
+    }
 
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-template<typename T>
-void AddDataArray(AttributeMatrix::Pointer am, const QString name, QVector<size_t>& tDims, QVector<size_t>& cDims)
-{
+    // -----------------------------------------------------------------------------
+    //
+    // -----------------------------------------------------------------------------
+    template<typename T>
+    void AddDataArray(AttributeMatrix::Pointer am, const QString name, QVector<size_t>& tDims, QVector<size_t>& cDims)
+    {
 
-  typename DataArray<T>::Pointer data = DataArray<T>::CreateArray(tDims, cDims, name);
+      typename DataArray<T>::Pointer data = DataArray<T>::CreateArray(tDims, cDims, name);
 
-  am->addAttributeArray(data->getName(), data);
+      am->addAttributeArray(data->getName(), data);
 
-}
-
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-void TestDataBundleCommonPaths()
-{
+    }
 
 
-
-  QVector<size_t> tDims(3, 0);
-  tDims[0] = 10;
-  tDims[1] = 20;
-  tDims[2] = 30;
-  QVector<size_t> cDims(2);
-  cDims[0] = 3;
-  cDims[1] = 3;
-
-  DataContainer::Pointer dc0 = DataContainer::New("DC 0");
-  AttributeMatrix::Pointer am = AttributeMatrix::New(tDims, "CellAttributeMatrix", SIMPL::AttributeMatrixType::Cell);
-  AddDataArray<uint8_t>(am, "Uint8 Array", tDims, cDims);
-  AddDataArray<float>(am, "Float Array", tDims, cDims);
-  AddDataArray<int32_t>(am, "int32 Array", tDims, cDims);
-  dc0->addAttributeMatrix(am->getName(), am);
-
-  QVector<size_t> tupleDims(1, 1);
-  AttributeMatrix::Pointer metaAm = AttributeMatrix::New(tupleDims, DataContainerBundle::GetMetaDataName(), SIMPL::AttributeMatrixType::MetaData);
-  dc0->addAttributeMatrix(metaAm->getName(), metaAm);
-
-  DataContainer::Pointer dc1 = dc0->deepCopy();
-  dc1->setName("DC 1");
-
-  DataContainer::Pointer dc2 = dc0->deepCopy();
-  dc2->setName("DC 2");
-  // remove an array so that we have something different
-  dc2->getAttributeMatrix("CellAttributeMatrix")->removeAttributeArray("Uint8 Array");
-
-  DataContainerArray::Pointer dca = DataContainerArray::New();
-  dca->addDataContainer(dc0);
-  dca->addDataContainer(dc1);
-  dca->addDataContainer(dc2);
+    // -----------------------------------------------------------------------------
+    //
+    // -----------------------------------------------------------------------------
+    void TestDataBundleCommonPaths()
+    {
 
 
-  DataContainerBundle::Pointer bundle = DataContainerBundle::New("Bundle 1");
-  bundle->addDataContainer(dc0);
-  bundle->addDataContainer(dc1);
-  bundle->addDataContainer(dc2);
 
-  QVector<DataArrayPath> paths = bundle->findCommonDataArrayPaths();
+      QVector<size_t> tDims(3, 0);
+      tDims[0] = 10;
+      tDims[1] = 20;
+      tDims[2] = 30;
+      QVector<size_t> cDims(2);
+      cDims[0] = 3;
+      cDims[1] = 3;
 
-  int count = paths.count();
-  DREAM3D_REQUIRE_EQUAL(count, 2)
+      DataContainer::Pointer dc0 = DataContainer::New("DC 0");
+      AttributeMatrix::Pointer am = AttributeMatrix::New(tDims, "CellAttributeMatrix", SIMPL::AttributeMatrixType::Cell);
+      AddDataArray<uint8_t>(am, "Uint8 Array", tDims, cDims);
+      AddDataArray<float>(am, "Float Array", tDims, cDims);
+      AddDataArray<int32_t>(am, "int32 Array", tDims, cDims);
+      dc0->addAttributeMatrix(am->getName(), am);
 
-}
+      QVector<size_t> tupleDims(1, 1);
+      AttributeMatrix::Pointer metaAm = AttributeMatrix::New(tupleDims, DataContainerBundle::GetMetaDataName(), SIMPL::AttributeMatrixType::MetaData);
+      dc0->addAttributeMatrix(metaAm->getName(), metaAm);
+
+      DataContainer::Pointer dc1 = dc0->deepCopy();
+      dc1->setName("DC 1");
+
+      DataContainer::Pointer dc2 = dc0->deepCopy();
+      dc2->setName("DC 2");
+      // remove an array so that we have something different
+      dc2->getAttributeMatrix("CellAttributeMatrix")->removeAttributeArray("Uint8 Array");
+
+      DataContainerArray::Pointer dca = DataContainerArray::New();
+      dca->addDataContainer(dc0);
+      dca->addDataContainer(dc1);
+      dca->addDataContainer(dc2);
 
 
+      DataContainerBundle::Pointer bundle = DataContainerBundle::New("Bundle 1");
+      bundle->addDataContainer(dc0);
+      bundle->addDataContainer(dc1);
+      bundle->addDataContainer(dc2);
+
+      QVector<DataArrayPath> paths = bundle->findCommonDataArrayPaths();
+
+      int count = paths.count();
+      DREAM3D_REQUIRE_EQUAL(count, 2)
+
+    }
+
+    void operator()()
+    {
+      int err = EXIT_SUCCESS;
+
+      QDir dir(UnitTest::DataArrayTest::TestDir);
+      dir.mkpath(".");
+
+#if !REMOVE_TEST_FILES
+      DREAM3D_REGISTER_TEST( RemoveTestFiles() )
+    #endif
+
+          DREAM3D_REGISTER_TEST( TestDataBundleCommonPaths() )
+
+    #if REMOVE_TEST_FILES
+          DREAM3D_REGISTER_TEST( RemoveTestFiles() )
+    #endif
+
+    }
+
+  private:
+    DataContainerBundleTest(const DataContainerBundleTest&); // Copy Constructor Not Implemented
+    void operator=(const DataContainerBundleTest&); // Operator '=' Not Implemented
+};
 
 // -----------------------------------------------------------------------------
 //  Use unit test framework
 // -----------------------------------------------------------------------------
-int main(int argc, char** argv)
-{
-  int err = EXIT_SUCCESS;
-
-  QDir dir(UnitTest::DataArrayTest::TestDir);
-  dir.mkpath(".");
-
-#if !REMOVE_TEST_FILES
-  DREAM3D_REGISTER_TEST( RemoveTestFiles() )
-#endif
-
-  DREAM3D_REGISTER_TEST( TestDataBundleCommonPaths() )
-
-#if REMOVE_TEST_FILES
-  DREAM3D_REGISTER_TEST( RemoveTestFiles() )
-#endif
+//int main(int argc, char** argv)
+//{
 
 
-  PRINT_TEST_SUMMARY();
-  return err;
-}
+//  PRINT_TEST_SUMMARY();
+//  return err;
+//}
