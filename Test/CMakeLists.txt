@@ -28,8 +28,35 @@ configure_file(${SIMPLTest_SOURCE_DIR}/TestFileLocations.h.in
 
 include_directories(${SIMPLTest_BINARY_DIR})
 
+#------------------------------------------------------------------------------
+# List all the source files here. They will NOT be compiled but instead
+# be directly included in the main test source file. We list them here so that
+# they will show up in IDEs
+set( ${PLUGIN_NAME}_TEST_SRCS
+  "${SIMPLTest_SOURCE_DIR}/ConditionalSetValueTest.cpp"
+  "${SIMPLTest_SOURCE_DIR}/CombineAttributeArraysTest.cpp"
+  "${SIMPLTest_SOURCE_DIR}/CombineAttributeMatricesTest.cpp"
+  "${SIMPLTest_SOURCE_DIR}/DataContainerTest.cpp"
+  "${SIMPLTest_SOURCE_DIR}/ReplaceValueTest.cpp"
+  "${SIMPLTest_SOURCE_DIR}/StringDataArrayTest.cpp"
+  "${SIMPLTest_SOURCE_DIR}/StructArrayTest.cpp"
+  "${SIMPLTest_SOURCE_DIR}/FilterPipelineTest.cpp"
+  "${SIMPLTest_SOURCE_DIR}/DataArrayTest.cpp"
+  "${SIMPLTest_SOURCE_DIR}/ErrorMessageTest.cpp"
+  "${SIMPLTest_SOURCE_DIR}/DataContainerBundleTest.cpp"
+  "${SIMPLTest_SOURCE_DIR}/FilterParametersRWTest.cpp"
+  "${SIMPLTest_SOURCE_DIR}/CreateDataArrayTest.cpp"
+  "${SIMPLTest_SOURCE_DIR}/RemoveComponentFromArrayTest.cpp"
+  "${SIMPLTest_SOURCE_DIR}/QuaternionMathTest.cpp"
+  "${SIMPLTest_SOURCE_DIR}/CreateFeatureArrayFromElementArrayTest.cpp"
+  )
+# Set the source files properties on each source file.
+foreach(f ${${PLUGIN_NAME}_TEST_SRCS})
+  set_source_files_properties( ${f} PROPERTIES HEADER_FILE_ONLY TRUE)
+endforeach()
+
 AddSIMPLUnitTest(TESTNAME SIMPLUnitTest
-  SOURCES ${SIMPLTest_SOURCE_DIR}/SIMPLUnitTest.cpp
+  SOURCES ${SIMPLTest_SOURCE_DIR}/SIMPLUnitTest.cpp ${${PLUGIN_NAME}_TEST_SRCS}
   FOLDER "SIMPLibProj/Test"
   LINK_LIBRARIES Qt5::Core H5Support SIMPLib)
 

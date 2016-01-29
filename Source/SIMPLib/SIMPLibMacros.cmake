@@ -1,14 +1,11 @@
 
 
 #-------------------------------------------------------------------------------
-# Macro START_FILTER_GROUP
-# macro(START_FILTER_GROUP WidgetsBinaryDir filterGroup humanGroup)
-#    file(APPEND ${AllFiltersHeaderFile} "\n/* ------ ${filterGroup} --------- */\n")
-#    file(APPEND ${RegisterKnownFiltersFile} "\n    /* ------ ${filterGroup} --------- */\n")
-#    file(APPEND "${DREAM3DProj_BINARY_DIR}/DREAM3DDocGroupList" "${filterGroup}\n")
-#    file(WRITE "${DREAM3DProj_BINARY_DIR}/DREAM3DDoc_${filterGroup}" "")
-# endmacro()
-
+# Function START_FILTER_GROUP
+# @param ALL_FILTERS_HEADERFILE
+# @param REGISTER_KNOWN_FILTERS_FILE
+# @param FILTER_GROUP
+# @param BINARY_DIR
 function(SIMPL_START_FILTER_GROUP)
 
   set(options)
@@ -19,31 +16,20 @@ function(SIMPL_START_FILTER_GROUP)
 
   file(APPEND ${P_ALL_FILTERS_HEADERFILE} "\n/* ------ ${P_FILTER_GROUP} --------- */\n")
   file(APPEND ${P_REGISTER_KNOWN_FILTERS_FILE} "\n    /* ------ ${P_FILTER_GROUP} --------- */\n")
-  file(APPEND "${P_BINARY_DIR}/DREAM3DDocGroupList" "${P_FILTER_GROUP}\n")
-  file(WRITE "${P_BINARY_DIR}/DREAM3DDoc_${P_FILTER_GROUP}" "")
+
+  get_property(DREAM3DDocRoot GLOBAL PROPERTY DREAM3DDocRoot)
+  file(APPEND "${DREAM3DDocRoot}/DREAM3DDocGroupList" "${P_FILTER_GROUP}\n")
+  file(WRITE "${DREAM3DDocRoot}/DREAM3DDoc_${P_FILTER_GROUP}" "")
 
 endfunction()
 
 #-------------------------------------------------------------------------------
 # Macro END_FILTER_GROUP
+# @param WidgetsBinaryDir
+# @param filterGroup
+# @param humanGroup
 macro(SIMPL_END_FILTER_GROUP WidgetsBinaryDir filterGroup humanGroup)
 endmacro()
-
-#-------------------------------------------------------------------------------
-# Macro MAKE_CONSTANTS_HEADER
-# @param PLUGIN_NAME
-macro(MAKE_CONSTANTS_HEADER PLUGIN_NAME)
-  set(PLUGIN_NAME ${PLUGIN_NAME})
-  set(ConstantsFile ${${PLUGIN_NAME}_SOURCE_DIR}/${PLUGIN_NAME}Constants.h)
-  file(WRITE ${ConstantsFile} "#ifndef _${PLUGIN_NAME}_H_\n#define _${PLUGIN_NAME}_H_\n\n#include <QtCore/QString>\n\n")
-  file(APPEND ${ConstantsFile} "namespace ${PLUGIN_NAME} {\n")
-  file(APPEND ${ConstantsFile} "  const QString ${PLUGIN_NAME}PluginFile(\"${PLUGIN_NAME}Plugin\");\n")
-  file(APPEND ${ConstantsFile} "  const QString ${PLUGIN_NAME}PluginDisplayName(\"${PLUGIN_NAME}Plugin\");\n")
-  file(APPEND ${ConstantsFile} "  const QString ${PLUGIN_NAME}PluginBaseName(\"${PLUGIN_NAME}Plugin\");\n")
-  file(APPEND ${ConstantsFile} "}\n")
-  file(APPEND ${ConstantsFile} "#endif\n")
-endmacro()
-
 
 #-------------------------------------------------------------------------------
 # Macro ADD_SIMPL_SUPPORT_HEADER
@@ -93,7 +79,13 @@ endmacro()
 
 #-------------------------------------------------------------------------------
 # Macro ADD_SIMPL_FILTER
-macro(ADD_SIMPL_FILTER FilterLib WidgetLib filterGroup filterName filterDocPath publicFilter BinaryDir)
+# @param FilterLib The Library/Plugin the filter belongs to.
+# @param WidgetLib The Widgets library the filter belongs to
+# @param filterGroup The group or plugin that the filter belongs to.
+# @param filterName The base filename of the filter, i.e., SomeFilter.cpp would be "SomeFilter"
+# @param filterDocPath The absolute path to the .md documentation file
+# @param publicFilter  Boolean TRUE or FALSE
+macro(ADD_SIMPL_FILTER FilterLib WidgetLib filterGroup filterName filterDocPath publicFilter)
 
   QT5_WRAP_CPP( _moc_filter_source  ${${FilterLib}_SOURCE_DIR}/${filterGroup}/${filterName}.h)
   set_source_files_properties( ${_moc_filter_source} PROPERTIES GENERATED TRUE)
@@ -126,7 +118,8 @@ macro(ADD_SIMPL_FILTER FilterLib WidgetLib filterGroup filterName filterDocPath 
         message(FATAL_ERROR "*** Missing Documenation File for ${filterDocPath}")
       endif()
 
-      file(APPEND ${BinaryDir}/DREAM3DDoc_${filterGroup} "${filterDocPath}\n")
+      get_property(DREAM3DDocRoot GLOBAL PROPERTY DREAM3DDocRoot)
+      file(APPEND ${DREAM3DDocRoot}/DREAM3DDoc_${filterGroup} "${filterDocPath}\n")
 
   endif()
 endmacro()

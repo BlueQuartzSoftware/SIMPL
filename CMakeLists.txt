@@ -33,7 +33,6 @@
 #
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-
 if(NOT "${DREAM3D_SDK}" STREQUAL "")
   include("${DREAM3D_SDK}/DREAM3D_SDK.cmake")
   message(STATUS "DREAM3D_SDK Location: ${DREAM3D_SDK}")
@@ -52,7 +51,7 @@ cmake_minimum_required(VERSION 3.1.0)
 
 #------------------------------------------------------------------------------
 # Create the Top level Project
-#
+# 
 project(SIMPLProj VERSION 1.0.0.0)
 #------------------------------------------------------------------------------
 # There are several different Release Types that we are going to use.
@@ -295,10 +294,13 @@ include_directories(${SIMPLProj_SOURCE_DIR}/Source)
 include_directories(${PROJECT_BINARY_DIR})
 
 # -----------------------------------------------------------------------
-# Setup some Global Lists that are used to gather Documentation Information
+# Setup a Global property that is used to gather Documentation Information
+# into a single known location
+get_property(DREAM3DDocRoot GLOBAL PROPERTY DREAM3DDocRoot)
+if("${DREAM3DDocRoot}" STREQUAL "")
+  set_property(GLOBAL PROPERTY DREAM3DDocRoot "${SIMPLProj_BINARY_DIR}")
+endif()
 file(WRITE ${SIMPLProj_BINARY_DIR}/DREAM3DDocGroupList "")
-
-
 
 # ------- Enable the CTest testing. Use make test to run all tests ---------------
 OPTION(DREAM3D_BUILD_TESTING "Compile the test programs" ON)
