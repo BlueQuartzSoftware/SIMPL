@@ -33,3 +33,6 @@ AddSIMPLUnitTest(TESTNAME SIMPLUnitTest
   FOLDER "SIMPLibProj/Test"
   LINK_LIBRARIES Qt5::Core H5Support SIMPLib)
 
+if(MSVC)
+  set_source_files_properties(${SIMPLTest_SOURCE_DIR}/SIMPLUnitTest.cpp PROPERTIES COMPILE_FLAGS /bigobj)
+endif()
