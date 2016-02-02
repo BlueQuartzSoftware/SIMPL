@@ -153,23 +153,39 @@ if(WIN32)
 endif()
 
 
-if(BUILD_SHARED_LIBS AND NOT APPLE)
+#if(BUILD_SHARED_LIBS AND NOT APPLE)
     INSTALL(TARGETS ${PROJECT_NAME}
+        EXPORT SIMPLibH5SupportTargets
         COMPONENT Applications
         RUNTIME DESTINATION ${install_dir}
         LIBRARY DESTINATION ${lib_install_dir}
         ARCHIVE DESTINATION ${lib_install_dir}
         BUNDLE DESTINATION "."
     )
-endif()
-
-
-
+#endif()
 
 # ------- Enable the CTest testing. Use make test to run all tests ---------------
 if(SIMPL_BUILD_TESTING)
     add_subdirectory(${H5Support_SOURCE_DIR}/Test ${H5Support_BINARY_DIR}/Test)
 endif()
+
+# --------------------------------------------------------------------
+# Allow the generation and installation of a CMake configuration file
+# which makes using SIMPL from another project easier.
+# --------------------------------------------------------------------
+export(EXPORT SIMPLibH5SupportTargets
+  FILE "${CMAKE_CURRENT_BINARY_DIR}/SIMPL/${PROJECT_NAME}Targets.cmake"
+  NAMESPACE SIMPL::
+)
+
+install(EXPORT SIMPLibH5SupportTargets
+  FILE
+    SIMPLibH5SupportTargets.cmake
+  NAMESPACE
+    SIMPL::
+  DESTINATION
+    ${ConfigPackageLocation}
+)
 
 
 

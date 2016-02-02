@@ -335,6 +335,33 @@ if(DREAM3D_BUILD_TESTING)
     include( CTest )
 endif()
 
+
+# --------------------------------------------------------------------
+#
+include(CMakePackageConfigHelpers)
+write_basic_package_version_file(
+  "${CMAKE_CURRENT_BINARY_DIR}/SIMPL/SIMPLTargetsConfigVersion.cmake"
+  VERSION ${SIMPL_VERSION}
+  COMPATIBILITY AnyNewerVersion
+)
+
+configure_file(${SIMPLProj_SOURCE_DIR}/SIMPLConfig.cmake
+  "${CMAKE_CURRENT_BINARY_DIR}/SIMPL/SIMPLConfig.cmake"
+  COPYONLY
+)
+
+set(ConfigPackageLocation lib/cmake/SIMPL)
+
+install(
+  FILES
+    ${SIMPLProj_SOURCE_DIR}/SIMPLConfig.cmake
+    "${CMAKE_CURRENT_BINARY_DIR}/SIMPL/SIMPLTargetsConfigVersion.cmake"
+  DESTINATION
+    ${ConfigPackageLocation}
+  COMPONENT
+    Devel
+)
+
 # -----------------------------------------------------------------------
 # Add in the Necessary HDF5 Support Sources into a library
 # -----------------------------------------------------------------------
@@ -404,4 +431,5 @@ include(${PROJECT_RESOURCES_DIR}/CPack/PackageProject.cmake)
 if(DREAM3D_BUILD_TESTING)
     include(${SIMPLProj_SOURCE_DIR}/Test/CMakeLists.txt)
 endif()
+
 
