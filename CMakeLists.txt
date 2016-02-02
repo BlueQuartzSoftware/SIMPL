@@ -65,7 +65,7 @@ include(CMakeParseArguments)
 # ---------- Setup output Directories -------------------------
 if(NOT DEFINED CMAKE_LIBRARY_OUTPUT_DIRECTORY)
   set(CMAKE_LIBRARY_OUTPUT_DIRECTORY
-    ${SIMPLViewProj_BINARY_DIR}/Bin
+    ${SIMPLProj_BINARY_DIR}/Bin
     CACHE PATH
     "Single Directory for all Libraries"
     )
@@ -74,7 +74,7 @@ endif()
 # --------- Setup the Executable output Directory -------------
 if(NOT DEFINED CMAKE_RUNTIME_OUTPUT_DIRECTORY)
   set(CMAKE_RUNTIME_OUTPUT_DIRECTORY
-    ${SIMPLViewProj_BINARY_DIR}/Bin
+    ${SIMPLProj_BINARY_DIR}/Bin
     CACHE PATH
     "Single Directory for all Executables."
     )
@@ -83,7 +83,7 @@ endif()
 # --------- Setup the Executable output Directory -------------
 if(NOT DEFINED CMAKE_ARCHIVE_OUTPUT_DIRECTORY)
   set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY
-    ${SIMPLViewProj_BINARY_DIR}/Bin
+    ${SIMPLProj_BINARY_DIR}/Bin
     CACHE PATH
     "Single Directory for all static libraries."
     )
@@ -117,25 +117,25 @@ endif()
 # into a single known location
 get_property(DREAM3DDocRoot GLOBAL PROPERTY DREAM3DDocRoot)
 if("${DREAM3DDocRoot}" STREQUAL "")
-  set_property(GLOBAL PROPERTY DREAM3DDocRoot "${DREAM3DProj_BINARY_DIR}")
+  set_property(GLOBAL PROPERTY DREAM3DDocRoot "${SIMPLProj_BINARY_DIR}")
   get_property(DREAM3DDocRoot GLOBAL PROPERTY DREAM3DDocRoot)
-  file(WRITE "${DREAM3DProj_BINARY_DIR}/DREAM3DDocGroupList" "")
+  file(WRITE "${SIMPLProj_BINARY_DIR}/DREAM3DDocGroupList" "")
 endif()
 
 
 get_property(SIMPLPluginList GLOBAL PROPERTY SIMPLPluginList)
 if("${SIMPLPluginList}" STREQUAL "")
-  set_property(GLOBAL PROPERTY SIMPLPluginList "${DREAM3DProj_BINARY_DIR}/SIMPLPluginList.txt")
+  set_property(GLOBAL PROPERTY SIMPLPluginList "${SIMPLProj_BINARY_DIR}/SIMPLPluginList.txt")
   get_property(SIMPLPluginList GLOBAL PROPERTY SIMPLPluginList)
-  file(WRITE "${DREAM3DProj_BINARY_DIR}/SIMPLPluginList.txt" "")
+  file(WRITE "${SIMPLProj_BINARY_DIR}/SIMPLPluginList.txt" "")
 endif()
 
 
 get_property(SIMPLLibSearchDirs GLOBAL PROPERTY SIMPLLibSearchDirs)
 if("${SIMPLLibSearchDirs}" STREQUAL "")
-  set_property(GLOBAL PROPERTY SIMPLLibSearchDirs "${DREAM3DProj_BINARY_DIR}/LibSearchDirs.txt")
+  set_property(GLOBAL PROPERTY SIMPLLibSearchDirs "${SIMPLProj_BINARY_DIR}/LibSearchDirs.txt")
   get_property(SIMPLLibSearchDirs GLOBAL PROPERTY SIMPLLibSearchDirs)
-  file(WRITE "${DREAM3DProj_BINARY_DIR}/LibSearchDirs.txt" "")
+  file(WRITE "${SIMPLProj_BINARY_DIR}/LibSearchDirs.txt" "")
 endif()
 
 
