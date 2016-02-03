@@ -53,14 +53,7 @@ cmake_minimum_required(VERSION 3.1.0)
 # Create the Top level Project
 # 
 project(SIMPLProj VERSION 1.0.0.0)
-#------------------------------------------------------------------------------
-# There are several different Release Types that we are going to use.
-# Official: This is an official release from BlueQuartz Software
-# Beta: This is a Beta release that has is getting ready to be officially released.
-# Development: This is currently in development and probably has bugs.
-set(SIMPLProj_RELEASE_TYPE "Development")
 
-include(CMakeParseArguments)
 
 # ---------- Setup output Directories -------------------------
 if(NOT DEFINED CMAKE_LIBRARY_OUTPUT_DIRECTORY)
@@ -90,31 +83,28 @@ if(NOT DEFINED CMAKE_ARCHIVE_OUTPUT_DIRECTORY)
 endif()
 
 
-#Enable use of Solution Folders
-set_property(GLOBAL PROPERTY USE_FOLDERS ON)
-set(PROJECT_CODE_DIR ${PROJECT_SOURCE_DIR}/Source)
-set(PROJECT_RESOURCES_DIR ${SIMPLProj_SOURCE_DIR}/Resources)
-set(EXE_DEBUG_EXTENSION "_debug")
-set(PROJECT_INSTALL_HEADERS "1")
-set(PROJECT_INSTALL_EXECUTABLES "1")
+#------------------------------------------------------------------------------
+# Find the Git Package for Versioning. It should be ok if Git is NOT found
+Find_package(Git)
 
+get_filename_component(SIMPL_PARENT ${SIMPLProj_SOURCE_DIR} DIRECTORY CACHE)
 
 #------------------------------------------------------------------------------
 # If the developer has set another CMP directory then use that, otherwise look
 # for the CMP directory at the same level as the SIMPL directory
 if("${CMP_SOURCE_DIR}" STREQUAL "")
-  set(CMP_SOURCE_DIR ${SIMPLProj_SOURCE_DIR}/../CMP)
+  set(CMP_SOURCE_DIR ${SIMPL_PARENT}/CMP)
   message(STATUS "CMP_SOURCE_DIR: ${CMP_SOURCE_DIR}")
 endif()
 
 if(NOT EXISTS "${CMP_SOURCE_DIR}")
   if(Git_FOUND)
     message(STATUS "CMP_SOURCE_DIR does not exist at ${CMP_SOURCE_DIR}. Attempting to clone it from Github....")
-    execute_process(COMMAND ${GIT_EXECUTABLE} clone -b develop git://github.com/bluequartzsoftware/CMP.git ${SIMPLProj_SOURCE_DIR}/../CMP
+    execute_process(COMMAND ${GIT_EXECUTABLE} clone -b develop git://github.com/bluequartzsoftware/CMP.git ${SIMPL_PARENT}/CMP
                     OUTPUT_VARIABLE CLONE_OUTPUT
                     RESULT_VARIABLE did_run
                     ERROR_VARIABLE git_error
-                    WORKING_DIRECTORY ${SIMPLProj_SOURCE_DIR}/../ )
+                    WORKING_DIRECTORY ${SIMPL_PARENT} )
   endif()
   # One last check. If it does not exist at this point then we simply Abort CMake 
   if(NOT EXISTS "${CMP_SOURCE_DIR}")
@@ -124,6 +114,25 @@ if(NOT EXISTS "${CMP_SOURCE_DIR}")
       a firewall blocking the 'git' protocol? ")
   endif()
 endif()
+
+
+#------------------------------------------------------------------------------
+# There are several different Release Types that we are going to use.
+# Official: This is an official release from BlueQuartz Software
+# Beta: This is a Beta release that has is getting ready to be officially released.
+# Development: This is currently in development and probably has bugs.
+set(SIMPLProj_RELEASE_TYPE "Development")
+
+include(CMakeParseArguments)
+
+
+#Enable use of Solution Folders
+set_property(GLOBAL PROPERTY USE_FOLDERS ON)
+set(PROJECT_CODE_DIR ${PROJECT_SOURCE_DIR}/Source)
+set(PROJECT_RESOURCES_DIR ${SIMPLProj_SOURCE_DIR}/Resources)
+set(EXE_DEBUG_EXTENSION "_debug")
+set(PROJECT_INSTALL_HEADERS "1")
+set(PROJECT_INSTALL_EXECUTABLES "1")
 
 # -----------------------------------------------------------------------
 # Setup a Global property that is used to gather Documentation Information
