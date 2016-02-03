@@ -98,6 +98,7 @@ set(EXE_DEBUG_EXTENSION "_debug")
 set(PROJECT_INSTALL_HEADERS "1")
 set(PROJECT_INSTALL_EXECUTABLES "1")
 
+
 #------------------------------------------------------------------------------
 # If the developer has set another CMP directory then use that, otherwise look
 # for the CMP directory at the same level as the SIMPL directory
@@ -107,9 +108,21 @@ if("${CMP_SOURCE_DIR}" STREQUAL "")
 endif()
 
 if(NOT EXISTS "${CMP_SOURCE_DIR}")
-  message(WARNING "CMP_SOURCE_DIR does not exist at ${CMP_SOURCE_DIR}. Aborting CMake.")
-  message(FATAL_ERROR "CMP can be cloned using git clone -b develop git://github.com/bluequartzsoftware/CMP.git")
-  # TODO: Add in automatic cloning
+  if(Git_FOUND)
+    message(STATUS "CMP_SOURCE_DIR does not exist at ${CMP_SOURCE_DIR}. Attempting to clone it from Github....")
+    execute_process(COMMAND ${GIT_EXECUTABLE} clone -b develop git://github.com/bluequartzsoftware/CMP.git ${SIMPLProj_SOURCE_DIR}/../CMP
+                    OUTPUT_VARIABLE CLONE_OUTPUT
+                    RESULT_VARIABLE did_run
+                    ERROR_VARIABLE git_error
+                    WORKING_DIRECTORY ${SIMPLProj_SOURCE_DIR}/../ )
+  endif()
+  # One last check. If it does not exist at this point then we simply Abort CMake 
+  if(NOT EXISTS "${CMP_SOURCE_DIR}")
+    message(FATAL_ERROR "CMP_SOURCE_DIR does not exist. We attempted to clone it from the GitHub repo but that also seemed\
+      to fail. SIMPLView can not proceed without the CMP directory. Please ask a SIMPL developer for more\
+      information about this error. Can you access http://github.com/bluequartzsoftware/CMP.git? is\
+      a firewall blocking the 'git' protocol? ")
+  endif()
 endif()
 
 # -----------------------------------------------------------------------
