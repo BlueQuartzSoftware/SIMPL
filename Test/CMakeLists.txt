@@ -67,10 +67,10 @@ foreach(name  ${TEST_NAMES})
     "#include \"${name}.cpp\"\n"
     )
 
-    string(CONCAT
-      TestMainFunctors
-     ${TestMainFunctors}
-     "  ${name}()()|\n")
+  string(CONCAT
+    TestMainFunctors
+   ${TestMainFunctors}
+   "  ${name}()()|\n")
 endforeach()
 
 STRING(REPLACE "|" ";" TestMainFunctors ${TestMainFunctors}   )
