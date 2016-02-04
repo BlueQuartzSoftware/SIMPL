@@ -1,0 +1,32 @@
+
+
+@FilterTestIncludes@
+
+
+// -----------------------------------------------------------------------------
+//  Use test framework
+// -----------------------------------------------------------------------------
+int main(int argc, char** argv)
+{
+  int err = EXIT_SUCCESS;
+
+  // Instantiate the QCoreApplication that we need to get the current path and load plugins.
+  QCoreApplication app(argc, argv);
+  QCoreApplication::setOrganizationName("Your Company");
+  QCoreApplication::setOrganizationDomain("Your Domain");
+  QCoreApplication::setApplicationName("@PluginName@");
+  // Register all the filters including trying to load those from Plugins
+  FilterManager* fm = FilterManager::Instance();
+  SIMPLibPluginLoader::LoadPluginFilters(fm);
+
+  // Send progress messages from PipelineBuilder to this object for display
+  QMetaObjectUtilities::RegisterMetaTypes();
+
+
+  @TestMainFunctors@
+
+
+  PRINT_TEST_SUMMARY();
+
+  return err;
+}
