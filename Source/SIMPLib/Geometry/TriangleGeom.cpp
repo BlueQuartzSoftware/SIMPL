@@ -690,7 +690,6 @@ IGeometry::Pointer TriangleGeom::deepCopy()
 
 // Shared ops includes
 #define GEOM_CLASS_NAME TriangleGeom
-#include "SIMPLib/Geometry/SharedGeometryOps.cpp"
 #include "SIMPLib/Geometry/SharedVertexOps.cpp"
 #include "SIMPLib/Geometry/SharedEdgeOps.cpp"
 #include "SIMPLib/Geometry/SharedTriOps.cpp"

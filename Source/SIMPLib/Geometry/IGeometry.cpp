@@ -48,3 +48,169 @@ IGeometry::IGeometry()
 // -----------------------------------------------------------------------------
 IGeometry::~IGeometry()
 {}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void IGeometry::setName(const QString& name)
+{
+  m_Name = name;
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+QString IGeometry::getName()
+{
+  return m_Name;
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+unsigned int IGeometry::getGeometryType()
+{
+  return m_GeometryType;
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+QString IGeometry::getGeometryTypeAsString()
+{
+  return m_GeometryTypeName;
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void IGeometry::sendThreadSafeProgressMessage(int64_t counter, int64_t max)
+{
+  m_Mutex.lock();
+
+  m_ProgressCounter += counter;
+
+  int64_t progIncrement = max / 100;
+  int64_t prog = 1;
+
+  if (m_ProgressCounter > prog)
+  {
+    int64_t progressInt = static_cast<int64_t>((static_cast<float>(m_ProgressCounter) / max) * 100.0f);
+    QString ss = m_MessageTitle + QObject::tr(" || %1% Complete").arg(progressInt);
+    notifyStatusMessage(m_MessagePrefix, m_MessageLabel, ss);
+    prog += progIncrement;
+  }
+
+  m_Mutex.unlock();
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void IGeometry::setMessagePrefix(const QString& name)
+{
+  m_MessagePrefix = name;
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+QString IGeometry::getMessagePrefix()
+{
+  return m_MessagePrefix;
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void IGeometry::setMessageTitle(const QString& title)
+{
+  m_MessageTitle = title;
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+QString IGeometry::getMessageTitle()
+{
+  return m_MessageTitle;
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void IGeometry::setMessageLabel(const QString& label)
+{
+  m_MessageLabel = label;
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+QString IGeometry::getMessageLabel()
+{
+  return m_MessageLabel;
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+unsigned int IGeometry::getXdmfGridType()
+{
+  return m_XdmfGridType;
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+unsigned int IGeometry::getUnitDimensionality()
+{
+  return m_UnitDimensionality;
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void IGeometry::setSpatialDimensionality(unsigned int spatialDims)
+{
+  m_SpatialDimensionality = spatialDims;
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+unsigned int IGeometry::getSpatialDimensionality()
+{
+  return m_SpatialDimensionality;
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+AttributeMatrix::Pointer IGeometry::getAttributeMatrix(const QString& name)
+{
+  AttributeMatrixMap_t::iterator it;
+  it = m_AttributeMatrices.find(name);
+  if ( it == m_AttributeMatrices.end() )
+  {
+    return AttributeMatrix::NullPointer();
+  }
+  return it.value();
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+AttributeMatrix::Pointer IGeometry::removeAttributeMatrix(const QString& name)
+{
+  QMap<QString, AttributeMatrix::Pointer>::iterator it;
+  it =  m_AttributeMatrices.find(name);
+  if ( it == m_AttributeMatrices.end() )
+  {
+    // DO NOT return a NullPointer for any reason other than "Attribute Matrix was not found"
+    return AttributeMatrix::NullPointer();
+  }
+  AttributeMatrix::Pointer p = it.value();
+  m_AttributeMatrices.erase(it);
+  return p;
+}

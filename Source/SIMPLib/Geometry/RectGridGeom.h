@@ -171,95 +171,11 @@ class SIMPLib_EXPORT RectGridGeom : public IGeometry
     virtual void findDerivatives(DoubleArrayType::Pointer field, DoubleArrayType::Pointer derivatives, Observable* observable = NULL);
 
     /**
-     * @brief setName
-     * @param name
-     */
-    virtual void setName(const QString& name);
-
-    /**
-     * @brief getName
-     * @return
-     */
-    virtual QString getName();
-
-    /**
-     * @brief getGeometryType
-     * @return
-     */
-    virtual unsigned int getGeometryType();
-
-    /**
-     * @brief getGeometryTypeAsString
-     * @return
-     */
-    virtual QString getGeometryTypeAsString();
-
-    /**
      * @brief getInfoString
      * @return Returns a formatted string that contains general infomation about
      * the instance of the object.
      */
     virtual QString getInfoString(SIMPL::InfoStringFormat format);
-
-    /**
-     * @brief setMessagePrefix
-     * @param prefix
-     */
-    virtual void setMessagePrefix(const QString& prefix);
-
-    /**
-     * @brief getMessagePrefix
-     * @return
-     */
-    virtual QString getMessagePrefix();
-
-    /**
-     * @brief setMessageTitle
-     * @param title
-     */
-    virtual void setMessageTitle(const QString& title);
-
-    /**
-     * @brief getMessageTitle
-     * @return
-     */
-    virtual QString getMessageTitle();
-
-    /**
-     * @brief setMessageLabel
-     * @param label
-     */
-    virtual void setMessageLabel(const QString& label);
-
-    /**
-     * @brief getMessageLabel
-     * @return
-     */
-    virtual QString getMessageLabel();
-
-    /**
-     * @brief getXdmfGridType
-     * @return
-     */
-    virtual unsigned int getXdmfGridType();
-
-    /**
-     * @brief getUnitDimensionality
-     * @return
-     */
-    virtual unsigned int getUnitDimensionality();
-
-    /**
-     * @brief setSpatialDimensionality
-     * @param spatialDims
-     */
-    virtual void setSpatialDimensionality(unsigned int spatialDims);
-
-    /**
-     * @brief getSpatialDimensionality
-     * @return
-     */
-    virtual unsigned int getSpatialDimensionality();
 
     /**
      * @brief writeGeometryToHDF5
@@ -297,20 +213,6 @@ class SIMPLib_EXPORT RectGridGeom : public IGeometry
      */
     virtual void addAttributeMatrix(const QString& name, AttributeMatrix::Pointer data);
 
-    /**
-     * @brief getAttributeMatrix
-     * @param name
-     * @return
-     */
-    virtual AttributeMatrix::Pointer getAttributeMatrix(const QString& name);
-
-    /**
-     * @brief removeAttributeMatrix
-     * @param name
-     * @return
-     */
-    virtual AttributeMatrix::Pointer removeAttributeMatrix(const QString& name);
-
   protected:
 
     RectGridGeom();
@@ -324,13 +226,6 @@ class SIMPLib_EXPORT RectGridGeom : public IGeometry
      * @return
      */
     virtual int gatherMetaData(hid_t parentid, size_t volDims[3], bool preflight);
-
-    /**
-     * @brief sendThreadSafeProgressMessage
-     * @param counter
-     * @param max
-     */
-    virtual void sendThreadSafeProgressMessage(int64_t counter, int64_t max);
 
     /**
      * @brief setElementsContaingVert
@@ -351,22 +246,9 @@ class SIMPLib_EXPORT RectGridGeom : public IGeometry
     virtual void setElementCentroids(FloatArrayType::Pointer elementCentroids);
 
   private:
-
-    QString m_Name;
-    QString m_GeometryTypeName;
-    QString m_MessagePrefix;
-    QString m_MessageTitle;
-    QString m_MessageLabel;
-    unsigned int m_GeometryType;
-    unsigned int m_XdmfGridType;
-    unsigned int m_UnitDimensionality;
-    unsigned int m_SpatialDimensionality;
-    AttributeMatrixMap_t m_AttributeMatrices;
     FloatArrayType::Pointer m_xBounds;
     FloatArrayType::Pointer m_yBounds;
     FloatArrayType::Pointer m_zBounds;
-    QMutex m_Mutex;
-    int64_t m_ProgressCounter;
 
     friend class FindRectGridDerivativesImpl;
 

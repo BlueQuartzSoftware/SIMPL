@@ -168,25 +168,25 @@ class SIMPLib_EXPORT IGeometry : public Observable
      * @brief setName
      * @param name
      */
-    virtual void setName(const QString& name) = 0;
+    virtual void setName(const QString& name) final;
 
     /**
      * @brief getName
      * @return
      */
-    virtual QString getName() = 0;
+    virtual QString getName() final;
 
     /**
      * @brief getGeometryType
      * @return
      */
-    virtual unsigned int getGeometryType() = 0;
+    virtual unsigned int getGeometryType() final;
 
     /**
      * @brief getGeometryTypeAsString
      * @return
      */
-    virtual QString getGeometryTypeAsString() = 0;
+    virtual QString getGeometryTypeAsString() final;
 
     /**
      * @brief getInfoString
@@ -199,61 +199,61 @@ class SIMPLib_EXPORT IGeometry : public Observable
      * @brief setMessagePrefix
      * @param prefix
      */
-    virtual void setMessagePrefix(const QString& prefix) = 0;
+    virtual void setMessagePrefix(const QString& prefix) final;
 
     /**
      * @brief getMessagePrefix
      * @return
      */
-    virtual QString getMessagePrefix() = 0;
+    virtual QString getMessagePrefix() final;
 
     /**
      * @brief setMessageTitle
      * @param title
      */
-    virtual void setMessageTitle(const QString& title) = 0;
+    virtual void setMessageTitle(const QString& title) final;
 
     /**
      * @brief getMessageTitle
      * @return
      */
-    virtual QString getMessageTitle() = 0;
+    virtual QString getMessageTitle() final;
 
     /**
      * @brief setMessageLabel
      * @param label
      */
-    virtual void setMessageLabel(const QString& label) = 0;
+    virtual void setMessageLabel(const QString& label) final;
 
     /**
      * @brief getMessageLabel
      * @return
      */
-    virtual QString getMessageLabel() = 0;
+    virtual QString getMessageLabel() final;
 
     /**
      * @brief getXdmfGridType
      * @return
      */
-    virtual unsigned int getXdmfGridType() = 0;
+    virtual unsigned int getXdmfGridType() final;
 
     /**
      * @brief getUnitDimensionality
      * @return
      */
-    virtual unsigned int getUnitDimensionality() = 0;
+    virtual unsigned int getUnitDimensionality() final;
 
     /**
      * @brief setSpatialDimensionality
      * @param spatialDims
      */
-    virtual void setSpatialDimensionality(unsigned int spatialDims) = 0;
+    virtual void setSpatialDimensionality(unsigned int spatialDims) final;
 
     /**
      * @brief getSpatialDimensionality
      * @return
      */
-    virtual unsigned int getSpatialDimensionality() = 0;
+    virtual unsigned int getSpatialDimensionality() final;
 
     /**
      * @brief writeGeometryToHDF5
@@ -301,23 +301,37 @@ class SIMPLib_EXPORT IGeometry : public Observable
      * @param name
      * @return
      */
-    virtual AttributeMatrix::Pointer getAttributeMatrix(const QString& name) = 0;
+    virtual AttributeMatrix::Pointer getAttributeMatrix(const QString& name) final;
 
     /**
      * @brief removeAttributeMatrix
      * @param name
      * @return
      */
-    virtual AttributeMatrix::Pointer removeAttributeMatrix(const QString& name) = 0;
+    virtual AttributeMatrix::Pointer removeAttributeMatrix(const QString& name) final;
 
   protected:
+    QString m_Name;
+    QString m_GeometryTypeName;
+    QString m_MessagePrefix;
+    QString m_MessageTitle;
+    QString m_MessageLabel;
+    unsigned int m_GeometryType;
+    unsigned int m_XdmfGridType;
+    unsigned int m_UnitDimensionality;
+    unsigned int m_SpatialDimensionality;
+
+    AttributeMatrixMap_t m_AttributeMatrices;
+
+    QMutex m_Mutex;
+    int64_t m_ProgressCounter;
 
     /**
      * @brief sendThreadSafeProgressMessage
      * @param counter
      * @param max
      */
-    virtual void sendThreadSafeProgressMessage(int64_t counter, int64_t max) = 0;
+    virtual void sendThreadSafeProgressMessage(int64_t counter, int64_t max) final;
 
     /**
      * @brief setElementsContaingVert
