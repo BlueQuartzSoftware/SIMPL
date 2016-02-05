@@ -318,9 +318,13 @@ class CreateFeatureArrayFromElementArrayTest
       return EXIT_SUCCESS;
     }
 
-
+    // -----------------------------------------------------------------------------
+    //
+    // -----------------------------------------------------------------------------
     void operator()()
     {
+      std::cout << "#### CreateFeatureArrayFromElementArrayTest Starting ####" << std::endl;
+
       int err = EXIT_SUCCESS;
       DREAM3D_REGISTER_TEST( TestFilterAvailability() );
 

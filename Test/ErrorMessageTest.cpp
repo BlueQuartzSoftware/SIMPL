@@ -92,8 +92,13 @@ class ErrorMessageTest
 
     }
 
+    // -----------------------------------------------------------------------------
+    //
+    // -----------------------------------------------------------------------------
     void operator()()
     {
+      std::cout << "#### ErrorMessageTest Starting ####" << std::endl;
+
       int err = EXIT_SUCCESS;
 
 #if !REMOVE_TEST_FILES

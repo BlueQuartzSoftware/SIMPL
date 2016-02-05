@@ -137,8 +137,13 @@ class DataContainerBundleTest
 
     }
 
+    // -----------------------------------------------------------------------------
+    //
+    // -----------------------------------------------------------------------------
     void operator()()
     {
+      std::cout << "#### DataContainerBundleTest Starting ####" << std::endl;
+
       int err = EXIT_SUCCESS;
 
       QDir dir(UnitTest::DataArrayTest::TestDir);

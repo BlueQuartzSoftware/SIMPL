@@ -1027,8 +1027,13 @@ class FilterParametersRWTest
 #endif
     }
 
+    // -----------------------------------------------------------------------------
+    //
+    // -----------------------------------------------------------------------------
     void operator()()
     {
+      std::cout << "#### FilterParametersRWTest Starting ####" << std::endl;
+
       int err = EXIT_SUCCESS;
 
       DREAM3D_REGISTER_TEST(RWIntegerTest<uint8_t>())

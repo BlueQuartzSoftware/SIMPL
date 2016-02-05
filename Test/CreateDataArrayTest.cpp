@@ -353,8 +353,13 @@ class CreateDataArrayTest
       return EXIT_SUCCESS;
     }
 
+    // -----------------------------------------------------------------------------
+    //
+    // -----------------------------------------------------------------------------
     void operator()()
     {
+      std::cout << "#### CreateDataArrayTest Starting ####" << std::endl;
+
       int err = EXIT_SUCCESS;
 
       DREAM3D_REGISTER_TEST( TestFilterAvailability() );

@@ -985,13 +985,17 @@ class DataArrayTest
     void _testWrapPointer()
     {
       QVector<size_t> cDims = {1};
-      T* ptr = reinterpret_cast<T*>(malloc(TEST_SIZE * sizeof(T) ) );
-
-      free(ptr);
-
-
-      typename DataArray<T>::Pointer dataPtr = DataArray<T>::WrapPointer(ptr, TEST_SIZE, cDims, "Wrapped Pointer", false);
-      dataPtr->initializeWithZeros();
+      T* ptr = new T[TEST_SIZE]; // Allocate on the heap
+      {
+        // Wrap the pointer, write some data to it, and then let the object go
+        // out of scope. We should then be able to delete the memory without
+        // any issues. Note that Windows did not complain about this. If we
+        // claim ownership on the pointer but let the delete stand OS X will complain
+        // to the point of not completing the test. Windows silently worked. Odd.
+        typename DataArray<T>::Pointer dataPtr = DataArray<T>::WrapPointer(ptr, TEST_SIZE, cDims, "Wrapped Pointer", false);
+        dataPtr->initializeWithZeros();
+      }
+      delete ptr;
       ptr = nullptr;
     }
 
@@ -1015,6 +1019,9 @@ class DataArrayTest
 
     }
 
+    // -----------------------------------------------------------------------------
+    //
+    // -----------------------------------------------------------------------------
     void operator()()
     {
       int err = EXIT_SUCCESS;

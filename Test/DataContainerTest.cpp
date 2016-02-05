@@ -903,11 +903,16 @@ class DataContainerTest
     }
 #endif
 
+    // -----------------------------------------------------------------------------
+    //
+    // -----------------------------------------------------------------------------
     void operator()()
     {
+      std::cout << "#### DataContainerTest Starting ####" << std::endl;
+
       QDir dir(DataContainerIOTest::TestDir());
       dir.mkpath(".");
-      std::cout << "Output Directory: " << DataContainerIOTest::TestDir().toStdString() << std::endl;
+     // std::cout << "Output Directory: " << DataContainerIOTest::TestDir().toStdString() << std::endl;
 #if !REMOVE_TEST_FILES
       DREAM3D_REGISTER_TEST( RemoveTestFiles() )
     #endif
@@ -931,23 +936,3 @@ class DataContainerTest
     DataContainerTest(const DataContainerTest&); // Copy Constructor Not Implemented
     void operator=(const DataContainerTest&); // Operator '=' Not Implemented
 };
-
-
-// -----------------------------------------------------------------------------
-//  Use unit test framework
-// -----------------------------------------------------------------------------
-//int main(int argc, char** argv)
-//{
-
-
-
-
-
-//  QMetaObjectUtilities::RegisterMetaTypes();
-
-
-//  PRINT_TEST_SUMMARY();
-
-//  return err;
-//}
-

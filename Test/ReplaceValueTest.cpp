@@ -308,9 +308,13 @@ class ReplaceValueTest
       return EXIT_SUCCESS;
     }
 
-
+    // -----------------------------------------------------------------------------
+    //
+    // -----------------------------------------------------------------------------
     void operator()()
     {
+      std::cout << "#### ReplaceValueTest Starting ####" << std::endl;
+
       int err = EXIT_SUCCESS;
       DREAM3D_REGISTER_TEST( TestFilterAvailability() );
       DREAM3D_REGISTER_TEST( RunTest() )

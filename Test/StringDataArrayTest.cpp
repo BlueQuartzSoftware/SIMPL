@@ -407,9 +407,12 @@ class StringDataArrayTest
 
     }
 
-
+    // -----------------------------------------------------------------------------
+    //
+    // -----------------------------------------------------------------------------
     void operator()()
     {
+      std::cout << "#### StringDataArrayTest Starting ####" << std::endl;
       int err = EXIT_SUCCESS;
 
 #if !REMOVE_TEST_FILES
@@ -433,15 +436,3 @@ class StringDataArrayTest
     StringDataArrayTest(const StringDataArrayTest&); // Copy Constructor Not Implemented
     void operator=(const StringDataArrayTest&); // Operator '=' Not Implemented
 };
-
-// -----------------------------------------------------------------------------
-//  Use unit test framework
-// -----------------------------------------------------------------------------
-//int main(int argc, char** argv)
-//{
-
-
-//  PRINT_TEST_SUMMARY();
-//  return err;
-//}
-

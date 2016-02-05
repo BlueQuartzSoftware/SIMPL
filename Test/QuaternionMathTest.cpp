@@ -355,8 +355,13 @@ class QuaternionMathTest
 
     }
 
+    // -----------------------------------------------------------------------------
+    //
+    // -----------------------------------------------------------------------------
     void operator()()
     {
+      std::cout << "#### QuaternionMathTest Starting ####" << std::endl;
+
       int err = EXIT_SUCCESS;
       DREAM3D_REGISTER_TEST( TestMatrixMath() )
       DREAM3D_REGISTER_TEST( TestQuat_t() )
@@ -367,16 +372,3 @@ class QuaternionMathTest
     QuaternionMathTest(const QuaternionMathTest&); // Copy Constructor Not Implemented
     void operator=(const QuaternionMathTest&); // Operator '=' Not Implemented
 };
-
-
-// -----------------------------------------------------------------------------
-//  Use test framework
-// -----------------------------------------------------------------------------
-//int main(int argc, char* argv[])
-//{
-//
-
-//  PRINT_TEST_SUMMARY();
-
-//  return err;
-//}

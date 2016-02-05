@@ -521,8 +521,13 @@ class StructArrayTest
       _TestDeepCopyStructArray<Vec3Int_t>();
     }
 
+    // -----------------------------------------------------------------------------
+    //
+    // -----------------------------------------------------------------------------
     void operator()()
     {
+      std::cout << "#### StringDataArrayTest Starting ####" << std::endl;
+
       int err = EXIT_SUCCESS;
 
 #if !REMOVE_TEST_FILES
@@ -544,16 +549,3 @@ class StructArrayTest
     StructArrayTest(const StructArrayTest&); // Copy Constructor Not Implemented
     void operator=(const StructArrayTest&); // Operator '=' Not Implemented
 };
-
-// -----------------------------------------------------------------------------
-//  Use unit test framework
-// -----------------------------------------------------------------------------
-//int main(int argc, char** argv)
-//{
-
-
-
-//  PRINT_TEST_SUMMARY();
-//  return err;
-//}
-

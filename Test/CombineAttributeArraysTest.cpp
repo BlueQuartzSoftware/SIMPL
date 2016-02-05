@@ -375,9 +375,12 @@ class CombineAttributeArraysTest
     }
 
 
-
+    // -----------------------------------------------------------------------------
+    //
+    // -----------------------------------------------------------------------------
     void operator()()
     {
+      std::cout << "#### CombineAttributeArraysTest Starting ####" << std::endl;
       int err = EXIT_SUCCESS;
       DREAM3D_REGISTER_TEST( TestCombineAttributeArraysFilter() )
     }
