@@ -123,6 +123,8 @@ herr_t QH5Lite::writeVectorOfStringsDataset(hid_t loc_id,
                                             const QString& dsetName,
                                             const QVector<QString>& data)
 {
+  H5SUPPORT_MUTEX_LOCK()
+
   hid_t sid = -1;
   hid_t memspace = -1;
   hid_t datatype = -1;
@@ -258,6 +260,7 @@ herr_t QH5Lite::readVectorOfStringDataset(hid_t loc_id,
                                           const QString& dsetName,
                                           QVector<QString>& data)
 {
+  H5SUPPORT_MUTEX_LOCK()
 
   hid_t did; // dataset id
   hid_t tid; // type id
