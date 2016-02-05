@@ -51,7 +51,7 @@ cmake_minimum_required(VERSION 3.1.0)
 
 #------------------------------------------------------------------------------
 # Create the Top level Project
-# 
+#
 project(SIMPLProj VERSION 1.0.0.0)
 
 
@@ -106,7 +106,7 @@ if(NOT EXISTS "${CMP_SOURCE_DIR}")
                     ERROR_VARIABLE git_error
                     WORKING_DIRECTORY ${SIMPL_PARENT} )
   endif()
-  # One last check. If it does not exist at this point then we simply Abort CMake 
+  # One last check. If it does not exist at this point then we simply Abort CMake
   if(NOT EXISTS "${CMP_SOURCE_DIR}")
     message(FATAL_ERROR "CMP_SOURCE_DIR does not exist. We attempted to clone it from the GitHub repo but that also seemed\
       to fail. SIMPLView can not proceed without the CMP directory. Please ask a SIMPL developer for more\
@@ -352,8 +352,9 @@ endif()
 file(WRITE ${SIMPLProj_BINARY_DIR}/DREAM3DDocGroupList "")
 
 # ------- Enable the CTest testing. Use make test to run all tests ---------------
-OPTION(DREAM3D_BUILD_TESTING "Compile the test programs" ON)
-if(DREAM3D_BUILD_TESTING)
+OPTION(SIMPL_BUILD_TESTING "Compile the test programs" ON)
+if(SIMPL_BUILD_TESTING)
+    #ENABLE_TESTING()
     include( CTest )
 endif()
 
@@ -450,7 +451,7 @@ endif()
 include(${PROJECT_RESOURCES_DIR}/CPack/PackageProject.cmake)
 
 # ------- Enable the CTest testing. Use make test to run all tests ---------------
-if(DREAM3D_BUILD_TESTING)
+if(SIMPL_BUILD_TESTING)
     include(${SIMPLProj_SOURCE_DIR}/Test/CMakeLists.txt)
 endif()
 
