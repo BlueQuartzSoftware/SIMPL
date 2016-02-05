@@ -161,13 +161,3 @@ class DataContainerBundleTest
     void operator=(const DataContainerBundleTest&); // Operator '=' Not Implemented
 };
 
-// -----------------------------------------------------------------------------
-//  Use unit test framework
-// -----------------------------------------------------------------------------
-//int main(int argc, char** argv)
-//{
-
-
-//  PRINT_TEST_SUMMARY();
-//  return err;
-//}

@@ -976,6 +976,44 @@ class DataArrayTest
       _TestCopyData<double>();
     }
 
+#define TEST_SIZE  1024
+
+    // -----------------------------------------------------------------------------
+    //
+    // -----------------------------------------------------------------------------
+    template<typename T>
+    void _testWrapPointer()
+    {
+      QVector<size_t> cDims = {1};
+      T* ptr = reinterpret_cast<T*>(malloc(TEST_SIZE * sizeof(T) ) );
+
+      free(ptr);
+
+
+      typename DataArray<T>::Pointer dataPtr = DataArray<T>::WrapPointer(ptr, TEST_SIZE, cDims, "Wrapped Pointer", false);
+      dataPtr->initializeWithZeros();
+      ptr = nullptr;
+    }
+
+
+
+    // -----------------------------------------------------------------------------
+    //
+    // -----------------------------------------------------------------------------
+    void TestWrapPointer()
+    {
+      _testWrapPointer<uint8_t>();
+      _testWrapPointer<int8_t>();
+      _testWrapPointer<uint16_t>();
+      _testWrapPointer<int16_t>();
+      _testWrapPointer<uint32_t>();
+      _testWrapPointer<int32_t>();
+      _testWrapPointer<uint64_t>();
+      _testWrapPointer<int64_t>();
+      _testWrapPointer<float>();
+      _testWrapPointer<double>();
+
+    }
 
     void operator()()
     {
@@ -983,18 +1021,19 @@ class DataArrayTest
 
       QDir dir(UnitTest::DataArrayTest::TestDir);
       dir.mkpath(".");
-
+      std::cout << "#### DataArrayTest Starting ####" << std::endl;
 #if !REMOVE_TEST_FILES
       DREAM3D_REGISTER_TEST( RemoveTestFiles() )
     #endif
-          DREAM3D_REGISTER_TEST( TestCopyData() )
-          DREAM3D_REGISTER_TEST( TestTypeStrings() )
-          DREAM3D_REGISTER_TEST( TestArrayCreation() )
-          DREAM3D_REGISTER_TEST( TestDataArray() )
-          DREAM3D_REGISTER_TEST( TestEraseElements() )
-          DREAM3D_REGISTER_TEST( TestcopyTuples() )
-          DREAM3D_REGISTER_TEST( TestDeepCopyArray() )
-          DREAM3D_REGISTER_TEST( TestNeighborList() )
+      DREAM3D_REGISTER_TEST( TestCopyData() )
+      DREAM3D_REGISTER_TEST( TestTypeStrings() )
+      DREAM3D_REGISTER_TEST( TestArrayCreation() )
+      DREAM3D_REGISTER_TEST( TestDataArray() )
+      DREAM3D_REGISTER_TEST( TestEraseElements() )
+      DREAM3D_REGISTER_TEST( TestcopyTuples() )
+      DREAM3D_REGISTER_TEST( TestDeepCopyArray() )
+      DREAM3D_REGISTER_TEST( TestNeighborList() )
+      DREAM3D_REGISTER_TEST( TestWrapPointer() )
 
     #if REMOVE_TEST_FILES
           DREAM3D_REGISTER_TEST( RemoveTestFiles() )
@@ -1005,16 +1044,4 @@ class DataArrayTest
     DataArrayTest(const DataArrayTest&); // Copy Constructor Not Implemented
     void operator=(const DataArrayTest&); // Operator '=' Not Implemented
 };
-
-// -----------------------------------------------------------------------------
-//  Use unit test framework
-// -----------------------------------------------------------------------------
-//int main(int argc, char** argv)
-//{
-
-
-
-//  PRINT_TEST_SUMMARY();
-//  return err;
-//}
 

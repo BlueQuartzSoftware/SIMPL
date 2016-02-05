@@ -490,21 +490,3 @@ class RemoveComponentFromArrayTest
     void operator=(const RemoveComponentFromArrayTest&); // Operator '=' Not Implemented
 };
 
-// -----------------------------------------------------------------------------
-//  Use test framework
-// -----------------------------------------------------------------------------
-//int main(int argc, char** argv)
-//{
-//  // Instantiate the QCoreApplication that we need to get the current path and load plugins.
-//  QCoreApplication app(argc, argv);
-//  QCoreApplication::setOrganizationName("BlueQuartz Software");
-//  QCoreApplication::setOrganizationDomain("bluequartz.net");
-//  QCoreApplication::setApplicationName("CreateDataArrayTest");
-
-
-//  PRINT_TEST_SUMMARY();
-
-//  return err;
-//}
-
-

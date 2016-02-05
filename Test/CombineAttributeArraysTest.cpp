@@ -68,6 +68,7 @@ class CombineAttributeArraysTest
   public:
     CombineAttributeArraysTest() {}
     virtual ~CombineAttributeArraysTest() {}
+    SIMPL_TYPE_MACRO(CombineAttributeArraysTest)
 
 
     // -----------------------------------------------------------------------------
@@ -385,32 +386,4 @@ class CombineAttributeArraysTest
     CombineAttributeArraysTest(const CombineAttributeArraysTest&); // Copy Constructor Not Implemented
     void operator=(const CombineAttributeArraysTest&); // Operator '=' Not Implemented
 };
-
-// -----------------------------------------------------------------------------
-//  Use test framework
-// -----------------------------------------------------------------------------
-//int main(int argc, char** argv)
-//{
-//  int err = EXIT_SUCCESS;
-
-//  // Instantiate the QCoreApplication that we need to get the current path and load plugins.
-//  QCoreApplication app(argc, argv);
-//  QCoreApplication::setOrganizationName("BlueQuartz Software");
-//  QCoreApplication::setOrganizationDomain("bluequartz.net");
-//  QCoreApplication::setApplicationName("CombineAttributeArraysTest");
-//  // Register all the filters including trying to load those from Plugins
-//  FilterManager* fm = FilterManager::Instance();
-//  SIMPLibPluginLoader::LoadPluginFilters(fm);
-
-//  // Send progress messages from PipelineBuilder to this object for display
-//  QMetaObjectUtilities::RegisterMetaTypes();
-
-//  // Use this to register a specific function that will run a test
-//  DREAM3D_REGISTER_TEST( CombineAttributeArraysTest()() )
-
-
-//      PRINT_TEST_SUMMARY();
-
-//  return err;
-//}
 

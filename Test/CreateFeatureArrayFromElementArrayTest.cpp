@@ -331,19 +331,3 @@ class CreateFeatureArrayFromElementArrayTest
     CreateFeatureArrayFromElementArrayTest(const CreateFeatureArrayFromElementArrayTest&); // Copy Constructor Not Implemented
     void operator=(const CreateFeatureArrayFromElementArrayTest&); // Operator '=' Not Implemented
 };
-// -----------------------------------------------------------------------------
-//  Use test framework
-// -----------------------------------------------------------------------------
-//int main(int argc, char** argv)
-//{
-//  // Instantiate the QCoreApplication that we need to get the current path and load plugins.
-//  QCoreApplication app(argc, argv);
-//  QCoreApplication::setOrganizationName("");
-//  QCoreApplication::setOrganizationDomain("");
-//  QCoreApplication::setApplicationName("CreateFeatureArrayFromElementArrayTest");
-
-
-
-//  PRINT_TEST_SUMMARY();
-//  return err;
-//}

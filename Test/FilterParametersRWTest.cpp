@@ -1027,21 +1027,6 @@ class FilterParametersRWTest
 #endif
     }
 
-
-    // -----------------------------------------------------------------------------
-    //
-    // -----------------------------------------------------------------------------
-    //void loadFilterPlugins()
-    //{
-    //  // Register all the filters including trying to load those from Plugins
-    //  FilterManager* fm = FilterManager::Instance();
-    //  SIMPLibPluginLoader::LoadPluginFilters(fm);
-
-    //  // Send progress messages from PipelineBuilder to this object for display
-    //  QMetaObjectUtilities::RegisterMetaTypes();
-    //}
-
-
     void operator()()
     {
       int err = EXIT_SUCCESS;
@@ -1068,21 +1053,3 @@ class FilterParametersRWTest
     FilterParametersRWTest(const FilterParametersRWTest&); // Copy Constructor Not Implemented
     void operator=(const FilterParametersRWTest&); // Operator '=' Not Implemented
 };
-
-// -----------------------------------------------------------------------------
-//  Use test framework
-// -----------------------------------------------------------------------------
-//int main(int argc, char** argv)
-//{
-//  // Instantiate the QCoreApplication that we need to get the current path and load plugins.
-//  QCoreApplication app(argc, argv);
-//  QCoreApplication::setOrganizationName("BlueQuartz Software");
-//  QCoreApplication::setOrganizationDomain("bluequartz.net");
-//  QCoreApplication::setApplicationName("FilterParametersRWTest");
-
-
-//  PRINT_TEST_SUMMARY();
-
-//  return err;
-//}
-
