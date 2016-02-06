@@ -113,6 +113,9 @@ int RemoveArrays::writeFilterParameters(AbstractFilterParametersWriter* writer, 
 void RemoveArrays::dataCheck()
 {
   setErrorCondition(0);
+
+  markSelectionsForDeletion(getDataContainerArray().get(), Qt::Checked);
+
   // Remove all the arrays, but only if they are CHECKED. This is opposite of the default
   removeSelectionsFromDataContainerArray(getDataContainerArray().get(), Qt::Checked);
 }
@@ -128,6 +131,14 @@ void RemoveArrays::preflight()
   dataCheck();
   emit preflightExecuted();
   setInPreflight(false);
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void RemoveArrays::markSelectionsForDeletion(DataContainerArray* dca, Qt::CheckState state)
+{
+
 }
 
 // -----------------------------------------------------------------------------
