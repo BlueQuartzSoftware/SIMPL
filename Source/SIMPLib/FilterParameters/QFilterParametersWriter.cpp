@@ -902,4 +902,22 @@ int QFilterParametersWriter::writeValue(const QString name, const DynamicTableDa
   return err;
 }
 
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+int QFilterParametersWriter::writeValue(const QString name, const QPair<double, double> & v)
+{
+  Q_ASSERT(m_Prefs != NULL);
+  int err = 0;
+  m_Prefs->beginWriteArray(name, 2);
+  m_Prefs->setArrayIndex(0);
+  m_Prefs->setValue("Min", v.first);
+
+  m_Prefs->setArrayIndex(1);
+  m_Prefs->setValue("Max", v.second);
+
+  m_Prefs->endArray();
+  return err;
+}
+
 

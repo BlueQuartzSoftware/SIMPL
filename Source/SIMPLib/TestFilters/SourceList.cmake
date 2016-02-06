@@ -41,7 +41,7 @@ set(${_filterGroupName}_FILTERS_HDRS "")
 SIMPL_START_FILTER_GROUP(
   ALL_FILTERS_HEADERFILE ${AllFiltersHeaderFile}
   REGISTER_KNOWN_FILTERS_FILE ${RegisterKnownFiltersFile}
-  FILTER_GROUP" ${_filterGroupName}"
+  FILTER_GROUP "${_filterGroupName}"
   BINARY_DIR ${SIMPLProj_BINARY_DIR}
   )
 
@@ -62,8 +62,7 @@ set(_PublicFilters
 foreach(f ${_PublicFilters} )
   ADD_SIMPL_FILTER(  "SIMPLib" "FilterWidgetsLib"
                         ${_filterGroupName} ${f}
-                        ${SIMPLib_FILTER_DOC_DIR}/${_filterGroupName}/${f}.md TRUE
-                        ${SIMPLProj_BINARY_DIR})
+                        ${SIMPLib_FILTER_DOC_DIR}/${_filterGroupName}/${f}.md TRUE)
 endforeach()
 
 
@@ -79,8 +78,7 @@ set(_PrivateFilters
 foreach(f ${_PrivateFilters} )
   ADD_SIMPL_FILTER(  "SIMPLib" "FilterWidgetsLib"
                         ${_filterGroupName} ${f}
-                        ${SIMPLib_FILTER_DOC_DIR}/${_filterGroupName}/${f}.md FALSE
-                        ${SIMPLProj_BINARY_DIR})
+                        ${SIMPLib_FILTER_DOC_DIR}/${_filterGroupName}/${f}.md FALSE)
 endforeach()
 
 # -- Add the binary directory for this subdirectory to the include path which is where the moc files are generated

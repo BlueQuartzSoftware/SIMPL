@@ -38,7 +38,7 @@
 #include <QtCore/QVector>
 #include <QtCore/QDataStream>
 
-
+#include "SIMPLib/FilterParameters/RangeFilterParameter.h"
 #include "SIMPLib/FilterParameters/IntVec3FilterParameter.h"
 #include "SIMPLib/FilterParameters/FloatVec3FilterParameter.h"
 #include "SIMPLib/FilterParameters/PhaseTypeSelectionFilterParameter.h"
@@ -105,6 +105,7 @@ void QMetaObjectUtilities::RegisterMetaTypes()
   qRegisterMetaType<FloatVec3_t>("FloatVec3_t");
   qRegisterMetaType<PipelineMessage>("PipelineMessage");
   qRegisterMetaType<UInt32Vector_t>("UInt32Vector_t");
+  qRegisterMetaType<FPRangePair>("FPRangePair");
 
   qRegisterMetaTypeStreamOperators<IntVec3_t>("IntVec3_t");
   qRegisterMetaTypeStreamOperators<FloatVec3_t>("FloatVec3_t");

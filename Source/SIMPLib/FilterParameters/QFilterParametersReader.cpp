@@ -1603,3 +1603,31 @@ DynamicTableData QFilterParametersReader::readDynamicTableData(const QString& na
   return tableData;
 }
 
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+QPair<double, double> QFilterParametersReader::readPairOfDoubles(const QString& name, QPair<double, double> v)
+{
+  Q_ASSERT(m_Prefs != NULL);
+  bool ok = false;
+  QPair<double, double> pair;
+  m_Prefs->beginReadArray(name);
+  m_Prefs->setArrayIndex(0);
+  pair.first = m_Prefs->value("Min").toDouble();
+  if (!ok)
+  {
+    m_Prefs->endArray();
+    return v;
+  }
+  m_Prefs->setArrayIndex(1);
+  pair.second = m_Prefs->value("Max").toDouble();
+  if (!ok)
+  {
+    m_Prefs->endArray();
+    return v;
+  }
+
+  m_Prefs->endArray();
+  return pair;
+}
+

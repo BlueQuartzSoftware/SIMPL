@@ -33,43 +33,44 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-#ifndef _AxisAngleFilterParameter_H_
-#define _AxisAngleFilterParameter_H_
+#ifndef _RangeFilterParameter_H_
+#define _RangeFilterParameter_H_
 
-
-
-#include "SIMPLib/Common/SIMPLibSetGetMacros.h"
 #include "SIMPLib/FilterParameters/FilterParameter.h"
-#include "SIMPLib/FilterParameters/AxisAngleInput.h"
 
-/**
- * @brief The AxisAngleFilterParameter class
- */
-class SIMPLib_EXPORT AxisAngleFilterParameter : public FilterParameter
+#include <QtCore/QPair>
+
+typedef QPair <double, double> FPRangePair;
+
+class SIMPLib_EXPORT RangeFilterParameter : public FilterParameter
 {
-  public:
-    SIMPL_SHARED_POINTERS(AxisAngleFilterParameter)
-    SIMPL_STATIC_NEW_MACRO(AxisAngleFilterParameter)
-    SIMPL_TYPE_MACRO(AxisAngleFilterParameter)
+public:
+  SIMPL_SHARED_POINTERS(RangeFilterParameter)
+    SIMPL_STATIC_NEW_MACRO(RangeFilterParameter)
+    SIMPL_TYPE_MACRO(RangeFilterParameter)
 
     static Pointer New(const QString& humanLabel, const QString& propertyName,
-                       const AxisAngleInput_t& defaultValue, Category category,
-                       int groupIndex = -1);
+    const QPair<double, double>& defaultPair, Category category,
+     int groupIndex = -1);
 
-    virtual ~AxisAngleFilterParameter();
+    virtual ~RangeFilterParameter();
 
-    /**
+  /**
    * @brief getWidgetType Returns the type of widget that displays and controls
    * this FilterParameter subclass
    * @return
    */
-    QString getWidgetType();
-  protected:
-    AxisAngleFilterParameter();
+  QString getWidgetType();
 
-  private:
-    AxisAngleFilterParameter(const AxisAngleFilterParameter&); // Copy Constructor Not Implemented
-    void operator=(const AxisAngleFilterParameter&); // Operator '=' Not Implemented
+  SIMPL_INSTANCE_PROPERTY(FPRangePair, DefaultPair)
+
+
+protected:
+  RangeFilterParameter();
+
+private:
+  RangeFilterParameter(const RangeFilterParameter&); // Copy Constructor Not Implemented
+  void operator=(const RangeFilterParameter&); // Operator '=' Not Implemented
 };
 
-#endif /* _AxisAngleFilterParameter_H_ */
+#endif /* _RangeFilterParameter_H_ */

@@ -973,11 +973,3 @@ int RectGridGeom::gatherMetaData(hid_t parentId, size_t volDims[3], bool preflig
 
   return err;
 }
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-
-// Shared ops includes
-#define GEOM_CLASS_NAME RectGridGeom
-#include "SIMPLib/Geometry/SharedGeometryOps.cpp"

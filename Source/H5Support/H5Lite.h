@@ -20,6 +20,7 @@
 #include <iostream>
 #include <vector>
 #include <map>
+#include <mutex>
 
 //-- HDF Headers
 #include <hdf5.h>
@@ -28,7 +29,14 @@
 #include "H5Support/H5Support.h"
 #include "H5Support/H5Macros.h"
 
+#ifdef H5Support_USE_MUTEX
+#define H5SUPPORT_MUTEX_LOCK()\
+  static std::mutex mutex;\
+  std::lock_guard<std::mutex> lock(mutex);
+#else
+#define H5SUPPORT_MUTEX_LOCK()
 
+#endif
 #ifdef __cplusplus
 extern "C" {
 #endif
@@ -89,6 +97,8 @@ namespace H5Support_NAMESPACE
        */
       static hid_t HDFTypeFromString(const std::string& value)
       {
+        H5SUPPORT_MUTEX_LOCK()
+
         if (value.compare("H5T_STRING") == 0) { return H5T_STRING; }
 
         if (value.compare("H5T_NATIVE_INT8") == 0) { return H5T_NATIVE_INT8; }
@@ -118,6 +128,8 @@ namespace H5Support_NAMESPACE
        */
       static std::string StringForHDFType(hid_t type)
       {
+        H5SUPPORT_MUTEX_LOCK()
+
         if ( type == H5T_STRING) { return "H5T_STRING"; }
 
         if (H5Tequal(type , H5T_NATIVE_INT8) ) { return "H5T_NATIVE_INT8"; }
@@ -148,6 +160,8 @@ namespace H5Support_NAMESPACE
       template<typename T>
       static std::string HDFTypeForPrimitiveAsStr(T value)
       {
+        H5SUPPORT_MUTEX_LOCK()
+
         if (typeid(value) == typeid(int8_t)) { return "H5T_NATIVE_INT8"; }
         if (typeid(value) == typeid(uint8_t)) { return "H5T_NATIVE_UINT8"; }
 
@@ -178,6 +192,7 @@ namespace H5Support_NAMESPACE
       template<typename T>
       static hid_t HDFTypeForPrimitive(T value)
       {
+        H5SUPPORT_MUTEX_LOCK()
 
         if (typeid(value) == typeid(float)) { return H5T_NATIVE_FLOAT; }
         if (typeid(value) == typeid(double)) { return H5T_NATIVE_DOUBLE; }
@@ -289,6 +304,8 @@ namespace H5Support_NAMESPACE
                                         std::vector<hsize_t>& dims,
                                         std::vector<T>& data)
       {
+        H5SUPPORT_MUTEX_LOCK()
+
         herr_t err = -1;
         hid_t did = -1;
         hid_t sid = -1;
@@ -358,6 +375,7 @@ namespace H5Support_NAMESPACE
                                          hsize_t* dims,
                                          T* data)
       {
+        H5SUPPORT_MUTEX_LOCK()
 
         herr_t err    = -1;
         hid_t did     = -1;
@@ -433,6 +451,7 @@ namespace H5Support_NAMESPACE
                                            hsize_t* dims,
                                            T* data)
       {
+        H5SUPPORT_MUTEX_LOCK()
 
         herr_t err    = -1;
         hid_t did     = -1;
@@ -526,6 +545,8 @@ namespace H5Support_NAMESPACE
                                  hsize_t* dims,
                                  T* data)
       {
+        H5SUPPORT_MUTEX_LOCK()
+
         herr_t err = -1;
         hid_t did = -1;
         hid_t sid = -1;
@@ -588,6 +609,8 @@ namespace H5Support_NAMESPACE
                                         const std::string& dsetName,
                                         T& value)
       {
+        H5SUPPORT_MUTEX_LOCK()
+
         herr_t err = -1;
         hid_t did = -1;
         hid_t sid = -1;
@@ -689,6 +712,8 @@ namespace H5Support_NAMESPACE
                                           hsize_t* dims,
                                           T* data)
       {
+        H5SUPPORT_MUTEX_LOCK()
+
         hid_t      obj_id, sid, attr_id;
         int32_t        has_attr;
         H5O_info_t statbuf;
@@ -805,6 +830,8 @@ namespace H5Support_NAMESPACE
                                          std::vector<hsize_t>& dims,
                                          std::vector<T>& data )
       {
+        H5SUPPORT_MUTEX_LOCK()
+
         hid_t      obj_id, sid, attr_id;
         //hsize_t    dim_size = data.size();
         int32_t        has_attr;
@@ -972,6 +999,7 @@ namespace H5Support_NAMESPACE
                                           const std::string& attrName,
                                           T data )
       {
+        H5SUPPORT_MUTEX_LOCK()
 
         hid_t      obj_id, sid, attr_id;
         int32_t        has_attr;
@@ -1075,6 +1103,8 @@ namespace H5Support_NAMESPACE
                                        const std::string& dsetName,
                                        T* data)
       {
+        H5SUPPORT_MUTEX_LOCK()
+
         hid_t did;
         herr_t err = 0;
         herr_t retErr = 0;
@@ -1136,6 +1166,8 @@ namespace H5Support_NAMESPACE
                                       const std::string& dsetName,
                                       std::vector<T>& data)
       {
+        H5SUPPORT_MUTEX_LOCK()
+
         hid_t   did;
         herr_t  err = 0;
         herr_t retErr = 0;
@@ -1217,6 +1249,8 @@ namespace H5Support_NAMESPACE
                                       const std::string& dsetName,
                                       T& data)
       {
+        H5SUPPORT_MUTEX_LOCK()
+
         hid_t   did;
         herr_t  err = 0;
         herr_t retErr = 0;
@@ -1332,6 +1366,8 @@ namespace H5Support_NAMESPACE
                                         const std::string& attrName,
                                         std::vector<T>& data)
       {
+        H5SUPPORT_MUTEX_LOCK()
+
         /* identifiers */
         hid_t      obj_id;
         H5O_info_t statbuf;
@@ -1410,6 +1446,7 @@ namespace H5Support_NAMESPACE
                                          const std::string& attrName,
                                          T& data)
       {
+        H5SUPPORT_MUTEX_LOCK()
 
         /* identifiers */
         hid_t      obj_id;
@@ -1476,6 +1513,8 @@ namespace H5Support_NAMESPACE
                                          const std::string& attrName,
                                          T* data)
       {
+        H5SUPPORT_MUTEX_LOCK()
+
         /* identifiers */
         hid_t      obj_id;
         H5O_info_t statbuf;

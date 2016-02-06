@@ -598,7 +598,7 @@ class DataArray : public IDataArray
      */
     virtual void initializeWithZeros()
     {
-      if(!m_IsAllocated) { return; }
+      if(!m_IsAllocated || NULL == m_Array) { return; }
       size_t typeSize = sizeof(T);
       ::memset(m_Array, 0, m_Size * typeSize);
     }
@@ -608,7 +608,7 @@ class DataArray : public IDataArray
      */
     virtual void initializeWithValue(T initValue, size_t offset = 0)
     {
-      if(!m_IsAllocated) { return; }
+      if(!m_IsAllocated || NULL == m_Array) { return; }
       for (size_t i = offset; i < m_Size; i++)
       {
         m_Array[i] = initValue;

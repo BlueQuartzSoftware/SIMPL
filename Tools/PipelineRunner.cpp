@@ -134,6 +134,8 @@ int main (int argc, char*  argv[])
 
   std::cout << "PipelineRunner Starting. Version " << SIMPLib::Version::PackageComplete().toStdString() << std::endl;
 
+  // Ensure an instance of QCoreApplication is available
+  QCoreApplication::instance();
 
   // Register all the filters including trying to load those from Plugins
   FilterManager* fm = FilterManager::Instance();

@@ -848,4 +848,20 @@ int JsonFilterParametersWriter::writeValue(const QString name, const DynamicTabl
   return err;
 }
 
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+int JsonFilterParametersWriter::writeValue(const QString name, const QPair<double, double> & v)
+{
+  int err = 0;
+
+  QJsonObject obj;
+  obj["Min"] = v.first;
+  obj["Max"] = v.second;
+
+  m_CurrentFilterIndex[name] = obj;
+
+  return err;
+}
+
 

@@ -161,6 +161,11 @@ class SIMPLib_EXPORT RemoveArrays : public AbstractFilter
      */
     void dataCheck();
 
+    /**
+    * @brief markSelectionsForDeletion Marks the items in the data container array with checkstate 'state' for deletion
+    */
+    void markSelectionsForDeletion(DataContainerArray* dca, Qt::CheckState state);
+
     RemoveArrays(const RemoveArrays&); // Copy Constructor Not Implemented
     void operator=(const RemoveArrays&); // Operator '=' Not Implemented
 };

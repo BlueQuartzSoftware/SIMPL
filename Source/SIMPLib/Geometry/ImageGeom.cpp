@@ -904,11 +904,3 @@ int ImageGeom::gatherMetaData(hid_t parentId, size_t volDims[3], float spacing[3
 
   return err;
 }
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-
-// Shared ops includes
-#define GEOM_CLASS_NAME ImageGeom
-#include "SIMPLib/Geometry/SharedGeometryOps.cpp"

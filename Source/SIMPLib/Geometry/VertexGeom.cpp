@@ -397,6 +397,5 @@ IGeometry::Pointer VertexGeom::deepCopy()
 
 // Shared ops includes
 #define GEOM_CLASS_NAME VertexGeom
-#include "SIMPLib/Geometry/SharedGeometryOps.cpp"
 #include "SIMPLib/Geometry/SharedVertexOps.cpp"
 

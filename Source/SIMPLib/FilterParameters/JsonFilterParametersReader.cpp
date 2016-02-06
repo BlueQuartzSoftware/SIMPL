@@ -1406,3 +1406,39 @@ DynamicTableData JsonFilterParametersReader::readDynamicTableData(const QString&
   return def;
 }
 
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+QPair<double, double> JsonFilterParametersReader::readPairOfDoubles(const QString& name, QPair<double, double> v)
+{
+  //QJsonObject obj;
+  //obj["Min"] = v.first;
+  //obj["Max"] = v.second;
+
+  //m_CurrentFilterIndex[name] = obj;
+
+
+
+  Q_ASSERT(m_CurrentFilterIndex.isEmpty() == false);
+  if (m_CurrentFilterIndex.contains(name) == false)
+  {
+    return v;
+  }
+
+  if (m_CurrentFilterIndex.value(name).isObject())
+  {
+    QJsonObject obj = m_CurrentFilterIndex.value(name).toObject();
+    if (!obj.contains("Min") || !obj.contains("Max"))
+    {
+      return v;
+    }
+
+    QPair<double, double> pair;
+    pair.first = obj["Min"].toDouble();
+    pair.second = obj["Max"].toDouble();
+    return pair;
+  }
+
+  return v;
+}
+

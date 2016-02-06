@@ -584,6 +584,5 @@ IGeometry::Pointer EdgeGeom::deepCopy()
 
 // Shared ops includes
 #define GEOM_CLASS_NAME EdgeGeom
-#include "SIMPLib/Geometry/SharedGeometryOps.cpp"
 #include "SIMPLib/Geometry/SharedVertexOps.cpp"
 #include "SIMPLib/Geometry/SharedEdgeOps.cpp"

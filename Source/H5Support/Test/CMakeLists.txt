@@ -10,10 +10,10 @@
 
 # project(H5SupportTest)
 set(PLUGIN_NAME "H5Support")
-set(${PLUGIN_NAME}Test_SOURCE_DIR ${${PLUGIN_NAME}_SOURCE_DIR}/Test/Test)
+set(${PLUGIN_NAME}Test_SOURCE_DIR ${${PLUGIN_NAME}_SOURCE_DIR}/Test)
 set(${PLUGIN_NAME}Test_BINARY_DIR ${${PLUGIN_NAME}_BINARY_DIR}/Test)
 
-include(${DREAM3DProj_SOURCE_DIR}/Test/DREAM3DTestFunctions.cmake)
+include(${SIMPLProj_SOURCE_DIR}/Test/SIMPLTestFunctions.cmake)
 
 include_directories(${${PLUGIN_NAME}_SOURCE_DIR}/Test)
 include_directories(${${PLUGIN_NAME}_BINARY_DIR}/Test)
@@ -27,18 +27,58 @@ configure_file(${${PLUGIN_NAME}_SOURCE_DIR}/Test/TestFileLocations.h.in
                ${${PLUGIN_NAME}_BINARY_DIR}/Test/${PLUGIN_NAME}TestFileLocations.h @ONLY IMMEDIATE)
 
 
-AddDREAM3DUnitTest(TESTNAME H5LiteTest 
-                    SOURCES ${${PLUGIN_NAME}_SOURCE_DIR}/Test/H5LiteTest.cpp
-                    FOLDER "Test/H5Support" 
-                    LINK_LIBRARIES Qt5::Core H5Support )
-AddDREAM3DUnitTest(TESTNAME H5UtilitiesTest 
-                    SOURCES ${${PLUGIN_NAME}_SOURCE_DIR}/Test/H5UtilitiesTest.cpp 
-                    FOLDER "Test/H5Support" 
-                    LINK_LIBRARIES Qt5::Core H5Support )
+include_directories(${${PLUGIN_NAME}Test_BINARY_DIR})
+
+set(TEST_NAMES
+  H5LiteTest
+  H5UtilitiesTest
+  )
+
+
+set( ${PLUGIN_NAME}_TEST_SRCS )
+set(FilterTestIncludes "")
+set(TestMainFunctors "")
+
+foreach(name  ${TEST_NAMES})
+  set( ${PLUGIN_NAME}_TEST_SRCS
+    ${${PLUGIN_NAME}_TEST_SRCS}
+    "${${PLUGIN_NAME}_SOURCE_DIR}/Test/${name}.cpp"
+    )
+  string(CONCAT
+    FilterTestIncludes
+    ${FilterTestIncludes}
+    "#include \"${name}.cpp\"\n"
+    )
+
+  string(CONCAT
+    TestMainFunctors
+   ${TestMainFunctors}
+   "  ${name}()()|\n")
+endforeach()
+
+STRING(REPLACE "|" ";" TestMainFunctors ${TestMainFunctors}   )
+
+configure_file(${SIMPLProj_SOURCE_DIR}/Test/TestMain.cpp.in
+               ${${PLUGIN_NAME}Test_BINARY_DIR}/${PLUGIN_NAME}UnitTest.cpp @ONLY)
+
+
+# Set the source files properties on each source file.
+foreach(f ${${PLUGIN_NAME}_TEST_SRCS})
+  set_source_files_properties( ${f} PROPERTIES HEADER_FILE_ONLY TRUE)
+endforeach()
+
+AddSIMPLUnitTest(TESTNAME H5SupportUnitTest
+  SOURCES ${${PLUGIN_NAME}Test_BINARY_DIR}/${PLUGIN_NAME}UnitTest.cpp ${${PLUGIN_NAME}_TEST_SRCS}
+  FOLDER "H5Support/Test"
+  LINK_LIBRARIES Qt5::Core H5Support SIMPLib)
+
+if(MSVC)
+  set_source_files_properties( ${${PLUGIN_NAME}Test_BINARY_DIR}/${PLUGIN_NAME}UnitTest.cpp PROPERTIES COMPILE_FLAGS /bigobj)
+endif()
 
 
 if(0)
-# THis is just a quick test to make sure that the latest HDF5 can actually write data
+# This is just a quick test to make sure that the latest HDF5 can actually write data
 # sets that are larger than 4GB in size
 add_executable(BigHDF5DatasetTest ${DREAM3DTest_SOURCE_DIR}/BigHDF5DatasetTest.cpp)
 target_link_libraries(BigHDF5DatasetTest Qt5::Core H5Support )

@@ -40,6 +40,7 @@
 #include "SIMPLib/SIMPLib.h"
 #include "SIMPLib/Common/AbstractFilter.h"
 #include "SIMPLib/Common/SIMPLibSetGetMacros.h"
+#include "SIMPLib/FilterParameters/RangeFilterParameter.h"
 
 /**
  * @brief The CreateDataArray class. See [Filter documentation](@ref createdataarray) for details.
@@ -48,7 +49,6 @@ class SIMPLib_EXPORT CreateDataArray : public AbstractFilter
 {
     Q_OBJECT /* Need this for Qt's signals and slots mechanism to work */
   public:
-
     SIMPL_SHARED_POINTERS(CreateDataArray)
     SIMPL_STATIC_NEW_MACRO(CreateDataArray)
     SIMPL_TYPE_MACRO_SUPER(CreateDataArray, AbstractFilter)
@@ -56,16 +56,22 @@ class SIMPLib_EXPORT CreateDataArray : public AbstractFilter
     virtual ~CreateDataArray();
 
     SIMPL_FILTER_PARAMETER(int, ScalarType)
-    Q_PROPERTY(int ScalarType READ getScalarType WRITE setScalarType)
+      Q_PROPERTY(int ScalarType READ getScalarType WRITE setScalarType)
 
-    SIMPL_FILTER_PARAMETER(int, NumberOfComponents)
-    Q_PROPERTY(int NumberOfComponents READ getNumberOfComponents WRITE setNumberOfComponents)
+      SIMPL_FILTER_PARAMETER(int, NumberOfComponents)
+      Q_PROPERTY(int NumberOfComponents READ getNumberOfComponents WRITE setNumberOfComponents)
 
-    SIMPL_FILTER_PARAMETER(DataArrayPath, NewArray)
-    Q_PROPERTY(DataArrayPath NewArray READ getNewArray WRITE setNewArray)
+      SIMPL_FILTER_PARAMETER(DataArrayPath, NewArray)
+      Q_PROPERTY(DataArrayPath NewArray READ getNewArray WRITE setNewArray)
 
-    SIMPL_FILTER_PARAMETER(QString, InitializationValue)
-    Q_PROPERTY(QString InitializationValue READ getInitializationValue WRITE setInitializationValue)
+      SIMPL_FILTER_PARAMETER(int, InitializationType)
+      Q_PROPERTY(int InitializationType READ getInitializationType WRITE setInitializationType)
+
+      SIMPL_FILTER_PARAMETER(QString, InitializationValue)
+      Q_PROPERTY(QString InitializationValue READ getInitializationValue WRITE setInitializationValue)
+
+    SIMPL_FILTER_PARAMETER(FPRangePair, InitializationRange)
+    Q_PROPERTY(FPRangePair InitializationRange READ getInitializationRange WRITE setInitializationRange)
 
     /**
      * @brief getCompiledLibraryName Reimplemented from @see AbstractFilter class
@@ -165,10 +171,74 @@ class SIMPLib_EXPORT CreateDataArray : public AbstractFilter
   private:
     DEFINE_IDATAARRAY_VARIABLE(OutputArray)
 
-    void checkInitialization();
+    enum InitializationChoices
+    {
+      Manual,
+      RandomWithRange
+    };
+
+    enum ScalarTypeChoices
+    {
+      Int8Choice,
+      UInt8Choice,
+      Int16Choice,
+      UInt16Choice,
+      Int32Choice,
+      UInt32Choice,
+      Int64Choice,
+      UInt64Choice,
+      FloatChoice,
+      DoubleChoice,
+      BoolChoice
+    };
+
+    /**
+    * @brief initializeArrayWithInts Initializes the array p with integers, either from the
+    * manual value entered in the filter, or with a random number.  This function does not
+    * check that the template type actually is an integer, so it will most likely cause
+    * unexpected results when passing anything other than an integer as a template parameter.
+    * @param p The array that will be initialized
+    */
+    template <typename T>
+    void initializeArrayWithInts();
+
+
+    /**
+    * @brief initializeArrayWithReals Initializes the array p with real numbers, either from the
+    * manual value entered in the filter, or with a random number.  This function does not
+    * check that the template type actually is a non-integer, so it will most likely cause
+    * unexpected results when passing anything other than a float or double as a template
+    * parameter.
+    * @param p The array that will be initialized
+    */
+    template <typename T>
+    void initializeArrayWithReals();
+
+    /**
+    * @brief checkInitialization Checks that the chosen initialization value/range is inside
+    * the bounds of the array type
+    */
+    template <typename T>
+    void checkInitialization(QString dataArrayName);
+
+    const QString Int8 = "signed   int 8  bit";
+    const QString UInt8 = "unsigned int 8  bit";
+    const QString Int16 = "signed   int 16 bit";
+    const QString UInt16 = "unsigned int 16 bit";
+    const QString Int32 = "signed   int 32 bit";
+    const QString UInt32 = "unsigned int 32 bit";
+    const QString Int64 = "signed   int 64 bit";
+    const QString UInt64 = "unsigned int 64 bit";
+    const QString Float = "       Float 32 bit";
+    const QString Double = "      Double 64 bit";
+    const QString Bool = "bool";
 
     CreateDataArray(const CreateDataArray&); // Copy Constructor Not Implemented
     void operator=(const CreateDataArray&); // Operator '=' Not Implemented
 };
+
+
+template <>
+void CreateDataArray::initializeArrayWithInts<bool>();
 
 #endif /* _CreateDataArray_H_ */

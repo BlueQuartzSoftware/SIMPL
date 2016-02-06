@@ -179,12 +179,38 @@ if(WIN32)
 endif()
 
 
-if(BUILD_SHARED_LIBS  AND NOT APPLE)
+#if(BUILD_SHARED_LIBS  AND NOT APPLE)
     INSTALL(TARGETS ${PROJECT_NAME}
+        EXPORT ${PROJECT_NAME}Targets
         COMPONENT Applications
         RUNTIME DESTINATION ${install_dir}
         LIBRARY DESTINATION ${lib_install_dir}
         ARCHIVE DESTINATION ${lib_install_dir}
         BUNDLE DESTINATION "."
     )
-endif()
+#endif()
+
+
+
+# --------------------------------------------------------------------
+# Allow the generation and installation of a CMake configuration file
+# which makes using SIMPL from another project easier.
+# --------------------------------------------------------------------
+export(EXPORT SIMPLibTargets
+  FILE "${CMAKE_CURRENT_BINARY_DIR}/SIMPL/SIMPLibTargets.cmake"
+  NAMESPACE SIMPL::
+)
+
+install(EXPORT SIMPLibTargets
+  FILE
+    SIMPLibTargets.cmake
+  NAMESPACE
+    SIMPL::
+  DESTINATION
+    ${ConfigPackageLocation}
+)
+
+
+
+
+

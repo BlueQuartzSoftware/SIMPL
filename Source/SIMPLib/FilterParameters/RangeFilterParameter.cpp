@@ -33,43 +33,45 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-#ifndef _AxisAngleFilterParameter_H_
-#define _AxisAngleFilterParameter_H_
+#include "RangeFilterParameter.h"
 
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+RangeFilterParameter::RangeFilterParameter() :
+FilterParameter()
+{}
 
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+RangeFilterParameter::~RangeFilterParameter()
+{}
 
-#include "SIMPLib/Common/SIMPLibSetGetMacros.h"
-#include "SIMPLib/FilterParameters/FilterParameter.h"
-#include "SIMPLib/FilterParameters/AxisAngleInput.h"
-
-/**
- * @brief The AxisAngleFilterParameter class
- */
-class SIMPLib_EXPORT AxisAngleFilterParameter : public FilterParameter
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+RangeFilterParameter::Pointer RangeFilterParameter::New(const QString& humanLabel, const QString& propertyName,
+  const QPair<double, double>& defaultPair, Category category, int groupIndex)
 {
-  public:
-    SIMPL_SHARED_POINTERS(AxisAngleFilterParameter)
-    SIMPL_STATIC_NEW_MACRO(AxisAngleFilterParameter)
-    SIMPL_TYPE_MACRO(AxisAngleFilterParameter)
 
-    static Pointer New(const QString& humanLabel, const QString& propertyName,
-                       const AxisAngleInput_t& defaultValue, Category category,
-                       int groupIndex = -1);
+  RangeFilterParameter::Pointer ptr = RangeFilterParameter::New();
+  ptr->setHumanLabel(humanLabel);
+  ptr->setPropertyName(propertyName);
+  ptr->setDefaultPair(defaultPair);
+  ptr->setCategory(category);
+  ptr->setGroupIndex(groupIndex);
 
-    virtual ~AxisAngleFilterParameter();
 
-    /**
-   * @brief getWidgetType Returns the type of widget that displays and controls
-   * this FilterParameter subclass
-   * @return
-   */
-    QString getWidgetType();
-  protected:
-    AxisAngleFilterParameter();
+  return ptr;
+}
 
-  private:
-    AxisAngleFilterParameter(const AxisAngleFilterParameter&); // Copy Constructor Not Implemented
-    void operator=(const AxisAngleFilterParameter&); // Operator '=' Not Implemented
-};
 
-#endif /* _AxisAngleFilterParameter_H_ */
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+QString RangeFilterParameter::getWidgetType()
+{
+  return QString("RangeWidget");
+}
+

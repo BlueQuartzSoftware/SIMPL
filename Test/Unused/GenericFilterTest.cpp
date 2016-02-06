@@ -161,7 +161,7 @@ void TestTslReadH5Ebsd()
 
   reader->setInputFile(GenericFilterTest::SmallIN100File());
   reader->setSelectedArrayNames(arrays);
-  reader->setRefFrameZDir(Ebsd::RefFrameZDir::HightoLow);
+  reader->setRefFrameZDir(SIMPL::RefFrameZDir::HightoLow);
   reader->setZStartIndex(1);
   reader->setZEndIndex(117);
   reader->setUseTransformations(true);
@@ -225,7 +225,7 @@ void TestHklReadH5Ebsd()
 
   reader->setInputFile(GenericFilterTest::SmallIN100File());
   reader->setSelectedArrayNames(arrays);
-  reader->setRefFrameZDir(Ebsd::RefFrameZDir::HightoLow);
+  reader->setRefFrameZDir(SIMPL::RefFrameZDir::HightoLow);
   reader->setZStartIndex(1);
   reader->setZEndIndex(117);
   reader->setUseTransformations(true);
