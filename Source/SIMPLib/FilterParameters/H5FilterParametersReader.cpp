@@ -1020,3 +1020,27 @@ DynamicTableData H5FilterParametersReader::readDynamicTableData(const QString& n
     return def;
   }
 }
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+QPair<double, double> H5FilterParametersReader::readPairOfDoubles(const QString& name, QPair<double, double> v)
+{
+  /*int err = QH5Lite::writeScalarAttribute(m_CurrentGroupId, name, "Min", v.first);
+  if (err < 0) { return err; }
+  err = QH5Lite::writeScalarAttribute(m_CurrentGroupId, name, "Max", v.second);
+
+  return err;*/
+
+  double min = 0.0;
+  double max = 0.0;
+  int err = QH5Lite::readScalarAttribute(m_CurrentGroupId, name, "Min", min);
+  if (err < 0) { return v; }
+  err = QH5Lite::readScalarAttribute(m_CurrentGroupId, name, "Max", max);
+  if (err < 0) { return v; }
+
+  QPair<double, double> value;
+  value.first = min;
+  value.second = max;
+  return value;
+}

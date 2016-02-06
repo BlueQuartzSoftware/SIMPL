@@ -126,6 +126,8 @@ class SIMPLib_EXPORT AbstractFilterParametersReader
 
     virtual DynamicTableData readDynamicTableData(const QString& name, DynamicTableData v) = 0;
 
+    virtual QPair<double, double> readPairOfDoubles(const QString& name, QPair<double, double> v) = 0;
+
   protected:
     AbstractFilterParametersReader();
 

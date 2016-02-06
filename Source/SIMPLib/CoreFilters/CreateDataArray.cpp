@@ -35,13 +35,23 @@
 
 #include "CreateDataArray.h"
 
+#include <QtCore/QDateTime>
+
+#include <boost/random/mersenne_twister.hpp>
+#include <boost/random/uniform_real.hpp>
+#include <boost/random/uniform_int.hpp>
+#include <boost/random/bernoulli_distribution.hpp>
+#include <boost/random/variate_generator.hpp>
+
 #include "SIMPLib/Common/Constants.h"
 #include "SIMPLib/SIMPLibVersion.h"
 #include "SIMPLib/Common/TemplateHelpers.hpp"
 #include "SIMPLib/FilterParameters/AbstractFilterParametersReader.h"
 #include "SIMPLib/FilterParameters/AbstractFilterParametersWriter.h"
+#include "SIMPLib/FilterParameters/LinkedChoicesFilterParameter.h"
 #include "SIMPLib/FilterParameters/IntFilterParameter.h"
 #include "SIMPLib/FilterParameters/StringFilterParameter.h"
+#include "SIMPLib/FilterParameters/DoubleFilterParameter.h"
 #include "SIMPLib/FilterParameters/DataArrayCreationFilterParameter.h"
 #include "SIMPLib/FilterParameters/ChoiceFilterParameter.h"
 
@@ -58,6 +68,7 @@ CreateDataArray::CreateDataArray() :
   m_ScalarType(0),
   m_NumberOfComponents(0),
   m_NewArray("", "", ""),
+  m_InitializationType(Manual),
   m_InitializationValue("0")
 {
   setupFilterParameters();
@@ -83,23 +94,43 @@ void CreateDataArray::setupFilterParameters()
     parameter->setPropertyName("ScalarType");
 
     QVector<QString> choices;
-    choices.push_back("signed   int 8  bit");
-    choices.push_back("unsigned int 8  bit");
-    choices.push_back("signed   int 16 bit");
-    choices.push_back("unsigned int 16 bit");
-    choices.push_back("signed   int 32 bit");
-    choices.push_back("unsigned int 32 bit");
-    choices.push_back("signed   int 64 bit");
-    choices.push_back("unsigned int 64 bit");
-    choices.push_back("       Float 32 bit");
-    choices.push_back("      Double 64 bit");
-    choices.push_back("bool");
+    choices.push_back(Int8);
+    choices.push_back(UInt8);
+    choices.push_back(Int16);
+    choices.push_back(UInt16);
+    choices.push_back(Int32);
+    choices.push_back(UInt32);
+    choices.push_back(Int64);
+    choices.push_back(UInt64);
+    choices.push_back(Float);
+    choices.push_back(Double);
+    choices.push_back(Bool);
     parameter->setChoices(choices);
     parameter->setCategory(FilterParameter::Parameter);
     parameters.push_back(parameter);
   }
   parameters.push_back(IntFilterParameter::New("Number of Components", "NumberOfComponents", getNumberOfComponents(), FilterParameter::Parameter));
-  parameters.push_back(StringFilterParameter::New("Initialization Value", "InitializationValue", getInitializationValue(), FilterParameter::Parameter));
+
+  {
+    LinkedChoicesFilterParameter::Pointer parameter = LinkedChoicesFilterParameter::New();
+    parameter->setHumanLabel("Initialization Type");
+    parameter->setPropertyName("InitializationType");
+
+    parameter->setDefaultValue(Manual);
+
+    QVector<QString> choices;
+    choices.push_back("Manual");
+    choices.push_back("Random With Range");
+    parameter->setChoices(choices);
+    QStringList linkedProps;
+    linkedProps << "InitializationValue" << "InitializationRange";
+    parameter->setLinkedProperties(linkedProps);
+    parameter->setEditable(false);
+    parameter->setCategory(FilterParameter::Parameter);
+    parameters.push_back(parameter);
+  }
+  parameters.push_back(StringFilterParameter::New("Initialization Value", "InitializationValue", getInitializationValue(), FilterParameter::Parameter, Manual));
+  parameters.push_back(RangeFilterParameter::New("Initialization Range", "InitializationRange", getInitializationRange(), FilterParameter::Parameter, RandomWithRange));
 
   {
     DataArrayCreationFilterParameter::RequirementType req;
@@ -119,6 +150,8 @@ void CreateDataArray::readFilterParameters(AbstractFilterParametersReader* reade
   setNumberOfComponents( reader->readValue("NumberOfComponents", getNumberOfComponents()) );
   setNewArray(reader->readDataArrayPath("NewArray", getNewArray()));
   setInitializationValue(reader->readString("InitializationValue", getInitializationValue()));
+  setInitializationType(reader->readValue("InitializationType", getInitializationType()));
+  setInitializationRange(reader->readPairOfDoubles("InitializationRange", getInitializationRange()));
   reader->closeFilterGroup();
 }
 
@@ -133,165 +166,10 @@ int CreateDataArray::writeFilterParameters(AbstractFilterParametersWriter* write
   SIMPL_FILTER_WRITE_PARAMETER(NumberOfComponents);
   SIMPL_FILTER_WRITE_PARAMETER(NewArray);
   SIMPL_FILTER_WRITE_PARAMETER(InitializationValue);
+  SIMPL_FILTER_WRITE_PARAMETER(InitializationType);
+  SIMPL_FILTER_WRITE_PARAMETER(InitializationRange);
   writer->closeFilterGroup();
   return ++index; // we want to return the next index that was just written to
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-template<typename T>
-void checkInitializationInt(AbstractFilter* filter, IDataArray::Pointer iDataArray, T initValue, bool ok, int32_t err)
-{
-  filter->setErrorCondition(0);
-  QString ss;
-  typename DataArray<T>::Pointer var = DataArray<T>::CreateArray(1, "_INTERNAL_USE_ONLY_DO_NOT_USE"); // temporary for use of getTypeAsString()
-  QString strType = var->getTypeAsString();
-  strType.remove("_t");
-
-  if(!ok)
-  {
-    filter->setErrorCondition(err);
-    ss = QObject::tr("The string could not be converted to type '%1'. The valid range is %2 to %3").arg(strType).arg(std::numeric_limits<T>::min()).arg(std::numeric_limits<T>::max());
-  }
-
-  if (filter->getErrorCondition() < 0)
-  {
-    filter->notifyErrorMessage(filter->getHumanLabel(), ss, filter->getErrorCondition());
-  }
-
-  // Now set the initial Value into the array
-  typename DataArray<T>::Pointer array = std::dynamic_pointer_cast<DataArray<T> >(iDataArray);
-  if(NULL != array.get())
-  {
-    array->initializeWithValue(initValue, 0);
-  }
-
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-template<typename T>
-void checkInitializationFloatDouble(AbstractFilter* filter, IDataArray::Pointer iDataArray, T initValue, bool ok, int32_t err)
-{
-  filter->setErrorCondition(0);
-  QString ss;
-  typename DataArray<T>::Pointer var = DataArray<T>::CreateArray(1, "_INTERNAL_USE_ONLY_DO_NOT_USE"); // temporary for use of getTypeAsString()
-  QString strType = var->getTypeAsString();
-
-  if(!ok)
-  {
-    filter->setErrorCondition(err);
-    ss = QObject::tr("The %1 initialization value was invalid. The valid ranges are -%3 to -%2, 0, %2 to %3").arg(strType).arg(std::numeric_limits<T>::min()).arg(std::numeric_limits<T>::max());
-    filter->notifyErrorMessage(filter->getHumanLabel(), ss, filter->getErrorCondition());
-  }
-
-  /* This is special because floats/doubles can not represent numbers very close to Zero (+-). */
-  if (!(((initValue >= static_cast<T>(-1) * std::numeric_limits<T>::max()) && (initValue <= static_cast<T>(-1) * std::numeric_limits<T>::min())) ||
-        (initValue == 0) || ((initValue >= std::numeric_limits<T>::min()) && (initValue <= std::numeric_limits<T>::max()))))
-  {
-    filter->setErrorCondition(err);
-    ss = QObject::tr("The %1 initialization value was invalid. The valid ranges are -%3 to -%2, 0, %2 to %3").arg(strType).arg(std::numeric_limits<T>::min()).arg(std::numeric_limits<T>::max());
-    filter->notifyErrorMessage(filter->getHumanLabel(), ss, filter->getErrorCondition());
-
-  }
-
-  typename DataArray<T>::Pointer array = std::dynamic_pointer_cast<DataArray<T> >(iDataArray);
-  if(NULL != array.get())
-  {
-    array->initializeWithValue(initValue, 0);
-  }
-
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-void CreateDataArray::checkInitialization()
-{
-  setErrorCondition(0);
-  bool ok = false;
-  switch (m_ScalarType) // check user input value to data type
-  {
-    case SIMPL::TypeEnums::Int8:
-    {
-      int val = m_InitializationValue.toInt(&ok);
-      if(val < -128 || val > 127) { ok = false; }
-      checkInitializationInt<int8_t>(this, m_OutputArrayPtr.lock(), static_cast<int8_t>(val), ok, -4050);
-      break;
-    }
-    case SIMPL::TypeEnums::UInt8:
-    {
-      uint32_t val = m_InitializationValue.toUInt(&ok);
-      if( val > 255) { ok = false; }
-      checkInitializationInt<uint8_t>(this, m_OutputArrayPtr.lock(), static_cast<uint8_t>(val), ok, -4051);
-      break;
-    }
-    case SIMPL::TypeEnums::Int16:
-    {
-      int16_t i16 = static_cast<int16_t>(m_InitializationValue.toShort(&ok));
-      checkInitializationInt<int16_t>(this, m_OutputArrayPtr.lock(), i16, ok, -4052);
-      break;
-    }
-    case SIMPL::TypeEnums::UInt16:
-    {
-      uint16_t ui16 = static_cast<uint16_t>(m_InitializationValue.toUShort(&ok));
-      checkInitializationInt<uint16_t>(this, m_OutputArrayPtr.lock(), ui16, ok, -4053);
-      break;
-    }
-    case SIMPL::TypeEnums::Int32:
-    {
-      int32_t i32 = static_cast<int32_t>(m_InitializationValue.toInt(&ok));
-      checkInitializationInt<int32_t>(this, m_OutputArrayPtr.lock(), i32, ok, -4054);
-      break;
-    }
-    case SIMPL::TypeEnums::UInt32:
-    {
-      uint32_t ui32 = static_cast<uint32_t>(m_InitializationValue.toUInt(&ok));
-      checkInitializationInt<uint32_t>(this, m_OutputArrayPtr.lock(), ui32, ok, -4055);
-      break;
-    }
-    case SIMPL::TypeEnums::Int64:
-    {
-      int64_t i64 = static_cast<int64_t>(m_InitializationValue.toLongLong(&ok));
-      checkInitializationInt<int64_t>(this, m_OutputArrayPtr.lock(), i64, ok, -4056);
-      break;
-    }
-    case SIMPL::TypeEnums::UInt64:
-    {
-      uint64_t ui64 = static_cast<uint64_t>(m_InitializationValue.toULongLong(&ok));
-      checkInitializationInt<uint64_t>(this, m_OutputArrayPtr.lock(), ui64, ok, -4057);
-      break;
-    }
-    case SIMPL::TypeEnums::Float:
-    {
-      float f = static_cast<float>(m_InitializationValue.toFloat(&ok));
-      checkInitializationFloatDouble<float>(this, m_OutputArrayPtr.lock(), f, ok, -4058);
-      break;
-    }
-    case SIMPL::TypeEnums::Double:
-    {
-      double d = static_cast<double>(m_InitializationValue.toFloat(&ok));
-      checkInitializationFloatDouble<double>(this, m_OutputArrayPtr.lock(), d, ok, -4059);
-      break;
-    }
-    case SIMPL::TypeEnums::Bool:
-    {
-      int8_t b = static_cast<int8_t>(m_InitializationValue.toInt(&ok));
-      if (b != 0)
-      {
-        m_InitializationValue = 1; // anything that is not a zero is a one
-      }
-      break;
-    }
-    default:
-    {
-      setErrorCondition(-4060);
-      QString ss = QObject::tr("Incorrect data scalar type");
-      break;
-    }
-  }
 }
 
 // -----------------------------------------------------------------------------
@@ -302,6 +180,14 @@ void CreateDataArray::dataCheck()
   setErrorCondition(0);
 
   if (getErrorCondition() < 0) { return; }
+
+  if (m_InitializationType == RandomWithRange && m_InitializationRange.first > m_InitializationRange.second)
+  {
+    QString ss = "Invalid initialization range.  Minimum value is larger than maximum value.";
+    setErrorCondition(-5550);
+    notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
+    return;
+  }
 
   if (getNumberOfComponents() < 0)
   {
@@ -317,12 +203,58 @@ void CreateDataArray::dataCheck()
     notifyWarningMessage(getHumanLabel(), ss, getErrorCondition());
     return;
   }
+
   QVector<size_t> cDims(1, getNumberOfComponents());
 
-  m_OutputArrayPtr = TemplateHelpers::CreateNonPrereqArrayFromTypeEnum()(this, getNewArray(), cDims, getScalarType(), 0.0);
+  // Create the data array and initialize it to a placeholder value
+  m_OutputArrayPtr = TemplateHelpers::CreateNonPrereqArrayFromTypeEnum()(this, getNewArray(), cDims, getScalarType(), 0);
 
-  checkInitialization(); // check the initialization value range for that data type
+  QString dataArrayName = getNewArray().getDataArrayName();
 
+  if (m_ScalarType == Int8Choice)
+  {
+    checkInitialization<int8_t>(dataArrayName); // check the initialization for that data type
+  }
+  else if (m_ScalarType == Int16Choice)
+  {
+    checkInitialization<int16_t>(dataArrayName); // check the initialization for that data type
+  }
+  else if (m_ScalarType == Int32Choice)
+  {
+    checkInitialization<int32_t>(dataArrayName); // check the initialization for that data type
+  }
+  else if (m_ScalarType == Int64Choice)
+  {
+    checkInitialization<int64_t>(dataArrayName); // check the initialization for that data type
+  }
+  else if (m_ScalarType == UInt8Choice)
+  {
+    checkInitialization<uint8_t>(dataArrayName); // check the initialization for that data type
+  }
+  else if (m_ScalarType == UInt16Choice)
+  {
+    checkInitialization<uint16_t>(dataArrayName); // check the initialization for that data type
+  }
+  else if (m_ScalarType == UInt32Choice)
+  {
+    checkInitialization<uint32_t>(dataArrayName); // check the initialization for that data type
+  }
+  else if (m_ScalarType == UInt64Choice)
+  {
+    checkInitialization<uint64_t>(dataArrayName); // check the initialization for that data type
+  }
+  else if (m_ScalarType == FloatChoice)
+  {
+    checkInitialization<float>(dataArrayName); // check the initialization for that data type
+  }
+  else if (m_ScalarType == DoubleChoice)
+  {
+    checkInitialization<double>(dataArrayName); // check the initialization for that data type
+  }
+  else if (m_ScalarType == BoolChoice)
+  {
+    checkInitialization<bool>(dataArrayName); // check the initialization for that data type
+  }
 }
 
 // -----------------------------------------------------------------------------
@@ -348,8 +280,227 @@ void CreateDataArray::execute()
   if(getErrorCondition() < 0)
   { return; }
 
+  if (m_ScalarType == Int8Choice)
+  {
+    initializeArrayWithInts<int8_t>();
+  }
+  else if (m_ScalarType == Int16Choice)
+  {
+    initializeArrayWithInts<int16_t>();
+  }
+  else if (m_ScalarType == Int32Choice)
+  {
+    initializeArrayWithInts<int32_t>();
+  }
+  else if (m_ScalarType == Int64Choice)
+  {
+    initializeArrayWithInts<int64_t>();
+  }
+  else if (m_ScalarType == UInt8Choice)
+  {
+    initializeArrayWithInts<uint8_t>();
+  }
+  else if (m_ScalarType == UInt16Choice)
+  {
+    initializeArrayWithInts<uint16_t>();
+  }
+  else if (m_ScalarType == UInt32Choice)
+  {
+    initializeArrayWithInts<uint32_t>();
+  }
+  else if (m_ScalarType == UInt64Choice)
+  {
+    initializeArrayWithInts<uint64_t>();
+  }
+  else if (m_ScalarType == FloatChoice)
+  {
+    initializeArrayWithReals<float>();
+  }
+  else if (m_ScalarType == DoubleChoice)
+  {
+    initializeArrayWithReals<double>();
+  }
+  else if (m_ScalarType == BoolChoice)
+  {
+    initializeArrayWithInts<bool>();
+  }
+
   /* Let the GUI know we are done with this filter */
   notifyStatusMessage(getHumanLabel(), "Complete");
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+template <typename T>
+void CreateDataArray::initializeArrayWithInts()
+{
+  if (m_InitializationType == Manual)
+  {
+    for (int32_t i = 0; i < m_OutputArrayPtr.lock()->getSize(); i++)
+    {
+      m_OutputArrayPtr.lock()->initializeTuple(i, m_InitializationValue.toDouble());
+    }
+  }
+  else
+  {
+    T rangeMin = m_InitializationRange.first;
+    T rangeMax = m_InitializationRange.second;
+
+    typedef boost::mt19937 RandomNumberGenerator;
+    typedef boost::uniform_int<T> IntDistribution;
+    typedef boost::variate_generator<RandomNumberGenerator&, IntDistribution> IntGenerator;
+
+    std::shared_ptr<IntDistribution> distribution = std::shared_ptr<IntDistribution>(new IntDistribution(rangeMin, rangeMax));
+    std::shared_ptr<RandomNumberGenerator> randomNumberGenerator = std::shared_ptr<RandomNumberGenerator>(new RandomNumberGenerator);
+    randomNumberGenerator->seed(static_cast<size_t>(QDateTime::currentMSecsSinceEpoch())); // seed with the current time
+    std::shared_ptr<IntGenerator> intGeneratorPtr = std::shared_ptr<IntGenerator>(new IntGenerator(*randomNumberGenerator, *distribution));
+    IntGenerator& intGenerator = *intGeneratorPtr;
+
+    for (int32_t i = 0; i < m_OutputArrayPtr.lock()->getSize(); i++)
+    {
+      m_OutputArrayPtr.lock()->initializeTuple(i, intGenerator());
+    }
+  }
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+template <>
+void CreateDataArray::initializeArrayWithInts<bool>()
+{
+  if (m_InitializationType == Manual)
+  {
+    bool result;
+    if (m_InitializationValue.toDouble() == 0)
+    {
+      result = false;
+    }
+    else
+    {
+      result = true;
+    }
+
+    for (int32_t i = 0; i < m_OutputArrayPtr.lock()->getSize(); i++)
+    {
+      m_OutputArrayPtr.lock()->initializeTuple(i, result);
+    }
+  }
+  else
+  {
+    typedef boost::mt19937 RandomNumberGenerator;
+    typedef boost::uniform_int<int8_t> IntDistribution;
+    typedef boost::variate_generator<RandomNumberGenerator&, IntDistribution> IntGenerator;
+
+    std::shared_ptr<IntDistribution> distribution = std::shared_ptr<IntDistribution>(new IntDistribution(0, 1));
+    std::shared_ptr<RandomNumberGenerator> randomNumberGenerator = std::shared_ptr<RandomNumberGenerator>(new RandomNumberGenerator);
+    randomNumberGenerator->seed(static_cast<size_t>(QDateTime::currentMSecsSinceEpoch())); // seed with the current time
+    std::shared_ptr<IntGenerator> intGeneratorPtr = std::shared_ptr<IntGenerator>(new IntGenerator(*randomNumberGenerator, *distribution));
+    IntGenerator& intGenerator = *intGeneratorPtr;
+
+    for (int32_t i = 0; i < m_OutputArrayPtr.lock()->getSize(); i++)
+    {
+      int8_t result = intGenerator();
+      if (result == 0)
+      {
+        m_OutputArrayPtr.lock()->initializeTuple(i, false);
+      }
+      else
+      {
+        m_OutputArrayPtr.lock()->initializeTuple(i, true);
+      }
+    }
+  }
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+template <typename T>
+void CreateDataArray::initializeArrayWithReals()
+{
+  if (m_InitializationType == Manual)
+  {
+    for (int32_t i = 0; i < m_OutputArrayPtr.lock()->getSize(); i++)
+    {
+      m_OutputArrayPtr.lock()->initializeTuple(i, m_InitializationValue.toDouble());
+    }
+  }
+  else
+  {
+    T rangeMin = m_InitializationRange.first;
+    T rangeMax = m_InitializationRange.second;
+
+    typedef boost::mt19937 RandomNumberGenerator;
+    typedef boost::uniform_real<T> RealDistribution;
+    typedef boost::variate_generator<RandomNumberGenerator&, RealDistribution> RealGenerator;
+
+    std::shared_ptr<RealDistribution> distribution = std::shared_ptr<RealDistribution>(new RealDistribution(rangeMin, rangeMax));
+    std::shared_ptr<RandomNumberGenerator> randomNumberGenerator = std::shared_ptr<RandomNumberGenerator>(new RandomNumberGenerator);
+    randomNumberGenerator->seed(static_cast<size_t>(QDateTime::currentMSecsSinceEpoch())); // seed with the current time
+    std::shared_ptr<RealGenerator> realGeneratorPtr = std::shared_ptr<RealGenerator>(new RealGenerator(*randomNumberGenerator, *distribution));
+    RealGenerator& realGenerator = *realGeneratorPtr;
+
+    for (int32_t i = 0; i < m_OutputArrayPtr.lock()->getSize(); i++)
+    {
+      m_OutputArrayPtr.lock()->initializeTuple(i, realGenerator());
+    }
+  }
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+template <typename T>
+void CreateDataArray::checkInitialization(QString dataArrayName)
+{
+  if (m_InitializationType == Manual)
+  {
+    bool ok;
+    double input = m_InitializationValue.toDouble(&ok);
+    if (ok == false)
+    {
+      QString ss = "Could not convert initialization value to a double.";
+      setErrorCondition(-5559);
+      notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
+      return;
+    }
+
+    if (input < static_cast<double>(std::numeric_limits<T>().lowest()) || input > static_cast<double>(std::numeric_limits<T>().max()))
+    {
+      setErrorCondition(-4000);
+      QString ss = QObject::tr("%1: Invalid initialization value. The valid range is %2 to %3").arg(dataArrayName).arg(std::numeric_limits<T>::min()).arg(std::numeric_limits<T>::max());
+      notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
+      return;
+    }
+  }
+  else if (m_InitializationType == RandomWithRange)
+  {
+    double min = m_InitializationRange.first;
+    double max = m_InitializationRange.second;
+    if (min > max)
+    {
+      QString ss = dataArrayName + ": Invalid initialization range.  Minimum value is larger than maximum value.";
+      setErrorCondition(-5550);
+      notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
+      return;
+    }
+    else if (min < static_cast<double>(std::numeric_limits<T>().lowest()) || max > static_cast<double>(std::numeric_limits<T>().max()))
+    {
+      setErrorCondition(-4001);
+      QString ss = QObject::tr("%1: The initialization range can only be from %2 to %3").arg(dataArrayName).arg(std::numeric_limits<T>::min()).arg(std::numeric_limits<T>::max());
+      notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
+      return;
+    }
+    else if (min == max)
+    {
+      setErrorCondition(-4002);
+      QString ss = dataArrayName + ": The initialization range must have differing values";
+      notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
+      return;
+    }
+  }
 }
 
 // -----------------------------------------------------------------------------

@@ -126,6 +126,8 @@ class SIMPLib_EXPORT H5FilterParametersWriter : public AbstractFilterParametersW
 
     virtual int writeValue(const QString name, const DynamicTableData& v);
 
+    virtual int writeValue(const QString name, const QPair<double, double> & v);
+
   protected:
     H5FilterParametersWriter();
 

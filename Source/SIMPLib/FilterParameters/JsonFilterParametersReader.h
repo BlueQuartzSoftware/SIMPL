@@ -175,6 +175,8 @@ class SIMPLib_EXPORT JsonFilterParametersReader : public AbstractFilterParameter
     virtual QVector<DataArrayPath> readDataArrayPathVector(const QString& name, QVector<DataArrayPath> def);
     virtual DynamicTableData readDynamicTableData(const QString& name, DynamicTableData def);
 
+    virtual QPair<double, double> readPairOfDoubles(const QString& name, QPair<double, double> v);
+
   protected:
     JsonFilterParametersReader();
 

@@ -807,3 +807,15 @@ int H5FilterParametersWriter::writeValue(const QString name, const DynamicTableD
   return err;
 }
 
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+int H5FilterParametersWriter::writeValue(const QString name, const QPair<double, double> & v)
+{
+  int err = QH5Lite::writeScalarAttribute(m_CurrentGroupId, name, "Min", v.first);
+  if (err < 0) { return err; }
+  err = QH5Lite::writeScalarAttribute(m_CurrentGroupId, name, "Max", v.second);
+
+  return err;
+}
+

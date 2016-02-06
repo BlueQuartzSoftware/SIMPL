@@ -33,83 +33,45 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-#include "QMetaObjectUtilities.h"
-
-#include <QtCore/QVector>
-#include <QtCore/QDataStream>
-
-#include "SIMPLib/FilterParameters/RangeFilterParameter.h"
-#include "SIMPLib/FilterParameters/IntVec3FilterParameter.h"
-#include "SIMPLib/FilterParameters/FloatVec3FilterParameter.h"
-#include "SIMPLib/FilterParameters/PhaseTypeSelectionFilterParameter.h"
-#include "SIMPLib/FilterParameters/AxisAngleFilterParameter.h"
-#include "SIMPLib/Common/PipelineMessage.h"
-#include "SIMPLib/Common/ComparisonInputs.h"
-#include "SIMPLib/DataContainers/DataArrayPath.h"
-#include "SIMPLib/DataContainers/DataContainerArrayProxy.h"
-
-// These Streams need to be implemented so that our 3 Element Vectors can be read/write to disk/prefs files
-QDataStream& operator<<( QDataStream& out, const IntVec3_t& v)
-{
-  out << v.x << v.y << v.z;
-  return out;
-}
-QDataStream& operator>>( QDataStream& in, IntVec3_t& v)
-{
-  in >> v.x >> v.y >> v.z;
-  return in;
-}
-
-QDataStream& operator<<( QDataStream& out, const FloatVec3_t& v)
-{
-  out << v.x << v.y << v.z;
-  return out;
-}
-QDataStream& operator>>( QDataStream& in, FloatVec3_t& v)
-{
-  in >> v.x >> v.y >> v.z;
-  return in;
-}
-
-QDataStream& operator<<( QDataStream& out, const DataArrayPath& v)
-{
-  out << v.getDataContainerName() << "|" << v.getAttributeMatrixName() << "|" << v.getDataArrayName();
-  return out;
-}
-//QDataStream& operator>>( QDataStream& in, DataArrayPath& v) { in >> v.getDataContainerName() >> "|" >> v.getAttributeMatrixName() >> "|" >> v.getDataArrayName(); return in;}
-
+#include "RangeFilterParameter.h"
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-QMetaObjectUtilities::QMetaObjectUtilities()
+RangeFilterParameter::RangeFilterParameter() :
+FilterParameter()
 {}
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-QMetaObjectUtilities::~QMetaObjectUtilities()
+RangeFilterParameter::~RangeFilterParameter()
 {}
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void QMetaObjectUtilities::RegisterMetaTypes()
+RangeFilterParameter::Pointer RangeFilterParameter::New(const QString& humanLabel, const QString& propertyName,
+  const QPair<double, double>& defaultPair, Category category, int groupIndex)
 {
-  qRegisterMetaType<DataArrayPath>("DataArrayPath");
-  qRegisterMetaType<AxisAngleInput_t>("AxisAngleInput_t");
-  qRegisterMetaType<ComparisonInput_t>("ComparisonInput_t");
-  qRegisterMetaType<ComparisonInputs>("ComparisonInputs");
-  qRegisterMetaType<DataContainerArrayProxy>("DataContainerArrayProxy");
-  qRegisterMetaType<IntVec3_t>("IntVec3_t");
-  qRegisterMetaType<FloatVec3_t>("FloatVec3_t");
-  qRegisterMetaType<PipelineMessage>("PipelineMessage");
-  qRegisterMetaType<UInt32Vector_t>("UInt32Vector_t");
-  qRegisterMetaType<FPRangePair>("FPRangePair");
 
-  qRegisterMetaTypeStreamOperators<IntVec3_t>("IntVec3_t");
-  qRegisterMetaTypeStreamOperators<FloatVec3_t>("FloatVec3_t");
-//  qRegisterMetaTypeStreamOperators<DataArrayPath>("DataArrayPath");
+  RangeFilterParameter::Pointer ptr = RangeFilterParameter::New();
+  ptr->setHumanLabel(humanLabel);
+  ptr->setPropertyName(propertyName);
+  ptr->setDefaultPair(defaultPair);
+  ptr->setCategory(category);
+  ptr->setGroupIndex(groupIndex);
 
+
+  return ptr;
+}
+
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+QString RangeFilterParameter::getWidgetType()
+{
+  return QString("RangeWidget");
 }
 

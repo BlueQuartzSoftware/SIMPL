@@ -142,6 +142,8 @@ class SIMPLib_EXPORT JsonFilterParametersWriter : public AbstractFilterParameter
 
     virtual int writeValue(const QString name, const DynamicTableData& v);
 
+    virtual int writeValue(const QString name, const QPair<double,double> & v);
+
   protected:
     JsonFilterParametersWriter();
 

@@ -133,6 +133,8 @@ class SIMPLib_EXPORT AbstractFilterParametersWriter
 
     virtual int writeValue(const QString name, const DynamicTableData& v) = 0;
 
+    virtual int writeValue(const QString name, const QPair<double, double> & v) = 0;
+
   protected:
     AbstractFilterParametersWriter();
 
