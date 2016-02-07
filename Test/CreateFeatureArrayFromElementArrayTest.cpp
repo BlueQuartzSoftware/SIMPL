@@ -103,28 +103,37 @@ class CreateFeatureArrayFromElementArrayTest
 
           DataArray<int32_t>::Pointer featureIds = DataArray<int32_t>::CreateArray(16, "FeatureIds");
           size_t numTuples = featureIds->getNumberOfTuples();
-          featureIds->initializeTuple(0, 1);
-          featureIds->initializeTuple(1, 1);
-          featureIds->initializeTuple(2, 2);
-          featureIds->initializeTuple(3, 2);
-          featureIds->initializeTuple(4, 1);
-          featureIds->initializeTuple(5, 1);
-          featureIds->initializeTuple(6, 2);
-          featureIds->initializeTuple(7, 2);
-          featureIds->initializeTuple(8, 3);
-          featureIds->initializeTuple(9, 3);
-          featureIds->initializeTuple(10, 4);
-          featureIds->initializeTuple(11, 4);
-          featureIds->initializeTuple(12, 3);
-          featureIds->initializeTuple(13, 3);
-          featureIds->initializeTuple(14, 4);
-          featureIds->initializeTuple(15, 4);
+          int32_t value = 1;
+          featureIds->initializeTuple(0, &value);
+          featureIds->initializeTuple(1, &value);
+          value = 2;
+          featureIds->initializeTuple(2, &value);
+          featureIds->initializeTuple(3, &value);
+          value = 1;
+          featureIds->initializeTuple(4, &value);
+          featureIds->initializeTuple(5, &value);
+          value = 2;
+          featureIds->initializeTuple(6, &value);
+          featureIds->initializeTuple(7, &value);
+          value = 3;
+          featureIds->initializeTuple(8, &value);
+          featureIds->initializeTuple(9, &value);
+          value = 4;
+          featureIds->initializeTuple(10, &value);
+          featureIds->initializeTuple(11, &value);
+          value = 3;
+          featureIds->initializeTuple(12, &value);
+          featureIds->initializeTuple(13, &value);
+          value = 4;
+          featureIds->initializeTuple(14, &value);
+          featureIds->initializeTuple(15, &value);
 
           DataArray<float>::Pointer cellDataArray = DataArray<float>::CreateArray(16, "CellData");
           numTuples = cellDataArray->getNumberOfTuples();
           for (size_t i = 0; i < numTuples; i++)
           {
-            cellDataArray->initializeTuple(i, i + 1);
+            size_t temp = i + 1;
+            cellDataArray->initializeTuple(i, &temp);
           }
 
           cellAttr->addAttributeArray("CellData", cellDataArray);
@@ -184,29 +193,38 @@ class CreateFeatureArrayFromElementArrayTest
 
           DataArray<int32_t>::Pointer featureIds = DataArray<int32_t>::CreateArray(16, "FeatureIds");
           size_t numTuples = featureIds->getNumberOfTuples();
-          featureIds->initializeTuple(0, 1);
-          featureIds->initializeTuple(1, 1);
-          featureIds->initializeTuple(2, 2);
-          featureIds->initializeTuple(3, 2);
-          featureIds->initializeTuple(4, 1);
-          featureIds->initializeTuple(5, 1);
-          featureIds->initializeTuple(6, 2);
-          featureIds->initializeTuple(7, 2);
-          featureIds->initializeTuple(8, 3);
-          featureIds->initializeTuple(9, 3);
-          featureIds->initializeTuple(10, 4);
-          featureIds->initializeTuple(11, 4);
-          featureIds->initializeTuple(12, 3);
-          featureIds->initializeTuple(13, 3);
-          featureIds->initializeTuple(14, 4);
-          featureIds->initializeTuple(15, 4);
+          int32_t value = 1;
+          featureIds->initializeTuple(0, &value);
+          featureIds->initializeTuple(1, &value);
+          value = 2;
+          featureIds->initializeTuple(2, &value);
+          featureIds->initializeTuple(3, &value);
+          value = 1;
+          featureIds->initializeTuple(4, &value);
+          featureIds->initializeTuple(5, &value);
+          value = 2;
+          featureIds->initializeTuple(6, &value);
+          featureIds->initializeTuple(7, &value);
+          value = 3;
+          featureIds->initializeTuple(8, &value);
+          featureIds->initializeTuple(9, &value);
+          value = 4;
+          featureIds->initializeTuple(10, &value);
+          featureIds->initializeTuple(11, &value);
+          value = 3;
+          featureIds->initializeTuple(12, &value);
+          featureIds->initializeTuple(13, &value);
+          value = 4;
+          featureIds->initializeTuple(14, &value);
+          featureIds->initializeTuple(15, &value);
 
           QVector<size_t> cDims = QVector<size_t>(1, 3);
           DataArray<float>::Pointer cellDataArray = DataArray<float>::CreateArray(16, cDims, "CellData");
           numTuples = cellDataArray->getNumberOfTuples();
           for (size_t i = 0; i < numTuples; i++)
           {
-            cellDataArray->initializeTuple(i, i + 1);
+            size_t temp = i + 1;
+            cellDataArray->initializeTuple(i, &temp);
           }
 
           cellAttr->addAttributeArray("CellData", cellDataArray);
@@ -265,22 +283,30 @@ class CreateFeatureArrayFromElementArrayTest
           AttributeMatrix::Pointer featureAttr = AttributeMatrix::New(QVector<size_t>(1, 5), "Feature Attribute Matrix", SIMPL::AttributeMatrixType::Cell);
 
           DataArray<int32_t>::Pointer featureIds = DataArray<int32_t>::CreateArray(16, "FeatureIds");
-          featureIds->initializeTuple(0, 1);
-          featureIds->initializeTuple(1, 1);
-          featureIds->initializeTuple(2, 2);
-          featureIds->initializeTuple(3, 2);
-          featureIds->initializeTuple(4, 1);
-          featureIds->initializeTuple(5, 1);
-          featureIds->initializeTuple(6, 2);
-          featureIds->initializeTuple(7, 2);
-          featureIds->initializeTuple(8, 3);
-          featureIds->initializeTuple(9, 3);
-          featureIds->initializeTuple(10, 4);
-          featureIds->initializeTuple(11, 4);
-          featureIds->initializeTuple(12, 3);
-          featureIds->initializeTuple(13, 3);
-          featureIds->initializeTuple(14, 4);
-          featureIds->initializeTuple(15, 4);
+          int32_t value = 1;
+          featureIds->initializeTuple(0, &value);
+          featureIds->initializeTuple(1, &value);
+          value = 2;
+          featureIds->initializeTuple(2, &value);
+          featureIds->initializeTuple(3, &value);
+          value = 1;
+          featureIds->initializeTuple(4, &value);
+          featureIds->initializeTuple(5, &value);
+          value = 2;
+          featureIds->initializeTuple(6, &value);
+          featureIds->initializeTuple(7, &value);
+          value = 3;
+          featureIds->initializeTuple(8, &value);
+          featureIds->initializeTuple(9, &value);
+          value = 4;
+          featureIds->initializeTuple(10, &value);
+          featureIds->initializeTuple(11, &value);
+          value = 3;
+          featureIds->initializeTuple(12, &value);
+          featureIds->initializeTuple(13, &value);
+          value = 4;
+          featureIds->initializeTuple(14, &value);
+          featureIds->initializeTuple(15, &value);
 
           cellAttr->addAttributeArray("FeatureIds", featureIds);
           dc->addAttributeMatrix("Cell Attribute Matrix", cellAttr);

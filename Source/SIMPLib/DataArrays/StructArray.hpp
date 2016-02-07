@@ -547,7 +547,7 @@ class StructArray : public IDataArray
      * @param i The index of the Tuple
      * @param c The value to splat across all components in the tuple
      */
-    void initializeTuple(size_t i, double p)
+    void initializeTuple(size_t i, void* p)
     {
 #ifndef NDEBUG
       if (m_Size > 0) { Q_ASSERT(i < m_Size);}

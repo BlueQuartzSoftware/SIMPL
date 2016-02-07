@@ -48,6 +48,7 @@
 #include "SIMPLib/Utilities/UnitTestSupport.hpp"
 #include "SIMPLib/Utilities/QMetaObjectUtilities.h"
 #include "SIMPLib/DataContainers/DataContainer.h"
+#include "SIMPLib/CoreFilters/CreateDataArray.h"
 
 #include "SIMPLTestFileLocations.h"
 
@@ -191,8 +192,12 @@ class CreateDataArrayTest
     //
     // -----------------------------------------------------------------------------
     template<typename T>
-    void TestScalarType(AbstractFilter::Pointer filter, DataArrayPath path, int scalarType)
+    void TestScalarType(AbstractFilter::Pointer filter, CreateDataArray::ScalarTypeChoices scalarType)
     {
+
+      QString dsName = QString("TestArray-%1").arg(scalarType);
+      DataArrayPath path = DataArrayPath(SIMPL::Defaults::DataContainerName, SIMPL::Defaults::AttributeMatrixName, dsName);
+
 
       DataContainerArray::Pointer dca = CreateDataContainerArray();
       filter->setDataContainerArray(dca);
@@ -214,13 +219,13 @@ class CreateDataArrayTest
       propWasSet = filter->setProperty("NewArray", var); // array path
       DREAM3D_REQUIRE_EQUAL(propWasSet, true)
 
-          /* ==== Test The Maximum Value for the primitive type ===== */
-          T max = std::numeric_limits<T>::max();
+      /* ==== Test The Maximum Value for the primitive type ===== */
+      T max = std::numeric_limits<T>::max();
       var.setValue(QString::number(max));
       propWasSet = filter->setProperty("InitializationValue", var); // initialize with
-      DREAM3D_REQUIRE_EQUAL(propWasSet, true)
+      DREAM3D_REQUIRE_EQUAL(propWasSet, true);
 
-          filter->preflight();
+      filter->preflight();
       err = filter->getErrorCondition();
       DREAM3D_REQUIRE_EQUAL(err, NO_ERROR);
 
@@ -289,19 +294,19 @@ class CreateDataArrayTest
         // If we get this far, the Factory is good so creating the filter should not fail unless something has
         // horribly gone wrong in which case the system is going to come down quickly after this.
         AbstractFilter::Pointer filter = filterFactory->create();
-        DataArrayPath path = DataArrayPath(SIMPL::Defaults::DataContainerName, SIMPL::Defaults::AttributeMatrixName, "testArray");
-        DataArrayPath path1 = DataArrayPath(SIMPL::Defaults::DataContainerName, SIMPL::Defaults::AttributeMatrixName, "testArray");
+       // DataArrayPath path1 = DataArrayPath(SIMPL::Defaults::DataContainerName, SIMPL::Defaults::AttributeMatrixName, "testArray");
 
-        TestScalarType<int8_t>(filter, path, 0);
-        TestScalarType<uint8_t>(filter, path, 1);
-        TestScalarType<int16_t>(filter, path, 2);
-        TestScalarType<uint16_t>(filter, path, 3);
-        TestScalarType<int32_t>(filter, path, 4);
-        TestScalarType<uint32_t>(filter, path, 5);
-        TestScalarType<int64_t>(filter, path, 6);
-        TestScalarType<uint64_t>(filter, path, 7);
-        //    TestScalarType<float>(filter, path, 8);
-        //    TestScalarType<double>(filter, path, path1, 9);
+        TestScalarType<uint64_t>(filter, CreateDataArray::UInt64Choice);
+        TestScalarType<int8_t>(filter, CreateDataArray::Int8Choice);
+        TestScalarType<uint8_t>(filter, CreateDataArray::UInt8Choice);
+        TestScalarType<int16_t>(filter, CreateDataArray::Int16Choice);
+        TestScalarType<uint16_t>(filter, CreateDataArray::UInt16Choice);
+        TestScalarType<int32_t>(filter, CreateDataArray::Int32Choice);
+        TestScalarType<uint32_t>(filter, CreateDataArray::UInt32Choice);
+        TestScalarType<int64_t>(filter, CreateDataArray::Int64Choice);
+
+        //    TestScalarType<float>(filter, 8);
+        //    TestScalarType<double>(filter, path1, 9);
 
 #if 0
         // Test 2 set a bool array with a non-zero value and compare to 1

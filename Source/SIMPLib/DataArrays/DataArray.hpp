@@ -886,16 +886,16 @@ class DataArray : public IDataArray
      * @param i The index of the Tuple
      * @param c The value to splat across all components in the tuple
      */
-    void initializeTuple(size_t i, double p)
+    void initializeTuple(size_t i, void* p)
     {
       if(!m_IsAllocated) { return; }
 #ifndef NDEBUG
       if (m_Size > 0) { Q_ASSERT(i * m_NumComponents < m_Size);}
 #endif
-      T c = static_cast<T>(p);
+      T* c = reinterpret_cast<T*>(p);
       for (size_t j = 0; j < m_NumComponents; ++j)
       {
-        m_Array[i * m_NumComponents + j] = c;
+        m_Array[i * m_NumComponents + j] = *c;
       }
     }
 

@@ -390,9 +390,9 @@ class StringDataArray : public IDataArray
      * @param pos The index of the Tuple
      * @param value pointer to value
      */
-    virtual void initializeTuple(size_t pos, double value)
+    virtual void initializeTuple(size_t pos, void* value)
     {
-
+      m_Array[pos] = *(reinterpret_cast<QString*>(value));
     }
 
     /**

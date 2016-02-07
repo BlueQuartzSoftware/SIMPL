@@ -475,8 +475,8 @@ class DataArrayTest
         //    DREAM3D_REQUIRE_EQUAL(NUM_TUPLES_4, int32Array->getNumberOfTuples());
         //    DREAM3D_REQUIRE_EQUAL(NUM_ELEMENTS_4, int32Array->getSize());
 
-        double temp = 9999;
-        int32Array->initializeTuple(0, temp );
+        int temp = 9999;
+        int32Array->initializeTuple(0, &temp );
         for (int c = 0; c < NUM_COMPONENTS; ++c)
         {
           DREAM3D_REQUIRE_EQUAL( (int32Array->getComponent(0, c)), (9999))
@@ -696,7 +696,8 @@ class DataArrayTest
       array->initializeWithZeros();
       for(size_t t = 0; t < numTuples; t++)
       {
-        array->initializeTuple(t, 6.0);
+        T temp = 6.0;
+        array->initializeTuple(t, &temp);
         for(int j = 0; j < numComp; j++)
         {
           T val = array->getComponent(t, j);

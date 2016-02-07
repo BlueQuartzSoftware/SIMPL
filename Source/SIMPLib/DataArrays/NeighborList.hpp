@@ -436,8 +436,10 @@ class NeighborList : public IDataArray
      * @param i The index of the Tuple
      * @param c The value to splat across all components in the tuple
      */
-    void initializeTuple(size_t i, double p)
+    void initializeTuple(size_t i, void* p)
     {
+      Q_UNUSED(i);
+      Q_UNUSED(p);
       Q_ASSERT(false);
     }
 

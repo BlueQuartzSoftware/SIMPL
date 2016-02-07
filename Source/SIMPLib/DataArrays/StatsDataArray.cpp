@@ -363,7 +363,7 @@ bool StatsDataArray::copyData(size_t destTupleOffset, IDataArray::Pointer source
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void StatsDataArray::initializeTuple(size_t i, double p)
+void StatsDataArray::initializeTuple(size_t i, void* p)
 {
   Q_ASSERT(false);
 }

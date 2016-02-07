@@ -181,7 +181,7 @@ class SIMPLib_EXPORT IDataArray
      * @param pos The index of the Tuple
      * @param value pointer to value
      */
-    virtual void initializeTuple(size_t pos, double value) = 0;
+    virtual void initializeTuple(size_t pos, void* value) = 0;
 
     /**
      * @brief Sets all the values to zero.

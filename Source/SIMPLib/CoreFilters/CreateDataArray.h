@@ -55,20 +55,41 @@ class SIMPLib_EXPORT CreateDataArray : public AbstractFilter
 
     virtual ~CreateDataArray();
 
+    enum InitializationChoices
+    {
+      Manual,
+      RandomWithRange
+    };
+
+    enum ScalarTypeChoices
+    {
+      Int8Choice = 0,
+      UInt8Choice,
+      Int16Choice,
+      UInt16Choice,
+      Int32Choice,
+      UInt32Choice,
+      Int64Choice,
+      UInt64Choice,
+      FloatChoice,
+      DoubleChoice,
+      BoolChoice
+    };
+
     SIMPL_FILTER_PARAMETER(int, ScalarType)
-      Q_PROPERTY(int ScalarType READ getScalarType WRITE setScalarType)
+    Q_PROPERTY(int ScalarType READ getScalarType WRITE setScalarType)
 
-      SIMPL_FILTER_PARAMETER(int, NumberOfComponents)
-      Q_PROPERTY(int NumberOfComponents READ getNumberOfComponents WRITE setNumberOfComponents)
+    SIMPL_FILTER_PARAMETER(int, NumberOfComponents)
+    Q_PROPERTY(int NumberOfComponents READ getNumberOfComponents WRITE setNumberOfComponents)
 
-      SIMPL_FILTER_PARAMETER(DataArrayPath, NewArray)
-      Q_PROPERTY(DataArrayPath NewArray READ getNewArray WRITE setNewArray)
+    SIMPL_FILTER_PARAMETER(DataArrayPath, NewArray)
+    Q_PROPERTY(DataArrayPath NewArray READ getNewArray WRITE setNewArray)
 
-      SIMPL_FILTER_PARAMETER(int, InitializationType)
-      Q_PROPERTY(int InitializationType READ getInitializationType WRITE setInitializationType)
+    SIMPL_FILTER_PARAMETER(int, InitializationType)
+    Q_PROPERTY(int InitializationType READ getInitializationType WRITE setInitializationType)
 
-      SIMPL_FILTER_PARAMETER(QString, InitializationValue)
-      Q_PROPERTY(QString InitializationValue READ getInitializationValue WRITE setInitializationValue)
+    SIMPL_FILTER_PARAMETER(QString, InitializationValue)
+    Q_PROPERTY(QString InitializationValue READ getInitializationValue WRITE setInitializationValue)
 
     SIMPL_FILTER_PARAMETER(FPRangePair, InitializationRange)
     Q_PROPERTY(FPRangePair InitializationRange READ getInitializationRange WRITE setInitializationRange)
@@ -171,27 +192,6 @@ class SIMPLib_EXPORT CreateDataArray : public AbstractFilter
   private:
     DEFINE_IDATAARRAY_VARIABLE(OutputArray)
 
-    enum InitializationChoices
-    {
-      Manual,
-      RandomWithRange
-    };
-
-    enum ScalarTypeChoices
-    {
-      Int8Choice,
-      UInt8Choice,
-      Int16Choice,
-      UInt16Choice,
-      Int32Choice,
-      UInt32Choice,
-      Int64Choice,
-      UInt64Choice,
-      FloatChoice,
-      DoubleChoice,
-      BoolChoice
-    };
-
     /**
     * @brief initializeArrayWithInts Initializes the array p with integers, either from the
     * manual value entered in the filter, or with a random number.  This function does not
@@ -240,5 +240,7 @@ class SIMPLib_EXPORT CreateDataArray : public AbstractFilter
 
 template <>
 void CreateDataArray::initializeArrayWithInts<bool>();
+
+Q_DECLARE_METATYPE(CreateDataArray::ScalarTypeChoices)
 
 #endif /* _CreateDataArray_H_ */

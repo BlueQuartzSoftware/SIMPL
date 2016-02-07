@@ -337,15 +337,53 @@ void CreateDataArray::initializeArrayWithInts()
 {
   if (m_InitializationType == Manual)
   {
-    for (int32_t i = 0; i < m_OutputArrayPtr.lock()->getSize(); i++)
+
+    qint8 i8 = static_cast<qint8>(m_InitializationValue.toInt());
+    quint8 ui8 = static_cast<quint8>(m_InitializationValue.toUInt());
+    qint16 i16 = static_cast<qint16>(m_InitializationValue.toShort());
+    quint16 ui16 = static_cast<qint16>(m_InitializationValue.toUShort());
+    qint32 i32 = static_cast<qint32>(m_InitializationValue.toInt());
+    quint32 ui32 = static_cast<quint32>(m_InitializationValue.toUInt());
+    qint64 i64 = static_cast<qint64>(m_InitializationValue.toLongLong());
+    quint64 iu64 = static_cast<quint64>(m_InitializationValue.toULongLong());
+
+    for (size_t i = 0; i < m_OutputArrayPtr.lock()->getNumberOfTuples(); i++)
     {
-      m_OutputArrayPtr.lock()->initializeTuple(i, m_InitializationValue.toDouble());
+      switch (m_ScalarType) {
+        case Int8Choice:
+          m_OutputArrayPtr.lock()->initializeTuple(i, &i8);
+          break;
+        case UInt8Choice:
+          m_OutputArrayPtr.lock()->initializeTuple(i, &ui8);
+          break;
+        case Int16Choice:
+          m_OutputArrayPtr.lock()->initializeTuple(i, &i16);
+          break;
+        case UInt16Choice:
+          m_OutputArrayPtr.lock()->initializeTuple(i, &ui16);
+          break;
+        case Int32Choice:
+          m_OutputArrayPtr.lock()->initializeTuple(i, &i32);
+          break;
+        case UInt32Choice:
+          m_OutputArrayPtr.lock()->initializeTuple(i, &ui32);
+          break;
+        case Int64Choice:
+          m_OutputArrayPtr.lock()->initializeTuple(i, &i64);
+          break;
+        case UInt64Choice:
+          m_OutputArrayPtr.lock()->initializeTuple(i, &iu64);
+          break;
+        default:
+          Q_ASSERT_X(false, __FILE__, "Incorrent use of CreateDataArray::initializeArrayWithInts when using a non-integer type");
+          break;
+      }
     }
   }
   else
   {
-    T rangeMin = m_InitializationRange.first;
-    T rangeMax = m_InitializationRange.second;
+    T rangeMin = static_cast<T>(m_InitializationRange.first);
+    T rangeMax = static_cast<T>(m_InitializationRange.second);
 
     typedef boost::mt19937 RandomNumberGenerator;
     typedef boost::uniform_int<T> IntDistribution;
@@ -357,9 +395,10 @@ void CreateDataArray::initializeArrayWithInts()
     std::shared_ptr<IntGenerator> intGeneratorPtr = std::shared_ptr<IntGenerator>(new IntGenerator(*randomNumberGenerator, *distribution));
     IntGenerator& intGenerator = *intGeneratorPtr;
 
-    for (int32_t i = 0; i < m_OutputArrayPtr.lock()->getSize(); i++)
+    for (size_t i = 0; i < m_OutputArrayPtr.lock()->getSize(); i++)
     {
-      m_OutputArrayPtr.lock()->initializeTuple(i, intGenerator());
+      T value = intGenerator();
+      m_OutputArrayPtr.lock()->initializeTuple(i, &value);
     }
   }
 }
@@ -373,7 +412,7 @@ void CreateDataArray::initializeArrayWithInts<bool>()
   if (m_InitializationType == Manual)
   {
     bool result;
-    if (m_InitializationValue.toDouble() == 0)
+    if (m_InitializationValue.toInt() == 0)
     {
       result = false;
     }
@@ -382,9 +421,9 @@ void CreateDataArray::initializeArrayWithInts<bool>()
       result = true;
     }
 
-    for (int32_t i = 0; i < m_OutputArrayPtr.lock()->getSize(); i++)
+    for (size_t i = 0; i < m_OutputArrayPtr.lock()->getSize(); i++)
     {
-      m_OutputArrayPtr.lock()->initializeTuple(i, result);
+      m_OutputArrayPtr.lock()->initializeTuple(i, &result);
     }
   }
   else
@@ -399,16 +438,17 @@ void CreateDataArray::initializeArrayWithInts<bool>()
     std::shared_ptr<IntGenerator> intGeneratorPtr = std::shared_ptr<IntGenerator>(new IntGenerator(*randomNumberGenerator, *distribution));
     IntGenerator& intGenerator = *intGeneratorPtr;
 
-    for (int32_t i = 0; i < m_OutputArrayPtr.lock()->getSize(); i++)
+    for (size_t i = 0; i < m_OutputArrayPtr.lock()->getSize(); i++)
     {
       int8_t result = intGenerator();
       if (result == 0)
       {
-        m_OutputArrayPtr.lock()->initializeTuple(i, false);
+        m_OutputArrayPtr.lock()->initializeTuple(i, &result);
       }
       else
       {
-        m_OutputArrayPtr.lock()->initializeTuple(i, true);
+        result = 1;
+        m_OutputArrayPtr.lock()->initializeTuple(i, &result);
       }
     }
   }
@@ -422,15 +462,16 @@ void CreateDataArray::initializeArrayWithReals()
 {
   if (m_InitializationType == Manual)
   {
-    for (int32_t i = 0; i < m_OutputArrayPtr.lock()->getSize(); i++)
+    double value = m_InitializationValue.toDouble();
+    for (size_t i = 0; i < m_OutputArrayPtr.lock()->getSize(); i++)
     {
-      m_OutputArrayPtr.lock()->initializeTuple(i, m_InitializationValue.toDouble());
+      m_OutputArrayPtr.lock()->initializeTuple(i, &value);
     }
   }
   else
   {
-    T rangeMin = m_InitializationRange.first;
-    T rangeMax = m_InitializationRange.second;
+    T rangeMin = static_cast<T>(m_InitializationRange.first);
+    T rangeMax = static_cast<T>(m_InitializationRange.second);
 
     typedef boost::mt19937 RandomNumberGenerator;
     typedef boost::uniform_real<T> RealDistribution;
@@ -442,9 +483,10 @@ void CreateDataArray::initializeArrayWithReals()
     std::shared_ptr<RealGenerator> realGeneratorPtr = std::shared_ptr<RealGenerator>(new RealGenerator(*randomNumberGenerator, *distribution));
     RealGenerator& realGenerator = *realGeneratorPtr;
 
-    for (int32_t i = 0; i < m_OutputArrayPtr.lock()->getSize(); i++)
+    for (size_t i = 0; i < m_OutputArrayPtr.lock()->getSize(); i++)
     {
-      m_OutputArrayPtr.lock()->initializeTuple(i, realGenerator());
+      double value = realGenerator();
+      m_OutputArrayPtr.lock()->initializeTuple(i, &value);
     }
   }
 }

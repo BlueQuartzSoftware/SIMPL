@@ -47,6 +47,7 @@
 #include "SIMPLib/Common/ComparisonInputs.h"
 #include "SIMPLib/DataContainers/DataArrayPath.h"
 #include "SIMPLib/DataContainers/DataContainerArrayProxy.h"
+#include "SIMPLib/CoreFilters/CreateDataArray.h"
 
 // These Streams need to be implemented so that our 3 Element Vectors can be read/write to disk/prefs files
 QDataStream& operator<<( QDataStream& out, const IntVec3_t& v)
@@ -106,9 +107,12 @@ void QMetaObjectUtilities::RegisterMetaTypes()
   qRegisterMetaType<PipelineMessage>("PipelineMessage");
   qRegisterMetaType<UInt32Vector_t>("UInt32Vector_t");
   qRegisterMetaType<FPRangePair>("FPRangePair");
+  qRegisterMetaType<CreateDataArray::ScalarTypeChoices>("ScalarTypeChoices");
+
 
   qRegisterMetaTypeStreamOperators<IntVec3_t>("IntVec3_t");
   qRegisterMetaTypeStreamOperators<FloatVec3_t>("FloatVec3_t");
+
 //  qRegisterMetaTypeStreamOperators<DataArrayPath>("DataArrayPath");
 
 }
