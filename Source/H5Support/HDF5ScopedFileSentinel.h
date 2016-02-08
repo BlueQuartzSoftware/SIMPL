@@ -33,10 +33,8 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-#ifndef _HDF5ScopedFileSentineal_H_
-#define _HDF5ScopedFileSentineal_H_
-
-
+#ifndef _HDF5ScopedFileSentinel_H_
+#define _HDF5ScopedFileSentinel_H_
 
 
 #include "H5Support/H5Utilities.h"
@@ -102,5 +100,5 @@ class H5Support_EXPORT HDF5ScopedObjectSentinel
 
 
 
-#endif /* _HDF5ScopedFileSentineal_H_ */
+#endif /* _HDF5ScopedFileSentinel_H_ */
 
