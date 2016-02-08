@@ -892,6 +892,7 @@ class DataArray : public IDataArray
 #ifndef NDEBUG
       if (m_Size > 0) { Q_ASSERT(i * m_NumComponents < m_Size);}
 #endif
+      if(nullptr == p) { return; }
       T* c = reinterpret_cast<T*>(p);
       for (size_t j = 0; j < m_NumComponents; ++j)
       {
