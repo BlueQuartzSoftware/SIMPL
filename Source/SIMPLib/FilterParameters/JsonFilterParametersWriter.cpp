@@ -50,6 +50,7 @@
 //
 // -----------------------------------------------------------------------------
 JsonFilterParametersWriter::JsonFilterParametersWriter() :
+  m_MaxFilterIndex(-1),
   m_CurrentIndex(0)
 {
 
@@ -59,6 +60,7 @@ JsonFilterParametersWriter::JsonFilterParametersWriter() :
 //
 // -----------------------------------------------------------------------------
 JsonFilterParametersWriter::JsonFilterParametersWriter(QString& fileName, QString& pipelineName, int& numFilters) :
+  m_MaxFilterIndex(-1),
   m_CurrentIndex(0)
 {
   m_FileName = fileName;
@@ -142,6 +144,7 @@ JsonFilterParametersWriter::Pointer JsonFilterParametersWriter::CreateAndPopulat
   writer->setPipelineName(info.completeBaseName());
 
   FilterPipeline::FilterContainerType& filters = pipeline->getFilterContainer();
+  writer->setMaxFilterIndex(filters.size());
 
   // Loop over each filter and write it's input parameters to the file
   int count = filters.size();
@@ -198,7 +201,7 @@ QJsonDocument JsonFilterParametersWriter::toDocument()
 int JsonFilterParametersWriter::openFilterGroup(AbstractFilter* filter, int index)
 {
   m_CurrentIndex = index;
-  QString numStr = QString::number(m_CurrentIndex);
+  QString numStr = generateIndexString(m_CurrentIndex);
 
   if (m_Root.contains(numStr))
   {
@@ -222,12 +225,35 @@ int JsonFilterParametersWriter::openFilterGroup(AbstractFilter* filter, int inde
 // -----------------------------------------------------------------------------
 int JsonFilterParametersWriter::closeFilterGroup()
 {
-  QString numStr = QString::number(m_CurrentIndex);
+  QString numStr = generateIndexString(m_CurrentIndex);
   m_Root[numStr] = m_CurrentFilterIndex;
-
   return 0;
 }
 
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+QString JsonFilterParametersWriter::generateIndexString(int currentIndex)
+{
+  Q_UNUSED(currentIndex);
+  QString numStr = QString::number(m_CurrentIndex);
+
+  if(m_MaxFilterIndex > 10)
+  {
+    int mag = 0;
+    int max = m_MaxFilterIndex;
+    while(max > 0) {
+      mag++;
+      max = max / 10;
+    }
+    numStr = ""; // Clear the string
+    QTextStream ss(&numStr); // Create a QTextStream to set up the padding
+    ss.setFieldWidth(mag);
+    ss.setPadChar('0');
+    ss << m_CurrentIndex;
+  }
+  return numStr;
+}
 
 // -----------------------------------------------------------------------------
 //

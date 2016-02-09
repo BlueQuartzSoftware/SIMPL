@@ -41,6 +41,7 @@
 
 #include "SIMPLib/SIMPLib.h"
 #include "SIMPLib/Common/SIMPLibSetGetMacros.h"
+#include "SIMPLib/Common/SIMPLibSetGetMacros.h"
 #include "SIMPLib/Common/AbstractFilter.h"
 #include "SIMPLib/Common/FilterPipeline.h"
 #include "SIMPLib/FilterParameters/FilterParameter.h"
@@ -144,6 +145,8 @@ class SIMPLib_EXPORT JsonFilterParametersWriter : public AbstractFilterParameter
 
     virtual int writeValue(const QString name, const QPair<double,double> & v);
 
+    SIMPL_INSTANCE_PROPERTY(int, MaxFilterIndex)
+
   protected:
     JsonFilterParametersWriter();
 
@@ -154,6 +157,14 @@ class SIMPLib_EXPORT JsonFilterParametersWriter : public AbstractFilterParameter
 
     static JsonFilterParametersWriter::Pointer CreateAndPopulateWriter(FilterPipeline::Pointer pipeline, QString pipelineName, IObserver* obs);
     QJsonDocument toDocument();
+
+    /**
+     * @brief generateIndexString Generates a possibly padded string that represents
+     * the current filter index. Used during the JSON document creation.
+     * @param currentIndex The numerical index that the string should be generated for.
+     * @return
+     */
+    QString generateIndexString(int currentIndex);
 
     JsonFilterParametersWriter(const JsonFilterParametersWriter&); // Copy Constructor Not Implemented
     void operator=(const JsonFilterParametersWriter&); // Operator '=' Not Implemented
