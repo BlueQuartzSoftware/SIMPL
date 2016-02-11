@@ -97,7 +97,7 @@ macro(ADD_SIMPL_FILTER FilterLib WidgetLib filterGroup filterName filterDocPath 
                   ${_moc_filter_source}
                   )
   #--- Organize inside the Visual Studio/Xcode Projects
-  cmp_IDE_SOURCE_PROPERTIES( "${FilterLib}/${filterGroup}" "${${FilterLib}_SOURCE_DIR}/${filterGroup}/${filterName}.h" "${${FilterLib}_SOURCE_DIR}/${filterGroup}/${filterName}.cpp" ${PROJECT_INSTALL_HEADERS})
+  cmp_IDE_SOURCE_PROPERTIES( "${filterGroup}" "${${FilterLib}_SOURCE_DIR}/${filterGroup}/${filterName}.h" "${${FilterLib}_SOURCE_DIR}/${filterGroup}/${filterName}.cpp" ${PROJECT_INSTALL_HEADERS})
   cmp_IDE_GENERATED_PROPERTIES ( "Generated/${FilterLib}/${filterGroup}" "" "${_moc_filter_source}" "0")
 
   #-- Create an Install Rule for the headers
