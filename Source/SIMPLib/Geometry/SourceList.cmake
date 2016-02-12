@@ -32,8 +32,10 @@
 #    United States Prime Contract Navy N00173-07-C-2068
 #
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
+set(SUBDIR_NAME Geometry)
 
-set(SIMPLib_Geometry_HDRS
+
+set(SIMPLib_${SUBDIR_NAME}_HDRS
   ${SIMPLib_SOURCE_DIR}/Geometry/IGeometry.h
   ${SIMPLib_SOURCE_DIR}/Geometry/IGeometry2D.h
   ${SIMPLib_SOURCE_DIR}/Geometry/IGeometry3D.h
@@ -55,7 +57,7 @@ set(SIMPLib_Geometry_HDRS
   ${SIMPLib_SOURCE_DIR}/Geometry/ShapeOps/SuperEllipsoidOps.h
 )
 
-set(SIMPLib_Geometry_SRCS
+set(SIMPLib_${SUBDIR_NAME}_SRCS
   ${SIMPLib_SOURCE_DIR}/Geometry/IGeometry.cpp
   ${SIMPLib_SOURCE_DIR}/Geometry/IGeometry2D.cpp
   ${SIMPLib_SOURCE_DIR}/Geometry/IGeometry3D.cpp
@@ -75,7 +77,8 @@ set(SIMPLib_Geometry_SRCS
   ${SIMPLib_SOURCE_DIR}/Geometry/ShapeOps/SuperEllipsoidOps.cpp
 )
 
-cmp_IDE_SOURCE_PROPERTIES( "SIMPLib/Geometry" "${SIMPLib_Geometry_HDRS}" "${SIMPLib_Geometry_SRCS}" "${PROJECT_INSTALL_HEADERS}")
+cmp_IDE_SOURCE_PROPERTIES( "${SUBDIR_NAME}" "${SIMPLib_${SUBDIR_NAME}_HDRS};${SIMPLib_${SUBDIR_NAME}_Moc_HDRS}" "${SIMPLib_${SUBDIR_NAME}_SRCS}" "${PROJECT_INSTALL_HEADERS}")
+cmp_IDE_SOURCE_PROPERTIES( "Generated/${SUBDIR_NAME}" "" "${SIMPLib_${SUBDIR_NAME}_Generated_MOC_SRCS}" "0")
 
 set(SIMPLib_Geometry_HDRS
   ${SIMPLib_Geometry_HDRS}

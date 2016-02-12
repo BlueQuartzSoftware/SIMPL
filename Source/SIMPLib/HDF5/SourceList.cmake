@@ -32,8 +32,9 @@
 #    United States Prime Contract Navy N00173-07-C-2068
 #
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
+set(SUBDIR_NAME HDF5)
 
-set(SIMPLib_HDF5_HDRS
+set(SIMPLib_${SUBDIR_NAME}_HDRS
   ${SIMPLib_SOURCE_DIR}/HDF5/H5BoundaryStatsDataDelegate.h
   ${SIMPLib_SOURCE_DIR}/HDF5/H5DataArrayReader.h
   ${SIMPLib_SOURCE_DIR}/HDF5/H5DataArrayWriter.hpp
@@ -47,7 +48,7 @@ set(SIMPLib_HDF5_HDRS
 
 )
 
-set(SIMPLib_HDF5_SRCS
+set(SIMPLib_${SUBDIR_NAME}_SRCS
   ${SIMPLib_SOURCE_DIR}/HDF5/H5BoundaryStatsDataDelegate.cpp
   ${SIMPLib_SOURCE_DIR}/HDF5/H5DataArrayReader.cpp
   ${SIMPLib_SOURCE_DIR}/HDF5/H5MatrixStatsDataDelegate.cpp
@@ -58,5 +59,6 @@ set(SIMPLib_HDF5_SRCS
 
 )
 
-cmp_IDE_SOURCE_PROPERTIES( "SIMPLib/HDF5" "${SIMPLib_HDF5_HDRS}" "${SIMPLib_HDF5_SRCS}" "${PROJECT_INSTALL_HEADERS}")
+cmp_IDE_SOURCE_PROPERTIES( "${SUBDIR_NAME}" "${SIMPLib_${SUBDIR_NAME}_HDRS};${SIMPLib_${SUBDIR_NAME}_Moc_HDRS}" "${SIMPLib_${SUBDIR_NAME}_SRCS}" "${PROJECT_INSTALL_HEADERS}")
+cmp_IDE_SOURCE_PROPERTIES( "Generated/${SUBDIR_NAME}" "" "${SIMPLib_${SUBDIR_NAME}_Generated_MOC_SRCS}" "0")
 

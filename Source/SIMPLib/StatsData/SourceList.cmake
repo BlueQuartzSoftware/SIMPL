@@ -33,7 +33,9 @@
 #
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-set(SIMPLib_StatsData_HDRS
+set(SUBDIR_NAME StatsData)
+
+set(SIMPLib_${SUBDIR_NAME}_HDRS
   ${SIMPLib_SOURCE_DIR}/StatsData/BoundaryStatsData.h
   ${SIMPLib_SOURCE_DIR}/StatsData/MatrixStatsData.h
   ${SIMPLib_SOURCE_DIR}/StatsData/PrecipitateStatsData.h
@@ -42,7 +44,7 @@ set(SIMPLib_StatsData_HDRS
   ${SIMPLib_SOURCE_DIR}/StatsData/TransformationStatsData.h
 )
 
-set(SIMPLib_StatsData_SRCS
+set(SIMPLib_${SUBDIR_NAME}_SRCS
   ${SIMPLib_SOURCE_DIR}/StatsData/BoundaryStatsData.cpp
   ${SIMPLib_SOURCE_DIR}/StatsData/MatrixStatsData.cpp
   ${SIMPLib_SOURCE_DIR}/StatsData/PrecipitateStatsData.cpp
@@ -50,5 +52,6 @@ set(SIMPLib_StatsData_SRCS
   ${SIMPLib_SOURCE_DIR}/StatsData/StatsData.cpp
   ${SIMPLib_SOURCE_DIR}/StatsData/TransformationStatsData.cpp
 )
-cmp_IDE_SOURCE_PROPERTIES( "SIMPLib/StatsData" "${SIMPLib_StatsData_HDRS}" "${SIMPLib_StatsData_SRCS}" "${PROJECT_INSTALL_HEADERS}")
 
+cmp_IDE_SOURCE_PROPERTIES( "${SUBDIR_NAME}" "${SIMPLib_${SUBDIR_NAME}_HDRS};${SIMPLib_${SUBDIR_NAME}_Moc_HDRS}" "${SIMPLib_${SUBDIR_NAME}_SRCS}" "${PROJECT_INSTALL_HEADERS}")
+cmp_IDE_SOURCE_PROPERTIES( "Generated/${SUBDIR_NAME}" "" "${SIMPLib_${SUBDIR_NAME}_Generated_MOC_SRCS}" "0")
