@@ -37,6 +37,9 @@
 #ifndef _ArrayCalculator_H_
 #define _ArrayCalculator_H_
 
+#include <QtCore/QStack>
+#include <QtCore/QQueue>
+
 #include "SIMPLib/SIMPLib.h"
 #include "SIMPLib/Common/SIMPLibSetGetMacros.h"
 #include "SIMPLib/Common/AbstractFilter.h"
@@ -157,6 +160,15 @@ class ArrayCalculator : public AbstractFilter
     void dataCheck();
 
   private:
+    QStringList                                                 m_OperatorList;
+
+    QStack<char>                                                m_OperatorStack;
+    QStack<QString>                                             m_ExecutionStack;
+    QQueue<QString>                                             m_RPNQueue;
+
+    QStringList delimitEquation(QString equation);
+    QStringList toRPN(QStringList infix);
+
     ArrayCalculator(const ArrayCalculator&); // Copy Constructor Not Implemented
     void operator=(const ArrayCalculator&); // Operator '=' Not Implemented
 };

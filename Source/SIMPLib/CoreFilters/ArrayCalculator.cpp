@@ -47,7 +47,6 @@
 // Include the MOC generated file for this class
 #include "moc_ArrayCalculator.cpp"
 
-
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
@@ -55,6 +54,8 @@ ArrayCalculator::ArrayCalculator() :
   AbstractFilter()
 {
   setupFilterParameters();
+
+  m_OperatorList = {"(", ")", "sin", "cos", "tan", "+", "-", "*", "/"};
 }
 
 // -----------------------------------------------------------------------------
@@ -133,17 +134,53 @@ void ArrayCalculator::execute()
   dataCheck();
   if(getErrorCondition() < 0) { return; }
 
-  if (getCancel() == true) { return; }
+  QStringList rpn = delimitEquation(m_InfixEquation);
 
-  if (getErrorCondition() < 0)
+  //if (getCancel() == true) { return; }
+
+  //if (getErrorCondition() < 0)
+  //{
+  //  QString ss = QObject::tr("Some error message");
+  //  setErrorCondition(-99999999);
+  //  notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
+  //  return;
+  //}
+
+  //notifyStatusMessage(getHumanLabel(), "Complete");
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+QStringList ArrayCalculator::delimitEquation(QString equation)
+{
+  for (int i = 0; i < m_OperatorList.size(); i++)
   {
-    QString ss = QObject::tr("Some error message");
-    setErrorCondition(-99999999);
-    notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
-    return;
+    QString operatorStr = m_OperatorList[i];
+
+    int start = 0;
+    int index = 0;
+    while (index >= 0)
+    {
+      index = equation.indexOf(operatorStr, start);
+      if (index > 0 && index < equation.size() - 1)
+      {
+        equation.insert(index, "@@@");
+      }
+      start = index + 4;
+    }
   }
 
-  notifyStatusMessage(getHumanLabel(), "Complete");
+  std::cout << equation.toStdString();
+  return QStringList();
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+QStringList ArrayCalculator::toRPN(QStringList infix)
+{
+  return QStringList();
 }
 
 // -----------------------------------------------------------------------------
