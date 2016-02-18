@@ -150,13 +150,13 @@ EdgeGeom::~EdgeGeom()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-EdgeGeom::Pointer EdgeGeom::CreateGeometry(int64_t numEdges, SharedVertexList::Pointer vertices, const QString& name)
+EdgeGeom::Pointer EdgeGeom::CreateGeometry(int64_t numEdges, SharedVertexList::Pointer vertices, const QString& name, bool allocate)
 {
   if (name.isEmpty() == true)
   {
     return NullPointer();
   }
-  SharedEdgeList::Pointer edges = EdgeGeom::CreateSharedEdgeList(numEdges);
+  SharedEdgeList::Pointer edges = EdgeGeom::CreateSharedEdgeList(numEdges, allocate);
   EdgeGeom* d = new EdgeGeom();
   d->setVertices(vertices);
   d->setEdges(edges);

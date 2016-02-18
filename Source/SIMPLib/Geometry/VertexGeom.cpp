@@ -71,13 +71,13 @@ VertexGeom::~VertexGeom()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-VertexGeom::Pointer VertexGeom::CreateGeometry(int64_t numVertices, const QString& name)
+VertexGeom::Pointer VertexGeom::CreateGeometry(int64_t numVertices, const QString& name, bool allocate)
 {
   if (name.isEmpty() == true)
   {
     return NullPointer();
   }
-  SharedVertexList::Pointer vertices = VertexGeom::CreateSharedVertexList(numVertices);
+  SharedVertexList::Pointer vertices = VertexGeom::CreateSharedVertexList(numVertices, allocate);
   VertexGeom* d = new VertexGeom();
   d->setVertices(vertices);
   d->setName(name);

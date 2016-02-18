@@ -37,10 +37,10 @@
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-SharedVertexList::Pointer GEOM_CLASS_NAME::CreateSharedVertexList(int64_t numVertices)
+SharedVertexList::Pointer GEOM_CLASS_NAME::CreateSharedVertexList(int64_t numVertices, bool allocate)
 {
   QVector<size_t> vertDims(1, 3);
-  SharedVertexList::Pointer vertices = SharedVertexList::CreateArray(numVertices, vertDims, SIMPL::Geometry::SharedVertexList);
+  SharedVertexList::Pointer vertices = SharedVertexList::CreateArray(numVertices, vertDims, SIMPL::Geometry::SharedVertexList, allocate);
   vertices->initializeWithZeros();
   return vertices;
 }

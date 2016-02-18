@@ -37,10 +37,10 @@
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-SharedEdgeList::Pointer GEOM_CLASS_NAME::CreateSharedEdgeList(int64_t numEdges)
+SharedEdgeList::Pointer GEOM_CLASS_NAME::CreateSharedEdgeList(int64_t numEdges, bool allocate)
 {
   QVector<size_t> edgeDims(1, 2);
-  SharedEdgeList::Pointer edges = SharedEdgeList::CreateArray(numEdges, edgeDims, SIMPL::Geometry::SharedEdgeList);
+  SharedEdgeList::Pointer edges = SharedEdgeList::CreateArray(numEdges, edgeDims, SIMPL::Geometry::SharedEdgeList, allocate);
   edges->initializeWithZeros();
   return edges;
 }

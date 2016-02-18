@@ -59,7 +59,7 @@ class SIMPLib_EXPORT TriangleGeom : public IGeometry2D
      * @param name
      * @return
      */
-    static Pointer CreateGeometry(int64_t numTriangles, SharedVertexList::Pointer vertices, const QString& name);
+    static Pointer CreateGeometry(int64_t numTriangles, SharedVertexList::Pointer vertices, const QString& name, bool allocate = true);
 
     /**
      * @brief CreateGeometry
@@ -79,7 +79,7 @@ class SIMPLib_EXPORT TriangleGeom : public IGeometry2D
      * @param numVertices
      * @return
      */
-    static SharedVertexList::Pointer CreateSharedVertexList(int64_t numVertices);
+    static SharedVertexList::Pointer CreateSharedVertexList(int64_t numVertices, bool allocate = true);
 
 // -----------------------------------------------------------------------------
 // Inherited from SharedEdgeOps
@@ -90,7 +90,7 @@ class SIMPLib_EXPORT TriangleGeom : public IGeometry2D
      * @param numEdges
      * @return
      */
-    static SharedEdgeList::Pointer CreateSharedEdgeList(int64_t numEdges);
+    static SharedEdgeList::Pointer CreateSharedEdgeList(int64_t numEdges, bool allocate = true);
 
 // -----------------------------------------------------------------------------
 // Inherited from SharedTriOps
@@ -101,7 +101,7 @@ class SIMPLib_EXPORT TriangleGeom : public IGeometry2D
      * @param numTris
      * @return
      */
-    static SharedTriList::Pointer CreateSharedTriList(int64_t numTris);
+    static SharedTriList::Pointer CreateSharedTriList(int64_t numTris, bool allocate = true);
 
     /**
      * @brief resizeTriList

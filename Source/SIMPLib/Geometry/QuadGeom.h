@@ -59,7 +59,7 @@ class SIMPLib_EXPORT QuadGeom : public IGeometry2D
      * @param name
      * @return
      */
-    static Pointer CreateGeometry(int64_t numQuads, SharedVertexList::Pointer vertices, const QString& name);
+    static Pointer CreateGeometry(int64_t numQuads, SharedVertexList::Pointer vertices, const QString& name, bool allocate = true);
 
     /**
      * @brief CreateGeometry
@@ -79,7 +79,7 @@ class SIMPLib_EXPORT QuadGeom : public IGeometry2D
      * @param numVertices
      * @return
      */
-    static SharedVertexList::Pointer CreateSharedVertexList(int64_t numVertices);
+    static SharedVertexList::Pointer CreateSharedVertexList(int64_t numVertices, bool allocate = true);
 
 // -----------------------------------------------------------------------------
 // Inherited from SharedEdgeOps
@@ -90,7 +90,7 @@ class SIMPLib_EXPORT QuadGeom : public IGeometry2D
      * @param numEdges
      * @return
      */
-    static SharedEdgeList::Pointer CreateSharedEdgeList(int64_t numEdges);
+    static SharedEdgeList::Pointer CreateSharedEdgeList(int64_t numEdges, bool allocate = true);
 
 // -----------------------------------------------------------------------------
 // Inherited from SharedQuadOps
@@ -101,7 +101,7 @@ class SIMPLib_EXPORT QuadGeom : public IGeometry2D
      * @param numQuads
      * @return
      */
-    static SharedQuadList::Pointer CreateSharedQuadList(int64_t numQuads);
+    static SharedQuadList::Pointer CreateSharedQuadList(int64_t numQuads, bool allocate = true);
 
     /**
      * @brief resizeQuadList
