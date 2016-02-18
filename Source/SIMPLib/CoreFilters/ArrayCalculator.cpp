@@ -55,7 +55,15 @@ ArrayCalculator::ArrayCalculator() :
 {
   setupFilterParameters();
 
-  m_OperatorList = {"(", ")", "sin", "cos", "tan", "+", "-", "*", "/"};
+  m_OperatorList.push_back("(");
+  m_OperatorList.push_back(")");
+  m_OperatorList.push_back("sin");
+  m_OperatorList.push_back("cos");
+  m_OperatorList.push_back("tan");
+  m_OperatorList.push_back("+");
+  m_OperatorList.push_back("-");
+  m_OperatorList.push_back("*");
+  m_OperatorList.push_back("/");
 }
 
 // -----------------------------------------------------------------------------
@@ -134,9 +142,9 @@ void ArrayCalculator::execute()
   dataCheck();
   if(getErrorCondition() < 0) { return; }
 
-  QStringList rpn = delimitEquation(m_InfixEquation);
+  QStringList delimitedInfix = delimitEquation(m_InfixEquation);
 
-  //if (getCancel() == true) { return; }
+  if (getCancel() == true) { return; }
 
   //if (getErrorCondition() < 0)
   //{
@@ -154,33 +162,35 @@ void ArrayCalculator::execute()
 // -----------------------------------------------------------------------------
 QStringList ArrayCalculator::delimitEquation(QString equation)
 {
+  if (equation.isEmpty())
+  {
+    return QStringList();
+  }
+
   for (int i = 0; i < m_OperatorList.size(); i++)
   {
     QString operatorStr = m_OperatorList[i];
 
-    int start = 0;
-    int index = 0;
-    while (index >= 0)
-    {
-      index = equation.indexOf(operatorStr, start);
-      if (index > 0 && index < equation.size() - 1)
-      {
-        equation.insert(index, "@@@");
-      }
-      start = index + 4;
-    }
+    equation.replace(operatorStr, "@" + operatorStr + "@");
   }
 
-  std::cout << equation.toStdString();
-  return QStringList();
+  QStringList list = equation.split("@", QString::SkipEmptyParts);
+
+  return list;
 }
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-QStringList ArrayCalculator::toRPN(QStringList infix)
+bool ArrayCalculator::isOperator(QString str)
 {
-  return QStringList();
+  if (str == "(" || str == ")" || str == "sin" || str == "cos" || str == "tan"
+      || str == "+" || str == "-" || str == "*" || str == "/")
+  {
+    return true;
+  }
+
+  return false;
 }
 
 // -----------------------------------------------------------------------------

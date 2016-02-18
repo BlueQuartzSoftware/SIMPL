@@ -107,6 +107,15 @@ foreach(f ${_PrivateFilters} )
                         ${SIMPLProj_BINARY_DIR})
 endforeach()
 
+ADD_SIMPL_SUPPORT_HEADER(${SIMPLib_SOURCE_DIR} ${_filterGroupName} util/CalculatorItem.h)
+ADD_SIMPL_SUPPORT_SOURCE(${SIMPLib_SOURCE_DIR} ${_filterGroupName} util/CalculatorItem.cpp)
+
+ADD_SIMPL_SUPPORT_HEADER(${SIMPLib_SOURCE_DIR} ${_filterGroupName} util/CalculatorNumber.h)
+ADD_SIMPL_SUPPORT_SOURCE(${SIMPLib_SOURCE_DIR} ${_filterGroupName} util/CalculatorNumber.cpp)
+
+ADD_SIMPL_SUPPORT_HEADER(${SIMPLib_SOURCE_DIR} ${_filterGroupName} util/CalculatorOperator.h)
+ADD_SIMPL_SUPPORT_SOURCE(${SIMPLib_SOURCE_DIR} ${_filterGroupName} util/CalculatorOperator.cpp)
+
 # -- Add the binary directory for this subdirectory to the include path which is where the moc files are generated
 include_directories( ${SIMPLib_BINARY_DIR}/${_filterGroupName})
 

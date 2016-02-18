@@ -162,12 +162,9 @@ class ArrayCalculator : public AbstractFilter
   private:
     QStringList                                                 m_OperatorList;
 
-    QStack<char>                                                m_OperatorStack;
-    QStack<QString>                                             m_ExecutionStack;
-    QQueue<QString>                                             m_RPNQueue;
+    bool isOperator(QString str);
 
     QStringList delimitEquation(QString equation);
-    QStringList toRPN(QStringList infix);
 
     ArrayCalculator(const ArrayCalculator&); // Copy Constructor Not Implemented
     void operator=(const ArrayCalculator&); // Operator '=' Not Implemented
