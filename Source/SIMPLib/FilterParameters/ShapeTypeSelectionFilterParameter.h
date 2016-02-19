@@ -33,8 +33,8 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-#ifndef _ShapeTypeSelectionFilterParameter_H_
-#define _ShapeTypeSelectionFilterParameter_H_
+#ifndef _shapetypeselectionfilterparameter_h_
+#define _shapetypeselectionfilterparameter_h_
 
 #include "SIMPLib/FilterParameters/FilterParameter.h"
 

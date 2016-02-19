@@ -34,8 +34,8 @@
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
 
-#ifndef _OBSERVABLE_H_
-#define _OBSERVABLE_H_
+#ifndef _observable_h_
+#define _observable_h_
 
 #include <QtCore/QString>
 

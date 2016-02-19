@@ -33,8 +33,8 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-#ifndef _RectGridGeom_H_
-#define _RectGridGeom_H_
+#ifndef _rectgridgeom_h_
+#define _rectgridgeom_h_
 
 #include "SIMPLib/Common/SIMPLibSetGetMacros.h"
 #include "SIMPLib/Geometry/IGeometry.h"

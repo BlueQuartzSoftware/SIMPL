@@ -34,8 +34,8 @@
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
 
-#ifndef _CombineAttributeMatrices_H_
-#define _CombineAttributeMatrices_H_
+#ifndef _combineattributematrices_h_
+#define _combineattributematrices_h_
 
 #include "SIMPLib/SIMPLib.h"
 #include "SIMPLib/Common/AbstractFilter.h"

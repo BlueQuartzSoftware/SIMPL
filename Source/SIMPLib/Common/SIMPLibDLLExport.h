@@ -34,8 +34,8 @@
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
 
-#ifndef _SIMPLib_DLL_EXPORT_H_
-#define _SIMPLib_DLL_EXPORT_H_
+#ifndef _simplibdllexport_h_
+#define _simplibdllexport_h_
 
 
 #if defined (_MSC_VER)

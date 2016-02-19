@@ -6,8 +6,8 @@
 //
 
 
-#ifndef _VTKH5CONSTANTS_H_
-#define _VTKH5CONSTANTS_H_
+#ifndef _vtkh5constants_h_
+#define _vtkh5constants_h_
 
 
 #define H5_VTK_OBJECT_INDEX_PATH "/VTK_OBJECT_INDEX"

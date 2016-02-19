@@ -32,8 +32,8 @@
 *    United States Prime Contract Navy N00173-07-C-2068
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
-#ifndef _SIMPLibPlugin_H_
-#define _SIMPLibPlugin_H_
+#ifndef _simplibplugin_h_
+#define _simplibplugin_h_
 
 #include <QtCore/QObject>
 #include <QtCore/QString>

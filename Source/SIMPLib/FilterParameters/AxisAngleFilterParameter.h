@@ -33,8 +33,8 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-#ifndef _AxisAngleFilterParameter_H_
-#define _AxisAngleFilterParameter_H_
+#ifndef _axisanglefilterparameter_h_
+#define _axisanglefilterparameter_h_
 
 
 

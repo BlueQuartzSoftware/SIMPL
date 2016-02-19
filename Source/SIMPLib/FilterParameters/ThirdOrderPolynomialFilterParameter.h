@@ -33,8 +33,8 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-#ifndef _ThirdOrderPolynomialFilterParameter_H_
-#define _ThirdOrderPolynomialFilterParameter_H_
+#ifndef _thirdorderpolynomialfilterparameter_h_
+#define _thirdorderpolynomialfilterparameter_h_
 
 #include <QtCore/QJsonObject>
 

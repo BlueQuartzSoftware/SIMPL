@@ -33,8 +33,8 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-#ifndef _PhaseTypeSelectionFilterParameter_H_
-#define _PhaseTypeSelectionFilterParameter_H_
+#ifndef _phasetypeselectionfilterparameter_h_
+#define _phasetypeselectionfilterparameter_h_
 
 #include "SIMPLib/FilterParameters/FilterParameter.h"
 #include "SIMPLib/DataContainers/DataArrayPath.h"

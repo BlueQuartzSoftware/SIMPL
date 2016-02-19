@@ -8,8 +8,8 @@
 //                           FA8650-04-C-5229
 //
 
-#ifndef _HDF5_UTILITIES_H_
-#define _HDF5_UTILITIES_H_
+#ifndef _h5utilities_h_
+#define _h5utilities_h_
 
 
 // C++ Includes

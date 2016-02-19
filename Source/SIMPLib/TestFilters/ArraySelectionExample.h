@@ -33,8 +33,8 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-#ifndef _ArraySelectionExample_H_
-#define _ArraySelectionExample_H_
+#ifndef _arrayselectionexample_h_
+#define _arrayselectionexample_h_
 
 #include <QtCore/QString>
 

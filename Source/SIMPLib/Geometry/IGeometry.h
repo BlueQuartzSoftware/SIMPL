@@ -33,8 +33,8 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-#ifndef _IGeometry_H_
-#define _IGeometry_H_
+#ifndef _igeometry_h_
+#define _igeometry_h_
 
 #include <QtCore/QString>
 #include <QtCore/QMap>

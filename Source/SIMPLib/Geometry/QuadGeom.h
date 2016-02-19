@@ -33,8 +33,8 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-#ifndef _QuadGeom_H_
-#define _QuadGeom_H_
+#ifndef _quadgeom_h_
+#define _quadgeom_h_
 
 #include "SIMPLib/Common/SIMPLibSetGetMacros.h"
 #include "SIMPLib/Geometry/IGeometry2D.h"

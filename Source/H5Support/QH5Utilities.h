@@ -33,8 +33,8 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-#ifndef _QH5Utilities_H_
-#define _QH5Utilities_H_
+#ifndef _qh5utilities_h_
+#define _qh5utilities_h_
 
 
 #include "H5Support/H5Support.h"

@@ -34,8 +34,8 @@
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
 
-#ifndef _QUALITYMETRICFILTER_H_
-#define _QUALITYMETRICFILTER_H_
+#ifndef _qualitymetricfilter_h_
+#define _qualitymetricfilter_h_
 
 #include "EbsdLib/EbsdConstants.h"
 

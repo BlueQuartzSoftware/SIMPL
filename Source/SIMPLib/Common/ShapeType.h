@@ -33,8 +33,8 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-#ifndef _SHAPETYPE_H_
-#define _SHAPETYPE_H_
+#ifndef _shapetype_h_
+#define _shapetype_h_
 
 
 #include <QtCore/QString>

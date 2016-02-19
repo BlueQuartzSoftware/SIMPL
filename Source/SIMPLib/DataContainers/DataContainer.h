@@ -33,8 +33,8 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-#ifndef _DataContainer_H_
-#define _DataContainer_H_
+#ifndef _datacontainer_h_
+#define _datacontainer_h_
 
 #include <stddef.h>
 

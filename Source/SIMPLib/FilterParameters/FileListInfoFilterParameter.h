@@ -33,8 +33,8 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-#ifndef _FileListInfoFilterParameter_H_
-#define _FileListInfoFilterParameter_H_
+#ifndef _filelistinfofilterparameter_h_
+#define _filelistinfofilterparameter_h_
 
 #include <QtCore/QMetaType>
 #include <QtCore/QJsonObject>

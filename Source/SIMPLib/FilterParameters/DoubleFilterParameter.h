@@ -33,8 +33,8 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-#ifndef _DoubleFilterParameter_H_
-#define _DoubleFilterParameter_H_
+#ifndef _doublefilterparameter_h_
+#define _doublefilterparameter_h_
 
 #include "SIMPLib/FilterParameters/FilterParameter.h"
 

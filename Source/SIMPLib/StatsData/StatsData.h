@@ -34,8 +34,8 @@
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
 
-#ifndef _STATSDATA_H_
-#define _STATSDATA_H_
+#ifndef _statsdata_h_
+#define _statsdata_h_
 
 #include <hdf5.h>
 

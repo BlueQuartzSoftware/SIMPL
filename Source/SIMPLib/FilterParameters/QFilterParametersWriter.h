@@ -33,8 +33,8 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-#ifndef _QFilterParametersWRITER_H_
-#define _QFilterParametersWRITER_H_
+#ifndef _qfilterparameterswriter_h_
+#define _qfilterparameterswriter_h_
 
 
 #include <QtCore/QString>

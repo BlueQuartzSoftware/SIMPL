@@ -33,8 +33,8 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-#ifndef _LinkedBooleanFilterParameter_H_
-#define _LinkedBooleanFilterParameter_H_
+#ifndef _linkedbooleanfilterparameter_h_
+#define _linkedbooleanfilterparameter_h_
 
 #include "SIMPLib/FilterParameters/FilterParameter.h"
 

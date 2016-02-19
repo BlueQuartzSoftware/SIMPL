@@ -33,8 +33,8 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-#ifndef _HDF5ScopedFileSentinel_H_
-#define _HDF5ScopedFileSentinel_H_
+#ifndef _hdf5scopedfilesentinel_h_
+#define _hdf5scopedfilesentinel_h_
 
 
 #include "H5Support/H5Utilities.h"

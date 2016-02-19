@@ -34,8 +34,8 @@
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
 
-#ifndef _TransformationStatsDataTUPLE_H_
-#define _TransformationStatsDataTUPLE_H_
+#ifndef _transformationstatsdata_h_
+#define _transformationstatsdata_h_
 
 #include <hdf5.h>
 

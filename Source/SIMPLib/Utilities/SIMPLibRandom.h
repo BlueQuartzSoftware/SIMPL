@@ -39,8 +39,8 @@
  * instance of this class.
  */
 
-#ifndef _SIMPLibRANDOM_H_
-#define _SIMPLibRANDOM_H_
+#ifndef _simplibrandom_h_
+#define _simplibrandom_h_
 
 #include <QtCore/QDateTime>
 

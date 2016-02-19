@@ -34,8 +34,8 @@
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
 
-#ifndef _BoundaryStatsDataTUPLE_H_
-#define _BoundaryStatsDataTUPLE_H_
+#ifndef _boundarystatsdata_h_
+#define _boundarystatsdata_h_
 
 #include <hdf5.h>
 

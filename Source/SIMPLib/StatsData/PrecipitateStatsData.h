@@ -34,8 +34,8 @@
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
 
-#ifndef _PrecipitateStatsDataTUPLE_H_
-#define _PrecipitateStatsDataTUPLE_H_
+#ifndef _precipitatestatsdata_h_
+#define _precipitatestatsdata_h_
 
 #include <hdf5.h>
 

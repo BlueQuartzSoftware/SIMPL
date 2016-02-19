@@ -34,8 +34,8 @@
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
 
-#ifndef _VTKFILEREADER_H_
-#define _VTKFILEREADER_H_
+#ifndef _vtkfilereader_h_
+#define _vtkfilereader_h_
 
 #include <fstream>
 

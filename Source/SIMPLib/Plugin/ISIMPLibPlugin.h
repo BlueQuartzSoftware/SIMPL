@@ -32,8 +32,8 @@
 *    United States Prime Contract Navy N00173-07-C-2068
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
-#ifndef _ISIMPLibPlugin_H_
-#define _ISIMPLibPlugin_H_
+#ifndef _isimplibplugin_h_
+#define _isimplibplugin_h_
 
 
 #include <QtCore/QSettings>

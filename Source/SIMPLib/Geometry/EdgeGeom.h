@@ -33,8 +33,8 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-#ifndef _EdgeGeom_H_
-#define _EdgeGeom_H_
+#ifndef _edgegeom_h_
+#define _edgegeom_h_
 
 #include "SIMPLib/Common/SIMPLibSetGetMacros.h"
 #include "SIMPLib/Geometry/IGeometry.h"

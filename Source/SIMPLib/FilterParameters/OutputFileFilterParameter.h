@@ -33,8 +33,8 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-#ifndef _OutputFileFilterParameter_H_
-#define _OutputFileFilterParameter_H_
+#ifndef _outputfilefilterparameter_h_
+#define _outputfilefilterparameter_h_
 
 #include "SIMPLib/FilterParameters/FilterParameter.h"
 

@@ -33,8 +33,8 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-#ifndef _DataContainerCreationFilterParameter_H_
-#define _DataContainerCreationFilterParameter_H_
+#ifndef _datacontainercreationfilterparameter_h_
+#define _datacontainercreationfilterparameter_h_
 
 #include "SIMPLib/FilterParameters/FilterParameter.h"
 

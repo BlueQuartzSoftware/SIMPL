@@ -34,8 +34,8 @@
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
 
-#ifndef _CUBOCTOHEDRONOPS_H_
-#define _CUBOCTOHEDRONOPS_H_
+#ifndef _cubeoctohedronops_h_
+#define _cubeoctohedronops_h_
 
 #include "ShapeOps.h"
 #include "SIMPLib/Common/SIMPLibSetGetMacros.h"

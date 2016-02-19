@@ -34,8 +34,8 @@
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
 
-#ifndef _AbstractFilterParametersWriter_H_
-#define _AbstractFilterParametersWriter_H_
+#ifndef _abstractfilterparameterswriter_h_
+#define _abstractfilterparameterswriter_h_
 
 #include <set>
 

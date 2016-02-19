@@ -34,8 +34,8 @@
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
 
-#ifndef _MatrixStatsDataTUPLE_H_
-#define _MatrixStatsDataTUPLE_H_
+#ifndef _matrixstatsdata_h_
+#define _matrixstatsdata_h_
 
 #include <hdf5.h>
 

@@ -33,8 +33,8 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-#ifndef _QH5Lite_H_
-#define _QH5Lite_H_
+#ifndef _qh5lite_h_
+#define _qh5lite_h_
 
 
 //--C++ Headers

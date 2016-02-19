@@ -33,8 +33,8 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-#ifndef _ColorTable_H_
-#define _ColorTable_H_
+#ifndef _colortable_h_
+#define _colortable_h_
 
 #include <QtCore/QVector>
 

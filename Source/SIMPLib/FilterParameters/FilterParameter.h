@@ -34,8 +34,8 @@
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
 
-#ifndef _FilterParameter_H_
-#define _FilterParameter_H_
+#ifndef _filterparameter_h_
+#define _filterparameter_h_
 
 #include <QtCore/QVector>
 #include <QtCore/QVariant>

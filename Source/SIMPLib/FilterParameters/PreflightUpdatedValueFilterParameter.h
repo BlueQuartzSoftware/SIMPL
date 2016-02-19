@@ -33,8 +33,8 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-#ifndef _PreflightUpdatedValueFilterParameter_H_
-#define _PreflightUpdatedValueFilterParameter_H_
+#ifndef _preflightupdatedvaluefilterparameter_h_
+#define _preflightupdatedvaluefilterparameter_h_
 
 #include "SIMPLib/FilterParameters/FilterParameter.h"
 

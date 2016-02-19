@@ -34,8 +34,8 @@
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
 
-#ifndef _CopyFeatureArrayToElementArray_H_
-#define _CopyFeatureArrayToElementArray_H_
+#ifndef _copyfeaturearraytoelementarray_h_
+#define _copyfeaturearraytoelementarray_h_
 
 #include "SIMPLib/SIMPLib.h"
 #include "SIMPLib/Common/AbstractFilter.h"

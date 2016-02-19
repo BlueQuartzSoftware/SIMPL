@@ -33,8 +33,8 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-#ifndef _DynamicTableFilterParameter_H_
-#define _DynamicTableFilterParameter_H_
+#ifndef _dynamictablefilterparameter_h_
+#define _dynamictablefilterparameter_h_
 
 #include "SIMPLib/FilterParameters/FilterParameter.h"
 

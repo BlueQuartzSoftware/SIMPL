@@ -34,8 +34,8 @@
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
 
-#ifndef _ELLIPSOIDOPS_H_
-#define _ELLIPSOIDOPS_H_
+#ifndef _ellipsoidops_h_
+#define _ellipsoidops_h_
 
 #include "ShapeOps.h"
 #include "SIMPLib/Common/SIMPLibSetGetMacros.h"

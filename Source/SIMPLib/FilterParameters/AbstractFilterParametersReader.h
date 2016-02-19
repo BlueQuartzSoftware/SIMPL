@@ -32,8 +32,8 @@
 *    United States Prime Contract Navy N00173-07-C-2068
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
-#ifndef _AbstractFilterParametersReader_H_
-#define _AbstractFilterParametersReader_H_
+#ifndef _abstractfilterparametersreader_h_
+#define _abstractfilterparametersreader_h_
 
 #include <set>
 

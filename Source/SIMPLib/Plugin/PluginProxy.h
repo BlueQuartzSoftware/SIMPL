@@ -33,8 +33,8 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-#ifndef _PluginProxy_H_
-#define _PluginProxy_H_
+#ifndef _pluginproxy_h_
+#define _pluginproxy_h_
 
 
 #include <QtCore/QString>

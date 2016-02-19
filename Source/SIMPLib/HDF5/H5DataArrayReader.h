@@ -34,8 +34,8 @@
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
 
-#ifndef _H5DATAARRAYREADER_HPP_
-#define _H5DATAARRAYREADER_HPP_
+#ifndef _h5dataarrayreader_h_
+#define _h5dataarrayreader_h_
 
 #include <hdf5.h>
 

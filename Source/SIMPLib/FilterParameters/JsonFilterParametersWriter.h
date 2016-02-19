@@ -33,8 +33,8 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-#ifndef _JsonFilterParametersWriter_H_
-#define _JsonFilterParametersWriter_H_
+#ifndef _jsonfilterparameterswriter_h_
+#define _jsonfilterparameterswriter_h_
 
 #include <QtCore/QString>
 

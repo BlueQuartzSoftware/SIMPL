@@ -37,8 +37,8 @@
 
 
 
-#ifndef _H5Support_COMMON_DLL_EXPORT_H_
-#define _H5Support_COMMON_DLL_EXPORT_H_
+#ifndef _h5supportdllexport_h_
+#define _h5supportdllexport_h_
 
 
 #if defined (_MSC_VER)
@@ -78,8 +78,8 @@ building the H5SupportDatModel DLL on windows.
 #endif
 
 /* If H5Support_EXPORT was never defined, define it here */
-#ifndef H5Support_EXPORT
-#define H5Support_EXPORT
+#ifndef _h5supportdllexport_h_
+#define _h5supportdllexport_h_
 #endif
 
 #if 0

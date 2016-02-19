@@ -1,5 +1,5 @@
-#ifndef _RemoveArraysObserver_H_
-#define _RemoveArraysObserver_H_
+#ifndef _removearraysobserver_h_
+#define _removearraysobserver_h_
 
 
 #include <QtCore/QObject>

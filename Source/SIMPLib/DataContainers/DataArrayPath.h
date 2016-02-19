@@ -33,8 +33,8 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-#ifndef _DataArrayPath_H_
-#define _DataArrayPath_H_
+#ifndef _dataarraypath_h_
+#define _dataarraypath_h_
 
 #include <QtCore/QtGlobal>                     // for Q_DECLARE_PRIVATE
 #include <QtCore/QMetaType>                   // for Q_DECLARE_METATYPE

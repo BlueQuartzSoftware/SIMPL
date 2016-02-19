@@ -33,8 +33,8 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-#ifndef _DataArrayProxy_H_
-#define _DataArrayProxy_H_
+#ifndef _dataarrayproxy_h_
+#define _dataarrayproxy_h_
 
 #include <QtCore/QMetaType>
 #include <QtCore/QString>

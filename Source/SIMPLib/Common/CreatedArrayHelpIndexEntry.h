@@ -33,8 +33,8 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-#ifndef _CreatedArrayHelpIndexEntry_H_
-#define _CreatedArrayHelpIndexEntry_H_
+#ifndef _createdarrayhelpindexentry_h_
+#define _createdarrayhelpindexentry_h_
 
 #include <QtCore/QString>
 #include <vector>

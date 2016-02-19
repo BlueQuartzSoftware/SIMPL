@@ -33,8 +33,8 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-#ifndef _SeparatorFilterParameter_H_
-#define _SeparatorFilterParameter_H_
+#ifndef _separatorfilterparameter_h_
+#define _separatorfilterparameter_h_
 
 #include "SIMPLib/FilterParameters/FilterParameter.h"
 

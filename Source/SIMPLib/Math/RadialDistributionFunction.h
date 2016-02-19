@@ -33,8 +33,8 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-#ifndef _RadialDistributionFunction_H_
-#define _RadialDistributionFunction_H_
+#ifndef _radialdistributionfunction_h_
+#define _radialdistributionfunction_h_
 
 #include <vector>
 

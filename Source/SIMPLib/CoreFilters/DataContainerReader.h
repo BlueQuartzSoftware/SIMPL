@@ -34,8 +34,8 @@
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
 
-#ifndef _DataContainerReader_H_
-#define _DataContainerReader_H_
+#ifndef _datacontainerreader_h_
+#define _datacontainerreader_h_
 
 #include <QtCore/QDateTime>
 

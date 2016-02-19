@@ -34,8 +34,8 @@
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
 
-#ifndef _ABSTRACTDECISIONFILTER_H_
-#define _ABSTRACTDECISIONFILTER_H_
+#ifndef _abstractdecisionfilter_h_
+#define _abstractdecisionfilter_h_
 
 #include "SIMPLib/SIMPLib.h"
 #include "SIMPLib/Common/AbstractFilter.h"

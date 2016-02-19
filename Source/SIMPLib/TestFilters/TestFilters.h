@@ -2,8 +2,8 @@
  * Your License or Copyright Information can go here
  */
 
-#ifndef _Filt0_H_
-#define _Filt0_H_
+#ifndef _testfilters_h_
+#define _testfilters_h_
 
 #include <QString>
 

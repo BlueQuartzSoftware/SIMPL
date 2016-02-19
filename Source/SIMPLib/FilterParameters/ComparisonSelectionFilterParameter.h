@@ -33,8 +33,8 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-#ifndef _ComparisonSelectionFilterParameter_H_
-#define _ComparisonSelectionFilterParameter_H_
+#ifndef _comparisonselectionfilterparameter_h_
+#define _comparisonselectionfilterparameter_h_
 
 #include "SIMPLib/FilterParameters/FilterParameter.h"
 

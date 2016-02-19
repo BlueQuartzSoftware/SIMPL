@@ -33,8 +33,8 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-#ifndef _QMetaObjectUtilities_H_
-#define _QMetaObjectUtilities_H_
+#ifndef _qmetaobjectutilities_h_
+#define _qmetaobjectutilities_h_
 
 #include <QtCore/QMetaType>
 #include <QtCore/QVector>

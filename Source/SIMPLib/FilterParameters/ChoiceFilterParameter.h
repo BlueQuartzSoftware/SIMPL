@@ -33,8 +33,8 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-#ifndef _ChoiceFilterParameter_H_
-#define _ChoiceFilterParameter_H_
+#ifndef _choicefilterparameter_h_
+#define _choicefilterparameter_h_
 
 #include "SIMPLib/FilterParameters/FilterParameter.h"
 

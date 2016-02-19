@@ -33,8 +33,8 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-#ifndef _DataContainerBundle_H_
-#define _DataContainerBundle_H_
+#ifndef _datacontainerbundle_h_
+#define _datacontainerbundle_h_
 
 
 #include <QtCore/QObject>

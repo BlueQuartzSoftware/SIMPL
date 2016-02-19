@@ -34,8 +34,8 @@
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
 
-#ifndef _H5FilterParametersConstants_H_
-#define _H5FilterParametersConstants_H_
+#ifndef _h5filterparametersconstants_h_
+#define _h5filterparametersconstants_h_
 
 #include <QtCore/QString>
 

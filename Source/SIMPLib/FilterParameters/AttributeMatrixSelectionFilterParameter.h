@@ -33,8 +33,8 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-#ifndef _AttributeMatrixSelectionFilterParameter_H_
-#define _AttributeMatrixSelectionFilterParameter_H_
+#ifndef _attributematrixselectionfilterparameter_h_
+#define _attributematrixselectionfilterparameter_h_
 
 #include "SIMPLib/FilterParameters/FilterParameter.h"
 #include "SIMPLib/DataContainers/DataArrayPath.h"

@@ -33,8 +33,8 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-#ifndef _DynamicChoiceFilterParameter_H_
-#define _DynamicChoiceFilterParameter_H_
+#ifndef _dynamicchoicefilterparameter_h_
+#define _dynamicchoicefilterparameter_h_
 
 #include "SIMPLib/FilterParameters/FilterParameter.h"
 

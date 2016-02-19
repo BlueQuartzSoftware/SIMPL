@@ -34,8 +34,8 @@
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
 
-#ifndef _CreateFeatureArrayFromElementArray_H_
-#define _CreateFeatureArrayFromElementArray_H_
+#ifndef _createfeaturearrayfromelementarray_h_
+#define _createfeaturearrayfromelementarray_h_
 
 #include "SIMPLib/SIMPLib.h"
 #include "SIMPLib/Common/AbstractFilter.h"

@@ -34,8 +34,8 @@
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
 
-#ifndef _OBSERVER_H_
-#define _OBSERVER_H_
+#ifndef _observer_h_
+#define _observer_h_
 
 
 #include <QtCore/QObject>

@@ -34,8 +34,8 @@
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
 
-#ifndef _FILTERPIPELINE_H_
-#define _FILTERPIPELINE_H_
+#ifndef _filterpipeline_h_
+#define _filterpipeline_h_
 
 #include <QtCore/QObject>
 #include <QtCore/QString>

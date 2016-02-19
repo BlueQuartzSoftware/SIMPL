@@ -34,8 +34,8 @@
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
 
-#ifndef _SetOriginResolutionImageGeom_H_
-#define _SetOriginResolutionImageGeom_H_
+#ifndef _setoriginresolutionimagegeom_h_
+#define _setoriginresolutionimagegeom_h_
 
 #include "SIMPLib/SIMPLib.h"
 #include "SIMPLib/Common/AbstractFilter.h"

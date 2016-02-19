@@ -33,8 +33,8 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-#ifndef _AttributeMatrixCreationFilterParameter_H_
-#define _AttributeMatrixCreationFilterParameter_H_
+#ifndef _attributematrixcreationfilterparameter_h_
+#define _attributematrixcreationfilterparameter_h_
 
 #include <QtCore/QVector>
 

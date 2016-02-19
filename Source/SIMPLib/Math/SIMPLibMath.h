@@ -33,8 +33,8 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-#ifndef _SIMPLib_MATH_H_
-#define _SIMPLib_MATH_H_
+#ifndef _simplibmath_h_
+#define _simplibmath_h_
 /** @file SIMPLibMath.h
  * @brief This file performs the necessary including of <math.h> with certain
  * define constants (like M_PI) defined on all platforms.
@@ -60,8 +60,8 @@
    Microsoft doesn't define M_2PI ever, other compilers may lack some of these
    too, hence the sequence as it is: load math.h, then see what's lacking still.
 */
-#ifndef _USE_MATH_DEFINES
-#define _USE_MATH_DEFINES 1
+#ifndef _simplibmath_h_
+#define _simplibmath_h_
 #endif
 #endif
 

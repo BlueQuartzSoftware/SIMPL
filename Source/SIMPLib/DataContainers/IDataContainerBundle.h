@@ -33,8 +33,8 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-#ifndef _IDataContainerBundle_H_
-#define _IDataContainerBundle_H_
+#ifndef _idatacontainerbundle_h_
+#define _idatacontainerbundle_h_
 
 #include <QtCore/QObject>
 #include <QtCore/QVector>

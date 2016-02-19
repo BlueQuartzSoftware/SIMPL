@@ -33,8 +33,8 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-#ifndef _FourthOrderPolynomialFilterParameter_H_
-#define _FourthOrderPolynomialFilterParameter_H_
+#ifndef _fourthorderpolynomialfilterparameter_h_
+#define _fourthorderpolynomialfilterparameter_h_
 
 #include <QtCore/QJsonObject>
 

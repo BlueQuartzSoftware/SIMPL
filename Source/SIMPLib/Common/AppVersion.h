@@ -35,8 +35,8 @@
 
 
 
-#ifndef _AppVersion_H_
-#define _AppVersion_H_
+#ifndef _appversion_h_
+#define _appversion_h_
 
 #include "SIMPLib/SIMPLib.h"
 

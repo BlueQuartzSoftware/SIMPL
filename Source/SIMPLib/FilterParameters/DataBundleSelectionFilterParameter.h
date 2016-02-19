@@ -33,8 +33,8 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-#ifndef _DataBundleSelectionFilterParameter_H_
-#define _DataBundleSelectionFilterParameter_H_
+#ifndef _databundleselectionfilterparameter_h_
+#define _databundleselectionfilterparameter_h_
 
 #include "SIMPLib/FilterParameters/FilterParameter.h"
 

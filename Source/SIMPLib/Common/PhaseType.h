@@ -33,8 +33,8 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-#ifndef _PhaseType_h_
-#define _PhaseType_h_
+#ifndef _phasetype_h_
+#define _phasetype_h_
 
 
 #include <QtCore/QString>

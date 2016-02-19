@@ -32,8 +32,8 @@
 *    United States Prime Contract Navy N00173-07-C-2068
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
-#ifndef _STATSDATAARRAY_H_
-#define _STATSDATAARRAY_H_
+#ifndef _statsdataarray_h_
+#define _statsdataarray_h_
 
 
 #include "SIMPLib/SIMPLib.h"

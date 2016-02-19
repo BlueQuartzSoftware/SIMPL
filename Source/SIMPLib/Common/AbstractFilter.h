@@ -33,8 +33,8 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-#ifndef _AbstractFilter_H_
-#define _AbstractFilter_H_
+#ifndef _abstractfilter_h_
+#define _abstractfilter_h_
 
 #include <QtCore/QObject>
 #include <QtCore/QString>

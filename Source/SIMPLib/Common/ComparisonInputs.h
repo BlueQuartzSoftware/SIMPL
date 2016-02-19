@@ -33,8 +33,8 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-#ifndef _ComparisonInputs_H_
-#define _ComparisonInputs_H_
+#ifndef _comparisoninputs_h_
+#define _comparisoninputs_h_
 
 #include <QtCore/QObject>
 #include <QtCore/QMetaType>

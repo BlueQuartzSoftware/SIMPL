@@ -34,8 +34,8 @@
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
 
-#ifndef _PrimaryStatsDataTUPLE_H_
-#define _PrimaryStatsDataTUPLE_H_
+#ifndef _primarystatsdata_h_
+#define _primarystatsdata_h_
 
 #include <hdf5.h>
 

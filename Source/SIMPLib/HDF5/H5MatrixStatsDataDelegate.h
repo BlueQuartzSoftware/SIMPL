@@ -34,8 +34,8 @@
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
 
-#ifndef _H5MatrixStatsData_DELEGATE_H_
-#define _H5MatrixStatsData_DELEGATE_H_
+#ifndef _h5matrixstatsdatadelegate_h_
+#define _h5matrixstatsdatadelegate_h_
 
 #include <QtCore/QString>
 

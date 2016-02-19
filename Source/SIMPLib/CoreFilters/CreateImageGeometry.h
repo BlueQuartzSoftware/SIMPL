@@ -34,8 +34,8 @@
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
 
-#ifndef _CreateImageGeometry_H_
-#define _CreateImageGeometry_H_
+#ifndef _createimagegeometry_h_
+#define _createimagegeometry_h_
 
 #include "SIMPLib/SIMPLib.h"
 #include "SIMPLib/FilterParameters/IntVec3FilterParameter.h"

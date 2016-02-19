@@ -33,8 +33,8 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-#ifndef _IntVec3FilterParameter_H_
-#define _IntVec3FilterParameter_H_
+#ifndef _intvec3filterparameter_h_
+#define _intvec3filterparameter_h_
 
 #include <QtCore/QJsonObject>
 

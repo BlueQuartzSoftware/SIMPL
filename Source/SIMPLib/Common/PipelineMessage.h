@@ -33,8 +33,8 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-#ifndef _PIPELINEMESSAGE_H_
-#define _PIPELINEMESSAGE_H_
+#ifndef _pipelinemessage_h_
+#define _pipelinemessage_h_
 
 #include <QtCore/QString>
 #include <QtCore/QMetaType>

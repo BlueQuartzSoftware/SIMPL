@@ -33,8 +33,8 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-#ifndef _IDataArrayFilter_H_
-#define _IDataArrayFilter_H_
+#ifndef _idataarrayfilter_h_
+#define _idataarrayfilter_h_
 
 #include "SIMPLib/SIMPLib.h"
 

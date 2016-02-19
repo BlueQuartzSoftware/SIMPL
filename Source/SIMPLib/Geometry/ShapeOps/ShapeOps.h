@@ -34,8 +34,8 @@
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
 
-#ifndef _SHAPEOPS_H_
-#define _SHAPEOPS_H_
+#ifndef _shapeops_h_
+#define _shapeops_h_
 
 #include <map>
 

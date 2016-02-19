@@ -33,8 +33,8 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-#ifndef _FilePathGenerator_H_
-#define _FilePathGenerator_H_
+#ifndef _filepathgenerator_h_
+#define _filepathgenerator_h_
 
 
 #include <QtCore/QString>

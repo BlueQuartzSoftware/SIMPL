@@ -33,8 +33,8 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-#ifndef _IGeometry2D_H_
-#define _IGeometry2D_H_
+#ifndef _igeometry2d_h_
+#define _igeometry2d_h_
 
 
 #include "SIMPLib/Common/SIMPLibSetGetMacros.h"

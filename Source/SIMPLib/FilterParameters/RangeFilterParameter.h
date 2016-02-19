@@ -33,8 +33,8 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-#ifndef _RangeFilterParameter_H_
-#define _RangeFilterParameter_H_
+#ifndef _rangefilterparameter_h_
+#define _rangefilterparameter_h_
 
 #include "SIMPLib/FilterParameters/FilterParameter.h"
 

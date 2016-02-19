@@ -33,8 +33,8 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-#ifndef _GenericExample_H_
-#define _GenericExample_H_
+#ifndef _genericexample_h_
+#define _genericexample_h_
 
 #include <QtCore/QString>
 

@@ -34,8 +34,8 @@
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
 
-#ifndef _H5TransformationStatsData_DELEGATE_H_
-#define _H5TransformationStatsData_DELEGATE_H_
+#ifndef _h5transformationstatsdatadelegate_h_
+#define _h5transformationstatsdatadelegate_h_
 
 #include <QtCore/QString>
 

@@ -34,8 +34,8 @@
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
 
-#ifndef _MatrixMath_H_
-#define _MatrixMath_H_
+#ifndef _matrixmath_h_
+#define _matrixmath_h_
 
 
 #include "SIMPLib/SIMPLib.h"

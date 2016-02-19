@@ -33,8 +33,8 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-#ifndef _HDF5MACROS_H_
-#define _HDF5MACROS_H_
+#ifndef _h5macros_h_
+#define _h5macros_h_
 
 
 #define OPEN_HDF5_FILE(fileId, filename)\

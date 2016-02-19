@@ -33,8 +33,8 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-#ifndef _ColorUtilities_H_
-#define _ColorUtilities_H_
+#ifndef _colorutilities_h_
+#define _colorutilities_h_
 
 #include "SIMPLib/SIMPLib.h"
 #include "SIMPLib/Utilities/ColorTable.h"

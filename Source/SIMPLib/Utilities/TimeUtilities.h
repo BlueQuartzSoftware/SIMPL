@@ -33,8 +33,8 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-#ifndef _TimeUtilities_H_
-#define _TimeUtilities_H_
+#ifndef _timeutilities_h_
+#define _timeutilities_h_
 
 #include <QtCore/QString>
 #include <QtCore/QTextStream>

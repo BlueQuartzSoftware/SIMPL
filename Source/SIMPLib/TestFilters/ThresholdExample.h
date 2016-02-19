@@ -34,8 +34,8 @@
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
 
-#ifndef _ThresholdExample_H_
-#define _ThresholdExample_H_
+#ifndef _thresholdexample_h_
+#define _thresholdexample_h_
 
 #include <QtCore/QString>
 

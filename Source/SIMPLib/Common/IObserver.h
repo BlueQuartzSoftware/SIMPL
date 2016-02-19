@@ -34,8 +34,8 @@
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
 
-#ifndef _IObserver_H_
-#define _IObserver_H_
+#ifndef _iobserver_h_
+#define _iobserver_h_
 
 
 #include "SIMPLib/SIMPLib.h"

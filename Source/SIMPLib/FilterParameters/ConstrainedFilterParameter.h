@@ -33,8 +33,8 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-#ifndef _ConstrainedFilterParameter_H_
-#define _ConstrainedFilterParameter_H_
+#ifndef _constrainedfilterparameter_h_
+#define _constrainedfilterparameter_h_
 
 #include "SIMPLib/FilterParameters/FilterParameter.h"
 

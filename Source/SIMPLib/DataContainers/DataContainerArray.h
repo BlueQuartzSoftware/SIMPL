@@ -34,8 +34,8 @@
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
 
-#ifndef _DATACONTAINERARRAY_H_
-#define _DATACONTAINERARRAY_H_
+#ifndef _datacontainerarray_h_
+#define _datacontainerarray_h_
 
 #include <stddef.h>       // for NULL
 

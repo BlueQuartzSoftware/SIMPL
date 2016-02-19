@@ -34,8 +34,8 @@
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
 
-#ifndef _LinkFeatureMapToElementArray_H_
-#define _LinkFeatureMapToElementArray_H_
+#ifndef _linkfeaturemaptoelementarray_h_
+#define _linkfeaturemaptoelementarray_h_
 
 #include "SIMPLib/SIMPLib.h"
 #include "SIMPLib/Common/AbstractFilter.h"

@@ -33,8 +33,8 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-#ifndef _H5FilterParametersREADER_H_
-#define _H5FilterParametersREADER_H_
+#ifndef _h5filterparametersreader_h_
+#define _h5filterparametersreader_h_
 
 #include "hdf5.h"
 

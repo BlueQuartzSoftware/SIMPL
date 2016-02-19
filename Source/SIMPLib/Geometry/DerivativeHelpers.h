@@ -33,8 +33,8 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-#ifndef _DerivativeHelpers_H_
-#define _DerivativeHelpers_H_
+#ifndef _derivativehelpers_h_
+#define _derivativehelpers_h_
 
 #include <math.h>
 

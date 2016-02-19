@@ -33,8 +33,8 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-#ifndef _DataContainerArrayProxy_H_
-#define _DataContainerArrayProxy_H_
+#ifndef _datacontainerarrayproxy_h_
+#define _datacontainerarrayproxy_h_
 
 
 

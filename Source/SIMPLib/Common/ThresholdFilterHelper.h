@@ -33,8 +33,8 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-#ifndef _ThresholdFilterHelperHelper_H_
-#define _ThresholdFilterHelperHelper_H_
+#ifndef _thresholdfilterhelper_h_
+#define _thresholdfilterhelper_h_
 
 
 #include "SIMPLib/SIMPLib.h"

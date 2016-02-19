@@ -32,8 +32,8 @@
 *    United States Prime Contract Navy N00173-07-C-2068
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
-#ifndef _JsonFilterParametersReader_H_
-#define _JsonFilterParametersReader_H_
+#ifndef _jsonfilterparametersreader_h_
+#define _jsonfilterparametersreader_h_
 
 
 

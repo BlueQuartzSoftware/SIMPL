@@ -33,8 +33,8 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-#ifndef _H5FilterParametersWRITER_H_
-#define _H5FilterParametersWRITER_H_
+#ifndef _h5filterparameterswriter_h_
+#define _h5filterparameterswriter_h_
 
 #include "hdf5.h"
 

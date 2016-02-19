@@ -34,8 +34,8 @@
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
 
-#ifndef _H5BoundarySTATSDATA_DELEGATE_H_
-#define _H5BoundarySTATSDATA_DELEGATE_H_
+#ifndef _h5boundarystatsdatadelegate_h_
+#define _h5boundarystatsdatadelegate_h_
 
 #include <QtCore/QString>
 

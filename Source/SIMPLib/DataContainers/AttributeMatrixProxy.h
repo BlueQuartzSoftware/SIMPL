@@ -33,8 +33,8 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-#ifndef _AttributeMatrixProxy_H_
-#define _AttributeMatrixProxy_H_
+#ifndef _attributematrixproxy_h_
+#define _attributematrixproxy_h_
 
 #include <QtCore/QMetaType>
 #include <QtCore/QString>

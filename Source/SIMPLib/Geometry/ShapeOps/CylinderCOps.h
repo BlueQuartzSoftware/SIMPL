@@ -33,8 +33,8 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-#ifndef _CYLINDERCOPS_H_
-#define _CYLINDERCOPS_H_
+#ifndef _cylindercops_h_
+#define _cylindercops_h_
 
 
 #include "ShapeOps.h"

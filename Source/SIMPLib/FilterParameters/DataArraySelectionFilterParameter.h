@@ -33,8 +33,8 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-#ifndef _DataArraySelectionFilterParameter_H_
-#define _DataArraySelectionFilterParameter_H_
+#ifndef _dataarrayselectionfilterparameter_h_
+#define _dataarrayselectionfilterparameter_h_
 
 #include "SIMPLib/FilterParameters/FilterParameter.h"
 #include "SIMPLib/DataContainers/DataArrayPath.h"

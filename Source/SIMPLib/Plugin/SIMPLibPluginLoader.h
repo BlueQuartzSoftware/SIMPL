@@ -33,8 +33,8 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-#ifndef _DREAM3D_PluginLoader_H_
-#define _DREAM3D_PluginLoader_H_
+#ifndef _simplibpluginloader_h_
+#define _simplibpluginloader_h_
 
 
 

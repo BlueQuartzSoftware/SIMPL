@@ -33,8 +33,8 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-#ifndef _DataContainerProxy_H_
-#define _DataContainerProxy_H_
+#ifndef _datacontainerproxy_h_
+#define _datacontainerproxy_h_
 
 
 #include <QtCore/QMetaType>

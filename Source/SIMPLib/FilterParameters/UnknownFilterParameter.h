@@ -33,8 +33,8 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-#ifndef _UnknownFilterParameter_H_
-#define _UnknownFilterParameter_H_
+#ifndef _unknownfilterparameter_h_
+#define _unknownfilterparameter_h_
 
 #include "SIMPLib/FilterParameters/FilterParameter.h"
 

@@ -33,8 +33,8 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-#ifndef _PluginManager_H_
-#define _PluginManager_H_
+#ifndef _pluginmanager_h_
+#define _pluginmanager_h_
 
 
 #include <QtCore/QString>

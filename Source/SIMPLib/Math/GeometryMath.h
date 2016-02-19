@@ -34,8 +34,8 @@
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
 
-#ifndef _GeometryMath_H_
-#define _GeometryMath_H_
+#ifndef _geometrymath_h_
+#define _geometrymath_h_
 
 
 #include "SIMPLib/SIMPLib.h"

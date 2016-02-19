@@ -33,8 +33,8 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-#ifndef _FilterManager_H_
-#define _FilterManager_H_
+#ifndef _filtermanager_h_
+#define _filtermanager_h_
 
 
 #include <QtCore/QString>

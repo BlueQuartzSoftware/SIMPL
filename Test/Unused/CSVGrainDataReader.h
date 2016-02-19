@@ -34,8 +34,8 @@
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
 
-#ifndef _CSVGRAINDATAREADER_H_
-#define _CSVGRAINDATAREADER_H_
+#ifndef _csvgraindatareader_h_
+#define _csvgraindatareader_h_
 
 #include <QtCore/QString>
 

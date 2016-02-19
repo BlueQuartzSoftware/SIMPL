@@ -29,8 +29,8 @@
 * USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
-#ifndef _MESHSTRUCTS_H_
-#define _MESHSTRUCTS_H_
+#ifndef _meshstructs_h_
+#define _meshstructs_h_
 
 //Qt Includes
 #include <QtCore/QString>

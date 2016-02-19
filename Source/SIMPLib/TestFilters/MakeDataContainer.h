@@ -32,8 +32,8 @@
 *    United States Prime Contract Navy N00173-07-C-2068
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
-#ifndef _MakeDataContainer_H_
-#define _MakeDataContainer_H_
+#ifndef _makedatacontainer_h_
+#define _makedatacontainer_h_
 
 
 #include <QtCore/QString>

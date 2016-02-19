@@ -33,8 +33,8 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-#ifndef _SUPERELLIPSOIDOPS_H_
-#define _SUPERELLIPSOIDOPS_H_
+#ifndef _superellipsoidops_h_
+#define _superellipsoidops_h_
 
 #include "ShapeOps.h"
 #include "SIMPLib/Common/SIMPLibSetGetMacros.h"

@@ -2,8 +2,8 @@
  * Your License or Copyright Information can go here
  */
 
-#ifndef _RawBinaryWriter_H_
-#define _RawBinaryWriter_H_
+#ifndef _rawbinarywriter_h_
+#define _rawbinarywriter_h_
 
 
 #include "SIMPLib/SIMPLib.h"

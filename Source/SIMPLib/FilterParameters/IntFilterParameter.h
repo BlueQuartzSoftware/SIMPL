@@ -33,8 +33,8 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-#ifndef _IntFilterParameter_H_
-#define _IntFilterParameter_H_
+#ifndef _intfilterparameter_h_
+#define _intfilterparameter_h_
 
 #include "SIMPLib/FilterParameters/FilterParameter.h"
 

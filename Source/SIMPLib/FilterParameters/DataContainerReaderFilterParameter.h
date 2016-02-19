@@ -33,8 +33,8 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-#ifndef _DataContainerReaderFilterParameter_H_
-#define _DataContainerReaderFilterParameter_H_
+#ifndef _datacontainerreaderfilterparameter_h_
+#define _datacontainerreaderfilterparameter_h_
 
 #include "SIMPLib/FilterParameters/FilterParameter.h"
 

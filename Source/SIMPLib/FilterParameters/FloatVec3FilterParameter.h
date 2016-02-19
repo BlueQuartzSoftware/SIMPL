@@ -33,8 +33,8 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-#ifndef _FloatVec3FilterParameter_H_
-#define _FloatVec3FilterParameter_H_
+#ifndef _floatvec3filterparameter_h_
+#define _floatvec3filterparameter_h_
 
 #include <QtCore/QJsonObject>
 

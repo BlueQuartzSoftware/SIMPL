@@ -33,8 +33,8 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-#ifndef _DataArrayCreationFilterParameter_H_
-#define _DataArrayCreationFilterParameter_H_
+#ifndef _dataarraycreationfilterparameter_h_
+#define _dataarraycreationfilterparameter_h_
 
 #include "SIMPLib/FilterParameters/FilterParameter.h"
 #include "SIMPLib/DataContainers/DataArrayPath.h"

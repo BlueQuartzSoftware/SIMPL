@@ -33,8 +33,8 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-#ifndef _QFilterParametersReader_H_
-#define _QFilterParametersReader_H_
+#ifndef _qfilterparametersreader_h_
+#define _qfilterparametersreader_h_
 
 
 
