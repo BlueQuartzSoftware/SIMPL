@@ -45,6 +45,7 @@
 #include "SIMPLib/FilterParameters/CalculatorFilterParameter.h"
 
 #include "util/CalculatorNumber.h"
+#include "util/CalculatorArray.h"
 #include "util/LeftParenthesisSeparator.h"
 #include "util/RightParenthesisSeparator.h"
 #include "util/AdditionOperator.h"
@@ -258,6 +259,11 @@ QVector<QSharedPointer<CalculatorItem> > ArrayCalculator::parseInfixEquation(QSt
     else if (listItem == "/")
     {
       itemPtr = QSharedPointer<DivisionOperator>(new DivisionOperator());
+    }
+    else if (am->getAttributeArrayNames().contains(listItem))
+    {
+      IDataArray::Pointer dataArray = am->getAttributeArray(listItem);
+      itemPtr = QSharedPointer<CalculatorArray>(new CalculatorArray(dataArray));
     }
 
     parsedInfix.push_back(itemPtr);
