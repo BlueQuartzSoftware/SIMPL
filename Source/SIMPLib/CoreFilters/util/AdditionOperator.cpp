@@ -33,14 +33,24 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-#include "CalculatorOperator.h"
+#include "AdditionOperator.h"
+
+#include "CalculatorNumber.h"
+#include "CalculatorArray.h"
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-CalculatorOperator::CalculatorOperator() :
-  CalculatorItem(),
-  m_PrecedenceId(0)
+AdditionOperator::AdditionOperator() :
+  CalculatorOperator()
+{
+  setPrecedenceId(0);
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+AdditionOperator::~AdditionOperator()
 {
 
 }
@@ -48,46 +58,14 @@ CalculatorOperator::CalculatorOperator() :
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-CalculatorOperator::~CalculatorOperator()
+QSharedPointer<CalculatorItem> AdditionOperator::calculate(QStack<QSharedPointer<CalculatorItem> > &executionStack)
 {
+  QSharedPointer<CalculatorNumber> item1 = qSharedPointerDynamicCast<CalculatorNumber>(executionStack.pop());
+  QSharedPointer<CalculatorNumber> item2 = qSharedPointerDynamicCast<CalculatorNumber>(executionStack.pop());
 
-}
+  double newNumber = item1->getNumber() + item2->getNumber();
 
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-bool CalculatorOperator::hasHigherPrecedence(const QSharedPointer<CalculatorOperator> other)
-{
-  if (m_PrecedenceId > other->m_PrecedenceId)
-  {
-    return true;
-  }
-
-  return false;
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-QSharedPointer<CalculatorItem> CalculatorOperator::calculate(QStack<QSharedPointer<CalculatorItem> > &executionStack)
-{
-  // This should never be executed
-  return QSharedPointer<CalculatorItem>();
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-int CalculatorOperator::getPrecedenceId()
-{
-  return m_PrecedenceId;
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-void CalculatorOperator::setPrecedenceId(int id)
-{
-  m_PrecedenceId = id;
+  QSharedPointer<CalculatorItem> newItem = QSharedPointer<CalculatorNumber>(new CalculatorNumber(newNumber));
+  return newItem;
 }
 

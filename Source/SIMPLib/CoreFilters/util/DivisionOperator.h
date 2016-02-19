@@ -33,61 +33,30 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
+#ifndef _DivisionOperator_H_
+#define _DivisionOperator_H_
+
+#include <QtCore/QSharedPointer>
+#include <QtCore/QStack>
+
+#include "SIMPLib/SIMPLib.h"
+
 #include "CalculatorOperator.h"
 
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-CalculatorOperator::CalculatorOperator() :
-  CalculatorItem(),
-  m_PrecedenceId(0)
+class SIMPLib_EXPORT DivisionOperator : public CalculatorOperator
 {
+  public:
 
-}
+    DivisionOperator();
+    virtual ~DivisionOperator();
 
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-CalculatorOperator::~CalculatorOperator()
-{
+    virtual QSharedPointer<CalculatorItem> calculate(QStack<QSharedPointer<CalculatorItem> > &executionStack);
 
-}
+  private:
+    int                                             m_PrecedenceId;
 
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-bool CalculatorOperator::hasHigherPrecedence(const QSharedPointer<CalculatorOperator> other)
-{
-  if (m_PrecedenceId > other->m_PrecedenceId)
-  {
-    return true;
-  }
+    DivisionOperator(const DivisionOperator&); // Copy Constructor Not Implemented
+    void operator=(const DivisionOperator&); // Operator '=' Not Implemented
+};
 
-  return false;
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-QSharedPointer<CalculatorItem> CalculatorOperator::calculate(QStack<QSharedPointer<CalculatorItem> > &executionStack)
-{
-  // This should never be executed
-  return QSharedPointer<CalculatorItem>();
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-int CalculatorOperator::getPrecedenceId()
-{
-  return m_PrecedenceId;
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-void CalculatorOperator::setPrecedenceId(int id)
-{
-  m_PrecedenceId = id;
-}
-
+#endif /* _DivisionOperator_H_ */

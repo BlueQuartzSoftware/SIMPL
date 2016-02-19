@@ -44,6 +44,14 @@
 #include "SIMPLib/FilterParameters/AttributeMatrixSelectionFilterParameter.h"
 #include "SIMPLib/FilterParameters/CalculatorFilterParameter.h"
 
+#include "util/CalculatorNumber.h"
+#include "util/LeftParenthesisSeparator.h"
+#include "util/RightParenthesisSeparator.h"
+#include "util/AdditionOperator.h"
+#include "util/SubtractionOperator.h"
+#include "util/MultiplicationOperator.h"
+#include "util/DivisionOperator.h"
+
 // Include the MOC generated file for this class
 #include "moc_ArrayCalculator.cpp"
 
@@ -55,15 +63,12 @@ ArrayCalculator::ArrayCalculator() :
 {
   setupFilterParameters();
 
-  m_OperatorList.push_back("(");
-  m_OperatorList.push_back(")");
-  m_OperatorList.push_back("sin");
-  m_OperatorList.push_back("cos");
-  m_OperatorList.push_back("tan");
-  m_OperatorList.push_back("+");
-  m_OperatorList.push_back("-");
-  m_OperatorList.push_back("*");
-  m_OperatorList.push_back("/");
+  m_SymbolList.push_back("(");
+  m_SymbolList.push_back(")");
+  m_SymbolList.push_back("+");
+  m_SymbolList.push_back("-");
+  m_SymbolList.push_back("*");
+  m_SymbolList.push_back("/");
 }
 
 // -----------------------------------------------------------------------------
@@ -142,7 +147,36 @@ void ArrayCalculator::execute()
   dataCheck();
   if(getErrorCondition() < 0) { return; }
 
-  QStringList delimitedInfix = delimitEquation(m_InfixEquation);
+  // Parse the infix equation from the user interface
+  QVector<QSharedPointer<CalculatorItem> > parsedInfix = parseInfixEquation(m_InfixEquation);
+
+  // Convert the parsed infix equation into RPN
+  QVector<QSharedPointer<CalculatorItem> > rpn = toRPN(parsedInfix);
+
+  // Execute the RPN equation
+  for (int i = 0; i < rpn.size(); i++)
+  {
+    QSharedPointer<CalculatorItem> rpnItem = rpn[i];
+    if (NULL != qSharedPointerDynamicCast<CalculatorNumber>(rpnItem) || NULL != qSharedPointerDynamicCast<CalculatorArray>(rpnItem))
+    {
+      m_ExecutionStack.push(rpnItem);
+    }
+    else if (NULL != qSharedPointerDynamicCast<CalculatorOperator>(rpnItem))
+    {
+      QSharedPointer<CalculatorOperator> rpnOperator = qSharedPointerDynamicCast<CalculatorOperator>(rpnItem);
+      QSharedPointer<CalculatorItem> rpnCalculatedItem = rpnOperator->calculate(m_ExecutionStack);
+      m_ExecutionStack.push(rpnCalculatedItem);
+    }
+    else
+    {
+      // ERROR: Unrecognized item in the RPN vector
+    }
+  }
+
+  // Grab the result from the stack
+  QSharedPointer<CalculatorItem> resultItem = m_ExecutionStack.pop();
+  QSharedPointer<CalculatorNumber> numberItem = qSharedPointerDynamicCast<CalculatorNumber>(resultItem);
+  double num = numberItem->getNumber();
 
   if (getCancel() == true) { return; }
 
@@ -160,37 +194,147 @@ void ArrayCalculator::execute()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-QStringList ArrayCalculator::delimitEquation(QString equation)
+QVector<QSharedPointer<CalculatorItem> > ArrayCalculator::parseInfixEquation(QString equation)
 {
   if (equation.isEmpty())
   {
-    return QStringList();
+    return QVector<QSharedPointer<CalculatorItem> >();
   }
 
-  for (int i = 0; i < m_OperatorList.size(); i++)
+  int err = 0;
+  AttributeMatrix::Pointer am = getDataContainerArray()->getPrereqAttributeMatrixFromPath(this, m_SelectedAttributeMatrix, err);
+  if (NULL == am)
   {
-    QString operatorStr = m_OperatorList[i];
-
-    equation.replace(operatorStr, "@" + operatorStr + "@");
+    // ERROR: Could not find the attribute matrix
   }
 
+  // Remove all spaces
+  equation.remove(" ");
+
+  // Place @ symbols around each item in the equation
+  for (int i = 0; i < m_SymbolList.size(); i++)
+  {
+    QString symbolStr = m_SymbolList[i];
+
+    equation.replace(symbolStr, "@" + symbolStr + "@");
+  }
+  
+  // Now split the equation up into a QStringList of items
   QStringList list = equation.split("@", QString::SkipEmptyParts);
 
-  return list;
+  // Iterate through the QStringList and create the proper CalculatorItems
+  QVector<QSharedPointer<CalculatorItem> > parsedInfix;
+  for (int i = 0; i < list.size(); i++)
+  {
+    QString listItem = list[i];
+    QSharedPointer<CalculatorItem> itemPtr;
+
+    bool ok;
+    double num = listItem.toDouble(&ok);
+    if (ok == true)
+    {
+      itemPtr = QSharedPointer<CalculatorNumber>(new CalculatorNumber(num));
+    }
+    else if (listItem == "(")
+    {
+      itemPtr = QSharedPointer<LeftParenthesisSeparator>(new LeftParenthesisSeparator());
+    }
+    else if (listItem == ")")
+    {
+      itemPtr = QSharedPointer<RightParenthesisSeparator>(new RightParenthesisSeparator());
+    }
+    else if (listItem == "+")
+    {
+      itemPtr = QSharedPointer<AdditionOperator>(new AdditionOperator());
+    }
+    else if (listItem == "-")
+    {
+      itemPtr = QSharedPointer<SubtractionOperator>(new SubtractionOperator());
+    }
+    else if (listItem == "*")
+    {
+      itemPtr = QSharedPointer<MultiplicationOperator>(new MultiplicationOperator());
+    }
+    else if (listItem == "/")
+    {
+      itemPtr = QSharedPointer<DivisionOperator>(new DivisionOperator());
+    }
+
+    parsedInfix.push_back(itemPtr);
+  }
+
+  // Return the parsed infix equation as a vector of CalculatorItems
+  return parsedInfix;
 }
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-bool ArrayCalculator::isOperator(QString str)
+QVector<QSharedPointer<CalculatorItem> > ArrayCalculator::toRPN(QVector<QSharedPointer<CalculatorItem> > infixEquation)
 {
-  if (str == "(" || str == ")" || str == "sin" || str == "cos" || str == "tan"
-      || str == "+" || str == "-" || str == "*" || str == "/")
+  QStack<QSharedPointer<CalculatorItem> > itemStack;
+  QVector<QSharedPointer<CalculatorItem> > rpnEquation;
+
+  // Iterate through the infix equation items
+  for (int i = 0; i < infixEquation.size(); i++)
   {
-    return true;
+    QSharedPointer<CalculatorItem> calcItem = infixEquation[i];
+    if (NULL != qSharedPointerDynamicCast<CalculatorNumber>(calcItem))
+    {
+      // This is a number, so push it onto the rpn equation output
+      rpnEquation.push_back(calcItem);
+    }
+    else if (NULL != qSharedPointerDynamicCast<LeftParenthesisSeparator>(calcItem))
+    {
+      // This is a left parenthesis, so push it onto the item stack
+      itemStack.push_back(calcItem);
+    }
+    else if (NULL != qSharedPointerDynamicCast<RightParenthesisSeparator>(calcItem))
+    {
+      // This is a right parenthesis, so push operators from the item stack onto the rpn equation output until we get to the left parenthesis
+      while (itemStack.isEmpty() == false && NULL == qSharedPointerDynamicCast<LeftParenthesisSeparator>(itemStack.top()))
+      {
+        rpnEquation.push_back(itemStack.pop());
+      }
+
+      if (itemStack.isEmpty() == true)
+      {
+        // ERROR: Could not find matching left parenthesis
+      }
+
+      // Discard the left parenthesis that we found
+      itemStack.pop();
+    }
+    else if (NULL != qSharedPointerDynamicCast<CalculatorOperator>(calcItem))
+    {
+      // This is an operator
+      QSharedPointer<CalculatorOperator> incomingOperator = qSharedPointerDynamicCast<CalculatorOperator>(calcItem);
+      if (itemStack.isEmpty() == false)
+      {
+        /* If the operator's precedence is lower than the precedence of the operator on top of the item stack, push the operator at the top
+           of the item stack onto the rpn equation output.  Keeping doing this until there isn't another operator at the top of the item
+           stack or the operator has a higher precedence than the one currently on top of the stack */
+        QSharedPointer<CalculatorOperator> topOperator = qSharedPointerDynamicCast<CalculatorOperator>(itemStack.top());
+        while (NULL != topOperator && incomingOperator->hasHigherPrecedence(topOperator) == false)
+        {
+          rpnEquation.push_back(itemStack.pop());
+          topOperator = qSharedPointerDynamicCast<CalculatorOperator>(itemStack.top());
+        }
+      }
+
+      // Push the operator onto the rpn equation output.
+      itemStack.push_back(calcItem);
+    }
   }
 
-  return false;
+  /* After we are done iterating through the infix equation items, keep transferring items from the item stack to the 
+     rpn equation output until the stack is empty. */
+  while (itemStack.isEmpty() == false)
+  {
+    rpnEquation.push_back(itemStack.pop());
+  }
+
+  return rpnEquation;
 }
 
 // -----------------------------------------------------------------------------

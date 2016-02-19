@@ -116,6 +116,24 @@ ADD_SIMPL_SUPPORT_SOURCE(${SIMPLib_SOURCE_DIR} ${_filterGroupName} util/Calculat
 ADD_SIMPL_SUPPORT_HEADER(${SIMPLib_SOURCE_DIR} ${_filterGroupName} util/CalculatorOperator.h)
 ADD_SIMPL_SUPPORT_SOURCE(${SIMPLib_SOURCE_DIR} ${_filterGroupName} util/CalculatorOperator.cpp)
 
+ADD_SIMPL_SUPPORT_HEADER(${SIMPLib_SOURCE_DIR} ${_filterGroupName} util/AdditionOperator.h)
+ADD_SIMPL_SUPPORT_SOURCE(${SIMPLib_SOURCE_DIR} ${_filterGroupName} util/AdditionOperator.cpp)
+
+ADD_SIMPL_SUPPORT_HEADER(${SIMPLib_SOURCE_DIR} ${_filterGroupName} util/SubtractionOperator.h)
+ADD_SIMPL_SUPPORT_SOURCE(${SIMPLib_SOURCE_DIR} ${_filterGroupName} util/SubtractionOperator.cpp)
+
+ADD_SIMPL_SUPPORT_HEADER(${SIMPLib_SOURCE_DIR} ${_filterGroupName} util/MultiplicationOperator.h)
+ADD_SIMPL_SUPPORT_SOURCE(${SIMPLib_SOURCE_DIR} ${_filterGroupName} util/MultiplicationOperator.cpp)
+
+ADD_SIMPL_SUPPORT_HEADER(${SIMPLib_SOURCE_DIR} ${_filterGroupName} util/DivisionOperator.h)
+ADD_SIMPL_SUPPORT_SOURCE(${SIMPLib_SOURCE_DIR} ${_filterGroupName} util/DivisionOperator.cpp)
+
+ADD_SIMPL_SUPPORT_HEADER(${SIMPLib_SOURCE_DIR} ${_filterGroupName} util/LeftParenthesisSeparator.h)
+ADD_SIMPL_SUPPORT_SOURCE(${SIMPLib_SOURCE_DIR} ${_filterGroupName} util/LeftParenthesisSeparator.cpp)
+
+ADD_SIMPL_SUPPORT_HEADER(${SIMPLib_SOURCE_DIR} ${_filterGroupName} util/RightParenthesisSeparator.h)
+ADD_SIMPL_SUPPORT_SOURCE(${SIMPLib_SOURCE_DIR} ${_filterGroupName} util/RightParenthesisSeparator.cpp)
+
 # -- Add the binary directory for this subdirectory to the include path which is where the moc files are generated
 include_directories( ${SIMPLib_BINARY_DIR}/${_filterGroupName})
 

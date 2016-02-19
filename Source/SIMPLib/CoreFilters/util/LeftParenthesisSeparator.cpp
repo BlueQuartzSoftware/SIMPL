@@ -33,14 +33,13 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-#include "CalculatorOperator.h"
+#include "LeftParenthesisSeparator.h"
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-CalculatorOperator::CalculatorOperator() :
-  CalculatorItem(),
-  m_PrecedenceId(0)
+LeftParenthesisSeparator::LeftParenthesisSeparator() :
+CalculatorItem()
 {
 
 }
@@ -48,46 +47,8 @@ CalculatorOperator::CalculatorOperator() :
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-CalculatorOperator::~CalculatorOperator()
+LeftParenthesisSeparator::~LeftParenthesisSeparator()
 {
 
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-bool CalculatorOperator::hasHigherPrecedence(const QSharedPointer<CalculatorOperator> other)
-{
-  if (m_PrecedenceId > other->m_PrecedenceId)
-  {
-    return true;
-  }
-
-  return false;
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-QSharedPointer<CalculatorItem> CalculatorOperator::calculate(QStack<QSharedPointer<CalculatorItem> > &executionStack)
-{
-  // This should never be executed
-  return QSharedPointer<CalculatorItem>();
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-int CalculatorOperator::getPrecedenceId()
-{
-  return m_PrecedenceId;
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-void CalculatorOperator::setPrecedenceId(int id)
-{
-  m_PrecedenceId = id;
 }
 

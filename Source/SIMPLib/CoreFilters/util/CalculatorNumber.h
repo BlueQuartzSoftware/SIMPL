@@ -49,6 +49,8 @@ class SIMPLib_EXPORT CalculatorNumber : public CalculatorItem
     CalculatorNumber(double number, QObject* parent = NULL);
     virtual ~CalculatorNumber();
 
+    double getNumber();
+
   private:
     double                              m_Number;
 

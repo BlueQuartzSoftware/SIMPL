@@ -33,61 +33,24 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-#include "CalculatorOperator.h"
+#ifndef _RightParenthesisSeparator_H_
+#define _RightParenthesisSeparator_H_
 
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-CalculatorOperator::CalculatorOperator() :
-  CalculatorItem(),
-  m_PrecedenceId(0)
+#include "SIMPLib/SIMPLib.h"
+
+#include "CalculatorItem.h"
+
+class SIMPLib_EXPORT RightParenthesisSeparator : public CalculatorItem
 {
+  public:
 
-}
+    RightParenthesisSeparator();
+    virtual ~RightParenthesisSeparator();
 
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-CalculatorOperator::~CalculatorOperator()
-{
+  private:
 
-}
+    RightParenthesisSeparator(const RightParenthesisSeparator&); // Copy Constructor Not Implemented
+    void operator=(const RightParenthesisSeparator&); // Operator '=' Not Implemented
+};
 
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-bool CalculatorOperator::hasHigherPrecedence(const QSharedPointer<CalculatorOperator> other)
-{
-  if (m_PrecedenceId > other->m_PrecedenceId)
-  {
-    return true;
-  }
-
-  return false;
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-QSharedPointer<CalculatorItem> CalculatorOperator::calculate(QStack<QSharedPointer<CalculatorItem> > &executionStack)
-{
-  // This should never be executed
-  return QSharedPointer<CalculatorItem>();
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-int CalculatorOperator::getPrecedenceId()
-{
-  return m_PrecedenceId;
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-void CalculatorOperator::setPrecedenceId(int id)
-{
-  m_PrecedenceId = id;
-}
-
+#endif /* _RightParenthesisSeparator_H_ */

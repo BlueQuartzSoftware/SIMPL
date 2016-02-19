@@ -36,26 +36,26 @@
 #ifndef _CalculatorOperator_H_
 #define _CalculatorOperator_H_
 
-#include <QtCore/QObject>
 #include <QtCore/QSharedPointer>
+#include <QtCore/QVector>
 
 #include "SIMPLib/SIMPLib.h"
 
 #include "CalculatorItem.h"
 
-class CalculatorNumber;
-
 class SIMPLib_EXPORT CalculatorOperator : public CalculatorItem
 {
   public:
-
     CalculatorOperator();
     virtual ~CalculatorOperator();
 
-    virtual QSharedPointer<CalculatorNumber> calculate();
+    bool hasHigherPrecedence(QSharedPointer<CalculatorOperator> other);
 
-    bool operator<=(const CalculatorOperator &other);
-    bool operator>=(const CalculatorOperator &other);
+    virtual QSharedPointer<CalculatorItem> calculate(QStack<QSharedPointer<CalculatorItem> > &executionStack);
+
+  protected:
+    int getPrecedenceId();
+    void setPrecedenceId(int id);
 
   private:
     int                                             m_PrecedenceId;

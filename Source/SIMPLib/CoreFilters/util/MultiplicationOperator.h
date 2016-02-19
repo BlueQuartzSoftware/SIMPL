@@ -33,61 +33,30 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
+#ifndef _MultiplicationOperator_H_
+#define _MultiplicationOperator_H_
+
+#include <QtCore/QSharedPointer>
+#include <QtCore/QStack>
+
+#include "SIMPLib/SIMPLib.h"
+
 #include "CalculatorOperator.h"
 
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-CalculatorOperator::CalculatorOperator() :
-  CalculatorItem(),
-  m_PrecedenceId(0)
+class SIMPLib_EXPORT MultiplicationOperator : public CalculatorOperator
 {
+  public:
 
-}
+    MultiplicationOperator();
+    virtual ~MultiplicationOperator();
 
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-CalculatorOperator::~CalculatorOperator()
-{
+    virtual QSharedPointer<CalculatorItem> calculate(QStack<QSharedPointer<CalculatorItem> > &executionStack);
 
-}
+  private:
+    int                                             m_PrecedenceId;
 
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-bool CalculatorOperator::hasHigherPrecedence(const QSharedPointer<CalculatorOperator> other)
-{
-  if (m_PrecedenceId > other->m_PrecedenceId)
-  {
-    return true;
-  }
+    MultiplicationOperator(const MultiplicationOperator&); // Copy Constructor Not Implemented
+    void operator=(const MultiplicationOperator&); // Operator '=' Not Implemented
+};
 
-  return false;
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-QSharedPointer<CalculatorItem> CalculatorOperator::calculate(QStack<QSharedPointer<CalculatorItem> > &executionStack)
-{
-  // This should never be executed
-  return QSharedPointer<CalculatorItem>();
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-int CalculatorOperator::getPrecedenceId()
-{
-  return m_PrecedenceId;
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-void CalculatorOperator::setPrecedenceId(int id)
-{
-  m_PrecedenceId = id;
-}
-
+#endif /* _MultiplicationOperator_H_ */

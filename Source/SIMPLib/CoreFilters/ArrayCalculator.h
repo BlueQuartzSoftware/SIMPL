@@ -44,6 +44,8 @@
 #include "SIMPLib/Common/SIMPLibSetGetMacros.h"
 #include "SIMPLib/Common/AbstractFilter.h"
 
+class CalculatorItem;
+
 /**
  * @brief The ArrayCalculator class. See [Filter documentation](@ref createdatacontainer) for details.
  */
@@ -160,11 +162,11 @@ class ArrayCalculator : public AbstractFilter
     void dataCheck();
 
   private:
-    QStringList                                                 m_OperatorList;
+    QStringList                                                 m_SymbolList;
+    QStack<QSharedPointer<CalculatorItem> >                     m_ExecutionStack;
 
-    bool isOperator(QString str);
-
-    QStringList delimitEquation(QString equation);
+    QVector<QSharedPointer<CalculatorItem> > parseInfixEquation(QString equation);
+    QVector<QSharedPointer<CalculatorItem> > toRPN(QVector<QSharedPointer<CalculatorItem> > infixEquation);
 
     ArrayCalculator(const ArrayCalculator&); // Copy Constructor Not Implemented
     void operator=(const ArrayCalculator&); // Operator '=' Not Implemented
