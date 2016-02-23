@@ -245,7 +245,7 @@ QVector<QSharedPointer<CalculatorItem> > ArrayCalculator::parseInfixEquation(QSt
     return QVector<QSharedPointer<CalculatorItem> >();
   }
 
-  // Place @ symbols around each item in the equation
+  // Remove spaces and place @ symbols around each item in the equation
   for (int i = 0; i < m_SymbolList.size(); i++)
   {
     QString symbolStr = m_SymbolList[i];
@@ -257,7 +257,15 @@ QVector<QSharedPointer<CalculatorItem> > ArrayCalculator::parseInfixEquation(QSt
   for (int i = 0; i < aaNames.size(); i++)
   {
     QString aaName = aaNames[i];
-    equation.replace(aaName, "@" + aaName + "@");
+    equation.replace(aaName, "@[" + QString::number(i) + "]@");
+  }
+
+  equation.remove(" ");
+
+  for (int i = 0; i < aaNames.size(); i++)
+  {
+    QString aaName = aaNames[i];
+    equation.replace("[" + QString::number(i) + "]", aaName);
   }
   
   // Now split the equation up into a QStringList of items
@@ -388,7 +396,14 @@ QVector<QSharedPointer<CalculatorItem> > ArrayCalculator::toRPN(QVector<QSharedP
         while (NULL != topOperator && incomingOperator->hasHigherPrecedence(topOperator) == false)
         {
           rpnEquation.push_back(itemStack.pop());
-          topOperator = qSharedPointerDynamicCast<CalculatorOperator>(itemStack.top());
+          if (itemStack.isEmpty() == false)
+          {
+            topOperator = qSharedPointerDynamicCast<CalculatorOperator>(itemStack.top());
+          }
+          else
+          {
+            topOperator.clear();
+          }
         }
       }
 
