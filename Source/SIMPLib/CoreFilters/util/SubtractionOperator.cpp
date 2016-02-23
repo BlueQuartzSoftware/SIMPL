@@ -37,6 +37,14 @@
 
 #include "CalculatorNumber.h"
 
+#define SUBTRACT_NUMBER_FROM_ARRAY(iDataPtr, dataType, newArray, numberVal)\
+  dataType::Pointer arrayCast = std::dynamic_pointer_cast<dataType>(iDataPtr);\
+  for (int i = 0; i < arrayCast->getNumberOfTuples(); i++)\
+  {\
+    double dblValue = static_cast<double>(arrayCast->getValue(i)) - static_cast<double>(numberVal);\
+    newArray->initializeTuple(i, &dblValue);\
+  }\
+
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
@@ -59,12 +67,102 @@ SubtractionOperator::~SubtractionOperator()
 // -----------------------------------------------------------------------------
 QSharedPointer<CalculatorItem> SubtractionOperator::calculate(AbstractFilter* filter, const QString &newArrayName, QStack<QSharedPointer<CalculatorItem> > &executionStack)
 {
-  QSharedPointer<CalculatorNumber> item1 = qSharedPointerDynamicCast<CalculatorNumber>(executionStack.pop());
-  QSharedPointer<CalculatorNumber> item2 = qSharedPointerDynamicCast<CalculatorNumber>(executionStack.pop());
+  if (executionStack.size() >= 2)
+  {
+    EXECUTE_ARRAY_NUMBER_OPERATIONS(filter, newArrayName, executionStack.pop(), executionStack.pop(), subtract)
+  }
 
-  double newNumber = item2->getNumber() - item1->getNumber();
+  // If the execution gets down here, then we have an error
+  QString ss = QObject::tr("The chosen infix equation is not a valid equation.");
+  filter->setErrorCondition(-4005);
+  filter->notifyErrorMessage(filter->getHumanLabel(), ss, filter->getErrorCondition());
+  return QSharedPointer<CalculatorItem>();
+}
 
-  QSharedPointer<CalculatorItem> newItem = QSharedPointer<CalculatorNumber>(new CalculatorNumber(newNumber));
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+QSharedPointer<CalculatorItem> SubtractionOperator::subtract(AbstractFilter* filter, const QString &newArrayName, IDataArray::Pointer dataArray, double subtrahend)
+{
+  DataArray<double>::Pointer newArray = DataArray<double>::CreateArray(dataArray->getNumberOfTuples(), newArrayName);
+
+  if (TemplateHelpers::CanDynamicCast<FloatArrayType>()(dataArray))
+  {
+    SUBTRACT_NUMBER_FROM_ARRAY(dataArray, FloatArrayType, newArray, subtrahend)
+  }
+  else if (TemplateHelpers::CanDynamicCast<DoubleArrayType>()(dataArray))
+  {
+    SUBTRACT_NUMBER_FROM_ARRAY(dataArray, DoubleArrayType, newArray, subtrahend)
+  }
+  else if (TemplateHelpers::CanDynamicCast<Int8ArrayType>()(dataArray))
+  {
+    SUBTRACT_NUMBER_FROM_ARRAY(dataArray, Int8ArrayType, newArray, subtrahend)
+  }
+  else if (TemplateHelpers::CanDynamicCast<UInt8ArrayType>()(dataArray))
+  {
+    SUBTRACT_NUMBER_FROM_ARRAY(dataArray, UInt8ArrayType, newArray, subtrahend)
+  }
+  else if (TemplateHelpers::CanDynamicCast<Int16ArrayType>()(dataArray))
+  {
+    SUBTRACT_NUMBER_FROM_ARRAY(dataArray, Int16ArrayType, newArray, subtrahend)
+  }
+  else if (TemplateHelpers::CanDynamicCast<UInt16ArrayType>()(dataArray))
+  {
+    SUBTRACT_NUMBER_FROM_ARRAY(dataArray, UInt16ArrayType, newArray, subtrahend)
+  }
+  else if (TemplateHelpers::CanDynamicCast<Int32ArrayType>()(dataArray))
+  {
+    SUBTRACT_NUMBER_FROM_ARRAY(dataArray, Int32ArrayType, newArray, subtrahend)
+  }
+  else if (TemplateHelpers::CanDynamicCast<UInt32ArrayType>()(dataArray))
+  {
+    SUBTRACT_NUMBER_FROM_ARRAY(dataArray, UInt32ArrayType, newArray, subtrahend)
+  }
+  else if (TemplateHelpers::CanDynamicCast<Int64ArrayType>()(dataArray))
+  {
+    SUBTRACT_NUMBER_FROM_ARRAY(dataArray, Int64ArrayType, newArray, subtrahend)
+  }
+  else if (TemplateHelpers::CanDynamicCast<UInt64ArrayType>()(dataArray))
+  {
+    SUBTRACT_NUMBER_FROM_ARRAY(dataArray, UInt64ArrayType, newArray, subtrahend)
+  }
+
+  QSharedPointer<CalculatorItem> newItem = QSharedPointer<CalculatorArray>(new CalculatorArray(newArray));
+  return newItem;
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+template <typename J, typename K>
+QSharedPointer<CalculatorItem> SubtractionOperator::subtract(AbstractFilter* filter, const QString &newArrayName, IDataArray::Pointer subtrahend, IDataArray::Pointer minuend)
+{
+  J::Pointer subtrahendCast = std::dynamic_pointer_cast<J>(subtrahend);
+  K::Pointer minuendCast = std::dynamic_pointer_cast<K>(minuend);
+
+  DataArray<double>::Pointer newArray = DataArray<double>::CreateArray(minuendCast->getNumberOfTuples(), newArrayName);
+
+  for (int i = 0; i < newArray->getNumberOfTuples(); i++)
+  {
+    double value = static_cast<double>(minuendCast->getValue(i)) - static_cast<double>(subtrahendCast->getValue(i));
+    newArray->initializeTuple(i, &value);
+  }
+
+  QSharedPointer<CalculatorItem> newItem = QSharedPointer<CalculatorArray>(new CalculatorArray(newArray));
+  return newItem;
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+QSharedPointer<CalculatorItem> SubtractionOperator::subtract(AbstractFilter* filter, const QString &newArrayName, double subtrahend, double minuend)
+{
+  double newNumber = minuend - subtrahend;
+
+  DataArray<double>::Pointer newArray = DataArray<double>::CreateArray(1, newArrayName);
+  newArray->initializeTuple(0, &newNumber);
+
+  QSharedPointer<CalculatorItem> newItem = QSharedPointer<CalculatorArray>(new CalculatorArray(newArray));
   return newItem;
 }
 

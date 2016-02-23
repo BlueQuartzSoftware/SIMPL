@@ -70,9 +70,9 @@ AdditionOperator::~AdditionOperator()
 // -----------------------------------------------------------------------------
 QSharedPointer<CalculatorItem> AdditionOperator::calculate(AbstractFilter* filter, const QString &newArrayName, QStack<QSharedPointer<CalculatorItem> > &executionStack)
 {
-  if (executionStack.isEmpty() == false)
+  if (executionStack.size() >= 2)
   {
-    EXECUTE_ARRAY_NUMBER_OPERATIONS(newArrayName, executionStack.pop(), executionStack.pop(), add)
+    EXECUTE_ARRAY_NUMBER_OPERATIONS(filter, newArrayName, executionStack.pop(), executionStack.pop(), add)
   }
 
   // If the execution gets down here, then we have an error
@@ -85,7 +85,7 @@ QSharedPointer<CalculatorItem> AdditionOperator::calculate(AbstractFilter* filte
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-QSharedPointer<CalculatorItem> AdditionOperator::add(const QString &newArrayName, IDataArray::Pointer dataArray, double number)
+QSharedPointer<CalculatorItem> AdditionOperator::add(AbstractFilter* filter, const QString &newArrayName, IDataArray::Pointer dataArray, double number)
 {
   DataArray<double>::Pointer newArray = DataArray<double>::CreateArray(dataArray->getNumberOfTuples(), newArrayName);
 
@@ -138,7 +138,7 @@ QSharedPointer<CalculatorItem> AdditionOperator::add(const QString &newArrayName
 //
 // -----------------------------------------------------------------------------
 template <typename J, typename K>
-QSharedPointer<CalculatorItem> AdditionOperator::add(const QString &newArrayName, IDataArray::Pointer dataArray1, IDataArray::Pointer dataArray2)
+QSharedPointer<CalculatorItem> AdditionOperator::add(AbstractFilter* filter, const QString &newArrayName, IDataArray::Pointer dataArray1, IDataArray::Pointer dataArray2)
 {
   J::Pointer arrayCast1 = std::dynamic_pointer_cast<J>(dataArray1);
   K::Pointer arrayCast2 = std::dynamic_pointer_cast<K>(dataArray2);
@@ -158,7 +158,7 @@ QSharedPointer<CalculatorItem> AdditionOperator::add(const QString &newArrayName
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-QSharedPointer<CalculatorItem> AdditionOperator::add(const QString &newArrayName, double number1, double number2)
+QSharedPointer<CalculatorItem> AdditionOperator::add(AbstractFilter* filter, const QString &newArrayName, double number1, double number2)
 {
   double newNumber = number1 + number2;
 

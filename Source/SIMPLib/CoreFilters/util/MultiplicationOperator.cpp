@@ -37,6 +37,14 @@
 
 #include "CalculatorNumber.h"
 
+#define MULTIPLY_ARRAY_BY_NUMBER(iDataPtr, dataType, newArray, numberVal)\
+  dataType::Pointer arrayCast = std::dynamic_pointer_cast<dataType>(iDataPtr);\
+  for (int i = 0; i < arrayCast->getNumberOfTuples(); i++)\
+  {\
+    double dblValue = static_cast<double>(arrayCast->getValue(i)) * static_cast<double>(numberVal);\
+    newArray->initializeTuple(i, &dblValue);\
+  }\
+
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
@@ -59,12 +67,102 @@ MultiplicationOperator::~MultiplicationOperator()
 // -----------------------------------------------------------------------------
 QSharedPointer<CalculatorItem> MultiplicationOperator::calculate(AbstractFilter* filter, const QString &newArrayName, QStack<QSharedPointer<CalculatorItem> > &executionStack)
 {
-  QSharedPointer<CalculatorNumber> item1 = qSharedPointerDynamicCast<CalculatorNumber>(executionStack.pop());
-  QSharedPointer<CalculatorNumber> item2 = qSharedPointerDynamicCast<CalculatorNumber>(executionStack.pop());
+  if (executionStack.size() >= 2)
+  {
+    EXECUTE_ARRAY_NUMBER_OPERATIONS(filter, newArrayName, executionStack.pop(), executionStack.pop(), multiply)
+  }
 
-  double newNumber = item2->getNumber() * item1->getNumber();
+  // If the execution gets down here, then we have an error
+  QString ss = QObject::tr("The chosen infix equation is not a valid equation.");
+  filter->setErrorCondition(-4005);
+  filter->notifyErrorMessage(filter->getHumanLabel(), ss, filter->getErrorCondition());
+  return QSharedPointer<CalculatorItem>();
+}
 
-  QSharedPointer<CalculatorItem> newItem = QSharedPointer<CalculatorNumber>(new CalculatorNumber(newNumber));
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+QSharedPointer<CalculatorItem> MultiplicationOperator::multiply(AbstractFilter* filter, const QString &newArrayName, IDataArray::Pointer dataArray, double multiplier)
+{
+  DataArray<double>::Pointer newArray = DataArray<double>::CreateArray(dataArray->getNumberOfTuples(), newArrayName);
+
+  if (TemplateHelpers::CanDynamicCast<FloatArrayType>()(dataArray))
+  {
+    MULTIPLY_ARRAY_BY_NUMBER(dataArray, FloatArrayType, newArray, multiplier)
+  }
+  else if (TemplateHelpers::CanDynamicCast<DoubleArrayType>()(dataArray))
+  {
+    MULTIPLY_ARRAY_BY_NUMBER(dataArray, DoubleArrayType, newArray, multiplier)
+  }
+  else if (TemplateHelpers::CanDynamicCast<Int8ArrayType>()(dataArray))
+  {
+    MULTIPLY_ARRAY_BY_NUMBER(dataArray, Int8ArrayType, newArray, multiplier)
+  }
+  else if (TemplateHelpers::CanDynamicCast<UInt8ArrayType>()(dataArray))
+  {
+    MULTIPLY_ARRAY_BY_NUMBER(dataArray, UInt8ArrayType, newArray, multiplier)
+  }
+  else if (TemplateHelpers::CanDynamicCast<Int16ArrayType>()(dataArray))
+  {
+    MULTIPLY_ARRAY_BY_NUMBER(dataArray, Int16ArrayType, newArray, multiplier)
+  }
+  else if (TemplateHelpers::CanDynamicCast<UInt16ArrayType>()(dataArray))
+  {
+    MULTIPLY_ARRAY_BY_NUMBER(dataArray, UInt16ArrayType, newArray, multiplier)
+  }
+  else if (TemplateHelpers::CanDynamicCast<Int32ArrayType>()(dataArray))
+  {
+    MULTIPLY_ARRAY_BY_NUMBER(dataArray, Int32ArrayType, newArray, multiplier)
+  }
+  else if (TemplateHelpers::CanDynamicCast<UInt32ArrayType>()(dataArray))
+  {
+    MULTIPLY_ARRAY_BY_NUMBER(dataArray, UInt32ArrayType, newArray, multiplier)
+  }
+  else if (TemplateHelpers::CanDynamicCast<Int64ArrayType>()(dataArray))
+  {
+    MULTIPLY_ARRAY_BY_NUMBER(dataArray, Int64ArrayType, newArray, multiplier)
+  }
+  else if (TemplateHelpers::CanDynamicCast<UInt64ArrayType>()(dataArray))
+  {
+    MULTIPLY_ARRAY_BY_NUMBER(dataArray, UInt64ArrayType, newArray, multiplier)
+  }
+
+  QSharedPointer<CalculatorItem> newItem = QSharedPointer<CalculatorArray>(new CalculatorArray(newArray));
+  return newItem;
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+template <typename J, typename K>
+QSharedPointer<CalculatorItem> MultiplicationOperator::multiply(AbstractFilter* filter, const QString &newArrayName, IDataArray::Pointer multiplier, IDataArray::Pointer multiplicand)
+{
+  J::Pointer multiplierCast = std::dynamic_pointer_cast<J>(multiplier);
+  K::Pointer multiplicandCast = std::dynamic_pointer_cast<K>(multiplicand);
+
+  DataArray<double>::Pointer newArray = DataArray<double>::CreateArray(multiplicandCast->getNumberOfTuples(), newArrayName);
+
+  for (int i = 0; i < newArray->getNumberOfTuples(); i++)
+  {
+    double value = static_cast<double>(multiplicandCast->getValue(i)) * static_cast<double>(multiplierCast->getValue(i));
+    newArray->initializeTuple(i, &value);
+  }
+
+  QSharedPointer<CalculatorItem> newItem = QSharedPointer<CalculatorArray>(new CalculatorArray(newArray));
+  return newItem;
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+QSharedPointer<CalculatorItem> MultiplicationOperator::multiply(AbstractFilter* filter, const QString &newArrayName, double multiplier, double multiplicand)
+{
+  double newNumber = multiplicand * multiplier;
+
+  DataArray<double>::Pointer newArray = DataArray<double>::CreateArray(1, newArrayName);
+  newArray->initializeTuple(0, &newNumber);
+
+  QSharedPointer<CalculatorItem> newItem = QSharedPointer<CalculatorArray>(new CalculatorArray(newArray));
   return newItem;
 }
 

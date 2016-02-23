@@ -37,6 +37,14 @@
 
 #include "CalculatorNumber.h"
 
+#define DIVIDE_ARRAY_BY_NUMBER(iDataPtr, dataType, newArray, numberVal)\
+  dataType::Pointer arrayCast = std::dynamic_pointer_cast<dataType>(iDataPtr);\
+  for (int i = 0; i < arrayCast->getNumberOfTuples(); i++)\
+  {\
+    double dblValue = static_cast<double>(arrayCast->getValue(i)) / static_cast<double>(numberVal);\
+    newArray->initializeTuple(i, &dblValue);\
+  }\
+
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
@@ -59,12 +67,126 @@ DivisionOperator::~DivisionOperator()
 // -----------------------------------------------------------------------------
 QSharedPointer<CalculatorItem> DivisionOperator::calculate(AbstractFilter* filter, const QString &newArrayName, QStack<QSharedPointer<CalculatorItem> > &executionStack)
 {
-  QSharedPointer<CalculatorNumber> item1 = qSharedPointerDynamicCast<CalculatorNumber>(executionStack.pop());
-  QSharedPointer<CalculatorNumber> item2 = qSharedPointerDynamicCast<CalculatorNumber>(executionStack.pop());
+  if (executionStack.size() >= 2)
+  {
+    EXECUTE_ARRAY_NUMBER_OPERATIONS(filter, newArrayName, executionStack.pop(), executionStack.pop(), divide)
+  }
 
-  double newNumber = item2->getNumber() / item1->getNumber();
+  // If the execution gets down here, then we have an error
+  QString ss = QObject::tr("The chosen infix equation is not a valid equation.");
+  filter->setErrorCondition(-4005);
+  filter->notifyErrorMessage(filter->getHumanLabel(), ss, filter->getErrorCondition());
+  return QSharedPointer<CalculatorItem>();
+}
 
-  QSharedPointer<CalculatorItem> newItem = QSharedPointer<CalculatorNumber>(new CalculatorNumber(newNumber));
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+QSharedPointer<CalculatorItem> DivisionOperator::divide(AbstractFilter* filter, const QString &newArrayName, IDataArray::Pointer dataArray, double divisor)
+{
+  if (divisor == 0)
+  {
+    QString ss = QObject::tr("The chosen infix equation tried to divide by 0 (\"%1/%2\").").arg(dataArray->getName()).arg(divisor);
+    filter->setErrorCondition(-4008);
+    filter->notifyErrorMessage(filter->getHumanLabel(), ss, filter->getErrorCondition());
+    return QSharedPointer<CalculatorItem>();
+  }
+
+  DataArray<double>::Pointer newArray = DataArray<double>::CreateArray(dataArray->getNumberOfTuples(), newArrayName);
+
+  if (TemplateHelpers::CanDynamicCast<FloatArrayType>()(dataArray))
+  {
+    DIVIDE_ARRAY_BY_NUMBER(dataArray, FloatArrayType, newArray, divisor)
+  }
+  else if (TemplateHelpers::CanDynamicCast<DoubleArrayType>()(dataArray))
+  {
+    DIVIDE_ARRAY_BY_NUMBER(dataArray, DoubleArrayType, newArray, divisor)
+  }
+  else if (TemplateHelpers::CanDynamicCast<Int8ArrayType>()(dataArray))
+  {
+    DIVIDE_ARRAY_BY_NUMBER(dataArray, Int8ArrayType, newArray, divisor)
+  }
+  else if (TemplateHelpers::CanDynamicCast<UInt8ArrayType>()(dataArray))
+  {
+    DIVIDE_ARRAY_BY_NUMBER(dataArray, UInt8ArrayType, newArray, divisor)
+  }
+  else if (TemplateHelpers::CanDynamicCast<Int16ArrayType>()(dataArray))
+  {
+    DIVIDE_ARRAY_BY_NUMBER(dataArray, Int16ArrayType, newArray, divisor)
+  }
+  else if (TemplateHelpers::CanDynamicCast<UInt16ArrayType>()(dataArray))
+  {
+    DIVIDE_ARRAY_BY_NUMBER(dataArray, UInt16ArrayType, newArray, divisor)
+  }
+  else if (TemplateHelpers::CanDynamicCast<Int32ArrayType>()(dataArray))
+  {
+    DIVIDE_ARRAY_BY_NUMBER(dataArray, Int32ArrayType, newArray, divisor)
+  }
+  else if (TemplateHelpers::CanDynamicCast<UInt32ArrayType>()(dataArray))
+  {
+    DIVIDE_ARRAY_BY_NUMBER(dataArray, UInt32ArrayType, newArray, divisor)
+  }
+  else if (TemplateHelpers::CanDynamicCast<Int64ArrayType>()(dataArray))
+  {
+    DIVIDE_ARRAY_BY_NUMBER(dataArray, Int64ArrayType, newArray, divisor)
+  }
+  else if (TemplateHelpers::CanDynamicCast<UInt64ArrayType>()(dataArray))
+  {
+    DIVIDE_ARRAY_BY_NUMBER(dataArray, UInt64ArrayType, newArray, divisor)
+  }
+
+  QSharedPointer<CalculatorItem> newItem = QSharedPointer<CalculatorArray>(new CalculatorArray(newArray));
+  return newItem;
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+template <typename J, typename K>
+QSharedPointer<CalculatorItem> DivisionOperator::divide(AbstractFilter* filter, const QString &newArrayName, IDataArray::Pointer divisor, IDataArray::Pointer dividend)
+{
+  J::Pointer divisorCast = std::dynamic_pointer_cast<J>(divisor);
+  K::Pointer dividendCast = std::dynamic_pointer_cast<K>(dividend);
+
+  DataArray<double>::Pointer newArray = DataArray<double>::CreateArray(dividendCast->getNumberOfTuples(), newArrayName);
+
+  for (int i = 0; i < newArray->getNumberOfTuples(); i++)
+  {
+    if (static_cast<double>(divisorCast->getValue(i)) == 0)
+    {
+      QString ss = QObject::tr("The chosen infix equation tried to divide by 0 (\"%1/%2\").").arg(dividend->getName()).arg(divisor->getName());
+      filter->setErrorCondition(-4008);
+      filter->notifyErrorMessage(filter->getHumanLabel(), ss, filter->getErrorCondition());
+      return QSharedPointer<CalculatorItem>();
+    }
+
+    double value = static_cast<double>(dividendCast->getValue(i)) * static_cast<double>(divisorCast->getValue(i));
+    newArray->initializeTuple(i, &value);
+  }
+
+  QSharedPointer<CalculatorItem> newItem = QSharedPointer<CalculatorArray>(new CalculatorArray(newArray));
+  return newItem;
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+QSharedPointer<CalculatorItem> DivisionOperator::divide(AbstractFilter* filter, const QString &newArrayName, double divisor, double dividend)
+{
+  if (divisor == 0)
+  {
+    QString ss = QObject::tr("The chosen infix equation tried to divide by 0 (\"%1/%2\").").arg(dividend).arg(divisor);
+    filter->setErrorCondition(-4008);
+    filter->notifyErrorMessage(filter->getHumanLabel(), ss, filter->getErrorCondition());
+    return QSharedPointer<CalculatorItem>();
+  }
+
+  double newNumber = dividend / divisor;
+
+  DataArray<double>::Pointer newArray = DataArray<double>::CreateArray(1, newArrayName);
+  newArray->initializeTuple(0, &newNumber);
+
+  QSharedPointer<CalculatorItem> newItem = QSharedPointer<CalculatorArray>(new CalculatorArray(newArray));
   return newItem;
 }
 
