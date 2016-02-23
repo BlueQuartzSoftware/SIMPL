@@ -41,8 +41,10 @@
 
 #include "SIMPLib/SIMPLib.h"
 #include "SIMPLib/Common/TemplateHelpers.hpp"
+#include "SIMPLib/DataArrays/IDataArray.h"
 
-#include "CalculatorItem.h"
+#include "CalculatorArray.h"
+#include "CalculatorNumber.h"
 
 class SIMPLib_EXPORT CalculatorOperator : public CalculatorItem
 {
@@ -64,6 +66,33 @@ class SIMPLib_EXPORT CalculatorOperator : public CalculatorItem
     CalculatorOperator(const CalculatorOperator&); // Copy Constructor Not Implemented
     void operator=(const CalculatorOperator&); // Operator '=' Not Implemented
 };
+
+#define EXECUTE_ARRAY_NUMBER_OPERATIONS(newArrayName, item1, item2, func)\
+  if (NULL != qSharedPointerDynamicCast<CalculatorNumber>(item1) && NULL != qSharedPointerDynamicCast<CalculatorNumber>(item2))\
+  {\
+    double number1 = qSharedPointerDynamicCast<CalculatorNumber>(item1)->getNumber();\
+    double number2 = qSharedPointerDynamicCast<CalculatorNumber>(item2)->getNumber();\
+    return func(newArrayName, number1, number2);\
+  }\
+  if (NULL != qSharedPointerDynamicCast<CalculatorArray>(item1) && NULL != qSharedPointerDynamicCast<CalculatorNumber>(item2))\
+  {\
+    IDataArray::Pointer array1 = qSharedPointerDynamicCast<CalculatorArray>(item1)->getArray();\
+    double number2 = qSharedPointerDynamicCast<CalculatorNumber>(item2)->getNumber();\
+    return func(newArrayName, array1, number2);\
+  }\
+  if (NULL != qSharedPointerDynamicCast<CalculatorNumber>(item1) && NULL != qSharedPointerDynamicCast<CalculatorArray>(item2))\
+  {\
+    double number1 = qSharedPointerDynamicCast<CalculatorNumber>(item1)->getNumber();\
+    IDataArray::Pointer array2 = qSharedPointerDynamicCast<CalculatorArray>(item2)->getArray();\
+    return func(newArrayName, array2, number1);\
+  }\
+  if (NULL != qSharedPointerDynamicCast<CalculatorArray>(item1) && NULL != qSharedPointerDynamicCast<CalculatorArray>(item2))\
+  {\
+    IDataArray::Pointer array1 = qSharedPointerDynamicCast<CalculatorArray>(item1)->getArray();\
+    IDataArray::Pointer array2 = qSharedPointerDynamicCast<CalculatorArray>(item2)->getArray();\
+    EXECUTE_OPERATOR_FUNCTION(newArrayName, array1, array2, add)\
+  }\
+
 
 #define EXECUTE_OPERATOR_FUNCTION(newArrayName, ptr1, ptr2, func)\
     if(TemplateHelpers::CanDynamicCast<FloatArrayType>()(ptr1) && TemplateHelpers::CanDynamicCast<FloatArrayType>()(ptr2))\

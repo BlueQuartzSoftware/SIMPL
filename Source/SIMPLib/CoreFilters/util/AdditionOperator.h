@@ -56,8 +56,8 @@ class SIMPLib_EXPORT AdditionOperator : public CalculatorOperator
     virtual QSharedPointer<CalculatorItem> calculate(AbstractFilter* filter, const QString &newArrayName, QStack<QSharedPointer<CalculatorItem> > &executionStack);
 
   private:
-    QSharedPointer<CalculatorItem> add(const QString &newArrayName, QSharedPointer<CalculatorArray> dataArray, QSharedPointer<CalculatorNumber> number);
-    QSharedPointer<CalculatorItem> add(const QString &newArrayName, QSharedPointer<CalculatorNumber> number1, QSharedPointer<CalculatorNumber> number2);
+    QSharedPointer<CalculatorItem> add(const QString &newArrayName, IDataArray::Pointer dataArray, double number);
+    QSharedPointer<CalculatorItem> add(const QString &newArrayName, double number1, double number2);
 
     template <typename J, typename K>
     QSharedPointer<CalculatorItem> add(const QString &newArrayName, IDataArray::Pointer dataArray1, IDataArray::Pointer dataArray2);

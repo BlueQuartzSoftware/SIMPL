@@ -72,36 +72,7 @@ QSharedPointer<CalculatorItem> AdditionOperator::calculate(AbstractFilter* filte
 {
   if (executionStack.isEmpty() == false)
   {
-    if (NULL != qSharedPointerDynamicCast<CalculatorNumber>(executionStack.top()))
-    {
-      QSharedPointer<CalculatorNumber> item1Number = qSharedPointerDynamicCast<CalculatorNumber>(executionStack.pop());
-      if (NULL != qSharedPointerDynamicCast<CalculatorNumber>(executionStack.top()))
-      {
-        QSharedPointer<CalculatorNumber> item2Number = qSharedPointerDynamicCast<CalculatorNumber>(executionStack.pop());
-        return add(newArrayName, item1Number, item2Number);
-      }
-      else if (NULL != qSharedPointerDynamicCast<CalculatorArray>(executionStack.top()))
-      {
-        QSharedPointer<CalculatorArray> item2Array = qSharedPointerDynamicCast<CalculatorArray>(executionStack.pop());
-        return add(newArrayName, item2Array, item1Number);
-      }
-    }
-    else if (NULL != qSharedPointerDynamicCast<CalculatorArray>(executionStack.top()))
-    {
-      QSharedPointer<CalculatorArray> item1Array = qSharedPointerDynamicCast<CalculatorArray>(executionStack.pop());
-      IDataArray::Pointer item1Ptr = item1Array->getArray();
-      if (NULL != qSharedPointerDynamicCast<CalculatorNumber>(executionStack.top()))
-      {
-        QSharedPointer<CalculatorNumber> item2Number = qSharedPointerDynamicCast<CalculatorNumber>(executionStack.pop());
-        return add(newArrayName, item1Array, item2Number);
-      }
-      else if (NULL != qSharedPointerDynamicCast<CalculatorArray>(executionStack.top()))
-      {
-        QSharedPointer<CalculatorArray> item2Array = qSharedPointerDynamicCast<CalculatorArray>(executionStack.pop());
-        IDataArray::Pointer item2Ptr = item2Array->getArray();
-        EXECUTE_OPERATOR_FUNCTION(newArrayName, item1Ptr, item2Ptr, add)
-      }
-    }
+    EXECUTE_ARRAY_NUMBER_OPERATIONS(newArrayName, executionStack.pop(), executionStack.pop(), add)
   }
 
   // If the execution gets down here, then we have an error
@@ -114,53 +85,49 @@ QSharedPointer<CalculatorItem> AdditionOperator::calculate(AbstractFilter* filte
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-QSharedPointer<CalculatorItem> AdditionOperator::add(const QString &newArrayName, QSharedPointer<CalculatorArray> dataArray, QSharedPointer<CalculatorNumber> number)
+QSharedPointer<CalculatorItem> AdditionOperator::add(const QString &newArrayName, IDataArray::Pointer dataArray, double number)
 {
-  IDataArray::Pointer ptr = dataArray->getArray();
+  DataArray<double>::Pointer newArray = DataArray<double>::CreateArray(dataArray->getNumberOfTuples(), newArrayName);
 
-  DataArray<double>::Pointer newArray = DataArray<double>::CreateArray(ptr->getNumberOfTuples(), newArrayName);
-
-  double value = number->getNumber();
-
-  if (TemplateHelpers::CanDynamicCast<FloatArrayType>()(ptr))
+  if (TemplateHelpers::CanDynamicCast<FloatArrayType>()(dataArray))
   {
-    ADD_NUMBER_TO_ARRAY(ptr, FloatArrayType, newArray, value)
+    ADD_NUMBER_TO_ARRAY(dataArray, FloatArrayType, newArray, number)
   }
-  else if (TemplateHelpers::CanDynamicCast<DoubleArrayType>()(ptr))
+  else if (TemplateHelpers::CanDynamicCast<DoubleArrayType>()(dataArray))
   {
-    ADD_NUMBER_TO_ARRAY(ptr, DoubleArrayType, newArray, value)
+    ADD_NUMBER_TO_ARRAY(dataArray, DoubleArrayType, newArray, number)
   }
-  else if (TemplateHelpers::CanDynamicCast<Int8ArrayType>()(ptr))
+  else if (TemplateHelpers::CanDynamicCast<Int8ArrayType>()(dataArray))
   {
-    ADD_NUMBER_TO_ARRAY(ptr, Int8ArrayType, newArray, value)
+    ADD_NUMBER_TO_ARRAY(dataArray, Int8ArrayType, newArray, number)
   }
-  else if (TemplateHelpers::CanDynamicCast<UInt8ArrayType>()(ptr))
+  else if (TemplateHelpers::CanDynamicCast<UInt8ArrayType>()(dataArray))
   {
-    ADD_NUMBER_TO_ARRAY(ptr, UInt8ArrayType, newArray, value)
+    ADD_NUMBER_TO_ARRAY(dataArray, UInt8ArrayType, newArray, number)
   }
-  else if (TemplateHelpers::CanDynamicCast<Int16ArrayType>()(ptr))
+  else if (TemplateHelpers::CanDynamicCast<Int16ArrayType>()(dataArray))
   {
-    ADD_NUMBER_TO_ARRAY(ptr, Int16ArrayType, newArray, value)
+    ADD_NUMBER_TO_ARRAY(dataArray, Int16ArrayType, newArray, number)
   }
-  else if (TemplateHelpers::CanDynamicCast<UInt16ArrayType>()(ptr))
+  else if (TemplateHelpers::CanDynamicCast<UInt16ArrayType>()(dataArray))
   {
-    ADD_NUMBER_TO_ARRAY(ptr, UInt16ArrayType, newArray, value)
+    ADD_NUMBER_TO_ARRAY(dataArray, UInt16ArrayType, newArray, number)
   }
-  else if (TemplateHelpers::CanDynamicCast<Int32ArrayType>()(ptr))
+  else if (TemplateHelpers::CanDynamicCast<Int32ArrayType>()(dataArray))
   {
-    ADD_NUMBER_TO_ARRAY(ptr, Int32ArrayType, newArray, value)
+    ADD_NUMBER_TO_ARRAY(dataArray, Int32ArrayType, newArray, number)
   }
-  else if (TemplateHelpers::CanDynamicCast<UInt32ArrayType>()(ptr))
+  else if (TemplateHelpers::CanDynamicCast<UInt32ArrayType>()(dataArray))
   {
-    ADD_NUMBER_TO_ARRAY(ptr, UInt32ArrayType, newArray, value)
+    ADD_NUMBER_TO_ARRAY(dataArray, UInt32ArrayType, newArray, number)
   }
-  else if (TemplateHelpers::CanDynamicCast<Int64ArrayType>()(ptr))
+  else if (TemplateHelpers::CanDynamicCast<Int64ArrayType>()(dataArray))
   {
-    ADD_NUMBER_TO_ARRAY(ptr, Int64ArrayType, newArray, value)
+    ADD_NUMBER_TO_ARRAY(dataArray, Int64ArrayType, newArray, number)
   }
-  else if (TemplateHelpers::CanDynamicCast<UInt64ArrayType>()(ptr))
+  else if (TemplateHelpers::CanDynamicCast<UInt64ArrayType>()(dataArray))
   {
-    ADD_NUMBER_TO_ARRAY(ptr, UInt64ArrayType, newArray, value)
+    ADD_NUMBER_TO_ARRAY(dataArray, UInt64ArrayType, newArray, number)
   }
 
   QSharedPointer<CalculatorItem> newItem = QSharedPointer<CalculatorArray>(new CalculatorArray(newArray));
@@ -191,9 +158,9 @@ QSharedPointer<CalculatorItem> AdditionOperator::add(const QString &newArrayName
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-QSharedPointer<CalculatorItem> AdditionOperator::add(const QString &newArrayName, QSharedPointer<CalculatorNumber> number1, QSharedPointer<CalculatorNumber> number2)
+QSharedPointer<CalculatorItem> AdditionOperator::add(const QString &newArrayName, double number1, double number2)
 {
-  double newNumber = number1->getNumber() + number2->getNumber();
+  double newNumber = number1 + number2;
 
   DataArray<double>::Pointer newArray = DataArray<double>::CreateArray(1, newArrayName);
   newArray->initializeTuple(0, &newNumber);
