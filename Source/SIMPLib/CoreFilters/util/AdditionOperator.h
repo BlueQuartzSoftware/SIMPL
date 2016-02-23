@@ -43,6 +43,9 @@
 
 #include "CalculatorOperator.h"
 
+class CalculatorArray;
+class CalculatorNumber;
+
 class SIMPLib_EXPORT AdditionOperator : public CalculatorOperator
 {
   public:
@@ -50,9 +53,14 @@ class SIMPLib_EXPORT AdditionOperator : public CalculatorOperator
     AdditionOperator();
     virtual ~AdditionOperator();
 
-    virtual QSharedPointer<CalculatorItem> calculate(QStack<QSharedPointer<CalculatorItem> > &executionStack);
+    virtual QSharedPointer<CalculatorItem> calculate(AbstractFilter* filter, const QString &newArrayName, QStack<QSharedPointer<CalculatorItem> > &executionStack);
 
   private:
+    QSharedPointer<CalculatorItem> add(const QString &newArrayName, QSharedPointer<CalculatorArray> dataArray, QSharedPointer<CalculatorNumber> number);
+    QSharedPointer<CalculatorItem> add(const QString &newArrayName, QSharedPointer<CalculatorNumber> number1, QSharedPointer<CalculatorNumber> number2);
+
+    template <typename J, typename K>
+    QSharedPointer<CalculatorItem> add(const QString &newArrayName, IDataArray::Pointer dataArray1, IDataArray::Pointer dataArray2);
 
     AdditionOperator(const AdditionOperator&); // Copy Constructor Not Implemented
     void operator=(const AdditionOperator&); // Operator '=' Not Implemented

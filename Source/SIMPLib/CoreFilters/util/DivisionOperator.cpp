@@ -57,7 +57,7 @@ DivisionOperator::~DivisionOperator()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-QSharedPointer<CalculatorItem> DivisionOperator::calculate(QStack<QSharedPointer<CalculatorItem> > &executionStack)
+QSharedPointer<CalculatorItem> DivisionOperator::calculate(AbstractFilter* filter, const QString &newArrayName, QStack<QSharedPointer<CalculatorItem> > &executionStack)
 {
   QSharedPointer<CalculatorNumber> item1 = qSharedPointerDynamicCast<CalculatorNumber>(executionStack.pop());
   QSharedPointer<CalculatorNumber> item2 = qSharedPointerDynamicCast<CalculatorNumber>(executionStack.pop());

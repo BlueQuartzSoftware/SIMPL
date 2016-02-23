@@ -43,6 +43,7 @@
 #include "SIMPLib/FilterParameters/AbstractFilterParametersWriter.h"
 #include "SIMPLib/FilterParameters/AttributeMatrixSelectionFilterParameter.h"
 #include "SIMPLib/FilterParameters/CalculatorFilterParameter.h"
+#include "SIMPLib/FilterParameters/DataArrayCreationFilterParameter.h"
 
 #include "util/CalculatorNumber.h"
 #include "util/CalculatorArray.h"
@@ -85,10 +86,18 @@ ArrayCalculator::~ArrayCalculator()
 void ArrayCalculator::setupFilterParameters()
 {
   FilterParameterVector parameters;
-  AttributeMatrixSelectionFilterParameter::RequirementType req = AttributeMatrixSelectionFilterParameter::CreateRequirement(SIMPL::Defaults::AnyAttributeMatrix, SIMPL::Defaults::AnyGeometry);
-  parameters.push_back(AttributeMatrixSelectionFilterParameter::New("Cell Attribute Matrix", "SelectedAttributeMatrix", getSelectedAttributeMatrix(), FilterParameter::Parameter, req));
+  {
+    AttributeMatrixSelectionFilterParameter::RequirementType req = AttributeMatrixSelectionFilterParameter::CreateRequirement(SIMPL::Defaults::AnyAttributeMatrix, SIMPL::Defaults::AnyGeometry);
+    parameters.push_back(AttributeMatrixSelectionFilterParameter::New("Cell Attribute Matrix", "SelectedAttributeMatrix", getSelectedAttributeMatrix(), FilterParameter::Parameter, req));
+  }
 
   parameters.push_back(CalculatorFilterParameter::New("Infix Equation", "InfixEquation", getInfixEquation(), FilterParameter::Parameter));
+
+  {
+    DataArrayCreationFilterParameter::RequirementType req = DataArrayCreationFilterParameter::CreateRequirement(SIMPL::Defaults::AnyAttributeMatrix, SIMPL::Defaults::AnyGeometry);
+    parameters.push_back(DataArrayCreationFilterParameter::New("Calculated Array", "CalculatedArray", getCalculatedArray(), FilterParameter::CreatedArray, req));
+  }
+
   setFilterParameters(parameters);
 }
 
@@ -100,6 +109,7 @@ void ArrayCalculator::readFilterParameters(AbstractFilterParametersReader* reade
   reader->openFilterGroup(this, index);
   setSelectedAttributeMatrix(reader->readDataArrayPath("SelectedAttributeMatrix", getSelectedAttributeMatrix()));
   setInfixEquation(reader->readString("InfixEquation", getInfixEquation()));
+  setCalculatedArray(reader->readDataArrayPath("CalculatedArray", getCalculatedArray()));
   reader->closeFilterGroup();
 }
 
@@ -111,6 +121,7 @@ int ArrayCalculator::writeFilterParameters(AbstractFilterParametersWriter* write
   writer->openFilterGroup(this, index);
   SIMPL_FILTER_WRITE_PARAMETER(SelectedAttributeMatrix)
   SIMPL_FILTER_WRITE_PARAMETER(InfixEquation)
+  SIMPL_FILTER_WRITE_PARAMETER(CalculatedArray)
   writer->closeFilterGroup();
   return ++index; // we want to return the next index that was just written to
 }
@@ -122,7 +133,29 @@ void ArrayCalculator::dataCheck()
 {
   setErrorCondition(0);
 
-  // Do Stuff
+  QVector<QSharedPointer<CalculatorItem> > parsedInfix = parseInfixEquation(m_InfixEquation);
+  if (parsedInfix.isEmpty() == true) { return; }
+
+  /* Check for two operators in a row, or operators at the beginning or end of the expression.
+     If this occurs, then this is not a valid expression */
+  for (int i = 0; i < parsedInfix.size(); i++)
+  {
+    QSharedPointer<CalculatorItem> item = parsedInfix[i];
+    if (NULL != qSharedPointerDynamicCast<CalculatorOperator>(item))
+    {
+      if (i > parsedInfix.size() - 2 || NULL != qSharedPointerDynamicCast<CalculatorOperator>(parsedInfix[i+1])
+        || i < 1 || NULL != qSharedPointerDynamicCast<CalculatorOperator>(parsedInfix[i - 1]))
+      {
+        QString ss = QObject::tr("The chosen infix equation is not a valid equation.");
+        setErrorCondition(-4005);
+        notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
+        return;
+      }
+    }
+  }
+
+  QVector<QSharedPointer<CalculatorItem> > rpn = toRPN(parsedInfix);
+  if (rpn.isEmpty() == true) { return; }
 }
 
 // -----------------------------------------------------------------------------
@@ -130,13 +163,12 @@ void ArrayCalculator::dataCheck()
 // -----------------------------------------------------------------------------
 void ArrayCalculator::preflight()
 {
-  // These are the REQUIRED lines of CODE to make sure the filter behaves correctly
-  setInPreflight(true); // Set the fact that we are preflighting.
-  emit preflightAboutToExecute(); // Emit this signal so that other widgets can do one file update
-  emit updateFilterParameters(this); // Emit this signal to have the widgets push their values down to the filter
-  dataCheck(); // Run our DataCheck to make sure everthing is setup correctly
-  emit preflightExecuted(); // We are done preflighting this filter
-  setInPreflight(false); // Inform the system this filter is NOT in preflight mode anymore.
+  setInPreflight(true);
+  emit preflightAboutToExecute();
+  emit updateFilterParameters(this);
+  dataCheck();
+  emit preflightExecuted();
+  setInPreflight(false);
 }
 
 // -----------------------------------------------------------------------------
@@ -165,31 +197,32 @@ void ArrayCalculator::execute()
     else if (NULL != qSharedPointerDynamicCast<CalculatorOperator>(rpnItem))
     {
       QSharedPointer<CalculatorOperator> rpnOperator = qSharedPointerDynamicCast<CalculatorOperator>(rpnItem);
-      QSharedPointer<CalculatorItem> rpnCalculatedItem = rpnOperator->calculate(m_ExecutionStack);
+      QSharedPointer<CalculatorItem> rpnCalculatedItem = rpnOperator->calculate(this, m_CalculatedArray.getDataArrayName(), m_ExecutionStack);
+      if (NULL == rpnCalculatedItem) { return; }
+
       m_ExecutionStack.push(rpnCalculatedItem);
     }
     else
     {
       // ERROR: Unrecognized item in the RPN vector
     }
+
+    if (getCancel() == true) { return; }
   }
 
   // Grab the result from the stack
   QSharedPointer<CalculatorItem> resultItem = m_ExecutionStack.pop();
-  QSharedPointer<CalculatorNumber> numberItem = qSharedPointerDynamicCast<CalculatorNumber>(resultItem);
-  double num = numberItem->getNumber();
+  QSharedPointer<CalculatorArray> arrayItem = qSharedPointerDynamicCast<CalculatorArray>(resultItem);
+  IDataArray::Pointer arrayPtr = arrayItem->getArray();
 
-  if (getCancel() == true) { return; }
+  DataArrayPath amPath(m_CalculatedArray.getDataContainerName(), m_CalculatedArray.getAttributeMatrixName(), "");
+  AttributeMatrix::Pointer am = getDataContainerArray()->getAttributeMatrix(amPath);
+  if (NULL != am)
+  {
+    am->addAttributeArray(m_CalculatedArray.getDataArrayName(), arrayPtr);
+  }
 
-  //if (getErrorCondition() < 0)
-  //{
-  //  QString ss = QObject::tr("Some error message");
-  //  setErrorCondition(-99999999);
-  //  notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
-  //  return;
-  //}
-
-  //notifyStatusMessage(getHumanLabel(), "Complete");
+  notifyStatusMessage(getHumanLabel(), "Complete");
 }
 
 // -----------------------------------------------------------------------------
@@ -206,11 +239,11 @@ QVector<QSharedPointer<CalculatorItem> > ArrayCalculator::parseInfixEquation(QSt
   AttributeMatrix::Pointer am = getDataContainerArray()->getPrereqAttributeMatrixFromPath(this, m_SelectedAttributeMatrix, err);
   if (NULL == am)
   {
-    // ERROR: Could not find the attribute matrix
+    QString ss = QObject::tr("Could not find the attribute matrix \"%1\".").arg(m_SelectedAttributeMatrix.getAttributeMatrixName());
+    setErrorCondition(-4001);
+    notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
+    return QVector<QSharedPointer<CalculatorItem> >();
   }
-
-  // Remove all spaces
-  equation.remove(" ");
 
   // Place @ symbols around each item in the equation
   for (int i = 0; i < m_SymbolList.size(); i++)
@@ -219,12 +252,21 @@ QVector<QSharedPointer<CalculatorItem> > ArrayCalculator::parseInfixEquation(QSt
 
     equation.replace(symbolStr, "@" + symbolStr + "@");
   }
+
+  QStringList aaNames = am->getAttributeArrayNames();
+  for (int i = 0; i < aaNames.size(); i++)
+  {
+    QString aaName = aaNames[i];
+    equation.replace(aaName, "@" + aaName + "@");
+  }
   
   // Now split the equation up into a QStringList of items
   QStringList list = equation.split("@", QString::SkipEmptyParts);
 
   // Iterate through the QStringList and create the proper CalculatorItems
   QVector<QSharedPointer<CalculatorItem> > parsedInfix;
+  int numTuples = -1;
+  QString firstArray = "";
   for (int i = 0; i < list.size(); i++)
   {
     QString listItem = list[i];
@@ -263,7 +305,26 @@ QVector<QSharedPointer<CalculatorItem> > ArrayCalculator::parseInfixEquation(QSt
     else if (am->getAttributeArrayNames().contains(listItem))
     {
       IDataArray::Pointer dataArray = am->getAttributeArray(listItem);
+      if (numTuples < 0 && firstArray.isEmpty() == true)
+      {
+        numTuples = dataArray->getNumberOfTuples();
+        firstArray = dataArray->getName();
+      }
+      else if (dataArray->getNumberOfTuples() != numTuples)
+      {
+        QString ss = QObject::tr("Arrays \"%1\" and \"%2\" in the infix equation have an inconsistent number of tuples.").arg(firstArray).arg(dataArray->getName());
+        setErrorCondition(-4007);
+        notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
+        return QVector<QSharedPointer<CalculatorItem> >();
+      }
       itemPtr = QSharedPointer<CalculatorArray>(new CalculatorArray(dataArray));
+    }
+    else
+    {
+      QString ss = QObject::tr("An unrecognized item \"%1\" was found in the chosen infix equation.").arg(listItem);
+      setErrorCondition(-4002);
+      notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
+      return QVector<QSharedPointer<CalculatorItem> >();
     }
 
     parsedInfix.push_back(itemPtr);
@@ -285,9 +346,9 @@ QVector<QSharedPointer<CalculatorItem> > ArrayCalculator::toRPN(QVector<QSharedP
   for (int i = 0; i < infixEquation.size(); i++)
   {
     QSharedPointer<CalculatorItem> calcItem = infixEquation[i];
-    if (NULL != qSharedPointerDynamicCast<CalculatorNumber>(calcItem))
+    if (NULL != qSharedPointerDynamicCast<CalculatorNumber>(calcItem) || NULL != qSharedPointerDynamicCast<CalculatorArray>(calcItem))
     {
-      // This is a number, so push it onto the rpn equation output
+      // This is a number or array, so push it onto the rpn equation output
       rpnEquation.push_back(calcItem);
     }
     else if (NULL != qSharedPointerDynamicCast<LeftParenthesisSeparator>(calcItem))
@@ -305,7 +366,10 @@ QVector<QSharedPointer<CalculatorItem> > ArrayCalculator::toRPN(QVector<QSharedP
 
       if (itemStack.isEmpty() == true)
       {
-        // ERROR: Could not find matching left parenthesis
+        QString ss = QObject::tr("One or more parentheses are mismatched in the chosen infix equation \"%1\".").arg(m_InfixEquation);
+        setErrorCondition(-4003);
+        notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
+        return QVector<QSharedPointer<CalculatorItem> >();
       }
 
       // Discard the left parenthesis that we found
@@ -330,6 +394,13 @@ QVector<QSharedPointer<CalculatorItem> > ArrayCalculator::toRPN(QVector<QSharedP
 
       // Push the operator onto the rpn equation output.
       itemStack.push_back(calcItem);
+    }
+    else
+    {
+      QString ss = QObject::tr("An unrecognized character was found in the chosen infix equation \"%1\".").arg(m_InfixEquation);
+      setErrorCondition(-4004);
+      notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
+      return QVector<QSharedPointer<CalculatorItem> >();
     }
   }
 

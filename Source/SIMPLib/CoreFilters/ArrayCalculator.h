@@ -64,6 +64,9 @@ class ArrayCalculator : public AbstractFilter
     SIMPL_FILTER_PARAMETER(QString, InfixEquation)
     Q_PROPERTY(QString InfixEquation READ getInfixEquation WRITE setInfixEquation)
 
+    SIMPL_FILTER_PARAMETER(DataArrayPath, CalculatedArray)
+    Q_PROPERTY(DataArrayPath CalculatedArray READ getCalculatedArray WRITE setCalculatedArray)
+
     virtual ~ArrayCalculator();
 
     /**

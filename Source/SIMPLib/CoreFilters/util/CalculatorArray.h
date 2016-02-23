@@ -38,7 +38,7 @@
 
 #include <QtCore/QObject>
 
-#include "SIMPLib/DataArrays/IDataArray.h"
+#include "SIMPLib/DataArrays/DataArray.hpp"
 #include "SIMPLib/SIMPLib.h"
 
 #include "CalculatorItem.h"

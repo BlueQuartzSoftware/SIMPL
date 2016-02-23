@@ -57,7 +57,7 @@ MultiplicationOperator::~MultiplicationOperator()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-QSharedPointer<CalculatorItem> MultiplicationOperator::calculate(QStack<QSharedPointer<CalculatorItem> > &executionStack)
+QSharedPointer<CalculatorItem> MultiplicationOperator::calculate(AbstractFilter* filter, const QString &newArrayName, QStack<QSharedPointer<CalculatorItem> > &executionStack)
 {
   QSharedPointer<CalculatorNumber> item1 = qSharedPointerDynamicCast<CalculatorNumber>(executionStack.pop());
   QSharedPointer<CalculatorNumber> item2 = qSharedPointerDynamicCast<CalculatorNumber>(executionStack.pop());

@@ -57,7 +57,7 @@ SubtractionOperator::~SubtractionOperator()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-QSharedPointer<CalculatorItem> SubtractionOperator::calculate(QStack<QSharedPointer<CalculatorItem> > &executionStack)
+QSharedPointer<CalculatorItem> SubtractionOperator::calculate(AbstractFilter* filter, const QString &newArrayName, QStack<QSharedPointer<CalculatorItem> > &executionStack)
 {
   QSharedPointer<CalculatorNumber> item1 = qSharedPointerDynamicCast<CalculatorNumber>(executionStack.pop());
   QSharedPointer<CalculatorNumber> item2 = qSharedPointerDynamicCast<CalculatorNumber>(executionStack.pop());

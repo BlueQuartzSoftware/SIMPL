@@ -50,7 +50,7 @@ class SIMPLib_EXPORT SubtractionOperator : public CalculatorOperator
     SubtractionOperator();
     virtual ~SubtractionOperator();
 
-    virtual QSharedPointer<CalculatorItem> calculate(QStack<QSharedPointer<CalculatorItem> > &executionStack);
+    virtual QSharedPointer<CalculatorItem> calculate(AbstractFilter* filter, const QString &newArrayName, QStack<QSharedPointer<CalculatorItem> > &executionStack);
 
   private:
     int                                             m_PrecedenceId;
