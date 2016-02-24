@@ -147,8 +147,8 @@ QSharedPointer<CalculatorItem> DivisionOperator::divide(AbstractFilter* filter, 
 template <typename J, typename K>
 QSharedPointer<CalculatorItem> DivisionOperator::divide(AbstractFilter* filter, const QString &newArrayName, IDataArray::Pointer divisor, IDataArray::Pointer dividend)
 {
-  J::Pointer divisorCast = std::dynamic_pointer_cast<J>(divisor);
-  K::Pointer dividendCast = std::dynamic_pointer_cast<K>(dividend);
+  typename J::Pointer divisorCast = std::dynamic_pointer_cast<J>(divisor);
+  typename K::Pointer dividendCast = std::dynamic_pointer_cast<K>(dividend);
 
   DataArray<double>::Pointer newArray = DataArray<double>::CreateArray(dividendCast->getNumberOfTuples(), newArrayName);
 

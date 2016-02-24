@@ -142,8 +142,8 @@ QSharedPointer<CalculatorItem> AdditionOperator::add(AbstractFilter* filter, con
 template <typename J, typename K>
 QSharedPointer<CalculatorItem> AdditionOperator::add(AbstractFilter* filter, const QString &newArrayName, IDataArray::Pointer dataArray1, IDataArray::Pointer dataArray2)
 {
-  J::Pointer arrayCast1 = std::dynamic_pointer_cast<J>(dataArray1);
-  K::Pointer arrayCast2 = std::dynamic_pointer_cast<K>(dataArray2);
+  typename J::Pointer arrayCast1 = std::dynamic_pointer_cast<J>(dataArray1);
+  typename K::Pointer arrayCast2 = std::dynamic_pointer_cast<K>(dataArray2);
 
   DataArray<double>::Pointer newArray = DataArray<double>::CreateArray(arrayCast1->getNumberOfTuples(), newArrayName);
 

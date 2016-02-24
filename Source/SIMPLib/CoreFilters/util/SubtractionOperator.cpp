@@ -139,8 +139,8 @@ QSharedPointer<CalculatorItem> SubtractionOperator::subtract(AbstractFilter* fil
 template <typename J, typename K>
 QSharedPointer<CalculatorItem> SubtractionOperator::subtract(AbstractFilter* filter, const QString &newArrayName, IDataArray::Pointer subtrahend, IDataArray::Pointer minuend)
 {
-  J::Pointer subtrahendCast = std::dynamic_pointer_cast<J>(subtrahend);
-  K::Pointer minuendCast = std::dynamic_pointer_cast<K>(minuend);
+  typename J::Pointer subtrahendCast = std::dynamic_pointer_cast<J>(subtrahend);
+  typename K::Pointer minuendCast = std::dynamic_pointer_cast<K>(minuend);
 
   DataArray<double>::Pointer newArray = DataArray<double>::CreateArray(minuendCast->getNumberOfTuples(), newArrayName);
 

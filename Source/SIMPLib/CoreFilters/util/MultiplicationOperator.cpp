@@ -139,8 +139,8 @@ QSharedPointer<CalculatorItem> MultiplicationOperator::multiply(AbstractFilter* 
 template <typename J, typename K>
 QSharedPointer<CalculatorItem> MultiplicationOperator::multiply(AbstractFilter* filter, const QString &newArrayName, IDataArray::Pointer multiplier, IDataArray::Pointer multiplicand)
 {
-  J::Pointer multiplierCast = std::dynamic_pointer_cast<J>(multiplier);
-  K::Pointer multiplicandCast = std::dynamic_pointer_cast<K>(multiplicand);
+  typename J::Pointer multiplierCast = std::dynamic_pointer_cast<J>(multiplier);
+  typename K::Pointer multiplicandCast = std::dynamic_pointer_cast<K>(multiplicand);
 
   DataArray<double>::Pointer newArray = DataArray<double>::CreateArray(multiplicandCast->getNumberOfTuples(), newArrayName);
 
