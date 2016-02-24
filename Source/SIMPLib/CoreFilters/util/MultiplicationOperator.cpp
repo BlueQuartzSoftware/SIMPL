@@ -69,7 +69,9 @@ QSharedPointer<CalculatorItem> MultiplicationOperator::calculate(AbstractFilter*
 {
   if (executionStack.size() >= 2)
   {
-    EXECUTE_ARRAY_NUMBER_OPERATIONS(filter, newArrayName, executionStack.pop(), executionStack.pop(), multiply)
+    QSharedPointer<CalculatorItem> item1 = executionStack.pop();
+    QSharedPointer<CalculatorItem> item2 = executionStack.pop();
+    EXECUTE_ARRAY_NUMBER_OPERATIONS(filter, newArrayName, item1, item2, multiply)
   }
 
   // If the execution gets down here, then we have an error
