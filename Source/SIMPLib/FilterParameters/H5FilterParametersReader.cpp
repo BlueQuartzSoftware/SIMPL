@@ -1034,9 +1034,9 @@ QPair<double, double> H5FilterParametersReader::readPairOfDoubles(const QString&
 
   double min = 0.0;
   double max = 0.0;
-  int err = QH5Lite::readScalarAttribute(m_CurrentGroupId, name, "Min", min);
+  int err = QH5Lite::readScalarDataset(m_CurrentGroupId, name + "_Min", min);
   if (err < 0) { return v; }
-  err = QH5Lite::readScalarAttribute(m_CurrentGroupId, name, "Max", max);
+  err = QH5Lite::readScalarDataset(m_CurrentGroupId, name + "_Max", max);
   if (err < 0) { return v; }
 
   QPair<double, double> value;
