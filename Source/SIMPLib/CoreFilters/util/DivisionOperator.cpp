@@ -154,15 +154,18 @@ QSharedPointer<CalculatorItem> DivisionOperator::divide(AbstractFilter* filter, 
 
   for (int i = 0; i < newArray->getNumberOfTuples(); i++)
   {
-    if (static_cast<double>(divisorCast->getValue(i)) == 0)
+    double divisorValue = divisorCast->getValue(i);
+    if (divisorValue == 0)
     {
-      QString ss = QObject::tr("The chosen infix equation tried to divide by 0 (\"%1/%2\").").arg(dividend->getName()).arg(divisor->getName());
+      QString ss = QObject::tr("The chosen infix equation tried to divide by 0 (\"%1\", tuple %2).").arg(divisor->getName()).arg(QString::number(i));
       filter->setErrorCondition(-4008);
       filter->notifyErrorMessage(filter->getHumanLabel(), ss, filter->getErrorCondition());
       return QSharedPointer<CalculatorItem>();
     }
 
-    double value = static_cast<double>(dividendCast->getValue(i)) * static_cast<double>(divisorCast->getValue(i));
+    double dividend = static_cast<double>(dividendCast->getValue(i));
+    double divisor = static_cast<double>(divisorCast->getValue(i));
+    double value = dividend / divisor;
     newArray->initializeTuple(i, &value);
   }
 
@@ -185,10 +188,7 @@ QSharedPointer<CalculatorItem> DivisionOperator::divide(AbstractFilter* filter, 
 
   double newNumber = dividend / divisor;
 
-  DataArray<double>::Pointer newArray = DataArray<double>::CreateArray(1, newArrayName);
-  newArray->initializeTuple(0, &newNumber);
-
-  QSharedPointer<CalculatorItem> newItem = QSharedPointer<CalculatorArray>(new CalculatorArray(newArray));
+  QSharedPointer<CalculatorItem> newItem = QSharedPointer<CalculatorNumber>(new CalculatorNumber(newNumber));
   return newItem;
 }
 

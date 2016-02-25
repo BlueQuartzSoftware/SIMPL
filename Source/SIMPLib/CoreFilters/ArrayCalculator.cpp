@@ -212,14 +212,35 @@ void ArrayCalculator::execute()
 
   // Grab the result from the stack
   QSharedPointer<CalculatorItem> resultItem = m_ExecutionStack.pop();
-  QSharedPointer<CalculatorArray> arrayItem = qSharedPointerDynamicCast<CalculatorArray>(resultItem);
-  IDataArray::Pointer arrayPtr = arrayItem->getArray();
+
+  IDataArray::Pointer newArray = IDataArray::NullPointer();
+  if (NULL != qSharedPointerDynamicCast<CalculatorArray>(resultItem))
+  {
+    QSharedPointer<CalculatorArray> arrayItem = qSharedPointerDynamicCast<CalculatorArray>(resultItem);
+    newArray = arrayItem->getArray();
+  }
+  else if (NULL != qSharedPointerDynamicCast<CalculatorNumber>(resultItem))
+  {
+    QSharedPointer<CalculatorNumber> numberItem = qSharedPointerDynamicCast<CalculatorNumber>(resultItem);
+    double number = numberItem->getNumber();
+
+    newArray = DataArray<double>::CreateArray(1, m_CalculatedArray.getDataArrayName());
+    newArray->initializeTuple(0, &number);
+  }
+  else
+  {
+    QString ss = QObject::tr("Unexpected output item from chosen infix equation.  The output item must be either an array or number, and it is neither."
+                             "Please contact the DREAM3D developers for more information.");
+    setErrorCondition(-4009);
+    notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
+    return;
+  }
 
   DataArrayPath amPath(m_CalculatedArray.getDataContainerName(), m_CalculatedArray.getAttributeMatrixName(), "");
   AttributeMatrix::Pointer am = getDataContainerArray()->getAttributeMatrix(amPath);
   if (NULL != am)
   {
-    am->addAttributeArray(m_CalculatedArray.getDataArrayName(), arrayPtr);
+    am->addAttributeArray(m_CalculatedArray.getDataArrayName(), newArray);
   }
 
   notifyStatusMessage(getHumanLabel(), "Complete");

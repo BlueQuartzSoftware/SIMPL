@@ -161,10 +161,7 @@ QSharedPointer<CalculatorItem> MultiplicationOperator::multiply(AbstractFilter* 
 {
   double newNumber = multiplicand * multiplier;
 
-  DataArray<double>::Pointer newArray = DataArray<double>::CreateArray(1, newArrayName);
-  newArray->initializeTuple(0, &newNumber);
-
-  QSharedPointer<CalculatorItem> newItem = QSharedPointer<CalculatorArray>(new CalculatorArray(newArray));
+  QSharedPointer<CalculatorItem> newItem = QSharedPointer<CalculatorNumber>(new CalculatorNumber(newNumber));
   return newItem;
 }
 

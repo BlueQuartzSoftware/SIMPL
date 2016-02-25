@@ -146,7 +146,9 @@ QSharedPointer<CalculatorItem> SubtractionOperator::subtract(AbstractFilter* fil
 
   for (int i = 0; i < newArray->getNumberOfTuples(); i++)
   {
-    double value = static_cast<double>(minuendCast->getValue(i)) - static_cast<double>(subtrahendCast->getValue(i));
+    double minuendVal = static_cast<double>(minuendCast->getValue(i));
+    double subtrahendVal = static_cast<double>(subtrahendCast->getValue(i));
+    double value = minuendVal - subtrahendVal;
     newArray->initializeTuple(i, &value);
   }
 
@@ -161,10 +163,7 @@ QSharedPointer<CalculatorItem> SubtractionOperator::subtract(AbstractFilter* fil
 {
   double newNumber = minuend - subtrahend;
 
-  DataArray<double>::Pointer newArray = DataArray<double>::CreateArray(1, newArrayName);
-  newArray->initializeTuple(0, &newNumber);
-
-  QSharedPointer<CalculatorItem> newItem = QSharedPointer<CalculatorArray>(new CalculatorArray(newArray));
+  QSharedPointer<CalculatorItem> newItem = QSharedPointer<CalculatorNumber>(new CalculatorNumber(newNumber));
   return newItem;
 }
 
