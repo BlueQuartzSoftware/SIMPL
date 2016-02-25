@@ -55,8 +55,10 @@ class SIMPLib_EXPORT DivisionOperator : public CalculatorOperator
   private:
     int                                             m_PrecedenceId;
 
-    QSharedPointer<CalculatorItem> divide(AbstractFilter* filter, const QString &newArrayName, IDataArray::Pointer dataArray, double multiplier);
     QSharedPointer<CalculatorItem> divide(AbstractFilter* filter, const QString &newArrayName, double multiplier, double multiplicand);
+
+    template <typename T>
+    QSharedPointer<CalculatorItem> divide(AbstractFilter* filter, const QString &newArrayName, IDataArray::Pointer dataArray, double multiplier);
 
     template <typename J, typename K>
     QSharedPointer<CalculatorItem> divide(AbstractFilter* filter, const QString &newArrayName, IDataArray::Pointer multiplier, IDataArray::Pointer multiplicand);

@@ -40,13 +40,6 @@
 #include "CalculatorNumber.h"
 #include "CalculatorArray.h"
 
-#define ADD_NUMBER_TO_ARRAY(iDataPtr, dataType, newArray, numberVal)\
-  dataType::Pointer arrayCast = std::dynamic_pointer_cast<dataType>(iDataPtr);\
-  for (int i = 0; i < arrayCast->getNumberOfTuples(); i++)\
-    {\
-      double dblValue = static_cast<double>(arrayCast->getValue(i)) + static_cast<double>(numberVal);\
-      newArray->initializeTuple(i, &dblValue);\
-    }\
 
 // -----------------------------------------------------------------------------
 //
@@ -87,49 +80,16 @@ QSharedPointer<CalculatorItem> AdditionOperator::calculate(AbstractFilter* filte
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
+template <typename T>
 QSharedPointer<CalculatorItem> AdditionOperator::add(AbstractFilter* filter, const QString &newArrayName, IDataArray::Pointer dataArray, double number)
 {
   DataArray<double>::Pointer newArray = DataArray<double>::CreateArray(dataArray->getNumberOfTuples(), newArrayName);
 
-  if (TemplateHelpers::CanDynamicCast<FloatArrayType>()(dataArray))
+  typename T::Pointer arrayCast = std::dynamic_pointer_cast<T>(dataArray);
+  for (int i = 0; i < arrayCast->getNumberOfTuples(); i++)
   {
-    ADD_NUMBER_TO_ARRAY(dataArray, FloatArrayType, newArray, number)
-  }
-  else if (TemplateHelpers::CanDynamicCast<DoubleArrayType>()(dataArray))
-  {
-    ADD_NUMBER_TO_ARRAY(dataArray, DoubleArrayType, newArray, number)
-  }
-  else if (TemplateHelpers::CanDynamicCast<Int8ArrayType>()(dataArray))
-  {
-    ADD_NUMBER_TO_ARRAY(dataArray, Int8ArrayType, newArray, number)
-  }
-  else if (TemplateHelpers::CanDynamicCast<UInt8ArrayType>()(dataArray))
-  {
-    ADD_NUMBER_TO_ARRAY(dataArray, UInt8ArrayType, newArray, number)
-  }
-  else if (TemplateHelpers::CanDynamicCast<Int16ArrayType>()(dataArray))
-  {
-    ADD_NUMBER_TO_ARRAY(dataArray, Int16ArrayType, newArray, number)
-  }
-  else if (TemplateHelpers::CanDynamicCast<UInt16ArrayType>()(dataArray))
-  {
-    ADD_NUMBER_TO_ARRAY(dataArray, UInt16ArrayType, newArray, number)
-  }
-  else if (TemplateHelpers::CanDynamicCast<Int32ArrayType>()(dataArray))
-  {
-    ADD_NUMBER_TO_ARRAY(dataArray, Int32ArrayType, newArray, number)
-  }
-  else if (TemplateHelpers::CanDynamicCast<UInt32ArrayType>()(dataArray))
-  {
-    ADD_NUMBER_TO_ARRAY(dataArray, UInt32ArrayType, newArray, number)
-  }
-  else if (TemplateHelpers::CanDynamicCast<Int64ArrayType>()(dataArray))
-  {
-    ADD_NUMBER_TO_ARRAY(dataArray, Int64ArrayType, newArray, number)
-  }
-  else if (TemplateHelpers::CanDynamicCast<UInt64ArrayType>()(dataArray))
-  {
-    ADD_NUMBER_TO_ARRAY(dataArray, UInt64ArrayType, newArray, number)
+    double dblValue = static_cast<double>(arrayCast->getValue(i)) + static_cast<double>(number);
+    newArray->initializeTuple(i, &dblValue);
   }
 
   QSharedPointer<CalculatorItem> newItem = QSharedPointer<CalculatorArray>(new CalculatorArray(newArray));

@@ -78,23 +78,65 @@ class SIMPLib_EXPORT CalculatorOperator : public CalculatorItem
   {\
     IDataArray::Pointer array1 = qSharedPointerDynamicCast<CalculatorArray>(item1)->getArray();\
     double number2 = qSharedPointerDynamicCast<CalculatorNumber>(item2)->getNumber();\
-    return func(filter, newArrayName, array1, number2);\
+    EXECUTE_FUNCTION_ONE_ARRAY(filter, newArrayName, array1, number2, func)\
   }\
   if (NULL != qSharedPointerDynamicCast<CalculatorNumber>(item1) && NULL != qSharedPointerDynamicCast<CalculatorArray>(item2))\
   {\
     double number1 = qSharedPointerDynamicCast<CalculatorNumber>(item1)->getNumber();\
     IDataArray::Pointer array2 = qSharedPointerDynamicCast<CalculatorArray>(item2)->getArray();\
-    return func(filter, newArrayName, array2, number1);\
+    EXECUTE_FUNCTION_ONE_ARRAY(filter, newArrayName, array2, number1, func)\
   }\
   if (NULL != qSharedPointerDynamicCast<CalculatorArray>(item1) && NULL != qSharedPointerDynamicCast<CalculatorArray>(item2))\
   {\
     IDataArray::Pointer array1 = qSharedPointerDynamicCast<CalculatorArray>(item1)->getArray();\
     IDataArray::Pointer array2 = qSharedPointerDynamicCast<CalculatorArray>(item2)->getArray();\
-    EXECUTE_OPERATOR_FUNCTION(filter, newArrayName, array1, array2, func)\
+    EXECUTE_FUNCTION_TWO_ARRAYS(filter, newArrayName, array1, array2, func)\
   }\
 
+#define EXECUTE_FUNCTION_ONE_ARRAY(filter, newArrayName, array, num, func)\
+    if(TemplateHelpers::CanDynamicCast<FloatArrayType>()(array))\
+    {\
+      return func<FloatArrayType>(filter, newArrayName, array, num);\
+    }\
+    else if(TemplateHelpers::CanDynamicCast<DoubleArrayType>()(array))\
+    {\
+      return func<DoubleArrayType>(filter, newArrayName, array, num);\
+    }\
+    else if(TemplateHelpers::CanDynamicCast<Int8ArrayType>()(array))\
+    {\
+      return func<Int8ArrayType>(filter, newArrayName, array, num);\
+    }\
+    else if(TemplateHelpers::CanDynamicCast<UInt8ArrayType>()(array))\
+    {\
+      return func<UInt8ArrayType>(filter, newArrayName, array, num);\
+    }\
+    else if(TemplateHelpers::CanDynamicCast<Int16ArrayType>()(array))\
+    {\
+      return func<Int16ArrayType>(filter, newArrayName, array, num);\
+    }\
+    else if(TemplateHelpers::CanDynamicCast<UInt16ArrayType>()(array))\
+    {\
+      return func<UInt16ArrayType>(filter, newArrayName, array, num);\
+    }\
+    else if(TemplateHelpers::CanDynamicCast<Int32ArrayType>()(array))\
+    {\
+      return func<Int32ArrayType>(filter, newArrayName, array, num);\
+    }\
+    else if(TemplateHelpers::CanDynamicCast<UInt32ArrayType>()(array))\
+    {\
+      return func<UInt32ArrayType>(filter, newArrayName, array, num);\
+    }\
+    else if(TemplateHelpers::CanDynamicCast<Int64ArrayType>()(array))\
+    {\
+      return func<Int64ArrayType>(filter, newArrayName, array, num);\
+    }\
+    else if(TemplateHelpers::CanDynamicCast<UInt64ArrayType>()(array))\
+    {\
+      return func<UInt64ArrayType>(filter, newArrayName, array, num);\
+    }\
 
-#define EXECUTE_OPERATOR_FUNCTION(filter, newArrayName, ptr1, ptr2, func)\
+
+#define EXECUTE_FUNCTION_TWO_ARRAYS(filter, newArrayName, ptr1, ptr2, func)\
     if(TemplateHelpers::CanDynamicCast<FloatArrayType>()(ptr1) && TemplateHelpers::CanDynamicCast<FloatArrayType>()(ptr2))\
     {\
       return func<FloatArrayType, FloatArrayType>(filter, newArrayName, ptr1, ptr2);\

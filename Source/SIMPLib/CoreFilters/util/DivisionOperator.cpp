@@ -37,14 +37,6 @@
 
 #include "CalculatorNumber.h"
 
-#define DIVIDE_ARRAY_BY_NUMBER(iDataPtr, dataType, newArray, numberVal)\
-  dataType::Pointer arrayCast = std::dynamic_pointer_cast<dataType>(iDataPtr);\
-  for (int i = 0; i < arrayCast->getNumberOfTuples(); i++)\
-  {\
-    double dblValue = static_cast<double>(arrayCast->getValue(i)) / static_cast<double>(numberVal);\
-    newArray->initializeTuple(i, &dblValue);\
-  }\
-
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
@@ -84,6 +76,7 @@ QSharedPointer<CalculatorItem> DivisionOperator::calculate(AbstractFilter* filte
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
+template <typename T>
 QSharedPointer<CalculatorItem> DivisionOperator::divide(AbstractFilter* filter, const QString &newArrayName, IDataArray::Pointer dataArray, double divisor)
 {
   if (divisor == 0)
@@ -96,45 +89,11 @@ QSharedPointer<CalculatorItem> DivisionOperator::divide(AbstractFilter* filter, 
 
   DataArray<double>::Pointer newArray = DataArray<double>::CreateArray(dataArray->getNumberOfTuples(), newArrayName);
 
-  if (TemplateHelpers::CanDynamicCast<FloatArrayType>()(dataArray))
+  typename T::Pointer arrayCast = std::dynamic_pointer_cast<T>(dataArray);
+  for (int i = 0; i < arrayCast->getNumberOfTuples(); i++)
   {
-    DIVIDE_ARRAY_BY_NUMBER(dataArray, FloatArrayType, newArray, divisor)
-  }
-  else if (TemplateHelpers::CanDynamicCast<DoubleArrayType>()(dataArray))
-  {
-    DIVIDE_ARRAY_BY_NUMBER(dataArray, DoubleArrayType, newArray, divisor)
-  }
-  else if (TemplateHelpers::CanDynamicCast<Int8ArrayType>()(dataArray))
-  {
-    DIVIDE_ARRAY_BY_NUMBER(dataArray, Int8ArrayType, newArray, divisor)
-  }
-  else if (TemplateHelpers::CanDynamicCast<UInt8ArrayType>()(dataArray))
-  {
-    DIVIDE_ARRAY_BY_NUMBER(dataArray, UInt8ArrayType, newArray, divisor)
-  }
-  else if (TemplateHelpers::CanDynamicCast<Int16ArrayType>()(dataArray))
-  {
-    DIVIDE_ARRAY_BY_NUMBER(dataArray, Int16ArrayType, newArray, divisor)
-  }
-  else if (TemplateHelpers::CanDynamicCast<UInt16ArrayType>()(dataArray))
-  {
-    DIVIDE_ARRAY_BY_NUMBER(dataArray, UInt16ArrayType, newArray, divisor)
-  }
-  else if (TemplateHelpers::CanDynamicCast<Int32ArrayType>()(dataArray))
-  {
-    DIVIDE_ARRAY_BY_NUMBER(dataArray, Int32ArrayType, newArray, divisor)
-  }
-  else if (TemplateHelpers::CanDynamicCast<UInt32ArrayType>()(dataArray))
-  {
-    DIVIDE_ARRAY_BY_NUMBER(dataArray, UInt32ArrayType, newArray, divisor)
-  }
-  else if (TemplateHelpers::CanDynamicCast<Int64ArrayType>()(dataArray))
-  {
-    DIVIDE_ARRAY_BY_NUMBER(dataArray, Int64ArrayType, newArray, divisor)
-  }
-  else if (TemplateHelpers::CanDynamicCast<UInt64ArrayType>()(dataArray))
-  {
-    DIVIDE_ARRAY_BY_NUMBER(dataArray, UInt64ArrayType, newArray, divisor)
+    double dblValue = static_cast<double>(arrayCast->getValue(i)) / static_cast<double>(divisor);
+    newArray->initializeTuple(i, &dblValue);
   }
 
   QSharedPointer<CalculatorItem> newItem = QSharedPointer<CalculatorArray>(new CalculatorArray(newArray));

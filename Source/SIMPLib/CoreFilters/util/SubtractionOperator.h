@@ -55,8 +55,10 @@ class SIMPLib_EXPORT SubtractionOperator : public CalculatorOperator
   private:
     int                                             m_PrecedenceId;
 
-    QSharedPointer<CalculatorItem> subtract(AbstractFilter* filter, const QString &newArrayName, IDataArray::Pointer dataArray, double subtrahend);
     QSharedPointer<CalculatorItem> subtract(AbstractFilter* filter, const QString &newArrayName, double subtrahend, double minuend);
+
+    template <typename T>
+    QSharedPointer<CalculatorItem> subtract(AbstractFilter* filter, const QString &newArrayName, IDataArray::Pointer dataArray, double subtrahend);
 
     template <typename J, typename K>
     QSharedPointer<CalculatorItem> subtract(AbstractFilter* filter, const QString &newArrayName, IDataArray::Pointer subtrahend, IDataArray::Pointer minuend);
