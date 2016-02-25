@@ -1,5 +1,5 @@
-#ifndef _AxisAngleInput_H_
-#define _AxisAngleInput_H_
+#ifndef _axisangleinput_h_
+#define _axisangleinput_h_
 
 #include <QtCore/QJsonObject>
 

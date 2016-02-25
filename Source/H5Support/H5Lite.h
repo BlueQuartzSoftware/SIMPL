@@ -8,8 +8,8 @@
 //                           FA8650-04-C-5229
 //
 
-#ifndef _H5Lite_H_
-#define _H5Lite_H_
+#ifndef _h5lite_h_
+#define _h5lite_h_
 
 
 //--C++ Headers

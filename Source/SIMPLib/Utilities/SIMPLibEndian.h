@@ -37,8 +37,8 @@
  *  SIMPLib::Endian::FromLittleToSystem::convert(value);
  */
 
-#ifndef _SIMPLibENDIAN_H_
-#define _SIMPLibENDIAN_H_
+#ifndef _simplibendian_h_
+#define _simplibendian_h_
 
 
 //-- Needed for the memcpy function

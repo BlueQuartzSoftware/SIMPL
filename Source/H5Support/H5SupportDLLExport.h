@@ -1,5 +1,5 @@
 /* ============================================================================
-* Copyright (c) 2009-2015 BlueQuartz Software, LLC
+* Copyright (c) 2009-2016 BlueQuartz Software, LLC
 *
 * Redistribution and use in source and binary forms, with or without modification,
 * are permitted provided that the following conditions are met:
@@ -37,8 +37,8 @@
 
 
 
-#ifndef _H5Support_COMMON_DLL_EXPORT_H_
-#define _H5Support_COMMON_DLL_EXPORT_H_
+#ifndef _h5supportdllexport_h_
+#define _h5supportdllexport_h_
 
 
 #if defined (_MSC_VER)
@@ -78,8 +78,8 @@ building the H5SupportDatModel DLL on windows.
 #endif
 
 /* If H5Support_EXPORT was never defined, define it here */
-#ifndef H5Support_EXPORT
-#define H5Support_EXPORT
+#ifndef _h5supportdllexport_h_
+#define _h5supportdllexport_h_
 #endif
 
 #if 0

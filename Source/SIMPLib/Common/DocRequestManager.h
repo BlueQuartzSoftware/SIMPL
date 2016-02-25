@@ -29,8 +29,8 @@
  *
  *
  * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
-#ifndef _DocRequestManger_H_
-#define _DocRequestManger_H_
+#ifndef _docrequestmanager_h_
+#define _docrequestmanager_h_
 
 #include <QtCore/QObject>
 #include <QtCore/QString>

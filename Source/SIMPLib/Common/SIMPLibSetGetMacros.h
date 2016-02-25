@@ -1,5 +1,5 @@
 /* ============================================================================
-* Copyright (c) 2009-2015 BlueQuartz Software, LLC
+* Copyright (c) 2009-2016 BlueQuartz Software, LLC
 *
 * Redistribution and use in source and binary forms, with or without modification,
 * are permitted provided that the following conditions are met:
@@ -32,8 +32,8 @@
 *    United States Prime Contract Navy N00173-07-C-2068
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
-#ifndef _SIMPL_SETGETMACROS_H_
-#define _SIMPL_SETGETMACROS_H_
+#ifndef _simplibsetgetmacros_h_
+#define _simplibsetgetmacros_h_
 
 #include <string.h>
 #include <sstream>
@@ -124,8 +124,8 @@
     return Pointer(static_cast<thisClass*>(NULL));\
   }
 
-#ifndef QT_SHARED_POINTERS
-/**
+#ifndef _simplibsetgetmacros_h_
+#define _simplibsetgetmacros_h_
  * @brief Creates some basic typedefs that can be used throughout the code to
  * reference the class.
  */

@@ -29,8 +29,8 @@
  *
  *
  * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
-#ifndef _TestObserver_H_
-#define _TestObserver_H_
+#ifndef _testobserver_h_
+#define _testobserver_h_
 
 #include <QtCore/QObject>
 #include <QtCore/QVector>

@@ -1,5 +1,5 @@
 /* ============================================================================
-* Copyright (c) 2009-2015 BlueQuartz Software, LLC
+* Copyright (c) 2009-2016 BlueQuartz Software, LLC
 *
 * Redistribution and use in source and binary forms, with or without modification,
 * are permitted provided that the following conditions are met:
@@ -33,8 +33,8 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-#ifndef _DataArrayPath_H_
-#define _DataArrayPath_H_
+#ifndef _dataarraypath_h_
+#define _dataarraypath_h_
 
 #include <QtCore/QtGlobal>                     // for Q_DECLARE_PRIVATE
 #include <QtCore/QMetaType>                   // for Q_DECLARE_METATYPE

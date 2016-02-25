@@ -1,5 +1,5 @@
 /* ============================================================================
-* Copyright (c) 2009-2015 BlueQuartz Software, LLC
+* Copyright (c) 2009-2016 BlueQuartz Software, LLC
 *
 * Redistribution and use in source and binary forms, with or without modification,
 * are permitted provided that the following conditions are met:
@@ -34,8 +34,8 @@
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
 
-#ifndef _CreateImageGeometry_H_
-#define _CreateImageGeometry_H_
+#ifndef _createimagegeometry_h_
+#define _createimagegeometry_h_
 
 #include "SIMPLib/SIMPLib.h"
 #include "SIMPLib/FilterParameters/IntVec3FilterParameter.h"

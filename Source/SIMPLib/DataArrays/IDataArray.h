@@ -8,8 +8,8 @@
 //                           FA8650-04-C-5229
 //
 ///////////////////////////////////////////////////////////////////////////////
-#ifndef _IDATAARRAY_HPP_
-#define _IDATAARRAY_HPP_
+#ifndef _idataarray_h_
+#define _idataarray_h_
 
 
 //-- C++
