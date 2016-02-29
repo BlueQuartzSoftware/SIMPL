@@ -152,13 +152,13 @@ QuadGeom::~QuadGeom()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-QuadGeom::Pointer QuadGeom::CreateGeometry(int64_t numQuads, SharedVertexList::Pointer vertices, const QString& name)
+QuadGeom::Pointer QuadGeom::CreateGeometry(int64_t numQuads, SharedVertexList::Pointer vertices, const QString& name, bool allocate)
 {
   if (name.isEmpty() == true)
   {
     return NullPointer();
   }
-  SharedQuadList::Pointer quads = QuadGeom::CreateSharedQuadList(numQuads);
+  SharedQuadList::Pointer quads = QuadGeom::CreateSharedQuadList(numQuads, allocate);
   QuadGeom* d = new QuadGeom();
   d->setVertices(vertices);
   d->setQuads(quads);

@@ -161,7 +161,7 @@ void MakeDataContainer::dataCheck()
   //image->setDimensions(64, 64, 64);
   //m->setGeometry(image);
 
-  VertexGeom::Pointer vertices = VertexGeom::CreateGeometry(100, "TestVertexGeom");
+  VertexGeom::Pointer vertices = VertexGeom::CreateGeometry(100, "TestVertexGeom", false);
   SharedVertexList::Pointer test = vertices->getVertices();
   float* verts = test->getPointer(0);
   for (int64_t i = 0; i < vertices->getNumberOfVertices(); i++)
