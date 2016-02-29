@@ -35,7 +35,9 @@
 
 #include "SubtractionOperator.h"
 
-#include "CalculatorNumber.h"
+#include <Eigen/Core>
+#include <Eigen/Dense>
+#include <Eigen/Eigen>
 
 // -----------------------------------------------------------------------------
 //
@@ -61,9 +63,10 @@ QSharedPointer<CalculatorItem> SubtractionOperator::calculate(AbstractFilter* fi
 {
   if (executionStack.size() >= 2)
   {
-    QSharedPointer<CalculatorItem> item1 = executionStack.pop();
-    QSharedPointer<CalculatorItem> item2 = executionStack.pop();
-    EXECUTE_ARRAY_NUMBER_OPERATIONS(filter, newArrayName, item1, item2, subtract)
+    IDataArray::Pointer item1 = qSharedPointerDynamicCast<CalculatorArray>(executionStack.pop())->getArray();
+    IDataArray::Pointer item2 = qSharedPointerDynamicCast<CalculatorArray>(executionStack.pop())->getArray();
+
+    EXECUTE_FUNCTION_TWO_ARRAYS(filter, newArrayName, item1, item2, subtract)
   }
 
   // If the execution gets down here, then we have an error
@@ -76,53 +79,55 @@ QSharedPointer<CalculatorItem> SubtractionOperator::calculate(AbstractFilter* fi
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-template <typename T>
-QSharedPointer<CalculatorItem> SubtractionOperator::subtract(AbstractFilter* filter, const QString &newArrayName, IDataArray::Pointer dataArray, double subtrahend)
-{
-  DataArray<double>::Pointer newArray = DataArray<double>::CreateArray(dataArray->getNumberOfTuples(), newArrayName);
-
-  typename T::Pointer arrayCast = std::dynamic_pointer_cast<T>(dataArray);
-  for (int i = 0; i < arrayCast->getNumberOfTuples(); i++)
-  {
-    double dblValue = static_cast<double>(arrayCast->getValue(i)) - static_cast<double>(subtrahend);
-    newArray->initializeTuple(i, &dblValue);
-  }
-
-  QSharedPointer<CalculatorItem> newItem = QSharedPointer<CalculatorArray>(new CalculatorArray(newArray));
-  return newItem;
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
 template <typename J, typename K>
 QSharedPointer<CalculatorItem> SubtractionOperator::subtract(AbstractFilter* filter, const QString &newArrayName, IDataArray::Pointer subtrahend, IDataArray::Pointer minuend)
-{
-  typename J::Pointer subtrahendCast = std::dynamic_pointer_cast<J>(subtrahend);
-  typename K::Pointer minuendCast = std::dynamic_pointer_cast<K>(minuend);
+{ 
+  typedef Eigen::Array<J, Eigen::Dynamic, 1> JEigenArrayType;
+  typedef Eigen::Map<JEigenArrayType> JEigenArrayMapType;
 
-  DataArray<double>::Pointer newArray = DataArray<double>::CreateArray(minuendCast->getNumberOfTuples(), newArrayName);
+  typedef Eigen::Array<K, Eigen::Dynamic, 1> KEigenArrayType;
+  typedef Eigen::Map<KEigenArrayType> KEigenArrayMapType;
 
-  for (int i = 0; i < newArray->getNumberOfTuples(); i++)
+  typename DataArray<J>::Pointer subtrahendCast = std::dynamic_pointer_cast<DataArray<J> >(subtrahend);
+  typename DataArray<K>::Pointer minuendCast = std::dynamic_pointer_cast<DataArray<K> >(minuend);
+
+  DataArray<double>::Pointer newArray;
+  if (subtrahendCast->getNumberOfTuples() > 1 && minuendCast->getNumberOfTuples() == 1)
   {
-    double minuendVal = static_cast<double>(minuendCast->getValue(i));
-    double subtrahendVal = static_cast<double>(subtrahendCast->getValue(i));
-    double value = minuendVal - subtrahendVal;
-    newArray->initializeTuple(i, &value);
+    double minuendNum = static_cast<double>(minuendCast->getValue(0));
+    JEigenArrayMapType ac(subtrahendCast->getPointer(0), subtrahendCast->getNumberOfTuples());
+
+    newArray = DataArray<double>::CreateArray(subtrahendCast->getNumberOfTuples(), newArrayName);
+    Eigen::Map<Eigen::Array<double, Eigen::Dynamic, 1> > newArrayMap(newArray->getPointer(0), newArray->getNumberOfTuples());
+
+    newArrayMap = minuendNum - ac. template cast<double>();
+  }
+  else if (subtrahendCast->getNumberOfTuples() == 1 && minuendCast->getNumberOfTuples() > 1)
+  {
+    double subtrahendNum = static_cast<double>(subtrahendCast->getValue(0));
+    KEigenArrayMapType ac(minuendCast->getPointer(0), minuendCast->getNumberOfTuples());
+
+    newArray = DataArray<double>::CreateArray(minuendCast->getNumberOfTuples(), newArrayName);
+    Eigen::Map<Eigen::Array<double, Eigen::Dynamic, 1> > newArrayMap(newArray->getPointer(0), newArray->getNumberOfTuples());
+
+    newArrayMap = ac. template cast<double>() - subtrahendNum;
+  }
+  else if (subtrahendCast->getNumberOfTuples() > 0 && minuendCast->getNumberOfTuples() > 0)
+  {
+    JEigenArrayMapType subtrahendAC(subtrahendCast->getPointer(0), subtrahendCast->getNumberOfTuples());
+    KEigenArrayMapType minuendAC(minuendCast->getPointer(0), minuendCast->getNumberOfTuples());
+
+    newArray = DataArray<double>::CreateArray(minuendCast->getNumberOfTuples(), newArrayName);
+    Eigen::Map<Eigen::Array<double, Eigen::Dynamic, 1> > newArrayMap(newArray->getPointer(0), newArray->getNumberOfTuples());
+
+    newArrayMap = minuendAC. template cast<double>() - subtrahendAC. template cast<double>();
+  }
+  else
+  {
+    Q_ASSERT(false);
   }
 
   QSharedPointer<CalculatorItem> newItem = QSharedPointer<CalculatorArray>(new CalculatorArray(newArray));
-  return newItem;
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-QSharedPointer<CalculatorItem> SubtractionOperator::subtract(AbstractFilter* filter, const QString &newArrayName, double subtrahend, double minuend)
-{
-  double newNumber = minuend - subtrahend;
-
-  QSharedPointer<CalculatorItem> newItem = QSharedPointer<CalculatorNumber>(new CalculatorNumber(newNumber));
   return newItem;
 }
 

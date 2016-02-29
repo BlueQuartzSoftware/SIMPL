@@ -35,7 +35,9 @@
 
 #include "MultiplicationOperator.h"
 
-#include "CalculatorNumber.h"
+#include <Eigen/Core>
+#include <Eigen/Dense>
+#include <Eigen/Eigen>
 
 // -----------------------------------------------------------------------------
 //
@@ -61,9 +63,10 @@ QSharedPointer<CalculatorItem> MultiplicationOperator::calculate(AbstractFilter*
 {
   if (executionStack.size() >= 2)
   {
-    QSharedPointer<CalculatorItem> item1 = executionStack.pop();
-    QSharedPointer<CalculatorItem> item2 = executionStack.pop();
-    EXECUTE_ARRAY_NUMBER_OPERATIONS(filter, newArrayName, item1, item2, multiply)
+    IDataArray::Pointer item1 = qSharedPointerDynamicCast<CalculatorArray>(executionStack.pop())->getArray();
+    IDataArray::Pointer item2 = qSharedPointerDynamicCast<CalculatorArray>(executionStack.pop())->getArray();
+
+    EXECUTE_FUNCTION_TWO_ARRAYS(filter, newArrayName, item1, item2, multiply)
   }
 
   // If the execution gets down here, then we have an error
@@ -76,51 +79,55 @@ QSharedPointer<CalculatorItem> MultiplicationOperator::calculate(AbstractFilter*
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-template <typename T>
-QSharedPointer<CalculatorItem> MultiplicationOperator::multiply(AbstractFilter* filter, const QString &newArrayName, IDataArray::Pointer dataArray, double multiplier)
-{
-  DataArray<double>::Pointer newArray = DataArray<double>::CreateArray(dataArray->getNumberOfTuples(), newArrayName);
-
-  typename T::Pointer arrayCast = std::dynamic_pointer_cast<T>(dataArray);
-  for (int i = 0; i < arrayCast->getNumberOfTuples(); i++)
-  {
-    double dblValue = static_cast<double>(arrayCast->getValue(i)) * static_cast<double>(multiplier);
-    newArray->initializeTuple(i, &dblValue);
-  }
-
-  QSharedPointer<CalculatorItem> newItem = QSharedPointer<CalculatorArray>(new CalculatorArray(newArray));
-  return newItem;
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
 template <typename J, typename K>
 QSharedPointer<CalculatorItem> MultiplicationOperator::multiply(AbstractFilter* filter, const QString &newArrayName, IDataArray::Pointer multiplier, IDataArray::Pointer multiplicand)
-{
-  typename J::Pointer multiplierCast = std::dynamic_pointer_cast<J>(multiplier);
-  typename K::Pointer multiplicandCast = std::dynamic_pointer_cast<K>(multiplicand);
+{ 
+  typedef Eigen::Array<J, Eigen::Dynamic, 1> JEigenArrayType;
+  typedef Eigen::Map<JEigenArrayType> JEigenArrayMapType;
 
-  DataArray<double>::Pointer newArray = DataArray<double>::CreateArray(multiplicandCast->getNumberOfTuples(), newArrayName);
+  typedef Eigen::Array<K, Eigen::Dynamic, 1> KEigenArrayType;
+  typedef Eigen::Map<KEigenArrayType> KEigenArrayMapType;
 
-  for (int i = 0; i < newArray->getNumberOfTuples(); i++)
+  typename DataArray<J>::Pointer multiplierCast = std::dynamic_pointer_cast<DataArray<J> >(multiplier);
+  typename DataArray<K>::Pointer multiplicandCast = std::dynamic_pointer_cast<DataArray<K> >(multiplicand);
+
+  DataArray<double>::Pointer newArray;
+  if (multiplierCast->getNumberOfTuples() > 1 && multiplicandCast->getNumberOfTuples() == 1)
   {
-    double value = static_cast<double>(multiplicandCast->getValue(i)) * static_cast<double>(multiplierCast->getValue(i));
-    newArray->initializeTuple(i, &value);
+    double number = static_cast<double>(multiplicandCast->getValue(0));
+    JEigenArrayMapType ac(multiplierCast->getPointer(0), multiplierCast->getNumberOfTuples());
+
+    newArray = DataArray<double>::CreateArray(multiplierCast->getNumberOfTuples(), newArrayName);
+    Eigen::Map<Eigen::Array<double, Eigen::Dynamic, 1> > newArrayMap(newArray->getPointer(0), newArray->getNumberOfTuples());
+
+    newArrayMap = ac. template cast<double>() * number;
+  }
+  else if (multiplierCast->getNumberOfTuples() == 1 && multiplicandCast->getNumberOfTuples() > 1)
+  {
+    double number = static_cast<double>(multiplierCast->getValue(0));
+    KEigenArrayMapType ac(multiplicandCast->getPointer(0), multiplicandCast->getNumberOfTuples());
+
+    newArray = DataArray<double>::CreateArray(multiplicandCast->getNumberOfTuples(), newArrayName);
+    Eigen::Map<Eigen::Array<double, Eigen::Dynamic, 1> > newArrayMap(newArray->getPointer(0), newArray->getNumberOfTuples());
+
+    newArrayMap = ac. template cast<double>() * number;
+  }
+  else if (multiplierCast->getNumberOfTuples() > 0 && multiplicandCast->getNumberOfTuples() > 0)
+  {
+    JEigenArrayMapType ac1(multiplierCast->getPointer(0), multiplierCast->getNumberOfTuples());
+    KEigenArrayMapType ac2(multiplicandCast->getPointer(0), multiplicandCast->getNumberOfTuples());
+
+    newArray = DataArray<double>::CreateArray(multiplicandCast->getNumberOfTuples(), newArrayName);
+    Eigen::Map<Eigen::Array<double, Eigen::Dynamic, 1> > newArrayMap(newArray->getPointer(0), newArray->getNumberOfTuples());
+
+    newArrayMap = ac1. template cast<double>() * ac2. template cast<double>();
+  }
+  else
+  {
+    Q_ASSERT(false);
   }
 
   QSharedPointer<CalculatorItem> newItem = QSharedPointer<CalculatorArray>(new CalculatorArray(newArray));
-  return newItem;
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-QSharedPointer<CalculatorItem> MultiplicationOperator::multiply(AbstractFilter* filter, const QString &newArrayName, double multiplier, double multiplicand)
-{
-  double newNumber = multiplicand * multiplier;
-
-  QSharedPointer<CalculatorItem> newItem = QSharedPointer<CalculatorNumber>(new CalculatorNumber(newNumber));
   return newItem;
 }
 

@@ -35,7 +35,9 @@
 
 #include "DivisionOperator.h"
 
-#include "CalculatorNumber.h"
+#include <Eigen/Core>
+#include <Eigen/Dense>
+#include <Eigen/Eigen>
 
 // -----------------------------------------------------------------------------
 //
@@ -61,9 +63,10 @@ QSharedPointer<CalculatorItem> DivisionOperator::calculate(AbstractFilter* filte
 {
   if (executionStack.size() >= 2)
   {
-    QSharedPointer<CalculatorItem> item1 = executionStack.pop();
-    QSharedPointer<CalculatorItem> item2 = executionStack.pop();
-    EXECUTE_ARRAY_NUMBER_OPERATIONS(filter, newArrayName, item1, item2, divide)
+    IDataArray::Pointer item1 = qSharedPointerDynamicCast<CalculatorArray>(executionStack.pop())->getArray();
+    IDataArray::Pointer item2 = qSharedPointerDynamicCast<CalculatorArray>(executionStack.pop())->getArray();
+
+    EXECUTE_FUNCTION_TWO_ARRAYS(filter, newArrayName, item1, item2, divide)
   }
 
   // If the execution gets down here, then we have an error
@@ -76,78 +79,79 @@ QSharedPointer<CalculatorItem> DivisionOperator::calculate(AbstractFilter* filte
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-template <typename T>
-QSharedPointer<CalculatorItem> DivisionOperator::divide(AbstractFilter* filter, const QString &newArrayName, IDataArray::Pointer dataArray, double divisor)
-{
-  if (divisor == 0)
-  {
-    QString ss = QObject::tr("The chosen infix equation tried to divide by 0 (\"%1/%2\").").arg(dataArray->getName()).arg(divisor);
-    filter->setErrorCondition(-4008);
-    filter->notifyErrorMessage(filter->getHumanLabel(), ss, filter->getErrorCondition());
-    return QSharedPointer<CalculatorItem>();
-  }
-
-  DataArray<double>::Pointer newArray = DataArray<double>::CreateArray(dataArray->getNumberOfTuples(), newArrayName);
-
-  typename T::Pointer arrayCast = std::dynamic_pointer_cast<T>(dataArray);
-  for (int i = 0; i < arrayCast->getNumberOfTuples(); i++)
-  {
-    double dblValue = static_cast<double>(arrayCast->getValue(i)) / static_cast<double>(divisor);
-    newArray->initializeTuple(i, &dblValue);
-  }
-
-  QSharedPointer<CalculatorItem> newItem = QSharedPointer<CalculatorArray>(new CalculatorArray(newArray));
-  return newItem;
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
 template <typename J, typename K>
 QSharedPointer<CalculatorItem> DivisionOperator::divide(AbstractFilter* filter, const QString &newArrayName, IDataArray::Pointer divisor, IDataArray::Pointer dividend)
-{
-  typename J::Pointer divisorCast = std::dynamic_pointer_cast<J>(divisor);
-  typename K::Pointer dividendCast = std::dynamic_pointer_cast<K>(dividend);
+{ 
+  typedef Eigen::Array<J, Eigen::Dynamic, 1> JEigenArrayType;
+  typedef Eigen::Map<JEigenArrayType> JEigenArrayMapType;
 
-  DataArray<double>::Pointer newArray = DataArray<double>::CreateArray(dividendCast->getNumberOfTuples(), newArrayName);
+  typedef Eigen::Array<K, Eigen::Dynamic, 1> KEigenArrayType;
+  typedef Eigen::Map<KEigenArrayType> KEigenArrayMapType;
 
-  for (int i = 0; i < newArray->getNumberOfTuples(); i++)
+  typename DataArray<J>::Pointer divisorCast = std::dynamic_pointer_cast<DataArray<J> >(divisor);
+  typename DataArray<K>::Pointer dividendCast = std::dynamic_pointer_cast<DataArray<K> >(dividend);
+
+  DataArray<double>::Pointer newArray;
+  if (divisorCast->getNumberOfTuples() > 1 && dividendCast->getNumberOfTuples() == 1)
   {
-    double divisorValue = divisorCast->getValue(i);
-    if (divisorValue == 0)
-    {
-      QString ss = QObject::tr("The chosen infix equation tried to divide by 0 (\"%1\", tuple %2).").arg(divisor->getName()).arg(QString::number(i));
-      filter->setErrorCondition(-4008);
-      filter->notifyErrorMessage(filter->getHumanLabel(), ss, filter->getErrorCondition());
-      return QSharedPointer<CalculatorItem>();
-    }
+    double dividendNum = static_cast<double>(dividendCast->getValue(0));
+    JEigenArrayMapType ac(divisorCast->getPointer(0), divisorCast->getNumberOfTuples());
 
-    double dividend = static_cast<double>(dividendCast->getValue(i));
-    double divisor = static_cast<double>(divisorCast->getValue(i));
-    double value = dividend / divisor;
-    newArray->initializeTuple(i, &value);
+    newArray = DataArray<double>::CreateArray(divisorCast->getNumberOfTuples(), newArrayName);
+    Eigen::Map<Eigen::Array<double, Eigen::Dynamic, 1> > newArrayMap(newArray->getPointer(0), newArray->getNumberOfTuples());
+
+//    if (divisorNum == 0)
+//    {
+//      QString ss = QObject::tr("The chosen infix equation tried to divide by 0 (\"%1\", tuple %2).").arg(divisor->getName()).arg(QString::number(i));
+//      filter->setErrorCondition(-4008);
+//      filter->notifyErrorMessage(filter->getHumanLabel(), ss, filter->getErrorCondition());
+//      return QSharedPointer<CalculatorItem>();
+//    }
+
+    newArrayMap = dividendNum / ac. template cast<double>();
+  }
+  else if (divisorCast->getNumberOfTuples() == 1 && dividendCast->getNumberOfTuples() > 1)
+  {
+    double divisorNum = static_cast<double>(divisorCast->getValue(0));
+    KEigenArrayMapType ac(dividendCast->getPointer(0), dividendCast->getNumberOfTuples());
+
+    newArray = DataArray<double>::CreateArray(dividendCast->getNumberOfTuples(), newArrayName);
+    Eigen::Map<Eigen::Array<double, Eigen::Dynamic, 1> > newArrayMap(newArray->getPointer(0), newArray->getNumberOfTuples());
+
+//    if (divisorNum == 0)
+//    {
+//      QString ss = QObject::tr("The chosen infix equation tried to divide by 0.");
+//      filter->setErrorCondition(-4008);
+//      filter->notifyErrorMessage(filter->getHumanLabel(), ss, filter->getErrorCondition());
+//      return QSharedPointer<CalculatorItem>();
+//    }
+
+    newArrayMap = ac. template cast<double>() / divisorNum;
+  }
+  else if (divisorCast->getNumberOfTuples() > 0 && dividendCast->getNumberOfTuples() > 0)
+  {
+    JEigenArrayMapType divisorAC(divisorCast->getPointer(0), divisorCast->getNumberOfTuples());
+    KEigenArrayMapType dividendAC(dividendCast->getPointer(0), dividendCast->getNumberOfTuples());
+
+    newArray = DataArray<double>::CreateArray(dividendCast->getNumberOfTuples(), newArrayName);
+    Eigen::Map<Eigen::Array<double, Eigen::Dynamic, 1> > newArrayMap(newArray->getPointer(0), newArray->getNumberOfTuples());
+
+//    if (divisorNum == 0)
+//    {
+//      QString ss = QObject::tr("The chosen infix equation tried to divide by 0 (\"%1\", tuple %2).").arg(divisor->getName()).arg(QString::number(i));
+//      filter->setErrorCondition(-4008);
+//      filter->notifyErrorMessage(filter->getHumanLabel(), ss, filter->getErrorCondition());
+//      return QSharedPointer<CalculatorItem>();
+//    }
+
+    newArrayMap = dividendAC. template cast<double>() / divisorAC. template cast<double>();
+  }
+  else
+  {
+    Q_ASSERT(false);
   }
 
   QSharedPointer<CalculatorItem> newItem = QSharedPointer<CalculatorArray>(new CalculatorArray(newArray));
-  return newItem;
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-QSharedPointer<CalculatorItem> DivisionOperator::divide(AbstractFilter* filter, const QString &newArrayName, double divisor, double dividend)
-{
-  if (divisor == 0)
-  {
-    QString ss = QObject::tr("The chosen infix equation tried to divide by 0 (\"%1/%2\").").arg(dividend).arg(divisor);
-    filter->setErrorCondition(-4008);
-    filter->notifyErrorMessage(filter->getHumanLabel(), ss, filter->getErrorCondition());
-    return QSharedPointer<CalculatorItem>();
-  }
-
-  double newNumber = dividend / divisor;
-
-  QSharedPointer<CalculatorItem> newItem = QSharedPointer<CalculatorNumber>(new CalculatorNumber(newNumber));
   return newItem;
 }
 

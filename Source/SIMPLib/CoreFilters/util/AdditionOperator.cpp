@@ -35,11 +35,57 @@
 
 #include "AdditionOperator.h"
 
+#include <Eigen/Core>
+#include <Eigen/Dense>
+#include <Eigen/Eigen>
+
 #include "SIMPLib/Common/TemplateHelpers.hpp"
 
-#include "CalculatorNumber.h"
 #include "CalculatorArray.h"
 
+#ifdef SIMPLib_USE_PARALLEL_ALGORITHMS
+#include <tbb/parallel_for.h>
+#include <tbb/blocked_range.h>
+#include <tbb/partitioner.h>
+#include <tbb/task_scheduler_init.h>
+#endif
+
+///**
+// * @brief The AdditionOperatorTwoArraysImpl class implements a threaded algorithm that computes the IPF
+// * colors for each element in a geometry
+// */
+//template <typename J, typename K>
+//class AdditionOperatorTwoArraysImpl
+//{
+//  public:
+//    AdditionOperatorTwoArraysImpl(typename J::Pointer inputDataArray1, typename K::Pointer inputDataArray2, DoubleArrayType::Pointer destDataArray) :
+//      m_InputDataArray1(inputDataArray1),
+//      m_InputDataArray2(inputDataArray2),
+//      m_DestinationDataArray(destDataArray)
+//    {}
+//    virtual ~AdditionOperatorTwoArraysImpl() {}
+
+//    void addArrays(int start, int end) const
+//    {
+//      for (int i = start; i < end; i++)
+//      {
+//        double value = static_cast<double>(m_InputDataArray1->getValue(i)) + static_cast<double>(m_InputDataArray2->getValue(i));
+//        m_DestinationDataArray->initializeTuple(i, &value);
+//      }
+//    }
+
+//#ifdef SIMPLib_USE_PARALLEL_ALGORITHMS
+//    void operator()(const tbb::blocked_range<int>& r) const
+//    {
+//      addArrays(r.begin(), r.end());
+//    }
+//#endif
+//  private:
+//    typename J::Pointer                             m_InputDataArray1;
+//    typename K::Pointer                             m_InputDataArray2;
+//    DoubleArrayType::Pointer                        m_DestinationDataArray;
+
+//};
 
 // -----------------------------------------------------------------------------
 //
@@ -65,9 +111,10 @@ QSharedPointer<CalculatorItem> AdditionOperator::calculate(AbstractFilter* filte
 {
   if (executionStack.size() >= 2)
   {
-    QSharedPointer<CalculatorItem> item1 = executionStack.pop();
-    QSharedPointer<CalculatorItem> item2 = executionStack.pop();
-    EXECUTE_ARRAY_NUMBER_OPERATIONS(filter, newArrayName, item1, item2, add)
+    IDataArray::Pointer item1 = qSharedPointerDynamicCast<CalculatorArray>(executionStack.pop())->getArray();
+    IDataArray::Pointer item2 = qSharedPointerDynamicCast<CalculatorArray>(executionStack.pop())->getArray();
+
+    EXECUTE_FUNCTION_TWO_ARRAYS(filter, newArrayName, item1, item2, add)\
   }
 
   // If the execution gets down here, then we have an error
@@ -80,51 +127,90 @@ QSharedPointer<CalculatorItem> AdditionOperator::calculate(AbstractFilter* filte
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-template <typename T>
-QSharedPointer<CalculatorItem> AdditionOperator::add(AbstractFilter* filter, const QString &newArrayName, IDataArray::Pointer dataArray, double number)
-{
-  DataArray<double>::Pointer newArray = DataArray<double>::CreateArray(dataArray->getNumberOfTuples(), newArrayName);
-
-  typename T::Pointer arrayCast = std::dynamic_pointer_cast<T>(dataArray);
-  for (int i = 0; i < arrayCast->getNumberOfTuples(); i++)
-  {
-    double dblValue = static_cast<double>(arrayCast->getValue(i)) + static_cast<double>(number);
-    newArray->initializeTuple(i, &dblValue);
-  }
-
-  QSharedPointer<CalculatorItem> newItem = QSharedPointer<CalculatorArray>(new CalculatorArray(newArray));
-  return newItem;
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
 template <typename J, typename K>
 QSharedPointer<CalculatorItem> AdditionOperator::add(AbstractFilter* filter, const QString &newArrayName, IDataArray::Pointer dataArray1, IDataArray::Pointer dataArray2)
 {
-  typename J::Pointer arrayCast1 = std::dynamic_pointer_cast<J>(dataArray1);
-  typename K::Pointer arrayCast2 = std::dynamic_pointer_cast<K>(dataArray2);
+  typedef Eigen::Array<J, Eigen::Dynamic, 1> JEigenArrayType;
+  typedef Eigen::Map<JEigenArrayType> JEigenArrayMapType;
 
-  DataArray<double>::Pointer newArray = DataArray<double>::CreateArray(arrayCast1->getNumberOfTuples(), newArrayName);
+  typedef Eigen::Array<K, Eigen::Dynamic, 1> KEigenArrayType;
+  typedef Eigen::Map<KEigenArrayType> KEigenArrayMapType;
 
-  for (int i = 0; i < newArray->getNumberOfTuples(); i++)
+  typename DataArray<J>::Pointer arrayCast1 = std::dynamic_pointer_cast<DataArray<J> >(dataArray1);
+  typename DataArray<K>::Pointer arrayCast2 = std::dynamic_pointer_cast<DataArray<K> >(dataArray2);
+
+  DataArray<double>::Pointer newArray;
+  if (arrayCast1->getNumberOfTuples() > 1 && arrayCast2->getNumberOfTuples() == 1)
   {
-    double value = static_cast<double>(arrayCast1->getValue(i)) + static_cast<double>(arrayCast2->getValue(i));
-    newArray->initializeTuple(i, &value);
+    double number = static_cast<double>(arrayCast2->getValue(0));
+    JEigenArrayMapType ac(arrayCast1->getPointer(0), arrayCast1->getNumberOfTuples());
+
+    newArray = DataArray<double>::CreateArray(arrayCast1->getNumberOfTuples(), newArrayName);
+    Eigen::Map<Eigen::Array<double, Eigen::Dynamic, 1> > newArrayMap(newArray->getPointer(0), newArray->getNumberOfTuples());
+
+    newArrayMap = ac. template cast<double>() + number;
+  }
+  else if (arrayCast1->getNumberOfTuples() == 1 && arrayCast2->getNumberOfTuples() > 1)
+  {
+    double number = static_cast<double>(arrayCast1->getValue(0));
+    KEigenArrayMapType ac(arrayCast2->getPointer(0), arrayCast2->getNumberOfTuples());
+
+    newArray = DataArray<double>::CreateArray(arrayCast2->getNumberOfTuples(), newArrayName);
+    Eigen::Map<Eigen::Array<double, Eigen::Dynamic, 1> > newArrayMap(newArray->getPointer(0), newArray->getNumberOfTuples());
+
+    newArrayMap = ac. template cast<double>() + number;
+  }
+  else if (arrayCast1->getNumberOfTuples() > 0 && arrayCast2->getNumberOfTuples() > 0)
+  {
+    JEigenArrayMapType ac1(arrayCast1->getPointer(0), arrayCast1->getNumberOfTuples());
+    KEigenArrayMapType ac2(arrayCast2->getPointer(0), arrayCast2->getNumberOfTuples());
+
+    newArray = DataArray<double>::CreateArray(arrayCast2->getNumberOfTuples(), newArrayName);
+    Eigen::Map<Eigen::Array<double, Eigen::Dynamic, 1> > newArrayMap(newArray->getPointer(0), newArray->getNumberOfTuples());
+
+    newArrayMap = ac1. template cast<double>() + ac2. template cast<double>();
+  }
+  else
+  {
+    Q_ASSERT(false);
   }
 
+//  if (arrayCast1->getNumberOfTuples() != arrayCast2->getNumberOfTuples())
+//  {
+//    if (arrayCast1->getNumberOfTuples() == 1)
+//    {
+//      double number = static_cast<double>(arrayCast1->getValue(0));
+//      for (int i = 0; i < arrayCast2->getNumberOfTuples(); i++)
+//      {
+//        double value = number + static_cast<double>(arrayCast2->getValue(i));
+//        newArray->initializeTuple(i, &value);
+//      }
+//    }
+//    else
+//    {
+//      double number = static_cast<double>(arrayCast2->getValue(0));
+//      for (int i = 0; i < arrayCast1->getNumberOfTuples(); i++)
+//      {
+//        double value = static_cast<double>(arrayCast1->getValue(i)) + number;
+//        newArray->initializeTuple(i, &value);
+//      }
+//    }
+//  }
+//  else
+//  {
+//    for (int i = 0; i < newArray->getNumberOfTuples(); i++)
+//    {
+//      double value = static_cast<double>(arrayCast1->getValue(i)) + static_cast<double>(arrayCast2->getValue(i));
+//      newArray->initializeTuple(i, &value);
+//    }
+//  }
+
+//#ifdef SIMPLib_USE_PARALLEL_ALGORITHMS
+//    tbb::parallel_for(tbb::blocked_range<int>(0, newArray->getNumberOfTuples()),
+//                      AdditionOperatorTwoArraysImpl<J, K>(arrayCast1, arrayCast2, newArray), tbb::auto_partitioner());
+//#endif
+
   QSharedPointer<CalculatorItem> newItem = QSharedPointer<CalculatorArray>(new CalculatorArray(newArray));
-  return newItem;
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-QSharedPointer<CalculatorItem> AdditionOperator::add(AbstractFilter* filter, const QString &newArrayName, double number1, double number2)
-{
-  double newNumber = number1 + number2;
-
-  QSharedPointer<CalculatorItem> newItem = QSharedPointer<CalculatorNumber>(new CalculatorNumber(newNumber));
   return newItem;
 }
 

@@ -44,7 +44,6 @@
 #include "SIMPLib/DataArrays/IDataArray.h"
 
 #include "CalculatorArray.h"
-#include "CalculatorNumber.h"
 
 class SIMPLib_EXPORT CalculatorOperator : public CalculatorItem
 {
@@ -67,475 +66,406 @@ class SIMPLib_EXPORT CalculatorOperator : public CalculatorItem
     void operator=(const CalculatorOperator&); // Operator '=' Not Implemented
 };
 
-#define EXECUTE_ARRAY_NUMBER_OPERATIONS(filter, newArrayName, item1, item2, func)\
-  if (NULL != qSharedPointerDynamicCast<CalculatorNumber>(item1) && NULL != qSharedPointerDynamicCast<CalculatorNumber>(item2))\
-  {\
-    double number1 = qSharedPointerDynamicCast<CalculatorNumber>(item1)->getNumber();\
-    double number2 = qSharedPointerDynamicCast<CalculatorNumber>(item2)->getNumber();\
-    return func(filter, newArrayName, number1, number2);\
-  }\
-  if (NULL != qSharedPointerDynamicCast<CalculatorArray>(item1) && NULL != qSharedPointerDynamicCast<CalculatorNumber>(item2))\
-  {\
-    IDataArray::Pointer array1 = qSharedPointerDynamicCast<CalculatorArray>(item1)->getArray();\
-    double number2 = qSharedPointerDynamicCast<CalculatorNumber>(item2)->getNumber();\
-    EXECUTE_FUNCTION_ONE_ARRAY(filter, newArrayName, array1, number2, func)\
-  }\
-  if (NULL != qSharedPointerDynamicCast<CalculatorNumber>(item1) && NULL != qSharedPointerDynamicCast<CalculatorArray>(item2))\
-  {\
-    double number1 = qSharedPointerDynamicCast<CalculatorNumber>(item1)->getNumber();\
-    IDataArray::Pointer array2 = qSharedPointerDynamicCast<CalculatorArray>(item2)->getArray();\
-    EXECUTE_FUNCTION_ONE_ARRAY(filter, newArrayName, array2, number1, func)\
-  }\
-  if (NULL != qSharedPointerDynamicCast<CalculatorArray>(item1) && NULL != qSharedPointerDynamicCast<CalculatorArray>(item2))\
-  {\
-    IDataArray::Pointer array1 = qSharedPointerDynamicCast<CalculatorArray>(item1)->getArray();\
-    IDataArray::Pointer array2 = qSharedPointerDynamicCast<CalculatorArray>(item2)->getArray();\
-    EXECUTE_FUNCTION_TWO_ARRAYS(filter, newArrayName, array1, array2, func)\
-  }\
-
-#define EXECUTE_FUNCTION_ONE_ARRAY(filter, newArrayName, array, num, func)\
-    if(TemplateHelpers::CanDynamicCast<FloatArrayType>()(array))\
-    {\
-      return func<FloatArrayType>(filter, newArrayName, array, num);\
-    }\
-    else if(TemplateHelpers::CanDynamicCast<DoubleArrayType>()(array))\
-    {\
-      return func<DoubleArrayType>(filter, newArrayName, array, num);\
-    }\
-    else if(TemplateHelpers::CanDynamicCast<Int8ArrayType>()(array))\
-    {\
-      return func<Int8ArrayType>(filter, newArrayName, array, num);\
-    }\
-    else if(TemplateHelpers::CanDynamicCast<UInt8ArrayType>()(array))\
-    {\
-      return func<UInt8ArrayType>(filter, newArrayName, array, num);\
-    }\
-    else if(TemplateHelpers::CanDynamicCast<Int16ArrayType>()(array))\
-    {\
-      return func<Int16ArrayType>(filter, newArrayName, array, num);\
-    }\
-    else if(TemplateHelpers::CanDynamicCast<UInt16ArrayType>()(array))\
-    {\
-      return func<UInt16ArrayType>(filter, newArrayName, array, num);\
-    }\
-    else if(TemplateHelpers::CanDynamicCast<Int32ArrayType>()(array))\
-    {\
-      return func<Int32ArrayType>(filter, newArrayName, array, num);\
-    }\
-    else if(TemplateHelpers::CanDynamicCast<UInt32ArrayType>()(array))\
-    {\
-      return func<UInt32ArrayType>(filter, newArrayName, array, num);\
-    }\
-    else if(TemplateHelpers::CanDynamicCast<Int64ArrayType>()(array))\
-    {\
-      return func<Int64ArrayType>(filter, newArrayName, array, num);\
-    }\
-    else if(TemplateHelpers::CanDynamicCast<UInt64ArrayType>()(array))\
-    {\
-      return func<UInt64ArrayType>(filter, newArrayName, array, num);\
-    }\
-
-
 #define EXECUTE_FUNCTION_TWO_ARRAYS(filter, newArrayName, ptr1, ptr2, func)\
     if(TemplateHelpers::CanDynamicCast<FloatArrayType>()(ptr1) && TemplateHelpers::CanDynamicCast<FloatArrayType>()(ptr2))\
     {\
-      return func<FloatArrayType, FloatArrayType>(filter, newArrayName, ptr1, ptr2);\
+      return func<float, float>(filter, newArrayName, ptr1, ptr2);\
     }\
     else if(TemplateHelpers::CanDynamicCast<FloatArrayType>()(ptr1) && TemplateHelpers::CanDynamicCast<DoubleArrayType>()(ptr2))\
     {\
-      return func<FloatArrayType, DoubleArrayType>(filter, newArrayName, ptr1, ptr2);\
+      return func<float, double>(filter, newArrayName, ptr1, ptr2);\
     }\
     else if(TemplateHelpers::CanDynamicCast<FloatArrayType>()(ptr1) && TemplateHelpers::CanDynamicCast<Int8ArrayType>()(ptr2))\
     {\
-      return func<FloatArrayType, Int8ArrayType>(filter, newArrayName, ptr1, ptr2);\
+      return func<float, int8_t>(filter, newArrayName, ptr1, ptr2);\
     }\
     else if(TemplateHelpers::CanDynamicCast<FloatArrayType>()(ptr1) && TemplateHelpers::CanDynamicCast<UInt8ArrayType>()(ptr2))\
     {\
-      return func<FloatArrayType, UInt8ArrayType>(filter, newArrayName, ptr1, ptr2);\
+      return func<float, uint8_t>(filter, newArrayName, ptr1, ptr2);\
     }\
     else if(TemplateHelpers::CanDynamicCast<FloatArrayType>()(ptr1) && TemplateHelpers::CanDynamicCast<Int16ArrayType>()(ptr2))\
     {\
-      return func<FloatArrayType, Int16ArrayType>(filter, newArrayName, ptr1, ptr2);\
+      return func<float, int16_t>(filter, newArrayName, ptr1, ptr2);\
     }\
     else if(TemplateHelpers::CanDynamicCast<FloatArrayType>()(ptr1) && TemplateHelpers::CanDynamicCast<UInt16ArrayType>()(ptr2))\
     {\
-      return func<FloatArrayType, UInt16ArrayType>(filter, newArrayName, ptr1, ptr2);\
+      return func<float, uint16_t>(filter, newArrayName, ptr1, ptr2);\
     }\
     else if(TemplateHelpers::CanDynamicCast<FloatArrayType>()(ptr1) && TemplateHelpers::CanDynamicCast<Int32ArrayType>()(ptr2))\
     {\
-      return func<FloatArrayType, Int32ArrayType>(filter, newArrayName, ptr1, ptr2);\
+      return func<float, int32_t>(filter, newArrayName, ptr1, ptr2);\
     }\
     else if(TemplateHelpers::CanDynamicCast<FloatArrayType>()(ptr1) && TemplateHelpers::CanDynamicCast<UInt32ArrayType>()(ptr2))\
     {\
-      return func<FloatArrayType, UInt32ArrayType>(filter, newArrayName, ptr1, ptr2);\
+      return func<float, uint32_t>(filter, newArrayName, ptr1, ptr2);\
     }\
     else if(TemplateHelpers::CanDynamicCast<FloatArrayType>()(ptr1) && TemplateHelpers::CanDynamicCast<Int64ArrayType>()(ptr2))\
     {\
-      return func<FloatArrayType, Int64ArrayType>(filter, newArrayName, ptr1, ptr2);\
+      return func<float, int64_t>(filter, newArrayName, ptr1, ptr2);\
     }\
     else if(TemplateHelpers::CanDynamicCast<FloatArrayType>()(ptr1) && TemplateHelpers::CanDynamicCast<UInt64ArrayType>()(ptr2))\
     {\
-      return func<FloatArrayType, UInt64ArrayType>(filter, newArrayName, ptr1, ptr2);\
+      return func<float, uint64_t>(filter, newArrayName, ptr1, ptr2);\
     }\
     else if (TemplateHelpers::CanDynamicCast<DoubleArrayType>()(ptr1) && TemplateHelpers::CanDynamicCast<FloatArrayType>()(ptr2))\
     {\
-      return func<DoubleArrayType, FloatArrayType>(filter, newArrayName, ptr1, ptr2); \
+      return func<double, float>(filter, newArrayName, ptr1, ptr2); \
     }\
     else if (TemplateHelpers::CanDynamicCast<DoubleArrayType>()(ptr1) && TemplateHelpers::CanDynamicCast<DoubleArrayType>()(ptr2))\
     {\
-      return func<DoubleArrayType, DoubleArrayType>(filter, newArrayName, ptr1, ptr2); \
+      return func<double, double>(filter, newArrayName, ptr1, ptr2); \
     }\
     else if (TemplateHelpers::CanDynamicCast<DoubleArrayType>()(ptr1) && TemplateHelpers::CanDynamicCast<Int8ArrayType>()(ptr2))\
     {\
-      return func<DoubleArrayType, Int8ArrayType>(filter, newArrayName, ptr1, ptr2); \
+      return func<double, int8_t>(filter, newArrayName, ptr1, ptr2); \
     }\
     else if (TemplateHelpers::CanDynamicCast<DoubleArrayType>()(ptr1) && TemplateHelpers::CanDynamicCast<UInt8ArrayType>()(ptr2))\
     {\
-      return func<DoubleArrayType, UInt8ArrayType>(filter, newArrayName, ptr1, ptr2); \
+      return func<double, uint8_t>(filter, newArrayName, ptr1, ptr2); \
     }\
     else if (TemplateHelpers::CanDynamicCast<DoubleArrayType>()(ptr1) && TemplateHelpers::CanDynamicCast<Int16ArrayType>()(ptr2))\
     {\
-      return func<DoubleArrayType, Int16ArrayType>(filter, newArrayName, ptr1, ptr2); \
+      return func<double, int16_t>(filter, newArrayName, ptr1, ptr2); \
     }\
     else if (TemplateHelpers::CanDynamicCast<DoubleArrayType>()(ptr1) && TemplateHelpers::CanDynamicCast<UInt16ArrayType>()(ptr2))\
     {\
-      return func<DoubleArrayType, UInt16ArrayType>(filter, newArrayName, ptr1, ptr2); \
+      return func<double, int16_t>(filter, newArrayName, ptr1, ptr2); \
     }\
     else if (TemplateHelpers::CanDynamicCast<DoubleArrayType>()(ptr1) && TemplateHelpers::CanDynamicCast<Int32ArrayType>()(ptr2))\
     {\
-      return func<DoubleArrayType, Int32ArrayType>(filter, newArrayName, ptr1, ptr2); \
+      return func<double, int32_t>(filter, newArrayName, ptr1, ptr2); \
     }\
     else if (TemplateHelpers::CanDynamicCast<DoubleArrayType>()(ptr1) && TemplateHelpers::CanDynamicCast<UInt32ArrayType>()(ptr2))\
     {\
-      return func<DoubleArrayType, UInt32ArrayType>(filter, newArrayName, ptr1, ptr2); \
+      return func<double, uint32_t>(filter, newArrayName, ptr1, ptr2); \
     }\
     else if (TemplateHelpers::CanDynamicCast<DoubleArrayType>()(ptr1) && TemplateHelpers::CanDynamicCast<Int64ArrayType>()(ptr2))\
     {\
-      return func<DoubleArrayType, Int64ArrayType>(filter, newArrayName, ptr1, ptr2); \
+      return func<double, int64_t>(filter, newArrayName, ptr1, ptr2); \
     }\
     else if (TemplateHelpers::CanDynamicCast<DoubleArrayType>()(ptr1) && TemplateHelpers::CanDynamicCast<UInt64ArrayType>()(ptr2))\
     {\
-      return func<DoubleArrayType, UInt64ArrayType>(filter, newArrayName, ptr1, ptr2); \
+      return func<double, uint64_t>(filter, newArrayName, ptr1, ptr2); \
     }\
     else if (TemplateHelpers::CanDynamicCast<Int8ArrayType>()(ptr1) && TemplateHelpers::CanDynamicCast<FloatArrayType>()(ptr2))\
     {\
-      return func<Int8ArrayType, FloatArrayType>(filter, newArrayName, ptr1, ptr2); \
+      return func<int8_t, float>(filter, newArrayName, ptr1, ptr2); \
     }\
     else if (TemplateHelpers::CanDynamicCast<Int8ArrayType>()(ptr1) && TemplateHelpers::CanDynamicCast<DoubleArrayType>()(ptr2))\
     {\
-      return func<Int8ArrayType, DoubleArrayType>(filter, newArrayName, ptr1, ptr2); \
+      return func<int8_t, double>(filter, newArrayName, ptr1, ptr2); \
     }\
     else if (TemplateHelpers::CanDynamicCast<Int8ArrayType>()(ptr1) && TemplateHelpers::CanDynamicCast<Int8ArrayType>()(ptr2))\
     {\
-      return func<Int8ArrayType, Int8ArrayType>(filter, newArrayName, ptr1, ptr2); \
+      return func<int8_t, int8_t>(filter, newArrayName, ptr1, ptr2); \
     }\
     else if (TemplateHelpers::CanDynamicCast<Int8ArrayType>()(ptr1) && TemplateHelpers::CanDynamicCast<UInt8ArrayType>()(ptr2))\
     {\
-      return func<Int8ArrayType, UInt8ArrayType>(filter, newArrayName, ptr1, ptr2); \
+      return func<int8_t, uint8_t>(filter, newArrayName, ptr1, ptr2); \
     }\
     else if (TemplateHelpers::CanDynamicCast<Int8ArrayType>()(ptr1) && TemplateHelpers::CanDynamicCast<Int16ArrayType>()(ptr2))\
     {\
-      return func<Int8ArrayType, Int16ArrayType>(filter, newArrayName, ptr1, ptr2); \
+      return func<int8_t, int16_t>(filter, newArrayName, ptr1, ptr2); \
     }\
     else if (TemplateHelpers::CanDynamicCast<Int8ArrayType>()(ptr1) && TemplateHelpers::CanDynamicCast<UInt16ArrayType>()(ptr2))\
     {\
-      return func<Int8ArrayType, UInt16ArrayType>(filter, newArrayName, ptr1, ptr2); \
+      return func<int8_t, int16_t>(filter, newArrayName, ptr1, ptr2); \
     }\
     else if (TemplateHelpers::CanDynamicCast<Int8ArrayType>()(ptr1) && TemplateHelpers::CanDynamicCast<Int32ArrayType>()(ptr2))\
     {\
-      return func<Int8ArrayType, Int32ArrayType>(filter, newArrayName, ptr1, ptr2); \
+      return func<int8_t, int32_t>(filter, newArrayName, ptr1, ptr2); \
     }\
     else if (TemplateHelpers::CanDynamicCast<Int8ArrayType>()(ptr1) && TemplateHelpers::CanDynamicCast<UInt32ArrayType>()(ptr2))\
     {\
-      return func<Int8ArrayType, UInt32ArrayType>(filter, newArrayName, ptr1, ptr2); \
+      return func<int8_t, uint32_t>(filter, newArrayName, ptr1, ptr2); \
     }\
     else if (TemplateHelpers::CanDynamicCast<Int8ArrayType>()(ptr1) && TemplateHelpers::CanDynamicCast<Int64ArrayType>()(ptr2))\
     {\
-      return func<Int8ArrayType, Int64ArrayType>(filter, newArrayName, ptr1, ptr2); \
+      return func<int8_t, int64_t>(filter, newArrayName, ptr1, ptr2); \
     }\
     else if (TemplateHelpers::CanDynamicCast<Int8ArrayType>()(ptr1) && TemplateHelpers::CanDynamicCast<UInt64ArrayType>()(ptr2))\
     {\
-      return func<Int8ArrayType, UInt64ArrayType>(filter, newArrayName, ptr1, ptr2); \
+      return func<int8_t, uint64_t>(filter, newArrayName, ptr1, ptr2); \
     }\
     else if (TemplateHelpers::CanDynamicCast<UInt8ArrayType>()(ptr1) && TemplateHelpers::CanDynamicCast<FloatArrayType>()(ptr2))\
     {\
-      return func<UInt8ArrayType, FloatArrayType>(filter, newArrayName, ptr1, ptr2); \
+      return func<uint8_t, float>(filter, newArrayName, ptr1, ptr2); \
     }\
     else if (TemplateHelpers::CanDynamicCast<UInt8ArrayType>()(ptr1) && TemplateHelpers::CanDynamicCast<DoubleArrayType>()(ptr2))\
     {\
-      return func<UInt8ArrayType, DoubleArrayType>(filter, newArrayName, ptr1, ptr2); \
+      return func<uint8_t, double>(filter, newArrayName, ptr1, ptr2); \
     }\
     else if (TemplateHelpers::CanDynamicCast<UInt8ArrayType>()(ptr1) && TemplateHelpers::CanDynamicCast<Int8ArrayType>()(ptr2))\
     {\
-      return func<UInt8ArrayType, Int8ArrayType>(filter, newArrayName, ptr1, ptr2); \
+      return func<uint8_t, int8_t>(filter, newArrayName, ptr1, ptr2); \
     }\
     else if (TemplateHelpers::CanDynamicCast<UInt8ArrayType>()(ptr1) && TemplateHelpers::CanDynamicCast<UInt8ArrayType>()(ptr2))\
     {\
-      return func<UInt8ArrayType, UInt8ArrayType>(filter, newArrayName, ptr1, ptr2); \
+      return func<uint8_t, uint8_t>(filter, newArrayName, ptr1, ptr2); \
     }\
     else if (TemplateHelpers::CanDynamicCast<UInt8ArrayType>()(ptr1) && TemplateHelpers::CanDynamicCast<Int16ArrayType>()(ptr2))\
     {\
-      return func<UInt8ArrayType, Int16ArrayType>(filter, newArrayName, ptr1, ptr2); \
+      return func<uint8_t, int16_t>(filter, newArrayName, ptr1, ptr2); \
     }\
     else if (TemplateHelpers::CanDynamicCast<UInt8ArrayType>()(ptr1) && TemplateHelpers::CanDynamicCast<UInt16ArrayType>()(ptr2))\
     {\
-      return func<UInt8ArrayType, UInt16ArrayType>(filter, newArrayName, ptr1, ptr2); \
+      return func<uint8_t, int16_t>(filter, newArrayName, ptr1, ptr2); \
     }\
     else if (TemplateHelpers::CanDynamicCast<UInt8ArrayType>()(ptr1) && TemplateHelpers::CanDynamicCast<Int32ArrayType>()(ptr2))\
     {\
-      return func<UInt8ArrayType, Int32ArrayType>(filter, newArrayName, ptr1, ptr2); \
+      return func<uint8_t, int32_t>(filter, newArrayName, ptr1, ptr2); \
     }\
     else if (TemplateHelpers::CanDynamicCast<UInt8ArrayType>()(ptr1) && TemplateHelpers::CanDynamicCast<UInt32ArrayType>()(ptr2))\
     {\
-      return func<UInt8ArrayType, UInt32ArrayType>(filter, newArrayName, ptr1, ptr2); \
+      return func<uint8_t, uint32_t>(filter, newArrayName, ptr1, ptr2); \
     }\
     else if (TemplateHelpers::CanDynamicCast<UInt8ArrayType>()(ptr1) && TemplateHelpers::CanDynamicCast<Int64ArrayType>()(ptr2))\
     {\
-      return func<UInt8ArrayType, Int64ArrayType>(filter, newArrayName, ptr1, ptr2); \
+      return func<uint8_t, int64_t>(filter, newArrayName, ptr1, ptr2); \
     }\
     else if (TemplateHelpers::CanDynamicCast<UInt8ArrayType>()(ptr1) && TemplateHelpers::CanDynamicCast<UInt64ArrayType>()(ptr2))\
     {\
-      return func<UInt8ArrayType, UInt64ArrayType>(filter, newArrayName, ptr1, ptr2); \
+      return func<uint8_t, uint64_t>(filter, newArrayName, ptr1, ptr2); \
     }\
     else if (TemplateHelpers::CanDynamicCast<Int16ArrayType>()(ptr1) && TemplateHelpers::CanDynamicCast<FloatArrayType>()(ptr2))\
     {\
-      return func<Int16ArrayType, FloatArrayType>(filter, newArrayName, ptr1, ptr2); \
+      return func<int16_t, float>(filter, newArrayName, ptr1, ptr2); \
     }\
     else if (TemplateHelpers::CanDynamicCast<Int16ArrayType>()(ptr1) && TemplateHelpers::CanDynamicCast<DoubleArrayType>()(ptr2))\
     {\
-      return func<Int16ArrayType, DoubleArrayType>(filter, newArrayName, ptr1, ptr2); \
+      return func<int16_t, double>(filter, newArrayName, ptr1, ptr2); \
     }\
     else if (TemplateHelpers::CanDynamicCast<Int16ArrayType>()(ptr1) && TemplateHelpers::CanDynamicCast<Int8ArrayType>()(ptr2))\
     {\
-      return func<Int16ArrayType, Int8ArrayType>(filter, newArrayName, ptr1, ptr2); \
+      return func<int16_t, int8_t>(filter, newArrayName, ptr1, ptr2); \
     }\
     else if (TemplateHelpers::CanDynamicCast<Int16ArrayType>()(ptr1) && TemplateHelpers::CanDynamicCast<UInt8ArrayType>()(ptr2))\
     {\
-      return func<Int16ArrayType, UInt8ArrayType>(filter, newArrayName, ptr1, ptr2); \
+      return func<int16_t, uint8_t>(filter, newArrayName, ptr1, ptr2); \
     }\
     else if (TemplateHelpers::CanDynamicCast<Int16ArrayType>()(ptr1) && TemplateHelpers::CanDynamicCast<Int16ArrayType>()(ptr2))\
     {\
-      return func<Int16ArrayType, Int16ArrayType>(filter, newArrayName, ptr1, ptr2); \
+      return func<int16_t, int16_t>(filter, newArrayName, ptr1, ptr2); \
     }\
     else if (TemplateHelpers::CanDynamicCast<Int16ArrayType>()(ptr1) && TemplateHelpers::CanDynamicCast<UInt16ArrayType>()(ptr2))\
     {\
-      return func<Int16ArrayType, UInt16ArrayType>(filter, newArrayName, ptr1, ptr2); \
+      return func<int16_t, int16_t>(filter, newArrayName, ptr1, ptr2); \
     }\
     else if (TemplateHelpers::CanDynamicCast<Int16ArrayType>()(ptr1) && TemplateHelpers::CanDynamicCast<Int32ArrayType>()(ptr2))\
     {\
-      return func<Int16ArrayType, Int32ArrayType>(filter, newArrayName, ptr1, ptr2); \
+      return func<int16_t, int32_t>(filter, newArrayName, ptr1, ptr2); \
     }\
     else if (TemplateHelpers::CanDynamicCast<Int16ArrayType>()(ptr1) && TemplateHelpers::CanDynamicCast<UInt32ArrayType>()(ptr2))\
     {\
-      return func<Int16ArrayType, UInt32ArrayType>(filter, newArrayName, ptr1, ptr2); \
+      return func<int16_t, uint32_t>(filter, newArrayName, ptr1, ptr2); \
     }\
     else if (TemplateHelpers::CanDynamicCast<Int16ArrayType>()(ptr1) && TemplateHelpers::CanDynamicCast<Int64ArrayType>()(ptr2))\
     {\
-      return func<Int16ArrayType, Int64ArrayType>(filter, newArrayName, ptr1, ptr2); \
+      return func<int16_t, int64_t>(filter, newArrayName, ptr1, ptr2); \
     }\
     else if (TemplateHelpers::CanDynamicCast<Int16ArrayType>()(ptr1) && TemplateHelpers::CanDynamicCast<UInt64ArrayType>()(ptr2))\
     {\
-      return func<Int16ArrayType, UInt64ArrayType>(filter, newArrayName, ptr1, ptr2); \
+      return func<int16_t, uint64_t>(filter, newArrayName, ptr1, ptr2); \
     }\
     else if (TemplateHelpers::CanDynamicCast<UInt16ArrayType>()(ptr1) && TemplateHelpers::CanDynamicCast<FloatArrayType>()(ptr2))\
     {\
-      return func<UInt16ArrayType, FloatArrayType>(filter, newArrayName, ptr1, ptr2); \
+      return func<uint16_t, float>(filter, newArrayName, ptr1, ptr2); \
     }\
     else if (TemplateHelpers::CanDynamicCast<UInt16ArrayType>()(ptr1) && TemplateHelpers::CanDynamicCast<DoubleArrayType>()(ptr2))\
     {\
-      return func<UInt16ArrayType, DoubleArrayType>(filter, newArrayName, ptr1, ptr2); \
+      return func<uint16_t, double>(filter, newArrayName, ptr1, ptr2); \
     }\
     else if (TemplateHelpers::CanDynamicCast<UInt16ArrayType>()(ptr1) && TemplateHelpers::CanDynamicCast<Int8ArrayType>()(ptr2))\
     {\
-      return func<UInt16ArrayType, Int8ArrayType>(filter, newArrayName, ptr1, ptr2); \
+      return func<uint16_t, int8_t>(filter, newArrayName, ptr1, ptr2); \
     }\
     else if (TemplateHelpers::CanDynamicCast<UInt16ArrayType>()(ptr1) && TemplateHelpers::CanDynamicCast<UInt8ArrayType>()(ptr2))\
     {\
-      return func<UInt16ArrayType, UInt8ArrayType>(filter, newArrayName, ptr1, ptr2); \
+      return func<uint16_t, uint8_t>(filter, newArrayName, ptr1, ptr2); \
     }\
     else if (TemplateHelpers::CanDynamicCast<UInt16ArrayType>()(ptr1) && TemplateHelpers::CanDynamicCast<Int16ArrayType>()(ptr2))\
     {\
-      return func<UInt16ArrayType, Int16ArrayType>(filter, newArrayName, ptr1, ptr2); \
+      return func<uint16_t, int16_t>(filter, newArrayName, ptr1, ptr2); \
     }\
     else if (TemplateHelpers::CanDynamicCast<UInt16ArrayType>()(ptr1) && TemplateHelpers::CanDynamicCast<UInt16ArrayType>()(ptr2))\
     {\
-      return func<UInt16ArrayType, UInt16ArrayType>(filter, newArrayName, ptr1, ptr2); \
+      return func<uint16_t, int16_t>(filter, newArrayName, ptr1, ptr2); \
     }\
     else if (TemplateHelpers::CanDynamicCast<UInt16ArrayType>()(ptr1) && TemplateHelpers::CanDynamicCast<Int32ArrayType>()(ptr2))\
     {\
-      return func<UInt16ArrayType, Int32ArrayType>(filter, newArrayName, ptr1, ptr2); \
+      return func<uint16_t, int32_t>(filter, newArrayName, ptr1, ptr2); \
     }\
     else if (TemplateHelpers::CanDynamicCast<UInt16ArrayType>()(ptr1) && TemplateHelpers::CanDynamicCast<UInt32ArrayType>()(ptr2))\
     {\
-      return func<UInt16ArrayType, UInt32ArrayType>(filter, newArrayName, ptr1, ptr2); \
+      return func<uint16_t, uint32_t>(filter, newArrayName, ptr1, ptr2); \
     }\
     else if (TemplateHelpers::CanDynamicCast<UInt16ArrayType>()(ptr1) && TemplateHelpers::CanDynamicCast<Int64ArrayType>()(ptr2))\
     {\
-      return func<UInt16ArrayType, Int64ArrayType>(filter, newArrayName, ptr1, ptr2); \
+      return func<uint16_t, int64_t>(filter, newArrayName, ptr1, ptr2); \
     }\
     else if (TemplateHelpers::CanDynamicCast<UInt16ArrayType>()(ptr1) && TemplateHelpers::CanDynamicCast<UInt64ArrayType>()(ptr2))\
     {\
-      return func<UInt16ArrayType, UInt64ArrayType>(filter, newArrayName, ptr1, ptr2); \
+      return func<uint16_t, uint64_t>(filter, newArrayName, ptr1, ptr2); \
     }\
     else if (TemplateHelpers::CanDynamicCast<Int32ArrayType>()(ptr1) && TemplateHelpers::CanDynamicCast<FloatArrayType>()(ptr2))\
     {\
-      return func<Int32ArrayType, FloatArrayType>(filter, newArrayName, ptr1, ptr2); \
+      return func<int32_t, float>(filter, newArrayName, ptr1, ptr2); \
     }\
     else if (TemplateHelpers::CanDynamicCast<Int32ArrayType>()(ptr1) && TemplateHelpers::CanDynamicCast<DoubleArrayType>()(ptr2))\
     {\
-      return func<Int32ArrayType, DoubleArrayType>(filter, newArrayName, ptr1, ptr2); \
+      return func<int32_t, double>(filter, newArrayName, ptr1, ptr2); \
     }\
     else if (TemplateHelpers::CanDynamicCast<Int32ArrayType>()(ptr1) && TemplateHelpers::CanDynamicCast<Int8ArrayType>()(ptr2))\
     {\
-      return func<Int32ArrayType, Int8ArrayType>(filter, newArrayName, ptr1, ptr2); \
+      return func<int32_t, int8_t>(filter, newArrayName, ptr1, ptr2); \
     }\
     else if (TemplateHelpers::CanDynamicCast<Int32ArrayType>()(ptr1) && TemplateHelpers::CanDynamicCast<UInt8ArrayType>()(ptr2))\
     {\
-      return func<Int32ArrayType, UInt8ArrayType>(filter, newArrayName, ptr1, ptr2); \
+      return func<int32_t, uint8_t>(filter, newArrayName, ptr1, ptr2); \
     }\
     else if (TemplateHelpers::CanDynamicCast<Int32ArrayType>()(ptr1) && TemplateHelpers::CanDynamicCast<Int16ArrayType>()(ptr2))\
     {\
-      return func<Int32ArrayType, Int16ArrayType>(filter, newArrayName, ptr1, ptr2); \
+      return func<int32_t, int16_t>(filter, newArrayName, ptr1, ptr2); \
     }\
     else if (TemplateHelpers::CanDynamicCast<Int32ArrayType>()(ptr1) && TemplateHelpers::CanDynamicCast<UInt16ArrayType>()(ptr2))\
     {\
-      return func<Int32ArrayType, UInt16ArrayType>(filter, newArrayName, ptr1, ptr2); \
+      return func<int32_t, int16_t>(filter, newArrayName, ptr1, ptr2); \
     }\
     else if (TemplateHelpers::CanDynamicCast<Int32ArrayType>()(ptr1) && TemplateHelpers::CanDynamicCast<Int32ArrayType>()(ptr2))\
     {\
-      return func<Int32ArrayType, Int32ArrayType>(filter, newArrayName, ptr1, ptr2); \
+      return func<int32_t, int32_t>(filter, newArrayName, ptr1, ptr2); \
     }\
     else if (TemplateHelpers::CanDynamicCast<Int32ArrayType>()(ptr1) && TemplateHelpers::CanDynamicCast<UInt32ArrayType>()(ptr2))\
     {\
-      return func<Int32ArrayType, UInt32ArrayType>(filter, newArrayName, ptr1, ptr2); \
+      return func<int32_t, uint32_t>(filter, newArrayName, ptr1, ptr2); \
     }\
     else if (TemplateHelpers::CanDynamicCast<Int32ArrayType>()(ptr1) && TemplateHelpers::CanDynamicCast<Int64ArrayType>()(ptr2))\
     {\
-      return func<Int32ArrayType, Int64ArrayType>(filter, newArrayName, ptr1, ptr2); \
+      return func<int32_t, int64_t>(filter, newArrayName, ptr1, ptr2); \
     }\
     else if (TemplateHelpers::CanDynamicCast<Int32ArrayType>()(ptr1) && TemplateHelpers::CanDynamicCast<UInt64ArrayType>()(ptr2))\
     {\
-      return func<Int32ArrayType, UInt64ArrayType>(filter, newArrayName, ptr1, ptr2); \
+      return func<int32_t, uint64_t>(filter, newArrayName, ptr1, ptr2); \
     }\
     else if (TemplateHelpers::CanDynamicCast<UInt32ArrayType>()(ptr1) && TemplateHelpers::CanDynamicCast<FloatArrayType>()(ptr2))\
     {\
-      return func<UInt32ArrayType, FloatArrayType>(filter, newArrayName, ptr1, ptr2); \
+      return func<uint32_t, float>(filter, newArrayName, ptr1, ptr2); \
     }\
     else if (TemplateHelpers::CanDynamicCast<UInt32ArrayType>()(ptr1) && TemplateHelpers::CanDynamicCast<DoubleArrayType>()(ptr2))\
     {\
-      return func<UInt32ArrayType, DoubleArrayType>(filter, newArrayName, ptr1, ptr2); \
+      return func<uint32_t, double>(filter, newArrayName, ptr1, ptr2); \
     }\
     else if (TemplateHelpers::CanDynamicCast<UInt32ArrayType>()(ptr1) && TemplateHelpers::CanDynamicCast<Int8ArrayType>()(ptr2))\
     {\
-      return func<UInt32ArrayType, Int8ArrayType>(filter, newArrayName, ptr1, ptr2); \
+      return func<uint32_t, int8_t>(filter, newArrayName, ptr1, ptr2); \
     }\
     else if (TemplateHelpers::CanDynamicCast<UInt32ArrayType>()(ptr1) && TemplateHelpers::CanDynamicCast<UInt8ArrayType>()(ptr2))\
     {\
-      return func<UInt32ArrayType, UInt8ArrayType>(filter, newArrayName, ptr1, ptr2); \
+      return func<uint32_t, uint8_t>(filter, newArrayName, ptr1, ptr2); \
     }\
     else if (TemplateHelpers::CanDynamicCast<UInt32ArrayType>()(ptr1) && TemplateHelpers::CanDynamicCast<Int16ArrayType>()(ptr2))\
     {\
-      return func<UInt32ArrayType, Int16ArrayType>(filter, newArrayName, ptr1, ptr2); \
+      return func<uint32_t, int16_t>(filter, newArrayName, ptr1, ptr2); \
     }\
     else if (TemplateHelpers::CanDynamicCast<UInt32ArrayType>()(ptr1) && TemplateHelpers::CanDynamicCast<UInt16ArrayType>()(ptr2))\
     {\
-      return func<UInt32ArrayType, UInt16ArrayType>(filter, newArrayName, ptr1, ptr2); \
+      return func<uint32_t, int16_t>(filter, newArrayName, ptr1, ptr2); \
     }\
     else if (TemplateHelpers::CanDynamicCast<UInt32ArrayType>()(ptr1) && TemplateHelpers::CanDynamicCast<Int32ArrayType>()(ptr2))\
     {\
-      return func<UInt32ArrayType, Int32ArrayType>(filter, newArrayName, ptr1, ptr2); \
+      return func<uint32_t, int32_t>(filter, newArrayName, ptr1, ptr2); \
     }\
     else if (TemplateHelpers::CanDynamicCast<UInt32ArrayType>()(ptr1) && TemplateHelpers::CanDynamicCast<UInt32ArrayType>()(ptr2))\
     {\
-      return func<UInt32ArrayType, UInt32ArrayType>(filter, newArrayName, ptr1, ptr2); \
+      return func<uint32_t, uint32_t>(filter, newArrayName, ptr1, ptr2); \
     }\
     else if (TemplateHelpers::CanDynamicCast<UInt32ArrayType>()(ptr1) && TemplateHelpers::CanDynamicCast<Int64ArrayType>()(ptr2))\
     {\
-      return func<UInt32ArrayType, Int64ArrayType>(filter, newArrayName, ptr1, ptr2); \
+      return func<uint32_t, int64_t>(filter, newArrayName, ptr1, ptr2); \
     }\
     else if (TemplateHelpers::CanDynamicCast<UInt32ArrayType>()(ptr1) && TemplateHelpers::CanDynamicCast<UInt64ArrayType>()(ptr2))\
     {\
-      return func<UInt32ArrayType, UInt64ArrayType>(filter, newArrayName, ptr1, ptr2); \
+      return func<uint32_t, uint64_t>(filter, newArrayName, ptr1, ptr2); \
     }\
     else if (TemplateHelpers::CanDynamicCast<Int64ArrayType>()(ptr1) && TemplateHelpers::CanDynamicCast<FloatArrayType>()(ptr2))\
     {\
-      return func<Int64ArrayType, FloatArrayType>(filter, newArrayName, ptr1, ptr2); \
+      return func<int64_t, float>(filter, newArrayName, ptr1, ptr2); \
     }\
     else if (TemplateHelpers::CanDynamicCast<Int64ArrayType>()(ptr1) && TemplateHelpers::CanDynamicCast<DoubleArrayType>()(ptr2))\
     {\
-      return func<Int64ArrayType, DoubleArrayType>(filter, newArrayName, ptr1, ptr2); \
+      return func<int64_t, double>(filter, newArrayName, ptr1, ptr2); \
     }\
     else if (TemplateHelpers::CanDynamicCast<Int64ArrayType>()(ptr1) && TemplateHelpers::CanDynamicCast<Int8ArrayType>()(ptr2))\
     {\
-      return func<Int64ArrayType, Int8ArrayType>(filter, newArrayName, ptr1, ptr2); \
+      return func<int64_t, int8_t>(filter, newArrayName, ptr1, ptr2); \
     }\
     else if (TemplateHelpers::CanDynamicCast<Int64ArrayType>()(ptr1) && TemplateHelpers::CanDynamicCast<UInt8ArrayType>()(ptr2))\
     {\
-      return func<Int64ArrayType, UInt8ArrayType>(filter, newArrayName, ptr1, ptr2); \
+      return func<int64_t, uint8_t>(filter, newArrayName, ptr1, ptr2); \
     }\
     else if (TemplateHelpers::CanDynamicCast<Int64ArrayType>()(ptr1) && TemplateHelpers::CanDynamicCast<Int16ArrayType>()(ptr2))\
     {\
-      return func<Int64ArrayType, Int16ArrayType>(filter, newArrayName, ptr1, ptr2); \
+      return func<int64_t, int16_t>(filter, newArrayName, ptr1, ptr2); \
     }\
     else if (TemplateHelpers::CanDynamicCast<Int64ArrayType>()(ptr1) && TemplateHelpers::CanDynamicCast<UInt16ArrayType>()(ptr2))\
     {\
-      return func<Int64ArrayType, UInt16ArrayType>(filter, newArrayName, ptr1, ptr2); \
+      return func<int64_t, int16_t>(filter, newArrayName, ptr1, ptr2); \
     }\
     else if (TemplateHelpers::CanDynamicCast<Int64ArrayType>()(ptr1) && TemplateHelpers::CanDynamicCast<Int32ArrayType>()(ptr2))\
     {\
-      return func<Int64ArrayType, Int32ArrayType>(filter, newArrayName, ptr1, ptr2); \
+      return func<int64_t, int32_t>(filter, newArrayName, ptr1, ptr2); \
     }\
     else if (TemplateHelpers::CanDynamicCast<Int64ArrayType>()(ptr1) && TemplateHelpers::CanDynamicCast<UInt32ArrayType>()(ptr2))\
     {\
-      return func<Int64ArrayType, UInt32ArrayType>(filter, newArrayName, ptr1, ptr2); \
+      return func<int64_t, uint32_t>(filter, newArrayName, ptr1, ptr2); \
     }\
     else if (TemplateHelpers::CanDynamicCast<Int64ArrayType>()(ptr1) && TemplateHelpers::CanDynamicCast<Int64ArrayType>()(ptr2))\
     {\
-      return func<Int64ArrayType, Int64ArrayType>(filter, newArrayName, ptr1, ptr2); \
+      return func<int64_t, int64_t>(filter, newArrayName, ptr1, ptr2); \
     }\
     else if (TemplateHelpers::CanDynamicCast<Int64ArrayType>()(ptr1) && TemplateHelpers::CanDynamicCast<UInt64ArrayType>()(ptr2))\
     {\
-      return func<Int64ArrayType, UInt64ArrayType>(filter, newArrayName, ptr1, ptr2); \
+      return func<int64_t, uint64_t>(filter, newArrayName, ptr1, ptr2); \
     }\
     else if (TemplateHelpers::CanDynamicCast<UInt64ArrayType>()(ptr1) && TemplateHelpers::CanDynamicCast<FloatArrayType>()(ptr2))\
     {\
-      return func<UInt64ArrayType, FloatArrayType>(filter, newArrayName, ptr1, ptr2); \
+      return func<uint64_t, float>(filter, newArrayName, ptr1, ptr2); \
     }\
     else if (TemplateHelpers::CanDynamicCast<UInt64ArrayType>()(ptr1) && TemplateHelpers::CanDynamicCast<DoubleArrayType>()(ptr2))\
     {\
-      return func<UInt64ArrayType, DoubleArrayType>(filter, newArrayName, ptr1, ptr2); \
+      return func<uint64_t, double>(filter, newArrayName, ptr1, ptr2); \
     }\
     else if (TemplateHelpers::CanDynamicCast<UInt64ArrayType>()(ptr1) && TemplateHelpers::CanDynamicCast<Int8ArrayType>()(ptr2))\
     {\
-      return func<UInt64ArrayType, Int8ArrayType>(filter, newArrayName, ptr1, ptr2); \
+      return func<uint64_t, int8_t>(filter, newArrayName, ptr1, ptr2); \
     }\
     else if (TemplateHelpers::CanDynamicCast<UInt64ArrayType>()(ptr1) && TemplateHelpers::CanDynamicCast<UInt8ArrayType>()(ptr2))\
     {\
-      return func<UInt64ArrayType, UInt8ArrayType>(filter, newArrayName, ptr1, ptr2); \
+      return func<uint64_t, uint8_t>(filter, newArrayName, ptr1, ptr2); \
     }\
     else if (TemplateHelpers::CanDynamicCast<UInt64ArrayType>()(ptr1) && TemplateHelpers::CanDynamicCast<Int16ArrayType>()(ptr2))\
     {\
-      return func<UInt64ArrayType, Int16ArrayType>(filter, newArrayName, ptr1, ptr2); \
+      return func<uint64_t, int16_t>(filter, newArrayName, ptr1, ptr2); \
     }\
     else if (TemplateHelpers::CanDynamicCast<UInt64ArrayType>()(ptr1) && TemplateHelpers::CanDynamicCast<UInt16ArrayType>()(ptr2))\
     {\
-      return func<UInt64ArrayType, UInt16ArrayType>(filter, newArrayName, ptr1, ptr2); \
+      return func<uint64_t, int16_t>(filter, newArrayName, ptr1, ptr2); \
     }\
     else if (TemplateHelpers::CanDynamicCast<UInt64ArrayType>()(ptr1) && TemplateHelpers::CanDynamicCast<Int32ArrayType>()(ptr2))\
     {\
-      return func<UInt64ArrayType, Int32ArrayType>(filter, newArrayName, ptr1, ptr2); \
+      return func<uint64_t, int32_t>(filter, newArrayName, ptr1, ptr2); \
     }\
     else if (TemplateHelpers::CanDynamicCast<UInt64ArrayType>()(ptr1) && TemplateHelpers::CanDynamicCast<UInt32ArrayType>()(ptr2))\
     {\
-      return func<UInt64ArrayType, UInt32ArrayType>(filter, newArrayName, ptr1, ptr2); \
+      return func<uint64_t, uint32_t>(filter, newArrayName, ptr1, ptr2); \
     }\
     else if (TemplateHelpers::CanDynamicCast<UInt64ArrayType>()(ptr1) && TemplateHelpers::CanDynamicCast<Int64ArrayType>()(ptr2))\
     {\
-      return func<UInt64ArrayType, Int64ArrayType>(filter, newArrayName, ptr1, ptr2); \
+      return func<uint64_t, int64_t>(filter, newArrayName, ptr1, ptr2); \
     }\
     else if (TemplateHelpers::CanDynamicCast<UInt64ArrayType>()(ptr1) && TemplateHelpers::CanDynamicCast<UInt64ArrayType>()(ptr2))\
     {\
-      return func<UInt64ArrayType, UInt64ArrayType>(filter, newArrayName, ptr1, ptr2); \
+      return func<uint64_t, uint64_t>(filter, newArrayName, ptr1, ptr2); \
     }\
 
 #endif /* _CalculatorOperator_H_ */

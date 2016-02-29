@@ -45,7 +45,6 @@
 #include "SIMPLib/FilterParameters/CalculatorFilterParameter.h"
 #include "SIMPLib/FilterParameters/DataArrayCreationFilterParameter.h"
 
-#include "util/CalculatorNumber.h"
 #include "util/CalculatorArray.h"
 #include "util/LeftParenthesisSeparator.h"
 #include "util/RightParenthesisSeparator.h"
@@ -190,7 +189,7 @@ void ArrayCalculator::execute()
   for (int i = 0; i < rpn.size(); i++)
   {
     QSharedPointer<CalculatorItem> rpnItem = rpn[i];
-    if (NULL != qSharedPointerDynamicCast<CalculatorNumber>(rpnItem) || NULL != qSharedPointerDynamicCast<CalculatorArray>(rpnItem))
+    if (NULL != qSharedPointerDynamicCast<CalculatorArray>(rpnItem))
     {
       m_ExecutionStack.push(rpnItem);
     }
@@ -219,17 +218,9 @@ void ArrayCalculator::execute()
     QSharedPointer<CalculatorArray> arrayItem = qSharedPointerDynamicCast<CalculatorArray>(resultItem);
     newArray = arrayItem->getArray();
   }
-  else if (NULL != qSharedPointerDynamicCast<CalculatorNumber>(resultItem))
-  {
-    QSharedPointer<CalculatorNumber> numberItem = qSharedPointerDynamicCast<CalculatorNumber>(resultItem);
-    double number = numberItem->getNumber();
-
-    newArray = DataArray<double>::CreateArray(1, m_CalculatedArray.getDataArrayName());
-    newArray->initializeTuple(0, &number);
-  }
   else
   {
-    QString ss = QObject::tr("Unexpected output item from chosen infix equation.  The output item must be either an array or number, and it is neither."
+    QString ss = QObject::tr("Unexpected output item from chosen infix equation.  The output item must be an array."
                              "Please contact the DREAM3D developers for more information.");
     setErrorCondition(-4009);
     notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
@@ -305,7 +296,9 @@ QVector<QSharedPointer<CalculatorItem> > ArrayCalculator::parseInfixEquation(QSt
     double num = listItem.toDouble(&ok);
     if (ok == true)
     {
-      itemPtr = QSharedPointer<CalculatorNumber>(new CalculatorNumber(num));
+      IDataArray::Pointer ptr = DoubleArrayType::CreateArray(1, QVector<size_t>(1, 1), "NumberArray");
+      ptr->initializeTuple(0, &num);
+      itemPtr = QSharedPointer<CalculatorArray>(new CalculatorArray(ptr));
     }
     else if (listItem == "(")
     {
@@ -375,7 +368,7 @@ QVector<QSharedPointer<CalculatorItem> > ArrayCalculator::toRPN(QVector<QSharedP
   for (int i = 0; i < infixEquation.size(); i++)
   {
     QSharedPointer<CalculatorItem> calcItem = infixEquation[i];
-    if (NULL != qSharedPointerDynamicCast<CalculatorNumber>(calcItem) || NULL != qSharedPointerDynamicCast<CalculatorArray>(calcItem))
+    if (NULL != qSharedPointerDynamicCast<CalculatorArray>(calcItem))
     {
       // This is a number or array, so push it onto the rpn equation output
       rpnEquation.push_back(calcItem);
