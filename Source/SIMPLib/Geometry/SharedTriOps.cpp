@@ -37,10 +37,10 @@
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-SharedTriList::Pointer GEOM_CLASS_NAME::CreateSharedTriList(int64_t numTris)
+SharedTriList::Pointer GEOM_CLASS_NAME::CreateSharedTriList(int64_t numTris, bool allocate)
 {
   QVector<size_t> triDims(1, 3);
-  SharedTriList::Pointer triangles = SharedEdgeList::CreateArray(numTris, triDims, SIMPL::Geometry::SharedTriList);
+  SharedTriList::Pointer triangles = SharedEdgeList::CreateArray(numTris, triDims, SIMPL::Geometry::SharedTriList, allocate);
   triangles->initializeWithZeros();
   return triangles;
 }

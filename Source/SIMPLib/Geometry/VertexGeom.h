@@ -61,7 +61,7 @@ class SIMPLib_EXPORT VertexGeom : public IGeometry
      * @param name
      * @return
      */
-    static Pointer CreateGeometry(int64_t numVertices, const QString& name);
+    static Pointer CreateGeometry(int64_t numVertices, const QString& name, bool allocate = true);
 
     /**
      * @brief CreateGeometry
@@ -80,7 +80,7 @@ class SIMPLib_EXPORT VertexGeom : public IGeometry
      * @param numVertices
      * @return
      */
-    static SharedVertexList::Pointer CreateSharedVertexList(int64_t numVertices);
+    static SharedVertexList::Pointer CreateSharedVertexList(int64_t numVertices, bool allocate = true);
 
     /**
      * @brief resizeVertexList

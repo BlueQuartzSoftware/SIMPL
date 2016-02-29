@@ -152,13 +152,13 @@ TriangleGeom::~TriangleGeom()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-TriangleGeom::Pointer TriangleGeom::CreateGeometry(int64_t numTriangles, SharedVertexList::Pointer vertices, const QString& name)
+TriangleGeom::Pointer TriangleGeom::CreateGeometry(int64_t numTriangles, SharedVertexList::Pointer vertices, const QString& name, bool allocate)
 {
   if (name.isEmpty() == true)
   {
     return NullPointer();
   }
-  SharedTriList::Pointer triangles = TriangleGeom::CreateSharedTriList(numTriangles);
+  SharedTriList::Pointer triangles = TriangleGeom::CreateSharedTriList(numTriangles, allocate);
   TriangleGeom* d = new TriangleGeom();
   d->setVertices(vertices);
   d->setTriangles(triangles);

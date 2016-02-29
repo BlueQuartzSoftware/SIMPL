@@ -59,7 +59,7 @@ class SIMPLib_EXPORT EdgeGeom : public IGeometry
      * @param name
      * @return
      */
-    static Pointer CreateGeometry(int64_t numEdges, SharedVertexList::Pointer vertices, const QString& name);
+    static Pointer CreateGeometry(int64_t numEdges, SharedVertexList::Pointer vertices, const QString& name, bool allocate = true);
 
     /**
      * @brief CreateGeometry
@@ -79,7 +79,7 @@ class SIMPLib_EXPORT EdgeGeom : public IGeometry
      * @param numVertices
      * @return
      */
-    static SharedVertexList::Pointer CreateSharedVertexList(int64_t numVertices);
+    static SharedVertexList::Pointer CreateSharedVertexList(int64_t numVertices, bool allocate = true);
 
     /**
      * @brief resizeVertexList
@@ -135,7 +135,7 @@ class SIMPLib_EXPORT EdgeGeom : public IGeometry
      * @param numEdges
      * @return
      */
-    static SharedEdgeList::Pointer CreateSharedEdgeList(int64_t numEdges);
+    static SharedEdgeList::Pointer CreateSharedEdgeList(int64_t numEdges, bool allocate = true);
 
     /**
      * @brief resizeEdgeList
