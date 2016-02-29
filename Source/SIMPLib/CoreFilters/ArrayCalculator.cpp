@@ -52,6 +52,7 @@
 #include "util/SubtractionOperator.h"
 #include "util/MultiplicationOperator.h"
 #include "util/DivisionOperator.h"
+#include "util/ABSOperator.h"
 
 // Include the MOC generated file for this class
 #include "moc_ArrayCalculator.cpp"
@@ -70,6 +71,7 @@ ArrayCalculator::ArrayCalculator() :
   m_SymbolList.push_back("-");
   m_SymbolList.push_back("*");
   m_SymbolList.push_back("/");
+  m_SymbolList.push_back("abs");
 }
 
 // -----------------------------------------------------------------------------
@@ -142,13 +144,17 @@ void ArrayCalculator::dataCheck()
     QSharedPointer<CalculatorItem> item = parsedInfix[i];
     if (NULL != qSharedPointerDynamicCast<CalculatorOperator>(item))
     {
-      if (i > parsedInfix.size() - 2 || NULL != qSharedPointerDynamicCast<CalculatorOperator>(parsedInfix[i+1])
-        || i < 1 || NULL != qSharedPointerDynamicCast<CalculatorOperator>(parsedInfix[i - 1]))
+      QSharedPointer<CalculatorOperator> operatorItem = qSharedPointerDynamicCast<CalculatorOperator>(item);
+      if (operatorItem->getOperatorType() == CalculatorOperator::Binary)
       {
-        QString ss = QObject::tr("The chosen infix equation is not a valid equation.");
-        setErrorCondition(-4005);
-        notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
-        return;
+        if (i > parsedInfix.size() - 2 || NULL != qSharedPointerDynamicCast<CalculatorOperator>(parsedInfix[i+1])
+          || i < 1 || NULL != qSharedPointerDynamicCast<CalculatorOperator>(parsedInfix[i - 1]))
+        {
+          QString ss = QObject::tr("The chosen infix equation is not a valid equation.");
+          setErrorCondition(-4005);
+          notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
+          return;
+        }
       }
     }
   }
@@ -323,6 +329,10 @@ QVector<QSharedPointer<CalculatorItem> > ArrayCalculator::parseInfixEquation(QSt
     else if (listItem == "/")
     {
       itemPtr = QSharedPointer<DivisionOperator>(new DivisionOperator());
+    }
+    else if (listItem == "abs")
+    {
+      itemPtr = QSharedPointer<ABSOperator>(new ABSOperator());
     }
     else if (am->getAttributeArrayNames().contains(listItem))
     {

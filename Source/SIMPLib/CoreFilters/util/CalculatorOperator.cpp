@@ -91,3 +91,19 @@ void CalculatorOperator::setPrecedenceId(int id)
   m_PrecedenceId = id;
 }
 
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+CalculatorOperator::OperatorType CalculatorOperator::getOperatorType()
+{
+  return m_OperatorType;
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void CalculatorOperator::setOperatorType(OperatorType type)
+{
+  m_OperatorType = type;
+}
+

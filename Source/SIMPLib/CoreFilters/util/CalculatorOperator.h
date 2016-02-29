@@ -48,6 +48,13 @@
 class SIMPLib_EXPORT CalculatorOperator : public CalculatorItem
 {
   public:
+    enum OperatorType
+    {
+      Unary,
+      Binary
+    };
+
+
     CalculatorOperator();
     virtual ~CalculatorOperator();
 
@@ -55,16 +62,63 @@ class SIMPLib_EXPORT CalculatorOperator : public CalculatorItem
 
     virtual QSharedPointer<CalculatorItem> calculate(AbstractFilter* filter, const QString &newArrayName, QStack<QSharedPointer<CalculatorItem> > &executionStack);
 
+    OperatorType getOperatorType();
+
   protected:
     int getPrecedenceId();
     void setPrecedenceId(int id);
 
+    void setOperatorType(OperatorType type);
+
   private:
     int                                             m_PrecedenceId;
+    OperatorType                                    m_OperatorType;
 
     CalculatorOperator(const CalculatorOperator&); // Copy Constructor Not Implemented
     void operator=(const CalculatorOperator&); // Operator '=' Not Implemented
 };
+
+#define EXECUTE_FUNCTION_ONE_ARRAY(filter, newArrayName, ptr, func)\
+    if(TemplateHelpers::CanDynamicCast<FloatArrayType>()(ptr))\
+    {\
+      return func<float>(filter, newArrayName, ptr);\
+    }\
+    else if(TemplateHelpers::CanDynamicCast<DoubleArrayType>()(ptr))\
+    {\
+      return func<double>(filter, newArrayName, ptr);\
+    }\
+    else if(TemplateHelpers::CanDynamicCast<Int8ArrayType>()(ptr))\
+    {\
+      return func<int8_t>(filter, newArrayName, ptr);\
+    }\
+    else if(TemplateHelpers::CanDynamicCast<UInt8ArrayType>()(ptr))\
+    {\
+      return func<uint8_t>(filter, newArrayName, ptr);\
+    }\
+    else if(TemplateHelpers::CanDynamicCast<Int16ArrayType>()(ptr))\
+    {\
+      return func<int16_t>(filter, newArrayName, ptr);\
+    }\
+    else if(TemplateHelpers::CanDynamicCast<UInt16ArrayType>()(ptr))\
+    {\
+      return func<uint16_t>(filter, newArrayName, ptr);\
+    }\
+    else if(TemplateHelpers::CanDynamicCast<Int32ArrayType>()(ptr))\
+    {\
+      return func<int32_t>(filter, newArrayName, ptr);\
+    }\
+    else if(TemplateHelpers::CanDynamicCast<UInt32ArrayType>()(ptr))\
+    {\
+      return func<uint32_t>(filter, newArrayName, ptr);\
+    }\
+    else if(TemplateHelpers::CanDynamicCast<Int64ArrayType>()(ptr))\
+    {\
+      return func<int64_t>(filter, newArrayName, ptr);\
+    }\
+    else if(TemplateHelpers::CanDynamicCast<UInt64ArrayType>()(ptr))\
+    {\
+      return func<uint64_t>(filter, newArrayName, ptr);\
+    }\
 
 #define EXECUTE_FUNCTION_TWO_ARRAYS(filter, newArrayName, ptr1, ptr2, func)\
     if(TemplateHelpers::CanDynamicCast<FloatArrayType>()(ptr1) && TemplateHelpers::CanDynamicCast<FloatArrayType>()(ptr2))\

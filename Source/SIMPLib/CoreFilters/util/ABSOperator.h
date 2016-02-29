@@ -33,8 +33,8 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-#ifndef _AdditionOperator_H_
-#define _AdditionOperator_H_
+#ifndef _ABSOperator_H_
+#define _ABSOperator_H_
 
 #include <QtCore/QSharedPointer>
 #include <QtCore/QStack>
@@ -46,21 +46,21 @@
 class CalculatorArray;
 class CalculatorNumber;
 
-class SIMPLib_EXPORT AdditionOperator : public CalculatorOperator
+class SIMPLib_EXPORT ABSOperator : public CalculatorOperator
 {
   public:
 
-    AdditionOperator();
-    virtual ~AdditionOperator();
+    ABSOperator();
+    virtual ~ABSOperator();
 
     virtual QSharedPointer<CalculatorItem> calculate(AbstractFilter* filter, const QString &newArrayName, QStack<QSharedPointer<CalculatorItem> > &executionStack);
 
   private:
-    template <typename J, typename K>
-    QSharedPointer<CalculatorItem> add(AbstractFilter* filter, const QString &newArrayName, IDataArray::Pointer dataArray1, IDataArray::Pointer dataArray2);
+    template <typename T>
+    QSharedPointer<CalculatorItem> absoluteValue(AbstractFilter* filter, const QString &newArrayName, IDataArray::Pointer dataArray);
 
-    AdditionOperator(const AdditionOperator&); // Copy Constructor Not Implemented
-    void operator=(const AdditionOperator&); // Operator '=' Not Implemented
+    ABSOperator(const ABSOperator&); // Copy Constructor Not Implemented
+    void operator=(const ABSOperator&); // Operator '=' Not Implemented
 };
 
-#endif /* _AdditionOperator_H_ */
+#endif /* _ABSOperator_H_ */

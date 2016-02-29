@@ -33,7 +33,7 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-#include "AdditionOperator.h"
+#include "ABSOperator.h"
 
 #include <Eigen/Core>
 #include <Eigen/Dense>
@@ -46,17 +46,17 @@
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-AdditionOperator::AdditionOperator() :
+ABSOperator::ABSOperator() :
   CalculatorOperator()
 {
-  setPrecedenceId(0);
-  setOperatorType(Binary);
+  setPrecedenceId(2);
+  setOperatorType(Unary);
 }
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-AdditionOperator::~AdditionOperator()
+ABSOperator::~ABSOperator()
 {
 
 }
@@ -64,14 +64,13 @@ AdditionOperator::~AdditionOperator()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-QSharedPointer<CalculatorItem> AdditionOperator::calculate(AbstractFilter* filter, const QString &newArrayName, QStack<QSharedPointer<CalculatorItem> > &executionStack)
+QSharedPointer<CalculatorItem> ABSOperator::calculate(AbstractFilter* filter, const QString &newArrayName, QStack<QSharedPointer<CalculatorItem> > &executionStack)
 {
-  if (executionStack.size() >= 2)
+  if (executionStack.size() >= 1)
   {
-    IDataArray::Pointer item1 = qSharedPointerDynamicCast<CalculatorArray>(executionStack.pop())->getArray();
-    IDataArray::Pointer item2 = qSharedPointerDynamicCast<CalculatorArray>(executionStack.pop())->getArray();
+    IDataArray::Pointer item = qSharedPointerDynamicCast<CalculatorArray>(executionStack.pop())->getArray();
 
-    EXECUTE_FUNCTION_TWO_ARRAYS(filter, newArrayName, item1, item2, add)\
+    EXECUTE_FUNCTION_ONE_ARRAY(filter, newArrayName, item, absoluteValue)\
   }
 
   // If the execution gets down here, then we have an error
@@ -84,48 +83,23 @@ QSharedPointer<CalculatorItem> AdditionOperator::calculate(AbstractFilter* filte
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-template <typename J, typename K>
-QSharedPointer<CalculatorItem> AdditionOperator::add(AbstractFilter* filter, const QString &newArrayName, IDataArray::Pointer dataArray1, IDataArray::Pointer dataArray2)
+template <typename T>
+QSharedPointer<CalculatorItem> ABSOperator::absoluteValue(AbstractFilter* filter, const QString &newArrayName, IDataArray::Pointer dataArray)
 {
-  typedef Eigen::Array<J, Eigen::Dynamic, 1> JEigenArrayType;
-  typedef Eigen::Map<JEigenArrayType> JEigenArrayMapType;
+  typedef Eigen::Array<T, Eigen::Dynamic, 1> EigenArrayType;
+  typedef Eigen::Map<EigenArrayType> EigenArrayMapType;
 
-  typedef Eigen::Array<K, Eigen::Dynamic, 1> KEigenArrayType;
-  typedef Eigen::Map<KEigenArrayType> KEigenArrayMapType;
-
-  typename DataArray<J>::Pointer arrayCast1 = std::dynamic_pointer_cast<DataArray<J> >(dataArray1);
-  typename DataArray<K>::Pointer arrayCast2 = std::dynamic_pointer_cast<DataArray<K> >(dataArray2);
+  typename DataArray<T>::Pointer arrayCast = std::dynamic_pointer_cast<DataArray<T> >(dataArray);
 
   DataArray<double>::Pointer newArray;
-  if (arrayCast1->getNumberOfTuples() > 1 && arrayCast2->getNumberOfTuples() == 1)
+  if (arrayCast->getNumberOfTuples() > 0)
   {
-    double number = static_cast<double>(arrayCast2->getValue(0));
-    JEigenArrayMapType ac(arrayCast1->getPointer(0), arrayCast1->getNumberOfTuples());
+    EigenArrayMapType ac(arrayCast->getPointer(0), arrayCast->getNumberOfTuples());
 
-    newArray = DataArray<double>::CreateArray(arrayCast1->getNumberOfTuples(), newArrayName);
+    newArray = DataArray<double>::CreateArray(arrayCast->getNumberOfTuples(), newArrayName);
     Eigen::Map<Eigen::Array<double, Eigen::Dynamic, 1> > newArrayMap(newArray->getPointer(0), newArray->getNumberOfTuples());
 
-    newArrayMap = ac. template cast<double>() + number;
-  }
-  else if (arrayCast1->getNumberOfTuples() == 1 && arrayCast2->getNumberOfTuples() > 1)
-  {
-    double number = static_cast<double>(arrayCast1->getValue(0));
-    KEigenArrayMapType ac(arrayCast2->getPointer(0), arrayCast2->getNumberOfTuples());
-
-    newArray = DataArray<double>::CreateArray(arrayCast2->getNumberOfTuples(), newArrayName);
-    Eigen::Map<Eigen::Array<double, Eigen::Dynamic, 1> > newArrayMap(newArray->getPointer(0), newArray->getNumberOfTuples());
-
-    newArrayMap = ac. template cast<double>() + number;
-  }
-  else if (arrayCast1->getNumberOfTuples() > 0 && arrayCast2->getNumberOfTuples() > 0)
-  {
-    JEigenArrayMapType ac1(arrayCast1->getPointer(0), arrayCast1->getNumberOfTuples());
-    KEigenArrayMapType ac2(arrayCast2->getPointer(0), arrayCast2->getNumberOfTuples());
-
-    newArray = DataArray<double>::CreateArray(arrayCast2->getNumberOfTuples(), newArrayName);
-    Eigen::Map<Eigen::Array<double, Eigen::Dynamic, 1> > newArrayMap(newArray->getPointer(0), newArray->getNumberOfTuples());
-
-    newArrayMap = ac1. template cast<double>() + ac2. template cast<double>();
+    newArrayMap = ac. template cast<double>().abs();
   }
   else
   {

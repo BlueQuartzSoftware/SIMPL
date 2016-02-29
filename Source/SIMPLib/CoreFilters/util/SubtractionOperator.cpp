@@ -46,6 +46,7 @@ SubtractionOperator::SubtractionOperator() :
 CalculatorOperator()
 {
   setPrecedenceId(0);
+  setOperatorType(Binary);
 }
 
 // -----------------------------------------------------------------------------

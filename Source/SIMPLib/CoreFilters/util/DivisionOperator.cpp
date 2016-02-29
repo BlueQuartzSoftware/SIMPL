@@ -46,6 +46,7 @@ DivisionOperator::DivisionOperator() :
 CalculatorOperator()
 {
   setPrecedenceId(1);
+  setOperatorType(Binary);
 }
 
 // -----------------------------------------------------------------------------

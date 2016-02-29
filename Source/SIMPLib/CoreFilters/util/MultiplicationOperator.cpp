@@ -46,6 +46,7 @@ MultiplicationOperator::MultiplicationOperator() :
 CalculatorOperator()
 {
   setPrecedenceId(1);
+  setOperatorType(Binary);
 }
 
 // -----------------------------------------------------------------------------
