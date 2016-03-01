@@ -38,6 +38,7 @@
 #include "ArrayCalculator.h"
 
 #include "SIMPLib/Common/Constants.h"
+#include "SIMPLib/Common/TemplateHelpers.hpp"
 #include "SIMPLib/SIMPLibVersion.h"
 #include "SIMPLib/FilterParameters/AbstractFilterParametersReader.h"
 #include "SIMPLib/FilterParameters/AbstractFilterParametersWriter.h"
@@ -56,6 +57,58 @@
 
 // Include the MOC generated file for this class
 #include "moc_ArrayCalculator.cpp"
+
+#define CREATE_CALCULATOR_ARRAY(itemPtr, iDataArrayPtr)\
+    if(TemplateHelpers::CanDynamicCast<FloatArrayType>()(iDataArrayPtr))\
+    {\
+      typename FloatArrayType::Pointer arrayCast = std::dynamic_pointer_cast<FloatArrayType>(iDataArrayPtr);\
+      itemPtr = QSharedPointer<CalculatorArray<float> >(new CalculatorArray<float>(arrayCast));\
+    }\
+    else if(TemplateHelpers::CanDynamicCast<DoubleArrayType>()(iDataArrayPtr))\
+    {\
+      typename DoubleArrayType::Pointer arrayCast = std::dynamic_pointer_cast<DoubleArrayType>(iDataArrayPtr);\
+      itemPtr = QSharedPointer<CalculatorArray<double> >(new CalculatorArray<double>(arrayCast));\
+    }\
+    else if(TemplateHelpers::CanDynamicCast<Int8ArrayType>()(iDataArrayPtr))\
+    {\
+      typename Int8ArrayType::Pointer arrayCast = std::dynamic_pointer_cast<Int8ArrayType>(iDataArrayPtr);\
+      itemPtr = QSharedPointer<CalculatorArray<int8_t> >(new CalculatorArray<int8_t>(arrayCast));\
+    }\
+    else if(TemplateHelpers::CanDynamicCast<UInt8ArrayType>()(iDataArrayPtr))\
+    {\
+      typename UInt8ArrayType::Pointer arrayCast = std::dynamic_pointer_cast<UInt8ArrayType>(iDataArrayPtr);\
+      itemPtr = QSharedPointer<CalculatorArray<uint8_t> >(new CalculatorArray<uint8_t>(arrayCast));\
+    }\
+    else if(TemplateHelpers::CanDynamicCast<Int16ArrayType>()(iDataArrayPtr))\
+    {\
+      typename Int16ArrayType::Pointer arrayCast = std::dynamic_pointer_cast<Int16ArrayType>(iDataArrayPtr);\
+      itemPtr = QSharedPointer<CalculatorArray<int16_t> >(new CalculatorArray<int16_t>(arrayCast));\
+    }\
+    else if(TemplateHelpers::CanDynamicCast<UInt16ArrayType>()(iDataArrayPtr))\
+    {\
+      typename UInt16ArrayType::Pointer arrayCast = std::dynamic_pointer_cast<UInt16ArrayType>(iDataArrayPtr);\
+      itemPtr = QSharedPointer<CalculatorArray<uint16_t> >(new CalculatorArray<uint16_t>(arrayCast));\
+    }\
+    else if(TemplateHelpers::CanDynamicCast<Int32ArrayType>()(iDataArrayPtr))\
+    {\
+      typename Int32ArrayType::Pointer arrayCast = std::dynamic_pointer_cast<Int32ArrayType>(iDataArrayPtr);\
+      itemPtr = QSharedPointer<CalculatorArray<int32_t> >(new CalculatorArray<int32_t>(arrayCast));\
+    }\
+    else if(TemplateHelpers::CanDynamicCast<UInt32ArrayType>()(iDataArrayPtr))\
+    {\
+      typename UInt32ArrayType::Pointer arrayCast = std::dynamic_pointer_cast<UInt32ArrayType>(iDataArrayPtr);\
+      itemPtr = QSharedPointer<CalculatorArray<uint32_t> >(new CalculatorArray<uint32_t>(arrayCast));\
+    }\
+    else if(TemplateHelpers::CanDynamicCast<Int64ArrayType>()(iDataArrayPtr))\
+    {\
+      typename Int64ArrayType::Pointer arrayCast = std::dynamic_pointer_cast<Int64ArrayType>(iDataArrayPtr);\
+      itemPtr = QSharedPointer<CalculatorArray<int64_t> >(new CalculatorArray<int64_t>(arrayCast));\
+    }\
+    else if(TemplateHelpers::CanDynamicCast<UInt64ArrayType>()(iDataArrayPtr))\
+    {\
+      typename UInt64ArrayType::Pointer arrayCast = std::dynamic_pointer_cast<UInt64ArrayType>(iDataArrayPtr);\
+      itemPtr = QSharedPointer<CalculatorArray<uint64_t> >(new CalculatorArray<uint64_t>(arrayCast));\
+    }\
 
 // -----------------------------------------------------------------------------
 //
@@ -185,6 +238,8 @@ void ArrayCalculator::execute()
   dataCheck();
   if(getErrorCondition() < 0) { return; }
 
+  AttributeMatrix::Pointer am = getDataContainerArray()->getAttributeMatrix(m_SelectedAttributeMatrix);
+
   // Parse the infix equation from the user interface
   QVector<QSharedPointer<CalculatorItem> > parsedInfix = parseInfixEquation(m_InfixEquation);
 
@@ -195,17 +250,34 @@ void ArrayCalculator::execute()
   for (int i = 0; i < rpn.size(); i++)
   {
     QSharedPointer<CalculatorItem> rpnItem = rpn[i];
-    if (NULL != qSharedPointerDynamicCast<CalculatorArray>(rpnItem))
+    if (NULL != qSharedPointerDynamicCast<ICalculatorArray>(rpnItem))
     {
       m_ExecutionStack.push(rpnItem);
     }
     else if (NULL != qSharedPointerDynamicCast<CalculatorOperator>(rpnItem))
     {
       QSharedPointer<CalculatorOperator> rpnOperator = qSharedPointerDynamicCast<CalculatorOperator>(rpnItem);
-      QSharedPointer<CalculatorItem> rpnCalculatedItem = rpnOperator->calculate(this, m_CalculatedArray.getDataArrayName(), m_ExecutionStack);
-      if (NULL == rpnCalculatedItem) { return; }
+      DoubleArrayType::Pointer newArray = DoubleArrayType::CreateArray(am->getNumTuples(), QVector<size_t>(1, 1), m_CalculatedArray.getDataArrayName());
 
-      m_ExecutionStack.push(rpnCalculatedItem);
+      for (int i=0; i<newArray->getNumberOfTuples(); i++)
+      {
+        double value = rpnOperator->calculate(this, m_CalculatedArray.getDataArrayName(), m_ExecutionStack, i);
+
+        if (getErrorCondition() < 0)
+        {
+          return;
+        }
+
+        newArray->setValue(i, value);
+      }
+
+      m_ExecutionStack.pop();
+      if (rpnOperator->getOperatorType() == CalculatorOperator::Binary)
+      {
+        m_ExecutionStack.pop();
+      }
+
+      m_ExecutionStack.push(QSharedPointer<CalculatorArray<double> >(new CalculatorArray<double>(newArray)));
     }
     else
     {
@@ -219,9 +291,9 @@ void ArrayCalculator::execute()
   QSharedPointer<CalculatorItem> resultItem = m_ExecutionStack.pop();
 
   IDataArray::Pointer newArray = IDataArray::NullPointer();
-  if (NULL != qSharedPointerDynamicCast<CalculatorArray>(resultItem))
+  if (NULL != qSharedPointerDynamicCast<ICalculatorArray>(resultItem))
   {
-    QSharedPointer<CalculatorArray> arrayItem = qSharedPointerDynamicCast<CalculatorArray>(resultItem);
+    QSharedPointer<ICalculatorArray> arrayItem = qSharedPointerDynamicCast<ICalculatorArray>(resultItem);
     newArray = arrayItem->getArray();
   }
   else
@@ -234,7 +306,6 @@ void ArrayCalculator::execute()
   }
 
   DataArrayPath amPath(m_CalculatedArray.getDataContainerName(), m_CalculatedArray.getAttributeMatrixName(), "");
-  AttributeMatrix::Pointer am = getDataContainerArray()->getAttributeMatrix(amPath);
   if (NULL != am)
   {
     am->addAttributeArray(m_CalculatedArray.getDataArrayName(), newArray);
@@ -302,9 +373,9 @@ QVector<QSharedPointer<CalculatorItem> > ArrayCalculator::parseInfixEquation(QSt
     double num = listItem.toDouble(&ok);
     if (ok == true)
     {
-      IDataArray::Pointer ptr = DoubleArrayType::CreateArray(1, QVector<size_t>(1, 1), "NumberArray");
+      DoubleArrayType::Pointer ptr = DoubleArrayType::CreateArray(1, QVector<size_t>(1, 1), "NumberArray");
       ptr->initializeTuple(0, &num);
-      itemPtr = QSharedPointer<CalculatorArray>(new CalculatorArray(ptr));
+      itemPtr = QSharedPointer<CalculatorArray<double> >(new CalculatorArray<double>(ptr));
     }
     else if (listItem == "(")
     {
@@ -349,7 +420,8 @@ QVector<QSharedPointer<CalculatorItem> > ArrayCalculator::parseInfixEquation(QSt
         notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
         return QVector<QSharedPointer<CalculatorItem> >();
       }
-      itemPtr = QSharedPointer<CalculatorArray>(new CalculatorArray(dataArray));
+
+      CREATE_CALCULATOR_ARRAY(itemPtr, dataArray)
     }
     else
     {
@@ -378,7 +450,7 @@ QVector<QSharedPointer<CalculatorItem> > ArrayCalculator::toRPN(QVector<QSharedP
   for (int i = 0; i < infixEquation.size(); i++)
   {
     QSharedPointer<CalculatorItem> calcItem = infixEquation[i];
-    if (NULL != qSharedPointerDynamicCast<CalculatorArray>(calcItem))
+    if (NULL != qSharedPointerDynamicCast<ICalculatorArray>(calcItem))
     {
       // This is a number or array, so push it onto the rpn equation output
       rpnEquation.push_back(calcItem);

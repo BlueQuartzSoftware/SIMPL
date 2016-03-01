@@ -69,10 +69,10 @@ bool CalculatorOperator::hasHigherPrecedence(const QSharedPointer<CalculatorOper
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-QSharedPointer<CalculatorItem> CalculatorOperator::calculate(AbstractFilter* filter, const QString &newArrayName, QStack<QSharedPointer<CalculatorItem> > &executionStack)
+double CalculatorOperator::calculate(AbstractFilter* filter, const QString &newArrayName, QStack<QSharedPointer<CalculatorItem> > &executionStack, int index)
 {
   // This should never be executed
-  return QSharedPointer<CalculatorItem>();
+  return 0.0;
 }
 
 // -----------------------------------------------------------------------------

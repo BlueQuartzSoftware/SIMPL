@@ -64,75 +64,27 @@ AdditionOperator::~AdditionOperator()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-QSharedPointer<CalculatorItem> AdditionOperator::calculate(AbstractFilter* filter, const QString &newArrayName, QStack<QSharedPointer<CalculatorItem> > &executionStack)
-{
+double AdditionOperator::calculate(AbstractFilter* filter, const QString &newArrayName, QStack<QSharedPointer<CalculatorItem> > &executionStack, int index)
+{ 
   if (executionStack.size() >= 2)
   {
-    IDataArray::Pointer item1 = qSharedPointerDynamicCast<CalculatorArray>(executionStack.pop())->getArray();
-    IDataArray::Pointer item2 = qSharedPointerDynamicCast<CalculatorArray>(executionStack.pop())->getArray();
+    QSharedPointer<ICalculatorArray> array1 = qSharedPointerDynamicCast<ICalculatorArray>(executionStack.pop());
+    QSharedPointer<ICalculatorArray> array2 = qSharedPointerDynamicCast<ICalculatorArray>(executionStack.pop());
 
-    EXECUTE_FUNCTION_TWO_ARRAYS(filter, newArrayName, item1, item2, add)\
+    double num1 = array1->getValue(index);
+    double num2 = array2->getValue(index);
+    double result = num1 + num2;
+
+    executionStack.push(array2);
+    executionStack.push(array1);
+
+    return result;
   }
 
   // If the execution gets down here, then we have an error
   QString ss = QObject::tr("The chosen infix equation is not a valid equation.");
   filter->setErrorCondition(-4005);
   filter->notifyErrorMessage(filter->getHumanLabel(), ss, filter->getErrorCondition());
-  return QSharedPointer<CalculatorItem>();
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-template <typename J, typename K>
-QSharedPointer<CalculatorItem> AdditionOperator::add(AbstractFilter* filter, const QString &newArrayName, IDataArray::Pointer dataArray1, IDataArray::Pointer dataArray2)
-{
-  typedef Eigen::Array<J, Eigen::Dynamic, 1> JEigenArrayType;
-  typedef Eigen::Map<JEigenArrayType> JEigenArrayMapType;
-
-  typedef Eigen::Array<K, Eigen::Dynamic, 1> KEigenArrayType;
-  typedef Eigen::Map<KEigenArrayType> KEigenArrayMapType;
-
-  typename DataArray<J>::Pointer arrayCast1 = std::dynamic_pointer_cast<DataArray<J> >(dataArray1);
-  typename DataArray<K>::Pointer arrayCast2 = std::dynamic_pointer_cast<DataArray<K> >(dataArray2);
-
-  DataArray<double>::Pointer newArray;
-  if (arrayCast1->getNumberOfTuples() > 1 && arrayCast2->getNumberOfTuples() == 1)
-  {
-    double number = static_cast<double>(arrayCast2->getValue(0));
-    JEigenArrayMapType ac(arrayCast1->getPointer(0), arrayCast1->getNumberOfTuples());
-
-    newArray = DataArray<double>::CreateArray(arrayCast1->getNumberOfTuples(), newArrayName);
-    Eigen::Map<Eigen::Array<double, Eigen::Dynamic, 1> > newArrayMap(newArray->getPointer(0), newArray->getNumberOfTuples());
-
-    newArrayMap = ac. template cast<double>() + number;
-  }
-  else if (arrayCast1->getNumberOfTuples() == 1 && arrayCast2->getNumberOfTuples() > 1)
-  {
-    double number = static_cast<double>(arrayCast1->getValue(0));
-    KEigenArrayMapType ac(arrayCast2->getPointer(0), arrayCast2->getNumberOfTuples());
-
-    newArray = DataArray<double>::CreateArray(arrayCast2->getNumberOfTuples(), newArrayName);
-    Eigen::Map<Eigen::Array<double, Eigen::Dynamic, 1> > newArrayMap(newArray->getPointer(0), newArray->getNumberOfTuples());
-
-    newArrayMap = ac. template cast<double>() + number;
-  }
-  else if (arrayCast1->getNumberOfTuples() > 0 && arrayCast2->getNumberOfTuples() > 0)
-  {
-    JEigenArrayMapType ac1(arrayCast1->getPointer(0), arrayCast1->getNumberOfTuples());
-    KEigenArrayMapType ac2(arrayCast2->getPointer(0), arrayCast2->getNumberOfTuples());
-
-    newArray = DataArray<double>::CreateArray(arrayCast2->getNumberOfTuples(), newArrayName);
-    Eigen::Map<Eigen::Array<double, Eigen::Dynamic, 1> > newArrayMap(newArray->getPointer(0), newArray->getNumberOfTuples());
-
-    newArrayMap = ac1. template cast<double>() + ac2. template cast<double>();
-  }
-  else
-  {
-    Q_ASSERT(false);
-  }
-
-  QSharedPointer<CalculatorItem> newItem = QSharedPointer<CalculatorArray>(new CalculatorArray(newArray));
-  return newItem;
+  return 0.0;
 }
 

@@ -50,13 +50,10 @@ class SIMPLib_EXPORT MultiplicationOperator : public CalculatorOperator
     MultiplicationOperator();
     virtual ~MultiplicationOperator();
 
-    virtual QSharedPointer<CalculatorItem> calculate(AbstractFilter* filter, const QString &newArrayName, QStack<QSharedPointer<CalculatorItem> > &executionStack);
+    virtual double calculate(AbstractFilter* filter, const QString &newArrayName, QStack<QSharedPointer<CalculatorItem> > &executionStack, int index);
 
   private:
     int                                             m_PrecedenceId;
-
-    template <typename J, typename K>
-    QSharedPointer<CalculatorItem> multiply(AbstractFilter* filter, const QString &newArrayName, IDataArray::Pointer multiplier, IDataArray::Pointer multiplicand);
 
     MultiplicationOperator(const MultiplicationOperator&); // Copy Constructor Not Implemented
     void operator=(const MultiplicationOperator&); // Operator '=' Not Implemented

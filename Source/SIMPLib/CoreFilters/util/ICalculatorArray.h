@@ -33,43 +33,30 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-#include "CalculatorArray.h"
+#ifndef _ICalculatorArray_H_
+#define _ICalculatorArray_H_
 
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-template <typename T>
-CalculatorArray<T>::CalculatorArray(typename DataArray<T>::Pointer dataArray, QObject *parent) :
-  ICalculatorArray(parent),
-  m_Array(dataArray)
+#include <QtCore/QObject>
+
+#include "SIMPLib/DataArrays/DataArray.hpp"
+#include "SIMPLib/SIMPLib.h"
+
+#include "CalculatorItem.h"
+
+class SIMPLib_EXPORT ICalculatorArray : public CalculatorItem
 {
+  public:
 
-}
+    ICalculatorArray(QObject* parent = NULL);
+    virtual ~ICalculatorArray();
 
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-template <typename T>
-CalculatorArray<T>::~CalculatorArray()
-{
+    virtual IDataArray::Pointer getArray();
+    virtual double getValue(int i);
 
-}
+  private:
 
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-template <typename T>
-IDataArray::Pointer CalculatorArray<T>::getArray()
-{
-  return m_Array;
-}
+    ICalculatorArray(const ICalculatorArray&); // Copy Constructor Not Implemented
+    void operator=(const ICalculatorArray&); // Operator '=' Not Implemented
+};
 
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-template <typename T>
-double CalculatorArray<T>::getValue(int i)
-{
-  return static_cast<double>(m_Array->getValue(i));
-}
-
+#endif /* _ICalculatorArray_H_ */

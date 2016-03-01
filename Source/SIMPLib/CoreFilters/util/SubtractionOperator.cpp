@@ -60,75 +60,27 @@ SubtractionOperator::~SubtractionOperator()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-QSharedPointer<CalculatorItem> SubtractionOperator::calculate(AbstractFilter* filter, const QString &newArrayName, QStack<QSharedPointer<CalculatorItem> > &executionStack)
+double SubtractionOperator::calculate(AbstractFilter* filter, const QString &newArrayName, QStack<QSharedPointer<CalculatorItem> > &executionStack, int index)
 {
   if (executionStack.size() >= 2)
   {
-    IDataArray::Pointer item1 = qSharedPointerDynamicCast<CalculatorArray>(executionStack.pop())->getArray();
-    IDataArray::Pointer item2 = qSharedPointerDynamicCast<CalculatorArray>(executionStack.pop())->getArray();
+    QSharedPointer<ICalculatorArray> subtrahendArray = qSharedPointerDynamicCast<ICalculatorArray>(executionStack.pop());
+    QSharedPointer<ICalculatorArray> minuendArray = qSharedPointerDynamicCast<ICalculatorArray>(executionStack.pop());
 
-    EXECUTE_FUNCTION_TWO_ARRAYS(filter, newArrayName, item1, item2, subtract)
+    double subtrahend = subtrahendArray->getValue(index);
+    double minuend = minuendArray->getValue(index);
+    double result = minuend - subtrahend;
+
+    executionStack.push(minuendArray);
+    executionStack.push(subtrahendArray);
+
+    return result;
   }
 
   // If the execution gets down here, then we have an error
   QString ss = QObject::tr("The chosen infix equation is not a valid equation.");
   filter->setErrorCondition(-4005);
   filter->notifyErrorMessage(filter->getHumanLabel(), ss, filter->getErrorCondition());
-  return QSharedPointer<CalculatorItem>();
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-template <typename J, typename K>
-QSharedPointer<CalculatorItem> SubtractionOperator::subtract(AbstractFilter* filter, const QString &newArrayName, IDataArray::Pointer subtrahend, IDataArray::Pointer minuend)
-{ 
-  typedef Eigen::Array<J, Eigen::Dynamic, 1> JEigenArrayType;
-  typedef Eigen::Map<JEigenArrayType> JEigenArrayMapType;
-
-  typedef Eigen::Array<K, Eigen::Dynamic, 1> KEigenArrayType;
-  typedef Eigen::Map<KEigenArrayType> KEigenArrayMapType;
-
-  typename DataArray<J>::Pointer subtrahendCast = std::dynamic_pointer_cast<DataArray<J> >(subtrahend);
-  typename DataArray<K>::Pointer minuendCast = std::dynamic_pointer_cast<DataArray<K> >(minuend);
-
-  DataArray<double>::Pointer newArray;
-  if (subtrahendCast->getNumberOfTuples() > 1 && minuendCast->getNumberOfTuples() == 1)
-  {
-    double minuendNum = static_cast<double>(minuendCast->getValue(0));
-    JEigenArrayMapType ac(subtrahendCast->getPointer(0), subtrahendCast->getNumberOfTuples());
-
-    newArray = DataArray<double>::CreateArray(subtrahendCast->getNumberOfTuples(), newArrayName);
-    Eigen::Map<Eigen::Array<double, Eigen::Dynamic, 1> > newArrayMap(newArray->getPointer(0), newArray->getNumberOfTuples());
-
-    newArrayMap = minuendNum - ac. template cast<double>();
-  }
-  else if (subtrahendCast->getNumberOfTuples() == 1 && minuendCast->getNumberOfTuples() > 1)
-  {
-    double subtrahendNum = static_cast<double>(subtrahendCast->getValue(0));
-    KEigenArrayMapType ac(minuendCast->getPointer(0), minuendCast->getNumberOfTuples());
-
-    newArray = DataArray<double>::CreateArray(minuendCast->getNumberOfTuples(), newArrayName);
-    Eigen::Map<Eigen::Array<double, Eigen::Dynamic, 1> > newArrayMap(newArray->getPointer(0), newArray->getNumberOfTuples());
-
-    newArrayMap = ac. template cast<double>() - subtrahendNum;
-  }
-  else if (subtrahendCast->getNumberOfTuples() > 0 && minuendCast->getNumberOfTuples() > 0)
-  {
-    JEigenArrayMapType subtrahendAC(subtrahendCast->getPointer(0), subtrahendCast->getNumberOfTuples());
-    KEigenArrayMapType minuendAC(minuendCast->getPointer(0), minuendCast->getNumberOfTuples());
-
-    newArray = DataArray<double>::CreateArray(minuendCast->getNumberOfTuples(), newArrayName);
-    Eigen::Map<Eigen::Array<double, Eigen::Dynamic, 1> > newArrayMap(newArray->getPointer(0), newArray->getNumberOfTuples());
-
-    newArrayMap = minuendAC. template cast<double>() - subtrahendAC. template cast<double>();
-  }
-  else
-  {
-    Q_ASSERT(false);
-  }
-
-  QSharedPointer<CalculatorItem> newItem = QSharedPointer<CalculatorArray>(new CalculatorArray(newArray));
-  return newItem;
+  return 0.0;
 }
 

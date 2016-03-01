@@ -60,75 +60,27 @@ MultiplicationOperator::~MultiplicationOperator()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-QSharedPointer<CalculatorItem> MultiplicationOperator::calculate(AbstractFilter* filter, const QString &newArrayName, QStack<QSharedPointer<CalculatorItem> > &executionStack)
+double MultiplicationOperator::calculate(AbstractFilter* filter, const QString &newArrayName, QStack<QSharedPointer<CalculatorItem> > &executionStack, int index)
 {
   if (executionStack.size() >= 2)
   {
-    IDataArray::Pointer item1 = qSharedPointerDynamicCast<CalculatorArray>(executionStack.pop())->getArray();
-    IDataArray::Pointer item2 = qSharedPointerDynamicCast<CalculatorArray>(executionStack.pop())->getArray();
+    QSharedPointer<ICalculatorArray> array1 = qSharedPointerDynamicCast<ICalculatorArray>(executionStack.pop());
+    QSharedPointer<ICalculatorArray> array2 = qSharedPointerDynamicCast<ICalculatorArray>(executionStack.pop());
 
-    EXECUTE_FUNCTION_TWO_ARRAYS(filter, newArrayName, item1, item2, multiply)
+    double num1 = array1->getValue(index);
+    double num2 = array2->getValue(index);
+    double result = num1 * num2;
+
+    executionStack.push(array2);
+    executionStack.push(array1);
+
+    return result;
   }
 
   // If the execution gets down here, then we have an error
   QString ss = QObject::tr("The chosen infix equation is not a valid equation.");
   filter->setErrorCondition(-4005);
   filter->notifyErrorMessage(filter->getHumanLabel(), ss, filter->getErrorCondition());
-  return QSharedPointer<CalculatorItem>();
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-template <typename J, typename K>
-QSharedPointer<CalculatorItem> MultiplicationOperator::multiply(AbstractFilter* filter, const QString &newArrayName, IDataArray::Pointer multiplier, IDataArray::Pointer multiplicand)
-{ 
-  typedef Eigen::Array<J, Eigen::Dynamic, 1> JEigenArrayType;
-  typedef Eigen::Map<JEigenArrayType> JEigenArrayMapType;
-
-  typedef Eigen::Array<K, Eigen::Dynamic, 1> KEigenArrayType;
-  typedef Eigen::Map<KEigenArrayType> KEigenArrayMapType;
-
-  typename DataArray<J>::Pointer multiplierCast = std::dynamic_pointer_cast<DataArray<J> >(multiplier);
-  typename DataArray<K>::Pointer multiplicandCast = std::dynamic_pointer_cast<DataArray<K> >(multiplicand);
-
-  DataArray<double>::Pointer newArray;
-  if (multiplierCast->getNumberOfTuples() > 1 && multiplicandCast->getNumberOfTuples() == 1)
-  {
-    double number = static_cast<double>(multiplicandCast->getValue(0));
-    JEigenArrayMapType ac(multiplierCast->getPointer(0), multiplierCast->getNumberOfTuples());
-
-    newArray = DataArray<double>::CreateArray(multiplierCast->getNumberOfTuples(), newArrayName);
-    Eigen::Map<Eigen::Array<double, Eigen::Dynamic, 1> > newArrayMap(newArray->getPointer(0), newArray->getNumberOfTuples());
-
-    newArrayMap = ac. template cast<double>() * number;
-  }
-  else if (multiplierCast->getNumberOfTuples() == 1 && multiplicandCast->getNumberOfTuples() > 1)
-  {
-    double number = static_cast<double>(multiplierCast->getValue(0));
-    KEigenArrayMapType ac(multiplicandCast->getPointer(0), multiplicandCast->getNumberOfTuples());
-
-    newArray = DataArray<double>::CreateArray(multiplicandCast->getNumberOfTuples(), newArrayName);
-    Eigen::Map<Eigen::Array<double, Eigen::Dynamic, 1> > newArrayMap(newArray->getPointer(0), newArray->getNumberOfTuples());
-
-    newArrayMap = ac. template cast<double>() * number;
-  }
-  else if (multiplierCast->getNumberOfTuples() > 0 && multiplicandCast->getNumberOfTuples() > 0)
-  {
-    JEigenArrayMapType ac1(multiplierCast->getPointer(0), multiplierCast->getNumberOfTuples());
-    KEigenArrayMapType ac2(multiplicandCast->getPointer(0), multiplicandCast->getNumberOfTuples());
-
-    newArray = DataArray<double>::CreateArray(multiplicandCast->getNumberOfTuples(), newArrayName);
-    Eigen::Map<Eigen::Array<double, Eigen::Dynamic, 1> > newArrayMap(newArray->getPointer(0), newArray->getNumberOfTuples());
-
-    newArrayMap = ac1. template cast<double>() * ac2. template cast<double>();
-  }
-  else
-  {
-    Q_ASSERT(false);
-  }
-
-  QSharedPointer<CalculatorItem> newItem = QSharedPointer<CalculatorArray>(new CalculatorArray(newArray));
-  return newItem;
+  return 0.0;
 }
 

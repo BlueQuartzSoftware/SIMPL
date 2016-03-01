@@ -48,6 +48,7 @@ class SIMPLib_EXPORT CalculatorItem
     virtual ~CalculatorItem();
 
   private:
+
     CalculatorItem(const CalculatorItem&); // Copy Constructor Not Implemented
     void operator=(const CalculatorItem&); // Operator '=' Not Implemented
 };

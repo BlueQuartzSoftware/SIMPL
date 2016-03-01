@@ -33,15 +33,13 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-#include "CalculatorArray.h"
+#include "ICalculatorArray.h"
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-template <typename T>
-CalculatorArray<T>::CalculatorArray(typename DataArray<T>::Pointer dataArray, QObject *parent) :
-  ICalculatorArray(parent),
-  m_Array(dataArray)
+ICalculatorArray::ICalculatorArray(QObject *parent) :
+  CalculatorItem(parent)
 {
 
 }
@@ -49,8 +47,7 @@ CalculatorArray<T>::CalculatorArray(typename DataArray<T>::Pointer dataArray, QO
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-template <typename T>
-CalculatorArray<T>::~CalculatorArray()
+ICalculatorArray::~ICalculatorArray()
 {
 
 }
@@ -58,18 +55,18 @@ CalculatorArray<T>::~CalculatorArray()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-template <typename T>
-IDataArray::Pointer CalculatorArray<T>::getArray()
+IDataArray::Pointer ICalculatorArray::getArray()
 {
-  return m_Array;
+  // This should never be called
+  return IDataArray::NullPointer();
 }
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-template <typename T>
-double CalculatorArray<T>::getValue(int i)
+double ICalculatorArray::getValue(int i)
 {
-  return static_cast<double>(m_Array->getValue(i));
+  // This should never be called
+  return 0.0;
 }
 

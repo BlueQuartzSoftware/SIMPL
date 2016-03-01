@@ -43,7 +43,6 @@
 
 #include "CalculatorOperator.h"
 
-class CalculatorArray;
 class CalculatorNumber;
 
 class SIMPLib_EXPORT ABSOperator : public CalculatorOperator
@@ -53,11 +52,9 @@ class SIMPLib_EXPORT ABSOperator : public CalculatorOperator
     ABSOperator();
     virtual ~ABSOperator();
 
-    virtual QSharedPointer<CalculatorItem> calculate(AbstractFilter* filter, const QString &newArrayName, QStack<QSharedPointer<CalculatorItem> > &executionStack);
+    virtual double calculate(AbstractFilter* filter, const QString &newArrayName, QStack<QSharedPointer<CalculatorItem> > &executionStack, int index);
 
   private:
-    template <typename T>
-    QSharedPointer<CalculatorItem> absoluteValue(AbstractFilter* filter, const QString &newArrayName, IDataArray::Pointer dataArray);
 
     ABSOperator(const ABSOperator&); // Copy Constructor Not Implemented
     void operator=(const ABSOperator&); // Operator '=' Not Implemented

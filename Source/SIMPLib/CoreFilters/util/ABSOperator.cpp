@@ -35,6 +35,8 @@
 
 #include "ABSOperator.h"
 
+#include <math.h>
+
 #include <Eigen/Core>
 #include <Eigen/Dense>
 #include <Eigen/Eigen>
@@ -64,49 +66,18 @@ ABSOperator::~ABSOperator()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-QSharedPointer<CalculatorItem> ABSOperator::calculate(AbstractFilter* filter, const QString &newArrayName, QStack<QSharedPointer<CalculatorItem> > &executionStack)
+double ABSOperator::calculate(AbstractFilter* filter, const QString &newArrayName, QStack<QSharedPointer<CalculatorItem> > &executionStack, int index)
 {
-  if (executionStack.size() >= 1)
+  if (executionStack.size() >= 1 && NULL != qSharedPointerDynamicCast<ICalculatorArray>(executionStack.top()))
   {
-    IDataArray::Pointer item = qSharedPointerDynamicCast<CalculatorArray>(executionStack.pop())->getArray();
-
-    EXECUTE_FUNCTION_ONE_ARRAY(filter, newArrayName, item, absoluteValue)\
+    double num = qSharedPointerDynamicCast<ICalculatorArray>(executionStack.top())->getValue(index);
+    return fabs(num);
   }
 
   // If the execution gets down here, then we have an error
   QString ss = QObject::tr("The chosen infix equation is not a valid equation.");
   filter->setErrorCondition(-4005);
   filter->notifyErrorMessage(filter->getHumanLabel(), ss, filter->getErrorCondition());
-  return QSharedPointer<CalculatorItem>();
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-template <typename T>
-QSharedPointer<CalculatorItem> ABSOperator::absoluteValue(AbstractFilter* filter, const QString &newArrayName, IDataArray::Pointer dataArray)
-{
-  typedef Eigen::Array<T, Eigen::Dynamic, 1> EigenArrayType;
-  typedef Eigen::Map<EigenArrayType> EigenArrayMapType;
-
-  typename DataArray<T>::Pointer arrayCast = std::dynamic_pointer_cast<DataArray<T> >(dataArray);
-
-  DataArray<double>::Pointer newArray;
-  if (arrayCast->getNumberOfTuples() > 0)
-  {
-    EigenArrayMapType ac(arrayCast->getPointer(0), arrayCast->getNumberOfTuples());
-
-    newArray = DataArray<double>::CreateArray(arrayCast->getNumberOfTuples(), newArrayName);
-    Eigen::Map<Eigen::Array<double, Eigen::Dynamic, 1> > newArrayMap(newArray->getPointer(0), newArray->getNumberOfTuples());
-
-    newArrayMap = ac. template cast<double>().abs();
-  }
-  else
-  {
-    Q_ASSERT(false);
-  }
-
-  QSharedPointer<CalculatorItem> newItem = QSharedPointer<CalculatorArray>(new CalculatorArray(newArray));
-  return newItem;
+  return 0.0;
 }
 

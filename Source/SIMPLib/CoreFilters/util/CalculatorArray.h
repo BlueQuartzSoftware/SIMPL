@@ -41,19 +41,22 @@
 #include "SIMPLib/DataArrays/DataArray.hpp"
 #include "SIMPLib/SIMPLib.h"
 
-#include "CalculatorItem.h"
+#include "ICalculatorArray.h"
 
-class SIMPLib_EXPORT CalculatorArray : public CalculatorItem
+template <typename T>
+class SIMPLib_EXPORT CalculatorArray : public ICalculatorArray
 {
   public:
 
-    CalculatorArray(IDataArray::Pointer dataArray, QObject* parent = NULL);
+    CalculatorArray(typename DataArray<T>::Pointer dataArray, QObject* parent = NULL);
     virtual ~CalculatorArray();
 
     IDataArray::Pointer getArray();
 
+    double getValue(int i);
+
   private:
-    IDataArray::Pointer                              m_Array;
+    typename DataArray<T>::Pointer                                  m_Array;
 
     CalculatorArray(const CalculatorArray&); // Copy Constructor Not Implemented
     void operator=(const CalculatorArray&); // Operator '=' Not Implemented

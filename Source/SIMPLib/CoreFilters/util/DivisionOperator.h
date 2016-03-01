@@ -50,13 +50,10 @@ class SIMPLib_EXPORT DivisionOperator : public CalculatorOperator
     DivisionOperator();
     virtual ~DivisionOperator();
 
-    virtual QSharedPointer<CalculatorItem> calculate(AbstractFilter* filter, const QString &newArrayName, QStack<QSharedPointer<CalculatorItem> > &executionStack);
+    virtual double calculate(AbstractFilter* filter, const QString &newArrayName, QStack<QSharedPointer<CalculatorItem> > &executionStack, int index);
 
   private:
     int                                             m_PrecedenceId;
-
-    template <typename J, typename K>
-    QSharedPointer<CalculatorItem> divide(AbstractFilter* filter, const QString &newArrayName, IDataArray::Pointer multiplier, IDataArray::Pointer multiplicand);
 
     DivisionOperator(const DivisionOperator&); // Copy Constructor Not Implemented
     void operator=(const DivisionOperator&); // Operator '=' Not Implemented
