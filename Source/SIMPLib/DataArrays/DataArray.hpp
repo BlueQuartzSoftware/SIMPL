@@ -33,8 +33,8 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-#ifndef _DataArray_h_
-#define _DataArray_h_
+#ifndef _dataarray_h_
+#define _dataarray_h_
 
 // STL Includes
 #include <vector>
