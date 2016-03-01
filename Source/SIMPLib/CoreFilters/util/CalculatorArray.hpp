@@ -33,43 +33,39 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-#include "CalculatorArray.h"
+#ifndef _CalculatorArray_H_
+#define _CalculatorArray_H_
 
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
+#include <QtCore/QObject>
+
+#include "SIMPLib/DataArrays/DataArray.hpp"
+#include "SIMPLib/SIMPLib.h"
+
+#include "ICalculatorArray.h"
+
 template <typename T>
-CalculatorArray<T>::CalculatorArray(typename DataArray<T>::Pointer dataArray, QObject *parent) :
-  ICalculatorArray(parent),
-  m_Array(dataArray)
+class SIMPLib_EXPORT CalculatorArray : public ICalculatorArray
 {
+  public:
 
-}
+    CalculatorArray(typename DataArray<T>::Pointer dataArray, QObject* parent = NULL) :
+      ICalculatorArray(parent),
+      m_Array(dataArray)
+    {
 
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-template <typename T>
-CalculatorArray<T>::~CalculatorArray()
-{
+    }
 
-}
+    virtual ~CalculatorArray() {}
 
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-template <typename T>
-IDataArray::Pointer CalculatorArray<T>::getArray()
-{
-  return m_Array;
-}
+    IDataArray::Pointer getArray() { return m_Array; }
 
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-template <typename T>
-double CalculatorArray<T>::getValue(int i)
-{
-  return static_cast<double>(m_Array->getValue(i));
-}
+    double getValue(int i) { return static_cast<double>(m_Array->getValue(i)); }
 
+  private:
+    typename DataArray<T>::Pointer                                  m_Array;
+
+    CalculatorArray(const CalculatorArray&); // Copy Constructor Not Implemented
+    void operator=(const CalculatorArray&); // Operator '=' Not Implemented
+};
+
+#endif /* _CalculatorArray_H_ */

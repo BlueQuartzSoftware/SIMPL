@@ -46,7 +46,7 @@
 #include "SIMPLib/FilterParameters/CalculatorFilterParameter.h"
 #include "SIMPLib/FilterParameters/DataArrayCreationFilterParameter.h"
 
-#include "util/CalculatorArray.h"
+#include "util/CalculatorArray.hpp"
 #include "util/LeftParenthesisSeparator.h"
 #include "util/RightParenthesisSeparator.h"
 #include "util/AdditionOperator.h"

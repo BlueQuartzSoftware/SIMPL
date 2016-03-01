@@ -43,7 +43,7 @@
 #include "SIMPLib/Common/TemplateHelpers.hpp"
 #include "SIMPLib/DataArrays/IDataArray.h"
 
-#include "CalculatorArray.h"
+#include "CalculatorArray.hpp"
 
 class SIMPLib_EXPORT CalculatorOperator : public CalculatorItem
 {

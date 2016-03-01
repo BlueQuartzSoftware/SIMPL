@@ -41,7 +41,7 @@
 
 #include "SIMPLib/Common/TemplateHelpers.hpp"
 
-#include "CalculatorArray.h"
+#include "CalculatorArray.hpp"
 
 // -----------------------------------------------------------------------------
 //
