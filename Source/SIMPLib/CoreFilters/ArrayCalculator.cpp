@@ -61,52 +61,52 @@
 #define CREATE_CALCULATOR_ARRAY(itemPtr, iDataArrayPtr)\
     if(TemplateHelpers::CanDynamicCast<FloatArrayType>()(iDataArrayPtr))\
     {\
-      typename FloatArrayType::Pointer arrayCast = std::dynamic_pointer_cast<FloatArrayType>(iDataArrayPtr);\
+      FloatArrayType::Pointer arrayCast = std::dynamic_pointer_cast<FloatArrayType>(iDataArrayPtr);\
       itemPtr = QSharedPointer<CalculatorArray<float> >(new CalculatorArray<float>(arrayCast));\
     }\
     else if(TemplateHelpers::CanDynamicCast<DoubleArrayType>()(iDataArrayPtr))\
     {\
-      typename DoubleArrayType::Pointer arrayCast = std::dynamic_pointer_cast<DoubleArrayType>(iDataArrayPtr);\
+      DoubleArrayType::Pointer arrayCast = std::dynamic_pointer_cast<DoubleArrayType>(iDataArrayPtr);\
       itemPtr = QSharedPointer<CalculatorArray<double> >(new CalculatorArray<double>(arrayCast));\
     }\
     else if(TemplateHelpers::CanDynamicCast<Int8ArrayType>()(iDataArrayPtr))\
     {\
-      typename Int8ArrayType::Pointer arrayCast = std::dynamic_pointer_cast<Int8ArrayType>(iDataArrayPtr);\
+      Int8ArrayType::Pointer arrayCast = std::dynamic_pointer_cast<Int8ArrayType>(iDataArrayPtr);\
       itemPtr = QSharedPointer<CalculatorArray<int8_t> >(new CalculatorArray<int8_t>(arrayCast));\
     }\
     else if(TemplateHelpers::CanDynamicCast<UInt8ArrayType>()(iDataArrayPtr))\
     {\
-      typename UInt8ArrayType::Pointer arrayCast = std::dynamic_pointer_cast<UInt8ArrayType>(iDataArrayPtr);\
+      UInt8ArrayType::Pointer arrayCast = std::dynamic_pointer_cast<UInt8ArrayType>(iDataArrayPtr);\
       itemPtr = QSharedPointer<CalculatorArray<uint8_t> >(new CalculatorArray<uint8_t>(arrayCast));\
     }\
     else if(TemplateHelpers::CanDynamicCast<Int16ArrayType>()(iDataArrayPtr))\
     {\
-      typename Int16ArrayType::Pointer arrayCast = std::dynamic_pointer_cast<Int16ArrayType>(iDataArrayPtr);\
+      Int16ArrayType::Pointer arrayCast = std::dynamic_pointer_cast<Int16ArrayType>(iDataArrayPtr);\
       itemPtr = QSharedPointer<CalculatorArray<int16_t> >(new CalculatorArray<int16_t>(arrayCast));\
     }\
     else if(TemplateHelpers::CanDynamicCast<UInt16ArrayType>()(iDataArrayPtr))\
     {\
-      typename UInt16ArrayType::Pointer arrayCast = std::dynamic_pointer_cast<UInt16ArrayType>(iDataArrayPtr);\
+      UInt16ArrayType::Pointer arrayCast = std::dynamic_pointer_cast<UInt16ArrayType>(iDataArrayPtr);\
       itemPtr = QSharedPointer<CalculatorArray<uint16_t> >(new CalculatorArray<uint16_t>(arrayCast));\
     }\
     else if(TemplateHelpers::CanDynamicCast<Int32ArrayType>()(iDataArrayPtr))\
     {\
-      typename Int32ArrayType::Pointer arrayCast = std::dynamic_pointer_cast<Int32ArrayType>(iDataArrayPtr);\
+      Int32ArrayType::Pointer arrayCast = std::dynamic_pointer_cast<Int32ArrayType>(iDataArrayPtr);\
       itemPtr = QSharedPointer<CalculatorArray<int32_t> >(new CalculatorArray<int32_t>(arrayCast));\
     }\
     else if(TemplateHelpers::CanDynamicCast<UInt32ArrayType>()(iDataArrayPtr))\
     {\
-      typename UInt32ArrayType::Pointer arrayCast = std::dynamic_pointer_cast<UInt32ArrayType>(iDataArrayPtr);\
+      UInt32ArrayType::Pointer arrayCast = std::dynamic_pointer_cast<UInt32ArrayType>(iDataArrayPtr);\
       itemPtr = QSharedPointer<CalculatorArray<uint32_t> >(new CalculatorArray<uint32_t>(arrayCast));\
     }\
     else if(TemplateHelpers::CanDynamicCast<Int64ArrayType>()(iDataArrayPtr))\
     {\
-      typename Int64ArrayType::Pointer arrayCast = std::dynamic_pointer_cast<Int64ArrayType>(iDataArrayPtr);\
+      Int64ArrayType::Pointer arrayCast = std::dynamic_pointer_cast<Int64ArrayType>(iDataArrayPtr);\
       itemPtr = QSharedPointer<CalculatorArray<int64_t> >(new CalculatorArray<int64_t>(arrayCast));\
     }\
     else if(TemplateHelpers::CanDynamicCast<UInt64ArrayType>()(iDataArrayPtr))\
     {\
-      typename UInt64ArrayType::Pointer arrayCast = std::dynamic_pointer_cast<UInt64ArrayType>(iDataArrayPtr);\
+      UInt64ArrayType::Pointer arrayCast = std::dynamic_pointer_cast<UInt64ArrayType>(iDataArrayPtr);\
       itemPtr = QSharedPointer<CalculatorArray<uint64_t> >(new CalculatorArray<uint64_t>(arrayCast));\
     }\
 
