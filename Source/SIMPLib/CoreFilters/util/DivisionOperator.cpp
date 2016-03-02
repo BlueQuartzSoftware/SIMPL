@@ -46,10 +46,9 @@
 //
 // -----------------------------------------------------------------------------
 DivisionOperator::DivisionOperator() :
-CalculatorOperator()
+BinaryOperator()
 {
   setPrecedenceId(1);
-  setOperatorType(Binary);
 }
 
 // -----------------------------------------------------------------------------
@@ -73,23 +72,15 @@ double DivisionOperator::calculate(AbstractFilter* filter, const QString &newArr
     double divisor = divisorArray->getValue(index);
     double dividend = dividendArray->getValue(index);
 
+    double result;
     if (divisor == 0.0)
     {
-//      QString ss;
-//      if (divisorArray->getArray()->getNumberOfTuples() > 1)
-//      {
-//        ss = QObject::tr("The chosen infix equation divided by 0.");
-//      }
-//      else
-//      {
-//        ss = QObject::tr("The chosen infix equation divided by 0.");
-//      }
-//      filter->setErrorCondition(-4009);
-//      filter->notifyErrorMessage(filter->getHumanLabel(), ss, filter->getErrorCondition());
-      return std::numeric_limits<double>::infinity();
+      result = std::numeric_limits<double>::infinity();
     }
-
-    double result = dividend / divisor;
+    else
+    {
+      result = dividend / divisor;
+    }
 
     executionStack.push(dividendArray);
     executionStack.push(divisorArray);
@@ -102,35 +93,5 @@ double DivisionOperator::calculate(AbstractFilter* filter, const QString &newArr
   filter->setErrorCondition(-4005);
   filter->notifyErrorMessage(filter->getHumanLabel(), ss, filter->getErrorCondition());
   return 0.0;
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-bool DivisionOperator::checkValidity(QVector<QSharedPointer<CalculatorItem> > infixVector, int currentIndex)
-{
-  /* We need to check that the infix vector has a big enough size to fit all parts
-     of the division expression */
-  if (currentIndex - 1 < 0 || currentIndex + 1 > infixVector.size() - 1)
-  {
-    return false;
-  }
-
-  int leftValue = currentIndex - 1;
-  int rightValue = currentIndex + 1;
-
-  if ( (NULL != qSharedPointerDynamicCast<CalculatorOperator>(infixVector[leftValue])
-          && qSharedPointerDynamicCast<CalculatorOperator>(infixVector[leftValue])->getOperatorType() == Binary)
-      || (NULL != qSharedPointerDynamicCast<CalculatorOperator>(infixVector[rightValue])
-          && qSharedPointerDynamicCast<CalculatorOperator>(infixVector[rightValue])->getOperatorType() == Binary)
-       || NULL != qSharedPointerDynamicCast<LeftParenthesisSeparator>(infixVector[leftValue])
-       || NULL != qSharedPointerDynamicCast<RightParenthesisSeparator>(infixVector[rightValue]) )
-  {
-    return false;
-  }
-  else
-  {
-    return true;
-  }
 }
 

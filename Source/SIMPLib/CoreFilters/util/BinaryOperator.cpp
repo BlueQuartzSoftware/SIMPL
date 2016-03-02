@@ -33,31 +33,24 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-#include "ABSOperator.h"
+#include "BinaryOperator.h"
 
-#include <math.h>
-
-#include <Eigen/Core>
-#include <Eigen/Dense>
-#include <Eigen/Eigen>
-
-#include "SIMPLib/Common/TemplateHelpers.hpp"
-
-#include "CalculatorArray.hpp"
+#include "LeftParenthesisSeparator.h"
+#include "RightParenthesisSeparator.h"
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-ABSOperator::ABSOperator() :
-  UnaryOperator()
+BinaryOperator::BinaryOperator() :
+  CalculatorOperator()
 {
-  setPrecedenceId(2);
+  setOperatorType(Binary);
 }
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-ABSOperator::~ABSOperator()
+BinaryOperator::~BinaryOperator()
 {
 
 }
@@ -65,18 +58,39 @@ ABSOperator::~ABSOperator()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-double ABSOperator::calculate(AbstractFilter* filter, const QString &newArrayName, QStack<QSharedPointer<CalculatorItem> > &executionStack, int index)
+double BinaryOperator::calculate(AbstractFilter* filter, const QString &newArrayName, QStack<QSharedPointer<CalculatorItem> > &executionStack, int index)
 {
-  if (executionStack.size() >= 1 && NULL != qSharedPointerDynamicCast<ICalculatorArray>(executionStack.top()))
+  // This should never be executed
+  return 0.0;
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+bool BinaryOperator::checkValidity(QVector<QSharedPointer<CalculatorItem> > infixVector, int currentIndex)
+{
+  /* We need to check that the infix vector has a big enough size to fit all parts
+  of the subtraction expression */
+  if (currentIndex - 1 < 0 || currentIndex + 1 > infixVector.size() - 1)
   {
-    double num = qSharedPointerDynamicCast<ICalculatorArray>(executionStack.top())->getValue(index);
-    return fabs(num);
+    return false;
   }
 
-  // If the execution gets down here, then we have an error
-  QString ss = QObject::tr("The chosen infix equation is not a valid equation.");
-  filter->setErrorCondition(-4005);
-  filter->notifyErrorMessage(filter->getHumanLabel(), ss, filter->getErrorCondition());
-  return 0.0;
+  int leftValue = currentIndex - 1;
+  int rightValue = currentIndex + 1;
+
+  if ((NULL != qSharedPointerDynamicCast<CalculatorOperator>(infixVector[leftValue])
+    && qSharedPointerDynamicCast<CalculatorOperator>(infixVector[leftValue])->getOperatorType() == Binary)
+    || (NULL != qSharedPointerDynamicCast<CalculatorOperator>(infixVector[rightValue])
+    && qSharedPointerDynamicCast<CalculatorOperator>(infixVector[rightValue])->getOperatorType() == Binary)
+    || NULL != qSharedPointerDynamicCast<LeftParenthesisSeparator>(infixVector[leftValue])
+    || NULL != qSharedPointerDynamicCast<RightParenthesisSeparator>(infixVector[rightValue]))
+  {
+    return false;
+  }
+  else
+  {
+    return true;
+  }
 }
 

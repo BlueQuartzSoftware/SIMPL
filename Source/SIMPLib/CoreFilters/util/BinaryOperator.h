@@ -33,50 +33,25 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-#include "ABSOperator.h"
+#ifndef _BinaryOperator_H_
+#define _BinaryOperator_H_
 
-#include <math.h>
+#include "CalculatorOperator.h"
 
-#include <Eigen/Core>
-#include <Eigen/Dense>
-#include <Eigen/Eigen>
-
-#include "SIMPLib/Common/TemplateHelpers.hpp"
-
-#include "CalculatorArray.hpp"
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-ABSOperator::ABSOperator() :
-  UnaryOperator()
+class SIMPLib_EXPORT BinaryOperator : public CalculatorOperator
 {
-  setPrecedenceId(2);
-}
+  public:
+    BinaryOperator();
+    virtual ~BinaryOperator();
 
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-ABSOperator::~ABSOperator()
-{
+    virtual double calculate(AbstractFilter* filter, const QString &newArrayName, QStack<QSharedPointer<CalculatorItem> > &executionStack, int index);
 
-}
+    bool checkValidity(QVector<QSharedPointer<CalculatorItem> > infixVector, int currentIndex) final;
 
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-double ABSOperator::calculate(AbstractFilter* filter, const QString &newArrayName, QStack<QSharedPointer<CalculatorItem> > &executionStack, int index)
-{
-  if (executionStack.size() >= 1 && NULL != qSharedPointerDynamicCast<ICalculatorArray>(executionStack.top()))
-  {
-    double num = qSharedPointerDynamicCast<ICalculatorArray>(executionStack.top())->getValue(index);
-    return fabs(num);
-  }
+  private:
 
-  // If the execution gets down here, then we have an error
-  QString ss = QObject::tr("The chosen infix equation is not a valid equation.");
-  filter->setErrorCondition(-4005);
-  filter->notifyErrorMessage(filter->getHumanLabel(), ss, filter->getErrorCondition());
-  return 0.0;
-}
+    BinaryOperator(const BinaryOperator&); // Copy Constructor Not Implemented
+    void operator=(const BinaryOperator&); // Operator '=' Not Implemented
+};
 
+#endif /* _BinaryOperator_H_ */

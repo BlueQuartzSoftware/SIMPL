@@ -387,7 +387,7 @@ QVector<QSharedPointer<CalculatorItem> > ArrayCalculator::parseInfixEquation(QSt
   if (hasArrayNames == false)
   {
     QString ss = QObject::tr("The result of the chosen equation will be a numeric value, not an array."
-      "This numeric value will be stored in an array with the number of tuples equal to  1.").arg(m_SelectedAttributeMatrix.getAttributeMatrixName());
+      "This numeric value will be stored in an array with the number of tuples equal to 1.").arg(m_SelectedAttributeMatrix.getAttributeMatrixName());
     notifyWarningMessage(getHumanLabel(), ss, -4015);
 
     if (calculatedAM->getNumTuples() != 1)

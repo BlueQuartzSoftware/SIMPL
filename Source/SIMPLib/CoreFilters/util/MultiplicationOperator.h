@@ -41,9 +41,9 @@
 
 #include "SIMPLib/SIMPLib.h"
 
-#include "CalculatorOperator.h"
+#include "BinaryOperator.h"
 
-class SIMPLib_EXPORT MultiplicationOperator : public CalculatorOperator
+class SIMPLib_EXPORT MultiplicationOperator : public BinaryOperator
 {
   public:
 
@@ -52,10 +52,7 @@ class SIMPLib_EXPORT MultiplicationOperator : public CalculatorOperator
 
     virtual double calculate(AbstractFilter* filter, const QString &newArrayName, QStack<QSharedPointer<CalculatorItem> > &executionStack, int index);
 
-    virtual bool checkValidity(QVector<QSharedPointer<CalculatorItem> > infixVector, int currentIndex);
-
   private:
-    int                                             m_PrecedenceId;
 
     MultiplicationOperator(const MultiplicationOperator&); // Copy Constructor Not Implemented
     void operator=(const MultiplicationOperator&); // Operator '=' Not Implemented

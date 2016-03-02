@@ -41,11 +41,11 @@
 
 #include "SIMPLib/SIMPLib.h"
 
-#include "CalculatorOperator.h"
+#include "BinaryOperator.h"
 
 class CalculatorNumber;
 
-class SIMPLib_EXPORT AdditionOperator : public CalculatorOperator
+class SIMPLib_EXPORT AdditionOperator : public BinaryOperator
 {
   public:
 
@@ -53,8 +53,6 @@ class SIMPLib_EXPORT AdditionOperator : public CalculatorOperator
     virtual ~AdditionOperator();
 
     virtual double calculate(AbstractFilter* filter, const QString &newArrayName, QStack<QSharedPointer<CalculatorItem> > &executionStack, int index);
-
-    virtual bool checkValidity(QVector<QSharedPointer<CalculatorItem> > infixVector, int currentIndex);
 
   private:
 

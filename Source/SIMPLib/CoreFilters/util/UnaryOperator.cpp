@@ -33,31 +33,24 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-#include "ABSOperator.h"
+#include "UnaryOperator.h"
 
-#include <math.h>
-
-#include <Eigen/Core>
-#include <Eigen/Dense>
-#include <Eigen/Eigen>
-
-#include "SIMPLib/Common/TemplateHelpers.hpp"
-
-#include "CalculatorArray.hpp"
+#include "LeftParenthesisSeparator.h"
+#include "RightParenthesisSeparator.h"
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-ABSOperator::ABSOperator() :
-  UnaryOperator()
+UnaryOperator::UnaryOperator() :
+  CalculatorOperator()
 {
-  setPrecedenceId(2);
+  setOperatorType(Unary);
 }
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-ABSOperator::~ABSOperator()
+UnaryOperator::~UnaryOperator()
 {
 
 }
@@ -65,18 +58,38 @@ ABSOperator::~ABSOperator()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-double ABSOperator::calculate(AbstractFilter* filter, const QString &newArrayName, QStack<QSharedPointer<CalculatorItem> > &executionStack, int index)
+double UnaryOperator::calculate(AbstractFilter* filter, const QString &newArrayName, QStack<QSharedPointer<CalculatorItem> > &executionStack, int index)
 {
-  if (executionStack.size() >= 1 && NULL != qSharedPointerDynamicCast<ICalculatorArray>(executionStack.top()))
+  // This should never be executed
+  return 0.0;
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+bool UnaryOperator::checkValidity(QVector<QSharedPointer<CalculatorItem> > infixVector, int currentIndex)
+{
+  /* We need to check that the infix vector has a big enough size to fit all parts
+  of the absolute value expression */
+  if (infixVector.size() < currentIndex + 4)
   {
-    double num = qSharedPointerDynamicCast<ICalculatorArray>(executionStack.top())->getValue(index);
-    return fabs(num);
+    return false;
   }
 
-  // If the execution gets down here, then we have an error
-  QString ss = QObject::tr("The chosen infix equation is not a valid equation.");
-  filter->setErrorCondition(-4005);
-  filter->notifyErrorMessage(filter->getHumanLabel(), ss, filter->getErrorCondition());
-  return 0.0;
+  int leftPIndex = currentIndex + 1;
+
+  int index = leftPIndex;
+  if (NULL != qSharedPointerDynamicCast<LeftParenthesisSeparator>(infixVector[leftPIndex]))
+  {
+    for (; index < infixVector.size(); index++)
+    {
+      if (NULL != qSharedPointerDynamicCast<RightParenthesisSeparator>(infixVector[index]))
+      {
+        return true;
+      }
+    }
+  }
+
+  return false;
 }
 

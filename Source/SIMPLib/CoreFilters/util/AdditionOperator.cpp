@@ -49,10 +49,9 @@
 //
 // -----------------------------------------------------------------------------
 AdditionOperator::AdditionOperator() :
-  CalculatorOperator()
+  BinaryOperator()
 {
   setPrecedenceId(0);
-  setOperatorType(Binary);
 }
 
 // -----------------------------------------------------------------------------
@@ -88,35 +87,5 @@ double AdditionOperator::calculate(AbstractFilter* filter, const QString &newArr
   filter->setErrorCondition(-4005);
   filter->notifyErrorMessage(filter->getHumanLabel(), ss, filter->getErrorCondition());
   return 0.0;
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-bool AdditionOperator::checkValidity(QVector<QSharedPointer<CalculatorItem> > infixVector, int currentIndex)
-{
-  /* We need to check that the infix vector has a big enough size to fit all parts
-     of the addition expression */
-  if (currentIndex - 1 < 0 || currentIndex + 1 > infixVector.size() - 1)
-  {
-    return false;
-  }
-
-  int leftValue = currentIndex - 1;
-  int rightValue = currentIndex + 1;
-
-  if ( (NULL != qSharedPointerDynamicCast<CalculatorOperator>(infixVector[leftValue])
-          && qSharedPointerDynamicCast<CalculatorOperator>(infixVector[leftValue])->getOperatorType() == Binary)
-      || (NULL != qSharedPointerDynamicCast<CalculatorOperator>(infixVector[rightValue])
-          && qSharedPointerDynamicCast<CalculatorOperator>(infixVector[rightValue])->getOperatorType() == Binary)
-       || NULL != qSharedPointerDynamicCast<LeftParenthesisSeparator>(infixVector[leftValue])
-       || NULL != qSharedPointerDynamicCast<RightParenthesisSeparator>(infixVector[rightValue]) )
-  {
-    return false;
-  }
-  else
-  {
-    return true;
-  }
 }
 
