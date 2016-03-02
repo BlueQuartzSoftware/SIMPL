@@ -414,10 +414,12 @@ QVector<QSharedPointer<CalculatorItem> > ArrayCalculator::parseInfixEquation(QSt
         itemPtr = QSharedPointer<MultiplicationOperator>(new MultiplicationOperator());
         parsedInfix.push_back(itemPtr);
       }
-
-      // By context, this is a subtraction sign
-      itemPtr = QSharedPointer<SubtractionOperator>(new SubtractionOperator());
-      parsedInfix.push_back(itemPtr);
+      else
+      {
+        // By context, this is a subtraction sign
+        itemPtr = QSharedPointer<SubtractionOperator>(new SubtractionOperator());
+        parsedInfix.push_back(itemPtr);
+      }
     }
     else if (listItem == "*")
     {
