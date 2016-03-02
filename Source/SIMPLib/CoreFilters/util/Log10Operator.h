@@ -33,56 +33,31 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-#include "MultiplicationOperator.h"
+#ifndef _Log10Operator_H_
+#define _Log10Operator_H_
 
-#include <Eigen/Core>
-#include <Eigen/Dense>
-#include <Eigen/Eigen>
+#include <QtCore/QSharedPointer>
+#include <QtCore/QStack>
 
-#include "LeftParenthesisSeparator.h"
-#include "RightParenthesisSeparator.h"
+#include "SIMPLib/SIMPLib.h"
 
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-MultiplicationOperator::MultiplicationOperator() :
-BinaryOperator()
+#include "UnaryOperator.h"
+
+class CalculatorNumber;
+
+class SIMPLib_EXPORT Log10Operator : public UnaryOperator
 {
-  setPrecedence(Binary_High_Precedence);
-}
+  public:
 
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-MultiplicationOperator::~MultiplicationOperator()
-{
+    Log10Operator();
+    virtual ~Log10Operator();
 
-}
+    virtual double calculate(AbstractFilter* filter, const QString &newArrayName, QStack<QSharedPointer<CalculatorItem> > &executionStack, int index);
 
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-double MultiplicationOperator::calculate(AbstractFilter* filter, const QString &newArrayName, QStack<QSharedPointer<CalculatorItem> > &executionStack, int index)
-{
-  if (executionStack.size() >= 2)
-  {
-    QSharedPointer<ICalculatorArray> array1 = qSharedPointerDynamicCast<ICalculatorArray>(executionStack.pop());
-    QSharedPointer<ICalculatorArray> array2 = qSharedPointerDynamicCast<ICalculatorArray>(executionStack.pop());
+  private:
 
-    double num1 = array1->getValue(index);
-    double num2 = array2->getValue(index);
-    double result = num1 * num2;
+    Log10Operator(const Log10Operator&); // Copy Constructor Not Implemented
+    void operator=(const Log10Operator&); // Operator '=' Not Implemented
+};
 
-    executionStack.push(array2);
-    executionStack.push(array1);
-
-    return result;
-  }
-
-  // If the execution gets down here, then we have an error
-  QString ss = QObject::tr("The chosen infix equation is not a valid equation.");
-  filter->setErrorCondition(-4005);
-  filter->notifyErrorMessage(filter->getHumanLabel(), ss, filter->getErrorCondition());
-  return 0.0;
-}
-
+#endif /* _Log10Operator_H_ */

@@ -51,7 +51,7 @@
 AdditionOperator::AdditionOperator() :
   BinaryOperator()
 {
-  setPrecedenceId(0);
+  setPrecedence(Binary_Low_Precedence);
 }
 
 // -----------------------------------------------------------------------------

@@ -33,28 +33,29 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-#include "MultiplicationOperator.h"
+#include "CosOperator.h"
 
 #include <Eigen/Core>
 #include <Eigen/Dense>
 #include <Eigen/Eigen>
 
-#include "LeftParenthesisSeparator.h"
-#include "RightParenthesisSeparator.h"
+#include "SIMPLib/Common/TemplateHelpers.hpp"
+
+#include "CalculatorArray.hpp"
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-MultiplicationOperator::MultiplicationOperator() :
-BinaryOperator()
+CosOperator::CosOperator() :
+  UnaryOperator()
 {
-  setPrecedence(Binary_High_Precedence);
+  setPrecedence(Unary_Precedence);
 }
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-MultiplicationOperator::~MultiplicationOperator()
+CosOperator::~CosOperator()
 {
 
 }
@@ -62,21 +63,13 @@ MultiplicationOperator::~MultiplicationOperator()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-double MultiplicationOperator::calculate(AbstractFilter* filter, const QString &newArrayName, QStack<QSharedPointer<CalculatorItem> > &executionStack, int index)
+double CosOperator::calculate(AbstractFilter* filter, const QString &newArrayName, QStack<QSharedPointer<CalculatorItem> > &executionStack, int index)
 {
-  if (executionStack.size() >= 2)
+  if (executionStack.size() >= 1 && NULL != qSharedPointerDynamicCast<ICalculatorArray>(executionStack.top()))
   {
-    QSharedPointer<ICalculatorArray> array1 = qSharedPointerDynamicCast<ICalculatorArray>(executionStack.pop());
-    QSharedPointer<ICalculatorArray> array2 = qSharedPointerDynamicCast<ICalculatorArray>(executionStack.pop());
-
-    double num1 = array1->getValue(index);
-    double num2 = array2->getValue(index);
-    double result = num1 * num2;
-
-    executionStack.push(array2);
-    executionStack.push(array1);
-
-    return result;
+    double degrees = qSharedPointerDynamicCast<ICalculatorArray>(executionStack.top())->getValue(index);
+    double radians = toRadians(degrees);
+    return cos(radians);
   }
 
   // If the execution gets down here, then we have an error

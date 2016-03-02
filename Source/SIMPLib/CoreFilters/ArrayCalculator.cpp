@@ -54,6 +54,11 @@
 #include "util/MultiplicationOperator.h"
 #include "util/DivisionOperator.h"
 #include "util/ABSOperator.h"
+#include "util/SinOperator.h"
+#include "util/CosOperator.h"
+#include "util/TanOperator.h"
+#include "util/SqrtOperator.h"
+#include "util/Log10Operator.h"
 
 // Include the MOC generated file for this class
 #include "moc_ArrayCalculator.cpp"
@@ -125,6 +130,11 @@ ArrayCalculator::ArrayCalculator() :
   m_SymbolList.push_back("*");
   m_SymbolList.push_back("/");
   m_SymbolList.push_back("abs");
+  m_SymbolList.push_back("sin");
+  m_SymbolList.push_back("cos");
+  m_SymbolList.push_back("tan");
+  m_SymbolList.push_back("sqrt");
+  m_SymbolList.push_back("log10");
 }
 
 // -----------------------------------------------------------------------------
@@ -492,6 +502,31 @@ QVector<QSharedPointer<CalculatorItem> > ArrayCalculator::parseInfixEquation(QSt
     else if (listItem == "abs")
     {
       itemPtr = QSharedPointer<ABSOperator>(new ABSOperator());
+      parsedInfix.push_back(itemPtr);
+    }
+    else if (listItem == "sin")
+    {
+      itemPtr = QSharedPointer<SinOperator>(new SinOperator());
+      parsedInfix.push_back(itemPtr);
+    }
+    else if (listItem == "cos")
+    {
+      itemPtr = QSharedPointer<CosOperator>(new CosOperator());
+      parsedInfix.push_back(itemPtr);
+    }
+    else if (listItem == "tan")
+    {
+      itemPtr = QSharedPointer<TanOperator>(new TanOperator());
+      parsedInfix.push_back(itemPtr);
+    }
+    else if (listItem == "sqrt")
+    {
+      itemPtr = QSharedPointer<SqrtOperator>(new SqrtOperator());
+      parsedInfix.push_back(itemPtr);
+    }
+    else if (listItem == "log10")
+    {
+      itemPtr = QSharedPointer<Log10Operator>(new Log10Operator());
       parsedInfix.push_back(itemPtr);
     }
     else if (selectedAM->getAttributeArrayNames().contains(listItem))

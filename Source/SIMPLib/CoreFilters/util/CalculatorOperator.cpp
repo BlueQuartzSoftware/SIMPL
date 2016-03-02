@@ -40,7 +40,7 @@
 // -----------------------------------------------------------------------------
 CalculatorOperator::CalculatorOperator() :
   CalculatorItem(),
-  m_PrecedenceId(0)
+  m_Precedence(Unknown_Precedence)
 {
 
 }
@@ -58,7 +58,7 @@ CalculatorOperator::~CalculatorOperator()
 // -----------------------------------------------------------------------------
 bool CalculatorOperator::hasHigherPrecedence(const QSharedPointer<CalculatorOperator> other)
 {
-  if (m_PrecedenceId > other->m_PrecedenceId)
+  if (m_Precedence > other->m_Precedence)
   {
     return true;
   }
@@ -87,17 +87,17 @@ bool CalculatorOperator::checkValidity(QVector<QSharedPointer<CalculatorItem> > 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-int CalculatorOperator::getPrecedenceId()
+CalculatorOperator::Precedence CalculatorOperator::getPrecedence()
 {
-  return m_PrecedenceId;
+  return m_Precedence;
 }
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void CalculatorOperator::setPrecedenceId(int id)
+void CalculatorOperator::setPrecedence(Precedence precedence)
 {
-  m_PrecedenceId = id;
+  m_Precedence = precedence;
 }
 
 // -----------------------------------------------------------------------------
@@ -114,5 +114,21 @@ CalculatorOperator::OperatorType CalculatorOperator::getOperatorType()
 void CalculatorOperator::setOperatorType(OperatorType type)
 {
   m_OperatorType = type;
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+double CalculatorOperator::toDegrees(double radians)
+{
+  return radians * (180.0 / M_PI);
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+double CalculatorOperator::toRadians(double degrees)
+{
+  return degrees * (M_PI / 180.0);
 }
 

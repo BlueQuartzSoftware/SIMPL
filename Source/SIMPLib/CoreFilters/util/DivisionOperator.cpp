@@ -48,7 +48,7 @@
 DivisionOperator::DivisionOperator() :
 BinaryOperator()
 {
-  setPrecedenceId(1);
+  setPrecedence(Binary_High_Precedence);
 }
 
 // -----------------------------------------------------------------------------

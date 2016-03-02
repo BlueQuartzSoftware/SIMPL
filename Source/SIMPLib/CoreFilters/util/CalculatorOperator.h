@@ -39,6 +39,9 @@
 #include <QtCore/QSharedPointer>
 #include <QtCore/QVector>
 
+#define _USE_MATH_DEFINES
+#include <math.h>
+
 #include "SIMPLib/SIMPLib.h"
 #include "SIMPLib/Common/TemplateHelpers.hpp"
 #include "SIMPLib/DataArrays/IDataArray.h"
@@ -67,13 +70,24 @@ class SIMPLib_EXPORT CalculatorOperator : public CalculatorItem
     OperatorType getOperatorType();
 
   protected:
-    int getPrecedenceId();
-    void setPrecedenceId(int id);
+    enum Precedence
+    {
+      Unknown_Precedence,
+      Binary_Low_Precedence,
+      Binary_High_Precedence,
+      Unary_Precedence,
+    };
+
+    double toDegrees(double radians);
+    double toRadians(double degrees);
+
+    Precedence getPrecedence();
+    void setPrecedence(Precedence precedence);
 
     void setOperatorType(OperatorType type);
 
   private:
-    int                                             m_PrecedenceId;
+    Precedence                                      m_Precedence;
     OperatorType                                    m_OperatorType;
 
     CalculatorOperator(const CalculatorOperator&); // Copy Constructor Not Implemented
