@@ -96,18 +96,19 @@ bool ABSOperator::checkValidity(QVector<QSharedPointer<CalculatorItem> > infixVe
   }
 
   int leftPIndex = currentIndex+1;
-  int valueIndex = currentIndex+2;
-  int rightPIndex = currentIndex+3;
 
-  if (NULL == qSharedPointerDynamicCast<LeftParenthesisSeparator>(infixVector[leftPIndex])
-      || NULL == qSharedPointerDynamicCast<ICalculatorArray>(infixVector[valueIndex])
-        || NULL == qSharedPointerDynamicCast<RightParenthesisSeparator>(infixVector[rightPIndex]))
+  int index = leftPIndex;
+  if (NULL != qSharedPointerDynamicCast<LeftParenthesisSeparator>(infixVector[leftPIndex]))
   {
-    return false;
+    for (; index < infixVector.size(); index++)
+    {
+      if (NULL != qSharedPointerDynamicCast<RightParenthesisSeparator>(infixVector[index]))
+      {
+        return true;
+      }
+    }
   }
-  else
-  {
-    return true;
-  }
+
+  return false;
 }
 
