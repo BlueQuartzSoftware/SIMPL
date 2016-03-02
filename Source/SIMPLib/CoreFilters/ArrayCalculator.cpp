@@ -187,6 +187,33 @@ void ArrayCalculator::dataCheck()
 {
   setErrorCondition(0);
 
+  if (m_InfixEquation.isEmpty() == true)
+  {
+    QString ss = QObject::tr("The infix equation is empty.");
+    setErrorCondition(-4011);
+    notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
+    return;
+  }
+
+  if (m_CalculatedArray.isEmpty() == true)
+  {
+    QString ss = QObject::tr("A calculated array has not been chosen.");
+    setErrorCondition(-4012);
+    notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
+    return;
+  }
+
+  DataArrayPath calculatedAMPath(m_CalculatedArray.getDataContainerName(), m_CalculatedArray.getAttributeMatrixName(), "");
+  AttributeMatrix::Pointer calculatedAM = getDataContainerArray()->getAttributeMatrix(calculatedAMPath);
+
+  if (NULL == calculatedAM)
+  {
+    QString ss = QObject::tr("Could not find the attribute matrix \"%1\".").arg(m_CalculatedArray.getAttributeMatrixName());
+    setErrorCondition(-4013);
+    notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
+    return;
+  }
+
   QVector<QSharedPointer<CalculatorItem> > parsedInfix = parseInfixEquation(m_InfixEquation);
   if (parsedInfix.isEmpty() == true) { return; }
 
@@ -324,8 +351,8 @@ QVector<QSharedPointer<CalculatorItem> > ArrayCalculator::parseInfixEquation(QSt
   }
 
   int err = 0;
-  AttributeMatrix::Pointer am = getDataContainerArray()->getPrereqAttributeMatrixFromPath(this, m_SelectedAttributeMatrix, err);
-  if (NULL == am)
+  AttributeMatrix::Pointer selectedAM = getDataContainerArray()->getPrereqAttributeMatrixFromPath(this, m_SelectedAttributeMatrix, err);
+  if (NULL == selectedAM)
   {
     QString ss = QObject::tr("Could not find the attribute matrix \"%1\".").arg(m_SelectedAttributeMatrix.getAttributeMatrixName());
     setErrorCondition(-4001);
@@ -341,11 +368,42 @@ QVector<QSharedPointer<CalculatorItem> > ArrayCalculator::parseInfixEquation(QSt
     equation.replace(symbolStr, "@" + symbolStr + "@");
   }
 
-  QStringList aaNames = am->getAttributeArrayNames();
+  QStringList aaNames = selectedAM->getAttributeArrayNames();
+  bool hasArrayNames = false;
   for (int i = 0; i < aaNames.size(); i++)
   {
     QString aaName = aaNames[i];
+    if (equation.contains(aaName))
+    {
+      hasArrayNames = true;
+    }
+
     equation.replace(aaName, "@[" + QString::number(i) + "]@");
+  }
+
+  DataArrayPath calculatedAMPath(m_CalculatedArray.getDataContainerName(), m_CalculatedArray.getAttributeMatrixName(), "");
+  AttributeMatrix::Pointer calculatedAM = getDataContainerArray()->getAttributeMatrix(calculatedAMPath);
+
+  if (hasArrayNames == false)
+  {
+    QString ss = QObject::tr("The result of the chosen equation will be a numeric value, not an array."
+      "This numeric value will be stored in an array with the number of tuples equal to  1.").arg(m_SelectedAttributeMatrix.getAttributeMatrixName());
+    notifyWarningMessage(getHumanLabel(), ss, -4015);
+
+    if (calculatedAM->getNumTuples() != 1)
+    {
+      QString ss = QObject::tr("The tuple count of the calculated attribute matrix is not equal to 1.").arg(m_SelectedAttributeMatrix.getAttributeMatrixName());
+      setErrorCondition(-4016);
+      notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
+      return QVector<QSharedPointer<CalculatorItem> >();
+    }
+  }
+  else if (hasArrayNames == true && calculatedAM->getNumTuples() != selectedAM->getNumTuples())
+  {
+    QString ss = QObject::tr("The tuple count of the calculated attribute matrix is not equal to the tuple count of the selected attribute matrix.").arg(m_SelectedAttributeMatrix.getAttributeMatrixName());
+    setErrorCondition(-4016);
+    notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
+    return QVector<QSharedPointer<CalculatorItem> >();
   }
 
   equation.remove(" ");
@@ -436,9 +494,9 @@ QVector<QSharedPointer<CalculatorItem> > ArrayCalculator::parseInfixEquation(QSt
       itemPtr = QSharedPointer<ABSOperator>(new ABSOperator());
       parsedInfix.push_back(itemPtr);
     }
-    else if (am->getAttributeArrayNames().contains(listItem))
+    else if (selectedAM->getAttributeArrayNames().contains(listItem))
     {
-      IDataArray::Pointer dataArray = am->getAttributeArray(listItem);
+      IDataArray::Pointer dataArray = selectedAM->getAttributeArray(listItem);
       if (numTuples < 0 && firstArray.isEmpty() == true)
       {
         numTuples = dataArray->getNumberOfTuples();
