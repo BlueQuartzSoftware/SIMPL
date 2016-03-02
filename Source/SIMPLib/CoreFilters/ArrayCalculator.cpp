@@ -190,25 +190,23 @@ void ArrayCalculator::dataCheck()
   QVector<QSharedPointer<CalculatorItem> > parsedInfix = parseInfixEquation(m_InfixEquation);
   if (parsedInfix.isEmpty() == true) { return; }
 
-  /* Check for two operators in a row, or operators at the beginning or end of the expression.
-     If this occurs, then this is not a valid expression */
-  for (int i = 0; i < parsedInfix.size(); i++)
+  for (int i=0; i<parsedInfix.size(); i++)
   {
-    QSharedPointer<CalculatorItem> item = parsedInfix[i];
-    if (NULL != qSharedPointerDynamicCast<CalculatorOperator>(item))
+    QSharedPointer<CalculatorItem> currentItem = parsedInfix[i];
+    if (NULL != qSharedPointerDynamicCast<CalculatorOperator>(currentItem))
     {
-      QSharedPointer<CalculatorOperator> operatorItem = qSharedPointerDynamicCast<CalculatorOperator>(item);
-      if (operatorItem->getOperatorType() == CalculatorOperator::Binary)
+      bool result = qSharedPointerDynamicCast<CalculatorOperator>(currentItem)->checkValidity(parsedInfix, i);
+      if (result == false)
       {
-        if (i > parsedInfix.size() - 2 || NULL != qSharedPointerDynamicCast<CalculatorOperator>(parsedInfix[i+1])
-          || i < 1 || NULL != qSharedPointerDynamicCast<CalculatorOperator>(parsedInfix[i - 1]))
-        {
-          QString ss = QObject::tr("The chosen infix equation is not a valid equation.");
-          setErrorCondition(-4005);
-          notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
-          return;
-        }
+        QString ss = QObject::tr("The chosen infix equation is not a valid equation.");
+        setErrorCondition(-4008);
+        notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
+        return;
       }
+    }
+    else
+    {
+      // ERROR: Unrecognized item in the RPN vector
     }
   }
 
@@ -295,6 +293,13 @@ void ArrayCalculator::execute()
   {
     QSharedPointer<ICalculatorArray> arrayItem = qSharedPointerDynamicCast<ICalculatorArray>(resultItem);
     newArray = arrayItem->getArray();
+
+    DataArrayPath createdAMPath(m_CalculatedArray.getDataContainerName(), m_CalculatedArray.getAttributeMatrixName(), "");
+    AttributeMatrix::Pointer createdAM = getDataContainerArray()->getAttributeMatrix(createdAMPath);
+    if (NULL != createdAM)
+    {
+      createdAM->addAttributeArray(m_CalculatedArray.getDataArrayName(), newArray);
+    }
   }
   else
   {
@@ -303,12 +308,6 @@ void ArrayCalculator::execute()
     setErrorCondition(-4009);
     notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
     return;
-  }
-
-  DataArrayPath amPath(m_CalculatedArray.getDataContainerName(), m_CalculatedArray.getAttributeMatrixName(), "");
-  if (NULL != am)
-  {
-    am->addAttributeArray(m_CalculatedArray.getDataArrayName(), newArray);
   }
 
   notifyStatusMessage(getHumanLabel(), "Complete");
@@ -374,36 +373,66 @@ QVector<QSharedPointer<CalculatorItem> > ArrayCalculator::parseInfixEquation(QSt
     if (ok == true)
     {
       DoubleArrayType::Pointer ptr = DoubleArrayType::CreateArray(1, QVector<size_t>(1, 1), "NumberArray");
-      ptr->initializeTuple(0, &num);
+      ptr->setValue(0, num);
       itemPtr = QSharedPointer<CalculatorArray<double> >(new CalculatorArray<double>(ptr));
+      parsedInfix.push_back(itemPtr);
     }
     else if (listItem == "(")
     {
       itemPtr = QSharedPointer<LeftParenthesisSeparator>(new LeftParenthesisSeparator());
+      parsedInfix.push_back(itemPtr);
     }
     else if (listItem == ")")
     {
       itemPtr = QSharedPointer<RightParenthesisSeparator>(new RightParenthesisSeparator());
+      parsedInfix.push_back(itemPtr);
     }
     else if (listItem == "+")
     {
       itemPtr = QSharedPointer<AdditionOperator>(new AdditionOperator());
+      parsedInfix.push_back(itemPtr);
     }
     else if (listItem == "-")
     {
+      if (
+           i == 0 ||
+           (
+             (
+               (NULL != qSharedPointerDynamicCast<CalculatorOperator>(parsedInfix.back()) && qSharedPointerDynamicCast<CalculatorOperator>(parsedInfix.back())->getOperatorType() == CalculatorOperator::Binary)
+               || NULL != qSharedPointerDynamicCast<LeftParenthesisSeparator>(parsedInfix.back())
+             )
+             && NULL == qSharedPointerDynamicCast<RightParenthesisSeparator>(parsedInfix.back())
+           )
+         )
+      {
+        // By context, this is a negative sign, so we need to insert a -1 array and a multiplication operator
+        DoubleArrayType::Pointer ptr = DoubleArrayType::CreateArray(1, QVector<size_t>(1, 1), "NumberArray");
+        ptr->setValue(0, -1);
+        itemPtr = QSharedPointer<CalculatorArray<double> >(new CalculatorArray<double>(ptr));
+        parsedInfix.push_back(itemPtr);
+
+        itemPtr = QSharedPointer<MultiplicationOperator>(new MultiplicationOperator());
+        parsedInfix.push_back(itemPtr);
+      }
+
+      // By context, this is a subtraction sign
       itemPtr = QSharedPointer<SubtractionOperator>(new SubtractionOperator());
+      parsedInfix.push_back(itemPtr);
     }
     else if (listItem == "*")
     {
       itemPtr = QSharedPointer<MultiplicationOperator>(new MultiplicationOperator());
+      parsedInfix.push_back(itemPtr);
     }
     else if (listItem == "/")
     {
       itemPtr = QSharedPointer<DivisionOperator>(new DivisionOperator());
+      parsedInfix.push_back(itemPtr);
     }
     else if (listItem == "abs")
     {
       itemPtr = QSharedPointer<ABSOperator>(new ABSOperator());
+      parsedInfix.push_back(itemPtr);
     }
     else if (am->getAttributeArrayNames().contains(listItem))
     {
@@ -422,6 +451,7 @@ QVector<QSharedPointer<CalculatorItem> > ArrayCalculator::parseInfixEquation(QSt
       }
 
       CREATE_CALCULATOR_ARRAY(itemPtr, dataArray)
+      parsedInfix.push_back(itemPtr);
     }
     else
     {
@@ -430,8 +460,6 @@ QVector<QSharedPointer<CalculatorItem> > ArrayCalculator::parseInfixEquation(QSt
       notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
       return QVector<QSharedPointer<CalculatorItem> >();
     }
-
-    parsedInfix.push_back(itemPtr);
   }
 
   // Return the parsed infix equation as a vector of CalculatorItems
@@ -519,7 +547,16 @@ QVector<QSharedPointer<CalculatorItem> > ArrayCalculator::toRPN(QVector<QSharedP
      rpn equation output until the stack is empty. */
   while (itemStack.isEmpty() == false)
   {
-    rpnEquation.push_back(itemStack.pop());
+    QSharedPointer<CalculatorItem> item = itemStack.pop();
+    if (NULL != qSharedPointerDynamicCast<LeftParenthesisSeparator>(item))
+    {
+      QString ss = QObject::tr("One or more parentheses are mismatched in the chosen infix equation \"%1\".").arg(m_InfixEquation);
+      setErrorCondition(-4010);
+      notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
+      return QVector<QSharedPointer<CalculatorItem> >();
+    }
+
+    rpnEquation.push_back(item);
   }
 
   return rpnEquation;

@@ -78,6 +78,15 @@ double CalculatorOperator::calculate(AbstractFilter* filter, const QString &newA
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
+bool CalculatorOperator::checkValidity(QVector<QSharedPointer<CalculatorItem> > infixVector, int currentIndex)
+{
+  // This should never be executed
+  return false;
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
 int CalculatorOperator::getPrecedenceId()
 {
   return m_PrecedenceId;

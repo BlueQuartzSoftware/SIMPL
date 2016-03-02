@@ -62,6 +62,8 @@ class SIMPLib_EXPORT CalculatorOperator : public CalculatorItem
 
     virtual double calculate(AbstractFilter* filter, const QString &newArrayName, QStack<QSharedPointer<CalculatorItem> > &executionStack, int index);
 
+    virtual bool checkValidity(QVector<QSharedPointer<CalculatorItem> > infixVector, int currentIndex);
+
     OperatorType getOperatorType();
 
   protected:

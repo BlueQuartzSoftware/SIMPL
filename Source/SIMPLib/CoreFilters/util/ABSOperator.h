@@ -54,6 +54,8 @@ class SIMPLib_EXPORT ABSOperator : public CalculatorOperator
 
     virtual double calculate(AbstractFilter* filter, const QString &newArrayName, QStack<QSharedPointer<CalculatorItem> > &executionStack, int index);
 
+    virtual bool checkValidity(QVector<QSharedPointer<CalculatorItem> > infixVector, int currentIndex);
+
   private:
 
     ABSOperator(const ABSOperator&); // Copy Constructor Not Implemented

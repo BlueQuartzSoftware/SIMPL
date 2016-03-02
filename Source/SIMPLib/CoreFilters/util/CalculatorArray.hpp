@@ -59,7 +59,22 @@ class SIMPLib_EXPORT CalculatorArray : public ICalculatorArray
 
     IDataArray::Pointer getArray() { return m_Array; }
 
-    double getValue(int i) { return static_cast<double>(m_Array->getValue(i)); }
+    double getValue(int i)
+    {
+      if (m_Array->getNumberOfTuples() > 1)
+      {
+        return static_cast<double>(m_Array->getValue(i));
+      }
+      else if (m_Array->getNumberOfTuples() == 1)
+      {
+        return static_cast<double>(m_Array->getValue(0));
+      }
+      else
+      {
+        // ERROR: The array is empty!
+        return 0.0;
+      }
+    }
 
   private:
     typename DataArray<T>::Pointer                                  m_Array;

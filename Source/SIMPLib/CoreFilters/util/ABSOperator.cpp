@@ -44,6 +44,8 @@
 #include "SIMPLib/Common/TemplateHelpers.hpp"
 
 #include "CalculatorArray.hpp"
+#include "LeftParenthesisSeparator.h"
+#include "RightParenthesisSeparator.h"
 
 // -----------------------------------------------------------------------------
 //
@@ -79,5 +81,33 @@ double ABSOperator::calculate(AbstractFilter* filter, const QString &newArrayNam
   filter->setErrorCondition(-4005);
   filter->notifyErrorMessage(filter->getHumanLabel(), ss, filter->getErrorCondition());
   return 0.0;
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+bool ABSOperator::checkValidity(QVector<QSharedPointer<CalculatorItem> > infixVector, int currentIndex)
+{
+  /* We need to check that the infix vector has a big enough size to fit all parts
+     of the absolute value expression */
+  if (infixVector.size() < currentIndex + 4)
+  {
+    return false;
+  }
+
+  int leftPIndex = currentIndex+1;
+  int valueIndex = currentIndex+2;
+  int rightPIndex = currentIndex+3;
+
+  if (NULL == qSharedPointerDynamicCast<LeftParenthesisSeparator>(infixVector[leftPIndex])
+      || NULL == qSharedPointerDynamicCast<ICalculatorArray>(infixVector[valueIndex])
+        || NULL == qSharedPointerDynamicCast<RightParenthesisSeparator>(infixVector[rightPIndex]))
+  {
+    return false;
+  }
+  else
+  {
+    return true;
+  }
 }
 
