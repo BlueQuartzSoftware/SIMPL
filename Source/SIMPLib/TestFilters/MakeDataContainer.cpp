@@ -161,14 +161,17 @@ void MakeDataContainer::dataCheck()
   //image->setDimensions(64, 64, 64);
   //m->setGeometry(image);
 
-  VertexGeom::Pointer vertices = VertexGeom::CreateGeometry(100, "TestVertexGeom", false);
-  SharedVertexList::Pointer test = vertices->getVertices();
-  float* verts = test->getPointer(0);
-  for (int64_t i = 0; i < vertices->getNumberOfVertices(); i++)
+  VertexGeom::Pointer vertices = VertexGeom::CreateGeometry(100, "TestVertexGeom", !getInPreflight());
+  if (!getInPreflight())
   {
-    verts[3 * i] = float(0.1 + i);
-    verts[3 * i + 1] = float(0.2 + i);
-    verts[3 * i + 2] = float(0.3 + i);
+    SharedVertexList::Pointer test = vertices->getVertices();
+    float* verts = test->getPointer(0);
+    for (int64_t i = 0; i < vertices->getNumberOfVertices(); i++)
+    {
+      verts[3 * i] = float(0.1 + i);
+      verts[3 * i + 1] = float(0.2 + i);
+      verts[3 * i + 2] = float(0.3 + i);
+    }
   }
   m->setGeometry(vertices);
 
