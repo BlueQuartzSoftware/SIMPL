@@ -165,7 +165,7 @@ class ArrayCalculator : public AbstractFilter
     void dataCheck();
 
   private:
-    QStringList                                                 m_SymbolList;
+    QMap<QString, QSharedPointer<CalculatorItem> >              m_SymbolMap;
     QStack<QSharedPointer<CalculatorItem> >                     m_ExecutionStack;
 
     QVector<QSharedPointer<CalculatorItem> > parseInfixEquation(QString equation);

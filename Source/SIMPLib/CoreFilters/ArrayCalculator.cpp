@@ -59,6 +59,7 @@
 #include "util/TanOperator.h"
 #include "util/SqrtOperator.h"
 #include "util/Log10Operator.h"
+#include "util/PowOperator.h"
 
 // Include the MOC generated file for this class
 #include "moc_ArrayCalculator.cpp"
@@ -123,18 +124,20 @@ ArrayCalculator::ArrayCalculator() :
 {
   setupFilterParameters();
 
-  m_SymbolList.push_back("(");
-  m_SymbolList.push_back(")");
-  m_SymbolList.push_back("+");
-  m_SymbolList.push_back("-");
-  m_SymbolList.push_back("*");
-  m_SymbolList.push_back("/");
-  m_SymbolList.push_back("abs");
-  m_SymbolList.push_back("sin");
-  m_SymbolList.push_back("cos");
-  m_SymbolList.push_back("tan");
-  m_SymbolList.push_back("sqrt");
-  m_SymbolList.push_back("log10");
+  // Insert all items into the symbol map to use during equation parsing
+  m_SymbolMap.insert("(", QSharedPointer<LeftParenthesisSeparator>(new LeftParenthesisSeparator()));
+  m_SymbolMap.insert(")", QSharedPointer<RightParenthesisSeparator>(new RightParenthesisSeparator()));
+  m_SymbolMap.insert("+", QSharedPointer<AdditionOperator>(new AdditionOperator()));
+  m_SymbolMap.insert("-", QSharedPointer<SubtractionOperator>(new SubtractionOperator()));
+  m_SymbolMap.insert("*", QSharedPointer<MultiplicationOperator>(new MultiplicationOperator()));
+  m_SymbolMap.insert("/", QSharedPointer<DivisionOperator>(new DivisionOperator()));
+  m_SymbolMap.insert("abs", QSharedPointer<ABSOperator>(new ABSOperator()));
+  m_SymbolMap.insert("sin", QSharedPointer<SinOperator>(new SinOperator()));
+  m_SymbolMap.insert("cos", QSharedPointer<CosOperator>(new CosOperator()));
+  m_SymbolMap.insert("tan", QSharedPointer<TanOperator>(new TanOperator()));
+  m_SymbolMap.insert("sqrt", QSharedPointer<SqrtOperator>(new SqrtOperator()));
+  m_SymbolMap.insert("log10", QSharedPointer<Log10Operator>(new Log10Operator()));
+  m_SymbolMap.insert("^", QSharedPointer<PowOperator>(new PowOperator()));
 }
 
 // -----------------------------------------------------------------------------
@@ -213,13 +216,21 @@ void ArrayCalculator::dataCheck()
     return;
   }
 
+  AttributeMatrix::Pointer selectedAM = getDataContainerArray()->getAttributeMatrix(m_SelectedAttributeMatrix);
+  if (NULL == selectedAM)
+  {
+    QString ss = QObject::tr("Could not find the attribute matrix \"%1\".").arg(m_SelectedAttributeMatrix.getAttributeMatrixName());
+    setErrorCondition(-4013);
+    notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
+    return;
+  }
+
   DataArrayPath calculatedAMPath(m_CalculatedArray.getDataContainerName(), m_CalculatedArray.getAttributeMatrixName(), "");
   AttributeMatrix::Pointer calculatedAM = getDataContainerArray()->getAttributeMatrix(calculatedAMPath);
-
   if (NULL == calculatedAM)
   {
     QString ss = QObject::tr("Could not find the attribute matrix \"%1\".").arg(m_CalculatedArray.getAttributeMatrixName());
-    setErrorCondition(-4013);
+    setErrorCondition(-4014);
     notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
     return;
   }
@@ -227,6 +238,8 @@ void ArrayCalculator::dataCheck()
   QVector<QSharedPointer<CalculatorItem> > parsedInfix = parseInfixEquation(m_InfixEquation);
   if (parsedInfix.isEmpty() == true) { return; }
 
+  bool hasArrayGreaterThan1 = false;
+  bool hasArray = false;
   for (int i=0; i<parsedInfix.size(); i++)
   {
     QSharedPointer<CalculatorItem> currentItem = parsedInfix[i];
@@ -236,15 +249,51 @@ void ArrayCalculator::dataCheck()
       if (result == false)
       {
         QString ss = QObject::tr("The chosen infix equation is not a valid equation.");
-        setErrorCondition(-4008);
+        setErrorCondition(-4018);
         notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
         return;
       }
     }
-    else
+    else if (NULL != qSharedPointerDynamicCast<ICalculatorArray>(currentItem))
     {
-      // ERROR: Unrecognized item in the RPN vector
+      hasArray = true;
+      if (qSharedPointerDynamicCast<ICalculatorArray>(currentItem)->getArray()->getNumberOfTuples() > 1)
+      {
+        hasArrayGreaterThan1 = true;
+      }
     }
+  }
+
+  if (hasArray == true)
+  {
+    if (hasArrayGreaterThan1 == false)
+    {
+      QString ss = QObject::tr("The result of the chosen equation will be a numeric value, not an array."
+        "This numeric value will be stored in an array with the number of tuples equal to 1.").arg(m_SelectedAttributeMatrix.getAttributeMatrixName());
+      notifyWarningMessage(getHumanLabel(), ss, -4015);
+
+      if (calculatedAM->getNumTuples() != 1)
+      {
+        QString ss = QObject::tr("The tuple count of the calculated attribute matrix is not equal to 1.").arg(m_SelectedAttributeMatrix.getAttributeMatrixName());
+        setErrorCondition(-4016);
+        notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
+        return;
+      }
+    }
+    else if (calculatedAM->getNumTuples() != selectedAM->getNumTuples())
+    {
+      QString ss = QObject::tr("The tuple count of the calculated attribute matrix is not equal to the tuple count of the selected attribute matrix.").arg(m_SelectedAttributeMatrix.getAttributeMatrixName());
+      setErrorCondition(-4017);
+      notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
+      return;
+    }
+  }
+  else
+  {
+    QString ss = QObject::tr("The chosen infix equation does not have any numeric values or arrays in it.");
+    setErrorCondition(-4019);
+    notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
+    return;
   }
 
   QVector<QSharedPointer<CalculatorItem> > rpn = toRPN(parsedInfix);
@@ -273,7 +322,8 @@ void ArrayCalculator::execute()
   dataCheck();
   if(getErrorCondition() < 0) { return; }
 
-  AttributeMatrix::Pointer am = getDataContainerArray()->getAttributeMatrix(m_SelectedAttributeMatrix);
+  DataArrayPath calculatedAMPath(m_CalculatedArray.getDataContainerName(), m_CalculatedArray.getAttributeMatrixName(), "");
+  AttributeMatrix::Pointer calculatedAM = getDataContainerArray()->getAttributeMatrix(calculatedAMPath);
 
   // Parse the infix equation from the user interface
   QVector<QSharedPointer<CalculatorItem> > parsedInfix = parseInfixEquation(m_InfixEquation);
@@ -292,7 +342,7 @@ void ArrayCalculator::execute()
     else if (NULL != qSharedPointerDynamicCast<CalculatorOperator>(rpnItem))
     {
       QSharedPointer<CalculatorOperator> rpnOperator = qSharedPointerDynamicCast<CalculatorOperator>(rpnItem);
-      DoubleArrayType::Pointer newArray = DoubleArrayType::CreateArray(am->getNumTuples(), QVector<size_t>(1, 1), m_CalculatedArray.getDataArrayName());
+      DoubleArrayType::Pointer newArray = DoubleArrayType::CreateArray(calculatedAM->getNumTuples(), QVector<size_t>(1, 1), m_CalculatedArray.getDataArrayName());
 
       for (int i=0; i<newArray->getNumberOfTuples(); i++)
       {
@@ -371,49 +421,18 @@ QVector<QSharedPointer<CalculatorItem> > ArrayCalculator::parseInfixEquation(QSt
   }
 
   // Remove spaces and place @ symbols around each item in the equation
-  for (int i = 0; i < m_SymbolList.size(); i++)
+  for (QMap<QString, QSharedPointer<CalculatorItem> >::iterator iter = m_SymbolMap.begin(); iter != m_SymbolMap.end(); iter++)
   {
-    QString symbolStr = m_SymbolList[i];
+    QString symbolStr = iter.key();
 
     equation.replace(symbolStr, "@" + symbolStr + "@");
   }
 
   QStringList aaNames = selectedAM->getAttributeArrayNames();
-  bool hasArrayNames = false;
   for (int i = 0; i < aaNames.size(); i++)
   {
     QString aaName = aaNames[i];
-    if (equation.contains(aaName))
-    {
-      hasArrayNames = true;
-    }
-
     equation.replace(aaName, "@[" + QString::number(i) + "]@");
-  }
-
-  DataArrayPath calculatedAMPath(m_CalculatedArray.getDataContainerName(), m_CalculatedArray.getAttributeMatrixName(), "");
-  AttributeMatrix::Pointer calculatedAM = getDataContainerArray()->getAttributeMatrix(calculatedAMPath);
-
-  if (hasArrayNames == false)
-  {
-    QString ss = QObject::tr("The result of the chosen equation will be a numeric value, not an array."
-      "This numeric value will be stored in an array with the number of tuples equal to 1.").arg(m_SelectedAttributeMatrix.getAttributeMatrixName());
-    notifyWarningMessage(getHumanLabel(), ss, -4015);
-
-    if (calculatedAM->getNumTuples() != 1)
-    {
-      QString ss = QObject::tr("The tuple count of the calculated attribute matrix is not equal to 1.").arg(m_SelectedAttributeMatrix.getAttributeMatrixName());
-      setErrorCondition(-4016);
-      notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
-      return QVector<QSharedPointer<CalculatorItem> >();
-    }
-  }
-  else if (hasArrayNames == true && calculatedAM->getNumTuples() != selectedAM->getNumTuples())
-  {
-    QString ss = QObject::tr("The tuple count of the calculated attribute matrix is not equal to the tuple count of the selected attribute matrix.").arg(m_SelectedAttributeMatrix.getAttributeMatrixName());
-    setErrorCondition(-4016);
-    notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
-    return QVector<QSharedPointer<CalculatorItem> >();
   }
 
   equation.remove(" ");
@@ -440,28 +459,15 @@ QVector<QSharedPointer<CalculatorItem> > ArrayCalculator::parseInfixEquation(QSt
     double num = listItem.toDouble(&ok);
     if (ok == true)
     {
+      // This is a number, so create an array with numOfTuples equal to 1 and set the value into it
       DoubleArrayType::Pointer ptr = DoubleArrayType::CreateArray(1, QVector<size_t>(1, 1), "NumberArray");
       ptr->setValue(0, num);
       itemPtr = QSharedPointer<CalculatorArray<double> >(new CalculatorArray<double>(ptr));
       parsedInfix.push_back(itemPtr);
     }
-    else if (listItem == "(")
-    {
-      itemPtr = QSharedPointer<LeftParenthesisSeparator>(new LeftParenthesisSeparator());
-      parsedInfix.push_back(itemPtr);
-    }
-    else if (listItem == ")")
-    {
-      itemPtr = QSharedPointer<RightParenthesisSeparator>(new RightParenthesisSeparator());
-      parsedInfix.push_back(itemPtr);
-    }
-    else if (listItem == "+")
-    {
-      itemPtr = QSharedPointer<AdditionOperator>(new AdditionOperator());
-      parsedInfix.push_back(itemPtr);
-    }
     else if (listItem == "-")
     {
+      // This could be either a negative sign or subtraction sign, so we need to figure out which one it is
       if (
            i == 0 ||
            (
@@ -485,52 +491,13 @@ QVector<QSharedPointer<CalculatorItem> > ArrayCalculator::parseInfixEquation(QSt
       else
       {
         // By context, this is a subtraction sign
-        itemPtr = QSharedPointer<SubtractionOperator>(new SubtractionOperator());
+        itemPtr = m_SymbolMap.value(listItem);
         parsedInfix.push_back(itemPtr);
       }
     }
-    else if (listItem == "*")
-    {
-      itemPtr = QSharedPointer<MultiplicationOperator>(new MultiplicationOperator());
-      parsedInfix.push_back(itemPtr);
-    }
-    else if (listItem == "/")
-    {
-      itemPtr = QSharedPointer<DivisionOperator>(new DivisionOperator());
-      parsedInfix.push_back(itemPtr);
-    }
-    else if (listItem == "abs")
-    {
-      itemPtr = QSharedPointer<ABSOperator>(new ABSOperator());
-      parsedInfix.push_back(itemPtr);
-    }
-    else if (listItem == "sin")
-    {
-      itemPtr = QSharedPointer<SinOperator>(new SinOperator());
-      parsedInfix.push_back(itemPtr);
-    }
-    else if (listItem == "cos")
-    {
-      itemPtr = QSharedPointer<CosOperator>(new CosOperator());
-      parsedInfix.push_back(itemPtr);
-    }
-    else if (listItem == "tan")
-    {
-      itemPtr = QSharedPointer<TanOperator>(new TanOperator());
-      parsedInfix.push_back(itemPtr);
-    }
-    else if (listItem == "sqrt")
-    {
-      itemPtr = QSharedPointer<SqrtOperator>(new SqrtOperator());
-      parsedInfix.push_back(itemPtr);
-    }
-    else if (listItem == "log10")
-    {
-      itemPtr = QSharedPointer<Log10Operator>(new Log10Operator());
-      parsedInfix.push_back(itemPtr);
-    }
     else if (selectedAM->getAttributeArrayNames().contains(listItem))
     {
+      // This is an array, so create the array item
       IDataArray::Pointer dataArray = selectedAM->getAttributeArray(listItem);
       if (numTuples < 0 && firstArray.isEmpty() == true)
       {
@@ -550,10 +517,18 @@ QVector<QSharedPointer<CalculatorItem> > ArrayCalculator::parseInfixEquation(QSt
     }
     else
     {
-      QString ss = QObject::tr("An unrecognized item \"%1\" was found in the chosen infix equation.").arg(listItem);
-      setErrorCondition(-4002);
-      notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
-      return QVector<QSharedPointer<CalculatorItem> >();
+      itemPtr = m_SymbolMap.value(listItem);
+      if (itemPtr.isNull())
+      {
+        QString ss = QObject::tr("An unrecognized item \"%1\" was found in the chosen infix equation.").arg(listItem);
+        setErrorCondition(-4002);
+        notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
+        return QVector<QSharedPointer<CalculatorItem> >();
+      }
+      else
+      {
+        parsedInfix.push_back(itemPtr);
+      }
     }
   }
 

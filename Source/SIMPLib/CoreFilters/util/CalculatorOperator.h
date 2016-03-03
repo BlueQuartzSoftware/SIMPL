@@ -73,9 +73,9 @@ class SIMPLib_EXPORT CalculatorOperator : public CalculatorItem
     enum Precedence
     {
       Unknown_Precedence,
-      Binary_Low_Precedence,
-      Binary_High_Precedence,
-      Unary_Precedence,
+      Alpha_Precedence,
+      Bravo_Precedence,
+      Charlie_Precedence,
     };
 
     double toDegrees(double radians);

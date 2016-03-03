@@ -49,7 +49,7 @@
 CosOperator::CosOperator() :
   UnaryOperator()
 {
-  setPrecedence(Unary_Precedence);
+  setPrecedence(Charlie_Precedence);
 }
 
 // -----------------------------------------------------------------------------

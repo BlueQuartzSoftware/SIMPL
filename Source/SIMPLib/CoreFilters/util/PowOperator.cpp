@@ -33,7 +33,7 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-#include "SqrtOperator.h"
+#include "PowOperator.h"
 
 #include <Eigen/Core>
 #include <Eigen/Dense>
@@ -42,12 +42,14 @@
 #include "SIMPLib/Common/TemplateHelpers.hpp"
 
 #include "CalculatorArray.hpp"
+#include "LeftParenthesisSeparator.h"
+#include "RightParenthesisSeparator.h"
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-SqrtOperator::SqrtOperator() :
-  UnaryOperator()
+PowOperator::PowOperator() :
+  BinaryOperator()
 {
   setPrecedence(Charlie_Precedence);
 }
@@ -55,7 +57,7 @@ SqrtOperator::SqrtOperator() :
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-SqrtOperator::~SqrtOperator()
+PowOperator::~PowOperator()
 {
 
 }
@@ -63,12 +65,21 @@ SqrtOperator::~SqrtOperator()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-double SqrtOperator::calculate(AbstractFilter* filter, const QString &newArrayName, QStack<QSharedPointer<CalculatorItem> > &executionStack, int index)
-{
-  if (executionStack.size() >= 1 && NULL != qSharedPointerDynamicCast<ICalculatorArray>(executionStack.top()))
+double PowOperator::calculate(AbstractFilter* filter, const QString &newArrayName, QStack<QSharedPointer<CalculatorItem> > &executionStack, int index)
+{ 
+  if (executionStack.size() >= 2)
   {
-    double num = qSharedPointerDynamicCast<ICalculatorArray>(executionStack.top())->getValue(index);
-    return sqrt(num);
+    QSharedPointer<ICalculatorArray> exponentArray = qSharedPointerDynamicCast<ICalculatorArray>(executionStack.pop());
+    QSharedPointer<ICalculatorArray> baseArray = qSharedPointerDynamicCast<ICalculatorArray>(executionStack.pop());
+
+    double exponent = exponentArray->getValue(index);
+    double base = baseArray->getValue(index);
+    double result = pow(base, exponent);
+
+    executionStack.push(baseArray);
+    executionStack.push(exponentArray);
+
+    return result;
   }
 
   // If the execution gets down here, then we have an error

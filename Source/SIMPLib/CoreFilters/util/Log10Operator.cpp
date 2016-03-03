@@ -51,7 +51,7 @@
 Log10Operator::Log10Operator() :
   UnaryOperator()
 {
-  setPrecedence(Unary_Precedence);
+  setPrecedence(Charlie_Precedence);
 }
 
 // -----------------------------------------------------------------------------

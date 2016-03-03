@@ -51,7 +51,7 @@
 ABSOperator::ABSOperator() :
   UnaryOperator()
 {
-  setPrecedence(Unary_Precedence);
+  setPrecedence(Charlie_Precedence);
 }
 
 // -----------------------------------------------------------------------------

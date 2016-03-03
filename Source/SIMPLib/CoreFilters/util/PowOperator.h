@@ -33,48 +33,31 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-#include "SqrtOperator.h"
+#ifndef _PowOperator_H_
+#define _PowOperator_H_
 
-#include <Eigen/Core>
-#include <Eigen/Dense>
-#include <Eigen/Eigen>
+#include <QtCore/QSharedPointer>
+#include <QtCore/QStack>
 
-#include "SIMPLib/Common/TemplateHelpers.hpp"
+#include "SIMPLib/SIMPLib.h"
 
-#include "CalculatorArray.hpp"
+#include "BinaryOperator.h"
 
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-SqrtOperator::SqrtOperator() :
-  UnaryOperator()
+class CalculatorNumber;
+
+class SIMPLib_EXPORT PowOperator : public BinaryOperator
 {
-  setPrecedence(Charlie_Precedence);
-}
+  public:
 
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-SqrtOperator::~SqrtOperator()
-{
+    PowOperator();
+    virtual ~PowOperator();
 
-}
+    virtual double calculate(AbstractFilter* filter, const QString &newArrayName, QStack<QSharedPointer<CalculatorItem> > &executionStack, int index);
 
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-double SqrtOperator::calculate(AbstractFilter* filter, const QString &newArrayName, QStack<QSharedPointer<CalculatorItem> > &executionStack, int index)
-{
-  if (executionStack.size() >= 1 && NULL != qSharedPointerDynamicCast<ICalculatorArray>(executionStack.top()))
-  {
-    double num = qSharedPointerDynamicCast<ICalculatorArray>(executionStack.top())->getValue(index);
-    return sqrt(num);
-  }
+  private:
 
-  // If the execution gets down here, then we have an error
-  QString ss = QObject::tr("The chosen infix equation is not a valid equation.");
-  filter->setErrorCondition(-4005);
-  filter->notifyErrorMessage(filter->getHumanLabel(), ss, filter->getErrorCondition());
-  return 0.0;
-}
+    PowOperator(const PowOperator&); // Copy Constructor Not Implemented
+    void operator=(const PowOperator&); // Operator '=' Not Implemented
+};
 
+#endif /* _PowOperator_H_ */

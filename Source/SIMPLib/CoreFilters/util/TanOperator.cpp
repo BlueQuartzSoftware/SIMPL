@@ -49,7 +49,7 @@
 TanOperator::TanOperator() :
   UnaryOperator()
 {
-  setPrecedence(Unary_Precedence);
+  setPrecedence(Charlie_Precedence);
 }
 
 // -----------------------------------------------------------------------------
