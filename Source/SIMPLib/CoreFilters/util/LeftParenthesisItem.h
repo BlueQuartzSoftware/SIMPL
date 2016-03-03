@@ -33,49 +33,24 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-#include "SinOperator.h"
+#ifndef _LeftParenthesisItem_H_
+#define _LeftParenthesisItem_H_
 
-#include <Eigen/Core>
-#include <Eigen/Dense>
-#include <Eigen/Eigen>
+#include "SIMPLib/SIMPLib.h"
 
-#include "SIMPLib/Common/TemplateHelpers.hpp"
+#include "CalculatorItem.h"
 
-#include "CalculatorArray.hpp"
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-SinOperator::SinOperator() :
-  UnaryOperator()
+class SIMPLib_EXPORT LeftParenthesisItem : public CalculatorItem
 {
-  setNumberOfArguments(1);
-}
+  public:
 
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-SinOperator::~SinOperator()
-{
+    LeftParenthesisItem();
+    virtual ~LeftParenthesisItem();
 
-}
+  private:
 
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-double SinOperator::calculate(AbstractFilter* filter, const QString &newArrayName, QStack<QSharedPointer<CalculatorItem> > &executionStack, int index)
-{
-  if (executionStack.size() >= 1 && NULL != qSharedPointerDynamicCast<ICalculatorArray>(executionStack.top()))
-  {
-    double degrees = qSharedPointerDynamicCast<ICalculatorArray>(executionStack.top())->getValue(index);
-    double radians = toRadians(degrees);
-    return sin(radians);
-  }
+    LeftParenthesisItem(const LeftParenthesisItem&); // Copy Constructor Not Implemented
+    void operator=(const LeftParenthesisItem&); // Operator '=' Not Implemented
+};
 
-  // If the execution gets down here, then we have an error
-  QString ss = QObject::tr("The chosen infix equation is not a valid equation.");
-  filter->setErrorCondition(-4005);
-  filter->notifyErrorMessage(filter->getHumanLabel(), ss, filter->getErrorCondition());
-  return 0.0;
-}
-
+#endif /* _LeftParenthesisItem_H_ */

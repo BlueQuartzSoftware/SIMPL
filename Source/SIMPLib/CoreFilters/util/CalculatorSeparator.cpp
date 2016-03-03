@@ -33,29 +33,13 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-#include "SinOperator.h"
-
-#include <Eigen/Core>
-#include <Eigen/Dense>
-#include <Eigen/Eigen>
-
-#include "SIMPLib/Common/TemplateHelpers.hpp"
-
-#include "CalculatorArray.hpp"
+#include "CalculatorSeparator.h"
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-SinOperator::SinOperator() :
-  UnaryOperator()
-{
-  setNumberOfArguments(1);
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-SinOperator::~SinOperator()
+CalculatorSeparator::CalculatorSeparator() :
+CalculatorItem()
 {
 
 }
@@ -63,19 +47,8 @@ SinOperator::~SinOperator()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-double SinOperator::calculate(AbstractFilter* filter, const QString &newArrayName, QStack<QSharedPointer<CalculatorItem> > &executionStack, int index)
+CalculatorSeparator::~CalculatorSeparator()
 {
-  if (executionStack.size() >= 1 && NULL != qSharedPointerDynamicCast<ICalculatorArray>(executionStack.top()))
-  {
-    double degrees = qSharedPointerDynamicCast<ICalculatorArray>(executionStack.top())->getValue(index);
-    double radians = toRadians(degrees);
-    return sin(radians);
-  }
 
-  // If the execution gets down here, then we have an error
-  QString ss = QObject::tr("The chosen infix equation is not a valid equation.");
-  filter->setErrorCondition(-4005);
-  filter->notifyErrorMessage(filter->getHumanLabel(), ss, filter->getErrorCondition());
-  return 0.0;
 }
 

@@ -142,6 +142,9 @@ ADD_SIMPL_SUPPORT_SOURCE(${SIMPLib_SOURCE_DIR} ${_filterGroupName} util/TanOpera
 ADD_SIMPL_SUPPORT_HEADER(${SIMPLib_SOURCE_DIR} ${_filterGroupName} util/SqrtOperator.h)
 ADD_SIMPL_SUPPORT_SOURCE(${SIMPLib_SOURCE_DIR} ${_filterGroupName} util/SqrtOperator.cpp)
 
+ADD_SIMPL_SUPPORT_HEADER(${SIMPLib_SOURCE_DIR} ${_filterGroupName} util/RootOperator.h)
+ADD_SIMPL_SUPPORT_SOURCE(${SIMPLib_SOURCE_DIR} ${_filterGroupName} util/RootOperator.cpp)
+
 ADD_SIMPL_SUPPORT_HEADER(${SIMPLib_SOURCE_DIR} ${_filterGroupName} util/Log10Operator.h)
 ADD_SIMPL_SUPPORT_SOURCE(${SIMPLib_SOURCE_DIR} ${_filterGroupName} util/Log10Operator.cpp)
 
@@ -157,11 +160,17 @@ ADD_SIMPL_SUPPORT_SOURCE(${SIMPLib_SOURCE_DIR} ${_filterGroupName} util/Multipli
 ADD_SIMPL_SUPPORT_HEADER(${SIMPLib_SOURCE_DIR} ${_filterGroupName} util/DivisionOperator.h)
 ADD_SIMPL_SUPPORT_SOURCE(${SIMPLib_SOURCE_DIR} ${_filterGroupName} util/DivisionOperator.cpp)
 
-ADD_SIMPL_SUPPORT_HEADER(${SIMPLib_SOURCE_DIR} ${_filterGroupName} util/LeftParenthesisSeparator.h)
-ADD_SIMPL_SUPPORT_SOURCE(${SIMPLib_SOURCE_DIR} ${_filterGroupName} util/LeftParenthesisSeparator.cpp)
+ADD_SIMPL_SUPPORT_HEADER(${SIMPLib_SOURCE_DIR} ${_filterGroupName} util/LeftParenthesisItem.h)
+ADD_SIMPL_SUPPORT_SOURCE(${SIMPLib_SOURCE_DIR} ${_filterGroupName} util/LeftParenthesisItem.cpp)
 
-ADD_SIMPL_SUPPORT_HEADER(${SIMPLib_SOURCE_DIR} ${_filterGroupName} util/RightParenthesisSeparator.h)
-ADD_SIMPL_SUPPORT_SOURCE(${SIMPLib_SOURCE_DIR} ${_filterGroupName} util/RightParenthesisSeparator.cpp)
+ADD_SIMPL_SUPPORT_HEADER(${SIMPLib_SOURCE_DIR} ${_filterGroupName} util/RightParenthesisItem.h)
+ADD_SIMPL_SUPPORT_SOURCE(${SIMPLib_SOURCE_DIR} ${_filterGroupName} util/RightParenthesisItem.cpp)
+
+ADD_SIMPL_SUPPORT_HEADER(${SIMPLib_SOURCE_DIR} ${_filterGroupName} util/CalculatorSeparator.h)
+ADD_SIMPL_SUPPORT_SOURCE(${SIMPLib_SOURCE_DIR} ${_filterGroupName} util/CalculatorSeparator.cpp)
+
+ADD_SIMPL_SUPPORT_HEADER(${SIMPLib_SOURCE_DIR} ${_filterGroupName} util/CommaSeparator.h)
+ADD_SIMPL_SUPPORT_SOURCE(${SIMPLib_SOURCE_DIR} ${_filterGroupName} util/CommaSeparator.cpp)
 
 # -- Add the binary directory for this subdirectory to the include path which is where the moc files are generated
 include_directories( ${SIMPLib_BINARY_DIR}/${_filterGroupName})

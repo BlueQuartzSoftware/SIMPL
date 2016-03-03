@@ -39,8 +39,8 @@
 #include <Eigen/Dense>
 #include <Eigen/Eigen>
 
-#include "LeftParenthesisSeparator.h"
-#include "RightParenthesisSeparator.h"
+#include "LeftParenthesisItem.h"
+#include "RightParenthesisItem.h"
 
 // -----------------------------------------------------------------------------
 //
@@ -48,7 +48,7 @@
 MultiplicationOperator::MultiplicationOperator() :
 BinaryOperator()
 {
-  setPrecedence(Charlie_Precedence);
+  setPrecedence(Bravo_Precedence);
 }
 
 // -----------------------------------------------------------------------------

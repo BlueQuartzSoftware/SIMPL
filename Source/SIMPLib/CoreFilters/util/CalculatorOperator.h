@@ -76,10 +76,13 @@ class SIMPLib_EXPORT CalculatorOperator : public CalculatorItem
       Alpha_Precedence,
       Bravo_Precedence,
       Charlie_Precedence,
+      Delta_Precedence,
     };
 
     double toDegrees(double radians);
     double toRadians(double degrees);
+
+    double root(double base, double root);
 
     Precedence getPrecedence();
     void setPrecedence(Precedence precedence);

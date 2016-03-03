@@ -33,24 +33,31 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-#ifndef _RightParenthesisSeparator_H_
-#define _RightParenthesisSeparator_H_
+#ifndef _RootOperator_H_
+#define _RootOperator_H_
+
+#include <QtCore/QSharedPointer>
+#include <QtCore/QStack>
 
 #include "SIMPLib/SIMPLib.h"
 
-#include "CalculatorItem.h"
+#include "UnaryOperator.h"
 
-class SIMPLib_EXPORT RightParenthesisSeparator : public CalculatorItem
+class CalculatorNumber;
+
+class SIMPLib_EXPORT RootOperator : public UnaryOperator
 {
   public:
 
-    RightParenthesisSeparator();
-    virtual ~RightParenthesisSeparator();
+    RootOperator();
+    virtual ~RootOperator();
+
+    virtual double calculate(AbstractFilter* filter, const QString &newArrayName, QStack<QSharedPointer<CalculatorItem> > &executionStack, int index);
 
   private:
 
-    RightParenthesisSeparator(const RightParenthesisSeparator&); // Copy Constructor Not Implemented
-    void operator=(const RightParenthesisSeparator&); // Operator '=' Not Implemented
+    RootOperator(const RootOperator&); // Copy Constructor Not Implemented
+    void operator=(const RootOperator&); // Operator '=' Not Implemented
 };
 
-#endif /* _RightParenthesisSeparator_H_ */
+#endif /* _RootOperator_H_ */

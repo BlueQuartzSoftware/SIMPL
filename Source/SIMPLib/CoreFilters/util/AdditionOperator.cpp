@@ -42,8 +42,8 @@
 #include "SIMPLib/Common/TemplateHelpers.hpp"
 
 #include "CalculatorArray.hpp"
-#include "LeftParenthesisSeparator.h"
-#include "RightParenthesisSeparator.h"
+#include "LeftParenthesisItem.h"
+#include "RightParenthesisItem.h"
 
 // -----------------------------------------------------------------------------
 //
@@ -51,7 +51,7 @@
 AdditionOperator::AdditionOperator() :
   BinaryOperator()
 {
-  setPrecedence(Bravo_Precedence);
+  setPrecedence(Alpha_Precedence);
 }
 
 // -----------------------------------------------------------------------------

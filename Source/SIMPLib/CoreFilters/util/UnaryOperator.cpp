@@ -35,15 +35,18 @@
 
 #include "UnaryOperator.h"
 
-#include "LeftParenthesisSeparator.h"
-#include "RightParenthesisSeparator.h"
+#include "LeftParenthesisItem.h"
+#include "RightParenthesisItem.h"
+#include "CommaSeparator.h"
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
 UnaryOperator::UnaryOperator() :
-  CalculatorOperator()
+  CalculatorOperator(),
+  m_NumOfArguments(-1)
 {
+  setPrecedence(Delta_Precedence);
   setOperatorType(Unary);
 }
 
@@ -69,27 +72,59 @@ double UnaryOperator::calculate(AbstractFilter* filter, const QString &newArrayN
 // -----------------------------------------------------------------------------
 bool UnaryOperator::checkValidity(QVector<QSharedPointer<CalculatorItem> > infixVector, int currentIndex)
 {
-  /* We need to check that the infix vector has a big enough size to fit all parts
-  of the absolute value expression */
-  if (infixVector.size() < currentIndex + 4)
+  int index = currentIndex + 1;
+  int commaCount = 0;
+  if (index < infixVector.size() && NULL != qSharedPointerDynamicCast<LeftParenthesisItem>(infixVector[index]))
   {
-    return false;
-  }
+    index++;
 
-  int leftPIndex = currentIndex + 1;
-
-  int index = leftPIndex;
-  if (NULL != qSharedPointerDynamicCast<LeftParenthesisSeparator>(infixVector[leftPIndex]))
-  {
+    // Iterate through the vector to find the matching right parenthesis
     for (; index < infixVector.size(); index++)
     {
-      if (NULL != qSharedPointerDynamicCast<RightParenthesisSeparator>(infixVector[index]))
+      if (NULL != qSharedPointerDynamicCast<RightParenthesisItem>(infixVector[index]))
       {
+        // We found the matching right parenthesis, so return true
         return true;
+      }
+      else if (NULL != qSharedPointerDynamicCast<LeftParenthesisItem>(infixVector[index]))
+      {
+        /* We found another left parenthesis, but we don't care what's inside this set of parentheses
+           (other operators' checkValidity functions will take care of these values), so just iterate
+           until we find the matching closing parenthesis for this opening parenthesis */
+        while (index < infixVector.size() && NULL == qSharedPointerDynamicCast<RightParenthesisItem>(infixVector[index]))
+        {
+          index++;
+        }
+      }
+      else if (NULL != qSharedPointerDynamicCast<CommaSeparator>(infixVector[index]))
+      {
+        // We found a comma, so increase the comma count
+        commaCount++;
+        if (commaCount > m_NumOfArguments - 1)
+        {
+          // We found too many commas (meaning that there are too many arguments), so return false
+          return false;
+        }
       }
     }
   }
 
   return false;
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+int UnaryOperator::getNumberOfArguments()
+{
+  return m_NumOfArguments;
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void UnaryOperator::setNumberOfArguments(int numOfArguments)
+{
+  m_NumOfArguments = numOfArguments;
 }
 

@@ -132,3 +132,16 @@ double CalculatorOperator::toRadians(double degrees)
   return degrees * (M_PI / 180.0);
 }
 
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+double CalculatorOperator::root(double base, double root)
+{
+  if (root == 0)
+  {
+    return std::numeric_limits<double>().infinity();
+  }
+
+  return pow(base, 1 / root);
+}
+

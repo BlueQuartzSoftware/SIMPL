@@ -33,24 +33,22 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-#ifndef _LeftParenthesisSeparator_H_
-#define _LeftParenthesisSeparator_H_
+#include "CommaSeparator.h"
 
-#include "SIMPLib/SIMPLib.h"
-
-#include "CalculatorItem.h"
-
-class SIMPLib_EXPORT LeftParenthesisSeparator : public CalculatorItem
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+CommaSeparator::CommaSeparator() :
+CalculatorSeparator()
 {
-  public:
 
-    LeftParenthesisSeparator();
-    virtual ~LeftParenthesisSeparator();
+}
 
-  private:
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+CommaSeparator::~CommaSeparator()
+{
 
-    LeftParenthesisSeparator(const LeftParenthesisSeparator&); // Copy Constructor Not Implemented
-    void operator=(const LeftParenthesisSeparator&); // Operator '=' Not Implemented
-};
+}
 
-#endif /* _LeftParenthesisSeparator_H_ */

@@ -48,7 +48,13 @@ class SIMPLib_EXPORT UnaryOperator : public CalculatorOperator
 
     bool checkValidity(QVector<QSharedPointer<CalculatorItem> > infixVector, int currentIndex) final;
 
+    int getNumberOfArguments();
+
+  protected:
+    void setNumberOfArguments(int numOfArguments);
+
   private:
+    int                                           m_NumOfArguments;
 
     UnaryOperator(const UnaryOperator&); // Copy Constructor Not Implemented
     void operator=(const UnaryOperator&); // Operator '=' Not Implemented

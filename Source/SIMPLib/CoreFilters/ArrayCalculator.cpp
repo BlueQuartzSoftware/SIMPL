@@ -47,8 +47,9 @@
 #include "SIMPLib/FilterParameters/DataArrayCreationFilterParameter.h"
 
 #include "util/CalculatorArray.hpp"
-#include "util/LeftParenthesisSeparator.h"
-#include "util/RightParenthesisSeparator.h"
+#include "util/LeftParenthesisItem.h"
+#include "util/RightParenthesisItem.h"
+#include "util/CommaSeparator.h"
 #include "util/AdditionOperator.h"
 #include "util/SubtractionOperator.h"
 #include "util/MultiplicationOperator.h"
@@ -60,6 +61,7 @@
 #include "util/SqrtOperator.h"
 #include "util/Log10Operator.h"
 #include "util/PowOperator.h"
+#include "util/RootOperator.h"
 
 // Include the MOC generated file for this class
 #include "moc_ArrayCalculator.cpp"
@@ -125,8 +127,9 @@ ArrayCalculator::ArrayCalculator() :
   setupFilterParameters();
 
   // Insert all items into the symbol map to use during equation parsing
-  m_SymbolMap.insert("(", QSharedPointer<LeftParenthesisSeparator>(new LeftParenthesisSeparator()));
-  m_SymbolMap.insert(")", QSharedPointer<RightParenthesisSeparator>(new RightParenthesisSeparator()));
+  m_SymbolMap.insert("(", QSharedPointer<LeftParenthesisItem>(new LeftParenthesisItem()));
+  m_SymbolMap.insert(")", QSharedPointer<RightParenthesisItem>(new RightParenthesisItem()));
+  m_SymbolMap.insert(",", QSharedPointer<CommaSeparator>(new CommaSeparator()));
   m_SymbolMap.insert("+", QSharedPointer<AdditionOperator>(new AdditionOperator()));
   m_SymbolMap.insert("-", QSharedPointer<SubtractionOperator>(new SubtractionOperator()));
   m_SymbolMap.insert("*", QSharedPointer<MultiplicationOperator>(new MultiplicationOperator()));
@@ -136,6 +139,7 @@ ArrayCalculator::ArrayCalculator() :
   m_SymbolMap.insert("cos", QSharedPointer<CosOperator>(new CosOperator()));
   m_SymbolMap.insert("tan", QSharedPointer<TanOperator>(new TanOperator()));
   m_SymbolMap.insert("sqrt", QSharedPointer<SqrtOperator>(new SqrtOperator()));
+  m_SymbolMap.insert("root", QSharedPointer<RootOperator>(new RootOperator()));
   m_SymbolMap.insert("log10", QSharedPointer<Log10Operator>(new Log10Operator()));
   m_SymbolMap.insert("^", QSharedPointer<PowOperator>(new PowOperator()));
 }
@@ -473,9 +477,9 @@ QVector<QSharedPointer<CalculatorItem> > ArrayCalculator::parseInfixEquation(QSt
            (
              (
                (NULL != qSharedPointerDynamicCast<CalculatorOperator>(parsedInfix.back()) && qSharedPointerDynamicCast<CalculatorOperator>(parsedInfix.back())->getOperatorType() == CalculatorOperator::Binary)
-               || NULL != qSharedPointerDynamicCast<LeftParenthesisSeparator>(parsedInfix.back())
+               || NULL != qSharedPointerDynamicCast<LeftParenthesisItem>(parsedInfix.back())
              )
-             && NULL == qSharedPointerDynamicCast<RightParenthesisSeparator>(parsedInfix.back())
+             && NULL == qSharedPointerDynamicCast<RightParenthesisItem>(parsedInfix.back())
            )
          )
       {
@@ -553,15 +557,15 @@ QVector<QSharedPointer<CalculatorItem> > ArrayCalculator::toRPN(QVector<QSharedP
       // This is a number or array, so push it onto the rpn equation output
       rpnEquation.push_back(calcItem);
     }
-    else if (NULL != qSharedPointerDynamicCast<LeftParenthesisSeparator>(calcItem))
+    else if (NULL != qSharedPointerDynamicCast<LeftParenthesisItem>(calcItem))
     {
       // This is a left parenthesis, so push it onto the item stack
       itemStack.push_back(calcItem);
     }
-    else if (NULL != qSharedPointerDynamicCast<RightParenthesisSeparator>(calcItem))
+    else if (NULL != qSharedPointerDynamicCast<RightParenthesisItem>(calcItem))
     {
       // This is a right parenthesis, so push operators from the item stack onto the rpn equation output until we get to the left parenthesis
-      while (itemStack.isEmpty() == false && NULL == qSharedPointerDynamicCast<LeftParenthesisSeparator>(itemStack.top()))
+      while (itemStack.isEmpty() == false && NULL == qSharedPointerDynamicCast<LeftParenthesisItem>(itemStack.top()))
       {
         rpnEquation.push_back(itemStack.pop());
       }
@@ -576,6 +580,11 @@ QVector<QSharedPointer<CalculatorItem> > ArrayCalculator::toRPN(QVector<QSharedP
 
       // Discard the left parenthesis that we found
       itemStack.pop();
+    }
+    else if (NULL != qSharedPointerDynamicCast<CalculatorSeparator>(calcItem))
+    {
+      // This is a comma, so we want to continue without adding it to anything
+      continue;
     }
     else if (NULL != qSharedPointerDynamicCast<CalculatorOperator>(calcItem))
     {
@@ -618,7 +627,7 @@ QVector<QSharedPointer<CalculatorItem> > ArrayCalculator::toRPN(QVector<QSharedP
   while (itemStack.isEmpty() == false)
   {
     QSharedPointer<CalculatorItem> item = itemStack.pop();
-    if (NULL != qSharedPointerDynamicCast<LeftParenthesisSeparator>(item))
+    if (NULL != qSharedPointerDynamicCast<LeftParenthesisItem>(item))
     {
       QString ss = QObject::tr("One or more parentheses are mismatched in the chosen infix equation \"%1\".").arg(m_InfixEquation);
       setErrorCondition(-4010);

@@ -33,13 +33,29 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-#include "RightParenthesisSeparator.h"
+#include "RootOperator.h"
+
+#include <Eigen/Core>
+#include <Eigen/Dense>
+#include <Eigen/Eigen>
+
+#include "SIMPLib/Common/TemplateHelpers.hpp"
+
+#include "CalculatorArray.hpp"
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-RightParenthesisSeparator::RightParenthesisSeparator() :
-CalculatorItem()
+RootOperator::RootOperator() :
+  UnaryOperator()
+{
+  setNumberOfArguments(2);
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+RootOperator::~RootOperator()
 {
 
 }
@@ -47,8 +63,28 @@ CalculatorItem()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-RightParenthesisSeparator::~RightParenthesisSeparator()
+double RootOperator::calculate(AbstractFilter* filter, const QString &newArrayName, QStack<QSharedPointer<CalculatorItem> > &executionStack, int index)
 {
+  if (executionStack.size() >= 1 && NULL != qSharedPointerDynamicCast<ICalculatorArray>(executionStack.top()))
+  {
+    QSharedPointer<ICalculatorArray> rootArray = qSharedPointerDynamicCast<ICalculatorArray>(executionStack.pop());
+    QSharedPointer<ICalculatorArray> baseArray = qSharedPointerDynamicCast<ICalculatorArray>(executionStack.pop());
 
+    double rootNum = rootArray->getValue(index);
+    double baseNum = baseArray->getValue(index);
+
+    double result = root(baseNum, rootNum);
+
+    executionStack.push(baseArray);
+    executionStack.push(rootArray);
+
+    return result;
+  }
+
+  // If the execution gets down here, then we have an error
+  QString ss = QObject::tr("The chosen infix equation is not a valid equation.");
+  filter->setErrorCondition(-4005);
+  filter->notifyErrorMessage(filter->getHumanLabel(), ss, filter->getErrorCondition());
+  return 0.0;
 }
 

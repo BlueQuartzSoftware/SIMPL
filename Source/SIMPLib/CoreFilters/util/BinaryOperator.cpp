@@ -35,8 +35,8 @@
 
 #include "BinaryOperator.h"
 
-#include "LeftParenthesisSeparator.h"
-#include "RightParenthesisSeparator.h"
+#include "LeftParenthesisItem.h"
+#include "RightParenthesisItem.h"
 
 // -----------------------------------------------------------------------------
 //
@@ -83,8 +83,8 @@ bool BinaryOperator::checkValidity(QVector<QSharedPointer<CalculatorItem> > infi
     && qSharedPointerDynamicCast<CalculatorOperator>(infixVector[leftValue])->getOperatorType() == Binary)
     || (NULL != qSharedPointerDynamicCast<CalculatorOperator>(infixVector[rightValue])
     && qSharedPointerDynamicCast<CalculatorOperator>(infixVector[rightValue])->getOperatorType() == Binary)
-    || NULL != qSharedPointerDynamicCast<LeftParenthesisSeparator>(infixVector[leftValue])
-    || NULL != qSharedPointerDynamicCast<RightParenthesisSeparator>(infixVector[rightValue]))
+    || NULL != qSharedPointerDynamicCast<LeftParenthesisItem>(infixVector[leftValue])
+    || NULL != qSharedPointerDynamicCast<RightParenthesisItem>(infixVector[rightValue]))
   {
     return false;
   }
