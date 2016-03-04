@@ -216,7 +216,7 @@ int H5PrimaryStatsDataDelegate::writePrimaryStatsData(PrimaryStatsData* data, hi
   }
   int err = 0;
 
-  // Write the NumFeatures
+  // Write the Boundary Area Fraction
   err = writeBoundaryArea(data, groupId);
   if (err < 0)
   {
@@ -367,8 +367,8 @@ int H5PrimaryStatsDataDelegate::readMDFWeights(hid_t pid, PrimaryStatsData* data
 
   VectorOfFloatArray mdfWeights;
   mdfWeights.push_back(angles);
-  mdfWeights.push_back(axis);
   mdfWeights.push_back(weight);
+  mdfWeights.push_back(axis);
 
   hid_t groupId = QH5Utilities::openHDF5Object(pid, SIMPL::StringConstants::MDFWeights);
   if (groupId > 0)
