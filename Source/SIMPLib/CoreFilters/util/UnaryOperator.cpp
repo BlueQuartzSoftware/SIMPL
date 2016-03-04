@@ -35,6 +35,7 @@
 
 #include "UnaryOperator.h"
 
+#include "BinaryOperator.h"
 #include "LeftParenthesisItem.h"
 #include "RightParenthesisItem.h"
 #include "CommaSeparator.h"
@@ -72,8 +73,16 @@ double UnaryOperator::calculate(AbstractFilter* filter, const QString &newArrayN
 // -----------------------------------------------------------------------------
 bool UnaryOperator::checkValidity(QVector<QSharedPointer<CalculatorItem> > infixVector, int currentIndex)
 {
+  if (currentIndex - 1 >= 0 &&
+    NULL == qSharedPointerDynamicCast<BinaryOperator>(infixVector[currentIndex-1])
+    && NULL == qSharedPointerDynamicCast<LeftParenthesisItem>(infixVector[currentIndex - 1]))
+  {
+    return false;
+  }
+
   int index = currentIndex + 1;
   int commaCount = 0;
+  bool hasArray = false;
   if (index < infixVector.size() && NULL != qSharedPointerDynamicCast<LeftParenthesisItem>(infixVector[index]))
   {
     index++;
@@ -84,6 +93,13 @@ bool UnaryOperator::checkValidity(QVector<QSharedPointer<CalculatorItem> > infix
       if (NULL != qSharedPointerDynamicCast<RightParenthesisItem>(infixVector[index]))
       {
         // We found the matching right parenthesis, so return true
+        if (commaCount < m_NumOfArguments - 1
+          || (index + 1 < infixVector.size() && NULL == qSharedPointerDynamicCast<BinaryOperator>(infixVector[index + 1])
+          && NULL == qSharedPointerDynamicCast<RightParenthesisItem>(infixVector[index + 1])) || hasArray == false)
+        {
+          return false;
+        }
+
         return true;
       }
       else if (NULL != qSharedPointerDynamicCast<LeftParenthesisItem>(infixVector[index]))
@@ -93,6 +109,11 @@ bool UnaryOperator::checkValidity(QVector<QSharedPointer<CalculatorItem> > infix
            until we find the matching closing parenthesis for this opening parenthesis */
         while (index < infixVector.size() && NULL == qSharedPointerDynamicCast<RightParenthesisItem>(infixVector[index]))
         {
+          if (NULL != qSharedPointerDynamicCast<ICalculatorArray>(infixVector[index]))
+          {
+            hasArray = true;
+          }
+
           index++;
         }
       }
@@ -105,6 +126,10 @@ bool UnaryOperator::checkValidity(QVector<QSharedPointer<CalculatorItem> > infix
           // We found too many commas (meaning that there are too many arguments), so return false
           return false;
         }
+      }
+      else if (NULL != qSharedPointerDynamicCast<ICalculatorArray>(infixVector[index]))
+      {
+        hasArray = true;
       }
     }
   }

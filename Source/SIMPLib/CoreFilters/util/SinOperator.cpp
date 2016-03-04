@@ -35,11 +35,7 @@
 
 #include "SinOperator.h"
 
-#include <Eigen/Core>
-#include <Eigen/Dense>
-#include <Eigen/Eigen>
-
-#include "SIMPLib/Common/TemplateHelpers.hpp"
+#include <math.h>
 
 #include "CalculatorArray.hpp"
 

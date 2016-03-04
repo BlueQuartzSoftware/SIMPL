@@ -35,12 +35,9 @@
 
 #include "MultiplicationOperator.h"
 
-#include <Eigen/Core>
-#include <Eigen/Dense>
-#include <Eigen/Eigen>
+#include <math.h>
 
-#include "LeftParenthesisItem.h"
-#include "RightParenthesisItem.h"
+#include "CalculatorArray.hpp"
 
 // -----------------------------------------------------------------------------
 //

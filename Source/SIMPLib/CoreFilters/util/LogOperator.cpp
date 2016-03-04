@@ -33,7 +33,7 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-#include "AdditionOperator.h"
+#include "LogOperator.h"
 
 #include <math.h>
 
@@ -42,16 +42,16 @@
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-AdditionOperator::AdditionOperator() :
-  BinaryOperator()
+LogOperator::LogOperator() :
+  UnaryOperator()
 {
-  setPrecedence(Alpha_Precedence);
+  setNumberOfArguments(2);
 }
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-AdditionOperator::~AdditionOperator()
+LogOperator::~LogOperator()
 {
 
 }
@@ -59,19 +59,20 @@ AdditionOperator::~AdditionOperator()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-double AdditionOperator::calculate(AbstractFilter* filter, const QString &newArrayName, QStack<QSharedPointer<CalculatorItem> > &executionStack, int index)
-{ 
-  if (executionStack.size() >= 2)
+double LogOperator::calculate(AbstractFilter* filter, const QString &newArrayName, QStack<QSharedPointer<CalculatorItem> > &executionStack, int index)
+{
+  if (executionStack.size() >= 1 && NULL != qSharedPointerDynamicCast<ICalculatorArray>(executionStack.top()))
   {
-    QSharedPointer<ICalculatorArray> array1 = qSharedPointerDynamicCast<ICalculatorArray>(executionStack.pop());
-    QSharedPointer<ICalculatorArray> array2 = qSharedPointerDynamicCast<ICalculatorArray>(executionStack.pop());
+    QSharedPointer<ICalculatorArray> valueArray = qSharedPointerDynamicCast<ICalculatorArray>(executionStack.pop());
+    QSharedPointer<ICalculatorArray> baseArray = qSharedPointerDynamicCast<ICalculatorArray>(executionStack.pop());
 
-    double num1 = array1->getValue(index);
-    double num2 = array2->getValue(index);
-    double result = num1 + num2;
+    double valueNum = valueArray->getValue(index);
+    double baseNum = baseArray->getValue(index);
 
-    executionStack.push(array2);
-    executionStack.push(array1);
+    double result = log(valueNum) / log(baseNum);
+
+    executionStack.push(baseArray);
+    executionStack.push(valueArray);
 
     return result;
   }

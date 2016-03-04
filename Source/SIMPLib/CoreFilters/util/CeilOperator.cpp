@@ -33,7 +33,7 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-#include "AdditionOperator.h"
+#include "CeilOperator.h"
 
 #include <math.h>
 
@@ -42,16 +42,16 @@
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-AdditionOperator::AdditionOperator() :
-  BinaryOperator()
+CeilOperator::CeilOperator() :
+  UnaryOperator()
 {
-  setPrecedence(Alpha_Precedence);
+  setNumberOfArguments(1);
 }
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-AdditionOperator::~AdditionOperator()
+CeilOperator::~CeilOperator()
 {
 
 }
@@ -59,21 +59,12 @@ AdditionOperator::~AdditionOperator()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-double AdditionOperator::calculate(AbstractFilter* filter, const QString &newArrayName, QStack<QSharedPointer<CalculatorItem> > &executionStack, int index)
-{ 
-  if (executionStack.size() >= 2)
+double CeilOperator::calculate(AbstractFilter* filter, const QString &newArrayName, QStack<QSharedPointer<CalculatorItem> > &executionStack, int index)
+{
+  if (executionStack.size() >= 1 && NULL != qSharedPointerDynamicCast<ICalculatorArray>(executionStack.top()))
   {
-    QSharedPointer<ICalculatorArray> array1 = qSharedPointerDynamicCast<ICalculatorArray>(executionStack.pop());
-    QSharedPointer<ICalculatorArray> array2 = qSharedPointerDynamicCast<ICalculatorArray>(executionStack.pop());
-
-    double num1 = array1->getValue(index);
-    double num2 = array2->getValue(index);
-    double result = num1 + num2;
-
-    executionStack.push(array2);
-    executionStack.push(array1);
-
-    return result;
+    double num = qSharedPointerDynamicCast<ICalculatorArray>(executionStack.top())->getValue(index);
+    return ceil(num);
   }
 
   // If the execution gets down here, then we have an error

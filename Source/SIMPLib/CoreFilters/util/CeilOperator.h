@@ -33,53 +33,31 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-#include "AdditionOperator.h"
+#ifndef _CeilOperator_H_
+#define _CeilOperator_H_
 
-#include <math.h>
+#include <QtCore/QSharedPointer>
+#include <QtCore/QStack>
 
-#include "CalculatorArray.hpp"
+#include "SIMPLib/SIMPLib.h"
 
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-AdditionOperator::AdditionOperator() :
-  BinaryOperator()
+#include "UnaryOperator.h"
+
+class CalculatorNumber;
+
+class SIMPLib_EXPORT CeilOperator : public UnaryOperator
 {
-  setPrecedence(Alpha_Precedence);
-}
+  public:
 
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-AdditionOperator::~AdditionOperator()
-{
+    CeilOperator();
+    virtual ~CeilOperator();
 
-}
+    virtual double calculate(AbstractFilter* filter, const QString &newArrayName, QStack<QSharedPointer<CalculatorItem> > &executionStack, int index);
 
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-double AdditionOperator::calculate(AbstractFilter* filter, const QString &newArrayName, QStack<QSharedPointer<CalculatorItem> > &executionStack, int index)
-{ 
-  if (executionStack.size() >= 2)
-  {
-    QSharedPointer<ICalculatorArray> array1 = qSharedPointerDynamicCast<ICalculatorArray>(executionStack.pop());
-    QSharedPointer<ICalculatorArray> array2 = qSharedPointerDynamicCast<ICalculatorArray>(executionStack.pop());
+  private:
 
-    double num1 = array1->getValue(index);
-    double num2 = array2->getValue(index);
-    double result = num1 + num2;
+    CeilOperator(const CeilOperator&); // Copy Constructor Not Implemented
+    void operator=(const CeilOperator&); // Operator '=' Not Implemented
+};
 
-    executionStack.push(array2);
-    executionStack.push(array1);
-
-    return result;
-  }
-
-  // If the execution gets down here, then we have an error
-  QString ss = QObject::tr("The chosen infix equation is not a valid equation.");
-  filter->setErrorCondition(-4005);
-  filter->notifyErrorMessage(filter->getHumanLabel(), ss, filter->getErrorCondition());
-  return 0.0;
-}
-
+#endif /* _CeilOperator_H_ */

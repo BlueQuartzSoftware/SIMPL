@@ -37,6 +37,8 @@
 
 #include "ArrayCalculator.h"
 
+#include <QtCore/QMapIterator>
+
 #include "SIMPLib/Common/Constants.h"
 #include "SIMPLib/Common/TemplateHelpers.hpp"
 #include "SIMPLib/SIMPLibVersion.h"
@@ -60,8 +62,13 @@
 #include "util/TanOperator.h"
 #include "util/SqrtOperator.h"
 #include "util/Log10Operator.h"
+#include "util/LogOperator.h"
 #include "util/PowOperator.h"
 #include "util/RootOperator.h"
+#include "util/ExpOperator.h"
+#include "util/LnOperator.h"
+#include "util/FloorOperator.h"
+#include "util/CeilOperator.h"
 
 // Include the MOC generated file for this class
 #include "moc_ArrayCalculator.cpp"
@@ -141,7 +148,12 @@ ArrayCalculator::ArrayCalculator() :
   m_SymbolMap.insert("sqrt", QSharedPointer<SqrtOperator>(new SqrtOperator()));
   m_SymbolMap.insert("root", QSharedPointer<RootOperator>(new RootOperator()));
   m_SymbolMap.insert("log10", QSharedPointer<Log10Operator>(new Log10Operator()));
+  m_SymbolMap.insert("log", QSharedPointer<LogOperator>(new LogOperator()));
   m_SymbolMap.insert("^", QSharedPointer<PowOperator>(new PowOperator()));
+  m_SymbolMap.insert("exp", QSharedPointer<ExpOperator>(new ExpOperator()));
+  m_SymbolMap.insert("ln", QSharedPointer<LnOperator>(new LnOperator()));
+  m_SymbolMap.insert("floor", QSharedPointer<FloorOperator>(new FloorOperator()));
+  m_SymbolMap.insert("ceil", QSharedPointer<CeilOperator>(new CeilOperator()));
 }
 
 // -----------------------------------------------------------------------------
@@ -424,19 +436,43 @@ QVector<QSharedPointer<CalculatorItem> > ArrayCalculator::parseInfixEquation(QSt
     return QVector<QSharedPointer<CalculatorItem> >();
   }
 
-  // Remove spaces and place @ symbols around each item in the equation
-  for (QMap<QString, QSharedPointer<CalculatorItem> >::iterator iter = m_SymbolMap.begin(); iter != m_SymbolMap.end(); iter++)
+  /* Remove spaces and place @ symbols around each item in the equation.
+     We are iterating in reverse so that we can avoid partial string matching in our replacements.
+     (for example, looking for and replacing "log" will replace the "log" in "log10", which we don't want).
+     Iterating in reverse guarantees that we will replace "log10" first before we try to replace "log".
+     This will work in a similar way for all similarly named items. */
+  QMapIterator<QString, QSharedPointer<CalculatorItem> > iter(m_SymbolMap);
+  iter.toBack();
+  int index = m_SymbolMap.size() - 1;
+  while (iter.hasPrevious())
   {
+    iter.previous();
     QString symbolStr = iter.key();
 
-    equation.replace(symbolStr, "@" + symbolStr + "@");
+    // Replacing symbol name with a placeholder to avoid partial string matching on future replacements...
+    equation.replace(symbolStr, "@[s" + QString::number(index) + "]@");
+    index--;
+  }
+
+  iter.toFront();
+  index = 0;
+  while (iter.hasNext())
+  {
+    iter.next();
+    QString symbolStr = iter.key();
+
+    // Putting the actual symbol names back into the equation...
+    equation.replace("[s" + QString::number(index) + "]", symbolStr);
+    index++;
   }
 
   QStringList aaNames = selectedAM->getAttributeArrayNames();
   for (int i = 0; i < aaNames.size(); i++)
   {
     QString aaName = aaNames[i];
-    equation.replace(aaName, "@[" + QString::number(i) + "]@");
+
+    // Replacing attribute array name with a placeholder to avoid partial string matching on future replacements...
+    equation.replace(aaName, "@[aa" + QString::number(i) + "]@");
   }
 
   equation.remove(" ");
@@ -444,7 +480,9 @@ QVector<QSharedPointer<CalculatorItem> > ArrayCalculator::parseInfixEquation(QSt
   for (int i = 0; i < aaNames.size(); i++)
   {
     QString aaName = aaNames[i];
-    equation.replace("[" + QString::number(i) + "]", aaName);
+
+    // Putting the actual attribute array names back into the equation...
+    equation.replace("[aa" + QString::number(i) + "]", aaName);
   }
   
   // Now split the equation up into a QStringList of items
