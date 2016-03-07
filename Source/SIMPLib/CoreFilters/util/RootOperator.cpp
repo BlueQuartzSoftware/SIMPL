@@ -37,6 +37,8 @@
 
 #include <math.h>
 
+#include "SIMPLib/CoreFilters/ArrayCalculator.h"
+
 #include "CalculatorArray.hpp"
 
 // -----------------------------------------------------------------------------
@@ -79,7 +81,7 @@ double RootOperator::calculate(AbstractFilter* filter, const QString &newArrayNa
 
   // If the execution gets down here, then we have an error
   QString ss = QObject::tr("The chosen infix equation is not a valid equation.");
-  filter->setErrorCondition(-4005);
+  filter->setErrorCondition(ArrayCalculator::INVALID_EQUATION);
   filter->notifyErrorMessage(filter->getHumanLabel(), ss, filter->getErrorCondition());
   return 0.0;
 }
