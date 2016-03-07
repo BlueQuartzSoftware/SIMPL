@@ -54,6 +54,21 @@ class ArrayCalculator : public AbstractFilter
     Q_OBJECT /* Need this for Qt's signals and slots mechanism to work */
 
   public:
+    enum ErrorAndWarningCodes
+    {
+      EMPTY_EQUATION = -4010,
+      EMPTY_CAL_ARRAY = -4011,
+      LOST_ATTR_MATRIX = -4012,
+      INVALID_EQUATION = -4013,
+      NUMERIC_VALUE_WARNING = -4014,
+      INCORRECT_TUPLE_COUNT = -4015,
+      NO_NUMERIC_VALUES = -4016,
+      INCONSISTENT_TUPLES = -4017,
+      UNRECOGNIZED_ITEM = -4018,
+      MISMATCHED_PARENTHESES = -4019,
+      UNEXPECTED_OUTPUT = -4020
+    };
+
     SIMPL_SHARED_POINTERS(ArrayCalculator)
     SIMPL_STATIC_NEW_MACRO(ArrayCalculator)
     SIMPL_TYPE_MACRO_SUPER(ArrayCalculator, AbstractFilter)

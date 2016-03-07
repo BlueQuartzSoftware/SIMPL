@@ -226,7 +226,7 @@ void ArrayCalculator::dataCheck()
   if (m_InfixEquation.isEmpty() == true)
   {
     QString ss = QObject::tr("The infix equation is empty.");
-    setErrorCondition(-4011);
+    setErrorCondition(EMPTY_EQUATION);
     notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
     return;
   }
@@ -234,7 +234,7 @@ void ArrayCalculator::dataCheck()
   if (m_CalculatedArray.isEmpty() == true)
   {
     QString ss = QObject::tr("A calculated array has not been chosen.");
-    setErrorCondition(-4012);
+    setErrorCondition(EMPTY_CAL_ARRAY);
     notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
     return;
   }
@@ -243,7 +243,7 @@ void ArrayCalculator::dataCheck()
   if (NULL == selectedAM)
   {
     QString ss = QObject::tr("Could not find the attribute matrix \"%1\".").arg(m_SelectedAttributeMatrix.getAttributeMatrixName());
-    setErrorCondition(-4013);
+    setErrorCondition(LOST_ATTR_MATRIX);
     notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
     return;
   }
@@ -253,7 +253,7 @@ void ArrayCalculator::dataCheck()
   if (NULL == calculatedAM)
   {
     QString ss = QObject::tr("Could not find the attribute matrix \"%1\".").arg(m_CalculatedArray.getAttributeMatrixName());
-    setErrorCondition(-4014);
+    setErrorCondition(LOST_ATTR_MATRIX);
     notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
     return;
   }
@@ -272,7 +272,7 @@ void ArrayCalculator::dataCheck()
       if (result == false)
       {
         QString ss = QObject::tr("The chosen infix equation is not a valid equation.");
-        setErrorCondition(-4018);
+        setErrorCondition(INVALID_EQUATION);
         notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
         return;
       }
@@ -293,12 +293,13 @@ void ArrayCalculator::dataCheck()
     {
       QString ss = QObject::tr("The result of the chosen equation will be a numeric value, not an array."
         "This numeric value will be stored in an array with the number of tuples equal to 1.").arg(m_SelectedAttributeMatrix.getAttributeMatrixName());
-      notifyWarningMessage(getHumanLabel(), ss, -4015);
+      setWarningCondition(NUMERIC_VALUE_WARNING);
+      notifyWarningMessage(getHumanLabel(), ss, getWarningCondition());
 
       if (calculatedAM->getNumTuples() != 1)
       {
         QString ss = QObject::tr("The tuple count of the calculated attribute matrix is not equal to 1.").arg(m_SelectedAttributeMatrix.getAttributeMatrixName());
-        setErrorCondition(-4016);
+        setErrorCondition(INCORRECT_TUPLE_COUNT);
         notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
         return;
       }
@@ -306,7 +307,7 @@ void ArrayCalculator::dataCheck()
     else if (calculatedAM->getNumTuples() != selectedAM->getNumTuples())
     {
       QString ss = QObject::tr("The tuple count of the calculated attribute matrix is not equal to the tuple count of the selected attribute matrix.").arg(m_SelectedAttributeMatrix.getAttributeMatrixName());
-      setErrorCondition(-4017);
+      setErrorCondition(INCORRECT_TUPLE_COUNT);
       notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
       return;
     }
@@ -314,7 +315,7 @@ void ArrayCalculator::dataCheck()
   else
   {
     QString ss = QObject::tr("The chosen infix equation does not have any numeric values or arrays in it.");
-    setErrorCondition(-4019);
+    setErrorCondition(NO_NUMERIC_VALUES);
     notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
     return;
   }
@@ -415,7 +416,7 @@ void ArrayCalculator::execute()
   {
     QString ss = QObject::tr("Unexpected output item from chosen infix equation.  The output item must be an array."
                              "Please contact the DREAM3D developers for more information.");
-    setErrorCondition(-4009);
+    setErrorCondition(UNEXPECTED_OUTPUT);
     notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
     return;
   }
@@ -438,7 +439,7 @@ QVector<QSharedPointer<CalculatorItem> > ArrayCalculator::parseInfixEquation(QSt
   if (NULL == selectedAM)
   {
     QString ss = QObject::tr("Could not find the attribute matrix \"%1\".").arg(m_SelectedAttributeMatrix.getAttributeMatrixName());
-    setErrorCondition(-4001);
+    setErrorCondition(LOST_ATTR_MATRIX);
     notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
     return QVector<QSharedPointer<CalculatorItem> >();
   }
@@ -514,7 +515,7 @@ QVector<QSharedPointer<CalculatorItem> > ArrayCalculator::parseInfixEquation(QSt
       else if (dataArray->getNumberOfTuples() != numTuples)
       {
         QString ss = QObject::tr("Arrays \"%1\" and \"%2\" in the infix equation have an inconsistent number of tuples.").arg(firstArray).arg(dataArray->getName());
-        setErrorCondition(-4007);
+        setErrorCondition(INCONSISTENT_TUPLES);
         notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
         return QVector<QSharedPointer<CalculatorItem> >();
       }
@@ -528,7 +529,7 @@ QVector<QSharedPointer<CalculatorItem> > ArrayCalculator::parseInfixEquation(QSt
       if (itemPtr.isNull())
       {
         QString ss = QObject::tr("An unrecognized item \"%1\" was found in the chosen infix equation.").arg(strItem);
-        setErrorCondition(-4002);
+        setErrorCondition(UNRECOGNIZED_ITEM);
         notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
         return QVector<QSharedPointer<CalculatorItem> >();
       }
@@ -576,7 +577,7 @@ QVector<QSharedPointer<CalculatorItem> > ArrayCalculator::toRPN(QVector<QSharedP
       if (itemStack.isEmpty() == true)
       {
         QString ss = QObject::tr("One or more parentheses are mismatched in the chosen infix equation \"%1\".").arg(m_InfixEquation);
-        setErrorCondition(-4003);
+        setErrorCondition(MISMATCHED_PARENTHESES);
         notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
         return QVector<QSharedPointer<CalculatorItem> >();
       }
@@ -589,7 +590,7 @@ QVector<QSharedPointer<CalculatorItem> > ArrayCalculator::toRPN(QVector<QSharedP
       // This is a comma, so we want to continue without adding it to anything
       continue;
     }
-    else if (NULL != qSharedPointerDynamicCast<CalculatorOperator>(calcItem))
+    else
     {
       // This is an operator
       QSharedPointer<CalculatorOperator> incomingOperator = qSharedPointerDynamicCast<CalculatorOperator>(calcItem);
@@ -616,13 +617,6 @@ QVector<QSharedPointer<CalculatorItem> > ArrayCalculator::toRPN(QVector<QSharedP
       // Push the operator onto the rpn equation output.
       itemStack.push_back(calcItem);
     }
-    else
-    {
-      QString ss = QObject::tr("An unrecognized character was found in the chosen infix equation \"%1\".").arg(m_InfixEquation);
-      setErrorCondition(-4004);
-      notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
-      return QVector<QSharedPointer<CalculatorItem> >();
-    }
   }
 
   /* After we are done iterating through the infix equation items, keep transferring items from the item stack to the 
@@ -633,7 +627,7 @@ QVector<QSharedPointer<CalculatorItem> > ArrayCalculator::toRPN(QVector<QSharedP
     if (NULL != qSharedPointerDynamicCast<LeftParenthesisItem>(item))
     {
       QString ss = QObject::tr("One or more parentheses are mismatched in the chosen infix equation \"%1\".").arg(m_InfixEquation);
-      setErrorCondition(-4010);
+      setErrorCondition(MISMATCHED_PARENTHESES);
       notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
       return QVector<QSharedPointer<CalculatorItem> >();
     }
