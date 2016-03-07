@@ -184,6 +184,8 @@ class SIMPLib_EXPORT AbstractFilter : public Observable
 
     SIMPL_INSTANCE_PROPERTY(int, ErrorCondition)
 
+    SIMPL_INSTANCE_PROPERTY(int, WarningCondition)
+
     SIMPL_INSTANCE_PROPERTY(bool, InPreflight)
 
     // ------------------------------
