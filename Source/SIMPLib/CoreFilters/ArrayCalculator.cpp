@@ -38,6 +38,7 @@
 #include "ArrayCalculator.h"
 
 #include <QtCore/QMapIterator>
+#include <QtCore/QRegularExpression>
 
 #include "SIMPLib/Common/Constants.h"
 #include "SIMPLib/Common/TemplateHelpers.hpp"
@@ -60,6 +61,9 @@
 #include "util/SinOperator.h"
 #include "util/CosOperator.h"
 #include "util/TanOperator.h"
+#include "util/ASinOperator.h"
+#include "util/ACosOperator.h"
+#include "util/ATanOperator.h"
 #include "util/SqrtOperator.h"
 #include "util/Log10Operator.h"
 #include "util/LogOperator.h"
@@ -141,15 +145,18 @@ ArrayCalculator::ArrayCalculator() :
   m_SymbolMap.insert("-", QSharedPointer<SubtractionOperator>(new SubtractionOperator()));
   m_SymbolMap.insert("*", QSharedPointer<MultiplicationOperator>(new MultiplicationOperator()));
   m_SymbolMap.insert("/", QSharedPointer<DivisionOperator>(new DivisionOperator()));
+  m_SymbolMap.insert("^", QSharedPointer<PowOperator>(new PowOperator()));
   m_SymbolMap.insert("abs", QSharedPointer<ABSOperator>(new ABSOperator()));
   m_SymbolMap.insert("sin", QSharedPointer<SinOperator>(new SinOperator()));
   m_SymbolMap.insert("cos", QSharedPointer<CosOperator>(new CosOperator()));
   m_SymbolMap.insert("tan", QSharedPointer<TanOperator>(new TanOperator()));
+  m_SymbolMap.insert("asin", QSharedPointer<ASinOperator>(new ASinOperator()));
+  m_SymbolMap.insert("acos", QSharedPointer<ACosOperator>(new ACosOperator()));
+  m_SymbolMap.insert("atan", QSharedPointer<ATanOperator>(new ATanOperator()));
   m_SymbolMap.insert("sqrt", QSharedPointer<SqrtOperator>(new SqrtOperator()));
   m_SymbolMap.insert("root", QSharedPointer<RootOperator>(new RootOperator()));
   m_SymbolMap.insert("log10", QSharedPointer<Log10Operator>(new Log10Operator()));
   m_SymbolMap.insert("log", QSharedPointer<LogOperator>(new LogOperator()));
-  m_SymbolMap.insert("^", QSharedPointer<PowOperator>(new PowOperator()));
   m_SymbolMap.insert("exp", QSharedPointer<ExpOperator>(new ExpOperator()));
   m_SymbolMap.insert("ln", QSharedPointer<LnOperator>(new LnOperator()));
   m_SymbolMap.insert("floor", QSharedPointer<FloorOperator>(new FloorOperator()));
@@ -436,69 +443,27 @@ QVector<QSharedPointer<CalculatorItem> > ArrayCalculator::parseInfixEquation(QSt
     return QVector<QSharedPointer<CalculatorItem> >();
   }
 
-  /* Remove spaces and place @ symbols around each item in the equation.
-     We are iterating in reverse so that we can avoid partial string matching in our replacements.
-     (for example, looking for and replacing "log" will replace the "log" in "log10", which we don't want).
-     Iterating in reverse guarantees that we will replace "log10" first before we try to replace "log".
-     This will work in a similar way for all similarly named items. */
-  QMapIterator<QString, QSharedPointer<CalculatorItem> > iter(m_SymbolMap);
-  iter.toBack();
-  int index = m_SymbolMap.size() - 1;
-  while (iter.hasPrevious())
-  {
-    iter.previous();
-    QString symbolStr = iter.key();
-
-    // Replacing symbol name with a placeholder to avoid partial string matching on future replacements...
-    equation.replace(symbolStr, "@[s" + QString::number(index) + "]@");
-    index--;
-  }
-
-  iter.toFront();
-  index = 0;
+  // Parse all the items into a QStringList using a regular expression
+  QStringList itemList;
+  QRegularExpression regExp("\\w{2,}\\d{0,2}|\\d+\\.\\d+|\\d+|\\+|\\-|\\*|\\/|\\(|\\)|\\,");
+  QRegularExpressionMatchIterator iter = regExp.globalMatch(m_InfixEquation);
   while (iter.hasNext())
   {
-    iter.next();
-    QString symbolStr = iter.key();
-
-    // Putting the actual symbol names back into the equation...
-    equation.replace("[s" + QString::number(index) + "]", symbolStr);
-    index++;
+    QRegularExpressionMatch match = iter.next();
+    itemList.push_back(match.captured());
   }
-
-  QStringList aaNames = selectedAM->getAttributeArrayNames();
-  for (int i = 0; i < aaNames.size(); i++)
-  {
-    QString aaName = aaNames[i];
-
-    // Replacing attribute array name with a placeholder to avoid partial string matching on future replacements...
-    equation.replace(aaName, "@[aa" + QString::number(i) + "]@");
-  }
-
-  equation.remove(" ");
-
-  for (int i = 0; i < aaNames.size(); i++)
-  {
-    QString aaName = aaNames[i];
-
-    // Putting the actual attribute array names back into the equation...
-    equation.replace("[aa" + QString::number(i) + "]", aaName);
-  }
-  
-  // Now split the equation up into a QStringList of items
-  QStringList list = equation.split("@", QString::SkipEmptyParts);
 
   // Iterate through the QStringList and create the proper CalculatorItems
   QVector<QSharedPointer<CalculatorItem> > parsedInfix;
   int numTuples = -1;
   QString firstArray = "";
-  for (int i = 0; i < list.size(); i++)
+  for (int i = 0; i < itemList.size(); i++)
   {
-    QString listItem = list[i];
+    QString strItem = itemList[i];
     QSharedPointer<CalculatorItem> itemPtr;
 
     bool ok;
-    double num = listItem.toDouble(&ok);
+    double num = strItem.toDouble(&ok);
     if (ok == true)
     {
       // This is a number, so create an array with numOfTuples equal to 1 and set the value into it
@@ -507,7 +472,7 @@ QVector<QSharedPointer<CalculatorItem> > ArrayCalculator::parseInfixEquation(QSt
       itemPtr = QSharedPointer<CalculatorArray<double> >(new CalculatorArray<double>(ptr));
       parsedInfix.push_back(itemPtr);
     }
-    else if (listItem == "-")
+    else if (strItem == "-")
     {
       // This could be either a negative sign or subtraction sign, so we need to figure out which one it is
       if (
@@ -533,14 +498,14 @@ QVector<QSharedPointer<CalculatorItem> > ArrayCalculator::parseInfixEquation(QSt
       else
       {
         // By context, this is a subtraction sign
-        itemPtr = m_SymbolMap.value(listItem);
+        itemPtr = m_SymbolMap.value(strItem);
         parsedInfix.push_back(itemPtr);
       }
     }
-    else if (selectedAM->getAttributeArrayNames().contains(listItem))
+    else if (selectedAM->getAttributeArrayNames().contains(strItem))
     {
       // This is an array, so create the array item
-      IDataArray::Pointer dataArray = selectedAM->getAttributeArray(listItem);
+      IDataArray::Pointer dataArray = selectedAM->getAttributeArray(strItem);
       if (numTuples < 0 && firstArray.isEmpty() == true)
       {
         numTuples = dataArray->getNumberOfTuples();
@@ -559,10 +524,10 @@ QVector<QSharedPointer<CalculatorItem> > ArrayCalculator::parseInfixEquation(QSt
     }
     else
     {
-      itemPtr = m_SymbolMap.value(listItem);
+      itemPtr = m_SymbolMap.value(strItem);
       if (itemPtr.isNull())
       {
-        QString ss = QObject::tr("An unrecognized item \"%1\" was found in the chosen infix equation.").arg(listItem);
+        QString ss = QObject::tr("An unrecognized item \"%1\" was found in the chosen infix equation.").arg(strItem);
         setErrorCondition(-4002);
         notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
         return QVector<QSharedPointer<CalculatorItem> >();
