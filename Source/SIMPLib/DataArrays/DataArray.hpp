@@ -402,7 +402,7 @@ class DataArray : public IDataArray
     {
       if(!m_IsAllocated) { return false; }
       if(NULL == m_Array) { return false; }
-      if(destTupleOffset >= m_MaxId) { return false; }
+      if(destTupleOffset > m_MaxId) { return false; }
       if(!sourceArray->isAllocated()) { return false; }
       Self* source = dynamic_cast<Self*>(sourceArray.get());
       if(NULL == source->getPointer(0)) { return false; }
