@@ -64,12 +64,12 @@ DivisionOperator::~DivisionOperator()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-double DivisionOperator::calculate(AbstractFilter* filter, const QString &newArrayName, QStack<QSharedPointer<CalculatorItem> > &executionStack, int index)
+double DivisionOperator::calculate(AbstractFilter* filter, const QString &newArrayName, QStack<CalculatorItem::Pointer> &executionStack, int index)
 {
   if (executionStack.size() >= 2)
   {
-    QSharedPointer<ICalculatorArray> divisorArray = qSharedPointerDynamicCast<ICalculatorArray>(executionStack.pop());
-    QSharedPointer<ICalculatorArray> dividendArray = qSharedPointerDynamicCast<ICalculatorArray>(executionStack.pop());
+    ICalculatorArray::Pointer divisorArray = std::dynamic_pointer_cast<ICalculatorArray>(executionStack.pop());
+    ICalculatorArray::Pointer dividendArray = std::dynamic_pointer_cast<ICalculatorArray>(executionStack.pop());
 
     double divisor = divisorArray->getValue(index);
     double dividend = dividendArray->getValue(index);

@@ -61,11 +61,11 @@ ASinOperator::~ASinOperator()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-double ASinOperator::calculate(AbstractFilter* filter, const QString &newArrayName, QStack<QSharedPointer<CalculatorItem> > &executionStack, int index)
+double ASinOperator::calculate(AbstractFilter* filter, const QString &newArrayName, QStack<CalculatorItem::Pointer> &executionStack, int index)
 {
-  if (executionStack.size() >= 1 && NULL != qSharedPointerDynamicCast<ICalculatorArray>(executionStack.top()))
+  if (executionStack.size() >= 1 && NULL != std::dynamic_pointer_cast<ICalculatorArray>(executionStack.top()))
   {
-    double degrees = qSharedPointerDynamicCast<ICalculatorArray>(executionStack.top())->getValue(index);
+    double degrees = std::dynamic_pointer_cast<ICalculatorArray>(executionStack.top())->getValue(index);
     double radians = toRadians(degrees);
     return asin(radians);
   }

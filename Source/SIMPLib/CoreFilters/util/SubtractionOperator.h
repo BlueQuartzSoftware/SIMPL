@@ -46,11 +46,19 @@
 class SIMPLib_EXPORT SubtractionOperator : public BinaryOperator
 {
   public:
+    SIMPL_SHARED_POINTERS(SubtractionOperator)
 
-    SubtractionOperator();
+    static Pointer New()
+    {
+      return Pointer(new SubtractionOperator());
+    }
+
     virtual ~SubtractionOperator();
 
-    virtual double calculate(AbstractFilter* filter, const QString &newArrayName, QStack<QSharedPointer<CalculatorItem> > &executionStack, int index);
+    virtual double calculate(AbstractFilter* filter, const QString &newArrayName, QStack<CalculatorItem::Pointer> &executionStack, int index);
+
+  protected:
+    SubtractionOperator();
 
   private:
 

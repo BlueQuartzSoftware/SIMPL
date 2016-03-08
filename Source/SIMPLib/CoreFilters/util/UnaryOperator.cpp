@@ -62,7 +62,7 @@ UnaryOperator::~UnaryOperator()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-double UnaryOperator::calculate(AbstractFilter* filter, const QString &newArrayName, QStack<QSharedPointer<CalculatorItem> > &executionStack, int index)
+double UnaryOperator::calculate(AbstractFilter* filter, const QString &newArrayName, QStack<CalculatorItem::Pointer> &executionStack, int index)
 {
   // This should never be executed
   return 0.0;
@@ -71,11 +71,11 @@ double UnaryOperator::calculate(AbstractFilter* filter, const QString &newArrayN
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-bool UnaryOperator::checkValidity(QVector<QSharedPointer<CalculatorItem> > infixVector, int currentIndex)
+bool UnaryOperator::checkValidity(QVector<CalculatorItem::Pointer> infixVector, int currentIndex)
 {
   if (currentIndex - 1 >= 0 &&
-    NULL == qSharedPointerDynamicCast<BinaryOperator>(infixVector[currentIndex-1])
-    && NULL == qSharedPointerDynamicCast<LeftParenthesisItem>(infixVector[currentIndex - 1]))
+    NULL == std::dynamic_pointer_cast<BinaryOperator>(infixVector[currentIndex-1])
+    && NULL == std::dynamic_pointer_cast<LeftParenthesisItem>(infixVector[currentIndex - 1]))
   {
     return false;
   }
@@ -83,33 +83,33 @@ bool UnaryOperator::checkValidity(QVector<QSharedPointer<CalculatorItem> > infix
   int index = currentIndex + 1;
   int commaCount = 0;
   bool hasArray = false;
-  if (index < infixVector.size() && NULL != qSharedPointerDynamicCast<LeftParenthesisItem>(infixVector[index]))
+  if (index < infixVector.size() && NULL != std::dynamic_pointer_cast<LeftParenthesisItem>(infixVector[index]))
   {
     index++;
 
     // Iterate through the vector to find the matching right parenthesis
     for (; index < infixVector.size(); index++)
     {
-      if (NULL != qSharedPointerDynamicCast<RightParenthesisItem>(infixVector[index]))
+      if (NULL != std::dynamic_pointer_cast<RightParenthesisItem>(infixVector[index]))
       {
         // We found the matching right parenthesis, so return true
         if (commaCount < m_NumOfArguments - 1
-          || (index + 1 < infixVector.size() && NULL == qSharedPointerDynamicCast<BinaryOperator>(infixVector[index + 1])
-          && NULL == qSharedPointerDynamicCast<RightParenthesisItem>(infixVector[index + 1])) || hasArray == false)
+          || (index + 1 < infixVector.size() && NULL == std::dynamic_pointer_cast<BinaryOperator>(infixVector[index + 1])
+          && NULL == std::dynamic_pointer_cast<RightParenthesisItem>(infixVector[index + 1])) || hasArray == false)
         {
           return false;
         }
 
         return true;
       }
-      else if (NULL != qSharedPointerDynamicCast<LeftParenthesisItem>(infixVector[index]))
+      else if (NULL != std::dynamic_pointer_cast<LeftParenthesisItem>(infixVector[index]))
       {
         /* We found another left parenthesis, but we don't care what's inside this set of parentheses
            (other operators' checkValidity functions will take care of these values), so just iterate
            until we find the matching closing parenthesis for this opening parenthesis */
-        while (index < infixVector.size() && NULL == qSharedPointerDynamicCast<RightParenthesisItem>(infixVector[index]))
+        while (index < infixVector.size() && NULL == std::dynamic_pointer_cast<RightParenthesisItem>(infixVector[index]))
         {
-          if (NULL != qSharedPointerDynamicCast<ICalculatorArray>(infixVector[index]))
+          if (NULL != std::dynamic_pointer_cast<ICalculatorArray>(infixVector[index]))
           {
             hasArray = true;
           }
@@ -117,7 +117,7 @@ bool UnaryOperator::checkValidity(QVector<QSharedPointer<CalculatorItem> > infix
           index++;
         }
       }
-      else if (NULL != qSharedPointerDynamicCast<CommaSeparator>(infixVector[index]))
+      else if (NULL != std::dynamic_pointer_cast<CommaSeparator>(infixVector[index]))
       {
         // We found a comma, so increase the comma count
         commaCount++;
@@ -127,7 +127,7 @@ bool UnaryOperator::checkValidity(QVector<QSharedPointer<CalculatorItem> > infix
           return false;
         }
       }
-      else if (NULL != qSharedPointerDynamicCast<ICalculatorArray>(infixVector[index]))
+      else if (NULL != std::dynamic_pointer_cast<ICalculatorArray>(infixVector[index]))
       {
         hasArray = true;
       }

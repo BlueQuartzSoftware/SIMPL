@@ -46,11 +46,19 @@
 class SIMPLib_EXPORT DivisionOperator : public BinaryOperator
 {
   public:
+    SIMPL_SHARED_POINTERS(DivisionOperator)
 
-    DivisionOperator();
+    static Pointer New()
+    {
+      return Pointer(new DivisionOperator());
+    }
+
     virtual ~DivisionOperator();
 
-    virtual double calculate(AbstractFilter* filter, const QString &newArrayName, QStack<QSharedPointer<CalculatorItem> > &executionStack, int index);
+    virtual double calculate(AbstractFilter* filter, const QString &newArrayName, QStack<CalculatorItem::Pointer> &executionStack, int index);
+
+  protected:
+    DivisionOperator();
 
   private:
 

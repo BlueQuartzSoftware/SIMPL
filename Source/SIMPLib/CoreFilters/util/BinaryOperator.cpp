@@ -58,7 +58,7 @@ BinaryOperator::~BinaryOperator()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-double BinaryOperator::calculate(AbstractFilter* filter, const QString &newArrayName, QStack<QSharedPointer<CalculatorItem> > &executionStack, int index)
+double BinaryOperator::calculate(AbstractFilter* filter, const QString &newArrayName, QStack<CalculatorItem::Pointer> &executionStack, int index)
 {
   // This should never be executed
   return 0.0;
@@ -67,7 +67,7 @@ double BinaryOperator::calculate(AbstractFilter* filter, const QString &newArray
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-bool BinaryOperator::checkValidity(QVector<QSharedPointer<CalculatorItem> > infixVector, int currentIndex)
+bool BinaryOperator::checkValidity(QVector<CalculatorItem::Pointer> infixVector, int currentIndex)
 {
   /* We need to check that the infix vector has a big enough size to fit all parts
   of the subtraction expression */
@@ -79,12 +79,12 @@ bool BinaryOperator::checkValidity(QVector<QSharedPointer<CalculatorItem> > infi
   int leftValue = currentIndex - 1;
   int rightValue = currentIndex + 1;
 
-  if ((NULL != qSharedPointerDynamicCast<CalculatorOperator>(infixVector[leftValue])
-    && qSharedPointerDynamicCast<CalculatorOperator>(infixVector[leftValue])->getOperatorType() == Binary)
-    || (NULL != qSharedPointerDynamicCast<CalculatorOperator>(infixVector[rightValue])
-    && qSharedPointerDynamicCast<CalculatorOperator>(infixVector[rightValue])->getOperatorType() == Binary)
-    || NULL != qSharedPointerDynamicCast<LeftParenthesisItem>(infixVector[leftValue])
-    || NULL != qSharedPointerDynamicCast<RightParenthesisItem>(infixVector[rightValue]))
+  if ((NULL != std::dynamic_pointer_cast<CalculatorOperator>(infixVector[leftValue])
+    && std::dynamic_pointer_cast<CalculatorOperator>(infixVector[leftValue])->getOperatorType() == Binary)
+    || (NULL != std::dynamic_pointer_cast<CalculatorOperator>(infixVector[rightValue])
+    && std::dynamic_pointer_cast<CalculatorOperator>(infixVector[rightValue])->getOperatorType() == Binary)
+    || NULL != std::dynamic_pointer_cast<LeftParenthesisItem>(infixVector[leftValue])
+    || NULL != std::dynamic_pointer_cast<RightParenthesisItem>(infixVector[rightValue]))
   {
     return false;
   }

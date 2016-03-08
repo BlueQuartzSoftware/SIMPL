@@ -48,11 +48,19 @@ class CalculatorNumber;
 class SIMPLib_EXPORT PowOperator : public BinaryOperator
 {
   public:
+    SIMPL_SHARED_POINTERS(PowOperator)
 
-    PowOperator();
+    static Pointer New()
+    {
+      return Pointer(new PowOperator());
+    }
+
     virtual ~PowOperator();
 
-    virtual double calculate(AbstractFilter* filter, const QString &newArrayName, QStack<QSharedPointer<CalculatorItem> > &executionStack, int index);
+    virtual double calculate(AbstractFilter* filter, const QString &newArrayName, QStack<CalculatorItem::Pointer> &executionStack, int index);
+
+  protected:
+    PowOperator();
 
   private:
 

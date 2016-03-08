@@ -61,12 +61,12 @@ AdditionOperator::~AdditionOperator()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-double AdditionOperator::calculate(AbstractFilter* filter, const QString &newArrayName, QStack<QSharedPointer<CalculatorItem> > &executionStack, int index)
+double AdditionOperator::calculate(AbstractFilter* filter, const QString &newArrayName, QStack<CalculatorItem::Pointer> &executionStack, int index)
 { 
   if (executionStack.size() >= 2)
   {
-    QSharedPointer<ICalculatorArray> array1 = qSharedPointerDynamicCast<ICalculatorArray>(executionStack.pop());
-    QSharedPointer<ICalculatorArray> array2 = qSharedPointerDynamicCast<ICalculatorArray>(executionStack.pop());
+    ICalculatorArray::Pointer array1 = std::dynamic_pointer_cast<ICalculatorArray>(executionStack.pop());
+    ICalculatorArray::Pointer array2 = std::dynamic_pointer_cast<ICalculatorArray>(executionStack.pop());
 
     double num1 = array1->getValue(index);
     double num2 = array2->getValue(index);

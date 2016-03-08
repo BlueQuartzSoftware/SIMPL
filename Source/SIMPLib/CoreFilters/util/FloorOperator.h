@@ -48,11 +48,19 @@ class CalculatorNumber;
 class SIMPLib_EXPORT FloorOperator : public UnaryOperator
 {
   public:
+    SIMPL_SHARED_POINTERS(FloorOperator)
 
-    FloorOperator();
+    static Pointer New()
+    {
+      return Pointer(new FloorOperator());
+    }
+
     virtual ~FloorOperator();
 
-    virtual double calculate(AbstractFilter* filter, const QString &newArrayName, QStack<QSharedPointer<CalculatorItem> > &executionStack, int index);
+    virtual double calculate(AbstractFilter* filter, const QString &newArrayName, QStack<CalculatorItem::Pointer> &executionStack, int index);
+
+  protected:
+    FloorOperator();
 
   private:
 

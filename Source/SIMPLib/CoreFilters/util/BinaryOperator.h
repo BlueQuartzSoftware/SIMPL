@@ -41,12 +41,21 @@
 class SIMPLib_EXPORT BinaryOperator : public CalculatorOperator
 {
   public:
-    BinaryOperator();
+    SIMPL_SHARED_POINTERS(BinaryOperator)
+
+    static Pointer New()
+    {
+      return Pointer(new BinaryOperator());
+    }
+
     virtual ~BinaryOperator();
 
-    virtual double calculate(AbstractFilter* filter, const QString &newArrayName, QStack<QSharedPointer<CalculatorItem> > &executionStack, int index);
+    virtual double calculate(AbstractFilter* filter, const QString &newArrayName, QStack<CalculatorItem::Pointer> &executionStack, int index);
 
-    bool checkValidity(QVector<QSharedPointer<CalculatorItem> > infixVector, int currentIndex) final;
+    bool checkValidity(QVector<CalculatorItem::Pointer> infixVector, int currentIndex) final;
+
+  protected:
+    BinaryOperator();
 
   private:
 

@@ -56,7 +56,7 @@ CalculatorOperator::~CalculatorOperator()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-bool CalculatorOperator::hasHigherPrecedence(const QSharedPointer<CalculatorOperator> other)
+bool CalculatorOperator::hasHigherPrecedence(const CalculatorOperator::Pointer other)
 {
   if (m_Precedence > other->m_Precedence)
   {
@@ -69,7 +69,7 @@ bool CalculatorOperator::hasHigherPrecedence(const QSharedPointer<CalculatorOper
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-double CalculatorOperator::calculate(AbstractFilter* filter, const QString &newArrayName, QStack<QSharedPointer<CalculatorItem> > &executionStack, int index)
+double CalculatorOperator::calculate(AbstractFilter* filter, const QString &newArrayName, QStack<CalculatorItem::Pointer> &executionStack, int index)
 {
   // This should never be executed
   return 0.0;
@@ -78,7 +78,7 @@ double CalculatorOperator::calculate(AbstractFilter* filter, const QString &newA
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-bool CalculatorOperator::checkValidity(QVector<QSharedPointer<CalculatorItem> > infixVector, int currentIndex)
+bool CalculatorOperator::checkValidity(QVector<CalculatorItem::Pointer> infixVector, int currentIndex)
 {
   // This should never be executed
   return false;

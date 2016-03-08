@@ -43,9 +43,17 @@
 class SIMPLib_EXPORT RightParenthesisItem : public CalculatorItem
 {
   public:
+    SIMPL_SHARED_POINTERS(RightParenthesisItem)
 
-    RightParenthesisItem();
+    static Pointer New()
+    {
+      return Pointer(new RightParenthesisItem());
+    }
+
     virtual ~RightParenthesisItem();
+
+  protected:
+    RightParenthesisItem();
 
   private:
 

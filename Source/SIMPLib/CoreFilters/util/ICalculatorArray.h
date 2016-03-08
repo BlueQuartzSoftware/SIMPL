@@ -46,12 +46,20 @@
 class SIMPLib_EXPORT ICalculatorArray : public CalculatorItem
 {
   public:
+    SIMPL_SHARED_POINTERS(ICalculatorArray)
 
-    ICalculatorArray(QObject* parent = NULL);
+    static Pointer New(QObject* parent = NULL)
+    {
+      return Pointer(new ICalculatorArray(parent));
+    }
+
     virtual ~ICalculatorArray();
 
     virtual IDataArray::Pointer getArray();
     virtual double getValue(int i);
+
+  protected:
+    ICalculatorArray(QObject* parent = NULL);
 
   private:
 

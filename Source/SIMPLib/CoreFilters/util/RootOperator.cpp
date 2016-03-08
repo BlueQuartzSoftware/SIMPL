@@ -61,12 +61,12 @@ RootOperator::~RootOperator()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-double RootOperator::calculate(AbstractFilter* filter, const QString &newArrayName, QStack<QSharedPointer<CalculatorItem> > &executionStack, int index)
+double RootOperator::calculate(AbstractFilter* filter, const QString &newArrayName, QStack<CalculatorItem::Pointer> &executionStack, int index)
 {
-  if (executionStack.size() >= 1 && NULL != qSharedPointerDynamicCast<ICalculatorArray>(executionStack.top()))
+  if (executionStack.size() >= 1 && NULL != std::dynamic_pointer_cast<ICalculatorArray>(executionStack.top()))
   {
-    QSharedPointer<ICalculatorArray> rootArray = qSharedPointerDynamicCast<ICalculatorArray>(executionStack.pop());
-    QSharedPointer<ICalculatorArray> baseArray = qSharedPointerDynamicCast<ICalculatorArray>(executionStack.pop());
+    ICalculatorArray::Pointer rootArray = std::dynamic_pointer_cast<ICalculatorArray>(executionStack.pop());
+    ICalculatorArray::Pointer baseArray = std::dynamic_pointer_cast<ICalculatorArray>(executionStack.pop());
 
     double rootNum = rootArray->getValue(index);
     double baseNum = baseArray->getValue(index);

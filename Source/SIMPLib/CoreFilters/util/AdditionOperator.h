@@ -48,11 +48,19 @@ class CalculatorNumber;
 class SIMPLib_EXPORT AdditionOperator : public BinaryOperator
 {
   public:
+    SIMPL_SHARED_POINTERS(AdditionOperator)
 
-    AdditionOperator();
+    static Pointer New()
+    {
+      return Pointer(new AdditionOperator());
+    }
+
     virtual ~AdditionOperator();
 
-    virtual double calculate(AbstractFilter* filter, const QString &newArrayName, QStack<QSharedPointer<CalculatorItem> > &executionStack, int index);
+    virtual double calculate(AbstractFilter* filter, const QString &newArrayName, QStack<CalculatorItem::Pointer> &executionStack, int index);
+
+  protected:
+    AdditionOperator();
 
   private:
 

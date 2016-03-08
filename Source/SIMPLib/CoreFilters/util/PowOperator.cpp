@@ -61,12 +61,12 @@ PowOperator::~PowOperator()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-double PowOperator::calculate(AbstractFilter* filter, const QString &newArrayName, QStack<QSharedPointer<CalculatorItem> > &executionStack, int index)
+double PowOperator::calculate(AbstractFilter* filter, const QString &newArrayName, QStack<CalculatorItem::Pointer> &executionStack, int index)
 { 
   if (executionStack.size() >= 2)
   {
-    QSharedPointer<ICalculatorArray> exponentArray = qSharedPointerDynamicCast<ICalculatorArray>(executionStack.pop());
-    QSharedPointer<ICalculatorArray> baseArray = qSharedPointerDynamicCast<ICalculatorArray>(executionStack.pop());
+    ICalculatorArray::Pointer exponentArray = std::dynamic_pointer_cast<ICalculatorArray>(executionStack.pop());
+    ICalculatorArray::Pointer baseArray = std::dynamic_pointer_cast<ICalculatorArray>(executionStack.pop());
 
     double exponent = exponentArray->getValue(index);
     double base = baseArray->getValue(index);

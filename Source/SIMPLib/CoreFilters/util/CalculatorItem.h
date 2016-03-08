@@ -39,13 +39,22 @@
 #include <QtCore/QObject>
 
 #include "SIMPLib/SIMPLib.h"
+#include "SIMPLib/Common/SIMPLibSetGetMacros.h"
 
 class SIMPLib_EXPORT CalculatorItem
 {
   public:
+    SIMPL_SHARED_POINTERS(CalculatorItem)
 
-    CalculatorItem(QObject* parent = NULL);
+    static Pointer New(QObject* parent = NULL)
+    {
+      return Pointer(new CalculatorItem(parent));
+    }
+
     virtual ~CalculatorItem();
+
+  protected:
+    CalculatorItem(QObject* parent = NULL);
 
   private:
 

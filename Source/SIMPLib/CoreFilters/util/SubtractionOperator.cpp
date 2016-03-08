@@ -61,12 +61,12 @@ SubtractionOperator::~SubtractionOperator()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-double SubtractionOperator::calculate(AbstractFilter* filter, const QString &newArrayName, QStack<QSharedPointer<CalculatorItem> > &executionStack, int index)
+double SubtractionOperator::calculate(AbstractFilter* filter, const QString &newArrayName, QStack<CalculatorItem::Pointer> &executionStack, int index)
 {
   if (executionStack.size() >= 2)
   {
-    QSharedPointer<ICalculatorArray> subtrahendArray = qSharedPointerDynamicCast<ICalculatorArray>(executionStack.pop());
-    QSharedPointer<ICalculatorArray> minuendArray = qSharedPointerDynamicCast<ICalculatorArray>(executionStack.pop());
+    ICalculatorArray::Pointer subtrahendArray = std::dynamic_pointer_cast<ICalculatorArray>(executionStack.pop());
+    ICalculatorArray::Pointer minuendArray = std::dynamic_pointer_cast<ICalculatorArray>(executionStack.pop());
 
     double subtrahend = subtrahendArray->getValue(index);
     double minuend = minuendArray->getValue(index);

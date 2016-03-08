@@ -47,12 +47,11 @@ template <typename T>
 class SIMPLib_EXPORT CalculatorArray : public ICalculatorArray
 {
   public:
+    SIMPL_SHARED_POINTERS(CalculatorArray<T>)
 
-    CalculatorArray(typename DataArray<T>::Pointer dataArray, QObject* parent = NULL) :
-      ICalculatorArray(parent),
-      m_Array(dataArray)
+    static Pointer New(typename DataArray<T>::Pointer dataArray, QObject* parent = NULL)
     {
-
+      return Pointer(new CalculatorArray(dataArray, parent));
     }
 
     virtual ~CalculatorArray() {}
@@ -74,6 +73,14 @@ class SIMPLib_EXPORT CalculatorArray : public ICalculatorArray
         // ERROR: The array is empty!
         return 0.0;
       }
+    }
+
+  protected:
+    CalculatorArray(typename DataArray<T>::Pointer dataArray, QObject* parent = NULL) :
+      ICalculatorArray(parent),
+      m_Array(dataArray)
+    {
+
     }
 
   private:

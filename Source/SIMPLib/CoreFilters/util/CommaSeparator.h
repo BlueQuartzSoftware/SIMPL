@@ -43,9 +43,17 @@
 class SIMPLib_EXPORT CommaSeparator : public CalculatorSeparator
 {
   public:
+    SIMPL_SHARED_POINTERS(CommaSeparator)
 
-    CommaSeparator();
+    static Pointer New()
+    {
+      return Pointer(new CommaSeparator());
+    }
+
     virtual ~CommaSeparator();
+
+  protected:
+    CommaSeparator();
 
   private:
 

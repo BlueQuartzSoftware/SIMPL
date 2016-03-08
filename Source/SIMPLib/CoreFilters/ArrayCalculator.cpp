@@ -81,52 +81,52 @@
     if(TemplateHelpers::CanDynamicCast<FloatArrayType>()(iDataArrayPtr))\
     {\
       FloatArrayType::Pointer arrayCast = std::dynamic_pointer_cast<FloatArrayType>(iDataArrayPtr);\
-      itemPtr = QSharedPointer<CalculatorArray<float> >(new CalculatorArray<float>(arrayCast));\
+      itemPtr = CalculatorArray<float>::New(arrayCast);\
     }\
     else if(TemplateHelpers::CanDynamicCast<DoubleArrayType>()(iDataArrayPtr))\
     {\
       DoubleArrayType::Pointer arrayCast = std::dynamic_pointer_cast<DoubleArrayType>(iDataArrayPtr);\
-      itemPtr = QSharedPointer<CalculatorArray<double> >(new CalculatorArray<double>(arrayCast));\
+      itemPtr = CalculatorArray<double>::New(arrayCast);\
     }\
     else if(TemplateHelpers::CanDynamicCast<Int8ArrayType>()(iDataArrayPtr))\
     {\
       Int8ArrayType::Pointer arrayCast = std::dynamic_pointer_cast<Int8ArrayType>(iDataArrayPtr);\
-      itemPtr = QSharedPointer<CalculatorArray<int8_t> >(new CalculatorArray<int8_t>(arrayCast));\
+      itemPtr = CalculatorArray<int8_t>::New(arrayCast);\
     }\
     else if(TemplateHelpers::CanDynamicCast<UInt8ArrayType>()(iDataArrayPtr))\
     {\
       UInt8ArrayType::Pointer arrayCast = std::dynamic_pointer_cast<UInt8ArrayType>(iDataArrayPtr);\
-      itemPtr = QSharedPointer<CalculatorArray<uint8_t> >(new CalculatorArray<uint8_t>(arrayCast));\
+      itemPtr = CalculatorArray<uint8_t>::New(arrayCast);\
     }\
     else if(TemplateHelpers::CanDynamicCast<Int16ArrayType>()(iDataArrayPtr))\
     {\
       Int16ArrayType::Pointer arrayCast = std::dynamic_pointer_cast<Int16ArrayType>(iDataArrayPtr);\
-      itemPtr = QSharedPointer<CalculatorArray<int16_t> >(new CalculatorArray<int16_t>(arrayCast));\
+      itemPtr = CalculatorArray<int16_t>::New(arrayCast);\
     }\
     else if(TemplateHelpers::CanDynamicCast<UInt16ArrayType>()(iDataArrayPtr))\
     {\
       UInt16ArrayType::Pointer arrayCast = std::dynamic_pointer_cast<UInt16ArrayType>(iDataArrayPtr);\
-      itemPtr = QSharedPointer<CalculatorArray<uint16_t> >(new CalculatorArray<uint16_t>(arrayCast));\
+      itemPtr = CalculatorArray<uint16_t>::New(arrayCast);\
     }\
     else if(TemplateHelpers::CanDynamicCast<Int32ArrayType>()(iDataArrayPtr))\
     {\
       Int32ArrayType::Pointer arrayCast = std::dynamic_pointer_cast<Int32ArrayType>(iDataArrayPtr);\
-      itemPtr = QSharedPointer<CalculatorArray<int32_t> >(new CalculatorArray<int32_t>(arrayCast));\
+      itemPtr = CalculatorArray<int32_t>::New(arrayCast);\
     }\
     else if(TemplateHelpers::CanDynamicCast<UInt32ArrayType>()(iDataArrayPtr))\
     {\
       UInt32ArrayType::Pointer arrayCast = std::dynamic_pointer_cast<UInt32ArrayType>(iDataArrayPtr);\
-      itemPtr = QSharedPointer<CalculatorArray<uint32_t> >(new CalculatorArray<uint32_t>(arrayCast));\
+      itemPtr = CalculatorArray<uint32_t>::New(arrayCast);\
     }\
     else if(TemplateHelpers::CanDynamicCast<Int64ArrayType>()(iDataArrayPtr))\
     {\
       Int64ArrayType::Pointer arrayCast = std::dynamic_pointer_cast<Int64ArrayType>(iDataArrayPtr);\
-      itemPtr = QSharedPointer<CalculatorArray<int64_t> >(new CalculatorArray<int64_t>(arrayCast));\
+      itemPtr = CalculatorArray<int64_t>::New(arrayCast);\
     }\
     else if(TemplateHelpers::CanDynamicCast<UInt64ArrayType>()(iDataArrayPtr))\
     {\
       UInt64ArrayType::Pointer arrayCast = std::dynamic_pointer_cast<UInt64ArrayType>(iDataArrayPtr);\
-      itemPtr = QSharedPointer<CalculatorArray<uint64_t> >(new CalculatorArray<uint64_t>(arrayCast));\
+      itemPtr = CalculatorArray<uint64_t>::New(arrayCast);\
     }\
 
 // -----------------------------------------------------------------------------
@@ -138,29 +138,29 @@ ArrayCalculator::ArrayCalculator() :
   setupFilterParameters();
 
   // Insert all items into the symbol map to use during equation parsing
-  m_SymbolMap.insert("(", QSharedPointer<LeftParenthesisItem>(new LeftParenthesisItem()));
-  m_SymbolMap.insert(")", QSharedPointer<RightParenthesisItem>(new RightParenthesisItem()));
-  m_SymbolMap.insert(",", QSharedPointer<CommaSeparator>(new CommaSeparator()));
-  m_SymbolMap.insert("+", QSharedPointer<AdditionOperator>(new AdditionOperator()));
-  m_SymbolMap.insert("-", QSharedPointer<SubtractionOperator>(new SubtractionOperator()));
-  m_SymbolMap.insert("*", QSharedPointer<MultiplicationOperator>(new MultiplicationOperator()));
-  m_SymbolMap.insert("/", QSharedPointer<DivisionOperator>(new DivisionOperator()));
-  m_SymbolMap.insert("^", QSharedPointer<PowOperator>(new PowOperator()));
-  m_SymbolMap.insert("abs", QSharedPointer<ABSOperator>(new ABSOperator()));
-  m_SymbolMap.insert("sin", QSharedPointer<SinOperator>(new SinOperator()));
-  m_SymbolMap.insert("cos", QSharedPointer<CosOperator>(new CosOperator()));
-  m_SymbolMap.insert("tan", QSharedPointer<TanOperator>(new TanOperator()));
-  m_SymbolMap.insert("asin", QSharedPointer<ASinOperator>(new ASinOperator()));
-  m_SymbolMap.insert("acos", QSharedPointer<ACosOperator>(new ACosOperator()));
-  m_SymbolMap.insert("atan", QSharedPointer<ATanOperator>(new ATanOperator()));
-  m_SymbolMap.insert("sqrt", QSharedPointer<SqrtOperator>(new SqrtOperator()));
-  m_SymbolMap.insert("root", QSharedPointer<RootOperator>(new RootOperator()));
-  m_SymbolMap.insert("log10", QSharedPointer<Log10Operator>(new Log10Operator()));
-  m_SymbolMap.insert("log", QSharedPointer<LogOperator>(new LogOperator()));
-  m_SymbolMap.insert("exp", QSharedPointer<ExpOperator>(new ExpOperator()));
-  m_SymbolMap.insert("ln", QSharedPointer<LnOperator>(new LnOperator()));
-  m_SymbolMap.insert("floor", QSharedPointer<FloorOperator>(new FloorOperator()));
-  m_SymbolMap.insert("ceil", QSharedPointer<CeilOperator>(new CeilOperator()));
+  m_SymbolMap.insert("(", LeftParenthesisItem::New());
+  m_SymbolMap.insert(")", RightParenthesisItem::New());
+  m_SymbolMap.insert(",", CommaSeparator::New());
+  m_SymbolMap.insert("+", AdditionOperator::New());
+  m_SymbolMap.insert("-", SubtractionOperator::New());
+  m_SymbolMap.insert("*", MultiplicationOperator::New());
+  m_SymbolMap.insert("/", DivisionOperator::New());
+  m_SymbolMap.insert("^", PowOperator::New());
+  m_SymbolMap.insert("abs", ABSOperator::New());
+  m_SymbolMap.insert("sin", SinOperator::New());
+  m_SymbolMap.insert("cos", CosOperator::New());
+  m_SymbolMap.insert("tan", TanOperator::New());
+  m_SymbolMap.insert("asin", ASinOperator::New());
+  m_SymbolMap.insert("acos", ACosOperator::New());
+  m_SymbolMap.insert("atan", ATanOperator::New());
+  m_SymbolMap.insert("sqrt", SqrtOperator::New());
+  m_SymbolMap.insert("root", RootOperator::New());
+  m_SymbolMap.insert("log10", Log10Operator::New());
+  m_SymbolMap.insert("log", LogOperator::New());
+  m_SymbolMap.insert("exp", ExpOperator::New());
+  m_SymbolMap.insert("ln", LnOperator::New());
+  m_SymbolMap.insert("floor", FloorOperator::New());
+  m_SymbolMap.insert("ceil", CeilOperator::New());
 }
 
 // -----------------------------------------------------------------------------
@@ -250,17 +250,17 @@ void ArrayCalculator::dataCheck()
     return;
   }
 
-  QVector<QSharedPointer<CalculatorItem> > parsedInfix = parseInfixEquation(m_InfixEquation);
+  QVector<CalculatorItem::Pointer> parsedInfix = parseInfixEquation(m_InfixEquation);
   if (parsedInfix.isEmpty() == true) { return; }
 
   bool hasArrayGreaterThan1 = false;
   bool hasArray = false;
   for (int i=0; i<parsedInfix.size(); i++)
   {
-    QSharedPointer<CalculatorItem> currentItem = parsedInfix[i];
-    if (NULL != qSharedPointerDynamicCast<CalculatorOperator>(currentItem))
+    CalculatorItem::Pointer currentItem = parsedInfix[i];
+    if (NULL != std::dynamic_pointer_cast<CalculatorOperator>(currentItem))
     {
-      bool result = qSharedPointerDynamicCast<CalculatorOperator>(currentItem)->checkValidity(parsedInfix, i);
+      bool result = std::dynamic_pointer_cast<CalculatorOperator>(currentItem)->checkValidity(parsedInfix, i);
       if (result == false)
       {
         QString ss = QObject::tr("The chosen infix equation is not a valid equation.");
@@ -269,10 +269,10 @@ void ArrayCalculator::dataCheck()
         return;
       }
     }
-    else if (NULL != qSharedPointerDynamicCast<ICalculatorArray>(currentItem))
+    else if (NULL != std::dynamic_pointer_cast<ICalculatorArray>(currentItem))
     {
       hasArray = true;
-      if (qSharedPointerDynamicCast<ICalculatorArray>(currentItem)->getArray()->getNumberOfTuples() > 1)
+      if (std::dynamic_pointer_cast<ICalculatorArray>(currentItem)->getArray()->getNumberOfTuples() > 1)
       {
         hasArrayGreaterThan1 = true;
       }
@@ -316,7 +316,7 @@ void ArrayCalculator::dataCheck()
     return;
   }
 
-  QVector<QSharedPointer<CalculatorItem> > rpn = toRPN(parsedInfix);
+  QVector<CalculatorItem::Pointer> rpn = toRPN(parsedInfix);
   if (rpn.isEmpty() == true) { return; }
 }
 
@@ -346,22 +346,22 @@ void ArrayCalculator::execute()
   AttributeMatrix::Pointer calculatedAM = getDataContainerArray()->getAttributeMatrix(calculatedAMPath);
 
   // Parse the infix equation from the user interface
-  QVector<QSharedPointer<CalculatorItem> > parsedInfix = parseInfixEquation(m_InfixEquation);
+  QVector<CalculatorItem::Pointer> parsedInfix = parseInfixEquation(m_InfixEquation);
 
   // Convert the parsed infix equation into RPN
-  QVector<QSharedPointer<CalculatorItem> > rpn = toRPN(parsedInfix);
+  QVector<CalculatorItem::Pointer> rpn = toRPN(parsedInfix);
 
   // Execute the RPN equation
   for (int i = 0; i < rpn.size(); i++)
   {
-    QSharedPointer<CalculatorItem> rpnItem = rpn[i];
-    if (NULL != qSharedPointerDynamicCast<ICalculatorArray>(rpnItem))
+    CalculatorItem::Pointer rpnItem = rpn[i];
+    if (NULL != std::dynamic_pointer_cast<ICalculatorArray>(rpnItem))
     {
       m_ExecutionStack.push(rpnItem);
     }
-    else if (NULL != qSharedPointerDynamicCast<CalculatorOperator>(rpnItem))
+    else if (NULL != std::dynamic_pointer_cast<CalculatorOperator>(rpnItem))
     {
-      QSharedPointer<CalculatorOperator> rpnOperator = qSharedPointerDynamicCast<CalculatorOperator>(rpnItem);
+      CalculatorOperator::Pointer rpnOperator = std::dynamic_pointer_cast<CalculatorOperator>(rpnItem);
       DoubleArrayType::Pointer newArray = DoubleArrayType::CreateArray(calculatedAM->getNumTuples(), QVector<size_t>(1, 1), m_CalculatedArray.getDataArrayName());
 
       for (int i=0; i<newArray->getNumberOfTuples(); i++)
@@ -382,7 +382,7 @@ void ArrayCalculator::execute()
         m_ExecutionStack.pop();
       }
 
-      m_ExecutionStack.push(QSharedPointer<CalculatorArray<double> >(new CalculatorArray<double>(newArray)));
+      m_ExecutionStack.push(CalculatorArray<double>::New(newArray));
     }
     else
     {
@@ -393,12 +393,12 @@ void ArrayCalculator::execute()
   }
 
   // Grab the result from the stack
-  QSharedPointer<CalculatorItem> resultItem = m_ExecutionStack.pop();
+  CalculatorItem::Pointer resultItem = m_ExecutionStack.pop();
 
   IDataArray::Pointer newArray = IDataArray::NullPointer();
-  if (NULL != qSharedPointerDynamicCast<ICalculatorArray>(resultItem))
+  if (NULL != std::dynamic_pointer_cast<ICalculatorArray>(resultItem))
   {
-    QSharedPointer<ICalculatorArray> arrayItem = qSharedPointerDynamicCast<ICalculatorArray>(resultItem);
+    ICalculatorArray::Pointer arrayItem = std::dynamic_pointer_cast<ICalculatorArray>(resultItem);
     newArray = arrayItem->getArray();
 
     DataArrayPath createdAMPath(m_CalculatedArray.getDataContainerName(), m_CalculatedArray.getAttributeMatrixName(), "");
@@ -423,7 +423,7 @@ void ArrayCalculator::execute()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-QVector<QSharedPointer<CalculatorItem> > ArrayCalculator::parseInfixEquation(QString equation)
+QVector<CalculatorItem::Pointer> ArrayCalculator::parseInfixEquation(QString equation)
 {
   int err = 0;
 
@@ -438,13 +438,13 @@ QVector<QSharedPointer<CalculatorItem> > ArrayCalculator::parseInfixEquation(QSt
   }
 
   // Iterate through the QStringList and create the proper CalculatorItems
-  QVector<QSharedPointer<CalculatorItem> > parsedInfix;
+  QVector<CalculatorItem::Pointer> parsedInfix;
   int numTuples = -1;
   QString firstArray = "";
   for (int i = 0; i < itemList.size(); i++)
   {
     QString strItem = itemList[i];
-    QSharedPointer<CalculatorItem> itemPtr;
+    CalculatorItem::Pointer itemPtr;
 
     bool ok;
     double num = strItem.toDouble(&ok);
@@ -453,7 +453,7 @@ QVector<QSharedPointer<CalculatorItem> > ArrayCalculator::parseInfixEquation(QSt
       // This is a number, so create an array with numOfTuples equal to 1 and set the value into it
       DoubleArrayType::Pointer ptr = DoubleArrayType::CreateArray(1, QVector<size_t>(1, 1), m_CalculatedArray.getDataArrayName());
       ptr->setValue(0, num);
-      itemPtr = QSharedPointer<CalculatorArray<double> >(new CalculatorArray<double>(ptr));
+      itemPtr = CalculatorArray<double>::New(ptr);
       parsedInfix.push_back(itemPtr);
     }
     else if (strItem == "-")
@@ -463,20 +463,20 @@ QVector<QSharedPointer<CalculatorItem> > ArrayCalculator::parseInfixEquation(QSt
            i == 0 ||
            (
              (
-               (NULL != qSharedPointerDynamicCast<CalculatorOperator>(parsedInfix.back()) && qSharedPointerDynamicCast<CalculatorOperator>(parsedInfix.back())->getOperatorType() == CalculatorOperator::Binary)
-               || NULL != qSharedPointerDynamicCast<LeftParenthesisItem>(parsedInfix.back())
+               (NULL != std::dynamic_pointer_cast<CalculatorOperator>(parsedInfix.back()) && std::dynamic_pointer_cast<CalculatorOperator>(parsedInfix.back())->getOperatorType() == CalculatorOperator::Binary)
+               || NULL != std::dynamic_pointer_cast<LeftParenthesisItem>(parsedInfix.back())
              )
-             && NULL == qSharedPointerDynamicCast<RightParenthesisItem>(parsedInfix.back())
+             && NULL == std::dynamic_pointer_cast<RightParenthesisItem>(parsedInfix.back())
            )
          )
       {
         // By context, this is a negative sign, so we need to insert a -1 array and a multiplication operator
         DoubleArrayType::Pointer ptr = DoubleArrayType::CreateArray(1, QVector<size_t>(1, 1), "NumberArray");
         ptr->setValue(0, -1);
-        itemPtr = QSharedPointer<CalculatorArray<double> >(new CalculatorArray<double>(ptr));
+        itemPtr = CalculatorArray<double>::New(ptr);
         parsedInfix.push_back(itemPtr);
 
-        itemPtr = QSharedPointer<MultiplicationOperator>(new MultiplicationOperator());
+        itemPtr = MultiplicationOperator::New();
         parsedInfix.push_back(itemPtr);
       }
       else
@@ -504,7 +504,7 @@ QVector<QSharedPointer<CalculatorItem> > ArrayCalculator::parseInfixEquation(QSt
           QString ss = QObject::tr("Arrays \"%1\" and \"%2\" in the infix equation have an inconsistent number of tuples.").arg(firstArray).arg(dataArray->getName());
           setErrorCondition(INCONSISTENT_TUPLES);
           notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
-          return QVector<QSharedPointer<CalculatorItem> >();
+          return QVector<CalculatorItem::Pointer>();
         }
 
         CREATE_CALCULATOR_ARRAY(itemPtr, dataArray)
@@ -514,12 +514,12 @@ QVector<QSharedPointer<CalculatorItem> > ArrayCalculator::parseInfixEquation(QSt
     else
     {
       itemPtr = m_SymbolMap.value(strItem);
-      if (itemPtr.isNull())
+      if (NULL == itemPtr)
       {
         QString ss = QObject::tr("An unrecognized item \"%1\" was found in the chosen infix equation.").arg(strItem);
         setErrorCondition(UNRECOGNIZED_ITEM);
         notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
-        return QVector<QSharedPointer<CalculatorItem> >();
+        return QVector<CalculatorItem::Pointer>();
       }
       else
       {
@@ -535,29 +535,29 @@ QVector<QSharedPointer<CalculatorItem> > ArrayCalculator::parseInfixEquation(QSt
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-QVector<QSharedPointer<CalculatorItem> > ArrayCalculator::toRPN(QVector<QSharedPointer<CalculatorItem> > infixEquation)
+QVector<CalculatorItem::Pointer> ArrayCalculator::toRPN(QVector<CalculatorItem::Pointer> infixEquation)
 {
-  QStack<QSharedPointer<CalculatorItem> > itemStack;
-  QVector<QSharedPointer<CalculatorItem> > rpnEquation;
+  QStack<CalculatorItem::Pointer> itemStack;
+  QVector<CalculatorItem::Pointer> rpnEquation;
 
   // Iterate through the infix equation items
   for (int i = 0; i < infixEquation.size(); i++)
   {
-    QSharedPointer<CalculatorItem> calcItem = infixEquation[i];
-    if (NULL != qSharedPointerDynamicCast<ICalculatorArray>(calcItem))
+    CalculatorItem::Pointer calcItem = infixEquation[i];
+    if (NULL != std::dynamic_pointer_cast<ICalculatorArray>(calcItem))
     {
       // This is a number or array, so push it onto the rpn equation output
       rpnEquation.push_back(calcItem);
     }
-    else if (NULL != qSharedPointerDynamicCast<LeftParenthesisItem>(calcItem))
+    else if (NULL != std::dynamic_pointer_cast<LeftParenthesisItem>(calcItem))
     {
       // This is a left parenthesis, so push it onto the item stack
       itemStack.push_back(calcItem);
     }
-    else if (NULL != qSharedPointerDynamicCast<RightParenthesisItem>(calcItem))
+    else if (NULL != std::dynamic_pointer_cast<RightParenthesisItem>(calcItem))
     {
       // This is a right parenthesis, so push operators from the item stack onto the rpn equation output until we get to the left parenthesis
-      while (itemStack.isEmpty() == false && NULL == qSharedPointerDynamicCast<LeftParenthesisItem>(itemStack.top()))
+      while (itemStack.isEmpty() == false && NULL == std::dynamic_pointer_cast<LeftParenthesisItem>(itemStack.top()))
       {
         rpnEquation.push_back(itemStack.pop());
       }
@@ -567,13 +567,13 @@ QVector<QSharedPointer<CalculatorItem> > ArrayCalculator::toRPN(QVector<QSharedP
         QString ss = QObject::tr("One or more parentheses are mismatched in the chosen infix equation \"%1\".").arg(m_InfixEquation);
         setErrorCondition(MISMATCHED_PARENTHESES);
         notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
-        return QVector<QSharedPointer<CalculatorItem> >();
+        return QVector<CalculatorItem::Pointer>();
       }
 
       // Discard the left parenthesis that we found
       itemStack.pop();
     }
-    else if (NULL != qSharedPointerDynamicCast<CalculatorSeparator>(calcItem))
+    else if (NULL != std::dynamic_pointer_cast<CalculatorSeparator>(calcItem))
     {
       // This is a comma, so we want to continue without adding it to anything
       continue;
@@ -581,23 +581,23 @@ QVector<QSharedPointer<CalculatorItem> > ArrayCalculator::toRPN(QVector<QSharedP
     else
     {
       // This is an operator
-      QSharedPointer<CalculatorOperator> incomingOperator = qSharedPointerDynamicCast<CalculatorOperator>(calcItem);
+      CalculatorOperator::Pointer incomingOperator = std::dynamic_pointer_cast<CalculatorOperator>(calcItem);
       if (itemStack.isEmpty() == false)
       {
         /* If the operator's precedence is lower than the precedence of the operator on top of the item stack, push the operator at the top
            of the item stack onto the rpn equation output.  Keeping doing this until there isn't another operator at the top of the item
            stack or the operator has a higher precedence than the one currently on top of the stack */
-        QSharedPointer<CalculatorOperator> topOperator = qSharedPointerDynamicCast<CalculatorOperator>(itemStack.top());
+        CalculatorOperator::Pointer topOperator = std::dynamic_pointer_cast<CalculatorOperator>(itemStack.top());
         while (NULL != topOperator && incomingOperator->hasHigherPrecedence(topOperator) == false)
         {
           rpnEquation.push_back(itemStack.pop());
           if (itemStack.isEmpty() == false)
           {
-            topOperator = qSharedPointerDynamicCast<CalculatorOperator>(itemStack.top());
+            topOperator = std::dynamic_pointer_cast<CalculatorOperator>(itemStack.top());
           }
           else
           {
-            topOperator.clear();
+            topOperator = NULL;
           }
         }
       }
@@ -611,13 +611,13 @@ QVector<QSharedPointer<CalculatorItem> > ArrayCalculator::toRPN(QVector<QSharedP
      rpn equation output until the stack is empty. */
   while (itemStack.isEmpty() == false)
   {
-    QSharedPointer<CalculatorItem> item = itemStack.pop();
-    if (NULL != qSharedPointerDynamicCast<LeftParenthesisItem>(item))
+    CalculatorItem::Pointer item = itemStack.pop();
+    if (NULL != std::dynamic_pointer_cast<LeftParenthesisItem>(item))
     {
       QString ss = QObject::tr("One or more parentheses are mismatched in the chosen infix equation \"%1\".").arg(m_InfixEquation);
       setErrorCondition(MISMATCHED_PARENTHESES);
       notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
-      return QVector<QSharedPointer<CalculatorItem> >();
+      return QVector<CalculatorItem::Pointer>();
     }
 
     rpnEquation.push_back(item);

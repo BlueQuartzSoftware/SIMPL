@@ -48,11 +48,19 @@ class CalculatorNumber;
 class SIMPLib_EXPORT ABSOperator : public UnaryOperator
 {
   public:
+    SIMPL_SHARED_POINTERS(ABSOperator)
 
-    ABSOperator();
+    static Pointer New()
+    {
+      return Pointer(new ABSOperator());
+    }
+
     virtual ~ABSOperator();
 
-    virtual double calculate(AbstractFilter* filter, const QString &newArrayName, QStack<QSharedPointer<CalculatorItem> > &executionStack, int index);
+    virtual double calculate(AbstractFilter* filter, const QString &newArrayName, QStack<CalculatorItem::Pointer> &executionStack, int index);
+
+  protected:
+    ABSOperator();
 
   private:
 

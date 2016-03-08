@@ -57,19 +57,26 @@ class SIMPLib_EXPORT CalculatorOperator : public CalculatorItem
       Binary
     };
 
+    SIMPL_SHARED_POINTERS(CalculatorOperator)
 
-    CalculatorOperator();
+    static Pointer New()
+    {
+      return Pointer(new CalculatorOperator());
+    }
+
     virtual ~CalculatorOperator();
 
-    bool hasHigherPrecedence(QSharedPointer<CalculatorOperator> other);
+    bool hasHigherPrecedence(CalculatorOperator::Pointer other);
 
-    virtual double calculate(AbstractFilter* filter, const QString &newArrayName, QStack<QSharedPointer<CalculatorItem> > &executionStack, int index);
+    virtual double calculate(AbstractFilter* filter, const QString &newArrayName, QStack<CalculatorItem::Pointer> &executionStack, int index);
 
-    virtual bool checkValidity(QVector<QSharedPointer<CalculatorItem> > infixVector, int currentIndex);
+    virtual bool checkValidity(QVector<CalculatorItem::Pointer> infixVector, int currentIndex);
 
     OperatorType getOperatorType();
 
   protected:
+    CalculatorOperator();
+
     enum Precedence
     {
       Unknown_Precedence,

@@ -48,11 +48,19 @@ class CalculatorNumber;
 class SIMPLib_EXPORT ACosOperator : public UnaryOperator
 {
   public:
+    SIMPL_SHARED_POINTERS(ACosOperator)
 
-    ACosOperator();
+    static Pointer New()
+    {
+      return Pointer(new ACosOperator());
+    }
+
     virtual ~ACosOperator();
 
-    virtual double calculate(AbstractFilter* filter, const QString &newArrayName, QStack<QSharedPointer<CalculatorItem> > &executionStack, int index);
+    virtual double calculate(AbstractFilter* filter, const QString &newArrayName, QStack<CalculatorItem::Pointer> &executionStack, int index);
+
+  protected:
+    ACosOperator();
 
   private:
 
