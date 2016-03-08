@@ -221,9 +221,10 @@ int ArrayCalculator::writeFilterParameters(AbstractFilterParametersWriter* write
 // -----------------------------------------------------------------------------
 void ArrayCalculator::dataCheck()
 {
-  setErrorCondition(0);
+  int err = 0;
+  setErrorCondition(err);
 
-  if (m_InfixEquation.isEmpty() == true)
+  if (m_InfixEquation.isEmpty() == true || m_InfixEquation.split(" ", QString::SkipEmptyParts).size() <= 0)
   {
     QString ss = QObject::tr("The infix equation is empty.");
     setErrorCondition(EMPTY_EQUATION);
@@ -235,15 +236,6 @@ void ArrayCalculator::dataCheck()
   {
     QString ss = QObject::tr("A calculated array has not been chosen.");
     setErrorCondition(EMPTY_CAL_ARRAY);
-    notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
-    return;
-  }
-
-  AttributeMatrix::Pointer selectedAM = getDataContainerArray()->getAttributeMatrix(m_SelectedAttributeMatrix);
-  if (NULL == selectedAM)
-  {
-    QString ss = QObject::tr("Could not find the attribute matrix \"%1\".").arg(m_SelectedAttributeMatrix.getAttributeMatrixName());
-    setErrorCondition(LOST_ATTR_MATRIX);
     notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
     return;
   }
@@ -304,12 +296,16 @@ void ArrayCalculator::dataCheck()
         return;
       }
     }
-    else if (calculatedAM->getNumTuples() != selectedAM->getNumTuples())
+    else
     {
-      QString ss = QObject::tr("The tuple count of the calculated attribute matrix is not equal to the tuple count of the selected attribute matrix.").arg(m_SelectedAttributeMatrix.getAttributeMatrixName());
-      setErrorCondition(INCORRECT_TUPLE_COUNT);
-      notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
-      return;
+      AttributeMatrix::Pointer selectedAM = getDataContainerArray()->getPrereqAttributeMatrixFromPath(this, m_SelectedAttributeMatrix, err);
+      if (NULL != selectedAM && calculatedAM->getNumTuples() != selectedAM->getNumTuples())
+      {
+        QString ss = QObject::tr("The tuple count of the calculated attribute matrix is not equal to the tuple count of the selected attribute matrix.").arg(m_SelectedAttributeMatrix.getAttributeMatrixName());
+        setErrorCondition(INCORRECT_TUPLE_COUNT);
+        notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
+        return;
+      }
     }
   }
   else
@@ -429,20 +425,7 @@ void ArrayCalculator::execute()
 // -----------------------------------------------------------------------------
 QVector<QSharedPointer<CalculatorItem> > ArrayCalculator::parseInfixEquation(QString equation)
 {
-  if (equation.isEmpty())
-  {
-    return QVector<QSharedPointer<CalculatorItem> >();
-  }
-
   int err = 0;
-  AttributeMatrix::Pointer selectedAM = getDataContainerArray()->getPrereqAttributeMatrixFromPath(this, m_SelectedAttributeMatrix, err);
-  if (NULL == selectedAM)
-  {
-    QString ss = QObject::tr("Could not find the attribute matrix \"%1\".").arg(m_SelectedAttributeMatrix.getAttributeMatrixName());
-    setErrorCondition(LOST_ATTR_MATRIX);
-    notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
-    return QVector<QSharedPointer<CalculatorItem> >();
-  }
 
   // Parse all the items into a QStringList using a regular expression
   QStringList itemList;
@@ -503,25 +486,30 @@ QVector<QSharedPointer<CalculatorItem> > ArrayCalculator::parseInfixEquation(QSt
         parsedInfix.push_back(itemPtr);
       }
     }
-    else if (selectedAM->getAttributeArrayNames().contains(strItem))
+    else if (m_SelectedAttributeMatrix.isEmpty() == false)
     {
-      // This is an array, so create the array item
-      IDataArray::Pointer dataArray = selectedAM->getAttributeArray(strItem);
-      if (numTuples < 0 && firstArray.isEmpty() == true)
-      {
-        numTuples = dataArray->getNumberOfTuples();
-        firstArray = dataArray->getName();
-      }
-      else if (dataArray->getNumberOfTuples() != numTuples)
-      {
-        QString ss = QObject::tr("Arrays \"%1\" and \"%2\" in the infix equation have an inconsistent number of tuples.").arg(firstArray).arg(dataArray->getName());
-        setErrorCondition(INCONSISTENT_TUPLES);
-        notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
-        return QVector<QSharedPointer<CalculatorItem> >();
-      }
+      AttributeMatrix::Pointer selectedAM = getDataContainerArray()->getPrereqAttributeMatrixFromPath(this, m_SelectedAttributeMatrix, err);
 
-      CREATE_CALCULATOR_ARRAY(itemPtr, dataArray)
-      parsedInfix.push_back(itemPtr);
+      if (NULL != selectedAM && selectedAM->getAttributeArrayNames().contains(strItem))
+      {
+        // This is an array, so create the array item
+        IDataArray::Pointer dataArray = selectedAM->getAttributeArray(strItem);
+        if (numTuples < 0 && firstArray.isEmpty() == true)
+        {
+          numTuples = dataArray->getNumberOfTuples();
+          firstArray = dataArray->getName();
+        }
+        else if (dataArray->getNumberOfTuples() != numTuples)
+        {
+          QString ss = QObject::tr("Arrays \"%1\" and \"%2\" in the infix equation have an inconsistent number of tuples.").arg(firstArray).arg(dataArray->getName());
+          setErrorCondition(INCONSISTENT_TUPLES);
+          notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
+          return QVector<QSharedPointer<CalculatorItem> >();
+        }
+
+        CREATE_CALCULATOR_ARRAY(itemPtr, dataArray)
+          parsedInfix.push_back(itemPtr);
+      }
     }
     else
     {

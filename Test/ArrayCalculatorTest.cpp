@@ -46,10 +46,29 @@
 #include "SIMPLib/Plugin/SIMPLibPluginLoader.h"
 #include "SIMPLib/Utilities/UnitTestSupport.hpp"
 #include "SIMPLib/Utilities/QMetaObjectUtilities.h"
+#include "SIMPLib/FilterParameters/DynamicTableData.h"
 
 #include "SIMPLib/CoreFilters/ArrayCalculator.h"
+#include "SIMPLib/CoreFilters/CreateDataArray.h"
 
 #include "SIMPLTestFileLocations.h"
+
+class DummyObserver : public Observer
+{
+public:
+  DummyObserver() : Observer() {}
+  virtual ~DummyObserver() {}
+  SIMPL_TYPE_MACRO(DummyObserver)
+
+  void processPipelineMessage(const PipelineMessage& pm)
+  {
+    // Don't do anything...this class only exists to stifle the messages being dumped to the console
+  }
+
+private:
+  DummyObserver(const DummyObserver&); // Copy Constructor Not Implemented
+  void operator=(const DummyObserver&); // Operator '=' Not Implemented
+};
 
 class ArrayCalculatorTest
 {
@@ -61,22 +80,159 @@ public:
   // -----------------------------------------------------------------------------
   //
   // -----------------------------------------------------------------------------
-  DataContainerArray::Pointer createDataContainerArray()
+  FilterPipeline::Pointer createPipeline()
   {
-    DataContainerArray::Pointer dca = DataContainerArray::New();
-    DataContainer::Pointer dc = DataContainer::New("DataContainer");
-    AttributeMatrix::Pointer am1 = AttributeMatrix::New(QVector<size_t>(1, 10), "AttributeMatrix", 3);
-    AttributeMatrix::Pointer am2 = AttributeMatrix::New(QVector<size_t>(1, 1), "NumericMatrix", 3);
-    FloatArrayType::Pointer array1 = FloatArrayType::CreateArray(10, "InputArray1");
-    UInt32ArrayType::Pointer array2 = UInt32ArrayType::CreateArray(10, "InputArray2");
+    FilterPipeline::Pointer pipeline = FilterPipeline::New();
+    DummyObserver* obs = new DummyObserver();
+    pipeline->addMessageReceiver(obs);
 
-    am1->addAttributeArray("InputArray1", array1);
-    am1->addAttributeArray("InputArray2", array2);
-    dc->addAttributeMatrix("AttributeMatrix", am1);
-    dc->addAttributeMatrix("NumericMatrix", am2);
-    dca->addDataContainer(dc);
+    {
+      QString filtName = "CreateDataContainer";
+      FilterManager* fm = FilterManager::Instance();
+      IFilterFactory::Pointer factory = fm->getFactoryForFilter(filtName);
+      DREAM3D_REQUIRE(factory.get() != NULL);
 
-    return dca;
+      AbstractFilter::Pointer filter = factory->create();
+      DREAM3D_REQUIRE(filter.get() != NULL);
+
+      bool propWasSet = false;
+      propWasSet = filter->setProperty("CreatedDataContainer", "DataContainer");
+      DREAM3D_REQUIRE_EQUAL(propWasSet, true);
+
+      pipeline->pushBack(filter);
+    }
+
+    {
+      QString filtName = "CreateAttributeMatrix";
+      FilterManager* fm = FilterManager::Instance();
+      IFilterFactory::Pointer factory = fm->getFactoryForFilter(filtName);
+      DREAM3D_REQUIRE(factory.get() != NULL);
+
+      AbstractFilter::Pointer filter = factory->create();
+      DREAM3D_REQUIRE(filter.get() != NULL);
+
+      bool propWasSet = false;
+      QVariant var;
+      DataArrayPath dap("DataContainer", "AttributeMatrix", "");
+      var.setValue(dap);
+      propWasSet = filter->setProperty("CreatedAttributeMatrix", var);
+      DREAM3D_REQUIRE_EQUAL(propWasSet, true);
+
+      var.setValue(3);
+      propWasSet = filter->setProperty("AttributeMatrixType", var);
+      DREAM3D_REQUIRE_EQUAL(propWasSet, true);
+
+      var.setValue(DynamicTableData(std::vector<std::vector<double> >(1, std::vector<double>(1, 10))));
+      propWasSet = filter->setProperty("TupleDimensions", var);
+      DREAM3D_REQUIRE_EQUAL(propWasSet, true);
+
+      pipeline->pushBack(filter);
+    }
+
+    {
+      QString filtName = "CreateAttributeMatrix";
+      FilterManager* fm = FilterManager::Instance();
+      IFilterFactory::Pointer factory = fm->getFactoryForFilter(filtName);
+      DREAM3D_REQUIRE(factory.get() != NULL);
+
+      AbstractFilter::Pointer filter = factory->create();
+      DREAM3D_REQUIRE(filter.get() != NULL);
+
+      bool propWasSet = false;
+      QVariant var;
+      DataArrayPath dap("DataContainer", "NumericMatrix", "");
+      var.setValue(dap);
+      propWasSet = filter->setProperty("CreatedAttributeMatrix", var);
+      DREAM3D_REQUIRE_EQUAL(propWasSet, true);
+
+      var.setValue(3);
+      propWasSet = filter->setProperty("AttributeMatrixType", var);
+      DREAM3D_REQUIRE_EQUAL(propWasSet, true);
+
+      var.setValue(DynamicTableData(std::vector<std::vector<double> >(1, std::vector<double>(1, 1))));
+      propWasSet = filter->setProperty("TupleDimensions", var);
+      DREAM3D_REQUIRE_EQUAL(propWasSet, true);
+
+      pipeline->pushBack(filter);
+    }
+
+    {
+      QString filtName = "CreateDataArray";
+      FilterManager* fm = FilterManager::Instance();
+      IFilterFactory::Pointer factory = fm->getFactoryForFilter(filtName);
+      DREAM3D_REQUIRE(factory.get() != NULL);
+
+      AbstractFilter::Pointer filter = factory->create();
+      DREAM3D_REQUIRE(filter.get() != NULL);
+
+      bool propWasSet = false;
+      QVariant var;
+      DataArrayPath dap("DataContainer", "AttributeMatrix", "Array1");
+      var.setValue(dap);
+      propWasSet = filter->setProperty("NewArray", var);
+      DREAM3D_REQUIRE_EQUAL(propWasSet, true);
+
+      var.setValue(1);
+      propWasSet = filter->setProperty("NumberOfComponents", var);
+      DREAM3D_REQUIRE_EQUAL(propWasSet, true);
+
+      var.setValue(0);
+      propWasSet = filter->setProperty("ScalarType", var);
+      DREAM3D_REQUIRE_EQUAL(propWasSet, true);
+
+      var.setValue(1);
+      propWasSet = filter->setProperty("InitializationType", var);
+      DREAM3D_REQUIRE_EQUAL(propWasSet, true);
+
+      FPRangePair pair;
+      pair.first = -10;
+      pair.second = 10;
+      var.setValue(pair);
+      propWasSet = filter->setProperty("InitializationRange", var);
+      DREAM3D_REQUIRE_EQUAL(propWasSet, true);
+
+      pipeline->pushBack(filter);
+    }
+
+    {
+      QString filtName = "CreateDataArray";
+      FilterManager* fm = FilterManager::Instance();
+      IFilterFactory::Pointer factory = fm->getFactoryForFilter(filtName);
+      DREAM3D_REQUIRE(factory.get() != NULL);
+
+      AbstractFilter::Pointer filter = factory->create();
+      DREAM3D_REQUIRE(filter.get() != NULL);
+
+      bool propWasSet = false;
+      QVariant var;
+      DataArrayPath dap("DataContainer", "AttributeMatrix", "Array2");
+      var.setValue(dap);
+      propWasSet = filter->setProperty("NewArray", var);
+      DREAM3D_REQUIRE_EQUAL(propWasSet, true);
+
+      var.setValue(1);
+      propWasSet = filter->setProperty("NumberOfComponents", var);
+      DREAM3D_REQUIRE_EQUAL(propWasSet, true);
+
+      var.setValue(8);
+      propWasSet = filter->setProperty("ScalarType", var);
+      DREAM3D_REQUIRE_EQUAL(propWasSet, true);
+
+      var.setValue(1);
+      propWasSet = filter->setProperty("InitializationType", var);
+      DREAM3D_REQUIRE_EQUAL(propWasSet, true);
+
+      FPRangePair pair;
+      pair.first = 0;
+      pair.second = 20;
+      var.setValue(pair);
+      propWasSet = filter->setProperty("InitializationRange", var);
+      DREAM3D_REQUIRE_EQUAL(propWasSet, true);
+
+      pipeline->pushBack(filter);
+    }
+
+    return pipeline;
   }
 
   // -----------------------------------------------------------------------------
@@ -84,6 +240,8 @@ public:
   // -----------------------------------------------------------------------------
   void TestArrayCalculatorFilter()
   {
+    FilterPipeline::Pointer pipeline = createPipeline();
+
     QString filtName = "ArrayCalculator";
     FilterManager* fm = FilterManager::Instance();
     IFilterFactory::Pointer factory = fm->getFactoryForFilter(filtName);
@@ -92,28 +250,177 @@ public:
     AbstractFilter::Pointer filter = factory->create();
     DREAM3D_REQUIRE(filter.get() != NULL);
 
+    pipeline->pushBack(filter);
+
     QVariant var;
     bool propWasSet = false;
 
-    DataArrayPath dap("DataContainer", "AttributeMatrix", "");
-    var.setValue(dap);
-    propWasSet = filter->setProperty("SelectedAttributeMatrix", var);
-    DREAM3D_REQUIRE_EQUAL(propWasSet, true);
-
     {
-      DataContainerArray::Pointer dca = createDataContainerArray();
-      filter->setDataContainerArray(dca);
+      // Empty Calculated Array Test
+      propWasSet = filter->setProperty("InfixEquation", "3");
+      DREAM3D_REQUIRE_EQUAL(propWasSet, true);
+      pipeline->execute();
+      DREAM3D_REQUIRE_EQUAL(filter->getErrorCondition(), ArrayCalculator::EMPTY_CAL_ARRAY);
 
+      // Set the calculated array using the NumericMatrix path
+      DataArrayPath dap = DataArrayPath("DataContainer", "NumericMatrix", "NewArray");
+      var.setValue(dap);
+      propWasSet = filter->setProperty("CalculatedArray", var);
+      DREAM3D_REQUIRE_EQUAL(propWasSet, true);
+
+      // Empty Tests
+      propWasSet = filter->setProperty("InfixEquation", "");
+      DREAM3D_REQUIRE_EQUAL(propWasSet, true);
+      pipeline->execute();
+      DREAM3D_REQUIRE_EQUAL(filter->getErrorCondition(), ArrayCalculator::EMPTY_EQUATION);
+
+      propWasSet = filter->setProperty("InfixEquation", "          ");
+      DREAM3D_REQUIRE_EQUAL(propWasSet, true);
+      pipeline->execute();
+      DREAM3D_REQUIRE_EQUAL(filter->getErrorCondition(), ArrayCalculator::EMPTY_EQUATION);
+
+      // Single Value Tests
+      propWasSet = filter->setProperty("InfixEquation", "-3");
+      DREAM3D_REQUIRE_EQUAL(propWasSet, true);
+      pipeline->execute();
+      DREAM3D_REQUIRE_EQUAL(filter->getErrorCondition(), 0);
+      DREAM3D_REQUIRE_EQUAL(filter->getWarningCondition(), ArrayCalculator::NUMERIC_VALUE_WARNING);
+
+      propWasSet = filter->setProperty("InfixEquation", "14");
+      DREAM3D_REQUIRE_EQUAL(propWasSet, true);
+      pipeline->execute();
+      DREAM3D_REQUIRE_EQUAL(filter->getErrorCondition(), 0);
+      DREAM3D_REQUIRE_EQUAL(filter->getWarningCondition(), ArrayCalculator::NUMERIC_VALUE_WARNING);
+
+      // Incomplete Binary Operators Tests
+      propWasSet = filter->setProperty("InfixEquation", "3-");
+      DREAM3D_REQUIRE_EQUAL(propWasSet, true);
+      pipeline->execute();
+      DREAM3D_REQUIRE_EQUAL(filter->getErrorCondition(), ArrayCalculator::INVALID_EQUATION);
+
+      propWasSet = filter->setProperty("InfixEquation", "+");
+      DREAM3D_REQUIRE_EQUAL(propWasSet, true);
+      pipeline->execute();
+      DREAM3D_REQUIRE_EQUAL(filter->getErrorCondition(), ArrayCalculator::INVALID_EQUATION);
+
+      propWasSet = filter->setProperty("InfixEquation", "-");
+      DREAM3D_REQUIRE_EQUAL(propWasSet, true);
+      pipeline->execute();
+      DREAM3D_REQUIRE_EQUAL(filter->getErrorCondition(), ArrayCalculator::INVALID_EQUATION);
+
+      propWasSet = filter->setProperty("InfixEquation", "5 - (2+)");
+      DREAM3D_REQUIRE_EQUAL(propWasSet, true);
+      pipeline->execute();
+      DREAM3D_REQUIRE_EQUAL(filter->getErrorCondition(), ArrayCalculator::INVALID_EQUATION);
+
+      // Incomplete Unary Operators Tests
+      propWasSet = filter->setProperty("InfixEquation", "cos(-)");
+      DREAM3D_REQUIRE_EQUAL(propWasSet, true);
+      pipeline->execute();
+      DREAM3D_REQUIRE_EQUAL(filter->getErrorCondition(), ArrayCalculator::INVALID_EQUATION);
+
+      propWasSet = filter->setProperty("InfixEquation", "log10()");
+      DREAM3D_REQUIRE_EQUAL(propWasSet, true);
+      pipeline->execute();
+      DREAM3D_REQUIRE_EQUAL(filter->getErrorCondition(), ArrayCalculator::INVALID_EQUATION);
+
+      propWasSet = filter->setProperty("InfixEquation", "abs(+ 3 ^)");
+      DREAM3D_REQUIRE_EQUAL(propWasSet, true);
+      pipeline->execute();
+      DREAM3D_REQUIRE_EQUAL(filter->getErrorCondition(), ArrayCalculator::INVALID_EQUATION);
+
+      propWasSet = filter->setProperty("InfixEquation", "sqrt(* 3 )");
+      DREAM3D_REQUIRE_EQUAL(propWasSet, true);
+      pipeline->execute();
+      DREAM3D_REQUIRE_EQUAL(filter->getErrorCondition(), ArrayCalculator::INVALID_EQUATION);
+
+      propWasSet = filter->setProperty("InfixEquation", "sqrt( 3 /)");
+      DREAM3D_REQUIRE_EQUAL(propWasSet, true);
+      pipeline->execute();
+      DREAM3D_REQUIRE_EQUAL(filter->getErrorCondition(), ArrayCalculator::INVALID_EQUATION);
+
+      // Mismatched Parentheses Tests
+      propWasSet = filter->setProperty("InfixEquation", "(3*4)");
+      DREAM3D_REQUIRE_EQUAL(propWasSet, true);
+      pipeline->execute();
+      DREAM3D_REQUIRE_EQUAL(filter->getErrorCondition(), 0);
+
+      propWasSet = filter->setProperty("InfixEquation", "(3*4");
+      DREAM3D_REQUIRE_EQUAL(propWasSet, true);
+      pipeline->execute();
+      DREAM3D_REQUIRE_EQUAL(filter->getErrorCondition(), ArrayCalculator::MISMATCHED_PARENTHESES);
+
+      propWasSet = filter->setProperty("InfixEquation", "3*4)");
+      DREAM3D_REQUIRE_EQUAL(propWasSet, true);
+      pipeline->execute();
+      DREAM3D_REQUIRE_EQUAL(filter->getErrorCondition(), ArrayCalculator::MISMATCHED_PARENTHESES);
+
+      // Nested Unary Operator Tests
+      propWasSet = filter->setProperty("InfixEquation", "abs( abs( abs( abs(3)/4) + 7.34)^2)");
+      DREAM3D_REQUIRE_EQUAL(propWasSet, true);
+      pipeline->execute();
+      DREAM3D_REQUIRE_EQUAL(filter->getErrorCondition(), 0);
+
+      propWasSet = filter->setProperty("InfixEquation", "abs( cos( log10( abs(3)/4) - 1)^2)*5");
+      DREAM3D_REQUIRE_EQUAL(propWasSet, true);
+      pipeline->execute();
+      DREAM3D_REQUIRE_EQUAL(filter->getErrorCondition(), 0);
+
+      // Incorrect Number Of Arguments Tests
+      propWasSet = filter->setProperty("InfixEquation", "root(3)");
+      DREAM3D_REQUIRE_EQUAL(propWasSet, true);
+      pipeline->execute();
+      DREAM3D_REQUIRE_EQUAL(filter->getErrorCondition(), ArrayCalculator::INVALID_EQUATION);
+
+      propWasSet = filter->setProperty("InfixEquation", "root(3, 5, 2)");
+      DREAM3D_REQUIRE_EQUAL(propWasSet, true);
+      pipeline->execute();
+      DREAM3D_REQUIRE_EQUAL(filter->getErrorCondition(), ArrayCalculator::INVALID_EQUATION);
+
+      propWasSet = filter->setProperty("InfixEquation", "abs(2, -12)");
+      DREAM3D_REQUIRE_EQUAL(propWasSet, true);
+      pipeline->execute();
+      DREAM3D_REQUIRE_EQUAL(filter->getErrorCondition(), ArrayCalculator::INVALID_EQUATION);
+
+      // Set the selected attribute matrix
+      dap = DataArrayPath("DataContainer", "AttributeMatrix", "");
+      var.setValue(dap);
+      propWasSet = filter->setProperty("SelectedAttributeMatrix", var);
+      DREAM3D_REQUIRE_EQUAL(propWasSet, true);
+
+      // Single Array Tests (Force "Incorrect Tuple Count" Error)
+      propWasSet = filter->setProperty("InfixEquation", "-Array1");
+      DREAM3D_REQUIRE_EQUAL(propWasSet, true);
+      pipeline->execute();
+      DREAM3D_REQUIRE_EQUAL(filter->getErrorCondition(), ArrayCalculator::INCORRECT_TUPLE_COUNT);
+
+      propWasSet = filter->setProperty("InfixEquation", "Array2");
+      DREAM3D_REQUIRE_EQUAL(propWasSet, true);
+      pipeline->execute();
+      DREAM3D_REQUIRE_EQUAL(filter->getErrorCondition(), ArrayCalculator::INCORRECT_TUPLE_COUNT);
+
+      // Set the new calculated array path
       dap = DataArrayPath("DataContainer", "AttributeMatrix", "NewArray");
       var.setValue(dap);
       propWasSet = filter->setProperty("CalculatedArray", var);
       DREAM3D_REQUIRE_EQUAL(propWasSet, true);
 
-      propWasSet = filter->setProperty("InfixEquation", "");
+      // Single Array Tests
+      propWasSet = filter->setProperty("InfixEquation", "-Array1");
       DREAM3D_REQUIRE_EQUAL(propWasSet, true);
+      pipeline->execute();
+      DREAM3D_REQUIRE_EQUAL(filter->getErrorCondition(), 0);
 
-      filter->preflight();
-      DREAM3D_REQUIRE_EQUAL(filter->getErrorCondition(), ArrayCalculator::EMPTY_EQUATION);
+      propWasSet = filter->setProperty("InfixEquation", "Array2");
+      DREAM3D_REQUIRE_EQUAL(propWasSet, true);
+      pipeline->execute();
+      DREAM3D_REQUIRE_EQUAL(filter->getErrorCondition(), 0);
+
+      // Binary Operator Tests
+      propWasSet = filter->setProperty("InfixEquation", "Array1 + Array2");
+      DREAM3D_REQUIRE_EQUAL(propWasSet, true);
+      pipeline->execute();
+      DREAM3D_REQUIRE_EQUAL(filter->getErrorCondition(), 0);
     }
   }
 
