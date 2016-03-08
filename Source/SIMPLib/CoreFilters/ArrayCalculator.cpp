@@ -405,6 +405,7 @@ void ArrayCalculator::execute()
     AttributeMatrix::Pointer createdAM = getDataContainerArray()->getAttributeMatrix(createdAMPath);
     if (NULL != createdAM)
     {
+      newArray->setName(m_CalculatedArray.getDataArrayName());
       createdAM->addAttributeArray(newArray->getName(), newArray);
     }
   }
