@@ -47,7 +47,7 @@ template <typename T>
 class SIMPLib_EXPORT CalculatorArray : public ICalculatorArray
 {
   public:
-    SIMPL_SHARED_POINTERS(CalculatorArray<T>)
+    SIMPL_SHARED_POINTERS(CalculatorArray)
 
     static Pointer New(typename DataArray<T>::Pointer dataArray, QObject* parent = NULL)
     {
@@ -76,15 +76,20 @@ class SIMPLib_EXPORT CalculatorArray : public ICalculatorArray
     }
 
   protected:
-    CalculatorArray(typename DataArray<T>::Pointer dataArray, QObject* parent = NULL) :
-      ICalculatorArray(parent),
-      m_Array(dataArray)
-    {
+    CalculatorArray() {}
 
+    CalculatorArray(typename DataArray<T>::Pointer dataArray, QObject* parent = NULL) :
+      ICalculatorArray(parent)
+    {
+      m_Array = DoubleArrayType::CreateArray(dataArray->getNumberOfTuples(), dataArray->getComponentDimensions(), "InternalArray");
+      for (int i = 0; i < dataArray->getNumberOfTuples(); i++)
+      {
+        m_Array->setValue(i, static_cast<double>(dataArray->getValue(i)));
+      }
     }
 
   private:
-    typename DataArray<T>::Pointer                                  m_Array;
+    DoubleArrayType::Pointer                                  m_Array;
 
     CalculatorArray(const CalculatorArray&); // Copy Constructor Not Implemented
     void operator=(const CalculatorArray&); // Operator '=' Not Implemented
