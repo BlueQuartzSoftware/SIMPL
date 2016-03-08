@@ -284,13 +284,13 @@ void ArrayCalculator::dataCheck()
     if (hasArrayGreaterThan1 == false)
     {
       QString ss = QObject::tr("The result of the chosen equation will be a numeric value, not an array."
-        "This numeric value will be stored in an array with the number of tuples equal to 1.").arg(m_SelectedAttributeMatrix.getAttributeMatrixName());
+        "This numeric value will be stored in an array with the number of tuples equal to 1.");
       setWarningCondition(NUMERIC_VALUE_WARNING);
       notifyWarningMessage(getHumanLabel(), ss, getWarningCondition());
 
       if (calculatedAM->getNumTuples() != 1)
       {
-        QString ss = QObject::tr("The tuple count of the calculated attribute matrix is not equal to 1.").arg(m_SelectedAttributeMatrix.getAttributeMatrixName());
+        QString ss = QObject::tr("The tuple count of the calculated attribute matrix is not equal to 1.");
         setErrorCondition(INCORRECT_TUPLE_COUNT);
         notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
         return;
@@ -301,7 +301,7 @@ void ArrayCalculator::dataCheck()
       AttributeMatrix::Pointer selectedAM = getDataContainerArray()->getPrereqAttributeMatrixFromPath(this, m_SelectedAttributeMatrix, err);
       if (NULL != selectedAM && calculatedAM->getNumTuples() != selectedAM->getNumTuples())
       {
-        QString ss = QObject::tr("The tuple count of the calculated attribute matrix is not equal to the tuple count of the selected attribute matrix.").arg(m_SelectedAttributeMatrix.getAttributeMatrixName());
+        QString ss = QObject::tr("The tuple count of the calculated attribute matrix is not equal to the tuple count of the selected attribute matrix.");
         setErrorCondition(INCORRECT_TUPLE_COUNT);
         notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
         return;
@@ -405,7 +405,7 @@ void ArrayCalculator::execute()
     AttributeMatrix::Pointer createdAM = getDataContainerArray()->getAttributeMatrix(createdAMPath);
     if (NULL != createdAM)
     {
-      createdAM->addAttributeArray(m_CalculatedArray.getDataArrayName(), newArray);
+      createdAM->addAttributeArray(newArray->getName(), newArray);
     }
   }
   else
@@ -451,7 +451,7 @@ QVector<QSharedPointer<CalculatorItem> > ArrayCalculator::parseInfixEquation(QSt
     if (ok == true)
     {
       // This is a number, so create an array with numOfTuples equal to 1 and set the value into it
-      DoubleArrayType::Pointer ptr = DoubleArrayType::CreateArray(1, QVector<size_t>(1, 1), "NumberArray");
+      DoubleArrayType::Pointer ptr = DoubleArrayType::CreateArray(1, QVector<size_t>(1, 1), m_CalculatedArray.getDataArrayName());
       ptr->setValue(0, num);
       itemPtr = QSharedPointer<CalculatorArray<double> >(new CalculatorArray<double>(ptr));
       parsedInfix.push_back(itemPtr);
