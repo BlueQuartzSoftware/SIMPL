@@ -81,52 +81,52 @@
     if(TemplateHelpers::CanDynamicCast<FloatArrayType>()(iDataArrayPtr))\
     {\
       FloatArrayType::Pointer arrayCast = std::dynamic_pointer_cast<FloatArrayType>(iDataArrayPtr);\
-      itemPtr = CalculatorArray<float>::New(arrayCast);\
+      itemPtr = CalculatorArray<float>::New(arrayCast, !getInPreflight());\
     }\
     else if(TemplateHelpers::CanDynamicCast<DoubleArrayType>()(iDataArrayPtr))\
     {\
       DoubleArrayType::Pointer arrayCast = std::dynamic_pointer_cast<DoubleArrayType>(iDataArrayPtr);\
-      itemPtr = CalculatorArray<double>::New(arrayCast);\
+      itemPtr = CalculatorArray<double>::New(arrayCast, !getInPreflight());\
     }\
     else if(TemplateHelpers::CanDynamicCast<Int8ArrayType>()(iDataArrayPtr))\
     {\
       Int8ArrayType::Pointer arrayCast = std::dynamic_pointer_cast<Int8ArrayType>(iDataArrayPtr);\
-      itemPtr = CalculatorArray<int8_t>::New(arrayCast);\
+      itemPtr = CalculatorArray<int8_t>::New(arrayCast, !getInPreflight());\
     }\
     else if(TemplateHelpers::CanDynamicCast<UInt8ArrayType>()(iDataArrayPtr))\
     {\
       UInt8ArrayType::Pointer arrayCast = std::dynamic_pointer_cast<UInt8ArrayType>(iDataArrayPtr);\
-      itemPtr = CalculatorArray<uint8_t>::New(arrayCast);\
+      itemPtr = CalculatorArray<uint8_t>::New(arrayCast, !getInPreflight());\
     }\
     else if(TemplateHelpers::CanDynamicCast<Int16ArrayType>()(iDataArrayPtr))\
     {\
       Int16ArrayType::Pointer arrayCast = std::dynamic_pointer_cast<Int16ArrayType>(iDataArrayPtr);\
-      itemPtr = CalculatorArray<int16_t>::New(arrayCast);\
+      itemPtr = CalculatorArray<int16_t>::New(arrayCast, !getInPreflight());\
     }\
     else if(TemplateHelpers::CanDynamicCast<UInt16ArrayType>()(iDataArrayPtr))\
     {\
       UInt16ArrayType::Pointer arrayCast = std::dynamic_pointer_cast<UInt16ArrayType>(iDataArrayPtr);\
-      itemPtr = CalculatorArray<uint16_t>::New(arrayCast);\
+      itemPtr = CalculatorArray<uint16_t>::New(arrayCast, !getInPreflight());\
     }\
     else if(TemplateHelpers::CanDynamicCast<Int32ArrayType>()(iDataArrayPtr))\
     {\
       Int32ArrayType::Pointer arrayCast = std::dynamic_pointer_cast<Int32ArrayType>(iDataArrayPtr);\
-      itemPtr = CalculatorArray<int32_t>::New(arrayCast);\
+      itemPtr = CalculatorArray<int32_t>::New(arrayCast, !getInPreflight());\
     }\
     else if(TemplateHelpers::CanDynamicCast<UInt32ArrayType>()(iDataArrayPtr))\
     {\
       UInt32ArrayType::Pointer arrayCast = std::dynamic_pointer_cast<UInt32ArrayType>(iDataArrayPtr);\
-      itemPtr = CalculatorArray<uint32_t>::New(arrayCast);\
+      itemPtr = CalculatorArray<uint32_t>::New(arrayCast, !getInPreflight());\
     }\
     else if(TemplateHelpers::CanDynamicCast<Int64ArrayType>()(iDataArrayPtr))\
     {\
       Int64ArrayType::Pointer arrayCast = std::dynamic_pointer_cast<Int64ArrayType>(iDataArrayPtr);\
-      itemPtr = CalculatorArray<int64_t>::New(arrayCast);\
+      itemPtr = CalculatorArray<int64_t>::New(arrayCast, !getInPreflight());\
     }\
     else if(TemplateHelpers::CanDynamicCast<UInt64ArrayType>()(iDataArrayPtr))\
     {\
       UInt64ArrayType::Pointer arrayCast = std::dynamic_pointer_cast<UInt64ArrayType>(iDataArrayPtr);\
-      itemPtr = CalculatorArray<uint64_t>::New(arrayCast);\
+      itemPtr = CalculatorArray<uint64_t>::New(arrayCast, !getInPreflight());\
     }\
 
 // -----------------------------------------------------------------------------
@@ -225,6 +225,8 @@ void ArrayCalculator::dataCheck()
   setErrorCondition(err);
 
   getDataContainerArray()->createNonPrereqArrayFromPath<DoubleArrayType, AbstractFilter, double>(this, m_CalculatedArray, 0, QVector<size_t>(1, 1));
+
+  getDataContainerArray()->getPrereqAttributeMatrixFromPath<AbstractFilter>(this, m_SelectedAttributeMatrix, err);
 
   if (m_InfixEquation.isEmpty() == true || m_InfixEquation.split(" ", QString::SkipEmptyParts).size() <= 0)
   {
@@ -369,7 +371,7 @@ void ArrayCalculator::execute()
         m_ExecutionStack.pop();
       }
 
-      m_ExecutionStack.push(CalculatorArray<double>::New(newArray));
+      m_ExecutionStack.push(CalculatorArray<double>::New(newArray, true));
     }
     else
     {
@@ -415,6 +417,8 @@ QVector<CalculatorItem::Pointer> ArrayCalculator::parseInfixEquation(QString equ
 {
   int err = 0;
 
+  AttributeMatrix::Pointer selectedAM = getDataContainerArray()->getPrereqAttributeMatrixFromPath<AbstractFilter>(this, m_SelectedAttributeMatrix, err);
+
   // Parse all the items into a QStringList using a regular expression
   QStringList itemList;
   QRegularExpression regExp("\\w{2,}\\d{0,2}|\\d+\\.\\d+|\\d+|\\+|\\-|\\*|\\/|\\(|\\)|\\,|\\^");
@@ -441,7 +445,7 @@ QVector<CalculatorItem::Pointer> ArrayCalculator::parseInfixEquation(QString equ
       // This is a number, so create an array with numOfTuples equal to 1 and set the value into it
       DoubleArrayType::Pointer ptr = DoubleArrayType::CreateArray(1, QVector<size_t>(1, 1), m_CalculatedArray.getDataArrayName());
       ptr->setValue(0, num);
-      itemPtr = CalculatorArray<double>::New(ptr);
+      itemPtr = CalculatorArray<double>::New(ptr, !getInPreflight());
       parsedInfix.push_back(itemPtr);
     }
     else if (strItem == "-")
@@ -461,7 +465,7 @@ QVector<CalculatorItem::Pointer> ArrayCalculator::parseInfixEquation(QString equ
         // By context, this is a negative sign, so we need to insert a -1 array and a multiplication operator
         DoubleArrayType::Pointer ptr = DoubleArrayType::CreateArray(1, QVector<size_t>(1, 1), "NumberArray");
         ptr->setValue(0, -1);
-        itemPtr = CalculatorArray<double>::New(ptr);
+        itemPtr = CalculatorArray<double>::New(ptr, !getInPreflight());
         parsedInfix.push_back(itemPtr);
 
         itemPtr = MultiplicationOperator::New();
@@ -474,30 +478,25 @@ QVector<CalculatorItem::Pointer> ArrayCalculator::parseInfixEquation(QString equ
         parsedInfix.push_back(itemPtr);
       }
     }
-    else if (m_SelectedAttributeMatrix.isEmpty() == false)
+    else if (selectedAM->getAttributeArrayNames().contains(strItem))
     {
-      AttributeMatrix::Pointer selectedAM = getDataContainerArray()->getPrereqAttributeMatrixFromPath(this, m_SelectedAttributeMatrix, err);
-
-      if (NULL != selectedAM && selectedAM->getAttributeArrayNames().contains(strItem))
+      // This is an array, so create the array item
+      IDataArray::Pointer dataArray = selectedAM->getAttributeArray(strItem);
+      if (numTuples < 0 && firstArray.isEmpty() == true)
       {
-        // This is an array, so create the array item
-        IDataArray::Pointer dataArray = selectedAM->getAttributeArray(strItem);
-        if (numTuples < 0 && firstArray.isEmpty() == true)
-        {
-          numTuples = dataArray->getNumberOfTuples();
-          firstArray = dataArray->getName();
-        }
-        else if (dataArray->getNumberOfTuples() != numTuples)
-        {
-          QString ss = QObject::tr("Arrays \"%1\" and \"%2\" in the infix equation have an inconsistent number of tuples.").arg(firstArray).arg(dataArray->getName());
-          setErrorCondition(INCONSISTENT_TUPLES);
-          notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
-          return QVector<CalculatorItem::Pointer>();
-        }
-
-        CREATE_CALCULATOR_ARRAY(itemPtr, dataArray)
-          parsedInfix.push_back(itemPtr);
+        numTuples = dataArray->getNumberOfTuples();
+        firstArray = dataArray->getName();
       }
+      else if (dataArray->getNumberOfTuples() != numTuples)
+      {
+        QString ss = QObject::tr("Arrays \"%1\" and \"%2\" in the infix equation have an inconsistent number of tuples.").arg(firstArray).arg(dataArray->getName());
+        setErrorCondition(INCONSISTENT_TUPLES);
+        notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
+        return QVector<CalculatorItem::Pointer>();
+      }
+
+      CREATE_CALCULATOR_ARRAY(itemPtr, dataArray)
+        parsedInfix.push_back(itemPtr);
     }
     else
     {

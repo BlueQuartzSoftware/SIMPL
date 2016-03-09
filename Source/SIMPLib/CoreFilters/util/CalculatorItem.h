@@ -46,15 +46,15 @@ class SIMPLib_EXPORT CalculatorItem
   public:
     SIMPL_SHARED_POINTERS(CalculatorItem)
 
-    static Pointer New(QObject* parent = NULL)
+    static Pointer New()
     {
-      return Pointer(new CalculatorItem(parent));
+      return Pointer(new CalculatorItem());
     }
 
     virtual ~CalculatorItem();
 
   protected:
-    CalculatorItem(QObject* parent = NULL);
+    CalculatorItem();
 
   private:
 

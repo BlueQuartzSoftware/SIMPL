@@ -38,8 +38,8 @@
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-ICalculatorArray::ICalculatorArray(QObject *parent) :
-  CalculatorItem(parent)
+ICalculatorArray::ICalculatorArray() :
+  CalculatorItem()
 {
 
 }

@@ -49,9 +49,9 @@ class SIMPLib_EXPORT CalculatorArray : public ICalculatorArray
   public:
     SIMPL_SHARED_POINTERS(CalculatorArray)
 
-    static Pointer New(typename DataArray<T>::Pointer dataArray, QObject* parent = NULL)
+    static Pointer New(typename DataArray<T>::Pointer dataArray, bool allocate)
     {
-      return Pointer(new CalculatorArray(dataArray, parent));
+      return Pointer(new CalculatorArray(dataArray, allocate));
     }
 
     virtual ~CalculatorArray() {}
@@ -78,13 +78,16 @@ class SIMPLib_EXPORT CalculatorArray : public ICalculatorArray
   protected:
     CalculatorArray() {}
 
-    CalculatorArray(typename DataArray<T>::Pointer dataArray, QObject* parent = NULL) :
-      ICalculatorArray(parent)
+    CalculatorArray(typename DataArray<T>::Pointer dataArray, bool allocate) :
+      ICalculatorArray()
     {
-      m_Array = DoubleArrayType::CreateArray(dataArray->getNumberOfTuples(), dataArray->getComponentDimensions(), "InternalArray");
-      for (int i = 0; i < dataArray->getNumberOfTuples(); i++)
+      m_Array = DoubleArrayType::CreateArray(dataArray->getNumberOfTuples(), dataArray->getComponentDimensions(), dataArray->getName(), allocate);
+      if (allocate == true)
       {
-        m_Array->setValue(i, static_cast<double>(dataArray->getValue(i)));
+        for (int i = 0; i < dataArray->getNumberOfTuples(); i++)
+        {
+          m_Array->setValue(i, static_cast<double>(dataArray->getValue(i)));
+        }
       }
     }
 
