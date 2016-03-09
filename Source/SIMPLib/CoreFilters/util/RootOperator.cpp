@@ -65,18 +65,17 @@ double RootOperator::calculate(AbstractFilter* filter, const QString &newArrayNa
 {
   if (executionStack.size() >= 1 && NULL != std::dynamic_pointer_cast<ICalculatorArray>(executionStack.top()))
   {
-    ICalculatorArray::Pointer rootArray = std::dynamic_pointer_cast<ICalculatorArray>(executionStack.pop());
-    ICalculatorArray::Pointer baseArray = std::dynamic_pointer_cast<ICalculatorArray>(executionStack.pop());
+    // Iterate through the stack to get pointers to the top and second-to-top values
+    QStack<CalculatorItem::Pointer>::iterator iter = executionStack.end();
+    iter--;
+    ICalculatorArray::Pointer rootArray = std::dynamic_pointer_cast<ICalculatorArray>(*iter);
+    iter--;
+    ICalculatorArray::Pointer baseArray = std::dynamic_pointer_cast<ICalculatorArray>(*iter);
 
     double rootNum = rootArray->getValue(index);
     double baseNum = baseArray->getValue(index);
 
-    double result = root(baseNum, rootNum);
-
-    executionStack.push(baseArray);
-    executionStack.push(rootArray);
-
-    return result;
+    return root(baseNum, rootNum);
   }
 
   // If the execution gets down here, then we have an error

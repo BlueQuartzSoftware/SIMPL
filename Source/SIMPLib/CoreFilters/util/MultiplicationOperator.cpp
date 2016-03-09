@@ -65,17 +65,16 @@ double MultiplicationOperator::calculate(AbstractFilter* filter, const QString &
 {
   if (executionStack.size() >= 2)
   {
-    ICalculatorArray::Pointer array1 = std::dynamic_pointer_cast<ICalculatorArray>(executionStack.pop());
-    ICalculatorArray::Pointer array2 = std::dynamic_pointer_cast<ICalculatorArray>(executionStack.pop());
+    // Iterate through the stack to get pointers to the top and second-to-top values
+    QStack<CalculatorItem::Pointer>::iterator iter = executionStack.end();
+    iter--;
+    ICalculatorArray::Pointer array1 = std::dynamic_pointer_cast<ICalculatorArray>(*iter);
+    iter--;
+    ICalculatorArray::Pointer array2 = std::dynamic_pointer_cast<ICalculatorArray>(*iter);
 
     double num1 = array1->getValue(index);
     double num2 = array2->getValue(index);
-    double result = num1 * num2;
-
-    executionStack.push(array2);
-    executionStack.push(array1);
-
-    return result;
+    return num1 * num2;
   }
 
   // If the execution gets down here, then we have an error

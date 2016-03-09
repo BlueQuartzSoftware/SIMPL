@@ -68,8 +68,12 @@ double DivisionOperator::calculate(AbstractFilter* filter, const QString &newArr
 {
   if (executionStack.size() >= 2)
   {
-    ICalculatorArray::Pointer divisorArray = std::dynamic_pointer_cast<ICalculatorArray>(executionStack.pop());
-    ICalculatorArray::Pointer dividendArray = std::dynamic_pointer_cast<ICalculatorArray>(executionStack.pop());
+    // Iterate through the stack to get pointers to the top and second-to-top values
+    QStack<CalculatorItem::Pointer>::iterator iter = executionStack.end();
+    iter--;
+    ICalculatorArray::Pointer divisorArray = std::dynamic_pointer_cast<ICalculatorArray>(*iter);
+    iter--;
+    ICalculatorArray::Pointer dividendArray = std::dynamic_pointer_cast<ICalculatorArray>(*iter);
 
     double divisor = divisorArray->getValue(index);
     double dividend = dividendArray->getValue(index);
@@ -83,9 +87,6 @@ double DivisionOperator::calculate(AbstractFilter* filter, const QString &newArr
     {
       result = dividend / divisor;
     }
-
-    executionStack.push(dividendArray);
-    executionStack.push(divisorArray);
 
     return result;
   }
