@@ -349,9 +349,12 @@ void ArrayCalculator::execute()
   QVector<CalculatorItem::Pointer> rpn = toRPN(parsedInfix);
 
   // Execute the RPN equation
-  for (int i = 0; i < rpn.size(); i++)
+  int totalItems = rpn.size();
+  for (int rpnCount = 0; rpnCount < totalItems; rpnCount++)
   {
-    CalculatorItem::Pointer rpnItem = rpn[i];
+    notifyStatusMessage(getHumanLabel(), QString::number(rpnCount + 1) + "/" + QString::number(totalItems) + ": " + QString::number(0) + "%");
+
+    CalculatorItem::Pointer rpnItem = rpn[rpnCount];
     ICalculatorArray::Pointer calcArray = std::dynamic_pointer_cast<ICalculatorArray>(rpnItem);
     if (NULL != calcArray)
     {
@@ -364,6 +367,9 @@ void ArrayCalculator::execute()
       CalculatorOperator::Pointer rpnOperator = std::dynamic_pointer_cast<CalculatorOperator>(rpnItem);
       DoubleArrayType::Pointer newArray = DoubleArrayType::CreateArray(calculatedAM->getNumTuples(), QVector<size_t>(1, 1), m_CalculatedArray.getDataArrayName());
 
+      int tuplePercentNum = newArray->getNumberOfTuples() / 100;
+      int percent = 0;
+      int tupleThresh = tuplePercentNum;
       for (int i=0; i<newArray->getNumberOfTuples(); i++)
       {
         double value = rpnOperator->calculate(this, m_CalculatedArray.getDataArrayName(), m_ExecutionStack, i);
@@ -374,6 +380,14 @@ void ArrayCalculator::execute()
         }
 
         newArray->setValue(i, value);
+
+        if (i == tupleThresh)
+        {
+          percent++;
+          QString msg = QString::number(rpnCount + 1) + "/" + QString::number(totalItems) + ": " + QString::number(percent) + "%";
+          notifyStatusMessage(getHumanLabel(), msg);
+          tupleThresh = i + tuplePercentNum;
+        }
       }
 
       m_ExecutionStack.pop();
