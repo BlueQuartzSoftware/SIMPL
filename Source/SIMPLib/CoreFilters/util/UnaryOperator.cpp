@@ -73,6 +73,11 @@ double UnaryOperator::calculate(AbstractFilter* filter, const QString &newArrayN
 // -----------------------------------------------------------------------------
 bool UnaryOperator::checkValidity(QVector<CalculatorItem::Pointer> infixVector, int currentIndex)
 {
+  if (m_NumOfArguments == -1)
+  {
+    return true;
+  }
+
   if (currentIndex - 1 >= 0 &&
     NULL == std::dynamic_pointer_cast<BinaryOperator>(infixVector[currentIndex-1])
     && NULL == std::dynamic_pointer_cast<LeftParenthesisItem>(infixVector[currentIndex - 1]))

@@ -57,6 +57,7 @@
 #include "util/SubtractionOperator.h"
 #include "util/MultiplicationOperator.h"
 #include "util/DivisionOperator.h"
+#include "util/NegativeOperator.h"
 #include "util/ABSOperator.h"
 #include "util/SinOperator.h"
 #include "util/CosOperator.h"
@@ -483,12 +484,15 @@ QVector<CalculatorItem::Pointer> ArrayCalculator::parseInfixEquation(QString equ
          )
       {
         // By context, this is a negative sign, so we need to insert a -1 array and a multiplication operator
-        DoubleArrayType::Pointer ptr = DoubleArrayType::CreateArray(1, QVector<size_t>(1, 1), "NumberArray");
-        ptr->setValue(0, -1);
-        itemPtr = CalculatorArray<double>::New(ptr, !getInPreflight());
-        parsedInfix.push_back(itemPtr);
+        //DoubleArrayType::Pointer ptr = DoubleArrayType::CreateArray(1, QVector<size_t>(1, 1), "NumberArray");
+        //ptr->setValue(0, -1);
+        //itemPtr = CalculatorArray<double>::New(ptr, !getInPreflight());
+        //parsedInfix.push_back(itemPtr);
 
-        itemPtr = MultiplicationOperator::New();
+        //itemPtr = MultiplicationOperator::New();
+        //parsedInfix.push_back(itemPtr);
+        
+        itemPtr = NegativeOperator::New();
         parsedInfix.push_back(itemPtr);
       }
       else

@@ -33,76 +33,37 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-#ifndef _CalculatorOperator_H_
-#define _CalculatorOperator_H_
+#ifndef _NegativeOperator_H_
+#define _NegativeOperator_H_
 
 #include <QtCore/QSharedPointer>
-#include <QtCore/QVector>
-
-#define _USE_MATH_DEFINES
-#include <math.h>
+#include <QtCore/QStack>
 
 #include "SIMPLib/SIMPLib.h"
-#include "SIMPLib/Common/TemplateHelpers.hpp"
-#include "SIMPLib/DataArrays/IDataArray.h"
 
-#include "CalculatorArray.hpp"
+#include "UnaryOperator.h"
 
-class SIMPLib_EXPORT CalculatorOperator : public CalculatorItem
+class SIMPLib_EXPORT NegativeOperator : public UnaryOperator
 {
   public:
-    enum OperatorType
-    {
-      Unary,
-      Binary
-    };
-
-    SIMPL_SHARED_POINTERS(CalculatorOperator)
+    SIMPL_SHARED_POINTERS(NegativeOperator)
 
     static Pointer New()
     {
-      return Pointer(new CalculatorOperator());
+      return Pointer(new NegativeOperator());
     }
 
-    virtual ~CalculatorOperator();
-
-    bool hasHigherPrecedence(CalculatorOperator::Pointer other);
+    virtual ~NegativeOperator();
 
     virtual double calculate(AbstractFilter* filter, const QString &newArrayName, QStack<ICalculatorArray::Pointer> &executionStack, int index);
 
-    virtual bool checkValidity(QVector<CalculatorItem::Pointer> infixVector, int currentIndex);
-
-    OperatorType getOperatorType();
-
   protected:
-    CalculatorOperator();
-
-    enum Precedence
-    {
-      Unknown_Precedence,
-      Alpha_Precedence,
-      Bravo_Precedence,
-      Charlie_Precedence,
-      Delta_Precedence,
-      Episilon_Precedence
-    };
-
-    double toDegrees(double radians);
-    double toRadians(double degrees);
-
-    double root(double base, double root);
-
-    Precedence getPrecedence();
-    void setPrecedence(Precedence precedence);
-
-    void setOperatorType(OperatorType type);
+    NegativeOperator();
 
   private:
-    Precedence                                      m_Precedence;
-    OperatorType                                    m_OperatorType;
 
-    CalculatorOperator(const CalculatorOperator&); // Copy Constructor Not Implemented
-    void operator=(const CalculatorOperator&); // Operator '=' Not Implemented
+    NegativeOperator(const NegativeOperator&); // Copy Constructor Not Implemented
+    void operator=(const NegativeOperator&); // Operator '=' Not Implemented
 };
 
-#endif /* _CalculatorOperator_H_ */
+#endif /* _NegativeOperator_H_ */

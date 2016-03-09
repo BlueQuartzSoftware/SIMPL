@@ -33,76 +33,50 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-#ifndef _CalculatorOperator_H_
-#define _CalculatorOperator_H_
+#include "NegativeOperator.h"
 
-#include <QtCore/QSharedPointer>
-#include <QtCore/QVector>
-
-#define _USE_MATH_DEFINES
 #include <math.h>
 
-#include "SIMPLib/SIMPLib.h"
-#include "SIMPLib/Common/TemplateHelpers.hpp"
-#include "SIMPLib/DataArrays/IDataArray.h"
+#include "SIMPLib/CoreFilters/ArrayCalculator.h"
 
 #include "CalculatorArray.hpp"
 
-class SIMPLib_EXPORT CalculatorOperator : public CalculatorItem
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+NegativeOperator::NegativeOperator() :
+UnaryOperator()
 {
-  public:
-    enum OperatorType
-    {
-      Unary,
-      Binary
-    };
+  setPrecedence(Episilon_Precedence);
+}
 
-    SIMPL_SHARED_POINTERS(CalculatorOperator)
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+NegativeOperator::~NegativeOperator()
+{
 
-    static Pointer New()
-    {
-      return Pointer(new CalculatorOperator());
-    }
+}
 
-    virtual ~CalculatorOperator();
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+double NegativeOperator::calculate(AbstractFilter* filter, const QString &newArrayName, QStack<ICalculatorArray::Pointer> &executionStack, int index)
+{
+  if (executionStack.size() >= 1)
+  {
+    // Iterate through the stack to get pointers to the top and second-to-top values
+    QStack<ICalculatorArray::Pointer>::iterator iter = executionStack.end();
+    iter--;
+    ICalculatorArray::Pointer array1 = *iter;
 
-    bool hasHigherPrecedence(CalculatorOperator::Pointer other);
+    return -1 * array1->getValue(index);
+  }
 
-    virtual double calculate(AbstractFilter* filter, const QString &newArrayName, QStack<ICalculatorArray::Pointer> &executionStack, int index);
+  // If the execution gets down here, then we have an error
+  QString ss = QObject::tr("The chosen infix equation is not a valid equation.");
+  filter->setErrorCondition(ArrayCalculator::INVALID_EQUATION);
+  filter->notifyErrorMessage(filter->getHumanLabel(), ss, filter->getErrorCondition());
+  return 0.0;
+}
 
-    virtual bool checkValidity(QVector<CalculatorItem::Pointer> infixVector, int currentIndex);
-
-    OperatorType getOperatorType();
-
-  protected:
-    CalculatorOperator();
-
-    enum Precedence
-    {
-      Unknown_Precedence,
-      Alpha_Precedence,
-      Bravo_Precedence,
-      Charlie_Precedence,
-      Delta_Precedence,
-      Episilon_Precedence
-    };
-
-    double toDegrees(double radians);
-    double toRadians(double degrees);
-
-    double root(double base, double root);
-
-    Precedence getPrecedence();
-    void setPrecedence(Precedence precedence);
-
-    void setOperatorType(OperatorType type);
-
-  private:
-    Precedence                                      m_Precedence;
-    OperatorType                                    m_OperatorType;
-
-    CalculatorOperator(const CalculatorOperator&); // Copy Constructor Not Implemented
-    void operator=(const CalculatorOperator&); // Operator '=' Not Implemented
-};
-
-#endif /* _CalculatorOperator_H_ */
