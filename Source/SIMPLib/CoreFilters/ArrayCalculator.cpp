@@ -224,28 +224,12 @@ void ArrayCalculator::dataCheck()
   int err = 0;
   setErrorCondition(err);
 
+  getDataContainerArray()->createNonPrereqArrayFromPath<DoubleArrayType, AbstractFilter, double>(this, m_CalculatedArray, 0, QVector<size_t>(1, 1));
+
   if (m_InfixEquation.isEmpty() == true || m_InfixEquation.split(" ", QString::SkipEmptyParts).size() <= 0)
   {
     QString ss = QObject::tr("The infix equation is empty.");
     setErrorCondition(EMPTY_EQUATION);
-    notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
-    return;
-  }
-
-  if (m_CalculatedArray.isEmpty() == true)
-  {
-    QString ss = QObject::tr("A calculated array has not been chosen.");
-    setErrorCondition(EMPTY_CAL_ARRAY);
-    notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
-    return;
-  }
-
-  DataArrayPath calculatedAMPath(m_CalculatedArray.getDataContainerName(), m_CalculatedArray.getAttributeMatrixName(), "");
-  AttributeMatrix::Pointer calculatedAM = getDataContainerArray()->getAttributeMatrix(calculatedAMPath);
-  if (NULL == calculatedAM)
-  {
-    QString ss = QObject::tr("Could not find the attribute matrix \"%1\".").arg(m_CalculatedArray.getAttributeMatrixName());
-    setErrorCondition(LOST_ATTR_MATRIX);
     notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
     return;
   }
@@ -278,6 +262,9 @@ void ArrayCalculator::dataCheck()
       }
     }
   }
+
+  DataArrayPath calculatedAMPath(m_CalculatedArray.getDataContainerName(), m_CalculatedArray.getAttributeMatrixName(), "");
+  AttributeMatrix::Pointer calculatedAM = getDataContainerArray()->getAttributeMatrix(calculatedAMPath);
 
   if (hasArray == true)
   {
@@ -430,7 +417,7 @@ QVector<CalculatorItem::Pointer> ArrayCalculator::parseInfixEquation(QString equ
 
   // Parse all the items into a QStringList using a regular expression
   QStringList itemList;
-  QRegularExpression regExp("\\w{2,}\\d{0,2}|\\d+\\.\\d+|\\d+|\\+|\\-|\\*|\\/|\\(|\\)|\\,");
+  QRegularExpression regExp("\\w{2,}\\d{0,2}|\\d+\\.\\d+|\\d+|\\+|\\-|\\*|\\/|\\(|\\)|\\,|\\^");
   QRegularExpressionMatchIterator iter = regExp.globalMatch(m_InfixEquation);
   while (iter.hasNext())
   {
