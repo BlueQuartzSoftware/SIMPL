@@ -225,8 +225,16 @@ void ArrayCalculator::dataCheck()
   setErrorCondition(err);
 
   getDataContainerArray()->createNonPrereqArrayFromPath<DoubleArrayType, AbstractFilter, double>(this, m_CalculatedArray, 0, QVector<size_t>(1, 1));
+  if (getErrorCondition() < 0)
+  {
+    return;
+  }
 
   getDataContainerArray()->getPrereqAttributeMatrixFromPath<AbstractFilter>(this, m_SelectedAttributeMatrix, err);
+  if (getErrorCondition() < 0)
+  {
+    return;
+  }
 
   if (m_InfixEquation.isEmpty() == true || m_InfixEquation.split(" ", QString::SkipEmptyParts).size() <= 0)
   {
@@ -381,20 +389,19 @@ void ArrayCalculator::execute()
   }
 
   // Grab the result from the stack
-  CalculatorItem::Pointer resultItem = m_ExecutionStack.pop();
+  ICalculatorArray::Pointer arrayItem = m_ExecutionStack.pop();
 
-  IDataArray::Pointer newArray = IDataArray::NullPointer();
-  if (NULL != std::dynamic_pointer_cast<ICalculatorArray>(resultItem))
+  IDataArray::Pointer resultArray = IDataArray::NullPointer();
+  if (NULL != arrayItem)
   {
-    ICalculatorArray::Pointer arrayItem = std::dynamic_pointer_cast<ICalculatorArray>(resultItem);
-    newArray = arrayItem->getArray();
+    resultArray = arrayItem->getArray();
 
     DataArrayPath createdAMPath(m_CalculatedArray.getDataContainerName(), m_CalculatedArray.getAttributeMatrixName(), "");
     AttributeMatrix::Pointer createdAM = getDataContainerArray()->getAttributeMatrix(createdAMPath);
     if (NULL != createdAM)
     {
-      newArray->setName(m_CalculatedArray.getDataArrayName());
-      createdAM->addAttributeArray(newArray->getName(), newArray);
+      resultArray->setName(m_CalculatedArray.getDataArrayName());
+      createdAM->addAttributeArray(resultArray->getName(), resultArray);
     }
   }
   else
