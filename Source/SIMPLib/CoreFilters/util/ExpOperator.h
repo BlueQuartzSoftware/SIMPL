@@ -57,7 +57,7 @@ class SIMPLib_EXPORT ExpOperator : public UnaryOperator
 
     virtual ~ExpOperator();
 
-    virtual double calculate(AbstractFilter* filter, const QString &newArrayName, QStack<CalculatorItem::Pointer> &executionStack, int index);
+    virtual double calculate(AbstractFilter* filter, const QString &newArrayName, QStack<ICalculatorArray::Pointer> &executionStack, int index);
 
   protected:
     ExpOperator();

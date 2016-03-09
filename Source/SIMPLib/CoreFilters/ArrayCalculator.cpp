@@ -344,12 +344,15 @@ void ArrayCalculator::execute()
   for (int i = 0; i < rpn.size(); i++)
   {
     CalculatorItem::Pointer rpnItem = rpn[i];
-    if (NULL != std::dynamic_pointer_cast<ICalculatorArray>(rpnItem))
+    ICalculatorArray::Pointer calcArray = std::dynamic_pointer_cast<ICalculatorArray>(rpnItem);
+    if (NULL != calcArray)
     {
-      m_ExecutionStack.push(rpnItem);
+      // This is an array
+      m_ExecutionStack.push(calcArray);
     }
-    else if (NULL != std::dynamic_pointer_cast<CalculatorOperator>(rpnItem))
+    else
     {
+      // This is an operator
       CalculatorOperator::Pointer rpnOperator = std::dynamic_pointer_cast<CalculatorOperator>(rpnItem);
       DoubleArrayType::Pointer newArray = DoubleArrayType::CreateArray(calculatedAM->getNumTuples(), QVector<size_t>(1, 1), m_CalculatedArray.getDataArrayName());
 
@@ -372,10 +375,6 @@ void ArrayCalculator::execute()
       }
 
       m_ExecutionStack.push(CalculatorArray<double>::New(newArray, true));
-    }
-    else
-    {
-      // ERROR: Unrecognized item in the RPN vector
     }
 
     if (getCancel() == true) { return; }

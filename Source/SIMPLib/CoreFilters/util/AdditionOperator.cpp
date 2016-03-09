@@ -61,16 +61,16 @@ AdditionOperator::~AdditionOperator()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-double AdditionOperator::calculate(AbstractFilter* filter, const QString &newArrayName, QStack<CalculatorItem::Pointer> &executionStack, int index)
+double AdditionOperator::calculate(AbstractFilter* filter, const QString &newArrayName, QStack<ICalculatorArray::Pointer> &executionStack, int index)
 { 
   if (executionStack.size() >= 2)
   {
     // Iterate through the stack to get pointers to the top and second-to-top values
-    QStack<CalculatorItem::Pointer>::iterator iter = executionStack.end();
+    QStack<ICalculatorArray::Pointer>::iterator iter = executionStack.end();
     iter--;
-    ICalculatorArray::Pointer array1 = std::dynamic_pointer_cast<ICalculatorArray>(*iter);
+    ICalculatorArray::Pointer array1 = *iter;
     iter--;
-    ICalculatorArray::Pointer array2 = std::dynamic_pointer_cast<ICalculatorArray>(*iter);
+    ICalculatorArray::Pointer array2 = *iter;
 
     double num1 = array1->getValue(index);
     double num2 = array2->getValue(index);

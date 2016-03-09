@@ -61,16 +61,16 @@ PowOperator::~PowOperator()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-double PowOperator::calculate(AbstractFilter* filter, const QString &newArrayName, QStack<CalculatorItem::Pointer> &executionStack, int index)
+double PowOperator::calculate(AbstractFilter* filter, const QString &newArrayName, QStack<ICalculatorArray::Pointer> &executionStack, int index)
 { 
   if (executionStack.size() >= 2)
   {
     // Iterate through the stack to get pointers to the top and second-to-top values
-    QStack<CalculatorItem::Pointer>::iterator iter = executionStack.end();
+    QStack<ICalculatorArray::Pointer>::iterator iter = executionStack.end();
     iter--;
-    ICalculatorArray::Pointer exponentArray = std::dynamic_pointer_cast<ICalculatorArray>(*iter);
+    ICalculatorArray::Pointer exponentArray = *iter;
     iter--;
-    ICalculatorArray::Pointer baseArray = std::dynamic_pointer_cast<ICalculatorArray>(*iter);
+    ICalculatorArray::Pointer baseArray = *iter;
 
     double exponent = exponentArray->getValue(index);
     double base = baseArray->getValue(index);

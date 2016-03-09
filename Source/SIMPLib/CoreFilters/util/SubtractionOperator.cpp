@@ -61,16 +61,16 @@ SubtractionOperator::~SubtractionOperator()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-double SubtractionOperator::calculate(AbstractFilter* filter, const QString &newArrayName, QStack<CalculatorItem::Pointer> &executionStack, int index)
+double SubtractionOperator::calculate(AbstractFilter* filter, const QString &newArrayName, QStack<ICalculatorArray::Pointer> &executionStack, int index)
 {
   if (executionStack.size() >= 2)
   {
     // Iterate through the stack to get pointers to the top and second-to-top values
-    QStack<CalculatorItem::Pointer>::iterator iter = executionStack.end();
+    QStack<ICalculatorArray::Pointer>::iterator iter = executionStack.end();
     iter--;
-    ICalculatorArray::Pointer subtrahendArray = std::dynamic_pointer_cast<ICalculatorArray>(*iter);
+    ICalculatorArray::Pointer subtrahendArray = *iter;
     iter--;
-    ICalculatorArray::Pointer minuendArray = std::dynamic_pointer_cast<ICalculatorArray>(*iter);
+    ICalculatorArray::Pointer minuendArray = *iter;
 
     double subtrahend = subtrahendArray->getValue(index);
     double minuend = minuendArray->getValue(index);

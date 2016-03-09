@@ -61,7 +61,7 @@ ACosOperator::~ACosOperator()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-double ACosOperator::calculate(AbstractFilter* filter, const QString &newArrayName, QStack<CalculatorItem::Pointer> &executionStack, int index)
+double ACosOperator::calculate(AbstractFilter* filter, const QString &newArrayName, QStack<ICalculatorArray::Pointer> &executionStack, int index)
 {
   if (executionStack.size() >= 1 && NULL != std::dynamic_pointer_cast<ICalculatorArray>(executionStack.top()))
   {

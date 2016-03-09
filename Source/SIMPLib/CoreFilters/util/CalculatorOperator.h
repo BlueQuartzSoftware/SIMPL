@@ -68,7 +68,7 @@ class SIMPLib_EXPORT CalculatorOperator : public CalculatorItem
 
     bool hasHigherPrecedence(CalculatorOperator::Pointer other);
 
-    virtual double calculate(AbstractFilter* filter, const QString &newArrayName, QStack<CalculatorItem::Pointer> &executionStack, int index);
+    virtual double calculate(AbstractFilter* filter, const QString &newArrayName, QStack<ICalculatorArray::Pointer> &executionStack, int index);
 
     virtual bool checkValidity(QVector<CalculatorItem::Pointer> infixVector, int currentIndex);
 

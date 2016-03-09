@@ -44,7 +44,7 @@
 #include "SIMPLib/Common/SIMPLibSetGetMacros.h"
 #include "SIMPLib/Common/AbstractFilter.h"
 
-#include "util/CalculatorItem.h"
+#include "util/ICalculatorArray.h"
 
 /**
  * @brief The ArrayCalculator class. See [Filter documentation](@ref createdatacontainer) for details.
@@ -182,7 +182,7 @@ class ArrayCalculator : public AbstractFilter
 
   private:
     QMap<QString, CalculatorItem::Pointer>                      m_SymbolMap;
-    QStack<CalculatorItem::Pointer>                     m_ExecutionStack;
+    QStack<ICalculatorArray::Pointer>                           m_ExecutionStack;
 
     QVector<CalculatorItem::Pointer> parseInfixEquation(QString equation);
     QVector<CalculatorItem::Pointer> toRPN(QVector<CalculatorItem::Pointer> infixEquation);

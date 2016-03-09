@@ -61,16 +61,16 @@ LogOperator::~LogOperator()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-double LogOperator::calculate(AbstractFilter* filter, const QString &newArrayName, QStack<CalculatorItem::Pointer> &executionStack, int index)
+double LogOperator::calculate(AbstractFilter* filter, const QString &newArrayName, QStack<ICalculatorArray::Pointer> &executionStack, int index)
 {
   if (executionStack.size() >= 1 && NULL != std::dynamic_pointer_cast<ICalculatorArray>(executionStack.top()))
   {
     // Iterate through the stack to get pointers to the top and second-to-top values
-    QStack<CalculatorItem::Pointer>::iterator iter = executionStack.end();
+    QStack<ICalculatorArray::Pointer>::iterator iter = executionStack.end();
     iter--;
-    ICalculatorArray::Pointer valueArray = std::dynamic_pointer_cast<ICalculatorArray>(*iter);
+    ICalculatorArray::Pointer valueArray = *iter;
     iter--;
-    ICalculatorArray::Pointer baseArray = std::dynamic_pointer_cast<ICalculatorArray>(*iter);
+    ICalculatorArray::Pointer baseArray = *iter;
 
     double valueNum = valueArray->getValue(index);
     double baseNum = baseArray->getValue(index);

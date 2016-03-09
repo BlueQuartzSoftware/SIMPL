@@ -50,7 +50,7 @@ class SIMPLib_EXPORT UnaryOperator : public CalculatorOperator
 
     virtual ~UnaryOperator();
 
-    virtual double calculate(AbstractFilter* filter, const QString &newArrayName, QStack<CalculatorItem::Pointer> &executionStack, int index);
+    virtual double calculate(AbstractFilter* filter, const QString &newArrayName, QStack<ICalculatorArray::Pointer> &executionStack, int index);
 
     bool checkValidity(QVector<CalculatorItem::Pointer> infixVector, int currentIndex) final;
 
