@@ -223,7 +223,8 @@ int ArrayCalculator::writeFilterParameters(AbstractFilterParametersWriter* write
 void ArrayCalculator::dataCheck()
 {
   int err = 0;
-  setErrorCondition(err);
+  setErrorCondition(0);
+  setWarningCondition(0);
 
   getDataContainerArray()->createNonPrereqArrayFromPath<DoubleArrayType, AbstractFilter, double>(this, m_CalculatedArray, 0, QVector<size_t>(1, 1));
   if (getErrorCondition() < 0)
@@ -337,6 +338,7 @@ void ArrayCalculator::preflight()
 void ArrayCalculator::execute()
 {
   setErrorCondition(0);
+  setWarningCondition(0);
   dataCheck();
   if(getErrorCondition() < 0) { return; }
 
