@@ -311,8 +311,6 @@ public:
       DREAM3D_REQUIRE(arrayPtr->getNumberOfTuples() == inputArray2->getNumberOfTuples());
       for (int i = 0; i < arrayPtr->getNumberOfTuples(); i++)
       {
-        double arrayPtrVal = arrayPtr->getValue(i);
-        double inputArray2Val = static_cast<double>(inputArray2->getValue(i));
         DREAM3D_REQUIRE(arrayPtr->getValue(i) == static_cast<double>(inputArray2->getValue(i)));
       }
 
