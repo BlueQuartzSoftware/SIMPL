@@ -64,6 +64,9 @@ class SIMPLib_EXPORT CalculatorOperator : public CalculatorItem
       return Pointer(new CalculatorOperator());
     }
 
+    static double toDegrees(double radians);
+    static double toRadians(double degrees);
+
     virtual ~CalculatorOperator();
 
     bool hasHigherPrecedence(CalculatorOperator::Pointer other);
@@ -86,9 +89,6 @@ class SIMPLib_EXPORT CalculatorOperator : public CalculatorItem
       Delta_Precedence,
       Episilon_Precedence
     };
-
-    double toDegrees(double radians);
-    double toRadians(double degrees);
 
     double root(double base, double root);
 

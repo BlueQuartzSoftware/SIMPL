@@ -63,7 +63,7 @@ RootOperator::~RootOperator()
 // -----------------------------------------------------------------------------
 double RootOperator::calculate(AbstractFilter* filter, const QString &newArrayName, QStack<ICalculatorArray::Pointer> &executionStack, int index)
 {
-  if (executionStack.size() >= 1 && NULL != std::dynamic_pointer_cast<ICalculatorArray>(executionStack.top()))
+  if (executionStack.size() >= 1 && NULL != executionStack.top())
   {
     // Iterate through the stack to get pointers to the top and second-to-top values
     QStack<ICalculatorArray::Pointer>::iterator iter = executionStack.end();

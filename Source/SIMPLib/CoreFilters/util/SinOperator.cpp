@@ -63,11 +63,11 @@ SinOperator::~SinOperator()
 // -----------------------------------------------------------------------------
 double SinOperator::calculate(AbstractFilter* filter, const QString &newArrayName, QStack<ICalculatorArray::Pointer> &executionStack, int index)
 {
-  if (executionStack.size() >= 1 && NULL != std::dynamic_pointer_cast<ICalculatorArray>(executionStack.top()))
+  if (executionStack.size() >= 1 && NULL != executionStack.top())
   {
-    double degrees = std::dynamic_pointer_cast<ICalculatorArray>(executionStack.top())->getValue(index);
+    double degrees = executionStack.top()->getValue(index);
     double radians = toRadians(degrees);
-    return sin(radians);
+    return toDegrees(sin(radians));
   }
 
   // If the execution gets down here, then we have an error

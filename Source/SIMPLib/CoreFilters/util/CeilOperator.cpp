@@ -63,9 +63,9 @@ CeilOperator::~CeilOperator()
 // -----------------------------------------------------------------------------
 double CeilOperator::calculate(AbstractFilter* filter, const QString &newArrayName, QStack<ICalculatorArray::Pointer> &executionStack, int index)
 {
-  if (executionStack.size() >= 1 && NULL != std::dynamic_pointer_cast<ICalculatorArray>(executionStack.top()))
+  if (executionStack.size() >= 1 && NULL != executionStack.top())
   {
-    double num = std::dynamic_pointer_cast<ICalculatorArray>(executionStack.top())->getValue(index);
+    double num = executionStack.top()->getValue(index);
     return ceil(num);
   }
 
