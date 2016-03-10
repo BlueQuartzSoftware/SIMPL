@@ -75,7 +75,7 @@ bool UnaryOperator::checkValidity(QVector<CalculatorItem::Pointer> infixVector, 
 {
   if (m_NumOfArguments == -1)
   {
-    return true;
+    return false;
   }
 
   if (currentIndex - 1 >= 0 &&

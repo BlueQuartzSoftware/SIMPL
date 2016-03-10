@@ -250,7 +250,6 @@ void ArrayCalculator::dataCheck()
   if (parsedInfix.isEmpty() == true) { return; }
 
   bool hasArrayGreaterThan1 = false;
-  bool hasArray = false;
   for (int i=0; i<parsedInfix.size(); i++)
   {
     CalculatorItem::Pointer currentItem = parsedInfix[i];
@@ -267,7 +266,6 @@ void ArrayCalculator::dataCheck()
     }
     else if (NULL != std::dynamic_pointer_cast<ICalculatorArray>(currentItem))
     {
-      hasArray = true;
       if (std::dynamic_pointer_cast<ICalculatorArray>(currentItem)->getArray()->getNumberOfTuples() > 1)
       {
         hasArrayGreaterThan1 = true;
@@ -278,41 +276,31 @@ void ArrayCalculator::dataCheck()
   DataArrayPath calculatedAMPath(m_CalculatedArray.getDataContainerName(), m_CalculatedArray.getAttributeMatrixName(), "");
   AttributeMatrix::Pointer calculatedAM = getDataContainerArray()->getAttributeMatrix(calculatedAMPath);
 
-  if (hasArray == true)
+  if (hasArrayGreaterThan1 == false)
   {
-    if (hasArrayGreaterThan1 == false)
-    {
-      QString ss = QObject::tr("The result of the chosen equation will be a numeric value, not an array."
-        "This numeric value will be stored in an array with the number of tuples equal to 1.");
-      setWarningCondition(NUMERIC_VALUE_WARNING);
-      notifyWarningMessage(getHumanLabel(), ss, getWarningCondition());
+    QString ss = QObject::tr("The result of the chosen equation will be a numeric value, not an array."
+                             "This numeric value will be stored in an array with the number of tuples equal to 1.");
+    setWarningCondition(NUMERIC_VALUE_WARNING);
+    notifyWarningMessage(getHumanLabel(), ss, getWarningCondition());
 
-      if (calculatedAM->getNumTuples() != 1)
-      {
-        QString ss = QObject::tr("The tuple count of the calculated attribute matrix is not equal to 1.");
-        setErrorCondition(INCORRECT_TUPLE_COUNT);
-        notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
-        return;
-      }
-    }
-    else
+    if (calculatedAM->getNumTuples() != 1)
     {
-      AttributeMatrix::Pointer selectedAM = getDataContainerArray()->getPrereqAttributeMatrixFromPath(this, m_SelectedAttributeMatrix, err);
-      if (NULL != selectedAM && calculatedAM->getNumTuples() != selectedAM->getNumTuples())
-      {
-        QString ss = QObject::tr("The tuple count of the calculated attribute matrix is not equal to the tuple count of the selected attribute matrix.");
-        setErrorCondition(INCORRECT_TUPLE_COUNT);
-        notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
-        return;
-      }
+      QString ss = QObject::tr("The tuple count of the calculated attribute matrix is not equal to 1.");
+      setErrorCondition(INCORRECT_TUPLE_COUNT);
+      notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
+      return;
     }
   }
   else
   {
-    QString ss = QObject::tr("The chosen infix equation does not have any numeric values or arrays in it.");
-    setErrorCondition(NO_NUMERIC_VALUES);
-    notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
-    return;
+    AttributeMatrix::Pointer selectedAM = getDataContainerArray()->getPrereqAttributeMatrixFromPath(this, m_SelectedAttributeMatrix, err);
+    if (NULL != selectedAM && calculatedAM->getNumTuples() != selectedAM->getNumTuples())
+    {
+      QString ss = QObject::tr("The tuple count of the calculated attribute matrix is not equal to the tuple count of the selected attribute matrix.");
+      setErrorCondition(INCORRECT_TUPLE_COUNT);
+      notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
+      return;
+    }
   }
 
   QVector<CalculatorItem::Pointer> rpn = toRPN(parsedInfix);
@@ -620,7 +608,7 @@ QVector<CalculatorItem::Pointer> ArrayCalculator::toRPN(QVector<CalculatorItem::
     }
   }
 
-  /* After we are done iterating through the infix equation items, keep transferring items from the item stack to the 
+  /* After we are done iterating through the infix equation items, keep transferring items from the item stack to the
      rpn equation output until the stack is empty. */
   while (itemStack.isEmpty() == false)
   {

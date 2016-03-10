@@ -417,7 +417,7 @@ public:
       propWasSet = filter->setProperty("InfixEquation", "-");
       DREAM3D_REQUIRE_EQUAL(propWasSet, true);
       filter->execute();
-      DREAM3D_REQUIRE_EQUAL(filter->getErrorCondition(), ArrayCalculator::NO_NUMERIC_VALUES);
+      DREAM3D_REQUIRE_EQUAL(filter->getErrorCondition(), ArrayCalculator::INVALID_EQUATION);
 
       dca = createDataContainerArray();
       filter->setDataContainerArray(dca);

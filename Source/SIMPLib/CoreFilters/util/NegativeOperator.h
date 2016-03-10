@@ -43,7 +43,7 @@
 
 #include "UnaryOperator.h"
 
-class SIMPLib_EXPORT NegativeOperator : public UnaryOperator
+class SIMPLib_EXPORT NegativeOperator : public CalculatorOperator
 {
   public:
     SIMPL_SHARED_POINTERS(NegativeOperator)
@@ -56,6 +56,8 @@ class SIMPLib_EXPORT NegativeOperator : public UnaryOperator
     virtual ~NegativeOperator();
 
     virtual double calculate(AbstractFilter* filter, const QString &newArrayName, QStack<ICalculatorArray::Pointer> &executionStack, int index);
+
+    bool checkValidity(QVector<CalculatorItem::Pointer> infixVector, int currentIndex) final;
 
   protected:
     NegativeOperator();

@@ -40,12 +40,14 @@
 #include "SIMPLib/CoreFilters/ArrayCalculator.h"
 
 #include "CalculatorArray.hpp"
+#include "BinaryOperator.h"
+#include "LeftParenthesisItem.h"
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
 NegativeOperator::NegativeOperator() :
-UnaryOperator()
+CalculatorOperator()
 {
   setPrecedence(Episilon_Precedence);
 }
@@ -79,4 +81,27 @@ double NegativeOperator::calculate(AbstractFilter* filter, const QString &newArr
   filter->notifyErrorMessage(filter->getHumanLabel(), ss, filter->getErrorCondition());
   return 0.0;
 }
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+bool NegativeOperator::checkValidity(QVector<CalculatorItem::Pointer> infixVector, int currentIndex)
+{
+  if (currentIndex - 1 >= 0 &&
+    NULL == std::dynamic_pointer_cast<BinaryOperator>(infixVector[currentIndex-1])
+    && NULL == std::dynamic_pointer_cast<LeftParenthesisItem>(infixVector[currentIndex - 1]))
+  {
+    return false;
+  }
+
+  int index = currentIndex + 1;
+  if (index < infixVector.size() && (NULL != std::dynamic_pointer_cast<ICalculatorArray>(infixVector[index])
+                                     || NULL != std::dynamic_pointer_cast<UnaryOperator>(infixVector[index])))
+  {
+    return true;
+  }
+
+  return false;
+}
+
 
