@@ -35,6 +35,8 @@
 
 #include <QtCore/QCoreApplication>
 
+#include <math.h>
+
 #include "SIMPLib/SIMPLib.h"
 #include "SIMPLib/SIMPLibVersion.h"
 #include "SIMPLib/Common/Constants.h"
