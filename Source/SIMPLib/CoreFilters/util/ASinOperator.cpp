@@ -65,9 +65,8 @@ double ASinOperator::calculate(AbstractFilter* filter, const QString &newArrayNa
 {
   if (executionStack.size() >= 1 && NULL != executionStack.top())
   {
-    double degrees = executionStack.top()->getValue(index);
-    double radians = toRadians(degrees);
-    return toDegrees(asin(radians));
+    double value = executionStack.top()->getValue(index);
+    return toDegrees(asin(value));
   }
 
   // If the execution gets down here, then we have an error

@@ -65,9 +65,8 @@ double ACosOperator::calculate(AbstractFilter* filter, const QString &newArrayNa
 {
   if (executionStack.size() >= 1 && NULL != executionStack.top())
   {
-    double degrees = executionStack.top()->getValue(index);
-    double radians = toRadians(degrees);
-    return toDegrees(acos(radians));
+    double value = executionStack.top()->getValue(index);
+    return toDegrees(acos(value));
   }
 
   // If the execution gets down here, then we have an error
