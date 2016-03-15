@@ -462,7 +462,7 @@ void CreateDataArray::initializeArrayWithReals()
 {
   if (m_InitializationType == Manual)
   {
-    double value = m_InitializationValue.toDouble();
+    T value = static_cast<T>(m_InitializationValue.toDouble());
     for (size_t i = 0; i < m_OutputArrayPtr.lock()->getSize(); i++)
     {
       m_OutputArrayPtr.lock()->initializeTuple(i, &value);
