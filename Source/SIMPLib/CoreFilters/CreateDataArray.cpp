@@ -485,7 +485,7 @@ void CreateDataArray::initializeArrayWithReals()
 
     for (size_t i = 0; i < m_OutputArrayPtr.lock()->getSize(); i++)
     {
-      double value = realGenerator();
+      T value = realGenerator();
       m_OutputArrayPtr.lock()->initializeTuple(i, &value);
     }
   }
