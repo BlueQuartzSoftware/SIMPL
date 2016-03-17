@@ -687,6 +687,23 @@ public:
       value = -82;
       runTest("ceil(-82.789367)", numericArrayPath, 0, ArrayCalculator::NUMERIC_VALUE_WARNING, &numTuple, &value);
     }
+
+    // Negative Operator
+    {
+      runTest("-", numericArrayPath, ArrayCalculator::INVALID_EQUATION, 0);
+      runTest("-(", numericArrayPath, ArrayCalculator::INVALID_EQUATION, 0);
+      runTest("-)", numericArrayPath, ArrayCalculator::INVALID_EQUATION, 0);
+      runTest("-()", numericArrayPath, ArrayCalculator::INVALID_EQUATION, 0);
+      runTest("-(1, 5)", numericArrayPath, ArrayCalculator::INVALID_EQUATION, 0);
+      runTest("-(,)", numericArrayPath, ArrayCalculator::INVALID_EQUATION, 0);
+
+      int numTuple = 1;
+      double value = -0.4564;
+      runTest("-(.4564)", numericArrayPath, 0, ArrayCalculator::NUMERIC_VALUE_WARNING, &numTuple, &value);
+
+      value = 1;
+      runTest("-(3-4)", numericArrayPath, 0, ArrayCalculator::NUMERIC_VALUE_WARNING, &numTuple, &value);
+    }
   }
 
   // -----------------------------------------------------------------------------

@@ -87,18 +87,17 @@ double NegativeOperator::calculate(AbstractFilter* filter, const QString &newArr
 // -----------------------------------------------------------------------------
 bool NegativeOperator::checkValidity(QVector<CalculatorItem::Pointer> infixVector, int currentIndex)
 {
-  if (currentIndex - 1 >= 0 &&
-    NULL == std::dynamic_pointer_cast<BinaryOperator>(infixVector[currentIndex-1])
-    && NULL == std::dynamic_pointer_cast<LeftParenthesisItem>(infixVector[currentIndex - 1]))
+  if (currentIndex - 1 < 0 || (currentIndex - 1 >= 0 &&
+    (NULL != std::dynamic_pointer_cast<BinaryOperator>(infixVector[currentIndex-1])
+    || NULL != std::dynamic_pointer_cast<LeftParenthesisItem>(infixVector[currentIndex - 1]))))
   {
-    return false;
-  }
-
-  int index = currentIndex + 1;
-  if (index < infixVector.size() && (NULL != std::dynamic_pointer_cast<ICalculatorArray>(infixVector[index])
-                                     || NULL != std::dynamic_pointer_cast<UnaryOperator>(infixVector[index])))
-  {
-    return true;
+    if (currentIndex + 1 < infixVector.size() &&
+      (NULL != std::dynamic_pointer_cast<ICalculatorArray>(infixVector[currentIndex + 1])
+      || NULL != std::dynamic_pointer_cast<LeftParenthesisItem>(infixVector[currentIndex + 1])
+      || NULL != std::dynamic_pointer_cast<UnaryOperator>(infixVector[currentIndex + 1])))
+    {
+      return true;
+    }
   }
 
   return false;

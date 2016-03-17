@@ -39,6 +39,7 @@
 
 #include <QtCore/QMapIterator>
 #include <QtCore/QRegularExpression>
+#include <QtCore/QVectorIterator>
 
 #include "SIMPLib/Common/Constants.h"
 #include "SIMPLib/Common/TemplateHelpers.hpp"
@@ -251,6 +252,7 @@ void ArrayCalculator::dataCheck()
   if (parsedInfix.isEmpty() == true) { return; }
 
   bool hasArrayGreaterThan1 = false;
+  bool hasValue = false;
   for (int i=0; i<parsedInfix.size(); i++)
   {
     CalculatorItem::Pointer currentItem = parsedInfix[i];
@@ -267,11 +269,20 @@ void ArrayCalculator::dataCheck()
     }
     else if (NULL != std::dynamic_pointer_cast<ICalculatorArray>(currentItem))
     {
+      hasValue = true;
       if (std::dynamic_pointer_cast<ICalculatorArray>(currentItem)->getArray()->getNumberOfTuples() > 1)
       {
         hasArrayGreaterThan1 = true;
       }
     }
+  }
+
+  if (hasValue == false)
+  {
+    QString ss = QObject::tr("The chosen infix equation is not a valid equation.");
+    setErrorCondition(INVALID_EQUATION);
+    notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
+    return;
   }
 
   DataArrayPath calculatedAMPath(m_CalculatedArray.getDataContainerName(), m_CalculatedArray.getAttributeMatrixName(), "");
@@ -517,6 +528,29 @@ QVector<CalculatorItem::Pointer> ArrayCalculator::parseInfixEquation(QString equ
       }
       else if (NULL != std::dynamic_pointer_cast<CommaSeparator>(itemPtr))
       {
+        // This is a comma, so make sure that this comma has a valid unary operator before it
+        {
+          QVectorIterator<CalculatorItem::Pointer> iter(parsedInfix);
+          iter.toBack();
+          bool foundUnaryOperator = false;
+          while (iter.hasPrevious())
+          {
+            CalculatorItem::Pointer item = iter.previous();
+            if (NULL != std::dynamic_pointer_cast<UnaryOperator>(item))
+            {
+              foundUnaryOperator = true;
+            }
+          }
+
+          if (foundUnaryOperator == false)
+          {
+            QString ss = QObject::tr("The chosen infix equation is not a valid equation.");
+            setErrorCondition(INVALID_EQUATION);
+            notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
+            return QVector<CalculatorItem::Pointer>();
+          }
+        }
+
         // This is a comma, so we need to put parentheses around the entire term so that the RPN parser knows to evaluate the entire expression placed here
         // For example, if we have root( 4*4, 2*3 ), then we need it to be root( (4*4), (2*3) )
         parsedInfix.push_back(RightParenthesisItem::New());
