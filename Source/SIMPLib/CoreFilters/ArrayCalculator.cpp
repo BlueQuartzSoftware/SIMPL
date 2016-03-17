@@ -433,7 +433,7 @@ QVector<CalculatorItem::Pointer> ArrayCalculator::parseInfixEquation(QString equ
 
   // Parse all the items into a QVector of strings using a regular expression
   QVector<QString> itemList;
-  QRegularExpression regExp("\\d+(\\.\\d+)?|\\w{2,}\\d{0,2}|\\+|\\-|\\*|\\/|\\(|\\)|\\,|\\^");
+  QRegularExpression regExp("\\d+(\\.\\d+)?|\\.\\d+|\\w{2,}\\d{0,2}|\\+|\\-|\\*|\\/|\\(|\\)|\\,|\\^");
   QRegularExpressionMatchIterator iter = regExp.globalMatch(m_InfixEquation);
   while (iter.hasNext())
   {

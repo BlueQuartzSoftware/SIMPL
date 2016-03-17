@@ -201,6 +201,10 @@ public:
       numTuple = 1;
       value = 14;
       runTest("14", numericArrayPath, 0, ArrayCalculator::NUMERIC_VALUE_WARNING, &numTuple, &value);
+
+      numTuple = 1;
+      value = 0.345;
+      runTest(".345", numericArrayPath, 0, ArrayCalculator::NUMERIC_VALUE_WARNING, &numTuple, &value);
     }
 
     // Mismatched Parentheses Tests
@@ -677,8 +681,8 @@ public:
       runTest("ceil(,)", numericArrayPath, ArrayCalculator::INVALID_EQUATION, 0);
 
       int numTuple = 1;
-      double value = 13;
-      runTest("ceil(12.4564)", numericArrayPath, 0, ArrayCalculator::NUMERIC_VALUE_WARNING, &numTuple, &value);
+      double value = 1;
+      runTest("ceil(.4564)", numericArrayPath, 0, ArrayCalculator::NUMERIC_VALUE_WARNING, &numTuple, &value);
 
       value = -82;
       runTest("ceil(-82.789367)", numericArrayPath, 0, ArrayCalculator::NUMERIC_VALUE_WARNING, &numTuple, &value);
