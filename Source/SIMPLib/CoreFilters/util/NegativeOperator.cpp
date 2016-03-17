@@ -49,7 +49,7 @@
 NegativeOperator::NegativeOperator() :
 CalculatorOperator()
 {
-  setPrecedence(Episilon_Precedence);
+  setPrecedence(Delta_Precedence);
 }
 
 // -----------------------------------------------------------------------------

@@ -63,10 +63,20 @@ ACosOperator::~ACosOperator()
 // -----------------------------------------------------------------------------
 double ACosOperator::calculate(AbstractFilter* filter, const QString &newArrayName, QStack<ICalculatorArray::Pointer> &executionStack, int index)
 {
-  if (executionStack.size() >= 1 && NULL != executionStack.top())
+  ArrayCalculator* calculatorFilter = dynamic_cast<ArrayCalculator*>(filter);
+
+  if (executionStack.size() >= 1 && NULL != executionStack.top() && NULL != calculatorFilter)
   {
-    double value = executionStack.top()->getValue(index);
-    return toDegrees(acos(value));
+    double stackVal = executionStack.top()->getValue(index);
+
+    if (calculatorFilter->getUnits() == ArrayCalculator::Degrees)
+    {
+      return toDegrees(acos(stackVal));
+    }
+    else
+    {
+      return acos(stackVal);
+    }
   }
 
   // If the execution gets down here, then we have an error

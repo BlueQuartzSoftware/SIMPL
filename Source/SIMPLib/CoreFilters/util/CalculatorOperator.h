@@ -39,9 +39,6 @@
 #include <QtCore/QSharedPointer>
 #include <QtCore/QVector>
 
-#define _USE_MATH_DEFINES
-#include <math.h>
-
 #include "SIMPLib/SIMPLib.h"
 #include "SIMPLib/Common/TemplateHelpers.hpp"
 #include "SIMPLib/DataArrays/IDataArray.h"
@@ -87,7 +84,7 @@ class SIMPLib_EXPORT CalculatorOperator : public CalculatorItem
       Bravo_Precedence,
       Charlie_Precedence,
       Delta_Precedence,
-      Episilon_Precedence
+      Epsilon_Precedence
     };
 
     double root(double base, double root);

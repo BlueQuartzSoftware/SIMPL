@@ -63,11 +63,21 @@ CosOperator::~CosOperator()
 // -----------------------------------------------------------------------------
 double CosOperator::calculate(AbstractFilter* filter, const QString &newArrayName, QStack<ICalculatorArray::Pointer> &executionStack, int index)
 {
-  if (executionStack.size() >= 1 && NULL != executionStack.top())
+  ArrayCalculator* calculatorFilter = dynamic_cast<ArrayCalculator*>(filter);
+
+  if (executionStack.size() >= 1 && NULL != executionStack.top() && NULL != calculatorFilter)
   {
-    double degrees = executionStack.top()->getValue(index);
-    double radians = toRadians(degrees);
-    return toDegrees(cos(radians));
+    double stackVal = executionStack.top()->getValue(index);
+
+    if (calculatorFilter->getUnits() == ArrayCalculator::Degrees)
+    {
+      double radians = toRadians(stackVal);
+      return cos(radians);
+    }
+    else
+    {
+      return cos(stackVal);
+    }
   }
 
   // If the execution gets down here, then we have an error

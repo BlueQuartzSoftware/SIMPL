@@ -60,8 +60,9 @@
    Microsoft doesn't define M_2PI ever, other compilers may lack some of these
    too, hence the sequence as it is: load math.h, then see what's lacking still.
 */
-#ifndef _simplibmath_h_
-#define _simplibmath_h_
+#ifndef _USE_MATH_DEFINES
+#define _USE_MATH_DEFINES 1
+
 #endif
 #endif
 

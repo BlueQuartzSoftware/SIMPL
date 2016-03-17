@@ -36,6 +36,7 @@
 #include "UnaryOperator.h"
 
 #include "BinaryOperator.h"
+#include "NegativeOperator.h"
 #include "LeftParenthesisItem.h"
 #include "RightParenthesisItem.h"
 #include "CommaSeparator.h"
@@ -47,7 +48,7 @@ UnaryOperator::UnaryOperator() :
   CalculatorOperator(),
   m_NumOfArguments(-1)
 {
-  setPrecedence(Delta_Precedence);
+  setPrecedence(Epsilon_Precedence);
   setOperatorType(Unary);
 }
 
@@ -80,7 +81,8 @@ bool UnaryOperator::checkValidity(QVector<CalculatorItem::Pointer> infixVector, 
 
   if (currentIndex - 1 >= 0 &&
     NULL == std::dynamic_pointer_cast<BinaryOperator>(infixVector[currentIndex-1])
-    && NULL == std::dynamic_pointer_cast<LeftParenthesisItem>(infixVector[currentIndex - 1]))
+    && NULL == std::dynamic_pointer_cast<LeftParenthesisItem>(infixVector[currentIndex - 1])
+    && NULL == std::dynamic_pointer_cast<NegativeOperator>(infixVector[currentIndex - 1]))
   {
     return false;
   }

@@ -69,6 +69,14 @@ class ArrayCalculator : public AbstractFilter
       UNEXPECTED_OUTPUT = -4020
     };
 
+    enum AngleUnits
+    {
+      Degrees,
+      Radians
+    };
+
+    Q_ENUMS(AngleUnits)
+
     SIMPL_SHARED_POINTERS(ArrayCalculator)
     SIMPL_STATIC_NEW_MACRO(ArrayCalculator)
     SIMPL_TYPE_MACRO_SUPER(ArrayCalculator, AbstractFilter)
@@ -81,6 +89,9 @@ class ArrayCalculator : public AbstractFilter
 
     SIMPL_FILTER_PARAMETER(DataArrayPath, CalculatedArray)
     Q_PROPERTY(DataArrayPath CalculatedArray READ getCalculatedArray WRITE setCalculatedArray)
+
+    SIMPL_FILTER_PARAMETER(AngleUnits, Units)
+    Q_PROPERTY(AngleUnits Units READ getUnits WRITE setUnits)
 
     virtual ~ArrayCalculator();
 

@@ -134,7 +134,8 @@
 //
 // -----------------------------------------------------------------------------
 ArrayCalculator::ArrayCalculator() :
-  AbstractFilter()
+  AbstractFilter(),
+  m_Units(Radians)
 {
   setupFilterParameters();
 
@@ -430,9 +431,9 @@ QVector<CalculatorItem::Pointer> ArrayCalculator::parseInfixEquation(QString equ
 
   AttributeMatrix::Pointer selectedAM = getDataContainerArray()->getPrereqAttributeMatrixFromPath<AbstractFilter>(this, m_SelectedAttributeMatrix, err);
 
-  // Parse all the items into a QStringList using a regular expression
-  QStringList itemList;
-  QRegularExpression regExp("\\w{2,}\\d{0,2}|\\d+\\.\\d+|\\d+|\\+|\\-|\\*|\\/|\\(|\\)|\\,|\\^");
+  // Parse all the items into a QVector of strings using a regular expression
+  QVector<QString> itemList;
+  QRegularExpression regExp("\\d+(\\.\\d+)?|\\w{2,}\\d{0,2}|\\+|\\-|\\*|\\/|\\(|\\)|\\,|\\^");
   QRegularExpressionMatchIterator iter = regExp.globalMatch(m_InfixEquation);
   while (iter.hasNext())
   {
@@ -473,15 +474,7 @@ QVector<CalculatorItem::Pointer> ArrayCalculator::parseInfixEquation(QString equ
            )
          )
       {
-        // By context, this is a negative sign, so we need to insert a -1 array and a multiplication operator
-        //DoubleArrayType::Pointer ptr = DoubleArrayType::CreateArray(1, QVector<size_t>(1, 1), "NumberArray");
-        //ptr->setValue(0, -1);
-        //itemPtr = CalculatorArray<double>::New(ptr, !getInPreflight());
-        //parsedInfix.push_back(itemPtr);
-
-        //itemPtr = MultiplicationOperator::New();
-        //parsedInfix.push_back(itemPtr);
-        
+        // By context, this is a negative sign
         itemPtr = NegativeOperator::New();
         parsedInfix.push_back(itemPtr);
       }
@@ -522,10 +515,29 @@ QVector<CalculatorItem::Pointer> ArrayCalculator::parseInfixEquation(QString equ
         notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
         return QVector<CalculatorItem::Pointer>();
       }
-      else
+      else if (NULL != std::dynamic_pointer_cast<CommaSeparator>(itemPtr))
       {
-        parsedInfix.push_back(itemPtr);
+        // This is a comma, so we need to put parentheses around the entire term so that the RPN parser knows to evaluate the entire expression placed here
+        // For example, if we have root( 4*4, 2*3 ), then we need it to be root( (4*4), (2*3) )
+        parsedInfix.push_back(RightParenthesisItem::New());
+
+        QVector<CalculatorItem::Pointer>::iterator iter = parsedInfix.end();
+        iter--;
+        while (iter != parsedInfix.begin())
+        {
+          if (NULL != std::dynamic_pointer_cast<CommaSeparator>(*iter)
+            || NULL != std::dynamic_pointer_cast<LeftParenthesisItem>(*iter))
+          {
+            iter++;
+            parsedInfix.insert(iter, LeftParenthesisItem::New());
+            break;
+          }
+
+          iter--;
+        }
       }
+
+      parsedInfix.push_back(itemPtr);
     }
   }
 
