@@ -93,9 +93,12 @@ public:
     array1->initializeWithValue(-12, 0);
     UInt32ArrayType::Pointer array2 = UInt32ArrayType::CreateArray(10, "InputArray2");
     array2->initializeWithValue(10, 0);
+    UInt32ArrayType::Pointer array3 = UInt32ArrayType::CreateArray(10, "Spaced Array");
+    array3->initializeWithValue(2, 0);
 
     am1->addAttributeArray("InputArray1", array1);
     am1->addAttributeArray("InputArray2", array2);
+    am1->addAttributeArray("Spaced Array", array3);
     dc->addAttributeMatrix("AttributeMatrix", am1);
     dc->addAttributeMatrix("NumericMatrix", am2);
     dca->addDataContainer(dc);
@@ -251,7 +254,7 @@ public:
       DREAM3D_REQUIRE(arrayPtr->getNumberOfTuples() == inputArray1->getNumberOfTuples());
       for (int i = 0; i < arrayPtr->getNumberOfTuples(); i++)
       {
-        DREAM3D_REQUIRE(arrayPtr->getValue(i) == static_cast<double>(inputArray1->getValue(i) * -1));
+        DREAM3D_REQUIRE(arrayPtr->getValue(i) == inputArray1->getValue(i) * -1);
       }
     }
     {
@@ -268,7 +271,7 @@ public:
       DREAM3D_REQUIRE(arrayPtr->getNumberOfTuples() == inputArray2->getNumberOfTuples());
       for (int i = 0; i < arrayPtr->getNumberOfTuples(); i++)
       {
-        DREAM3D_REQUIRE(arrayPtr->getValue(i) == static_cast<double>(inputArray2->getValue(i)));
+        DREAM3D_REQUIRE(arrayPtr->getValue(i) == inputArray2->getValue(i));
       }
     }
 
@@ -279,19 +282,19 @@ public:
       FloatArrayType::Pointer inputArray1 = filter->getDataContainerArray()->getPrereqIDataArrayFromPath<FloatArrayType, AbstractFilter>(filter.get(),
         DataArrayPath("DataContainer", "AttributeMatrix", "InputArray1"));
 
-      UInt32ArrayType::Pointer inputArray2 = filter->getDataContainerArray()->getPrereqIDataArrayFromPath<UInt32ArrayType, AbstractFilter>(filter.get(),
-        DataArrayPath("DataContainer", "AttributeMatrix", "InputArray2"));
+      UInt32ArrayType::Pointer spacedArray = filter->getDataContainerArray()->getPrereqIDataArrayFromPath<UInt32ArrayType, AbstractFilter>(filter.get(),
+        DataArrayPath("DataContainer", "AttributeMatrix", "Spaced Array"));
 
-      propWasSet = filter->setProperty("InfixEquation", "InputArray1 + InputArray2");
+      propWasSet = filter->setProperty("InfixEquation", "Spaced Array + InputArray1");
       DREAM3D_REQUIRE_EQUAL(propWasSet, true);
       filter->execute();
       DREAM3D_REQUIRE_EQUAL(filter->getErrorCondition(), 0);
       DREAM3D_REQUIRE_EQUAL(filter->getWarningCondition(), 0);
       DoubleArrayType::Pointer arrayPtr = filter->getDataContainerArray()->getPrereqIDataArrayFromPath<DoubleArrayType, AbstractFilter>(filter.get(), arrayPath);
-      DREAM3D_REQUIRE(arrayPtr->getNumberOfTuples() == inputArray2->getNumberOfTuples());
+      DREAM3D_REQUIRE(arrayPtr->getNumberOfTuples() == spacedArray->getNumberOfTuples());
       for (int i = 0; i < arrayPtr->getNumberOfTuples(); i++)
       {
-        DREAM3D_REQUIRE(arrayPtr->getValue(i) == static_cast<double>(inputArray1->getValue(i)) + static_cast<double>(inputArray2->getValue(i)));
+        DREAM3D_REQUIRE(arrayPtr->getValue(i) == inputArray1->getValue(i) + spacedArray->getValue(i));
       }
     }
     {
@@ -312,7 +315,7 @@ public:
       DREAM3D_REQUIRE(arrayPtr->getNumberOfTuples() == inputArray2->getNumberOfTuples());
       for (int i = 0; i < arrayPtr->getNumberOfTuples(); i++)
       {
-        double value = pow(static_cast<double>(inputArray1->getValue(i)), 2) + pow(static_cast<double>(inputArray2->getValue(i)), 2);
+        double value = pow(inputArray1->getValue(i), 2) + pow(inputArray2->getValue(i), 2);
         value = sqrt(value);
         DREAM3D_REQUIRE(arrayPtr->getValue(i) == value);
       }
