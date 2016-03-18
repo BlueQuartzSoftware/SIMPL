@@ -203,6 +203,7 @@ void ArrayCalculator::readFilterParameters(AbstractFilterParametersReader* reade
   setSelectedAttributeMatrix(reader->readDataArrayPath("SelectedAttributeMatrix", getSelectedAttributeMatrix()));
   setInfixEquation(reader->readString("InfixEquation", getInfixEquation()));
   setCalculatedArray(reader->readDataArrayPath("CalculatedArray", getCalculatedArray()));
+  setUnits(static_cast<ArrayCalculator::AngleUnits>(reader->readValue("Units", static_cast<int>(getUnits()))));
   reader->closeFilterGroup();
 }
 
@@ -215,6 +216,7 @@ int ArrayCalculator::writeFilterParameters(AbstractFilterParametersWriter* write
   SIMPL_FILTER_WRITE_PARAMETER(SelectedAttributeMatrix)
   SIMPL_FILTER_WRITE_PARAMETER(InfixEquation)
   SIMPL_FILTER_WRITE_PARAMETER(CalculatedArray)
+  SIMPL_FILTER_WRITE_PARAMETER(Units)
   writer->closeFilterGroup();
   return ++index; // we want to return the next index that was just written to
 }
@@ -683,6 +685,7 @@ AbstractFilter::Pointer ArrayCalculator::newFilterInstance(bool copyFilterParame
   {
     copyFilterParameterInstanceVariables(filter.get());
   }
+  filter->setUnits(getUnits());
   return filter;
 }
 
