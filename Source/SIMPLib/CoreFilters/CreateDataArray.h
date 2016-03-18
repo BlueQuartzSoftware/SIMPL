@@ -192,27 +192,6 @@ class SIMPLib_EXPORT CreateDataArray : public AbstractFilter
   private:
     DEFINE_IDATAARRAY_VARIABLE(OutputArray)
 
-    /**
-    * @brief initializeArrayWithInts Initializes the array p with integers, either from the
-    * manual value entered in the filter, or with a random number.  This function does not
-    * check that the template type actually is an integer, so it will most likely cause
-    * unexpected results when passing anything other than an integer as a template parameter.
-    * @param p The array that will be initialized
-    */
-    template <typename T>
-    void initializeArrayWithInts();
-
-
-    /**
-    * @brief initializeArrayWithReals Initializes the array p with real numbers, either from the
-    * manual value entered in the filter, or with a random number.  This function does not
-    * check that the template type actually is a non-integer, so it will most likely cause
-    * unexpected results when passing anything other than a float or double as a template
-    * parameter.
-    * @param p The array that will be initialized
-    */
-    template <typename T>
-    void initializeArrayWithReals();
 
     /**
     * @brief checkInitialization Checks that the chosen initialization value/range is inside
@@ -238,8 +217,7 @@ class SIMPLib_EXPORT CreateDataArray : public AbstractFilter
 };
 
 
-template <>
-void CreateDataArray::initializeArrayWithInts<bool>();
+
 
 Q_DECLARE_METATYPE(CreateDataArray::ScalarTypeChoices)
 

@@ -1397,6 +1397,25 @@ class H5LiteTest
     // -----------------------------------------------------------------------------
     void TestVLengStringReadWrite()
     {
+      // Write a Single String as a VLength String and read back as a normal string.
+      {
+        hid_t file_id = H5Utilities::createFile(UnitTest::H5LiteTest::VLengthFile.toStdString());
+
+        std::vector<std::string> strings;
+        strings.push_back("Testing 1 2 3");
+        herr_t err = H5Lite::writeVectorOfStringsDataset(file_id, "VlenStrings", strings);
+        DREAM3D_REQUIRE(err >= 0)
+        H5Utilities::closeFile(file_id);
+
+        file_id = QH5Utilities::openFile(UnitTest::H5LiteTest::VLengthFile, true);
+
+        std::string data;
+        err = H5Lite::readStringDataset(file_id, "VlenStrings", data);
+        DREAM3D_REQUIRE(err > -1)
+        DREAM3D_REQUIRE(data.size() == 13)
+
+        QH5Utilities::closeFile(file_id);
+      }
 
       {
         hid_t file_id = H5Utilities::createFile(UnitTest::H5LiteTest::VLengthFile.toStdString());
@@ -1411,7 +1430,7 @@ class H5LiteTest
         herr_t err = H5Lite::writeVectorOfStringsDataset(file_id, "VlenStrings", strings);
         DREAM3D_REQUIRE(err >= 0)
 
-            H5Utilities::closeFile(file_id);
+        H5Utilities::closeFile(file_id);
       }
 
       {
@@ -1436,7 +1455,7 @@ class H5LiteTest
         herr_t err = QH5Lite::writeVectorOfStringsDataset(file_id, "VlenStrings", strings);
         DREAM3D_REQUIRE(err >= 0)
 
-            QH5Utilities::closeFile(file_id);
+        QH5Utilities::closeFile(file_id);
       }
 
       {
@@ -1446,64 +1465,6 @@ class H5LiteTest
         QVector<QString> data;
         QH5Lite::readVectorOfStringDataset(file_id, "VlenStrings", data);
         DREAM3D_REQUIRE(data.size() == 5)
-    #if 0
-            /*
-        * Open file and dataset.
-        */
-
-            hid_t dset = H5Dopen(file_id, "VlenStrings", H5P_DEFAULT);
-
-        /*
-    * Get the datatype.
-    */
-        hid_t filetype = H5Dget_type(dset);
-
-        hsize_t dims[1] = { 0 };
-        /*
-    * Get dataspace and allocate memory for read buffer.
-    */
-        hid_t space = H5Dget_space(dset);
-        int ndims = H5Sget_simple_extent_dims(space, dims, NULL);
-        std::vector<char*> rdata(dims[0]);
-        for (int i = 0; i < 5; i++)
-        {
-          rdata[i] = NULL;
-        }
-
-        /*
-    * Create the memory datatype.
-    */
-        hid_t memtype = H5Tcopy(H5T_C_S1);
-        herr_t status = H5Tset_size(memtype, H5T_VARIABLE);
-
-        /*
-    * Read the data.
-    */
-        status = H5Dread(dset, memtype, H5S_ALL, H5S_ALL, H5P_DEFAULT, &(rdata.front()));
-
-        /*
-    * Output the data to the screen.
-    */
-        for (int i = 0; i < dims[0]; i++)
-        {
-          // printf("%s[%d]: %s\n", "VlenStrings", i, rdata[i].p);
-          QString str = QString::fromLocal8Bit(rdata[i]);
-          qDebug() << str;
-        }
-
-        /*
-    * Close and release resources.  Note that H5Dvlen_reclaim works
-    * for variable-length strings as well as variable-length arrays.
-    * Also note that we must still free the array of pointers stored
-    * in rdata, as H5Tvlen_reclaim only frees the data these point to.
-    */
-        status = H5Dvlen_reclaim(memtype, space, H5P_DEFAULT, &(rdata.front()));
-        // free(rdata);
-        status = H5Dclose(dset);
-        status = H5Sclose(space);
-        status = H5Tclose(filetype);
-        status = H5Tclose(memtype);
-#endif
 
         QH5Utilities::closeFile(file_id);
       }

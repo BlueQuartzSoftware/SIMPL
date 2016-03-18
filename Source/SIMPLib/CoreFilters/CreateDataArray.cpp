@@ -59,6 +59,198 @@
 #include "moc_CreateDataArray.cpp"
 
 
+/**
+* @brief initializeArrayWithInts Initializes the array p with integers, either from the
+* manual value entered in the filter, or with a random number.  This function does not
+* check that the template type actually is an integer, so it will most likely cause
+* unexpected results when passing anything other than an integer as a template parameter.
+* @param p The array that will be initialized
+*/
+template <typename T>
+void initializeArrayWithInts(IDataArray::Pointer outputArrayPtr, int initializationType,
+                              FPRangePair initializationRange, const QString& initializationValue, int scalarType)
+{
+
+  typename DataArray<T>::Pointer array = std::dynamic_pointer_cast<DataArray<T> >(outputArrayPtr);
+  size_t count = array->getSize();
+  T* rawPointer = array->getPointer(0);
+
+  if (initializationType == CreateDataArray::Manual)
+  {
+
+    qint8 i8 = static_cast<qint8>(initializationValue.toInt());
+    quint8 ui8 = static_cast<quint8>(initializationValue.toUInt());
+    qint16 i16 = static_cast<qint16>(initializationValue.toShort());
+    quint16 ui16 = static_cast<qint16>(initializationValue.toUShort());
+    qint32 i32 = static_cast<qint32>(initializationValue.toInt());
+    quint32 ui32 = static_cast<quint32>(initializationValue.toUInt());
+    qint64 i64 = static_cast<qint64>(initializationValue.toLongLong());
+    quint64 ui64 = static_cast<quint64>(initializationValue.toULongLong());
+
+
+    switch (scalarType) {
+      case CreateDataArray::Int8Choice:
+        for (size_t i = 0; i < count; i++) { rawPointer[i] = i8; }
+        break;
+      case CreateDataArray::UInt8Choice:
+        for (size_t i = 0; i < count; i++) { rawPointer[i] = ui8; }
+        break;
+      case CreateDataArray::Int16Choice:
+        for (size_t i = 0; i < count; i++) { rawPointer[i] = i16; }
+        break;
+      case CreateDataArray::UInt16Choice:
+        for (size_t i = 0; i < count; i++) { rawPointer[i] = ui16; }
+        break;
+      case CreateDataArray::Int32Choice:
+        for (size_t i = 0; i < count; i++) { rawPointer[i] = i32; }
+        break;
+      case CreateDataArray::UInt32Choice:
+        for (size_t i = 0; i < count; i++) { rawPointer[i] = ui32; }
+        break;
+      case CreateDataArray::Int64Choice:
+        for (size_t i = 0; i < count; i++) { rawPointer[i] = i64; }
+        break;
+      case CreateDataArray::UInt64Choice:
+        for (size_t i = 0; i < count; i++) { rawPointer[i] = ui64; }
+        break;
+      default:
+        Q_ASSERT_X(false, __FILE__, "Incorrent use of CreateDataArray::initializeArrayWithInts when using a non-integer type");
+        break;
+    }
+  }
+  else
+  {
+    T rangeMin = static_cast<T>(initializationRange.first);
+    T rangeMax = static_cast<T>(initializationRange.second);
+
+    typedef boost::mt19937 RandomNumberGenerator;
+    typedef boost::uniform_int<T> IntDistribution;
+    typedef boost::variate_generator<RandomNumberGenerator&, IntDistribution> IntGenerator;
+
+    std::shared_ptr<IntDistribution> distribution = std::shared_ptr<IntDistribution>(new IntDistribution(rangeMin, rangeMax));
+    std::shared_ptr<RandomNumberGenerator> randomNumberGenerator = std::shared_ptr<RandomNumberGenerator>(new RandomNumberGenerator);
+    randomNumberGenerator->seed(static_cast<size_t>(QDateTime::currentMSecsSinceEpoch())); // seed with the current time
+    std::shared_ptr<IntGenerator> intGeneratorPtr = std::shared_ptr<IntGenerator>(new IntGenerator(*randomNumberGenerator, *distribution));
+    IntGenerator& intGenerator = *intGeneratorPtr;
+
+    for (size_t i = 0; i < count; i++)
+    {
+      T value = intGenerator();
+     // m_OutputArrayPtr.lock()->initializeTuple(i, &value);
+      rawPointer[i] = value;
+    }
+  }
+}
+
+/**
+* @brief initializeArrayWithInts Initializes the array p with integers, either from the
+* manual value entered in the filter, or with a random number.  This function does not
+* check that the template type actually is an integer, so it will most likely cause
+* unexpected results when passing anything other than an integer as a template parameter.
+* @param p The array that will be initialized
+*/
+template <>
+void initializeArrayWithInts<bool>(IDataArray::Pointer outputArrayPtr, int initializationType,
+                              FPRangePair initializationRange, const QString& initializationValue, int scalarType)
+{
+  DataArray<bool>::Pointer array = std::dynamic_pointer_cast<DataArray<bool> >(outputArrayPtr);
+  size_t count = array->getSize();
+  bool* rawPointer = array->getPointer(0);
+
+  if (initializationType == CreateDataArray::Manual)
+  {
+    bool result;
+    if (initializationValue.toInt() == 0)
+    {
+      result = false;
+    }
+    else
+    {
+      result = true;
+    }
+
+    for (size_t i = 0; i < count; i++)
+    {
+      rawPointer[i] = result;
+    }
+  }
+  else
+  {
+    typedef boost::mt19937 RandomNumberGenerator;
+    typedef boost::uniform_int<int8_t> IntDistribution;
+    typedef boost::variate_generator<RandomNumberGenerator&, IntDistribution> IntGenerator;
+
+    std::shared_ptr<IntDistribution> distribution = std::shared_ptr<IntDistribution>(new IntDistribution(0, 1));
+    std::shared_ptr<RandomNumberGenerator> randomNumberGenerator = std::shared_ptr<RandomNumberGenerator>(new RandomNumberGenerator);
+    randomNumberGenerator->seed(static_cast<size_t>(QDateTime::currentMSecsSinceEpoch())); // seed with the current time
+    std::shared_ptr<IntGenerator> intGeneratorPtr = std::shared_ptr<IntGenerator>(new IntGenerator(*randomNumberGenerator, *distribution));
+    IntGenerator& intGenerator = *intGeneratorPtr;
+
+    for (size_t i = 0; i < count; i++)
+    {
+      int8_t result = intGenerator();
+      if (result == 0)
+      {
+        rawPointer[i] = result;
+      }
+      else
+      {
+        result = 1;
+        rawPointer[i] = result;
+      }
+    }
+  }
+}
+
+
+/**
+* @brief initializeArrayWithReals Initializes the array p with real numbers, either from the
+* manual value entered in the filter, or with a random number.  This function does not
+* check that the template type actually is a non-integer, so it will most likely cause
+* unexpected results when passing anything other than a float or double as a template
+* parameter.
+* @param p The array that will be initialized
+*/
+template <typename T>
+void initializeArrayWithReals(IDataArray::Pointer outputArrayPtr, int initializationType,
+                              FPRangePair initializationRange, const QString& initializationValue)
+{
+  typename DataArray<T>::Pointer array = std::dynamic_pointer_cast<DataArray<T> >(outputArrayPtr);
+  size_t count = array->getSize();
+  T* rawPointer = array->getPointer(0);
+
+  if (initializationType == CreateDataArray::Manual)
+  {
+    T value = static_cast<T>(initializationValue.toDouble());
+    for (size_t i = 0; i < count; i++)
+    {
+      rawPointer[i] = value;
+    }
+  }
+  else
+  {
+    T rangeMin = static_cast<T>(initializationRange.first);
+    T rangeMax = static_cast<T>(initializationRange.second);
+
+    typedef boost::mt19937 RandomNumberGenerator;
+    typedef boost::uniform_real<T> RealDistribution;
+    typedef boost::variate_generator<RandomNumberGenerator&, RealDistribution> RealGenerator;
+
+    std::shared_ptr<RealDistribution> distribution = std::shared_ptr<RealDistribution>(new RealDistribution(rangeMin, rangeMax));
+    std::shared_ptr<RandomNumberGenerator> randomNumberGenerator = std::shared_ptr<RandomNumberGenerator>(new RandomNumberGenerator);
+    randomNumberGenerator->seed(static_cast<size_t>(QDateTime::currentMSecsSinceEpoch())); // seed with the current time
+    std::shared_ptr<RealGenerator> realGeneratorPtr = std::shared_ptr<RealGenerator>(new RealGenerator(*randomNumberGenerator, *distribution));
+    RealGenerator& realGenerator = *realGeneratorPtr;
+
+    size_t count = array->getSize();
+    for (size_t i = 0; i < count; i++)
+    {
+      T value = realGenerator();
+      rawPointer[i] = value;
+    }
+  }
+}
+
 
 // -----------------------------------------------------------------------------
 //
@@ -282,213 +474,51 @@ void CreateDataArray::execute()
 
   if (m_ScalarType == Int8Choice)
   {
-    initializeArrayWithInts<int8_t>();
+    initializeArrayWithInts<int8_t>(m_OutputArrayPtr.lock(), m_InitializationType, m_InitializationRange, m_InitializationValue, m_ScalarType);
   }
   else if (m_ScalarType == Int16Choice)
   {
-    initializeArrayWithInts<int16_t>();
+    initializeArrayWithInts<int16_t>(m_OutputArrayPtr.lock(), m_InitializationType, m_InitializationRange, m_InitializationValue, m_ScalarType);
   }
   else if (m_ScalarType == Int32Choice)
   {
-    initializeArrayWithInts<int32_t>();
+    initializeArrayWithInts<int32_t>(m_OutputArrayPtr.lock(), m_InitializationType, m_InitializationRange, m_InitializationValue, m_ScalarType);
   }
   else if (m_ScalarType == Int64Choice)
   {
-    initializeArrayWithInts<int64_t>();
+    initializeArrayWithInts<int64_t>(m_OutputArrayPtr.lock(), m_InitializationType, m_InitializationRange, m_InitializationValue, m_ScalarType);
   }
   else if (m_ScalarType == UInt8Choice)
   {
-    initializeArrayWithInts<uint8_t>();
+    initializeArrayWithInts<uint8_t>(m_OutputArrayPtr.lock(), m_InitializationType, m_InitializationRange, m_InitializationValue, m_ScalarType);
   }
   else if (m_ScalarType == UInt16Choice)
   {
-    initializeArrayWithInts<uint16_t>();
+    initializeArrayWithInts<uint16_t>(m_OutputArrayPtr.lock(), m_InitializationType, m_InitializationRange, m_InitializationValue, m_ScalarType);
   }
   else if (m_ScalarType == UInt32Choice)
   {
-    initializeArrayWithInts<uint32_t>();
+    initializeArrayWithInts<uint32_t>(m_OutputArrayPtr.lock(), m_InitializationType, m_InitializationRange, m_InitializationValue, m_ScalarType);
   }
   else if (m_ScalarType == UInt64Choice)
   {
-    initializeArrayWithInts<uint64_t>();
+    initializeArrayWithInts<uint64_t>(m_OutputArrayPtr.lock(), m_InitializationType, m_InitializationRange, m_InitializationValue, m_ScalarType);
   }
   else if (m_ScalarType == FloatChoice)
   {
-    initializeArrayWithReals<float>();
+    initializeArrayWithReals<float>(m_OutputArrayPtr.lock(), m_InitializationType, m_InitializationRange, m_InitializationValue);
   }
   else if (m_ScalarType == DoubleChoice)
   {
-    initializeArrayWithReals<double>();
+    initializeArrayWithReals<double>(m_OutputArrayPtr.lock(), m_InitializationType, m_InitializationRange, m_InitializationValue);
   }
   else if (m_ScalarType == BoolChoice)
   {
-    initializeArrayWithInts<bool>();
+    initializeArrayWithInts<bool>(m_OutputArrayPtr.lock(), m_InitializationType, m_InitializationRange, m_InitializationValue, m_ScalarType);
   }
 
   /* Let the GUI know we are done with this filter */
   notifyStatusMessage(getHumanLabel(), "Complete");
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-template <typename T>
-void CreateDataArray::initializeArrayWithInts()
-{
-  if (m_InitializationType == Manual)
-  {
-
-    qint8 i8 = static_cast<qint8>(m_InitializationValue.toInt());
-    quint8 ui8 = static_cast<quint8>(m_InitializationValue.toUInt());
-    qint16 i16 = static_cast<qint16>(m_InitializationValue.toShort());
-    quint16 ui16 = static_cast<qint16>(m_InitializationValue.toUShort());
-    qint32 i32 = static_cast<qint32>(m_InitializationValue.toInt());
-    quint32 ui32 = static_cast<quint32>(m_InitializationValue.toUInt());
-    qint64 i64 = static_cast<qint64>(m_InitializationValue.toLongLong());
-    quint64 iu64 = static_cast<quint64>(m_InitializationValue.toULongLong());
-
-    for (size_t i = 0; i < m_OutputArrayPtr.lock()->getNumberOfTuples(); i++)
-    {
-      switch (m_ScalarType) {
-        case Int8Choice:
-          m_OutputArrayPtr.lock()->initializeTuple(i, &i8);
-          break;
-        case UInt8Choice:
-          m_OutputArrayPtr.lock()->initializeTuple(i, &ui8);
-          break;
-        case Int16Choice:
-          m_OutputArrayPtr.lock()->initializeTuple(i, &i16);
-          break;
-        case UInt16Choice:
-          m_OutputArrayPtr.lock()->initializeTuple(i, &ui16);
-          break;
-        case Int32Choice:
-          m_OutputArrayPtr.lock()->initializeTuple(i, &i32);
-          break;
-        case UInt32Choice:
-          m_OutputArrayPtr.lock()->initializeTuple(i, &ui32);
-          break;
-        case Int64Choice:
-          m_OutputArrayPtr.lock()->initializeTuple(i, &i64);
-          break;
-        case UInt64Choice:
-          m_OutputArrayPtr.lock()->initializeTuple(i, &iu64);
-          break;
-        default:
-          Q_ASSERT_X(false, __FILE__, "Incorrent use of CreateDataArray::initializeArrayWithInts when using a non-integer type");
-          break;
-      }
-    }
-  }
-  else
-  {
-    T rangeMin = static_cast<T>(m_InitializationRange.first);
-    T rangeMax = static_cast<T>(m_InitializationRange.second);
-
-    typedef boost::mt19937 RandomNumberGenerator;
-    typedef boost::uniform_int<T> IntDistribution;
-    typedef boost::variate_generator<RandomNumberGenerator&, IntDistribution> IntGenerator;
-
-    std::shared_ptr<IntDistribution> distribution = std::shared_ptr<IntDistribution>(new IntDistribution(rangeMin, rangeMax));
-    std::shared_ptr<RandomNumberGenerator> randomNumberGenerator = std::shared_ptr<RandomNumberGenerator>(new RandomNumberGenerator);
-    randomNumberGenerator->seed(static_cast<size_t>(QDateTime::currentMSecsSinceEpoch())); // seed with the current time
-    std::shared_ptr<IntGenerator> intGeneratorPtr = std::shared_ptr<IntGenerator>(new IntGenerator(*randomNumberGenerator, *distribution));
-    IntGenerator& intGenerator = *intGeneratorPtr;
-
-    for (size_t i = 0; i < m_OutputArrayPtr.lock()->getSize(); i++)
-    {
-      T value = intGenerator();
-      m_OutputArrayPtr.lock()->initializeTuple(i, &value);
-    }
-  }
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-template <>
-void CreateDataArray::initializeArrayWithInts<bool>()
-{
-  if (m_InitializationType == Manual)
-  {
-    bool result;
-    if (m_InitializationValue.toInt() == 0)
-    {
-      result = false;
-    }
-    else
-    {
-      result = true;
-    }
-
-    for (size_t i = 0; i < m_OutputArrayPtr.lock()->getSize(); i++)
-    {
-      m_OutputArrayPtr.lock()->initializeTuple(i, &result);
-    }
-  }
-  else
-  {
-    typedef boost::mt19937 RandomNumberGenerator;
-    typedef boost::uniform_int<int8_t> IntDistribution;
-    typedef boost::variate_generator<RandomNumberGenerator&, IntDistribution> IntGenerator;
-
-    std::shared_ptr<IntDistribution> distribution = std::shared_ptr<IntDistribution>(new IntDistribution(0, 1));
-    std::shared_ptr<RandomNumberGenerator> randomNumberGenerator = std::shared_ptr<RandomNumberGenerator>(new RandomNumberGenerator);
-    randomNumberGenerator->seed(static_cast<size_t>(QDateTime::currentMSecsSinceEpoch())); // seed with the current time
-    std::shared_ptr<IntGenerator> intGeneratorPtr = std::shared_ptr<IntGenerator>(new IntGenerator(*randomNumberGenerator, *distribution));
-    IntGenerator& intGenerator = *intGeneratorPtr;
-
-    for (size_t i = 0; i < m_OutputArrayPtr.lock()->getSize(); i++)
-    {
-      int8_t result = intGenerator();
-      if (result == 0)
-      {
-        m_OutputArrayPtr.lock()->initializeTuple(i, &result);
-      }
-      else
-      {
-        result = 1;
-        m_OutputArrayPtr.lock()->initializeTuple(i, &result);
-      }
-    }
-  }
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-template <typename T>
-void CreateDataArray::initializeArrayWithReals()
-{
-  if (m_InitializationType == Manual)
-  {
-    double value = m_InitializationValue.toDouble();
-    for (size_t i = 0; i < m_OutputArrayPtr.lock()->getSize(); i++)
-    {
-      m_OutputArrayPtr.lock()->initializeTuple(i, &value);
-    }
-  }
-  else
-  {
-    T rangeMin = static_cast<T>(m_InitializationRange.first);
-    T rangeMax = static_cast<T>(m_InitializationRange.second);
-
-    typedef boost::mt19937 RandomNumberGenerator;
-    typedef boost::uniform_real<T> RealDistribution;
-    typedef boost::variate_generator<RandomNumberGenerator&, RealDistribution> RealGenerator;
-
-    std::shared_ptr<RealDistribution> distribution = std::shared_ptr<RealDistribution>(new RealDistribution(rangeMin, rangeMax));
-    std::shared_ptr<RandomNumberGenerator> randomNumberGenerator = std::shared_ptr<RandomNumberGenerator>(new RandomNumberGenerator);
-    randomNumberGenerator->seed(static_cast<size_t>(QDateTime::currentMSecsSinceEpoch())); // seed with the current time
-    std::shared_ptr<RealGenerator> realGeneratorPtr = std::shared_ptr<RealGenerator>(new RealGenerator(*randomNumberGenerator, *distribution));
-    RealGenerator& realGenerator = *realGeneratorPtr;
-
-    for (size_t i = 0; i < m_OutputArrayPtr.lock()->getSize(); i++)
-    {
-      double value = realGenerator();
-      m_OutputArrayPtr.lock()->initializeTuple(i, &value);
-    }
-  }
 }
 
 // -----------------------------------------------------------------------------

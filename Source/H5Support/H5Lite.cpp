@@ -632,21 +632,40 @@ herr_t H5Lite::readStringDataset(hid_t loc_id, const std::string& dsetName, std:
     std::cout << "H5Lite.cpp::readStringDataset(" << __LINE__ << ") Error opening Dataset at loc_id (" << loc_id << ") with object name (" << dsetName << ")" << std::endl;
     return -1;
   }
+  /*
+  * Get the datatype.
+  */
   tid = H5Dget_type(did);
   if ( tid >= 0 )
   {
+    htri_t isVariableString = H5Tis_variable_str( tid ); // Test if the string is variable length
 
-    size = H5Dget_storage_size(did);
-    std::vector<char> buf(static_cast<int>(size + 1), 0x00); //Allocate and Zero and array
-    err = H5Dread(did, tid, H5S_ALL, H5S_ALL, H5P_DEFAULT, &(buf.front()) );
-    if (err < 0)
+    if(isVariableString == 1)
     {
-      std::cout << "Error Reading string dataset." << std::endl;
-      retErr = err;
+      std::vector<std::string> strings;
+      err = readVectorOfStringDataset(loc_id, dsetName, strings); // Read the string
+      if(err < 0 || (strings.size() > 1 && strings.size() != 0 ) ) {
+        std::cout << "Error Reading string dataset. There were multiple Strings and the program asked for a single string." << std::endl;
+        retErr = err;
+      }
+      else {
+        data.assign(strings[0]);
+      }
     }
     else
     {
-      data.append( &(buf.front()) ); //Append the string to the given string
+      size = H5Dget_storage_size(did);
+      std::vector<char> buf(static_cast<int>(size + 1), 0x00); //Allocate and Zero and array
+      err = H5Dread(did, tid, H5S_ALL, H5S_ALL, H5P_DEFAULT, &(buf.front()) );
+      if (err < 0)
+      {
+        std::cout << "Error Reading string dataset." << std::endl;
+        retErr = err;
+      }
+      else
+      {
+        data.append( &(buf.front()) ); //Append the string to the given string
+      }
     }
   }
   CloseH5D(did, err, retErr);
