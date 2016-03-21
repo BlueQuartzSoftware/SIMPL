@@ -57,7 +57,7 @@ class SIMPLib_EXPORT ABSOperator : public UnaryOperator
 
     virtual ~ABSOperator();
 
-    virtual double calculate(AbstractFilter* filter, const QString &newArrayName, QStack<ICalculatorArray::Pointer> &executionStack, int index);
+    virtual void calculate(AbstractFilter* filter, DataArrayPath calculatedArrayPath, QStack<ICalculatorArray::Pointer> &executionStack);
 
   protected:
     ABSOperator();

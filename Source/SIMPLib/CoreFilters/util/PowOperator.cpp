@@ -61,26 +61,8 @@ PowOperator::~PowOperator()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-double PowOperator::calculate(AbstractFilter* filter, const QString &newArrayName, QStack<ICalculatorArray::Pointer> &executionStack, int index)
+void PowOperator::calculate(AbstractFilter* filter, DataArrayPath calculatedArrayPath, QStack<ICalculatorArray::Pointer> &executionStack)
 { 
-  if (executionStack.size() >= 2)
-  {
-    // Iterate through the stack to get pointers to the top and second-to-top values
-    QStack<ICalculatorArray::Pointer>::iterator iter = executionStack.end();
-    iter--;
-    ICalculatorArray::Pointer exponentArray = *iter;
-    iter--;
-    ICalculatorArray::Pointer baseArray = *iter;
-
-    double exponent = exponentArray->getValue(index);
-    double base = baseArray->getValue(index);
-    return pow(base, exponent);
-  }
-
-  // If the execution gets down here, then we have an error
-  QString ss = QObject::tr("The chosen infix equation is not a valid equation.");
-  filter->setErrorCondition(ArrayCalculator::INVALID_EQUATION);
-  filter->notifyErrorMessage(filter->getHumanLabel(), ss, filter->getErrorCondition());
-  return 0.0;
+  CREATE_NEW_ARRAY_TWO_ARGUMENTS(filter, calculatedArrayPath, executionStack, pow)
 }
 

@@ -79,12 +79,12 @@ class SIMPLib_EXPORT CalculatorArray : public ICalculatorArray
     CalculatorArray() {}
 
     CalculatorArray(typename DataArray<T>::Pointer dataArray, bool allocate) :
-      ICalculatorArray()
+      ICalculatorArray(-1)
     {
       m_Array = DoubleArrayType::CreateArray(dataArray->getNumberOfTuples(), dataArray->getComponentDimensions(), dataArray->getName(), allocate);
       if (allocate == true)
       {
-        for (int i = 0; i < dataArray->getNumberOfTuples(); i++)
+        for (int i = 0; i < dataArray->getSize(); i++)
         {
           m_Array->setValue(i, static_cast<double>(dataArray->getValue(i)));
         }

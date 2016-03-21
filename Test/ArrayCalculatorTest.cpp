@@ -93,12 +93,30 @@ public:
     array1->initializeWithValue(-12, 0);
     UInt32ArrayType::Pointer array2 = UInt32ArrayType::CreateArray(10, "InputArray2");
     array2->initializeWithValue(10, 0);
-    UInt32ArrayType::Pointer array3 = UInt32ArrayType::CreateArray(10, "Spaced Array");
-    array3->initializeWithValue(2, 0);
+    UInt32ArrayType::Pointer sArray = UInt32ArrayType::CreateArray(10, "Spaced Array");
+    sArray->initializeWithValue(2, 0);
+
+    UInt32ArrayType::Pointer mcArray1 = UInt32ArrayType::CreateArray(QVector<size_t>(1, 10), QVector<size_t>(1, 3), "MultiComponent Array1");
+    int num = 0;
+    for (int i = 0; i < mcArray1->getNumberOfTuples()*mcArray1->getNumberOfComponents(); i++)
+    {
+      mcArray1->setValue(i, num);
+      num++;
+    }
+
+    UInt32ArrayType::Pointer mcArray2 = UInt32ArrayType::CreateArray(QVector<size_t>(1, 10), QVector<size_t>(1, 3), "MultiComponent Array2");
+    num = 0;
+    for (int i = 0; i < mcArray2->getNumberOfTuples()*mcArray2->getNumberOfComponents(); i++)
+    {
+      mcArray2->setValue(i, num);
+      num++;
+    }
 
     am1->addAttributeArray("InputArray1", array1);
     am1->addAttributeArray("InputArray2", array2);
-    am1->addAttributeArray("Spaced Array", array3);
+    am1->addAttributeArray("Spaced Array", sArray);
+    am1->addAttributeArray("MultiComponent Array1", mcArray1);
+    am1->addAttributeArray("MultiComponent Array2", mcArray2);
     dc->addAttributeMatrix("AttributeMatrix", am1);
     dc->addAttributeMatrix("NumericMatrix", am2);
     dca->addDataContainer(dc);
@@ -175,6 +193,41 @@ public:
         double val1 = arrayPtr->getValue(i);
         DREAM3D_REQUIRE(SIMPLibMath::closeEnough<double>(arrayPtr->getValue(i), value, 0.01) == true);
       }
+    }
+  }
+
+  // -----------------------------------------------------------------------------
+  //
+  // -----------------------------------------------------------------------------
+  void TestArrayCalculatorFilter2()
+  {
+    DataArrayPath numericArrayPath("DataContainer", "NumericMatrix", "NewArray");
+    DataArrayPath arrayPath("DataContainer", "AttributeMatrix", "NewArray");
+
+    QVariant var;
+    bool propWasSet = false;
+
+    // Multi-Component Array Tests
+    {
+      AbstractFilter::Pointer filter = createArrayCalculatorFilter(arrayPath);
+
+      FloatArrayType::Pointer mcArray1 = filter->getDataContainerArray()->getPrereqIDataArrayFromPath<FloatArrayType, AbstractFilter>(filter.get(),
+        DataArrayPath("DataContainer", "AttributeMatrix", "MultiComponent Array1"));
+
+      FloatArrayType::Pointer mcArray2 = filter->getDataContainerArray()->getPrereqIDataArrayFromPath<FloatArrayType, AbstractFilter>(filter.get(),
+        DataArrayPath("DataContainer", "AttributeMatrix", "MultiComponent Array2"));
+
+      propWasSet = filter->setProperty("InfixEquation", "MultiComponent Array1 + MultiComponent Array2");
+      DREAM3D_REQUIRE_EQUAL(propWasSet, true);
+      filter->execute();
+      DREAM3D_REQUIRE_EQUAL(filter->getErrorCondition(), 0);
+      //DoubleArrayType::Pointer arrayPtr = filter->getDataContainerArray()->getPrereqIDataArrayFromPath<DoubleArrayType, AbstractFilter>(filter.get(), arrayPath);
+      //DREAM3D_REQUIRE(arrayPtr->getNumberOfTuples() == mcArray1->getNumberOfTuples());
+      //DREAM3D_REQUIRE(arrayPtr->getNumberOfComponents() == mcArray1->getNumberOfComponents());
+      //for (int t = 0; t < arrayPtr->getNumberOfTuples(); t++)
+      //{
+      //  DREAM3D_REQUIRE(arrayPtr->getValue(t) == mcArray1->getValue(t) * -1);
+      //}
     }
   }
 
@@ -717,6 +770,7 @@ public:
     std::cout << "#### ArrayCalculatorTest Starting ####" << std::endl;
     int err = EXIT_SUCCESS;
     DREAM3D_REGISTER_TEST(TestArrayCalculatorFilter())
+    DREAM3D_REGISTER_TEST(TestArrayCalculatorFilter2())
   }
 
 private:

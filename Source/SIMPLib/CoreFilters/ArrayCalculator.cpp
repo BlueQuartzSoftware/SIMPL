@@ -370,38 +370,12 @@ void ArrayCalculator::execute()
     {
       // This is an operator
       CalculatorOperator::Pointer rpnOperator = std::dynamic_pointer_cast<CalculatorOperator>(rpnItem);
-      DoubleArrayType::Pointer newArray = DoubleArrayType::CreateArray(calculatedAM->getNumTuples(), QVector<size_t>(1, 1), m_CalculatedArray.getDataArrayName());
 
-      int tuplePercentNum = newArray->getNumberOfTuples() / 100;
-      int percent = 0;
-      int tupleThresh = tuplePercentNum;
-      for (int i=0; i<newArray->getNumberOfTuples(); i++)
+      rpnOperator->calculate(this, m_CalculatedArray, m_ExecutionStack);
+      if (getErrorCondition() < 0)
       {
-        double value = rpnOperator->calculate(this, m_CalculatedArray.getDataArrayName(), m_ExecutionStack, i);
-
-        if (getErrorCondition() < 0)
-        {
-          return;
-        }
-
-        newArray->setValue(i, value);
-
-        if (i == tupleThresh)
-        {
-          percent++;
-          QString msg = QString::number(rpnCount + 1) + "/" + QString::number(totalItems) + ": " + QString::number(percent) + "%";
-          notifyStatusMessage(getHumanLabel(), msg);
-          tupleThresh = i + tuplePercentNum;
-        }
+        return;
       }
-
-      m_ExecutionStack.pop();
-      if (rpnOperator->getOperatorType() == CalculatorOperator::Binary)
-      {
-        m_ExecutionStack.pop();
-      }
-
-      m_ExecutionStack.push(CalculatorArray<double>::New(newArray, true));
     }
 
     if (getCancel() == true) { return; }
@@ -446,7 +420,9 @@ QVector<CalculatorItem::Pointer> ArrayCalculator::parseInfixEquation(QString equ
 
   // Parse all the items into a QVector of strings using a regular expression
   QVector<QString> itemList;
-  QRegularExpression regExp("\\d+(\\.\\d+)?|\\.\\d+|\\w{2,2}((\\w|\\s|\\d)*(\\w|\\d){1,1})?|\\w{1,1}|\\+|\\-|\\*|\\/|\\(|\\)|\\,|\\^");
+  // Match all array names that start with two alphabetical characters and have spaces.  Match all numbers, decimal or integer.
+  // Match one letter array names.  Match all special character operators.
+  QRegularExpression regExp("\\d+(\\.\\d+)?|\\.\\d+|\\w{1,1}((\\w|\\s|\\d)*(\\w|\\d){1,1})?(\\[\\d*\\])?|\\+|\\-|\\*|\\/|\\(|\\)|\\,|\\^");
   QRegularExpressionMatchIterator iter = regExp.globalMatch(m_InfixEquation);
   while (iter.hasNext())
   {

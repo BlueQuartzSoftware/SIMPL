@@ -63,23 +63,43 @@ NegativeOperator::~NegativeOperator()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-double NegativeOperator::calculate(AbstractFilter* filter, const QString &newArrayName, QStack<ICalculatorArray::Pointer> &executionStack, int index)
+void NegativeOperator::calculate(AbstractFilter* filter, DataArrayPath calculatedArrayPath, QStack<ICalculatorArray::Pointer> &executionStack)
 {
   if (executionStack.size() >= 1)
   {
-    // Iterate through the stack to get pointers to the top and second-to-top values
-    QStack<ICalculatorArray::Pointer>::iterator iter = executionStack.end();
-    iter--;
-    ICalculatorArray::Pointer array1 = *iter;
+    ICalculatorArray::Pointer arrayPtr = executionStack.pop();
 
-    return -1 * array1->getValue(index);
+    DoubleArrayType::Pointer newArray = createNewArray(filter, calculatedArrayPath, arrayPtr);
+
+    int numComps = newArray->getNumberOfComponents();
+    for (int i = 0; i < newArray->getNumberOfTuples(); i++)
+    {
+      if (arrayPtr->getCompIndex() >= 0)
+      {
+        int index = numComps * i + arrayPtr->getCompIndex();
+        double num = arrayPtr->getValue(index);
+        newArray->setValue(i, -1 * num);
+
+      }
+      else
+      {
+        for (int c = 0; c < newArray->getNumberOfComponents(); c++)
+        {
+          int index = numComps * i + c;
+          double num = arrayPtr->getValue(index);
+          newArray->setValue(index, -1 * num);
+        }
+      }
+    }
+
+    executionStack.push(CalculatorArray<double>::New(newArray, true));
+    return;
   }
 
-  // If the execution gets down here, then we have an error
   QString ss = QObject::tr("The chosen infix equation is not a valid equation.");
   filter->setErrorCondition(ArrayCalculator::INVALID_EQUATION);
   filter->notifyErrorMessage(filter->getHumanLabel(), ss, filter->getErrorCondition());
-  return 0.0;
+  return;
 }
 
 // -----------------------------------------------------------------------------

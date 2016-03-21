@@ -55,7 +55,7 @@ class SIMPLib_EXPORT SubtractionOperator : public BinaryOperator
 
     virtual ~SubtractionOperator();
 
-    virtual double calculate(AbstractFilter* filter, const QString &newArrayName, QStack<ICalculatorArray::Pointer> &executionStack, int index);
+    virtual void calculate(AbstractFilter* filter, DataArrayPath calculatedArrayPath, QStack<ICalculatorArray::Pointer> &executionStack);
 
   protected:
     SubtractionOperator();

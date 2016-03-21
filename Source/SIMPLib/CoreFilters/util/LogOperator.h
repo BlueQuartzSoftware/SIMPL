@@ -57,12 +57,13 @@ class SIMPLib_EXPORT LogOperator : public UnaryOperator
 
     virtual ~LogOperator();
 
-    virtual double calculate(AbstractFilter* filter, const QString &newArrayName, QStack<ICalculatorArray::Pointer> &executionStack, int index);
+    virtual void calculate(AbstractFilter* filter, DataArrayPath calculatedArrayPath, QStack<ICalculatorArray::Pointer> &executionStack);
 
   protected:
     LogOperator();
 
   private:
+    double log(double base, double value);
 
     LogOperator(const LogOperator&); // Copy Constructor Not Implemented
     void operator=(const LogOperator&); // Operator '=' Not Implemented

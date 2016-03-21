@@ -57,7 +57,7 @@ class SIMPLib_EXPORT RootOperator : public UnaryOperator
 
     virtual ~RootOperator();
 
-    virtual double calculate(AbstractFilter* filter, const QString &newArrayName, QStack<ICalculatorArray::Pointer> &executionStack, int index);
+    virtual void calculate(AbstractFilter* filter, DataArrayPath calculatedArrayPath, QStack<ICalculatorArray::Pointer> &executionStack);
 
   protected:
     RootOperator();

@@ -61,18 +61,8 @@ ExpOperator::~ExpOperator()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-double ExpOperator::calculate(AbstractFilter* filter, const QString &newArrayName, QStack<ICalculatorArray::Pointer> &executionStack, int index)
+void ExpOperator::calculate(AbstractFilter* filter, DataArrayPath calculatedArrayPath, QStack<ICalculatorArray::Pointer> &executionStack)
 {
-  if (executionStack.size() >= 1 && NULL != executionStack.top())
-  {
-    double num = executionStack.top()->getValue(index);
-    return exp(num);
-  }
-
-  // If the execution gets down here, then we have an error
-  QString ss = QObject::tr("The chosen infix equation is not a valid equation.");
-  filter->setErrorCondition(ArrayCalculator::INVALID_EQUATION);
-  filter->notifyErrorMessage(filter->getHumanLabel(), ss, filter->getErrorCondition());
-  return 0.0;
+  CREATE_NEW_ARRAY_STANDARD_UNARY(filter, calculatedArrayPath, executionStack, exp)
 }
 

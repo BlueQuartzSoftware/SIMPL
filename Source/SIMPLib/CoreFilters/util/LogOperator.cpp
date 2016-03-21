@@ -61,27 +61,16 @@ LogOperator::~LogOperator()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-double LogOperator::calculate(AbstractFilter* filter, const QString &newArrayName, QStack<ICalculatorArray::Pointer> &executionStack, int index)
+void LogOperator::calculate(AbstractFilter* filter, DataArrayPath calculatedArrayPath, QStack<ICalculatorArray::Pointer> &executionStack)
 {
-  if (executionStack.size() >= 1 && NULL != executionStack.top())
-  {
-    // Iterate through the stack to get pointers to the top and second-to-top values
-    QStack<ICalculatorArray::Pointer>::iterator iter = executionStack.end();
-    iter--;
-    ICalculatorArray::Pointer valueArray = *iter;
-    iter--;
-    ICalculatorArray::Pointer baseArray = *iter;
+  CREATE_NEW_ARRAY_TWO_ARGUMENTS(filter, calculatedArrayPath, executionStack, log)
+}
 
-    double valueNum = valueArray->getValue(index);
-    double baseNum = baseArray->getValue(index);
-
-    return log(valueNum) / log(baseNum);
-  }
-
-  // If the execution gets down here, then we have an error
-  QString ss = QObject::tr("The chosen infix equation is not a valid equation.");
-  filter->setErrorCondition(ArrayCalculator::INVALID_EQUATION);
-  filter->notifyErrorMessage(filter->getHumanLabel(), ss, filter->getErrorCondition());
-  return 0.0;
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+double LogOperator::log(double base, double value)
+{
+  return std::log(value) / std::log(base);
 }
 

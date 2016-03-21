@@ -63,10 +63,10 @@ UnaryOperator::~UnaryOperator()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-double UnaryOperator::calculate(AbstractFilter* filter, const QString &newArrayName, QStack<ICalculatorArray::Pointer> &executionStack, int index)
+void UnaryOperator::calculate(AbstractFilter* filter, DataArrayPath calculatedArrayPath, QStack<ICalculatorArray::Pointer> &executionStack)
 {
   // This should never be executed
-  return 0.0;
+  return;
 }
 
 // -----------------------------------------------------------------------------

@@ -58,10 +58,10 @@ BinaryOperator::~BinaryOperator()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-double BinaryOperator::calculate(AbstractFilter* filter, const QString &newArrayName, QStack<ICalculatorArray::Pointer> &executionStack, int index)
+void BinaryOperator::calculate(AbstractFilter* filter, DataArrayPath calculatedArrayPath, QStack<ICalculatorArray::Pointer> &executionStack)
 {
   // This should never be executed
-  return 0.0;
+  return;
 }
 
 // -----------------------------------------------------------------------------

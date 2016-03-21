@@ -50,7 +50,7 @@ class SIMPLib_EXPORT BinaryOperator : public CalculatorOperator
 
     virtual ~BinaryOperator();
 
-    virtual double calculate(AbstractFilter* filter, const QString &newArrayName, QStack<ICalculatorArray::Pointer> &executionStack, int index);
+    virtual void calculate(AbstractFilter* filter, DataArrayPath calculatedArrayPath, QStack<ICalculatorArray::Pointer> &executionStack);
 
     bool checkValidity(QVector<CalculatorItem::Pointer> infixVector, int currentIndex) final;
 
@@ -62,5 +62,48 @@ class SIMPLib_EXPORT BinaryOperator : public CalculatorOperator
     BinaryOperator(const BinaryOperator&); // Copy Constructor Not Implemented
     void operator=(const BinaryOperator&); // Operator '=' Not Implemented
 };
+
+#define CREATE_NEW_ARRAY_STANDARD_BINARY(filter, calculatedArrayPath, executionStack, op)\
+    ArrayCalculator* calculatorFilter = dynamic_cast<ArrayCalculator*>(filter);\
+    \
+    if (executionStack.size() >= 1 && NULL != executionStack.top() && NULL != calculatorFilter)\
+    {\
+      ICalculatorArray::Pointer array1 = executionStack.pop();\
+      ICalculatorArray::Pointer array2 = executionStack.pop();\
+      \
+      DoubleArrayType::Pointer newArray = createNewArray(filter, calculatedArrayPath, array1);\
+      \
+      int numComps = newArray->getNumberOfComponents();\
+      for (int i = 0; i < newArray->getNumberOfTuples(); i++)\
+      {\
+        if (array1->getCompIndex() >= 0)\
+        {\
+          int index1 = numComps * i + array1->getCompIndex();\
+          int index2 = numComps * i + array2->getCompIndex();\
+          double num1 = array1->getValue(index1);\
+          double num2 = array2->getValue(index2);\
+          newArray->setValue(i, num2 op num1);\
+          \
+        }\
+        else\
+        {\
+          for (int c = 0; c < newArray->getNumberOfComponents(); c++)\
+          {\
+            int index = numComps * i + c;\
+            double num1 = array1->getValue(index);\
+            double num2 = array2->getValue(index);\
+            newArray->setValue(index, num2 op num1);\
+          }\
+        }\
+      }\
+      \
+      executionStack.push(CalculatorArray<double>::New(newArray, true));\
+      return;\
+    }\
+    \
+    QString ss = QObject::tr("The chosen infix equation is not a valid equation.");\
+    filter->setErrorCondition(ArrayCalculator::INVALID_EQUATION);\
+    filter->notifyErrorMessage(filter->getHumanLabel(), ss, filter->getErrorCondition());\
+    return;\
 
 #endif /* _BinaryOperator_H_ */

@@ -61,26 +61,8 @@ MultiplicationOperator::~MultiplicationOperator()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-double MultiplicationOperator::calculate(AbstractFilter* filter, const QString &newArrayName, QStack<ICalculatorArray::Pointer> &executionStack, int index)
+void MultiplicationOperator::calculate(AbstractFilter* filter, DataArrayPath calculatedArrayPath, QStack<ICalculatorArray::Pointer> &executionStack)
 {
-  if (executionStack.size() >= 2)
-  {
-    // Iterate through the stack to get pointers to the top and second-to-top values
-    QStack<ICalculatorArray::Pointer>::iterator iter = executionStack.end();
-    iter--;
-    ICalculatorArray::Pointer array1 = *iter;
-    iter--;
-    ICalculatorArray::Pointer array2 = *iter;
-
-    double num1 = array1->getValue(index);
-    double num2 = array2->getValue(index);
-    return num1 * num2;
-  }
-
-  // If the execution gets down here, then we have an error
-  QString ss = QObject::tr("The chosen infix equation is not a valid equation.");
-  filter->setErrorCondition(ArrayCalculator::INVALID_EQUATION);
-  filter->notifyErrorMessage(filter->getHumanLabel(), ss, filter->getErrorCondition());
-  return 0.0;
+  CREATE_NEW_ARRAY_STANDARD_BINARY(filter, calculatedArrayPath, executionStack, *)
 }
 

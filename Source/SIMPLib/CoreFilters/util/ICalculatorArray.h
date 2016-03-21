@@ -48,9 +48,9 @@ class SIMPLib_EXPORT ICalculatorArray : public CalculatorItem
   public:
     SIMPL_SHARED_POINTERS(ICalculatorArray)
 
-    static Pointer New()
+    static Pointer New(int compIndex)
     {
-      return Pointer(new ICalculatorArray());
+      return Pointer(new ICalculatorArray(compIndex));
     }
 
     virtual ~ICalculatorArray();
@@ -58,10 +58,13 @@ class SIMPLib_EXPORT ICalculatorArray : public CalculatorItem
     virtual IDataArray::Pointer getArray();
     virtual double getValue(int i);
 
+    int getCompIndex();
+
   protected:
-    ICalculatorArray();
+    ICalculatorArray(int compIndex);
 
   private:
+    int                                                       m_CompIndex;
 
     ICalculatorArray(const ICalculatorArray&); // Copy Constructor Not Implemented
     void operator=(const ICalculatorArray&); // Operator '=' Not Implemented

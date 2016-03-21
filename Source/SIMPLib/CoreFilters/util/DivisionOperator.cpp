@@ -64,37 +64,67 @@ DivisionOperator::~DivisionOperator()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-double DivisionOperator::calculate(AbstractFilter* filter, const QString &newArrayName, QStack<ICalculatorArray::Pointer> &executionStack, int index)
+void DivisionOperator::calculate(AbstractFilter* filter, DataArrayPath calculatedArrayPath, QStack<ICalculatorArray::Pointer> &executionStack)
 {
   if (executionStack.size() >= 2)
   {
-    // Iterate through the stack to get pointers to the top and second-to-top values
-    QStack<ICalculatorArray::Pointer>::iterator iter = executionStack.end();
-    iter--;
-    ICalculatorArray::Pointer divisorArray = *iter;
-    iter--;
-    ICalculatorArray::Pointer dividendArray = *iter;
+    ICalculatorArray::Pointer divisorArray = executionStack.pop();
+    ICalculatorArray::Pointer dividendArray = executionStack.pop();
 
-    double divisor = divisorArray->getValue(index);
-    double dividend = dividendArray->getValue(index);
+    DoubleArrayType::Pointer newArray = createNewArray(filter, calculatedArrayPath, divisorArray);
 
-    double result;
-    if (divisor == 0.0)
+    int numComps = newArray->getNumberOfComponents();
+    for (int i = 0; i < newArray->getNumberOfTuples(); i++)
     {
-      result = std::numeric_limits<double>::infinity();
-    }
-    else
-    {
-      result = dividend / divisor;
+      if (divisorArray->getCompIndex() >= 0)
+      {
+        int divisorIndex = numComps * i + divisorArray->getCompIndex();
+        int dividendIndex = numComps * i + dividendArray->getCompIndex();
+        double divisor = divisorArray->getValue(divisorIndex);
+        double dividend = dividendArray->getValue(dividendIndex);
+
+        double result;
+        if (divisor == 0.0)
+        {
+          result = std::numeric_limits<double>::infinity();
+        }
+        else
+        {
+          result = dividend / divisor;
+        }
+
+        newArray->setValue(i, result);
+      }
+      else
+      {
+        for (int c = 0; c < newArray->getNumberOfComponents(); c++)
+        {
+          int index = numComps * i + c;
+          double divisor = divisorArray->getValue(index);
+          double dividend = dividendArray->getValue(index);
+
+          double result;
+          if (divisor == 0.0)
+          {
+            result = std::numeric_limits<double>::infinity();
+          }
+          else
+          {
+            result = dividend / divisor;
+          }
+
+          newArray->setValue(index, result);
+        }
+      }
     }
 
-    return result;
+    executionStack.push(CalculatorArray<double>::New(newArray, true));
+    return;
   }
 
   // If the execution gets down here, then we have an error
   QString ss = QObject::tr("The chosen infix equation is not a valid equation.");
   filter->setErrorCondition(ArrayCalculator::INVALID_EQUATION);
   filter->notifyErrorMessage(filter->getHumanLabel(), ss, filter->getErrorCondition());
-  return 0.0;
 }
 
