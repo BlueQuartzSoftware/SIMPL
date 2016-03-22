@@ -563,6 +563,8 @@ QVector<CalculatorItem::Pointer> ArrayCalculator::parseInfixEquation(QString equ
 
           iter--;
         }
+
+        parsedInfix.push_back(itemPtr);
       }
       else if (NULL != itemPtr)
       {

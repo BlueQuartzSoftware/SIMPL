@@ -211,23 +211,27 @@ public:
     {
       AbstractFilter::Pointer filter = createArrayCalculatorFilter(arrayPath);
 
-      FloatArrayType::Pointer mcArray1 = filter->getDataContainerArray()->getPrereqIDataArrayFromPath<FloatArrayType, AbstractFilter>(filter.get(),
+      UInt32ArrayType::Pointer mcArray1 = filter->getDataContainerArray()->getPrereqIDataArrayFromPath<UInt32ArrayType, AbstractFilter>(filter.get(),
         DataArrayPath("DataContainer", "AttributeMatrix", "MultiComponent Array1"));
 
-      FloatArrayType::Pointer mcArray2 = filter->getDataContainerArray()->getPrereqIDataArrayFromPath<FloatArrayType, AbstractFilter>(filter.get(),
+      UInt32ArrayType::Pointer mcArray2 = filter->getDataContainerArray()->getPrereqIDataArrayFromPath<UInt32ArrayType, AbstractFilter>(filter.get(),
         DataArrayPath("DataContainer", "AttributeMatrix", "MultiComponent Array2"));
 
       propWasSet = filter->setProperty("InfixEquation", "MultiComponent Array1 + MultiComponent Array2");
       DREAM3D_REQUIRE_EQUAL(propWasSet, true);
       filter->execute();
       DREAM3D_REQUIRE_EQUAL(filter->getErrorCondition(), 0);
-      //DoubleArrayType::Pointer arrayPtr = filter->getDataContainerArray()->getPrereqIDataArrayFromPath<DoubleArrayType, AbstractFilter>(filter.get(), arrayPath);
-      //DREAM3D_REQUIRE(arrayPtr->getNumberOfTuples() == mcArray1->getNumberOfTuples());
-      //DREAM3D_REQUIRE(arrayPtr->getNumberOfComponents() == mcArray1->getNumberOfComponents());
-      //for (int t = 0; t < arrayPtr->getNumberOfTuples(); t++)
-      //{
-      //  DREAM3D_REQUIRE(arrayPtr->getValue(t) == mcArray1->getValue(t) * -1);
-      //}
+      DoubleArrayType::Pointer arrayPtr = filter->getDataContainerArray()->getPrereqIDataArrayFromPath<DoubleArrayType, AbstractFilter>(filter.get(), arrayPath);
+      DREAM3D_REQUIRE(arrayPtr->getNumberOfTuples() == mcArray1->getNumberOfTuples());
+      DREAM3D_REQUIRE(arrayPtr->getNumberOfComponents() == mcArray1->getNumberOfComponents());
+      for (int t = 0; t < arrayPtr->getNumberOfTuples(); t++)
+      {
+        for (int c = 0; c < arrayPtr->getNumberOfComponents(); c++)
+        {
+          int index = arrayPtr->getNumberOfComponents() * t + c;
+          DREAM3D_REQUIRE(arrayPtr->getValue(index) == mcArray1->getValue(index) + mcArray2->getValue(index));
+        }
+      }
     }
   }
 
@@ -637,6 +641,9 @@ public:
 
       value = 4;
       runTest("root(4*4, 2)", numericArrayPath, 0, ArrayCalculator::NUMERIC_VALUE_WARNING, &numTuple, &value);
+
+      value = 4;
+      runTest("root(4*4+0, 1*2+0)", numericArrayPath, 0, ArrayCalculator::NUMERIC_VALUE_WARNING, &numTuple, &value);
 
       value = 4;
       runTest("root(64, 3)", numericArrayPath, 0, ArrayCalculator::NUMERIC_VALUE_WARNING, &numTuple, &value);
