@@ -88,7 +88,7 @@ class SIMPLib_EXPORT UnaryOperator : public CalculatorOperator
         }\
       }\
       \
-      executionStack.push(CalculatorArray<double>::New(newArray, true));\
+      executionStack.push(CalculatorArray<double>::New(newArray, arrayPtr->getType(), true));\
       return;\
     }\
     \
@@ -125,7 +125,7 @@ class SIMPLib_EXPORT UnaryOperator : public CalculatorOperator
         }\
       }\
       \
-      executionStack.push(CalculatorArray<double>::New(newArray, true));\
+      executionStack.push(CalculatorArray<double>::New(newArray, arrayPtr->getType(), true));\
       return;\
     }\
     \
@@ -162,7 +162,7 @@ class SIMPLib_EXPORT UnaryOperator : public CalculatorOperator
         }\
       }\
       \
-      executionStack.push(CalculatorArray<double>::New(newArray, true));\
+      executionStack.push(CalculatorArray<double>::New(newArray, arrayPtr->getType(), true));\
       return;\
     }\
     \

@@ -84,52 +84,52 @@
     if(TemplateHelpers::CanDynamicCast<FloatArrayType>()(iDataArrayPtr))\
     {\
       FloatArrayType::Pointer arrayCast = std::dynamic_pointer_cast<FloatArrayType>(iDataArrayPtr);\
-      itemPtr = CalculatorArray<float>::New(arrayCast, !getInPreflight());\
+      itemPtr = CalculatorArray<float>::New(arrayCast, ICalculatorArray::Array, !getInPreflight());\
     }\
     else if(TemplateHelpers::CanDynamicCast<DoubleArrayType>()(iDataArrayPtr))\
     {\
       DoubleArrayType::Pointer arrayCast = std::dynamic_pointer_cast<DoubleArrayType>(iDataArrayPtr);\
-      itemPtr = CalculatorArray<double>::New(arrayCast, !getInPreflight());\
+      itemPtr = CalculatorArray<double>::New(arrayCast, ICalculatorArray::Array, !getInPreflight());\
     }\
     else if(TemplateHelpers::CanDynamicCast<Int8ArrayType>()(iDataArrayPtr))\
     {\
       Int8ArrayType::Pointer arrayCast = std::dynamic_pointer_cast<Int8ArrayType>(iDataArrayPtr);\
-      itemPtr = CalculatorArray<int8_t>::New(arrayCast, !getInPreflight());\
+      itemPtr = CalculatorArray<int8_t>::New(arrayCast, ICalculatorArray::Array, !getInPreflight());\
     }\
     else if(TemplateHelpers::CanDynamicCast<UInt8ArrayType>()(iDataArrayPtr))\
     {\
       UInt8ArrayType::Pointer arrayCast = std::dynamic_pointer_cast<UInt8ArrayType>(iDataArrayPtr);\
-      itemPtr = CalculatorArray<uint8_t>::New(arrayCast, !getInPreflight());\
+      itemPtr = CalculatorArray<uint8_t>::New(arrayCast, ICalculatorArray::Array, !getInPreflight());\
     }\
     else if(TemplateHelpers::CanDynamicCast<Int16ArrayType>()(iDataArrayPtr))\
     {\
       Int16ArrayType::Pointer arrayCast = std::dynamic_pointer_cast<Int16ArrayType>(iDataArrayPtr);\
-      itemPtr = CalculatorArray<int16_t>::New(arrayCast, !getInPreflight());\
+      itemPtr = CalculatorArray<int16_t>::New(arrayCast, ICalculatorArray::Array, !getInPreflight());\
     }\
     else if(TemplateHelpers::CanDynamicCast<UInt16ArrayType>()(iDataArrayPtr))\
     {\
       UInt16ArrayType::Pointer arrayCast = std::dynamic_pointer_cast<UInt16ArrayType>(iDataArrayPtr);\
-      itemPtr = CalculatorArray<uint16_t>::New(arrayCast, !getInPreflight());\
+      itemPtr = CalculatorArray<uint16_t>::New(arrayCast, ICalculatorArray::Array, !getInPreflight());\
     }\
     else if(TemplateHelpers::CanDynamicCast<Int32ArrayType>()(iDataArrayPtr))\
     {\
       Int32ArrayType::Pointer arrayCast = std::dynamic_pointer_cast<Int32ArrayType>(iDataArrayPtr);\
-      itemPtr = CalculatorArray<int32_t>::New(arrayCast, !getInPreflight());\
+      itemPtr = CalculatorArray<int32_t>::New(arrayCast, ICalculatorArray::Array, !getInPreflight());\
     }\
     else if(TemplateHelpers::CanDynamicCast<UInt32ArrayType>()(iDataArrayPtr))\
     {\
       UInt32ArrayType::Pointer arrayCast = std::dynamic_pointer_cast<UInt32ArrayType>(iDataArrayPtr);\
-      itemPtr = CalculatorArray<uint32_t>::New(arrayCast, !getInPreflight());\
+      itemPtr = CalculatorArray<uint32_t>::New(arrayCast, ICalculatorArray::Array, !getInPreflight());\
     }\
     else if(TemplateHelpers::CanDynamicCast<Int64ArrayType>()(iDataArrayPtr))\
     {\
       Int64ArrayType::Pointer arrayCast = std::dynamic_pointer_cast<Int64ArrayType>(iDataArrayPtr);\
-      itemPtr = CalculatorArray<int64_t>::New(arrayCast, !getInPreflight());\
+      itemPtr = CalculatorArray<int64_t>::New(arrayCast, ICalculatorArray::Array, !getInPreflight());\
     }\
     else if(TemplateHelpers::CanDynamicCast<UInt64ArrayType>()(iDataArrayPtr))\
     {\
       UInt64ArrayType::Pointer arrayCast = std::dynamic_pointer_cast<UInt64ArrayType>(iDataArrayPtr);\
-      itemPtr = CalculatorArray<uint64_t>::New(arrayCast, !getInPreflight());\
+      itemPtr = CalculatorArray<uint64_t>::New(arrayCast, ICalculatorArray::Array, !getInPreflight());\
     }\
 
 // -----------------------------------------------------------------------------
@@ -424,7 +424,7 @@ QVector<CalculatorItem::Pointer> ArrayCalculator::parseInfixEquation(QString equ
   QVector<QString> itemList;
   // Match all array names that start with two alphabetical characters and have spaces.  Match all numbers, decimal or integer.
   // Match one letter array names.  Match all special character operators.
-  QRegularExpression regExp("(\")?((\\[)?\\d+(\\.\\d+)?(\\])?|(\\[)?\\.\\d+(\\])?|\\w{1,1}((\\w|\\s|\\d)*(\\w|\\d){1,1})?|\\+|\\-|\\*|\\/|\\(|\\)|\\,|\\^)(\")?");
+  QRegularExpression regExp("(\")?((\\[)?\\d+(\\.\\d+)?(\\])?|(\\[)?\\.\\d+(\\])?|\\w{1,1}((\\w|\\s|\\d)*(\\w|\\d){1,1})?|\\S)(\")?");
   QRegularExpressionMatchIterator iter = regExp.globalMatch(m_InfixEquation);
   while (iter.hasNext())
   {
@@ -448,10 +448,10 @@ QVector<CalculatorItem::Pointer> ArrayCalculator::parseInfixEquation(QString equ
       // This is a number, so create an array with numOfTuples equal to 1 and set the value into it
       DoubleArrayType::Pointer ptr = DoubleArrayType::CreateArray(1, QVector<size_t>(1, 1), m_CalculatedArray.getDataArrayName());
       ptr->setValue(0, num);
-      itemPtr = CalculatorArray<double>::New(ptr, !getInPreflight());
+      itemPtr = CalculatorArray<double>::New(ptr, ICalculatorArray::Number, !getInPreflight());
       parsedInfix.push_back(itemPtr);
 
-      QString ss = QObject::tr("Item \"%1\" in the infix equation is the name of an array in the selected attribute matrix, but it is currently being used as a number.").arg(strItem);
+      QString ss = QObject::tr("Item '%1' in the infix equation is the name of an array in the selected attribute matrix, but it is currently being used as a number.").arg(strItem);
       checkForAmbiguousArrayName(strItem, ss);
     }
     else if (strItem == "-")
@@ -479,7 +479,7 @@ QVector<CalculatorItem::Pointer> ArrayCalculator::parseInfixEquation(QString equ
         parsedInfix.push_back(itemPtr);
       }
 
-      QString ss = QObject::tr("Item \"%1\" in the infix equation is the name of an array in the selected attribute matrix, but it is currently being used as a mathematical operator.").arg(strItem);
+      QString ss = QObject::tr("Item '%1' in the infix equation is the name of an array in the selected attribute matrix, but it is currently being used as a mathematical operator.").arg(strItem);
       checkForAmbiguousArrayName(strItem, ss);
     }
     else if (strItem.contains("[") && strItem.contains("]"))
@@ -501,7 +501,7 @@ QVector<CalculatorItem::Pointer> ArrayCalculator::parseInfixEquation(QString equ
       ICalculatorArray::Pointer calcArray = std::dynamic_pointer_cast<ICalculatorArray>(parsedInfix.back());
       if (NULL != calcArray && index >= calcArray->getArray()->getNumberOfComponents())
       {
-        QString ss = QObject::tr("\"%1\" has an component index that is out of range.").arg(calcArray->getArray()->getName());
+        QString ss = QObject::tr("'%1' has an component index that is out of range.").arg(calcArray->getArray()->getName());
         setErrorCondition(COMPONENT_OUT_OF_RANGE);
         notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
         return QVector<CalculatorItem::Pointer>();
@@ -510,7 +510,7 @@ QVector<CalculatorItem::Pointer> ArrayCalculator::parseInfixEquation(QString equ
       itemPtr = IndexOperator::New(index);
       parsedInfix.push_back(itemPtr);
 
-      QString ss = QObject::tr("Item \"%1\" in the infix equation is the name of an array in the selected attribute matrix, but it is currently being used as an indexing operator.").arg(strItem);
+      QString ss = QObject::tr("Item '%1' in the infix equation is the name of an array in the selected attribute matrix, but it is currently being used as an indexing operator.").arg(strItem);
       checkForAmbiguousArrayName(strItem, ss);
     }
     else
@@ -519,7 +519,7 @@ QVector<CalculatorItem::Pointer> ArrayCalculator::parseInfixEquation(QString equ
 
       if (NULL != std::dynamic_pointer_cast<CommaSeparator>(itemPtr))
       {
-        QString ss = QObject::tr("Item \"%1\" in the infix equation is the name of an array in the selected attribute matrix, but it is currently being detected as a comma in a mathematical operator.").arg(strItem);
+        QString ss = QObject::tr("Item '%1' in the infix equation is the name of an array in the selected attribute matrix, but it is currently being detected as a comma in a mathematical operator.").arg(strItem);
         checkForAmbiguousArrayName(strItem, ss);
 
         // This is a comma, so make sure that this comma has a valid unary operator before it
@@ -566,7 +566,7 @@ QVector<CalculatorItem::Pointer> ArrayCalculator::parseInfixEquation(QString equ
       }
       else if (NULL != itemPtr)
       {
-        QString ss = QObject::tr("Item \"%1\" in the infix equation is the name of an array in the selected attribute matrix, but it is currently being used as a mathematical operator.").arg(strItem);
+        QString ss = QObject::tr("Item '%1' in the infix equation is the name of an array in the selected attribute matrix, but it is currently being used as a mathematical operator.").arg(strItem);
         checkForAmbiguousArrayName(strItem, ss);
 
         parsedInfix.push_back(itemPtr);
@@ -576,7 +576,7 @@ QVector<CalculatorItem::Pointer> ArrayCalculator::parseInfixEquation(QString equ
         strItem.remove("\"");
         if (selectedAM->getAttributeArrayNames().contains(strItem) == false)
         {
-          QString ss = QObject::tr("The item \"%1\" is not the name of any valid array in the selected attribute matrix.").arg(strItem);
+          QString ss = QObject::tr("The item '%1' is not the name of any valid array in the selected attribute matrix.").arg(strItem);
           setErrorCondition(INVALID_ARRAY_NAME);
           notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
           return QVector<CalculatorItem::Pointer>();
@@ -590,7 +590,7 @@ QVector<CalculatorItem::Pointer> ArrayCalculator::parseInfixEquation(QString equ
         }
         else if (dataArray->getNumberOfTuples() != firstArray_NumTuples)
         {
-          QString ss = QObject::tr("Arrays \"%1\" and \"%2\" in the infix equation have an inconsistent number of tuples.").arg(firstArray_Name).arg(dataArray->getName());
+          QString ss = QObject::tr("Arrays '%1' and '%2' in the infix equation have an inconsistent number of tuples.").arg(firstArray_Name).arg(dataArray->getName());
           setErrorCondition(INCONSISTENT_TUPLES);
           notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
           return QVector<CalculatorItem::Pointer>();
@@ -601,7 +601,7 @@ QVector<CalculatorItem::Pointer> ArrayCalculator::parseInfixEquation(QString equ
       }
       else
       {
-        QString ss = QObject::tr("An unrecognized item \"%1\" was found in the chosen infix equation.").arg(strItem);
+        QString ss = QObject::tr("An unrecognized item '%1' was found in the chosen infix equation.").arg(strItem);
         setErrorCondition(UNRECOGNIZED_ITEM);
         notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
         return QVector<CalculatorItem::Pointer>();
@@ -634,21 +634,24 @@ QVector<CalculatorItem::Pointer> ArrayCalculator::toRPN(QVector<CalculatorItem::
       // This is a number or array, so push it onto the rpn equation output
       rpnEquation.push_back(arrayItem);
 
-      if (i + 1 < infixEquation.size() && NULL != std::dynamic_pointer_cast<IndexOperator>(infixEquation[i + 1]) && NULL == oneComponent)
+      if (arrayItem->getType() == ICalculatorArray::Array)
       {
-        oneComponent = new bool(true);
-      }
-      else if ((i + 1 >= infixEquation.size() || NULL == std::dynamic_pointer_cast<IndexOperator>(infixEquation[i + 1])) && NULL == oneComponent)
-      {
-        oneComponent = new bool(false);
-      }
-      else if (((i + 1 >= infixEquation.size() || NULL == std::dynamic_pointer_cast<IndexOperator>(infixEquation[i + 1])) && *oneComponent == true)
-        || ((i + 1 < infixEquation.size() && NULL != std::dynamic_pointer_cast<IndexOperator>(infixEquation[i + 1])) && *oneComponent == false))
-      {
-        QString ss = QObject::tr("Not all arrays have a component index. All arrays must specify a component index (i.e. %1[0]), or none at all.").arg(arrayItem->getArray()->getName());
-        setErrorCondition(COMPONENT_OUT_OF_RANGE);
-        notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
-        return QVector<CalculatorItem::Pointer>();
+        if (i + 1 < infixEquation.size() && NULL != std::dynamic_pointer_cast<IndexOperator>(infixEquation[i + 1]) && NULL == oneComponent)
+        {
+          oneComponent = new bool(true);
+        }
+        else if ((i + 1 >= infixEquation.size() || NULL == std::dynamic_pointer_cast<IndexOperator>(infixEquation[i + 1])) && NULL == oneComponent)
+        {
+          oneComponent = new bool(false);
+        }
+        else if (((i + 1 >= infixEquation.size() || NULL == std::dynamic_pointer_cast<IndexOperator>(infixEquation[i + 1])) && *oneComponent == true)
+          || ((i + 1 < infixEquation.size() && NULL != std::dynamic_pointer_cast<IndexOperator>(infixEquation[i + 1])) && *oneComponent == false))
+        {
+          QString ss = QObject::tr("Not all arrays have a component index. All arrays must specify a component index (i.e. %1[0]), or none at all.").arg(arrayItem->getArray()->getName());
+          setErrorCondition(COMPONENT_OUT_OF_RANGE);
+          notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
+          return QVector<CalculatorItem::Pointer>();
+        }
       }
     }
     else if (NULL != std::dynamic_pointer_cast<LeftParenthesisItem>(calcItem))
@@ -666,7 +669,7 @@ QVector<CalculatorItem::Pointer> ArrayCalculator::toRPN(QVector<CalculatorItem::
 
       if (itemStack.isEmpty() == true)
       {
-        QString ss = QObject::tr("One or more parentheses are mismatched in the chosen infix equation \"%1\".").arg(m_InfixEquation);
+        QString ss = QObject::tr("One or more parentheses are mismatched in the chosen infix equation '%1'.").arg(m_InfixEquation);
         setErrorCondition(MISMATCHED_PARENTHESES);
         notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
         return QVector<CalculatorItem::Pointer>();
@@ -717,7 +720,7 @@ QVector<CalculatorItem::Pointer> ArrayCalculator::toRPN(QVector<CalculatorItem::
     CalculatorItem::Pointer item = itemStack.pop();
     if (NULL != std::dynamic_pointer_cast<LeftParenthesisItem>(item))
     {
-      QString ss = QObject::tr("One or more parentheses are mismatched in the chosen infix equation \"%1\".").arg(m_InfixEquation);
+      QString ss = QObject::tr("One or more parentheses are mismatched in the chosen infix equation '%1'.").arg(m_InfixEquation);
       setErrorCondition(MISMATCHED_PARENTHESES);
       notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
       return QVector<CalculatorItem::Pointer>();

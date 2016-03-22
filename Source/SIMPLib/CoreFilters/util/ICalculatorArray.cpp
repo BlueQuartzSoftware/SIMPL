@@ -70,3 +70,12 @@ double ICalculatorArray::getValue(int i)
   return 0.0;
 }
 
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+ICalculatorArray::ValueType ICalculatorArray::getType()
+{
+  // This should never be called
+  return ICalculatorArray::Array;
+}
+

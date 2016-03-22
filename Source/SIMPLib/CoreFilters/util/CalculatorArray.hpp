@@ -49,9 +49,9 @@ class SIMPLib_EXPORT CalculatorArray : public ICalculatorArray
   public:
     SIMPL_SHARED_POINTERS(CalculatorArray)
 
-    static Pointer New(typename DataArray<T>::Pointer dataArray, bool allocate)
+    static Pointer New(typename DataArray<T>::Pointer dataArray, ValueType type, bool allocate)
     {
-      return Pointer(new CalculatorArray(dataArray, allocate));
+      return Pointer(new CalculatorArray(dataArray, type, allocate));
     }
 
     virtual ~CalculatorArray() {}
@@ -75,11 +75,17 @@ class SIMPLib_EXPORT CalculatorArray : public ICalculatorArray
       }
     }
 
+    ICalculatorArray::ValueType getType()
+    {
+      return m_Type;
+    }
+
   protected:
     CalculatorArray() {}
 
-    CalculatorArray(typename DataArray<T>::Pointer dataArray, bool allocate) :
-      ICalculatorArray()
+    CalculatorArray(typename DataArray<T>::Pointer dataArray, ValueType type, bool allocate) :
+      ICalculatorArray(),
+      m_Type(type)
     {
       m_Array = DoubleArrayType::CreateArray(dataArray->getNumberOfTuples(), dataArray->getComponentDimensions(), dataArray->getName(), allocate);
       if (allocate == true)
@@ -93,6 +99,7 @@ class SIMPLib_EXPORT CalculatorArray : public ICalculatorArray
 
   private:
     DoubleArrayType::Pointer                                  m_Array;
+    ValueType                                                 m_Type;
 
     CalculatorArray(const CalculatorArray&); // Copy Constructor Not Implemented
     void operator=(const CalculatorArray&); // Operator '=' Not Implemented

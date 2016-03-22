@@ -83,7 +83,7 @@ void IndexOperator::calculate(AbstractFilter* filter, DataArrayPath calculatedAr
       newArray->setValue(i, num);
     }
 
-    executionStack.push(CalculatorArray<double>::New(newArray, true));
+    executionStack.push(CalculatorArray<double>::New(newArray, arrayPtr->getType(), true));
     return;
   }
 

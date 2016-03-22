@@ -82,7 +82,7 @@ void NegativeOperator::calculate(AbstractFilter* filter, DataArrayPath calculate
       }
     }
 
-    executionStack.push(CalculatorArray<double>::New(newArray, true));
+    executionStack.push(CalculatorArray<double>::New(newArray, arrayPtr->getType(), true));
     return;
   }
 

@@ -127,7 +127,14 @@ class SIMPLib_EXPORT CalculatorOperator : public CalculatorItem
         }\
       }\
       \
-      executionStack.push(CalculatorArray<double>::New(newArray, true));\
+      if (array1->getType() == ICalculatorArray::Array || array2->getType() == ICalculatorArray::Array)\
+      {\
+        executionStack.push(CalculatorArray<double>::New(newArray, ICalculatorArray::Array, true));\
+      }\
+      else\
+      {\
+        executionStack.push(CalculatorArray<double>::New(newArray, ICalculatorArray::Number, true));\
+      }\
       return;\
     }\
     \

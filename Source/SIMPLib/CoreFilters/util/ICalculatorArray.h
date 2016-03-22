@@ -46,6 +46,12 @@
 class SIMPLib_EXPORT ICalculatorArray : public CalculatorItem
 {
   public:
+    enum ValueType
+    {
+      Number,
+      Array
+    };
+
     SIMPL_SHARED_POINTERS(ICalculatorArray)
 
     static Pointer New()
@@ -57,6 +63,7 @@ class SIMPLib_EXPORT ICalculatorArray : public CalculatorItem
 
     virtual IDataArray::Pointer getArray();
     virtual double getValue(int i);
+    virtual ValueType getType();
 
   protected:
     ICalculatorArray();

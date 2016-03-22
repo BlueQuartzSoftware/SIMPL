@@ -96,7 +96,14 @@ void DivisionOperator::calculate(AbstractFilter* filter, DataArrayPath calculate
       }
     }
 
-    executionStack.push(CalculatorArray<double>::New(newArray, true));
+    if (divisorArray->getType() == ICalculatorArray::Array || dividendArray->getType() == ICalculatorArray::Array)
+    {
+      executionStack.push(CalculatorArray<double>::New(newArray, ICalculatorArray::Array, true));
+    }
+    else
+    {
+      executionStack.push(CalculatorArray<double>::New(newArray, ICalculatorArray::Number, true));
+    }
     return;
   }
 
