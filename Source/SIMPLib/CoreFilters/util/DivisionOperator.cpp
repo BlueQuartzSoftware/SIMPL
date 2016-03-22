@@ -71,7 +71,15 @@ void DivisionOperator::calculate(AbstractFilter* filter, DataArrayPath calculate
     ICalculatorArray::Pointer divisorArray = executionStack.pop();
     ICalculatorArray::Pointer dividendArray = executionStack.pop();
 
-    DoubleArrayType::Pointer newArray = createNewArray(filter, calculatedArrayPath, divisorArray);
+    DoubleArrayType::Pointer newArray;
+    if (divisorArray->getType() == ICalculatorArray::Array)
+    {
+      newArray = createNewArray(filter, calculatedArrayPath, divisorArray);
+    }
+    else
+    {
+      newArray = createNewArray(filter, calculatedArrayPath, dividendArray);
+    }
 
     int numComps = newArray->getNumberOfComponents();
     for (int i = 0; i < newArray->getNumberOfTuples(); i++)

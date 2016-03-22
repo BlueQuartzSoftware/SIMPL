@@ -113,7 +113,15 @@ class SIMPLib_EXPORT CalculatorOperator : public CalculatorItem
       ICalculatorArray::Pointer array1 = executionStack.pop();\
       ICalculatorArray::Pointer array2 = executionStack.pop();\
       \
-      DoubleArrayType::Pointer newArray = createNewArray(filter, calculatedArrayPath, array1);\
+      DoubleArrayType::Pointer newArray;\
+      if (array1->getType() == ICalculatorArray::Array)\
+      {\
+        newArray = createNewArray(filter, calculatedArrayPath, array1);\
+      }\
+      else\
+      {\
+        newArray = createNewArray(filter, calculatedArrayPath, array2);\
+      }\
       \
       int numComps = newArray->getNumberOfComponents();\
       for (int i = 0; i < newArray->getNumberOfTuples(); i++)\

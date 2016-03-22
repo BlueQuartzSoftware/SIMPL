@@ -112,11 +112,19 @@ public:
       num++;
     }
 
+    IDataArray::Pointer numberArray = mcArray2->deepCopy();
+    numberArray->setName("4");
+
+    IDataArray::Pointer signArray = mcArray1->deepCopy();
+    signArray->setName("*");
+
     am1->addAttributeArray("InputArray1", array1);
     am1->addAttributeArray("InputArray2", array2);
     am1->addAttributeArray("Spaced Array", sArray);
     am1->addAttributeArray("MultiComponent Array1", mcArray1);
     am1->addAttributeArray("MultiComponent Array2", mcArray2);
+    am1->addAttributeArray("4", numberArray);
+    am1->addAttributeArray("*", signArray);
     dc->addAttributeMatrix("AttributeMatrix", am1);
     dc->addAttributeMatrix("NumericMatrix", am2);
     dca->addDataContainer(dc);
@@ -232,6 +240,123 @@ public:
           DREAM3D_REQUIRE(arrayPtr->getValue(index) == mcArray1->getValue(index) + mcArray2->getValue(index));
         }
       }
+    }
+
+    {
+      AbstractFilter::Pointer filter = createArrayCalculatorFilter(arrayPath);
+
+      UInt32ArrayType::Pointer mcArray1 = filter->getDataContainerArray()->getPrereqIDataArrayFromPath<UInt32ArrayType, AbstractFilter>(filter.get(),
+        DataArrayPath("DataContainer", "AttributeMatrix", "MultiComponent Array1"));
+
+      UInt32ArrayType::Pointer mcArray2 = filter->getDataContainerArray()->getPrereqIDataArrayFromPath<UInt32ArrayType, AbstractFilter>(filter.get(),
+        DataArrayPath("DataContainer", "AttributeMatrix", "MultiComponent Array2"));
+
+      propWasSet = filter->setProperty("InfixEquation", "MultiComponent Array1[1] + MultiComponent Array2[0]");
+      DREAM3D_REQUIRE_EQUAL(propWasSet, true);
+      filter->execute();
+      DREAM3D_REQUIRE_EQUAL(filter->getErrorCondition(), 0);
+      DoubleArrayType::Pointer arrayPtr = filter->getDataContainerArray()->getPrereqIDataArrayFromPath<DoubleArrayType, AbstractFilter>(filter.get(), arrayPath);
+      DREAM3D_REQUIRE(arrayPtr->getNumberOfTuples() == mcArray1->getNumberOfTuples());
+      DREAM3D_REQUIRE(arrayPtr->getNumberOfComponents() == 1);
+      for (int t = 0; t < arrayPtr->getNumberOfTuples(); t++)
+      {
+        int index1 = mcArray1->getNumberOfComponents() * t + 1;
+        int index2 = mcArray2->getNumberOfComponents() * t + 0;
+        int arrayIndex = arrayPtr->getNumberOfComponents() * t + 0;
+        DREAM3D_REQUIRE(arrayPtr->getValue(arrayIndex) == mcArray1->getValue(index1) + mcArray2->getValue(index2));
+      }
+    }
+
+    {
+      AbstractFilter::Pointer filter = createArrayCalculatorFilter(arrayPath);
+
+      UInt32ArrayType::Pointer nArray = filter->getDataContainerArray()->getPrereqIDataArrayFromPath<UInt32ArrayType, AbstractFilter>(filter.get(),
+            DataArrayPath("DataContainer", "AttributeMatrix", "4"));
+
+      UInt32ArrayType::Pointer sArray = filter->getDataContainerArray()->getPrereqIDataArrayFromPath<UInt32ArrayType, AbstractFilter>(filter.get(),
+            DataArrayPath("DataContainer", "AttributeMatrix", "*"));
+
+      propWasSet = filter->setProperty("InfixEquation", "\"4\" + 2");
+      DREAM3D_REQUIRE_EQUAL(propWasSet, true);
+      filter->execute();
+      DREAM3D_REQUIRE_EQUAL(filter->getErrorCondition(), 0);
+      DoubleArrayType::Pointer arrayPtr = filter->getDataContainerArray()->getPrereqIDataArrayFromPath<DoubleArrayType, AbstractFilter>(filter.get(), arrayPath);
+      DREAM3D_REQUIRE(arrayPtr->getNumberOfTuples() == nArray->getNumberOfTuples());
+      DREAM3D_REQUIRE(arrayPtr->getNumberOfComponents() == nArray->getNumberOfComponents());
+      for (int t = 0; t < arrayPtr->getNumberOfTuples(); t++)
+      {
+        for (int c = 0; c < arrayPtr->getNumberOfComponents(); c++)
+        {
+          int index = nArray->getNumberOfComponents() * t + c;
+          DREAM3D_REQUIRE(arrayPtr->getValue(index) == nArray->getValue(index) + 2);
+        }
+      }
+    }
+
+    {
+      AbstractFilter::Pointer filter = createArrayCalculatorFilter(arrayPath);
+
+      UInt32ArrayType::Pointer nArray = filter->getDataContainerArray()->getPrereqIDataArrayFromPath<UInt32ArrayType, AbstractFilter>(filter.get(),
+        DataArrayPath("DataContainer", "AttributeMatrix", "4"));
+
+      UInt32ArrayType::Pointer sArray = filter->getDataContainerArray()->getPrereqIDataArrayFromPath<UInt32ArrayType, AbstractFilter>(filter.get(),
+        DataArrayPath("DataContainer", "AttributeMatrix", "*"));
+
+      propWasSet = filter->setProperty("InfixEquation", "\"4\" + \"*\"");
+      DREAM3D_REQUIRE_EQUAL(propWasSet, true);
+      filter->execute();
+      DREAM3D_REQUIRE_EQUAL(filter->getErrorCondition(), 0);
+      DoubleArrayType::Pointer arrayPtr = filter->getDataContainerArray()->getPrereqIDataArrayFromPath<DoubleArrayType, AbstractFilter>(filter.get(), arrayPath);
+      DREAM3D_REQUIRE(arrayPtr->getNumberOfTuples() == nArray->getNumberOfTuples());
+      DREAM3D_REQUIRE(arrayPtr->getNumberOfComponents() == nArray->getNumberOfComponents());
+      for (int t = 0; t < arrayPtr->getNumberOfTuples(); t++)
+      {
+        for (int c = 0; c < arrayPtr->getNumberOfComponents(); c++)
+        {
+          int index = nArray->getNumberOfComponents() * t + c;
+          DREAM3D_REQUIRE(arrayPtr->getValue(index) == nArray->getValue(index) + sArray->getValue(index));
+        }
+      }
+    }
+
+    {
+      AbstractFilter::Pointer filter = createArrayCalculatorFilter(arrayPath);
+
+      UInt32ArrayType::Pointer nArray = filter->getDataContainerArray()->getPrereqIDataArrayFromPath<UInt32ArrayType, AbstractFilter>(filter.get(),
+        DataArrayPath("DataContainer", "AttributeMatrix", "4"));
+
+      UInt32ArrayType::Pointer sArray = filter->getDataContainerArray()->getPrereqIDataArrayFromPath<UInt32ArrayType, AbstractFilter>(filter.get(),
+        DataArrayPath("DataContainer", "AttributeMatrix", "*"));
+
+      propWasSet = filter->setProperty("InfixEquation", "\"4\"[0] + \"*\"[1]");
+      DREAM3D_REQUIRE_EQUAL(propWasSet, true);
+      filter->execute();
+      DREAM3D_REQUIRE_EQUAL(filter->getErrorCondition(), 0);
+      DoubleArrayType::Pointer arrayPtr = filter->getDataContainerArray()->getPrereqIDataArrayFromPath<DoubleArrayType, AbstractFilter>(filter.get(), arrayPath);
+      DREAM3D_REQUIRE(arrayPtr->getNumberOfTuples() == nArray->getNumberOfTuples());
+      DREAM3D_REQUIRE(arrayPtr->getNumberOfComponents() == 1);
+      for (int t = 0; t < arrayPtr->getNumberOfTuples(); t++)
+      {
+        int nIndex = nArray->getNumberOfComponents() * t + 0;
+        int sIndex = sArray->getNumberOfComponents() * t + 1;
+        DREAM3D_REQUIRE(arrayPtr->getValue(t) == nArray->getValue(nIndex) + sArray->getValue(sIndex));
+      }
+    }
+
+    // Out of bounds error
+    {
+      AbstractFilter::Pointer filter = createArrayCalculatorFilter(arrayPath);
+
+      UInt32ArrayType::Pointer nArray = filter->getDataContainerArray()->getPrereqIDataArrayFromPath<UInt32ArrayType, AbstractFilter>(filter.get(),
+        DataArrayPath("DataContainer", "AttributeMatrix", "4"));
+
+      UInt32ArrayType::Pointer sArray = filter->getDataContainerArray()->getPrereqIDataArrayFromPath<UInt32ArrayType, AbstractFilter>(filter.get(),
+        DataArrayPath("DataContainer", "AttributeMatrix", "*"));
+
+      propWasSet = filter->setProperty("InfixEquation", "\"4\"[0] + \"*\"[3]");
+      DREAM3D_REQUIRE_EQUAL(propWasSet, true);
+      filter->execute();
+      DREAM3D_REQUIRE_EQUAL(filter->getErrorCondition(), ArrayCalculator::COMPONENT_OUT_OF_RANGE);
     }
   }
 
