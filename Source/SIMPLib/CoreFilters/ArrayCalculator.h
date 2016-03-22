@@ -67,7 +67,9 @@ class ArrayCalculator : public AbstractFilter
       UNRECOGNIZED_ITEM = -4018,
       MISMATCHED_PARENTHESES = -4019,
       UNEXPECTED_OUTPUT = -4020,
-      COMPONENT_OUT_OF_RANGE = -4021
+      COMPONENT_OUT_OF_RANGE = -4021,
+      AMBIGUOUS_NAME_WARNING = -4022,
+      INVALID_ARRAY_NAME = -4023
     };
 
     enum AngleUnits
@@ -197,6 +199,8 @@ class ArrayCalculator : public AbstractFilter
 
     QVector<CalculatorItem::Pointer> parseInfixEquation(QString equation);
     QVector<CalculatorItem::Pointer> toRPN(QVector<CalculatorItem::Pointer> infixEquation);
+
+    void checkForAmbiguousArrayName(QString itemStr, QString warningMsg);
 
     ArrayCalculator(const ArrayCalculator&); // Copy Constructor Not Implemented
     void operator=(const ArrayCalculator&); // Operator '=' Not Implemented

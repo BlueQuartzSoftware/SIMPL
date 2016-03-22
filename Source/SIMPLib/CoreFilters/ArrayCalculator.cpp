@@ -424,7 +424,7 @@ QVector<CalculatorItem::Pointer> ArrayCalculator::parseInfixEquation(QString equ
   QVector<QString> itemList;
   // Match all array names that start with two alphabetical characters and have spaces.  Match all numbers, decimal or integer.
   // Match one letter array names.  Match all special character operators.
-  QRegularExpression regExp("(\\[)?\\d+(\\.\\d+)?(\\])?|(\\[)?\\.\\d+(\\])?|\\w{1,1}((\\w|\\s|\\d)*(\\w|\\d){1,1})?|\\+|\\-|\\*|\\/|\\(|\\)|\\,|\\^");
+  QRegularExpression regExp("(\")?((\\[)?\\d+(\\.\\d+)?(\\])?|(\\[)?\\.\\d+(\\])?|\\w{1,1}((\\w|\\s|\\d)*(\\w|\\d){1,1})?|\\+|\\-|\\*|\\/|\\(|\\)|\\,|\\^)(\")?");
   QRegularExpressionMatchIterator iter = regExp.globalMatch(m_InfixEquation);
   while (iter.hasNext())
   {
@@ -450,6 +450,9 @@ QVector<CalculatorItem::Pointer> ArrayCalculator::parseInfixEquation(QString equ
       ptr->setValue(0, num);
       itemPtr = CalculatorArray<double>::New(ptr, !getInPreflight());
       parsedInfix.push_back(itemPtr);
+
+      QString ss = QObject::tr("Item \"%1\" in the infix equation is the name of an array in the selected attribute matrix, but it is currently being used as a number.").arg(strItem);
+      checkForAmbiguousArrayName(strItem, ss);
     }
     else if (strItem == "-")
     {
@@ -475,6 +478,9 @@ QVector<CalculatorItem::Pointer> ArrayCalculator::parseInfixEquation(QString equ
         itemPtr = m_SymbolMap.value(strItem);
         parsedInfix.push_back(itemPtr);
       }
+
+      QString ss = QObject::tr("Item \"%1\" in the infix equation is the name of an array in the selected attribute matrix, but it is currently being used as a mathematical operator.").arg(strItem);
+      checkForAmbiguousArrayName(strItem, ss);
     }
     else if (strItem.contains("[") && strItem.contains("]"))
     {
@@ -503,38 +509,19 @@ QVector<CalculatorItem::Pointer> ArrayCalculator::parseInfixEquation(QString equ
 
       itemPtr = IndexOperator::New(index);
       parsedInfix.push_back(itemPtr);
-    }
-    else if (selectedAM->getAttributeArrayNames().contains(strItem))
-    {
-      IDataArray::Pointer dataArray = selectedAM->getAttributeArray(strItem);
-      if (firstArray_NumTuples < 0 && firstArray_Name.isEmpty() == true)
-      {
-        firstArray_NumTuples = dataArray->getNumberOfTuples();
-        firstArray_Name = dataArray->getName();
-      }
-      else if (dataArray->getNumberOfTuples() != firstArray_NumTuples)
-      {
-        QString ss = QObject::tr("Arrays \"%1\" and \"%2\" in the infix equation have an inconsistent number of tuples.").arg(firstArray_Name).arg(dataArray->getName());
-        setErrorCondition(INCONSISTENT_TUPLES);
-        notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
-        return QVector<CalculatorItem::Pointer>();
-      }
 
-      CREATE_CALCULATOR_ARRAY(itemPtr, dataArray)
-      parsedInfix.push_back(itemPtr);
+      QString ss = QObject::tr("Item \"%1\" in the infix equation is the name of an array in the selected attribute matrix, but it is currently being used as an indexing operator.").arg(strItem);
+      checkForAmbiguousArrayName(strItem, ss);
     }
     else
     {
       itemPtr = m_SymbolMap.value(strItem);
-      if (NULL == itemPtr)
+
+      if (NULL != std::dynamic_pointer_cast<CommaSeparator>(itemPtr))
       {
-        QString ss = QObject::tr("An unrecognized item \"%1\" was found in the chosen infix equation.").arg(strItem);
-        setErrorCondition(UNRECOGNIZED_ITEM);
-        notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
-        return QVector<CalculatorItem::Pointer>();
-      }
-      else if (NULL != std::dynamic_pointer_cast<CommaSeparator>(itemPtr))
-      {
+        QString ss = QObject::tr("Item \"%1\" in the infix equation is the name of an array in the selected attribute matrix, but it is currently being detected as a comma in a mathematical operator.").arg(strItem);
+        checkForAmbiguousArrayName(strItem, ss);
+
         // This is a comma, so make sure that this comma has a valid unary operator before it
         {
           QVectorIterator<CalculatorItem::Pointer> iter(parsedInfix);
@@ -577,8 +564,48 @@ QVector<CalculatorItem::Pointer> ArrayCalculator::parseInfixEquation(QString equ
           iter--;
         }
       }
+      else if (NULL != itemPtr)
+      {
+        QString ss = QObject::tr("Item \"%1\" in the infix equation is the name of an array in the selected attribute matrix, but it is currently being used as a mathematical operator.").arg(strItem);
+        checkForAmbiguousArrayName(strItem, ss);
 
-      parsedInfix.push_back(itemPtr);
+        parsedInfix.push_back(itemPtr);
+      }
+      else if (selectedAM->getAttributeArrayNames().contains(strItem) || (strItem.isEmpty() == false && strItem[0] == '\"' && strItem[strItem.size()-1] == '\"'))
+      {
+        strItem.remove("\"");
+        if (selectedAM->getAttributeArrayNames().contains(strItem) == false)
+        {
+          QString ss = QObject::tr("The item \"%1\" is not the name of any valid array in the selected attribute matrix.").arg(strItem);
+          setErrorCondition(INVALID_ARRAY_NAME);
+          notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
+          return QVector<CalculatorItem::Pointer>();
+        }
+
+        IDataArray::Pointer dataArray = selectedAM->getAttributeArray(strItem);
+        if (firstArray_NumTuples < 0 && firstArray_Name.isEmpty() == true)
+        {
+          firstArray_NumTuples = dataArray->getNumberOfTuples();
+          firstArray_Name = dataArray->getName();
+        }
+        else if (dataArray->getNumberOfTuples() != firstArray_NumTuples)
+        {
+          QString ss = QObject::tr("Arrays \"%1\" and \"%2\" in the infix equation have an inconsistent number of tuples.").arg(firstArray_Name).arg(dataArray->getName());
+          setErrorCondition(INCONSISTENT_TUPLES);
+          notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
+          return QVector<CalculatorItem::Pointer>();
+        }
+
+        CREATE_CALCULATOR_ARRAY(itemPtr, dataArray)
+        parsedInfix.push_back(itemPtr);
+      }
+      else
+      {
+        QString ss = QObject::tr("An unrecognized item \"%1\" was found in the chosen infix equation.").arg(strItem);
+        setErrorCondition(UNRECOGNIZED_ITEM);
+        notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
+        return QVector<CalculatorItem::Pointer>();
+      }
     }
   }
 
@@ -700,6 +727,26 @@ QVector<CalculatorItem::Pointer> ArrayCalculator::toRPN(QVector<CalculatorItem::
   }
 
   return rpnEquation;
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void ArrayCalculator::checkForAmbiguousArrayName(QString strItem, QString warningMsg)
+{
+  if (getInPreflight())
+  {
+    int err = 0;
+    AttributeMatrix::Pointer selectedAM = getDataContainerArray()->getPrereqAttributeMatrixFromPath<AbstractFilter>(this, m_SelectedAttributeMatrix, err);
+    if (selectedAM->getAttributeArrayNames().contains(strItem))
+    {
+      IDataArray::Pointer dataArray = selectedAM->getAttributeArray(strItem);
+
+      setWarningCondition(AMBIGUOUS_NAME_WARNING);
+      warningMsg.append("  To treat this item as an array name, please add double quotes around the item (i.e. \"" + strItem + "\").");
+      notifyWarningMessage(getHumanLabel(), warningMsg, getErrorCondition());
+    }
+  }
 }
 
 // -----------------------------------------------------------------------------
