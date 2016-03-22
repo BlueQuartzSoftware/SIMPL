@@ -80,21 +80,11 @@ class SIMPLib_EXPORT UnaryOperator : public CalculatorOperator
       int numComps = newArray->getNumberOfComponents();\
       for (int i = 0; i < newArray->getNumberOfTuples(); i++)\
       {\
-        if (arrayPtr->getCompIndex() >= 0)\
+        for (int c = 0; c < newArray->getNumberOfComponents(); c++)\
         {\
-          int index = numComps * i + arrayPtr->getCompIndex();\
+          int index = numComps * i + c;\
           double num = arrayPtr->getValue(index);\
-          newArray->setValue(i, func(num));\
-          \
-        }\
-        else\
-        {\
-          for (int c = 0; c < newArray->getNumberOfComponents(); c++)\
-          {\
-            int index = numComps * i + c;\
-            double num = arrayPtr->getValue(index);\
-            newArray->setValue(index, func(num));\
-          }\
+          newArray->setValue(index, func(num));\
         }\
       }\
       \
@@ -119,35 +109,18 @@ class SIMPLib_EXPORT UnaryOperator : public CalculatorOperator
       int numComps = newArray->getNumberOfComponents();\
       for (int i = 0; i < newArray->getNumberOfTuples(); i++)\
       {\
-        if (arrayPtr->getCompIndex() >= 0)\
+        for (int c = 0; c < newArray->getNumberOfComponents(); c++)\
         {\
-          int index = numComps * i + arrayPtr->getCompIndex();\
+          int index = numComps * i + c;\
           double num = arrayPtr->getValue(index);\
           \
           if (calculatorFilter->getUnits() == ArrayCalculator::Degrees)\
           {\
-            newArray->setValue(i, func(toRadians(num)));\
+            newArray->setValue(index, func(toRadians(num)));\
           }\
           else\
           {\
-            newArray->setValue(i, func(num));\
-          }\
-        }\
-        else\
-        {\
-          for (int c = 0; c < newArray->getNumberOfComponents(); c++)\
-          {\
-            int index = numComps * i + c;\
-            double num = arrayPtr->getValue(index);\
-            \
-            if (calculatorFilter->getUnits() == ArrayCalculator::Degrees)\
-            {\
-              newArray->setValue(index, func(toRadians(num)));\
-            }\
-            else\
-            {\
-              newArray->setValue(index, func(num));\
-            }\
+            newArray->setValue(index, func(num));\
           }\
         }\
       }\
@@ -173,35 +146,18 @@ class SIMPLib_EXPORT UnaryOperator : public CalculatorOperator
       int numComps = newArray->getNumberOfComponents();\
       for (int i = 0; i < newArray->getNumberOfTuples(); i++)\
       {\
-        if (arrayPtr->getCompIndex() >= 0)\
+        for (int c = 0; c < newArray->getNumberOfComponents(); c++)\
         {\
-          int index = numComps * i + arrayPtr->getCompIndex();\
+          int index = numComps * i + c;\
           double num = arrayPtr->getValue(index);\
           \
           if (calculatorFilter->getUnits() == ArrayCalculator::Degrees)\
           {\
-            newArray->setValue(i, toDegrees(func(num)));\
+            newArray->setValue(index, toDegrees(func(num)));\
           }\
           else\
           {\
-            newArray->setValue(i, func(num));\
-          }\
-        }\
-        else\
-        {\
-          for (int c = 0; c < newArray->getNumberOfComponents(); c++)\
-          {\
-            int index = numComps * i + c;\
-            double num = arrayPtr->getValue(index);\
-            \
-            if (calculatorFilter->getUnits() == ArrayCalculator::Degrees)\
-            {\
-              newArray->setValue(index, toDegrees(func(num)));\
-            }\
-            else\
-            {\
-              newArray->setValue(index, func(num));\
-            }\
+            newArray->setValue(index, func(num));\
           }\
         }\
       }\

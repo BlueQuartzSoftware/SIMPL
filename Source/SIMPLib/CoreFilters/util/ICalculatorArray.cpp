@@ -38,9 +38,8 @@
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-ICalculatorArray::ICalculatorArray(int compIndex) :
-  CalculatorItem(),
-  m_CompIndex(compIndex)
+ICalculatorArray::ICalculatorArray() :
+  CalculatorItem()
 {
 
 }
@@ -69,13 +68,5 @@ double ICalculatorArray::getValue(int i)
 {
   // This should never be called
   return 0.0;
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-int ICalculatorArray::getCompIndex()
-{
-  return m_CompIndex;
 }
 

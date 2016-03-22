@@ -63,39 +63,6 @@ ABSOperator::~ABSOperator()
 // -----------------------------------------------------------------------------
 void ABSOperator::calculate(AbstractFilter* filter, DataArrayPath calculatedArrayPath, QStack<ICalculatorArray::Pointer> &executionStack)
 {
-  if (executionStack.size() >= 1)
-  {
-    ICalculatorArray::Pointer arrayPtr = executionStack.pop();
-
-    DoubleArrayType::Pointer newArray = createNewArray(filter, calculatedArrayPath, arrayPtr);
-
-    int numComps = newArray->getNumberOfComponents();
-    for (int i = 0; i < newArray->getNumberOfTuples(); i++)
-    {
-      if (arrayPtr->getCompIndex() >= 0)
-      {
-        int index = numComps * i + arrayPtr->getCompIndex();
-        double num = arrayPtr->getValue(index);
-        newArray->setValue(i, fabs(num));
-      }
-      else
-      {
-        for (int c = 0; c < newArray->getNumberOfComponents(); c++)
-        {
-          int index = numComps * i + c;
-          double num = arrayPtr->getValue(index);
-          newArray->setValue(index, fabs(num));
-        }
-      }
-    }
-
-    executionStack.push(CalculatorArray<double>::New(newArray, true));
-    return;
-  }
-
-  // If the execution gets down here, then we have an error
-  QString ss = QObject::tr("The chosen infix equation is not a valid equation.");
-  filter->setErrorCondition(ArrayCalculator::INVALID_EQUATION);
-  filter->notifyErrorMessage(filter->getHumanLabel(), ss, filter->getErrorCondition());
+  CREATE_NEW_ARRAY_STANDARD_UNARY(filter, calculatedArrayPath, executionStack, fabs)
 }
 

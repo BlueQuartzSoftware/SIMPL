@@ -59,6 +59,7 @@
 #include "util/MultiplicationOperator.h"
 #include "util/DivisionOperator.h"
 #include "util/NegativeOperator.h"
+#include "util/IndexOperator.h"
 #include "util/ABSOperator.h"
 #include "util/SinOperator.h"
 #include "util/CosOperator.h"
@@ -272,7 +273,8 @@ void ArrayCalculator::dataCheck()
     else if (NULL != std::dynamic_pointer_cast<ICalculatorArray>(currentItem))
     {
       hasValue = true;
-      if (std::dynamic_pointer_cast<ICalculatorArray>(currentItem)->getArray()->getNumberOfTuples() > 1)
+      ICalculatorArray::Pointer calcArray = std::dynamic_pointer_cast<ICalculatorArray>(currentItem);
+      if (calcArray->getArray()->getNumberOfTuples() > 1)
       {
         hasArrayGreaterThan1 = true;
       }
@@ -422,7 +424,7 @@ QVector<CalculatorItem::Pointer> ArrayCalculator::parseInfixEquation(QString equ
   QVector<QString> itemList;
   // Match all array names that start with two alphabetical characters and have spaces.  Match all numbers, decimal or integer.
   // Match one letter array names.  Match all special character operators.
-  QRegularExpression regExp("\\d+(\\.\\d+)?|\\.\\d+|\\w{1,1}((\\w|\\s|\\d)*(\\w|\\d){1,1})?(\\[\\d*\\])?|\\+|\\-|\\*|\\/|\\(|\\)|\\,|\\^");
+  QRegularExpression regExp("(\\[)?\\d+(\\.\\d+)?(\\])?|(\\[)?\\.\\d+(\\])?|\\w{1,1}((\\w|\\s|\\d)*(\\w|\\d){1,1})?|\\+|\\-|\\*|\\/|\\(|\\)|\\,|\\^");
   QRegularExpressionMatchIterator iter = regExp.globalMatch(m_InfixEquation);
   while (iter.hasNext())
   {
@@ -432,8 +434,8 @@ QVector<CalculatorItem::Pointer> ArrayCalculator::parseInfixEquation(QString equ
 
   // Iterate through the QStringList and create the proper CalculatorItems
   QVector<CalculatorItem::Pointer> parsedInfix;
-  int numTuples = -1;
-  QString firstArray = "";
+  int firstArray_NumTuples = -1;
+  QString firstArray_Name = "";
   for (int i = 0; i < itemList.size(); i++)
   {
     QString strItem = itemList[i];
@@ -474,25 +476,52 @@ QVector<CalculatorItem::Pointer> ArrayCalculator::parseInfixEquation(QString equ
         parsedInfix.push_back(itemPtr);
       }
     }
+    else if (strItem.contains("[") && strItem.contains("]"))
+    {
+      // This is an array index, so create an index operator
+      strItem.remove("[");
+      strItem.remove("]");
+
+      bool ok;
+      int index = strItem.toInt(&ok);
+      if (ok == false)
+      {
+        QString ss = QObject::tr("The chosen infix equation is not a valid equation.");
+        setErrorCondition(INVALID_EQUATION);
+        notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
+        return QVector<CalculatorItem::Pointer>();
+      }
+
+      ICalculatorArray::Pointer calcArray = std::dynamic_pointer_cast<ICalculatorArray>(parsedInfix.back());
+      if (NULL != calcArray && index >= calcArray->getArray()->getNumberOfComponents())
+      {
+        QString ss = QObject::tr("\"%1\" has an component index that is out of range.").arg(calcArray->getArray()->getName());
+        setErrorCondition(COMPONENT_OUT_OF_RANGE);
+        notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
+        return QVector<CalculatorItem::Pointer>();
+      }
+
+      itemPtr = IndexOperator::New(index);
+      parsedInfix.push_back(itemPtr);
+    }
     else if (selectedAM->getAttributeArrayNames().contains(strItem))
     {
-      // This is an array, so create the array item
       IDataArray::Pointer dataArray = selectedAM->getAttributeArray(strItem);
-      if (numTuples < 0 && firstArray.isEmpty() == true)
+      if (firstArray_NumTuples < 0 && firstArray_Name.isEmpty() == true)
       {
-        numTuples = dataArray->getNumberOfTuples();
-        firstArray = dataArray->getName();
+        firstArray_NumTuples = dataArray->getNumberOfTuples();
+        firstArray_Name = dataArray->getName();
       }
-      else if (dataArray->getNumberOfTuples() != numTuples)
+      else if (dataArray->getNumberOfTuples() != firstArray_NumTuples)
       {
-        QString ss = QObject::tr("Arrays \"%1\" and \"%2\" in the infix equation have an inconsistent number of tuples.").arg(firstArray).arg(dataArray->getName());
+        QString ss = QObject::tr("Arrays \"%1\" and \"%2\" in the infix equation have an inconsistent number of tuples.").arg(firstArray_Name).arg(dataArray->getName());
         setErrorCondition(INCONSISTENT_TUPLES);
         notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
         return QVector<CalculatorItem::Pointer>();
       }
 
       CREATE_CALCULATOR_ARRAY(itemPtr, dataArray)
-        parsedInfix.push_back(itemPtr);
+      parsedInfix.push_back(itemPtr);
     }
     else
     {
@@ -565,14 +594,35 @@ QVector<CalculatorItem::Pointer> ArrayCalculator::toRPN(QVector<CalculatorItem::
   QStack<CalculatorItem::Pointer> itemStack;
   QVector<CalculatorItem::Pointer> rpnEquation;
 
+  bool* oneComponent = NULL;
+
   // Iterate through the infix equation items
   for (int i = 0; i < infixEquation.size(); i++)
   {
     CalculatorItem::Pointer calcItem = infixEquation[i];
     if (NULL != std::dynamic_pointer_cast<ICalculatorArray>(calcItem))
     {
+      ICalculatorArray::Pointer arrayItem = std::dynamic_pointer_cast<ICalculatorArray>(calcItem);
+
       // This is a number or array, so push it onto the rpn equation output
-      rpnEquation.push_back(calcItem);
+      rpnEquation.push_back(arrayItem);
+
+      if (i + 1 < infixEquation.size() && NULL != std::dynamic_pointer_cast<IndexOperator>(infixEquation[i + 1]) && NULL == oneComponent)
+      {
+        oneComponent = new bool(true);
+      }
+      else if ((i + 1 >= infixEquation.size() || NULL == std::dynamic_pointer_cast<IndexOperator>(infixEquation[i + 1])) && NULL == oneComponent)
+      {
+        oneComponent = new bool(false);
+      }
+      else if (((i + 1 >= infixEquation.size() || NULL == std::dynamic_pointer_cast<IndexOperator>(infixEquation[i + 1])) && *oneComponent == true)
+        || ((i + 1 < infixEquation.size() && NULL != std::dynamic_pointer_cast<IndexOperator>(infixEquation[i + 1])) && *oneComponent == false))
+      {
+        QString ss = QObject::tr("Not all arrays have a component index. All arrays must specify a component index (i.e. %1[0]), or none at all.").arg(arrayItem->getArray()->getName());
+        setErrorCondition(COMPONENT_OUT_OF_RANGE);
+        notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
+        return QVector<CalculatorItem::Pointer>();
+      }
     }
     else if (NULL != std::dynamic_pointer_cast<LeftParenthesisItem>(calcItem))
     {
@@ -607,6 +657,7 @@ QVector<CalculatorItem::Pointer> ArrayCalculator::toRPN(QVector<CalculatorItem::
     {
       // This is an operator
       CalculatorOperator::Pointer incomingOperator = std::dynamic_pointer_cast<CalculatorOperator>(calcItem);
+
       if (itemStack.isEmpty() == false)
       {
         /* If the operator's precedence is lower than the precedence of the operator on top of the item stack, push the operator at the top

@@ -47,7 +47,7 @@
 AdditionOperator::AdditionOperator() :
   BinaryOperator()
 {
-  setPrecedence(Alpha_Precedence);
+  setPrecedence(A_Precedence);
 }
 
 // -----------------------------------------------------------------------------

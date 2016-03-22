@@ -47,7 +47,7 @@
 PowOperator::PowOperator() :
   BinaryOperator()
 {
-  setPrecedence(Charlie_Precedence);
+  setPrecedence(C_Precedence);
 }
 
 // -----------------------------------------------------------------------------

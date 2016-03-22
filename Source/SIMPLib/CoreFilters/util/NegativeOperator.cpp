@@ -49,7 +49,7 @@
 NegativeOperator::NegativeOperator() :
 CalculatorOperator()
 {
-  setPrecedence(Delta_Precedence);
+  setPrecedence(D_Precedence);
 }
 
 // -----------------------------------------------------------------------------
@@ -74,21 +74,11 @@ void NegativeOperator::calculate(AbstractFilter* filter, DataArrayPath calculate
     int numComps = newArray->getNumberOfComponents();
     for (int i = 0; i < newArray->getNumberOfTuples(); i++)
     {
-      if (arrayPtr->getCompIndex() >= 0)
+      for (int c = 0; c < newArray->getNumberOfComponents(); c++)
       {
-        int index = numComps * i + arrayPtr->getCompIndex();
+        int index = numComps * i + c;
         double num = arrayPtr->getValue(index);
-        newArray->setValue(i, -1 * num);
-
-      }
-      else
-      {
-        for (int c = 0; c < newArray->getNumberOfComponents(); c++)
-        {
-          int index = numComps * i + c;
-          double num = arrayPtr->getValue(index);
-          newArray->setValue(index, -1 * num);
-        }
+        newArray->setValue(index, -1 * num);
       }
     }
 

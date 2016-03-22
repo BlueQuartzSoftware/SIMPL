@@ -48,7 +48,7 @@ UnaryOperator::UnaryOperator() :
   CalculatorOperator(),
   m_NumOfArguments(-1)
 {
-  setPrecedence(Epsilon_Precedence);
+  setPrecedence(E_Precedence);
   setOperatorType(Unary);
 }
 

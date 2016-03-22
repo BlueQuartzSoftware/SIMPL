@@ -50,7 +50,7 @@
 DivisionOperator::DivisionOperator() :
 BinaryOperator()
 {
-  setPrecedence(Bravo_Precedence);
+  setPrecedence(B_Precedence);
 }
 
 // -----------------------------------------------------------------------------
@@ -76,12 +76,11 @@ void DivisionOperator::calculate(AbstractFilter* filter, DataArrayPath calculate
     int numComps = newArray->getNumberOfComponents();
     for (int i = 0; i < newArray->getNumberOfTuples(); i++)
     {
-      if (divisorArray->getCompIndex() >= 0)
+      for (int c = 0; c < newArray->getNumberOfComponents(); c++)
       {
-        int divisorIndex = numComps * i + divisorArray->getCompIndex();
-        int dividendIndex = numComps * i + dividendArray->getCompIndex();
-        double divisor = divisorArray->getValue(divisorIndex);
-        double dividend = dividendArray->getValue(dividendIndex);
+        int index = numComps * i + c;
+        double divisor = divisorArray->getValue(index);
+        double dividend = dividendArray->getValue(index);
 
         double result;
         if (divisor == 0.0)
@@ -93,28 +92,7 @@ void DivisionOperator::calculate(AbstractFilter* filter, DataArrayPath calculate
           result = dividend / divisor;
         }
 
-        newArray->setValue(i, result);
-      }
-      else
-      {
-        for (int c = 0; c < newArray->getNumberOfComponents(); c++)
-        {
-          int index = numComps * i + c;
-          double divisor = divisorArray->getValue(index);
-          double dividend = dividendArray->getValue(index);
-
-          double result;
-          if (divisor == 0.0)
-          {
-            result = std::numeric_limits<double>::infinity();
-          }
-          else
-          {
-            result = dividend / divisor;
-          }
-
-          newArray->setValue(index, result);
-        }
+        newArray->setValue(index, result);
       }
     }
 

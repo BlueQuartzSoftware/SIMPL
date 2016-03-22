@@ -81,11 +81,11 @@ class SIMPLib_EXPORT CalculatorOperator : public CalculatorItem
     enum Precedence
     {
       Unknown_Precedence,
-      Alpha_Precedence,
-      Bravo_Precedence,
-      Charlie_Precedence,
-      Delta_Precedence,
-      Epsilon_Precedence
+      A_Precedence,
+      B_Precedence,
+      C_Precedence,
+      D_Precedence,
+      E_Precedence
     };
 
     double root(double base, double root);
@@ -118,24 +118,12 @@ class SIMPLib_EXPORT CalculatorOperator : public CalculatorItem
       int numComps = newArray->getNumberOfComponents();\
       for (int i = 0; i < newArray->getNumberOfTuples(); i++)\
       {\
-        if (array1->getCompIndex() >= 0)\
+        for (int c = 0; c < newArray->getNumberOfComponents(); c++)\
         {\
-          int index1 = numComps * i + array1->getCompIndex();\
-          int index2 = numComps * i + array2->getCompIndex();\
-          double num1 = array1->getValue(index1);\
-          double num2 = array2->getValue(index2);\
-          newArray->setValue(i, func(num2, num1));\
-          \
-        }\
-        else\
-        {\
-          for (int c = 0; c < newArray->getNumberOfComponents(); c++)\
-          {\
-            int index = numComps * i + c;\
-            double num1 = array1->getValue(index);\
-            double num2 = array2->getValue(index);\
-            newArray->setValue(index, func(num2, num1));\
-          }\
+          int index = numComps * i + c;\
+          double num1 = array1->getValue(index);\
+          double num2 = array2->getValue(index);\
+          newArray->setValue(index, func(num2, num1));\
         }\
       }\
       \

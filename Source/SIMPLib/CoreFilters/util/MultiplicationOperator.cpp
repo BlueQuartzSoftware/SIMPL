@@ -47,7 +47,7 @@
 MultiplicationOperator::MultiplicationOperator() :
 BinaryOperator()
 {
-  setPrecedence(Bravo_Precedence);
+  setPrecedence(B_Precedence);
 }
 
 // -----------------------------------------------------------------------------
