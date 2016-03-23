@@ -124,7 +124,7 @@ class SIMPLib_EXPORT CalculatorOperator : public CalculatorItem
       }\
       \
       int numComps = newArray->getNumberOfComponents();\
-      for (int i = 0; i < newArray->getNumberOfTuples(); i++)\
+      for (int i = 0; i < static_cast<int>(newArray->getNumberOfTuples()); i++)\
       {\
         for (int c = 0; c < newArray->getNumberOfComponents(); c++)\
         {\
