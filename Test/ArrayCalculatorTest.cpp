@@ -191,14 +191,12 @@ public:
 
     if (NULL != expectedValue && NULL != expectedNumberOfTuples)
     {
-      int expectedTuples = *expectedNumberOfTuples;
       double value = *expectedValue;
 
       DREAM3D_REQUIRE(arrayPtr->getNumberOfTuples() == 1);
 
-      for (int i = 0; i < arrayPtr->getNumberOfTuples(); i++)
+      for (size_t i = 0; i < arrayPtr->getNumberOfTuples(); i++)
       {
-        double val1 = arrayPtr->getValue(i);
         DREAM3D_REQUIRE(SIMPLibMath::closeEnough<double>(arrayPtr->getValue(i), value, 0.01) == true);
       }
     }
