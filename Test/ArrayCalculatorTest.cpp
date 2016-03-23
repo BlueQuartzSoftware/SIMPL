@@ -207,7 +207,7 @@ public:
   // -----------------------------------------------------------------------------
   //
   // -----------------------------------------------------------------------------
-  void TestArrayCalculatorFilter2()
+  void MultiComponentArrayCalculatorTest()
   {
     DataArrayPath numericArrayPath("DataContainer", "NumericMatrix", "NewArray");
     DataArrayPath arrayPath("DataContainer", "AttributeMatrix", "NewArray");
@@ -343,6 +343,22 @@ public:
       }
     }
 
+    // Inconsistent indexing
+    {
+      AbstractFilter::Pointer filter = createArrayCalculatorFilter(arrayPath);
+
+      UInt32ArrayType::Pointer nArray = filter->getDataContainerArray()->getPrereqIDataArrayFromPath<UInt32ArrayType, AbstractFilter>(filter.get(),
+        DataArrayPath("DataContainer", "AttributeMatrix", "4"));
+
+      UInt32ArrayType::Pointer sArray = filter->getDataContainerArray()->getPrereqIDataArrayFromPath<UInt32ArrayType, AbstractFilter>(filter.get(),
+        DataArrayPath("DataContainer", "AttributeMatrix", "*"));
+
+      propWasSet = filter->setProperty("InfixEquation", "\"4\" + \"*\"[1]");
+      DREAM3D_REQUIRE_EQUAL(propWasSet, true);
+      filter->execute();
+      DREAM3D_REQUIRE_EQUAL(filter->getErrorCondition(), ArrayCalculator::INCONSISTENT_INDEXING);
+    }
+
     // Out of bounds error
     {
       AbstractFilter::Pointer filter = createArrayCalculatorFilter(arrayPath);
@@ -363,7 +379,7 @@ public:
   // -----------------------------------------------------------------------------
   //
   // -----------------------------------------------------------------------------
-  void TestArrayCalculatorFilter()
+  void SingleComponentArrayCalculatorTest()
   {
     DataArrayPath numericArrayPath("DataContainer", "NumericMatrix", "NewArray");
     DataArrayPath arrayPath("DataContainer", "AttributeMatrix", "NewArray");
@@ -901,8 +917,8 @@ public:
   {
     std::cout << "#### ArrayCalculatorTest Starting ####" << std::endl;
     int err = EXIT_SUCCESS;
-    DREAM3D_REGISTER_TEST(TestArrayCalculatorFilter())
-    DREAM3D_REGISTER_TEST(TestArrayCalculatorFilter2())
+    DREAM3D_REGISTER_TEST(SingleComponentArrayCalculatorTest())
+    DREAM3D_REGISTER_TEST(MultiComponentArrayCalculatorTest())
   }
 
 private:

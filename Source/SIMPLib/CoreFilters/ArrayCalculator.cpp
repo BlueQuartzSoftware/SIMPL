@@ -650,7 +650,7 @@ QVector<CalculatorItem::Pointer> ArrayCalculator::toRPN(QVector<CalculatorItem::
           || ((i + 1 < infixEquation.size() && NULL != std::dynamic_pointer_cast<IndexOperator>(infixEquation[i + 1])) && *oneComponent == false))
         {
           QString ss = QObject::tr("Not all arrays have a component index. All arrays must specify a component index (i.e. %1[0]), or none at all.").arg(arrayItem->getArray()->getName());
-          setErrorCondition(COMPONENT_OUT_OF_RANGE);
+          setErrorCondition(INCONSISTENT_INDEXING);
           notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
           return QVector<CalculatorItem::Pointer>();
         }

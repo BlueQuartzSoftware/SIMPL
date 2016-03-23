@@ -69,7 +69,8 @@ class ArrayCalculator : public AbstractFilter
       UNEXPECTED_OUTPUT = -4020,
       COMPONENT_OUT_OF_RANGE = -4021,
       AMBIGUOUS_NAME_WARNING = -4022,
-      INVALID_ARRAY_NAME = -4023
+      INVALID_ARRAY_NAME = -4023,
+      INCONSISTENT_INDEXING = -4024
     };
 
     enum AngleUnits
