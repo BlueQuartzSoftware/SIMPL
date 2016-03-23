@@ -33,8 +33,8 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-#ifndef _MultiplicationOperator_H_
-#define _MultiplicationOperator_H_
+#ifndef _multiplicationoperator_h_
+#define _multiplicationoperator_h_
 
 #include <QtCore/QSharedPointer>
 #include <QtCore/QStack>

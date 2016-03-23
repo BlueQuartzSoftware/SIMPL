@@ -33,8 +33,8 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-#ifndef _CalculatorOperator_H_
-#define _CalculatorOperator_H_
+#ifndef _calculatoroperator_h_
+#define _calculatoroperator_h_
 
 #include <QtCore/QSharedPointer>
 #include <QtCore/QVector>

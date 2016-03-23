@@ -33,8 +33,8 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-#ifndef _CalculatorSeparator_H_
-#define _CalculatorSeparator_H_
+#ifndef _calculatorseparator_h_
+#define _calculatorseparator_h_
 
 #include "SIMPLib/SIMPLib.h"
 

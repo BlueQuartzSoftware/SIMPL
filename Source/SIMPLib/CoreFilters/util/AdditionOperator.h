@@ -33,8 +33,8 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-#ifndef _AdditionOperator_H_
-#define _AdditionOperator_H_
+#ifndef _additionoperator_h_
+#define _additionoperator_h_
 
 #include <QtCore/QSharedPointer>
 #include <QtCore/QStack>

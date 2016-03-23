@@ -33,8 +33,8 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-#ifndef _TanOperator_H_
-#define _TanOperator_H_
+#ifndef _tanoperator_h_
+#define _tanoperator_h_
 
 #include <QtCore/QSharedPointer>
 #include <QtCore/QStack>

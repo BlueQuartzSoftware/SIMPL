@@ -33,8 +33,8 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-#ifndef _DivisionOperator_H_
-#define _DivisionOperator_H_
+#ifndef _divisionoperator_h_
+#define _divisionoperator_h_
 
 #include <QtCore/QSharedPointer>
 #include <QtCore/QStack>

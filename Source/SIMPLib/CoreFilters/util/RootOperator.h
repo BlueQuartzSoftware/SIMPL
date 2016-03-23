@@ -33,8 +33,8 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-#ifndef _RootOperator_H_
-#define _RootOperator_H_
+#ifndef _rootoperator_h_
+#define _rootoperator_h_
 
 #include <QtCore/QSharedPointer>
 #include <QtCore/QStack>

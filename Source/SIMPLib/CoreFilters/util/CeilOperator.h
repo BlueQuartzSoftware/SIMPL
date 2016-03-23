@@ -33,8 +33,8 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-#ifndef _CeilOperator_H_
-#define _CeilOperator_H_
+#ifndef _ceiloperator_h_
+#define _ceiloperator_h_
 
 #include <QtCore/QSharedPointer>
 #include <QtCore/QStack>

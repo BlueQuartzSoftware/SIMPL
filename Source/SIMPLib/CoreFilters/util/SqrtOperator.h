@@ -33,8 +33,8 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-#ifndef _SqrtOperator_H_
-#define _SqrtOperator_H_
+#ifndef _sqrtoperator_h_
+#define _sqrtoperator_h_
 
 #include <QtCore/QSharedPointer>
 #include <QtCore/QStack>
@@ -58,7 +58,7 @@ class SIMPLib_EXPORT SqrtOperator : public UnaryOperator
     virtual ~SqrtOperator();
 
     virtual void calculate(AbstractFilter* filter, DataArrayPath calculatedArrayPath, QStack<ICalculatorArray::Pointer> &executionStack);
-    
+
   protected:
     SqrtOperator();
 

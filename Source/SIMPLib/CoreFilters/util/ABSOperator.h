@@ -33,8 +33,8 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-#ifndef _ABSOperator_H_
-#define _ABSOperator_H_
+#ifndef _absoperator_h_
+#define _absoperator_h_
 
 #include <QtCore/QSharedPointer>
 #include <QtCore/QStack>

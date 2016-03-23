@@ -33,8 +33,8 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-#ifndef _UnaryOperator_H_
-#define _UnaryOperator_H_
+#ifndef _unaryoperator_h_
+#define _unaryoperator_h_
 
 #include "CalculatorOperator.h"
 

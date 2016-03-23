@@ -33,8 +33,8 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-#ifndef _RightParenthesisItem_H_
-#define _RightParenthesisItem_H_
+#ifndef _rightparenthesisitem_h_
+#define _rightparenthesisitem_h_
 
 #include "SIMPLib/SIMPLib.h"
 

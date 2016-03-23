@@ -33,8 +33,8 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-#ifndef _PowOperator_H_
-#define _PowOperator_H_
+#ifndef _powoperator_h_
+#define _powoperator_h_
 
 #include <QtCore/QSharedPointer>
 #include <QtCore/QStack>

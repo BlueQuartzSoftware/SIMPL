@@ -33,8 +33,8 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-#ifndef _CommaSeparator_H_
-#define _CommaSeparator_H_
+#ifndef _commaseparator_h_
+#define _commaseparator_h_
 
 #include "SIMPLib/SIMPLib.h"
 

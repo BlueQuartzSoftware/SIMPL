@@ -33,8 +33,8 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-#ifndef _ATanOperator_H_
-#define _ATanOperator_H_
+#ifndef _atanoperator_h_
+#define _atanoperator_h_
 
 #include <QtCore/QSharedPointer>
 #include <QtCore/QStack>

@@ -33,8 +33,8 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-#ifndef _CalculatorItem_H_
-#define _CalculatorItem_H_
+#ifndef _calculatoritem_h_
+#define _calculatoritem_h_
 
 #include <QtCore/QObject>
 

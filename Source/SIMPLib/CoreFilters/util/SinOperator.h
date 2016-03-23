@@ -33,8 +33,8 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-#ifndef _SinOperator_H_
-#define _SinOperator_H_
+#ifndef _sinoperator_h_
+#define _sinoperator_h_
 
 #include <QtCore/QSharedPointer>
 #include <QtCore/QStack>

@@ -33,8 +33,8 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-#ifndef _LnOperator_H_
-#define _LnOperator_H_
+#ifndef _lnoperator_h_
+#define _lnoperator_h_
 
 #include <QtCore/QSharedPointer>
 #include <QtCore/QStack>

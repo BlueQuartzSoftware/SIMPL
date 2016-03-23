@@ -33,8 +33,8 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-#ifndef _ICalculatorArray_H_
-#define _ICalculatorArray_H_
+#ifndef _icalculatorarray_h_
+#define _icalculatorarray_h_
 
 #include <QtCore/QObject>
 

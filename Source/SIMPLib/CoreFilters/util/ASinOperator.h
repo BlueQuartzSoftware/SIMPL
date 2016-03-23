@@ -33,8 +33,8 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-#ifndef _ASinOperator_H_
-#define _ASinOperator_H_
+#ifndef _asinoperator_h_
+#define _asinoperator_h_
 
 #include <QtCore/QSharedPointer>
 #include <QtCore/QStack>

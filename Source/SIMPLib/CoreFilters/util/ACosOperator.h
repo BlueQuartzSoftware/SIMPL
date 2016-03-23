@@ -33,8 +33,8 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-#ifndef _ACosOperator_H_
-#define _ACosOperator_H_
+#ifndef _acosoperator_h_
+#define _acosoperator_h_
 
 #include <QtCore/QSharedPointer>
 #include <QtCore/QStack>

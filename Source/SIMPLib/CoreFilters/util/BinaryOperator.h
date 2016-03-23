@@ -33,8 +33,8 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-#ifndef _BinaryOperator_H_
-#define _BinaryOperator_H_
+#ifndef _binaryoperator_h_
+#define _binaryoperator_h_
 
 #include "CalculatorOperator.h"
 

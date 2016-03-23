@@ -33,8 +33,8 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-#ifndef _NegativeOperator_H_
-#define _NegativeOperator_H_
+#ifndef _negativeoperator_h_
+#define _negativeoperator_h_
 
 #include <QtCore/QSharedPointer>
 #include <QtCore/QStack>

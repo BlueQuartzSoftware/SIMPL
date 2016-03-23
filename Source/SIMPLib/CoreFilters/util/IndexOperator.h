@@ -33,8 +33,8 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-#ifndef _IndexOperator_H_
-#define _IndexOperator_H_
+#ifndef _indexoperator_h_
+#define _indexoperator_h_
 
 #include <QtCore/QSharedPointer>
 #include <QtCore/QStack>

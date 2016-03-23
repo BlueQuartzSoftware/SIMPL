@@ -33,8 +33,8 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-#ifndef _FloorOperator_H_
-#define _FloorOperator_H_
+#ifndef _flooroperator_h_
+#define _flooroperator_h_
 
 #include <QtCore/QSharedPointer>
 #include <QtCore/QStack>

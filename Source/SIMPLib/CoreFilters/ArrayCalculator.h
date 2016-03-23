@@ -34,8 +34,8 @@
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
 
-#ifndef _ArrayCalculator_H_
-#define _ArrayCalculator_H_
+#ifndef _arraycalculator_h_
+#define _arraycalculator_h_
 
 #include <QtCore/QStack>
 #include <QtCore/QQueue>

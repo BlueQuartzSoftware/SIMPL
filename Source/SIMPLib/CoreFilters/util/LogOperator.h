@@ -33,8 +33,8 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-#ifndef _LogOperator_H_
-#define _LogOperator_H_
+#ifndef _logoperator_h_
+#define _logoperator_h_
 
 #include <QtCore/QSharedPointer>
 #include <QtCore/QStack>

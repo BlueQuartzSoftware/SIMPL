@@ -33,8 +33,8 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-#ifndef _SubtractionOperator_H_
-#define _SubtractionOperator_H_
+#ifndef _subtractionoperator_h_
+#define _subtractionoperator_h_
 
 #include <QtCore/QSharedPointer>
 #include <QtCore/QStack>

@@ -33,8 +33,8 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-#ifndef _ExpOperator_H_
-#define _ExpOperator_H_
+#ifndef _expoperator_h_
+#define _expoperator_h_
 
 #include <QtCore/QSharedPointer>
 #include <QtCore/QStack>

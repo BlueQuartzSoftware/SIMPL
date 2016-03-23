@@ -33,8 +33,8 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-#ifndef _CosOperator_H_
-#define _CosOperator_H_
+#ifndef _cosoperator_h_
+#define _cosoperator_h_
 
 #include <QtCore/QSharedPointer>
 #include <QtCore/QStack>
