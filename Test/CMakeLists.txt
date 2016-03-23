@@ -58,22 +58,22 @@ include_directories(${SIMPLTest_BINARY_DIR})
 # they will show up in IDEs
 set(TEST_NAMES
   ArrayCalculatorTest
-  #ConditionalSetValueTest
-  #CombineAttributeArraysTest
-  #CombineAttributeMatricesTest
-  #DataContainerTest
-  #ReplaceValueTest
-  #StringDataArrayTest
-  #StructArrayTest
-  #FilterPipelineTest
-  #DataArrayTest
-  #ErrorMessageTest
-  #DataContainerBundleTest
-  #FilterParametersRWTest
-  #CreateDataArrayTest
-  #RemoveComponentFromArrayTest
-  #QuaternionMathTest
-  #CreateFeatureArrayFromElementArrayTest
+  ConditionalSetValueTest
+  CombineAttributeArraysTest
+  CombineAttributeMatricesTest
+  DataContainerTest
+  ReplaceValueTest
+  StringDataArrayTest
+  StructArrayTest
+  FilterPipelineTest
+  DataArrayTest
+  ErrorMessageTest
+  DataContainerBundleTest
+  FilterParametersRWTest
+  CreateDataArrayTest
+  RemoveComponentFromArrayTest
+  QuaternionMathTest
+  CreateFeatureArrayFromElementArrayTest
 
   )
 
