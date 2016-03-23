@@ -63,7 +63,7 @@ class SIMPLib_EXPORT LogOperator : public UnaryOperator
     LogOperator();
 
   private:
-    double log(double base, double value);
+    double log_arbitrary_base(double base, double value);
 
     LogOperator(const LogOperator&); // Copy Constructor Not Implemented
     void operator=(const LogOperator&); // Operator '=' Not Implemented

@@ -63,14 +63,14 @@ LogOperator::~LogOperator()
 // -----------------------------------------------------------------------------
 void LogOperator::calculate(AbstractFilter* filter, DataArrayPath calculatedArrayPath, QStack<ICalculatorArray::Pointer> &executionStack)
 {
-  CREATE_NEW_ARRAY_TWO_ARGUMENTS(filter, calculatedArrayPath, executionStack, log)
+  CREATE_NEW_ARRAY_TWO_ARGUMENTS(filter, calculatedArrayPath, executionStack, log_arbitrary_base)
 }
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-double LogOperator::log(double base, double value)
+double LogOperator::log_arbitrary_base(double base, double value)
 {
-  return std::log(value) / std::log(base);
+  return log(value) / log(base);
 }
 
