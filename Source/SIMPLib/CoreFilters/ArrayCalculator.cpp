@@ -231,7 +231,6 @@ void ArrayCalculator::dataCheck()
   setErrorCondition(0);
   setWarningCondition(0);
 
-  getDataContainerArray()->createNonPrereqArrayFromPath<DoubleArrayType, AbstractFilter, double>(this, m_CalculatedArray, 0, QVector<size_t>(1, 1));
   if (getErrorCondition() < 0)
   {
     return;
@@ -256,6 +255,7 @@ void ArrayCalculator::dataCheck()
 
   bool hasArrayGreaterThan1 = false;
   bool hasValue = false;
+  QVector<size_t> compDims(1, 1);
   for (int i=0; i<parsedInfix.size(); i++)
   {
     CalculatorItem::Pointer currentItem = parsedInfix[i];
@@ -277,6 +277,11 @@ void ArrayCalculator::dataCheck()
       if (calcArray->getArray()->getNumberOfTuples() > 1)
       {
         hasArrayGreaterThan1 = true;
+      }
+
+      if (calcArray->getArray()->getNumberOfComponents() > 1)
+      {
+        compDims = calcArray->getArray()->getComponentDimensions();
       }
     }
   }
@@ -321,6 +326,8 @@ void ArrayCalculator::dataCheck()
 
   QVector<CalculatorItem::Pointer> rpn = toRPN(parsedInfix);
   if (rpn.isEmpty() == true) { return; }
+
+  getDataContainerArray()->createNonPrereqArrayFromPath<DoubleArrayType, AbstractFilter, double>(this, m_CalculatedArray, 0, compDims);
 }
 
 // -----------------------------------------------------------------------------
