@@ -159,7 +159,7 @@ ArrayCalculator::ArrayCalculator() :
   m_SymbolMap.insert("atan", ATanOperator::New());
   m_SymbolMap.insert("sqrt", SqrtOperator::New());
   m_SymbolMap.insert("root", RootOperator::New());
-  m_SymbolMap.insert("log10", Log10Operator::New());
+  m_SymbolMap.insert("log10", Log10Operator::New()); 
   m_SymbolMap.insert("log", LogOperator::New());
   m_SymbolMap.insert("exp", ExpOperator::New());
   m_SymbolMap.insert("ln", LnOperator::New());
@@ -424,7 +424,7 @@ QVector<CalculatorItem::Pointer> ArrayCalculator::parseInfixEquation(QString equ
   QVector<QString> itemList;
   // Match all array names that start with two alphabetical characters and have spaces.  Match all numbers, decimal or integer.
   // Match one letter array names.  Match all special character operators.
-  QRegularExpression regExp("(\")?((\\[)?\\d+(\\.\\d+)?(\\])?|(\\[)?\\.\\d+(\\])?|\\w{1,1}((\\w|\\s|\\d)*(\\w|\\d){1,1})?|\\S)(\")?");
+  QRegularExpression regExp("(\"((\\[)?\\d+(\\.\\d+)?(\\])?|(\\[)?\\.\\d+(\\])?|\\w{1,1}((\\w|\\s|\\d)*(\\w|\\d){1,1})?|\\S)\")|(((\\[)?\\d+(\\.\\d+)?(\\])?|(\\[)?\\.\\d+(\\])?|\\w{1,1}((\\w|\\s|\\d)*(\\w|\\d){1,1})?|\\S))");
   QRegularExpressionMatchIterator iter = regExp.globalMatch(m_InfixEquation);
   while (iter.hasNext())
   {
