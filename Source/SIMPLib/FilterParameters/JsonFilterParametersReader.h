@@ -57,9 +57,10 @@ class SIMPLib_EXPORT JsonFilterParametersReader : public AbstractFilterParameter
     SIMPL_STATIC_NEW_MACRO(JsonFilterParametersReader)
     SIMPL_TYPE_MACRO_SUPER(JsonFilterParametersReader, AbstractFilterParametersReader)
 
-    SIMPL_INSTANCE_PROPERTY(QString, FileName)
-
     virtual ~JsonFilterParametersReader();
+
+    SIMPL_INSTANCE_PROPERTY(QString, FileName)
+    SIMPL_INSTANCE_PROPERTY(int, MaxFilterIndex)
 
     /**
     * @brief ReadPipelineFromFile Reads the Json formatted file and returns a FilterPipeline object
@@ -121,10 +122,26 @@ class SIMPLib_EXPORT JsonFilterParametersReader : public AbstractFilterParameter
     virtual int openFilterGroup(AbstractFilter* unused, int index);
 
     /**
+     * @brief openFilterGroup
+     * @param groupName
+     * @return
+     */
+    int openFilterGroup(const QString &groupName);
+
+    /**
      * @brief closeFilterGroup
      * @return
      */
     virtual int closeFilterGroup();
+
+    /**
+     * @brief generateIndexString
+     * @param index
+     * @param maxIndex
+     * @return
+     */
+    QString generateIndexString(int index, int maxIndex);
+
 
     int openGroup(QString key);
     int closeGroup();

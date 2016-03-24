@@ -51,7 +51,8 @@
 //
 // -----------------------------------------------------------------------------
 JsonFilterParametersReader::JsonFilterParametersReader() :
-  AbstractFilterParametersReader()
+  AbstractFilterParametersReader(),
+  m_MaxFilterIndex(-1)
 {
 
 }
@@ -111,6 +112,30 @@ FilterPipeline::Pointer JsonFilterParametersReader::ReadPipelineFromString(QStri
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
+QString JsonFilterParametersReader::generateIndexString(int index, int maxIndex)
+{
+  QString numStr = QString::number(index);
+
+  if(maxIndex > 10)
+  {
+    int mag = 0;
+    int max = maxIndex;
+    while(max > 0) {
+      mag++;
+      max = max / 10;
+    }
+    numStr = ""; // Clear the string
+    QTextStream ss(&numStr); // Create a QTextStream to set up the padding
+    ss.setFieldWidth(mag);
+    ss.setPadChar('0');
+    ss << index;
+  }
+  return numStr;
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
 FilterPipeline::Pointer JsonFilterParametersReader::ReadPipeline(JsonFilterParametersReader::Pointer reader, IObserver* obs)
 {
   FilterManager* filtManager = FilterManager::Instance();
@@ -118,21 +143,30 @@ FilterPipeline::Pointer JsonFilterParametersReader::ReadPipeline(JsonFilterParam
   filtManager->addFilterFactory("EmptyFilter", emptyFilterFactory);
 
   reader->openGroup(SIMPL::Settings::PipelineBuilderGroup);
-  int filterCount = reader->readValue(SIMPL::Settings::NumFilters, 0);
+  int filterCount = reader->readValue(SIMPL::Settings::NumFilters, -1);
   reader->closeGroup();
+  reader->setMaxFilterIndex(filterCount);
 
   FilterPipeline::Pointer pipeline = FilterPipeline::New();
 
   for (int i = 0; i < filterCount; ++i)
   {
-    // Open the group to get the name of the filter then close again.
     QString filterName;
-    int err = reader->openFilterGroup(NULL, i);
+    // Open the group to get the name of the filter then close again.
+    QString groupName = reader->generateIndexString(i, filterCount);
+    //First try generating a string with padding digits.
+    int err = reader->openFilterGroup(groupName);
+    if(err < 0)
+    {
+      // If that fails then try without the padding digits
+      err = reader->openFilterGroup(NULL, i);
+    }
     if (err == 0)
     {
       filterName = reader->readString(SIMPL::Settings::FilterName, "");
+      reader->closeFilterGroup();
     }
-    reader->closeFilterGroup();
+
     //qDebug() << "Group: " << gName << " FilterName: " << filterName;
     if (filterName.isEmpty() == false)
     {
@@ -289,6 +323,7 @@ void JsonFilterParametersReader::closeFile()
 {
   m_Root = QJsonObject();
   m_CurrentFilterIndex = QJsonObject();
+  m_MaxFilterIndex = -1;
 }
 
 // -----------------------------------------------------------------------------
@@ -302,10 +337,31 @@ int JsonFilterParametersReader::openFilterGroup(AbstractFilter* unused, int inde
   m_CurrentFilterIndex = m_Root[numStr].toObject();
   if(m_CurrentFilterIndex.isEmpty())
   {
+    numStr = generateIndexString(index, m_MaxFilterIndex);
+    m_CurrentFilterIndex = m_Root[numStr].toObject();
+    if(m_CurrentFilterIndex.isEmpty())
+    {
+      err = -1;
+    }
+  }
+  return err;
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+int JsonFilterParametersReader::openFilterGroup(const QString &numStr)
+{
+  Q_ASSERT(m_Root.isEmpty() == false);
+  int err = 0;
+  m_CurrentFilterIndex = m_Root[numStr].toObject();
+  if(m_CurrentFilterIndex.isEmpty())
+  {
     err = -1;
   }
   return err;
 }
+
 
 // -----------------------------------------------------------------------------
 //
