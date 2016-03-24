@@ -114,11 +114,21 @@ bool UnaryOperator::checkValidity(QVector<CalculatorItem::Pointer> infixVector, 
         /* We found another left parenthesis, but we don't care what's inside this set of parentheses
            (other operators' checkValidity functions will take care of these values), so just iterate
            until we find the matching closing parenthesis for this opening parenthesis */
-        while (index < infixVector.size() && NULL == std::dynamic_pointer_cast<RightParenthesisItem>(infixVector[index]))
+        int extraLeftPCount = 0;
+        index++;
+        while (index < infixVector.size() && (NULL == std::dynamic_pointer_cast<RightParenthesisItem>(infixVector[index]) || extraLeftPCount > 0))
         {
           if (NULL != std::dynamic_pointer_cast<ICalculatorArray>(infixVector[index]))
           {
             hasArray = true;
+          }
+          else if (NULL != std::dynamic_pointer_cast<LeftParenthesisItem>(infixVector[index]))
+          {
+            extraLeftPCount++;
+          }
+          else if (NULL != std::dynamic_pointer_cast<RightParenthesisItem>(infixVector[index]))
+          {
+            extraLeftPCount--;
           }
 
           index++;
