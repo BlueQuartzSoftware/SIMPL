@@ -124,7 +124,7 @@ int main (int argc, char*  argv[])
   parser.addVersionOption();
 
   // A boolean option with a single name (-p)
-  QCommandLineOption pipelineFileArg(QStringList() << "p" << "pipeline", "Pipeline File as a JSON file.", "");
+  QCommandLineOption pipelineFileArg(QStringList() << "p" << "pipeline", "Pipeline File as a JSON file.", "file");
   parser.addOption(pipelineFileArg);
 
   // Process the actual command line arguments given by the user
