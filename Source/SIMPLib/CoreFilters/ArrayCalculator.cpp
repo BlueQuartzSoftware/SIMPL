@@ -159,7 +159,7 @@ ArrayCalculator::ArrayCalculator() :
   m_SymbolMap.insert("atan", ATanOperator::New());
   m_SymbolMap.insert("sqrt", SqrtOperator::New());
   m_SymbolMap.insert("root", RootOperator::New());
-  m_SymbolMap.insert("log10", Log10Operator::New()); 
+  m_SymbolMap.insert("log10", Log10Operator::New());
   m_SymbolMap.insert("log", LogOperator::New());
   m_SymbolMap.insert("exp", ExpOperator::New());
   m_SymbolMap.insert("ln", LnOperator::New());
@@ -366,7 +366,7 @@ void ArrayCalculator::execute()
   int totalItems = rpn.size();
   for (int rpnCount = 0; rpnCount < totalItems; rpnCount++)
   {
-    notifyStatusMessage(getHumanLabel(), QString::number(rpnCount + 1) + "/" + QString::number(totalItems) + ": " + QString::number(0) + "%");
+    notifyStatusMessage(getMessagePrefix(), getHumanLabel(), "Computing Operator " + QString::number(rpnCount + 1) + "/" + QString::number(totalItems));
 
     CalculatorItem::Pointer rpnItem = rpn[rpnCount];
     ICalculatorArray::Pointer calcArray = std::dynamic_pointer_cast<ICalculatorArray>(rpnItem);
