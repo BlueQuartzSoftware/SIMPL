@@ -8,7 +8,7 @@ Core (Generation)
 This **Filter** performs calculations on **Attribute Arrays** using the mathematical expression entered by the user, referred to as the *infix expression*. Calculations follow standard mathematical order of operations rules. Parentheses may be used to influence priority. The output of the entered equation is stored as a new **Attribute Array** of type double in an **Attribute Matrix** chosen by the user.
  
 ## Usage & Syntax  ##
-The user may enter any valid mathematical expression that uses numbers, operators and/or available **Attribute Arrays**.  This expression may be typed into the **Filter** or entered using available calculator interface. The **Filter** automatically determines how many tuples and component dimensions the output array requires.  Should the entered expression use arrays, computations performed by the **Filter** are performed per tuple, i.e. each tuple has the same expression performed. Therefore, any **Attribute Arrays** used in the entered expression must have the same number of tuples. To help prevent most cases of tuple incompatibilities, the user must select an **Attribute Matrix** to serve as the source for arrays to be used in the expression. Additionally, the output array will have the same number of tuples as the arrays used in the infix expression, and must be placed in an **Attribute Matrix** that has the same number of tuples as the source **Attribute Matrix**.
+The user may enter any valid mathematical expression that uses numbers, operators and/or available **Attribute Arrays**.  This expression may be typed into the **Filter** or entered using the available calculator interface. The **Filter** automatically determines how many tuples and component dimensions the output array requires.  Should the entered expression use arrays, computations performed by the **Filter** are performed per tuple, i.e. each tuple has the same expression performed. Therefore, any **Attribute Arrays** used in the entered expression must have the same number of tuples. To help prevent most cases of tuple incompatibilities, the user must select an **Attribute Matrix** to serve as the source for arrays to be used in the expression. Additionally, the output array will have the same number of tuples as the arrays used in the infix expression, and must be placed in an **Attribute Matrix** that has the same number of tuples as the source **Attribute Matrix**.
 
 All items in the entered infix expression, including values within arrays, will be cast to doubles for computation, and the resulting output will be stored as doubles. If the output array needs to be a different type for use as input to another **Filter**, consider using the [Convert Attribute Data Type](@ref convertdata) **Filter**.
 
@@ -21,10 +21,10 @@ There are several mathematical operators available for usage in an infix express
 #### Binary Operators ####
 | Symbol | Name | Operation |
 |-----------|----------|---------------|
-| **\+** | addition | Adds two items |
-| **\-** | subtraction | Subtracts two items |
-| **\*** | multiplication | Multiplies two items |
-| **/** | division | Divides two items |
+| `+` | addition | Adds two items |
+| `-` | subtraction | Subtracts two items |
+| `*` | multiplication | Multiplies two items |
+| `/` | division | Divides two items |
 | **x^y** | exponentiation | Raises the base *x* to the *y* power |
 
 #### Unary Operators ####
@@ -47,7 +47,7 @@ There are several mathematical operators available for usage in an infix express
 | **root(r, ind)** | *ind<sup>th</sup>* root | 2 | Computes the *ind<sup>th</sup>* root of the radicand*r* |
 
 #### Trigonometric Operators and Degrees/Radians ####
-The direct trigonometric operators (**sin**, **cos** and **tan**) can operate one either radians or degrees, which can be selected by the user from the **Filter** interface.  Similarly, the inverse trigonometric operators (**asin**, **acos** and **atan**) will return either radians or degrees depending on the selection in the **Filter** interface. Note that by default, DREAM.3D **Filters** generally assume angle values are in radians. The [Convert Angles to Degrees or Radians](@ref changeanglerepresentation) can be used to convert arrays from radians to degrees and vice versa.
+The direct trigonometric operators (**sin**, **cos** and **tan**) can operate on either radians or degrees, which can be selected by the user from the **Filter** interface.  Similarly, the inverse trigonometric operators (**asin**, **acos** and **atan**) will return either radians or degrees depending on the selection in the **Filter** interface. Note that by default, DREAM.3D **Filters** generally assume angle values are in radians. The [Convert Angles to Degrees or Radians](@ref changeanglerepresentation) can be used to convert arrays from radians to degrees and vice versa.
 
 #### Undefined Operations and Operators Out-Of-Range ####
 This **Filter** allows for undefined operations to occur. The return values for these operations will be the same return value obtained from the utilized C/C++ function. For example, the divide by zero operation in C/C++ is undefined behavior, so the result is not guaranteed (however, most platforms will follow the IEEE floating point standard and a value of +infinity will be returned). Similarly, a domain error may occur if an operator function is used with arguments out of range. For example, entering `arcsin(-2)`, `ln(-7.34)` or `sqrt(-14.89)` results in a domain error. The return value here is again not guaranteed, but would most likely be NaN. 
@@ -57,10 +57,10 @@ Any **Attribute Array** available in the selected **Attribute Matrix** is eligib
 	
 	[2, 3, 5, 7, 11]
 	
- If the user enters the infix expression `Foo + 3`, the result of the **Filter** is a new array with exactly five tuples that contains the following values:
- 
+If the user enters the infix expression `Foo + 3`, the result of the **Filter** is a new array with exactly five tuples that contains the values:
+
 	[5, 6, 8, 10, 14]
-	
+
 Now consider another single component array named *Bar* that has the value 4.25 at all tuples.  If the infix expression `(Foo + Bar) * 4` is entered, then the output values are as follows:
 
 	[25, 29, 37, 45, 61]
@@ -99,27 +99,28 @@ It is possible to force the **Filter** to treat a term in the infix expression a
 In most cases, attempting to write equations like these without putting the double quotes around the desired array name will cause an error due to ambiguity.
 
 ## Examples ##
-`Confidence Index + 3 / ln(4*Fit)`
+
+	Confidence Index + 3 / ln(4*Fit)
 
 This equation multiplies every tuple in the *Fit* array by *4* and then finds the *natural logarithm* of those results.  Then, it divides *3* by those values and *adds* the results of that to every element in the *Confidence Index* array.
 
-`Array1[0] - Array2[1]`
+	Array1[0] - Array2[1]
 
 This equation subtracts the second component in *Array2* from the first component in *Array1* for each tuple. The resulting array will have the same number of tuples as *Array1* and *Array2*, but only one component.
 
-`Array1 + Array2`
+	Array1 + Array2
 
 This equation adds every element in *Array2* with every element in *Array1*.  The resulting array will have the same number of tuples and components as *Array1* and *Array2*.
 
-`6 / 3`
+	6 / 3
 
 This equation divides *6* by *3* and stores the result in an array with exactly one component and one tuple.
 
-`root(8, 3)`
+	root(8, 3)
 
 This equation takes the cube root of *8* and stores the result in an array with exactly one component and one tuple.
 
-`3 ^ Array1`
+	3 ^ Array1
 
 This equation raises *3* to the power of the value stored in every component of every tuple in *Array1*.  The resulting array has the same tuple and component size of *Array1*.
 
