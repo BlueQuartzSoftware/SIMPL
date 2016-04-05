@@ -140,7 +140,7 @@ set(PROJECT_SRCS
 )
 
 add_library(${PROJECT_NAME} ${LIB_TYPE} ${PROJECT_SRCS})
-target_link_libraries(${PROJECT_NAME} hdf5 Qt5::Core )
+target_link_libraries(${PROJECT_NAME} ${HDF5_C_TARGET_NAME} Qt5::Core )
 
 
 LibraryProperties( ${PROJECT_NAME}  ${EXE_DEBUG_EXTENSION} )
