@@ -144,7 +144,7 @@ ArrayCalculator::ArrayCalculator() :
 {
   setupFilterParameters();
 
-  // Insert all items into the symbol map to use during equation parsing
+  // Insert all items into the symbol map to use during expression parsing
   m_SymbolMap.insert("(", LeftParenthesisItem::New());
   m_SymbolMap.insert(")", RightParenthesisItem::New());
   m_SymbolMap.insert(",", CommaSeparator::New());
@@ -188,7 +188,7 @@ void ArrayCalculator::setupFilterParameters()
     parameters.push_back(AttributeMatrixSelectionFilterParameter::New("Cell Attribute Matrix", "SelectedAttributeMatrix", getSelectedAttributeMatrix(), FilterParameter::Parameter, req));
   }
 
-  parameters.push_back(CalculatorFilterParameter::New("Infix Equation", "InfixEquation", getInfixEquation(), FilterParameter::Parameter));
+  parameters.push_back(CalculatorFilterParameter::New("Infix Expression", "InfixEquation", getInfixEquation(), FilterParameter::Parameter));
 
   {
     DataArrayCreationFilterParameter::RequirementType req = DataArrayCreationFilterParameter::CreateRequirement(SIMPL::Defaults::AnyAttributeMatrix, SIMPL::Defaults::AnyGeometry);
@@ -238,7 +238,7 @@ void ArrayCalculator::dataCheck()
 
   if (m_InfixEquation.isEmpty() == true || m_InfixEquation.split(" ", QString::SkipEmptyParts).size() <= 0)
   {
-    QString ss = QObject::tr("The infix equation is empty");
+    QString ss = QObject::tr("The infix expression is empty");
     setErrorCondition(EMPTY_EQUATION);
     notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
     return;
@@ -249,7 +249,9 @@ void ArrayCalculator::dataCheck()
 
   bool hasArrayGreaterThan1 = false;
   bool hasValue = false;
+  bool checkCompDims = true;
   QVector<size_t> compDims(1, 1);
+  QVector<size_t> tmpCompDims;
   for (int32_t i = 0; i < parsedInfix.size(); i++)
   {
     CalculatorItem::Pointer currentItem = parsedInfix[i];
@@ -258,7 +260,7 @@ void ArrayCalculator::dataCheck()
       bool result = std::dynamic_pointer_cast<CalculatorOperator>(currentItem)->checkValidity(parsedInfix, i);
       if (result == false)
       {
-        QString ss = QObject::tr("The chosen infix equation is not a valid equation");
+        QString ss = QObject::tr("The chosen infix expression is not a valid expression");
         setErrorCondition(INVALID_EQUATION);
         notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
         return;
@@ -273,16 +275,32 @@ void ArrayCalculator::dataCheck()
         hasArrayGreaterThan1 = true;
       }
 
-      if (calcArray->getArray()->getNumberOfComponents() > 1)
+      if (checkCompDims)
+      {
+        tmpCompDims = calcArray->getArray()->getComponentDimensions();
+        checkCompDims = false;
+      }
+      else
       {
         compDims = calcArray->getArray()->getComponentDimensions();
+        if (tmpCompDims != compDims)
+        {
+          QString ss = QObject::tr("All Attribute Arrays in the infix expression must have the same component dimensions");
+          setErrorCondition(INCONSISTENT_COMP_DIMS);
+          notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
+          return;
+        }
       }
     }
   }
 
+  // Ensure the output component dims are correct if we happened to only have
+  // one array in the infix expression
+  compDims = tmpCompDims;
+
   if (hasValue == false)
   {
-    QString ss = QObject::tr("The chosen infix equation is not a valid equation");
+    QString ss = QObject::tr("The chosen infix expression is not a valid expression");
     setErrorCondition(INVALID_EQUATION);
     notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
     return;
@@ -292,7 +310,7 @@ void ArrayCalculator::dataCheck()
 
   if (hasArrayGreaterThan1 == false)
   {
-    QString ss = QObject::tr("The result of the chosen equation will be a numeric value, not an array\n"
+    QString ss = QObject::tr("The result of the chosen expression will be a numeric value or contain one tuple\n"
                              "This numeric value will be stored in an array with the number of tuples equal to 1");
     setWarningCondition(NUMERIC_VALUE_WARNING);
     notifyWarningMessage(getHumanLabel(), ss, getWarningCondition());
@@ -302,7 +320,7 @@ void ArrayCalculator::dataCheck()
 
     if (calculatedAM->getNumTuples() != 1)
     {
-      QString ss = QObject::tr("The tuple count of the calculated Attribute Matrix is not equal to 1");
+      QString ss = QObject::tr("The tuple count of the output Attribute Matrix is not equal to 1");
       setErrorCondition(INCORRECT_TUPLE_COUNT);
       notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
       return;
@@ -315,7 +333,7 @@ void ArrayCalculator::dataCheck()
     if (getErrorCondition() < 0) { return; }
     if (NULL != selectedAM && calculatedAM->getNumTuples() != selectedAM->getNumTuples())
     {
-      QString ss = QObject::tr("The tuple count of the calculated Attribute Matrix is not equal to the tuple count of the selected Attribute Matrix");
+      QString ss = QObject::tr("The tuple count of the output Attribute Matrix is not equal to the tuple count of the selected Attribute Matrix");
       setErrorCondition(INCORRECT_TUPLE_COUNT);
       notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
       return;
@@ -354,13 +372,13 @@ void ArrayCalculator::execute()
   DataArrayPath calculatedAMPath(m_CalculatedArray.getDataContainerName(), m_CalculatedArray.getAttributeMatrixName(), "");
   AttributeMatrix::Pointer calculatedAM = getDataContainerArray()->getAttributeMatrix(calculatedAMPath);
 
-  // Parse the infix equation from the user interface
+  // Parse the infix expression from the user interface
   QVector<CalculatorItem::Pointer> parsedInfix = parseInfixEquation(m_InfixEquation);
 
-  // Convert the parsed infix equation into RPN
+  // Convert the parsed infix expression into RPN
   QVector<CalculatorItem::Pointer> rpn = toRPN(parsedInfix);
 
-  // Execute the RPN equation
+  // Execute the RPN expression
   int totalItems = rpn.size();
   for (int rpnCount = 0; rpnCount < totalItems; rpnCount++)
   {
@@ -406,7 +424,7 @@ void ArrayCalculator::execute()
   }
   else
   {
-    QString ss = QObject::tr("Unexpected output item from chosen infix equation; the output item must be an array\n"
+    QString ss = QObject::tr("Unexpected output item from chosen infix expression; the output item must be an array\n"
                              "Please contact the DREAM.3D developers for more information");
     setErrorCondition(UNEXPECTED_OUTPUT);
     notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
@@ -419,7 +437,7 @@ void ArrayCalculator::execute()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-QVector<CalculatorItem::Pointer> ArrayCalculator::parseInfixEquation(QString equation)
+QVector<CalculatorItem::Pointer> ArrayCalculator::parseInfixEquation(QString expression)
 {
   int err = 0;
 
@@ -456,7 +474,7 @@ QVector<CalculatorItem::Pointer> ArrayCalculator::parseInfixEquation(QString equ
       itemPtr = CalculatorArray<double>::New(ptr, ICalculatorArray::Number, !getInPreflight());
       parsedInfix.push_back(itemPtr);
 
-      QString ss = QObject::tr("Item '%1' in the infix equation is the name of an array in the selected Attribute Matrix, but it is currently being used as a number").arg(strItem);
+      QString ss = QObject::tr("Item '%1' in the infix expression is the name of an array in the selected Attribute Matrix, but it is currently being used as a number").arg(strItem);
       checkForAmbiguousArrayName(strItem, ss);
     }
     else if (strItem == "-")
@@ -484,7 +502,7 @@ QVector<CalculatorItem::Pointer> ArrayCalculator::parseInfixEquation(QString equ
         parsedInfix.push_back(itemPtr);
       }
 
-      QString ss = QObject::tr("Item '%1' in the infix equation is the name of an array in the selected attribute matrix, but it is currently being used as a mathematical operator").arg(strItem);
+      QString ss = QObject::tr("Item '%1' in the infix expression is the name of an array in the selected attribute matrix, but it is currently being used as a mathematical operator").arg(strItem);
       checkForAmbiguousArrayName(strItem, ss);
     }
     else if (strItem.contains("[") && strItem.contains("]"))
@@ -497,7 +515,7 @@ QVector<CalculatorItem::Pointer> ArrayCalculator::parseInfixEquation(QString equ
       int index = strItem.toInt(&ok);
       if (ok == false)
       {
-        QString ss = QObject::tr("The chosen infix equation is not a valid equation");
+        QString ss = QObject::tr("The chosen infix expression is not a valid expression");
         setErrorCondition(INVALID_EQUATION);
         notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
         return QVector<CalculatorItem::Pointer>();
@@ -515,7 +533,7 @@ QVector<CalculatorItem::Pointer> ArrayCalculator::parseInfixEquation(QString equ
       itemPtr = IndexOperator::New(index);
       parsedInfix.push_back(itemPtr);
 
-      QString ss = QObject::tr("Item '%1' in the infix equation is the name of an array in the selected Attribute Matrix, but it is currently being used as an indexing operator").arg(strItem);
+      QString ss = QObject::tr("Item '%1' in the infix expression is the name of an array in the selected Attribute Matrix, but it is currently being used as an indexing operator").arg(strItem);
       checkForAmbiguousArrayName(strItem, ss);
     }
     else
@@ -524,7 +542,7 @@ QVector<CalculatorItem::Pointer> ArrayCalculator::parseInfixEquation(QString equ
 
       if (NULL != std::dynamic_pointer_cast<CommaSeparator>(itemPtr))
       {
-        QString ss = QObject::tr("Item '%1' in the infix equation is the name of an array in the selected Attribute Matrix, but it is currently being detected as a comma in a mathematical operator").arg(strItem);
+        QString ss = QObject::tr("Item '%1' in the infix expression is the name of an array in the selected Attribute Matrix, but it is currently being detected as a comma in a mathematical operator").arg(strItem);
         checkForAmbiguousArrayName(strItem, ss);
 
         // This is a comma, so make sure that this comma has a valid unary operator before it
@@ -543,7 +561,7 @@ QVector<CalculatorItem::Pointer> ArrayCalculator::parseInfixEquation(QString equ
 
           if (foundUnaryOperator == false)
           {
-            QString ss = QObject::tr("The chosen infix equation is not a valid equation");
+            QString ss = QObject::tr("The chosen infix expression is not a valid expression");
             setErrorCondition(INVALID_EQUATION);
             notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
             return QVector<CalculatorItem::Pointer>();
@@ -573,7 +591,7 @@ QVector<CalculatorItem::Pointer> ArrayCalculator::parseInfixEquation(QString equ
       }
       else if (NULL != itemPtr)
       {
-        QString ss = QObject::tr("Item '%1' in the infix equation is the name of an array in the selected Attribute Matrix, but it is currently being used as a mathematical operator").arg(strItem);
+        QString ss = QObject::tr("Item '%1' in the infix expression is the name of an array in the selected Attribute Matrix, but it is currently being used as a mathematical operator").arg(strItem);
         checkForAmbiguousArrayName(strItem, ss);
 
         parsedInfix.push_back(itemPtr);
@@ -597,7 +615,7 @@ QVector<CalculatorItem::Pointer> ArrayCalculator::parseInfixEquation(QString equ
         }
         else if (dataArray->getNumberOfTuples() != firstArray_NumTuples)
         {
-          QString ss = QObject::tr("Arrays '%1' and '%2' in the infix equation have an inconsistent number of tuples").arg(firstArray_Name).arg(dataArray->getName());
+          QString ss = QObject::tr("Arrays '%1' and '%2' in the infix expression have an inconsistent number of tuples").arg(firstArray_Name).arg(dataArray->getName());
           setErrorCondition(INCONSISTENT_TUPLES);
           notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
           return QVector<CalculatorItem::Pointer>();
@@ -608,7 +626,7 @@ QVector<CalculatorItem::Pointer> ArrayCalculator::parseInfixEquation(QString equ
       }
       else
       {
-        QString ss = QObject::tr("An unrecognized item '%1' was found in the chosen infix equation").arg(strItem);
+        QString ss = QObject::tr("An unrecognized item '%1' was found in the chosen infix expression").arg(strItem);
         setErrorCondition(UNRECOGNIZED_ITEM);
         notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
         return QVector<CalculatorItem::Pointer>();
@@ -616,7 +634,7 @@ QVector<CalculatorItem::Pointer> ArrayCalculator::parseInfixEquation(QString equ
     }
   }
 
-  // Return the parsed infix equation as a vector of CalculatorItems
+  // Return the parsed infix expression as a vector of CalculatorItems
   return parsedInfix;
 }
 
@@ -630,7 +648,7 @@ QVector<CalculatorItem::Pointer> ArrayCalculator::toRPN(QVector<CalculatorItem::
 
   bool* oneComponent = NULL;
 
-  // Iterate through the infix equation items
+  // Iterate through the infix expression items
   for (int i = 0; i < infixEquation.size(); i++)
   {
     CalculatorItem::Pointer calcItem = infixEquation[i];
@@ -638,7 +656,7 @@ QVector<CalculatorItem::Pointer> ArrayCalculator::toRPN(QVector<CalculatorItem::
     {
       ICalculatorArray::Pointer arrayItem = std::dynamic_pointer_cast<ICalculatorArray>(calcItem);
 
-      // This is a number or array, so push it onto the rpn equation output
+      // This is a number or array, so push it onto the rpn expression output
       rpnEquation.push_back(arrayItem);
 
       if (arrayItem->getType() == ICalculatorArray::Array)
@@ -668,7 +686,7 @@ QVector<CalculatorItem::Pointer> ArrayCalculator::toRPN(QVector<CalculatorItem::
     }
     else if (NULL != std::dynamic_pointer_cast<RightParenthesisItem>(calcItem))
     {
-      // This is a right parenthesis, so push operators from the item stack onto the rpn equation output until we get to the left parenthesis
+      // This is a right parenthesis, so push operators from the item stack onto the rpn expression output until we get to the left parenthesis
       while (itemStack.isEmpty() == false && NULL == std::dynamic_pointer_cast<LeftParenthesisItem>(itemStack.top()))
       {
         rpnEquation.push_back(itemStack.pop());
@@ -676,7 +694,7 @@ QVector<CalculatorItem::Pointer> ArrayCalculator::toRPN(QVector<CalculatorItem::
 
       if (itemStack.isEmpty() == true)
       {
-        QString ss = QObject::tr("One or more parentheses are mismatched in the chosen infix equation '%1'").arg(m_InfixEquation);
+        QString ss = QObject::tr("One or more parentheses are mismatched in the chosen infix expression '%1'").arg(m_InfixEquation);
         setErrorCondition(MISMATCHED_PARENTHESES);
         notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
         return QVector<CalculatorItem::Pointer>();
@@ -698,7 +716,7 @@ QVector<CalculatorItem::Pointer> ArrayCalculator::toRPN(QVector<CalculatorItem::
       if (itemStack.isEmpty() == false)
       {
         /* If the operator's precedence is lower than the precedence of the operator on top of the item stack, push the operator at the top
-           of the item stack onto the rpn equation output.  Keeping doing this until there isn't another operator at the top of the item
+           of the item stack onto the rpn expression output.  Keeping doing this until there isn't another operator at the top of the item
            stack or the operator has a higher precedence than the one currently on top of the stack */
         CalculatorOperator::Pointer topOperator = std::dynamic_pointer_cast<CalculatorOperator>(itemStack.top());
         while (NULL != topOperator && incomingOperator->hasHigherPrecedence(topOperator) == false)
@@ -715,19 +733,19 @@ QVector<CalculatorItem::Pointer> ArrayCalculator::toRPN(QVector<CalculatorItem::
         }
       }
 
-      // Push the operator onto the rpn equation output.
+      // Push the operator onto the rpn expression output.
       itemStack.push_back(calcItem);
     }
   }
 
-  /* After we are done iterating through the infix equation items, keep transferring items from the item stack to the
-     rpn equation output until the stack is empty. */
+  /* After we are done iterating through the infix expression items, keep transferring items from the item stack to the
+     rpn expression output until the stack is empty. */
   while (itemStack.isEmpty() == false)
   {
     CalculatorItem::Pointer item = itemStack.pop();
     if (NULL != std::dynamic_pointer_cast<LeftParenthesisItem>(item))
     {
-      QString ss = QObject::tr("One or more parentheses are mismatched in the chosen infix equation '%1'").arg(m_InfixEquation);
+      QString ss = QObject::tr("One or more parentheses are mismatched in the chosen infix expression '%1'").arg(m_InfixEquation);
       setErrorCondition(MISMATCHED_PARENTHESES);
       notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
       return QVector<CalculatorItem::Pointer>();
