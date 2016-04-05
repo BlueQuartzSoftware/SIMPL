@@ -826,12 +826,12 @@ const QString ArrayCalculator::getGroupName()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString ArrayCalculator::getHumanLabel()
-{ return "Array Calculator"; }
+const QString ArrayCalculator::getSubGroupName()
+{ return SIMPL::FilterSubGroups::GenerationFilters; }
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString ArrayCalculator::getSubGroupName()
-{ return SIMPL::FilterSubGroups::GenerationFilters; }
+const QString ArrayCalculator::getHumanLabel()
+{ return "Attribute Array Calculator"; }
 
