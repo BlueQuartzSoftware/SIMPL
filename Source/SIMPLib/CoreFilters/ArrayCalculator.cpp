@@ -292,8 +292,8 @@ void ArrayCalculator::dataCheck()
 
   if (hasArrayGreaterThan1 == false)
   {
-    QString ss = QObject::tr("The result of the chosen equation will be a numeric value, not an array"
-                             "\nThis numeric value will be stored in an array with the number of tuples equal to 1");
+    QString ss = QObject::tr("The result of the chosen equation will be a numeric value, not an array\n"
+                             "This numeric value will be stored in an array with the number of tuples equal to 1");
     setWarningCondition(NUMERIC_VALUE_WARNING);
     notifyWarningMessage(getHumanLabel(), ss, getWarningCondition());
 
