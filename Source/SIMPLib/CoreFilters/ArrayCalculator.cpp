@@ -251,7 +251,7 @@ void ArrayCalculator::dataCheck()
   bool hasValue = false;
   bool checkCompDims = true;
   QVector<size_t> compDims(1, 1);
-  QVector<size_t> tmpCompDims;
+  QVector<size_t> tmpCompDims(1, 1);
   for (int32_t i = 0; i < parsedInfix.size(); i++)
   {
     CalculatorItem::Pointer currentItem = parsedInfix[i];
@@ -275,20 +275,25 @@ void ArrayCalculator::dataCheck()
         hasArrayGreaterThan1 = true;
       }
 
-      if (checkCompDims)
+      // If the calculator array items are truly arrays, verify that they
+      // all have the same component dimensions
+      if (calcArray->getType() == ICalculatorArray::Array)
       {
-        tmpCompDims = calcArray->getArray()->getComponentDimensions();
-        checkCompDims = false;
-      }
-      else
-      {
-        compDims = calcArray->getArray()->getComponentDimensions();
-        if (tmpCompDims != compDims)
+        if (checkCompDims)
         {
-          QString ss = QObject::tr("All Attribute Arrays in the infix expression must have the same component dimensions");
-          setErrorCondition(INCONSISTENT_COMP_DIMS);
-          notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
-          return;
+          tmpCompDims = calcArray->getArray()->getComponentDimensions();
+          checkCompDims = false;
+        }
+        else
+        {
+          compDims = calcArray->getArray()->getComponentDimensions();
+          if (tmpCompDims != compDims)
+          {
+            QString ss = QObject::tr("All Attribute Arrays in the infix expression must have the same component dimensions");
+            setErrorCondition(INCONSISTENT_COMP_DIMS);
+            notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
+            return;
+          }
         }
       }
     }
