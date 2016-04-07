@@ -60,8 +60,8 @@ class CombineAttributeArrays : public AbstractFilter
     SIMPL_FILTER_PARAMETER(QString, StackedDataArrayName)
     Q_PROPERTY(QString StackedDataArrayName READ getStackedDataArrayName WRITE setStackedDataArrayName)
 
-    SIMPL_FILTER_PARAMETER(bool, StandardizeData)
-    Q_PROPERTY(bool StandardizeData READ getStandardizeData WRITE setStandardizeData)
+    SIMPL_FILTER_PARAMETER(bool, NormalizeData)
+    Q_PROPERTY(bool NormalizeData READ getNormalizeData WRITE setNormalizeData)
 
     /**
      * @brief getCompiledLibraryName Reimplemented from @see AbstractFilter class

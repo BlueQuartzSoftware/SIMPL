@@ -87,7 +87,7 @@ class CombineAttributeArraysTemplatePrivate
       size_t arrayOffset = 0;
       int32_t numDims = 0;
 
-      if (filter->getStandardizeData())
+      if (filter->getNormalizeData())
       {
         std::vector<DataType> maxVals(stackedDims, std::numeric_limits<DataType>::lowest());
         std::vector<DataType> minVals(stackedDims, std::numeric_limits<DataType>::max());
@@ -178,7 +178,7 @@ CombineAttributeArrays::CombineAttributeArrays() :
   AbstractFilter(),
   m_SelectedDataArrayPaths(QVector<DataArrayPath>()),
   m_StackedDataArrayName(SIMPL::GeneralData::CombinedData),
-  m_StandardizeData(false),
+  m_NormalizeData(false),
   m_StackedData(NULL)
 {
   setupFilterParameters();
@@ -197,7 +197,7 @@ CombineAttributeArrays::~CombineAttributeArrays()
 void CombineAttributeArrays::setupFilterParameters()
 {
   FilterParameterVector parameters;
-  parameters.push_back(BooleanFilterParameter::New("Standardize Data", "StandardizeData", getStandardizeData(), FilterParameter::Parameter));
+  parameters.push_back(BooleanFilterParameter::New("Normalize Data", "NormalizeData", getNormalizeData(), FilterParameter::Parameter));
   {
     MultiDataArraySelectionFilterParameter::RequirementType req = MultiDataArraySelectionFilterParameter::CreateRequirement(SIMPL::Defaults::AnyPrimitive, SIMPL::Defaults::AnyComponentSize, SIMPL::Defaults::AnyAttributeMatrix, SIMPL::Defaults::AnyGeometry);
     parameters.push_back(MultiDataArraySelectionFilterParameter::New("Attribute Arrays to Combine", "SelectedDataArrayPaths", getSelectedDataArrayPaths(), FilterParameter::RequiredArray, req));
@@ -214,7 +214,7 @@ void CombineAttributeArrays::readFilterParameters(AbstractFilterParametersReader
   reader->openFilterGroup(this, index);
   setSelectedDataArrayPaths( reader->readDataArrayPathVector("SelectedDataArrayPaths", getSelectedDataArrayPaths() ) );
   setStackedDataArrayName( reader->readString("StackedDataArrayName", getStackedDataArrayName() ) );
-  setStandardizeData( reader->readValue("StandardizeData", getStandardizeData() ) );
+  setNormalizeData( reader->readValue("NormalizeData", getNormalizeData() ) );
   reader->closeFilterGroup();
 }
 
@@ -227,7 +227,7 @@ int CombineAttributeArrays::writeFilterParameters(AbstractFilterParametersWriter
   SIMPL_FILTER_WRITE_PARAMETER(FilterVersion)
   SIMPL_FILTER_WRITE_PARAMETER(SelectedDataArrayPaths);
   SIMPL_FILTER_WRITE_PARAMETER(StackedDataArrayName);
-  SIMPL_FILTER_WRITE_PARAMETER(StandardizeData);
+  SIMPL_FILTER_WRITE_PARAMETER(NormalizeData);
   writer->closeFilterGroup();
   return ++index; // we want to return the next index that was just written to
 }
