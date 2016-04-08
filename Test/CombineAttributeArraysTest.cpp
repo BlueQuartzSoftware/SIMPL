@@ -202,10 +202,10 @@ class CombineAttributeArraysTest
       bool standardize = false;
 
       var.setValue(standardize);
-      propWasSet = filter->setProperty("StandardizeData", var);
+      propWasSet = filter->setProperty("NormalizeData", var);
       if(false == propWasSet)
       {
-        qDebug() << "Unable to set property StandardizeData";
+        qDebug() << "Unable to set property NormalizeData";
       }
 
       var.setValue(dataArrayPathsVecFirst);
@@ -267,10 +267,10 @@ class CombineAttributeArraysTest
       standardize = true;
 
       var.setValue(standardize);
-      propWasSet = filter->setProperty("StandardizeData", var);
+      propWasSet = filter->setProperty("NormalizeData", var);
       if(false == propWasSet)
       {
-        qDebug() << "Unable to set property StandardizeData";
+        qDebug() << "Unable to set property NormalizeData";
       }
 
       filter->execute();
