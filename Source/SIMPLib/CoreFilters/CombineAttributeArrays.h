@@ -43,7 +43,7 @@
 /**
  * @brief The CombineAttributeArrays class. See [Filter documentation](@ref combineattributearrays) for details.
  */
-class CombineAttributeArrays : public AbstractFilter
+class SIMPLib_EXPORT CombineAttributeArrays : public AbstractFilter
 {
   Q_OBJECT /* Need this for Qt's signals and slots mechanism to work */
 

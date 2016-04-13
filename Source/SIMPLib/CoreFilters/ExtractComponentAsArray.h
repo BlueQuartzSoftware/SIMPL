@@ -44,7 +44,7 @@
 /**
  * @brief The ExtractComponentAsArray class. See [Filter documentation](@ref extractcomponentasarray) for details.
  */
-class ExtractComponentAsArray : public AbstractFilter
+class SIMPLib_EXPORT ExtractComponentAsArray : public AbstractFilter
 {
     Q_OBJECT /* Need this for Qt's signals and slots mechanism to work */
   public:
