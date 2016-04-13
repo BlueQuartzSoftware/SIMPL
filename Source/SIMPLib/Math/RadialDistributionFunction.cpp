@@ -48,11 +48,12 @@
 RdfData::RdfData() :
   m_MinDistance(0.0f),
   m_MaxDistance(0.0f),
+  m_NumberOfBins(50),
   m_DistributionType(SIMPL::StringConstants::UnknownDistribution)
 {
-  m_BoxResolution[0] = 0.1;
-  m_BoxResolution[1] = 0.1;
-  m_BoxResolution[2] = 0.1;
+  m_BoxResolution[0] = 0.1f;
+  m_BoxResolution[1] = 0.1f;
+  m_BoxResolution[2] = 0.1f;
   m_BoxSize[0] = 100;
   m_BoxSize[1] = 100;
   m_BoxSize[2] = 100;
@@ -125,7 +126,7 @@ int RdfData::readJson(const QJsonObject &json)
   int numBins = 0;
   jsonValue = rdfJson[SIMPL::StringConstants::BinCount];
   if(!jsonValue.isUndefined() && jsonValue.isDouble()) { numBins = jsonValue.toInt(0); }
-
+  setNumberOfBins(numBins);
 
   std::vector<float> bd = { boxDims[0], boxDims[1], boxDims[2] };
   std::vector<float> br = { boxRes[0], boxRes[1], boxRes[2] };
@@ -142,7 +143,7 @@ int RdfData::writeJson(QJsonObject &json)
 {
   int err = 0;
   QJsonObject rdfJson;
-  rdfJson.insert(SIMPL::StringConstants::BinCount, getFrequencyCount());
+  rdfJson.insert(SIMPL::StringConstants::BinCount, getNumberOfBins());
   rdfJson.insert(SIMPL::StringConstants::RdfMinDistance, getMinDistance());
   rdfJson.insert(SIMPL::StringConstants::RdfMaxDistance, getMaxDistance());
   QJsonArray boxArray;

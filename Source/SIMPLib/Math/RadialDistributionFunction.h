@@ -58,6 +58,7 @@ class SIMPLib_EXPORT RdfData
     SIMPL_INSTANCE_PROPERTY(std::vector<float>, Frequencies)
     SIMPL_INSTANCE_PROPERTY(float, MinDistance)
     SIMPL_INSTANCE_PROPERTY(float, MaxDistance)
+    SIMPL_INSTANCE_PROPERTY(int, NumberOfBins)
     SIMPL_INSTANCE_STRING_PROPERTY(DistributionType)
     SIMPL_INSTANCE_VEC3_PROPERTY(float, BoxSize)
     SIMPL_INSTANCE_VEC3_PROPERTY(float, BoxResolution)
