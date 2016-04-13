@@ -136,6 +136,7 @@ class AbstractDecisionFilter : public AbstractFilter
 
 
     void decisionMade(bool& dm);
+    void targetValue(int& value);
 
   protected:
     AbstractDecisionFilter();

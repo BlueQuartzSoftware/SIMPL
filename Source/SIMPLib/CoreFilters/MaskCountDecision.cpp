@@ -151,6 +151,7 @@ void MaskCountDecision::execute()
     {
       qDebug() << "First if check: " << dm;
       emit decisionMade(dm);
+      emit targetValue(m_NumberOfTrues);
       return;
     }
     if (m_Mask[i]) { trueCount++; }
@@ -160,6 +161,7 @@ void MaskCountDecision::execute()
       qDebug() << "Second if check: " << dm;
 
       emit decisionMade(dm);
+      emit targetValue(m_NumberOfTrues);
       return;
     }
   }
@@ -168,6 +170,7 @@ void MaskCountDecision::execute()
 
 
   emit decisionMade(dm);
+  emit targetValue(m_NumberOfTrues);
 
   notifyStatusMessage(getHumanLabel(), "Complete");
 }
