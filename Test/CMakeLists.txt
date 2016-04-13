@@ -57,23 +57,24 @@ include_directories(${SIMPLTest_BINARY_DIR})
 # be directly included in the main test source file. We list them here so that
 # they will show up in IDEs
 set(TEST_NAMES
-  ArrayCalculatorTest
-  ConditionalSetValueTest
-  CombineAttributeArraysTest
-  CombineAttributeMatricesTest
-  DataContainerTest
-  ReplaceValueTest
-  StringDataArrayTest
-  StructArrayTest
-  FilterPipelineTest
-  DataArrayTest
-  ErrorMessageTest
-  DataContainerBundleTest
-  FilterParametersRWTest
-  CreateDataArrayTest
-  RemoveComponentFromArrayTest
-  QuaternionMathTest
-  CreateFeatureArrayFromElementArrayTest
+  #ArrayCalculatorTest
+  #CombineAttributeArraysTest
+  #CombineAttributeMatricesTest
+  #ConditionalSetValueTest
+  #CreateDataArrayTest
+  #CreateFeatureArrayFromElementArrayTest
+  #DataArrayTest
+  #DataContainerBundleTest
+  #DataContainerTest
+  #ErrorMessageTest
+  #FilterParametersRWTest
+  #FilterPipelineTest
+  PipelinePauseTest
+  #QuaternionMathTest
+  #RemoveComponentFromArrayTest
+  #ReplaceValueTest
+  #StringDataArrayTest
+  #StructArrayTest
 
   )
 
