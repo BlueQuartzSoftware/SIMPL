@@ -44,7 +44,7 @@
 /**
  * @brief The RemoveComponentFromArray class. See [Filter documentation](@ref RemoveComponentFromArray) for details.
  */
-class RemoveComponentFromArray : public AbstractFilter
+class SIMPLib_EXPORT RemoveComponentFromArray : public AbstractFilter
 {
     Q_OBJECT /* Need this for Qt's signals and slots mechanism to work */
   public:

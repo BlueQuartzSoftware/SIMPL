@@ -44,7 +44,7 @@
 /**
  * @brief The CreateDataContainer class. See [Filter documentation](@ref createdatacontainer) for details.
  */
-class CreateDataContainer : public AbstractFilter
+class SIMPLib_EXPORT CreateDataContainer : public AbstractFilter
 {
     Q_OBJECT /* Need this for Qt's signals and slots mechanism to work */
 
