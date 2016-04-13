@@ -91,8 +91,26 @@ class SIMPLib_EXPORT JsonFilterParametersWriter : public AbstractFilterParameter
     */
     static QString WritePipelineToString(FilterPipeline::Pointer pipeline, QString pipelineName, IObserver* obs = NULL);
 
-    virtual int openFilterGroup(AbstractFilter* filter, int index);
+    /**
+     * @brief openFilterGroup
+     * @param unused
+     * @param index
+     * @return
+     */
+    virtual int openFilterGroup(AbstractFilter* unused, int index);
+
+    /**
+     * @brief closeFilterGroup
+     * @return
+     */
     virtual int closeFilterGroup();
+
+
+    /**
+     * @brief getCurrentGroupObject
+     * @return
+     */
+    QJsonObject& getCurrentGroupObject();
 
     virtual int writeValue(const QString name, const QString value);
     virtual int writeValue(const QString name, const QVector<QString> value);

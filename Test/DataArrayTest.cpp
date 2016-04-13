@@ -938,10 +938,12 @@ class DataArrayTest
           copy->setComponent(i, j, static_cast<T>(i + j) );
         }
       }
-
-      bool didCopy = src->copyData(numTuples, copy);
+      // We should FAIL this test as we are going to be off the end of the array
+      size_t copyOffset = numTuples;
+      bool didCopy = src->copyData(copyOffset, copy);
       DREAM3D_REQUIRE_EQUAL(didCopy, false);
 
+      // Resize the DataArray to accomondate the true amount of data that we want (20 Tuples)
       src->resize(numTuples * 2);
       didCopy = src->copyData(numTuples, copy);
       DREAM3D_REQUIRE_EQUAL(didCopy, true);

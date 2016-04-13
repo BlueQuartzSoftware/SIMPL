@@ -35,6 +35,7 @@
 #ifndef _statsdataarray_h_
 #define _statsdataarray_h_
 
+#include <QtCore/QJsonObject>
 
 #include "SIMPLib/SIMPLib.h"
 #include "SIMPLib/Common/SIMPLibSetGetMacros.h"
@@ -341,6 +342,21 @@ class SIMPLib_EXPORT StatsDataArray : public IDataArray
      * @return
      */
     virtual QString getInfoString(SIMPL::InfoStringFormat format);
+
+    /**
+     * @brief StatsDataArray::readFromJson
+     * @param jsonRoot
+     * @return
+     */
+    int readFromJson(const QJsonObject &jsonRoot);
+
+    /**
+     * @brief writeToJson
+     * @param jsonRoot
+     * @param crystalStructures
+     * @return
+     */
+    int writeToJson(QJsonObject &jsonRoot, UInt32ArrayType::Pointer crystalStructures);
 
   protected:
     StatsDataArray();

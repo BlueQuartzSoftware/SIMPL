@@ -265,6 +265,14 @@ void JsonFilterParametersReader::ReadNameOfPipelineFromFile(QString filePath, QS
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
+QJsonObject& JsonFilterParametersReader::getCurrentGroupObject()
+{
+  return m_CurrentFilterIndex;
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
 int JsonFilterParametersReader::openFile(QString filePath)
 {
   if (m_Root.isEmpty() == false || m_CurrentFilterIndex.isEmpty() == false)

@@ -162,10 +162,42 @@ class SIMPLib_EXPORT PrimaryStatsData : public StatsData
     /* 5 Vectors: Euler 1, Euler 2, Euler 3, Sigma, Weights */
     SIMPL_INSTANCE_PROPERTY(VectorOfFloatArray, AxisODF_Weights)
 
+    /**
+     * @brief deepCopy
+     * @return
+     */
+    virtual StatsData::Pointer deepCopy();
+
+    /**
+     * @brief initialize
+     */
     virtual void initialize();
 
+    /**
+     * @brief writeHDF5Data
+     * @param groupId
+     * @return
+     */
     virtual int writeHDF5Data(hid_t groupId);
+
+    /**
+     * @brief readHDF5Data
+     * @param groupId
+     * @return
+     */
     virtual int readHDF5Data(hid_t groupId);
+
+    /**
+     * @brief writeJson
+     * @param json
+     */
+    virtual void writeJson(QJsonObject &json);
+
+    /**
+     * @brief readJson
+     * @param json
+     */
+    virtual void readJson(const QJsonObject &json);
 
   protected:
     PrimaryStatsData();

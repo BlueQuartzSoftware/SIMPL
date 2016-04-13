@@ -39,13 +39,22 @@
 
 #include <hdf5.h>
 
+#include <QtCore/QJsonObject>
+#include <QtCore/QJsonArray>
 
 #include "SIMPLib/SIMPLib.h"
 #include "SIMPLib/Common/SIMPLibSetGetMacros.h"
 #include "SIMPLib/DataArrays/DataArray.hpp"
-#include "SIMPLib/Math/RadialDistributionFunction.h"
 
 typedef QVector<FloatArrayType::Pointer> VectorOfFloatArray;
+
+
+#define SD_DEEP_COPY_VECTOR(func)\
+  { VectorOfFloatArray arrays = get##func();\
+  arrays = StatsData::DeepCopyVectorOFloatArray(arrays);\
+  ptr->set##func(arrays);\
+  }
+
 
 /**
  * @class StatsData StatsData.h DREAM3DLib/StatsData/StatsData.h
@@ -101,6 +110,13 @@ class SIMPLib_EXPORT StatsData
     }
 
     /**
+    * @brief CreateDeepCopy
+    * @param array
+    * @return
+    */
+    static VectorOfFloatArray DeepCopyVectorOFloatArray(VectorOfFloatArray &array);
+
+    /**
      * @brief Creates the Vector of FloatArrayType for a give distribution type
      * and sized according to numBins
      * @param distributionType The type of distribution as laid out in the SIMPL::DistributionType
@@ -110,16 +126,137 @@ class SIMPLib_EXPORT StatsData
      * distribution type is passed in.
      */
     static VectorOfFloatArray CreateCorrelatedDistributionArrays(uint32_t distributionType, size_t numBins);
-    //static RdfData::Pointer CreateRDFDistributionArrays(uint32_t distributionType, size_t numBins);
+
+    /**
+     * @brief CreateDistributionArrays
+     * @param distributionType
+     * @return
+     */
     static FloatArrayType::Pointer CreateDistributionArrays(uint32_t distributionType);
 
+    /**
+     * @brief initialize
+     */
     virtual void initialize();
 
+    /**
+     * @brief deepCopy
+     * @return
+     */
+    virtual Pointer deepCopy();
+
+    /**
+     * @brief writeHDF5Data
+     * @param groupId
+     * @return
+     */
     virtual int writeHDF5Data(hid_t groupId);
+
+    /**
+     * @brief readHDF5Data
+     * @param groupId
+     * @return
+     */
     virtual int readHDF5Data(hid_t groupId);
 
+    /**
+     * @brief writeJson
+     * @param json
+     */
+    virtual void writeJson(QJsonObject &json);
+
+    /**
+     * @brief readJson
+     * @param json
+     */
+    virtual void readJson(const QJsonObject &json);
+
+    /**
+     * @brief getStatsType
+     * @return
+     */
     virtual QString getStatsType();
+
+    /**
+     * @brief getPhaseType
+     * @return
+     */
     virtual unsigned int getPhaseType();
+
+    /**
+     * @brief generateJsonArrayFromDataArray
+     * @param data
+     * @return
+     */
+    template<typename T>
+    QJsonArray generateJsonArrayFromDataArray(typename DataArray<T>::Pointer data)
+    {
+      QJsonArray json;
+      if(NULL != data.get()) {
+        for(size_t i = 0; i < data->getSize(); i++)
+        {
+          json.append(QJsonValue(static_cast<double>( data->getValue(i))));
+        }
+      }
+      return json;
+    }
+
+    /**
+     * @brief generateJsonArrays
+     * @param arrays
+     * @param json
+     */
+    void generateJsonArrays(VectorOfFloatArray &arrays, QJsonObject &json);
+
+    /**
+     * @brief decodeDistributionType
+     * @param disType
+     * @return
+     */
+    QString decodeDistributionType(int disType);
+
+    /**
+     * @brief writeJsonDistributionArrays
+     * @param json
+     * @param arrays
+     * @param key
+     * @param disType
+     */
+    void writeJsonDistributionArrays(QJsonObject &json, VectorOfFloatArray arrays, QString key, int disType);
+
+    /**
+     * @brief ParseFloat3Vec
+     * @param json
+     * @param key
+     * @param values
+     * @param defaultValue
+     * @return
+     */
+    static int ParseFloat3Vec(const QJsonObject &json, const QString key, float* values, float defaultValue = 0.0f);
+
+    /**
+     * @brief ReadJsonDistributionArrays
+     * @param json
+     * @param key
+     * @param disType
+     * @return
+     */
+    static VectorOfFloatArray ReadJsonDistributionArrays(const QJsonObject &json, const QString &key, int& disType);
+
+    /**
+     * @brief arrayNamesFromDistributionType
+     * @param disType
+     * @return
+     */
+    static QStringList ArrayNamesFromDistributionType(const QString &disType);
+
+    /**
+     * @brief arrayNamesFromDistributionType
+     * @param disType
+     * @return
+     */
+    static VectorOfFloatArray ReadJsonVectorOfFloatsArrays(const QJsonObject &json, const QString &key);
+
 
   protected:
     StatsData();

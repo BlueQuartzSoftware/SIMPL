@@ -111,7 +111,7 @@ class SIMPLib_EXPORT H5TransformationStatsDataDelegate : public H5StatsDataDeleg
 
     VectorOfFloatArray createBetaDistributionArrays();
 
-    VectorOfFloatArray createPowerDistributionArrays();
+  //  VectorOfFloatArray createPowerDistributionArrays();
 
     VectorOfFloatArray createLogNormalDistributionArrays();
 

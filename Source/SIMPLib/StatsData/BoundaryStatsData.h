@@ -117,13 +117,55 @@ class SIMPLib_EXPORT BoundaryStatsData : public StatsData
     SIMPL_INSTANCE_PROPERTY(float, PhaseFraction)
     SIMPL_INSTANCE_PROPERTY(float, ParentPhase)
 
+    /**
+     * @brief getStatsType
+     * @return
+     */
+    virtual QString getStatsType();
+
+    /**
+     * @brief getPhaseType
+     * @return
+     */
+    virtual unsigned int getPhaseType();
+
+    /**
+     * @brief deepCopy
+     * @return
+     */
+    virtual StatsData::Pointer deepCopy();
+
+    /**
+     * @brief initialize
+     */
     virtual void initialize();
 
+    /**
+     * @brief writeHDF5Data
+     * @param groupId
+     * @return
+     */
     virtual int writeHDF5Data(hid_t groupId);
+
+    /**
+     * @brief readHDF5Data
+     * @param groupId
+     * @return
+     */
     virtual int readHDF5Data(hid_t groupId);
 
-    virtual QString getStatsType();
-    virtual unsigned int getPhaseType();
+    /**
+     * @brief writeJson
+     * @param json
+     */
+    virtual void writeJson(QJsonObject &json);
+
+    /**
+     * @brief readJson
+     * @param json
+     */
+    virtual void readJson(const QJsonObject &json);
+
   protected:
     BoundaryStatsData();
 
