@@ -256,6 +256,28 @@ QString StatsData::decodeDistributionType(int disType)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
+int StatsData::EncodeDistributionType(QString distTypeName)
+{
+  int distType = SIMPL::DistributionType::UnknownDistributionType;
+  if (distTypeName == SIMPL::StringConstants::BetaDistribution)
+  {
+    distType = SIMPL::DistributionType::Beta;
+  }
+  else if (distTypeName == SIMPL::StringConstants::LogNormalDistribution)
+  {
+    distType = SIMPL::DistributionType::LogNormal;
+  }
+  else if (distTypeName == SIMPL::StringConstants::UnknownDistribution)
+  {
+    distType = SIMPL::DistributionType::UnknownDistributionType;
+  }
+  
+  return distType;
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
 QStringList StatsData::ArrayNamesFromDistributionType(const QString &disType)
 {
   QStringList disTypeStr;
@@ -336,6 +358,7 @@ VectorOfFloatArray StatsData::ReadJsonDistributionArrays(const QJsonObject &json
   QJsonValue jValue = jDistribution[SIMPL::StringConstants::DistributionType];
   if(jValue.isUndefined()) { return arrays; }
   QString disTypeString = jValue.toString(SIMPL::StringConstants::UnknownDistribution);
+  disType = StatsData::EncodeDistributionType(disTypeString);
 
   QStringList arrayNames = StatsData::ArrayNamesFromDistributionType(disTypeString);
   foreach(const QString arrayName, arrayNames)

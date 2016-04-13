@@ -223,6 +223,13 @@ class SIMPLib_EXPORT StatsData
      * @param disType
      */
     void writeJsonDistributionArrays(QJsonObject &json, VectorOfFloatArray arrays, QString key, int disType);
+  
+    /**
+     *  @brief encodeDistributionType
+     *  @param distTypeName
+     *  @return
+     */
+    static int EncodeDistributionType(QString distTypeName);
 
     /**
      * @brief ParseFloat3Vec
