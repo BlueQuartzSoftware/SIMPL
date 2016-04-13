@@ -49,6 +49,9 @@
 #include "SIMPLib/Utilities/UnitTestSupport.hpp"
 #include "SIMPLib/Utilities/QMetaObjectUtilities.h"
 
+#include "SIMPLib/CoreFilters/Breakpoint.h"
+#include "SIMPLib/TestFilters/ChangeGlobalValue.h"
+
 #include "SIMPLTestFileLocations.h"
 
 int GlobalVariable = 0;
@@ -67,54 +70,19 @@ public:
   {
     FilterPipeline::Pointer pipeline = FilterPipeline::New();
     {
-      QString filtName = "ChangeGlobalValue";
-      FilterManager* fm = FilterManager::Instance();
-      IFilterFactory::Pointer factory = fm->getFactoryForFilter(filtName);
-      DREAM3D_REQUIRE(factory.get() != NULL);
-
-      AbstractFilter::Pointer filter = factory->create();
-      DREAM3D_REQUIRE(filter.get() != NULL);
-
-      bool propWasSet;
-      propWasSet = filter->setProperty("Value", 3);
-      DREAM3D_REQUIRE_EQUAL(propWasSet, true);
-      
-      QVariant var;
-      var.setValue(&GlobalVariable);
-      propWasSet = filter->setProperty("GlobalValue", var);
-      DREAM3D_REQUIRE_EQUAL(propWasSet, true);
-
+      ChangeGlobalValue::Pointer filter = ChangeGlobalValue::New();
+      filter->setValue(3);
+      filter->setGlobalValue(&GlobalVariable);
       pipeline->pushBack(filter);
     }
     {
-      QString filtName = "Breakpoint";
-      FilterManager* fm = FilterManager::Instance();
-      IFilterFactory::Pointer factory = fm->getFactoryForFilter(filtName);
-      DREAM3D_REQUIRE(factory.get() != NULL);
-
-      AbstractFilter::Pointer filter = factory->create();
-      DREAM3D_REQUIRE(filter.get() != NULL);
-
+      Breakpoint::Pointer filter = Breakpoint::New();
       pipeline->pushBack(filter);
     }
     {
-      QString filtName = "ChangeGlobalValue";
-      FilterManager* fm = FilterManager::Instance();
-      IFilterFactory::Pointer factory = fm->getFactoryForFilter(filtName);
-      DREAM3D_REQUIRE(factory.get() != NULL);
-
-      AbstractFilter::Pointer filter = factory->create();
-      DREAM3D_REQUIRE(filter.get() != NULL);
-
-      bool propWasSet;
-      propWasSet = filter->setProperty("Value", 7);
-      DREAM3D_REQUIRE_EQUAL(propWasSet, true);
-
-      QVariant var;
-      var.setValue(&GlobalVariable);
-      propWasSet = filter->setProperty("GlobalValue", var);
-      DREAM3D_REQUIRE_EQUAL(propWasSet, true);
-
+      ChangeGlobalValue::Pointer filter = ChangeGlobalValue::New();
+      filter->setValue(7);
+      filter->setGlobalValue(&GlobalVariable);
       pipeline->pushBack(filter);
     }
 

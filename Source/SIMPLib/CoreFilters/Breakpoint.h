@@ -43,7 +43,7 @@
 /**
  * @brief The Breakpoint class. See [Filter documentation](@ref breakpoint) for details.
  */
-class Breakpoint : public AbstractFilter
+class SIMPLib_EXPORT Breakpoint : public AbstractFilter
 {
   Q_OBJECT /* Need this for Qt's signals and slots mechanism to work */
 

@@ -71,6 +71,7 @@ endforeach()
 # be able to use them from the DREAM3D user interface.
 set(_PrivateFilters
   TestFilters
+  ChangeGlobalValue
 )
 
 #-----------------

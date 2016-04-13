@@ -40,7 +40,7 @@
 #include "SIMPLib/Common/AbstractFilter.h"
 #include "SIMPLib/Common/SIMPLibSetGetMacros.h"
 
-class ChangeGlobalValue : public AbstractFilter
+class SIMPLib_EXPORT ChangeGlobalValue : public AbstractFilter
 {
   Q_OBJECT /* Need this for Qt's signals and slots mechanism to work */
 

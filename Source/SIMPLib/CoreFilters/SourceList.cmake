@@ -97,7 +97,6 @@ set(_PrivateFilters
   EmptyFilter
   FileReader
   FileWriter
-  ChangeGlobalValue
 )
 
 #-----------------
