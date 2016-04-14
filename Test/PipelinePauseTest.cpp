@@ -109,7 +109,7 @@ public:
 
     // When the pipeline pauses then tell this object that it has paused
     connect(this, SIGNAL(pipelineIsResuming()),
-      pipeline.get(), SIGNAL(pipelineIsResuming()), Qt::QueuedConnection);
+      pipeline.get(), SIGNAL(pipelineIsResuming()), Qt::DirectConnection);
 
     // When the pipeline ends then tell the QThread to stop its event loop
     connect(pipeline.get(), SIGNAL(pipelineFinished()),

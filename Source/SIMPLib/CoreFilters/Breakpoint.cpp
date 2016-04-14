@@ -128,8 +128,7 @@ void Breakpoint::execute()
   m_Mutex.lock();
   while(m_IsPaused)
   {
-    m_WaitCondition.wait(&m_Mutex, 500);
-    QCoreApplication::processEvents();
+    m_WaitCondition.wait(&m_Mutex);
   }
   m_Mutex.unlock();
 }
