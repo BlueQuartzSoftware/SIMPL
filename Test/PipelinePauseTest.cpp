@@ -35,6 +35,7 @@
 
 #include <QtCore/QCoreApplication>
 #include <QtCore/QMetaObject>
+#include <QtCore/QThread>
 
 #include "SIMPLib/SIMPLib.h"
 #include "SIMPLib/SIMPLibVersion.h"
@@ -99,9 +100,27 @@ public:
 
     FilterPipeline::Pointer pipeline = createPipeline();
 
-    pipeline->execute();
+    // When the thread starts its event loop, start the PipelineBuilder going
+    connect(m_WorkerThread, SIGNAL(started()),
+      pipeline.get(), SLOT(run()));
 
-    DREAM3D_REQUIRE_EQUAL(GlobalVariable, 7);
+    // When the PipelineBuilder ends then tell the QThread to stop its event loop
+    connect(pipeline.get(), SIGNAL(pipelineFinished()),
+      m_WorkerThread, SLOT(quit()));
+
+    // When the QThread finishes, tell this object that it has finished.
+    connect(m_WorkerThread, SIGNAL(finished()),
+      this, SLOT(pipelineDidFinish()));
+
+    // If the use clicks on the "Cancel" button send a message to the PipelineBuilder object
+    connect(this, SIGNAL(pipelineCanceled()),
+      pipeline.get(), SLOT(cancelPipeline()), Qt::DirectConnection);
+
+    pipeline->moveToThread(m_WorkerThread);
+
+    m_WorkerThread->start();
+
+    //DREAM3D_REQUIRE_EQUAL(GlobalVariable, 7);
   }
 
   // -----------------------------------------------------------------------------
@@ -125,6 +144,8 @@ public slots:
   }
 
 private:
+  QThread*                            m_WorkerThread;
+
   PipelinePauseTest(const PipelinePauseTest&); // Copy Constructor Not Implemented
   void operator=(const PipelinePauseTest&); // Operator '=' Not Implemented
 };
