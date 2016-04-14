@@ -35,6 +35,8 @@
 
 #include "Breakpoint.h"
 
+#include <QtCore/QCoreApplication>
+
 #include "SIMPLib/SIMPLibVersion.h"
 #include "SIMPLib/Common/Constants.h"
 #include "SIMPLib/FilterParameters/AbstractFilterParametersReader.h"
@@ -123,14 +125,13 @@ void Breakpoint::execute()
   // Pause the pipeline at this point until someone chooses to resume
   emit pipelineHasPaused();
 
+  m_Mutex.lock();
   while(m_IsPaused)
   {
-    m_Mutex.lock();
-    m_WaitCondition.wait(&m_Mutex, 1000);
-    m_Mutex.unlock();
+    m_WaitCondition.wait(&m_Mutex, 500);
+    QCoreApplication::processEvents();
   }
-
-  std::cout << "Breakpoint execute finished" << std::endl;
+  m_Mutex.unlock();
 }
 
 // -----------------------------------------------------------------------------

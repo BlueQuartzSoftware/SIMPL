@@ -36,6 +36,7 @@
 #include <QtCore/QCoreApplication>
 #include <QtCore/QMetaObject>
 #include <QtCore/QThread>
+#include <QtCore/QTimer>
 
 #include "SIMPLib/SIMPLib.h"
 #include "SIMPLib/SIMPLibVersion.h"
@@ -100,19 +101,19 @@ public:
 
     // When the thread starts its event loop, start the PipelineBuilder going
     connect(m_WorkerThread, SIGNAL(started()),
-      pipeline.get(), SLOT(run()), Qt::DirectConnection);
+      pipeline.get(), SLOT(run()));
 
     // When the pipeline pauses then tell this object that it has paused
     connect(pipeline.get(), SIGNAL(pipelineHasPaused()),
-      this, SLOT(PipelinePaused()), Qt::DirectConnection);
+      this, SLOT(PipelinePaused()), Qt::QueuedConnection);
 
     // When the pipeline pauses then tell this object that it has paused
     connect(this, SIGNAL(pipelineIsResuming()),
-      pipeline.get(), SIGNAL(pipelineIsResuming()), Qt::DirectConnection);
+      pipeline.get(), SIGNAL(pipelineIsResuming()), Qt::QueuedConnection);
 
     // When the pipeline ends then tell the QThread to stop its event loop
     connect(pipeline.get(), SIGNAL(pipelineFinished()),
-      m_WorkerThread, SLOT(quit()), Qt::DirectConnection);
+      m_WorkerThread, SLOT(quit()));
 
     return pipeline;
   }
@@ -146,17 +147,22 @@ public:
     m_Mutex.lock();
     while (m_IsPaused == false)
     {
-      m_WaitCondition.wait(&m_Mutex, 1000);
+      m_WaitCondition.wait(&m_Mutex, 500);
+      QCoreApplication::processEvents();
     }
     m_Mutex.unlock();
 
     DREAM3D_REQUIRE_EQUAL(GlobalVariable, 7);
+    std::cout << "GlobalVariable = 7" << std::endl;
+
+    qApp->quit();
   }
 
+public slots:
   // -----------------------------------------------------------------------------
   //
   // -----------------------------------------------------------------------------
-  void operator()()
+  void StartTest()
   {
     std::cout << "#### PipelinePauseTest Starting ####" << std::endl;
     int err = EXIT_SUCCESS;
@@ -164,7 +170,6 @@ public:
     DREAM3D_REGISTER_TEST(PauseTest())
   }
 
-public slots:
   // -----------------------------------------------------------------------------
   //
   // -----------------------------------------------------------------------------
@@ -182,13 +187,12 @@ public slots:
   void PipelineDidFinish()
   {
     m_IsPaused = true;
-    std::cout << "PipelineDidFinish()" << std::endl;
-
     m_WaitCondition.wakeAll();
   }
 
 signals:
   void pipelineIsResuming();
+  void testFinished();
 
 private:
   QThread*                            m_WorkerThread;
@@ -204,4 +208,33 @@ private:
 #include "moc_PipelinePauseTest.cpp"
 
 Q_DECLARE_METATYPE(int*);
+
+// -----------------------------------------------------------------------------
+//  Use test framework
+// -----------------------------------------------------------------------------
+int main(int argc, char** argv)
+{
+  int err = EXIT_SUCCESS;
+
+  // Instantiate the QCoreApplication that we need to get the current path and load plugins.
+  QCoreApplication app(argc, argv);
+  QCoreApplication::setOrganizationName("Your Company");
+  QCoreApplication::setOrganizationDomain("Your Domain");
+  QCoreApplication::setApplicationName("");
+  // Register all the filters including trying to load those from Plugins
+  FilterManager* fm = FilterManager::Instance();
+  SIMPLibPluginLoader::LoadPluginFilters(fm);
+
+  // Send progress messages from PipelineBuilder to this object for display
+  QMetaObjectUtilities::RegisterMetaTypes();
+
+  PipelinePauseTest* test = new PipelinePauseTest();
+  QTimer::singleShot(500, test, SLOT(StartTest()));
+
+  app.exec();
+
+  PRINT_TEST_SUMMARY();
+
+  return err;
+}
 
