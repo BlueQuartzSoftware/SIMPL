@@ -293,7 +293,7 @@ void PrecipitateStatsData::readJson(const QJsonObject &json)
 
   // Read the Feature Diameter Info
   float fVec3[3] = { 0.0f, 0.0f, 0.0f};
-  if(ParseFloat3Vec(json, SIMPL::StringConstants::Feature_Diameter_Info, fVec3, 0.0) == -1)
+  if (ParseFloat3Vec(json, SIMPL::StringConstants::Feature_Diameter_Info, fVec3, 0.0) == -1)
   {
   // Throw warning
   }
@@ -301,7 +301,7 @@ void PrecipitateStatsData::readJson(const QJsonObject &json)
 
   // Read the Feature Size Distribution
   jsonValue = json[SIMPL::StringConstants::Feature_Size_Distribution];
-  if( !jsonValue.isUndefined() && jsonValue.isObject())
+  if (!jsonValue.isUndefined() && jsonValue.isObject())
   {
     QJsonObject avgSizeDist = jsonValue.toObject();
     QStringList keys = avgSizeDist.keys();
@@ -315,17 +315,15 @@ void PrecipitateStatsData::readJson(const QJsonObject &json)
     setFeatureSizeDistribution(arrays);
   }
 
-
   // Read RDF Distribution Data
   m_RadialDistFunction = RdfData::New();
   m_RadialDistFunction->readJson(json);
-
 
   // Read the Bin Numbers, Bin Step Size
   jsonValue = json[SIMPL::StringConstants::BinNumber];
   QJsonArray jArray = jsonValue.toArray();
   FloatArrayType::Pointer binNumbers = FloatArrayType::CreateArray(jArray.count(), SIMPL::StringConstants::BinNumber, true);
-  for(int i = 0; i < jArray.count(); i++)
+  for (int i = 0; i < jArray.count(); i++)
   {
     binNumbers->setValue(i, jArray[i].toDouble());
   }
