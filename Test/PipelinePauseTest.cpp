@@ -57,8 +57,10 @@
 
 int GlobalVariable = 0;
 
-class PipelinePauseTest
+class PipelinePauseTest : public QObject
 {
+  Q_OBJECT
+
 public:
   PipelinePauseTest() {}
   virtual ~PipelinePauseTest() {}
@@ -95,9 +97,6 @@ public:
   // -----------------------------------------------------------------------------
   void PauseTest()
   {
-    QVariant var;
-    bool propWasSet = false;
-
     FilterPipeline::Pointer pipeline = createPipeline();
 
     // When the thread starts its event loop, start the PipelineBuilder going
@@ -149,6 +148,8 @@ private:
   PipelinePauseTest(const PipelinePauseTest&); // Copy Constructor Not Implemented
   void operator=(const PipelinePauseTest&); // Operator '=' Not Implemented
 };
+
+#include "moc_PipelinePauseTest.cpp"
 
 Q_DECLARE_METATYPE(int*);
 

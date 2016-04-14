@@ -78,6 +78,10 @@ set(TEST_NAMES
 
   )
 
+QT5_WRAP_CPP( _moc_filter_source  ${SIMPLTest_SOURCE_DIR}/PipelinePauseTest.cpp)
+set_source_files_properties( ${_moc_filter_source} PROPERTIES GENERATED TRUE)
+set_source_files_properties( ${_moc_filter_source} PROPERTIES HEADER_FILE_ONLY TRUE)
+
 set( ${PLUGIN_NAME}_TEST_SRCS )
 set(FilterTestIncludes "")
 set(TestMainFunctors "")
@@ -111,7 +115,7 @@ foreach(f ${${PLUGIN_NAME}_TEST_SRCS})
 endforeach()
 
 AddSIMPLUnitTest(TESTNAME SIMPLUnitTest
-  SOURCES ${SIMPLTest_BINARY_DIR}/SIMPLUnitTest.cpp ${${PLUGIN_NAME}_TEST_SRCS}
+  SOURCES ${SIMPLTest_BINARY_DIR}/SIMPLUnitTest.cpp ${${PLUGIN_NAME}_TEST_SRCS} ${_moc_filter_source}
   FOLDER "SIMPLibProj/Test"
   LINK_LIBRARIES Qt5::Core H5Support SIMPLib)
 
