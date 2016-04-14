@@ -103,9 +103,9 @@ int RdfData::readJson(const QJsonObject &json)
   QJsonObject rdfJson = json[SIMPL::StringConstants::RadialDistFunc].toObject();
 
   QJsonValue jsonValue = rdfJson[SIMPL::StringConstants::RdfMinDistance];
-  if (!jsonValue.isUndefined() && jsonValue.isDouble()) { setMinDistance(jsonValue.toDouble(0.0)); }
+  if (!jsonValue.isUndefined() && jsonValue.isDouble()) { setMinDistance(static_cast<float>(jsonValue.toDouble(0.0))); }
   jsonValue = rdfJson[SIMPL::StringConstants::RdfMaxDistance];
-  if (!jsonValue.isUndefined() && jsonValue.isDouble()) { setMaxDistance(jsonValue.toDouble(0.0)); }
+  if (!jsonValue.isUndefined() && jsonValue.isDouble()) { setMaxDistance(static_cast<float>(jsonValue.toDouble(0.0))); }
 
   if (StatsData::ParseFloat3Vec(rdfJson, SIMPL::StringConstants::RdfBoxDims, boxDims, 0.0) == 0)
   {
