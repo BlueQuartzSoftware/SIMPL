@@ -63,7 +63,8 @@ class PipelinePauseTest : public QObject
 
 public:
   PipelinePauseTest() :
-    m_WorkerThread(NULL)
+    m_WorkerThread(NULL),
+    m_IsPaused(false)
   {
 
   }
@@ -99,19 +100,19 @@ public:
 
     // When the thread starts its event loop, start the PipelineBuilder going
     connect(m_WorkerThread, SIGNAL(started()),
-      pipeline.get(), SLOT(run()));
+      pipeline.get(), SLOT(run()), Qt::DirectConnection);
 
     // When the pipeline pauses then tell this object that it has paused
     connect(pipeline.get(), SIGNAL(pipelineHasPaused()),
-      this, SLOT(PipelinePaused()));
+      this, SLOT(PipelinePaused()), Qt::DirectConnection);
 
     // When the pipeline pauses then tell this object that it has paused
     connect(this, SIGNAL(pipelineIsResuming()),
-      pipeline.get(), SIGNAL(pipelineIsResuming()));
+      pipeline.get(), SIGNAL(pipelineIsResuming()), Qt::DirectConnection);
 
     // When the pipeline ends then tell the QThread to stop its event loop
     connect(pipeline.get(), SIGNAL(pipelineFinished()),
-      m_WorkerThread, SLOT(quit()));
+      m_WorkerThread, SLOT(quit()), Qt::DirectConnection);
 
     return pipeline;
   }
@@ -136,14 +137,17 @@ public:
 
     // When the QThread finishes, tell this object that it has finished.
     connect(m_WorkerThread, SIGNAL(finished()),
-      this, SLOT(PipelineDidFinish()));
+      this, SLOT(PipelineDidFinish()), Qt::DirectConnection);
 
     pipeline->moveToThread(m_WorkerThread);
 
     m_WorkerThread->start();
 
     m_Mutex.lock();
-    m_WaitCondition.wait(&m_Mutex);
+    while (m_IsPaused == false)
+    {
+      m_WaitCondition.wait(&m_Mutex, 1000);
+    }
     m_Mutex.unlock();
 
     DREAM3D_REQUIRE_EQUAL(GlobalVariable, 7);
@@ -167,7 +171,7 @@ public slots:
   void PipelinePaused()
   {
     DREAM3D_REQUIRE_EQUAL(GlobalVariable, 3);
-    std::cout << "GlobalVariable = 3";
+    std::cout << "GlobalVariable = 3" << std::endl;
 
     emit pipelineIsResuming();
   }
@@ -177,6 +181,9 @@ public slots:
   // -----------------------------------------------------------------------------
   void PipelineDidFinish()
   {
+    m_IsPaused = true;
+    std::cout << "PipelineDidFinish()" << std::endl;
+
     m_WaitCondition.wakeAll();
   }
 
@@ -185,6 +192,7 @@ signals:
 
 private:
   QThread*                            m_WorkerThread;
+  bool                                m_IsPaused;
 
   QWaitCondition                      m_WaitCondition;
   QMutex                              m_Mutex;
