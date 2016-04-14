@@ -117,12 +117,26 @@ StatsData::Pointer PrecipitateStatsData::deepCopy()
 
   SD_DEEP_COPY_VECTOR(FeatureSizeDistribution);
 
-  if(nullptr != m_RadialDistFunction) {
+  if (nullptr != m_RadialDistFunction) {
     ptr->setRadialDistFunction(getRadialDistFunction()->deepCopy());
   }
-  if(nullptr != m_BinNumbers) {
+
+  if (nullptr != m_BinNumbers) {
     ptr->setBinNumbers(std::dynamic_pointer_cast<FloatArrayType>(getBinNumbers()->deepCopy()));
   }
+
+  if (nullptr != m_ODF) {
+    ptr->setODF(std::dynamic_pointer_cast<FloatArrayType>(getODF()->deepCopy()));
+  }
+
+  if (nullptr != m_MisorientationBins) {
+    ptr->setMisorientationBins(std::dynamic_pointer_cast<FloatArrayType>(getMisorientationBins()->deepCopy()));
+  }
+
+  if (nullptr != m_AxisOrientation) {
+    ptr->setAxisOrientation(std::dynamic_pointer_cast<FloatArrayType>(getAxisOrientation()->deepCopy()));
+  }
+
   ptr->setBinStepSize(getBinStepSize());
 
   ptr->setBOverA_DistType(getBOverA_DistType());
@@ -136,8 +150,10 @@ StatsData::Pointer PrecipitateStatsData::deepCopy()
 
   //Miso Bins
   SD_DEEP_COPY_VECTOR(MDF_Weights)
+
   //ODF
   SD_DEEP_COPY_VECTOR(ODF_Weights)
+
   // Axis ODF
   SD_DEEP_COPY_VECTOR(AxisODF_Weights)
 
