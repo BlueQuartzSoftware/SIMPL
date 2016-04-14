@@ -117,7 +117,21 @@ void Breakpoint::preflight()
 // -----------------------------------------------------------------------------
 void Breakpoint::execute()
 {
-  if (getCancel() == true) { return; }
+  // Pause the pipeline at this point until someone chooses to resume
+  emit pipelineHasPaused();
+
+  m_Mutex.lock();
+  m_WaitCondition.wait(&m_Mutex);
+  m_Mutex.unlock();
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void Breakpoint::resumePipeline()
+{
+  // Resume the pipeline
+  m_WaitCondition.wakeAll();
 }
 
 // -----------------------------------------------------------------------------

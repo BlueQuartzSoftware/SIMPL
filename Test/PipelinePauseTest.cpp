@@ -62,7 +62,12 @@ class PipelinePauseTest : public QObject
   Q_OBJECT
 
 public:
-  PipelinePauseTest() {}
+  PipelinePauseTest() :
+    m_WorkerThread(NULL)
+  {
+
+  }
+
   virtual ~PipelinePauseTest() {}
   SIMPL_TYPE_MACRO(PipelinePauseTest)
 
@@ -80,6 +85,9 @@ public:
     }
     {
       Breakpoint::Pointer filter = Breakpoint::New();
+      connect(filter.get(), SIGNAL(pipelineHasPaused()), pipeline.get(), SIGNAL(pipelineHasPaused()), Qt::DirectConnection);
+      connect(pipeline.get(), SIGNAL(pipelineIsResuming()), filter.get(), SLOT(resumePipeline()), Qt::DirectConnection);
+
       pipeline->pushBack(filter);
     }
     {
@@ -89,6 +97,22 @@ public:
       pipeline->pushBack(filter);
     }
 
+    // When the thread starts its event loop, start the PipelineBuilder going
+    connect(m_WorkerThread, SIGNAL(started()),
+      pipeline.get(), SLOT(run()));
+
+    // When the pipeline pauses then tell this object that it has paused
+    connect(pipeline.get(), SIGNAL(pipelineHasPaused()),
+      this, SLOT(PipelinePaused()));
+
+    // When the pipeline pauses then tell this object that it has paused
+    connect(this, SIGNAL(pipelineIsResuming()),
+      pipeline.get(), SIGNAL(pipelineIsResuming()));
+
+    // When the pipeline ends then tell the QThread to stop its event loop
+    connect(pipeline.get(), SIGNAL(pipelineFinished()),
+      m_WorkerThread, SLOT(quit()));
+
     return pipeline;
   }
 
@@ -97,29 +121,32 @@ public:
   // -----------------------------------------------------------------------------
   void PauseTest()
   {
+    if (m_WorkerThread != NULL)
+    {
+      m_WorkerThread->wait(); // Wait until the thread is complete
+      if (m_WorkerThread->isFinished() == true)
+      {
+        delete m_WorkerThread;
+        m_WorkerThread = NULL;
+      }
+    }
+    m_WorkerThread = new QThread(); // Create a new Thread Resource
+
     FilterPipeline::Pointer pipeline = createPipeline();
-
-    // When the thread starts its event loop, start the PipelineBuilder going
-    connect(m_WorkerThread, SIGNAL(started()),
-      pipeline.get(), SLOT(run()));
-
-    // When the PipelineBuilder ends then tell the QThread to stop its event loop
-    connect(pipeline.get(), SIGNAL(pipelineFinished()),
-      m_WorkerThread, SLOT(quit()));
 
     // When the QThread finishes, tell this object that it has finished.
     connect(m_WorkerThread, SIGNAL(finished()),
-      this, SLOT(pipelineDidFinish()));
-
-    // If the use clicks on the "Cancel" button send a message to the PipelineBuilder object
-    connect(this, SIGNAL(pipelineCanceled()),
-      pipeline.get(), SLOT(cancelPipeline()), Qt::DirectConnection);
+      this, SLOT(PipelineDidFinish()));
 
     pipeline->moveToThread(m_WorkerThread);
 
     m_WorkerThread->start();
 
-    //DREAM3D_REQUIRE_EQUAL(GlobalVariable, 7);
+    m_Mutex.lock();
+    m_WaitCondition.wait(&m_Mutex);
+    m_Mutex.unlock();
+
+    DREAM3D_REQUIRE_EQUAL(GlobalVariable, 7);
   }
 
   // -----------------------------------------------------------------------------
@@ -139,11 +166,28 @@ public slots:
   // -----------------------------------------------------------------------------
   void PipelinePaused()
   {
+    DREAM3D_REQUIRE_EQUAL(GlobalVariable, 3);
+    std::cout << "GlobalVariable = 3";
 
+    emit pipelineIsResuming();
   }
+
+  // -----------------------------------------------------------------------------
+  //
+  // -----------------------------------------------------------------------------
+  void PipelineDidFinish()
+  {
+    m_WaitCondition.wakeAll();
+  }
+
+signals:
+  void pipelineIsResuming();
 
 private:
   QThread*                            m_WorkerThread;
+
+  QWaitCondition                      m_WaitCondition;
+  QMutex                              m_Mutex;
 
   PipelinePauseTest(const PipelinePauseTest&); // Copy Constructor Not Implemented
   void operator=(const PipelinePauseTest&); // Operator '=' Not Implemented

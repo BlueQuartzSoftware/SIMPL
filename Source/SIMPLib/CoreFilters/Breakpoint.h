@@ -36,6 +36,8 @@
 #ifndef _breakpoint_h_
 #define _breakpoint_h_
 
+#include <QtCore/QWaitCondition>
+
 #include "SIMPLib/SIMPLib.h"
 #include "SIMPLib/Common/AbstractFilter.h"
 #include "SIMPLib/Common/SIMPLibSetGetMacros.h"
@@ -143,6 +145,11 @@ class SIMPLib_EXPORT Breakpoint : public AbstractFilter
      */
     void preflightExecuted();
 
+    /**
+    * @brief preflightExecuted Emitted when the pipeline needs to be paused
+    */
+    void pipelineHasPaused();
+
   protected:
     Breakpoint();
 
@@ -151,7 +158,16 @@ class SIMPLib_EXPORT Breakpoint : public AbstractFilter
      */
     void dataCheck();
 
+  protected slots:
+    /**
+    * @brief resumePipeline Resumes the pipeline
+    */
+    void resumePipeline();
+
   private:
+    QWaitCondition                          m_WaitCondition;
+    QMutex                                  m_Mutex;
+
     Breakpoint(const Breakpoint&); // Copy Constructor Not Implemented
     void operator=(const Breakpoint&); // Operator '=' Not Implemented
 };
