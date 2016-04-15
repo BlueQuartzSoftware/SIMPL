@@ -252,9 +252,7 @@ void PrimaryStatsData::writeJson(QJsonObject &json)
 
   // Write the Axis ODF
   writeJsonDistributionArrays(json, getAxisODF_Weights(), SIMPL::StringConstants::AxisODFWeights, SIMPL::DistributionType::UnknownDistributionType);
-
 }
-
 
 // -----------------------------------------------------------------------------
 //
@@ -345,10 +343,4 @@ void PrimaryStatsData::readJson(const QJsonObject &json)
   // Read the Axis ODF
   arrays = ReadJsonVectorOfFloatsArrays(json, SIMPL::StringConstants::AxisODFWeights);
   setAxisODF_Weights(arrays);
-
-
-
 }
-
-
-
