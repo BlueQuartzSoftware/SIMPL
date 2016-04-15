@@ -154,9 +154,9 @@ class SIMPLib_EXPORT FilterPipeline : public QObject
     void pipelineHasPaused();
 
     /**
-    * @brief This method is emitted from the pipeline and signals a pipeline resume
+    * @brief This method is emitted from the pipeline and signals a pipeline cancel
     */
-    void pipelineIsResuming();
+    void pipelineCanceled();
 
     /**
     * @brief This signal is emitted from the run() method just before exiting and

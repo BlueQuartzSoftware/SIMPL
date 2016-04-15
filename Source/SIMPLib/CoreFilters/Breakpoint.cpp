@@ -136,6 +136,7 @@ void Breakpoint::resumePipeline()
 {
   // Resume the pipeline
   m_WaitCondition.wakeAll();
+  emit pipelineHasResumed();
 }
 
 // -----------------------------------------------------------------------------

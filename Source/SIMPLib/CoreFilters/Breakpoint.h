@@ -152,9 +152,14 @@ class SIMPLib_EXPORT Breakpoint : public AbstractFilter
     void preflightExecuted();
 
     /**
-    * @brief preflightExecuted Emitted when the pipeline needs to be paused
+    * @brief pipelineHasPaused Emitted when the pipeline needs to be paused
     */
     void pipelineHasPaused();
+
+    /**
+    * @brief pipelineHasResumed Emitted when the pipeline needs to be resumed
+    */
+    void pipelineHasResumed();
 
   protected:
     Breakpoint();
