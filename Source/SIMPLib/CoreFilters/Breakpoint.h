@@ -122,6 +122,12 @@ class SIMPLib_EXPORT Breakpoint : public AbstractFilter
     */
     virtual void preflight();
 
+  public slots:
+    /**
+    * @brief resumePipeline Resumes the pipeline
+    */
+    void resumePipeline();
+
   signals:
     /**
      * @brief updateFilterParameters Emitted when the Filter requests all the latest Filter parameters
@@ -157,12 +163,6 @@ class SIMPLib_EXPORT Breakpoint : public AbstractFilter
      * @brief dataCheck Checks for the appropriate parameter values and availability of arrays
      */
     void dataCheck();
-
-  protected slots:
-    /**
-    * @brief resumePipeline Resumes the pipeline
-    */
-    void resumePipeline();
 
   private:
     QWaitCondition                          m_WaitCondition;
