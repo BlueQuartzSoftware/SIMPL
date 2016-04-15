@@ -64,8 +64,7 @@ class PipelinePauseTest : public QObject
 
 public:
   PipelinePauseTest() :
-    m_WorkerThread(NULL),
-    m_IsPaused(false)
+    m_WorkerThread(NULL)
   {
 
   }
@@ -87,8 +86,8 @@ public:
     }
     {
       Breakpoint::Pointer filter = Breakpoint::New();
-      connect(filter.get(), SIGNAL(pipelineHasPaused()), pipeline.get(), SIGNAL(pipelineHasPaused()), Qt::DirectConnection);
-      connect(pipeline.get(), SIGNAL(pipelineIsResuming()), filter.get(), SLOT(resumePipeline()), Qt::DirectConnection);
+      connect(filter.get(), SIGNAL(pipelineHasPaused()), pipeline.get(), SIGNAL(pipelineHasPaused()));
+      connect(pipeline.get(), SIGNAL(pipelineIsResuming()), filter.get(), SLOT(resumePipeline()));
 
       pipeline->pushBack(filter);
     }
@@ -98,22 +97,6 @@ public:
       filter->setGlobalValue(&GlobalVariable);
       pipeline->pushBack(filter);
     }
-
-    // When the thread starts its event loop, start the PipelineBuilder going
-    connect(m_WorkerThread, SIGNAL(started()),
-      pipeline.get(), SLOT(run()));
-
-    // When the pipeline pauses then tell this object that it has paused
-    connect(pipeline.get(), SIGNAL(pipelineHasPaused()),
-      this, SLOT(PipelinePaused()), Qt::QueuedConnection);
-
-    // When the pipeline pauses then tell this object that it has paused
-    connect(this, SIGNAL(pipelineIsResuming()),
-      pipeline.get(), SIGNAL(pipelineIsResuming()), Qt::DirectConnection);
-
-    // When the pipeline ends then tell the QThread to stop its event loop
-    connect(pipeline.get(), SIGNAL(pipelineFinished()),
-      m_WorkerThread, SLOT(quit()));
 
     return pipeline;
   }
@@ -134,28 +117,31 @@ public:
     }
     m_WorkerThread = new QThread(); // Create a new Thread Resource
 
-    FilterPipeline::Pointer pipeline = createPipeline();
+    m_Pipeline = createPipeline();
+
+    // When the thread starts its event loop, start the PipelineBuilder going
+    connect(m_WorkerThread, SIGNAL(started()),
+      m_Pipeline.get(), SLOT(run()));
+
+    // When the pipeline pauses then tell this object that it has paused
+    connect(m_Pipeline.get(), SIGNAL(pipelineHasPaused()),
+      this, SLOT(PipelinePaused()));
+
+    // When the pipeline pauses then tell this object that it has paused
+    connect(this, SIGNAL(pipelineIsResuming()),
+      m_Pipeline.get(), SIGNAL(pipelineIsResuming()), Qt::DirectConnection);
+
+    // When the pipeline ends then tell the QThread to stop its event loop
+    connect(m_Pipeline.get(), SIGNAL(pipelineFinished()),
+      m_WorkerThread, SLOT(quit()));
 
     // When the QThread finishes, tell this object that it has finished.
     connect(m_WorkerThread, SIGNAL(finished()),
-      this, SLOT(PipelineDidFinish()), Qt::DirectConnection);
+      this, SLOT(PipelineDidFinish()));
 
-    pipeline->moveToThread(m_WorkerThread);
+    m_Pipeline->moveToThread(m_WorkerThread);
 
     m_WorkerThread->start();
-
-    m_Mutex.lock();
-    while (m_IsPaused == false)
-    {
-      m_WaitCondition.wait(&m_Mutex, 500);
-      QCoreApplication::processEvents();
-    }
-    m_Mutex.unlock();
-
-    DREAM3D_REQUIRE_EQUAL(GlobalVariable, 7);
-    std::cout << "GlobalVariable = 7" << std::endl;
-
-    qApp->quit();
   }
 
 public slots:
@@ -186,8 +172,9 @@ public slots:
   // -----------------------------------------------------------------------------
   void PipelineDidFinish()
   {
-    m_IsPaused = true;
-    m_WaitCondition.wakeAll();
+    qApp->quit();
+    DREAM3D_REQUIRE_EQUAL(GlobalVariable, 7);
+    std::cout << "GlobalVariable = 7" << std::endl;
   }
 
 signals:
@@ -195,11 +182,8 @@ signals:
   void testFinished();
 
 private:
-  QThread*                            m_WorkerThread;
-  bool                                m_IsPaused;
-
-  QWaitCondition                      m_WaitCondition;
-  QMutex                              m_Mutex;
+  QThread*                                              m_WorkerThread;
+  FilterPipeline::Pointer                               m_Pipeline;
 
   PipelinePauseTest(const PipelinePauseTest&); // Copy Constructor Not Implemented
   void operator=(const PipelinePauseTest&); // Operator '=' Not Implemented
