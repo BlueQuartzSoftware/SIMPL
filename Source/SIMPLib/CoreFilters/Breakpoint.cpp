@@ -49,8 +49,7 @@
 //
 // -----------------------------------------------------------------------------
 Breakpoint::Breakpoint() :
-  AbstractFilter(),
-  m_IsPaused(false)
+  AbstractFilter()
 {
   setupFilterParameters();
 }
@@ -120,16 +119,11 @@ void Breakpoint::preflight()
 // -----------------------------------------------------------------------------
 void Breakpoint::execute()
 {
-  m_IsPaused = true;
-
   // Pause the pipeline at this point until someone chooses to resume
   emit pipelineHasPaused();
 
   m_Mutex.lock();
-  while(m_IsPaused)
-  {
-    m_WaitCondition.wait(&m_Mutex);
-  }
+  m_WaitCondition.wait(&m_Mutex);
   m_Mutex.unlock();
 }
 
@@ -140,7 +134,6 @@ void Breakpoint::resumePipeline()
 {
   // Resume the pipeline
   m_WaitCondition.wakeAll();
-  m_IsPaused = false;
 }
 
 // -----------------------------------------------------------------------------
