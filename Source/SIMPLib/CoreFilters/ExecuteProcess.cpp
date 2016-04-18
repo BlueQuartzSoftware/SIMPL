@@ -5,6 +5,7 @@
 #include "ExecuteProcess.h"
 
 #include <QtCore/QFileInfo>
+#include <QtCore/QCoreApplication>
 
 #include "SIMPLib/Common/Constants.h"
 #include "SIMPLib/SIMPLibVersion.h"
@@ -23,6 +24,12 @@ ExecuteProcess::ExecuteProcess() :
   AbstractFilter()
 {
   setupFilterParameters();
+
+  m_Process = new QProcess(NULL);
+  connect(m_Process, SIGNAL(finished(int, QProcess::ExitStatus)), this, SLOT(processHasFinished(int, QProcess::ExitStatus)));
+  connect(m_Process, SIGNAL(error(QProcess::ProcessError)), this, SLOT(processHasErroredOut(QProcess::ProcessError)));
+  qRegisterMetaType<QProcess::ExitStatus>("QProcess::ExitStatus");
+  qRegisterMetaType<QProcess::ProcessError>("QProcess::ProcessError");
 }
 
 // -----------------------------------------------------------------------------
@@ -30,6 +37,7 @@ ExecuteProcess::ExecuteProcess() :
 // -----------------------------------------------------------------------------
 ExecuteProcess::~ExecuteProcess()
 {
+  delete m_Process;
 }
 
 // -----------------------------------------------------------------------------
@@ -38,12 +46,6 @@ ExecuteProcess::~ExecuteProcess()
 void ExecuteProcess::setupFilterParameters()
 {
   FilterParameterVector parameters;
-
-#if !defined (Q_OS_MAC)
-  parameters.push_back(InputFileFilterParameter::New("Process Path", "ProcessPath", getProcessPath(), FilterParameter::Parameter, "*.exe"));
-#else
-  parameters.push_back(InputFileFilterParameter::New("Process File", "ProcessFile", getProcessFile(), FilterParameter::Parameter));
-#endif
 
   parameters.push_back(StringFilterParameter::New("Command Line Arguments", "Arguments", getArguments(), FilterParameter::Parameter));
 
@@ -78,12 +80,13 @@ void ExecuteProcess::dataCheck()
 {
   setErrorCondition(0);
 
-  QFileInfo fi(m_ProcessFile);
-  if (fi.exists() == false)
+  QStringList arguments = splitArgumentsString(m_Arguments);
+  if (arguments.size() <= 0)
   {
-    QString ss = QObject::tr("The process file does not exist on the file system.");
+    QString ss = QObject::tr("No command line arguments have been specified.");
     setErrorCondition(-4001);
     notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
+    return;
   }
 }
 
@@ -110,17 +113,118 @@ void ExecuteProcess::execute()
   dataCheck();
   if(getErrorCondition() < 0) { return; }
 
-//  if (getCancel() == true) { return; }
+  QStringList arguments = splitArgumentsString(m_Arguments);
+  QString command = arguments[0];
+  arguments.removeAt(0);
 
-//  if (getErrorCondition() < 0)
-//  {
-//    QString ss = QObject::tr("Some error message");
-//    setErrorCondition(-99999999);
-//    notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
-//    return;
-//  }
+  m_Process->start(command, arguments);
+  m_Process->waitForFinished(-1);
 
-  notifyStatusMessage(getHumanLabel(), "Complete");
+  std::cout << "Finished";
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+QStringList ExecuteProcess::splitArgumentsString(QString arguments)
+{
+  QStringList argumentList;
+  for(int i=0; i<m_Arguments.size(); i++)
+  {
+    if (m_Arguments[i] == '\"')
+    {
+      i++;
+      int start = i;
+      int index = m_Arguments.indexOf("\"", start);
+      if (index == -1)
+      {
+        index = m_Arguments.size();
+      }
+      int end = index - 1;
+      argumentList.push_back(m_Arguments.mid(start, end-start+1));
+      i = index;
+    }
+    else
+    {
+      int start = i;
+      int index = m_Arguments.indexOf(" ", start + 1);
+      if (index == -1)
+      {
+        index = m_Arguments.size();
+      }
+      int end = index - 1;
+      argumentList.push_back(m_Arguments.mid(start, end-start+1));
+      i = index;
+    }
+  }
+
+  return argumentList;
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void ExecuteProcess::processHasFinished(int exitCode, QProcess::ExitStatus exitStatus)
+{
+  if (exitStatus == QProcess::CrashExit)
+  {
+    QString ss = QObject::tr("The process crashed during its exit.");
+    setErrorCondition(-4003);
+    notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
+  }
+  else if (exitCode < 0)
+  {
+    QString ss = QObject::tr("The process finished with exit code %1.").arg(QString::number(exitCode));
+    setErrorCondition(-4004);
+    notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
+  }
+  else
+  {
+    notifyStatusMessage(getHumanLabel(), "Complete");
+  }
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void ExecuteProcess::processHasErroredOut(QProcess::ProcessError error)
+{
+  if (error == QProcess::FailedToStart)
+  {
+    QString ss = QObject::tr("The process failed to start.  Either the invoked program is missing, or you may have insufficient permissions to invoke the program.");
+    setErrorCondition(-4005);
+    notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
+  }
+  else if (error == QProcess::Crashed)
+  {
+    QString ss = QObject::tr("The process crashed some time after starting successfully.");
+    setErrorCondition(-4006);
+    notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
+  }
+  else if (error == QProcess::Timedout)
+  {
+    QString ss = QObject::tr("The process timed out.");
+    setErrorCondition(-4007);
+    notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
+  }
+  else if (error == QProcess::WriteError)
+  {
+    QString ss = QObject::tr("An error occurred when attempting to write to the process.");
+    setErrorCondition(-4008);
+    notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
+  }
+  else if (error == QProcess::ReadError)
+  {
+    QString ss = QObject::tr("An error occurred when attempting to read from the process.");
+    setErrorCondition(-4009);
+    notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
+  }
+  else
+  {
+    QString ss = QObject::tr("An unknown error occurred.");
+    setErrorCondition(-4009);
+    notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
+  }
 }
 
 // -----------------------------------------------------------------------------

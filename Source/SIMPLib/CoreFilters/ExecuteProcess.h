@@ -5,6 +5,10 @@
 #ifndef _executeprocess_h_
 #define _executeprocess_h_
 
+#include <QtCore/QProcess>
+#include <QtCore/QWaitCondition>
+#include <QtCore/QMutex>
+
 #include "SIMPLib/SIMPLib.h"
 #include "SIMPLib/Common/AbstractFilter.h"
 #include "SIMPLib/Common/SIMPLibSetGetMacros.h"
@@ -20,9 +24,6 @@ class ExecuteProcess : public AbstractFilter
     SIMPL_SHARED_POINTERS(ExecuteProcess)
     SIMPL_STATIC_NEW_MACRO(ExecuteProcess)
     SIMPL_TYPE_MACRO_SUPER(ExecuteProcess, AbstractFilter)
-
-    SIMPL_FILTER_PARAMETER(QString, ProcessFile)
-    Q_PROPERTY(QString ProcessFile READ getProcessFile WRITE setProcessFile)
 
     SIMPL_FILTER_PARAMETER(QString, Arguments)
     Q_PROPERTY(QString Arguments READ getArguments WRITE setArguments)
@@ -126,7 +127,15 @@ class ExecuteProcess : public AbstractFilter
      */
     void dataCheck();
 
+protected slots:
+    void processHasFinished(int exitCode, QProcess::ExitStatus exitStatus);
+    void processHasErroredOut(QProcess::ProcessError error);
+
   private:
+    QProcess*                                         m_Process;
+
+    QStringList splitArgumentsString(QString arguments);
+
     ExecuteProcess(const ExecuteProcess&); // Copy Constructor Not Implemented
     void operator=(const ExecuteProcess&); // Operator '=' Not Implemented
 };
