@@ -130,6 +130,8 @@ class ExecuteProcess : public AbstractFilter
 protected slots:
     void processHasFinished(int exitCode, QProcess::ExitStatus exitStatus);
     void processHasErroredOut(QProcess::ProcessError error);
+    void displayErrorOutput();
+    void displayStandardOutput();
 
   private:
     QWaitCondition                                      m_WaitCondition;

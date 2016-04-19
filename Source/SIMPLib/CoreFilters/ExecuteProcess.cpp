@@ -118,6 +118,10 @@ void ExecuteProcess::execute()
           this, SLOT(processHasFinished(int, QProcess::ExitStatus)), Qt::QueuedConnection);
   connect(process, SIGNAL(error(QProcess::ProcessError)),
           this, SLOT(processHasErroredOut(QProcess::ProcessError)), Qt::QueuedConnection);
+  connect(process, SIGNAL(readyReadStandardError()),
+          this, SLOT(displayErrorOutput()), Qt::QueuedConnection);
+  connect(process, SIGNAL(readyReadStandardOutput()),
+          this, SLOT(displayStandardOutput()), Qt::QueuedConnection);
   process->start(command, arguments);
 
   m_Mutex.lock();
@@ -174,7 +178,7 @@ QStringList ExecuteProcess::splitArgumentsString(QString arguments)
 //
 // -----------------------------------------------------------------------------
 void ExecuteProcess::processHasFinished(int exitCode, QProcess::ExitStatus exitStatus)
-{
+{  
   if (exitStatus == QProcess::CrashExit)
   {
     QString ss = QObject::tr("The process crashed during its exit.");
@@ -187,7 +191,7 @@ void ExecuteProcess::processHasFinished(int exitCode, QProcess::ExitStatus exitS
     setErrorCondition(-4004);
     notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
   }
-  else
+  else if (getErrorCondition() >= 0)
   {
     notifyStatusMessage(getHumanLabel(), "Complete");
   }
@@ -200,7 +204,7 @@ void ExecuteProcess::processHasFinished(int exitCode, QProcess::ExitStatus exitS
 //
 // -----------------------------------------------------------------------------
 void ExecuteProcess::processHasErroredOut(QProcess::ProcessError error)
-{
+{  
   if (error == QProcess::FailedToStart)
   {
     QString ss = QObject::tr("The process failed to start.  Either the invoked program is missing, or you may have insufficient permissions to invoke the program.");
@@ -234,12 +238,38 @@ void ExecuteProcess::processHasErroredOut(QProcess::ProcessError error)
   else
   {
     QString ss = QObject::tr("An unknown error occurred.");
-    setErrorCondition(-4009);
+    setErrorCondition(-4010);
     notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
   }
 
   m_Pause = false;
   m_WaitCondition.wakeAll();
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void ExecuteProcess::displayErrorOutput()
+{
+  QProcess* process = dynamic_cast<QProcess*>(sender());
+
+  QString error = process->readAllStandardError();
+  if (error[error.size() - 1] == '\n')
+  {
+    error.chop(1);
+  }
+  notifyErrorMessage(getHumanLabel(), error, -4011);
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void ExecuteProcess::displayStandardOutput()
+{
+  QProcess* process = dynamic_cast<QProcess*>(sender());
+
+  QByteArray stdOutput = process->readAllStandardOutput();
+  notifyStatusMessage(getHumanLabel(), stdOutput);
 }
 
 // -----------------------------------------------------------------------------
