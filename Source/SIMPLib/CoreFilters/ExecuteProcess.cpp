@@ -24,12 +24,6 @@ ExecuteProcess::ExecuteProcess() :
   AbstractFilter()
 {
   setupFilterParameters();
-
-  m_Process = new QProcess(NULL);
-  connect(m_Process, SIGNAL(finished(int, QProcess::ExitStatus)), this, SLOT(processHasFinished(int, QProcess::ExitStatus)));
-  connect(m_Process, SIGNAL(error(QProcess::ProcessError)), this, SLOT(processHasErroredOut(QProcess::ProcessError)));
-  qRegisterMetaType<QProcess::ExitStatus>("QProcess::ExitStatus");
-  qRegisterMetaType<QProcess::ProcessError>("QProcess::ProcessError");
 }
 
 // -----------------------------------------------------------------------------
@@ -37,7 +31,7 @@ ExecuteProcess::ExecuteProcess() :
 // -----------------------------------------------------------------------------
 ExecuteProcess::~ExecuteProcess()
 {
-  delete m_Process;
+
 }
 
 // -----------------------------------------------------------------------------
@@ -117,10 +111,25 @@ void ExecuteProcess::execute()
   QString command = arguments[0];
   arguments.removeAt(0);
 
-  m_Process->start(command, arguments);
-  m_Process->waitForFinished(-1);
+  QProcess* process = new QProcess(NULL);
+  qRegisterMetaType<QProcess::ExitStatus>("QProcess::ExitStatus");
+  qRegisterMetaType<QProcess::ProcessError>("QProcess::ProcessError");
+  connect(process, SIGNAL(finished(int, QProcess::ExitStatus)),
+          this, SLOT(processHasFinished(int, QProcess::ExitStatus)), Qt::QueuedConnection);
+  connect(process, SIGNAL(error(QProcess::ProcessError)),
+          this, SLOT(processHasErroredOut(QProcess::ProcessError)), Qt::QueuedConnection);
+  process->start(command, arguments);
 
-  std::cout << "Finished";
+  m_Mutex.lock();
+  m_Pause = true;
+  while (m_Pause == true)
+  {
+    m_WaitCondition.wait(&m_Mutex, 2000);
+    QCoreApplication::processEvents();
+  }
+  m_Mutex.unlock();
+
+  delete process;
 }
 
 // -----------------------------------------------------------------------------
@@ -182,6 +191,9 @@ void ExecuteProcess::processHasFinished(int exitCode, QProcess::ExitStatus exitS
   {
     notifyStatusMessage(getHumanLabel(), "Complete");
   }
+
+  m_Pause = false;
+  m_WaitCondition.wakeAll();
 }
 
 // -----------------------------------------------------------------------------
@@ -225,6 +237,9 @@ void ExecuteProcess::processHasErroredOut(QProcess::ProcessError error)
     setErrorCondition(-4009);
     notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
   }
+
+  m_Pause = false;
+  m_WaitCondition.wakeAll();
 }
 
 // -----------------------------------------------------------------------------

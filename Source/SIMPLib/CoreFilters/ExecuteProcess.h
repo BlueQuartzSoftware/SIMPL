@@ -132,7 +132,9 @@ protected slots:
     void processHasErroredOut(QProcess::ProcessError error);
 
   private:
-    QProcess*                                         m_Process;
+    QWaitCondition                                      m_WaitCondition;
+    QMutex                                              m_Mutex;
+    bool                                                m_Pause;
 
     QStringList splitArgumentsString(QString arguments);
 
