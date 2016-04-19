@@ -185,7 +185,7 @@ const QString Breakpoint::getGroupName()
 //
 // -----------------------------------------------------------------------------
 const QString Breakpoint::getSubGroupName()
-{ return SIMPL::FilterSubGroups::MemoryManagementFilters; }
+{ return SIMPL::FilterSubGroups::MiscFilters; }
 
 // -----------------------------------------------------------------------------
 //
