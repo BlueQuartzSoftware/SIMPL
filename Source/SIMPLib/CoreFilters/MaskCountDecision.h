@@ -46,7 +46,7 @@
 /**
  * @brief The MaskCountDecision class. See [Filter documentation](@ref MaskCountDecision) for details.
  */
-class MaskCountDecision : public AbstractDecisionFilter
+class SIMPLib_EXPORT MaskCountDecision : public AbstractDecisionFilter
 {
     Q_OBJECT /* Need this for Qt's signals and slots mechanism to work */
   public:

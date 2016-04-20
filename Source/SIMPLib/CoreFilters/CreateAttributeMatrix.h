@@ -47,7 +47,7 @@
 /**
  * @brief The CreateAttributeMatrix class. See [Filter documentation](@ref createattributematrix) for details.
  */
-class CreateAttributeMatrix : public AbstractFilter
+class SIMPLib_EXPORT CreateAttributeMatrix : public AbstractFilter
 {
     Q_OBJECT /* Need this for Qt's signals and slots mechanism to work */
 

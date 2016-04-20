@@ -46,7 +46,7 @@
 /**
  * @brief The RequiredZThickness class. See [Filter documentation](@ref requiredzthickness) for details.
  */
-class RequiredZThickness : public AbstractDecisionFilter
+class SIMPLib_EXPORT RequiredZThickness : public AbstractDecisionFilter
 {
     Q_OBJECT /* Need this for Qt's signals and slots mechanism to work */
   public:

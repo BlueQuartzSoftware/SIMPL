@@ -46,7 +46,7 @@
 /**
  * @brief The FeatureCountDecision class. See [Filter documentation](@ref featurecountdecision) for details.
  */
-class FeatureCountDecision : public AbstractDecisionFilter
+class SIMPLib_EXPORT FeatureCountDecision : public AbstractDecisionFilter
 {
     Q_OBJECT /* Need this for Qt's signals and slots mechanism to work */
   public:
