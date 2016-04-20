@@ -68,17 +68,17 @@ VectorOfFloatArray H5TransformationStatsDataDelegate::createBetaDistributionArra
   return vect;
 }
 
-VectorOfFloatArray H5TransformationStatsDataDelegate::createPowerDistributionArrays()
-{
-  FloatArrayType::Pointer alphas = FloatArrayType::CreateArray(0, SIMPL::StringConstants::Alpha);
-  FloatArrayType::Pointer ks = FloatArrayType::CreateArray(0, SIMPL::StringConstants::Exp_k);
-  FloatArrayType::Pointer betas = FloatArrayType::CreateArray(0, SIMPL::StringConstants::Beta);
-  QVector<FloatArrayType::Pointer> vect;
-  vect.push_back(alphas);
-  vect.push_back(ks);
-  vect.push_back(betas);
-  return vect;
-}
+//VectorOfFloatArray H5TransformationStatsDataDelegate::createPowerDistributionArrays()
+//{
+//  FloatArrayType::Pointer alphas = FloatArrayType::CreateArray(0, SIMPL::StringConstants::Alpha);
+//  FloatArrayType::Pointer ks = FloatArrayType::CreateArray(0, SIMPL::StringConstants::Exp_k);
+//  FloatArrayType::Pointer betas = FloatArrayType::CreateArray(0, SIMPL::StringConstants::Beta);
+//  QVector<FloatArrayType::Pointer> vect;
+//  vect.push_back(alphas);
+//  vect.push_back(ks);
+//  vect.push_back(betas);
+//  return vect;
+//}
 
 VectorOfFloatArray H5TransformationStatsDataDelegate::createLogNormalDistributionArrays()
 {
@@ -100,10 +100,10 @@ VectorOfFloatArray H5TransformationStatsDataDelegate::createDistributionVector(u
   {
     return createBetaDistributionArrays();
   }
-  else if (distType == SIMPL::DistributionType::Power)
-  {
-    return createPowerDistributionArrays();
-  }
+//  else if (distType == SIMPL::DistributionType::Power)
+//  {
+//    return createPowerDistributionArrays();
+//  }
   else if (distType == SIMPL::DistributionType::LogNormal)
   {
     return createLogNormalDistributionArrays();
@@ -500,9 +500,9 @@ int H5TransformationStatsDataDelegate::writeDistributionData(hid_t pid,
     case SIMPL::DistributionType::LogNormal:
       disTypeStr = SIMPL::StringConstants::LogNormalDistribution;
       break;
-    case SIMPL::DistributionType::Power:
-      disTypeStr = SIMPL::StringConstants::PowerLawDistribution;
-      break;
+//    case SIMPL::DistributionType::Power:
+//      disTypeStr = SIMPL::StringConstants::PowerLawDistribution;
+//      break;
     case SIMPL::DistributionType::UnknownDistributionType:
       disTypeStr = SIMPL::StringConstants::UnknownDistribution;
       break;
@@ -556,10 +556,10 @@ uint32_t H5TransformationStatsDataDelegate::readDistributionType(hid_t pid, cons
   {
     dType = SIMPL::DistributionType::LogNormal;
   }
-  else   if (disTypeStr.compare(SIMPL::StringConstants::PowerLawDistribution) == 0)
-  {
-    dType = SIMPL::DistributionType::Power;
-  }
+//  else   if (disTypeStr.compare(SIMPL::StringConstants::PowerLawDistribution) == 0)
+//  {
+//    dType = SIMPL::DistributionType::Power;
+//  }
   return dType;
 }
 

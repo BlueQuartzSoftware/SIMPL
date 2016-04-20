@@ -64,6 +64,14 @@ H5FilterParametersWriter::~H5FilterParametersWriter()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
+hid_t H5FilterParametersWriter::getCurrentGroupId() const
+{
+  return m_CurrentGroupId;
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
 int H5FilterParametersWriter::WritePipelineToFile(FilterPipeline::Pointer pipeline, QString filePath, QString name, IObserver* obs)
 {
   if (NULL == pipeline.get())

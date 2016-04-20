@@ -35,7 +35,10 @@
 
 #include "RadialDistributionFunction.h"
 #include "SIMPLib/Utilities/SIMPLibRandom.h"
+#include "SIMPLib/StatsData/StatsData.h"
+
 #include "math.h"
+
 #include <fstream>
 #include <iostream>
 
@@ -45,9 +48,15 @@
 RdfData::RdfData() :
   m_MinDistance(0.0f),
   m_MaxDistance(0.0f),
+  m_NumberOfBins(50),
   m_DistributionType(SIMPL::StringConstants::UnknownDistribution)
 {
-
+  m_BoxResolution[0] = 0.1f;
+  m_BoxResolution[1] = 0.1f;
+  m_BoxResolution[2] = 0.1f;
+  m_BoxSize[0] = 100;
+  m_BoxSize[1] = 100;
+  m_BoxSize[2] = 100;
 }
 
 // -----------------------------------------------------------------------------
@@ -55,10 +64,99 @@ RdfData::RdfData() :
 // -----------------------------------------------------------------------------
 RdfData::~RdfData()
 {
-
 }
 
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+int RdfData::getFrequencyCount()
+{
+  return m_Frequencies.size();
+}
 
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+RdfData::Pointer RdfData::deepCopy()
+{
+  RdfData::Pointer ptr = RdfData::New();
+  ptr->setFrequencies(getFrequencies());
+  ptr->setMinDistance(getMinDistance());
+  ptr->setMaxDistance(getMaxDistance());
+  ptr->setDistributionType(getDistributionType());
+  float temp[3] = { 0.0f, 0.0f, 0.0f};
+  getBoxSize(temp);
+  ptr->setBoxSize(temp);
+  getBoxResolution(temp);
+  ptr->setBoxResolution(temp);
+  return ptr;
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+int RdfData::readJson(const QJsonObject &json)
+{
+  int err = 0;
+  float boxDims[3] = { 0.0f, 0.0f, 0.0f};
+
+  QJsonObject rdfJson = json[SIMPL::StringConstants::RadialDistFunc].toObject();
+
+  QJsonValue jsonValue = rdfJson[SIMPL::StringConstants::RdfMinDistance];
+  if (!jsonValue.isUndefined() && jsonValue.isDouble()) { setMinDistance(static_cast<float>(jsonValue.toDouble(0.0))); }
+  jsonValue = rdfJson[SIMPL::StringConstants::RdfMaxDistance];
+  if (!jsonValue.isUndefined() && jsonValue.isDouble()) { setMaxDistance(static_cast<float>(jsonValue.toDouble(0.0))); }
+
+  if (StatsData::ParseFloat3Vec(rdfJson, SIMPL::StringConstants::RdfBoxDims, boxDims, 0.0) == 0)
+  {
+    // Throw warning
+  }
+  setBoxSize(boxDims);
+
+  float boxRes[3] = { 0.0f, 0.0f, 0.0f};
+
+  if (StatsData::ParseFloat3Vec(rdfJson, SIMPL::StringConstants::RdfBoxRes, boxRes, 0.0) == 0)
+  {
+    // Throw warning
+  }
+  setBoxResolution(boxRes);
+
+  int numBins = 0;
+  jsonValue = rdfJson[SIMPL::StringConstants::BinCount];
+  if(!jsonValue.isUndefined() && jsonValue.isDouble()) { numBins = jsonValue.toInt(0); }
+  setNumberOfBins(numBins);
+
+  std::vector<float> bd = { boxDims[0], boxDims[1], boxDims[2] };
+  std::vector<float> br = { boxRes[0], boxRes[1], boxRes[2] };
+  std::vector<float> freqs = RadialDistributionFunction::GenerateRandomDistribution(m_MinDistance, m_MaxDistance, numBins, bd, br);
+  setFrequencies(freqs);
+
+  return err;
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+int RdfData::writeJson(QJsonObject &json)
+{
+  int err = 0;
+  QJsonObject rdfJson;
+  rdfJson.insert(SIMPL::StringConstants::BinCount, getNumberOfBins());
+  rdfJson.insert(SIMPL::StringConstants::RdfMinDistance, getMinDistance());
+  rdfJson.insert(SIMPL::StringConstants::RdfMaxDistance, getMaxDistance());
+  QJsonArray boxArray;
+  float boxDims[3];
+  getBoxSize(boxDims);
+  for(int i = 0; i < 3; i++) { boxArray.insert(i, boxDims[i]); }
+  rdfJson.insert(SIMPL::StringConstants::RdfBoxDims, boxArray);
+
+  getBoxResolution(boxDims);
+  for(int i = 0; i < 3; i++) { boxArray.replace(i, boxDims[i]); }
+  rdfJson.insert(SIMPL::StringConstants::RdfBoxRes, boxArray);
+
+  json.insert(SIMPL::StringConstants::RadialDistFunc, rdfJson);
+  return err;
+}
 
 // -----------------------------------------------------------------------------
 //

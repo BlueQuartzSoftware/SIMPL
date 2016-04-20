@@ -62,6 +62,16 @@ MatrixStatsData::~MatrixStatsData()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
+StatsData::Pointer MatrixStatsData::deepCopy()
+{
+  MatrixStatsData::Pointer ptr = MatrixStatsData::New();
+  ptr->setPhaseFraction(getPhaseFraction());
+  return ptr;
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
 void MatrixStatsData::initialize()
 {
 
@@ -105,3 +115,30 @@ int MatrixStatsData::readHDF5Data(hid_t groupId)
   err = reader->readMatrixStatsData(this, groupId);
   return err;
 }
+
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void MatrixStatsData::writeJson(QJsonObject &json)
+{
+  json.insert(SIMPL::StringConstants::PhaseType, SIMPL::PhaseType::Matrix);
+  // Write the Phase Fraction
+  json.insert(SIMPL::StringConstants::PhaseFraction, getPhaseFraction());
+
+}
+
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void MatrixStatsData::readJson(const QJsonObject &json)
+{
+  QJsonValue fValue = json[SIMPL::StringConstants::PhaseFraction];
+  if(!fValue.isUndefined() && fValue.isDouble())
+  {
+    setPhaseFraction(fValue.toDouble(0.0));
+  }
+
+}
+

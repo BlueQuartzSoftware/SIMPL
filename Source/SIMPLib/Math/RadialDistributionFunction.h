@@ -38,6 +38,8 @@
 
 #include <vector>
 
+#include <QtCore/QJsonObject>
+
 #include "SIMPLib/SIMPLib.h"
 #include "SIMPLib/Common/SIMPLibSetGetMacros.h"
 #include "SIMPLib/DataArrays/DataArray.hpp"
@@ -56,7 +58,32 @@ class SIMPLib_EXPORT RdfData
     SIMPL_INSTANCE_PROPERTY(std::vector<float>, Frequencies)
     SIMPL_INSTANCE_PROPERTY(float, MinDistance)
     SIMPL_INSTANCE_PROPERTY(float, MaxDistance)
+    SIMPL_INSTANCE_PROPERTY(int, NumberOfBins)
     SIMPL_INSTANCE_STRING_PROPERTY(DistributionType)
+    SIMPL_INSTANCE_VEC3_PROPERTY(float, BoxSize)
+    SIMPL_INSTANCE_VEC3_PROPERTY(float, BoxResolution)
+
+    int getFrequencyCount();
+
+    /**
+     * @brief deepCopy
+     * @return
+     */
+    Pointer deepCopy();
+
+    /**
+     * @brief readJson
+     * @param json
+     * @return
+     */
+    int readJson(const QJsonObject &json);
+
+    /**
+     * @brief writeJson
+     * @param json
+     * @return
+     */
+    int writeJson(QJsonObject &json);
 
   protected:
     RdfData();

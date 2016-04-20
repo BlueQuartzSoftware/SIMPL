@@ -75,8 +75,8 @@ set(TEST_NAMES
   RemoveComponentFromArrayTest
   QuaternionMathTest
   CreateFeatureArrayFromElementArrayTest
-
-  )
+  StatsDataJsonRWTest
+)
 
 set( ${PLUGIN_NAME}_TEST_SRCS )
 set(FilterTestIncludes "")

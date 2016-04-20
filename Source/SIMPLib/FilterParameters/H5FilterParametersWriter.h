@@ -75,6 +75,7 @@ class SIMPLib_EXPORT H5FilterParametersWriter : public AbstractFilterParametersW
     virtual ~H5FilterParametersWriter();
 
     SIMPL_INSTANCE_PROPERTY(hid_t, GroupId)
+    hid_t getCurrentGroupId() const;
 
     virtual int openFilterGroup(AbstractFilter* filter, int index);
     virtual int closeFilterGroup();

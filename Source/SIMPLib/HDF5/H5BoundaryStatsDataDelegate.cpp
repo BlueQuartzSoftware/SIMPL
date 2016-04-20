@@ -85,14 +85,14 @@ int H5BoundaryStatsDataDelegate::writeBoundaryStatsData(BoundaryStatsData* data,
   }
   int err = 0;
 
-  // Write the NumFeatures
+  // Write the Boundary Area
   err = writeBoundaryArea(data, groupId);
   if (err < 0)
   {
     return err;
   }
 
-  // Write the PhaseFraction
+  // Write the Phase Fraction
   err = writePhaseFraction(data, groupId);
   if (err < 0)
   {
