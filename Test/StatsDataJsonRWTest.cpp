@@ -153,7 +153,7 @@ class StatsDataJsonRWTest
      */
     void validateDistributionValues(VectorOfFloatArray &arrays, int binCount)
     {
-      float epsilon = 0.00001;
+      float epsilon = 0.00001f;
       for(size_t a = 0; a < arrays.size(); a++)
       {
         for(int i = 0; i < binCount; i++)
@@ -173,9 +173,9 @@ class StatsDataJsonRWTest
       statsData->setBoundaryArea(0.5f);
 
       // Write the Bin Numbers
-      statsData->setBinStepSize(0.2);
-      statsData->setMaxFeatureDiameter(1.2);
-      statsData->setMinFeatureDiameter(.2);
+      statsData->setBinStepSize(0.2f);
+      statsData->setMaxFeatureDiameter(1.2f);
+      statsData->setMinFeatureDiameter(.2f);
       FloatArrayType::Pointer bins = statsData->generateBinNumbers();
       int numTuples = bins->getNumberOfTuples();
 
@@ -186,8 +186,8 @@ class StatsDataJsonRWTest
         FloatArrayType::Pointer d2 = FloatArrayType::CreateArray(1, SIMPL::StringConstants::StandardDeviation);
         data.push_back(d1);
         data.push_back(d2);
-        d1->setValue(0, 1.1);
-        d2->setValue(0, 0.1);
+        d1->setValue(0, 1.1f);
+        d2->setValue(0, 0.1f);
         statsData->setFeatureSizeDistribution(data);
         statsData->setFeatureSize_DistType(SIMPL::DistributionType::LogNormal);
       }
@@ -254,7 +254,7 @@ class StatsDataJsonRWTest
     template<typename T>
     void ValidateStatsData(typename T::Pointer statsData)
     {
-      float epsilon = 0.00001;
+      float epsilon = 0.00001f;
 
       DREAM3D_REQUIRED(std::abs(statsData->getPhaseFraction() - 0.10), <, epsilon );
       DREAM3D_REQUIRED(std::abs(statsData->getBoundaryArea() - 0.50), <, epsilon );
@@ -327,9 +327,9 @@ class StatsDataJsonRWTest
     void BoundaryWriteTest()
     {
       BoundaryStatsData::Pointer statsData = BoundaryStatsData::New();
-      statsData->setBoundaryArea(0.5);
-      statsData->setParentPhase(0.25);
-      statsData->setPhaseFraction(0.65);
+      statsData->setBoundaryArea(0.5f);
+      statsData->setParentPhase(0.25f);
+      statsData->setPhaseFraction(0.65f);
 
       QJsonObject jsonRoot;
       statsData->writeJson(jsonRoot);
@@ -343,7 +343,7 @@ class StatsDataJsonRWTest
      */
     void BoundaryReadTest()
     {
-      float epsilon = 0.00001;
+      float epsilon = 0.00001f;
       QJsonDocument doc = readJsonFile(getBoundaryStatsFileName());
       QJsonObject jsonRoot = doc.object();
 
@@ -361,7 +361,7 @@ class StatsDataJsonRWTest
     void MatrixWriteTest()
     {
       MatrixStatsData::Pointer statsData = MatrixStatsData::New();
-      statsData->setPhaseFraction(0.65);
+      statsData->setPhaseFraction(0.65f);
 
       QJsonObject jsonRoot;
       statsData->writeJson(jsonRoot);
@@ -375,7 +375,7 @@ class StatsDataJsonRWTest
      */
     void MatrixReadTest()
     {
-      float epsilon = 0.00001;
+      float epsilon = 0.00001f;
       QJsonDocument doc = readJsonFile(getMatrixStatsFileName());
       QJsonObject jsonRoot = doc.object();
 
@@ -422,7 +422,7 @@ class StatsDataJsonRWTest
      */
     void PrecipitateReadTest()
     {
-      float epsilon = 0.00001;
+      float epsilon = 0.00001f;
       QJsonDocument doc = readJsonFile(getPrecipitateStatsFileName());
       QJsonObject jsonRoot = doc.object();
 
@@ -525,7 +525,7 @@ class StatsDataJsonRWTest
      */
     void TransformationReadTest()
     {
-      float epsilon = 0.00001;
+      float epsilon = 0.00001f;
       QJsonDocument doc = readJsonFile(getTransformationStatsFileName());
       QJsonObject jsonRoot = doc.object();
 
