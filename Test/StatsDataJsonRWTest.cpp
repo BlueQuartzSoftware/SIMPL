@@ -212,7 +212,9 @@ class StatsDataJsonRWTest
       {
         FloatArrayType::Pointer angles = FloatArrayType::CreateArray(1, SIMPL::StringConstants::Angle);
         angles->initializeWithValue(45.0f, 0);
-        FloatArrayType::Pointer axis = FloatArrayType::CreateArray(1, std::vector<size_t>({3}), SIMPL::StringConstants::Axis);
+        std::vector<size_t> vec;
+        vec.push_back(3);
+        FloatArrayType::Pointer axis = FloatArrayType::CreateArray(1, vec, SIMPL::StringConstants::Axis);
         axis->initializeWithValue(1.0, 0);
         FloatArrayType::Pointer weight = FloatArrayType::CreateArray(1, SIMPL::StringConstants::Weight);
         weight->initializeWithValue(1000.0f, 0);
