@@ -152,7 +152,7 @@ void ExecuteProcess::execute()
   connect(process, SIGNAL(readyReadStandardError()),
           this, SLOT(displayErrorOutput()), Qt::QueuedConnection);
   connect(process, SIGNAL(readyReadStandardOutput()),
-          this, SLOT(displayStandardOutput()), Qt::QueuedConnection);
+          this, SLOT(passStandardOutput()), Qt::QueuedConnection);
   process->start(command, arguments);
 
   m_Mutex.lock();
@@ -295,12 +295,19 @@ void ExecuteProcess::displayErrorOutput()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void ExecuteProcess::displayStandardOutput()
+void ExecuteProcess::passStandardOutput()
 {
   QProcess* process = dynamic_cast<QProcess*>(sender());
 
-  QByteArray stdOutput = process->readAllStandardOutput();
-  notifyStatusMessage(getHumanLabel(), stdOutput);
+  m_StandardOutput = process->readAllStandardOutput();
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+QString ExecuteProcess::getStandardOutput()
+{
+  return m_StandardOutput;
 }
 
 // -----------------------------------------------------------------------------
