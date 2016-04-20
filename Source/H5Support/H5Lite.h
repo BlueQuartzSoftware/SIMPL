@@ -310,6 +310,7 @@ namespace H5Support_NAMESPACE
         hid_t did = -1;
         hid_t sid = -1;
         herr_t retErr = 0;
+        if(data.size() == 0) { return 0; }
         hid_t dataType = H5Lite::HDFTypeForPrimitive(data.front());
         if(dataType == -1)
         {

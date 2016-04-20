@@ -80,7 +80,7 @@ class SIMPLib_EXPORT H5FilterParametersReader : public AbstractFilterParametersR
 
     SIMPL_INSTANCE_PROPERTY(hid_t, PipelineGroupId)
 
-
+    hid_t getCurrentGroupId() const;
 
     virtual int openFilterGroup(AbstractFilter* filter, int index);
     virtual int closeFilterGroup();

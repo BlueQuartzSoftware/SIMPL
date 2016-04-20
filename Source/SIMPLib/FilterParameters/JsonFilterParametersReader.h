@@ -142,6 +142,11 @@ class SIMPLib_EXPORT JsonFilterParametersReader : public AbstractFilterParameter
      */
     QString generateIndexString(int index, int maxIndex);
 
+    /*
+     * @brief getCurrentGroupObject
+     * @return
+     */
+    QJsonObject& getCurrentGroupObject();
 
     int openGroup(QString key);
     int closeGroup();

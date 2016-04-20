@@ -372,6 +372,7 @@ namespace SIMPL
     const QString NumFeatures("NumFeatures");
     const QString VolFractions("VolFractions");
     const QString TotalSurfaceAreas("TotalSurfaceAreas");
+    const QString CrystalSymmetry("Crystal Symmetry");
     const QString CrystalStructures("CrystalStructures");
     const QString PhaseTypes("PhaseTypes");
     const QString BravaisLattice("BravaisLattice");
@@ -482,6 +483,8 @@ namespace SIMPL
     const QString Beta("Beta");
     const QString BetaDistribution("Beta Distribution");
     const QString BinNumber("BinNumber");
+    const QString BinCount("Bin Count");
+    const QString BinStepSize("Bin Step Size");
     const QString BoundaryArea("BoundaryArea");
     const QString BoundaryStatsData("BoundaryStatsData");
     const QString CellNeighbors("CellNeighbors");
@@ -557,6 +560,8 @@ namespace SIMPL
     const QString RadialDistFunc("Radial Distribution Function");
     const QString RdfMinDistance("Min");
     const QString RdfMaxDistance("Max");
+    const QString RdfBoxDims("BoxDims");
+    const QString RdfBoxRes("BoxRes");
 
     const QString Sigma("Sigma");
     const QString StandardDeviation("Standard Deviation");
@@ -633,7 +638,7 @@ namespace SIMPL
     const unsigned int RDFFrequency = 3; //!<
     const unsigned int RDFMaxMin = 4; //!<
     const unsigned int UnknownDistributionType = 5;    //!<
-    const unsigned int Count = 5; //!<
+    const unsigned int Count = 6; //!<
 
     enum ColumnCount
     {

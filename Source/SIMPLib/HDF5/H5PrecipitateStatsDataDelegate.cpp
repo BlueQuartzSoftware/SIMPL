@@ -38,6 +38,7 @@
 
 #include "H5Support/QH5Lite.h"
 #include "H5Support/QH5Utilities.h"
+#include "H5Support/HDF5ScopedFileSentinel.h"
 
 
 // -----------------------------------------------------------------------------
@@ -68,17 +69,17 @@ VectorOfFloatArray H5PrecipitateStatsDataDelegate::createBetaDistributionArrays(
   return vect;
 }
 
-VectorOfFloatArray H5PrecipitateStatsDataDelegate::createPowerDistributionArrays()
-{
-  FloatArrayType::Pointer alphas = FloatArrayType::CreateArray(0, SIMPL::StringConstants::Alpha);
-  FloatArrayType::Pointer ks = FloatArrayType::CreateArray(0, SIMPL::StringConstants::Exp_k);
-  FloatArrayType::Pointer betas = FloatArrayType::CreateArray(0, SIMPL::StringConstants::Beta);
-  QVector<FloatArrayType::Pointer> vect;
-  vect.push_back(alphas);
-  vect.push_back(ks);
-  vect.push_back(betas);
-  return vect;
-}
+//VectorOfFloatArray H5PrecipitateStatsDataDelegate::createPowerDistributionArrays()
+//{
+//  FloatArrayType::Pointer alphas = FloatArrayType::CreateArray(0, SIMPL::StringConstants::Alpha);
+//  FloatArrayType::Pointer ks = FloatArrayType::CreateArray(0, SIMPL::StringConstants::Exp_k);
+//  FloatArrayType::Pointer betas = FloatArrayType::CreateArray(0, SIMPL::StringConstants::Beta);
+//  QVector<FloatArrayType::Pointer> vect;
+//  vect.push_back(alphas);
+//  vect.push_back(ks);
+//  vect.push_back(betas);
+//  return vect;
+//}
 
 VectorOfFloatArray H5PrecipitateStatsDataDelegate::createLogNormalDistributionArrays()
 {
@@ -109,10 +110,10 @@ VectorOfFloatArray H5PrecipitateStatsDataDelegate::createDistributionVector(unsi
   {
     return createBetaDistributionArrays();
   }
-  else if (distType == SIMPL::DistributionType::Power)
-  {
-    return createPowerDistributionArrays();
-  }
+//  else if (distType == SIMPL::DistributionType::Power)
+//  {
+//    return createPowerDistributionArrays();
+//  }
   else if (distType == SIMPL::DistributionType::LogNormal)
   {
     return createLogNormalDistributionArrays();
@@ -534,9 +535,9 @@ int H5PrecipitateStatsDataDelegate::writeDistributionData(hid_t pid,
     case SIMPL::DistributionType::LogNormal:
       disTypeStr = SIMPL::StringConstants::LogNormalDistribution;
       break;
-    case SIMPL::DistributionType::Power:
-      disTypeStr = SIMPL::StringConstants::PowerLawDistribution;
-      break;
+//    case SIMPL::DistributionType::Power:
+//      disTypeStr = SIMPL::StringConstants::PowerLawDistribution;
+//      break;
     case SIMPL::DistributionType::UnknownDistributionType:
       disTypeStr = SIMPL::StringConstants::UnknownDistribution;
       break;
@@ -584,32 +585,52 @@ int H5PrecipitateStatsDataDelegate::writeRDFDistributionData(hid_t pid, RdfData:
     hid_t disId = QH5Utilities::createGroup(pid, hdf5GroupName);
     if (disId > 0)
     {
-
+      HDF5ScopedGroupSentinel sentinel(&disId, false);
       std::vector<hsize_t> dims(1);
       //Write the Frequencies
-      dims[0] = rdfData->getFrequencies().size();
       std::vector<float> freqs = rdfData->getFrequencies();
-      err = H5Lite::writeVectorDataset(disId, SIMPL::StringConstants::Frequencies.toStdString(), dims, freqs);
-      if(err < 0)
+      dims[0] = freqs.size();
+      if(dims[0] != 0)
       {
-        return err;
+        err = H5Lite::writeVectorDataset(disId, SIMPL::StringConstants::Frequencies.toStdString(), dims, freqs);
+        if(err < 0)
+        {
+          return err;
+        }
+        float val = rdfData->getMaxDistance();
+        err = QH5Lite::writeScalarAttribute(disId, SIMPL::StringConstants::Frequencies, SIMPL::StringConstants::RdfMaxDistance, val);
+        if(err < 0)
+        {
+          return err;
+        }
+        val = rdfData->getMinDistance();
+        err = QH5Lite::writeScalarAttribute(disId, SIMPL::StringConstants::Frequencies, SIMPL::StringConstants::RdfMinDistance, val);
+        if(err < 0)
+        {
+          return err;
+        }
       }
-      float val = rdfData->getMaxDistance();
-      err = QH5Lite::writeScalarAttribute(disId, SIMPL::StringConstants::Frequencies, SIMPL::StringConstants::RdfMaxDistance, val);
-      if(err < 0)
-      {
-        return err;
-      }
-      val = rdfData->getMinDistance();
-      err = QH5Lite::writeScalarAttribute(disId, SIMPL::StringConstants::Frequencies, SIMPL::StringConstants::RdfMinDistance, val);
+      int32_t rank = 1;
+      dims[0] = 3;
+      float boxRes[3] = {0.0f, 0.0f, 0.0f};
+      rdfData->getBoxResolution(boxRes);
+      err = H5Lite::writePointerDataset(disId, SIMPL::StringConstants::RdfBoxRes.toStdString(), rank, dims.data(), boxRes);
       if(err < 0)
       {
         return err;
       }
 
+      float boxDims[3] = {0.0f, 0.0f, 0.0f};
+      rdfData->getBoxSize(boxDims);
+      err = H5Lite::writePointerDataset(disId, SIMPL::StringConstants::RdfBoxDims.toStdString(), rank, dims.data(), boxDims);
+      if(err < 0)
+      {
+        return err;
+      }
 
       // Close the HDF5 Group
       err = H5Gclose(disId);
+      disId = -1;
     }
     else
     {
@@ -643,10 +664,10 @@ uint32_t H5PrecipitateStatsDataDelegate::readDistributionType(hid_t pid, const Q
   {
     dType = SIMPL::DistributionType::LogNormal;
   }
-  else   if (disTypeStr.compare(SIMPL::StringConstants::PowerLawDistribution) == 0)
-  {
-    dType = SIMPL::DistributionType::Power;
-  }
+//  else   if (disTypeStr.compare(SIMPL::StringConstants::PowerLawDistribution) == 0)
+//  {
+//    dType = SIMPL::DistributionType::Power;
+//  }
   return dType;
 }
 
@@ -689,6 +710,7 @@ int H5PrecipitateStatsDataDelegate::readRDFDistributionData(hid_t pid,
   {
     return -1;
   }
+  HDF5ScopedGroupSentinel sentinel(&disId, false);
 
 
   std::vector<float> freqs;
@@ -714,13 +736,24 @@ int H5PrecipitateStatsDataDelegate::readRDFDistributionData(hid_t pid,
   }
   rdfData->setMinDistance(val);
 
-//  QString disType;
-//  err = QH5Lite::readStringAttribute(disId, SIMPL::StringConstants::RadialDistFunc, SIMPL::StringConstants::DistributionType, disType);
-//  if(err < 0)
-//  {
-//    return err;
-//  }
-//  rdfData->setDistributionType(disType);
+
+
+  float boxDims[3] = { 0.0f, 0.0f, 0.0f};
+  err = QH5Lite::readPointerDataset(disId, SIMPL::StringConstants::RdfBoxDims, boxDims);
+  if(err < 0)
+  {
+    return err;
+  }
+  rdfData->setBoxSize(boxDims);
+
+
+  float boxRes[3] = { 0.0f, 0.0f, 0.0f};
+  err = QH5Lite::readPointerDataset(disId, SIMPL::StringConstants::RdfBoxRes, boxRes);
+  if(err < 0)
+  {
+    return err;
+  }
+  rdfData->setBoxResolution(boxRes);
 
   err = QH5Utilities::closeHDF5Object(disId);
   return err;

@@ -386,16 +386,21 @@ void StatsDataArray::initializeWithZeros()
 // -----------------------------------------------------------------------------
 IDataArray::Pointer StatsDataArray::deepCopy(bool forceNoAllocate)
 {
-  StatsDataArray::Pointer daCopyPtr = StatsDataArray::New();
-  if(forceNoAllocate == false)
+  StatsDataArray::Pointer daCopyPtr = StatsDataArray::CreateArray(getNumberOfTuples() * getNumberOfComponents(), getName());
+
+  daCopyPtr->resize(getNumberOfTuples());
+  for(size_t i = 0; i < getNumberOfTuples(); i++)
   {
-    daCopyPtr->resize(getNumberOfTuples());
-    StatsDataArray& daCopy = *daCopyPtr;
-    for(size_t i = 0; i < getNumberOfTuples(); i++)
+    // This should be a Deep Copy of each of the StatsData subclasses instead of a reference copy
+    if(nullptr != m_StatsDataArray[i]) {
+      daCopyPtr->setStatsData(i, m_StatsDataArray[i]->deepCopy());
+    }
+    else
     {
-      daCopy[i] = m_StatsDataArray[i];
+      daCopyPtr->setStatsData(i, StatsData::NullPointer());
     }
   }
+
   return daCopyPtr;
 }
 
@@ -540,6 +545,104 @@ int StatsDataArray::readH5Data(hid_t parentId)
   err |= QH5Utilities::closeHDF5Object(gid);
 
   return err;
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+int StatsDataArray::writeToJson(QJsonObject &jsonRoot, UInt32ArrayType::Pointer crystalStructures)
+{
+  int error = 0;
+
+  QJsonObject statsObj
+  {
+    {"Phase Count", static_cast<double>(getNumberOfTuples()) },
+    {"Name", SIMPL::EnsembleData::Statistics }
+  };
+
+
+  for(size_t i = 1; i < getNumberOfTuples(); i++)
+  {
+    StatsData::Pointer statsData = getStatsData(i);
+    if(NULL != statsData.get() ) {
+      QJsonObject phaseObj;
+      statsData->writeJson(phaseObj);
+      if(crystalStructures) {
+        phaseObj.insert(SIMPL::EnsembleData::CrystalSymmetry, static_cast<int>(crystalStructures->getValue(i)));
+      }
+      statsObj.insert(QString::number(i), phaseObj);
+    }
+  }
+
+  jsonRoot.insert(QString("StatsDataArray"), statsObj);
+
+  return error;
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+int StatsDataArray::readFromJson(const QJsonObject &jsonRoot)
+{
+  QJsonObject statsObject = jsonRoot["StatsDataArray"].toObject();
+
+  int phaseCount = statsObject["Phase Count"].toInt();
+  QString arrayName = statsObject["Name"].toString();
+  setName(arrayName);
+  resizeTotalElements(phaseCount);
+
+  // Start from index 1. Index 0 is always junk.
+  for(int index = 1; index < phaseCount; index++)
+  {
+    QString phaseAsString = QString::number(index);
+    QJsonObject phaseObject = statsObject[phaseAsString].toObject();
+    QString statsType = phaseObject[SIMPL::StringConstants::PhaseType].toString();
+
+    if(statsType.compare(SIMPL::PhaseType::Primary) == 0)
+    {
+      PrimaryStatsData::Pointer data = PrimaryStatsData::New();
+      data->readJson(phaseObject);
+      setStatsData(index, data);
+    }
+    else if(statsType.compare(SIMPL::PhaseType::Precipitate) == 0)
+    {
+      PrecipitateStatsData::Pointer data = PrecipitateStatsData::New();
+      data->readJson(phaseObject);
+      setStatsData(index, data);
+    }
+    else if(statsType.compare(SIMPL::PhaseType::Transformation) == 0)
+    {
+      TransformationStatsData::Pointer data = TransformationStatsData::New();
+      data->readJson(phaseObject);
+      setStatsData(index, data);
+    }
+    else if(statsType.compare(SIMPL::PhaseType::Matrix) == 0)
+    {
+      MatrixStatsData::Pointer data = MatrixStatsData::New();
+      data->readJson(phaseObject);
+      setStatsData(index, data);
+    }
+    else if(statsType.compare(SIMPL::PhaseType::Boundary) == 0)
+    {
+      BoundaryStatsData::Pointer data = BoundaryStatsData::New();
+      data->readJson(phaseObject);
+      setStatsData(index, data);
+    }
+    else
+    {
+      qDebug() << "While reading a StatsDataArray object from a Json Object the type\n"
+      << "of StatsData object did not match any known types. The type retrieved from the\n"
+      << "JSON object was '" << statsType << "'. The known types are:";
+      qDebug() << SIMPL::StringConstants::PrimaryStatsData;
+      qDebug() << SIMPL::StringConstants::PrecipitateStatsData;
+      qDebug() << SIMPL::StringConstants::TransformationStatsData;
+      qDebug() << SIMPL::StringConstants::MatrixStatsData;
+      qDebug() << SIMPL::StringConstants::BoundaryStatsData;
+      return -1100;
+    }
+  }
+  return 0;
+
 }
 
 // -----------------------------------------------------------------------------

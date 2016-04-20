@@ -62,6 +62,18 @@ BoundaryStatsData::~BoundaryStatsData()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
+StatsData::Pointer BoundaryStatsData::deepCopy()
+{
+  BoundaryStatsData::Pointer ptr = BoundaryStatsData::New();
+  ptr->setBoundaryArea(getBoundaryArea());
+  ptr->setPhaseFraction(getPhaseFraction());
+  ptr->setParentPhase(getParentPhase());
+  return ptr;
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
 void BoundaryStatsData::initialize()
 {
 
@@ -107,4 +119,45 @@ int BoundaryStatsData::readHDF5Data(hid_t groupId)
   H5BoundaryStatsDataDelegate::Pointer reader = H5BoundaryStatsDataDelegate::New();
   err = reader->readBoundaryStatsData(this, groupId);
   return err;
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void BoundaryStatsData::writeJson(QJsonObject &json)
+{
+  json.insert(SIMPL::StringConstants::PhaseType, SIMPL::PhaseType::Boundary);
+  // Write the precipitate boundary fraction
+  json.insert(SIMPL::StringConstants::BoundaryArea, getBoundaryArea());
+  // Write the Phase Fraction
+  json.insert(SIMPL::StringConstants::PhaseFraction, getPhaseFraction());
+  // Write the Parent Phase
+  json.insert(SIMPL::StringConstants::ParentPhase, getParentPhase());
+
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void BoundaryStatsData::readJson(const QJsonObject &json)
+{
+
+  QJsonValue fValue = json[SIMPL::StringConstants::BoundaryArea];
+  if(!fValue.isUndefined() && fValue.isDouble())
+  {
+    setBoundaryArea(fValue.toDouble(0.0));
+  }
+
+  fValue = json[SIMPL::StringConstants::PhaseFraction];
+  if(!fValue.isUndefined() && fValue.isDouble())
+  {
+    setPhaseFraction(fValue.toDouble(0.0));
+  }
+
+  fValue = json[SIMPL::StringConstants::ParentPhase];
+  if(!fValue.isUndefined() && fValue.isDouble())
+  {
+    setParentPhase(fValue.toDouble(0.0));
+  }
+
 }
