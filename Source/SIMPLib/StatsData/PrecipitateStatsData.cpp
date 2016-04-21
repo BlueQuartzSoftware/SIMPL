@@ -172,9 +172,9 @@ void PrecipitateStatsData::initialize()
   m_Clustering_DistType = SIMPL::DistributionType::LogNormal;
   m_Omegas_DistType = SIMPL::DistributionType::Beta;
   m_PrecipBoundaryFraction = 0.0;
-  m_FeatureDiameterInfo[0] = 0.1; // Bin Step Size
-  m_FeatureDiameterInfo[1] = 1.0; // MaxFeatureDiameter
-  m_FeatureDiameterInfo[2] = 0.1; // MinFeatureDiameter
+  m_FeatureDiameterInfo[0] = 0.1f; // Bin Step Size
+  m_FeatureDiameterInfo[1] = 1.0f; // MaxFeatureDiameter
+  m_FeatureDiameterInfo[2] = 0.1f; // MinFeatureDiameter
 
 }
 
