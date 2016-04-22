@@ -116,7 +116,6 @@ class ExecuteProcessTest
   }
 
   private:
-    QString                                   m_StandardOutput;
 
     ExecuteProcessTest(const ExecuteProcessTest&); // Copy Constructor Not Implemented
     void operator=(const ExecuteProcessTest&); // Operator '=' Not Implemented
