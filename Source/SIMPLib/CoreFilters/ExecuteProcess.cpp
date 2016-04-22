@@ -138,10 +138,6 @@ void ExecuteProcess::execute()
   dataCheck();
   if(getErrorCondition() < 0) { return; }
 
-  notifyStandardOutputMessage(getHumanLabel(), getPipelineIndex() + 1, "String1\n");
-  notifyStandardOutputMessage(getHumanLabel(), getPipelineIndex() + 1, "String2\n");
-  notifyStandardOutputMessage(getHumanLabel(), getPipelineIndex() + 1, "String3\n");
-
   QStringList arguments = splitArgumentsString(m_Arguments);
   QString command = arguments[0];
   arguments.removeAt(0);

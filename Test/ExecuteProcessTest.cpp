@@ -83,11 +83,22 @@ class ExecuteProcessTest
   int TestExecuteProcess()
   {
     ExecuteProcess::Pointer filter = ExecuteProcess::New();
+
     filter->setArguments("ls");
     filter->execute();
-    //QString stdOutput = filter->getStandardOutput();
     DREAM3D_REQUIRE_EQUAL(filter->getErrorCondition(), 0)
-    //DREAM3D_REQUIRE_EQUAL(stdOutput, 0)
+
+    filter->setArguments("ls -laF");
+    filter->execute();
+    DREAM3D_REQUIRE_EQUAL(filter->getErrorCondition(), 0)
+
+    filter->setArguments("cd ~/");
+    filter->execute();
+    DREAM3D_REQUIRE_EQUAL(filter->getErrorCondition(), 0)
+
+    filter->setArguments("lsz");
+    filter->execute();
+    DREAM3D_REQUIRE_EQUAL(filter->getErrorCondition(), -4005)
 
     return EXIT_SUCCESS;
   }
@@ -105,6 +116,8 @@ class ExecuteProcessTest
   }
 
   private:
+    QString                                   m_StandardOutput;
+
     ExecuteProcessTest(const ExecuteProcessTest&); // Copy Constructor Not Implemented
     void operator=(const ExecuteProcessTest&); // Operator '=' Not Implemented
 };
