@@ -91,6 +91,15 @@ void Observable::notifyStatusMessage(const QString& prefix, const QString& human
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
+void Observable::notifyStandardOutputMessage(const QString& humanLabel, int pipelineIndex, const QString& str)
+{
+  PipelineMessage pm = PipelineMessage::CreateStandardOutputMessage(humanLabel, pipelineIndex, str);
+  emit filterGeneratedMessage(pm);
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
 void Observable::notifyWarningMessage(const QString& humanLabel, const QString& str, int code)
 {
   PipelineMessage pm = PipelineMessage::CreateWarningMessage(getNameOfClass(), humanLabel, str, code);

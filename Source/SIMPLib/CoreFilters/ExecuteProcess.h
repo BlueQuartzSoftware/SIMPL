@@ -61,8 +61,6 @@ class ExecuteProcess : public AbstractFilter
 
     virtual ~ExecuteProcess();
 
-    QString getStandardOutput();
-
     /**
      * @brief getCompiledLibraryName Reimplemented from @see AbstractFilter class
      */
@@ -161,15 +159,13 @@ class ExecuteProcess : public AbstractFilter
   protected slots:
     void processHasFinished(int exitCode, QProcess::ExitStatus exitStatus);
     void processHasErroredOut(QProcess::ProcessError error);
-    void displayErrorOutput();
-    void passStandardOutput();
+    void sendErrorOutput();
+    void sendStandardOutput();
 
   private:
     QWaitCondition                                      m_WaitCondition;
     QMutex                                              m_Mutex;
     bool                                                m_Pause;
-
-    QString                                             m_StandardOutput;
 
     QStringList splitArgumentsString(QString arguments);
 

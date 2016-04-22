@@ -138,6 +138,10 @@ void ExecuteProcess::execute()
   dataCheck();
   if(getErrorCondition() < 0) { return; }
 
+  notifyStandardOutputMessage(getHumanLabel(), getPipelineIndex() + 1, "String1\n");
+  notifyStandardOutputMessage(getHumanLabel(), getPipelineIndex() + 1, "String2\n");
+  notifyStandardOutputMessage(getHumanLabel(), getPipelineIndex() + 1, "String3\n");
+
   QStringList arguments = splitArgumentsString(m_Arguments);
   QString command = arguments[0];
   arguments.removeAt(0);
@@ -150,9 +154,9 @@ void ExecuteProcess::execute()
   connect(process, SIGNAL(error(QProcess::ProcessError)),
           this, SLOT(processHasErroredOut(QProcess::ProcessError)), Qt::QueuedConnection);
   connect(process, SIGNAL(readyReadStandardError()),
-          this, SLOT(displayErrorOutput()), Qt::QueuedConnection);
+          this, SLOT(sendErrorOutput()), Qt::QueuedConnection);
   connect(process, SIGNAL(readyReadStandardOutput()),
-          this, SLOT(passStandardOutput()), Qt::QueuedConnection);
+          this, SLOT(sendStandardOutput()), Qt::QueuedConnection);
   process->start(command, arguments);
 
   m_Mutex.lock();
@@ -280,7 +284,7 @@ void ExecuteProcess::processHasErroredOut(QProcess::ProcessError error)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void ExecuteProcess::displayErrorOutput()
+void ExecuteProcess::sendErrorOutput()
 {
   QProcess* process = dynamic_cast<QProcess*>(sender());
 
@@ -289,25 +293,18 @@ void ExecuteProcess::displayErrorOutput()
   {
     error.chop(1);
   }
-  notifyErrorMessage(getHumanLabel(), error, -4011);
+
+  notifyStandardOutputMessage(getHumanLabel(), getPipelineIndex() + 1, error);
 }
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void ExecuteProcess::passStandardOutput()
+void ExecuteProcess::sendStandardOutput()
 {
   QProcess* process = dynamic_cast<QProcess*>(sender());
 
-  m_StandardOutput = process->readAllStandardOutput();
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-QString ExecuteProcess::getStandardOutput()
-{
-  return m_StandardOutput;
+  notifyStandardOutputMessage(getHumanLabel(), getPipelineIndex() + 1, process->readAllStandardOutput());
 }
 
 // -----------------------------------------------------------------------------

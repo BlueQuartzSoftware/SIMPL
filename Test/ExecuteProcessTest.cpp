@@ -85,7 +85,7 @@ class ExecuteProcessTest
     ExecuteProcess::Pointer filter = ExecuteProcess::New();
     filter->setArguments("ls");
     filter->execute();
-    QString stdOutput = filter->getStandardOutput();
+    //QString stdOutput = filter->getStandardOutput();
     DREAM3D_REQUIRE_EQUAL(filter->getErrorCondition(), 0)
     //DREAM3D_REQUIRE_EQUAL(stdOutput, 0)
 
