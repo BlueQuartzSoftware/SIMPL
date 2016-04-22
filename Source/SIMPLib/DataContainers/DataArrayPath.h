@@ -36,7 +36,6 @@
 #ifndef _dataarraypath_h_
 #define _dataarraypath_h_
 
-#include <QtCore/QtGlobal>                     // for Q_DECLARE_PRIVATE
 #include <QtCore/QMetaType>                   // for Q_DECLARE_METATYPE
 #include <QtCore/QObject>                 // for Q_OBJECT
 #include <QtCore/QString>
@@ -46,9 +45,6 @@
 #include "SIMPLib/Common/SIMPLibSetGetMacros.h"  // for SIMPL_PIMPL_PROPERTY_DECL
 
 
-// our PIMPL private class
-class DataArrayPathPrivate;
-
 /**
  * @brief The DataArrayPath class holds a complete or partial path to a data array starting at the DataContainer
  * level. The class is implemented using the PIMPL design pattern.
@@ -56,7 +52,6 @@ class DataArrayPathPrivate;
 class SIMPLib_EXPORT DataArrayPath : public QObject
 {
     Q_OBJECT
-    Q_DECLARE_PRIVATE(DataArrayPath)
 
   public:
     DataArrayPath();
@@ -76,18 +71,52 @@ class SIMPLib_EXPORT DataArrayPath : public QObject
     explicit DataArrayPath(const QString& path);
 
     /**
-     * @brief DataArrayPath
+     * @brief DataArrayPath Copy Constructor
      */
     DataArrayPath(const DataArrayPath& rhs);
 
+    /**
+     * @brief ~DataArrayPath
+     */
     virtual ~DataArrayPath();
 
+        /**
+    * @brief checks that a vector of paths have the same data container and attribute matrix
+    * @return true if the paths in the vector have the same data container and attribute matrix, false otherwise
+    */
+    static bool ValidateVector(const QVector<DataArrayPath>& other);
 
+    /**
+    * @brief Gets the data array names from a QVector of DataArrayPaths.
+    * @return Returns the data array names from a QVector of DataArrayPaths, in a QList.
+    */
+    static QList<QString> GetDataArrayNames(const QVector<DataArrayPath>& paths);
+
+    /**
+    * @brief Gets the attribute matrix path from a QVector of DataArrayPaths.
+    * @return Returns the attribute matrix path as a DataArrayPath from a QVector
+    * of DataArrayPaths.
+    */
+    static DataArrayPath GetAttributeMatrixPath(const QVector<DataArrayPath>& paths);
+
+    /**
+     * @brief ConvertToQVector Converts a QStringList of DataArrayPaths to a QVector of DataArrayPaths
+     * @param paths
+     * @return
+     */
     static QVector<DataArrayPath> ConvertToQVector(QStringList& paths);
 
-    SIMPL_PIMPL_PROPERTY_DECL(QString, DataContainerName)
-    SIMPL_PIMPL_PROPERTY_DECL(QString, AttributeMatrixName)
-    SIMPL_PIMPL_PROPERTY_DECL(QString, DataArrayName)
+    /**
+    * @brief serialize Returns the path using the '|' charater by default. This can be over ridden by the programmer
+    * @param delimiter
+    * @return
+    */
+    static DataArrayPath Deserialize(QString str, QString delimiter = "|");
+
+
+    SIMPL_INSTANCE_STRING_PROPERTY(DataContainerName)
+    SIMPL_INSTANCE_STRING_PROPERTY(AttributeMatrixName)
+    SIMPL_INSTANCE_STRING_PROPERTY(DataArrayName)
 
 
     /**
@@ -110,23 +139,11 @@ class SIMPLib_EXPORT DataArrayPath : public QObject
     QString serialize(QString delimiter = "|") const;
 
     /**
-    * @brief serialize Returns the path using the '|' charater by default. This can be over ridden by the programmer
-    * @param delimiter
-    * @return
-    */
-    static DataArrayPath Deserialize(QString str, QString delimiter = "|");
-
-    /**
-     * @brief getAsStringList
+     * @brief getAsVector Returns the DataArrayPath represented as a QVector<String> where index[0] = DataContainer Name,
+     * index[1] = AttributeMatrix Name and index[2] = DataArray Name
      * @return
      */
-    QStringList getAsStringList();
-
-    /**
-     * @brief getAsVector
-     * @return
-     */
-    QVector<QString> getAsVector();
+    QVector<QString> toQVector();
 
     /**
      * @brief isEmpty Returns if ALL of the string elements are empty. Note that a class could return FALSE for this
@@ -144,11 +161,10 @@ class SIMPLib_EXPORT DataArrayPath : public QObject
     bool isValid() const;
 
     /**
-     * @brief split
-     * @param delimiter
+     * @brief toQStringList Converts the DataArrayPath to a QStringList
      * @return
      */
-    QStringList split(QString NOT_USED = "|") const;
+    QStringList toQStringList() const;
 
     /**
      * @brief Updates the DataArrayPath with the values in the arguments
@@ -187,25 +203,6 @@ class SIMPLib_EXPORT DataArrayPath : public QObject
     bool hasSameDataArray(const DataArrayPath& other) const;
 
     /**
-    * @brief checks that a vector of paths have the same data container and attribute matrix
-    * @return true if the paths in the vector have the same data container and attribute matrix, false otherwise
-    */
-    static bool ValidateVector(const QVector<DataArrayPath>& other);
-
-    /**
-    * @brief Gets the data array names from a QVector of DataArrayPaths.
-    * @return Returns the data array names from a QVector of DataArrayPaths, in a QList.
-    */
-    static QList<QString> GetDataArrayNames(const QVector<DataArrayPath>& paths);
-
-    /**
-    * @brief Gets the attribute matrix path from a QVector of DataArrayPaths.
-    * @return Returns the attribute matrix path as a DataArrayPath from a QVector
-    * of DataArrayPaths.
-    */
-    static DataArrayPath GetAttributeMatrixPath(const QVector<DataArrayPath>& paths);
-
-    /**
     * @brief Writes the contents of the proxy to the json object 'json'
     * @param json
     * @return
@@ -217,7 +214,7 @@ class SIMPLib_EXPORT DataArrayPath : public QObject
     * @param json
     * @return
     */
-    bool readJson(QJsonObject& json) const;
+    bool readJson(QJsonObject& json);
 
 
   protected:
@@ -225,7 +222,6 @@ class SIMPLib_EXPORT DataArrayPath : public QObject
 
 
   private:
-    DataArrayPathPrivate* const d_ptr;
 
 
 };

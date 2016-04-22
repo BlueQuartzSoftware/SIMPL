@@ -637,9 +637,9 @@ class DataContainerTest
       dap0 = dap3;
 
       QString serialize = dap1.serialize();
-      QStringList strList = dap2.getAsStringList();
+      QStringList strList = dap2.toQStringList();
 
-      QVector<QString> strVec = dap0.getAsVector();
+      QVector<QString> strVec = dap0.toQVector();
       DREAM3D_REQUIRE(strVec.size() > 0)
 
           bool isEmpty = dap1.isEmpty();
@@ -648,7 +648,7 @@ class DataContainerTest
           bool isValid = dap3.isValid();
       DREAM3D_REQUIRE_EQUAL(isValid, true)
 
-          QStringList split = dap2.split();
+          QStringList split = dap2.toQStringList();
 
       dap2.update("Foo", "Bar", "Baz");
     }
