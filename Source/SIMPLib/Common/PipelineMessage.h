@@ -75,6 +75,7 @@ class PipelineMessage
       m_Code = rhs.m_Code;
       m_Type = rhs.m_Type;
       m_ProgressValue = rhs.m_ProgressValue;
+      m_PipelineIndex = rhs.m_PipelineIndex;
     }
 
 
