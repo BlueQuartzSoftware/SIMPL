@@ -142,12 +142,25 @@ FilterPipeline::Pointer JsonFilterParametersReader::ReadPipeline(JsonFilterParam
   FilterFactory<EmptyFilter>::Pointer emptyFilterFactory = FilterFactory<EmptyFilter>::New();
   filtManager->addFilterFactory("EmptyFilter", emptyFilterFactory);
 
+  if (reader->containsGroup(SIMPL::Settings::PipelineBuilderGroup) == false)
+  {
+    return FilterPipeline::NullPointer();
+  }
+
   reader->openGroup(SIMPL::Settings::PipelineBuilderGroup);
   int filterCount = reader->readValue(SIMPL::Settings::NumFilters, -1);
   reader->closeGroup();
   reader->setMaxFilterIndex(filterCount);
 
-  FilterPipeline::Pointer pipeline = FilterPipeline::New();
+  FilterPipeline::Pointer pipeline;
+  if (filterCount >= 0)
+  {
+    pipeline = FilterPipeline::New();
+  }
+  else
+  {
+    pipeline = FilterPipeline::NullPointer();
+  }
 
   for (int i = 0; i < filterCount; ++i)
   {
@@ -379,6 +392,26 @@ int JsonFilterParametersReader::closeFilterGroup()
   Q_ASSERT(m_Root.isEmpty() == false);
   m_CurrentFilterIndex = QJsonObject();
   return 0;
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+bool JsonFilterParametersReader::containsGroup(QString key)
+{
+  if (m_Root.isEmpty() == false)
+  {
+    if (m_Root[key].isObject() == true)
+    {
+      QJsonObject obj = m_Root[key].toObject();
+      if (obj.isEmpty() == false)
+      {
+        return true;
+      }
+    }
+  }
+
+  return false;
 }
 
 // -----------------------------------------------------------------------------

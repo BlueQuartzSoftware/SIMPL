@@ -148,6 +148,8 @@ class SIMPLib_EXPORT JsonFilterParametersReader : public AbstractFilterParameter
      */
     QJsonObject& getCurrentGroupObject();
 
+    bool containsGroup(QString key);
+
     int openGroup(QString key);
     int closeGroup();
 
