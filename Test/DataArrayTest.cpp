@@ -998,7 +998,7 @@ class DataArrayTest
         typename DataArray<T>::Pointer dataPtr = DataArray<T>::WrapPointer(ptr, TEST_SIZE, cDims, "Wrapped Pointer", false);
         dataPtr->initializeWithZeros();
       }
-      delete ptr;
+      delete[] ptr;
       ptr = nullptr;
     }
 
