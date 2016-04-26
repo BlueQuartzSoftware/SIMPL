@@ -140,7 +140,7 @@ void MaskCountDecision::execute()
 
   size_t numTuples = m_MaskPtr.lock()->getNumberOfTuples();
 
-  size_t trueCount = 0;
+  int32_t trueCount = 0;
   bool dm = true;
 
   qDebug() << "NumberOfTrues: " << m_NumberOfTrues;
@@ -151,7 +151,6 @@ void MaskCountDecision::execute()
     {
       qDebug() << "First if check: " << dm;
       emit decisionMade(dm);
-      emit targetValue(m_NumberOfTrues);
       return;
     }
     if (m_Mask[i]) { trueCount++; }
@@ -161,16 +160,14 @@ void MaskCountDecision::execute()
       qDebug() << "Second if check: " << dm;
 
       emit decisionMade(dm);
-      emit targetValue(m_NumberOfTrues);
+      emit targetValue(trueCount);
       return;
     }
   }
 
   qDebug() << "Fell through: " << dm;
 
-
   emit decisionMade(dm);
-  emit targetValue(m_NumberOfTrues);
 
   notifyStatusMessage(getHumanLabel(), "Complete");
 }
