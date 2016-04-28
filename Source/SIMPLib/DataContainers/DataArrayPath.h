@@ -216,6 +216,12 @@ class SIMPLib_EXPORT DataArrayPath : public QObject
     */
     bool readJson(QJsonObject& json);
 
+    /**
+     * @brief Returns a QJsonObject that holds the values of this class.
+     * @return
+     */
+    QJsonObject toJsonObject() const;
+
 
   protected:
 

@@ -331,6 +331,18 @@ bool DataArrayPath::ValidateVector(const QVector<DataArrayPath>& other)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
+QJsonObject DataArrayPath::toJsonObject() const
+{
+  QJsonObject json;
+  json["Data Container Name"] = getDataContainerName();
+  json["Attribute Matrix Name"] = getAttributeMatrixName();
+  json["Data Array Name"] = getDataArrayName();
+  return json;
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
 void DataArrayPath::writeJson(QJsonObject& json) const
 {
   json["Data Container Name"] = getDataContainerName();
