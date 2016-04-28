@@ -100,7 +100,7 @@ class DataArrayTest
     //
     // -----------------------------------------------------------------------------
     template<typename T>
-    void __TestcopyTuples()
+    void TestcopyTuplesForType()
     {
       int err = 0;
       QVector<size_t> dims(1, NUM_COMPONENTS_2);
@@ -140,23 +140,23 @@ class DataArrayTest
     // -----------------------------------------------------------------------------
     void TestcopyTuples()
     {
-      __TestcopyTuples<int8_t>();
-      __TestcopyTuples<uint8_t>();
-      __TestcopyTuples<int16_t>();
-      __TestcopyTuples<uint16_t>();
-      __TestcopyTuples<int32_t>();
-      __TestcopyTuples<uint32_t>();
-      __TestcopyTuples<int64_t>();
-      __TestcopyTuples<uint64_t>();
-      __TestcopyTuples<float>();
-      __TestcopyTuples<double>();
+      TestcopyTuplesForType<int8_t>();
+      TestcopyTuplesForType<uint8_t>();
+      TestcopyTuplesForType<int16_t>();
+      TestcopyTuplesForType<uint16_t>();
+      TestcopyTuplesForType<int32_t>();
+      TestcopyTuplesForType<uint32_t>();
+      TestcopyTuplesForType<int64_t>();
+      TestcopyTuplesForType<uint64_t>();
+      TestcopyTuplesForType<float>();
+      TestcopyTuplesForType<double>();
     }
 
     // -----------------------------------------------------------------------------
     //
     // -----------------------------------------------------------------------------
     template<typename T>
-    void __TestEraseElements()
+    void TestEraseElementsForType()
     {
       // Test dropping of front elements only
       {
@@ -335,16 +335,16 @@ class DataArrayTest
     // -----------------------------------------------------------------------------
     void TestEraseElements()
     {
-      __TestEraseElements<int8_t>();
-      __TestEraseElements<uint8_t>();
-      __TestEraseElements<int16_t>();
-      __TestEraseElements<uint16_t>();
-      __TestEraseElements<int32_t>();
-      __TestEraseElements<uint32_t>();
-      __TestEraseElements<int64_t>();
-      __TestEraseElements<uint64_t>();
-      __TestEraseElements<float>();
-      __TestEraseElements<double>();
+      TestEraseElementsForType<int8_t>();
+      TestEraseElementsForType<uint8_t>();
+      TestEraseElementsForType<int16_t>();
+      TestEraseElementsForType<uint16_t>();
+      TestEraseElementsForType<int32_t>();
+      TestEraseElementsForType<uint32_t>();
+      TestEraseElementsForType<int64_t>();
+      TestEraseElementsForType<uint64_t>();
+      TestEraseElementsForType<float>();
+      TestEraseElementsForType<double>();
     }
 
 
@@ -492,7 +492,7 @@ class DataArrayTest
     //  Test the NeighborList Class
     // -----------------------------------------------------------------------------
     template<typename T>
-    void __TestNeighborList()
+    void TestNeighborListForType()
     {
       typename NeighborList<T>::Pointer n = NeighborList<T>::New();
       n->setName("Test");
@@ -589,7 +589,7 @@ class DataArrayTest
     //
     // -----------------------------------------------------------------------------
     template<typename T>
-    void _TestNeighborListDeepCopy()
+    void TestNeighborListDeepCopyForType()
     {
 
       QVector<size_t> tDims(10);
@@ -625,25 +625,25 @@ class DataArrayTest
     // -----------------------------------------------------------------------------
     void TestNeighborList()
     {
-      __TestNeighborList<int8_t>();
-      __TestNeighborList<uint8_t>();
-      __TestNeighborList<int16_t>();
-      __TestNeighborList<uint16_t>();
-      __TestNeighborList<int32_t>();
-      __TestNeighborList<uint32_t>();
-      __TestNeighborList<int64_t>();
-      __TestNeighborList<uint64_t>();
-      __TestNeighborList<float>();
-      __TestNeighborList<double>();
+      TestNeighborListForType<int8_t>();
+      TestNeighborListForType<uint8_t>();
+      TestNeighborListForType<int16_t>();
+      TestNeighborListForType<uint16_t>();
+      TestNeighborListForType<int32_t>();
+      TestNeighborListForType<uint32_t>();
+      TestNeighborListForType<int64_t>();
+      TestNeighborListForType<uint64_t>();
+      TestNeighborListForType<float>();
+      TestNeighborListForType<double>();
 
-      _TestNeighborListDeepCopy<int8_t>();
+      TestNeighborListDeepCopyForType<int8_t>();
     }
 
     // -----------------------------------------------------------------------------
     //
     // -----------------------------------------------------------------------------
     template<typename T>
-    int __ValidateArray(typename DataArray<T>::Pointer array, size_t numTuples, int numComp)
+    int ValidateArrayForType(typename DataArray<T>::Pointer array, size_t numTuples, int numComp)
     {
       int err = 0;
       DREAM3D_REQUIRED(true, ==, array->isAllocated() );
@@ -772,7 +772,7 @@ class DataArrayTest
     //
     // -----------------------------------------------------------------------------
     template<typename T>
-    void __TestArrayCreation()
+    void TestArrayCreationForType()
     {
       int err = 0;
       size_t numTuples = NUM_TUPLES;
@@ -781,14 +781,14 @@ class DataArrayTest
       int numComp = 1;
       {
         typename DataArray<T>::Pointer array = DataArray<T>::CreateArray(numTuples, "TEST");
-        err = __ValidateArray<T>(array, numTuples, numComp);
+        err = ValidateArrayForType<T>(array, numTuples, numComp);
         DREAM3D_REQUIRED(err, >=, 0)
       }
 
       {
         numComp = DIM0 * DIM1 * DIM2;
         typename DataArray<T>::Pointer array = DataArray<T>::CreateArray(numTuples, rank, dims, "TEST");
-        err = __ValidateArray<T>(array, numTuples, numComp);
+        err = ValidateArrayForType<T>(array, numTuples, numComp);
         DREAM3D_REQUIRED(err, >=, 0)
       }
 
@@ -799,7 +799,7 @@ class DataArrayTest
         vDims[1] = DIM1;
         vDims[2] = DIM2;
         typename DataArray<T>::Pointer array = DataArray<T>::CreateArray(numTuples, vDims, "TEST");
-        err = __ValidateArray<T>(array, numTuples, numComp);
+        err = ValidateArrayForType<T>(array, numTuples, numComp);
         DREAM3D_REQUIRED(err, >=, 0)
       }
 
@@ -810,10 +810,9 @@ class DataArrayTest
         vDims[1] = DIM1;
         vDims[2] = DIM2;
         typename DataArray<T>::Pointer array = DataArray<T>::CreateArray(numTuples, vDims, "TEST");
-        err = __ValidateArray<T>(array, numTuples, numComp);
+        err = ValidateArrayForType<T>(array, numTuples, numComp);
         DREAM3D_REQUIRED(err, >=, 0)
       }
-
 
       {
         QVector<size_t> tDims(2, 4);
@@ -822,14 +821,75 @@ class DataArrayTest
         vDims[1] = DIM1;
         vDims[2] = DIM2;
         typename DataArray<T>::Pointer array = DataArray<T>::CreateArray(tDims, vDims, "TEST");
-        err = __ValidateArray<T>(array, tDims[0] * tDims[1], numComp);
+        err = ValidateArrayForType<T>(array, tDims[0] * tDims[1], numComp);
         DREAM3D_REQUIRED(err, >=, 0)
       }
 
+      {
+        union {
+            uint8_t ui8;
+            int8_t i8;
+            uint16_t ui16;
+            int16_t i16;
+            uint32_t ui32;
+            int32_t i32;
+            uint64_t ui64;
+            int64_t i64;
+            float f32;
+            double d64;
+        } mudflap;
+        unsigned char* cptr = nullptr;
 
-      ////FromQVector(QVector<T>& vec, const QString& name)
-      ///FromStdVector(std::vector<T>& vec, const QString& name)
-      /// FromPointer(T* data, size_t size, const QString& name)
+        QVector<size_t> tDims(1, 10);
+        typename DataArray<T>::Pointer array = DataArray<T>::CreateArray(DIM0, "TEST");
+        array->initializeWithZeros();
+        cptr = reinterpret_cast<uint8_t*>(array->getPointer(0));
+
+        if (sizeof(T) == 1) {
+          uint8_t* ptr = reinterpret_cast<uint8_t*>(cptr);
+          mudflap.ui8 = *ptr;
+          DREAM3D_REQUIRED(mudflap.ui8, ==, 0x00)
+        }
+        if (sizeof(T) == 2) {
+          uint16_t* ptr = reinterpret_cast<uint16_t*>(cptr);
+          mudflap.ui16 = *ptr;
+          DREAM3D_REQUIRED(mudflap.ui16, ==, 0x0000)
+        }
+        if (sizeof(T) == 4) {
+          uint32_t* ptr = reinterpret_cast<uint32_t*>(cptr);
+          mudflap.ui32 = *ptr;
+          DREAM3D_REQUIRED(mudflap.ui32, ==, 0x00000000)
+        }
+        if (sizeof(T) == 8) {
+          uint64_t* ptr = reinterpret_cast<uint64_t*>(cptr);
+          mudflap.ui64 = *ptr;
+          DREAM3D_REQUIRED(mudflap.ui64, ==, 0x0000000000000000)
+        }
+
+        array->clear();
+
+
+        if (sizeof(T) == 1) {
+          uint8_t* ptr = reinterpret_cast<uint8_t*>(cptr);
+          mudflap.ui8 = *ptr;
+          DREAM3D_REQUIRED(mudflap.ui8, ==, 0xAB)
+        }
+        if (sizeof(T) == 2) {
+          uint16_t* ptr = reinterpret_cast<uint16_t*>(cptr);
+          mudflap.ui16 = *ptr;
+          DREAM3D_REQUIRED(mudflap.ui16, ==, 0xABAB)
+        }
+        if (sizeof(T) == 4) {
+          uint32_t* ptr = reinterpret_cast<uint32_t*>(cptr);
+          mudflap.ui32 = *ptr;
+          DREAM3D_REQUIRED(mudflap.ui32, ==, 0xABABABAB)
+        }
+        if (sizeof(T) == 8) {
+          uint64_t* ptr = reinterpret_cast<uint64_t*>(cptr);
+          mudflap.ui64 = *ptr;
+          DREAM3D_REQUIRED(mudflap.ui64, ==, 0xABABABABABABABAB)
+        }
+      }
     }
 
 
@@ -838,23 +898,23 @@ class DataArrayTest
     // -----------------------------------------------------------------------------
     void TestArrayCreation()
     {
-      __TestArrayCreation<int8_t>();
-      __TestArrayCreation<uint8_t>();
-      __TestArrayCreation<int16_t>();
-      __TestArrayCreation<uint16_t>();
-      __TestArrayCreation<int32_t>();
-      __TestArrayCreation<uint32_t>();
-      __TestArrayCreation<int64_t>();
-      __TestArrayCreation<uint64_t>();
-      __TestArrayCreation<float>();
-      __TestArrayCreation<double>();
+      TestArrayCreationForType<int8_t>();
+      TestArrayCreationForType<uint8_t>();
+      TestArrayCreationForType<int16_t>();
+      TestArrayCreationForType<uint16_t>();
+      TestArrayCreationForType<int32_t>();
+      TestArrayCreationForType<uint32_t>();
+      TestArrayCreationForType<int64_t>();
+      TestArrayCreationForType<uint64_t>();
+      TestArrayCreationForType<float>();
+      TestArrayCreationForType<double>();
     }
 
     // -----------------------------------------------------------------------------
     //
     // -----------------------------------------------------------------------------
     template<typename T>
-    void _TestDeepCopyDataArray()
+    void TestDeepCopyDataArrayForType()
     {
       size_t numTuples = 10;
       QVector<size_t> cDims(1, 5);
@@ -895,16 +955,16 @@ class DataArrayTest
     // -----------------------------------------------------------------------------
     void TestDeepCopyArray()
     {
-      _TestDeepCopyDataArray<uint8_t>();
-      _TestDeepCopyDataArray<int8_t>();
-      _TestDeepCopyDataArray<uint16_t>();
-      _TestDeepCopyDataArray<int16_t>();
-      _TestDeepCopyDataArray<uint32_t>();
-      _TestDeepCopyDataArray<int32_t>();
-      _TestDeepCopyDataArray<uint64_t>();
-      _TestDeepCopyDataArray<int64_t>();
-      _TestDeepCopyDataArray<float>();
-      _TestDeepCopyDataArray<double>();
+      TestDeepCopyDataArrayForType<uint8_t>();
+      TestDeepCopyDataArrayForType<int8_t>();
+      TestDeepCopyDataArrayForType<uint16_t>();
+      TestDeepCopyDataArrayForType<int16_t>();
+      TestDeepCopyDataArrayForType<uint32_t>();
+      TestDeepCopyDataArrayForType<int32_t>();
+      TestDeepCopyDataArrayForType<uint64_t>();
+      TestDeepCopyDataArrayForType<int64_t>();
+      TestDeepCopyDataArrayForType<float>();
+      TestDeepCopyDataArrayForType<double>();
 
     }
 
@@ -912,7 +972,7 @@ class DataArrayTest
     //
     // -----------------------------------------------------------------------------
     template<typename T>
-    void _TestCopyData()
+    void TestCopyDataForType()
     {
       size_t numTuples = 10;
       QVector<size_t> cDims(1, 5);
@@ -967,16 +1027,16 @@ class DataArrayTest
     // -----------------------------------------------------------------------------
     void TestCopyData()
     {
-      _TestCopyData<uint8_t>();
-      _TestCopyData<int8_t>();
-      _TestCopyData<uint16_t>();
-      _TestCopyData<int16_t>();
-      _TestCopyData<uint32_t>();
-      _TestCopyData<int32_t>();
-      _TestCopyData<uint64_t>();
-      _TestCopyData<int64_t>();
-      _TestCopyData<float>();
-      _TestCopyData<double>();
+      TestCopyDataForType<uint8_t>();
+      TestCopyDataForType<int8_t>();
+      TestCopyDataForType<uint16_t>();
+      TestCopyDataForType<int16_t>();
+      TestCopyDataForType<uint32_t>();
+      TestCopyDataForType<int32_t>();
+      TestCopyDataForType<uint64_t>();
+      TestCopyDataForType<int64_t>();
+      TestCopyDataForType<float>();
+      TestCopyDataForType<double>();
     }
 
 #define TEST_SIZE  1024
@@ -985,7 +1045,7 @@ class DataArrayTest
     //
     // -----------------------------------------------------------------------------
     template<typename T>
-    void _testWrapPointer()
+    void TestWrapPointerForType()
     {
       QVector<size_t> cDims = {1};
       T* ptr = new T[TEST_SIZE]; // Allocate on the heap
@@ -1009,16 +1069,16 @@ class DataArrayTest
     // -----------------------------------------------------------------------------
     void TestWrapPointer()
     {
-      _testWrapPointer<uint8_t>();
-      _testWrapPointer<int8_t>();
-      _testWrapPointer<uint16_t>();
-      _testWrapPointer<int16_t>();
-      _testWrapPointer<uint32_t>();
-      _testWrapPointer<int32_t>();
-      _testWrapPointer<uint64_t>();
-      _testWrapPointer<int64_t>();
-      _testWrapPointer<float>();
-      _testWrapPointer<double>();
+      TestWrapPointerForType<uint8_t>();
+      TestWrapPointerForType<int8_t>();
+      TestWrapPointerForType<uint16_t>();
+      TestWrapPointerForType<int16_t>();
+      TestWrapPointerForType<uint32_t>();
+      TestWrapPointerForType<int32_t>();
+      TestWrapPointerForType<uint64_t>();
+      TestWrapPointerForType<int64_t>();
+      TestWrapPointerForType<float>();
+      TestWrapPointerForType<double>();
 
     }
 
