@@ -156,18 +156,9 @@ class SIMPLib_EXPORT ExecuteProcess : public AbstractFilter
      */
     void dataCheck();
 
-  protected slots:
-    void processHasFinished(int exitCode, QProcess::ExitStatus exitStatus);
-    void processHasErroredOut(QProcess::ProcessError error);
-    void sendErrorOutput();
-    void sendStandardOutput();
-
   private:
-    QWaitCondition                                      m_WaitCondition;
-    QMutex                                              m_Mutex;
-    bool                                                m_Pause;
 
-    QStringList splitArgumentsString(QString arguments);
+    QStringList splitArgumentsString();
 
     ExecuteProcess(const ExecuteProcess&); // Copy Constructor Not Implemented
     void operator=(const ExecuteProcess&); // Operator '=' Not Implemented

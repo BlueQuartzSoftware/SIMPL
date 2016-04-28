@@ -105,7 +105,7 @@ void ExecuteProcess::dataCheck()
 {
   setErrorCondition(0);
 
-  QStringList arguments = splitArgumentsString(m_Arguments);
+  QStringList arguments = splitArgumentsString();
   if (arguments.size() <= 0)
   {
     QString ss = QObject::tr("No command line arguments have been specified.");
@@ -138,39 +138,92 @@ void ExecuteProcess::execute()
   dataCheck();
   if(getErrorCondition() < 0) { return; }
 
-  QStringList arguments = splitArgumentsString(m_Arguments);
+  QStringList arguments = splitArgumentsString();
   QString command = arguments[0];
   arguments.removeAt(0);
 
-  QProcess* process = new QProcess(NULL);
+  QProcess process;
   qRegisterMetaType<QProcess::ExitStatus>("QProcess::ExitStatus");
   qRegisterMetaType<QProcess::ProcessError>("QProcess::ProcessError");
-  connect(process, SIGNAL(finished(int, QProcess::ExitStatus)),
-          this, SLOT(processHasFinished(int, QProcess::ExitStatus)), Qt::QueuedConnection);
-  connect(process, SIGNAL(error(QProcess::ProcessError)),
-          this, SLOT(processHasErroredOut(QProcess::ProcessError)), Qt::QueuedConnection);
-  connect(process, SIGNAL(readyReadStandardError()),
-          this, SLOT(sendErrorOutput()), Qt::QueuedConnection);
-  connect(process, SIGNAL(readyReadStandardOutput()),
-          this, SLOT(sendStandardOutput()), Qt::QueuedConnection);
-  process->start(command, arguments);
 
-  m_Mutex.lock();
-  m_Pause = true;
-  while (m_Pause == true)
+  process.start(command, arguments);
+
+  while( !process.waitForFinished(200) )
   {
-    m_WaitCondition.wait(&m_Mutex, 2000);
-    QCoreApplication::processEvents();
-  }
-  m_Mutex.unlock();
+    process.waitForReadyRead(100);
+    QByteArray stdOut = process.readAllStandardOutput();
+    if(stdOut.size() > 0)
+    {
+      notifyStandardOutputMessage(getHumanLabel(), getPipelineIndex() + 1, QString(stdOut));
+    }
 
-  delete process;
+    QByteArray stdErr = process.readAllStandardError();
+    if(stdErr.size() > 0)
+    {
+      notifyStandardOutputMessage(getHumanLabel(), getPipelineIndex() + 1, QString(stdErr));
+    }
+  }
+
+  int exitStatus = process.exitStatus();
+  int exitCode = process.exitCode();
+  if (exitStatus == QProcess::CrashExit)
+  {
+    QString ss = QObject::tr("The process crashed during its exit.");
+    setErrorCondition(-4003);
+    notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
+  }
+  else if (exitCode < 0)
+  {
+    QString ss = QObject::tr("The process finished with exit code %1.").arg(QString::number(exitCode));
+    setErrorCondition(-4004);
+    notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
+  }
+
+  QProcess::ProcessError proError = process.error();
+  if (proError == QProcess::FailedToStart)
+  {
+    QString ss = QObject::tr("The process failed to start.  Either the invoked program is missing, or you may have insufficient permissions to invoke the program.");
+    setErrorCondition(-4005);
+    notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
+  }
+  else if (proError == QProcess::Crashed)
+  {
+    QString ss = QObject::tr("The process crashed some time after starting successfully.");
+    setErrorCondition(-4006);
+    notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
+  }
+  else if (proError == QProcess::Timedout)
+  {
+    QString ss = QObject::tr("The process timed out.");
+    setErrorCondition(-4007);
+    notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
+  }
+  else if (proError == QProcess::WriteError)
+  {
+    QString ss = QObject::tr("An error occurred when attempting to write to the process.");
+    setErrorCondition(-4008);
+    notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
+  }
+  else if (proError == QProcess::ReadError)
+  {
+    QString ss = QObject::tr("An error occurred when attempting to read from the process.");
+    setErrorCondition(-4009);
+    notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
+  }
+  else
+  {
+    QString ss = QObject::tr("An unknown error occurred.");
+    setErrorCondition(-4010);
+    notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
+  }
+
+  notifyStatusMessage(getHumanLabel(), "Complete");
 }
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-QStringList ExecuteProcess::splitArgumentsString(QString arguments)
+QStringList ExecuteProcess::splitArgumentsString()
 {
   QStringList argumentList;
   for(int i=0; i<m_Arguments.size(); i++)
@@ -205,103 +258,6 @@ QStringList ExecuteProcess::splitArgumentsString(QString arguments)
   return argumentList;
 }
 
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-void ExecuteProcess::processHasFinished(int exitCode, QProcess::ExitStatus exitStatus)
-{  
-  if (exitStatus == QProcess::CrashExit)
-  {
-    QString ss = QObject::tr("The process crashed during its exit.");
-    setErrorCondition(-4003);
-    notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
-  }
-  else if (exitCode < 0)
-  {
-    QString ss = QObject::tr("The process finished with exit code %1.").arg(QString::number(exitCode));
-    setErrorCondition(-4004);
-    notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
-  }
-  else if (getErrorCondition() >= 0)
-  {
-    notifyStatusMessage(getHumanLabel(), "Complete");
-  }
-
-  m_Pause = false;
-  m_WaitCondition.wakeAll();
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-void ExecuteProcess::processHasErroredOut(QProcess::ProcessError error)
-{  
-  if (error == QProcess::FailedToStart)
-  {
-    QString ss = QObject::tr("The process failed to start.  Either the invoked program is missing, or you may have insufficient permissions to invoke the program.");
-    setErrorCondition(-4005);
-    notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
-  }
-  else if (error == QProcess::Crashed)
-  {
-    QString ss = QObject::tr("The process crashed some time after starting successfully.");
-    setErrorCondition(-4006);
-    notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
-  }
-  else if (error == QProcess::Timedout)
-  {
-    QString ss = QObject::tr("The process timed out.");
-    setErrorCondition(-4007);
-    notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
-  }
-  else if (error == QProcess::WriteError)
-  {
-    QString ss = QObject::tr("An error occurred when attempting to write to the process.");
-    setErrorCondition(-4008);
-    notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
-  }
-  else if (error == QProcess::ReadError)
-  {
-    QString ss = QObject::tr("An error occurred when attempting to read from the process.");
-    setErrorCondition(-4009);
-    notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
-  }
-  else
-  {
-    QString ss = QObject::tr("An unknown error occurred.");
-    setErrorCondition(-4010);
-    notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
-  }
-
-  m_Pause = false;
-  m_WaitCondition.wakeAll();
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-void ExecuteProcess::sendErrorOutput()
-{
-  QProcess* process = dynamic_cast<QProcess*>(sender());
-
-  QString error = process->readAllStandardError();
-  if (error[error.size() - 1] == '\n')
-  {
-    error.chop(1);
-  }
-
-  notifyStandardOutputMessage(getHumanLabel(), getPipelineIndex() + 1, error);
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-void ExecuteProcess::sendStandardOutput()
-{
-  QProcess* process = dynamic_cast<QProcess*>(sender());
-
-  notifyStandardOutputMessage(getHumanLabel(), getPipelineIndex() + 1, process->readAllStandardOutput());
-}
 
 // -----------------------------------------------------------------------------
 //
