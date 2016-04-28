@@ -84,6 +84,7 @@ void FilterPipeline::cancelPipeline()
 {
   qDebug() << "FilterPipeline::cancelPipeline()";
   setCancel(true);
+  emit pipelineCanceled();
 }
 
 // -----------------------------------------------------------------------------

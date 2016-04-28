@@ -149,14 +149,24 @@ class SIMPLib_EXPORT FilterPipeline : public QObject
     void pipelineGeneratedMessage(const PipelineMessage& message);
 
     /**
-    * @brief This method is called from the run() method just before exiting and
+    * @brief This method is emitted from the pipeline and signals a pipeline pause
+    */
+    void pipelineHasPaused();
+
+    /**
+    * @brief This method is emitted from the pipeline and signals a pipeline cancel
+    */
+    void pipelineCanceled();
+
+    /**
+    * @brief This signal is emitted from the run() method just before exiting and
     * signals the end of the pipeline execution
     */
     void pipelineFinished();
 
   private:
     bool m_Cancel;
-    FilterContainerType  m_Pipeline;
+    FilterContainerType                     m_Pipeline;
 
     QVector<QObject*> m_MessageReceivers;
 

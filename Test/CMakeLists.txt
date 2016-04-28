@@ -58,25 +58,30 @@ include_directories(${SIMPLTest_BINARY_DIR})
 # they will show up in IDEs
 set(TEST_NAMES
   ArrayCalculatorTest
-  ConditionalSetValueTest
   CombineAttributeArraysTest
   CombineAttributeMatricesTest
-  DataContainerTest
-  ReplaceValueTest
-  StringDataArrayTest
-  StructArrayTest
-  FilterPipelineTest
+  ConditionalSetValueTest
+  CreateDataArrayTest
+  CreateFeatureArrayFromElementArrayTest
   DataArrayTest
+  DataContainerBundleTest
+  DataContainerTest
   ErrorMessageTest
   ExecuteProcessTest
-  DataContainerBundleTest
   FilterParametersRWTest
-  CreateDataArrayTest
-  RemoveComponentFromArrayTest
+  FilterPipelineTest
   QuaternionMathTest
-  CreateFeatureArrayFromElementArrayTest
+  RemoveComponentFromArrayTest
+  ReplaceValueTest
   StatsDataJsonRWTest
+  StringDataArrayTest
+  StructArrayTest
 )
+
+
+QT5_WRAP_CPP( _moc_filter_source  ${SIMPLTest_SOURCE_DIR}/PipelinePauseTest.cpp)
+set_source_files_properties( ${_moc_filter_source} PROPERTIES GENERATED TRUE)
+set_source_files_properties( ${_moc_filter_source} PROPERTIES HEADER_FILE_ONLY TRUE)
 
 set( ${PLUGIN_NAME}_TEST_SRCS )
 set(FilterTestIncludes "")
@@ -112,6 +117,11 @@ endforeach()
 
 AddSIMPLUnitTest(TESTNAME SIMPLUnitTest
   SOURCES ${SIMPLTest_BINARY_DIR}/SIMPLUnitTest.cpp ${${PLUGIN_NAME}_TEST_SRCS}
+  FOLDER "SIMPLibProj/Test"
+  LINK_LIBRARIES Qt5::Core H5Support SIMPLib)
+
+AddSIMPLUnitTest(TESTNAME PipelinePauseTest
+  SOURCES ${SIMPLTest_SOURCE_DIR}/PipelinePauseTest.cpp ${_moc_filter_source}
   FOLDER "SIMPLibProj/Test"
   LINK_LIBRARIES Qt5::Core H5Support SIMPLib)
 
