@@ -68,6 +68,7 @@ set(TEST_NAMES
   FilterPipelineTest
   DataArrayTest
   ErrorMessageTest
+  ExecuteProcessTest
   DataContainerBundleTest
   FilterParametersRWTest
   CreateDataArrayTest

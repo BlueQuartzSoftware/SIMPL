@@ -58,6 +58,7 @@ class PipelineMessage
     enum MessageType {Error,
                       Warning,
                       StatusMessage,
+                      StandardOutputMessage,
                       ProgressValue,
                       StatusMessageAndProgressValue,
                       UnknownMessageType
@@ -74,6 +75,7 @@ class PipelineMessage
       m_Code = rhs.m_Code;
       m_Type = rhs.m_Type;
       m_ProgressValue = rhs.m_ProgressValue;
+      m_PipelineIndex = rhs.m_PipelineIndex;
     }
 
 
@@ -120,6 +122,18 @@ class PipelineMessage
 
     }
 
+    PipelineMessage(const QString& humanLabel,
+                    int pipelineIndex,
+                    const QString& msg,
+                    MessageType msgType = UnknownMessageType) :
+      m_FilterHumanLabel(humanLabel),
+      m_Text(msg),
+      m_PipelineIndex(pipelineIndex),
+      m_Type(msgType)
+    {
+
+    }
+
 
     static PipelineMessage CreateErrorMessage(const QString className, const QString humanLabel, const QString msg, int code)
     {
@@ -139,6 +153,12 @@ class PipelineMessage
       return em;
     }
 
+    static PipelineMessage CreateStandardOutputMessage(const QString humanLabel, int pipelineIndex, const QString msg)
+    {
+      PipelineMessage em(humanLabel, pipelineIndex, msg, StandardOutputMessage);
+      return em;
+    }
+
 
     SIMPL_TYPE_MACRO(PipelineMessage)
 
@@ -152,7 +172,8 @@ class PipelineMessage
               m_Text == rhs.m_Text &&
               m_Code == rhs.m_Code &&
               m_Type == rhs.m_Type &&
-              m_ProgressValue == rhs.m_ProgressValue);
+              m_ProgressValue == rhs.m_ProgressValue &&
+              m_PipelineIndex == rhs.m_PipelineIndex);
     }
 
     void operator=(const PipelineMessage& rhs)
@@ -164,6 +185,7 @@ class PipelineMessage
       m_Code = rhs.m_Code;
       m_Type = rhs.m_Type;
       m_ProgressValue = rhs.m_ProgressValue;
+      m_PipelineIndex = rhs.m_PipelineIndex;
     }
 
     SIMPL_INSTANCE_STRING_PROPERTY(FilterClassName)
@@ -175,6 +197,8 @@ class PipelineMessage
     SIMPL_INSTANCE_STRING_PROPERTY(Text)
 
     SIMPL_INSTANCE_PROPERTY(int, Code)
+
+    SIMPL_INSTANCE_PROPERTY(int, PipelineIndex)
 
     SIMPL_INSTANCE_PROPERTY(MessageType, Type)
 
@@ -259,6 +283,14 @@ class PipelineMessage
     {
       QString ss = QObject::tr("%1: %2").arg(m_Prefix).arg(m_Text);
       return ss;
+    }
+
+    /**
+     * @brief This function creates and returns a string for standard output messages
+     */
+    QString generateStandardOutputString()
+    {
+      return m_Text;
     }
 
 

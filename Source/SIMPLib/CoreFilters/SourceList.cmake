@@ -60,6 +60,7 @@ set(_PublicFilters
   CreateImageGeometry
   DataContainerReader
   DataContainerWriter
+  ExecuteProcess
   ExtractComponentAsArray
   FeatureCountDecision
   LinkFeatureMapToElementArray

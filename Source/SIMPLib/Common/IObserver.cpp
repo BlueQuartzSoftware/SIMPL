@@ -55,7 +55,6 @@ IObserver::~IObserver()
 void IObserver::processPipelineMessage(const PipelineMessage& pm)
 {
   PipelineMessage msg = pm;
-  QString filterHumanLabel = pm.getFilterHumanLabel();
   QString str;
   QTextStream ss(&str);
   if(msg.getType() == PipelineMessage::Error)
@@ -69,6 +68,10 @@ void IObserver::processPipelineMessage(const PipelineMessage& pm)
   else if(msg.getType() == PipelineMessage::StatusMessage)
   {
     ss << msg.generateStatusString();
+  }
+  else if(msg.getType() == PipelineMessage::StandardOutputMessage)
+  {
+    ss << msg.generateStandardOutputString();
   }
   else if(msg.getType() == PipelineMessage::ProgressValue)
   {
