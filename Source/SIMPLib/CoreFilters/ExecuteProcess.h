@@ -39,10 +39,14 @@
 #include <QtCore/QProcess>
 #include <QtCore/QWaitCondition>
 #include <QtCore/QMutex>
+#include <QtCore/QSharedPointer>
+
 
 #include "SIMPLib/SIMPLib.h"
 #include "SIMPLib/Common/AbstractFilter.h"
 #include "SIMPLib/Common/SIMPLibSetGetMacros.h"
+
+class QProcess;
 
 /**
  * @brief The ExecuteProcess class. See [Filter documentation](@ref executeprocess) for details.
@@ -156,9 +160,18 @@ class SIMPLib_EXPORT ExecuteProcess : public AbstractFilter
      */
     void dataCheck();
 
-  private:
+  protected slots:
+    void processHasFinished(int exitCode, QProcess::ExitStatus exitStatus);
+    void processHasErroredOut(QProcess::ProcessError error);
+    void sendErrorOutput();
+    void sendStandardOutput();
 
-    QStringList splitArgumentsString();
+  private:
+    QWaitCondition                                      m_WaitCondition;
+    QMutex                                              m_Mutex;
+    bool                                                m_Pause;
+    QSharedPointer<QProcess>                            m_ProcessPtr;
+    QStringList splitArgumentsString(QString arguments);
 
     ExecuteProcess(const ExecuteProcess&); // Copy Constructor Not Implemented
     void operator=(const ExecuteProcess&); // Operator '=' Not Implemented
