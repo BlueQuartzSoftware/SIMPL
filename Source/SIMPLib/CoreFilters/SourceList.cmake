@@ -48,7 +48,6 @@ SIMPL_START_FILTER_GROUP(
 
 set(_PublicFilters
   ArrayCalculator
-  Breakpoint
   CombineAttributeArrays
   CombineAttributeMatrices
   ConditionalSetValue
@@ -95,6 +94,7 @@ endforeach()
 # This is the list of Private Filters. These filters are available from other filters but the user will not
 # be able to use them from the DREAM3D user interface.
 set(_PrivateFilters
+  Breakpoint
   EmptyFilter
   FileReader
   FileWriter
