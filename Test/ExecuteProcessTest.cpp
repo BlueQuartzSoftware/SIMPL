@@ -52,6 +52,27 @@
 
 #include "SIMPLTestFileLocations.h"
 
+class ExecuteProcessObserver : public QObject, public IObserver
+{
+    Q_OBJECT
+
+  public:
+    ExecuteProcessObserver() {}
+    SIMPL_TYPE_MACRO_SUPER(ExecuteProcessObserver, IObserver)
+
+    virtual ~ExecuteProcessObserver() {}
+
+  public slots:
+    virtual void processPipelineMessage(const PipelineMessage& pm)
+    {
+
+    }
+
+  private:
+    ExecuteProcessObserver(const ExecuteProcessObserver&); // Copy Constructor Not Implemented
+    void operator=(const ExecuteProcessObserver&); // Operator '=' Not Implemented
+};
+
 class ExecuteProcessTest
 {
 
@@ -83,20 +104,28 @@ class ExecuteProcessTest
   int TestExecuteProcess()
   {
     ExecuteProcess::Pointer filter = ExecuteProcess::New();
+    ExecuteProcessObserver obs;
 
-    filter->setArguments("ls");
+    QObject::connect(filter.get(), SIGNAL(filterGeneratedMessage(const PipelineMessage&)),
+                     &obs, SLOT(processPipelineMessage(const PipelineMessage&)));
+
+    filter->setArguments(QObject::tr("%1 -v").arg(UnitTest::ExecuteProcessTest::QMakeLocation));
     filter->execute();
     DREAM3D_REQUIRE_EQUAL(filter->getErrorCondition(), 0)
 
-    filter->setArguments("ls -laF");
+    filter->setArguments(QObject::tr("%1 -help").arg(UnitTest::ExecuteProcessTest::QMakeLocation));
     filter->execute();
     DREAM3D_REQUIRE_EQUAL(filter->getErrorCondition(), 0)
 
-    filter->setArguments("cd ~/");
+    filter->setArguments(QObject::tr("%1 -v").arg(UnitTest::ExecuteProcessTest::CMakeLocation));
     filter->execute();
     DREAM3D_REQUIRE_EQUAL(filter->getErrorCondition(), 0)
 
-    filter->setArguments("lsz");
+    filter->setArguments(QObject::tr("%1 -help").arg(UnitTest::ExecuteProcessTest::CMakeLocation));
+    filter->execute();
+    DREAM3D_REQUIRE_EQUAL(filter->getErrorCondition(), 0)
+
+    filter->setArguments("sdhsdrtfn");
     filter->execute();
     DREAM3D_REQUIRE_EQUAL(filter->getErrorCondition(), -4005)
 

@@ -147,6 +147,7 @@ namespace UnitTest
   namespace ExecuteProcessTest
   {
     const QString QMakeLocation("@QtQMake_location@");
+    const QString CMakeLocation("@CMAKE_COMMAND@");
   }
 }
 
