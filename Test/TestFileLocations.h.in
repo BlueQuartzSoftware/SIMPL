@@ -140,8 +140,13 @@ namespace UnitTest
 
   namespace FilterParametersRWTest
   {
-      const QString OutputFile("@TEST_TEMP_DIR@/FilterParametersRWTest/OutputFile.json");
-      const QString OutputDir("@TEST_TEMP_DIR@/FilterParametersRWTest/");
+    const QString OutputFile("@TEST_TEMP_DIR@/FilterParametersRWTest/OutputFile.json");
+    const QString OutputDir("@TEST_TEMP_DIR@/FilterParametersRWTest/");
+  }
+
+  namespace ExecuteProcessTest
+  {
+    const QString QMakeLocation("@QtQMake_location@");
   }
 }
 
