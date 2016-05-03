@@ -40,7 +40,7 @@
 // -----------------------------------------------------------------------------
 AbstractFilterParametersWriter::AbstractFilterParametersWriter()
 {
-  // TODO Auto-generated constructor stub
+  
 
 }
 
@@ -49,6 +49,6 @@ AbstractFilterParametersWriter::AbstractFilterParametersWriter()
 // -----------------------------------------------------------------------------
 AbstractFilterParametersWriter::~AbstractFilterParametersWriter()
 {
-  // TODO Auto-generated destructor stub
+  
 }
 

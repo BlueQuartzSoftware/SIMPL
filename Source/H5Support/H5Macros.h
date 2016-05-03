@@ -43,7 +43,6 @@
 #include "H5Support/H5Support.h"
 #include "H5Support/H5SupportDLLExport.h"
 
-//TODO: Add tests for the find* methods
 
 #define CloseH5A(aid, err, retError)\
   err = H5Aclose( attr_id );\

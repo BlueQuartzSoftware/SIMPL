@@ -53,9 +53,6 @@
   Suffix##H5Attribute::Pointer m_msgType##_attr = Suffix##H5Attribute::New();\
   m_msgType##_attr->setKey(key);
 
-
-//TODO: Test the Read/Write IMXAArray methods
-
 /* Methods to test
  *
  * HDFTypeFromString
