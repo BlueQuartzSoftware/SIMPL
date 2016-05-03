@@ -150,3 +150,5 @@ class ExecuteProcessTest
     void operator=(const ExecuteProcessTest&); // Operator '=' Not Implemented
 };
 
+#include "moc_ExecuteProcessTest.cpp"
+
