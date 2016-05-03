@@ -119,6 +119,14 @@ void Breakpoint::preflight()
 // -----------------------------------------------------------------------------
 void Breakpoint::execute()
 {
+  pause();
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void Breakpoint::pause()
+{
   // Pause the pipeline at this point until someone chooses to resume
   emit pipelineHasPaused();
 

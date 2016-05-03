@@ -169,6 +169,11 @@ class SIMPLib_EXPORT Breakpoint : public AbstractFilter
      */
     void dataCheck();
 
+    /**
+     * @brief pause Pauses the pipeline
+     */
+    void pause();
+
   private:
     QWaitCondition                          m_WaitCondition;
     QMutex                                  m_Mutex;
