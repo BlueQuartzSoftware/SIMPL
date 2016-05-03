@@ -52,7 +52,7 @@
 
 #define PFTEST_NO_QOBJECT 1
 
-#include "QtSupportLib/PoleFigureImageUtilities.h"
+#include "SVWidgetsLib/QtSupport/PoleFigureImageUtilities.h"
 
 #include "TestFileLocations.h"
 
