@@ -62,13 +62,32 @@ class ExecuteProcessObserver : public QObject, public IObserver
 
     virtual ~ExecuteProcessObserver() {}
 
+    QString getStdOutput()
+    {
+      return m_StdOutput;
+    }
+
+    void clearStdOutput()
+    {
+      m_StdOutput.clear();
+    }
+
   public slots:
     virtual void processPipelineMessage(const PipelineMessage& pm)
     {
-
+      if(pm.getType() == PipelineMessage::StandardOutputMessage)
+      {
+        PipelineMessage msg = pm;
+        QString str;
+        QTextStream ss(&str);
+        ss << msg.generateStandardOutputString();
+        m_StdOutput.append(str);
+      }
     }
 
   private:
+    QString                               m_StdOutput;
+
     ExecuteProcessObserver(const ExecuteProcessObserver&); // Copy Constructor Not Implemented
     void operator=(const ExecuteProcessObserver&); // Operator '=' Not Implemented
 };
@@ -103,31 +122,58 @@ class ExecuteProcessTest
   // -----------------------------------------------------------------------------
   int TestExecuteProcess()
   {
-    ExecuteProcess::Pointer filter = ExecuteProcess::New();
-    ExecuteProcessObserver obs;
+    {
+      ExecuteProcess::Pointer filter = ExecuteProcess::New();
+      ExecuteProcessObserver obs;
 
-    QObject::connect(filter.get(), SIGNAL(filterGeneratedMessage(const PipelineMessage&)),
-                     &obs, SLOT(processPipelineMessage(const PipelineMessage&)));
+      QObject::connect(filter.get(), SIGNAL(filterGeneratedMessage(const PipelineMessage&)),
+                       &obs, SLOT(processPipelineMessage(const PipelineMessage&)));
 
-    filter->setArguments(QObject::tr("%1 -v").arg(UnitTest::ExecuteProcessTest::QMakeLocation));
-    filter->execute();
-    DREAM3D_REQUIRE_EQUAL(filter->getErrorCondition(), 0)
+      filter->setArguments(QObject::tr("%1 -v").arg(UnitTest::ExecuteProcessTest::QMakeLocation));
+      filter->execute();
+      DREAM3D_REQUIRE_EQUAL(filter->getErrorCondition(), 0)
+      QString stdOutput = obs.getStdOutput();
+      stdOutput.remove('\r');
+      stdOutput.remove('\n');
+      QString versionString = UnitTest::ExecuteProcessTest::QMakeVersionString;
+      versionString.remove('\r');
+      versionString.remove('\n');
+      DREAM3D_REQUIRE_EQUAL(stdOutput, versionString)
+    }
 
-    filter->setArguments(QObject::tr("%1 -help").arg(UnitTest::ExecuteProcessTest::QMakeLocation));
-    filter->execute();
-    DREAM3D_REQUIRE_EQUAL(filter->getErrorCondition(), 0)
+    {
+      ExecuteProcess::Pointer filter = ExecuteProcess::New();
+      ExecuteProcessObserver obs;
 
-    filter->setArguments(QObject::tr("%1 -v").arg(UnitTest::ExecuteProcessTest::CMakeLocation));
-    filter->execute();
-    DREAM3D_REQUIRE_EQUAL(filter->getErrorCondition(), 0)
+      QObject::connect(filter.get(), SIGNAL(filterGeneratedMessage(const PipelineMessage&)),
+                       &obs, SLOT(processPipelineMessage(const PipelineMessage&)));
 
-    filter->setArguments(QObject::tr("%1 -help").arg(UnitTest::ExecuteProcessTest::CMakeLocation));
-    filter->execute();
-    DREAM3D_REQUIRE_EQUAL(filter->getErrorCondition(), 0)
+      filter->setArguments(QObject::tr("%1 -version").arg(UnitTest::ExecuteProcessTest::CMakeLocation));
+      filter->execute();
+      QString stdOutput = obs.getStdOutput();
+      stdOutput.remove('\r');
+      stdOutput.remove('\n');
+      DREAM3D_REQUIRE_EQUAL(filter->getErrorCondition(), 0)
+      QString versionString = UnitTest::ExecuteProcessTest::CMakeVersionString;
+      versionString.remove('\r');
+      versionString.remove('\n');
+      DREAM3D_REQUIRE_EQUAL(stdOutput, versionString)
+    }
 
-    filter->setArguments("sdhsdrtfn");
-    filter->execute();
-    DREAM3D_REQUIRE_EQUAL(filter->getErrorCondition(), -4005)
+    {
+      ExecuteProcess::Pointer filter = ExecuteProcess::New();
+      ExecuteProcessObserver obs;
+
+      QObject::connect(filter.get(), SIGNAL(filterGeneratedMessage(const PipelineMessage&)),
+                       &obs, SLOT(processPipelineMessage(const PipelineMessage&)));
+
+      filter->setArguments("sdhsdrtfn");
+      filter->execute();
+      QString stdOutput = obs.getStdOutput();
+      stdOutput.remove('\r');
+      stdOutput.remove('\n');
+      DREAM3D_REQUIRE_EQUAL(filter->getErrorCondition(), -4005)
+    }
 
     return EXIT_SUCCESS;
   }
