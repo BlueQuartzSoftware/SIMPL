@@ -825,6 +825,7 @@ class DataArrayTest
         DREAM3D_REQUIRED(err, >=, 0)
       }
 
+#if 0
       {
         union {
             uint8_t ui8;
@@ -890,6 +891,8 @@ class DataArrayTest
           DREAM3D_REQUIRED(mudflap.ui64, ==, 0xABABABABABABABAB)
         }
       }
+#endif
+
     }
 
 
