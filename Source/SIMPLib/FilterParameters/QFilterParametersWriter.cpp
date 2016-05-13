@@ -103,7 +103,7 @@ int QFilterParametersWriter::WritePipelineToFile(FilterPipeline::Pointer pipelin
     {
       AbstractFilter::Pointer badFilter = AbstractFilter::New();
       writer->openFilterGroup(badFilter.get(), i);
-      writer->writeValue("Unkown Filter", "ERROR: Filter instance was NULL within the PipelineFilterWidget instance. Report this error to the DREAM3D Developers");
+      writer->writeValue("Unkown Filter", "ERROR: Filter instance was NULL within the SVPipelineFilterWidget instance. Report this error to the DREAM3D Developers");
       writer->closeFilterGroup();
     }
   }

@@ -62,12 +62,12 @@ AbstractFilter::AbstractFilter() :
 AbstractFilter::~AbstractFilter()
 {
   //  if(NULL != m_PreviousFilter.get())
-  //  std::cout << "~PipelineFilterWidget() m_PreviousFilter " << this  << "  " << m_PreviousFilter->getNameOfClass().toStdString()
+  //  std::cout << "~SVPipelineFilterWidget() m_PreviousFilter " << this  << "  " << m_PreviousFilter->getNameOfClass().toStdString()
   //            << "  " << m_PreviousFilter.use_count() << std::endl;
   // m_PreviousFilter = AbstractFilter::NullPointer();
 
   //  if(NULL != m_NextFilter.get())
-  //  std::cout << "~PipelineFilterWidget() m_NextFilter " << this  << "  " << m_NextFilter->getNameOfClass().toStdString()
+  //  std::cout << "~SVPipelineFilterWidget() m_NextFilter " << this  << "  " << m_NextFilter->getNameOfClass().toStdString()
   //            << "  " << m_NextFilter.use_count() << std::endl;
   //  m_NextFilter = AbstractFilter::NullPointer();
   //  std::cout << "~AbstractFilter" << std::endl;
