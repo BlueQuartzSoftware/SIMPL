@@ -1,0 +1,238 @@
+/* ============================================================================
+* Copyright (c) 2009-2016 BlueQuartz Software, LLC
+*
+* Redistribution and use in source and binary forms, with or without modification,
+* are permitted provided that the following conditions are met:
+*
+* Redistributions of source code must retain the above copyright notice, this
+* list of conditions and the following disclaimer.
+*
+* Redistributions in binary form must reproduce the above copyright notice, this
+* list of conditions and the following disclaimer in the documentation and/or
+* other materials provided with the distribution.
+*
+* Neither the name of BlueQuartz Software, the US Air Force, nor the names of its
+* contributors may be used to endorse or promote products derived from this software
+* without specific prior written permission.
+*
+* THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+* AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+* IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+* DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE
+* FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
+* DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
+* SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
+* CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
+* OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE
+* USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+*
+* The code contained herein was partially funded by the followig contracts:
+*    United States Air Force Prime Contract FA8650-07-D-5800
+*    United States Air Force Prime Contract FA8650-10-D-5210
+*    United States Prime Contract Navy N00173-07-C-2068
+*
+* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
+
+#ifndef _svpipelinefilterwidget_h_
+#define _svpipelinefilterwidget_h_
+
+#include <QtCore/QStringList>
+#include <QtCore/QSettings>
+#include <QtCore/QUrl>
+
+#include <QtWidgets/QFrame>
+#include <QtWidgets/QMenu>
+
+
+#include "SIMPLib/Common/AbstractFilter.h"
+#include "SIMPLib/FilterParameters/FilterParameter.h"
+
+#include "SVWidgetsLib/SVWidgetsLib.h"
+#include "SVWidgetsLib/Widgets/FilterInputWidget.h"
+#include "SVWidgetsLib/Widgets/PipelineFilterObject.h"
+
+#include "SVWidgetsLib/ui_SVPipelineFilterWidget.h"
+
+// This needs to be defined
+class QMouseEvent;
+class AbstractFilter;
+class QFormLayout;
+class QLabel;
+class QComboBox;
+class IObserver;
+
+/**
+ * @class SVPipelineFilterWidget SVPipelineFilterWidget.h FilterWidgets/SVPipelineFilterWidget.h
+ * @brief  This class is a subclass of the QGroupBox class and is used to display
+ * Filter Options that the user can set. This class is capable of constructing a
+ * default GUI widget set for each type of Filter Option that is available. If
+ * the programmer needs more specialized widgets then they can simply subclass
+ * this class and over ride or implement their custom code.
+ *
+ * @date Jan 6, 2012
+ * @version 1.0
+ */
+class SVWidgetsLib_EXPORT SVPipelineFilterWidget : public QFrame, public PipelineFilterObject, private Ui::SVPipelineFilterWidget
+{
+    Q_OBJECT
+  public:
+    SIMPL_INSTANCE_PROPERTY(QString, BorderColorStyle)
+
+    SVPipelineFilterWidget(QWidget* parent = NULL);
+    SVPipelineFilterWidget(AbstractFilter::Pointer filter, IObserver* observer = NULL, QWidget* parent = NULL);
+    virtual ~SVPipelineFilterWidget();
+
+    void setFilterTitle(const QString title) override;
+
+    virtual void getGuiParametersFromFilter(AbstractFilter* filt);
+
+    PipelineFilterObject* deepCopy() override;
+
+  public slots:
+
+    /**
+     * @brief changeStyle
+     */
+    void changeStyle() override;
+
+    /**
+     * @brief displayFilterParameterWidgetError
+     * @param msg
+     */
+    void displayFilterParameterWidgetError(const QString& msg);
+
+    /**
+     * @brief adjustLayout
+     * @param w
+     * @param state
+     */
+    void adjustLayout(QWidget* w, int state);
+
+    /**
+    * @brief launchHelpForItem
+    */
+    void launchHelpForItem();
+
+    /**
+    * @brief toRunningState
+    */
+    void toRunningState() override;
+
+    /**
+    * @brief toIdleState
+    */
+    void toIdleState() override;
+
+  protected slots:
+    /**
+     * @brief on_deleteBtn_clicked
+     */
+    void on_deleteBtn_clicked();
+
+    void filterInputWidget_filterParametersChanged();
+
+  signals:
+
+    /**
+     * @brief filterWidgetRemoved
+     * @param widget
+     */
+    void filterWidgetRemoved(SVPipelineFilterWidget* widget, bool allowUndo);
+
+    /**
+     * @brief dragStarted
+     */
+    void dragStarted(QMouseEvent* event, SVPipelineFilterWidget* fw);
+
+    /**
+     * @brief parametersChanged
+     */
+    void parametersChanged(QUuid id);
+
+    /**
+     * @brief filterWidgetPressed
+     */
+    void filterWidgetPressed(SVPipelineFilterWidget* fw, Qt::KeyboardModifiers modifiers);
+
+    /**
+    * @brief filterWidgetCut
+    */
+    void filterWidgetCut();
+
+    /**
+    * @brief filterWidgetCopied
+    */
+    void filterWidgetCopied();
+
+    /**
+    * @brief filterWidgetPasted
+    */
+    void filterWidgetPasted();
+
+    /**
+    * @brief focusInEventStarted
+    */
+    void focusInEventStarted(QFocusEvent* event);
+
+    /**
+    * @brief focusOutEventStarted
+    */
+    void focusOutEventStarted(QFocusEvent* event);
+
+  protected:
+    /**
+     * @brief mousePressEvent
+     * @param event
+     */
+    virtual void mousePressEvent( QMouseEvent* event ) override;
+
+    /**
+     * @brief mouseReleaseEvent
+     * @param event
+     */
+    virtual void mouseReleaseEvent( QMouseEvent* event ) override;
+
+    /**
+     * @brief mouseMoveEvent
+     * @param event
+     */
+    virtual void mouseMoveEvent( QMouseEvent* event ) override;
+
+    /**
+    * @brief getHorizontalLayout
+    */
+    QHBoxLayout* getHorizontalLayout();
+
+    /**
+    * @brief focusInEvent
+    */
+    void focusInEvent(QFocusEvent* event) override;
+
+    /**
+    * @brief focusOutEvent
+    */
+    void focusOutEvent(QFocusEvent* event) override;
+
+  private:
+    QRect                             m_DeleteRect;
+    QPoint                            dragStartPosition;
+    IObserver*                        m_Observer;
+    FilterInputWidget*                m_FilterInputWidget;
+
+    /**
+     * @brief initialize Calls all the necessary initialization code for the widget
+     * @param filter
+     */
+    void initialize();
+
+    /**
+      *@brief
+      */
+    void updateWidgetStyle();
+
+    SVPipelineFilterWidget(const SVPipelineFilterWidget&); // Copy Constructor Not Implemented
+    void operator=(const SVPipelineFilterWidget&); // Operator '=' Not Implemented
+};
+
+#endif /* _svpipelinefilterwidget_h_ */
+
