@@ -367,6 +367,8 @@ class SVWidgetsLib_EXPORT SVPipelineViewWidget : public QFrame, public PipelineV
 
     void contextMenuRequested(SVPipelineViewWidget* widget, const QPoint &pos);
 
+    void statusMessage(const QString& message);
+
   protected:
     void setupGui();
 
