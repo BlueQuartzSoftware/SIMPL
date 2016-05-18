@@ -33,7 +33,7 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-#include "AddFiltersCommand.h"
+#include "AddFilterCommand.h"
 
 #include <QtCore/QObject>
 
@@ -51,7 +51,7 @@
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-AddFiltersCommand::AddFiltersCommand(AbstractFilter::Pointer filter, PipelineView* destination, QString actionText, QVariant value, bool connectToStart, QUndoCommand* parent) :
+AddFilterCommand::AddFilterCommand(AbstractFilter::Pointer filter, PipelineView* destination, QString actionText, QVariant value, bool connectToStart, QUndoCommand* parent) :
   QUndoCommand(parent),
   m_ActionText(actionText),
   m_Destination(destination),
@@ -82,41 +82,7 @@ AddFiltersCommand::AddFiltersCommand(AbstractFilter::Pointer filter, PipelineVie
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-AddFiltersCommand::AddFiltersCommand(QList<AbstractFilter::Pointer> filters, PipelineView* destination, QString actionText, QVariant value, bool connectToStart, QUndoCommand* parent) :
-  QUndoCommand(parent),
-  m_ActionText(actionText),
-  m_Destination(destination),
-  m_Value(value),
-  m_FilterWidgetGeometry(QRect()),
-  m_ConnectToStart(connectToStart)
-{
-  if (m_Value.canConvert<int>())
-  {
-    int index = value.toInt();
-    if (index < 0)
-    {
-      m_Value.setValue(destination->filterCount());
-    }
-  }
-
-  if (destination->filterCount() > 0)
-  {
-    //m_FilterWidgetGeometry = destination->filterObjectAt(m_Value)->geometry();
-  }
-
-  FilterPipeline::Pointer pipeline = FilterPipeline::New();
-  for (int i=0; i<filters.size(); i++)
-  {
-    pipeline->pushBack(filters[i]);
-  }
-
-  m_JsonString = JsonFilterParametersWriter::WritePipelineToString(pipeline, "Pipeline");
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-AddFiltersCommand::AddFiltersCommand(PipelineFilterObject* filterWidget, PipelineView* destination, QString actionText, QVariant value, bool connectToStart, QUndoCommand* parent) :
+AddFilterCommand::AddFilterCommand(PipelineFilterObject* filterWidget, PipelineView* destination, QString actionText, QVariant value, bool connectToStart, QUndoCommand* parent) :
   QUndoCommand(parent),
   m_ActionText(actionText),
   m_Destination(destination),
@@ -148,42 +114,7 @@ AddFiltersCommand::AddFiltersCommand(PipelineFilterObject* filterWidget, Pipelin
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-AddFiltersCommand::AddFiltersCommand(QList<PipelineFilterObject*> filterWidgets, PipelineView* destination, QString actionText, QVariant value, bool connectToStart, QUndoCommand* parent) :
-  QUndoCommand(parent),
-  m_ActionText(actionText),
-  m_Destination(destination),
-  m_Value(value),
-  m_FilterWidgetGeometry(QRect()),
-  m_ConnectToStart(connectToStart)
-{
-  if (m_Value.canConvert<int>())
-  {
-    int index = value.toInt();
-    if (index < 0)
-    {
-      m_Value.setValue(destination->filterCount());
-    }
-  }
-
-  if (destination->filterCount() > 0)
-  {
-    //m_FilterWidgetGeometry = destination->filterObjectAt(m_Value)->geometry();
-  }
-
-  FilterPipeline::Pointer pipeline = FilterPipeline::New();
-  for (int i=0; i<filterWidgets.size(); i++)
-  {
-    pipeline->pushBack(filterWidgets[i]->getFilter());
-    delete filterWidgets[i];
-  }
-
-  m_JsonString = JsonFilterParametersWriter::WritePipelineToString(pipeline, "Pipeline");
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-AddFiltersCommand::AddFiltersCommand(const QString &jsonString, PipelineView* destination, QString actionText, QVariant value, bool connectToStart, QUndoCommand* parent) :
+AddFilterCommand::AddFilterCommand(const QString &jsonString, PipelineView* destination, QString actionText, QVariant value, bool connectToStart, QUndoCommand* parent) :
   QUndoCommand(parent),
   m_JsonString(jsonString),
   m_ActionText(actionText),
@@ -210,7 +141,7 @@ AddFiltersCommand::AddFiltersCommand(const QString &jsonString, PipelineView* de
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-AddFiltersCommand::~AddFiltersCommand()
+AddFilterCommand::~AddFilterCommand()
 {
 
 }
@@ -218,14 +149,9 @@ AddFiltersCommand::~AddFiltersCommand()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void AddFiltersCommand::undo()
+void AddFilterCommand::undo()
 {
-  for (int i = 0; i < m_AddedFilters.size(); i++)
-  {
-    m_Destination->removeFilterObject(m_AddedFilters[i], false);
-  }
-
-  m_AddedFilters.clear();
+  m_Destination->removeFilterObject(m_Destination->filterObjectAt(m_Value), false);
 
   m_Destination->preflightPipeline();
 }
@@ -233,23 +159,18 @@ void AddFiltersCommand::undo()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void AddFiltersCommand::redo()
+void AddFilterCommand::redo()
 {
   FilterPipeline::Pointer pipeline = JsonFilterParametersReader::ReadPipelineFromString(m_JsonString);
   if (pipeline == nullptr) { return; }
 
   FilterPipeline::FilterContainerType container = pipeline->getFilterContainer();
 
-  if (container.size() == 1)
-  {
-    setText(QObject::tr("\"%1 '%2'\"").arg(m_ActionText).arg(container[0]->getHumanLabel()));
-  }
-  else
-  {
-    setText(QObject::tr("\"%1 %2 Filter Widgets\"").arg(m_ActionText).arg(container.size()));
-  }
+  AbstractFilter::Pointer filter = container[0];
 
-  m_AddedFilters = m_Destination->addFilters(container, m_Value, false, m_ConnectToStart);
+  setText(QObject::tr("\"%1 '%2'\"").arg(m_ActionText).arg(filter->getHumanLabel()));
+
+  m_Destination->addFilter(filter, m_Value, false, m_ConnectToStart);
 
 //  for (int i = 0; i < container.size(); i++)
 //  {
@@ -284,14 +205,6 @@ void AddFiltersCommand::redo()
 //  }
 
   m_Destination->setSelectedFilterObject(m_Destination->filterObjectAt(m_Value), Qt::NoModifier);
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-QList<PipelineFilterObject*> AddFiltersCommand::getAddedFilters()
-{
-  return m_AddedFilters;
 }
 
 

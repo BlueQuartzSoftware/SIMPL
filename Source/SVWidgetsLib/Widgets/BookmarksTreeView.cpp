@@ -50,11 +50,10 @@
 #include <QtGui/QMouseEvent>
 #include <QtGui/QDrag>
 
-
-
-
 #include "SVWidgetsLib/Core/SVWidgetsLibConstants.h"
 #include "SVWidgetsLib/Widgets/BookmarksItemDelegate.h"
+#include "SVWidgetsLib/Widgets/SIMPLViewMenuItems.h"
+#include "SVWidgetsLib/Widgets/SIMPLViewToolbox.h"
 
 // Include the MOC generated CPP file which has all the QMetaObject methods/data
 #include "moc_BookmarksTreeView.cpp"
@@ -144,197 +143,124 @@ void BookmarksTreeView::mouseMoveEvent(QMouseEvent* event)
 // -----------------------------------------------------------------------------
 void BookmarksTreeView::requestContextMenu(const QPoint& pos)
 {
-//  activateWindow();
+  activateWindow();
 
-//  QModelIndex index = indexAt(pos);
+  SIMPLViewMenuItems* menuItems = SIMPLViewMenuItems::Instance();
 
-//  QPoint mapped;
-//  if (index.isValid())
-//  {
-//    // Note: We must map the point to global from the viewport to
-//    // account for the header.
-//    mapped = viewport()->mapToGlobal(pos);
-//  }
-//  else
-//  {
-//    index = QModelIndex();
-//    mapped = mapToGlobal(pos);
-//  }
+  QModelIndex index = indexAt(pos);
 
-//  BookmarksModel* model = BookmarksModel::Instance();
+  QPoint mapped;
+  if (index.isValid())
+  {
+    // Note: We must map the point to global from the viewport to
+    // account for the header.
+    mapped = viewport()->mapToGlobal(pos);
+  }
+  else
+  {
+    index = QModelIndex();
+    mapped = mapToGlobal(pos);
+  }
 
-//  QAction* actionAddBookmark = new QAction("Add Bookmark", this);
-//  QAction* actionNewFolder = new QAction("New Folder", this);
-//  QAction* actionRenameBookmark = new QAction("Rename Pipeline", this);
-//  QAction* actionRemoveBookmark = new QAction("Remove Bookmark", this);
-//  QAction* actionShowBookmarkInFileSystem = new QAction(this);
-//  QAction* actionLocateFile = new QAction("Locate File", this);
+  BookmarksModel* model = BookmarksModel::Instance();
+  SIMPLViewToolbox* toolbox = SIMPLViewToolbox::Instance();
 
-//#if defined(Q_OS_WIN)
-//  m_ActionShowBookmarkInFileSystem->setText("Show in Windows Explorer");
-//#elif defined(Q_OS_MAC)
-//  m_ActionShowBookmarkInFileSystem->setText("Show in Finder");
-//#else
-//  m_ActionShowBookmarkInFileSystem->setText("Show in File System");
-//#endif
+  QAction* actionAddBookmark = menuItems->getActionAddBookmark();
+  QAction* actionNewFolder = menuItems->getActionNewFolder();
+  QAction* actionRenameBookmark = menuItems->getActionRenameBookmark();
+  QAction* actionRemoveBookmark = menuItems->getActionRemoveBookmark();
+  QAction* actionLocateFile = menuItems->getActionLocateFile();
+  QAction* actionShowBookmarkInFileSystem = menuItems->getActionShowBookmarkInFileSystem();
 
-//  connect(actionAddBookmark, SIGNAL(triggered()), dream3dApp, SLOT(on_actionAddBookmark_triggered()));
-//  connect(actionNewFolder, SIGNAL(triggered()), dream3dApp, SLOT(on_actionNewFolder_triggered()));
-//  connect(actionRenameBookmark, SIGNAL(triggered()), dream3dApp, SLOT(on_actionRenameBookmark_triggered()));
-//  connect(actionRemoveBookmark, SIGNAL(triggered()), dream3dApp, SLOT(on_actionRemoveBookmark_triggered()));
-//  connect(actionShowBookmarkInFileSystem, SIGNAL(triggered()), dream3dApp, SLOT(on_actionShowBookmarkInFileSystem_triggered()));
-//  connect(actionLocateFile, SIGNAL(triggered()), this, SLOT(on_actionLocateFile_triggered()));
+  QModelIndexList indexList = toolbox->getBookmarksWidget()->getBookmarksTreeView()->selectionModel()->selectedRows(BookmarksItem::Name);
 
+  QMenu menu;
+  if (index.isValid() == false)
+  {
+    menu.addAction(actionAddBookmark);
+    {
+      QAction* separator = new QAction(this);
+      separator->setSeparator(true);
+      menu.addAction(separator);
+    }
+    menu.addAction(actionNewFolder);
+  }
+  else
+  {
+    QModelIndex actualIndex = model->index(index.row(), BookmarksItem::Path, index.parent());
+    QString path = actualIndex.data().toString();
+    if (indexList.size() > 1)
+    {
+      actionRemoveBookmark->setText("Remove Items");
+      menu.addAction(actionRemoveBookmark);
+    }
+    else if (path.isEmpty() == false)
+    {
+      bool itemHasErrors = model->data(actualIndex, Qt::UserRole).value<bool>();
+      if (itemHasErrors == true)
+      {
+        menu.addAction(actionLocateFile);
 
-//  QModelIndexList indexList = selectionModel()->selectedRows(BookmarksItem::Name);
+        {
+          QAction* separator = new QAction(this);
+          separator->setSeparator(true);
+          menu.addAction(separator);
+        }
 
-//  QMenu menu;
-//  if (index.isValid() == false)
-//  {
-//    menu.addAction(actionAddBookmark);
-//    {
-//      QAction* separator = new QAction(this);
-//      separator->setSeparator(true);
-//      menu.addAction(separator);
-//    }
-//    menu.addAction(actionNewFolder);
-//  }
-//  else
-//  {
-//    QModelIndex actualIndex = model->index(index.row(), BookmarksItem::Path, index.parent());
-//    QString path = actualIndex.data().toString();
-//    if (indexList.size() > 1)
-//    {
-//      actionRemoveBookmark->setText("Remove Items");
-//      menu.addAction(actionRemoveBookmark);
-//    }
-//    else if (path.isEmpty() == false)
-//    {
-//      bool itemHasErrors = model->data(actualIndex, Qt::UserRole).value<bool>();
-//      if (itemHasErrors == true)
-//      {
-//        menu.addAction(actionLocateFile);
+        actionRemoveBookmark->setText("Remove Bookmark");
+        menu.addAction(actionRemoveBookmark);
+      }
+      else
+      {
+        actionRenameBookmark->setText("Rename Bookmark");
+        menu.addAction(actionRenameBookmark);
 
-//        {
-//          QAction* separator = new QAction(this);
-//          separator->setSeparator(true);
-//          menu.addAction(separator);
-//        }
+        {
+          QAction* separator = new QAction(this);
+          separator->setSeparator(true);
+          menu.addAction(separator);
+        }
 
-//        actionRemoveBookmark->setText("Remove Bookmark");
-//        menu.addAction(actionRemoveBookmark);
-//      }
-//      else
-//      {
-//        actionRenameBookmark->setText("Rename Bookmark");
-//        menu.addAction(actionRenameBookmark);
+        actionRemoveBookmark->setText("Remove Bookmark");
+        menu.addAction(actionRemoveBookmark);
 
-//        {
-//          QAction* separator = new QAction(this);
-//          separator->setSeparator(true);
-//          menu.addAction(separator);
-//        }
+        {
+          QAction* separator = new QAction(this);
+          separator->setSeparator(true);
+          menu.addAction(separator);
+        }
 
-//        actionRemoveBookmark->setText("Remove Bookmark");
-//        menu.addAction(actionRemoveBookmark);
+        menu.addAction(actionShowBookmarkInFileSystem);
+      }
+    }
+    else if (path.isEmpty())
+    {
+      menu.addAction(actionAddBookmark);
 
-//        {
-//          QAction* separator = new QAction(this);
-//          separator->setSeparator(true);
-//          menu.addAction(separator);
-//        }
+      actionRenameBookmark->setText("Rename Folder");
+      menu.addAction(actionRenameBookmark);
 
-//        menu.addAction(actionShowBookmarkInFileSystem);
-//      }
-//    }
-//    else if (path.isEmpty())
-//    {
-//      menu.addAction(actionAddBookmark);
+      {
+        QAction* separator = new QAction(this);
+        separator->setSeparator(true);
+        menu.addAction(separator);
+      }
 
-//      actionRenameBookmark->setText("Rename Folder");
-//      menu.addAction(actionRenameBookmark);
+      actionRemoveBookmark->setText("Remove Folder");
+      menu.addAction(actionRemoveBookmark);
 
-//      {
-//        QAction* separator = new QAction(this);
-//        separator->setSeparator(true);
-//        menu.addAction(separator);
-//      }
+      {
+        QAction* separator = new QAction(this);
+        separator->setSeparator(true);
+        menu.addAction(separator);
+      }
 
-//      actionRemoveBookmark->setText("Remove Folder");
-//      menu.addAction(actionRemoveBookmark);
+      menu.addAction(actionNewFolder);
+    }
+  }
 
-//      {
-//        QAction* separator = new QAction(this);
-//        separator->setSeparator(true);
-//        menu.addAction(separator);
-//      }
+  menu.exec(mapped);
 
-//      menu.addAction(actionNewFolder);
-//    }
-//  }
-
-//  menu.exec(mapped);
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-void BookmarksTreeView::on_actionAddBookmark_triggered()
-{
-//  SIMPLViewToolbox* toolbox = SIMPLViewToolbox::Instance();
-
-//  toolbox->setCurrentTab(SIMPLViewToolbox::Bookmarks);
-
-//  QString proposedDir = m_OpenDialogLastDirectory;
-//  QList<QString> newPrefPaths;
-
-//  newPrefPaths = QFileDialog::getOpenFileNames(toolbox, tr("Choose Pipeline File(s)"),
-//                                               proposedDir, tr("Json File (*.json);;SIMPLView File (*.dream3d);;Text File (*.txt);;Ini File (*.ini);;All Files (*.*)"));
-//  if (true == newPrefPaths.isEmpty()) { return; }
-
-//  QModelIndex parent = currentIndex();
-
-//  if (parent.isValid() == false)
-//  {
-//    parent = QModelIndex();
-//  }
-
-//  for (int i = 0; i < newPrefPaths.size(); i++)
-//  {
-//    QString newPrefPath = newPrefPaths[i];
-//    newPrefPath = QDir::toNativeSeparators(newPrefPath);
-//    bookmarksToolboxWidget->addBookmark(newPrefPath, parent);
-//  }
-
-//  if (newPrefPaths.size() > 0)
-//  {
-//    // Cache the directory from the last path added
-//    m_OpenDialogLastDirectory = newPrefPaths[newPrefPaths.size() - 1];
-//  }
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-void BookmarksTreeView::on_actionNewFolder_triggered()
-{
-//  SIMPLViewToolbox* toolbox = SIMPLViewToolbox::Instance();
-
-//  toolbox->setCurrentTab(SIMPLViewToolbox::Bookmarks);
-
-//  BookmarksModel* model = BookmarksModel::Instance();
-//  BookmarksToolboxWidget* bookmarksToolboxWidget = toolbox->getBookmarksWidget();
-
-//  QModelIndex parent = m_Toolbox->getBookmarksWidget()->getBookmarksTreeView()->currentIndex();
-
-//  if (parent.isValid() == false)
-//  {
-//    parent = QModelIndex();
-//  }
-
-//  QString name = "New Folder";
-
-//  bookmarksToolboxWidget->addTreeItem(parent, name, QIcon(":/folder_blue.png"), "", model->rowCount(parent), true, true, false);
 }
 
 // -----------------------------------------------------------------------------

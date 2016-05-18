@@ -146,7 +146,7 @@ class SVWidgetsLib_EXPORT PipelineView
      * @param index
      * @param allowUndo
      */
-    virtual PipelineFilterObject* addFilter(AbstractFilter::Pointer filter, QVariant value, bool allowUndo = true, bool connectToStart = false);
+    virtual void addFilter(AbstractFilter::Pointer filter, QVariant value, bool allowUndo = true, bool connectToStart = false);
 
     /**
      * @brief addFilter
@@ -154,7 +154,7 @@ class SVWidgetsLib_EXPORT PipelineView
      * @param index
      * param allowUndo
      */
-    virtual PipelineFilterObject* addFilter(const QString& filterClassName, QVariant value, bool allowUndo = true, bool connectToStart = false);
+    virtual void addFilter(const QString& filterClassName, QVariant value, bool allowUndo = true, bool connectToStart = false);
 
     /**
      * @brief addFilter
@@ -162,7 +162,7 @@ class SVWidgetsLib_EXPORT PipelineView
      * @param index
      * @param allowUndo
      */
-    virtual QList<PipelineFilterObject*> addFilters(QList<AbstractFilter::Pointer> filters, QVariant value, bool allowUndo = true, bool connectToStart = false);
+    virtual void addFilters(QList<AbstractFilter::Pointer> filters, QVariant value, bool allowUndo = true, bool connectToStart = false);
 
     /**
      * @brief addFilterWidget
@@ -235,7 +235,7 @@ class SVWidgetsLib_EXPORT PipelineView
     /**
     * @brief clearWidgets
     */
-    virtual void clearWidgets(bool allowUndo = false);
+    virtual void clearFilterWidgets(bool allowUndo = false);
 
     /**
      * @brief getActionRedo

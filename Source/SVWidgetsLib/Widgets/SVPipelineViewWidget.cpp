@@ -83,10 +83,9 @@
 #include "SVWidgetsLib/Core/FilterWidgetManager.h"
 #include "SVWidgetsLib/Core/PipelineViewPtrMimeData.h"
 #include "SVWidgetsLib/Widgets/BreakpointFilterWidget.h"
-#include "SVWidgetsLib/Widgets/util/AddFiltersCommand.h"
+#include "SVWidgetsLib/Widgets/util/AddFilterCommand.h"
 #include "SVWidgetsLib/Widgets/util/MoveFilterCommand.h"
 #include "SVWidgetsLib/Widgets/util/RemoveFilterCommand.h"
-#include "SVWidgetsLib/Widgets/util/ClearFiltersCommand.h"
 #include "SVWidgetsLib/FilterParameterWidgets/FilterParameterWidgetsDialogs.h"
 
 // Include the MOC generated CPP file which has all the QMetaObject methods/data
@@ -360,12 +359,18 @@ void SVPipelineViewWidget::resetLayout()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void SVPipelineViewWidget::clearWidgets(bool allowUndo)
+void SVPipelineViewWidget::clearFilterWidgets(bool allowUndo)
 {
   if (allowUndo == true)
   {
-    ClearFiltersCommand* cmd = new ClearFiltersCommand(this);
-    addUndoCommand(cmd);
+    QUndoCommand* topCmd = new QUndoCommand();
+    topCmd->setText(QObject::tr("\"%1 %2 Filter Widgets\"").arg("Clear").arg(filterCount()));
+    for (int i=0; i<filterCount(); i++)
+    {
+      SVPipelineFilterWidget* filterWidget = dynamic_cast<SVPipelineFilterWidget*>(m_FilterWidgetLayout->itemAt(i)->widget());
+      new RemoveFilterCommand(filterWidget, this, "Clear", topCmd);
+    }
+    addUndoCommand(topCmd);
   }
   else
   {
@@ -517,60 +522,68 @@ int SVPipelineViewWidget::openPipeline(const QString& filePath, QVariant value, 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-PipelineFilterObject* SVPipelineViewWidget::addFilter(const QString& filterClassName, QVariant value, bool allowUndo, bool connectToStart)
+void SVPipelineViewWidget::addFilter(const QString& filterClassName, QVariant value, bool allowUndo, bool connectToStart)
 {  
-  if (this->isEnabled() == false) { return nullptr; }
+  if (this->isEnabled() == false) { return; }
   FilterManager* fm = FilterManager::Instance();
-  if(NULL == fm) { return nullptr; }
+  if(NULL == fm) { return; }
   IFilterFactory::Pointer wf = fm->getFactoryForFilter(filterClassName);
-  if (NULL == wf.get()) { return nullptr; }
+  if (NULL == wf.get()) { return; }
 
   // Create an instance of the filter. Since we are dealing with the AbstractFilter interface we can not
   // actually use the concrete filter class. We are going to have to rely on QProperties or Signals/Slots
   // to communicate changes back to the filter.
   AbstractFilter::Pointer filter = wf->create();
 
-  return addFilter(filter, value, allowUndo, connectToStart);
+  addFilter(filter, value, allowUndo, connectToStart);
 }
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-QList<PipelineFilterObject*> SVPipelineViewWidget::addFilters(QList<AbstractFilter::Pointer> filters, QVariant value, bool allowUndo, bool connectToStart)
+void SVPipelineViewWidget::addFilters(QList<AbstractFilter::Pointer> filters, QVariant value, bool allowUndo, bool connectToStart)
 {
-  QList<PipelineFilterObject*> list;
+  if (filters.size() <= 0) { return; }
+
+  bool ok;
+  int index = value.toInt(&ok);
+  if (ok == false) { return; }
+  if (index < 0)
+  {
+    index = filterCount();
+  }
 
   if (allowUndo == true)
   {
-    AddFiltersCommand* cmd = new AddFiltersCommand(filters, this, "Add", value);
-    addUndoCommand(cmd);
-    list = cmd->getAddedFilters();
+    QUndoCommand* topCmd = new QUndoCommand();
+    topCmd->setText(QObject::tr("\"%1 %2 Filter Widgets\"").arg("Add").arg(filters.size()));
+    for (int i=0; i<filters.size(); i++)
+    {
+      new AddFilterCommand(filters[i], this, "Add", index, false, topCmd);
+      index++;
+    }
+    addUndoCommand(topCmd);
   }
   else
   {
     bool ok;
     int index = value.toInt(&ok);
-    if (ok == false) { return QList<PipelineFilterObject*>(); }
+    if (ok == false) { return; }
 
     for (int i=0; i<filters.size(); i++)
     {
-      PipelineFilterObject* object = addFilter(filters[i], index, false, connectToStart);
-      list.push_back(object);
+      addFilter(filters[i], index, false, connectToStart);
       index++;
     }
   }
-
-  return list;
 }
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-PipelineFilterObject* SVPipelineViewWidget::addFilter(AbstractFilter::Pointer filter, QVariant value, bool allowUndo, bool connectToStart)
+void SVPipelineViewWidget::addFilter(AbstractFilter::Pointer filter, QVariant value, bool allowUndo, bool connectToStart)
 {
   Q_UNUSED(connectToStart)
-
-  PipelineFilterObject* object;
 
   if (value < 0) // If the programmer wants to add it to the end of the list
   {
@@ -584,21 +597,17 @@ PipelineFilterObject* SVPipelineViewWidget::addFilter(AbstractFilter::Pointer fi
   {
     BreakpointFilterWidget* w = new BreakpointFilterWidget(filter, NULL, this);
     addFilterObject(w, value, allowUndo);
-    object = w;
   }
   else
   {
     SVPipelineFilterWidget* w = new SVPipelineFilterWidget(filter, NULL, this);
     addFilterObject(w, value, allowUndo);
-    object = w;
   }
 
   // Clear the pipeline Issues table first so we can collect all the error messages
   emit pipelineIssuesCleared();
   // Now preflight the pipeline for this filter.
   preflightPipeline();
-
-  return object;
 }
 
 // -----------------------------------------------------------------------------
@@ -606,10 +615,26 @@ PipelineFilterObject* SVPipelineViewWidget::addFilter(AbstractFilter::Pointer fi
 // -----------------------------------------------------------------------------
 void SVPipelineViewWidget::addFilterObjects(QList<PipelineFilterObject*> filterObjects, QVariant value, bool allowUndo)
 {
+  if (filterObjects.size() <= 0) { return; }
+
+  bool ok;
+  int index = value.toInt(&ok);
+  if (ok == false) { return; }
+  if (index < 0)
+  {
+    index = filterCount();
+  }
+
   if (allowUndo == true)
   {
-    AddFiltersCommand* cmd = new AddFiltersCommand(filterObjects, this, "Add", value);
-    addUndoCommand(cmd);
+    QUndoCommand* topCmd = new QUndoCommand();
+    topCmd->setText(QObject::tr("\"%1 %2 Filter Widgets\"").arg("Add").arg(filterObjects.size()));
+    for (int i=0; i<filterObjects.size(); i++)
+    {
+      new AddFilterCommand(filterObjects[i], this, "Add", index, false, topCmd);
+      index++;
+    }
+    addUndoCommand(topCmd);
   }
   else
   {
@@ -635,7 +660,7 @@ void SVPipelineViewWidget::addFilterObject(PipelineFilterObject* filterObject, Q
 
   if (allowUndo == true)
   {
-    AddFiltersCommand* cmd = new AddFiltersCommand(filterWidget, this, "Add", value);
+    AddFilterCommand* cmd = new AddFilterCommand(filterWidget, this, "Add", value);
     addUndoCommand(cmd);
   }
   else
@@ -761,15 +786,20 @@ void SVPipelineViewWidget::moveFilterWidget(PipelineFilterObject* fw, QVariant o
 // -----------------------------------------------------------------------------
 void SVPipelineViewWidget::pasteFilters(QList<AbstractFilter::Pointer> filters, bool allowUndo)
 {
-  if (filters.isEmpty())
-  {
-    return;
-  }
+  if (filters.isEmpty()) { return; }
+
+  int index = filterCount();
 
   if (allowUndo == true)
   {
-    AddFiltersCommand* cmd = new AddFiltersCommand(filters, this, "Paste", -1);
-    addUndoCommand(cmd);
+    QUndoCommand* topCmd = new QUndoCommand();
+    topCmd->setText(QObject::tr("\"%1 %2 Filter Widgets\"").arg("Paste").arg(filters.size()));
+    for (int i=0; i<filters.size(); i++)
+    {
+      new AddFilterCommand(filters[i], this, "Paste", index, false, topCmd);
+      index++;
+    }
+    addUndoCommand(topCmd);
   }
   else
   {
@@ -784,7 +814,7 @@ void SVPipelineViewWidget::pasteFilterWidgets(const QString &jsonString, QVarian
 {
   if (allowUndo == true)
   {
-    AddFiltersCommand* cmd = new AddFiltersCommand(jsonString, this, "Paste", value);
+    AddFilterCommand* cmd = new AddFilterCommand(jsonString, this, "Paste", value);
     addUndoCommand(cmd);
   }
   else
@@ -1107,11 +1137,11 @@ void SVPipelineViewWidget::populatePipelineView(FilterPipeline::Pointer pipeline
 {
   Q_UNUSED(connectToStart)
 
-  if (NULL == pipeline.get()) { clearWidgets(); return; }
+  if (NULL == pipeline.get()) { clearFilterWidgets(); return; }
 
   QString jsonString = JsonFilterParametersWriter::WritePipelineToString(pipeline, "Pipeline");
 
-  AddFiltersCommand* cmd = new AddFiltersCommand(jsonString, this, "Paste", value);
+  AddFilterCommand* cmd = new AddFilterCommand(jsonString, this, "Paste", value);
   addUndoCommand(cmd);
 
   if (filterCount() > 0)
@@ -1875,7 +1905,7 @@ void SVPipelineViewWidget::handleFilterParameterChanged(QUuid id)
 // -----------------------------------------------------------------------------
 void SVPipelineViewWidget::on_actionClearPipeline_triggered()
 {
-  clearWidgets(true);
+  clearFilterWidgets(true);
 }
 
 // -----------------------------------------------------------------------------

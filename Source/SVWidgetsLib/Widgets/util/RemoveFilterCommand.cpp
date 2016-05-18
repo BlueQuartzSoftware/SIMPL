@@ -46,60 +46,25 @@
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-RemoveFilterCommand::RemoveFilterCommand(PipelineFilterObject* fw, PipelineView *pipelineView, QString actionText, QUndoCommand* parent) :
-QUndoCommand(parent),
-m_PipelineView(pipelineView)
+RemoveFilterCommand::RemoveFilterCommand(PipelineFilterObject* fw, PipelineView *pipelineView, QString actionText, bool deleteObject, QUndoCommand* parent) :
+  QUndoCommand(parent),
+  m_PipelineView(pipelineView),
+  m_DeleteObject(deleteObject)
 {
   if (NULL == fw || NULL == pipelineView)
   {
     return;
   }
 
-  m_RemovalValues.push_back(pipelineView->valueOfFilterWidget(fw));
+  m_RemovalValue = pipelineView->valueOfFilterWidget(fw);
 
   FilterPipeline::Pointer pipeline = FilterPipeline::New();
-  PipelineFilterObject* filterWidget = m_PipelineView->filterObjectAt(m_RemovalValues[0]);
+  PipelineFilterObject* filterWidget = m_PipelineView->filterObjectAt(m_RemovalValue);
   pipeline->pushBack(filterWidget->getFilter());
 
   m_JsonString = JsonFilterParametersWriter::WritePipelineToString(pipeline, "Pipeline");
 
   setText(QObject::tr("\"%1 '%2'\"").arg(actionText).arg(pipeline->getFilterContainer()[0]->getHumanLabel()));
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-RemoveFilterCommand::RemoveFilterCommand(QList<PipelineFilterObject*> filterWidgets, PipelineView* pipelineView, QString actionText, QUndoCommand* parent) :
-QUndoCommand(parent),
-m_PipelineView(pipelineView)
-{
-  if (filterWidgets.size() <= 0 || NULL == pipelineView)
-  {
-    return;
-  }
-
-  for (int i=0; i<filterWidgets.size(); i++)
-  {
-    m_RemovalValues.push_back(pipelineView->valueOfFilterWidget(filterWidgets[i]));
-  }
-
-  FilterPipeline::Pointer pipeline = FilterPipeline::New();
-  for (int i=0; i<m_RemovalValues.size(); i++)
-  {
-    PipelineFilterObject* filterWidget = m_PipelineView->filterObjectAt(m_RemovalValues[i]);
-    pipeline->pushBack(filterWidget->getFilter());
-  }
-
-  if (m_RemovalValues.size() == 1)
-  {
-    setText(QObject::tr("\"%1 '%2'\"").arg(actionText).arg(pipeline->getFilterContainer()[0]->getHumanLabel()));
-  }
-  else
-  {
-    setText(QObject::tr("\"%1 %2 Filter Widgets\"").arg(actionText).arg(pipeline->getFilterContainer().size()));
-  }
-
-  m_JsonString = JsonFilterParametersWriter::WritePipelineToString(pipeline, "Pipeline");
 }
 
 // -----------------------------------------------------------------------------
@@ -120,12 +85,7 @@ void RemoveFilterCommand::undo()
 
   m_PipelineView->clearSelectedFilterObjects();
 
-  for (int i=0; i<container.size(); i++)
-  {
-    SVPipelineFilterWidget* filterWidget = new SVPipelineFilterWidget(container[i], NULL, NULL);
-    m_PipelineView->addFilterObject(filterWidget, m_RemovalValues[i], false);
-    m_PipelineView->setSelectedFilterObject(filterWidget, Qt::ShiftModifier);
-  }
+  m_PipelineView->addFilter(container[0], m_RemovalValue, false);
 
   m_PipelineView->preflightPipeline();
 }
@@ -135,17 +95,9 @@ void RemoveFilterCommand::undo()
 // -----------------------------------------------------------------------------
 void RemoveFilterCommand::redo()
 {
-  QList<PipelineFilterObject*> filterWidgets;
-  for (int i=0; i<m_RemovalValues.size(); i++)
-  {
-    filterWidgets.push_back(m_PipelineView->filterObjectAt(m_RemovalValues[i]));
-  }
+  PipelineFilterObject* filterWidget = m_PipelineView->filterObjectAt(m_RemovalValue);
 
-  for (int i=0; i<filterWidgets.size(); i++)
-  {
-    PipelineFilterObject* filterWidget = filterWidgets[i];
-    m_PipelineView->removeFilterObject(filterWidget, false);
-  }
+  m_PipelineView->removeFilterObject(filterWidget, false, m_DeleteObject);
 
   m_PipelineView->preflightPipeline();
 }

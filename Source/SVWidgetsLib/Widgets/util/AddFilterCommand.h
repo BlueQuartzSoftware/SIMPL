@@ -33,33 +33,44 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-#ifndef _clearfilterscommand_h_
-#define _clearfilterscommand_h_
+#ifndef _addfilterscommand_h_
+#define _addfilterscommand_h_
 
 #include <QtCore/QMap>
 
+#include <QtCore/QRect>
+
 #include <QtWidgets/QUndoCommand>
 
-class SVPipelineFilterWidget;
-class SVPipelineViewWidget;
+#include <SIMPLib/Common/AbstractFilter.h>
 
-class ClearFiltersCommand : public QUndoCommand
+class PipelineFilterObject;
+class PipelineView;
+
+class AddFilterCommand : public QUndoCommand
 {
-public:
-  ClearFiltersCommand(SVPipelineViewWidget* pipelineView, QUndoCommand* parent = 0);
-  virtual ~ClearFiltersCommand();
+  public:
+    AddFilterCommand(AbstractFilter::Pointer filter, PipelineView* destination, QString actionText, QVariant value, bool connectToStart = false, QUndoCommand* parent = 0);
+    AddFilterCommand(PipelineFilterObject* filterWidget, PipelineView* destination, QString actionText, QVariant value, bool connectToStart = false, QUndoCommand* parent = 0);
+    AddFilterCommand(const QString &jsonString, PipelineView* destination, QString actionText, QVariant value, bool connectToStart = false, QUndoCommand* parent = 0);
+    virtual ~AddFilterCommand();
 
-  virtual void undo();
+    virtual void undo();
 
-  virtual void redo();
+    virtual void redo();
 
-private:
-  SVPipelineViewWidget*                                         m_PipelineView;
-  QString                                                       m_JsonString;
+  private:
+    QString                                             m_JsonString;
+    QString                                             m_ActionText;
+    PipelineView*                                       m_Destination;
+    QMap<int, Qt::KeyboardModifiers>                    m_Selections;
+    QVariant                                            m_Value;
+    QRect                                               m_FilterWidgetGeometry;
+    bool                                                m_ConnectToStart;
 
-  ClearFiltersCommand(const ClearFiltersCommand&); // Copy Constructor Not Implemented
-  void operator=(const ClearFiltersCommand&); // Operator '=' Not Implemented
+    AddFilterCommand(const AddFilterCommand&); // Copy Constructor Not Implemented
+    void operator=(const AddFilterCommand&); // Operator '=' Not Implemented
 };
 
-#endif /* _clearfilterscommand_h_ */
+#endif /* _addfilterscommand_h_ */
 

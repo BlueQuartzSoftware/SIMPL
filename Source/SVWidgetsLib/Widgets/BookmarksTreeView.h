@@ -120,8 +120,6 @@ class SVWidgetsLib_EXPORT BookmarksTreeView : public QTreeView
     void addActionList(QList<QAction*> actionList);
 
   protected slots:
-    void on_actionAddBookmark_triggered();
-    void on_actionNewFolder_triggered();
     void on_actionLocateFile_triggered();
 
   signals:

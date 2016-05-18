@@ -78,16 +78,14 @@ set(SVWidgetsLib_Widgets_UIS
 
 SET(SVWidgetsLib_Widgets_Util_HDRS
   ${SVWidgetsLib_SOURCE_DIR}/Widgets/util/MoveFilterCommand.h
-  ${SVWidgetsLib_SOURCE_DIR}/Widgets/util/AddFiltersCommand.h
+  ${SVWidgetsLib_SOURCE_DIR}/Widgets/util/AddFilterCommand.h
   ${SVWidgetsLib_SOURCE_DIR}/Widgets/util/RemoveFilterCommand.h
-  ${SVWidgetsLib_SOURCE_DIR}/Widgets/util/ClearFiltersCommand.h
 )
 
 SET(SVWidgetsLib_Widgets_Util_SRCS
   ${SVWidgetsLib_SOURCE_DIR}/Widgets/util/MoveFilterCommand.cpp
-  ${SVWidgetsLib_SOURCE_DIR}/Widgets/util/AddFiltersCommand.cpp
+  ${SVWidgetsLib_SOURCE_DIR}/Widgets/util/AddFilterCommand.cpp
   ${SVWidgetsLib_SOURCE_DIR}/Widgets/util/RemoveFilterCommand.cpp
-  ${SVWidgetsLib_SOURCE_DIR}/Widgets/util/ClearFiltersCommand.cpp
   )
 
 cmp_IDE_SOURCE_PROPERTIES( "SVWidgetsLib/Widgets/util" "${SVWidgetsLib_Widgets_Util_HDRS}" "${SVWidgetsLib_Widgets_Util_SRCS}" "${PROJECT_INSTALL_HEADERS}")

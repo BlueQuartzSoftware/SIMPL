@@ -272,6 +272,30 @@ QStringList BookmarksToolboxWidget::generateFilterListFromPipelineFile(QString p
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
+void BookmarksToolboxWidget::addBookmark(const QString& filePath, const QModelIndex& parent)
+{
+  BookmarksModel* model = BookmarksModel::Instance();
+  QFileInfo fi(filePath);
+  QString fileTitle = fi.baseName();
+  int err = addTreeItem(parent, fileTitle, QIcon(":/text.png"), filePath, model->rowCount(parent), true, false, false);
+  if (err >= 0)
+  {
+    emit updateStatusBar("The pipeline '" + fileTitle + "' has been added successfully.");
+    getBookmarksTreeView()->expand(parent);
+  }
+  else if (err == UNRECOGNIZED_EXT)
+  {
+    emit updateStatusBar("The pipeline '" + fileTitle + "' could not be added, because the pipeline file extension was not recognized.");
+  }
+  else
+  {
+    emit updateStatusBar("The pipeline '" + fileTitle + "' could not be added.  An unknown error has occurred.  Please contact the SIMPLView developers.");
+  }
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
 void BookmarksToolboxWidget::readPrebuiltPipelines()
 {
   QDir pipelinesDir = findPipelinesDirectory();
@@ -473,30 +497,6 @@ QString BookmarksToolboxWidget::writeNewFavoriteFilePath(QString newFavoriteTitl
   bookmarksTreeView->blockSignals(false);
 
   return newPath;
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-void BookmarksToolboxWidget::addBookmark(const QString& filePath, const QModelIndex& parent)
-{
-  BookmarksModel* model = BookmarksModel::Instance();
-  QFileInfo fi(filePath);
-  QString fileTitle = fi.baseName();
-  int err = addTreeItem(parent, fileTitle, QIcon(":/text.png"), filePath, model->rowCount(parent), true, false, false);
-  if (err >= 0)
-  {
-    emit updateStatusBar("The pipeline '" + fileTitle + "' has been added successfully.");
-    bookmarksTreeView->expand(parent);
-  }
-  else if (err == UNRECOGNIZED_EXT)
-  {
-    emit updateStatusBar("The pipeline '" + fileTitle + "' could not be added, because the pipeline file extension was not recognized.");
-  }
-  else
-  {
-    emit updateStatusBar("The pipeline '" + fileTitle + "' could not be added.  An unknown error has occurred.  Please contact the SIMPLView developers.");
-  }
 }
 
 // -----------------------------------------------------------------------------

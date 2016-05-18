@@ -130,6 +130,7 @@ void SIMPLViewMenuItems::createActions()
   m_ActionPaste = new QAction("Paste", this);
   m_ActionLoadTheme = new QAction("Load Theme", this);
   m_ActionSaveTheme = new QAction("Save Theme", this);
+  m_ActionLocateFile = new QAction("Locate File", this);
 
 #if defined(Q_OS_WIN)
   m_ActionShowBookmarkInFileSystem->setText("Show in Windows Explorer");

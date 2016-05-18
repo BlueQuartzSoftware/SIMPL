@@ -95,6 +95,7 @@ class SVWidgetsLib_EXPORT SIMPLViewMenuItems : public QObject
     // Bookmarks Menu
     SIMPL_INSTANCE_PROPERTY(QAction*, ActionAddBookmark)
     SIMPL_INSTANCE_PROPERTY(QAction*, ActionNewFolder)
+    SIMPL_INSTANCE_PROPERTY(QAction*, ActionLocateFile)
 
     // Pipeline Menu
     SIMPL_INSTANCE_PROPERTY(QAction*, ActionClearPipeline)

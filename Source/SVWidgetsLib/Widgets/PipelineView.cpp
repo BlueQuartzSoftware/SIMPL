@@ -81,10 +81,9 @@
 #include "SVWidgetsLib/Core/FilterWidgetManager.h"
 #include "SVWidgetsLib/Core/PipelineViewPtrMimeData.h"
 #include "SVWidgetsLib/Widgets/BreakpointFilterWidget.h"
-#include "SVWidgetsLib/Widgets/util/AddFiltersCommand.h"
+#include "SVWidgetsLib/Widgets/util/AddFilterCommand.h"
 #include "SVWidgetsLib/Widgets/util/MoveFilterCommand.h"
 #include "SVWidgetsLib/Widgets/util/RemoveFilterCommand.h"
-#include "SVWidgetsLib/Widgets/util/ClearFiltersCommand.h"
 #include "SVWidgetsLib/FilterParameterWidgets/FilterParameterWidgetsDialogs.h"
 
 // -----------------------------------------------------------------------------
@@ -153,7 +152,7 @@ QVariant PipelineView::valueOfFilterWidget(PipelineFilterObject* filterWidget)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-PipelineFilterObject* PipelineView::addFilter(const QString& filterClassName, QVariant value, bool allowUndo, bool connectToStart)
+void PipelineView::addFilter(const QString& filterClassName, QVariant value, bool allowUndo, bool connectToStart)
 {
   Q_UNUSED(filterClassName)
   Q_UNUSED(value)
@@ -161,13 +160,13 @@ PipelineFilterObject* PipelineView::addFilter(const QString& filterClassName, QV
   Q_UNUSED(connectToStart)
 
   // The subclass should reimplement this function
-  return nullptr;
+  return;
 }
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-QList<PipelineFilterObject*> PipelineView::addFilters(QList<AbstractFilter::Pointer> filters, QVariant value, bool allowUndo, bool connectToStart)
+void PipelineView::addFilters(QList<AbstractFilter::Pointer> filters, QVariant value, bool allowUndo, bool connectToStart)
 {
   Q_UNUSED(filters)
   Q_UNUSED(value)
@@ -175,13 +174,13 @@ QList<PipelineFilterObject*> PipelineView::addFilters(QList<AbstractFilter::Poin
   Q_UNUSED(connectToStart)
 
   // The subclass should reimplement this function
-  return QList<PipelineFilterObject*>();
+  return;
 }
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-PipelineFilterObject* PipelineView::addFilter(AbstractFilter::Pointer filter, QVariant value, bool allowUndo, bool connectToStart)
+void PipelineView::addFilter(AbstractFilter::Pointer filter, QVariant value, bool allowUndo, bool connectToStart)
 {
   Q_UNUSED(filter)
   Q_UNUSED(value)
@@ -189,7 +188,7 @@ PipelineFilterObject* PipelineView::addFilter(AbstractFilter::Pointer filter, QV
   Q_UNUSED(connectToStart)
 
   // The subclass should reimplement this function
-  return nullptr;
+  return;
 }
 
 // -----------------------------------------------------------------------------
@@ -244,8 +243,13 @@ void PipelineView::cutFilterWidgets(QList<PipelineFilterObject*> filterWidgets, 
 
   if (allowUndo == true)
   {
-    RemoveFilterCommand* cmd = new RemoveFilterCommand(filterWidgets, this, "Cut");
-    addUndoCommand(cmd);
+    QUndoCommand* topCmd = new QUndoCommand();
+    topCmd->setText(QObject::tr("\"%1 %2 Filter Widgets\"").arg("Cut").arg(filterWidgets.size()));
+    for (int i=0; i<filterWidgets.size(); i++)
+    {
+      new RemoveFilterCommand(filterWidgets[i], this, "Cut", topCmd);
+    }
+    addUndoCommand(topCmd);
   }
   else
   {
@@ -298,8 +302,13 @@ void PipelineView::removeFilterWidgets(QList<PipelineFilterObject*> filterWidget
 {
   if (allowUndo == true)
   {
-    RemoveFilterCommand* cmd = new RemoveFilterCommand(filterWidgets, this, "Remove");
-    addUndoCommand(cmd);
+    QUndoCommand* topCmd = new QUndoCommand();
+    topCmd->setText(QObject::tr("\"%1 %2 Filter Widgets\"").arg("Remove").arg(filterWidgets.size()));
+    for (int i=0; i<filterWidgets.size(); i++)
+    {
+      new RemoveFilterCommand(filterWidgets[i], this, "Remove", topCmd);
+    }
+    addUndoCommand(topCmd);
   }
   else
   {
@@ -340,7 +349,7 @@ void PipelineView::addSIMPLViewReaderFilter(const QString& filePath, QVariant va
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void PipelineView::clearWidgets(bool allowUndo)
+void PipelineView::clearFilterWidgets(bool allowUndo)
 {
   Q_UNUSED(allowUndo)
 
