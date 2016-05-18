@@ -121,7 +121,7 @@ void DataContainerArrayProxyWidget::setupGui()
   dcaProxyView->setModel(model);
   delete oldModel;
 
-  setStyleSheet("QColumnView { text-decoration-color: red; }");
+  //setStyleSheet("QColumnView { text-decoration-color: red; }");
 
   connect(model, SIGNAL(itemChanged(QStandardItem*)),
           this, SLOT(itemActivated(QStandardItem*)));
