@@ -92,7 +92,7 @@ void MoveFilterCommand::moveFilter(QVariant origin, QVariant destination)
 {  
   if (NULL == m_FilterWidget)
   {
-    m_PipelineView->removeFilterWidget(m_PipelineView->filterObjectAt(origin), false);
+    m_PipelineView->removeFilterObject(m_PipelineView->filterObjectAt(origin), false);
   }
   else
   {
@@ -102,7 +102,7 @@ void MoveFilterCommand::moveFilter(QVariant origin, QVariant destination)
   FilterPipeline::Pointer pipeline = JsonFilterParametersReader::ReadPipelineFromString(m_JsonString);
   SVPipelineFilterWidget* filterWidget = new SVPipelineFilterWidget(pipeline->getFilterContainer().at(0), NULL, NULL);
 
-  m_PipelineView->addFilterWidget(filterWidget, destination, false);
+  m_PipelineView->addFilterObject(filterWidget, destination, false);
   m_PipelineView->setSelectedFilterObject(filterWidget, Qt::NoModifier);
 
   m_PipelineView->preflightPipeline();

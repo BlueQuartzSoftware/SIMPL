@@ -61,16 +61,17 @@ class AddFiltersCommand : public QUndoCommand
 
     virtual void redo();
 
+    QList<PipelineFilterObject*> getAddedFilters();
+
   private:
     QString                                             m_JsonString;
     QString                                             m_ActionText;
     PipelineView*                                       m_Destination;
     QMap<int, Qt::KeyboardModifiers>                    m_Selections;
     QVariant                                            m_Value;
-    int                                                 m_Index;
-    QList<QVariant>                                     m_AddValues;
     QRect                                               m_FilterWidgetGeometry;
     bool                                                m_ConnectToStart;
+    QList<PipelineFilterObject*>                        m_AddedFilters;
 
     AddFiltersCommand(const AddFiltersCommand&); // Copy Constructor Not Implemented
     void operator=(const AddFiltersCommand&); // Operator '=' Not Implemented

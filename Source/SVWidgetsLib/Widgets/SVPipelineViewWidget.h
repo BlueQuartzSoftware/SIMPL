@@ -231,7 +231,7 @@ class SVWidgetsLib_EXPORT SVPipelineViewWidget : public QFrame, public PipelineV
      * @param index
      * @param allowUndo
      */
-    void addFilter(AbstractFilter::Pointer filter, QVariant value, bool allowUndo = true, bool connectToStart = false) override;
+    PipelineFilterObject* addFilter(AbstractFilter::Pointer filter, QVariant value, bool allowUndo = true, bool connectToStart = false) override;
 
     /**
      * @brief addFilter
@@ -239,7 +239,7 @@ class SVWidgetsLib_EXPORT SVPipelineViewWidget : public QFrame, public PipelineV
      * @param index
      * param allowUndo
      */
-    void addFilter(const QString& filterClassName, QVariant value, bool allowUndo = true, bool connectToStart = false) override;
+    PipelineFilterObject* addFilter(const QString& filterClassName, QVariant value, bool allowUndo = true, bool connectToStart = false) override;
 
     /**
      * @brief addFilter
@@ -247,7 +247,7 @@ class SVWidgetsLib_EXPORT SVPipelineViewWidget : public QFrame, public PipelineV
      * @param index
      * @param allowUndo
      */
-    void addFilters(QList<AbstractFilter::Pointer> filters, QVariant value, bool allowUndo = true, bool connectToStart = false) override;
+    QList<PipelineFilterObject*> addFilters(QList<AbstractFilter::Pointer> filters, QVariant value, bool allowUndo = true, bool connectToStart = false) override;
 
     /**
      * @brief addFilterWidget
@@ -255,7 +255,7 @@ class SVWidgetsLib_EXPORT SVPipelineViewWidget : public QFrame, public PipelineV
      * @param index
      * @param allowUndo
      */
-    void addFilterWidget(PipelineFilterObject* filterObject, QVariant value, bool allowUndo = true) override;
+    void addFilterObject(PipelineFilterObject* filterObject, QVariant value, bool allowUndo = true) override;
 
     /**
      * @brief addFilterWidget
@@ -263,7 +263,7 @@ class SVWidgetsLib_EXPORT SVPipelineViewWidget : public QFrame, public PipelineV
      * @param index
      * @param allowUndo
      */
-    void addFilterWidgets(QList<PipelineFilterObject*> filterWidgets, QVariant value, bool allowUndo = true) override;
+    void addFilterObjects(QList<PipelineFilterObject*> filterObjects, QVariant value, bool allowUndo = true) override;
 
     /**
      * @brief moveFilterWidget
@@ -292,7 +292,7 @@ class SVWidgetsLib_EXPORT SVPipelineViewWidget : public QFrame, public PipelineV
      * @param filterWidget
      * @param allowUndo
      */
-    void removeFilterWidget(PipelineFilterObject* filterObject, bool allowUndo = true, bool deleteWidget = true) override;
+    void removeFilterObject(PipelineFilterObject* filterObject, bool allowUndo = true, bool deleteWidget = true) override;
 
     /**
      * @brief setSelectedFilterObject
@@ -342,6 +342,11 @@ class SVWidgetsLib_EXPORT SVPipelineViewWidget : public QFrame, public PipelineV
     */
     void toIdleState();
 
+    void on_actionCut_triggered();
+    void on_actionCopy_triggered();
+    void on_actionPaste_triggered();
+    void on_actionClearPipeline_triggered();
+
   signals:
     void addPlaceHolderFilter(QPoint p);
     void removePlaceHolderFilter();
@@ -390,10 +395,6 @@ class SVWidgetsLib_EXPORT SVPipelineViewWidget : public QFrame, public PipelineV
     void on_focusOutEventStarted(QFocusEvent* event);
 
     void requestContextMenu(const QPoint& pos);
-    void on_actionCut_triggered();
-    void on_actionCopy_triggered();
-    void on_actionPaste_triggered();
-    void on_actionClearPipeline_triggered();
 
   private:
     SVPipelineFilterWidget*             m_ShiftStart;

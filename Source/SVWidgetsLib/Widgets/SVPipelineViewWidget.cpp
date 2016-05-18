@@ -307,6 +307,11 @@ PipelineFilterObject* SVPipelineViewWidget::filterObjectAt(QVariant value)
   int index = value.toInt(&ok);
   if (ok == false) { return nullptr; }
 
+  if (index < 0)
+  {
+    index = filterCount();
+  }
+
   SVPipelineFilterWidget* fw = NULL;
   if (m_FilterWidgetLayout != NULL)
   {
@@ -512,52 +517,60 @@ int SVPipelineViewWidget::openPipeline(const QString& filePath, QVariant value, 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void SVPipelineViewWidget::addFilter(const QString& filterClassName, QVariant value, bool allowUndo, bool connectToStart)
+PipelineFilterObject* SVPipelineViewWidget::addFilter(const QString& filterClassName, QVariant value, bool allowUndo, bool connectToStart)
 {  
-  if (this->isEnabled() == false) { return; }
+  if (this->isEnabled() == false) { return nullptr; }
   FilterManager* fm = FilterManager::Instance();
-  if(NULL == fm) { return; }
+  if(NULL == fm) { return nullptr; }
   IFilterFactory::Pointer wf = fm->getFactoryForFilter(filterClassName);
-  if (NULL == wf.get()) { return; }
+  if (NULL == wf.get()) { return nullptr; }
 
   // Create an instance of the filter. Since we are dealing with the AbstractFilter interface we can not
   // actually use the concrete filter class. We are going to have to rely on QProperties or Signals/Slots
   // to communicate changes back to the filter.
   AbstractFilter::Pointer filter = wf->create();
 
-  addFilter(filter, value, allowUndo, connectToStart);
+  return addFilter(filter, value, allowUndo, connectToStart);
 }
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void SVPipelineViewWidget::addFilters(QList<AbstractFilter::Pointer> filters, QVariant value, bool allowUndo, bool connectToStart)
+QList<PipelineFilterObject*> SVPipelineViewWidget::addFilters(QList<AbstractFilter::Pointer> filters, QVariant value, bool allowUndo, bool connectToStart)
 {
+  QList<PipelineFilterObject*> list;
+
   if (allowUndo == true)
   {
     AddFiltersCommand* cmd = new AddFiltersCommand(filters, this, "Add", value);
     addUndoCommand(cmd);
+    list = cmd->getAddedFilters();
   }
   else
   {
     bool ok;
     int index = value.toInt(&ok);
-    if (ok == false) { return; }
+    if (ok == false) { return QList<PipelineFilterObject*>(); }
 
     for (int i=0; i<filters.size(); i++)
     {
-      addFilter(filters[i], index, false, connectToStart);
+      PipelineFilterObject* object = addFilter(filters[i], index, false, connectToStart);
+      list.push_back(object);
       index++;
     }
   }
+
+  return list;
 }
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void SVPipelineViewWidget::addFilter(AbstractFilter::Pointer filter, QVariant value, bool allowUndo, bool connectToStart)
+PipelineFilterObject* SVPipelineViewWidget::addFilter(AbstractFilter::Pointer filter, QVariant value, bool allowUndo, bool connectToStart)
 {
   Q_UNUSED(connectToStart)
+
+  PipelineFilterObject* object;
 
   if (value < 0) // If the programmer wants to add it to the end of the list
   {
@@ -570,28 +583,32 @@ void SVPipelineViewWidget::addFilter(AbstractFilter::Pointer filter, QVariant va
   if (NULL != breakpoint)
   {
     BreakpointFilterWidget* w = new BreakpointFilterWidget(filter, NULL, this);
-    addFilterWidget(w, value, allowUndo);
+    addFilterObject(w, value, allowUndo);
+    object = w;
   }
   else
   {
     SVPipelineFilterWidget* w = new SVPipelineFilterWidget(filter, NULL, this);
-    addFilterWidget(w, value, allowUndo);
+    addFilterObject(w, value, allowUndo);
+    object = w;
   }
 
   // Clear the pipeline Issues table first so we can collect all the error messages
   emit pipelineIssuesCleared();
   // Now preflight the pipeline for this filter.
   preflightPipeline();
+
+  return object;
 }
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void SVPipelineViewWidget::addFilterWidgets(QList<PipelineFilterObject*> filterWidgets, QVariant value, bool allowUndo)
+void SVPipelineViewWidget::addFilterObjects(QList<PipelineFilterObject*> filterObjects, QVariant value, bool allowUndo)
 {
   if (allowUndo == true)
   {
-    AddFiltersCommand* cmd = new AddFiltersCommand(filterWidgets, this, "Add", value);
+    AddFiltersCommand* cmd = new AddFiltersCommand(filterObjects, this, "Add", value);
     addUndoCommand(cmd);
   }
   else
@@ -600,9 +617,9 @@ void SVPipelineViewWidget::addFilterWidgets(QList<PipelineFilterObject*> filterW
     int index = value.toInt(&ok);
     if (ok == false) { return; }
 
-    for (int i=0; i<filterWidgets.size(); i++)
+    for (int i=0; i<filterObjects.size(); i++)
     {
-      addFilterWidget(filterWidgets[i], index, false);
+      addFilterObject(filterObjects[i], index, false);
       index++;
     }
   }
@@ -611,7 +628,7 @@ void SVPipelineViewWidget::addFilterWidgets(QList<PipelineFilterObject*> filterW
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void SVPipelineViewWidget::addFilterWidget(PipelineFilterObject* filterObject, QVariant value, bool allowUndo)
+void SVPipelineViewWidget::addFilterObject(PipelineFilterObject* filterObject, QVariant value, bool allowUndo)
 {
   SVPipelineFilterWidget* filterWidget = dynamic_cast<SVPipelineFilterWidget*>(filterObject);
   Q_ASSERT(filterWidget != nullptr);
@@ -669,7 +686,7 @@ void SVPipelineViewWidget::addFilterWidget(PipelineFilterObject* filterObject, Q
 
     // When the filter is removed from this view
     connect(filterWidget, SIGNAL(filterWidgetRemoved(PipelineFilterObject*, bool)),
-            this, SLOT(removeFilterWidget(PipelineFilterObject*, bool)) );
+            this, SLOT(removeFilterObject(PipelineFilterObject*, bool)) );
 
     // When the FilterWidget is selected
     connect(filterWidget, SIGNAL(filterWidgetPressed(PipelineFilterObject*, Qt::KeyboardModifiers)),
@@ -929,7 +946,7 @@ void SVPipelineViewWidget::preflightPipeline(QUuid id)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void SVPipelineViewWidget::removeFilterWidget(PipelineFilterObject* filterObject, bool allowUndo, bool deleteWidget)
+void SVPipelineViewWidget::removeFilterObject(PipelineFilterObject* filterObject, bool allowUndo, bool deleteWidget)
 {
   SVPipelineFilterWidget* filterWidget = dynamic_cast<SVPipelineFilterWidget*>(filterObject);
   Q_ASSERT(filterWidget != nullptr);

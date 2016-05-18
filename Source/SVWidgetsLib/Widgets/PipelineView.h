@@ -146,7 +146,7 @@ class SVWidgetsLib_EXPORT PipelineView
      * @param index
      * @param allowUndo
      */
-    virtual void addFilter(AbstractFilter::Pointer filter, QVariant value, bool allowUndo = true, bool connectToStart = false);
+    virtual PipelineFilterObject* addFilter(AbstractFilter::Pointer filter, QVariant value, bool allowUndo = true, bool connectToStart = false);
 
     /**
      * @brief addFilter
@@ -154,7 +154,7 @@ class SVWidgetsLib_EXPORT PipelineView
      * @param index
      * param allowUndo
      */
-    virtual void addFilter(const QString& filterClassName, QVariant value, bool allowUndo = true, bool connectToStart = false);
+    virtual PipelineFilterObject* addFilter(const QString& filterClassName, QVariant value, bool allowUndo = true, bool connectToStart = false);
 
     /**
      * @brief addFilter
@@ -162,7 +162,7 @@ class SVWidgetsLib_EXPORT PipelineView
      * @param index
      * @param allowUndo
      */
-    virtual void addFilters(QList<AbstractFilter::Pointer> filters, QVariant value, bool allowUndo = true, bool connectToStart = false);
+    virtual QList<PipelineFilterObject*> addFilters(QList<AbstractFilter::Pointer> filters, QVariant value, bool allowUndo = true, bool connectToStart = false);
 
     /**
      * @brief addFilterWidget
@@ -170,7 +170,7 @@ class SVWidgetsLib_EXPORT PipelineView
      * @param index
      * @param allowUndo
      */
-    virtual void addFilterWidget(PipelineFilterObject* fw, QVariant value, bool allowUndo = true);
+    virtual void addFilterObject(PipelineFilterObject* filterObject, QVariant value, bool allowUndo = true);
 
     /**
      * @brief addFilterWidget
@@ -178,7 +178,7 @@ class SVWidgetsLib_EXPORT PipelineView
      * @param index
      * @param allowUndo
      */
-    virtual void addFilterWidgets(QList<PipelineFilterObject*> filterWidgets, QVariant value, bool allowUndo = true);
+    virtual void addFilterObjects(QList<PipelineFilterObject*> filterObjects, QVariant value, bool allowUndo = true);
 
     /**
      * @brief moveFilterWidget
@@ -207,7 +207,7 @@ class SVWidgetsLib_EXPORT PipelineView
      * @param filterWidget
      * @param allowUndo
      */
-    virtual void removeFilterWidget(PipelineFilterObject* filterWidget, bool allowUndo = true, bool deleteWidget = true);
+    virtual void removeFilterObject(PipelineFilterObject* filterWidget, bool allowUndo = true, bool deleteWidget = true);
 
     /**
      * @brief setSelectedFilterObject

@@ -61,10 +61,10 @@ AddFiltersCommand::AddFiltersCommand(AbstractFilter::Pointer filter, PipelineVie
 {
   if (m_Value.canConvert<int>())
   {
-    m_Index = value.toInt();
-    if (m_Index < -1)
+    int index = value.toInt();
+    if (index < 0)
     {
-      m_Index = destination->filterCount();
+      m_Value.setValue(destination->filterCount());
     }
   }
 
@@ -92,10 +92,10 @@ AddFiltersCommand::AddFiltersCommand(QList<AbstractFilter::Pointer> filters, Pip
 {
   if (m_Value.canConvert<int>())
   {
-    m_Index = value.toInt();
-    if (m_Index < -1)
+    int index = value.toInt();
+    if (index < 0)
     {
-      m_Index = destination->filterCount();
+      m_Value.setValue(destination->filterCount());
     }
   }
 
@@ -126,10 +126,10 @@ AddFiltersCommand::AddFiltersCommand(PipelineFilterObject* filterWidget, Pipelin
 {
   if (m_Value.canConvert<int>())
   {
-    m_Index = value.toInt();
-    if (m_Index < -1)
+    int index = value.toInt();
+    if (index < 0)
     {
-      m_Index = destination->filterCount();
+      m_Value.setValue(destination->filterCount());
     }
   }
 
@@ -158,10 +158,10 @@ AddFiltersCommand::AddFiltersCommand(QList<PipelineFilterObject*> filterWidgets,
 {
   if (m_Value.canConvert<int>())
   {
-    m_Index = value.toInt();
-    if (m_Index < -1)
+    int index = value.toInt();
+    if (index < 0)
     {
-      m_Index = destination->filterCount();
+      m_Value.setValue(destination->filterCount());
     }
   }
 
@@ -194,10 +194,10 @@ AddFiltersCommand::AddFiltersCommand(const QString &jsonString, PipelineView* de
 {
   if (m_Value.canConvert<int>())
   {
-    m_Index = value.toInt();
-    if (m_Index < -1)
+    int index = value.toInt();
+    if (index < 0)
     {
-      m_Index = m_Destination->filterCount();
+      m_Value.setValue(destination->filterCount());
     }
   }
 
@@ -220,12 +220,12 @@ AddFiltersCommand::~AddFiltersCommand()
 // -----------------------------------------------------------------------------
 void AddFiltersCommand::undo()
 {
-  for (int i = 0; i < m_AddValues.size(); i++)
+  for (int i = 0; i < m_AddedFilters.size(); i++)
   {
-    m_Destination->removeFilterWidget(m_Destination->filterObjectAt(m_AddValues[i]), false);
+    m_Destination->removeFilterObject(m_AddedFilters[i], false);
   }
 
-  m_AddValues.clear();
+  m_AddedFilters.clear();
 
   m_Destination->preflightPipeline();
 }
@@ -249,9 +249,7 @@ void AddFiltersCommand::redo()
     setText(QObject::tr("\"%1 %2 Filter Widgets\"").arg(m_ActionText).arg(container.size()));
   }
 
-  QVariant insertValue = m_Value;
-
-  m_Destination->addFilters(container, insertValue, false, m_ConnectToStart);
+  m_AddedFilters = m_Destination->addFilters(container, m_Value, false, m_ConnectToStart);
 
 //  for (int i = 0; i < container.size(); i++)
 //  {
@@ -286,6 +284,14 @@ void AddFiltersCommand::redo()
 //  }
 
   m_Destination->setSelectedFilterObject(m_Destination->filterObjectAt(m_Value), Qt::NoModifier);
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+QList<PipelineFilterObject*> AddFiltersCommand::getAddedFilters()
+{
+  return m_AddedFilters;
 }
 
 

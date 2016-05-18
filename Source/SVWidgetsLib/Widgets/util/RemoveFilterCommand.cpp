@@ -123,7 +123,7 @@ void RemoveFilterCommand::undo()
   for (int i=0; i<container.size(); i++)
   {
     SVPipelineFilterWidget* filterWidget = new SVPipelineFilterWidget(container[i], NULL, NULL);
-    m_PipelineView->addFilterWidget(filterWidget, m_RemovalValues[i], false);
+    m_PipelineView->addFilterObject(filterWidget, m_RemovalValues[i], false);
     m_PipelineView->setSelectedFilterObject(filterWidget, Qt::ShiftModifier);
   }
 
@@ -144,7 +144,7 @@ void RemoveFilterCommand::redo()
   for (int i=0; i<filterWidgets.size(); i++)
   {
     PipelineFilterObject* filterWidget = filterWidgets[i];
-    m_PipelineView->removeFilterWidget(filterWidget, false);
+    m_PipelineView->removeFilterObject(filterWidget, false);
   }
 
   m_PipelineView->preflightPipeline();
