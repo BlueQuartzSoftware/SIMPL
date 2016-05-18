@@ -111,8 +111,6 @@ SVPipelineFilterWidget::SVPipelineFilterWidget(AbstractFilter::Pointer filter, I
 void SVPipelineFilterWidget::initialize()
 {
   setContextMenuPolicy(Qt::CustomContextMenu);
-//FIXME: This needs to be pushed up to the PipelineViewWidget level
-  //connect(this, SIGNAL(customContextMenuRequested(const QPoint&)), dream3dApp, SLOT(on_pipelineFilterWidget_contextMenuRequested(const QPoint&)));
 
   connect(getFilterInputWidget(), SIGNAL(filterParametersChanged()), this, SLOT(filterInputWidget_filterParametersChanged()));
   connect(getFilterInputWidget(), SIGNAL(errorSettingFilterParameter(const QString&)), this, SLOT(displayFilterParameterWidgetError(const QString&)));

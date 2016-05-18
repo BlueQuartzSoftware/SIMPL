@@ -118,24 +118,9 @@ SVPipelineViewWidget::SVPipelineViewWidget(QWidget* parent) :
   setContextMenuPolicy(Qt::CustomContextMenu);
   setFocusPolicy(Qt::StrongFocus);
 
-
-
   connect(this, SIGNAL(customContextMenuRequested(const QPoint&)), this, SLOT(requestContextMenu(const QPoint&)));
 
-  m_ContextMenu = new QMenu(this);
-
-  QAction* actionPaste = new QAction("Paste", this);
-  actionPaste->setShortcut(QKeySequence(Qt::CTRL + Qt::Key_V));
-  connect(actionPaste, SIGNAL(triggered()), this, SLOT(on_actionPaste_triggered()));
-
-  QAction* actionClearPipeline = new QAction("Clear Pipeline", this);
-  actionClearPipeline->setShortcut(QKeySequence(Qt::CTRL + Qt::Key_Backspace));
-  connect(actionClearPipeline, SIGNAL(triggered()), this, SLOT(on_actionClearPipeline_triggered()));
-
-  m_ContextMenu->addAction(actionPaste);
-  m_ContextMenu->addSeparator();
-  m_ContextMenu->addAction(actionClearPipeline);
-
+  createPipelineViewWidgetMenu();
 }
 
 // -----------------------------------------------------------------------------
@@ -157,6 +142,53 @@ void SVPipelineViewWidget::setupGui()
   //connect(this, SIGNAL(deleteKeyPressed(PipelineView*)), dream3dApp, SLOT(on_pipelineViewWidget_deleteKeyPressed(PipelineView*)));
 
   m_DropBox = new DropBoxWidget();
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+QMenu* SVPipelineViewWidget::createPipelineFilterWidgetMenu(SVPipelineFilterWidget *filterWidget)
+{
+  // Creating Pipeline Filter Widget Menu
+  QMenu* contextMenu = new QMenu(this);
+
+  QAction* actionCut = new QAction("Cut", this);
+  connect(actionCut, SIGNAL(triggered()), this, SLOT(on_actionCut_triggered()));
+
+  QAction* actionCopy = new QAction("Copy", this);
+  connect(actionCopy, SIGNAL(triggered()), this, SLOT(on_actionCopy_triggered()));
+
+  contextMenu->addAction(actionCut);
+  contextMenu->addAction(actionCopy);
+
+  contextMenu->addSeparator();
+
+  QAction* actionLaunchHelp = new QAction("Filter Help", this);
+  connect(actionLaunchHelp, SIGNAL(triggered()), filterWidget, SLOT(launchHelpForItem()));
+
+  contextMenu->addAction(actionLaunchHelp);
+  return contextMenu;
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void SVPipelineViewWidget::createPipelineViewWidgetMenu()
+{
+  // Creating Pipeline View Widget Menu
+  m_ContextMenu = new QMenu(this);
+
+  QAction* actionPaste = new QAction("Paste", this);
+  actionPaste->setShortcut(QKeySequence(Qt::CTRL + Qt::Key_V));
+  connect(actionPaste, SIGNAL(triggered()), this, SLOT(on_actionPaste_triggered()));
+
+  QAction* actionClearPipeline = new QAction("Clear Pipeline", this);
+  actionClearPipeline->setShortcut(QKeySequence(Qt::CTRL + Qt::Key_Backspace));
+  connect(actionClearPipeline, SIGNAL(triggered()), this, SLOT(on_actionClearPipeline_triggered()));
+
+  m_ContextMenu->addAction(actionPaste);
+  m_ContextMenu->addSeparator();
+  m_ContextMenu->addAction(actionClearPipeline);
 }
 
 // -----------------------------------------------------------------------------
@@ -657,6 +689,7 @@ void SVPipelineViewWidget::addFilterWidget(PipelineFilterObject* filterObject, Q
 
     connect(filterWidget, SIGNAL(focusOutEventStarted(QFocusEvent*)), this, SLOT(on_focusOutEventStarted(QFocusEvent*)));
 
+    filterWidget->installEventFilter(this);
 
     // Check to make sure at least the vertical spacer is in the Layout
     if (addSpacer)
@@ -804,6 +837,24 @@ bool SVPipelineViewWidget::eventFilter(QObject* o, QEvent* e)
   {
     return false;
   }
+  else if (dynamic_cast<SVPipelineFilterWidget*>(o) != nullptr && e->type() == QEvent::MouseButtonPress)
+  {
+    QMouseEvent* mouseEvent = dynamic_cast<QMouseEvent*>(e);
+    if (mouseEvent != nullptr && mouseEvent->button() == Qt::RightButton)
+    {
+      SVPipelineFilterWidget* filterWidget = dynamic_cast<SVPipelineFilterWidget*>(o);
+
+      if (filterWidget != nullptr && filterWidget->getFilter() != nullptr)
+      {
+        // Show Pipeline Filter Widget context menu
+        QMenu* pfwContextMenu = createPipelineFilterWidgetMenu(filterWidget);
+        pfwContextMenu->exec(QCursor::pos());
+        delete pfwContextMenu;
+      }
+      return true;
+    }
+  }
+
   return QFrame::eventFilter( o, e );
 }
 
@@ -1810,6 +1861,43 @@ void SVPipelineViewWidget::on_actionClearPipeline_triggered()
   clearWidgets(true);
 }
 
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void SVPipelineViewWidget::on_actionCut_triggered()
+{
+  QList<PipelineFilterObject*> filterWidgets = getSelectedFilterObjects();
+
+  FilterPipeline::Pointer pipeline = FilterPipeline::New();
+  for (int i = 0; i < filterWidgets.size(); i++)
+  {
+    pipeline->pushBack(filterWidgets[i]->getFilter());
+  }
+
+  QString jsonString = JsonFilterParametersWriter::WritePipelineToString(pipeline, "Pipeline");
+
+  QClipboard* clipboard = QApplication::clipboard();
+  clipboard->setText(jsonString);
+
+  cutFilterWidgets(filterWidgets);
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void SVPipelineViewWidget::on_actionCopy_triggered()
+{
+  FilterPipeline::Pointer pipeline = FilterPipeline::New();
+  QList<PipelineFilterObject*> filterWidgets = getSelectedFilterObjects();
+  for (int i = 0; i < filterWidgets.size(); i++)
+  {
+    pipeline->pushBack(filterWidgets[i]->getFilter());
+  }
+
+  QString json = JsonFilterParametersWriter::WritePipelineToString(pipeline, "Copy - Pipeline");
+  QClipboard* clipboard = QApplication::clipboard();
+  clipboard->setText(json);
+}
 
 // -----------------------------------------------------------------------------
 //

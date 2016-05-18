@@ -390,6 +390,8 @@ class SVWidgetsLib_EXPORT SVPipelineViewWidget : public QFrame, public PipelineV
     void on_focusOutEventStarted(QFocusEvent* event);
 
     void requestContextMenu(const QPoint& pos);
+    void on_actionCut_triggered();
+    void on_actionCopy_triggered();
     void on_actionPaste_triggered();
     void on_actionClearPipeline_triggered();
 
@@ -408,6 +410,9 @@ class SVWidgetsLib_EXPORT SVPipelineViewWidget : public QFrame, public PipelineV
     int                                 m_autoScrollCount;
     QWidget*                            m_InputParametersWidget;
     QMenu*                              m_ContextMenu;
+
+    QMenu* createPipelineFilterWidgetMenu(SVPipelineFilterWidget* filterWidget);
+    void createPipelineViewWidgetMenu();
 
     SVPipelineViewWidget(const SVPipelineViewWidget&); // Copy Constructor Not Implemented
     void operator=(const SVPipelineViewWidget&); // Operator '=' Not Implemented
