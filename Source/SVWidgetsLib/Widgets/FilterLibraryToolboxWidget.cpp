@@ -298,6 +298,8 @@ void FilterLibraryToolboxWidget::on_bookmarksTreeView_currentItemChanged(QTreeWi
 // -----------------------------------------------------------------------------
 void FilterLibraryToolboxWidget::on_bookmarksTreeView_itemDoubleClicked( QTreeWidgetItem* item, int column )
 {
+  Q_UNUSED(column)
+
   QVariant nodeType = item->data(0, Qt::UserRole);
   if(nodeType.toInt() == FILTER_NODE_TYPE)
   {

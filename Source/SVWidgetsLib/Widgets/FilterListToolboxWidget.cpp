@@ -490,7 +490,6 @@ void FilterListToolboxWidget::searchFilters(QString text)
 // -----------------------------------------------------------------------------
 void FilterListToolboxWidget::on_filterList_itemDoubleClicked( QListWidgetItem* item )
 {
-  //emit filterItemDoubleClicked(item->data(Qt::UserRole).toString(), -1);
   emit filterItemDoubleClicked(item->data(Qt::UserRole).toString());
 }
 

@@ -137,7 +137,7 @@ class SVWidgetsLib_EXPORT SVPipelineFilterWidget : public QFrame, public Pipelin
      * @brief filterWidgetRemoved
      * @param widget
      */
-    void filterWidgetRemoved(SVPipelineFilterWidget* widget, bool allowUndo);
+    void filterWidgetRemoved(PipelineFilterObject* widget, bool allowUndo);
 
     /**
      * @brief dragStarted
@@ -152,7 +152,7 @@ class SVWidgetsLib_EXPORT SVPipelineFilterWidget : public QFrame, public Pipelin
     /**
      * @brief filterWidgetPressed
      */
-    void filterWidgetPressed(SVPipelineFilterWidget* fw, Qt::KeyboardModifiers modifiers);
+    void filterWidgetPressed(PipelineFilterObject* fw, Qt::KeyboardModifiers modifiers);
 
     /**
     * @brief filterWidgetCut

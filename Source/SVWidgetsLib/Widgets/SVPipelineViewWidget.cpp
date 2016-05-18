@@ -636,12 +636,12 @@ void SVPipelineViewWidget::addFilterWidget(PipelineFilterObject* filterObject, Q
     /// Now setup all the connections between the various widgets
 
     // When the filter is removed from this view
-    connect(filterWidget, SIGNAL(filterWidgetRemoved(SVPipelineFilterWidget*, bool)),
-            this, SLOT(removeFilterWidget(SVPipelineFilterWidget*, bool)) );
+    connect(filterWidget, SIGNAL(filterWidgetRemoved(PipelineFilterObject*, bool)),
+            this, SLOT(removeFilterWidget(PipelineFilterObject*, bool)) );
 
     // When the FilterWidget is selected
-    connect(filterWidget, SIGNAL(filterWidgetPressed(SVPipelineFilterWidget*, Qt::KeyboardModifiers)),
-            this, SLOT(setSelectedFilterObject(SVPipelineFilterWidget*, Qt::KeyboardModifiers)));
+    connect(filterWidget, SIGNAL(filterWidgetPressed(PipelineFilterObject*, Qt::KeyboardModifiers)),
+            this, SLOT(setSelectedFilterObject(PipelineFilterObject*, Qt::KeyboardModifiers)));
 
     // When the filter widget is dragged
     connect(filterWidget, SIGNAL(dragStarted(QMouseEvent*, SVPipelineFilterWidget*)),
