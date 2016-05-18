@@ -48,7 +48,7 @@ class SIMPLib_EXPORT DynamicTableFilterParameter : public FilterParameter
     static Pointer New(const QString& humanLabel, const QString& propertyName,
                        QStringList rHeaders, QStringList cHeaders, std::vector<std::vector<double> > defaultTable,
                        FilterParameter::Category category, bool isRowsDynamic = true, bool isColsDynamic = true,
-                       int minRowCount = 0, int minColCount = 0);
+                       int minRowCount = 0, int minColCount = 0, int groupIndex = -1);
 
     virtual ~DynamicTableFilterParameter();
 
