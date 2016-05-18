@@ -496,7 +496,7 @@ int SVPipelineViewWidget::openPipeline(const QString& filePath, QVariant value, 
   // Check that a valid extension was read...
   if (pipeline == FilterPipeline::NullPointer())
   {
-    getStatusBar()->showMessage(tr("The pipeline was not read correctly from file '%1'. '%2' is an unsupported file extension.").arg(name).arg(ext));
+    emit statusMessage(tr("The pipeline was not read correctly from file '%1'. '%2' is an unsupported file extension.").arg(name).arg(ext));
     return -1;
   }
 
@@ -504,7 +504,7 @@ int SVPipelineViewWidget::openPipeline(const QString& filePath, QVariant value, 
   populatePipelineView(pipeline, value);
 
   // Notify user of successful read
-  getStatusBar()->showMessage(tr("The pipeline has been read successfully from '%1'.").arg(name));
+  emit statusMessage(tr("The pipeline has been read successfully from '%1'.").arg(name));
 
   QString file = filePath;
   emit pipelineOpened(file, setOpenedFilePath, changeTitle);
@@ -777,11 +777,13 @@ void SVPipelineViewWidget::moveFilterWidget(PipelineFilterObject* fw, QVariant o
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void SVPipelineViewWidget::pasteFilters(QList<AbstractFilter::Pointer> filters, bool allowUndo)
+void SVPipelineViewWidget::pasteFilters(QList<AbstractFilter::Pointer> filters, QVariant value, bool allowUndo)
 {
   if (filters.isEmpty()) { return; }
 
-  int index = filterCount();
+  bool ok;
+  int index = value.toInt(&ok);
+  if (ok == false) { return; }
 
   if (allowUndo == true)
   {
@@ -807,8 +809,10 @@ void SVPipelineViewWidget::pasteFilterWidgets(const QString &jsonString, QVarian
 {
   if (allowUndo == true)
   {
-    AddFilterCommand* cmd = new AddFilterCommand(jsonString, this, "Paste", value);
-    addUndoCommand(cmd);
+    FilterPipeline::Pointer pipeline = JsonFilterParametersReader::ReadPipelineFromString(jsonString);
+    FilterPipeline::FilterContainerType container = pipeline->getFilterContainer();
+
+    pasteFilters(container, value, allowUndo);
   }
   else
   {
@@ -1132,10 +1136,9 @@ void SVPipelineViewWidget::populatePipelineView(FilterPipeline::Pointer pipeline
 
   if (NULL == pipeline.get()) { clearFilterWidgets(); return; }
 
-  QString jsonString = JsonFilterParametersWriter::WritePipelineToString(pipeline, "Pipeline");
+  FilterPipeline::FilterContainerType container = pipeline->getFilterContainer();
 
-  AddFilterCommand* cmd = new AddFilterCommand(jsonString, this, "Paste", value);
-  addUndoCommand(cmd);
+  pasteFilters(container, value);
 
   if (filterCount() > 0)
   {
@@ -1271,18 +1274,18 @@ int SVPipelineViewWidget::writePipeline(QString filePath)
   }
   else
   {
-    getStatusBar()->showMessage(tr("The pipeline was not written to file '%1'. '%2' is an unsupported file extension.").arg(fi.fileName()).arg(ext));
+    emit statusMessage(tr("The pipeline was not written to file '%1'. '%2' is an unsupported file extension.").arg(fi.fileName()).arg(ext));
     return -1;
   }
 
   if (err < 0)
   {
-    getStatusBar()->showMessage(tr("There was an error while saving the pipeline to file '%1'.").arg(fi.fileName()));
+    emit statusMessage(tr("There was an error while saving the pipeline to file '%1'.").arg(fi.fileName()));
     return -1;
   }
   else
   {
-    getStatusBar()->showMessage(tr("The pipeline has been saved successfully to '%1'.").arg(fi.fileName()));
+    emit statusMessage(tr("The pipeline has been saved successfully to '%1'.").arg(fi.fileName()));
   }
 
   return 0;

@@ -90,7 +90,6 @@
 //
 // -----------------------------------------------------------------------------
 PipelineView::PipelineView(QWidget* parent) :
-  m_StatusBar(NULL),
   m_UndoStack(new QUndoStack(NULL))
 {
   m_ActionUndo = m_UndoStack->createUndoAction(NULL);
@@ -260,9 +259,10 @@ void PipelineView::cutFilterWidgets(QList<PipelineFilterObject*> filterWidgets, 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void PipelineView::pasteFilters(QList<AbstractFilter::Pointer> filters, bool allowUndo)
+void PipelineView::pasteFilters(QList<AbstractFilter::Pointer> filters, QVariant value, bool allowUndo)
 {
   Q_UNUSED(filters)
+  Q_UNUSED(value)
   Q_UNUSED(allowUndo)
 
   // The subclass should reimplement this function
@@ -456,12 +456,4 @@ QAction* PipelineView::getActionRedo()
 QAction* PipelineView::getActionUndo()
 {
   return m_ActionUndo;
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-QStatusBar* PipelineView::getStatusBar()
-{
-  return m_StatusBar;
 }

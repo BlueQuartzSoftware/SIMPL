@@ -277,7 +277,7 @@ class SVWidgetsLib_EXPORT SVPipelineViewWidget : public QFrame, public PipelineV
      * @brief pasteFilters
      * @param filters
      */
-    void pasteFilters(QList<AbstractFilter::Pointer> filters, bool allowUndo = true) override;
+    void pasteFilters(QList<AbstractFilter::Pointer> filters, QVariant value, bool allowUndo = true) override;
 
     /**
      * @brief pasteFilterWidgets

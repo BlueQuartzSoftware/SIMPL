@@ -52,7 +52,6 @@ class AddFilterCommand : public QUndoCommand
   public:
     AddFilterCommand(AbstractFilter::Pointer filter, PipelineView* destination, QString actionText, QVariant value, bool connectToStart = false, QUndoCommand* parent = 0);
     AddFilterCommand(PipelineFilterObject* filterWidget, PipelineView* destination, QString actionText, QVariant value, bool connectToStart = false, QUndoCommand* parent = 0);
-    AddFilterCommand(const QString &jsonString, PipelineView* destination, QString actionText, QVariant value, bool connectToStart = false, QUndoCommand* parent = 0);
     virtual ~AddFilterCommand();
 
     virtual void undo();

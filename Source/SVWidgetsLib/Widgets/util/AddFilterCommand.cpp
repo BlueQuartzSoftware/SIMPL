@@ -114,33 +114,6 @@ AddFilterCommand::AddFilterCommand(PipelineFilterObject* filterWidget, PipelineV
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-AddFilterCommand::AddFilterCommand(const QString &jsonString, PipelineView* destination, QString actionText, QVariant value, bool connectToStart, QUndoCommand* parent) :
-  QUndoCommand(parent),
-  m_JsonString(jsonString),
-  m_ActionText(actionText),
-  m_Destination(destination),
-  m_Value(value),
-  m_FilterWidgetGeometry(QRect()),
-  m_ConnectToStart(connectToStart)
-{
-  if (m_Value.canConvert<int>())
-  {
-    int index = value.toInt();
-    if (index < 0)
-    {
-      m_Value.setValue(destination->filterCount());
-    }
-  }
-
-  if (destination->filterCount() > 0)
-  {
-    //m_FilterWidgetGeometry = destination->filterObjectAt(m_Value)->geometry();
-  }
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
 AddFilterCommand::~AddFilterCommand()
 {
 

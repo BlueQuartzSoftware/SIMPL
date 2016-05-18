@@ -192,7 +192,7 @@ class SVWidgetsLib_EXPORT PipelineView
      * @brief pasteFilters
      * @param filters
      */
-    virtual void pasteFilters(QList<AbstractFilter::Pointer> filters, bool allowUndo = true);
+    virtual void pasteFilters(QList<AbstractFilter::Pointer> filters, QVariant value, bool allowUndo = true);
 
     /**
      * @brief pasteFilterWidgets
@@ -267,10 +267,7 @@ class SVWidgetsLib_EXPORT PipelineView
 
     void showFilterHelp(const QString& className);
 
-    QStatusBar* getStatusBar();
-
   private:
-    QStatusBar*                         m_StatusBar;
     QUndoStack*                         m_UndoStack;
     QAction*                            m_ActionUndo;
     QAction*                            m_ActionRedo;
