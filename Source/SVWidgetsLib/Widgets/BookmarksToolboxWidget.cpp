@@ -425,7 +425,7 @@ void BookmarksToolboxWidget::on_bookmarksTreeView_doubleClicked(const QModelInde
     {
       bookmarksTreeView->blockSignals(true);
       QtSBookmarkMissingDialog* dialog = new QtSBookmarkMissingDialog(this, Qt::WindowSystemMenuHint | Qt::WindowCloseButtonHint | Qt::WindowTitleHint);
-      connect(dialog, SIGNAL(locateBtnPressed()), this, SLOT(on_actionLocateFile_triggered()));
+      connect(dialog, SIGNAL(locateBtnPressed()), bookmarksTreeView, SLOT(on_actionLocateFile_triggered()));
       dialog->setBookmarkName(nameIndex.data().toString());
       dialog->exec();
       delete dialog;
@@ -443,50 +443,6 @@ void BookmarksToolboxWidget::on_bookmarksTreeView_doubleClicked(const QModelInde
     }
   }
 
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-void BookmarksToolboxWidget::on_actionLocateFile_triggered()
-{
-  BookmarksModel* model = BookmarksModel::Instance();
-
-  QModelIndex current = bookmarksTreeView->currentIndex();
-
-  QModelIndex nameIndex = model->index(current.row(), BookmarksItem::Name, current.parent());
-  QModelIndex pathIndex = model->index(current.row(), BookmarksItem::Path, current.parent());
-
-  QFileInfo fi(pathIndex.data().toString());
-  QString restrictions;
-  if (fi.completeSuffix() == "json")
-  {
-    restrictions = "Json File (*.json)";
-  }
-  else if (fi.completeSuffix() == "dream3d")
-  {
-    restrictions = "Dream3d File(*.dream3d)";
-  }
-  else if (fi.completeSuffix() == "txt")
-  {
-    restrictions = "Text File (*.txt)";
-  }
-  else
-  {
-    restrictions = "Ini File (*.ini)";
-  }
-
-  QString filePath = QFileDialog::getOpenFileName(bookmarksTreeView, tr("Locate Pipeline File"),
-                                                  pathIndex.data().toString(), tr(restrictions.toStdString().c_str()));
-  if (true == filePath.isEmpty()) { return; }
-
-  filePath = QDir::toNativeSeparators(filePath);
-
-  // Set the new path into the item
-  model->setData(pathIndex, filePath, Qt::DisplayRole);
-
-  // Change item back to default look and functionality
-  model->setData(nameIndex, false, Qt::UserRole);
 }
 
 // -----------------------------------------------------------------------------

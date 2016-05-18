@@ -158,7 +158,6 @@ class SVWidgetsLib_EXPORT BookmarksToolboxWidget : public QWidget, private Ui::B
     //// Slots to catch signals from the QTreeWidget
     void on_bookmarksTreeView_clicked(const QModelIndex& index);
     void on_bookmarksTreeView_doubleClicked(const QModelIndex& index);
-    void on_actionLocateFile_triggered();
 
   signals:
 

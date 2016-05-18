@@ -25,6 +25,8 @@ set(SVWidgetsLib_Widgets_MOC_HDRS
   ${SVWidgetsLib_SOURCE_DIR}/Widgets/FilterInputWidget.h
   ${SVWidgetsLib_SOURCE_DIR}/Widgets/SVPipelineFilterWidget.h
   ${SVWidgetsLib_SOURCE_DIR}/Widgets/SVPipelineViewWidget.h
+  ${SVWidgetsLib_SOURCE_DIR}/Widgets/SIMPLViewToolbox.h
+  ${SVWidgetsLib_SOURCE_DIR}/Widgets/SIMPLViewMenuItems.h
 )
 
 set(SVWidgetsLib_Widgets_HDRS
@@ -55,6 +57,8 @@ set(SVWidgetsLib_Widgets_SRCS
   ${SVWidgetsLib_SOURCE_DIR}/Widgets/SVPipelineViewWidget.cpp
   ${SVWidgetsLib_SOURCE_DIR}/Widgets/PipelineFilterObject.cpp
   ${SVWidgetsLib_SOURCE_DIR}/Widgets/PipelineView.cpp
+  ${SVWidgetsLib_SOURCE_DIR}/Widgets/SIMPLViewToolbox.cpp
+  ${SVWidgetsLib_SOURCE_DIR}/Widgets/SIMPLViewMenuItems.cpp
   )
 
 set(SVWidgetsLib_Widgets_UIS
@@ -69,6 +73,7 @@ set(SVWidgetsLib_Widgets_UIS
   ${SVWidgetsLib_SOURCE_DIR}/Widgets/UI_Files/SVPipelineFilterWidget.ui
   ${SVWidgetsLib_SOURCE_DIR}/Widgets/UI_Files/PrebuiltsToolboxWidget.ui
   ${SVWidgetsLib_SOURCE_DIR}/Widgets/UI_Files/StandardOutputDockWidget.ui
+  ${SVWidgetsLib_SOURCE_DIR}/Widgets/UI_Files/SIMPLViewToolbox.ui
   )
 
 SET(SVWidgetsLib_Widgets_Util_HDRS
