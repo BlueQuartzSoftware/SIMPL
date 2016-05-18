@@ -342,11 +342,6 @@ class SVWidgetsLib_EXPORT SVPipelineViewWidget : public QFrame, public PipelineV
     */
     void toIdleState();
 
-    void on_actionCut_triggered();
-    void on_actionCopy_triggered();
-    void on_actionPaste_triggered();
-    void on_actionClearPipeline_triggered();
-
   signals:
     void addPlaceHolderFilter(QPoint p);
     void removePlaceHolderFilter();

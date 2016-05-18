@@ -86,6 +86,7 @@
 #include "SVWidgetsLib/Widgets/util/AddFilterCommand.h"
 #include "SVWidgetsLib/Widgets/util/MoveFilterCommand.h"
 #include "SVWidgetsLib/Widgets/util/RemoveFilterCommand.h"
+#include "SVWidgetsLib/Widgets/SIMPLViewMenuItems.h"
 #include "SVWidgetsLib/FilterParameterWidgets/FilterParameterWidgetsDialogs.h"
 
 // Include the MOC generated CPP file which has all the QMetaObject methods/data
@@ -149,16 +150,12 @@ void SVPipelineViewWidget::setupGui()
 QMenu* SVPipelineViewWidget::createPipelineFilterWidgetMenu(SVPipelineFilterWidget *filterWidget)
 {
   // Creating Pipeline Filter Widget Menu
+  SIMPLViewMenuItems* menuItems = SIMPLViewMenuItems::Instance();
+
   QMenu* contextMenu = new QMenu(this);
 
-  QAction* actionCut = new QAction("Cut", this);
-  connect(actionCut, SIGNAL(triggered()), this, SLOT(on_actionCut_triggered()));
-
-  QAction* actionCopy = new QAction("Copy", this);
-  connect(actionCopy, SIGNAL(triggered()), this, SLOT(on_actionCopy_triggered()));
-
-  contextMenu->addAction(actionCut);
-  contextMenu->addAction(actionCopy);
+  contextMenu->addAction(menuItems->getActionCut());
+  contextMenu->addAction(menuItems->getActionCopy());
 
   contextMenu->addSeparator();
 
@@ -175,19 +172,13 @@ QMenu* SVPipelineViewWidget::createPipelineFilterWidgetMenu(SVPipelineFilterWidg
 void SVPipelineViewWidget::createPipelineViewWidgetMenu()
 {
   // Creating Pipeline View Widget Menu
+  SIMPLViewMenuItems* menuItems = SIMPLViewMenuItems::Instance();
+
   m_ContextMenu = new QMenu(this);
 
-  QAction* actionPaste = new QAction("Paste", this);
-  actionPaste->setShortcut(QKeySequence(Qt::CTRL + Qt::Key_V));
-  connect(actionPaste, SIGNAL(triggered()), this, SLOT(on_actionPaste_triggered()));
-
-  QAction* actionClearPipeline = new QAction("Clear Pipeline", this);
-  actionClearPipeline->setShortcut(QKeySequence(Qt::CTRL + Qt::Key_Backspace));
-  connect(actionClearPipeline, SIGNAL(triggered()), this, SLOT(on_actionClearPipeline_triggered()));
-
-  m_ContextMenu->addAction(actionPaste);
+  m_ContextMenu->addAction(menuItems->getActionPaste());
   m_ContextMenu->addSeparator();
-  m_ContextMenu->addAction(actionClearPipeline);
+  m_ContextMenu->addAction(menuItems->getActionClearPipeline());
 }
 
 // -----------------------------------------------------------------------------
@@ -363,12 +354,14 @@ void SVPipelineViewWidget::clearFilterWidgets(bool allowUndo)
 {
   if (allowUndo == true)
   {
+    int numFilters = filterCount();
+
     QUndoCommand* topCmd = new QUndoCommand();
-    topCmd->setText(QObject::tr("\"%1 %2 Filter Widgets\"").arg("Clear").arg(filterCount()));
-    for (int i=0; i<filterCount(); i++)
+    topCmd->setText(QObject::tr("\"%1 %2 Filter Widgets\"").arg("Clear").arg(numFilters));
+    for (int i = numFilters - 1; i >= 0; i--)
     {
       SVPipelineFilterWidget* filterWidget = dynamic_cast<SVPipelineFilterWidget*>(m_FilterWidgetLayout->itemAt(i)->widget());
-      new RemoveFilterCommand(filterWidget, this, "Clear", topCmd);
+      new RemoveFilterCommand(filterWidget, this, "Clear", true, topCmd);
     }
     addUndoCommand(topCmd);
   }
@@ -1898,64 +1891,4 @@ void SVPipelineViewWidget::handleFilterParameterChanged(QUuid id)
   Q_UNUSED(id)
 
   emit filterInputWidgetEdited();
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-void SVPipelineViewWidget::on_actionClearPipeline_triggered()
-{
-  clearFilterWidgets(true);
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-void SVPipelineViewWidget::on_actionCut_triggered()
-{
-  QList<PipelineFilterObject*> filterWidgets = getSelectedFilterObjects();
-
-  FilterPipeline::Pointer pipeline = FilterPipeline::New();
-  for (int i = 0; i < filterWidgets.size(); i++)
-  {
-    pipeline->pushBack(filterWidgets[i]->getFilter());
-  }
-
-  QString jsonString = JsonFilterParametersWriter::WritePipelineToString(pipeline, "Pipeline");
-
-  QClipboard* clipboard = QApplication::clipboard();
-  clipboard->setText(jsonString);
-
-  cutFilterWidgets(filterWidgets);
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-void SVPipelineViewWidget::on_actionCopy_triggered()
-{
-  FilterPipeline::Pointer pipeline = FilterPipeline::New();
-  QList<PipelineFilterObject*> filterWidgets = getSelectedFilterObjects();
-  for (int i = 0; i < filterWidgets.size(); i++)
-  {
-    pipeline->pushBack(filterWidgets[i]->getFilter());
-  }
-
-  QString json = JsonFilterParametersWriter::WritePipelineToString(pipeline, "Copy - Pipeline");
-  QClipboard* clipboard = QApplication::clipboard();
-  clipboard->setText(json);
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-void SVPipelineViewWidget::on_actionPaste_triggered()
-{
-  QClipboard* clipboard = QApplication::clipboard();
-  QString jsonString = clipboard->text();
-
-  FilterPipeline::Pointer pipeline = JsonFilterParametersReader::ReadPipelineFromString(jsonString);
-  FilterPipeline::FilterContainerType container = pipeline->getFilterContainer();
-
-  pasteFilters(container);
 }
