@@ -1067,7 +1067,7 @@ void SVPipelineViewWidget::setSelectedFilterObject(PipelineFilterObject* w, Qt::
 
     for (int i = begin; i <= end; i++)
     {
-      filterObjectAt(i)->setIsSelected(true, modifiers);
+      filterObjectAt(i)->setSelection(true, modifiers);
     }
   }
   else if (modifiers == Qt::ControlModifier)
@@ -1076,7 +1076,7 @@ void SVPipelineViewWidget::setSelectedFilterObject(PipelineFilterObject* w, Qt::
 
     if (w->getIsSelected())
     {
-      w->setIsSelected(false, modifiers);
+      w->setSelection(false, modifiers);
       if (getSelectedFilterObjects().isEmpty())
       {
         m_ShiftStart = NULL;
@@ -1084,7 +1084,7 @@ void SVPipelineViewWidget::setSelectedFilterObject(PipelineFilterObject* w, Qt::
     }
     else
     {
-      w->setIsSelected(true, modifiers);
+      w->setSelection(true, modifiers);
     }
   }
   else
@@ -1092,7 +1092,7 @@ void SVPipelineViewWidget::setSelectedFilterObject(PipelineFilterObject* w, Qt::
     clearSelectedFilterObjects();
 
     m_ShiftStart = filterWidget;
-    w->setIsSelected(true, modifiers);
+    w->setSelection(true, modifiers);
   }
 
   QList<PipelineFilterObject*> selectedObjects = getSelectedFilterObjects();

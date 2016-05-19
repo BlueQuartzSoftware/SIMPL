@@ -47,7 +47,6 @@
 PipelineFilterObject::PipelineFilterObject() :
   m_IsRunning(false),
   m_Filter(AbstractFilter::NullPointer()),
-  m_IsSelected(false),
   m_FilterInputWidget(NULL),
   m_HasFocus(false),
   m_HasPreflightErrors(false),
@@ -61,7 +60,6 @@ PipelineFilterObject::PipelineFilterObject() :
 // -----------------------------------------------------------------------------
 PipelineFilterObject::PipelineFilterObject(AbstractFilter::Pointer filter, IObserver* observer) :
   m_Filter(filter),
-  m_IsSelected(false),
   m_FilterInputWidget(NULL),
   m_HasPreflightErrors(false),
   m_HasPreflightWarnings(false)
@@ -103,14 +101,6 @@ void PipelineFilterObject::setupFilterInputWidget()
 AbstractFilter::Pointer PipelineFilterObject::getFilter()
 {
   return m_Filter;
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-bool PipelineFilterObject::getIsSelected()
-{
-  return m_IsSelected;
 }
 
 // -----------------------------------------------------------------------------
@@ -231,7 +221,7 @@ void PipelineFilterObject::setHasFocus(bool hasFocus)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void PipelineFilterObject::setIsSelected(bool b, Qt::KeyboardModifiers modifiers)
+void PipelineFilterObject::setSelection(bool b, Qt::KeyboardModifiers modifiers)
 {
   m_IsSelected = b;
   m_SelectionModifiers = modifiers;
