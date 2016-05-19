@@ -151,7 +151,7 @@ FilterInputWidget::FilterInputWidget(QString filterClassName, PipelineFilterObje
 // -----------------------------------------------------------------------------
 FilterInputWidget::~FilterInputWidget()
 {
-  std::cout << "testing";
+
 }
 
 // -----------------------------------------------------------------------------
