@@ -252,7 +252,7 @@ void PipelineView::cutFilterWidgets(QList<PipelineFilterObject*> filterWidgets, 
   }
   else
   {
-    removeFilterWidgets(filterWidgets, false);
+    removeFilterObjects(filterWidgets, false);
   }
 }
 
@@ -298,7 +298,7 @@ void PipelineView::removeFilterObject(PipelineFilterObject* filterWidget, bool a
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void PipelineView::removeFilterWidgets(QList<PipelineFilterObject*> filterWidgets, bool allowUndo)
+void PipelineView::removeFilterObjects(QList<PipelineFilterObject*> filterWidgets, bool allowUndo)
 {
   if (allowUndo == true)
   {

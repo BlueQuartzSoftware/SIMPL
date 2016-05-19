@@ -263,7 +263,7 @@ class SVWidgetsLib_EXPORT PipelineView
      * @param filterWidgets
      * @param allowUndo
      */
-    void removeFilterWidgets(QList<PipelineFilterObject*> filterWidgets, bool allowUndo = true);
+    void removeFilterObjects(QList<PipelineFilterObject*> filterWidgets, bool allowUndo = true);
 
     void showFilterHelp(const QString& className);
 
