@@ -634,6 +634,10 @@ void SVPipelineViewWidget::addFilterObjects(QList<PipelineFilterObject*> filterO
     bool ok;
     int index = value.toInt(&ok);
     if (ok == false) { return; }
+    if (index < 0)
+    {
+      index = filterCount();
+    }
 
     for (int i=0; i<filterObjects.size(); i++)
     {
@@ -661,6 +665,10 @@ void SVPipelineViewWidget::addFilterObject(PipelineFilterObject* filterObject, Q
     bool ok;
     int index = value.toInt(&ok);
     if (ok == false) { return; }
+    if (index < 0)
+    {
+      index = filterCount();
+    }
 
     bool addSpacer = false;
     if (filterCount() <= 0)
@@ -784,6 +792,10 @@ void SVPipelineViewWidget::pasteFilters(QList<AbstractFilter::Pointer> filters, 
   bool ok;
   int index = value.toInt(&ok);
   if (ok == false) { return; }
+  if (index < 0)
+  {
+    index = filterCount();
+  }
 
   if (allowUndo == true)
   {
