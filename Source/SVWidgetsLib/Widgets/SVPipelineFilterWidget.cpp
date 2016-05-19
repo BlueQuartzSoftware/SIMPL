@@ -87,8 +87,7 @@
 SVPipelineFilterWidget::SVPipelineFilterWidget(QWidget* parent) :
   QFrame(parent),
   PipelineFilterObject(AbstractFilter::NullPointer()),
-  m_Observer(NULL),
-  m_FilterInputWidget(NULL)
+  m_Observer(NULL)
 {
   initialize();
 }
@@ -99,8 +98,7 @@ SVPipelineFilterWidget::SVPipelineFilterWidget(QWidget* parent) :
 SVPipelineFilterWidget::SVPipelineFilterWidget(AbstractFilter::Pointer filter, IObserver* observer, QWidget* parent) :
   QFrame(parent),
   PipelineFilterObject(filter),
-  m_Observer(observer),
-  m_FilterInputWidget(NULL)
+  m_Observer(observer)
 {
   initialize();
 }
@@ -366,7 +364,7 @@ void SVPipelineFilterWidget::launchHelpForItem()
 // -----------------------------------------------------------------------------
 void SVPipelineFilterWidget::toRunningState()
 {
-  m_FilterInputWidget->getVariablesTabContentsWidget()->setDisabled(true);
+  getFilterInputWidget()->getVariablesTabContentsWidget()->setDisabled(true);
   deleteBtn->setDisabled(true);
 }
 
@@ -375,7 +373,7 @@ void SVPipelineFilterWidget::toRunningState()
 // -----------------------------------------------------------------------------
 void SVPipelineFilterWidget::toIdleState()
 {
-  m_FilterInputWidget->getVariablesTabContentsWidget()->setEnabled(true);
+  getFilterInputWidget()->getVariablesTabContentsWidget()->setEnabled(true);
   deleteBtn->setEnabled(true);
 }
 

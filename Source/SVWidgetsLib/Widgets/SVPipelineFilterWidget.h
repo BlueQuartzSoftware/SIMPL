@@ -217,7 +217,6 @@ class SVWidgetsLib_EXPORT SVPipelineFilterWidget : public QFrame, public Pipelin
     QRect                             m_DeleteRect;
     QPoint                            dragStartPosition;
     IObserver*                        m_Observer;
-    FilterInputWidget*                m_FilterInputWidget;
 
     /**
      * @brief initialize Calls all the necessary initialization code for the widget
