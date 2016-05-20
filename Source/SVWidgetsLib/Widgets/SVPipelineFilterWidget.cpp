@@ -87,7 +87,8 @@
 SVPipelineFilterWidget::SVPipelineFilterWidget(QWidget* parent) :
   QFrame(parent),
   PipelineFilterObject(AbstractFilter::NullPointer()),
-  m_Observer(NULL)
+  m_Observer(NULL),
+  m_Selected(false)
 {
   initialize();
 }
@@ -98,7 +99,8 @@ SVPipelineFilterWidget::SVPipelineFilterWidget(QWidget* parent) :
 SVPipelineFilterWidget::SVPipelineFilterWidget(AbstractFilter::Pointer filter, IObserver* observer, QWidget* parent) :
   QFrame(parent),
   PipelineFilterObject(filter),
-  m_Observer(observer)
+  m_Observer(observer),
+  m_Selected(false)
 {
   initialize();
 }
@@ -122,6 +124,23 @@ void SVPipelineFilterWidget::initialize()
 
   // Set the Name of the filter into the FilterWidget
   filterName->setText(getFilter()->getHumanLabel() );
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+bool SVPipelineFilterWidget::isSelected()
+{
+  return m_Selected;
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void SVPipelineFilterWidget::setSelected(bool s)
+{
+  m_Selected = s;
+  changeStyle();
 }
 
 // -----------------------------------------------------------------------------
@@ -179,11 +198,11 @@ void SVPipelineFilterWidget::changeStyle()
   {
     ss << "border: 2px solid rgb(172, 168, 0);";
   }
-  else if(getIsSelected() == true && getHasFocus() == true)
+  else if(isSelected() == true && isFocused() == true)
   {
     ss << "border: 2px solid MediumBlue;";
   }
-  else if (getIsSelected() == true && getHasFocus() == false)
+  else if (isSelected() == true && isFocused() == false)
   {
     ss << "border: 2px solid DarkSlateGray;";
   }

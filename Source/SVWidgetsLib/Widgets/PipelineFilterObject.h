@@ -49,17 +49,17 @@ class IObserver;
 class SVWidgetsLib_EXPORT PipelineFilterObject
 {
   public:
-    SIMPL_INSTANCE_PROPERTY(Qt::KeyboardModifiers, SelectionModifiers)
-    SIMPL_INSTANCE_PROPERTY(bool, IsRunning)
-    SIMPL_INSTANCE_PROPERTY(bool, IsSelected)
-
     PipelineFilterObject();
     PipelineFilterObject(AbstractFilter::Pointer filter, IObserver* observer = NULL);
     virtual ~PipelineFilterObject();
 
+    // SIMPL_INSTANCE_PROPERTY(Qt::KeyboardModifiers, SelectionModifiers)
+    SIMPL_BOOL_PROPERTY(Running)
+    // SIMPL_INSTANCE_PROPERTY(bool, IsSelected)
+
     AbstractFilter::Pointer getFilter();
 
-    bool getHasFocus();
+    bool isFocused();
     bool getHasPreflightErrors();
     bool getHasPreflightWarnings();
 
@@ -81,7 +81,7 @@ class SVWidgetsLib_EXPORT PipelineFilterObject
     QWidget* getBasicInputsWidget();
     QWidget* getCurrentStructureWidget();
 
-    void setSelection(bool b, Qt::KeyboardModifiers modifiers = Qt::NoModifier);
+    //void setSelection(bool b, Qt::KeyboardModifiers modifiers = Qt::NoModifier);
 
     void setHasPreflightErrors(bool hasPreflightErrors);
     void setHasPreflightWarnings(bool hasPreflightWarnings);
@@ -104,14 +104,14 @@ class SVWidgetsLib_EXPORT PipelineFilterObject
   private:
     AbstractFilter::Pointer           m_Filter;
     FilterInputWidget*                m_FilterInputWidget;
-    bool                              m_HasFocus;
+    bool                              m_IsFocused;
     bool                              m_HasPreflightErrors;
     bool                              m_HasPreflightWarnings;
     QWidget*                          m_VariablesWidget;
     QWidget*                          m_CurrentStructureWidget;
     QVBoxLayout*                      m_VariablesVerticalLayout;
     QVBoxLayout*                      m_CurrStrucVerticalLayout;
-
+    Qt::KeyboardModifiers             m_SelectionModifiers;
     /**
     * @brief setupFilterInputWidget Creates and initializes the filter input widget.
     */

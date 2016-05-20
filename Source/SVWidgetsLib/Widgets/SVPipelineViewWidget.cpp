@@ -746,6 +746,7 @@ void SVPipelineViewWidget::addFilterObject(PipelineFilterObject* filterObject, Q
 
     // Finally, set this new filter widget as selected
     setSelectedFilterObject(filterWidget, Qt::NoModifier);
+    filterWidget->setSelected(true);
 
     // Get the filter to ignore Scroll Wheel Events
     filterWidget->installEventFilter( this);
@@ -840,7 +841,7 @@ void SVPipelineViewWidget::pasteFilterWidgets(const QString &jsonString, QVarian
 void SVPipelineViewWidget::startDrag(QMouseEvent* event, SVPipelineFilterWidget* fw)
 {
   // The user is dragging the filter widget so we should set it as selected.
-  if (fw->getIsSelected() == false)
+  if (fw->isSelected() == false)
   {
     setSelectedFilterObject(fw, Qt::NoModifier);
   }
@@ -1067,16 +1068,19 @@ void SVPipelineViewWidget::setSelectedFilterObject(PipelineFilterObject* w, Qt::
 
     for (int i = begin; i <= end; i++)
     {
-      filterObjectAt(i)->setSelection(true, modifiers);
+      SVPipelineFilterWidget* fw = dynamic_cast<SVPipelineFilterWidget*>(filterObjectAt(i));
+      if(fw) {
+        fw->setSelected(true);
+      }
     }
   }
   else if (modifiers == Qt::ControlModifier)
   {
     m_ShiftStart = filterWidget;
 
-    if (w->getIsSelected())
+    if (filterWidget->isSelected())
     {
-      w->setSelection(false, modifiers);
+      filterWidget->setSelected(true);
       if (getSelectedFilterObjects().isEmpty())
       {
         m_ShiftStart = NULL;
@@ -1084,7 +1088,7 @@ void SVPipelineViewWidget::setSelectedFilterObject(PipelineFilterObject* w, Qt::
     }
     else
     {
-      w->setSelection(true, modifiers);
+      filterWidget->setSelected(true);
     }
   }
   else
@@ -1092,7 +1096,7 @@ void SVPipelineViewWidget::setSelectedFilterObject(PipelineFilterObject* w, Qt::
     clearSelectedFilterObjects();
 
     m_ShiftStart = filterWidget;
-    w->setSelection(true, modifiers);
+    filterWidget->setSelected(true);
   }
 
   QList<PipelineFilterObject*> selectedObjects = getSelectedFilterObjects();
@@ -1123,7 +1127,7 @@ void SVPipelineViewWidget::clearSelectedFilterObjects()
     else
     {
       SVPipelineFilterWidget* fw = dynamic_cast<SVPipelineFilterWidget*>(m_FilterWidgetLayout->itemAt(i)->widget());
-      fw->setIsSelected(false);
+      fw->setSelected(false);
     }
   }
 }
@@ -1876,7 +1880,7 @@ QList<PipelineFilterObject*> SVPipelineViewWidget::getSelectedFilterObjects()
     else
     {
       SVPipelineFilterWidget* fw = dynamic_cast<SVPipelineFilterWidget*>(m_FilterWidgetLayout->itemAt(i)->widget());
-      if (fw->getIsSelected() == true)
+      if (fw->isSelected() == true)
       {
         filterObjects.push_back(fw);
       }

@@ -45,10 +45,10 @@
 //
 // -----------------------------------------------------------------------------
 PipelineFilterObject::PipelineFilterObject() :
-  m_IsRunning(false),
+  m_Running(false),
   m_Filter(AbstractFilter::NullPointer()),
   m_FilterInputWidget(NULL),
-  m_HasFocus(false),
+  m_IsFocused(false),
   m_HasPreflightErrors(false),
   m_HasPreflightWarnings(false)
 {
@@ -106,9 +106,9 @@ AbstractFilter::Pointer PipelineFilterObject::getFilter()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-bool PipelineFilterObject::getHasFocus()
+bool PipelineFilterObject::isFocused()
 {
-  return m_HasFocus;
+  return m_IsFocused;
 }
 
 // -----------------------------------------------------------------------------
@@ -215,18 +215,20 @@ PipelineFilterObject* PipelineFilterObject::deepCopy()
 // -----------------------------------------------------------------------------
 void PipelineFilterObject::setHasFocus(bool hasFocus)
 {
-  m_HasFocus = hasFocus;
+  m_IsFocused = hasFocus;
 }
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
+#if 0
 void PipelineFilterObject::setSelection(bool b, Qt::KeyboardModifiers modifiers)
 {
-  m_IsSelected = b;
+  //m_IsSelected = b;
   m_SelectionModifiers = modifiers;
   changeStyle();
 }
+#endif
 
 // -----------------------------------------------------------------------------
 //

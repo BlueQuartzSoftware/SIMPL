@@ -63,7 +63,7 @@ class IObserver;
 
 /**
  * @class SVPipelineFilterWidget SVPipelineFilterWidget.h FilterWidgets/SVPipelineFilterWidget.h
- * @brief  This class is a subclass of the QGroupBox class and is used to display
+ * @brief  This class is a subclass of the QFrame class and is used to display
  * Filter Options that the user can set. This class is capable of constructing a
  * default GUI widget set for each type of Filter Option that is available. If
  * the programmer needs more specialized widgets then they can simply subclass
@@ -76,11 +76,13 @@ class SVWidgetsLib_EXPORT SVPipelineFilterWidget : public QFrame, public Pipelin
 {
     Q_OBJECT
   public:
-    SIMPL_INSTANCE_PROPERTY(QString, BorderColorStyle)
-
     SVPipelineFilterWidget(QWidget* parent = NULL);
     SVPipelineFilterWidget(AbstractFilter::Pointer filter, IObserver* observer = NULL, QWidget* parent = NULL);
     virtual ~SVPipelineFilterWidget();
+
+    SIMPL_INSTANCE_PROPERTY(QString, BorderColorStyle)
+    bool isSelected();
+    void setSelected(bool s);
 
     void setFilterTitle(const QString title) override;
 
@@ -217,6 +219,7 @@ class SVWidgetsLib_EXPORT SVPipelineFilterWidget : public QFrame, public Pipelin
     QRect                             m_DeleteRect;
     QPoint                            dragStartPosition;
     IObserver*                        m_Observer;
+    bool                              m_Selected;
 
     /**
      * @brief initialize Calls all the necessary initialization code for the widget
