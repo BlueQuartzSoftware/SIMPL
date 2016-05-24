@@ -221,18 +221,6 @@ void PipelineFilterObject::setHasFocus(bool hasFocus)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-#if 0
-void PipelineFilterObject::setSelection(bool b, Qt::KeyboardModifiers modifiers)
-{
-  //m_IsSelected = b;
-  m_SelectionModifiers = modifiers;
-  changeStyle();
-}
-#endif
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
 void PipelineFilterObject::changeStyle()
 {
   // This should be implemented in the subclasses
