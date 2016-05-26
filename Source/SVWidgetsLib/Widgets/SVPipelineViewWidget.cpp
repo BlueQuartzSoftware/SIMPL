@@ -836,7 +836,8 @@ void SVPipelineViewWidget::pasteFilterWidgets(const QString &jsonString, QVarian
   {
     FilterPipeline::Pointer pipeline = JsonFilterParametersReader::ReadPipelineFromString(jsonString);
     FilterPipeline::FilterContainerType container = pipeline->getFilterContainer();
-    addFilters(container, value, false);
+
+    pasteFilters(container, value, false);
   }
 }
 
