@@ -51,13 +51,9 @@ MoveFilterCommand::MoveFilterCommand(PipelineFilterObject* filterWidget, QVarian
   m_PipelineView(pipelineView),
   m_FilterWidget(filterWidget),
   m_Origin(origin),
-  m_Destination(destination)
+  m_Destination(destination),
+  m_FirstRun(true)
 {
-  FilterPipeline::Pointer pipeline = FilterPipeline::New();
-  pipeline->pushBack(filterWidget->getFilter());
-
-  m_JsonString = JsonFilterParametersWriter::WritePipelineToString(pipeline, "Pipeline");
-
   setText(QObject::tr("\"Move '%1'\"").arg(m_FilterWidget->getFilter()->getHumanLabel()));
 }
 
@@ -90,22 +86,15 @@ void MoveFilterCommand::redo()
 // -----------------------------------------------------------------------------
 void MoveFilterCommand::moveFilter(QVariant origin, QVariant destination)
 {  
-  if (NULL == m_FilterWidget)
+  if (m_FirstRun == false)
   {
-    m_PipelineView->removeFilterObject(m_PipelineView->filterObjectAt(origin), false);
+    m_PipelineView->moveFilterWidget(m_PipelineView->filterObjectAt(origin), origin, destination, false);
   }
   else
   {
-    m_FilterWidget = NULL;
+    m_FirstRun = false;
+    m_PipelineView->moveFilterWidget(m_FilterWidget, origin, destination, false);
   }
-
-  FilterPipeline::Pointer pipeline = JsonFilterParametersReader::ReadPipelineFromString(m_JsonString);
-  SVPipelineFilterWidget* filterWidget = new SVPipelineFilterWidget(pipeline->getFilterContainer().at(0), NULL, NULL);
-
-  m_PipelineView->addFilterObject(filterWidget, destination, false);
-  m_PipelineView->setSelectedFilterObject(filterWidget, Qt::NoModifier);
-
-  m_PipelineView->preflightPipeline();
 }
 
 

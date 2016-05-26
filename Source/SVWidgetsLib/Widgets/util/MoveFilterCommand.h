@@ -60,6 +60,7 @@ class MoveFilterCommand : public QUndoCommand
     QVariant                                m_Origin;
     QVariant                                m_Destination;
     bool                                    m_WindowIsModified;
+    bool                                    m_FirstRun;
 
     void moveFilter(QVariant origin, QVariant destination);
 

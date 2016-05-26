@@ -768,19 +768,24 @@ void SVPipelineViewWidget::moveFilterWidget(PipelineFilterObject* fw, QVariant o
     return;
   }
 
-  MoveFilterCommand* cmd = new MoveFilterCommand(fw, origin, destination, this);
-  addUndoCommand(cmd);
+  if (allowUndo == true)
+  {
+    MoveFilterCommand* cmd = new MoveFilterCommand(fw, origin, destination, this);
+    addUndoCommand(cmd);
+  }
+  else
+  {
+    if (containsFilterWidget(fw) == true)
+    {
+      removeFilterObject(fw, false, false);
+    }
 
-//  if (allowUndo == true)
-//  {
-//    MoveFilterCommand* cmd = new MoveFilterCommand(fw, origin, destination, this);
-//    addUndoCommand(cmd);
-//  }
-//  else
-//  {
-//    removeFilterWidget(fw, false, false);
-//    addFilterWidget(fw, destination, false);
-//  }
+    addFilterObject(fw, destination, false);
+
+    setSelectedFilterObject(fw, Qt::NoModifier);
+
+    preflightPipeline();
+  }
 }
 
 // -----------------------------------------------------------------------------
