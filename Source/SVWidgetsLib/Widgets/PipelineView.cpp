@@ -304,9 +304,9 @@ void PipelineView::removeFilterObjects(QList<PipelineFilterObject*> filterWidget
   {
     QUndoCommand* topCmd = new QUndoCommand();
     topCmd->setText(QObject::tr("\"%1 %2 Filter Widgets\"").arg("Remove").arg(filterWidgets.size()));
-    for (int i=0; i<filterWidgets.size(); i++)
+    for (int i = filterWidgets.size() - 1; i >= 0; i--)
     {
-      new RemoveFilterCommand(filterWidgets[i], this, "Remove", topCmd);
+      new RemoveFilterCommand(filterWidgets[i], this, "Remove", true, topCmd);
     }
     addUndoCommand(topCmd);
   }
