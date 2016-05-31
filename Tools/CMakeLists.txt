@@ -111,6 +111,7 @@ COMPILE_TOOL(
     LINK_LIBRARIES SIMPLib
 )
 
+if (FALSE)
 # Create a Command line tool for the PipelineRunner
 COMPILE_TOOL(
     TARGET FilterInfoUtility
@@ -139,4 +140,5 @@ COMPILE_TOOL(
     INSTALL_DEST  "${install_dir}"
     LINK_LIBRARIES SIMPLib
 )
+endif()
 
