@@ -60,7 +60,7 @@ DynamicTableFilterParameter::~DynamicTableFilterParameter()
 // -----------------------------------------------------------------------------
 DynamicTableFilterParameter::Pointer DynamicTableFilterParameter::New(const QString& humanLabel, const QString& propertyName,
     QStringList rHeaders, QStringList cHeaders, std::vector<std::vector<double> > defaultTable,
-    FilterParameter::Category category, bool areRowsDynamic, bool areColsDynamic, int minRowCount, int minColCount)
+    FilterParameter::Category category, bool areRowsDynamic, bool areColsDynamic, int minRowCount, int minColCount, int groupIndex)
 {
   DynamicTableFilterParameter::Pointer ptr = DynamicTableFilterParameter::New();
   ptr->setHumanLabel(humanLabel);
@@ -74,6 +74,7 @@ DynamicTableFilterParameter::Pointer DynamicTableFilterParameter::New(const QStr
   ptr->setMinRowCount(minRowCount);
   ptr->setMinColCount(minColCount);
   ptr->setReadOnly(false);
+  ptr->setGroupIndex(groupIndex);
 
   // Check that all columns are initialized to the same size
   if (defaultTable.size() > 0)

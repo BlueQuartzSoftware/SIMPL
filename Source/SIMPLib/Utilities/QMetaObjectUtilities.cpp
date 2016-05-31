@@ -43,6 +43,7 @@
 #include "SIMPLib/FilterParameters/FloatVec3FilterParameter.h"
 #include "SIMPLib/FilterParameters/PhaseTypeSelectionFilterParameter.h"
 #include "SIMPLib/FilterParameters/AxisAngleFilterParameter.h"
+#include "SIMPLib/FilterParameters/DynamicTableData.h"
 #include "SIMPLib/Common/PipelineMessage.h"
 #include "SIMPLib/Common/ComparisonInputs.h"
 #include "SIMPLib/DataContainers/DataArrayPath.h"
@@ -108,12 +109,8 @@ void QMetaObjectUtilities::RegisterMetaTypes()
   qRegisterMetaType<UInt32Vector_t>("UInt32Vector_t");
   qRegisterMetaType<FPRangePair>("FPRangePair");
   qRegisterMetaType<CreateDataArray::ScalarTypeChoices>("ScalarTypeChoices");
-
-
+  qRegisterMetaType<DynamicTableData>("DynamicTableData");
   qRegisterMetaTypeStreamOperators<IntVec3_t>("IntVec3_t");
   qRegisterMetaTypeStreamOperators<FloatVec3_t>("FloatVec3_t");
-
-//  qRegisterMetaTypeStreamOperators<DataArrayPath>("DataArrayPath");
-
 }
 
