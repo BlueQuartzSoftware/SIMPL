@@ -138,7 +138,7 @@ class SVWidgetsLib_EXPORT PipelineView
      * @brief populatePipelineView
      * @param pipeline
      */
-    virtual void populatePipelineView(FilterPipeline::Pointer pipeline, QVariant value, bool connectToStart = false);
+    virtual void populatePipelineView(FilterPipeline::Pointer pipeline, QVariant value);
 
     /**
      * @brief addFilter
@@ -224,7 +224,7 @@ class SVWidgetsLib_EXPORT PipelineView
     /**
     * @brief Open pipeline to a file
     */
-    virtual int openPipeline(const QString& filePath, QVariant value, const bool& setOpenedFilePath, const bool& changeTitle, bool connectToStart = false);
+    virtual int openPipeline(const QString& filePath, QVariant value, const bool& setOpenedFilePath, const bool& changeTitle);
 
     /**
      * @brief addSIMPLViewReaderFilter

@@ -133,7 +133,7 @@ class SVWidgetsLib_EXPORT SVPipelineViewWidget : public QFrame, public PipelineV
      * @brief populatePipelineView
      * @param pipeline
      */
-    void populatePipelineView(FilterPipeline::Pointer pipeline, QVariant value, bool connectToStart = false) override;
+    void populatePipelineView(FilterPipeline::Pointer pipeline, QVariant value) override;
 
     /**
     * @brief getSelectedFilterWidgets
@@ -309,7 +309,7 @@ class SVWidgetsLib_EXPORT SVPipelineViewWidget : public QFrame, public PipelineV
     /**
     * @brief Open pipeline to a file
     */
-    int openPipeline(const QString& filePath, QVariant value, const bool& setOpenedFilePath, const bool& changeTitle, bool connectToStart = false) override;
+    int openPipeline(const QString& filePath, QVariant value, const bool& setOpenedFilePath, const bool& changeTitle) override;
 
     /**
      * @brief addSIMPLViewReaderFilter

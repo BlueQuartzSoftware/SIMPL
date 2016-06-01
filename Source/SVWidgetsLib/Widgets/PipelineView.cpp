@@ -325,13 +325,12 @@ void PipelineView::removeFilterObjects(QList<PipelineFilterObject*> filterWidget
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-int PipelineView::openPipeline(const QString& filePath, QVariant value, const bool& setOpenedFilePath, const bool& changeTitle, bool connectToStart)
+int PipelineView::openPipeline(const QString& filePath, QVariant value, const bool& setOpenedFilePath, const bool& changeTitle)
 {
   Q_UNUSED(filePath)
   Q_UNUSED(value)
   Q_UNUSED(setOpenedFilePath)
   Q_UNUSED(changeTitle)
-  Q_UNUSED(connectToStart)
 
   // The subclass should reimplement this function
   return -1;
@@ -380,11 +379,10 @@ void PipelineView::setSelectedFilterObject(PipelineFilterObject *w, Qt::Keyboard
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void PipelineView::populatePipelineView(FilterPipeline::Pointer pipeline, QVariant value, bool connectToStart)
+void PipelineView::populatePipelineView(FilterPipeline::Pointer pipeline, QVariant value)
 {
   Q_UNUSED(pipeline)
   Q_UNUSED(value)
-  Q_UNUSED(connectToStart)
 
   // The subclass should reimplement this function
   return;

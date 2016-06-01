@@ -472,10 +472,8 @@ FilterPipeline::Pointer SVPipelineViewWidget::getCopyOfFilterPipeline()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-int SVPipelineViewWidget::openPipeline(const QString& filePath, QVariant value, const bool& setOpenedFilePath, const bool& changeTitle, bool connectToStart)
+int SVPipelineViewWidget::openPipeline(const QString& filePath, QVariant value, const bool& setOpenedFilePath, const bool& changeTitle)
 {
-  Q_UNUSED(connectToStart)
-
   QFileInfo fi(filePath);
   if (fi.exists() == false)
   {
@@ -1164,10 +1162,8 @@ void SVPipelineViewWidget::addSIMPLViewReaderFilter(const QString& filePath, QVa
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void SVPipelineViewWidget::populatePipelineView(FilterPipeline::Pointer pipeline, QVariant value, bool connectToStart)
+void SVPipelineViewWidget::populatePipelineView(FilterPipeline::Pointer pipeline, QVariant value)
 {
-  Q_UNUSED(connectToStart)
-
   if (NULL == pipeline.get()) { clearFilterWidgets(); return; }
 
   FilterPipeline::FilterContainerType container = pipeline->getFilterContainer();
