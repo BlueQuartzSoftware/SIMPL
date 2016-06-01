@@ -151,12 +151,13 @@ QVariant PipelineView::valueOfFilterWidget(PipelineFilterObject* filterWidget)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void PipelineView::addFilter(const QString& filterClassName, QVariant value, bool allowUndo, bool connectToStart)
+void PipelineView::addFilter(const QString& filterClassName, QVariant value, bool allowUndo, QUuid previousNode, QUuid nextNode)
 {
   Q_UNUSED(filterClassName)
   Q_UNUSED(value)
   Q_UNUSED(allowUndo)
-  Q_UNUSED(connectToStart)
+  Q_UNUSED(previousNode)
+  Q_UNUSED(nextNode)
 
   // The subclass should reimplement this function
   return;
@@ -165,12 +166,13 @@ void PipelineView::addFilter(const QString& filterClassName, QVariant value, boo
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void PipelineView::addFilters(QList<AbstractFilter::Pointer> filters, QVariant value, bool allowUndo, bool connectToStart)
+void PipelineView::addFilters(QList<AbstractFilter::Pointer> filters, QVariant value, bool allowUndo, QUuid previousNode, QUuid nextNode)
 {
   Q_UNUSED(filters)
   Q_UNUSED(value)
   Q_UNUSED(allowUndo)
-  Q_UNUSED(connectToStart)
+  Q_UNUSED(previousNode)
+  Q_UNUSED(nextNode)
 
   // The subclass should reimplement this function
   return;
@@ -179,12 +181,13 @@ void PipelineView::addFilters(QList<AbstractFilter::Pointer> filters, QVariant v
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void PipelineView::addFilter(AbstractFilter::Pointer filter, QVariant value, bool allowUndo, bool connectToStart)
+void PipelineView::addFilter(AbstractFilter::Pointer filter, QVariant value, bool allowUndo, QUuid previousNode, QUuid nextNode)
 {
   Q_UNUSED(filter)
   Q_UNUSED(value)
   Q_UNUSED(allowUndo)
-  Q_UNUSED(connectToStart)
+  Q_UNUSED(previousNode)
+  Q_UNUSED(nextNode)
 
   // The subclass should reimplement this function
   return;
@@ -206,7 +209,7 @@ void PipelineView::addFilterObjects(QList<PipelineFilterObject*> filterObjects, 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void PipelineView::addFilterObject(PipelineFilterObject* filterObject, QVariant value, bool allowUndo)
+void PipelineView::addFilterObject(PipelineFilterObject* filterObject, QVariant value, bool allowUndo, QUuid previousNodeId, QUuid nextNodeId)
 {
   Q_UNUSED(filterObject)
   Q_UNUSED(value)

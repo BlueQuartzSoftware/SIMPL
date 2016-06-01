@@ -51,13 +51,14 @@
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-AddFilterCommand::AddFilterCommand(AbstractFilter::Pointer filter, PipelineView* destination, QString actionText, QVariant value, bool connectToStart, QUndoCommand* parent) :
+AddFilterCommand::AddFilterCommand(PipelineFilterObject* filterWidget, PipelineView* destination, QString actionText, QVariant value, QUuid previousNode, QUuid nextNode, QUndoCommand* parent) :
   QUndoCommand(parent),
   m_ActionText(actionText),
   m_Destination(destination),
   m_Value(value),
   m_FilterWidgetGeometry(QRect()),
-  m_ConnectToStart(connectToStart)
+  m_PreviousNodeId(previousNode),
+  m_NextNodeId(nextNode)
 {
   if (m_Value.canConvert<int>())
   {
@@ -73,42 +74,7 @@ AddFilterCommand::AddFilterCommand(AbstractFilter::Pointer filter, PipelineView*
     //m_FilterWidgetGeometry = destination->filterObjectAt(m_Value)->geometry();
   }
 
-  FilterPipeline::Pointer pipeline = FilterPipeline::New();
-  pipeline->pushBack(filter);
-
-  m_JsonString = JsonFilterParametersWriter::WritePipelineToString(pipeline, "Pipeline");
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-AddFilterCommand::AddFilterCommand(PipelineFilterObject* filterWidget, PipelineView* destination, QString actionText, QVariant value, bool connectToStart, QUndoCommand* parent) :
-  QUndoCommand(parent),
-  m_ActionText(actionText),
-  m_Destination(destination),
-  m_Value(value),
-  m_FilterWidgetGeometry(QRect()),
-  m_ConnectToStart(connectToStart)
-{
-  if (m_Value.canConvert<int>())
-  {
-    int index = value.toInt();
-    if (index < 0)
-    {
-      m_Value.setValue(destination->filterCount());
-    }
-  }
-
-  if (destination->filterCount() > 0)
-  {
-    //m_FilterWidgetGeometry = destination->filterObjectAt(m_Value)->geometry();
-  }
-
-  FilterPipeline::Pointer pipeline = FilterPipeline::New();
-  pipeline->pushBack(filterWidget->getFilter());
-  delete filterWidget;
-
-  m_JsonString = JsonFilterParametersWriter::WritePipelineToString(pipeline, "Pipeline");
+  m_FilterObject = filterWidget;
 }
 
 // -----------------------------------------------------------------------------
@@ -124,7 +90,9 @@ AddFilterCommand::~AddFilterCommand()
 // -----------------------------------------------------------------------------
 void AddFilterCommand::undo()
 {
-  m_Destination->removeFilterObject(m_Destination->filterObjectAt(m_Value), false);
+  m_FilterObject = m_Destination->filterObjectAt(m_Value);
+
+  m_Destination->removeFilterObject(m_Destination->filterObjectAt(m_Value), false, false);
 
   m_Destination->preflightPipeline();
 }
@@ -134,16 +102,16 @@ void AddFilterCommand::undo()
 // -----------------------------------------------------------------------------
 void AddFilterCommand::redo()
 {
-  FilterPipeline::Pointer pipeline = JsonFilterParametersReader::ReadPipelineFromString(m_JsonString);
-  if (pipeline == nullptr) { return; }
+//  FilterPipeline::Pointer pipeline = JsonFilterParametersReader::ReadPipelineFromString(m_JsonString);
+//  if (pipeline == nullptr) { return; }
 
-  FilterPipeline::FilterContainerType container = pipeline->getFilterContainer();
+//  FilterPipeline::FilterContainerType container = pipeline->getFilterContainer();
 
-  AbstractFilter::Pointer filter = container[0];
+  AbstractFilter::Pointer filter = m_FilterObject->getFilter();
 
   setText(QObject::tr("\"%1 '%2'\"").arg(m_ActionText).arg(filter->getHumanLabel()));
 
-  m_Destination->addFilter(filter, m_Value, false, m_ConnectToStart);
+  m_Destination->addFilterObject(m_FilterObject, m_Value, false, m_PreviousNodeId, m_NextNodeId);
 
 //  for (int i = 0; i < container.size(); i++)
 //  {
@@ -177,7 +145,8 @@ void AddFilterCommand::redo()
 //    }
 //  }
 
-  m_Destination->setSelectedFilterObject(m_Destination->filterObjectAt(m_Value), Qt::NoModifier);
+  //m_Destination->clearSelectedFilterObjects();
+  //m_Destination->setSelectedFilterObject(m_Destination->filterObjectAt(m_Value), Qt::NoModifier);
 }
 
 

@@ -37,7 +37,7 @@
 #define _addfilterscommand_h_
 
 #include <QtCore/QMap>
-
+#include <QtCore/QUuid>
 #include <QtCore/QRect>
 
 #include <QtWidgets/QUndoCommand>
@@ -50,8 +50,8 @@ class PipelineView;
 class AddFilterCommand : public QUndoCommand
 {
   public:
-    AddFilterCommand(AbstractFilter::Pointer filter, PipelineView* destination, QString actionText, QVariant value, bool connectToStart = false, QUndoCommand* parent = 0);
-    AddFilterCommand(PipelineFilterObject* filterWidget, PipelineView* destination, QString actionText, QVariant value, bool connectToStart = false, QUndoCommand* parent = 0);
+    AddFilterCommand(PipelineFilterObject* filterWidget, PipelineView* destination, QString actionText, QVariant value,
+                     QUuid previousNode = QUuid(), QUuid nextNode = QUuid(), QUndoCommand* parent = 0);
     virtual ~AddFilterCommand();
 
     virtual void undo();
@@ -65,7 +65,9 @@ class AddFilterCommand : public QUndoCommand
     QMap<int, Qt::KeyboardModifiers>                    m_Selections;
     QVariant                                            m_Value;
     QRect                                               m_FilterWidgetGeometry;
-    bool                                                m_ConnectToStart;
+    PipelineFilterObject*                               m_FilterObject;
+    QUuid                                               m_PreviousNodeId;
+    QUuid                                               m_NextNodeId;
 
     AddFilterCommand(const AddFilterCommand&); // Copy Constructor Not Implemented
     void operator=(const AddFilterCommand&); // Operator '=' Not Implemented

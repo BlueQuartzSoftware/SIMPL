@@ -515,8 +515,11 @@ int SVPipelineViewWidget::openPipeline(const QString& filePath, QVariant value, 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void SVPipelineViewWidget::addFilter(const QString& filterClassName, QVariant value, bool allowUndo, bool connectToStart)
+void SVPipelineViewWidget::addFilter(const QString& filterClassName, QVariant value, bool allowUndo, QUuid previousNode, QUuid nextNode)
 {  
+  Q_UNUSED(previousNode)
+  Q_UNUSED(nextNode)
+
   if (this->isEnabled() == false) { return; }
   FilterManager* fm = FilterManager::Instance();
   if(NULL == fm) { return; }
@@ -528,14 +531,17 @@ void SVPipelineViewWidget::addFilter(const QString& filterClassName, QVariant va
   // to communicate changes back to the filter.
   AbstractFilter::Pointer filter = wf->create();
 
-  addFilter(filter, value, allowUndo, connectToStart);
+  addFilter(filter, value, allowUndo);
 }
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void SVPipelineViewWidget::addFilters(QList<AbstractFilter::Pointer> filters, QVariant value, bool allowUndo, bool connectToStart)
+void SVPipelineViewWidget::addFilters(QList<AbstractFilter::Pointer> filters, QVariant value, bool allowUndo, QUuid previousNode, QUuid nextNode)
 {
+  Q_UNUSED(previousNode)
+  Q_UNUSED(nextNode)
+
   if (filters.size() <= 0) { return; }
 
   bool ok;
@@ -552,7 +558,8 @@ void SVPipelineViewWidget::addFilters(QList<AbstractFilter::Pointer> filters, QV
     topCmd->setText(QObject::tr("\"%1 %2 Filter Widgets\"").arg("Add").arg(filters.size()));
     for (int i=0; i<filters.size(); i++)
     {
-      new AddFilterCommand(filters[i], this, "Add", index, false, topCmd);
+      SVPipelineFilterWidget* filterWidget = new SVPipelineFilterWidget(filters[i]->newFilterInstance(true), NULL, NULL);
+      new AddFilterCommand(filterWidget, this, "Add", index, QUuid(), QUuid(), topCmd);
       index++;
     }
     addUndoCommand(topCmd);
@@ -565,7 +572,7 @@ void SVPipelineViewWidget::addFilters(QList<AbstractFilter::Pointer> filters, QV
 
     for (int i=0; i<filters.size(); i++)
     {
-      addFilter(filters[i], index, false, connectToStart);
+      addFilter(filters[i], index, false);
       index++;
     }
   }
@@ -574,9 +581,10 @@ void SVPipelineViewWidget::addFilters(QList<AbstractFilter::Pointer> filters, QV
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void SVPipelineViewWidget::addFilter(AbstractFilter::Pointer filter, QVariant value, bool allowUndo, bool connectToStart)
+void SVPipelineViewWidget::addFilter(AbstractFilter::Pointer filter, QVariant value, bool allowUndo, QUuid previousNode, QUuid nextNode)
 {
-  Q_UNUSED(connectToStart)
+  Q_UNUSED(previousNode)
+  Q_UNUSED(nextNode)
 
   if (value < 0) // If the programmer wants to add it to the end of the list
   {
@@ -624,7 +632,7 @@ void SVPipelineViewWidget::addFilterObjects(QList<PipelineFilterObject*> filterO
     topCmd->setText(QObject::tr("\"%1 %2 Filter Widgets\"").arg("Add").arg(filterObjects.size()));
     for (int i=0; i<filterObjects.size(); i++)
     {
-      new AddFilterCommand(filterObjects[i], this, "Add", index, false, topCmd);
+      new AddFilterCommand(filterObjects[i], this, "Add", index, QUuid(), QUuid(), topCmd);
       index++;
     }
     addUndoCommand(topCmd);
@@ -650,8 +658,11 @@ void SVPipelineViewWidget::addFilterObjects(QList<PipelineFilterObject*> filterO
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void SVPipelineViewWidget::addFilterObject(PipelineFilterObject* filterObject, QVariant value, bool allowUndo)
+void SVPipelineViewWidget::addFilterObject(PipelineFilterObject* filterObject, QVariant value, bool allowUndo, QUuid previousNodeId, QUuid nextNodeId)
 {
+  Q_UNUSED(previousNodeId)
+  Q_UNUSED(nextNodeId)
+
   SVPipelineFilterWidget* filterWidget = dynamic_cast<SVPipelineFilterWidget*>(filterObject);
   Q_ASSERT(filterWidget != nullptr);
 
@@ -809,7 +820,8 @@ void SVPipelineViewWidget::pasteFilters(QList<AbstractFilter::Pointer> filters, 
     topCmd->setText(QObject::tr("\"%1 %2 Filter Widgets\"").arg("Paste").arg(filters.size()));
     for (int i=0; i<filters.size(); i++)
     {
-      new AddFilterCommand(filters[i], this, "Paste", index, false, topCmd);
+      SVPipelineFilterWidget* filterWidget = new SVPipelineFilterWidget(filters[i]->newFilterInstance(true), NULL, NULL);
+      new AddFilterCommand(filterWidget, this, "Paste", index, QUuid(), QUuid(), topCmd);
       index++;
     }
     addUndoCommand(topCmd);

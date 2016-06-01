@@ -231,7 +231,7 @@ class SVWidgetsLib_EXPORT SVPipelineViewWidget : public QFrame, public PipelineV
      * @param index
      * @param allowUndo
      */
-    void addFilter(AbstractFilter::Pointer filter, QVariant value, bool allowUndo = true, bool connectToStart = false) override;
+    void addFilter(AbstractFilter::Pointer filter, QVariant value, bool allowUndo = true, QUuid previousNode = QUuid(), QUuid nextNode = QUuid()) override;
 
     /**
      * @brief addFilter
@@ -239,7 +239,7 @@ class SVWidgetsLib_EXPORT SVPipelineViewWidget : public QFrame, public PipelineV
      * @param index
      * param allowUndo
      */
-    void addFilter(const QString& filterClassName, QVariant value, bool allowUndo = true, bool connectToStart = false) override;
+    void addFilter(const QString& filterClassName, QVariant value, bool allowUndo = true, QUuid previousNode = QUuid(), QUuid nextNode = QUuid()) override;
 
     /**
      * @brief addFilter
@@ -247,7 +247,7 @@ class SVWidgetsLib_EXPORT SVPipelineViewWidget : public QFrame, public PipelineV
      * @param index
      * @param allowUndo
      */
-    void addFilters(QList<AbstractFilter::Pointer> filters, QVariant value, bool allowUndo = true, bool connectToStart = false) override;
+    void addFilters(QList<AbstractFilter::Pointer> filters, QVariant value, bool allowUndo = true, QUuid previousNode = QUuid(), QUuid nextNode = QUuid()) override;
 
     /**
      * @brief addFilterWidget
@@ -255,7 +255,7 @@ class SVWidgetsLib_EXPORT SVPipelineViewWidget : public QFrame, public PipelineV
      * @param index
      * @param allowUndo
      */
-    void addFilterObject(PipelineFilterObject* filterObject, QVariant value, bool allowUndo = true) override;
+    void addFilterObject(PipelineFilterObject* filterObject, QVariant value, bool allowUndo = true, QUuid previousNodeId = QUuid(), QUuid nextNodeId = QUuid()) override;
 
     /**
      * @brief addFilterWidget
