@@ -386,18 +386,21 @@ void CreateDataArray::dataCheck()
     setErrorCondition(-8050);
     QString ss = QObject::tr("The number of components must non-negative");
     notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
-    return;
   }
   if(getNumberOfComponents() == 0)
   {
-    setErrorCondition(0);
+    setErrorCondition(-8051);
     QString ss = QObject::tr("The number of components is Zero. This will result in an array that has no memory allocated. Are you sure you wanted to do this?");
-    notifyWarningMessage(getHumanLabel(), ss, getErrorCondition());
-    return;
+    notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
   }
-
+  if(!getNewArray().isValid() )
+  {
+    setErrorCondition(-8051);
+    QString ss = QObject::tr("The Created DataArrayPath is invalid. Please select the Data Container, Attribute Matrix and set an output DataArray name.");
+    notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
+  }
   QVector<size_t> cDims(1, getNumberOfComponents());
-
+  if (getErrorCondition() < 0) { return; }
   // Create the data array and initialize it to a placeholder value
   m_OutputArrayPtr = TemplateHelpers::CreateNonPrereqArrayFromTypeEnum()(this, getNewArray(), cDims, getScalarType(), 0);
 

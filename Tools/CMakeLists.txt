@@ -111,3 +111,34 @@ COMPILE_TOOL(
     LINK_LIBRARIES SIMPLib
 )
 
+if (FALSE)
+# Create a Command line tool for the PipelineRunner
+COMPILE_TOOL(
+    TARGET FilterInfoUtility
+    SOURCES ${SIMPLTools_SOURCE_DIR}/FilterInfoUtility.cpp
+    DEBUG_EXTENSION ${EXE_DEBUG_EXTENSION}
+    VERSION_MAJOR ${SIMPL_VER_MAJOR}
+    VERSION_MINOR ${SIMPL_VER_MINOR}
+    VERSION_PATCH ${SIMPL_VER_PATCH}
+    BINARY_DIR    ${${PROJECT_NAME}_BINARY_DIR}
+    COMPONENT     Tools
+    INSTALL_DEST  "${install_dir}"
+    LINK_LIBRARIES SIMPLib
+)
+
+
+# Create a Command line tool for the PipelineRunner
+COMPILE_TOOL(
+    TARGET GraphTest
+    SOURCES ${SIMPLTools_SOURCE_DIR}/GraphTest.cpp
+    DEBUG_EXTENSION ${EXE_DEBUG_EXTENSION}
+    VERSION_MAJOR ${SIMPL_VER_MAJOR}
+    VERSION_MINOR ${SIMPL_VER_MINOR}
+    VERSION_PATCH ${SIMPL_VER_PATCH}
+    BINARY_DIR    ${${PROJECT_NAME}_BINARY_DIR}
+    COMPONENT     Tools
+    INSTALL_DEST  "${install_dir}"
+    LINK_LIBRARIES SIMPLib
+)
+endif()
+

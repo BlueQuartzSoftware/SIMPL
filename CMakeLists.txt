@@ -211,10 +211,15 @@ else()
   message(FATAL_ERROR "BUILD_SHARED_LIBS Must be set to ON in order to build properly.")
 endif(BUILD_SHARED_LIBS)
 
+option(SIMPL_BUILD_WIDGETS "Build the QtWidgets that are needed for GUI Applications" OFF)
+
 # --------------------------------------------------------------------
 # Find and Use the Qt5 Libraries
 include(${CMP_SOURCE_DIR}/ExtLib/Qt5Support.cmake)
 set(SIMPL_Qt5_COMPONENTS Core )
+if( SIMPL_BUILD_WIDGETS)
+  set(SIMPL_Qt5_COMPONENTS Core Widgets Network Gui Concurrent Script Svg Xml OpenGL PrintSupport)
+endif()
 set(USE_QtWebEngine FALSE)
 CMP_AddQt5Support( "${SIMPL_Qt5_COMPONENTS}" "${USE_QtWebEngine}" "${SIMPLProj_BINARY_DIR}" "SIMPL")
 
@@ -405,6 +410,15 @@ add_subdirectory( ${SIMPLProj_SOURCE_DIR}/Source/SIMPLib/ ${PROJECT_BINARY_DIR}/
 # add the Command line utilities
 # Figure out here if we are going to build the command line tools
 add_subdirectory(${SIMPLProj_SOURCE_DIR}/Tools ${PROJECT_BINARY_DIR}/Tools)
+
+# --------------------------------------------------------------------
+# Build the SVWidgetsLib Library which holds all the GUI Specific Widgets such
+# as the Filter Parameter Widgets and various building block widgets for the GUI applications.
+# The plugins are also going to depend on these being built
+if(SIMPL_BUILD_WIDGETS)
+  add_subdirectory( ${SIMPLProj_SOURCE_DIR}/Source/SVWidgetsLib ${PROJECT_BINARY_DIR}/SVWidgetsLib)
+endif()
+
 
 if(0)
 #-------------------------------------------------------------------------------

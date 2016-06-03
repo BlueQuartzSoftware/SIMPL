@@ -1,0 +1,164 @@
+#--////////////////////////////////////////////////////////////////////////////
+#--
+#--  Copyright (c) 2012, Michael A. Jackson. BlueQuartz Software
+#--  All rights reserved.
+#--  BSD License: http://www.opensource.org/licenses/bsd-license.html
+#--
+#--////////////////////////////////////////////////////////////////////////////
+
+#///////////////////////////////////////////////////////////////////////////////
+#// This code was partly written under US Air Force Contract FA8650-07-D-5800
+#///////////////////////////////////////////////////////////////////////////////
+
+project(SVWidgetsLib VERSION 2.0)
+
+
+set(SVWidgetsLib_BUILT_AS_DYNAMIC_LIB)
+if(BUILD_SHARED_LIBS)
+    set(SVWidgetsLib_BUILT_AS_DYNAMIC_LIB 1)
+    if(WIN32)
+        ADD_DEFINITIONS("-DSVWidgetsLib_BUILT_AS_DYNAMIC_LIB")
+    endif(WIN32)
+endif(BUILD_SHARED_LIBS)
+
+set(GENERATE_GIT_VERSION 1)
+
+if(NOT PROJECT_RESOURCES_DIR)
+set(PROJECT_RESOURCES_DIR ${SVWidgetsLib_SOURCE_DIR}/Resources)
+endif()
+if(NOT DEFINED CMP_SOURCE_DIR)
+set(CMP_SOURCE_DIR ${SVWidgetsLib_SOURCE_DIR}/Support/cmp)
+endif()
+
+set(PROJECT_PREFIX "SVWidgetsLib" CACHE STRING "The Prefix to be used for Preprocessor definitions")
+set(SVWidgetsLib_INSTALL_FILES 0)
+#-------------------------------------------------------------------------------
+# Include the cmp project to perform all the basic configuration tests for the
+# project.
+#-------------------------------------------------------------------------------
+set(CMP_HEADER_DIR ${SVWidgetsLib_BINARY_DIR})
+set(CMP_CONFIGURATION_FILE_NAME "SVWidgetsLibConfiguration.h")
+set(CMP_TYPES_FILE_NAME "SVWidgetsLibTypes.h")
+set(CMP_VERSION_HEADER_FILE_NAME "SVWidgetsLibVersion.h")
+set(CMP_VERSION_SOURCE_FILE_NAME "SVWidgetsLibVersion.cpp")
+set(CMP_TOP_HEADER_FILE "SVWidgetsLib.h")
+set(CMP_PROJECT_NAMESPACE "${PROJECT_NAME}")
+set(CMP_PROJECT_NAME "${PROJECT_NAME}")
+set(CMP_ENABLE_PLUGINS "0")
+set(CMP_LIB_SEARCH_DIRS "")
+set(CMP_GENERATE_VERSION_STRING ${GENERATE_GIT_VERSION})
+
+# Extra Variables that need to be set before all the configured files are generated.
+set(SVWidgetsLib_HDF5_SUPPORT 1)
+option(SVWidgetsLib_ENABLE_HDF5 "Enable the use of HDF5 functionality" ON)
+mark_as_advanced(SVWidgetsLib_ENABLE_HDF5)
+
+include(${CMP_SOURCE_DIR}/cmpProject.cmake)
+
+configure_file(${SVWidgetsLib_SOURCE_DIR}/Core/SVWidgetsLibConfiguration.h.in
+               ${SVWidgetsLib_BINARY_DIR}/${CMP_TOP_HEADER_FILE})
+
+set(Project_SRCS "")
+
+set(${PROJECT_NAME}_Generated_HDRS
+        ${CMP_HEADER_DIR}/${CMP_CONFIGURATION_FILE_NAME}
+        ${CMP_HEADER_DIR}/${CMP_TYPES_FILE_NAME}
+        ${CMP_HEADER_DIR}/${CMP_VERSION_HEADER_FILE_NAME}
+        ${CMP_HEADER_DIR}/${CMP_TOP_HEADER_FILE}
+)
+
+set(${PROJECT_NAME}_Generated_SRCS
+        ${CMP_HEADER_DIR}/${CMP_VERSION_SOURCE_FILE_NAME}
+)
+
+cmp_IDE_GENERATED_PROPERTIES("Generated" "${${PROJECT_NAME}_Generated_HDRS}" "${${PROJECT_NAME}_Generated_SRCS}")
+
+
+# -- Run MOC and UIC on the necessary files
+QT5_ADD_RESOURCES( SVWidgetsLib_Generated_RC_SRCS "${SVWidgetsLib_SOURCE_DIR}/icons/images/Icons.qrc"  )
+
+
+add_definitions(-DQT_CORE_LIB)
+include(${SVWidgetsLib_SOURCE_DIR}/Core/SourceList.cmake)
+include(${SVWidgetsLib_SOURCE_DIR}/Dialogs/SourceList.cmake)
+include(${SVWidgetsLib_SOURCE_DIR}/FilterParameterWidgets/SourceList.cmake)
+include(${SVWidgetsLib_SOURCE_DIR}/QtSupport/SourceList.cmake)
+include(${SVWidgetsLib_SOURCE_DIR}/Widgets/SourceList.cmake)
+
+
+
+set(Project_SRCS
+
+  ${${PROJECT_NAME}_Generated_HDRS}
+  ${${PROJECT_NAME}_Generated_SRCS}
+  ${SVWidgetsLib_Generated_RC_SRCS}
+
+  #---------------
+  ${SVWidgets_Core_Files}
+  ${SVWidgets_Dialogs_Files}
+  ${SVWidgetsLib_ParameterFilterWidgets_Files}
+  ${SVWidgets_QtSupport_Files}
+  ${SVWidgets_Widgets_Files}
+  #---------------
+
+)
+
+# --------------------------------------------------------------------
+# Set some Include directories
+include_directories(${PROJECT_CODE_DIR}
+                    ${SVWidgetsLib_SOURCE_DIR}/..
+                    ${SVWidgetsLib_SOURCE_DIR}/Core
+                    ${SVWidgetsLib_SOURCE_DIR}/Dialogs
+                    ${SVWidgetsLib_SOURCE_DIR}/FilterParameterWidgets
+                    ${SVWidgetsLib_SOURCE_DIR}/QtSupport
+                    ${SVWidgetsLib_SOURCE_DIR}/Widgets
+
+										${SVWidgetsLib_BINARY_DIR}/..
+                    ${SVWidgetsLib_BINARY_DIR}/Core
+                    ${SVWidgetsLib_BINARY_DIR}/Dialogs
+                    ${SVWidgetsLib_BINARY_DIR}/FilterParameterWidgets
+                    ${SVWidgetsLib_BINARY_DIR}/QtSupport
+                    ${SVWidgetsLib_BINARY_DIR}/Widgets
+                    
+                    ${SIMPLProj_SOURCE_DIR}/Source
+                    ${SIMPLProj_BINARY_DIR}
+  )
+
+if(UNIX AND NOT APPLE)
+    set_source_files_properties(${Project_SRCS} PROPERTIES COMPILE_FLAGS -fPIC)
+endif()
+
+
+set(SVWidgetsLib_LINK_LIBRARIES SIMPLib)
+# Add in the Qt5 Libraries to the Link Library List
+set(SVWidgetsLib_LINK_LIBRARIES
+  ${SVWidgetsLib_LINK_LIBRARIES}
+  Qt5::Gui
+  Qt5::Widgets
+  Qt5::Network
+)
+
+add_library(SVWidgetsLib ${LIB_TYPE} ${Project_SRCS})
+target_link_libraries(SVWidgetsLib ${SVWidgetsLib_LINK_LIBRARIES} )
+LibraryProperties( SVWidgetsLib ${EXE_DEBUG_EXTENSION})
+
+
+
+set(install_dir "tools")
+set(lib_install_dir "lib")
+if(WIN32)
+    set(install_dir ".")
+    set(lib_install_dir "")
+endif()
+
+
+if(BUILD_SHARED_LIBS AND NOT APPLE)
+    INSTALL(TARGETS ${PROJECT_NAME}
+        COMPONENT Applications
+        RUNTIME DESTINATION ${install_dir}
+        LIBRARY DESTINATION ${lib_install_dir}
+        ARCHIVE DESTINATION ${lib_install_dir}
+        BUNDLE DESTINATION "."
+    )
+endif()
+

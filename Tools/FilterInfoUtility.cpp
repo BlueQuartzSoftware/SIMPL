@@ -1,0 +1,130 @@
+/* ============================================================================
+ * Copyright (c) 2016 BlueQuartz Softwae, LLC
+ * All rights reserved.
+ *
+ * Redistribution and use in source and binary forms, with or without modification,
+ * are permitted provided that the following conditions are met:
+ *
+ * Redistributions of source code must retain the above copyright notice, this
+ * list of conditions and the following disclaimer.
+ *
+ * Redistributions in binary form must reproduce the above copyright notice, this
+ * list of conditions and the following disclaimer in the documentation and/or
+ * other materials provided with the distribution.
+ *
+ * Neither the names of any of the BlueQuartz Software contributors
+ * may be used to endorse or promote products derived from this software without
+ * specific prior written permission.
+ *
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+ * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+ * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+ * DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE
+ * FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
+ * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
+ * SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
+ * CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
+ * OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE
+ * USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ *
+ *
+ * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
+
+
+
+
+#include <QtCore/QtDebug>
+#include <QtCore/QCoreApplication>
+#include <QtCore/QJsonObject>
+#include <QtCore/QFile>
+#include <QtCore/QFileInfo>
+#include <QtCore/QDir>
+#include <QtCore/QJsonDocument>
+
+
+
+#include "SIMPLib/SIMPLib.h"
+#include "SIMPLib/Common/Observer.h"
+#include "SIMPLib/Common/FilterManager.h"
+#include "SIMPLib/Common/FilterFactory.hpp"
+#include "SIMPLib/Common/AbstractFilter.h"
+#include "SIMPLib/Plugin/ISIMPLibPlugin.h"
+#include "SIMPLib/Plugin/SIMPLibPluginLoader.h"
+#include "SIMPLib/Plugin/PluginManager.h"
+#include "SIMPLib/FilterParameters/JsonFilterParametersWriter.h"
+#include "SIMPLib/Utilities/QMetaObjectUtilities.h"
+
+
+
+// -----------------------------------------------------------------------------
+//  Use unit test framework
+// -----------------------------------------------------------------------------
+int main(int argc, char** argv)
+{
+
+  // Instantiate the QCoreApplication that we need to get the current path and load plugins.
+  QCoreApplication app(argc, argv);
+  QCoreApplication::setOrganizationName("BlueQuartz Software");
+  QCoreApplication::setOrganizationDomain("bluequartz.net");
+  QCoreApplication::setApplicationName("PreflightTest");
+
+
+  // Load all the plugins and
+  // Register all the filters including trying to load those from Plugins
+  FilterManager* fm = FilterManager::Instance();
+  SIMPLibPluginLoader::LoadPluginFilters(fm);
+  // THIS IS A VERY IMPORTANT LINE: It will register all the known filters in the dream3d library. This
+  // will NOT however get filters from plugins. We are going to have to figure out how to compile filters
+  // into their own plugin and load the plugins from a command line.
+  fm->RegisterKnownFilters(fm);
+
+  QMetaObjectUtilities::RegisterMetaTypes();
+
+
+  QJsonObject rootObj;
+
+  PluginManager* pluginManager = PluginManager::Instance();
+  QVector<ISIMPLibPlugin*> plugins = pluginManager->getPluginsVector();
+  foreach(ISIMPLibPlugin* plugin, plugins)
+  {
+    QJsonObject jobj;
+
+
+    QList<QString> filters = plugin->getFilters();
+
+    QJsonArray jArray = QJsonArray::fromStringList(filters);
+
+    foreach(QString filter, filters)
+    {
+      QJsonObject parameters;
+      int index = 0;
+      JsonFilterParametersWriter::Pointer writer = JsonFilterParametersWriter::New();
+
+      AbstractFilter::Pointer fPtr = FilterManager::Instance()->getFactoryForFilter(filter)->create();
+      fPtr->writeFilterParameters(writer.get(), index);
+
+
+      jobj[filter] = writer->getCurrentGroupObject();
+    }
+    //jobj["Filters"] = jArray;
+
+    rootObj[ plugin->getPluginName() ] = jobj;
+  }
+
+
+  QFile out(argv[1]);
+  if( !out.open(QFile::WriteOnly) )
+  {
+     qDebug() << "Error opening JSON file for writing. No output generated.";
+     return EXIT_FAILURE;
+  }
+
+  qDebug() << "Writing JSON file.. ";
+  QJsonDocument doc(rootObj);
+  out.write(doc.toJson());
+  out.close();
+
+
+
+  return EXIT_SUCCESS;
+}

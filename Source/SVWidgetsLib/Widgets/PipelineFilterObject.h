@@ -1,0 +1,121 @@
+/* ============================================================================
+* Copyright (c) 2009-2016 BlueQuartz Software, LLC
+*
+* Redistribution and use in source and binary forms, with or without modification,
+* are permitted provided that the following conditions are met:
+*
+* Redistributions of source code must retain the above copyright notice, this
+* list of conditions and the following disclaimer.
+*
+* Redistributions in binary form must reproduce the above copyright notice, this
+* list of conditions and the following disclaimer in the documentation and/or
+* other materials provided with the distribution.
+*
+* Neither the name of BlueQuartz Software, the US Air Force, nor the names of its
+* contributors may be used to endorse or promote products derived from this software
+* without specific prior written permission.
+*
+* THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+* AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+* IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+* DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE
+* FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
+* DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
+* SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
+* CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
+* OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE
+* USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+*
+* The code contained herein was partially funded by the followig contracts:
+*    United States Air Force Prime Contract FA8650-07-D-5800
+*    United States Air Force Prime Contract FA8650-10-D-5210
+*    United States Prime Contract Navy N00173-07-C-2068
+*
+* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
+
+#ifndef _pipelinefilterobject_h_
+#define _pipelinefilterobject_h_
+
+#include <QtWidgets/QWidget>
+#include <QtWidgets/QVBoxLayout>
+
+#include "SIMPLib/Common/AbstractFilter.h"
+
+#include "SVWidgetsLib/SVWidgetsLib.h"
+#include "SVWidgetsLib/Widgets/FilterInputWidget.h"
+
+class IObserver;
+
+class SVWidgetsLib_EXPORT PipelineFilterObject
+{
+  public:
+    PipelineFilterObject();
+    PipelineFilterObject(AbstractFilter::Pointer filter, IObserver* observer = NULL);
+    virtual ~PipelineFilterObject();
+
+    SIMPL_BOOL_PROPERTY(Running)
+
+    AbstractFilter::Pointer getFilter();
+
+    bool isFocused();
+    bool getHasPreflightErrors();
+    bool getHasPreflightWarnings();
+
+    // These are convenience functions that just pass through to the filter instance
+    QString getHumanLabel();
+    QString getFilterGroup();
+    QString getFilterSubGroup();
+    QString getFilterClassName();
+    QString getCompiledLibraryName();
+
+    virtual void setFilterTitle(const QString title);
+
+    FilterInputWidget* getFilterInputWidget();
+
+    virtual PipelineFilterObject* deepCopy();
+
+    void setHasFocus(bool hasFocus);
+
+    QWidget* getBasicInputsWidget();
+    QWidget* getCurrentStructureWidget();
+
+    void setHasPreflightErrors(bool hasPreflightErrors);
+    void setHasPreflightWarnings(bool hasPreflightWarnings);
+
+    /**
+     * @brief changeStyle
+     */
+    virtual void changeStyle();
+
+    /**
+    * @brief toRunningState
+    */
+    virtual void toRunningState();
+
+    /**
+    * @brief toIdleState
+    */
+    virtual void toIdleState();
+
+  private:
+    AbstractFilter::Pointer           m_Filter;
+    FilterInputWidget*                m_FilterInputWidget;
+    bool                              m_IsFocused;
+    bool                              m_HasPreflightErrors;
+    bool                              m_HasPreflightWarnings;
+    QWidget*                          m_VariablesWidget;
+    QWidget*                          m_CurrentStructureWidget;
+    QVBoxLayout*                      m_VariablesVerticalLayout;
+    QVBoxLayout*                      m_CurrStrucVerticalLayout;
+
+    /**
+    * @brief setupFilterInputWidget Creates and initializes the filter input widget.
+    */
+    void setupFilterInputWidget();
+
+    PipelineFilterObject(const PipelineFilterObject&); // Copy Constructor Not Implemented
+    void operator=(const PipelineFilterObject&); // Operator '=' Not Implemented
+};
+
+#endif /* _pipelinefilterobject_h_ */
+
