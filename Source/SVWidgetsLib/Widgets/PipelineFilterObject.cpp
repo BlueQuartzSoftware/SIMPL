@@ -64,7 +64,10 @@ PipelineFilterObject::PipelineFilterObject(AbstractFilter::Pointer filter, IObse
   m_HasPreflightErrors(false),
   m_HasPreflightWarnings(false)
 {
-  setupFilterInputWidget();
+  if (filter != AbstractFilter::NullPointer())
+  {
+    setupFilterInputWidget();
+  }
 }
 
 // -----------------------------------------------------------------------------
@@ -72,9 +75,12 @@ PipelineFilterObject::PipelineFilterObject(AbstractFilter::Pointer filter, IObse
 // -----------------------------------------------------------------------------
 PipelineFilterObject::~PipelineFilterObject()
 {
-  m_Filter->setPreviousFilter(AbstractFilter::NullPointer());
-  m_Filter->setNextFilter(AbstractFilter::NullPointer());
-  m_Filter = AbstractFilter::NullPointer();
+  if (m_Filter != AbstractFilter::NullPointer())
+  {
+    m_Filter->setPreviousFilter(AbstractFilter::NullPointer());
+    m_Filter->setNextFilter(AbstractFilter::NullPointer());
+    m_Filter = AbstractFilter::NullPointer();
+  }
 
   if (NULL != m_FilterInputWidget)
   {
