@@ -249,7 +249,7 @@ void PipelineView::cutFilterWidgets(QList<PipelineFilterObject*> filterWidgets, 
     topCmd->setText(QObject::tr("\"%1 %2 Filter Widgets\"").arg("Cut").arg(filterWidgets.size()));
     for (int i = filterWidgets.size() - 1; i >= 0; i--)
     {
-      new RemoveFilterCommand(filterWidgets[i], this, "Cut", true, topCmd);
+      new RemoveFilterCommand(filterWidgets[i], this, "Cut", topCmd);
     }
     addUndoCommand(topCmd);
   }
@@ -309,7 +309,7 @@ void PipelineView::removeFilterObjects(QList<PipelineFilterObject*> filterWidget
     topCmd->setText(QObject::tr("\"%1 %2 Filter Widgets\"").arg("Remove").arg(filterWidgets.size()));
     for (int i = filterWidgets.size() - 1; i >= 0; i--)
     {
-      new RemoveFilterCommand(filterWidgets[i], this, "Remove", true, topCmd);
+      new RemoveFilterCommand(filterWidgets[i], this, "Remove", topCmd);
     }
     addUndoCommand(topCmd);
   }

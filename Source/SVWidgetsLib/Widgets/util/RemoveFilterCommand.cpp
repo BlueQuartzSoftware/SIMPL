@@ -46,25 +46,19 @@
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-RemoveFilterCommand::RemoveFilterCommand(PipelineFilterObject* fw, PipelineView *pipelineView, QString actionText, bool deleteObject, QUndoCommand* parent) :
+RemoveFilterCommand::RemoveFilterCommand(PipelineFilterObject* fw, PipelineView *pipelineView, QString actionText, QUndoCommand* parent) :
   QUndoCommand(parent),
   m_PipelineView(pipelineView),
-  m_DeleteObject(deleteObject)
+  m_FilterObject(fw)
 {
   if (NULL == fw || NULL == pipelineView)
   {
     return;
   }
 
-  m_RemovalValue = pipelineView->valueOfFilterWidget(fw);
+  m_Value = pipelineView->valueOfFilterWidget(fw);
 
-  FilterPipeline::Pointer pipeline = FilterPipeline::New();
-  PipelineFilterObject* filterWidget = m_PipelineView->filterObjectAt(m_RemovalValue);
-  pipeline->pushBack(filterWidget->getFilter());
-
-  m_JsonString = JsonFilterParametersWriter::WritePipelineToString(pipeline, "Pipeline");
-
-  setText(QObject::tr("\"%1 '%2'\"").arg(actionText).arg(pipeline->getFilterContainer()[0]->getHumanLabel()));
+  setText(QObject::tr("\"%1 '%2'\"").arg(actionText).arg(fw->getHumanLabel()));
 }
 
 // -----------------------------------------------------------------------------
@@ -80,12 +74,9 @@ RemoveFilterCommand::~RemoveFilterCommand()
 // -----------------------------------------------------------------------------
 void RemoveFilterCommand::undo()
 {
-  FilterPipeline::Pointer pipeline = JsonFilterParametersReader::ReadPipelineFromString(m_JsonString);
-  QList<AbstractFilter::Pointer> container = pipeline->getFilterContainer();
-
   m_PipelineView->clearSelectedFilterObjects();
 
-  m_PipelineView->addFilter(container[0], m_RemovalValue, false);
+  m_PipelineView->addFilterObject(m_FilterObject, m_Value, false);
 
   m_PipelineView->preflightPipeline();
 }
@@ -95,9 +86,7 @@ void RemoveFilterCommand::undo()
 // -----------------------------------------------------------------------------
 void RemoveFilterCommand::redo()
 {
-  PipelineFilterObject* filterWidget = m_PipelineView->filterObjectAt(m_RemovalValue);
-
-  m_PipelineView->removeFilterObject(filterWidget, false, m_DeleteObject);
+  m_PipelineView->removeFilterObject(m_FilterObject, false, false);
 
   m_PipelineView->preflightPipeline();
 }

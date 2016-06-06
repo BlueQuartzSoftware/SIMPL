@@ -46,7 +46,7 @@ class PipelineView;
 class RemoveFilterCommand : public QUndoCommand
 {
 public:
-  RemoveFilterCommand(PipelineFilterObject* fw, PipelineView* pipelineView, QString actionText, bool deleteObject = true, QUndoCommand* parent = 0);
+  RemoveFilterCommand(PipelineFilterObject* fw, PipelineView* pipelineView, QString actionText, QUndoCommand* parent = 0);
   virtual ~RemoveFilterCommand();
 
   virtual void undo();
@@ -55,9 +55,8 @@ public:
 
 private:
   PipelineView*                           m_PipelineView;
-  QString                                 m_JsonString;
-  QVariant                                m_RemovalValue;
-  bool                                    m_DeleteObject;
+  PipelineFilterObject*                   m_FilterObject;
+  QVariant                                m_Value;
 
   RemoveFilterCommand(const RemoveFilterCommand&); // Copy Constructor Not Implemented
   void operator=(const RemoveFilterCommand&); // Operator '=' Not Implemented

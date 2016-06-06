@@ -361,7 +361,7 @@ void SVPipelineViewWidget::clearFilterWidgets(bool allowUndo)
     for (int i = numFilters - 1; i >= 0; i--)
     {
       SVPipelineFilterWidget* filterWidget = dynamic_cast<SVPipelineFilterWidget*>(m_FilterWidgetLayout->itemAt(i)->widget());
-      new RemoveFilterCommand(filterWidget, this, "Clear", true, topCmd);
+      new RemoveFilterCommand(filterWidget, this, "Clear", topCmd);
     }
     addUndoCommand(topCmd);
   }
