@@ -1033,6 +1033,28 @@ void SVPipelineViewWidget::removeFilterObject(PipelineFilterObject* filterObject
         else
         {
           w->setParent(nullptr);
+
+          // When the filter is removed from this view
+          disconnect(filterWidget, SIGNAL(filterWidgetRemoved(PipelineFilterObject*, bool)),
+                  this, SLOT(removeFilterObject(PipelineFilterObject*, bool)) );
+
+          // When the FilterWidget is selected
+          disconnect(filterWidget, SIGNAL(filterWidgetPressed(PipelineFilterObject*, Qt::KeyboardModifiers)),
+                  this, SLOT(setSelectedFilterObject(PipelineFilterObject*, Qt::KeyboardModifiers)));
+
+          // When the filter widget is dragged
+          disconnect(filterWidget, SIGNAL(dragStarted(QMouseEvent*, SVPipelineFilterWidget*)),
+                  this, SLOT(startDrag(QMouseEvent*, SVPipelineFilterWidget*)));
+
+          disconnect(filterWidget, SIGNAL(parametersChanged(QUuid)),
+                  this, SLOT(preflightPipeline(QUuid)));
+
+          disconnect(filterWidget, SIGNAL(parametersChanged(QUuid)),
+                  this, SLOT(handleFilterParameterChanged(QUuid)));
+
+          disconnect(filterWidget, SIGNAL(focusInEventStarted(QFocusEvent*)), this, SLOT(on_focusInEventStarted(QFocusEvent*)));
+
+          disconnect(filterWidget, SIGNAL(focusOutEventStarted(QFocusEvent*)), this, SLOT(on_focusOutEventStarted(QFocusEvent*)));
         }
       }
 
