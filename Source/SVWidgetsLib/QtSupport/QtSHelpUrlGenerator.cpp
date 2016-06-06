@@ -78,15 +78,6 @@ QUrl QtSHelpUrlGenerator::generateHTMLUrl(QString htmlName)
     helpDir.cdUp();
     helpDir.cdUp();
   }
-#else
-  // We are on Linux - I think
-  QFileInfo fi( helpDir.absolutePath() + "/Help/" + BrandedStrings::ApplicationName + "/" + htmlName + ".html");
-  if (fi.exists() == false)
-  {
-    // The help file does not exist at the default location because we are probably running from the build tree.
-    // Try up one more directory
-    helpDir.cdUp();
-  }
 #endif
 
 
