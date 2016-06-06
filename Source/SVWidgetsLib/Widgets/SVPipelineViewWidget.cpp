@@ -762,6 +762,8 @@ void SVPipelineViewWidget::addFilterObject(PipelineFilterObject* filterObject, Q
 
     // Emit that the pipeline changed
     emit pipelineChanged();
+
+    preflightPipeline();
   }
 }
 
