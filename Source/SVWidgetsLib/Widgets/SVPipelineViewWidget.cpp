@@ -1030,6 +1030,10 @@ void SVPipelineViewWidget::removeFilterObject(PipelineFilterObject* filterObject
         {
           w->deleteLater();
         }
+        else
+        {
+          w->setParent(nullptr);
+        }
       }
 
       if (getSelectedFilterObjects().isEmpty())
