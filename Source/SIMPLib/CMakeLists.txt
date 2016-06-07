@@ -165,10 +165,14 @@ include_directories( ${HDF5_INCLUDE_DIR} )
 include_directories( ${PROJECT_CODE_DIR} )
 include_directories( ${SIMPLib_BINARY_DIR} )
 
+set(${PROJECT_NAME}_LINK_LIBS Qt5::Core H5Support)
+if( "${SIMPLib_USE_MULTITHREADED_ALGOS}" STREQUAL "ON")
+  list(APPEND ${PROJECT_NAME}_LINK_LIBS ${TBB_LIBRARIES})
+endif()
 
 #-- Add a library for the SIMPLib Code
 add_library(${PROJECT_NAME} ${LIB_TYPE} ${Project_SRCS} )
-target_link_libraries(${PROJECT_NAME} Qt5::Core H5Support ${TBB_LIBRARIES})
+target_link_libraries(${PROJECT_NAME} ${${PROJECT_NAME}_LINK_LIBS})
 LibraryProperties( ${PROJECT_NAME} ${EXE_DEBUG_EXTENSION} )
 
 set(install_dir "tools")
