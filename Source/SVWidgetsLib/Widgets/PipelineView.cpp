@@ -238,25 +238,11 @@ void PipelineView::moveFilterWidget(PipelineFilterObject* fw, QVariant origin, Q
 // -----------------------------------------------------------------------------
 void PipelineView::cutFilterWidgets(QList<PipelineFilterObject*> filterWidgets, bool allowUndo)
 {
-  if (filterWidgets.isEmpty())
-  {
-    return;
-  }
+  Q_UNUSED(filterWidgets)
+  Q_UNUSED(allowUndo)
 
-  if (allowUndo == true)
-  {
-    QUndoCommand* topCmd = new QUndoCommand();
-    topCmd->setText(QObject::tr("\"%1 %2 Filter Widgets\"").arg("Cut").arg(filterWidgets.size()));
-    for (int i = filterWidgets.size() - 1; i >= 0; i--)
-    {
-      new RemoveFilterCommand(filterWidgets[i], this, "Cut", topCmd);
-    }
-    addUndoCommand(topCmd);
-  }
-  else
-  {
-    removeFilterObjects(filterWidgets, false);
-  }
+  // The subclass should reimplement this function
+  return;
 }
 
 // -----------------------------------------------------------------------------
@@ -301,25 +287,14 @@ void PipelineView::removeFilterObject(PipelineFilterObject* filterWidget, bool a
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void PipelineView::removeFilterObjects(QList<PipelineFilterObject*> filterWidgets, bool allowUndo)
+void PipelineView::removeFilterObjects(QList<PipelineFilterObject*> filterWidgets, bool allowUndo, bool deleteWidgets)
 {
-  if (allowUndo == true)
-  {
-    QUndoCommand* topCmd = new QUndoCommand();
-    topCmd->setText(QObject::tr("\"%1 %2 Filter Widgets\"").arg("Remove").arg(filterWidgets.size()));
-    for (int i = filterWidgets.size() - 1; i >= 0; i--)
-    {
-      new RemoveFilterCommand(filterWidgets[i], this, "Remove", topCmd);
-    }
-    addUndoCommand(topCmd);
-  }
-  else
-  {
-    for (int i=0; i<filterWidgets.size(); i++)
-    {
-      removeFilterObject(filterWidgets[i], false);
-    }
-  }
+  Q_UNUSED(filterWidgets)
+  Q_UNUSED(allowUndo)
+  Q_UNUSED(deleteWidgets)
+
+  // The subclass should reimplement this function
+  return;
 }
 
 // -----------------------------------------------------------------------------

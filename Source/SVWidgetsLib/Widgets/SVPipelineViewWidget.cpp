@@ -361,7 +361,7 @@ void SVPipelineViewWidget::clearFilterWidgets(bool allowUndo)
     for (int i = numFilters - 1; i >= 0; i--)
     {
       SVPipelineFilterWidget* filterWidget = dynamic_cast<SVPipelineFilterWidget*>(m_FilterWidgetLayout->itemAt(i)->widget());
-      new RemoveFilterCommand(filterWidget, this, "Clear", topCmd);
+      new RemoveFilterCommand(filterWidget, this, "Clear", QUuid(), QUuid(), topCmd);
     }
     addUndoCommand(topCmd);
   }
@@ -1075,6 +1075,56 @@ void SVPipelineViewWidget::removeFilterObject(PipelineFilterObject* filterObject
       resetLayout();
       emit pipelineChanged();
     }
+  }
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void SVPipelineViewWidget::removeFilterObjects(QList<PipelineFilterObject*> filterWidgets, bool allowUndo, bool deleteWidgets)
+{
+  if (allowUndo == true)
+  {
+    QUndoCommand* topCmd = new QUndoCommand();
+    topCmd->setText(QObject::tr("\"%1 %2 Filter Widgets\"").arg("Remove").arg(filterWidgets.size()));
+    for (int i = filterWidgets.size() - 1; i >= 0; i--)
+    {
+      new RemoveFilterCommand(filterWidgets[i], this, "Remove", QUuid(), QUuid(), topCmd);
+    }
+    addUndoCommand(topCmd);
+  }
+  else
+  {
+    for (int i=0; i<filterWidgets.size(); i++)
+    {
+      removeFilterObject(filterWidgets[i], false, deleteWidgets);
+    }
+  }
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void SVPipelineViewWidget::cutFilterWidgets(QList<PipelineFilterObject*> filterWidgets, bool allowUndo)
+{
+  if (filterWidgets.isEmpty())
+  {
+    return;
+  }
+
+  if (allowUndo == true)
+  {
+    QUndoCommand* topCmd = new QUndoCommand();
+    topCmd->setText(QObject::tr("\"%1 %2 Filter Widgets\"").arg("Cut").arg(filterWidgets.size()));
+    for (int i = filterWidgets.size() - 1; i >= 0; i--)
+    {
+      new RemoveFilterCommand(filterWidgets[i], this, "Cut", QUuid(), QUuid(), topCmd);
+    }
+    addUndoCommand(topCmd);
+  }
+  else
+  {
+    removeFilterObjects(filterWidgets, false);
   }
 }
 

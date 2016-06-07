@@ -210,6 +210,19 @@ class SVWidgetsLib_EXPORT PipelineView
     virtual void removeFilterObject(PipelineFilterObject* filterWidget, bool allowUndo = true, bool deleteWidget = true);
 
     /**
+     * @brief addFilterWidget
+     * @param filterWidgets
+     */
+    virtual void cutFilterWidgets(QList<PipelineFilterObject*> filterWidgets, bool allowUndo = true);
+
+    /**
+     * @brief removeFilterWidget
+     * @param filterWidgets
+     * @param allowUndo
+     */
+    virtual void removeFilterObjects(QList<PipelineFilterObject*> filterWidgets, bool allowUndo = true, bool deleteWidgets = true);
+
+    /**
      * @brief setSelectedFilterObject
      * @param w
      * @param modifiers
@@ -251,19 +264,6 @@ class SVWidgetsLib_EXPORT PipelineView
     * @brief addUndoCommand
     */
     void addUndoCommand(QUndoCommand* cmd);
-
-    /**
-     * @brief addFilterWidget
-     * @param filterWidgets
-     */
-    void cutFilterWidgets(QList<PipelineFilterObject*> filterWidgets, bool allowUndo = true);
-
-    /**
-     * @brief removeFilterWidget
-     * @param filterWidgets
-     * @param allowUndo
-     */
-    void removeFilterObjects(QList<PipelineFilterObject*> filterWidgets, bool allowUndo = true);
 
     void showFilterHelp(const QString& className);
 

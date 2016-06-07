@@ -295,6 +295,19 @@ class SVWidgetsLib_EXPORT SVPipelineViewWidget : public QFrame, public PipelineV
     void removeFilterObject(PipelineFilterObject* filterObject, bool allowUndo = true, bool deleteWidget = true) override;
 
     /**
+     * @brief removeFilterWidget
+     * @param filterWidgets
+     * @param allowUndo
+     */
+    void removeFilterObjects(QList<PipelineFilterObject*> filterWidgets, bool allowUndo = true, bool deleteWidgets = true) override;
+
+    /**
+     * @brief addFilterWidget
+     * @param filterWidgets
+     */
+    void cutFilterWidgets(QList<PipelineFilterObject*> filterWidgets, bool allowUndo = true) override;
+
+    /**
      * @brief setSelectedFilterObject
      * @param w
      * @param modifiers

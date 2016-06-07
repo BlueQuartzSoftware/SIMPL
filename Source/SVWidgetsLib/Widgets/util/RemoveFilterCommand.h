@@ -37,6 +37,7 @@
 #define _removefiltercommand_h_
 
 #include <QtCore/QVariant>
+#include <QtCore/QUuid>
 
 #include <QtWidgets/QUndoCommand>
 
@@ -46,7 +47,7 @@ class PipelineView;
 class RemoveFilterCommand : public QUndoCommand
 {
 public:
-  RemoveFilterCommand(PipelineFilterObject* fw, PipelineView* pipelineView, QString actionText, QUndoCommand* parent = 0);
+  RemoveFilterCommand(PipelineFilterObject* fw, PipelineView* pipelineView, QString actionText, QUuid prevNodeId = QUuid(), QUuid nextNodeId = QUuid(), QUndoCommand* parent = 0);
   virtual ~RemoveFilterCommand();
 
   virtual void undo();
@@ -57,6 +58,8 @@ private:
   PipelineView*                           m_PipelineView;
   PipelineFilterObject*                   m_FilterObject;
   QVariant                                m_Value;
+  QUuid                                   m_PrevNodeId;
+  QUuid                                   m_NextNodeId;
 
   RemoveFilterCommand(const RemoveFilterCommand&); // Copy Constructor Not Implemented
   void operator=(const RemoveFilterCommand&); // Operator '=' Not Implemented

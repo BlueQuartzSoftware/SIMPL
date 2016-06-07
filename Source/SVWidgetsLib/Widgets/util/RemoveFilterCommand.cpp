@@ -46,10 +46,12 @@
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-RemoveFilterCommand::RemoveFilterCommand(PipelineFilterObject* fw, PipelineView *pipelineView, QString actionText, QUndoCommand* parent) :
+RemoveFilterCommand::RemoveFilterCommand(PipelineFilterObject* fw, PipelineView *pipelineView, QString actionText, QUuid prevNodeId, QUuid nextNodeId, QUndoCommand* parent) :
   QUndoCommand(parent),
   m_PipelineView(pipelineView),
-  m_FilterObject(fw)
+  m_FilterObject(fw),
+  m_PrevNodeId(prevNodeId),
+  m_NextNodeId(nextNodeId)
 {
   if (NULL == fw || NULL == pipelineView)
   {
@@ -76,7 +78,7 @@ void RemoveFilterCommand::undo()
 {
   m_PipelineView->clearSelectedFilterObjects();
 
-  m_PipelineView->addFilterObject(m_FilterObject, m_Value, false);
+  m_PipelineView->addFilterObject(m_FilterObject, m_Value, false, m_PrevNodeId, m_NextNodeId);
 
   m_PipelineView->preflightPipeline();
 }
