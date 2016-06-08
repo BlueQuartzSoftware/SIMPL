@@ -527,7 +527,7 @@ void ImageGeom::initializeWithZeros()
 // -----------------------------------------------------------------------------
 void ImageGeom::addAttributeMatrix(const QString& name, AttributeMatrix::Pointer data)
 {
-  if (data->getType() != 3)
+  if (data->getType() != SIMPL::AttributeMatrixType::Cell)
   {
     // ImageGeom can only accept cell Attribute Matrices
     return;
