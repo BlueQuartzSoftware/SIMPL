@@ -110,7 +110,8 @@ SVPipelineViewWidget::SVPipelineViewWidget(QWidget* parent) :
   m_AutoScroll(true),
   m_AutoScrollMargin(10),
   m_autoScrollCount(0),
-  m_InputParametersWidget(NULL)
+  m_InputParametersWidget(NULL),
+  m_UndoStack(new QUndoStack(this))
 {
   setupGui();
   m_autoScrollTimer.setParent(this);
@@ -142,6 +143,11 @@ void SVPipelineViewWidget::setupGui()
   //connect(this, SIGNAL(deleteKeyPressed(PipelineView*)), dream3dApp, SLOT(on_pipelineViewWidget_deleteKeyPressed(PipelineView*)));
 
   m_DropBox = new DropBoxWidget();
+
+  m_ActionUndo = m_UndoStack->createUndoAction(NULL);
+  m_ActionRedo = m_UndoStack->createRedoAction(NULL);
+  m_ActionUndo->setShortcut(QKeySequence(Qt::CTRL + Qt::Key_Z));
+  m_ActionRedo->setShortcut(QKeySequence(Qt::CTRL + Qt::SHIFT + Qt::Key_Z));
 }
 
 // -----------------------------------------------------------------------------
@@ -1105,6 +1111,14 @@ void SVPipelineViewWidget::removeFilterObjects(QList<PipelineFilterObject*> filt
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
+void SVPipelineViewWidget::addUndoCommand(QUndoCommand* cmd)
+{
+  m_UndoStack->push(cmd);
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
 void SVPipelineViewWidget::cutFilterWidgets(QList<PipelineFilterObject*> filterWidgets, bool allowUndo)
 {
   if (filterWidgets.isEmpty())
@@ -1979,6 +1993,22 @@ QList<PipelineFilterObject*> SVPipelineViewWidget::getSelectedFilterObjects()
     }
   }
   return filterObjects;
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+QAction* SVPipelineViewWidget::getActionRedo()
+{
+  return m_ActionRedo;
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+QAction* SVPipelineViewWidget::getActionUndo()
+{
+  return m_ActionUndo;
 }
 
 // -----------------------------------------------------------------------------

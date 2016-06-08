@@ -336,6 +336,11 @@ class SVWidgetsLib_EXPORT SVPipelineViewWidget : public QFrame, public PipelineV
     void clearFilterWidgets(bool allowUndo = false) override;
 
     /**
+    * @brief addUndoCommand
+    */
+    void addUndoCommand(QUndoCommand* cmd) override;
+
+    /**
      * @brief reindexWidgetTitles
      */
     void reindexWidgetTitles();
@@ -354,6 +359,16 @@ class SVWidgetsLib_EXPORT SVPipelineViewWidget : public QFrame, public PipelineV
     * @brief toIdleState
     */
     void toIdleState();
+
+    /**
+     * @brief getActionRedo
+     */
+    QAction* getActionRedo();
+
+    /**
+     * @brief getActionUndo
+     */
+    QAction* getActionUndo();
 
   signals:
     void addPlaceHolderFilter(QPoint p);
@@ -419,6 +434,9 @@ class SVWidgetsLib_EXPORT SVPipelineViewWidget : public QFrame, public PipelineV
     int                                 m_autoScrollCount;
     QWidget*                            m_InputParametersWidget;
     QMenu*                              m_ContextMenu;
+    QUndoStack*                         m_UndoStack;
+    QAction*                            m_ActionUndo;
+    QAction*                            m_ActionRedo;
 
     QMenu* createPipelineFilterWidgetMenu(SVPipelineFilterWidget* filterWidget);
     void createPipelineViewWidgetMenu();

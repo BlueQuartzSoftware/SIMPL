@@ -93,7 +93,6 @@ void MoveFilterCommand::moveFilter(QVariant origin, QVariant destination)
   else
   {
     m_FirstRun = false;
-    m_PipelineView->moveFilterWidget(m_FilterWidget, origin, destination, false);
   }
 }
 

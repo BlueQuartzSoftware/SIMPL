@@ -89,13 +89,9 @@
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-PipelineView::PipelineView(QWidget* parent) :
-  m_UndoStack(new QUndoStack(NULL))
+PipelineView::PipelineView(QWidget* parent)
 {
-  m_ActionUndo = m_UndoStack->createUndoAction(NULL);
-  m_ActionRedo = m_UndoStack->createRedoAction(NULL);
-  m_ActionUndo->setShortcut(QKeySequence(Qt::CTRL + Qt::Key_Z));
-  m_ActionRedo->setShortcut(QKeySequence(Qt::CTRL + Qt::SHIFT + Qt::Key_Z));
+
 }
 
 // -----------------------------------------------------------------------------
@@ -406,7 +402,10 @@ void PipelineView::clearSelectedFilterObjects()
 // -----------------------------------------------------------------------------
 void PipelineView::addUndoCommand(QUndoCommand* cmd)
 {
-  m_UndoStack->push(cmd);
+  Q_UNUSED(cmd)
+
+  // The subclass should reimplement this function
+  return;
 }
 
 // -----------------------------------------------------------------------------
@@ -416,20 +415,4 @@ QList<PipelineFilterObject*> PipelineView::getSelectedFilterObjects()
 {
   // The subclass should reimplement this function
   return QList<PipelineFilterObject*>();
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-QAction* PipelineView::getActionRedo()
-{
-  return m_ActionRedo;
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-QAction* PipelineView::getActionUndo()
-{
-  return m_ActionUndo;
 }

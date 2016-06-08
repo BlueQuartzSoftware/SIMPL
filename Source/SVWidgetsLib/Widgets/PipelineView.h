@@ -251,26 +251,13 @@ class SVWidgetsLib_EXPORT PipelineView
     virtual void clearFilterWidgets(bool allowUndo = false);
 
     /**
-     * @brief getActionRedo
-     */
-    QAction* getActionRedo();
-
-    /**
-     * @brief getActionUndo
-     */
-    QAction* getActionUndo();
-
-    /**
     * @brief addUndoCommand
     */
-    void addUndoCommand(QUndoCommand* cmd);
+    virtual void addUndoCommand(QUndoCommand* cmd);
 
     void showFilterHelp(const QString& className);
 
   private:
-    QUndoStack*                         m_UndoStack;
-    QAction*                            m_ActionUndo;
-    QAction*                            m_ActionRedo;
 
     PipelineView(const PipelineView&); // Copy Constructor Not Implemented
     void operator=(const PipelineView&); // Operator '=' Not Implemented

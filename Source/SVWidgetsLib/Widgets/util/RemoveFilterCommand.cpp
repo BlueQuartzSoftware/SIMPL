@@ -76,8 +76,6 @@ RemoveFilterCommand::~RemoveFilterCommand()
 // -----------------------------------------------------------------------------
 void RemoveFilterCommand::undo()
 {
-  m_PipelineView->clearSelectedFilterObjects();
-
   m_PipelineView->addFilterObject(m_FilterObject, m_Value, false, m_PrevNodeId, m_NextNodeId);
 
   m_PipelineView->preflightPipeline();
