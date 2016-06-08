@@ -977,6 +977,7 @@ void SVPipelineViewWidget::preflightPipeline(QUuid id)
       fw->setHasPreflightErrors(false);
     }
     filters.at(i)->setErrorCondition(0);
+    filters.at(i)->setCancel(false);
   }
 
 
