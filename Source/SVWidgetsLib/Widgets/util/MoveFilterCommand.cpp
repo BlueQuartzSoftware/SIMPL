@@ -46,13 +46,13 @@
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-MoveFilterCommand::MoveFilterCommand(PipelineFilterObject* filterWidget, QVariant origin, QVariant destination, PipelineView* pipelineView, QUndoCommand* parent) :
+MoveFilterCommand::MoveFilterCommand(PipelineFilterObject* filterWidget, QVariant origin, QVariant destination, PipelineView* pipelineView, bool runFirstTime, QUndoCommand* parent) :
   QUndoCommand(parent),
   m_PipelineView(pipelineView),
   m_FilterWidget(filterWidget),
   m_Origin(origin),
   m_Destination(destination),
-  m_FirstRun(true)
+  m_FirstRun(!runFirstTime)
 {
   setText(QObject::tr("\"Move '%1'\"").arg(m_FilterWidget->getFilter()->getHumanLabel()));
 }
@@ -88,7 +88,7 @@ void MoveFilterCommand::moveFilter(QVariant origin, QVariant destination)
 {  
   if (m_FirstRun == false)
   {
-    m_PipelineView->moveFilterWidget(m_PipelineView->filterObjectAt(origin), origin, destination, false);
+    m_PipelineView->moveFilterWidget(m_FilterWidget, origin, destination, false);
   }
   else
   {

@@ -787,7 +787,7 @@ void SVPipelineViewWidget::moveFilterWidget(PipelineFilterObject* fw, QVariant o
 
   if (allowUndo == true)
   {
-    MoveFilterCommand* cmd = new MoveFilterCommand(fw, origin, destination, this);
+    MoveFilterCommand* cmd = new MoveFilterCommand(fw, origin, destination, this, true);
     addUndoCommand(cmd);
   }
   else

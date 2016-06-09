@@ -46,7 +46,7 @@ class PipelineView;
 class MoveFilterCommand : public QUndoCommand
 {
   public:
-    MoveFilterCommand(PipelineFilterObject* filterWidget, QVariant origin, QVariant destination, PipelineView* pipelineView, QUndoCommand* parent = 0);
+    MoveFilterCommand(PipelineFilterObject* filterWidget, QVariant origin, QVariant destination, PipelineView* pipelineView, bool runFirstTime, QUndoCommand* parent = 0);
     virtual ~MoveFilterCommand();
 
     virtual void undo();
