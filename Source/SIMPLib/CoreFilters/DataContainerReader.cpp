@@ -630,4 +630,4 @@ const QString DataContainerReader::getSubGroupName()
 //
 // -----------------------------------------------------------------------------
 const QString DataContainerReader::getHumanLabel()
-{ return "Read SIMPLView Data File"; }
+{ return "Read DREAM.3D Data File"; }

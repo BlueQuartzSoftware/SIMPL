@@ -528,4 +528,4 @@ const QString DataContainerWriter::getSubGroupName()
 //
 // -----------------------------------------------------------------------------
 const QString DataContainerWriter::getHumanLabel()
-{ return "Write SIMPLView Data File"; }
+{ return "Write DREAM.3D Data File"; }
