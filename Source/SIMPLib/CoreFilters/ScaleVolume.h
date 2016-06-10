@@ -159,11 +159,16 @@ class SIMPLib_EXPORT ScaleVolume : public AbstractFilter
 
   protected:
     ScaleVolume();
-
     /**
      * @brief dataCheck Checks for the appropriate parameter values and availability of arrays
      */
     void dataCheck();
+
+    /**
+     * @brief Initializes all the private instance variables.
+     */
+    void initialize();
+
 
     /**
      * @brief updateSurfaceMesh updates the mesh coordinates

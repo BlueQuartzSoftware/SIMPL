@@ -155,11 +155,16 @@ class SIMPLib_EXPORT RemoveArrays : public AbstractFilter
 
   protected:
     RemoveArrays();
-
     /**
      * @brief dataCheck Checks for the appropriate parameter values and availability of arrays
      */
     void dataCheck();
+
+    /**
+     * @brief Initializes all the private instance variables.
+     */
+    void initialize();
+
 
     /**
     * @brief markSelectionsForDeletion Marks the items in the data container array with checkstate 'state' for deletion

@@ -147,11 +147,16 @@ class SIMPLib_EXPORT CreateDataContainer : public AbstractFilter
 
   protected:
     CreateDataContainer();
-
     /**
      * @brief dataCheck Checks for the appropriate parameter values and availability of arrays
      */
     void dataCheck();
+
+    /**
+     * @brief Initializes all the private instance variables.
+     */
+    void initialize();
+
 
   private:
     CreateDataContainer(const CreateDataContainer&); // Copy Constructor Not Implemented

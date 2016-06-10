@@ -154,11 +154,16 @@ class SIMPLib_EXPORT ExecuteProcess : public AbstractFilter
 
   protected:
     ExecuteProcess();
-
     /**
      * @brief dataCheck Checks for the appropriate parameter values and availability of arrays
      */
     void dataCheck();
+
+    /**
+     * @brief Initializes all the private instance variables.
+     */
+    void initialize();
+
 
   protected slots:
     void processHasFinished(int exitCode, QProcess::ExitStatus exitStatus);
@@ -171,6 +176,12 @@ class SIMPLib_EXPORT ExecuteProcess : public AbstractFilter
     QMutex                                              m_Mutex;
     bool                                                m_Pause;
     QSharedPointer<QProcess>                            m_ProcessPtr;
+
+    /**
+     * @brief splitArgumentsString
+     * @param arguments
+     * @return
+     */
     QStringList splitArgumentsString(QString arguments);
 
     ExecuteProcess(const ExecuteProcess&); // Copy Constructor Not Implemented

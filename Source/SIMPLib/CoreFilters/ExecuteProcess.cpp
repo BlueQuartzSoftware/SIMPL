@@ -102,6 +102,15 @@ int ExecuteProcess::writeFilterParameters(AbstractFilterParametersWriter* writer
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
+void ExecuteProcess::initialize()
+{
+  m_Pause = false;
+  m_ProcessPtr.reset();
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
 void ExecuteProcess::dataCheck()
 {
   setErrorCondition(0);

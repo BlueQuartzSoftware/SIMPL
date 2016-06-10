@@ -136,6 +136,14 @@ int CreateAttributeMatrix::writeFilterParameters(AbstractFilterParametersWriter*
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
+void CreateAttributeMatrix::initialize()
+{
+
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
 void CreateAttributeMatrix::dataCheck()
 {
   setErrorCondition(0);

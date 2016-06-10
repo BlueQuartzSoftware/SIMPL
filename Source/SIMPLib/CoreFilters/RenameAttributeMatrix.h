@@ -149,11 +149,16 @@ class SIMPLib_EXPORT RenameAttributeMatrix : public AbstractFilter
 
   protected:
     RenameAttributeMatrix();
-
     /**
      * @brief dataCheck Checks for the appropriate parameter values and availability of arrays
      */
     void dataCheck();
+
+    /**
+     * @brief Initializes all the private instance variables.
+     */
+    void initialize();
+
 
   private:
 

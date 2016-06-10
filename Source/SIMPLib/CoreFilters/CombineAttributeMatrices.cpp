@@ -168,6 +168,14 @@ int CombineAttributeMatrices::writeFilterParameters(AbstractFilterParametersWrit
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
+void CombineAttributeMatrices::initialize()
+{
+
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
 void CombineAttributeMatrices::dataCheck()
 {
   setErrorCondition(0);

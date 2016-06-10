@@ -129,6 +129,14 @@ void LinkFeatureMapToElementArray::updateFeatureInstancePointers()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
+void LinkFeatureMapToElementArray::initialize()
+{
+
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
 void LinkFeatureMapToElementArray::dataCheck()
 {
   setErrorCondition(0);

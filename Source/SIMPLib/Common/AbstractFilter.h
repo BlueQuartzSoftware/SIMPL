@@ -104,7 +104,7 @@ class SIMPLib_EXPORT AbstractFilter : public Observable
 
     /**
      * @brief getBrandingString Returns the branding string for the filter, which is a tag
-     * used to denote the filter's association with specific plugins
+     * used to denote the filter's association with a specific plugin
      * @return Branding string
      */
     virtual const QString getBrandingString();
@@ -220,8 +220,11 @@ class SIMPLib_EXPORT AbstractFilter : public Observable
      */
     virtual bool doesPipelineContainFilterAfterThis(const QString& name);
 
-
-    virtual void printValues(std::ostream& out) {}
+    /**
+     * @brief printValues Optional method to print out values as the developer sees fit.
+     * @param out
+     */
+    virtual void printValues(std::ostream& out) const;
 
     /**
      * @brief getCancel Returns if the filter has been cancelled.
@@ -242,18 +245,8 @@ class SIMPLib_EXPORT AbstractFilter : public Observable
       */
     virtual void setCancel(bool value);
 
-
-#if 0
-  signals:
-    void updateFilterParameters(AbstractFilter* filter);
-    void parametersChanged();
-    void preflightAboutToExecute();
-    void preflightExecuted();
-#endif
-
   protected:
     AbstractFilter();
-
 
 
   private:
@@ -262,8 +255,6 @@ class SIMPLib_EXPORT AbstractFilter : public Observable
     AbstractFilter(const AbstractFilter&); // Copy Constructor Not Implemented
     void operator=(const AbstractFilter&); // Operator '=' Not Implemented
 };
-
-
 
 
 #endif /* _AbstractFilter_H_  */

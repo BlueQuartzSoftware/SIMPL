@@ -153,11 +153,16 @@ class SIMPLib_EXPORT DataContainerWriter : public AbstractFilter
 
   protected:
     DataContainerWriter();
-
     /**
      * @brief dataCheck Checks for the appropriate parameter values and availability of arrays
      */
     void dataCheck();
+
+    /**
+     * @brief Initializes all the private instance variables.
+     */
+    void initialize();
+
 
     /**
      * @brief openFile Opens or creates an HDF5 file to write data into

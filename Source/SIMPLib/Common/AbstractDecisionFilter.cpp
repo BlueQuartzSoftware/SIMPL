@@ -92,6 +92,14 @@ int AbstractDecisionFilter::writeFilterParameters(AbstractFilterParametersWriter
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
+void AbstractDecisionFilter::initialize()
+{
+
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
 void AbstractDecisionFilter::dataCheck()
 {
   setErrorCondition(0);

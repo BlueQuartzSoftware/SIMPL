@@ -129,6 +129,14 @@ int CreateFeatureArrayFromElementArray::writeFilterParameters(AbstractFilterPara
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
+void CreateFeatureArrayFromElementArray::initialize()
+{
+
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
 void CreateFeatureArrayFromElementArray::dataCheck()
 {
   setErrorCondition(0);

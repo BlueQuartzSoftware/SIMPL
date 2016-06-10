@@ -140,11 +140,16 @@ class AbstractDecisionFilter : public AbstractFilter
 
   protected:
     AbstractDecisionFilter();
-
     /**
      * @brief dataCheck Checks for the appropriate parameter values and availability of arrays
      */
     void dataCheck();
+
+    /**
+     * @brief Initializes all the private instance variables.
+     */
+    void initialize();
+
 
   private:
     AbstractDecisionFilter(const AbstractDecisionFilter&); // Copy Constructor Not Implemented

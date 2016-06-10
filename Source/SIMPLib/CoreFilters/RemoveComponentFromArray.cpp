@@ -135,6 +135,14 @@ int RemoveComponentFromArray::writeFilterParameters(AbstractFilterParametersWrit
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
+void RemoveComponentFromArray::initialize()
+{
+
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
 void RemoveComponentFromArray::dataCheck()
 {
   setErrorCondition(0);

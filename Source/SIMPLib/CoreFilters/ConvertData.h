@@ -152,11 +152,16 @@ class SIMPLib_EXPORT ConvertData : public AbstractFilter
 
   protected:
     ConvertData();
-
     /**
      * @brief dataCheck Checks for the appropriate parameter values and availability of arrays
      */
     void dataCheck();
+
+    /**
+     * @brief Initializes all the private instance variables.
+     */
+    void initialize();
+
 
   private:
     ConvertData(const ConvertData&); // Copy Constructor Not Implemented

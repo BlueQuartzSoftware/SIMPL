@@ -199,11 +199,16 @@ class SIMPLib_EXPORT DataContainerReader : public AbstractFilter
 
   protected:
     DataContainerReader();
-
     /**
      * @brief dataCheck Checks for the appropriate parameter values and availability of arrays
      */
     void dataCheck();
+
+    /**
+     * @brief Initializes all the private instance variables.
+     */
+    void initialize();
+
 
     /**
      * @brief readData Reads the actual data from the HDF5 based .dream3d file

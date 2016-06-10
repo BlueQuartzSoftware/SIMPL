@@ -228,6 +228,15 @@ int ArrayCalculator::writeFilterParameters(AbstractFilterParametersWriter* write
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
+void ArrayCalculator::initialize()
+{
+  m_SymbolMap.clear();
+  m_ExecutionStack.clear();
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
 void ArrayCalculator::dataCheck()
 {
   setErrorCondition(0);
@@ -373,6 +382,7 @@ void ArrayCalculator::execute()
   setWarningCondition(0);
   dataCheck();
   if(getErrorCondition() < 0) { return; }
+  initialize();
 
   DataArrayPath calculatedAMPath(m_CalculatedArray.getDataContainerName(), m_CalculatedArray.getAttributeMatrixName(), "");
   AttributeMatrix::Pointer calculatedAM = getDataContainerArray()->getAttributeMatrix(calculatedAMPath);

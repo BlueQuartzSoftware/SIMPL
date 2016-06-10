@@ -180,6 +180,14 @@ int SetOriginResolutionImageGeom::writeFilterParameters(AbstractFilterParameters
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
+void SetOriginResolutionImageGeom::initialize()
+{
+
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
 void SetOriginResolutionImageGeom::dataCheck()
 {
   setErrorCondition(0);

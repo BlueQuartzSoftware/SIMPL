@@ -134,15 +134,16 @@ class SIMPLib_EXPORT ThresholdExample : public AbstractFilter
   protected:
     ThresholdExample();
 
+
     /**
-    * @brief Checks for the appropriate parameter values and availability of
-    * arrays in the data container
-    * @param preflight
-    * @param voxels The number of voxels
-    * @param features The number of features
-    * @param ensembles The number of ensembles
-    */
-    void dataCheck();
+     * @brief dataCheck Checks for the appropriate parameter values and availability of arrays
+     */
+    virtual void dataCheck();
+
+    /**
+     * @brief Initializes all the private instance variables.
+     */
+    void initialize();
 
   private:
 

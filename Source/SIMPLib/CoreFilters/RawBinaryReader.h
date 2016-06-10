@@ -167,8 +167,14 @@ class SIMPLib_EXPORT RawBinaryReader : public AbstractFilter
      */
     void dataCheck();
 
+    /**
+     * @brief Initializes all the private instance variables.
+     */
+    void initialize();
+
+
   private:
-    IDataArray::Pointer array;
+    IDataArray::Pointer m_Array;
 
     RawBinaryReader(const RawBinaryReader&); // Copy Constructor Not Implemented
     void operator=(const RawBinaryReader&); // Operator '=' Not Implemented

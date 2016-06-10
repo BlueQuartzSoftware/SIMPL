@@ -156,11 +156,16 @@ class SIMPLib_EXPORT CreateAttributeMatrix : public AbstractFilter
 
   protected:
     CreateAttributeMatrix();
-
     /**
      * @brief dataCheck Checks for the appropriate parameter values and availability of arrays
      */
     void dataCheck();
+
+    /**
+     * @brief Initializes all the private instance variables.
+     */
+    void initialize();
+
 
   private:
     CreateAttributeMatrix(const CreateAttributeMatrix&); // Copy Constructor Not Implemented

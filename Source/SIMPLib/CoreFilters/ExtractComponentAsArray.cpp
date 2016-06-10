@@ -120,6 +120,14 @@ int ExtractComponentAsArray::writeFilterParameters(AbstractFilterParametersWrite
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
+void ExtractComponentAsArray::initialize()
+{
+
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
 void ExtractComponentAsArray::dataCheck()
 {
   setErrorCondition(0);

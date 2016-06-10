@@ -152,11 +152,16 @@ class SIMPLib_EXPORT EmptyFilter : public AbstractFilter
 
   protected:
     EmptyFilter();
-
     /**
      * @brief dataCheck Checks for the appropriate parameter values and availability of arrays
      */
     void dataCheck();
+
+    /**
+     * @brief Initializes all the private instance variables.
+     */
+    void initialize();
+
 
   private:
     QString m_HumanLabel;

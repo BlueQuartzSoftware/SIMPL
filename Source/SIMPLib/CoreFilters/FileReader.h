@@ -104,6 +104,11 @@ class SIMPLib_EXPORT FileReader : public AbstractFilter
      */
     virtual void dataCheck();
 
+    /**
+     * @brief Initializes all the private instance variables.
+     */
+    void initialize();
+
   private:
     FileReader(const FileReader&); // Copy Constructor Not Implemented
     void operator=(const FileReader&); // Operator '=' Not Implemented

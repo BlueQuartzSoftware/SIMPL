@@ -152,11 +152,16 @@ class SIMPLib_EXPORT LinkFeatureMapToElementArray : public AbstractFilter
 
   protected:
     LinkFeatureMapToElementArray();
-
     /**
      * @brief dataCheck Checks for the appropriate parameter values and availability of arrays
      */
     void dataCheck();
+
+    /**
+     * @brief Initializes all the private instance variables.
+     */
+    void initialize();
+
 
     /**
      * @brief updateFeatureInstancePointers Updates raw feature pointers
@@ -165,7 +170,6 @@ class SIMPLib_EXPORT LinkFeatureMapToElementArray : public AbstractFilter
 
   private:
     DEFINE_DATAARRAY_VARIABLE(int32_t, SelectedCellData)
-
     DEFINE_DATAARRAY_VARIABLE(bool, Active)
 
     LinkFeatureMapToElementArray(const LinkFeatureMapToElementArray&); // Copy Constructor Not Implemented

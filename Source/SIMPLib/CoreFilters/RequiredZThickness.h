@@ -120,11 +120,16 @@ class SIMPLib_EXPORT RequiredZThickness : public AbstractDecisionFilter
 
   protected:
     RequiredZThickness();
-
     /**
      * @brief dataCheck Checks for the appropriate parameter values and availability of arrays
      */
     void dataCheck();
+
+    /**
+     * @brief Initializes all the private instance variables.
+     */
+    void initialize();
+
 
   private:
     DEFINE_DATAARRAY_VARIABLE(int32_t, FeatureIds)

@@ -170,6 +170,12 @@ class SIMPLib_EXPORT CreateImageGeometry : public AbstractFilter
     void dataCheck();
 
     /**
+     * @brief Initializes all the private instance variables.
+     */
+    void initialize();
+
+
+    /**
      * @brief updateSurfaceMesh Updates the mesh coordinates
      */
     void updateSurfaceMesh();

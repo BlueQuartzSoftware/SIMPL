@@ -252,6 +252,14 @@ void verifyArrayList(AbstractFilter* filter, QVector<IDataArray::WeakPointer> pt
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
+void CombineAttributeArrays::initialize()
+{
+
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
 void CombineAttributeArrays::dataCheck()
 {
   m_SelectedWeakPtrVector.clear();

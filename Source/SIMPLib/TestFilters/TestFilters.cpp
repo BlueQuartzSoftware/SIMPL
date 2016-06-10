@@ -89,6 +89,14 @@ int Filt0::writeFilterParameters(AbstractFilterParametersWriter* writer, int ind
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
+void Filt0::initialize()
+{
+
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
 void Filt0::dataCheck()
 {
   setErrorCondition(0);
@@ -198,6 +206,14 @@ int Filt1::writeFilterParameters(AbstractFilterParametersWriter* writer, int ind
   SIMPL_FILTER_WRITE_PARAMETER(Filt1_Integer)
   writer->closeFilterGroup();
   return ++index; // we want to return the next index that was just written to
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void Filt1::initialize()
+{
+
 }
 
 // -----------------------------------------------------------------------------

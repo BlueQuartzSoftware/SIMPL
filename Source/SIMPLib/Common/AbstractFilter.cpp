@@ -299,3 +299,11 @@ const QString AbstractFilter::generateHtmlSummary()
   ss << "</body></html>";
   return html;
 }
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void AbstractFilter::printValues(std::ostream& out) const
+{
+
+}

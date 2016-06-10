@@ -189,11 +189,16 @@ class SIMPLib_EXPORT ArrayCalculator : public AbstractFilter
 
   protected:
     ArrayCalculator();
-
     /**
      * @brief dataCheck Checks for the appropriate parameter values and availability of arrays
      */
     void dataCheck();
+
+    /**
+     * @brief Initializes all the private instance variables.
+     */
+    void initialize();
+
 
   private:
     QMap<QString, CalculatorItem::Pointer>                      m_SymbolMap;

@@ -153,6 +153,14 @@ int DynamicTableExample::writeFilterParameters(AbstractFilterParametersWriter* w
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
+void DynamicTableExample::initialize()
+{
+
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
 void DynamicTableExample::dataCheck()
 {
   // This filter does nothing during the dataCheck!

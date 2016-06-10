@@ -142,6 +142,14 @@ int DataContainerWriter::writeFilterParameters(AbstractFilterParametersWriter* w
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
+void DataContainerWriter::initialize()
+{
+  m_FileId = -1;
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
 void DataContainerWriter::dataCheck()
 {
   setErrorCondition(0);

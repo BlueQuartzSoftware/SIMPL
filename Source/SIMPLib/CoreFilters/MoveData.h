@@ -164,6 +164,12 @@ class SIMPLib_EXPORT MoveData : public AbstractFilter
      */
     void dataCheck();
 
+    /**
+     * @brief Initializes all the private instance variables.
+     */
+    void initialize();
+
+
     MoveData(const MoveData&); // Copy Constructor Not Implemented
     void operator=(const MoveData&); // Operator '=' Not Implemented
 };

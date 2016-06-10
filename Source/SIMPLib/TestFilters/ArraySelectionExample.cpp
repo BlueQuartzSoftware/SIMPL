@@ -107,6 +107,14 @@ int ArraySelectionExample::writeFilterParameters(AbstractFilterParametersWriter*
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
+void ArraySelectionExample::initialize()
+{
+
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
 void ArraySelectionExample::dataCheck()
 {
   //std::cout << " ArraySelectionExample   Preflighting " << std::endl;

@@ -108,6 +108,14 @@ int RenameAttributeArray::writeFilterParameters(AbstractFilterParametersWriter* 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
+void RenameAttributeArray::initialize()
+{
+
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
 void RenameAttributeArray::dataCheck()
 {
   setErrorCondition(0);

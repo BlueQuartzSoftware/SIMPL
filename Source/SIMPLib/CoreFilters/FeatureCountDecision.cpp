@@ -110,6 +110,14 @@ int FeatureCountDecision::writeFilterParameters(AbstractFilterParametersWriter* 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
+void FeatureCountDecision::initialize()
+{
+
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
 void FeatureCountDecision::dataCheck()
 {
   setErrorCondition(0);

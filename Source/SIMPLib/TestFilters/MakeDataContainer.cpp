@@ -125,6 +125,14 @@ int MakeDataContainer::writeFilterParameters(AbstractFilterParametersWriter* wri
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
+void MakeDataContainer::initialize()
+{
+
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
 void MakeDataContainer::dataCheck()
 {
   DataArrayPath tempPath;

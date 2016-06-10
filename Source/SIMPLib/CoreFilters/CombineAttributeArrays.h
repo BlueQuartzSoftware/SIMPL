@@ -152,11 +152,16 @@ class SIMPLib_EXPORT CombineAttributeArrays : public AbstractFilter
 
   protected:
     CombineAttributeArrays();
-
     /**
      * @brief dataCheck Checks for the appropriate parameter values and availability of arrays
      */
     void dataCheck();
+
+    /**
+     * @brief Initializes all the private instance variables.
+     */
+    void initialize();
+
 
   private:
     DEFINE_IDATAARRAY_VARIABLE(StackedData)

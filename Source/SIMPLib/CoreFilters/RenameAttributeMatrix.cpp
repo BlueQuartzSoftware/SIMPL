@@ -110,6 +110,14 @@ int RenameAttributeMatrix::writeFilterParameters(AbstractFilterParametersWriter*
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
+void RenameAttributeMatrix::initialize()
+{
+
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
 void RenameAttributeMatrix::dataCheck()
 {
   setErrorCondition(0);

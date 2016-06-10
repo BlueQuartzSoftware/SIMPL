@@ -125,6 +125,14 @@ int CopyFeatureArrayToElementArray::writeFilterParameters(AbstractFilterParamete
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
+void CopyFeatureArrayToElementArray::initialize()
+{
+
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
 void CopyFeatureArrayToElementArray::dataCheck()
 {
   setErrorCondition(0);

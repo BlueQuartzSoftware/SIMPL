@@ -158,17 +158,20 @@ class SIMPLib_EXPORT RemoveComponentFromArray : public AbstractFilter
 
   protected:
     RemoveComponentFromArray();
-
     /**
      * @brief dataCheck Checks for the appropriate parameter values and availability of arrays
      */
     void dataCheck();
 
+    /**
+     * @brief Initializes all the private instance variables.
+     */
+    void initialize();
+
+
   private:
     DEFINE_IDATAARRAY_VARIABLE(InArray)
-
     DEFINE_IDATAARRAY_VARIABLE(NewArray)
-
     DEFINE_IDATAARRAY_VARIABLE(ReducedArray)
 
     RemoveComponentFromArray(const RemoveComponentFromArray&); // Copy Constructor Not Implemented
