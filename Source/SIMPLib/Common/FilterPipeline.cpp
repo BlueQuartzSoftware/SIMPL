@@ -323,6 +323,8 @@ void FilterPipeline::execute()
 {
   int err = 0;
 
+  connectSignalsSlots();
+
   DataContainerArray::Pointer dca = DataContainerArray::New();
 
   // Start looping through the Pipeline
@@ -366,7 +368,7 @@ void FilterPipeline::execute()
       progValue.setProgressValue(100);
       emit pipelineGeneratedMessage(progValue);
 
-      pipelineFinished();
+      emit pipelineFinished();
       return;
     }
     if (this->getCancel() == true)
@@ -375,6 +377,10 @@ void FilterPipeline::execute()
     }
     ss = QObject::tr("%1 Filter Complete").arg((*filter)->getNameOfClass());
   }
+
+  emit pipelineFinished();
+
+  disconnectSignalsSlots();
 
   PipelineMessage completMessage("", "Pipeline Complete", 0, PipelineMessage::StatusMessage, -1);
   emit pipelineGeneratedMessage(completMessage);
@@ -391,4 +397,28 @@ void FilterPipeline::printFilterNames(QTextStream& out)
     out << (*iter)->getNameOfClass() << "\n";
   }
   out << "---------------------------------------------------------------------" ;
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void FilterPipeline::connectSignalsSlots()
+{
+  for (int i=0; i < m_Pipeline.size(); i++)
+  {
+    AbstractFilter::Pointer filter = m_Pipeline[i];
+    connect(this, SIGNAL(pipelineFinished()), filter.get(), SLOT(cleanupFilter()));
+  }
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void FilterPipeline::disconnectSignalsSlots()
+{
+  for (int i=0; i < m_Pipeline.size(); i++)
+  {
+    AbstractFilter::Pointer filter = m_Pipeline[i];
+    disconnect(this, SIGNAL(pipelineFinished()), filter.get(), SLOT(cleanupFilter()));
+  }
 }

@@ -175,6 +175,8 @@ class SIMPLib_EXPORT FilterPipeline : public QObject
 
     QVector<QObject*> m_MessageReceivers;
 
+    void connectSignalsSlots();
+    void disconnectSignalsSlots();
 
     FilterPipeline(const FilterPipeline&); // Copy Constructor Not Implemented
     void operator=(const FilterPipeline&); // Operator '=' Not Implemented

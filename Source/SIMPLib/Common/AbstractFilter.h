@@ -248,6 +248,8 @@ class SIMPLib_EXPORT AbstractFilter : public Observable
   protected:
     AbstractFilter();
 
+  protected slots:
+    virtual void cleanupFilter();
 
   private:
     bool m_Cancel;
