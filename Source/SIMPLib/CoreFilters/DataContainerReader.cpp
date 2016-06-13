@@ -639,3 +639,11 @@ const QString DataContainerReader::getSubGroupName()
 // -----------------------------------------------------------------------------
 const QString DataContainerReader::getHumanLabel()
 { return "Read DREAM.3D Data File"; }
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void DataContainerReader::cleanupFilter()
+{
+  m_PipelineFromFile->clear();
+}

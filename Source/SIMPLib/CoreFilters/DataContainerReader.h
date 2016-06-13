@@ -218,6 +218,12 @@ class SIMPLib_EXPORT DataContainerReader : public AbstractFilter
      */
     void readData(bool preflight, DataContainerArrayProxy& proxy, DataContainerArray::Pointer dca);
 
+  protected slots:
+    /**
+    * @brief Cleans up the filter after execution
+    */
+    void cleanupFilter();
+
   private:
     FilterPipeline::Pointer m_PipelineFromFile;
 
