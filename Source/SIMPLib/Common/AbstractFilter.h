@@ -249,6 +249,10 @@ class SIMPLib_EXPORT AbstractFilter : public Observable
     AbstractFilter();
 
   protected slots:
+    /**
+     * @brief This function will be called after the pipeline is completely done executing.  This can be reimplemented
+     * in subclasses to provide cleanup code between pipeline executions. (resetting/clearing variables, updating settings, etc.)
+     */
     virtual void cleanupFilter();
 
   private:
