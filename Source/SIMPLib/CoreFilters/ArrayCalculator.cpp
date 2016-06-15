@@ -230,7 +230,6 @@ int ArrayCalculator::writeFilterParameters(AbstractFilterParametersWriter* write
 // -----------------------------------------------------------------------------
 void ArrayCalculator::initialize()
 {
-  m_SymbolMap.clear();
   m_ExecutionStack.clear();
 }
 
