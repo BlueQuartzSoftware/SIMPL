@@ -57,6 +57,7 @@ public:
 private:
   PipelineView*                           m_PipelineView;
   PipelineFilterObject*                   m_FilterObject;
+  QString                                 m_JsonString;
   QVariant                                m_Value;
   QUuid                                   m_PrevNodeId;
   QUuid                                   m_NextNodeId;
