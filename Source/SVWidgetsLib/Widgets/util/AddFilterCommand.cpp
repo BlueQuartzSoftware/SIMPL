@@ -87,7 +87,7 @@ AddFilterCommand::~AddFilterCommand()
 // -----------------------------------------------------------------------------
 void AddFilterCommand::undo()
 {
-  m_Destination->removeFilterObject(m_Destination->filterObjectAt(m_Value), false, false);
+  m_Destination->removeFilterObject(m_Destination->filterObjectAt(m_Value), false);
 
   m_Destination->preflightPipeline();
 }
