@@ -65,7 +65,6 @@ class AddFilterCommand : public QUndoCommand
     QMap<int, Qt::KeyboardModifiers>                    m_Selections;
     QVariant                                            m_Value;
     QRect                                               m_FilterWidgetGeometry;
-    PipelineFilterObject*                               m_FilterObject;
     QUuid                                               m_PreviousNodeId;
     QUuid                                               m_NextNodeId;
 

@@ -69,12 +69,9 @@ AddFilterCommand::AddFilterCommand(PipelineFilterObject* filterWidget, PipelineV
     }
   }
 
-  if (destination->filterCount() > 0)
-  {
-    //m_FilterWidgetGeometry = destination->filterObjectAt(m_Value)->geometry();
-  }
-
-  m_FilterObject = filterWidget;
+  FilterPipeline::Pointer pipeline = FilterPipeline::New();
+  pipeline->pushBack(filterWidget->getFilter());
+  m_JsonString = JsonFilterParametersWriter::WritePipelineToString(pipeline, "");
 }
 
 // -----------------------------------------------------------------------------
@@ -90,7 +87,7 @@ AddFilterCommand::~AddFilterCommand()
 // -----------------------------------------------------------------------------
 void AddFilterCommand::undo()
 {
-  m_Destination->removeFilterObject(m_FilterObject, false, false);
+  m_Destination->removeFilterObject(m_Destination->filterObjectAt(m_Value), false, false);
 
   m_Destination->preflightPipeline();
 }
@@ -100,51 +97,12 @@ void AddFilterCommand::undo()
 // -----------------------------------------------------------------------------
 void AddFilterCommand::redo()
 {
-//  FilterPipeline::Pointer pipeline = JsonFilterParametersReader::ReadPipelineFromString(m_JsonString);
-//  if (pipeline == nullptr) { return; }
-
-//  FilterPipeline::FilterContainerType container = pipeline->getFilterContainer();
-
-  AbstractFilter::Pointer filter = m_FilterObject->getFilter();
+  FilterPipeline::Pointer pipeline = JsonFilterParametersReader::ReadPipelineFromString(m_JsonString);
+  AbstractFilter::Pointer filter = pipeline->getFilterContainer()[0];
 
   setText(QObject::tr("\"%1 '%2'\"").arg(m_ActionText).arg(filter->getHumanLabel()));
 
-  m_Destination->addFilterObject(m_FilterObject, m_Value, false, m_PreviousNodeId, m_NextNodeId);
-
-//  for (int i = 0; i < container.size(); i++)
-//  {
-////    if (std::dynamic_pointer_cast<Breakpoint>(container[i]))
-////    {
-////      BreakpointFilterWidget* filterWidget = new BreakpointFilterWidget(container[i], NULL, NULL);
-////      m_Destination->addFilterWidget(filterWidget, insertValue, false);
-////    }
-////    else
-////    {
-//      //SVPipelineFilterWidget* filterWidget = new SVPipelineFilterWidget(container[i], NULL, NULL);
-//      m_Destination->addFilters(container, insertValue, false);
-////    }
-
-//    m_AddValues.push_back(insertValue);
-
-//    if (insertValue.canConvert<int>())
-//    {
-//      int integer = insertValue.toInt();
-//      integer++;
-//      insertValue.setValue(integer);
-//    }
-//    else if (insertValue.canConvert<QPointF>())
-//    {
-//      QPointF pos = insertValue.toPointF();
-//      //pos.setX(pos.x() + m_FilterWidgetGeometry.width());
-//      //pos.setY(pos.y() + m_FilterWidgetGeometry.height());
-//      //pos.setX(pos.x() + 20);
-//      pos.setY(pos.y() + 30);
-//      insertValue.setValue(pos);
-//    }
-//  }
-
-  //m_Destination->clearSelectedFilterObjects();
-  //m_Destination->setSelectedFilterObject(m_Destination->filterObjectAt(m_Value), Qt::NoModifier);
+  m_Destination->addFilter(filter, m_Value, false, m_PreviousNodeId, m_NextNodeId);
 }
 
 
