@@ -422,11 +422,15 @@ void ArrayCalculator::execute()
   }
 
   // Grab the result from the stack
-  ICalculatorArray::Pointer arrayItem = m_ExecutionStack.pop();
+  ICalculatorArray::Pointer arrayItem =  ICalculatorArray::NullPointer();
+  if(!m_ExecutionStack.isEmpty())
+  {
+    arrayItem = m_ExecutionStack.pop();
+  }
 
-  IDataArray::Pointer resultArray = IDataArray::NullPointer();
   if (NULL != arrayItem)
   {
+    IDataArray::Pointer resultArray = IDataArray::NullPointer();
     resultArray = arrayItem->getArray();
 
     DataArrayPath createdAMPath(m_CalculatedArray.getDataContainerName(), m_CalculatedArray.getAttributeMatrixName(), "");
