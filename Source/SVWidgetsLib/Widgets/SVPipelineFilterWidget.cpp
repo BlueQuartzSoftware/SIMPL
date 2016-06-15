@@ -276,15 +276,7 @@ void SVPipelineFilterWidget::mousePressEvent ( QMouseEvent* event )
   }
   else if(event->button() == Qt::LeftButton)
   {
-    // Only if we are inside the delete checkbox/image then pass up to the superclass
-    if(m_DeleteRect.contains(event->pos()))
-    {
-      QFrame::mousePressEvent(event);
-    }
-    else
-    {
-      dragStartPosition = event->pos();
-    }
+    dragStartPosition = event->pos();
   }
 }
 
@@ -293,20 +285,7 @@ void SVPipelineFilterWidget::mousePressEvent ( QMouseEvent* event )
 // -----------------------------------------------------------------------------
 void SVPipelineFilterWidget::mouseReleaseEvent(QMouseEvent* event)
 {
-  if(event->button() != Qt::LeftButton)
-  {
-    event->ignore();
-    return;
-  }
-  // Only if we are inside the delete checkbox/image then pass up to the superclass
-  if(m_DeleteRect.contains(event->pos()))
-  {
-    QFrame::mouseReleaseEvent(event);
-  }
-  else
-  {
-    emit filterWidgetPressed(this, qApp->queryKeyboardModifiers());
-  }
+  emit filterWidgetPressed(this, qApp->queryKeyboardModifiers());
 }
 
 // -----------------------------------------------------------------------------
