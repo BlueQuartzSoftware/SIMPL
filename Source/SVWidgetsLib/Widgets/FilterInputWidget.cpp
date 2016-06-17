@@ -193,6 +193,33 @@ void FilterInputWidget::setupGui()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
+void FilterInputWidget::toRunningState()
+{
+  QMapIterator<QString, QWidget*> iter(m_PropertyToWidget);
+  while(iter.hasNext())
+  {
+    iter.next();
+    iter.value()->setDisabled(true);
+  }
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void FilterInputWidget::toIdleState()
+{
+  QMapIterator<QString, QWidget*> iter(m_PropertyToWidget);
+  while(iter.hasNext())
+  {
+    iter.next();
+    iter.value()->setDisabled(false);
+  }
+}
+
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
 void FilterInputWidget::layoutWidgets(AbstractFilter::Pointer filter)
 {
   // If the filter is valid then instantiate all the FilterParameterWidgets
@@ -230,6 +257,7 @@ void FilterInputWidget::layoutWidgets(AbstractFilter::Pointer filter)
 
   QGroupBox* noCategoryGroupBox = new QGroupBox("Uncategorized", this);
   QVBoxLayout* nLayout = new QVBoxLayout(noCategoryGroupBox);
+  nLayout->setContentsMargins(0, 0, 0, 0);
   noCategoryGroupBox->setStyleSheet(groupBoxStyle);
 
   // Get the FilterWidgetManagere instance so we can instantiate new FilterParameterWidgets
@@ -237,6 +265,7 @@ void FilterInputWidget::layoutWidgets(AbstractFilter::Pointer filter)
   // Get a list of all the filterParameters from the filter.
   QVector<FilterParameter::Pointer> filterParameters = filter->getFilterParameters();
   // Create all the FilterParameterWidget objects that can be displayed where ever the developer needs
+  bool addSpacer = true;
 
   int pCount = 0, rCount = 0, cCount = 0;
   for (QVector<FilterParameter::Pointer>::iterator iter = filterParameters.begin(); iter != filterParameters.end(); ++iter )
@@ -280,6 +309,11 @@ void FilterInputWidget::layoutWidgets(AbstractFilter::Pointer filter)
     {
       filterParameterWidget->setParent(m_VariablesWidget);
       nLayout->addWidget(filterParameterWidget);
+    }
+
+    FilterParameterWidget* fpwPtr = qobject_cast<FilterParameterWidget*>(filterParameterWidget);
+    if(fpwPtr) {
+      if(fpwPtr->getWidgetIsExpanding()) { addSpacer = false; }
     }
 
     // Connect up some signals and slots
@@ -339,6 +373,11 @@ void FilterInputWidget::layoutWidgets(AbstractFilter::Pointer filter)
   QString curStructName = QString::fromUtf8("advancedInputsScrollWidget_CurrStructWidget");
   m_CurrentStructureWidget->setObjectName(curStructName);
   m_CurrentStructureWidget->setGeometry(QRect(0, 0, 250, 267));
+
+  if(!addSpacer)
+  {
+    scrollAreaVertSpacer->removeItem(inputVertSpacer);
+  }
 }
 
 // -----------------------------------------------------------------------------

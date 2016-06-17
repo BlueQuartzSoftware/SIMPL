@@ -387,7 +387,7 @@ void SVPipelineFilterWidget::launchHelpForItem()
 // -----------------------------------------------------------------------------
 void SVPipelineFilterWidget::toRunningState()
 {
-  getFilterInputWidget()->getVariablesTabContentsWidget()->setDisabled(true);
+  getFilterInputWidget()->toRunningState(); //getVariablesTabContentsWidget()->setDisabled(true);
   deleteBtn->setDisabled(true);
 }
 
@@ -396,7 +396,7 @@ void SVPipelineFilterWidget::toRunningState()
 // -----------------------------------------------------------------------------
 void SVPipelineFilterWidget::toIdleState()
 {
-  getFilterInputWidget()->getVariablesTabContentsWidget()->setEnabled(true);
+  getFilterInputWidget()->toIdleState(); //getVariablesTabContentsWidget()->setEnabled(true);
   deleteBtn->setEnabled(true);
 }
 

@@ -107,7 +107,7 @@
                <height>321</height>
               </rect>
              </property>
-             <layout class="QVBoxLayout" name="verticalLayout_8">
+             <layout class="QVBoxLayout" name="scrollAreaVertSpacer">
               <property name="leftMargin">
                <number>2</number>
               </property>
@@ -124,7 +124,7 @@
                <layout class="QGridLayout" name="variablesGrid"/>
               </item>
               <item>
-               <spacer name="verticalSpacer">
+               <spacer name="inputVertSpacer">
                 <property name="orientation">
                  <enum>Qt::Vertical</enum>
                 </property>
@@ -255,7 +255,7 @@
   <customwidget>
    <class>QtSHoverButton</class>
    <extends>QPushButton</extends>
-   <header location="global">QtSHoverButton.h</header>
+   <header>QtSHoverButton.h</header>
   </customwidget>
  </customwidgets>
  <resources>
