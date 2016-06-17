@@ -50,7 +50,7 @@ class PipelineView;
 class AddFilterCommand : public QUndoCommand
 {
   public:
-    AddFilterCommand(PipelineFilterObject* filterWidget, PipelineView* destination, QString actionText, QVariant value,
+    AddFilterCommand(AbstractFilter::Pointer filter, PipelineView* destination, QString actionText, QVariant value,
                      QUuid previousNode = QUuid(), QUuid nextNode = QUuid(), QUndoCommand* parent = 0);
     virtual ~AddFilterCommand();
 

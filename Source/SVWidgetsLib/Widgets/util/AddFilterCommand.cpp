@@ -51,7 +51,7 @@
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-AddFilterCommand::AddFilterCommand(PipelineFilterObject* filterWidget, PipelineView* destination, QString actionText, QVariant value, QUuid previousNode, QUuid nextNode, QUndoCommand* parent) :
+AddFilterCommand::AddFilterCommand(AbstractFilter::Pointer filter, PipelineView* destination, QString actionText, QVariant value, QUuid previousNode, QUuid nextNode, QUndoCommand* parent) :
   QUndoCommand(parent),
   m_ActionText(actionText),
   m_Destination(destination),
@@ -70,7 +70,7 @@ AddFilterCommand::AddFilterCommand(PipelineFilterObject* filterWidget, PipelineV
   }
 
   FilterPipeline::Pointer pipeline = FilterPipeline::New();
-  pipeline->pushBack(filterWidget->getFilter());
+  pipeline->pushBack(filter);
   m_JsonString = JsonFilterParametersWriter::WritePipelineToString(pipeline, "");
 }
 

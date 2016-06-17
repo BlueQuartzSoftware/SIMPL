@@ -562,8 +562,8 @@ void SVPipelineViewWidget::addFilters(QList<AbstractFilter::Pointer> filters, QV
     topCmd->setText(QObject::tr("\"%1 %2 Filter Widgets\"").arg("Add").arg(filters.size()));
     for (int i=0; i<filters.size(); i++)
     {
-      SVPipelineFilterWidget* filterWidget = new SVPipelineFilterWidget(filters[i]->newFilterInstance(true), NULL, NULL);
-      new AddFilterCommand(filterWidget, this, "Add", index, QUuid(), QUuid(), topCmd);
+      //SVPipelineFilterWidget* filterWidget = new SVPipelineFilterWidget(filters[i]->newFilterInstance(true), NULL, NULL);
+      new AddFilterCommand(filters[i], this, "Add", index, QUuid(), QUuid(), topCmd);
       index++;
     }
     addUndoCommand(topCmd);
@@ -636,7 +636,7 @@ void SVPipelineViewWidget::addFilterObjects(QList<PipelineFilterObject*> filterO
     topCmd->setText(QObject::tr("\"%1 %2 Filter Widgets\"").arg("Add").arg(filterObjects.size()));
     for (int i=0; i<filterObjects.size(); i++)
     {
-      new AddFilterCommand(filterObjects[i], this, "Add", index, QUuid(), QUuid(), topCmd);
+      new AddFilterCommand(filterObjects[i]->getFilter(), this, "Add", index, QUuid(), QUuid(), topCmd);
       index++;
     }
     addUndoCommand(topCmd);
@@ -672,7 +672,7 @@ void SVPipelineViewWidget::addFilterObject(PipelineFilterObject* filterObject, Q
 
   if (allowUndo == true)
   {
-    AddFilterCommand* cmd = new AddFilterCommand(filterWidget, this, "Add", value);
+    AddFilterCommand* cmd = new AddFilterCommand(filterWidget->getFilter(), this, "Add", value);
     addUndoCommand(cmd);
   }
   else
@@ -826,8 +826,8 @@ void SVPipelineViewWidget::pasteFilters(QList<AbstractFilter::Pointer> filters, 
     topCmd->setText(QObject::tr("\"%1 %2 Filter Widgets\"").arg("Paste").arg(filters.size()));
     for (int i=0; i<filters.size(); i++)
     {
-      SVPipelineFilterWidget* filterWidget = new SVPipelineFilterWidget(filters[i]->newFilterInstance(true), NULL, NULL);
-      new AddFilterCommand(filterWidget, this, "Paste", index, QUuid(), QUuid(), topCmd);
+      //SVPipelineFilterWidget* filterWidget = new SVPipelineFilterWidget(filters[i]->newFilterInstance(true), NULL, NULL);
+      new AddFilterCommand(filters[i], this, "Paste", index, QUuid(), QUuid(), topCmd);
       index++;
     }
     addUndoCommand(topCmd);
