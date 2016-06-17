@@ -1991,7 +1991,7 @@ QList<PipelineFilterObject*> SVPipelineViewWidget::getSelectedFilterObjects()
     else
     {
       SVPipelineFilterWidget* fw = dynamic_cast<SVPipelineFilterWidget*>(m_FilterWidgetLayout->itemAt(i)->widget());
-      if (fw->isSelected() == true)
+      if (fw->isSelected() == true || fw->hasRightClickTarget() == true)
       {
         filterObjects.push_back(fw);
       }
