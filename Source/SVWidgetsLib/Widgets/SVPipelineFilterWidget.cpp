@@ -88,7 +88,8 @@ SVPipelineFilterWidget::SVPipelineFilterWidget(QWidget* parent) :
   QFrame(parent),
   PipelineFilterObject(AbstractFilter::NullPointer()),
   m_Observer(NULL),
-  m_Selected(false)
+  m_Selected(false),
+  m_HasRightClickTarget(false)
 {
   initialize();
 }
@@ -100,7 +101,8 @@ SVPipelineFilterWidget::SVPipelineFilterWidget(AbstractFilter::Pointer filter, I
   QFrame(parent),
   PipelineFilterObject(filter),
   m_Observer(observer),
-  m_Selected(false)
+  m_Selected(false),
+  m_HasRightClickTarget(false)
 {
   initialize();
 }
@@ -140,6 +142,23 @@ bool SVPipelineFilterWidget::isSelected()
 void SVPipelineFilterWidget::setSelected(bool s)
 {
   m_Selected = s;
+  changeStyle();
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+bool SVPipelineFilterWidget::hasRightClickTarget()
+{
+  return m_HasRightClickTarget;
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void SVPipelineFilterWidget::setHasRightClickTarget(bool value)
+{
+  m_HasRightClickTarget = value;
   changeStyle();
 }
 
@@ -196,7 +215,7 @@ void SVPipelineFilterWidget::changeStyle()
 
   if(getHasPreflightWarnings())
   {
-    ss << "border: 2px solid rgb(172, 168, 0);";
+    ss << "border: 2px rgb(172, 168, 0);";
   }
   else if(isSelected() == true && isFocused() == true)
   {
@@ -211,6 +230,12 @@ void SVPipelineFilterWidget::changeStyle()
     ss << "border: 1px solid #515151;";
     ss << "margin: 1px;";
   }
+
+  if (isSelected() == false && hasRightClickTarget() == true)
+  {
+    ss << "border-style: dotted;";
+  }
+
   setBorderColorStyle(style);
   updateWidgetStyle();
 }

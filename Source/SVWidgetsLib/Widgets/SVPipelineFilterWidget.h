@@ -81,8 +81,12 @@ class SVWidgetsLib_EXPORT SVPipelineFilterWidget : public QFrame, public Pipelin
     virtual ~SVPipelineFilterWidget();
 
     SIMPL_INSTANCE_PROPERTY(QString, BorderColorStyle)
+
     bool isSelected();
     void setSelected(bool s);
+
+    bool hasRightClickTarget();
+    void setHasRightClickTarget(bool value);
 
     void setFilterTitle(const QString title) override;
 
@@ -220,6 +224,7 @@ class SVWidgetsLib_EXPORT SVPipelineFilterWidget : public QFrame, public Pipelin
     QPoint                            dragStartPosition;
     IObserver*                        m_Observer;
     bool                              m_Selected;
+    bool                              m_HasRightClickTarget;
 
     /**
      * @brief initialize Calls all the necessary initialization code for the widget

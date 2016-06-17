@@ -927,10 +927,14 @@ bool SVPipelineViewWidget::eventFilter(QObject* o, QEvent* e)
 
       if (filterWidget != nullptr && filterWidget->getFilter() != nullptr)
       {
+        filterWidget->setHasRightClickTarget(true);
+
         // Show Pipeline Filter Widget context menu
         QMenu* pfwContextMenu = createPipelineFilterWidgetMenu(filterWidget);
         pfwContextMenu->exec(QCursor::pos());
         delete pfwContextMenu;
+
+        filterWidget->setHasRightClickTarget(false);
       }
       return true;
     }
