@@ -78,4 +78,24 @@ QString ShapeTypeSelectionFilterParameter::getWidgetType()
   return QString("ShapeTypeSelectionWidget");
 }
 
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void ShapeTypeSelectionFilterParameter::readJson(const QJsonObject &json)
+{
+  QJsonValue jsonValue = json[getPropertyName()];
+  if(!jsonValue.isUndefined() )
+  {
+    m_SetterCallback(jsonValue.toInt(0.0));
+  }
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void ShapeTypeSelectionFilterParameter::writeJson(QJsonObject &json)
+{
+  json[getPropertyName()] = m_GetterCallback();
+}
+
 

@@ -74,3 +74,23 @@ QString DoubleFilterParameter::getWidgetType()
   return QString("DoubleWidget");
 }
 
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void DoubleFilterParameter::readJson(const QJsonObject &json)
+{
+  QJsonValue jsonValue = json[getPropertyName()];
+  if(!jsonValue.isUndefined() )
+  {
+    m_SetterCallback(jsonValue.toInt(0.0));
+  }
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void DoubleFilterParameter::writeJson(QJsonObject &json)
+{
+  json[getPropertyName()] = m_GetterCallback();
+}
+

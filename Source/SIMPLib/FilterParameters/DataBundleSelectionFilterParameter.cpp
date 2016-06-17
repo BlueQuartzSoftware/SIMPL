@@ -73,3 +73,23 @@ QString DataBundleSelectionFilterParameter::getWidgetType()
   return QString("DataBundleSelectionWidget");
 }
 
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void DataBundleSelectionFilterParameter::readJson(const QJsonObject &json)
+{
+  QJsonValue jsonValue = json[getPropertyName()];
+  if(!jsonValue.isUndefined() )
+  {
+    m_SetterCallback(jsonValue.toInt(0.0));
+  }
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void DataBundleSelectionFilterParameter::writeJson(QJsonObject &json)
+{
+  json[getPropertyName()] = m_GetterCallback();
+}
+

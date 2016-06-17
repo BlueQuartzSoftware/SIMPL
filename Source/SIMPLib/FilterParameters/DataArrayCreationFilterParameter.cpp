@@ -129,3 +129,23 @@ DataArrayCreationFilterParameter::RequirementType DataArrayCreationFilterParamet
   }
   return req;
 }
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void DataArrayCreationFilterParameter::readJson(const QJsonObject &json)
+{
+  QJsonValue jsonValue = json[getPropertyName()];
+  if(!jsonValue.isUndefined() )
+  {
+    m_SetterCallback(jsonValue.toInt(0.0));
+  }
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void DataArrayCreationFilterParameter::writeJson(QJsonObject &json)
+{
+  json[getPropertyName()] = m_GetterCallback();
+}

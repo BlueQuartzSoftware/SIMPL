@@ -36,6 +36,8 @@
 #ifndef _stringfilterparameter_h_
 #define _stringfilterparameter_h_
 
+#include <QtCore/QJsonObject>
+
 #include "SIMPLib/FilterParameters/FilterParameter.h"
 
 class SIMPLib_EXPORT StringFilterParameter : public FilterParameter
@@ -57,6 +59,21 @@ public:
    * @return
    */
   QString getWidgetType();
+
+  /**
+   * @brief readJson
+   * @return
+   */
+  void readJson(const QJsonObject &json);
+
+  /**
+   * @brief writeJson
+   * @return
+   */
+  void writeJson(QJsonObject &json);
+
+  SIMPL_INSTANCE_PROPERTY(SetterCallbackType, SetterCallback)
+  SIMPL_INSTANCE_PROPERTY(GetterCallbackType, GetterCallback)
 
 
 protected:

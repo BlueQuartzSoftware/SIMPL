@@ -75,3 +75,23 @@ QString RangeFilterParameter::getWidgetType()
   return QString("RangeWidget");
 }
 
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void RangeFilterParameter::readJson(const QJsonObject &json)
+{
+  QJsonValue jsonValue = json[getPropertyName()];
+  if(!jsonValue.isUndefined() )
+  {
+    m_SetterCallback(jsonValue.toInt(0.0));
+  }
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void RangeFilterParameter::writeJson(QJsonObject &json)
+{
+  json[getPropertyName()] = m_GetterCallback();
+}
+

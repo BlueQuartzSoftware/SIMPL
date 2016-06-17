@@ -58,6 +58,9 @@ class SIMPLib_EXPORT FilterParameter
     SIMPL_SHARED_POINTERS(FilterParameter)
     SIMPL_TYPE_MACRO(FilterParameter)
 
+    typedef std::function<void(int)> SetterCallbackType;
+    typedef std::function<int(void)> GetterCallbackType;
+
     enum Category
     {
       Parameter = 0,

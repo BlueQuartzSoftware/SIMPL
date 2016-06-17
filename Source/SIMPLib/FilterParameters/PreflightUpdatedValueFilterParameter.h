@@ -36,6 +36,8 @@
 #ifndef _preflightupdatedvaluefilterparameter_h_
 #define _preflightupdatedvaluefilterparameter_h_
 
+#include <QtCore/QJsonObject>
+
 #include "SIMPLib/FilterParameters/FilterParameter.h"
 
 class SIMPLib_EXPORT PreflightUpdatedValueFilterParameter : public FilterParameter
@@ -58,6 +60,21 @@ class SIMPLib_EXPORT PreflightUpdatedValueFilterParameter : public FilterParamet
      * @return
      */
     QString getWidgetType();
+
+    /**
+     * @brief readJson
+     * @return
+     */
+    void readJson(const QJsonObject &json);
+
+    /**
+     * @brief writeJson
+     * @return
+     */
+    void writeJson(QJsonObject &json);
+
+    SIMPL_INSTANCE_PROPERTY(SetterCallbackType, SetterCallback)
+    SIMPL_INSTANCE_PROPERTY(GetterCallbackType, GetterCallback)
 
 
   protected:

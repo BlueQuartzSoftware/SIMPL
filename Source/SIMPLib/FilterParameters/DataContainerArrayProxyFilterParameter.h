@@ -36,9 +36,10 @@
 #ifndef _datacontainerarrayproxyfilterparameter_h_
 #define _datacontainerarrayproxyfilterparameter_h_
 
+#include <QtCore/QJsonObject>
+
 #include "SIMPLib/FilterParameters/FilterParameter.h"
 #include "SIMPLib/DataContainers/DataContainerArrayProxy.h"
-
 
 class SIMPLib_EXPORT DataContainerArrayProxyFilterParameter : public FilterParameter
 {
@@ -62,6 +63,21 @@ class SIMPLib_EXPORT DataContainerArrayProxyFilterParameter : public FilterParam
      * @return
      */
     QString getWidgetType();
+
+    /**
+     * @brief readJson
+     * @return
+     */
+    void readJson(const QJsonObject &json);
+
+    /**
+     * @brief writeJson
+     * @return
+     */
+    void writeJson(QJsonObject &json);
+
+    SIMPL_INSTANCE_PROPERTY(SetterCallbackType, SetterCallback)
+    SIMPL_INSTANCE_PROPERTY(GetterCallbackType, GetterCallback)
 
 
   protected:

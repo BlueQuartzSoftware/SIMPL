@@ -37,6 +37,7 @@
 #define _attributematrixcreationfilterparameter_h_
 
 #include <QtCore/QVector>
+#include <QtCore/QJsonObject>
 
 #include "SIMPLib/FilterParameters/FilterParameter.h"
 #include "SIMPLib/DataContainers/DataArrayPath.h"
@@ -66,7 +67,21 @@ class SIMPLib_EXPORT AttributeMatrixCreationFilterParameter : public FilterParam
      */
     QString getWidgetType();
 
+    /**
+     * @brief readJson
+     * @return
+     */
+    void readJson(const QJsonObject &json);
+
+    /**
+     * @brief writeJson
+     * @return
+     */
+    void writeJson(QJsonObject &json);
+
     SIMPL_INSTANCE_PROPERTY(QVector<unsigned int>, DefaultGeometryTypes)
+    SIMPL_INSTANCE_PROPERTY(SetterCallbackType, SetterCallback)
+    SIMPL_INSTANCE_PROPERTY(GetterCallbackType, GetterCallback)
 
   protected:
     AttributeMatrixCreationFilterParameter();

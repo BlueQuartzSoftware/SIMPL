@@ -36,9 +36,10 @@
 #ifndef _rangefilterparameter_h_
 #define _rangefilterparameter_h_
 
-#include "SIMPLib/FilterParameters/FilterParameter.h"
-
+#include <QtCore/QJsonObject>
 #include <QtCore/QPair>
+
+#include "SIMPLib/FilterParameters/FilterParameter.h"
 
 typedef QPair <double, double> FPRangePair;
 
@@ -62,7 +63,22 @@ public:
    */
   QString getWidgetType();
 
+  /**
+   * @brief readJson
+   * @return
+   */
+  void readJson(const QJsonObject &json);
+
+  /**
+   * @brief writeJson
+   * @return
+   */
+  void writeJson(QJsonObject &json);
+
   SIMPL_INSTANCE_PROPERTY(FPRangePair, DefaultPair)
+
+  SIMPL_INSTANCE_PROPERTY(SetterCallbackType, SetterCallback)
+  SIMPL_INSTANCE_PROPERTY(GetterCallbackType, GetterCallback)
 
 
 protected:

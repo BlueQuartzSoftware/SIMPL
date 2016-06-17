@@ -36,8 +36,9 @@
 #ifndef _datacontainerreaderfilterparameter_h_
 #define _datacontainerreaderfilterparameter_h_
 
-#include "SIMPLib/FilterParameters/FilterParameter.h"
+#include <QtCore/QJsonObject>
 
+#include "SIMPLib/FilterParameters/FilterParameter.h"
 
 class SIMPLib_EXPORT DataContainerReaderFilterParameter : public FilterParameter
 {
@@ -62,6 +63,21 @@ class SIMPLib_EXPORT DataContainerReaderFilterParameter : public FilterParameter
      * @return
      */
     QString getWidgetType();
+
+    /**
+     * @brief readJson
+     * @return
+     */
+    void readJson(const QJsonObject &json);
+
+    /**
+     * @brief writeJson
+     * @return
+     */
+    void writeJson(QJsonObject &json);
+
+    SIMPL_INSTANCE_PROPERTY(SetterCallbackType, SetterCallback)
+    SIMPL_INSTANCE_PROPERTY(GetterCallbackType, GetterCallback)
 
 
   protected:
