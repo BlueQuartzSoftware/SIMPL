@@ -1,19 +1,7 @@
-#--////////////////////////////////////////////////////////////////////////////
-#--
-#--  Copyright (c) 2012, Michael A. Jackson. BlueQuartz Software
-#--  All rights reserved.
-#--  BSD License: http://www.opensource.org/licenses/bsd-license.html
-#--
-#--////////////////////////////////////////////////////////////////////////////
-
-#///////////////////////////////////////////////////////////////////////////////
-#// This code was partly written under US Air Force Contract FA8650-07-D-5800
-#///////////////////////////////////////////////////////////////////////////////
-
 project(SVWidgetsLib VERSION 2.0)
 
 
-set(SVWidgetsLib_BUILT_AS_DYNAMIC_LIB)
+set(SVWidgetsLib_BUILT_AS_DYNAMIC_LIB 0)
 if(BUILD_SHARED_LIBS)
     set(SVWidgetsLib_BUILT_AS_DYNAMIC_LIB 1)
     if(WIN32)
@@ -24,10 +12,10 @@ endif(BUILD_SHARED_LIBS)
 set(GENERATE_GIT_VERSION 1)
 
 if(NOT PROJECT_RESOURCES_DIR)
-set(PROJECT_RESOURCES_DIR ${SVWidgetsLib_SOURCE_DIR}/Resources)
+  set(PROJECT_RESOURCES_DIR ${SVWidgetsLib_SOURCE_DIR}/Resources)
 endif()
 if(NOT DEFINED CMP_SOURCE_DIR)
-set(CMP_SOURCE_DIR ${SVWidgetsLib_SOURCE_DIR}/Support/cmp)
+  set(CMP_SOURCE_DIR ${SVWidgetsLib_SOURCE_DIR}/Support/cmp)
 endif()
 
 set(PROJECT_PREFIX "SVWidgetsLib" CACHE STRING "The Prefix to be used for Preprocessor definitions")
@@ -85,7 +73,18 @@ include(${SVWidgetsLib_SOURCE_DIR}/FilterParameterWidgets/SourceList.cmake)
 include(${SVWidgetsLib_SOURCE_DIR}/QtSupport/SourceList.cmake)
 include(${SVWidgetsLib_SOURCE_DIR}/Widgets/SourceList.cmake)
 
+#------------------------------------------------------------------------------
+# Clear these variables and look for any extra Widget Directories that the
+# developer would like to add
+set(SVWidgetsLib_Extra_Sources)
+set(SVWidgetsLib_Extra_Headers)
+set(SVWidgetsLib_Extra_Link_Libraries)
 
+message(STATUS "SVWidgetsExtraPaths: ${SVWidgetsExtraPaths}")
+
+foreach(SVWidgetsExtraPath ${SVWidgetsExtraPaths})
+  include( ${SVWidgetsExtraPath}/SourceList.cmake )
+endforeach()
 
 set(Project_SRCS
 
@@ -100,7 +99,8 @@ set(Project_SRCS
   ${SVWidgets_QtSupport_Files}
   ${SVWidgets_Widgets_Files}
   #---------------
-
+  ${SVWidgetsLib_Extra_Sources}
+  ${SVWidgetsLib_Extra_Headers}
 )
 
 # --------------------------------------------------------------------
@@ -128,14 +128,13 @@ if(UNIX AND NOT APPLE)
     set_source_files_properties(${Project_SRCS} PROPERTIES COMPILE_FLAGS -fPIC)
 endif()
 
-
-set(SVWidgetsLib_LINK_LIBRARIES SIMPLib)
-# Add in the Qt5 Libraries to the Link Library List
+# Add in all the dependent link libraries
 set(SVWidgetsLib_LINK_LIBRARIES
-  ${SVWidgetsLib_LINK_LIBRARIES}
+  SIMPLib
   Qt5::Gui
   Qt5::Widgets
   Qt5::Network
+  ${SVWidgetsLib_Extra_Link_Libraries}
 )
 
 add_library(SVWidgetsLib ${LIB_TYPE} ${Project_SRCS})
