@@ -47,10 +47,20 @@ class SIMPLib_EXPORT PreflightUpdatedValueFilterParameter : public FilterParamet
     SIMPL_STATIC_NEW_MACRO(PreflightUpdatedValueFilterParameter)
     SIMPL_TYPE_MACRO_SUPER(PreflightUpdatedValueFilterParameter, FilterParameter)
 
+    typedef std::function<void(QString)> SetterCallbackType;
+    typedef std::function<QString(void)> GetterCallbackType;
+
+    //************************** OLD FP API *******************************
     static Pointer New(const QString& humanLabel, const QString& propertyName,
                        const QString& defaultValue,
                        Category category,
                        int groupIndex = -1);
+    //************************** OLD FP API *******************************
+
+    static Pointer New(const QString& humanLabel, const QString& propertyName,
+                       const QString& defaultValue,
+                       Category category, SetterCallbackType setterCallback,
+                       GetterCallbackType getterCallback, int groupIndex = -1);
 
     virtual ~PreflightUpdatedValueFilterParameter();
 

@@ -48,6 +48,7 @@ FilterParameter()
 IntFilterParameter::~IntFilterParameter()
 {}
 
+//************************** OLD FP API *******************************
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
@@ -64,7 +65,27 @@ IntFilterParameter::Pointer IntFilterParameter::New(const QString& humanLabel, c
 
   return ptr;
 }
+//************************** OLD FP API *******************************
 
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+IntFilterParameter::Pointer IntFilterParameter::New(const QString& humanLabel, const QString& propertyName,
+  const int& defaultValue, Category category, SetterCallbackType setterCallback, GetterCallbackType getterCallback,
+  int groupIndex)
+{
+
+  IntFilterParameter::Pointer ptr = IntFilterParameter::New();
+  ptr->setHumanLabel(humanLabel);
+  ptr->setPropertyName(propertyName);
+  ptr->setDefaultValue(defaultValue);
+  ptr->setCategory(category);
+  ptr->setGroupIndex(groupIndex);
+  ptr->setSetterCallback(setterCallback);
+  ptr->setGetterCallback(getterCallback);
+
+  return ptr;
+}
 
 // -----------------------------------------------------------------------------
 //

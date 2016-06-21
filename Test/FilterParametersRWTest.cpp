@@ -48,6 +48,43 @@
 #include "SIMPLib/Plugin/SIMPLibPluginLoader.h"
 #include "SIMPLib/Utilities/UnitTestSupport.hpp"
 #include "SIMPLib/Utilities/QMetaObjectUtilities.h"
+#include "SIMPLib/FilterParameters/AttributeMatrixSelectionFilterParameter.h"
+#include "SIMPLib/FilterParameters/AttributeMatrixCreationFilterParameter.h"
+#include "SIMPLib/FilterParameters/AxisAngleFilterParameter.h"
+#include "SIMPLib/FilterParameters/BooleanFilterParameter.h"
+#include "SIMPLib/FilterParameters/CalculatorFilterParameter.h"
+#include "SIMPLib/FilterParameters/ChoiceFilterParameter.h"
+#include "SIMPLib/FilterParameters/ComparisonSelectionFilterParameter.h"
+#include "SIMPLib/FilterParameters/DataArrayCreationFilterParameter.h"
+#include "SIMPLib/FilterParameters/DataArraySelectionFilterParameter.h"
+#include "SIMPLib/FilterParameters/DataBundleSelectionFilterParameter.h"
+#include "SIMPLib/FilterParameters/DataContainerArrayProxyFilterParameter.h"
+#include "SIMPLib/FilterParameters/DataContainerCreationFilterParameter.h"
+#include "SIMPLib/FilterParameters/DataContainerReaderFilterParameter.h"
+#include "SIMPLib/FilterParameters/DataContainerSelectionFilterParameter.h"
+#include "SIMPLib/FilterParameters/DoubleFilterParameter.h"
+#include "SIMPLib/FilterParameters/DynamicChoiceFilterParameter.h"
+#include "SIMPLib/FilterParameters/DynamicTableFilterParameter.h"
+#include "SIMPLib/FilterParameters/FileListInfoFilterParameter.h"
+#include "SIMPLib/FilterParameters/FloatVec3FilterParameter.h"
+#include "SIMPLib/FilterParameters/FourthOrderPolynomialFilterParameter.h"
+#include "SIMPLib/FilterParameters/InputFileFilterParameter.h"
+#include "SIMPLib/FilterParameters/InputPathFilterParameter.h"
+#include "SIMPLib/FilterParameters/IntFilterParameter.h"
+#include "SIMPLib/FilterParameters/IntVec3FilterParameter.h"
+#include "SIMPLib/FilterParameters/LinkedBooleanFilterParameter.h"
+#include "SIMPLib/FilterParameters/LinkedChoicesFilterParameter.h"
+#include "SIMPLib/FilterParameters/MultiDataArraySelectionFilterParameter.h"
+#include "SIMPLib/FilterParameters/OutputFileFilterParameter.h"
+#include "SIMPLib/FilterParameters/OutputPathFilterParameter.h"
+#include "SIMPLib/FilterParameters/PhaseTypeSelectionFilterParameter.h"
+#include "SIMPLib/FilterParameters/PreflightUpdatedValueFilterParameter.h"
+#include "SIMPLib/FilterParameters/RangeFilterParameter.h"
+#include "SIMPLib/FilterParameters/SecondOrderPolynomialFilterParameter.h"
+#include "SIMPLib/FilterParameters/ShapeTypeSelectionFilterParameter.h"
+#include "SIMPLib/FilterParameters/StringFilterParameter.h"
+#include "SIMPLib/FilterParameters/ThirdOrderPolynomialFilterParameter.h"
+#include "SIMPLib/FilterParameters/UnknownFilterParameter.h"
 #include "SIMPLib/FilterParameters/JsonFilterParametersWriter.h"
 #include "SIMPLib/FilterParameters/JsonFilterParametersReader.h"
 #include "SIMPLib/DataContainers/DataArrayPath.h"
@@ -61,7 +98,7 @@ namespace StringTest
   QString Key = "Test String";
 
   QString Value = "I am testing the string";
-};
+}
 
 namespace StringVectorTest
 {
@@ -71,7 +108,7 @@ namespace StringVectorTest
   QString Value2 = "VecString2";
   QString Value3 = "VecString3";
   QString Value4 = "VecString4";
-};
+}
 
 namespace IntVec3Test
 {
@@ -80,7 +117,7 @@ namespace IntVec3Test
   int X = -1;
   int Y = 2;
   int Z = 3;
-};
+}
 
 namespace FloatVec3Test
 {
@@ -89,7 +126,7 @@ namespace FloatVec3Test
   float X = 0.0f;
   float Y = 2.65f;
   float Z = -3.975f;
-};
+}
 
 namespace FloatVec4Test
 {
@@ -99,7 +136,7 @@ namespace FloatVec4Test
   float B = 2.65f;
   float C = 3.975f;
   float D = -4.6876f;
-};
+}
 
 namespace FloatVec21Test
 {
@@ -126,7 +163,7 @@ namespace FloatVec21Test
   float Val19 = 3.975f;
   float Val20 = 4.6876f;
   float Val21 = 1.2f;
-};
+}
 
 namespace Float2ndOrderPolyTest
 {
@@ -138,7 +175,7 @@ namespace Float2ndOrderPolyTest
   float Val4 = 4.6876f;
   float Val5 = 1.2f;
   float Val6 = 2.65f;
-};
+}
 
 namespace Float3rdOrderPolyTest
 {
@@ -154,7 +191,7 @@ namespace Float3rdOrderPolyTest
   float Val8 = 3.975f;
   float Val9 = 4.6876f;
   float Val10 = 1.2f;
-};
+}
 
 namespace Float4thOrderPolyTest
 {
@@ -175,7 +212,7 @@ namespace Float4thOrderPolyTest
   float Val13 = 3.975f;
   float Val14 = 4.6876f;
   float Val15 = 1.2f;
-};
+}
 
 namespace FileListInfoTest
 {
@@ -189,7 +226,7 @@ namespace FileListInfoTest
   QString FilePrefix = "TestString2";
   QString FileSuffix = "TestString3";
   QString FileExtension = "TestString4";
-};
+}
 
 namespace ComparisonInputTest
 {
@@ -200,7 +237,7 @@ namespace ComparisonInputTest
   QString AttributeArrayName = "AttributeArray1";
   int CompOperator = 3;
   double CompValue = 4.6876;
-};
+}
 
 namespace MultipleComparisonInputTest
 {
@@ -217,7 +254,7 @@ namespace MultipleComparisonInputTest
   QString AttributeArrayName2 = "AttributeArray2";
   int CompOperator2 = 4;
   double CompValue2 = 2.935;
-};
+}
 
 namespace AxisAngleInputTest
 {
@@ -227,7 +264,7 @@ namespace AxisAngleInputTest
   float H = 1.23f;
   float K = 4.32f;
   float L = 3.54f;
-};
+}
 
 namespace MultipleAxisAngleInputTest
 {
@@ -242,7 +279,7 @@ namespace MultipleAxisAngleInputTest
   float H2 = 9.5677f;
   float K2 = 4.8124f;
   float L2 = 6.315f;
-};
+}
 
 namespace StringSetTest
 {
@@ -252,7 +289,7 @@ namespace StringSetTest
   QString String2 = "StringSetTest-String2";
   QString String3 = "StringSetTest-String3";
   QString String4 = "StringSetTest-String4";
-};
+}
 
 namespace DataContainerArrayProxyTest
 {
@@ -264,7 +301,7 @@ namespace DataContainerArrayProxyTest
   QString DaProxyName1 = "AttributeArray1";
   QString DaProxyName2 = "AttributeArray2";
   QString DaProxyName3 = "AttributeArray3";
-};
+}
 
 namespace DataArrayPathTest
 {
@@ -273,7 +310,7 @@ namespace DataArrayPathTest
   QString DCName = "DataContainer";
   QString AMName = "AttributeMatrix";
   QString DAName = "AttributeArray";
-};
+}
 
 namespace MultipleDataArrayPathTest
 {
@@ -286,7 +323,7 @@ namespace MultipleDataArrayPathTest
   QString DCName2 = "DataContainer2";
   QString AMName2 = "AttributeMatrix2";
   QString DAName2 = "AttributeArray2";
-};
+}
 
 namespace DynamicTableDataTest
 {
@@ -308,14 +345,63 @@ namespace DynamicTableDataTest
   QString ColumnHeader6 = "Column 6";
   QString ColumnHeader7 = "Column 7";
   QString ColumnHeader8 = "Column 8";
-};
+}
 
 
 class FilterParametersRWTest
 {
   public:
-    FilterParametersRWTest() {}
+    FilterParametersRWTest()
+    {
+      m_Bool1 = true;
+      m_Int1 = 24;
+      m_String1 = "This is the FilterParametersRWTest";
+      m_ArrayPath1 = DataArrayPath("DataContainer", "AttributeMatrix", "DataArray");
+
+      m_AxisAngle1.angle = 2.2f;
+      m_AxisAngle1.h = 3.4f;
+      m_AxisAngle1.k = 6.4f;
+      m_AxisAngle1.l = 8.2f;
+
+      m_ComparisonInputs1.addInput("DataContainer", "AttributeMatrix", "DataArrayName", 2, 4.6);
+    }
     virtual ~FilterParametersRWTest() {}
+
+    SIMPL_INSTANCE_PROPERTY(bool, Bool1)
+    Q_PROPERTY(bool Bool1 READ getBool1 WRITE setBool1)
+
+    SIMPL_INSTANCE_PROPERTY(bool, Bool2)
+    Q_PROPERTY(bool Bool2 READ getBool2 WRITE setBool2)
+
+    SIMPL_INSTANCE_PROPERTY(int, Int1)
+    Q_PROPERTY(int Int1 READ getInt1 WRITE setInt1)
+
+    SIMPL_INSTANCE_PROPERTY(int, Int2)
+    Q_PROPERTY(int Int2 READ getInt2 WRITE setInt2)
+
+    SIMPL_INSTANCE_PROPERTY(QString, String1)
+    Q_PROPERTY(QString String1 READ getString1 WRITE setString1)
+
+    SIMPL_INSTANCE_PROPERTY(QString, String2)
+    Q_PROPERTY(QString String2 READ getString2 WRITE setString2)
+
+    SIMPL_INSTANCE_PROPERTY(DataArrayPath, ArrayPath1)
+    Q_PROPERTY(DataArrayPath ArrayPath1 READ getArrayPath1 WRITE setArrayPath1)
+
+    SIMPL_INSTANCE_PROPERTY(DataArrayPath, ArrayPath2)
+    Q_PROPERTY(DataArrayPath ArrayPath2 READ getArrayPath2 WRITE setArrayPath2)
+
+    SIMPL_INSTANCE_PROPERTY(AxisAngleInput_t, AxisAngle1)
+    Q_PROPERTY(AxisAngleInput_t AxisAngle1 READ getAxisAngle1 WRITE setAxisAngle1)
+
+    SIMPL_INSTANCE_PROPERTY(AxisAngleInput_t, AxisAngle2)
+    Q_PROPERTY(AxisAngleInput_t AxisAngle2 READ getAxisAngle2 WRITE setAxisAngle2)
+
+    SIMPL_INSTANCE_PROPERTY(ComparisonInputs, ComparisonInputs1)
+    Q_PROPERTY(ComparisonInputs ComparisonInputs1 READ getComparisonInputs1 WRITE setComparisonInputs1)
+
+    SIMPL_INSTANCE_PROPERTY(ComparisonInputs, ComparisonInputs2)
+    Q_PROPERTY(ComparisonInputs ComparisonInputs2 READ getComparisonInputs2 WRITE setComparisonInputs2)
 
 
     // -----------------------------------------------------------------------------
@@ -333,8 +419,198 @@ class FilterParametersRWTest
     // -----------------------------------------------------------------------------
     //
     // -----------------------------------------------------------------------------
-    int TestJsonWriter()
+    int TestFilterParametersRW()
     {
+      {
+        AttributeMatrixCreationFilterParameter::RequirementType req;
+        AttributeMatrixCreationFilterParameter::Pointer fp = AttributeMatrixCreationFilterParameter::New("Test", "ArrayPath1",
+                                                                                                         getArrayPath1(), FilterParameter::Parameter,
+                                                                                                         req, SIMPL_BIND_SETTER(FilterParametersRWTest, this, ArrayPath2),
+                                                                                                         SIMPL_BIND_GETTER(FilterParametersRWTest, this, ArrayPath1));
+
+        QJsonObject obj;
+        fp->writeJson(obj);
+        fp->readJson(obj);
+
+        DREAM3D_REQUIRE_EQUAL(m_ArrayPath1.getDataContainerName(), m_ArrayPath2.getDataContainerName())
+        DREAM3D_REQUIRE_EQUAL(m_ArrayPath1.getAttributeMatrixName(), m_ArrayPath2.getAttributeMatrixName())
+        DREAM3D_REQUIRE_EQUAL(m_ArrayPath1.getDataArrayName(), m_ArrayPath2.getDataArrayName())
+
+        m_ArrayPath2 = DataArrayPath("", "", "");
+      }
+
+      {
+        AttributeMatrixSelectionFilterParameter::RequirementType req;
+        AttributeMatrixSelectionFilterParameter::Pointer fp = AttributeMatrixSelectionFilterParameter::New("Test", "ArrayPath1",
+                                                                                                         getArrayPath1(), FilterParameter::Parameter,
+                                                                                                         req, SIMPL_BIND_SETTER(FilterParametersRWTest, this, ArrayPath2),
+                                                                                                         SIMPL_BIND_GETTER(FilterParametersRWTest, this, ArrayPath1));
+
+        QJsonObject obj;
+        fp->writeJson(obj);
+        fp->readJson(obj);
+
+        DREAM3D_REQUIRE_EQUAL(m_ArrayPath1.getDataContainerName(), m_ArrayPath2.getDataContainerName())
+        DREAM3D_REQUIRE_EQUAL(m_ArrayPath1.getAttributeMatrixName(), m_ArrayPath2.getAttributeMatrixName())
+        DREAM3D_REQUIRE_EQUAL(m_ArrayPath1.getDataArrayName(), m_ArrayPath2.getDataArrayName())
+
+        m_ArrayPath2 = DataArrayPath("", "", "");
+      }
+
+      {
+        AxisAngleFilterParameter::Pointer fp = AxisAngleFilterParameter::New("Test", "AxisAngle1",
+                                                                             getAxisAngle1(), FilterParameter::Parameter,
+                                                                             SIMPL_BIND_SETTER(FilterParametersRWTest, this, AxisAngle2),
+                                                                             SIMPL_BIND_GETTER(FilterParametersRWTest, this, AxisAngle1));
+
+        QJsonObject obj;
+        fp->writeJson(obj);
+        fp->readJson(obj);
+
+        DREAM3D_REQUIRE_EQUAL(m_AxisAngle1.angle, m_AxisAngle2.angle)
+        DREAM3D_REQUIRE_EQUAL(m_AxisAngle1.h, m_AxisAngle2.h)
+        DREAM3D_REQUIRE_EQUAL(m_AxisAngle1.k, m_AxisAngle2.k)
+        DREAM3D_REQUIRE_EQUAL(m_AxisAngle1.l, m_AxisAngle2.l)
+
+        m_AxisAngle2 = AxisAngleInput_t();
+      }
+
+      {
+        BooleanFilterParameter::Pointer fp = BooleanFilterParameter::New("Test", "Bool1",
+                                                                             getBool1(), FilterParameter::Parameter,
+                                                                             SIMPL_BIND_SETTER(FilterParametersRWTest, this, Bool2),
+                                                                             SIMPL_BIND_GETTER(FilterParametersRWTest, this, Bool1));
+
+        QJsonObject obj;
+        fp->writeJson(obj);
+        fp->readJson(obj);
+
+        DREAM3D_REQUIRE_EQUAL(m_Bool1, m_Bool2)
+
+        m_Bool2 = false;
+      }
+
+      {
+        CalculatorFilterParameter::Pointer fp = CalculatorFilterParameter::New("Test", "String1",
+                                                                             getString1(), FilterParameter::Parameter,
+                                                                             SIMPL_BIND_SETTER(FilterParametersRWTest, this, String2),
+                                                                             SIMPL_BIND_GETTER(FilterParametersRWTest, this, String1));
+
+        QJsonObject obj;
+        fp->writeJson(obj);
+        fp->readJson(obj);
+
+        DREAM3D_REQUIRE_EQUAL(m_String1, m_String2)
+
+        m_String2.clear();
+      }
+
+      {
+        ChoiceFilterParameter::Pointer fp = ChoiceFilterParameter::New("Test", "Int1",
+                                                                             getInt1(), QVector<QString>(), true, FilterParameter::Parameter,
+                                                                             SIMPL_BIND_SETTER(FilterParametersRWTest, this, Int2),
+                                                                             SIMPL_BIND_GETTER(FilterParametersRWTest, this, Int1));
+
+        QJsonObject obj;
+        fp->writeJson(obj);
+        fp->readJson(obj);
+
+        DREAM3D_REQUIRE_EQUAL(m_Int1, m_Int2)
+
+        m_Int2 = 0;
+      }
+
+      {
+        ComparisonSelectionFilterParameter::Pointer fp = ComparisonSelectionFilterParameter::New("Test", "ComparisonInputs1",
+                                                                             "", QVector<QString>(), true, FilterParameter::Parameter,
+                                                                             SIMPL_BIND_SETTER(FilterParametersRWTest, this, ComparisonInputs2),
+                                                                             SIMPL_BIND_GETTER(FilterParametersRWTest, this, ComparisonInputs1));
+
+        QJsonObject obj;
+        fp->writeJson(obj);
+        fp->readJson(obj);
+
+        DREAM3D_REQUIRE_EQUAL(m_ComparisonInputs1.size(), m_ComparisonInputs2.size())
+        for (int i=0; i<m_ComparisonInputs1.size(); i++)
+        {
+          ComparisonInput_t input1 = m_ComparisonInputs1[i];
+          ComparisonInput_t input2 = m_ComparisonInputs2[i];
+          DREAM3D_REQUIRE_EQUAL(input1.dataContainerName, input2.dataContainerName)
+          DREAM3D_REQUIRE_EQUAL(input1.attributeMatrixName, input2.attributeMatrixName)
+          DREAM3D_REQUIRE_EQUAL(input1.attributeArrayName, input2.attributeArrayName)
+          DREAM3D_REQUIRE_EQUAL(input1.compOperator, input2.compOperator)
+          DREAM3D_REQUIRE_EQUAL(input1.compValue, input2.compValue)
+        }
+
+        m_ComparisonInputs2 = ComparisonInputs();
+      }
+
+      {
+        DataArrayCreationFilterParameter::RequirementType req;
+        DataArrayCreationFilterParameter::Pointer fp = DataArrayCreationFilterParameter::New("Test", "ArrayPath1",
+                                                                                                         getArrayPath1(), FilterParameter::Parameter,
+                                                                                                         req, SIMPL_BIND_SETTER(FilterParametersRWTest, this, ArrayPath2),
+                                                                                                         SIMPL_BIND_GETTER(FilterParametersRWTest, this, ArrayPath1));
+
+        QJsonObject obj;
+        fp->writeJson(obj);
+        fp->readJson(obj);
+
+        DREAM3D_REQUIRE_EQUAL(m_ArrayPath1.getDataContainerName(), m_ArrayPath2.getDataContainerName())
+        DREAM3D_REQUIRE_EQUAL(m_ArrayPath1.getAttributeMatrixName(), m_ArrayPath2.getAttributeMatrixName())
+        DREAM3D_REQUIRE_EQUAL(m_ArrayPath1.getDataArrayName(), m_ArrayPath2.getDataArrayName())
+
+        m_ArrayPath2 = DataArrayPath("", "", "");
+      }
+
+      {
+        DataArraySelectionFilterParameter::RequirementType req;
+        DataArraySelectionFilterParameter::Pointer fp = DataArraySelectionFilterParameter::New("Test", "ArrayPath1",
+                                                                                                         getArrayPath1(), FilterParameter::Parameter,
+                                                                                                         req, SIMPL_BIND_SETTER(FilterParametersRWTest, this, ArrayPath2),
+                                                                                                         SIMPL_BIND_GETTER(FilterParametersRWTest, this, ArrayPath1));
+
+        QJsonObject obj;
+        fp->writeJson(obj);
+        fp->readJson(obj);
+
+        DREAM3D_REQUIRE_EQUAL(m_ArrayPath1.getDataContainerName(), m_ArrayPath2.getDataContainerName())
+        DREAM3D_REQUIRE_EQUAL(m_ArrayPath1.getAttributeMatrixName(), m_ArrayPath2.getAttributeMatrixName())
+        DREAM3D_REQUIRE_EQUAL(m_ArrayPath1.getDataArrayName(), m_ArrayPath2.getDataArrayName())
+
+        m_ArrayPath2 = DataArrayPath("", "", "");
+      }
+
+      {
+        DataBundleSelectionFilterParameter::Pointer fp = DataBundleSelectionFilterParameter::New("Test", "String1",
+                                                                             getString1(), FilterParameter::Parameter,
+                                                                             SIMPL_BIND_SETTER(FilterParametersRWTest, this, String2),
+                                                                             SIMPL_BIND_GETTER(FilterParametersRWTest, this, String1));
+
+        QJsonObject obj;
+        fp->writeJson(obj);
+        fp->readJson(obj);
+
+        DREAM3D_REQUIRE_EQUAL(m_String1, m_String2)
+
+        m_String2.clear();
+      }
+
+      {
+        DataContainerArrayProxyFilterParameter::Pointer fp = DataContainerArrayProxyFilterParameter::New("Test", "String1",
+                                                                             getString1(), FilterParameter::Parameter,
+                                                                             SIMPL_BIND_SETTER(FilterParametersRWTest, this, String2),
+                                                                             SIMPL_BIND_GETTER(FilterParametersRWTest, this, String1));
+
+        QJsonObject obj;
+        fp->writeJson(obj);
+        fp->readJson(obj);
+
+        DREAM3D_REQUIRE_EQUAL(m_String1, m_String2)
+
+        m_String2.clear();
+      }
+
       JsonFilterParametersWriter::Pointer writer = JsonFilterParametersWriter::New();
       writer->setFileName(UnitTest::FilterParametersRWTest::OutputFile);
       writer->setPipelineName("TestPipelineName");
@@ -344,7 +620,7 @@ class FilterParametersRWTest
       err = writer->openFilterGroup(NULL, 0);
       DREAM3D_REQUIRE_EQUAL(err, 0)
 
-          // QString write test
+      // QString write test
       {
         err = writer->writeValue(StringTest::Key, StringTest::Value);
         DREAM3D_REQUIRE_EQUAL(err, 0)
@@ -593,263 +869,6 @@ class FilterParametersRWTest
     // -----------------------------------------------------------------------------
     //
     // -----------------------------------------------------------------------------
-    int TestJsonReader()
-    {
-      JsonFilterParametersReader::Pointer reader = JsonFilterParametersReader::New();
-      int err = reader->openFile(UnitTest::FilterParametersRWTest::OutputFile);
-      DREAM3D_REQUIRE_EQUAL(err, 0)
-
-          err = reader->openFilterGroup(NULL, 0);
-      DREAM3D_REQUIRE_EQUAL(err, 0)
-
-          // QString read test
-      {
-        QString str = reader->readString(StringTest::Key, "");
-        DREAM3D_REQUIRE_EQUAL(str, StringTest::Value)
-      }
-
-      // QVector<QString> read test
-      {
-        QVector<QString> vector = reader->readStrings(StringVectorTest::Key, QVector<QString>());
-        DREAM3D_REQUIRE_EQUAL(vector.size(), 4)
-            DREAM3D_REQUIRE_EQUAL(vector[0], StringVectorTest::Value1)
-            DREAM3D_REQUIRE_EQUAL(vector[1], StringVectorTest::Value2)
-            DREAM3D_REQUIRE_EQUAL(vector[2], StringVectorTest::Value3)
-            DREAM3D_REQUIRE_EQUAL(vector[3], StringVectorTest::Value4)
-      }
-
-      // IntVec3_t read test
-      {
-        IntVec3_t intvec3 = reader->readIntVec3(IntVec3Test::Key, IntVec3_t());
-        DREAM3D_REQUIRE_EQUAL(intvec3.x, IntVec3Test::X)
-            DREAM3D_REQUIRE_EQUAL(intvec3.y, IntVec3Test::Y)
-            DREAM3D_REQUIRE_EQUAL(intvec3.z, IntVec3Test::Z)
-      }
-
-      // FloatVec3_t read test
-      {
-        FloatVec3_t floatvec3 = reader->readFloatVec3(FloatVec3Test::Key, FloatVec3_t());
-        DREAM3D_REQUIRE_EQUAL(floatvec3.x, FloatVec3Test::X)
-            DREAM3D_REQUIRE_EQUAL(floatvec3.y, FloatVec3Test::Y)
-            DREAM3D_REQUIRE_EQUAL(floatvec3.z, FloatVec3Test::Z)
-      }
-
-      // Float2ndOrderPoly_t read test
-      {
-        Float2ndOrderPoly_t floatPoly = reader->readFloat2ndOrderPoly(Float2ndOrderPolyTest::Key, Float2ndOrderPoly_t());
-        DREAM3D_REQUIRE_EQUAL(floatPoly.c20, Float2ndOrderPolyTest::Val1)
-            DREAM3D_REQUIRE_EQUAL(floatPoly.c02, Float2ndOrderPolyTest::Val2)
-            DREAM3D_REQUIRE_EQUAL(floatPoly.c11, Float2ndOrderPolyTest::Val3)
-            DREAM3D_REQUIRE_EQUAL(floatPoly.c10, Float2ndOrderPolyTest::Val4)
-            DREAM3D_REQUIRE_EQUAL(floatPoly.c01, Float2ndOrderPolyTest::Val5)
-            DREAM3D_REQUIRE_EQUAL(floatPoly.c00, Float2ndOrderPolyTest::Val6)
-      }
-
-      // Float3rdOrderPoly_t read test
-      {
-        Float3rdOrderPoly_t floatPoly = reader->readFloat3rdOrderPoly(Float3rdOrderPolyTest::Key, Float3rdOrderPoly_t());
-        DREAM3D_REQUIRE_EQUAL(floatPoly.c30, Float3rdOrderPolyTest::Val1)
-            DREAM3D_REQUIRE_EQUAL(floatPoly.c03, Float3rdOrderPolyTest::Val2)
-            DREAM3D_REQUIRE_EQUAL(floatPoly.c21, Float3rdOrderPolyTest::Val3)
-            DREAM3D_REQUIRE_EQUAL(floatPoly.c12, Float3rdOrderPolyTest::Val4)
-            DREAM3D_REQUIRE_EQUAL(floatPoly.c20, Float3rdOrderPolyTest::Val5)
-            DREAM3D_REQUIRE_EQUAL(floatPoly.c02, Float3rdOrderPolyTest::Val6)
-            DREAM3D_REQUIRE_EQUAL(floatPoly.c11, Float3rdOrderPolyTest::Val7)
-            DREAM3D_REQUIRE_EQUAL(floatPoly.c10, Float3rdOrderPolyTest::Val8)
-            DREAM3D_REQUIRE_EQUAL(floatPoly.c01, Float3rdOrderPolyTest::Val9)
-            DREAM3D_REQUIRE_EQUAL(floatPoly.c00, Float3rdOrderPolyTest::Val10)
-      }
-
-      // Float4thOrderPoly_t read test
-      {
-        Float4thOrderPoly_t floatPoly = reader->readFloat4thOrderPoly(Float4thOrderPolyTest::Key, Float4thOrderPoly_t());
-        DREAM3D_REQUIRE_EQUAL(floatPoly.c02, Float4thOrderPolyTest::Val1)
-            DREAM3D_REQUIRE_EQUAL(floatPoly.c11, Float4thOrderPolyTest::Val2)
-            DREAM3D_REQUIRE_EQUAL(floatPoly.c10, Float4thOrderPolyTest::Val3)
-            DREAM3D_REQUIRE_EQUAL(floatPoly.c01, Float4thOrderPolyTest::Val4)
-            DREAM3D_REQUIRE_EQUAL(floatPoly.c00, Float4thOrderPolyTest::Val5)
-            DREAM3D_REQUIRE_EQUAL(floatPoly.c40, Float4thOrderPolyTest::Val6)
-            DREAM3D_REQUIRE_EQUAL(floatPoly.c04, Float4thOrderPolyTest::Val7)
-            DREAM3D_REQUIRE_EQUAL(floatPoly.c31, Float4thOrderPolyTest::Val8)
-            DREAM3D_REQUIRE_EQUAL(floatPoly.c13, Float4thOrderPolyTest::Val9)
-            DREAM3D_REQUIRE_EQUAL(floatPoly.c22, Float4thOrderPolyTest::Val10)
-            DREAM3D_REQUIRE_EQUAL(floatPoly.c30, Float4thOrderPolyTest::Val11)
-            DREAM3D_REQUIRE_EQUAL(floatPoly.c03, Float4thOrderPolyTest::Val12)
-            DREAM3D_REQUIRE_EQUAL(floatPoly.c21, Float4thOrderPolyTest::Val13)
-            DREAM3D_REQUIRE_EQUAL(floatPoly.c12, Float4thOrderPolyTest::Val14)
-            DREAM3D_REQUIRE_EQUAL(floatPoly.c20, Float4thOrderPolyTest::Val15)
-      }
-
-      // FileListInfo_t read test
-      {
-        FileListInfo_t fileListInfo = reader->readFileListInfo(FileListInfoTest::Key, FileListInfo_t());
-        DREAM3D_REQUIRE_EQUAL(fileListInfo.EndIndex, FileListInfoTest::EndIndex)
-            DREAM3D_REQUIRE_EQUAL(fileListInfo.FileExtension, FileListInfoTest::FileExtension)
-            DREAM3D_REQUIRE_EQUAL(fileListInfo.FilePrefix, FileListInfoTest::FilePrefix)
-            DREAM3D_REQUIRE_EQUAL(fileListInfo.FileSuffix, FileListInfoTest::FileSuffix)
-            DREAM3D_REQUIRE_EQUAL(fileListInfo.InputPath, FileListInfoTest::InputPath)
-            DREAM3D_REQUIRE_EQUAL(fileListInfo.Ordering, FileListInfoTest::Ordering)
-            DREAM3D_REQUIRE_EQUAL(fileListInfo.PaddingDigits, FileListInfoTest::PaddingDigits)
-            DREAM3D_REQUIRE_EQUAL(fileListInfo.StartIndex, FileListInfoTest::StartIndex)
-      }
-
-      // ComparisonInputs read test
-      {
-        ComparisonInputs inputs = reader->readComparisonInputs(MultipleComparisonInputTest::Key, ComparisonInputs());
-        DREAM3D_REQUIRE_EQUAL(inputs.size(), 2)
-
-            DREAM3D_REQUIRE_EQUAL(inputs[0].attributeArrayName, MultipleComparisonInputTest::AttributeArrayName1)
-            DREAM3D_REQUIRE_EQUAL(inputs[0].attributeMatrixName, MultipleComparisonInputTest::AttributeMatrixName1)
-            DREAM3D_REQUIRE_EQUAL(inputs[0].compOperator, MultipleComparisonInputTest::CompOperator1)
-            DREAM3D_REQUIRE_EQUAL(inputs[0].compValue, MultipleComparisonInputTest::CompValue1)
-            DREAM3D_REQUIRE_EQUAL(inputs[0].dataContainerName, MultipleComparisonInputTest::DataContainerName1)
-
-            DREAM3D_REQUIRE_EQUAL(inputs[1].attributeArrayName, MultipleComparisonInputTest::AttributeArrayName2)
-            DREAM3D_REQUIRE_EQUAL(inputs[1].attributeMatrixName, MultipleComparisonInputTest::AttributeMatrixName2)
-            DREAM3D_REQUIRE_EQUAL(inputs[1].compOperator, MultipleComparisonInputTest::CompOperator2)
-            DREAM3D_REQUIRE_EQUAL(inputs[1].compValue, MultipleComparisonInputTest::CompValue2)
-            DREAM3D_REQUIRE_EQUAL(inputs[1].dataContainerName, MultipleComparisonInputTest::DataContainerName2)
-      }
-
-      // ComparisonInput_t read test
-      {
-        ComparisonInput_t input = reader->readComparisonInput(MultipleComparisonInputTest::Key, ComparisonInput_t(), 0);
-        DREAM3D_REQUIRE_EQUAL(input.attributeArrayName, MultipleComparisonInputTest::AttributeArrayName1)
-            DREAM3D_REQUIRE_EQUAL(input.attributeMatrixName, MultipleComparisonInputTest::AttributeMatrixName1)
-            DREAM3D_REQUIRE_EQUAL(input.compOperator, MultipleComparisonInputTest::CompOperator1)
-            DREAM3D_REQUIRE_EQUAL(input.compValue, MultipleComparisonInputTest::CompValue1)
-            DREAM3D_REQUIRE_EQUAL(input.dataContainerName, MultipleComparisonInputTest::DataContainerName1)
-      }
-
-      // QVector<AxisAngleInput_t> read test
-      {
-        QVector<AxisAngleInput_t> inputs = reader->readAxisAngles(MultipleAxisAngleInputTest::Key, QVector<AxisAngleInput_t>());
-        DREAM3D_REQUIRE_EQUAL(inputs.size(), 2)
-
-            DREAM3D_REQUIRE_EQUAL(inputs[0].angle, MultipleAxisAngleInputTest::Angle1)
-            DREAM3D_REQUIRE_EQUAL(inputs[0].h, MultipleAxisAngleInputTest::H1)
-            DREAM3D_REQUIRE_EQUAL(inputs[0].k, MultipleAxisAngleInputTest::K1)
-            DREAM3D_REQUIRE_EQUAL(inputs[0].l, MultipleAxisAngleInputTest::L1)
-
-            DREAM3D_REQUIRE_EQUAL(inputs[1].angle, MultipleAxisAngleInputTest::Angle2)
-            DREAM3D_REQUIRE_EQUAL(inputs[1].h, MultipleAxisAngleInputTest::H2)
-            DREAM3D_REQUIRE_EQUAL(inputs[1].k, MultipleAxisAngleInputTest::K2)
-            DREAM3D_REQUIRE_EQUAL(inputs[1].l, MultipleAxisAngleInputTest::L2)
-      }
-
-      // AxisAngleInput_t read test
-      {
-        AxisAngleInput_t input = reader->readAxisAngle(AxisAngleInputTest::Key, AxisAngleInput_t(), 0);
-        DREAM3D_REQUIRE_EQUAL(input.angle, AxisAngleInputTest::Angle)
-            DREAM3D_REQUIRE_EQUAL(input.h, AxisAngleInputTest::H)
-            DREAM3D_REQUIRE_EQUAL(input.k, AxisAngleInputTest::K)
-            DREAM3D_REQUIRE_EQUAL(input.l, AxisAngleInputTest::L)
-      }
-
-      // QSet<QString> read test
-      {
-        QSet<QString> strings = reader->readArraySelections(StringSetTest::Key, QSet<QString>());
-        DREAM3D_REQUIRE_EQUAL(strings.size(), 4)
-
-            DREAM3D_REQUIRE_EQUAL(strings.contains(StringSetTest::String1), true)
-            DREAM3D_REQUIRE_EQUAL(strings.contains(StringSetTest::String2), true)
-            DREAM3D_REQUIRE_EQUAL(strings.contains(StringSetTest::String3), true)
-            DREAM3D_REQUIRE_EQUAL(strings.contains(StringSetTest::String4), true)
-      }
-
-      // DataContainerArrayProxy read test
-      {
-        DataContainerArrayProxy proxy = reader->readDataContainerArrayProxy(DataContainerArrayProxyTest::Key, DataContainerArrayProxy());
-        QMap<QString, DataContainerProxy> dcMap = proxy.dataContainers;
-        DREAM3D_REQUIRE_EQUAL(dcMap.size(), 1)
-            DREAM3D_REQUIRE_EQUAL(dcMap.contains(DataContainerArrayProxyTest::DcProxyName), true)
-
-            QMap<QString, AttributeMatrixProxy> amMap = dcMap.value(DataContainerArrayProxyTest::DcProxyName).attributeMatricies;
-        DREAM3D_REQUIRE_EQUAL(amMap.size(), 2)
-            DREAM3D_REQUIRE_EQUAL(amMap.contains(DataContainerArrayProxyTest::AmProxyName1), true)
-            DREAM3D_REQUIRE_EQUAL(amMap.contains(DataContainerArrayProxyTest::AmProxyName2), true)
-
-            QMap<QString, DataArrayProxy> daMap1 = amMap.value(DataContainerArrayProxyTest::AmProxyName1).dataArrays;
-        DREAM3D_REQUIRE_EQUAL(daMap1.size(), 2)
-            DREAM3D_REQUIRE_EQUAL(daMap1.contains(DataContainerArrayProxyTest::DaProxyName1), true)
-            DREAM3D_REQUIRE_EQUAL(daMap1.contains(DataContainerArrayProxyTest::DaProxyName2), true)
-
-            QMap<QString, DataArrayProxy> daMap2 = amMap.value(DataContainerArrayProxyTest::AmProxyName2).dataArrays;
-        DREAM3D_REQUIRE_EQUAL(daMap2.size(), 1)
-            DREAM3D_REQUIRE_EQUAL(daMap2.contains(DataContainerArrayProxyTest::DaProxyName3), true)
-      }
-
-      // DataArrayPath read test
-      {
-        DataArrayPath path = reader->readDataArrayPath(DataArrayPathTest::Key, DataArrayPath());
-        DREAM3D_REQUIRE_EQUAL(path.isEmpty(), false)
-
-            DREAM3D_REQUIRE_EQUAL(path.getDataContainerName(), DataArrayPathTest::DCName)
-            DREAM3D_REQUIRE_EQUAL(path.getAttributeMatrixName(), DataArrayPathTest::AMName)
-            DREAM3D_REQUIRE_EQUAL(path.getDataArrayName(), DataArrayPathTest::DAName)
-      }
-
-      // QVector<DataArrayPath> read test
-      {
-        QVector<DataArrayPath> paths = reader->readDataArrayPathVector(MultipleDataArrayPathTest::Key, QVector<DataArrayPath>());
-        DREAM3D_REQUIRE_EQUAL(paths.size(), 2)
-
-            DREAM3D_REQUIRE_EQUAL(paths[0].getDataContainerName(), MultipleDataArrayPathTest::DCName1)
-            DREAM3D_REQUIRE_EQUAL(paths[0].getAttributeMatrixName(), MultipleDataArrayPathTest::AMName1)
-            DREAM3D_REQUIRE_EQUAL(paths[0].getDataArrayName(), MultipleDataArrayPathTest::DAName1)
-
-            DREAM3D_REQUIRE_EQUAL(paths[1].getDataContainerName(), MultipleDataArrayPathTest::DCName2)
-            DREAM3D_REQUIRE_EQUAL(paths[1].getAttributeMatrixName(), MultipleDataArrayPathTest::AMName2)
-            DREAM3D_REQUIRE_EQUAL(paths[1].getDataArrayName(), MultipleDataArrayPathTest::DAName2)
-      }
-
-      // DynamicTableData read test
-      {
-        DynamicTableData data = reader->readDynamicTableData(DynamicTableDataTest::Key, DynamicTableData());
-        DREAM3D_REQUIRE_EQUAL(data.isEmpty(), false)
-
-            QStringList rowHeaders = data.getRowHeaders();
-        DREAM3D_REQUIRE_EQUAL(rowHeaders.size(), 6)
-            DREAM3D_REQUIRE_EQUAL(rowHeaders[0], DynamicTableDataTest::RowHeader1)
-            DREAM3D_REQUIRE_EQUAL(rowHeaders[1], DynamicTableDataTest::RowHeader2)
-            DREAM3D_REQUIRE_EQUAL(rowHeaders[2], DynamicTableDataTest::RowHeader3)
-            DREAM3D_REQUIRE_EQUAL(rowHeaders[3], DynamicTableDataTest::RowHeader4)
-            DREAM3D_REQUIRE_EQUAL(rowHeaders[4], DynamicTableDataTest::RowHeader5)
-            DREAM3D_REQUIRE_EQUAL(rowHeaders[5], DynamicTableDataTest::RowHeader6)
-
-            QStringList colHeaders = data.getColHeaders();
-        DREAM3D_REQUIRE_EQUAL(colHeaders.size(), 8)
-            DREAM3D_REQUIRE_EQUAL(colHeaders[0], DynamicTableDataTest::ColumnHeader1)
-            DREAM3D_REQUIRE_EQUAL(colHeaders[1], DynamicTableDataTest::ColumnHeader2)
-            DREAM3D_REQUIRE_EQUAL(colHeaders[2], DynamicTableDataTest::ColumnHeader3)
-            DREAM3D_REQUIRE_EQUAL(colHeaders[3], DynamicTableDataTest::ColumnHeader4)
-            DREAM3D_REQUIRE_EQUAL(colHeaders[4], DynamicTableDataTest::ColumnHeader5)
-            DREAM3D_REQUIRE_EQUAL(colHeaders[5], DynamicTableDataTest::ColumnHeader6)
-            DREAM3D_REQUIRE_EQUAL(colHeaders[6], DynamicTableDataTest::ColumnHeader7)
-            DREAM3D_REQUIRE_EQUAL(colHeaders[7], DynamicTableDataTest::ColumnHeader8)
-
-            std::vector<std::vector<double> > tableData = data.getTableData();
-        DREAM3D_REQUIRE_EQUAL(tableData.size(), rowHeaders.size())
-            foreach(std::vector<double> vector, tableData)
-        {
-          DREAM3D_REQUIRE_EQUAL(vector.size(), colHeaders.size())
-              foreach(double i, vector)
-          {
-            DREAM3D_REQUIRE_EQUAL(vector[i], 0)
-          }
-        }
-      }
-
-      err = reader->closeFilterGroup();
-      DREAM3D_REQUIRE_EQUAL(err, 0)
-
-          return EXIT_SUCCESS;
-    }
-
-
-    // -----------------------------------------------------------------------------
-    //
-    // -----------------------------------------------------------------------------
     template<typename T>
     void RWIntegerTest()
     {
@@ -1048,8 +1067,7 @@ class FilterParametersRWTest
       DREAM3D_REGISTER_TEST(RWFloatTest<float>())
       DREAM3D_REGISTER_TEST(RWFloatTest<double>())
 
-      DREAM3D_REGISTER_TEST(TestJsonWriter())
-      DREAM3D_REGISTER_TEST(TestJsonReader())
+      DREAM3D_REGISTER_TEST(TestFilterParametersRW())
 
       DREAM3D_REGISTER_TEST(RemoveTestFiles())
     }

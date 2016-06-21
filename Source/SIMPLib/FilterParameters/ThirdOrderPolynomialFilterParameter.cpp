@@ -48,6 +48,7 @@ FilterParameter()
 ThirdOrderPolynomialFilterParameter::~ThirdOrderPolynomialFilterParameter()
 {}
 
+//************************** OLD FP API *******************************
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
@@ -66,7 +67,28 @@ ThirdOrderPolynomialFilterParameter::Pointer ThirdOrderPolynomialFilterParameter
 
   return ptr;
 }
+//************************** OLD FP API *******************************
 
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+ThirdOrderPolynomialFilterParameter::Pointer ThirdOrderPolynomialFilterParameter::New(const QString& humanLabel, const QString& propertyName,
+  const Float3rdOrderPoly_t& defaultValue, Category category, SetterCallbackType setterCallback, GetterCallbackType getterCallback, int groupIndex)
+{
+
+  ThirdOrderPolynomialFilterParameter::Pointer ptr = ThirdOrderPolynomialFilterParameter::New();
+  ptr->setHumanLabel(humanLabel);
+  ptr->setPropertyName(propertyName);
+  QVariant v;
+  v.setValue(defaultValue);
+  ptr->setDefaultValue(v);
+  ptr->setCategory(category);
+  ptr->setGroupIndex(groupIndex);
+  ptr->setSetterCallback(setterCallback);
+  ptr->setGetterCallback(getterCallback);
+
+  return ptr;
+}
 
 // -----------------------------------------------------------------------------
 //
@@ -84,7 +106,21 @@ void ThirdOrderPolynomialFilterParameter::readJson(const QJsonObject &json)
   QJsonValue jsonValue = json[getPropertyName()];
   if(!jsonValue.isUndefined() )
   {
-    m_SetterCallback(jsonValue.toInt(0.0));
+    QJsonObject obj = jsonValue.toObject();
+    Float3rdOrderPoly_t poly;
+
+    poly.c30 = static_cast<float>(obj["c30"].toDouble());
+    poly.c03 = static_cast<float>(obj["c03"].toDouble());
+    poly.c21 = static_cast<float>(obj["c21"].toDouble());
+    poly.c12 = static_cast<float>(obj["c12"].toDouble());
+    poly.c20 = static_cast<float>(obj["c20"].toDouble());
+    poly.c02 = static_cast<float>(obj["c02"].toDouble());
+    poly.c11 = static_cast<float>(obj["c11"].toDouble());
+    poly.c10 = static_cast<float>(obj["c10"].toDouble());
+    poly.c01 = static_cast<float>(obj["c01"].toDouble());
+    poly.c00 = static_cast<float>(obj["c00"].toDouble());
+
+    m_SetterCallback(poly);
   }
 }
 
@@ -93,6 +129,20 @@ void ThirdOrderPolynomialFilterParameter::readJson(const QJsonObject &json)
 // -----------------------------------------------------------------------------
 void ThirdOrderPolynomialFilterParameter::writeJson(QJsonObject &json)
 {
-  json[getPropertyName()] = m_GetterCallback();
+  Float3rdOrderPoly_t poly = m_GetterCallback();
+  QJsonObject obj;
+
+  obj["c30"] = poly.c30;
+  obj["c03"] = poly.c03;
+  obj["c21"] = poly.c21;
+  obj["c12"] = poly.c12;
+  obj["c20"] = poly.c20;
+  obj["c02"] = poly.c02;
+  obj["c11"] = poly.c11;
+  obj["c10"] = poly.c10;
+  obj["c01"] = poly.c01;
+  obj["c00"] = poly.c00;
+
+  json[getPropertyName()] = obj;
 }
 

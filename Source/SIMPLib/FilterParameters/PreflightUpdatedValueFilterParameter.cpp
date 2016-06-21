@@ -48,6 +48,7 @@ PreflightUpdatedValueFilterParameter::PreflightUpdatedValueFilterParameter()
 PreflightUpdatedValueFilterParameter::~PreflightUpdatedValueFilterParameter()
 {}
 
+//************************** OLD FP API *******************************
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
@@ -63,7 +64,25 @@ PreflightUpdatedValueFilterParameter::Pointer PreflightUpdatedValueFilterParamet
 
   return ptr;
 }
+//************************** OLD FP API *******************************
 
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+PreflightUpdatedValueFilterParameter::Pointer PreflightUpdatedValueFilterParameter::New(const QString& humanLabel, const QString& propertyName, const QString& defaultValue,
+  Category category, SetterCallbackType setterCallback, GetterCallbackType getterCallback, int groupIndex)
+{
+  PreflightUpdatedValueFilterParameter::Pointer ptr = PreflightUpdatedValueFilterParameter::New();
+  ptr->setHumanLabel(humanLabel);
+  ptr->setPropertyName(propertyName);
+  ptr->setDefaultValue(defaultValue);
+  ptr->setCategory(category);
+  ptr->setGroupIndex(groupIndex);
+  ptr->setSetterCallback(setterCallback);
+  ptr->setGetterCallback(getterCallback);
+
+  return ptr;
+}
 
 // -----------------------------------------------------------------------------
 //
@@ -81,7 +100,7 @@ void PreflightUpdatedValueFilterParameter::readJson(const QJsonObject &json)
   QJsonValue jsonValue = json[getPropertyName()];
   if(!jsonValue.isUndefined() )
   {
-    m_SetterCallback(jsonValue.toInt(0.0));
+    m_SetterCallback(jsonValue.toString(""));
   }
 }
 

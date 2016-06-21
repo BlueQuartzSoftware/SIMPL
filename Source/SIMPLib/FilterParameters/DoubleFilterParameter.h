@@ -47,9 +47,18 @@ public:
     SIMPL_STATIC_NEW_MACRO(DoubleFilterParameter)
     SIMPL_TYPE_MACRO(DoubleFilterParameter)
 
+  typedef std::function<void(double)> SetterCallbackType;
+  typedef std::function<double(void)> GetterCallbackType;
+
+  //************************** OLD FP API *******************************
     static Pointer New(const QString& humanLabel, const QString& propertyName,
     const double& defaultValue, Category category,
      int groupIndex = -1);
+    //************************** OLD FP API *******************************
+
+    static Pointer New(const QString& humanLabel, const QString& propertyName,
+    const double& defaultValue, Category category, SetterCallbackType setterCallback,
+    GetterCallbackType getterCallback, int groupIndex = -1);
 
     virtual ~DoubleFilterParameter();
 

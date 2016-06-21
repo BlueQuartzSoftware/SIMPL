@@ -39,6 +39,7 @@
 #include <QtCore/QJsonObject>
 
 #include "SIMPLib/FilterParameters/FilterParameter.h"
+#include "SIMPLib/FilterParameters/DynamicTableData.h"
 
 class SIMPLib_EXPORT DynamicTableFilterParameter : public FilterParameter
 {
@@ -47,9 +48,20 @@ class SIMPLib_EXPORT DynamicTableFilterParameter : public FilterParameter
     SIMPL_STATIC_NEW_MACRO(DynamicTableFilterParameter)
     SIMPL_TYPE_MACRO_SUPER(DynamicTableFilterParameter, FilterParameter)
 
+    typedef std::function<void(DynamicTableData)> SetterCallbackType;
+    typedef std::function<DynamicTableData(void)> GetterCallbackType;
+
+    //************************** OLD FP API *******************************
     static Pointer New(const QString& humanLabel, const QString& propertyName,
                        QStringList rHeaders, QStringList cHeaders, std::vector<std::vector<double> > defaultTable,
                        FilterParameter::Category category, bool isRowsDynamic = true, bool isColsDynamic = true,
+                       int minRowCount = 0, int minColCount = 0, int groupIndex = -1);
+    //************************** OLD FP API *******************************
+
+    static Pointer New(const QString& humanLabel, const QString& propertyName,
+                       QStringList rHeaders, QStringList cHeaders, std::vector<std::vector<double> > defaultTable,
+                       FilterParameter::Category category, SetterCallbackType setterCallback,
+                       GetterCallbackType getterCallback, bool isRowsDynamic = true, bool isColsDynamic = true,
                        int minRowCount = 0, int minColCount = 0, int groupIndex = -1);
 
     virtual ~DynamicTableFilterParameter();

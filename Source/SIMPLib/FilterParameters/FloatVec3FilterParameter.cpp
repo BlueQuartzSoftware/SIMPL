@@ -48,6 +48,7 @@ FilterParameter()
 FloatVec3FilterParameter::~FloatVec3FilterParameter()
 {}
 
+//************************** OLD FP API *******************************
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
@@ -63,6 +64,28 @@ FloatVec3FilterParameter::Pointer FloatVec3FilterParameter::New(const QString& h
   ptr->setDefaultValue(v);
   ptr->setCategory(category);
   ptr->setGroupIndex(groupIndex);
+
+  return ptr;
+}
+//************************** OLD FP API *******************************
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+FloatVec3FilterParameter::Pointer FloatVec3FilterParameter::New(const QString& humanLabel, const QString& propertyName,
+  const FloatVec3_t& defaultValue, Category category, SetterCallbackType setterCallback, GetterCallbackType getterCallback, int groupIndex)
+{
+
+  FloatVec3FilterParameter::Pointer ptr = FloatVec3FilterParameter::New();
+  ptr->setHumanLabel(humanLabel);
+  ptr->setPropertyName(propertyName);
+  QVariant v;
+  v.setValue(defaultValue);
+  ptr->setDefaultValue(v);
+  ptr->setCategory(category);
+  ptr->setGroupIndex(groupIndex);
+  ptr->setSetterCallback(setterCallback);
+  ptr->setGetterCallback(getterCallback);
 
   return ptr;
 }
@@ -83,7 +106,14 @@ void FloatVec3FilterParameter::readJson(const QJsonObject &json)
   QJsonValue jsonValue = json[getPropertyName()];
   if(!jsonValue.isUndefined() )
   {
-    m_SetterCallback(jsonValue.toInt(0.0));
+    QJsonObject obj = jsonValue.toObject();
+    FloatVec3_t floatVec3;
+
+    floatVec3.x = static_cast<float>(obj["x"].toDouble());
+    floatVec3.y = static_cast<float>(obj["y"].toDouble());
+    floatVec3.z = static_cast<float>(obj["z"].toDouble());
+
+    m_SetterCallback(floatVec3);
   }
 }
 
@@ -92,6 +122,14 @@ void FloatVec3FilterParameter::readJson(const QJsonObject &json)
 // -----------------------------------------------------------------------------
 void FloatVec3FilterParameter::writeJson(QJsonObject &json)
 {
-  json[getPropertyName()] = m_GetterCallback();
+  FloatVec3_t floatVec3 = m_GetterCallback();
+
+  QJsonObject obj;
+
+  obj["x"] = floatVec3.x;
+  obj["y"] = floatVec3.y;
+  obj["z"] = floatVec3.z;
+
+  json[getPropertyName()] = obj;
 }
 

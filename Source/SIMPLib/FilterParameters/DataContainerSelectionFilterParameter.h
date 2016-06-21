@@ -47,14 +47,24 @@ class SIMPLib_EXPORT DataContainerSelectionFilterParameter : public FilterParame
     SIMPL_STATIC_NEW_MACRO(DataContainerSelectionFilterParameter)
     SIMPL_TYPE_MACRO(DataContainerSelectionFilterParameter)
 
+    typedef std::function<void(QString)> SetterCallbackType;
+    typedef std::function<QString(void)> GetterCallbackType;
+
     typedef struct
     {
       QVector<unsigned int> dcGeometryTypes;
     } RequirementType;
 
+    //************************** OLD FP API *******************************
     static Pointer New(const QString& humanLabel, const QString& propertyName,
                        const QString& defaultValue, Category category,
                        const RequirementType req, int groupIndex = -1);
+    //************************** OLD FP API *******************************
+
+    static Pointer New(const QString& humanLabel, const QString& propertyName,
+                       const QString& defaultValue, Category category,
+                       const RequirementType req, SetterCallbackType setterCallback,
+                       GetterCallbackType getterCallback, int groupIndex = -1);
 
     virtual ~DataContainerSelectionFilterParameter();
 

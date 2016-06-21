@@ -48,6 +48,7 @@ PhaseTypeSelectionFilterParameter::PhaseTypeSelectionFilterParameter()
 PhaseTypeSelectionFilterParameter::~PhaseTypeSelectionFilterParameter()
 {}
 
+//************************** OLD FP API *******************************
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
@@ -75,7 +76,39 @@ PhaseTypeSelectionFilterParameter::Pointer PhaseTypeSelectionFilterParameter::Ne
 
   return ptr;
 }
+//************************** OLD FP API *******************************
 
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+PhaseTypeSelectionFilterParameter::Pointer PhaseTypeSelectionFilterParameter::New(const QString& humanLabel,
+                                                                                  const QString& PhaseTypesArrayName,
+                                                                                  const QString& phaseTypeCountProperty,
+                                                                                  const QString& phaseTypeDataProperty,
+                                                                                  const QString& attributeMatrixProperty,
+                                                                                  const DataArrayPath attributeMatrixDefault,
+                                                                                  const QStringList phaseListChoices,
+                                                                                  Category category,
+                                                                                  SetterCallbackType setterCallback,
+                                                                                  GetterCallbackType getterCallback,
+                                                                                  int groupIndex)
+{
+  PhaseTypeSelectionFilterParameter::Pointer ptr = PhaseTypeSelectionFilterParameter::New();
+  ptr->setHumanLabel(humanLabel);
+  ptr->setPropertyName(PhaseTypesArrayName);
+  ptr->setCategory(category);
+  ptr->setGroupIndex(groupIndex);
+  ptr->setPhaseListChoices(phaseListChoices);
+  ptr->setPhaseTypeCountProperty(phaseTypeCountProperty);
+  ptr->setPhaseTypeDataProperty(phaseTypeDataProperty);
+  ptr->setAttributeMatrixPathProperty(attributeMatrixProperty);
+  ptr->setAttributeMatrixPathDefault(attributeMatrixDefault);
+  ptr->setSetterCallback(setterCallback);
+  ptr->setGetterCallback(getterCallback);
+
+
+  return ptr;
+}
 
 // -----------------------------------------------------------------------------
 //
@@ -93,7 +126,9 @@ void PhaseTypeSelectionFilterParameter::readJson(const QJsonObject &json)
   QJsonValue jsonValue = json[getPropertyName()];
   if(!jsonValue.isUndefined() )
   {
-    m_SetterCallback(jsonValue.toInt(0.0));
+    QJsonObject obj = jsonValue.toObject();
+    DataArrayPath dap(obj["Data Container Name"].toString(), obj["Attribute Matrix Name"].toString(), obj["Data Array Name"].toString());
+    m_SetterCallback(dap);
   }
 }
 
@@ -102,6 +137,13 @@ void PhaseTypeSelectionFilterParameter::readJson(const QJsonObject &json)
 // -----------------------------------------------------------------------------
 void PhaseTypeSelectionFilterParameter::writeJson(QJsonObject &json)
 {
-  json[getPropertyName()] = m_GetterCallback();
+  DataArrayPath dap = m_GetterCallback();
+  QJsonObject obj;
+
+  obj["Data Container Name"] = dap.getDataContainerName();
+  obj["Attribute Matrix Name"] = dap.getAttributeMatrixName();
+  obj["Data Array Name"] = dap.getDataArrayName();
+
+  json[getPropertyName()] = obj;
 }
 

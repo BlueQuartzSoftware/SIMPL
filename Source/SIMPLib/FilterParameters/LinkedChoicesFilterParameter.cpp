@@ -49,6 +49,7 @@ LinkedChoicesFilterParameter::LinkedChoicesFilterParameter() :
 LinkedChoicesFilterParameter::~LinkedChoicesFilterParameter()
 {}
 
+//************************** OLD FP API *******************************
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
@@ -70,7 +71,34 @@ LinkedChoicesFilterParameter::Pointer LinkedChoicesFilterParameter::New(const QS
 
   return ptr;
 }
+//************************** OLD FP API *******************************
 
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+LinkedChoicesFilterParameter::Pointer LinkedChoicesFilterParameter::New(const QString& humanLabel, const QString& propertyName,
+    const int& defaultValue,
+    QVector<QString> choices,
+    QStringList linkedProperties,
+    Category category,
+    SetterCallbackType setterCallback,
+    GetterCallbackType getterCallback,
+    int groupIndex)
+{
+  LinkedChoicesFilterParameter::Pointer ptr = LinkedChoicesFilterParameter::New();
+  ptr->setHumanLabel(humanLabel);
+  ptr->setPropertyName(propertyName);
+  ptr->setDefaultValue(defaultValue);
+  ptr->setCategory(category);
+  ptr->setChoices(choices);
+  ptr->setLinkedProperties(linkedProperties);
+  ptr->setEditable(false);
+  ptr->setGroupIndex(groupIndex);
+  ptr->setSetterCallback(setterCallback);
+  ptr->setGetterCallback(getterCallback);
+
+  return ptr;
+}
 
 // -----------------------------------------------------------------------------
 //

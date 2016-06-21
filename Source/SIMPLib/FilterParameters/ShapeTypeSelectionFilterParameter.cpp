@@ -48,6 +48,7 @@ ShapeTypeSelectionFilterParameter::ShapeTypeSelectionFilterParameter()
 ShapeTypeSelectionFilterParameter::~ShapeTypeSelectionFilterParameter()
 {}
 
+//************************** OLD FP API *******************************
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
@@ -68,7 +69,31 @@ ShapeTypeSelectionFilterParameter::Pointer ShapeTypeSelectionFilterParameter::Ne
 
   return ptr;
 }
+//************************** OLD FP API *******************************
 
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+ShapeTypeSelectionFilterParameter::Pointer ShapeTypeSelectionFilterParameter::New(const QString& humanLabel, const QString& propertyName, const QString& defaultValue,
+  const QString& phaseTypeCountProperty,
+  const QString& phaseTypeArrayPathProperty,
+  Category category, SetterCallbackType setterCallback,
+  GetterCallbackType getterCallback, int groupIndex)
+{
+  ShapeTypeSelectionFilterParameter::Pointer ptr = ShapeTypeSelectionFilterParameter::New();
+  ptr->setHumanLabel(humanLabel);
+  ptr->setPropertyName(propertyName);
+  ptr->setDefaultValue(defaultValue);
+  ptr->setCategory(category);
+
+  ptr->setPhaseTypeCountProperty(phaseTypeCountProperty);
+  ptr->setPhaseTypeArrayPathProperty(phaseTypeArrayPathProperty);
+  ptr->setGroupIndex(groupIndex);
+  ptr->setSetterCallback(setterCallback);
+  ptr->setGetterCallback(getterCallback);
+
+  return ptr;
+}
 
 // -----------------------------------------------------------------------------
 //
@@ -86,7 +111,7 @@ void ShapeTypeSelectionFilterParameter::readJson(const QJsonObject &json)
   QJsonValue jsonValue = json[getPropertyName()];
   if(!jsonValue.isUndefined() )
   {
-    m_SetterCallback(jsonValue.toInt(0.0));
+    m_SetterCallback(jsonValue.toString(""));
   }
 }
 

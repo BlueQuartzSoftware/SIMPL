@@ -48,6 +48,7 @@ FilterParameter()
 OutputPathFilterParameter::~OutputPathFilterParameter()
 {}
 
+//************************** OLD FP API *******************************
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
@@ -66,7 +67,28 @@ OutputPathFilterParameter::Pointer OutputPathFilterParameter::New(const QString&
 
   return ptr;
 }
+//************************** OLD FP API *******************************
 
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+OutputPathFilterParameter::Pointer OutputPathFilterParameter::New(const QString& humanLabel, const QString& propertyName,
+  const QString& defaultValue, Category category, SetterCallbackType setterCallback, GetterCallbackType getterCallback,
+  const QString& fileExtension, const QString& fileType, int groupIndex)
+{
+  OutputPathFilterParameter::Pointer ptr = OutputPathFilterParameter::New();
+  ptr->setHumanLabel(humanLabel);
+  ptr->setPropertyName(propertyName);
+  ptr->setDefaultValue(defaultValue);
+  ptr->setCategory(category);
+  ptr->setFileExtension(fileExtension);
+  ptr->setFileType(fileType);
+  ptr->setGroupIndex(groupIndex);
+  ptr->setSetterCallback(setterCallback);
+  ptr->setGetterCallback(getterCallback);
+
+  return ptr;
+}
 
 // -----------------------------------------------------------------------------
 //
@@ -84,7 +106,7 @@ void OutputPathFilterParameter::readJson(const QJsonObject &json)
   QJsonValue jsonValue = json[getPropertyName()];
   if(!jsonValue.isUndefined() )
   {
-    m_SetterCallback(jsonValue.toInt(0.0));
+    m_SetterCallback(jsonValue.toString(""));
   }
 }
 

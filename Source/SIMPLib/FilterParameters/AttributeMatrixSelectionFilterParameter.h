@@ -48,15 +48,25 @@ class SIMPLib_EXPORT AttributeMatrixSelectionFilterParameter : public FilterPara
     SIMPL_STATIC_NEW_MACRO(AttributeMatrixSelectionFilterParameter)
     SIMPL_TYPE_MACRO(AttributeMatrixSelectionFilterParameter)
 
+    typedef std::function<void(DataArrayPath)> SetterCallbackType;
+    typedef std::function<DataArrayPath(void)> GetterCallbackType;
+
     typedef struct
     {
       QVector<unsigned int> dcGeometryTypes;
       QVector<unsigned int> amTypes;
     } RequirementType;
 
+    //************************** OLD FP API *******************************
     static Pointer New(const QString& humanLabel, const QString& propertyName,
                        const DataArrayPath& defaultValue, Category category,
                        const RequirementType req, int groupIndex = -1);
+    //************************** OLD FP API *******************************
+
+    static Pointer New(const QString& humanLabel, const QString& propertyName,
+                       const DataArrayPath& defaultValue, Category category,
+                       const RequirementType req, SetterCallbackType setterCallback,
+                       GetterCallbackType getterCallback, int groupIndex = -1);
 
     virtual ~AttributeMatrixSelectionFilterParameter();
 

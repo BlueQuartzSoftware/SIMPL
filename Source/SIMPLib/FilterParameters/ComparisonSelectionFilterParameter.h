@@ -38,6 +38,7 @@
 
 #include <QtCore/QJsonObject>
 
+#include "SIMPLib/Common/ComparisonInputs.h"
 #include "SIMPLib/FilterParameters/FilterParameter.h"
 
 class SIMPLib_EXPORT ComparisonSelectionFilterParameter : public FilterParameter
@@ -47,10 +48,19 @@ class SIMPLib_EXPORT ComparisonSelectionFilterParameter : public FilterParameter
     SIMPL_STATIC_NEW_MACRO(ComparisonSelectionFilterParameter)
     SIMPL_TYPE_MACRO_SUPER(ComparisonSelectionFilterParameter, FilterParameter)
 
+    typedef std::function<void(ComparisonInputs)> SetterCallbackType;
+    typedef std::function<ComparisonInputs(void)> GetterCallbackType;
+
+    //************************** OLD FP API *******************************
     static Pointer New(const QString& humanLabel, const QString& propertyName,
                        const QString& defaultValue, QVector<QString> choices,
                        bool showOperators, Category category, int groupIndex = -1);
+    //************************** OLD FP API *******************************
 
+    static Pointer New(const QString& humanLabel, const QString& propertyName,
+                       const QString& defaultValue, QVector<QString> choices,
+                       bool showOperators, Category category, SetterCallbackType setterCallback,
+                       GetterCallbackType getterCallback, int groupIndex = -1);
 
     virtual ~ComparisonSelectionFilterParameter();
 

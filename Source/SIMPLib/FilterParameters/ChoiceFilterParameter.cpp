@@ -49,6 +49,7 @@ ChoiceFilterParameter::ChoiceFilterParameter() :
 ChoiceFilterParameter::~ChoiceFilterParameter()
 {}
 
+//************************** OLD FP API *******************************
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
@@ -67,6 +68,29 @@ ChoiceFilterParameter::Pointer ChoiceFilterParameter::New(const QString& humanLa
   ptr->setEditable(editable);
   ptr->setGroupIndex(groupIndex);
 
+
+  return ptr;
+}
+//************************** OLD FP API *******************************
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+ChoiceFilterParameter::Pointer ChoiceFilterParameter::New(const QString& humanLabel, const QString& propertyName, const int& defaultValue,
+                                                          QVector<QString> choices, bool editable, Category category, SetterCallbackType setterCallback,
+                                                          GetterCallbackType getterCallback, int groupIndex)
+
+{
+  ChoiceFilterParameter::Pointer ptr = ChoiceFilterParameter::New();
+  ptr->setHumanLabel(humanLabel);
+  ptr->setPropertyName(propertyName);
+  ptr->setDefaultValue(defaultValue);
+  ptr->setCategory(category);
+  ptr->setChoices(choices);
+  ptr->setEditable(editable);
+  ptr->setGroupIndex(groupIndex);
+  ptr->setSetterCallback(setterCallback);
+  ptr->setGetterCallback(getterCallback);
 
   return ptr;
 }

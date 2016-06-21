@@ -47,11 +47,21 @@ public:
     SIMPL_STATIC_NEW_MACRO(InputFileFilterParameter)
     SIMPL_TYPE_MACRO(InputFileFilterParameter)
 
+  typedef std::function<void(QString)> SetterCallbackType;
+  typedef std::function<QString(void)> GetterCallbackType;
+
+  //************************** OLD FP API *******************************
     static Pointer New(const QString& humanLabel, const QString& propertyName,
     const QString& defaultValue, Category category,
     const QString& fileExtension = QString(""),
     const QString& fileType = QString(""),
     int groupIndex = -1);
+    //************************** OLD FP API *******************************
+
+    static Pointer New(const QString& humanLabel, const QString& propertyName,
+    const QString& defaultValue, Category category, SetterCallbackType setterCallback,
+    GetterCallbackType getterCallback, const QString& fileExtension = QString(""),
+    const QString& fileType = QString(""), int groupIndex = -1);
 
     virtual ~InputFileFilterParameter();
 

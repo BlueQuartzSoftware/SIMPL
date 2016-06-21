@@ -44,6 +44,12 @@
 #include "SIMPLib/SIMPLib.h"
 #include "SIMPLib/Common/SIMPLibSetGetMacros.h"
 
+#define SIMPL_BIND_SETTER(CLASS, PTR, PROP)\
+std::bind(&CLASS::set##PROP, PTR, std::placeholders::_1)
+
+#define SIMPL_BIND_GETTER(CLASS, PTR, PROP)\
+std::bind(&CLASS::get##PROP, PTR)
+
 /**
  * @class FilterParameter FilterParameter.h DREAM3DLib/FilterParameters/FilterParameter.h
  * @brief This class holds the various properties that an input parameter to a
@@ -57,9 +63,6 @@ class SIMPLib_EXPORT FilterParameter
   public:
     SIMPL_SHARED_POINTERS(FilterParameter)
     SIMPL_TYPE_MACRO(FilterParameter)
-
-    typedef std::function<void(int)> SetterCallbackType;
-    typedef std::function<int(void)> GetterCallbackType;
 
     enum Category
     {

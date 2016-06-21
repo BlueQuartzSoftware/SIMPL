@@ -48,6 +48,7 @@ FilterParameter()
 StringFilterParameter::~StringFilterParameter()
 {}
 
+//************************** OLD FP API *******************************
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
@@ -65,7 +66,28 @@ StringFilterParameter::Pointer StringFilterParameter::New(const QString& humanLa
 
   return ptr;
 }
+//************************** OLD FP API *******************************
 
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+StringFilterParameter::Pointer StringFilterParameter::New(const QString& humanLabel, const QString& propertyName,
+  const QString& defaultValue, Category category, SetterCallbackType setterCallback, GetterCallbackType getterCallback,
+  int groupIndex)
+{
+
+  StringFilterParameter::Pointer ptr = StringFilterParameter::New();
+  ptr->setHumanLabel(humanLabel);
+  ptr->setPropertyName(propertyName);
+  ptr->setDefaultValue(defaultValue);
+  ptr->setCategory(category);
+  ptr->setGroupIndex(groupIndex);
+  ptr->setSetterCallback(setterCallback);
+  ptr->setGetterCallback(getterCallback);
+
+
+  return ptr;
+}
 
 // -----------------------------------------------------------------------------
 //
@@ -83,7 +105,7 @@ void StringFilterParameter::readJson(const QJsonObject &json)
   QJsonValue jsonValue = json[getPropertyName()];
   if(!jsonValue.isUndefined() )
   {
-    m_SetterCallback(jsonValue.toInt(0.0));
+    m_SetterCallback(jsonValue.toString(""));
   }
 }
 

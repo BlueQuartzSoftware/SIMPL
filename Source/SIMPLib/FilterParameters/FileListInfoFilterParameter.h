@@ -95,9 +95,18 @@ class SIMPLib_EXPORT FileListInfoFilterParameter : public FilterParameter
     SIMPL_STATIC_NEW_MACRO(FileListInfoFilterParameter)
     SIMPL_TYPE_MACRO_SUPER(FileListInfoFilterParameter, FilterParameter)
 
+    typedef std::function<void(FileListInfo_t)> SetterCallbackType;
+    typedef std::function<FileListInfo_t(void)> GetterCallbackType;
+
+    //************************** OLD FP API *******************************
     static Pointer New(const QString& humanLabel, const QString& propertyName,
                        const FileListInfo_t& defaultValue,
                        Category category);
+    //************************** OLD FP API *******************************
+
+    static Pointer New(const QString& humanLabel, const QString& propertyName,
+                       const FileListInfo_t& defaultValue, Category category,
+                       SetterCallbackType setterCallback, GetterCallbackType getterCallback);
 
     virtual ~FileListInfoFilterParameter();
 

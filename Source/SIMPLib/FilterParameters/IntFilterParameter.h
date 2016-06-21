@@ -47,9 +47,18 @@ public:
     SIMPL_STATIC_NEW_MACRO(IntFilterParameter)
     SIMPL_TYPE_MACRO(IntFilterParameter)
 
+  typedef std::function<void(int)> SetterCallbackType;
+  typedef std::function<int(void)> GetterCallbackType;
+
+  //************************** OLD FP API *******************************
     static Pointer New(const QString& humanLabel, const QString& propertyName,
     const int& defaultValue, Category category,
      int groupIndex = -1);
+    //************************** OLD FP API *******************************
+
+    static Pointer New(const QString& humanLabel, const QString& propertyName,
+    const int& defaultValue, Category category, SetterCallbackType setterCallback,
+    GetterCallbackType getterCallback, int groupIndex = -1);
 
     virtual ~IntFilterParameter();
 

@@ -55,6 +55,7 @@ DynamicTableFilterParameter::DynamicTableFilterParameter() :
 DynamicTableFilterParameter::~DynamicTableFilterParameter()
 {}
 
+//************************** OLD FP API *******************************
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
@@ -98,7 +99,54 @@ DynamicTableFilterParameter::Pointer DynamicTableFilterParameter::New(const QStr
   ptr->setErrorMessage("There is no error.");
   return ptr;
 }
+//************************** OLD FP API *******************************
 
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+DynamicTableFilterParameter::Pointer DynamicTableFilterParameter::New(const QString& humanLabel, const QString& propertyName,
+    QStringList rHeaders, QStringList cHeaders, std::vector<std::vector<double> > defaultTable,
+    FilterParameter::Category category, SetterCallbackType setterCallback, GetterCallbackType getterCallback,
+    bool areRowsDynamic, bool areColsDynamic, int minRowCount, int minColCount, int groupIndex)
+{
+  DynamicTableFilterParameter::Pointer ptr = DynamicTableFilterParameter::New();
+  ptr->setHumanLabel(humanLabel);
+  ptr->setPropertyName(propertyName);
+  ptr->setCategory(category);
+  ptr->setRowHeaders(rHeaders);
+  ptr->setColumnHeaders(cHeaders);
+  ptr->setDefaultTable(defaultTable);
+  ptr->setAreRowsDynamic(areRowsDynamic);
+  ptr->setAreColsDynamic(areColsDynamic);
+  ptr->setMinRowCount(minRowCount);
+  ptr->setMinColCount(minColCount);
+  ptr->setReadOnly(false);
+  ptr->setGroupIndex(groupIndex);
+  ptr->setSetterCallback(setterCallback);
+  ptr->setGetterCallback(getterCallback);
+
+  // Check that all columns are initialized to the same size
+  if (defaultTable.size() > 0)
+  {
+    QSet<int> colSizes;
+    colSizes.insert(defaultTable[0].size());
+    for (int i = 1; i < defaultTable.size(); i++)
+    {
+      colSizes.insert(defaultTable[i].size());
+      if (colSizes.size() > 1)
+      {
+        ptr->setErrorCondition(-100);
+        // Use HTML code in the error message, because this will be displayed in RichText format.
+        ptr->setErrorMessage("Column " + QString::number(i) + " has a different size than the other columns.<br>Please make all columns the same size.");
+        return ptr;
+      }
+    }
+  }
+
+  ptr->setErrorCondition(0);
+  ptr->setErrorMessage("There is no error.");
+  return ptr;
+}
 
 // -----------------------------------------------------------------------------
 //
@@ -116,7 +164,60 @@ void DynamicTableFilterParameter::readJson(const QJsonObject &json)
   QJsonValue jsonValue = json[getPropertyName()];
   if(!jsonValue.isUndefined() )
   {
-    m_SetterCallback(jsonValue.toInt(0.0));
+    QJsonObject jsonObj = jsonValue.toObject();
+
+    std::vector<std::vector<double> > tableData;
+    if (jsonObj["Table Data"].isArray())
+    {
+      QJsonArray rowArray = jsonObj["Table Data"].toArray();
+      tableData.resize(rowArray.size());
+
+      for (int row = 0; row < rowArray.size(); row++)
+      {
+        QJsonValue rowObj = rowArray.at(row);
+        if (rowObj.isArray())
+        {
+          QJsonArray colArray = rowObj.toArray();
+          tableData[row].resize(colArray.size());
+
+          for (int col = 0; col < colArray.size(); col++)
+          {
+            QJsonValue colObj = colArray.at(col);
+
+            if (colObj.isDouble())
+            {
+              tableData[row][col] = colObj.toDouble();
+            }
+          }
+        }
+      }
+    }
+
+    QStringList rowHeaders;
+    QJsonArray rHeaders = json["Row Headers"].toArray();
+    foreach(QJsonValue val, rHeaders)
+    {
+      if (val.isString())
+      {
+        rowHeaders.push_back(val.toString());
+      }
+    }
+
+    QStringList columnHeaders;
+    QJsonArray cHeaders = json["Column Headers"].toArray();
+    foreach(QJsonValue val, cHeaders)
+    {
+      if (val.isString())
+      {
+        columnHeaders.push_back(val.toString());
+      }
+    }
+
+    DynamicTableData dynamicData;
+    dynamicData.setTableData(tableData);
+    dynamicData.setRowHeaders(rowHeaders);
+    dynamicData.setColHeaders(columnHeaders);
+    m_SetterCallback(dynamicData);
   }
 }
 
@@ -125,6 +226,36 @@ void DynamicTableFilterParameter::readJson(const QJsonObject &json)
 // -----------------------------------------------------------------------------
 void DynamicTableFilterParameter::writeJson(QJsonObject &json)
 {
-  json[getPropertyName()] = m_GetterCallback();
+  DynamicTableData dynamicData = m_GetterCallback();
+  QJsonObject jsonObj;
+
+  QJsonArray rows;
+  foreach(std::vector<double> vector, dynamicData.getTableData())
+  {
+    QJsonArray cols;
+    foreach(double val, vector)
+    {
+      cols.push_back(val);
+    }
+    rows.push_back(cols);
+  }
+
+  jsonObj["Table Data"] = rows;
+
+  QJsonArray rHeaders;
+  foreach(QString header, dynamicData.getRowHeaders())
+  {
+    rHeaders.push_back(header);
+  }
+  jsonObj["Row Headers"] = rHeaders;
+
+  QJsonArray cHeaders;
+  foreach(QString header, dynamicData.getColHeaders())
+  {
+    cHeaders.push_back(header);
+  }
+  jsonObj["Column Headers"] = cHeaders;
+
+  json[getPropertyName()] = jsonObj;
 }
 

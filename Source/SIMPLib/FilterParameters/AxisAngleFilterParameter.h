@@ -52,8 +52,18 @@ class SIMPLib_EXPORT AxisAngleFilterParameter : public FilterParameter
     SIMPL_STATIC_NEW_MACRO(AxisAngleFilterParameter)
     SIMPL_TYPE_MACRO(AxisAngleFilterParameter)
 
+    typedef std::function<void(AxisAngleInput_t)> SetterCallbackType;
+    typedef std::function<AxisAngleInput_t(void)> GetterCallbackType;
+
+    //************************** OLD FP API *******************************
     static Pointer New(const QString& humanLabel, const QString& propertyName,
                        const AxisAngleInput_t& defaultValue, Category category,
+                       int groupIndex = -1);
+    //************************** OLD FP API *******************************
+
+    static Pointer New(const QString& humanLabel, const QString& propertyName,
+                       const AxisAngleInput_t& defaultValue, Category category,
+                       SetterCallbackType setterCallback, GetterCallbackType getterCallback,
                        int groupIndex = -1);
 
     virtual ~AxisAngleFilterParameter();

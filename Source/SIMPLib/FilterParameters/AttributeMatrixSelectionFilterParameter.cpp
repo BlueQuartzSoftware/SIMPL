@@ -49,6 +49,7 @@ AttributeMatrixSelectionFilterParameter::AttributeMatrixSelectionFilterParameter
 AttributeMatrixSelectionFilterParameter::~AttributeMatrixSelectionFilterParameter()
 {}
 
+//************************** OLD FP API *******************************
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
@@ -66,6 +67,30 @@ AttributeMatrixSelectionFilterParameter::Pointer AttributeMatrixSelectionFilterP
   ptr->setDefaultGeometryTypes(req.dcGeometryTypes);
   ptr->setDefaultAttributeMatrixTypes(req.amTypes);
   ptr->setGroupIndex(groupIndex);
+
+  return ptr;
+}
+//************************** OLD FP API *******************************
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+AttributeMatrixSelectionFilterParameter::Pointer AttributeMatrixSelectionFilterParameter::New(const QString& humanLabel, const QString& propertyName,
+    const DataArrayPath& defaultValue, Category category, const RequirementType req, SetterCallbackType setterCallback, GetterCallbackType getterCallback, int groupIndex)
+{
+
+  AttributeMatrixSelectionFilterParameter::Pointer ptr = AttributeMatrixSelectionFilterParameter::New();
+  ptr->setHumanLabel(humanLabel);
+  ptr->setPropertyName(propertyName);
+  QVariant v;
+  v.setValue(defaultValue);
+  ptr->setDefaultValue(v);
+  ptr->setCategory(category);
+  ptr->setDefaultGeometryTypes(req.dcGeometryTypes);
+  ptr->setDefaultAttributeMatrixTypes(req.amTypes);
+  ptr->setGroupIndex(groupIndex);
+  ptr->setSetterCallback(setterCallback);
+  ptr->setGetterCallback(getterCallback);
 
   return ptr;
 }
@@ -137,7 +162,9 @@ void AttributeMatrixSelectionFilterParameter::readJson(const QJsonObject &json)
   QJsonValue jsonValue = json[getPropertyName()];
   if(!jsonValue.isUndefined() )
   {
-    m_SetterCallback(jsonValue.toInt(0.0));
+    QJsonObject obj = jsonValue.toObject();
+    DataArrayPath dap(obj["Data Container Name"].toString(), obj["Attribute Matrix Name"].toString(), obj["Data Array Name"].toString());
+    m_SetterCallback(dap);
   }
 }
 
@@ -146,5 +173,12 @@ void AttributeMatrixSelectionFilterParameter::readJson(const QJsonObject &json)
 // -----------------------------------------------------------------------------
 void AttributeMatrixSelectionFilterParameter::writeJson(QJsonObject &json)
 {
-  json[getPropertyName()] = m_GetterCallback();
+  DataArrayPath dap = m_GetterCallback();
+  QJsonObject obj;
+
+  obj["Data Container Name"] = dap.getDataContainerName();
+  obj["Attribute Matrix Name"] = dap.getAttributeMatrixName();
+  obj["Data Array Name"] = dap.getDataArrayName();
+
+  json[getPropertyName()] = obj;
 }

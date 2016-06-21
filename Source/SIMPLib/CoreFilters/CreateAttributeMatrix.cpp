@@ -102,7 +102,10 @@ void CreateAttributeMatrix::setupFilterParameters()
   parameters.push_back(DynamicTableFilterParameter::New("Tuple Dimensions", "TupleDimensions", rHeaders, cHeaders, defaultTable, FilterParameter::Parameter, false, true, 0));
   {
     AttributeMatrixCreationFilterParameter::RequirementType req;
-    parameters.push_back(AttributeMatrixCreationFilterParameter::New("Created Attribute Matrix", "CreatedAttributeMatrix", getCreatedAttributeMatrix(), FilterParameter::CreatedArray, req));
+    parameters.push_back(AttributeMatrixCreationFilterParameter::New("Created Attribute Matrix", "CreatedAttributeMatrix",
+                                                                     getCreatedAttributeMatrix(), FilterParameter::CreatedArray, req,
+                                                                     SIMPL_BIND_SETTER(CreateAttributeMatrix, this, CreatedAttributeMatrix),
+                                                                     SIMPL_BIND_GETTER(CreateAttributeMatrix, this, CreatedAttributeMatrix)));
   }
 
   setFilterParameters(parameters);

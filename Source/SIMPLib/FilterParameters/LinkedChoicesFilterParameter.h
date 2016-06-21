@@ -51,11 +51,22 @@ class SIMPLib_EXPORT LinkedChoicesFilterParameter : public ChoiceFilterParameter
     SIMPL_STATIC_NEW_MACRO(LinkedChoicesFilterParameter)
     SIMPL_TYPE_MACRO_SUPER(LinkedChoicesFilterParameter, FilterParameter)
 
+    typedef std::function<void(int)> SetterCallbackType;
+    typedef std::function<int(void)> GetterCallbackType;
+
+    //************************** OLD FP API *******************************
     static Pointer New(const QString& humanLabel, const QString& propertyName,
                        const int& defaultValue,
                        QVector<QString> choices,
                        QStringList linkedProperties,
                        Category category,
+                       int groupIndex = -1);
+    //************************** OLD FP API *******************************
+
+    static Pointer New(const QString& humanLabel, const QString& propertyName,
+                       const int& defaultValue, QVector<QString> choices,
+                       QStringList linkedProperties, Category category,
+                       SetterCallbackType setterCallback, GetterCallbackType getterCallback,
                        int groupIndex = -1);
 
     virtual ~LinkedChoicesFilterParameter();

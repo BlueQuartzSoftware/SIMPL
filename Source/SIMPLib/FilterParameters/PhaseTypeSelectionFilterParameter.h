@@ -48,6 +48,10 @@ public:
     SIMPL_STATIC_NEW_MACRO(PhaseTypeSelectionFilterParameter)
     SIMPL_TYPE_MACRO_SUPER(PhaseTypeSelectionFilterParameter, FilterParameter)
 
+  typedef std::function<void(DataArrayPath)> SetterCallbackType;
+  typedef std::function<DataArrayPath(void)> GetterCallbackType;
+
+  //************************** OLD FP API *******************************
     static Pointer New(const QString& humanLabel,
                       const QString& PhaseTypesArrayName,
                       const QString& phaseTypeCountProperty,
@@ -56,6 +60,19 @@ public:
                       const DataArrayPath attributeMatrixDefault,
                       const QStringList phaseListChoices,
                       Category category,
+                      int groupIndex = -1);
+    //************************** OLD FP API *******************************
+
+    static Pointer New(const QString& humanLabel,
+                      const QString& PhaseTypesArrayName,
+                      const QString& phaseTypeCountProperty,
+                      const QString& phaseTypeDataProperty,
+                      const QString& attributeMatrixProperty,
+                      const DataArrayPath attributeMatrixDefault,
+                      const QStringList phaseListChoices,
+                      Category category,
+                      SetterCallbackType setterCallback,
+                      GetterCallbackType getterCallback,
                       int groupIndex = -1);
 
   virtual ~PhaseTypeSelectionFilterParameter();

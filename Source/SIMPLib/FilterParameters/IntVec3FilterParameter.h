@@ -72,9 +72,18 @@ public:
     SIMPL_STATIC_NEW_MACRO(IntVec3FilterParameter)
     SIMPL_TYPE_MACRO(IntVec3FilterParameter)
 
+  typedef std::function<void(IntVec3_t)> SetterCallbackType;
+  typedef std::function<IntVec3_t(void)> GetterCallbackType;
+
+  //************************** OLD FP API *******************************
     static Pointer New(const QString& humanLabel, const QString& propertyName,
                       const IntVec3_t& defaultValue, Category category,
                       const QString& units = "", int groupIndex = -1);
+    //************************** OLD FP API *******************************
+
+    static Pointer New(const QString& humanLabel, const QString& propertyName,
+    const IntVec3_t& defaultValue, Category category, SetterCallbackType setterCallback,
+    GetterCallbackType getterCallback, const QString& units = "", int groupIndex = -1);
 
     virtual ~IntVec3FilterParameter();
 

@@ -34,6 +34,9 @@
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
 #include "MultiDataArraySelectionFilterParameter.h"
+
+#include <QtCore/QJsonArray>
+
 #include "SIMPLib/Common/Constants.h"
 
 // -----------------------------------------------------------------------------
@@ -50,6 +53,7 @@ MultiDataArraySelectionFilterParameter::MultiDataArraySelectionFilterParameter()
 MultiDataArraySelectionFilterParameter::~MultiDataArraySelectionFilterParameter()
 {}
 
+//************************** OLD FP API *******************************
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
@@ -69,6 +73,33 @@ MultiDataArraySelectionFilterParameter::Pointer MultiDataArraySelectionFilterPar
   ptr->setDefaultAttributeArrayTypes(req.daTypes);
   ptr->setDefaultComponentDimensions(req.componentDimensions);
   ptr->setGroupIndex(groupIndex);
+
+  return ptr;
+}
+//************************** OLD FP API *******************************
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+MultiDataArraySelectionFilterParameter::Pointer MultiDataArraySelectionFilterParameter::New(const QString& humanLabel, const QString& propertyName,
+    const QVector<DataArrayPath>& defaultValue, Category category, const RequirementType req, SetterCallbackType setterCallback,
+    GetterCallbackType getterCallback, int groupIndex)
+{
+
+  MultiDataArraySelectionFilterParameter::Pointer ptr = MultiDataArraySelectionFilterParameter::New();
+  ptr->setHumanLabel(humanLabel);
+  ptr->setPropertyName(propertyName);
+  QVariant v;
+  v.setValue(defaultValue);
+  ptr->setDefaultValue(v);
+  ptr->setCategory(category);
+  ptr->setDefaultGeometryTypes(req.dcGeometryTypes);
+  ptr->setDefaultAttributeMatrixTypes(req.amTypes);
+  ptr->setDefaultAttributeArrayTypes(req.daTypes);
+  ptr->setDefaultComponentDimensions(req.componentDimensions);
+  ptr->setGroupIndex(groupIndex);
+  ptr->setSetterCallback(setterCallback);
+  ptr->setGetterCallback(getterCallback);
 
   return ptr;
 }
@@ -167,7 +198,16 @@ void MultiDataArraySelectionFilterParameter::readJson(const QJsonObject &json)
   QJsonValue jsonValue = json[getPropertyName()];
   if(!jsonValue.isUndefined() )
   {
-    m_SetterCallback(jsonValue.toInt(0.0));
+    QJsonArray arrayObj = jsonValue.toArray();
+    QVector<DataArrayPath> dapVec;
+    for (int i=0; i<arrayObj.size(); i++)
+    {
+      QJsonObject obj = arrayObj.at(i).toObject();
+      DataArrayPath dap(obj["Data Container Name"].toString(), obj["Attribute Matrix Name"].toString(), obj["Data Array Name"].toString());
+      dapVec.push_back(dap);
+    }
+
+    m_SetterCallback(dapVec);
   }
 }
 
@@ -176,5 +216,20 @@ void MultiDataArraySelectionFilterParameter::readJson(const QJsonObject &json)
 // -----------------------------------------------------------------------------
 void MultiDataArraySelectionFilterParameter::writeJson(QJsonObject &json)
 {
-  json[getPropertyName()] = m_GetterCallback();
+  QVector<DataArrayPath> dapVec = m_GetterCallback();
+  QJsonArray arrayObj;
+
+  for (int i=0; i<dapVec.size(); i++)
+  {
+    DataArrayPath dap = dapVec[i];
+    QJsonObject obj;
+
+    obj["Data Container Name"] = dap.getDataContainerName();
+    obj["Attribute Matrix Name"] = dap.getAttributeMatrixName();
+    obj["Data Array Name"] = dap.getDataArrayName();
+
+    arrayObj.push_back(obj);
+  }
+
+  json[getPropertyName()] = arrayObj;
 }

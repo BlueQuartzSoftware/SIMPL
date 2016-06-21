@@ -48,6 +48,7 @@ FilterParameter()
 RangeFilterParameter::~RangeFilterParameter()
 {}
 
+//************************** OLD FP API *******************************
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
@@ -65,7 +66,28 @@ RangeFilterParameter::Pointer RangeFilterParameter::New(const QString& humanLabe
 
   return ptr;
 }
+//************************** OLD FP API *******************************
 
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+RangeFilterParameter::Pointer RangeFilterParameter::New(const QString& humanLabel, const QString& propertyName,
+  const QPair<double, double>& defaultPair, Category category, SetterCallbackType setterCallback,
+  GetterCallbackType getterCallback, int groupIndex)
+{
+
+  RangeFilterParameter::Pointer ptr = RangeFilterParameter::New();
+  ptr->setHumanLabel(humanLabel);
+  ptr->setPropertyName(propertyName);
+  ptr->setDefaultPair(defaultPair);
+  ptr->setCategory(category);
+  ptr->setGroupIndex(groupIndex);
+  ptr->setSetterCallback(setterCallback);
+  ptr->setGetterCallback(getterCallback);
+
+
+  return ptr;
+}
 
 // -----------------------------------------------------------------------------
 //
@@ -83,7 +105,13 @@ void RangeFilterParameter::readJson(const QJsonObject &json)
   QJsonValue jsonValue = json[getPropertyName()];
   if(!jsonValue.isUndefined() )
   {
-    m_SetterCallback(jsonValue.toInt(0.0));
+    QJsonObject obj = jsonValue.toObject();
+    QPair<double, double> pair;
+
+    pair.first = obj["first"].toDouble();
+    pair.second = obj["second"].toDouble();
+
+    m_SetterCallback(pair);
   }
 }
 
@@ -92,6 +120,12 @@ void RangeFilterParameter::readJson(const QJsonObject &json)
 // -----------------------------------------------------------------------------
 void RangeFilterParameter::writeJson(QJsonObject &json)
 {
-  json[getPropertyName()] = m_GetterCallback();
+  QPair<double, double> pair = m_GetterCallback();
+  QJsonObject obj;
+
+  obj["first"] = pair.first;
+  obj["second"] = pair.second;
+
+  json[getPropertyName()] = obj;
 }
 

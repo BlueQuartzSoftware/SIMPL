@@ -48,6 +48,7 @@ DynamicChoiceFilterParameter::DynamicChoiceFilterParameter() :
 DynamicChoiceFilterParameter::~DynamicChoiceFilterParameter()
 {}
 
+//************************** OLD FP API *******************************
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
@@ -67,7 +68,31 @@ DynamicChoiceFilterParameter::Pointer DynamicChoiceFilterParameter::New(const QS
   ptr->setGroupIndex(groupIndex);
   return ptr;
 }
+//************************** OLD FP API *******************************
 
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+DynamicChoiceFilterParameter::Pointer DynamicChoiceFilterParameter::New(const QString& humanLabel,
+    const QString& propertyName,
+    const QString& defaultValue,
+    const QString& listProperty,
+    Category category,
+    SetterCallbackType setterCallback,
+    GetterCallbackType getterCallback,
+    int groupIndex)
+{
+  DynamicChoiceFilterParameter::Pointer ptr = DynamicChoiceFilterParameter::New();
+  ptr->setHumanLabel(humanLabel);
+  ptr->setPropertyName(propertyName);
+  ptr->setDefaultValue(defaultValue);
+  ptr->setCategory(category);
+  ptr->setListProperty(listProperty);
+  ptr->setGroupIndex(groupIndex);
+  ptr->setSetterCallback(setterCallback);
+  ptr->setGetterCallback(getterCallback);
+  return ptr;
+}
 
 // -----------------------------------------------------------------------------
 //
@@ -85,7 +110,7 @@ void DynamicChoiceFilterParameter::readJson(const QJsonObject &json)
   QJsonValue jsonValue = json[getPropertyName()];
   if(!jsonValue.isUndefined() )
   {
-    m_SetterCallback(jsonValue.toInt(0.0));
+    m_SetterCallback(jsonValue.toString(""));
   }
 }
 

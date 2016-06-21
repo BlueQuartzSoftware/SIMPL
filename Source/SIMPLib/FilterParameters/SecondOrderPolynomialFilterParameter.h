@@ -80,8 +80,18 @@ public:
     SIMPL_STATIC_NEW_MACRO(SecondOrderPolynomialFilterParameter)
     SIMPL_TYPE_MACRO(SecondOrderPolynomialFilterParameter)
 
+  typedef std::function<void(Float2ndOrderPoly_t)> SetterCallbackType;
+  typedef std::function<Float2ndOrderPoly_t(void)> GetterCallbackType;
+
+  //************************** OLD FP API *******************************
     static Pointer New(const QString& humanLabel, const QString& propertyName,
     const Float2ndOrderPoly_t& defaultValue, Category category,
+     int groupIndex = -1);
+    //************************** OLD FP API *******************************
+
+    static Pointer New(const QString& humanLabel, const QString& propertyName,
+    const Float2ndOrderPoly_t& defaultValue, Category category,
+     SetterCallbackType setterCallback, GetterCallbackType getterCallback,
      int groupIndex = -1);
 
     virtual ~SecondOrderPolynomialFilterParameter();

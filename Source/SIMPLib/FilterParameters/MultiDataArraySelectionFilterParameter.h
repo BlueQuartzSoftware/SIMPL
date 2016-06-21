@@ -48,6 +48,9 @@ class SIMPLib_EXPORT MultiDataArraySelectionFilterParameter : public FilterParam
     SIMPL_STATIC_NEW_MACRO(MultiDataArraySelectionFilterParameter)
     SIMPL_TYPE_MACRO_SUPER(MultiDataArraySelectionFilterParameter, FilterParameter)
 
+    typedef std::function<void(QVector<DataArrayPath>)> SetterCallbackType;
+    typedef std::function<QVector<DataArrayPath>(void)> GetterCallbackType;
+
     typedef struct
     {
       QVector<unsigned int> dcGeometryTypes;
@@ -56,9 +59,16 @@ class SIMPLib_EXPORT MultiDataArraySelectionFilterParameter : public FilterParam
       QVector< QVector<size_t> > componentDimensions;
     } RequirementType;
 
+    //************************** OLD FP API *******************************
     static Pointer New(const QString& humanLabel, const QString& propertyName,
                        const QVector<DataArrayPath>& defaultValue, Category category,
                        const RequirementType req, int groupIndex = -1);
+    //************************** OLD FP API *******************************
+
+    static Pointer New(const QString& humanLabel, const QString& propertyName,
+                       const QVector<DataArrayPath>& defaultValue, Category category,
+                       const RequirementType req, SetterCallbackType setterCallback,
+                       GetterCallbackType getterCallback, int groupIndex = -1);
 
     virtual ~MultiDataArraySelectionFilterParameter();
 
