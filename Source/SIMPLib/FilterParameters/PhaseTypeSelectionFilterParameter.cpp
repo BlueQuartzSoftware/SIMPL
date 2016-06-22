@@ -35,6 +35,8 @@
 
 #include "PhaseTypeSelectionFilterParameter.h"
 
+#include <QtCore/QJsonArray>
+
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
@@ -126,9 +128,13 @@ void PhaseTypeSelectionFilterParameter::readJson(const QJsonObject &json)
   QJsonValue jsonValue = json[getPropertyName()];
   if(!jsonValue.isUndefined() )
   {
-    QJsonObject obj = jsonValue.toObject();
-    DataArrayPath dap(obj["Data Container Name"].toString(), obj["Attribute Matrix Name"].toString(), obj["Data Array Name"].toString());
-    m_SetterCallback(dap);
+    QJsonArray jsonArray = jsonValue.toArray();
+    UInt32Vector_t vec;
+    for (int i=0; i<jsonArray.size(); i++)
+    {
+      vec.d.push_back(static_cast<unsigned int>(jsonArray[i].toDouble()));
+    }
+    m_SetterCallback(vec);
   }
 }
 
@@ -137,13 +143,14 @@ void PhaseTypeSelectionFilterParameter::readJson(const QJsonObject &json)
 // -----------------------------------------------------------------------------
 void PhaseTypeSelectionFilterParameter::writeJson(QJsonObject &json)
 {
-  DataArrayPath dap = m_GetterCallback();
-  QJsonObject obj;
+  UInt32Vector_t vec = m_GetterCallback();
+  QJsonArray jsonArray;
 
-  obj["Data Container Name"] = dap.getDataContainerName();
-  obj["Attribute Matrix Name"] = dap.getAttributeMatrixName();
-  obj["Data Array Name"] = dap.getDataArrayName();
+  for (int i=0; i<vec.d.size(); i++)
+  {
+    jsonArray.push_back(static_cast<double>(vec.d[i]));
+  }
 
-  json[getPropertyName()] = obj;
+  json[getPropertyName()] = jsonArray;
 }
 

@@ -145,6 +145,8 @@ class SIMPLib_EXPORT DynamicTableData : public QObject
 
     DynamicTableData(const DynamicTableData& rhs);
     void operator=(const DynamicTableData& rhs);
+    bool operator==(const DynamicTableData& rhs) const;
+    bool operator!=(const DynamicTableData& rhs) const;
 
   private:
     std::vector<std::vector<double> > m_TableData;

@@ -96,6 +96,19 @@ class DataContainerProxy
     }
 
     /**
+    * @brief operator == method
+    */
+    bool operator==(const DataContainerProxy& amp) const
+    {
+      if (flag == amp.flag && name == amp.name && dcType == amp.dcType && attributeMatricies == amp.attributeMatricies)
+      {
+        return true;
+      }
+
+      return false;
+    }
+
+    /**
     * @brief Writes the contents of the proxy to the json object 'json'
     * @param json
     * @return

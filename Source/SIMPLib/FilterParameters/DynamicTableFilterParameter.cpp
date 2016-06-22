@@ -194,7 +194,7 @@ void DynamicTableFilterParameter::readJson(const QJsonObject &json)
     }
 
     QStringList rowHeaders;
-    QJsonArray rHeaders = json["Row Headers"].toArray();
+    QJsonArray rHeaders = jsonObj["Row Headers"].toArray();
     foreach(QJsonValue val, rHeaders)
     {
       if (val.isString())
@@ -204,7 +204,7 @@ void DynamicTableFilterParameter::readJson(const QJsonObject &json)
     }
 
     QStringList columnHeaders;
-    QJsonArray cHeaders = json["Column Headers"].toArray();
+    QJsonArray cHeaders = jsonObj["Column Headers"].toArray();
     foreach(QJsonValue val, cHeaders)
     {
       if (val.isString())

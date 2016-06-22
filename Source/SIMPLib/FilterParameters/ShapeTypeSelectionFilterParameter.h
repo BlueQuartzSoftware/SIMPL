@@ -47,8 +47,8 @@ public:
     SIMPL_STATIC_NEW_MACRO(ShapeTypeSelectionFilterParameter)
     SIMPL_TYPE_MACRO_SUPER(ShapeTypeSelectionFilterParameter, FilterParameter)
 
-  typedef std::function<void(QString)> SetterCallbackType;
-  typedef std::function<QString(void)> GetterCallbackType;
+  typedef std::function<void(UInt32Vector_t)> SetterCallbackType;
+  typedef std::function<UInt32Vector_t(void)> GetterCallbackType;
 
   //************************** OLD FP API *******************************
     static Pointer New(const QString& humanLabel, const QString& propertyName,

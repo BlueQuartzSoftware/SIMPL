@@ -187,6 +187,20 @@ class DataArrayProxy
       compDims = rhs.compDims;
     }
 
+    /**
+    * @brief operator == method
+    */
+    bool operator==(const DataArrayProxy& rhs) const
+    {
+      if (flag == rhs.flag && version == rhs.version && path == rhs.path && name == rhs.name
+          && objectType == rhs.objectType && tupleDims == rhs.tupleDims && compDims == rhs.compDims)
+      {
+        return true;
+      }
+
+      return false;
+    }
+
     //----- Our variables, publicly available
     uint8_t flag;
     int version;

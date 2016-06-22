@@ -38,6 +38,7 @@
 
 #include <QtCore/QJsonObject>
 
+#include "SIMPLib/DataContainers/DataContainerArrayProxy.h"
 #include "SIMPLib/FilterParameters/FilterParameter.h"
 
 class SIMPLib_EXPORT DataContainerReaderFilterParameter : public FilterParameter
@@ -47,8 +48,8 @@ class SIMPLib_EXPORT DataContainerReaderFilterParameter : public FilterParameter
     SIMPL_STATIC_NEW_MACRO(DataContainerReaderFilterParameter)
     SIMPL_TYPE_MACRO_SUPER(DataContainerReaderFilterParameter, FilterParameter)
 
-    typedef std::function<void(QString)> SetterCallbackType;
-    typedef std::function<QString(void)> GetterCallbackType;
+    typedef std::function<void(DataContainerArrayProxy)> SetterCallbackType;
+    typedef std::function<DataContainerArrayProxy(void)> GetterCallbackType;
 
     //************************** OLD FP API *******************************
     static Pointer New(const QString& humanLabel, const QString& propertyName,

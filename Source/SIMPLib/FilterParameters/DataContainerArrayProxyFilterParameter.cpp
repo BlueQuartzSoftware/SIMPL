@@ -135,12 +135,19 @@ void DataContainerArrayProxyFilterParameter::readJson(const QJsonObject &json)
 void DataContainerArrayProxyFilterParameter::writeJson(QJsonObject &json)
 {
   DataContainerArrayProxy proxy = m_GetterCallback();
+  QJsonObject obj;
+  QJsonArray dataContainersArray;
   QMap<QString, DataContainerProxy> dataContainers = proxy.dataContainers;
   for (QMap<QString,DataContainerProxy>::iterator iter = dataContainers.begin(); iter != dataContainers.end(); iter++)
   {
-
+    QJsonObject dcObj;
+    DataContainerProxy dc = iter.value();
+    dc.writeJson(dcObj);
+    dataContainersArray.push_back(dcObj);
   }
 
-  json[getPropertyName()] = m_GetterCallback();
+  obj["Data Containers"] = dataContainersArray;
+
+  json[getPropertyName()] = obj;
 }
 

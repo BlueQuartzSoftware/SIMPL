@@ -35,6 +35,8 @@
 
 #include "ShapeTypeSelectionFilterParameter.h"
 
+#include <QtCore/QJsonArray>
+
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
@@ -111,7 +113,13 @@ void ShapeTypeSelectionFilterParameter::readJson(const QJsonObject &json)
   QJsonValue jsonValue = json[getPropertyName()];
   if(!jsonValue.isUndefined() )
   {
-    m_SetterCallback(jsonValue.toString(""));
+    QJsonArray jsonArray = jsonValue.toArray();
+    UInt32Vector_t vec;
+    for (int i=0; i<jsonArray.size(); i++)
+    {
+      vec.d.push_back(static_cast<unsigned int>(jsonArray[i].toDouble()));
+    }
+    m_SetterCallback(vec);
   }
 }
 
@@ -120,7 +128,15 @@ void ShapeTypeSelectionFilterParameter::readJson(const QJsonObject &json)
 // -----------------------------------------------------------------------------
 void ShapeTypeSelectionFilterParameter::writeJson(QJsonObject &json)
 {
-  json[getPropertyName()] = m_GetterCallback();
+  UInt32Vector_t vec = m_GetterCallback();
+  QJsonArray jsonArray;
+
+  for (int i=0; i<vec.d.size(); i++)
+  {
+    jsonArray.push_back(static_cast<double>(vec.d[i]));
+  }
+
+  json[getPropertyName()] = jsonArray;
 }
 
 

@@ -557,6 +557,55 @@ void DynamicTableData::operator=(const DynamicTableData& rhs)
   m_ColHeaders = rhs.m_ColHeaders;
 }
 
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+bool DynamicTableData::operator==(const DynamicTableData& rhs) const
+{
+  if (m_RowHeaders == rhs.m_RowHeaders && m_ColHeaders == rhs.m_ColHeaders)
+  {
+    for (int i=0; i< m_TableData.size(); i++)
+    {
+      for (int j=0; j<m_TableData[i].size(); j++)
+      {
+        if (m_TableData[i][j] != rhs.m_TableData[i][j])
+        {
+          return false;
+        }
+      }
+    }
+    return true;
+  }
+
+  return false;
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+bool DynamicTableData::operator!=(const DynamicTableData& rhs) const
+{
+  if (m_RowHeaders == rhs.m_RowHeaders && m_ColHeaders == rhs.m_ColHeaders)
+  {
+    for (int i=0; i< m_TableData.size(); i++)
+    {
+      for (int j=0; j<m_TableData[i].size(); j++)
+      {
+        if (m_TableData[i][j] != rhs.m_TableData[i][j])
+        {
+          return true;
+        }
+      }
+    }
+  }
+  else
+  {
+    return true;
+  }
+
+  return false;
+}
+
 
 
 
