@@ -75,6 +75,9 @@ class SVWidgetsLib_EXPORT FilterParameterWidget : public QFrame
 
     SIMPL_VIRTUAL_INSTANCE_PROPERTY(AbstractFilter*, Filter)
     SIMPL_VIRTUAL_INSTANCE_PROPERTY(FilterParameter*, FilterParameter)
+    SIMPL_VIRTUAL_INSTANCE_PROPERTY(bool, WidgetIsExpanding)
+
+
     void fadeInWidget(QWidget* widget);
 
     QPointer<QtSFaderWidget> getFaderWidget() const;

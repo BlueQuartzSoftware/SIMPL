@@ -60,6 +60,7 @@ FilterParameterWidget::FilterParameterWidget(QWidget* parent) :
   QFrame(parent),
   m_Filter(NULL),
   m_FilterParameter(NULL),
+  m_WidgetIsExpanding(false),
   m_Timer(NULL),
   animation(NULL),
   effect(NULL)
@@ -77,6 +78,7 @@ FilterParameterWidget::FilterParameterWidget(FilterParameter* parameter, Abstrac
   QFrame(parent),
   m_Filter(filter),
   m_FilterParameter(parameter),
+  m_WidgetIsExpanding(false),
   m_Timer(NULL),
   animation(NULL),
   effect(NULL)

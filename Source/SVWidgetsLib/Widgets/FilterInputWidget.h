@@ -67,6 +67,9 @@ class SVWidgetsLib_EXPORT FilterInputWidget : public QWidget, private Ui::Filter
 
     bool eventFilter(QObject* o, QEvent* e);
 
+    void toRunningState();
+    void toIdleState();
+
     QWidget* getVariablesTabContentsWidget();
 
     QVector<QWidget*>& getFilterParameterWidgets();
