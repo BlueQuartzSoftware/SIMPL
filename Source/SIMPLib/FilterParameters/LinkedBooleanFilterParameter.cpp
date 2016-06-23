@@ -48,27 +48,6 @@ LinkedBooleanFilterParameter::LinkedBooleanFilterParameter() :
 LinkedBooleanFilterParameter::~LinkedBooleanFilterParameter()
 {}
 
-//************************** OLD FP API *******************************
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-LinkedBooleanFilterParameter::Pointer LinkedBooleanFilterParameter::New(const QString& humanLabel, const QString& propertyName,
-    const bool& defaultValue,
-    QStringList conditionalProperties,
-    Category category, int groupIndex)
-{
-  LinkedBooleanFilterParameter::Pointer ptr = LinkedBooleanFilterParameter::New();
-  ptr->setHumanLabel(humanLabel);
-  ptr->setPropertyName(propertyName);
-  ptr->setDefaultValue(defaultValue);
-  ptr->setCategory(category);
-  ptr->setConditionalProperties(conditionalProperties);
-  ptr->setGroupIndex(groupIndex);
-
-  return ptr;
-}
-//************************** OLD FP API *******************************
-
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------

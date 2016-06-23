@@ -49,29 +49,6 @@ AttributeMatrixSelectionFilterParameter::AttributeMatrixSelectionFilterParameter
 AttributeMatrixSelectionFilterParameter::~AttributeMatrixSelectionFilterParameter()
 {}
 
-//************************** OLD FP API *******************************
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-AttributeMatrixSelectionFilterParameter::Pointer AttributeMatrixSelectionFilterParameter::New(const QString& humanLabel, const QString& propertyName,
-    const DataArrayPath& defaultValue, Category category, const RequirementType req, int groupIndex)
-{
-
-  AttributeMatrixSelectionFilterParameter::Pointer ptr = AttributeMatrixSelectionFilterParameter::New();
-  ptr->setHumanLabel(humanLabel);
-  ptr->setPropertyName(propertyName);
-  QVariant v;
-  v.setValue(defaultValue);
-  ptr->setDefaultValue(v);
-  ptr->setCategory(category);
-  ptr->setDefaultGeometryTypes(req.dcGeometryTypes);
-  ptr->setDefaultAttributeMatrixTypes(req.amTypes);
-  ptr->setGroupIndex(groupIndex);
-
-  return ptr;
-}
-//************************** OLD FP API *******************************
-
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------

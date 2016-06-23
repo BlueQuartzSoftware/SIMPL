@@ -55,12 +55,6 @@ class SIMPLib_EXPORT DataContainerSelectionFilterParameter : public FilterParame
       QVector<unsigned int> dcGeometryTypes;
     } RequirementType;
 
-    //************************** OLD FP API *******************************
-    static Pointer New(const QString& humanLabel, const QString& propertyName,
-                       const QString& defaultValue, Category category,
-                       const RequirementType req, int groupIndex = -1);
-    //************************** OLD FP API *******************************
-
     static Pointer New(const QString& humanLabel, const QString& propertyName,
                        const QString& defaultValue, Category category,
                        const RequirementType req, SetterCallbackType setterCallback,

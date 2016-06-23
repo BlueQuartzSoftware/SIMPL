@@ -50,26 +50,6 @@ DataContainerArrayProxyFilterParameter::DataContainerArrayProxyFilterParameter()
 DataContainerArrayProxyFilterParameter::~DataContainerArrayProxyFilterParameter()
 {}
 
-//************************** OLD FP API *******************************
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-DataContainerArrayProxyFilterParameter::Pointer DataContainerArrayProxyFilterParameter::New(const QString& humanLabel, const QString& propertyName,
-    const QString& defaultValue, DataContainerArrayProxy proxy, Qt::CheckState defValue, Category category, int groupIndex)
-{
-  DataContainerArrayProxyFilterParameter::Pointer ptr = DataContainerArrayProxyFilterParameter::New();
-  ptr->setHumanLabel(humanLabel);
-  ptr->setPropertyName(propertyName);
-  ptr->setDefaultValue(defaultValue);
-  ptr->setCategory(category);
-  ptr->setDefaultFlagValue(defValue);
-  ptr->setDataContainerArrayProxy(proxy);
-  ptr->setGroupIndex(groupIndex);
-
-  return ptr;
-}
-//************************** OLD FP API *******************************
-
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------

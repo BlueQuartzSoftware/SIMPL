@@ -48,24 +48,6 @@ FilterParameter()
 DataBundleSelectionFilterParameter::~DataBundleSelectionFilterParameter()
 {}
 
-//************************** OLD FP API *******************************
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-DataBundleSelectionFilterParameter::Pointer DataBundleSelectionFilterParameter::New(const QString& humanLabel, const QString& propertyName,
-  const QString& defaultValue, Category category, int groupIndex)
-{
-  DataBundleSelectionFilterParameter::Pointer ptr = DataBundleSelectionFilterParameter::New();
-  ptr->setHumanLabel(humanLabel);
-  ptr->setPropertyName(propertyName);
-  ptr->setDefaultValue(defaultValue);
-  ptr->setCategory(category);
-  ptr->setGroupIndex(groupIndex);
-
-  return ptr;
-}
-//************************** OLD FP API *******************************
-
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------

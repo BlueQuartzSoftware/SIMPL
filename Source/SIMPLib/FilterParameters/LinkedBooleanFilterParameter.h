@@ -50,14 +50,6 @@ class SIMPLib_EXPORT LinkedBooleanFilterParameter : public FilterParameter
     typedef std::function<void(bool)> SetterCallbackType;
     typedef std::function<bool(void)> GetterCallbackType;
 
-    //************************** OLD FP API *******************************
-    static Pointer New(const QString& humanLabel, const QString& propertyName,
-                       const bool& defaultValue,
-                       QStringList conditionalProperties,
-                       Category category,
-                       int groupIndex = -1);
-    //************************** OLD FP API *******************************
-
     static Pointer New(const QString& humanLabel, const QString& propertyName,
                        const bool& defaultValue, QStringList conditionalProperties,
                        Category category, SetterCallbackType setterCallback,

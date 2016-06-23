@@ -104,12 +104,6 @@ public:
   typedef std::function<void(Float4thOrderPoly_t)> SetterCallbackType;
   typedef std::function<Float4thOrderPoly_t(void)> GetterCallbackType;
 
-  //************************** OLD FP API *******************************
-    static Pointer New(const QString& humanLabel, const QString& propertyName,
-    const Float4thOrderPoly_t& defaultValue, Category category,
-     int groupIndex = -1);
-    //************************** OLD FP API *******************************
-
     static Pointer New(const QString& humanLabel, const QString& propertyName,
     const Float4thOrderPoly_t& defaultValue, Category category, SetterCallbackType setterCallback,
     GetterCallbackType getterCallback, int groupIndex = -1);

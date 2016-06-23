@@ -49,26 +49,6 @@ m_ShowOperators(true) {}
 ComparisonSelectionFilterParameter::~ComparisonSelectionFilterParameter()
 {}
 
-//************************** OLD FP API *******************************
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-ComparisonSelectionFilterParameter::Pointer ComparisonSelectionFilterParameter::New(const QString& humanLabel, const QString& propertyName,
-  const QString& defaultValue, QVector<QString> choices, bool showOperators, Category category, int groupIndex)
-{
-  ComparisonSelectionFilterParameter::Pointer ptr = ComparisonSelectionFilterParameter::New();
-  ptr->setHumanLabel(humanLabel);
-  ptr->setPropertyName(propertyName);
-  ptr->setDefaultValue(defaultValue);
-  ptr->setCategory(category);
-  ptr->setChoices(choices);
-  ptr->setShowOperators(showOperators);
-  ptr->setGroupIndex(groupIndex);
-
-  return ptr;
-}
-//************************** OLD FP API *******************************
-
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------

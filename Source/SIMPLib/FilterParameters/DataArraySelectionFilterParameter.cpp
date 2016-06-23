@@ -49,31 +49,6 @@ DataArraySelectionFilterParameter::DataArraySelectionFilterParameter() :
 DataArraySelectionFilterParameter::~DataArraySelectionFilterParameter()
 {}
 
-//************************** OLD FP API *******************************
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-DataArraySelectionFilterParameter::Pointer DataArraySelectionFilterParameter::New(const QString& humanLabel, const QString& propertyName,
-    const DataArrayPath& defaultValue, Category category, const RequirementType req, int groupIndex)
-{
-
-  DataArraySelectionFilterParameter::Pointer ptr = DataArraySelectionFilterParameter::New();
-  ptr->setHumanLabel(humanLabel);
-  ptr->setPropertyName(propertyName);
-  QVariant v;
-  v.setValue(defaultValue);
-  ptr->setDefaultValue(v);
-  ptr->setCategory(category);
-  ptr->setDefaultGeometryTypes(req.dcGeometryTypes);
-  ptr->setDefaultAttributeMatrixTypes(req.amTypes);
-  ptr->setDefaultAttributeArrayTypes(req.daTypes);
-  ptr->setDefaultComponentDimensions(req.componentDimensions);
-  ptr->setGroupIndex(groupIndex);
-
-  return ptr;
-}
-//************************** OLD FP API *******************************
-
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------

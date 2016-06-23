@@ -48,27 +48,6 @@ FileListInfoFilterParameter::FileListInfoFilterParameter() :
 FileListInfoFilterParameter::~FileListInfoFilterParameter()
 {}
 
-//************************** OLD FP API *******************************
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-FileListInfoFilterParameter::Pointer FileListInfoFilterParameter::New(const QString& humanLabel, const QString& propertyName,
-    const FileListInfo_t& defaultValue,
-    FilterParameter::Category category)
-{
-
-  FileListInfoFilterParameter::Pointer ptr = FileListInfoFilterParameter::New();
-  ptr->setHumanLabel(humanLabel);
-  ptr->setPropertyName(propertyName);
-  QVariant v;
-  v.setValue(defaultValue);
-  ptr->setDefaultValue(v);
-  ptr->setCategory(category);
-
-  return ptr;
-}
-//************************** OLD FP API *******************************
-
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------

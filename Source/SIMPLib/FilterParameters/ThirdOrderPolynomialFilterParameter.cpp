@@ -48,27 +48,6 @@ FilterParameter()
 ThirdOrderPolynomialFilterParameter::~ThirdOrderPolynomialFilterParameter()
 {}
 
-//************************** OLD FP API *******************************
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-ThirdOrderPolynomialFilterParameter::Pointer ThirdOrderPolynomialFilterParameter::New(const QString& humanLabel, const QString& propertyName,
-  const Float3rdOrderPoly_t& defaultValue, Category category, int groupIndex)
-{
-
-  ThirdOrderPolynomialFilterParameter::Pointer ptr = ThirdOrderPolynomialFilterParameter::New();
-  ptr->setHumanLabel(humanLabel);
-  ptr->setPropertyName(propertyName);
-  QVariant v;
-  v.setValue(defaultValue);
-  ptr->setDefaultValue(v);
-  ptr->setCategory(category);
-  ptr->setGroupIndex(groupIndex);
-
-  return ptr;
-}
-//************************** OLD FP API *******************************
-
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------

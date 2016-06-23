@@ -51,18 +51,6 @@ public:
   typedef std::function<void(UInt32Vector_t)> SetterCallbackType;
   typedef std::function<UInt32Vector_t(void)> GetterCallbackType;
 
-  //************************** OLD FP API *******************************
-    static Pointer New(const QString& humanLabel,
-                      const QString& PhaseTypesArrayName,
-                      const QString& phaseTypeCountProperty,
-                      const QString& phaseTypeDataProperty,
-                      const QString& attributeMatrixProperty,
-                      const DataArrayPath attributeMatrixDefault,
-                      const QStringList phaseListChoices,
-                      Category category,
-                      int groupIndex = -1);
-    //************************** OLD FP API *******************************
-
     static Pointer New(const QString& humanLabel,
                       const QString& PhaseTypesArrayName,
                       const QString& phaseTypeCountProperty,

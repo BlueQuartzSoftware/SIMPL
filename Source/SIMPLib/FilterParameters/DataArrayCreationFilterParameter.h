@@ -60,12 +60,6 @@ class SIMPLib_EXPORT DataArrayCreationFilterParameter : public FilterParameter
       QVector<unsigned int> amTypes;
     } RequirementType;
 
-    //************************** OLD FP API *******************************
-    static Pointer New(const QString& humanLabel, const QString& propertyName,
-                       const DataArrayPath& defaultValue, Category category,
-                       const RequirementType req, int groupIndex = -1);
-    //************************** OLD FP API *******************************
-
     static Pointer New(const QString& humanLabel, const QString& propertyName,
                        const DataArrayPath& defaultValue, Category category,
                        const RequirementType req, SetterCallbackType setterCallback,

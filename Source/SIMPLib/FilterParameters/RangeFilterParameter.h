@@ -53,12 +53,6 @@ public:
   typedef std::function<void(QPair<double, double>)> SetterCallbackType;
   typedef std::function<QPair<double, double>(void)> GetterCallbackType;
 
-  //************************** OLD FP API *******************************
-    static Pointer New(const QString& humanLabel, const QString& propertyName,
-    const QPair<double, double>& defaultPair, Category category,
-     int groupIndex = -1);
-    //************************** OLD FP API *******************************
-
     static Pointer New(const QString& humanLabel, const QString& propertyName,
     const QPair<double, double>& defaultPair, Category category,
     SetterCallbackType setterCallback, GetterCallbackType getterCallback,

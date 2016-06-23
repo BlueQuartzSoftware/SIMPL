@@ -50,36 +50,6 @@ PhaseTypeSelectionFilterParameter::PhaseTypeSelectionFilterParameter()
 PhaseTypeSelectionFilterParameter::~PhaseTypeSelectionFilterParameter()
 {}
 
-//************************** OLD FP API *******************************
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-PhaseTypeSelectionFilterParameter::Pointer PhaseTypeSelectionFilterParameter::New(const QString& humanLabel,
-                                                                                  const QString& PhaseTypesArrayName,
-                                                                                  const QString& phaseTypeCountProperty,
-                                                                                  const QString& phaseTypeDataProperty,
-                                                                                  const QString& attributeMatrixProperty,
-                                                                                  const DataArrayPath attributeMatrixDefault,
-                                                                                  const QStringList phaseListChoices,
-                                                                                  Category category,
-                                                                                  int groupIndex)
-{
-  PhaseTypeSelectionFilterParameter::Pointer ptr = PhaseTypeSelectionFilterParameter::New();
-  ptr->setHumanLabel(humanLabel);
-  ptr->setPropertyName(PhaseTypesArrayName);
-  ptr->setCategory(category);
-  ptr->setGroupIndex(groupIndex);
-  ptr->setPhaseListChoices(phaseListChoices);
-  ptr->setPhaseTypeCountProperty(phaseTypeCountProperty);
-  ptr->setPhaseTypeDataProperty(phaseTypeDataProperty);
-  ptr->setAttributeMatrixPathProperty(attributeMatrixProperty);
-  ptr->setAttributeMatrixPathDefault(attributeMatrixDefault);
-
-
-  return ptr;
-}
-//************************** OLD FP API *******************************
-
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------

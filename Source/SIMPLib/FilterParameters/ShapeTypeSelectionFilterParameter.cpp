@@ -50,29 +50,6 @@ ShapeTypeSelectionFilterParameter::ShapeTypeSelectionFilterParameter()
 ShapeTypeSelectionFilterParameter::~ShapeTypeSelectionFilterParameter()
 {}
 
-//************************** OLD FP API *******************************
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-ShapeTypeSelectionFilterParameter::Pointer ShapeTypeSelectionFilterParameter::New(const QString& humanLabel, const QString& propertyName, const QString& defaultValue,
-  const QString& phaseTypeCountProperty,
-  const QString& phaseTypeArrayPathProperty,
-  Category category, int groupIndex)
-{
-  ShapeTypeSelectionFilterParameter::Pointer ptr = ShapeTypeSelectionFilterParameter::New();
-  ptr->setHumanLabel(humanLabel);
-  ptr->setPropertyName(propertyName);
-  ptr->setDefaultValue(defaultValue);
-  ptr->setCategory(category);
-
-  ptr->setPhaseTypeCountProperty(phaseTypeCountProperty);
-  ptr->setPhaseTypeArrayPathProperty(phaseTypeArrayPathProperty);
-  ptr->setGroupIndex(groupIndex);
-
-  return ptr;
-}
-//************************** OLD FP API *******************************
-
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------

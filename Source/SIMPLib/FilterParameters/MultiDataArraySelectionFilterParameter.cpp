@@ -53,31 +53,6 @@ MultiDataArraySelectionFilterParameter::MultiDataArraySelectionFilterParameter()
 MultiDataArraySelectionFilterParameter::~MultiDataArraySelectionFilterParameter()
 {}
 
-//************************** OLD FP API *******************************
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-MultiDataArraySelectionFilterParameter::Pointer MultiDataArraySelectionFilterParameter::New(const QString& humanLabel, const QString& propertyName,
-    const QVector<DataArrayPath>& defaultValue, Category category, const RequirementType req, int groupIndex)
-{
-
-  MultiDataArraySelectionFilterParameter::Pointer ptr = MultiDataArraySelectionFilterParameter::New();
-  ptr->setHumanLabel(humanLabel);
-  ptr->setPropertyName(propertyName);
-  QVariant v;
-  v.setValue(defaultValue);
-  ptr->setDefaultValue(v);
-  ptr->setCategory(category);
-  ptr->setDefaultGeometryTypes(req.dcGeometryTypes);
-  ptr->setDefaultAttributeMatrixTypes(req.amTypes);
-  ptr->setDefaultAttributeArrayTypes(req.daTypes);
-  ptr->setDefaultComponentDimensions(req.componentDimensions);
-  ptr->setGroupIndex(groupIndex);
-
-  return ptr;
-}
-//************************** OLD FP API *******************************
-
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------

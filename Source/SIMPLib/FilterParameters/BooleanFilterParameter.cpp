@@ -48,26 +48,6 @@ FilterParameter()
 BooleanFilterParameter::~BooleanFilterParameter()
 {}
 
-//************************** OLD FP API *******************************
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-BooleanFilterParameter::Pointer BooleanFilterParameter::New(const QString& humanLabel, const QString& propertyName,
-  const bool& defaultValue, Category category, const QString& units, int groupIndex)
-{
-
-  BooleanFilterParameter::Pointer ptr = BooleanFilterParameter::New();
-  ptr->setHumanLabel(humanLabel);
-  ptr->setPropertyName(propertyName);
-  ptr->setDefaultValue(defaultValue);
-  ptr->setCategory(category);
-  ptr->setGroupIndex(groupIndex);
-  ptr->setUnits(units);
-
-  return ptr;
-}
-//************************** OLD FP API *******************************
-
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------

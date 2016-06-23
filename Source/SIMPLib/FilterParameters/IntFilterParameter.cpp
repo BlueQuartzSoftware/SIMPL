@@ -48,25 +48,6 @@ FilterParameter()
 IntFilterParameter::~IntFilterParameter()
 {}
 
-//************************** OLD FP API *******************************
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-IntFilterParameter::Pointer IntFilterParameter::New(const QString& humanLabel, const QString& propertyName,
-  const int& defaultValue, Category category, int groupIndex)
-{
-
-  IntFilterParameter::Pointer ptr = IntFilterParameter::New();
-  ptr->setHumanLabel(humanLabel);
-  ptr->setPropertyName(propertyName);
-  ptr->setDefaultValue(defaultValue);
-  ptr->setCategory(category);
-  ptr->setGroupIndex(groupIndex);
-
-  return ptr;
-}
-//************************** OLD FP API *******************************
-
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------

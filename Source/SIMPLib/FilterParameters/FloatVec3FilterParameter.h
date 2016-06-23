@@ -75,12 +75,6 @@ public:
   typedef std::function<void(FloatVec3_t)> SetterCallbackType;
   typedef std::function<FloatVec3_t(void)> GetterCallbackType;
 
-  //************************** OLD FP API *******************************
-    static Pointer New(const QString& humanLabel, const QString& propertyName,
-    const FloatVec3_t& defaultValue, Category category,
-     int groupIndex = -1);
-    //************************** OLD FP API *******************************
-
     static Pointer New(const QString& humanLabel, const QString& propertyName,
     const FloatVec3_t& defaultValue, Category category, SetterCallbackType setterCallback,
     GetterCallbackType getterCallback, int groupIndex = -1);

@@ -48,27 +48,6 @@ FilterParameter()
 FourthOrderPolynomialFilterParameter::~FourthOrderPolynomialFilterParameter()
 {}
 
-//************************** OLD FP API *******************************
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-FourthOrderPolynomialFilterParameter::Pointer FourthOrderPolynomialFilterParameter::New(const QString& humanLabel, const QString& propertyName,
-  const Float4thOrderPoly_t& defaultValue, Category category, int groupIndex)
-{
-
-  FourthOrderPolynomialFilterParameter::Pointer ptr = FourthOrderPolynomialFilterParameter::New();
-  ptr->setHumanLabel(humanLabel);
-  ptr->setPropertyName(propertyName);
-  QVariant v;
-  v.setValue(defaultValue);
-  ptr->setDefaultValue(v);
-  ptr->setCategory(category);
-  ptr->setGroupIndex(groupIndex);
-
-  return ptr;
-}
-//************************** OLD FP API *******************************
-
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------

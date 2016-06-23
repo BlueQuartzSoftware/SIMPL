@@ -51,11 +51,6 @@ class SIMPLib_EXPORT DataContainerReaderFilterParameter : public FilterParameter
     typedef std::function<void(DataContainerArrayProxy)> SetterCallbackType;
     typedef std::function<DataContainerArrayProxy(void)> GetterCallbackType;
 
-    //************************** OLD FP API *******************************
-    static Pointer New(const QString& humanLabel, const QString& propertyName,
-                       const QString& defaultValue, Category category, int groupIndex = -1);
-    //************************** OLD FP API *******************************
-
     static Pointer New(const QString& humanLabel, const QString& propertyName,
                        const QString& defaultValue, Category category, SetterCallbackType setterCallback,
                        GetterCallbackType getterCallback, int groupIndex = -1);

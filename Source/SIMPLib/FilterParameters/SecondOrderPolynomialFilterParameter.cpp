@@ -48,27 +48,6 @@ FilterParameter()
 SecondOrderPolynomialFilterParameter::~SecondOrderPolynomialFilterParameter()
 {}
 
-//************************** OLD FP API *******************************
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-SecondOrderPolynomialFilterParameter::Pointer SecondOrderPolynomialFilterParameter::New(const QString& humanLabel, const QString& propertyName,
-  const Float2ndOrderPoly_t& defaultValue, Category category, int groupIndex)
-{
-
-  SecondOrderPolynomialFilterParameter::Pointer ptr = SecondOrderPolynomialFilterParameter::New();
-  ptr->setHumanLabel(humanLabel);
-  ptr->setPropertyName(propertyName);
-  QVariant v;
-  v.setValue(defaultValue);
-  ptr->setDefaultValue(v);
-  ptr->setCategory(category);
-  ptr->setGroupIndex(groupIndex);
-
-  return ptr;
-}
-//************************** OLD FP API *******************************
-
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------

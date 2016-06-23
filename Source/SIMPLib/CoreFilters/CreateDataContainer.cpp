@@ -73,7 +73,9 @@ CreateDataContainer::~CreateDataContainer()
 void CreateDataContainer::setupFilterParameters()
 {
   FilterParameterVector parameters;
-  parameters.push_back(DataContainerCreationFilterParameter::New("Created Data Container", "CreatedDataContainer", getCreatedDataContainer(), FilterParameter::CreatedArray));
+  parameters.push_back(DataContainerCreationFilterParameter::New("Created Data Container", "CreatedDataContainer", getCreatedDataContainer(), FilterParameter::CreatedArray,
+                                                                 SIMPL_BIND_SETTER(CreateDataContainer, this, CreatedDataContainer),
+                                                                 SIMPL_BIND_GETTER(CreateDataContainer, this, CreatedDataContainer)));
   setFilterParameters(parameters);
 }
 

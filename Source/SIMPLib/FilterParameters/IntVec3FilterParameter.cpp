@@ -48,29 +48,6 @@ FilterParameter()
 IntVec3FilterParameter::~IntVec3FilterParameter()
 {}
 
-//************************** OLD FP API *******************************
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-IntVec3FilterParameter::Pointer IntVec3FilterParameter::New(const QString& humanLabel, const QString& propertyName,
-                                                            const IntVec3_t& defaultValue, Category category,
-                                                            const QString& units, int groupIndex)
-{
-
-  IntVec3FilterParameter::Pointer ptr = IntVec3FilterParameter::New();
-  ptr->setHumanLabel(humanLabel);
-  ptr->setPropertyName(propertyName);
-  QVariant v;
-  v.setValue(defaultValue);
-  ptr->setDefaultValue(v);
-  ptr->setCategory(category);
-  ptr->setGroupIndex(groupIndex);
-  ptr->setUnits(units);
-
-  return ptr;
-}
-//************************** OLD FP API *******************************
-
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------

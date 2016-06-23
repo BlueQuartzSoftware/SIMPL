@@ -48,27 +48,6 @@ FilterParameter()
 FloatVec3FilterParameter::~FloatVec3FilterParameter()
 {}
 
-//************************** OLD FP API *******************************
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-FloatVec3FilterParameter::Pointer FloatVec3FilterParameter::New(const QString& humanLabel, const QString& propertyName,
-  const FloatVec3_t& defaultValue, Category category, int groupIndex)
-{
-
-  FloatVec3FilterParameter::Pointer ptr = FloatVec3FilterParameter::New();
-  ptr->setHumanLabel(humanLabel);
-  ptr->setPropertyName(propertyName);
-  QVariant v;
-  v.setValue(defaultValue);
-  ptr->setDefaultValue(v);
-  ptr->setCategory(category);
-  ptr->setGroupIndex(groupIndex);
-
-  return ptr;
-}
-//************************** OLD FP API *******************************
-
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------

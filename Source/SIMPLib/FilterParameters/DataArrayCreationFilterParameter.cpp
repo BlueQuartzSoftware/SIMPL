@@ -49,29 +49,6 @@ DataArrayCreationFilterParameter::DataArrayCreationFilterParameter() :
 DataArrayCreationFilterParameter::~DataArrayCreationFilterParameter()
 {}
 
-//************************** OLD FP API *******************************
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-DataArrayCreationFilterParameter::Pointer DataArrayCreationFilterParameter::New(const QString& humanLabel, const QString& propertyName,
-                                              const DataArrayPath& defaultValue, Category category, const RequirementType req, int groupIndex)
-{
-
-  DataArrayCreationFilterParameter::Pointer ptr = DataArrayCreationFilterParameter::New();
-  ptr->setHumanLabel(humanLabel);
-  ptr->setPropertyName(propertyName);
-  QVariant v;
-  v.setValue(defaultValue);
-  ptr->setDefaultValue(v);
-  ptr->setCategory(category);
-  ptr->setDefaultGeometryTypes(req.dcGeometryTypes);
-  ptr->setDefaultAttributeMatrixTypes(req.amTypes);
-  ptr->setGroupIndex(groupIndex);
-
-  return ptr;
-}
-//************************** OLD FP API *******************************
-
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------

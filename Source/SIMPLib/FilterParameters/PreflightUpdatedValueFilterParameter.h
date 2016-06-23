@@ -50,13 +50,6 @@ class SIMPLib_EXPORT PreflightUpdatedValueFilterParameter : public FilterParamet
     typedef std::function<void(QString)> SetterCallbackType;
     typedef std::function<QString(void)> GetterCallbackType;
 
-    //************************** OLD FP API *******************************
-    static Pointer New(const QString& humanLabel, const QString& propertyName,
-                       const QString& defaultValue,
-                       Category category,
-                       int groupIndex = -1);
-    //************************** OLD FP API *******************************
-
     static Pointer New(const QString& humanLabel, const QString& propertyName,
                        const QString& defaultValue,
                        Category category, SetterCallbackType setterCallback,

@@ -48,26 +48,6 @@ FilterParameter()
 RangeFilterParameter::~RangeFilterParameter()
 {}
 
-//************************** OLD FP API *******************************
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-RangeFilterParameter::Pointer RangeFilterParameter::New(const QString& humanLabel, const QString& propertyName,
-  const QPair<double, double>& defaultPair, Category category, int groupIndex)
-{
-
-  RangeFilterParameter::Pointer ptr = RangeFilterParameter::New();
-  ptr->setHumanLabel(humanLabel);
-  ptr->setPropertyName(propertyName);
-  ptr->setDefaultPair(defaultPair);
-  ptr->setCategory(category);
-  ptr->setGroupIndex(groupIndex);
-
-
-  return ptr;
-}
-//************************** OLD FP API *******************************
-
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------

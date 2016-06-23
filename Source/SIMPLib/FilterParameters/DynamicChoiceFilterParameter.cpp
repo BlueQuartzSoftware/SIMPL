@@ -48,28 +48,6 @@ DynamicChoiceFilterParameter::DynamicChoiceFilterParameter() :
 DynamicChoiceFilterParameter::~DynamicChoiceFilterParameter()
 {}
 
-//************************** OLD FP API *******************************
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-DynamicChoiceFilterParameter::Pointer DynamicChoiceFilterParameter::New(const QString& humanLabel,
-    const QString& propertyName,
-    const QString& defaultValue,
-    const QString& listProperty,
-    Category category,
-    int groupIndex)
-{
-  DynamicChoiceFilterParameter::Pointer ptr = DynamicChoiceFilterParameter::New();
-  ptr->setHumanLabel(humanLabel);
-  ptr->setPropertyName(propertyName);
-  ptr->setDefaultValue(defaultValue);
-  ptr->setCategory(category);
-  ptr->setListProperty(listProperty);
-  ptr->setGroupIndex(groupIndex);
-  return ptr;
-}
-//************************** OLD FP API *******************************
-
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------

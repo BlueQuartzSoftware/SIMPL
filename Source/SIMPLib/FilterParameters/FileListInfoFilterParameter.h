@@ -98,12 +98,6 @@ class SIMPLib_EXPORT FileListInfoFilterParameter : public FilterParameter
     typedef std::function<void(FileListInfo_t)> SetterCallbackType;
     typedef std::function<FileListInfo_t(void)> GetterCallbackType;
 
-    //************************** OLD FP API *******************************
-    static Pointer New(const QString& humanLabel, const QString& propertyName,
-                       const FileListInfo_t& defaultValue,
-                       Category category);
-    //************************** OLD FP API *******************************
-
     static Pointer New(const QString& humanLabel, const QString& propertyName,
                        const FileListInfo_t& defaultValue, Category category,
                        SetterCallbackType setterCallback, GetterCallbackType getterCallback);

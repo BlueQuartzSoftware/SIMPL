@@ -48,27 +48,6 @@ DataContainerSelectionFilterParameter::DataContainerSelectionFilterParameter() :
 DataContainerSelectionFilterParameter::~DataContainerSelectionFilterParameter()
 {}
 
-//************************** OLD FP API *******************************
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-DataContainerSelectionFilterParameter::Pointer DataContainerSelectionFilterParameter::New(const QString& humanLabel, const QString& propertyName,
-    const QString& defaultValue, Category category, const RequirementType req, int groupIndex)
-{
-  DataContainerSelectionFilterParameter::Pointer ptr = DataContainerSelectionFilterParameter::New();
-  ptr->setHumanLabel(humanLabel);
-  ptr->setPropertyName(propertyName);
-  QVariant v;
-  v.setValue(defaultValue);
-  ptr->setDefaultValue(v);
-  ptr->setCategory(category);
-  ptr->setDefaultGeometryTypes(req.dcGeometryTypes);
-  ptr->setGroupIndex(groupIndex);
-
-  return ptr;
-}
-//************************** OLD FP API *******************************
-
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------

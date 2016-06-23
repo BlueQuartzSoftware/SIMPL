@@ -52,26 +52,6 @@ DataContainerReaderFilterParameter::DataContainerReaderFilterParameter() :
 DataContainerReaderFilterParameter::~DataContainerReaderFilterParameter()
 {}
 
-//************************** OLD FP API *******************************
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-DataContainerReaderFilterParameter::Pointer DataContainerReaderFilterParameter::New(const QString& humanLabel, const QString& propertyName,
-    const QString& defaultValue, Category category, int groupIndex)
-{
-  DataContainerReaderFilterParameter::Pointer ptr = DataContainerReaderFilterParameter::New();
-  ptr->setHumanLabel(humanLabel);
-  ptr->setPropertyName(ptr->getInputFileProperty());
-  ptr->setDefaultValue(defaultValue);
-  ptr->setCategory(category);
-  ptr->setGroupIndex(groupIndex);
-  ptr->setFileExtension(".dream3d");
-  ptr->setFileType("");
-
-  return ptr;
-}
-//************************** OLD FP API *******************************
-
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------

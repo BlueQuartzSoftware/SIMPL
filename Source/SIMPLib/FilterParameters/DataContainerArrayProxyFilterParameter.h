@@ -51,12 +51,6 @@ class SIMPLib_EXPORT DataContainerArrayProxyFilterParameter : public FilterParam
     typedef std::function<void(DataContainerArrayProxy)> SetterCallbackType;
     typedef std::function<DataContainerArrayProxy(void)> GetterCallbackType;
 
-    //************************** OLD FP API *******************************
-    static Pointer New(const QString& humanLabel, const QString& propertyName,
-                       const QString& defaultValue, DataContainerArrayProxy proxy,
-                       Qt::CheckState defState, Category category, int groupIndex = -1);
-    //************************** OLD FP API *******************************
-
     static Pointer New(const QString& humanLabel, const QString& propertyName,
                        const QString& defaultValue, DataContainerArrayProxy proxy,
                        Qt::CheckState defState, Category category, SetterCallbackType setterCallback,

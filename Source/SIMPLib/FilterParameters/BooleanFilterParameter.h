@@ -50,12 +50,6 @@ public:
   typedef std::function<void(bool)> SetterCallbackType;
   typedef std::function<bool(void)> GetterCallbackType;
 
-  //************************** OLD FP API *******************************
-    static Pointer New(const QString& humanLabel, const QString& propertyName,
-    const bool& defaultValue, Category category,
-    const QString& units = "", int groupIndex = -1);
-    //************************** OLD FP API *******************************
-
     static Pointer New(const QString& humanLabel, const QString& propertyName,
     const bool& defaultValue, Category category, SetterCallbackType setterCallback,
     GetterCallbackType getterCallback, const QString& units = "", int groupIndex = -1);

@@ -48,26 +48,6 @@ FilterParameter()
 AxisAngleFilterParameter::~AxisAngleFilterParameter()
 {}
 
-//************************** OLD FP API *******************************
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-AxisAngleFilterParameter::Pointer AxisAngleFilterParameter::New(const QString& humanLabel, const QString& propertyName,
-  const AxisAngleInput_t& defaultValue, Category category, int groupIndex)
-{
-  AxisAngleFilterParameter::Pointer ptr = AxisAngleFilterParameter::New();
-  ptr->setHumanLabel(humanLabel);
-  ptr->setPropertyName(propertyName);
-  QVariant v;
-  v.setValue(defaultValue);
-  ptr->setDefaultValue(v);
-  ptr->setCategory(category);
-  ptr->setGroupIndex(groupIndex);
-
-  return ptr;
-}
-//************************** OLD FP API *******************************
-
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
