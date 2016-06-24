@@ -69,6 +69,7 @@ QUrl QtSHelpUrlGenerator::generateHTMLUrl(QString htmlName)
   QDir helpDir = QDir(appPath);
   QString s("file://");
 
+
 #if defined(Q_OS_WIN)
   s = s + "/"; // Need the third slash on windows because file paths start with a drive letter
 #elif defined(Q_OS_MAC)
@@ -82,7 +83,7 @@ QUrl QtSHelpUrlGenerator::generateHTMLUrl(QString htmlName)
 
 
 
-#if defined(Q_OS_WIN) || defined (Q_OS_MAC)
+#if defined(Q_OS_WIN) || defined (Q_OS_MAC) || defined (Q_OS_LINUX)
   QString helpFilePath=QString("%1/Help/%2/%3.html").arg(helpDir.absolutePath()).arg(QCoreApplication::instance()->applicationName()).arg(htmlName);
   QFileInfo fi(helpFilePath);
   if (fi.exists() == false)
