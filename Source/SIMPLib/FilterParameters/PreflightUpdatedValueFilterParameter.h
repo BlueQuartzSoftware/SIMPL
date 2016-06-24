@@ -52,7 +52,8 @@ class SIMPLib_EXPORT PreflightUpdatedValueFilterParameter : public FilterParamet
 
     static Pointer New(const QString& humanLabel, const QString& propertyName,
                        const QString& defaultValue,
-                       Category category, SetterCallbackType setterCallback,
+                       Category category,
+                       //SetterCallbackType setterCallback,
                        GetterCallbackType getterCallback, int groupIndex = -1);
 
     virtual ~PreflightUpdatedValueFilterParameter();
@@ -76,7 +77,7 @@ class SIMPLib_EXPORT PreflightUpdatedValueFilterParameter : public FilterParamet
      */
     void writeJson(QJsonObject &json);
 
-    SIMPL_INSTANCE_PROPERTY(SetterCallbackType, SetterCallback)
+    //SIMPL_INSTANCE_PROPERTY(SetterCallbackType, SetterCallback)
     SIMPL_INSTANCE_PROPERTY(GetterCallbackType, GetterCallback)
 
 

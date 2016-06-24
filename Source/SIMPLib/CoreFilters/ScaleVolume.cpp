@@ -127,25 +127,26 @@ void ScaleVolume::setupFilterParameters()
 {
   FilterParameterVector parameters;
 
-  parameters.push_back(FloatVec3FilterParameter::New("Scaling Factor", "ScaleFactor", getScaleFactor(), FilterParameter::Parameter));
+  parameters.push_back(FloatVec3FilterParameter::New("Scaling Factor", "ScaleFactor", getScaleFactor(), FilterParameter::Parameter, SIMPL_BIND_SETTER(ScaleVolume, this, ScaleFactor), SIMPL_BIND_GETTER(ScaleVolume, this, ScaleFactor)));
+
 
   QStringList linkedProps("DataContainerName");
-  parameters.push_back(LinkedBooleanFilterParameter::New("Apply to Image Geometry", "ApplyToVoxelVolume", getApplyToVoxelVolume(), linkedProps, FilterParameter::Parameter));
+  parameters.push_back(LinkedBooleanFilterParameter::New("Apply to Image Geometry", "ApplyToVoxelVolume", getApplyToVoxelVolume(), linkedProps, FilterParameter::Parameter, SIMPL_BIND_SETTER(ScaleVolume, this, ApplyToVoxelVolume), SIMPL_BIND_GETTER(ScaleVolume, this, ApplyToVoxelVolume)));
   {
     DataContainerSelectionFilterParameter::RequirementType req;
     req.dcGeometryTypes = QVector<unsigned int>(1, SIMPL::GeometryType::ImageGeometry);
-    parameters.push_back(DataContainerSelectionFilterParameter::New("Data Container Image Geometry to Scale", "DataContainerName", getDataContainerName(), FilterParameter::RequiredArray, req));
+    parameters.push_back(DataContainerSelectionFilterParameter::New("Data Container Image Geometry to Scale", "DataContainerName", getDataContainerName(), FilterParameter::RequiredArray, req, SIMPL_BIND_SETTER(ScaleVolume, this, DataContainerName), SIMPL_BIND_GETTER(ScaleVolume, this, DataContainerName)));
   }
   linkedProps.clear();
   linkedProps << "SurfaceDataContainerName";
-  parameters.push_back(LinkedBooleanFilterParameter::New("Apply to Surface Geometry", "ApplyToSurfaceMesh", getApplyToSurfaceMesh(), linkedProps, FilterParameter::Parameter));
+  parameters.push_back(LinkedBooleanFilterParameter::New("Apply to Surface Geometry", "ApplyToSurfaceMesh", getApplyToSurfaceMesh(), linkedProps, FilterParameter::Parameter, SIMPL_BIND_SETTER(ScaleVolume, this, ApplyToSurfaceMesh), SIMPL_BIND_GETTER(ScaleVolume, this, ApplyToSurfaceMesh)));
   {
     DataContainerSelectionFilterParameter::RequirementType req;
     QVector<unsigned int> dcGeometryTypes;
     dcGeometryTypes.push_back(SIMPL::GeometryType::TriangleGeometry);
     dcGeometryTypes.push_back(SIMPL::GeometryType::QuadGeometry);
     req.dcGeometryTypes = dcGeometryTypes;
-    parameters.push_back(DataContainerSelectionFilterParameter::New("Data Container Surface Geometry to Scale", "SurfaceDataContainerName", getSurfaceDataContainerName(), FilterParameter::RequiredArray, req));
+    parameters.push_back(DataContainerSelectionFilterParameter::New("Data Container Surface Geometry to Scale", "SurfaceDataContainerName", getSurfaceDataContainerName(), FilterParameter::RequiredArray, req, SIMPL_BIND_SETTER(ScaleVolume, this, SurfaceDataContainerName), SIMPL_BIND_GETTER(ScaleVolume, this, SurfaceDataContainerName)));
   }
 
   setFilterParameters(parameters);

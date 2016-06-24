@@ -52,8 +52,7 @@ UnknownFilterParameter::~UnknownFilterParameter()
 //
 // -----------------------------------------------------------------------------
 UnknownFilterParameter::Pointer UnknownFilterParameter::New(const QString& humanLabel, const QString& propertyName,
-  const QString& defaultValue, Category category, SetterCallbackType setterCallback, GetterCallbackType getterCallback,
-  int groupIndex)
+  const QString& defaultValue, Category category, int groupIndex)
 {
   UnknownFilterParameter::Pointer ptr = UnknownFilterParameter::New();
   ptr->setHumanLabel(humanLabel);
@@ -61,8 +60,6 @@ UnknownFilterParameter::Pointer UnknownFilterParameter::New(const QString& human
   ptr->setDefaultValue(defaultValue);
   ptr->setCategory(category);
   ptr->setGroupIndex(groupIndex);
-  ptr->setSetterCallback(setterCallback);
-  ptr->setGetterCallback(getterCallback);
   return ptr;
 }
 
@@ -82,7 +79,7 @@ void UnknownFilterParameter::readJson(const QJsonObject &json)
   QJsonValue jsonValue = json[getPropertyName()];
   if(!jsonValue.isUndefined() )
   {
-    m_SetterCallback(jsonValue.toString(""));
+    //m_SetterCallback(jsonValue.toString(""));
   }
 }
 
@@ -91,6 +88,6 @@ void UnknownFilterParameter::readJson(const QJsonObject &json)
 // -----------------------------------------------------------------------------
 void UnknownFilterParameter::writeJson(QJsonObject &json)
 {
-  json[getPropertyName()] = m_GetterCallback();
+  //json[getPropertyName()] = m_GetterCallback();
 }
 

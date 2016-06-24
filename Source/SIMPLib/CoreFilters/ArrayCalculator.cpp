@@ -185,14 +185,14 @@ void ArrayCalculator::setupFilterParameters()
   FilterParameterVector parameters;
   {
     AttributeMatrixSelectionFilterParameter::RequirementType req = AttributeMatrixSelectionFilterParameter::CreateRequirement(SIMPL::Defaults::AnyAttributeMatrix, SIMPL::Defaults::AnyGeometry);
-    parameters.push_back(AttributeMatrixSelectionFilterParameter::New("Cell Attribute Matrix", "SelectedAttributeMatrix", getSelectedAttributeMatrix(), FilterParameter::Parameter, req));
+    parameters.push_back(AttributeMatrixSelectionFilterParameter::New("Cell Attribute Matrix", "SelectedAttributeMatrix", getSelectedAttributeMatrix(), FilterParameter::Parameter, req, SIMPL_BIND_SETTER(ArrayCalculator, this, SelectedAttributeMatrix), SIMPL_BIND_GETTER(ArrayCalculator, this, SelectedAttributeMatrix)));
   }
 
-  parameters.push_back(CalculatorFilterParameter::New("Infix Expression", "InfixEquation", getInfixEquation(), FilterParameter::Parameter));
+  parameters.push_back(CalculatorFilterParameter::New("Infix Expression", "InfixEquation", getInfixEquation(), FilterParameter::Parameter, SIMPL_BIND_SETTER(ArrayCalculator, this, InfixEquation), SIMPL_BIND_GETTER(ArrayCalculator, this, InfixEquation)));
 
   {
     DataArrayCreationFilterParameter::RequirementType req = DataArrayCreationFilterParameter::CreateRequirement(SIMPL::Defaults::AnyAttributeMatrix, SIMPL::Defaults::AnyGeometry);
-    parameters.push_back(DataArrayCreationFilterParameter::New("Calculated Array", "CalculatedArray", getCalculatedArray(), FilterParameter::CreatedArray, req));
+    parameters.push_back(DataArrayCreationFilterParameter::New("Calculated Array", "CalculatedArray", getCalculatedArray(), FilterParameter::CreatedArray, req, SIMPL_BIND_SETTER(ArrayCalculator, this, CalculatedArray), SIMPL_BIND_GETTER(ArrayCalculator, this, CalculatedArray)));
   }
 
   setFilterParameters(parameters);

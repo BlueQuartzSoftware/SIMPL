@@ -52,7 +52,7 @@ PreflightUpdatedValueFilterParameter::~PreflightUpdatedValueFilterParameter()
 //
 // -----------------------------------------------------------------------------
 PreflightUpdatedValueFilterParameter::Pointer PreflightUpdatedValueFilterParameter::New(const QString& humanLabel, const QString& propertyName, const QString& defaultValue,
-  Category category, SetterCallbackType setterCallback, GetterCallbackType getterCallback, int groupIndex)
+  Category category, GetterCallbackType getterCallback, int groupIndex)
 {
   PreflightUpdatedValueFilterParameter::Pointer ptr = PreflightUpdatedValueFilterParameter::New();
   ptr->setHumanLabel(humanLabel);
@@ -60,7 +60,7 @@ PreflightUpdatedValueFilterParameter::Pointer PreflightUpdatedValueFilterParamet
   ptr->setDefaultValue(defaultValue);
   ptr->setCategory(category);
   ptr->setGroupIndex(groupIndex);
-  ptr->setSetterCallback(setterCallback);
+ // ptr->setSetterCallback(setterCallback);
   ptr->setGetterCallback(getterCallback);
 
   return ptr;
@@ -82,7 +82,7 @@ void PreflightUpdatedValueFilterParameter::readJson(const QJsonObject &json)
   QJsonValue jsonValue = json[getPropertyName()];
   if(!jsonValue.isUndefined() )
   {
-    m_SetterCallback(jsonValue.toString(""));
+    //m_SetterCallback(jsonValue.toString(""));
   }
 }
 

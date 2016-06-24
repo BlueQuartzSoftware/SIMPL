@@ -73,7 +73,7 @@ void ExecuteProcess::setupFilterParameters()
 {
   FilterParameterVector parameters;
 
-  parameters.push_back(StringFilterParameter::New("Command Line Arguments", "Arguments", getArguments(), FilterParameter::Parameter));
+  parameters.push_back(StringFilterParameter::New("Command Line Arguments", "Arguments", getArguments(), FilterParameter::Parameter, SIMPL_BIND_SETTER(ExecuteProcess, this, Arguments), SIMPL_BIND_GETTER(ExecuteProcess, this, Arguments)));
 
   setFilterParameters(parameters);
 }

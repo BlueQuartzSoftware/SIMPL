@@ -54,9 +54,9 @@ public:
   typedef std::function<QPair<double, double>(void)> GetterCallbackType;
 
     static Pointer New(const QString& humanLabel, const QString& propertyName,
-    const QPair<double, double>& defaultPair, Category category,
-    SetterCallbackType setterCallback, GetterCallbackType getterCallback,
-    int groupIndex = -1);
+                      const QPair<double, double>& defaultPair, Category category,
+                      SetterCallbackType setterCallback, GetterCallbackType getterCallback,
+                      int groupIndex = -1);
 
     virtual ~RangeFilterParameter();
 

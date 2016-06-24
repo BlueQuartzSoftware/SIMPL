@@ -84,7 +84,7 @@ void DataContainerReader::setupFilterParameters()
 {
   FilterParameterVector parameters;
 
-  parameters.push_back(BooleanFilterParameter::New("Overwrite Existing Data Containers", "OverwriteExistingDataContainers", getOverwriteExistingDataContainers(), FilterParameter::Parameter));
+  parameters.push_back(BooleanFilterParameter::New("Overwrite Existing Data Containers", "OverwriteExistingDataContainers", getOverwriteExistingDataContainers(), FilterParameter::Parameter, SIMPL_BIND_SETTER(DataContainerReader, this, OverwriteExistingDataContainers), SIMPL_BIND_GETTER(DataContainerReader, this, OverwriteExistingDataContainers)));
   {
     DataContainerReaderFilterParameter::Pointer parameter = DataContainerReaderFilterParameter::New();
     parameter->setHumanLabel("Select Arrays from Input File");
@@ -92,6 +92,8 @@ void DataContainerReader::setupFilterParameters()
     parameter->setDefaultFlagValue(Qt::Checked);
     parameter->setInputFileProperty("InputFile");
     parameter->setCategory(FilterParameter::Parameter);
+    parameter->setSetterCallback(SIMPL_BIND_SETTER(DataContainerReader, this, InputFileDataContainerArrayProxy));
+    parameter->setGetterCallback(SIMPL_BIND_GETTER(DataContainerReader, this, InputFileDataContainerArrayProxy));
     parameters.push_back(parameter);
   }
 

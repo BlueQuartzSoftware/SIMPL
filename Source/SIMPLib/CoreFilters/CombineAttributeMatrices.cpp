@@ -121,14 +121,14 @@ void CombineAttributeMatrices::setupFilterParameters()
     req.amTypes = amTypes;
     req.daTypes = daTypes;
     req.componentDimensions = compDims;
-    parameters.push_back(DataArraySelectionFilterParameter::New("First Index Array", "FirstIndexArrayPath", getFirstIndexArrayPath(), FilterParameter::RequiredArray, req));
-    parameters.push_back(DataArraySelectionFilterParameter::New("Second Index Array", "SecondIndexArrayPath", getSecondIndexArrayPath(), FilterParameter::RequiredArray, req));
+    parameters.push_back(DataArraySelectionFilterParameter::New("First Index Array", "FirstIndexArrayPath", getFirstIndexArrayPath(), FilterParameter::RequiredArray, req, SIMPL_BIND_SETTER(CombineAttributeMatrices, this, FirstIndexArrayPath), SIMPL_BIND_GETTER(CombineAttributeMatrices, this, FirstIndexArrayPath)));
+    parameters.push_back(DataArraySelectionFilterParameter::New("Second Index Array", "SecondIndexArrayPath", getSecondIndexArrayPath(), FilterParameter::RequiredArray, req, SIMPL_BIND_SETTER(CombineAttributeMatrices, this, SecondIndexArrayPath), SIMPL_BIND_GETTER(CombineAttributeMatrices, this, SecondIndexArrayPath)));
   }
 
   parameters.push_back(SeparatorFilterParameter::New("Cell/Feature Data", FilterParameter::CreatedArray));
-  parameters.push_back(StringFilterParameter::New("New Index Array", "NewIndexArrayName", getNewIndexArrayName(), FilterParameter::CreatedArray));
+  parameters.push_back(StringFilterParameter::New("New Index Array", "NewIndexArrayName", getNewIndexArrayName(), FilterParameter::CreatedArray, SIMPL_BIND_SETTER(CombineAttributeMatrices, this, NewIndexArrayName), SIMPL_BIND_GETTER(CombineAttributeMatrices, this, NewIndexArrayName)));
   parameters.push_back(SeparatorFilterParameter::New("Feature/Ensemble Data", FilterParameter::CreatedArray));
-  parameters.push_back(StringFilterParameter::New("Combined Attribute Matrix", "CombinedAttributeMatrixName", getCombinedAttributeMatrixName(), FilterParameter::CreatedArray));
+  parameters.push_back(StringFilterParameter::New("Combined Attribute Matrix", "CombinedAttributeMatrixName", getCombinedAttributeMatrixName(), FilterParameter::CreatedArray, SIMPL_BIND_SETTER(CombineAttributeMatrices, this, CombinedAttributeMatrixName), SIMPL_BIND_GETTER(CombineAttributeMatrices, this, CombinedAttributeMatrixName)));
 
   setFilterParameters(parameters);
 }
