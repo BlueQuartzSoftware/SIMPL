@@ -41,10 +41,31 @@
   <file>arrow_up_green.png</file>
   <file>arrow_up_green@2x.png</file>
 
-<!-- These are low res icons -->
+  <file>Import_Data.png</file>
+  <file>Import_Data@2x.png</file>
+
+  <file>bullet_triangle_blue.png</file>
+  <file>bullet_triangle_blue@2x.png</file>
+  <file>bullet_triangle_green.png</file>
+  <file>bullet_triangle_green@2x.png</file>
+  <file>bullet_triangle_grey.png</file>
+  <file>bullet_triangle_grey@2x.png</file>
+  <file>bullet_triangle_red.png</file>
+  <file>bullet_triangle_red@2x.png</file>
+  <file>bullet_triangle_yellow.png</file>
+  <file>bullet_triangle_yellow@2x.png</file>
+<file>row_add.png</file>
+<file>row_add@2x.png</file>
+<file>row_delete.png</file>
+<file>row_delete@2x.png</file>
+<file>Table_Import.png</file>
+<file>Table_Import@2x.png</file>
+
+
   <file>Groups/cubes.png</file>
   <file>Groups/cubes@2x.png</file>
 
+<!-- These are low res icons -->
   <file>Groups/Generic_Icon.png</file>
   <file>Groups/Processing_Icon.png</file>
   <file>Groups/Reconstruction_Icon.png</file>

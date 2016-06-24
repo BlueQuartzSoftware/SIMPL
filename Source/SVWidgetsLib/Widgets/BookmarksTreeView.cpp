@@ -37,16 +37,14 @@
 
 #include <iostream>
 
-#include <QtWidgets/QApplication>
-#include <QtWidgets/QMessageBox>
-#include <QtWidgets/QFileDialog>
-
 #include <QtCore/QJsonObject>
 #include <QtCore/QJsonDocument>
 #include <QtCore/QMimeData>
 #include <QtCore/QFileInfo>
 #include <QtCore/QDir>
-
+#include <QtWidgets/QApplication>
+#include <QtWidgets/QMessageBox>
+#include <QtWidgets/QFileDialog>
 #include <QtGui/QMouseEvent>
 #include <QtGui/QDrag>
 
