@@ -43,13 +43,13 @@ void Filt0::setupFilterParameters()
 
   /*  For an Integer use this code*/
   {
-    IntFilterParameter::Pointer parameter = IntFilterParameter::New("Int Value", "Filt0_Integer", 0, FilterParameter::Parameter);
+    IntFilterParameter::Pointer parameter = IntFilterParameter::New("Int Value", "Filt0_Integer", 0, FilterParameter::Parameter, SIMPL_BIND_SETTER(Filt0, this, Filt0_Integer), SIMPL_BIND_GETTER(Filt0, this, Filt0_Integer));
     //  //parameter->setValueType("int");
     parameters.push_back(parameter);
   }
   /*  For a Floating point value use this code*/
   {
-    DoubleFilterParameter::Pointer parameter = DoubleFilterParameter::New("Float Value", "Filt0_Float", 0.0, FilterParameter::Parameter);
+    DoubleFilterParameter::Pointer parameter = DoubleFilterParameter::New("Float Value", "Filt0_Float", 0.0, FilterParameter::Parameter, SIMPL_BIND_SETTER(Filt0, this, Filt0_Float), SIMPL_BIND_GETTER(Filt0, this, Filt0_Float));
     parameters.push_back(parameter);
   }
 
@@ -165,13 +165,13 @@ void Filt1::setupFilterParameters()
 
   /*  For an Integer use this code*/
   {
-    IntFilterParameter::Pointer parameter = IntFilterParameter::New("Int Value", "Filt1_Integer", 0, FilterParameter::Parameter);
+    IntFilterParameter::Pointer parameter = IntFilterParameter::New("Int Value", "Filt1_Integer", 0, FilterParameter::Parameter, SIMPL_BIND_SETTER(Filt1, this, Filt1_Integer), SIMPL_BIND_GETTER(Filt1, this, Filt1_Integer));
     //  //parameter->setValueType("int");
     parameters.push_back(parameter);
   }
   /*  For a Floating point value use this code*/
   {
-    DoubleFilterParameter::Pointer parameter = DoubleFilterParameter::New("Float Value", "Filt1_Float", 0.0, FilterParameter::Parameter);
+    DoubleFilterParameter::Pointer parameter = DoubleFilterParameter::New("Float Value", "Filt1_Float", 0.0, FilterParameter::Parameter, SIMPL_BIND_SETTER(Filt1, this, Filt1_Float), SIMPL_BIND_GETTER(Filt1, this, Filt1_Float));
     parameters.push_back(parameter);
   }
 

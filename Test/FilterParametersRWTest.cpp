@@ -856,7 +856,6 @@ class FilterParametersRWTest
       {
         PreflightUpdatedValueFilterParameter::Pointer fp = PreflightUpdatedValueFilterParameter::New("Test", "String2",
                                                                              getString1(), FilterParameter::Parameter,
-                                                                             SIMPL_BIND_SETTER(FilterParametersRWTest, this, String2),
                                                                              SIMPL_BIND_GETTER(FilterParametersRWTest, this, String1));
 
         QJsonObject obj;
@@ -964,10 +963,7 @@ class FilterParametersRWTest
       }
 
       {
-        UnknownFilterParameter::Pointer fp = UnknownFilterParameter::New("Test", "String2",
-                                                                             getString1(), FilterParameter::Parameter,
-                                                                             SIMPL_BIND_SETTER(FilterParametersRWTest, this, String2),
-                                                                             SIMPL_BIND_GETTER(FilterParametersRWTest, this, String1));
+        UnknownFilterParameter::Pointer fp = UnknownFilterParameter::New("Test", "String2", getString1(), FilterParameter::Parameter);
 
         QJsonObject obj;
         fp->writeJson(obj);

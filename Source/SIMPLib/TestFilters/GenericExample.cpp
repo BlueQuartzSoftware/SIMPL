@@ -116,9 +116,9 @@ void GenericExample::setupFilterParameters()
   parameters.push_back(StringFilterParameter::New("STL Output Prefix", "StlFilePrefix", getStlFilePrefix(), FilterParameter::Parameter, SIMPL_BIND_SETTER(GenericExample, this, StlFilePrefix), SIMPL_BIND_GETTER(GenericExample, this, StlFilePrefix)));
 
   /*   For an output file use this code*/
-  //parameters.push_back(OutputFileFilterParameter::New("Output File", "OutputFile", getOutputFile(), FilterParameter::Parameter));
+  //parameters.push_back(OutputFileFilterParameter::New("Output File", "OutputFile", getOutputFile(), FilterParameter::Parameter, SIMPL_BIND_SETTER(GenericExample, this, OutputFile), SIMPL_BIND_GETTER(GenericExample, this, OutputFile)));
   /*   For an output path use this code*/
-  //parameters.push_back(OutputPathFilterParameter::New("Output Path", "OutputPath", getOutputPath(), FilterParameter::Parameter));
+  //parameters.push_back(OutputPathFilterParameter::New("Output Path", "OutputPath", getOutputPath(), FilterParameter::Parameter, SIMPL_BIND_SETTER(GenericExample, this, OutputPath), SIMPL_BIND_GETTER(GenericExample, this, OutputPath)));
   /*   For a simple true/false boolean use this code*/
   parameters.push_back(BooleanFilterParameter::New("Write Alignment Shift File", "WriteAlignmentShifts", getWriteAlignmentShifts(), FilterParameter::Parameter, SIMPL_BIND_SETTER(GenericExample, this, WriteAlignmentShifts), SIMPL_BIND_GETTER(GenericExample, this, WriteAlignmentShifts)));
 
@@ -142,7 +142,7 @@ void GenericExample::setupFilterParameters()
 
 
   /* Display a group of 3 text boxes to collect 3 integer values */
-  parameters.push_back(IntVec3FilterParameter::New("Dimensions (XYZ)", "Dimensions", getDimensions(), FilterParameter::Parameter));
+  parameters.push_back(IntVec3FilterParameter::New("Dimensions (XYZ)", "Dimensions", getDimensions(), FilterParameter::Parameter, SIMPL_BIND_SETTER(GenericExample, this, Dimensions), SIMPL_BIND_GETTER(GenericExample, this, Dimensions)));
 
   {
     DataArraySelectionFilterParameter::RequirementType req;
@@ -191,9 +191,9 @@ void GenericExample::setupFilterParameters()
     parameters.push_back(IntFilterParameter::New("Max Iterations", "MaxIterations", getMaxIterations(), FilterParameter::Parameter, SIMPL_BIND_SETTER(GenericExample, this, MaxIterations), SIMPL_BIND_GETTER(GenericExample, this, MaxIterations), 0));    /*  For a Floating point value use this code*/
     parameters.push_back(DoubleFilterParameter::New("Misorientation Tolerance", "MisorientationTolerance", getMisorientationTolerance(), FilterParameter::Parameter, SIMPL_BIND_SETTER(GenericExample, this, MisorientationTolerance), SIMPL_BIND_GETTER(GenericExample, this, MisorientationTolerance), 1));
     /*   For an input file use this code*/
-    //parameters.push_back(InputFileFilterParameter::New("Input File", "InputFile", getInputFile(), FilterParameter::Parameter, "", "", 1));
+    //parameters.push_back(InputFileFilterParameter::New("Input File", "InputFile", getInputFile(), FilterParameter::Parameter, SIMPL_BIND_SETTER(GenericExample, this, InputFile), SIMPL_BIND_GETTER(GenericExample, this, InputFile), "", "", 1));
     /*   For an input path use this code*/
-    //parameters.push_back(InputPathFilterParameter::New("Input Path", "InputPath", getInputPath(), FilterParameter::Parameter, "", "", 2));
+    //parameters.push_back(InputPathFilterParameter::New("Input Path", "InputPath", getInputPath(), FilterParameter::Parameter, SIMPL_BIND_SETTER(GenericExample, this, InputPath), SIMPL_BIND_GETTER(GenericExample, this, InputPath), "", "", 2));
   }
 
 
@@ -222,13 +222,13 @@ void GenericExample::setupFilterParameters()
 
     {
       DataArrayCreationFilterParameter::RequirementType req;
-      parameters.push_back(DataArrayCreationFilterParameter::New("Created Data Array", "CreatedDataArray", getCreatedDataArray(), FilterParameter::Parameter, req, 0));
+      parameters.push_back(DataArrayCreationFilterParameter::New("Created Data Array", "CreatedDataArray", getCreatedDataArray(), FilterParameter::Parameter, req, SIMPL_BIND_SETTER(GenericExample, this, CreatedDataArray), SIMPL_BIND_GETTER(GenericExample, this, CreatedDataArray), 0));
     }
     /* Display a group of 3 text boxes to collect 3 float values */
-    parameters.push_back(FloatVec3FilterParameter::New("Origin", "Origin", getOrigin(), FilterParameter::Parameter, 1));
+    parameters.push_back(FloatVec3FilterParameter::New("Origin", "Origin", getOrigin(), FilterParameter::Parameter, SIMPL_BIND_SETTER(GenericExample, this, Origin), SIMPL_BIND_GETTER(GenericExample, this, Origin), 1));
 
     /* Display the AxisAngleWidget to collect Axis-Angle pairs from the user */
-    parameters.push_back(AxisAngleFilterParameter::New("Crystal Rotations", "CrystalSymmetryRotations", getCrystalSymmetryRotations(), FilterParameter::Parameter, 2));
+    parameters.push_back(AxisAngleFilterParameter::New("Crystal Rotations", "CrystalSymmetryRotations", getCrystalSymmetryRotations(), FilterParameter::Parameter, SIMPL_BIND_SETTER(GenericExample, this, CrystalSymmetryRotations), SIMPL_BIND_GETTER(GenericExample, this, CrystalSymmetryRotations), 2));
 
     {
       DataContainerSelectionFilterParameter::RequirementType req;
@@ -241,7 +241,7 @@ void GenericExample::setupFilterParameters()
 
   {
     MultiDataArraySelectionFilterParameter::RequirementType req;
-    parameters.push_back(MultiDataArraySelectionFilterParameter::New("Multi Data Array Test", "SelectedMultiArrayPaths", paths, FilterParameter::Parameter, req, 0));
+    parameters.push_back(MultiDataArraySelectionFilterParameter::New("Multi Data Array Test", "SelectedMultiArrayPaths", paths, FilterParameter::Parameter, req, SIMPL_BIND_SETTER(GenericExample, this, SelectedMultiArrayPaths), SIMPL_BIND_GETTER(GenericExample, this, SelectedMultiArrayPaths), 0));
   }
 
   setFilterParameters(parameters);
