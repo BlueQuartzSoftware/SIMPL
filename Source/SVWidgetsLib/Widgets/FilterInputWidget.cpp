@@ -229,6 +229,7 @@ void FilterInputWidget::layoutWidgets(AbstractFilter::Pointer filter)
 
   m_VariablesVerticalLayout = new QVBoxLayout(m_VariablesWidget);
   m_VariablesVerticalLayout->setSpacing(30);
+  m_VariablesVerticalLayout->setMargin(0);
 
   QString groupBoxStyle;
   QTextStream ss(&groupBoxStyle);
@@ -245,14 +246,17 @@ void FilterInputWidget::layoutWidgets(AbstractFilter::Pointer filter)
 
   QGroupBox* parametersGroupBox = new QGroupBox("Parameters", this);
   QVBoxLayout* pLayout = new QVBoxLayout(parametersGroupBox);
+  pLayout->setContentsMargins(0, 0, 0, 0);
   parametersGroupBox->setStyleSheet(groupBoxStyle);
 
   QGroupBox* requiredGroupBox = new QGroupBox("Required Objects", this);
   QVBoxLayout* rLayout = new QVBoxLayout(requiredGroupBox);
+  rLayout->setContentsMargins(0, 0, 0, 0);
   requiredGroupBox->setStyleSheet(groupBoxStyle);
 
   QGroupBox* createdGroupBox = new QGroupBox("Created Objects", this);
   QVBoxLayout* cLayout = new QVBoxLayout(createdGroupBox);
+  cLayout->setContentsMargins(0, 0, 0, 0);
   createdGroupBox->setStyleSheet(groupBoxStyle);
 
   QGroupBox* noCategoryGroupBox = new QGroupBox("Uncategorized", this);
