@@ -71,8 +71,6 @@
 #include "SIMPLib/Common/IFilterFactory.hpp"
 #include "SIMPLib/Common/FilterFactory.hpp"
 #include "SIMPLib/CoreFilters/Breakpoint.h"
-#include "SIMPLib/FilterParameters/QFilterParametersReader.h"
-#include "SIMPLib/FilterParameters/QFilterParametersWriter.h"
 #include "SIMPLib/FilterParameters/JsonFilterParametersReader.h"
 #include "SIMPLib/FilterParameters/JsonFilterParametersWriter.h"
 

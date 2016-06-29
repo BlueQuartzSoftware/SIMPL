@@ -91,6 +91,18 @@ class SIMPLib_EXPORT FilterParameter
     SIMPL_INSTANCE_PROPERTY(bool, ReadOnly)
     SIMPL_INSTANCE_PROPERTY(int, GroupIndex)
 
+    /**
+     * @brief readJson
+     * @return
+     */
+    virtual QJsonObject readJson(const QJsonObject &json);
+
+    /**
+     * @brief writeJson
+     * @return
+     */
+    virtual void writeJson(QJsonObject &json);
+
   protected:
     FilterParameter();
 

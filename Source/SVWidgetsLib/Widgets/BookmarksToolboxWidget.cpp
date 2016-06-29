@@ -55,7 +55,6 @@
 #include "SIMPLib/Common/FilterManager.h"
 #include "SIMPLib/Common/FilterFactory.hpp"
 #include "SIMPLib/FilterParameters/JsonFilterParametersReader.h"
-#include "SIMPLib/FilterParameters/QFilterParametersReader.h"
 
 #include "SVWidgetsLib/QtSupport/QtSBookmarkMissingDialog.h"
 
@@ -155,24 +154,7 @@ QString BookmarksToolboxWidget::generateHtmlFilterListFromPipelineFile(QString p
   FilterPipeline::Pointer pipeline;
 
   QFileInfo fi(path);
-  if(fi.suffix().compare("ini") == 0)
-  {
-    QtSSettings prefs(path);
-    prefs.beginGroup(SIMPL::Settings::PipelineBuilderGroup);
-    bool ok = false;
-    name = prefs.value("Name", QString("")).toString();
-    dVers = prefs.value("SIMPLView_Version", QString("")).toString();
-    if(dVers.isEmpty() == true)
-    {
-      dVers = prefs.value("Version", QString("")).toString();
-    }
-    prefs.endGroup();
-    if (false == ok) {filterCount = 0;}
-
-    pipeline = QFilterParametersReader::ReadPipelineFromFile(path, QSettings::IniFormat, NULL);
-    filterCount = pipeline->getFilterContainer().size();
-  }
-  else if (fi.suffix().compare("json") == 0)
+  if (fi.suffix().compare("json") == 0)
   {
     pipeline = JsonFilterParametersReader::ReadPipelineFromFile(path, NULL);
     JsonFilterParametersReader::ReadNameOfPipelineFromFile(path, name, dVers, NULL);

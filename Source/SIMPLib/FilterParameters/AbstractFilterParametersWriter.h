@@ -83,63 +83,63 @@ class SIMPLib_EXPORT AbstractFilterParametersWriter
     virtual int closeFilterGroup() = 0;
 
 
-    virtual int writeValue(const QString name, const QString value) = 0;
-    virtual int writeValue(const QString name, const QVector<QString> value) = 0;
-    virtual int writeValue(const QString name, const QStringList value) = 0;
+    virtual int writeValue(const QString name, const QString value);
+    virtual int writeValue(const QString name, const QVector<QString> value);
+    virtual int writeValue(const QString name, const QStringList value);
 
-    virtual int writeValue(const QString name, int8_t value) = 0;
-    virtual int writeValue(const QString name, int16_t value) = 0;
-    virtual int writeValue(const QString name, int32_t value) = 0;
-    virtual int writeValue(const QString name, int64_t value) = 0;
-    virtual int writeValue(const QString name, uint8_t value) = 0;
-    virtual int writeValue(const QString name, uint16_t value) = 0;
-    virtual int writeValue(const QString name, uint32_t value) = 0;
-    virtual int writeValue(const QString name, uint64_t value) = 0;
-    virtual int writeValue(const QString name, float value) = 0;
-    virtual int writeValue(const QString name, double value) = 0;
+    virtual int writeValue(const QString name, int8_t value);
+    virtual int writeValue(const QString name, int16_t value);
+    virtual int writeValue(const QString name, int32_t value);
+    virtual int writeValue(const QString name, int64_t value);
+    virtual int writeValue(const QString name, uint8_t value);
+    virtual int writeValue(const QString name, uint16_t value);
+    virtual int writeValue(const QString name, uint32_t value);
+    virtual int writeValue(const QString name, uint64_t value);
+    virtual int writeValue(const QString name, float value);
+    virtual int writeValue(const QString name, double value);
 
-    virtual int writeValue(const QString name, QVector<int8_t> value) = 0;
-    virtual int writeValue(const QString name, QVector<int16_t> value) = 0;
-    virtual int writeValue(const QString name, QVector<int32_t> value) = 0;
-    virtual int writeValue(const QString name, QVector<int64_t> value) = 0;
-    virtual int writeValue(const QString name, QVector<uint8_t> value) = 0;
-    virtual int writeValue(const QString name, QVector<uint16_t> value) = 0;
-    virtual int writeValue(const QString name, QVector<uint32_t> value) = 0;
-    virtual int writeValue(const QString name, QVector<uint64_t> value) = 0;
-    virtual int writeValue(const QString name, QVector<float> value) = 0;
-    virtual int writeValue(const QString name, QVector<double> value) = 0;
+    virtual int writeValue(const QString name, QVector<int8_t> value);
+    virtual int writeValue(const QString name, QVector<int16_t> value);
+    virtual int writeValue(const QString name, QVector<int32_t> value);
+    virtual int writeValue(const QString name, QVector<int64_t> value);
+    virtual int writeValue(const QString name, QVector<uint8_t> value);
+    virtual int writeValue(const QString name, QVector<uint16_t> value);
+    virtual int writeValue(const QString name, QVector<uint32_t> value);
+    virtual int writeValue(const QString name, QVector<uint64_t> value);
+    virtual int writeValue(const QString name, QVector<float> value);
+    virtual int writeValue(const QString name, QVector<double> value);
 
-    virtual int writeValue(const QString name, IntVec3_t v) = 0;
-    virtual int writeValue(const QString name, FloatVec3_t v) = 0;
-    virtual int writeValue(const QString name, Float2ndOrderPoly_t v) = 0;
-    virtual int writeValue(const QString name, Float3rdOrderPoly_t v) = 0;
-    virtual int writeValue(const QString name, Float4thOrderPoly_t v) = 0;
-    virtual int writeValue(const QString name, FileListInfo_t v) = 0;
+    virtual int writeValue(const QString name, IntVec3_t v);
+    virtual int writeValue(const QString name, FloatVec3_t v);
+    virtual int writeValue(const QString name, Float2ndOrderPoly_t v);
+    virtual int writeValue(const QString name, Float3rdOrderPoly_t v);
+    virtual int writeValue(const QString name, Float4thOrderPoly_t v);
+    virtual int writeValue(const QString name, FileListInfo_t v);
 
-    virtual int writeValue(const QString name, ComparisonInput_t v) = 0;
-    virtual int writeValue(const QString name, ComparisonInputs v) = 0;
+    virtual int writeValue(const QString name, ComparisonInput_t v);
+    virtual int writeValue(const QString name, ComparisonInputs v);
 
-    virtual int writeValue(const QString name, QVector<AxisAngleInput_t> v) = 0;
+    virtual int writeValue(const QString name, QVector<AxisAngleInput_t> v);
 
-    virtual int writeArraySelections(const QString name, QSet<QString> v) = 0;
+    virtual int writeArraySelections(const QString name, QSet<QString> v);
 
-    virtual int writeValue(const QString name, const DataContainerArrayProxy& v) = 0;
+    virtual int writeValue(const QString name, const DataContainerArrayProxy& v);
 
-    virtual int writeValue(const QString name, AxisAngleInput_t v) = 0;
+    virtual int writeValue(const QString name, AxisAngleInput_t v);
 
-    virtual int writeValue(const QString name, const DataArrayPath& path) = 0;
+    virtual int writeValue(const QString name, const DataArrayPath& path);
 
-    virtual int writeValue(const QString name, const QVector<DataArrayPath>& path) = 0;
+    virtual int writeValue(const QString name, const QVector<DataArrayPath>& path);
 
-    virtual int writeValue(const QString name, const DynamicTableData& v) = 0;
+    virtual int writeValue(const QString name, const DynamicTableData& v);
 
-    virtual int writeValue(const QString name, const QPair<double, double> & v) = 0;
+    virtual int writeValue(const QString name, const QPair<double, double> & v);
 
   protected:
     AbstractFilterParametersWriter();
 
 
-    virtual int writeValue(const QString name, AxisAngleInput_t v, int vectorPos) = 0;
+    virtual int writeValue(const QString name, AxisAngleInput_t v, int vectorPos);
 
 
 

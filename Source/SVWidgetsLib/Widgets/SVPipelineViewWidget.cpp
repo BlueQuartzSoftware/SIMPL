@@ -72,8 +72,6 @@
 #include "SIMPLib/Common/IFilterFactory.hpp"
 #include "SIMPLib/Common/FilterFactory.hpp"
 #include "SIMPLib/CoreFilters/Breakpoint.h"
-#include "SIMPLib/FilterParameters/QFilterParametersReader.h"
-#include "SIMPLib/FilterParameters/QFilterParametersWriter.h"
 #include "SIMPLib/FilterParameters/JsonFilterParametersReader.h"
 #include "SIMPLib/FilterParameters/JsonFilterParametersWriter.h"
 
@@ -1347,11 +1345,7 @@ FilterPipeline::Pointer SVPipelineViewWidget::readPipelineFromFile(const QString
   QString ext = fi.suffix();
 
   FilterPipeline::Pointer pipeline;
-  if (ext == "ini" || ext == "txt")
-  {
-    pipeline = QFilterParametersReader::ReadPipelineFromFile(filePath, QSettings::IniFormat, dynamic_cast<IObserver*>(m_PipelineMessageObserver));
-  }
-  else if (ext == "dream3d")
+  if (ext == "dream3d")
   {
     pipeline = H5FilterParametersReader::ReadPipelineFromFile(filePath);
   }
@@ -1397,7 +1391,7 @@ int SVPipelineViewWidget::writePipeline(QString filePath)
   }
   else if (ext == "json")
   {
-    err = JsonFilterParametersWriter::WritePipelineToFile(pipeline, fi.absoluteFilePath(), fi.fileName(), reinterpret_cast<IObserver*>(m_PipelineMessageObserver));
+    JsonFilterParametersWriter::WritePipelineToFile(pipeline, fi.absoluteFilePath(), fi.fileName(), reinterpret_cast<IObserver*>(m_PipelineMessageObserver));
   }
   else
   {

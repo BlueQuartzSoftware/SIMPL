@@ -80,7 +80,7 @@ class SIMPLib_EXPORT JsonFilterParametersWriter : public AbstractFilterParameter
     * @param obs Any observer that we can pass error/warning messages back to in case something goes wrong.
     * @return
     */
-    static int WritePipelineToFile(FilterPipeline::Pointer pipeline, QString filePath, QString pipelineName, IObserver* obs = NULL);
+    void writePipelineToFile(FilterPipeline::Pointer pipeline, QString filePath, QString pipelineName, IObserver* obs = NULL);
 
     /**
     * @brief WritePipelineToString This function will write a pipeline to a QString.
@@ -89,7 +89,7 @@ class SIMPLib_EXPORT JsonFilterParametersWriter : public AbstractFilterParameter
     * @param obs Any observer that we can pass error/warning messages back to in case something goes wrong.
     * @return The pipeline as a QString
     */
-    static QString WritePipelineToString(FilterPipeline::Pointer pipeline, QString pipelineName, IObserver* obs = NULL);
+    QString writePipelineToString(FilterPipeline::Pointer pipeline, QString pipelineName, IObserver* obs = NULL);
 
     /**
      * @brief openFilterGroup
@@ -112,56 +112,7 @@ class SIMPLib_EXPORT JsonFilterParametersWriter : public AbstractFilterParameter
      */
     QJsonObject& getCurrentGroupObject();
 
-    virtual int writeValue(const QString name, const QString value);
-    virtual int writeValue(const QString name, const QVector<QString> value);
-    virtual int writeValue(const QString name, const QStringList value);
-
-    virtual int writeValue(const QString name, int8_t value);
-    virtual int writeValue(const QString name, int16_t value);
-    virtual int writeValue(const QString name, int32_t value);
-    virtual int writeValue(const QString name, int64_t value);
-    virtual int writeValue(const QString name, uint8_t value);
-    virtual int writeValue(const QString name, uint16_t value);
-    virtual int writeValue(const QString name, uint32_t value);
-    virtual int writeValue(const QString name, uint64_t value);
-    virtual int writeValue(const QString name, float value);
-    virtual int writeValue(const QString name, double value);
-
-    virtual int writeValue(const QString name, QVector<int8_t> value);
-    virtual int writeValue(const QString name, QVector<int16_t> value);
-    virtual int writeValue(const QString name, QVector<int32_t> value);
-    virtual int writeValue(const QString name, QVector<int64_t> value);
-    virtual int writeValue(const QString name, QVector<uint8_t> value);
-    virtual int writeValue(const QString name, QVector<uint16_t> value);
-    virtual int writeValue(const QString name, QVector<uint32_t> value);
-    virtual int writeValue(const QString name, QVector<uint64_t> value);
-    virtual int writeValue(const QString name, QVector<float> value);
-    virtual int writeValue(const QString name, QVector<double> value);
-
-    virtual int writeValue(const QString name, IntVec3_t v);
-    virtual int writeValue(const QString name, FloatVec3_t v);
-
-    virtual int writeValue(const QString name, Float2ndOrderPoly_t v);
-    virtual int writeValue(const QString name, Float3rdOrderPoly_t v);
-    virtual int writeValue(const QString name, Float4thOrderPoly_t v);
-    virtual int writeValue(const QString name, FileListInfo_t v);
-
-    virtual int writeValue(const QString name, ComparisonInput_t v);
-    virtual int writeValue(const QString name, ComparisonInputs v);
-
-    virtual int writeValue(const QString name, QVector<AxisAngleInput_t> v);
-    virtual int writeValue(const QString name, AxisAngleInput_t v, int vectorPos);
-
-    virtual int writeArraySelections(const QString name, QSet<QString> v);
-    virtual int writeValue(const QString name, const DataContainerArrayProxy& v);
-    virtual int writeValue(const QString name, AxisAngleInput_t v);
-
-    virtual int writeValue(const QString name, const DataArrayPath& v);
-    virtual int writeValue(const QString name, const QVector<DataArrayPath>& path);
-
-    virtual int writeValue(const QString name, const DynamicTableData& v);
-
-    virtual int writeValue(const QString name, const QPair<double,double> & v);
+    QJsonObject getRoot();
 
     SIMPL_INSTANCE_PROPERTY(int, MaxFilterIndex)
 
@@ -173,7 +124,7 @@ class SIMPLib_EXPORT JsonFilterParametersWriter : public AbstractFilterParameter
     QJsonObject m_CurrentFilterIndex;
     int         m_CurrentIndex;
 
-    static JsonFilterParametersWriter::Pointer CreateAndPopulateWriter(FilterPipeline::Pointer pipeline, QString pipelineName, IObserver* obs);
+    JsonFilterParametersWriter::Pointer createAndPopulateWriter(FilterPipeline::Pointer pipeline, QString pipelineName, IObserver* obs);
     QJsonDocument toDocument();
 
     /**
