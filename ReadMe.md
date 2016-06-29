@@ -1,8 +1,0 @@
-# SIMPLib #
-
-## Introduction ##
-
-## Credits ##
-
-## License ##
-
