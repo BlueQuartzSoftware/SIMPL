@@ -107,7 +107,7 @@ int main (int argc, char*  argv[])
 {
 
   // Instantiate the QCoreApplication that we need to get the current path and load plugins.
-  QCoreApplication app(argc, argv);
+  QCoreApplication* app = new QCoreApplication(argc, argv);
   QCoreApplication::setOrganizationName("BlueQuartz Software");
   QCoreApplication::setOrganizationDomain("bluequartz.net");
   QCoreApplication::setApplicationName("PipelineRunner");
@@ -128,14 +128,12 @@ int main (int argc, char*  argv[])
   parser.addOption(pipelineFileArg);
 
   // Process the actual command line arguments given by the user
-  parser.process(app);
+  parser.process(*app);
 
   QString pipelineFile = parser.value(pipelineFileArg);
 
-  std::cout << "PipelineRunner Starting. Version " << SIMPLib::Version::PackageComplete().toStdString() << std::endl;
-
-  // Ensure an instance of QCoreApplication is available
-  QCoreApplication::instance();
+  std::cout << "PipelineRunner Starting. " << std::endl;
+  std::cout << "   " << SIMPLib::Version::PackageComplete().toStdString() << std::endl;
 
   // Register all the filters including trying to load those from Plugins
   FilterManager* fm = FilterManager::Instance();
@@ -200,6 +198,7 @@ int main (int argc, char*  argv[])
     std::cout << "Error Condition of Pipeline: " << err << std::endl;
     return EXIT_FAILURE;
   }
+
   return EXIT_SUCCESS;
 }
 
