@@ -71,23 +71,3 @@ QString UnknownFilterParameter::getWidgetType()
   return QString("UnknownWidget");
 }
 
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-void UnknownFilterParameter::readJson(const QJsonObject &json)
-{
-  QJsonValue jsonValue = json[getPropertyName()];
-  if(!jsonValue.isUndefined() )
-  {
-    //m_SetterCallback(jsonValue.toString(""));
-  }
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-void UnknownFilterParameter::writeJson(QJsonObject &json)
-{
-  //json[getPropertyName()] = m_GetterCallback();
-}
-

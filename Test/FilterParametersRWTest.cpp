@@ -860,11 +860,15 @@ class FilterParametersRWTest
 
         QJsonObject obj;
         fp->writeJson(obj);
-        fp->readJson(obj);
 
-        DREAM3D_REQUIRE_EQUAL(m_String1, m_String2)
+        QJsonValue jsonValue = obj[fp->getPropertyName()];
+        QString result = "";
+        if(!jsonValue.isUndefined() )
+        {
+          result = jsonValue.toString("");
+        }
 
-        m_String2.clear();
+        DREAM3D_REQUIRE_EQUAL(m_String1, result)
       }
 
       {
@@ -962,199 +966,7 @@ class FilterParametersRWTest
         m_Float3rdOrderPoly_2 = Float3rdOrderPoly_t();
       }
 
-      {
-        UnknownFilterParameter::Pointer fp = UnknownFilterParameter::New("Test", "String2", getString1(), FilterParameter::Parameter);
-
-        QJsonObject obj;
-        fp->writeJson(obj);
-        fp->readJson(obj);
-
-        DREAM3D_REQUIRE_EQUAL(m_String1, m_String2)
-
-        m_String2.clear();
-      }
-
       return EXIT_SUCCESS;
-    }
-
-    // -----------------------------------------------------------------------------
-    //
-    // -----------------------------------------------------------------------------
-    template<typename T>
-    void RWIntegerTest()
-    {
-      int err = 0;
-
-
-      typename DataArray<T>::Pointer data = DataArray<T>::CreateArray(1, "Junk");
-      QString primType = data->getTypeAsString();
-
-      QString jsonFile = UnitTest::FilterParametersRWTest::OutputDir + primType + ".json";
-
-
-      JsonFilterParametersWriter::Pointer writer = JsonFilterParametersWriter::New();
-      writer->setFileName(jsonFile);
-      writer->setPipelineName("TestPipelineName");
-
-      err = writer->openFilterGroup(NULL, 0);
-      DREAM3D_REQUIRE_EQUAL(err, 0)
-
-          err = writer->writeValue(primType + QString("_min"), std::numeric_limits<T>::min() );
-      DREAM3D_REQUIRE_EQUAL(err, 0)
-
-          err = writer->writeValue(primType + QString("_max"), std::numeric_limits<T>::max() );
-      DREAM3D_REQUIRE_EQUAL(err, 0)
-
-          err = writer->writeValue(primType + QString("_zero"), static_cast<T>(0) );
-      DREAM3D_REQUIRE_EQUAL(err, 0)
-
-          // QVector<T> write test
-      {
-        QVector<T> vector;
-        vector.push_back(std::numeric_limits<T>::min());
-        vector.push_back(std::numeric_limits<T>::max());
-        vector.push_back(static_cast<T>(0));
-        vector.push_back(std::numeric_limits<T>::min() + 1);
-        vector.push_back(std::numeric_limits<T>::max() - 1);
-        err = writer->writeValue(primType + QString("_vector"), vector);
-        DREAM3D_REQUIRE_EQUAL(err, 0)
-      }
-
-
-      err = writer->closeFilterGroup();
-      DREAM3D_REQUIRE_EQUAL(err, 0)
-
-          writer = JsonFilterParametersWriter::NullPointer();
-
-
-      JsonFilterParametersReader::Pointer reader = JsonFilterParametersReader::New();
-      err = reader->openFile(jsonFile);
-      DREAM3D_REQUIRE_EQUAL(err, 0)
-
-          err = reader->openFilterGroup(NULL, 0);
-      DREAM3D_REQUIRE_EQUAL(err, 0)
-
-          T def = std::numeric_limits<T>::max() - 10;
-
-      T val = reader->readValue(primType + QString("_min"), def);
-      DREAM3D_REQUIRE_EQUAL(val, std::numeric_limits<T>::min() )
-
-          val = reader->readValue(primType + QString("_max"), def);
-      DREAM3D_REQUIRE_EQUAL(val, std::numeric_limits<T>::max() )
-
-          val = reader->readValue(primType + QString("_zero"), def);
-      DREAM3D_REQUIRE_EQUAL(val, 0 )
-
-
-          // QVector<T> read test
-      {
-        QVector<T> vector = reader->readArray(primType + QString("_vector"), QVector<T>());
-        DREAM3D_REQUIRE_EQUAL(vector.size(), 5)
-            DREAM3D_REQUIRE_EQUAL(vector[0], std::numeric_limits<T>::min())
-            DREAM3D_REQUIRE_EQUAL(vector[1], std::numeric_limits<T>::max())
-            DREAM3D_REQUIRE_EQUAL(vector[2], 0)
-            DREAM3D_REQUIRE_EQUAL(vector[3], std::numeric_limits<T>::min() + 1)
-            DREAM3D_REQUIRE_EQUAL(vector[4], std::numeric_limits<T>::max() - 1)
-      }
-
-      err = reader->closeFilterGroup();
-      DREAM3D_REQUIRE_EQUAL(err, 0)
-
-          reader = JsonFilterParametersReader::NullPointer();
-
-#if REMOVE_TEST_FILES
-      QFile::remove(jsonFile);
-#endif
-    }
-
-    // -----------------------------------------------------------------------------
-    //
-    // -----------------------------------------------------------------------------
-    template<typename T>
-    void RWFloatTest()
-    {
-      int err = 0;
-
-
-      typename DataArray<T>::Pointer data = DataArray<T>::CreateArray(1, "Junk");
-      QString primType = data->getTypeAsString();
-
-      QString jsonFile = UnitTest::FilterParametersRWTest::OutputDir + primType + ".json";
-
-
-      JsonFilterParametersWriter::Pointer writer = JsonFilterParametersWriter::New();
-      writer->setFileName(jsonFile);
-      writer->setPipelineName("TestPipelineName");
-
-      err = writer->openFilterGroup(NULL, 0);
-      DREAM3D_REQUIRE_EQUAL(err, 0)
-
-          err = writer->writeValue(primType + QString("_min"), std::numeric_limits<T>::min() );
-      DREAM3D_REQUIRE_EQUAL(err, 0)
-
-          err = writer->writeValue(primType + QString("_max"), std::numeric_limits<T>::max() );
-      DREAM3D_REQUIRE_EQUAL(err, 0)
-
-          err = writer->writeValue(primType + QString("_zero"), static_cast<T>(0) );
-      DREAM3D_REQUIRE_EQUAL(err, 0)
-
-          // QVector<T> write test
-      {
-        QVector<T> vector;
-        vector.push_back(std::numeric_limits<T>::min());
-        vector.push_back(std::numeric_limits<T>::max());
-        vector.push_back(static_cast<T>(0.0));
-        vector.push_back(std::numeric_limits<T>::min() + 1);
-        vector.push_back(std::numeric_limits<T>::max() - 1);
-        err = writer->writeValue(primType + QString("_vector"), vector);
-        DREAM3D_REQUIRE_EQUAL(err, 0)
-      }
-
-
-      err = writer->closeFilterGroup();
-      DREAM3D_REQUIRE_EQUAL(err, 0)
-
-          writer = JsonFilterParametersWriter::NullPointer();
-
-
-      JsonFilterParametersReader::Pointer reader = JsonFilterParametersReader::New();
-      err = reader->openFile(jsonFile);
-      DREAM3D_REQUIRE_EQUAL(err, 0)
-
-          err = reader->openFilterGroup(NULL, 0);
-      DREAM3D_REQUIRE_EQUAL(err, 0)
-
-          T def = std::numeric_limits<T>::max() - static_cast<T>(10.0);
-
-      T val = reader->readValue(primType + QString("_min"), def);
-      DREAM3D_REQUIRE_EQUAL(val, std::numeric_limits<T>::min() )
-
-          val = reader->readValue(primType + QString("_max"), def);
-      DREAM3D_REQUIRE_EQUAL(val, std::numeric_limits<T>::max() )
-
-          val = reader->readValue(primType + QString("_zero"), def);
-      DREAM3D_REQUIRE_EQUAL(val, 0 )
-
-
-          // QVector<T> read test
-      {
-        QVector<T> vector = reader->readArray(primType + QString("_vector"), QVector<T>());
-        DREAM3D_REQUIRE_EQUAL(vector.size(), 5)
-            DREAM3D_REQUIRE_EQUAL(vector[0], std::numeric_limits<T>::min())
-            DREAM3D_REQUIRE_EQUAL(vector[1], std::numeric_limits<T>::max())
-            DREAM3D_REQUIRE_EQUAL(vector[2], static_cast<T>(0.0))
-            DREAM3D_REQUIRE_EQUAL(vector[3], std::numeric_limits<T>::min() + 1)
-            DREAM3D_REQUIRE_EQUAL(vector[4], std::numeric_limits<T>::max() - 1)
-      }
-
-      err = reader->closeFilterGroup();
-      DREAM3D_REQUIRE_EQUAL(err, 0)
-
-          reader = JsonFilterParametersReader::NullPointer();
-
-#if REMOVE_TEST_FILES
-      QFile::remove(jsonFile);
-#endif
     }
 
     // -----------------------------------------------------------------------------
@@ -1165,18 +977,6 @@ class FilterParametersRWTest
       std::cout << "#### FilterParametersRWTest Starting ####" << std::endl;
 
       int err = EXIT_SUCCESS;
-
-      DREAM3D_REGISTER_TEST(RWIntegerTest<uint8_t>())
-      DREAM3D_REGISTER_TEST(RWIntegerTest<int8_t>())
-      DREAM3D_REGISTER_TEST(RWIntegerTest<uint16_t>())
-      DREAM3D_REGISTER_TEST(RWIntegerTest<int16_t>())
-      DREAM3D_REGISTER_TEST(RWIntegerTest<uint32_t>())
-      DREAM3D_REGISTER_TEST(RWIntegerTest<int32_t>())
-      DREAM3D_REGISTER_TEST(RWIntegerTest<uint64_t>())
-      DREAM3D_REGISTER_TEST(RWIntegerTest<int64_t>())
-
-      DREAM3D_REGISTER_TEST(RWFloatTest<float>())
-      DREAM3D_REGISTER_TEST(RWFloatTest<double>())
 
       DREAM3D_REGISTER_TEST(TestFilterParametersRW())
 

@@ -59,18 +59,6 @@ public:
    */
   QString getWidgetType();
 
-  /**
-   * @brief readJson
-   * @return
-   */
-  void readJson(const QJsonObject &json);
-
-  /**
-   * @brief writeJson
-   * @return
-   */
-  void writeJson(QJsonObject &json);
-
 protected:
   UnknownFilterParameter();
 

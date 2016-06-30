@@ -77,18 +77,6 @@ QString PreflightUpdatedValueFilterParameter::getWidgetType()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void PreflightUpdatedValueFilterParameter::readJson(const QJsonObject &json)
-{
-  QJsonValue jsonValue = json[getPropertyName()];
-  if(!jsonValue.isUndefined() )
-  {
-    //m_SetterCallback(jsonValue.toString(""));
-  }
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
 void PreflightUpdatedValueFilterParameter::writeJson(QJsonObject &json)
 {
   json[getPropertyName()] = m_GetterCallback();

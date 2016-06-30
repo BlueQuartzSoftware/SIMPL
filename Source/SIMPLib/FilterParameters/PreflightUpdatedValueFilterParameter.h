@@ -66,12 +66,6 @@ class SIMPLib_EXPORT PreflightUpdatedValueFilterParameter : public FilterParamet
     QString getWidgetType();
 
     /**
-     * @brief readJson
-     * @return
-     */
-    void readJson(const QJsonObject &json);
-
-    /**
      * @brief writeJson
      * @return
      */
