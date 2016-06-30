@@ -121,7 +121,11 @@ endif()
 # Official: This is an official release from BlueQuartz Software
 # Beta: This is a Beta release that has is getting ready to be officially released.
 # Development: This is currently in development and probably has bugs.
-set(SIMPLProj_RELEASE_TYPE "Development")
+get_property(SIMPLProj_RELEASE_TYPE GLOBAL PROPERTY PACKAGE_RELEASE_TYPE)
+if("${SIMPLProj_RELEASE_TYPE}" STREQUAL "")
+  set(SIMPLProj_RELEASE_TYPE "Development")
+  set_property(GLOBAL PROPERTY PACKAGE_RELEASE_TYPE "${SIMPLProj_RELEASE_TYPE}")
+endif()
 
 include(CMakeParseArguments)
 
@@ -131,8 +135,17 @@ set_property(GLOBAL PROPERTY USE_FOLDERS ON)
 set(PROJECT_CODE_DIR ${PROJECT_SOURCE_DIR}/Source)
 set(PROJECT_RESOURCES_DIR ${SIMPLProj_SOURCE_DIR}/Resources)
 set(EXE_DEBUG_EXTENSION "_debug")
-set(PROJECT_INSTALL_HEADERS "1")
 set(PROJECT_INSTALL_EXECUTABLES "1")
+# -----------------------------------------------------------------------
+# The project generally does NOT want to install headers. See if another
+# project has over ridden that property
+get_property(CMP_PROJECT_INSTALL_HEADERS GLOBAL PROPERTY CMP_PROJECT_INSTALL_HEADERS)
+if("${CMP_PROJECT_INSTALL_HEADERS}" STREQUAL "")
+  set_property(GLOBAL PROPERTY CMP_PROJECT_INSTALL_HEADERS "1")
+  set(PROJECT_INSTALL_HEADERS "1")
+else()
+  set(PROJECT_INSTALL_HEADERS "${CMP_PROJECT_INSTALL_HEADERS}")
+endif()
 
 # -----------------------------------------------------------------------
 # Setup a Global property that is used to gather Documentation Information
@@ -160,8 +173,16 @@ if("${SIMPLLibSearchDirs}" STREQUAL "")
   file(WRITE "${SIMPLProj_BINARY_DIR}/LibSearchDirs.txt" "")
 endif()
 
+# -----------------------------------------------------------------------
+# The project generally wants to install headers. See if another
+# project has over ridden that property
+get_property(CMP_PROJECT_INSTALL_HEADERS GLOBAL PROPERTY CMP_PROJECT_INSTALL_HEADERS)
+if("${CMP_PROJECT_INSTALL_HEADERS}" STREQUAL "")
+  set_property(GLOBAL PROPERTY CMP_PROJECT_INSTALL_HEADERS "1")
+endif()
 
 
+set(PROJECT_INSTALL_HEADERS "${CMP_PROJECT_INSTALL_HEADERS}")
 set(CMP_CONFIGURED_FILES_SOURCE_DIR ${CMP_SOURCE_DIR}/ConfiguredFiles)
 INCLUDE (${CMP_SOURCE_DIR}/cmpCMakeMacros.cmake )
 set(CMP_ENABLE_PLUGINS "1")
@@ -175,6 +196,7 @@ set(CMP_MODULES_SOURCE_DIR ${CMP_SOURCE_DIR}/Modules CACHE INTERNAL "")
 if(UNIX AND NOT APPLE)
     set(DREAM3D_LINUX_SYSTEM ${CMAKE_SYSTEM_NAME} CACHE STRING "The Name of the linux distrubution for packaging")
 endif()
+
 
 
 #------------------------------------------------------------------------------

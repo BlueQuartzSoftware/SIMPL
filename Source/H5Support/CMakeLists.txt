@@ -54,6 +54,15 @@ endif()
 
 set(PROJECT_PREFIX "H5Support" CACHE STRING "The Prefix to be used for Preprocessor definitions")
 set(H5Support_INSTALL_FILES 0)
+# -----------------------------------------------------------------------
+# The project generally does NOT want to install headers. See if another
+# project has over ridden that property
+get_property(CMP_PROJECT_INSTALL_HEADERS GLOBAL PROPERTY CMP_PROJECT_INSTALL_HEADERS)
+if("${CMP_PROJECT_INSTALL_HEADERS}" STREQUAL "")
+  set_property(GLOBAL PROPERTY CMP_PROJECT_INSTALL_HEADERS "0")
+else()
+  set(H5Support_INSTALL_FILES "${CMP_PROJECT_INSTALL_HEADERS}")
+endif()
 #-------------------------------------------------------------------------------
 # Include the cmp project to perform all the basic configuration tests for the
 # project.
