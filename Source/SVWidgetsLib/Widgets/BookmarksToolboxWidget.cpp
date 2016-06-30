@@ -149,97 +149,16 @@ QDir BookmarksToolboxWidget::findV4FavoritesDirectory()
 // -----------------------------------------------------------------------------
 QString BookmarksToolboxWidget::generateHtmlFilterListFromPipelineFile(QString path)
 {
-  int filterCount = 0;
   QString name;
   QString dVers;
   FilterPipeline::Pointer pipeline;
+  QString html;
 
   QFileInfo fi(path);
-  if(fi.suffix().compare("ini") == 0)
+  if (fi.suffix().compare("json") == 0)
   {
-    QtSSettings prefs(path);
-    prefs.beginGroup(SIMPL::Settings::PipelineBuilderGroup);
-    bool ok = false;
-    name = prefs.value("Name", QString("")).toString();
-    dVers = prefs.value("SIMPLView_Version", QString("")).toString();
-    if(dVers.isEmpty() == true)
-    {
-      dVers = prefs.value("Version", QString("")).toString();
-    }
-    prefs.endGroup();
-    if (false == ok) {filterCount = 0;}
-
-    pipeline = QFilterParametersReader::ReadPipelineFromFile(path, QSettings::IniFormat, NULL);
-    filterCount = pipeline->getFilterContainer().size();
+    html = JsonFilterParametersReader::HtmlSummaryFromFile(path, NULL);
   }
-  else if (fi.suffix().compare("json") == 0)
-  {
-    pipeline = JsonFilterParametersReader::ReadPipelineFromFile(path, NULL);
-    JsonFilterParametersReader::ReadNameOfPipelineFromFile(path, name, dVers, NULL);
-    filterCount = pipeline->getFilterContainer().size();
-  }
-
-  QString html;
-  QTextStream ss(&html);
-  ss << "<html><head></head>\n";
-  ss << "<body>\n";
-
-  // A table for the summary items
-  ss << "<table cellpadding=\"2\" cellspacing=\"0\" border=\"0\">\n";
-  ss << "<tbody>\n";
-  ss << "	<tr><th align=\"right\">Pipeline Name:</th><td>" << name << "</td></tr>\n";
-  ss << "	<tr><th align=\"right\">Filter Count:</th><td>" << filterCount << "</td></tr>\n";
-  ss << "	<tr><th align=\"right\">SIMPLView Version:</th><td>" << dVers << "</td></tr>\n";
-  ss << "</tbody>\n";
-  ss << "</table>\n";
-  ss << "<p></p>\n";
-  if(NULL == pipeline.get())
-  {
-    ss << "<b>Unkonwn Pipeline File format for file " << path << "</b>";
-    ss << "</tbody></table>\n";
-    ss << "</body></html>";
-    return html;
-  }
-  // Start the table of the Pipeline
-  ss << "<table cellpadding=\"2\" cellspacing=\"0\" border=\"0\" width=\"300px\">\n";
-  ss << "<tbody>\n";
-  ss << "<tr bgcolor=\"#A2E99C\"><th>Index</th><th>Filter Group</th><th>Filter Name</th></tr>\n";
-
-//  FilterManager* filtManager = FilterManager::Instance();
-  char rowColor = 0;
-  QString red("#FFAAAA");
-  QString odd("#FFFFFF");
-  QString even("#B0E4FF");
-  QString color = odd;
-  bool unknownFilters = false;
-
-  FilterPipeline::FilterContainerType filters = pipeline->getFilterContainer();
-  filterCount = filters.size();
-  for (int i = 0; i < filterCount; ++i)
-  {
-    if (rowColor == 0) { rowColor = 1; color = odd; }
-    else { rowColor = 0; color = even; }
-
-    AbstractFilter::Pointer filter = filters.at(i);
-
-    if(NULL != filter.get())
-    {
-      ss << "<tr bgcolor=\"" << color << "\"><td>" << i << "</td><td>" << filter->getGroupName() << "</td><td>" << filter->getHumanLabel() << "</td></tr>\n";
-    }
-  }
-
-
-  if(unknownFilters)
-  {
-    color = red;
-    ss << "<tr bgcolor=\"" << color << "\"><th colspan=\"3\">There are filters in the pipeline that the currently running version of SIMPLView does not know about. This ";
-    ss << "can happen if you are missing plugins that contain the filters or if the pipeline was created in a prior version ";
-    ss << "of SIMPLView in which case those filters may have been renamed. Please consult the SIMPLView documentation for more details ";
-    ss << "or ask the individual who gave you the pipeline file for more details.</th></tr>\n";
-  }
-  ss << "</tbody></table>\n";
-
-  ss << "</body></html>";
 
   return html;
 }
@@ -306,8 +225,6 @@ void BookmarksToolboxWidget::readPrebuiltPipelines()
   QString iconFileName(":/text.png");
   bool allowEditing = false;
   QStringList fileExtension;
-  fileExtension.append("*.txt");
-  fileExtension.append("*.ini");
   fileExtension.append("*.json");
 
   // Add top-level folder and then load up all the pipelines into the folder
