@@ -122,13 +122,6 @@ class SIMPLib_EXPORT JsonFilterParametersReader : public AbstractFilterParameter
     virtual int openFilterGroup(AbstractFilter* unused, int index);
 
     /**
-     * @brief openFilterGroup
-     * @param groupName
-     * @return
-     */
-    int openFilterGroup(const QString &groupName);
-
-    /**
      * @brief closeFilterGroup
      * @return
      */
@@ -149,11 +142,6 @@ class SIMPLib_EXPORT JsonFilterParametersReader : public AbstractFilterParameter
     QJsonObject& getCurrentGroupObject();
 
     bool containsGroup(QString key);
-
-    int openGroup(QString key);
-    int closeGroup();
-
-    QJsonObject getRoot();
 
   protected:
     JsonFilterParametersReader();

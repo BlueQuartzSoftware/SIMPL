@@ -362,22 +362,6 @@ int JsonFilterParametersReader::openFilterGroup(AbstractFilter* unused, int inde
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-int JsonFilterParametersReader::openFilterGroup(const QString &numStr)
-{
-  Q_ASSERT(m_Root.isEmpty() == false);
-  int err = 0;
-  m_CurrentFilterIndex = m_Root[numStr].toObject();
-  if(m_CurrentFilterIndex.isEmpty())
-  {
-    err = -1;
-  }
-  return err;
-}
-
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
 int JsonFilterParametersReader::closeFilterGroup()
 {
   Q_ASSERT(m_Root.isEmpty() == false);
@@ -403,38 +387,5 @@ bool JsonFilterParametersReader::containsGroup(QString key)
   }
 
   return false;
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-int JsonFilterParametersReader::openGroup(QString key)
-{
-  Q_ASSERT(m_Root.isEmpty() == false);
-  int err = 0;
-  m_CurrentFilterIndex = m_Root[key].toObject();
-  if(m_CurrentFilterIndex.isEmpty())
-  {
-    err = -1;
-  }
-  return err;
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-int JsonFilterParametersReader::closeGroup()
-{
-  Q_ASSERT(m_Root.isEmpty() == false);
-  m_CurrentFilterIndex = QJsonObject();
-  return 0;
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-QJsonObject JsonFilterParametersReader::getRoot()
-{
-  return m_Root;
 }
 
