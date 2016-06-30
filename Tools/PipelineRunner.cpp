@@ -126,7 +126,8 @@ int main (int argc, char*  argv[])
   }
   else if (ext == "json")
   {
-    pipeline = JsonFilterParametersReader::ReadPipelineFromFile(pipelineFile);
+    JsonFilterParametersReader::Pointer jsonReader = JsonFilterParametersReader::New();
+    pipeline = jsonReader->readPipelineFromFile(pipelineFile);
   }
   else
   {

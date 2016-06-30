@@ -112,8 +112,6 @@ class SIMPLib_EXPORT JsonFilterParametersWriter : public AbstractFilterParameter
      */
     QJsonObject& getCurrentGroupObject();
 
-    QJsonObject getRoot();
-
     SIMPL_INSTANCE_PROPERTY(int, MaxFilterIndex)
 
   protected:
@@ -124,7 +122,10 @@ class SIMPLib_EXPORT JsonFilterParametersWriter : public AbstractFilterParameter
     QJsonObject m_CurrentFilterIndex;
     int         m_CurrentIndex;
 
-    JsonFilterParametersWriter::Pointer createAndPopulateWriter(FilterPipeline::Pointer pipeline, QString pipelineName, IObserver* obs);
+    void populateWriter(FilterPipeline::Pointer pipeline, QString pipelineName, IObserver* obs);
+    void writePipeline();
+    void clearWriter();
+
     QJsonDocument toDocument();
 
     /**

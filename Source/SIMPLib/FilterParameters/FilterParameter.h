@@ -95,7 +95,7 @@ class SIMPLib_EXPORT FilterParameter
      * @brief readJson
      * @return
      */
-    virtual QJsonObject readJson(const QJsonObject &json);
+    virtual void readJson(const QJsonObject &json);
 
     /**
      * @brief writeJson

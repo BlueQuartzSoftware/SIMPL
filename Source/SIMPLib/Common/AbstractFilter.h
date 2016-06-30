@@ -147,13 +147,13 @@ class SIMPLib_EXPORT AbstractFilter : public Observable
     * @param root The root json object
     * @param index Index the filter is in the pipeline that is being written
     */
-    QJsonObject writeFilterParametersToJson();
+    void writeFilterParametersToJson(QJsonObject &obj);
 
     /**
     * @brief readFilterParametersFromJson Reads the filter parameters from a file
     * @param reader Reader that is used to read the parameters from a file
     */
-    void readFilterParametersFromJson(QJsonObject &root, int index);
+    void readFilterParametersFromJson(QJsonObject &obj);
 
     /**
      * @brief execute Implements the main functionality of the filter

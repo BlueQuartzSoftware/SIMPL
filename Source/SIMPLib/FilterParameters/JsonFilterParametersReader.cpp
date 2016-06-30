@@ -68,7 +68,7 @@ JsonFilterParametersReader::~JsonFilterParametersReader()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-FilterPipeline::Pointer JsonFilterParametersReader::ReadPipelineFromFile(QString filePath, IObserver* obs)
+FilterPipeline::Pointer JsonFilterParametersReader::readPipelineFromFile(QString filePath, IObserver* obs)
 {
   QFileInfo fInfo(filePath);
 
@@ -82,8 +82,7 @@ FilterPipeline::Pointer JsonFilterParametersReader::ReadPipelineFromFile(QString
     return FilterPipeline::NullPointer();
   }
 
-  JsonFilterParametersReader::Pointer reader = JsonFilterParametersReader::New();
-  int err = reader->openFile(filePath);
+  int err = openFile(filePath);
 
   if (err != QJsonParseError::NoError)
   {
@@ -95,18 +94,23 @@ FilterPipeline::Pointer JsonFilterParametersReader::ReadPipelineFromFile(QString
     return FilterPipeline::NullPointer();
   }
 
-  return ReadPipeline(reader, obs);
+  FilterPipeline::Pointer pipeline = readPipeline(obs);
+  closeFile();
+
+  return pipeline;
 }
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-FilterPipeline::Pointer JsonFilterParametersReader::ReadPipelineFromString(QString contents, IObserver* obs)
+FilterPipeline::Pointer JsonFilterParametersReader::readPipelineFromString(QString contents, IObserver* obs)
 {
-  JsonFilterParametersReader::Pointer reader = JsonFilterParametersReader::New();
-  reader->setPipelineContents(contents);
+  setPipelineContents(contents);
 
-  return ReadPipeline(reader, obs);
+  FilterPipeline::Pointer pipeline = readPipeline(obs);
+  closeFile();
+
+  return pipeline;
 }
 
 // -----------------------------------------------------------------------------
@@ -136,19 +140,18 @@ QString JsonFilterParametersReader::generateIndexString(int index, int maxIndex)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-FilterPipeline::Pointer JsonFilterParametersReader::ReadPipeline(JsonFilterParametersReader::Pointer reader, IObserver* obs)
+FilterPipeline::Pointer JsonFilterParametersReader::readPipeline(IObserver* obs)
 {
   FilterManager* filtManager = FilterManager::Instance();
   FilterFactory<EmptyFilter>::Pointer emptyFilterFactory = FilterFactory<EmptyFilter>::New();
   filtManager->addFilterFactory("EmptyFilter", emptyFilterFactory);
 
-  if (reader->containsGroup(SIMPL::Settings::PipelineBuilderGroup) == false)
+  if (containsGroup(SIMPL::Settings::PipelineBuilderGroup) == false)
   {
     return FilterPipeline::NullPointer();
   }
 
-  QJsonObject root = reader->getRoot();
-  QJsonObject builderObj = root[SIMPL::Settings::PipelineBuilderGroup].toObject();
+  QJsonObject builderObj = m_Root[SIMPL::Settings::PipelineBuilderGroup].toObject();
   int filterCount = builderObj[SIMPL::Settings::NumFilters].toInt();
 
   FilterPipeline::Pointer pipeline;
@@ -163,8 +166,9 @@ FilterPipeline::Pointer JsonFilterParametersReader::ReadPipeline(JsonFilterParam
 
   for (int i = 0; i < filterCount; ++i)
   {
-    QJsonObject filterObj = root[QString::number(i)].toObject();
-    QString filterName = filterObj[SIMPL::Settings::FilterName].toString();
+    openFilterGroup(NULL, i);
+
+    QString filterName = m_CurrentFilterIndex[SIMPL::Settings::FilterName].toString();
 
     if (filterName.isEmpty() == false)
     {
@@ -175,7 +179,7 @@ FilterPipeline::Pointer JsonFilterParametersReader::ReadPipeline(JsonFilterParam
 
         if (NULL != filter.get())
         {
-          filter->readFilterParametersFromJson(reader->m_Root, i);
+          filter->readFilterParametersFromJson(m_CurrentFilterIndex);
           pipeline->pushBack(filter);
         }
       }
@@ -214,6 +218,8 @@ FilterPipeline::Pointer JsonFilterParametersReader::ReadPipeline(JsonFilterParam
         obs->processPipelineMessage(pm);
       }
     }
+
+    closeFilterGroup();
   }
   return pipeline;
 }
@@ -221,7 +227,7 @@ FilterPipeline::Pointer JsonFilterParametersReader::ReadPipeline(JsonFilterParam
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void JsonFilterParametersReader::ReadNameOfPipelineFromFile(QString filePath, QString& name, QString& version, IObserver* obs)
+void JsonFilterParametersReader::readNameOfPipelineFromFile(QString filePath, QString& name, QString& version, IObserver* obs)
 {
   QFileInfo fInfo(filePath);
 

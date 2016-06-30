@@ -841,18 +841,17 @@ void SVPipelineViewWidget::pasteFilters(QList<AbstractFilter::Pointer> filters, 
 // -----------------------------------------------------------------------------
 void SVPipelineViewWidget::pasteFilterWidgets(const QString &jsonString, QVariant value, bool allowUndo)
 {
+  JsonFilterParametersReader::Pointer jsonReader = JsonFilterParametersReader::New();
+
+  FilterPipeline::Pointer pipeline = jsonReader->readPipelineFromString(jsonString);
+  FilterPipeline::FilterContainerType container = pipeline->getFilterContainer();
+
   if (allowUndo == true)
   {
-    FilterPipeline::Pointer pipeline = JsonFilterParametersReader::ReadPipelineFromString(jsonString);
-    FilterPipeline::FilterContainerType container = pipeline->getFilterContainer();
-
     pasteFilters(container, value, allowUndo);
   }
   else
   {
-    FilterPipeline::Pointer pipeline = JsonFilterParametersReader::ReadPipelineFromString(jsonString);
-    FilterPipeline::FilterContainerType container = pipeline->getFilterContainer();
-
     pasteFilters(container, value, false);
   }
 }
@@ -1351,7 +1350,8 @@ FilterPipeline::Pointer SVPipelineViewWidget::readPipelineFromFile(const QString
   }
   else if (ext == "json")
   {
-    pipeline = JsonFilterParametersReader::ReadPipelineFromFile(filePath);
+    JsonFilterParametersReader::Pointer jsonReader = JsonFilterParametersReader::New();
+    pipeline = jsonReader->readPipelineFromFile(filePath);
   }
   else
   {
@@ -1391,7 +1391,8 @@ int SVPipelineViewWidget::writePipeline(QString filePath)
   }
   else if (ext == "json")
   {
-    JsonFilterParametersWriter::WritePipelineToFile(pipeline, fi.absoluteFilePath(), fi.fileName(), reinterpret_cast<IObserver*>(m_PipelineMessageObserver));
+    JsonFilterParametersWriter::Pointer jsonWriter = JsonFilterParametersWriter::New();
+    jsonWriter->writePipelineToFile(pipeline, fi.absoluteFilePath(), fi.fileName(), reinterpret_cast<IObserver*>(m_PipelineMessageObserver));
   }
   else
   {
@@ -1778,7 +1779,8 @@ void SVPipelineViewWidget::dropEvent(QDropEvent* event)
         pipeline->pushBack(filterObjects[i]->getFilter());
       }
 
-      QString jsonString = JsonFilterParametersWriter::WritePipelineToString(pipeline, "Pipeline");
+      JsonFilterParametersWriter::Pointer jsonWriter = JsonFilterParametersWriter::New();
+      QString jsonString = jsonWriter->writePipelineToString(pipeline, "Pipeline");
       pasteFilterWidgets(jsonString, index, true);
 
       if (qApp->queryKeyboardModifiers() != Qt::AltModifier)

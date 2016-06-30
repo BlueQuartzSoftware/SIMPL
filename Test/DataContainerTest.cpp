@@ -556,9 +556,11 @@ class DataContainerTest
         QFile(jsonFile).remove();
       }
 
-      JsonFilterParametersWriter::WritePipelineToFile(pipeline, jsonFile, nullptr);
+      JsonFilterParametersWriter::Pointer jsonWriter = JsonFilterParametersWriter::New();
+      jsonWriter->writePipelineToFile(pipeline, jsonFile, nullptr);
 
-      pipeline = JsonFilterParametersReader::ReadPipelineFromFile(jsonFile, nullptr);
+      JsonFilterParametersReader::Pointer jsonReader = JsonFilterParametersReader::New();
+      pipeline = jsonReader->readPipelineFromFile(jsonFile, nullptr);
       DREAM3D_REQUIRE(pipeline->getFilterContainer().size() == 1)
 
       DataContainerReader::Pointer result = std::dynamic_pointer_cast<DataContainerReader>(pipeline->getFilterContainer()[0]);

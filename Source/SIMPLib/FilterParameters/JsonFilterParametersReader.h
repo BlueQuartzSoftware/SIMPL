@@ -71,7 +71,7 @@ class SIMPLib_EXPORT JsonFilterParametersReader : public AbstractFilterParameter
     * @param obs An IObserver object to report errors.
     * @return Shared Pointer to a FilterPipeline Instance
     */
-    static FilterPipeline::Pointer ReadPipelineFromFile(QString filePath, IObserver* obs = NULL);
+    FilterPipeline::Pointer readPipelineFromFile(QString filePath, IObserver* obs = NULL);
 
     /**
     * @brief ReadPipelineFromString Reads the Json formatted file and returns a FilterPipeline object
@@ -82,7 +82,7 @@ class SIMPLib_EXPORT JsonFilterParametersReader : public AbstractFilterParameter
     * @param obs An IObserver object to report errors.
     * @return Shared Pointer to a FilterPipeline Instance
     */
-    static FilterPipeline::Pointer ReadPipelineFromString(QString contents, IObserver* obs = NULL);
+    FilterPipeline::Pointer readPipelineFromString(QString contents, IObserver* obs = NULL);
 
     /**
      * @brief ReadNameOfPipelineFromFile
@@ -92,7 +92,7 @@ class SIMPLib_EXPORT JsonFilterParametersReader : public AbstractFilterParameter
      * @param obs
      * @return
      */
-    static void ReadNameOfPipelineFromFile(QString filePath, QString& name, QString& version, IObserver* obs = NULL);
+    void readNameOfPipelineFromFile(QString filePath, QString& name, QString& version, IObserver* obs = NULL);
 
     /**
      * @brief openFile
@@ -162,7 +162,7 @@ class SIMPLib_EXPORT JsonFilterParametersReader : public AbstractFilterParameter
     QJsonObject m_Root;
     QJsonObject m_CurrentFilterIndex;
 
-    static FilterPipeline::Pointer ReadPipeline(JsonFilterParametersReader::Pointer reader, IObserver* obs);
+    FilterPipeline::Pointer readPipeline(IObserver* obs);
 
     JsonFilterParametersReader(const JsonFilterParametersReader&); // Copy Constructor Not Implemented
     void operator=(const JsonFilterParametersReader&); // Operator '=' Not Implemented

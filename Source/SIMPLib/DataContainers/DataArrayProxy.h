@@ -216,7 +216,7 @@ class DataArrayProxy
     QJsonArray writeVector(QVector<size_t> vector)
     {
       QJsonArray jsonArray;
-      foreach(size_t num, compDims)
+      foreach(size_t num, vector)
       {
         jsonArray.push_back(static_cast<double>(num));
       }

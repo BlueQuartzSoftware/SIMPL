@@ -72,6 +72,85 @@ JsonFilterParametersWriter::JsonFilterParametersWriter(QString& fileName, QStrin
 // -----------------------------------------------------------------------------
 JsonFilterParametersWriter::~JsonFilterParametersWriter()
 {
+
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void JsonFilterParametersWriter::writePipelineToFile(FilterPipeline::Pointer pipeline, QString filePath, QString pipelineName, IObserver* obs)
+{
+  populateWriter(pipeline, pipelineName, obs);
+  setFileName(filePath);
+  writePipeline();
+  clearWriter();
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+QString JsonFilterParametersWriter::writePipelineToString(FilterPipeline::Pointer pipeline, QString pipelineName, IObserver* obs)
+{
+  populateWriter(pipeline, pipelineName, obs);
+
+  QJsonDocument doc = toDocument();
+  QString contents = QString::fromStdString(doc.toJson().toStdString());
+
+  clearWriter();
+
+  return contents;
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void JsonFilterParametersWriter::populateWriter(FilterPipeline::Pointer pipeline, QString pipelineName, IObserver* obs)
+{
+  if (NULL == pipeline.get())
+  {
+    if (NULL != obs)
+    {
+      PipelineMessage pm(JsonFilterParametersWriter::ClassName(), "FilterPipeline Object was NULL for writing", -1, PipelineMessage::Error);
+      obs->processPipelineMessage(pm);
+    }
+    return;
+  }
+
+  QFileInfo info(pipelineName);
+
+  // WRITE THE PIPELINE TO THE JSON FILE
+  setPipelineName(info.completeBaseName());
+
+  FilterPipeline::FilterContainerType& filters = pipeline->getFilterContainer();
+  setMaxFilterIndex(filters.size());
+
+  // Loop over each filter and write it's input parameters to the file
+  int count = filters.size();
+  for (qint32 i = 0; i < count; ++i)
+  {
+    AbstractFilter::Pointer filter = filters.at(i);
+    if (NULL != filter.get())
+    {
+      openFilterGroup(filter.get(), i);
+      filter->writeFilterParametersToJson(m_CurrentFilterIndex);
+      closeFilterGroup();
+    }
+    else
+    {
+      AbstractFilter::Pointer badFilter = AbstractFilter::New();
+      openFilterGroup(badFilter.get(), i);
+      m_CurrentFilterIndex["Unknown Filter"] = "ERROR: Filter instance was NULL within the SVPipelineFilterWidget instance. Report this error to the DREAM3D Developers";
+      closeFilterGroup();
+    }
+  }
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void JsonFilterParametersWriter::writePipeline()
+{
+  // Write the contents
   if (m_FileName.isEmpty() == false)
   {
     QFile outputFile(m_FileName);
@@ -101,67 +180,11 @@ JsonFilterParametersWriter::~JsonFilterParametersWriter()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void JsonFilterParametersWriter::writePipelineToFile(FilterPipeline::Pointer pipeline, QString filePath, QString pipelineName, IObserver* obs)
+void JsonFilterParametersWriter::clearWriter()
 {
-  JsonFilterParametersWriter::Pointer writer = createAndPopulateWriter(pipeline, pipelineName, obs);
-  writer->setFileName(filePath);
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-QString JsonFilterParametersWriter::writePipelineToString(FilterPipeline::Pointer pipeline, QString pipelineName, IObserver* obs)
-{
-  JsonFilterParametersWriter::Pointer writer = createAndPopulateWriter(pipeline, pipelineName, obs);
-
-  QJsonDocument doc = writer->toDocument();
-  QString contents = QString::fromStdString(doc.toJson().toStdString());
-
-  return contents;
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-JsonFilterParametersWriter::Pointer JsonFilterParametersWriter::createAndPopulateWriter(FilterPipeline::Pointer pipeline, QString pipelineName, IObserver* obs)
-{
-  if (NULL == pipeline.get())
-  {
-    if (NULL != obs)
-    {
-      PipelineMessage pm(JsonFilterParametersWriter::ClassName(), "FilterPipeline Object was NULL for writing", -1, PipelineMessage::Error);
-      obs->processPipelineMessage(pm);
-    }
-    return JsonFilterParametersWriter::NullPointer();
-  }
-
-  QFileInfo info(pipelineName);
-
-  // WRITE THE PIPELINE TO THE JSON FILE
-  setPipelineName(info.completeBaseName());
-
-  FilterPipeline::FilterContainerType& filters = pipeline->getFilterContainer();
-  setMaxFilterIndex(filters.size());
-
-  // Loop over each filter and write it's input parameters to the file
-  int count = filters.size();
-  for (qint32 i = 0; i < count; ++i)
-  {
-    AbstractFilter::Pointer filter = filters.at(i);
-    if (NULL != filter.get())
-    {
-      QJsonObject fpObj = filter->writeFilterParametersToJson();
-    }
-    else
-    {
-      AbstractFilter::Pointer badFilter = AbstractFilter::New();
-      writer->openFilterGroup(badFilter.get(), i);
-      writer->writeValue("Unknown Filter", "ERROR: Filter instance was NULL within the SVPipelineFilterWidget instance. Report this error to the DREAM3D Developers");
-      writer->closeFilterGroup();
-    }
-  }
-
-  return writer;
+  m_Root = QJsonObject();
+  m_CurrentFilterIndex = QJsonObject();
+  m_MaxFilterIndex = -1;
 }
 
 // -----------------------------------------------------------------------------
@@ -218,8 +241,8 @@ int JsonFilterParametersWriter::openFilterGroup(AbstractFilter* filter, int inde
     m_CurrentFilterIndex = QJsonObject();
     if(filter)
     {
-      writeValue(SIMPL::Settings::FilterName, filter->getNameOfClass());
-      writeValue(SIMPL::Settings::HumanLabel, filter->getHumanLabel());
+      m_CurrentFilterIndex[SIMPL::Settings::FilterName] = filter->getNameOfClass();
+      m_CurrentFilterIndex[SIMPL::Settings::HumanLabel] = filter->getHumanLabel();
     }
   }
 
@@ -259,14 +282,6 @@ QString JsonFilterParametersWriter::generateIndexString(int currentIndex)
     ss << m_CurrentIndex;
   }
   return numStr;
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-QJsonObject JsonFilterParametersWriter::getRoot()
-{
-  return m_Root;
 }
 
 
