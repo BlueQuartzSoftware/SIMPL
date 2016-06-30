@@ -75,7 +75,7 @@ StatsDataArray::Pointer StatsDataArray::CreateArray(size_t numElements, const QS
   StatsDataArray::Pointer ptr = StatsDataArray::New();
   ptr->setName(name);
   std::vector<unsigned int> phase_types(numElements, SIMPL::PhaseType::UnknownPhaseType);
-  if(allocate) { ptr->fillArrayWithNewStatsData(numElements, &(phase_types.front()) ); }
+  if(allocate && numElements > 0) { ptr->fillArrayWithNewStatsData(numElements, &(phase_types.front()) ); }
   return ptr;
 }
 
