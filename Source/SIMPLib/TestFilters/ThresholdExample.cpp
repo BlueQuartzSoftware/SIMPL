@@ -74,6 +74,8 @@ void ThresholdExample::setupFilterParameters()
     ComparisonSelectionFilterParameter::Pointer parameter = ComparisonSelectionFilterParameter::New();
     parameter->setHumanLabel("Voxel Cell Arrays to Threshold");
     parameter->setPropertyName("CellComparisonInputs");
+    parameter->setSetterCallback(SIMPL_BIND_SETTER(ThresholdExample, this, CellComparisonInputs));
+    parameter->setGetterCallback(SIMPL_BIND_GETTER(ThresholdExample, this, CellComparisonInputs));
 
     parameter->setShowOperators(true);
     parameters.push_back(parameter);

@@ -217,6 +217,8 @@ void ConvertData::setupFilterParameters()
     ChoiceFilterParameter::Pointer parameter = ChoiceFilterParameter::New();
     parameter->setHumanLabel("Scalar Type");
     parameter->setPropertyName("ScalarType");
+    parameter->setSetterCallback(SIMPL_BIND_SETTER(ConvertData, this, ScalarType));
+    parameter->setGetterCallback(SIMPL_BIND_GETTER(ConvertData, this, ScalarType));
 
     QVector<QString> choices;
     choices.push_back("signed   int 8  bit");

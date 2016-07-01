@@ -67,7 +67,7 @@ class SIMPLib_EXPORT H5FilterParametersWriter : public AbstractFilterParametersW
      * @param obs Any observer that we can pass error/warning messages back to in case something goes wrong.
      * @return
      */
-    static int WritePipelineToFile(FilterPipeline::Pointer pipeline, QString filePath, QString name, IObserver* obs = NULL);
+    int writePipelineToFile(FilterPipeline::Pointer pipeline, QString filePath, QString name, IObserver* obs = NULL);
 
     SIMPL_INSTANCE_PROPERTY(hid_t, PipelineGroupId)
 
@@ -79,6 +79,8 @@ class SIMPLib_EXPORT H5FilterParametersWriter : public AbstractFilterParametersW
 
     virtual int openFilterGroup(AbstractFilter* filter, int index);
     virtual int closeFilterGroup();
+
+    void clearWriter();
 
     virtual int writeValue(const QString name, const QString value);
     virtual int writeValue(const QString name, const QVector<QString> value);
@@ -138,8 +140,10 @@ class SIMPLib_EXPORT H5FilterParametersWriter : public AbstractFilterParametersW
 
 
   private:
-    hid_t m_CurrentGroupId;
-
+    hid_t                                 m_CurrentGroupId;
+    QJsonObject                           m_PipelineRoot;
+    QJsonObject                           m_CurrentFilterIndex;
+    int                                   m_CurrentIndex;
 
     H5FilterParametersWriter(const H5FilterParametersWriter&); // Copy Constructor Not Implemented
     void operator=(const H5FilterParametersWriter&); // Operator '=' Not Implemented

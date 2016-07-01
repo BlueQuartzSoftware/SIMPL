@@ -1387,7 +1387,8 @@ int SVPipelineViewWidget::writePipeline(QString filePath)
   int err = 0;
   if (ext == "dream3d")
   {
-    err = H5FilterParametersWriter::WritePipelineToFile(pipeline, fi.absoluteFilePath(), fi.fileName(), reinterpret_cast<IObserver*>(m_PipelineMessageObserver));
+    H5FilterParametersWriter::Pointer dream3dWriter = H5FilterParametersWriter::New();
+    err = dream3dWriter->writePipelineToFile(pipeline, fi.absoluteFilePath(), fi.fileName(), reinterpret_cast<IObserver*>(m_PipelineMessageObserver));
   }
   else if (ext == "json")
   {

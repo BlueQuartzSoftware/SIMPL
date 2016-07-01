@@ -131,6 +131,21 @@ int DataContainerReader::writeFilterParameters(AbstractFilterParametersWriter* w
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
+void DataContainerReader::writeFilterParameters(QJsonObject &obj)
+{
+//  writeExistingPipelineToFile(obj);
+//  writer->openFilterGroup(this, index);
+//  SIMPL_FILTER_WRITE_PARAMETER(InputFile)
+//  SIMPL_FILTER_WRITE_PARAMETER(OverwriteExistingDataContainers)
+//  DataContainerArrayProxy dcaProxy = getInputFileDataContainerArrayProxy(); // This line makes a COPY of the DataContainerArrayProxy that is stored in the current instance
+//  writer->writeValue("InputFileDataContainerArrayProxy", dcaProxy );
+//  writer->closeFilterGroup();
+//  return ++index; // we want to return the index after the one we just wrote to
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
 void DataContainerReader::initialize()
 {
 
@@ -468,6 +483,20 @@ int DataContainerReader::writeExistingPipelineToFile(AbstractFilterParametersWri
     index = (*iter)->writeFilterParameters(writer, index);
   }
   return index;
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void DataContainerReader::writeExistingPipelineToFile(QJsonObject &json)
+{
+//  FilterPipeline::FilterContainerType container = m_PipelineFromFile->getFilterContainer();
+
+//  for(FilterPipeline::FilterContainerType::iterator iter = container.begin(); iter != container.end(); ++iter)
+//  {
+//    index = (*iter)->writeFilterParameters(writer, index);
+//  }
+//  return index;
 }
 
 // -----------------------------------------------------------------------------

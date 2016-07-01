@@ -132,7 +132,7 @@ void JsonFilterParametersWriter::populateWriter(FilterPipeline::Pointer pipeline
     if (NULL != filter.get())
     {
       openFilterGroup(filter.get(), i);
-      filter->writeFilterParametersToJson(m_CurrentFilterIndex);
+      filter->writeFilterParameters(m_CurrentFilterIndex);
       closeFilterGroup();
     }
     else

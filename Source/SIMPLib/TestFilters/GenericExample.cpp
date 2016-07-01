@@ -130,6 +130,8 @@ void GenericExample::setupFilterParameters()
     ChoiceFilterParameter::Pointer parameter = ChoiceFilterParameter::New();
     parameter->setHumanLabel("Conversion Type");
     parameter->setPropertyName("ConversionType");
+    parameter->setSetterCallback(SIMPL_BIND_SETTER(GenericExample, this, ConversionType));
+    parameter->setGetterCallback(SIMPL_BIND_GETTER(GenericExample, this, ConversionType));
 
     ////parameter->setValueType("unsigned int");
     QVector<QString> choices;
@@ -172,6 +174,8 @@ void GenericExample::setupFilterParameters()
     LinkedChoicesFilterParameter::Pointer parameter = LinkedChoicesFilterParameter::New();
     parameter->setHumanLabel("Select Distance Metric");
     parameter->setPropertyName("DistanceMetric");
+    parameter->setSetterCallback(SIMPL_BIND_SETTER(GenericExample, this, DistanceMetric));
+    parameter->setGetterCallback(SIMPL_BIND_GETTER(GenericExample, this, DistanceMetric));
 
     parameter->setDefaultValue(getDistanceMetric()); // Just set the first index
 
@@ -205,6 +209,8 @@ void GenericExample::setupFilterParameters()
     LinkedChoicesFilterParameter::Pointer parameter = LinkedChoicesFilterParameter::New();
     parameter->setHumanLabel("Select Algorithm");
     parameter->setPropertyName("AlgorithmSelection");
+    parameter->setSetterCallback(SIMPL_BIND_SETTER(GenericExample, this, AlgorithmSelection));
+    parameter->setGetterCallback(SIMPL_BIND_GETTER(GenericExample, this, AlgorithmSelection));
 
     parameter->setDefaultValue(getAlgorithmSelection()); // Just set the first index
 

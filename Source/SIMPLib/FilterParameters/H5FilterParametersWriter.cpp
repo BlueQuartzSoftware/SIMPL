@@ -37,6 +37,7 @@
 
 #include <QtCore/QDir>
 #include <QtCore/QFile>
+#include <QtCore/QJsonDocument>
 
 #include "H5Support/QH5Utilities.h"
 #include "H5Support/QH5Lite.h"
@@ -49,7 +50,8 @@
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-H5FilterParametersWriter::H5FilterParametersWriter()
+H5FilterParametersWriter::H5FilterParametersWriter() :
+  m_CurrentIndex(0)
 {
 
 }
@@ -72,7 +74,7 @@ hid_t H5FilterParametersWriter::getCurrentGroupId() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-int H5FilterParametersWriter::WritePipelineToFile(FilterPipeline::Pointer pipeline, QString filePath, QString name, IObserver* obs)
+int H5FilterParametersWriter::writePipelineToFile(FilterPipeline::Pointer pipeline, QString filePath, QString name, IObserver* obs)
 {
   if (NULL == pipeline.get())
   {
@@ -84,14 +86,19 @@ int H5FilterParametersWriter::WritePipelineToFile(FilterPipeline::Pointer pipeli
     return -1;
   }
 
-  QFileInfo fileInfo(filePath);
-
   // WRITE THE PIPELINE TO THE HDF5 FILE
-  H5FilterParametersWriter::Pointer writer = H5FilterParametersWriter::New();
-
   hid_t fileId = -1;
 
-  fileId = QH5Utilities::createFile(filePath);
+  QFileInfo fi(filePath);
+  if (fi.exists())
+  {
+    fileId = QH5Utilities::openFile(filePath);
+  }
+  else
+  {
+    fileId = QH5Utilities::createFile(filePath);
+  }
+
   if (fileId < 0)
   {
     if (NULL != obs)
@@ -113,28 +120,39 @@ int H5FilterParametersWriter::WritePipelineToFile(FilterPipeline::Pointer pipeli
 
   hid_t pipelineGroupId = QH5Utilities::createGroup(fileId, SIMPL::StringConstants::PipelineGroupName);
   scopedFileSentinel.addGroupId(&pipelineGroupId);
-  writer->setGroupId(pipelineGroupId);
+  setGroupId(pipelineGroupId);
+
+  QH5Lite::writeScalarAttribute(pipelineGroupId, "/" + SIMPL::StringConstants::PipelineGroupName, SIMPL::StringConstants::PipelineVersionName, 2);
+  QH5Lite::writeStringAttribute(pipelineGroupId, "/" + SIMPL::StringConstants::PipelineGroupName, SIMPL::StringConstants::PipelineCurrentName, name);
 
   FilterPipeline::FilterContainerType& filters = pipeline->getFilterContainer();
 
   // Loop over each filter and write it's input parameters to the file
   int count = filters.size();
-  int index = 0;
   for (qint32 i = 0; i < count; ++i)
   {
     AbstractFilter::Pointer filter = filters.at(i);
     if (NULL != filter.get())
     {
-      index = filter->writeFilterParameters(writer.get(), index);
+      openFilterGroup(filter.get(), i);
+      filter->writeFilterParameters(m_CurrentFilterIndex);
+      closeFilterGroup();
     }
     else
     {
       AbstractFilter::Pointer badFilter = AbstractFilter::New();
-      writer->openFilterGroup(badFilter.get(), i);
-      writer->writeValue("Unknown Filter", "ERROR: Filter instance was NULL within the SVPipelineFilterWidget instance. Report this error to the DREAM3D Developers");
-      writer->closeFilterGroup();
+      openFilterGroup(badFilter.get(), i);
+      m_CurrentFilterIndex["Unknown Filter"] = "ERROR: Filter instance was NULL within the SVPipelineFilterWidget instance. Report this error to the DREAM3D Developers";
+      closeFilterGroup();
     }
   }
+
+  QJsonDocument doc(m_PipelineRoot);
+  QByteArray byteArray = doc.toJson(QJsonDocument::Compact);
+  QString jsonString = QString::fromStdString(byteArray.toStdString());
+  QH5Lite::writeStringDataset(pipelineGroupId, name, jsonString);
+
+  clearWriter();
 
   return 0;
 }
@@ -144,16 +162,34 @@ int H5FilterParametersWriter::WritePipelineToFile(FilterPipeline::Pointer pipeli
 // -----------------------------------------------------------------------------
 int H5FilterParametersWriter::openFilterGroup(AbstractFilter* filter, int index)
 {
-  int err = 0;
-  if (m_GroupId <= 0)
+//  int err = 0;
+//  if (m_GroupId <= 0)
+//  {
+//    return -1;
+//  }
+//  QString name = QString::number(index);
+//  m_CurrentGroupId = QH5Utilities::createGroup(m_GroupId, name);
+//  err = QH5Lite::writeStringAttribute(m_GroupId, name, "ClassName", filter->getNameOfClass());
+//  err = QH5Lite::writeStringAttribute(m_GroupId, name, "HumanLabel", filter->getHumanLabel());
+
+  m_CurrentIndex = index;
+  QString numStr = QString::number(m_CurrentIndex);
+
+  if (m_PipelineRoot.contains(numStr))
   {
-    return -1;
+    m_CurrentFilterIndex = m_PipelineRoot.value(numStr).toObject();
   }
-  QString name = QString::number(index);
-  m_CurrentGroupId = QH5Utilities::createGroup(m_GroupId, name);
-  err = QH5Lite::writeStringAttribute(m_GroupId, name, "ClassName", filter->getNameOfClass());
-  err = QH5Lite::writeStringAttribute(m_GroupId, name, "HumanLabel", filter->getHumanLabel());
-  return err;
+  else
+  {
+    m_CurrentFilterIndex = QJsonObject();
+    if(filter)
+    {
+      m_CurrentFilterIndex[SIMPL::Settings::FilterName] = filter->getNameOfClass();
+      m_CurrentFilterIndex[SIMPL::Settings::HumanLabel] = filter->getHumanLabel();
+    }
+  }
+
+  return 0;
 }
 
 // -----------------------------------------------------------------------------
@@ -161,9 +197,21 @@ int H5FilterParametersWriter::openFilterGroup(AbstractFilter* filter, int index)
 // -----------------------------------------------------------------------------
 int H5FilterParametersWriter::closeFilterGroup()
 {
-  H5Gclose(m_CurrentGroupId);
-  m_CurrentGroupId = -1;
+//  H5Gclose(m_CurrentGroupId);
+//  m_CurrentGroupId = -1;
+  m_PipelineRoot[QString::number(m_CurrentIndex)] = m_CurrentFilterIndex;
+  m_CurrentFilterIndex = QJsonObject();
   return 0;
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void H5FilterParametersWriter::clearWriter()
+{
+  m_PipelineRoot = QJsonObject();
+  m_CurrentFilterIndex = QJsonObject();
+  m_CurrentIndex = 0;
 }
 
 // -----------------------------------------------------------------------------

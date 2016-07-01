@@ -91,6 +91,8 @@ void MoveData::setupFilterParameters()
     LinkedChoicesFilterParameter::Pointer parameter = LinkedChoicesFilterParameter::New();
     parameter->setHumanLabel("Object to Move");
     parameter->setPropertyName("WhatToMove");
+    parameter->setSetterCallback(SIMPL_BIND_SETTER(MoveData, this, WhatToMove));
+    parameter->setGetterCallback(SIMPL_BIND_GETTER(MoveData, this, WhatToMove));
 
     parameter->setDefaultValue(getWhatToMove()); // Just set the first index
     QVector<QString> choices;

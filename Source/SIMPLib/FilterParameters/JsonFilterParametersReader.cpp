@@ -179,7 +179,7 @@ FilterPipeline::Pointer JsonFilterParametersReader::readPipeline(IObserver* obs)
 
         if (NULL != filter.get())
         {
-          filter->readFilterParametersFromJson(m_CurrentFilterIndex);
+          filter->readFilterParameters(m_CurrentFilterIndex);
           pipeline->pushBack(filter);
         }
       }
@@ -245,8 +245,7 @@ void JsonFilterParametersReader::readNameOfPipelineFromFile(QString filePath, QS
     return;
   }
 
-  JsonFilterParametersReader::Pointer reader = JsonFilterParametersReader::New();
-  int err = reader->openFile(filePath);
+  int err = openFile(filePath);
 
   if (err != QJsonParseError::NoError)
   {
@@ -260,10 +259,10 @@ void JsonFilterParametersReader::readNameOfPipelineFromFile(QString filePath, QS
     return;
   }
 
-  err = reader->openGroup(SIMPL::Settings::PipelineBuilderGroup);
-  name = reader->readString(SIMPL::Settings::PipelineName, "");
-  version = reader->readString(SIMPL::Settings::Version, "Unknown DREAM3D Version");
-  reader->closeGroup();
+  err = openGroup(SIMPL::Settings::PipelineBuilderGroup);
+  name = m_CurrentFilterIndex[SIMPL::Settings::PipelineName].toString();
+  version = m_CurrentFilterIndex[SIMPL::Settings::Version].toString();
+  closeGroup();
 }
 
 // -----------------------------------------------------------------------------
@@ -389,3 +388,27 @@ bool JsonFilterParametersReader::containsGroup(QString key)
   return false;
 }
 
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+int JsonFilterParametersReader::openGroup(QString key)
+{
+  Q_ASSERT(m_Root.isEmpty() == false);
+  int err = 0;
+  m_CurrentFilterIndex = m_Root[key].toObject();
+  if(m_CurrentFilterIndex.isEmpty())
+  {
+    err = -1;
+  }
+  return err;
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+int JsonFilterParametersReader::closeGroup()
+{
+  Q_ASSERT(m_Root.isEmpty() == false);
+  m_CurrentFilterIndex = QJsonObject();
+  return 0;
+}

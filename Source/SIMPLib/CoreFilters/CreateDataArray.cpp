@@ -284,6 +284,8 @@ void CreateDataArray::setupFilterParameters()
     ChoiceFilterParameter::Pointer parameter = ChoiceFilterParameter::New();
     parameter->setHumanLabel("Scalar Type");
     parameter->setPropertyName("ScalarType");
+    parameter->setSetterCallback(SIMPL_BIND_SETTER(CreateDataArray, this, ScalarType));
+    parameter->setGetterCallback(SIMPL_BIND_GETTER(CreateDataArray, this, ScalarType));
 
     QVector<QString> choices;
     choices.push_back(Int8);
@@ -307,6 +309,8 @@ void CreateDataArray::setupFilterParameters()
     LinkedChoicesFilterParameter::Pointer parameter = LinkedChoicesFilterParameter::New();
     parameter->setHumanLabel("Initialization Type");
     parameter->setPropertyName("InitializationType");
+    parameter->setSetterCallback(SIMPL_BIND_SETTER(CreateDataArray, this, InitializationType));
+    parameter->setGetterCallback(SIMPL_BIND_GETTER(CreateDataArray, this, InitializationType));
 
     parameter->setDefaultValue(Manual);
 

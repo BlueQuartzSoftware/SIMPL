@@ -547,6 +547,8 @@ namespace SIMPL
     const QString PhaseFraction("PhaseFraction");
     const QString PhaseType("PhaseType");
     const QString PipelineGroupName("Pipeline");
+    const QString PipelineVersionName("Pipeline Version");
+    const QString PipelineCurrentName("Current Pipeline");
     const QString PowerLawDistribution("Power Law Distribution");
     const QString PrecipitateBoundaryFraction("Precipitate Boundary Fraction");
     const QString PrecipitateStatsData("PrecipitateStatsData");

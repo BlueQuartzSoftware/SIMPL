@@ -143,6 +143,9 @@ class SIMPLib_EXPORT JsonFilterParametersReader : public AbstractFilterParameter
 
     bool containsGroup(QString key);
 
+    int openGroup(QString key);
+    int closeGroup();
+
   protected:
     JsonFilterParametersReader();
 
