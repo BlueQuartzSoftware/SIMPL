@@ -1346,7 +1346,8 @@ FilterPipeline::Pointer SVPipelineViewWidget::readPipelineFromFile(const QString
   FilterPipeline::Pointer pipeline;
   if (ext == "dream3d")
   {
-    pipeline = H5FilterParametersReader::ReadPipelineFromFile(filePath);
+    H5FilterParametersReader::Pointer dream3dReader = H5FilterParametersReader::New();
+    pipeline = dream3dReader->readPipelineFromFile(filePath);
   }
   else if (ext == "json")
   {

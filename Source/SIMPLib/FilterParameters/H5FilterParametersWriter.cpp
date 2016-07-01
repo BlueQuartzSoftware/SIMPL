@@ -44,14 +44,14 @@
 
 #include "SIMPLib/SIMPLibVersion.h"
 #include "SIMPLib/FilterParameters/H5FilterParametersConstants.h"
+#include "SIMPLib/FilterParameters/JsonFilterParametersWriter.h"
 #include "SIMPLib/Common/Constants.h"
 
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-H5FilterParametersWriter::H5FilterParametersWriter() :
-  m_CurrentIndex(0)
+H5FilterParametersWriter::H5FilterParametersWriter()
 {
 
 }
@@ -125,34 +125,9 @@ int H5FilterParametersWriter::writePipelineToFile(FilterPipeline::Pointer pipeli
   QH5Lite::writeScalarAttribute(pipelineGroupId, "/" + SIMPL::StringConstants::PipelineGroupName, SIMPL::StringConstants::PipelineVersionName, 2);
   QH5Lite::writeStringAttribute(pipelineGroupId, "/" + SIMPL::StringConstants::PipelineGroupName, SIMPL::StringConstants::PipelineCurrentName, name);
 
-  FilterPipeline::FilterContainerType& filters = pipeline->getFilterContainer();
-
-  // Loop over each filter and write it's input parameters to the file
-  int count = filters.size();
-  for (qint32 i = 0; i < count; ++i)
-  {
-    AbstractFilter::Pointer filter = filters.at(i);
-    if (NULL != filter.get())
-    {
-      openFilterGroup(filter.get(), i);
-      filter->writeFilterParameters(m_CurrentFilterIndex);
-      closeFilterGroup();
-    }
-    else
-    {
-      AbstractFilter::Pointer badFilter = AbstractFilter::New();
-      openFilterGroup(badFilter.get(), i);
-      m_CurrentFilterIndex["Unknown Filter"] = "ERROR: Filter instance was NULL within the SVPipelineFilterWidget instance. Report this error to the DREAM3D Developers";
-      closeFilterGroup();
-    }
-  }
-
-  QJsonDocument doc(m_PipelineRoot);
-  QByteArray byteArray = doc.toJson(QJsonDocument::Compact);
-  QString jsonString = QString::fromStdString(byteArray.toStdString());
+  JsonFilterParametersWriter::Pointer jsonWriter = JsonFilterParametersWriter::New();
+  QString jsonString = jsonWriter->writePipelineToString(pipeline, name, obs);
   QH5Lite::writeStringDataset(pipelineGroupId, name, jsonString);
-
-  clearWriter();
 
   return 0;
 }
@@ -162,32 +137,9 @@ int H5FilterParametersWriter::writePipelineToFile(FilterPipeline::Pointer pipeli
 // -----------------------------------------------------------------------------
 int H5FilterParametersWriter::openFilterGroup(AbstractFilter* filter, int index)
 {
-//  int err = 0;
-//  if (m_GroupId <= 0)
-//  {
-//    return -1;
-//  }
-//  QString name = QString::number(index);
-//  m_CurrentGroupId = QH5Utilities::createGroup(m_GroupId, name);
-//  err = QH5Lite::writeStringAttribute(m_GroupId, name, "ClassName", filter->getNameOfClass());
-//  err = QH5Lite::writeStringAttribute(m_GroupId, name, "HumanLabel", filter->getHumanLabel());
-
-  m_CurrentIndex = index;
-  QString numStr = QString::number(m_CurrentIndex);
-
-  if (m_PipelineRoot.contains(numStr))
-  {
-    m_CurrentFilterIndex = m_PipelineRoot.value(numStr).toObject();
-  }
-  else
-  {
-    m_CurrentFilterIndex = QJsonObject();
-    if(filter)
-    {
-      m_CurrentFilterIndex[SIMPL::Settings::FilterName] = filter->getNameOfClass();
-      m_CurrentFilterIndex[SIMPL::Settings::HumanLabel] = filter->getHumanLabel();
-    }
-  }
+  // We are piggy-backing off of the Json writer, so we don't need this function
+  Q_UNUSED(filter)
+  Q_UNUSED(index)
 
   return 0;
 }
@@ -197,21 +149,8 @@ int H5FilterParametersWriter::openFilterGroup(AbstractFilter* filter, int index)
 // -----------------------------------------------------------------------------
 int H5FilterParametersWriter::closeFilterGroup()
 {
-//  H5Gclose(m_CurrentGroupId);
-//  m_CurrentGroupId = -1;
-  m_PipelineRoot[QString::number(m_CurrentIndex)] = m_CurrentFilterIndex;
-  m_CurrentFilterIndex = QJsonObject();
+  // We are piggy-backing off of the Json writer, so we don't need this function
   return 0;
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-void H5FilterParametersWriter::clearWriter()
-{
-  m_PipelineRoot = QJsonObject();
-  m_CurrentFilterIndex = QJsonObject();
-  m_CurrentIndex = 0;
 }
 
 // -----------------------------------------------------------------------------

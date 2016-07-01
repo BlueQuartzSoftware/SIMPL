@@ -38,6 +38,7 @@
 #include <limits>
 
 #include <QtCore/QStringList>
+#include <QtCore/QJsonDocument>
 
 #include "H5Support/QH5Utilities.h"
 #include "H5Support/QH5Lite.h"
@@ -48,6 +49,7 @@
 #include "SIMPLib/Common/FilterFactory.hpp"
 
 #include "SIMPLib/FilterParameters/H5FilterParametersConstants.h"
+#include "SIMPLib/FilterParameters/JsonFilterParametersReader.h"
 #include "SIMPLib/Common/Constants.h"
 
 
@@ -103,7 +105,7 @@ H5FilterParametersReader::Pointer H5FilterParametersReader::OpenDREAM3DFileForRe
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-FilterPipeline::Pointer H5FilterParametersReader::ReadPipelineFromFile(QString filePath)
+FilterPipeline::Pointer H5FilterParametersReader::readPipelineFromFile(QString filePath)
 {
   hid_t fid = -1;
   fid = QH5Utilities::openFile(filePath);
@@ -125,43 +127,67 @@ FilterPipeline::Pointer H5FilterParametersReader::ReadPipelineFromFile(QString f
   }
 
   sentinel.addGroupId(&pipelineGroupId);
-  // Use QH5Lite to ask how many "groups" are in the "Pipeline Group"
-  QList<QString> groupList;
-  herr_t err = QH5Utilities::getGroupObjects(pipelineGroupId, H5Utilities::H5Support_GROUP, groupList);
-  if(err < 0)
-  {
 
-  }
+  setPipelineGroupId(pipelineGroupId);
 
-  H5FilterParametersReader::Pointer reader = H5FilterParametersReader::New();
-  reader->setPipelineGroupId(pipelineGroupId);
-
-  // Get a FilterManager Instance
-  FilterManager* filterManager = FilterManager::Instance();
+  m_Version = -1;
 
   // Create a FilterPipeline Object
   FilterPipeline::Pointer pipeline = FilterPipeline::New();
 
-  // Loop over the items getting the "ClassName" attribute from each group
-  QString classNameStr = "";
-  for (int i = 0; i < groupList.size(); i++)
+  if (QH5Lite::findAttribute(pipelineGroupId, SIMPL::StringConstants::PipelineVersionName) > 0)
   {
+    herr_t err = QH5Lite::readScalarAttribute(pipelineGroupId, "/" + SIMPL::StringConstants::PipelineGroupName, SIMPL::StringConstants::PipelineVersionName, m_Version);
+    if (err < 0) { return FilterPipeline::NullPointer(); }
 
-    QString iStr = QString::number(i);
-    err = QH5Lite::readStringAttribute(pipelineGroupId, iStr, "ClassName", classNameStr);
-
-    // Instantiate a new filter using the FilterFactory based on the value of the className attribute
-    IFilterFactory::Pointer ff = filterManager->getFactoryForFilter(classNameStr);
-    if (NULL != ff)
+    if (m_Version == 2)
     {
-      AbstractFilter::Pointer filter = ff->create();
-      if(NULL != ff)
-      {
-        // Read the parameters
-        filter->readFilterParameters( reader.get(), i );
+      QString jsonString = "";
+      herr_t err = QH5Lite::readStringDataset(pipelineGroupId, SIMPL::StringConstants::PipelineGroupName, jsonString);
+      if (err < 0) { return FilterPipeline::NullPointer(); }
 
-        // Add filter to pipeline
-        pipeline->pushBack(filter);
+      JsonFilterParametersReader::Pointer jsonReader = JsonFilterParametersReader::New();
+      pipeline = jsonReader->readPipelineFromString(jsonString, nullptr);
+    }
+    else
+    {
+      // Error! - Incompatible spec
+    }
+  }
+  else
+  {
+    // Use QH5Lite to ask how many "groups" are in the "Pipeline Group"
+    QList<QString> groupList;
+    herr_t err = QH5Utilities::getGroupObjects(pipelineGroupId, H5Utilities::H5Support_GROUP, groupList);
+    if(err < 0)
+    {
+
+    }
+
+    // Get a FilterManager Instance
+    FilterManager* filterManager = FilterManager::Instance();
+
+    // Loop over the items getting the "ClassName" attribute from each group
+    QString classNameStr = "";
+    for (int i = 0; i < groupList.size(); i++)
+    {
+
+      QString iStr = QString::number(i);
+      err = QH5Lite::readStringAttribute(pipelineGroupId, iStr, "ClassName", classNameStr);
+
+      // Instantiate a new filter using the FilterFactory based on the value of the className attribute
+      IFilterFactory::Pointer ff = filterManager->getFactoryForFilter(classNameStr);
+      if (NULL != ff)
+      {
+        AbstractFilter::Pointer filter = ff->create();
+        if(NULL != ff)
+        {
+          // Read the parameters
+          filter->readFilterParameters(this, i);
+
+          // Add filter to pipeline
+          pipeline->pushBack(filter);
+        }
       }
     }
   }
@@ -175,13 +201,31 @@ FilterPipeline::Pointer H5FilterParametersReader::ReadPipelineFromFile(QString f
 int H5FilterParametersReader::openFilterGroup(AbstractFilter* filter, int index)
 {
   int err = 0;
-  if (m_PipelineGroupId <= 0)
+
+  if (m_Version < 0)
   {
-    return -1;
+    if (m_PipelineGroupId <= 0)
+    {
+      return -1;
+    }
+
+    QString name = QString::number(index);
+    m_CurrentGroupId = H5Gopen(m_PipelineGroupId, name.toLatin1().data(), H5P_DEFAULT);
+  }
+  else if (m_Version == 2)
+  {
+    QString numStr = QString::number(index);
+    m_CurrentFilterObject = m_PipelineRoot[numStr].toObject();
+    if(m_CurrentFilterObject.isEmpty())
+    {
+      m_CurrentFilterObject = m_PipelineRoot[numStr].toObject();
+      if(m_CurrentFilterObject.isEmpty())
+      {
+        err = -1;
+      }
+    }
   }
 
-  QString name = QString::number(index);
-  m_CurrentGroupId = H5Gopen(m_PipelineGroupId, name.toLatin1().data(), H5P_DEFAULT);
   return err;
 }
 
@@ -190,8 +234,20 @@ int H5FilterParametersReader::openFilterGroup(AbstractFilter* filter, int index)
 // -----------------------------------------------------------------------------
 int H5FilterParametersReader::closeFilterGroup()
 {
-  H5Gclose(m_CurrentGroupId);
-  m_CurrentGroupId = -1;
+  if (m_Version < 0)
+  {
+    H5Gclose(m_CurrentGroupId);
+    m_CurrentGroupId = -1;
+  }
+  else if (m_Version == 2)
+  {
+    Q_ASSERT(m_PipelineRoot.isEmpty() == false);
+    m_CurrentFilterObject = QJsonObject();
+    m_PipelineRoot = QJsonObject();
+    m_Version = -1;
+    m_CurrentIndex = -1;
+  }
+
   return 0;
 }
 
