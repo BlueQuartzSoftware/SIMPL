@@ -39,6 +39,7 @@
 
 #include <QtCore/QStringList>
 #include <QtCore/QJsonDocument>
+#include <QtCore/QFileInfo>
 
 #include "H5Support/QH5Utilities.h"
 #include "H5Support/QH5Lite.h"
@@ -105,7 +106,7 @@ H5FilterParametersReader::Pointer H5FilterParametersReader::OpenDREAM3DFileForRe
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-FilterPipeline::Pointer H5FilterParametersReader::readPipelineFromFile(QString filePath)
+FilterPipeline::Pointer H5FilterParametersReader::readPipelineFromFile(QString filePath, IObserver* obs)
 {
   hid_t fid = -1;
   fid = QH5Utilities::openFile(filePath);
@@ -149,9 +150,14 @@ FilterPipeline::Pointer H5FilterParametersReader::readPipelineFromFile(QString f
       JsonFilterParametersReader::Pointer jsonReader = JsonFilterParametersReader::New();
       pipeline = jsonReader->readPipelineFromString(jsonString, nullptr);
     }
-    else
+    else if (NULL != obs)
     {
-      // Error! - Incompatible spec
+      QFileInfo fi(filePath);
+      QString ss = QObject::tr("The file '%1' contains an unrecognizable version number, and is therefore incompatible and cannot be read.").arg(fi.fileName());
+      PipelineMessage pm("", ss, -66066, PipelineMessage::Error);
+      pm.setPrefix("H5FilterParametersReader::ReadPipelineFromFile(...)");
+      obs->processPipelineMessage(pm);
+      return FilterPipeline::NullPointer();
     }
   }
   else
@@ -159,10 +165,6 @@ FilterPipeline::Pointer H5FilterParametersReader::readPipelineFromFile(QString f
     // Use QH5Lite to ask how many "groups" are in the "Pipeline Group"
     QList<QString> groupList;
     herr_t err = QH5Utilities::getGroupObjects(pipelineGroupId, H5Utilities::H5Support_GROUP, groupList);
-    if(err < 0)
-    {
-
-    }
 
     // Get a FilterManager Instance
     FilterManager* filterManager = FilterManager::Instance();
