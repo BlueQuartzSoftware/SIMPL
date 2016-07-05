@@ -118,7 +118,7 @@ void DataContainerReader::readFilterParameters(AbstractFilterParametersReader* r
 // -----------------------------------------------------------------------------
 int DataContainerReader::writeFilterParameters(AbstractFilterParametersWriter* writer, int index)
 {
-  index = writeExistingPipelineToFile(writer, index);
+  //index = writeExistingPipelineToFile(writer, index);
   writer->openFilterGroup(this, index);
   SIMPL_FILTER_WRITE_PARAMETER(InputFile)
   SIMPL_FILTER_WRITE_PARAMETER(OverwriteExistingDataContainers)
@@ -133,14 +133,8 @@ int DataContainerReader::writeFilterParameters(AbstractFilterParametersWriter* w
 // -----------------------------------------------------------------------------
 void DataContainerReader::writeFilterParameters(QJsonObject &obj)
 {
-//  writeExistingPipelineToFile(obj);
-//  writer->openFilterGroup(this, index);
-//  SIMPL_FILTER_WRITE_PARAMETER(InputFile)
-//  SIMPL_FILTER_WRITE_PARAMETER(OverwriteExistingDataContainers)
-//  DataContainerArrayProxy dcaProxy = getInputFileDataContainerArrayProxy(); // This line makes a COPY of the DataContainerArrayProxy that is stored in the current instance
-//  writer->writeValue("InputFileDataContainerArrayProxy", dcaProxy );
-//  writer->closeFilterGroup();
-//  return ++index; // we want to return the index after the one we just wrote to
+  writeExistingPipelineToFile(obj);
+  AbstractFilter::writeFilterParameters(obj);
 }
 
 // -----------------------------------------------------------------------------
@@ -474,29 +468,22 @@ int DataContainerReader::readExistingPipelineFromFile(hid_t fileId)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-int DataContainerReader::writeExistingPipelineToFile(AbstractFilterParametersWriter* writer, int index)
+void DataContainerReader::writeExistingPipelineToFile(QJsonObject &json)
 {
   FilterPipeline::FilterContainerType container = m_PipelineFromFile->getFilterContainer();
 
   for(FilterPipeline::FilterContainerType::iterator iter = container.begin(); iter != container.end(); ++iter)
   {
-    index = (*iter)->writeFilterParameters(writer, index);
+    AbstractFilter::Pointer filter = *iter;
+    if (NULL != filter.get())
+    {
+      filter->writeFilterParameters(json);
+    }
+    else
+    {
+      json["Unknown Filter"] = "ERROR: Filter instance was NULL within the SVPipelineFilterWidget instance. Report this error to the DREAM3D Developers";
+    }
   }
-  return index;
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-void DataContainerReader::writeExistingPipelineToFile(QJsonObject &json)
-{
-//  FilterPipeline::FilterContainerType container = m_PipelineFromFile->getFilterContainer();
-
-//  for(FilterPipeline::FilterContainerType::iterator iter = container.begin(); iter != container.end(); ++iter)
-//  {
-//    index = (*iter)->writeFilterParameters(writer, index);
-//  }
-//  return index;
 }
 
 // -----------------------------------------------------------------------------

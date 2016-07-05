@@ -161,16 +161,6 @@ void AbstractFilter::readFilterParameters(AbstractFilterParametersReader* reader
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-int AbstractFilter::writeFilterParameters(AbstractFilterParametersWriter* writer, int index)
-{
-  Q_ASSERT(writer != NULL);
-  qDebug() << "AbstractFilter::writeFilterParameters() -> Writing Filter Options" << "\n";
-  return -1;
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
 void AbstractFilter::readFilterParameters(QJsonObject &obj)
 {
   QVector<FilterParameter::Pointer> filterParameters = getFilterParameters();

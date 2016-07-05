@@ -80,7 +80,7 @@ class SIMPLib_EXPORT JsonFilterParametersWriter : public AbstractFilterParameter
     * @param obs Any observer that we can pass error/warning messages back to in case something goes wrong.
     * @return
     */
-    void writePipelineToFile(FilterPipeline::Pointer pipeline, QString filePath, QString pipelineName, IObserver* obs = NULL);
+    int writePipelineToFile(FilterPipeline::Pointer pipeline, QString filePath, QString pipelineName, IObserver* obs = NULL);
 
     /**
     * @brief WritePipelineToString This function will write a pipeline to a QString.
@@ -122,7 +122,7 @@ class SIMPLib_EXPORT JsonFilterParametersWriter : public AbstractFilterParameter
     QJsonObject m_CurrentFilterIndex;
     int         m_CurrentIndex;
 
-    void populateWriter(FilterPipeline::Pointer pipeline, QString pipelineName, IObserver* obs);
+    int populateWriter(FilterPipeline::Pointer pipeline, QString pipelineName, IObserver* obs);
     void writePipeline();
     void clearWriter();
 

@@ -153,15 +153,6 @@ class SIMPLib_EXPORT DataContainerReader : public AbstractFilter
     /**
      * @brief writeExistingPipelineToFile Writes the filter parameters of the existing pipline to a
      * SIMPLView file
-     * @param writer AbstractFilterParametersWriter instance pointer
-     * @param index Group index
-     * @return Integer error value
-     */
-    int writeExistingPipelineToFile(AbstractFilterParametersWriter* writer, int index);
-
-    /**
-     * @brief writeExistingPipelineToFile Writes the filter parameters of the existing pipline to a
-     * SIMPLView file
      * @param obj json object
      * @return
      */

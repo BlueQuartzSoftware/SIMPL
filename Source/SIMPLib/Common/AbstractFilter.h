@@ -142,13 +142,6 @@ class SIMPLib_EXPORT AbstractFilter : public Observable
     void readFilterParameters(QJsonObject &obj);
 
     /**
-    * @brief writeFilterParameters Writes the filter parameters to a file
-    * @param writer Writer that is used to write the parameters to a file
-    * @param index Index the filter is in the pipeline that is being written
-    */
-    virtual int writeFilterParameters(AbstractFilterParametersWriter* writer, int index);
-
-    /**
     * @brief writeFilterParametersToJson Writes the filter parameters to a file
     * @param root The root json object
     * @param index Index the filter is in the pipeline that is being written

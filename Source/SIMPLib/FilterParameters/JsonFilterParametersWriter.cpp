@@ -78,12 +78,16 @@ JsonFilterParametersWriter::~JsonFilterParametersWriter()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void JsonFilterParametersWriter::writePipelineToFile(FilterPipeline::Pointer pipeline, QString filePath, QString pipelineName, IObserver* obs)
+int JsonFilterParametersWriter::writePipelineToFile(FilterPipeline::Pointer pipeline, QString filePath, QString pipelineName, IObserver* obs)
 {
-  populateWriter(pipeline, pipelineName, obs);
+  int err = 0;
+  err = populateWriter(pipeline, pipelineName, obs);
+  if (err < 0) { return err; }
+
   setFileName(filePath);
   writePipeline();
   clearWriter();
+  return err;
 }
 
 // -----------------------------------------------------------------------------
@@ -104,7 +108,7 @@ QString JsonFilterParametersWriter::writePipelineToString(FilterPipeline::Pointe
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void JsonFilterParametersWriter::populateWriter(FilterPipeline::Pointer pipeline, QString pipelineName, IObserver* obs)
+int JsonFilterParametersWriter::populateWriter(FilterPipeline::Pointer pipeline, QString pipelineName, IObserver* obs)
 {
   if (NULL == pipeline.get())
   {
@@ -113,7 +117,7 @@ void JsonFilterParametersWriter::populateWriter(FilterPipeline::Pointer pipeline
       PipelineMessage pm(JsonFilterParametersWriter::ClassName(), "FilterPipeline Object was NULL for writing", -1, PipelineMessage::Error);
       obs->processPipelineMessage(pm);
     }
-    return;
+    return -1;
   }
 
   QFileInfo info(pipelineName);
@@ -143,6 +147,8 @@ void JsonFilterParametersWriter::populateWriter(FilterPipeline::Pointer pipeline
       closeFilterGroup();
     }
   }
+
+  return 0;
 }
 
 // -----------------------------------------------------------------------------
