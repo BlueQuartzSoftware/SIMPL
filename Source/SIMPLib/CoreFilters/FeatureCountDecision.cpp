@@ -96,19 +96,6 @@ void FeatureCountDecision::readFilterParameters(AbstractFilterParametersReader* 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-int FeatureCountDecision::writeFilterParameters(AbstractFilterParametersWriter* writer, int index)
-{
-  AbstractDecisionFilter::writeFilterParameters(writer, index);
-  writer->openFilterGroup(this, index);
-  SIMPL_FILTER_WRITE_PARAMETER(FeatureIdsArrayPath)
-  SIMPL_FILTER_WRITE_PARAMETER(MaxGrains)
-  writer->closeFilterGroup();
-  return ++index; // we want to return the next index that was just written to
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
 void FeatureCountDecision::initialize()
 {
 

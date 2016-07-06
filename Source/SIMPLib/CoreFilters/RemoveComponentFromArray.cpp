@@ -119,22 +119,6 @@ void RemoveComponentFromArray::readFilterParameters(AbstractFilterParametersRead
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-int RemoveComponentFromArray::writeFilterParameters(AbstractFilterParametersWriter* writer, int index)
-{
-  writer->openFilterGroup(this, index);
-  SIMPL_FILTER_WRITE_PARAMETER(FilterVersion)
-  SIMPL_FILTER_WRITE_PARAMETER(CompNumber)
-  SIMPL_FILTER_WRITE_PARAMETER(NewArrayArrayName)
-  SIMPL_FILTER_WRITE_PARAMETER(ReducedArrayArrayName)
-  SIMPL_FILTER_WRITE_PARAMETER(SelectedArrayPath)
-  SIMPL_FILTER_WRITE_PARAMETER(SaveRemovedComponent)
-  writer->closeFilterGroup();
-  return ++index; // we want to return the next index that was just written to
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
 void RemoveComponentFromArray::initialize()
 {
 

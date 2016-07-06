@@ -130,19 +130,6 @@ void CreateAttributeMatrix::readFilterParameters(AbstractFilterParametersReader*
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-int CreateAttributeMatrix::writeFilterParameters(AbstractFilterParametersWriter* writer, int index)
-{
-  writer->openFilterGroup(this, index);
-  SIMPL_FILTER_WRITE_PARAMETER(CreatedAttributeMatrix)
-  SIMPL_FILTER_WRITE_PARAMETER(AttributeMatrixType)
-  SIMPL_FILTER_WRITE_PARAMETER(TupleDimensions)
-  writer->closeFilterGroup();
-  return ++index; // we want to return the next index that was just written to
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
 void CreateAttributeMatrix::initialize()
 {
 

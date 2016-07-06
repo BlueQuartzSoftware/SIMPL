@@ -221,20 +221,6 @@ void CombineAttributeArrays::readFilterParameters(AbstractFilterParametersReader
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-int CombineAttributeArrays::writeFilterParameters(AbstractFilterParametersWriter* writer, int index)
-{
-  writer->openFilterGroup(this, index);
-  SIMPL_FILTER_WRITE_PARAMETER(FilterVersion)
-  SIMPL_FILTER_WRITE_PARAMETER(SelectedDataArrayPaths);
-  SIMPL_FILTER_WRITE_PARAMETER(StackedDataArrayName);
-  SIMPL_FILTER_WRITE_PARAMETER(NormalizeData);
-  writer->closeFilterGroup();
-  return ++index; // we want to return the next index that was just written to
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
 template<typename DataType>
 void verifyArrayList(AbstractFilter* filter, QVector<IDataArray::WeakPointer> ptrArray)
 {

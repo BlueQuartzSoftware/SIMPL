@@ -97,20 +97,6 @@ void RequiredZThickness::readFilterParameters(AbstractFilterParametersReader* re
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-int RequiredZThickness::writeFilterParameters(AbstractFilterParametersWriter* writer, int index)
-{
-  AbstractDecisionFilter::writeFilterParameters(writer, index);
-  writer->openFilterGroup(this, index);
-  SIMPL_FILTER_WRITE_PARAMETER(NumZVoxels)
-  SIMPL_FILTER_WRITE_PARAMETER(PreflightCheck)
-  SIMPL_FILTER_WRITE_PARAMETER(DataContainerSelection)
-  writer->closeFilterGroup();
-  return ++index; // we want to return the next index that was just written to
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
 void RequiredZThickness::initialize()
 {
 

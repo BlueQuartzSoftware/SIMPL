@@ -151,23 +151,6 @@ void CombineAttributeMatrices::readFilterParameters(AbstractFilterParametersRead
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-int CombineAttributeMatrices::writeFilterParameters(AbstractFilterParametersWriter* writer, int index)
-{
-  writer->openFilterGroup(this, index);
-  SIMPL_FILTER_WRITE_PARAMETER(FilterVersion)
-  SIMPL_FILTER_WRITE_PARAMETER(FirstAttributeMatrixPath)
-  SIMPL_FILTER_WRITE_PARAMETER(SecondAttributeMatrixPath)
-  SIMPL_FILTER_WRITE_PARAMETER(CombinedAttributeMatrixName)
-  SIMPL_FILTER_WRITE_PARAMETER(FirstIndexArrayPath)
-  SIMPL_FILTER_WRITE_PARAMETER(SecondIndexArrayPath)
-  SIMPL_FILTER_WRITE_PARAMETER(NewIndexArrayName)
-  writer->closeFilterGroup();
-  return ++index; // we want to return the next index that was just written to
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
 void CombineAttributeMatrices::initialize()
 {
 

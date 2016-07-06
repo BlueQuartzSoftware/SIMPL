@@ -99,19 +99,6 @@ void RemoveArrays::readFilterParameters(AbstractFilterParametersReader* reader, 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-int RemoveArrays::writeFilterParameters(AbstractFilterParametersWriter* writer, int index)
-{
-  writer->openFilterGroup(this, index);
-  SIMPL_FILTER_WRITE_PARAMETER(FilterVersion)
-  DataContainerArrayProxy dcaProxy = getDataArraysToRemove(); // This line makes a COPY of the DataContainerArrayProxy that is stored in the current instance
-  writer->writeValue("DataArraysToRemove", dcaProxy );
-  writer->closeFilterGroup();
-  return ++index;
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
 void RemoveArrays::initialize()
 {
 

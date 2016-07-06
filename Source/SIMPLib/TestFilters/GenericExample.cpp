@@ -280,37 +280,6 @@ void GenericExample::readFilterParameters(AbstractFilterParametersReader* reader
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-int GenericExample::writeFilterParameters(AbstractFilterParametersWriter* writer, int index)
-{
-  writer->openFilterGroup(this, index);
-  SIMPL_FILTER_WRITE_PARAMETER(FilterVersion)
-  SIMPL_FILTER_WRITE_PARAMETER(FeatureIdsArrayPath)
-  SIMPL_FILTER_WRITE_PARAMETER(SelectedMultiArrayPaths)
-  /* Place code that will write the inputs values into a file. reference the
-       AbstractFilterParametersWriter class for the proper API to use. */
-  SIMPL_FILTER_WRITE_PARAMETER(StlFilePrefix)
-  SIMPL_FILTER_WRITE_PARAMETER(MaxIterations)
-  SIMPL_FILTER_WRITE_PARAMETER(MisorientationTolerance)
-  SIMPL_FILTER_WRITE_PARAMETER(InputFile)
-  SIMPL_FILTER_WRITE_PARAMETER(InputPath)
-  SIMPL_FILTER_WRITE_PARAMETER(OutputFile)
-  SIMPL_FILTER_WRITE_PARAMETER(OutputPath)
-  SIMPL_FILTER_WRITE_PARAMETER(WriteAlignmentShifts)
-  SIMPL_FILTER_WRITE_PARAMETER(ConversionType)
-  SIMPL_FILTER_WRITE_PARAMETER(Dimensions)
-  SIMPL_FILTER_WRITE_PARAMETER(Origin)
-  SIMPL_FILTER_WRITE_PARAMETER(CrystalSymmetryRotations)
-
-
-
-  writer->closeFilterGroup();
-  return ++index; // we want to return the next index that was just written to
-}
-
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
 void GenericExample::initialize()
 {
 

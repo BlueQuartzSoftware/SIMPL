@@ -73,22 +73,6 @@ void Filt0::readFilterParameters(AbstractFilterParametersReader* reader, int ind
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-int Filt0::writeFilterParameters(AbstractFilterParametersWriter* writer, int index)
-
-{
-  writer->openFilterGroup(this, index);
-  SIMPL_FILTER_WRITE_PARAMETER(FilterVersion)
-  /* Place code that will write the inputs values into a file. reference the
-   AbstractFilterParametersWriter class for the proper API to use. */
-  SIMPL_FILTER_WRITE_PARAMETER(Filt0_Float)
-  SIMPL_FILTER_WRITE_PARAMETER(Filt0_Integer)
-  writer->closeFilterGroup();
-  return ++index; // we want to return the next index that was just written to
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
 void Filt0::initialize()
 {
 
@@ -190,22 +174,6 @@ void Filt1::readFilterParameters(AbstractFilterParametersReader* reader, int ind
   setFilt1_Float( reader->readValue("Filt1_Float", dummyFloat) );
   setFilt1_Integer( reader->readValue("Filt1_Integer", dummyInt) );
   reader->closeFilterGroup();
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-int Filt1::writeFilterParameters(AbstractFilterParametersWriter* writer, int index)
-
-{
-  writer->openFilterGroup(this, index);
-  SIMPL_FILTER_WRITE_PARAMETER(FilterVersion)
-  /* Place code that will write the inputs values into a file. reference the
-   AbstractFilterParametersWriter class for the proper API to use. */
-  SIMPL_FILTER_WRITE_PARAMETER(Filt1_Float)
-  SIMPL_FILTER_WRITE_PARAMETER(Filt1_Integer)
-  writer->closeFilterGroup();
-  return ++index; // we want to return the next index that was just written to
 }
 
 // -----------------------------------------------------------------------------

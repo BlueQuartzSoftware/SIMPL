@@ -262,23 +262,6 @@ void RawBinaryReader::readFilterParameters(AbstractFilterParametersReader* reade
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-int RawBinaryReader::writeFilterParameters(AbstractFilterParametersWriter* writer, int index)
-{
-  writer->openFilterGroup(this, index);
-  SIMPL_FILTER_WRITE_PARAMETER(FilterVersion)
-  SIMPL_FILTER_WRITE_PARAMETER(CreatedAttributeArrayPath)
-  SIMPL_FILTER_WRITE_PARAMETER(ScalarType)
-  SIMPL_FILTER_WRITE_PARAMETER(NumberOfComponents)
-  SIMPL_FILTER_WRITE_PARAMETER(Endian)
-  SIMPL_FILTER_WRITE_PARAMETER(InputFile)
-  SIMPL_FILTER_WRITE_PARAMETER(SkipHeaderBytes)
-  writer->closeFilterGroup();
-  return ++index; // we want to return the next index that was just written to
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
 void RawBinaryReader::initialize()
 {
 

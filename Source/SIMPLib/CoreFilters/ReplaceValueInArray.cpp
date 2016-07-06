@@ -99,20 +99,6 @@ void ReplaceValueInArray::readFilterParameters(AbstractFilterParametersReader* r
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-int ReplaceValueInArray::writeFilterParameters(AbstractFilterParametersWriter* writer, int index)
-{
-  writer->openFilterGroup(this, index);
-  SIMPL_FILTER_WRITE_PARAMETER(FilterVersion)
-  SIMPL_FILTER_WRITE_PARAMETER(SelectedArray)
-  SIMPL_FILTER_WRITE_PARAMETER(RemoveValue)
-  SIMPL_FILTER_WRITE_PARAMETER(ReplaceValue)
-  writer->closeFilterGroup();
-  return ++index; // we want to return the next index that was just written to
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
 template<typename T>
 void checkValuesInt(AbstractFilter* filter, double removeValue, double replaceValue, QString strType)
 {

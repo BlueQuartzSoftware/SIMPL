@@ -539,24 +539,6 @@ class FilterParametersRWTest
       }
 
       {
-        DataContainerReaderFilterParameter::Pointer fp = DataContainerReaderFilterParameter::New("Test", "String1",
-                                                                             "", FilterParameter::Parameter,
-                                                                             SIMPL_BIND_SETTER(FilterParametersRWTest, this, DcaProxy2),
-                                                                             SIMPL_BIND_GETTER(FilterParametersRWTest, this, DcaProxy1));
-
-        QJsonObject obj;
-        fp->writeJson(obj);
-        fp->readJson(obj);
-
-        if (m_DcaProxy1 != m_DcaProxy2)
-        {
-          DREAM3D_REQUIRE_EQUAL(0, 1)
-        }
-
-        m_DcaProxy2 = DataContainerArrayProxy();
-      }
-
-      {
         DataContainerSelectionFilterParameter::RequirementType req;
         DataContainerSelectionFilterParameter::Pointer fp = DataContainerSelectionFilterParameter::New("Test", "String1",
                                                                              getString1(), FilterParameter::Parameter, req,

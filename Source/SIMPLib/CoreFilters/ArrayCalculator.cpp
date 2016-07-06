@@ -214,20 +214,6 @@ void ArrayCalculator::readFilterParameters(AbstractFilterParametersReader* reade
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-int ArrayCalculator::writeFilterParameters(AbstractFilterParametersWriter* writer, int index)
-{
-  writer->openFilterGroup(this, index);
-  SIMPL_FILTER_WRITE_PARAMETER(SelectedAttributeMatrix)
-  SIMPL_FILTER_WRITE_PARAMETER(InfixEquation)
-  SIMPL_FILTER_WRITE_PARAMETER(CalculatedArray)
-  SIMPL_FILTER_WRITE_PARAMETER(Units)
-  writer->closeFilterGroup();
-  return ++index; // we want to return the next index that was just written to
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
 void ArrayCalculator::initialize()
 {
   m_ExecutionStack.clear();

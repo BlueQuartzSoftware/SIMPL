@@ -169,22 +169,6 @@ void ScaleVolume::readFilterParameters(AbstractFilterParametersReader* reader, i
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-int ScaleVolume::writeFilterParameters(AbstractFilterParametersWriter* writer, int index)
-{
-  writer->openFilterGroup(this, index);
-  SIMPL_FILTER_WRITE_PARAMETER(FilterVersion)
-  SIMPL_FILTER_WRITE_PARAMETER(ScaleFactor)
-  SIMPL_FILTER_WRITE_PARAMETER(ApplyToVoxelVolume)
-  SIMPL_FILTER_WRITE_PARAMETER(ApplyToSurfaceMesh)
-  SIMPL_FILTER_WRITE_PARAMETER(DataContainerName)
-  SIMPL_FILTER_WRITE_PARAMETER(SurfaceDataContainerName)
-  writer->closeFilterGroup();
-  return ++index; // we want to return the next index that was just written to
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
 void ScaleVolume::initialize()
 {
 

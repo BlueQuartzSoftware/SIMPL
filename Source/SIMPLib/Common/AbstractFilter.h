@@ -139,7 +139,7 @@ class SIMPLib_EXPORT AbstractFilter : public Observable
     * @brief readFilterParametersFromJson Reads the filter parameters from a file
     * @param reader Reader that is used to read the parameters from a file
     */
-    void readFilterParameters(QJsonObject &obj);
+    virtual void readFilterParameters(QJsonObject &obj);
 
     /**
     * @brief writeFilterParametersToJson Writes the filter parameters to a file

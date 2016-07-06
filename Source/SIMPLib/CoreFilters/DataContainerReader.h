@@ -120,17 +120,17 @@ class SIMPLib_EXPORT DataContainerReader : public AbstractFilter
     /**
      * @brief writeFilterParameters Reimplemented from @see AbstractFilter class
      */
-    virtual int writeFilterParameters(AbstractFilterParametersWriter* writer, int index);
-
-    /**
-     * @brief writeFilterParameters Reimplemented from @see AbstractFilter class
-     */
     virtual void writeFilterParameters(QJsonObject &obj);
 
     /**
      * @brief readFilterParameters Reimplemented from @see AbstractFilter class
      */
     virtual void readFilterParameters(AbstractFilterParametersReader* reader, int index);
+
+    /**
+     * @brief readFilterParameters Reimplemented from @see AbstractFilter class
+     */
+    virtual void readFilterParameters(QJsonObject &obj);
 
     /**
      * @brief execute Reimplemented from @see AbstractFilter class

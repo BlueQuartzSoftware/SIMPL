@@ -142,22 +142,6 @@ void MoveData::readFilterParameters(AbstractFilterParametersReader* reader, int 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-int MoveData::writeFilterParameters(AbstractFilterParametersWriter* writer, int index)
-{
-  writer->openFilterGroup(this, index);
-  SIMPL_FILTER_WRITE_PARAMETER(FilterVersion)
-  SIMPL_FILTER_WRITE_PARAMETER(WhatToMove)
-  SIMPL_FILTER_WRITE_PARAMETER(DataContainerDestination)
-  SIMPL_FILTER_WRITE_PARAMETER(AttributeMatrixSource)
-  SIMPL_FILTER_WRITE_PARAMETER(AttributeMatrixDestination)
-  SIMPL_FILTER_WRITE_PARAMETER(DataArraySource)
-  writer->closeFilterGroup(); // we want to return the next index that was just written to
-  return ++index;
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
 void MoveData::initialize()
 {
 

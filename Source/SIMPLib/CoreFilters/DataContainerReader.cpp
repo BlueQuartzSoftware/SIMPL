@@ -92,8 +92,7 @@ void DataContainerReader::setupFilterParameters()
     parameter->setDefaultFlagValue(Qt::Checked);
     parameter->setInputFileProperty("InputFile");
     parameter->setCategory(FilterParameter::Parameter);
-    parameter->setSetterCallback(SIMPL_BIND_SETTER(DataContainerReader, this, InputFileDataContainerArrayProxy));
-    parameter->setGetterCallback(SIMPL_BIND_GETTER(DataContainerReader, this, InputFileDataContainerArrayProxy));
+    parameter->setFilter(this);
     parameters.push_back(parameter);
   }
 
@@ -116,16 +115,10 @@ void DataContainerReader::readFilterParameters(AbstractFilterParametersReader* r
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-int DataContainerReader::writeFilterParameters(AbstractFilterParametersWriter* writer, int index)
+void DataContainerReader::readFilterParameters(QJsonObject &obj)
 {
-  //index = writeExistingPipelineToFile(writer, index);
-  writer->openFilterGroup(this, index);
-  SIMPL_FILTER_WRITE_PARAMETER(InputFile)
-  SIMPL_FILTER_WRITE_PARAMETER(OverwriteExistingDataContainers)
-  DataContainerArrayProxy dcaProxy = getInputFileDataContainerArrayProxy(); // This line makes a COPY of the DataContainerArrayProxy that is stored in the current instance
-  writer->writeValue("InputFileDataContainerArrayProxy", dcaProxy );
-  writer->closeFilterGroup();
-  return ++index; // we want to return the index after the one we just wrote to
+  AbstractFilter::readFilterParameters(obj);
+  syncProxies();
 }
 
 // -----------------------------------------------------------------------------

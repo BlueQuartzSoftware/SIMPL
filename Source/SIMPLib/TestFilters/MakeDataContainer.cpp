@@ -109,22 +109,6 @@ void MakeDataContainer::readFilterParameters(AbstractFilterParametersReader* rea
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-int MakeDataContainer::writeFilterParameters(AbstractFilterParametersWriter* writer, int index)
-{
-  writer->openFilterGroup(this, index);
-  SIMPL_FILTER_WRITE_PARAMETER(FilterVersion)
-  /*[]*/SIMPL_FILTER_WRITE_PARAMETER(LatticeConstantsArrayName)
-  /*[]*/SIMPL_FILTER_WRITE_PARAMETER(CrystalStructuresArrayName)
-  /*[]*/SIMPL_FILTER_WRITE_PARAMETER(CellPhasesArrayName)
-  /*[]*/SIMPL_FILTER_WRITE_PARAMETER(CellEulerAnglesArrayName)
-  /*[]*/SIMPL_FILTER_WRITE_PARAMETER(FeatureIdsArrayName)
-  writer->closeFilterGroup();
-  return ++index; // we want to return the next index that was just written to
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
 void MakeDataContainer::initialize()
 {
 

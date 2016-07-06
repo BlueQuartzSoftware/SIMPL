@@ -92,21 +92,6 @@ void ArraySelectionExample::readFilterParameters(AbstractFilterParametersReader*
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-int ArraySelectionExample::writeFilterParameters(AbstractFilterParametersWriter* writer, int index)
-{
-  writer->openFilterGroup(this, index);
-  SIMPL_FILTER_WRITE_PARAMETER(FilterVersion)
-  //  SIMPL_FILTER_WRITE_PARAMETER(DataContainerName)
-  //  SIMPL_FILTER_WRITE_PARAMETER(AttributeMatrixName)
-  //  SIMPL_FILTER_WRITE_PARAMETER(SelectedArrayName)
-  writer->closeFilterGroup();
-  return ++index; // we want to return the next index that was just written to
-}
-
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
 void ArraySelectionExample::initialize()
 {
 

@@ -56,7 +56,7 @@ DataContainerReaderFilterParameter::~DataContainerReaderFilterParameter()
 //
 // -----------------------------------------------------------------------------
 DataContainerReaderFilterParameter::Pointer DataContainerReaderFilterParameter::New(const QString& humanLabel, const QString& propertyName,
-    const QString& defaultValue, Category category, SetterCallbackType setterCallback, GetterCallbackType getterCallback, int groupIndex)
+    const QString& defaultValue, Category category, DataContainerReader* filter, int groupIndex)
 {
   DataContainerReaderFilterParameter::Pointer ptr = DataContainerReaderFilterParameter::New();
   ptr->setHumanLabel(humanLabel);
@@ -66,8 +66,7 @@ DataContainerReaderFilterParameter::Pointer DataContainerReaderFilterParameter::
   ptr->setGroupIndex(groupIndex);
   ptr->setFileExtension(".dream3d");
   ptr->setFileType("");
-  ptr->setSetterCallback(setterCallback);
-  ptr->setGetterCallback(getterCallback);
+  ptr->setFilter(filter);
 
   return ptr;
 }
@@ -81,7 +80,7 @@ QString DataContainerReaderFilterParameter::getWidgetType()
 }
 
 // -----------------------------------------------------------------------------
-//
+// THIS IS A SPECIAL CASE AND IS NOT STANDARD.  DO NOT COPY THIS CODE.
 // -----------------------------------------------------------------------------
 void DataContainerReaderFilterParameter::readJson(const QJsonObject &json)
 {
@@ -105,17 +104,18 @@ void DataContainerReaderFilterParameter::readJson(const QJsonObject &json)
 
     DataContainerArrayProxy proxy;
     proxy.dataContainers = dataContainers;
+    m_Filter->setInputFileDataContainerArrayProxy(proxy);
 
-    m_SetterCallback(proxy);
+    m_Filter->setInputFile(jsonObject["Input File"].toString());
   }
 }
 
 // -----------------------------------------------------------------------------
-//
+// THIS IS A SPECIAL CASE AND IS NOT STANDARD.  DO NOT COPY THIS CODE.
 // -----------------------------------------------------------------------------
 void DataContainerReaderFilterParameter::writeJson(QJsonObject &json)
 {
-  DataContainerArrayProxy proxy = m_GetterCallback();
+  DataContainerArrayProxy proxy = m_Filter->getInputFileDataContainerArrayProxy();
   QJsonObject obj;
   QJsonArray dataContainersArray;
   QMap<QString, DataContainerProxy> dataContainers = proxy.dataContainers;
@@ -128,6 +128,8 @@ void DataContainerReaderFilterParameter::writeJson(QJsonObject &json)
   }
 
   obj["Data Containers"] = dataContainersArray;
+
+  obj["Input File"] = m_Filter->getInputFile();
 
   json[getPropertyName()] = obj;
 }

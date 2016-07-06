@@ -91,19 +91,6 @@ void MaskCountDecision::readFilterParameters(AbstractFilterParametersReader* rea
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-int MaskCountDecision::writeFilterParameters(AbstractFilterParametersWriter* writer, int index)
-{
-  AbstractDecisionFilter::writeFilterParameters(writer, index);
-  writer->openFilterGroup(this, index);
-  SIMPL_FILTER_WRITE_PARAMETER(MaskArrayPath)
-  SIMPL_FILTER_WRITE_PARAMETER(NumberOfTrues)
-  writer->closeFilterGroup();
-  return ++index; // we want to return the next index that was just written to
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
 void MaskCountDecision::initialize()
 {
 

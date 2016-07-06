@@ -146,23 +146,6 @@ void DynamicTableExample::readFilterParameters(AbstractFilterParametersReader* r
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-int DynamicTableExample::writeFilterParameters(AbstractFilterParametersWriter* writer, int index)
-{
-  writer->openFilterGroup(this, index);
-  SIMPL_FILTER_WRITE_PARAMETER(FilterVersion)
-  SIMPL_FILTER_WRITE_PARAMETER(DynamicData1)
-  SIMPL_FILTER_WRITE_PARAMETER(DynamicData2)
-  SIMPL_FILTER_WRITE_PARAMETER(DynamicData3)
-  SIMPL_FILTER_WRITE_PARAMETER(DynamicData4)
-  SIMPL_FILTER_WRITE_PARAMETER(DynamicData5)
-  writer->closeFilterGroup();
-  return ++index; // we want to return the next index that was just written to
-}
-
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
 void DynamicTableExample::initialize()
 {
 
