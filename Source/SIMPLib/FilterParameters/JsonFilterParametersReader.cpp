@@ -295,6 +295,9 @@ int JsonFilterParametersReader::openFile(QString filePath)
     }
     m_Root = doc.object();
 
+    QJsonObject meta = m_Root[SIMPL::Settings::PipelineBuilderGroup].toObject();
+    m_MaxFilterIndex = meta[SIMPL::Settings::NumFilters].toInt();
+
     err = QJsonParseError::NoError;
   }
 
