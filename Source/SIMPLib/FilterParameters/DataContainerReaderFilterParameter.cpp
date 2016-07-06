@@ -105,9 +105,9 @@ void DataContainerReaderFilterParameter::readJson(const QJsonObject &json)
     DataContainerArrayProxy proxy;
     proxy.dataContainers = dataContainers;
     m_Filter->setInputFileDataContainerArrayProxy(proxy);
-
-    m_Filter->setInputFile(jsonObject["Input File"].toString());
   }
+
+  m_Filter->setInputFile(json["InputFile"].toString());
 }
 
 // -----------------------------------------------------------------------------
@@ -129,8 +129,7 @@ void DataContainerReaderFilterParameter::writeJson(QJsonObject &json)
 
   obj["Data Containers"] = dataContainersArray;
 
-  obj["Input File"] = m_Filter->getInputFile();
-
   json[getPropertyName()] = obj;
+  json["InputFile"] = m_Filter->getInputFile();
 }
 
