@@ -43,7 +43,7 @@ class FilterPararameterWidgetUtils
       QList<DataContainerProxy> dcList = dcaProxy.dataContainers.values();
       QListIterator<DataContainerProxy> iter(dcList);
       dcCombo->clear();
-      QVector<unsigned int> defVec = fp->getDefaultGeometryTypes();
+      QVector<unsigned int> geomTypes = fp->getDefaultGeometryTypes();
       while(iter.hasNext() )
       {
         DataContainerProxy dcProxy = iter.next();
@@ -54,9 +54,9 @@ class FilterPararameterWidgetUtils
         if (NULL != geom.get()) { geomType = geom->getGeometryType(); }
         dcCombo->addItem(dcProxy.name);
 
-        if (defVec.isEmpty() == false)
+        if (geomTypes.isEmpty() == false)
         {
-          if (defVec.contains(geomType) == false)
+          if (geomTypes.contains(geomType) == false)
           {
             QStandardItemModel* model = qobject_cast<QStandardItemModel*>(dcCombo->model());
             if (NULL != model)
