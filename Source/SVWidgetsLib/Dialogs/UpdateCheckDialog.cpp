@@ -174,7 +174,7 @@ QLabel* UpdateCheckDialog::getLatestVersionLabel()
 // -----------------------------------------------------------------------------
 QString UpdateCheckDialog::getAppName()
 {
-  return m_AppName;
+  return m_VersionData.appName;
 }
 
 // -----------------------------------------------------------------------------
@@ -206,7 +206,7 @@ void UpdateCheckDialog::setLastCheckDateTime(QDateTime lastDateTime)
 // -----------------------------------------------------------------------------
 void UpdateCheckDialog::setApplicationName(QString name)
 {
-  m_AppName = name;
+  m_VersionData.appName = name;
 }
 
 // -----------------------------------------------------------------------------

@@ -38,6 +38,7 @@
 #define _svpipelineviewwidget_h_
 
 #include <vector>
+#include <stack>
 
 #include <QtCore/QTimer>
 #include <QtWidgets/QLabel>
@@ -224,6 +225,12 @@ class SVWidgetsLib_EXPORT SVPipelineViewWidget : public QFrame, public PipelineV
     void resetLayout();
 
   public slots:
+
+    /**
+     * @brief Should be block this class from either emitting a preflight signal or otherwise running a preflight.
+     * @param b
+     */
+    void blockPreflightSignals(bool b);
 
     /**
      * @brief addFilter
@@ -437,6 +444,8 @@ class SVWidgetsLib_EXPORT SVPipelineViewWidget : public QFrame, public PipelineV
     QUndoStack*                         m_UndoStack;
     QAction*                            m_ActionUndo;
     QAction*                            m_ActionRedo;
+    bool                                m_BlockPreflight;
+    std::stack<bool>                    m_BlockPreflightStack;
 
     QMenu* createPipelineFilterWidgetMenu(SVPipelineFilterWidget* filterWidget);
     void createPipelineViewWidgetMenu();

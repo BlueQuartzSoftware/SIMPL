@@ -109,7 +109,8 @@ SVPipelineViewWidget::SVPipelineViewWidget(QWidget* parent) :
   m_AutoScrollMargin(10),
   m_autoScrollCount(0),
   m_InputParametersWidget(NULL),
-  m_UndoStack(new QUndoStack(this))
+  m_UndoStack(new QUndoStack(this)),
+  m_BlockPreflight(false)
 {
   setupGui();
   m_autoScrollTimer.setParent(this);
@@ -599,12 +600,16 @@ void SVPipelineViewWidget::addFilter(AbstractFilter::Pointer filter, QVariant va
   if (NULL != breakpoint)
   {
     BreakpointFilterWidget* w = new BreakpointFilterWidget(filter, NULL, this);
+    blockPreflightSignals(true);
     addFilterObject(w, value, allowUndo);
+    blockPreflightSignals(false);
   }
   else
   {
     SVPipelineFilterWidget* w = new SVPipelineFilterWidget(filter, NULL, this);
+    blockPreflightSignals(true);
     addFilterObject(w, value, allowUndo);
+    blockPreflightSignals(false);
   }
 
   // Clear the pipeline Issues table first so we can collect all the error messages
@@ -841,18 +846,16 @@ void SVPipelineViewWidget::pasteFilters(QList<AbstractFilter::Pointer> filters, 
 // -----------------------------------------------------------------------------
 void SVPipelineViewWidget::pasteFilterWidgets(const QString &jsonString, QVariant value, bool allowUndo)
 {
-  JsonFilterParametersReader::Pointer jsonReader = JsonFilterParametersReader::New();
-
-  FilterPipeline::Pointer pipeline = jsonReader->readPipelineFromString(jsonString);
-  FilterPipeline::FilterContainerType container = pipeline->getFilterContainer();
-
   if (allowUndo == true)
   {
+    JsonFilterParametersReader::Pointer jsonReader = JsonFilterParametersReader::New();
+    FilterPipeline::Pointer pipeline = jsonReader->readPipelineFromString(jsonString);
+    FilterPipeline::FilterContainerType container = pipeline->getFilterContainer();
+
+    blockPreflightSignals(true);
     pasteFilters(container, value, allowUndo);
-  }
-  else
-  {
-    pasteFilters(container, value, false);
+    blockPreflightSignals(false);
+    preflightPipeline();
   }
 }
 
@@ -961,9 +964,22 @@ void SVPipelineViewWidget::on_focusOutEventStarted(QFocusEvent* event)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
+void SVPipelineViewWidget::blockPreflightSignals(bool b)
+{
+  if(b) { m_BlockPreflightStack.push(b); }
+  else { m_BlockPreflightStack.pop(); }
+
+  m_BlockPreflight = (m_BlockPreflightStack.size() > 0) ? true : false;
+
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
 void SVPipelineViewWidget::preflightPipeline(QUuid id)
 {
   Q_UNUSED(id)
+  if(m_BlockPreflight) { return; }
 
   emit pipelineIssuesCleared();
   // Create a Pipeline Object and fill it with the filters from this View
@@ -1261,9 +1277,10 @@ void SVPipelineViewWidget::populatePipelineView(FilterPipeline::Pointer pipeline
   if (NULL == pipeline.get()) { clearFilterWidgets(); return; }
 
   FilterPipeline::FilterContainerType container = pipeline->getFilterContainer();
-
+  blockPreflightSignals(true);
   pasteFilters(container, value);
-
+  blockPreflightSignals(false);
+  preflightPipeline();
   if (filterCount() > 0)
   {
     SVPipelineFilterWidget* fw = dynamic_cast<SVPipelineFilterWidget*>(m_FilterWidgetLayout->itemAt(0)->widget());

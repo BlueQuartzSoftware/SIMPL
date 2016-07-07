@@ -105,7 +105,7 @@ void UpdateCheck::checkVersion(QUrl website)
 
   QString header;
   QTextStream out(&header);
-  out << "SIMPLView Version " << SVWidgetsLib::Version::Complete() << " [" << SIMPLViewProj_RELEASE_TYPE << "] ";
+  out << m_VersionData.appName << " Version " << m_VersionData.complete << " [" << SIMPLViewProj_RELEASE_TYPE << "] ";
   out << "(" << QSysInfo::prettyProductName() << ")";
   request.setRawHeader("User-Agent", header.toLatin1());
 

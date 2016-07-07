@@ -707,8 +707,6 @@ QJsonObject BookmarksTreeView::wrapModel(QModelIndex currentIndex)
   else
   {
     obj.insert("Path", path);
-    QString tooltip = model->data(currentIndex, Qt::ToolTipRole).toString();
-    obj.insert("Tooltip", tooltip);
   }
 
   return obj;
@@ -725,6 +723,7 @@ BookmarksModel* BookmarksTreeView::FromJsonObject(QJsonObject treeObject)
   keys.sort(Qt::CaseInsensitive);
   for (int i = 0; i < keys.size(); i++)
   {
+    if(keys[i].compare("Prebuilt Pipelines") == 0) { continue; }
     QJsonValue val = treeObject.value(keys[i]);
     if (val.isObject())
     {
@@ -760,8 +759,6 @@ void BookmarksTreeView::UnwrapModel(QString objectName, QJsonObject object, Book
   if (path.isEmpty() == false)
   {
     model->setData(nameIndex, QIcon(":/text.png"), Qt::DecorationRole);
-    QString tooltip = object["Tooltip"].toString();
-    model->setData(nameIndex, tooltip, Qt::ToolTipRole);
     if (fi.exists() == false)
     {
       // Set the itemHasError variable

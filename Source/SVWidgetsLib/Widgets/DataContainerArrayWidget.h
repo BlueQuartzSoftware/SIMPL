@@ -42,7 +42,6 @@ class SVWidgetsLib_EXPORT DataContainerArrayWidget : public QWidget, private Ui:
 
     void initializeWithFilter(AbstractFilter* filter);
 
-    void updateModelFromProxy(DataContainerArray* dc);
 
 
   protected slots:

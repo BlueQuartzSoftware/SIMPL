@@ -85,18 +85,27 @@ class SIMPLib_EXPORT JsonFilterParametersReader : public AbstractFilterParameter
     FilterPipeline::Pointer readPipelineFromString(QString contents, IObserver* obs = NULL);
 
     /**
-     * @brief ReadNameOfPipelineFromFile
-     * @param filePath
+     * @brief Gets the name of the pipeline from a pipeline file
+     * @param filePath The absolute path to the pipeline file.
      * @param name Sets the name of the pipeline into this variable
      * @param version Sets the DREAM3D Version into this variable.
-     * @param obs
+     * @param obs Any observer that needs to know about errors.
      * @return
      */
     void readNameOfPipelineFromFile(QString filePath, QString& name, QString& version, IObserver* obs = NULL);
 
     /**
-     * @brief openFile
-     * @param filePath
+     * @brief Generate an html formatted string that summarizes the pipeline file by listing
+     * each filter by it's human name and C++ class name.
+     * @param filePath The path to the pipeline file
+     * @param obs Any observer that needs to know about errors.
+     * @return html formatted string
+     */
+    static QString HtmlSummaryFromFile(QString filePath, IObserver* obs);
+
+    /**
+     * @brief Opens the pipeline file for operations
+     * @param filePath The path to the pipeline file
      * @return
      */
     int openFile(QString filePath);

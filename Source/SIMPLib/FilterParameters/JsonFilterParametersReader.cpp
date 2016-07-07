@@ -103,6 +103,142 @@ FilterPipeline::Pointer JsonFilterParametersReader::readPipelineFromFile(QString
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
+QString generateErrorHtml(const QString &errorText)
+{
+    QString html;
+    QTextStream ss(&html);
+    ss << "<html><head></head>\n";
+    ss << "<body>\n";
+    ss << "<h2>";
+    ss << errorText;
+    ss << "</h2>";
+    ss << "</body></html>";
+    return html;
+}
+
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+QString JsonFilterParametersReader::HtmlSummaryFromFile(QString filePath, IObserver* obs)
+{
+
+    QFileInfo fInfo(filePath);
+
+    if (filePath.isEmpty() == true)
+    {
+        // Build up the Html formatted Error Message
+        return generateErrorHtml(QString("The file path was empty"));
+    }
+    QFileInfo fi(filePath);
+    if (fi.exists() == false)
+    {
+        // Build up the Html formatted Error Message
+        return generateErrorHtml(QString("The file path does not exist on the system."));
+    }
+
+    QJsonObject m_Root;
+
+    int err = -100;
+    QFile inputFile(filePath);
+    if (inputFile.open(QIODevice::ReadOnly))
+    {
+      QJsonParseError parseError;
+      QByteArray byteArray = inputFile.readAll();
+      QJsonDocument doc = QJsonDocument::fromJson(byteArray, &parseError);
+      if (parseError.error != QJsonParseError::NoError)
+      {
+          // Build up the Html formatted Error Message
+        return generateErrorHtml(QString("Error parsing the Json file: (%1) %2").arg(parseError.error).arg(parseError.errorString()));
+
+      }
+      m_Root = doc.object();
+
+      err = QJsonParseError::NoError;
+      inputFile.close();
+    }
+
+    QJsonValueRef pBuildRef = m_Root["PipelineBuilder"];
+    if(pBuildRef.isUndefined())
+    {
+        // Build up the Html formatted Error Message
+        return generateErrorHtml(QString("The 'PipelineBuilder' object was not found in the pipeline file."));
+    }
+
+    QJsonObject pBuildObj = pBuildRef.toObject();
+    QString name = pBuildObj["Name"].toString();
+    QString dVers = pBuildObj["Version"].toString();
+    int filterCount = pBuildObj["Number_Filters"].toInt();
+
+    QString html;
+    QTextStream ss(&html);
+    ss << "<html><head></head>\n";
+    ss << "<body>\n";
+
+    // A table for the summary items
+    ss << "<table cellpadding=\"2\" cellspacing=\"0\" border=\"0\">\n";
+    ss << "<tbody>\n";
+    ss << "	<tr><th align=\"right\">Pipeline Name:</th><td>" << name << "</td></tr>\n";
+    ss << "	<tr><th align=\"right\">Filter Count:</th><td>" << filterCount << "</td></tr>\n";
+    ss << "	<tr><th align=\"right\">Version:</th><td>" << dVers << "</td></tr>\n";
+    ss << "</tbody>\n";
+    ss << "</table>\n";
+    ss << "<p></p>\n";
+
+    // Start the table of the Pipeline
+    ss << "<table cellpadding=\"2\" cellspacing=\"0\" border=\"0\" width=\"300px\">\n";
+    ss << "<tbody>\n";
+    ss << "<tr bgcolor=\"#A2E99C\"><th>Index</th><th>Name Label</th><th>Filter Name</th></tr>\n";
+
+  //  FilterManager* filtManager = FilterManager::Instance();
+    char rowColor = 0;
+    QString red("#FFAAAA");
+    QString odd("#FFFFFF");
+    QString even("#B0E4FF");
+    QString color = odd;
+    bool unknownFilters = false;
+
+
+    for (int i = 0; i < filterCount; ++i)
+    {
+      if (rowColor == 0) { rowColor = 1; color = odd; }
+      else { rowColor = 0; color = even; }
+
+      QJsonValueRef filtRef = m_Root[QString::number(i)];
+
+      if(filtRef.isUndefined()) {
+           ss << "<tr bgcolor=\"" << color << "\"><td>" << i << "</td><td> Filter Missing </td><td></td></tr>\n";
+           unknownFilters = true;
+      }
+      else {
+          QJsonObject filtObj = filtRef.toObject();
+          QString filtName = filtObj["Filter_Name"].toString();
+          QString filtLabel = filtObj["Filter_Human_Label"].toString();
+        ss << "<tr bgcolor=\"" << color << "\"><td>" << i << "</td><td>" << filtLabel << "</td><td>" << filtName << "</td></tr>\n";
+      }
+    }
+
+
+    if(unknownFilters)
+    {
+      color = red;
+      ss << "<tr bgcolor=\"" << color << "\"><th colspan=\"3\">There are filters in the pipeline that the currently running version of SIMPLView does not know about. This ";
+      ss << "can happen if you are missing plugins that contain the filters or if the pipeline was created in a prior version ";
+      ss << "of SIMPLView in which case those filters may have been renamed. Please consult the SIMPLView documentation for more details ";
+      ss << "or ask the individual who gave you the pipeline file for more details.</th></tr>\n";
+    }
+    ss << "</tbody></table>\n";
+
+    ss << "</body></html>";
+
+
+    return html;
+
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
 FilterPipeline::Pointer JsonFilterParametersReader::readPipelineFromString(QString contents, IObserver* obs)
 {
   setPipelineContents(contents);

@@ -141,7 +141,6 @@ class SVWidgetsLib_EXPORT UpdateCheckDialog : public QDialog, private Ui::Update
     int             m_WhenToCheck;
     QString           m_UpdatePreferencesPath;
     QString           m_UpdateWebSite;
-    QString           m_AppName;
     UpdateCheck*        m_UpdateCheck;
     QThread*          m_UpdateCheckThread;
     DialogState         m_DialogState;

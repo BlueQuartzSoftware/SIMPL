@@ -40,9 +40,10 @@
 #include <QtCore/QObject>
 #include <QtCore/QPointer>
 #include <QtWidgets/QWidget>
+#include <QtWidgets/QMenu>
+#include <QtGui/QShowEvent>
 
-#include "SVWidgetsLib/QtSupport/QtSFaderWidget.h"
-
+#include "SIMPLib/Common/SIMPLibSetGetMacros.h"
 #include "SIMPLib/Common/AbstractFilter.h"
 #include "SIMPLib/FilterParameters/FilterParameter.h"
 #include "SIMPLib/DataContainers/DataArrayPath.h"
@@ -51,9 +52,13 @@
 
 #include "SVWidgetsLib/SVWidgetsLib.h"
 #include "SVWidgetsLib/FilterParameterWidgets/FilterParameterWidget.h"
-
+#include "SVWidgetsLib/QtSupport/QtSFaderWidget.h"
 
 #include "SVWidgetsLib/ui_DataArraySelectionWidget.h"
+
+#define DASW_NEW_GUI 1
+
+class QSignalMapper;
 
 /**
 * @brief
@@ -103,21 +108,32 @@ class SVWidgetsLib_EXPORT DataArraySelectionWidget : public FilterParameterWidge
     void afterPreflight();
     void filterNeedsInputParameters(AbstractFilter* filter);
 
+#if DASW_NEW_GUI
+    void dataArraySelected(QString path);
+#else
     void on_dataContainerCombo_currentIndexChanged(int index);
 
     void on_attributeMatrixCombo_currentIndexChanged(int index);
 
     void on_attributeArrayCombo_currentIndexChanged(int index);
+#endif
+
 
 
   protected:
-    void populateComboBoxes();
+#if DASW_NEW_GUI
 
     /**
-     * @brief generateDCAProxy
-     * @return
+     * @brief createSelectionMenu
      */
-    DataContainerArrayProxy generateDCAProxy();
+    void createSelectionMenu();
+
+#else
+    /**
+     * @brief populateComboBoxes
+     */
+    void populateComboBoxes();
+#endif
 
     /**
      * @brief setSelectedPath
@@ -132,11 +148,14 @@ class SVWidgetsLib_EXPORT DataArraySelectionWidget : public FilterParameterWidge
     void parametersChanged();
 
   private:
-
     bool m_DidCausePreflight;
 
-
+#if DASW_NEW_GUI
+    QSignalMapper*  m_MenuMapper;
+#else
     DataContainerArrayProxy m_DcaProxy;
+#endif
+
     DataArrayPath  m_DefaultPath;
 
     DataArraySelectionFilterParameter* m_FilterParameter;
@@ -145,6 +164,31 @@ class SVWidgetsLib_EXPORT DataArraySelectionWidget : public FilterParameterWidge
     void operator=(const DataArraySelectionWidget&); // Operator '=' Not Implemented
 
 };
+
+
+class PopupMenu : public QMenu
+{
+    Q_OBJECT
+public:
+    explicit PopupMenu(QPushButton* button, QWidget* parent = 0) :
+      QMenu(parent),
+      b(button)
+    {
+    }
+
+    void showEvent(QShowEvent* event)
+    {
+      QPoint p = this->pos();
+      QRect geo = b->geometry();
+      this->move(p.x()+geo.width()-this->geometry().width(), p.y());
+    }
+
+private:
+    QPushButton* b;
+};
+
+
+
 
 #endif /* _DataArraySelectionWidget_H_ */
 

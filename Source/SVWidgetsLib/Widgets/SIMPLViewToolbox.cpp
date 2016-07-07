@@ -120,7 +120,6 @@ void SIMPLViewToolbox::readSettings()
   if (prefs->value("PrebuiltsRead", QVariant(false)).toBool() == false)
   {
     bookmarksWidget->readPrebuiltPipelines();
-    prefs->setValue("PrebuiltsRead", true);
   }
   prefs->endGroup();
 
