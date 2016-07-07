@@ -171,10 +171,10 @@ DataArrayPath DataArrayPath::Deserialize(QString str, QString delimiter)
 
   int tokenIndex = str.indexOf(delimiter, start);
   QString dcName = str.mid(start, tokenIndex);
-  start = tokenIndex + 1;
+  start = tokenIndex + delimiter.size();
   tokenIndex = str.indexOf(delimiter, start);
   QString amName = str.mid(start, tokenIndex - start);
-  start = tokenIndex + 1;
+  start = tokenIndex + delimiter.size();
   QString daName = str.mid(start);
 
   DataArrayPath path(dcName, amName, daName);
