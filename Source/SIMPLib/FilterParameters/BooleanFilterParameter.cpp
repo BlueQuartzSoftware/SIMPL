@@ -85,7 +85,7 @@ void BooleanFilterParameter::readJson(const QJsonObject &json)
   QJsonValue jsonValue = json[getPropertyName()];
   if(!jsonValue.isUndefined() )
   {
-    m_SetterCallback(jsonValue.toBool());
+    m_SetterCallback(static_cast<bool>(jsonValue.toInt()));
   }
 }
 
@@ -94,6 +94,6 @@ void BooleanFilterParameter::readJson(const QJsonObject &json)
 // -----------------------------------------------------------------------------
 void BooleanFilterParameter::writeJson(QJsonObject &json)
 {
-  json[getPropertyName()] = m_GetterCallback();
+  json[getPropertyName()] = static_cast<int>(m_GetterCallback());
 }
 

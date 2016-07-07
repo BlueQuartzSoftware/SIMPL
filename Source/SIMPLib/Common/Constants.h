@@ -447,6 +447,7 @@ namespace SIMPL
     const QString NumFilters("Number_Filters");
     const QString PipelineName("Name");
     const QString FilterName("Filter_Name");
+    const QString FilterVersion("FilterVersion");
     const QString HumanLabel("Filter_Human_Label");
     const QString Version("Version");
     const QString PipelineBuilderGeomertry("PipelineBuilderGeometry");

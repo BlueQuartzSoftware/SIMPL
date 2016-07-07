@@ -249,6 +249,7 @@ int JsonFilterParametersWriter::openFilterGroup(AbstractFilter* filter, int inde
     {
       m_CurrentFilterIndex[SIMPL::Settings::FilterName] = filter->getNameOfClass();
       m_CurrentFilterIndex[SIMPL::Settings::HumanLabel] = filter->getHumanLabel();
+      m_CurrentFilterIndex[SIMPL::Settings::FilterVersion] = filter->getFilterVersion();
     }
   }
 
