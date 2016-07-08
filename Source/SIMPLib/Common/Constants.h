@@ -180,6 +180,11 @@ namespace SIMPL
     const QString NewAttributeMatrixName("NewAttributeMatrixName");
   }
 
+  namespace PipelineVersionNumbers
+  {
+    const int CurrentVersion(6);
+  }
+
   namespace FilterGroups
   {
     const QString GenericFilters("Generic");

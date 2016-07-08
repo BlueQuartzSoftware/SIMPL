@@ -40,9 +40,6 @@
 #include <QtCore/QJsonObject>
 #include <QtCore/QJsonDocument>
 
-#include "SIMPLib/SIMPLibVersion.h"
-
-
 #include "JsonFilterParametersWriter.h"
 #include "SIMPLib/Common/Constants.h"
 
@@ -201,7 +198,7 @@ QJsonDocument JsonFilterParametersWriter::toDocument()
   // Write our File Version and DREAM3D Version strings
   QJsonObject meta;
   meta[SIMPL::Settings::PipelineName] = m_PipelineName;
-  meta[SIMPL::Settings::Version] = SIMPLib::Version::Package();
+  meta[SIMPL::Settings::Version] = SIMPL::PipelineVersionNumbers::CurrentVersion;
 
   if (m_Root.size() > 0)
   {
