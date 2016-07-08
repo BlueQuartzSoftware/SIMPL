@@ -214,6 +214,24 @@ void ArrayCalculator::readFilterParameters(AbstractFilterParametersReader* reade
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
+void ArrayCalculator::readFilterParameters(QJsonObject &obj)
+{
+  AbstractFilter::readFilterParameters(obj);
+  setUnits(static_cast<ArrayCalculator::AngleUnits>(obj["Units"].toInt()));
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void ArrayCalculator::writeFilterParameters(QJsonObject &obj)
+{
+  AbstractFilter::writeFilterParameters(obj);
+  obj["Units"] = static_cast<int>(getUnits());
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
 void ArrayCalculator::initialize()
 {
   m_ExecutionStack.clear();

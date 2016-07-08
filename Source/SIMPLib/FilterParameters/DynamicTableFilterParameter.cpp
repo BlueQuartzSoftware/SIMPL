@@ -121,27 +121,35 @@ void DynamicTableFilterParameter::readJson(const QJsonObject &json)
     QJsonObject jsonObj = jsonValue.toObject();
 
     std::vector<std::vector<double> > tableData;
-    if (jsonObj["Table Data"].isArray())
+
+    QJsonArray rowArray;
+    if (jsonObj.contains("Dynamic Table Data") == true)
     {
-      QJsonArray rowArray = jsonObj["Table Data"].toArray();
-      tableData.resize(rowArray.size());
+      QJsonObject obj = jsonObj["Dynamic Table Data"].toObject();
+      rowArray = obj["Table Data"].toArray();
+    }
+    else
+    {
+      rowArray = jsonObj["Table Data"].toArray();
+    }
 
-      for (int row = 0; row < rowArray.size(); row++)
+    tableData.resize(rowArray.size());
+
+    for (int row = 0; row < rowArray.size(); row++)
+    {
+      QJsonValue rowObj = rowArray.at(row);
+      if (rowObj.isArray())
       {
-        QJsonValue rowObj = rowArray.at(row);
-        if (rowObj.isArray())
+        QJsonArray colArray = rowObj.toArray();
+        tableData[row].resize(colArray.size());
+
+        for (int col = 0; col < colArray.size(); col++)
         {
-          QJsonArray colArray = rowObj.toArray();
-          tableData[row].resize(colArray.size());
+          QJsonValue colObj = colArray.at(col);
 
-          for (int col = 0; col < colArray.size(); col++)
+          if (colObj.isDouble())
           {
-            QJsonValue colObj = colArray.at(col);
-
-            if (colObj.isDouble())
-            {
-              tableData[row][col] = colObj.toDouble();
-            }
+            tableData[row][col] = colObj.toDouble();
           }
         }
       }

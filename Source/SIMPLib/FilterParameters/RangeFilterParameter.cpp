@@ -88,8 +88,8 @@ void RangeFilterParameter::readJson(const QJsonObject &json)
     QJsonObject obj = jsonValue.toObject();
     QPair<double, double> pair;
 
-    pair.first = obj["first"].toDouble();
-    pair.second = obj["second"].toDouble();
+    pair.first = obj["Min"].toDouble();
+    pair.second = obj["Max"].toDouble();
 
     m_SetterCallback(pair);
   }
@@ -103,8 +103,8 @@ void RangeFilterParameter::writeJson(QJsonObject &json)
   QPair<double, double> pair = m_GetterCallback();
   QJsonObject obj;
 
-  obj["first"] = pair.first;
-  obj["second"] = pair.second;
+  obj["Min"] = pair.first;
+  obj["Max"] = pair.second;
 
   json[getPropertyName()] = obj;
 }
