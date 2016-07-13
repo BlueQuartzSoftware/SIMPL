@@ -142,7 +142,8 @@ void DataArrayCreationFilterParameter::readJson(const QJsonObject &json)
   if(!jsonValue.isUndefined() )
   {
     QJsonObject obj = jsonValue.toObject();
-    DataArrayPath dap(obj["Data Container Name"].toString(), obj["Attribute Matrix Name"].toString(), obj["Data Array Name"].toString());
+    DataArrayPath dap;
+    dap.readJson(obj);
     m_SetterCallback(dap);
   }
 }
@@ -154,10 +155,6 @@ void DataArrayCreationFilterParameter::writeJson(QJsonObject &json)
 {
   DataArrayPath dap = m_GetterCallback();
   QJsonObject obj;
-
-  obj["Data Container Name"] = dap.getDataContainerName();
-  obj["Attribute Matrix Name"] = dap.getAttributeMatrixName();
-  obj["Data Array Name"] = dap.getDataArrayName();
-
+  dap.writeJson(obj);
   json[getPropertyName()] = obj;
 }

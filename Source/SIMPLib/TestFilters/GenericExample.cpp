@@ -280,6 +280,32 @@ void GenericExample::readFilterParameters(AbstractFilterParametersReader* reader
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
+void GenericExample::readFilterParameters(QJsonObject &obj)
+{
+  AbstractFilter::readFilterParameters(obj);
+  setInputFile(obj["InputFile"].toString());
+  setInputPath(obj["InputPath"].toString());
+  setOutputFile(obj["OutputFile"].toString());
+  setOutputPath(obj["OutputPath"].toString());
+}
+
+// FP: Check why these values are not connected to a filter parameter!
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void GenericExample::writeFilterParameters(QJsonObject &obj)
+{
+  AbstractFilter::writeFilterParameters(obj);
+  obj["InputFile"] = getInputFile();
+  obj["InputPath"] = getInputPath();
+  obj["OutputFile"] = getOutputFile();
+  obj["OutputPath"] = getOutputPath();
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
 void GenericExample::initialize()
 {
 

@@ -90,11 +90,7 @@ void IntVec3FilterParameter::readJson(const QJsonObject &json)
   {
     QJsonObject obj = jsonValue.toObject();
     IntVec3_t intVec3;
-
-    intVec3.x = obj["x"].toInt();
-    intVec3.y = obj["y"].toInt();
-    intVec3.z = obj["z"].toInt();
-
+    intVec3.readJson(obj);
     m_SetterCallback(intVec3);
   }
 }
@@ -106,11 +102,7 @@ void IntVec3FilterParameter::writeJson(QJsonObject &json)
 {
   IntVec3_t intVec3 = m_GetterCallback();
   QJsonObject obj;
-
-  obj["x"] = intVec3.x;
-  obj["y"] = intVec3.y;
-  obj["z"] = intVec3.z;
-
+  intVec3.writeJson(obj);
   json[getPropertyName()] = obj;
 }
 

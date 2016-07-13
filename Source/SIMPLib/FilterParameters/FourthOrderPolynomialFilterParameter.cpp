@@ -87,23 +87,7 @@ void FourthOrderPolynomialFilterParameter::readJson(const QJsonObject &json)
   {
     QJsonObject obj = jsonValue.toObject();
     Float4thOrderPoly_t poly;
-
-    poly.c40 = static_cast<float>(obj["c40"].toDouble());
-    poly.c04 = static_cast<float>(obj["c04"].toDouble());
-    poly.c31 = static_cast<float>(obj["c31"].toDouble());
-    poly.c13 = static_cast<float>(obj["c13"].toDouble());
-    poly.c22 = static_cast<float>(obj["c22"].toDouble());
-    poly.c30 = static_cast<float>(obj["c30"].toDouble());
-    poly.c03 = static_cast<float>(obj["c03"].toDouble());
-    poly.c21 = static_cast<float>(obj["c21"].toDouble());
-    poly.c12 = static_cast<float>(obj["c12"].toDouble());
-    poly.c20 = static_cast<float>(obj["c20"].toDouble());
-    poly.c02 = static_cast<float>(obj["c02"].toDouble());
-    poly.c11 = static_cast<float>(obj["c11"].toDouble());
-    poly.c10 = static_cast<float>(obj["c10"].toDouble());
-    poly.c01 = static_cast<float>(obj["c01"].toDouble());
-    poly.c00 = static_cast<float>(obj["c00"].toDouble());
-
+    poly.readJson(obj);
     m_SetterCallback(poly);
   }
 }
@@ -115,23 +99,7 @@ void FourthOrderPolynomialFilterParameter::writeJson(QJsonObject &json)
 {
   Float4thOrderPoly_t poly = m_GetterCallback();
   QJsonObject obj;
-
-  obj["c40"] = poly.c40;
-  obj["c04"] = poly.c04;
-  obj["c31"] = poly.c31;
-  obj["c13"] = poly.c13;
-  obj["c22"] = poly.c22;
-  obj["c30"] = poly.c30;
-  obj["c03"] = poly.c03;
-  obj["c21"] = poly.c21;
-  obj["c12"] = poly.c12;
-  obj["c20"] = poly.c20;
-  obj["c02"] = poly.c02;
-  obj["c11"] = poly.c11;
-  obj["c10"] = poly.c10;
-  obj["c01"] = poly.c01;
-  obj["c00"] = poly.c00;
-
+  poly.writeJson(obj);
   json[getPropertyName()] = obj;
 }
 

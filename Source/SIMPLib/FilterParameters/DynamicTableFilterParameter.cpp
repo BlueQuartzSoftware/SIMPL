@@ -119,66 +119,8 @@ void DynamicTableFilterParameter::readJson(const QJsonObject &json)
   if(!jsonValue.isUndefined() )
   {
     QJsonObject jsonObj = jsonValue.toObject();
-
-    std::vector<std::vector<double> > tableData;
-
-    QJsonArray rowArray;
-    if (jsonObj.contains("Dynamic Table Data") == true)
-    {
-      QJsonObject obj = jsonObj["Dynamic Table Data"].toObject();
-      rowArray = obj["Table Data"].toArray();
-    }
-    else
-    {
-      rowArray = jsonObj["Table Data"].toArray();
-    }
-
-    tableData.resize(rowArray.size());
-
-    for (int row = 0; row < rowArray.size(); row++)
-    {
-      QJsonValue rowObj = rowArray.at(row);
-      if (rowObj.isArray())
-      {
-        QJsonArray colArray = rowObj.toArray();
-        tableData[row].resize(colArray.size());
-
-        for (int col = 0; col < colArray.size(); col++)
-        {
-          QJsonValue colObj = colArray.at(col);
-
-          if (colObj.isDouble())
-          {
-            tableData[row][col] = colObj.toDouble();
-          }
-        }
-      }
-    }
-
-    QStringList rowHeaders;
-    QJsonArray rHeaders = jsonObj["Row Headers"].toArray();
-    foreach(QJsonValue val, rHeaders)
-    {
-      if (val.isString())
-      {
-        rowHeaders.push_back(val.toString());
-      }
-    }
-
-    QStringList columnHeaders;
-    QJsonArray cHeaders = jsonObj["Column Headers"].toArray();
-    foreach(QJsonValue val, cHeaders)
-    {
-      if (val.isString())
-      {
-        columnHeaders.push_back(val.toString());
-      }
-    }
-
     DynamicTableData dynamicData;
-    dynamicData.setTableData(tableData);
-    dynamicData.setRowHeaders(rowHeaders);
-    dynamicData.setColHeaders(columnHeaders);
+    dynamicData.readJson(jsonObj);
     m_SetterCallback(dynamicData);
   }
 }
@@ -190,34 +132,7 @@ void DynamicTableFilterParameter::writeJson(QJsonObject &json)
 {
   DynamicTableData dynamicData = m_GetterCallback();
   QJsonObject jsonObj;
-
-  QJsonArray rows;
-  foreach(std::vector<double> vector, dynamicData.getTableData())
-  {
-    QJsonArray cols;
-    foreach(double val, vector)
-    {
-      cols.push_back(val);
-    }
-    rows.push_back(cols);
-  }
-
-  jsonObj["Table Data"] = rows;
-
-  QJsonArray rHeaders;
-  foreach(QString header, dynamicData.getRowHeaders())
-  {
-    rHeaders.push_back(header);
-  }
-  jsonObj["Row Headers"] = rHeaders;
-
-  QJsonArray cHeaders;
-  foreach(QString header, dynamicData.getColHeaders())
-  {
-    cHeaders.push_back(header);
-  }
-  jsonObj["Column Headers"] = cHeaders;
-
+  dynamicData.writeJson(jsonObj);
   json[getPropertyName()] = jsonObj;
 }
 

@@ -220,6 +220,8 @@ void ArrayCalculator::readFilterParameters(QJsonObject &obj)
   setUnits(static_cast<ArrayCalculator::AngleUnits>(obj["Units"].toInt()));
 }
 
+// FP: Check why these values are not connected to a filter parameter!
+
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------

@@ -85,16 +85,8 @@ void AxisAngleFilterParameter::readJson(const QJsonObject &json)
   if(!jsonValue.isUndefined() )
   {
     QJsonObject axisObj = jsonValue.toObject();
-    float angle = static_cast<float>(axisObj["angle"].toDouble());
-    float h = static_cast<float>(axisObj["h"].toDouble());
-    float k = static_cast<float>(axisObj["k"].toDouble());
-    float l = static_cast<float>(axisObj["l"].toDouble());
-
     AxisAngleInput_t axisAngle;
-    axisAngle.angle = angle;
-    axisAngle.h = h;
-    axisAngle.k = k;
-    axisAngle.l = l;
+    axisAngle.readJson(axisObj);
     m_SetterCallback(axisAngle);
   }
 
@@ -106,13 +98,8 @@ void AxisAngleFilterParameter::readJson(const QJsonObject &json)
 void AxisAngleFilterParameter::writeJson(QJsonObject &json)
 {
   QJsonObject axisObj;
-
   AxisAngleInput_t axisAngle = m_GetterCallback();
-  axisObj["angle"] = axisAngle.angle;
-  axisObj["h"] = axisAngle.h;
-  axisObj["k"] = axisAngle.k;
-  axisObj["l"] = axisAngle.l;
-
+  axisAngle.writeJson(axisObj);
   json[getPropertyName()] = axisObj;
 }
 

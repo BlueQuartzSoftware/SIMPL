@@ -178,7 +178,8 @@ void MultiDataArraySelectionFilterParameter::readJson(const QJsonObject &json)
     for (int i=0; i<arrayObj.size(); i++)
     {
       QJsonObject obj = arrayObj.at(i).toObject();
-      DataArrayPath dap(obj["Data Container Name"].toString(), obj["Attribute Matrix Name"].toString(), obj["Data Array Name"].toString());
+      DataArrayPath dap;
+      dap.readJson(obj);
       dapVec.push_back(dap);
     }
 
@@ -198,11 +199,7 @@ void MultiDataArraySelectionFilterParameter::writeJson(QJsonObject &json)
   {
     DataArrayPath dap = dapVec[i];
     QJsonObject obj;
-
-    obj["Data Container Name"] = dap.getDataContainerName();
-    obj["Attribute Matrix Name"] = dap.getAttributeMatrixName();
-    obj["Data Array Name"] = dap.getDataArrayName();
-
+    dap.writeJson(obj);
     arrayObj.push_back(obj);
   }
 

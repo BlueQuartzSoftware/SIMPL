@@ -158,7 +158,7 @@ class SIMPLib_EXPORT DynamicTableData : public QObject
     * @param data
     * @return QJsonArray
     */
-    QJsonObject writeData() const;
+    void writeData(QJsonObject &object) const;
 
     /**
     * @brief Reads the contents of the QJsonObject into a 2D array

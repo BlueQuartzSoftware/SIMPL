@@ -87,11 +87,7 @@ void FloatVec3FilterParameter::readJson(const QJsonObject &json)
   {
     QJsonObject obj = jsonValue.toObject();
     FloatVec3_t floatVec3;
-
-    floatVec3.x = static_cast<float>(obj["x"].toDouble());
-    floatVec3.y = static_cast<float>(obj["y"].toDouble());
-    floatVec3.z = static_cast<float>(obj["z"].toDouble());
-
+    floatVec3.readJson(obj);
     m_SetterCallback(floatVec3);
   }
 }
@@ -102,13 +98,8 @@ void FloatVec3FilterParameter::readJson(const QJsonObject &json)
 void FloatVec3FilterParameter::writeJson(QJsonObject &json)
 {
   FloatVec3_t floatVec3 = m_GetterCallback();
-
   QJsonObject obj;
-
-  obj["x"] = floatVec3.x;
-  obj["y"] = floatVec3.y;
-  obj["z"] = floatVec3.z;
-
+  floatVec3.writeJson(obj);
   json[getPropertyName()] = obj;
 }
 

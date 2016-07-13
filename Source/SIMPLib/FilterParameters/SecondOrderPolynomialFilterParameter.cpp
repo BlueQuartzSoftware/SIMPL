@@ -87,14 +87,7 @@ void SecondOrderPolynomialFilterParameter::readJson(const QJsonObject &json)
   {
     QJsonObject obj = jsonValue.toObject();
     Float2ndOrderPoly_t poly;
-
-    poly.c20 = static_cast<float>(obj["c20"].toDouble());
-    poly.c02 = static_cast<float>(obj["c02"].toDouble());
-    poly.c11 = static_cast<float>(obj["c11"].toDouble());
-    poly.c10 = static_cast<float>(obj["c10"].toDouble());
-    poly.c01 = static_cast<float>(obj["c01"].toDouble());
-    poly.c00 = static_cast<float>(obj["c00"].toDouble());
-
+    poly.readJson(obj);
     m_SetterCallback(poly);
   }
 }
@@ -106,14 +99,7 @@ void SecondOrderPolynomialFilterParameter::writeJson(QJsonObject &json)
 {
   Float2ndOrderPoly_t poly = m_GetterCallback();
   QJsonObject obj;
-
-  obj["c20"] = poly.c20;
-  obj["c02"] = poly.c02;
-  obj["c11"] = poly.c11;
-  obj["c10"] = poly.c10;
-  obj["c01"] = poly.c01;
-  obj["c00"] = poly.c00;
-
+  poly.writeJson(obj);
   json[getPropertyName()] = obj;
 }
 

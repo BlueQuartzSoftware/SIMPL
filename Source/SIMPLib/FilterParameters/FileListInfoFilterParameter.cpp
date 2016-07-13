@@ -86,16 +86,7 @@ void FileListInfoFilterParameter::readJson(const QJsonObject &json)
   {
     QJsonObject jsonObj = jsonValue.toObject();
     FileListInfo_t fileListInfo;
-
-    fileListInfo.PaddingDigits = static_cast<qint32>(jsonObj["PaddingDigits"].toDouble());
-    fileListInfo.Ordering = static_cast<quint32>(jsonObj["Ordering"].toDouble());
-    fileListInfo.StartIndex = static_cast<qint32>(jsonObj["StartIndex"].toDouble());
-    fileListInfo.EndIndex = static_cast<qint32>(jsonObj["EndIndex"].toDouble());
-    fileListInfo.InputPath = jsonObj["InputPath"].toString();
-    fileListInfo.FilePrefix = jsonObj["FilePrefix"].toString();
-    fileListInfo.FileSuffix = jsonObj["FileSuffix"].toString();
-    fileListInfo.FileExtension = jsonObj["FileExtension"].toString();
-
+    fileListInfo.readJson(jsonObj);
     m_SetterCallback(fileListInfo);
   }
 }
@@ -106,17 +97,8 @@ void FileListInfoFilterParameter::readJson(const QJsonObject &json)
 void FileListInfoFilterParameter::writeJson(QJsonObject &json)
 {
   FileListInfo_t fileListInfo = m_GetterCallback();
-
   QJsonObject jsonObj;
-  jsonObj["PaddingDigits"] = static_cast<double>(fileListInfo.PaddingDigits);
-  jsonObj["Ordering"] = static_cast<double>(fileListInfo.Ordering);
-  jsonObj["StartIndex"] = static_cast<double>(fileListInfo.StartIndex);
-  jsonObj["EndIndex"] = static_cast<double>(fileListInfo.EndIndex);
-  jsonObj["InputPath"] = fileListInfo.InputPath;
-  jsonObj["FilePrefix"] = fileListInfo.FilePrefix;
-  jsonObj["FileSuffix"] = fileListInfo.FileSuffix;
-  jsonObj["FileExtension"] = fileListInfo.FileExtension;
-
+  fileListInfo.writeJson(jsonObj);
   json[getPropertyName()] = jsonObj;
 }
 

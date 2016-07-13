@@ -92,14 +92,8 @@ void ComparisonSelectionFilterParameter::readJson(const QJsonObject &json)
     for (int i=0; i<jsonArray.size(); i++)
     {
       QJsonObject comparisonObj = jsonArray[i].toObject();
-
       ComparisonInput_t input;
-      input.dataContainerName = comparisonObj["Data Container Name"].toString();
-      input.attributeMatrixName = comparisonObj["Attribute Matrix Name"].toString();
-      input.attributeArrayName = comparisonObj["Attribute Array Name"].toString();
-      input.compOperator = comparisonObj["Comparison Operator"].toInt();
-      input.compValue = comparisonObj["Comparison Value"].toDouble();
-
+      input.readJson(comparisonObj);
       inputs.addInput(input);
     }
 
@@ -120,12 +114,7 @@ void ComparisonSelectionFilterParameter::writeJson(QJsonObject &json)
   {
     ComparisonInput_t input = inputs[i];
     QJsonObject obj;
-    obj["Data Container Name"] = input.dataContainerName;
-    obj["Attribute Matrix Name"] = input.attributeMatrixName;
-    obj["Attribute Array Name"] = input.attributeArrayName;
-    obj["Comparison Operator"] = input.compOperator;
-    obj["Comparison Value"] = input.compValue;
-
+    input.writeJson(obj);
     inputsArray.push_back(obj);
   }
 

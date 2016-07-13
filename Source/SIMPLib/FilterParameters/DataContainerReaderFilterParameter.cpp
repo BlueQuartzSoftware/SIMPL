@@ -88,22 +88,8 @@ void DataContainerReaderFilterParameter::readJson(const QJsonObject &json)
   if(!jsonValue.isUndefined() )
   {
     QJsonObject jsonObject = jsonValue.toObject();
-
-    QMap<QString, DataContainerProxy> dataContainers;
-    QJsonArray jsonArray = jsonObject["Data Containers"].toArray();
-    foreach(QJsonValue val, jsonArray)
-    {
-      if (val.isObject())
-      {
-        DataContainerProxy dc;
-        QJsonObject obj = val.toObject();
-        dc.readJson(obj);
-        dataContainers.insert(dc.name, dc);
-      }
-    }
-
     DataContainerArrayProxy proxy;
-    proxy.dataContainers = dataContainers;
+    proxy.readJson(jsonObject);
     m_Filter->setInputFileDataContainerArrayProxy(proxy);
   }
 
@@ -117,18 +103,7 @@ void DataContainerReaderFilterParameter::writeJson(QJsonObject &json)
 {
   DataContainerArrayProxy proxy = m_Filter->getInputFileDataContainerArrayProxy();
   QJsonObject obj;
-  QJsonArray dataContainersArray;
-  QMap<QString, DataContainerProxy> dataContainers = proxy.dataContainers;
-  for (QMap<QString,DataContainerProxy>::iterator iter = dataContainers.begin(); iter != dataContainers.end(); iter++)
-  {
-    QJsonObject dcObj;
-    DataContainerProxy dc = iter.value();
-    dc.writeJson(dcObj);
-    dataContainersArray.push_back(dcObj);
-  }
-
-  obj["Data Containers"] = dataContainersArray;
-
+  proxy.writeJson(obj);
   json[getPropertyName()] = obj;
   json["InputFile"] = m_Filter->getInputFile();
 }
