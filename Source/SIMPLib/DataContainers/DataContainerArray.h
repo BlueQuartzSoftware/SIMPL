@@ -615,6 +615,7 @@ class SIMPLib_EXPORT DataContainerArray : public QObject
         ss = QObject::tr("DataContainerArray::validateNumberOfTuples Error at line %1. The DataArrayPath object was not valid meaning one of the strings in the object is empty. The path is %2").arg(__LINE__).arg(paths.at(0).serialize());
         filter->notifyErrorMessage(filter->getHumanLabel(), ss, filter->getErrorCondition());
         valid = false;
+        return valid;
       }
       IDataArray::Pointer array0 = getPrereqIDataArrayFromPath<IDataArray, Filter>(filter, paths.at(0));
       if (NULL == array0.get() && NULL != filter)
@@ -623,11 +624,10 @@ class SIMPLib_EXPORT DataContainerArray : public QObject
         ss = QObject::tr("DataContainerArray::validateNumberOfTuples Error at line %1. The DataArray object was not available. The path is %2").arg(__LINE__).arg(paths.at(0).serialize());
         filter->notifyErrorMessage(filter->getHumanLabel(), ss, filter->getErrorCondition());
         valid = false;
+        return valid;
       }
-      else
-      {
-        dataArrays.push_back(array0);
-      }
+
+      dataArrays.push_back(array0);
       for (int32_t i = 1; i < paths.size(); i++)
       {
         if (paths.at(i).isValid() == false && NULL != filter)
@@ -636,6 +636,7 @@ class SIMPLib_EXPORT DataContainerArray : public QObject
           ss = QObject::tr("DataContainerArray::validateNumberOfTuples Error at line %1. The DataArrayPath object was not valid meaning one of the strings in the object is empty. The path is %2").arg(__LINE__).arg(paths.at(i).serialize());
           filter->notifyErrorMessage(filter->getHumanLabel(), ss, filter->getErrorCondition());
           valid = false;
+          return valid;
         }
         IDataArray::Pointer nextArray = getPrereqIDataArrayFromPath<IDataArray, Filter>(filter, paths.at(i));
         if (NULL == nextArray.get() && NULL != filter)
@@ -644,11 +645,10 @@ class SIMPLib_EXPORT DataContainerArray : public QObject
           ss = QObject::tr("DataContainerArray::validateNumberOfTuples Error at line %1. The DataArray object was not available. The path is %2").arg(__LINE__).arg(paths.at(i).serialize());
           filter->notifyErrorMessage(filter->getHumanLabel(), ss, filter->getErrorCondition());
           valid = false;
+          return valid;
         }
-        else
-        {
-          dataArrays.push_back(nextArray);
-        }
+
+        dataArrays.push_back(nextArray);
       }
       size_t numTuples = dataArrays[0]->getNumberOfTuples();
       for (int32_t i = 1; i < dataArrays.size(); i++)
