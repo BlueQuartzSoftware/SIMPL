@@ -46,8 +46,6 @@
 #include "SVWidgetsLib/Widgets/SVPipelineViewWidget.h"
 #include "SVWidgetsLib/Widgets/BreakpointFilterWidget.h"
 
-// WORKSPACE: FilterWidgetGeometry & BreakpointFilter
-
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
