@@ -1708,7 +1708,7 @@ void SVPipelineViewWidget::dropEvent(QDropEvent* event)
 
       if (obj.size() > 1)
       {
-        QMessageBox::warning(NULL, "SIMPLView Warning", "SIMPLView currently does not support dragging and dropping multiple bookmarks.", QMessageBox::Ok);
+        QMessageBox::warning(NULL, "Warning", "This application currently does not support dragging and dropping multiple bookmarks.", QMessageBox::Ok);
         event->ignore();
         return;
       }
