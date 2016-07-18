@@ -137,7 +137,11 @@ QWidget* ComparisonSelectionItemDelegate::createEditor(QWidget* widgetParent, co
       featureValueValidator->setLocale(QLocale::system());
       featureValue->setValidator(featureValueValidator);
       QVariant var = index.model()->data(index);
-      featureValue->setText(QString::number(var.toDouble(&ok), 'g', 6));
+      QLocale loc = QLocale::system();
+
+      QString dStr = loc.toString(var.toDouble(&ok));
+      featureValue->setText(dStr);
+
       if (tableModel)
       {
         connect(featureValue, SIGNAL(textChanged(const QString&)),
@@ -223,8 +227,8 @@ void ComparisonSelectionItemDelegate::setModelData(QWidget* editor, QAbstractIte
   {
     QLineEdit* lineEdit = qobject_cast<QLineEdit* > (editor);
     Q_ASSERT(lineEdit);
-    bool ok = false;
-    double v = lineEdit->text().toFloat(&ok);
+    QLocale loc = QLocale::system();
+    double v = loc.toFloat(lineEdit->text());
     model->setData(index, v);
   }
   else if (col == ComparisonSelectionTableModel::FeatureOperator)

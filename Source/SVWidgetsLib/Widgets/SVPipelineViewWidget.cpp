@@ -322,7 +322,7 @@ PipelineFilterObject* SVPipelineViewWidget::filterObjectAt(QVariant value)
 QVariant SVPipelineViewWidget::valueOfFilterWidget(PipelineFilterObject* filterObject)
 {
   SVPipelineFilterWidget* filterWidget = dynamic_cast<SVPipelineFilterWidget*>(filterObject);
-  Q_ASSERT(filterWidget != nullptr);
+  if (filterWidget == nullptr) { return QVariant(); }
 
   return m_FilterWidgetLayout->indexOf(filterWidget);
 }
@@ -366,7 +366,10 @@ void SVPipelineViewWidget::clearFilterWidgets(bool allowUndo)
     for (int i = numFilters - 1; i >= 0; i--)
     {
       SVPipelineFilterWidget* filterWidget = dynamic_cast<SVPipelineFilterWidget*>(m_FilterWidgetLayout->itemAt(i)->widget());
-      new RemoveFilterCommand(filterWidget, this, "Clear", QUuid(), QUuid(), topCmd);
+      if (filterWidget != nullptr)
+      {
+        new RemoveFilterCommand(filterWidget, this, "Clear", QUuid(), QUuid(), topCmd);
+      }
     }
     addUndoCommand(topCmd);
   }
@@ -671,7 +674,7 @@ void SVPipelineViewWidget::addFilterObject(PipelineFilterObject* filterObject, Q
   Q_UNUSED(nextNodeId)
 
   SVPipelineFilterWidget* filterWidget = dynamic_cast<SVPipelineFilterWidget*>(filterObject);
-  Q_ASSERT(filterWidget != nullptr);
+  if (filterWidget == nullptr) { return; }
 
   if (allowUndo == true)
   {
@@ -890,7 +893,7 @@ void SVPipelineViewWidget::startDrag(QMouseEvent* event, SVPipelineFilterWidget*
   for (int i = 0; i < selectedObjects.size(); i++)
   {
     SVPipelineFilterWidget* filterWidget = dynamic_cast<SVPipelineFilterWidget*>(selectedObjects[i]);
-    Q_ASSERT(filterWidget != nullptr);
+    if (filterWidget == nullptr) { continue; }
 
     QPixmap currentPixmap = filterWidget->grab();
     p.drawPixmap(0, offset, currentPixmap);
@@ -1031,7 +1034,7 @@ void SVPipelineViewWidget::preflightPipeline(QUuid id)
 void SVPipelineViewWidget::removeFilterObject(PipelineFilterObject* filterObject, bool allowUndo, bool deleteWidget)
 {
   SVPipelineFilterWidget* filterWidget = dynamic_cast<SVPipelineFilterWidget*>(filterObject);
-  Q_ASSERT(filterWidget != nullptr);
+  if (filterWidget == nullptr) { return; }
 
   if (filterWidget)
   {
@@ -1166,7 +1169,7 @@ void SVPipelineViewWidget::cutFilterWidgets(QList<PipelineFilterObject*> filterW
 void SVPipelineViewWidget::setSelectedFilterObject(PipelineFilterObject* w, Qt::KeyboardModifiers modifiers)
 {
   SVPipelineFilterWidget* filterWidget = dynamic_cast<SVPipelineFilterWidget*>(w);
-  Q_ASSERT(filterWidget != nullptr);
+  if (filterWidget == nullptr) { return; }
 
   if (modifiers == Qt::ShiftModifier)
   {
@@ -1253,7 +1256,10 @@ void SVPipelineViewWidget::clearSelectedFilterObjects()
     else
     {
       SVPipelineFilterWidget* fw = dynamic_cast<SVPipelineFilterWidget*>(m_FilterWidgetLayout->itemAt(i)->widget());
-      fw->setSelected(false);
+      if (fw != nullptr)
+      {
+        fw->setSelected(false);
+      }
     }
   }
 }
@@ -1478,7 +1484,7 @@ void SVPipelineViewWidget::dragMoveEvent(QDragMoveEvent* event)
           {
             PipelineFilterObject* draggedObject = draggedFilterObjects[0];
             SVPipelineFilterWidget* filterWidget = dynamic_cast<SVPipelineFilterWidget*>(draggedObject);
-            Q_ASSERT(filterWidget != nullptr);
+            if (filterWidget == nullptr) { return; }
 
             m_FilterOrigPos = origin->valueOfFilterWidget(filterWidget).toInt();
             m_FilterWidgetLayout->removeWidget(filterWidget);
@@ -1692,7 +1698,7 @@ void SVPipelineViewWidget::dropEvent(QDropEvent* event)
 
       if (obj.size() > 1)
       {
-        QMessageBox::warning(NULL, "SIMPLView Warning", "SIMPLView currently does not support dragging and dropping multiple bookmarks.", QMessageBox::Ok);
+        QMessageBox::warning(NULL, "Warning", "This application currently does not support dragging and dropping multiple bookmarks.", QMessageBox::Ok);
         event->ignore();
         return;
       }
@@ -1858,7 +1864,7 @@ void SVPipelineViewWidget::dragLeaveEvent(QDragLeaveEvent* event)
   if (draggedFilterObjects.size() == 1 && qApp->queryKeyboardModifiers() != Qt::AltModifier)
   {
     SVPipelineFilterWidget* filterWidget = dynamic_cast<SVPipelineFilterWidget*>(draggedFilterObjects[0]);
-    Q_ASSERT(filterWidget != nullptr);
+    if (filterWidget == nullptr) { return; }
 
     m_FilterWidgetLayout->insertWidget(m_FilterOrigPos, filterWidget);
     setSelectedFilterObject(filterWidget, Qt::NoModifier);
@@ -2006,7 +2012,7 @@ QList<PipelineFilterObject*> SVPipelineViewWidget::getSelectedFilterObjects()
     else
     {
       SVPipelineFilterWidget* fw = dynamic_cast<SVPipelineFilterWidget*>(m_FilterWidgetLayout->itemAt(i)->widget());
-      if (fw->isSelected() == true || fw->hasRightClickTarget() == true)
+      if (fw != nullptr && (fw->isSelected() == true || fw->hasRightClickTarget() == true))
       {
         filterObjects.push_back(fw);
       }

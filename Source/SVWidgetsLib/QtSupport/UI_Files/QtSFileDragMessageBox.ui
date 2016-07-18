@@ -56,7 +56,7 @@
         </font>
        </property>
        <property name="text">
-        <string>Would you like to extract the pipeline contained in the file, or add a SIMPLView File Reader filter to the existing pipeline?</string>
+        <string>Would you like to extract the pipeline contained in the file, or add a &quot;Read DREAM.3D File&quot; filter to the existing pipeline?</string>
        </property>
        <property name="alignment">
         <set>Qt::AlignCenter</set>
@@ -133,7 +133,7 @@
        <item>
         <widget class="QRadioButton" name="addFilterRadioBtn">
          <property name="text">
-          <string>Add SIMPLView File Reader Filter</string>
+          <string>Add &quot;Read DREAM.3D File&quot; Filter</string>
          </property>
         </widget>
        </item>
