@@ -56,7 +56,7 @@
 
 #include "SVWidgetsLib/ui_DataArraySelectionWidget.h"
 
-#define DASW_NEW_GUI 1
+#define DASW_NEW_GUI 0
 
 class QSignalMapper;
 
