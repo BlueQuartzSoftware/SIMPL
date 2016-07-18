@@ -932,11 +932,17 @@ class DataArray : public IDataArray
      */
     virtual void printTuple(QTextStream& out, size_t i, char delimiter = ',')
     {
+      int precision = out.realNumberPrecision();
+      T value = 0x00;
+      if (typeid(value) == typeid(float)) { out.setRealNumberPrecision(8); }
+      if (typeid(value) == typeid(double)) { out.setRealNumberPrecision(16);}
+
       for(size_t j = 0; j < m_NumComponents; ++j)
       {
         if (j != 0) { out << delimiter; }
         out << m_Array[i * m_NumComponents + j];
       }
+      out.setRealNumberPrecision(precision);
     }
 
     /**
