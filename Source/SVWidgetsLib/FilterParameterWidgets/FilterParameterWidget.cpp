@@ -34,10 +34,13 @@
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 #include "FilterParameterWidget.h"
 
-#include <QtWidgets/QApplication>
 #include <QtCore/QTimer>
 #include <QtCore/QPropertyAnimation>
+
 #include <QtWidgets/QGraphicsOpacityEffect>
+#include <QtWidgets/QApplication>
+#include <QtWidgets/QMenu>
+#include <QtWidgets/QDesktopWidget>
 
 #include "SIMPLib/Common/AbstractFilter.h"
 #include "SIMPLib/FilterParameters/FilterParameter.h"
@@ -158,6 +161,37 @@ void FilterParameterWidget::fadeInWidget(QWidget* widget)
 void FilterParameterWidget::setupGui()
 {
 
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+QPoint FilterParameterWidget::adjustedMenuPosition(QPushButton* pushButton)
+{
+  QRect rect = pushButton->geometry();
+  rect.setRect(rect.x() - pushButton->x(), rect.y() - pushButton->y(), rect.width(), rect.height());
+
+  QSize menuSize = pushButton->menu()->sizeHint();
+  QPoint globalPos = mapToGlobal(rect.topLeft());
+  int x = globalPos.x();
+  int y = globalPos.y();
+
+  x = QCursor::pos().x();
+
+  if (globalPos.y() + rect.height() + menuSize.height() <= QApplication::desktop()->availableGeometry(this).height())
+  {
+    y += rect.height();
+  }
+  else
+  {
+    y -= menuSize.height();
+  }
+  if (pushButton->layoutDirection() == Qt::RightToLeft)
+  {
+    x += rect.width() - menuSize.width();
+  }
+
+  return QPoint(x,y);
 }
 
 // -----------------------------------------------------------------------------

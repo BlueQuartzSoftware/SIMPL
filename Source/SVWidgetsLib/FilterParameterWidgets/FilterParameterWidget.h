@@ -41,7 +41,7 @@
 #include <QtCore/QObject>
 #include <QtCore/QPointer>
 
-
+#include <QtWidgets/QPushButton>
 #include <QtWidgets/QWidget>
 #include <QtWidgets/QFrame>
 
@@ -92,6 +92,9 @@ class SVWidgetsLib_EXPORT FilterParameterWidget : public QFrame
 
     void fadeWidget(QWidget* widget, bool in);
     void animationFinished();
+
+  protected:
+    QPoint adjustedMenuPosition(QPushButton* pushButton);
 
   protected slots:
     void showBorder();

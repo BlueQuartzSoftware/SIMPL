@@ -44,7 +44,7 @@
 #include <QtWidgets/QListWidgetItem>
 #include <QtWidgets/QMenu>
 #include <QtWidgets/QAction>
-
+#include <QtWidgets/QDesktopWidget>
 
 #include "SIMPLib/Common/AbstractFilter.h"
 #include "SIMPLib/FilterParameters/FilterParameter.h"
@@ -196,13 +196,13 @@ void DataArraySelectionWidget::createSelectionMenu()
   DataContainerArray::Pointer dca = getFilter()->getDataContainerArray();
   if(NULL == dca.get()) { return; }
 
-
   // Get the menu and clear it out
   QMenu* menu = m_SelectedDataArrayPath->menu();
   if(!menu)
   {
     menu = new QMenu();
     m_SelectedDataArrayPath->setMenu(menu);
+    menu->installEventFilter(this);
   }
   if(menu) {
     menu->clear();
@@ -283,6 +283,20 @@ void DataArraySelectionWidget::createSelectionMenu()
       }
     }
   }
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+bool DataArraySelectionWidget::eventFilter(QObject* obj, QEvent* event)
+{
+  if (event->type() == QEvent::Show && obj == m_SelectedDataArrayPath->menu())
+  {
+    QPoint pos = adjustedMenuPosition(m_SelectedDataArrayPath);
+    m_SelectedDataArrayPath->menu()->move(pos);
+    return true;
+  }
+  return false;
 }
 
 // -----------------------------------------------------------------------------
