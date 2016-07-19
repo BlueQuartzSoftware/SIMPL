@@ -172,7 +172,7 @@ void MultiDataArraySelectionWidget::populateComboBoxes()
   m_DcaProxy = DataContainerArrayProxy(dca.get());
 
   // Populate the DataContainer ComboBox
-  FilterPararameterWidgetUtils::PopulateDataContainerComboBox<MultiDataArraySelectionFilterParameter>(getFilter(), getFilterParameter(), dataContainerCombo, m_DcaProxy);
+  FilterParameterWidgetUtils::PopulateDataContainerComboBox<MultiDataArraySelectionFilterParameter>(getFilter(), getFilterParameter(), dataContainerCombo, m_DcaProxy);
 
 
   // Get what is in the filter
@@ -227,7 +227,7 @@ void MultiDataArraySelectionWidget::populateComboBoxes()
   int dcIndex = dataContainerCombo->findText(dcName);
   dataContainerCombo->setCurrentIndex(dcIndex);
 
-  FilterPararameterWidgetUtils::PopulateAttributeMatrixComboBox<MultiDataArraySelectionFilterParameter>(getFilter(), getFilterParameter(), dataContainerCombo, attributeMatrixCombo, m_DcaProxy);
+  FilterParameterWidgetUtils::PopulateAttributeMatrixComboBox<MultiDataArraySelectionFilterParameter>(getFilter(), getFilterParameter(), dataContainerCombo, attributeMatrixCombo, m_DcaProxy);
 
   if (didBlock) { dataContainerCombo->blockSignals(false); didBlock = false; }
 
@@ -243,7 +243,7 @@ void MultiDataArraySelectionWidget::populateComboBoxes()
   {
     int amIndex = attributeMatrixCombo->findText(amName);
     attributeMatrixCombo->setCurrentIndex(amIndex);
-    FilterPararameterWidgetUtils::PopulateAttributeArrayList<MultiDataArraySelectionFilterParameter, QListWidget>
+    FilterParameterWidgetUtils::PopulateAttributeArrayList<MultiDataArraySelectionFilterParameter, QListWidget>
             (getFilter(), getFilterParameter(), dataContainerCombo, attributeMatrixCombo, attributeArraysSelectWidget, m_DcaProxy, selectedPaths);
     for (int i = 0; i < selectedPaths.size(); i++)
     {
@@ -286,7 +286,7 @@ QString MultiDataArraySelectionWidget::checkStringValues(QString curDcName, QStr
 // -----------------------------------------------------------------------------
 void MultiDataArraySelectionWidget::on_dataContainerCombo_currentIndexChanged(int index)
 {
-  FilterPararameterWidgetUtils::PopulateAttributeMatrixComboBox<MultiDataArraySelectionFilterParameter>(getFilter(), getFilterParameter(), dataContainerCombo, attributeMatrixCombo, m_DcaProxy);
+  FilterParameterWidgetUtils::PopulateAttributeMatrixComboBox<MultiDataArraySelectionFilterParameter>(getFilter(), getFilterParameter(), dataContainerCombo, attributeMatrixCombo, m_DcaProxy);
 
   // Do not select an attribute matrix from the list
   if (attributeMatrixCombo->count() > 0)
@@ -302,7 +302,7 @@ void MultiDataArraySelectionWidget::on_attributeMatrixCombo_currentIndexChanged(
 {
   QVector<DataArrayPath> selectedPaths = getFilter()->property(PROPERTY_NAME_AS_CHAR).value<QVector<DataArrayPath> >();
 
-  FilterPararameterWidgetUtils::PopulateAttributeArrayList<MultiDataArraySelectionFilterParameter, QListWidget>
+  FilterParameterWidgetUtils::PopulateAttributeArrayList<MultiDataArraySelectionFilterParameter, QListWidget>
           (getFilter(), getFilterParameter(), dataContainerCombo, attributeMatrixCombo, attributeArraysSelectWidget, m_DcaProxy, selectedPaths);
 
   updateSelectAllCheckbox();

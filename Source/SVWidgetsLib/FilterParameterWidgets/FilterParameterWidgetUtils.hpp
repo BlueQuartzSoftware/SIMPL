@@ -17,11 +17,11 @@
 
 
 /**
- * @brief The FilterPararameterWidgetUtils class implements some common methods that
+ * @brief The FilterParameterWidgetUtils class implements some common methods that
  * can be used by widgets that present QComboBoxes populated with DataContainers,
  * AttributeMatrices or DataArrays.
  */
-class FilterPararameterWidgetUtils
+class FilterParameterWidgetUtils
 {
   public:
 
@@ -321,7 +321,7 @@ class FilterPararameterWidgetUtils
 
 
   protected:
-    FilterPararameterWidgetUtils() {}
+    FilterParameterWidgetUtils() {}
 
   private:
 
