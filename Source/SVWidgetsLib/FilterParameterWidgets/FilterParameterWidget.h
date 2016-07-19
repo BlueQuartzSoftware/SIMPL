@@ -54,7 +54,6 @@
 #include "SVWidgetsLib/SVWidgetsLib.h"
 #include "SVWidgetsLib/FilterParameterWidgets/FilterParameterWidget.h"
 
-
 class AbstractFilter;
 class FilterParameter;
 class QPropertyAnimation;

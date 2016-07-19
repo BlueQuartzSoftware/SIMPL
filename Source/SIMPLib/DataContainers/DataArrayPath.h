@@ -132,11 +132,18 @@ class SIMPLib_EXPORT DataArrayPath : public QObject
     bool operator==(const DataArrayPath& rhs);
 
     /**
-     * @brief serialize Returns the path using the '|' charater by default. This can be over ridden by the programmer
+     * @brief serializeDataArrayPath Returns the path using the '|' charater by default. This can be over ridden by the programmer
      * @param delimiter
      * @return
      */
-    QString serialize(QString delimiter = "|") const;
+    QString serializeDataArrayPath(QString delimiter = "|") const;
+
+    /**
+     * @brief serializeAttributeMatrixPath Returns the path using the '|' charater by default. This can be over ridden by the programmer
+     * @param delimiter
+     * @return
+     */
+    QString serializeAttributeMatrixPath(QString delimiter = "|") const;
 
     /**
      * @brief getAsVector Returns the DataArrayPath represented as a QVector<String> where index[0] = DataContainer Name,

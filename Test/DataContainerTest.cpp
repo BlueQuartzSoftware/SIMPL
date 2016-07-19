@@ -636,7 +636,7 @@ class DataContainerTest
 
       dap0 = dap3;
 
-      QString serialize = dap1.serialize();
+      QString serialize = dap1.serializeDataArrayPath();
       QStringList strList = dap2.toQStringList();
 
       QVector<QString> strVec = dap0.toQVector();

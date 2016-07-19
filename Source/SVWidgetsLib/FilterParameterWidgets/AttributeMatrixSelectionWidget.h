@@ -53,6 +53,7 @@
 
 #include "SVWidgetsLib/ui_AttributeMatrixSelectionWidget.h"
 
+class QSignalMapper;
 
 /**
 * @brief
@@ -93,23 +94,20 @@ class SVWidgetsLib_EXPORT AttributeMatrixSelectionWidget : public FilterParamete
      */
     QString checkStringValues(QString current, QString filtDcName);
 
+    bool eventFilter(QObject* obj, QEvent* event) override;
 
   public slots:
     void beforePreflight();
     void afterPreflight();
     void filterNeedsInputParameters(AbstractFilter* filter);
 
-    void on_dataContainerCombo_currentIndexChanged(int index);
-
-    void on_attributeMatrixCombo_currentIndexChanged(int index);
-
+    void attributeMatrixSelected(QString path);
 
   protected:
-    void populateComboBoxes();
-
-    DataContainerArrayProxy generateDCAProxy();
-    void setSelectedPath(QString dcName, QString attrMatName, QString attrArrName);
-    void selectDefaultPath();
+    /**
+     * @brief createSelectionMenu
+     */
+    void createSelectionMenu();
 
   signals:
     void errorSettingFilterParameter(const QString& msg);
@@ -119,7 +117,9 @@ class SVWidgetsLib_EXPORT AttributeMatrixSelectionWidget : public FilterParamete
 
     bool m_DidCausePreflight;
 
-    DataContainerArrayProxy m_DcaProxy;
+    QSignalMapper*  m_MenuMapper;
+
+    DataArrayPath  m_DefaultPath;
 
     AttributeMatrixSelectionFilterParameter*  m_FilterParameter;
 

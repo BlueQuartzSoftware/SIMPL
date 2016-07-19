@@ -302,7 +302,7 @@ void CopyFeatureArrayToElementArray::execute()
   }
   else
   {
-    QString ss = QObject::tr("The selected array was of unsupported type. The path is %1").arg(m_SelectedFeatureArrayPath.serialize());
+    QString ss = QObject::tr("The selected array was of unsupported type. The path is %1").arg(m_SelectedFeatureArrayPath.serializeDataArrayPath());
     setErrorCondition(-14000);
     notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
   }

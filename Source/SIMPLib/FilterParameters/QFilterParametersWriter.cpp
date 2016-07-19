@@ -848,7 +848,7 @@ int QFilterParametersWriter::writeValue(const QString name, const DataContainerA
 int QFilterParametersWriter::writeValue(const QString name, const DataArrayPath& v)
 {
   int err = 0;
-  QString value = v.serialize();
+  QString value = v.serializeDataArrayPath();
   m_Prefs->setValue(name, value );
   return err;
 }
@@ -864,7 +864,7 @@ int QFilterParametersWriter::writeValue(const QString name, const QVector<DataAr
   for (int i = 0; i < v.size(); ++i)
   {
     m_Prefs->setArrayIndex(i);
-    m_Prefs->setValue(SIMPL::IO::DAPSettingsHeader, v.at(i).serialize("|"));
+    m_Prefs->setValue(SIMPL::IO::DAPSettingsHeader, v.at(i).serializeDataArrayPath("|"));
   }
   m_Prefs->endArray();
 
