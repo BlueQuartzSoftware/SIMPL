@@ -156,7 +156,7 @@ void AttributeMatrixSelectionWidget::populateComboBoxes()
   m_DcaProxy = DataContainerArrayProxy(dca.get());
 
   // Populate the DataContainer ComboBox
-  FilterPararameterWidgetUtils::PopulateDataContainerComboBox<AttributeMatrixSelectionFilterParameter>(getFilter(), getFilterParameter(), dataContainerCombo, m_DcaProxy);
+  FilterParameterWidgetUtils::PopulateDataContainerComboBox<AttributeMatrixSelectionFilterParameter>(getFilter(), getFilterParameter(), dataContainerCombo, m_DcaProxy);
 
 
 
@@ -201,7 +201,7 @@ void AttributeMatrixSelectionWidget::populateComboBoxes()
   int dcIndex = dataContainerCombo->findText(dcName);
 
   dataContainerCombo->setCurrentIndex(dcIndex);
-  FilterPararameterWidgetUtils::PopulateAttributeMatrixComboBox<AttributeMatrixSelectionFilterParameter>(getFilter(), getFilterParameter(), dataContainerCombo, attributeMatrixCombo, m_DcaProxy);
+  FilterParameterWidgetUtils::PopulateAttributeMatrixComboBox<AttributeMatrixSelectionFilterParameter>(getFilter(), getFilterParameter(), dataContainerCombo, attributeMatrixCombo, m_DcaProxy);
 
   if(didBlock) { dataContainerCombo->blockSignals(false); didBlock = false; }
 
@@ -293,7 +293,7 @@ void AttributeMatrixSelectionWidget::setSelectedPath(QString dcName, QString att
 // -----------------------------------------------------------------------------
 void AttributeMatrixSelectionWidget::on_dataContainerCombo_currentIndexChanged(int index)
 {
-  FilterPararameterWidgetUtils::PopulateAttributeMatrixComboBox<AttributeMatrixSelectionFilterParameter>(getFilter(), getFilterParameter(), dataContainerCombo, attributeMatrixCombo, m_DcaProxy);
+  FilterParameterWidgetUtils::PopulateAttributeMatrixComboBox<AttributeMatrixSelectionFilterParameter>(getFilter(), getFilterParameter(), dataContainerCombo, attributeMatrixCombo, m_DcaProxy);
 
   // Do not select an attribute matrix from the list
   if (attributeMatrixCombo->count() > 0)

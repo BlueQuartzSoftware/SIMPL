@@ -169,7 +169,7 @@ void DataArrayCreationWidget::populateComboBoxes()
   m_DcaProxy = DataContainerArrayProxy(dca.get());
 
   // Populate the DataContainer ComboBox
-  FilterPararameterWidgetUtils::PopulateDataContainerComboBox<DataArrayCreationFilterParameter>(getFilter(), getFilterParameter(), dataContainerCombo, m_DcaProxy);
+  FilterParameterWidgetUtils::PopulateDataContainerComboBox<DataArrayCreationFilterParameter>(getFilter(), getFilterParameter(), dataContainerCombo, m_DcaProxy);
 
   // Grab what is currently selected
   QString curDcName = dataContainerCombo->currentText();
@@ -206,7 +206,7 @@ void DataArrayCreationWidget::populateComboBoxes()
 
   int dcIndex = dataContainerCombo->findText(dcName);
   dataContainerCombo->setCurrentIndex(dcIndex);
-  FilterPararameterWidgetUtils::PopulateAttributeMatrixComboBox<DataArrayCreationFilterParameter>(getFilter(), getFilterParameter(), dataContainerCombo, attributeMatrixCombo, m_DcaProxy);
+  FilterParameterWidgetUtils::PopulateAttributeMatrixComboBox<DataArrayCreationFilterParameter>(getFilter(), getFilterParameter(), dataContainerCombo, attributeMatrixCombo, m_DcaProxy);
 
   if(didBlock) { dataContainerCombo->blockSignals(false); didBlock = false; }
 
@@ -255,7 +255,7 @@ QString DataArrayCreationWidget::checkStringValues(QString curDcName, QString fi
 // -----------------------------------------------------------------------------
 void DataArrayCreationWidget::on_dataContainerCombo_currentIndexChanged(int index)
 {
-  FilterPararameterWidgetUtils::PopulateAttributeMatrixComboBox<DataArrayCreationFilterParameter>(getFilter(), getFilterParameter(), dataContainerCombo, attributeMatrixCombo, m_DcaProxy);
+  FilterParameterWidgetUtils::PopulateAttributeMatrixComboBox<DataArrayCreationFilterParameter>(getFilter(), getFilterParameter(), dataContainerCombo, attributeMatrixCombo, m_DcaProxy);
 
   // Do not select an attribute matrix from the list
   if (attributeMatrixCombo->count() > 0)

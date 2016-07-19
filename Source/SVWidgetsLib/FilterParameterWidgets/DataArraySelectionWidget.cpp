@@ -339,7 +339,7 @@ void DataArraySelectionWidget::populateComboBoxes()
   m_DcaProxy = DataContainerArrayProxy(dca.get());
 
   // Populate the DataContainer ComboBox
-  FilterPararameterWidgetUtils::PopulateDataContainerComboBox<DataArraySelectionFilterParameter>(getFilter(), getFilterParameter(), dataContainerCombo, m_DcaProxy);
+  FilterParameterWidgetUtils::PopulateDataContainerComboBox<DataArraySelectionFilterParameter>(getFilter(), getFilterParameter(), dataContainerCombo, m_DcaProxy);
 
   // Get what is in the filter
   DataArrayPath selectedPath = getFilter()->property(PROPERTY_NAME_AS_CHAR).value<DataArrayPath>();
@@ -386,7 +386,7 @@ void DataArraySelectionWidget::populateComboBoxes()
   int dcIndex = dataContainerCombo->findText(dcName);
   dataContainerCombo->setCurrentIndex(dcIndex);
 
-  FilterPararameterWidgetUtils::PopulateAttributeMatrixComboBox<DataArraySelectionFilterParameter>(getFilter(), getFilterParameter(), dataContainerCombo, attributeMatrixCombo, m_DcaProxy);
+  FilterParameterWidgetUtils::PopulateAttributeMatrixComboBox<DataArraySelectionFilterParameter>(getFilter(), getFilterParameter(), dataContainerCombo, attributeMatrixCombo, m_DcaProxy);
 
   if(didBlock) { dataContainerCombo->blockSignals(false); didBlock = false; }
   if(!attributeMatrixCombo->signalsBlocked()) { didBlock = true; }
@@ -402,7 +402,7 @@ void DataArraySelectionWidget::populateComboBoxes()
   {
     amIndex = attributeMatrixCombo->findText(amName);
     attributeMatrixCombo->setCurrentIndex(amIndex);
-    FilterPararameterWidgetUtils::PopulateAttributeArrayComboBox<DataArraySelectionFilterParameter>(getFilter(), getFilterParameter(), dataContainerCombo, attributeMatrixCombo, attributeArrayCombo, m_DcaProxy);
+    FilterParameterWidgetUtils::PopulateAttributeArrayComboBox<DataArraySelectionFilterParameter>(getFilter(), getFilterParameter(), dataContainerCombo, attributeMatrixCombo, attributeArrayCombo, m_DcaProxy);
   }
 
   if(didBlock) { attributeMatrixCombo->blockSignals(false); didBlock = false; }
@@ -450,7 +450,7 @@ void DataArraySelectionWidget::populateComboBoxes()
 // -----------------------------------------------------------------------------
 void DataArraySelectionWidget::on_dataContainerCombo_currentIndexChanged(int index)
 {
-  FilterPararameterWidgetUtils::PopulateAttributeMatrixComboBox<DataArraySelectionFilterParameter>(getFilter(), getFilterParameter(), dataContainerCombo, attributeMatrixCombo, m_DcaProxy);
+  FilterParameterWidgetUtils::PopulateAttributeMatrixComboBox<DataArraySelectionFilterParameter>(getFilter(), getFilterParameter(), dataContainerCombo, attributeMatrixCombo, m_DcaProxy);
 
   // Do not select an attribute matrix from the list
   if (attributeMatrixCombo->count() > 0)
@@ -465,7 +465,7 @@ void DataArraySelectionWidget::on_dataContainerCombo_currentIndexChanged(int ind
 // -----------------------------------------------------------------------------
 void DataArraySelectionWidget::on_attributeMatrixCombo_currentIndexChanged(int index)
 {
-  FilterPararameterWidgetUtils::PopulateAttributeArrayComboBox<DataArraySelectionFilterParameter>(getFilter(), getFilterParameter(), dataContainerCombo, attributeMatrixCombo, attributeArrayCombo, m_DcaProxy);
+  FilterParameterWidgetUtils::PopulateAttributeArrayComboBox<DataArraySelectionFilterParameter>(getFilter(), getFilterParameter(), dataContainerCombo, attributeMatrixCombo, attributeArrayCombo, m_DcaProxy);
 
   // Do not select an attribute array from the list
   if (attributeArrayCombo->count() > 0)
