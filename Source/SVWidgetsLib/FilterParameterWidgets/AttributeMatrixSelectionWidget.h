@@ -84,7 +84,7 @@ class SVWidgetsLib_EXPORT AttributeMatrixSelectionWidget : public FilterParamete
     /**
     * @brief This method does additional GUI widget connections
     */
-    void setupGui();
+    void setupGui() override;
 
     /**
      * @brief checkStringValues

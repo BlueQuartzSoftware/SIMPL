@@ -155,7 +155,7 @@ void DataContainerSelectionWidget::populateComboBoxes()
   m_DcaProxy = DataContainerArrayProxy(dca.get());
 
   // Populate the DataContainer ComboBox
-  FilterPararameterWidgetUtils::PopulateDataContainerComboBox<DataContainerSelectionFilterParameter>(getFilter(), getFilterParameter(), dataContainerCombo, m_DcaProxy);
+  FilterParameterWidgetUtils::PopulateDataContainerComboBox<DataContainerSelectionFilterParameter>(getFilter(), getFilterParameter(), dataContainerCombo, m_DcaProxy);
 
   // Grab what is currently selected
   QString curDcName = dataContainerCombo->currentText();

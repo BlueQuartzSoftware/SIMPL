@@ -39,6 +39,7 @@
 #include "SVWidgetsLib/Core/SVWidgetsLibConstants.h"
 
 #include "FilterParameterWidgetsDialogs.h"
+#include "FilterParameterWidgetUtils.hpp"
 
 // Include the MOC generated file for this class
 #include "moc_ComparisonSelectionWidget.cpp"
@@ -214,25 +215,16 @@ void ComparisonSelectionWidget::populateComboBoxes()
   // Check to see if we have any DataContainers to actually populate drop downs with.
   if(dca->getDataContainers().size() == 0)
   {
+    dataContainerCombo->clear();
+    attributeMatrixCombo->clear();
     return;
   }
+
   // Cache the DataContainerArray Structure for our use during all the selections
   m_DcaProxy = DataContainerArrayProxy(dca.get());
 
   // Populate the DataContainerArray Combo Box with all the DataContainers
-  QList<DataContainerProxy> dcList = m_DcaProxy.dataContainers.values();
-  QListIterator<DataContainerProxy> iter(dcList);
-
-  while(iter.hasNext() )
-  {
-    DataContainerProxy dc = iter.next();
-    if(dataContainerCombo->findText(dc.name) == -1 )
-    {
-      int index = dataContainerCombo->currentIndex();
-      dataContainerCombo->addItem(dc.name);
-      dataContainerCombo->setCurrentIndex(index);
-    }
-  }
+  FilterParameterWidgetUtils::PopulateDataContainerComboBox<ComparisonSelectionFilterParameter>(getFilter(), getFilterParameter(), dataContainerCombo, m_DcaProxy);
 
   // Grab what is currently selected
   QString curDcName = dataContainerCombo->currentText();
@@ -270,7 +262,7 @@ void ComparisonSelectionWidget::populateComboBoxes()
   int dcIndex = dataContainerCombo->findText(dcName);
 
   dataContainerCombo->setCurrentIndex(dcIndex);
-  populateAttributeMatrixList();
+  FilterParameterWidgetUtils::PopulateAttributeMatrixComboBox<ComparisonSelectionFilterParameter>(getFilter(), getFilterParameter(), dataContainerCombo, attributeMatrixCombo, m_DcaProxy);
 
   if(didBlock) { dataContainerCombo->blockSignals(false); didBlock = false; }
 

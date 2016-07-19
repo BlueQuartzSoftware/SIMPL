@@ -55,6 +55,9 @@ class SIMPLib_EXPORT ComparisonSelectionFilterParameter : public FilterParameter
     SIMPL_INSTANCE_PROPERTY(QVector<QString>, Choices)
     SIMPL_INSTANCE_PROPERTY(bool, ShowOperators)
 
+    SIMPL_INSTANCE_PROPERTY(QVector<unsigned int>, DefaultGeometryTypes)
+    SIMPL_INSTANCE_PROPERTY(QVector<unsigned int>, DefaultAttributeMatrixTypes)
+
     /**
    * @brief getWidgetType Returns the type of widget that displays and controls
    * this FilterParameter subclass
