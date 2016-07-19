@@ -53,9 +53,8 @@ ChoiceFilterParameter::~ChoiceFilterParameter()
 //
 // -----------------------------------------------------------------------------
 ChoiceFilterParameter::Pointer ChoiceFilterParameter::New(const QString& humanLabel, const QString& propertyName, const int& defaultValue,
-                                                          QVector<QString> choices,
-                                                          bool editable,
-                                                          Category category, int groupIndex)
+                                                          QVector<QString> choices, bool editable, Category category, SetterCallbackType setterCallback,
+                                                          GetterCallbackType getterCallback, int groupIndex)
 
 {
   ChoiceFilterParameter::Pointer ptr = ChoiceFilterParameter::New();
@@ -66,7 +65,8 @@ ChoiceFilterParameter::Pointer ChoiceFilterParameter::New(const QString& humanLa
   ptr->setChoices(choices);
   ptr->setEditable(editable);
   ptr->setGroupIndex(groupIndex);
-
+  ptr->setSetterCallback(setterCallback);
+  ptr->setGetterCallback(getterCallback);
 
   return ptr;
 }
@@ -77,5 +77,25 @@ ChoiceFilterParameter::Pointer ChoiceFilterParameter::New(const QString& humanLa
 QString ChoiceFilterParameter::getWidgetType()
 {
   return QString("ChoiceWidget");
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void ChoiceFilterParameter::readJson(const QJsonObject &json)
+{
+  QJsonValue jsonValue = json[getPropertyName()];
+  if(!jsonValue.isUndefined() )
+  {
+    m_SetterCallback(jsonValue.toInt(0.0));
+  }
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void ChoiceFilterParameter::writeJson(QJsonObject &json)
+{
+  json[getPropertyName()] = m_GetterCallback();
 }
 

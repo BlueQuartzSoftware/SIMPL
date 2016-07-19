@@ -56,7 +56,7 @@ DataContainerReaderFilterParameter::~DataContainerReaderFilterParameter()
 //
 // -----------------------------------------------------------------------------
 DataContainerReaderFilterParameter::Pointer DataContainerReaderFilterParameter::New(const QString& humanLabel, const QString& propertyName,
-    const QString& defaultValue, Category category, int groupIndex)
+    const QString& defaultValue, Category category, DataContainerReader* filter, int groupIndex)
 {
   DataContainerReaderFilterParameter::Pointer ptr = DataContainerReaderFilterParameter::New();
   ptr->setHumanLabel(humanLabel);
@@ -66,10 +66,10 @@ DataContainerReaderFilterParameter::Pointer DataContainerReaderFilterParameter::
   ptr->setGroupIndex(groupIndex);
   ptr->setFileExtension(".dream3d");
   ptr->setFileType("");
+  ptr->setFilter(filter);
 
   return ptr;
 }
-
 
 // -----------------------------------------------------------------------------
 //
@@ -77,5 +77,34 @@ DataContainerReaderFilterParameter::Pointer DataContainerReaderFilterParameter::
 QString DataContainerReaderFilterParameter::getWidgetType()
 {
   return QString("DataContainerReaderWidget");
+}
+
+// -----------------------------------------------------------------------------
+// THIS IS A SPECIAL CASE AND IS NOT STANDARD.  DO NOT COPY THIS CODE.
+// -----------------------------------------------------------------------------
+void DataContainerReaderFilterParameter::readJson(const QJsonObject &json)
+{
+  QJsonValue jsonValue = json[getPropertyName()];
+  if(!jsonValue.isUndefined() )
+  {
+    QJsonObject jsonObject = jsonValue.toObject();
+    DataContainerArrayProxy proxy;
+    proxy.readJson(jsonObject);
+    m_Filter->setInputFileDataContainerArrayProxy(proxy);
+  }
+
+  m_Filter->setInputFile(json["InputFile"].toString());
+}
+
+// -----------------------------------------------------------------------------
+// THIS IS A SPECIAL CASE AND IS NOT STANDARD.  DO NOT COPY THIS CODE.
+// -----------------------------------------------------------------------------
+void DataContainerReaderFilterParameter::writeJson(QJsonObject &json)
+{
+  DataContainerArrayProxy proxy = m_Filter->getInputFileDataContainerArrayProxy();
+  QJsonObject obj;
+  proxy.writeJson(obj);
+  json[getPropertyName()] = obj;
+  json["InputFile"] = m_Filter->getInputFile();
 }
 

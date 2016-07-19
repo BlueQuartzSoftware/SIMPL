@@ -52,7 +52,7 @@ FloatVec3FilterParameter::~FloatVec3FilterParameter()
 //
 // -----------------------------------------------------------------------------
 FloatVec3FilterParameter::Pointer FloatVec3FilterParameter::New(const QString& humanLabel, const QString& propertyName,
-  const FloatVec3_t& defaultValue, Category category, int groupIndex)
+  const FloatVec3_t& defaultValue, Category category, SetterCallbackType setterCallback, GetterCallbackType getterCallback, int groupIndex)
 {
 
   FloatVec3FilterParameter::Pointer ptr = FloatVec3FilterParameter::New();
@@ -63,6 +63,8 @@ FloatVec3FilterParameter::Pointer FloatVec3FilterParameter::New(const QString& h
   ptr->setDefaultValue(v);
   ptr->setCategory(category);
   ptr->setGroupIndex(groupIndex);
+  ptr->setSetterCallback(setterCallback);
+  ptr->setGetterCallback(getterCallback);
 
   return ptr;
 }
@@ -73,5 +75,31 @@ FloatVec3FilterParameter::Pointer FloatVec3FilterParameter::New(const QString& h
 QString FloatVec3FilterParameter::getWidgetType()
 {
   return QString("FloatVec3Widget");
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void FloatVec3FilterParameter::readJson(const QJsonObject &json)
+{
+  QJsonValue jsonValue = json[getPropertyName()];
+  if(!jsonValue.isUndefined() )
+  {
+    QJsonObject obj = jsonValue.toObject();
+    FloatVec3_t floatVec3;
+    floatVec3.readJson(obj);
+    m_SetterCallback(floatVec3);
+  }
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void FloatVec3FilterParameter::writeJson(QJsonObject &json)
+{
+  FloatVec3_t floatVec3 = m_GetterCallback();
+  QJsonObject obj;
+  floatVec3.writeJson(obj);
+  json[getPropertyName()] = obj;
 }
 

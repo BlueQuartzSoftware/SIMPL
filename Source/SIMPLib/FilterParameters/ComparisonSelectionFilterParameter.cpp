@@ -35,6 +35,8 @@
 
 #include "ComparisonSelectionFilterParameter.h"
 
+#include <QtCore/QJsonArray>
+
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
@@ -51,7 +53,8 @@ ComparisonSelectionFilterParameter::~ComparisonSelectionFilterParameter()
 //
 // -----------------------------------------------------------------------------
 ComparisonSelectionFilterParameter::Pointer ComparisonSelectionFilterParameter::New(const QString& humanLabel, const QString& propertyName,
-  const QString& defaultValue, QVector<QString> choices, bool showOperators, Category category, int groupIndex)
+  const QString& defaultValue, QVector<QString> choices, bool showOperators, Category category, SetterCallbackType setterCallback,
+                                                                                    GetterCallbackType getterCallback, int groupIndex)
 {
   ComparisonSelectionFilterParameter::Pointer ptr = ComparisonSelectionFilterParameter::New();
   ptr->setHumanLabel(humanLabel);
@@ -61,6 +64,8 @@ ComparisonSelectionFilterParameter::Pointer ComparisonSelectionFilterParameter::
   ptr->setChoices(choices);
   ptr->setShowOperators(showOperators);
   ptr->setGroupIndex(groupIndex);
+  ptr->setSetterCallback(setterCallback);
+  ptr->setGetterCallback(getterCallback);
 
   return ptr;
 }
@@ -71,5 +76,48 @@ ComparisonSelectionFilterParameter::Pointer ComparisonSelectionFilterParameter::
 QString ComparisonSelectionFilterParameter::getWidgetType()
 {
   return QString("ComparisonSelectionWidget");
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void ComparisonSelectionFilterParameter::readJson(const QJsonObject &json)
+{
+  QJsonValue jsonValue = json[getPropertyName()];
+  if(!jsonValue.isUndefined() )
+  {
+    QJsonArray jsonArray = jsonValue.toArray();
+
+    ComparisonInputs inputs;
+    for (int i=0; i<jsonArray.size(); i++)
+    {
+      QJsonObject comparisonObj = jsonArray[i].toObject();
+      ComparisonInput_t input;
+      input.readJson(comparisonObj);
+      inputs.addInput(input);
+    }
+
+    m_SetterCallback(inputs);
+  }
+
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void ComparisonSelectionFilterParameter::writeJson(QJsonObject &json)
+{
+  QJsonArray inputsArray;
+
+  ComparisonInputs inputs = m_GetterCallback();
+  for (int i=0; i<inputs.size(); i++)
+  {
+    ComparisonInput_t input = inputs[i];
+    QJsonObject obj;
+    input.writeJson(obj);
+    inputsArray.push_back(obj);
+  }
+
+  json[getPropertyName()] = inputsArray;
 }
 

@@ -52,8 +52,8 @@ OutputPathFilterParameter::~OutputPathFilterParameter()
 //
 // -----------------------------------------------------------------------------
 OutputPathFilterParameter::Pointer OutputPathFilterParameter::New(const QString& humanLabel, const QString& propertyName,
-  const QString& defaultValue, Category category, const QString& fileExtension,
-  const QString& fileType, int groupIndex)
+  const QString& defaultValue, Category category, SetterCallbackType setterCallback, GetterCallbackType getterCallback,
+  const QString& fileExtension, const QString& fileType, int groupIndex)
 {
   OutputPathFilterParameter::Pointer ptr = OutputPathFilterParameter::New();
   ptr->setHumanLabel(humanLabel);
@@ -63,10 +63,11 @@ OutputPathFilterParameter::Pointer OutputPathFilterParameter::New(const QString&
   ptr->setFileExtension(fileExtension);
   ptr->setFileType(fileType);
   ptr->setGroupIndex(groupIndex);
+  ptr->setSetterCallback(setterCallback);
+  ptr->setGetterCallback(getterCallback);
 
   return ptr;
 }
-
 
 // -----------------------------------------------------------------------------
 //
@@ -76,3 +77,22 @@ QString OutputPathFilterParameter::getWidgetType()
   return QString("OutputPathWidget");
 }
 
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void OutputPathFilterParameter::readJson(const QJsonObject &json)
+{
+  QJsonValue jsonValue = json[getPropertyName()];
+  if(!jsonValue.isUndefined() )
+  {
+    m_SetterCallback(jsonValue.toString(""));
+  }
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void OutputPathFilterParameter::writeJson(QJsonObject &json)
+{
+  json[getPropertyName()] = m_GetterCallback();
+}

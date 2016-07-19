@@ -159,16 +159,22 @@ class SIMPLib_EXPORT GenericExample : public AbstractFilter
     virtual void setupFilterParameters();
 
     /**
-    * @brief This method will write the options to a file
-    * @param writer The writer that is used to write the options to a file
-    */
-    virtual int writeFilterParameters(AbstractFilterParametersWriter* writer, int index);
-
-    /**
     * @brief This method will read the options from a file
     * @param reader The reader that is used to read the options from a file
     */
     virtual void readFilterParameters(AbstractFilterParametersReader* reader, int index);
+
+    /**
+    * @brief readFilterParametersFromJson Reads the filter parameters from a file
+    * @param reader Reader that is used to read the parameters from a file
+    */
+    virtual void readFilterParameters(QJsonObject &obj);
+
+    /**
+    * @brief writeFilterParametersToJson Writes the filter parameters to a file
+    * @param root The root json object
+    */
+    virtual void writeFilterParameters(QJsonObject &obj);
 
     /**
      * @brief Reimplemented from @see AbstractFilter class

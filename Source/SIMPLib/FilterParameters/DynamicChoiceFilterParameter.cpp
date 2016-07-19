@@ -56,6 +56,8 @@ DynamicChoiceFilterParameter::Pointer DynamicChoiceFilterParameter::New(const QS
     const QString& defaultValue,
     const QString& listProperty,
     Category category,
+    SetterCallbackType setterCallback,
+    GetterCallbackType getterCallback,
     int groupIndex)
 {
   DynamicChoiceFilterParameter::Pointer ptr = DynamicChoiceFilterParameter::New();
@@ -65,9 +67,10 @@ DynamicChoiceFilterParameter::Pointer DynamicChoiceFilterParameter::New(const QS
   ptr->setCategory(category);
   ptr->setListProperty(listProperty);
   ptr->setGroupIndex(groupIndex);
+  ptr->setSetterCallback(setterCallback);
+  ptr->setGetterCallback(getterCallback);
   return ptr;
 }
-
 
 // -----------------------------------------------------------------------------
 //
@@ -75,5 +78,25 @@ DynamicChoiceFilterParameter::Pointer DynamicChoiceFilterParameter::New(const QS
 QString DynamicChoiceFilterParameter::getWidgetType()
 {
   return QString("DynamicChoiceWidget");
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void DynamicChoiceFilterParameter::readJson(const QJsonObject &json)
+{
+  QJsonValue jsonValue = json[getPropertyName()];
+  if(!jsonValue.isUndefined() )
+  {
+    m_SetterCallback(jsonValue.toString(""));
+  }
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void DynamicChoiceFilterParameter::writeJson(QJsonObject &json)
+{
+  json[getPropertyName()] = m_GetterCallback();
 }
 

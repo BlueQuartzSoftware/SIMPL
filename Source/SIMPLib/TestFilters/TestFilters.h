@@ -58,12 +58,6 @@ class SIMPLib_EXPORT Filt0 : public AbstractFilter
     virtual void setupFilterParameters();
 
     /**
-    * @brief This method will write the options to a file
-    * @param writer The writer that is used to write the options to a file
-    */
-    virtual int writeFilterParameters(AbstractFilterParametersWriter* writer, int index);
-
-    /**
     * @brief This method will read the options from a file
     * @param reader The reader that is used to read the options from a file
     */
@@ -149,12 +143,6 @@ class SIMPLib_EXPORT Filt1 : public AbstractFilter
     * for this filter
     */
     virtual void setupFilterParameters();
-
-    /**
-    * @brief This method will write the options to a file
-    * @param writer The writer that is used to write the options to a file
-    */
-    virtual int writeFilterParameters(AbstractFilterParametersWriter* writer, int index);
 
     /**
     * @brief This method will read the options from a file

@@ -36,6 +36,8 @@
 #ifndef _linkedchoicesfilterparameter_h_
 #define _linkedchoicesfilterparameter_h_
 
+#include <QtCore/QJsonObject>
+
 #include "SIMPLib/FilterParameters/FilterParameter.h"
 #include "SIMPLib/FilterParameters/ChoiceFilterParameter.h"
 
@@ -49,11 +51,13 @@ class SIMPLib_EXPORT LinkedChoicesFilterParameter : public ChoiceFilterParameter
     SIMPL_STATIC_NEW_MACRO(LinkedChoicesFilterParameter)
     SIMPL_TYPE_MACRO_SUPER(LinkedChoicesFilterParameter, FilterParameter)
 
+    typedef std::function<void(int)> SetterCallbackType;
+    typedef std::function<int(void)> GetterCallbackType;
+
     static Pointer New(const QString& humanLabel, const QString& propertyName,
-                       const int& defaultValue,
-                       QVector<QString> choices,
-                       QStringList linkedProperties,
-                       Category category,
+                       const int& defaultValue, QVector<QString> choices,
+                       QStringList linkedProperties, Category category,
+                       SetterCallbackType setterCallback, GetterCallbackType getterCallback,
                        int groupIndex = -1);
 
     virtual ~LinkedChoicesFilterParameter();
@@ -66,6 +70,21 @@ class SIMPLib_EXPORT LinkedChoicesFilterParameter : public ChoiceFilterParameter
      * @return
      */
     QString getWidgetType();
+
+    /**
+     * @brief readJson
+     * @return
+     */
+    void readJson(const QJsonObject &json);
+
+    /**
+     * @brief writeJson
+     * @return
+     */
+    void writeJson(QJsonObject &json);
+
+    SIMPL_INSTANCE_PROPERTY(SetterCallbackType, SetterCallback)
+    SIMPL_INSTANCE_PROPERTY(GetterCallbackType, GetterCallback)
 
 
   protected:

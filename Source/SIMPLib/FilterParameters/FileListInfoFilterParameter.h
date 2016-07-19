@@ -95,9 +95,12 @@ class SIMPLib_EXPORT FileListInfoFilterParameter : public FilterParameter
     SIMPL_STATIC_NEW_MACRO(FileListInfoFilterParameter)
     SIMPL_TYPE_MACRO_SUPER(FileListInfoFilterParameter, FilterParameter)
 
+    typedef std::function<void(FileListInfo_t)> SetterCallbackType;
+    typedef std::function<FileListInfo_t(void)> GetterCallbackType;
+
     static Pointer New(const QString& humanLabel, const QString& propertyName,
-                       const FileListInfo_t& defaultValue,
-                       Category category);
+                       const FileListInfo_t& defaultValue, Category category,
+                       SetterCallbackType setterCallback, GetterCallbackType getterCallback);
 
     virtual ~FileListInfoFilterParameter();
 
@@ -107,6 +110,21 @@ class SIMPLib_EXPORT FileListInfoFilterParameter : public FilterParameter
      * @return
      */
     QString getWidgetType();
+
+    /**
+     * @brief readJson
+     * @return
+     */
+    void readJson(const QJsonObject &json);
+
+    /**
+     * @brief writeJson
+     * @return
+     */
+    void writeJson(QJsonObject &json);
+
+    SIMPL_INSTANCE_PROPERTY(SetterCallbackType, SetterCallback)
+    SIMPL_INSTANCE_PROPERTY(GetterCallbackType, GetterCallback)
 
 
   protected:

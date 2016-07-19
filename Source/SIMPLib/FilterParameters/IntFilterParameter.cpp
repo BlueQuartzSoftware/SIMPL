@@ -52,7 +52,8 @@ IntFilterParameter::~IntFilterParameter()
 //
 // -----------------------------------------------------------------------------
 IntFilterParameter::Pointer IntFilterParameter::New(const QString& humanLabel, const QString& propertyName,
-  const int& defaultValue, Category category, int groupIndex)
+  const int& defaultValue, Category category, SetterCallbackType setterCallback, GetterCallbackType getterCallback,
+  int groupIndex)
 {
 
   IntFilterParameter::Pointer ptr = IntFilterParameter::New();
@@ -61,10 +62,11 @@ IntFilterParameter::Pointer IntFilterParameter::New(const QString& humanLabel, c
   ptr->setDefaultValue(defaultValue);
   ptr->setCategory(category);
   ptr->setGroupIndex(groupIndex);
+  ptr->setSetterCallback(setterCallback);
+  ptr->setGetterCallback(getterCallback);
 
   return ptr;
 }
-
 
 // -----------------------------------------------------------------------------
 //
@@ -72,5 +74,25 @@ IntFilterParameter::Pointer IntFilterParameter::New(const QString& humanLabel, c
 QString IntFilterParameter::getWidgetType()
 {
   return QString("IntWidget");
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void IntFilterParameter::readJson(const QJsonObject &json)
+{
+  QJsonValue jsonValue = json[getPropertyName()];
+  if(!jsonValue.isUndefined() )
+  {
+    m_SetterCallback(jsonValue.toInt(0.0));
+  }
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void IntFilterParameter::writeJson(QJsonObject &json)
+{
+  json[getPropertyName()] = m_GetterCallback();
 }
 

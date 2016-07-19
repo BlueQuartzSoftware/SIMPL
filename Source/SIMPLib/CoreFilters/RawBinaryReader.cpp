@@ -197,11 +197,13 @@ void RawBinaryReader::setupFilterParameters()
 {
   FilterParameterVector parameters;
 
-  parameters.push_back(InputFileFilterParameter::New("Input File", "InputFile", getInputFile(), FilterParameter::Parameter, "*.raw *.bin"));
+  parameters.push_back(InputFileFilterParameter::New("Input File", "InputFile", getInputFile(), FilterParameter::Parameter, SIMPL_BIND_SETTER(RawBinaryReader, this, InputFile), SIMPL_BIND_GETTER(RawBinaryReader, this, InputFile), "*.raw *.bin"));
   {
     ChoiceFilterParameter::Pointer parameter = ChoiceFilterParameter::New();
     parameter->setHumanLabel("Scalar Type");
     parameter->setPropertyName("ScalarType");
+    parameter->setSetterCallback(SIMPL_BIND_SETTER(RawBinaryReader, this, ScalarType));
+    parameter->setGetterCallback(SIMPL_BIND_GETTER(RawBinaryReader, this, ScalarType));
 
     QVector<QString> choices;
     choices.push_back("signed   int 8  bit");
@@ -218,11 +220,13 @@ void RawBinaryReader::setupFilterParameters()
     parameter->setCategory(FilterParameter::Parameter);
     parameters.push_back(parameter);
   }
-  parameters.push_back(IntFilterParameter::New("Number of Components", "NumberOfComponents", getNumberOfComponents(), FilterParameter::Parameter));
+  parameters.push_back(IntFilterParameter::New("Number of Components", "NumberOfComponents", getNumberOfComponents(), FilterParameter::Parameter, SIMPL_BIND_SETTER(RawBinaryReader, this, NumberOfComponents), SIMPL_BIND_GETTER(RawBinaryReader, this, NumberOfComponents)));
   {
     ChoiceFilterParameter::Pointer parameter = ChoiceFilterParameter::New();
     parameter->setHumanLabel("Endian");
     parameter->setPropertyName("Endian");
+    parameter->setSetterCallback(SIMPL_BIND_SETTER(RawBinaryReader, this, Endian));
+    parameter->setGetterCallback(SIMPL_BIND_GETTER(RawBinaryReader, this, Endian));
 
     QVector<QString> choices;
     choices.push_back("Little");
@@ -231,10 +235,10 @@ void RawBinaryReader::setupFilterParameters()
     parameter->setCategory(FilterParameter::Parameter);
     parameters.push_back(parameter);
   }
-  parameters.push_back(IntFilterParameter::New("Skip Header Bytes", "SkipHeaderBytes", getSkipHeaderBytes(), FilterParameter::Parameter));
+  parameters.push_back(IntFilterParameter::New("Skip Header Bytes", "SkipHeaderBytes", getSkipHeaderBytes(), FilterParameter::Parameter, SIMPL_BIND_SETTER(RawBinaryReader, this, SkipHeaderBytes), SIMPL_BIND_GETTER(RawBinaryReader, this, SkipHeaderBytes)));
   {
     DataArrayCreationFilterParameter::RequirementType req;
-    parameters.push_back(DataArrayCreationFilterParameter::New("Output Attribute Array", "CreatedAttributeArrayPath", getCreatedAttributeArrayPath(), FilterParameter::CreatedArray, req));
+    parameters.push_back(DataArrayCreationFilterParameter::New("Output Attribute Array", "CreatedAttributeArrayPath", getCreatedAttributeArrayPath(), FilterParameter::CreatedArray, req, SIMPL_BIND_SETTER(RawBinaryReader, this, CreatedAttributeArrayPath), SIMPL_BIND_GETTER(RawBinaryReader, this, CreatedAttributeArrayPath)));
   }
   setFilterParameters(parameters);
 }
@@ -253,23 +257,6 @@ void RawBinaryReader::readFilterParameters(AbstractFilterParametersReader* reade
   setSkipHeaderBytes( reader->readValue("SkipHeaderBytes", getSkipHeaderBytes()) );
 
   reader->closeFilterGroup();
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-int RawBinaryReader::writeFilterParameters(AbstractFilterParametersWriter* writer, int index)
-{
-  writer->openFilterGroup(this, index);
-  SIMPL_FILTER_WRITE_PARAMETER(FilterVersion)
-  SIMPL_FILTER_WRITE_PARAMETER(CreatedAttributeArrayPath)
-  SIMPL_FILTER_WRITE_PARAMETER(ScalarType)
-  SIMPL_FILTER_WRITE_PARAMETER(NumberOfComponents)
-  SIMPL_FILTER_WRITE_PARAMETER(Endian)
-  SIMPL_FILTER_WRITE_PARAMETER(InputFile)
-  SIMPL_FILTER_WRITE_PARAMETER(SkipHeaderBytes)
-  writer->closeFilterGroup();
-  return ++index; // we want to return the next index that was just written to
 }
 
 // -----------------------------------------------------------------------------

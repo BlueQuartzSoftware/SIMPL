@@ -88,11 +88,11 @@ void MakeDataContainer::setupFilterParameters()
 {
   FilterParameterVector parameters;
 
-  parameters.push_back(StringFilterParameter::New("FeatureIds", "FeatureIdsArrayName", getFeatureIdsArrayName(), FilterParameter::CreatedArray));
-  parameters.push_back(StringFilterParameter::New("Cell Euler Angles", "CellEulerAnglesArrayName", getCellEulerAnglesArrayName(), FilterParameter::CreatedArray));
-  parameters.push_back(StringFilterParameter::New("Cell Phases", "CellPhasesArrayName", getCellPhasesArrayName(), FilterParameter::CreatedArray));
-  parameters.push_back(StringFilterParameter::New("Crystal Structures", "CrystalStructuresArrayName", getCrystalStructuresArrayName(), FilterParameter::CreatedArray));
-  parameters.push_back(StringFilterParameter::New("LatticeConstants", "LatticeConstantsArrayName", getLatticeConstantsArrayName(), FilterParameter::CreatedArray));
+  parameters.push_back(StringFilterParameter::New("FeatureIds", "FeatureIdsArrayName", getFeatureIdsArrayName(), FilterParameter::CreatedArray, SIMPL_BIND_SETTER(MakeDataContainer, this, FeatureIdsArrayName), SIMPL_BIND_GETTER(MakeDataContainer, this, FeatureIdsArrayName)));
+  parameters.push_back(StringFilterParameter::New("Cell Euler Angles", "CellEulerAnglesArrayName", getCellEulerAnglesArrayName(), FilterParameter::CreatedArray, SIMPL_BIND_SETTER(MakeDataContainer, this, CellEulerAnglesArrayName), SIMPL_BIND_GETTER(MakeDataContainer, this, CellEulerAnglesArrayName)));
+  parameters.push_back(StringFilterParameter::New("Cell Phases", "CellPhasesArrayName", getCellPhasesArrayName(), FilterParameter::CreatedArray, SIMPL_BIND_SETTER(MakeDataContainer, this, CellPhasesArrayName), SIMPL_BIND_GETTER(MakeDataContainer, this, CellPhasesArrayName)));
+  parameters.push_back(StringFilterParameter::New("Crystal Structures", "CrystalStructuresArrayName", getCrystalStructuresArrayName(), FilterParameter::CreatedArray, SIMPL_BIND_SETTER(MakeDataContainer, this, CrystalStructuresArrayName), SIMPL_BIND_GETTER(MakeDataContainer, this, CrystalStructuresArrayName)));
+  parameters.push_back(StringFilterParameter::New("LatticeConstants", "LatticeConstantsArrayName", getLatticeConstantsArrayName(), FilterParameter::CreatedArray, SIMPL_BIND_SETTER(MakeDataContainer, this, LatticeConstantsArrayName), SIMPL_BIND_GETTER(MakeDataContainer, this, LatticeConstantsArrayName)));
 
   setFilterParameters(parameters);
 }
@@ -104,22 +104,6 @@ void MakeDataContainer::setupFilterParameters()
 void MakeDataContainer::readFilterParameters(AbstractFilterParametersReader* reader, int index)
 {
 
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-int MakeDataContainer::writeFilterParameters(AbstractFilterParametersWriter* writer, int index)
-{
-  writer->openFilterGroup(this, index);
-  SIMPL_FILTER_WRITE_PARAMETER(FilterVersion)
-  /*[]*/SIMPL_FILTER_WRITE_PARAMETER(LatticeConstantsArrayName)
-  /*[]*/SIMPL_FILTER_WRITE_PARAMETER(CrystalStructuresArrayName)
-  /*[]*/SIMPL_FILTER_WRITE_PARAMETER(CellPhasesArrayName)
-  /*[]*/SIMPL_FILTER_WRITE_PARAMETER(CellEulerAnglesArrayName)
-  /*[]*/SIMPL_FILTER_WRITE_PARAMETER(FeatureIdsArrayName)
-  writer->closeFilterGroup();
-  return ++index; // we want to return the next index that was just written to
 }
 
 // -----------------------------------------------------------------------------

@@ -35,6 +35,8 @@
 
 #include "PhaseTypeSelectionFilterParameter.h"
 
+#include <QtCore/QJsonArray>
+
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
@@ -59,6 +61,8 @@ PhaseTypeSelectionFilterParameter::Pointer PhaseTypeSelectionFilterParameter::Ne
                                                                                   const DataArrayPath attributeMatrixDefault,
                                                                                   const QStringList phaseListChoices,
                                                                                   Category category,
+                                                                                  SetterCallbackType setterCallback,
+                                                                                  GetterCallbackType getterCallback,
                                                                                   int groupIndex)
 {
   PhaseTypeSelectionFilterParameter::Pointer ptr = PhaseTypeSelectionFilterParameter::New();
@@ -71,11 +75,12 @@ PhaseTypeSelectionFilterParameter::Pointer PhaseTypeSelectionFilterParameter::Ne
   ptr->setPhaseTypeDataProperty(phaseTypeDataProperty);
   ptr->setAttributeMatrixPathProperty(attributeMatrixProperty);
   ptr->setAttributeMatrixPathDefault(attributeMatrixDefault);
+  ptr->setSetterCallback(setterCallback);
+  ptr->setGetterCallback(getterCallback);
 
 
   return ptr;
 }
-
 
 // -----------------------------------------------------------------------------
 //
@@ -83,5 +88,39 @@ PhaseTypeSelectionFilterParameter::Pointer PhaseTypeSelectionFilterParameter::Ne
 QString PhaseTypeSelectionFilterParameter::getWidgetType()
 {
   return QString("PhaseTypeSelectionWidget");
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void PhaseTypeSelectionFilterParameter::readJson(const QJsonObject &json)
+{
+  QJsonValue jsonValue = json[getPropertyName()];
+  if(!jsonValue.isUndefined() )
+  {
+    QJsonArray jsonArray = jsonValue.toArray();
+    UInt32Vector_t vec;
+    for (int i=0; i<jsonArray.size(); i++)
+    {
+      vec.d.push_back(static_cast<unsigned int>(jsonArray[i].toDouble()));
+    }
+    m_SetterCallback(vec);
+  }
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void PhaseTypeSelectionFilterParameter::writeJson(QJsonObject &json)
+{
+  UInt32Vector_t vec = m_GetterCallback();
+  QJsonArray jsonArray;
+
+  for (int i=0; i<vec.d.size(); i++)
+  {
+    jsonArray.push_back(static_cast<double>(vec.d[i]));
+  }
+
+  json[getPropertyName()] = jsonArray;
 }
 

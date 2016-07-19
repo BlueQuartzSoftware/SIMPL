@@ -36,6 +36,9 @@
 #ifndef _comparisonselectionfilterparameter_h_
 #define _comparisonselectionfilterparameter_h_
 
+#include <QtCore/QJsonObject>
+
+#include "SIMPLib/Common/ComparisonInputs.h"
 #include "SIMPLib/FilterParameters/FilterParameter.h"
 
 class SIMPLib_EXPORT ComparisonSelectionFilterParameter : public FilterParameter
@@ -45,10 +48,13 @@ class SIMPLib_EXPORT ComparisonSelectionFilterParameter : public FilterParameter
     SIMPL_STATIC_NEW_MACRO(ComparisonSelectionFilterParameter)
     SIMPL_TYPE_MACRO_SUPER(ComparisonSelectionFilterParameter, FilterParameter)
 
+    typedef std::function<void(ComparisonInputs)> SetterCallbackType;
+    typedef std::function<ComparisonInputs(void)> GetterCallbackType;
+
     static Pointer New(const QString& humanLabel, const QString& propertyName,
                        const QString& defaultValue, QVector<QString> choices,
-                       bool showOperators, Category category, int groupIndex = -1);
-
+                       bool showOperators, Category category, SetterCallbackType setterCallback,
+                       GetterCallbackType getterCallback, int groupIndex = -1);
 
     virtual ~ComparisonSelectionFilterParameter();
 
@@ -64,6 +70,22 @@ class SIMPLib_EXPORT ComparisonSelectionFilterParameter : public FilterParameter
    * @return
    */
     QString getWidgetType();
+
+    /**
+     * @brief readJson
+     * @return
+     */
+    void readJson(const QJsonObject &json);
+
+    /**
+     * @brief writeJson
+     * @return
+     */
+    void writeJson(QJsonObject &json);
+
+    SIMPL_INSTANCE_PROPERTY(SetterCallbackType, SetterCallback)
+    SIMPL_INSTANCE_PROPERTY(GetterCallbackType, GetterCallback)
+
   protected:
     ComparisonSelectionFilterParameter();
 

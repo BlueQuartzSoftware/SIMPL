@@ -44,6 +44,12 @@
 #include "SIMPLib/SIMPLib.h"
 #include "SIMPLib/Common/SIMPLibSetGetMacros.h"
 
+#define SIMPL_BIND_SETTER(CLASS, PTR, PROP)\
+std::bind(&CLASS::set##PROP, PTR, std::placeholders::_1)
+
+#define SIMPL_BIND_GETTER(CLASS, PTR, PROP)\
+std::bind(&CLASS::get##PROP, PTR)
+
 /**
  * @class FilterParameter FilterParameter.h DREAM3DLib/FilterParameters/FilterParameter.h
  * @brief This class holds the various properties that an input parameter to a
@@ -84,6 +90,18 @@ class SIMPLib_EXPORT FilterParameter
     SIMPL_INSTANCE_PROPERTY(Category, Category)
     SIMPL_INSTANCE_PROPERTY(bool, ReadOnly)
     SIMPL_INSTANCE_PROPERTY(int, GroupIndex)
+
+    /**
+     * @brief readJson
+     * @return
+     */
+    virtual void readJson(const QJsonObject &json);
+
+    /**
+     * @brief writeJson
+     * @return
+     */
+    virtual void writeJson(QJsonObject &json);
 
   protected:
     FilterParameter();

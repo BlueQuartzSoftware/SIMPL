@@ -36,6 +36,8 @@
 #ifndef _CalculatorFilterParameter_H_
 #define _CalculatorFilterParameter_H_
 
+#include <QtCore/QJsonObject>
+
 #include "SIMPLib/FilterParameters/FilterParameter.h"
 
 class SIMPLib_EXPORT CalculatorFilterParameter : public FilterParameter
@@ -45,9 +47,12 @@ public:
     SIMPL_STATIC_NEW_MACRO(CalculatorFilterParameter)
     SIMPL_TYPE_MACRO(CalculatorFilterParameter)
 
+  typedef std::function<void(QString)> SetterCallbackType;
+  typedef std::function<QString(void)> GetterCallbackType;
+
     static Pointer New(const QString& humanLabel, const QString& propertyName,
     const QString& defaultValue, Category category,
-     int groupIndex = -1);
+    SetterCallbackType setterCallback, GetterCallbackType getterCallback, int groupIndex = -1);
 
     virtual ~CalculatorFilterParameter();
 
@@ -57,6 +62,21 @@ public:
    * @return
    */
   QString getWidgetType();
+
+  /**
+   * @brief readJson
+   * @return
+   */
+  void readJson(const QJsonObject &json);
+
+  /**
+   * @brief writeJson
+   * @return
+   */
+  void writeJson(QJsonObject &json);
+
+  SIMPL_INSTANCE_PROPERTY(SetterCallbackType, SetterCallback)
+  SIMPL_INSTANCE_PROPERTY(GetterCallbackType, GetterCallback)
 
 
 protected:

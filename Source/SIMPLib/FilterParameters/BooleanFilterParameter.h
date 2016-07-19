@@ -36,6 +36,8 @@
 #ifndef _booleanfilterparameter_h_
 #define _booleanfilterparameter_h_
 
+#include <QtCore/QJsonObject>
+
 #include "SIMPLib/FilterParameters/FilterParameter.h"
 
 class SIMPLib_EXPORT BooleanFilterParameter : public FilterParameter
@@ -45,9 +47,12 @@ public:
     SIMPL_STATIC_NEW_MACRO(BooleanFilterParameter)
     SIMPL_TYPE_MACRO(BooleanFilterParameter)
 
+  typedef std::function<void(bool)> SetterCallbackType;
+  typedef std::function<bool(void)> GetterCallbackType;
+
     static Pointer New(const QString& humanLabel, const QString& propertyName,
-    const bool& defaultValue, Category category,
-    const QString& units = "", int groupIndex = -1);
+    const bool& defaultValue, Category category, SetterCallbackType setterCallback,
+    GetterCallbackType getterCallback, const QString& units = "", int groupIndex = -1);
 
     virtual ~BooleanFilterParameter();
 
@@ -59,6 +64,22 @@ public:
      * @return
      */
     QString getWidgetType();
+
+    /**
+     * @brief readJson
+     * @return
+     */
+    void readJson(const QJsonObject &json);
+
+    /**
+     * @brief writeJson
+     * @return
+     */
+    void writeJson(QJsonObject &json);
+
+    SIMPL_INSTANCE_PROPERTY(SetterCallbackType, SetterCallback)
+    SIMPL_INSTANCE_PROPERTY(GetterCallbackType, GetterCallback)
+
 protected:
   BooleanFilterParameter();
 

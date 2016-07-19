@@ -92,17 +92,24 @@ void CreateAttributeMatrix::setupFilterParameters()
     choices.push_back("CellEnsemble");
     choices.push_back("MetaData");
     choices.push_back("Generic");
-    parameters.push_back(ChoiceFilterParameter::New("Attribute Matrix Type", "AttributeMatrixType", getAttributeMatrixType(), choices, false, FilterParameter::Parameter));
+    parameters.push_back(ChoiceFilterParameter::New("Attribute Matrix Type", "AttributeMatrixType", getAttributeMatrixType(), choices, false, FilterParameter::Parameter,
+                         SIMPL_BIND_SETTER(CreateAttributeMatrix, this, AttributeMatrixType),
+                         SIMPL_BIND_GETTER(CreateAttributeMatrix, this, AttributeMatrixType)));
   }
 
   QStringList rHeaders, cHeaders;
   rHeaders << "Tuple Dimensions";
 
   std::vector<std::vector<double> > defaultTable;
-  parameters.push_back(DynamicTableFilterParameter::New("Tuple Dimensions", "TupleDimensions", rHeaders, cHeaders, defaultTable, FilterParameter::Parameter, false, true, 0));
+  parameters.push_back(DynamicTableFilterParameter::New("Tuple Dimensions", "TupleDimensions", rHeaders, cHeaders, defaultTable, FilterParameter::Parameter,
+                                                        SIMPL_BIND_SETTER(CreateAttributeMatrix, this, TupleDimensions),
+                                                        SIMPL_BIND_GETTER(CreateAttributeMatrix, this, TupleDimensions), false, true, 0));
   {
     AttributeMatrixCreationFilterParameter::RequirementType req;
-    parameters.push_back(AttributeMatrixCreationFilterParameter::New("Created Attribute Matrix", "CreatedAttributeMatrix", getCreatedAttributeMatrix(), FilterParameter::CreatedArray, req));
+    parameters.push_back(AttributeMatrixCreationFilterParameter::New("Created Attribute Matrix", "CreatedAttributeMatrix",
+                                                                     getCreatedAttributeMatrix(), FilterParameter::CreatedArray, req,
+                                                                     SIMPL_BIND_SETTER(CreateAttributeMatrix, this, CreatedAttributeMatrix),
+                                                                     SIMPL_BIND_GETTER(CreateAttributeMatrix, this, CreatedAttributeMatrix)));
   }
 
   setFilterParameters(parameters);
@@ -118,19 +125,6 @@ void CreateAttributeMatrix::readFilterParameters(AbstractFilterParametersReader*
   setAttributeMatrixType(reader->readValue("AttributeMatrixType", getAttributeMatrixType()));
   setTupleDimensions(reader->readDynamicTableData("TupleDimensions", getTupleDimensions()));
   reader->closeFilterGroup();
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-int CreateAttributeMatrix::writeFilterParameters(AbstractFilterParametersWriter* writer, int index)
-{
-  writer->openFilterGroup(this, index);
-  SIMPL_FILTER_WRITE_PARAMETER(CreatedAttributeMatrix)
-  SIMPL_FILTER_WRITE_PARAMETER(AttributeMatrixType)
-  SIMPL_FILTER_WRITE_PARAMETER(TupleDimensions)
-  writer->closeFilterGroup();
-  return ++index; // we want to return the next index that was just written to
 }
 
 // -----------------------------------------------------------------------------

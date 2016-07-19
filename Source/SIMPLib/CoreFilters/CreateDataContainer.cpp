@@ -73,7 +73,9 @@ CreateDataContainer::~CreateDataContainer()
 void CreateDataContainer::setupFilterParameters()
 {
   FilterParameterVector parameters;
-  parameters.push_back(DataContainerCreationFilterParameter::New("Created Data Container", "CreatedDataContainer", getCreatedDataContainer(), FilterParameter::CreatedArray));
+  parameters.push_back(DataContainerCreationFilterParameter::New("Created Data Container", "CreatedDataContainer", getCreatedDataContainer(), FilterParameter::CreatedArray,
+                                                                 SIMPL_BIND_SETTER(CreateDataContainer, this, CreatedDataContainer),
+                                                                 SIMPL_BIND_GETTER(CreateDataContainer, this, CreatedDataContainer)));
   setFilterParameters(parameters);
 }
 
@@ -85,17 +87,6 @@ void CreateDataContainer::readFilterParameters(AbstractFilterParametersReader* r
   reader->openFilterGroup(this, index);
   setCreatedDataContainer(reader->readString("CreatedDataContainer", getCreatedDataContainer()));
   reader->closeFilterGroup();
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-int CreateDataContainer::writeFilterParameters(AbstractFilterParametersWriter* writer, int index)
-{
-  writer->openFilterGroup(this, index);
-  SIMPL_FILTER_WRITE_PARAMETER(CreatedDataContainer)
-  writer->closeFilterGroup();
-  return ++index; // we want to return the next index that was just written to
 }
 
 // -----------------------------------------------------------------------------

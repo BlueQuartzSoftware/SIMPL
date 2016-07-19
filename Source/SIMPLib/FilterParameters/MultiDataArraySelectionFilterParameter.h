@@ -36,6 +36,8 @@
 #ifndef _multidataarrayselectionfilterparameter_h_
 #define _multidataarrayselectionfilterparameter_h_
 
+#include <QtCore/QJsonObject>
+
 #include "SIMPLib/FilterParameters/FilterParameter.h"
 #include "SIMPLib/DataContainers/DataArrayPath.h"
 
@@ -45,6 +47,9 @@ class SIMPLib_EXPORT MultiDataArraySelectionFilterParameter : public FilterParam
     SIMPL_SHARED_POINTERS(MultiDataArraySelectionFilterParameter)
     SIMPL_STATIC_NEW_MACRO(MultiDataArraySelectionFilterParameter)
     SIMPL_TYPE_MACRO_SUPER(MultiDataArraySelectionFilterParameter, FilterParameter)
+
+    typedef std::function<void(QVector<DataArrayPath>)> SetterCallbackType;
+    typedef std::function<QVector<DataArrayPath>(void)> GetterCallbackType;
 
     typedef struct
     {
@@ -56,7 +61,8 @@ class SIMPLib_EXPORT MultiDataArraySelectionFilterParameter : public FilterParam
 
     static Pointer New(const QString& humanLabel, const QString& propertyName,
                        const QVector<DataArrayPath>& defaultValue, Category category,
-                       const RequirementType req, int groupIndex = -1);
+                       const RequirementType req, SetterCallbackType setterCallback,
+                       GetterCallbackType getterCallback, int groupIndex = -1);
 
     virtual ~MultiDataArraySelectionFilterParameter();
 
@@ -93,10 +99,25 @@ class SIMPLib_EXPORT MultiDataArraySelectionFilterParameter : public FilterParam
      */
     QString getWidgetType();
 
+    /**
+     * @brief readJson
+     * @return
+     */
+    void readJson(const QJsonObject &json);
+
+    /**
+     * @brief writeJson
+     * @return
+     */
+    void writeJson(QJsonObject &json);
+
     SIMPL_INSTANCE_PROPERTY(QVector<unsigned int>, DefaultGeometryTypes)
     SIMPL_INSTANCE_PROPERTY(QVector<unsigned int>, DefaultAttributeMatrixTypes)
     SIMPL_INSTANCE_PROPERTY(QVector<QString>, DefaultAttributeArrayTypes)
     SIMPL_INSTANCE_PROPERTY(QVector< QVector<size_t> >, DefaultComponentDimensions)
+
+    SIMPL_INSTANCE_PROPERTY(SetterCallbackType, SetterCallback)
+    SIMPL_INSTANCE_PROPERTY(GetterCallbackType, GetterCallback)
 
   protected:
     MultiDataArraySelectionFilterParameter();

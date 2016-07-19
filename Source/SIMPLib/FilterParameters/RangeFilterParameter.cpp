@@ -52,7 +52,8 @@ RangeFilterParameter::~RangeFilterParameter()
 //
 // -----------------------------------------------------------------------------
 RangeFilterParameter::Pointer RangeFilterParameter::New(const QString& humanLabel, const QString& propertyName,
-  const QPair<double, double>& defaultPair, Category category, int groupIndex)
+  const QPair<double, double>& defaultPair, Category category, SetterCallbackType setterCallback,
+  GetterCallbackType getterCallback, int groupIndex)
 {
 
   RangeFilterParameter::Pointer ptr = RangeFilterParameter::New();
@@ -61,11 +62,12 @@ RangeFilterParameter::Pointer RangeFilterParameter::New(const QString& humanLabe
   ptr->setDefaultPair(defaultPair);
   ptr->setCategory(category);
   ptr->setGroupIndex(groupIndex);
+  ptr->setSetterCallback(setterCallback);
+  ptr->setGetterCallback(getterCallback);
 
 
   return ptr;
 }
-
 
 // -----------------------------------------------------------------------------
 //
@@ -73,5 +75,37 @@ RangeFilterParameter::Pointer RangeFilterParameter::New(const QString& humanLabe
 QString RangeFilterParameter::getWidgetType()
 {
   return QString("RangeWidget");
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void RangeFilterParameter::readJson(const QJsonObject &json)
+{
+  QJsonValue jsonValue = json[getPropertyName()];
+  if(!jsonValue.isUndefined() )
+  {
+    QJsonObject obj = jsonValue.toObject();
+    QPair<double, double> pair;
+
+    pair.first = obj["Min"].toDouble();
+    pair.second = obj["Max"].toDouble();
+
+    m_SetterCallback(pair);
+  }
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void RangeFilterParameter::writeJson(QJsonObject &json)
+{
+  QPair<double, double> pair = m_GetterCallback();
+  QJsonObject obj;
+
+  obj["Min"] = pair.first;
+  obj["Max"] = pair.second;
+
+  json[getPropertyName()] = obj;
 }
 

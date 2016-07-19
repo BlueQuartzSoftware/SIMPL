@@ -120,12 +120,17 @@ class SIMPLib_EXPORT DataContainerReader : public AbstractFilter
     /**
      * @brief writeFilterParameters Reimplemented from @see AbstractFilter class
      */
-    virtual int writeFilterParameters(AbstractFilterParametersWriter* writer, int index);
+    virtual void writeFilterParameters(QJsonObject &obj);
 
     /**
      * @brief readFilterParameters Reimplemented from @see AbstractFilter class
      */
     virtual void readFilterParameters(AbstractFilterParametersReader* reader, int index);
+
+    /**
+     * @brief readFilterParameters Reimplemented from @see AbstractFilter class
+     */
+    virtual void readFilterParameters(QJsonObject &obj);
 
     /**
      * @brief execute Reimplemented from @see AbstractFilter class
@@ -148,11 +153,10 @@ class SIMPLib_EXPORT DataContainerReader : public AbstractFilter
     /**
      * @brief writeExistingPipelineToFile Writes the filter parameters of the existing pipline to a
      * SIMPLView file
-     * @param writer AbstractFilterParametersWriter instance pointer
-     * @param index Group index
-     * @return Integer error value
+     * @param obj json object
+     * @return
      */
-    int writeExistingPipelineToFile(AbstractFilterParametersWriter* writer, int index);
+    void writeExistingPipelineToFile(QJsonObject &obj);
 
     /**
      * @brief readDataContainerArrayStructure Reads the structure of the DataContainerArray from the HDF5 based .dream3d file. For this method to work

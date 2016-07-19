@@ -91,6 +91,8 @@ void MoveData::setupFilterParameters()
     LinkedChoicesFilterParameter::Pointer parameter = LinkedChoicesFilterParameter::New();
     parameter->setHumanLabel("Object to Move");
     parameter->setPropertyName("WhatToMove");
+    parameter->setSetterCallback(SIMPL_BIND_SETTER(MoveData, this, WhatToMove));
+    parameter->setGetterCallback(SIMPL_BIND_GETTER(MoveData, this, WhatToMove));
 
     parameter->setDefaultValue(getWhatToMove()); // Just set the first index
     QVector<QString> choices;
@@ -105,19 +107,19 @@ void MoveData::setupFilterParameters()
 
   {
     AttributeMatrixSelectionFilterParameter::RequirementType req;
-    parameters.push_back(AttributeMatrixSelectionFilterParameter::New("Attribute Matrix Source", "AttributeMatrixSource", getAttributeMatrixSource(), FilterParameter::RequiredArray, req, 0));
+    parameters.push_back(AttributeMatrixSelectionFilterParameter::New("Attribute Matrix Source", "AttributeMatrixSource", getAttributeMatrixSource(), FilterParameter::RequiredArray, req, SIMPL_BIND_SETTER(MoveData, this, AttributeMatrixSource), SIMPL_BIND_GETTER(MoveData, this, AttributeMatrixSource), 0));
   }
   {
     DataContainerSelectionFilterParameter::RequirementType req;
-    parameters.push_back(DataContainerSelectionFilterParameter::New("Data Container Destination", "DataContainerDestination", getDataContainerDestination(), FilterParameter::RequiredArray, req, 0));
+    parameters.push_back(DataContainerSelectionFilterParameter::New("Data Container Destination", "DataContainerDestination", getDataContainerDestination(), FilterParameter::RequiredArray, req, SIMPL_BIND_SETTER(MoveData, this, DataContainerDestination), SIMPL_BIND_GETTER(MoveData, this, DataContainerDestination), 0));
   }
   {
     DataArraySelectionFilterParameter::RequirementType req;
-    parameters.push_back(DataArraySelectionFilterParameter::New("Attribute Array Source", "DataArraySource", getDataArraySource(), FilterParameter::RequiredArray, req, 1));
+    parameters.push_back(DataArraySelectionFilterParameter::New("Attribute Array Source", "DataArraySource", getDataArraySource(), FilterParameter::RequiredArray, req, SIMPL_BIND_SETTER(MoveData, this, DataArraySource), SIMPL_BIND_GETTER(MoveData, this, DataArraySource), 1));
   }
   {
     AttributeMatrixSelectionFilterParameter::RequirementType req;
-    parameters.push_back(AttributeMatrixSelectionFilterParameter::New("Attribute Matrix Destination", "AttributeMatrixDestination", getAttributeMatrixDestination(), FilterParameter::RequiredArray, req, 1));
+    parameters.push_back(AttributeMatrixSelectionFilterParameter::New("Attribute Matrix Destination", "AttributeMatrixDestination", getAttributeMatrixDestination(), FilterParameter::RequiredArray, req, SIMPL_BIND_SETTER(MoveData, this, AttributeMatrixDestination), SIMPL_BIND_GETTER(MoveData, this, AttributeMatrixDestination), 1));
   }
 
   setFilterParameters(parameters);
@@ -135,22 +137,6 @@ void MoveData::readFilterParameters(AbstractFilterParametersReader* reader, int 
   setAttributeMatrixDestination( reader->readDataArrayPath("AttributeMatrixDestination", getAttributeMatrixDestination() ) );
   setDataArraySource( reader->readDataArrayPath("DataArraySource", getDataArraySource() ) );
   reader->closeFilterGroup();
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-int MoveData::writeFilterParameters(AbstractFilterParametersWriter* writer, int index)
-{
-  writer->openFilterGroup(this, index);
-  SIMPL_FILTER_WRITE_PARAMETER(FilterVersion)
-  SIMPL_FILTER_WRITE_PARAMETER(WhatToMove)
-  SIMPL_FILTER_WRITE_PARAMETER(DataContainerDestination)
-  SIMPL_FILTER_WRITE_PARAMETER(AttributeMatrixSource)
-  SIMPL_FILTER_WRITE_PARAMETER(AttributeMatrixDestination)
-  SIMPL_FILTER_WRITE_PARAMETER(DataArraySource)
-  writer->closeFilterGroup(); // we want to return the next index that was just written to
-  return ++index;
 }
 
 // -----------------------------------------------------------------------------

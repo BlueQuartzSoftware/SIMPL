@@ -185,14 +185,14 @@ void ArrayCalculator::setupFilterParameters()
   FilterParameterVector parameters;
   {
     AttributeMatrixSelectionFilterParameter::RequirementType req = AttributeMatrixSelectionFilterParameter::CreateRequirement(SIMPL::Defaults::AnyAttributeMatrix, SIMPL::Defaults::AnyGeometry);
-    parameters.push_back(AttributeMatrixSelectionFilterParameter::New("Cell Attribute Matrix", "SelectedAttributeMatrix", getSelectedAttributeMatrix(), FilterParameter::Parameter, req));
+    parameters.push_back(AttributeMatrixSelectionFilterParameter::New("Cell Attribute Matrix", "SelectedAttributeMatrix", getSelectedAttributeMatrix(), FilterParameter::Parameter, req, SIMPL_BIND_SETTER(ArrayCalculator, this, SelectedAttributeMatrix), SIMPL_BIND_GETTER(ArrayCalculator, this, SelectedAttributeMatrix)));
   }
 
-  parameters.push_back(CalculatorFilterParameter::New("Infix Expression", "InfixEquation", getInfixEquation(), FilterParameter::Parameter));
+  parameters.push_back(CalculatorFilterParameter::New("Infix Expression", "InfixEquation", getInfixEquation(), FilterParameter::Parameter, SIMPL_BIND_SETTER(ArrayCalculator, this, InfixEquation), SIMPL_BIND_GETTER(ArrayCalculator, this, InfixEquation)));
 
   {
     DataArrayCreationFilterParameter::RequirementType req = DataArrayCreationFilterParameter::CreateRequirement(SIMPL::Defaults::AnyAttributeMatrix, SIMPL::Defaults::AnyGeometry);
-    parameters.push_back(DataArrayCreationFilterParameter::New("Calculated Array", "CalculatedArray", getCalculatedArray(), FilterParameter::CreatedArray, req));
+    parameters.push_back(DataArrayCreationFilterParameter::New("Calculated Array", "CalculatedArray", getCalculatedArray(), FilterParameter::CreatedArray, req, SIMPL_BIND_SETTER(ArrayCalculator, this, CalculatedArray), SIMPL_BIND_GETTER(ArrayCalculator, this, CalculatedArray)));
   }
 
   setFilterParameters(parameters);
@@ -214,15 +214,21 @@ void ArrayCalculator::readFilterParameters(AbstractFilterParametersReader* reade
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-int ArrayCalculator::writeFilterParameters(AbstractFilterParametersWriter* writer, int index)
+void ArrayCalculator::readFilterParameters(QJsonObject &obj)
 {
-  writer->openFilterGroup(this, index);
-  SIMPL_FILTER_WRITE_PARAMETER(SelectedAttributeMatrix)
-  SIMPL_FILTER_WRITE_PARAMETER(InfixEquation)
-  SIMPL_FILTER_WRITE_PARAMETER(CalculatedArray)
-  SIMPL_FILTER_WRITE_PARAMETER(Units)
-  writer->closeFilterGroup();
-  return ++index; // we want to return the next index that was just written to
+  AbstractFilter::readFilterParameters(obj);
+  setUnits(static_cast<ArrayCalculator::AngleUnits>(obj["Units"].toInt()));
+}
+
+// FP: Check why these values are not connected to a filter parameter!
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void ArrayCalculator::writeFilterParameters(QJsonObject &obj)
+{
+  AbstractFilter::writeFilterParameters(obj);
+  obj["Units"] = static_cast<int>(getUnits());
 }
 
 // -----------------------------------------------------------------------------

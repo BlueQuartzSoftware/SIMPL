@@ -36,6 +36,8 @@
 #ifndef _intfilterparameter_h_
 #define _intfilterparameter_h_
 
+#include <QtCore/QJsonObject>
+
 #include "SIMPLib/FilterParameters/FilterParameter.h"
 
 class SIMPLib_EXPORT IntFilterParameter : public FilterParameter
@@ -45,9 +47,12 @@ public:
     SIMPL_STATIC_NEW_MACRO(IntFilterParameter)
     SIMPL_TYPE_MACRO(IntFilterParameter)
 
+  typedef std::function<void(int)> SetterCallbackType;
+  typedef std::function<int(void)> GetterCallbackType;
+
     static Pointer New(const QString& humanLabel, const QString& propertyName,
-    const int& defaultValue, Category category,
-     int groupIndex = -1);
+    const int& defaultValue, Category category, SetterCallbackType setterCallback,
+    GetterCallbackType getterCallback, int groupIndex = -1);
 
     virtual ~IntFilterParameter();
 
@@ -57,6 +62,21 @@ public:
    * @return
    */
   QString getWidgetType();
+
+  /**
+   * @brief readJson
+   * @return
+   */
+  void readJson(const QJsonObject &json);
+
+  /**
+   * @brief writeJson
+   * @return
+   */
+  void writeJson(QJsonObject &json);
+
+  SIMPL_INSTANCE_PROPERTY(SetterCallbackType, SetterCallback)
+  SIMPL_INSTANCE_PROPERTY(GetterCallbackType, GetterCallback)
 
 
 protected:

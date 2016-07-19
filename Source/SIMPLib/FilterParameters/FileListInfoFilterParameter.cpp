@@ -52,8 +52,7 @@ FileListInfoFilterParameter::~FileListInfoFilterParameter()
 //
 // -----------------------------------------------------------------------------
 FileListInfoFilterParameter::Pointer FileListInfoFilterParameter::New(const QString& humanLabel, const QString& propertyName,
-    const FileListInfo_t& defaultValue,
-    FilterParameter::Category category)
+    const FileListInfo_t& defaultValue, FilterParameter::Category category, SetterCallbackType setterCallback, GetterCallbackType getterCallback)
 {
 
   FileListInfoFilterParameter::Pointer ptr = FileListInfoFilterParameter::New();
@@ -63,10 +62,11 @@ FileListInfoFilterParameter::Pointer FileListInfoFilterParameter::New(const QStr
   v.setValue(defaultValue);
   ptr->setDefaultValue(v);
   ptr->setCategory(category);
+  ptr->setSetterCallback(setterCallback);
+  ptr->setGetterCallback(getterCallback);
 
   return ptr;
 }
-
 
 // -----------------------------------------------------------------------------
 //
@@ -74,5 +74,31 @@ FileListInfoFilterParameter::Pointer FileListInfoFilterParameter::New(const QStr
 QString FileListInfoFilterParameter::getWidgetType()
 {
   return QString("FileListInfoWidget");
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void FileListInfoFilterParameter::readJson(const QJsonObject &json)
+{
+  QJsonValue jsonValue = json[getPropertyName()];
+  if(!jsonValue.isUndefined() )
+  {
+    QJsonObject jsonObj = jsonValue.toObject();
+    FileListInfo_t fileListInfo;
+    fileListInfo.readJson(jsonObj);
+    m_SetterCallback(fileListInfo);
+  }
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void FileListInfoFilterParameter::writeJson(QJsonObject &json)
+{
+  FileListInfo_t fileListInfo = m_GetterCallback();
+  QJsonObject jsonObj;
+  fileListInfo.writeJson(jsonObj);
+  json[getPropertyName()] = jsonObj;
 }
 

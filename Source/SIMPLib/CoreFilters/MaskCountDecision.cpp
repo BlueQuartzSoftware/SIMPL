@@ -72,9 +72,8 @@ void MaskCountDecision::setupFilterParameters()
 {
   FilterParameterVector parameters = getFilterParameters();
   DataArraySelectionFilterParameter::RequirementType req = DataArraySelectionFilterParameter::CreateRequirement(SIMPL::TypeNames::Bool, 1, SIMPL::Defaults::AnyAttributeMatrix, SIMPL::Defaults::AnyGeometry);
-  parameters.push_back(DataArraySelectionFilterParameter::New("Mask", "MaskArrayPath", getMaskArrayPath(), FilterParameter::RequiredArray, req));
-  parameters.push_back(IntFilterParameter::New("Number of True Instances", "NumberOfTrues", getNumberOfTrues(), FilterParameter::Parameter, 0));
-  setFilterParameters(parameters);
+  parameters.push_back(DataArraySelectionFilterParameter::New("Mask", "MaskArrayPath", getMaskArrayPath(), FilterParameter::RequiredArray, req, SIMPL_BIND_SETTER(MaskCountDecision, this, MaskArrayPath), SIMPL_BIND_GETTER(MaskCountDecision, this, MaskArrayPath)));
+  parameters.push_back(IntFilterParameter::New("Number of True Instances", "NumberOfTrues", getNumberOfTrues(), FilterParameter::Parameter, SIMPL_BIND_SETTER(MaskCountDecision, this, NumberOfTrues), SIMPL_BIND_GETTER(MaskCountDecision, this, NumberOfTrues), 0));  setFilterParameters(parameters);
 }
 
 // -----------------------------------------------------------------------------
@@ -87,19 +86,6 @@ void MaskCountDecision::readFilterParameters(AbstractFilterParametersReader* rea
   setMaskArrayPath(reader->readDataArrayPath("MaskArrayPath", getMaskArrayPath()));
   setNumberOfTrues(reader->readValue("NumberOfTrues", getNumberOfTrues()));
   reader->closeFilterGroup();
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-int MaskCountDecision::writeFilterParameters(AbstractFilterParametersWriter* writer, int index)
-{
-  AbstractDecisionFilter::writeFilterParameters(writer, index);
-  writer->openFilterGroup(this, index);
-  SIMPL_FILTER_WRITE_PARAMETER(MaskArrayPath)
-  SIMPL_FILTER_WRITE_PARAMETER(NumberOfTrues)
-  writer->closeFilterGroup();
-  return ++index; // we want to return the next index that was just written to
 }
 
 // -----------------------------------------------------------------------------

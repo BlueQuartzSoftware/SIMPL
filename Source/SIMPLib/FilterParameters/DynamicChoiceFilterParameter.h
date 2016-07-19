@@ -36,6 +36,8 @@
 #ifndef _dynamicchoicefilterparameter_h_
 #define _dynamicchoicefilterparameter_h_
 
+#include <QtCore/QJsonObject>
+
 #include "SIMPLib/FilterParameters/FilterParameter.h"
 
 class SIMPLib_EXPORT DynamicChoiceFilterParameter : public FilterParameter
@@ -45,11 +47,13 @@ class SIMPLib_EXPORT DynamicChoiceFilterParameter : public FilterParameter
     SIMPL_STATIC_NEW_MACRO(DynamicChoiceFilterParameter)
     SIMPL_TYPE_MACRO_SUPER(DynamicChoiceFilterParameter, FilterParameter)
 
+    typedef std::function<void(QString)> SetterCallbackType;
+    typedef std::function<QString(void)> GetterCallbackType;
+
     static Pointer New(const QString& humanLabel, const QString& propertyName,
-                       const QString& defaultValue,
-                       const QString& listProperty,
-                       Category category,
-                       int groupIndex = -1);
+                       const QString& defaultValue, const QString& listProperty,
+                       Category category, SetterCallbackType setterCallback,
+                       GetterCallbackType getterCallback, int groupIndex = -1);
 
     virtual ~DynamicChoiceFilterParameter();
 
@@ -63,6 +67,21 @@ class SIMPLib_EXPORT DynamicChoiceFilterParameter : public FilterParameter
      * @return
      */
     QString getWidgetType();
+
+    /**
+     * @brief readJson
+     * @return
+     */
+    void readJson(const QJsonObject &json);
+
+    /**
+     * @brief writeJson
+     * @return
+     */
+    void writeJson(QJsonObject &json);
+
+    SIMPL_INSTANCE_PROPERTY(SetterCallbackType, SetterCallback)
+    SIMPL_INSTANCE_PROPERTY(GetterCallbackType, GetterCallback)
 
 
   protected:

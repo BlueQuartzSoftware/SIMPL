@@ -60,7 +60,8 @@ DynamicTableFilterParameter::~DynamicTableFilterParameter()
 // -----------------------------------------------------------------------------
 DynamicTableFilterParameter::Pointer DynamicTableFilterParameter::New(const QString& humanLabel, const QString& propertyName,
     QStringList rHeaders, QStringList cHeaders, std::vector<std::vector<double> > defaultTable,
-    FilterParameter::Category category, bool areRowsDynamic, bool areColsDynamic, int minRowCount, int minColCount, int groupIndex)
+    FilterParameter::Category category, SetterCallbackType setterCallback, GetterCallbackType getterCallback,
+    bool areRowsDynamic, bool areColsDynamic, int minRowCount, int minColCount, int groupIndex)
 {
   DynamicTableFilterParameter::Pointer ptr = DynamicTableFilterParameter::New();
   ptr->setHumanLabel(humanLabel);
@@ -75,6 +76,8 @@ DynamicTableFilterParameter::Pointer DynamicTableFilterParameter::New(const QStr
   ptr->setMinColCount(minColCount);
   ptr->setReadOnly(false);
   ptr->setGroupIndex(groupIndex);
+  ptr->setSetterCallback(setterCallback);
+  ptr->setGetterCallback(getterCallback);
 
   // Check that all columns are initialized to the same size
   if (defaultTable.size() > 0)
@@ -99,12 +102,37 @@ DynamicTableFilterParameter::Pointer DynamicTableFilterParameter::New(const QStr
   return ptr;
 }
 
-
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
 QString DynamicTableFilterParameter::getWidgetType()
 {
   return QString("DynamicTableWidget");
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void DynamicTableFilterParameter::readJson(const QJsonObject &json)
+{
+  QJsonValue jsonValue = json[getPropertyName()];
+  if(!jsonValue.isUndefined() )
+  {
+    QJsonObject jsonObj = jsonValue.toObject();
+    DynamicTableData dynamicData;
+    dynamicData.readJson(jsonObj);
+    m_SetterCallback(dynamicData);
+  }
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void DynamicTableFilterParameter::writeJson(QJsonObject &json)
+{
+  DynamicTableData dynamicData = m_GetterCallback();
+  QJsonObject jsonObj;
+  dynamicData.writeJson(jsonObj);
+  json[getPropertyName()] = jsonObj;
 }
 

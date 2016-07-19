@@ -217,6 +217,8 @@ void ConvertData::setupFilterParameters()
     ChoiceFilterParameter::Pointer parameter = ChoiceFilterParameter::New();
     parameter->setHumanLabel("Scalar Type");
     parameter->setPropertyName("ScalarType");
+    parameter->setSetterCallback(SIMPL_BIND_SETTER(ConvertData, this, ScalarType));
+    parameter->setGetterCallback(SIMPL_BIND_GETTER(ConvertData, this, ScalarType));
 
     QVector<QString> choices;
     choices.push_back("signed   int 8  bit");
@@ -236,10 +238,14 @@ void ConvertData::setupFilterParameters()
 
   {
     DataArraySelectionFilterParameter::RequirementType req;
-    parameters.push_back(DataArraySelectionFilterParameter::New("Attribute Array to Convert", "SelectedCellArrayPath", getSelectedCellArrayPath(), FilterParameter::RequiredArray, req));
+    parameters.push_back(DataArraySelectionFilterParameter::New("Attribute Array to Convert", "SelectedCellArrayPath", getSelectedCellArrayPath(), FilterParameter::RequiredArray, req,
+                                                                SIMPL_BIND_SETTER(ConvertData, this, SelectedCellArrayPath),
+                                                                SIMPL_BIND_GETTER(ConvertData, this, SelectedCellArrayPath)));
   }
 
-  parameters.push_back(StringFilterParameter::New("Converted Attribute Array", "OutputArrayName", getOutputArrayName(), FilterParameter::CreatedArray));
+  parameters.push_back(StringFilterParameter::New("Converted Attribute Array", "OutputArrayName", getOutputArrayName(), FilterParameter::CreatedArray,
+                                                  SIMPL_BIND_SETTER(ConvertData, this, OutputArrayName),
+                                                  SIMPL_BIND_GETTER(ConvertData, this, OutputArrayName)));
 
   setFilterParameters(parameters);
 }
@@ -254,20 +260,6 @@ void ConvertData::readFilterParameters(AbstractFilterParametersReader* reader, i
   setScalarType( reader->readValue("ScalarType", getScalarType()) );
   setOutputArrayName( reader->readString( "OutputArrayName", getOutputArrayName() ) );
   reader->closeFilterGroup();
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-int ConvertData::writeFilterParameters(AbstractFilterParametersWriter* writer, int index)
-{
-  writer->openFilterGroup(this, index);
-  SIMPL_FILTER_WRITE_PARAMETER(FilterVersion)
-  SIMPL_FILTER_WRITE_PARAMETER(ScalarType)
-  SIMPL_FILTER_WRITE_PARAMETER(OutputArrayName)
-  SIMPL_FILTER_WRITE_PARAMETER(SelectedCellArrayPath)
-  writer->closeFilterGroup();
-  return ++index; // we want to return the next index that was just written to
 }
 
 // -----------------------------------------------------------------------------

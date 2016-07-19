@@ -36,6 +36,8 @@
 #ifndef _datacontainerselectionfilterparameter_h_
 #define _datacontainerselectionfilterparameter_h_
 
+#include <QtCore/QJsonObject>
+
 #include "SIMPLib/FilterParameters/FilterParameter.h"
 
 class SIMPLib_EXPORT DataContainerSelectionFilterParameter : public FilterParameter
@@ -45,6 +47,9 @@ class SIMPLib_EXPORT DataContainerSelectionFilterParameter : public FilterParame
     SIMPL_STATIC_NEW_MACRO(DataContainerSelectionFilterParameter)
     SIMPL_TYPE_MACRO(DataContainerSelectionFilterParameter)
 
+    typedef std::function<void(QString)> SetterCallbackType;
+    typedef std::function<QString(void)> GetterCallbackType;
+
     typedef struct
     {
       QVector<unsigned int> dcGeometryTypes;
@@ -52,7 +57,8 @@ class SIMPLib_EXPORT DataContainerSelectionFilterParameter : public FilterParame
 
     static Pointer New(const QString& humanLabel, const QString& propertyName,
                        const QString& defaultValue, Category category,
-                       const RequirementType req, int groupIndex = -1);
+                       const RequirementType req, SetterCallbackType setterCallback,
+                       GetterCallbackType getterCallback, int groupIndex = -1);
 
     virtual ~DataContainerSelectionFilterParameter();
 
@@ -63,7 +69,22 @@ class SIMPLib_EXPORT DataContainerSelectionFilterParameter : public FilterParame
      */
     QString getWidgetType();
 
+    /**
+     * @brief readJson
+     * @return
+     */
+    void readJson(const QJsonObject &json);
+
+    /**
+     * @brief writeJson
+     * @return
+     */
+    void writeJson(QJsonObject &json);
+
     SIMPL_INSTANCE_PROPERTY(QVector<unsigned int>, DefaultGeometryTypes)
+
+    SIMPL_INSTANCE_PROPERTY(SetterCallbackType, SetterCallback)
+    SIMPL_INSTANCE_PROPERTY(GetterCallbackType, GetterCallback)
 
   protected:
     DataContainerSelectionFilterParameter();

@@ -53,7 +53,7 @@ AttributeMatrixSelectionFilterParameter::~AttributeMatrixSelectionFilterParamete
 //
 // -----------------------------------------------------------------------------
 AttributeMatrixSelectionFilterParameter::Pointer AttributeMatrixSelectionFilterParameter::New(const QString& humanLabel, const QString& propertyName,
-    const DataArrayPath& defaultValue, Category category, const RequirementType req, int groupIndex)
+    const DataArrayPath& defaultValue, Category category, const RequirementType req, SetterCallbackType setterCallback, GetterCallbackType getterCallback, int groupIndex)
 {
 
   AttributeMatrixSelectionFilterParameter::Pointer ptr = AttributeMatrixSelectionFilterParameter::New();
@@ -66,6 +66,8 @@ AttributeMatrixSelectionFilterParameter::Pointer AttributeMatrixSelectionFilterP
   ptr->setDefaultGeometryTypes(req.dcGeometryTypes);
   ptr->setDefaultAttributeMatrixTypes(req.amTypes);
   ptr->setGroupIndex(groupIndex);
+  ptr->setSetterCallback(setterCallback);
+  ptr->setGetterCallback(getterCallback);
 
   return ptr;
 }
@@ -127,4 +129,30 @@ AttributeMatrixSelectionFilterParameter::RequirementType AttributeMatrixSelectio
     req.dcGeometryTypes = QVector<uint32_t>(1, geometryType);
   }
   return req;
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void AttributeMatrixSelectionFilterParameter::readJson(const QJsonObject &json)
+{
+  QJsonValue jsonValue = json[getPropertyName()];
+  if(!jsonValue.isUndefined() )
+  {
+    QJsonObject obj = jsonValue.toObject();
+    DataArrayPath dap;
+    dap.readJson(obj);
+    m_SetterCallback(dap);
+  }
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void AttributeMatrixSelectionFilterParameter::writeJson(QJsonObject &json)
+{
+  DataArrayPath dap = m_GetterCallback();
+  QJsonObject obj;
+  dap.writeJson(obj);
+  json[getPropertyName()] = obj;
 }

@@ -53,7 +53,8 @@ DataArrayCreationFilterParameter::~DataArrayCreationFilterParameter()
 //
 // -----------------------------------------------------------------------------
 DataArrayCreationFilterParameter::Pointer DataArrayCreationFilterParameter::New(const QString& humanLabel, const QString& propertyName,
-                                              const DataArrayPath& defaultValue, Category category, const RequirementType req, int groupIndex)
+                                              const DataArrayPath& defaultValue, Category category, const RequirementType req, SetterCallbackType setterCallback,
+                                                                                GetterCallbackType getterCallback, int groupIndex)
 {
 
   DataArrayCreationFilterParameter::Pointer ptr = DataArrayCreationFilterParameter::New();
@@ -66,6 +67,8 @@ DataArrayCreationFilterParameter::Pointer DataArrayCreationFilterParameter::New(
   ptr->setDefaultGeometryTypes(req.dcGeometryTypes);
   ptr->setDefaultAttributeMatrixTypes(req.amTypes);
   ptr->setGroupIndex(groupIndex);
+  ptr->setSetterCallback(setterCallback);
+  ptr->setGetterCallback(getterCallback);
 
   return ptr;
 }
@@ -128,4 +131,30 @@ DataArrayCreationFilterParameter::RequirementType DataArrayCreationFilterParamet
     req.dcGeometryTypes = QVector<uint32_t>(1, geometryType);
   }
   return req;
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void DataArrayCreationFilterParameter::readJson(const QJsonObject &json)
+{
+  QJsonValue jsonValue = json[getPropertyName()];
+  if(!jsonValue.isUndefined() )
+  {
+    QJsonObject obj = jsonValue.toObject();
+    DataArrayPath dap;
+    dap.readJson(obj);
+    m_SetterCallback(dap);
+  }
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void DataArrayCreationFilterParameter::writeJson(QJsonObject &json)
+{
+  DataArrayPath dap = m_GetterCallback();
+  QJsonObject obj;
+  dap.writeJson(obj);
+  json[getPropertyName()] = obj;
 }

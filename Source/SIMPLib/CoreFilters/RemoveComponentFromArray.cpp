@@ -83,19 +83,19 @@ void RemoveComponentFromArray::setupFilterParameters()
 {
   FilterParameterVector parameters;
 
-  parameters.push_back(IntFilterParameter::New("Component Number to Remove", "CompNumber", getCompNumber(), FilterParameter::Parameter));
+  parameters.push_back(IntFilterParameter::New("Component Number to Remove", "CompNumber", getCompNumber(), FilterParameter::Parameter, SIMPL_BIND_SETTER(RemoveComponentFromArray, this, CompNumber), SIMPL_BIND_GETTER(RemoveComponentFromArray, this, CompNumber)));
 
   DataArraySelectionFilterParameter::RequirementType req = DataArraySelectionFilterParameter::CreateCategoryRequirement(SIMPL::Defaults::AnyPrimitive, SIMPL::Defaults::AnyComponentSize, SIMPL::AttributeMatrixObjectType::Any);
-  parameters.push_back(DataArraySelectionFilterParameter::New("Multicomponent Attribute Array", "SelectedArrayPath", getSelectedArrayPath(), FilterParameter::RequiredArray, req));
+  parameters.push_back(DataArraySelectionFilterParameter::New("Multicomponent Attribute Array", "SelectedArrayPath", getSelectedArrayPath(), FilterParameter::RequiredArray, req, SIMPL_BIND_SETTER(RemoveComponentFromArray, this, SelectedArrayPath), SIMPL_BIND_GETTER(RemoveComponentFromArray, this, SelectedArrayPath)));
 
-  parameters.push_back(StringFilterParameter::New("Removed Component Attribute Array", "NewArrayArrayName", getNewArrayArrayName(), FilterParameter::CreatedArray));
+  parameters.push_back(StringFilterParameter::New("Removed Component Attribute Array", "NewArrayArrayName", getNewArrayArrayName(), FilterParameter::CreatedArray, SIMPL_BIND_SETTER(RemoveComponentFromArray, this, NewArrayArrayName), SIMPL_BIND_GETTER(RemoveComponentFromArray, this, NewArrayArrayName)));
 
-  parameters.push_back(StringFilterParameter::New("Reduced Attribute Array", "ReducedArrayArrayName", getReducedArrayArrayName(), FilterParameter::CreatedArray));
+  parameters.push_back(StringFilterParameter::New("Reduced Attribute Array", "ReducedArrayArrayName", getReducedArrayArrayName(), FilterParameter::CreatedArray, SIMPL_BIND_SETTER(RemoveComponentFromArray, this, ReducedArrayArrayName), SIMPL_BIND_GETTER(RemoveComponentFromArray, this, ReducedArrayArrayName)));
 
   QStringList linkedProps;
   linkedProps.clear();
   linkedProps << "NewArrayArrayName";
-  parameters.push_back(LinkedBooleanFilterParameter::New("Save Removed Component in New Array", "SaveRemovedComponent", getSaveRemovedComponent(), linkedProps, FilterParameter::Parameter));
+  parameters.push_back(LinkedBooleanFilterParameter::New("Save Removed Component in New Array", "SaveRemovedComponent", getSaveRemovedComponent(), linkedProps, FilterParameter::Parameter, SIMPL_BIND_SETTER(RemoveComponentFromArray, this, SaveRemovedComponent), SIMPL_BIND_GETTER(RemoveComponentFromArray, this, SaveRemovedComponent)));
 
 
 
@@ -114,22 +114,6 @@ void RemoveComponentFromArray::readFilterParameters(AbstractFilterParametersRead
   setSelectedArrayPath( reader->readDataArrayPath( "SelectedArrayPath", getSelectedArrayPath() ) );
   setSaveRemovedComponent(reader->readValue("SaveRemovedComponent", getSaveRemovedComponent()));
   reader->closeFilterGroup();
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-int RemoveComponentFromArray::writeFilterParameters(AbstractFilterParametersWriter* writer, int index)
-{
-  writer->openFilterGroup(this, index);
-  SIMPL_FILTER_WRITE_PARAMETER(FilterVersion)
-  SIMPL_FILTER_WRITE_PARAMETER(CompNumber)
-  SIMPL_FILTER_WRITE_PARAMETER(NewArrayArrayName)
-  SIMPL_FILTER_WRITE_PARAMETER(ReducedArrayArrayName)
-  SIMPL_FILTER_WRITE_PARAMETER(SelectedArrayPath)
-  SIMPL_FILTER_WRITE_PARAMETER(SaveRemovedComponent)
-  writer->closeFilterGroup();
-  return ++index; // we want to return the next index that was just written to
 }
 
 // -----------------------------------------------------------------------------

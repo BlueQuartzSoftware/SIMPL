@@ -89,11 +89,13 @@ void CreateImageGeometry::setupFilterParameters()
   FilterParameterVector parameters;
   {
     DataContainerSelectionFilterParameter::RequirementType req;
-    parameters.push_back(DataContainerSelectionFilterParameter::New("Data Container Destination", "SelectedDataContainer", getSelectedDataContainer(), FilterParameter::Parameter, req));
+    parameters.push_back(DataContainerSelectionFilterParameter::New("Data Container Destination", "SelectedDataContainer", getSelectedDataContainer(), FilterParameter::Parameter, req, SIMPL_BIND_SETTER(CreateImageGeometry, this, SelectedDataContainer), SIMPL_BIND_GETTER(CreateImageGeometry, this, SelectedDataContainer)));
   }
-  parameters.push_back(IntVec3FilterParameter::New("Dimensions", "Dimensions", getDimensions(), FilterParameter::Parameter));
-  parameters.push_back(FloatVec3FilterParameter::New("Origin", "Origin", getOrigin(), FilterParameter::Parameter));
-  parameters.push_back(FloatVec3FilterParameter::New("Resolution", "Resolution", getResolution(), FilterParameter::Parameter));
+  parameters.push_back(IntVec3FilterParameter::New("Dimensions", "Dimensions", getDimensions(), FilterParameter::Parameter, SIMPL_BIND_SETTER(CreateImageGeometry, this, Dimensions), SIMPL_BIND_GETTER(CreateImageGeometry, this, Dimensions)));
+  parameters.push_back(FloatVec3FilterParameter::New("Origin", "Origin", getOrigin(), FilterParameter::Parameter, SIMPL_BIND_SETTER(CreateImageGeometry, this, Origin), SIMPL_BIND_GETTER(CreateImageGeometry, this, Origin)));
+
+  parameters.push_back(FloatVec3FilterParameter::New("Resolution", "Resolution", getResolution(), FilterParameter::Parameter, SIMPL_BIND_SETTER(CreateImageGeometry, this, Resolution), SIMPL_BIND_GETTER(CreateImageGeometry, this, Resolution)));
+
   setFilterParameters(parameters);
 }
 
@@ -108,21 +110,6 @@ void CreateImageGeometry::readFilterParameters(AbstractFilterParametersReader* r
   setResolution( reader->readFloatVec3("Resolution", getResolution() ) );
   setSelectedDataContainer(reader->readString("SelectedDataContainer", getSelectedDataContainer()));
   reader->closeFilterGroup();
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-int CreateImageGeometry::writeFilterParameters(AbstractFilterParametersWriter* writer, int index)
-{
-  writer->openFilterGroup(this, index);
-  SIMPL_FILTER_WRITE_PARAMETER(FilterVersion)
-  SIMPL_FILTER_WRITE_PARAMETER(Dimensions)
-  SIMPL_FILTER_WRITE_PARAMETER(Origin)
-  SIMPL_FILTER_WRITE_PARAMETER(Resolution)
-  SIMPL_FILTER_WRITE_PARAMETER(SelectedDataContainer)
-  writer->closeFilterGroup();
-  return ++index; // we want to return the next index that was just written to
 }
 
 // -----------------------------------------------------------------------------

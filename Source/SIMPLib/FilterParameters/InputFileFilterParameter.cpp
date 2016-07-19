@@ -54,8 +54,8 @@ InputFileFilterParameter::~InputFileFilterParameter()
 //
 // -----------------------------------------------------------------------------
 InputFileFilterParameter::Pointer InputFileFilterParameter::New(const QString& humanLabel, const QString& propertyName,
-  const QString& defaultValue, Category category, const QString& fileExtension,
-  const QString& fileType, int groupIndex)
+  const QString& defaultValue, Category category, SetterCallbackType setterCallback, GetterCallbackType getterCallback,
+  const QString& fileExtension, const QString& fileType, int groupIndex)
 {
   InputFileFilterParameter::Pointer ptr = InputFileFilterParameter::New();
   ptr->setHumanLabel(humanLabel);
@@ -65,6 +65,8 @@ InputFileFilterParameter::Pointer InputFileFilterParameter::New(const QString& h
   ptr->setFileExtension(fileExtension);
   ptr->setFileType(fileType);
   ptr->setGroupIndex(groupIndex);
+  ptr->setSetterCallback(setterCallback);
+  ptr->setGetterCallback(getterCallback);
 
   return ptr;
 }
@@ -75,5 +77,25 @@ InputFileFilterParameter::Pointer InputFileFilterParameter::New(const QString& h
 QString InputFileFilterParameter::getWidgetType()
 {
   return QString("InputFileWidget");
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void InputFileFilterParameter::readJson(const QJsonObject &json)
+{
+  QJsonValue jsonValue = json[getPropertyName()];
+  if(!jsonValue.isUndefined() )
+  {
+    m_SetterCallback(jsonValue.toString(""));
+  }
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void InputFileFilterParameter::writeJson(QJsonObject &json)
+{
+  json[getPropertyName()] = m_GetterCallback();
 }
 

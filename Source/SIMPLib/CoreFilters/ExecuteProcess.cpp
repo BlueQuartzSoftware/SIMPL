@@ -73,7 +73,7 @@ void ExecuteProcess::setupFilterParameters()
 {
   FilterParameterVector parameters;
 
-  parameters.push_back(StringFilterParameter::New("Command Line Arguments", "Arguments", getArguments(), FilterParameter::Parameter));
+  parameters.push_back(StringFilterParameter::New("Command Line Arguments", "Arguments", getArguments(), FilterParameter::Parameter, SIMPL_BIND_SETTER(ExecuteProcess, this, Arguments), SIMPL_BIND_GETTER(ExecuteProcess, this, Arguments)));
 
   setFilterParameters(parameters);
 }
@@ -86,17 +86,6 @@ void ExecuteProcess::readFilterParameters(AbstractFilterParametersReader* reader
   reader->openFilterGroup(this, index);
   setArguments( reader->readString( "Arguments", getArguments() ) );
   reader->closeFilterGroup();
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-int ExecuteProcess::writeFilterParameters(AbstractFilterParametersWriter* writer, int index)
-{
-  writer->openFilterGroup(this, index);
-  SIMPL_FILTER_WRITE_PARAMETER(Arguments)
-  writer->closeFilterGroup();
-  return ++index; // we want to return the next index that was just written to
 }
 
 // -----------------------------------------------------------------------------

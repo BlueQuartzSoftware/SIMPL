@@ -76,10 +76,9 @@ void FeatureCountDecision::setupFilterParameters()
   parameters.push_back(SeparatorFilterParameter::New("Cell Ensemble Data", FilterParameter::RequiredArray));
   {
     DataArraySelectionFilterParameter::RequirementType req = DataArraySelectionFilterParameter::CreateRequirement(SIMPL::TypeNames::Int32, 1, SIMPL::AttributeMatrixType::CellEnsemble, SIMPL::Defaults::AnyGeometry);
-    parameters.push_back(DataArraySelectionFilterParameter::New("Feature Ids", "FeatureIdsArrayPath", getFeatureIdsArrayPath(), FilterParameter::RequiredArray, req));
+    parameters.push_back(DataArraySelectionFilterParameter::New("Feature Ids", "FeatureIdsArrayPath", getFeatureIdsArrayPath(), FilterParameter::RequiredArray, req, SIMPL_BIND_SETTER(FeatureCountDecision, this, FeatureIdsArrayPath), SIMPL_BIND_GETTER(FeatureCountDecision, this, FeatureIdsArrayPath)));
   }
-  parameters.push_back(IntFilterParameter::New("Maximum Number of Features", "MaxGrains", getMaxGrains(), FilterParameter::Parameter, 0));
-  setFilterParameters(parameters);
+  parameters.push_back(IntFilterParameter::New("Maximum Number of Features", "MaxGrains", getMaxGrains(), FilterParameter::Parameter, SIMPL_BIND_SETTER(FeatureCountDecision, this, MaxGrains), SIMPL_BIND_GETTER(FeatureCountDecision, this, MaxGrains), 0));  setFilterParameters(parameters);
 }
 
 // -----------------------------------------------------------------------------
@@ -92,19 +91,6 @@ void FeatureCountDecision::readFilterParameters(AbstractFilterParametersReader* 
   setFeatureIdsArrayPath(reader->readDataArrayPath("FeatureIdsArrayPath", getFeatureIdsArrayPath()));
   setMaxGrains(reader->readValue("MaxGrains", getMaxGrains()));
   reader->closeFilterGroup();
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-int FeatureCountDecision::writeFilterParameters(AbstractFilterParametersWriter* writer, int index)
-{
-  AbstractDecisionFilter::writeFilterParameters(writer, index);
-  writer->openFilterGroup(this, index);
-  SIMPL_FILTER_WRITE_PARAMETER(FeatureIdsArrayPath)
-  SIMPL_FILTER_WRITE_PARAMETER(MaxGrains)
-  writer->closeFilterGroup();
-  return ++index; // we want to return the next index that was just written to
 }
 
 // -----------------------------------------------------------------------------

@@ -284,6 +284,8 @@ void CreateDataArray::setupFilterParameters()
     ChoiceFilterParameter::Pointer parameter = ChoiceFilterParameter::New();
     parameter->setHumanLabel("Scalar Type");
     parameter->setPropertyName("ScalarType");
+    parameter->setSetterCallback(SIMPL_BIND_SETTER(CreateDataArray, this, ScalarType));
+    parameter->setGetterCallback(SIMPL_BIND_GETTER(CreateDataArray, this, ScalarType));
 
     QVector<QString> choices;
     choices.push_back(Int8);
@@ -301,12 +303,14 @@ void CreateDataArray::setupFilterParameters()
     parameter->setCategory(FilterParameter::Parameter);
     parameters.push_back(parameter);
   }
-  parameters.push_back(IntFilterParameter::New("Number of Components", "NumberOfComponents", getNumberOfComponents(), FilterParameter::Parameter));
+  parameters.push_back(IntFilterParameter::New("Number of Components", "NumberOfComponents", getNumberOfComponents(), FilterParameter::Parameter, SIMPL_BIND_SETTER(CreateDataArray, this, NumberOfComponents), SIMPL_BIND_GETTER(CreateDataArray, this, NumberOfComponents)));
 
   {
     LinkedChoicesFilterParameter::Pointer parameter = LinkedChoicesFilterParameter::New();
     parameter->setHumanLabel("Initialization Type");
     parameter->setPropertyName("InitializationType");
+    parameter->setSetterCallback(SIMPL_BIND_SETTER(CreateDataArray, this, InitializationType));
+    parameter->setGetterCallback(SIMPL_BIND_GETTER(CreateDataArray, this, InitializationType));
 
     parameter->setDefaultValue(Manual);
 
@@ -321,12 +325,11 @@ void CreateDataArray::setupFilterParameters()
     parameter->setCategory(FilterParameter::Parameter);
     parameters.push_back(parameter);
   }
-  parameters.push_back(StringFilterParameter::New("Initialization Value", "InitializationValue", getInitializationValue(), FilterParameter::Parameter, Manual));
-  parameters.push_back(RangeFilterParameter::New("Initialization Range", "InitializationRange", getInitializationRange(), FilterParameter::Parameter, RandomWithRange));
-
+  parameters.push_back(StringFilterParameter::New("Initialization Value", "InitializationValue", getInitializationValue(), FilterParameter::Parameter, SIMPL_BIND_SETTER(CreateDataArray, this, InitializationValue), SIMPL_BIND_GETTER(CreateDataArray, this, InitializationValue), Manual));
+  parameters.push_back(RangeFilterParameter::New("Initialization Range", "InitializationRange", getInitializationRange(), FilterParameter::Parameter, SIMPL_BIND_SETTER(CreateDataArray, this, InitializationRange), SIMPL_BIND_GETTER(CreateDataArray, this, InitializationRange), RandomWithRange));
   {
     DataArrayCreationFilterParameter::RequirementType req;
-    parameters.push_back(DataArrayCreationFilterParameter::New("Created Attribute Array", "NewArray", getNewArray(), FilterParameter::CreatedArray, req));
+    parameters.push_back(DataArrayCreationFilterParameter::New("Created Attribute Array", "NewArray", getNewArray(), FilterParameter::CreatedArray, req, SIMPL_BIND_SETTER(CreateDataArray, this, NewArray), SIMPL_BIND_GETTER(CreateDataArray, this, NewArray)));
   }
 
   setFilterParameters(parameters);
@@ -345,23 +348,6 @@ void CreateDataArray::readFilterParameters(AbstractFilterParametersReader* reade
   setInitializationType(reader->readValue("InitializationType", getInitializationType()));
   setInitializationRange(reader->readPairOfDoubles("InitializationRange", getInitializationRange()));
   reader->closeFilterGroup();
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-int CreateDataArray::writeFilterParameters(AbstractFilterParametersWriter* writer, int index)
-{
-  writer->openFilterGroup(this, index);
-  SIMPL_FILTER_WRITE_PARAMETER(FilterVersion);
-  SIMPL_FILTER_WRITE_PARAMETER(ScalarType);
-  SIMPL_FILTER_WRITE_PARAMETER(NumberOfComponents);
-  SIMPL_FILTER_WRITE_PARAMETER(NewArray);
-  SIMPL_FILTER_WRITE_PARAMETER(InitializationValue);
-  SIMPL_FILTER_WRITE_PARAMETER(InitializationType);
-  SIMPL_FILTER_WRITE_PARAMETER(InitializationRange);
-  writer->closeFilterGroup();
-  return ++index; // we want to return the next index that was just written to
 }
 
 // -----------------------------------------------------------------------------

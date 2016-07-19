@@ -83,18 +83,18 @@ void CreateFeatureArrayFromElementArray::setupFilterParameters()
   parameters.push_back(SeparatorFilterParameter::New("Element Data", FilterParameter::RequiredArray));
   {
     DataArraySelectionFilterParameter::RequirementType req = DataArraySelectionFilterParameter::CreateCategoryRequirement(SIMPL::Defaults::AnyPrimitive, SIMPL::Defaults::AnyComponentSize, SIMPL::AttributeMatrixObjectType::Element);
-    parameters.push_back(DataArraySelectionFilterParameter::New("Element Data to Copy to Feature Data", "SelectedCellArrayPath", getSelectedCellArrayPath(), FilterParameter::RequiredArray, req));
+    parameters.push_back(DataArraySelectionFilterParameter::New("Element Data to Copy to Feature Data", "SelectedCellArrayPath", getSelectedCellArrayPath(), FilterParameter::RequiredArray, req, SIMPL_BIND_SETTER(CreateFeatureArrayFromElementArray, this, SelectedCellArrayPath), SIMPL_BIND_GETTER(CreateFeatureArrayFromElementArray, this, SelectedCellArrayPath)));
   }
   {
     DataArraySelectionFilterParameter::RequirementType req = DataArraySelectionFilterParameter::CreateCategoryRequirement(SIMPL::TypeNames::Int32, 1, SIMPL::AttributeMatrixObjectType::Element);
-    parameters.push_back(DataArraySelectionFilterParameter::New("Feature Ids", "FeatureIdsArrayPath", getFeatureIdsArrayPath(), FilterParameter::RequiredArray, req));
+    parameters.push_back(DataArraySelectionFilterParameter::New("Feature Ids", "FeatureIdsArrayPath", getFeatureIdsArrayPath(), FilterParameter::RequiredArray, req, SIMPL_BIND_SETTER(CreateFeatureArrayFromElementArray, this, FeatureIdsArrayPath), SIMPL_BIND_GETTER(CreateFeatureArrayFromElementArray, this, FeatureIdsArrayPath)));
   }
   parameters.push_back(SeparatorFilterParameter::New("Feature Data", FilterParameter::CreatedArray));
   {
     AttributeMatrixSelectionFilterParameter::RequirementType req = AttributeMatrixSelectionFilterParameter::CreateRequirement(SIMPL::AttributeMatrixType::CellFeature, SIMPL::Defaults::AnyGeometry);
-    parameters.push_back(AttributeMatrixSelectionFilterParameter::New("Feature Attribute Matrix", "CellFeatureAttributeMatrixName", getCellFeatureAttributeMatrixName(), FilterParameter::CreatedArray, req));
+    parameters.push_back(AttributeMatrixSelectionFilterParameter::New("Feature Attribute Matrix", "CellFeatureAttributeMatrixName", getCellFeatureAttributeMatrixName(), FilterParameter::CreatedArray, req, SIMPL_BIND_SETTER(CreateFeatureArrayFromElementArray, this, CellFeatureAttributeMatrixName), SIMPL_BIND_GETTER(CreateFeatureArrayFromElementArray, this, CellFeatureAttributeMatrixName)));
   }
-  parameters.push_back(StringFilterParameter::New("Copied Attribute Array", "CreatedArrayName", getCreatedArrayName(), FilterParameter::CreatedArray));
+  parameters.push_back(StringFilterParameter::New("Copied Attribute Array", "CreatedArrayName", getCreatedArrayName(), FilterParameter::CreatedArray, SIMPL_BIND_SETTER(CreateFeatureArrayFromElementArray, this, CreatedArrayName), SIMPL_BIND_GETTER(CreateFeatureArrayFromElementArray, this, CreatedArrayName)));
   setFilterParameters(parameters);
 }
 
@@ -109,21 +109,6 @@ void CreateFeatureArrayFromElementArray::readFilterParameters(AbstractFilterPara
   setSelectedCellArrayPath(reader->readDataArrayPath( "SelectedCellArrayPath", getSelectedCellArrayPath() ) );
   setCreatedArrayName(reader->readString("CreatedArrayName", getCreatedArrayName() ) );
   reader->closeFilterGroup();
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-int CreateFeatureArrayFromElementArray::writeFilterParameters(AbstractFilterParametersWriter* writer, int index)
-{
-  writer->openFilterGroup(this, index);
-  SIMPL_FILTER_WRITE_PARAMETER(FilterVersion)
-  SIMPL_FILTER_WRITE_PARAMETER(CellFeatureAttributeMatrixName)
-  SIMPL_FILTER_WRITE_PARAMETER(FeatureIdsArrayPath)
-  SIMPL_FILTER_WRITE_PARAMETER(SelectedCellArrayPath)
-  SIMPL_FILTER_WRITE_PARAMETER(CreatedArrayName)
-  writer->closeFilterGroup();
-  return ++index; // we want to return the next index that was just written to
 }
 
 // -----------------------------------------------------------------------------

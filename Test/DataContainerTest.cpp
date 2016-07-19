@@ -57,9 +57,9 @@
 #include "SIMPLib/Common/SIMPLibSetGetMacros.h"
 #include "SIMPLib/CoreFilters/DataContainerReader.h"
 #include "SIMPLib/CoreFilters/DataContainerWriter.h"
-#include "SIMPLib/FilterParameters/QFilterParametersWriter.h"
+#include "SIMPLib/FilterParameters/JsonFilterParametersWriter.h"
+#include "SIMPLib/FilterParameters/JsonFilterParametersReader.h"
 #include "SIMPLib/FilterParameters/H5FilterParametersWriter.h"
-#include "SIMPLib/FilterParameters/QFilterParametersReader.h"
 #include "SIMPLib/FilterParameters/H5FilterParametersReader.h"
 #include "SIMPLib/Utilities/QMetaObjectUtilities.h"
 
@@ -117,9 +117,9 @@ namespace DataContainerIOTest
     return TestDir() + QString::fromLatin1("/DataContainerIOTest_Subset.h5");
   }
 
-  QString IniFile()
+  QString JsonFile()
   {
-    return TestDir() + QString::fromLatin1("/DataContainerProxyTest.ini");
+    return TestDir() + QString::fromLatin1("/DataContainerProxyTest.json");
   }
 
   QString H5File()
@@ -145,7 +145,7 @@ class DataContainerTest
       QFile::remove(DataContainerIOTest::TestFile());
       QFile::remove(DataContainerIOTest::TestFile2());
       QFile::remove(DataContainerIOTest::TestFile3());
-      QFile::remove(DataContainerIOTest::IniFile());
+      QFile::remove(DataContainerIOTest::JsonFile());
       QFile::remove(DataContainerIOTest::H5File());
 
       QDir tempDir(DataContainerIOTest::TestDir());
@@ -545,54 +545,58 @@ class DataContainerTest
 
       reader->setInputFileDataContainerArrayProxy(proxy);
 
-      // Now create a QSettings based writer to write the parameters to a .ini file
-      QFilterParametersWriter::Pointer qWriter = QFilterParametersWriter::New();
-      QString iniFile(DataContainerIOTest::IniFile());
-      QFileInfo fi(iniFile);
-      if (fi.exists() == true)
+      FilterPipeline::Pointer pipeline = FilterPipeline::New();
+      pipeline->pushBack(reader);
+
+      // Write the pipeline to a .json file, read it back in, and compare the results
       {
-        QFile(iniFile).remove();
+        QString jsonFile(DataContainerIOTest::JsonFile());
+        QFileInfo fi(jsonFile);
+        if (fi.exists() == true)
+        {
+          QFile(jsonFile).remove();
+        }
+
+        JsonFilterParametersWriter::Pointer jsonWriter = JsonFilterParametersWriter::New();
+        jsonWriter->writePipelineToFile(pipeline, jsonFile, nullptr);
+
+        JsonFilterParametersReader::Pointer jsonReader = JsonFilterParametersReader::New();
+        pipeline = jsonReader->readPipelineFromFile(jsonFile, nullptr);
+        DREAM3D_REQUIRE(pipeline->getFilterContainer().size() == 1)
+
+        DataContainerReader::Pointer result = std::dynamic_pointer_cast<DataContainerReader>(pipeline->getFilterContainer()[0]);
+        DREAM3D_REQUIRE(result != DataContainerReader::NullPointer())
+
+        DataContainerArrayProxy beforeProxy = reader->getInputFileDataContainerArrayProxy();
+        DataContainerArrayProxy afterProxy = result->getInputFileDataContainerArrayProxy();
+
+        DREAM3D_REQUIRE(beforeProxy == afterProxy)
       }
-      qWriter->openFile(DataContainerIOTest::IniFile(), QSettings::IniFormat);
-      // Write the Filter Parameters to the file
-      reader->writeFilterParameters(qWriter.get(), 0);
-      qWriter->closeFile();
 
-      // Read it back into a DataContainerArrayProxy
-      QFilterParametersReader::Pointer qReader = QFilterParametersReader::New();
-      qReader->openFile(DataContainerIOTest::IniFile(), QSettings::IniFormat);
-      reader->readFilterParameters(qReader.get(), 0);
-      qReader->closeFile();
+      // Write the pipeline to a .dream3d file, read it back in, and compare the results
+      {
+        QString h5File(DataContainerIOTest::H5File());
+        QFileInfo fi(h5File);
+        if (fi.exists() == true)
+        {
+          QFile(h5File).remove();
+        }
 
-      DataContainerArrayProxy dcaProxyFromIni = reader->getInputFileDataContainerArrayProxy();
-      //FIXME: This should be validated
+        H5FilterParametersWriter::Pointer h5Writer = H5FilterParametersWriter::New();
+        h5Writer->writePipelineToFile(pipeline, h5File, "Pipeline", nullptr);
 
-      // Now write the proxy to an HDF5/DREAM3D file
-      hid_t fid = QH5Utilities::createFile(DataContainerIOTest::H5File() );
-      H5FilterParametersWriter::Pointer parametersWriter = H5FilterParametersWriter::New();
-      hid_t pipelineGroupId = QH5Utilities::createGroup(fid, SIMPL::StringConstants::PipelineGroupName);
-      parametersWriter->setGroupId(pipelineGroupId);
+        H5FilterParametersReader::Pointer h5Reader = H5FilterParametersReader::New();
+        pipeline = h5Reader->readPipelineFromFile(h5File, nullptr);
+        DREAM3D_REQUIRE(pipeline->getFilterContainer().size() == 1)
 
-      int index = reader->writeFilterParameters(parametersWriter.get(), 0);
+        DataContainerReader::Pointer result = std::dynamic_pointer_cast<DataContainerReader>(pipeline->getFilterContainer()[0]);
+        DREAM3D_REQUIRE(result != DataContainerReader::NullPointer())
 
-      int err = QH5Lite::writeScalarAttribute(fid, SIMPL::StringConstants::PipelineGroupName, SIMPL::Settings::NumFilters, index);
-      DREAM3D_REQUIRE(err >= 0)
+        DataContainerArrayProxy beforeProxy = reader->getInputFileDataContainerArrayProxy();
+        DataContainerArrayProxy afterProxy = result->getInputFileDataContainerArrayProxy();
 
-
-
-          // Lets try to read the Proxy back into memory
-          H5FilterParametersReader::Pointer hReader = H5FilterParametersReader::New();
-      hReader->setPipelineGroupId(pipelineGroupId);
-      reader->readFilterParameters(hReader.get(), 0);
-
-      DataContainerArrayProxy dcaProxy = reader->getInputFileDataContainerArrayProxy();
-
-      int dcaCount = dcaProxy.dataContainers.count();
-      DREAM3D_REQUIRE_EQUAL(dcaCount, 4);
-
-      H5Gclose(pipelineGroupId);
-
-      H5Fclose(fid);
+        DREAM3D_REQUIRE(beforeProxy == afterProxy)
+      }
     }
 
     // -----------------------------------------------------------------------------

@@ -80,53 +80,53 @@ class SIMPLib_EXPORT AbstractFilterParametersReader
     virtual int closeFilterGroup() = 0;
 
 
-    virtual QString readString(const QString name, QString value) = 0;
-    virtual QVector<QString> readStrings(const QString name, QVector<QString> value) = 0;
-    virtual QStringList readStringList(const QString name, QStringList value) = 0;
+    virtual QString readString(const QString name, QString value);
+    virtual QVector<QString> readStrings(const QString name, QVector<QString> value);
+    virtual QStringList readStringList(const QString name, QStringList value);
 
-    virtual int8_t readValue(const QString name, int8_t value) = 0;
-    virtual int16_t readValue(const QString name, int16_t value) = 0;
-    virtual int32_t readValue(const QString name, int32_t value) = 0;
-    virtual int64_t readValue(const QString name, int64_t value) = 0;
-    virtual uint8_t readValue(const QString name, uint8_t value) = 0;
-    virtual uint16_t readValue(const QString name, uint16_t value) = 0;
-    virtual uint32_t readValue(const QString name, uint32_t value) = 0;
-    virtual uint64_t readValue(const QString name, uint64_t value) = 0;
-    virtual float readValue(const QString name, float value) = 0;
-    virtual double readValue(const QString name, double value) = 0;
-    virtual bool readValue(const QString name, bool value) = 0;
+    virtual int8_t readValue(const QString name, int8_t value);
+    virtual int16_t readValue(const QString name, int16_t value);
+    virtual int32_t readValue(const QString name, int32_t value);
+    virtual int64_t readValue(const QString name, int64_t value);
+    virtual uint8_t readValue(const QString name, uint8_t value);
+    virtual uint16_t readValue(const QString name, uint16_t value);
+    virtual uint32_t readValue(const QString name, uint32_t value);
+    virtual uint64_t readValue(const QString name, uint64_t value);
+    virtual float readValue(const QString name, float value);
+    virtual double readValue(const QString name, double value);
+    virtual bool readValue(const QString name, bool value);
 
-    virtual QVector<int8_t> readArray(const QString name, QVector<int8_t> value) = 0;
-    virtual QVector<int16_t> readArray(const QString name, QVector<int16_t> value) = 0;
-    virtual QVector<int32_t> readArray(const QString name, QVector<int32_t> value) = 0;
-    virtual QVector<int64_t> readArray(const QString name, QVector<int64_t> value) = 0;
-    virtual QVector<uint8_t> readArray(const QString name, QVector<uint8_t> value) = 0;
-    virtual QVector<uint16_t> readArray(const QString name, QVector<uint16_t> value) = 0;
-    virtual QVector<uint32_t> readArray(const QString name, QVector<uint32_t> value) = 0;
-    virtual QVector<uint64_t> readArray(const QString name, QVector<uint64_t> value) = 0;
-    virtual QVector<float> readArray(const QString name, QVector<float> value) = 0;
-    virtual QVector<double> readArray(const QString name, QVector<double> value) = 0;
+    virtual QVector<int8_t> readArray(const QString name, QVector<int8_t> value);
+    virtual QVector<int16_t> readArray(const QString name, QVector<int16_t> value);
+    virtual QVector<int32_t> readArray(const QString name, QVector<int32_t> value);
+    virtual QVector<int64_t> readArray(const QString name, QVector<int64_t> value);
+    virtual QVector<uint8_t> readArray(const QString name, QVector<uint8_t> value);
+    virtual QVector<uint16_t> readArray(const QString name, QVector<uint16_t> value);
+    virtual QVector<uint32_t> readArray(const QString name, QVector<uint32_t> value);
+    virtual QVector<uint64_t> readArray(const QString name, QVector<uint64_t> value);
+    virtual QVector<float> readArray(const QString name, QVector<float> value);
+    virtual QVector<double> readArray(const QString name, QVector<double> value);
 
-    virtual IntVec3_t readIntVec3(const QString name, IntVec3_t v) = 0;
-    virtual FloatVec3_t readFloatVec3(const QString name, FloatVec3_t v) = 0;
-    virtual Float2ndOrderPoly_t readFloat2ndOrderPoly(const QString name, Float2ndOrderPoly_t v) = 0;
-    virtual Float3rdOrderPoly_t readFloat3rdOrderPoly(const QString name, Float3rdOrderPoly_t v) = 0;
-    virtual Float4thOrderPoly_t readFloat4thOrderPoly(const QString name, Float4thOrderPoly_t v) = 0;
-    virtual FileListInfo_t readFileListInfo(const QString name, FileListInfo_t v) = 0;
-    virtual ComparisonInput_t readComparisonInput(const QString name, ComparisonInput_t v, int vectorPos) = 0;
-    virtual ComparisonInputs readComparisonInputs(const QString name, ComparisonInputs v) = 0;
-    virtual AxisAngleInput_t readAxisAngle(const QString name, AxisAngleInput_t v, int vectorPos) = 0;
-    virtual QVector<AxisAngleInput_t> readAxisAngles(const QString name, QVector<AxisAngleInput_t> v) = 0;
-    virtual QSet<QString> readArraySelections(const QString name, QSet<QString> v) = 0;
+    virtual IntVec3_t readIntVec3(const QString name, IntVec3_t v);
+    virtual FloatVec3_t readFloatVec3(const QString name, FloatVec3_t v);
+    virtual Float2ndOrderPoly_t readFloat2ndOrderPoly(const QString name, Float2ndOrderPoly_t v);
+    virtual Float3rdOrderPoly_t readFloat3rdOrderPoly(const QString name, Float3rdOrderPoly_t v);
+    virtual Float4thOrderPoly_t readFloat4thOrderPoly(const QString name, Float4thOrderPoly_t v);
+    virtual FileListInfo_t readFileListInfo(const QString name, FileListInfo_t v);
+    virtual ComparisonInput_t readComparisonInput(const QString name, ComparisonInput_t v, int vectorPos);
+    virtual ComparisonInputs readComparisonInputs(const QString name, ComparisonInputs v);
+    virtual AxisAngleInput_t readAxisAngle(const QString name, AxisAngleInput_t v, int vectorPos);
+    virtual QVector<AxisAngleInput_t> readAxisAngles(const QString name, QVector<AxisAngleInput_t> v);
+    virtual QSet<QString> readArraySelections(const QString name, QSet<QString> v);
 
-    virtual DataContainerArrayProxy readDataContainerArrayProxy(const QString& name, DataContainerArrayProxy v) = 0;
+    virtual DataContainerArrayProxy readDataContainerArrayProxy(const QString& name, DataContainerArrayProxy v);
 
-    virtual DataArrayPath readDataArrayPath(const QString& name, DataArrayPath v) = 0;
-    virtual QVector<DataArrayPath> readDataArrayPathVector(const QString& name, QVector<DataArrayPath> v) = 0;
+    virtual DataArrayPath readDataArrayPath(const QString& name, DataArrayPath v);
+    virtual QVector<DataArrayPath> readDataArrayPathVector(const QString& name, QVector<DataArrayPath> v);
 
-    virtual DynamicTableData readDynamicTableData(const QString& name, DynamicTableData v) = 0;
+    virtual DynamicTableData readDynamicTableData(const QString& name, DynamicTableData v);
 
-    virtual QPair<double, double> readPairOfDoubles(const QString& name, QPair<double, double> v) = 0;
+    virtual QPair<double, double> readPairOfDoubles(const QString& name, QPair<double, double> v);
 
   protected:
     AbstractFilterParametersReader();

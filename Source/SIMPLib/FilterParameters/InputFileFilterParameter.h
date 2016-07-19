@@ -36,6 +36,8 @@
 #ifndef _inputfilefilterparameter_h_
 #define _inputfilefilterparameter_h_
 
+#include <QtCore/QJsonObject>
+
 #include "SIMPLib/FilterParameters/FilterParameter.h"
 
 class SIMPLib_EXPORT InputFileFilterParameter : public FilterParameter
@@ -45,11 +47,13 @@ public:
     SIMPL_STATIC_NEW_MACRO(InputFileFilterParameter)
     SIMPL_TYPE_MACRO(InputFileFilterParameter)
 
+  typedef std::function<void(QString)> SetterCallbackType;
+  typedef std::function<QString(void)> GetterCallbackType;
+
     static Pointer New(const QString& humanLabel, const QString& propertyName,
-    const QString& defaultValue, Category category,
-    const QString& fileExtension = QString(""),
-    const QString& fileType = QString(""),
-    int groupIndex = -1);
+    const QString& defaultValue, Category category, SetterCallbackType setterCallback,
+    GetterCallbackType getterCallback, const QString& fileExtension = QString(""),
+    const QString& fileType = QString(""), int groupIndex = -1);
 
     virtual ~InputFileFilterParameter();
 
@@ -62,6 +66,21 @@ public:
      * @return
      */
     QString getWidgetType();
+
+    /**
+     * @brief readJson
+     * @return
+     */
+    void readJson(const QJsonObject &json);
+
+    /**
+     * @brief writeJson
+     * @return
+     */
+    void writeJson(QJsonObject &json);
+
+    SIMPL_INSTANCE_PROPERTY(SetterCallbackType, SetterCallback)
+    SIMPL_INSTANCE_PROPERTY(GetterCallbackType, GetterCallback)
 
 
 protected:

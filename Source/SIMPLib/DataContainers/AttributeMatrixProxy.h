@@ -92,6 +92,19 @@ class AttributeMatrixProxy
     }
 
     /**
+    * @brief operator == method
+    */
+    bool operator==(const AttributeMatrixProxy& amp) const
+    {
+      if (flag == amp.flag && name == amp.name && amType == amp.amType && dataArrays == amp.dataArrays)
+      {
+        return true;
+      }
+
+      return false;
+    }
+
+    /**
     * @brief Writes the contents of the proxy to the json object 'json'
     * @param json
     * @return

@@ -109,8 +109,8 @@ void DataContainerWriter::setupFilterParameters()
 {
   FilterParameterVector parameters;
 
-  parameters.push_back(OutputFileFilterParameter::New("Output File", "OutputFile", getOutputFile(), FilterParameter::Parameter, "*.dream3d", ""));
-  parameters.push_back(BooleanFilterParameter::New("Write Xdmf File", "WriteXdmfFile", getWriteXdmfFile(), FilterParameter::Parameter, "ParaView Compatible File"));
+  parameters.push_back(OutputFileFilterParameter::New("Output File", "OutputFile", getOutputFile(), FilterParameter::Parameter, SIMPL_BIND_SETTER(DataContainerWriter, this, OutputFile), SIMPL_BIND_GETTER(DataContainerWriter, this, OutputFile), "*.dream3d", ""));
+  parameters.push_back(BooleanFilterParameter::New("Write Xdmf File", "WriteXdmfFile", getWriteXdmfFile(), FilterParameter::Parameter, SIMPL_BIND_SETTER(DataContainerWriter, this, WriteXdmfFile), SIMPL_BIND_GETTER(DataContainerWriter, this, WriteXdmfFile), "ParaView Compatible File"));
 
   setFilterParameters(parameters);
 }
@@ -124,19 +124,6 @@ void DataContainerWriter::readFilterParameters(AbstractFilterParametersReader* r
   setOutputFile( reader->readString( "OutputFile", getOutputFile() ) );
   setWriteXdmfFile( reader->readValue("WriteXdmfFile", getWriteXdmfFile()) );
   reader->closeFilterGroup();
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-int DataContainerWriter::writeFilterParameters(AbstractFilterParametersWriter* writer, int index)
-{
-  writer->openFilterGroup(this, index);
-  SIMPL_FILTER_WRITE_PARAMETER(FilterVersion)
-  SIMPL_FILTER_WRITE_PARAMETER(OutputFile)
-  SIMPL_FILTER_WRITE_PARAMETER(WriteXdmfFile)
-  writer->closeFilterGroup();
-  return ++index; // we want to return the next index that was just written to
 }
 
 // -----------------------------------------------------------------------------
@@ -410,9 +397,7 @@ void DataContainerWriter::writeXdmfFooter(QTextStream& xdmf)
 int DataContainerWriter::writePipeline()
 {
   // WRITE THE PIPELINE TO THE HDF5 FILE
-  H5FilterParametersWriter::Pointer parametersWriter = H5FilterParametersWriter::New();
-  hid_t pipelineGroupId = QH5Utilities::createGroup(m_FileId, SIMPL::StringConstants::PipelineGroupName);
-  parametersWriter->setGroupId(pipelineGroupId);
+  H5FilterParametersWriter::Pointer writer = H5FilterParametersWriter::New();
 
   // Now start walking BACKWARDS through the pipeline to find the first filter.
   AbstractFilter::Pointer previousFilter = getPreviousFilter().lock();
@@ -428,25 +413,19 @@ int DataContainerWriter::writePipeline()
     }
   }
 
+  FilterPipeline::Pointer pipeline = FilterPipeline::New();
 
   // Now starting with the first filter in the pipeline, start the actual writing
   AbstractFilter::Pointer currentFilter = previousFilter;
-  int index = 0;
+  AbstractFilter::Pointer nextFilter;
   while (NULL != currentFilter.get())
   {
-    index = currentFilter->writeFilterParameters(parametersWriter.get(), index);
-    currentFilter = currentFilter->getNextFilter().lock();
+    nextFilter = currentFilter->getNextFilter().lock();
+    pipeline->pushBack(currentFilter);
+    currentFilter = nextFilter;
   }
 
-  int err = QH5Lite::writeScalarAttribute(m_FileId, SIMPL::StringConstants::PipelineGroupName, SIMPL::Settings::NumFilters, index);
-  if (err < 0)
-  {
-    QString ss = QObject::tr("Error writing HDF5 scalar attribute '%1' on HDF5 Group '%2'").arg(SIMPL::Settings::NumFilters).arg(SIMPL::StringConstants::PipelineGroupName);
-    setErrorCondition(-12324323);
-    notifyErrorMessage(getHumanLabel(), ss, getErrorCondition() );
-  }
-  H5Gclose(pipelineGroupId);
-  return 1;
+  return writer->writePipelineToFile(pipeline, m_OutputFile, SIMPL::StringConstants::PipelineGroupName, nullptr);
 }
 
 // -----------------------------------------------------------------------------
@@ -517,8 +496,6 @@ const QString DataContainerWriter::getFilterVersion()
   vStream <<  SIMPLib::Version::Major() << "." << SIMPLib::Version::Minor() << "." << SIMPLib::Version::Patch();
   return version;
 }
-
-
 
 // -----------------------------------------------------------------------------
 //
