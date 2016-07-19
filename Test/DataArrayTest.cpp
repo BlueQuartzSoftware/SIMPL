@@ -51,6 +51,7 @@
 #include "SIMPLib/DataArrays/DataArray.hpp"
 #include "SIMPLib/DataArrays/NeighborList.hpp"
 #include "SIMPLib/DataArrays/StringDataArray.hpp"
+#include "SIMPLib/Math/SIMPLibMath.h"
 
 
 #include "SIMPLib/Utilities/UnitTestSupport.hpp"
@@ -1088,6 +1089,35 @@ class DataArrayTest
     // -----------------------------------------------------------------------------
     //
     // -----------------------------------------------------------------------------
+    void TestPrintDataArray()
+    {
+      FloatArrayType::Pointer floats = FloatArrayType::CreateArray(1, "Test_Float", true);
+      floats->setValue(0, SIMPLib::Constants::k_Pif);
+      QString outStr;
+      QTextStream out(&outStr);
+      floats->printTuple(out, 0);
+
+      QString matchString = "3.1415927";
+      int32_t length = outStr.length();
+      DREAM3D_REQUIRE_EQUAL(length, 9);
+      int comp = matchString.compare(outStr);
+      DREAM3D_REQUIRE_EQUAL(comp, 0);
+
+
+      outStr.clear();
+      DoubleArrayType::Pointer doubles = DoubleArrayType::CreateArray(1, "Test_Double", true);
+      doubles->setValue(0, SIMPLib::Constants::k_Pi);
+      doubles->printTuple(out, 0);
+      matchString = "3.141592653589793";
+      length = outStr.length();
+      DREAM3D_REQUIRE_EQUAL(length, 17);
+      comp = matchString.compare(outStr);
+      DREAM3D_REQUIRE_EQUAL(comp, 0);
+    }
+
+    // -----------------------------------------------------------------------------
+    //
+    // -----------------------------------------------------------------------------
     void operator()()
     {
       int err = EXIT_SUCCESS;
@@ -1107,6 +1137,7 @@ class DataArrayTest
       DREAM3D_REGISTER_TEST( TestDeepCopyArray() )
       DREAM3D_REGISTER_TEST( TestNeighborList() )
       DREAM3D_REGISTER_TEST( TestWrapPointer() )
+      DREAM3D_REGISTER_TEST( TestPrintDataArray() )
 
     #if REMOVE_TEST_FILES
           DREAM3D_REGISTER_TEST( RemoveTestFiles() )
