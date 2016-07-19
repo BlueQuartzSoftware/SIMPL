@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>629</width>
-    <height>58</height>
+    <width>568</width>
+    <height>25</height>
    </rect>
   </property>
   <layout class="QHBoxLayout" name="horizontalLayout">
@@ -31,28 +31,81 @@
     </widget>
    </item>
    <item>
-    <widget class="QComboBox" name="dataContainerCombo">
+    <widget class="QPushButton" name="m_SelectedAttributeMatrixPath">
      <property name="sizePolicy">
-      <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+      <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
        <horstretch>0</horstretch>
        <verstretch>0</verstretch>
       </sizepolicy>
      </property>
-     <property name="sizeAdjustPolicy">
-      <enum>QComboBox::AdjustToContents</enum>
+     <property name="maximumSize">
+      <size>
+       <width>16777215</width>
+       <height>16777215</height>
+      </size>
      </property>
-    </widget>
-   </item>
-   <item>
-    <widget class="QComboBox" name="attributeMatrixCombo">
-     <property name="sizePolicy">
-      <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-       <horstretch>0</horstretch>
-       <verstretch>0</verstretch>
-      </sizepolicy>
+     <property name="font">
+      <font>
+       <pointsize>12</pointsize>
+      </font>
      </property>
-     <property name="sizeAdjustPolicy">
-      <enum>QComboBox::AdjustToContents</enum>
+     <property name="styleSheet">
+      <string notr="true">QPushButton { /* all types of tool button */
+    border: 1px solid #8f8f91;
+    border-radius: 4px;
+    background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
+                                      stop: 0 #DDDDDD, stop: 1 #FFFFFF);
+	font-size: 12pt;
+	padding-left: 16px;
+	padding-right: 4px;
+	padding-top: 2px;
+	padding-bottom: 2px;
+}
+
+QPushButton::menu-indicator {
+   /*  image: url(menu_indicator.png); */
+    subcontrol-origin: padding;
+    subcontrol-position:  left; /* */
+}
+
+QPushButton::menu-indicator:pressed, QPushButton::menu-indicator:open
+{
+    position: relative;
+    /*  top: 2px; left: 2px; shift the arrow by 2 px */
+}
+
+QPushButton:pressed
+{
+    background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
+                                      stop: 0 #AAAAFF, stop: 1 #FFFFFF);
+}
+
+QPushButton:flat 
+{
+    border: none; /* no border for a flat push button */
+}
+
+QPushButton:hover
+{
+	border: 1px solid #8f8f91;
+	border-radius: 4px;
+}
+</string>
+     </property>
+     <property name="text">
+      <string notr="true">Default / Path / Array</string>
+     </property>
+     <property name="iconSize">
+      <size>
+       <width>2</width>
+       <height>2</height>
+      </size>
+     </property>
+     <property name="shortcut">
+      <string>Ctrl+S</string>
+     </property>
+     <property name="flat">
+      <bool>false</bool>
      </property>
     </widget>
    </item>

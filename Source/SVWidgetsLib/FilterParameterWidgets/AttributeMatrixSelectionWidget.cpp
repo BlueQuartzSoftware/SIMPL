@@ -148,7 +148,6 @@ QString AttributeMatrixSelectionWidget::checkStringValues(QString curDcName, QSt
 // -----------------------------------------------------------------------------
 void AttributeMatrixSelectionWidget::createSelectionMenu()
 {
-
   // Now get the DataContainerArray from the Filter instance
   // We are going to use this to get all the current DataContainers
   DataContainerArray::Pointer dca = getFilter()->getDataContainerArray();
