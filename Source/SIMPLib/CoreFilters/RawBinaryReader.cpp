@@ -277,7 +277,7 @@ void RawBinaryReader::dataCheck()
   QFileInfo fi(getInputFile());
   if (getInputFile().isEmpty() == true)
   {
-    QString ss = QObject::tr("The input file must be set").arg(ClassName());
+    QString ss = QObject::tr("The input file must be set");
     setErrorCondition(-387);
     notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
   }
