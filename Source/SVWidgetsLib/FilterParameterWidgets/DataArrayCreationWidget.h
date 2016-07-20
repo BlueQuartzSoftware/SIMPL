@@ -99,7 +99,7 @@ class SVWidgetsLib_EXPORT DataArrayCreationWidget : public FilterParameterWidget
      */
     void initializeWidget(FilterParameter* parameter, AbstractFilter* filter);
 
-    bool eventFilter(QObject* obj, QEvent* event) override;
+    bool eventFilter(QObject* obj, QEvent* event);
 
   public slots:
     void beforePreflight();

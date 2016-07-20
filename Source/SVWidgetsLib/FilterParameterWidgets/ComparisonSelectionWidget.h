@@ -58,6 +58,8 @@
 
 #include "ui_ComparisonSelectionWidget.h"
 
+class QSignalMapper;
+
 /**
  * @class ComparisonSelectionWidget ComparisonSelectionWidget.h PipelineBuilder/UI/ComparisonSelectionWidget.h
  * @brief This class
@@ -93,11 +95,14 @@ class ComparisonSelectionWidget : public FilterParameterWidget, private Ui::Comp
      */
     virtual void setupGui();
 
+    bool eventFilter(QObject* obj, QEvent* event);
+
   public slots:
     void beforePreflight();
     void afterPreflight();
     void filterNeedsInputParameters(AbstractFilter* filter);
 
+    void attributeMatrixSelected(QString path);
 
   signals:
     void errorSettingFilterParameter(const QString& msg);
@@ -116,8 +121,11 @@ class ComparisonSelectionWidget : public FilterParameterWidget, private Ui::Comp
      */
     ComparisonInputs getComparisonInputs();
 
-    void populateComboBoxes();
-    void populateAttributeMatrixList();
+    /**
+     * @brief createSelectionMenu
+     */
+    void createSelectionMenu();
+
     QStringList generateAttributeArrayList();
     QString checkStringValues(QString curDcName, QString filtDcName);
 
@@ -126,18 +134,16 @@ class ComparisonSelectionWidget : public FilterParameterWidget, private Ui::Comp
     void on_addComparison_clicked();
     void on_removeComparison_clicked();
 
-    void on_dataContainerCombo_currentIndexChanged(int index);
-
-    void on_attributeMatrixCombo_currentIndexChanged(int index);
-
     void tableDataWasChanged(const QModelIndex& topLeft, const QModelIndex& bottomRight);
     void widgetChanged(const QString& text);
 
   private:
 
-    DataContainerArrayProxy m_DcaProxy;
     bool m_DidCausePreflight;
 
+    QSignalMapper*  m_MenuMapper;
+
+    DataArrayPath  m_DefaultPath;
 
     ComparisonSelectionTableModel*    m_ComparisonSelectionTableModel;
 

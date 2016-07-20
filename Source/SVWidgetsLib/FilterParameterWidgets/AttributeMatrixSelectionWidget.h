@@ -50,7 +50,6 @@
 #include "SVWidgetsLib/SVWidgetsLib.h"
 #include "SVWidgetsLib/FilterParameterWidgets/FilterParameterWidget.h"
 
-
 #include "SVWidgetsLib/ui_AttributeMatrixSelectionWidget.h"
 
 class QSignalMapper;
@@ -84,7 +83,7 @@ class SVWidgetsLib_EXPORT AttributeMatrixSelectionWidget : public FilterParamete
     /**
     * @brief This method does additional GUI widget connections
     */
-    void setupGui() override;
+    void setupGui();
 
     /**
      * @brief checkStringValues
@@ -94,7 +93,7 @@ class SVWidgetsLib_EXPORT AttributeMatrixSelectionWidget : public FilterParamete
      */
     QString checkStringValues(QString current, QString filtDcName);
 
-    bool eventFilter(QObject* obj, QEvent* event) override;
+    bool eventFilter(QObject* obj, QEvent* event);
 
   public slots:
     void beforePreflight();

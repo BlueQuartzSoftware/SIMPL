@@ -106,15 +106,11 @@ void DataArrayCreationWidget::initializeWidget(FilterParameter* parameter, Abstr
 // -----------------------------------------------------------------------------
 void DataArrayCreationWidget::setupGui()
 {
-
-
   blockSignals(true);
   if (getFilterParameter() != NULL)
   {
-    label->setText(getFilterParameter()->getHumanLabel() );
-
-    QString str = getFilter()->property(PROPERTY_NAME_AS_CHAR).toString();
-    dataArrayName->setText(str);
+    QString str = getFilterParameter()->getHumanLabel();
+    label->setText(str);
   }
   blockSignals(false);
 
@@ -131,6 +127,7 @@ void DataArrayCreationWidget::setupGui()
             this, SLOT(attributeMatrixSelected(QString)));
 
   attributeMatrixSelected(m_DefaultPath.serializeAttributeMatrixPath(Detail::Delimiter));
+  dataArrayName->setText(m_DefaultPath.getDataArrayName());
   createSelectionMenu();
 
   // Catch when the filter is about to execute the preflight
