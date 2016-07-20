@@ -35,7 +35,6 @@
 
 #include "ArraySelectionExample.h"
 #include "SIMPLib/FilterParameters/AbstractFilterParametersReader.h"
-#include "SIMPLib/FilterParameters/AbstractFilterParametersWriter.h"
 #include "SIMPLib/FilterParameters/DataContainerArrayProxyFilterParameter.h"
 #include "SIMPLib/DataContainers/DataContainerArrayProxy.h"
 

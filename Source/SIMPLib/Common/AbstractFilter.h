@@ -48,7 +48,6 @@
 
 
 class AbstractFilterParametersReader;
-class AbstractFilterParametersWriter;
 class ISIMPLibPlugin;
 
 /**

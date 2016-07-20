@@ -37,7 +37,6 @@
 #include "AbstractDecisionFilter.h"
 
 #include "SIMPLib/FilterParameters/AbstractFilterParametersReader.h"
-#include "SIMPLib/FilterParameters/AbstractFilterParametersWriter.h"
 
 // Include the MOC generated file for this class
 #include "moc_AbstractDecisionFilter.cpp"
