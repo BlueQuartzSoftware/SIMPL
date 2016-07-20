@@ -37,7 +37,6 @@
 
 #include "SIMPLib/SIMPLibVersion.h"
 #include "SIMPLib/Common/Constants.h"
-#include "SIMPLib/FilterParameters/AbstractFilterParametersWriter.h"
 #include "SIMPLib/FilterParameters/AbstractFilterParametersReader.h"
 
 // Include the MOC generated file for this class

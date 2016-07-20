@@ -52,7 +52,7 @@ DataContainerCreationFilterParameter::~DataContainerCreationFilterParameter()
 //
 // -----------------------------------------------------------------------------
 DataContainerCreationFilterParameter::Pointer DataContainerCreationFilterParameter::New(const QString& humanLabel, const QString& propertyName,
-  const QString& defaultValue, Category category, int groupIndex)
+  const QString& defaultValue, Category category, SetterCallbackType setterCallback, GetterCallbackType getterCallback, int groupIndex)
 {
 
   DataContainerCreationFilterParameter::Pointer ptr = DataContainerCreationFilterParameter::New();
@@ -61,11 +61,12 @@ DataContainerCreationFilterParameter::Pointer DataContainerCreationFilterParamet
   ptr->setDefaultValue(defaultValue);
   ptr->setCategory(category);
   ptr->setGroupIndex(groupIndex);
+  ptr->setSetterCallback(setterCallback);
+  ptr->setGetterCallback(getterCallback);
 
 
   return ptr;
 }
-
 
 // -----------------------------------------------------------------------------
 //
@@ -73,5 +74,25 @@ DataContainerCreationFilterParameter::Pointer DataContainerCreationFilterParamet
 QString DataContainerCreationFilterParameter::getWidgetType()
 {
   return QString("DataContainerCreationWidget");
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void DataContainerCreationFilterParameter::readJson(const QJsonObject &json)
+{
+  QJsonValue jsonValue = json[getPropertyName()];
+  if(!jsonValue.isUndefined() )
+  {
+    m_SetterCallback(jsonValue.toString(""));
+  }
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void DataContainerCreationFilterParameter::writeJson(QJsonObject &json)
+{
+  json[getPropertyName()] = m_GetterCallback();
 }
 

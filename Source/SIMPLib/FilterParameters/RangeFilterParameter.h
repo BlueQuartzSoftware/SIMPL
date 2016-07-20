@@ -36,9 +36,10 @@
 #ifndef _rangefilterparameter_h_
 #define _rangefilterparameter_h_
 
-#include "SIMPLib/FilterParameters/FilterParameter.h"
-
+#include <QtCore/QJsonObject>
 #include <QtCore/QPair>
+
+#include "SIMPLib/FilterParameters/FilterParameter.h"
 
 typedef QPair <double, double> FPRangePair;
 
@@ -49,9 +50,13 @@ public:
     SIMPL_STATIC_NEW_MACRO(RangeFilterParameter)
     SIMPL_TYPE_MACRO(RangeFilterParameter)
 
+  typedef std::function<void(QPair<double, double>)> SetterCallbackType;
+  typedef std::function<QPair<double, double>(void)> GetterCallbackType;
+
     static Pointer New(const QString& humanLabel, const QString& propertyName,
-    const QPair<double, double>& defaultPair, Category category,
-     int groupIndex = -1);
+                      const QPair<double, double>& defaultPair, Category category,
+                      SetterCallbackType setterCallback, GetterCallbackType getterCallback,
+                      int groupIndex = -1);
 
     virtual ~RangeFilterParameter();
 
@@ -62,7 +67,22 @@ public:
    */
   QString getWidgetType();
 
+  /**
+   * @brief readJson
+   * @return
+   */
+  void readJson(const QJsonObject &json);
+
+  /**
+   * @brief writeJson
+   * @return
+   */
+  void writeJson(QJsonObject &json);
+
   SIMPL_INSTANCE_PROPERTY(FPRangePair, DefaultPair)
+
+  SIMPL_INSTANCE_PROPERTY(SetterCallbackType, SetterCallback)
+  SIMPL_INSTANCE_PROPERTY(GetterCallbackType, GetterCallback)
 
 
 protected:

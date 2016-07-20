@@ -92,6 +92,18 @@ class SIMPLib_EXPORT DataContainerArrayProxy
     void operator=(const DataContainerArrayProxy& rhs);
 
     /**
+     * @brief operator ==
+     * @param rhs
+     */
+    bool operator==(const DataContainerArrayProxy &rhs) const;
+
+    /**
+     * @brief operator ==
+     * @param rhs
+     */
+    bool operator!=(const DataContainerArrayProxy &rhs) const;
+
+    /**
      * @brief flattenHeirarchy
      * @param dcFlag
      * @param amFlag

@@ -37,6 +37,7 @@
 #define _attributematrixcreationfilterparameter_h_
 
 #include <QtCore/QVector>
+#include <QtCore/QJsonObject>
 
 #include "SIMPLib/FilterParameters/FilterParameter.h"
 #include "SIMPLib/DataContainers/DataArrayPath.h"
@@ -48,6 +49,9 @@ class SIMPLib_EXPORT AttributeMatrixCreationFilterParameter : public FilterParam
     SIMPL_STATIC_NEW_MACRO(AttributeMatrixCreationFilterParameter)
     SIMPL_TYPE_MACRO(AttributeMatrixCreationFilterParameter)
 
+    typedef std::function<void(DataArrayPath)> SetterCallbackType;
+    typedef std::function<DataArrayPath(void)> GetterCallbackType;
+
     typedef struct
     {
       QVector<unsigned int> dcGeometryTypes;
@@ -55,7 +59,8 @@ class SIMPLib_EXPORT AttributeMatrixCreationFilterParameter : public FilterParam
 
     static Pointer New(const QString& humanLabel, const QString& propertyName,
                        const DataArrayPath& defaultValue, Category category,
-                       const RequirementType req, int groupIndex = -1);
+                       const RequirementType req, SetterCallbackType setterCallback,
+                       GetterCallbackType getterCallback, int groupIndex = -1);
 
     virtual ~AttributeMatrixCreationFilterParameter();
 
@@ -66,7 +71,32 @@ class SIMPLib_EXPORT AttributeMatrixCreationFilterParameter : public FilterParam
      */
     QString getWidgetType();
 
+    /**
+     * @brief readJson
+     * @return
+     */
+    void readJson(const QJsonObject &json);
+
+    /**
+     * @brief writeJson
+     * @return
+     */
+    void writeJson(QJsonObject &json);
+
     SIMPL_INSTANCE_PROPERTY(QVector<unsigned int>, DefaultGeometryTypes)
+    /**
+    * @param SetterCallback The method in the AbstractFilter subclass that <i>sets</i> the value of the property
+    * that this FilterParameter subclass represents.
+    * from the filter parameter.
+    */
+    SIMPL_INSTANCE_PROPERTY(SetterCallbackType, SetterCallback)
+
+    /**
+    * @param GetterCallback The method in the AbstractFilter subclass that <i>gets</i> the value of the property
+    * that this FilterParameter subclass represents.
+    * @return The GetterCallback
+    */
+    SIMPL_INSTANCE_PROPERTY(GetterCallbackType, GetterCallback)
 
   protected:
     AttributeMatrixCreationFilterParameter();

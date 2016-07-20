@@ -36,35 +36,92 @@
 #ifndef _stringfilterparameter_h_
 #define _stringfilterparameter_h_
 
+#include <QtCore/QJsonObject>
+
 #include "SIMPLib/FilterParameters/FilterParameter.h"
 
+/**
+  * @param
+ */
+#define SIMPL_NEW_STRING_FP(...) \
+  _FP_GET_OVERRIDE(__VA_ARGS__, \
+  SIMPL_NEW_FP_9, SIMPL_NEW_FP_8, SIMPL_NEW_FP_7, SIMPL_NEW_FP_6, SIMPL_NEW_FP_5, SIMPL_NEW_FP_4)\
+  (StringFilterParameter, __VA_ARGS__)
+
+/**
+ * @brief The StringFilterParameter class is used by filters to expose a property to a user through a user interface or
+ * other user interaction interface.
+ * @author BlueQuartz Software
+ * @version 2.0
+ */
 class SIMPLib_EXPORT StringFilterParameter : public FilterParameter
 {
-public:
-  SIMPL_SHARED_POINTERS(StringFilterParameter)
+  public:
+    SIMPL_SHARED_POINTERS(StringFilterParameter)
     SIMPL_STATIC_NEW_MACRO(StringFilterParameter)
     SIMPL_TYPE_MACRO(StringFilterParameter)
 
+    typedef std::function<void(QString)> SetterCallbackType;
+    typedef std::function<QString(void)> GetterCallbackType;
+
+    /**
+     * @brief New
+     * @param humanLabel
+     * @param propertyName
+     * @param defaultValue
+     * @param category
+     * @param setterCallback
+     * @param getterCallback
+     * @param groupIndex
+     * @return
+     */
     static Pointer New(const QString& humanLabel, const QString& propertyName,
-    const QString& defaultValue, Category category,
-     int groupIndex = -1);
+                       const QString& defaultValue, Category category, SetterCallbackType setterCallback,
+                       GetterCallbackType getterCallback, int groupIndex = -1);
 
     virtual ~StringFilterParameter();
 
-  /**
+    /**
    * @brief getWidgetType Returns the type of widget that displays and controls
    * this FilterParameter subclass
    * @return
    */
-  QString getWidgetType();
+    QString getWidgetType();
+
+    /**
+   * @brief readJson
+   * @return
+   */
+    void readJson(const QJsonObject &json);
+
+    /**
+   * @brief writeJson
+   * @return
+   */
+    void writeJson(QJsonObject &json);
+
+    /**
+    * @param SetterCallback The method in the AbstractFilter subclass that <i>sets</i> the value of the property
+    * that this FilterParameter subclass represents.
+    * from the filter parameter.
+    */
+    SIMPL_INSTANCE_PROPERTY(SetterCallbackType, SetterCallback)
+
+    /**
+    * @param GetterCallback The method in the AbstractFilter subclass that <i>gets</i> the value of the property
+    * that this FilterParameter subclass represents.
+    * @return The GetterCallback
+    */
+    SIMPL_INSTANCE_PROPERTY(GetterCallbackType, GetterCallback)
 
 
-protected:
-  StringFilterParameter();
+    protected:
+      StringFilterParameter();
 
-private:
-  StringFilterParameter(const StringFilterParameter&); // Copy Constructor Not Implemented
-  void operator=(const StringFilterParameter&); // Operator '=' Not Implemented
+  private:
+    StringFilterParameter(const StringFilterParameter&); // Copy Constructor Not Implemented
+    void operator=(const StringFilterParameter&); // Operator '=' Not Implemented
 };
+
 
 #endif /* _StringFilterParameter_H_ */

@@ -52,7 +52,7 @@ ThirdOrderPolynomialFilterParameter::~ThirdOrderPolynomialFilterParameter()
 //
 // -----------------------------------------------------------------------------
 ThirdOrderPolynomialFilterParameter::Pointer ThirdOrderPolynomialFilterParameter::New(const QString& humanLabel, const QString& propertyName,
-  const Float3rdOrderPoly_t& defaultValue, Category category, int groupIndex)
+  const Float3rdOrderPoly_t& defaultValue, Category category, SetterCallbackType setterCallback, GetterCallbackType getterCallback, int groupIndex)
 {
 
   ThirdOrderPolynomialFilterParameter::Pointer ptr = ThirdOrderPolynomialFilterParameter::New();
@@ -63,10 +63,11 @@ ThirdOrderPolynomialFilterParameter::Pointer ThirdOrderPolynomialFilterParameter
   ptr->setDefaultValue(v);
   ptr->setCategory(category);
   ptr->setGroupIndex(groupIndex);
+  ptr->setSetterCallback(setterCallback);
+  ptr->setGetterCallback(getterCallback);
 
   return ptr;
 }
-
 
 // -----------------------------------------------------------------------------
 //
@@ -74,5 +75,31 @@ ThirdOrderPolynomialFilterParameter::Pointer ThirdOrderPolynomialFilterParameter
 QString ThirdOrderPolynomialFilterParameter::getWidgetType()
 {
   return QString("ThirdOrderPolynomialWidget");
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void ThirdOrderPolynomialFilterParameter::readJson(const QJsonObject &json)
+{
+  QJsonValue jsonValue = json[getPropertyName()];
+  if(!jsonValue.isUndefined() )
+  {
+    QJsonObject obj = jsonValue.toObject();
+    Float3rdOrderPoly_t poly;
+    poly.readJson(obj);
+    m_SetterCallback(poly);
+  }
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void ThirdOrderPolynomialFilterParameter::writeJson(QJsonObject &json)
+{
+  Float3rdOrderPoly_t poly = m_GetterCallback();
+  QJsonObject obj;
+  poly.writeJson(obj);
+  json[getPropertyName()] = obj;
 }
 

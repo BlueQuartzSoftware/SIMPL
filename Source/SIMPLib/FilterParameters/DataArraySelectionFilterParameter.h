@@ -36,10 +36,10 @@
 #ifndef _dataarrayselectionfilterparameter_h_
 #define _dataarrayselectionfilterparameter_h_
 
+#include <QtCore/QJsonObject>
+
 #include "SIMPLib/FilterParameters/FilterParameter.h"
 #include "SIMPLib/DataContainers/DataArrayPath.h"
-
-
 
 class SIMPLib_EXPORT DataArraySelectionFilterParameter : public FilterParameter
 {
@@ -47,6 +47,9 @@ class SIMPLib_EXPORT DataArraySelectionFilterParameter : public FilterParameter
     SIMPL_SHARED_POINTERS(DataArraySelectionFilterParameter)
     SIMPL_STATIC_NEW_MACRO(DataArraySelectionFilterParameter)
     SIMPL_TYPE_MACRO(DataArraySelectionFilterParameter)
+
+    typedef std::function<void(DataArrayPath)> SetterCallbackType;
+    typedef std::function<DataArrayPath(void)> GetterCallbackType;
 
     typedef struct
     {
@@ -58,7 +61,8 @@ class SIMPLib_EXPORT DataArraySelectionFilterParameter : public FilterParameter
 
     static Pointer New(const QString& humanLabel, const QString& propertyName,
                        const DataArrayPath& defaultValue, Category category,
-                       const RequirementType req, int groupIndex = -1);
+                       const RequirementType req, SetterCallbackType setterCallback,
+                       GetterCallbackType getterCallback, int groupIndex = -1);
 
     virtual ~DataArraySelectionFilterParameter();
 
@@ -94,10 +98,36 @@ class SIMPLib_EXPORT DataArraySelectionFilterParameter : public FilterParameter
     */
     QString getWidgetType();
 
+    /**
+     * @brief readJson
+     * @return
+     */
+    void readJson(const QJsonObject &json);
+
+    /**
+     * @brief writeJson
+     * @return
+     */
+    void writeJson(QJsonObject &json);
+
     SIMPL_INSTANCE_PROPERTY(QVector<unsigned int>, DefaultGeometryTypes)
     SIMPL_INSTANCE_PROPERTY(QVector<unsigned int>, DefaultAttributeMatrixTypes)
     SIMPL_INSTANCE_PROPERTY(QVector<QString>, DefaultAttributeArrayTypes)
     SIMPL_INSTANCE_PROPERTY(QVector< QVector<size_t> >, DefaultComponentDimensions)
+
+    /**
+    * @param SetterCallback The method in the AbstractFilter subclass that <i>sets</i> the value of the property
+    * that this FilterParameter subclass represents.
+    * from the filter parameter.
+    */
+    SIMPL_INSTANCE_PROPERTY(SetterCallbackType, SetterCallback)
+
+    /**
+    * @param GetterCallback The method in the AbstractFilter subclass that <i>gets</i> the value of the property
+    * that this FilterParameter subclass represents.
+    * @return The GetterCallback
+    */
+    SIMPL_INSTANCE_PROPERTY(GetterCallbackType, GetterCallback)
 
   protected:
     DataArraySelectionFilterParameter();

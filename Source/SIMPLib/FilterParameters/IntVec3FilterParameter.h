@@ -72,9 +72,12 @@ public:
     SIMPL_STATIC_NEW_MACRO(IntVec3FilterParameter)
     SIMPL_TYPE_MACRO(IntVec3FilterParameter)
 
+  typedef std::function<void(IntVec3_t)> SetterCallbackType;
+  typedef std::function<IntVec3_t(void)> GetterCallbackType;
+
     static Pointer New(const QString& humanLabel, const QString& propertyName,
-                      const IntVec3_t& defaultValue, Category category,
-                      const QString& units = "", int groupIndex = -1);
+    const IntVec3_t& defaultValue, Category category, SetterCallbackType setterCallback,
+    GetterCallbackType getterCallback, const QString& units = "", int groupIndex = -1);
 
     virtual ~IntVec3FilterParameter();
 
@@ -86,6 +89,21 @@ public:
    * @return
    */
   QString getWidgetType();
+
+  /**
+   * @brief readJson
+   * @return
+   */
+  void readJson(const QJsonObject &json);
+
+  /**
+   * @brief writeJson
+   * @return
+   */
+  void writeJson(QJsonObject &json);
+
+  SIMPL_INSTANCE_PROPERTY(SetterCallbackType, SetterCallback)
+  SIMPL_INSTANCE_PROPERTY(GetterCallbackType, GetterCallback)
 
 
 protected:

@@ -36,6 +36,8 @@
 #ifndef _preflightupdatedvaluefilterparameter_h_
 #define _preflightupdatedvaluefilterparameter_h_
 
+#include <QtCore/QJsonObject>
+
 #include "SIMPLib/FilterParameters/FilterParameter.h"
 
 class SIMPLib_EXPORT PreflightUpdatedValueFilterParameter : public FilterParameter
@@ -45,9 +47,12 @@ class SIMPLib_EXPORT PreflightUpdatedValueFilterParameter : public FilterParamet
     SIMPL_STATIC_NEW_MACRO(PreflightUpdatedValueFilterParameter)
     SIMPL_TYPE_MACRO_SUPER(PreflightUpdatedValueFilterParameter, FilterParameter)
 
+    typedef std::function<void(QString)> SetterCallbackType;
+    typedef std::function<QString(void)> GetterCallbackType;
+
     static Pointer New(const QString& humanLabel, const QString& propertyName,
                        const QString& defaultValue,
-                       Category category,
+                       Category category, GetterCallbackType getterCallback,
                        int groupIndex = -1);
 
     virtual ~PreflightUpdatedValueFilterParameter();
@@ -58,6 +63,15 @@ class SIMPLib_EXPORT PreflightUpdatedValueFilterParameter : public FilterParamet
      * @return
      */
     QString getWidgetType();
+
+    /**
+     * @brief writeJson
+     * @return
+     */
+    void writeJson(QJsonObject &json);
+
+    //SIMPL_INSTANCE_PROPERTY(SetterCallbackType, SetterCallback)
+    SIMPL_INSTANCE_PROPERTY(GetterCallbackType, GetterCallback)
 
 
   protected:

@@ -35,6 +35,8 @@
 
 #include "ShapeTypeSelectionFilterParameter.h"
 
+#include <QtCore/QJsonArray>
+
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
@@ -54,7 +56,8 @@ ShapeTypeSelectionFilterParameter::~ShapeTypeSelectionFilterParameter()
 ShapeTypeSelectionFilterParameter::Pointer ShapeTypeSelectionFilterParameter::New(const QString& humanLabel, const QString& propertyName, const QString& defaultValue,
   const QString& phaseTypeCountProperty,
   const QString& phaseTypeArrayPathProperty,
-  Category category, int groupIndex)
+  Category category, SetterCallbackType setterCallback,
+  GetterCallbackType getterCallback, int groupIndex)
 {
   ShapeTypeSelectionFilterParameter::Pointer ptr = ShapeTypeSelectionFilterParameter::New();
   ptr->setHumanLabel(humanLabel);
@@ -65,10 +68,11 @@ ShapeTypeSelectionFilterParameter::Pointer ShapeTypeSelectionFilterParameter::Ne
   ptr->setPhaseTypeCountProperty(phaseTypeCountProperty);
   ptr->setPhaseTypeArrayPathProperty(phaseTypeArrayPathProperty);
   ptr->setGroupIndex(groupIndex);
+  ptr->setSetterCallback(setterCallback);
+  ptr->setGetterCallback(getterCallback);
 
   return ptr;
 }
-
 
 // -----------------------------------------------------------------------------
 //
@@ -76,6 +80,40 @@ ShapeTypeSelectionFilterParameter::Pointer ShapeTypeSelectionFilterParameter::Ne
 QString ShapeTypeSelectionFilterParameter::getWidgetType()
 {
   return QString("ShapeTypeSelectionWidget");
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void ShapeTypeSelectionFilterParameter::readJson(const QJsonObject &json)
+{
+  QJsonValue jsonValue = json[getPropertyName()];
+  if(!jsonValue.isUndefined() )
+  {
+    QJsonArray jsonArray = jsonValue.toArray();
+    UInt32Vector_t vec;
+    for (int i=0; i<jsonArray.size(); i++)
+    {
+      vec.d.push_back(static_cast<unsigned int>(jsonArray[i].toDouble()));
+    }
+    m_SetterCallback(vec);
+  }
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void ShapeTypeSelectionFilterParameter::writeJson(QJsonObject &json)
+{
+  UInt32Vector_t vec = m_GetterCallback();
+  QJsonArray jsonArray;
+
+  for (int i=0; i<vec.d.size(); i++)
+  {
+    jsonArray.push_back(static_cast<double>(vec.d[i]));
+  }
+
+  json[getPropertyName()] = jsonArray;
 }
 
 

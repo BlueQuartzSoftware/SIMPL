@@ -54,7 +54,8 @@ DataContainerArrayProxyFilterParameter::~DataContainerArrayProxyFilterParameter(
 //
 // -----------------------------------------------------------------------------
 DataContainerArrayProxyFilterParameter::Pointer DataContainerArrayProxyFilterParameter::New(const QString& humanLabel, const QString& propertyName,
-    const QString& defaultValue, DataContainerArrayProxy proxy, Qt::CheckState defValue, Category category, int groupIndex)
+    const QString& defaultValue, DataContainerArrayProxy proxy, Qt::CheckState defValue, Category category, SetterCallbackType setterCallback,
+                                                                                            GetterCallbackType getterCallback,int groupIndex)
 {
   DataContainerArrayProxyFilterParameter::Pointer ptr = DataContainerArrayProxyFilterParameter::New();
   ptr->setHumanLabel(humanLabel);
@@ -64,11 +65,11 @@ DataContainerArrayProxyFilterParameter::Pointer DataContainerArrayProxyFilterPar
   ptr->setDefaultFlagValue(defValue);
   ptr->setDataContainerArrayProxy(proxy);
   ptr->setGroupIndex(groupIndex);
+  ptr->setSetterCallback(setterCallback);
+  ptr->setGetterCallback(getterCallback);
 
   return ptr;
 }
-
-
 
 // -----------------------------------------------------------------------------
 //
@@ -76,5 +77,31 @@ DataContainerArrayProxyFilterParameter::Pointer DataContainerArrayProxyFilterPar
 QString DataContainerArrayProxyFilterParameter::getWidgetType()
 {
   return QString("DataContainerArrayProxyWidget");
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void DataContainerArrayProxyFilterParameter::readJson(const QJsonObject &json)
+{     
+  QJsonValue jsonValue = json[getPropertyName()];
+  if(!jsonValue.isUndefined() )
+  {
+    QJsonObject jsonObject = jsonValue.toObject();
+    DataContainerArrayProxy proxy;
+    proxy.readJson(jsonObject);
+    m_SetterCallback(proxy);
+  }
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void DataContainerArrayProxyFilterParameter::writeJson(QJsonObject &json)
+{
+  DataContainerArrayProxy proxy = m_GetterCallback();
+  QJsonObject obj;
+  proxy.writeJson(obj);
+  json[getPropertyName()] = obj;
 }
 

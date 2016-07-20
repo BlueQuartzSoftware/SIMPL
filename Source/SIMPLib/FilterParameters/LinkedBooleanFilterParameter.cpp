@@ -54,7 +54,10 @@ LinkedBooleanFilterParameter::~LinkedBooleanFilterParameter()
 LinkedBooleanFilterParameter::Pointer LinkedBooleanFilterParameter::New(const QString& humanLabel, const QString& propertyName,
     const bool& defaultValue,
     QStringList conditionalProperties,
-    Category category, int groupIndex)
+    Category category,
+    SetterCallbackType setterCallback,
+    GetterCallbackType getterCallback,
+    int groupIndex)
 {
   LinkedBooleanFilterParameter::Pointer ptr = LinkedBooleanFilterParameter::New();
   ptr->setHumanLabel(humanLabel);
@@ -63,10 +66,11 @@ LinkedBooleanFilterParameter::Pointer LinkedBooleanFilterParameter::New(const QS
   ptr->setCategory(category);
   ptr->setConditionalProperties(conditionalProperties);
   ptr->setGroupIndex(groupIndex);
+  ptr->setSetterCallback(setterCallback);
+  ptr->setGetterCallback(getterCallback);
 
   return ptr;
 }
-
 
 // -----------------------------------------------------------------------------
 //
@@ -74,5 +78,25 @@ LinkedBooleanFilterParameter::Pointer LinkedBooleanFilterParameter::New(const QS
 QString LinkedBooleanFilterParameter::getWidgetType()
 {
   return QString("LinkedBooleanWidget");
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void LinkedBooleanFilterParameter::readJson(const QJsonObject &json)
+{
+  QJsonValue jsonValue = json[getPropertyName()];
+  if(!jsonValue.isUndefined() )
+  {
+    m_SetterCallback(static_cast<bool>(jsonValue.toInt()));
+  }
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void LinkedBooleanFilterParameter::writeJson(QJsonObject &json)
+{
+  json[getPropertyName()] = static_cast<int>(m_GetterCallback());
 }
 

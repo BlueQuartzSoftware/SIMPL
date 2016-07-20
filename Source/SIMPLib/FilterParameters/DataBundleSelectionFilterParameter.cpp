@@ -52,7 +52,7 @@ DataBundleSelectionFilterParameter::~DataBundleSelectionFilterParameter()
 //
 // -----------------------------------------------------------------------------
 DataBundleSelectionFilterParameter::Pointer DataBundleSelectionFilterParameter::New(const QString& humanLabel, const QString& propertyName,
-  const QString& defaultValue, Category category, int groupIndex)
+  const QString& defaultValue, Category category, SetterCallbackType setterCallback, GetterCallbackType getterCallback,int groupIndex)
 {
   DataBundleSelectionFilterParameter::Pointer ptr = DataBundleSelectionFilterParameter::New();
   ptr->setHumanLabel(humanLabel);
@@ -60,10 +60,11 @@ DataBundleSelectionFilterParameter::Pointer DataBundleSelectionFilterParameter::
   ptr->setDefaultValue(defaultValue);
   ptr->setCategory(category);
   ptr->setGroupIndex(groupIndex);
+  ptr->setSetterCallback(setterCallback);
+  ptr->setGetterCallback(getterCallback);
 
   return ptr;
 }
-
 
 // -----------------------------------------------------------------------------
 //
@@ -71,5 +72,25 @@ DataBundleSelectionFilterParameter::Pointer DataBundleSelectionFilterParameter::
 QString DataBundleSelectionFilterParameter::getWidgetType()
 {
   return QString("DataBundleSelectionWidget");
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void DataBundleSelectionFilterParameter::readJson(const QJsonObject &json)
+{
+  QJsonValue jsonValue = json[getPropertyName()];
+  if(!jsonValue.isUndefined() )
+  {
+    m_SetterCallback(jsonValue.toString(""));
+  }
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void DataBundleSelectionFilterParameter::writeJson(QJsonObject &json)
+{
+  json[getPropertyName()] = m_GetterCallback();
 }
 

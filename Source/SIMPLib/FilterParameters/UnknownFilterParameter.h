@@ -36,6 +36,8 @@
 #ifndef _unknownfilterparameter_h_
 #define _unknownfilterparameter_h_
 
+#include <QtCore/QJsonObject>
+
 #include "SIMPLib/FilterParameters/FilterParameter.h"
 
 class SIMPLib_EXPORT UnknownFilterParameter : public FilterParameter
@@ -46,8 +48,7 @@ public:
     SIMPL_TYPE_MACRO(UnknownFilterParameter)
 
     static Pointer New(const QString& humanLabel, const QString& propertyName,
-    const QString& defaultValue, Category category,
-     int groupIndex = -1);
+                       const QString& defaultValue, Category category, int groupIndex = -1);
 
     virtual ~UnknownFilterParameter();
 
@@ -57,7 +58,6 @@ public:
    * @return
    */
   QString getWidgetType();
-
 
 protected:
   UnknownFilterParameter();

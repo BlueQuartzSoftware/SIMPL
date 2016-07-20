@@ -46,7 +46,6 @@
 #include "SIMPLib/Common/Constants.h"
 #include "SIMPLib/SIMPLibVersion.h"
 #include "SIMPLib/FilterParameters/AbstractFilterParametersReader.h"
-#include "SIMPLib/FilterParameters/AbstractFilterParametersWriter.h"
 
 #include "SIMPLib/FilterParameters/FloatVec3FilterParameter.h"
 #include "SIMPLib/FilterParameters/DataContainerSelectionFilterParameter.h"
@@ -127,25 +126,26 @@ void ScaleVolume::setupFilterParameters()
 {
   FilterParameterVector parameters;
 
-  parameters.push_back(FloatVec3FilterParameter::New("Scaling Factor", "ScaleFactor", getScaleFactor(), FilterParameter::Parameter));
+  parameters.push_back(FloatVec3FilterParameter::New("Scaling Factor", "ScaleFactor", getScaleFactor(), FilterParameter::Parameter, SIMPL_BIND_SETTER(ScaleVolume, this, ScaleFactor), SIMPL_BIND_GETTER(ScaleVolume, this, ScaleFactor)));
+
 
   QStringList linkedProps("DataContainerName");
-  parameters.push_back(LinkedBooleanFilterParameter::New("Apply to Image Geometry", "ApplyToVoxelVolume", getApplyToVoxelVolume(), linkedProps, FilterParameter::Parameter));
+  parameters.push_back(LinkedBooleanFilterParameter::New("Apply to Image Geometry", "ApplyToVoxelVolume", getApplyToVoxelVolume(), linkedProps, FilterParameter::Parameter, SIMPL_BIND_SETTER(ScaleVolume, this, ApplyToVoxelVolume), SIMPL_BIND_GETTER(ScaleVolume, this, ApplyToVoxelVolume)));
   {
     DataContainerSelectionFilterParameter::RequirementType req;
     req.dcGeometryTypes = QVector<unsigned int>(1, SIMPL::GeometryType::ImageGeometry);
-    parameters.push_back(DataContainerSelectionFilterParameter::New("Data Container Image Geometry to Scale", "DataContainerName", getDataContainerName(), FilterParameter::RequiredArray, req));
+    parameters.push_back(DataContainerSelectionFilterParameter::New("Data Container Image Geometry to Scale", "DataContainerName", getDataContainerName(), FilterParameter::RequiredArray, req, SIMPL_BIND_SETTER(ScaleVolume, this, DataContainerName), SIMPL_BIND_GETTER(ScaleVolume, this, DataContainerName)));
   }
   linkedProps.clear();
   linkedProps << "SurfaceDataContainerName";
-  parameters.push_back(LinkedBooleanFilterParameter::New("Apply to Surface Geometry", "ApplyToSurfaceMesh", getApplyToSurfaceMesh(), linkedProps, FilterParameter::Parameter));
+  parameters.push_back(LinkedBooleanFilterParameter::New("Apply to Surface Geometry", "ApplyToSurfaceMesh", getApplyToSurfaceMesh(), linkedProps, FilterParameter::Parameter, SIMPL_BIND_SETTER(ScaleVolume, this, ApplyToSurfaceMesh), SIMPL_BIND_GETTER(ScaleVolume, this, ApplyToSurfaceMesh)));
   {
     DataContainerSelectionFilterParameter::RequirementType req;
     QVector<unsigned int> dcGeometryTypes;
     dcGeometryTypes.push_back(SIMPL::GeometryType::TriangleGeometry);
     dcGeometryTypes.push_back(SIMPL::GeometryType::QuadGeometry);
     req.dcGeometryTypes = dcGeometryTypes;
-    parameters.push_back(DataContainerSelectionFilterParameter::New("Data Container Surface Geometry to Scale", "SurfaceDataContainerName", getSurfaceDataContainerName(), FilterParameter::RequiredArray, req));
+    parameters.push_back(DataContainerSelectionFilterParameter::New("Data Container Surface Geometry to Scale", "SurfaceDataContainerName", getSurfaceDataContainerName(), FilterParameter::RequiredArray, req, SIMPL_BIND_SETTER(ScaleVolume, this, SurfaceDataContainerName), SIMPL_BIND_GETTER(ScaleVolume, this, SurfaceDataContainerName)));
   }
 
   setFilterParameters(parameters);
@@ -163,22 +163,6 @@ void ScaleVolume::readFilterParameters(AbstractFilterParametersReader* reader, i
   setDataContainerName(reader->readString("DataContainerName", getDataContainerName()));
   setSurfaceDataContainerName(reader->readString("SurfaceDataContainerName", getSurfaceDataContainerName()));
   reader->closeFilterGroup();
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-int ScaleVolume::writeFilterParameters(AbstractFilterParametersWriter* writer, int index)
-{
-  writer->openFilterGroup(this, index);
-  SIMPL_FILTER_WRITE_PARAMETER(FilterVersion)
-  SIMPL_FILTER_WRITE_PARAMETER(ScaleFactor)
-  SIMPL_FILTER_WRITE_PARAMETER(ApplyToVoxelVolume)
-  SIMPL_FILTER_WRITE_PARAMETER(ApplyToSurfaceMesh)
-  SIMPL_FILTER_WRITE_PARAMETER(DataContainerName)
-  SIMPL_FILTER_WRITE_PARAMETER(SurfaceDataContainerName)
-  writer->closeFilterGroup();
-  return ++index; // we want to return the next index that was just written to
 }
 
 // -----------------------------------------------------------------------------

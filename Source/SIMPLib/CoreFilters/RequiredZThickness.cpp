@@ -38,7 +38,6 @@
 
 #include "SIMPLib/Common/Constants.h"
 #include "SIMPLib/FilterParameters/AbstractFilterParametersReader.h"
-#include "SIMPLib/FilterParameters/AbstractFilterParametersWriter.h"
 #include "SIMPLib/FilterParameters/DataArraySelectionFilterParameter.h"
 #include "SIMPLib/FilterParameters/DataContainerSelectionFilterParameter.h"
 #include "SIMPLib/FilterParameters/BooleanFilterParameter.h"
@@ -75,10 +74,9 @@ void RequiredZThickness::setupFilterParameters()
 
   {
     DataContainerSelectionFilterParameter::RequirementType req;
-    parameters.push_back(DataContainerSelectionFilterParameter::New("DataContainer", "DataContainerSelection", getDataContainerSelection(), FilterParameter::RequiredArray, req));
+    parameters.push_back(DataContainerSelectionFilterParameter::New("DataContainer", "DataContainerSelection", getDataContainerSelection(), FilterParameter::RequiredArray, req, SIMPL_BIND_SETTER(RequiredZThickness, this, DataContainerSelection), SIMPL_BIND_GETTER(RequiredZThickness, this, DataContainerSelection)));
   }
-  parameters.push_back(IntFilterParameter::New("Minimum Z Dimension", "NumZVoxels", getNumZVoxels(), FilterParameter::Parameter, 0));
-  parameters.push_back(BooleanFilterParameter::New("Preflight Check", "PreflightCheck", getPreflightCheck(), FilterParameter::Parameter));
+  parameters.push_back(IntFilterParameter::New("Minimum Z Dimension", "NumZVoxels", getNumZVoxels(), FilterParameter::Parameter, SIMPL_BIND_SETTER(RequiredZThickness, this, NumZVoxels), SIMPL_BIND_GETTER(RequiredZThickness, this, NumZVoxels), 0));  parameters.push_back(BooleanFilterParameter::New("Preflight Check", "PreflightCheck", getPreflightCheck(), FilterParameter::Parameter, SIMPL_BIND_SETTER(RequiredZThickness, this, PreflightCheck), SIMPL_BIND_GETTER(RequiredZThickness, this, PreflightCheck)));
   setFilterParameters(parameters);
 }
 
@@ -93,20 +91,6 @@ void RequiredZThickness::readFilterParameters(AbstractFilterParametersReader* re
   setNumZVoxels(reader->readValue("NumZVoxels", getNumZVoxels()));
   setPreflightCheck(reader->readValue("PreflightCheck", getPreflightCheck()));
   reader->closeFilterGroup();
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-int RequiredZThickness::writeFilterParameters(AbstractFilterParametersWriter* writer, int index)
-{
-  AbstractDecisionFilter::writeFilterParameters(writer, index);
-  writer->openFilterGroup(this, index);
-  SIMPL_FILTER_WRITE_PARAMETER(NumZVoxels)
-  SIMPL_FILTER_WRITE_PARAMETER(PreflightCheck)
-  SIMPL_FILTER_WRITE_PARAMETER(DataContainerSelection)
-  writer->closeFilterGroup();
-  return ++index; // we want to return the next index that was just written to
 }
 
 // -----------------------------------------------------------------------------

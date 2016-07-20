@@ -68,7 +68,7 @@ JsonFilterParametersReader::~JsonFilterParametersReader()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-FilterPipeline::Pointer JsonFilterParametersReader::ReadPipelineFromFile(QString filePath, IObserver* obs)
+FilterPipeline::Pointer JsonFilterParametersReader::readPipelineFromFile(QString filePath, IObserver* obs)
 {
   QFileInfo fInfo(filePath);
 
@@ -82,8 +82,7 @@ FilterPipeline::Pointer JsonFilterParametersReader::ReadPipelineFromFile(QString
     return FilterPipeline::NullPointer();
   }
 
-  JsonFilterParametersReader::Pointer reader = JsonFilterParametersReader::New();
-  int err = reader->openFile(filePath);
+  int err = openFile(filePath);
 
   if (err != QJsonParseError::NoError)
   {
@@ -95,7 +94,10 @@ FilterPipeline::Pointer JsonFilterParametersReader::ReadPipelineFromFile(QString
     return FilterPipeline::NullPointer();
   }
 
-  return ReadPipeline(reader, obs);
+  FilterPipeline::Pointer pipeline = readPipeline(obs);
+  closeFile();
+
+  return pipeline;
 }
 
 // -----------------------------------------------------------------------------
@@ -237,12 +239,14 @@ QString JsonFilterParametersReader::HtmlSummaryFromFile(QString filePath, IObser
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-FilterPipeline::Pointer JsonFilterParametersReader::ReadPipelineFromString(QString contents, IObserver* obs)
+FilterPipeline::Pointer JsonFilterParametersReader::readPipelineFromString(QString contents, IObserver* obs)
 {
-  JsonFilterParametersReader::Pointer reader = JsonFilterParametersReader::New();
-  reader->setPipelineContents(contents);
+  setPipelineContents(contents);
 
-  return ReadPipeline(reader, obs);
+  FilterPipeline::Pointer pipeline = readPipeline(obs);
+  closeFile();
+
+  return pipeline;
 }
 
 // -----------------------------------------------------------------------------
@@ -272,21 +276,19 @@ QString JsonFilterParametersReader::generateIndexString(int index, int maxIndex)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-FilterPipeline::Pointer JsonFilterParametersReader::ReadPipeline(JsonFilterParametersReader::Pointer reader, IObserver* obs)
+FilterPipeline::Pointer JsonFilterParametersReader::readPipeline(IObserver* obs)
 {
   FilterManager* filtManager = FilterManager::Instance();
   FilterFactory<EmptyFilter>::Pointer emptyFilterFactory = FilterFactory<EmptyFilter>::New();
   filtManager->addFilterFactory("EmptyFilter", emptyFilterFactory);
 
-  if (reader->containsGroup(SIMPL::Settings::PipelineBuilderGroup) == false)
+  if (containsGroup(SIMPL::Settings::PipelineBuilderGroup) == false)
   {
     return FilterPipeline::NullPointer();
   }
 
-  reader->openGroup(SIMPL::Settings::PipelineBuilderGroup);
-  int filterCount = reader->readValue(SIMPL::Settings::NumFilters, -1);
-  reader->closeGroup();
-  reader->setMaxFilterIndex(filterCount);
+  QJsonObject builderObj = m_Root[SIMPL::Settings::PipelineBuilderGroup].toObject();
+  int filterCount = builderObj[SIMPL::Settings::NumFilters].toInt();
 
   FilterPipeline::Pointer pipeline;
   if (filterCount >= 0)
@@ -300,23 +302,10 @@ FilterPipeline::Pointer JsonFilterParametersReader::ReadPipeline(JsonFilterParam
 
   for (int i = 0; i < filterCount; ++i)
   {
-    QString filterName;
-    // Open the group to get the name of the filter then close again.
-    QString groupName = reader->generateIndexString(i, filterCount);
-    //First try generating a string with padding digits.
-    int err = reader->openFilterGroup(groupName);
-    if(err < 0)
-    {
-      // If that fails then try without the padding digits
-      err = reader->openFilterGroup(NULL, i);
-    }
-    if (err == 0)
-    {
-      filterName = reader->readString(SIMPL::Settings::FilterName, "");
-      reader->closeFilterGroup();
-    }
+    openFilterGroup(NULL, i);
 
-    //qDebug() << "Group: " << gName << " FilterName: " << filterName;
+    QString filterName = m_CurrentFilterIndex[SIMPL::Settings::FilterName].toString();
+
     if (filterName.isEmpty() == false)
     {
       IFilterFactory::Pointer factory = filtManager->getFactoryForFilter(filterName);
@@ -326,7 +315,7 @@ FilterPipeline::Pointer JsonFilterParametersReader::ReadPipeline(JsonFilterParam
 
         if (NULL != filter.get())
         {
-          filter->readFilterParameters(reader.get(), i);
+          filter->readFilterParameters(m_CurrentFilterIndex);
           pipeline->pushBack(filter);
         }
       }
@@ -365,6 +354,8 @@ FilterPipeline::Pointer JsonFilterParametersReader::ReadPipeline(JsonFilterParam
         obs->processPipelineMessage(pm);
       }
     }
+
+    closeFilterGroup();
   }
   return pipeline;
 }
@@ -372,7 +363,7 @@ FilterPipeline::Pointer JsonFilterParametersReader::ReadPipeline(JsonFilterParam
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void JsonFilterParametersReader::ReadNameOfPipelineFromFile(QString filePath, QString& name, QString& version, IObserver* obs)
+void JsonFilterParametersReader::readNameOfPipelineFromFile(QString filePath, QString& name, QString& version, IObserver* obs)
 {
   QFileInfo fInfo(filePath);
 
@@ -390,8 +381,7 @@ void JsonFilterParametersReader::ReadNameOfPipelineFromFile(QString filePath, QS
     return;
   }
 
-  JsonFilterParametersReader::Pointer reader = JsonFilterParametersReader::New();
-  int err = reader->openFile(filePath);
+  int err = openFile(filePath);
 
   if (err != QJsonParseError::NoError)
   {
@@ -405,10 +395,10 @@ void JsonFilterParametersReader::ReadNameOfPipelineFromFile(QString filePath, QS
     return;
   }
 
-  err = reader->openGroup(SIMPL::Settings::PipelineBuilderGroup);
-  name = reader->readString(SIMPL::Settings::PipelineName, "");
-  version = reader->readString(SIMPL::Settings::Version, "Unknown DREAM3D Version");
-  reader->closeGroup();
+  err = openGroup(SIMPL::Settings::PipelineBuilderGroup);
+  name = m_CurrentFilterIndex[SIMPL::Settings::PipelineName].toString();
+  version = m_CurrentFilterIndex[SIMPL::Settings::Version].toString();
+  closeGroup();
 }
 
 // -----------------------------------------------------------------------------
@@ -440,6 +430,9 @@ int JsonFilterParametersReader::openFile(QString filePath)
       return parseError.error;
     }
     m_Root = doc.object();
+
+    QJsonObject meta = m_Root[SIMPL::Settings::PipelineBuilderGroup].toObject();
+    m_MaxFilterIndex = meta[SIMPL::Settings::NumFilters].toInt();
 
     err = QJsonParseError::NoError;
   }
@@ -507,22 +500,6 @@ int JsonFilterParametersReader::openFilterGroup(AbstractFilter* unused, int inde
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-int JsonFilterParametersReader::openFilterGroup(const QString &numStr)
-{
-  Q_ASSERT(m_Root.isEmpty() == false);
-  int err = 0;
-  m_CurrentFilterIndex = m_Root[numStr].toObject();
-  if(m_CurrentFilterIndex.isEmpty())
-  {
-    err = -1;
-  }
-  return err;
-}
-
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
 int JsonFilterParametersReader::closeFilterGroup()
 {
   Q_ASSERT(m_Root.isEmpty() == false);
@@ -574,1104 +551,3 @@ int JsonFilterParametersReader::closeGroup()
   m_CurrentFilterIndex = QJsonObject();
   return 0;
 }
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-QString JsonFilterParametersReader::readString(const QString name, QString value)
-{
-  Q_ASSERT(m_CurrentFilterIndex.isEmpty() == false);
-  if (m_CurrentFilterIndex.contains(name) == false)
-  {
-    return value;
-  }
-  return m_CurrentFilterIndex.value(name).toString();
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-QVector<QString> JsonFilterParametersReader::readStrings(const QString name, QVector<QString> value)
-{
-  Q_ASSERT(m_CurrentFilterIndex.isEmpty() == false);
-  if (m_CurrentFilterIndex.contains(name) == false)
-  {
-    return value;
-  }
-
-  QJsonArray jsonArray = m_CurrentFilterIndex.value(name).toArray();
-  QVector<QString> vector;
-  for (QJsonArray::iterator iter = jsonArray.begin(); iter != jsonArray.end(); ++iter)
-  {
-    if ((*iter).isString())
-    {
-      QString str = (*iter).toString();
-      vector.push_back(str);
-    }
-  }
-
-  return vector;
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-QStringList JsonFilterParametersReader::readStringList(const QString name, QStringList value)
-{
-  Q_ASSERT(m_CurrentFilterIndex.isEmpty() == false);
-  if (m_CurrentFilterIndex.contains(name) == false)
-  {
-    return value;
-  }
-
-  QJsonArray jsonArray = m_CurrentFilterIndex.value(name).toArray();
-  QStringList vector;
-  for (QJsonArray::iterator iter = jsonArray.begin(); iter != jsonArray.end(); ++iter)
-  {
-    if ((*iter).isString())
-    {
-      QString str = (*iter).toString();
-      vector.push_back(str);
-    }
-  }
-
-  return vector;
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-int8_t JsonFilterParametersReader::readValue(const QString name, int8_t value)
-{
-  Q_ASSERT(m_CurrentFilterIndex.isEmpty() == false);
-  if (m_CurrentFilterIndex.contains(name) == false)
-  {
-    return value;
-  }
-
-  if (m_CurrentFilterIndex.value(name).isDouble())
-  {
-    double val = m_CurrentFilterIndex.value(name).toDouble();
-    if (val >= std::numeric_limits<int8_t>().min() && val <= std::numeric_limits<int8_t>().max())
-    {
-      return static_cast<int8_t>(val);
-    }
-  }
-
-  return value;
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-int16_t JsonFilterParametersReader::readValue(const QString name, int16_t value)
-{
-  Q_ASSERT(m_CurrentFilterIndex.isEmpty() == false);
-  if (m_CurrentFilterIndex.contains(name) == false)
-  {
-    return value;
-  }
-
-  if (m_CurrentFilterIndex.value(name).isDouble())
-  {
-    double val = m_CurrentFilterIndex.value(name).toDouble();
-    if (val >= std::numeric_limits<int16_t>().min() && val <= std::numeric_limits<int16_t>().max())
-    {
-      return static_cast<int16_t>(val);
-    }
-  }
-
-  return value;
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-int32_t JsonFilterParametersReader::readValue(const QString name, int32_t value)
-{
-  Q_ASSERT(m_CurrentFilterIndex.isEmpty() == false);
-  if (m_CurrentFilterIndex.contains(name) == false)
-  {
-    return value;
-  }
-
-  if (m_CurrentFilterIndex.value(name).isDouble())
-  {
-    double val = m_CurrentFilterIndex.value(name).toDouble();
-    if (val >= std::numeric_limits<int32_t>().min() && val <= std::numeric_limits<int32_t>().max())
-    {
-      return static_cast<int32_t>(val);
-    }
-  }
-
-  return value;
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-int64_t JsonFilterParametersReader::readValue(const QString name, int64_t value)
-{
-  Q_ASSERT(m_CurrentFilterIndex.isEmpty() == false);
-  if (m_CurrentFilterIndex.contains(name) == false)
-  {
-    return value;
-  }
-
-  if (m_CurrentFilterIndex.value(name).isDouble())
-  {
-    double val = m_CurrentFilterIndex.value(name).toDouble();
-    if (val >= std::numeric_limits<int64_t>().min() && val <= std::numeric_limits<int64_t>().max())
-    {
-      return static_cast<int64_t>(val);
-    }
-  }
-  else if (m_CurrentFilterIndex.value(name).isString())
-  {
-    qint64 val = m_CurrentFilterIndex.value(name).toString().toLongLong();
-    if (val >= std::numeric_limits<int64_t>().min() && val <= std::numeric_limits<int64_t>().max())
-    {
-      return static_cast<int64_t>(val);
-    }
-  }
-
-  return value;
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-uint8_t JsonFilterParametersReader::readValue(const QString name, uint8_t value)
-{
-  Q_ASSERT(m_CurrentFilterIndex.isEmpty() == false);
-  if (m_CurrentFilterIndex.contains(name) == false)
-  {
-    return value;
-  }
-
-  if (m_CurrentFilterIndex.value(name).isDouble())
-  {
-    double val = m_CurrentFilterIndex.value(name).toDouble();
-    if (val >= std::numeric_limits<uint8_t>().min() && val <= std::numeric_limits<uint8_t>().max())
-    {
-      return static_cast<uint8_t>(val);
-    }
-  }
-
-  return value;
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-uint16_t JsonFilterParametersReader::readValue(const QString name, uint16_t value)
-{
-  Q_ASSERT(m_CurrentFilterIndex.isEmpty() == false);
-  if (m_CurrentFilterIndex.contains(name) == false)
-  {
-    return value;
-  }
-
-  if (m_CurrentFilterIndex.value(name).isDouble())
-  {
-    double val = m_CurrentFilterIndex.value(name).toDouble();
-    if (val >= std::numeric_limits<uint16_t>().min() && val <= std::numeric_limits<uint16_t>().max())
-    {
-      return static_cast<uint16_t>(val);
-    }
-  }
-
-  return value;
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-uint32_t JsonFilterParametersReader::readValue(const QString name, uint32_t value)
-{
-  Q_ASSERT(m_CurrentFilterIndex.isEmpty() == false);
-  if (m_CurrentFilterIndex.contains(name) == false)
-  {
-    return value;
-  }
-
-  if (m_CurrentFilterIndex.value(name).isDouble())
-  {
-    double val = m_CurrentFilterIndex.value(name).toDouble();
-    if (val >= std::numeric_limits<uint32_t>().min() && val <= std::numeric_limits<uint32_t>().max())
-    {
-      return static_cast<uint32_t>(val);
-    }
-  }
-
-  return value;
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-uint64_t JsonFilterParametersReader::readValue(const QString name, uint64_t value)
-{
-  Q_ASSERT(m_CurrentFilterIndex.isEmpty() == false);
-  if (m_CurrentFilterIndex.contains(name) == false)
-  {
-    return value;
-  }
-
-  if (m_CurrentFilterIndex.value(name).isDouble())
-  {
-    double val = m_CurrentFilterIndex.value(name).toDouble();
-    if (val >= std::numeric_limits<uint64_t>().min() && val <= std::numeric_limits<uint64_t>().max())
-    {
-      return static_cast<uint64_t>(val);
-    }
-  }
-  else if (m_CurrentFilterIndex.value(name).isString())
-  {
-    quint64 val = m_CurrentFilterIndex.value(name).toString().toULongLong();
-    if (val <= std::numeric_limits<quint64>().max())
-    {
-      return static_cast<quint64>(val);
-    }
-  }
-  return value;
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-float JsonFilterParametersReader::readValue(const QString name, float value)
-{
-  Q_ASSERT(m_CurrentFilterIndex.isEmpty() == false);
-  if (m_CurrentFilterIndex.contains(name) == false)
-  {
-    return value;
-  }
-
-  if (m_CurrentFilterIndex.value(name).isDouble())
-  {
-    double val = m_CurrentFilterIndex.value(name).toDouble();
-    if (val >= std::numeric_limits<float>().min() && val <= std::numeric_limits<float>().max())
-    {
-      return static_cast<float>(val);
-    }
-    else if (val >= -std::numeric_limits<float>().max() && val <= -std::numeric_limits<float>().min())
-    {
-      return static_cast<float>(val);
-    }
-    else if (val == 0.0f)
-    {
-      return static_cast<float>(val);
-    }
-  }
-
-  return value;
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-double JsonFilterParametersReader::readValue(const QString name, double value)
-{
-  Q_ASSERT(m_CurrentFilterIndex.isEmpty() == false);
-  if (m_CurrentFilterIndex.contains(name) == false)
-  {
-    return value;
-  }
-
-  if (m_CurrentFilterIndex.value(name).isDouble())
-  {
-    return m_CurrentFilterIndex.value(name).toDouble();
-  }
-
-  return value;
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-bool JsonFilterParametersReader::readValue(const QString name, bool value)
-{
-  Q_ASSERT(m_CurrentFilterIndex.isEmpty() == false);
-  if (m_CurrentFilterIndex.contains(name) == false)
-  {
-    return value;
-  }
-  int v = m_CurrentFilterIndex.value(name).toInt();
-  return ( v == 0 ) ? false : true;
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-QVector<int8_t> JsonFilterParametersReader::readArray(const QString name, QVector<int8_t> value)
-{
-  Q_ASSERT(m_CurrentFilterIndex.isEmpty() == false);
-  if (m_CurrentFilterIndex.contains(name) == false)
-  {
-    return value;
-  }
-
-  if (m_CurrentFilterIndex.value(name).isArray())
-  {
-    QJsonArray jsonArray = m_CurrentFilterIndex.value(name).toArray();
-    QVector<int8_t> vector;
-    for (QJsonArray::iterator iter = jsonArray.begin(); iter != jsonArray.end(); ++iter)
-    {
-      if ((*iter).isDouble())
-      {
-        double val = (*iter).toDouble();
-        if (val >= std::numeric_limits<int8_t>().min() && val <= std::numeric_limits<int8_t>().max())
-        {
-          vector.push_back(static_cast<int8_t>(val));
-        }
-      }
-    }
-    return vector;
-  }
-
-  return value;
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-QVector<int16_t> JsonFilterParametersReader::readArray(const QString name, QVector<int16_t> value)
-{
-  Q_ASSERT(m_CurrentFilterIndex.isEmpty() == false);
-  if (m_CurrentFilterIndex.contains(name) == false)
-  {
-    return value;
-  }
-
-  if (m_CurrentFilterIndex.value(name).isArray())
-  {
-    QJsonArray jsonArray = m_CurrentFilterIndex.value(name).toArray();
-    QVector<int16_t> vector;
-    for (QJsonArray::iterator iter = jsonArray.begin(); iter != jsonArray.end(); ++iter)
-    {
-      if ((*iter).isDouble())
-      {
-        double val = (*iter).toDouble();
-        if (val >= std::numeric_limits<int16_t>().min() && val <= std::numeric_limits<int16_t>().max())
-        {
-          vector.push_back(static_cast<int16_t>(val));
-        }
-      }
-    }
-    return vector;
-  }
-
-  return value;
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-QVector<int32_t> JsonFilterParametersReader::readArray(const QString name, QVector<int32_t> value)
-{
-  Q_ASSERT(m_CurrentFilterIndex.isEmpty() == false);
-  if (m_CurrentFilterIndex.contains(name) == false)
-  {
-    return value;
-  }
-
-  if (m_CurrentFilterIndex.value(name).isArray())
-  {
-    QJsonArray jsonArray = m_CurrentFilterIndex.value(name).toArray();
-    QVector<int32_t> vector;
-    for (QJsonArray::iterator iter = jsonArray.begin(); iter != jsonArray.end(); ++iter)
-    {
-      if ((*iter).isDouble())
-      {
-        double val = (*iter).toDouble();
-        if (val >= std::numeric_limits<int32_t>().min() && val <= std::numeric_limits<int32_t>().max())
-        {
-          vector.push_back(static_cast<int32_t>(val));
-        }
-      }
-    }
-    return vector;
-  }
-
-  return value;
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-QVector<int64_t> JsonFilterParametersReader::readArray(const QString name, QVector<int64_t> value)
-{
-  Q_ASSERT(m_CurrentFilterIndex.isEmpty() == false);
-  if (m_CurrentFilterIndex.contains(name) == false)
-  {
-    return value;
-  }
-
-  if (m_CurrentFilterIndex.value(name).isArray())
-  {
-    QJsonArray jsonArray = m_CurrentFilterIndex.value(name).toArray();
-    QVector<int64_t> vector;
-    for (QJsonArray::iterator iter = jsonArray.begin(); iter != jsonArray.end(); ++iter)
-    {
-      if ((*iter).isDouble())
-      {
-        double val = (*iter).toDouble();
-        if (val >= std::numeric_limits<int64_t>().min() && val <= std::numeric_limits<int64_t>().max())
-        {
-          vector.push_back(static_cast<int64_t>(val));
-        }
-      }
-      else if ((*iter).isString())
-      {
-        qint64 val = (*iter).toString().toLongLong();
-        if (val >= std::numeric_limits<int64_t>().min() && val <= std::numeric_limits<int64_t>().max())
-        {
-          vector.push_back(static_cast<int64_t>(val));
-        }
-      }
-    }
-    return vector;
-  }
-
-  return value;
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-QVector<uint8_t> JsonFilterParametersReader::readArray(const QString name, QVector<uint8_t> value)
-{
-  Q_ASSERT(m_CurrentFilterIndex.isEmpty() == false);
-  if (m_CurrentFilterIndex.contains(name) == false)
-  {
-    return value;
-  }
-
-  if (m_CurrentFilterIndex.value(name).isArray())
-  {
-    QJsonArray jsonArray = m_CurrentFilterIndex.value(name).toArray();
-    QVector<uint8_t> vector;
-    for (QJsonArray::iterator iter = jsonArray.begin(); iter != jsonArray.end(); ++iter)
-    {
-      if ((*iter).isDouble())
-      {
-        double val = (*iter).toDouble();
-        if (val >= std::numeric_limits<uint8_t>().min() && val <= std::numeric_limits<uint8_t>().max())
-        {
-          vector.push_back(static_cast<uint8_t>(val));
-        }
-      }
-    }
-    return vector;
-  }
-
-  return value;
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-QVector<uint16_t> JsonFilterParametersReader::readArray(const QString name, QVector<uint16_t> value)
-{
-  Q_ASSERT(m_CurrentFilterIndex.isEmpty() == false);
-  if (m_CurrentFilterIndex.contains(name) == false)
-  {
-    return value;
-  }
-
-  if (m_CurrentFilterIndex.value(name).isArray())
-  {
-    QJsonArray jsonArray = m_CurrentFilterIndex.value(name).toArray();
-    QVector<uint16_t> vector;
-    for (QJsonArray::iterator iter = jsonArray.begin(); iter != jsonArray.end(); ++iter)
-    {
-      if ((*iter).isDouble())
-      {
-        double val = (*iter).toDouble();
-        if (val >= std::numeric_limits<uint16_t>().min() && val <= std::numeric_limits<uint16_t>().max())
-        {
-          vector.push_back(static_cast<uint16_t>(val));
-        }
-      }
-    }
-    return vector;
-  }
-
-  return value;
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-QVector<uint32_t> JsonFilterParametersReader::readArray(const QString name, QVector<uint32_t> value)
-{
-  Q_ASSERT(m_CurrentFilterIndex.isEmpty() == false);
-  if (m_CurrentFilterIndex.contains(name) == false)
-  {
-    return value;
-  }
-
-  if (m_CurrentFilterIndex.value(name).isArray())
-  {
-    QJsonArray jsonArray = m_CurrentFilterIndex.value(name).toArray();
-    QVector<uint32_t> vector;
-    for (QJsonArray::iterator iter = jsonArray.begin(); iter != jsonArray.end(); ++iter)
-    {
-      if ((*iter).isDouble())
-      {
-        double val = (*iter).toDouble();
-        if (val >= std::numeric_limits<uint32_t>().min() && val <= std::numeric_limits<uint32_t>().max())
-        {
-          vector.push_back(static_cast<uint32_t>(val));
-        }
-      }
-    }
-    return vector;
-  }
-
-  return value;
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-QVector<uint64_t> JsonFilterParametersReader::readArray(const QString name, QVector<uint64_t> value)
-{
-  Q_ASSERT(m_CurrentFilterIndex.isEmpty() == false);
-  if (m_CurrentFilterIndex.contains(name) == false)
-  {
-    return value;
-  }
-
-  if (m_CurrentFilterIndex.value(name).isArray())
-  {
-    QJsonArray jsonArray = m_CurrentFilterIndex.value(name).toArray();
-    QVector<uint64_t> vector;
-    for (QJsonArray::iterator iter = jsonArray.begin(); iter != jsonArray.end(); ++iter)
-    {
-      if ((*iter).isDouble())
-      {
-        double val = (*iter).toDouble();
-        if (val >= std::numeric_limits<uint64_t>().min() && val <= std::numeric_limits<uint64_t>().max())
-        {
-          vector.push_back(static_cast<uint64_t>(val));
-        }
-      }
-      else if ((*iter).isString())
-      {
-        quint64 val = (*iter).toString().toULongLong();
-        if (val <= std::numeric_limits<quint64>().max())
-        {
-          vector.push_back(static_cast<uint64_t>(val));
-        }
-      }
-    }
-    return vector;
-  }
-
-  return value;
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-QVector<float> JsonFilterParametersReader::readArray(const QString name, QVector<float> value)
-{
-  Q_ASSERT(m_CurrentFilterIndex.isEmpty() == false);
-  if (m_CurrentFilterIndex.contains(name) == false)
-  {
-    return value;
-  }
-
-  if (m_CurrentFilterIndex.value(name).isArray())
-  {
-    QJsonArray jsonArray = m_CurrentFilterIndex.value(name).toArray();
-    QVector<float> vector;
-    for (QJsonArray::iterator iter = jsonArray.begin(); iter != jsonArray.end(); ++iter)
-    {
-      if ((*iter).isDouble())
-      {
-        double val = (*iter).toDouble();
-        if (val >= std::numeric_limits<float>().min() && val <= std::numeric_limits<float>().max())
-        {
-          vector.push_back(static_cast<float>(val));
-        }
-        else if (val >= -std::numeric_limits<float>().max() && val <= -std::numeric_limits<float>().min())
-        {
-          vector.push_back(static_cast<float>(val));
-        }
-        else if (val == 0.0f)
-        {
-          vector.push_back(static_cast<float>(val));
-        }
-
-      }
-    }
-    return vector;
-  }
-
-  return value;
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-QVector<double> JsonFilterParametersReader::readArray(const QString name, QVector<double> value)
-{
-  Q_ASSERT(m_CurrentFilterIndex.isEmpty() == false);
-  if (m_CurrentFilterIndex.contains(name) == false)
-  {
-    return value;
-  }
-
-  if (m_CurrentFilterIndex.value(name).isArray())
-  {
-    QJsonArray jsonArray = m_CurrentFilterIndex.value(name).toArray();
-    QVector<double> vector;
-    for (QJsonArray::iterator iter = jsonArray.begin(); iter != jsonArray.end(); ++iter)
-    {
-      if ((*iter).isDouble())
-      {
-        vector.push_back((*iter).toDouble());
-      }
-    }
-    return vector;
-  }
-
-  return value;
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-IntVec3_t JsonFilterParametersReader::readIntVec3(const QString name, IntVec3_t defaultValue)
-{
-  Q_ASSERT(m_CurrentFilterIndex.isEmpty() == false);
-  if (m_CurrentFilterIndex.contains(name) == false)
-  {
-    return defaultValue;
-  }
-
-  if (m_CurrentFilterIndex.value(name).isObject())
-  {
-    QJsonObject jsonObject = m_CurrentFilterIndex.value(name).toObject();
-    IntVec3_t vec3;
-    if (vec3.readJson(jsonObject) == true)
-    {
-      return vec3;
-    }
-  }
-
-  return defaultValue;
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-FloatVec3_t JsonFilterParametersReader::readFloatVec3(const QString name, FloatVec3_t defaultValue)
-{
-  Q_ASSERT(m_CurrentFilterIndex.isEmpty() == false);
-  if (m_CurrentFilterIndex.contains(name) == false)
-  {
-    return defaultValue;
-  }
-
-  if (m_CurrentFilterIndex.value(name).isObject())
-  {
-    QJsonObject jsonObject = m_CurrentFilterIndex.value(name).toObject();
-    FloatVec3_t vec3;
-    if (vec3.readJson(jsonObject) == true)
-    {
-      return vec3;
-    }
-  }
-
-  return defaultValue;
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-Float2ndOrderPoly_t JsonFilterParametersReader::readFloat2ndOrderPoly(const QString name, Float2ndOrderPoly_t defaultValue)
-{
-  Q_ASSERT(m_CurrentFilterIndex.isEmpty() == false);
-  if (m_CurrentFilterIndex.contains(name) == false)
-  {
-    return defaultValue;
-  }
-
-  if (m_CurrentFilterIndex.value(name).isObject())
-  {
-    QJsonObject jsonObject = m_CurrentFilterIndex.value(name).toObject();
-    Float2ndOrderPoly_t poly;
-    if (poly.readJson(jsonObject) == true)
-    {
-      return poly;
-    }
-  }
-
-  return defaultValue;
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-Float3rdOrderPoly_t JsonFilterParametersReader::readFloat3rdOrderPoly(const QString name, Float3rdOrderPoly_t defaultValue)
-{
-  Q_ASSERT(m_CurrentFilterIndex.isEmpty() == false);
-  if (m_CurrentFilterIndex.contains(name) == false)
-  {
-    return defaultValue;
-  }
-
-  if (m_CurrentFilterIndex.value(name).isObject())
-  {
-    QJsonObject jsonObject = m_CurrentFilterIndex.value(name).toObject();
-    Float3rdOrderPoly_t poly;
-    if (poly.readJson(jsonObject) == true)
-    {
-      return poly;
-    }
-  }
-
-  return defaultValue;
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-Float4thOrderPoly_t JsonFilterParametersReader::readFloat4thOrderPoly(const QString name, Float4thOrderPoly_t defaultValue)
-{
-  Q_ASSERT(m_CurrentFilterIndex.isEmpty() == false);
-  if (m_CurrentFilterIndex.contains(name) == false)
-  {
-    return defaultValue;
-  }
-
-  if (m_CurrentFilterIndex.value(name).isObject())
-  {
-    QJsonObject jsonObject = m_CurrentFilterIndex.value(name).toObject();
-    Float4thOrderPoly_t poly;
-    if (poly.readJson(jsonObject) == true)
-    {
-      return poly;
-    }
-  }
-
-  return defaultValue;
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-FileListInfo_t JsonFilterParametersReader::readFileListInfo(const QString name, FileListInfo_t defaultValue)
-{
-  Q_ASSERT(m_CurrentFilterIndex.isEmpty() == false);
-  if (m_CurrentFilterIndex.contains(name) == false)
-  {
-    return defaultValue;
-  }
-
-  if (m_CurrentFilterIndex.value(name).isObject())
-  {
-    QJsonObject jsonObject = m_CurrentFilterIndex.value(name).toObject();
-    FileListInfo_t fLInfo;
-    if (fLInfo.readJson(jsonObject) == true)
-    {
-      return fLInfo;
-    }
-  }
-
-  return defaultValue;
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-ComparisonInput_t JsonFilterParametersReader::readComparisonInput(const QString name, ComparisonInput_t defaultValue, int arrayIndex)
-{
-  Q_ASSERT(m_CurrentFilterIndex.isEmpty() == false);
-  if (m_CurrentFilterIndex.contains(name) == false)
-  {
-    return defaultValue;
-  }
-
-  if (m_CurrentFilterIndex.value(name).isArray())
-  {
-    QJsonArray cInputsArray = m_CurrentFilterIndex.value(name).toArray();
-    if (cInputsArray.size() > arrayIndex && cInputsArray[arrayIndex].isObject())
-    {
-      QJsonObject cInputObject = cInputsArray[arrayIndex].toObject();
-      ComparisonInput_t cInput;
-      if (cInput.readJson(cInputObject) == true)
-      {
-        return cInput;
-      }
-    }
-  }
-
-  return defaultValue;
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-ComparisonInputs JsonFilterParametersReader::readComparisonInputs(const QString name, ComparisonInputs defValues)
-{
-  Q_ASSERT(m_CurrentFilterIndex.isEmpty() == false);
-  if (m_CurrentFilterIndex.contains(name) == false)
-  {
-    return defValues;
-  }
-
-  if (m_CurrentFilterIndex.value(name).isArray())
-  {
-    QJsonArray cInputsArray = m_CurrentFilterIndex.value(name).toArray();
-
-    ComparisonInputs inputs;
-    for (int i = 0; i < cInputsArray.size(); i++)
-    {
-      if (cInputsArray[i].isObject() == true)
-      {
-        QJsonObject cInputObj = cInputsArray[i].toObject();
-        ComparisonInput_t cInput;
-        if (cInput.readJson(cInputObj) == true)
-        {
-          inputs.addInput(cInput);
-        }
-        else
-        {
-          return defValues;
-        }
-      }
-    }
-    return inputs;
-  }
-
-  return defValues;
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-AxisAngleInput_t JsonFilterParametersReader::readAxisAngle(const QString name, AxisAngleInput_t v, int vectorPos)
-{
-  Q_ASSERT(m_CurrentFilterIndex.isEmpty() == false);
-  if (m_CurrentFilterIndex.contains(name) == false)
-  {
-    return v;
-  }
-
-  QJsonObject obj = m_CurrentFilterIndex.value(name).toObject();
-  AxisAngleInput_t aInput;
-  if (aInput.readJson(obj) == true)
-  {
-    return aInput;
-  }
-
-  return v;
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-QVector<AxisAngleInput_t> JsonFilterParametersReader::readAxisAngles(const QString name, QVector<AxisAngleInput_t> v)
-{
-  Q_ASSERT(m_CurrentFilterIndex.isEmpty() == false);
-  if (m_CurrentFilterIndex.contains(name) == false)
-  {
-    return v;
-  }
-
-  if (m_CurrentFilterIndex.value(name).isArray())
-  {
-    QJsonArray aInputsArray = m_CurrentFilterIndex.value(name).toArray();
-
-    QVector<AxisAngleInput_t> inputs;
-    for (int i = 0; i < aInputsArray.size(); i++)
-    {
-      if (aInputsArray[i].isObject() == true)
-      {
-        QJsonObject aInputObj = aInputsArray[i].toObject();
-        AxisAngleInput_t aInput;
-        if (aInput.readJson(aInputObj) == true)
-        {
-          inputs.push_back(aInput);
-        }
-        else
-        {
-          return v;
-        }
-      }
-    }
-    return inputs;
-  }
-
-  return v;
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-QSet<QString> JsonFilterParametersReader::readArraySelections(const QString name, QSet<QString> v)
-{
-  Q_ASSERT(m_CurrentFilterIndex.isEmpty() == false);
-  if (m_CurrentFilterIndex.contains(name) == false)
-  {
-    return v;
-  }
-
-  QSet<QString> set;
-
-  if (m_CurrentFilterIndex[name].isArray())
-  {
-    QJsonArray jsonArray = m_CurrentFilterIndex[name].toArray();
-
-    foreach(QJsonValue val, jsonArray)
-    {
-      if (val.isString())
-      {
-        set.insert(val.toString());
-      }
-    }
-
-    return set;
-  }
-
-  return v;
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-DataContainerArrayProxy JsonFilterParametersReader::readDataContainerArrayProxy(const QString& name, DataContainerArrayProxy v)
-{
-  Q_ASSERT(m_CurrentFilterIndex.isEmpty() == false);
-  if (m_CurrentFilterIndex.contains(name) == false)
-  {
-    return v;
-  }
-
-  DataContainerArrayProxy proxy;
-  if (m_CurrentFilterIndex[name].isObject())
-  {
-    QJsonObject obj = m_CurrentFilterIndex[name].toObject();
-    proxy.readJson(obj);
-    return proxy;
-  }
-
-  return v;
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-DataArrayPath JsonFilterParametersReader::readDataArrayPath(const QString& name, DataArrayPath def)
-{
-  Q_ASSERT(m_CurrentFilterIndex.isEmpty() == false);
-  if (m_CurrentFilterIndex.contains(name) == false)
-  {
-    return def;
-  }
-
-  DataArrayPath path;
-  if (m_CurrentFilterIndex[name].isObject())
-  {
-    QJsonObject obj = m_CurrentFilterIndex[name].toObject();
-    path.readJson(obj);
-    return path;
-  }
-
-  return def;
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-QVector<DataArrayPath> JsonFilterParametersReader::readDataArrayPathVector(const QString& name, QVector<DataArrayPath> def)
-{
-  Q_ASSERT(m_CurrentFilterIndex.isEmpty() == false);
-  if (m_CurrentFilterIndex.contains(name) == false)
-  {
-    return def;
-  }
-
-  QVector<DataArrayPath> paths;
-  if (m_CurrentFilterIndex[name].isArray())
-  {
-    QJsonArray jsonArray = m_CurrentFilterIndex[name].toArray();
-    foreach(QJsonValue val, jsonArray)
-    {
-      if (val.isObject())
-      {
-        DataArrayPath path;
-        QJsonObject obj = val.toObject();
-        path.readJson(obj);
-        paths.push_back(path);
-      }
-    }
-    return paths;
-  }
-
-  return def;
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-DynamicTableData JsonFilterParametersReader::readDynamicTableData(const QString& name, DynamicTableData def)
-{
-  Q_ASSERT(m_CurrentFilterIndex.isEmpty() == false);
-  if (m_CurrentFilterIndex.contains(name) == false)
-  {
-    return def;
-  }
-
-  DynamicTableData data;
-  if (m_CurrentFilterIndex[name].isObject())
-  {
-    QJsonObject obj = m_CurrentFilterIndex[name].toObject();
-    data.readJson(obj);
-    return data;
-  }
-
-  return def;
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-QPair<double, double> JsonFilterParametersReader::readPairOfDoubles(const QString& name, QPair<double, double> v)
-{
-  //QJsonObject obj;
-  //obj["Min"] = v.first;
-  //obj["Max"] = v.second;
-
-  //m_CurrentFilterIndex[name] = obj;
-
-
-
-  Q_ASSERT(m_CurrentFilterIndex.isEmpty() == false);
-  if (m_CurrentFilterIndex.contains(name) == false)
-  {
-    return v;
-  }
-
-  if (m_CurrentFilterIndex.value(name).isObject())
-  {
-    QJsonObject obj = m_CurrentFilterIndex.value(name).toObject();
-    if (!obj.contains("Min") || !obj.contains("Max"))
-    {
-      return v;
-    }
-
-    QPair<double, double> pair;
-    pair.first = obj["Min"].toDouble();
-    pair.second = obj["Max"].toDouble();
-    return pair;
-  }
-
-  return v;
-}
-

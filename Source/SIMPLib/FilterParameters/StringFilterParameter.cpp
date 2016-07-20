@@ -52,7 +52,8 @@ StringFilterParameter::~StringFilterParameter()
 //
 // -----------------------------------------------------------------------------
 StringFilterParameter::Pointer StringFilterParameter::New(const QString& humanLabel, const QString& propertyName,
-  const QString& defaultValue, Category category, int groupIndex)
+  const QString& defaultValue, Category category, SetterCallbackType setterCallback, GetterCallbackType getterCallback,
+  int groupIndex)
 {
 
   StringFilterParameter::Pointer ptr = StringFilterParameter::New();
@@ -61,11 +62,12 @@ StringFilterParameter::Pointer StringFilterParameter::New(const QString& humanLa
   ptr->setDefaultValue(defaultValue);
   ptr->setCategory(category);
   ptr->setGroupIndex(groupIndex);
+  ptr->setSetterCallback(setterCallback);
+  ptr->setGetterCallback(getterCallback);
 
 
   return ptr;
 }
-
 
 // -----------------------------------------------------------------------------
 //
@@ -73,5 +75,25 @@ StringFilterParameter::Pointer StringFilterParameter::New(const QString& humanLa
 QString StringFilterParameter::getWidgetType()
 {
   return QString("StringWidget");
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void StringFilterParameter::readJson(const QJsonObject &json)
+{
+  QJsonValue jsonValue = json[getPropertyName()];
+  if(!jsonValue.isUndefined() )
+  {
+    m_SetterCallback(jsonValue.toString(""));
+  }
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void StringFilterParameter::writeJson(QJsonObject &json)
+{
+  json[getPropertyName()] = m_GetterCallback();
 }
 

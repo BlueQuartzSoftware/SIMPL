@@ -72,8 +72,6 @@
 #include "SIMPLib/Common/IFilterFactory.hpp"
 #include "SIMPLib/Common/FilterFactory.hpp"
 #include "SIMPLib/CoreFilters/Breakpoint.h"
-#include "SIMPLib/FilterParameters/QFilterParametersReader.h"
-#include "SIMPLib/FilterParameters/QFilterParametersWriter.h"
 #include "SIMPLib/FilterParameters/JsonFilterParametersReader.h"
 #include "SIMPLib/FilterParameters/JsonFilterParametersWriter.h"
 
@@ -853,16 +851,8 @@ void SVPipelineViewWidget::pasteFilterWidgets(const QString &jsonString, QVarian
 {
   if (allowUndo == true)
   {
-    FilterPipeline::Pointer pipeline = JsonFilterParametersReader::ReadPipelineFromString(jsonString);
-    FilterPipeline::FilterContainerType container = pipeline->getFilterContainer();    
-    blockPreflightSignals(true);
-    pasteFilters(container, value, allowUndo);
-    blockPreflightSignals(false);
-    preflightPipeline();
-  }
-  else
-  {
-    FilterPipeline::Pointer pipeline = JsonFilterParametersReader::ReadPipelineFromString(jsonString);
+    JsonFilterParametersReader::Pointer jsonReader = JsonFilterParametersReader::New();
+    FilterPipeline::Pointer pipeline = jsonReader->readPipelineFromString(jsonString);
     FilterPipeline::FilterContainerType container = pipeline->getFilterContainer();
 
     blockPreflightSignals(true);
@@ -1377,17 +1367,15 @@ FilterPipeline::Pointer SVPipelineViewWidget::readPipelineFromFile(const QString
   QString ext = fi.suffix();
 
   FilterPipeline::Pointer pipeline;
-  if (ext == "ini" || ext == "txt")
+  if (ext == "dream3d")
   {
-    pipeline = QFilterParametersReader::ReadPipelineFromFile(filePath, QSettings::IniFormat, dynamic_cast<IObserver*>(m_PipelineMessageObserver));
-  }
-  else if (ext == "dream3d")
-  {
-    pipeline = H5FilterParametersReader::ReadPipelineFromFile(filePath);
+    H5FilterParametersReader::Pointer dream3dReader = H5FilterParametersReader::New();
+    pipeline = dream3dReader->readPipelineFromFile(filePath);
   }
   else if (ext == "json")
   {
-    pipeline = JsonFilterParametersReader::ReadPipelineFromFile(filePath);
+    JsonFilterParametersReader::Pointer jsonReader = JsonFilterParametersReader::New();
+    pipeline = jsonReader->readPipelineFromFile(filePath);
   }
   else
   {
@@ -1423,11 +1411,13 @@ int SVPipelineViewWidget::writePipeline(QString filePath)
   int err = 0;
   if (ext == "dream3d")
   {
-    err = H5FilterParametersWriter::WritePipelineToFile(pipeline, fi.absoluteFilePath(), fi.fileName(), reinterpret_cast<IObserver*>(m_PipelineMessageObserver));
+    H5FilterParametersWriter::Pointer dream3dWriter = H5FilterParametersWriter::New();
+    err = dream3dWriter->writePipelineToFile(pipeline, fi.absoluteFilePath(), fi.fileName(), reinterpret_cast<IObserver*>(m_PipelineMessageObserver));
   }
   else if (ext == "json")
   {
-    err = JsonFilterParametersWriter::WritePipelineToFile(pipeline, fi.absoluteFilePath(), fi.fileName(), reinterpret_cast<IObserver*>(m_PipelineMessageObserver));
+    JsonFilterParametersWriter::Pointer jsonWriter = JsonFilterParametersWriter::New();
+    jsonWriter->writePipelineToFile(pipeline, fi.absoluteFilePath(), fi.fileName(), reinterpret_cast<IObserver*>(m_PipelineMessageObserver));
   }
   else
   {
@@ -1814,7 +1804,8 @@ void SVPipelineViewWidget::dropEvent(QDropEvent* event)
         pipeline->pushBack(filterObjects[i]->getFilter());
       }
 
-      QString jsonString = JsonFilterParametersWriter::WritePipelineToString(pipeline, "Pipeline");
+      JsonFilterParametersWriter::Pointer jsonWriter = JsonFilterParametersWriter::New();
+      QString jsonString = jsonWriter->writePipelineToString(pipeline, "Pipeline");
       pasteFilterWidgets(jsonString, index, true);
 
       if (qApp->queryKeyboardModifiers() != Qt::AltModifier)

@@ -55,7 +55,6 @@
 #include "SIMPLib/Common/FilterManager.h"
 #include "SIMPLib/Common/FilterFactory.hpp"
 #include "SIMPLib/FilterParameters/JsonFilterParametersReader.h"
-#include "SIMPLib/FilterParameters/QFilterParametersReader.h"
 
 #include "SVWidgetsLib/QtSupport/QtSBookmarkMissingDialog.h"
 
@@ -149,9 +148,6 @@ QDir BookmarksToolboxWidget::findV4FavoritesDirectory()
 // -----------------------------------------------------------------------------
 QString BookmarksToolboxWidget::generateHtmlFilterListFromPipelineFile(QString path)
 {
-  QString name;
-  QString dVers;
-  FilterPipeline::Pointer pipeline;
   QString html;
 
   QFileInfo fi(path);
@@ -280,7 +276,8 @@ void BookmarksToolboxWidget::addPipelinesRecursively(QDir currentDir, QModelInde
     else if (itemInfo.suffix().compare("json") == 0)
     {
       QString dVers;
-      JsonFilterParametersReader::ReadNameOfPipelineFromFile(itemFilePath, itemName, dVers, NULL);
+      JsonFilterParametersReader::Pointer jsonReader = JsonFilterParametersReader::New();
+      jsonReader->readNameOfPipelineFromFile(itemFilePath, itemName, dVers, NULL);
     }
 
     // Add tree widget for this Prebuilt Pipeline

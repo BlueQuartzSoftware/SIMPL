@@ -4,7 +4,6 @@
 
 #include "TestFilters.h"
 #include "SIMPLib/FilterParameters/AbstractFilterParametersReader.h"
-#include "SIMPLib/FilterParameters/AbstractFilterParametersWriter.h"
 #include "SIMPLib/FilterParameters/IntFilterParameter.h"
 #include "SIMPLib/FilterParameters/DoubleFilterParameter.h"
 
@@ -43,13 +42,13 @@ void Filt0::setupFilterParameters()
 
   /*  For an Integer use this code*/
   {
-    IntFilterParameter::Pointer parameter = IntFilterParameter::New("Int Value", "Filt0_Integer", 0, FilterParameter::Parameter);
+    IntFilterParameter::Pointer parameter = IntFilterParameter::New("Int Value", "Filt0_Integer", 0, FilterParameter::Parameter, SIMPL_BIND_SETTER(Filt0, this, Filt0_Integer), SIMPL_BIND_GETTER(Filt0, this, Filt0_Integer));
     //  //parameter->setValueType("int");
     parameters.push_back(parameter);
   }
   /*  For a Floating point value use this code*/
   {
-    DoubleFilterParameter::Pointer parameter = DoubleFilterParameter::New("Float Value", "Filt0_Float", 0.0, FilterParameter::Parameter);
+    DoubleFilterParameter::Pointer parameter = DoubleFilterParameter::New("Float Value", "Filt0_Float", 0.0, FilterParameter::Parameter, SIMPL_BIND_SETTER(Filt0, this, Filt0_Float), SIMPL_BIND_GETTER(Filt0, this, Filt0_Float));
     parameters.push_back(parameter);
   }
 
@@ -68,22 +67,6 @@ void Filt0::readFilterParameters(AbstractFilterParametersReader* reader, int ind
   setFilt0_Float( reader->readValue("Filt0_Float", dummyFloat) );
   setFilt0_Integer( reader->readValue("Filt0_Integer", dummyInt) );
   reader->closeFilterGroup();
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-int Filt0::writeFilterParameters(AbstractFilterParametersWriter* writer, int index)
-
-{
-  writer->openFilterGroup(this, index);
-  SIMPL_FILTER_WRITE_PARAMETER(FilterVersion)
-  /* Place code that will write the inputs values into a file. reference the
-   AbstractFilterParametersWriter class for the proper API to use. */
-  SIMPL_FILTER_WRITE_PARAMETER(Filt0_Float)
-  SIMPL_FILTER_WRITE_PARAMETER(Filt0_Integer)
-  writer->closeFilterGroup();
-  return ++index; // we want to return the next index that was just written to
 }
 
 // -----------------------------------------------------------------------------
@@ -165,13 +148,13 @@ void Filt1::setupFilterParameters()
 
   /*  For an Integer use this code*/
   {
-    IntFilterParameter::Pointer parameter = IntFilterParameter::New("Int Value", "Filt1_Integer", 0, FilterParameter::Parameter);
+    IntFilterParameter::Pointer parameter = IntFilterParameter::New("Int Value", "Filt1_Integer", 0, FilterParameter::Parameter, SIMPL_BIND_SETTER(Filt1, this, Filt1_Integer), SIMPL_BIND_GETTER(Filt1, this, Filt1_Integer));
     //  //parameter->setValueType("int");
     parameters.push_back(parameter);
   }
   /*  For a Floating point value use this code*/
   {
-    DoubleFilterParameter::Pointer parameter = DoubleFilterParameter::New("Float Value", "Filt1_Float", 0.0, FilterParameter::Parameter);
+    DoubleFilterParameter::Pointer parameter = DoubleFilterParameter::New("Float Value", "Filt1_Float", 0.0, FilterParameter::Parameter, SIMPL_BIND_SETTER(Filt1, this, Filt1_Float), SIMPL_BIND_GETTER(Filt1, this, Filt1_Float));
     parameters.push_back(parameter);
   }
 
@@ -190,22 +173,6 @@ void Filt1::readFilterParameters(AbstractFilterParametersReader* reader, int ind
   setFilt1_Float( reader->readValue("Filt1_Float", dummyFloat) );
   setFilt1_Integer( reader->readValue("Filt1_Integer", dummyInt) );
   reader->closeFilterGroup();
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-int Filt1::writeFilterParameters(AbstractFilterParametersWriter* writer, int index)
-
-{
-  writer->openFilterGroup(this, index);
-  SIMPL_FILTER_WRITE_PARAMETER(FilterVersion)
-  /* Place code that will write the inputs values into a file. reference the
-   AbstractFilterParametersWriter class for the proper API to use. */
-  SIMPL_FILTER_WRITE_PARAMETER(Filt1_Float)
-  SIMPL_FILTER_WRITE_PARAMETER(Filt1_Integer)
-  writer->closeFilterGroup();
-  return ++index; // we want to return the next index that was just written to
 }
 
 // -----------------------------------------------------------------------------

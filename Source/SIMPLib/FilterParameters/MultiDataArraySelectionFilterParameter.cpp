@@ -34,6 +34,9 @@
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
 #include "MultiDataArraySelectionFilterParameter.h"
+
+#include <QtCore/QJsonArray>
+
 #include "SIMPLib/Common/Constants.h"
 
 // -----------------------------------------------------------------------------
@@ -54,7 +57,8 @@ MultiDataArraySelectionFilterParameter::~MultiDataArraySelectionFilterParameter(
 //
 // -----------------------------------------------------------------------------
 MultiDataArraySelectionFilterParameter::Pointer MultiDataArraySelectionFilterParameter::New(const QString& humanLabel, const QString& propertyName,
-    const QVector<DataArrayPath>& defaultValue, Category category, const RequirementType req, int groupIndex)
+    const QVector<DataArrayPath>& defaultValue, Category category, const RequirementType req, SetterCallbackType setterCallback,
+    GetterCallbackType getterCallback, int groupIndex)
 {
 
   MultiDataArraySelectionFilterParameter::Pointer ptr = MultiDataArraySelectionFilterParameter::New();
@@ -69,6 +73,8 @@ MultiDataArraySelectionFilterParameter::Pointer MultiDataArraySelectionFilterPar
   ptr->setDefaultAttributeArrayTypes(req.daTypes);
   ptr->setDefaultComponentDimensions(req.componentDimensions);
   ptr->setGroupIndex(groupIndex);
+  ptr->setSetterCallback(setterCallback);
+  ptr->setGetterCallback(getterCallback);
 
   return ptr;
 }
@@ -157,4 +163,45 @@ MultiDataArraySelectionFilterParameter::RequirementType MultiDataArraySelectionF
     req.dcGeometryTypes = QVector<unsigned int>(1, geometryType);
   }
   return req;
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void MultiDataArraySelectionFilterParameter::readJson(const QJsonObject &json)
+{
+  QJsonValue jsonValue = json[getPropertyName()];
+  if(!jsonValue.isUndefined() )
+  {
+    QJsonArray arrayObj = jsonValue.toArray();
+    QVector<DataArrayPath> dapVec;
+    for (int i=0; i<arrayObj.size(); i++)
+    {
+      QJsonObject obj = arrayObj.at(i).toObject();
+      DataArrayPath dap;
+      dap.readJson(obj);
+      dapVec.push_back(dap);
+    }
+
+    m_SetterCallback(dapVec);
+  }
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void MultiDataArraySelectionFilterParameter::writeJson(QJsonObject &json)
+{
+  QVector<DataArrayPath> dapVec = m_GetterCallback();
+  QJsonArray arrayObj;
+
+  for (int i=0; i<dapVec.size(); i++)
+  {
+    DataArrayPath dap = dapVec[i];
+    QJsonObject obj;
+    dap.writeJson(obj);
+    arrayObj.push_back(obj);
+  }
+
+  json[getPropertyName()] = arrayObj;
 }

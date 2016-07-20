@@ -35,7 +35,6 @@
 
 #include "ArraySelectionExample.h"
 #include "SIMPLib/FilterParameters/AbstractFilterParametersReader.h"
-#include "SIMPLib/FilterParameters/AbstractFilterParametersWriter.h"
 #include "SIMPLib/FilterParameters/DataContainerArrayProxyFilterParameter.h"
 #include "SIMPLib/DataContainers/DataContainerArrayProxy.h"
 
@@ -70,7 +69,7 @@ void ArraySelectionExample::setupFilterParameters()
   QVector<FilterParameter::Pointer> parameters;
   DataContainerArrayProxy proxy;
   /* To select arrays */
-  parameters.push_back(DataContainerArrayProxyFilterParameter::New("Array to Select", "DataContainerArrayProxy", "", proxy, Qt::Checked, FilterParameter::Parameter));
+  parameters.push_back(DataContainerArrayProxyFilterParameter::New("Array to Select", "DataContainerArrayProxy", "", proxy, Qt::Checked, FilterParameter::Parameter, SIMPL_BIND_SETTER(ArraySelectionExample, this, DataContainerArrayProxy), SIMPL_BIND_GETTER(ArraySelectionExample, this, DataContainerArrayProxy)));
 
 
   setFilterParameters(parameters);
@@ -88,21 +87,6 @@ void ArraySelectionExample::readFilterParameters(AbstractFilterParametersReader*
   //  setSelectedArrayName( reader->readString("SelectedArrayName", getSelectedArrayName()) );
   reader->closeFilterGroup();
 }
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-int ArraySelectionExample::writeFilterParameters(AbstractFilterParametersWriter* writer, int index)
-{
-  writer->openFilterGroup(this, index);
-  SIMPL_FILTER_WRITE_PARAMETER(FilterVersion)
-  //  SIMPL_FILTER_WRITE_PARAMETER(DataContainerName)
-  //  SIMPL_FILTER_WRITE_PARAMETER(AttributeMatrixName)
-  //  SIMPL_FILTER_WRITE_PARAMETER(SelectedArrayName)
-  writer->closeFilterGroup();
-  return ++index; // we want to return the next index that was just written to
-}
-
 
 // -----------------------------------------------------------------------------
 //

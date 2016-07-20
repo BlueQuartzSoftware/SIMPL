@@ -74,6 +74,8 @@ void ThresholdExample::setupFilterParameters()
     ComparisonSelectionFilterParameter::Pointer parameter = ComparisonSelectionFilterParameter::New();
     parameter->setHumanLabel("Voxel Cell Arrays to Threshold");
     parameter->setPropertyName("CellComparisonInputs");
+    parameter->setSetterCallback(SIMPL_BIND_SETTER(ThresholdExample, this, CellComparisonInputs));
+    parameter->setGetterCallback(SIMPL_BIND_GETTER(ThresholdExample, this, CellComparisonInputs));
 
     parameter->setShowOperators(true);
     parameters.push_back(parameter);
@@ -136,20 +138,6 @@ void ThresholdExample::readFilterParameters(AbstractFilterParametersReader* read
   reader->openFilterGroup(this, index);
   setCellComparisonInputs(reader->readComparisonInputs("CellComparisonInputs", getCellComparisonInputs()));
   reader->closeFilterGroup();
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-int ThresholdExample::writeFilterParameters(AbstractFilterParametersWriter* writer, int index)
-{
-  writer->openFilterGroup(this, index);
-  SIMPL_FILTER_WRITE_PARAMETER(FilterVersion)
-  /* Place code that will write the inputs values into a file. reference the
-   AbstractFilterParametersWriter class for the proper API to use. */
-  writer->writeValue( "CellComparisonInputs", getCellComparisonInputs() );
-  writer->closeFilterGroup();
-  return ++index; // we want to return the next index that was just written to
 }
 
 // -----------------------------------------------------------------------------

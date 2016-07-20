@@ -161,11 +161,27 @@ void AbstractFilter::readFilterParameters(AbstractFilterParametersReader* reader
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-int AbstractFilter::writeFilterParameters(AbstractFilterParametersWriter* writer, int index)
+void AbstractFilter::readFilterParameters(QJsonObject &obj)
 {
-  Q_ASSERT(writer != NULL);
-  qDebug() << "AbstractFilter::writeFilterParameters() -> Writing Filter Options" << "\n";
-  return -1;
+  QVector<FilterParameter::Pointer> filterParameters = getFilterParameters();
+  for (int i=0; i<filterParameters.size(); i++)
+  {
+    FilterParameter::Pointer fp = filterParameters[i];
+    fp->readJson(obj);
+  }
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void AbstractFilter::writeFilterParameters(QJsonObject &obj)
+{
+  QVector<FilterParameter::Pointer> filterParameters = getFilterParameters();
+  for (int i=0; i<filterParameters.size(); i++)
+  {
+    FilterParameter::Pointer fp = filterParameters[i];
+    fp->writeJson(obj);
+  }
 }
 
 // -----------------------------------------------------------------------------

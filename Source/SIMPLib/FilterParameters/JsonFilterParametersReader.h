@@ -71,7 +71,7 @@ class SIMPLib_EXPORT JsonFilterParametersReader : public AbstractFilterParameter
     * @param obs An IObserver object to report errors.
     * @return Shared Pointer to a FilterPipeline Instance
     */
-    static FilterPipeline::Pointer ReadPipelineFromFile(QString filePath, IObserver* obs = NULL);
+    FilterPipeline::Pointer readPipelineFromFile(QString filePath, IObserver* obs = NULL);
 
     /**
     * @brief ReadPipelineFromString Reads the Json formatted file and returns a FilterPipeline object
@@ -82,7 +82,7 @@ class SIMPLib_EXPORT JsonFilterParametersReader : public AbstractFilterParameter
     * @param obs An IObserver object to report errors.
     * @return Shared Pointer to a FilterPipeline Instance
     */
-    static FilterPipeline::Pointer ReadPipelineFromString(QString contents, IObserver* obs = NULL);
+    FilterPipeline::Pointer readPipelineFromString(QString contents, IObserver* obs = NULL);
 
     /**
      * @brief Gets the name of the pipeline from a pipeline file
@@ -92,7 +92,7 @@ class SIMPLib_EXPORT JsonFilterParametersReader : public AbstractFilterParameter
      * @param obs Any observer that needs to know about errors.
      * @return
      */
-    static void ReadNameOfPipelineFromFile(QString filePath, QString& name, QString& version, IObserver* obs = NULL);
+    void readNameOfPipelineFromFile(QString filePath, QString& name, QString& version, IObserver* obs = NULL);
 
     /**
      * @brief Generate an html formatted string that summarizes the pipeline file by listing
@@ -131,13 +131,6 @@ class SIMPLib_EXPORT JsonFilterParametersReader : public AbstractFilterParameter
     virtual int openFilterGroup(AbstractFilter* unused, int index);
 
     /**
-     * @brief openFilterGroup
-     * @param groupName
-     * @return
-     */
-    int openFilterGroup(const QString &groupName);
-
-    /**
      * @brief closeFilterGroup
      * @return
      */
@@ -162,54 +155,6 @@ class SIMPLib_EXPORT JsonFilterParametersReader : public AbstractFilterParameter
     int openGroup(QString key);
     int closeGroup();
 
-    virtual QString readString(const QString name, QString value);
-    virtual QVector<QString> readStrings(const QString name, QVector<QString> value);
-    virtual QStringList readStringList(const QString name, QStringList value);
-
-    virtual int8_t readValue(const QString name, int8_t value);
-    virtual int16_t readValue(const QString name, int16_t value);
-    virtual int32_t readValue(const QString name, int32_t value);
-    virtual int64_t readValue(const QString name, int64_t value);
-    virtual uint8_t readValue(const QString name, uint8_t value);
-    virtual uint16_t readValue(const QString name, uint16_t value);
-    virtual uint32_t readValue(const QString name, uint32_t value);
-    virtual uint64_t readValue(const QString name, uint64_t value);
-    virtual float readValue(const QString name, float def);
-    virtual double readValue(const QString name, double value);
-    virtual bool readValue(const QString name, bool value);
-
-    virtual QVector<int8_t> readArray(const QString name, QVector<int8_t> value);
-    virtual QVector<int16_t> readArray(const QString name, QVector<int16_t> value);
-    virtual QVector<int32_t> readArray(const QString name, QVector<int32_t> value);
-    virtual QVector<int64_t> readArray(const QString name, QVector<int64_t> value);
-    virtual QVector<uint8_t> readArray(const QString name, QVector<uint8_t> value);
-    virtual QVector<uint16_t> readArray(const QString name, QVector<uint16_t> value);
-    virtual QVector<uint32_t> readArray(const QString name, QVector<uint32_t> value);
-    virtual QVector<uint64_t> readArray(const QString name, QVector<uint64_t> value);
-    virtual QVector<float> readArray(const QString name, QVector<float> value);
-    virtual QVector<double> readArray(const QString name, QVector<double> value);
-
-
-    virtual IntVec3_t readIntVec3(const QString name, IntVec3_t v);
-    virtual FloatVec3_t readFloatVec3(const QString name, FloatVec3_t v);
-
-    virtual Float2ndOrderPoly_t readFloat2ndOrderPoly(const QString name, Float2ndOrderPoly_t v);
-    virtual Float3rdOrderPoly_t readFloat3rdOrderPoly(const QString name, Float3rdOrderPoly_t v);
-    virtual Float4thOrderPoly_t readFloat4thOrderPoly(const QString name, Float4thOrderPoly_t v);
-    virtual FileListInfo_t readFileListInfo(const QString name, FileListInfo_t v);
-    virtual ComparisonInput_t readComparisonInput(const QString name, ComparisonInput_t v, int vectorPos);
-    virtual ComparisonInputs readComparisonInputs(const QString name, ComparisonInputs v);
-    virtual AxisAngleInput_t readAxisAngle(const QString name, AxisAngleInput_t v, int vectorPos = -1);
-    virtual QVector<AxisAngleInput_t> readAxisAngles(const QString name, QVector<AxisAngleInput_t> v);
-    virtual QSet<QString> readArraySelections(const QString name, QSet<QString> v);
-
-    virtual DataContainerArrayProxy readDataContainerArrayProxy(const QString& name, DataContainerArrayProxy v);
-    virtual DataArrayPath readDataArrayPath(const QString& name, DataArrayPath v);
-    virtual QVector<DataArrayPath> readDataArrayPathVector(const QString& name, QVector<DataArrayPath> def);
-    virtual DynamicTableData readDynamicTableData(const QString& name, DynamicTableData def);
-
-    virtual QPair<double, double> readPairOfDoubles(const QString& name, QPair<double, double> v);
-
   protected:
     JsonFilterParametersReader();
 
@@ -217,7 +162,7 @@ class SIMPLib_EXPORT JsonFilterParametersReader : public AbstractFilterParameter
     QJsonObject m_Root;
     QJsonObject m_CurrentFilterIndex;
 
-    static FilterPipeline::Pointer ReadPipeline(JsonFilterParametersReader::Pointer reader, IObserver* obs);
+    FilterPipeline::Pointer readPipeline(IObserver* obs);
 
     JsonFilterParametersReader(const JsonFilterParametersReader&); // Copy Constructor Not Implemented
     void operator=(const JsonFilterParametersReader&); // Operator '=' Not Implemented

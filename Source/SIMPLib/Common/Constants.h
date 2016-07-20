@@ -180,6 +180,11 @@ namespace SIMPL
     const QString NewAttributeMatrixName("NewAttributeMatrixName");
   }
 
+  namespace PipelineVersionNumbers
+  {
+    const int CurrentVersion(6);
+  }
+
   namespace FilterGroups
   {
     const QString GenericFilters("Generic");
@@ -447,6 +452,7 @@ namespace SIMPL
     const QString NumFilters("Number_Filters");
     const QString PipelineName("Name");
     const QString FilterName("Filter_Name");
+    const QString FilterVersion("FilterVersion");
     const QString HumanLabel("Filter_Human_Label");
     const QString Version("Version");
     const QString PipelineBuilderGeomertry("PipelineBuilderGeometry");
@@ -547,6 +553,8 @@ namespace SIMPL
     const QString PhaseFraction("PhaseFraction");
     const QString PhaseType("PhaseType");
     const QString PipelineGroupName("Pipeline");
+    const QString PipelineVersionName("Pipeline Version");
+    const QString PipelineCurrentName("Current Pipeline");
     const QString PowerLawDistribution("Power Law Distribution");
     const QString PrecipitateBoundaryFraction("Precipitate Boundary Fraction");
     const QString PrecipitateStatsData("PrecipitateStatsData");

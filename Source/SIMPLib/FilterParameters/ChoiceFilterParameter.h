@@ -36,8 +36,13 @@
 #ifndef _choicefilterparameter_h_
 #define _choicefilterparameter_h_
 
+#include <QtCore/QJsonObject>
+
 #include "SIMPLib/FilterParameters/FilterParameter.h"
 
+/**
+ * @brief The ChoiceFilterParameter class
+ */
 class SIMPLib_EXPORT ChoiceFilterParameter : public FilterParameter
 {
   public:
@@ -45,12 +50,26 @@ class SIMPLib_EXPORT ChoiceFilterParameter : public FilterParameter
     SIMPL_STATIC_NEW_MACRO(ChoiceFilterParameter)
     SIMPL_TYPE_MACRO_SUPER(ChoiceFilterParameter, FilterParameter)
 
+    typedef std::function<void(int)> SetterCallbackType;
+    typedef std::function<int(void)> GetterCallbackType;
+
+    /**
+     * @brief New
+     * @param humanLabel
+     * @param propertyName
+     * @param defaultValue
+     * @param choices
+     * @param editable
+     * @param category
+     * @param setterCallback
+     * @param getterCallback
+     * @param groupIndex
+     * @return
+     */
     static Pointer New(const QString& humanLabel, const QString& propertyName,
-                       const int& defaultValue,
-                       QVector<QString> choices,
-                       bool editable,
-                       Category category,
-                       int groupIndex = -1);
+                       const int& defaultValue, QVector<QString> choices,
+                       bool editable, Category category, SetterCallbackType setterCallback,
+                       GetterCallbackType getterCallback, int groupIndex = -1);
 
     virtual ~ChoiceFilterParameter();
 
@@ -63,6 +82,33 @@ class SIMPLib_EXPORT ChoiceFilterParameter : public FilterParameter
      * @return
      */
     QString getWidgetType();
+
+    /**
+     * @brief readJson
+     * @return
+     */
+    void readJson(const QJsonObject &json);
+
+    /**
+     * @brief writeJson
+     * @return
+     */
+    void writeJson(QJsonObject &json);
+
+    /**
+    * @param SetterCallback The method in the AbstractFilter subclass that <i>sets</i> the value of the property
+    * that this FilterParameter subclass represents.
+    * from the filter parameter.
+    */
+    SIMPL_INSTANCE_PROPERTY(SetterCallbackType, SetterCallback)
+
+    /**
+    * @param GetterCallback The method in the AbstractFilter subclass that <i>gets</i> the value of the property
+    * that this FilterParameter subclass represents.
+    * @return The GetterCallback
+    */
+    SIMPL_INSTANCE_PROPERTY(GetterCallbackType, GetterCallback)
+
   protected:
     ChoiceFilterParameter();
 

@@ -36,7 +36,6 @@
 
 #include "GenericExample.h"
 #include "SIMPLib/FilterParameters/AbstractFilterParametersReader.h"
-#include "SIMPLib/FilterParameters/AbstractFilterParametersWriter.h"
 
 #include "SIMPLib/FilterParameters/StringFilterParameter.h"
 #include "SIMPLib/FilterParameters/OutputFileFilterParameter.h"
@@ -113,14 +112,14 @@ void GenericExample::setupFilterParameters()
   FilterParameterVector parameters;
   /* Place all your option initialization code here */
   /* For String input use this code */
-  parameters.push_back(StringFilterParameter::New("STL Output Prefix", "StlFilePrefix", getStlFilePrefix(), FilterParameter::Parameter));
+  parameters.push_back(StringFilterParameter::New("STL Output Prefix", "StlFilePrefix", getStlFilePrefix(), FilterParameter::Parameter, SIMPL_BIND_SETTER(GenericExample, this, StlFilePrefix), SIMPL_BIND_GETTER(GenericExample, this, StlFilePrefix)));
 
   /*   For an output file use this code*/
-  //parameters.push_back(OutputFileFilterParameter::New("Output File", "OutputFile", getOutputFile(), FilterParameter::Parameter));
+  //parameters.push_back(OutputFileFilterParameter::New("Output File", "OutputFile", getOutputFile(), FilterParameter::Parameter, SIMPL_BIND_SETTER(GenericExample, this, OutputFile), SIMPL_BIND_GETTER(GenericExample, this, OutputFile)));
   /*   For an output path use this code*/
-  //parameters.push_back(OutputPathFilterParameter::New("Output Path", "OutputPath", getOutputPath(), FilterParameter::Parameter));
+  //parameters.push_back(OutputPathFilterParameter::New("Output Path", "OutputPath", getOutputPath(), FilterParameter::Parameter, SIMPL_BIND_SETTER(GenericExample, this, OutputPath), SIMPL_BIND_GETTER(GenericExample, this, OutputPath)));
   /*   For a simple true/false boolean use this code*/
-  parameters.push_back(BooleanFilterParameter::New("Write Alignment Shift File", "WriteAlignmentShifts", getWriteAlignmentShifts(), FilterParameter::Parameter));
+  parameters.push_back(BooleanFilterParameter::New("Write Alignment Shift File", "WriteAlignmentShifts", getWriteAlignmentShifts(), FilterParameter::Parameter, SIMPL_BIND_SETTER(GenericExample, this, WriteAlignmentShifts), SIMPL_BIND_GETTER(GenericExample, this, WriteAlignmentShifts)));
 
   parameters.push_back(SeparatorFilterParameter::New("Choice Example", FilterParameter::Parameter));
 
@@ -130,6 +129,8 @@ void GenericExample::setupFilterParameters()
     ChoiceFilterParameter::Pointer parameter = ChoiceFilterParameter::New();
     parameter->setHumanLabel("Conversion Type");
     parameter->setPropertyName("ConversionType");
+    parameter->setSetterCallback(SIMPL_BIND_SETTER(GenericExample, this, ConversionType));
+    parameter->setGetterCallback(SIMPL_BIND_GETTER(GenericExample, this, ConversionType));
 
     ////parameter->setValueType("unsigned int");
     QVector<QString> choices;
@@ -142,29 +143,29 @@ void GenericExample::setupFilterParameters()
 
 
   /* Display a group of 3 text boxes to collect 3 integer values */
-  parameters.push_back(IntVec3FilterParameter::New("Dimensions (XYZ)", "Dimensions", getDimensions(), FilterParameter::Parameter));
+  parameters.push_back(IntVec3FilterParameter::New("Dimensions (XYZ)", "Dimensions", getDimensions(), FilterParameter::Parameter, SIMPL_BIND_SETTER(GenericExample, this, Dimensions), SIMPL_BIND_GETTER(GenericExample, this, Dimensions)));
 
   {
     DataArraySelectionFilterParameter::RequirementType req;
-    parameters.push_back(DataArraySelectionFilterParameter::New("Feature Ids", "FeatureIdsArrayPath", getFeatureIdsArrayPath(), FilterParameter::Parameter, req));
+    parameters.push_back(DataArraySelectionFilterParameter::New("Feature Ids", "FeatureIdsArrayPath", getFeatureIdsArrayPath(), FilterParameter::Parameter, req, SIMPL_BIND_SETTER(GenericExample, this, FeatureIdsArrayPath), SIMPL_BIND_GETTER(GenericExample, this, FeatureIdsArrayPath)));
   }
 
 
   {
     QStringList linkedProps;
     linkedProps << "Bool2" << "Double2";
-    parameters.push_back(LinkedBooleanFilterParameter::New("Bool1", "Bool1", getBool1(), linkedProps, FilterParameter::Parameter));
-    parameters.push_back(DoubleFilterParameter::New("Double 2", "Double2", getDouble2(), FilterParameter::Parameter));
+    parameters.push_back(LinkedBooleanFilterParameter::New("Bool1", "Bool1", getBool1(), linkedProps, FilterParameter::Parameter, SIMPL_BIND_SETTER(GenericExample, this, Bool1), SIMPL_BIND_GETTER(GenericExample, this, Bool1)));
+    parameters.push_back(DoubleFilterParameter::New("Double 2", "Double2", getDouble2(), FilterParameter::Parameter, SIMPL_BIND_SETTER(GenericExample, this, Double2), SIMPL_BIND_GETTER(GenericExample, this, Double2)));
   }
 
   {
     QStringList linkedProps;
     linkedProps << "AttributeMatrixPath";
-    parameters.push_back(LinkedBooleanFilterParameter::New("Bool2", "Bool2", getBool2(), linkedProps, FilterParameter::Parameter));
+    parameters.push_back(LinkedBooleanFilterParameter::New("Bool2", "Bool2", getBool2(), linkedProps, FilterParameter::Parameter, SIMPL_BIND_SETTER(GenericExample, this, Bool2), SIMPL_BIND_GETTER(GenericExample, this, Bool2)));
   }
   {
     AttributeMatrixSelectionFilterParameter::RequirementType req;
-    parameters.push_back(AttributeMatrixSelectionFilterParameter::New("Attribute Matrix", "AttributeMatrixPath", getAttributeMatrixPath(), FilterParameter::Parameter, req));
+    parameters.push_back(AttributeMatrixSelectionFilterParameter::New("Attribute Matrix", "AttributeMatrixPath", getAttributeMatrixPath(), FilterParameter::Parameter, req, SIMPL_BIND_SETTER(GenericExample, this, AttributeMatrixPath), SIMPL_BIND_GETTER(GenericExample, this, AttributeMatrixPath)));
   }
 
   parameters.push_back(SeparatorFilterParameter::New("Linked Combo Box Example (1)", FilterParameter::Parameter));
@@ -172,6 +173,8 @@ void GenericExample::setupFilterParameters()
     LinkedChoicesFilterParameter::Pointer parameter = LinkedChoicesFilterParameter::New();
     parameter->setHumanLabel("Select Distance Metric");
     parameter->setPropertyName("DistanceMetric");
+    parameter->setSetterCallback(SIMPL_BIND_SETTER(GenericExample, this, DistanceMetric));
+    parameter->setGetterCallback(SIMPL_BIND_GETTER(GenericExample, this, DistanceMetric));
 
     parameter->setDefaultValue(getDistanceMetric()); // Just set the first index
 
@@ -188,13 +191,12 @@ void GenericExample::setupFilterParameters()
     parameters.push_back(parameter);
 
     /*  For an Integer use this code*/
-    parameters.push_back(IntFilterParameter::New("Max Iterations", "MaxIterations", getMaxIterations(), FilterParameter::Parameter, 0));
-    /*  For a Floating point value use this code*/
-    parameters.push_back(DoubleFilterParameter::New("Misorientation Tolerance", "MisorientationTolerance", getMisorientationTolerance(), FilterParameter::Parameter, 1));
+    parameters.push_back(IntFilterParameter::New("Max Iterations", "MaxIterations", getMaxIterations(), FilterParameter::Parameter, SIMPL_BIND_SETTER(GenericExample, this, MaxIterations), SIMPL_BIND_GETTER(GenericExample, this, MaxIterations), 0));    /*  For a Floating point value use this code*/
+    parameters.push_back(DoubleFilterParameter::New("Misorientation Tolerance", "MisorientationTolerance", getMisorientationTolerance(), FilterParameter::Parameter, SIMPL_BIND_SETTER(GenericExample, this, MisorientationTolerance), SIMPL_BIND_GETTER(GenericExample, this, MisorientationTolerance), 1));
     /*   For an input file use this code*/
-    //parameters.push_back(InputFileFilterParameter::New("Input File", "InputFile", getInputFile(), FilterParameter::Parameter, "", "", 1));
+    //parameters.push_back(InputFileFilterParameter::New("Input File", "InputFile", getInputFile(), FilterParameter::Parameter, SIMPL_BIND_SETTER(GenericExample, this, InputFile), SIMPL_BIND_GETTER(GenericExample, this, InputFile), "", "", 1));
     /*   For an input path use this code*/
-    //parameters.push_back(InputPathFilterParameter::New("Input Path", "InputPath", getInputPath(), FilterParameter::Parameter, "", "", 2));
+    //parameters.push_back(InputPathFilterParameter::New("Input Path", "InputPath", getInputPath(), FilterParameter::Parameter, SIMPL_BIND_SETTER(GenericExample, this, InputPath), SIMPL_BIND_GETTER(GenericExample, this, InputPath), "", "", 2));
   }
 
 
@@ -206,6 +208,8 @@ void GenericExample::setupFilterParameters()
     LinkedChoicesFilterParameter::Pointer parameter = LinkedChoicesFilterParameter::New();
     parameter->setHumanLabel("Select Algorithm");
     parameter->setPropertyName("AlgorithmSelection");
+    parameter->setSetterCallback(SIMPL_BIND_SETTER(GenericExample, this, AlgorithmSelection));
+    parameter->setGetterCallback(SIMPL_BIND_GETTER(GenericExample, this, AlgorithmSelection));
 
     parameter->setDefaultValue(getAlgorithmSelection()); // Just set the first index
 
@@ -223,17 +227,17 @@ void GenericExample::setupFilterParameters()
 
     {
       DataArrayCreationFilterParameter::RequirementType req;
-      parameters.push_back(DataArrayCreationFilterParameter::New("Created Data Array", "CreatedDataArray", getCreatedDataArray(), FilterParameter::Parameter, req, 0));
+      parameters.push_back(DataArrayCreationFilterParameter::New("Created Data Array", "CreatedDataArray", getCreatedDataArray(), FilterParameter::Parameter, req, SIMPL_BIND_SETTER(GenericExample, this, CreatedDataArray), SIMPL_BIND_GETTER(GenericExample, this, CreatedDataArray), 0));
     }
     /* Display a group of 3 text boxes to collect 3 float values */
-    parameters.push_back(FloatVec3FilterParameter::New("Origin", "Origin", getOrigin(), FilterParameter::Parameter, 1));
+    parameters.push_back(FloatVec3FilterParameter::New("Origin", "Origin", getOrigin(), FilterParameter::Parameter, SIMPL_BIND_SETTER(GenericExample, this, Origin), SIMPL_BIND_GETTER(GenericExample, this, Origin), 1));
 
     /* Display the AxisAngleWidget to collect Axis-Angle pairs from the user */
-    parameters.push_back(AxisAngleFilterParameter::New("Crystal Rotations", "CrystalSymmetryRotations", getCrystalSymmetryRotations(), FilterParameter::Parameter, 2));
+    parameters.push_back(AxisAngleFilterParameter::New("Crystal Rotations", "CrystalSymmetryRotations", getCrystalSymmetryRotations(), FilterParameter::Parameter, SIMPL_BIND_SETTER(GenericExample, this, CrystalSymmetryRotations), SIMPL_BIND_GETTER(GenericExample, this, CrystalSymmetryRotations), 2));
 
     {
       DataContainerSelectionFilterParameter::RequirementType req;
-      parameters.push_back(DataContainerSelectionFilterParameter::New("Data Container", "DataContainerName", getDataContainerName(), FilterParameter::Parameter, req, 2));
+      parameters.push_back(DataContainerSelectionFilterParameter::New("Data Container", "DataContainerName", getDataContainerName(), FilterParameter::Parameter, req, SIMPL_BIND_SETTER(GenericExample, this, DataContainerName), SIMPL_BIND_GETTER(GenericExample, this, DataContainerName), 2));
     }
   }
   QVector<DataArrayPath> paths;
@@ -242,7 +246,7 @@ void GenericExample::setupFilterParameters()
 
   {
     MultiDataArraySelectionFilterParameter::RequirementType req;
-    parameters.push_back(MultiDataArraySelectionFilterParameter::New("Multi Data Array Test", "SelectedMultiArrayPaths", paths, FilterParameter::Parameter, req, 0));
+    parameters.push_back(MultiDataArraySelectionFilterParameter::New("Multi Data Array Test", "SelectedMultiArrayPaths", paths, FilterParameter::Parameter, req, SIMPL_BIND_SETTER(GenericExample, this, SelectedMultiArrayPaths), SIMPL_BIND_GETTER(GenericExample, this, SelectedMultiArrayPaths), 0));
   }
 
   setFilterParameters(parameters);
@@ -275,33 +279,28 @@ void GenericExample::readFilterParameters(AbstractFilterParametersReader* reader
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-int GenericExample::writeFilterParameters(AbstractFilterParametersWriter* writer, int index)
+void GenericExample::readFilterParameters(QJsonObject &obj)
 {
-  writer->openFilterGroup(this, index);
-  SIMPL_FILTER_WRITE_PARAMETER(FilterVersion)
-  SIMPL_FILTER_WRITE_PARAMETER(FeatureIdsArrayPath)
-  SIMPL_FILTER_WRITE_PARAMETER(SelectedMultiArrayPaths)
-  /* Place code that will write the inputs values into a file. reference the
-       AbstractFilterParametersWriter class for the proper API to use. */
-  SIMPL_FILTER_WRITE_PARAMETER(StlFilePrefix)
-  SIMPL_FILTER_WRITE_PARAMETER(MaxIterations)
-  SIMPL_FILTER_WRITE_PARAMETER(MisorientationTolerance)
-  SIMPL_FILTER_WRITE_PARAMETER(InputFile)
-  SIMPL_FILTER_WRITE_PARAMETER(InputPath)
-  SIMPL_FILTER_WRITE_PARAMETER(OutputFile)
-  SIMPL_FILTER_WRITE_PARAMETER(OutputPath)
-  SIMPL_FILTER_WRITE_PARAMETER(WriteAlignmentShifts)
-  SIMPL_FILTER_WRITE_PARAMETER(ConversionType)
-  SIMPL_FILTER_WRITE_PARAMETER(Dimensions)
-  SIMPL_FILTER_WRITE_PARAMETER(Origin)
-  SIMPL_FILTER_WRITE_PARAMETER(CrystalSymmetryRotations)
-
-
-
-  writer->closeFilterGroup();
-  return ++index; // we want to return the next index that was just written to
+  AbstractFilter::readFilterParameters(obj);
+  setInputFile(obj["InputFile"].toString());
+  setInputPath(obj["InputPath"].toString());
+  setOutputFile(obj["OutputFile"].toString());
+  setOutputPath(obj["OutputPath"].toString());
 }
 
+// FP: Check why these values are not connected to a filter parameter!
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void GenericExample::writeFilterParameters(QJsonObject &obj)
+{
+  AbstractFilter::writeFilterParameters(obj);
+  obj["InputFile"] = getInputFile();
+  obj["InputPath"] = getInputPath();
+  obj["OutputFile"] = getOutputFile();
+  obj["OutputPath"] = getOutputPath();
+}
 
 // -----------------------------------------------------------------------------
 //

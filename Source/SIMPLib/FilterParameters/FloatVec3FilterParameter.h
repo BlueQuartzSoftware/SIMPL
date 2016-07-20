@@ -72,9 +72,12 @@ public:
     SIMPL_STATIC_NEW_MACRO(FloatVec3FilterParameter)
     SIMPL_TYPE_MACRO(FloatVec3FilterParameter)
 
+  typedef std::function<void(FloatVec3_t)> SetterCallbackType;
+  typedef std::function<FloatVec3_t(void)> GetterCallbackType;
+
     static Pointer New(const QString& humanLabel, const QString& propertyName,
-    const FloatVec3_t& defaultValue, Category category,
-     int groupIndex = -1);
+    const FloatVec3_t& defaultValue, Category category, SetterCallbackType setterCallback,
+    GetterCallbackType getterCallback, int groupIndex = -1);
 
     virtual ~FloatVec3FilterParameter();
 
@@ -84,6 +87,21 @@ public:
    * @return
    */
   QString getWidgetType();
+
+  /**
+   * @brief readJson
+   * @return
+   */
+  void readJson(const QJsonObject &json);
+
+  /**
+   * @brief writeJson
+   * @return
+   */
+  void writeJson(QJsonObject &json);
+
+  SIMPL_INSTANCE_PROPERTY(SetterCallbackType, SetterCallback)
+  SIMPL_INSTANCE_PROPERTY(GetterCallbackType, GetterCallback)
 
 
 protected:

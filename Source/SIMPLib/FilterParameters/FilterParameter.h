@@ -44,6 +44,7 @@
 #include "SIMPLib/SIMPLib.h"
 #include "SIMPLib/Common/SIMPLibSetGetMacros.h"
 
+
 /**
  * @class FilterParameter FilterParameter.h DREAM3DLib/FilterParameters/FilterParameter.h
  * @brief This class holds the various properties that an input parameter to a
@@ -85,6 +86,18 @@ class SIMPLib_EXPORT FilterParameter
     SIMPL_INSTANCE_PROPERTY(bool, ReadOnly)
     SIMPL_INSTANCE_PROPERTY(int, GroupIndex)
 
+    /**
+     * @brief readJson
+     * @return
+     */
+    virtual void readJson(const QJsonObject &json);
+
+    /**
+     * @brief writeJson
+     * @return
+     */
+    virtual void writeJson(QJsonObject &json);
+
   protected:
     FilterParameter();
 
@@ -97,6 +110,65 @@ typedef QVector<FilterParameter::Pointer> FilterParameterVector;
 
 typedef struct { QVector<unsigned int> d; } UInt32Vector_t;
 Q_DECLARE_METATYPE(UInt32Vector_t)
+
+// -----------------------------------------------------------------------------
+// This section of Macros allows each FilterParameter subclass to create a macro
+// or set of macros that can lessen the amout of code that needs to be written
+// in order to create an instantiation of the subclass. The technique used here
+// is the 'paired, sliding list' of macro parameters that also makes use of
+// __VA__ARGS__
+// -----------------------------------------------------------------------------
+
+#define SIMPL_BIND_SETTER(CLASS, PTR, PROP)\
+std::bind(&CLASS::set##PROP, PTR, std::placeholders::_1)
+
+#define SIMPL_BIND_GETTER(CLASS, PTR, PROP)\
+std::bind(&CLASS::get##PROP, PTR)
+
+// Define overrides that can be used by the expansion of our main macro.
+// Each subclass can define a macro that takes up to nine (9) arguments
+// to the constructor. These macros support a minimum of 4 arguments.
+
+#define SIMPL_NEW_FP_9(Class, Desc, Prop, Category, Filter, Index, A, B, C, D)\
+  Class::New(Desc, #Prop, get##Prop(), Category,\
+  SIMPL_BIND_SETTER(Filter, this, Prop),\
+  SIMPL_BIND_GETTER(Filter, this, Prop),\
+  Index, A, B, C, D)
+
+#define SIMPL_NEW_FP_8(Class, Desc, Prop, Category, Filter, Index, A, B, C)\
+  Class::New(Desc, #Prop, get##Prop(), Category,\
+  SIMPL_BIND_SETTER(Filter, this, Prop),\
+  SIMPL_BIND_GETTER(Filter, this, Prop),\
+  Index, A, B, C)
+
+#define SIMPL_NEW_FP_7(Class, Desc, Prop, Category, Filter, Index, A, B)\
+  Class::New(Desc, #Prop, get##Prop(), Category,\
+  SIMPL_BIND_SETTER(Filter, this, Prop),\
+  SIMPL_BIND_GETTER(Filter, this, Prop),\
+  Index, A, B)
+
+#define SIMPL_NEW_FP_6(Class, Desc, Prop, Category, Filter, Index, A)\
+  Class::New(Desc, #Prop, get##Prop(), Category,\
+  SIMPL_BIND_SETTER(Filter, this, Prop),\
+  SIMPL_BIND_GETTER(Filter, this, Prop),\
+  Index, A)
+
+#define SIMPL_NEW_FP_5(Class, Desc, Prop, Category, Filter, Index)\
+  Class::New(Desc, #Prop, get##Prop(), Category,\
+  SIMPL_BIND_SETTER(Filter, this, Prop),\
+  SIMPL_BIND_GETTER(Filter, this, Prop),\
+  Index)
+
+#define SIMPL_NEW_FP_4(Class, Desc, Prop, Category, Filter)\
+  Class::New(Desc, #Prop, get##Prop(), Category,\
+  SIMPL_BIND_SETTER(Filter, this, Prop),\
+  SIMPL_BIND_GETTER(Filter, this, Prop))
+
+// -----------------------------------------------------------------------------
+// Define a macro that uses the "paired, sliding arg list"
+// technique to select the appropriate override.
+#define _FP_GET_OVERRIDE(_1, _2, _3, _4, _5, _6, _7, _8, _9, NAME, ...) NAME
+
 
 #endif /* _FilterParameter_H_ */
 

@@ -36,35 +36,86 @@
 #ifndef _doublefilterparameter_h_
 #define _doublefilterparameter_h_
 
+#include <QtCore/QJsonObject>
+
 #include "SIMPLib/FilterParameters/FilterParameter.h"
 
+#define SIMPL_NEW_DOUBLE_FP(...) \
+  _FP_GET_OVERRIDE(__VA_ARGS__, \
+  SIMPL_NEW_FP_9, SIMPL_NEW_FP_8, SIMPL_NEW_FP_7, SIMPL_NEW_FP_6, SIMPL_NEW_FP_5, SIMPL_NEW_FP_4)\
+  (DoubleFilterParameter, __VA_ARGS__)
+
+
+/**
+ * @brief The DoubleFilterParameter class
+ */
 class SIMPLib_EXPORT DoubleFilterParameter : public FilterParameter
 {
-public:
-  SIMPL_SHARED_POINTERS(DoubleFilterParameter)
+  public:
+    SIMPL_SHARED_POINTERS(DoubleFilterParameter)
     SIMPL_STATIC_NEW_MACRO(DoubleFilterParameter)
     SIMPL_TYPE_MACRO(DoubleFilterParameter)
 
+    typedef std::function<void(double)> SetterCallbackType;
+    typedef std::function<double(void)> GetterCallbackType;
+
+    /**
+     * @brief New
+     * @param humanLabel
+     * @param propertyName
+     * @param defaultValue
+     * @param category
+     * @param setterCallback
+     * @param getterCallback
+     * @param groupIndex
+     * @return
+     */
     static Pointer New(const QString& humanLabel, const QString& propertyName,
-    const double& defaultValue, Category category,
-     int groupIndex = -1);
+                       const double& defaultValue, Category category, SetterCallbackType setterCallback,
+                       GetterCallbackType getterCallback, int groupIndex = -1);
 
     virtual ~DoubleFilterParameter();
 
-  /**
+    /**
    * @brief getWidgetType Returns the type of widget that displays and controls
    * this FilterParameter subclass
    * @return
    */
-  QString getWidgetType();
+    QString getWidgetType();
+
+    /**
+   * @brief readJson
+   * @return
+   */
+    void readJson(const QJsonObject &json);
+
+    /**
+   * @brief writeJson
+   * @return
+   */
+    void writeJson(QJsonObject &json);
+
+    /**
+    * @param SetterCallback The method in the AbstractFilter subclass that <i>sets</i> the value of the property
+    * that this FilterParameter subclass represents.
+    * from the filter parameter.
+    */
+    SIMPL_INSTANCE_PROPERTY(SetterCallbackType, SetterCallback)
+
+    /**
+    * @param GetterCallback The method in the AbstractFilter subclass that <i>gets</i> the value of the property
+    * that this FilterParameter subclass represents.
+    * @return The GetterCallback
+    */
+    SIMPL_INSTANCE_PROPERTY(GetterCallbackType, GetterCallback)
 
 
-protected:
-  DoubleFilterParameter();
+    protected:
+      DoubleFilterParameter();
 
-private:
-  DoubleFilterParameter(const DoubleFilterParameter&); // Copy Constructor Not Implemented
-  void operator=(const DoubleFilterParameter&); // Operator '=' Not Implemented
+  private:
+    DoubleFilterParameter(const DoubleFilterParameter&); // Copy Constructor Not Implemented
+    void operator=(const DoubleFilterParameter&); // Operator '=' Not Implemented
 };
 
 #endif /* _DoubleFilterParameter_H_ */

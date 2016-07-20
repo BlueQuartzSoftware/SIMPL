@@ -89,9 +89,13 @@ public:
     SIMPL_STATIC_NEW_MACRO(ThirdOrderPolynomialFilterParameter)
     SIMPL_TYPE_MACRO(ThirdOrderPolynomialFilterParameter)
 
+  typedef std::function<void(Float3rdOrderPoly_t)> SetterCallbackType;
+  typedef std::function<Float3rdOrderPoly_t(void)> GetterCallbackType;
+
     static Pointer New(const QString& humanLabel, const QString& propertyName,
     const Float3rdOrderPoly_t& defaultValue, Category category,
-     int groupIndex = -1);
+    SetterCallbackType setterCallback, GetterCallbackType getterCallback,
+    int groupIndex = -1);
 
     virtual ~ThirdOrderPolynomialFilterParameter();
 
@@ -101,6 +105,21 @@ public:
    * @return
    */
   QString getWidgetType();
+
+  /**
+   * @brief readJson
+   * @return
+   */
+  void readJson(const QJsonObject &json);
+
+  /**
+   * @brief writeJson
+   * @return
+   */
+  void writeJson(QJsonObject &json);
+
+  SIMPL_INSTANCE_PROPERTY(SetterCallbackType, SetterCallback)
+  SIMPL_INSTANCE_PROPERTY(GetterCallbackType, GetterCallback)
 
 
 protected:

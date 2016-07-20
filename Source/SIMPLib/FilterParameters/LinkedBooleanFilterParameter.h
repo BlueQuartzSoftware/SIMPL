@@ -36,6 +36,8 @@
 #ifndef _linkedbooleanfilterparameter_h_
 #define _linkedbooleanfilterparameter_h_
 
+#include <QtCore/QJsonObject>
+
 #include "SIMPLib/FilterParameters/FilterParameter.h"
 
 class SIMPLib_EXPORT LinkedBooleanFilterParameter : public FilterParameter
@@ -45,11 +47,13 @@ class SIMPLib_EXPORT LinkedBooleanFilterParameter : public FilterParameter
     SIMPL_STATIC_NEW_MACRO(LinkedBooleanFilterParameter)
     SIMPL_TYPE_MACRO_SUPER(LinkedBooleanFilterParameter, FilterParameter)
 
+    typedef std::function<void(bool)> SetterCallbackType;
+    typedef std::function<bool(void)> GetterCallbackType;
+
     static Pointer New(const QString& humanLabel, const QString& propertyName,
-                       const bool& defaultValue,
-                       QStringList conditionalProperties,
-                       Category category,
-                       int groupIndex = -1);
+                       const bool& defaultValue, QStringList conditionalProperties,
+                       Category category, SetterCallbackType setterCallback,
+                       GetterCallbackType getterCallback, int groupIndex = -1);
 
     virtual ~LinkedBooleanFilterParameter();
 
@@ -61,6 +65,32 @@ class SIMPLib_EXPORT LinkedBooleanFilterParameter : public FilterParameter
      * @return
      */
     QString getWidgetType();
+
+    /**
+     * @brief readJson
+     * @return
+     */
+    void readJson(const QJsonObject &json);
+
+    /**
+     * @brief writeJson
+     * @return
+     */
+    void writeJson(QJsonObject &json);
+
+    /**
+    * @param SetterCallback The method in the AbstractFilter subclass that <i>sets</i> the value of the property
+    * that this FilterParameter subclass represents.
+    * from the filter parameter.
+    */
+    SIMPL_INSTANCE_PROPERTY(SetterCallbackType, SetterCallback)
+
+    /**
+    * @param GetterCallback The method in the AbstractFilter subclass that <i>gets</i> the value of the property
+    * that this FilterParameter subclass represents.
+    * @return The GetterCallback
+    */
+    SIMPL_INSTANCE_PROPERTY(GetterCallbackType, GetterCallback)
 
 
   protected:

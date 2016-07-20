@@ -39,7 +39,6 @@
 #include "SIMPLib/Common/Constants.h"
 #include "SIMPLib/SIMPLibVersion.h"
 #include "SIMPLib/FilterParameters/AbstractFilterParametersReader.h"
-#include "SIMPLib/FilterParameters/AbstractFilterParametersWriter.h"
 #include "SIMPLib/FilterParameters/DataContainerSelectionFilterParameter.h"
 #include "SIMPLib/FilterParameters/StringFilterParameter.h"
 
@@ -75,10 +74,10 @@ void RenameDataContainer::setupFilterParameters()
 
   {
     DataContainerSelectionFilterParameter::RequirementType req;
-    parameters.push_back(DataContainerSelectionFilterParameter::New("Data Container to Rename", "SelectedDataContainerName", getSelectedDataContainerName(), FilterParameter::RequiredArray, req));
+    parameters.push_back(DataContainerSelectionFilterParameter::New("Data Container to Rename", "SelectedDataContainerName", getSelectedDataContainerName(), FilterParameter::RequiredArray, req, SIMPL_BIND_SETTER(RenameDataContainer, this, SelectedDataContainerName), SIMPL_BIND_GETTER(RenameDataContainer, this, SelectedDataContainerName)));
   }
 
-  parameters.push_back(StringFilterParameter::New("New Data Container Name", "NewDataContainerName", getNewDataContainerName(), FilterParameter::Parameter));
+  parameters.push_back(StringFilterParameter::New("New Data Container Name", "NewDataContainerName", getNewDataContainerName(), FilterParameter::Parameter, SIMPL_BIND_SETTER(RenameDataContainer, this, NewDataContainerName), SIMPL_BIND_GETTER(RenameDataContainer, this, NewDataContainerName)));
 
   setFilterParameters(parameters);
 }
@@ -92,19 +91,6 @@ void RenameDataContainer::readFilterParameters(AbstractFilterParametersReader* r
   setSelectedDataContainerName( reader->readString("SelectedDataContainerName", getSelectedDataContainerName()) );
   setNewDataContainerName( reader->readString( "NewDataContainerName", getNewDataContainerName() ) );
   reader->closeFilterGroup();
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-int RenameDataContainer::writeFilterParameters(AbstractFilterParametersWriter* writer, int index)
-{
-  writer->openFilterGroup(this, index);
-  SIMPL_FILTER_WRITE_PARAMETER(FilterVersion)
-  SIMPL_FILTER_WRITE_PARAMETER(SelectedDataContainerName)
-  SIMPL_FILTER_WRITE_PARAMETER(NewDataContainerName)
-  writer->closeFilterGroup();
-  return ++index; // we want to return the next index that was just written to
 }
 
 // -----------------------------------------------------------------------------

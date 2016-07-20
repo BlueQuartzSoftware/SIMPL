@@ -52,7 +52,7 @@ CalculatorFilterParameter::~CalculatorFilterParameter()
 //
 // -----------------------------------------------------------------------------
 CalculatorFilterParameter::Pointer CalculatorFilterParameter::New(const QString& humanLabel, const QString& propertyName,
-  const QString& defaultValue, Category category, int groupIndex)
+  const QString& defaultValue, Category category, SetterCallbackType setterCallback, GetterCallbackType getterCallback, int groupIndex)
 {
 
   CalculatorFilterParameter::Pointer ptr = CalculatorFilterParameter::New();
@@ -61,6 +61,8 @@ CalculatorFilterParameter::Pointer CalculatorFilterParameter::New(const QString&
   ptr->setDefaultValue(defaultValue);
   ptr->setCategory(category);
   ptr->setGroupIndex(groupIndex);
+  ptr->setSetterCallback(setterCallback);
+  ptr->setGetterCallback(getterCallback);
 
   return ptr;
 }
@@ -72,5 +74,25 @@ CalculatorFilterParameter::Pointer CalculatorFilterParameter::New(const QString&
 QString CalculatorFilterParameter::getWidgetType()
 {
   return QString("CalculatorWidget");
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void CalculatorFilterParameter::readJson(const QJsonObject &json)
+{
+  QJsonValue jsonValue = json[getPropertyName()];
+  if(!jsonValue.isUndefined() )
+  {
+    m_SetterCallback(jsonValue.toString(""));
+  }
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void CalculatorFilterParameter::writeJson(QJsonObject &json)
+{
+  json[getPropertyName()] = m_GetterCallback();
 }
 

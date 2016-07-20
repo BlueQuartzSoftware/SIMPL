@@ -39,7 +39,6 @@
 #include "SIMPLib/Common/Constants.h"
 #include "SIMPLib/SIMPLibVersion.h"
 #include "SIMPLib/FilterParameters/AbstractFilterParametersReader.h"
-#include "SIMPLib/FilterParameters/AbstractFilterParametersWriter.h"
 #include "SIMPLib/FilterParameters/DataContainerArrayProxyFilterParameter.h"
 
 // Include the MOC generated file for this class
@@ -74,6 +73,8 @@ void RemoveArrays::setupFilterParameters()
     DataContainerArrayProxyFilterParameter::Pointer parameter = DataContainerArrayProxyFilterParameter::New();
     parameter->setHumanLabel("Objects to Delete");
     parameter->setPropertyName("DataArraysToRemove");
+    parameter->setSetterCallback(SIMPL_BIND_SETTER(RemoveArrays, this, DataArraysToRemove));
+    parameter->setGetterCallback(SIMPL_BIND_GETTER(RemoveArrays, this, DataArraysToRemove));
 
     parameter->setDefaultFlagValue(Qt::Unchecked);
     parameter->setCategory(FilterParameter::RequiredArray);
@@ -92,19 +93,6 @@ void RemoveArrays::readFilterParameters(AbstractFilterParametersReader* reader, 
   DataContainerArrayProxy proxy = reader->readDataContainerArrayProxy("DataArraysToRemove", getDataArraysToRemove() );
   setDataArraysToRemove(proxy);
   reader->closeFilterGroup();
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-int RemoveArrays::writeFilterParameters(AbstractFilterParametersWriter* writer, int index)
-{
-  writer->openFilterGroup(this, index);
-  SIMPL_FILTER_WRITE_PARAMETER(FilterVersion)
-  DataContainerArrayProxy dcaProxy = getDataArraysToRemove(); // This line makes a COPY of the DataContainerArrayProxy that is stored in the current instance
-  writer->writeValue("DataArraysToRemove", dcaProxy );
-  writer->closeFilterGroup();
-  return ++index;
 }
 
 // -----------------------------------------------------------------------------

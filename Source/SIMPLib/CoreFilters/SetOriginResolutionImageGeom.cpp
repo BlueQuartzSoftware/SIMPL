@@ -46,7 +46,6 @@
 #include "SIMPLib/Common/Constants.h"
 #include "SIMPLib/SIMPLibVersion.h"
 #include "SIMPLib/FilterParameters/AbstractFilterParametersReader.h"
-#include "SIMPLib/FilterParameters/AbstractFilterParametersWriter.h"
 
 #include "SIMPLib/FilterParameters/DataContainerSelectionFilterParameter.h"
 #include "SIMPLib/FilterParameters/FloatVec3FilterParameter.h"
@@ -132,17 +131,19 @@ void SetOriginResolutionImageGeom::setupFilterParameters()
   {
     DataContainerSelectionFilterParameter::RequirementType req;
     req.dcGeometryTypes = QVector<unsigned int>(1, SIMPL::GeometryType::ImageGeometry);
-    parameters.push_back(DataContainerSelectionFilterParameter::New("Data Container Image Geometry to Modify", "DataContainerName", getDataContainerName(), FilterParameter::RequiredArray, req));
+    parameters.push_back(DataContainerSelectionFilterParameter::New("Data Container Image Geometry to Modify", "DataContainerName", getDataContainerName(), FilterParameter::RequiredArray, req, SIMPL_BIND_SETTER(SetOriginResolutionImageGeom, this, DataContainerName), SIMPL_BIND_GETTER(SetOriginResolutionImageGeom, this, DataContainerName)));
   }
 
   QStringList linkedProps("Origin");
-  parameters.push_back(LinkedBooleanFilterParameter::New("Change Origin", "ChangeOrigin", getChangeOrigin(), linkedProps, FilterParameter::Parameter));
-  parameters.push_back(FloatVec3FilterParameter::New("Origin", "Origin", getOrigin(), FilterParameter::Parameter));
+  parameters.push_back(LinkedBooleanFilterParameter::New("Change Origin", "ChangeOrigin", getChangeOrigin(), linkedProps, FilterParameter::Parameter, SIMPL_BIND_SETTER(SetOriginResolutionImageGeom, this, ChangeOrigin), SIMPL_BIND_GETTER(SetOriginResolutionImageGeom, this, ChangeOrigin)));
+  parameters.push_back(FloatVec3FilterParameter::New("Origin", "Origin", getOrigin(), FilterParameter::Parameter, SIMPL_BIND_SETTER(SetOriginResolutionImageGeom, this, Origin), SIMPL_BIND_GETTER(SetOriginResolutionImageGeom, this, Origin)));
+
 
   linkedProps.clear();
   linkedProps << "Resolution";
-  parameters.push_back(LinkedBooleanFilterParameter::New("Change Resolution", "ChangeResolution", getChangeResolution(), linkedProps, FilterParameter::Parameter));
-  parameters.push_back(FloatVec3FilterParameter::New("Resolution", "Resolution", getResolution(), FilterParameter::Parameter));
+  parameters.push_back(LinkedBooleanFilterParameter::New("Change Resolution", "ChangeResolution", getChangeResolution(), linkedProps, FilterParameter::Parameter, SIMPL_BIND_SETTER(SetOriginResolutionImageGeom, this, ChangeResolution), SIMPL_BIND_GETTER(SetOriginResolutionImageGeom, this, ChangeResolution)));
+  parameters.push_back(FloatVec3FilterParameter::New("Resolution", "Resolution", getResolution(), FilterParameter::Parameter, SIMPL_BIND_SETTER(SetOriginResolutionImageGeom, this, Resolution), SIMPL_BIND_GETTER(SetOriginResolutionImageGeom, this, Resolution)));
+
 
   setFilterParameters(parameters);
 }
@@ -159,22 +160,6 @@ void SetOriginResolutionImageGeom::readFilterParameters(AbstractFilterParameters
   setResolution(reader->readFloatVec3("Resolution", getResolution() ) );
   setDataContainerName(reader->readString("DataContainerName", getDataContainerName()));
   reader->closeFilterGroup();
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-int SetOriginResolutionImageGeom::writeFilterParameters(AbstractFilterParametersWriter* writer, int index)
-{
-  writer->openFilterGroup(this, index);
-  SIMPL_FILTER_WRITE_PARAMETER(FilterVersion)
-  SIMPL_FILTER_WRITE_PARAMETER(Origin)
-  SIMPL_FILTER_WRITE_PARAMETER(Resolution)
-  SIMPL_FILTER_WRITE_PARAMETER(ChangeOrigin)
-  SIMPL_FILTER_WRITE_PARAMETER(ChangeResolution)
-  SIMPL_FILTER_WRITE_PARAMETER(DataContainerName)
-  writer->closeFilterGroup();
-  return ++index; // we want to return the next index that was just written to
 }
 
 // -----------------------------------------------------------------------------

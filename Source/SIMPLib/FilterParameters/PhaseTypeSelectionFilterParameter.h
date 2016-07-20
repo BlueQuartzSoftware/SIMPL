@@ -36,6 +36,8 @@
 #ifndef _phasetypeselectionfilterparameter_h_
 #define _phasetypeselectionfilterparameter_h_
 
+#include <QtCore/QJsonObject>
+
 #include "SIMPLib/FilterParameters/FilterParameter.h"
 #include "SIMPLib/DataContainers/DataArrayPath.h"
 
@@ -46,6 +48,9 @@ public:
     SIMPL_STATIC_NEW_MACRO(PhaseTypeSelectionFilterParameter)
     SIMPL_TYPE_MACRO_SUPER(PhaseTypeSelectionFilterParameter, FilterParameter)
 
+  typedef std::function<void(UInt32Vector_t)> SetterCallbackType;
+  typedef std::function<UInt32Vector_t(void)> GetterCallbackType;
+
     static Pointer New(const QString& humanLabel,
                       const QString& PhaseTypesArrayName,
                       const QString& phaseTypeCountProperty,
@@ -54,6 +59,8 @@ public:
                       const DataArrayPath attributeMatrixDefault,
                       const QStringList phaseListChoices,
                       Category category,
+                      SetterCallbackType setterCallback,
+                      GetterCallbackType getterCallback,
                       int groupIndex = -1);
 
   virtual ~PhaseTypeSelectionFilterParameter();
@@ -70,6 +77,21 @@ public:
    * @return
    */
   QString getWidgetType();
+
+  /**
+   * @brief readJson
+   * @return
+   */
+  void readJson(const QJsonObject &json);
+
+  /**
+   * @brief writeJson
+   * @return
+   */
+  void writeJson(QJsonObject &json);
+
+  SIMPL_INSTANCE_PROPERTY(SetterCallbackType, SetterCallback)
+  SIMPL_INSTANCE_PROPERTY(GetterCallbackType, GetterCallback)
 
 
 protected:

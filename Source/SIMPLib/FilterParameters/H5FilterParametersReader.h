@@ -71,19 +71,19 @@ class SIMPLib_EXPORT H5FilterParametersReader : public AbstractFilterParametersR
      */
     static Pointer OpenDREAM3DFileForReadingPipeline(QString filePath, hid_t& fid);
 
-    /**
-     * @brief ReadPipelineFromFile
-     * @param filePath
-     * @return
-     */
-    static FilterPipeline::Pointer ReadPipelineFromFile(QString filePath);
-
     SIMPL_INSTANCE_PROPERTY(hid_t, PipelineGroupId)
 
     hid_t getCurrentGroupId() const;
 
     virtual int openFilterGroup(AbstractFilter* filter, int index);
     virtual int closeFilterGroup();
+
+    /**
+     * @brief ReadPipelineFromFile
+     * @param filePath
+     * @return
+     */
+    FilterPipeline::Pointer readPipelineFromFile(QString filePath, IObserver *obs = NULL);
 
     virtual QString readString(const QString name, QString value);
     virtual QVector<QString> readStrings(const QString name, QVector<QString> value);
@@ -138,7 +138,11 @@ class SIMPLib_EXPORT H5FilterParametersReader : public AbstractFilterParametersR
     H5FilterParametersReader();
 
   private:
-    hid_t m_CurrentGroupId;
+    hid_t               m_CurrentGroupId;
+    QJsonObject         m_PipelineRoot;
+    QJsonObject         m_CurrentFilterObject;
+    int                 m_Version;
+    int                 m_CurrentIndex;
 
     H5FilterParametersReader(const H5FilterParametersReader&); // Copy Constructor Not Implemented
     void operator=(const H5FilterParametersReader&); // Operator '=' Not Implemented

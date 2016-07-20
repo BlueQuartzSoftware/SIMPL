@@ -56,7 +56,10 @@ LinkedChoicesFilterParameter::Pointer LinkedChoicesFilterParameter::New(const QS
     const int& defaultValue,
     QVector<QString> choices,
     QStringList linkedProperties,
-    Category category, int groupIndex)
+    Category category,
+    SetterCallbackType setterCallback,
+    GetterCallbackType getterCallback,
+    int groupIndex)
 {
   LinkedChoicesFilterParameter::Pointer ptr = LinkedChoicesFilterParameter::New();
   ptr->setHumanLabel(humanLabel);
@@ -67,10 +70,11 @@ LinkedChoicesFilterParameter::Pointer LinkedChoicesFilterParameter::New(const QS
   ptr->setLinkedProperties(linkedProperties);
   ptr->setEditable(false);
   ptr->setGroupIndex(groupIndex);
+  ptr->setSetterCallback(setterCallback);
+  ptr->setGetterCallback(getterCallback);
 
   return ptr;
 }
-
 
 // -----------------------------------------------------------------------------
 //
@@ -78,5 +82,28 @@ LinkedChoicesFilterParameter::Pointer LinkedChoicesFilterParameter::New(const QS
 QString LinkedChoicesFilterParameter::getWidgetType()
 {
   return QString("ChoiceWidget");
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void LinkedChoicesFilterParameter::readJson(const QJsonObject &json)
+{
+  QJsonValue jsonValue = json[getPropertyName()];
+  if(!jsonValue.isUndefined() && m_SetterCallback.target<void(int)>() )
+  {
+    m_SetterCallback(jsonValue.toInt(0.0));
+  }
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void LinkedChoicesFilterParameter::writeJson(QJsonObject &json)
+{
+  if(m_GetterCallback.target<int(void)>())
+  {
+    json[getPropertyName()] = m_GetterCallback();
+  }
 }
 

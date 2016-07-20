@@ -63,7 +63,6 @@ UnknownFilterParameter::Pointer UnknownFilterParameter::New(const QString& human
   return ptr;
 }
 
-
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------

@@ -36,6 +36,8 @@
 #ifndef _inputpathfilterparameter_h_
 #define _inputpathfilterparameter_h_
 
+#include <QtCore/QJsonObject>
+
 #include "SIMPLib/FilterParameters/FilterParameter.h"
 
 class SIMPLib_EXPORT InputPathFilterParameter : public FilterParameter
@@ -45,11 +47,13 @@ public:
     SIMPL_STATIC_NEW_MACRO(InputPathFilterParameter)
     SIMPL_TYPE_MACRO(InputPathFilterParameter)
 
+  typedef std::function<void(QString)> SetterCallbackType;
+  typedef std::function<QString(void)> GetterCallbackType;
+
     static Pointer New(const QString& humanLabel, const QString& propertyName,
-    const QString& defaultValue, Category category,
-    const QString& fileExtension = QString(""),
-    const QString& fileType = QString(""),
-    int groupIndex = -1);
+    const QString& defaultValue, Category category, SetterCallbackType setterCallback,
+    GetterCallbackType getterCallback, const QString& fileExtension = QString(""),
+    const QString& fileType = QString(""), int groupIndex = -1);
 
     virtual ~InputPathFilterParameter();
 
@@ -62,6 +66,32 @@ public:
      * @return
      */
     QString getWidgetType();
+
+    /**
+     * @brief readJson
+     * @return
+     */
+    void readJson(const QJsonObject &json);
+
+    /**
+     * @brief writeJson
+     * @return
+     */
+    void writeJson(QJsonObject &json);
+
+    /**
+    * @param SetterCallback The method in the AbstractFilter subclass that <i>sets</i> the value of the property
+    * that this FilterParameter subclass represents.
+    * from the filter parameter.
+    */
+    SIMPL_INSTANCE_PROPERTY(SetterCallbackType, SetterCallback)
+
+    /**
+    * @param GetterCallback The method in the AbstractFilter subclass that <i>gets</i> the value of the property
+    * that this FilterParameter subclass represents.
+    * @return The GetterCallback
+    */
+    SIMPL_INSTANCE_PROPERTY(GetterCallbackType, GetterCallback)
 
 
 protected:

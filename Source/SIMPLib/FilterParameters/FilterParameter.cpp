@@ -52,3 +52,19 @@ FilterParameter::FilterParameter() :
 FilterParameter::~FilterParameter()
 {}
 
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void FilterParameter::readJson(const QJsonObject &json)
+{
+  Q_UNUSED(json)
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void FilterParameter::writeJson(QJsonObject &json)
+{
+  Q_UNUSED(json)
+}
+

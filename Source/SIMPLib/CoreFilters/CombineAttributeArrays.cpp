@@ -38,7 +38,6 @@
 #include "SIMPLib/SIMPLibVersion.h"
 #include "SIMPLib/Common/Constants.h"
 #include "SIMPLib/Common/TemplateHelpers.hpp"
-#include "SIMPLib/FilterParameters/AbstractFilterParametersWriter.h"
 #include "SIMPLib/FilterParameters/AbstractFilterParametersReader.h"
 #include "SIMPLib/FilterParameters/BooleanFilterParameter.h"
 #include "SIMPLib/FilterParameters/MultiDataArraySelectionFilterParameter.h"
@@ -197,12 +196,12 @@ CombineAttributeArrays::~CombineAttributeArrays()
 void CombineAttributeArrays::setupFilterParameters()
 {
   FilterParameterVector parameters;
-  parameters.push_back(BooleanFilterParameter::New("Normalize Data", "NormalizeData", getNormalizeData(), FilterParameter::Parameter));
+  parameters.push_back(BooleanFilterParameter::New("Normalize Data", "NormalizeData", getNormalizeData(), FilterParameter::Parameter, SIMPL_BIND_SETTER(CombineAttributeArrays, this, NormalizeData), SIMPL_BIND_GETTER(CombineAttributeArrays, this, NormalizeData)));
   {
     MultiDataArraySelectionFilterParameter::RequirementType req = MultiDataArraySelectionFilterParameter::CreateRequirement(SIMPL::Defaults::AnyPrimitive, SIMPL::Defaults::AnyComponentSize, SIMPL::Defaults::AnyAttributeMatrix, SIMPL::Defaults::AnyGeometry);
-    parameters.push_back(MultiDataArraySelectionFilterParameter::New("Attribute Arrays to Combine", "SelectedDataArrayPaths", getSelectedDataArrayPaths(), FilterParameter::RequiredArray, req));
+    parameters.push_back(MultiDataArraySelectionFilterParameter::New("Attribute Arrays to Combine", "SelectedDataArrayPaths", getSelectedDataArrayPaths(), FilterParameter::RequiredArray, req, SIMPL_BIND_SETTER(CombineAttributeArrays, this, SelectedDataArrayPaths), SIMPL_BIND_GETTER(CombineAttributeArrays, this, SelectedDataArrayPaths)));
   }
-  parameters.push_back(StringFilterParameter::New("Combined Data", "StackedDataArrayName", getStackedDataArrayName(), FilterParameter::CreatedArray));
+  parameters.push_back(StringFilterParameter::New("Combined Data", "StackedDataArrayName", getStackedDataArrayName(), FilterParameter::CreatedArray, SIMPL_BIND_SETTER(CombineAttributeArrays, this, StackedDataArrayName), SIMPL_BIND_GETTER(CombineAttributeArrays, this, StackedDataArrayName)));
   setFilterParameters(parameters);
 }
 
@@ -216,20 +215,6 @@ void CombineAttributeArrays::readFilterParameters(AbstractFilterParametersReader
   setStackedDataArrayName( reader->readString("StackedDataArrayName", getStackedDataArrayName() ) );
   setNormalizeData( reader->readValue("NormalizeData", getNormalizeData() ) );
   reader->closeFilterGroup();
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-int CombineAttributeArrays::writeFilterParameters(AbstractFilterParametersWriter* writer, int index)
-{
-  writer->openFilterGroup(this, index);
-  SIMPL_FILTER_WRITE_PARAMETER(FilterVersion)
-  SIMPL_FILTER_WRITE_PARAMETER(SelectedDataArrayPaths);
-  SIMPL_FILTER_WRITE_PARAMETER(StackedDataArrayName);
-  SIMPL_FILTER_WRITE_PARAMETER(NormalizeData);
-  writer->closeFilterGroup();
-  return ++index; // we want to return the next index that was just written to
 }
 
 // -----------------------------------------------------------------------------

@@ -36,9 +36,10 @@
 #ifndef _datacontainerarrayproxyfilterparameter_h_
 #define _datacontainerarrayproxyfilterparameter_h_
 
+#include <QtCore/QJsonObject>
+
 #include "SIMPLib/FilterParameters/FilterParameter.h"
 #include "SIMPLib/DataContainers/DataContainerArrayProxy.h"
-
 
 class SIMPLib_EXPORT DataContainerArrayProxyFilterParameter : public FilterParameter
 {
@@ -47,9 +48,13 @@ class SIMPLib_EXPORT DataContainerArrayProxyFilterParameter : public FilterParam
     SIMPL_STATIC_NEW_MACRO(DataContainerArrayProxyFilterParameter)
     SIMPL_TYPE_MACRO_SUPER(DataContainerArrayProxyFilterParameter, FilterParameter)
 
+    typedef std::function<void(DataContainerArrayProxy)> SetterCallbackType;
+    typedef std::function<DataContainerArrayProxy(void)> GetterCallbackType;
+
     static Pointer New(const QString& humanLabel, const QString& propertyName,
                        const QString& defaultValue, DataContainerArrayProxy proxy,
-                       Qt::CheckState defState, Category category, int groupIndex = -1);
+                       Qt::CheckState defState, Category category, SetterCallbackType setterCallback,
+                       GetterCallbackType getterCallback, int groupIndex = -1);
 
     virtual ~DataContainerArrayProxyFilterParameter();
 
@@ -62,6 +67,32 @@ class SIMPLib_EXPORT DataContainerArrayProxyFilterParameter : public FilterParam
      * @return
      */
     QString getWidgetType();
+
+    /**
+     * @brief readJson
+     * @return
+     */
+    void readJson(const QJsonObject &json);
+
+    /**
+     * @brief writeJson
+     * @return
+     */
+    void writeJson(QJsonObject &json);
+
+    /**
+    * @param SetterCallback The method in the AbstractFilter subclass that <i>sets</i> the value of the property
+    * that this FilterParameter subclass represents.
+    * from the filter parameter.
+    */
+    SIMPL_INSTANCE_PROPERTY(SetterCallbackType, SetterCallback)
+
+    /**
+    * @param GetterCallback The method in the AbstractFilter subclass that <i>gets</i> the value of the property
+    * that this FilterParameter subclass represents.
+    * @return The GetterCallback
+    */
+    SIMPL_INSTANCE_PROPERTY(GetterCallbackType, GetterCallback)
 
 
   protected:

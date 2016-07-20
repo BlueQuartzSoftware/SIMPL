@@ -101,9 +101,7 @@ class SIMPLib_EXPORT MakeDataContainer : public AbstractFilter
     * @brief This method will instantiate all the end user settable options/parameters
     * for this filter
     */
-    virtual void setupFilterParameters();
-
-    /**
+    virtual void setupFilterParameters();    /**
     * @brief This returns a string that is displayed in the GUI and helps to sort the filters into
     * a subgroup. It should be readable and understandable by humans.
     */
@@ -111,11 +109,6 @@ class SIMPLib_EXPORT MakeDataContainer : public AbstractFilter
 
 
 
-    /**
-    * @brief This method will write the options to a file
-    * @param writer The writer that is used to write the options to a file
-    */
-    virtual int writeFilterParameters(AbstractFilterParametersWriter* writer, int index);
 
     /**
     * @brief This method will read the options from a file

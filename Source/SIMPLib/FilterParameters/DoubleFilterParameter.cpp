@@ -52,7 +52,7 @@ DoubleFilterParameter::~DoubleFilterParameter()
 //
 // -----------------------------------------------------------------------------
 DoubleFilterParameter::Pointer DoubleFilterParameter::New(const QString& humanLabel, const QString& propertyName,
-  const double& defaultValue, Category category, int groupIndex)
+  const double& defaultValue, Category category, SetterCallbackType setterCallback, GetterCallbackType getterCallback, int groupIndex)
 {
 
   DoubleFilterParameter::Pointer ptr = DoubleFilterParameter::New();
@@ -61,10 +61,11 @@ DoubleFilterParameter::Pointer DoubleFilterParameter::New(const QString& humanLa
   ptr->setDefaultValue(defaultValue);
   ptr->setCategory(category);
   ptr->setGroupIndex(groupIndex);
+  ptr->setSetterCallback(setterCallback);
+  ptr->setGetterCallback(getterCallback);
 
   return ptr;
 }
-
 
 // -----------------------------------------------------------------------------
 //
@@ -72,5 +73,25 @@ DoubleFilterParameter::Pointer DoubleFilterParameter::New(const QString& humanLa
 QString DoubleFilterParameter::getWidgetType()
 {
   return QString("DoubleWidget");
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void DoubleFilterParameter::readJson(const QJsonObject &json)
+{
+  QJsonValue jsonValue = json[getPropertyName()];
+  if(!jsonValue.isUndefined() )
+  {
+    m_SetterCallback(jsonValue.toDouble());
+  }
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void DoubleFilterParameter::writeJson(QJsonObject &json)
+{
+  json[getPropertyName()] = m_GetterCallback();
 }
 

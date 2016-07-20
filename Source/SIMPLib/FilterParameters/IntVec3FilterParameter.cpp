@@ -53,6 +53,7 @@ IntVec3FilterParameter::~IntVec3FilterParameter()
 // -----------------------------------------------------------------------------
 IntVec3FilterParameter::Pointer IntVec3FilterParameter::New(const QString& humanLabel, const QString& propertyName,
                                                             const IntVec3_t& defaultValue, Category category,
+                                                            SetterCallbackType setterCallback, GetterCallbackType getterCallback,
                                                             const QString& units, int groupIndex)
 {
 
@@ -65,10 +66,11 @@ IntVec3FilterParameter::Pointer IntVec3FilterParameter::New(const QString& human
   ptr->setCategory(category);
   ptr->setGroupIndex(groupIndex);
   ptr->setUnits(units);
+  ptr->setSetterCallback(setterCallback);
+  ptr->setGetterCallback(getterCallback);
 
   return ptr;
 }
-
 
 // -----------------------------------------------------------------------------
 //
@@ -76,5 +78,31 @@ IntVec3FilterParameter::Pointer IntVec3FilterParameter::New(const QString& human
 QString IntVec3FilterParameter::getWidgetType()
 {
   return QString("IntVec3Widget");
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void IntVec3FilterParameter::readJson(const QJsonObject &json)
+{
+  QJsonValue jsonValue = json[getPropertyName()];
+  if(!jsonValue.isUndefined() )
+  {
+    QJsonObject obj = jsonValue.toObject();
+    IntVec3_t intVec3;
+    intVec3.readJson(obj);
+    m_SetterCallback(intVec3);
+  }
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void IntVec3FilterParameter::writeJson(QJsonObject &json)
+{
+  IntVec3_t intVec3 = m_GetterCallback();
+  QJsonObject obj;
+  intVec3.writeJson(obj);
+  json[getPropertyName()] = obj;
 }
 

@@ -46,8 +46,6 @@
 #include "SVWidgetsLib/Widgets/SVPipelineViewWidget.h"
 #include "SVWidgetsLib/Widgets/BreakpointFilterWidget.h"
 
-// WORKSPACE: FilterWidgetGeometry & BreakpointFilter
-
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
@@ -71,7 +69,8 @@ AddFilterCommand::AddFilterCommand(AbstractFilter::Pointer filter, PipelineView*
 
   FilterPipeline::Pointer pipeline = FilterPipeline::New();
   pipeline->pushBack(filter);
-  m_JsonString = JsonFilterParametersWriter::WritePipelineToString(pipeline, "");
+  JsonFilterParametersWriter::Pointer jsonWriter = JsonFilterParametersWriter::New();
+  m_JsonString = jsonWriter->writePipelineToString(pipeline, "");
 }
 
 // -----------------------------------------------------------------------------
@@ -97,7 +96,8 @@ void AddFilterCommand::undo()
 // -----------------------------------------------------------------------------
 void AddFilterCommand::redo()
 {
-  FilterPipeline::Pointer pipeline = JsonFilterParametersReader::ReadPipelineFromString(m_JsonString);
+  JsonFilterParametersReader::Pointer jsonReader = JsonFilterParametersReader::New();
+  FilterPipeline::Pointer pipeline = jsonReader->readPipelineFromString(m_JsonString);
   AbstractFilter::Pointer filter = pipeline->getFilterContainer()[0];
 
   setText(QObject::tr("\"%1 '%2'\"").arg(m_ActionText).arg(filter->getHumanLabel()));

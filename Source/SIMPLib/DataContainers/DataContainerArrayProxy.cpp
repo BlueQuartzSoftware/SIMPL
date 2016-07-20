@@ -120,6 +120,32 @@ void DataContainerArrayProxy::operator=(const DataContainerArrayProxy& rhs)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
+bool DataContainerArrayProxy::operator==(const DataContainerArrayProxy &rhs) const
+{
+  if (dataContainers == rhs.dataContainers)
+  {
+    return true;
+  }
+
+  return false;
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+bool DataContainerArrayProxy::operator!=(const DataContainerArrayProxy &rhs) const
+{
+  if (dataContainers == rhs.dataContainers)
+  {
+    return false;
+  }
+
+  return true;
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
 QStringList DataContainerArrayProxy::flattenHeirarchy(Qt::CheckState dcFlag, Qt::CheckState amFlag, Qt::CheckState daFlag)
 {
   QStringList strList;

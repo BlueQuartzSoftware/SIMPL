@@ -36,35 +36,74 @@
 #ifndef _intfilterparameter_h_
 #define _intfilterparameter_h_
 
+#include <QtCore/QJsonObject>
+
 #include "SIMPLib/FilterParameters/FilterParameter.h"
 
+#define SIMPL_NEW_INTEGER_FP(...) \
+  _FP_GET_OVERRIDE(__VA_ARGS__, \
+  SIMPL_NEW_FP_9, SIMPL_NEW_FP_8, SIMPL_NEW_FP_7, SIMPL_NEW_FP_6, SIMPL_NEW_FP_5, SIMPL_NEW_FP_4)\
+  (IntFilterParameter, __VA_ARGS__)
+
+/**
+ * @brief The IntFilterParameter class
+ */
 class SIMPLib_EXPORT IntFilterParameter : public FilterParameter
 {
-public:
-  SIMPL_SHARED_POINTERS(IntFilterParameter)
+  public:
+    SIMPL_SHARED_POINTERS(IntFilterParameter)
     SIMPL_STATIC_NEW_MACRO(IntFilterParameter)
     SIMPL_TYPE_MACRO(IntFilterParameter)
 
+    typedef std::function<void(int)> SetterCallbackType;
+    typedef std::function<int(void)> GetterCallbackType;
+
     static Pointer New(const QString& humanLabel, const QString& propertyName,
-    const int& defaultValue, Category category,
-     int groupIndex = -1);
+                       const int& defaultValue, Category category, SetterCallbackType setterCallback,
+                       GetterCallbackType getterCallback, int groupIndex = -1);
 
     virtual ~IntFilterParameter();
 
-  /**
+    /**
    * @brief getWidgetType Returns the type of widget that displays and controls
    * this FilterParameter subclass
    * @return
    */
-  QString getWidgetType();
+    QString getWidgetType();
+
+    /**
+   * @brief readJson
+   * @return
+   */
+    void readJson(const QJsonObject &json);
+
+    /**
+   * @brief writeJson
+   * @return
+   */
+    void writeJson(QJsonObject &json);
+
+    /**
+    * @param SetterCallback The method in the AbstractFilter subclass that <i>sets</i> the value of the property
+    * that this FilterParameter subclass represents.
+    * from the filter parameter.
+    */
+    SIMPL_INSTANCE_PROPERTY(SetterCallbackType, SetterCallback)
+
+    /**
+    * @param GetterCallback The method in the AbstractFilter subclass that <i>gets</i> the value of the property
+    * that this FilterParameter subclass represents.
+    * @return The GetterCallback
+    */
+    SIMPL_INSTANCE_PROPERTY(GetterCallbackType, GetterCallback)
 
 
-protected:
-  IntFilterParameter();
+    protected:
+      IntFilterParameter();
 
-private:
-  IntFilterParameter(const IntFilterParameter&); // Copy Constructor Not Implemented
-  void operator=(const IntFilterParameter&); // Operator '=' Not Implemented
+  private:
+    IntFilterParameter(const IntFilterParameter&); // Copy Constructor Not Implemented
+    void operator=(const IntFilterParameter&); // Operator '=' Not Implemented
 };
 
 #endif /* _IntFilterParameter_H_ */

@@ -64,7 +64,8 @@ RemoveFilterCommand::RemoveFilterCommand(PipelineFilterObject* fw, PipelineView 
 
   FilterPipeline::Pointer pipeline = FilterPipeline::New();
   pipeline->pushBack(fw->getFilter());
-  m_JsonString = JsonFilterParametersWriter::WritePipelineToString(pipeline, "");
+  JsonFilterParametersWriter::Pointer jsonWriter = JsonFilterParametersWriter::New();
+  m_JsonString = jsonWriter->writePipelineToString(pipeline, "");
 }
 
 // -----------------------------------------------------------------------------
@@ -80,7 +81,8 @@ RemoveFilterCommand::~RemoveFilterCommand()
 // -----------------------------------------------------------------------------
 void RemoveFilterCommand::undo()
 {
-  FilterPipeline::Pointer pipeline = JsonFilterParametersReader::ReadPipelineFromString(m_JsonString);
+  JsonFilterParametersReader::Pointer jsonReader = JsonFilterParametersReader::New();
+  FilterPipeline::Pointer pipeline = jsonReader->readPipelineFromString(m_JsonString);
   AbstractFilter::Pointer filter = pipeline->getFilterContainer()[0];
 
   m_PipelineView->addFilter(filter, m_Value, false, m_PrevNodeId, m_NextNodeId);

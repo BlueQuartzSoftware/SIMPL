@@ -36,6 +36,8 @@
 #ifndef _shapetypeselectionfilterparameter_h_
 #define _shapetypeselectionfilterparameter_h_
 
+#include <QtCore/QJsonObject>
+
 #include "SIMPLib/FilterParameters/FilterParameter.h"
 
 class SIMPLib_EXPORT ShapeTypeSelectionFilterParameter : public FilterParameter
@@ -45,12 +47,15 @@ public:
     SIMPL_STATIC_NEW_MACRO(ShapeTypeSelectionFilterParameter)
     SIMPL_TYPE_MACRO_SUPER(ShapeTypeSelectionFilterParameter, FilterParameter)
 
+  typedef std::function<void(UInt32Vector_t)> SetterCallbackType;
+  typedef std::function<UInt32Vector_t(void)> GetterCallbackType;
+
     static Pointer New(const QString& humanLabel, const QString& propertyName,
      const QString& defaultValue,
     const QString& phaseTypeCountProperty,
     const QString& phaseTypeArrayPathProperty,
-    Category category,
-    int groupIndex = -1);
+    Category category, SetterCallbackType setterCallback,
+    GetterCallbackType getterCallback, int groupIndex = -1);
 
   virtual ~ShapeTypeSelectionFilterParameter();
 
@@ -63,6 +68,21 @@ public:
    * @return
    */
   QString getWidgetType();
+
+  /**
+   * @brief readJson
+   * @return
+   */
+  void readJson(const QJsonObject &json);
+
+  /**
+   * @brief writeJson
+   * @return
+   */
+  void writeJson(QJsonObject &json);
+
+  SIMPL_INSTANCE_PROPERTY(SetterCallbackType, SetterCallback)
+  SIMPL_INSTANCE_PROPERTY(GetterCallbackType, GetterCallback)
 
 
 protected:

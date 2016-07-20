@@ -52,7 +52,7 @@ AttributeMatrixCreationFilterParameter::~AttributeMatrixCreationFilterParameter(
 //
 // -----------------------------------------------------------------------------
 AttributeMatrixCreationFilterParameter::Pointer AttributeMatrixCreationFilterParameter::New(const QString& humanLabel, const QString& propertyName,
-    const DataArrayPath& defaultValue, Category category, const RequirementType req, int groupIndex)
+    const DataArrayPath& defaultValue, Category category, const RequirementType req, SetterCallbackType setterCallback, GetterCallbackType getterCallback, int groupIndex)
 {
   AttributeMatrixCreationFilterParameter::Pointer ptr = AttributeMatrixCreationFilterParameter::New();
   ptr->setHumanLabel(humanLabel);
@@ -63,6 +63,8 @@ AttributeMatrixCreationFilterParameter::Pointer AttributeMatrixCreationFilterPar
   ptr->setCategory(category);
   ptr->setDefaultGeometryTypes(req.dcGeometryTypes);
   ptr->setGroupIndex(groupIndex);
+  ptr->setSetterCallback(setterCallback);
+  ptr->setGetterCallback(getterCallback);
 
   return ptr;
 }
@@ -73,5 +75,31 @@ AttributeMatrixCreationFilterParameter::Pointer AttributeMatrixCreationFilterPar
 QString AttributeMatrixCreationFilterParameter::getWidgetType()
 {
   return QString("AttributeMatrixCreationWidget");
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void AttributeMatrixCreationFilterParameter::readJson(const QJsonObject &json)
+{
+  QJsonValue jsonValue = json[getPropertyName()];
+  if(!jsonValue.isUndefined() )
+  {
+    QJsonObject obj = jsonValue.toObject();
+    DataArrayPath dap;
+    dap.readJson(obj);
+    m_SetterCallback(dap);
+  }
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void AttributeMatrixCreationFilterParameter::writeJson(QJsonObject &json)
+{
+  DataArrayPath dap = m_GetterCallback();
+  QJsonObject obj;
+  dap.writeJson(obj);
+  json[getPropertyName()] = obj;
 }
 

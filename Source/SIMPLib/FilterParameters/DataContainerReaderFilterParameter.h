@@ -36,8 +36,11 @@
 #ifndef _datacontainerreaderfilterparameter_h_
 #define _datacontainerreaderfilterparameter_h_
 
-#include "SIMPLib/FilterParameters/FilterParameter.h"
+#include <QtCore/QJsonObject>
 
+#include "SIMPLib/CoreFilters/DataContainerReader.h"
+#include "SIMPLib/DataContainers/DataContainerArrayProxy.h"
+#include "SIMPLib/FilterParameters/FilterParameter.h"
 
 class SIMPLib_EXPORT DataContainerReaderFilterParameter : public FilterParameter
 {
@@ -47,7 +50,8 @@ class SIMPLib_EXPORT DataContainerReaderFilterParameter : public FilterParameter
     SIMPL_TYPE_MACRO_SUPER(DataContainerReaderFilterParameter, FilterParameter)
 
     static Pointer New(const QString& humanLabel, const QString& propertyName,
-                       const QString& defaultValue, Category category, int groupIndex = -1);
+                       const QString& defaultValue, Category category, DataContainerReader* filter,
+                       int groupIndex = -1);
 
     virtual ~DataContainerReaderFilterParameter();
 
@@ -55,6 +59,7 @@ class SIMPLib_EXPORT DataContainerReaderFilterParameter : public FilterParameter
     SIMPL_INSTANCE_PROPERTY(QString, InputFileProperty)
     SIMPL_INSTANCE_PROPERTY(QString, FileExtension)
     SIMPL_INSTANCE_PROPERTY(QString, FileType)
+    SIMPL_INSTANCE_PROPERTY(DataContainerReader*, Filter)
 
     /**
      * @brief getWidgetType Returns the type of widget that displays and controls
@@ -63,11 +68,23 @@ class SIMPLib_EXPORT DataContainerReaderFilterParameter : public FilterParameter
      */
     QString getWidgetType();
 
+    /**
+     * @brief readJson
+     * @return
+     */
+    void readJson(const QJsonObject &json);
+
+    /**
+     * @brief writeJson
+     * @return
+     */
+    void writeJson(QJsonObject &json);
 
   protected:
     DataContainerReaderFilterParameter();
 
   private:
+
     DataContainerReaderFilterParameter(const DataContainerReaderFilterParameter&); // Copy Constructor Not Implemented
     void operator=(const DataContainerReaderFilterParameter&); // Operator '=' Not Implemented
 };
