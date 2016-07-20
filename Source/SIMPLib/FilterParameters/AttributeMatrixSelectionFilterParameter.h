@@ -101,7 +101,18 @@ class SIMPLib_EXPORT AttributeMatrixSelectionFilterParameter : public FilterPara
 
     SIMPL_INSTANCE_PROPERTY(QVector<unsigned int>, DefaultGeometryTypes)
     SIMPL_INSTANCE_PROPERTY(QVector<unsigned int>, DefaultAttributeMatrixTypes)
+    /**
+    * @param SetterCallback The method in the AbstractFilter subclass that <i>sets</i> the value of the property
+    * that this FilterParameter subclass represents.
+    * from the filter parameter.
+    */
     SIMPL_INSTANCE_PROPERTY(SetterCallbackType, SetterCallback)
+
+    /**
+    * @param GetterCallback The method in the AbstractFilter subclass that <i>gets</i> the value of the property
+    * that this FilterParameter subclass represents.
+    * @return The GetterCallback
+    */
     SIMPL_INSTANCE_PROPERTY(GetterCallbackType, GetterCallback)
 
   protected:

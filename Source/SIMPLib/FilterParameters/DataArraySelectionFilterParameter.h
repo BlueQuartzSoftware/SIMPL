@@ -115,7 +115,18 @@ class SIMPLib_EXPORT DataArraySelectionFilterParameter : public FilterParameter
     SIMPL_INSTANCE_PROPERTY(QVector<QString>, DefaultAttributeArrayTypes)
     SIMPL_INSTANCE_PROPERTY(QVector< QVector<size_t> >, DefaultComponentDimensions)
 
+    /**
+    * @param SetterCallback The method in the AbstractFilter subclass that <i>sets</i> the value of the property
+    * that this FilterParameter subclass represents.
+    * from the filter parameter.
+    */
     SIMPL_INSTANCE_PROPERTY(SetterCallbackType, SetterCallback)
+
+    /**
+    * @param GetterCallback The method in the AbstractFilter subclass that <i>gets</i> the value of the property
+    * that this FilterParameter subclass represents.
+    * @return The GetterCallback
+    */
     SIMPL_INSTANCE_PROPERTY(GetterCallbackType, GetterCallback)
 
   protected:
