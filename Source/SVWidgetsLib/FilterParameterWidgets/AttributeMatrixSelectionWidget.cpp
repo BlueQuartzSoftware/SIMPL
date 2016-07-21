@@ -105,15 +105,9 @@ void AttributeMatrixSelectionWidget::setupGui()
 
   label->setText(getFilterParameter()->getHumanLabel() );
 
-  // Get the default path from the Filter instance to cache
-  m_DefaultPath = getFilter()->property(PROPERTY_NAME_AS_CHAR).value<DataArrayPath>();
-
   m_MenuMapper = new QSignalMapper(this);
   connect(m_MenuMapper, SIGNAL(mapped(QString)),
             this, SLOT(attributeMatrixSelected(QString)));
-
-  attributeMatrixSelected(m_DefaultPath.serializeAttributeMatrixPath(Detail::Delimiter));
-  createSelectionMenu();
 
   // Catch when the filter is about to execute the preflight
   connect(getFilter(), SIGNAL(preflightAboutToExecute()),
@@ -241,21 +235,34 @@ bool AttributeMatrixSelectionWidget::eventFilter(QObject* obj, QEvent* event)
 // -----------------------------------------------------------------------------
 void AttributeMatrixSelectionWidget::attributeMatrixSelected(QString path)
 {
-  m_SelectedAttributeMatrixPath->setText(path);
-
-  DataContainerArray::Pointer dca = getFilter()->getDataContainerArray();
-  if(NULL == dca.get()) { return; }
-
-
-  IDataArray::Pointer attrArray = dca->getPrereqIDataArrayFromPath<IDataArray, AbstractFilter>(getFilter(), DataArrayPath::Deserialize(path, Detail::Delimiter));
-  if(nullptr != attrArray.get()) {
-    QString html = attrArray->getInfoString(SIMPL::HtmlFormat);
-    m_SelectedAttributeMatrixPath->setToolTip(html);
-  }
+  setSelectedPath(path);
 
   m_DidCausePreflight = true;
   emit parametersChanged();
   m_DidCausePreflight = false;
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void AttributeMatrixSelectionWidget::setSelectedPath(QString path)
+{
+  DataArrayPath amPath = DataArrayPath::Deserialize(path, Detail::Delimiter);
+  if (amPath.isEmpty()) { return; }
+
+  m_SelectedAttributeMatrixPath->setText("");
+  m_SelectedAttributeMatrixPath->setToolTip("");
+
+  DataContainerArray::Pointer dca = getFilter()->getDataContainerArray();
+  if(NULL == dca.get()) { return; }
+
+  int err = 0;
+  AttributeMatrix::Pointer attrMat = dca->getPrereqAttributeMatrixFromPath(getFilter(), amPath, err);
+  if(nullptr != attrMat.get()) {
+    QString html = attrMat->getInfoString(SIMPL::HtmlFormat);
+    m_SelectedAttributeMatrixPath->setToolTip(html);
+    m_SelectedAttributeMatrixPath->setText(path);
+  }
 }
 
 // -----------------------------------------------------------------------------
@@ -270,6 +277,9 @@ void AttributeMatrixSelectionWidget::beforePreflight()
     return;
   }
 
+  DataArrayPath path = getFilter()->property(PROPERTY_NAME_AS_CHAR).value<DataArrayPath>();
+
+  setSelectedPath(path.serializeAttributeMatrixPath(Detail::Delimiter));
   createSelectionMenu();
 }
 

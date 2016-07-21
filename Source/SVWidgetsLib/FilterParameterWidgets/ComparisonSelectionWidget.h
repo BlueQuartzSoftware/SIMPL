@@ -75,8 +75,6 @@ class ComparisonSelectionWidget : public FilterParameterWidget, private Ui::Comp
     ComparisonSelectionWidget(FilterParameter* parameter, AbstractFilter* filter = NULL, QWidget* parent = NULL);
     virtual ~ComparisonSelectionWidget();
 
-
-
     enum ArrayListType
     {
       CellListType,
@@ -91,21 +89,51 @@ class ComparisonSelectionWidget : public FilterParameterWidget, private Ui::Comp
     SIMPL_INSTANCE_PROPERTY(bool, ShowOperators)
 
     /**
-     * @brief Initializes some of the GUI elements with selections or other GUI related items
+     * @brief setupGui Initializes some of the GUI elements with selections or other GUI related items
      */
     virtual void setupGui();
 
+    /**
+     * @brief eventFilter
+     * @param obj
+     * @param event
+     * @return
+     */
     bool eventFilter(QObject* obj, QEvent* event);
 
   public slots:
+    /**
+     * @brief beforePreflight
+     */
     void beforePreflight();
+
+    /**
+     * @brief afterPreflight
+     */
     void afterPreflight();
+
+    /**
+     * @brief filterNeedsInputParameters
+     * @param filter
+     */
     void filterNeedsInputParameters(AbstractFilter* filter);
 
+    /**
+     * @brief attributeMatrixSelected
+     * @param path
+     */
     void attributeMatrixSelected(QString path);
 
   signals:
+    /**
+     * @brief errorSettingFilterParameter
+     * @param msg
+     */
     void errorSettingFilterParameter(const QString& msg);
+
+    /**
+     * @brief parametersChanged
+     */
     void parametersChanged();
 
   protected:
@@ -126,15 +154,36 @@ class ComparisonSelectionWidget : public FilterParameterWidget, private Ui::Comp
      */
     void createSelectionMenu();
 
-    QStringList generateAttributeArrayList();
+    /**
+     * @brief checkStringValues
+     * @param curDcName
+     * @param filtDcName
+     * @return
+     */
     QString checkStringValues(QString curDcName, QString filtDcName);
 
   protected slots:
-
+    /**
+     * @brief on_addComparison_clicked
+     */
     void on_addComparison_clicked();
+
+    /**
+     * @brief on_removeComparison_clicked
+     */
     void on_removeComparison_clicked();
 
+    /**
+     * @brief tableDataWasChanged
+     * @param topLeft
+     * @param bottomRight
+     */
     void tableDataWasChanged(const QModelIndex& topLeft, const QModelIndex& bottomRight);
+
+    /**
+     * @brief widgetChanged
+     * @param text
+     */
     void widgetChanged(const QString& text);
 
   private:
@@ -143,11 +192,21 @@ class ComparisonSelectionWidget : public FilterParameterWidget, private Ui::Comp
 
     QSignalMapper*  m_MenuMapper;
 
-    DataArrayPath  m_DefaultPath;
-
-    ComparisonSelectionTableModel*    m_ComparisonSelectionTableModel;
+    ComparisonSelectionTableModel* m_ComparisonSelectionTableModel;
 
     ComparisonSelectionFilterParameter* m_FilterParameter;
+
+    /**
+     * @brief setSelectedPath
+     * @param path
+     */
+    void setSelectedPath(QString path);
+
+    /**
+     * @brief createComparisonModel
+     * @return
+     */
+    ComparisonSelectionTableModel* createComparisonModel();
 
     ComparisonSelectionWidget(const ComparisonSelectionWidget&); // Copy Constructor Not Implemented
     void operator=(const ComparisonSelectionWidget&); // Operator '=' Not Implemented

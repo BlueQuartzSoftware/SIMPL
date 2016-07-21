@@ -99,7 +99,7 @@ QPushButton:hover
 </string>
      </property>
      <property name="text">
-      <string notr="true">Default / Path / Array</string>
+      <string notr="true"/>
      </property>
      <property name="iconSize">
       <size>

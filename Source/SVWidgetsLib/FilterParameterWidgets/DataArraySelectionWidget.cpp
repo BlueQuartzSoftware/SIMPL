@@ -127,15 +127,9 @@ void DataArraySelectionWidget::setupGui()
   // Generate the text for the QLabel
   label->setText(getFilterParameter()->getHumanLabel() );
 
-  // Get the default path from the Filter instance to cache
-  m_DefaultPath = getFilter()->property(PROPERTY_NAME_AS_CHAR).value<DataArrayPath>();
-
   m_MenuMapper = new QSignalMapper(this);
   connect(m_MenuMapper, SIGNAL(mapped(QString)),
             this, SLOT(dataArraySelected(QString)));
-
-  dataArraySelected(m_DefaultPath.serializeDataArrayPath(Detail::Delimiter));
-  createSelectionMenu();
 
   // Lastly, hook up the filter's signals and slots to our own signals and slots
   // Catch when the filter is about to execute the preflight
@@ -271,21 +265,34 @@ bool DataArraySelectionWidget::eventFilter(QObject* obj, QEvent* event)
 // -----------------------------------------------------------------------------
 void DataArraySelectionWidget::dataArraySelected(QString path)
 {
-  m_SelectedDataArrayPath->setText(path);
-
-  DataContainerArray::Pointer dca = getFilter()->getDataContainerArray();
-  if(NULL == dca.get()) { return; }
-
-
-  IDataArray::Pointer attrArray = dca->getPrereqIDataArrayFromPath<IDataArray, AbstractFilter>(getFilter(), DataArrayPath::Deserialize(path, Detail::Delimiter));
-  if(nullptr != attrArray.get()) {
-    QString html = attrArray->getInfoString(SIMPL::HtmlFormat);
-    m_SelectedDataArrayPath->setToolTip(html);
-  }
+  setSelectedPath(path);
 
   m_DidCausePreflight = true;
   emit parametersChanged();
   m_DidCausePreflight = false;
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void DataArraySelectionWidget::setSelectedPath(QString path)
+{
+  DataArrayPath daPath = DataArrayPath::Deserialize(path, Detail::Delimiter);
+  if (daPath.isEmpty()) { return; }
+
+  m_SelectedDataArrayPath->setText("");
+  m_SelectedDataArrayPath->setToolTip("");
+
+  DataContainerArray::Pointer dca = getFilter()->getDataContainerArray();
+  if(NULL == dca.get()) { return; }
+
+  IDataArray::Pointer attrArray = dca->getPrereqIDataArrayFromPath<IDataArray, AbstractFilter>(getFilter(), daPath);
+  if(nullptr != attrArray.get())
+  {
+    QString html = attrArray->getInfoString(SIMPL::HtmlFormat);
+    m_SelectedDataArrayPath->setToolTip(html);
+    m_SelectedDataArrayPath->setText(path);
+  }
 }
 
 // -----------------------------------------------------------------------------
@@ -322,6 +329,9 @@ void DataArraySelectionWidget::beforePreflight()
     return;
   }
 
+  DataArrayPath defaultPath = getFilter()->property(PROPERTY_NAME_AS_CHAR).value<DataArrayPath>();
+
+  setSelectedPath(defaultPath.serializeDataArrayPath(Detail::Delimiter));
   createSelectionMenu();
 }
 

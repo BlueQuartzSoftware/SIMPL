@@ -119,16 +119,9 @@ void DataArrayCreationWidget::setupGui()
   // Do not allow the user to put a forward slash into the attributeMatrixName line edit
   dataArrayName->setValidator(new QRegularExpressionValidator(QRegularExpression("[^/]*"), this));
 
-  // Get the default path from the Filter instance to cache
-  m_DefaultPath = getFilter()->property(PROPERTY_NAME_AS_CHAR).value<DataArrayPath>();
-
   m_MenuMapper = new QSignalMapper(this);
   connect(m_MenuMapper, SIGNAL(mapped(QString)),
             this, SLOT(attributeMatrixSelected(QString)));
-
-  attributeMatrixSelected(m_DefaultPath.serializeAttributeMatrixPath(Detail::Delimiter));
-  dataArrayName->setText(m_DefaultPath.getDataArrayName());
-  createSelectionMenu();
 
   // Catch when the filter is about to execute the preflight
   connect(getFilter(), SIGNAL(preflightAboutToExecute()),
@@ -142,7 +135,7 @@ void DataArrayCreationWidget::setupGui()
   connect(getFilter(), SIGNAL(updateFilterParameters(AbstractFilter*)),
           this, SLOT(filterNeedsInputParameters(AbstractFilter*)));
 
-  connect(dataArrayName, SIGNAL(textChanged(const QString&)),
+  connect(dataArrayName, SIGNAL(textEdited(const QString&)),
           this, SLOT(widgetChanged(const QString&)));
 }
 
@@ -310,6 +303,29 @@ void DataArrayCreationWidget::widgetChanged(const QString& text)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
+void DataArrayCreationWidget::setSelectedPath(QString path)
+{
+  DataArrayPath amPath = DataArrayPath::Deserialize(path, Detail::Delimiter);
+  if (amPath.isEmpty()) { return; }
+
+  m_SelectedAttributeMatrixPath->setText("");
+  m_SelectedAttributeMatrixPath->setToolTip("");
+
+  DataContainerArray::Pointer dca = getFilter()->getDataContainerArray();
+  if(NULL == dca.get()) { return; }
+
+  int err = 0;
+  AttributeMatrix::Pointer attrMat = dca->getPrereqAttributeMatrixFromPath(getFilter(), amPath, err);
+  if(nullptr != attrMat.get()) {
+    QString html = attrMat->getInfoString(SIMPL::HtmlFormat);
+    m_SelectedAttributeMatrixPath->setToolTip(html);
+    m_SelectedAttributeMatrixPath->setText(path);
+  }
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
 void DataArrayCreationWidget::beforePreflight()
 {
   if (NULL == getFilter()) { return; }
@@ -319,6 +335,11 @@ void DataArrayCreationWidget::beforePreflight()
     return;
   }
 
+  DataArrayPath path = getFilter()->property(PROPERTY_NAME_AS_CHAR).value<DataArrayPath>();
+
+  dataArrayName->setText(path.getDataArrayName());
+  path.setDataArrayName("");
+  setSelectedPath(path.serializeAttributeMatrixPath(Detail::Delimiter));
   createSelectionMenu();
 }
 

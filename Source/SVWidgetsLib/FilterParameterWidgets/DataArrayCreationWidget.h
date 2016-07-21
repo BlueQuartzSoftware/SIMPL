@@ -130,9 +130,9 @@ class SVWidgetsLib_EXPORT DataArrayCreationWidget : public FilterParameterWidget
 
     QSignalMapper*  m_MenuMapper;
 
-    DataArrayPath  m_DefaultPath;
-
     DataArrayCreationFilterParameter* m_FilterParameter;
+
+    void setSelectedPath(QString path);
 
     DataArrayCreationWidget(const DataArrayCreationWidget&); // Copy Constructor Not Implemented
     void operator=(const DataArrayCreationWidget&); // Operator '=' Not Implemented

@@ -118,9 +118,9 @@ class SVWidgetsLib_EXPORT AttributeMatrixSelectionWidget : public FilterParamete
 
     QSignalMapper*  m_MenuMapper;
 
-    DataArrayPath  m_DefaultPath;
-
     AttributeMatrixSelectionFilterParameter*  m_FilterParameter;
+
+    void setSelectedPath(QString path);
 
     AttributeMatrixSelectionWidget(const AttributeMatrixSelectionWidget&); // Copy Constructor Not Implemented
     void operator=(const AttributeMatrixSelectionWidget&); // Operator '=' Not Implemented
