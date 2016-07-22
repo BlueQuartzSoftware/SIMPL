@@ -215,7 +215,7 @@ void DataArrayCreationWidget::createSelectionMenu()
 
       QAction* action = new QAction(amName, dcMenu);
       DataArrayPath daPath(dc->getName(), amName, "");
-      QString path = daPath.serializeAttributeMatrixPath(Detail::Delimiter);
+      QString path = daPath.serialize(Detail::Delimiter);
       action->setData(path);
 
       connect(action, SIGNAL(triggered(bool)), m_MenuMapper, SLOT(map()));
@@ -339,7 +339,7 @@ void DataArrayCreationWidget::beforePreflight()
 
   dataArrayName->setText(path.getDataArrayName());
   path.setDataArrayName("");
-  setSelectedPath(path.serializeAttributeMatrixPath(Detail::Delimiter));
+  setSelectedPath(path.serialize(Detail::Delimiter));
   createSelectionMenu();
 }
 

@@ -111,7 +111,7 @@ void PhaseTypeSelectionWidget::setupGui()
   connect(m_MenuMapper, SIGNAL(mapped(QString)),
             this, SLOT(attributeMatrixSelected(QString)));
 
-  attributeMatrixSelected(m_DefaultPath.serializeAttributeMatrixPath(Detail::Delimiter));
+  attributeMatrixSelected(m_DefaultPath.serialize(Detail::Delimiter));
   createSelectionMenu();
 
   // Catch when the filter is about to execute the preflight
@@ -203,7 +203,7 @@ void PhaseTypeSelectionWidget::createSelectionMenu()
 
       QAction* action = new QAction(amName, dcMenu);
       DataArrayPath daPath(dc->getName(), amName, "");
-      QString path = daPath.serializeAttributeMatrixPath(Detail::Delimiter);
+      QString path = daPath.serialize(Detail::Delimiter);
       action->setData(path);
 
       connect(action, SIGNAL(triggered(bool)), m_MenuMapper, SLOT(map()));

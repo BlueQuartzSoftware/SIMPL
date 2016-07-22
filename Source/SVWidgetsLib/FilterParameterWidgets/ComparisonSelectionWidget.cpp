@@ -269,7 +269,7 @@ void ComparisonSelectionWidget::createSelectionMenu()
 
       QAction* action = new QAction(amName, dcMenu);
       DataArrayPath daPath(dc->getName(), amName, "");
-      QString path = daPath.serializeAttributeMatrixPath(Detail::Delimiter);
+      QString path = daPath.serialize(Detail::Delimiter);
       action->setData(path);
 
       connect(action, SIGNAL(triggered(bool)), m_MenuMapper, SLOT(map()));
@@ -473,7 +473,7 @@ void ComparisonSelectionWidget::beforePreflight()
     path.setDataContainerName(comps[0].dataContainerName);
     path.setAttributeMatrixName(comps[0].attributeMatrixName);
   }
-  setSelectedPath(path.serializeAttributeMatrixPath(Detail::Delimiter));
+  setSelectedPath(path.serialize(Detail::Delimiter));
   m_ComparisonSelectionTableModel->setTableData(comps);
   createSelectionMenu();
 }

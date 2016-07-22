@@ -381,7 +381,7 @@ class SIMPLib_EXPORT DataContainerArray : public QObject
         if(filter)
         {
           filter->setErrorCondition(-80001);
-          ss = QObject::tr("DataContainerArray::getPrereqArrayFromPath Error at line %1. The DataArrayPath object was not valid meaning one of the strings in the object is empty. The path is %2").arg(__LINE__).arg(path.serializeDataArrayPath());
+          ss = QObject::tr("DataContainerArray::getPrereqArrayFromPath Error at line %1. The DataArrayPath object was not valid meaning one of the strings in the object is empty. The path is %2").arg(__LINE__).arg(path.serialize());
           filter->notifyErrorMessage(filter->getHumanLabel(), ss, filter->getErrorCondition());
         }
         return dataArray;
@@ -449,7 +449,7 @@ class SIMPLib_EXPORT DataContainerArray : public QObject
         if(filter)
         {
           filter->setErrorCondition(-90001);
-          ss = QObject::tr("DataContainerArray::getPrereqIDataArrayFromPath Error at line %1. The DataArrayPath object was not valid meaning one of the strings in the object is empty. The path is %2").arg(__LINE__).arg(path.serializeDataArrayPath());
+          ss = QObject::tr("DataContainerArray::getPrereqIDataArrayFromPath Error at line %1. The DataArrayPath object was not valid meaning one of the strings in the object is empty. The path is %2").arg(__LINE__).arg(path.serialize());
           filter->notifyErrorMessage(filter->getHumanLabel(), ss, filter->getErrorCondition());
         }
         return dataArray;
@@ -612,7 +612,7 @@ class SIMPLib_EXPORT DataContainerArray : public QObject
       if (paths.at(0).isValid() == false && NULL != filter)
       {
         filter->setErrorCondition(-10000);
-        ss = QObject::tr("DataContainerArray::validateNumberOfTuples Error at line %1. The DataArrayPath object was not valid meaning one of the strings in the object is empty. The path is %2").arg(__LINE__).arg(paths.at(0).serializeDataArrayPath());
+        ss = QObject::tr("DataContainerArray::validateNumberOfTuples Error at line %1. The DataArrayPath object was not valid meaning one of the strings in the object is empty. The path is %2").arg(__LINE__).arg(paths.at(0).serialize());
         filter->notifyErrorMessage(filter->getHumanLabel(), ss, filter->getErrorCondition());
         valid = false;
         return valid;
@@ -621,7 +621,7 @@ class SIMPLib_EXPORT DataContainerArray : public QObject
       if (NULL == array0.get() && NULL != filter)
       {
         filter->setErrorCondition(-10100);
-        ss = QObject::tr("DataContainerArray::validateNumberOfTuples Error at line %1. The DataArray object was not available. The path is %2").arg(__LINE__).arg(paths.at(0).serializeDataArrayPath());
+        ss = QObject::tr("DataContainerArray::validateNumberOfTuples Error at line %1. The DataArray object was not available. The path is %2").arg(__LINE__).arg(paths.at(0).serialize());
         filter->notifyErrorMessage(filter->getHumanLabel(), ss, filter->getErrorCondition());
         valid = false;
         return valid;
@@ -633,7 +633,7 @@ class SIMPLib_EXPORT DataContainerArray : public QObject
         if (paths.at(i).isValid() == false && NULL != filter)
         {
           filter->setErrorCondition(-10000);
-          ss = QObject::tr("DataContainerArray::validateNumberOfTuples Error at line %1. The DataArrayPath object was not valid meaning one of the strings in the object is empty. The path is %2").arg(__LINE__).arg(paths.at(i).serializeDataArrayPath());
+          ss = QObject::tr("DataContainerArray::validateNumberOfTuples Error at line %1. The DataArrayPath object was not valid meaning one of the strings in the object is empty. The path is %2").arg(__LINE__).arg(paths.at(i).serialize());
           filter->notifyErrorMessage(filter->getHumanLabel(), ss, filter->getErrorCondition());
           valid = false;
           return valid;
@@ -642,7 +642,7 @@ class SIMPLib_EXPORT DataContainerArray : public QObject
         if (NULL == nextArray.get() && NULL != filter)
         {
           filter->setErrorCondition(-10100);
-          ss = QObject::tr("DataContainerArray::validateNumberOfTuples Error at line %1. The DataArray object was not available. The path is %2").arg(__LINE__).arg(paths.at(i).serializeDataArrayPath());
+          ss = QObject::tr("DataContainerArray::validateNumberOfTuples Error at line %1. The DataArray object was not available. The path is %2").arg(__LINE__).arg(paths.at(i).serialize());
           filter->notifyErrorMessage(filter->getHumanLabel(), ss, filter->getErrorCondition());
           valid = false;
           return valid;

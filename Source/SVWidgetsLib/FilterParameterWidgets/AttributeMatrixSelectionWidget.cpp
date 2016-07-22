@@ -198,7 +198,7 @@ void AttributeMatrixSelectionWidget::createSelectionMenu()
 
       QAction* action = new QAction(amName, dcMenu);
       DataArrayPath daPath(dc->getName(), amName, "");
-      QString path = daPath.serializeAttributeMatrixPath(Detail::Delimiter);
+      QString path = daPath.serialize(Detail::Delimiter);
       action->setData(path);
 
       connect(action, SIGNAL(triggered(bool)), m_MenuMapper, SLOT(map()));
@@ -279,7 +279,7 @@ void AttributeMatrixSelectionWidget::beforePreflight()
 
   DataArrayPath path = getFilter()->property(PROPERTY_NAME_AS_CHAR).value<DataArrayPath>();
 
-  setSelectedPath(path.serializeAttributeMatrixPath(Detail::Delimiter));
+  setSelectedPath(path.serialize(Detail::Delimiter));
   createSelectionMenu();
 }
 

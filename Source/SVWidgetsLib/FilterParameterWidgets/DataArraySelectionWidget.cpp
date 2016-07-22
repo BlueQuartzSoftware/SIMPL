@@ -226,7 +226,7 @@ void DataArraySelectionWidget::createSelectionMenu()
         IDataArray::Pointer da = am->getAttributeArray(attrArrayName);
         QAction* action = new QAction(attrArrayName, amMenu);
         DataArrayPath daPath(dc->getName(), amName, attrArrayName);
-        QString path = daPath.serializeDataArrayPath(Detail::Delimiter);
+        QString path = daPath.serialize(Detail::Delimiter);
         action->setData(path);
 
         connect(action, SIGNAL(triggered(bool)), m_MenuMapper, SLOT(map()));
@@ -331,7 +331,7 @@ void DataArraySelectionWidget::beforePreflight()
 
   DataArrayPath defaultPath = getFilter()->property(PROPERTY_NAME_AS_CHAR).value<DataArrayPath>();
 
-  setSelectedPath(defaultPath.serializeDataArrayPath(Detail::Delimiter));
+  setSelectedPath(defaultPath.serialize(Detail::Delimiter));
   createSelectionMenu();
 }
 

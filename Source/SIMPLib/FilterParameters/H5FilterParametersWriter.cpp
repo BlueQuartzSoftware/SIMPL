@@ -755,7 +755,7 @@ int H5FilterParametersWriter::writeValue(const QString name, const DataContainer
 int H5FilterParametersWriter::writeValue(const QString name, const DataArrayPath& v)
 {
   int err = 0;
-  QString value = v.serializeDataArrayPath();
+  QString value = v.serialize();
   err = QH5Lite::writeStringDataset(m_CurrentGroupId, name, value);
   return err;
 }
@@ -772,7 +772,7 @@ int H5FilterParametersWriter::writeValue(const QString name, const QVector<DataA
   for (int i = 0; i < v.size(); i++)
   {
     DataArrayPath path = v.at(i);
-    ss << path.serializeDataArrayPath("|") << sep;
+    ss << path.serialize("|") << sep;
   }
   err = QH5Lite::writeStringDataset(m_CurrentGroupId, name, pathStr);
   return err;

@@ -151,18 +151,24 @@ bool DataArrayPath::operator==(const DataArrayPath& rhs)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-QString DataArrayPath::serializeDataArrayPath(QString delimiter) const
-{
-  QString s = m_DataContainerName + delimiter + m_AttributeMatrixName + delimiter + m_DataArrayName;
-  return s;
-}
+QString DataArrayPath::serialize(QString delimiter) const
+{  
+  QString s = "";
+  if (m_DataContainerName.isEmpty() == false)
+  {
+    s = m_DataContainerName;
+    if (m_AttributeMatrixName.isEmpty() == false)
+    {
+      s = s.append(delimiter);
+      s = s.append(m_AttributeMatrixName);
+      if (m_DataArrayName.isEmpty() == false)
+      {
+        s = s.append(delimiter);
+        s = s.append(m_DataArrayName);
+      }
+    }
+  }
 
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-QString DataArrayPath::serializeAttributeMatrixPath(QString delimiter) const
-{
-  QString s = m_DataContainerName + delimiter + m_AttributeMatrixName;
   return s;
 }
 
