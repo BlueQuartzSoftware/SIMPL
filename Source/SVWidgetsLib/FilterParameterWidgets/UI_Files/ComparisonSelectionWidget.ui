@@ -211,6 +211,12 @@
       </widget>
      </item>
      <item>
+      <widget class="QComboBox" name="dataContainerComb2"/>
+     </item>
+     <item>
+      <widget class="QComboBox" name="attributeMatrixCombo2"/>
+     </item>
+     <item>
       <widget class="QPushButton" name="m_SelectedAttributeMatrixPath">
        <property name="sizePolicy">
         <sizepolicy hsizetype="Expanding" vsizetype="Preferred">

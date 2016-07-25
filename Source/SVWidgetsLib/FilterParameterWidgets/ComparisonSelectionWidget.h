@@ -58,6 +58,8 @@
 
 #include "ui_ComparisonSelectionWidget.h"
 
+#define OLD_GUI 0
+
 class QSignalMapper;
 
 /**
@@ -160,7 +162,13 @@ class ComparisonSelectionWidget : public FilterParameterWidget, private Ui::Comp
      * @param filtDcName
      * @return
      */
+    void populateComboBoxes();
+    void populateAttributeMatrixList();
+    QStringList generateAttributeArrayList(const QString& currentDCName, const QString &currentAttrMatName);
     QString checkStringValues(QString curDcName, QString filtDcName);
+
+    void populateButtonText();
+
 
   protected slots:
     /**
@@ -180,6 +188,12 @@ class ComparisonSelectionWidget : public FilterParameterWidget, private Ui::Comp
      */
     void tableDataWasChanged(const QModelIndex& topLeft, const QModelIndex& bottomRight);
 
+#if OLD_GUI
+    void on_dataContainerCombo_currentIndexChanged(int index);
+
+    void on_attributeMatrixCombo_currentIndexChanged(int index);
+#endif
+
     /**
      * @brief widgetChanged
      * @param text
@@ -187,6 +201,7 @@ class ComparisonSelectionWidget : public FilterParameterWidget, private Ui::Comp
     void widgetChanged(const QString& text);
 
   private:
+    DataContainerArrayProxy m_DcaProxy;
 
     bool m_DidCausePreflight;
 
