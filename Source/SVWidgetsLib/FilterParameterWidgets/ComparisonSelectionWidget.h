@@ -39,6 +39,7 @@
 
 #include <QtCore/QObject>
 #include <QtCore/QPointer>
+
 #include <QtWidgets/QWidget>
 
 
@@ -120,12 +121,6 @@ class ComparisonSelectionWidget : public FilterParameterWidget, private Ui::Comp
      */
     void filterNeedsInputParameters(AbstractFilter* filter);
 
-    /**
-     * @brief attributeMatrixSelected
-     * @param path
-     */
-    void attributeMatrixSelected(QString path);
-
   signals:
     /**
      * @brief errorSettingFilterParameter
@@ -157,16 +152,29 @@ class ComparisonSelectionWidget : public FilterParameterWidget, private Ui::Comp
     void createSelectionMenu();
 
     /**
+     * @brief populateAttributeMatrixList
+     */
+    void populateAttributeMatrixList();
+
+    /**
+     * @brief generateAttributeArrayList
+     * @param currentDCName
+     * @param currentAttrMatName
+     * @return
+     */
+    QStringList generateAttributeArrayList(const QString& currentDCName, const QString &currentAttrMatName);
+
+    /**
      * @brief checkStringValues
      * @param curDcName
      * @param filtDcName
      * @return
      */
-    void populateComboBoxes();
-    void populateAttributeMatrixList();
-    QStringList generateAttributeArrayList(const QString& currentDCName, const QString &currentAttrMatName);
     QString checkStringValues(QString curDcName, QString filtDcName);
 
+    /**
+     * @brief populateButtonText
+     */
     void populateButtonText();
 
 
@@ -188,17 +196,17 @@ class ComparisonSelectionWidget : public FilterParameterWidget, private Ui::Comp
      */
     void tableDataWasChanged(const QModelIndex& topLeft, const QModelIndex& bottomRight);
 
-#if OLD_GUI
-    void on_dataContainerCombo_currentIndexChanged(int index);
-
-    void on_attributeMatrixCombo_currentIndexChanged(int index);
-#endif
-
     /**
      * @brief widgetChanged
      * @param text
      */
     void widgetChanged(const QString& text);
+
+    /**
+     * @brief setSelectedPath
+     * @param path
+     */
+    void setSelectedPath(QString path);
 
   private:
     DataContainerArrayProxy m_DcaProxy;
@@ -211,11 +219,7 @@ class ComparisonSelectionWidget : public FilterParameterWidget, private Ui::Comp
 
     ComparisonSelectionFilterParameter* m_FilterParameter;
 
-    /**
-     * @brief setSelectedPath
-     * @param path
-     */
-    void setSelectedPath(QString path);
+
 
     /**
      * @brief createComparisonModel
