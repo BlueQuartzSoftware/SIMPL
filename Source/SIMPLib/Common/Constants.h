@@ -526,6 +526,11 @@ namespace SIMPL
     const QString QuadsContainingVert("QuadrilateralsContainingVerts");
     const QString QuadCentroids("QuadrilateralCentroids");
 
+    const QString TetsName("Tetrahedra");
+    const QString TetNeighbors("TetrahedralNeighbors");
+    const QString TetsContainingVert("TetrahedraContainingVerts");
+    const QString TetCentroids("TetrahedralCentroids");
+
     const QString GBCD("GBCD");
     const QString FeatureAvgDisorientation ("FeatureAvgDisorientation");
     const QString Feature_Diameter_Info("Feature_Diameter_Info");
@@ -752,6 +757,7 @@ namespace SIMPL
     const QString EdgeGeometry("EdgeGeometry");
     const QString TriangleGeometry("TriangleGeometry");
     const QString QuadGeometry("QuadrilateralGeometry");
+    const QString TetrahedralGeometry("TetrahedralGeometry");
 
     const QString xBoundsList("xBounds");
     const QString yBoundsList("yBounds");
@@ -760,6 +766,7 @@ namespace SIMPL
     const QString SharedEdgeList("SharedEdgeList");
     const QString SharedTriList("SharedTriList");
     const QString SharedQuadList("SharedQuadList");
+    const QString SharedTetList("SharedTetList");
     const QString UnsharedEdgeList("UnsharedEdgeList");
   }
 
@@ -771,6 +778,7 @@ namespace SIMPL
     const unsigned int EdgeGeometry = 3;
     const unsigned int TriangleGeometry = 5;
     const unsigned int QuadGeometry = 9;
+    const unsigned int TetrahedralGeometry = 10;
     const unsigned int UnknownGeometry = 999;
   }
 

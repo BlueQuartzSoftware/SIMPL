@@ -45,6 +45,7 @@ set(SIMPLib_${SUBDIR_NAME}_HDRS
   ${SIMPLib_SOURCE_DIR}/Geometry/EdgeGeom.h
   ${SIMPLib_SOURCE_DIR}/Geometry/TriangleGeom.h
   ${SIMPLib_SOURCE_DIR}/Geometry/QuadGeom.h
+  ${SIMPLib_SOURCE_DIR}/Geometry/TetrahedralGeom.h
   ${SIMPLib_SOURCE_DIR}/Geometry/MeshStructs.h
   ${SIMPLib_SOURCE_DIR}/Geometry/DerivativeHelpers.h
   ${SIMPLib_SOURCE_DIR}/Geometry/GeometryHelpers.hpp
@@ -67,6 +68,7 @@ set(SIMPLib_${SUBDIR_NAME}_SRCS
   ${SIMPLib_SOURCE_DIR}/Geometry/EdgeGeom.cpp
   ${SIMPLib_SOURCE_DIR}/Geometry/TriangleGeom.cpp
   ${SIMPLib_SOURCE_DIR}/Geometry/QuadGeom.cpp
+  ${SIMPLib_SOURCE_DIR}/Geometry/TetrahedralGeom.cpp
   ${SIMPLib_SOURCE_DIR}/Geometry/DerivativeHelpers.cpp
   ${SIMPLib_SOURCE_DIR}/Geometry/ShapeOps/ShapeOps.cpp
   ${SIMPLib_SOURCE_DIR}/Geometry/ShapeOps/CubeOctohedronOps.cpp

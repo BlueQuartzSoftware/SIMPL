@@ -44,6 +44,8 @@
  *   - re-implemented vtkTriangle::Derivatives to TriangleDeriv::operator()
  * * vtkQuad.cxx
  *   - re-implemented vtkQuad::Derivatives to QuadDeriv::operator()
+ * * vtkTetra.cxx
+ *   - re-implemented vtkTetra::Derivatives to TetDeriv::operator()
  * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
 #include "DerivativeHelpers.h"
