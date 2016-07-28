@@ -241,7 +241,7 @@ void TetrahedralGeom::addAttributeMatrix(const QString& name, AttributeMatrix::P
 // -----------------------------------------------------------------------------
 size_t TetrahedralGeom::getNumberOfElements()
 {
-  return m_TriList->getNumberOfTuples();
+  return m_TetList->getNumberOfTuples();
 }
 
 // -----------------------------------------------------------------------------
