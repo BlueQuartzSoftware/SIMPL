@@ -248,8 +248,9 @@ size_t TetrahedralGeom::getNumberOfElements()
 // -----------------------------------------------------------------------------
 int TetrahedralGeom::findEdges()
 {
+  //TODO implement
   m_EdgeList = CreateSharedEdgeList(0);
-  GeometryHelpers::Connectivity::FindElementEdges<int64_t>(m_TetList, m_EdgeList);
+  GeometryHelpers::Connectivity::Find2DElementEdges<int64_t>(m_TriList, m_EdgeList);
   if (m_EdgeList.get() == NULL)
   {
     return -1;
@@ -390,9 +391,10 @@ void TetrahedralGeom::deleteElementCentroids()
 // -----------------------------------------------------------------------------
 int TetrahedralGeom::findUnsharedEdges()
 {
+  //TODO implement
   QVector<size_t> cDims(1, 2);
   m_UnsharedEdgeList = SharedEdgeList::CreateArray(0, cDims, SIMPL::Geometry::UnsharedEdgeList);
-  GeometryHelpers::Connectivity::FindUnsharedEdges<int64_t>(m_TetList, m_UnsharedEdgeList);
+  GeometryHelpers::Connectivity::Find2DUnsharedEdges<int64_t>(m_TriList, m_UnsharedEdgeList);
   if (m_UnsharedEdgeList.get() == NULL)
   {
     return -1;
