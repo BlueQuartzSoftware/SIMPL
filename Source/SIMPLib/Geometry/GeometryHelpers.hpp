@@ -92,6 +92,7 @@ namespace GeometryHelpers
       static int WriteListToHDF5(hid_t parentId, IDataArray::Pointer list)
       {
         herr_t err = 0;
+        if (list->getNumberOfTuples() == 0) { return err; }
         QVector<size_t> tDims(1, list->getNumberOfTuples());
         err = list->writeH5Data(parentId, tDims);
         return err;
@@ -151,6 +152,7 @@ namespace GeometryHelpers
       static int WriteDynamicListToHDF5(hid_t parentId, typename DynamicListArray<T, K>::Pointer dynamicList, size_t numElems, const QString& name)
       {
         herr_t err = 0;
+        if (numElems == 0) { return err; }
         int32_t rank = 0;
         hsize_t dims[2] = {0, 2ULL};
         size_t total = 0;
