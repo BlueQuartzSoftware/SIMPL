@@ -727,6 +727,11 @@ int TetrahedralGeom::readGeometryFromHDF5(hid_t parentId, bool preflight)
   {
     return -1;
   }
+  SharedTriList::Pointer bTris = GeometryHelpers::GeomIO::ReadListFromHDF5<SharedTriList>(SIMPL::Geometry::UnsharedFaceList, parentId, preflight, err);
+  if (err < 0 && err != -2)
+  {
+    return -1;
+  }
   SharedEdgeList::Pointer edges = GeometryHelpers::GeomIO::ReadListFromHDF5<SharedEdgeList>(SIMPL::Geometry::SharedEdgeList, parentId, preflight, err);
   if (err < 0 && err != -2)
   {
@@ -758,6 +763,7 @@ int TetrahedralGeom::readGeometryFromHDF5(hid_t parentId, bool preflight)
   setEdges(edges);
   setUnsharedEdges(bEdges);
   setTriangles(tris);
+  setUnsharedFaces(bTris);
   setElementCentroids(tetCentroids);
   setElementNeighbors(tetNeighbors);
   setElementsContainingVert(tetsContainingVert);
@@ -775,6 +781,7 @@ IGeometry::Pointer TetrahedralGeom::deepCopy()
   tetCopy->setEdges(getEdges());
   tetCopy->setUnsharedEdges(getUnsharedEdges());
   tetCopy->setTriangles(getTriangles());
+  tetCopy->setUnsharedFaces(getUnsharedFaces());
   tetCopy->setElementsContainingVert(getElementsContainingVert());
   tetCopy->setElementNeighbors(getElementNeighbors());
   tetCopy->setElementCentroids(getElementCentroids());
