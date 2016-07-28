@@ -519,7 +519,7 @@ class SIMPLib_EXPORT TetrahedralGeom : public IGeometry3D
     ElementDynamicList::Pointer m_TetNeighbors;
     FloatArrayType::Pointer m_TetCentroids;
 
-    friend class FindTriangleDerivativesImpl;
+    friend class FindTetDerivativesImpl;
 
     TetrahedralGeom(const TetrahedralGeom&); // Copy Constructor Not Implemented
     void operator=(const TetrahedralGeom&); // Operator '=' Not Implemented

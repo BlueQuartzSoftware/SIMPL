@@ -61,39 +61,39 @@
  * @brief The FindTriangleDerivativesImpl class implements a threaded algorithm that computes the
  * derivative of an arbitrary dimensional field on the underlying triangles
  */
-class FindTriangleDerivativesImpl
+class FindTetDerivativesImpl
 {
   public:
-    FindTriangleDerivativesImpl(TetrahedralGeom* tris, DoubleArrayType::Pointer field, DoubleArrayType::Pointer derivs) :
-      m_Tris(tris),
+    FindTetDerivativesImpl(TetrahedralGeom* tets, DoubleArrayType::Pointer field, DoubleArrayType::Pointer derivs) :
+      m_Tets(tets),
       m_Field(field),
       m_Derivatives(derivs)
     {}
-    virtual ~FindTriangleDerivativesImpl() {}
+    virtual ~FindTetDerivativesImpl() {}
 
     void compute(int64_t start, int64_t end) const
     {
       int32_t cDims = m_Field->getNumberOfComponents();
       double* fieldPtr = m_Field->getPointer(0);
       double* derivsPtr = m_Derivatives->getPointer(0);
-      double values[3] = { 0.0, 0.0, 0.0 };
+      double values[4] = { 0.0, 0.0, 0.0, 0.0 };
       double derivs[3] = { 0.0, 0.0, 0.0 };
-      int64_t verts[3] { 0, 0, 0 };
+      int64_t verts[4] { 0, 0, 0, 0 };
 
       int64_t counter = 0;
-      int64_t totalElements = m_Tris->getNumberOfTris();
+      int64_t totalElements = m_Tets->getNumberOfTets();
       int64_t progIncrement = static_cast<int64_t>(totalElements / 100);
 
       for (int64_t i = start; i < end; i++)
       {
-        m_Tris->getVertsAtTri(i, verts);
+        m_Tets->getVertsAtTet(i, verts);
         for (int32_t j = 0; j < cDims; j++)
         {
-          for (size_t k = 0; k < 3; k++)
+          for (size_t k = 0; k < 4; k++)
           {
             values[k] = fieldPtr[cDims * verts[k] + j];
           }
-          //DerivativeHelpers::TriangleDeriv()(m_Tris, i, values, derivs);
+          DerivativeHelpers::TetDeriv()(m_Tets, i, values, derivs);
           derivsPtr[i * 3 * cDims + j * 3] = derivs[0];
           derivsPtr[i * 3 * cDims + j * 3 + 1] = derivs[1];
           derivsPtr[i * 3 * cDims + j * 3 + 2] = derivs[2];
@@ -101,7 +101,7 @@ class FindTriangleDerivativesImpl
 
         if (counter > progIncrement)
         {
-          m_Tris->sendThreadSafeProgressMessage(counter, totalElements);
+          m_Tets->sendThreadSafeProgressMessage(counter, totalElements);
           counter = 0;
         }
         counter++;
@@ -115,7 +115,7 @@ class FindTriangleDerivativesImpl
     }
 #endif
   private:
-    TetrahedralGeom* m_Tris;
+    TetrahedralGeom* m_Tets;
     DoubleArrayType::Pointer m_Field;
     DoubleArrayType::Pointer m_Derivatives;
 };
@@ -470,9 +470,8 @@ void TetrahedralGeom::getShapeFunctions(double pCoords[3], double* shape)
 // -----------------------------------------------------------------------------
 void TetrahedralGeom::findDerivatives(DoubleArrayType::Pointer field, DoubleArrayType::Pointer derivatives, Observable* observable)
 {
-  //TODO implement
   m_ProgressCounter = 0;
-  int64_t numTris = getNumberOfTris();
+  int64_t numTets = getNumberOfTets();
 
   if (observable)
   {
@@ -488,14 +487,14 @@ void TetrahedralGeom::findDerivatives(DoubleArrayType::Pointer field, DoubleArra
 #ifdef SIMPLib_USE_PARALLEL_ALGORITHMS
   if (doParallel == true)
   {
-    tbb::parallel_for(tbb::blocked_range<int64_t>(0, numTris),
-                      FindTriangleDerivativesImpl(this, field, derivatives), tbb::auto_partitioner());
+    tbb::parallel_for(tbb::blocked_range<int64_t>(0, numTets),
+                      FindTetDerivativesImpl(this, field, derivatives), tbb::auto_partitioner());
   }
   else
 #endif
   {
-    FindTriangleDerivativesImpl serial(this, field, derivatives);
-    serial.compute(0, numTris);
+    FindTetDerivativesImpl serial(this, field, derivatives);
+    serial.compute(0, numTets);
   }
 }
 
@@ -595,7 +594,7 @@ int TetrahedralGeom::writeXdmf(QTextStream& out, QString dcName, QString hdfFile
   out << "  <Grid Name=\"" << dcName << "\" GridType=\"Uniform\">" << "\n";
 
   out << "    <Topology TopologyType=\"Tetrahedron\" NumberOfElements=\"" << getNumberOfTets() << "\">" << "\n";
-  out << "      <DataItem Format=\"HDF\" NumberType=\"Int\" Dimensions=\"" << getNumberOfTets() << " 3\">" << "\n";
+  out << "      <DataItem Format=\"HDF\" NumberType=\"Int\" Dimensions=\"" << getNumberOfTets() << " 4\">" << "\n";
   out << "        " << hdfFileName << ":/DataContainers/" << dcName << "/" << SIMPL::Geometry::Geometry << "/" << SIMPL::Geometry::SharedTetList << "\n";
   out << "      </DataItem>" << "\n";
   out << "    </Topology>" << "\n";
