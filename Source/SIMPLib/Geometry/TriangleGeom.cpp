@@ -244,7 +244,7 @@ size_t TriangleGeom::getNumberOfElements()
 int TriangleGeom::findEdges()
 {
   m_EdgeList = CreateSharedEdgeList(0);
-  GeometryHelpers::Connectivity::Find2DElementEdges<int64_t>(m_TriList, m_EdgeList);
+  GeometryHelpers::Connectivity::FindElementEdges<int64_t>(m_TriList, m_EdgeList);
   if (m_EdgeList.get() == NULL)
   {
     return -1;
@@ -388,7 +388,7 @@ int TriangleGeom::findUnsharedEdges()
 {
   QVector<size_t> cDims(1, 2);
   m_UnsharedEdgeList = SharedEdgeList::CreateArray(0, cDims, SIMPL::Geometry::UnsharedEdgeList);
-  GeometryHelpers::Connectivity::Find2DUnsharedEdges<int64_t>(m_TriList, m_UnsharedEdgeList);
+  GeometryHelpers::Connectivity::FindUnsharedEdges<int64_t>(m_TriList, m_UnsharedEdgeList);
   if (m_UnsharedEdgeList.get() == NULL)
   {
     return -1;

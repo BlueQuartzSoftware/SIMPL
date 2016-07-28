@@ -364,12 +364,12 @@ namespace GeometryHelpers
       }
 
       /**
-       * @brief Find2DElementEdges
+       * @brief FindElementEdges
        * @param elemList
        * @param edgeList
        */
       template<typename T>
-      static void Find2DElementEdges(typename DataArray<T>::Pointer elemList, typename DataArray<T>::Pointer edgeList)
+      static void FindElementEdges(typename DataArray<T>::Pointer elemList, typename DataArray<T>::Pointer edgeList)
       {
         size_t numElems = elemList->getNumberOfTuples();
         size_t numVertsPerElem = elemList->getNumberOfComponents();
@@ -414,12 +414,12 @@ namespace GeometryHelpers
       }
 
       /**
-       * @brief Find2DUnsharedEdges
+       * @brief FindUnsharedEdges
        * @param elemList
        * @param edgeList
        */
       template<typename T>
-      static void Find2DUnsharedEdges(typename DataArray<T>::Pointer elemList, typename DataArray<T>::Pointer edgeList)
+      static void FindUnsharedEdges(typename DataArray<T>::Pointer elemList, typename DataArray<T>::Pointer edgeList)
       {
         size_t numElems = elemList->getNumberOfTuples();
         size_t numVertsPerElem = elemList->getNumberOfComponents();
