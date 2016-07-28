@@ -344,8 +344,8 @@ void DerivativeHelpers::TetDeriv::operator()(TetrahedralGeom* tets, int64_t tetI
 
   tets->getShapeFunctions(NULL, shapeFunctions);
 
-  // M is jacobian matrix
-  // then get inverse of m (jI) for computing derivs
+  // Compute 3x3 Jacobian from vertex coordinates and tet shape functions,
+  // then find the inverse Jacobian using Eigen
   double jPtr[9] = { 0.0, 0.0, 0.0,
                      0.0, 0.0, 0.0,
                      0.0, 0.0, 0.0, };
