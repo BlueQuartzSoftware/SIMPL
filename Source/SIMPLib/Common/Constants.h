@@ -138,6 +138,7 @@ namespace SIMPL
     const QString NewImageDataContainerName("NewImageDataContainer");
     const QString TriangleDataContainerName("TriangleDataContainer");
     const QString QuadDataContainerName("QuadDataContainer");
+    const QString TetrahedralDataContainerName("TetrahedralDataContainer");
 
     const QString VertexDataContainerName("VertexDataContainer");
     const QString VertexAttributeMatrixName("VertexData");
