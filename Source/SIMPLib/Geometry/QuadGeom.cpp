@@ -306,7 +306,8 @@ int QuadGeom::findElementNeighbors()
   int err = 0;
   if (m_QuadsContainingVert.get() == NULL)
   {
-    return -1;
+    err = findElementsContainingVert();
+    if (err < 0) { return err; }
   }
   m_QuadNeighbors = ElementDynamicList::New();
   err = GeometryHelpers::Connectivity::FindElementNeighbors<uint16_t, int64_t>(m_QuadList, m_QuadsContainingVert, m_QuadNeighbors, SIMPL::GeometryType::QuadGeometry);

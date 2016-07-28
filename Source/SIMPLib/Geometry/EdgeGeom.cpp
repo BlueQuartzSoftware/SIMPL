@@ -278,7 +278,8 @@ int EdgeGeom::findElementNeighbors()
   int err = 0;
   if (m_EdgesContainingVert.get() == NULL)
   {
-    return -1;
+    err = findElementsContainingVert();
+    if (err < 0) { return err; }
   }
   m_EdgeNeighbors = ElementDynamicList::New();
   err = GeometryHelpers::Connectivity::FindElementNeighbors<uint16_t, int64_t>(m_EdgeList, m_EdgesContainingVert, m_EdgeNeighbors, SIMPL::GeometryType::EdgeGeometry);

@@ -334,7 +334,8 @@ int TetrahedralGeom::findElementNeighbors()
   int err = 0;
   if (m_TetsContainingVert.get() == NULL)
   {
-    return -1;
+    err = findElementsContainingVert();
+    if (err < 0) { return err; }
   }
   m_TetNeighbors = ElementDynamicList::New();
   err = GeometryHelpers::Connectivity::FindElementNeighbors<uint16_t, int64_t>(m_TetList, m_TetsContainingVert, m_TetNeighbors, SIMPL::GeometryType::TetrahedralGeometry);
