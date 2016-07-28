@@ -414,6 +414,61 @@ namespace GeometryHelpers
       }
 
       /**
+       * @brief FindTetEdges
+       * @param tetList
+       * @param edgeList
+       */
+      template<typename T>
+      static void FindTetEdges(typename DataArray<T>::Pointer tetList, typename DataArray<T>::Pointer edgeList)
+      {
+        size_t numElems = tetList->getNumberOfTuples();
+        size_t numVertsPerElem = tetList->getNumberOfComponents();
+        T v0 = 0;
+        T v1 = 0;
+
+        std::pair<T, T> edge;
+        std::set<std::pair<T, T> > edgeSet;
+
+        for (size_t i = 0; i < numElems; i++)
+        {
+          T* verts = tetList->getTuplePointer(i);
+
+          for (size_t j = 0; j < numVertsPerElem; j++)
+          {
+            if (j == (numVertsPerElem - 1)) // normal point of tetrahedron, 3 edges
+            {
+              for (size_t k = 0; k < 3; k++)
+              {
+                if (verts[j] > verts[k]) { v0 = verts[k]; v1 = verts[j]; }
+                else { v0 = verts[j]; v1 = verts[k]; }
+                edge = std::make_pair(v0, v1);
+                edgeSet.insert(edge);
+              }
+            }
+            else // base of tetrahedron, 3 edges
+            {
+              if (verts[j] > verts[j + 1]) { v0 = verts[j + 1]; v1 = verts[j]; }
+              else { v0 = verts[j]; v1 = verts[j + 1]; }
+              edge = std::make_pair(v0, v1);
+              edgeSet.insert(edge);
+            }
+          }
+        }
+
+        typename std::set<std::pair<T, T> >::iterator setIter;
+        edgeList->resize(edgeSet.size());
+        T* uEdges = edgeList->getPointer(0);
+        T index = 0;
+
+        for (setIter = edgeSet.begin(); setIter != edgeSet.end(); ++setIter)
+        {
+          uEdges[2 * index] = (*setIter).first;
+          uEdges[2 * index + 1] = (*setIter).second;
+          ++index;
+        }
+      }
+
+      /**
        * @brief Find2DUnsharedEdges
        * @param elemList
        * @param edgeList
@@ -469,7 +524,69 @@ namespace GeometryHelpers
           ++index;
         }
       }
-  };
+
+      /**
+      * @brief FindUnsharedTetEdges
+      * @param tetList
+      * @param edgeList
+      */
+      template<typename T>
+      static void FindUnsharedTetEdges(typename DataArray<T>::Pointer tetList, typename DataArray<T>::Pointer edgeList)
+      {
+        size_t numElems = tetList->getNumberOfTuples();
+        size_t numVertsPerElem = tetList->getNumberOfComponents();
+        T v0 = 0;
+        T v1 = 0;
+
+        std::pair<T, T> edge;
+        std::map<std::pair<T, T>, T> edgeMap;
+
+        for (size_t i = 0; i < numElems; i++)
+        {
+          T* verts = tetList->getTuplePointer(i);
+
+          for (size_t j = 0; j < numVertsPerElem; j++)
+          {
+            if (j == (numVertsPerElem - 1)) // normal point of tetrahedron, 3 edges
+            {
+              for (size_t k = 0; k < 3; k++)
+              {
+                if (verts[j] > verts[k]) { v0 = verts[k]; v1 = verts[j]; }
+                else { v0 = verts[j]; v1 = verts[k]; }
+                edge = std::make_pair(v0, v1);
+                edgeMap[edge]++;
+              }
+            }
+            else // base of tetrahedron, 3 edges
+            {
+              if (verts[j] > verts[j + 1]) { v0 = verts[j + 1]; v1 = verts[j]; }
+              else { v0 = verts[j]; v1 = verts[j + 1]; }
+              edge = std::make_pair(v0, v1);
+              edgeMap[edge]++;
+            }
+          }
+        }
+
+        typename std::map<std::pair<T, T>, T>::iterator mapIter = edgeMap.begin();
+
+        while (mapIter != edgeMap.end())
+        {
+          if ((*mapIter).second > 1) { edgeMap.erase(mapIter++); }
+          else { ++mapIter; }
+        }
+
+        edgeList->resize(edgeMap.size());
+        T* bEdges = edgeList->getPointer(0);
+        T index = 0;
+
+        for (mapIter = edgeMap.begin(); mapIter != edgeMap.end(); ++mapIter)
+        {
+          bEdges[2 * index] = (*mapIter).first.first;
+          bEdges[2 * index + 1] = (*mapIter).first.second;
+          ++index;
+        }
+      }
+};
 
   /**
    * @brief The Topology class
