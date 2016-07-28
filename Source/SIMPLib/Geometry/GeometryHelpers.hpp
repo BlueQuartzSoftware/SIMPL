@@ -211,12 +211,9 @@ namespace GeometryHelpers
         size_t elemId = 0;
 
         // Fill out lists with number of references to cells
-
-
-        typename DataArray<K>::Pointer linkLocPtr = DataArray<K>::CreateArray(numVerts, "Vertices");
+        typename DataArray<K>::Pointer linkLocPtr = DataArray<K>::CreateArray(numVerts, "_INTERNAL_USE_ONLY_Vertices");
         linkLocPtr->initializeWithValue(0);
         K* linkLoc = linkLocPtr->getPointer(0);
-
         K* verts = NULL;
 
         //vtkPolyData *pdata = static_cast<vtkPolyData *>(data);
@@ -293,7 +290,7 @@ namespace GeometryHelpers
         dynamicList->allocateLists(linkCount);
 
         // Allocate an array of bools that we use each iteration so that we don't put duplicates into the array
-        typename DataArray<bool>::Pointer visitedPtr = DataArray<bool>::CreateArray(numElems, "visited");
+        typename DataArray<bool>::Pointer visitedPtr = DataArray<bool>::CreateArray(numElems, "_INTERNAL_USE_ONLY_Visited");
         visitedPtr->initializeWithValue(false);
         bool* visited = visitedPtr->getPointer(0);
 

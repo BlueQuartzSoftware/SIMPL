@@ -271,9 +271,8 @@ void TetrahedralGeom::deleteEdges()
 // -----------------------------------------------------------------------------
 int TetrahedralGeom::findElementsContainingVert()
 {
-  //TODO implement
   m_TetsContainingVert = ElementDynamicList::New();
-  GeometryHelpers::Connectivity::FindElementsContainingVert<uint16_t, int64_t>(m_TriList, m_TetsContainingVert, getNumberOfVertices());
+  GeometryHelpers::Connectivity::FindElementsContainingVert<uint16_t, int64_t>(m_TetList, m_TetsContainingVert, getNumberOfVertices());
   if (m_TetsContainingVert.get() == NULL)
   {
     return -1;
