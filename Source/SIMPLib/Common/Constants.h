@@ -769,6 +769,7 @@ namespace SIMPL
     const QString SharedQuadList("SharedQuadList");
     const QString SharedTetList("SharedTetList");
     const QString UnsharedEdgeList("UnsharedEdgeList");
+    const QString UnsharedFaceList("UnsharedFaceList");
   }
 
   namespace GeometryType

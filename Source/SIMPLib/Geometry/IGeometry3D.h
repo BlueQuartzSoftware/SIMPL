@@ -52,7 +52,7 @@ class SIMPLib_EXPORT IGeometry3D : public IGeometry
 
     IGeometry3D();
     virtual ~IGeometry3D();
-    
+
 // -----------------------------------------------------------------------------
 // Inherited from SharedVertexOps
 // -----------------------------------------------------------------------------
@@ -169,6 +169,17 @@ class SIMPLib_EXPORT IGeometry3D : public IGeometry
      */
     virtual void deleteEdges() = 0;
 
+    /**
+     * @brief findFaces
+     * @return
+     */
+    virtual int findFaces() = 0;
+
+    /**
+     * @brief deleteFaces
+     */
+    virtual void deleteFaces() = 0;
+
 // -----------------------------------------------------------------------------
 // Topology
 // -----------------------------------------------------------------------------
@@ -189,6 +200,22 @@ class SIMPLib_EXPORT IGeometry3D : public IGeometry
      */
     virtual void deleteUnsharedEdges() = 0;
 
+    /**
+     * @brief findUnsharedFaces
+     */
+    virtual int findUnsharedFaces() = 0;
+
+    /**
+     * @brief getUnsharedFaces
+     * @return
+     */
+    virtual SharedEdgeList::Pointer getUnsharedFaces() = 0;
+
+    /**
+     * @brief deleteUnsharedFaces
+     */
+    virtual void deleteUnsharedFaces() = 0;
+
   protected:
 
     /**
@@ -203,8 +230,13 @@ class SIMPLib_EXPORT IGeometry3D : public IGeometry
      */
     virtual void setUnsharedEdges(SharedEdgeList::Pointer bEdgeList) = 0;
 
-  private:
+    /**
+     * @brief setUnsharedFaces
+     * @param bFaceList
+     */
+    virtual void setUnsharedFaces(SharedFaceList::Pointer bFaceList) = 0;
 
+  private:
     IGeometry3D(const IGeometry3D&); // Copy Constructor Not Implemented
     void operator=(const IGeometry3D&); // Operator '=' Not Implemented
 };

@@ -459,6 +459,17 @@ class SIMPLib_EXPORT TetrahedralGeom : public IGeometry3D
     virtual void deleteEdges();
 
     /**
+     * @brief findFaces
+     * @return
+     */
+    virtual int findFaces();
+
+    /**
+     * @brief deleteFaces
+     */
+    virtual void deleteFaces();
+
+    /**
      * @brief findUnsharedEdges
      */
     virtual int findUnsharedEdges();
@@ -473,6 +484,22 @@ class SIMPLib_EXPORT TetrahedralGeom : public IGeometry3D
      * @brief deleteUnsharedEdges
      */
     virtual void deleteUnsharedEdges();
+
+    /**
+     * @brief findUnsharedFaces
+     */
+    virtual int findUnsharedFaces();
+
+    /**
+     * @brief getUnsharedFaces
+     * @return
+     */
+    virtual SharedEdgeList::Pointer getUnsharedFaces();
+
+    /**
+     * @brief deleteUnsharedFaces
+     */
+    virtual void deleteUnsharedFaces();
 
   protected:
 
@@ -508,12 +535,18 @@ class SIMPLib_EXPORT TetrahedralGeom : public IGeometry3D
      */
     virtual void setUnsharedEdges(SharedEdgeList::Pointer bEdgeList);
 
+    /**
+     * @brief setUnsharedFaces
+     * @param bFaceList
+     */
+    virtual void setUnsharedFaces(SharedFaceList::Pointer bFaceList);
 
   private:
     SharedVertexList::Pointer m_VertexList;
     SharedEdgeList::Pointer m_EdgeList;
     SharedEdgeList::Pointer m_UnsharedEdgeList;
     SharedTriList::Pointer m_TriList;
+    SharedTriList::Pointer m_UnsharedTriList;
     SharedTetList::Pointer m_TetList;
     ElementDynamicList::Pointer m_TetsContainingVert;
     ElementDynamicList::Pointer m_TetNeighbors;

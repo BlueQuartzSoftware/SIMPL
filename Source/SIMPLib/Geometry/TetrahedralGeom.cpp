@@ -138,6 +138,7 @@ TetrahedralGeom::TetrahedralGeom()
   m_TriList = SharedTriList::NullPointer();
   m_EdgeList = SharedEdgeList::NullPointer();
   m_UnsharedEdgeList = SharedEdgeList::NullPointer();
+  m_UnsharedTriList = SharedTriList::NullPointer();
   m_TetsContainingVert = ElementDynamicList::NullPointer();
   m_TetNeighbors = ElementDynamicList::NullPointer();
   m_TetCentroids = FloatArrayType::NullPointer();
@@ -263,6 +264,28 @@ int TetrahedralGeom::findEdges()
 void TetrahedralGeom::deleteEdges()
 {
   m_EdgeList = SharedEdgeList::NullPointer();
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+int TetrahedralGeom::findFaces()
+{
+  m_TriList = CreateSharedTriList(0);
+  GeometryHelpers::Connectivity::FindTetFaces<int64_t>(m_TetList, m_TriList);
+  if (m_TriList.get() == NULL)
+  {
+    return -1;
+  }
+  return 1;
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void TetrahedralGeom::deleteFaces()
+{
+  m_TriList = SharedTriList::NullPointer();
 }
 
 // -----------------------------------------------------------------------------
@@ -427,6 +450,45 @@ void TetrahedralGeom::deleteUnsharedEdges()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
+int TetrahedralGeom::findUnsharedFaces()
+{
+  QVector<size_t> cDims(1, 3);
+  m_UnsharedTriList = SharedTriList::CreateArray(0, cDims, SIMPL::Geometry::UnsharedFaceList);
+  GeometryHelpers::Connectivity::FindUnsharedTetFaces<int64_t>(m_TetList, m_UnsharedTriList);
+  if (m_UnsharedTriList.get() == NULL)
+  {
+    return -1;
+  }
+  return 1;
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+SharedTriList::Pointer TetrahedralGeom::getUnsharedFaces()
+{
+  return m_UnsharedTriList;
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void TetrahedralGeom::setUnsharedFaces(SharedFaceList::Pointer bFaceList)
+{
+  m_UnsharedTriList = bFaceList;
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void TetrahedralGeom::deleteUnsharedFaces()
+{
+  m_UnsharedTriList = SharedTriList::NullPointer();
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
 void TetrahedralGeom::getParametricCenter(double pCoords[3])
 {
   pCoords[0] = 0.25;
@@ -539,6 +601,15 @@ int TetrahedralGeom::writeGeometryToHDF5(hid_t parentId, bool SIMPL_NOT_USED(wri
   if (m_UnsharedEdgeList.get() != NULL)
   {
     err = GeometryHelpers::GeomIO::WriteListToHDF5(parentId, m_UnsharedEdgeList);
+    if (err < 0)
+    {
+      return err;
+    }
+  }
+
+  if (m_UnsharedTriList.get() != NULL)
+  {
+    err = GeometryHelpers::GeomIO::WriteListToHDF5(parentId, m_UnsharedTriList);
     if (err < 0)
     {
       return err;

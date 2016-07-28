@@ -57,6 +57,7 @@ typedef Int64ArrayType SharedEdgeList;
 typedef Int64ArrayType SharedTriList;
 typedef Int64ArrayType SharedQuadList;
 typedef Int64ArrayType SharedTetList;
+typedef Int64ArrayType SharedFaceList;
 typedef UInt16Int64DynamicListArray ElementDynamicList;
 
 /**

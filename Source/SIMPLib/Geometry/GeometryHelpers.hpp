@@ -422,40 +422,32 @@ namespace GeometryHelpers
       static void FindTetEdges(typename DataArray<T>::Pointer tetList, typename DataArray<T>::Pointer edgeList)
       {
         size_t numElems = tetList->getNumberOfTuples();
-        size_t numVertsPerElem = tetList->getNumberOfComponents();
-        T v0 = 0;
-        T v1 = 0;
 
         std::pair<T, T> edge;
-        std::set<std::pair<T, T> > edgeSet;
+        std::set<std::pair<T, T>> edgeSet;
 
         for (size_t i = 0; i < numElems; i++)
         {
           T* verts = tetList->getTuplePointer(i);
 
-          for (size_t j = 0; j < numVertsPerElem; j++)
+          std::vector<T> edge0 = { verts[0], verts[1] };
+          std::vector<T> edge1 = { verts[0], verts[2] };
+          std::vector<T> edge2 = { verts[1], verts[2] };
+          std::vector<T> edge3 = { verts[0], verts[3] };
+          std::vector<T> edge4 = { verts[1], verts[3] };
+          std::vector<T> edge5 = { verts[2], verts[3] };
+          std::list<std::vector<T>> edgeList = { edge0, edge1, edge2,
+                                                 edge3, edge4, edge5 };
+
+          for (auto&& uEdge : edgeList)
           {
-            if (j == (numVertsPerElem - 1)) // normal point of tetrahedron, 3 edges
-            {
-              for (size_t k = 0; k < 3; k++)
-              {
-                if (verts[j] > verts[k]) { v0 = verts[k]; v1 = verts[j]; }
-                else { v0 = verts[j]; v1 = verts[k]; }
-                edge = std::make_pair(v0, v1);
-                edgeSet.insert(edge);
-              }
-            }
-            else // base of tetrahedron, 3 edges
-            {
-              if (verts[j] > verts[j + 1]) { v0 = verts[j + 1]; v1 = verts[j]; }
-              else { v0 = verts[j]; v1 = verts[j + 1]; }
-              edge = std::make_pair(v0, v1);
-              edgeSet.insert(edge);
-            }
+            std::sort(uEdge.begin(), uEdge.end());
+            edge = std::make_pair(uEdge[0], uEdge[1]);
+            edgeSet.insert(edge);
           }
         }
 
-        typename std::set<std::pair<T, T> >::iterator setIter;
+        typename std::set<std::pair<T, T>>::iterator setIter;
         edgeList->resize(edgeSet.size());
         T* uEdges = edgeList->getPointer(0);
         T index = 0;
@@ -464,6 +456,51 @@ namespace GeometryHelpers
         {
           uEdges[2 * index] = (*setIter).first;
           uEdges[2 * index + 1] = (*setIter).second;
+          ++index;
+        }
+      }
+
+      /**
+       * @brief FindTetFaces
+       * @param tetList
+       * @param edgeList
+       */
+      template<typename T>
+      static void FindTetFaces(typename DataArray<T>::Pointer tetList, typename DataArray<T>::Pointer faceList)
+      {
+        size_t numElems = tetList->getNumberOfTuples();
+
+        std::tuple<T, T, T> face;
+        std::set<std::tuple<T, T, T>> faceSet;
+
+        for (size_t i = 0; i < numElems; i++)
+        {
+          T* verts = tetList->getTuplePointer(i);
+
+          std::vector<T> tri0 = { verts[0], verts[1], verts[2] };
+          std::vector<T> tri1 = { verts[1], verts[2], verts[3] };
+          std::vector<T> tri2 = { verts[0], verts[2], verts[3] };
+          std::vector<T> tri3 = { verts[0], verts[1], verts[3] };
+          std::list<std::vector<T>> triList = { tri0, tri1, tri2, tri3 };
+
+          for (auto&& tri : triList)
+          {
+            std::sort(tri.begin(), tri.end());
+            face = std::make_tuple(tri[0], tri[1], tri[2]);
+            faceSet.insert(face);
+          }
+        }
+
+        typename std::set<std::tuple<T, T, T>>::iterator setIter;
+        faceList->resize(faceSet.size());
+        T* uFaces = faceList->getPointer(0);
+        T index = 0;
+
+        for (setIter = faceSet.begin(); setIter != faceSet.end(); ++setIter)
+        {
+          uFaces[3 * index] = std::get<0>(*setIter);
+          uFaces[3 * index + 1] = std::get<1>(*setIter);
+          uFaces[3 * index + 2] = std::get<2>(*setIter);
           ++index;
         }
       }
@@ -534,9 +571,6 @@ namespace GeometryHelpers
       static void FindUnsharedTetEdges(typename DataArray<T>::Pointer tetList, typename DataArray<T>::Pointer edgeList)
       {
         size_t numElems = tetList->getNumberOfTuples();
-        size_t numVertsPerElem = tetList->getNumberOfComponents();
-        T v0 = 0;
-        T v1 = 0;
 
         std::pair<T, T> edge;
         std::map<std::pair<T, T>, T> edgeMap;
@@ -545,25 +579,20 @@ namespace GeometryHelpers
         {
           T* verts = tetList->getTuplePointer(i);
 
-          for (size_t j = 0; j < numVertsPerElem; j++)
+          std::vector<T> edge0 = { verts[0], verts[1] };
+          std::vector<T> edge1 = { verts[0], verts[2] };
+          std::vector<T> edge2 = { verts[1], verts[2] };
+          std::vector<T> edge3 = { verts[0], verts[3] };
+          std::vector<T> edge4 = { verts[1], verts[3] };
+          std::vector<T> edge5 = { verts[2], verts[3] };
+          std::list<std::vector<T>> edgeList = { edge0, edge1, edge2,
+                                                 edge3, edge4, edge5 };
+
+          for (auto&& uEdge : edgeList)
           {
-            if (j == (numVertsPerElem - 1)) // normal point of tetrahedron, 3 edges
-            {
-              for (size_t k = 0; k < 3; k++)
-              {
-                if (verts[j] > verts[k]) { v0 = verts[k]; v1 = verts[j]; }
-                else { v0 = verts[j]; v1 = verts[k]; }
-                edge = std::make_pair(v0, v1);
-                edgeMap[edge]++;
-              }
-            }
-            else // base of tetrahedron, 3 edges
-            {
-              if (verts[j] > verts[j + 1]) { v0 = verts[j + 1]; v1 = verts[j]; }
-              else { v0 = verts[j]; v1 = verts[j + 1]; }
-              edge = std::make_pair(v0, v1);
-              edgeMap[edge]++;
-            }
+            std::sort(uEdge.begin(), uEdge.end());
+            edge = std::make_pair(uEdge[0], uEdge[1]);
+            edgeMap[edge]++;
           }
         }
 
@@ -583,6 +612,58 @@ namespace GeometryHelpers
         {
           bEdges[2 * index] = (*mapIter).first.first;
           bEdges[2 * index + 1] = (*mapIter).first.second;
+          ++index;
+        }
+      }
+
+      /**
+       * @brief FindUnsharedTetFaces
+       * @param tetList
+       * @param edgeList
+       */
+      template<typename T>
+      static void FindUnsharedTetFaces(typename DataArray<T>::Pointer tetList, typename DataArray<T>::Pointer faceList)
+      {
+        size_t numElems = tetList->getNumberOfTuples();
+
+        std::tuple<T, T, T> face;
+        std::map<std::tuple<T, T, T>, T> faceMap;
+
+        for (size_t i = 0; i < numElems; i++)
+        {
+          T* verts = tetList->getTuplePointer(i);
+
+          std::vector<T> tri0 = { verts[0], verts[1], verts[2] };
+          std::vector<T> tri1 = { verts[1], verts[2], verts[3] };
+          std::vector<T> tri2 = { verts[0], verts[2], verts[3] };
+          std::vector<T> tri3 = { verts[0], verts[1], verts[3] };
+          std::list<std::vector<T>> triList = { tri0, tri1, tri2, tri3 };
+
+          for (auto&& tri : triList)
+          {
+            std::sort(tri.begin(), tri.end());
+            face = std::make_tuple(tri[0], tri[1], tri[2]);
+            faceMap[face]++;
+          }
+        }
+
+        typename std::map<std::tuple<T, T, T>, T>::iterator mapIter = faceMap.begin();
+
+        while (mapIter != faceMap.end())
+        {
+          if ((*mapIter).second > 1) { faceMap.erase(mapIter++); }
+          else { ++mapIter; }
+        }
+
+        faceList->resize(faceMap.size());
+        T* uFaces = faceList->getPointer(0);
+        T index = 0;
+
+        for (mapIter = faceMap.begin(); mapIter != faceMap.end(); ++mapIter)
+        {
+          uFaces[3 * index] = std::get<0>((*mapIter).first);
+          uFaces[3 * index + 1] = std::get<1>((*mapIter).first);
+          uFaces[3 * index + 2] = std::get<2>((*mapIter).first);
           ++index;
         }
       }
@@ -711,7 +792,7 @@ namespace GeometryHelpers
             {
               vertCentDist[numVertsPerElem * i + j] += (vertex[numDims * Elem[j] + k] - elementCentroids[numDims * i + k]) * (vertex[numDims * Elem[j] + k] - elementCentroids[numDims * i + k]);
             }
-            vertCentDist[numVertsPerElem * i + j] = sqrt(vertCentDist[numVertsPerElem * i + j]);
+            vertCentDist[numVertsPerElem * i + j] = sqrtf(vertCentDist[numVertsPerElem * i + j]);
           }
         }
 
