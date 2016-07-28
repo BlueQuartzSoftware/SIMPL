@@ -629,7 +629,7 @@ int TetrahedralGeom::writeGeometryToHDF5(hid_t parentId, bool SIMPL_NOT_USED(wri
   if (m_TetNeighbors.get() != NULL)
   {
     size_t numTets = getNumberOfTets();
-    err = GeometryHelpers::GeomIO::WriteDynamicListToHDF5<uint16_t, int64_t>(parentId, m_TetNeighbors, numTets, SIMPL::StringConstants::TriangleNeighbors);
+    err = GeometryHelpers::GeomIO::WriteDynamicListToHDF5<uint16_t, int64_t>(parentId, m_TetNeighbors, numTets, SIMPL::StringConstants::TetNeighbors);
     if (err < 0)
     {
       return err;
@@ -639,7 +639,7 @@ int TetrahedralGeom::writeGeometryToHDF5(hid_t parentId, bool SIMPL_NOT_USED(wri
   if (m_TetsContainingVert.get() != NULL)
   {
     size_t numVerts = getNumberOfVertices();
-    err = GeometryHelpers::GeomIO::WriteDynamicListToHDF5<uint16_t, int64_t>(parentId, m_TetsContainingVert, numVerts, SIMPL::StringConstants::TrianglesContainingVert);
+    err = GeometryHelpers::GeomIO::WriteDynamicListToHDF5<uint16_t, int64_t>(parentId, m_TetsContainingVert, numVerts, SIMPL::StringConstants::TetsContainingVert);
     if (err < 0)
     {
       return err;
