@@ -253,7 +253,7 @@ namespace GeometryHelpers
        */
       template<typename T, typename K>
       static int FindElementNeighbors(typename DataArray<K>::Pointer elemList, typename DynamicListArray<T, K>::Pointer elemsContainingVert,
-                                      typename DynamicListArray<T, K>::Pointer dynamicList)
+                                      typename DynamicListArray<T, K>::Pointer dynamicList, uint32_t geometryType)
       {
         size_t numElems = elemList->getNumberOfTuples();
         size_t numVertsPerElem = elemList->getNumberOfComponents();
@@ -261,21 +261,26 @@ namespace GeometryHelpers
         QVector<T> linkCount(numElems, 0);
         int err = 0;
 
-        switch(numVertsPerElem)
+        switch (geometryType)
         {
-          case 2: // edges
+          case 3: // edges
           {
             numSharedVerts = 1;
             break;
           }
-          case 3: // triangles
+          case 5: // triangles
           {
             numSharedVerts = 2;
             break;
           }
-          case 4: // quadrilaterals
+          case 9: // quadrilaterals
           {
             numSharedVerts = 2;
+            break;
+          }
+          case 10: // tetrahedra
+          {
+            numSharedVerts = 3;
             break;
           }
           default:
@@ -283,13 +288,14 @@ namespace GeometryHelpers
             break;
         }
 
+        if (numSharedVerts == 0) { return -1; }
+
         dynamicList->allocateLists(linkCount);
 
         // Allocate an array of bools that we use each iteration so that we don't put duplicates into the array
         typename DataArray<bool>::Pointer visitedPtr = DataArray<bool>::CreateArray(numElems, "visited");
         visitedPtr->initializeWithValue(false);
         bool* visited = visitedPtr->getPointer(0);
-
 
         // Reuse this vector for each loop. Avoids re-allocating the memory each time through the loop
         QVector<K> loop_neighbors(32, 0);

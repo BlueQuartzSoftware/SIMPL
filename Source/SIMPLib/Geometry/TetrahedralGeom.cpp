@@ -310,14 +310,13 @@ void TetrahedralGeom::deleteElementsContainingVert()
 // -----------------------------------------------------------------------------
 int TetrahedralGeom::findElementNeighbors()
 {
-  //TODO implement
   int err = 0;
   if (m_TetsContainingVert.get() == NULL)
   {
     return -1;
   }
   m_TetNeighbors = ElementDynamicList::New();
-  err = GeometryHelpers::Connectivity::FindElementNeighbors<uint16_t, int64_t>(m_TriList, m_TetsContainingVert, m_TetNeighbors);
+  err = GeometryHelpers::Connectivity::FindElementNeighbors<uint16_t, int64_t>(m_TetList, m_TetsContainingVert, m_TetNeighbors, SIMPL::GeometryType::TetrahedralGeometry);
   if (m_TetNeighbors.get() == NULL)
   {
     return -1;
@@ -354,10 +353,9 @@ void TetrahedralGeom::deleteElementNeighbors()
 // -----------------------------------------------------------------------------
 int TetrahedralGeom::findElementCentroids()
 {
-  //TODO implement
   QVector<size_t> cDims(1, 3);
-  m_TetCentroids = FloatArrayType::CreateArray(getNumberOfTris(), cDims, SIMPL::StringConstants::TriangleCentroids);
-  GeometryHelpers::Topology::FindElementCentroids<int64_t>(m_TriList, m_VertexList, m_TetCentroids);
+  m_TetCentroids = FloatArrayType::CreateArray(getNumberOfTets(), cDims, SIMPL::StringConstants::TetCentroids);
+  GeometryHelpers::Topology::FindElementCentroids<int64_t>(m_TetList, m_VertexList, m_TetCentroids);
   if (m_TetCentroids.get() == NULL)
   {
     return -1;

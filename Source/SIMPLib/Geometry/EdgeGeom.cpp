@@ -281,7 +281,7 @@ int EdgeGeom::findElementNeighbors()
     return -1;
   }
   m_EdgeNeighbors = ElementDynamicList::New();
-  err = GeometryHelpers::Connectivity::FindElementNeighbors<uint16_t, int64_t>(m_EdgeList, m_EdgesContainingVert, m_EdgeNeighbors);
+  err = GeometryHelpers::Connectivity::FindElementNeighbors<uint16_t, int64_t>(m_EdgeList, m_EdgesContainingVert, m_EdgeNeighbors, SIMPL::GeometryType::EdgeGeometry);
   if (m_EdgeNeighbors.get() == NULL)
   {
     err = -1;

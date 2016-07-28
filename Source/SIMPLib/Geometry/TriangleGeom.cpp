@@ -310,7 +310,7 @@ int TriangleGeom::findElementNeighbors()
     return -1;
   }
   m_TriangleNeighbors = ElementDynamicList::New();
-  err = GeometryHelpers::Connectivity::FindElementNeighbors<uint16_t, int64_t>(m_TriList, m_TrianglesContainingVert, m_TriangleNeighbors);
+  err = GeometryHelpers::Connectivity::FindElementNeighbors<uint16_t, int64_t>(m_TriList, m_TrianglesContainingVert, m_TriangleNeighbors, SIMPL::GeometryType::TriangleGeometry);
   if (m_TriangleNeighbors.get() == NULL)
   {
     return -1;
