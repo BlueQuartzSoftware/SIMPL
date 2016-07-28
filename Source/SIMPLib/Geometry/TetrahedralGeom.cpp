@@ -35,17 +35,17 @@
 
 
 /* ============================================================================
- * QuadGeom re-implements code from the following vtk modules:
+ * TetrahedralGeom re-implements code from the following vtk modules:
  *
- * * vtkQuad.cxx
- *   - re-implemented vtkQuad::GetParametricCenter to QuadGeom::getParametricCenter
- *   - re-implemented vtkQuad::InterpolationDerivs to QuadGeom::getShapeFunctions
+ * * vtkTriangle.cxx
+ *   - re-implemented vtkTetra::GetParametricCenter to TetrahedralGeom::getParametricCenter
+ *   - re-implemented vtkTetra::InterpolationDerivs to TetrahedralGeom::getShapeFunctions
  * * vtkGradientFilter.cxx
  *   - re-implemented vtkGradientFilter template function ComputeCellGradientsUG to
- *     QuadGeom::findDerivatives
+ *     TetrahedralGeom::findDerivatives
  * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-#include "SIMPLib/Geometry/QuadGeom.h"
+#include "SIMPLib/Geometry/TetrahedralGeom.h"
 
 #ifdef SIMPLib_USE_PARALLEL_ALGORITHMS
 #include <tbb/parallel_for.h>
@@ -54,22 +54,22 @@
 #include <tbb/task_scheduler_init.h>
 #endif
 
-#include "SIMPLib/Geometry/GeometryHelpers.hpp"
 #include "SIMPLib/Geometry/DerivativeHelpers.h"
+#include "SIMPLib/Geometry/GeometryHelpers.hpp"
 
 /**
- * @brief The FindQuadDerivativesImpl class implements a threaded algorithm that computes the
- * derivative of an arbitrary dimensional field on the underlying quadrilaterals
+ * @brief The FindTriangleDerivativesImpl class implements a threaded algorithm that computes the
+ * derivative of an arbitrary dimensional field on the underlying triangles
  */
-class FindQuadDerivativesImpl
+class FindTetDerivativesImpl
 {
   public:
-    FindQuadDerivativesImpl(QuadGeom* quads, DoubleArrayType::Pointer field, DoubleArrayType::Pointer derivs) :
-      m_Quads(quads),
+    FindTetDerivativesImpl(TetrahedralGeom* tets, DoubleArrayType::Pointer field, DoubleArrayType::Pointer derivs) :
+      m_Tets(tets),
       m_Field(field),
       m_Derivatives(derivs)
     {}
-    virtual ~FindQuadDerivativesImpl() {}
+    virtual ~FindTetDerivativesImpl() {}
 
     void compute(int64_t start, int64_t end) const
     {
@@ -78,22 +78,22 @@ class FindQuadDerivativesImpl
       double* derivsPtr = m_Derivatives->getPointer(0);
       double values[4] = { 0.0, 0.0, 0.0, 0.0 };
       double derivs[3] = { 0.0, 0.0, 0.0 };
-      int64_t verts[4] = { 0, 0, 0, 0 };
+      int64_t verts[4] { 0, 0, 0, 0 };
 
       int64_t counter = 0;
-      int64_t totalElements = m_Quads->getNumberOfQuads();
+      int64_t totalElements = m_Tets->getNumberOfTets();
       int64_t progIncrement = static_cast<int64_t>(totalElements / 100);
 
       for (int64_t i = start; i < end; i++)
       {
-        m_Quads->getVertsAtQuad(i, verts);
+        m_Tets->getVertsAtTet(i, verts);
         for (int32_t j = 0; j < cDims; j++)
         {
           for (size_t k = 0; k < 4; k++)
           {
             values[k] = fieldPtr[cDims * verts[k] + j];
           }
-          DerivativeHelpers::QuadDeriv()(m_Quads, i, values, derivs);
+          DerivativeHelpers::TetDeriv()(m_Tets, i, values, derivs);
           derivsPtr[i * 3 * cDims + j * 3] = derivs[0];
           derivsPtr[i * 3 * cDims + j * 3 + 1] = derivs[1];
           derivsPtr[i * 3 * cDims + j * 3 + 2] = derivs[2];
@@ -101,7 +101,7 @@ class FindQuadDerivativesImpl
 
         if (counter > progIncrement)
         {
-          m_Quads->sendThreadSafeProgressMessage(counter, totalElements);
+          m_Tets->sendThreadSafeProgressMessage(counter, totalElements);
           counter = 0;
         }
         counter++;
@@ -115,7 +115,7 @@ class FindQuadDerivativesImpl
     }
 #endif
   private:
-    QuadGeom* m_Quads;
+    TetrahedralGeom* m_Tets;
     DoubleArrayType::Pointer m_Field;
     DoubleArrayType::Pointer m_Derivatives;
 };
@@ -123,45 +123,47 @@ class FindQuadDerivativesImpl
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-QuadGeom::QuadGeom()
+TetrahedralGeom::TetrahedralGeom()
 {
-  m_GeometryTypeName = SIMPL::Geometry::QuadGeometry;
-  m_GeometryType = SIMPL::GeometryType::QuadGeometry;
+  m_GeometryTypeName = SIMPL::Geometry::TetrahedralGeometry;
+  m_GeometryType = SIMPL::GeometryType::TetrahedralGeometry;
   m_XdmfGridType = SIMPL::XdmfGridType::PolyData;
   m_MessagePrefix = "";
   m_MessageTitle = "";
   m_MessageLabel = "";
-  m_UnitDimensionality = 2;
+  m_UnitDimensionality = 3;
   m_SpatialDimensionality = 3;
-  m_VertexList = QuadGeom::CreateSharedVertexList(0);
-  m_QuadList = QuadGeom::CreateSharedQuadList(0);
+  m_VertexList = TetrahedralGeom::CreateSharedVertexList(0);
+  m_TetList = TetrahedralGeom::CreateSharedTetList(0);
+  m_TriList = SharedTriList::NullPointer();
   m_EdgeList = SharedEdgeList::NullPointer();
   m_UnsharedEdgeList = SharedEdgeList::NullPointer();
-  m_QuadsContainingVert = ElementDynamicList::NullPointer();
-  m_QuadNeighbors = ElementDynamicList::NullPointer();
-  m_QuadCentroids = FloatArrayType::NullPointer();
+  m_UnsharedTriList = SharedTriList::NullPointer();
+  m_TetsContainingVert = ElementDynamicList::NullPointer();
+  m_TetNeighbors = ElementDynamicList::NullPointer();
+  m_TetCentroids = FloatArrayType::NullPointer();
   m_ProgressCounter = 0;
 }
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-QuadGeom::~QuadGeom()
+TetrahedralGeom::~TetrahedralGeom()
 {}
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-QuadGeom::Pointer QuadGeom::CreateGeometry(int64_t numQuads, SharedVertexList::Pointer vertices, const QString& name, bool allocate)
+TetrahedralGeom::Pointer TetrahedralGeom::CreateGeometry(int64_t numTets, SharedVertexList::Pointer vertices, const QString& name, bool allocate)
 {
   if (name.isEmpty() == true)
   {
     return NullPointer();
   }
-  SharedQuadList::Pointer quads = QuadGeom::CreateSharedQuadList(numQuads, allocate);
-  QuadGeom* d = new QuadGeom();
+  SharedTetList::Pointer tets = TetrahedralGeom::CreateSharedTetList(numTets, allocate);
+  TetrahedralGeom* d = new TetrahedralGeom();
   d->setVertices(vertices);
-  d->setQuads(quads);
+  d->setTetrahedra(tets);
   d->setName(name);
   Pointer ptr(d);
   return ptr;
@@ -170,7 +172,7 @@ QuadGeom::Pointer QuadGeom::CreateGeometry(int64_t numQuads, SharedVertexList::P
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-QuadGeom::Pointer QuadGeom::CreateGeometry(SharedQuadList::Pointer quads, SharedVertexList::Pointer vertices, const QString& name)
+TetrahedralGeom::Pointer TetrahedralGeom::CreateGeometry(SharedTetList::Pointer tets, SharedVertexList::Pointer vertices, const QString& name)
 {
   if (name.isEmpty() == true)
   {
@@ -178,15 +180,15 @@ QuadGeom::Pointer QuadGeom::CreateGeometry(SharedQuadList::Pointer quads, Shared
   }
   if (vertices.get() == NULL)
   {
-    return QuadGeom::NullPointer();
+    return TetrahedralGeom::NullPointer();
   }
-  if (quads.get() == NULL)
+  if (tets.get() == NULL)
   {
-    return QuadGeom::NullPointer();
+    return TetrahedralGeom::NullPointer();
   }
-  QuadGeom* d = new QuadGeom();
+  TetrahedralGeom* d = new TetrahedralGeom();
   d->setVertices(vertices);
-  d->setQuads(quads);
+  d->setTetrahedra(tets);
   d->setName(name);
   Pointer ptr(d);
   return ptr;
@@ -195,20 +197,20 @@ QuadGeom::Pointer QuadGeom::CreateGeometry(SharedQuadList::Pointer quads, Shared
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void QuadGeom::initializeWithZeros()
+void TetrahedralGeom::initializeWithZeros()
 {
   m_VertexList->initializeWithZeros();
-  m_QuadList->initializeWithZeros();
+  m_TetList->initializeWithZeros();
 }
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void QuadGeom::addAttributeMatrix(const QString& name, AttributeMatrix::Pointer data)
+void TetrahedralGeom::addAttributeMatrix(const QString& name, AttributeMatrix::Pointer data)
 {
-  if (data->getType() != 0 || data->getType() != 1 || data->getType() != 2)
+  if (data->getType() != 0 || data->getType() != 1 || data->getType() != 2 || data->getType() != 3)
   {
-    // QuadGeom can only accept vertex, edge, or face Attribute Matrices
+    // TetrahedralGeom can only accept vertex, edge, face or cell Attribute Matrices
     return;
   }
   if (data->getType() == 0 && static_cast<int64_t>(data->getNumTuples()) != getNumberOfVertices())
@@ -219,7 +221,11 @@ void QuadGeom::addAttributeMatrix(const QString& name, AttributeMatrix::Pointer 
   {
     return;
   }
-  if (data->getType() == 2 && data->getNumTuples() != getNumberOfElements())
+  if (data->getType() == 2 && static_cast<int64_t>(data->getNumTuples()) != getNumberOfTris())
+  {
+    return;
+  }
+  if (data->getType() == 3 && data->getNumTuples() != getNumberOfElements())
   {
     return;
   }
@@ -233,18 +239,18 @@ void QuadGeom::addAttributeMatrix(const QString& name, AttributeMatrix::Pointer 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-size_t QuadGeom::getNumberOfElements()
+size_t TetrahedralGeom::getNumberOfElements()
 {
-  return m_QuadList->getNumberOfTuples();
+  return m_TetList->getNumberOfTuples();
 }
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-int QuadGeom::findEdges()
+int TetrahedralGeom::findEdges()
 {
   m_EdgeList = CreateSharedEdgeList(0);
-  GeometryHelpers::Connectivity::Find2DElementEdges<int64_t>(m_QuadList, m_EdgeList);
+  GeometryHelpers::Connectivity::FindTetEdges<int64_t>(m_TetList, m_EdgeList);
   if (m_EdgeList.get() == NULL)
   {
     return -1;
@@ -255,7 +261,7 @@ int QuadGeom::findEdges()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void QuadGeom::deleteEdges()
+void TetrahedralGeom::deleteEdges()
 {
   m_EdgeList = SharedEdgeList::NullPointer();
 }
@@ -263,11 +269,11 @@ void QuadGeom::deleteEdges()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-int QuadGeom::findElementsContainingVert()
+int TetrahedralGeom::findFaces()
 {
-  m_QuadsContainingVert = ElementDynamicList::New();
-  GeometryHelpers::Connectivity::FindElementsContainingVert<uint16_t, int64_t>(m_QuadList, m_QuadsContainingVert, getNumberOfVertices());
-  if (m_QuadsContainingVert.get() == NULL)
+  m_TriList = CreateSharedTriList(0);
+  GeometryHelpers::Connectivity::FindTetFaces<int64_t>(m_TetList, m_TriList);
+  if (m_TriList.get() == NULL)
   {
     return -1;
   }
@@ -277,41 +283,63 @@ int QuadGeom::findElementsContainingVert()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-ElementDynamicList::Pointer QuadGeom::getElementsContainingVert()
+void TetrahedralGeom::deleteFaces()
 {
-  return m_QuadsContainingVert;
+  m_TriList = SharedTriList::NullPointer();
 }
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void QuadGeom::setElementsContainingVert(ElementDynamicList::Pointer elementsContainingVert)
+int TetrahedralGeom::findElementsContainingVert()
 {
-  m_QuadsContainingVert = elementsContainingVert;
+  m_TetsContainingVert = ElementDynamicList::New();
+  GeometryHelpers::Connectivity::FindElementsContainingVert<uint16_t, int64_t>(m_TetList, m_TetsContainingVert, getNumberOfVertices());
+  if (m_TetsContainingVert.get() == NULL)
+  {
+    return -1;
+  }
+  return 1;
 }
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void QuadGeom::deleteElementsContainingVert()
+ElementDynamicList::Pointer TetrahedralGeom::getElementsContainingVert()
 {
-  m_QuadsContainingVert = ElementDynamicList::NullPointer();
+  return m_TetsContainingVert;
 }
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-int QuadGeom::findElementNeighbors()
+void TetrahedralGeom::setElementsContainingVert(ElementDynamicList::Pointer elementsContainingVert)
+{
+  m_TetsContainingVert = elementsContainingVert;
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void TetrahedralGeom::deleteElementsContainingVert()
+{
+  m_TetsContainingVert = ElementDynamicList::NullPointer();
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+int TetrahedralGeom::findElementNeighbors()
 {
   int err = 0;
-  if (m_QuadsContainingVert.get() == NULL)
+  if (m_TetsContainingVert.get() == NULL)
   {
     err = findElementsContainingVert();
     if (err < 0) { return err; }
   }
-  m_QuadNeighbors = ElementDynamicList::New();
-  err = GeometryHelpers::Connectivity::FindElementNeighbors<uint16_t, int64_t>(m_QuadList, m_QuadsContainingVert, m_QuadNeighbors, SIMPL::GeometryType::QuadGeometry);
-  if (m_QuadNeighbors.get() == NULL)
+  m_TetNeighbors = ElementDynamicList::New();
+  err = GeometryHelpers::Connectivity::FindElementNeighbors<uint16_t, int64_t>(m_TetList, m_TetsContainingVert, m_TetNeighbors, SIMPL::GeometryType::TetrahedralGeometry);
+  if (m_TetNeighbors.get() == NULL)
   {
     return -1;
   }
@@ -321,36 +349,36 @@ int QuadGeom::findElementNeighbors()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-ElementDynamicList::Pointer QuadGeom::getElementNeighbors()
+ElementDynamicList::Pointer TetrahedralGeom::getElementNeighbors()
 {
-  return m_QuadNeighbors;
+  return m_TetNeighbors;
 }
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void QuadGeom::setElementNeighbors(ElementDynamicList::Pointer elementNeighbors)
+void TetrahedralGeom::setElementNeighbors(ElementDynamicList::Pointer elementNeighbors)
 {
-  m_QuadNeighbors = elementNeighbors;
+  m_TetNeighbors = elementNeighbors;
 }
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void QuadGeom::deleteElementNeighbors()
+void TetrahedralGeom::deleteElementNeighbors()
 {
-  m_QuadNeighbors = ElementDynamicList::NullPointer();
+  m_TetNeighbors = ElementDynamicList::NullPointer();
 }
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-int QuadGeom::findElementCentroids()
+int TetrahedralGeom::findElementCentroids()
 {
   QVector<size_t> cDims(1, 3);
-  m_QuadCentroids = FloatArrayType::CreateArray(getNumberOfQuads(), cDims, SIMPL::StringConstants::QuadCentroids);
-  GeometryHelpers::Topology::FindElementCentroids<int64_t>(m_QuadList, m_VertexList, m_QuadCentroids);
-  if (m_QuadCentroids.get() == NULL)
+  m_TetCentroids = FloatArrayType::CreateArray(getNumberOfTets(), cDims, SIMPL::StringConstants::TetCentroids);
+  GeometryHelpers::Topology::FindElementCentroids<int64_t>(m_TetList, m_VertexList, m_TetCentroids);
+  if (m_TetCentroids.get() == NULL)
   {
     return -1;
   }
@@ -360,35 +388,35 @@ int QuadGeom::findElementCentroids()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-FloatArrayType::Pointer QuadGeom::getElementCentroids()
+FloatArrayType::Pointer TetrahedralGeom::getElementCentroids()
 {
-  return m_QuadCentroids;
+  return m_TetCentroids;
 }
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void QuadGeom::setElementCentroids(FloatArrayType::Pointer elementCentroids)
+void TetrahedralGeom::setElementCentroids(FloatArrayType::Pointer elementCentroids)
 {
-  m_QuadCentroids = elementCentroids;
+  m_TetCentroids = elementCentroids;
 }
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void QuadGeom::deleteElementCentroids()
+void TetrahedralGeom::deleteElementCentroids()
 {
-  m_QuadCentroids = FloatArrayType::NullPointer();
+  m_TetCentroids = FloatArrayType::NullPointer();
 }
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-int QuadGeom::findUnsharedEdges()
+int TetrahedralGeom::findUnsharedEdges()
 {
   QVector<size_t> cDims(1, 2);
   m_UnsharedEdgeList = SharedEdgeList::CreateArray(0, cDims, SIMPL::Geometry::UnsharedEdgeList);
-  GeometryHelpers::Connectivity::Find2DUnsharedEdges<int64_t>(m_QuadList, m_UnsharedEdgeList);
+  GeometryHelpers::Connectivity::FindUnsharedTetEdges<int64_t>(m_TetList, m_UnsharedEdgeList);
   if (m_UnsharedEdgeList.get() == NULL)
   {
     return -1;
@@ -399,7 +427,7 @@ int QuadGeom::findUnsharedEdges()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-SharedEdgeList::Pointer QuadGeom::getUnsharedEdges()
+SharedEdgeList::Pointer TetrahedralGeom::getUnsharedEdges()
 {
   return m_UnsharedEdgeList;
 }
@@ -407,7 +435,7 @@ SharedEdgeList::Pointer QuadGeom::getUnsharedEdges()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void QuadGeom::setUnsharedEdges(SharedEdgeList::Pointer bEdgeList)
+void TetrahedralGeom::setUnsharedEdges(SharedEdgeList::Pointer bEdgeList)
 {
   m_UnsharedEdgeList = bEdgeList;
 }
@@ -415,7 +443,7 @@ void QuadGeom::setUnsharedEdges(SharedEdgeList::Pointer bEdgeList)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void QuadGeom::deleteUnsharedEdges()
+void TetrahedralGeom::deleteUnsharedEdges()
 {
   m_UnsharedEdgeList = SharedEdgeList::NullPointer();
 }
@@ -423,41 +451,85 @@ void QuadGeom::deleteUnsharedEdges()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void QuadGeom::getParametricCenter(double pCoords[3])
+int TetrahedralGeom::findUnsharedFaces()
 {
-  pCoords[0] = 0.5;
-  pCoords[1] = 0.5;
-  pCoords[2] = 0.0;
+  QVector<size_t> cDims(1, 3);
+  m_UnsharedTriList = SharedTriList::CreateArray(0, cDims, SIMPL::Geometry::UnsharedFaceList);
+  GeometryHelpers::Connectivity::FindUnsharedTetFaces<int64_t>(m_TetList, m_UnsharedTriList);
+  if (m_UnsharedTriList.get() == NULL)
+  {
+    return -1;
+  }
+  return 1;
 }
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void QuadGeom::getShapeFunctions(double pCoords[3], double* shape)
+SharedTriList::Pointer TetrahedralGeom::getUnsharedFaces()
 {
-  double rm = 0.0;
-  double sm = 0.0;
-
-  rm = 1.0 - pCoords[0];
-  sm = 1.0 - pCoords[1];
-
-  shape[0] = -sm;
-  shape[1] = sm;
-  shape[2] = pCoords[1];
-  shape[3] = -pCoords[1];
-  shape[4] = -rm;
-  shape[5] = -pCoords[0];
-  shape[6] = pCoords[0];
-  shape[7] = rm;
+  return m_UnsharedTriList;
 }
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void QuadGeom::findDerivatives(DoubleArrayType::Pointer field, DoubleArrayType::Pointer derivatives, Observable* observable)
+void TetrahedralGeom::setUnsharedFaces(SharedFaceList::Pointer bFaceList)
+{
+  m_UnsharedTriList = bFaceList;
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void TetrahedralGeom::deleteUnsharedFaces()
+{
+  m_UnsharedTriList = SharedTriList::NullPointer();
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void TetrahedralGeom::getParametricCenter(double pCoords[3])
+{
+  pCoords[0] = 0.25;
+  pCoords[1] = 0.25;
+  pCoords[2] = 0.25;
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void TetrahedralGeom::getShapeFunctions(double pCoords[3], double* shape)
+{
+  (void)pCoords;
+
+  // r-derivatives
+  shape[0] = -1.0;
+  shape[1] = 1.0;
+  shape[2] = 0.0;
+  shape[3] = 0.0;
+
+  // s-derivatives
+  shape[4] = -1.0;
+  shape[5] = 0.0;
+  shape[6] = 1.0;
+  shape[7] = 0.0;
+
+  // t-derivatives
+  shape[8] = -1.0;
+  shape[9] = 0.0;
+  shape[10] = 0.0;
+  shape[11] = 1.0;
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void TetrahedralGeom::findDerivatives(DoubleArrayType::Pointer field, DoubleArrayType::Pointer derivatives, Observable* observable)
 {
   m_ProgressCounter = 0;
-  int64_t numQuads = getNumberOfQuads();
+  int64_t numTets = getNumberOfTets();
 
   if (observable)
   {
@@ -473,21 +545,21 @@ void QuadGeom::findDerivatives(DoubleArrayType::Pointer field, DoubleArrayType::
 #ifdef SIMPLib_USE_PARALLEL_ALGORITHMS
   if (doParallel == true)
   {
-    tbb::parallel_for(tbb::blocked_range<int64_t>(0, numQuads),
-                      FindQuadDerivativesImpl(this, field, derivatives), tbb::auto_partitioner());
+    tbb::parallel_for(tbb::blocked_range<int64_t>(0, numTets),
+                      FindTetDerivativesImpl(this, field, derivatives), tbb::auto_partitioner());
   }
   else
 #endif
   {
-    FindQuadDerivativesImpl serial(this, field, derivatives);
-    serial.compute(0, numQuads);
+    FindTetDerivativesImpl serial(this, field, derivatives);
+    serial.compute(0, numTets);
   }
 }
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-int QuadGeom::writeGeometryToHDF5(hid_t parentId, bool SIMPL_NOT_USED(writeXdmf))
+int TetrahedralGeom::writeGeometryToHDF5(hid_t parentId, bool SIMPL_NOT_USED(writeXdmf))
 {
   herr_t err = 0;
 
@@ -509,9 +581,18 @@ int QuadGeom::writeGeometryToHDF5(hid_t parentId, bool SIMPL_NOT_USED(writeXdmf)
     }
   }
 
-  if (m_QuadList.get() != NULL)
+  if (m_TriList.get() != NULL)
   {
-    err = GeometryHelpers::GeomIO::WriteListToHDF5(parentId, m_QuadList);
+    err = GeometryHelpers::GeomIO::WriteListToHDF5(parentId, m_TriList);
+    if (err < 0)
+    {
+      return err;
+    }
+  }
+
+  if (m_TetList.get() != NULL)
+  {
+    err = GeometryHelpers::GeomIO::WriteListToHDF5(parentId, m_TetList);
     if (err < 0)
     {
       return err;
@@ -527,29 +608,38 @@ int QuadGeom::writeGeometryToHDF5(hid_t parentId, bool SIMPL_NOT_USED(writeXdmf)
     }
   }
 
-  if (m_QuadCentroids.get() != NULL)
+  if (m_UnsharedTriList.get() != NULL)
   {
-    err = GeometryHelpers::GeomIO::WriteListToHDF5(parentId, m_QuadCentroids);
+    err = GeometryHelpers::GeomIO::WriteListToHDF5(parentId, m_UnsharedTriList);
     if (err < 0)
     {
       return err;
     }
   }
 
-  if (m_QuadNeighbors.get() != NULL)
+  if (m_TetCentroids.get() != NULL)
   {
-    size_t numQuads = getNumberOfQuads();
-    err = GeometryHelpers::GeomIO::WriteDynamicListToHDF5<uint16_t, int64_t>(parentId, m_QuadNeighbors, numQuads, SIMPL::StringConstants::QuadNeighbors);
+    err = GeometryHelpers::GeomIO::WriteListToHDF5(parentId, m_TetCentroids);
     if (err < 0)
     {
       return err;
     }
   }
 
-  if (m_QuadsContainingVert.get() != NULL)
+  if (m_TetNeighbors.get() != NULL)
+  {
+    size_t numTets = getNumberOfTets();
+    err = GeometryHelpers::GeomIO::WriteDynamicListToHDF5<uint16_t, int64_t>(parentId, m_TetNeighbors, numTets, SIMPL::StringConstants::TetNeighbors);
+    if (err < 0)
+    {
+      return err;
+    }
+  }
+
+  if (m_TetsContainingVert.get() != NULL)
   {
     size_t numVerts = getNumberOfVertices();
-    err = GeometryHelpers::GeomIO::WriteDynamicListToHDF5<uint16_t, int64_t>(parentId, m_QuadsContainingVert, numVerts, SIMPL::StringConstants::QuadsContainingVert);
+    err = GeometryHelpers::GeomIO::WriteDynamicListToHDF5<uint16_t, int64_t>(parentId, m_TetsContainingVert, numVerts, SIMPL::StringConstants::TetsContainingVert);
     if (err < 0)
     {
       return err;
@@ -562,16 +652,17 @@ int QuadGeom::writeGeometryToHDF5(hid_t parentId, bool SIMPL_NOT_USED(writeXdmf)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-int QuadGeom::writeXdmf(QTextStream& out, QString dcName, QString hdfFileName)
+int TetrahedralGeom::writeXdmf(QTextStream& out, QString dcName, QString hdfFileName)
 {
   herr_t err = 0;
 
+  // Always start the grid
   out << "  <!-- *************** START OF " << dcName << " *************** -->" << "\n";
   out << "  <Grid Name=\"" << dcName << "\" GridType=\"Uniform\">" << "\n";
 
-  out << "    <Topology TopologyType=\"Quadrilateral\" NumberOfElements=\"" << getNumberOfQuads() << "\">" << "\n";
-  out << "      <DataItem Format=\"HDF\" NumberType=\"Int\" Dimensions=\"" << getNumberOfQuads() << " 4\">" << "\n";
-  out << "        " << hdfFileName << ":/DataContainers/" << dcName << "/" << SIMPL::Geometry::Geometry << "/" << SIMPL::Geometry::SharedQuadList << "\n";
+  out << "    <Topology TopologyType=\"Tetrahedron\" NumberOfElements=\"" << getNumberOfTets() << "\">" << "\n";
+  out << "      <DataItem Format=\"HDF\" NumberType=\"Int\" Dimensions=\"" << getNumberOfTets() << " 4\">" << "\n";
+  out << "        " << hdfFileName << ":/DataContainers/" << dcName << "/" << SIMPL::Geometry::Geometry << "/" << SIMPL::Geometry::SharedTetList << "\n";
   out << "      </DataItem>" << "\n";
   out << "    </Topology>" << "\n";
 
@@ -600,17 +691,16 @@ int QuadGeom::writeXdmf(QTextStream& out, QString dcName, QString hdfFileName)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-QString QuadGeom::getInfoString(SIMPL::InfoStringFormat format)
+QString TetrahedralGeom::getInfoString(SIMPL::InfoStringFormat format)
 {
   QString info;
   QTextStream ss (&info);
 
-  if (format == SIMPL::HtmlFormat)
+  if(format == SIMPL::HtmlFormat)
   {
-    ss << "<tr bgcolor=\"#D3D8E0\"><th colspan=2>Quad Geometry Info</th></tr>";
-    ss << "<tr bgcolor=\"#C3C8D0\"><th align=\"right\">Number of Quads</th><td>" << getNumberOfQuads() << "</td></tr>";
+    ss << "<tr bgcolor=\"#D3D8E0\"><th colspan=2>Tetrahedral Geometry Info</th></tr>";
+    ss << "<tr bgcolor=\"#C3C8D0\"><th align=\"right\">Number of Tetrahedra</th><td>" << getNumberOfTets() << "</td></tr>";
     ss << "<tr bgcolor=\"#C3C8D0\"><th align=\"right\">Number of Vertices</th><td>" << getNumberOfVertices() << "</td></tr>";
-    ss << "</tbody></table>";
   }
   else
   {
@@ -622,17 +712,27 @@ QString QuadGeom::getInfoString(SIMPL::InfoStringFormat format)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-int QuadGeom::readGeometryFromHDF5(hid_t parentId, bool preflight)
+int TetrahedralGeom::readGeometryFromHDF5(hid_t parentId, bool preflight)
 {
   herr_t err = 0;
   SharedVertexList::Pointer vertices = GeometryHelpers::GeomIO::ReadListFromHDF5<SharedVertexList>(SIMPL::Geometry::SharedVertexList, parentId, preflight, err);
-  SharedQuadList::Pointer quads = GeometryHelpers::GeomIO::ReadListFromHDF5<SharedQuadList>(SIMPL::Geometry::SharedQuadList, parentId, preflight, err);
-  if (quads.get() == NULL || vertices.get() == NULL)
+  SharedTetList::Pointer tets = GeometryHelpers::GeomIO::ReadListFromHDF5<SharedTetList>(SIMPL::Geometry::SharedTetList, parentId, preflight, err);
+  if (tets.get() == NULL || vertices.get() == NULL)
   {
     return -1;
   }
-  size_t numQuads = quads->getNumberOfTuples();
+  size_t numTets = tets->getNumberOfTuples();
   size_t numVerts = vertices->getNumberOfTuples();
+  SharedTriList::Pointer tris = GeometryHelpers::GeomIO::ReadListFromHDF5<SharedTriList>(SIMPL::Geometry::SharedTriList, parentId, preflight, err);
+  if (err < 0 && err != -2)
+  {
+    return -1;
+  }
+  SharedTriList::Pointer bTris = GeometryHelpers::GeomIO::ReadListFromHDF5<SharedTriList>(SIMPL::Geometry::UnsharedFaceList, parentId, preflight, err);
+  if (err < 0 && err != -2)
+  {
+    return -1;
+  }
   SharedEdgeList::Pointer edges = GeometryHelpers::GeomIO::ReadListFromHDF5<SharedEdgeList>(SIMPL::Geometry::SharedEdgeList, parentId, preflight, err);
   if (err < 0 && err != -2)
   {
@@ -643,29 +743,31 @@ int QuadGeom::readGeometryFromHDF5(hid_t parentId, bool preflight)
   {
     return -1;
   }
-  FloatArrayType::Pointer quadCentroids = GeometryHelpers::GeomIO::ReadListFromHDF5<FloatArrayType>(SIMPL::StringConstants::QuadCentroids, parentId, preflight, err);
+  FloatArrayType::Pointer tetCentroids = GeometryHelpers::GeomIO::ReadListFromHDF5<FloatArrayType>(SIMPL::StringConstants::TetCentroids, parentId, preflight, err);
   if (err < 0 && err != -2)
   {
     return -1;
   }
-  ElementDynamicList::Pointer quadNeighbors = GeometryHelpers::GeomIO::ReadDynamicListFromHDF5<uint16_t, int64_t>(SIMPL::StringConstants::QuadNeighbors, parentId, numQuads, preflight, err);
+  ElementDynamicList::Pointer tetNeighbors = GeometryHelpers::GeomIO::ReadDynamicListFromHDF5<uint16_t, int64_t>(SIMPL::StringConstants::TetNeighbors, parentId, numTets, preflight, err);
   if (err < 0 && err != -2)
   {
     return -1;
   }
-  ElementDynamicList::Pointer quadsContainingVert = GeometryHelpers::GeomIO::ReadDynamicListFromHDF5<uint16_t, int64_t>(SIMPL::StringConstants::QuadsContainingVert, parentId, numVerts, preflight, err);
+  ElementDynamicList::Pointer tetsContainingVert = GeometryHelpers::GeomIO::ReadDynamicListFromHDF5<uint16_t, int64_t>(SIMPL::StringConstants::TetsContainingVert, parentId, numVerts, preflight, err);
   if (err < 0 && err != -2)
   {
     return -1;
   }
 
   setVertices(vertices);
+  setTetrahedra(tets);
   setEdges(edges);
   setUnsharedEdges(bEdges);
-  setQuads(quads);
-  setElementCentroids(quadCentroids);
-  setElementNeighbors(quadNeighbors);
-  setElementsContainingVert(quadsContainingVert);
+  setTriangles(tris);
+  setUnsharedFaces(bTris);
+  setElementCentroids(tetCentroids);
+  setElementNeighbors(tetNeighbors);
+  setElementsContainingVert(tetsContainingVert);
 
   return 1;
 }
@@ -673,18 +775,20 @@ int QuadGeom::readGeometryFromHDF5(hid_t parentId, bool preflight)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-IGeometry::Pointer QuadGeom::deepCopy()
+IGeometry::Pointer TetrahedralGeom::deepCopy()
 {
-  QuadGeom::Pointer quadCopy = QuadGeom::CreateGeometry(getQuads(), getVertices(), getName());
+  TetrahedralGeom::Pointer tetCopy = TetrahedralGeom::CreateGeometry(getTetrahedra(), getVertices(), getName());
 
-  quadCopy->setEdges(getEdges());
-  quadCopy->setUnsharedEdges(getUnsharedEdges());
-  quadCopy->setElementsContainingVert(getElementsContainingVert());
-  quadCopy->setElementNeighbors(getElementNeighbors());
-  quadCopy->setElementCentroids(getElementCentroids());
-  quadCopy->setSpatialDimensionality(getSpatialDimensionality());
+  tetCopy->setEdges(getEdges());
+  tetCopy->setUnsharedEdges(getUnsharedEdges());
+  tetCopy->setTriangles(getTriangles());
+  tetCopy->setUnsharedFaces(getUnsharedFaces());
+  tetCopy->setElementsContainingVert(getElementsContainingVert());
+  tetCopy->setElementNeighbors(getElementNeighbors());
+  tetCopy->setElementCentroids(getElementCentroids());
+  tetCopy->setSpatialDimensionality(getSpatialDimensionality());
 
-  return quadCopy;
+  return tetCopy;
 }
 
 // -----------------------------------------------------------------------------
@@ -692,7 +796,8 @@ IGeometry::Pointer QuadGeom::deepCopy()
 // -----------------------------------------------------------------------------
 
 // Shared ops includes
-#define GEOM_CLASS_NAME QuadGeom
+#define GEOM_CLASS_NAME TetrahedralGeom
 #include "SIMPLib/Geometry/SharedVertexOps.cpp"
 #include "SIMPLib/Geometry/SharedEdgeOps.cpp"
-#include "SIMPLib/Geometry/SharedQuadOps.cpp"
+#include "SIMPLib/Geometry/SharedTriOps.cpp"
+#include "SIMPLib/Geometry/SharedTetOps.cpp"

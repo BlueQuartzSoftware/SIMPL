@@ -48,6 +48,7 @@
 class EdgeGeom;
 class TriangleGeom;
 class QuadGeom;
+class TetrahedralGeom;
 
 /**
 * @brief This file contains a namespace with classes for computing derivatives on IGeometry objects
@@ -64,6 +65,11 @@ namespace DerivativeHelpers
    * @brief QuadJacobian
    */
   typedef Eigen::Matrix<double, 2, 2, Eigen::RowMajor> QuadJacobian;
+
+  /**
+   * @brief TetJacobian
+   */
+  typedef Eigen::Matrix<double, 3, 3, Eigen::RowMajor> TetJacobian;
 
   class EdgeDeriv
   {
@@ -96,6 +102,18 @@ namespace DerivativeHelpers
       virtual ~QuadDeriv() {}
 
       void operator()(QuadGeom* quads, int64_t quadId, double values[4], double derivs[3]);
+  };
+
+  /**
+   * @brief The QuadDeriv class
+   */
+  class TetDeriv
+  {
+    public:
+      TetDeriv() {}
+      virtual ~TetDeriv() {}
+
+      void operator()(TetrahedralGeom* tets, int64_t tetId, double values[4], double derivs[3]);
   };
 
 }
