@@ -277,6 +277,8 @@ void MultiDataArraySelectionWidget::setSelectedPath(QString path)
 
   m_SelectedAttributeMatrixPath->setText("");
   m_SelectedAttributeMatrixPath->setToolTip("");
+  attributeArraysSelectWidget->clear();
+  attributeArraysOrderWidget->clear();
 
   DataContainerArray::Pointer dca = getFilter()->getDataContainerArray();
   if(NULL == dca.get()) { return; }
@@ -287,7 +289,26 @@ void MultiDataArraySelectionWidget::setSelectedPath(QString path)
     QString html = attrMat->getInfoString(SIMPL::HtmlFormat);
     m_SelectedAttributeMatrixPath->setToolTip(html);
     m_SelectedAttributeMatrixPath->setText(path);
+    QList<QString> arrayNames = attrMat->getAttributeArrayNames();
+    QVector<DataArrayPath> selectedPaths = getFilter()->property(PROPERTY_NAME_AS_CHAR).value<QVector<DataArrayPath> >();
+    for (int i=0; i<arrayNames.size(); i++)
+    {
+      QString daName = arrayNames[i];
+      QListWidgetItem* daItem = new QListWidgetItem(daName);
+      daItem->setCheckState(Qt::Unchecked);
+
+      for (int i = 0; i < selectedPaths.size(); i++)
+      {
+        if (selectedPaths.at(i).getDataArrayName() == daName)
+        {
+          daItem->setCheckState(Qt::Checked);
+        }
+      }
+      attributeArraysSelectWidget->addItem(daItem);
+    }
   }
+
+  updateSelectAllCheckbox();
 }
 
 // -----------------------------------------------------------------------------
@@ -295,8 +316,6 @@ void MultiDataArraySelectionWidget::setSelectedPath(QString path)
 // -----------------------------------------------------------------------------
 void MultiDataArraySelectionWidget::on_attributeArraysSelectWidget_itemChanged(QListWidgetItem* item)
 {
-  updateSelectAllCheckbox();
-
   if (item->checkState() == Qt::Checked)
   {
     QList<QListWidgetItem*> list = attributeArraysOrderWidget->findItems(item->text(), Qt::MatchExactly);
@@ -315,6 +334,8 @@ void MultiDataArraySelectionWidget::on_attributeArraysSelectWidget_itemChanged(Q
       delete list[i];
     }
   }
+
+  updateSelectAllCheckbox();
 
   m_DidCausePreflight = true;
   emit parametersChanged();
@@ -371,9 +392,11 @@ void MultiDataArraySelectionWidget::beforePreflight()
     return;
   }
 
-  DataArrayPath path = getFilter()->property(PROPERTY_NAME_AS_CHAR).value<DataArrayPath>();
+  QVector<DataArrayPath> paths = getFilter()->property(PROPERTY_NAME_AS_CHAR).value<QVector<DataArrayPath> >();
 
-  setSelectedPath(path.serialize(Detail::Delimiter));
+  DataArrayPath amPath = DataArrayPath::GetAttributeMatrixPath(paths);
+
+  setSelectedPath(amPath.serialize(Detail::Delimiter));
   createSelectionMenu();
   updateSelectAllCheckbox();
 }
@@ -491,25 +514,23 @@ void MultiDataArraySelectionWidget::updateSelectAllCheckbox()
     selectCheckBox->setDisabled(false);
     selectCheckBox->blockSignals(false);
   }
-  else if (checkedStateExists == true && uncheckedStateExists == true)
+
+  if (checkedStateExists == true && uncheckedStateExists == true)
   {
     selectCheckBox->blockSignals(true);
     selectCheckBox->setCheckState(Qt::PartiallyChecked);
-    m_SelectedAttributeMatrixPath->setDisabled(true);
     selectCheckBox->blockSignals(false);
   }
   else if (checkedStateCount == attributeArraysSelectWidget->count())
   {
     selectCheckBox->blockSignals(true);
     selectCheckBox->setCheckState(Qt::Checked);
-    m_SelectedAttributeMatrixPath->setDisabled(true);
     selectCheckBox->blockSignals(false);
   }
   else
   {
     selectCheckBox->blockSignals(true);
     selectCheckBox->setCheckState(Qt::Unchecked);
-    m_SelectedAttributeMatrixPath->setEnabled(true);
     selectCheckBox->blockSignals(false);
   }
 }
