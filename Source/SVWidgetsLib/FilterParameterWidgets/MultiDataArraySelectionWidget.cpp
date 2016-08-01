@@ -34,11 +34,13 @@
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 #include "MultiDataArraySelectionWidget.h"
 
+#include <QtCore/QSignalMapper>
 #include <QtCore/QMetaProperty>
 #include <QtCore/QList>
 
 #include <QtGui/QStandardItemModel>
 
+#include <QtWidgets/QMenu>
 #include <QtWidgets/QListWidgetItem>
 
 #include "SIMPLib/Common/AbstractFilter.h"
@@ -52,6 +54,11 @@
 
 // Include the MOC generated file for this class
 #include "moc_MultiDataArraySelectionWidget.cpp"
+
+namespace Detail
+{
+  const QString Delimiter(" / ");
+}
 
 // -----------------------------------------------------------------------------
 //
@@ -114,20 +121,9 @@ void MultiDataArraySelectionWidget::setupGui()
   // Generate the text for the QLabel
   label->setText(getFilterParameter()->getHumanLabel());
 
-  // Block Signals from the ComboBoxes while we clear them
-  dataContainerCombo->blockSignals(true);
-  attributeMatrixCombo->blockSignals(true);
-  attributeArraysSelectWidget->blockSignals(true);
-
-  dataContainerCombo->clear();
-  attributeMatrixCombo->clear();
-  attributeArraysSelectWidget->clear();
-
-  dataContainerCombo->blockSignals(false);
-  attributeMatrixCombo->blockSignals(false);
-  attributeArraysSelectWidget->blockSignals(false);
-
-  populateComboBoxes();
+  m_MenuMapper = new QSignalMapper(this);
+  connect(m_MenuMapper, SIGNAL(mapped(QString)),
+            this, SLOT(attributeMatrixSelected(QString)));
 
   // Lastly, hook up the filter's signals and slots to our own signals and slots
   // Catch when the filter is about to execute the preflight
@@ -142,121 +138,6 @@ void MultiDataArraySelectionWidget::setupGui()
   connect(getFilter(), SIGNAL(updateFilterParameters(AbstractFilter*)),
           this, SLOT(filterNeedsInputParameters(AbstractFilter*)));
 
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-void MultiDataArraySelectionWidget::populateComboBoxes()
-{
-  // Now get the DataContainerArray from the Filter instance
-  // We are going to use this to get all the current DataContainers
-  DataContainerArray::Pointer dca = getFilter()->getDataContainerArray();
-  if (NULL == dca.get()) { return; }
-
-  // Check to see if we have any DataContainers to actually populate drop downs with.
-  if (dca->getDataContainers().size() == 0)
-  {
-    dataContainerCombo->clear();
-    attributeMatrixCombo->clear();
-    return;
-  }
-
-  attributeArraysOrderWidget->clear();
-
-  // Grab what is currently selected
-  QString curDcName = dataContainerCombo->currentText();
-  QString curAmName = attributeMatrixCombo->currentText();
-
-  // Cache the DataContainerArray Structure for our use during all the selections
-  m_DcaProxy = DataContainerArrayProxy(dca.get());
-
-  // Populate the DataContainer ComboBox
-  FilterParameterWidgetUtils::PopulateDataContainerComboBox<MultiDataArraySelectionFilterParameter>(getFilter(), getFilterParameter(), dataContainerCombo, m_DcaProxy);
-
-
-  // Get what is in the filter
-  QVector<DataArrayPath> selectedPaths = getFilter()->property(PROPERTY_NAME_AS_CHAR).value<QVector<DataArrayPath> >();
-  QString filtDcName = "";
-  QString filtAmName = "";
-
-  if (DataArrayPath::ValidateVector(selectedPaths) == false)
-  {
-    // Throw an error?  The Data Containers and Attribute Matrices are not the same
-  }
-
-  if (selectedPaths.isEmpty() == false)
-  {
-    filtDcName = selectedPaths.first().getDataContainerName();
-    filtAmName = selectedPaths.first().getAttributeMatrixName();
-  }
-
-  QString dcName = "";
-  QString amName = "";
-
-  // If EVERYTHING is empty, then try the default value
-  if (filtDcName.isEmpty() && filtAmName.isEmpty() && curDcName.isEmpty() && curAmName.isEmpty())
-  {
-    QVector<DataArrayPath> daPaths = dynamic_cast<MultiDataArraySelectionFilterParameter*>(getFilterParameter())->getDefaultPaths();
-    selectedPaths = daPaths;
-
-    if (daPaths.isEmpty() == false)
-    {
-      dcName = daPaths.first().getDataContainerName();
-      amName = daPaths.first().getAttributeMatrixName();
-    }
-  }
-  else
-  {
-    // Now to figure out which one of these to use. If this is the first time through then what we picked up from the
-    // gui will be empty strings because nothing is there. If there is something in the filter then we should use that.
-    // If there is something in both of them and they are NOT equal then we have a problem. Use the flag m_DidCausePreflight
-    // to determine if the change from the GUI should over ride the filter or vice versa. there is a potential that in future
-    // versions that something else is driving SIMPLView and pushing the changes to the filter and we need to reflect those
-    // changes in the GUI, like a testing script?
-
-    dcName = checkStringValues(curDcName, filtDcName);
-    amName = checkStringValues(curAmName, filtAmName);
-  }
-
-  bool didBlock = false;
-
-  if (!dataContainerCombo->signalsBlocked()) { didBlock = true; }
-  dataContainerCombo->blockSignals(true);
-
-  int dcIndex = dataContainerCombo->findText(dcName);
-  dataContainerCombo->setCurrentIndex(dcIndex);
-
-  FilterParameterWidgetUtils::PopulateAttributeMatrixComboBox<MultiDataArraySelectionFilterParameter>(getFilter(), getFilterParameter(), dataContainerCombo, attributeMatrixCombo, m_DcaProxy);
-
-  if (didBlock) { dataContainerCombo->blockSignals(false); didBlock = false; }
-
-  if (!attributeMatrixCombo->signalsBlocked()) { didBlock = true; }
-  attributeMatrixCombo->blockSignals(true);
-
-  if (dcIndex < 0)
-  {
-    attributeMatrixCombo->setCurrentIndex(-1);
-    attributeArraysSelectWidget->clear();
-  }
-  else
-  {
-    int amIndex = attributeMatrixCombo->findText(amName);
-    attributeMatrixCombo->setCurrentIndex(amIndex);
-    FilterParameterWidgetUtils::PopulateAttributeArrayList<MultiDataArraySelectionFilterParameter, QListWidget>
-            (getFilter(), getFilterParameter(), dataContainerCombo, attributeMatrixCombo, attributeArraysSelectWidget, m_DcaProxy, selectedPaths);
-    for (int i = 0; i < selectedPaths.size(); i++)
-    {
-      DataArrayPath dap = selectedPaths[i];
-      QListWidgetItem* item = new QListWidgetItem(dap.getDataArrayName());
-      attributeArraysOrderWidget->addItem(item);
-    }
-
-  }
-
-  if(didBlock) { attributeMatrixCombo->blockSignals(false); didBlock = false; }
-
-  updateSelectAllCheckbox();
 }
 
 // -----------------------------------------------------------------------------
@@ -284,31 +165,129 @@ QString MultiDataArraySelectionWidget::checkStringValues(QString curDcName, QStr
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void MultiDataArraySelectionWidget::on_dataContainerCombo_currentIndexChanged(int index)
+void MultiDataArraySelectionWidget::createSelectionMenu()
 {
-  FilterParameterWidgetUtils::PopulateAttributeMatrixComboBox<MultiDataArraySelectionFilterParameter>(getFilter(), getFilterParameter(), dataContainerCombo, attributeMatrixCombo, m_DcaProxy);
+  // Now get the DataContainerArray from the Filter instance
+  // We are going to use this to get all the current DataContainers
+  DataContainerArray::Pointer dca = getFilter()->getDataContainerArray();
+  if(NULL == dca.get()) { return; }
 
-  // Do not select an attribute matrix from the list
-  on_attributeMatrixCombo_currentIndexChanged(-1);
+  // Get the menu and clear it out
+  QMenu* menu = m_SelectedAttributeMatrixPath->menu();
+  if(!menu)
+  {
+    menu = new QMenu();
+    m_SelectedAttributeMatrixPath->setMenu(menu);
+    menu->installEventFilter(this);
+  }
+  if(menu) {
+    menu->clear();
+  }
+
+  // Get the DataContainerArray object
+  // Loop over the data containers until we find the proper data container
+  QList<DataContainer::Pointer> containers = dca->getDataContainers();
+  QVector<unsigned int> amTypes = m_FilterParameter->getDefaultAttributeMatrixTypes();
+  QVector<unsigned int> geomTypes = m_FilterParameter->getDefaultGeometryTypes();
+
+
+
+  QListIterator<DataContainer::Pointer> containerIter(containers);
+  while(containerIter.hasNext())
+  {
+    DataContainer::Pointer dc = containerIter.next();
+
+    IGeometry::Pointer geom = IGeometry::NullPointer();
+    uint32_t geomType = 999;
+    if (NULL != dc.get()) { geom = dc->getGeometry(); }
+    if (NULL != geom.get()) { geomType = geom->getGeometryType(); }
+
+
+    QMenu* dcMenu = new QMenu(dc->getName());
+    dcMenu->setDisabled(false);
+    menu->addMenu(dcMenu);
+    if(geomTypes.isEmpty() == false && geomTypes.contains(geomType) == false )
+    {
+      dcMenu->setDisabled(true);
+    }
+
+
+    // We found the proper Data Container, now populate the AttributeMatrix List
+    DataContainer::AttributeMatrixMap_t attrMats = dc->getAttributeMatrices();
+    QMapIterator<QString, AttributeMatrix::Pointer> attrMatsIter(attrMats);
+    while(attrMatsIter.hasNext() )
+    {
+      attrMatsIter.next();
+      QString amName = attrMatsIter.key();
+      AttributeMatrix::Pointer am = attrMatsIter.value();
+
+      QAction* action = new QAction(amName, dcMenu);
+      DataArrayPath daPath(dc->getName(), amName, "");
+      QString path = daPath.serialize(Detail::Delimiter);
+      action->setData(path);
+
+      connect(action, SIGNAL(triggered(bool)), m_MenuMapper, SLOT(map()));
+      m_MenuMapper->setMapping(action, path);
+      dcMenu->addAction(action);
+
+      bool amIsNotNull = (nullptr != am.get()) ? true : false;
+      bool amValidType = (amTypes.isEmpty() == false && amTypes.contains(am->getType()) == false) ? true : false;
+
+      if (amIsNotNull && amValidType)
+      {
+        action->setDisabled(true);
+      }
+    }
+  }
 }
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void MultiDataArraySelectionWidget::on_attributeMatrixCombo_currentIndexChanged(int index)
+bool MultiDataArraySelectionWidget::eventFilter(QObject* obj, QEvent* event)
 {
-  attributeArraysOrderWidget->clear();
+  if (event->type() == QEvent::Show && obj == m_SelectedAttributeMatrixPath->menu())
+  {
+    QPoint pos = adjustedMenuPosition(m_SelectedAttributeMatrixPath);
+    m_SelectedAttributeMatrixPath->menu()->move(pos);
+    return true;
+  }
+  return false;
+}
 
-  QVector<DataArrayPath> selectedPaths = getFilter()->property(PROPERTY_NAME_AS_CHAR).value<QVector<DataArrayPath> >();
-
-  FilterParameterWidgetUtils::PopulateAttributeArrayList<MultiDataArraySelectionFilterParameter, QListWidget>
-          (getFilter(), getFilterParameter(), dataContainerCombo, attributeMatrixCombo, attributeArraysSelectWidget, m_DcaProxy, selectedPaths);
-
-  updateSelectAllCheckbox();
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void MultiDataArraySelectionWidget::attributeMatrixSelected(QString path)
+{
+  setSelectedPath(path);
 
   m_DidCausePreflight = true;
   emit parametersChanged();
   m_DidCausePreflight = false;
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void MultiDataArraySelectionWidget::setSelectedPath(QString path)
+{
+  DataArrayPath amPath = DataArrayPath::Deserialize(path, Detail::Delimiter);
+  if (amPath.isEmpty()) { return; }
+
+  m_SelectedAttributeMatrixPath->setText("");
+  m_SelectedAttributeMatrixPath->setToolTip("");
+
+  DataContainerArray::Pointer dca = getFilter()->getDataContainerArray();
+  if(NULL == dca.get()) { return; }
+
+  int err = 0;
+  AttributeMatrix::Pointer attrMat = dca->getPrereqAttributeMatrixFromPath(getFilter(), amPath, err);
+  if(nullptr != attrMat.get()) {
+    QString html = attrMat->getInfoString(SIMPL::HtmlFormat);
+    m_SelectedAttributeMatrixPath->setToolTip(html);
+    m_SelectedAttributeMatrixPath->setText(path);
+  }
 }
 
 // -----------------------------------------------------------------------------
@@ -392,14 +371,11 @@ void MultiDataArraySelectionWidget::beforePreflight()
     return;
   }
 
-  dataContainerCombo->blockSignals(true);
-  attributeMatrixCombo->blockSignals(true);
-  attributeArraysSelectWidget->blockSignals(true);
-  // Reset all the combo box widgets to have the default selection of the first index in the list
-  populateComboBoxes();
-  dataContainerCombo->blockSignals(false);
-  attributeMatrixCombo->blockSignals(false);
-  attributeArraysSelectWidget->blockSignals(false);
+  DataArrayPath path = getFilter()->property(PROPERTY_NAME_AS_CHAR).value<DataArrayPath>();
+
+  setSelectedPath(path.serialize(Detail::Delimiter));
+  createSelectionMenu();
+  updateSelectAllCheckbox();
 }
 
 // -----------------------------------------------------------------------------
@@ -413,47 +389,15 @@ void MultiDataArraySelectionWidget::afterPreflight()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-DataContainerArrayProxy MultiDataArraySelectionWidget::generateDCAProxy()
-{
-  DataContainerArrayProxy dcaProxy;
-  QString dcaName = dataContainerCombo->currentText();
-  DataContainerProxy dcProxy(dcaName, true);
-
-  QString amName = attributeMatrixCombo->currentText();
-  AttributeMatrixProxy amProxy(amName, true);
-
-  for (int i = 0; i < attributeArraysSelectWidget->count(); i++)
-  {
-    QListWidgetItem* item = attributeArraysSelectWidget->item(i);
-    QString daName = item->text();
-
-    bool checkState;
-    if (item->checkState() == Qt::Checked)
-    {
-      checkState = true;
-    }
-    else
-    {
-      checkState = false;
-    }
-    DataArrayProxy daProxy(dcaName + "|" + amName, daName, checkState);
-    amProxy.dataArrays.insert(daName, daProxy);
-    dcProxy.attributeMatricies.insert(amName, amProxy);
-    dcaProxy.dataContainers.insert(dcProxy.name, dcProxy);
-  }
-
-  return dcaProxy;
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
 void MultiDataArraySelectionWidget::filterNeedsInputParameters(AbstractFilter* filter)
 {
+  DataArrayPath amPath = DataArrayPath::Deserialize(m_SelectedAttributeMatrixPath->text(), Detail::Delimiter);
+
   QVector<DataArrayPath> selectedPaths;
   for (int i = 0; i < attributeArraysOrderWidget->count(); i++)
   {
-    DataArrayPath path(dataContainerCombo->currentText(), attributeMatrixCombo->currentText(), attributeArraysOrderWidget->item(i)->text());
+    DataArrayPath path = amPath;
+    path.setDataArrayName(attributeArraysOrderWidget->item(i)->text());
     selectedPaths.push_back(path);
   }
 
@@ -551,24 +495,21 @@ void MultiDataArraySelectionWidget::updateSelectAllCheckbox()
   {
     selectCheckBox->blockSignals(true);
     selectCheckBox->setCheckState(Qt::PartiallyChecked);
-    dataContainerCombo->setDisabled(true);
-    attributeMatrixCombo->setDisabled(true);
+    m_SelectedAttributeMatrixPath->setDisabled(true);
     selectCheckBox->blockSignals(false);
   }
   else if (checkedStateCount == attributeArraysSelectWidget->count())
   {
     selectCheckBox->blockSignals(true);
     selectCheckBox->setCheckState(Qt::Checked);
-    dataContainerCombo->setDisabled(true);
-    attributeMatrixCombo->setDisabled(true);
+    m_SelectedAttributeMatrixPath->setDisabled(true);
     selectCheckBox->blockSignals(false);
   }
   else
   {
     selectCheckBox->blockSignals(true);
     selectCheckBox->setCheckState(Qt::Unchecked);
-    dataContainerCombo->setEnabled(true);
-    attributeMatrixCombo->setEnabled(true);
+    m_SelectedAttributeMatrixPath->setEnabled(true);
     selectCheckBox->blockSignals(false);
   }
 }
