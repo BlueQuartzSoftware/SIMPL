@@ -48,6 +48,7 @@
 #include "SIMPLib/Geometry/EdgeGeom.h"
 #include "SIMPLib/Geometry/TriangleGeom.h"
 #include "SIMPLib/Geometry/QuadGeom.h"
+#include "SIMPLib/Geometry/TetrahedralGeom.h"
 
 // -----------------------------------------------------------------------------
 //
@@ -561,6 +562,25 @@ int DataContainer::writeXdmf(QTextStream& out, QString hdfFileName)
           default:
             break;
         }
+      case SIMPL::GeometryType::TetrahedralGeometry:
+        switch(amType)
+        {
+          //FIXME: There are more AttributeMatrix Types that should be implemented
+          case SIMPL::AttributeMatrixType::Vertex:
+            xdmfCenter = SIMPL::XdmfCenterType::Node;
+            break;
+          case SIMPL::AttributeMatrixType::Edge:
+            xdmfCenter = SIMPL::XdmfCenterType::Cell;
+            break;
+          case SIMPL::AttributeMatrixType::Face:
+            xdmfCenter = SIMPL::XdmfCenterType::Cell;
+            break;
+          case SIMPL::AttributeMatrixType::Cell:
+            xdmfCenter = SIMPL::XdmfCenterType::Cell;
+            break;
+          default:
+            break;
+        }
       case SIMPL::GeometryType::ImageGeometry:
         switch(amType)
         {
@@ -669,6 +689,13 @@ int DataContainer::readMeshDataFromHDF5(hid_t dcGid, bool preflight)
       err = quads->readGeometryFromHDF5(geometryId, preflight);
       err = GeometryHelpers::GeomIO::ReadMetaDataFromHDF5(dcGid, quads);
       setGeometry(quads);
+    }
+    else if (geometryTypeName.compare(SIMPL::Geometry::TetrahedralGeometry) == 0)
+    {
+      TetrahedralGeom::Pointer tets = TetrahedralGeom::New();
+      err = tets->readGeometryFromHDF5(geometryId, preflight);
+      err = GeometryHelpers::GeomIO::ReadMetaDataFromHDF5(dcGid, tets);
+      setGeometry(tets);
     }
     else if (geometryTypeName.compare(SIMPL::Geometry::UnknownGeometry) == 0)
     {

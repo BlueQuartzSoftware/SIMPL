@@ -289,10 +289,7 @@ void MultiDataArraySelectionWidget::on_dataContainerCombo_currentIndexChanged(in
   FilterParameterWidgetUtils::PopulateAttributeMatrixComboBox<MultiDataArraySelectionFilterParameter>(getFilter(), getFilterParameter(), dataContainerCombo, attributeMatrixCombo, m_DcaProxy);
 
   // Do not select an attribute matrix from the list
-  if (attributeMatrixCombo->count() > 0)
-  {
-    attributeMatrixCombo->setCurrentIndex(-1);
-  }
+  on_attributeMatrixCombo_currentIndexChanged(-1);
 }
 
 // -----------------------------------------------------------------------------
@@ -300,6 +297,8 @@ void MultiDataArraySelectionWidget::on_dataContainerCombo_currentIndexChanged(in
 // -----------------------------------------------------------------------------
 void MultiDataArraySelectionWidget::on_attributeMatrixCombo_currentIndexChanged(int index)
 {
+  attributeArraysOrderWidget->clear();
+
   QVector<DataArrayPath> selectedPaths = getFilter()->property(PROPERTY_NAME_AS_CHAR).value<QVector<DataArrayPath> >();
 
   FilterParameterWidgetUtils::PopulateAttributeArrayList<MultiDataArraySelectionFilterParameter, QListWidget>

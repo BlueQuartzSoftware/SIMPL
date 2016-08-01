@@ -37,6 +37,9 @@
 #ifndef _filterparameter_h_
 #define _filterparameter_h_
 
+#include <functional>
+
+
 #include <QtCore/QVector>
 #include <QtCore/QVariant>
 #include <QtCore/QString>

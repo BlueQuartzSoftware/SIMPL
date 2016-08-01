@@ -53,8 +53,190 @@ class SIMPLib_EXPORT IGeometry3D : public IGeometry
     IGeometry3D();
     virtual ~IGeometry3D();
 
-  private:
+// -----------------------------------------------------------------------------
+// Inherited from SharedVertexOps
+// -----------------------------------------------------------------------------
 
+    /**
+     * @brief resizeVertexList
+     * @param newNumVertices
+     */
+    virtual void resizeVertexList(int64_t newNumVertices) = 0;
+
+    /**
+     * @brief setVertices
+     * @param vertices
+     */
+    virtual void setVertices(SharedVertexList::Pointer vertices) = 0;
+
+    /**
+     * @brief getVertices
+     * @return
+     */
+    virtual SharedVertexList::Pointer getVertices() = 0;
+
+    /**
+     * @brief setCoords
+     * @param vertId
+     * @param coords
+     */
+    virtual void setCoords(int64_t vertId, float coords[3]) = 0;
+
+    /**
+     * @brief getCoords
+     * @param vertId
+     * @param coords
+     */
+    virtual void getCoords(int64_t vertId, float coords[3]) = 0;
+
+    /**
+     * @brief getVertexPointer
+     * @param i
+     * @return
+     */
+    virtual float* getVertexPointer(int64_t i) = 0;
+
+    /**
+     * @brief getNumberOfVertices
+     * @return
+     */
+    virtual int64_t getNumberOfVertices() = 0;
+
+// -----------------------------------------------------------------------------
+// Inherited from SharedEdgeOps
+// -----------------------------------------------------------------------------
+
+    /**
+     * @brief resizeEdgeList
+     * @param newNumEdges
+     */
+    virtual void resizeEdgeList(int64_t newNumEdges) = 0;
+
+    /**
+     * @brief getEdges
+     * @return
+     */
+    virtual SharedEdgeList::Pointer getEdges() = 0;
+
+    /**
+     * @brief setVerts
+     * @param edgeId
+     * @param verts
+     */
+    virtual void setVertsAtEdge(int64_t edgeId, int64_t verts[2]) = 0;
+
+    /**
+     * @brief getVerts
+     * @param edgeId
+     * @param verts
+     */
+    virtual void getVertsAtEdge(int64_t edgeId, int64_t verts[2]) = 0;
+
+    /**
+     * @brief getVertCoordsAtEdge
+     * @param edgeId
+     * @param vert1
+     * @param vert2
+     */
+    virtual void getVertCoordsAtEdge(int64_t edgeId, float vert1[3], float vert2[3]) = 0;
+
+    /**
+     * @brief getEdgePointer
+     * @param i
+     * @return
+     */
+    virtual int64_t* getEdgePointer(int64_t i) = 0;
+
+    /**
+     * @brief getNumberOfEdges
+     * @return
+     */
+    virtual int64_t getNumberOfEdges() = 0;
+
+
+// -----------------------------------------------------------------------------
+// Connectivity
+// -----------------------------------------------------------------------------
+
+    /**
+     * @brief findElementEdges
+     * @return
+     */
+    virtual int findEdges() = 0;
+
+    /**
+     * @brief deleteElementEdges
+     */
+    virtual void deleteEdges() = 0;
+
+    /**
+     * @brief findFaces
+     * @return
+     */
+    virtual int findFaces() = 0;
+
+    /**
+     * @brief deleteFaces
+     */
+    virtual void deleteFaces() = 0;
+
+// -----------------------------------------------------------------------------
+// Topology
+// -----------------------------------------------------------------------------
+
+    /**
+     * @brief findUnsharedEdges
+     */
+    virtual int findUnsharedEdges() = 0;
+
+    /**
+     * @brief getUnsharedEdges
+     * @return
+     */
+    virtual SharedEdgeList::Pointer getUnsharedEdges() = 0;
+
+    /**
+     * @brief deleteUnsharedEdges
+     */
+    virtual void deleteUnsharedEdges() = 0;
+
+    /**
+     * @brief findUnsharedFaces
+     */
+    virtual int findUnsharedFaces() = 0;
+
+    /**
+     * @brief getUnsharedFaces
+     * @return
+     */
+    virtual SharedEdgeList::Pointer getUnsharedFaces() = 0;
+
+    /**
+     * @brief deleteUnsharedFaces
+     */
+    virtual void deleteUnsharedFaces() = 0;
+
+  protected:
+
+    /**
+     * @brief setEdges
+     * @param edges
+     */
+    virtual void setEdges(SharedEdgeList::Pointer edges) = 0;
+
+    /**
+     * @brief setUnsharedEdges
+     * @param bEdgeList
+     */
+    virtual void setUnsharedEdges(SharedEdgeList::Pointer bEdgeList) = 0;
+
+    /**
+     * @brief setUnsharedFaces
+     * @param bFaceList
+     */
+    virtual void setUnsharedFaces(SharedFaceList::Pointer bFaceList) = 0;
+
+  private:
     IGeometry3D(const IGeometry3D&); // Copy Constructor Not Implemented
     void operator=(const IGeometry3D&); // Operator '=' Not Implemented
 };

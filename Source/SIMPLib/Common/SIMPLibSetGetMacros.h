@@ -246,6 +246,33 @@
     return SafeObjectDownCast<superclass*, thisClass*>(s);\
   }
 
+#define SIMPL_TYPE_MACRO_SUPER_OVERRIDE(thisClass,superclass) \
+  public: \
+  virtual const QString getNameOfClass() override {return QString(#thisClass);}\
+  static QString ClassName() {return QString(#thisClass);}\
+  static int IsTypeOf(const char *type) \
+  { \
+    if ( !strcmp(#thisClass,type) ) \
+    { \
+      return 1; \
+    } \
+    return superclass::IsTypeOf(type); \
+  } \
+  virtual int IsA(const char *type) override \
+  { \
+    return this->thisClass::IsTypeOf(type); \
+  } \
+  template <class Source, class Target>\
+  static Target SafeObjectDownCast(Source x) { \
+    if( dynamic_cast<Target>(x) != x ) { \
+      return NULL;\
+    }\
+    return static_cast<Target>(x);\
+  }\
+  static thisClass* SafePointerDownCast(superclass* s) {\
+    return SafeObjectDownCast<superclass*, thisClass*>(s);\
+  }
+
 
 
 #define SIMPL_CLASS_VERSION(vers)\

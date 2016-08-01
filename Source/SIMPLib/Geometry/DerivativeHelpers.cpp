@@ -44,6 +44,8 @@
  *   - re-implemented vtkTriangle::Derivatives to TriangleDeriv::operator()
  * * vtkQuad.cxx
  *   - re-implemented vtkQuad::Derivatives to QuadDeriv::operator()
+ * * vtkTetra.cxx
+ *   - re-implemented vtkTetra::Derivatives to TetDeriv::operator()
  * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
 #include "DerivativeHelpers.h"
@@ -54,6 +56,7 @@
 #include "EdgeGeom.h"
 #include "TriangleGeom.h"
 #include "QuadGeom.h"
+#include "TetrahedralGeom.h"
 
 // -----------------------------------------------------------------------------
 //
@@ -219,12 +222,12 @@ void DerivativeHelpers::QuadDeriv::operator()(QuadGeom* quads, int64_t quadId, d
   double mag_basis1 = 0.0;
   double mag_basis2 = 0.0;
   double normal[3] = { 0.0, 0.0, 0.0 };
-  double shapeFunctions[8] = { 0.0, 0.0, 0.0, 0.0, 0.0, 0.0 };
+  double shapeFunctions[8] = { 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0 };
   double pCoords[3] { 0.0, 0.0, 0.0 };
   double sum[2] = { 0.0, 0.0 };
   double dBydx = 0.0;
   double dBydy = 0.0;
-  int64_t verts[4] = { 0, 0, 0 };
+  int64_t verts[4] = { 0, 0, 0, 0 };
 
   quads->getVertsAtQuad(quadId, verts);
   quads->getCoords(verts[0], vert0_f);
@@ -303,7 +306,7 @@ void DerivativeHelpers::QuadDeriv::operator()(QuadGeom* quads, int64_t quadId, d
 
   jMat.computeInverseWithCheck(jMatI, invertible);
 
-  // Jacobian is non-constant for a quad, so must check if must exists
+  // Jacobian is non-constant for a quad, so must check if inverse exists
   // If the Jacobian is not invertible, set derivatives to 0
   if (!invertible)
   {
@@ -327,4 +330,66 @@ void DerivativeHelpers::QuadDeriv::operator()(QuadGeom* quads, int64_t quadId, d
   derivs[0] = dBydx * basis1[0] + dBydy * basis2[0];
   derivs[1] = dBydx * basis1[1] + dBydy * basis2[1];
   derivs[2] = dBydx * basis1[2] + dBydy * basis2[2];
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void DerivativeHelpers::TetDeriv::operator()(TetrahedralGeom* tets, int64_t tetId, double values[4], double derivs[3])
+{
+  double shapeFunctions[12] = { 0.0, 0.0, 0.0, 0.0, 0.0, 0.0,
+                                0.0, 0.0, 0.0, 0.0, 0.0, 0.0};
+  int64_t verts[4] = { 0, 0, 0, 0 };
+  double sum[3] = { 0.0, 0.0, 0.0 };
+
+  tets->getShapeFunctions(NULL, shapeFunctions);
+
+  // Compute 3x3 Jacobian from vertex coordinates and tet shape functions,
+  // then find the inverse Jacobian using Eigen
+  double jPtr[9] = { 0.0, 0.0, 0.0,
+                     0.0, 0.0, 0.0,
+                     0.0, 0.0, 0.0, };
+
+  tets->getVertsAtTet(tetId, verts);
+
+  for (size_t i = 0; i < 4; i++)
+  {
+    float tmpCoords_f[3] = { 0.0, 0.0, 0.0 };
+    double tmpCoords[3] = { 0.0, 0.0, 0.0 };
+    tets->getCoords(verts[i], tmpCoords_f);
+    std::copy(tmpCoords_f, tmpCoords_f + 3, tmpCoords);
+    for (size_t j = 0; j < 3; j++)
+    {
+      jPtr[j] += tmpCoords[j] * shapeFunctions[i];
+      jPtr[j + 3] += tmpCoords[j] * shapeFunctions[4 + i];
+      jPtr[j + 6] += tmpCoords[j] * shapeFunctions[8 + i];
+    }
+  }
+
+  Eigen::Map<TetJacobian> jMat(jPtr);
+  TetJacobian jMatI;
+  bool invertible = false;
+
+  jMat.computeInverseWithCheck(jMatI, invertible);
+
+  // Jacobian is non-constant for a tet, so must check if inverse exists
+  // If the Jacobian is not invertible, set derivatives to 0
+  if (!invertible)
+  {
+    for (size_t i = 0; i < 3; i++ )
+    {
+      derivs[i] = 0.0;
+    }
+  }
+
+  for (size_t i = 0; i < 4; i++)
+  {
+    sum[0] += shapeFunctions[i] * values[i];
+    sum[1] += shapeFunctions[4 + i] * values[i];
+    sum[2] += shapeFunctions[8 + i] * values[i];
+  }
+
+  derivs[0] = sum[0] * jMatI(0, 0) + sum[1] * jMatI(0, 1) + sum[2] * jMatI(0, 2);
+  derivs[1] = sum[0] * jMatI(1, 0) + sum[1] * jMatI(1, 1) + sum[2] * jMatI(1, 2);
+  derivs[2] = sum[0] * jMatI(2, 0) + sum[1] * jMatI(2, 1) + sum[2] * jMatI(2, 2);
 }
