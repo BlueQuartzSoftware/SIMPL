@@ -168,37 +168,47 @@ void FilterParameterWidget::setupGui()
 // -----------------------------------------------------------------------------
 QPoint FilterParameterWidget::adjustedMenuPosition(QPushButton* pushButton)
 {
-  QRect rect = pushButton->geometry();
-  rect.setRect(rect.x() - pushButton->x(), rect.y() - pushButton->y(), rect.width(), rect.height());
+//  QRect rect = pushButton->geometry();
+//  rect.setRect(rect.x() - pushButton->x(), rect.y() - pushButton->y(), rect.width(), rect.height());
+
+//  QSize menuSize = pushButton->menu()->sizeHint();
+//  QPoint globalPos = mapToGlobal(rect.topLeft());
+//  int x = globalPos.x();
+//  int y = globalPos.y();
+
+//  // We want the menu to pop up underneath the mouse, in the middle.
+//  x = QCursor::pos().x() - menuSize.width() / 2;
+
+//  // If the menu is going to go off the screen, reposition it until it's completely on the screen
+//  while (x + menuSize.width() > QApplication::desktop()->availableGeometry(this).width())
+//  {
+//    x--;
+//  }
+
+//  if (globalPos.y() + rect.height() + menuSize.height() <= QApplication::desktop()->availableGeometry(this).height())
+//  {
+//    y += rect.height();
+//  }
+//  else
+//  {
+//    y -= menuSize.height();
+//  }
+//  if (pushButton->layoutDirection() == Qt::RightToLeft)
+//  {
+//    x += rect.width() - menuSize.width();
+//  }
 
   QSize menuSize = pushButton->menu()->sizeHint();
-  QPoint globalPos = mapToGlobal(rect.topLeft());
-  int x = globalPos.x();
-  int y = globalPos.y();
-
-  // We want the menu to pop up underneath the mouse, in the middle.
-  x = QCursor::pos().x() - menuSize.width() / 2;
+  QPoint point = QCursor::pos();
+  point.setX(QCursor::pos().x() - menuSize.width() / 2);
 
   // If the menu is going to go off the screen, reposition it until it's completely on the screen
-  while (x + menuSize.width() > QApplication::desktop()->availableGeometry(this).width())
+  while (point.x() + menuSize.width() > QApplication::desktop()->availableGeometry(this).width())
   {
-    x--;
+    point.setX(point.x() - 1);
   }
 
-  if (globalPos.y() + rect.height() + menuSize.height() <= QApplication::desktop()->availableGeometry(this).height())
-  {
-    y += rect.height();
-  }
-  else
-  {
-    y -= menuSize.height();
-  }
-  if (pushButton->layoutDirection() == Qt::RightToLeft)
-  {
-    x += rect.width() - menuSize.width();
-  }
-
-  return QPoint(x,y);
+  return point;
 }
 
 // -----------------------------------------------------------------------------
