@@ -43,8 +43,6 @@
 
 #include "SVWidgetsLib/QtSupport/QtSFaderWidget.h"
 
-
-
 #include "SIMPLib/Common/AbstractFilter.h"
 #include "SIMPLib/FilterParameters/AttributeMatrixCreationFilterParameter.h"
 #include "SIMPLib/DataContainers/DataContainerArrayProxy.h"
@@ -52,9 +50,9 @@
 #include "SVWidgetsLib/SVWidgetsLib.h"
 #include "SVWidgetsLib/FilterParameterWidgets/FilterParameterWidget.h"
 
-
 #include "SVWidgetsLib/ui_AttributeMatrixCreationWidget.h"
 
+class QSignalMapper;
 
 /**
 * @brief
@@ -98,13 +96,20 @@ public:
   */
   void initializeWidget(FilterParameter* parameter, AbstractFilter* filter);
 
+  /**
+   * @brief eventFilter
+   * @param obj
+   * @param event
+   * @return
+   */
+  bool eventFilter(QObject* obj, QEvent* event);
 
   public slots:
   void beforePreflight();
   void afterPreflight();
   void filterNeedsInputParameters(AbstractFilter* filter);
 
-  void on_dataContainerCombo_currentIndexChanged(int index);
+  void attributeMatrixSelected(QString path);
 
   void on_attributeMatrixName_returnPressed();
   void on_applyChangesBtn_clicked();
@@ -113,10 +118,22 @@ public:
   void hideButton();
 
 protected:
-  void populateComboBoxes();
+  /**
+   * @brief createSelectionMenu
+   */
+  void createSelectionMenu();
 
-  DataContainerArrayProxy generateDCAProxy();
+  /**
+   * @brief setSelectedPath
+   * @param dcName
+   * @param attrMatName
+   * @param attrArrName
+   */
   void setSelectedPath(QString dcName, QString attrMatName, QString attrArrName);
+
+  /**
+   * @brief selectDefaultPath
+   */
   void selectDefaultPath();
 
 signals:
@@ -126,11 +143,11 @@ signals:
   private slots:
 
 private:
-
   bool m_DidCausePreflight;
 
+  QSignalMapper*  m_MenuMapper;
 
-  DataContainerArrayProxy m_DcaProxy;
+  void setSelectedPath(QString path);
 
   AttributeMatrixCreationFilterParameter* m_FilterParameter;
 

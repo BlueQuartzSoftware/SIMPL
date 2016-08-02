@@ -50,9 +50,13 @@
 #include "SIMPLib/SIMPLib.h"
 #include "SIMPLib/Common/SIMPLibSetGetMacros.h"
 
-
 #include "SVWidgetsLib/SVWidgetsLib.h"
 #include "SVWidgetsLib/FilterParameterWidgets/FilterParameterWidget.h"
+
+namespace Detail
+{
+  const QString Delimiter(" / ");
+}
 
 class AbstractFilter;
 class FilterParameter;

@@ -60,11 +60,6 @@
 // Include the MOC generated file for this class
 #include "moc_DataArraySelectionWidget.cpp"
 
-namespace Detail
-{
-  const QString Delimiter(" / ");
-}
-
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------

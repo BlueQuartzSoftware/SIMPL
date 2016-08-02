@@ -49,11 +49,6 @@
 #include "FilterParameterWidgetsDialogs.h"
 #include "FilterParameterWidgetUtils.hpp"
 
-namespace Detail
-{
-  const QString Delimiter(" / ");
-}
-
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------

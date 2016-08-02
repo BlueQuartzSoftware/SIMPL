@@ -35,11 +35,13 @@
 
 #include "AttributeMatrixCreationWidget.h"
 
+#include <QtCore/QSignalMapper>
 #include <QtCore/QMetaProperty>
 #include <QtCore/QList>
 
 #include <QtGui/QStandardItemModel>
 
+#include <QtWidgets/QMenu>
 #include <QtWidgets/QListWidgetItem>
 
 #include "SIMPLib/DataContainers/DataArrayPath.h"
@@ -47,7 +49,6 @@
 
 #include "FilterParameterWidgetsDialogs.h"
 #include "FilterParameterWidgetUtils.hpp"
-
 
 // Include the MOC generated file for this class
 #include "moc_AttributeMatrixCreationWidget.cpp"
@@ -109,10 +110,12 @@ void AttributeMatrixCreationWidget::setupGui()
   }
   blockSignals(false);
 
-  applyChangesBtn->setVisible(false);
-
   // Do not allow the user to put a forward slash into the attributeMatrixName line edit
   attributeMatrixName->setValidator(new QRegularExpressionValidator(QRegularExpression("[^/]*"), this));
+
+  m_MenuMapper = new QSignalMapper(this);
+  connect(m_MenuMapper, SIGNAL(mapped(QString)),
+            this, SLOT(attributeMatrixSelected(QString)));
 
   // Catch when the filter is about to execute the preflight
   connect(getFilter(), SIGNAL(preflightAboutToExecute()),
@@ -126,89 +129,15 @@ void AttributeMatrixCreationWidget::setupGui()
   connect(getFilter(), SIGNAL(updateFilterParameters(AbstractFilter*)),
     this, SLOT(filterNeedsInputParameters(AbstractFilter*)));
 
-  connect(attributeMatrixName, SIGNAL(textChanged(const QString&)),
-    this, SLOT(widgetChanged(const QString&)));
-  connect(dataContainerCombo, SIGNAL(currentIndexChanged(const QString&)),
+  connect(attributeMatrixName, SIGNAL(textEdited(const QString&)),
     this, SLOT(widgetChanged(const QString&)));
 
-  dataContainerCombo->blockSignals(true);
   attributeMatrixName->blockSignals(true);
-  dataContainerCombo->clear();
   attributeMatrixName->clear();
   // Now let the gui send signals like normal
-  dataContainerCombo->blockSignals(false);
   attributeMatrixName->blockSignals(false);
 
-  populateComboBoxes();
-
-
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-void AttributeMatrixCreationWidget::populateComboBoxes()
-{
-  //  std::cout << "void AttributeMatrixCreationWidget::populateComboBoxesWithSelection()" << std::endl;
-
-
-  // Now get the DataContainerArray from the Filter instance
-  // We are going to use this to get all the current DataContainers
-  DataContainerArray::Pointer dca = getFilter()->getDataContainerArray();
-  if (NULL == dca.get()) { return; }
-
-  // Check to see if we have any DataContainers to actually populate drop downs with.
-  if (dca->getDataContainers().size() == 0)
-  {
-    return;
-  }
-  // Cache the DataContainerArray Structure for our use during all the selections
-  m_DcaProxy = DataContainerArrayProxy(dca.get());
-
-  // Populate the DataContainer ComboBox
-  FilterParameterWidgetUtils::PopulateDataContainerComboBox<AttributeMatrixCreationFilterParameter>(getFilter(), getFilterParameter(), dataContainerCombo, m_DcaProxy);
-
-  // Grab what is currently selected
-  QString curDcName = dataContainerCombo->currentText();
-  QString curAmName = attributeMatrixName->text();
-
-  // Get what is in the filter
-  DataArrayPath selectedPath = getFilter()->property(PROPERTY_NAME_AS_CHAR).value<DataArrayPath>();
-
-  // Split the path up to make sure we have a valid path separated by the "|" character
-
-  QString filtDcName = selectedPath.getDataContainerName();
-  QString filtAmName = selectedPath.getAttributeMatrixName();
-
-  // Now to figure out which one of these to use. If this is the first time through then what we picked up from the
-  // gui will be empty strings because nothing is there. If there is something in the filter then we should use that.
-  // If there is something in both of them and they are NOT equal then we have a problem. Use the flag m_DidCausePreflight
-  // to determine if the change from the GUI should over ride the filter or vice versa. there is a potential that in future
-  // versions that something else is driving SIMPLView and pushing the changes to the filter and we need to reflect those
-  // changes in the GUI, like a testing script?
-
-  QString dcName = checkStringValues(curDcName, filtDcName);
-  if (!dca->doesDataContainerExist(dcName)) { dcName = ""; }
-
-  bool didBlock = false;
-
-  if (!dataContainerCombo->signalsBlocked()) { didBlock = true; }
-  dataContainerCombo->blockSignals(true);
-
-  int dcIndex = dataContainerCombo->findText(dcName);
-  dataContainerCombo->setCurrentIndex(dcIndex);
-
-  if (didBlock) { dataContainerCombo->blockSignals(false); didBlock = false; }
-
-  if (!attributeMatrixName->signalsBlocked()) { didBlock = true; }
-  attributeMatrixName->blockSignals(true);
-
-  QString amName = checkStringValues(curAmName, filtAmName);
-
-  attributeMatrixName->setText(amName);
-
-  if (didBlock) { attributeMatrixName->blockSignals(false); didBlock = false; }
-
+  hideButton();
 }
 
 // -----------------------------------------------------------------------------
@@ -236,9 +165,105 @@ QString AttributeMatrixCreationWidget::checkStringValues(QString curDcName, QStr
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void AttributeMatrixCreationWidget::on_dataContainerCombo_currentIndexChanged(int index)
+void AttributeMatrixCreationWidget::createSelectionMenu()
 {
-  on_applyChangesBtn_clicked();
+  // Now get the DataContainerArray from the Filter instance
+  // We are going to use this to get all the current DataContainers
+  DataContainerArray::Pointer dca = getFilter()->getDataContainerArray();
+  if(NULL == dca.get()) { return; }
+
+  // Get the menu and clear it out
+  QMenu* menu = m_SelectedDataContainerPath->menu();
+  if(!menu)
+  {
+    menu = new QMenu();
+    m_SelectedDataContainerPath->setMenu(menu);
+    menu->installEventFilter(this);
+  }
+  if(menu) {
+    menu->clear();
+  }
+
+  // Get the DataContainerArray object
+  // Loop over the data containers until we find the proper data container
+  QList<DataContainer::Pointer> containers = dca->getDataContainers();
+  QVector<unsigned int> geomTypes = m_FilterParameter->getDefaultGeometryTypes();
+
+  QListIterator<DataContainer::Pointer> containerIter(containers);
+  while(containerIter.hasNext())
+  {
+    DataContainer::Pointer dc = containerIter.next();
+
+    IGeometry::Pointer geom = IGeometry::NullPointer();
+    uint32_t geomType = 999;
+    if (NULL != dc.get()) { geom = dc->getGeometry(); }
+    if (NULL != geom.get()) { geomType = geom->getGeometryType(); }
+
+    QString dcName = dc->getName();
+    QAction* action = new QAction(dcName, menu);
+    DataArrayPath dcPath(dcName, "", "");
+    QString path = dcPath.serialize(Detail::Delimiter);
+    action->setData(path);
+
+    connect(action, SIGNAL(triggered(bool)), m_MenuMapper, SLOT(map()));
+    m_MenuMapper->setMapping(action, path);
+    menu->addAction(action);
+
+    if(geomTypes.isEmpty() == false && geomTypes.contains(geomType) == false )
+    {
+      action->setDisabled(true);
+    }
+  }
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+bool AttributeMatrixCreationWidget::eventFilter(QObject* obj, QEvent* event)
+{
+  if (event->type() == QEvent::Show && obj == m_SelectedDataContainerPath->menu())
+  {
+    QPoint pos = adjustedMenuPosition(m_SelectedDataContainerPath);
+    m_SelectedDataContainerPath->menu()->move(pos);
+    return true;
+  }
+  return false;
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void AttributeMatrixCreationWidget::attributeMatrixSelected(QString path)
+{
+  setSelectedPath(path);
+
+  m_DidCausePreflight = true;
+  emit parametersChanged();
+  m_DidCausePreflight = false;
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void AttributeMatrixCreationWidget::setSelectedPath(QString path)
+{
+  DataArrayPath amPath = DataArrayPath::Deserialize(path, Detail::Delimiter);
+  if (amPath.isEmpty()) { return; }
+
+  m_SelectedDataContainerPath->setText("");
+  m_SelectedDataContainerPath->setToolTip("");
+  attributeMatrixName->clear();
+
+  DataContainerArray::Pointer dca = getFilter()->getDataContainerArray();
+  if(NULL == dca.get()) { return; }
+
+  DataContainer::Pointer dc = dca->getPrereqDataContainer<AbstractFilter>(getFilter(), amPath.getDataContainerName());
+  if(nullptr != dc.get()) {
+    QString html = dc->getInfoString(SIMPL::HtmlFormat);
+    m_SelectedDataContainerPath->setToolTip(html);
+    m_SelectedDataContainerPath->setText(amPath.getDataContainerName());
+    attributeMatrixName->setText(amPath.getAttributeMatrixName());
+  }
 }
 
 // -----------------------------------------------------------------------------
@@ -284,14 +309,10 @@ void AttributeMatrixCreationWidget::beforePreflight()
     return;
   }
 
-  dataContainerCombo->blockSignals(true);
-  attributeMatrixName->blockSignals(true);
+  DataArrayPath path = getFilter()->property(PROPERTY_NAME_AS_CHAR).value<DataArrayPath>();
 
-  // Reset all the combo box widgets to have the default selection of the first index in the list
-  populateComboBoxes();
-
-  dataContainerCombo->blockSignals(false);
-  attributeMatrixName->blockSignals(false);
+  setSelectedPath(path.serialize(Detail::Delimiter));
+  createSelectionMenu();
 }
 
 // -----------------------------------------------------------------------------
@@ -308,9 +329,10 @@ void AttributeMatrixCreationWidget::afterPreflight()
 void AttributeMatrixCreationWidget::filterNeedsInputParameters(AbstractFilter* filter)
 {
   // Generate the path to the AttributeArray
-  DataArrayPath path(dataContainerCombo->currentText(), attributeMatrixName->text(), "");
+  DataArrayPath selectedPath = DataArrayPath::Deserialize(m_SelectedDataContainerPath->text(), Detail::Delimiter);
+  selectedPath.setAttributeMatrixName(attributeMatrixName->text());
   QVariant var;
-  var.setValue(path);
+  var.setValue(selectedPath);
   bool ok = false;
   // Set the value into the Filter
   ok = filter->setProperty(PROPERTY_NAME_AS_CHAR, var);
@@ -318,7 +340,6 @@ void AttributeMatrixCreationWidget::filterNeedsInputParameters(AbstractFilter* f
   {
     FilterParameterWidgetsDialogs::ShowCouldNotSetFilterParameter(getFilter(), getFilterParameter());
   }
-
 }
 
 // -----------------------------------------------------------------------------
