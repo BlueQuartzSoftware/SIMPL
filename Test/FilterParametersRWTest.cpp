@@ -57,7 +57,6 @@
 #include "SIMPLib/FilterParameters/ComparisonSelectionFilterParameter.h"
 #include "SIMPLib/FilterParameters/DataArrayCreationFilterParameter.h"
 #include "SIMPLib/FilterParameters/DataArraySelectionFilterParameter.h"
-#include "SIMPLib/FilterParameters/DataBundleSelectionFilterParameter.h"
 #include "SIMPLib/FilterParameters/DataContainerArrayProxyFilterParameter.h"
 #include "SIMPLib/FilterParameters/DataContainerCreationFilterParameter.h"
 #include "SIMPLib/FilterParameters/DataContainerReaderFilterParameter.h"
@@ -488,21 +487,6 @@ class FilterParametersRWTest
         DREAM3D_REQUIRE_EQUAL(m_ArrayPath1.getDataArrayName(), m_ArrayPath2.getDataArrayName())
 
         m_ArrayPath2 = DataArrayPath("", "", "");
-      }
-
-      {
-        DataBundleSelectionFilterParameter::Pointer fp = DataBundleSelectionFilterParameter::New("Test", "String1",
-                                                                             getString1(), FilterParameter::Parameter,
-                                                                             SIMPL_BIND_SETTER(FilterParametersRWTest, this, String2),
-                                                                             SIMPL_BIND_GETTER(FilterParametersRWTest, this, String1));
-
-        QJsonObject obj;
-        fp->writeJson(obj);
-        fp->readJson(obj);
-
-        DREAM3D_REQUIRE_EQUAL(m_String1, m_String2)
-
-        m_String2.clear();
       }
 
       {
