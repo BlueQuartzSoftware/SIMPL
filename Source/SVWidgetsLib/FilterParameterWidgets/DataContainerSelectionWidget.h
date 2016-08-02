@@ -36,8 +36,6 @@
 #ifndef _datacontainerselectionwidget_h_
 #define _datacontainerselectionwidget_h_
 
-
-
 #include <QtCore/QObject>
 #include <QtCore/QPointer>
 #include <QtWidgets/QWidget>
@@ -53,9 +51,9 @@
 #include "SVWidgetsLib/SVWidgetsLib.h"
 #include "SVWidgetsLib/FilterParameterWidgets/FilterParameterWidget.h"
 
-
 #include "SVWidgetsLib/ui_DataContainerSelectionWidget.h"
 
+class QSignalMapper;
 
 /**
 * @brief
@@ -99,18 +97,27 @@ class SVWidgetsLib_EXPORT DataContainerSelectionWidget : public FilterParameterW
      */
     void initializeWidget(FilterParameter* parameter, AbstractFilter* filter);
 
+    /**
+     * @brief eventFilter
+     * @param obj
+     * @param event
+     * @return
+     */
+    bool eventFilter(QObject* obj, QEvent* event);
+
 
   public slots:
     void beforePreflight();
     void afterPreflight();
     void filterNeedsInputParameters(AbstractFilter* filter);
 
-    void on_dataContainerCombo_currentIndexChanged(int index);
-
+    void attributeMatrixSelected(QString path);
 
   protected:
-    void populateComboBoxes();
-
+    /**
+     * @brief createSelectionMenu
+     */
+    void createSelectionMenu();
 
   signals:
     void errorSettingFilterParameter(const QString& msg);
@@ -120,10 +127,11 @@ class SVWidgetsLib_EXPORT DataContainerSelectionWidget : public FilterParameterW
 
     bool m_DidCausePreflight;
 
-
-    DataContainerArrayProxy m_DcaProxy;
-
     DataContainerSelectionFilterParameter* m_FilterParameter;
+
+    QSignalMapper*  m_MenuMapper;
+
+    void setSelectedPath(QString path);
 
     DataContainerSelectionWidget(const DataContainerSelectionWidget&); // Copy Constructor Not Implemented
     void operator=(const DataContainerSelectionWidget&); // Operator '=' Not Implemented

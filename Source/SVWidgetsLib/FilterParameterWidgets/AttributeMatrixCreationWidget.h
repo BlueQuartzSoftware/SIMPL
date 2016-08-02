@@ -36,7 +36,6 @@
 #ifndef _attributematrixcreationwidget_h_
 #define _attributematrixcreationwidget_h_
 
-
 #include <QtCore/QObject>
 #include <QtCore/QPointer>
 #include <QtWidgets/QWidget>
@@ -130,11 +129,6 @@ protected:
    * @param attrArrName
    */
   void setSelectedPath(QString dcName, QString attrMatName, QString attrArrName);
-
-  /**
-   * @brief selectDefaultPath
-   */
-  void selectDefaultPath();
 
 signals:
   void errorSettingFilterParameter(const QString& msg);
