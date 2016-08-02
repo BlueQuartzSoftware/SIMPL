@@ -111,7 +111,7 @@ class SVWidgetsLib_EXPORT DataContainerSelectionWidget : public FilterParameterW
     void afterPreflight();
     void filterNeedsInputParameters(AbstractFilter* filter);
 
-    void attributeMatrixSelected(QString path);
+    void dataContainerSelected(QString path);
 
   protected:
     /**

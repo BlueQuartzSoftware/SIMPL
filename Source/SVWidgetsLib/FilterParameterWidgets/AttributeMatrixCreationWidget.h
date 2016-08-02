@@ -108,7 +108,7 @@ public:
   void afterPreflight();
   void filterNeedsInputParameters(AbstractFilter* filter);
 
-  void attributeMatrixSelected(QString path);
+  void dataContainerSelected(QString path);
 
   void on_attributeMatrixName_returnPressed();
   void on_applyChangesBtn_clicked();

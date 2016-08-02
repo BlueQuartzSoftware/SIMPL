@@ -115,7 +115,7 @@ void AttributeMatrixCreationWidget::setupGui()
 
   m_MenuMapper = new QSignalMapper(this);
   connect(m_MenuMapper, SIGNAL(mapped(QString)),
-            this, SLOT(attributeMatrixSelected(QString)));
+            this, SLOT(dataContainerSelected(QString)));
 
   // Catch when the filter is about to execute the preflight
   connect(getFilter(), SIGNAL(preflightAboutToExecute()),
@@ -233,7 +233,7 @@ bool AttributeMatrixCreationWidget::eventFilter(QObject* obj, QEvent* event)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void AttributeMatrixCreationWidget::attributeMatrixSelected(QString path)
+void AttributeMatrixCreationWidget::dataContainerSelected(QString path)
 {
   setSelectedPath(path);
 

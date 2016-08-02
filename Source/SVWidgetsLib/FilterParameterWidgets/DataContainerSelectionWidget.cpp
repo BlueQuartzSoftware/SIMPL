@@ -50,7 +50,6 @@
 #include "FilterParameterWidgetsDialogs.h"
 #include "FilterParameterWidgetUtils.hpp"
 
-
 // Include the MOC generated file for this class
 #include "moc_DataContainerSelectionWidget.cpp"
 
@@ -125,7 +124,7 @@ void DataContainerSelectionWidget::setupGui()
 
   m_MenuMapper = new QSignalMapper(this);
   connect(m_MenuMapper, SIGNAL(mapped(QString)),
-            this, SLOT(attributeMatrixSelected(QString)));
+            this, SLOT(dataContainerSelected(QString)));
 }
 
 // -----------------------------------------------------------------------------
@@ -214,7 +213,7 @@ bool DataContainerSelectionWidget::eventFilter(QObject* obj, QEvent* event)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void DataContainerSelectionWidget::attributeMatrixSelected(QString path)
+void DataContainerSelectionWidget::dataContainerSelected(QString path)
 {
   setSelectedPath(path);
 
