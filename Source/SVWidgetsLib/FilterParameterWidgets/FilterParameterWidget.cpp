@@ -168,35 +168,6 @@ void FilterParameterWidget::setupGui()
 // -----------------------------------------------------------------------------
 QPoint FilterParameterWidget::adjustedMenuPosition(QPushButton* pushButton)
 {
-//  QRect rect = pushButton->geometry();
-//  rect.setRect(rect.x() - pushButton->x(), rect.y() - pushButton->y(), rect.width(), rect.height());
-
-//  QSize menuSize = pushButton->menu()->sizeHint();
-//  QPoint globalPos = mapToGlobal(rect.topLeft());
-//  int x = globalPos.x();
-//  int y = globalPos.y();
-
-//  // We want the menu to pop up underneath the mouse, in the middle.
-//  x = QCursor::pos().x() - menuSize.width() / 2;
-
-//  // If the menu is going to go off the screen, reposition it until it's completely on the screen
-//  while (x + menuSize.width() > QApplication::desktop()->availableGeometry(this).width())
-//  {
-//    x--;
-//  }
-
-//  if (globalPos.y() + rect.height() + menuSize.height() <= QApplication::desktop()->availableGeometry(this).height())
-//  {
-//    y += rect.height();
-//  }
-//  else
-//  {
-//    y -= menuSize.height();
-//  }
-//  if (pushButton->layoutDirection() == Qt::RightToLeft)
-//  {
-//    x += rect.width() - menuSize.width();
-//  }
 
   QSize menuSize = pushButton->menu()->sizeHint();
   QPoint point = QCursor::pos();
@@ -208,7 +179,12 @@ QPoint FilterParameterWidget::adjustedMenuPosition(QPushButton* pushButton)
     point.setX(point.x() - 1);
   }
 
+  QPoint localButtonCoords = pushButton->geometry().bottomLeft();
+  QPoint globalButtonCoords = mapToGlobal(localButtonCoords);
+  point.setY(globalButtonCoords.y());
+
   return point;
+
 }
 
 // -----------------------------------------------------------------------------
