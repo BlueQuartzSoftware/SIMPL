@@ -145,11 +145,11 @@ signals:
 private:
   bool m_DidCausePreflight;
 
+  AttributeMatrixCreationFilterParameter* m_FilterParameter;
+
   QSignalMapper*  m_MenuMapper;
 
   void setSelectedPath(QString path);
-
-  AttributeMatrixCreationFilterParameter* m_FilterParameter;
 
   AttributeMatrixCreationWidget(const AttributeMatrixCreationWidget&); // Copy Constructor Not Implemented
   void operator=(const AttributeMatrixCreationWidget&); // Operator '=' Not Implemented
