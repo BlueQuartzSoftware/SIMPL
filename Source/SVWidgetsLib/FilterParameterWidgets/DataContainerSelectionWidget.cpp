@@ -46,6 +46,7 @@
 
 #include "SIMPLib/DataContainers/DataArrayPath.h"
 #include "SVWidgetsLib/Core/SVWidgetsLibConstants.h"
+#include "SVWidgetsLib/QtSupport/QtSStyles.h"
 
 #include "FilterParameterWidgetsDialogs.h"
 #include "FilterParameterWidgetUtils.hpp"
@@ -121,6 +122,8 @@ void DataContainerSelectionWidget::setupGui()
     return;
   }
   label->setText(getFilterParameter()->getHumanLabel() );
+
+  m_SelectedDataContainerPath->setStyleSheet(QtSStyles::DAPSelectionButtonStyle());
 
   m_MenuMapper = new QSignalMapper(this);
   connect(m_MenuMapper, SIGNAL(mapped(QString)),

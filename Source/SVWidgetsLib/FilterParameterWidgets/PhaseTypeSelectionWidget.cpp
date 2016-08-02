@@ -48,6 +48,7 @@
 #include "SIMPLib/FilterParameters/PhaseTypeSelectionFilterParameter.h"
 #include "SIMPLib/Utilities/QMetaObjectUtilities.h"
 #include "SVWidgetsLib/Core/SVWidgetsLibConstants.h"
+#include "SVWidgetsLib/QtSupport/QtSStyles.h"
 
 #include "FilterParameterWidgetsDialogs.h"
 
@@ -101,6 +102,8 @@ void PhaseTypeSelectionWidget::setupGui()
   // Get the default path from the Filter instance to cache
   //UInt32Vector_t data = getFilter()->property(PROPERTY_NAME_AS_CHAR).value<DataArrayPath>();
   //data.d =
+
+  m_SelectedAttributeMatrixPath->setStyleSheet(QtSStyles::DAPSelectionButtonStyle());
 
   m_MenuMapper = new QSignalMapper(this);
   connect(m_MenuMapper, SIGNAL(mapped(QString)),

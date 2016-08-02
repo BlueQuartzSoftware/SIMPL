@@ -48,6 +48,7 @@
 #include "SIMPLib/FilterParameters/MultiDataArraySelectionFilterParameter.h"
 #include "SIMPLib/DataContainers/DataArrayPath.h"
 #include "SVWidgetsLib/Core/SVWidgetsLibConstants.h"
+#include "SVWidgetsLib/QtSupport/QtSStyles.h"
 
 #include "FilterParameterWidgetsDialogs.h"
 #include "FilterParameterWidgetUtils.hpp"
@@ -115,6 +116,8 @@ void MultiDataArraySelectionWidget::setupGui()
 
   // Generate the text for the QLabel
   label->setText(getFilterParameter()->getHumanLabel());
+
+  m_SelectedAttributeMatrixPath->setStyleSheet(QtSStyles::DAPSelectionButtonStyle());
 
   m_MenuMapper = new QSignalMapper(this);
   connect(m_MenuMapper, SIGNAL(mapped(QString)),

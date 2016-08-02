@@ -50,9 +50,9 @@
 #include "SIMPLib/FilterParameters/FilterParameter.h"
 #include "SIMPLib/DataContainers/DataArrayPath.h"
 
-
 #include "SVWidgetsLib/Core/SVWidgetsLibConstants.h"
 #include "SVWidgetsLib/Widgets/DataContainerArrayWidget.h"
+#include "SVWidgetsLib/QtSupport/QtSStyles.h"
 
 #include "FilterParameterWidgetsDialogs.h"
 #include "FilterParameterWidgetUtils.hpp"
@@ -118,6 +118,8 @@ void DataArraySelectionWidget::setupGui()
   {
     return;
   }
+
+  m_SelectedDataArrayPath->setStyleSheet(QtSStyles::DAPSelectionButtonStyle());
 
   // Generate the text for the QLabel
   label->setText(getFilterParameter()->getHumanLabel() );

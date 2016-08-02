@@ -229,51 +229,8 @@
          <pointsize>12</pointsize>
         </font>
        </property>
-       <property name="styleSheet">
-        <string notr="true">QPushButton { /* all types of tool button */
-    border: 1px solid #8f8f91;
-    border-radius: 4px;
-    background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
-                                      stop: 0 #DDDDDD, stop: 1 #FFFFFF);
-	font-size: 12pt;
-	padding-left: 16px;
-	padding-right: 4px;
-	padding-top: 2px;
-	padding-bottom: 2px;
-}
-
-QPushButton::menu-indicator {
-   /*  image: url(menu_indicator.png); */
-    subcontrol-origin: padding;
-    subcontrol-position:  left; /* */
-}
-
-QPushButton::menu-indicator:pressed, QPushButton::menu-indicator:open
-{
-    position: relative;
-    /*  top: 2px; left: 2px; shift the arrow by 2 px */
-}
-
-QPushButton:pressed
-{
-    background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
-                                      stop: 0 #AAAAFF, stop: 1 #FFFFFF);
-}
-
-QPushButton:flat 
-{
-    border: none; /* no border for a flat push button */
-}
-
-QPushButton:hover
-{
-	border: 1px solid #8f8f91;
-	border-radius: 4px;
-}
-</string>
-       </property>
        <property name="text">
-        <string notr="true">Default / Path / Array</string>
+        <string notr="true"/>
        </property>
        <property name="iconSize">
         <size>

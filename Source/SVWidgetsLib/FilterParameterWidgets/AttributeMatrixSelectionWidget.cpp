@@ -45,6 +45,7 @@
 #include <QtWidgets/QListWidgetItem>
 
 #include "SVWidgetsLib/Core/SVWidgetsLibConstants.h"
+#include "SVWidgetsLib/QtSupport/QtSStyles.h"
 
 #include "FilterParameterWidgetsDialogs.h"
 #include "FilterParameterWidgetUtils.hpp"
@@ -99,6 +100,8 @@ void AttributeMatrixSelectionWidget::setupGui()
   }
 
   label->setText(getFilterParameter()->getHumanLabel() );
+
+  m_SelectedAttributeMatrixPath->setStyleSheet(QtSStyles::DAPSelectionButtonStyle());
 
   m_MenuMapper = new QSignalMapper(this);
   connect(m_MenuMapper, SIGNAL(mapped(QString)),
