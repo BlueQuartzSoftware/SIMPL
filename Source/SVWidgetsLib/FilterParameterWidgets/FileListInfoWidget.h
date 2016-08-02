@@ -143,7 +143,7 @@ class SVWidgetsLib_EXPORT FileListInfoWidget : public FilterParameterWidget, pri
     void setWidgetListEnabled(bool v);
 
     /**
-     * @brief Method to attempt the extraction of the .ang max slice value and prefix
+     * @brief Method to attempt the extraction of the file max slice value and prefix
      */
     void findMaxSliceAndPrefix();
 
