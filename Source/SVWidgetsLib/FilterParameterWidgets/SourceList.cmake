@@ -14,7 +14,6 @@ set(SIMPLView_PARAMETER_WIDGETS
     ComparisonSelectionWidget
     DataArrayCreationWidget
     DataArraySelectionWidget
-    DataBundleSelectionWidget
     DataContainerArrayProxyWidget
     DataContainerCreationWidget
     DataContainerReaderWidget
