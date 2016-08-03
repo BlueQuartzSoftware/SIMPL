@@ -52,9 +52,10 @@ class SIMPLib_EXPORT DynamicTableFilterParameter : public FilterParameter
     typedef std::function<DynamicTableData(void)> GetterCallbackType;
 
     static Pointer New(const QString& humanLabel, const QString& propertyName,
-                       QStringList rHeaders, QStringList cHeaders, std::vector<std::vector<double> > defaultTable,
-                       FilterParameter::Category category, SetterCallbackType setterCallback,
-                       GetterCallbackType getterCallback, bool isRowsDynamic = true, bool isColsDynamic = true,
+                       std::vector<std::vector<double> > defaultTable, FilterParameter::Category category,
+                       SetterCallbackType setterCallback, GetterCallbackType getterCallback,
+                       QStringList rHeaders, QStringList cHeaders,
+                       bool isRowsDynamic = true, bool isColsDynamic = true,
                        int minRowCount = 0, int minColCount = 0, int groupIndex = -1);
 
     virtual ~DynamicTableFilterParameter();

@@ -101,9 +101,9 @@ void CreateAttributeMatrix::setupFilterParameters()
   rHeaders << "Tuple Dimensions";
 
   std::vector<std::vector<double> > defaultTable;
-  parameters.push_back(DynamicTableFilterParameter::New("Tuple Dimensions", "TupleDimensions", rHeaders, cHeaders, defaultTable, FilterParameter::Parameter,
+  parameters.push_back(DynamicTableFilterParameter::New("Tuple Dimensions", "TupleDimensions", defaultTable, FilterParameter::Parameter,
                                                         SIMPL_BIND_SETTER(CreateAttributeMatrix, this, TupleDimensions),
-                                                        SIMPL_BIND_GETTER(CreateAttributeMatrix, this, TupleDimensions), false, true, 0));
+                                                        SIMPL_BIND_GETTER(CreateAttributeMatrix, this, TupleDimensions), rHeaders, cHeaders, false, true, 0));
   {
     AttributeMatrixCreationFilterParameter::RequirementType req;
     parameters.push_back(AttributeMatrixCreationFilterParameter::New("Created Attribute Matrix", "CreatedAttributeMatrix",
