@@ -805,10 +805,11 @@ class FilterParametersRWTest
       }
 
       {
-        PhaseTypeSelectionFilterParameter::Pointer fp = PhaseTypeSelectionFilterParameter::New("Test", "",
-                                                                             "", "UInt32Vector_2", "", DataArrayPath(), QStringList(), FilterParameter::Parameter,
+        PhaseTypeSelectionFilterParameter::Pointer fp = PhaseTypeSelectionFilterParameter::New("Test", "UInt32Vector_2", DataArrayPath(),
+                                                                             FilterParameter::Parameter,
                                                                              SIMPL_BIND_SETTER(FilterParametersRWTest, this, UInt32Vector_2),
-                                                                             SIMPL_BIND_GETTER(FilterParametersRWTest, this, UInt32Vector_1));
+                                                                             SIMPL_BIND_GETTER(FilterParametersRWTest, this, UInt32Vector_1),
+                                                                             "", "", "", QStringList());
 
         QJsonObject obj;
         fp->writeJson(obj);

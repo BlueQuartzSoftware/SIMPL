@@ -52,15 +52,15 @@ public:
   typedef std::function<UInt32Vector_t(void)> GetterCallbackType;
 
     static Pointer New(const QString& humanLabel,
+                       const QString& phaseTypeDataProperty,
+                       const DataArrayPath attributeMatrixDefault,
+                       Category category,
+                       SetterCallbackType setterCallback,
+                       GetterCallbackType getterCallback,
                       const QString& PhaseTypesArrayName,
                       const QString& phaseTypeCountProperty,
-                      const QString& phaseTypeDataProperty,
                       const QString& attributeMatrixProperty,
-                      const DataArrayPath attributeMatrixDefault,
                       const QStringList phaseListChoices,
-                      Category category,
-                      SetterCallbackType setterCallback,
-                      GetterCallbackType getterCallback,
                       int groupIndex = -1);
 
   virtual ~PhaseTypeSelectionFilterParameter();
