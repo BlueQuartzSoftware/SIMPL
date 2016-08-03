@@ -154,14 +154,14 @@ void GenericExample::setupFilterParameters()
   {
     QStringList linkedProps;
     linkedProps << "Bool2" << "Double2";
-    parameters.push_back(LinkedBooleanFilterParameter::New("Bool1", "Bool1", getBool1(), linkedProps, FilterParameter::Parameter, SIMPL_BIND_SETTER(GenericExample, this, Bool1), SIMPL_BIND_GETTER(GenericExample, this, Bool1)));
+    parameters.push_back(LinkedBooleanFilterParameter::New("Bool1", "Bool1", getBool1(), FilterParameter::Parameter, SIMPL_BIND_SETTER(GenericExample, this, Bool1), SIMPL_BIND_GETTER(GenericExample, this, Bool1), linkedProps));
     parameters.push_back(DoubleFilterParameter::New("Double 2", "Double2", getDouble2(), FilterParameter::Parameter, SIMPL_BIND_SETTER(GenericExample, this, Double2), SIMPL_BIND_GETTER(GenericExample, this, Double2)));
   }
 
   {
     QStringList linkedProps;
     linkedProps << "AttributeMatrixPath";
-    parameters.push_back(LinkedBooleanFilterParameter::New("Bool2", "Bool2", getBool2(), linkedProps, FilterParameter::Parameter, SIMPL_BIND_SETTER(GenericExample, this, Bool2), SIMPL_BIND_GETTER(GenericExample, this, Bool2)));
+    parameters.push_back(LinkedBooleanFilterParameter::New("Bool2", "Bool2", getBool2(), FilterParameter::Parameter, SIMPL_BIND_SETTER(GenericExample, this, Bool2), SIMPL_BIND_GETTER(GenericExample, this, Bool2), linkedProps));
   }
   {
     AttributeMatrixSelectionFilterParameter::RequirementType req;

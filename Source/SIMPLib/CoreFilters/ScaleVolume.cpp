@@ -130,7 +130,7 @@ void ScaleVolume::setupFilterParameters()
 
 
   QStringList linkedProps("DataContainerName");
-  parameters.push_back(LinkedBooleanFilterParameter::New("Apply to Image Geometry", "ApplyToVoxelVolume", getApplyToVoxelVolume(), linkedProps, FilterParameter::Parameter, SIMPL_BIND_SETTER(ScaleVolume, this, ApplyToVoxelVolume), SIMPL_BIND_GETTER(ScaleVolume, this, ApplyToVoxelVolume)));
+  parameters.push_back(LinkedBooleanFilterParameter::New("Apply to Image Geometry", "ApplyToVoxelVolume", getApplyToVoxelVolume(), FilterParameter::Parameter, SIMPL_BIND_SETTER(ScaleVolume, this, ApplyToVoxelVolume), SIMPL_BIND_GETTER(ScaleVolume, this, ApplyToVoxelVolume), linkedProps));
   {
     DataContainerSelectionFilterParameter::RequirementType req;
     req.dcGeometryTypes = QVector<unsigned int>(1, SIMPL::GeometryType::ImageGeometry);
@@ -138,7 +138,7 @@ void ScaleVolume::setupFilterParameters()
   }
   linkedProps.clear();
   linkedProps << "SurfaceDataContainerName";
-  parameters.push_back(LinkedBooleanFilterParameter::New("Apply to Surface Geometry", "ApplyToSurfaceMesh", getApplyToSurfaceMesh(), linkedProps, FilterParameter::Parameter, SIMPL_BIND_SETTER(ScaleVolume, this, ApplyToSurfaceMesh), SIMPL_BIND_GETTER(ScaleVolume, this, ApplyToSurfaceMesh)));
+  parameters.push_back(LinkedBooleanFilterParameter::New("Apply to Surface Geometry", "ApplyToSurfaceMesh", getApplyToSurfaceMesh(), FilterParameter::Parameter, SIMPL_BIND_SETTER(ScaleVolume, this, ApplyToSurfaceMesh), SIMPL_BIND_GETTER(ScaleVolume, this, ApplyToSurfaceMesh), linkedProps));
   {
     DataContainerSelectionFilterParameter::RequirementType req;
     QVector<unsigned int> dcGeometryTypes;

@@ -51,9 +51,9 @@ class SIMPLib_EXPORT LinkedBooleanFilterParameter : public FilterParameter
     typedef std::function<bool(void)> GetterCallbackType;
 
     static Pointer New(const QString& humanLabel, const QString& propertyName,
-                       const bool& defaultValue, QStringList conditionalProperties,
-                       Category category, SetterCallbackType setterCallback,
-                       GetterCallbackType getterCallback, int groupIndex = -1);
+                       const bool& defaultValue, Category category,
+                       SetterCallbackType setterCallback, GetterCallbackType getterCallback,
+                       QStringList conditionalProperties, int groupIndex = -1);
 
     virtual ~LinkedBooleanFilterParameter();
 

@@ -94,7 +94,7 @@ void RemoveComponentFromArray::setupFilterParameters()
   QStringList linkedProps;
   linkedProps.clear();
   linkedProps << "NewArrayArrayName";
-  parameters.push_back(LinkedBooleanFilterParameter::New("Save Removed Component in New Array", "SaveRemovedComponent", getSaveRemovedComponent(), linkedProps, FilterParameter::Parameter, SIMPL_BIND_SETTER(RemoveComponentFromArray, this, SaveRemovedComponent), SIMPL_BIND_GETTER(RemoveComponentFromArray, this, SaveRemovedComponent)));
+  parameters.push_back(LinkedBooleanFilterParameter::New("Save Removed Component in New Array", "SaveRemovedComponent", getSaveRemovedComponent(), FilterParameter::Parameter, SIMPL_BIND_SETTER(RemoveComponentFromArray, this, SaveRemovedComponent), SIMPL_BIND_GETTER(RemoveComponentFromArray, this, SaveRemovedComponent), linkedProps));
 
 
 

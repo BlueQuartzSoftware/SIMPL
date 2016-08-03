@@ -722,9 +722,9 @@ class FilterParametersRWTest
 
       {
         LinkedBooleanFilterParameter::Pointer fp = LinkedBooleanFilterParameter::New("Test", "Bool1",
-                                                                             getBool1(), QStringList(), FilterParameter::Parameter,
+                                                                             getBool1(), FilterParameter::Parameter,
                                                                              SIMPL_BIND_SETTER(FilterParametersRWTest, this, Bool2),
-                                                                             SIMPL_BIND_GETTER(FilterParametersRWTest, this, Bool1));
+                                                                             SIMPL_BIND_GETTER(FilterParametersRWTest, this, Bool1), QStringList());
 
         QJsonObject obj;
         fp->writeJson(obj);
