@@ -493,9 +493,10 @@ class FilterParametersRWTest
 
       {
         DataContainerArrayProxyFilterParameter::Pointer fp = DataContainerArrayProxyFilterParameter::New("Test", "String1",
-                                                                             "", DataContainerArrayProxy(), Qt::Checked, FilterParameter::Parameter,
+                                                                             "", FilterParameter::Parameter,
                                                                              SIMPL_BIND_SETTER(FilterParametersRWTest, this, DcaProxy2),
-                                                                             SIMPL_BIND_GETTER(FilterParametersRWTest, this, DcaProxy1));
+                                                                             SIMPL_BIND_GETTER(FilterParametersRWTest, this, DcaProxy1),
+                                                                             DataContainerArrayProxy(), Qt::Checked);
 
         QJsonObject obj;
         fp->writeJson(obj);
