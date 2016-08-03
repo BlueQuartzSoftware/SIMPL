@@ -737,9 +737,10 @@ class FilterParametersRWTest
 
       {
         LinkedChoicesFilterParameter::Pointer fp = LinkedChoicesFilterParameter::New("Test", "Int1",
-                                                                 getInt1(), QVector<QString>(), QStringList(), FilterParameter::Parameter,
+                                                                 getInt1(), FilterParameter::Parameter,
                                                                  SIMPL_BIND_SETTER(FilterParametersRWTest, this, Int2),
-                                                                 SIMPL_BIND_GETTER(FilterParametersRWTest, this, Int1));
+                                                                 SIMPL_BIND_GETTER(FilterParametersRWTest, this, Int1),
+                                                                 QVector<QString>(), QStringList());
 
         QJsonObject obj;
         fp->writeJson(obj);

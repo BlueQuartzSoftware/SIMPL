@@ -55,9 +55,9 @@ class SIMPLib_EXPORT LinkedChoicesFilterParameter : public ChoiceFilterParameter
     typedef std::function<int(void)> GetterCallbackType;
 
     static Pointer New(const QString& humanLabel, const QString& propertyName,
-                       const int& defaultValue, QVector<QString> choices,
-                       QStringList linkedProperties, Category category,
+                       const int& defaultValue, Category category,
                        SetterCallbackType setterCallback, GetterCallbackType getterCallback,
+                       QVector<QString> choices, QStringList linkedProperties,
                        int groupIndex = -1);
 
     virtual ~LinkedChoicesFilterParameter();
