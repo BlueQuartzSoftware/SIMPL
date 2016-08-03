@@ -1096,6 +1096,16 @@ void SVPipelineViewWidget::removeFilterObject(PipelineFilterObject* filterObject
         m_FilterWidgetLayout->removeItem(spacer);
       }
 
+      QList<PipelineFilterObject*> selectedObjs = getSelectedFilterObjects();
+      if (selectedObjs.size() <= 0 || selectedObjs.size() >= 2)
+      {
+        emit filterInputWidgetNeedsCleared();
+      }
+      else
+      {
+        emit filterInputWidgetChanged(selectedObjs[0]->getFilterInputWidget());
+      }
+
       reindexWidgetTitles();
       preflightPipeline();
 
