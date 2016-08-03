@@ -431,9 +431,10 @@ class FilterParametersRWTest
 
       {
         ComparisonSelectionFilterParameter::Pointer fp = ComparisonSelectionFilterParameter::New("Test", "ComparisonInputs1",
-                                                                             "", QVector<QString>(), true, FilterParameter::Parameter,
+                                                                             "", FilterParameter::Parameter,
                                                                              SIMPL_BIND_SETTER(FilterParametersRWTest, this, ComparisonInputs2),
-                                                                             SIMPL_BIND_GETTER(FilterParametersRWTest, this, ComparisonInputs1));
+                                                                             SIMPL_BIND_GETTER(FilterParametersRWTest, this, ComparisonInputs1),
+                                                                             QVector<QString>(), true);
 
         QJsonObject obj;
         fp->writeJson(obj);
