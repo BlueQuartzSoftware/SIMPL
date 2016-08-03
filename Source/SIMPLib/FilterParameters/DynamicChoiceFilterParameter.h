@@ -51,9 +51,9 @@ class SIMPLib_EXPORT DynamicChoiceFilterParameter : public FilterParameter
     typedef std::function<QString(void)> GetterCallbackType;
 
     static Pointer New(const QString& humanLabel, const QString& propertyName,
-                       const QString& defaultValue, const QString& listProperty,
-                       Category category, SetterCallbackType setterCallback,
-                       GetterCallbackType getterCallback, int groupIndex = -1);
+                       const QString& defaultValue, Category category,
+                       SetterCallbackType setterCallback, GetterCallbackType getterCallback,
+                       const QString& listProperty, int groupIndex = -1);
 
     virtual ~DynamicChoiceFilterParameter();
 

@@ -558,9 +558,9 @@ class FilterParametersRWTest
 
       {
         DynamicChoiceFilterParameter::Pointer fp = DynamicChoiceFilterParameter::New("Test", "String1",
-                                                                             getString1(), "", FilterParameter::Parameter,
+                                                                             getString1(), FilterParameter::Parameter,
                                                                              SIMPL_BIND_SETTER(FilterParametersRWTest, this, String2),
-                                                                             SIMPL_BIND_GETTER(FilterParametersRWTest, this, String1));
+                                                                             SIMPL_BIND_GETTER(FilterParametersRWTest, this, String1), "");
 
         QJsonObject obj;
         fp->writeJson(obj);
