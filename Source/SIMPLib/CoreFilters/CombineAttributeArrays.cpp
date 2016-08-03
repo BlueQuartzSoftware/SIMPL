@@ -199,7 +199,7 @@ void CombineAttributeArrays::setupFilterParameters()
   parameters.push_back(BooleanFilterParameter::New("Normalize Data", "NormalizeData", getNormalizeData(), FilterParameter::Parameter, SIMPL_BIND_SETTER(CombineAttributeArrays, this, NormalizeData), SIMPL_BIND_GETTER(CombineAttributeArrays, this, NormalizeData)));
   {
     MultiDataArraySelectionFilterParameter::RequirementType req = MultiDataArraySelectionFilterParameter::CreateRequirement(SIMPL::Defaults::AnyPrimitive, SIMPL::Defaults::AnyComponentSize, SIMPL::Defaults::AnyAttributeMatrix, SIMPL::Defaults::AnyGeometry);
-    parameters.push_back(MultiDataArraySelectionFilterParameter::New("Attribute Arrays to Combine", "SelectedDataArrayPaths", getSelectedDataArrayPaths(), FilterParameter::RequiredArray, req, SIMPL_BIND_SETTER(CombineAttributeArrays, this, SelectedDataArrayPaths), SIMPL_BIND_GETTER(CombineAttributeArrays, this, SelectedDataArrayPaths)));
+    parameters.push_back(MultiDataArraySelectionFilterParameter::New("Attribute Arrays to Combine", "SelectedDataArrayPaths", getSelectedDataArrayPaths(), FilterParameter::RequiredArray, SIMPL_BIND_SETTER(CombineAttributeArrays, this, SelectedDataArrayPaths), SIMPL_BIND_GETTER(CombineAttributeArrays, this, SelectedDataArrayPaths), req));
   }
   parameters.push_back(StringFilterParameter::New("Combined Data", "StackedDataArrayName", getStackedDataArrayName(), FilterParameter::CreatedArray, SIMPL_BIND_SETTER(CombineAttributeArrays, this, StackedDataArrayName), SIMPL_BIND_GETTER(CombineAttributeArrays, this, StackedDataArrayName)));
   setFilterParameters(parameters);
