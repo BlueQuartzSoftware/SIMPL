@@ -477,8 +477,8 @@ class FilterParametersRWTest
         DataArraySelectionFilterParameter::RequirementType req;
         DataArraySelectionFilterParameter::Pointer fp = DataArraySelectionFilterParameter::New("Test", "ArrayPath1",
                                                                                                          getArrayPath1(), FilterParameter::Parameter,
-                                                                                                         req, SIMPL_BIND_SETTER(FilterParametersRWTest, this, ArrayPath2),
-                                                                                                         SIMPL_BIND_GETTER(FilterParametersRWTest, this, ArrayPath1));
+                                                                                                         SIMPL_BIND_SETTER(FilterParametersRWTest, this, ArrayPath2),
+                                                                                                         SIMPL_BIND_GETTER(FilterParametersRWTest, this, ArrayPath1), req);
 
         QJsonObject obj;
         fp->writeJson(obj);

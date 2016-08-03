@@ -237,9 +237,9 @@ void ConvertData::setupFilterParameters()
 
   {
     DataArraySelectionFilterParameter::RequirementType req;
-    parameters.push_back(DataArraySelectionFilterParameter::New("Attribute Array to Convert", "SelectedCellArrayPath", getSelectedCellArrayPath(), FilterParameter::RequiredArray, req,
+    parameters.push_back(DataArraySelectionFilterParameter::New("Attribute Array to Convert", "SelectedCellArrayPath", getSelectedCellArrayPath(), FilterParameter::RequiredArray,
                                                                 SIMPL_BIND_SETTER(ConvertData, this, SelectedCellArrayPath),
-                                                                SIMPL_BIND_GETTER(ConvertData, this, SelectedCellArrayPath)));
+                                                                SIMPL_BIND_GETTER(ConvertData, this, SelectedCellArrayPath), req));
   }
 
   parameters.push_back(StringFilterParameter::New("Converted Attribute Array", "OutputArrayName", getOutputArrayName(), FilterParameter::CreatedArray,

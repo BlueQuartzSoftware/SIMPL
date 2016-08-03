@@ -82,7 +82,7 @@ void ExtractComponentAsArray::setupFilterParameters()
 
   {
     DataArraySelectionFilterParameter::RequirementType req;
-    parameters.push_back(DataArraySelectionFilterParameter::New("Multicomponent Attribute Array", "SelectedArrayPath", getSelectedArrayPath(), FilterParameter::RequiredArray, req, SIMPL_BIND_SETTER(ExtractComponentAsArray, this, SelectedArrayPath), SIMPL_BIND_GETTER(ExtractComponentAsArray, this, SelectedArrayPath)));
+    parameters.push_back(DataArraySelectionFilterParameter::New("Multicomponent Attribute Array", "SelectedArrayPath", getSelectedArrayPath(), FilterParameter::RequiredArray, SIMPL_BIND_SETTER(ExtractComponentAsArray, this, SelectedArrayPath), SIMPL_BIND_GETTER(ExtractComponentAsArray, this, SelectedArrayPath), req));
   }
 
   parameters.push_back(StringFilterParameter::New("Scalar Attribute Array", "NewArrayArrayName", getNewArrayArrayName(), FilterParameter::CreatedArray, SIMPL_BIND_SETTER(ExtractComponentAsArray, this, NewArrayArrayName), SIMPL_BIND_GETTER(ExtractComponentAsArray, this, NewArrayArrayName)));

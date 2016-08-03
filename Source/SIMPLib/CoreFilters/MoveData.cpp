@@ -114,7 +114,7 @@ void MoveData::setupFilterParameters()
   }
   {
     DataArraySelectionFilterParameter::RequirementType req;
-    parameters.push_back(DataArraySelectionFilterParameter::New("Attribute Array Source", "DataArraySource", getDataArraySource(), FilterParameter::RequiredArray, req, SIMPL_BIND_SETTER(MoveData, this, DataArraySource), SIMPL_BIND_GETTER(MoveData, this, DataArraySource), 1));
+    parameters.push_back(DataArraySelectionFilterParameter::New("Attribute Array Source", "DataArraySource", getDataArraySource(), FilterParameter::RequiredArray, SIMPL_BIND_SETTER(MoveData, this, DataArraySource), SIMPL_BIND_GETTER(MoveData, this, DataArraySource), req, 1));
   }
   {
     AttributeMatrixSelectionFilterParameter::RequirementType req;
