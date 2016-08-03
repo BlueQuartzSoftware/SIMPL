@@ -94,8 +94,8 @@ void CombineAttributeMatrices::setupFilterParameters()
     dcGeomTypes.push_back(SIMPL::Defaults::AnyGeometry);
     req.amTypes = amTypes;
     req.dcGeometryTypes = dcGeomTypes;
-    parameters.push_back(AttributeMatrixSelectionFilterParameter::New("First Feature/Ensemble Attribute Matrix", "FirstAttributeMatrixPath", getFirstAttributeMatrixPath(), FilterParameter::RequiredArray, req, SIMPL_BIND_SETTER(CombineAttributeMatrices, this, FirstAttributeMatrixPath), SIMPL_BIND_GETTER(CombineAttributeMatrices, this, FirstAttributeMatrixPath)));
-    parameters.push_back(AttributeMatrixSelectionFilterParameter::New("Second Feature/Ensemble Attribute Matrix", "SecondAttributeMatrixPath", getSecondAttributeMatrixPath(), FilterParameter::RequiredArray, req, SIMPL_BIND_SETTER(CombineAttributeMatrices, this, SecondAttributeMatrixPath), SIMPL_BIND_GETTER(CombineAttributeMatrices, this, SecondAttributeMatrixPath)));
+    parameters.push_back(AttributeMatrixSelectionFilterParameter::New("First Feature/Ensemble Attribute Matrix", "FirstAttributeMatrixPath", getFirstAttributeMatrixPath(), FilterParameter::RequiredArray, SIMPL_BIND_SETTER(CombineAttributeMatrices, this, FirstAttributeMatrixPath), SIMPL_BIND_GETTER(CombineAttributeMatrices, this, FirstAttributeMatrixPath), req));
+    parameters.push_back(AttributeMatrixSelectionFilterParameter::New("Second Feature/Ensemble Attribute Matrix", "SecondAttributeMatrixPath", getSecondAttributeMatrixPath(), FilterParameter::RequiredArray, SIMPL_BIND_SETTER(CombineAttributeMatrices, this, SecondAttributeMatrixPath), SIMPL_BIND_GETTER(CombineAttributeMatrices, this, SecondAttributeMatrixPath), req));
   }
   {
     DataArraySelectionFilterParameter::RequirementType req;

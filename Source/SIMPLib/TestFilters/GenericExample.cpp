@@ -165,7 +165,7 @@ void GenericExample::setupFilterParameters()
   }
   {
     AttributeMatrixSelectionFilterParameter::RequirementType req;
-    parameters.push_back(AttributeMatrixSelectionFilterParameter::New("Attribute Matrix", "AttributeMatrixPath", getAttributeMatrixPath(), FilterParameter::Parameter, req, SIMPL_BIND_SETTER(GenericExample, this, AttributeMatrixPath), SIMPL_BIND_GETTER(GenericExample, this, AttributeMatrixPath)));
+    parameters.push_back(AttributeMatrixSelectionFilterParameter::New("Attribute Matrix", "AttributeMatrixPath", getAttributeMatrixPath(), FilterParameter::Parameter, SIMPL_BIND_SETTER(GenericExample, this, AttributeMatrixPath), SIMPL_BIND_GETTER(GenericExample, this, AttributeMatrixPath), req));
   }
 
   parameters.push_back(SeparatorFilterParameter::New("Linked Combo Box Example (1)", FilterParameter::Parameter));

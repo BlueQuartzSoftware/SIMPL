@@ -91,7 +91,7 @@ void CreateFeatureArrayFromElementArray::setupFilterParameters()
   parameters.push_back(SeparatorFilterParameter::New("Feature Data", FilterParameter::CreatedArray));
   {
     AttributeMatrixSelectionFilterParameter::RequirementType req = AttributeMatrixSelectionFilterParameter::CreateRequirement(SIMPL::AttributeMatrixType::CellFeature, SIMPL::Defaults::AnyGeometry);
-    parameters.push_back(AttributeMatrixSelectionFilterParameter::New("Feature Attribute Matrix", "CellFeatureAttributeMatrixName", getCellFeatureAttributeMatrixName(), FilterParameter::CreatedArray, req, SIMPL_BIND_SETTER(CreateFeatureArrayFromElementArray, this, CellFeatureAttributeMatrixName), SIMPL_BIND_GETTER(CreateFeatureArrayFromElementArray, this, CellFeatureAttributeMatrixName)));
+    parameters.push_back(AttributeMatrixSelectionFilterParameter::New("Feature Attribute Matrix", "CellFeatureAttributeMatrixName", getCellFeatureAttributeMatrixName(), FilterParameter::CreatedArray, SIMPL_BIND_SETTER(CreateFeatureArrayFromElementArray, this, CellFeatureAttributeMatrixName), SIMPL_BIND_GETTER(CreateFeatureArrayFromElementArray, this, CellFeatureAttributeMatrixName), req));
   }
   parameters.push_back(StringFilterParameter::New("Copied Attribute Array", "CreatedArrayName", getCreatedArrayName(), FilterParameter::CreatedArray, SIMPL_BIND_SETTER(CreateFeatureArrayFromElementArray, this, CreatedArrayName), SIMPL_BIND_GETTER(CreateFeatureArrayFromElementArray, this, CreatedArrayName)));
   setFilterParameters(parameters);

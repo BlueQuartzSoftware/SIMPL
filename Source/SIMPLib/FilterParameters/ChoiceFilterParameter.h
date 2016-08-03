@@ -67,9 +67,10 @@ class SIMPLib_EXPORT ChoiceFilterParameter : public FilterParameter
      * @return
      */
     static Pointer New(const QString& humanLabel, const QString& propertyName,
-                       const int& defaultValue, QVector<QString> choices,
-                       bool editable, Category category, SetterCallbackType setterCallback,
-                       GetterCallbackType getterCallback, int groupIndex = -1);
+                       const int& defaultValue, Category category,
+                       SetterCallbackType setterCallback, GetterCallbackType getterCallback,
+                       QVector<QString> choices, bool editable,
+                       int groupIndex = -1);
 
     virtual ~ChoiceFilterParameter();
 

@@ -91,9 +91,10 @@ void CreateAttributeMatrix::setupFilterParameters()
     choices.push_back("CellEnsemble");
     choices.push_back("MetaData");
     choices.push_back("Generic");
-    parameters.push_back(ChoiceFilterParameter::New("Attribute Matrix Type", "AttributeMatrixType", getAttributeMatrixType(), choices, false, FilterParameter::Parameter,
+    parameters.push_back(ChoiceFilterParameter::New("Attribute Matrix Type", "AttributeMatrixType", getAttributeMatrixType(), FilterParameter::Parameter,
                          SIMPL_BIND_SETTER(CreateAttributeMatrix, this, AttributeMatrixType),
-                         SIMPL_BIND_GETTER(CreateAttributeMatrix, this, AttributeMatrixType)));
+                         SIMPL_BIND_GETTER(CreateAttributeMatrix, this, AttributeMatrixType),
+                         choices, false));
   }
 
   QStringList rHeaders, cHeaders;
@@ -106,9 +107,8 @@ void CreateAttributeMatrix::setupFilterParameters()
   {
     AttributeMatrixCreationFilterParameter::RequirementType req;
     parameters.push_back(AttributeMatrixCreationFilterParameter::New("Created Attribute Matrix", "CreatedAttributeMatrix",
-                                                                     getCreatedAttributeMatrix(), FilterParameter::CreatedArray, req,
-                                                                     SIMPL_BIND_SETTER(CreateAttributeMatrix, this, CreatedAttributeMatrix),
-                                                                     SIMPL_BIND_GETTER(CreateAttributeMatrix, this, CreatedAttributeMatrix)));
+                                                                     getCreatedAttributeMatrix(), FilterParameter::CreatedArray, SIMPL_BIND_SETTER(CreateAttributeMatrix, this, CreatedAttributeMatrix),
+                                                                     SIMPL_BIND_GETTER(CreateAttributeMatrix, this, CreatedAttributeMatrix), req));
   }
 
   setFilterParameters(parameters);

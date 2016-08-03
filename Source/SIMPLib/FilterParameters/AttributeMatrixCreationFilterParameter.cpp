@@ -52,7 +52,7 @@ AttributeMatrixCreationFilterParameter::~AttributeMatrixCreationFilterParameter(
 //
 // -----------------------------------------------------------------------------
 AttributeMatrixCreationFilterParameter::Pointer AttributeMatrixCreationFilterParameter::New(const QString& humanLabel, const QString& propertyName,
-    const DataArrayPath& defaultValue, Category category, const RequirementType req, SetterCallbackType setterCallback, GetterCallbackType getterCallback, int groupIndex)
+    const DataArrayPath& defaultValue, Category category, SetterCallbackType setterCallback, GetterCallbackType getterCallback, const RequirementType req, int groupIndex)
 {
   AttributeMatrixCreationFilterParameter::Pointer ptr = AttributeMatrixCreationFilterParameter::New();
   ptr->setHumanLabel(humanLabel);

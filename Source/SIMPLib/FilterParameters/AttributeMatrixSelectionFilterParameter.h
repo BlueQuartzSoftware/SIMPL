@@ -59,8 +59,8 @@ class SIMPLib_EXPORT AttributeMatrixSelectionFilterParameter : public FilterPara
 
     static Pointer New(const QString& humanLabel, const QString& propertyName,
                        const DataArrayPath& defaultValue, Category category,
-                       const RequirementType req, SetterCallbackType setterCallback,
-                       GetterCallbackType getterCallback, int groupIndex = -1);
+                       SetterCallbackType setterCallback, GetterCallbackType getterCallback,
+                       const RequirementType req, int groupIndex = -1);
 
     virtual ~AttributeMatrixSelectionFilterParameter();
 
