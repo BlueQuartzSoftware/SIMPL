@@ -57,8 +57,8 @@ class SIMPLib_EXPORT DataContainerSelectionFilterParameter : public FilterParame
 
     static Pointer New(const QString& humanLabel, const QString& propertyName,
                        const QString& defaultValue, Category category,
-                       const RequirementType req, SetterCallbackType setterCallback,
-                       GetterCallbackType getterCallback, int groupIndex = -1);
+                       SetterCallbackType setterCallback, GetterCallbackType getterCallback,
+                       const RequirementType req, int groupIndex = -1);
 
     virtual ~DataContainerSelectionFilterParameter();
 

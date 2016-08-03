@@ -528,9 +528,9 @@ class FilterParametersRWTest
       {
         DataContainerSelectionFilterParameter::RequirementType req;
         DataContainerSelectionFilterParameter::Pointer fp = DataContainerSelectionFilterParameter::New("Test", "String1",
-                                                                             getString1(), FilterParameter::Parameter, req,
+                                                                             getString1(), FilterParameter::Parameter,
                                                                              SIMPL_BIND_SETTER(FilterParametersRWTest, this, String2),
-                                                                             SIMPL_BIND_GETTER(FilterParametersRWTest, this, String1));
+                                                                             SIMPL_BIND_GETTER(FilterParametersRWTest, this, String1), req);
 
         QJsonObject obj;
         fp->writeJson(obj);

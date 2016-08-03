@@ -88,7 +88,7 @@ void CreateImageGeometry::setupFilterParameters()
   FilterParameterVector parameters;
   {
     DataContainerSelectionFilterParameter::RequirementType req;
-    parameters.push_back(DataContainerSelectionFilterParameter::New("Data Container Destination", "SelectedDataContainer", getSelectedDataContainer(), FilterParameter::Parameter, req, SIMPL_BIND_SETTER(CreateImageGeometry, this, SelectedDataContainer), SIMPL_BIND_GETTER(CreateImageGeometry, this, SelectedDataContainer)));
+    parameters.push_back(DataContainerSelectionFilterParameter::New("Data Container Destination", "SelectedDataContainer", getSelectedDataContainer(), FilterParameter::Parameter, SIMPL_BIND_SETTER(CreateImageGeometry, this, SelectedDataContainer), SIMPL_BIND_GETTER(CreateImageGeometry, this, SelectedDataContainer), req));
   }
   parameters.push_back(IntVec3FilterParameter::New("Dimensions", "Dimensions", getDimensions(), FilterParameter::Parameter, SIMPL_BIND_SETTER(CreateImageGeometry, this, Dimensions), SIMPL_BIND_GETTER(CreateImageGeometry, this, Dimensions)));
   parameters.push_back(FloatVec3FilterParameter::New("Origin", "Origin", getOrigin(), FilterParameter::Parameter, SIMPL_BIND_SETTER(CreateImageGeometry, this, Origin), SIMPL_BIND_GETTER(CreateImageGeometry, this, Origin)));

@@ -110,7 +110,7 @@ void MoveData::setupFilterParameters()
   }
   {
     DataContainerSelectionFilterParameter::RequirementType req;
-    parameters.push_back(DataContainerSelectionFilterParameter::New("Data Container Destination", "DataContainerDestination", getDataContainerDestination(), FilterParameter::RequiredArray, req, SIMPL_BIND_SETTER(MoveData, this, DataContainerDestination), SIMPL_BIND_GETTER(MoveData, this, DataContainerDestination), 0));
+    parameters.push_back(DataContainerSelectionFilterParameter::New("Data Container Destination", "DataContainerDestination", getDataContainerDestination(), FilterParameter::RequiredArray, SIMPL_BIND_SETTER(MoveData, this, DataContainerDestination), SIMPL_BIND_GETTER(MoveData, this, DataContainerDestination), req, 0));
   }
   {
     DataArraySelectionFilterParameter::RequirementType req;

@@ -74,7 +74,7 @@ void RequiredZThickness::setupFilterParameters()
 
   {
     DataContainerSelectionFilterParameter::RequirementType req;
-    parameters.push_back(DataContainerSelectionFilterParameter::New("DataContainer", "DataContainerSelection", getDataContainerSelection(), FilterParameter::RequiredArray, req, SIMPL_BIND_SETTER(RequiredZThickness, this, DataContainerSelection), SIMPL_BIND_GETTER(RequiredZThickness, this, DataContainerSelection)));
+    parameters.push_back(DataContainerSelectionFilterParameter::New("DataContainer", "DataContainerSelection", getDataContainerSelection(), FilterParameter::RequiredArray, SIMPL_BIND_SETTER(RequiredZThickness, this, DataContainerSelection), SIMPL_BIND_GETTER(RequiredZThickness, this, DataContainerSelection), req));
   }
   parameters.push_back(IntFilterParameter::New("Minimum Z Dimension", "NumZVoxels", getNumZVoxels(), FilterParameter::Parameter, SIMPL_BIND_SETTER(RequiredZThickness, this, NumZVoxels), SIMPL_BIND_GETTER(RequiredZThickness, this, NumZVoxels), 0));  parameters.push_back(BooleanFilterParameter::New("Preflight Check", "PreflightCheck", getPreflightCheck(), FilterParameter::Parameter, SIMPL_BIND_SETTER(RequiredZThickness, this, PreflightCheck), SIMPL_BIND_GETTER(RequiredZThickness, this, PreflightCheck)));
   setFilterParameters(parameters);
