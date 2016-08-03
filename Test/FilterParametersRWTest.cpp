@@ -881,9 +881,9 @@ class FilterParametersRWTest
 
       {
         ShapeTypeSelectionFilterParameter::Pointer fp = ShapeTypeSelectionFilterParameter::New("Test", "String1",
-                                                                             "", "String1", "", FilterParameter::Parameter,
+                                                                             "", FilterParameter::Parameter,
                                                                              SIMPL_BIND_SETTER(FilterParametersRWTest, this, UInt32Vector_2),
-                                                                             SIMPL_BIND_GETTER(FilterParametersRWTest, this, UInt32Vector_1));
+                                                                             SIMPL_BIND_GETTER(FilterParametersRWTest, this, UInt32Vector_1), "String1", "");
 
         QJsonObject obj;
         fp->writeJson(obj);

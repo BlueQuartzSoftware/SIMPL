@@ -51,11 +51,9 @@ public:
   typedef std::function<UInt32Vector_t(void)> GetterCallbackType;
 
     static Pointer New(const QString& humanLabel, const QString& propertyName,
-     const QString& defaultValue,
-    const QString& phaseTypeCountProperty,
-    const QString& phaseTypeArrayPathProperty,
-    Category category, SetterCallbackType setterCallback,
-    GetterCallbackType getterCallback, int groupIndex = -1);
+     const QString& defaultValue, Category category, SetterCallbackType setterCallback,
+     GetterCallbackType getterCallback, const QString& phaseTypeCountProperty,
+    const QString& phaseTypeArrayPathProperty, int groupIndex = -1);
 
   virtual ~ShapeTypeSelectionFilterParameter();
 

@@ -54,10 +54,10 @@ ShapeTypeSelectionFilterParameter::~ShapeTypeSelectionFilterParameter()
 //
 // -----------------------------------------------------------------------------
 ShapeTypeSelectionFilterParameter::Pointer ShapeTypeSelectionFilterParameter::New(const QString& humanLabel, const QString& propertyName, const QString& defaultValue,
-  const QString& phaseTypeCountProperty,
-  const QString& phaseTypeArrayPathProperty,
   Category category, SetterCallbackType setterCallback,
-  GetterCallbackType getterCallback, int groupIndex)
+  GetterCallbackType getterCallback,
+  const QString& phaseTypeCountProperty,
+  const QString& phaseTypeArrayPathProperty, int groupIndex)
 {
   ShapeTypeSelectionFilterParameter::Pointer ptr = ShapeTypeSelectionFilterParameter::New();
   ptr->setHumanLabel(humanLabel);
