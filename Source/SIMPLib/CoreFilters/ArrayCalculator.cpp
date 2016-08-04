@@ -184,7 +184,7 @@ void ArrayCalculator::setupFilterParameters()
   FilterParameterVector parameters;
   {
     AttributeMatrixSelectionFilterParameter::RequirementType req = AttributeMatrixSelectionFilterParameter::CreateRequirement(SIMPL::Defaults::AnyAttributeMatrix, SIMPL::Defaults::AnyGeometry);
-    parameters.push_back(AttributeMatrixSelectionFilterParameter::New("Cell Attribute Matrix", "SelectedAttributeMatrix", getSelectedAttributeMatrix(), FilterParameter::Parameter, SIMPL_BIND_SETTER(ArrayCalculator, this, SelectedAttributeMatrix), SIMPL_BIND_GETTER(ArrayCalculator, this, SelectedAttributeMatrix), req));
+    parameters.push_back(SIMPL_NEW_AM_SELECTION_FP("Cell Attribute Matrix", SelectedAttributeMatrix, FilterParameter::Parameter, ArrayCalculator, req));
   }
 
   parameters.push_back(CalculatorFilterParameter::New("Infix Expression", "InfixEquation", getInfixEquation(), FilterParameter::Parameter, SIMPL_BIND_SETTER(ArrayCalculator, this, InfixEquation), SIMPL_BIND_GETTER(ArrayCalculator, this, InfixEquation)));

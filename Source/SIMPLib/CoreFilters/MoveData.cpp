@@ -106,7 +106,7 @@ void MoveData::setupFilterParameters()
 
   {
     AttributeMatrixSelectionFilterParameter::RequirementType req;
-    parameters.push_back(AttributeMatrixSelectionFilterParameter::New("Attribute Matrix Source", "AttributeMatrixSource", getAttributeMatrixSource(), FilterParameter::RequiredArray, SIMPL_BIND_SETTER(MoveData, this, AttributeMatrixSource), SIMPL_BIND_GETTER(MoveData, this, AttributeMatrixSource), req, 0));
+    parameters.push_back(SIMPL_NEW_AM_SELECTION_FP("Attribute Matrix Source", AttributeMatrixSource, FilterParameter::RequiredArray, MoveData, req, 0));
   }
   {
     DataContainerSelectionFilterParameter::RequirementType req;
@@ -118,7 +118,7 @@ void MoveData::setupFilterParameters()
   }
   {
     AttributeMatrixSelectionFilterParameter::RequirementType req;
-    parameters.push_back(AttributeMatrixSelectionFilterParameter::New("Attribute Matrix Destination", "AttributeMatrixDestination", getAttributeMatrixDestination(), FilterParameter::RequiredArray, SIMPL_BIND_SETTER(MoveData, this, AttributeMatrixDestination), SIMPL_BIND_GETTER(MoveData, this, AttributeMatrixDestination), req, 1));
+    parameters.push_back(SIMPL_NEW_AM_SELECTION_FP("Attribute Matrix Destination", AttributeMatrixDestination, FilterParameter::RequiredArray, MoveData, req, 1));
   }
 
   setFilterParameters(parameters);
