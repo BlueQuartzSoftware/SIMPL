@@ -46,8 +46,7 @@ void Filt0::setupFilterParameters()
   }
   /*  For a Floating point value use this code*/
   {
-    DoubleFilterParameter::Pointer parameter = DoubleFilterParameter::New("Float Value", "Filt0_Float", 0.0, FilterParameter::Parameter, SIMPL_BIND_SETTER(Filt0, this, Filt0_Float), SIMPL_BIND_GETTER(Filt0, this, Filt0_Float));
-    parameters.push_back(parameter);
+    parameters.push_back(SIMPL_NEW_DOUBLE_FP("Float Value", Filt0_Float, FilterParameter::Parameter, Filt0));
   }
 
 
@@ -150,8 +149,7 @@ void Filt1::setupFilterParameters()
   }
   /*  For a Floating point value use this code*/
   {
-    DoubleFilterParameter::Pointer parameter = DoubleFilterParameter::New("Float Value", "Filt1_Float", 0.0, FilterParameter::Parameter, SIMPL_BIND_SETTER(Filt1, this, Filt1_Float), SIMPL_BIND_GETTER(Filt1, this, Filt1_Float));
-    parameters.push_back(parameter);
+    parameters.push_back(SIMPL_NEW_DOUBLE_FP("Float Value", Filt1_Float, FilterParameter::Parameter, Filt1));
   }
 
 

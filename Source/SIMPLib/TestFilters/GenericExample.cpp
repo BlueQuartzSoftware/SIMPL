@@ -155,7 +155,7 @@ void GenericExample::setupFilterParameters()
     QStringList linkedProps;
     linkedProps << "Bool2" << "Double2";
     parameters.push_back(LinkedBooleanFilterParameter::New("Bool1", "Bool1", getBool1(), FilterParameter::Parameter, SIMPL_BIND_SETTER(GenericExample, this, Bool1), SIMPL_BIND_GETTER(GenericExample, this, Bool1), linkedProps));
-    parameters.push_back(DoubleFilterParameter::New("Double 2", "Double2", getDouble2(), FilterParameter::Parameter, SIMPL_BIND_SETTER(GenericExample, this, Double2), SIMPL_BIND_GETTER(GenericExample, this, Double2)));
+    parameters.push_back(SIMPL_NEW_DOUBLE_FP("Double 2", Double2, FilterParameter::Parameter, GenericExample));
   }
 
   {
@@ -192,7 +192,7 @@ void GenericExample::setupFilterParameters()
 
     /*  For an Integer use this code*/
     parameters.push_back(SIMPL_NEW_INTEGER_FP("Max Iterations", MaxIterations, FilterParameter::Parameter, GenericExample, 0));    /*  For a Floating point value use this code*/
-    parameters.push_back(DoubleFilterParameter::New("Misorientation Tolerance", "MisorientationTolerance", getMisorientationTolerance(), FilterParameter::Parameter, SIMPL_BIND_SETTER(GenericExample, this, MisorientationTolerance), SIMPL_BIND_GETTER(GenericExample, this, MisorientationTolerance), 1));
+    parameters.push_back(SIMPL_NEW_DOUBLE_FP("Misorientation Tolerance", MisorientationTolerance, FilterParameter::Parameter, GenericExample, 1));
     /*   For an input file use this code*/
     //parameters.push_back(InputFileFilterParameter::New("Input File", "InputFile", getInputFile(), FilterParameter::Parameter, SIMPL_BIND_SETTER(GenericExample, this, InputFile), SIMPL_BIND_GETTER(GenericExample, this, InputFile), "", "", 1));
     /*   For an input path use this code*/
