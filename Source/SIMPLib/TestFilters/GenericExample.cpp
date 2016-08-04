@@ -191,7 +191,7 @@ void GenericExample::setupFilterParameters()
     parameters.push_back(parameter);
 
     /*  For an Integer use this code*/
-    parameters.push_back(IntFilterParameter::New("Max Iterations", "MaxIterations", getMaxIterations(), FilterParameter::Parameter, SIMPL_BIND_SETTER(GenericExample, this, MaxIterations), SIMPL_BIND_GETTER(GenericExample, this, MaxIterations), 0));    /*  For a Floating point value use this code*/
+    parameters.push_back(SIMPL_NEW_INTEGER_FP("Max Iterations", MaxIterations, FilterParameter::Parameter, GenericExample, 0));    /*  For a Floating point value use this code*/
     parameters.push_back(DoubleFilterParameter::New("Misorientation Tolerance", "MisorientationTolerance", getMisorientationTolerance(), FilterParameter::Parameter, SIMPL_BIND_SETTER(GenericExample, this, MisorientationTolerance), SIMPL_BIND_GETTER(GenericExample, this, MisorientationTolerance), 1));
     /*   For an input file use this code*/
     //parameters.push_back(InputFileFilterParameter::New("Input File", "InputFile", getInputFile(), FilterParameter::Parameter, SIMPL_BIND_SETTER(GenericExample, this, InputFile), SIMPL_BIND_GETTER(GenericExample, this, InputFile), "", "", 1));

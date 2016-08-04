@@ -78,7 +78,7 @@ void ExtractComponentAsArray::setupFilterParameters()
 {
   FilterParameterVector parameters;
 
-  parameters.push_back(IntFilterParameter::New("Component Number to Extract", "CompNumber", getCompNumber(), FilterParameter::Parameter, SIMPL_BIND_SETTER(ExtractComponentAsArray, this, CompNumber), SIMPL_BIND_GETTER(ExtractComponentAsArray, this, CompNumber)));
+  parameters.push_back(SIMPL_NEW_INTEGER_FP("Component Number to Extract", CompNumber, FilterParameter::Parameter, ExtractComponentAsArray));
 
   {
     DataArraySelectionFilterParameter::RequirementType req;

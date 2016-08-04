@@ -692,7 +692,7 @@ class FilterParametersRWTest
         IntFilterParameter::Pointer fp = IntFilterParameter::New("Test", "Int1",
                                                                  getInt1(), FilterParameter::Parameter,
                                                                  SIMPL_BIND_SETTER(FilterParametersRWTest, this, Int2),
-                                                                 SIMPL_BIND_GETTER(FilterParametersRWTest, this, Int1));
+                                                                 SIMPL_BIND_GETTER(FilterParametersRWTest, this, Int1));        
 
         QJsonObject obj;
         fp->writeJson(obj);
