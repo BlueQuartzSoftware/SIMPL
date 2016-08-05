@@ -39,7 +39,7 @@ void RawBinaryWriter::setupFilterParameters()
   * options for each class type. The programmer can put the entire invocation into
   * a single line if they want. For example:
   *
-  *   parameters.push_back(FloatVec3FilterParameter::New("Reference Direction", "ReferenceDir", getReferenceDir(), FilterParameter::Uncategorized, SIMPL_BIND_SETTER(RawBinaryWriter, this, ReferenceDir), SIMPL_BIND_GETTER(RawBinaryWriter, this, ReferenceDir)));
+  *   parameters.push_back(SIMPL_NEW_FLOAT_VEC3_FP("Reference Direction", ReferenceDir, FilterParameter::Uncategorized, RawBinaryWriter));
   * or the programmer can create a FilterParameter like usual C++ codes:
   * {
   *  FilterParameter::Pointer parameter = FilterParameter::New();

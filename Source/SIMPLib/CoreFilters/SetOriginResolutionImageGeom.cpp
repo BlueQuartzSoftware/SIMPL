@@ -136,13 +136,13 @@ void SetOriginResolutionImageGeom::setupFilterParameters()
 
   QStringList linkedProps("Origin");
   parameters.push_back(LinkedBooleanFilterParameter::New("Change Origin", "ChangeOrigin", getChangeOrigin(), FilterParameter::Parameter, SIMPL_BIND_SETTER(SetOriginResolutionImageGeom, this, ChangeOrigin), SIMPL_BIND_GETTER(SetOriginResolutionImageGeom, this, ChangeOrigin), linkedProps));
-  parameters.push_back(FloatVec3FilterParameter::New("Origin", "Origin", getOrigin(), FilterParameter::Parameter, SIMPL_BIND_SETTER(SetOriginResolutionImageGeom, this, Origin), SIMPL_BIND_GETTER(SetOriginResolutionImageGeom, this, Origin)));
+  parameters.push_back(SIMPL_NEW_FLOAT_VEC3_FP("Origin", Origin, FilterParameter::Parameter, SetOriginResolutionImageGeom));
 
 
   linkedProps.clear();
   linkedProps << "Resolution";
   parameters.push_back(LinkedBooleanFilterParameter::New("Change Resolution", "ChangeResolution", getChangeResolution(), FilterParameter::Parameter, SIMPL_BIND_SETTER(SetOriginResolutionImageGeom, this, ChangeResolution), SIMPL_BIND_GETTER(SetOriginResolutionImageGeom, this, ChangeResolution), linkedProps));
-  parameters.push_back(FloatVec3FilterParameter::New("Resolution", "Resolution", getResolution(), FilterParameter::Parameter, SIMPL_BIND_SETTER(SetOriginResolutionImageGeom, this, Resolution), SIMPL_BIND_GETTER(SetOriginResolutionImageGeom, this, Resolution)));
+  parameters.push_back(SIMPL_NEW_FLOAT_VEC3_FP("Resolution", Resolution, FilterParameter::Parameter, SetOriginResolutionImageGeom));
 
 
   setFilterParameters(parameters);

@@ -126,7 +126,7 @@ void ScaleVolume::setupFilterParameters()
 {
   FilterParameterVector parameters;
 
-  parameters.push_back(FloatVec3FilterParameter::New("Scaling Factor", "ScaleFactor", getScaleFactor(), FilterParameter::Parameter, SIMPL_BIND_SETTER(ScaleVolume, this, ScaleFactor), SIMPL_BIND_GETTER(ScaleVolume, this, ScaleFactor)));
+  parameters.push_back(SIMPL_NEW_FLOAT_VEC3_FP("Scaling Factor", ScaleFactor, FilterParameter::Parameter, ScaleVolume));
 
 
   QStringList linkedProps("DataContainerName");

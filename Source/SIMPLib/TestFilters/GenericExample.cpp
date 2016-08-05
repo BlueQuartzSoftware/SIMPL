@@ -230,7 +230,7 @@ void GenericExample::setupFilterParameters()
       parameters.push_back(SIMPL_NEW_DA_CREATION_FP("Created Data Array", CreatedDataArray, FilterParameter::Parameter, GenericExample, req, 0));
     }
     /* Display a group of 3 text boxes to collect 3 float values */
-    parameters.push_back(FloatVec3FilterParameter::New("Origin", "Origin", getOrigin(), FilterParameter::Parameter, SIMPL_BIND_SETTER(GenericExample, this, Origin), SIMPL_BIND_GETTER(GenericExample, this, Origin), 1));
+    parameters.push_back(SIMPL_NEW_FLOAT_VEC3_FP("Origin", Origin, FilterParameter::Parameter, GenericExample, 1));
 
     /* Display the AxisAngleWidget to collect Axis-Angle pairs from the user */
     parameters.push_back(SIMPL_NEW_AXISANGLE_FP("Crystal Rotations", CrystalSymmetryRotations, FilterParameter::Parameter, GenericExample, 2));
