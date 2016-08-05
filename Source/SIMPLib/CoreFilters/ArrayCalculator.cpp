@@ -191,7 +191,7 @@ void ArrayCalculator::setupFilterParameters()
 
   {
     DataArrayCreationFilterParameter::RequirementType req = DataArrayCreationFilterParameter::CreateRequirement(SIMPL::Defaults::AnyAttributeMatrix, SIMPL::Defaults::AnyGeometry);
-    parameters.push_back(DataArrayCreationFilterParameter::New("Calculated Array", "CalculatedArray", getCalculatedArray(), FilterParameter::CreatedArray, SIMPL_BIND_SETTER(ArrayCalculator, this, CalculatedArray), SIMPL_BIND_GETTER(ArrayCalculator, this, CalculatedArray), req));
+    parameters.push_back(SIMPL_NEW_DA_CREATION_FP("Calculated Array", CalculatedArray, FilterParameter::CreatedArray, ArrayCalculator, req));
   }
 
   setFilterParameters(parameters);

@@ -227,7 +227,7 @@ void GenericExample::setupFilterParameters()
 
     {
       DataArrayCreationFilterParameter::RequirementType req;
-      parameters.push_back(DataArrayCreationFilterParameter::New("Created Data Array", "CreatedDataArray", getCreatedDataArray(), FilterParameter::Parameter, SIMPL_BIND_SETTER(GenericExample, this, CreatedDataArray), SIMPL_BIND_GETTER(GenericExample, this, CreatedDataArray), req, 0));
+      parameters.push_back(SIMPL_NEW_DA_CREATION_FP("Created Data Array", CreatedDataArray, FilterParameter::Parameter, GenericExample, req, 0));
     }
     /* Display a group of 3 text boxes to collect 3 float values */
     parameters.push_back(FloatVec3FilterParameter::New("Origin", "Origin", getOrigin(), FilterParameter::Parameter, SIMPL_BIND_SETTER(GenericExample, this, Origin), SIMPL_BIND_GETTER(GenericExample, this, Origin), 1));

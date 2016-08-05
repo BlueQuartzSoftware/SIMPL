@@ -237,7 +237,7 @@ void RawBinaryReader::setupFilterParameters()
   parameters.push_back(SIMPL_NEW_INTEGER_FP("Skip Header Bytes", SkipHeaderBytes, FilterParameter::Parameter, RawBinaryReader));
   {
     DataArrayCreationFilterParameter::RequirementType req;
-    parameters.push_back(DataArrayCreationFilterParameter::New("Output Attribute Array", "CreatedAttributeArrayPath", getCreatedAttributeArrayPath(), FilterParameter::CreatedArray, SIMPL_BIND_SETTER(RawBinaryReader, this, CreatedAttributeArrayPath), SIMPL_BIND_GETTER(RawBinaryReader, this, CreatedAttributeArrayPath), req));
+    parameters.push_back(SIMPL_NEW_DA_CREATION_FP("Output Attribute Array", CreatedAttributeArrayPath, FilterParameter::CreatedArray, RawBinaryReader, req));
   }
   setFilterParameters(parameters);
 }
