@@ -88,6 +88,11 @@ FileListInfo_t;
 
 Q_DECLARE_METATYPE(FileListInfo_t)
 
+#define SIMPL_NEW_FILELISTINFO_FP(...) \
+  _FP_GET_OVERRIDE(__VA_ARGS__, \
+  SIMPL_NEW_FP_9, SIMPL_NEW_FP_8, SIMPL_NEW_FP_7, SIMPL_NEW_FP_6, SIMPL_NEW_FP_5, SIMPL_NEW_FP_4)\
+  (FileListInfoFilterParameter, __VA_ARGS__)
+
 class SIMPLib_EXPORT FileListInfoFilterParameter : public FilterParameter
 {
   public:
