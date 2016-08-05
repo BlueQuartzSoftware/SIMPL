@@ -77,11 +77,11 @@ void ConditionalSetValue::setupFilterParameters()
   parameters.push_back(SIMPL_NEW_DOUBLE_FP("New Value", ReplaceValue, FilterParameter::Parameter, ConditionalSetValue));
   {
     DataArraySelectionFilterParameter::RequirementType req = DataArraySelectionFilterParameter::CreateCategoryRequirement(SIMPL::TypeNames::Bool, 1, SIMPL::AttributeMatrixObjectType::Any);
-    parameters.push_back(DataArraySelectionFilterParameter::New("Conditional Array", "ConditionalArrayPath", getConditionalArrayPath(), FilterParameter::RequiredArray, SIMPL_BIND_SETTER(ConditionalSetValue, this, ConditionalArrayPath), SIMPL_BIND_GETTER(ConditionalSetValue, this, ConditionalArrayPath), req));
+    parameters.push_back(SIMPL_NEW_DA_SELECTION_FP("Conditional Array", ConditionalArrayPath, FilterParameter::RequiredArray, ConditionalSetValue, req));
   }
   {
     DataArraySelectionFilterParameter::RequirementType req = DataArraySelectionFilterParameter::CreateCategoryRequirement(SIMPL::Defaults::AnyPrimitive, 1, SIMPL::AttributeMatrixObjectType::Any);
-    parameters.push_back(DataArraySelectionFilterParameter::New("Attribute Array", "SelectedArrayPath", getSelectedArrayPath(), FilterParameter::RequiredArray, SIMPL_BIND_SETTER(ConditionalSetValue, this, SelectedArrayPath), SIMPL_BIND_GETTER(ConditionalSetValue, this, SelectedArrayPath), req));
+    parameters.push_back(SIMPL_NEW_DA_SELECTION_FP("Attribute Array", SelectedArrayPath, FilterParameter::RequiredArray, ConditionalSetValue, req));
   }
   setFilterParameters(parameters);
 }

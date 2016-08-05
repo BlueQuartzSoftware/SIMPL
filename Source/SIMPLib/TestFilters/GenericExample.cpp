@@ -147,7 +147,7 @@ void GenericExample::setupFilterParameters()
 
   {
     DataArraySelectionFilterParameter::RequirementType req;
-    parameters.push_back(DataArraySelectionFilterParameter::New("Feature Ids", "FeatureIdsArrayPath", getFeatureIdsArrayPath(), FilterParameter::Parameter, SIMPL_BIND_SETTER(GenericExample, this, FeatureIdsArrayPath), SIMPL_BIND_GETTER(GenericExample, this, FeatureIdsArrayPath), req));
+    parameters.push_back(SIMPL_NEW_DA_SELECTION_FP("Feature Ids", FeatureIdsArrayPath, FilterParameter::Parameter, GenericExample, req));
   }
 
 

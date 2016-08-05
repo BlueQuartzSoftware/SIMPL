@@ -73,7 +73,7 @@ void RenameAttributeArray::setupFilterParameters()
   FilterParameterVector parameters;
 
   DataArraySelectionFilterParameter::RequirementType req;
-  parameters.push_back(DataArraySelectionFilterParameter::New("Attribute Array to Rename", "SelectedArrayPath", getSelectedArrayPath(), FilterParameter::RequiredArray, SIMPL_BIND_SETTER(RenameAttributeArray, this, SelectedArrayPath), SIMPL_BIND_GETTER(RenameAttributeArray, this, SelectedArrayPath), req));
+  parameters.push_back(SIMPL_NEW_DA_SELECTION_FP("Attribute Array to Rename", SelectedArrayPath, FilterParameter::RequiredArray, RenameAttributeArray, req));
 
   parameters.push_back(StringFilterParameter::New("New Attribute Array Name", "NewArrayName", getNewArrayName(), FilterParameter::Parameter, SIMPL_BIND_SETTER(RenameAttributeArray, this, NewArrayName), SIMPL_BIND_GETTER(RenameAttributeArray, this, NewArrayName)));
 

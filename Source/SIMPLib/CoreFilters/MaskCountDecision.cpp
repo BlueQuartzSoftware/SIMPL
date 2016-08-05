@@ -71,7 +71,7 @@ void MaskCountDecision::setupFilterParameters()
 {
   FilterParameterVector parameters = getFilterParameters();
   DataArraySelectionFilterParameter::RequirementType req = DataArraySelectionFilterParameter::CreateRequirement(SIMPL::TypeNames::Bool, 1, SIMPL::Defaults::AnyAttributeMatrix, SIMPL::Defaults::AnyGeometry);
-  parameters.push_back(DataArraySelectionFilterParameter::New("Mask", "MaskArrayPath", getMaskArrayPath(), FilterParameter::RequiredArray, SIMPL_BIND_SETTER(MaskCountDecision, this, MaskArrayPath), SIMPL_BIND_GETTER(MaskCountDecision, this, MaskArrayPath), req));
+  parameters.push_back(SIMPL_NEW_DA_SELECTION_FP("Mask", MaskArrayPath, FilterParameter::RequiredArray, MaskCountDecision, req));
   parameters.push_back(SIMPL_NEW_INTEGER_FP("Number of True Instances", NumberOfTrues, FilterParameter::Parameter, MaskCountDecision, 0));  setFilterParameters(parameters);
 }
 
