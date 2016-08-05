@@ -40,6 +40,11 @@
 
 #include "SIMPLib/FilterParameters/FilterParameter.h"
 
+#define SIMPL_NEW_INPUT_PATH_FP(...) \
+  _FP_GET_OVERRIDE(__VA_ARGS__, \
+  SIMPL_NEW_FP_9, SIMPL_NEW_FP_8, SIMPL_NEW_FP_7, SIMPL_NEW_FP_6, SIMPL_NEW_FP_5, SIMPL_NEW_FP_4)\
+  (InputPathFilterParameter, __VA_ARGS__)
+
 class SIMPLib_EXPORT InputPathFilterParameter : public FilterParameter
 {
 public:

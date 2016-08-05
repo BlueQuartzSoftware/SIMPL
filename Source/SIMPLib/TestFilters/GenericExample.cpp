@@ -196,7 +196,7 @@ void GenericExample::setupFilterParameters()
     /*   For an input file use this code*/
     //parameters.push_back(SIMPL_NEW_INPUT_FILE_FP("Input File", InputFile, FilterParameter::Parameter, GenericExample, "", "", 1));
     /*   For an input path use this code*/
-    //parameters.push_back(InputPathFilterParameter::New("Input Path", "InputPath", getInputPath(), FilterParameter::Parameter, SIMPL_BIND_SETTER(GenericExample, this, InputPath), SIMPL_BIND_GETTER(GenericExample, this, InputPath), "", "", 2));
+    //parameters.push_back(SIMPL_NEW_INPUT_PATH_FP("Input Path", InputPath, FilterParameter::Parameter, GenericExample, "", "", 2));
   }
 
 
