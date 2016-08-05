@@ -246,7 +246,7 @@ void GenericExample::setupFilterParameters()
 
   {
     MultiDataArraySelectionFilterParameter::RequirementType req;
-    parameters.push_back(MultiDataArraySelectionFilterParameter::New("Multi Data Array Test", "SelectedMultiArrayPaths", paths, FilterParameter::Parameter, SIMPL_BIND_SETTER(GenericExample, this, SelectedMultiArrayPaths), SIMPL_BIND_GETTER(GenericExample, this, SelectedMultiArrayPaths), req, 0));
+    parameters.push_back(SIMPL_NEW_MDA_SELECTION_FP("Multi Data Array Test", SelectedMultiArrayPaths, FilterParameter::Parameter, GenericExample, req, 0));
   }
 
   setFilterParameters(parameters);
