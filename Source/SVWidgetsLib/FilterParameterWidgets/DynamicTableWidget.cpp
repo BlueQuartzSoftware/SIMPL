@@ -478,9 +478,9 @@ void DynamicTableWidget::populateTable()
     }
     else if (data.isEmpty())  // If there was nothing in the filter, use the defaults
     {
-      data.setTableData(m_FilterParameter->getDefaultTable());
-      data.setRowHeaders(m_FilterParameter->getRowHeaders());
-      data.setColHeaders(m_FilterParameter->getColumnHeaders());
+      data.setTableData(m_FilterParameter->getDefaultTableData().getTableData());
+      data.setRowHeaders(m_FilterParameter->getDefaultTableData().getRowHeaders());
+      data.setColHeaders(m_FilterParameter->getDefaultTableData().getColHeaders());
 
       // Populate table with default values
       for (int row = 0; row < data.getNumRows(); row++)

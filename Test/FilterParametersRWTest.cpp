@@ -573,10 +573,9 @@ class FilterParametersRWTest
 
       {
         DynamicTableFilterParameter::Pointer fp = DynamicTableFilterParameter::New("Test", "DynamicData1",
-                                                                             std::vector<std::vector<double> >(), FilterParameter::Parameter,
+                                                                             DynamicTableData(), FilterParameter::Parameter,
                                                                              SIMPL_BIND_SETTER(FilterParametersRWTest, this, DynamicData2),
-                                                                             SIMPL_BIND_GETTER(FilterParametersRWTest, this, DynamicData1),
-                                                                             QStringList(), QStringList());
+                                                                             SIMPL_BIND_GETTER(FilterParametersRWTest, this, DynamicData1));
 
         QJsonObject obj;
         fp->writeJson(obj);

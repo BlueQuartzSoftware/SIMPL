@@ -41,6 +41,11 @@
 #include "SIMPLib/FilterParameters/FilterParameter.h"
 #include "SIMPLib/FilterParameters/DynamicTableData.h"
 
+#define SIMPL_NEW_DYN_TABLE_FP(...) \
+  _FP_GET_OVERRIDE(__VA_ARGS__, \
+  SIMPL_NEW_FP_9, SIMPL_NEW_FP_8, SIMPL_NEW_FP_7, SIMPL_NEW_FP_6, SIMPL_NEW_FP_5, SIMPL_NEW_FP_4)\
+  (DynamicTableFilterParameter, __VA_ARGS__)
+
 class SIMPLib_EXPORT DynamicTableFilterParameter : public FilterParameter
 {
   public:
@@ -52,9 +57,8 @@ class SIMPLib_EXPORT DynamicTableFilterParameter : public FilterParameter
     typedef std::function<DynamicTableData(void)> GetterCallbackType;
 
     static Pointer New(const QString& humanLabel, const QString& propertyName,
-                       std::vector<std::vector<double> > defaultTable, FilterParameter::Category category,
+                       DynamicTableData defaultTableData, FilterParameter::Category category,
                        SetterCallbackType setterCallback, GetterCallbackType getterCallback,
-                       QStringList rHeaders, QStringList cHeaders,
                        bool isRowsDynamic = true, bool isColsDynamic = true,
                        int minRowCount = 0, int minColCount = 0, int groupIndex = -1);
 
@@ -62,9 +66,7 @@ class SIMPLib_EXPORT DynamicTableFilterParameter : public FilterParameter
 
     SIMPL_INSTANCE_PROPERTY(int, DefaultRowCount)
     SIMPL_INSTANCE_PROPERTY(int, DefaultColCount)
-    SIMPL_INSTANCE_PROPERTY(QStringList, ColumnHeaders)
-    SIMPL_INSTANCE_PROPERTY(QStringList, RowHeaders)
-    SIMPL_INSTANCE_PROPERTY(std::vector<std::vector<double> >, DefaultTable)
+    SIMPL_INSTANCE_PROPERTY(DynamicTableData, DefaultTableData)
     SIMPL_INSTANCE_PROPERTY(bool, AreRowsDynamic)
     SIMPL_INSTANCE_PROPERTY(bool, AreColsDynamic)
     SIMPL_INSTANCE_PROPERTY(int, MinRowCount)
