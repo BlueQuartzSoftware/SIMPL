@@ -34,10 +34,13 @@
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 #include "FilterParameterWidget.h"
 
-#include <QtWidgets/QApplication>
 #include <QtCore/QTimer>
 #include <QtCore/QPropertyAnimation>
+
 #include <QtWidgets/QGraphicsOpacityEffect>
+#include <QtWidgets/QApplication>
+#include <QtWidgets/QMenu>
+#include <QtWidgets/QDesktopWidget>
 
 #include "SIMPLib/Common/AbstractFilter.h"
 #include "SIMPLib/FilterParameters/FilterParameter.h"
@@ -157,6 +160,36 @@ void FilterParameterWidget::fadeInWidget(QWidget* widget)
 // -----------------------------------------------------------------------------
 void FilterParameterWidget::setupGui()
 {
+
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+QPoint FilterParameterWidget::adjustedMenuPosition(QPushButton* pushButton)
+{
+
+  QSize menuSize = pushButton->menu()->sizeHint();
+  QPoint point = QCursor::pos();
+  point.setX(QCursor::pos().x() - menuSize.width() / 2);
+
+  // If the menu is going to go off the screen in the X-axis, reposition it until it's completely on the screen
+  while (point.x() + menuSize.width() > QApplication::desktop()->geometry().width())
+  {
+    point.setX(point.x() - 1);
+  }
+
+  QPoint localButtonCoords = pushButton->geometry().bottomLeft();
+  QPoint globalButtonCoords = mapToGlobal(localButtonCoords);
+  point.setY(globalButtonCoords.y());
+
+  // If the menu is going to go off the screen in the Y-axis, reposition it until it's completely on the screen
+  while (point.y() + menuSize.height() > QApplication::desktop()->geometry().height())
+  {
+    point.setY(point.y() - 1);
+  }
+
+  return point;
 
 }
 

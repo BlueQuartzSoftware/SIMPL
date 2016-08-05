@@ -56,6 +56,7 @@
 
 class QComboBox;
 class QLabel;
+class QSignalMapper;
 
 /**
 * @brief
@@ -92,6 +93,8 @@ class SVWidgetsLib_EXPORT PhaseTypeSelectionWidget : public FilterParameterWidge
      */
     QString checkStringValues(QString current, QString filtDcName);
 
+    bool eventFilter(QObject* obj, QEvent* event);
+
   public slots:
     void beforePreflight();
     void afterPreflight();
@@ -99,19 +102,16 @@ class SVWidgetsLib_EXPORT PhaseTypeSelectionWidget : public FilterParameterWidge
 
     void phaseTypeComboBoxChanged(int index);
 
-
-    void on_dataContainerCombo_currentIndexChanged(int index);
-
-    void on_attributeMatrixCombo_currentIndexChanged(int index);
+    void attributeMatrixSelected(QString path);
 
   protected:
     void updatePhaseComboBoxes();
 
-    void populateComboBoxes();
-    void populateAttributeMatrixList();
-    DataContainerArrayProxy generateDCAProxy();
-    void setSelectedPath(QString dcName, QString attrMatName, QString attrArrName);
-    void selectDefaultPath();
+    /**
+     * @brief createSelectionMenu
+     */
+    void createSelectionMenu();
+
     void resetPhaseComboBoxes();
 
 
@@ -122,10 +122,9 @@ class SVWidgetsLib_EXPORT PhaseTypeSelectionWidget : public FilterParameterWidge
   private:
     bool              m_DidCausePreflight;
 
-//    QList<QLabel*>              m_PhaseTypeLabels;
-//    QList<QComboBox*>           m_PhaseTypeCombos;
+    QSignalMapper*  m_MenuMapper;
 
-    DataContainerArrayProxy m_DcaProxy;
+    DataArrayPath  m_DefaultPath;
 
     PhaseTypeSelectionFilterParameter* m_FilterParameter;
 

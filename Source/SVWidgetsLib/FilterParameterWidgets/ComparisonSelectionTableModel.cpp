@@ -287,7 +287,9 @@ bool ComparisonSelectionTableModel::setData(const QModelIndex& index, const QVar
 // -----------------------------------------------------------------------------
 bool ComparisonSelectionTableModel::insertRows(int row, int count, const QModelIndex& index)
 {
-  if (m_PossibleFeatures.size() < 1) { return false;}
+  if (m_PossibleFeatures.size() < 1) {
+    return false;
+  }
   QString featureName = m_PossibleFeatures.at(0);
   float featureValue = 0.0f;
   QString featureOperator = ">";

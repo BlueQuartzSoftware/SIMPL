@@ -41,7 +41,7 @@
 #include <QtCore/QObject>
 #include <QtCore/QPointer>
 
-
+#include <QtWidgets/QPushButton>
 #include <QtWidgets/QWidget>
 #include <QtWidgets/QFrame>
 
@@ -50,10 +50,13 @@
 #include "SIMPLib/SIMPLib.h"
 #include "SIMPLib/Common/SIMPLibSetGetMacros.h"
 
-
 #include "SVWidgetsLib/SVWidgetsLib.h"
 #include "SVWidgetsLib/FilterParameterWidgets/FilterParameterWidget.h"
 
+namespace Detail
+{
+  const QString Delimiter(" / ");
+}
 
 class AbstractFilter;
 class FilterParameter;
@@ -92,6 +95,9 @@ class SVWidgetsLib_EXPORT FilterParameterWidget : public QFrame
 
     void fadeWidget(QWidget* widget, bool in);
     void animationFinished();
+
+  protected:
+    QPoint adjustedMenuPosition(QPushButton* pushButton);
 
   protected slots:
     void showBorder();

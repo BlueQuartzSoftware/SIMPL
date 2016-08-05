@@ -55,6 +55,7 @@
 
 #include "SVWidgetsLib/ui_DataArrayCreationWidget.h"
 
+class QSignalMapper;
 
 /**
 * @brief
@@ -98,15 +99,14 @@ class SVWidgetsLib_EXPORT DataArrayCreationWidget : public FilterParameterWidget
      */
     void initializeWidget(FilterParameter* parameter, AbstractFilter* filter);
 
+    bool eventFilter(QObject* obj, QEvent* event);
 
   public slots:
     void beforePreflight();
     void afterPreflight();
     void filterNeedsInputParameters(AbstractFilter* filter);
 
-    void on_dataContainerCombo_currentIndexChanged(int index);
-
-    void on_attributeMatrixCombo_currentIndexChanged(int index);
+    void attributeMatrixSelected(QString path);
 
     void on_dataArrayName_returnPressed();
     void on_applyChangesBtn_clicked();
@@ -115,26 +115,24 @@ class SVWidgetsLib_EXPORT DataArrayCreationWidget : public FilterParameterWidget
     void hideButton();
 
   protected:
-    void populateComboBoxes();
-
-    DataContainerArrayProxy generateDCAProxy();
-    void setSelectedPath(QString dcName, QString attrMatName, QString attrArrName);
-    void selectDefaultPath();
+    /**
+     * @brief createSelectionMenu
+     */
+    void createSelectionMenu();
 
   signals:
     void errorSettingFilterParameter(const QString& msg);
     void parametersChanged();
 
-  private slots:
-
   private:
 
     bool m_DidCausePreflight;
 
-
-    DataContainerArrayProxy m_DcaProxy;
+    QSignalMapper*  m_MenuMapper;
 
     DataArrayCreationFilterParameter* m_FilterParameter;
+
+    void setSelectedPath(QString path);
 
     DataArrayCreationWidget(const DataArrayCreationWidget&); // Copy Constructor Not Implemented
     void operator=(const DataArrayCreationWidget&); // Operator '=' Not Implemented

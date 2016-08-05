@@ -29,6 +29,42 @@
    <property name="verticalSpacing">
     <number>2</number>
    </property>
+   <item row="1" column="2">
+    <widget class="QPushButton" name="m_SelectedAttributeMatrixPath">
+     <property name="sizePolicy">
+      <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+       <horstretch>0</horstretch>
+       <verstretch>0</verstretch>
+      </sizepolicy>
+     </property>
+     <property name="maximumSize">
+      <size>
+       <width>16777215</width>
+       <height>16777215</height>
+      </size>
+     </property>
+     <property name="font">
+      <font>
+       <pointsize>12</pointsize>
+      </font>
+     </property>
+     <property name="text">
+      <string notr="true"/>
+     </property>
+     <property name="iconSize">
+      <size>
+       <width>2</width>
+       <height>2</height>
+      </size>
+     </property>
+     <property name="shortcut">
+      <string>Ctrl+S</string>
+     </property>
+     <property name="flat">
+      <bool>false</bool>
+     </property>
+    </widget>
+   </item>
    <item row="1" column="0">
     <widget class="QLabel" name="label">
      <property name="sizePolicy">
@@ -42,7 +78,7 @@
      </property>
     </widget>
    </item>
-   <item row="1" column="4">
+   <item row="1" column="3">
     <widget class="QListWidget" name="attributeArraysSelectWidget">
      <property name="sizePolicy">
       <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
@@ -58,7 +94,7 @@
      </property>
     </widget>
    </item>
-   <item row="1" column="5">
+   <item row="1" column="4">
     <widget class="QListWidget" name="attributeArraysOrderWidget">
      <property name="editTriggers">
       <set>QAbstractItemView::NoEditTriggers</set>
@@ -68,39 +104,7 @@
      </property>
     </widget>
    </item>
-   <item row="1" column="2">
-    <widget class="QComboBox" name="dataContainerCombo">
-     <property name="sizePolicy">
-      <sizepolicy hsizetype="Fixed" vsizetype="Maximum">
-       <horstretch>0</horstretch>
-       <verstretch>0</verstretch>
-      </sizepolicy>
-     </property>
-     <property name="toolTip">
-      <string>This is the DataContainer selection</string>
-     </property>
-     <property name="sizeAdjustPolicy">
-      <enum>QComboBox::AdjustToContents</enum>
-     </property>
-    </widget>
-   </item>
-   <item row="1" column="3">
-    <widget class="QComboBox" name="attributeMatrixCombo">
-     <property name="sizePolicy">
-      <sizepolicy hsizetype="Fixed" vsizetype="Maximum">
-       <horstretch>0</horstretch>
-       <verstretch>0</verstretch>
-      </sizepolicy>
-     </property>
-     <property name="toolTip">
-      <string>This is the AttributeMatrix selection</string>
-     </property>
-     <property name="sizeAdjustPolicy">
-      <enum>QComboBox::AdjustToContents</enum>
-     </property>
-    </widget>
-   </item>
-   <item row="0" column="4">
+   <item row="0" column="3">
     <widget class="QCheckBox" name="selectCheckBox">
      <property name="text">
       <string>Select/Deselect All</string>
@@ -110,7 +114,7 @@
      </property>
     </widget>
    </item>
-   <item row="1" column="7">
+   <item row="1" column="6">
     <layout class="QVBoxLayout" name="verticalLayout">
      <property name="rightMargin">
       <number>0</number>
@@ -133,7 +137,7 @@
         <string/>
        </property>
        <property name="icon">
-        <iconset resource="../../../../Resources/icons/images/Icons.qrc">
+        <iconset>
          <normaloff>:/arrow_up_green.png</normaloff>:/arrow_up_green.png</iconset>
        </property>
        <property name="iconSize">
@@ -165,7 +169,7 @@
         <string/>
        </property>
        <property name="icon">
-        <iconset resource="../../../../Resources/icons/images/Icons.qrc">
+        <iconset>
          <normaloff>:/arrow_down_green.png</normaloff>:/arrow_down_green.png</iconset>
        </property>
        <property name="iconSize">

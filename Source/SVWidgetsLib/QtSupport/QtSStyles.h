@@ -41,6 +41,7 @@
 #include "SVWidgetsLib/SVWidgetsLib.h"
 
 class QLineEdit;
+class QPushButton;
 
 class SVWidgetsLib_EXPORT QtSStyles : public QObject
 {
@@ -57,6 +58,7 @@ class SVWidgetsLib_EXPORT QtSStyles : public QObject
     static void LineEditErrorStyle(QLineEdit* lineEdit);
     static void LineEditClearStyle(QLineEdit* lineEdit);
     static void LineEditRedErrorStyle(QLineEdit* lineEdit);
+    static QString DAPSelectionButtonStyle();
 };
 
 #endif /* _SIMPLViewStyles_H_ */

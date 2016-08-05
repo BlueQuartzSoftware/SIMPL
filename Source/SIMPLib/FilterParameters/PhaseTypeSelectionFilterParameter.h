@@ -90,9 +90,11 @@ public:
    */
   void writeJson(QJsonObject &json);
 
+  SIMPL_INSTANCE_PROPERTY(QVector<unsigned int>, DefaultGeometryTypes)
+  SIMPL_INSTANCE_PROPERTY(QVector<unsigned int>, DefaultAttributeMatrixTypes)
+
   SIMPL_INSTANCE_PROPERTY(SetterCallbackType, SetterCallback)
   SIMPL_INSTANCE_PROPERTY(GetterCallbackType, GetterCallback)
-
 
 protected:
   PhaseTypeSelectionFilterParameter();
