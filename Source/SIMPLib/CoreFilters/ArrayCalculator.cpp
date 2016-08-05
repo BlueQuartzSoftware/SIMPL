@@ -187,7 +187,7 @@ void ArrayCalculator::setupFilterParameters()
     parameters.push_back(SIMPL_NEW_AM_SELECTION_FP("Cell Attribute Matrix", SelectedAttributeMatrix, FilterParameter::Parameter, ArrayCalculator, req));
   }
 
-  parameters.push_back(CalculatorFilterParameter::New("Infix Expression", "InfixEquation", getInfixEquation(), FilterParameter::Parameter, SIMPL_BIND_SETTER(ArrayCalculator, this, InfixEquation), SIMPL_BIND_GETTER(ArrayCalculator, this, InfixEquation)));
+  parameters.push_back(SIMPL_NEW_CALC_FP("Infix Expression", InfixEquation, FilterParameter::Parameter, ArrayCalculator));
 
   {
     DataArrayCreationFilterParameter::RequirementType req = DataArrayCreationFilterParameter::CreateRequirement(SIMPL::Defaults::AnyAttributeMatrix, SIMPL::Defaults::AnyGeometry);
