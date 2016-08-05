@@ -233,7 +233,7 @@ void GenericExample::setupFilterParameters()
     parameters.push_back(FloatVec3FilterParameter::New("Origin", "Origin", getOrigin(), FilterParameter::Parameter, SIMPL_BIND_SETTER(GenericExample, this, Origin), SIMPL_BIND_GETTER(GenericExample, this, Origin), 1));
 
     /* Display the AxisAngleWidget to collect Axis-Angle pairs from the user */
-    parameters.push_back(AxisAngleFilterParameter::New("Crystal Rotations", "CrystalSymmetryRotations", getCrystalSymmetryRotations(), FilterParameter::Parameter, SIMPL_BIND_SETTER(GenericExample, this, CrystalSymmetryRotations), SIMPL_BIND_GETTER(GenericExample, this, CrystalSymmetryRotations), 2));
+    parameters.push_back(SIMPL_NEW_AXISANGLE_FP("Crystal Rotations", CrystalSymmetryRotations, FilterParameter::Parameter, GenericExample, 2));
 
     {
       DataContainerSelectionFilterParameter::RequirementType req;
