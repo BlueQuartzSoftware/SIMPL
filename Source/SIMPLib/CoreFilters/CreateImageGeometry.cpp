@@ -90,7 +90,7 @@ void CreateImageGeometry::setupFilterParameters()
     DataContainerSelectionFilterParameter::RequirementType req;
     parameters.push_back(SIMPL_NEW_DC_SELECTION_FP("Data Container Destination", SelectedDataContainer, FilterParameter::Parameter, CreateImageGeometry, req));
   }
-  parameters.push_back(IntVec3FilterParameter::New("Dimensions", "Dimensions", getDimensions(), FilterParameter::Parameter, SIMPL_BIND_SETTER(CreateImageGeometry, this, Dimensions), SIMPL_BIND_GETTER(CreateImageGeometry, this, Dimensions)));
+  parameters.push_back(SIMPL_NEW_INT_VEC3_FP("Dimensions", Dimensions, FilterParameter::Parameter, CreateImageGeometry));
   parameters.push_back(SIMPL_NEW_FLOAT_VEC3_FP("Origin", Origin, FilterParameter::Parameter, CreateImageGeometry));
 
   parameters.push_back(SIMPL_NEW_FLOAT_VEC3_FP("Resolution", Resolution, FilterParameter::Parameter, CreateImageGeometry));

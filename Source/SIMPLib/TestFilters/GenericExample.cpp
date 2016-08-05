@@ -143,7 +143,7 @@ void GenericExample::setupFilterParameters()
 
 
   /* Display a group of 3 text boxes to collect 3 integer values */
-  parameters.push_back(IntVec3FilterParameter::New("Dimensions (XYZ)", "Dimensions", getDimensions(), FilterParameter::Parameter, SIMPL_BIND_SETTER(GenericExample, this, Dimensions), SIMPL_BIND_GETTER(GenericExample, this, Dimensions)));
+  parameters.push_back(SIMPL_NEW_INT_VEC3_FP("Dimensions (XYZ)", Dimensions, FilterParameter::Parameter, GenericExample));
 
   {
     DataArraySelectionFilterParameter::RequirementType req;
