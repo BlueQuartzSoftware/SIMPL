@@ -196,7 +196,7 @@ CombineAttributeArrays::~CombineAttributeArrays()
 void CombineAttributeArrays::setupFilterParameters()
 {
   FilterParameterVector parameters;
-  parameters.push_back(BooleanFilterParameter::New("Normalize Data", "NormalizeData", getNormalizeData(), FilterParameter::Parameter, SIMPL_BIND_SETTER(CombineAttributeArrays, this, NormalizeData), SIMPL_BIND_GETTER(CombineAttributeArrays, this, NormalizeData)));
+  parameters.push_back(SIMPL_NEW_BOOL_FP("Normalize Data", NormalizeData, FilterParameter::Parameter, CombineAttributeArrays));
   {
     MultiDataArraySelectionFilterParameter::RequirementType req = MultiDataArraySelectionFilterParameter::CreateRequirement(SIMPL::Defaults::AnyPrimitive, SIMPL::Defaults::AnyComponentSize, SIMPL::Defaults::AnyAttributeMatrix, SIMPL::Defaults::AnyGeometry);
     parameters.push_back(MultiDataArraySelectionFilterParameter::New("Attribute Arrays to Combine", "SelectedDataArrayPaths", getSelectedDataArrayPaths(), FilterParameter::RequiredArray, SIMPL_BIND_SETTER(CombineAttributeArrays, this, SelectedDataArrayPaths), SIMPL_BIND_GETTER(CombineAttributeArrays, this, SelectedDataArrayPaths), req));

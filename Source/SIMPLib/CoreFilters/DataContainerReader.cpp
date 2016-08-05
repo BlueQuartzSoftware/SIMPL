@@ -83,7 +83,7 @@ void DataContainerReader::setupFilterParameters()
 {
   FilterParameterVector parameters;
 
-  parameters.push_back(BooleanFilterParameter::New("Overwrite Existing Data Containers", "OverwriteExistingDataContainers", getOverwriteExistingDataContainers(), FilterParameter::Parameter, SIMPL_BIND_SETTER(DataContainerReader, this, OverwriteExistingDataContainers), SIMPL_BIND_GETTER(DataContainerReader, this, OverwriteExistingDataContainers)));
+  parameters.push_back(SIMPL_NEW_BOOL_FP("Overwrite Existing Data Containers", OverwriteExistingDataContainers, FilterParameter::Parameter, DataContainerReader));
   {
     DataContainerReaderFilterParameter::Pointer parameter = DataContainerReaderFilterParameter::New();
     parameter->setHumanLabel("Select Arrays from Input File");

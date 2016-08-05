@@ -119,7 +119,7 @@ void GenericExample::setupFilterParameters()
   /*   For an output path use this code*/
   //parameters.push_back(OutputPathFilterParameter::New("Output Path", "OutputPath", getOutputPath(), FilterParameter::Parameter, SIMPL_BIND_SETTER(GenericExample, this, OutputPath), SIMPL_BIND_GETTER(GenericExample, this, OutputPath)));
   /*   For a simple true/false boolean use this code*/
-  parameters.push_back(BooleanFilterParameter::New("Write Alignment Shift File", "WriteAlignmentShifts", getWriteAlignmentShifts(), FilterParameter::Parameter, SIMPL_BIND_SETTER(GenericExample, this, WriteAlignmentShifts), SIMPL_BIND_GETTER(GenericExample, this, WriteAlignmentShifts)));
+  parameters.push_back(SIMPL_NEW_BOOL_FP("Write Alignment Shift File", WriteAlignmentShifts, FilterParameter::Parameter, GenericExample));
 
   parameters.push_back(SeparatorFilterParameter::New("Choice Example", FilterParameter::Parameter));
 

@@ -109,7 +109,7 @@ void DataContainerWriter::setupFilterParameters()
   FilterParameterVector parameters;
 
   parameters.push_back(OutputFileFilterParameter::New("Output File", "OutputFile", getOutputFile(), FilterParameter::Parameter, SIMPL_BIND_SETTER(DataContainerWriter, this, OutputFile), SIMPL_BIND_GETTER(DataContainerWriter, this, OutputFile), "*.dream3d", ""));
-  parameters.push_back(BooleanFilterParameter::New("Write Xdmf File", "WriteXdmfFile", getWriteXdmfFile(), FilterParameter::Parameter, SIMPL_BIND_SETTER(DataContainerWriter, this, WriteXdmfFile), SIMPL_BIND_GETTER(DataContainerWriter, this, WriteXdmfFile), "ParaView Compatible File"));
+  parameters.push_back(SIMPL_NEW_BOOL_FP("Write Xdmf File", WriteXdmfFile, FilterParameter::Parameter, DataContainerWriter, "ParaView Compatible File"));
 
   setFilterParameters(parameters);
 }
