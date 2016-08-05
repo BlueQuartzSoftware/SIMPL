@@ -237,7 +237,7 @@ void GenericExample::setupFilterParameters()
 
     {
       DataContainerSelectionFilterParameter::RequirementType req;
-      parameters.push_back(DataContainerSelectionFilterParameter::New("Data Container", "DataContainerName", getDataContainerName(), FilterParameter::Parameter, SIMPL_BIND_SETTER(GenericExample, this, DataContainerName), SIMPL_BIND_GETTER(GenericExample, this, DataContainerName), req, 2));
+      parameters.push_back(SIMPL_NEW_DC_SELECTION_FP("Data Container", DataContainerName, FilterParameter::Parameter, GenericExample, req, 2));
     }
   }
   QVector<DataArrayPath> paths;

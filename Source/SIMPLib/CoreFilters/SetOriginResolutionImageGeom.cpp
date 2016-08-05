@@ -131,7 +131,7 @@ void SetOriginResolutionImageGeom::setupFilterParameters()
   {
     DataContainerSelectionFilterParameter::RequirementType req;
     req.dcGeometryTypes = QVector<unsigned int>(1, SIMPL::GeometryType::ImageGeometry);
-    parameters.push_back(DataContainerSelectionFilterParameter::New("Data Container Image Geometry to Modify", "DataContainerName", getDataContainerName(), FilterParameter::RequiredArray, SIMPL_BIND_SETTER(SetOriginResolutionImageGeom, this, DataContainerName), SIMPL_BIND_GETTER(SetOriginResolutionImageGeom, this, DataContainerName), req));
+    parameters.push_back(SIMPL_NEW_DC_SELECTION_FP("Data Container Image Geometry to Modify", DataContainerName, FilterParameter::RequiredArray, SetOriginResolutionImageGeom, req));
   }
 
   QStringList linkedProps("Origin");
