@@ -115,7 +115,7 @@ void GenericExample::setupFilterParameters()
   parameters.push_back(StringFilterParameter::New("STL Output Prefix", "StlFilePrefix", getStlFilePrefix(), FilterParameter::Parameter, SIMPL_BIND_SETTER(GenericExample, this, StlFilePrefix), SIMPL_BIND_GETTER(GenericExample, this, StlFilePrefix)));
 
   /*   For an output file use this code*/
-  //parameters.push_back(OutputFileFilterParameter::New("Output File", "OutputFile", getOutputFile(), FilterParameter::Parameter, SIMPL_BIND_SETTER(GenericExample, this, OutputFile), SIMPL_BIND_GETTER(GenericExample, this, OutputFile)));
+  //parameters.push_back(SIMPL_NEW_OUTPUT_FILE_FP("Output File", OutputFile, FilterParameter::Parameter, GenericExample));
   /*   For an output path use this code*/
   //parameters.push_back(OutputPathFilterParameter::New("Output Path", "OutputPath", getOutputPath(), FilterParameter::Parameter, SIMPL_BIND_SETTER(GenericExample, this, OutputPath), SIMPL_BIND_GETTER(GenericExample, this, OutputPath)));
   /*   For a simple true/false boolean use this code*/
