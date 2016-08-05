@@ -117,7 +117,7 @@ void GenericExample::setupFilterParameters()
   /*   For an output file use this code*/
   //parameters.push_back(SIMPL_NEW_OUTPUT_FILE_FP("Output File", OutputFile, FilterParameter::Parameter, GenericExample));
   /*   For an output path use this code*/
-  //parameters.push_back(OutputPathFilterParameter::New("Output Path", "OutputPath", getOutputPath(), FilterParameter::Parameter, SIMPL_BIND_SETTER(GenericExample, this, OutputPath), SIMPL_BIND_GETTER(GenericExample, this, OutputPath)));
+  //parameters.push_back(SIMPL_NEW_OUTPUT_PATH_FP("Output Path", OutputPath, FilterParameter::Parameter, GenericExample));
   /*   For a simple true/false boolean use this code*/
   parameters.push_back(SIMPL_NEW_BOOL_FP("Write Alignment Shift File", WriteAlignmentShifts, FilterParameter::Parameter, GenericExample));
 
