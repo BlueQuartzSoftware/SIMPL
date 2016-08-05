@@ -91,10 +91,7 @@ void CreateAttributeMatrix::setupFilterParameters()
     choices.push_back("CellEnsemble");
     choices.push_back("MetaData");
     choices.push_back("Generic");
-    parameters.push_back(ChoiceFilterParameter::New("Attribute Matrix Type", "AttributeMatrixType", getAttributeMatrixType(), FilterParameter::Parameter,
-                         SIMPL_BIND_SETTER(CreateAttributeMatrix, this, AttributeMatrixType),
-                         SIMPL_BIND_GETTER(CreateAttributeMatrix, this, AttributeMatrixType),
-                         choices, false));
+    parameters.push_back(SIMPL_NEW_CHOICE_FP("Attribute Matrix Type", AttributeMatrixType, FilterParameter::Parameter, CreateAttributeMatrix, choices, false));
   }
 
   QStringList rHeaders, cHeaders;
