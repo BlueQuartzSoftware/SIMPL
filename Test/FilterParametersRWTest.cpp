@@ -493,7 +493,7 @@ class FilterParametersRWTest
 
       {
         DataContainerArrayProxyFilterParameter::Pointer fp = DataContainerArrayProxyFilterParameter::New("Test", "String1",
-                                                                             "", FilterParameter::Parameter,
+                                                                             DataContainerArrayProxy(), FilterParameter::Parameter,
                                                                              SIMPL_BIND_SETTER(FilterParametersRWTest, this, DcaProxy2),
                                                                              SIMPL_BIND_GETTER(FilterParametersRWTest, this, DcaProxy1),
                                                                              DataContainerArrayProxy(), Qt::Checked);

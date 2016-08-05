@@ -41,6 +41,11 @@
 #include "SIMPLib/FilterParameters/FilterParameter.h"
 #include "SIMPLib/DataContainers/DataContainerArrayProxy.h"
 
+#define SIMPL_NEW_DCA_PROXY_FP(...) \
+  _FP_GET_OVERRIDE(__VA_ARGS__, \
+  SIMPL_NEW_FP_9, SIMPL_NEW_FP_8, SIMPL_NEW_FP_7, SIMPL_NEW_FP_6, SIMPL_NEW_FP_5, SIMPL_NEW_FP_4)\
+  (DataContainerArrayProxyFilterParameter, __VA_ARGS__)
+
 class SIMPLib_EXPORT DataContainerArrayProxyFilterParameter : public FilterParameter
 {
   public:
@@ -52,7 +57,7 @@ class SIMPLib_EXPORT DataContainerArrayProxyFilterParameter : public FilterParam
     typedef std::function<DataContainerArrayProxy(void)> GetterCallbackType;
 
     static Pointer New(const QString& humanLabel, const QString& propertyName,
-                       const QString& defaultValue, Category category, SetterCallbackType setterCallback,
+                       DataContainerArrayProxy defaultValue, Category category, SetterCallbackType setterCallback,
                        GetterCallbackType getterCallback, DataContainerArrayProxy proxy,
                        Qt::CheckState defState, int groupIndex = -1);
 
