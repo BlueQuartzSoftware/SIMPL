@@ -40,6 +40,11 @@
 
 #include "SIMPLib/FilterParameters/FilterParameter.h"
 
+#define SIMPL_NEW_SHAPETYPE_SELECTION_FP(...) \
+  _FP_GET_OVERRIDE(__VA_ARGS__, \
+  SIMPL_NEW_FP_9, SIMPL_NEW_FP_8, SIMPL_NEW_FP_7, SIMPL_NEW_FP_6, SIMPL_NEW_FP_5, SIMPL_NEW_FP_4)\
+  (ShapeTypeSelectionFilterParameter, __VA_ARGS__)
+
 class SIMPLib_EXPORT ShapeTypeSelectionFilterParameter : public FilterParameter
 {
 public:
@@ -51,7 +56,7 @@ public:
   typedef std::function<UInt32Vector_t(void)> GetterCallbackType;
 
     static Pointer New(const QString& humanLabel, const QString& propertyName,
-     const QString& defaultValue, Category category, SetterCallbackType setterCallback,
+     UInt32Vector_t defaultValue, Category category, SetterCallbackType setterCallback,
      GetterCallbackType getterCallback, const QString& phaseTypeCountProperty,
     const QString& phaseTypeArrayPathProperty, int groupIndex = -1);
 

@@ -53,7 +53,7 @@ ShapeTypeSelectionFilterParameter::~ShapeTypeSelectionFilterParameter()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-ShapeTypeSelectionFilterParameter::Pointer ShapeTypeSelectionFilterParameter::New(const QString& humanLabel, const QString& propertyName, const QString& defaultValue,
+ShapeTypeSelectionFilterParameter::Pointer ShapeTypeSelectionFilterParameter::New(const QString& humanLabel, const QString& propertyName, UInt32Vector_t defaultValue,
   Category category, SetterCallbackType setterCallback,
   GetterCallbackType getterCallback,
   const QString& phaseTypeCountProperty,
@@ -62,9 +62,10 @@ ShapeTypeSelectionFilterParameter::Pointer ShapeTypeSelectionFilterParameter::Ne
   ShapeTypeSelectionFilterParameter::Pointer ptr = ShapeTypeSelectionFilterParameter::New();
   ptr->setHumanLabel(humanLabel);
   ptr->setPropertyName(propertyName);
-  ptr->setDefaultValue(defaultValue);
+  QVariant var;
+  var.setValue(defaultValue);
+  ptr->setDefaultValue(var);
   ptr->setCategory(category);
-
   ptr->setPhaseTypeCountProperty(phaseTypeCountProperty);
   ptr->setPhaseTypeArrayPathProperty(phaseTypeArrayPathProperty);
   ptr->setGroupIndex(groupIndex);
