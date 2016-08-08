@@ -304,6 +304,11 @@ void MultiDataArraySelectionWidget::setSelectedPath(QString path)
       }
       attributeArraysSelectWidget->addItem(daItem);
     }
+
+    for (int i = 0; i < selectedPaths.size(); i++)
+    {
+      attributeArraysOrderWidget->addItem(selectedPaths[i].getDataArrayName());
+    }
   }
 
   updateSelectAllCheckbox();
