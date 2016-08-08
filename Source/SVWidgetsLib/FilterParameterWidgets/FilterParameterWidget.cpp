@@ -168,29 +168,33 @@ void FilterParameterWidget::setupGui()
 // -----------------------------------------------------------------------------
 QPoint FilterParameterWidget::adjustedMenuPosition(QPushButton* pushButton)
 {
-
   QSize menuSize = pushButton->menu()->sizeHint();
   QPoint point = QCursor::pos();
   point.setX(QCursor::pos().x() - menuSize.width() / 2);
 
+  int desktopWidth = QApplication::desktop()->availableGeometry(pushButton).width();
+  int desktopHeight = QApplication::desktop()->availableGeometry(pushButton).height();
+
   // If the menu is going to go off the screen in the X-axis, reposition it until it's completely on the screen
-  while (point.x() + menuSize.width() > QApplication::desktop()->geometry().width())
+  while (point.x() + menuSize.width() > desktopWidth)
   {
     point.setX(point.x() - 1);
   }
 
   QPoint localButtonCoords = pushButton->geometry().bottomLeft();
   QPoint globalButtonCoords = mapToGlobal(localButtonCoords);
+//  qDebug() << "QApplication::desktop()->geometry().width(): " << desktopWidth << "," << desktopHeight;
+//  qDebug() << "localButtonCoords: " << localButtonCoords << "\tglobalButtonCoords: " << globalButtonCoords;
+
   point.setY(globalButtonCoords.y());
 
   // If the menu is going to go off the screen in the Y-axis, reposition it until it's completely on the screen
-  while (point.y() + menuSize.height() > QApplication::desktop()->geometry().height())
+  while (point.y() + menuSize.height() > desktopHeight)
   {
     point.setY(point.y() - 1);
   }
 
   return point;
-
 }
 
 // -----------------------------------------------------------------------------
