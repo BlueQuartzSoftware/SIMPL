@@ -55,6 +55,7 @@
 class FilterParameter;
 class AbstractFilter;
 class MultiDataArraySelectionFilterParameter;
+class QSignalMapper;
 
 /**
 * @brief
@@ -104,27 +105,29 @@ class SVWidgetsLib_EXPORT MultiDataArraySelectionWidget : public FilterParameter
     */
     void updateSelectAllCheckbox();
 
+    /**
+     * @brief eventFilter
+     * @param obj
+     * @param event
+     * @return
+     */
+    bool eventFilter(QObject* obj, QEvent* event);
 
   public slots:
     void beforePreflight();
     void afterPreflight();
     void filterNeedsInputParameters(AbstractFilter* filter);
 
-    void on_dataContainerCombo_currentIndexChanged(int index);
-
-    void on_attributeMatrixCombo_currentIndexChanged(int index);
+    void attributeMatrixSelected(QString path);
 
     void on_attributeArraysSelectWidget_itemChanged(QListWidgetItem* item);
 
 
   protected:
-    void populateComboBoxes();
-
     /**
-    * @brief generateDCAProxy
-    * @return
-    */
-    DataContainerArrayProxy generateDCAProxy();
+     * @brief createSelectionMenu
+     */
+    void createSelectionMenu();
 
   protected slots:
     void on_selectCheckBox_stateChanged(int state);
@@ -140,10 +143,11 @@ class SVWidgetsLib_EXPORT MultiDataArraySelectionWidget : public FilterParameter
 
     bool m_DidCausePreflight;
 
-
-    DataContainerArrayProxy m_DcaProxy;
+    QSignalMapper*  m_MenuMapper;
 
     MultiDataArraySelectionFilterParameter* m_FilterParameter;
+
+    void setSelectedPath(QString path);
 
     MultiDataArraySelectionWidget(const MultiDataArraySelectionWidget&); // Copy Constructor Not Implemented
     void operator=(const MultiDataArraySelectionWidget&); // Operator '=' Not Implemented

@@ -152,8 +152,23 @@ bool DataArrayPath::operator==(const DataArrayPath& rhs)
 //
 // -----------------------------------------------------------------------------
 QString DataArrayPath::serialize(QString delimiter) const
-{
-  QString s = m_DataContainerName + delimiter + m_AttributeMatrixName + delimiter + m_DataArrayName;
+{  
+  QString s = "";
+  if (m_DataContainerName.isEmpty() == false)
+  {
+    s = m_DataContainerName;
+    if (m_AttributeMatrixName.isEmpty() == false)
+    {
+      s = s.append(delimiter);
+      s = s.append(m_AttributeMatrixName);
+      if (m_DataArrayName.isEmpty() == false)
+      {
+        s = s.append(delimiter);
+        s = s.append(m_DataArrayName);
+      }
+    }
+  }
+
   return s;
 }
 
@@ -168,16 +183,30 @@ DataArrayPath DataArrayPath::Deserialize(QString str, QString delimiter)
   }
 
   int start = 0;
+  QStringList daParts;
+  int tokenIndex = 0;
 
-  int tokenIndex = str.indexOf(delimiter, start);
-  QString dcName = str.mid(start, tokenIndex);
-  start = tokenIndex + delimiter.size();
-  tokenIndex = str.indexOf(delimiter, start);
-  QString amName = str.mid(start, tokenIndex - start);
-  start = tokenIndex + delimiter.size();
-  QString daName = str.mid(start);
+  while (tokenIndex >= 0)
+  {
+    tokenIndex = str.indexOf(delimiter, start);
+    QString part = str.mid(start, tokenIndex - start);
+    daParts.push_back(part);
+    start = tokenIndex + delimiter.size();
+  }
 
-  DataArrayPath path(dcName, amName, daName);
+
+  DataArrayPath path;
+  switch (daParts.size())
+  {
+    case 3:
+      path.setDataArrayName(daParts[2]);
+    case 2:
+      path.setAttributeMatrixName(daParts[1]);
+    case 1:
+      path.setDataContainerName(daParts[0]);
+      break;
+  }
+
   return path;
 }
 

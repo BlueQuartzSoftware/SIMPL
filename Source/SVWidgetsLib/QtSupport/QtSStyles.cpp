@@ -35,9 +35,11 @@
 
 #include "QtSStyles.h"
 
-
 #include <QtCore/QTextStream>
+
+#include <QtWidgets/QApplication>
 #include <QtWidgets/QLineEdit>
+#include <QtWidgets/QPushButton>
 
 #include "moc_QtSStyles.cpp"
 
@@ -194,4 +196,48 @@ void QtSStyles::LineEditRedErrorStyle(QLineEdit* lineEdit)
   ss << "background-color: rgb(208, 128, 139);"; // Yellow background
   ss << "}";
   lineEdit->setStyleSheet(str);
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+QString QtSStyles::DAPSelectionButtonStyle()
+{
+  QString str;
+  QTextStream ss(&str);
+
+  ss << "QPushButton {\n";
+  ss << "border: 1px solid #8f8f91;\n";
+  ss << "border-radius: 4px;\n";
+  ss << "background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,\nstop: 0 #DDDDDD, stop: 1 #FFFFFF);\n";
+  ss << "font-size: 12pt;\n";
+  ss << "padding-left: 16px;\n";
+  ss << "padding-right: 4px;\n";
+  ss << "padding-top: 2px;\n";
+  ss << "padding-bottom: 2px;\n";
+  ss << "}\n";
+
+  ss << "QPushButton::menu-indicator {\n";
+  ss << "subcontrol-origin: padding;\n";
+  ss << "subcontrol-position:  left; /* */\n";
+  ss << "}\n";
+
+  ss << "QPushButton::menu-indicator:pressed, QPushButton::menu-indicator:open {\n";
+  ss << "position: relative;\n";
+  ss << "}\n";
+
+  ss << "QPushButton:pressed {\n";
+  ss << "background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,\nstop: 0 " << QApplication::palette().highlight().color().name() << ", stop: 1 #FFFFFF);\n";
+  ss << "}\n";
+
+  ss << "QPushButton:flat {\n";
+  ss << "border: none;\n";
+  ss << "}\n";
+
+  ss << "QPushButton:hover {\n";
+  ss << "border: 1px solid #8f8f91;\n";
+  ss << "border-radius: 4px;\n";
+  ss << "}\n";
+
+  return str;
 }

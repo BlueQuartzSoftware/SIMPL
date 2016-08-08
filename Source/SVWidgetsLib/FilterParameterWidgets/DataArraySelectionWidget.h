@@ -56,8 +56,6 @@
 
 #include "SVWidgetsLib/ui_DataArraySelectionWidget.h"
 
-#define DASW_NEW_GUI 0
-
 class QSignalMapper;
 
 /**
@@ -102,46 +100,21 @@ class SVWidgetsLib_EXPORT DataArraySelectionWidget : public FilterParameterWidge
      */
     void initializeWidget(FilterParameter* parameter, AbstractFilter* filter);
 
+    bool eventFilter(QObject* obj, QEvent* event);
 
   public slots:
     void beforePreflight();
     void afterPreflight();
     void filterNeedsInputParameters(AbstractFilter* filter);
 
-#if DASW_NEW_GUI
     void dataArraySelected(QString path);
-#else
-    void on_dataContainerCombo_currentIndexChanged(int index);
-
-    void on_attributeMatrixCombo_currentIndexChanged(int index);
-
-    void on_attributeArrayCombo_currentIndexChanged(int index);
-#endif
-
-
 
   protected:
-#if DASW_NEW_GUI
 
     /**
      * @brief createSelectionMenu
      */
     void createSelectionMenu();
-
-#else
-    /**
-     * @brief populateComboBoxes
-     */
-    void populateComboBoxes();
-#endif
-
-    /**
-     * @brief setSelectedPath
-     * @param dcName
-     * @param attrMatName
-     * @param attrArrName
-     */
-    void setSelectedPath(QString dcName, QString attrMatName, QString attrArrName);
 
   signals:
     void errorSettingFilterParameter(const QString& msg);
@@ -150,45 +123,16 @@ class SVWidgetsLib_EXPORT DataArraySelectionWidget : public FilterParameterWidge
   private:
     bool m_DidCausePreflight;
 
-#if DASW_NEW_GUI
     QSignalMapper*  m_MenuMapper;
-#else
-    DataContainerArrayProxy m_DcaProxy;
-#endif
-
-    DataArrayPath  m_DefaultPath;
 
     DataArraySelectionFilterParameter* m_FilterParameter;
+
+    void setSelectedPath(QString path);
 
     DataArraySelectionWidget(const DataArraySelectionWidget&); // Copy Constructor Not Implemented
     void operator=(const DataArraySelectionWidget&); // Operator '=' Not Implemented
 
 };
-
-
-class PopupMenu : public QMenu
-{
-    Q_OBJECT
-public:
-    explicit PopupMenu(QPushButton* button, QWidget* parent = 0) :
-      QMenu(parent),
-      b(button)
-    {
-    }
-
-    void showEvent(QShowEvent* event)
-    {
-      QPoint p = this->pos();
-      QRect geo = b->geometry();
-      this->move(p.x()+geo.width()-this->geometry().width(), p.y());
-    }
-
-private:
-    QPushButton* b;
-};
-
-
-
 
 #endif /* _DataArraySelectionWidget_H_ */
 

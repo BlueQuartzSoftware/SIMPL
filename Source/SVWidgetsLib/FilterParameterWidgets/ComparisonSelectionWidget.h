@@ -39,6 +39,7 @@
 
 #include <QtCore/QObject>
 #include <QtCore/QPointer>
+
 #include <QtWidgets/QWidget>
 
 
@@ -58,6 +59,10 @@
 
 #include "ui_ComparisonSelectionWidget.h"
 
+#define OLD_GUI 0
+
+class QSignalMapper;
+
 /**
  * @class ComparisonSelectionWidget ComparisonSelectionWidget.h PipelineBuilder/UI/ComparisonSelectionWidget.h
  * @brief This class
@@ -73,8 +78,6 @@ class ComparisonSelectionWidget : public FilterParameterWidget, private Ui::Comp
     ComparisonSelectionWidget(FilterParameter* parameter, AbstractFilter* filter = NULL, QWidget* parent = NULL);
     virtual ~ComparisonSelectionWidget();
 
-
-
     enum ArrayListType
     {
       CellListType,
@@ -89,18 +92,45 @@ class ComparisonSelectionWidget : public FilterParameterWidget, private Ui::Comp
     SIMPL_INSTANCE_PROPERTY(bool, ShowOperators)
 
     /**
-     * @brief Initializes some of the GUI elements with selections or other GUI related items
+     * @brief setupGui Initializes some of the GUI elements with selections or other GUI related items
      */
     virtual void setupGui();
 
+    /**
+     * @brief eventFilter
+     * @param obj
+     * @param event
+     * @return
+     */
+    bool eventFilter(QObject* obj, QEvent* event);
+
   public slots:
+    /**
+     * @brief beforePreflight
+     */
     void beforePreflight();
+
+    /**
+     * @brief afterPreflight
+     */
     void afterPreflight();
+
+    /**
+     * @brief filterNeedsInputParameters
+     * @param filter
+     */
     void filterNeedsInputParameters(AbstractFilter* filter);
 
-
   signals:
+    /**
+     * @brief errorSettingFilterParameter
+     * @param msg
+     */
     void errorSettingFilterParameter(const QString& msg);
+
+    /**
+     * @brief parametersChanged
+     */
     void parametersChanged();
 
   protected:
@@ -116,32 +146,86 @@ class ComparisonSelectionWidget : public FilterParameterWidget, private Ui::Comp
      */
     ComparisonInputs getComparisonInputs();
 
-    void populateComboBoxes();
+    /**
+     * @brief createSelectionMenu
+     */
+    void createSelectionMenu();
+
+    /**
+     * @brief populateAttributeMatrixList
+     */
     void populateAttributeMatrixList();
-    QStringList generateAttributeArrayList();
+
+    /**
+     * @brief generateAttributeArrayList
+     * @param currentDCName
+     * @param currentAttrMatName
+     * @return
+     */
+    QStringList generateAttributeArrayList(const QString& currentDCName, const QString &currentAttrMatName);
+
+    /**
+     * @brief checkStringValues
+     * @param curDcName
+     * @param filtDcName
+     * @return
+     */
     QString checkStringValues(QString curDcName, QString filtDcName);
 
-  protected slots:
+    /**
+     * @brief populateButtonText
+     */
+    void populateButtonText();
 
+
+  protected slots:
+    /**
+     * @brief on_addComparison_clicked
+     */
     void on_addComparison_clicked();
+
+    /**
+     * @brief on_removeComparison_clicked
+     */
     void on_removeComparison_clicked();
 
-    void on_dataContainerCombo_currentIndexChanged(int index);
-
-    void on_attributeMatrixCombo_currentIndexChanged(int index);
-
+    /**
+     * @brief tableDataWasChanged
+     * @param topLeft
+     * @param bottomRight
+     */
     void tableDataWasChanged(const QModelIndex& topLeft, const QModelIndex& bottomRight);
+
+    /**
+     * @brief widgetChanged
+     * @param text
+     */
     void widgetChanged(const QString& text);
 
-  private:
+    /**
+     * @brief setSelectedPath
+     * @param path
+     */
+    void setSelectedPath(QString path);
 
+  private:
     DataContainerArrayProxy m_DcaProxy;
+
     bool m_DidCausePreflight;
 
+    QSignalMapper*  m_MenuMapper;
 
-    ComparisonSelectionTableModel*    m_ComparisonSelectionTableModel;
+    ComparisonSelectionTableModel* m_ComparisonSelectionTableModel;
 
     ComparisonSelectionFilterParameter* m_FilterParameter;
+
+
+
+    /**
+     * @brief createComparisonModel
+     * @return
+     */
+    ComparisonSelectionTableModel* createComparisonModel();
 
     ComparisonSelectionWidget(const ComparisonSelectionWidget&); // Copy Constructor Not Implemented
     void operator=(const ComparisonSelectionWidget&); // Operator '=' Not Implemented
