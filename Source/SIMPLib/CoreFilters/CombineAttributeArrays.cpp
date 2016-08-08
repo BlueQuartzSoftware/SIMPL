@@ -201,7 +201,7 @@ void CombineAttributeArrays::setupFilterParameters()
     MultiDataArraySelectionFilterParameter::RequirementType req = MultiDataArraySelectionFilterParameter::CreateRequirement(SIMPL::Defaults::AnyPrimitive, SIMPL::Defaults::AnyComponentSize, SIMPL::Defaults::AnyAttributeMatrix, SIMPL::Defaults::AnyGeometry);
     parameters.push_back(SIMPL_NEW_MDA_SELECTION_FP("Attribute Arrays to Combine", SelectedDataArrayPaths, FilterParameter::RequiredArray, CombineAttributeArrays, req));
   }
-  parameters.push_back(StringFilterParameter::New("Combined Data", "StackedDataArrayName", getStackedDataArrayName(), FilterParameter::CreatedArray, SIMPL_BIND_SETTER(CombineAttributeArrays, this, StackedDataArrayName), SIMPL_BIND_GETTER(CombineAttributeArrays, this, StackedDataArrayName)));
+  parameters.push_back(SIMPL_NEW_STRING_FP("Combined Data", StackedDataArrayName, FilterParameter::CreatedArray, CombineAttributeArrays));
   setFilterParameters(parameters);
 }
 

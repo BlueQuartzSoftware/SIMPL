@@ -240,9 +240,7 @@ void ConvertData::setupFilterParameters()
     parameters.push_back(SIMPL_NEW_DA_SELECTION_FP("Attribute Array to Convert", SelectedCellArrayPath, FilterParameter::RequiredArray, ConvertData, req));
   }
 
-  parameters.push_back(StringFilterParameter::New("Converted Attribute Array", "OutputArrayName", getOutputArrayName(), FilterParameter::CreatedArray,
-                                                  SIMPL_BIND_SETTER(ConvertData, this, OutputArrayName),
-                                                  SIMPL_BIND_GETTER(ConvertData, this, OutputArrayName)));
+  parameters.push_back(SIMPL_NEW_STRING_FP("Converted Attribute Array", OutputArrayName, FilterParameter::CreatedArray, ConvertData));
 
   setFilterParameters(parameters);
 }

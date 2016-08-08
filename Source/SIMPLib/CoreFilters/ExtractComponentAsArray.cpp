@@ -85,7 +85,7 @@ void ExtractComponentAsArray::setupFilterParameters()
     parameters.push_back(SIMPL_NEW_DA_SELECTION_FP("Multicomponent Attribute Array", SelectedArrayPath, FilterParameter::RequiredArray, ExtractComponentAsArray, req));
   }
 
-  parameters.push_back(StringFilterParameter::New("Scalar Attribute Array", "NewArrayArrayName", getNewArrayArrayName(), FilterParameter::CreatedArray, SIMPL_BIND_SETTER(ExtractComponentAsArray, this, NewArrayArrayName), SIMPL_BIND_GETTER(ExtractComponentAsArray, this, NewArrayArrayName)));
+  parameters.push_back(SIMPL_NEW_STRING_FP("Scalar Attribute Array", NewArrayArrayName, FilterParameter::CreatedArray, ExtractComponentAsArray));
 
   setFilterParameters(parameters);
 }

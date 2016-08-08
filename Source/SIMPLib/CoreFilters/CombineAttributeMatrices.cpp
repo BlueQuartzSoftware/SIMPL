@@ -125,9 +125,9 @@ void CombineAttributeMatrices::setupFilterParameters()
   }
 
   parameters.push_back(SeparatorFilterParameter::New("Cell/Feature Data", FilterParameter::CreatedArray));
-  parameters.push_back(StringFilterParameter::New("New Index Array", "NewIndexArrayName", getNewIndexArrayName(), FilterParameter::CreatedArray, SIMPL_BIND_SETTER(CombineAttributeMatrices, this, NewIndexArrayName), SIMPL_BIND_GETTER(CombineAttributeMatrices, this, NewIndexArrayName)));
+  parameters.push_back(SIMPL_NEW_STRING_FP("New Index Array", NewIndexArrayName, FilterParameter::CreatedArray, CombineAttributeMatrices));
   parameters.push_back(SeparatorFilterParameter::New("Feature/Ensemble Data", FilterParameter::CreatedArray));
-  parameters.push_back(StringFilterParameter::New("Combined Attribute Matrix", "CombinedAttributeMatrixName", getCombinedAttributeMatrixName(), FilterParameter::CreatedArray, SIMPL_BIND_SETTER(CombineAttributeMatrices, this, CombinedAttributeMatrixName), SIMPL_BIND_GETTER(CombineAttributeMatrices, this, CombinedAttributeMatrixName)));
+  parameters.push_back(SIMPL_NEW_STRING_FP("Combined Attribute Matrix", CombinedAttributeMatrixName, FilterParameter::CreatedArray, CombineAttributeMatrices));
 
   setFilterParameters(parameters);
 }

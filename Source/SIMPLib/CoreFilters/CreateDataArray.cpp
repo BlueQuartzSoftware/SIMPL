@@ -324,7 +324,7 @@ void CreateDataArray::setupFilterParameters()
     parameter->setCategory(FilterParameter::Parameter);
     parameters.push_back(parameter);
   }
-  parameters.push_back(StringFilterParameter::New("Initialization Value", "InitializationValue", getInitializationValue(), FilterParameter::Parameter, SIMPL_BIND_SETTER(CreateDataArray, this, InitializationValue), SIMPL_BIND_GETTER(CreateDataArray, this, InitializationValue), Manual));
+  parameters.push_back(SIMPL_NEW_STRING_FP("Initialization Value", InitializationValue, FilterParameter::Parameter, CreateDataArray, Manual));
   parameters.push_back(SIMPL_NEW_RANGE_FP("Initialization Range", InitializationRange, FilterParameter::Parameter, CreateDataArray, RandomWithRange));
   {
     DataArrayCreationFilterParameter::RequirementType req;

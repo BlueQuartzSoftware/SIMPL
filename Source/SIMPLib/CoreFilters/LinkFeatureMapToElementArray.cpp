@@ -82,8 +82,8 @@ void LinkFeatureMapToElementArray::setupFilterParameters()
     parameters.push_back(SIMPL_NEW_DA_SELECTION_FP("Element Attribute Array to Link", SelectedCellArrayPath, FilterParameter::RequiredArray, LinkFeatureMapToElementArray, req));
   }
   parameters.push_back(SeparatorFilterParameter::New("Feature Data", FilterParameter::CreatedArray));
-  parameters.push_back(StringFilterParameter::New("Feature Attribute Matrix", "CellFeatureAttributeMatrixName", getCellFeatureAttributeMatrixName(), FilterParameter::CreatedArray, SIMPL_BIND_SETTER(LinkFeatureMapToElementArray, this, CellFeatureAttributeMatrixName), SIMPL_BIND_GETTER(LinkFeatureMapToElementArray, this, CellFeatureAttributeMatrixName)));
-  parameters.push_back(StringFilterParameter::New("Active", "ActiveArrayName", getActiveArrayName(), FilterParameter::CreatedArray, SIMPL_BIND_SETTER(LinkFeatureMapToElementArray, this, ActiveArrayName), SIMPL_BIND_GETTER(LinkFeatureMapToElementArray, this, ActiveArrayName)));
+  parameters.push_back(SIMPL_NEW_STRING_FP("Feature Attribute Matrix", CellFeatureAttributeMatrixName, FilterParameter::CreatedArray, LinkFeatureMapToElementArray));
+  parameters.push_back(SIMPL_NEW_STRING_FP("Active", ActiveArrayName, FilterParameter::CreatedArray, LinkFeatureMapToElementArray));
 
   setFilterParameters(parameters);
 }

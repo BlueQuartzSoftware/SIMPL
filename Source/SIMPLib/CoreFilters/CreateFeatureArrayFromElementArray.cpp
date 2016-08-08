@@ -93,7 +93,7 @@ void CreateFeatureArrayFromElementArray::setupFilterParameters()
     AttributeMatrixSelectionFilterParameter::RequirementType req = AttributeMatrixSelectionFilterParameter::CreateRequirement(SIMPL::AttributeMatrixType::CellFeature, SIMPL::Defaults::AnyGeometry);
     parameters.push_back(SIMPL_NEW_AM_SELECTION_FP("Feature Attribute Matrix", CellFeatureAttributeMatrixName, FilterParameter::CreatedArray, CreateFeatureArrayFromElementArray, req));
   }
-  parameters.push_back(StringFilterParameter::New("Copied Attribute Array", "CreatedArrayName", getCreatedArrayName(), FilterParameter::CreatedArray, SIMPL_BIND_SETTER(CreateFeatureArrayFromElementArray, this, CreatedArrayName), SIMPL_BIND_GETTER(CreateFeatureArrayFromElementArray, this, CreatedArrayName)));
+  parameters.push_back(SIMPL_NEW_STRING_FP("Copied Attribute Array", CreatedArrayName, FilterParameter::CreatedArray, CreateFeatureArrayFromElementArray));
   setFilterParameters(parameters);
 }
 

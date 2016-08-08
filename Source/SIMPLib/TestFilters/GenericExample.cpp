@@ -112,7 +112,7 @@ void GenericExample::setupFilterParameters()
   FilterParameterVector parameters;
   /* Place all your option initialization code here */
   /* For String input use this code */
-  parameters.push_back(StringFilterParameter::New("STL Output Prefix", "StlFilePrefix", getStlFilePrefix(), FilterParameter::Parameter, SIMPL_BIND_SETTER(GenericExample, this, StlFilePrefix), SIMPL_BIND_GETTER(GenericExample, this, StlFilePrefix)));
+  parameters.push_back(SIMPL_NEW_STRING_FP("STL Output Prefix", StlFilePrefix, FilterParameter::Parameter, GenericExample));
 
   /*   For an output file use this code*/
   //parameters.push_back(SIMPL_NEW_OUTPUT_FILE_FP("Output File", OutputFile, FilterParameter::Parameter, GenericExample));
