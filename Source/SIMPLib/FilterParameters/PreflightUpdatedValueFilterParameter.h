@@ -40,6 +40,11 @@
 
 #include "SIMPLib/FilterParameters/FilterParameter.h"
 
+#define SIMPL_NEW_PREFLIGHTUPDATEDVALUE_FP(...) \
+  _FP_GET_PREFLIGHTUPDATEDVALUE_OVERRIDE(__VA_ARGS__, \
+  SIMPL_NEW_PREFLIGHTUPDATEDVALUE_FP_5, SIMPL_NEW_PREFLIGHTUPDATEDVALUE_FP_4)\
+  (PreflightUpdatedValueFilterParameter, __VA_ARGS__)
+
 class SIMPLib_EXPORT PreflightUpdatedValueFilterParameter : public FilterParameter
 {
   public:
@@ -70,7 +75,6 @@ class SIMPLib_EXPORT PreflightUpdatedValueFilterParameter : public FilterParamet
      */
     void writeJson(QJsonObject &json);
 
-    //SIMPL_INSTANCE_PROPERTY(SetterCallbackType, SetterCallback)
     SIMPL_INSTANCE_PROPERTY(GetterCallbackType, GetterCallback)
 
 
