@@ -154,7 +154,7 @@ class SIMPLib_EXPORT VTKFileReader : public FileReader
         {
           diff = buffer[totalSize];
         }
-        delete buffer;
+        delete [] buffer;
       }
       else
       {
