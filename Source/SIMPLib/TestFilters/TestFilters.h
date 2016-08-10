@@ -18,7 +18,7 @@
 // -----------------------------------------------------------------------------
 class SIMPLib_EXPORT Filt0 : public AbstractFilter
 {
-    Q_OBJECT /* Need this for Qt's signals and slots mechanism to work */
+    Q_OBJECT
   public:
     SIMPL_SHARED_POINTERS(Filt0);
     SIMPL_STATIC_NEW_MACRO(Filt0);
@@ -105,7 +105,7 @@ class SIMPLib_EXPORT Filt0 : public AbstractFilter
 // -----------------------------------------------------------------------------
 class SIMPLib_EXPORT Filt1 : public AbstractFilter
 {
-    Q_OBJECT /* Need this for Qt's signals and slots mechanism to work */
+    Q_OBJECT
   public:
     SIMPL_SHARED_POINTERS(Filt1)
     SIMPL_STATIC_NEW_MACRO(Filt1)

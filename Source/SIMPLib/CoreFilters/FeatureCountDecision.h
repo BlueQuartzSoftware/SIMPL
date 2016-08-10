@@ -48,7 +48,7 @@
  */
 class SIMPLib_EXPORT FeatureCountDecision : public AbstractDecisionFilter
 {
-    Q_OBJECT /* Need this for Qt's signals and slots mechanism to work */
+    Q_OBJECT
   public:
     SIMPL_SHARED_POINTERS(FeatureCountDecision)
     SIMPL_STATIC_NEW_MACRO(FeatureCountDecision)

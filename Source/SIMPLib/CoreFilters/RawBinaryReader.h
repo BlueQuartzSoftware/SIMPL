@@ -45,7 +45,7 @@
  */
 class SIMPLib_EXPORT RawBinaryReader : public AbstractFilter
 {
-    Q_OBJECT /* Need this for Qt's signals and slots mechanism to work */
+    Q_OBJECT
   public:
     SIMPL_SHARED_POINTERS(RawBinaryReader)
     SIMPL_STATIC_NEW_MACRO(RawBinaryReader)
