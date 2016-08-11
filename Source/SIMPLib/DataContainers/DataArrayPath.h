@@ -107,11 +107,11 @@ class SIMPLib_EXPORT DataArrayPath : public QObject
     static QVector<DataArrayPath> ConvertToQVector(QStringList& paths);
 
     /**
-    * @brief serialize Returns the path using the '|' charater by default. This can be over ridden by the programmer
+    * @brief serialize Deserializes the string into a DataArrayPath, using the specified delimiter.
     * @param delimiter
     * @return
     */
-    static DataArrayPath Deserialize(QString str, QString delimiter = "|");
+    static DataArrayPath Deserialize(QString str, QString delimiter);
 
 
     SIMPL_INSTANCE_STRING_PROPERTY(DataContainerName)
