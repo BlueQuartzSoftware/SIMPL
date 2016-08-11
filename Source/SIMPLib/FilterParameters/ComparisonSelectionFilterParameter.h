@@ -57,7 +57,7 @@ class SIMPLib_EXPORT ComparisonSelectionFilterParameter : public FilterParameter
     typedef std::function<ComparisonInputs(void)> GetterCallbackType;
 
     static Pointer New(const QString& humanLabel, const QString& propertyName,
-                       const QString& defaultValue, Category category, SetterCallbackType setterCallback,
+                       ComparisonInputs defaultValue, Category category, SetterCallbackType setterCallback,
                        GetterCallbackType getterCallback, QVector<QString> choices,
                        bool showOperators, int groupIndex = -1);
 
