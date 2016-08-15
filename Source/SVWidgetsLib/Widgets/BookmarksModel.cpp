@@ -37,6 +37,7 @@
 
 #include "SVWidgetsLib/Widgets/BookmarksModel.h"
 #include "SVWidgetsLib/Widgets/BookmarksTreeView.h"
+#include "SVWidgetsLib/Widgets/SIMPLViewToolbox.h"
 
 #include "SVWidgetsLib/QtSupport/QtSSettings.h"
 
@@ -311,6 +312,9 @@ bool BookmarksModel::insertRows(int position, int rows, const QModelIndex& paren
   success = parentItem->insertChildren(position, rows, rootItem->columnCount());
   endInsertRows();
 
+  SIMPLViewToolbox* toolbox = SIMPLViewToolbox::Instance();
+  toolbox->getBookmarksWidget()->writeSettings();
+
   return success;
 }
 
@@ -325,6 +329,9 @@ bool BookmarksModel::removeRows(int position, int rows, const QModelIndex& paren
   beginRemoveRows(parent, position, position + rows - 1);
   success = parentItem->removeChildren(position, rows);
   endRemoveRows();
+
+  SIMPLViewToolbox* toolbox = SIMPLViewToolbox::Instance();
+  toolbox->getBookmarksWidget()->writeSettings();
 
   return success;
 }
@@ -350,6 +357,9 @@ bool BookmarksModel::moveRows(const QModelIndex & sourceParent, int sourceRow, i
   }
 
   endMoveRows();
+
+  SIMPLViewToolbox* toolbox = SIMPLViewToolbox::Instance();
+  toolbox->getBookmarksWidget()->writeSettings();
 
   return true;
 }
@@ -407,7 +417,12 @@ bool BookmarksModel::setData(const QModelIndex& index, const QVariant& value, in
   }
 
   if (result)
-  { emit dataChanged(index, index); }
+  {
+    emit dataChanged(index, index);
+
+    SIMPLViewToolbox* toolbox = SIMPLViewToolbox::Instance();
+    toolbox->getBookmarksWidget()->writeSettings();
+  }
 
   return result;
 }
@@ -419,6 +434,9 @@ void BookmarksModel::setNeedsToBeExpanded(const QModelIndex& index, bool value)
 {
   BookmarksItem* item = getItem(index);
   item->setNeedsToBeExpanded(value);
+
+  SIMPLViewToolbox* toolbox = SIMPLViewToolbox::Instance();
+  toolbox->getBookmarksWidget()->writeSettings();
 }
 
 // -----------------------------------------------------------------------------

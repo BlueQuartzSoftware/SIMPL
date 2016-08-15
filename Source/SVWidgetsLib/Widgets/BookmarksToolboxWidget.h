@@ -112,6 +112,11 @@ class SVWidgetsLib_EXPORT BookmarksToolboxWidget : public QWidget, private Ui::B
     */
     void writeSettings(QtSSettings* prefs);
 
+    /**
+    * @brief writeSettings
+    */
+    void writeSettings();
+
     virtual QDir findV4FavoritesDirectory();
 
     void readPrebuiltPipelines();
@@ -195,11 +200,6 @@ class SVWidgetsLib_EXPORT BookmarksToolboxWidget : public QWidget, private Ui::B
     * @param treePath
     */
     QList<QString> deserializeTreePath(QString treePath);
-
-    /**
-    * @brief writeSettings
-    */
-    void writeSettings();
 
     BookmarksToolboxWidget(const BookmarksToolboxWidget&); // Copy Constructor Not Implemented
     void operator=(const BookmarksToolboxWidget&); // Operator '=' Not Implemented
