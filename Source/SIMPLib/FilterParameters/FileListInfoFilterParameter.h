@@ -88,11 +88,26 @@ FileListInfo_t;
 
 Q_DECLARE_METATYPE(FileListInfo_t)
 
+/**
+ * @brief SIMPL_NEW_FILELISTINFO_FP This macro is a short-form way of instantiating an instance of
+ * FileListInfoFilterParameter. There are 4 required parameters that are always passed to this macro
+ * in the following order: HumanLabel, PropertyName, Category, FilterName (class name).
+ *
+ * Therefore, the macro should be written like this (this is a concrete example):
+ * SIMPL_NEW_FILELISTINFO_FP("HumanLabel", PropertyName, Category, FilterName)
+ *
+ * Example 1 (instantiated within a filter called [GenericExample](@ref genericexample)):
+ * SIMPL_NEW_FILELISTINFO_FP("Input File List", InputFileListInfo, FilterParameter::Parameter, GenericExample);
+ */
 #define SIMPL_NEW_FILELISTINFO_FP(...) \
   _FP_GET_OVERRIDE(__VA_ARGS__, \
   SIMPL_NEW_FP_9, SIMPL_NEW_FP_8, SIMPL_NEW_FP_7, SIMPL_NEW_FP_6, SIMPL_NEW_FP_5, SIMPL_NEW_FP_4)\
   (FileListInfoFilterParameter, __VA_ARGS__)
 
+/**
+ * @brief The FileListInfoFilterParameter class is used by filters to instantiate an FileListInfoWidget.  By instantiating an instance of
+ * this class in a filter's setupFilterParameters() method, a FileListInfoWidget will appear in the filter's "filter input" section in the DREAM3D GUI.
+ */
 class SIMPLib_EXPORT FileListInfoFilterParameter : public FilterParameter
 {
   public:
@@ -103,6 +118,22 @@ class SIMPLib_EXPORT FileListInfoFilterParameter : public FilterParameter
     typedef std::function<void(FileListInfo_t)> SetterCallbackType;
     typedef std::function<FileListInfo_t(void)> GetterCallbackType;
 
+    /**
+     * @brief New This function instantiates an instance of the FileListInfoFilterParameter. Although this
+     * function is available to be used, the preferable way to instantiate an instance of this class is to use the
+     * SIMPL_NEW_FILELISTINFO_FP(...) macro at the top of this file.
+
+     * @param humanLabel The name that the users of DREAM.3D see for this filter parameter
+     * @param propertyName The internal property name for this filter parameter.
+     * @param defaultValue The value that this filter parameter will be initialized to by default.
+     * @param category The category for the filter parameter in the DREAM.3D user interface.  There
+     * are three categories: Parameter, Required Arrays, and Created Arrays.
+     * @param setterCallback The method in the AbstractFilter subclass that <i>sets</i> the value of the property
+    * that this FilterParameter subclass represents.
+     * @param getterCallback The method in the AbstractFilter subclass that <i>gets</i> the value of the property
+    * that this FilterParameter subclass represents.
+     * @return
+     */
     static Pointer New(const QString& humanLabel, const QString& propertyName,
                        const FileListInfo_t& defaultValue, Category category,
                        SetterCallbackType setterCallback, GetterCallbackType getterCallback);

@@ -42,11 +42,10 @@
 #include "SIMPLib/DataContainers/DataContainerArrayProxy.h"
 #include "SIMPLib/FilterParameters/FilterParameter.h"
 
-#define SIMPL_NEW_DC_READER_FP(...) \
-  _FP_GET_OVERRIDE(__VA_ARGS__, \
-  SIMPL_NEW_FP_9, SIMPL_NEW_FP_8, SIMPL_NEW_FP_7, SIMPL_NEW_FP_6, SIMPL_NEW_FP_5, SIMPL_NEW_FP_4)\
-  (DataContainerReaderFilterParameter, __VA_ARGS__)
-
+/**
+ * @brief The DataContainerReaderFilterParameter class is used by filters to instantiate an DataContainerReaderWidget.  By instantiating an instance of
+ * this class in a filter's setupFilterParameters() method, a DataContainerReaderWidget will appear in the filter's "filter input" section in the DREAM3D GUI.
+ */
 class SIMPLib_EXPORT DataContainerReaderFilterParameter : public FilterParameter
 {
   public:
@@ -54,6 +53,17 @@ class SIMPLib_EXPORT DataContainerReaderFilterParameter : public FilterParameter
     SIMPL_STATIC_NEW_MACRO(DataContainerReaderFilterParameter)
     SIMPL_TYPE_MACRO_SUPER(DataContainerReaderFilterParameter, FilterParameter)
 
+    /**
+     * @brief New This function instantiates an instance of the DataContainerCreationFilterParameter.
+     * @param humanLabel The name that the users of DREAM.3D see for this filter parameter
+     * @param propertyName The internal property name for this filter parameter.
+     * @param defaultValue The value that this filter parameter will be initialized to by default.
+     * @param category The category for the filter parameter in the DREAM.3D user interface.  There
+     * are three categories: Parameter, Required Arrays, and Created Arrays.
+     * @param filter The corresponding filter that sets all its values into the DataContainerReaderWidget.
+     * @param groupIndex Integer that specifies the group that this filter parameter will be placed in.
+     * @return
+     */
     static Pointer New(const QString& humanLabel, const QString& propertyName,
                        const QString& defaultValue, Category category, DataContainerReader* filter,
                        int groupIndex = -1);

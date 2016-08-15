@@ -70,75 +70,57 @@ void DynamicTableExample::setupFilterParameters()
 
   // Table 1 - Fixed rows and columns, no default data passed in
   {
-    DynamicTableData defaultTableData;
     // We are using the expanded way to create the filter parameter, because the getter and setter variables are different
-    parameters.push_back(DynamicTableFilterParameter::New("Dynamic Table 1", "DynamicData1", defaultTableData, FilterParameter::Parameter,
-                                                          SIMPL_BIND_SETTER(DynamicTableExample, this, DynamicData2),
-                                                          SIMPL_BIND_GETTER(DynamicTableExample, this, DynamicData1), false, false, 0));
+    parameters.push_back(SIMPL_NEW_DYN_TABLE_FP("Dynamic Table 1", DynamicData1, FilterParameter::Parameter, DynamicTableExample, false, false, 0, 0, 0));
   }
 
   // Table 2 - Fixed rows and columns, default data passed in
   {
-    DynamicTableData defaultTableData;
     QStringList rHeaders, cHeaders;
     rHeaders << "Passed RowName 1" << "Passed RowName 2";
     cHeaders << "Passed ColName 1" << "Passed ColName 2";
     std::vector<std::vector<double> > defaultTable(4, std::vector<double>(1, 3.87));
-    defaultTableData.setColHeaders(cHeaders);
-    defaultTableData.setRowHeaders(rHeaders);
-    defaultTableData.setTableData(defaultTable);
-    parameters.push_back(DynamicTableFilterParameter::New("Dynamic Table 2", "DynamicData2", defaultTableData, FilterParameter::Parameter,
-                                                          SIMPL_BIND_SETTER(DynamicTableExample, this, DynamicData2),
-                                                          SIMPL_BIND_GETTER(DynamicTableExample, this, DynamicData1), false, false, 0));
+    m_DynamicData2.setColHeaders(cHeaders);
+    m_DynamicData2.setRowHeaders(rHeaders);
+    m_DynamicData2.setTableData(defaultTable);
+    parameters.push_back(SIMPL_NEW_DYN_TABLE_FP("Dynamic Table 2", DynamicData2, FilterParameter::Parameter, DynamicTableExample, false, false, 0, 0, 0));
   }
 
   // Table 3 - Dynamic rows and fixed columns, default data passed in
   {
-    DynamicTableData defaultTableData;
     QStringList rHeaders, cHeaders;
     rHeaders << "Passed RowName 1" << "Passed RowName 2";
     cHeaders << "Passed ColName 1" << "Passed ColName 2";
     std::vector<std::vector<double> > defaultTable(3, std::vector<double>(5, 1.34));
-    defaultTableData.setColHeaders(cHeaders);
-    defaultTableData.setRowHeaders(rHeaders);
-    defaultTableData.setTableData(defaultTable);
-    parameters.push_back(DynamicTableFilterParameter::New("Dynamic Table 3", "DynamicData3", defaultTableData, FilterParameter::Parameter,
-                                                          SIMPL_BIND_SETTER(DynamicTableExample, this, DynamicData2),
-                                                          SIMPL_BIND_GETTER(DynamicTableExample, this, DynamicData1), true, false, 0));
+    m_DynamicData3.setColHeaders(cHeaders);
+    m_DynamicData3.setRowHeaders(rHeaders);
+    m_DynamicData3.setTableData(defaultTable);
+    parameters.push_back(SIMPL_NEW_DYN_TABLE_FP("Dynamic Table 3", DynamicData3, FilterParameter::Parameter, DynamicTableExample, true, false, 0, 0, 0));
   }
 
   // Table 4 - Fixed rows and dynamic columns, default data passed in
   {
-    DynamicTableData defaultTableData;
     QStringList rHeaders, cHeaders;
     rHeaders << "Passed RowName 1" << "Passed RowName 2";
     cHeaders << "Passed ColName 1" << "Passed ColName 2";
     std::vector<std::vector<double> > defaultTable(2, std::vector<double>(2, 3));
-    defaultTableData.setColHeaders(cHeaders);
-    defaultTableData.setRowHeaders(rHeaders);
-    defaultTableData.setTableData(defaultTable);
-    parameters.push_back(DynamicTableFilterParameter::New("Dynamic Table 4", "DynamicData4", defaultTableData, FilterParameter::Parameter,
-                                                          SIMPL_BIND_SETTER(DynamicTableExample, this, DynamicData2),
-                                                          SIMPL_BIND_GETTER(DynamicTableExample, this, DynamicData1), false, true, 0));
+    m_DynamicData4.setColHeaders(cHeaders);
+    m_DynamicData4.setRowHeaders(rHeaders);
+    m_DynamicData4.setTableData(defaultTable);
+    parameters.push_back(SIMPL_NEW_DYN_TABLE_FP("Dynamic Table 4", DynamicData4, FilterParameter::Parameter, DynamicTableExample, false, true, 0, 0, 0));
   }
 
   // Table 5 - Dynamic rows and dynamic columns, default data passed in
   {
-    DynamicTableData defaultTableData;
     QStringList rHeaders, cHeaders;
     rHeaders << "Passed RowName 1" << "Passed RowName 2";
     cHeaders << "Passed ColName 1" << "Passed ColName 2";
     std::vector<std::vector<double> > defaultTable(2, std::vector<double>(2, 3));
-    defaultTableData.setColHeaders(cHeaders);
-    defaultTableData.setRowHeaders(rHeaders);
-    defaultTableData.setTableData(defaultTable);
-    parameters.push_back(DynamicTableFilterParameter::New("Dynamic Table 5", "DynamicData5", defaultTableData, FilterParameter::Parameter,
-                                                          SIMPL_BIND_SETTER(DynamicTableExample, this, DynamicData2),
-                                                          SIMPL_BIND_GETTER(DynamicTableExample, this, DynamicData1), true, true, 0));
+    m_DynamicData5.setColHeaders(cHeaders);
+    m_DynamicData5.setRowHeaders(rHeaders);
+    m_DynamicData5.setTableData(defaultTable);
+    parameters.push_back(SIMPL_NEW_DYN_TABLE_FP("Dynamic Table 5", DynamicData5, FilterParameter::Parameter, DynamicTableExample, true, true, 0, 0, 0));
   }
-
-
-
 
   setFilterParameters(parameters);
 }

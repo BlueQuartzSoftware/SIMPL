@@ -53,8 +53,7 @@ IntVec3FilterParameter::~IntVec3FilterParameter()
 // -----------------------------------------------------------------------------
 IntVec3FilterParameter::Pointer IntVec3FilterParameter::New(const QString& humanLabel, const QString& propertyName,
                                                             const IntVec3_t& defaultValue, Category category,
-                                                            SetterCallbackType setterCallback, GetterCallbackType getterCallback,
-                                                            const QString& units, int groupIndex)
+                                                            SetterCallbackType setterCallback, GetterCallbackType getterCallback, int groupIndex)
 {
 
   IntVec3FilterParameter::Pointer ptr = IntVec3FilterParameter::New();
@@ -65,7 +64,6 @@ IntVec3FilterParameter::Pointer IntVec3FilterParameter::New(const QString& human
   ptr->setDefaultValue(v);
   ptr->setCategory(category);
   ptr->setGroupIndex(groupIndex);
-  ptr->setUnits(units);
   ptr->setSetterCallback(setterCallback);
   ptr->setGetterCallback(getterCallback);
 

@@ -40,11 +40,27 @@
 
 #include "SIMPLib/FilterParameters/FilterParameter.h"
 
+/**
+ * @brief SIMPL_NEW_CALC_FP This macro is a short-form way of instantiating an instance of
+ * CalculatorFilterParameter. There are 4 required parameters and 1 optional parameter
+ * that are always passed to this macro in the following order: HumanLabel, PropertyName, Category,
+ * FilterName (class name), GroupIndex (optional).
+ *
+ * Therefore, the macro should be written like this (this is a concrete example):
+ * SIMPL_NEW_CALC_FP("HumanLabel", PropertyName, Category, FilterName, GroupIndex)
+ *
+ * Example 1 (instantiated within a filter called [GenericExample](@ref genericexample), without optional GroupIndex parameter):
+ * SIMPL_NEW_CALC_FP("Calculator Expression", CalcExpression, FilterParameter::Parameter, GenericExample);
+ */
 #define SIMPL_NEW_CALC_FP(...) \
   _FP_GET_OVERRIDE(__VA_ARGS__, \
   SIMPL_NEW_FP_9, SIMPL_NEW_FP_8, SIMPL_NEW_FP_7, SIMPL_NEW_FP_6, SIMPL_NEW_FP_5, SIMPL_NEW_FP_4)\
   (CalculatorFilterParameter, __VA_ARGS__)
 
+/**
+ * @brief The CalculatorFilterParameter class is used by filters to instantiate an CalculatorWidget.  By instantiating an instance of
+ * this class in a filter's setupFilterParameters() method, a CalculatorWidget will appear in the filter's "filter input" section in the DREAM3D GUI.
+ */
 class SIMPLib_EXPORT CalculatorFilterParameter : public FilterParameter
 {
 public:
@@ -55,6 +71,22 @@ public:
   typedef std::function<void(QString)> SetterCallbackType;
   typedef std::function<QString(void)> GetterCallbackType;
 
+  /**
+   * @brief New This function instantiates an instance of the CalculatorFilterParameter. Although this function is available to be used,
+   * the preferable way to instantiate an instance of this class is to use the SIMPL_NEW_CALC_FP(...) macro at the top of this file.
+
+   * @param humanLabel The name that the users of DREAM.3D see for this filter parameter
+   * @param propertyName The internal property name for this filter parameter.
+   * @param defaultValue The value that this filter parameter will be initialized to by default.
+   * @param category The category for the filter parameter in the DREAM.3D user interface.  There
+   * are three categories: Parameter, Required Arrays, and Created Arrays.
+   * @param setterCallback The method in the AbstractFilter subclass that <i>sets</i> the value of the property
+  * that this FilterParameter subclass represents.
+   * @param getterCallback The method in the AbstractFilter subclass that <i>gets</i> the value of the property
+  * that this FilterParameter subclass represents.
+   * @param groupIndex Integer that specifies the group that this filter parameter will be placed in.
+   * @return
+   */
     static Pointer New(const QString& humanLabel, const QString& propertyName,
     const QString& defaultValue, Category category,
     SetterCallbackType setterCallback, GetterCallbackType getterCallback, int groupIndex = -1);
