@@ -130,19 +130,29 @@ class SIMPLib_EXPORT AttributeMatrixSelectionFilterParameter : public FilterPara
     QString getWidgetType();
 
     /**
-     * @brief readJson
-     * @return
+     * @brief readJson Reads this filter parameter's corresponding property out of a QJsonObject.
+     * @param json The QJsonObject that the filter parameter reads from.
      */
     void readJson(const QJsonObject &json);
 
     /**
-     * @brief writeJson
-     * @return
+     * @brief writeJson Writes this filter parameter's corresponding property to a QJsonObject.
+     * @param json The QJsonObject that the filter parameter writes to.
      */
     void writeJson(QJsonObject &json);
 
+    /**
+    * @param DefaultGeometryTypes Default geometry types required for Data Container selections
+    * @return
+    */
     SIMPL_INSTANCE_PROPERTY(QVector<unsigned int>, DefaultGeometryTypes)
+
+    /**
+    * @param DefaultAttributeMatrixTypes Default attribute matrix types required for Attribute Matrix selections
+    * @return
+    */
     SIMPL_INSTANCE_PROPERTY(QVector<unsigned int>, DefaultAttributeMatrixTypes)
+
     /**
     * @param SetterCallback The method in the AbstractFilter subclass that <i>sets</i> the value of the property
     * that this FilterParameter subclass represents.
@@ -158,6 +168,10 @@ class SIMPLib_EXPORT AttributeMatrixSelectionFilterParameter : public FilterPara
     SIMPL_INSTANCE_PROPERTY(GetterCallbackType, GetterCallback)
 
   protected:
+      /**
+       * @brief AttributeMatrixSelectionFilterParameter The default constructor.  It is protected because this
+       * filter parameter should only be instantiated using its New(...) function or short-form macro.
+       */
     AttributeMatrixSelectionFilterParameter();
 
   private:

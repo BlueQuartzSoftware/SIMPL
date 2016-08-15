@@ -105,14 +105,14 @@ class SIMPLib_EXPORT LinkedBooleanFilterParameter : public FilterParameter
     QString getWidgetType();
 
     /**
-     * @brief readJson
-     * @return
+     * @brief readJson Reads this filter parameter's corresponding property out of a QJsonObject.
+     * @param json The QJsonObject that the filter parameter reads from.
      */
     void readJson(const QJsonObject &json);
 
     /**
-     * @brief writeJson
-     * @return
+     * @brief writeJson Writes this filter parameter's corresponding property to a QJsonObject.
+     * @param json The QJsonObject that the filter parameter writes to.
      */
     void writeJson(QJsonObject &json);
 
@@ -132,6 +132,10 @@ class SIMPLib_EXPORT LinkedBooleanFilterParameter : public FilterParameter
 
 
   protected:
+      /**
+       * @brief LinkedBooleanFilterParameter The default constructor.  It is protected because this
+       * filter parameter should only be instantiated using its New(...) function or short-form macro.
+       */
     LinkedBooleanFilterParameter();
 
   private:

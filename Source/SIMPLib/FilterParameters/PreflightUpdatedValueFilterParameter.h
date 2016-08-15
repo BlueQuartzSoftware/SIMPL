@@ -100,15 +100,24 @@ class SIMPLib_EXPORT PreflightUpdatedValueFilterParameter : public FilterParamet
     QString getWidgetType();
 
     /**
-     * @brief writeJson
-     * @return
+     * @brief writeJson Writes this filter parameter's corresponding property to a QJsonObject.
+     * @param json The QJsonObject that the filter parameter writes to.
      */
     void writeJson(QJsonObject &json);
 
+    /**
+    * @param GetterCallback The method in the AbstractFilter subclass that <i>gets</i> the value of the property
+    * that this FilterParameter subclass represents.
+    * @return The GetterCallback
+    */
     SIMPL_INSTANCE_PROPERTY(GetterCallbackType, GetterCallback)
 
 
   protected:
+      /**
+       * @brief PreflightUpdatedValueFilterParameter The default constructor.  It is protected because this
+       * filter parameter should only be instantiated using its New(...) function or short-form macro.
+       */
     PreflightUpdatedValueFilterParameter();
 
   private:

@@ -75,6 +75,10 @@ public:
   QString getWidgetType();
 
 protected:
+  /**
+   * @brief UnknownFilterParameter The default constructor.  It is protected because this
+   * filter parameter should only be instantiated using its New(...) function or short-form macro.
+   */
   UnknownFilterParameter();
 
 private:

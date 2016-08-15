@@ -126,6 +126,10 @@ class SIMPLib_EXPORT AttributeMatrixCreationFilterParameter : public FilterParam
      */
     void writeJson(QJsonObject &json);
 
+    /**
+    * @param DefaultGeometryTypes Default geometry types required for Data Container selections
+    * @return
+    */
     SIMPL_INSTANCE_PROPERTY(QVector<unsigned int>, DefaultGeometryTypes)
 
     /**

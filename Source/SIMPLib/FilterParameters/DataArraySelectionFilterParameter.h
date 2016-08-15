@@ -141,20 +141,39 @@ class SIMPLib_EXPORT DataArraySelectionFilterParameter : public FilterParameter
     QString getWidgetType();
 
     /**
-     * @brief readJson
-     * @return
+     * @brief readJson Reads this filter parameter's corresponding property out of a QJsonObject.
+     * @param json The QJsonObject that the filter parameter reads from.
      */
     void readJson(const QJsonObject &json);
 
     /**
-     * @brief writeJson
-     * @return
+     * @brief writeJson Writes this filter parameter's corresponding property to a QJsonObject.
+     * @param json The QJsonObject that the filter parameter writes to.
      */
     void writeJson(QJsonObject &json);
 
+    /**
+    * @param DefaultGeometryTypes Default geometry types required for Data Container selections
+    * @return
+    */
     SIMPL_INSTANCE_PROPERTY(QVector<unsigned int>, DefaultGeometryTypes)
+
+    /**
+    * @param DefaultAttributeMatrixTypes Default attribute matrix types required for Attribute Matrix selections
+    * @return
+    */
     SIMPL_INSTANCE_PROPERTY(QVector<unsigned int>, DefaultAttributeMatrixTypes)
+
+    /**
+    * @param DefaultAttributeArrayTypes Default attribute array types required for Attribute Array selections
+    * @return
+    */
     SIMPL_INSTANCE_PROPERTY(QVector<QString>, DefaultAttributeArrayTypes)
+
+    /**
+    * @param DefaultComponentDimensions Default component dimensions required for Attribute Array selections
+    * @return
+    */
     SIMPL_INSTANCE_PROPERTY(QVector< QVector<size_t> >, DefaultComponentDimensions)
 
     /**
@@ -172,6 +191,10 @@ class SIMPLib_EXPORT DataArraySelectionFilterParameter : public FilterParameter
     SIMPL_INSTANCE_PROPERTY(GetterCallbackType, GetterCallback)
 
   protected:
+      /**
+       * @brief DataArraySelectionFilterParameter The default constructor.  It is protected because this
+       * filter parameter should only be instantiated using its New(...) function or short-form macro.
+       */
     DataArraySelectionFilterParameter();
 
   private:

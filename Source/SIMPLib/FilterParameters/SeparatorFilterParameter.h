@@ -70,6 +70,10 @@ class SIMPLib_EXPORT SeparatorFilterParameter : public FilterParameter
 
 
   protected:
+    /**
+     * @brief SeparatorFilterParameter The default constructor.  It is protected because this
+     * filter parameter should only be instantiated using its New(...) function or short-form macro.
+     */
     SeparatorFilterParameter();
 
   private:
