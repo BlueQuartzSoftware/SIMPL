@@ -40,6 +40,10 @@
 
 #include "SIMPLib/FilterParameters/FilterParameter.h"
 
+/**
+ * @brief The UnknownFilterParameter class is used by filters to instantiate an UnknownWidget.  By instantiating an instance of
+ * this class in a filter's setupFilterParameters() method, an UnknownWidget will appear in the filter's "filter input" section in the DREAM3D GUI.
+ */
 class SIMPLib_EXPORT UnknownFilterParameter : public FilterParameter
 {
 public:
@@ -47,6 +51,17 @@ public:
     SIMPL_STATIC_NEW_MACRO(UnknownFilterParameter)
     SIMPL_TYPE_MACRO(UnknownFilterParameter)
 
+  /**
+   * @brief New This function instantiates an instance of the UnknownFilterParameter.
+
+   * @param humanLabel The name that the users of DREAM.3D see for this filter parameter
+   * @param propertyName The internal property name for this filter parameter.
+   * @param defaultValue The value that this filter parameter will be initialized to by default.
+   * @param category The category for the filter parameter in the DREAM.3D user interface.  There
+   * are three categories: Parameter, Required Arrays, and Created Arrays.
+   * @param groupIndex Integer that specifies the group that this filter parameter will be placed in.
+   * @return
+   */
     static Pointer New(const QString& humanLabel, const QString& propertyName,
                        const QString& defaultValue, Category category, int groupIndex = -1);
 
@@ -60,6 +75,10 @@ public:
   QString getWidgetType();
 
 protected:
+  /**
+   * @brief UnknownFilterParameter The default constructor.  It is protected because this
+   * filter parameter should only be instantiated using its New(...) function or short-form macro.
+   */
   UnknownFilterParameter();
 
 private:

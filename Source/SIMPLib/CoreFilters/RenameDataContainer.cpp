@@ -74,10 +74,10 @@ void RenameDataContainer::setupFilterParameters()
 
   {
     DataContainerSelectionFilterParameter::RequirementType req;
-    parameters.push_back(DataContainerSelectionFilterParameter::New("Data Container to Rename", "SelectedDataContainerName", getSelectedDataContainerName(), FilterParameter::RequiredArray, req, SIMPL_BIND_SETTER(RenameDataContainer, this, SelectedDataContainerName), SIMPL_BIND_GETTER(RenameDataContainer, this, SelectedDataContainerName)));
+    parameters.push_back(SIMPL_NEW_DC_SELECTION_FP("Data Container to Rename", SelectedDataContainerName, FilterParameter::RequiredArray, RenameDataContainer, req));
   }
 
-  parameters.push_back(StringFilterParameter::New("New Data Container Name", "NewDataContainerName", getNewDataContainerName(), FilterParameter::Parameter, SIMPL_BIND_SETTER(RenameDataContainer, this, NewDataContainerName), SIMPL_BIND_GETTER(RenameDataContainer, this, NewDataContainerName)));
+  parameters.push_back(SIMPL_NEW_STRING_FP("New Data Container Name", NewDataContainerName, FilterParameter::Parameter, RenameDataContainer));
 
   setFilterParameters(parameters);
 }

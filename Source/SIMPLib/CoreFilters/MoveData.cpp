@@ -106,19 +106,19 @@ void MoveData::setupFilterParameters()
 
   {
     AttributeMatrixSelectionFilterParameter::RequirementType req;
-    parameters.push_back(AttributeMatrixSelectionFilterParameter::New("Attribute Matrix Source", "AttributeMatrixSource", getAttributeMatrixSource(), FilterParameter::RequiredArray, req, SIMPL_BIND_SETTER(MoveData, this, AttributeMatrixSource), SIMPL_BIND_GETTER(MoveData, this, AttributeMatrixSource), 0));
+    parameters.push_back(SIMPL_NEW_AM_SELECTION_FP("Attribute Matrix Source", AttributeMatrixSource, FilterParameter::RequiredArray, MoveData, req, 0));
   }
   {
     DataContainerSelectionFilterParameter::RequirementType req;
-    parameters.push_back(DataContainerSelectionFilterParameter::New("Data Container Destination", "DataContainerDestination", getDataContainerDestination(), FilterParameter::RequiredArray, req, SIMPL_BIND_SETTER(MoveData, this, DataContainerDestination), SIMPL_BIND_GETTER(MoveData, this, DataContainerDestination), 0));
+    parameters.push_back(SIMPL_NEW_DC_SELECTION_FP("Data Container Destination", DataContainerDestination, FilterParameter::RequiredArray, MoveData, req, 0));
   }
   {
     DataArraySelectionFilterParameter::RequirementType req;
-    parameters.push_back(DataArraySelectionFilterParameter::New("Attribute Array Source", "DataArraySource", getDataArraySource(), FilterParameter::RequiredArray, req, SIMPL_BIND_SETTER(MoveData, this, DataArraySource), SIMPL_BIND_GETTER(MoveData, this, DataArraySource), 1));
+    parameters.push_back(SIMPL_NEW_DA_SELECTION_FP("Attribute Array Source", DataArraySource, FilterParameter::RequiredArray, MoveData, req, 1));
   }
   {
     AttributeMatrixSelectionFilterParameter::RequirementType req;
-    parameters.push_back(AttributeMatrixSelectionFilterParameter::New("Attribute Matrix Destination", "AttributeMatrixDestination", getAttributeMatrixDestination(), FilterParameter::RequiredArray, req, SIMPL_BIND_SETTER(MoveData, this, AttributeMatrixDestination), SIMPL_BIND_GETTER(MoveData, this, AttributeMatrixDestination), 1));
+    parameters.push_back(SIMPL_NEW_AM_SELECTION_FP("Attribute Matrix Destination", AttributeMatrixDestination, FilterParameter::RequiredArray, MoveData, req, 1));
   }
 
   setFilterParameters(parameters);

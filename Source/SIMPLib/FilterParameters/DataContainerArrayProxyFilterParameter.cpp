@@ -54,13 +54,15 @@ DataContainerArrayProxyFilterParameter::~DataContainerArrayProxyFilterParameter(
 //
 // -----------------------------------------------------------------------------
 DataContainerArrayProxyFilterParameter::Pointer DataContainerArrayProxyFilterParameter::New(const QString& humanLabel, const QString& propertyName,
-    const QString& defaultValue, DataContainerArrayProxy proxy, Qt::CheckState defValue, Category category, SetterCallbackType setterCallback,
-                                                                                            GetterCallbackType getterCallback,int groupIndex)
+    DataContainerArrayProxy defaultValue, Category category, SetterCallbackType setterCallback, GetterCallbackType getterCallback,
+                                                                                            DataContainerArrayProxy proxy, Qt::CheckState defValue, int groupIndex)
 {
   DataContainerArrayProxyFilterParameter::Pointer ptr = DataContainerArrayProxyFilterParameter::New();
   ptr->setHumanLabel(humanLabel);
   ptr->setPropertyName(propertyName);
-  ptr->setDefaultValue(defaultValue);
+  QVariant var;
+  var.setValue(defaultValue);
+  ptr->setDefaultValue(var);
   ptr->setCategory(category);
   ptr->setDefaultFlagValue(defValue);
   ptr->setDataContainerArrayProxy(proxy);

@@ -54,15 +54,15 @@ PhaseTypeSelectionFilterParameter::~PhaseTypeSelectionFilterParameter()
 //
 // -----------------------------------------------------------------------------
 PhaseTypeSelectionFilterParameter::Pointer PhaseTypeSelectionFilterParameter::New(const QString& humanLabel,
-                                                                                  const QString& PhaseTypesArrayName,
-                                                                                  const QString& phaseTypeCountProperty,
                                                                                   const QString& phaseTypeDataProperty,
-                                                                                  const QString& attributeMatrixProperty,
                                                                                   const DataArrayPath attributeMatrixDefault,
-                                                                                  const QStringList phaseListChoices,
                                                                                   Category category,
                                                                                   SetterCallbackType setterCallback,
                                                                                   GetterCallbackType getterCallback,
+                                                                                  const QString& PhaseTypesArrayName,
+                                                                                  const QString& phaseTypeCountProperty,
+                                                                                  const QString& attributeMatrixProperty,
+                                                                                  const QStringList phaseListChoices,
                                                                                   int groupIndex)
 {
   PhaseTypeSelectionFilterParameter::Pointer ptr = PhaseTypeSelectionFilterParameter::New();

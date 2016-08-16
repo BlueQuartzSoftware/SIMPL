@@ -196,7 +196,7 @@ void RawBinaryReader::setupFilterParameters()
 {
   FilterParameterVector parameters;
 
-  parameters.push_back(InputFileFilterParameter::New("Input File", "InputFile", getInputFile(), FilterParameter::Parameter, SIMPL_BIND_SETTER(RawBinaryReader, this, InputFile), SIMPL_BIND_GETTER(RawBinaryReader, this, InputFile), "*.raw *.bin"));
+  parameters.push_back(SIMPL_NEW_INPUT_FILE_FP("Input File", InputFile, FilterParameter::Parameter, RawBinaryReader, "*.raw *.bin"));
   {
     ChoiceFilterParameter::Pointer parameter = ChoiceFilterParameter::New();
     parameter->setHumanLabel("Scalar Type");
@@ -219,7 +219,7 @@ void RawBinaryReader::setupFilterParameters()
     parameter->setCategory(FilterParameter::Parameter);
     parameters.push_back(parameter);
   }
-  parameters.push_back(IntFilterParameter::New("Number of Components", "NumberOfComponents", getNumberOfComponents(), FilterParameter::Parameter, SIMPL_BIND_SETTER(RawBinaryReader, this, NumberOfComponents), SIMPL_BIND_GETTER(RawBinaryReader, this, NumberOfComponents)));
+  parameters.push_back(SIMPL_NEW_INTEGER_FP("Number of Components", NumberOfComponents, FilterParameter::Parameter, RawBinaryReader));
   {
     ChoiceFilterParameter::Pointer parameter = ChoiceFilterParameter::New();
     parameter->setHumanLabel("Endian");
@@ -234,10 +234,10 @@ void RawBinaryReader::setupFilterParameters()
     parameter->setCategory(FilterParameter::Parameter);
     parameters.push_back(parameter);
   }
-  parameters.push_back(IntFilterParameter::New("Skip Header Bytes", "SkipHeaderBytes", getSkipHeaderBytes(), FilterParameter::Parameter, SIMPL_BIND_SETTER(RawBinaryReader, this, SkipHeaderBytes), SIMPL_BIND_GETTER(RawBinaryReader, this, SkipHeaderBytes)));
+  parameters.push_back(SIMPL_NEW_INTEGER_FP("Skip Header Bytes", SkipHeaderBytes, FilterParameter::Parameter, RawBinaryReader));
   {
     DataArrayCreationFilterParameter::RequirementType req;
-    parameters.push_back(DataArrayCreationFilterParameter::New("Output Attribute Array", "CreatedAttributeArrayPath", getCreatedAttributeArrayPath(), FilterParameter::CreatedArray, req, SIMPL_BIND_SETTER(RawBinaryReader, this, CreatedAttributeArrayPath), SIMPL_BIND_GETTER(RawBinaryReader, this, CreatedAttributeArrayPath)));
+    parameters.push_back(SIMPL_NEW_DA_CREATION_FP("Output Attribute Array", CreatedAttributeArrayPath, FilterParameter::CreatedArray, RawBinaryReader, req));
   }
   setFilterParameters(parameters);
 }

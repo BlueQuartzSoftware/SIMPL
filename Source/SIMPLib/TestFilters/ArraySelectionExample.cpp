@@ -69,8 +69,10 @@ void ArraySelectionExample::setupFilterParameters()
   QVector<FilterParameter::Pointer> parameters;
   DataContainerArrayProxy proxy;
   /* To select arrays */
-  parameters.push_back(DataContainerArrayProxyFilterParameter::New("Array to Select", "DataContainerArrayProxy", "", proxy, Qt::Checked, FilterParameter::Parameter, SIMPL_BIND_SETTER(ArraySelectionExample, this, DataContainerArrayProxy), SIMPL_BIND_GETTER(ArraySelectionExample, this, DataContainerArrayProxy)));
+  //parameters.push_back(DataContainerArrayProxyFilterParameter::New("Array to Select", "DataContainerArrayProxy", "", FilterParameter::Parameter, SIMPL_BIND_SETTER(ArraySelectionExample, this, DataContainerArrayProxy), SIMPL_BIND_GETTER(ArraySelectionExample, this, DataContainerArrayProxy), proxy, Qt::Checked));
+  //parameters.push_back(SIMPL_NEW_DCA_PROXY_FP("Array to Select", DataContainerArrayProxy, FilterParameter::Parameter, ArraySelectionExample, proxy, Qt::Checked));
 
+  parameters.push_back(DataContainerArrayProxyFilterParameter::New("Array to Select", "DataContainerArrayProxy", getDataContainerArrayProxy(), FilterParameter::Parameter, SIMPL_BIND_SETTER(ArraySelectionExample, this, DataContainerArrayProxy), SIMPL_BIND_GETTER(ArraySelectionExample, this, DataContainerArrayProxy), proxy, Qt::Checked));
 
   setFilterParameters(parameters);
 }

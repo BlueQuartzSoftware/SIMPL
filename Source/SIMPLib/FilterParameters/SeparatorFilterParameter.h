@@ -38,6 +38,10 @@
 
 #include "SIMPLib/FilterParameters/FilterParameter.h"
 
+/**
+ * @brief The SeparatorFilterParameter class is used by filters to instantiate a SeparatorWidget.  By instantiating an instance of
+ * this class in a filter's setupFilterParameters() method, a SeparatorWidget will appear in the filter's "filter input" section in the DREAM3D GUI.
+ */
 class SIMPLib_EXPORT SeparatorFilterParameter : public FilterParameter
 {
   public:
@@ -45,6 +49,14 @@ class SIMPLib_EXPORT SeparatorFilterParameter : public FilterParameter
     SIMPL_STATIC_NEW_MACRO(SeparatorFilterParameter)
     SIMPL_TYPE_MACRO_SUPER(SeparatorFilterParameter, FilterParameter)
 
+    /**
+     * @brief New This function instantiates an instance of the SeparatorFilterParameter.
+
+     * @param humanLabel The name that the users of DREAM.3D see for this filter parameter
+     * @param category The category for the filter parameter in the DREAM.3D user interface.  There
+     * are three categories: Parameter, Required Arrays, and Created Arrays.
+     * @return
+     */
     static Pointer New(const QString& humanLabel, FilterParameter::Category category);
 
     virtual ~SeparatorFilterParameter();
@@ -58,6 +70,10 @@ class SIMPLib_EXPORT SeparatorFilterParameter : public FilterParameter
 
 
   protected:
+    /**
+     * @brief SeparatorFilterParameter The default constructor.  It is protected because this
+     * filter parameter should only be instantiated using its New(...) function or short-form macro.
+     */
     SeparatorFilterParameter();
 
   private:

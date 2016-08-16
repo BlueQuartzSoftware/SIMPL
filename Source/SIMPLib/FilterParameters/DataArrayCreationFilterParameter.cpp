@@ -53,8 +53,8 @@ DataArrayCreationFilterParameter::~DataArrayCreationFilterParameter()
 //
 // -----------------------------------------------------------------------------
 DataArrayCreationFilterParameter::Pointer DataArrayCreationFilterParameter::New(const QString& humanLabel, const QString& propertyName,
-                                              const DataArrayPath& defaultValue, Category category, const RequirementType req, SetterCallbackType setterCallback,
-                                                                                GetterCallbackType getterCallback, int groupIndex)
+                                              const DataArrayPath& defaultValue, Category category, SetterCallbackType setterCallback,
+                                              GetterCallbackType getterCallback, const RequirementType req, int groupIndex)
 {
 
   DataArrayCreationFilterParameter::Pointer ptr = DataArrayCreationFilterParameter::New();

@@ -58,8 +58,7 @@ DynamicTableFilterParameter::~DynamicTableFilterParameter()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-DynamicTableFilterParameter::Pointer DynamicTableFilterParameter::New(const QString& humanLabel, const QString& propertyName,
-    QStringList rHeaders, QStringList cHeaders, std::vector<std::vector<double> > defaultTable,
+DynamicTableFilterParameter::Pointer DynamicTableFilterParameter::New(const QString& humanLabel, const QString& propertyName, DynamicTableData defaultTableData,
     FilterParameter::Category category, SetterCallbackType setterCallback, GetterCallbackType getterCallback,
     bool areRowsDynamic, bool areColsDynamic, int minRowCount, int minColCount, int groupIndex)
 {
@@ -67,9 +66,7 @@ DynamicTableFilterParameter::Pointer DynamicTableFilterParameter::New(const QStr
   ptr->setHumanLabel(humanLabel);
   ptr->setPropertyName(propertyName);
   ptr->setCategory(category);
-  ptr->setRowHeaders(rHeaders);
-  ptr->setColumnHeaders(cHeaders);
-  ptr->setDefaultTable(defaultTable);
+  ptr->setDefaultTableData(defaultTableData);
   ptr->setAreRowsDynamic(areRowsDynamic);
   ptr->setAreColsDynamic(areColsDynamic);
   ptr->setMinRowCount(minRowCount);
@@ -80,13 +77,13 @@ DynamicTableFilterParameter::Pointer DynamicTableFilterParameter::New(const QStr
   ptr->setGetterCallback(getterCallback);
 
   // Check that all columns are initialized to the same size
-  if (defaultTable.size() > 0)
+  if (defaultTableData.getTableData().size() > 0)
   {
     QSet<int> colSizes;
-    colSizes.insert(defaultTable[0].size());
-    for (int i = 1; i < defaultTable.size(); i++)
+    colSizes.insert(defaultTableData.getTableData()[0].size());
+    for (int i = 1; i < defaultTableData.getTableData().size(); i++)
     {
-      colSizes.insert(defaultTable[i].size());
+      colSizes.insert(defaultTableData.getTableData()[i].size());
       if (colSizes.size() > 1)
       {
         ptr->setErrorCondition(-100);

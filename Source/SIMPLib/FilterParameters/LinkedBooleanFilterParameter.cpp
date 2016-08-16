@@ -53,10 +53,10 @@ LinkedBooleanFilterParameter::~LinkedBooleanFilterParameter()
 // -----------------------------------------------------------------------------
 LinkedBooleanFilterParameter::Pointer LinkedBooleanFilterParameter::New(const QString& humanLabel, const QString& propertyName,
     const bool& defaultValue,
-    QStringList conditionalProperties,
     Category category,
     SetterCallbackType setterCallback,
     GetterCallbackType getterCallback,
+    QStringList conditionalProperties,
     int groupIndex)
 {
   LinkedBooleanFilterParameter::Pointer ptr = LinkedBooleanFilterParameter::New();

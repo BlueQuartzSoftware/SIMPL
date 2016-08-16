@@ -52,9 +52,9 @@ ChoiceFilterParameter::~ChoiceFilterParameter()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-ChoiceFilterParameter::Pointer ChoiceFilterParameter::New(const QString& humanLabel, const QString& propertyName, const int& defaultValue,
-                                                          QVector<QString> choices, bool editable, Category category, SetterCallbackType setterCallback,
-                                                          GetterCallbackType getterCallback, int groupIndex)
+ChoiceFilterParameter::Pointer ChoiceFilterParameter::New(const QString& humanLabel, const QString& propertyName, const int& defaultValue, Category category, SetterCallbackType setterCallback,
+                                                          GetterCallbackType getterCallback,
+                                                          QVector<QString> choices, bool editable, int groupIndex)
 
 {
   ChoiceFilterParameter::Pointer ptr = ChoiceFilterParameter::New();

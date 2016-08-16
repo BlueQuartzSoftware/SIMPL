@@ -40,6 +40,27 @@
 
 #include "SIMPLib/FilterParameters/FilterParameter.h"
 
+/**
+ * @brief SIMPL_NEW_BOOL_FP This macro is a short-form way of instantiating an instance of
+ * BooleanFilterParameter. There are 4 required parameters and 1 optional parameter
+ * that are always passed to this macro in the following order: HumanLabel, PropertyName, Category,
+ * FilterName (class name), GroupIndex (optional).
+ *
+ * Therefore, the macro should be written like this (this is a concrete example):
+ * SIMPL_NEW_BOOL_FP("HumanLabel", PropertyName, Category, FilterName, GroupIndex)
+ *
+ * Example 1 (instantiated within a filter called [GenericExample](@ref genericexample), without optional GroupIndex parameter):
+ * SIMPL_NEW_BOOL_FP("Write Alignment Shift File", WriteAlignmentShifts, FilterParameter::Parameter, GenericExample);
+ */
+#define SIMPL_NEW_BOOL_FP(...) \
+  _FP_GET_OVERRIDE(__VA_ARGS__, \
+  SIMPL_NEW_FP_9, SIMPL_NEW_FP_8, SIMPL_NEW_FP_7, SIMPL_NEW_FP_6, SIMPL_NEW_FP_5, SIMPL_NEW_FP_4)\
+  (BooleanFilterParameter, __VA_ARGS__)
+
+/**
+ * @brief The BooleanFilterParameter class is used by filters to instantiate an BooleanWidget.  By instantiating an instance of
+ * this class in a filter's setupFilterParameters() method, a BooleanWidget will appear in the filter's "filter input" section in the DREAM3D GUI.
+ */
 class SIMPLib_EXPORT BooleanFilterParameter : public FilterParameter
 {
 public:
@@ -50,13 +71,27 @@ public:
   typedef std::function<void(bool)> SetterCallbackType;
   typedef std::function<bool(void)> GetterCallbackType;
 
+  /**
+   * @brief New This function instantiates an instance of the BooleanFilterParameter. Although this function is available to be used,
+   * the preferable way to instantiate an instance of this class is to use the SIMPL_NEW_BOOL_FP(...) macro at the top of this file.
+
+   * @param humanLabel The name that the users of DREAM.3D see for this filter parameter
+   * @param propertyName The internal property name for this filter parameter.
+   * @param defaultValue The value that this filter parameter will be initialized to by default.
+   * @param category The category for the filter parameter in the DREAM.3D user interface.  There
+   * are three categories: Parameter, Required Arrays, and Created Arrays.
+   * @param setterCallback The method in the AbstractFilter subclass that <i>sets</i> the value of the property
+  * that this FilterParameter subclass represents.
+   * @param getterCallback The method in the AbstractFilter subclass that <i>gets</i> the value of the property
+  * that this FilterParameter subclass represents.
+   * @param groupIndex Integer that specifies the group that this filter parameter will be placed in.
+   * @return
+   */
     static Pointer New(const QString& humanLabel, const QString& propertyName,
     const bool& defaultValue, Category category, SetterCallbackType setterCallback,
-    GetterCallbackType getterCallback, const QString& units = "", int groupIndex = -1);
+    GetterCallbackType getterCallback, int groupIndex = -1);
 
     virtual ~BooleanFilterParameter();
-
-    SIMPL_INSTANCE_STRING_PROPERTY(Units)
 
     /**
      * @brief getWidgetType Returns the type of widget that displays and controls
@@ -66,14 +101,14 @@ public:
     QString getWidgetType();
 
     /**
-     * @brief readJson
-     * @return
+     * @brief readJson Reads this filter parameter's corresponding property out of a QJsonObject.
+     * @param json The QJsonObject that the filter parameter reads from.
      */
     void readJson(const QJsonObject &json);
 
     /**
-     * @brief writeJson
-     * @return
+     * @brief writeJson Writes this filter parameter's corresponding property to a QJsonObject.
+     * @param json The QJsonObject that the filter parameter writes to.
      */
     void writeJson(QJsonObject &json);
 
@@ -92,6 +127,10 @@ public:
     SIMPL_INSTANCE_PROPERTY(GetterCallbackType, GetterCallback)
 
 protected:
+      /**
+       * @brief BooleanFilterParameter The default constructor.  It is protected because this
+       * filter parameter should only be instantiated using its New(...) function or short-form macro.
+       */
   BooleanFilterParameter();
 
 private:

@@ -54,10 +54,10 @@ DynamicChoiceFilterParameter::~DynamicChoiceFilterParameter()
 DynamicChoiceFilterParameter::Pointer DynamicChoiceFilterParameter::New(const QString& humanLabel,
     const QString& propertyName,
     const QString& defaultValue,
-    const QString& listProperty,
     Category category,
     SetterCallbackType setterCallback,
     GetterCallbackType getterCallback,
+    const QString& listProperty,
     int groupIndex)
 {
   DynamicChoiceFilterParameter::Pointer ptr = DynamicChoiceFilterParameter::New();

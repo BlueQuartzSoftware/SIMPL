@@ -302,7 +302,7 @@ void CreateDataArray::setupFilterParameters()
     parameter->setCategory(FilterParameter::Parameter);
     parameters.push_back(parameter);
   }
-  parameters.push_back(IntFilterParameter::New("Number of Components", "NumberOfComponents", getNumberOfComponents(), FilterParameter::Parameter, SIMPL_BIND_SETTER(CreateDataArray, this, NumberOfComponents), SIMPL_BIND_GETTER(CreateDataArray, this, NumberOfComponents)));
+  parameters.push_back(SIMPL_NEW_INTEGER_FP("Number of Components", NumberOfComponents, FilterParameter::Parameter, CreateDataArray));
 
   {
     LinkedChoicesFilterParameter::Pointer parameter = LinkedChoicesFilterParameter::New();
@@ -324,11 +324,11 @@ void CreateDataArray::setupFilterParameters()
     parameter->setCategory(FilterParameter::Parameter);
     parameters.push_back(parameter);
   }
-  parameters.push_back(StringFilterParameter::New("Initialization Value", "InitializationValue", getInitializationValue(), FilterParameter::Parameter, SIMPL_BIND_SETTER(CreateDataArray, this, InitializationValue), SIMPL_BIND_GETTER(CreateDataArray, this, InitializationValue), Manual));
-  parameters.push_back(RangeFilterParameter::New("Initialization Range", "InitializationRange", getInitializationRange(), FilterParameter::Parameter, SIMPL_BIND_SETTER(CreateDataArray, this, InitializationRange), SIMPL_BIND_GETTER(CreateDataArray, this, InitializationRange), RandomWithRange));
+  parameters.push_back(SIMPL_NEW_STRING_FP("Initialization Value", InitializationValue, FilterParameter::Parameter, CreateDataArray, Manual));
+  parameters.push_back(SIMPL_NEW_RANGE_FP("Initialization Range", InitializationRange, FilterParameter::Parameter, CreateDataArray, RandomWithRange));
   {
     DataArrayCreationFilterParameter::RequirementType req;
-    parameters.push_back(DataArrayCreationFilterParameter::New("Created Attribute Array", "NewArray", getNewArray(), FilterParameter::CreatedArray, req, SIMPL_BIND_SETTER(CreateDataArray, this, NewArray), SIMPL_BIND_GETTER(CreateDataArray, this, NewArray)));
+    parameters.push_back(SIMPL_NEW_DA_CREATION_FP("Created Attribute Array", NewArray, FilterParameter::CreatedArray, CreateDataArray, req));
   }
 
   setFilterParameters(parameters);

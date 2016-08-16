@@ -167,11 +167,20 @@ std::bind(&CLASS::get##PROP, PTR)
   SIMPL_BIND_SETTER(Filter, this, Prop),\
   SIMPL_BIND_GETTER(Filter, this, Prop))
 
+#define SIMPL_NEW_PREFLIGHTUPDATEDVALUE_FP_5(Class, Desc, Prop, Category, Filter, Index)\
+  Class::New(Desc, #Prop, get##Prop(), Category,\
+  SIMPL_BIND_GETTER(Filter, this, Prop),\
+  Index)
+
+#define SIMPL_NEW_PREFLIGHTUPDATEDVALUE_FP_4(Class, Desc, Prop, Category, Filter)\
+  Class::New(Desc, #Prop, get##Prop(), Category,\
+  SIMPL_BIND_GETTER(Filter, this, Prop))
+
 // -----------------------------------------------------------------------------
 // Define a macro that uses the "paired, sliding arg list"
 // technique to select the appropriate override.
 #define _FP_GET_OVERRIDE(_1, _2, _3, _4, _5, _6, _7, _8, _9, NAME, ...) NAME
-
+#define _FP_GET_PREFLIGHTUPDATEDVALUE_OVERRIDE(_1, _2, _3, _4, _5, NAME, ...) NAME
 
 #endif /* _FilterParameter_H_ */
 

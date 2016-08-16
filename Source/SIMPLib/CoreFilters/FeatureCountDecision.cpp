@@ -75,9 +75,9 @@ void FeatureCountDecision::setupFilterParameters()
   parameters.push_back(SeparatorFilterParameter::New("Cell Ensemble Data", FilterParameter::RequiredArray));
   {
     DataArraySelectionFilterParameter::RequirementType req = DataArraySelectionFilterParameter::CreateRequirement(SIMPL::TypeNames::Int32, 1, SIMPL::AttributeMatrixType::CellEnsemble, SIMPL::Defaults::AnyGeometry);
-    parameters.push_back(DataArraySelectionFilterParameter::New("Feature Ids", "FeatureIdsArrayPath", getFeatureIdsArrayPath(), FilterParameter::RequiredArray, req, SIMPL_BIND_SETTER(FeatureCountDecision, this, FeatureIdsArrayPath), SIMPL_BIND_GETTER(FeatureCountDecision, this, FeatureIdsArrayPath)));
+    parameters.push_back(SIMPL_NEW_DA_SELECTION_FP("Feature Ids", FeatureIdsArrayPath, FilterParameter::RequiredArray, FeatureCountDecision, req));
   }
-  parameters.push_back(IntFilterParameter::New("Maximum Number of Features", "MaxGrains", getMaxGrains(), FilterParameter::Parameter, SIMPL_BIND_SETTER(FeatureCountDecision, this, MaxGrains), SIMPL_BIND_GETTER(FeatureCountDecision, this, MaxGrains), 0));  setFilterParameters(parameters);
+  parameters.push_back(SIMPL_NEW_INTEGER_FP("Maximum Number of Features", MaxGrains, FilterParameter::Parameter, FeatureCountDecision, 0));  setFilterParameters(parameters);
 }
 
 // -----------------------------------------------------------------------------

@@ -91,24 +91,16 @@ void CreateAttributeMatrix::setupFilterParameters()
     choices.push_back("CellEnsemble");
     choices.push_back("MetaData");
     choices.push_back("Generic");
-    parameters.push_back(ChoiceFilterParameter::New("Attribute Matrix Type", "AttributeMatrixType", getAttributeMatrixType(), choices, false, FilterParameter::Parameter,
-                         SIMPL_BIND_SETTER(CreateAttributeMatrix, this, AttributeMatrixType),
-                         SIMPL_BIND_GETTER(CreateAttributeMatrix, this, AttributeMatrixType)));
+    parameters.push_back(SIMPL_NEW_CHOICE_FP("Attribute Matrix Type", AttributeMatrixType, FilterParameter::Parameter, CreateAttributeMatrix, choices, false));
   }
 
   QStringList rHeaders, cHeaders;
   rHeaders << "Tuple Dimensions";
 
-  std::vector<std::vector<double> > defaultTable;
-  parameters.push_back(DynamicTableFilterParameter::New("Tuple Dimensions", "TupleDimensions", rHeaders, cHeaders, defaultTable, FilterParameter::Parameter,
-                                                        SIMPL_BIND_SETTER(CreateAttributeMatrix, this, TupleDimensions),
-                                                        SIMPL_BIND_GETTER(CreateAttributeMatrix, this, TupleDimensions), false, true, 0));
+  parameters.push_back(SIMPL_NEW_DYN_TABLE_FP("Tuple Dimensions", TupleDimensions, FilterParameter::Parameter, CreateAttributeMatrix, false, true, 0));
   {
     AttributeMatrixCreationFilterParameter::RequirementType req;
-    parameters.push_back(AttributeMatrixCreationFilterParameter::New("Created Attribute Matrix", "CreatedAttributeMatrix",
-                                                                     getCreatedAttributeMatrix(), FilterParameter::CreatedArray, req,
-                                                                     SIMPL_BIND_SETTER(CreateAttributeMatrix, this, CreatedAttributeMatrix),
-                                                                     SIMPL_BIND_GETTER(CreateAttributeMatrix, this, CreatedAttributeMatrix)));
+    parameters.push_back(SIMPL_NEW_AM_CREATION_FP("Created Attribute Matrix", CreatedAttributeMatrix, FilterParameter::CreatedArray, CreateAttributeMatrix, req));
   }
 
   setFilterParameters(parameters);

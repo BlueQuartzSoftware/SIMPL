@@ -41,10 +41,15 @@
 #include "SIMPLib/SIMPLib.h"
 #include "SIMPLib/Common/AbstractFilter.h"
 #include "SIMPLib/Common/SIMPLibSetGetMacros.h"
+#include "SIMPLib/Common/ComparisonInputs.h"
 #include "SIMPLib/DataArrays/IDataArray.h"
 #include "SIMPLib/FilterParameters/FloatVec3FilterParameter.h"
+#include "SIMPLib/FilterParameters/SecondOrderPolynomialFilterParameter.h"
+#include "SIMPLib/FilterParameters/ThirdOrderPolynomialFilterParameter.h"
+#include "SIMPLib/FilterParameters/FourthOrderPolynomialFilterParameter.h"
 #include "SIMPLib/FilterParameters/IntVec3FilterParameter.h"
 #include "SIMPLib/FilterParameters/AxisAngleFilterParameter.h"
+#include "SIMPLib/FilterParameters/FileListInfoFilterParameter.h"
 
 /**
  * @class GenericExample GenericExample.h ExamplePlugin/Code/ExamplePluginFilters/GenericExample.h
@@ -73,11 +78,51 @@ class SIMPLib_EXPORT GenericExample : public AbstractFilter
     SIMPL_FILTER_PARAMETER(int, MaxIterations)
     Q_PROPERTY(int MaxIterations READ getMaxIterations WRITE setMaxIterations)
 
+    SIMPL_FILTER_PARAMETER(Float2ndOrderPoly_t, SecondOrderACoeff)
+    Q_PROPERTY(Float2ndOrderPoly_t SecondOrderACoeff READ getSecondOrderACoeff WRITE setSecondOrderACoeff)
+
+    SIMPL_FILTER_PARAMETER(Float3rdOrderPoly_t, ThirdOrderACoeff)
+    Q_PROPERTY(Float3rdOrderPoly_t ThirdOrderACoeff READ getThirdOrderACoeff WRITE setThirdOrderACoeff)
+
+    SIMPL_FILTER_PARAMETER(Float4thOrderPoly_t, FourthOrderACoeff)
+    Q_PROPERTY(Float4thOrderPoly_t FourthOrderACoeff READ getFourthOrderACoeff WRITE setFourthOrderACoeff)
+
     SIMPL_FILTER_PARAMETER(double, MisorientationTolerance)
     Q_PROPERTY(double MisorientationTolerance READ getMisorientationTolerance WRITE setMisorientationTolerance)
 
+    SIMPL_FILTER_PARAMETER(DataArrayPath, InputPhaseTypesArrayPath)
+    Q_PROPERTY(DataArrayPath InputPhaseTypesArrayPath READ getInputPhaseTypesArrayPath WRITE setInputPhaseTypesArrayPath)
+
+    SIMPL_FILTER_PARAMETER(UInt32Vector_t, ShapeTypeData)
+    Q_PROPERTY(UInt32Vector_t ShapeTypeData READ getShapeTypeData WRITE setShapeTypeData)
+
+    SIMPL_FILTER_PARAMETER(int, PhaseCount)
+    Q_PROPERTY(int PhaseCount READ getPhaseCount WRITE setPhaseCount)
+
+    typedef QPair <double, double> FPRangePair;
+    SIMPL_FILTER_PARAMETER(FPRangePair, InitRange)
+    Q_PROPERTY(FPRangePair InitRange READ getInitRange WRITE setInitRange)
+
+    SIMPL_FILTER_PARAMETER(QString, EstimatedPrimaryFeatures)
+    Q_PROPERTY(QString EstimatedPrimaryFeatures READ getEstimatedPrimaryFeatures WRITE setEstimatedPrimaryFeatures)
+
     SIMPL_FILTER_PARAMETER(QString, InputFile)
     Q_PROPERTY(QString InputFile READ getInputFile WRITE setInputFile)
+
+    SIMPL_FILTER_PARAMETER(FileListInfo_t, InputFileListInfo)
+    Q_PROPERTY(FileListInfo_t InputFileListInfo READ getInputFileListInfo WRITE setInputFileListInfo)
+
+    SIMPL_FILTER_PARAMETER(QString, SelectedXCoordArrayName)
+    Q_PROPERTY(QString SelectedXCoordArrayName READ getSelectedXCoordArrayName WRITE setSelectedXCoordArrayName)
+
+    SIMPL_FILTER_PARAMETER(QStringList, DataArrayList)
+    Q_PROPERTY(QStringList DataArrayList READ getDataArrayList WRITE setDataArrayList)
+
+    SIMPL_FILTER_PARAMETER(QString, CreatedDataContainer)
+    Q_PROPERTY(QString CreatedDataContainer READ getCreatedDataContainer WRITE setCreatedDataContainer)
+
+    SIMPL_FILTER_PARAMETER(DataContainerArrayProxy, DcaProxy)
+    Q_PROPERTY(DataContainerArrayProxy DcaProxy READ getDcaProxy WRITE setDcaProxy)
 
     SIMPL_FILTER_PARAMETER(QString, InputPath)
     Q_PROPERTY(QString InputPath READ getInputPath WRITE setInputPath)
@@ -114,8 +159,20 @@ class SIMPLib_EXPORT GenericExample : public AbstractFilter
     SIMPL_FILTER_PARAMETER(DataArrayPath, AttributeMatrixPath)
     Q_PROPERTY(DataArrayPath AttributeMatrixPath READ getAttributeMatrixPath WRITE setAttributeMatrixPath)
 
+    SIMPL_FILTER_PARAMETER(DataArrayPath, CreatedAttributeMatrix)
+    Q_PROPERTY(DataArrayPath CreatedAttributeMatrix READ getCreatedAttributeMatrix WRITE setCreatedAttributeMatrix)
+
     SIMPL_FILTER_PARAMETER(QString, DataContainerName)
     Q_PROPERTY(QString DataContainerName READ getDataContainerName WRITE setDataContainerName)
+
+    SIMPL_FILTER_PARAMETER(int, SizeDistributionFitType)
+    Q_PROPERTY(int SizeDistributionFitType READ getSizeDistributionFitType WRITE setSizeDistributionFitType)
+
+    SIMPL_FILTER_PARAMETER(ComparisonInputs, SelectedThresholds)
+    Q_PROPERTY(ComparisonInputs SelectedThresholds READ getSelectedThresholds WRITE setSelectedThresholds)
+
+    SIMPL_FILTER_PARAMETER(QString, CalcExpression)
+    Q_PROPERTY(QString CalcExpression READ getCalcExpression WRITE setCalcExpression)
 
     SIMPL_FILTER_PARAMETER(DataArrayPath, CreatedDataArray)
     Q_PROPERTY(DataArrayPath CreatedDataArray READ getCreatedDataArray WRITE setCreatedDataArray)
