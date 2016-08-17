@@ -54,9 +54,9 @@
  * SIMPL_NEW_COMP_SEL_FP("Select Arrays to Threshold", SelectedThresholds, FilterParameter::Parameter, GenericExample, choices, true);
  */
 #define SIMPL_NEW_COMP_SEL_FP(...) \
-  _FP_GET_OVERRIDE(__VA_ARGS__, \
+  SIMPL_EXPAND(_FP_GET_OVERRIDE(__VA_ARGS__, \
   SIMPL_NEW_FP_9, SIMPL_NEW_FP_8, SIMPL_NEW_FP_7, SIMPL_NEW_FP_6, SIMPL_NEW_FP_5, SIMPL_NEW_FP_4)\
-  (ComparisonSelectionFilterParameter, __VA_ARGS__)
+  (ComparisonSelectionFilterParameter, __VA_ARGS__))
 
 /**
  * @brief The ComparisonSelectionFilterParameter class is used by filters to instantiate an ComparisonSelectionWidget.  By instantiating an instance of

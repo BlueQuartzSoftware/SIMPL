@@ -53,9 +53,9 @@
  * SIMPL_NEW_INPUT_FILE_FP("Input File", InputFile, FilterParameter::Parameter, GenericExample, "*.txt", "", 1);
  */
 #define SIMPL_NEW_INPUT_FILE_FP(...) \
-  _FP_GET_OVERRIDE(__VA_ARGS__, \
+  SIMPL_EXPAND(_FP_GET_OVERRIDE(__VA_ARGS__, \
   SIMPL_NEW_FP_9, SIMPL_NEW_FP_8, SIMPL_NEW_FP_7, SIMPL_NEW_FP_6, SIMPL_NEW_FP_5, SIMPL_NEW_FP_4)\
-  (InputFileFilterParameter, __VA_ARGS__)
+  (InputFileFilterParameter, __VA_ARGS__))
 
 /**
  * @brief The InputFileFilterParameter class is used by filters to instantiate an InputFileWidget.  By instantiating an instance of

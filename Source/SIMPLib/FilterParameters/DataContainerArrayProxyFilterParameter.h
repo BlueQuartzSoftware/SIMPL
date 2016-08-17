@@ -55,9 +55,9 @@
  * SIMPL_NEW_DCA_PROXY_FP("Array to Select", DcaProxy, FilterParameter::Parameter, GenericExample, proxy, Qt::Checked);
  */
 #define SIMPL_NEW_DCA_PROXY_FP(...) \
-  _FP_GET_OVERRIDE(__VA_ARGS__, \
+  SIMPL_EXPAND(_FP_GET_OVERRIDE(__VA_ARGS__, \
   SIMPL_NEW_FP_9, SIMPL_NEW_FP_8, SIMPL_NEW_FP_7, SIMPL_NEW_FP_6, SIMPL_NEW_FP_5, SIMPL_NEW_FP_4)\
-  (DataContainerArrayProxyFilterParameter, __VA_ARGS__)
+  (DataContainerArrayProxyFilterParameter, __VA_ARGS__))
 
 /**
  * @brief The DataContainerArrayProxyFilterParameter class is used by filters to instantiate an DataContainerArrayProxyWidget.  By instantiating an instance of

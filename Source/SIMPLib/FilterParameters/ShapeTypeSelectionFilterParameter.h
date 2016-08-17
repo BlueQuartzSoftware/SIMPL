@@ -54,9 +54,9 @@
  * SIMPL_NEW_SHAPETYPE_SELECTION_FP("Shape Types", ShapeTypeData, FilterParameter::CreatedArray, EstablishShapeTypes, "PhaseCount", "InputPhaseTypesArrayPath");
  */
 #define SIMPL_NEW_SHAPETYPE_SELECTION_FP(...) \
-  _FP_GET_OVERRIDE(__VA_ARGS__, \
+  SIMPL_EXPAND(_FP_GET_OVERRIDE(__VA_ARGS__, \
   SIMPL_NEW_FP_9, SIMPL_NEW_FP_8, SIMPL_NEW_FP_7, SIMPL_NEW_FP_6, SIMPL_NEW_FP_5, SIMPL_NEW_FP_4)\
-  (ShapeTypeSelectionFilterParameter, __VA_ARGS__)
+  (ShapeTypeSelectionFilterParameter, __VA_ARGS__))
 
 /**
  * @brief The ShapeTypeSelectionFilterParameter class is used by filters to instantiate an ShapeTypeSelectionWidget.  By instantiating an instance of

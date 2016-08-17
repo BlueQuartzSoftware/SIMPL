@@ -53,9 +53,9 @@
  * SIMPL_NEW_DC_CREATION_FP("Created Data Container", CreatedDataContainer, FilterParameter::CreatedArray, GenericExample);
  */
 #define SIMPL_NEW_DC_CREATION_FP(...) \
-  _FP_GET_OVERRIDE(__VA_ARGS__, \
+  SIMPL_EXPAND(_FP_GET_OVERRIDE(__VA_ARGS__, \
   SIMPL_NEW_FP_9, SIMPL_NEW_FP_8, SIMPL_NEW_FP_7, SIMPL_NEW_FP_6, SIMPL_NEW_FP_5, SIMPL_NEW_FP_4)\
-  (DataContainerCreationFilterParameter, __VA_ARGS__)
+  (DataContainerCreationFilterParameter, __VA_ARGS__))
 
 /**
  * @brief The DataContainerCreationFilterParameter class is used by filters to instantiate an DataContainerCreationWidget.  By instantiating an instance of

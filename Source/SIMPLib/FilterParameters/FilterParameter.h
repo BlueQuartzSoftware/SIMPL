@@ -176,11 +176,18 @@ std::bind(&CLASS::get##PROP, PTR)
   Class::New(Desc, #Prop, get##Prop(), Category,\
   SIMPL_BIND_GETTER(Filter, this, Prop))
 
+
+/**
+ * @brief This macro is needed for Visual Studio due to differences of VAR_ARGS when
+ * passed to another macro that results in a new macro that needs expansion.
+ */
+#define SIMPL_EXPAND( x ) x
+
 // -----------------------------------------------------------------------------
 // Define a macro that uses the "paired, sliding arg list"
 // technique to select the appropriate override.
-#define _FP_GET_OVERRIDE(_1, _2, _3, _4, _5, _6, _7, _8, _9, NAME, ...) NAME
-#define _FP_GET_PREFLIGHTUPDATEDVALUE_OVERRIDE(_1, _2, _3, _4, _5, NAME, ...) NAME
+#define _FP_GET_OVERRIDE(A, B, C, D, E, F, G, H, I, NAME, ...) NAME
+#define _FP_GET_PREFLIGHTUPDATEDVALUE_OVERRIDE(A, B, C, D, E, NAME, ...) NAME
 
 #endif /* _FilterParameter_H_ */
 

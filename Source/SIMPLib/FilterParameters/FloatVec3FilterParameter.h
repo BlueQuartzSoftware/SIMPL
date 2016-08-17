@@ -78,9 +78,9 @@ Q_DECLARE_METATYPE(FloatVec3_t)
  * SIMPL_NEW_FLOAT_VEC3_FP("Origin", Origin, FilterParameter::Parameter, GenericExample, 1);
  */
 #define SIMPL_NEW_FLOAT_VEC3_FP(...) \
-  _FP_GET_OVERRIDE(__VA_ARGS__, \
+  SIMPL_EXPAND(_FP_GET_OVERRIDE(__VA_ARGS__, \
   SIMPL_NEW_FP_9, SIMPL_NEW_FP_8, SIMPL_NEW_FP_7, SIMPL_NEW_FP_6, SIMPL_NEW_FP_5, SIMPL_NEW_FP_4)\
-  (FloatVec3FilterParameter, __VA_ARGS__)
+  (FloatVec3FilterParameter, __VA_ARGS__))
 
 /**
  * @brief The FloatVec3FilterParameter class is used by filters to instantiate an FloatVec3Widget.  By instantiating an instance of

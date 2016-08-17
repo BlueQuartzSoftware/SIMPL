@@ -53,9 +53,9 @@
  * SIMPL_NEW_DOUBLE_FP("Double 2", Double2, FilterParameter::Parameter, GenericExample);
  */
 #define SIMPL_NEW_DOUBLE_FP(...) \
-  _FP_GET_OVERRIDE(__VA_ARGS__, \
+  SIMPL_EXPAND(_FP_GET_OVERRIDE(__VA_ARGS__, \
   SIMPL_NEW_FP_9, SIMPL_NEW_FP_8, SIMPL_NEW_FP_7, SIMPL_NEW_FP_6, SIMPL_NEW_FP_5, SIMPL_NEW_FP_4)\
-  (DoubleFilterParameter, __VA_ARGS__)
+  (DoubleFilterParameter, __VA_ARGS__))
 
 
 /**

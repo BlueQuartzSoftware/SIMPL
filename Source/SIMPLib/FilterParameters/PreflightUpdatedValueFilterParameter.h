@@ -53,9 +53,9 @@
  * SIMPL_NEW_PREFLIGHTUPDATEDVALUE_FP("Estimated Primary Features", EstimatedPrimaryFeatures, FilterParameter::Parameter, GenericExample);
  */
 #define SIMPL_NEW_PREFLIGHTUPDATEDVALUE_FP(...) \
-  _FP_GET_PREFLIGHTUPDATEDVALUE_OVERRIDE(__VA_ARGS__, \
+  SIMPL_EXPAND(_FP_GET_PREFLIGHTUPDATEDVALUE_OVERRIDE(__VA_ARGS__, \
   SIMPL_NEW_PREFLIGHTUPDATEDVALUE_FP_5, SIMPL_NEW_PREFLIGHTUPDATEDVALUE_FP_4)\
-  (PreflightUpdatedValueFilterParameter, __VA_ARGS__)
+  (PreflightUpdatedValueFilterParameter, __VA_ARGS__))
 
 /**
  * @brief The PreflightUpdatedValueFilterParameter class is used by filters to instantiate an PreflightUpdatedValueWidget.  By instantiating an instance of

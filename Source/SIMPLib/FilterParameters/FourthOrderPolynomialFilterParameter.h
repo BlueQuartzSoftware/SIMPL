@@ -107,9 +107,9 @@ Q_DECLARE_METATYPE(Float4thOrderPoly_t)
  * SIMPL_NEW_FourthO_POLY_FP("Fourth Order A Coefficients", FourthOrderACoeff, FilterParameter::Parameter, GenericExample, 2);
  */
 #define SIMPL_NEW_FourthO_POLY_FP(...) \
-  _FP_GET_OVERRIDE(__VA_ARGS__, \
+  SIMPL_EXPAND(_FP_GET_OVERRIDE(__VA_ARGS__, \
   SIMPL_NEW_FP_9, SIMPL_NEW_FP_8, SIMPL_NEW_FP_7, SIMPL_NEW_FP_6, SIMPL_NEW_FP_5, SIMPL_NEW_FP_4)\
-  (FourthOrderPolynomialFilterParameter, __VA_ARGS__)
+  (FourthOrderPolynomialFilterParameter, __VA_ARGS__))
 
 /**
  * @brief The FourthOrderPolynomialFilterParameter class is used by filters to instantiate an FourthOrderPolynomialWidget.  By instantiating an instance of

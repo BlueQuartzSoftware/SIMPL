@@ -56,9 +56,9 @@
  * SIMPL_NEW_AM_CREATION_FP("Created Attribute Matrix", CreatedAttributeMatrix, FilterParameter::CreatedArray, GenericExample, req);
  */
 #define SIMPL_NEW_AM_CREATION_FP(...) \
-  _FP_GET_OVERRIDE(__VA_ARGS__, \
+  SIMPL_EXPAND(_FP_GET_OVERRIDE(__VA_ARGS__, \
   SIMPL_NEW_FP_9, SIMPL_NEW_FP_8, SIMPL_NEW_FP_7, SIMPL_NEW_FP_6, SIMPL_NEW_FP_5, SIMPL_NEW_FP_4)\
-  (AttributeMatrixCreationFilterParameter, __VA_ARGS__)
+  (AttributeMatrixCreationFilterParameter, __VA_ARGS__))
 
 /**
  * @brief The AttributeMatrixCreationFilterParameter class is used by filters to instantiate an AttributeMatrixCreationWidget.  By instantiating an instance of
