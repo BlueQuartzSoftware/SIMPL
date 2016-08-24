@@ -214,8 +214,6 @@ void ShapeTypeSelectionWidget::beforePreflight()
     return;
   }
 
-  updateComboBoxes();
-
 }
 
 // -----------------------------------------------------------------------------
@@ -223,7 +221,7 @@ void ShapeTypeSelectionWidget::beforePreflight()
 // -----------------------------------------------------------------------------
 void ShapeTypeSelectionWidget::afterPreflight()
 {
-  // std::cout << "After Preflight" << std::endl;
+  updateComboBoxes();
 }
 
 // -----------------------------------------------------------------------------
