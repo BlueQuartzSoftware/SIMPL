@@ -138,11 +138,11 @@ class SIMPLib_EXPORT H5FilterParametersReader : public AbstractFilterParametersR
     H5FilterParametersReader();
 
   private:
-    hid_t               m_CurrentGroupId;
+    hid_t               m_CurrentGroupId = -1;
     QJsonObject         m_PipelineRoot;
     QJsonObject         m_CurrentFilterObject;
-    int                 m_Version;
-    int                 m_CurrentIndex;
+    int                 m_Version = -1;
+    int                 m_CurrentIndex = -1;
 
     H5FilterParametersReader(const H5FilterParametersReader&); // Copy Constructor Not Implemented
     void operator=(const H5FilterParametersReader&); // Operator '=' Not Implemented
