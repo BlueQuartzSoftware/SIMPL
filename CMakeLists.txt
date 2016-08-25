@@ -270,8 +270,8 @@ LINK_DIRECTORIES(${Boost_LIBRARY_DIRS})
 # Should we use Intel Threading Building Blocks
 # --------------------------------------------------------------------
 set(SIMPLib_USE_PARALLEL_ALGORITHMS "")
-option(SIMPLib_USE_MULTITHREADED_ALGOS "Use MultiThreaded Algorithms" ON)
-if(SIMPLib_USE_MULTITHREADED_ALGOS)
+option(SIMPL_USE_MULTITHREADED_ALGOS "Use MultiThreaded Algorithms" ON)
+if(SIMPL_USE_MULTITHREADED_ALGOS)
     find_package(TBB)
     if(TBB_FOUND)
         include_directories(${TBB_INCLUDE_DIRS} )
