@@ -83,9 +83,10 @@ unsigned int PrimaryStatsData::getPhaseType()
 // -----------------------------------------------------------------------------
 StatsData::Pointer PrimaryStatsData::deepCopy()
 {
-    PrimaryStatsData::Pointer ptr = PrimaryStatsData::New();
+  PrimaryStatsData::Pointer ptr = PrimaryStatsData::New();
   ptr->setBoundaryArea(getBoundaryArea());
   ptr->setPhaseFraction(getPhaseFraction());
+  ptr->setName(getName());
 
   float diamInfo[3] = { 0.0f, 0.0f, 0.0f};
   getFeatureDiameterInfo(diamInfo);
@@ -200,6 +201,8 @@ int PrimaryStatsData::readHDF5Data(hid_t groupId)
 // -----------------------------------------------------------------------------
 void PrimaryStatsData::writeJson(QJsonObject &json)
 {
+  // Write the name of the phase
+  json.insert(SIMPL::StringConstants::Name, getName());
 
   json.insert(SIMPL::StringConstants::PhaseType, SIMPL::PhaseType::Primary);
   // Write the Boundary Area
@@ -264,6 +267,12 @@ void PrimaryStatsData::readJson(const QJsonObject &json)
   if(!jsonValue.isUndefined() && jsonValue.isDouble())
   {
     setBoundaryArea(jsonValue.toDouble(0.0));
+  }
+  //
+  jsonValue = json[SIMPL::StringConstants::Name];
+  if(!jsonValue.isUndefined() && jsonValue.isString())
+  {
+    setName(jsonValue.toString("Primary"));
   }
   // Read the Phase Fraction
   jsonValue = json[SIMPL::StringConstants::PhaseFraction];

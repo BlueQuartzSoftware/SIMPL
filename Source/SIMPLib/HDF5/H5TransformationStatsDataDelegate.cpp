@@ -68,18 +68,9 @@ VectorOfFloatArray H5TransformationStatsDataDelegate::createBetaDistributionArra
   return vect;
 }
 
-//VectorOfFloatArray H5TransformationStatsDataDelegate::createPowerDistributionArrays()
-//{
-//  FloatArrayType::Pointer alphas = FloatArrayType::CreateArray(0, SIMPL::StringConstants::Alpha);
-//  FloatArrayType::Pointer ks = FloatArrayType::CreateArray(0, SIMPL::StringConstants::Exp_k);
-//  FloatArrayType::Pointer betas = FloatArrayType::CreateArray(0, SIMPL::StringConstants::Beta);
-//  QVector<FloatArrayType::Pointer> vect;
-//  vect.push_back(alphas);
-//  vect.push_back(ks);
-//  vect.push_back(betas);
-//  return vect;
-//}
-
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
 VectorOfFloatArray H5TransformationStatsDataDelegate::createLogNormalDistributionArrays()
 {
   FloatArrayType::Pointer avgs = FloatArrayType::CreateArray(0, SIMPL::StringConstants::Average);
@@ -121,6 +112,8 @@ int H5TransformationStatsDataDelegate::readTransformationStatsData(Transformatio
   int err = 0;
   //Read the NumFeatures
   err = readBoundaryArea(data, groupId);
+
+  err = readStatsDataName(data, groupId);
 
   //Read the PhaseFraction
   err = readPhaseFraction(data, groupId);
@@ -226,6 +219,11 @@ int H5TransformationStatsDataDelegate::writeTransformationStatsData(Transformati
     return err;
   }
 
+  err = QH5Lite::writeStringDataset(groupId, SIMPL::StringConstants::Name, data->getName());
+  if (err < 0)
+  {
+    return err;
+  }
   // Write the PhaseFraction
   err = writePhaseFraction(data, groupId);
   if (err < 0)

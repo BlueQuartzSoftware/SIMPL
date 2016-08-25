@@ -63,6 +63,7 @@ int H5MatrixStatsDataDelegate::readMatrixStatsData(MatrixStatsData* data, hid_t 
   int err = 0;
   //Read the PhaseFraction
   err = readPhaseFraction(data, groupId);
+  err = readStatsDataName(data, groupId);
 
   return err;
 }
@@ -86,6 +87,11 @@ int H5MatrixStatsDataDelegate::writeMatrixStatsData(MatrixStatsData* data, hid_t
     return err;
   }
 
+  err = QH5Lite::writeStringDataset(groupId, SIMPL::StringConstants::Name, data->getName());
+  if (err < 0)
+  {
+    return err;
+  }
   return err;
 }
 

@@ -66,6 +66,7 @@ StatsData::Pointer MatrixStatsData::deepCopy()
 {
   MatrixStatsData::Pointer ptr = MatrixStatsData::New();
   ptr->setPhaseFraction(getPhaseFraction());
+  ptr->setName(getName());
   return ptr;
 }
 
@@ -125,7 +126,8 @@ void MatrixStatsData::writeJson(QJsonObject &json)
   json.insert(SIMPL::StringConstants::PhaseType, SIMPL::PhaseType::Matrix);
   // Write the Phase Fraction
   json.insert(SIMPL::StringConstants::PhaseFraction, getPhaseFraction());
-
+  // Write the name of the phase
+  json.insert(SIMPL::StringConstants::Name, getName());
 }
 
 
@@ -139,6 +141,10 @@ void MatrixStatsData::readJson(const QJsonObject &json)
   {
     setPhaseFraction(fValue.toDouble(0.0));
   }
-
+  fValue = json[SIMPL::StringConstants::Name];
+  if(!fValue.isUndefined() && fValue.isString())
+  {
+    setName(fValue.toString("Matrix"));
+  }
 }
 

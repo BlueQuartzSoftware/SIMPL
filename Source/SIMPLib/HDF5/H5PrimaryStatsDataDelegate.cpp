@@ -122,6 +122,8 @@ int H5PrimaryStatsDataDelegate::readPrimaryStatsData(PrimaryStatsData* data, hid
   //Read the NumFeatures
   err = readBoundaryArea(data, groupId);
 
+  err = readStatsDataName(data, groupId);
+
   //Read the PhaseFraction
   err = readPhaseFraction(data, groupId);
 
@@ -216,6 +218,11 @@ int H5PrimaryStatsDataDelegate::writePrimaryStatsData(PrimaryStatsData* data, hi
   }
   int err = 0;
 
+  err = QH5Lite::writeStringDataset(groupId, SIMPL::StringConstants::Name, data->getName());
+  if (err < 0)
+  {
+    return err;
+  }
   // Write the Boundary Area Fraction
   err = writeBoundaryArea(data, groupId);
   if (err < 0)
