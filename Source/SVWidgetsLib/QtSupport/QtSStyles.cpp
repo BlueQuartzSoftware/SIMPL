@@ -201,13 +201,20 @@ void QtSStyles::LineEditRedErrorStyle(QLineEdit* lineEdit)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-QString QtSStyles::DAPSelectionButtonStyle()
+QString QtSStyles::DAPSelectionButtonStyle(bool exists)
 {
   QString str;
   QTextStream ss(&str);
 
   ss << "QPushButton {\n";
-  ss << "border: 1px solid #8f8f91;\n";
+  if(exists)
+  {
+    ss << "border: 1px solid #8f8f91;\n";
+  }
+  else
+  {
+    ss << "border: 1px solid #ff8f91;\n";
+  }
   ss << "border-radius: 4px;\n";
   ss << "background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,\nstop: 0 #DDDDDD, stop: 1 #FFFFFF);\n";
   ss << "font-size: 12pt;\n";
@@ -233,9 +240,15 @@ QString QtSStyles::DAPSelectionButtonStyle()
   ss << "QPushButton:flat {\n";
   ss << "border: none;\n";
   ss << "}\n";
-
   ss << "QPushButton:hover {\n";
-  ss << "border: 1px solid #8f8f91;\n";
+  if(exists)
+  {
+    ss << "border: 2px solid #8f8f91;\n";
+  }
+  else
+  {
+    ss << "border: 2px solid #ff8f91;\n";
+  }
   ss << "border-radius: 4px;\n";
   ss << "}\n";
 

@@ -531,6 +531,10 @@
   DataArray<type>::WeakPointer m_##name##Ptr;\
   type* m_##name;
 
+#define DEFINE_STRINGARRAY_VARIABLE(name)\
+  private:\
+  StringDataArray::WeakPointer m_##name##Ptr;
+
 #define DEFINE_REQUIRED_VARIABLE(type, name)\
   SIMPL_INSTANCE_STRING_PROPERTY(name##ArrayName);\
   private:\

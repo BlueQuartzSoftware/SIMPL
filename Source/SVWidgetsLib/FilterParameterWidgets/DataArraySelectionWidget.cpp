@@ -119,7 +119,7 @@ void DataArraySelectionWidget::setupGui()
     return;
   }
 
-  m_SelectedDataArrayPath->setStyleSheet(QtSStyles::DAPSelectionButtonStyle());
+  m_SelectedDataArrayPath->setStyleSheet(QtSStyles::DAPSelectionButtonStyle(false));
 
   // Generate the text for the QLabel
   label->setText(getFilterParameter()->getHumanLabel() );
@@ -140,6 +140,10 @@ void DataArraySelectionWidget::setupGui()
   // Catch when the filter wants its values updated
   connect(getFilter(), SIGNAL(updateFilterParameters(AbstractFilter*)),
           this, SLOT(filterNeedsInputParameters(AbstractFilter*)));
+
+  //setSelectedPath(m_FilterParameter->getDefaultValue().value<DataArrayPath>());
+  DataArrayPath defaultPath = getFilter()->property(PROPERTY_NAME_AS_CHAR).value<DataArrayPath>();
+  m_SelectedDataArrayPath->setText(defaultPath.serialize(Detail::Delimiter));
 
 }
 
@@ -275,6 +279,14 @@ void DataArraySelectionWidget::dataArraySelected(QString path)
 void DataArraySelectionWidget::setSelectedPath(QString path)
 {
   DataArrayPath daPath = DataArrayPath::Deserialize(path, Detail::Delimiter);
+  setSelectedPath(daPath);
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void DataArraySelectionWidget::setSelectedPath(DataArrayPath daPath)
+{
   if (daPath.isEmpty()) { return; }
 
   m_SelectedDataArrayPath->setText("");
@@ -283,12 +295,13 @@ void DataArraySelectionWidget::setSelectedPath(QString path)
   DataContainerArray::Pointer dca = getFilter()->getDataContainerArray();
   if(NULL == dca.get()) { return; }
 
-  IDataArray::Pointer attrArray = dca->getPrereqIDataArrayFromPath<IDataArray, AbstractFilter>(getFilter(), daPath);
-  if(nullptr != attrArray.get())
+  if(dca->doesAttributeArrayExist(daPath))
   {
+    AttributeMatrix::Pointer attMat = dca->getAttributeMatrix(daPath);
+    IDataArray::Pointer attrArray = attMat->getAttributeArray(daPath.getDataArrayName());
     QString html = attrArray->getInfoString(SIMPL::HtmlFormat);
     m_SelectedDataArrayPath->setToolTip(html);
-    m_SelectedDataArrayPath->setText(path);
+    m_SelectedDataArrayPath->setText(daPath.serialize(Detail::Delimiter));
   }
 }
 
@@ -326,9 +339,6 @@ void DataArraySelectionWidget::beforePreflight()
     return;
   }
 
-  DataArrayPath defaultPath = getFilter()->property(PROPERTY_NAME_AS_CHAR).value<DataArrayPath>();
-
-  setSelectedPath(defaultPath.serialize(Detail::Delimiter));
   createSelectionMenu();
 }
 
@@ -347,7 +357,12 @@ void DataArraySelectionWidget::afterPreflight()
     if(nullptr != attrArray.get()) {
       QString html = attrArray->getInfoString(SIMPL::HtmlFormat);
       m_SelectedDataArrayPath->setToolTip(html);
+      m_SelectedDataArrayPath->setStyleSheet(QtSStyles::DAPSelectionButtonStyle(true));
     }
+  }
+  else
+  {
+    m_SelectedDataArrayPath->setStyleSheet(QtSStyles::DAPSelectionButtonStyle(false));
   }
 }
 
@@ -362,9 +377,6 @@ void DataArraySelectionWidget::filterNeedsInputParameters(AbstractFilter* filter
   QString am = selectedPath.getAttributeMatrixName();
   QString da = selectedPath.getDataArrayName();
 
- // qDebug() << "++++++++++++++++++++++++++++++++++++++++++++";
- // qDebug() << getFilterParameter()->getHumanLabel() << ":" << dc << Detail::Delimiter << am << Detail::Delimiter << da << "   m_DidCausePreflight:" << (int)(m_DidCausePreflight) << " " << (int)(attributeArrayCombo->signalsBlocked());
- // qDebug() << "++++++++++++++++++++++++++++++++++++++++++++";
   DataArrayPath path(dc, am, da);
   QVariant var;
   var.setValue(path);

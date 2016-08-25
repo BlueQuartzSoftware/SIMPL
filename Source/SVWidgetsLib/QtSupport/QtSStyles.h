@@ -58,7 +58,7 @@ class SVWidgetsLib_EXPORT QtSStyles : public QObject
     static void LineEditErrorStyle(QLineEdit* lineEdit);
     static void LineEditClearStyle(QLineEdit* lineEdit);
     static void LineEditRedErrorStyle(QLineEdit* lineEdit);
-    static QString DAPSelectionButtonStyle();
+    static QString DAPSelectionButtonStyle(bool exists);
 };
 
 #endif /* _SIMPLViewStyles_H_ */

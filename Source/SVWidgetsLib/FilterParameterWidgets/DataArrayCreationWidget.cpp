@@ -115,7 +115,7 @@ void DataArrayCreationWidget::setupGui()
   // Do not allow the user to put a forward slash into the attributeMatrixName line edit
   dataArrayName->setValidator(new QRegularExpressionValidator(QRegularExpression("[^/]*"), this));
 
-  m_SelectedAttributeMatrixPath->setStyleSheet(QtSStyles::DAPSelectionButtonStyle());
+  m_SelectedAttributeMatrixPath->setStyleSheet(QtSStyles::DAPSelectionButtonStyle(true));
 
   m_MenuMapper = new QSignalMapper(this);
   connect(m_MenuMapper, SIGNAL(mapped(QString)),

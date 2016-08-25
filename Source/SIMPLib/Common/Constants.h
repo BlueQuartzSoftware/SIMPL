@@ -94,7 +94,8 @@ namespace SIMPL
     const QString UInt64("uint64_t");
     const QString StatsDataArray("StatsDataArray");
     const QString NeighborList("NeighborList<T>");
-    const QString SupportedTypeList(TypeNames::Int8 + ", " + TypeNames::UInt8 + ", " + TypeNames::Int16 + ", " + TypeNames::UInt16 + ", " + TypeNames::Int32 + ", " + TypeNames::UInt32 + ", " + TypeNames::Int64 + ", " + TypeNames::UInt64 + ", " + TypeNames::Float + ", " + TypeNames::Double);
+    const QString StringArray("StringDataArray");
+    const QString SupportedTypeList(TypeNames::StringArray + ", " + TypeNames::Int8 + ", " + TypeNames::UInt8 + ", " + TypeNames::Int16 + ", " + TypeNames::UInt16 + ", " + TypeNames::Int32 + ", " + TypeNames::UInt32 + ", " + TypeNames::Int64 + ", " + TypeNames::UInt64 + ", " + TypeNames::Float + ", " + TypeNames::Double);
   }
 
   namespace TypeEnums
@@ -589,6 +590,8 @@ namespace SIMPL
     const QString Weight("Weight");
 
     const QString MetaData("_META_DATA");
+
+    const QString Name("Name");
   }
 
   namespace CellType
