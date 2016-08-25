@@ -362,7 +362,7 @@ class SIMPLib_EXPORT AttributeMatrix : public Observable
       {
         if(filter)
         {
-          filter->setErrorCondition(-10002);
+          filter->setErrorCondition(-10001);
           ss = QObject::tr("The name of the array was empty. Please provide a name for this array.");
           filter->notifyErrorMessage(filter->getHumanLabel(), ss, filter->getErrorCondition());
         }
@@ -376,7 +376,7 @@ class SIMPLib_EXPORT AttributeMatrix : public Observable
       else if (filter)
       {
         filter->setErrorCondition(-10002);
-        ss = QObject::tr("An Attribute Array already exists with the name %1.").arg(attributeArrayName);
+        ss = QObject::tr("AttributeMatrix:'%1' An Attribute Array already exists with the name %1.").arg(getName()).arg(attributeArrayName);
         filter->notifyErrorMessage(filter->getHumanLabel(), ss, filter->getErrorCondition());
         return attributeArray;
       }
@@ -390,7 +390,7 @@ class SIMPLib_EXPORT AttributeMatrix : public Observable
       attributeArray = std::dynamic_pointer_cast< ArrayType >(iDataArray);
       if(NULL == attributeArray.get() && filter)
       {
-        filter->setErrorCondition(-10003);
+        filter->setErrorCondition(-10004);
         ss = QObject::tr("AttributeMatrix:'%1' An array with name '%2' could not be downcast using std::dynamic_pointer_cast<T>.").arg(getName()).arg(attributeArrayName);
         filter->notifyErrorMessage(filter->getHumanLabel(), ss, filter->getErrorCondition());
       }
