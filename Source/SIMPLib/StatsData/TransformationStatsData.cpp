@@ -85,6 +85,7 @@ StatsData::Pointer TransformationStatsData::deepCopy()
   ptr->setBoundaryArea(getBoundaryArea());
   ptr->setPhaseFraction(getPhaseFraction());
   ptr->setParentPhase(getParentPhase());
+  ptr->setName(getName());
 
   float diamInfo[3] = { 0.0f, 0.0f, 0.0f};
   getFeatureDiameterInfo(diamInfo);
@@ -200,6 +201,9 @@ int TransformationStatsData::readHDF5Data(hid_t groupId)
 // -----------------------------------------------------------------------------
 void TransformationStatsData::writeJson(QJsonObject &json)
 {
+  // Write the name of the phase
+  json.insert(SIMPL::StringConstants::Name, getName());
+
   json.insert(SIMPL::StringConstants::PhaseType, SIMPL::PhaseType::Transformation);
 
   // Write the boundary fraction
@@ -267,6 +271,12 @@ void TransformationStatsData::readJson(const QJsonObject &json)
   if(!jsonValue.isUndefined() && jsonValue.isDouble())
   {
     setBoundaryArea(jsonValue.toDouble(0.0));
+  }
+  //
+  jsonValue = json[SIMPL::StringConstants::Name];
+  if(!jsonValue.isUndefined() && jsonValue.isString())
+  {
+    setName(jsonValue.toString("Transformation"));
   }
   // Read the Phase Fraction
   jsonValue = json[SIMPL::StringConstants::PhaseFraction];

@@ -637,7 +637,7 @@ class StringDataArray : public IDataArray
       m_Name(name),
       _ownsData(true)
     {
-      if (allocate == true)
+      //if (allocate == true)
       {
         m_Array.resize(numTuples);
       }

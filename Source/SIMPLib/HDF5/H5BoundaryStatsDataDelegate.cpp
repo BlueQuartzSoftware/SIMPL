@@ -70,6 +70,8 @@ int H5BoundaryStatsDataDelegate::readBoundaryStatsData(BoundaryStatsData* data, 
   // Read the Parent Phase
   err = readParentPhase(data, groupId);
 
+  err = readStatsDataName(data, groupId);
+
   return err;
 }
 
@@ -101,6 +103,16 @@ int H5BoundaryStatsDataDelegate::writeBoundaryStatsData(BoundaryStatsData* data,
 
   // Write the Parent Phase
   err = writeParentPhase(data, groupId);
+  if (err < 0)
+  {
+    return err;
+  }
+
+  err = QH5Lite::writeStringDataset(groupId, SIMPL::StringConstants::Name, data->getName());
+  if (err < 0)
+  {
+    return err;
+  }
 
   return err;
 }

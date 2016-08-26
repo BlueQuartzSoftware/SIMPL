@@ -66,6 +66,12 @@
 #include "SVWidgetsLib/Widgets/SVPipelineFilterWidget.h"
 #include "SVWidgetsLib/Widgets/DataContainerArrayWidget.h"
 
+#if 1
+#include "ctkCollapsibleGroupBox.h"
+#define QGroupBox ctkCollapsibleGroupBox
+#endif
+
+
 // Include the MOC generated CPP file which has all the QMetaObject methods/data
 #include "moc_FilterInputWidget.cpp"
 

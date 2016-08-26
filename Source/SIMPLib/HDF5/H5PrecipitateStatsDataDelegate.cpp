@@ -140,6 +140,8 @@ int H5PrecipitateStatsDataDelegate::readPrecipitateStatsData(PrecipitateStatsDat
   //Read the NumFeatures
   err = readBoundaryArea(data, groupId);
 
+  err = readStatsDataName(data, groupId);
+
   //Read the PhaseFraction
   err = readPhaseFraction(data, groupId);
 
@@ -250,6 +252,11 @@ int H5PrecipitateStatsDataDelegate::writePrecipitateStatsData(PrecipitateStatsDa
   }
   int err = 0;
 
+  err = QH5Lite::writeStringDataset(groupId, SIMPL::StringConstants::Name, data->getName());
+  if (err < 0)
+  {
+    return err;
+  }
   // Write the NumFeatures
   err = writeBoundaryArea(data, groupId);
   if (err < 0)

@@ -33,6 +33,9 @@ set(SVWidgetsLib_QtSupport_MOC_HDRS
   ${SVWidgetsLib_SOURCE_DIR}/QtSupport/QtSSplitter.h
   ${SVWidgetsLib_SOURCE_DIR}/QtSupport/QtSSplitterHandle.h
   ${SVWidgetsLib_SOURCE_DIR}/QtSupport/QtSStyles.h
+  
+  ${SVWidgetsLib_SOURCE_DIR}/QtSupport/ctkCollapsibleGroupBox.h
+  ${SVWidgetsLib_SOURCE_DIR}/QtSupport/ctkProxyStyle.h
 
 )
 
@@ -61,6 +64,9 @@ set(SVWidgetsLib_QtSupport_SRCS
   ${SVWidgetsLib_SOURCE_DIR}/QtSupport/QtSSplitter.cpp
   ${SVWidgetsLib_SOURCE_DIR}/QtSupport/QtSSplitterHandle.cpp
   ${SVWidgetsLib_SOURCE_DIR}/QtSupport/QtSStyles.cpp
+
+  ${SVWidgetsLib_SOURCE_DIR}/QtSupport/ctkCollapsibleGroupBox.cpp
+  ${SVWidgetsLib_SOURCE_DIR}/QtSupport/ctkProxyStyle.cpp
 
 )
 

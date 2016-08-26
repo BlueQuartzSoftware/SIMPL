@@ -68,6 +68,7 @@ StatsData::Pointer BoundaryStatsData::deepCopy()
   ptr->setBoundaryArea(getBoundaryArea());
   ptr->setPhaseFraction(getPhaseFraction());
   ptr->setParentPhase(getParentPhase());
+  ptr->setName(getName());
   return ptr;
 }
 
@@ -133,6 +134,8 @@ void BoundaryStatsData::writeJson(QJsonObject &json)
   json.insert(SIMPL::StringConstants::PhaseFraction, getPhaseFraction());
   // Write the Parent Phase
   json.insert(SIMPL::StringConstants::ParentPhase, getParentPhase());
+  // Write the name of the phase
+  json.insert(SIMPL::StringConstants::Name, getName());
 
 }
 
@@ -160,4 +163,9 @@ void BoundaryStatsData::readJson(const QJsonObject &json)
     setParentPhase(fValue.toDouble(0.0));
   }
 
+  fValue = json[SIMPL::StringConstants::Name];
+  if(!fValue.isUndefined() && fValue.isString())
+  {
+    setName(fValue.toString("Boudary"));
+  }
 }

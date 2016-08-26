@@ -272,7 +272,7 @@ class SIMPLib_EXPORT DataContainer : public Observable
       {
         if(filter)
         {
-          filter->setErrorCondition(-10001);
+          filter->setErrorCondition(-10011);
           ss = QObject::tr("The name of the Attribute Matrix was empty. Please provide a name for this Attribute Matrix.");
           filter->notifyErrorMessage(filter->getHumanLabel(), ss, filter->getErrorCondition());
         }
@@ -283,7 +283,7 @@ class SIMPLib_EXPORT DataContainer : public Observable
       {
         if (filter)
         {
-          filter->setErrorCondition(-10002);
+          filter->setErrorCondition(-10012);
           ss = QObject::tr("The AttributeMatrix '%1' has forward slashes in its name").arg(attributeMatrixName);
           filter->notifyErrorMessage(filter->getHumanLabel(), ss, filter->getErrorCondition());
         }
@@ -294,7 +294,7 @@ class SIMPLib_EXPORT DataContainer : public Observable
       {
         if(filter)
         {
-          filter->setErrorCondition(-10003);
+          filter->setErrorCondition(-10013);
           ss = QObject::tr("%1 is a protected name.  Please provide a different name for this Attribute Matrix.").arg(SIMPL::Geometry::Geometry);
           filter->notifyErrorMessage(filter->getHumanLabel(), ss, filter->getErrorCondition());
         }
@@ -308,7 +308,7 @@ class SIMPLib_EXPORT DataContainer : public Observable
       }
       else if(filter) // If the filter object is NOT null (is valid) then set the error condition and send an error message
       {
-        filter->setErrorCondition(-10004);
+        filter->setErrorCondition(-10014);
         ss = QObject::tr("An Attribute Matrix already exists with the name %1.").arg(attributeMatrixName);
         filter->notifyErrorMessage(filter->getHumanLabel(), ss, filter->getErrorCondition());
       }

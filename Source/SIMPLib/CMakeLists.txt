@@ -150,8 +150,8 @@ include(${SIMPLib_SOURCE_DIR}/CoreFilters/SourceList.cmake)
 
 #-----------------------------------------------------
 # conditionally compile our example codes- These should be turned off for a release
-option(SIMPLib_BUILD_TEST_FILTERS "Build the Test filters: These should be OFF when doing a release" ON)
-if(SIMPLib_BUILD_TEST_FILTERS)
+option(SIMPL_BUILD_TEST_FILTERS "Build the Test filters: These should be OFF when doing a release" ON)
+if(SIMPL_BUILD_TEST_FILTERS)
     # set(PluginAutoMocSourceFile ${${PROJECT_NAME}_BINARY_DIR}/TestFilters_automoc_cmake.cpp)
     # set_source_files_properties( ${PluginAutoMocSourceFile} PROPERTIES GENERATED TRUE)
     # Add the generated moc file to the project sources
@@ -176,7 +176,7 @@ include_directories( ${PROJECT_CODE_DIR} )
 include_directories( ${SIMPLib_BINARY_DIR} )
 
 set(${PROJECT_NAME}_LINK_LIBS Qt5::Core H5Support)
-if( "${SIMPLib_USE_MULTITHREADED_ALGOS}" STREQUAL "ON")
+if( "${SIMPL_USE_MULTITHREADED_ALGOS}" STREQUAL "ON")
   list(APPEND ${PROJECT_NAME}_LINK_LIBS ${TBB_LIBRARIES})
 endif()
 

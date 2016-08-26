@@ -114,7 +114,7 @@ void AttributeMatrixCreationWidget::setupGui()
   // Do not allow the user to put a forward slash into the attributeMatrixName line edit
   attributeMatrixName->setValidator(new QRegularExpressionValidator(QRegularExpression("[^/]*"), this));
 
-  m_SelectedDataContainerPath->setStyleSheet(QtSStyles::DAPSelectionButtonStyle());
+  m_SelectedDataContainerPath->setStyleSheet(QtSStyles::DAPSelectionButtonStyle(true));
 
   m_MenuMapper = new QSignalMapper(this);
   connect(m_MenuMapper, SIGNAL(mapped(QString)),

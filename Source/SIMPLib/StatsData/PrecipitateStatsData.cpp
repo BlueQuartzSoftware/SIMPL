@@ -110,6 +110,7 @@ StatsData::Pointer PrecipitateStatsData::deepCopy()
   ptr->setBoundaryArea(getBoundaryArea());
   ptr->setPhaseFraction(getPhaseFraction());
   ptr->setPrecipBoundaryFraction(getPrecipBoundaryFraction());
+  ptr->setName(getName());
 
   float diamInfo[3] = { 0.0f, 0.0f, 0.0f};
   getFeatureDiameterInfo(diamInfo);
@@ -207,6 +208,8 @@ int PrecipitateStatsData::readHDF5Data(hid_t groupId)
 // -----------------------------------------------------------------------------
 void PrecipitateStatsData::writeJson(QJsonObject &json)
 {
+  // Write the name of the phase
+  json.insert(SIMPL::StringConstants::Name, getName());
 
   json.insert(SIMPL::StringConstants::PhaseType, SIMPL::PhaseType::Precipitate);
   // Write the boundary area
@@ -272,12 +275,20 @@ void PrecipitateStatsData::writeJson(QJsonObject &json)
 // -----------------------------------------------------------------------------
 void PrecipitateStatsData::readJson(const QJsonObject &json)
 {
+
   // Read the boundary area
   QJsonValue jsonValue = json[SIMPL::StringConstants::BoundaryArea];
   if(!jsonValue.isUndefined() && jsonValue.isDouble())
   {
     setBoundaryArea(jsonValue.toDouble(0.0));
   }
+  //
+  jsonValue = json[SIMPL::StringConstants::Name];
+  if(!jsonValue.isUndefined() && jsonValue.isString())
+  {
+    setName(jsonValue.toString("Precipitate"));
+  }
+
   // Read the Phase Fraction
   jsonValue = json[SIMPL::StringConstants::PhaseFraction];
   if(!jsonValue.isUndefined() && jsonValue.isDouble())

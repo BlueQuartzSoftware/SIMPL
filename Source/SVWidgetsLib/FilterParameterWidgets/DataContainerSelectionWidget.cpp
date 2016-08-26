@@ -123,7 +123,7 @@ void DataContainerSelectionWidget::setupGui()
   }
   label->setText(getFilterParameter()->getHumanLabel() );
 
-  m_SelectedDataContainerPath->setStyleSheet(QtSStyles::DAPSelectionButtonStyle());
+  m_SelectedDataContainerPath->setStyleSheet(QtSStyles::DAPSelectionButtonStyle(true));
 
   m_MenuMapper = new QSignalMapper(this);
   connect(m_MenuMapper, SIGNAL(mapped(QString)),

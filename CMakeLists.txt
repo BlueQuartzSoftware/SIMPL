@@ -270,8 +270,8 @@ LINK_DIRECTORIES(${Boost_LIBRARY_DIRS})
 # Should we use Intel Threading Building Blocks
 # --------------------------------------------------------------------
 set(SIMPLib_USE_PARALLEL_ALGORITHMS "")
-option(SIMPLib_USE_MULTITHREADED_ALGOS "Use MultiThreaded Algorithms" ON)
-if(SIMPLib_USE_MULTITHREADED_ALGOS)
+option(SIMPL_USE_MULTITHREADED_ALGOS "Use MultiThreaded Algorithms" ON)
+if(SIMPL_USE_MULTITHREADED_ALGOS)
     find_package(TBB)
     if(TBB_FOUND)
         include_directories(${TBB_INCLUDE_DIRS} )
@@ -362,7 +362,7 @@ ENDif(CMAKE_COMPILER_IS_GNUCXX)
 if(MSVC)
  add_definitions(-D_CRT_SECURE_NO_WARNINGS)
  add_definitions(-D_SCL_SECURE_NO_WARNINGS)
- option(SIMPLView_DISABLE_MSVC_WARNINGS "Disable some MSVC Compiler warnings" OFF)
+ option(SIMPL_DISABLE_MSVC_WARNINGS "Disable some MSVC Compiler warnings" OFF)
 endif()
 
 

@@ -32,8 +32,6 @@
 *    United States Prime Contract Navy N00173-07-C-2068
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
-
-
 #ifndef _statsdata_h_
 #define _statsdata_h_
 
@@ -97,6 +95,10 @@ class SIMPLib_EXPORT StatsData
     SIMPL_TYPE_MACRO(StatsData)
 
     virtual ~StatsData();
+
+    /** Allow users to give each StatsData object a custom name
+     */
+    SIMPL_INSTANCE_STRING_PROPERTY(Name)
 
     /**
      * @brief GetTypeName Returns a string representation of the type of data that is stored by this class. This
