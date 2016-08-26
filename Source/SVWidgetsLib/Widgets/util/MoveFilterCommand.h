@@ -46,7 +46,7 @@ class PipelineView;
 class MoveFilterCommand : public QUndoCommand
 {
   public:
-    MoveFilterCommand(PipelineFilterObject* filterWidget, QVariant origin, QVariant destination, PipelineView* pipelineView, bool runFirstTime, QUndoCommand* parent = 0);
+    MoveFilterCommand(PipelineFilterObject* filterWidget, QVariant origin, QVariant destination, PipelineView* pipelineView, QUndoCommand* parent = 0);
     virtual ~MoveFilterCommand();
 
     virtual void undo();
@@ -61,8 +61,6 @@ class MoveFilterCommand : public QUndoCommand
     QVariant                                m_Destination;
     bool                                    m_WindowIsModified;
     bool                                    m_FirstRun;
-
-    void moveFilter(QVariant origin, QVariant destination);
 
     MoveFilterCommand(const MoveFilterCommand&); // Copy Constructor Not Implemented
     void operator=(const MoveFilterCommand&); // Operator '=' Not Implemented

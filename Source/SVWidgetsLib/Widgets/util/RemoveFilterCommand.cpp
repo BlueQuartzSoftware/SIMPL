@@ -49,7 +49,6 @@
 RemoveFilterCommand::RemoveFilterCommand(PipelineFilterObject* fw, PipelineView *pipelineView, QString actionText, QUuid prevNodeId, QUuid nextNodeId, QUndoCommand* parent) :
   QUndoCommand(parent),
   m_PipelineView(pipelineView),
-  m_FilterObject(fw),
   m_PrevNodeId(prevNodeId),
   m_NextNodeId(nextNodeId)
 {
@@ -58,12 +57,39 @@ RemoveFilterCommand::RemoveFilterCommand(PipelineFilterObject* fw, PipelineView 
     return;
   }
 
-  m_Value = pipelineView->valueOfFilterWidget(fw);
+  m_FilterPositions.push_back(pipelineView->valueOfFilterWidget(fw));
 
   setText(QObject::tr("\"%1 '%2'\"").arg(actionText).arg(fw->getHumanLabel()));
 
   FilterPipeline::Pointer pipeline = FilterPipeline::New();
   pipeline->pushBack(fw->getFilter());
+  JsonFilterParametersWriter::Pointer jsonWriter = JsonFilterParametersWriter::New();
+  m_JsonString = jsonWriter->writePipelineToString(pipeline, "");
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+RemoveFilterCommand::RemoveFilterCommand(QList<PipelineFilterObject*> filterObjects, PipelineView *pipelineView, QString actionText, QUuid prevNodeId, QUuid nextNodeId, QUndoCommand* parent) :
+  QUndoCommand(parent),
+  m_PipelineView(pipelineView),
+  m_PrevNodeId(prevNodeId),
+  m_NextNodeId(nextNodeId)
+{
+  if (NULL == pipelineView)
+  {
+    return;
+  }
+
+  setText(QObject::tr("\"%1 %2 Filters\"").arg(actionText).arg(filterObjects.size()));
+
+  FilterPipeline::Pointer pipeline = FilterPipeline::New();
+  for (int i=0; i<filterObjects.size(); i++)
+  {
+    m_FilterPositions.push_back(m_PipelineView->valueOfFilterWidget(filterObjects[i]));
+    pipeline->pushBack(filterObjects[i]->getFilter());
+  }
+
   JsonFilterParametersWriter::Pointer jsonWriter = JsonFilterParametersWriter::New();
   m_JsonString = jsonWriter->writePipelineToString(pipeline, "");
 }
@@ -81,12 +107,22 @@ RemoveFilterCommand::~RemoveFilterCommand()
 // -----------------------------------------------------------------------------
 void RemoveFilterCommand::undo()
 {
+  QList<QVariant> ascendingList = m_FilterPositions;
+  std::sort(ascendingList.begin(), ascendingList.end());
+
   JsonFilterParametersReader::Pointer jsonReader = JsonFilterParametersReader::New();
+  jsonReader->setMaxFilterIndex(ascendingList.size());
   FilterPipeline::Pointer pipeline = jsonReader->readPipelineFromString(m_JsonString);
-  AbstractFilter::Pointer filter = pipeline->getFilterContainer()[0];
+  FilterPipeline::FilterContainerType container = pipeline->getFilterContainer();
 
-  m_PipelineView->addFilter(filter, m_Value, false, m_PrevNodeId, m_NextNodeId);
+  for (int i=0; i<container.size(); i++)
+  {
+    PipelineFilterObject* filterObject = m_PipelineView->createFilterObjectFromFilter(container[i]);
+    m_PipelineView->addFilterObject(filterObject, ascendingList[i]);
+  }
 
+  m_PipelineView->reindexWidgetTitles();
+  m_PipelineView->recheckWindowTitleAndModification();
   m_PipelineView->preflightPipeline();
 }
 
@@ -95,8 +131,16 @@ void RemoveFilterCommand::undo()
 // -----------------------------------------------------------------------------
 void RemoveFilterCommand::redo()
 {
-  m_PipelineView->removeFilterObject(m_PipelineView->filterObjectAt(m_Value), false, false);
+  QList<QVariant> descendingList = m_FilterPositions;
+  std::sort(descendingList.rbegin(), descendingList.rend());
 
+  for (int i = 0; i < descendingList.size(); i++)
+  {
+    m_PipelineView->removeFilterObject(m_PipelineView->filterObjectAt(descendingList[i]));
+  }
+
+  m_PipelineView->reindexWidgetTitles();
+  m_PipelineView->recheckWindowTitleAndModification();
   m_PipelineView->preflightPipeline();
 }
 

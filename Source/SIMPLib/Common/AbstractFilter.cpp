@@ -39,6 +39,9 @@
 #include "SIMPLib/SIMPLibVersion.h"
 #include "SIMPLib/Plugin/PluginManager.h"
 #include "SIMPLib/Common/PipelineMessage.h"
+#include "SIMPLib/Common/FilterManager.h"
+#include "SIMPLib/Common/IFilterFactory.hpp"
+#include "SIMPLib/Common/FilterFactory.hpp"
 
 #include "moc_AbstractFilter.cpp"
 // -----------------------------------------------------------------------------
@@ -71,6 +74,23 @@ AbstractFilter::~AbstractFilter()
   //            << "  " << m_NextFilter.use_count() << std::endl;
   //  m_NextFilter = AbstractFilter::NullPointer();
   //  std::cout << "~AbstractFilter" << std::endl;
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+AbstractFilter::Pointer AbstractFilter::CreateFilterFromClassName(const QString &className)
+{
+  FilterManager* fm = FilterManager::Instance();
+  if(NULL == fm) { return AbstractFilter::NullPointer(); }
+  IFilterFactory::Pointer wf = fm->getFactoryForFilter(className);
+  if (NULL == wf.get()) { return AbstractFilter::NullPointer(); }
+
+  // Create an instance of the filter. Since we are dealing with the AbstractFilter interface we can not
+  // actually use the concrete filter class. We are going to have to rely on QProperties or Signals/Slots
+  // to communicate changes back to the filter.
+  AbstractFilter::Pointer filter = wf->create();
+  return filter;
 }
 
 // -----------------------------------------------------------------------------

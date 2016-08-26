@@ -145,69 +145,10 @@ QVariant PipelineView::valueOfFilterWidget(PipelineFilterObject* filterWidget)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void PipelineView::addFilter(const QString& filterClassName, QVariant value, bool allowUndo, QUuid previousNode, QUuid nextNode)
-{
-  Q_UNUSED(filterClassName)
-  Q_UNUSED(value)
-  Q_UNUSED(allowUndo)
-  Q_UNUSED(previousNode)
-  Q_UNUSED(nextNode)
-
-  // The subclass should reimplement this function
-  return;
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-void PipelineView::addFilters(QList<AbstractFilter::Pointer> filters, QVariant value, bool allowUndo, QUuid previousNode, QUuid nextNode)
-{
-  Q_UNUSED(filters)
-  Q_UNUSED(value)
-  Q_UNUSED(allowUndo)
-  Q_UNUSED(previousNode)
-  Q_UNUSED(nextNode)
-
-  // The subclass should reimplement this function
-  return;
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-void PipelineView::addFilter(AbstractFilter::Pointer filter, QVariant value, bool allowUndo, QUuid previousNode, QUuid nextNode)
-{
-  Q_UNUSED(filter)
-  Q_UNUSED(value)
-  Q_UNUSED(allowUndo)
-  Q_UNUSED(previousNode)
-  Q_UNUSED(nextNode)
-
-  // The subclass should reimplement this function
-  return;
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-void PipelineView::addFilterObjects(QList<PipelineFilterObject*> filterObjects, QVariant value, bool allowUndo)
-{
-  Q_UNUSED(filterObjects)
-  Q_UNUSED(value)
-  Q_UNUSED(allowUndo)
-
-  // The subclass should reimplement this function
-  return;
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-void PipelineView::addFilterObject(PipelineFilterObject* filterObject, QVariant value, bool allowUndo, QUuid previousNodeId, QUuid nextNodeId)
+void PipelineView::addFilterObject(PipelineFilterObject* filterObject, QVariant value)
 {
   Q_UNUSED(filterObject)
   Q_UNUSED(value)
-  Q_UNUSED(allowUndo)
 
   // The subclass should reimplement this function
   return;
@@ -216,62 +157,9 @@ void PipelineView::addFilterObject(PipelineFilterObject* filterObject, QVariant 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void PipelineView::moveFilterWidget(PipelineFilterObject* fw, QVariant origin, QVariant destination, bool allowUndo)
-{
-  Q_UNUSED(fw)
-  Q_UNUSED(origin)
-  Q_UNUSED(destination)
-  Q_UNUSED(allowUndo)
-
-  // The subclass should reimplement this function
-  return;
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-void PipelineView::cutFilterWidgets(QList<PipelineFilterObject*> filterWidgets, bool allowUndo)
-{
-  Q_UNUSED(filterWidgets)
-  Q_UNUSED(allowUndo)
-
-  // The subclass should reimplement this function
-  return;
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-void PipelineView::pasteFilters(QList<AbstractFilter::Pointer> filters, QVariant value, bool allowUndo)
-{
-  Q_UNUSED(filters)
-  Q_UNUSED(value)
-  Q_UNUSED(allowUndo)
-
-  // The subclass should reimplement this function
-  return;
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-void PipelineView::pasteFilterWidgets(const QString &jsonString, QVariant value, bool allowUndo)
-{
-  Q_UNUSED(jsonString)
-  Q_UNUSED(value)
-  Q_UNUSED(allowUndo)
-
-  // The subclass should reimplement this function
-  return;
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-void PipelineView::removeFilterObject(PipelineFilterObject* filterWidget, bool allowUndo, bool deleteWidget)
+void PipelineView::removeFilterObject(PipelineFilterObject* filterWidget, bool deleteWidget)
 {
   Q_UNUSED(filterWidget)
-  Q_UNUSED(allowUndo)
   Q_UNUSED(deleteWidget)
 
   // The subclass should reimplement this function
@@ -281,11 +169,11 @@ void PipelineView::removeFilterObject(PipelineFilterObject* filterWidget, bool a
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void PipelineView::removeFilterObjects(QList<PipelineFilterObject*> filterWidgets, bool allowUndo, bool deleteWidgets)
+void PipelineView::moveFilterWidget(PipelineFilterObject* fw, QVariant origin, QVariant destination)
 {
-  Q_UNUSED(filterWidgets)
-  Q_UNUSED(allowUndo)
-  Q_UNUSED(deleteWidgets)
+  Q_UNUSED(fw)
+  Q_UNUSED(origin)
+  Q_UNUSED(destination)
 
   // The subclass should reimplement this function
   return;
@@ -320,10 +208,8 @@ void PipelineView::addSIMPLViewReaderFilter(const QString& filePath, QVariant va
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void PipelineView::clearFilterWidgets(bool allowUndo)
+void PipelineView::clearFilterWidgets()
 {
-  Q_UNUSED(allowUndo)
-
   // The subclass should reimplement this function
   return;
 }
@@ -339,7 +225,39 @@ void PipelineView::showFilterHelp(const QString& className)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
+PipelineFilterObject* PipelineView::createFilterObjectFromFilter(AbstractFilter::Pointer filter)
+{
+  Q_UNUSED(filter)
+
+  // The subclass should reimplement this function
+  return nullptr;
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
 void PipelineView::setSelectedFilterObject(PipelineFilterObject *w, Qt::KeyboardModifiers modifiers)
+{
+  Q_UNUSED(w)
+  Q_UNUSED(modifiers)
+
+  // The subclass should reimplement this function
+  return;
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void PipelineView::recheckWindowTitleAndModification()
+{
+  // The subclass should reimplement this function
+  return;
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void PipelineView::reindexWidgetTitles()
 {
   // The subclass should reimplement this function
   return;

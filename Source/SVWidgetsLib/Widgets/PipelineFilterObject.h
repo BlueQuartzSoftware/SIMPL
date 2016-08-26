@@ -103,10 +103,6 @@ class SVWidgetsLib_EXPORT PipelineFilterObject
     bool                              m_IsFocused;
     bool                              m_HasPreflightErrors;
     bool                              m_HasPreflightWarnings;
-    QWidget*                          m_VariablesWidget;
-    QWidget*                          m_CurrentStructureWidget;
-    QVBoxLayout*                      m_VariablesVerticalLayout;
-    QVBoxLayout*                      m_CurrStrucVerticalLayout;
 
     /**
     * @brief setupFilterInputWidget Creates and initializes the filter input widget.

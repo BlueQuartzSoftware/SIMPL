@@ -60,8 +60,6 @@
 #include "SVWidgetsLib/Widgets/SVPipelineFilterWidget.h"
 #include "SVWidgetsLib/Widgets/DropBoxWidget.h"
 
-
-
 #include "SVWidgetsLib/QtSupport/QtSFileDragMessageBox.h"
 
 class QScrollArea;
@@ -143,10 +141,22 @@ class SVWidgetsLib_EXPORT SVPipelineViewWidget : public QFrame, public PipelineV
     QList<PipelineFilterObject*> getSelectedFilterObjects() override;
 
     /**
+     * @brief recheckWindowTitleAndModification
+     */
+    void recheckWindowTitleAndModification() override;
+
+    /**
      * @brief eventFilter
      * @return
      */
     bool eventFilter(QObject*, QEvent*) override;
+
+    /**
+     * @brief createFilterObjectFromFilter
+     * @param filter
+     * @return
+     */
+    PipelineFilterObject* createFilterObjectFromFilter(AbstractFilter::Pointer filter) override;
 
     /**
      * @brief readPipelineFromFile
@@ -233,88 +243,6 @@ class SVWidgetsLib_EXPORT SVPipelineViewWidget : public QFrame, public PipelineV
     void blockPreflightSignals(bool b);
 
     /**
-     * @brief addFilter
-     * @param filter
-     * @param index
-     * @param allowUndo
-     */
-    void addFilter(AbstractFilter::Pointer filter, QVariant value, bool allowUndo = true, QUuid previousNode = QUuid(), QUuid nextNode = QUuid()) override;
-
-    /**
-     * @brief addFilter
-     * @param filterClassName
-     * @param index
-     * param allowUndo
-     */
-    void addFilter(const QString& filterClassName, QVariant value, bool allowUndo = true, QUuid previousNode = QUuid(), QUuid nextNode = QUuid()) override;
-
-    /**
-     * @brief addFilter
-     * @param filter
-     * @param index
-     * @param allowUndo
-     */
-    void addFilters(QList<AbstractFilter::Pointer> filters, QVariant value, bool allowUndo = true, QUuid previousNode = QUuid(), QUuid nextNode = QUuid()) override;
-
-    /**
-     * @brief addFilterWidget
-     * @param fw
-     * @param index
-     * @param allowUndo
-     */
-    void addFilterObject(PipelineFilterObject* filterObject, QVariant value, bool allowUndo = true, QUuid previousNodeId = QUuid(), QUuid nextNodeId = QUuid()) override;
-
-    /**
-     * @brief addFilterWidget
-     * @param fw
-     * @param index
-     * @param allowUndo
-     */
-    void addFilterObjects(QList<PipelineFilterObject*> filterObjects, QVariant value, bool allowUndo = true) override;
-
-    /**
-     * @brief moveFilterWidget
-     * @param fw
-     * @param origin
-     * @param destination
-     */
-    void moveFilterWidget(PipelineFilterObject* fw, QVariant origin, QVariant destination, bool allowUndo = true) override;
-
-    /**
-     * @brief pasteFilters
-     * @param filters
-     */
-    void pasteFilters(QList<AbstractFilter::Pointer> filters, QVariant value, bool allowUndo = true) override;
-
-    /**
-     * @brief pasteFilterWidgets
-     * @param jsonString
-     * @param index
-     * @param allowUndo
-     */
-    void pasteFilterWidgets(const QString &jsonString, QVariant value, bool allowUndo = true) override;
-
-    /**
-     * @brief removeFilterWidget
-     * @param filterWidget
-     * @param allowUndo
-     */
-    void removeFilterObject(PipelineFilterObject* filterObject, bool allowUndo = true, bool deleteWidget = true) override;
-
-    /**
-     * @brief removeFilterWidget
-     * @param filterWidgets
-     * @param allowUndo
-     */
-    void removeFilterObjects(QList<PipelineFilterObject*> filterWidgets, bool allowUndo = true, bool deleteWidgets = true) override;
-
-    /**
-     * @brief addFilterWidget
-     * @param filterWidgets
-     */
-    void cutFilterWidgets(QList<PipelineFilterObject*> filterWidgets, bool allowUndo = true) override;
-
-    /**
      * @brief setSelectedFilterObject
      * @param w
      * @param modifiers
@@ -340,7 +268,7 @@ class SVWidgetsLib_EXPORT SVPipelineViewWidget : public QFrame, public PipelineV
     /**
     * @brief clearWidgets
     */
-    void clearFilterWidgets(bool allowUndo = false) override;
+    void clearFilterWidgets() override;
 
     /**
     * @brief addUndoCommand
@@ -350,7 +278,7 @@ class SVWidgetsLib_EXPORT SVPipelineViewWidget : public QFrame, public PipelineV
     /**
      * @brief reindexWidgetTitles
      */
-    void reindexWidgetTitles();
+    void reindexWidgetTitles() override;
 
     /**
      * @brief doAutoScroll This does the actual scrolling of the Widget
@@ -387,7 +315,7 @@ class SVWidgetsLib_EXPORT SVPipelineViewWidget : public QFrame, public PipelineV
     void pipelineHasNoErrors();
     void pipelineIssuesCleared();
     void pipelineTitleUpdated(QString name);
-    void pipelineChanged();
+    void windowNeedsRecheck();
 
     void filterInputWidgetChanged(FilterInputWidget* widget);
     void filterInputWidgetNeedsCleared();
@@ -426,6 +354,19 @@ class SVWidgetsLib_EXPORT SVPipelineViewWidget : public QFrame, public PipelineV
 
     void requestContextMenu(const QPoint& pos);
 
+  private slots:
+    /**
+     * @brief removeFilterWidget
+     * @param filterWidget
+     */
+    void removeFilterObject(PipelineFilterObject* filterObject, bool deleteWidget = true) override;
+
+    /**
+     * @brief slot_removeFilterObject
+     * @param filterObject
+     */
+    void slot_removeFilterObject(PipelineFilterObject* filterObject);
+
   private:
     SVPipelineFilterWidget*             m_ShiftStart;
     QVBoxLayout*                        m_FilterWidgetLayout;
@@ -446,6 +387,13 @@ class SVWidgetsLib_EXPORT SVPipelineViewWidget : public QFrame, public PipelineV
     QAction*                            m_ActionRedo;
     bool                                m_BlockPreflight;
     std::stack<bool>                    m_BlockPreflightStack;
+
+    /**
+     * @brief addFilterObject
+     * @param filterObject
+     * @param value
+     */
+    virtual void addFilterObject(PipelineFilterObject* filterObject, QVariant value) override;
 
     QMenu* createPipelineFilterWidgetMenu(SVPipelineFilterWidget* filterWidget);
     void createPipelineViewWidgetMenu();

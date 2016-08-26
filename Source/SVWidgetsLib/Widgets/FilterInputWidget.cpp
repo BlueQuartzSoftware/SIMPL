@@ -130,7 +130,6 @@ FilterInputWidget::FilterInputWidget(QString filterClassName, PipelineFilterObje
   m_FilterClassName(filterClassName),
   m_AdvFadedOut(false),
   m_VariablesVerticalLayout(NULL),
-  m_CurrStrucVerticalLayout(NULL),
   m_VariablesWidget(NULL),
   m_CurrentStructureWidget(NULL)
 {
@@ -151,7 +150,11 @@ FilterInputWidget::FilterInputWidget(QString filterClassName, PipelineFilterObje
 // -----------------------------------------------------------------------------
 FilterInputWidget::~FilterInputWidget()
 {
+  if (m_VariablesVerticalLayout != nullptr) { delete m_VariablesVerticalLayout; }
+  if (m_VariablesWidget != nullptr) { delete m_VariablesWidget; }
+  if (m_CurrentStructureWidget != nullptr) { delete m_CurrentStructureWidget; }
 
+  qDebug() << m_FilterClassName << ": FilterInputWidget Destructor" << std::endl;
 }
 
 // -----------------------------------------------------------------------------
@@ -650,14 +653,6 @@ void FilterInputWidget::fadeOutWidget(QWidget* widget)
 QWidget* FilterInputWidget::getVariablesTabContentsWidget()
 {
   return variablesTabContents;
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-QVector<QWidget*>& FilterInputWidget::getFilterParameterWidgets()
-{
-  return m_FilterParameterWidgets;
 }
 
 

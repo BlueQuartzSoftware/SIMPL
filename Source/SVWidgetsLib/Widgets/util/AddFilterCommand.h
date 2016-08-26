@@ -52,6 +52,10 @@ class AddFilterCommand : public QUndoCommand
   public:
     AddFilterCommand(AbstractFilter::Pointer filter, PipelineView* destination, QString actionText, QVariant value,
                      QUuid previousNode = QUuid(), QUuid nextNode = QUuid(), QUndoCommand* parent = 0);
+
+    AddFilterCommand(QList<AbstractFilter::Pointer> filters, PipelineView* destination, QString actionText, QVariant value,
+                     QUuid previousNode = QUuid(), QUuid nextNode = QUuid(), QUndoCommand* parent = 0);
+
     virtual ~AddFilterCommand();
 
     virtual void undo();
@@ -60,11 +64,10 @@ class AddFilterCommand : public QUndoCommand
 
   private:
     QString                                             m_JsonString;
+    int                                                 m_FilterCount;
     QString                                             m_ActionText;
     PipelineView*                                       m_Destination;
-    QMap<int, Qt::KeyboardModifiers>                    m_Selections;
     QVariant                                            m_Value;
-    QRect                                               m_FilterWidgetGeometry;
     QUuid                                               m_PreviousNodeId;
     QUuid                                               m_NextNodeId;
 

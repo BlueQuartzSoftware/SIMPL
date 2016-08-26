@@ -110,6 +110,14 @@ SVPipelineFilterWidget::SVPipelineFilterWidget(AbstractFilter::Pointer filter, I
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
+SVPipelineFilterWidget::~SVPipelineFilterWidget()
+{
+
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
 void SVPipelineFilterWidget::initialize()
 {
   setContextMenuPolicy(Qt::CustomContextMenu);
@@ -187,14 +195,6 @@ void SVPipelineFilterWidget::displayFilterParameterWidgetError(const QString& ms
     PipelineMessage pm("Filter Paramter Widget", msg, -1, PipelineMessage::Error);
     m_Observer->processPipelineMessage(pm);
   }
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-SVPipelineFilterWidget::~SVPipelineFilterWidget()
-{
-
 }
 
 // -----------------------------------------------------------------------------
@@ -359,7 +359,7 @@ void SVPipelineFilterWidget::getGuiParametersFromFilter(AbstractFilter* filt)
 // -----------------------------------------------------------------------------
 void SVPipelineFilterWidget::on_deleteBtn_clicked()
 {
-  emit filterWidgetRemoved(this, true);
+  emit filterWidgetRemoved(this);
 }
 
 // -----------------------------------------------------------------------------

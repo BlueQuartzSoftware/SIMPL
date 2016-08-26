@@ -48,6 +48,7 @@ class RemoveFilterCommand : public QUndoCommand
 {
 public:
   RemoveFilterCommand(PipelineFilterObject* fw, PipelineView* pipelineView, QString actionText, QUuid prevNodeId = QUuid(), QUuid nextNodeId = QUuid(), QUndoCommand* parent = 0);
+  RemoveFilterCommand(QList<PipelineFilterObject*> filterObjects, PipelineView *pipelineView, QString actionText, QUuid prevNodeId = QUuid(), QUuid nextNodeId = QUuid(), QUndoCommand* parent = 0);
   virtual ~RemoveFilterCommand();
 
   virtual void undo();
@@ -56,9 +57,8 @@ public:
 
 private:
   PipelineView*                           m_PipelineView;
-  PipelineFilterObject*                   m_FilterObject;
   QString                                 m_JsonString;
-  QVariant                                m_Value;
+  QList<QVariant>                         m_FilterPositions;
   QUuid                                   m_PrevNodeId;
   QUuid                                   m_NextNodeId;
 
