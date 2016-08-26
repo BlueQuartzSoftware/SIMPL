@@ -122,7 +122,7 @@ class SVWidgetsLib_EXPORT PhaseTypeSelectionWidget : public FilterParameterWidge
   private:
     bool              m_DidCausePreflight;
 
-    QSignalMapper*  m_MenuMapper;
+    QPointer<QSignalMapper> m_MenuMapper;
 
     DataArrayPath  m_DefaultPath;
 

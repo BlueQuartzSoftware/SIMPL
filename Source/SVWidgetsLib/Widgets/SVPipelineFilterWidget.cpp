@@ -112,7 +112,11 @@ SVPipelineFilterWidget::SVPipelineFilterWidget(AbstractFilter::Pointer filter, I
 // -----------------------------------------------------------------------------
 SVPipelineFilterWidget::~SVPipelineFilterWidget()
 {
-
+  if (m_Observer != nullptr)
+  {
+    delete m_Observer;
+    m_Observer = nullptr;
+  }
 }
 
 // -----------------------------------------------------------------------------

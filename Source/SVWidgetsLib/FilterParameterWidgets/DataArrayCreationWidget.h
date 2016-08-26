@@ -128,7 +128,7 @@ class SVWidgetsLib_EXPORT DataArrayCreationWidget : public FilterParameterWidget
 
     bool m_DidCausePreflight;
 
-    QSignalMapper*  m_MenuMapper;
+    QPointer<QSignalMapper> m_MenuMapper;
 
     DataArrayCreationFilterParameter* m_FilterParameter;
 

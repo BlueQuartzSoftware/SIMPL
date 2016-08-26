@@ -821,6 +821,7 @@ void SVPipelineViewWidget::removeFilterObject(PipelineFilterObject* filterObject
     if (NULL != spacer)
     {
       m_FilterWidgetLayout->removeItem(spacer);
+      delete spacer;
     }
 
     QList<PipelineFilterObject*> selectedObjs = getSelectedFilterObjects();

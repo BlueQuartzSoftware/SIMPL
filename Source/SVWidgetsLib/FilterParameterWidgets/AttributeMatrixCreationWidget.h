@@ -137,11 +137,11 @@ signals:
   private slots:
 
 private:
-  bool m_DidCausePreflight;
+  bool                                            m_DidCausePreflight;
 
-  AttributeMatrixCreationFilterParameter* m_FilterParameter;
+  AttributeMatrixCreationFilterParameter*         m_FilterParameter;
 
-  QSignalMapper*  m_MenuMapper;
+  QPointer<QSignalMapper>                         m_MenuMapper;
 
   void setSelectedPath(QString path);
 

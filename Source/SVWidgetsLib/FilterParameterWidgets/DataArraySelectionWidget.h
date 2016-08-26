@@ -123,7 +123,7 @@ class SVWidgetsLib_EXPORT DataArraySelectionWidget : public FilterParameterWidge
   private:
     bool m_DidCausePreflight;
 
-    QSignalMapper*  m_MenuMapper;
+    QPointer<QSignalMapper> m_MenuMapper;
 
     DataArraySelectionFilterParameter* m_FilterParameter;
 
