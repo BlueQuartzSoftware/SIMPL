@@ -112,6 +112,8 @@ SVPipelineViewWidget::SVPipelineViewWidget(QWidget* parent) :
   setupGui();
   m_autoScrollTimer.setParent(this);
 
+  m_UndoStack->setUndoLimit(10);
+
   setContextMenuPolicy(Qt::CustomContextMenu);
   setFocusPolicy(Qt::StrongFocus);
 
