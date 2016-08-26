@@ -159,8 +159,6 @@ FilterInputWidget::~FilterInputWidget()
   if (m_VariablesVerticalLayout != nullptr) { delete m_VariablesVerticalLayout; }
   if (m_VariablesWidget != nullptr) { delete m_VariablesWidget; }
   if (m_CurrentStructureWidget != nullptr) { delete m_CurrentStructureWidget; }
-
-  qDebug() << m_FilterClassName << ": FilterInputWidget Destructor" << std::endl;
 }
 
 // -----------------------------------------------------------------------------
