@@ -42,12 +42,13 @@
 
 #include <QtWidgets/QUndoCommand>
 
+#include "SVWidgetsLib/SVWidgetsLib.h"
 #include <SIMPLib/Common/AbstractFilter.h>
 
 class PipelineFilterObject;
 class PipelineView;
 
-class AddFilterCommand : public QUndoCommand
+class SVWidgetsLib_EXPORT AddFilterCommand : public QUndoCommand
 {
   public:
     AddFilterCommand(AbstractFilter::Pointer filter, PipelineView* destination, QString actionText, QVariant value,

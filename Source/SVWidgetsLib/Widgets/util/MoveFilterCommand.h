@@ -40,10 +40,12 @@
 
 #include <QtWidgets/QUndoCommand>
 
+#include "SVWidgetsLib/SVWidgetsLib.h"
+
 class PipelineFilterObject;
 class PipelineView;
 
-class MoveFilterCommand : public QUndoCommand
+class SVWidgetsLib_EXPORT MoveFilterCommand : public QUndoCommand
 {
   public:
     MoveFilterCommand(PipelineFilterObject* filterWidget, QVariant origin, QVariant destination, PipelineView* pipelineView, QUndoCommand* parent = 0);
