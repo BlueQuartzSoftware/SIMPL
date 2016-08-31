@@ -66,7 +66,7 @@
 #include "SVWidgetsLib/Widgets/SVPipelineFilterWidget.h"
 #include "SVWidgetsLib/Widgets/DataContainerArrayWidget.h"
 
-#if 1
+#if 0
 #include "ctkCollapsibleGroupBox.h"
 #define QGroupBox ctkCollapsibleGroupBox
 #endif
