@@ -63,6 +63,7 @@ set(_PublicFilters
   ExecuteProcess
   ExtractComponentAsArray
   FeatureCountDecision
+  FindDerivatives
   LinkFeatureMapToElementArray
   MaskCountDecision
   MoveData

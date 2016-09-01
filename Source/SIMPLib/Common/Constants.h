@@ -238,6 +238,7 @@ namespace SIMPL
     const QString ConnectivityArrangementFilters("Connectivity/Arrangement");
     const QString MappingFilters("Mapping");
     const QString MiscFilters("Misc");
+    const QString GeometryFilters("Geometry");
   }
 
   namespace GeneralData
