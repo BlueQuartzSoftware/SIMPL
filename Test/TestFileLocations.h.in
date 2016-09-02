@@ -40,6 +40,12 @@ namespace UnitTest
     static const size_t ZSize = 5;
     static const size_t Offset = 200;
   }
+  
+  namespace FindDerivativesFilterTest
+  {
+   const QString TestFile1("@TEST_TEMP_DIR@/TestFile1.txt");
+   const QString TestFile2("@TEST_TEMP_DIR@/TestFile2.txt");
+  }
 
   namespace VtkGrainIdIOTest
   {

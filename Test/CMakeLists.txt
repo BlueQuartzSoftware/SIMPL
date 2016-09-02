@@ -70,6 +70,7 @@ set(TEST_NAMES
   ExecuteProcessTest
   FilterParametersRWTest
   FilterPipelineTest
+  FindDerivativesFilterTest
   QuaternionMathTest
   RemoveComponentFromArrayTest
   ReplaceValueTest
