@@ -139,7 +139,6 @@ void IssuesDockWidget::displayCachedMessages()
   {
     PipelineMessage msg = m_CachedMessages[j];
     // Create error hyperlink
-    QLabel* hyperlinkLabel = createHyperlinkLabel(msg);
 
     QColor msgColor;
     switch(msg.getType())
@@ -166,6 +165,7 @@ void IssuesDockWidget::displayCachedMessages()
           descriptionWidgetItem->setBackground(msgBrush);
           codeWidgetItem->setBackground(msgBrush);
 
+          QLabel* hyperlinkLabel = createHyperlinkLabel(msg);
           if (hyperlinkLabel == NULL)
           {
             errorTableWidget->setItem(row, 0, filterNameWidgetItem);
@@ -203,6 +203,7 @@ void IssuesDockWidget::displayCachedMessages()
           descriptionWidgetItem->setBackground(msgBrush);
           codeWidgetItem->setBackground(msgBrush);
 
+          QLabel* hyperlinkLabel = createHyperlinkLabel(msg);
           if (hyperlinkLabel == NULL)
           {
             errorTableWidget->setItem(row, 0, filterNameWidgetItem);
