@@ -123,11 +123,14 @@ void DataContainerSelectionWidget::setupGui()
   }
   label->setText(getFilterParameter()->getHumanLabel() );
 
-  m_SelectedDataContainerPath->setStyleSheet(QtSStyles::DAPSelectionButtonStyle(true));
+  m_SelectedDataContainerPath->setStyleSheet(QtSStyles::DAPSelectionButtonStyle(false));
 
   m_MenuMapper = new QSignalMapper(this);
   connect(m_MenuMapper, SIGNAL(mapped(QString)),
             this, SLOT(dataContainerSelected(QString)));
+
+  QString dcName = getFilter()->property(PROPERTY_NAME_AS_CHAR).value<QString>();
+  m_SelectedDataContainerPath->setText(dcName);
 }
 
 // -----------------------------------------------------------------------------
@@ -231,6 +234,14 @@ void DataContainerSelectionWidget::dataContainerSelected(QString path)
 void DataContainerSelectionWidget::setSelectedPath(QString path)
 {
   DataArrayPath dcPath = DataArrayPath::Deserialize(path, Detail::Delimiter);
+  setSelectedPath(dcPath);
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void DataContainerSelectionWidget::setSelectedPath(DataArrayPath dcPath)
+{
   if (dcPath.isEmpty()) { return; }
 
   m_SelectedDataContainerPath->setText("");
@@ -239,8 +250,9 @@ void DataContainerSelectionWidget::setSelectedPath(QString path)
   DataContainerArray::Pointer dca = getFilter()->getDataContainerArray();
   if(NULL == dca.get()) { return; }
 
-  DataContainer::Pointer dc = dca->getPrereqDataContainer<AbstractFilter>(getFilter(), dcPath.getDataContainerName());
-  if(nullptr != dc.get()) {
+  if (dca->doesDataContainerExist(dcPath.getDataContainerName()))
+  {
+    DataContainer::Pointer dc = dca->getDataContainer(dcPath.getDataContainerName());
     QString html = dc->getInfoString(SIMPL::HtmlFormat);
     m_SelectedDataContainerPath->setToolTip(html);
     m_SelectedDataContainerPath->setText(dcPath.getDataContainerName());
@@ -259,9 +271,6 @@ void DataContainerSelectionWidget::beforePreflight()
     return;
   }
 
-  QString dcName = getFilter()->property(PROPERTY_NAME_AS_CHAR).value<QString>();
-
-  setSelectedPath(dcName);
   createSelectionMenu();
 }
 
@@ -270,7 +279,22 @@ void DataContainerSelectionWidget::beforePreflight()
 // -----------------------------------------------------------------------------
 void DataContainerSelectionWidget::afterPreflight()
 {
-  // std::cout << "After Preflight" << std::endl;
+  DataContainerArray::Pointer dca = getFilter()->getDataContainerArray();
+  if (NULL == dca.get()) { return; }
+
+  if (dca->doesDataContainerExist(m_SelectedDataContainerPath->text()))
+  {
+    DataContainer::Pointer dc = dca->getDataContainer(m_SelectedDataContainerPath->text());
+    if (nullptr != dc.get()) {
+      QString html = dc->getInfoString(SIMPL::HtmlFormat);
+      m_SelectedDataContainerPath->setToolTip(html);
+      m_SelectedDataContainerPath->setStyleSheet(QtSStyles::DAPSelectionButtonStyle(true));
+    }
+  }
+  else
+  {
+    m_SelectedDataContainerPath->setStyleSheet(QtSStyles::DAPSelectionButtonStyle(false));
+  }
 }
 
 // -----------------------------------------------------------------------------
