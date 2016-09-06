@@ -121,6 +121,8 @@ class ComparisonSelectionWidget : public FilterParameterWidget, private Ui::Comp
      */
     void filterNeedsInputParameters(AbstractFilter* filter);
 
+    void attributeMatrixSelected(QString path);
+
   signals:
     /**
      * @brief errorSettingFilterParameter
@@ -207,6 +209,8 @@ class ComparisonSelectionWidget : public FilterParameterWidget, private Ui::Comp
      * @param path
      */
     void setSelectedPath(QString path);
+
+    void setSelectedPath(DataArrayPath amPath);
 
   private:
     DataContainerArrayProxy m_DcaProxy;
