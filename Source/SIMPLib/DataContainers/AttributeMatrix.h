@@ -376,7 +376,7 @@ class SIMPLib_EXPORT AttributeMatrix : public Observable
       else if (filter)
       {
         filter->setErrorCondition(-10002);
-        ss = QObject::tr("AttributeMatrix:'%1' An Attribute Array already exists with the name %1.").arg(getName()).arg(attributeArrayName);
+        ss = QObject::tr("AttributeMatrix:'%1' An Attribute Array already exists with the name %2.").arg(getName()).arg(attributeArrayName);
         filter->notifyErrorMessage(filter->getHumanLabel(), ss, filter->getErrorCondition());
         return attributeArray;
       }

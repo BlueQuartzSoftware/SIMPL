@@ -61,6 +61,7 @@ PipelineFilterObject::PipelineFilterObject() :
 PipelineFilterObject::PipelineFilterObject(AbstractFilter::Pointer filter, IObserver* observer) :
   m_Filter(filter),
   m_FilterInputWidget(NULL),
+  m_IsFocused(false),
   m_HasPreflightErrors(false),
   m_HasPreflightWarnings(false)
 {
