@@ -36,6 +36,7 @@
 #ifndef _attributematrixcreationwidget_h_
 #define _attributematrixcreationwidget_h_
 
+#include <QtCore/QSharedPointer>
 #include <QtCore/QObject>
 #include <QtCore/QPointer>
 #include <QtWidgets/QWidget>
@@ -74,6 +75,8 @@ public:
   AttributeMatrixCreationWidget(QWidget* parent = NULL);
 
   virtual ~AttributeMatrixCreationWidget();
+
+  typedef QSharedPointer<QMenu> QMenuPtr;
 
   /**
   * @brief This method does additional GUI widget connections
@@ -141,8 +144,10 @@ private:
 
   AttributeMatrixCreationFilterParameter* m_FilterParameter;
 
-  QSignalMapper*  m_MenuMapper;
+  QSignalMapper*  m_MenuMapper = nullptr;
 
+  QMenu*        m_MenuPtr = nullptr;
+  bool          m_OwnsMenuPtr = false;
   void setSelectedPath(QString path);
 
   AttributeMatrixCreationWidget(const AttributeMatrixCreationWidget&); // Copy Constructor Not Implemented

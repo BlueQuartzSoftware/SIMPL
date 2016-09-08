@@ -552,8 +552,8 @@ void BookmarksToolboxWidget::readSettings(QtSSettings* prefs)
 // -----------------------------------------------------------------------------
 void BookmarksToolboxWidget::writeSettings()
 {
-  QtSSettings* prefs = new QtSSettings();
-  writeSettings(prefs);
+   QtSSettings prefs;
+   writeSettings(&prefs);
 }
 
 // -----------------------------------------------------------------------------

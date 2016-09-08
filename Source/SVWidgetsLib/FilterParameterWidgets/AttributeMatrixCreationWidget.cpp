@@ -83,7 +83,10 @@ m_DidCausePreflight(false)
 //
 // -----------------------------------------------------------------------------
 AttributeMatrixCreationWidget::~AttributeMatrixCreationWidget()
-{}
+{
+  if(m_OwnsMenuPtr && m_MenuPtr) { delete m_MenuPtr; }
+  if(m_MenuMapper) { delete m_MenuMapper; }
+}
 
 // -----------------------------------------------------------------------------
 //
@@ -176,16 +179,19 @@ void AttributeMatrixCreationWidget::createSelectionMenu()
   if(NULL == dca.get()) { return; }
 
   // Get the menu and clear it out
-  QMenu* menu = m_SelectedDataContainerPath->menu();
-  if(!menu)
+  QMenu* btnMenu = m_SelectedDataContainerPath->menu();
+  if(btnMenu) {
+    btnMenu->clear();
+  }
+  else
   {
-    menu = new QMenu();
-    m_SelectedDataContainerPath->setMenu(menu);
-    menu->installEventFilter(this);
+    m_OwnsMenuPtr = true;
+    m_MenuPtr = new QMenu;
+    btnMenu = m_MenuPtr;
+    m_SelectedDataContainerPath->setMenu(btnMenu);
+    btnMenu->installEventFilter(this);
   }
-  if(menu) {
-    menu->clear();
-  }
+
 
   // Get the DataContainerArray object
   // Loop over the data containers until we find the proper data container
@@ -203,18 +209,19 @@ void AttributeMatrixCreationWidget::createSelectionMenu()
     if (NULL != geom.get()) { geomType = geom->getGeometryType(); }
 
     QString dcName = dc->getName();
-    QAction* action = new QAction(dcName, menu);
+
+    QAction* dcAction = btnMenu->addAction(dcName); // btnMenu owns the created QAction
+
     DataArrayPath dcPath(dcName, "", "");
     QString path = dcPath.serialize(Detail::Delimiter);
-    action->setData(path);
+    dcAction->setData(path);
 
-    connect(action, SIGNAL(triggered(bool)), m_MenuMapper, SLOT(map()));
-    m_MenuMapper->setMapping(action, path);
-    menu->addAction(action);
+    connect(dcAction, SIGNAL(triggered(bool)), m_MenuMapper, SLOT(map()));
+    m_MenuMapper->setMapping(dcAction, path);
 
     if(geomTypes.isEmpty() == false && geomTypes.contains(geomType) == false )
     {
-      action->setDisabled(true);
+      dcAction->setDisabled(true);
     }
   }
 }

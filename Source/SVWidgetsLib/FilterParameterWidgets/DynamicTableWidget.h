@@ -51,6 +51,7 @@
 #include "SVWidgetsLib/ui_DynamicTableWidget.h"
 
 class DynamicTableFilterParameter;
+class DynamicTableItemDelegate;
 
 /**
 * @brief
@@ -109,6 +110,7 @@ class SVWidgetsLib_EXPORT DynamicTableWidget : public FilterParameterWidget, pri
   private:
 
     DynamicTableFilterParameter*  m_FilterParameter;
+    DynamicTableItemDelegate*     m_ItemDelegate = nullptr;
     bool m_DidCausePreflight;
 
     void populateTable();

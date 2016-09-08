@@ -91,7 +91,8 @@ void DataContainerArrayWidget::clearStandardItemModel()
   QAbstractItemModel* oldModel = dcaProxyView->model();
   QStandardItemModel* model = new QStandardItemModel;
   dcaProxyView->setModel(model);
-  delete oldModel;
+  model->setParent(dcaProxyView); // Set the parent so it gets cleaned up
+  delete oldModel; // Clean up the old model now.
 }
 
 // -----------------------------------------------------------------------------
