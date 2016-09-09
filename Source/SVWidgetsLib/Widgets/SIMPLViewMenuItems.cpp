@@ -66,7 +66,49 @@ QObject(parent)
 // -----------------------------------------------------------------------------
 SIMPLViewMenuItems::~SIMPLViewMenuItems()
 {
+  delete m_MenuRecentFiles;
+  delete m_ActionNew;
+  delete m_ActionOpen;
+  delete m_ActionSave;
+  delete m_ActionSaveAs;
+  delete m_ActionLoadTheme;
+  delete m_ActionSaveTheme;
+  delete m_ActionClearRecentFiles;
+  delete m_ActionExit;
 
+  // Edit Menu
+  delete m_ActionCut;
+  delete m_ActionCopy;
+  delete m_ActionPaste;
+
+  // View Menu
+  delete m_ActionShowFilterLibrary;
+  delete m_ActionShowFilterList;
+  delete m_ActionShowBookmarks;
+  delete m_ActionShowStdOutput;
+  delete m_ActionShowIssues;
+  delete m_ActionShowToolbox;
+
+  // Bookmarks Menu
+  delete m_ActionAddBookmark;
+  delete m_ActionNewFolder;
+  delete m_ActionLocateFile;
+
+  // Pipeline Menu
+  delete m_ActionClearPipeline;
+
+  // Help Menu
+  delete m_ActionClearCache;
+  delete m_ActionClearBookmarks;
+  delete m_ActionShowSIMPLViewHelp;
+  delete m_ActionCheckForUpdates;
+  delete m_ActionAboutSIMPLView;
+  delete m_ActionPluginInformation;
+
+  // Contextual Menus
+  delete m_ActionRenameBookmark;
+  delete m_ActionRemoveBookmark;
+  delete m_ActionShowBookmarkInFileSystem;
 }
 
 // -----------------------------------------------------------------------------
