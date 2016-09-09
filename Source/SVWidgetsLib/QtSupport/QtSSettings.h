@@ -36,6 +36,7 @@
 #ifndef _simplviewsettings_h_
 #define _simplviewsettings_h_
 
+#include <QtCore/QSharedPointer>
 #include <QtCore/QString>
 #include <QtCore/QObject>
 #include <QtCore/QVariant>
@@ -57,6 +58,7 @@ struct SIMPLViewSettingsGroup
     groupName = name;
     group = object;
   }
+  typedef QSharedPointer<SIMPLViewSettingsGroup> Pointer;
 
   QString groupName;
   QJsonObject group;
@@ -97,7 +99,7 @@ class SVWidgetsLib_EXPORT QtSSettings : public QObject
 
   private:
     QString m_FilePath;
-    QStack<SIMPLViewSettingsGroup*> m_Stack;
+    QStack<SIMPLViewSettingsGroup::Pointer> m_Stack;
 
     void openFile();
     void closeFile();

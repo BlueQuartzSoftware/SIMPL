@@ -79,6 +79,8 @@ class SVWidgetsLib_EXPORT DataArrayCreationWidget : public FilterParameterWidget
 
     virtual ~DataArrayCreationWidget();
 
+    typedef QSharedPointer<QMenu> QMenuPtr;
+
     /**
     * @brief This method does additional GUI widget connections
     */
@@ -129,6 +131,9 @@ class SVWidgetsLib_EXPORT DataArrayCreationWidget : public FilterParameterWidget
     bool m_DidCausePreflight;
 
     QPointer<QSignalMapper> m_MenuMapper;
+
+    QMenu*        m_MenuPtr = nullptr;
+    bool          m_OwnsMenuPtr = false;
 
     DataArrayCreationFilterParameter* m_FilterParameter;
 

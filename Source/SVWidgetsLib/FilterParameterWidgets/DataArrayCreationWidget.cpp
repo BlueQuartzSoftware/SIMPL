@@ -84,7 +84,10 @@ DataArrayCreationWidget::DataArrayCreationWidget(QWidget* parent) :
 //
 // -----------------------------------------------------------------------------
 DataArrayCreationWidget::~DataArrayCreationWidget()
-{}
+{
+  if(m_OwnsMenuPtr && m_MenuPtr) { delete m_MenuPtr; }
+  if(m_MenuMapper) { delete m_MenuMapper; }
+}
 
 // -----------------------------------------------------------------------------
 //
@@ -163,15 +166,17 @@ void DataArrayCreationWidget::createSelectionMenu()
   if(NULL == dca.get()) { return; }
 
   // Get the menu and clear it out
-  QMenu* menu = m_SelectedAttributeMatrixPath->menu();
-  if(!menu)
-  {
-    menu = new QMenu();
-    m_SelectedAttributeMatrixPath->setMenu(menu);
-    menu->installEventFilter(this);
+  QMenu* btnMenu = m_SelectedAttributeMatrixPath->menu();
+  if(btnMenu) {
+    btnMenu->clear();
   }
-  if(menu) {
-    menu->clear();
+  else
+  {
+    m_OwnsMenuPtr = true;
+    m_MenuPtr = new QMenu;
+    btnMenu = m_MenuPtr;
+    m_SelectedAttributeMatrixPath->setMenu(btnMenu);
+    btnMenu->installEventFilter(this);
   }
 
   // Get the DataContainerArray object
@@ -179,8 +184,6 @@ void DataArrayCreationWidget::createSelectionMenu()
   QList<DataContainer::Pointer> containers = dca->getDataContainers();
   QVector<unsigned int> amTypes = m_FilterParameter->getDefaultAttributeMatrixTypes();
   QVector<unsigned int> geomTypes = m_FilterParameter->getDefaultGeometryTypes();
-
-
 
   QListIterator<DataContainer::Pointer> containerIter(containers);
   while(containerIter.hasNext())
@@ -192,10 +195,9 @@ void DataArrayCreationWidget::createSelectionMenu()
     if (NULL != dc.get()) { geom = dc->getGeometry(); }
     if (NULL != geom.get()) { geomType = geom->getGeometryType(); }
 
-
-    QMenu* dcMenu = new QMenu(dc->getName());
+    QMenu* dcMenu = btnMenu->addMenu(dc->getName()); // BtnMenu owns the new QMenu
     dcMenu->setDisabled(false);
-    menu->addMenu(dcMenu);
+
     if(geomTypes.isEmpty() == false && geomTypes.contains(geomType) == false )
     {
       dcMenu->setDisabled(true);
@@ -211,21 +213,21 @@ void DataArrayCreationWidget::createSelectionMenu()
       QString amName = attrMatsIter.key();
       AttributeMatrix::Pointer am = attrMatsIter.value();
 
-      QAction* action = new QAction(amName, dcMenu);
+      QAction* amAction = dcMenu->addAction(amName); // dcMenu owns the created action
+      //QAction* action = new QAction(amName, dcMenu);
       DataArrayPath daPath(dc->getName(), amName, "");
       QString path = daPath.serialize(Detail::Delimiter);
-      action->setData(path);
+      amAction->setData(path);
 
-      connect(action, SIGNAL(triggered(bool)), m_MenuMapper, SLOT(map()));
-      m_MenuMapper->setMapping(action, path);
-      dcMenu->addAction(action);
+      connect(amAction, SIGNAL(triggered(bool)), m_MenuMapper, SLOT(map()));
+      m_MenuMapper->setMapping(amAction, path);
 
       bool amIsNotNull = (nullptr != am.get()) ? true : false;
       bool amValidType = (amTypes.isEmpty() == false && amTypes.contains(am->getType()) == false) ? true : false;
 
       if (amIsNotNull && amValidType)
       {
-        action->setDisabled(true);
+        amAction->setDisabled(true);
       }
     }
   }

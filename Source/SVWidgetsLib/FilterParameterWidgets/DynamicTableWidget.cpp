@@ -75,7 +75,9 @@ DynamicTableWidget::DynamicTableWidget(FilterParameter* parameter, AbstractFilte
 //
 // -----------------------------------------------------------------------------
 DynamicTableWidget::~DynamicTableWidget()
-{}
+{
+  if(m_ItemDelegate) { delete m_ItemDelegate; }
+}
 
 // -----------------------------------------------------------------------------
 //
@@ -123,8 +125,8 @@ void DynamicTableWidget::setupGui()
   tableLabel->setText(m_FilterParameter->getHumanLabel());
 
   // Set the item delegate so that we can only enter 'double' values into the table
-  DynamicTableItemDelegate* dlg = new DynamicTableItemDelegate;
-  dynamicTable->setItemDelegate(dlg);
+  m_ItemDelegate = new DynamicTableItemDelegate;
+  dynamicTable->setItemDelegate(m_ItemDelegate);
 
   // Set button tooltips
   addRowBtn->setToolTip(addRowTT);

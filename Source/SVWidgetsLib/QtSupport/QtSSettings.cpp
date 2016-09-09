@@ -146,12 +146,12 @@ bool QtSSettings::beginGroup(const QString& prefix)
   }
   else if (m_Stack.isEmpty() == false && m_Stack.top()->group.contains(prefix) == true && m_Stack.top()->group[prefix].isObject() == true)
   {
-    SIMPLViewSettingsGroup* newGroup = new SIMPLViewSettingsGroup(prefix, m_Stack.top()->group[prefix].toObject());
+    SIMPLViewSettingsGroup::Pointer newGroup = SIMPLViewSettingsGroup::Pointer(new SIMPLViewSettingsGroup(prefix, m_Stack.top()->group[prefix].toObject()));
     m_Stack.push(newGroup);
   }
   else
   {
-    SIMPLViewSettingsGroup* newGroup = new SIMPLViewSettingsGroup(prefix, QJsonObject());
+    SIMPLViewSettingsGroup::Pointer newGroup = SIMPLViewSettingsGroup::Pointer(new SIMPLViewSettingsGroup(prefix, QJsonObject()));
     m_Stack.push(newGroup);
   }
 
@@ -167,8 +167,7 @@ void QtSSettings::endGroup()
 
   if (m_Stack.size() > 1)
   {
-    SIMPLViewSettingsGroup* group = m_Stack.pop();
-    delete group;
+    SIMPLViewSettingsGroup::Pointer group = m_Stack.pop();
   }
 }
 
@@ -269,6 +268,7 @@ QStringList QtSSettings::value(const QString& key, const QStringList& defaultLis
 // -----------------------------------------------------------------------------
 QByteArray QtSSettings::value(const QString& key, const QByteArray& defaultValue)
 {
+  Q_UNUSED(defaultValue);
   QString value = m_Stack.top()->group[key].toString();
   QByteArray byteArray8Bit = value.toLocal8Bit();
   QByteArray byteArray = QByteArray::fromBase64(byteArray8Bit);
@@ -362,12 +362,12 @@ void QtSSettings::openFile()
   {
     QByteArray byteArray = inputFile.readAll();
     QJsonDocument doc = QJsonDocument::fromJson(byteArray);
-    SIMPLViewSettingsGroup* root = new SIMPLViewSettingsGroup("", doc.object());
+    SIMPLViewSettingsGroup::Pointer root = SIMPLViewSettingsGroup::Pointer(new SIMPLViewSettingsGroup("", doc.object()));
     m_Stack.push(root);
   }
   else
   {
-    SIMPLViewSettingsGroup* root = new SIMPLViewSettingsGroup("", QJsonObject());
+    SIMPLViewSettingsGroup::Pointer root = SIMPLViewSettingsGroup::Pointer(new SIMPLViewSettingsGroup("", QJsonObject()));
     m_Stack.push(root);
   }
 }
