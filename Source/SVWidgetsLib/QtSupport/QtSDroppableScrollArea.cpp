@@ -100,7 +100,7 @@ void QtSDroppableScrollArea::dragMoveEvent( QDragMoveEvent* event)
 {
 // qDebug() << "QScrollContentsWidget::dragMoveEvent: " << event->pos().x() << ", " << event->pos().y() << "\n";
 // QObject* w = qobject_cast<QObject*>(childAt(event->pos()));
-// if (w != NULL)
+// if (w != nullptr)
   {
 //   qDebug() << "--- Child at Pos: " << w->objectName() << "\n";
   }

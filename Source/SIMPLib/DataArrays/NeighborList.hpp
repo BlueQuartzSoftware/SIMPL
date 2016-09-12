@@ -330,7 +330,7 @@ class NeighborList : public IDataArray
      * @param i
      * @return
      */
-    void* getVoidPointer(size_t i) { return NULL; }
+    void* getVoidPointer(size_t i) { return nullptr; }
 
     /**
      * @brief Removes Tuples from the Array. If the size of the vector is Zero nothing is done. If the size of the

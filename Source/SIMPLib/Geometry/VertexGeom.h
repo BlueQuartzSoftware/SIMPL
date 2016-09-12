@@ -211,7 +211,7 @@ class SIMPLib_EXPORT VertexGeom : public IGeometry
      * @param field
      * @param derivatives
      */
-    virtual void findDerivatives(DoubleArrayType::Pointer field, DoubleArrayType::Pointer derivatives, Observable* observable = NULL);
+    virtual void findDerivatives(DoubleArrayType::Pointer field, DoubleArrayType::Pointer derivatives, Observable* observable = nullptr);
 
     /**
      * @brief getInfoString

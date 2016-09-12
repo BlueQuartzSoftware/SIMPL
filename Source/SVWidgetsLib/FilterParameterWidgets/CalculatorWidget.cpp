@@ -54,16 +54,16 @@
 // -----------------------------------------------------------------------------
 CalculatorWidget::CalculatorWidget(FilterParameter* parameter, AbstractFilter* filter, QWidget* parent) :
   FilterParameterWidget(parameter, filter, parent),
-  m_ScalarsMenu(NULL),
-  m_VectorsMenu(NULL),
+  m_ScalarsMenu(nullptr),
+  m_VectorsMenu(nullptr),
   m_SelectedText(""),
   m_SelectionStart(-1)
 {
   m_Filter = dynamic_cast<ArrayCalculator*>(filter);
-  Q_ASSERT_X(m_Filter != NULL, "NULL Pointer", "CalculatorWidget can ONLY be used with an ArrayCalculator filter");
+  Q_ASSERT_X(m_Filter != nullptr, "nullptr Pointer", "CalculatorWidget can ONLY be used with an ArrayCalculator filter");
 
   m_FilterParameter = dynamic_cast<CalculatorFilterParameter*>(parameter);
-  Q_ASSERT_X(m_FilterParameter != NULL, "NULL Pointer", "CalculatorWidget can ONLY be used with a CalculatorFilterParameter object");
+  Q_ASSERT_X(m_FilterParameter != nullptr, "nullptr Pointer", "CalculatorWidget can ONLY be used with a CalculatorFilterParameter object");
 
   setupUi(this);
   setupGui();
@@ -81,7 +81,7 @@ CalculatorWidget::~CalculatorWidget()
 void CalculatorWidget::setupGui()
 {
   blockSignals(true);
-  if (getFilterParameter() != NULL)
+  if (getFilterParameter() != nullptr)
   {
     QString str = getFilter()->property(PROPERTY_NAME_AS_CHAR).toString();
     equation->setText(str);
@@ -149,7 +149,7 @@ void CalculatorWidget::setupGui()
 void CalculatorWidget::printUnaryButtonName()
 {
   QPushButton* button = static_cast<QPushButton*>(sender());
-  if (NULL != button)
+  if (nullptr != button)
   {
     printStringToEquation(button->text() + "(");
   }
@@ -161,7 +161,7 @@ void CalculatorWidget::printUnaryButtonName()
 void CalculatorWidget::printButtonName()
 {
   QPushButton* button = static_cast<QPushButton*>(sender());
-  if (NULL != button)
+  if (nullptr != button)
   {
     printStringToEquation(button->text());
   }
@@ -173,7 +173,7 @@ void CalculatorWidget::printButtonName()
 void CalculatorWidget::printActionName()
 { 
   QAction* action = static_cast<QAction*>(sender());
-  if (NULL != action)
+  if (nullptr != action)
   {
     printStringToEquation(action->text());
   }
@@ -271,17 +271,17 @@ void CalculatorWidget::on_rootBtn_pressed()
 // -----------------------------------------------------------------------------
 void CalculatorWidget::on_scalarsBtn_pressed()
 {
-  if (NULL != m_VectorsMenu)
+  if (nullptr != m_VectorsMenu)
   {
     delete m_ScalarsMenu;
-    m_ScalarsMenu = NULL;
+    m_ScalarsMenu = nullptr;
   }
 
   // Create Scalars Menu
   m_ScalarsMenu = new QMenu(this);
 
   AttributeMatrix::Pointer am = m_Filter->getDataContainerArray()->getAttributeMatrix(m_Filter->getSelectedAttributeMatrix());
-  if (NULL == am)
+  if (nullptr == am)
   {
     return;
   }
@@ -308,17 +308,17 @@ void CalculatorWidget::on_scalarsBtn_pressed()
 // -----------------------------------------------------------------------------
 void CalculatorWidget::on_vectorsBtn_pressed()
 {
-  if (NULL != m_VectorsMenu)
+  if (nullptr != m_VectorsMenu)
   {
     delete m_VectorsMenu;
-    m_VectorsMenu = NULL;
+    m_VectorsMenu = nullptr;
   }
 
   // Create Vectors Menu
   m_VectorsMenu = new QMenu(this);
 
   AttributeMatrix::Pointer am = m_Filter->getDataContainerArray()->getAttributeMatrix(m_Filter->getSelectedAttributeMatrix());
-  if (NULL == am)
+  if (nullptr == am)
   {
     return;
   }
@@ -414,7 +414,7 @@ void CalculatorWidget::filterNeedsInputParameters(AbstractFilter* filter)
   }
 
   ArrayCalculator* calculatorFilter = dynamic_cast<ArrayCalculator*>(filter);
-  Q_ASSERT_X(calculatorFilter != NULL, "NULL Pointer", "CalculatorWidget can ONLY be used with an ArrayCalculator filter");
+  Q_ASSERT_X(calculatorFilter != nullptr, "nullptr Pointer", "CalculatorWidget can ONLY be used with an ArrayCalculator filter");
 
   if (radiansBtn->isChecked())
   {

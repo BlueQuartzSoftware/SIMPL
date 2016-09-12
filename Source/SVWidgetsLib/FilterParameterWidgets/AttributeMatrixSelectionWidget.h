@@ -70,13 +70,13 @@ class SVWidgetsLib_EXPORT AttributeMatrixSelectionWidget : public FilterParamete
     * @param filter The instance of the filter that this parameter is a part of
     * @param parent The parent QWidget for this Widget
     */
-    AttributeMatrixSelectionWidget(FilterParameter* parameter, AbstractFilter* filter = NULL, QWidget* parent = NULL);
+    AttributeMatrixSelectionWidget(FilterParameter* parameter, AbstractFilter* filter = nullptr, QWidget* parent = nullptr);
 
     /**
      * @brief AttributeMatrixSelectionWidget
      * @param parent
      */
-    AttributeMatrixSelectionWidget(QWidget* parent = NULL);
+    AttributeMatrixSelectionWidget(QWidget* parent = nullptr);
 
     virtual ~AttributeMatrixSelectionWidget();
 

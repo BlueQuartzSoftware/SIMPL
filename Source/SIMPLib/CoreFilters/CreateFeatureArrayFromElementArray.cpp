@@ -60,8 +60,8 @@ CreateFeatureArrayFromElementArray::CreateFeatureArrayFromElementArray() :
   m_SelectedCellArrayPath("", "", ""),
   m_CreatedArrayName(""),
   m_FeatureIdsArrayPath("", "", ""),
-  m_FeatureIds(NULL),
-  m_InArray(NULL)
+  m_FeatureIds(nullptr),
+  m_InArray(nullptr)
 {
   setupFilterParameters();
 }
@@ -134,7 +134,7 @@ void CreateFeatureArrayFromElementArray::dataCheck()
 
   QVector<size_t> cDims(1, 1);
   m_FeatureIdsPtr = getDataContainerArray()->getPrereqArrayFromPath<DataArray<int32_t>, AbstractFilter>(this, getFeatureIdsArrayPath(), cDims); /* Assigns the shared_ptr<> to an instance variable that is a weak_ptr<> */
-  if( NULL != m_FeatureIdsPtr.lock().get() ) /* Validate the Weak Pointer wraps a non-NULL pointer to a DataArray<T> object */
+  if( nullptr != m_FeatureIdsPtr.lock().get() ) /* Validate the Weak Pointer wraps a non-nullptr pointer to a DataArray<T> object */
   { m_FeatureIds = m_FeatureIdsPtr.lock()->getPointer(0); }   /* Now assign the raw pointer to data from the DataArray<T> object */
 
   m_InArrayPtr = getDataContainerArray()->getPrereqIDataArrayFromPath<IDataArray, AbstractFilter>(this, getSelectedCellArrayPath());
@@ -169,7 +169,7 @@ IDataArray::Pointer copyCellData(AbstractFilter* filter, IDataArray::Pointer inp
   QString featureArrayName = inputData->getName();
 
   typename DataArray<T>::Pointer cell = std::dynamic_pointer_cast<DataArray<T> >(inputData);
-  if (NULL == cell) { return IDataArray::NullPointer(); }
+  if (nullptr == cell) { return IDataArray::NullPointer(); }
 
   QVector<size_t> dims = inputData->getComponentDimensions();
   typename DataArray<T>::Pointer feature = DataArray<T>::CreateArray(features, dims, createdArrayName);
@@ -320,7 +320,7 @@ void CreateFeatureArrayFromElementArray::execute()
     notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
   }
 
-  if (p.get() != NULL)
+  if (p.get() != nullptr)
   {
     getDataContainerArray()->getAttributeMatrix(m_CellFeatureAttributeMatrixName)->addAttributeArray(p->getName(), p);
   }

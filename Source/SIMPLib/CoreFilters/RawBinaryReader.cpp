@@ -118,7 +118,7 @@ int32_t readBinaryFile(typename DataArray<T>::Pointer p, const QString& filename
   if (err < 0) { return RBR_FILE_TOO_SMALL; }
 
   FILE* f = fopen(filename.toLatin1().data(), "rb");
-  if (NULL == f) { return RBR_FILE_NOT_OPEN; }
+  if (nullptr == f) { return RBR_FILE_NOT_OPEN; }
 
   ScopedFileMonitor monitor(f);
   size_t numBytesToRead = p->getNumberOfTuples() * static_cast<size_t>(p->getNumberOfComponents()) * sizeof(T);

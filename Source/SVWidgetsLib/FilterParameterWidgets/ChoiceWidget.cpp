@@ -56,7 +56,7 @@ ChoiceWidget::ChoiceWidget(FilterParameter* parameter, AbstractFilter* filter, Q
   FilterParameterWidget(parameter, filter, parent)
 {
   m_FilterParameter = dynamic_cast<ChoiceFilterParameter*>(parameter);
-  Q_ASSERT_X(m_FilterParameter != NULL, "NULL Pointer", "ChoiceWidget can ONLY be used with a ChoiceFilterParameter object");
+  Q_ASSERT_X(m_FilterParameter != nullptr, "nullptr Pointer", "ChoiceWidget can ONLY be used with a ChoiceFilterParameter object");
 
   setupUi(this);
   setupGui();
@@ -89,7 +89,7 @@ void ChoiceWidget::setupGui()
   connect(value, SIGNAL(currentIndexChanged(int)),
           this, SLOT(widgetChanged(int) ) );
 
-  if (getFilterParameter() != NULL)
+  if (getFilterParameter() != nullptr)
   {
     label->setText(getFilterParameter()->getHumanLabel() );
 

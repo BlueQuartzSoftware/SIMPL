@@ -57,7 +57,7 @@ class SVWidgetsLib_EXPORT IssuesDockWidget : public QDockWidget, public IObserve
 
     Q_OBJECT
   public:
-    IssuesDockWidget(QWidget* parent = NULL);
+    IssuesDockWidget(QWidget* parent = nullptr);
     virtual ~IssuesDockWidget();
 
     QLabel* createHyperlinkLabel(PipelineMessage msg);

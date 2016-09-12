@@ -153,7 +153,7 @@ void ExecuteProcess::execute()
 
   arguments.removeAt(0);
 
-  m_ProcessPtr = QSharedPointer<QProcess>(new QProcess(NULL));
+  m_ProcessPtr = QSharedPointer<QProcess>(new QProcess(nullptr));
   qRegisterMetaType<QProcess::ExitStatus>("QProcess::ExitStatus");
   qRegisterMetaType<QProcess::ProcessError>("QProcess::ProcessError");
   connect(m_ProcessPtr.data(), SIGNAL(finished(int, QProcess::ExitStatus)),

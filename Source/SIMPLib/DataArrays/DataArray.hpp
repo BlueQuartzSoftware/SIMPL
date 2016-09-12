@@ -316,7 +316,7 @@ class DataArray : public IDataArray
     {
 
       Pointer p = CreateArray(vec.size(), name, allocate);
-      if (NULL != p.get())
+      if (nullptr != p.get())
       {
         ::memcpy(p->getPointer(0), vec.data(), vec.size() * sizeof(T));
       }
@@ -334,7 +334,7 @@ class DataArray : public IDataArray
     {
       QVector<size_t> cDims(1, 1);
       Pointer p = CreateArray(vec.size(), cDims, name, allocate);
-      if (NULL != p.get())
+      if (nullptr != p.get())
       {
         ::memcpy(p->getPointer(0), &(vec.front()), vec.size() * sizeof(T));
       }
@@ -351,7 +351,7 @@ class DataArray : public IDataArray
     static Pointer FromPointer(T* data, size_t size, const QString& name, bool allocate = true)
     {
       Pointer p = CreateArray(size, name, allocate);
-      if (NULL != p.get())
+      if (nullptr != p.get())
       {
         ::memcpy(p->getPointer(0), data, size * sizeof(T));
       }
@@ -377,7 +377,7 @@ class DataArray : public IDataArray
 
       p->m_Array = data; // Now set the internal array to the raw pointer
       p->m_OwnsData = ownsData; // Set who owns the data, i.e., who is going to "free" the memory
-      if (NULL != data) { p->m_IsAllocated = true; }
+      if (nullptr != data) { p->m_IsAllocated = true; }
 
       return p;
     }
@@ -401,11 +401,11 @@ class DataArray : public IDataArray
     bool copyData(size_t destTupleOffset, IDataArray::Pointer sourceArray)
     {
       if(!m_IsAllocated) { return false; }
-      if(NULL == m_Array) { return false; }
+      if(nullptr == m_Array) { return false; }
       if(destTupleOffset > m_MaxId) { return false; }
       if(!sourceArray->isAllocated()) { return false; }
       Self* source = dynamic_cast<Self*>(sourceArray.get());
-      if(NULL == source->getPointer(0)) { return false; }
+      if(nullptr == source->getPointer(0)) { return false; }
 
       if(sourceArray->getNumberOfComponents() != getNumberOfComponents()) { return false; }
 
@@ -478,7 +478,7 @@ class DataArray : public IDataArray
     virtual ~DataArray()
     {
       //qDebug() << "~DataArrayTemplate '" << m_Name << "'" ;
-      if ((NULL != m_Array) && (true == m_OwnsData))
+      if ((nullptr != m_Array) && (true == m_OwnsData))
       {
         _deallocate();
       }
@@ -541,11 +541,11 @@ class DataArray : public IDataArray
      */
     virtual int32_t allocate()
     {
-      if ((NULL != m_Array) && (true == m_OwnsData))
+      if ((nullptr != m_Array) && (true == m_OwnsData))
       {
         _deallocate();
       }
-      m_Array = NULL;
+      m_Array = nullptr;
       m_OwnsData = true;
       m_IsAllocated = false;
       if (m_Size == 0)
@@ -578,11 +578,11 @@ class DataArray : public IDataArray
      */
     virtual void clear()
     {
-      if (NULL != m_Array && true == m_OwnsData)
+      if (nullptr != m_Array && true == m_OwnsData)
       {
         _deallocate();
       }
-      m_Array = NULL;
+      m_Array = nullptr;
       m_Size = 0;
       m_OwnsData = true;
       m_MaxId = 0;
@@ -598,7 +598,7 @@ class DataArray : public IDataArray
      */
     virtual void initializeWithZeros()
     {
-      if(!m_IsAllocated || NULL == m_Array) { return; }
+      if(!m_IsAllocated || nullptr == m_Array) { return; }
       size_t typeSize = sizeof(T);
       ::memset(m_Array, 0, m_Size * typeSize);
     }
@@ -608,7 +608,7 @@ class DataArray : public IDataArray
      */
     virtual void initializeWithValue(T initValue, size_t offset = 0)
     {
-      if(!m_IsAllocated || NULL == m_Array) { return; }
+      if(!m_IsAllocated || nullptr == m_Array) { return; }
       for (size_t i = offset; i < m_Size; i++)
       {
         m_Array[i] = initValue;
@@ -801,15 +801,15 @@ class DataArray : public IDataArray
 
 
     /**
-     * @brief Returns a void pointer pointing to the index of the array. NULL
+     * @brief Returns a void pointer pointing to the index of the array. nullptr
      * pointers are entirely possible. No checks are performed to make sure
      * the index is with in the range of the internal data array.
      * @param i The index to have the returned pointer pointing to.
-     * @return Void Pointer. Possibly NULL.
+     * @return Void Pointer. Possibly nullptr.
      */
     virtual void* getVoidPointer(size_t i)
     {
-      if (i >= m_Size) { return NULL;}
+      if (i >= m_Size) { return nullptr;}
 
       return (void*)(&(m_Array[i]));
     }
@@ -1030,7 +1030,7 @@ class DataArray : public IDataArray
 
       // qDebug()  << "Error: HDFTypeForPrimitive - Unknown Type: " << (typeid(value).name()) ;
       const char* name = typeid(value).name();
-      if (NULL != name && name[0] == 'l' )
+      if (nullptr != name && name[0] == 'l' )
       {
         qDebug() << "You are using 'long int' as a type which is not 32/64 bit safe. Suggest you use one of the H5SupportTypes defined in <Common/H5SupportTypes.h> such as int32_t or uint32_t." ;
       }
@@ -1064,7 +1064,7 @@ class DataArray : public IDataArray
      */
     virtual int writeH5Data(hid_t parentId, QVector<size_t> tDims)
     {
-      if (m_Array == NULL)
+      if (m_Array == nullptr)
       { return -85648; }
 #if 0
       return H5DataArrayWriter<T>::writeArray(parentId, getName(), getNumberOfTuples(), getNumberOfComponents(), getRank(), getDims(), getClassVersion(), m_Array, getFullNameOfClass());
@@ -1082,7 +1082,7 @@ class DataArray : public IDataArray
     virtual int writeXdmfAttribute(QTextStream& out, int64_t* volDims, const QString& hdfFileName,
                                    const QString& groupPath, const QString& label)
     {
-      if (m_Array == NULL) { return -85648; }
+      if (m_Array == nullptr) { return -85648; }
       QString dimStr;
       int precision = 0;
       QString xdmfTypeName;
@@ -1192,7 +1192,7 @@ class DataArray : public IDataArray
 
       resize(0);
       IDataArray::Pointer p = H5DataArrayReader::ReadIDataArray(parentId, getName());
-      if (p.get() == NULL)
+      if (p.get() == nullptr)
       {
         return -1;
       }
@@ -1262,7 +1262,7 @@ class DataArray : public IDataArray
     * @param takeOwnership Will the class clean up the memory. Default=true
     */
     DataArray(size_t numTuples, QVector<size_t> compDims, const QString& name, bool ownsData = true) :
-      m_Array(NULL),
+      m_Array(nullptr),
       m_OwnsData(ownsData),
       m_IsAllocated(false),
       m_Name(name),
@@ -1290,7 +1290,7 @@ class DataArray : public IDataArray
     {
       // We are going to splat 0xABABAB across the first value of the array as a debugging aid
       unsigned char* cptr = reinterpret_cast<unsigned char*>(m_Array);
-      if(NULL != cptr)
+      if(nullptr != cptr)
       {
         if(m_Size > 0)
         {
@@ -1317,7 +1317,7 @@ class DataArray : public IDataArray
 #else
       free(m_Array);
 #endif
-      m_Array = NULL;
+      m_Array = nullptr;
       m_IsAllocated = false;
     }
 
@@ -1335,7 +1335,7 @@ class DataArray : public IDataArray
         return 1;
       }
       T* ptr = resizeAndExtend(size);
-      if ( NULL != ptr)
+      if ( nullptr != ptr)
       {
         return 1;
       }
@@ -1379,7 +1379,7 @@ class DataArray : public IDataArray
 #endif
 
       // Allocate a new array if we DO NOT own the current array
-      if ((NULL != m_Array) && (false == m_OwnsData))
+      if ((nullptr != m_Array) && (false == m_OwnsData))
       {
         // The old array is owned by the user so we cannot try to
         // reallocate it.  Just allocate new memory that we will own.
@@ -1387,7 +1387,7 @@ class DataArray : public IDataArray
         if (!newArray)
         {
           qDebug() << "Unable to allocate " << newSize << " elements of size " << sizeof(T) << " bytes. " ;
-          return NULL;
+          return nullptr;
         }
 
         // Copy the data from the old array.
@@ -1400,7 +1400,7 @@ class DataArray : public IDataArray
         if (!newArray)
         {
           qDebug() << "Unable to allocate " << newSize << " elements of size " << sizeof(T) << " bytes. " ;
-          return NULL;
+          return nullptr;
         }
       }
       else
@@ -1409,11 +1409,11 @@ class DataArray : public IDataArray
         if (!newArray)
         {
           qDebug() << "Unable to allocate " << newSize << " elements of size " << sizeof(T) << " bytes. " ;
-          return NULL;
+          return nullptr;
         }
 
         // Copy the data from the old array.
-        if (m_Array != NULL)
+        if (m_Array != nullptr)
         {
           memcpy(newArray, m_Array, (newSize < m_Size ? newSize : m_Size) * sizeof(T));
         }

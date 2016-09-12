@@ -52,7 +52,7 @@ LinkedBooleanWidget::LinkedBooleanWidget(FilterParameter* parameter, AbstractFil
   FilterParameterWidget(parameter, filter, parent)
 {
   m_FilterParameter = dynamic_cast<LinkedBooleanFilterParameter*>(parameter);
-  Q_ASSERT_X(m_FilterParameter != NULL, "NULL Pointer", "LinkedBooleanWidget can ONLY be used with a LinkedBooleanFilterParameter object");
+  Q_ASSERT_X(m_FilterParameter != nullptr, "nullptr Pointer", "LinkedBooleanWidget can ONLY be used with a LinkedBooleanFilterParameter object");
 
   setupUi(this);
   setupGui();
@@ -85,7 +85,7 @@ void LinkedBooleanWidget::setupGui()
   connect(value, SIGNAL(stateChanged(int)),
           this, SLOT(widgetChanged(int) ) );
 
-  if (getFilterParameter() != NULL)
+  if (getFilterParameter() != nullptr)
   {
     label->setText(getFilterParameter()->getHumanLabel() );
 

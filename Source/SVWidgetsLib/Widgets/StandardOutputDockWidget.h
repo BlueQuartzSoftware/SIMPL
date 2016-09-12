@@ -52,7 +52,7 @@ class SVWidgetsLib_EXPORT StandardOutputDockWidget : public QDockWidget, public 
     Q_OBJECT
 
   public:
-    StandardOutputDockWidget(QWidget* parent = NULL);
+    StandardOutputDockWidget(QWidget* parent = nullptr);
     virtual ~StandardOutputDockWidget();
 
     /**

@@ -81,7 +81,7 @@
   err = filter->getErrorCondition();\
   DREAM3D_REQUIRE_EQUAL(err, 0);\
   data = dc->getAttributeMatrix(derivsName.getAttributeMatrixName())->getAttributeArray(derivsName.getDataArrayName());\
-  if (NULL == std::dynamic_pointer_cast<DoubleArrayType>(data))\
+  if (nullptr == std::dynamic_pointer_cast<DoubleArrayType>(data))\
 {\
   err = 1;\
   }\
@@ -325,7 +325,7 @@ class FindDerivativesFilterTest
       AttributeMatrix::Pointer attrMat = dc->getAttributeMatrix(derivsPath.getAttributeMatrixName());
       IDataArray::Pointer iArray = attrMat->getAttributeArray(dataArrayName);
       DoubleArrayType::Pointer array = std::dynamic_pointer_cast<DoubleArrayType>(iArray);
-      DREAM3D_REQUIRE(array.get() != NULL);
+      DREAM3D_REQUIRE(array.get() != nullptr);
 
       size_t size = array->getSize();
       double* arrayPtr = array->getPointer(0);
@@ -404,7 +404,7 @@ class FindDerivativesFilterTest
       DataArrayPath vertOutPath_Tet("TetDC", "AttrMatType0", derivativeName);
       DataArrayPath cellOutPath_Tet("TetDC", "AttrMatType3", derivativeName);
 
-      // Fail if geometry is NULL
+      // Fail if geometry is nullptr
       FDTEST_SET_PROPERTIES_AND_CHECK_NE(filter, null, vertPathD_N, vertOutPath_N);
       // Fail if incorrect AttributeMatrices set for ImageGeom/RectGridGeom
       FDTEST_SET_PROPERTIES_AND_CHECK_NE(filter, image, vertPathD_I, cellOutPath_I);
@@ -496,7 +496,7 @@ class FindDerivativesFilterTest
       QString filtName = "FindDerivatives";
       FilterManager* fm = FilterManager::Instance();
       IFilterFactory::Pointer filterFactory = fm->getFactoryForFilter(filtName);
-      if (NULL == filterFactory.get())
+      if (nullptr == filterFactory.get())
       {
         std::stringstream ss;
         ss << "The FindDerivativesTest Requires the use of the " << filtName.toStdString() << " filter which is found in the Core Plugin";
@@ -516,10 +516,10 @@ class FindDerivativesFilterTest
       QString filtName = "FindDerivatives";
       FilterManager* fm = FilterManager::Instance();
       IFilterFactory::Pointer factory = fm->getFactoryForFilter(filtName);
-      DREAM3D_REQUIRE(factory.get() != NULL);
+      DREAM3D_REQUIRE(factory.get() != nullptr);
 
       AbstractFilter::Pointer findDerivsFilter = factory->create();
-      DREAM3D_REQUIRE(findDerivsFilter.get() != NULL);
+      DREAM3D_REQUIRE(findDerivsFilter.get() != nullptr);
 
       findDerivsFilter->setDataContainerArray(dca);
 

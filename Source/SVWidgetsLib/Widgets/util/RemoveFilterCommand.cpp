@@ -53,7 +53,7 @@ RemoveFilterCommand::RemoveFilterCommand(PipelineFilterObject* fw, PipelineView 
   m_PrevNodeId(prevNodeId),
   m_NextNodeId(nextNodeId)
 {
-  if (NULL == fw || NULL == pipelineView)
+  if (nullptr == fw || nullptr == pipelineView)
   {
     return;
   }

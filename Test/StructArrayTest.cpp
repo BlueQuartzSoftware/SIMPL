@@ -197,9 +197,9 @@ class StructArrayTest
           // Test Reinitializing the Array to Zero Size
           nodes->initialize();
       Vec3Int_t* ptr = reinterpret_cast<Vec3Int_t*>(nodes->getVoidPointer(0));
-      DREAM3D_REQUIRED_PTR(ptr, ==, NULL);
+      DREAM3D_REQUIRED_PTR(ptr, ==, nullptr);
       ptr = nodes->getPointer(0);
-      DREAM3D_REQUIRED_PTR(ptr, ==, NULL);
+      DREAM3D_REQUIRED_PTR(ptr, ==, nullptr);
       size_t nTuples = nodes->getNumberOfTuples();
       DREAM3D_REQUIRE_EQUAL(INIT_SIZE, nTuples)
           size = nodes->getSize();
@@ -297,9 +297,9 @@ class StructArrayTest
       // Resize to a Zero Array
       nodes->resize(INIT_SIZE);
       Vec3Int_t* ptr = reinterpret_cast<Vec3Int_t*>(nodes->getVoidPointer(0));
-      DREAM3D_REQUIRED_PTR(ptr, ==, NULL);
+      DREAM3D_REQUIRED_PTR(ptr, ==, nullptr);
       ptr = nodes->getPointer(0);
-      DREAM3D_REQUIRED_PTR(ptr, ==, NULL);
+      DREAM3D_REQUIRED_PTR(ptr, ==, nullptr);
       nTuples = nodes->getNumberOfTuples();
       DREAM3D_REQUIRE_EQUAL(INIT_SIZE, nTuples)
           size = nodes->getSize();

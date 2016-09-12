@@ -56,7 +56,7 @@
 FilterListToolboxWidget::FilterListToolboxWidget(QWidget* parent) :
   QWidget(parent),
   m_ContextMenu(new QMenu(this)),
-  m_Mapper(NULL),
+  m_Mapper(nullptr),
   m_SearchAnyWords(false),
   m_SearchExactPhrase(false),
   m_SearchAllWords(true)
@@ -183,17 +183,17 @@ void FilterListToolboxWidget::showContextMenuForWidget(const QPoint& pos)
 void FilterListToolboxWidget::launchHelpForItem(QString humanLabel)
 {
   FilterManager* fm = FilterManager::Instance();
-  if (NULL == fm)
+  if (nullptr == fm)
   {
     return;
   }
   IFilterFactory::Pointer factory = fm->getFactoryForFilterHumanName(humanLabel);
-  if (NULL == factory.get())
+  if (nullptr == factory.get())
   {
     return;
   }
   AbstractFilter::Pointer filter = factory->create();
-  if (NULL == filter.get())
+  if (nullptr == filter.get())
   {
     return;
   }
@@ -224,13 +224,13 @@ void FilterListToolboxWidget::updateFilterList(bool sortItems)
   {
     iter.next();
     IFilterFactory::Pointer factory = iter.value();
-    if (NULL == factory.get() )
+    if (nullptr == factory.get() )
     {
       continue;
     }
 
     AbstractFilter::Pointer filter = factory->create();
-    if(NULL == filter.get())
+    if(nullptr == filter.get())
     {
       continue;
     }
@@ -346,13 +346,13 @@ void FilterListToolboxWidget::matchFilter(QMapIterator<QString, IFilterFactory::
   {
     iter.next();
     IFilterFactory::Pointer factory = iter.value();
-    if (NULL == factory.get())
+    if (nullptr == factory.get())
     {
       continue;
     }
 
     AbstractFilter::Pointer filter = factory->create();
-    if (NULL == filter.get())
+    if (nullptr == filter.get())
     {
       continue;
     }
@@ -500,7 +500,7 @@ void FilterListToolboxWidget::keyPressEvent(QKeyEvent* event)
 {
   if (searchInProgress() == true)
   {
-    if (NULL == filterList || filterList->count() <= 0)
+    if (nullptr == filterList || filterList->count() <= 0)
     {
       return;
     }

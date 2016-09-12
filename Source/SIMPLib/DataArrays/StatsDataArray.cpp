@@ -452,7 +452,7 @@ int StatsDataArray::writeH5Data(hid_t parentId, QVector<size_t> tDims)
   // We start numbering our phases at 1. Anything in slot 0 is considered "Dummy" or invalid
   for(qint32 i = 1; i < m_StatsDataArray.size(); ++i)
   {
-    if (m_StatsDataArray[i].get() != NULL)
+    if (m_StatsDataArray[i].get() != nullptr)
     {
       QString indexString = QString::number(i);
       hid_t tupleId = QH5Utilities::createGroup(gid, indexString);
@@ -564,7 +564,7 @@ int StatsDataArray::writeToJson(QJsonObject &jsonRoot, UInt32ArrayType::Pointer 
   for(size_t i = 1; i < getNumberOfTuples(); i++)
   {
     StatsData::Pointer statsData = getStatsData(i);
-    if(NULL != statsData.get() ) {
+    if(nullptr != statsData.get() ) {
       QJsonObject phaseObj;
       statsData->writeJson(phaseObj);
       if(crystalStructures) {
@@ -756,7 +756,7 @@ void StatsDataArray::fillArrayWithNewStatsData(size_t n, unsigned int* phase_typ
   m_StatsDataArray.resize(n);
   for (size_t i = 0; i < n; ++i)
   {
-    if (phase_types != NULL)
+    if (phase_types != nullptr)
     {
       if(phase_types[i] == SIMPL::PhaseType::PrimaryPhase) { m_StatsDataArray[i] = PrimaryStatsData::New(); }
       else if(phase_types[i] == SIMPL::PhaseType::PrecipitatePhase) { m_StatsDataArray[i] = PrecipitateStatsData::New(); }
@@ -765,7 +765,7 @@ void StatsDataArray::fillArrayWithNewStatsData(size_t n, unsigned int* phase_typ
       else if(phase_types[i] == SIMPL::PhaseType::MatrixPhase) { m_StatsDataArray[i] = MatrixStatsData::New(); }
       else { m_StatsDataArray[i] = StatsData::New(); }
     }
-    if(phase_types == NULL) { m_StatsDataArray[i] = StatsData::New(); }
+    if(phase_types == nullptr) { m_StatsDataArray[i] = StatsData::New(); }
   }
 }
 

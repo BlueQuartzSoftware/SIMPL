@@ -61,7 +61,7 @@ class CombineAttributeArraysTemplatePrivate
     // -----------------------------------------------------------------------------
     bool operator()(QVector<IDataArray::WeakPointer> p)
     {
-      return (std::dynamic_pointer_cast<DataArrayType>(p[0].lock()).get() != NULL);
+      return (std::dynamic_pointer_cast<DataArrayType>(p[0].lock()).get() != nullptr);
     }
 
     // -----------------------------------------------------------------------------
@@ -178,7 +178,7 @@ CombineAttributeArrays::CombineAttributeArrays() :
   m_SelectedDataArrayPaths(QVector<DataArrayPath>()),
   m_StackedDataArrayName(SIMPL::GeneralData::CombinedData),
   m_NormalizeData(false),
-  m_StackedData(NULL)
+  m_StackedData(nullptr)
 {
   setupFilterParameters();
 }
@@ -274,7 +274,7 @@ void CombineAttributeArrays::dataCheck()
   {
     DataArrayPath path = paths.at(i);
     IDataArray::WeakPointer ptr = getDataContainerArray()->getPrereqIDataArrayFromPath<IDataArray, AbstractFilter>(this, path);
-    if (NULL != ptr.lock().get())
+    if (nullptr != ptr.lock().get())
     {
       m_SelectedWeakPtrVector.push_back(ptr);
       int32_t numComps = ptr.lock()->getNumberOfComponents();

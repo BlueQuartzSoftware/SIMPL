@@ -165,7 +165,7 @@ bool DataContainerArray::renameDataContainer(const QString& oldName, const QStri
     }
   }
 
-  if(NULL == dc)
+  if(nullptr == dc)
   {
     // We did not find any data container that matches the new name so we can rename if we find one that matches
     // the 'oldname' argument
@@ -181,7 +181,7 @@ bool DataContainerArray::renameDataContainer(const QString& oldName, const QStri
       }
     }
   }
-  else if (NULL != dc)
+  else if (nullptr != dc)
   {
     // We found an existing Data Container with the 'newname' but we do NOT want to over write it so just bail out now
     return false;
@@ -223,7 +223,7 @@ DataContainer::Pointer DataContainerArray::getDataContainer(const DataArrayPath&
 AttributeMatrix::Pointer DataContainerArray::getAttributeMatrix(const DataArrayPath& path)
 {
   DataContainer::Pointer dc = getDataContainer(path);
-  if(NULL == dc.get() )
+  if(nullptr == dc.get() )
   {
     return AttributeMatrix::NullPointer();
   }
@@ -248,7 +248,7 @@ void DataContainerArray::duplicateDataContainer(const QString& name, const QStri
     }
   }
 
-  if(f == NULL)
+  if(f == nullptr)
   {
     return;
   }
@@ -312,7 +312,7 @@ int DataContainerArray::readDataContainersFromHDF5(bool preflight,
     }
     if (this->doesDataContainerExist(dcProxy.name) == true )
     {
-      if(NULL != obs)
+      if(nullptr != obs)
       {
         QString ss = QObject::tr("A Data Container with name %1 already exists in Memory. Reading a Data Container with the same name would over write the one in memory. Currently this is not allowed.").arg(dcProxy.name);
         obs->notifyErrorMessage(getNameOfClass(), ss, -198745600);
@@ -327,7 +327,7 @@ int DataContainerArray::readDataContainersFromHDF5(bool preflight,
     hid_t dcGid = H5Gopen(dcaGid, dcProxy.name.toLatin1().data(), H5P_DEFAULT );
     if (dcGid < 0)
     {
-      if(NULL != obs)
+      if(nullptr != obs)
       {
         QString ss = QObject::tr("Error opening Group '%1'").arg(dcProxy.name);
         obs->notifyErrorMessage(getNameOfClass(), ss, -198745602);
@@ -338,7 +338,7 @@ int DataContainerArray::readDataContainersFromHDF5(bool preflight,
     err = this->getDataContainer(dcProxy.name)->readMeshDataFromHDF5(dcGid, preflight);
     if(err < 0)
     {
-      if(NULL != obs)
+      if(nullptr != obs)
       {
         QString ss = QObject::tr("Error reading Mesh Data from '%1'").arg(dcProxy.name);
         obs->notifyErrorMessage(getNameOfClass(), ss, -198745603);
@@ -348,7 +348,7 @@ int DataContainerArray::readDataContainersFromHDF5(bool preflight,
     err = this->getDataContainer(dcProxy.name)->readAttributeMatricesFromHDF5(preflight, dcGid, dcProxy);
     if (err < 0)
     {
-      if(NULL != obs)
+      if(nullptr != obs)
       {
         QString ss = QObject::tr("Error reading AttributeMatrix Data from '%1'").arg(dcProxy.name);
         obs->notifyErrorMessage(getNameOfClass(), ss, -198745604);
@@ -456,7 +456,7 @@ void DataContainerArray::removeDataContainerFromBundles(const QString& name)
   for(QMap<QString, IDataContainerBundle::Pointer>::iterator iter = m_DataContainerBundles.begin(); iter != m_DataContainerBundles.end(); ++iter)
   {
     IDataContainerBundle::Pointer dcbPtr = iter.value();
-    if (dcbPtr.get() != NULL)
+    if (dcbPtr.get() != nullptr)
     {
       QVector<QString> dcbNames = dcbPtr->getDataContainerNames();
       for (qint32 i = 0; i < dcbNames.size(); i++)

@@ -202,7 +202,7 @@ class CombineAttributeMatricesTest
       QString filtName = "CombineAttributeMatrices";
       FilterManager* fm = FilterManager::Instance();
       IFilterFactory::Pointer filterFactory = fm->getFactoryForFilter(filtName);
-      if (NULL == filterFactory.get())
+      if (nullptr == filterFactory.get())
       {
         std::stringstream ss;
         ss << "The CombineAttribtueMatricesTest Requires the use of the " << filtName.toStdString() << " filter which is found in Core Filters";
@@ -448,10 +448,10 @@ class CombineAttributeMatricesTest
       QString filtName = "CombineAttributeMatrices";
       FilterManager* fm = FilterManager::Instance();
       IFilterFactory::Pointer factory = fm->getFactoryForFilter(filtName);
-      DREAM3D_REQUIRE(factory.get() != NULL)
+      DREAM3D_REQUIRE(factory.get() != nullptr)
 
           AbstractFilter::Pointer combineAttributeMatricesFilter = factory->create();
-      DREAM3D_REQUIRE(combineAttributeMatricesFilter.get() != NULL)
+      DREAM3D_REQUIRE(combineAttributeMatricesFilter.get() != nullptr)
 
           combineAttributeMatricesFilter->setDataContainerArray(dca);
 

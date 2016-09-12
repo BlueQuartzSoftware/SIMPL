@@ -508,7 +508,7 @@ namespace H5Support_NAMESPACE
             {
               QVector<hsize_t> dims;
               dims.resize(rank);// Allocate enough room for the dims
-              err = H5Sget_simple_extent_dims(spaceId, &(dims.front()), NULL);
+              err = H5Sget_simple_extent_dims(spaceId, &(dims.front()), nullptr);
               hsize_t numElements = 1;
               for (QVector<hsize_t>::iterator iter = dims.begin(); iter < dims.end(); ++iter )
               {
@@ -587,7 +587,7 @@ namespace H5Support_NAMESPACE
             {
               QVector<hsize_t> dims;
               dims.resize(rank);// Allocate enough room for the dims
-              err = H5Sget_simple_extent_dims(spaceId, &(dims.front()), NULL);
+              err = H5Sget_simple_extent_dims(spaceId, &(dims.front()), nullptr);
               hsize_t numElements = 1;
               for (QVector<hsize_t>::iterator iter = dims.begin(); iter < dims.end(); ++iter )
               {

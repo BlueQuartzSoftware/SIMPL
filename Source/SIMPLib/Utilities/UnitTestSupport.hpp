@@ -155,7 +155,7 @@ class TestException : public std::exception
 
       ::memset(m_What, 0, 2048);
       ::memcpy(m_What, ss.str().c_str(), ss.str().size() );
-      m_What[2047] = 0; // Make sure we NULL terminate no matter what.
+      m_What[2047] = 0; // Make sure we nullptr terminate no matter what.
     }
 
   private:
@@ -410,11 +410,11 @@ bool AlmostEqualUlpsFinal(float* A, float* B, int maxUlps)
       ss << #L << " " << #Q << " " << #R << "' but this condition was not met.\n";\
       ss << "            " << #L << " = ";\
       if(L) { ss << reinterpret_cast<void*>(L); }\
-      else { ss << "Left side was NULL"; }\
+      else { ss << "Left side was nullptr"; }\
       ss << "\n";\
       ss << "            " << #R << " = ";\
       if(R) { ss << reinterpret_cast<void*>(R);}\
-      else { ss << "Right Side was NULL";}\
+      else { ss << "Right Side was nullptr";}\
       ss << "\n";\
       DREAM3D_TEST_THROW_EXCEPTION( buf.toStdString() )\
     }\
@@ -424,10 +424,10 @@ bool AlmostEqualUlpsFinal(float* A, float* B, int maxUlps)
   { \
     QString buf;\
     QTextStream ss(&buf);\
-    if ( L == NULL ) \
+    if ( L == nullptr ) \
     {\
       ss <<"Your test requires\n            '";\
-      ss << #L << "' != NULL' but this condition was not met.\n";\
+      ss << #L << "' != nullptr' but this condition was not met.\n";\
       ss << "\n";\
       DREAM3D_TEST_THROW_EXCEPTION( buf.toStdString() )\
     }\
@@ -437,10 +437,10 @@ bool AlmostEqualUlpsFinal(float* A, float* B, int maxUlps)
   { \
     QString buf;\
     QTextStream ss(&buf);\
-    if ( L != NULL ) \
+    if ( L != nullptr ) \
     {\
       ss <<"Your test requires\n            '";\
-      ss << #L << " == NULL' but this condition was not met.\n";\
+      ss << #L << " == nullptr' but this condition was not met.\n";\
       ss << "\n";\
       DREAM3D_TEST_THROW_EXCEPTION( buf.toStdString() )\
     }\

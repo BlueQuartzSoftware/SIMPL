@@ -64,7 +64,7 @@ DataContainerArrayProxy::DataContainerArrayProxy(const DataContainerArrayProxy& 
 DataContainerArrayProxy::DataContainerArrayProxy(DataContainerArray* dca)
 {
 
-  if(NULL == dca)
+  if(nullptr == dca)
   {
     return;
   }

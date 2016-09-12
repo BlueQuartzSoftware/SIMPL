@@ -444,7 +444,7 @@ RectGridGeom::Pointer RectGridGeom::CreateGeometry(const QString& name)
 // -----------------------------------------------------------------------------
 void RectGridGeom::setXBounds(FloatArrayType::Pointer xBnds)
 {
-  if (xBnds.get() != NULL)
+  if (xBnds.get() != nullptr)
   {
     if (xBnds->getName().compare(SIMPL::Geometry::xBoundsList))
     {
@@ -459,7 +459,7 @@ void RectGridGeom::setXBounds(FloatArrayType::Pointer xBnds)
 // -----------------------------------------------------------------------------
 void RectGridGeom::setYBounds(FloatArrayType::Pointer yBnds)
 {
-  if (yBnds.get() != NULL)
+  if (yBnds.get() != nullptr)
   {
     if (yBnds->getName().compare(SIMPL::Geometry::yBoundsList))
     {
@@ -474,7 +474,7 @@ void RectGridGeom::setYBounds(FloatArrayType::Pointer yBnds)
 // -----------------------------------------------------------------------------
 void RectGridGeom::setZBounds(FloatArrayType::Pointer zBnds)
 {
-  if (zBnds.get() != NULL)
+  if (zBnds.get() != nullptr)
   {
     if (zBnds->getName().compare(SIMPL::Geometry::zBoundsList))
     {
@@ -820,7 +820,7 @@ int RectGridGeom::writeGeometryToHDF5(hid_t parentId, bool SIMPL_NOT_USED(writeX
   {
     return err;
   }
-  if (m_xBounds.get() != NULL)
+  if (m_xBounds.get() != nullptr)
   {
     err = GeometryHelpers::GeomIO::WriteListToHDF5(parentId, m_xBounds);
     if (err < 0)
@@ -828,7 +828,7 @@ int RectGridGeom::writeGeometryToHDF5(hid_t parentId, bool SIMPL_NOT_USED(writeX
       return err;
     }
   }
-  if (m_yBounds.get() != NULL)
+  if (m_yBounds.get() != nullptr)
   {
     err = GeometryHelpers::GeomIO::WriteListToHDF5(parentId, m_yBounds);
     if (err < 0)
@@ -836,7 +836,7 @@ int RectGridGeom::writeGeometryToHDF5(hid_t parentId, bool SIMPL_NOT_USED(writeX
       return err;
     }
   }
-  if (m_zBounds.get() != NULL)
+  if (m_zBounds.get() != nullptr)
   {
     err = GeometryHelpers::GeomIO::WriteListToHDF5(parentId, m_zBounds);
     if (err < 0)

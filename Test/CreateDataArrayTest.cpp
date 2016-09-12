@@ -76,7 +76,7 @@ class CreateDataArrayTest
       QString filtName = "CreateDataArray";
       FilterManager* fm = FilterManager::Instance();
       IFilterFactory::Pointer filterFactory = fm->getFactoryForFilter(filtName);
-      if (NULL == filterFactory.get() )
+      if (nullptr == filterFactory.get() )
       {
         std::stringstream ss;
         ss << "The CreateDataArrayTest Requires the use of the " << filtName.toStdString() << " filter which is found in the IO Plugin";
@@ -86,7 +86,7 @@ class CreateDataArrayTest
       // Now instantiate the CreateDataContainer Filter from the FilterManager
       filtName = "CreateDataContainer";
       filterFactory = fm->getFactoryForFilter(filtName);
-      if (NULL == filterFactory.get() )
+      if (nullptr == filterFactory.get() )
       {
         std::stringstream ss;
         ss << "The CreateDataArrayTest Requires the use of the " << filtName.toStdString() << " filter which is found in the IO Plugin";
@@ -97,7 +97,7 @@ class CreateDataArrayTest
       filtName = "CreateAttributeMatrix";
       fm = FilterManager::Instance();
       filterFactory = fm->getFactoryForFilter(filtName);
-      if (NULL == filterFactory.get() )
+      if (nullptr == filterFactory.get() )
       {
         std::stringstream ss;
         ss << "The CreateDataArrayTest Requires the use of the " << filtName.toStdString() << " filter which is found in the IO Plugin";
@@ -126,7 +126,7 @@ class CreateDataArrayTest
 
       QString filtName = "CreateDataContainer";
       IFilterFactory::Pointer filterFactory = fm->getFactoryForFilter(filtName);
-      if (NULL != filterFactory.get())
+      if (nullptr != filterFactory.get())
       {
         // If we get this far, the Factory is good so creating the filter should not fail unless something has
         // horribly gone wrong in which case the system is going to come down quickly after this.
@@ -149,7 +149,7 @@ class CreateDataArrayTest
 
       filtName = "CreateAttributeMatrix";
       filterFactory = fm->getFactoryForFilter(filtName);
-      if (NULL != filterFactory.get())
+      if (nullptr != filterFactory.get())
       {
         // If we get this far, the Factory is good so creating the filter should not fail unless something has
         // horribly gone wrong in which case the system is going to come down quickly after this.
@@ -289,7 +289,7 @@ class CreateDataArrayTest
       QString filtName = "CreateDataArray";
       FilterManager* fm = FilterManager::Instance();
       IFilterFactory::Pointer filterFactory = fm->getFactoryForFilter(filtName);
-      if (NULL != filterFactory.get())
+      if (nullptr != filterFactory.get())
       {
         // If we get this far, the Factory is good so creating the filter should not fail unless something has
         // horribly gone wrong in which case the system is going to come down quickly after this.

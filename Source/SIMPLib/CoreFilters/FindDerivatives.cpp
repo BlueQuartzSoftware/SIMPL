@@ -141,7 +141,7 @@ void interpolateCellValues(IDataArray::Pointer inDataPtr, DoubleArrayType::Point
   IGeometry::Pointer geom = m->getGeometry();
   int err = 0;
 
-  if (geom->getElementsContainingVert().get() == NULL)
+  if (geom->getElementsContainingVert().get() == nullptr)
   {
     err = geom->findElementsContainingVert();
     if (err < 0)
@@ -210,9 +210,9 @@ void FindDerivatives::dataCheck()
   setErrorCondition(0);
   initialize();
   DataContainer::Pointer m = getDataContainerArray()->getPrereqDataContainer<AbstractFilter>(this, m_SelectedArrayPath.getDataContainerName(), false);
-  if (getErrorCondition() < 0 || NULL == m.get()) { return; }
+  if (getErrorCondition() < 0 || nullptr == m.get()) { return; }
   IGeometry::Pointer geom = m->getPrereqGeometry<IGeometry>(this);
-  if (getErrorCondition() < 0 || NULL == geom.get()) { return; }
+  if (getErrorCondition() < 0 || nullptr == geom.get()) { return; }
 
   AttributeMatrix::Pointer inAttrMat = getDataContainerArray()->getPrereqAttributeMatrixFromPath<AbstractFilter>(this, m_SelectedArrayPath, -301);
   AttributeMatrix::Pointer destAttrMat = m->getPrereqAttributeMatrix<AbstractFilter>(this, getDerivativesArrayPath().getAttributeMatrixName(), -301);
@@ -306,7 +306,7 @@ void FindDerivatives::dataCheck()
   QVector<size_t> dims(1, cDims);
 
   m_DerivativesArrayPtr = getDataContainerArray()->createNonPrereqArrayFromPath<DataArray<double>, AbstractFilter, double>(this, getDerivativesArrayPath(), 0, dims); /* Assigns the shared_ptr<> to an instance variable that is a weak_ptr<> */
-  if( NULL != m_DerivativesArrayPtr.lock().get() ) /* Validate the Weak Pointer wraps a non-NULL pointer to a DataArray<T> object */
+  if( nullptr != m_DerivativesArrayPtr.lock().get() ) /* Validate the Weak Pointer wraps a non-nullptr pointer to a DataArray<T> object */
   { m_DerivativesArray = m_DerivativesArrayPtr.lock()->getPointer(0); } /* Now assign the raw pointer to data from the DataArray<T> object */
 }
 

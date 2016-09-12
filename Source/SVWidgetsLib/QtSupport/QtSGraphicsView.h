@@ -96,7 +96,7 @@ class SVWidgetsLib_EXPORT QtSGraphicsView : public QGraphicsView
 
   public:
 
-    QtSGraphicsView( QWidget* parent = NULL);
+    QtSGraphicsView( QWidget* parent = nullptr);
 
     /**
     * @brief Over-riding implementation from base class

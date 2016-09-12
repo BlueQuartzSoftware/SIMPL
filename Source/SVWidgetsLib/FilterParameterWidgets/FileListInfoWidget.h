@@ -79,7 +79,7 @@ class SVWidgetsLib_EXPORT FileListInfoWidget : public FilterParameterWidget, pri
     * @param filter The instance of the filter that this parameter is a part of
     * @param parent The parent QWidget for this Widget
     */
-    FileListInfoWidget(FilterParameter* parameter, AbstractFilter* filter = NULL, QWidget* parent = NULL);
+    FileListInfoWidget(FilterParameter* parameter, AbstractFilter* filter = nullptr, QWidget* parent = nullptr);
 
     virtual ~FileListInfoWidget();
 

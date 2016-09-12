@@ -76,8 +76,8 @@ class SVWidgetsLib_EXPORT SVPipelineFilterWidget : public QFrame, public Pipelin
 {
     Q_OBJECT
   public:
-    SVPipelineFilterWidget(QWidget* parent = NULL);
-    SVPipelineFilterWidget(AbstractFilter::Pointer filter, IObserver* observer = NULL, QWidget* parent = NULL);
+    SVPipelineFilterWidget(QWidget* parent = nullptr);
+    SVPipelineFilterWidget(AbstractFilter::Pointer filter, IObserver* observer = nullptr, QWidget* parent = nullptr);
     virtual ~SVPipelineFilterWidget();
 
     SIMPL_INSTANCE_PROPERTY(QString, BorderColorStyle)

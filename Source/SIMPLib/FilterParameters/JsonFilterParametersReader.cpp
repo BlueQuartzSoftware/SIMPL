@@ -86,7 +86,7 @@ FilterPipeline::Pointer JsonFilterParametersReader::readPipelineFromFile(QString
 
   if (err != QJsonParseError::NoError)
   {
-    if (NULL != obs)
+    if (nullptr != obs)
     {
       PipelineMessage pm(JsonFilterParametersReader::ClassName(), "File '" + fInfo.fileName() + "' could not be opened for reading.", -1, PipelineMessage::Error);
       obs->processPipelineMessage(pm);
@@ -302,18 +302,18 @@ FilterPipeline::Pointer JsonFilterParametersReader::readPipeline(IObserver* obs)
 
   for (int i = 0; i < filterCount; ++i)
   {
-    openFilterGroup(NULL, i);
+    openFilterGroup(nullptr, i);
 
     QString filterName = m_CurrentFilterIndex[SIMPL::Settings::FilterName].toString();
 
     if (filterName.isEmpty() == false)
     {
       IFilterFactory::Pointer factory = filtManager->getFactoryForFilter(filterName);
-      if (factory.get() != NULL)
+      if (factory.get() != nullptr)
       {
         AbstractFilter::Pointer filter = factory->create();
 
-        if (NULL != filter.get())
+        if (nullptr != filter.get())
         {
           filter->readFilterParameters(m_CurrentFilterIndex);
           pipeline->pushBack(filter);
@@ -328,7 +328,7 @@ FilterPipeline::Pointer JsonFilterParametersReader::readPipeline(IObserver* obs)
         filter->setOriginalFilterName(filterName);
         pipeline->pushBack(filter);
 
-        if (NULL != obs)
+        if (nullptr != obs)
         {
           QString ss = QObject::tr("An implementation for filter '%1' could not be located. Possible reasons include a name change of the filter, plugin not loading or a simple spelling mistake? A blank filter has been inserted in its place.").arg(filterName);
           PipelineMessage pm(filterName, ss, -66066, PipelineMessage::Error);
@@ -345,7 +345,7 @@ FilterPipeline::Pointer JsonFilterParametersReader::readPipeline(IObserver* obs)
       filter->setOriginalFilterName(filterName);
       pipeline->pushBack(filter);
 
-      if (NULL != obs)
+      if (nullptr != obs)
       {
         QString gName = QString::number(i);
         QString ss = QObject::tr("A filter for index '%1' is missing in the file. Is the numbering of the filters correct in the pipeline file?").arg(gName);
@@ -385,7 +385,7 @@ void JsonFilterParametersReader::readNameOfPipelineFromFile(QString filePath, QS
 
   if (err != QJsonParseError::NoError)
   {
-    if (NULL != obs)
+    if (nullptr != obs)
     {
       PipelineMessage pm(JsonFilterParametersReader::ClassName(), "File '" + fInfo.fileName() + "' could not be opened for reading.", -1, PipelineMessage::Error);
       obs->processPipelineMessage(pm);

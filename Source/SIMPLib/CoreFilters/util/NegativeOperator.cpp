@@ -98,13 +98,13 @@ void NegativeOperator::calculate(AbstractFilter* filter, DataArrayPath calculate
 bool NegativeOperator::checkValidity(QVector<CalculatorItem::Pointer> infixVector, int currentIndex)
 {
   if (currentIndex - 1 < 0 || (currentIndex - 1 >= 0 &&
-    (NULL != std::dynamic_pointer_cast<BinaryOperator>(infixVector[currentIndex-1])
-    || NULL != std::dynamic_pointer_cast<LeftParenthesisItem>(infixVector[currentIndex - 1]))))
+    (nullptr != std::dynamic_pointer_cast<BinaryOperator>(infixVector[currentIndex-1])
+    || nullptr != std::dynamic_pointer_cast<LeftParenthesisItem>(infixVector[currentIndex - 1]))))
   {
     if (currentIndex + 1 < infixVector.size() &&
-      (NULL != std::dynamic_pointer_cast<ICalculatorArray>(infixVector[currentIndex + 1])
-      || NULL != std::dynamic_pointer_cast<LeftParenthesisItem>(infixVector[currentIndex + 1])
-      || NULL != std::dynamic_pointer_cast<UnaryOperator>(infixVector[currentIndex + 1])))
+      (nullptr != std::dynamic_pointer_cast<ICalculatorArray>(infixVector[currentIndex + 1])
+      || nullptr != std::dynamic_pointer_cast<LeftParenthesisItem>(infixVector[currentIndex + 1])
+      || nullptr != std::dynamic_pointer_cast<UnaryOperator>(infixVector[currentIndex + 1])))
     {
       return true;
     }

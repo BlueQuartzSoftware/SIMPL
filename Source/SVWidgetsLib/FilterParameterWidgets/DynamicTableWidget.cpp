@@ -64,7 +64,7 @@ DynamicTableWidget::DynamicTableWidget(FilterParameter* parameter, AbstractFilte
   FilterParameterWidget(parameter, filter, parent)
 {
   m_FilterParameter = dynamic_cast<DynamicTableFilterParameter*>(parameter);
-  Q_ASSERT_X(m_FilterParameter != NULL, "NULL Pointer", "DynamicTableWidget can ONLY be used with a DynamicTableFilterParameter object");
+  Q_ASSERT_X(m_FilterParameter != nullptr, "nullptr Pointer", "DynamicTableWidget can ONLY be used with a DynamicTableFilterParameter object");
 
   setupUi(this);
   setupGui();
@@ -165,7 +165,7 @@ void DynamicTableWidget::filterNeedsInputParameters(AbstractFilter* filter)
   for (int i = 0; i < dynamicTable->rowCount(); i++)
   {
     QTableWidgetItem* vItem = dynamicTable->verticalHeaderItem(i);
-    if (NULL != vItem)
+    if (nullptr != vItem)
     {
       QString vName = vItem->data(Qt::DisplayRole).toString();
       rHeaders << vName;
@@ -174,7 +174,7 @@ void DynamicTableWidget::filterNeedsInputParameters(AbstractFilter* filter)
   for (int i = 0; i < dynamicTable->columnCount(); i++)
   {
     QTableWidgetItem* cItem = dynamicTable->horizontalHeaderItem(i);
-    if (NULL != cItem)
+    if (nullptr != cItem)
     {
       QString cName = cItem->data(Qt::DisplayRole).toString();
       cHeaders << cName;
@@ -207,7 +207,7 @@ std::vector<std::vector<double> > DynamicTableWidget::getData()
     {
       bool ok = false;
       QTableWidgetItem* item = dynamicTable->item(row, col);
-      if (NULL == item)
+      if (nullptr == item)
       {
         return std::vector < std::vector<double> >();
       }
@@ -453,7 +453,7 @@ void DynamicTableWidget::populateTable()
   // Get what is in the filter
   DynamicTableData data = getFilter()->property(PROPERTY_NAME_AS_CHAR).value<DynamicTableData>();
 
-  if (m_FilterParameter != NULL)
+  if (m_FilterParameter != nullptr)
   {
     // If the filter parameter generated an error, empty the data object and display the error.
     if (m_FilterParameter->getErrorCondition() < 0)

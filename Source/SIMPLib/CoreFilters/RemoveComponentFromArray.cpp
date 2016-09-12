@@ -61,9 +61,9 @@ RemoveComponentFromArray::RemoveComponentFromArray() :
   m_SaveRemovedComponent(false),
   m_NewArrayArrayName(""),
   m_ReducedArrayArrayName(""),
-  m_InArray(NULL),
-  m_NewArray(NULL),
-  m_ReducedArray(NULL)
+  m_InArray(nullptr),
+  m_NewArray(nullptr),
+  m_ReducedArray(nullptr)
 {
   setupFilterParameters();
 }
@@ -202,7 +202,7 @@ void extractComponent(IDataArray::Pointer inputData, IDataArray::Pointer newData
   typename DataArray<T>::Pointer newArrayPtr = std::dynamic_pointer_cast<DataArray<T> >(newData);
   typename DataArray<T>::Pointer reducedArrayPtr = std::dynamic_pointer_cast<DataArray<T> >(reducedData);
 
-  if (NULL == inputArrayPtr || NULL == newArrayPtr) { return; }
+  if (nullptr == inputArrayPtr || nullptr == newArrayPtr) { return; }
 
   T* inputArray = inputArrayPtr->getPointer(0);
   T* newArray = newArrayPtr->getPointer(0);
@@ -240,7 +240,7 @@ void reduceArrayOnly(IDataArray::Pointer inputData, IDataArray::Pointer reducedD
   typename DataArray<T>::Pointer inputArrayPtr = std::dynamic_pointer_cast<DataArray<T> >(inputData);
   typename DataArray<T>::Pointer reducedArrayPtr = std::dynamic_pointer_cast<DataArray<T> >(reducedData);
 
-  if (NULL == inputArrayPtr) { return; }
+  if (nullptr == inputArrayPtr) { return; }
 
   T* inputArray = inputArrayPtr->getPointer(0);
   T* reducedArray = reducedArrayPtr->getPointer(0);

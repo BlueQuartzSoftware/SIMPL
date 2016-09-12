@@ -30,7 +30,7 @@
 // -----------------------------------------------------------------------------
 QtSFaderWidget::QtSFaderWidget(QWidget* parent)
   : QWidget(parent),
-    timer(NULL)
+    timer(nullptr)
 {
   if (parent)
   { startColor = Qt::white; /* parent->palette().window().color();*/ }

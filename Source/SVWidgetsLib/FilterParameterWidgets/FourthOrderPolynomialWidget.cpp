@@ -55,7 +55,7 @@ FourthOrderPolynomialWidget::FourthOrderPolynomialWidget(FilterParameter* parame
   FilterParameterWidget(parameter, filter, parent)
 {
   m_FilterParameter = dynamic_cast<FourthOrderPolynomialFilterParameter*>(parameter);
-  Q_ASSERT_X(m_FilterParameter != NULL, "NULL Pointer", "FourthOrderPolynomialWidget can ONLY be used with a FourthOrderPolynomialFilterParameter object");
+  Q_ASSERT_X(m_FilterParameter != nullptr, "nullptr Pointer", "FourthOrderPolynomialWidget can ONLY be used with a FourthOrderPolynomialFilterParameter object");
 
   setupUi(this);
   setupGui();
@@ -106,7 +106,7 @@ void FourthOrderPolynomialWidget::setupGui()
   FOPW_SETUP_WIDGET(c00)
 
 
-  if (getFilterParameter() != NULL)
+  if (getFilterParameter() != nullptr)
   {
     label->setText(getFilterParameter()->getHumanLabel() );
 

@@ -107,11 +107,11 @@ QString JsonFilterParametersWriter::writePipelineToString(FilterPipeline::Pointe
 // -----------------------------------------------------------------------------
 int JsonFilterParametersWriter::populateWriter(FilterPipeline::Pointer pipeline, QString pipelineName, IObserver* obs)
 {
-  if (NULL == pipeline.get())
+  if (nullptr == pipeline.get())
   {
-    if (NULL != obs)
+    if (nullptr != obs)
     {
-      PipelineMessage pm(JsonFilterParametersWriter::ClassName(), "FilterPipeline Object was NULL for writing", -1, PipelineMessage::Error);
+      PipelineMessage pm(JsonFilterParametersWriter::ClassName(), "FilterPipeline Object was nullptr for writing", -1, PipelineMessage::Error);
       obs->processPipelineMessage(pm);
     }
     return -1;
@@ -130,7 +130,7 @@ int JsonFilterParametersWriter::populateWriter(FilterPipeline::Pointer pipeline,
   for (qint32 i = 0; i < count; ++i)
   {
     AbstractFilter::Pointer filter = filters.at(i);
-    if (NULL != filter.get())
+    if (nullptr != filter.get())
     {
       openFilterGroup(filter.get(), i);
       filter->writeFilterParameters(m_CurrentFilterIndex);
@@ -140,7 +140,7 @@ int JsonFilterParametersWriter::populateWriter(FilterPipeline::Pointer pipeline,
     {
       AbstractFilter::Pointer badFilter = AbstractFilter::New();
       openFilterGroup(badFilter.get(), i);
-      m_CurrentFilterIndex["Unknown Filter"] = "ERROR: Filter instance was NULL within the SVPipelineFilterWidget instance. Report this error to the DREAM3D Developers";
+      m_CurrentFilterIndex["Unknown Filter"] = "ERROR: Filter instance was nullptr within the SVPipelineFilterWidget instance. Report this error to the DREAM3D Developers";
       closeFilterGroup();
     }
   }

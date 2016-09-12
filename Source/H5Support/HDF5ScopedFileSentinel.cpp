@@ -48,7 +48,7 @@ HDF5ScopedFileSentinel::HDF5ScopedFileSentinel(hid_t* fileId, bool turnOffErrors
   if (m_TurnOffErrors == true)
   {
     H5Eget_auto(H5E_DEFAULT, &_oldHDF_error_func, &_oldHDF_error_client_data);
-    H5Eset_auto(H5E_DEFAULT, NULL, NULL);
+    H5Eset_auto(H5E_DEFAULT, nullptr, nullptr);
   }
 
 }
@@ -117,7 +117,7 @@ HDF5ScopedGroupSentinel::HDF5ScopedGroupSentinel(hid_t* gid, bool turnOffErrors)
   if (m_TurnOffErrors == true)
   {
     H5Eget_auto(H5E_DEFAULT, &_oldHDF_error_func, &_oldHDF_error_client_data);
-    H5Eset_auto(H5E_DEFAULT, NULL, NULL);
+    H5Eset_auto(H5E_DEFAULT, nullptr, nullptr);
   }
 
 }
@@ -160,7 +160,7 @@ HDF5ScopedObjectSentinel::HDF5ScopedObjectSentinel(hid_t* gid, bool turnOffError
   if (m_TurnOffErrors == true)
   {
     H5Eget_auto(H5E_DEFAULT, &_oldHDF_error_func, &_oldHDF_error_client_data);
-    H5Eset_auto(H5E_DEFAULT, NULL, NULL);
+    H5Eset_auto(H5E_DEFAULT, nullptr, nullptr);
   }
 
 }

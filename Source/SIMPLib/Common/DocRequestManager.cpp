@@ -34,7 +34,7 @@
 #include "moc_DocRequestManager.cpp"
 
  
-DocRequestManager* DocRequestManager::self = NULL;
+DocRequestManager* DocRequestManager::self = nullptr;
 
 // -----------------------------------------------------------------------------
 //
@@ -57,7 +57,7 @@ DocRequestManager::~DocRequestManager()
 // -----------------------------------------------------------------------------
 DocRequestManager* DocRequestManager::Instance()
 {
-  if (self == NULL)
+  if (self == nullptr)
   {
     self = new DocRequestManager();
   }

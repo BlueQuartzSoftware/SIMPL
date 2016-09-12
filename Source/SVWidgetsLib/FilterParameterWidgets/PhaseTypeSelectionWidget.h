@@ -74,9 +74,9 @@ class SVWidgetsLib_EXPORT PhaseTypeSelectionWidget : public FilterParameterWidge
     * @param filter The instance of the filter that this parameter is a part of
     * @param parent The parent QWidget for this Widget
     */
-    PhaseTypeSelectionWidget(FilterParameter* parameter, AbstractFilter* filter = NULL, QWidget* parent = NULL);
+    PhaseTypeSelectionWidget(FilterParameter* parameter, AbstractFilter* filter = nullptr, QWidget* parent = nullptr);
 
-    PhaseTypeSelectionWidget(QWidget* parent = NULL);
+    PhaseTypeSelectionWidget(QWidget* parent = nullptr);
 
     virtual ~PhaseTypeSelectionWidget();
 

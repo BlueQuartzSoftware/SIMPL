@@ -226,7 +226,7 @@ void PrimaryStatsData::writeJson(QJsonObject &json)
   json.insert(SIMPL::StringConstants::Feature_Size_Distribution, avgSizeDist);
 
   // Write the Bin Numbers
-  if(NULL == getBinNumbers().get())
+  if(nullptr == getBinNumbers().get())
   {
     generateBinNumbers();
   }

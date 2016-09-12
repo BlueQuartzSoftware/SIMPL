@@ -196,7 +196,7 @@ QVector<DataArrayPath> DataContainerBundle::findCommonDataArrayPaths(bool filter
 
   // Get the first DataContainer
   DataContainer::Pointer dc0 = m_DataContainers[0];
-  if(NULL == dc0.get())
+  if(nullptr == dc0.get())
   {
     return commonPaths;
   }

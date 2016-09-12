@@ -98,7 +98,7 @@ void IndexOperator::calculate(AbstractFilter* filter, DataArrayPath calculatedAr
 // -----------------------------------------------------------------------------
 bool IndexOperator::checkValidity(QVector<CalculatorItem::Pointer> infixVector, int currentIndex)
 {
-  if (currentIndex - 1 >= 0 && NULL != std::dynamic_pointer_cast<ICalculatorArray>(infixVector[currentIndex-1]))
+  if (currentIndex - 1 >= 0 && nullptr != std::dynamic_pointer_cast<ICalculatorArray>(infixVector[currentIndex-1]))
   {
     return true;
   }

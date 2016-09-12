@@ -306,7 +306,7 @@ class SIMPLib_EXPORT TetrahedralGeom : public IGeometry3D
      * @param field
      * @param derivatives
      */
-    virtual void findDerivatives(DoubleArrayType::Pointer field, DoubleArrayType::Pointer derivatives, Observable* observable = NULL);
+    virtual void findDerivatives(DoubleArrayType::Pointer field, DoubleArrayType::Pointer derivatives, Observable* observable = nullptr);
 
     /**
      * @brief getInfoString

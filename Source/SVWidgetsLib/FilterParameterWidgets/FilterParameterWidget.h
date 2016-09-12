@@ -72,7 +72,7 @@ class SVWidgetsLib_EXPORT FilterParameterWidget : public QFrame
     Q_OBJECT
   public:
     FilterParameterWidget(QWidget* parent = 0);
-    FilterParameterWidget(FilterParameter* parameter, AbstractFilter* filter = NULL, QWidget* parent = NULL);
+    FilterParameterWidget(FilterParameter* parameter, AbstractFilter* filter = nullptr, QWidget* parent = nullptr);
 
     virtual ~FilterParameterWidget();
 

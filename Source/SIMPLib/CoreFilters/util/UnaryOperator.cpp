@@ -80,9 +80,9 @@ bool UnaryOperator::checkValidity(QVector<CalculatorItem::Pointer> infixVector, 
   }
 
   if (currentIndex - 1 >= 0 &&
-    NULL == std::dynamic_pointer_cast<BinaryOperator>(infixVector[currentIndex-1])
-    && NULL == std::dynamic_pointer_cast<LeftParenthesisItem>(infixVector[currentIndex - 1])
-    && NULL == std::dynamic_pointer_cast<NegativeOperator>(infixVector[currentIndex - 1]))
+    nullptr == std::dynamic_pointer_cast<BinaryOperator>(infixVector[currentIndex-1])
+    && nullptr == std::dynamic_pointer_cast<LeftParenthesisItem>(infixVector[currentIndex - 1])
+    && nullptr == std::dynamic_pointer_cast<NegativeOperator>(infixVector[currentIndex - 1]))
   {
     return false;
   }
@@ -90,43 +90,43 @@ bool UnaryOperator::checkValidity(QVector<CalculatorItem::Pointer> infixVector, 
   int index = currentIndex + 1;
   int commaCount = 0;
   bool hasArray = false;
-  if (index < infixVector.size() && NULL != std::dynamic_pointer_cast<LeftParenthesisItem>(infixVector[index]))
+  if (index < infixVector.size() && nullptr != std::dynamic_pointer_cast<LeftParenthesisItem>(infixVector[index]))
   {
     index++;
 
     // Iterate through the vector to find the matching right parenthesis
     for (; index < infixVector.size(); index++)
     {
-      if (NULL != std::dynamic_pointer_cast<RightParenthesisItem>(infixVector[index]))
+      if (nullptr != std::dynamic_pointer_cast<RightParenthesisItem>(infixVector[index]))
       {
         // We found the matching right parenthesis, so return true
         if (commaCount < m_NumOfArguments - 1
-          || (index + 1 < infixVector.size() && NULL == std::dynamic_pointer_cast<BinaryOperator>(infixVector[index + 1])
-          && NULL == std::dynamic_pointer_cast<RightParenthesisItem>(infixVector[index + 1])) || hasArray == false)
+          || (index + 1 < infixVector.size() && nullptr == std::dynamic_pointer_cast<BinaryOperator>(infixVector[index + 1])
+          && nullptr == std::dynamic_pointer_cast<RightParenthesisItem>(infixVector[index + 1])) || hasArray == false)
         {
           return false;
         }
 
         return true;
       }
-      else if (NULL != std::dynamic_pointer_cast<LeftParenthesisItem>(infixVector[index]))
+      else if (nullptr != std::dynamic_pointer_cast<LeftParenthesisItem>(infixVector[index]))
       {
         /* We found another left parenthesis, but we don't care what's inside this set of parentheses
            (other operators' checkValidity functions will take care of these values), so just iterate
            until we find the matching closing parenthesis for this opening parenthesis */
         int extraLeftPCount = 0;
         index++;
-        while (index < infixVector.size() && (NULL == std::dynamic_pointer_cast<RightParenthesisItem>(infixVector[index]) || extraLeftPCount > 0))
+        while (index < infixVector.size() && (nullptr == std::dynamic_pointer_cast<RightParenthesisItem>(infixVector[index]) || extraLeftPCount > 0))
         {
-          if (NULL != std::dynamic_pointer_cast<ICalculatorArray>(infixVector[index]))
+          if (nullptr != std::dynamic_pointer_cast<ICalculatorArray>(infixVector[index]))
           {
             hasArray = true;
           }
-          else if (NULL != std::dynamic_pointer_cast<LeftParenthesisItem>(infixVector[index]))
+          else if (nullptr != std::dynamic_pointer_cast<LeftParenthesisItem>(infixVector[index]))
           {
             extraLeftPCount++;
           }
-          else if (NULL != std::dynamic_pointer_cast<RightParenthesisItem>(infixVector[index]))
+          else if (nullptr != std::dynamic_pointer_cast<RightParenthesisItem>(infixVector[index]))
           {
             extraLeftPCount--;
           }
@@ -134,7 +134,7 @@ bool UnaryOperator::checkValidity(QVector<CalculatorItem::Pointer> infixVector, 
           index++;
         }
       }
-      else if (NULL != std::dynamic_pointer_cast<CommaSeparator>(infixVector[index]))
+      else if (nullptr != std::dynamic_pointer_cast<CommaSeparator>(infixVector[index]))
       {
         // We found a comma, so increase the comma count
         commaCount++;
@@ -144,7 +144,7 @@ bool UnaryOperator::checkValidity(QVector<CalculatorItem::Pointer> infixVector, 
           return false;
         }
       }
-      else if (NULL != std::dynamic_pointer_cast<ICalculatorArray>(infixVector[index]))
+      else if (nullptr != std::dynamic_pointer_cast<ICalculatorArray>(infixVector[index]))
       {
         hasArray = true;
       }

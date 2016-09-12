@@ -48,7 +48,7 @@ namespace GeometryHelpers
           return ListType::NullPointer();
         }
         mesh = H5DataArrayReader::ReadIDataArray(parentId, listName, preflight);
-        if (NULL == mesh.get())
+        if (nullptr == mesh.get())
         {
           err = -1;
           return ListType::NullPointer();
@@ -216,7 +216,7 @@ namespace GeometryHelpers
         typename DataArray<K>::Pointer linkLocPtr = DataArray<K>::CreateArray(numVerts, "_INTERNAL_USE_ONLY_Vertices");
         linkLocPtr->initializeWithValue(0);
         K* linkLoc = linkLocPtr->getPointer(0);
-        K* verts = NULL;
+        K* verts = nullptr;
 
         //vtkPolyData *pdata = static_cast<vtkPolyData *>(data);
         // Traverse data to determine number of uses of each point

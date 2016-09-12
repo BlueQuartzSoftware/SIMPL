@@ -37,7 +37,7 @@
 
 #include "SIMPLib/Common/FilterFactory.hpp"
 
-FilterManager* FilterManager::self = NULL;
+FilterManager* FilterManager::self = nullptr;
 
 // -----------------------------------------------------------------------------
 //
@@ -60,7 +60,7 @@ FilterManager::~FilterManager()
 // -----------------------------------------------------------------------------
 FilterManager* FilterManager::Instance()
 {
-  if (self == NULL)
+  if (self == nullptr)
   {
     self = new FilterManager();
   }
@@ -72,7 +72,7 @@ FilterManager* FilterManager::Instance()
 // -----------------------------------------------------------------------------
 void FilterManager::RegisterFilterFactory(const QString& name, IFilterFactory::Pointer factory)
 {
-  if (NULL != factory.get() )
+  if (nullptr != factory.get() )
   {
     // Instantiate the Instance Manager for IFilterFactory
     FilterManager* idManager = FilterManager::Instance();
@@ -110,7 +110,7 @@ FilterManager::Collection FilterManager::getFactories(const QString& groupName)
   for (FilterManager::Collection::iterator factory = m_Factories.begin(); factory != m_Factories.end(); ++factory)
   {
     IFilterFactory::Pointer filterFactory = factory.value();
-    if ( NULL != filterFactory.get() && factory.value()->getFilterGroup().compare(groupName) == 0)
+    if ( nullptr != filterFactory.get() && factory.value()->getFilterGroup().compare(groupName) == 0)
     {
       groupFactories[factory.key()] = factory.value();
     }
@@ -127,7 +127,7 @@ FilterManager::Collection FilterManager::getFactories(const QString& groupName, 
   for (FilterManager::Collection::iterator factoryIter = m_Factories.begin(); factoryIter != m_Factories.end(); ++factoryIter)
   {
     IFilterFactory::Pointer filterFactory = factoryIter.value();
-    if ( NULL != filterFactory.get() && factoryIter.value()->getFilterGroup().compare(groupName) == 0 && factoryIter.value()->getFilterSubGroup().compare(subGroupName) == 0)
+    if ( nullptr != filterFactory.get() && factoryIter.value()->getFilterGroup().compare(groupName) == 0 && factoryIter.value()->getFilterSubGroup().compare(subGroupName) == 0)
     {
       groupFactories[factoryIter.key()] = factoryIter.value();
     }
@@ -157,7 +157,7 @@ QSet<QString> FilterManager::getGroupNames()
   for (FilterManager::Collection::iterator factory = factories.begin(); factory != factories.end(); ++factory)
   {
     IFilterFactory::Pointer filterFactory = factory.value();
-    if(NULL != filterFactory)
+    if(nullptr != filterFactory)
     {
       groupNames.insert(filterFactory->getFilterGroup());
     }
@@ -179,7 +179,7 @@ QSet<QString> FilterManager::getSubGroupNames(const QString& groupName)
   for (FilterManager::Collection::iterator factory = factories.begin(); factory != factories.end(); ++factory)
   {
     IFilterFactory::Pointer filterFactory = factory.value();
-    if ( NULL != filterFactory.get() && factory.value()->getFilterGroup().compare(groupName) == 0)
+    if ( nullptr != filterFactory.get() && factory.value()->getFilterGroup().compare(groupName) == 0)
     {
       subGroupNames.insert(factory.value()->getFilterSubGroup());
     }
@@ -209,7 +209,7 @@ IFilterFactory::Pointer FilterManager::getFactoryForFilterHumanName(const QStrin
   for (FilterManager::Collection::iterator factory = m_Factories.begin(); factory != m_Factories.end(); ++factory)
   {
     IFilterFactory::Pointer filterFactory = factory.value();
-    if ( NULL != filterFactory.get() && filterFactory->getFilterHumanLabel().compare(humanName) == 0)
+    if ( nullptr != filterFactory.get() && filterFactory->getFilterHumanLabel().compare(humanName) == 0)
     {
       Factory = filterFactory;
       break;

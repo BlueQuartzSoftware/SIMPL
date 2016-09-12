@@ -57,7 +57,7 @@
 // -----------------------------------------------------------------------------
 QtSGraphicsView::QtSGraphicsView(QWidget* parent)
   : QGraphicsView(parent),
-    m_ImageGraphicsItem(NULL),
+    m_ImageGraphicsItem(nullptr),
     m_UseColorTable(false)
 {
   setAcceptDrops(true);
@@ -128,7 +128,7 @@ void QtSGraphicsView::setZoomIndex(int index)
   if (index == 9)
   {
     QGraphicsScene* scenePtr = scene();
-    if (NULL != scenePtr)
+    if (nullptr != scenePtr)
     {
       QRectF r = scenePtr->sceneRect();
       fitInView(r, Qt::KeepAspectRatio);
@@ -348,11 +348,11 @@ void QtSGraphicsView::loadBaseImageFile(const QString& filename)
 
   if (m_BaseImage.isNull() == true)
   {
-    std::cout << "Base Image was NULL for some reason. Returning" << std::endl;
+    std::cout << "Base Image was nullptr for some reason. Returning" << std::endl;
     return;
   }
   QGraphicsScene* gScene = scene();
-  if (gScene == NULL)
+  if (gScene == nullptr)
   {
     gScene = new QGraphicsScene(this);
     setScene(gScene);
@@ -360,15 +360,15 @@ void QtSGraphicsView::loadBaseImageFile(const QString& filename)
   else
   {
 
-    setScene(NULL);
+    setScene(nullptr);
     gScene->deleteLater();
     gScene = new QGraphicsScene(this);
     setScene(gScene);
 
     delete m_ImageGraphicsItem;
-    m_ImageGraphicsItem = NULL;
+    m_ImageGraphicsItem = nullptr;
   }
-  if (NULL == m_ImageGraphicsItem)
+  if (nullptr == m_ImageGraphicsItem)
   {
     QImageReader reader(filename);
     QPixmap pixmap = QPixmap::fromImageReader(&reader, 0);
@@ -436,11 +436,11 @@ void QtSGraphicsView::setBaseImage(QImage image)
 
   if (m_BaseImage.isNull() == true)
   {
-    std::cout << "Base Image was NULL for some reason. Returning" << std::endl;
+    std::cout << "Base Image was nullptr for some reason. Returning" << std::endl;
     return;
   }
   QGraphicsScene* gScene = scene();
-  if (gScene == NULL)
+  if (gScene == nullptr)
   {
     gScene = new QGraphicsScene(this);
     setScene(gScene);
@@ -448,15 +448,15 @@ void QtSGraphicsView::setBaseImage(QImage image)
   else
   {
 
-    setScene(NULL);
+    setScene(nullptr);
     gScene->deleteLater();
     gScene = new QGraphicsScene(this);
     setScene(gScene);
 
     delete m_ImageGraphicsItem;
-    m_ImageGraphicsItem = NULL;
+    m_ImageGraphicsItem = nullptr;
   }
-  if (NULL == m_ImageGraphicsItem)
+  if (nullptr == m_ImageGraphicsItem)
   {
     QPixmap pixmap = QPixmap::fromImage(image);
     m_ImageGraphicsItem = gScene->addPixmap(pixmap);

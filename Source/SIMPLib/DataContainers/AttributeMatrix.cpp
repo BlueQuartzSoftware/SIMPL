@@ -403,7 +403,7 @@ AttributeMatrix::Pointer AttributeMatrix::deepCopy()
   {
     IDataArray::Pointer d = iter.value();
     IDataArray::Pointer new_d = d->deepCopy();
-    if (new_d.get() == NULL)
+    if (new_d.get() == nullptr)
     {
       return AttributeMatrix::NullPointer();
     }
@@ -481,7 +481,7 @@ int AttributeMatrix::addAttributeArrayFromHDF5Path(hid_t gid, QString name, bool
     }
   }
 
-  if (NULL != dPtr.get())
+  if (nullptr != dPtr.get())
   {
     addAttributeArray(dPtr->getName(), dPtr);
   }
@@ -539,7 +539,7 @@ int AttributeMatrix::readAttributeArraysFromHDF5(hid_t amGid, bool preflight, At
     //      dPtr = statsData;
     //    }
 
-    if (NULL != dPtr.get())
+    if (nullptr != dPtr.get())
     {
       addAttributeArray(dPtr->getName(), dPtr);
     }

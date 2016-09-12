@@ -136,7 +136,7 @@ class ReplaceValueTest
       QString filtName = "ReplaceValueInArray";
       FilterManager* fm = FilterManager::Instance();
       IFilterFactory::Pointer filterFactory = fm->getFactoryForFilter(filtName);
-      if (NULL == filterFactory.get())
+      if (nullptr == filterFactory.get())
       {
         std::stringstream ss;
         ss << "The replaceValueTest Requires the use of the " << filtName.toStdString() << " filter which is found in Core Filters";
@@ -296,10 +296,10 @@ class ReplaceValueTest
       QString filtName = "ReplaceValueInArray";
       FilterManager* fm = FilterManager::Instance();
       IFilterFactory::Pointer factory = fm->getFactoryForFilter(filtName);
-      DREAM3D_REQUIRE(factory.get() != NULL)
+      DREAM3D_REQUIRE(factory.get() != nullptr)
 
           AbstractFilter::Pointer replaceValueFilter = factory->create();
-      DREAM3D_REQUIRE(replaceValueFilter.get() != NULL)
+      DREAM3D_REQUIRE(replaceValueFilter.get() != nullptr)
 
           replaceValueFilter->setDataContainerArray(dca);
 

@@ -300,7 +300,7 @@ void DataContainerWriter::execute()
       notifyErrorMessage(getHumanLabel(), "Error writing DataContainer Geometry", -804);
       return;
     }
-    if (m_WriteXdmfFile == true && geometry.get() != NULL)
+    if (m_WriteXdmfFile == true && geometry.get() != nullptr)
     {
       QString hdfFileName = QH5Utilities::fileNameFromFileId(m_FileId);
 
@@ -400,9 +400,9 @@ int DataContainerWriter::writePipeline()
 
   // Now start walking BACKWARDS through the pipeline to find the first filter.
   AbstractFilter::Pointer previousFilter = getPreviousFilter().lock();
-  while (previousFilter.get() != NULL)
+  while (previousFilter.get() != nullptr)
   {
-    if (NULL == previousFilter->getPreviousFilter().lock().get())
+    if (nullptr == previousFilter->getPreviousFilter().lock().get())
     {
       break;
     }
@@ -417,7 +417,7 @@ int DataContainerWriter::writePipeline()
   // Now starting with the first filter in the pipeline, start the actual writing
   AbstractFilter::Pointer currentFilter = previousFilter;
   AbstractFilter::Pointer nextFilter;
-  while (NULL != currentFilter.get())
+  while (nullptr != currentFilter.get())
   {
     nextFilter = currentFilter->getNextFilter().lock();
     pipeline->pushBack(currentFilter);

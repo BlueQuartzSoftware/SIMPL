@@ -61,12 +61,12 @@ AbstractFilter::AbstractFilter() :
 // -----------------------------------------------------------------------------
 AbstractFilter::~AbstractFilter()
 {
-  //  if(NULL != m_PreviousFilter.get())
+  //  if(nullptr != m_PreviousFilter.get())
   //  std::cout << "~SVPipelineFilterWidget() m_PreviousFilter " << this  << "  " << m_PreviousFilter->getNameOfClass().toStdString()
   //            << "  " << m_PreviousFilter.use_count() << std::endl;
   // m_PreviousFilter = AbstractFilter::NullPointer();
 
-  //  if(NULL != m_NextFilter.get())
+  //  if(nullptr != m_NextFilter.get())
   //  std::cout << "~SVPipelineFilterWidget() m_NextFilter " << this  << "  " << m_NextFilter->getNameOfClass().toStdString()
   //            << "  " << m_NextFilter.use_count() << std::endl;
   //  m_NextFilter = AbstractFilter::NullPointer();
@@ -115,7 +115,7 @@ bool AbstractFilter::doesPipelineContainFilterBeforeThis(const QString& name)
   bool contains = false;
   // Check the previous filter
   AbstractFilter::Pointer prev = getPreviousFilter().lock();
-  while(prev.get() != NULL)
+  while(prev.get() != nullptr)
   {
     if (prev->getNameOfClass().compare(name) == 0)
     {
@@ -135,7 +135,7 @@ bool AbstractFilter::doesPipelineContainFilterAfterThis(const QString& name)
   bool contains = false;
   // Check the previous filter
   AbstractFilter::Pointer next = getNextFilter().lock();
-  while(next.get() != NULL)
+  while(next.get() != nullptr)
   {
     if (next->getNameOfClass().compare(name) == 0)
     {
@@ -153,7 +153,7 @@ bool AbstractFilter::doesPipelineContainFilterAfterThis(const QString& name)
 // -----------------------------------------------------------------------------
 void AbstractFilter::readFilterParameters(AbstractFilterParametersReader* reader, int index)
 {
-  Q_ASSERT(reader != NULL);
+  Q_ASSERT(reader != nullptr);
   qDebug() << "AbstractFilter::readFilterParameters() -> Writing Filter Options" << "\n";
   return;
 }

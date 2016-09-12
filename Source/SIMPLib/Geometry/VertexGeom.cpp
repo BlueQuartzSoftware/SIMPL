@@ -94,7 +94,7 @@ VertexGeom::Pointer VertexGeom::CreateGeometry(SharedVertexList::Pointer vertice
   {
     return VertexGeom::NullPointer();
   }
-  if (vertices.get() == NULL)
+  if (vertices.get() == nullptr)
   {
     return VertexGeom::NullPointer();
   }
@@ -278,7 +278,7 @@ int VertexGeom::writeGeometryToHDF5(hid_t parentId, bool writeXdmf)
   herr_t err = 0;
   QVector<size_t> tDims(1, 0);
 
-  if (m_VertexList.get() != NULL)
+  if (m_VertexList.get() != nullptr)
   {
     err = GeometryHelpers::GeomIO::WriteListToHDF5(parentId, m_VertexList);
     if (err < 0)
@@ -369,7 +369,7 @@ int VertexGeom::readGeometryFromHDF5(hid_t parentId, bool preflight)
   herr_t err = 0;
   SharedVertexList::Pointer vertices = SharedVertexList::NullPointer();
   vertices = GeometryHelpers::GeomIO::ReadListFromHDF5<SharedVertexList>(SIMPL::Geometry::SharedVertexList, parentId, preflight, err);
-  if (vertices.get() == NULL)
+  if (vertices.get() == nullptr)
   {
     return -1;
   }

@@ -137,7 +137,7 @@ class ConditionalSetValueTest
       QString filtName = "ConditionalSetValue";
       FilterManager* fm = FilterManager::Instance();
       IFilterFactory::Pointer filterFactory = fm->getFactoryForFilter(filtName);
-      if (NULL == filterFactory.get())
+      if (nullptr == filterFactory.get())
       {
         std::stringstream ss;
         ss << "The ConditionalSetValueTest Requires the use of the " << filtName.toStdString() << " filter which is found in Core Filters";
@@ -314,10 +314,10 @@ class ConditionalSetValueTest
       QString filtName = "ConditionalSetValue";
       FilterManager* fm = FilterManager::Instance();
       IFilterFactory::Pointer factory = fm->getFactoryForFilter(filtName);
-      DREAM3D_REQUIRE(factory.get() != NULL)
+      DREAM3D_REQUIRE(factory.get() != nullptr)
 
           AbstractFilter::Pointer conditionalSetValueFilter = factory->create();
-      DREAM3D_REQUIRE(conditionalSetValueFilter.get() != NULL)
+      DREAM3D_REQUIRE(conditionalSetValueFilter.get() != nullptr)
 
           conditionalSetValueFilter->setDataContainerArray(dca);
 

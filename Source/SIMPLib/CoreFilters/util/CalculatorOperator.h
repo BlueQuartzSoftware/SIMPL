@@ -108,7 +108,7 @@ class SIMPLib_EXPORT CalculatorOperator : public CalculatorItem
 #define CREATE_NEW_ARRAY_TWO_ARGUMENTS(filter, calculatedArrayPath, executionStack, func)\
     ArrayCalculator* calculatorFilter = dynamic_cast<ArrayCalculator*>(filter);\
     \
-    if (executionStack.size() >= 1 && NULL != executionStack.top() && NULL != calculatorFilter)\
+    if (executionStack.size() >= 1 && nullptr != executionStack.top() && nullptr != calculatorFilter)\
     {\
       ICalculatorArray::Pointer array1 = executionStack.pop();\
       ICalculatorArray::Pointer array2 = executionStack.pop();\

@@ -72,9 +72,9 @@ class SVWidgetsLib_EXPORT ShapeTypeSelectionWidget : public FilterParameterWidge
     * @param filter The instance of the filter that this parameter is a part of
     * @param parent The parent QWidget for this Widget
     */
-    ShapeTypeSelectionWidget(FilterParameter* parameter, AbstractFilter* filter = NULL, QWidget* parent = NULL);
+    ShapeTypeSelectionWidget(FilterParameter* parameter, AbstractFilter* filter = nullptr, QWidget* parent = nullptr);
 
-    ShapeTypeSelectionWidget(QWidget* parent = NULL);
+    ShapeTypeSelectionWidget(QWidget* parent = nullptr);
 
     virtual ~ShapeTypeSelectionWidget();
 

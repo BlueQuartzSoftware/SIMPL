@@ -61,7 +61,7 @@ ShapeTypeSelectionWidget::ShapeTypeSelectionWidget(FilterParameter* parameter, A
   m_DidCausePreflight(false)
 {
   m_FilterParameter = dynamic_cast<ShapeTypeSelectionFilterParameter*>(parameter);
-  Q_ASSERT_X(m_FilterParameter != NULL, "NULL Pointer", "ShapeTypeSelectionWidget can ONLY be used with a ShapeTypeSelectionFilterParameter object");
+  Q_ASSERT_X(m_FilterParameter != nullptr, "nullptr Pointer", "ShapeTypeSelectionWidget can ONLY be used with a ShapeTypeSelectionFilterParameter object");
 
   setupUi(this);
   setupGui();
@@ -71,7 +71,7 @@ ShapeTypeSelectionWidget::ShapeTypeSelectionWidget(FilterParameter* parameter, A
 //
 // -----------------------------------------------------------------------------
 ShapeTypeSelectionWidget::ShapeTypeSelectionWidget(QWidget* parent) :
-  FilterParameterWidget(NULL, NULL, parent),
+  FilterParameterWidget(nullptr, nullptr, parent),
   m_DidCausePreflight(false)
 {
   setupUi(this);
@@ -90,7 +90,7 @@ ShapeTypeSelectionWidget::~ShapeTypeSelectionWidget()
 // -----------------------------------------------------------------------------
 void ShapeTypeSelectionWidget::setupGui()
 {
-  if(getFilter() == NULL)
+  if(getFilter() == nullptr)
   {
     return;
   }
@@ -106,7 +106,7 @@ void ShapeTypeSelectionWidget::setupGui()
   connect(getFilter(), SIGNAL(updateFilterParameters(AbstractFilter*)),
           this, SLOT(filterNeedsInputParameters(AbstractFilter*)));
 
-  if (getFilterParameter() == NULL)
+  if (getFilterParameter() == nullptr)
   {
     return;
   }
@@ -207,7 +207,7 @@ void ShapeTypeSelectionWidget::comboboxChanged(int index)
 // -----------------------------------------------------------------------------
 void ShapeTypeSelectionWidget::beforePreflight()
 {
-  if (NULL == getFilter()) { return; }
+  if (nullptr == getFilter()) { return; }
   if(m_DidCausePreflight == true)
   {
   //  std::cout << "***  ShapeTypeSelectionWidget already caused a preflight, just returning" << std::endl;

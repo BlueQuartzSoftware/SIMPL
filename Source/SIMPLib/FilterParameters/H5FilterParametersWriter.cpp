@@ -76,11 +76,11 @@ hid_t H5FilterParametersWriter::getCurrentGroupId() const
 // -----------------------------------------------------------------------------
 int H5FilterParametersWriter::writePipelineToFile(FilterPipeline::Pointer pipeline, QString filePath, QString pipelineName, IObserver* obs)
 {
-  if (NULL == pipeline.get())
+  if (nullptr == pipeline.get())
   {
-    if (NULL != obs)
+    if (nullptr != obs)
     {
-      PipelineMessage pm(H5FilterParametersWriter::ClassName(), "FilterPipeline Object was NULL for writing", -1, PipelineMessage::Error);
+      PipelineMessage pm(H5FilterParametersWriter::ClassName(), "FilterPipeline Object was nullptr for writing", -1, PipelineMessage::Error);
       obs->processPipelineMessage(pm);
     }
     return -1;
@@ -101,7 +101,7 @@ int H5FilterParametersWriter::writePipelineToFile(FilterPipeline::Pointer pipeli
 
   if (fileId < 0)
   {
-    if (NULL != obs)
+    if (nullptr != obs)
     {
       PipelineMessage pm(H5FilterParametersWriter::ClassName(), "Output .dream3d file could not be created.", -1, PipelineMessage::Error);
       obs->processPipelineMessage(pm);

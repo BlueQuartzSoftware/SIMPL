@@ -365,7 +365,7 @@ class DataArrayTest
       if(typeid(v) == typeid(unsigned long long int)) { return QString("unsigned long long int"); }
       if(typeid(v) == typeid(unsigned long long)) { return QString("unsigned long long"); }
 
-      return QString("NULL");
+      return QString("nullptr");
     }
 
 #define TEST_TYPE_STRING(type)\
@@ -414,7 +414,7 @@ class DataArrayTest
     // -----------------------------------------------------------------------------
     void TestDataArray()
     {
-      int32_t* ptr = NULL;
+      int32_t* ptr = nullptr;
       {
         Int32ArrayType::Pointer d = Int32ArrayType::CreateArray(0, "Test7");
         DREAM3D_REQUIRE_EQUAL(0, d->getSize());
@@ -753,7 +753,7 @@ class DataArrayTest
       nt = array->getSize();
       DREAM3D_REQUIRED(nt, ==, 0);
       ptr = array->getPointer(0);
-      DREAM3D_REQUIRED_PTR(ptr, ==, NULL);
+      DREAM3D_REQUIRED_PTR(ptr, ==, nullptr);
 
 
       // Test resizing the array to a any larger size
@@ -764,7 +764,7 @@ class DataArrayTest
       nc = array->getNumberOfComponents();
       DREAM3D_REQUIRED(nc, ==, numComp );
       ptr = array->getPointer(0);
-      DREAM3D_REQUIRED_PTR(ptr, !=, NULL);
+      DREAM3D_REQUIRED_PTR(ptr, !=, nullptr);
 
       return err;
     }

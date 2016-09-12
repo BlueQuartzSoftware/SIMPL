@@ -74,7 +74,7 @@ class SIMPLib_EXPORT VTKUtil
 
       std::cout  << "Error: VtkTypeForPrimitive - Unknown Type: " << (typeid(value).name()) << std::endl;
       const char* name = typeid(value).name();
-      if (NULL != name && name[0] == 'l' )
+      if (nullptr != name && name[0] == 'l' )
       {
         std::cout << "You are using 'long int' as a type which is not 32/64 bit safe. Suggest you use one of the H5SupportTypes defined in <Common/H5SupportTypes.h> such as int32_t or uint32_t." << std::endl;
       }

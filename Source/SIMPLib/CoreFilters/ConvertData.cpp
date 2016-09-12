@@ -174,7 +174,7 @@ namespace Detail
 #define CHECK_AND_CONVERT(Type, DataContainer, ScalarType, Array, AttributeMatrixName, OutputName)\
   if(false == completed) {\
     Type* Type##Ptr = Type::SafePointerDownCast(Array.get());\
-    if (NULL != Type##Ptr) {\
+    if (nullptr != Type##Ptr) {\
       QVector<size_t> dims = Array->getComponentDimensions();\
       Detail::ConvertData<Type>(Type##Ptr, dims, DataContainer, ScalarType, AttributeMatrixName, OutputName);\
       completed = true;\

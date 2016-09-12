@@ -64,7 +64,7 @@
   herr_t (*_oldHDF_error_func)(hid_t, void *);\
   void *_oldHDF_error_client_data;\
   H5Eget_auto(H5E_DEFAULT, &_oldHDF_error_func, &_oldHDF_error_client_data);\
-  H5Eset_auto(H5E_DEFAULT, NULL, NULL);
+  H5Eset_auto(H5E_DEFAULT, nullptr, nullptr);
 
 #define HDF_ERROR_HANDLER_ON  H5Eset_auto(H5E_DEFAULT, _oldHDF_error_func, _oldHDF_error_client_data);
 

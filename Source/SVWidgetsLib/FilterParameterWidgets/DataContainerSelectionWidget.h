@@ -71,9 +71,9 @@ class SVWidgetsLib_EXPORT DataContainerSelectionWidget : public FilterParameterW
     * @param filter The instance of the filter that this parameter is a part of
     * @param parent The parent QWidget for this Widget
     */
-    DataContainerSelectionWidget(FilterParameter* parameter, AbstractFilter* filter = NULL, QWidget* parent = NULL);
+    DataContainerSelectionWidget(FilterParameter* parameter, AbstractFilter* filter = nullptr, QWidget* parent = nullptr);
 
-    DataContainerSelectionWidget(QWidget* parent = NULL);
+    DataContainerSelectionWidget(QWidget* parent = nullptr);
 
     virtual ~DataContainerSelectionWidget();
 

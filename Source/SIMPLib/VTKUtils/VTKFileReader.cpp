@@ -204,10 +204,10 @@ int VTKFileReader::readHeader()
     return -1;
   }
 
-  if (NULL == getDataContainerArray()->getDataContainer(getDataContainerName()).get())
+  if (nullptr == getDataContainerArray()->getDataContainer(getDataContainerName()).get())
   {
     setErrorCondition(-1);
-    notifyErrorMessage(getHumanLabel(), "DataContainer Pointer was NULL and must be valid", -1);
+    notifyErrorMessage(getHumanLabel(), "DataContainer Pointer was nullptr and must be valid", -1);
     return -1;
   }
 
@@ -287,12 +287,12 @@ int VTKFileReader::readHeader()
 
   size_t dcDims[3] = { static_cast<size_t>(dims[0]), static_cast<size_t>(dims[1]), static_cast<size_t>(dims[2]) };
   DataContainer::Pointer dc = getDataContainerArray()->getDataContainer(getDataContainerName());
-  if (dc.get() == NULL)
+  if (dc.get() == nullptr)
   {
     return -1;
   }
   ImageGeom::Pointer image = dc->getGeometryAs<ImageGeom>();
-  if (image.get() == NULL)
+  if (image.get() == nullptr)
   {
     return -1;
   }

@@ -147,7 +147,7 @@ class CombineAttributeArraysTest
       for (auto iter = attrArrayNames.begin(); iter != attrArrayNames.end(); ++iter)
       {
         IDataArray::Pointer tmpPtr = attrMat->getAttributeArray(*iter);
-        DREAM3D_REQUIRE(tmpPtr.get() != NULL);
+        DREAM3D_REQUIRE(tmpPtr.get() != nullptr);
         EXECUTE_FUNCTION_TEMPLATE(AbstractFilter::NullPointer(), initializeData, tmpPtr, tmpPtr)
       }
 
@@ -310,10 +310,10 @@ class CombineAttributeArraysTest
       QString filtName = "CombineAttributeArrays";
       FilterManager* fm = FilterManager::Instance();
       IFilterFactory::Pointer factory = fm->getFactoryForFilter(filtName);
-      DREAM3D_REQUIRE(factory.get() != NULL);
+      DREAM3D_REQUIRE(factory.get() != nullptr);
 
       AbstractFilter::Pointer filter = factory->create();
-      DREAM3D_REQUIRE(filter.get() != NULL);
+      DREAM3D_REQUIRE(filter.get() != nullptr);
 
       filter->setDataContainerArray(dca);
 

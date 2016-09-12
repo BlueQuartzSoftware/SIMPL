@@ -440,10 +440,10 @@ int DataContainerReader::readExistingPipelineFromFile(hid_t fileId)
     // Instantiate a new filter using the FilterFactory based on the value of the className attribute
     FilterManager* fm = FilterManager::Instance();
     IFilterFactory::Pointer ff = fm->getFactoryForFilter(classNameStr);
-    if (NULL != ff.get())
+    if (nullptr != ff.get())
     {
       AbstractFilter::Pointer filter = ff->create();
-      if (NULL != filter.get())
+      if (nullptr != filter.get())
       {
         // Read the parameters
         filter->readFilterParameters( reader.get(), i);
@@ -467,13 +467,13 @@ void DataContainerReader::writeExistingPipelineToFile(QJsonObject &json)
   for(FilterPipeline::FilterContainerType::iterator iter = container.begin(); iter != container.end(); ++iter)
   {
     AbstractFilter::Pointer filter = *iter;
-    if (NULL != filter.get())
+    if (nullptr != filter.get())
     {
       filter->writeFilterParameters(json);
     }
     else
     {
-      json["Unknown Filter"] = "ERROR: Filter instance was NULL within the SVPipelineFilterWidget instance. Report this error to the DREAM3D Developers";
+      json["Unknown Filter"] = "ERROR: Filter instance was nullptr within the SVPipelineFilterWidget instance. Report this error to the DREAM3D Developers";
     }
   }
 }
@@ -534,9 +534,9 @@ int DataContainerReader::readDataContainerBundles(hid_t fileId, DataContainerArr
     {
       QString dcName = nameIter.next();
       DataContainer::Pointer dc = dca->getDataContainer(dcName);
-      if (NULL == dc.get() )
+      if (nullptr == dc.get() )
       {
-        qDebug() << "Data Container '" << dcName << "' was NULL" << " " << __FILE__ << "(" << __LINE__ << ")";
+        qDebug() << "Data Container '" << dcName << "' was nullptr" << " " << __FILE__ << "(" << __LINE__ << ")";
       }
       bundle->addDataContainer(dc);
     }

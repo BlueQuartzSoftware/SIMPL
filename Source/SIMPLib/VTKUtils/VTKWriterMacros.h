@@ -204,7 +204,7 @@
 #define VTK_WRITE_RECTILINEAR_DATA(ArrayType, iDataPtr, VtkType, Type, Format)\
   {\
     ArrayType::Pointer array = std::dynamic_pointer_cast<ArrayType>(iDataPtr);\
-    if(NULL != array.get()) {\
+    if(nullptr != array.get()) {\
       size_t totalElements = array->getSize();\
       Type* val = array->getPointer(0);\
       int numComps = array->getNumberOfComponents();\

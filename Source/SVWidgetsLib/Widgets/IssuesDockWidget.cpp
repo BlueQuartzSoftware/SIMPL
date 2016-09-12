@@ -166,7 +166,7 @@ void IssuesDockWidget::displayCachedMessages()
           codeWidgetItem->setBackground(msgBrush);
 
           QLabel* hyperlinkLabel = createHyperlinkLabel(msg);
-          if (hyperlinkLabel == NULL)
+          if (hyperlinkLabel == nullptr)
           {
             errorTableWidget->setItem(row, 0, filterNameWidgetItem);
           }
@@ -204,7 +204,7 @@ void IssuesDockWidget::displayCachedMessages()
           codeWidgetItem->setBackground(msgBrush);
 
           QLabel* hyperlinkLabel = createHyperlinkLabel(msg);
-          if (hyperlinkLabel == NULL)
+          if (hyperlinkLabel == nullptr)
           {
             errorTableWidget->setItem(row, 0, filterNameWidgetItem);
           }

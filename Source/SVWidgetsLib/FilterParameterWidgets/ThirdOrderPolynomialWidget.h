@@ -70,7 +70,7 @@ class SVWidgetsLib_EXPORT ThirdOrderPolynomialWidget : public FilterParameterWid
     * @param filter The instance of the filter that this parameter is a part of
     * @param parent The parent QWidget for this Widget
     */
-    ThirdOrderPolynomialWidget(FilterParameter* parameter, AbstractFilter* filter = NULL, QWidget* parent = NULL);
+    ThirdOrderPolynomialWidget(FilterParameter* parameter, AbstractFilter* filter = nullptr, QWidget* parent = nullptr);
 
     virtual ~ThirdOrderPolynomialWidget();
 

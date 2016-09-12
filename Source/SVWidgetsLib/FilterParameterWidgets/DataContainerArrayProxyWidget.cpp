@@ -59,7 +59,7 @@ DataContainerArrayProxyWidget::DataContainerArrayProxyWidget(FilterParameter* pa
   m_DidCausePreflight(false)
 {
   m_FilterParameter = dynamic_cast<DataContainerArrayProxyFilterParameter*>(parameter);
-  Q_ASSERT_X(m_FilterParameter != NULL, "NULL Pointer", "DataContainerArrayProxyWidget can ONLY be used with a DataContainerArrayProxyFilterParameter object");
+  Q_ASSERT_X(m_FilterParameter != nullptr, "nullptr Pointer", "DataContainerArrayProxyWidget can ONLY be used with a DataContainerArrayProxyFilterParameter object");
 
   setupUi(this);
   setupGui();
@@ -69,7 +69,7 @@ DataContainerArrayProxyWidget::DataContainerArrayProxyWidget(FilterParameter* pa
 //
 // -----------------------------------------------------------------------------
 DataContainerArrayProxyWidget::DataContainerArrayProxyWidget(QWidget* parent) :
-  FilterParameterWidget(NULL, NULL, parent),
+  FilterParameterWidget(nullptr, nullptr, parent),
   m_DidCausePreflight(false)
 {
   setupUi(this);
@@ -126,7 +126,7 @@ void DataContainerArrayProxyWidget::setupGui()
   connect(model, SIGNAL(itemChanged(QStandardItem*)),
           this, SLOT(itemActivated(QStandardItem*)));
 
-  if (getFilterParameter() != NULL)
+  if (getFilterParameter() != nullptr)
   {
     label->setText(getFilterParameter()->getHumanLabel() );
 
@@ -171,7 +171,7 @@ void DataContainerArrayProxyWidget::toggleStrikeOutFont(QStandardItem* item, Qt:
   QColor defaultColor(Qt::white);
   QBrush defaultBrush(defaultColor);
 
-  if (state == Qt::Checked || (NULL != item->parent() && item->parent()->font().strikeOut() == true) )
+  if (state == Qt::Checked || (nullptr != item->parent() && item->parent()->font().strikeOut() == true) )
   {
     font.setStrikeOut(true);
     item->setBackground(errorBrush);
@@ -268,7 +268,7 @@ void removeNonExistantChildren(QStandardItem* parent, QStringList possibleNames)
 template<typename T>
 QStandardItem* getColumnItem(QStandardItem* parent, QString name, T& proxy)
 {
-  QStandardItem* item = NULL;
+  QStandardItem* item = nullptr;
   QList<QStandardItem*> items = findChildItems(parent, name);
   if (items.count() == 0)
   {
@@ -280,7 +280,7 @@ QStandardItem* getColumnItem(QStandardItem* parent, QString name, T& proxy)
   }
   else if (items.count() > 1)
   {
-    item = NULL;
+    item = nullptr;
   }
   else
   {
@@ -298,8 +298,8 @@ QStandardItem* getColumnItem(QStandardItem* parent, QString name, T& proxy)
 template<typename T>
 QStandardItem* updateProxyItem(QStandardItem* parent, QString name, T& proxy)
 {
-  QStandardItem* item = NULL;
-  if(NULL == parent) { return item; }
+  QStandardItem* item = nullptr;
+  if(nullptr == parent) { return item; }
   QList<QStandardItem*> items = findChildItems(parent, name);
   if (items.count() == 1)
   {
@@ -333,7 +333,7 @@ void DataContainerArrayProxyWidget::updateModelFromProxy(DataContainerArrayProxy
     DataContainerProxy dcProxy = containerIter.next();
     dcList.push_back(dcProxy.name);
     QStandardItem* dcItem = getColumnItem<DataContainerProxy>(rootItem, dcProxy.name, dcProxy);
-    assert(dcItem != NULL);
+    assert(dcItem != nullptr);
     //    qDebug() << "**  " << dcProxy.name;
     // We found the proper Data Container, now populate the AttributeMatrix List
     QMap<QString, AttributeMatrixProxy>& attrMats = dcProxy.attributeMatricies;
@@ -344,7 +344,7 @@ void DataContainerArrayProxyWidget::updateModelFromProxy(DataContainerArrayProxy
       QString amName = attrMatsIter.key();
       AttributeMatrixProxy& attrProxy = attrMatsIter.value();
       QStandardItem* amItem = getColumnItem<AttributeMatrixProxy>(dcItem, amName, attrProxy);
-      assert(amItem != NULL);
+      assert(amItem != nullptr);
 
       //   qDebug() << "@@@ " << amName;
       // We found the selected AttributeMatrix, so loop over this attribute matrix arrays and populate the list widget
@@ -357,9 +357,9 @@ void DataContainerArrayProxyWidget::updateModelFromProxy(DataContainerArrayProxy
         QString daName = dataArraysIter.key();
         //    qDebug() << "#### " << daName;
         QStandardItem* daItem = getColumnItem<DataArrayProxy>(amItem, daName, daProxy);
-        if (NULL == daItem)
+        if (nullptr == daItem)
         {
-          Q_ASSERT_X(daItem != NULL, "daItem was NULL. This can not happen", "");
+          Q_ASSERT_X(daItem != nullptr, "daItem was nullptr. This can not happen", "");
         }
       }
 

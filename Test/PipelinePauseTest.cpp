@@ -64,7 +64,7 @@ class PipelinePauseTest : public QObject
 
 public:
   PipelinePauseTest() :
-    m_WorkerThread(NULL)
+    m_WorkerThread(nullptr)
   {
 
   }
@@ -106,13 +106,13 @@ public:
   // -----------------------------------------------------------------------------
   void PauseTest()
   {
-    if (m_WorkerThread != NULL)
+    if (m_WorkerThread != nullptr)
     {
       m_WorkerThread->wait(); // Wait until the thread is complete
       if (m_WorkerThread->isFinished() == true)
       {
         delete m_WorkerThread;
-        m_WorkerThread = NULL;
+        m_WorkerThread = nullptr;
       }
     }
     m_WorkerThread = new QThread(); // Create a new Thread Resource
