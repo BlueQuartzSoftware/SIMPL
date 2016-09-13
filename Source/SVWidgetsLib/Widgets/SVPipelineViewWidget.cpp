@@ -106,20 +106,10 @@ SVPipelineViewWidget::SVPipelineViewWidget(QWidget* parent) :
   m_AutoScrollMargin(10),
   m_autoScrollCount(0),
   m_InputParametersWidget(NULL),
-  m_UndoStack(new QUndoStack(this)),
+  m_ContextMenu(nullptr),
   m_BlockPreflight(false)
 {
   setupGui();
-  m_autoScrollTimer.setParent(this);
-
-  m_UndoStack->setUndoLimit(10);
-
-  setContextMenuPolicy(Qt::CustomContextMenu);
-  setFocusPolicy(Qt::StrongFocus);
-
-  connect(this, SIGNAL(customContextMenuRequested(const QPoint&)), this, SLOT(requestContextMenu(const QPoint&)));
-
-  createPipelineViewWidgetMenu();
 }
 
 // -----------------------------------------------------------------------------
@@ -127,7 +117,8 @@ SVPipelineViewWidget::SVPipelineViewWidget(QWidget* parent) :
 // -----------------------------------------------------------------------------
 SVPipelineViewWidget::~SVPipelineViewWidget()
 {
-  
+  if(m_ContextMenu) { delete m_ContextMenu;}
+  if(m_DropBox && !m_DropBox->parent()) { delete m_DropBox; }
 }
 
 // -----------------------------------------------------------------------------
@@ -139,13 +130,27 @@ void SVPipelineViewWidget::setupGui()
   connect(&m_autoScrollTimer, SIGNAL(timeout()), this, SLOT(doAutoScroll()));
 
   //connect(this, SIGNAL(deleteKeyPressed(PipelineView*)), dream3dApp, SLOT(on_pipelineViewWidget_deleteKeyPressed(PipelineView*)));
+  m_UndoStack = QSharedPointer<QUndoStack>(new QUndoStack(this));
+  m_UndoStack->setUndoLimit(10);
+
 
   m_DropBox = new DropBoxWidget();
+  m_DropBox->setObjectName("m_DropBox");
 
   m_ActionUndo = m_UndoStack->createUndoAction(NULL);
   m_ActionRedo = m_UndoStack->createRedoAction(NULL);
   m_ActionUndo->setShortcut(QKeySequence(Qt::CTRL + Qt::Key_Z));
   m_ActionRedo->setShortcut(QKeySequence(Qt::CTRL + Qt::SHIFT + Qt::Key_Z));
+
+
+  m_autoScrollTimer.setParent(this);
+
+  setContextMenuPolicy(Qt::CustomContextMenu);
+  setFocusPolicy(Qt::StrongFocus);
+
+  connect(this, SIGNAL(customContextMenuRequested(const QPoint&)), this, SLOT(requestContextMenu(const QPoint&)));
+
+  createPipelineViewWidgetMenu();
 }
 
 // -----------------------------------------------------------------------------
@@ -534,6 +539,12 @@ void SVPipelineViewWidget::addFilterObject(PipelineFilterObject* filterObject, Q
     {
       qDeleteAll(l->children());
       delete l;
+    }
+
+    if(m_FilterWidgetLayout)
+    {
+      delete m_FilterWidgetLayout;
+      m_FilterWidgetLayout = nullptr;
     }
 
     m_FilterWidgetLayout = new QVBoxLayout(this);

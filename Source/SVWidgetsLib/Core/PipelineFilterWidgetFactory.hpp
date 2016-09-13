@@ -62,7 +62,10 @@ class PipelineFilterWidgetFactory : public IFilterWidgetFactory
      */
     QWidget* createWidget(FilterParameter* parameter, AbstractFilter* filter = NULL, QWidget* parent = NULL)
     {
-      return new Widget(parameter, filter, parent);
+      Widget* w = new Widget(parameter, filter, parent);
+      QString str = QString("%1_FilterParameter").arg(parameter->getPropertyName());
+      w->setObjectName(str);
+      return w;
     }
 
 

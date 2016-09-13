@@ -40,6 +40,7 @@
 #include <vector>
 #include <stack>
 
+#include <QtCore/QSharedPointer>
 #include <QtCore/QTimer>
 #include <QtWidgets/QLabel>
 #include <QtWidgets/QVBoxLayout>
@@ -382,7 +383,7 @@ class SVWidgetsLib_EXPORT SVPipelineViewWidget : public QFrame, public PipelineV
     int                                 m_autoScrollCount;
     QWidget*                            m_InputParametersWidget;
     QMenu*                              m_ContextMenu;
-    QUndoStack*                         m_UndoStack;
+    QSharedPointer<QUndoStack>          m_UndoStack;
     QAction*                            m_ActionUndo;
     QAction*                            m_ActionRedo;
     bool                                m_BlockPreflight;
