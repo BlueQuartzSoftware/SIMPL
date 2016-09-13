@@ -207,8 +207,8 @@ class DataContainerTest
     void CreateStringArray(AttributeMatrix::Pointer attrMat, QVector<size_t> compDims)
     {
       QString name("ExampleStringDataArray");
-      StringDataArray::Pointer data = StringDataArray::CreateArray(attrMat->getNumTuples(), name);
-      for(size_t i = 0; i < attrMat->getNumTuples(); i++)
+      StringDataArray::Pointer data = StringDataArray::CreateArray(attrMat->getNumberOfTuples(), name);
+      for(size_t i = 0; i < attrMat->getNumberOfTuples(); i++)
       {
         QString value = QString("string_%1").arg(i);
         data->setValue(i, value);

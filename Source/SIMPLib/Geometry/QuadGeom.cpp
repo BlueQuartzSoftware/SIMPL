@@ -211,15 +211,15 @@ void QuadGeom::addAttributeMatrix(const QString& name, AttributeMatrix::Pointer 
     // QuadGeom can only accept vertex, edge, or face Attribute Matrices
     return;
   }
-  if (data->getType() == 0 && static_cast<int64_t>(data->getNumTuples()) != getNumberOfVertices())
+  if (data->getType() == 0 && static_cast<int64_t>(data->getNumberOfTuples()) != getNumberOfVertices())
   {
     return;
   }
-  if (data->getType() == 1 && static_cast<int64_t>(data->getNumTuples()) != getNumberOfEdges())
+  if (data->getType() == 1 && static_cast<int64_t>(data->getNumberOfTuples()) != getNumberOfEdges())
   {
     return;
   }
-  if (data->getType() == 2 && data->getNumTuples() != getNumberOfElements())
+  if (data->getType() == 2 && data->getNumberOfTuples() != getNumberOfElements())
   {
     return;
   }

@@ -123,7 +123,7 @@ void VertexGeom::addAttributeMatrix(const QString& name, AttributeMatrix::Pointe
     // VertexGeom can only accept vertex Attribute Matrices
     return;
   }
-  if (data->getNumTuples() != getNumberOfElements())
+  if (data->getNumberOfTuples() != getNumberOfElements())
   {
     return;
   }

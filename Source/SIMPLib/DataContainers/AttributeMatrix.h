@@ -408,7 +408,7 @@ class SIMPLib_EXPORT AttributeMatrix : public Observable
       bool allocateData = false;
       if(nullptr == filter) { allocateData = true; }
       else { allocateData = !filter->getInPreflight(); }
-      typename ArrayType::Pointer attributeArray = ArrayType::CreateArray(getNumTuples(), compDims, name, allocateData);
+      typename ArrayType::Pointer attributeArray = ArrayType::CreateArray(getNumberOfTuples(), compDims, name, allocateData);
       if(attributeArray.get() != nullptr)
       {
         if(allocateData)
@@ -449,12 +449,12 @@ class SIMPLib_EXPORT AttributeMatrix : public Observable
         return false;
       }
       // Make sure the sizes are equal to what is being asked for
-      if (getNumTuples() != targetDestArray->getNumberOfTuples())
+      if (getNumberOfTuples() != targetDestArray->getNumberOfTuples())
       {
         if (nullptr != filter)
         {
           QString ss = QObject::tr("Filter '%1' requires array with name '%2' to have Number of Tuples = %3. The currently selected array "
-                                   " has %4").arg(filter->getHumanLabel()).arg(arrayName).arg((getNumTuples())).arg(targetDestArray->getNumberOfTuples());
+                                   " has %4").arg(filter->getHumanLabel()).arg(arrayName).arg((getNumberOfTuples())).arg(targetDestArray->getNumberOfTuples());
           filter->setErrorCondition(-502);
           filter->notifyErrorMessage(filter->getHumanLabel(), ss, filter->getErrorCondition());
         }
@@ -515,7 +515,7 @@ class SIMPLib_EXPORT AttributeMatrix : public Observable
     * in during a set of filtering operations then the a value of '32' would be returned.
     * @return
     */
-    size_t getNumTuples();
+    size_t getNumberOfTuples();
 
     /**
     * @brief creates and returns a copy of the attribute matrix

@@ -146,7 +146,7 @@ bool AttributeMatrix::doesAttributeArrayExist(const QString& name)
 bool AttributeMatrix::validateAttributeArraySizes()
 {
   int64_t arraySize = 0;
-  int64_t matrixSize = getNumTuples();
+  int64_t matrixSize = getNumberOfTuples();
   for(QMap<QString, IDataArray::Pointer>::iterator iter = m_AttributeArrays.begin(); iter != m_AttributeArrays.end(); ++iter)
   {
     IDataArray::Pointer d = iter.value();
@@ -171,12 +171,12 @@ int AttributeMatrix::addAttributeArray(const QString& name, IDataArray::Pointer 
     qDebug() << "Array Name:" << data->getName() << "\n";
     data->setName(name);
   }
-  if(getNumTuples() != data->getNumberOfTuples())
+  if(getNumberOfTuples() != data->getNumberOfTuples())
   {
     qDebug() << "AttributeMatrix::Name: " << getName() << "  dataArray::name:  " << data->getName() << " Type: " << data->getTypeAsString();
-    qDebug() << "getNumTuples(): " << getNumTuples() << "  data->getNumberOfTuples(): " << data->getNumberOfTuples();
+    qDebug() << "getNumberOfTuples(): " << getNumberOfTuples() << "  data->getNumberOfTuples(): " << data->getNumberOfTuples();
   }
-  Q_ASSERT(getNumTuples() == data->getNumberOfTuples());
+  Q_ASSERT(getNumberOfTuples() == data->getNumberOfTuples());
 
   m_AttributeArrays[name] = data;
   return 0;
@@ -259,7 +259,7 @@ void AttributeMatrix::setTupleDimensions(QVector<size_t> tupleDims)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-size_t AttributeMatrix::getNumTuples()
+size_t AttributeMatrix::getNumberOfTuples()
 {
   size_t numTuples = m_TupleDims[0];
   for(int i = 1; i < m_TupleDims.size(); i++)
@@ -283,7 +283,7 @@ bool AttributeMatrix::removeInactiveObjects(QVector<bool> activeObjects, Int32Ar
   {
     acceptableMatrix = true;
   }
-  size_t totalTuples = getNumTuples();
+  size_t totalTuples = getNumberOfTuples();
   if( static_cast<size_t>(activeObjects.size()) == totalTuples && acceptableMatrix == true)
   {
     size_t goodcount = 1;
@@ -446,7 +446,7 @@ int AttributeMatrix::addAttributeArrayFromHDF5Path(hid_t gid, QString name, bool
     dPtr = H5DataArrayReader::ReadIDataArray(gid, name, preflight);
     if(preflight == true)
     {
-      dPtr->resize(getNumTuples());
+      dPtr->resize(getNumberOfTuples());
     }
   }
   else if(classType.compare("StringDataArray") == 0)
@@ -454,7 +454,7 @@ int AttributeMatrix::addAttributeArrayFromHDF5Path(hid_t gid, QString name, bool
     dPtr = H5DataArrayReader::ReadStringDataArray(gid, name, preflight);
     if (preflight == true)
     {
-      dPtr->resize(getNumTuples());
+      dPtr->resize(getNumberOfTuples());
     }
   }
   else if(classType.compare("vector") == 0)
@@ -466,7 +466,7 @@ int AttributeMatrix::addAttributeArrayFromHDF5Path(hid_t gid, QString name, bool
     dPtr = H5DataArrayReader::ReadNeighborListData(gid, name, preflight);
     if (preflight == true)
     {
-      dPtr->resize(getNumTuples());
+      dPtr->resize(getNumberOfTuples());
     }
   }
   else if ( name.compare(SIMPL::EnsembleData::Statistics) == 0)
@@ -477,7 +477,7 @@ int AttributeMatrix::addAttributeArrayFromHDF5Path(hid_t gid, QString name, bool
     dPtr = statsData;
     if (preflight == true)
     {
-      dPtr->resize(getNumTuples());
+      dPtr->resize(getNumberOfTuples());
     }
   }
 

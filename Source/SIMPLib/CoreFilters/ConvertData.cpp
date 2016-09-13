@@ -292,7 +292,7 @@ void ConvertData::dataCheck()
     if(getErrorCondition() < 0) { return; }
 
     QVector<size_t> dims = p->getComponentDimensions();
-    size_t voxels = cellAttrMat->getNumTuples();
+    size_t voxels = cellAttrMat->getNumberOfTuples();
     if (m_ScalarType == Detail::Int8)
     {
       p = Int8ArrayType::CreateArray(voxels, dims, m_OutputArrayName, false);

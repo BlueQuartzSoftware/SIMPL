@@ -195,7 +195,7 @@ void CombineAttributeMatrices::dataCheck()
 
   //Note that the minus 1 in the totalTuples calculation is to account for the fact that the zeroth tuple in the two attribute matrices should only be counted once, not twice.
   //All Feature or Ensemble AMs should start from 1 and the zeroth tuple can be combined in the two AMs
-  size_t totalTuples = firstAttrMat->getNumTuples() + secondAttrMat->getNumTuples() - 1;
+  size_t totalTuples = firstAttrMat->getNumberOfTuples() + secondAttrMat->getNumberOfTuples() - 1;
   QVector<size_t> tDims(1, totalTuples);
   m->createNonPrereqAttributeMatrix<AbstractFilter>(this, getCombinedAttributeMatrixName(), tDims, firstAttrMat->getType());
   if (getErrorCondition() < 0) { return; }
@@ -291,7 +291,7 @@ void CombineAttributeMatrices::execute()
   AttributeMatrix::Pointer firstAttrMat = m->getAttributeMatrix(getFirstAttributeMatrixPath().getAttributeMatrixName());
   AttributeMatrix::Pointer secondAttrMat = m->getAttributeMatrix(getSecondAttributeMatrixPath().getAttributeMatrixName());
   AttributeMatrix::Pointer combinedAttrMat = m->getAttributeMatrix(getCombinedAttributeMatrixName());
-  size_t firstAttrMatNumTuples = firstAttrMat->getNumTuples();
+  size_t firstAttrMatNumTuples = firstAttrMat->getNumberOfTuples();
 
   size_t totalTuples1 = m_SecondIndexPtr.lock()->getNumberOfTuples();
   size_t totalTuples2 = m_SecondIndexPtr.lock()->getNumberOfTuples();

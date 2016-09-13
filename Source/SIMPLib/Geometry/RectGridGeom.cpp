@@ -600,7 +600,7 @@ void RectGridGeom::addAttributeMatrix(const QString& name, AttributeMatrix::Poin
     // RectGridGeom can only accept cell Attribute Matrices
     return;
   }
-  if (data->getNumTuples() != getNumberOfElements())
+  if (data->getNumberOfTuples() != getNumberOfElements())
   {
     return;
   }

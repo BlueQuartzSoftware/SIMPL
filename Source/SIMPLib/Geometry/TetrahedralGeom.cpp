@@ -213,19 +213,19 @@ void TetrahedralGeom::addAttributeMatrix(const QString& name, AttributeMatrix::P
     // TetrahedralGeom can only accept vertex, edge, face or cell Attribute Matrices
     return;
   }
-  if (data->getType() == 0 && static_cast<int64_t>(data->getNumTuples()) != getNumberOfVertices())
+  if (data->getType() == 0 && static_cast<int64_t>(data->getNumberOfTuples()) != getNumberOfVertices())
   {
     return;
   }
-  if (data->getType() == 1 && static_cast<int64_t>(data->getNumTuples()) != getNumberOfEdges())
+  if (data->getType() == 1 && static_cast<int64_t>(data->getNumberOfTuples()) != getNumberOfEdges())
   {
     return;
   }
-  if (data->getType() == 2 && static_cast<int64_t>(data->getNumTuples()) != getNumberOfTris())
+  if (data->getType() == 2 && static_cast<int64_t>(data->getNumberOfTuples()) != getNumberOfTris())
   {
     return;
   }
-  if (data->getType() == 3 && data->getNumTuples() != getNumberOfElements())
+  if (data->getType() == 3 && data->getNumberOfTuples() != getNumberOfElements())
   {
     return;
   }

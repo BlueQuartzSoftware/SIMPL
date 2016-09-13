@@ -336,7 +336,7 @@ void ArrayCalculator::dataCheck()
     AttributeMatrix::Pointer calculatedAM = getDataContainerArray()->getPrereqAttributeMatrixFromPath<AbstractFilter>(this, calculatedAMPath, -301);
     if (getErrorCondition() < 0) { return; }
 
-    if (calculatedAM->getNumTuples() != 1)
+    if (calculatedAM->getNumberOfTuples() != 1)
     {
       QString ss = QObject::tr("The tuple count of the output Attribute Matrix is not equal to 1");
       setErrorCondition(INCORRECT_TUPLE_COUNT);
@@ -349,7 +349,7 @@ void ArrayCalculator::dataCheck()
     AttributeMatrix::Pointer selectedAM = getDataContainerArray()->getPrereqAttributeMatrixFromPath<AbstractFilter>(this, m_SelectedAttributeMatrix, -301);
     AttributeMatrix::Pointer calculatedAM = getDataContainerArray()->getPrereqAttributeMatrixFromPath<AbstractFilter>(this, calculatedAMPath, -301);
     if (getErrorCondition() < 0) { return; }
-    if (nullptr != selectedAM && calculatedAM->getNumTuples() != selectedAM->getNumTuples())
+    if (nullptr != selectedAM && calculatedAM->getNumberOfTuples() != selectedAM->getNumberOfTuples())
     {
       QString ss = QObject::tr("The tuple count of the output Attribute Matrix is not equal to the tuple count of the selected Attribute Matrix");
       setErrorCondition(INCORRECT_TUPLE_COUNT);

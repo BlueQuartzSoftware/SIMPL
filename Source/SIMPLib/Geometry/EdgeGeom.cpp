@@ -209,11 +209,11 @@ void EdgeGeom::addAttributeMatrix(const QString& name, AttributeMatrix::Pointer 
     // EdgeGeom can only accept vertex or edge Attribute Matrices
     return;
   }
-  if (data->getType() == 0 && static_cast<int64_t>(data->getNumTuples()) != getNumberOfVertices())
+  if (data->getType() == 0 && static_cast<int64_t>(data->getNumberOfTuples()) != getNumberOfVertices())
   {
     return;
   }
-  if (data->getType() == 1 && data->getNumTuples() != getNumberOfElements())
+  if (data->getType() == 1 && data->getNumberOfTuples() != getNumberOfElements())
   {
     return;
   }

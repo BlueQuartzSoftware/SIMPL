@@ -73,7 +73,7 @@ void IndexOperator::calculate(AbstractFilter* filter, DataArrayPath calculatedAr
     int err = 0;
     DataArrayPath calculatedAMPath(calculatedArrayPath.getDataContainerName(), calculatedArrayPath.getAttributeMatrixName(), "");
     AttributeMatrix::Pointer calculatedAM = filter->getDataContainerArray()->getPrereqAttributeMatrixFromPath<AbstractFilter>(filter, calculatedAMPath, err);
-    DoubleArrayType::Pointer newArray = DoubleArrayType::CreateArray(calculatedAM->getNumTuples(), QVector<size_t>(1, 1), calculatedArrayPath.getDataArrayName());
+    DoubleArrayType::Pointer newArray = DoubleArrayType::CreateArray(calculatedAM->getNumberOfTuples(), QVector<size_t>(1, 1), calculatedArrayPath.getDataArrayName());
 
     int numComps = arrayPtr->getArray()->getNumberOfComponents();
     for (int i = 0; i < newArray->getNumberOfTuples(); i++)

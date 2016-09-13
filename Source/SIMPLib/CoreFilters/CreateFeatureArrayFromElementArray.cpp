@@ -234,7 +234,7 @@ void CreateFeatureArrayFromElementArray::execute()
   // Feature Id; the filter would not crash otherwise, but the user should
   // be notified of unanticipated behavior ; this cannot be done in the dataCheck since
   // we don't have acces to the data yet
-  int32_t totalFeatures = getDataContainerArray()->getAttributeMatrix(m_CellFeatureAttributeMatrixName)->getNumTuples();
+  int32_t totalFeatures = getDataContainerArray()->getAttributeMatrix(m_CellFeatureAttributeMatrixName)->getNumberOfTuples();
   bool mismatchedFeatures = false;
   int32_t largestFeature = 0;
   size_t totalPoints = m_FeatureIdsPtr.lock()->getNumberOfTuples();
