@@ -54,7 +54,7 @@ RangeWidget::RangeWidget(FilterParameter* parameter, AbstractFilter* filter, QWi
   FilterParameterWidget(parameter, filter, parent)
 {
   m_FilterParameter = dynamic_cast<RangeFilterParameter*>(parameter);
-  Q_ASSERT_X(m_FilterParameter != NULL, "NULL Pointer", "RangeWidget can ONLY be used with a RangeFilterParameter object");
+  Q_ASSERT_X(m_FilterParameter != nullptr, "nullptr Pointer", "RangeWidget can ONLY be used with a RangeFilterParameter object");
 
   setupUi(this);
   setupGui();
@@ -72,7 +72,7 @@ RangeWidget::~RangeWidget()
 void RangeWidget::setupGui()
 {
   blockSignals(true);
-  if (getFilterParameter() != NULL)
+  if (getFilterParameter() != nullptr)
   {
     label->setText(getFilterParameter()->getHumanLabel() );
 

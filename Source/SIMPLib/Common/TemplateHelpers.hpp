@@ -185,7 +185,7 @@ namespace TemplateHelpers
       virtual ~CanDynamicCast() {}
       bool operator()(IDataArray::Pointer p)
       {
-        return (std::dynamic_pointer_cast<T>(p).get() != NULL);
+        return (std::dynamic_pointer_cast<T>(p).get() != nullptr);
       }
   };
 
@@ -484,7 +484,7 @@ namespace TemplateHelpers
       {
         IDataArray::Pointer retPtr = IDataArray::NullPointer();
         DataContainer::Pointer volDataCntr = f->getDataContainerArray()->template getPrereqDataContainer<FilterClass>(f, arrayPath.getDataContainerName(), false);
-        if(f->getErrorCondition() < 0 || NULL == volDataCntr)
+        if(f->getErrorCondition() < 0 || nullptr == volDataCntr)
         {
           QString ss = QObject::tr("The Data Container '%1' does not exist").arg(arrayPath.getDataContainerName());
           f->setErrorCondition(Errors::MissingDataContainer);
@@ -492,7 +492,7 @@ namespace TemplateHelpers
           return retPtr;
         }
         AttributeMatrix::Pointer cell_attr_matrix = volDataCntr->template getPrereqAttributeMatrix<FilterClass>(f, arrayPath.getAttributeMatrixName(), Errors::MissingAttributeMatrix);
-        if(f->getErrorCondition() < 0 || NULL == cell_attr_matrix.get())
+        if(f->getErrorCondition() < 0 || nullptr == cell_attr_matrix.get())
         {
           QString ss = QObject::tr("The Attribute Matrix '%1' does not exist").arg(arrayPath.getAttributeMatrixName());
           f->setErrorCondition(Errors::MissingAttributeMatrix);
@@ -500,7 +500,7 @@ namespace TemplateHelpers
           return retPtr;
         }
         IDataArray::Pointer templ_ptr = cell_attr_matrix->getAttributeArray(arrayPath.getDataArrayName());
-        if(NULL == templ_ptr.get())
+        if(nullptr == templ_ptr.get())
         {
           QString ss = QObject::tr("The input array '%1' was not found in the AttributeMatrix '%2'.").arg(arrayPath.getDataArrayName()).arg(arrayPath.getAttributeMatrixName());
           f->setErrorCondition(Errors::MissingArray);

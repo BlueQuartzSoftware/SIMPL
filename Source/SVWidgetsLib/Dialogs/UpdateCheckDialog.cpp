@@ -68,8 +68,8 @@ namespace Detail
 UpdateCheckDialog::UpdateCheckDialog(UpdateCheck::SIMPLVersionData_t versionData, QWidget* parent) :
   QDialog(parent),
   m_WhenToCheck(UpdateCheckMonthly),
-  m_UpdateCheck(NULL),
-  m_UpdateCheckThread(NULL),
+  m_UpdateCheck(nullptr),
+  m_UpdateCheckThread(nullptr),
   m_DialogState(DefaultDialog),
   m_VersionData(versionData)
 {

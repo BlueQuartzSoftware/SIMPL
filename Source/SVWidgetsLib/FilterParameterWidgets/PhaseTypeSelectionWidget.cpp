@@ -63,7 +63,7 @@ PhaseTypeSelectionWidget::PhaseTypeSelectionWidget(FilterParameter* parameter, A
   m_DidCausePreflight(false)
 {
   m_FilterParameter = dynamic_cast<PhaseTypeSelectionFilterParameter*>(parameter);
-  Q_ASSERT_X(m_FilterParameter != NULL, "NULL Pointer", "PhaseTypeSelectionWidget can ONLY be used with a PhaseTypeSelectionFilterParameter object");
+  Q_ASSERT_X(m_FilterParameter != nullptr, "nullptr Pointer", "PhaseTypeSelectionWidget can ONLY be used with a PhaseTypeSelectionFilterParameter object");
 
   setupUi(this);
   setupGui();
@@ -73,7 +73,7 @@ PhaseTypeSelectionWidget::PhaseTypeSelectionWidget(FilterParameter* parameter, A
 //
 // -----------------------------------------------------------------------------
 PhaseTypeSelectionWidget::PhaseTypeSelectionWidget(QWidget* parent) :
-  FilterParameterWidget(NULL, NULL, parent),
+  FilterParameterWidget(nullptr, nullptr, parent),
   m_DidCausePreflight(false)
 {
   setupUi(this);
@@ -92,7 +92,7 @@ PhaseTypeSelectionWidget::~PhaseTypeSelectionWidget()
 // -----------------------------------------------------------------------------
 void PhaseTypeSelectionWidget::setupGui()
 {
-  if(getFilter() == NULL)
+  if(getFilter() == nullptr)
   {
     return;
   }
@@ -150,7 +150,7 @@ void PhaseTypeSelectionWidget::createSelectionMenu()
   // Now get the DataContainerArray from the Filter instance
   // We are going to use this to get all the current DataContainers
   DataContainerArray::Pointer dca = getFilter()->getDataContainerArray();
-  if(NULL == dca.get()) { return; }
+  if(nullptr == dca.get()) { return; }
 
   // Get the menu and clear it out
   QMenu* menu = m_SelectedAttributeMatrixPath->menu();
@@ -177,8 +177,8 @@ void PhaseTypeSelectionWidget::createSelectionMenu()
 
     IGeometry::Pointer geom = IGeometry::NullPointer();
     uint32_t geomType = 999;
-    if (NULL != dc.get()) { geom = dc->getGeometry(); }
-    if (NULL != geom.get()) { geomType = geom->getGeometryType(); }
+    if (nullptr != dc.get()) { geom = dc->getGeometry(); }
+    if (nullptr != geom.get()) { geomType = geom->getGeometryType(); }
 
 
     QMenu* dcMenu = new QMenu(dc->getName());
@@ -241,7 +241,7 @@ void PhaseTypeSelectionWidget::attributeMatrixSelected(QString path)
   m_SelectedAttributeMatrixPath->setText(path);
 
   DataContainerArray::Pointer dca = getFilter()->getDataContainerArray();
-  if(NULL == dca.get()) { return; }
+  if(nullptr == dca.get()) { return; }
 
 
   IDataArray::Pointer attrArray = dca->getPrereqIDataArrayFromPath<IDataArray, AbstractFilter>(getFilter(), DataArrayPath::Deserialize(path, Detail::Delimiter));
@@ -284,7 +284,7 @@ void PhaseTypeSelectionWidget::updatePhaseComboBoxes()
 
   for (int i = 1; i < phaseCount; i++)
   {
-    QComboBox* cb = new QComboBox(NULL);
+    QComboBox* cb = new QComboBox(nullptr);
     for (int s = 0; s < phaseListChoices.size(); ++s)
     {
       cb->addItem((phaseListChoices[s]), phaseTypeEnums[s]);
@@ -334,7 +334,7 @@ void PhaseTypeSelectionWidget::resetPhaseComboBoxes()
 // -----------------------------------------------------------------------------
 void PhaseTypeSelectionWidget::beforePreflight()
 {
-  if (NULL == getFilter()) { return; }
+  if (nullptr == getFilter()) { return; }
   if(m_DidCausePreflight == true)
   {
     return;

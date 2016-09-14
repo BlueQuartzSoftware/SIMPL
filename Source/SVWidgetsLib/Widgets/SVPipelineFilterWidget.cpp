@@ -87,7 +87,7 @@
 SVPipelineFilterWidget::SVPipelineFilterWidget(QWidget* parent) :
   QFrame(parent),
   PipelineFilterObject(AbstractFilter::NullPointer()),
-  m_Observer(NULL),
+  m_Observer(nullptr),
   m_Selected(false),
   m_HasRightClickTarget(false)
 {
@@ -405,7 +405,7 @@ void SVPipelineFilterWidget::toIdleState()
 // -----------------------------------------------------------------------------
 PipelineFilterObject* SVPipelineFilterWidget::deepCopy()
 {
-  SVPipelineFilterWidget* newWidget = new SVPipelineFilterWidget(getFilter()->newFilterInstance(true), NULL, dynamic_cast<QWidget*>(parent()));
+  SVPipelineFilterWidget* newWidget = new SVPipelineFilterWidget(getFilter()->newFilterInstance(true), nullptr, dynamic_cast<QWidget*>(parent()));
   newWidget->setHasPreflightErrors(getHasPreflightErrors());
   newWidget->setHasPreflightWarnings(getHasPreflightWarnings());
 

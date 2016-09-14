@@ -62,7 +62,7 @@ FilterParameterWidget(parameter, filter, parent),
 m_DidCausePreflight(false)
 {
   m_FilterParameter = dynamic_cast<AttributeMatrixCreationFilterParameter*>(parameter);
-  Q_ASSERT_X(m_FilterParameter != NULL, "NULL Pointer", "AttributeMatrixCreationWidget can ONLY be used with a AttributeMatrixCreationFilterParameter object");
+  Q_ASSERT_X(m_FilterParameter != nullptr, "nullptr Pointer", "AttributeMatrixCreationWidget can ONLY be used with a AttributeMatrixCreationFilterParameter object");
 
   setupUi(this);
   setupGui();
@@ -72,7 +72,7 @@ m_DidCausePreflight(false)
 //
 // -----------------------------------------------------------------------------
 AttributeMatrixCreationWidget::AttributeMatrixCreationWidget(QWidget* parent) :
-FilterParameterWidget(NULL, NULL, parent),
+FilterParameterWidget(nullptr, nullptr, parent),
 m_DidCausePreflight(false)
 {
   setupUi(this);
@@ -83,7 +83,10 @@ m_DidCausePreflight(false)
 //
 // -----------------------------------------------------------------------------
 AttributeMatrixCreationWidget::~AttributeMatrixCreationWidget()
-{}
+{
+  if(m_OwnsMenuPtr && m_MenuPtr) { delete m_MenuPtr; }
+  if(m_MenuMapper) { delete m_MenuMapper; }
+}
 
 // -----------------------------------------------------------------------------
 //
@@ -102,7 +105,7 @@ void AttributeMatrixCreationWidget::initializeWidget(FilterParameter* parameter,
 void AttributeMatrixCreationWidget::setupGui()
 {
   blockSignals(true);
-  if (getFilterParameter() != NULL)
+  if (getFilterParameter() != nullptr)
   {
     label->setText(getFilterParameter()->getHumanLabel());
 
@@ -173,19 +176,22 @@ void AttributeMatrixCreationWidget::createSelectionMenu()
   // Now get the DataContainerArray from the Filter instance
   // We are going to use this to get all the current DataContainers
   DataContainerArray::Pointer dca = getFilter()->getDataContainerArray();
-  if(NULL == dca.get()) { return; }
+  if(nullptr == dca.get()) { return; }
 
   // Get the menu and clear it out
-  QMenu* menu = m_SelectedDataContainerPath->menu();
-  if(!menu)
+  QMenu* btnMenu = m_SelectedDataContainerPath->menu();
+  if(btnMenu) {
+    btnMenu->clear();
+  }
+  else
   {
-    menu = new QMenu();
-    m_SelectedDataContainerPath->setMenu(menu);
-    menu->installEventFilter(this);
+    m_OwnsMenuPtr = true;
+    m_MenuPtr = new QMenu;
+    btnMenu = m_MenuPtr;
+    m_SelectedDataContainerPath->setMenu(btnMenu);
+    btnMenu->installEventFilter(this);
   }
-  if(menu) {
-    menu->clear();
-  }
+
 
   // Get the DataContainerArray object
   // Loop over the data containers until we find the proper data container
@@ -199,22 +205,23 @@ void AttributeMatrixCreationWidget::createSelectionMenu()
 
     IGeometry::Pointer geom = IGeometry::NullPointer();
     uint32_t geomType = 999;
-    if (NULL != dc.get()) { geom = dc->getGeometry(); }
-    if (NULL != geom.get()) { geomType = geom->getGeometryType(); }
+    if (nullptr != dc.get()) { geom = dc->getGeometry(); }
+    if (nullptr != geom.get()) { geomType = geom->getGeometryType(); }
 
     QString dcName = dc->getName();
-    QAction* action = new QAction(dcName, menu);
+
+    QAction* dcAction = btnMenu->addAction(dcName); // btnMenu owns the created QAction
+
     DataArrayPath dcPath(dcName, "", "");
     QString path = dcPath.serialize(Detail::Delimiter);
-    action->setData(path);
+    dcAction->setData(path);
 
-    connect(action, SIGNAL(triggered(bool)), m_MenuMapper, SLOT(map()));
-    m_MenuMapper->setMapping(action, path);
-    menu->addAction(action);
+    connect(dcAction, SIGNAL(triggered(bool)), m_MenuMapper, SLOT(map()));
+    m_MenuMapper->setMapping(dcAction, path);
 
     if(geomTypes.isEmpty() == false && geomTypes.contains(geomType) == false )
     {
-      action->setDisabled(true);
+      dcAction->setDisabled(true);
     }
   }
 }
@@ -258,7 +265,7 @@ void AttributeMatrixCreationWidget::setSelectedPath(QString path)
   attributeMatrixName->clear();
 
   DataContainerArray::Pointer dca = getFilter()->getDataContainerArray();
-  if(NULL == dca.get()) { return; }
+  if(nullptr == dca.get()) { return; }
 
   DataContainer::Pointer dc = dca->getPrereqDataContainer<AbstractFilter>(getFilter(), amPath.getDataContainerName());
   if(nullptr != dc.get()) {
@@ -305,7 +312,7 @@ void AttributeMatrixCreationWidget::widgetChanged(const QString& text)
 // -----------------------------------------------------------------------------
 void AttributeMatrixCreationWidget::beforePreflight()
 {
-  if (NULL == getFilter()) { return; }
+  if (nullptr == getFilter()) { return; }
   if (m_DidCausePreflight == true)
   {
    // std::cout << "***  AttributeMatrixCreationWidget already caused a preflight, just returning" << std::endl;

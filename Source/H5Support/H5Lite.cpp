@@ -259,7 +259,7 @@ herr_t  H5Lite::writeStringDataset (hid_t loc_id,
           /* Create the dataset. */
           if ( (did = H5Dcreate(loc_id, dsetName.c_str(), tid, sid, H5P_DEFAULT, H5P_DEFAULT, H5P_DEFAULT)) >= 0 )
           {
-            if ( NULL != data )
+            if ( nullptr != data )
             {
               err = H5Dwrite(did, tid, H5S_ALL, H5S_ALL, H5P_DEFAULT, data );
               if (err < 0 )
@@ -300,11 +300,11 @@ herr_t H5Lite::writeVectorOfStringsDataset(hid_t loc_id,
   herr_t retErr = 0;
 
   hsize_t  dims[1] = { data.size() };
-  if ( (sid = H5Screate_simple(sizeof(dims) / sizeof(*dims), dims, NULL)) >= 0)
+  if ( (sid = H5Screate_simple(sizeof(dims) / sizeof(*dims), dims, nullptr)) >= 0)
   {
     dims[0] = 1;
 
-    if( (memspace = H5Screate_simple(sizeof(dims) / sizeof(*dims), dims, NULL) ) >= 0)
+    if( (memspace = H5Screate_simple(sizeof(dims) / sizeof(*dims), dims, nullptr) ) >= 0)
     {
 
       datatype = H5Tcopy(H5T_C_S1);
@@ -317,14 +317,14 @@ herr_t H5Lite::writeVectorOfStringsDataset(hid_t loc_id,
         // Select the "memory" to be written out - just 1 record.
         hsize_t offset[] = { 0 };
         hsize_t count[] = { 1 };
-        H5Sselect_hyperslab(memspace, H5S_SELECT_SET, offset, NULL, count, NULL);
+        H5Sselect_hyperslab(memspace, H5S_SELECT_SET, offset, nullptr, count, nullptr);
         hsize_t m_pos = 0;
         for (std::vector < std::string>::size_type i = 0; i < data.size(); i++)
         {
           // Select the file position, 1 record at position 'pos'
           hsize_t count[] = { 1 };
           hsize_t offset[] = { m_pos++ };
-          H5Sselect_hyperslab(sid, H5S_SELECT_SET, offset, NULL, count, NULL);
+          H5Sselect_hyperslab(sid, H5S_SELECT_SET, offset, nullptr, count, nullptr);
           std::string v = data[i];
           const char* s = v.c_str();
           err = H5Dwrite(did, datatype, memspace, sid, H5P_DEFAULT, &s);
@@ -470,7 +470,7 @@ hsize_t H5Lite::getNumberOfElements(hid_t loc_id, const std::string& dsetName)
       {
         std::vector<hsize_t> dims;
         dims.resize(rank);// Allocate enough room for the dims
-        err = H5Sget_simple_extent_dims(spaceId, &(dims.front()), NULL);
+        err = H5Sget_simple_extent_dims(spaceId, &(dims.front()), nullptr);
         numElements = 1;
         for (std::vector<hsize_t>::iterator iter = dims.begin(); iter < dims.end(); ++iter )
         {
@@ -740,7 +740,7 @@ herr_t H5Lite::readVectorOfStringDataset(hid_t loc_id,
     * Get dataspace and allocate memory for read buffer.
     */
     hid_t sid = H5Dget_space(did);
-    int ndims = H5Sget_simple_extent_dims(sid, dims, NULL);
+    int ndims = H5Sget_simple_extent_dims(sid, dims, nullptr);
     if(ndims != 1)
     {
       CloseH5S(sid, err, retErr);
@@ -751,7 +751,7 @@ herr_t H5Lite::readVectorOfStringDataset(hid_t loc_id,
     std::vector<char*> rdata(dims[0]);
     for (int i = 0; i < dims[0]; i++)
     {
-      rdata[i] = NULL;
+      rdata[i] = nullptr;
     }
 
     /*
@@ -848,7 +848,7 @@ herr_t H5Lite::readStringAttribute(hid_t loc_id, const std::string& objName, con
         }
         else
         {
-          if (attr_out[size - 1] == 0) // NULL Terminated string
+          if (attr_out[size - 1] == 0) // nullptr Terminated string
           {
             size = size - 1;
           }
@@ -1110,7 +1110,7 @@ herr_t H5Lite::getDatasetInfo( hid_t loc_id,
       // hsize_t _dims[rank]; // allocate space for the dimensions
       std::vector<hsize_t> _dims(rank, 0);
       /* Get dimensions */
-      err = H5Sget_simple_extent_dims( sid, &(_dims.front() ), NULL);
+      err = H5Sget_simple_extent_dims( sid, &(_dims.front() ), nullptr);
       if ( err < 0 )
       {
         std::cout << "Error Getting Simple Extents for dataset" << std::endl;
@@ -1199,7 +1199,7 @@ herr_t H5Lite::getAttributeInfo(hid_t loc_id,
             rank = H5Sget_simple_extent_ndims( sid );
             std::vector<hsize_t> _dims(rank, 0);
             /* Get dimensions */
-            err = H5Sget_simple_extent_dims( sid, &(_dims.front() ), NULL);
+            err = H5Sget_simple_extent_dims( sid, &(_dims.front() ), nullptr);
             if (err < 0)
             {
               std::cout << "Error Getting Attribute dims" << std::endl;

@@ -73,13 +73,13 @@ class DynamicListArray
       // This makes sure we deallocate any lists that have been created
       for (size_t i = 0; i < this->m_Size; i++)
       {
-        if ( this->m_Array[i].cells != NULL )
+        if ( this->m_Array[i].cells != nullptr )
         {
           delete [] this->m_Array[i].cells;
         }
       }
       // Now delete all the "NeighborLists" structures
-      if ( this->m_Array != NULL )
+      if ( this->m_Array != nullptr )
       {
         delete [] this->m_Array;
       }
@@ -106,9 +106,9 @@ class DynamicListArray
     bool setElementList(size_t ptId, T nCells, K* data)
     {
       if(ptId >= m_Size) { return false; }
-      if(NULL != m_Array[ptId].cells && m_Array[ptId].ncells > 0)
+      if(nullptr != m_Array[ptId].cells && m_Array[ptId].ncells > 0)
       {
-        m_Array[ptId].cells = NULL;
+        m_Array[ptId].cells = nullptr;
         m_Array[ptId].ncells = 0;
       }
       m_Array[ptId].ncells = nCells;
@@ -132,11 +132,11 @@ class DynamicListArray
     void deserializeLinks(QVector<uint8_t>& buffer, size_t nElements)
     {
       size_t offset = 0;
-      allocate(nElements); // Allocate all the links with 0 and NULL;
+      allocate(nElements); // Allocate all the links with 0 and nullptr;
       uint8_t* bufPtr = buffer.data();
 
-      // Walk the array and allocate all the array links to Zero and NULL
-      T* ncells = NULL;
+      // Walk the array and allocate all the array links to Zero and nullptr
+      T* ncells = nullptr;
       for(size_t i = 0; i < nElements; ++i)
       {
         ncells = reinterpret_cast<T*>(bufPtr + offset);
@@ -154,12 +154,12 @@ class DynamicListArray
     void deserializeLinks(std::vector<uint8_t>& buffer, size_t nElements)
     {
       size_t offset = 0;
-      allocate(nElements); // Allocate all the links with 0 and NULL;
+      allocate(nElements); // Allocate all the links with 0 and nullptr;
       uint8_t* bufPtr = &(buffer.front());
 
-      // Walk the array and allocate all the array links to Zero and NULL
-      T* ncells = NULL;
-      //int32_t* cells = NULL;
+      // Walk the array and allocate all the array links to Zero and nullptr
+      T* ncells = nullptr;
+      //int32_t* cells = nullptr;
       for(size_t i = 0; i < nElements; ++i)
       {
         ncells = reinterpret_cast<T*>(bufPtr + offset);
@@ -201,27 +201,27 @@ class DynamicListArray
 
   protected:
     DynamicListArray() :
-      m_Array(NULL),
+      m_Array(nullptr),
       m_Size(0)
     {}
 
     //----------------------------------------------------------------------------
     // This will allocate memory to hold all the NeighborList structures where each
-    // structure is initialized to Zero Entries and a NULL Pointer
+    // structure is initialized to Zero Entries and a nullptr Pointer
     void allocate(size_t sz, size_t ext = 1000)
     {
-      static typename DynamicListArray<T, K>::ElementList linkInit = {0, NULL};
+      static typename DynamicListArray<T, K>::ElementList linkInit = {0, nullptr};
 
       // This makes sure we deallocate any lists that have been created
       for (size_t i = 0; i < this->m_Size; i++)
       {
-        if ( this->m_Array[i].cells != NULL )
+        if ( this->m_Array[i].cells != nullptr )
         {
           delete [] this->m_Array[i].cells;
         }
       }
       // Now delete all the "NeighborLists" structures
-      if ( this->m_Array != NULL )
+      if ( this->m_Array != nullptr )
       {
         delete [] this->m_Array;
       }
@@ -230,7 +230,7 @@ class DynamicListArray
       // Allocate a whole new set of structures
       this->m_Array = new typename DynamicListArray<T, K>::ElementList[sz];
 
-      // Initialize each structure to have 0 entries and NULL pointer.
+      // Initialize each structure to have 0 entries and nullptr pointer.
       for (size_t i = 0; i < sz; i++)
       {
         this->m_Array[i] = linkInit;

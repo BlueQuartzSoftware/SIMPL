@@ -37,7 +37,7 @@ class FilterParameterWidgetUtils
                                               QComboBox* dcCombo, DataContainerArrayProxy& dcaProxy)
     {
       FilterParameterType* fp = dynamic_cast<FilterParameterType*>(filterParameter);
-      assert(fp != NULL);
+      assert(fp != nullptr);
       DataContainerArray::Pointer dca = filter->getDataContainerArray();
       // Populate the DataContainerArray Combo Box with all the DataContainers
       QList<DataContainerProxy> dcList = dcaProxy.dataContainers.values();
@@ -50,8 +50,8 @@ class FilterParameterWidgetUtils
         DataContainer::Pointer dc = dca->getDataContainer(dcProxy.name);
         IGeometry::Pointer geom = IGeometry::NullPointer();
         uint32_t geomType = 999;
-        if (NULL != dc.get()) { geom = dc->getGeometry(); }
-        if (NULL != geom.get()) { geomType = geom->getGeometryType(); }
+        if (nullptr != dc.get()) { geom = dc->getGeometry(); }
+        if (nullptr != geom.get()) { geomType = geom->getGeometryType(); }
         dcCombo->addItem(dcProxy.name);
 
         if (geomTypes.isEmpty() == false)
@@ -59,10 +59,10 @@ class FilterParameterWidgetUtils
           if (geomTypes.contains(geomType) == false)
           {
             QStandardItemModel* model = qobject_cast<QStandardItemModel*>(dcCombo->model());
-            if (NULL != model)
+            if (nullptr != model)
             {
               QStandardItem* item = model->item(dcCombo->findText(dcProxy.name));
-              if (NULL != item)
+              if (nullptr != item)
               {
                 item->setFlags(item->flags() & ~Qt::ItemIsEnabled);
               }
@@ -86,9 +86,9 @@ class FilterParameterWidgetUtils
                                             DataContainerArrayProxy& dcaProxy)
     {
       FilterParameterType* fp = dynamic_cast<FilterParameterType*>(filterParameter);
-      assert(fp != NULL);
+      assert(fp != nullptr);
       DataContainerArray::Pointer dca = filter->getDataContainerArray();
-      if (NULL == dca.get()) { return; }
+      if (nullptr == dca.get()) { return; }
 
       QString dcName = dcCombo->currentText();
 
@@ -118,13 +118,13 @@ class FilterParameterWidgetUtils
             AttributeMatrix::Pointer am = dca->getAttributeMatrix(DataArrayPath(dc.name, amName, ""));
             amCombo->addItem(amName);
 
-            if (NULL != am.get() && defVec.isEmpty() == false && defVec.contains(am->getType()) == false)
+            if (nullptr != am.get() && defVec.isEmpty() == false && defVec.contains(am->getType()) == false)
             {
               QStandardItemModel* model = qobject_cast<QStandardItemModel*>(amCombo->model());
-              if (NULL != model)
+              if (nullptr != model)
               {
                 QStandardItem* item = model->item(amCombo->findText(amName));
-                if (NULL != item)
+                if (nullptr != item)
                 {
                   item->setFlags(item->flags() & ~Qt::ItemIsEnabled);
                 }
@@ -155,10 +155,10 @@ class FilterParameterWidgetUtils
                                       DataContainerArrayProxy& dcaProxy)
     {
       FilterParameterType* fp = dynamic_cast<FilterParameterType*>(filterParameter);
-      assert(fp != NULL);
+      assert(fp != nullptr);
 
       DataContainerArray::Pointer dca = filter->getDataContainerArray();
-      if (NULL == dca.get()) { return; }
+      if (nullptr == dca.get()) { return; }
       bool alreadyBlocked = false;
       if(aaCombo->signalsBlocked()) { alreadyBlocked = true; }
       aaCombo->blockSignals(true);
@@ -198,16 +198,16 @@ class FilterParameterWidgetUtils
                 dataArraysIter.next();
                 //DataArrayProxy daProxy = dataArraysIter.value();
                 QString daName = dataArraysIter.key();
-                IDataArray::Pointer da = dca->getPrereqIDataArrayFromPath<IDataArray, AbstractFilter>(NULL, DataArrayPath(dc.name, amProxy.name, daName));
+                IDataArray::Pointer da = dca->getPrereqIDataArrayFromPath<IDataArray, AbstractFilter>(nullptr, DataArrayPath(dc.name, amProxy.name, daName));
                 aaCombo->addItem(daName);
 
-                if (NULL != da.get() && ((daTypes.isEmpty() == false && daTypes.contains(da->getTypeAsString()) == false) || (cDims.isEmpty() == false && cDims.contains(da->getComponentDimensions()) == false)))
+                if (nullptr != da.get() && ((daTypes.isEmpty() == false && daTypes.contains(da->getTypeAsString()) == false) || (cDims.isEmpty() == false && cDims.contains(da->getComponentDimensions()) == false)))
                 {
                   QStandardItemModel* model = qobject_cast<QStandardItemModel*>(aaCombo->model());
-                  if (NULL != model)
+                  if (nullptr != model)
                   {
                     QStandardItem* item = model->item(aaCombo->findText(daName));
-                    if (NULL != item)
+                    if (nullptr != item)
                     {
                       item->setFlags(item->flags() & ~Qt::ItemIsEnabled);
                     }
@@ -245,10 +245,10 @@ class FilterParameterWidgetUtils
                                            QVector<DataArrayPath> selectedPaths)
     {
       FilterParameterType* fp = dynamic_cast<FilterParameterType*>(filterParameter);
-      assert(fp != NULL);
+      assert(fp != nullptr);
 
       DataContainerArray::Pointer dca = filter->getDataContainerArray();
-      if (NULL == dca.get()) { return; }
+      if (nullptr == dca.get()) { return; }
 
       attributeArraysWidget->blockSignals(true);
       attributeArraysWidget->clear();
@@ -297,10 +297,10 @@ class FilterParameterWidgetUtils
                   }
                 }
 
-                IDataArray::Pointer da = dca->getPrereqIDataArrayFromPath<IDataArray, AbstractFilter>(NULL, DataArrayPath(dc.name, amProxy.name, daName));
+                IDataArray::Pointer da = dca->getPrereqIDataArrayFromPath<IDataArray, AbstractFilter>(nullptr, DataArrayPath(dc.name, amProxy.name, daName));
                 attributeArraysWidget->addItem(daItem);
 
-                if (NULL != da.get() && ((daTypes.isEmpty() == false && daTypes.contains(da->getTypeAsString()) == false) || (cDims.isEmpty() == false && cDims.contains(da->getComponentDimensions()) == false)))
+                if (nullptr != da.get() && ((daTypes.isEmpty() == false && daTypes.contains(da->getTypeAsString()) == false) || (cDims.isEmpty() == false && cDims.contains(da->getComponentDimensions()) == false)))
                 {
                   QList<QListWidgetItem*> rejectList = attributeArraysWidget->findItems(daName, Qt::MatchRecursive);
                   for (int i = 0; i < rejectList.size(); i++)

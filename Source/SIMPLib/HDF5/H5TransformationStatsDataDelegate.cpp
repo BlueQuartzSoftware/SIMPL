@@ -206,7 +206,7 @@ int H5TransformationStatsDataDelegate::readTransformationStatsData(Transformatio
 // -----------------------------------------------------------------------------
 int H5TransformationStatsDataDelegate::writeTransformationStatsData(TransformationStatsData* data, hid_t groupId)
 {
-  if (NULL == data)
+  if (nullptr == data)
   {
     return -1;
   }
@@ -271,7 +271,7 @@ int H5TransformationStatsDataDelegate::writeTransformationStatsData(Transformati
                               data->getFeatureSize_Omegas());
 
   // Write the Misorientation Bins
-  if (NULL != data->getMisorientationBins().get())
+  if (nullptr != data->getMisorientationBins().get())
   {
     QVector<size_t> tDims(1, data->getMisorientationBins()->getNumberOfTuples());
     err = data->getMisorientationBins()->writeH5Data(groupId, tDims);
@@ -281,7 +281,7 @@ int H5TransformationStatsDataDelegate::writeTransformationStatsData(Transformati
 
 
   // Write the ODF
-  if (NULL != data->getODF().get())
+  if (nullptr != data->getODF().get())
   {
     QVector<size_t> tDims(1, data->getODF()->getNumberOfTuples());
     err = data->getODF()->writeH5Data(groupId, tDims);
@@ -290,7 +290,7 @@ int H5TransformationStatsDataDelegate::writeTransformationStatsData(Transformati
 
 
   // Write the Axis ODF
-  if (NULL != data->getAxisOrientation().get())
+  if (nullptr != data->getAxisOrientation().get())
   {
     QVector<size_t> tDims(1, data->getAxisOrientation()->getNumberOfTuples());
     err = data->getAxisOrientation()->writeH5Data(groupId, tDims);
@@ -315,7 +315,7 @@ int H5TransformationStatsDataDelegate::writeVectorOfArrays(hid_t pid,
   {
     //qDebug() << "Writing Dataset:" << hdf5GroupName << "/" << columnHeaders[c] ;
     err = -1;
-    if(NULL != colData[c].get() && colData[c]->getSize() > 0)
+    if(nullptr != colData[c].get() && colData[c]->getSize() > 0)
     {
       QVector<size_t> tDims(1, colData[c]->getNumberOfTuples());
       err = colData[c]->writeH5Data(pid, tDims);
@@ -684,7 +684,7 @@ int H5TransformationStatsDataDelegate::readFeatureDiameterInfo(TransformationSta
 int H5TransformationStatsDataDelegate::writeBinNumbers(TransformationStatsData* data, hid_t groupId)
 {
   // Ensure we have valid bin numbers
-  if(NULL == data->getBinNumbers().get())
+  if(nullptr == data->getBinNumbers().get())
   {
     data->generateBinNumbers();
   }

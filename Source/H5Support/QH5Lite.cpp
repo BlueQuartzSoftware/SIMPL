@@ -133,11 +133,11 @@ herr_t QH5Lite::writeVectorOfStringsDataset(hid_t loc_id,
   herr_t retErr = 0;
 
   hsize_t  dims[1] = { static_cast<hsize_t>(data.size()) };
-  if ( (sid = H5Screate_simple(sizeof(dims) / sizeof(*dims), dims, NULL)) >= 0)
+  if ( (sid = H5Screate_simple(sizeof(dims) / sizeof(*dims), dims, nullptr)) >= 0)
   {
     dims[0] = 1;
 
-    if( (memspace = H5Screate_simple(sizeof(dims) / sizeof(*dims), dims, NULL) ) >= 0)
+    if( (memspace = H5Screate_simple(sizeof(dims) / sizeof(*dims), dims, nullptr) ) >= 0)
     {
 
       datatype = H5Tcopy(H5T_C_S1);
@@ -150,14 +150,14 @@ herr_t QH5Lite::writeVectorOfStringsDataset(hid_t loc_id,
         // Select the "memory" to be written out - just 1 record.
         hsize_t offset_[] = { 0 };
         hsize_t count_[] = { 1 };
-        H5Sselect_hyperslab(memspace, H5S_SELECT_SET, offset_, NULL, count_, NULL);
+        H5Sselect_hyperslab(memspace, H5S_SELECT_SET, offset_, nullptr, count_, nullptr);
         hsize_t m_pos = 0;
         for (qint32 i = 0; i < data.size(); i++)
         {
           // Select the file position, 1 record at position 'pos'
           hsize_t count[] = { 1 };
           hsize_t offset[] = { m_pos++ };
-          H5Sselect_hyperslab(sid, H5S_SELECT_SET, offset, NULL, count, NULL);
+          H5Sselect_hyperslab(sid, H5S_SELECT_SET, offset, nullptr, count, nullptr);
           std::string v = data[i].toStdString(); // MUST be a C String, i.e., null terminated
           const char* s = v.c_str();
           err = H5Dwrite(did, datatype, memspace, sid, H5P_DEFAULT, s);
@@ -285,7 +285,7 @@ herr_t QH5Lite::readVectorOfStringDataset(hid_t loc_id,
     * Get dataspace and allocate memory for read buffer.
     */
     hid_t sid = H5Dget_space(did);
-    int ndims = H5Sget_simple_extent_dims(sid, dims, NULL);
+    int ndims = H5Sget_simple_extent_dims(sid, dims, nullptr);
     if(ndims != 1)
     {
       CloseH5S(sid, err, retErr);
@@ -296,7 +296,7 @@ herr_t QH5Lite::readVectorOfStringDataset(hid_t loc_id,
     std::vector<char*> rdata(dims[0]);
     for (int i = 0; i < dims[0]; i++)
     {
-      rdata[i] = NULL;
+      rdata[i] = nullptr;
     }
 
     /*

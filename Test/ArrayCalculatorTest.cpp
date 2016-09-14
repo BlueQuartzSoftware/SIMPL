@@ -140,10 +140,10 @@ public:
     QString filtName = "ArrayCalculator";
     FilterManager* fm = FilterManager::Instance();
     IFilterFactory::Pointer factory = fm->getFactoryForFilter(filtName);
-    DREAM3D_REQUIRE(factory.get() != NULL);
+    DREAM3D_REQUIRE(factory.get() != nullptr);
 
     AbstractFilter::Pointer filter = factory->create();
-    DREAM3D_REQUIRE(filter.get() != NULL);
+    DREAM3D_REQUIRE(filter.get() != nullptr);
 
     QVariant var;
     bool propWasSet = false;
@@ -168,7 +168,7 @@ public:
   // -----------------------------------------------------------------------------
   //
   // -----------------------------------------------------------------------------
-  void runTest(QString equation, DataArrayPath targetArrayPath, int expectedErrorCondition, int expectedWarningCondition, int* expectedNumberOfTuples = NULL, double* expectedValue = NULL, ArrayCalculator::AngleUnits units = ArrayCalculator::Radians)
+  void runTest(QString equation, DataArrayPath targetArrayPath, int expectedErrorCondition, int expectedWarningCondition, int* expectedNumberOfTuples = nullptr, double* expectedValue = nullptr, ArrayCalculator::AngleUnits units = ArrayCalculator::Radians)
   {
     bool propWasSet = false;
 
@@ -184,12 +184,12 @@ public:
 
     DoubleArrayType::Pointer arrayPtr = filter->getDataContainerArray()->getPrereqIDataArrayFromPath<DoubleArrayType, AbstractFilter>(filter.get(), targetArrayPath);
 
-    if (NULL != expectedNumberOfTuples)
+    if (nullptr != expectedNumberOfTuples)
     {
       DREAM3D_REQUIRE(arrayPtr->getNumberOfTuples() == 1);
     }
 
-    if (NULL != expectedValue && NULL != expectedNumberOfTuples)
+    if (nullptr != expectedValue && nullptr != expectedNumberOfTuples)
     {
       double value = *expectedValue;
 

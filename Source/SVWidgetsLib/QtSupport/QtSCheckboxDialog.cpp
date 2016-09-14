@@ -104,7 +104,7 @@ void QtSCheckboxDialog::setupGui()
 bool QtSCheckboxDialog::getValue(QString key)
 {
   QCheckBox* cb = m_WidgetMap[key];
-  if (NULL != cb)
+  if (nullptr != cb)
   {
     return cb->isChecked();
   }
@@ -118,7 +118,7 @@ bool QtSCheckboxDialog::getValue(QString key)
 void QtSCheckboxDialog::setValue(QString key, bool value)
 {
   QCheckBox* cb = m_WidgetMap[key];
-  if (NULL != cb)
+  if (nullptr != cb)
   {
     cb->setChecked(value);
   }

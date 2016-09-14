@@ -96,10 +96,10 @@ void ComparisonSelectionItemDelegate::setFeatureList(QStringList features)
 // -----------------------------------------------------------------------------
 QWidget* ComparisonSelectionItemDelegate::createEditor(QWidget* widgetParent, const QStyleOptionViewItem& option, const QModelIndex& index) const
 {
-  QLineEdit* featureValue = NULL;
-  QDoubleValidator* featureValueValidator = NULL;
+  QLineEdit* featureValue = nullptr;
+  QDoubleValidator* featureValueValidator = nullptr;
  
-  QComboBox* operatorCombo = NULL;
+  QComboBox* operatorCombo = nullptr;
 
   ComparisonSelectionTableModel* tableModel = qobject_cast<ComparisonSelectionTableModel*>(parent());
 
@@ -108,7 +108,7 @@ QWidget* ComparisonSelectionItemDelegate::createEditor(QWidget* widgetParent, co
             << (SIMPL::Comparison::Strings::GreaterThan)
             << (SIMPL::Comparison::Strings::Equal);
 
-  //QComboBox* phaseCombo = NULL;
+  //QComboBox* phaseCombo = nullptr;
   QStringList phases;
   for(int i = 0; i < m_NumberOfPhases; ++i)
   {

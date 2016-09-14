@@ -44,7 +44,7 @@
 // -----------------------------------------------------------------------------
 BreakpointFilterWidget::BreakpointFilterWidget(QWidget* parent) :
   SVPipelineFilterWidget(parent),
-  m_Filter(NULL)
+  m_Filter(nullptr)
 {
   setupGui();
 }
@@ -54,11 +54,11 @@ BreakpointFilterWidget::BreakpointFilterWidget(QWidget* parent) :
 // -----------------------------------------------------------------------------
 BreakpointFilterWidget::BreakpointFilterWidget(AbstractFilter::Pointer filter, IObserver* observer, QWidget* parent) :
   SVPipelineFilterWidget(filter, observer, parent),
-  m_Filter(NULL)
+  m_Filter(nullptr)
 {
   m_Filter = std::dynamic_pointer_cast<Breakpoint>(SVPipelineFilterWidget::getFilter());
 
-  if (NULL != m_Filter)
+  if (nullptr != m_Filter)
   {
     connect(m_Filter.get(), SIGNAL(pipelineHasPaused()), this, SLOT(showResumeBtn()));
     connect(m_Filter.get(), SIGNAL(pipelineHasResumed()), this, SLOT(hideResumeBtn()));

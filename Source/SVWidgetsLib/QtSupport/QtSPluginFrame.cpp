@@ -48,7 +48,7 @@
 // -----------------------------------------------------------------------------
 QtSPluginFrame::QtSPluginFrame(QWidget* parent) :
   QFrame(parent),
-  m_StatusBar(NULL)
+  m_StatusBar(nullptr)
 {
 }
 

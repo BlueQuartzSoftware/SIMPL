@@ -50,7 +50,7 @@ class SVWidgetsLib_EXPORT PipelineFilterObject
 {
   public:
     PipelineFilterObject();
-    PipelineFilterObject(AbstractFilter::Pointer filter, IObserver* observer = NULL);
+    PipelineFilterObject(AbstractFilter::Pointer filter, IObserver* observer = nullptr);
     virtual ~PipelineFilterObject();
 
     SIMPL_BOOL_PROPERTY(Running)

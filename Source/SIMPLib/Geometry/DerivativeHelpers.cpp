@@ -166,7 +166,7 @@ void DerivativeHelpers::TriangleDeriv::operator()(TriangleGeom* triangles, int64
   vert2_2d[1] = MatrixMath::DotProduct3x1(vector20, basis2);
 
   // Compute interpolation function derivatives
-  triangles->getShapeFunctions(NULL, shapeFunctions);
+  triangles->getShapeFunctions(nullptr, shapeFunctions);
 
   // Compute Jacobian and inverse Jacobian using Eigen
   // Jacobian is constant for a triangle, so inverse must exist
@@ -342,7 +342,7 @@ void DerivativeHelpers::TetDeriv::operator()(TetrahedralGeom* tets, int64_t tetI
   int64_t verts[4] = { 0, 0, 0, 0 };
   double sum[3] = { 0.0, 0.0, 0.0 };
 
-  tets->getShapeFunctions(NULL, shapeFunctions);
+  tets->getShapeFunctions(nullptr, shapeFunctions);
 
   // Compute 3x3 Jacobian from vertex coordinates and tet shape functions,
   // then find the inverse Jacobian using Eigen

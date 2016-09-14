@@ -114,7 +114,7 @@ void RequiredZThickness::dataCheck()
   if (getErrorCondition() < 0) { return; }
 
   ImageGeom::Pointer image = dataContainer->getGeometryAs<ImageGeom>();
-  if( NULL == image.get() )
+  if( nullptr == image.get() )
   {
     setErrorCondition(-7789);
     notifyErrorMessage(getHumanLabel(), "Missing Image Geometry in the selected DataContainer", getErrorCondition());

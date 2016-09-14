@@ -63,7 +63,7 @@ FilterPipeline::~FilterPipeline()
 void FilterPipeline::setCancel(bool value)
 {
   this->m_Cancel = value;
-  if (NULL != m_CurrentFilter.get())
+  if (nullptr != m_CurrentFilter.get())
   {
     m_CurrentFilter->setCancel(value);
   }

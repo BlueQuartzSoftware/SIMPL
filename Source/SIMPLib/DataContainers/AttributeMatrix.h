@@ -226,7 +226,7 @@ class SIMPLib_EXPORT AttributeMatrix : public Observable
 
     /**
      * @brief getPrereqArray
-     * @param filter An instance of an AbstractFilter that is calling this function. Can be NULL in which case
+     * @param filter An instance of an AbstractFilter that is calling this function. Can be nullptr in which case
      * no error message will be returned if there is an error.
      * @param attributeArrayName The name of the Attribute Array
      * @param err The error code to set into the filter if there is an error
@@ -276,7 +276,7 @@ class SIMPLib_EXPORT AttributeMatrix : public Observable
       }
       IDataArray::Pointer iDataArray = getAttributeArray(attributeArrayName);
       attributeArray = std::dynamic_pointer_cast< ArrayType >(iDataArray);
-      if(NULL == attributeArray.get() && filter)
+      if(nullptr == attributeArray.get() && filter)
       {
         filter->setErrorCondition(err);
         ss = QObject::tr("The AttributeMatrix named '%1' contains an array with name '%2' but the DataArray could not be downcast using std::dynamic_pointer_cast<T>.").arg(getName()).arg(attributeArrayName);
@@ -325,7 +325,7 @@ class SIMPLib_EXPORT AttributeMatrix : public Observable
       else
       {
         IDataArray::Pointer ptr = getAttributeArray(attributeArrayName);
-        if (std::dynamic_pointer_cast<ArrayType>(ptr) != NULL)
+        if (std::dynamic_pointer_cast<ArrayType>(ptr) != nullptr)
         {
           return std::dynamic_pointer_cast<ArrayType>(ptr);
         }
@@ -369,26 +369,26 @@ class SIMPLib_EXPORT AttributeMatrix : public Observable
         return attributeArray;
       }
       IDataArray::Pointer iDataArray = getAttributeArray(attributeArrayName);
-      if (NULL == iDataArray.get())
+      if (nullptr == iDataArray.get())
       {
         createAndAddAttributeArray<ArrayType, Filter, T>(filter, attributeArrayName, initValue, compDims);
       }
       else if (filter)
       {
         filter->setErrorCondition(-10002);
-        ss = QObject::tr("AttributeMatrix:'%1' An Attribute Array already exists with the name %1.").arg(getName()).arg(attributeArrayName);
+        ss = QObject::tr("AttributeMatrix:'%1' An Attribute Array already exists with the name %2.").arg(getName()).arg(attributeArrayName);
         filter->notifyErrorMessage(filter->getHumanLabel(), ss, filter->getErrorCondition());
         return attributeArray;
       }
       iDataArray = getAttributeArray(attributeArrayName);
-      if(NULL == iDataArray && filter)
+      if(nullptr == iDataArray && filter)
       {
         filter->setErrorCondition(-10003);
         ss = QObject::tr("AttributeMatrix:'%1' An array with name '%2' could not be created.").arg(getName()).arg(attributeArrayName);
         filter->notifyErrorMessage(filter->getHumanLabel(), ss, filter->getErrorCondition());
       }
       attributeArray = std::dynamic_pointer_cast< ArrayType >(iDataArray);
-      if(NULL == attributeArray.get() && filter)
+      if(nullptr == attributeArray.get() && filter)
       {
         filter->setErrorCondition(-10004);
         ss = QObject::tr("AttributeMatrix:'%1' An array with name '%2' could not be downcast using std::dynamic_pointer_cast<T>.").arg(getName()).arg(attributeArrayName);
@@ -406,10 +406,10 @@ class SIMPLib_EXPORT AttributeMatrix : public Observable
     void createAndAddAttributeArray(Filter* filter, const QString& name, T initValue, QVector<size_t> compDims)
     {
       bool allocateData = false;
-      if(NULL == filter) { allocateData = true; }
+      if(nullptr == filter) { allocateData = true; }
       else { allocateData = !filter->getInPreflight(); }
-      typename ArrayType::Pointer attributeArray = ArrayType::CreateArray(getNumTuples(), compDims, name, allocateData);
-      if(attributeArray.get() != NULL)
+      typename ArrayType::Pointer attributeArray = ArrayType::CreateArray(getNumberOfTuples(), compDims, name, allocateData);
+      if(attributeArray.get() != nullptr)
       {
         if(allocateData)
         {
@@ -437,7 +437,7 @@ class SIMPLib_EXPORT AttributeMatrix : public Observable
 
       if (targetDestArray.get() == 0)
       {
-        if (NULL != filter)
+        if (nullptr != filter)
         {
           IDataArray::Pointer srcArray = getAttributeArray(arrayName);
           QString srcDesc = srcArray->getTypeAsString();
@@ -449,12 +449,12 @@ class SIMPLib_EXPORT AttributeMatrix : public Observable
         return false;
       }
       // Make sure the sizes are equal to what is being asked for
-      if (getNumTuples() != targetDestArray->getNumberOfTuples())
+      if (getNumberOfTuples() != targetDestArray->getNumberOfTuples())
       {
-        if (NULL != filter)
+        if (nullptr != filter)
         {
           QString ss = QObject::tr("Filter '%1' requires array with name '%2' to have Number of Tuples = %3. The currently selected array "
-                                   " has %4").arg(filter->getHumanLabel()).arg(arrayName).arg((getNumTuples())).arg(targetDestArray->getNumberOfTuples());
+                                   " has %4").arg(filter->getHumanLabel()).arg(arrayName).arg((getNumberOfTuples())).arg(targetDestArray->getNumberOfTuples());
           filter->setErrorCondition(-502);
           filter->notifyErrorMessage(filter->getHumanLabel(), ss, filter->getErrorCondition());
         }
@@ -463,7 +463,7 @@ class SIMPLib_EXPORT AttributeMatrix : public Observable
       // Make sure the number of components match
       if (numComp != targetDestArray->getNumberOfComponents())
       {
-        if (NULL != filter)
+        if (nullptr != filter)
         {
           QString ss = QObject::tr("Filter '%1' is trying to use array '%2' where the number of components is %3 but the filter requires that array "
                                    " to have %4.").arg(filter->getHumanLabel()).arg(targetDestArray->getName()).arg(targetDestArray->getNumberOfComponents()).arg(numComp);
@@ -474,13 +474,13 @@ class SIMPLib_EXPORT AttributeMatrix : public Observable
       }
       // Make sure we can downcast to the proper type
       ArrayType* array = ArrayType::SafePointerDownCast(targetDestArray.get());
-      if (NULL == array)
+      if (nullptr == array)
       {
         typename ArrayType::Pointer dat = ArrayType::CreateArray(1, "JUNK-INTERNAL-USE-ONLY");
         QString ss = QObject::tr(" - The filter requested an array named '%1' with type '%2' from the filter '%3'.\n"
                                  "An Array with name '%4' is stored in the %5 but is of type %6\n")
                      .arg(arrayName).arg(dat->getTypeAsString()).arg(getNameOfClass()).arg(arrayName).arg(getNameOfClass()).arg(targetDestArray->getTypeAsString());
-        if (NULL != filter)
+        if (nullptr != filter)
         {
           filter->setErrorCondition(-504);
           filter->notifyErrorMessage(filter->getHumanLabel(), ss, filter->getErrorCondition());
@@ -515,7 +515,7 @@ class SIMPLib_EXPORT AttributeMatrix : public Observable
     * in during a set of filtering operations then the a value of '32' would be returned.
     * @return
     */
-    size_t getNumTuples();
+    size_t getNumberOfTuples();
 
     /**
     * @brief creates and returns a copy of the attribute matrix

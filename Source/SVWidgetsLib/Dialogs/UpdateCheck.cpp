@@ -69,7 +69,7 @@
 // -----------------------------------------------------------------------------
 UpdateCheck::UpdateCheck(SIMPLVersionData_t versionData, QObject* parent) :
   QObject(parent),
-  m_Nam(NULL),
+  m_Nam(nullptr),
   m_VersionData(versionData)
 {
 
@@ -90,7 +90,7 @@ void UpdateCheck::checkVersion(QUrl website)
 {
   writeUpdateCheckDate();
 
-  if (m_Nam != NULL)
+  if (m_Nam != nullptr)
   {
     m_Nam->deleteLater();
   }

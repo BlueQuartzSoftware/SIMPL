@@ -60,11 +60,11 @@
 // -----------------------------------------------------------------------------
 QtSImageGraphicsDelegate::QtSImageGraphicsDelegate(QObject* parent) :
   QObject(parent),
-  m_MainWindow(NULL),
-  m_GraphicsView(NULL),
-  m_GraphicsScene(NULL),
+  m_MainWindow(nullptr),
+  m_GraphicsView(nullptr),
+  m_GraphicsScene(nullptr),
   m_CompositeImages(false),
-  m_CurrentGraphicsItem(NULL),
+  m_CurrentGraphicsItem(nullptr),
   _zoomFactor(1.0),
   _shouldFitToWindow(false)
 {
@@ -295,10 +295,10 @@ void QtSImageGraphicsDelegate::updateGraphicsScene(bool update)
   {
     return;
   }
-  if (NULL != m_CurrentGraphicsItem)
+  if (nullptr != m_CurrentGraphicsItem)
   {
     m_GraphicsScene->removeItem(m_CurrentGraphicsItem); //Remove the image that is displaying
-    m_CurrentGraphicsItem->setParentItem(NULL); // Set the parent to NULL
+    m_CurrentGraphicsItem->setParentItem(nullptr); // Set the parent to nullptr
     delete m_CurrentGraphicsItem; // Delete the object
   }
 
@@ -341,13 +341,13 @@ void QtSImageGraphicsDelegate::updateGraphicsScene(bool update)
 // -----------------------------------------------------------------------------
 void QtSImageGraphicsDelegate::_displayTextMessage(QString message)
 {
-  if ( NULL != m_CurrentGraphicsItem )
+  if ( nullptr != m_CurrentGraphicsItem )
   {
     m_GraphicsScene->removeItem(m_CurrentGraphicsItem); //Remove the image that is displaying
-    m_CurrentGraphicsItem->setParentItem(NULL); // Set the parent to NULL
+    m_CurrentGraphicsItem->setParentItem(nullptr); // Set the parent to nullptr
     delete m_CurrentGraphicsItem; // Delete the object
   }
-  m_CurrentGraphicsItem = NULL;
+  m_CurrentGraphicsItem = nullptr;
   QGraphicsTextItem* tItem = m_GraphicsScene->addText(message); // Add the new image into the display
 
   QRectF rect = tItem->boundingRect();

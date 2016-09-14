@@ -55,7 +55,7 @@ FloatVec3Widget::FloatVec3Widget(FilterParameter* parameter, AbstractFilter* fil
   FilterParameterWidget(parameter, filter, parent)
 {
   m_FilterParameter = dynamic_cast<FloatVec3FilterParameter*>(parameter);
-  Q_ASSERT_X(m_FilterParameter != NULL, "NULL Pointer", "FloatVec3Widget can ONLY be used with a FloatVec3FilterParameter object");
+  Q_ASSERT_X(m_FilterParameter != nullptr, "nullptr Pointer", "FloatVec3Widget can ONLY be used with a FloatVec3FilterParameter object");
 
   setupUi(this);
   setupGui();
@@ -106,7 +106,7 @@ void FloatVec3Widget::setupGui()
   QDoubleValidator* zVal = new QDoubleValidator(zData);
   zData->setValidator(zVal);
   zVal->setLocale(loc);
-  if (getFilterParameter() != NULL)
+  if (getFilterParameter() != nullptr)
   {
     label->setText(getFilterParameter()->getHumanLabel() );
 
@@ -128,10 +128,10 @@ void FloatVec3Widget::widgetChanged(const QString& text)
 {
   Q_UNUSED(text);
 
-  QLineEdit* le = NULL;
-  (sender() == xData) ? le = xData: le = NULL;
-  (sender() == yData) ? le = yData: le = NULL;
-  (sender() == zData) ? le = zData: le = NULL;
+  QLineEdit* le = nullptr;
+  (sender() == xData) ? le = xData: le = nullptr;
+  (sender() == yData) ? le = yData: le = nullptr;
+  (sender() == zData) ? le = zData: le = nullptr;
 
   errorLabel->hide();
 

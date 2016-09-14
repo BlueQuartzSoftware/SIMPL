@@ -79,12 +79,12 @@ bool BinaryOperator::checkValidity(QVector<CalculatorItem::Pointer> infixVector,
   int leftValue = currentIndex - 1;
   int rightValue = currentIndex + 1;
 
-  if ((NULL != std::dynamic_pointer_cast<CalculatorOperator>(infixVector[leftValue])
+  if ((nullptr != std::dynamic_pointer_cast<CalculatorOperator>(infixVector[leftValue])
     && std::dynamic_pointer_cast<CalculatorOperator>(infixVector[leftValue])->getOperatorType() == Binary)
-    || (NULL != std::dynamic_pointer_cast<CalculatorOperator>(infixVector[rightValue])
+    || (nullptr != std::dynamic_pointer_cast<CalculatorOperator>(infixVector[rightValue])
     && std::dynamic_pointer_cast<CalculatorOperator>(infixVector[rightValue])->getOperatorType() == Binary)
-    || NULL != std::dynamic_pointer_cast<LeftParenthesisItem>(infixVector[leftValue])
-    || NULL != std::dynamic_pointer_cast<RightParenthesisItem>(infixVector[rightValue]))
+    || nullptr != std::dynamic_pointer_cast<LeftParenthesisItem>(infixVector[leftValue])
+    || nullptr != std::dynamic_pointer_cast<RightParenthesisItem>(infixVector[rightValue]))
   {
     return false;
   }

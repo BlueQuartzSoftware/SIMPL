@@ -66,7 +66,7 @@ class SIMPLib_EXPORT BinaryOperator : public CalculatorOperator
 #define CREATE_NEW_ARRAY_STANDARD_BINARY(filter, calculatedArrayPath, executionStack, op)\
     ArrayCalculator* calculatorFilter = dynamic_cast<ArrayCalculator*>(filter);\
     \
-    if (executionStack.size() >= 1 && NULL != executionStack.top() && NULL != calculatorFilter)\
+    if (executionStack.size() >= 1 && nullptr != executionStack.top() && nullptr != calculatorFilter)\
     {\
       ICalculatorArray::Pointer array1 = executionStack.pop();\
       ICalculatorArray::Pointer array2 = executionStack.pop();\

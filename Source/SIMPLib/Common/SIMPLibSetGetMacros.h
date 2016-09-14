@@ -75,11 +75,11 @@
  * target to destination. This is NOT just a simple pointer copy.
  */
 #define DEEP_COPY_SHARED_VECTOR(sharedPtr, obj, VType, m_msgType)\
-  if (NULL != sharedPtr.get())\
+  if (nullptr != sharedPtr.get())\
   {\
-    sharedPtr = VType(static_cast<std::vector<m_msgType>*>(NULL));\
+    sharedPtr = VType(static_cast<std::vector<m_msgType>*>(nullptr));\
   }\
-  if (NULL != obj->sharedPtr.get())\
+  if (nullptr != obj->sharedPtr.get())\
   {\
     sharedPtr = VType(new std::vector<m_msgType>(*(obj->sharedPtr.get())));\
   }
@@ -111,17 +111,17 @@
 
 
 #define SHARED_IS_NULL(ptr)\
-  (  (ptr).get() == NULL )
+  (  (ptr).get() == nullptr )
 
 /**
- * @brief Creates a static method that returns a NULL pointer wrapped in a
+ * @brief Creates a static method that returns a nullptr pointer wrapped in a
  * std::shared_ptr<>
  * @param thisClass The name of the class.
  */
 #define SIMPL_NULL_SHARED_POINTER(thisClass)\
   static Pointer NullPointer(void)\
   { \
-    return Pointer(static_cast<thisClass*>(NULL));\
+    return Pointer(static_cast<thisClass*>(nullptr));\
   }
 
 #ifndef _simplibsetgetmacros_h_
@@ -213,7 +213,7 @@
   template <class Source, class Target>\
   inline Target SafeObjectDownCast(Source x) { \
     if( dynamic_cast<Target>(x) != x ) { \
-      return NULL;\
+      return nullptr;\
     }\
     return static_cast<Target>(x);\
   }
@@ -238,7 +238,7 @@
   template <class Source, class Target>\
   static Target SafeObjectDownCast(Source x) { \
     if( dynamic_cast<Target>(x) != x ) { \
-      return NULL;\
+      return nullptr;\
     }\
     return static_cast<Target>(x);\
   }\
@@ -265,7 +265,7 @@
   template <class Source, class Target>\
   static Target SafeObjectDownCast(Source x) { \
     if( dynamic_cast<Target>(x) != x ) { \
-      return NULL;\
+      return nullptr;\
     }\
     return static_cast<Target>(x);\
   }\
@@ -479,7 +479,7 @@
 #define SIMPL_Header_SET_PROPERTY( HeaderType, type, prpty, key) \
   void set##prpty(type value) { \
     HeaderType* p = dynamic_cast<HeaderType*>(m_Headermap[key].get()); \
-    if (NULL != p) { p->setValue(value); } else {\
+    if (nullptr != p) { p->setValue(value); } else {\
       qDebug() << "Value for Key: " << key << " was null." ;} }
 
 /**
@@ -488,7 +488,7 @@
 #define SIMPL_Header_GET_PROPERTY(HeaderType, type, prpty, key) \
   type get##prpty() { \
     HeaderType* p = dynamic_cast<HeaderType*>(m_Headermap[key].get());\
-    if (NULL != p) { return p->getValue(); } else {\
+    if (nullptr != p) { return p->getValue(); } else {\
       qDebug() << "Value for Key: " << key << " was null." ; return 0;} }
 
 
@@ -505,10 +505,10 @@
   type* get##name##Pointer() { return m_##var; }\
   void set##name##Pointer(type* f)\
   {\
-    if (m_##var != NULL && m_##var != f)\
+    if (m_##var != nullptr && m_##var != f)\
     {\
       deallocateArrayData(m_##var);\
-      m_##var = NULL;\
+      m_##var = nullptr;\
     }\
     m_##var = f;\
   }

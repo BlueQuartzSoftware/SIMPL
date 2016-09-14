@@ -145,7 +145,7 @@ std::string H5Utilities::getObjectPath(hid_t loc_id, bool trim)
 
   //char *obj_name;
   size_t name_size;
-  name_size = 1 + H5Iget_name(loc_id, NULL, 0);
+  name_size = 1 + H5Iget_name(loc_id, nullptr, 0);
   std::vector<char> obj_name(name_size, 0);
   H5Iget_name(loc_id, &(obj_name.front()), name_size);
   std::string objPath(&(obj_name.front()));
@@ -313,7 +313,7 @@ herr_t H5Utilities::getGroupObjects(hid_t loc_id, int32_t typeFilter, std::list<
 
   for (hsize_t i = 0; i < numObjs; i++)
   {
-    size = 1 + H5Lget_name_by_idx(loc_id, ".", H5_INDEX_NAME, H5_ITER_INC, i, NULL, 0, H5P_DEFAULT);
+    size = 1 + H5Lget_name_by_idx(loc_id, ".", H5_INDEX_NAME, H5_ITER_INC, i, nullptr, 0, H5P_DEFAULT);
 
     std::vector<char> name(size * sizeof(char), 0);
 
@@ -541,7 +541,7 @@ herr_t H5Utilities::getAllAttributeNames(hid_t obj_id,
   for (hsize_t i = 0; i < num_attrs; i++)
   {
     attr_id = H5Aopen_by_idx(obj_id, ".", H5_INDEX_NAME, H5_ITER_INC, i, H5P_DEFAULT, H5P_DEFAULT);
-    name_size = 1 + H5Aget_name(attr_id, 0, NULL);
+    name_size = 1 + H5Aget_name(attr_id, 0, nullptr);
     std::vector<char> attr_name(name_size * sizeof(char), 0);
     H5Aget_name(attr_id, name_size, &(attr_name.front() ) );
     results.push_back(std::string( &(attr_name.front() ) ) );
@@ -742,8 +742,8 @@ herr_t H5Utilities::objectNameAtIndex(hid_t fileId, int32_t idx, std::string& na
   H5SUPPORT_MUTEX_LOCK()
 
   ssize_t err = -1;
-  // call H5Gget_objname_by_idx with name as NULL to get its length
-  ssize_t name_len = H5Lget_name_by_idx(fileId, ".", H5_INDEX_NAME, H5_ITER_NATIVE, (hsize_t)idx, NULL, 0, H5P_DEFAULT);
+  // call H5Gget_objname_by_idx with name as nullptr to get its length
+  ssize_t name_len = H5Lget_name_by_idx(fileId, ".", H5_INDEX_NAME, H5_ITER_NATIVE, (hsize_t)idx, nullptr, 0, H5P_DEFAULT);
   if(name_len < 0)
   {
     name.clear();

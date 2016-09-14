@@ -73,17 +73,17 @@ class SVWidgetsLib_EXPORT DataContainerArrayProxyWidget : public FilterParameter
     * @param filter The instance of the filter that this parameter is a part of
     * @param parent The parent QWidget for this Widget
     */
-    DataContainerArrayProxyWidget(FilterParameter* parameter, AbstractFilter* filter = NULL, QWidget* parent = NULL);
+    DataContainerArrayProxyWidget(FilterParameter* parameter, AbstractFilter* filter = nullptr, QWidget* parent = nullptr);
 
     /**
      * @brief DataContainerArrayProxyWidget
      * @param parent
      */
-    DataContainerArrayProxyWidget(QWidget* parent = NULL);
+    DataContainerArrayProxyWidget(QWidget* parent = nullptr);
 
     virtual ~DataContainerArrayProxyWidget();
 
-    void initialize(FilterParameter* parameter, AbstractFilter* filter = NULL);
+    void initialize(FilterParameter* parameter, AbstractFilter* filter = nullptr);
 
     /**
     * @brief This method does additional GUI widget connections

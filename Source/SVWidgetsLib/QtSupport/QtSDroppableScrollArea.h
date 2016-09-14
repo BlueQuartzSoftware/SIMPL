@@ -49,7 +49,7 @@ class SVWidgetsLib_EXPORT QtSDroppableScrollArea : public QScrollArea
     Q_OBJECT
 
   public:
-    QtSDroppableScrollArea(QWidget* parent = NULL);
+    QtSDroppableScrollArea(QWidget* parent = nullptr);
 
     void dragEnterEvent(QDragEnterEvent* event);
     void dropEvent(QDropEvent* event);

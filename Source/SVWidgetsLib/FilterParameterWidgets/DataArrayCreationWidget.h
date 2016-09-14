@@ -73,11 +73,13 @@ class SVWidgetsLib_EXPORT DataArrayCreationWidget : public FilterParameterWidget
     * @param filter The instance of the filter that this parameter is a part of
     * @param parent The parent QWidget for this Widget
     */
-    DataArrayCreationWidget(FilterParameter* parameter, AbstractFilter* filter = NULL, QWidget* parent = NULL);
+    DataArrayCreationWidget(FilterParameter* parameter, AbstractFilter* filter = nullptr, QWidget* parent = nullptr);
 
-    DataArrayCreationWidget(QWidget* parent = NULL);
+    DataArrayCreationWidget(QWidget* parent = nullptr);
 
     virtual ~DataArrayCreationWidget();
+
+    typedef QSharedPointer<QMenu> QMenuPtr;
 
     /**
     * @brief This method does additional GUI widget connections
@@ -129,6 +131,9 @@ class SVWidgetsLib_EXPORT DataArrayCreationWidget : public FilterParameterWidget
     bool m_DidCausePreflight;
 
     QSignalMapper*  m_MenuMapper;
+
+    QMenu*        m_MenuPtr = nullptr;
+    bool          m_OwnsMenuPtr = false;
 
     DataArrayCreationFilterParameter* m_FilterParameter;
 

@@ -72,7 +72,7 @@ class SVWidgetsLib_EXPORT CalculatorWidget : public FilterParameterWidget, priva
     * @param filter The instance of the filter that this parameter is a part of
     * @param parent The parent QWidget for this Widget
     */
-    CalculatorWidget(FilterParameter* parameter, AbstractFilter* filter = NULL, QWidget* parent = NULL);
+    CalculatorWidget(FilterParameter* parameter, AbstractFilter* filter = nullptr, QWidget* parent = nullptr);
 
     virtual ~CalculatorWidget();
 

@@ -61,12 +61,12 @@ namespace detail
 // -----------------------------------------------------------------------------
 FilterParameterWidget::FilterParameterWidget(QWidget* parent) :
   QFrame(parent),
-  m_Filter(NULL),
-  m_FilterParameter(NULL),
+  m_Filter(nullptr),
+  m_FilterParameter(nullptr),
   m_WidgetIsExpanding(false),
-  m_Timer(NULL),
-  animation(NULL),
-  effect(NULL)
+  m_Timer(nullptr),
+  animation(nullptr),
+  effect(nullptr)
 {
   fadeIn = true;
 }
@@ -82,9 +82,9 @@ FilterParameterWidget::FilterParameterWidget(FilterParameter* parameter, Abstrac
   m_Filter(filter),
   m_FilterParameter(parameter),
   m_WidgetIsExpanding(false),
-  m_Timer(NULL),
-  animation(NULL),
-  effect(NULL)
+  m_Timer(nullptr),
+  animation(nullptr),
+  effect(nullptr)
 {
   fadeIn = true;
 }
@@ -303,10 +303,10 @@ void FilterParameterWidget::animationFinished()
 // -----------------------------------------------------------------------------
 void FilterParameterWidget::showBorder()
 {
-  if (NULL != m_Timer)
+  if (nullptr != m_Timer)
   {
     delete m_Timer;
-    m_Timer = NULL;
+    m_Timer = nullptr;
   }
   m_Timer = new QTimer(this);
   connect(m_Timer, SIGNAL(timeout()), this, SLOT(hideBorder()));

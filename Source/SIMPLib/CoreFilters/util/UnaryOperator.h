@@ -71,7 +71,7 @@ class SIMPLib_EXPORT UnaryOperator : public CalculatorOperator
 #define CREATE_NEW_ARRAY_STANDARD_UNARY(filter, calculatedArrayPath, executionStack, func)\
     ArrayCalculator* calculatorFilter = dynamic_cast<ArrayCalculator*>(filter);\
     \
-    if (executionStack.size() >= 1 && NULL != executionStack.top() && NULL != calculatorFilter)\
+    if (executionStack.size() >= 1 && nullptr != executionStack.top() && nullptr != calculatorFilter)\
     {\
       ICalculatorArray::Pointer arrayPtr = executionStack.pop();\
       \
@@ -100,7 +100,7 @@ class SIMPLib_EXPORT UnaryOperator : public CalculatorOperator
 #define CREATE_NEW_ARRAY_TRIG(filter, calculatedArrayPath, executionStack, func)\
     ArrayCalculator* calculatorFilter = dynamic_cast<ArrayCalculator*>(filter);\
     \
-    if (executionStack.size() >= 1 && NULL != executionStack.top() && NULL != calculatorFilter)\
+    if (executionStack.size() >= 1 && nullptr != executionStack.top() && nullptr != calculatorFilter)\
     {\
       ICalculatorArray::Pointer arrayPtr = executionStack.pop();\
       \
@@ -137,7 +137,7 @@ class SIMPLib_EXPORT UnaryOperator : public CalculatorOperator
 #define CREATE_NEW_ARRAY_ARCTRIG(filter, calculatedArrayPath, executionStack, func)\
     ArrayCalculator* calculatorFilter = dynamic_cast<ArrayCalculator*>(filter);\
     \
-    if (executionStack.size() >= 1 && NULL != executionStack.top() && NULL != calculatorFilter)\
+    if (executionStack.size() >= 1 && nullptr != executionStack.top() && nullptr != calculatorFilter)\
     {\
       ICalculatorArray::Pointer arrayPtr = executionStack.pop();\
       \

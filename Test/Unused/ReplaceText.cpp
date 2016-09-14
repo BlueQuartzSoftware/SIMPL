@@ -190,7 +190,7 @@ void replaceText1(QString hFile, QString cppFile)
 
   bool doReplace = false;
 
-  QString searchStr("size_t totalFeatures = m->getAttributeMatrix(getCellFeatureAttributeMatrixName())->getNumTuples();");
+  QString searchStr("size_t totalFeatures = m->getAttributeMatrix(getCellFeatureAttributeMatrixName())->getNumberOfTuples();");
   int index = cpp.indexOf(searchStr);
   int hIndex = -1;
   if(index > 0)
@@ -204,7 +204,7 @@ void replaceText1(QString hFile, QString cppFile)
   }
 
 
-  searchStr = QString("size_t totalEnsembles = m->getAttributeMatrix(getCellEnsembleAttributeMatrixName())->getNumTuples();");
+  searchStr = QString("size_t totalEnsembles = m->getAttributeMatrix(getCellEnsembleAttributeMatrixName())->getNumberOfTuples();");
   index = cpp.indexOf(searchStr);
   hIndex = -1;
   if(index > 0)

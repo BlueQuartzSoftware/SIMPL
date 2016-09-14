@@ -73,7 +73,7 @@ void IndexOperator::calculate(AbstractFilter* filter, DataArrayPath calculatedAr
     int err = 0;
     DataArrayPath calculatedAMPath(calculatedArrayPath.getDataContainerName(), calculatedArrayPath.getAttributeMatrixName(), "");
     AttributeMatrix::Pointer calculatedAM = filter->getDataContainerArray()->getPrereqAttributeMatrixFromPath<AbstractFilter>(filter, calculatedAMPath, err);
-    DoubleArrayType::Pointer newArray = DoubleArrayType::CreateArray(calculatedAM->getNumTuples(), QVector<size_t>(1, 1), calculatedArrayPath.getDataArrayName());
+    DoubleArrayType::Pointer newArray = DoubleArrayType::CreateArray(calculatedAM->getNumberOfTuples(), QVector<size_t>(1, 1), calculatedArrayPath.getDataArrayName());
 
     int numComps = arrayPtr->getArray()->getNumberOfComponents();
     for (int i = 0; i < newArray->getNumberOfTuples(); i++)
@@ -98,7 +98,7 @@ void IndexOperator::calculate(AbstractFilter* filter, DataArrayPath calculatedAr
 // -----------------------------------------------------------------------------
 bool IndexOperator::checkValidity(QVector<CalculatorItem::Pointer> infixVector, int currentIndex)
 {
-  if (currentIndex - 1 >= 0 && NULL != std::dynamic_pointer_cast<ICalculatorArray>(infixVector[currentIndex-1]))
+  if (currentIndex - 1 >= 0 && nullptr != std::dynamic_pointer_cast<ICalculatorArray>(infixVector[currentIndex-1]))
   {
     return true;
   }

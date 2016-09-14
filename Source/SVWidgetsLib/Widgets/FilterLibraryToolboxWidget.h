@@ -62,7 +62,7 @@ class SVWidgetsLib_EXPORT FilterLibraryToolboxWidget : public QWidget, private U
      * @brief FilterLibraryToolboxWidget
      * @param parent
      */
-    FilterLibraryToolboxWidget(QWidget* parent = NULL);
+    FilterLibraryToolboxWidget(QWidget* parent = nullptr);
     virtual ~FilterLibraryToolboxWidget();
 
     /**

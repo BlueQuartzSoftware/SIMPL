@@ -647,7 +647,7 @@ class H5LiteTest
 
       // Now Read the Attribute back into an MXAArray object and test against the previous for equality
       IMXAArray* rArray = QH5Lite::readMXAAttribute(file_id, dsetName, attributeKey);
-      DREAM3D_REQUIRE (rArray != NULL);
+      DREAM3D_REQUIRE (rArray != nullptr);
       //hid_t t = rArray->getDataType();
       IMXAArray::Pointer rArrayPtr(rArray); // Let boost clean up the pointer
       T* r = static_cast<T*>(rArrayPtr->getVoidPointer(0));
@@ -659,7 +659,7 @@ class H5LiteTest
 
 
       AbstractH5Attribute::Pointer ptr = H5Attribute::ReadH5Attribute(file_id, dsetName, attributeKey);
-      DREAM3D_REQUIRE(ptr.get() != NULL);
+      DREAM3D_REQUIRE(ptr.get() != nullptr);
       r = static_cast<T*>(ptr->getAttributeValue()->getVoidPointer(0));
       DREAM3D_REQUIRE( ::memcmp(r, p, sizeof(T) * 10) == 0);
 
@@ -703,7 +703,7 @@ class H5LiteTest
 
       // Now Read the Attribute back into an MXAArray object and test against the previous for equality
       IMXAArray* rArray = QH5Lite::readMXAArray(file_id, dsetName);
-      DREAM3D_REQUIRE (rArray != NULL);
+      DREAM3D_REQUIRE (rArray != nullptr);
       IMXAArray::Pointer rArrayPtr(rArray); // Let boost clean up the pointer
       T* r = static_cast<T*>(rArrayPtr->getVoidPointer(0));
       //  for (int var = 0; var < 10; ++var) {
@@ -1055,7 +1055,7 @@ class H5LiteTest
       DREAM3D_REQUIRE(err >= 0);
       DREAM3D_REQUIRE( refAttrData.compare(attrData) == 0);
 
-      // Read the attribute as a byte array (US ASCII NULL TERM)
+      // Read the attribute as a byte array (US ASCII nullptr TERM)
       QByteArray attrDataPtr(refAttrDataBytes.size(), 0); // Create a null terminated string initialized to all zeros
       attributeKey = "c_string";
       err = QH5Lite::readStringAttribute(file_id, dsetName, attributeKey, attrDataPtr.data() );
@@ -1297,9 +1297,9 @@ class H5LiteTest
           H5Sselect_hyperslab( m_dataspace
                                , H5S_SELECT_SET
                                , offset
-                               , NULL
+                               , nullptr
                                , count
-                               , NULL );
+                               , nullptr );
 
           const char* s = v.c_str ();
           H5Dwrite (m_dataset
@@ -1314,10 +1314,10 @@ class H5LiteTest
     void writeVector (hid_t group, std::vector<std::string> const& v)
     {
       hsize_t     dims[] = { v.size ()  } ;
-      hid_t dataspace = H5Screate_simple(sizeof(dims) / sizeof(*dims), dims, NULL);
+      hid_t dataspace = H5Screate_simple(sizeof(dims) / sizeof(*dims), dims, nullptr);
 
       dims[0] = 1;
-      hid_t memspace = H5Screate_simple(sizeof(dims) / sizeof(*dims), dims, NULL);
+      hid_t memspace = H5Screate_simple(sizeof(dims) / sizeof(*dims), dims, nullptr);
 
       hid_t datatype = H5Tcopy (H5T_C_S1);
       H5Tset_size (datatype, H5T_VARIABLE);
@@ -1328,7 +1328,7 @@ class H5LiteTest
       // Select the "memory" to be written out - just 1 record.
       hsize_t offset[] = { 0 } ;
       hsize_t count[] = { 1 } ;
-      H5Sselect_hyperslab( memspace, H5S_SELECT_SET, offset, NULL, count, NULL );
+      H5Sselect_hyperslab( memspace, H5S_SELECT_SET, offset, nullptr, count, nullptr );
 
       std::for_each (v.begin (), v.end (), WriteString (dataset, datatype, dataspace, memspace));
 
@@ -1382,7 +1382,7 @@ class H5LiteTest
           // Select the file position, 1 record at position 'pos'
           hsize_t count[] = { 1 };
           hsize_t offset[] = { static_cast<hsize_t>(m_pos++) };
-          H5Sselect_hyperslab(m_dataspace, H5S_SELECT_SET, offset, NULL, count, NULL);
+          H5Sselect_hyperslab(m_dataspace, H5S_SELECT_SET, offset, nullptr, count, nullptr);
 
           const char* s = v.c_str();
           H5Dwrite(m_dataset, m_datatype, m_memspace, m_dataspace, H5P_DEFAULT, &s);

@@ -86,6 +86,7 @@ set(SIMPLib_${SUBDIR_NAME}_SRCS
   ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/IObserver.cpp
   ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/Observable.cpp
   ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/Observer.cpp
+  ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/PipelineMessage.cpp
   ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/PhaseType.cpp
   ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/ShapeType.cpp
   ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/ThresholdFilterHelper.cpp

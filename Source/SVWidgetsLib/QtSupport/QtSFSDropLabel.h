@@ -62,7 +62,7 @@ class SVWidgetsLib_EXPORT QtSFSDropLabel : public QLabel
       FS_DOESNOTEXIST_STYLE,
       FS_WARNING_STYLE
     };
-    QtSFSDropLabel(QWidget* parent = NULL);
+    QtSFSDropLabel(QWidget* parent = nullptr);
 
 
     void dragEnterEvent(QDragEnterEvent* event);

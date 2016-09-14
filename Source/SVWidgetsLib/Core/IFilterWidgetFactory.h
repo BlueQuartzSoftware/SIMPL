@@ -69,8 +69,8 @@ class SVWidgetsLib_EXPORT IFilterWidgetFactory
      * @return
      */
     virtual QWidget* createWidget(FilterParameter* parameter,
-                                  AbstractFilter* filter = NULL,
-                                  QWidget* parent = NULL);
+                                  AbstractFilter* filter = nullptr,
+                                  QWidget* parent = nullptr);
 
   protected:
     IFilterWidgetFactory();

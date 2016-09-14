@@ -54,7 +54,7 @@ class SVWidgetsLib_EXPORT QtSCheckboxDialog : public QDialog
     Q_OBJECT
 
   public:
-    QtSCheckboxDialog(QVector<QString> list, QWidget* parent = NULL);
+    QtSCheckboxDialog(QVector<QString> list, QWidget* parent = nullptr);
     virtual ~QtSCheckboxDialog();
 
     bool getValue(QString key);

@@ -174,11 +174,11 @@ EdgeGeom::Pointer EdgeGeom::CreateGeometry(SharedEdgeList::Pointer edges, Shared
   {
     return EdgeGeom::NullPointer();
   }
-  if (vertices.get() == NULL)
+  if (vertices.get() == nullptr)
   {
     return EdgeGeom::NullPointer();
   }
-  if (edges.get() == NULL)
+  if (edges.get() == nullptr)
   {
     return EdgeGeom::NullPointer();
   }
@@ -209,11 +209,11 @@ void EdgeGeom::addAttributeMatrix(const QString& name, AttributeMatrix::Pointer 
     // EdgeGeom can only accept vertex or edge Attribute Matrices
     return;
   }
-  if (data->getType() == 0 && static_cast<int64_t>(data->getNumTuples()) != getNumberOfVertices())
+  if (data->getType() == 0 && static_cast<int64_t>(data->getNumberOfTuples()) != getNumberOfVertices())
   {
     return;
   }
-  if (data->getType() == 1 && data->getNumTuples() != getNumberOfElements())
+  if (data->getType() == 1 && data->getNumberOfTuples() != getNumberOfElements())
   {
     return;
   }
@@ -239,7 +239,7 @@ int EdgeGeom::findElementsContainingVert()
 {
   m_EdgesContainingVert = ElementDynamicList::New();
   GeometryHelpers::Connectivity::FindElementsContainingVert<uint16_t, int64_t>(m_EdgeList, m_EdgesContainingVert, getNumberOfVertices());
-  if (m_EdgesContainingVert.get() == NULL)
+  if (m_EdgesContainingVert.get() == nullptr)
   {
     return -1;
   }
@@ -276,14 +276,14 @@ void EdgeGeom::deleteElementsContainingVert()
 int EdgeGeom::findElementNeighbors()
 {
   int err = 0;
-  if (m_EdgesContainingVert.get() == NULL)
+  if (m_EdgesContainingVert.get() == nullptr)
   {
     err = findElementsContainingVert();
     if (err < 0) { return err; }
   }
   m_EdgeNeighbors = ElementDynamicList::New();
   err = GeometryHelpers::Connectivity::FindElementNeighbors<uint16_t, int64_t>(m_EdgeList, m_EdgesContainingVert, m_EdgeNeighbors, SIMPL::GeometryType::EdgeGeometry);
-  if (m_EdgeNeighbors.get() == NULL)
+  if (m_EdgeNeighbors.get() == nullptr)
   {
     err = -1;
   }
@@ -322,7 +322,7 @@ int EdgeGeom::findElementCentroids()
   QVector<size_t> cDims(1, 3);
   m_EdgeCentroids = FloatArrayType::CreateArray(getNumberOfEdges(), cDims, SIMPL::StringConstants::EdgeCentroids);
   GeometryHelpers::Topology::FindElementCentroids<int64_t>(m_EdgeList, m_VertexList, m_EdgeCentroids);
-  if (m_EdgeCentroids.get() == NULL)
+  if (m_EdgeCentroids.get() == nullptr)
   {
     return -1;
   }
@@ -414,7 +414,7 @@ int EdgeGeom::writeGeometryToHDF5(hid_t parentId, bool SIMPL_NOT_USED(writeXdmf)
 {
   herr_t err = 0;
 
-  if (m_VertexList.get() != NULL)
+  if (m_VertexList.get() != nullptr)
   {
     err = GeometryHelpers::GeomIO::WriteListToHDF5(parentId, m_VertexList);
     if (err < 0)
@@ -423,7 +423,7 @@ int EdgeGeom::writeGeometryToHDF5(hid_t parentId, bool SIMPL_NOT_USED(writeXdmf)
     }
   }
 
-  if (m_EdgeList.get() != NULL)
+  if (m_EdgeList.get() != nullptr)
   {
     err = GeometryHelpers::GeomIO::WriteListToHDF5(parentId, m_EdgeList);
     if (err < 0)
@@ -432,7 +432,7 @@ int EdgeGeom::writeGeometryToHDF5(hid_t parentId, bool SIMPL_NOT_USED(writeXdmf)
     }
   }
 
-  if (m_EdgeCentroids.get() != NULL)
+  if (m_EdgeCentroids.get() != nullptr)
   {
     err = GeometryHelpers::GeomIO::WriteListToHDF5(parentId, m_EdgeCentroids);
     if (err < 0)
@@ -441,7 +441,7 @@ int EdgeGeom::writeGeometryToHDF5(hid_t parentId, bool SIMPL_NOT_USED(writeXdmf)
     }
   }
 
-  if (m_EdgeNeighbors.get() != NULL)
+  if (m_EdgeNeighbors.get() != nullptr)
   {
     size_t numEdges = getNumberOfEdges();
     err = GeometryHelpers::GeomIO::WriteDynamicListToHDF5<uint16_t, int64_t>(parentId, m_EdgeNeighbors, numEdges, SIMPL::StringConstants::EdgeNeighbors);
@@ -451,7 +451,7 @@ int EdgeGeom::writeGeometryToHDF5(hid_t parentId, bool SIMPL_NOT_USED(writeXdmf)
     }
   }
 
-  if (m_EdgesContainingVert.get() != NULL)
+  if (m_EdgesContainingVert.get() != nullptr)
   {
     size_t numVerts = getNumberOfVertices();
     err = GeometryHelpers::GeomIO::WriteDynamicListToHDF5<uint16_t, int64_t>(parentId, m_EdgesContainingVert, numVerts, SIMPL::StringConstants::EdgesContainingVert);
@@ -481,7 +481,7 @@ int EdgeGeom::writeXdmf(QTextStream& out, QString dcName, QString hdfFileName)
   out << "      </DataItem>" << "\n";
   out << "    </Topology>" << "\n";
 
-  if (m_VertexList.get() == NULL)
+  if (m_VertexList.get() == nullptr)
   {
     out << "<!-- ********************* GEOMETRY ERROR ****************************************\n";
     out << "The Geometry with name '" << getName() << "' in DataContainer '" << dcName <<  "' \n";
@@ -533,7 +533,7 @@ int EdgeGeom::readGeometryFromHDF5(hid_t parentId, bool preflight)
   herr_t err = 0;
   SharedVertexList::Pointer vertices = GeometryHelpers::GeomIO::ReadListFromHDF5<SharedVertexList>(SIMPL::Geometry::SharedVertexList, parentId, preflight, err);
   SharedEdgeList::Pointer edges = GeometryHelpers::GeomIO::ReadListFromHDF5<SharedEdgeList>(SIMPL::Geometry::SharedEdgeList, parentId, preflight, err);
-  if (edges.get() == NULL || vertices.get() == NULL)
+  if (edges.get() == nullptr || vertices.get() == nullptr)
   {
     return -1;
   }

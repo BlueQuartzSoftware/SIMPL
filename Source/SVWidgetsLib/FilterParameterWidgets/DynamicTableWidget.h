@@ -51,6 +51,7 @@
 #include "SVWidgetsLib/ui_DynamicTableWidget.h"
 
 class DynamicTableFilterParameter;
+class DynamicTableItemDelegate;
 
 /**
 * @brief
@@ -68,7 +69,7 @@ class SVWidgetsLib_EXPORT DynamicTableWidget : public FilterParameterWidget, pri
     * @param filter The instance of the filter that this parameter is a part of
     * @param parent The parent QWidget for this Widget
     */
-    DynamicTableWidget(FilterParameter* parameter, AbstractFilter* filter = NULL, QWidget* parent = NULL);
+    DynamicTableWidget(FilterParameter* parameter, AbstractFilter* filter = nullptr, QWidget* parent = nullptr);
 
     virtual ~DynamicTableWidget();
 
@@ -109,6 +110,7 @@ class SVWidgetsLib_EXPORT DynamicTableWidget : public FilterParameterWidget, pri
   private:
 
     DynamicTableFilterParameter*  m_FilterParameter;
+    DynamicTableItemDelegate*     m_ItemDelegate = nullptr;
     bool m_DidCausePreflight;
 
     void populateTable();

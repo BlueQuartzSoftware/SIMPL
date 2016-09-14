@@ -182,10 +182,10 @@ void MoveData::dataCheck()
 
     if(getErrorCondition() < 0) { return; }
 
-    if (daDestAttributeMatrix->getNumTuples() != daSrcDataArray->getNumberOfTuples())
+    if (daDestAttributeMatrix->getNumberOfTuples() != daSrcDataArray->getNumberOfTuples())
     {
       setErrorCondition(-11019);
-      QString ss = QObject::tr("The number of tuples of source Attribute Array (%1) and destination Attribute Matrix (%2) do not match").arg(daSrcDataArray->getNumberOfTuples()).arg(daDestAttributeMatrix->getNumTuples());
+      QString ss = QObject::tr("The number of tuples of source Attribute Array (%1) and destination Attribute Matrix (%2) do not match").arg(daSrcDataArray->getNumberOfTuples()).arg(daDestAttributeMatrix->getNumberOfTuples());
       notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
       return;
     }

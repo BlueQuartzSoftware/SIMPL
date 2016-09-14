@@ -365,7 +365,7 @@ int DataContainer::readAttributeMatricesFromHDF5(bool preflight, hid_t dcGid, co
       return -1;
     }
 
-    if(getAttributeMatrix(amName) == NULL)
+    if(getAttributeMatrix(amName) == nullptr)
     {
       AttributeMatrix::Pointer am = AttributeMatrix::New(tDims, amName, amType);
       addAttributeMatrix(amName, am);
@@ -393,7 +393,7 @@ DataContainer::Pointer DataContainer::deepCopy()
   DataContainer::Pointer dcCopy = DataContainer::New(getName());
   dcCopy->setName(getName());
 
-  if (m_Geometry.get() != NULL)
+  if (m_Geometry.get() != nullptr)
   {
     IGeometry::Pointer geomCopy = m_Geometry->deepCopy();
     dcCopy->setGeometry(geomCopy);
@@ -427,7 +427,7 @@ int DataContainer::writeMeshToHDF5(hid_t dcGid, bool writeXdmf)
   }
   HDF5ScopedGroupSentinel gSentinel(&geometryId, false);
 
-  if (NULL == m_Geometry.get())
+  if (nullptr == m_Geometry.get())
   {
     err = QH5Lite::writeScalarAttribute(dcGid, SIMPL::Geometry::Geometry, SIMPL::Geometry::GeometryType, SIMPL::GeometryType::UnknownGeometry);
     if (err < 0)
@@ -482,7 +482,7 @@ int DataContainer::writeMeshToHDF5(hid_t dcGid, bool writeXdmf)
 // -----------------------------------------------------------------------------
 int DataContainer::writeXdmf(QTextStream& out, QString hdfFileName)
 {
-  if (NULL == m_Geometry.get())
+  if (nullptr == m_Geometry.get())
   {
     return -1;
   }
@@ -646,7 +646,7 @@ int DataContainer::readMeshDataFromHDF5(hid_t dcGid, bool preflight)
 
   IGeometry::Pointer geomPtr = IGeometry::NullPointer();
 
-  if (NULL == m_Geometry.get())
+  if (nullptr == m_Geometry.get())
   {
     if (geometryTypeName.compare(SIMPL::Geometry::ImageGeometry) == 0)
     {
@@ -751,7 +751,7 @@ QString DataContainer::getInfoString(SIMPL::InfoStringFormat format)
     ss << "<tr bgcolor=\"#C3C8D0\"><th align=\"right\">Name:</th><td>" << getName() << "</td></tr>";
     ss << "<tr bgcolor=\"#C3C8D0\"><th align=\"right\">Attribute Matrix Count:</th><td>" << getNumAttributeMatrices() << "</td></tr>";
     ss << "<tr><td></td><td></td></tr>";
-    if(getGeometry().get() != NULL)
+    if(getGeometry().get() != nullptr)
     {
       ss << getGeometry()->getInfoString(SIMPL::HtmlFormat);
     }

@@ -90,7 +90,7 @@ class SVWidgetsLib_EXPORT QtSImageGraphicsDelegate : public QObject
     void displayTextMessage(QString message);
 
     /**
-     * @brief sets all cached values to NULL or empty
+     * @brief sets all cached values to nullptr or empty
      */
     void resetCaches();
 

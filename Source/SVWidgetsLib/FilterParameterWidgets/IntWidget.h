@@ -69,7 +69,7 @@ class SVWidgetsLib_EXPORT IntWidget : public FilterParameterWidget, private Ui::
     * @param filter The instance of the filter that this parameter is a part of
     * @param parent The parent QWidget for this Widget
     */
-    IntWidget(FilterParameter* parameter, AbstractFilter* filter = NULL, QWidget* parent = NULL);
+    IntWidget(FilterParameter* parameter, AbstractFilter* filter = nullptr, QWidget* parent = nullptr);
 
     virtual ~IntWidget();
 

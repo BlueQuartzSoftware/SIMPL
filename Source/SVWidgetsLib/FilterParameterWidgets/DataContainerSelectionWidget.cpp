@@ -62,7 +62,7 @@ DataContainerSelectionWidget::DataContainerSelectionWidget(FilterParameter* para
   m_DidCausePreflight(false)
 {
   m_FilterParameter = dynamic_cast<DataContainerSelectionFilterParameter*>(parameter);
-  Q_ASSERT_X(m_FilterParameter != NULL, "NULL Pointer", "DataContainerSelectionWidget can ONLY be used with a DataContainerSelectionFilterParameter object");
+  Q_ASSERT_X(m_FilterParameter != nullptr, "nullptr Pointer", "DataContainerSelectionWidget can ONLY be used with a DataContainerSelectionFilterParameter object");
 
   setupUi(this);
   setupGui();
@@ -72,7 +72,7 @@ DataContainerSelectionWidget::DataContainerSelectionWidget(FilterParameter* para
 //
 // -----------------------------------------------------------------------------
 DataContainerSelectionWidget::DataContainerSelectionWidget(QWidget* parent) :
-  FilterParameterWidget(NULL, NULL, parent),
+  FilterParameterWidget(nullptr, nullptr, parent),
   m_DidCausePreflight(false)
 {
   setupUi(this);
@@ -101,7 +101,7 @@ void DataContainerSelectionWidget::initializeWidget(FilterParameter* parameter, 
 // -----------------------------------------------------------------------------
 void DataContainerSelectionWidget::setupGui()
 {
-  if(getFilter() == NULL)
+  if(getFilter() == nullptr)
   {
     return;
   }
@@ -117,7 +117,7 @@ void DataContainerSelectionWidget::setupGui()
   connect(getFilter(), SIGNAL(updateFilterParameters(AbstractFilter*)),
           this, SLOT(filterNeedsInputParameters(AbstractFilter*)));
 
-  if (getFilterParameter() == NULL)
+  if (getFilterParameter() == nullptr)
   {
     return;
   }
@@ -156,7 +156,7 @@ void DataContainerSelectionWidget::createSelectionMenu()
   // Now get the DataContainerArray from the Filter instance
   // We are going to use this to get all the current DataContainers
   DataContainerArray::Pointer dca = getFilter()->getDataContainerArray();
-  if(NULL == dca.get()) { return; }
+  if(nullptr == dca.get()) { return; }
 
   // Get the menu and clear it out
   QMenu* menu = m_SelectedDataContainerPath->menu();
@@ -182,8 +182,8 @@ void DataContainerSelectionWidget::createSelectionMenu()
 
     IGeometry::Pointer geom = IGeometry::NullPointer();
     uint32_t geomType = 999;
-    if (NULL != dc.get()) { geom = dc->getGeometry(); }
-    if (NULL != geom.get()) { geomType = geom->getGeometryType(); }
+    if (nullptr != dc.get()) { geom = dc->getGeometry(); }
+    if (nullptr != geom.get()) { geomType = geom->getGeometryType(); }
 
     QString dcName = dc->getName();
     QAction* action = new QAction(dcName, menu);
@@ -248,7 +248,7 @@ void DataContainerSelectionWidget::setSelectedPath(DataArrayPath dcPath)
   m_SelectedDataContainerPath->setToolTip("");
 
   DataContainerArray::Pointer dca = getFilter()->getDataContainerArray();
-  if(NULL == dca.get()) { return; }
+  if(nullptr == dca.get()) { return; }
 
   if (dca->doesDataContainerExist(dcPath.getDataContainerName()))
   {
@@ -264,7 +264,7 @@ void DataContainerSelectionWidget::setSelectedPath(DataArrayPath dcPath)
 // -----------------------------------------------------------------------------
 void DataContainerSelectionWidget::beforePreflight()
 {
-  if (NULL == getFilter()) { return; }
+  if (nullptr == getFilter()) { return; }
   if(m_DidCausePreflight == true)
   {
     //std::cout << "***  DataContainerSelectionWidget already caused a preflight, just returning" << std::endl;

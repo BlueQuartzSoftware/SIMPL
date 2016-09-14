@@ -248,7 +248,7 @@ QString QH5Utilities::fileNameFromFileId(hid_t fileId)
   H5SUPPORT_MUTEX_LOCK()
 
 // Get the name of the .dream3d file that we are writing to:
-  ssize_t nameSize = H5Fget_name(fileId, NULL, 0) + 1;
+  ssize_t nameSize = H5Fget_name(fileId, nullptr, 0) + 1;
   QByteArray nameBuffer(nameSize, 0);
   nameSize = H5Fget_name(fileId, nameBuffer.data(), nameSize);
 
@@ -266,7 +266,7 @@ QString QH5Utilities::absoluteFilePathFromFileId(hid_t fileId)
   H5SUPPORT_MUTEX_LOCK()
 
 // Get the name of the .dream3d file that we are writing to:
-  ssize_t nameSize = H5Fget_name(fileId, NULL, 0) + 1;
+  ssize_t nameSize = H5Fget_name(fileId, nullptr, 0) + 1;
   QByteArray nameBuffer(nameSize, 0);
   nameSize = H5Fget_name(fileId, nameBuffer.data(), nameSize);
 

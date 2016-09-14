@@ -58,9 +58,9 @@ m_FirstIndexArrayPath("", "", ""),
 m_SecondIndexArrayPath("", "", ""),
 m_CombinedAttributeMatrixName(""),
 m_NewIndexArrayName(""),
-m_FirstIndex(NULL),
-m_SecondIndex(NULL),
-m_NewIndex(NULL)
+m_FirstIndex(nullptr),
+m_SecondIndex(nullptr),
+m_NewIndex(nullptr)
 {
   setupFilterParameters();
 }
@@ -164,7 +164,7 @@ void CombineAttributeMatrices::dataCheck()
   DataArrayPath tempPath;
 
   DataContainer::Pointer m = getDataContainerArray()->getPrereqDataContainer<AbstractFilter>(this, getFirstAttributeMatrixPath().getDataContainerName(), false);
-  if (getErrorCondition() < 0 || NULL == m.get()) { return; }
+  if (getErrorCondition() < 0 || nullptr == m.get()) { return; }
 
   if (getFirstAttributeMatrixPath().getDataContainerName().compare(getSecondAttributeMatrixPath().getDataContainerName()) != 0)
   {
@@ -195,7 +195,7 @@ void CombineAttributeMatrices::dataCheck()
 
   //Note that the minus 1 in the totalTuples calculation is to account for the fact that the zeroth tuple in the two attribute matrices should only be counted once, not twice.
   //All Feature or Ensemble AMs should start from 1 and the zeroth tuple can be combined in the two AMs
-  size_t totalTuples = firstAttrMat->getNumTuples() + secondAttrMat->getNumTuples() - 1;
+  size_t totalTuples = firstAttrMat->getNumberOfTuples() + secondAttrMat->getNumberOfTuples() - 1;
   QVector<size_t> tDims(1, totalTuples);
   m->createNonPrereqAttributeMatrix<AbstractFilter>(this, getCombinedAttributeMatrixName(), tDims, firstAttrMat->getType());
   if (getErrorCondition() < 0) { return; }
@@ -203,14 +203,14 @@ void CombineAttributeMatrices::dataCheck()
 
   QVector<size_t> cDims(1, 1);
   m_FirstIndexPtr = getDataContainerArray()->getPrereqArrayFromPath<DataArray<int32_t>, AbstractFilter>(this, getFirstIndexArrayPath(), cDims); /* Assigns the shared_ptr<> to an instance variable that is a weak_ptr<> */
-  if (NULL != m_FirstIndexPtr.lock().get()) /* Validate the Weak Pointer wraps a non-NULL pointer to a DataArray<T> object */
+  if (nullptr != m_FirstIndexPtr.lock().get()) /* Validate the Weak Pointer wraps a non-nullptr pointer to a DataArray<T> object */
   {
     m_FirstIndex = m_FirstIndexPtr.lock()->getPointer(0);
   } /* Now assign the raw pointer to data from the DataArray<T> object */
   if (getErrorCondition() < 0) { return; }
 
   m_SecondIndexPtr = getDataContainerArray()->getPrereqArrayFromPath<DataArray<int32_t>, AbstractFilter>(this, getSecondIndexArrayPath(), cDims); /* Assigns the shared_ptr<> to an instance variable that is a weak_ptr<> */
-  if (NULL != m_SecondIndexPtr.lock().get()) /* Validate the Weak Pointer wraps a non-NULL pointer to a DataArray<T> object */
+  if (nullptr != m_SecondIndexPtr.lock().get()) /* Validate the Weak Pointer wraps a non-nullptr pointer to a DataArray<T> object */
   {
     m_SecondIndex = m_SecondIndexPtr.lock()->getPointer(0);
   } /* Now assign the raw pointer to data from the DataArray<T> object */
@@ -245,7 +245,7 @@ void CombineAttributeMatrices::dataCheck()
 
   tempPath.update(getFirstIndexArrayPath().getDataContainerName(), getFirstIndexArrayPath().getAttributeMatrixName(), getNewIndexArrayName());
   m_NewIndexPtr = getDataContainerArray()->createNonPrereqArrayFromPath<DataArray<int32_t>, AbstractFilter, int32_t>(this, tempPath, 0, cDims); /* Assigns the shared_ptr<> to an instance variable that is a weak_ptr<> */
-  if (NULL != m_NewIndexPtr.lock().get()) /* Validate the Weak Pointer wraps a non-NULL pointer to a DataArray<T> object */
+  if (nullptr != m_NewIndexPtr.lock().get()) /* Validate the Weak Pointer wraps a non-nullptr pointer to a DataArray<T> object */
   {
     m_NewIndex = m_NewIndexPtr.lock()->getPointer(0);
   }    /* Now assign the raw pointer to data from the DataArray<T> object */
@@ -291,7 +291,7 @@ void CombineAttributeMatrices::execute()
   AttributeMatrix::Pointer firstAttrMat = m->getAttributeMatrix(getFirstAttributeMatrixPath().getAttributeMatrixName());
   AttributeMatrix::Pointer secondAttrMat = m->getAttributeMatrix(getSecondAttributeMatrixPath().getAttributeMatrixName());
   AttributeMatrix::Pointer combinedAttrMat = m->getAttributeMatrix(getCombinedAttributeMatrixName());
-  size_t firstAttrMatNumTuples = firstAttrMat->getNumTuples();
+  size_t firstAttrMatNumTuples = firstAttrMat->getNumberOfTuples();
 
   size_t totalTuples1 = m_SecondIndexPtr.lock()->getNumberOfTuples();
   size_t totalTuples2 = m_SecondIndexPtr.lock()->getNumberOfTuples();

@@ -55,7 +55,7 @@ ThirdOrderPolynomialWidget::ThirdOrderPolynomialWidget(FilterParameter* paramete
   FilterParameterWidget(parameter, filter, parent)
 {
   m_FilterParameter = dynamic_cast<ThirdOrderPolynomialFilterParameter*>(parameter);
-  Q_ASSERT_X(m_FilterParameter != NULL, "NULL Pointer", "ThirdOrderPolynomialWidget can ONLY be used with a ThirdOrderPolynomialFilterParameter object");
+  Q_ASSERT_X(m_FilterParameter != nullptr, "nullptr Pointer", "ThirdOrderPolynomialWidget can ONLY be used with a ThirdOrderPolynomialFilterParameter object");
 
   setupUi(this);
   setupGui();
@@ -98,7 +98,7 @@ void ThirdOrderPolynomialWidget::setupGui()
   FOPW_SETUP_WIDGET(c01)
   FOPW_SETUP_WIDGET(c00)
 
-  if (getFilterParameter() != NULL)
+  if (getFilterParameter() != nullptr)
   {
     label->setText(getFilterParameter()->getHumanLabel() );
 

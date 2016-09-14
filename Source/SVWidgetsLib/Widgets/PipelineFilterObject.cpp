@@ -47,7 +47,7 @@
 PipelineFilterObject::PipelineFilterObject() :
   m_Running(false),
   m_Filter(AbstractFilter::NullPointer()),
-  m_FilterInputWidget(NULL),
+  m_FilterInputWidget(nullptr),
   m_IsFocused(false),
   m_HasPreflightErrors(false),
   m_HasPreflightWarnings(false)
@@ -60,7 +60,8 @@ PipelineFilterObject::PipelineFilterObject() :
 // -----------------------------------------------------------------------------
 PipelineFilterObject::PipelineFilterObject(AbstractFilter::Pointer filter, IObserver* observer) :
   m_Filter(filter),
-  m_FilterInputWidget(NULL),
+  m_FilterInputWidget(nullptr),
+  m_IsFocused(false),
   m_HasPreflightErrors(false),
   m_HasPreflightWarnings(false)
 {
@@ -82,10 +83,10 @@ PipelineFilterObject::~PipelineFilterObject()
     m_Filter = AbstractFilter::NullPointer();
   }
 
-  if (NULL != m_FilterInputWidget)
+  if (nullptr != m_FilterInputWidget)
   {
     delete m_FilterInputWidget;
-    m_FilterInputWidget = NULL;
+    m_FilterInputWidget = nullptr;
   }
 }
 
@@ -95,7 +96,7 @@ PipelineFilterObject::~PipelineFilterObject()
 void PipelineFilterObject::setupFilterInputWidget()
 {
   // Instantiate the filter input widget object
-  m_FilterInputWidget = new FilterInputWidget(m_Filter->getNameOfClass(), this, NULL);
+  m_FilterInputWidget = new FilterInputWidget(m_Filter->getNameOfClass(), this, nullptr);
 
   // Initialize the filter input widget with values
   m_FilterInputWidget->displayFilterParameters(this);
@@ -138,7 +139,7 @@ bool PipelineFilterObject::getHasPreflightWarnings()
 // -----------------------------------------------------------------------------
 QString PipelineFilterObject::getHumanLabel()
 {
-  if (NULL != m_Filter.get())
+  if (nullptr != m_Filter.get())
   { return m_Filter->getHumanLabel(); }
 
   return "";
@@ -149,7 +150,7 @@ QString PipelineFilterObject::getHumanLabel()
 // -----------------------------------------------------------------------------
 QString PipelineFilterObject::getFilterClassName()
 {
-  if (NULL != m_Filter.get())
+  if (nullptr != m_Filter.get())
   { return m_Filter->getNameOfClass(); }
 
   return "";
@@ -160,7 +161,7 @@ QString PipelineFilterObject::getFilterClassName()
 // -----------------------------------------------------------------------------
 QString PipelineFilterObject::getCompiledLibraryName()
 {
-  if (NULL != m_Filter.get())
+  if (nullptr != m_Filter.get())
   { return m_Filter->getCompiledLibraryName(); }
 
   return "";
@@ -171,7 +172,7 @@ QString PipelineFilterObject::getCompiledLibraryName()
 // -----------------------------------------------------------------------------
 QString PipelineFilterObject::getFilterGroup()
 {
-  if (NULL != m_Filter.get())
+  if (nullptr != m_Filter.get())
   { return m_Filter->getGroupName(); }
 
   return "";
@@ -182,7 +183,7 @@ QString PipelineFilterObject::getFilterGroup()
 // -----------------------------------------------------------------------------
 QString PipelineFilterObject::getFilterSubGroup()
 {
-  if (NULL != m_Filter.get())
+  if (nullptr != m_Filter.get())
   { return m_Filter->getSubGroupName(); }
 
   return "";

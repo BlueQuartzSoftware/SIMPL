@@ -69,7 +69,7 @@ class SVWidgetsLib_EXPORT ChoiceWidget : public FilterParameterWidget, private U
     * @param filter The instance of the filter that this parameter is a part of
     * @param parent The parent QWidget for this Widget
     */
-    ChoiceWidget(FilterParameter* parameter, AbstractFilter* filter = NULL, QWidget* parent = NULL);
+    ChoiceWidget(FilterParameter* parameter, AbstractFilter* filter = nullptr, QWidget* parent = nullptr);
 
     virtual ~ChoiceWidget();
 

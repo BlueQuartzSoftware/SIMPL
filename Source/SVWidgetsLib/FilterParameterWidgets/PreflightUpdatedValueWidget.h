@@ -71,7 +71,7 @@ class SVWidgetsLib_EXPORT PreflightUpdatedValueWidget : public FilterParameterWi
     * @param filter The instance of the filter that this parameter is a part of
     * @param parent The parent QWidget for this Widget
     */
-    PreflightUpdatedValueWidget(FilterParameter* parameter, AbstractFilter* filter = NULL, QWidget* parent = NULL);
+    PreflightUpdatedValueWidget(FilterParameter* parameter, AbstractFilter* filter = nullptr, QWidget* parent = nullptr);
 
     virtual ~PreflightUpdatedValueWidget();
 

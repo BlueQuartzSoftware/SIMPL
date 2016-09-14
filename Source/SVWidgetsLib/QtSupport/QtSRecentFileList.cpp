@@ -60,7 +60,7 @@ QtSRecentFileList::QtSRecentFileList(QObject* parent) :
 QtSRecentFileList::~QtSRecentFileList()
 {
   delete m_Watcher;
-  m_Watcher = NULL;
+  m_Watcher = nullptr;
 }
 
 // -----------------------------------------------------------------------------
@@ -71,7 +71,7 @@ QtSRecentFileList* QtSRecentFileList::instance()
 // qDebug() << "QtSRecentFileList::instance()" << "\n";
   static QtSRecentFileList* singleton;
 
-  if (singleton == NULL)
+  if (singleton == nullptr)
   {
     singleton = new QtSRecentFileList();
   }

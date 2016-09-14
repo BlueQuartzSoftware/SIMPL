@@ -51,7 +51,7 @@ class SIMPLib_EXPORT IDataArray
      * @code
      *    typedef DataArray<int32_t>  Int32ArrayType;
      *    int32_t* iPtr = IDataArray::SafeReinterpretCast<IDataArray*, Int32ArrayType*, int32_t*>(ptr.get());
-    *     Q_ASSERT(NULL != iPtr);
+    *     Q_ASSERT(nullptr != iPtr);
      * @endcode
      * @param x The Pointer to IDataArray
      * @return
@@ -97,11 +97,11 @@ class SIMPLib_EXPORT IDataArray
     virtual void releaseOwnership () = 0;
 
     /**
-     * @brief Returns a void pointer pointing to the index of the array. NULL
+     * @brief Returns a void pointer pointing to the index of the array. nullptr
      * pointers are entirely possible. No checks are performed to make sure
      * the index is with in the range of the internal data array.
      * @param i The index to have the returned pointer pointing to.
-     * @return Void Pointer. Possibly NULL.
+     * @return Void Pointer. Possibly nullptr.
      */
     virtual void* getVoidPointer ( size_t i) = 0;
 
@@ -285,7 +285,7 @@ class CheckDataArrayType
     virtual ~CheckDataArrayType() {}
     bool operator()(IDataArray::Pointer p)
     {
-      return (std::dynamic_pointer_cast<T>(p).get() != NULL);
+      return (std::dynamic_pointer_cast<T>(p).get() != nullptr);
     }
 };
 

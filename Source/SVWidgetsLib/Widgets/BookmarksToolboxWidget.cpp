@@ -153,7 +153,7 @@ QString BookmarksToolboxWidget::generateHtmlFilterListFromPipelineFile(QString p
   QFileInfo fi(path);
   if (fi.suffix().compare("json") == 0)
   {
-    html = JsonFilterParametersReader::HtmlSummaryFromFile(path, NULL);
+    html = JsonFilterParametersReader::HtmlSummaryFromFile(path, nullptr);
   }
 
   return html;
@@ -277,7 +277,7 @@ void BookmarksToolboxWidget::addPipelinesRecursively(QDir currentDir, QModelInde
     {
       QString dVers;
       JsonFilterParametersReader::Pointer jsonReader = JsonFilterParametersReader::New();
-      jsonReader->readNameOfPipelineFromFile(itemFilePath, itemName, dVers, NULL);
+      jsonReader->readNameOfPipelineFromFile(itemFilePath, itemName, dVers, nullptr);
     }
 
     // Add tree widget for this Prebuilt Pipeline
@@ -552,8 +552,8 @@ void BookmarksToolboxWidget::readSettings(QtSSettings* prefs)
 // -----------------------------------------------------------------------------
 void BookmarksToolboxWidget::writeSettings()
 {
-  QtSSettings* prefs = new QtSSettings();
-  writeSettings(prefs);
+   QtSSettings prefs;
+   writeSettings(&prefs);
 }
 
 // -----------------------------------------------------------------------------
