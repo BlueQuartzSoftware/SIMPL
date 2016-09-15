@@ -326,6 +326,7 @@ class CombineAttributeArraysTest
       if (false == propWasSet)
       {
         qDebug() << "Unable to set property StackedDataArrayName";
+		DREAM3D_REQUIRE_EQUAL(0, 1);
       }
 
       DataArrayPath path1("CombineAttributeArraysTest", "CombineAttributeArraysTest", "uint8_tVectorArray");
