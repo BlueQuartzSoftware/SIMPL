@@ -109,7 +109,7 @@ void BuildNewDream3dFile()
   int64_t* m_FeatureIds;
   AbstractFilter::Pointer filt = AbstractFilter::New();
   m_FeatureIdsPtr = cellAttrMat->getPrereqArray<DataArray<int64_t>, AbstractFilter>(filt.get(), "Ids", -300, dims); /* Assigns the shared_ptr<> to an instance variable that is a weak_ptr<> */
-  if( NULL != m_FeatureIdsPtr.lock().get() ) /* Validate the Weak Pointer wraps a non-NULL pointer to a DataArray<T> object */
+  if( nullptr != m_FeatureIdsPtr.lock().get() ) /* Validate the Weak Pointer wraps a non-nullptr pointer to a DataArray<T> object */
   { m_FeatureIds = m_FeatureIdsPtr.lock()->getPointer(0); } /* Now assign the raw pointer to data from the DataArray<T> object */
 
   for(int i = 0; i < (128 * 128 * 128); i++)
@@ -127,7 +127,7 @@ void BuildNewDream3dFile()
   DataArray<unsigned int>::WeakPointer m_PhaseTypesPtr;
   unsigned int* m_PhaseTypes;
   m_PhaseTypesPtr = cellEnsembleAttrMat->getPrereqArray<DataArray<unsigned int>, AbstractFilter>(filt.get(), "PhaseTypes", -300, dims); /* Assigns the shared_ptr<> to an instance variable that is a weak_ptr<> */
-  if( NULL != m_PhaseTypesPtr.lock().get() ) /* Validate the Weak Pointer wraps a non-NULL pointer to a DataArray<T> object */
+  if( nullptr != m_PhaseTypesPtr.lock().get() ) /* Validate the Weak Pointer wraps a non-nullptr pointer to a DataArray<T> object */
   {
     m_PhaseTypes = m_PhaseTypesPtr.lock()->getPointer(0);  /* Now assign the raw pointer to data from the DataArray<T> object */
     m_PhaseTypes[0] = SIMPL::PhaseType::UnknownPhaseType;
@@ -137,7 +137,7 @@ void BuildNewDream3dFile()
   DataArray<unsigned int>::WeakPointer m_ShapeTypesPtr;
   unsigned int* m_ShapeTypes;
   m_ShapeTypesPtr = cellEnsembleAttrMat->getPrereqArray<DataArray<unsigned int>, AbstractFilter>(filt.get(), "ShapeTypes", -300, dims); /* Assigns the shared_ptr<> to an instance variable that is a weak_ptr<> */
-  if( NULL != m_ShapeTypesPtr.lock().get() ) /* Validate the Weak Pointer wraps a non-NULL pointer to a DataArray<T> object */
+  if( nullptr != m_ShapeTypesPtr.lock().get() ) /* Validate the Weak Pointer wraps a non-nullptr pointer to a DataArray<T> object */
   {
     m_ShapeTypes = m_ShapeTypesPtr.lock()->getPointer(0);  /* Now assign the raw pointer to data from the DataArray<T> object */
     m_ShapeTypes[0] = SIMPL::ShapeType::UnknownShapeType;
@@ -147,14 +147,14 @@ void BuildNewDream3dFile()
   DataArray<unsigned int>::WeakPointer m_CrystalStructuresPtr;
   unsigned int* m_CrystalStructures;
   m_CrystalStructuresPtr = cellEnsembleAttrMat->getPrereqArray<DataArray<unsigned int>, AbstractFilter>(filt.get(), "CrystalStructures", -300, dims); /* Assigns the shared_ptr<> to an instance variable that is a weak_ptr<> */
-  if( NULL != m_CrystalStructuresPtr.lock().get() ) /* Validate the Weak Pointer wraps a non-NULL pointer to a DataArray<T> object */
+  if( nullptr != m_CrystalStructuresPtr.lock().get() ) /* Validate the Weak Pointer wraps a non-nullptr pointer to a DataArray<T> object */
   {
     m_CrystalStructures = m_CrystalStructuresPtr.lock()->getPointer(0); /* Now assign the raw pointer to data from the DataArray<T> object */
     m_CrystalStructures[0] = Ebsd::CrystalStructure::UnknownCrystalStructure;
   }
 
   StatsDataArray* m_StatsDataArray = StatsDataArray::SafeObjectDownCast<IDataArray*, StatsDataArray*>(cellEnsembleAttrMat->getAttributeArray(SIMPL::EnsembleData::Statistics).get());
-  if(m_StatsDataArray == NULL)
+  if(m_StatsDataArray == nullptr)
   {
     StatsDataArray::Pointer p = StatsDataArray::New();
     m_StatsDataArray = p.get();

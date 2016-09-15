@@ -75,7 +75,7 @@ void __TestManagedArray()
     typename ManagedArrayOfArrays<T>::Data_t& ptr = *(mArray->getPointer(i));
     // First make sure we have a properly initialized Data structure
     DREAM3D_REQUIRE_EQUAL(ptr.count, 0)
-    DREAM3D_REQUIRE_EQUAL(ptr.data, NULL)
+    DREAM3D_REQUIRE_EQUAL(ptr.data, nullptr)
 
     ptr.count = i;
     ptr.data = (T*)(malloc(sizeof(T) * ptr.count));
@@ -85,10 +85,10 @@ void __TestManagedArray()
   {
     typename ManagedArrayOfArrays<T>::Data_t& ptr = *(mArray->getPointer(i));
     DREAM3D_REQUIRE_EQUAL(ptr.count, i)
-    DREAM3D_REQUIRE_NE(ptr.data, NULL)
+    DREAM3D_REQUIRE_NE(ptr.data, nullptr)
   }
 
-  // Forcibly set this to NULL so that if something goes wrong the debugger will catch it here.
+  // Forcibly set this to nullptr so that if something goes wrong the debugger will catch it here.
   mArray = ManagedArrayOfArrays<T>::NullPointer();
 }
 

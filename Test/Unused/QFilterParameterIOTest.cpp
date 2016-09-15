@@ -150,10 +150,10 @@ void readPipeline(QFilterParametersReader::Pointer paramsReader, FilterPipeline:
     //  qDebug() << filterName;
 
     IFilterFactory::Pointer factory = filtManager->getFactoryForFilter(filterName);
-    DREAM3D_REQUIRE(NULL != factory) // We should know about all the filters
+    DREAM3D_REQUIRE(nullptr != factory) // We should know about all the filters
     AbstractFilter::Pointer filter = factory->create();
 
-    if(NULL != filter.get())
+    if(nullptr != filter.get())
     {
       filter->readFilterParameters(paramsReader.get(), i);
       pipeline->pushBack(filter);
@@ -300,7 +300,7 @@ void TestReadQSettingsBasedFile()
 
   AbstractFilter::Pointer filter = pipeline->getFilterContainer().at(0);
   ReadH5Ebsd* readH5Ebsd = ReadH5Ebsd::SafePointerDownCast(filter.get());
-  DREAM3D_REQUIRE(readH5Ebsd != NULL);
+  DREAM3D_REQUIRE(readH5Ebsd != nullptr);
   readH5Ebsd->setInputFile(UnitTest::QFilterParameterIOTest::SmallIn100_H5EBSD_FILE);
 
   err = pipeline->preflightPipeline();

@@ -60,7 +60,7 @@ void buildInitializerList(QString hFile, QString cppFile)
       chunks = chunks.at(1).split(QRegExp("\\)"));
       QString s = QString("m_") + chunks.at(0) + QString("ArrayName");
       initializerList << s;
-      s = QString("m_") + chunks.at(0) + "(NULL)";
+      s = QString("m_") + chunks.at(0) + "(nullptr)";
       s = s.trimmed();
       initializerList << s;
     }
@@ -135,7 +135,7 @@ void buildInitializerList(QString hFile, QString cppFile)
     else
     {
 
-      if(line.contains("NULL") == false)
+      if(line.contains("nullptr") == false)
       {
         newList << line + QString("");
       }
