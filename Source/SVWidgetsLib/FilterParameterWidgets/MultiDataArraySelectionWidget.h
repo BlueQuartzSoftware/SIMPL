@@ -44,6 +44,7 @@
 
 #include "SIMPLib/SIMPLib.h"
 #include "SIMPLib/DataContainers/DataContainerArrayProxy.h"
+#include "SIMPLib/DataContainers/DataArrayPath.h"
 
 
 #include "SVWidgetsLib/SVWidgetsLib.h"
@@ -148,6 +149,7 @@ class SVWidgetsLib_EXPORT MultiDataArraySelectionWidget : public FilterParameter
     MultiDataArraySelectionFilterParameter* m_FilterParameter;
 
     void setSelectedPath(QString path);
+	void removeNonexistantPaths(QVector<DataArrayPath> &paths);
 
     MultiDataArraySelectionWidget(const MultiDataArraySelectionWidget&); // Copy Constructor Not Implemented
     void operator=(const MultiDataArraySelectionWidget&); // Operator '=' Not Implemented
