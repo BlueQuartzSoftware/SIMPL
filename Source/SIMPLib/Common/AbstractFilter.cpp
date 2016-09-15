@@ -47,6 +47,7 @@
 AbstractFilter::AbstractFilter() :
   Observable(),
   m_ErrorCondition(0),
+  m_WarningCondition(0),
   m_InPreflight(false),
   m_Cancel(false)
 {
