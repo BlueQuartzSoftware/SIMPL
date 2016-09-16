@@ -56,8 +56,8 @@ class SVWidgetsLib_EXPORT BreakpointFilterWidget : public SVPipelineFilterWidget
 {
     Q_OBJECT
   public:
-    BreakpointFilterWidget(QWidget* parent = NULL);
-    BreakpointFilterWidget(AbstractFilter::Pointer filter, IObserver* observer = NULL, QWidget* parent = NULL);
+    BreakpointFilterWidget(QWidget* parent = nullptr);
+    BreakpointFilterWidget(AbstractFilter::Pointer filter, IObserver* observer = nullptr, QWidget* parent = nullptr);
     virtual ~BreakpointFilterWidget();
 
     virtual Breakpoint::Pointer getBreakpointFilter();

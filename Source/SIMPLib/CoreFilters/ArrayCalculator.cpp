@@ -268,7 +268,7 @@ void ArrayCalculator::dataCheck()
   for (int32_t i = 0; i < parsedInfix.size(); i++)
   {
     CalculatorItem::Pointer currentItem = parsedInfix[i];
-    if (NULL != std::dynamic_pointer_cast<CalculatorOperator>(currentItem))
+    if (nullptr != std::dynamic_pointer_cast<CalculatorOperator>(currentItem))
     {
       bool result = std::dynamic_pointer_cast<CalculatorOperator>(currentItem)->checkValidity(parsedInfix, i);
       if (result == false)
@@ -279,7 +279,7 @@ void ArrayCalculator::dataCheck()
         return;
       }
     }
-    else if (NULL != std::dynamic_pointer_cast<ICalculatorArray>(currentItem))
+    else if (nullptr != std::dynamic_pointer_cast<ICalculatorArray>(currentItem))
     {
       hasValue = true;
       ICalculatorArray::Pointer calcArray = std::dynamic_pointer_cast<ICalculatorArray>(currentItem);
@@ -336,7 +336,7 @@ void ArrayCalculator::dataCheck()
     AttributeMatrix::Pointer calculatedAM = getDataContainerArray()->getPrereqAttributeMatrixFromPath<AbstractFilter>(this, calculatedAMPath, -301);
     if (getErrorCondition() < 0) { return; }
 
-    if (calculatedAM->getNumTuples() != 1)
+    if (calculatedAM->getNumberOfTuples() != 1)
     {
       QString ss = QObject::tr("The tuple count of the output Attribute Matrix is not equal to 1");
       setErrorCondition(INCORRECT_TUPLE_COUNT);
@@ -349,7 +349,7 @@ void ArrayCalculator::dataCheck()
     AttributeMatrix::Pointer selectedAM = getDataContainerArray()->getPrereqAttributeMatrixFromPath<AbstractFilter>(this, m_SelectedAttributeMatrix, -301);
     AttributeMatrix::Pointer calculatedAM = getDataContainerArray()->getPrereqAttributeMatrixFromPath<AbstractFilter>(this, calculatedAMPath, -301);
     if (getErrorCondition() < 0) { return; }
-    if (NULL != selectedAM && calculatedAM->getNumTuples() != selectedAM->getNumTuples())
+    if (nullptr != selectedAM && calculatedAM->getNumberOfTuples() != selectedAM->getNumberOfTuples())
     {
       QString ss = QObject::tr("The tuple count of the output Attribute Matrix is not equal to the tuple count of the selected Attribute Matrix");
       setErrorCondition(INCORRECT_TUPLE_COUNT);
@@ -405,7 +405,7 @@ void ArrayCalculator::execute()
 
     CalculatorItem::Pointer rpnItem = rpn[rpnCount];
     ICalculatorArray::Pointer calcArray = std::dynamic_pointer_cast<ICalculatorArray>(rpnItem);
-    if (NULL != calcArray)
+    if (nullptr != calcArray)
     {
       // This is an array
       m_ExecutionStack.push(calcArray);
@@ -432,14 +432,14 @@ void ArrayCalculator::execute()
     arrayItem = m_ExecutionStack.pop();
   }
 
-  if (NULL != arrayItem)
+  if (nullptr != arrayItem)
   {
     IDataArray::Pointer resultArray = IDataArray::NullPointer();
     resultArray = arrayItem->getArray();
 
     DataArrayPath createdAMPath(m_CalculatedArray.getDataContainerName(), m_CalculatedArray.getAttributeMatrixName(), "");
     AttributeMatrix::Pointer createdAM = getDataContainerArray()->getAttributeMatrix(createdAMPath);
-    if (NULL != createdAM)
+    if (nullptr != createdAM)
     {
       resultArray->setName(m_CalculatedArray.getDataArrayName());
       createdAM->addAttributeArray(resultArray->getName(), resultArray);
@@ -507,10 +507,10 @@ QVector<CalculatorItem::Pointer> ArrayCalculator::parseInfixEquation(QString exp
            i == 0 ||
            (
              (
-               (NULL != std::dynamic_pointer_cast<CalculatorOperator>(parsedInfix.back()) && std::dynamic_pointer_cast<CalculatorOperator>(parsedInfix.back())->getOperatorType() == CalculatorOperator::Binary)
-               || NULL != std::dynamic_pointer_cast<LeftParenthesisItem>(parsedInfix.back())
+               (nullptr != std::dynamic_pointer_cast<CalculatorOperator>(parsedInfix.back()) && std::dynamic_pointer_cast<CalculatorOperator>(parsedInfix.back())->getOperatorType() == CalculatorOperator::Binary)
+               || nullptr != std::dynamic_pointer_cast<LeftParenthesisItem>(parsedInfix.back())
              )
-             && NULL == std::dynamic_pointer_cast<RightParenthesisItem>(parsedInfix.back())
+             && nullptr == std::dynamic_pointer_cast<RightParenthesisItem>(parsedInfix.back())
            )
          )
       {
@@ -545,7 +545,7 @@ QVector<CalculatorItem::Pointer> ArrayCalculator::parseInfixEquation(QString exp
       }
 
       ICalculatorArray::Pointer calcArray = std::dynamic_pointer_cast<ICalculatorArray>(parsedInfix.back());
-      if (NULL != calcArray && index >= calcArray->getArray()->getNumberOfComponents())
+      if (nullptr != calcArray && index >= calcArray->getArray()->getNumberOfComponents())
       {
         QString ss = QObject::tr("'%1' has an component index that is out of range").arg(calcArray->getArray()->getName());
         setErrorCondition(COMPONENT_OUT_OF_RANGE);
@@ -563,7 +563,7 @@ QVector<CalculatorItem::Pointer> ArrayCalculator::parseInfixEquation(QString exp
     {
       itemPtr = m_SymbolMap.value(strItem);
 
-      if (NULL != std::dynamic_pointer_cast<CommaSeparator>(itemPtr))
+      if (nullptr != std::dynamic_pointer_cast<CommaSeparator>(itemPtr))
       {
         QString ss = QObject::tr("Item '%1' in the infix expression is the name of an array in the selected Attribute Matrix, but it is currently being detected as a comma in a mathematical operator").arg(strItem);
         checkForAmbiguousArrayName(strItem, ss);
@@ -576,7 +576,7 @@ QVector<CalculatorItem::Pointer> ArrayCalculator::parseInfixEquation(QString exp
           while (iter.hasPrevious())
           {
             CalculatorItem::Pointer item = iter.previous();
-            if (NULL != std::dynamic_pointer_cast<UnaryOperator>(item))
+            if (nullptr != std::dynamic_pointer_cast<UnaryOperator>(item))
             {
               foundUnaryOperator = true;
             }
@@ -599,8 +599,8 @@ QVector<CalculatorItem::Pointer> ArrayCalculator::parseInfixEquation(QString exp
         iter--;
         while (iter != parsedInfix.begin())
         {
-          if (NULL != std::dynamic_pointer_cast<CommaSeparator>(*iter)
-            || NULL != std::dynamic_pointer_cast<LeftParenthesisItem>(*iter))
+          if (nullptr != std::dynamic_pointer_cast<CommaSeparator>(*iter)
+            || nullptr != std::dynamic_pointer_cast<LeftParenthesisItem>(*iter))
           {
             iter++;
             parsedInfix.insert(iter, LeftParenthesisItem::New());
@@ -612,7 +612,7 @@ QVector<CalculatorItem::Pointer> ArrayCalculator::parseInfixEquation(QString exp
 
         parsedInfix.push_back(itemPtr);
       }
-      else if (NULL != itemPtr)
+      else if (nullptr != itemPtr)
       {
         QString ss = QObject::tr("Item '%1' in the infix expression is the name of an array in the selected Attribute Matrix, but it is currently being used as a mathematical operator").arg(strItem);
         checkForAmbiguousArrayName(strItem, ss);
@@ -669,13 +669,13 @@ QVector<CalculatorItem::Pointer> ArrayCalculator::toRPN(QVector<CalculatorItem::
   QStack<CalculatorItem::Pointer> itemStack;
   QVector<CalculatorItem::Pointer> rpnEquation;
 
-  bool* oneComponent = NULL;
+  bool* oneComponent = nullptr;
 
   // Iterate through the infix expression items
   for (int i = 0; i < infixEquation.size(); i++)
   {
     CalculatorItem::Pointer calcItem = infixEquation[i];
-    if (NULL != std::dynamic_pointer_cast<ICalculatorArray>(calcItem))
+    if (nullptr != std::dynamic_pointer_cast<ICalculatorArray>(calcItem))
     {
       ICalculatorArray::Pointer arrayItem = std::dynamic_pointer_cast<ICalculatorArray>(calcItem);
 
@@ -684,16 +684,16 @@ QVector<CalculatorItem::Pointer> ArrayCalculator::toRPN(QVector<CalculatorItem::
 
       if (arrayItem->getType() == ICalculatorArray::Array)
       {
-        if (i + 1 < infixEquation.size() && NULL != std::dynamic_pointer_cast<IndexOperator>(infixEquation[i + 1]) && NULL == oneComponent)
+        if (i + 1 < infixEquation.size() && nullptr != std::dynamic_pointer_cast<IndexOperator>(infixEquation[i + 1]) && nullptr == oneComponent)
         {
           oneComponent = new bool(true);
         }
-        else if ((i + 1 >= infixEquation.size() || NULL == std::dynamic_pointer_cast<IndexOperator>(infixEquation[i + 1])) && NULL == oneComponent)
+        else if ((i + 1 >= infixEquation.size() || nullptr == std::dynamic_pointer_cast<IndexOperator>(infixEquation[i + 1])) && nullptr == oneComponent)
         {
           oneComponent = new bool(false);
         }
-        else if (((i + 1 >= infixEquation.size() || NULL == std::dynamic_pointer_cast<IndexOperator>(infixEquation[i + 1])) && *oneComponent == true)
-          || ((i + 1 < infixEquation.size() && NULL != std::dynamic_pointer_cast<IndexOperator>(infixEquation[i + 1])) && *oneComponent == false))
+        else if (((i + 1 >= infixEquation.size() || nullptr == std::dynamic_pointer_cast<IndexOperator>(infixEquation[i + 1])) && *oneComponent == true)
+          || ((i + 1 < infixEquation.size() && nullptr != std::dynamic_pointer_cast<IndexOperator>(infixEquation[i + 1])) && *oneComponent == false))
         {
           QString ss = QObject::tr("Not all arrays have a component index. All arrays must specify a component index (i.e. %1[0]), or none at all").arg(arrayItem->getArray()->getName());
           setErrorCondition(INCONSISTENT_INDEXING);
@@ -702,15 +702,15 @@ QVector<CalculatorItem::Pointer> ArrayCalculator::toRPN(QVector<CalculatorItem::
         }
       }
     }
-    else if (NULL != std::dynamic_pointer_cast<LeftParenthesisItem>(calcItem))
+    else if (nullptr != std::dynamic_pointer_cast<LeftParenthesisItem>(calcItem))
     {
       // This is a left parenthesis, so push it onto the item stack
       itemStack.push_back(calcItem);
     }
-    else if (NULL != std::dynamic_pointer_cast<RightParenthesisItem>(calcItem))
+    else if (nullptr != std::dynamic_pointer_cast<RightParenthesisItem>(calcItem))
     {
       // This is a right parenthesis, so push operators from the item stack onto the rpn expression output until we get to the left parenthesis
-      while (itemStack.isEmpty() == false && NULL == std::dynamic_pointer_cast<LeftParenthesisItem>(itemStack.top()))
+      while (itemStack.isEmpty() == false && nullptr == std::dynamic_pointer_cast<LeftParenthesisItem>(itemStack.top()))
       {
         rpnEquation.push_back(itemStack.pop());
       }
@@ -726,7 +726,7 @@ QVector<CalculatorItem::Pointer> ArrayCalculator::toRPN(QVector<CalculatorItem::
       // Discard the left parenthesis that we found
       itemStack.pop();
     }
-    else if (NULL != std::dynamic_pointer_cast<CalculatorSeparator>(calcItem))
+    else if (nullptr != std::dynamic_pointer_cast<CalculatorSeparator>(calcItem))
     {
       // This is a comma, so we want to continue without adding it to anything
       continue;
@@ -742,7 +742,7 @@ QVector<CalculatorItem::Pointer> ArrayCalculator::toRPN(QVector<CalculatorItem::
            of the item stack onto the rpn expression output.  Keeping doing this until there isn't another operator at the top of the item
            stack or the operator has a higher precedence than the one currently on top of the stack */
         CalculatorOperator::Pointer topOperator = std::dynamic_pointer_cast<CalculatorOperator>(itemStack.top());
-        while (NULL != topOperator && incomingOperator->hasHigherPrecedence(topOperator) == false)
+        while (nullptr != topOperator && incomingOperator->hasHigherPrecedence(topOperator) == false)
         {
           rpnEquation.push_back(itemStack.pop());
           if (itemStack.isEmpty() == false)
@@ -751,7 +751,7 @@ QVector<CalculatorItem::Pointer> ArrayCalculator::toRPN(QVector<CalculatorItem::
           }
           else
           {
-            topOperator = NULL;
+            topOperator = nullptr;
           }
         }
       }
@@ -766,7 +766,7 @@ QVector<CalculatorItem::Pointer> ArrayCalculator::toRPN(QVector<CalculatorItem::
   while (itemStack.isEmpty() == false)
   {
     CalculatorItem::Pointer item = itemStack.pop();
-    if (NULL != std::dynamic_pointer_cast<LeftParenthesisItem>(item))
+    if (nullptr != std::dynamic_pointer_cast<LeftParenthesisItem>(item))
     {
       QString ss = QObject::tr("One or more parentheses are mismatched in the chosen infix expression '%1'").arg(m_InfixEquation);
       setErrorCondition(MISMATCHED_PARENTHESES);

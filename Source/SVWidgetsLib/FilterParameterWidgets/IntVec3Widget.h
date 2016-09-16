@@ -73,7 +73,7 @@ class SVWidgetsLib_EXPORT IntVec3Widget : public FilterParameterWidget, private 
     * @param filter The instance of the filter that this parameter is a part of
     * @param parent The parent QWidget for this Widget
     */
-    IntVec3Widget(FilterParameter* parameter, AbstractFilter* filter = NULL, QWidget* parent = NULL);
+    IntVec3Widget(FilterParameter* parameter, AbstractFilter* filter = nullptr, QWidget* parent = nullptr);
 
     virtual ~IntVec3Widget();
 

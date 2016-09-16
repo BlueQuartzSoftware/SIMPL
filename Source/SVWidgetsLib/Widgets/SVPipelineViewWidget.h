@@ -369,23 +369,23 @@ class SVWidgetsLib_EXPORT SVPipelineViewWidget : public QFrame, public PipelineV
     void slot_removeFilterObject(PipelineFilterObject* filterObject);
 
   private:
-    SVPipelineFilterWidget*             m_ShiftStart;
-    QVBoxLayout*                        m_FilterWidgetLayout;
+    SVPipelineFilterWidget*             m_ShiftStart = nullptr;
+    QVBoxLayout*                        m_FilterWidgetLayout = nullptr;
     int                                 m_FilterOrigPos;
-    DropBoxWidget*                      m_DropBox;
+    DropBoxWidget*                      m_DropBox = nullptr;
     int                                 m_DropIndex;
-    QLabel*                             m_EmptyPipelineLabel;
-    QObject*                            m_PipelineMessageObserver;
-    QScrollArea*                        m_ScrollArea;
+    QLabel*                             m_EmptyPipelineLabel = nullptr;
+    QObject*                            m_PipelineMessageObserver = nullptr;
+    QScrollArea*                        m_ScrollArea = nullptr;
     QTimer                              m_autoScrollTimer;
     bool                                m_AutoScroll;
     int                                 m_AutoScrollMargin;
     int                                 m_autoScrollCount;
-    QWidget*                            m_InputParametersWidget;
-    QMenu*                              m_ContextMenu;
+    QWidget*                            m_InputParametersWidget = nullptr;
+    QMenu*                              m_ContextMenu = nullptr;
     QSharedPointer<QUndoStack>          m_UndoStack;
-    QAction*                            m_ActionUndo;
-    QAction*                            m_ActionRedo;
+    QAction*                            m_ActionUndo = nullptr;
+    QAction*                            m_ActionRedo = nullptr;
     bool                                m_BlockPreflight;
     std::stack<bool>                    m_BlockPreflightStack;
 

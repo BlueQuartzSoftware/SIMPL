@@ -198,9 +198,9 @@ class SIMPLib_EXPORT DataContainer : public Observable
     /**
      * @brief This method will check for the existance of a named AttributeMatrix. If that AttributeMatrix with the
      * given name does exist, the attributeMatrix will be checked for validity and if it passes the attribute matrix
-     * will be returned. if any of the tests fail a Shared Pointer wrapping a NULL value will be returned.
-     * @param filter The filter object to use for error messages. Can be NULL.
-     * @param attributeMatrixName The name of the AttributeMatrix to look for. must NOT be NULL.
+     * will be returned. if any of the tests fail a Shared Pointer wrapping a nullptr value will be returned.
+     * @param filter The filter object to use for error messages. Can be nullptr.
+     * @param attributeMatrixName The name of the AttributeMatrix to look for. must NOT be nullptr.
      * @param err The unique error value to generate derived error values from. This helps debugging.
      * @return Shared Pointer to an AttributeMatrix object.
      */
@@ -224,9 +224,9 @@ class SIMPLib_EXPORT DataContainer : public Observable
         }
         return attributeMatrix;
       }
-      // Now attempt to get the AttributeMatrix which could still come back NULL because the name does not match.
+      // Now attempt to get the AttributeMatrix which could still come back nullptr because the name does not match.
       attributeMatrix = getAttributeMatrix(attributeMatrixName);
-      if(NULL == attributeMatrix.get())
+      if(nullptr == attributeMatrix.get())
       {
         if(filter)
         {
@@ -252,7 +252,7 @@ class SIMPLib_EXPORT DataContainer : public Observable
     /**
      * @brief createNonPrereqAttributeMatrix This method will create a new AttributeMatrix with the given tuple dimensions
      * and type. If the name is empty or an attribute matrix with the given name already exists the method will return
-     * a NULL shared pointer.
+     * a nullptr shared pointer.
      * @param filter The object to report errors through
      * @param attributeMatrixName The name of the AttributeMatrix to create
      * @param tDims The Tuple Dimensions of the Attribute Matrix
@@ -301,7 +301,7 @@ class SIMPLib_EXPORT DataContainer : public Observable
         return attributeMatrix;
       }
       attributeMatrix = getAttributeMatrix(attributeMatrixName);
-      if(NULL == attributeMatrix.get())
+      if(nullptr == attributeMatrix.get())
       {
         attributeMatrix = createAndAddAttributeMatrix(tDims, attributeMatrixName, amType);
         return attributeMatrix;
@@ -336,7 +336,7 @@ class SIMPLib_EXPORT DataContainer : public Observable
     {
       typename GeometryType::Pointer geom = GeometryType::NullPointer();
       IGeometry::Pointer igeom = getGeometry();
-      if (NULL == igeom.get())
+      if (nullptr == igeom.get())
       {
         if (filter)
         {
@@ -347,7 +347,7 @@ class SIMPLib_EXPORT DataContainer : public Observable
         return geom;
       }
       geom = getGeometryAs<GeometryType>();
-      if (NULL == geom.get())
+      if (nullptr == geom.get())
       {
         if (filter)
         {

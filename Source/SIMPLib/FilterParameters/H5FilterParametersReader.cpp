@@ -150,7 +150,7 @@ FilterPipeline::Pointer H5FilterParametersReader::readPipelineFromFile(QString f
       JsonFilterParametersReader::Pointer jsonReader = JsonFilterParametersReader::New();
       pipeline = jsonReader->readPipelineFromString(jsonString, nullptr);
     }
-    else if (NULL != obs)
+    else if (nullptr != obs)
     {
       QFileInfo fi(filePath);
       QString ss = QObject::tr("The file '%1' contains an unrecognizable version number, and is therefore incompatible and cannot be read.").arg(fi.fileName());
@@ -179,10 +179,10 @@ FilterPipeline::Pointer H5FilterParametersReader::readPipelineFromFile(QString f
 
       // Instantiate a new filter using the FilterFactory based on the value of the className attribute
       IFilterFactory::Pointer ff = filterManager->getFactoryForFilter(classNameStr);
-      if (NULL != ff)
+      if (nullptr != ff)
       {
         AbstractFilter::Pointer filter = ff->create();
-        if(NULL != ff)
+        if(nullptr != ff)
         {
           // Read the parameters
           filter->readFilterParameters(this, i);

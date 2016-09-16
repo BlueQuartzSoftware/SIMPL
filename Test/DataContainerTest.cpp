@@ -82,11 +82,11 @@
   t_##Type->setName( #Type );\
   m->add##DCType(#Type, t_##Type);\
   IDataArray::Pointer t = m->get##DCType(#Type);\
-  DREAM3D_TEST_POINTER(ptr, !=, NULL);\
+  DREAM3D_TEST_POINTER(ptr, !=, nullptr);\
   t = m->removeCellFeatureData(#Type);\
-  DREAM3D_TEST_POINTER(ptr, !=, NULL);\
+  DREAM3D_TEST_POINTER(ptr, !=, nullptr);\
   t = m->get##DCType(#Type);\
-  DREAM3D_REQUIRE_EQUAL(t.get(), NULL);\
+  DREAM3D_REQUIRE_EQUAL(t.get(), nullptr);\
   }
 
 namespace DataContainerIOTest
@@ -197,7 +197,7 @@ class DataContainerTest
       attrMat->addAttributeArray(foo->getName(), foo);
 
       QString autoName = foo->getName() + "_Auto";
-      attrMat->createNonPrereqArray< DataArray<T>, AbstractFilter, T>(NULL, autoName, static_cast<T>(10), compDims);
+      attrMat->createNonPrereqArray< DataArray<T>, AbstractFilter, T>(nullptr, autoName, static_cast<T>(10), compDims);
 
     }
 
@@ -207,8 +207,8 @@ class DataContainerTest
     void CreateStringArray(AttributeMatrix::Pointer attrMat, QVector<size_t> compDims)
     {
       QString name("ExampleStringDataArray");
-      StringDataArray::Pointer data = StringDataArray::CreateArray(attrMat->getNumTuples(), name);
-      for(size_t i = 0; i < attrMat->getNumTuples(); i++)
+      StringDataArray::Pointer data = StringDataArray::CreateArray(attrMat->getNumberOfTuples(), name);
+      for(size_t i = 0; i < attrMat->getNumberOfTuples(); i++)
       {
         QString value = QString("string_%1").arg(i);
         data->setValue(i, value);
@@ -262,7 +262,7 @@ class DataContainerTest
 
 
       QString autoAddName = name + QString::fromLatin1("_Auto");
-      AttributeMatrix::Pointer autoAttrMat = dc->createNonPrereqAttributeMatrix<AbstractFilter>(NULL, autoAddName, tupleDims, SIMPL::AttributeMatrixType::Cell);
+      AttributeMatrix::Pointer autoAttrMat = dc->createNonPrereqAttributeMatrix<AbstractFilter>(nullptr, autoAddName, tupleDims, SIMPL::AttributeMatrixType::Cell);
       compDims.resize(0);
       compDims.push_back(1);
       FillAttributeMatrix(autoAttrMat, compDims);
@@ -302,21 +302,21 @@ class DataContainerTest
       // 1D VolumeDataContainer
       tupleDims.push_back(nx);
       {
-        DataContainer::Pointer dc = dca->createNonPrereqDataContainer<AbstractFilter>(NULL, "1D_VolumeDataContainer");
+        DataContainer::Pointer dc = dca->createNonPrereqDataContainer<AbstractFilter>(nullptr, "1D_VolumeDataContainer");
         PopulateVolumeDataContainer(dc, tupleDims, "1D_AttributeMatrix");
       }
 
       // 2D VolumeDataContainer
       tupleDims.push_back(ny);
       {
-        DataContainer::Pointer dc = dca->createNonPrereqDataContainer<AbstractFilter>(NULL, "2D_VolumeDataContainer");
+        DataContainer::Pointer dc = dca->createNonPrereqDataContainer<AbstractFilter>(nullptr, "2D_VolumeDataContainer");
         PopulateVolumeDataContainer(dc, tupleDims, "2D_AttributeMatrix");
       }
 
       // 3D VolumeDataContainer
       tupleDims.push_back(nz);
       {
-        DataContainer::Pointer dc = dca->createNonPrereqDataContainer<AbstractFilter>(NULL, "3D_VolumeDataContainer");
+        DataContainer::Pointer dc = dca->createNonPrereqDataContainer<AbstractFilter>(nullptr, "3D_VolumeDataContainer");
         PopulateVolumeDataContainer(dc, tupleDims, "3D_AttributeMatrix");
       }
 
@@ -509,7 +509,7 @@ class DataContainerTest
       DREAM3D_REQUIRE_VALID_POINTER(ida.get());
 
       QVector<size_t> dims(1, 1);
-      t = attrMat->getPrereqArray<T, AbstractFilter>(NULL, "Test", -723, dims);
+      t = attrMat->getPrereqArray<T, AbstractFilter>(nullptr, "Test", -723, dims);
       DREAM3D_REQUIRE_VALID_POINTER(ida.get());
 
       // Remove the AttributeArray from the AttributeMatrix
@@ -523,7 +523,7 @@ class DataContainerTest
       ida = attrMat->getAttributeArray("Test");
       DREAM3D_REQUIRE_NULL_POINTER(ida.get());
 
-      t = attrMat->getPrereqArray<T, AbstractFilter>(NULL, "Test", -723, dims);
+      t = attrMat->getPrereqArray<T, AbstractFilter>(nullptr, "Test", -723, dims);
       DREAM3D_REQUIRE_NULL_POINTER(t.get());
 
       // Remove the AttributeMatrix to setup for the next test.
@@ -666,112 +666,112 @@ class DataContainerTest
       QVector<int> dims(1, 2);
       T* ptr = m->createCellData<T, K, AbstractFilter>("Test", 10, dims, absFilt.get());
       DREAM3D_REQUIRE_EQUAL(absFilt->getErrorCondition(), 0);
-      DREAM3D_TEST_POINTER(ptr, !=, NULL);
+      DREAM3D_TEST_POINTER(ptr, !=, nullptr);
       absFilt->setErrorCondition(0);
 
       // First try getting the array, but pass in a bad array name which should produce a null pointer
       // and negative error condition
       ptr =  m->getCellDataSizeCheck<T, K, AbstractFilter>("BAD_ARRAY_NAME", 10, 2, absFilt.get());
-      DREAM3D_REQUIRE_EQUAL(ptr , NULL)
+      DREAM3D_REQUIRE_EQUAL(ptr , nullptr)
           DREAM3D_REQUIRE_EQUAL(0, absFilt->getErrorCondition());
       absFilt->setErrorCondition(0);
 
       // Next try getting the array, but pass in a bad size name which should produce a null pointer
       // and negative error condition
       ptr =  m->getCellDataSizeCheck<T, K, AbstractFilter>("Test", 10, 1, absFilt.get());
-      DREAM3D_REQUIRE_EQUAL(ptr , NULL)
+      DREAM3D_REQUIRE_EQUAL(ptr , nullptr)
           DREAM3D_REQUIRE_NE(0, absFilt->getErrorCondition());
       absFilt->setErrorCondition(0);
 
       // Next try getting the array, but pass in a bad cast type which should produce a null pointer
       // and negative error condition
       bool* bool_ptr =  m->getCellDataSizeCheck<bool, BoolArrayType, AbstractFilter>("Test", 10, 2, absFilt.get());
-      DREAM3D_REQUIRE_EQUAL(bool_ptr , NULL)
+      DREAM3D_REQUIRE_EQUAL(bool_ptr , nullptr)
           DREAM3D_REQUIRE_NE(0, absFilt->getErrorCondition());
       absFilt->setErrorCondition(0);
 
-      // Next, pass in all the correct values which should produce a Non NULL pointer value and
+      // Next, pass in all the correct values which should produce a Non nullptr pointer value and
       // Zero Error Condition
       ptr = m->getCellDataSizeCheck<T, K, AbstractFilter>("Test", 10, 2, absFilt.get());
-      DREAM3D_TEST_POINTER(ptr, !=, NULL);
+      DREAM3D_TEST_POINTER(ptr, !=, nullptr);
       DREAM3D_REQUIRE_EQUAL(0, absFilt->getErrorCondition());
 
       IDataArray::Pointer t = attrMat->removeAttributeArray( "Test" );
-      DREAM3D_TEST_POINTER(ptr, !=, NULL);
+      DREAM3D_TEST_POINTER(ptr, !=, nullptr);
 
       /********************************* Feature Data Tests *********************************************/
       ptr = m->createCellFeatureData<T, K, AbstractFilter>("Test", 10, dims, absFilt.get());
       DREAM3D_REQUIRE_EQUAL(absFilt->getErrorCondition(), 0);
-      DREAM3D_TEST_POINTER(ptr, !=, NULL);
+      DREAM3D_TEST_POINTER(ptr, !=, nullptr);
       absFilt->setErrorCondition(0);
 
       // First try getting the array, but pass in a bad array name which should produce a null pointer
       // and negative error condition
       ptr =  m->getCellFeatureDataSizeCheck<T, K, AbstractFilter>("BAD_ARRAY_NAME", 10, 2, absFilt.get());
-      DREAM3D_REQUIRE_EQUAL(ptr , NULL)
+      DREAM3D_REQUIRE_EQUAL(ptr , nullptr)
           DREAM3D_REQUIRE_EQUAL(0, absFilt->getErrorCondition());
       absFilt->setErrorCondition(0);
 
       // Next try getting the array, but pass in a bad size name which should produce a null pointer
       // and negative error condition
       ptr =  m->getCellFeatureDataSizeCheck<T, K, AbstractFilter>("Test", 10, 1, absFilt.get());
-      DREAM3D_REQUIRE_EQUAL(ptr , NULL)
+      DREAM3D_REQUIRE_EQUAL(ptr , nullptr)
           DREAM3D_REQUIRE_NE(0, absFilt->getErrorCondition());
       absFilt->setErrorCondition(0);
 
       // Next try getting the array, but pass in a bad cast type which should produce a null pointer
       // and negative error condition
       bool_ptr =  m->getCellFeatureDataSizeCheck<bool, BoolArrayType, AbstractFilter>("Test", 10, 2, absFilt.get());
-      DREAM3D_REQUIRE_EQUAL(bool_ptr , NULL)
+      DREAM3D_REQUIRE_EQUAL(bool_ptr , nullptr)
           DREAM3D_REQUIRE_NE(0, absFilt->getErrorCondition());
       absFilt->setErrorCondition(0);
 
-      // Next, pass in all the correct values which should produce a Non NULL pointer value and
+      // Next, pass in all the correct values which should produce a Non nullptr pointer value and
       // Zero Error Condition
       ptr = m->getCellFeatureDataSizeCheck<T, K, AbstractFilter>("Test", 10, 2, absFilt.get());
-      DREAM3D_TEST_POINTER(ptr, !=, NULL);
+      DREAM3D_TEST_POINTER(ptr, !=, nullptr);
       DREAM3D_REQUIRE_EQUAL(0, absFilt->getErrorCondition());
 
       t = m->removeCellFeatureData( "Test" );
-      DREAM3D_TEST_POINTER(ptr, !=, NULL);
+      DREAM3D_TEST_POINTER(ptr, !=, nullptr);
 
 
       /********************************* Ensemble Data Tests *********************************************/
       ptr = m->createCellEnsembleData<T, K, AbstractFilter>("Test", 10, dims, absFilt.get());
       DREAM3D_REQUIRE_EQUAL(absFilt->getErrorCondition(), 0);
-      DREAM3D_TEST_POINTER(ptr, !=, NULL);
+      DREAM3D_TEST_POINTER(ptr, !=, nullptr);
       absFilt->setErrorCondition(0);
 
       // First try getting the array, but pass in a bad array name which should produce a null pointer
       // and negative error condition
       ptr =  m->getCellEnsembleDataSizeCheck<T, K, AbstractFilter>("BAD_ARRAY_NAME", 10, 2, absFilt.get());
-      DREAM3D_REQUIRE_EQUAL(ptr , NULL)
+      DREAM3D_REQUIRE_EQUAL(ptr , nullptr)
           DREAM3D_REQUIRE_EQUAL(0, absFilt->getErrorCondition());
       absFilt->setErrorCondition(0);
 
       // Next try getting the array, but pass in a bad size name which should produce a null pointer
       // and negative error condition
       ptr =  m->getCellEnsembleDataSizeCheck<T, K, AbstractFilter>("Test", 10, 1, absFilt.get());
-      DREAM3D_REQUIRE_EQUAL(ptr , NULL)
+      DREAM3D_REQUIRE_EQUAL(ptr , nullptr)
           DREAM3D_REQUIRE_NE(0, absFilt->getErrorCondition());
       absFilt->setErrorCondition(0);
 
       // Next try getting the array, but pass in a bad cast type which should produce a null pointer
       // and negative error condition
       bool_ptr =  m->getCellEnsembleDataSizeCheck<bool, BoolArrayType, AbstractFilter>("Test", 10, 2, absFilt.get());
-      DREAM3D_REQUIRE_EQUAL(bool_ptr , NULL)
+      DREAM3D_REQUIRE_EQUAL(bool_ptr , nullptr)
           DREAM3D_REQUIRE_NE(0, absFilt->getErrorCondition());
       absFilt->setErrorCondition(0);
 
-      // Next, pass in all the correct values which should produce a Non NULL pointer value and
+      // Next, pass in all the correct values which should produce a Non nullptr pointer value and
       // Zero Error Condition
       ptr = m->getCellEnsembleDataSizeCheck<T, K, AbstractFilter>("Test", 10, 2, absFilt.get());
-      DREAM3D_TEST_POINTER(ptr, !=, NULL);
+      DREAM3D_TEST_POINTER(ptr, !=, nullptr);
       DREAM3D_REQUIRE_EQUAL(0, absFilt->getErrorCondition());
 
 
       t = m->removeCellEnsembleData( "Test" );
-      DREAM3D_TEST_POINTER(ptr, !=, NULL);
+      DREAM3D_TEST_POINTER(ptr, !=, nullptr);
     }
 
 
@@ -820,7 +820,7 @@ class DataContainerTest
       IDataArray::Pointer iDataArray = NeighborList<int>::New();
 
       NeighborList<int>* neighborList = NeighborList<int>::SafeObjectDownCast<IDataArray*, NeighborList<int>* >(iDataArray.get());
-      assert (neighborList != NULL);
+      assert (neighborList != nullptr);
 
 
       for (int featureId = 0; featureId < 10; ++featureId)
@@ -863,14 +863,14 @@ class DataContainerTest
 
 
         double* dPtr = IDataArray::SafeReinterpretCast<IDataArray*, DoubleArrayType*, double*>(ptr.get());
-        Q_ASSERT(NULL == dPtr);
+        Q_ASSERT(nullptr == dPtr);
 
         int32_t* iPtr = IDataArray::SafeReinterpretCast<IDataArray*, Int32ArrayType*, int32_t*>(ptr.get());
-        Q_ASSERT(NULL != iPtr);
+        Q_ASSERT(nullptr != iPtr);
 
         // Or we can downcast to the type we know it is (in line)
         Int32ArrayType* intPtr = Int32ArrayType::SafeObjectDownCast<IDataArray*, Int32ArrayType* >(dataContainer->getCellData("int32_t_Array").get());
-        if (NULL != intPtr)
+        if (nullptr != intPtr)
         {
           std::cout << "Downcast to intPtr pointer was successful" << std::endl;
           std::cout << "Number of Tuples:" << intPtr->getNumberOfTuples() << std::endl;
@@ -887,7 +887,7 @@ class DataContainerTest
 
 
         DoubleArrayType* doublePtr = DoubleArrayType::SafeObjectDownCast<IDataArray*, DataArray<double>*>(ptr.get());
-        if (NULL != doublePtr)
+        if (nullptr != doublePtr)
         {
           std::cout << "Downcast to double pointer was successful" << std::endl;
         }

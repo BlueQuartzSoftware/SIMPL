@@ -48,7 +48,7 @@ UnknownWidget::UnknownWidget(FilterParameter* parameter, AbstractFilter* filter,
   FilterParameterWidget(parameter, filter, parent)
 {
   m_FilterParameter = dynamic_cast<UnknownFilterParameter*>(parameter);
-  //Q_ASSERT_X(m_FilterParameter != NULL, "NULL Pointer", "UnknownWidget can ONLY be used with a UnknownFilterParameter object");
+  //Q_ASSERT_X(m_FilterParameter != nullptr, "nullptr Pointer", "UnknownWidget can ONLY be used with a UnknownFilterParameter object");
 
   setupUi(this);
   setupGui();
@@ -77,7 +77,7 @@ void UnknownWidget::setupGui()
   connect(getFilter(), SIGNAL(updateFilterParameters(AbstractFilter*)),
           this, SLOT(filterNeedsInputParameters(AbstractFilter*)));
 
-  if (getFilterParameter() != NULL)
+  if (getFilterParameter() != nullptr)
   {
     QString str = QObject::tr("%1: Unknown Filter ParameterWidgetType: %2.").arg(getFilterParameter()->getHumanLabel()).arg(getFilterParameter()->getWidgetType());
     label->setText( str );

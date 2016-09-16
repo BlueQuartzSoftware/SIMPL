@@ -68,9 +68,9 @@ FilterWidgetManager::~FilterWidgetManager()
 // -----------------------------------------------------------------------------
 FilterWidgetManager* FilterWidgetManager::Instance()
 {
-  if (self == NULL)
+  if (self == nullptr)
   {
-//   qDebug() << "FilterWidgetManager::Instance self was NULL" << "\n";
+//   qDebug() << "FilterWidgetManager::Instance self was nullptr" << "\n";
     self = new FilterWidgetManager();
   }
 //  qDebug() << "self.get(): " << self << "\n";
@@ -82,7 +82,7 @@ FilterWidgetManager* FilterWidgetManager::Instance()
 // -----------------------------------------------------------------------------
 void FilterWidgetManager::RegisterFilterWidgetFactory(const QString& name, IFilterWidgetFactory::Pointer factory)
 {
-  if (NULL != factory.get() )
+  if (nullptr != factory.get() )
   {
     // Instantiate the Instance Manager for IFilterWidgetFactory
     FilterWidgetManager* idManager = FilterWidgetManager::Instance();
@@ -123,11 +123,11 @@ void FilterWidgetManager::RegisterKnownFilterWidgets()
 QWidget* FilterWidgetManager::createWidget(FilterParameter* parameter, AbstractFilter* filter)
 {
   IFilterWidgetFactory::Pointer factory = m_Factories.value(parameter->getWidgetType());
-  if(NULL != factory.get())
+  if(nullptr != factory.get())
   {
-    return factory->createWidget(parameter, filter, NULL);
+    return factory->createWidget(parameter, filter, nullptr);
   }
-  UnknownWidget* unknownWidget = new UnknownWidget(parameter, filter, NULL);
+  UnknownWidget* unknownWidget = new UnknownWidget(parameter, filter, nullptr);
   return unknownWidget;
 }
 

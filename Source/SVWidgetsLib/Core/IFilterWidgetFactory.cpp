@@ -66,5 +66,5 @@ QWidget* IFilterWidgetFactory::createWidget(FilterParameter* parameter,
                                             QWidget* parent)
 {
   Q_ASSERT(false);
-  return NULL;
+  return nullptr;
 }

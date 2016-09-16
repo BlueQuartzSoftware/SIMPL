@@ -151,7 +151,7 @@ void RemoveArrays::removeSelectionsFromDataContainerArray(DataContainerArray* dc
     DataContainerProxy dcProxy = containerIter.next();
     dcList.push_back(dcProxy.name);
     DataContainer::Pointer dcItem = dca->getPrereqDataContainer<AbstractFilter>(this, dcProxy.name);
-    if (getErrorCondition() < 0 || dcItem.get() == NULL) { continue; }
+    if (getErrorCondition() < 0 || dcItem.get() == nullptr) { continue; }
 
     // Check to see if the DataContainer is checked, if it is checked then we remove the entire DataContainer from
     // the DataContainerArray
@@ -167,8 +167,8 @@ void RemoveArrays::removeSelectionsFromDataContainerArray(DataContainerArray* dc
       attrMatsIter.next();
       QString amName = attrMatsIter.key();
       AttributeMatrix::Pointer amItem = dcItem->getAttributeMatrix(amName);
-      //assert(amItem.get() != NULL);
-      if (amItem.get() == NULL)
+      //assert(amItem.get() != nullptr);
+      if (amItem.get() == nullptr)
       {
         setErrorCondition(-11008);
         QString ss = QObject::tr("The AttributeMatrix '%1' could not be removed because it was not found in DataContainer '%2'").arg(amName).arg(dcProxy.name);
@@ -190,7 +190,7 @@ void RemoveArrays::removeSelectionsFromDataContainerArray(DataContainerArray* dc
         dataArraysIter.next();
         QString daName = dataArraysIter.key();
         IDataArray::Pointer daItem = amItem->getAttributeArray(daName);
-        if (daItem.get() == NULL)
+        if (daItem.get() == nullptr)
         {
           setErrorCondition(-11014);
           QString ss = QObject::tr("The DataArray '%1' could not be removed because it was not found in AttributeMatrix '%2'").arg(daName).arg(amName);

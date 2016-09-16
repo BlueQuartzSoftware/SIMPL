@@ -71,7 +71,7 @@ class SIMPLib_EXPORT JsonFilterParametersReader : public AbstractFilterParameter
     * @param obs An IObserver object to report errors.
     * @return Shared Pointer to a FilterPipeline Instance
     */
-    FilterPipeline::Pointer readPipelineFromFile(QString filePath, IObserver* obs = NULL);
+    FilterPipeline::Pointer readPipelineFromFile(QString filePath, IObserver* obs = nullptr);
 
     /**
     * @brief ReadPipelineFromString Reads the Json formatted file and returns a FilterPipeline object
@@ -82,7 +82,7 @@ class SIMPLib_EXPORT JsonFilterParametersReader : public AbstractFilterParameter
     * @param obs An IObserver object to report errors.
     * @return Shared Pointer to a FilterPipeline Instance
     */
-    FilterPipeline::Pointer readPipelineFromString(QString contents, IObserver* obs = NULL);
+    FilterPipeline::Pointer readPipelineFromString(QString contents, IObserver* obs = nullptr);
 
     /**
      * @brief Gets the name of the pipeline from a pipeline file
@@ -92,7 +92,7 @@ class SIMPLib_EXPORT JsonFilterParametersReader : public AbstractFilterParameter
      * @param obs Any observer that needs to know about errors.
      * @return
      */
-    void readNameOfPipelineFromFile(QString filePath, QString& name, QString& version, IObserver* obs = NULL);
+    void readNameOfPipelineFromFile(QString filePath, QString& name, QString& version, IObserver* obs = nullptr);
 
     /**
      * @brief Generate an html formatted string that summarizes the pipeline file by listing

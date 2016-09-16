@@ -70,9 +70,9 @@ public:
   * @param filter The instance of the filter that this parameter is a part of
   * @param parent The parent QWidget for this Widget
   */
-  AttributeMatrixCreationWidget(FilterParameter* parameter, AbstractFilter* filter = NULL, QWidget* parent = NULL);
+  AttributeMatrixCreationWidget(FilterParameter* parameter, AbstractFilter* filter = nullptr, QWidget* parent = nullptr);
 
-  AttributeMatrixCreationWidget(QWidget* parent = NULL);
+  AttributeMatrixCreationWidget(QWidget* parent = nullptr);
 
   virtual ~AttributeMatrixCreationWidget();
 

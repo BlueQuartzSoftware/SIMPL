@@ -61,18 +61,18 @@ QString FileListInfoWidget::m_OpenDialogLastDirectory = "";
 // -----------------------------------------------------------------------------
 FileListInfoWidget::FileListInfoWidget(FilterParameter* parameter, AbstractFilter* filter, QWidget* parent) :
   FilterParameterWidget(parameter, filter, parent),
-  m_OrderingGroup(NULL),
+  m_OrderingGroup(nullptr),
   m_DidCausePreflight(false)
 {
   FileListInfoFilterParameter* fli = dynamic_cast<FileListInfoFilterParameter*>(parameter);
-  if(NULL == fli)
+  if(nullptr == fli)
   {
     QString msg;
     QTextStream ss(&msg);
     ss << "FileListInfoWidget can ONLY be used with FileListInfoFilterParameter objects. The programmer of the filter has a bug.";
     ss << " The name of the filter was " << filter->getHumanLabel() << " and the name of the Filter Parameter was " << parameter->getHumanLabel();
     ss << " and is trying to get the propery " << parameter->getPropertyName() << " in the filter";
-    Q_ASSERT_X(NULL != fli, msg.toLatin1().constData(), __FILE__);
+    Q_ASSERT_X(nullptr != fli, msg.toLatin1().constData(), __FILE__);
   }
   setupUi(this);
   setupGui();
@@ -512,9 +512,9 @@ void FileListInfoWidget::widgetChanged(const QString& text)
 // -----------------------------------------------------------------------------
 void FileListInfoWidget::filterNeedsInputParameters(AbstractFilter* filter)
 {
-  if (NULL == filter)
+  if (nullptr == filter)
   {
-    QString ss = QObject::tr("Error Setting FileListStack Gui values to Filter instance. Filter instance was NULL.").arg(getFilterParameter()->getPropertyName());
+    QString ss = QObject::tr("Error Setting FileListStack Gui values to Filter instance. Filter instance was nullptr.").arg(getFilterParameter()->getPropertyName());
     emit errorSettingFilterParameter(ss);
   }
   bool ok = false;

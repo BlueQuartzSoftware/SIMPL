@@ -39,7 +39,7 @@
 #include <QtCore/QString>
 #include <QtCore/QMetaType>
 
-
+#include "SIMPLib/SIMPLib.h"
 #include "SIMPLib/Common/SIMPLibSetGetMacros.h"
 
 
@@ -47,11 +47,8 @@
  * @class PipelineMessage PipelineMessage.h DREAM3DLib/Common/PipelineMessage.h
  * @brief This class enables the creation of Error, Warning, and Status messages that
  * can be sent up from filters to the DREAM3D GUI.
- * @author Joey Kleingers (SOCHE)
- * @date Jun 21, 2012
- * @version 1.0
  */
-class PipelineMessage
+class SIMPLib_EXPORT PipelineMessage
 {
   public:
 
@@ -64,129 +61,51 @@ class PipelineMessage
                       UnknownMessageType
                      };
 
-    PipelineMessage() {}
+    PipelineMessage();
 
-    PipelineMessage(const PipelineMessage& rhs)
-    {
-      m_FilterClassName = rhs.m_FilterClassName;
-      m_FilterHumanLabel = rhs.m_FilterHumanLabel;
-      m_Prefix = rhs.m_Prefix;
-      m_Text = rhs.m_Text;
-      m_Code = rhs.m_Code;
-      m_Type = rhs.m_Type;
-      m_ProgressValue = rhs.m_ProgressValue;
-      m_PipelineIndex = rhs.m_PipelineIndex;
-    }
+    PipelineMessage(const PipelineMessage& rhs);
 
 
     PipelineMessage(const QString& className,
                     const char* msg,
                     int code,
                     MessageType msgType = UnknownMessageType,
-                    int progress = -1) :
-      m_FilterClassName(className),
-      m_Text(msg),
-      m_Code(code),
-      m_Type(msgType),
-      m_ProgressValue(progress)
-    {}
+                    int progress = -1) ;
 
     PipelineMessage(const QString& className,
                     const QString& msg,
                     int code,
                     MessageType msgType = UnknownMessageType,
-                    int progress = -1) :
-      m_FilterClassName(className),
-      m_FilterHumanLabel(""),
-      m_Text(msg),
-      m_Code(code),
-      m_Type(msgType),
-      m_ProgressValue(progress)
-    {
-
-    }
-
+                    int progress = -1);
     PipelineMessage(const QString& className,
                     const QString& humanLabel,
                     const QString& msg,
                     int code,
                     MessageType msgType = UnknownMessageType,
-                    int progress = -1) :
-      m_FilterClassName(className),
-      m_FilterHumanLabel(humanLabel),
-      m_Text(msg),
-      m_Code(code),
-      m_Type(msgType),
-      m_ProgressValue(progress)
-    {
-
-    }
+                    int progress = -1);
 
     PipelineMessage(const QString& humanLabel,
                     int pipelineIndex,
                     const QString& msg,
-                    MessageType msgType = UnknownMessageType) :
-      m_FilterHumanLabel(humanLabel),
-      m_Text(msg),
-      m_PipelineIndex(pipelineIndex),
-      m_Type(msgType)
-    {
-
-    }
+                    MessageType msgType = UnknownMessageType);
 
 
-    static PipelineMessage CreateErrorMessage(const QString className, const QString humanLabel, const QString msg, int code)
-    {
-      PipelineMessage em(className, humanLabel, msg, code, Error, -1);
-      return em;
-    }
+    static PipelineMessage CreateErrorMessage(const QString className, const QString humanLabel, const QString msg, int code);
 
-    static PipelineMessage CreateStatusMessage(const QString className, const QString humanLabel, const QString msg)
-    {
-      PipelineMessage em(className, humanLabel, msg, 0, StatusMessage, -1);
-      return em;
-    }
+    static PipelineMessage CreateStatusMessage(const QString className, const QString humanLabel, const QString msg);
 
-    static PipelineMessage CreateWarningMessage(const QString className, const QString humanLabel, const QString msg, int code)
-    {
-      PipelineMessage em(className, humanLabel,  msg, code, Warning, -1);
-      return em;
-    }
+    static PipelineMessage CreateWarningMessage(const QString className, const QString humanLabel, const QString msg, int code);
 
-    static PipelineMessage CreateStandardOutputMessage(const QString humanLabel, int pipelineIndex, const QString msg)
-    {
-      PipelineMessage em(humanLabel, pipelineIndex, msg, StandardOutputMessage);
-      return em;
-    }
+    static PipelineMessage CreateStandardOutputMessage(const QString humanLabel, int pipelineIndex, const QString msg);
 
 
     SIMPL_TYPE_MACRO(PipelineMessage)
 
-    virtual ~PipelineMessage() {}
+    virtual ~PipelineMessage();
 
-    bool operator==(const PipelineMessage& rhs)
-    {
-      return (m_FilterClassName == rhs.m_FilterClassName &&
-              m_Prefix == rhs.m_Prefix &&
-              m_FilterHumanLabel == rhs.m_FilterHumanLabel &&
-              m_Text == rhs.m_Text &&
-              m_Code == rhs.m_Code &&
-              m_Type == rhs.m_Type &&
-              m_ProgressValue == rhs.m_ProgressValue &&
-              m_PipelineIndex == rhs.m_PipelineIndex);
-    }
+    bool operator==(const PipelineMessage& rhs);
 
-    void operator=(const PipelineMessage& rhs)
-    {
-      m_FilterClassName = rhs.m_FilterClassName;
-      m_Prefix = rhs.m_Prefix;
-      m_FilterHumanLabel = rhs.m_FilterHumanLabel;
-      m_Text = rhs.m_Text;
-      m_Code = rhs.m_Code;
-      m_Type = rhs.m_Type;
-      m_ProgressValue = rhs.m_ProgressValue;
-      m_PipelineIndex = rhs.m_PipelineIndex;
-    }
+    void operator=(const PipelineMessage& rhs);
 
     SIMPL_INSTANCE_STRING_PROPERTY(FilterClassName)
 
@@ -204,102 +123,34 @@ class PipelineMessage
 
     SIMPL_INSTANCE_PROPERTY(int, ProgressValue)
 
-//    void setFilterHumanLabel(const QString& s)
-//    {
-//      m_FilterHumanLabel = s;
-//    }
-//    QString getFilterHumanLabel() const
-//    {
-//      return m_FilterHumanLabel;
-//    }
-
-
-//    /**
-//     * @brief This function is the member m_Text's accessor.
-//     */
-//    QString getMessageText() const { return m_Text; }
-
-//    /**
-//     * @brief This function is the member m_Text's mutator.
-//     * @param val Variable whose value is assigned to m_Text.
-//     */
-//    void setMessageText(const QString& val) { m_Text = val; }
-
-//    /**
-//     * @brief This function is the member m_Code's accessor.
-//     */
-//    int getMessageCode() { return m_Code; }
-
-//    /**
-//     * @brief This function is the member m_Code's mutator.
-//     * @param val Variable whose value is assigned to m_Code.
-//     */
-//    void setMessageCode(int val) { m_Code = val; }
-
-//    /**
-//     * @brief This function is the member m_Type's accessor.
-//     */
-//    PipelineMessage::MessageType getMessageType() { return m_Type; }
-
-//    /**
-//     * @brief This function is the member m_Type's mutator.
-//     * @param val Variable whose value is assigned to m_Type.
-//     */
-//    void setMessageType(PipelineMessage::MessageType val) { m_Type = val; }
-
-//    /**
-//     * @brief This function is the member m_status's accessor.
-//     */
-//    int getProgressValue() const { return m_ProgressValue; }
-
-//    /**
-//     * @brief This function is the member m_status's mutator.
-//     * @param val Variable whose value is assigned to m_ProgressValue.
-//     */
-//    void setProgressValue(int val) { m_ProgressValue = val; }
+    /**
+     * @brief This method creates and returns a string for error messages
+     */
+    QString generateErrorString() const;
 
     /**
-     * @brief This function creates and returns a string for error messages
+     * @brief This method creates and returns a string for warning messages
      */
-    QString generateErrorString()
-    {
-      QString ss = QObject::tr("Error (%1): %2: %3").arg(m_Code).arg(m_Prefix).arg(m_Text);
-      return ss;
-    }
+    QString generateWarningString() const;
 
     /**
-     * @brief This function creates and returns a string for warning messages
+     * @brief This method creates and returns a string for status messages
      */
-    QString generateWarningString()
-    {
-      QString ss = QObject::tr("Warning (%1): %2: %3").arg(m_Code).arg(m_Prefix).arg(m_Text);
-      return ss;
-    }
+    QString generateStatusString() const;
 
     /**
-     * @brief This function creates and returns a string for status messages
+     * @brief This method creates and returns a string for standard output messages
      */
-    QString generateStatusString()
-    {
-      QString ss = QObject::tr("%1: %2").arg(m_Prefix).arg(m_Text);
-      return ss;
-    }
+    QString generateStandardOutputString() const;
 
     /**
-     * @brief This function creates and returns a string for standard output messages
+     * @brief This method generates a status message that includes a progress value.
+     * @return
      */
-    QString generateStandardOutputString()
-    {
-      return m_Text;
-    }
+    QString generateProgressString() const;
 
 
   private:
-//   QString m_FilterHumanLabel;
-//   QString m_Text;          // Message Text
-//   int m_Code;                 // Error/Warning Code
-//    MessageType m_Type;      // Type of Message (see enumeration "MessageType")
-//   int m_ProgressValue;             // Progress integer
 
 };
 

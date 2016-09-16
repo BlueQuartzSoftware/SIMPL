@@ -59,7 +59,7 @@
 FilterLibraryToolboxWidget::FilterLibraryToolboxWidget(QWidget* parent) :
   QWidget(parent),
   m_ContextMenu(new QMenu(this)),
-  m_Mapper(NULL)
+  m_Mapper(nullptr)
 {
   setupUi(this);
   setupGui();
@@ -159,7 +159,7 @@ void FilterLibraryToolboxWidget::refreshFilterGroups()
     }
   }
   library->setExpanded(true);
-  on_bookmarksTreeView_currentItemChanged(library, NULL);
+  on_bookmarksTreeView_currentItemChanged(library, nullptr);
 }
 
 // -----------------------------------------------------------------------------
@@ -206,7 +206,7 @@ void FilterLibraryToolboxWidget::showContextMenuForWidget(const QPoint& pos)
 {
   QTreeWidgetItem* item = bookmarksTreeView->itemAt(pos);
 
-  if (NULL != item && item->childCount() == 0)
+  if (nullptr != item && item->childCount() == 0)
   {
     // Clear the existing context menu
     m_ContextMenu->clear();
@@ -235,17 +235,17 @@ void FilterLibraryToolboxWidget::showContextMenuForWidget(const QPoint& pos)
 void FilterLibraryToolboxWidget::launchHelpForItem(QString humanLabel)
 {
   FilterManager* fm = FilterManager::Instance();
-  if (NULL == fm)
+  if (nullptr == fm)
   {
     return;
   }
   IFilterFactory::Pointer factory = fm->getFactoryForFilterHumanName(humanLabel);
-  if (NULL == factory.get())
+  if (nullptr == factory.get())
   {
     return;
   }
   AbstractFilter::Pointer filter = factory->create();
-  if (NULL == filter.get())
+  if (nullptr == filter.get())
   {
     return;
   }
@@ -261,7 +261,7 @@ void FilterLibraryToolboxWidget::launchHelpForItem(QString humanLabel)
 // -----------------------------------------------------------------------------
 void FilterLibraryToolboxWidget::on_bookmarksTreeView_currentItemChanged(QTreeWidgetItem* item, QTreeWidgetItem* previous )
 {
-  if (NULL == item)
+  if (nullptr == item)
   {
     return;
   }
@@ -276,12 +276,12 @@ void FilterLibraryToolboxWidget::on_bookmarksTreeView_currentItemChanged(QTreeWi
     factories = fm->getFactories();
     updateFilterGroupList(factories);
   }
-  else if (NULL != item->parent() && item->parent()->text(0).compare(SIMPL::Settings::Library) == 0)
+  else if (nullptr != item->parent() && item->parent()->text(0).compare(SIMPL::Settings::Library) == 0)
   {
     factories = fm->getFactories(item->text(0));
     updateFilterGroupList(factories);
   }
-  else if (NULL != item->parent() && NULL != item->parent()->parent() && item->parent()->parent()->text(0).compare(SIMPL::Settings::Library) == 0)
+  else if (nullptr != item->parent() && nullptr != item->parent()->parent() && item->parent()->parent()->text(0).compare(SIMPL::Settings::Library) == 0)
   {
     factories = fm->getFactories(item->parent()->text(0), item->text(0));
     updateFilterGroupList(factories);

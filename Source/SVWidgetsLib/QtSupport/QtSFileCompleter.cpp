@@ -44,7 +44,7 @@
 // -----------------------------------------------------------------------------
 static QDirModel* fileDirModel()
 {
-  static QDirModel* m = NULL;
+  static QDirModel* m = nullptr;
   if (!m)
   {
     m = new QDirModel();
@@ -61,7 +61,7 @@ static QDirModel* fileDirModel()
 // -----------------------------------------------------------------------------
 static QDirModel* pathDirModel()
 {
-  static QDirModel* m = NULL;
+  static QDirModel* m = nullptr;
   if (!m)
   {
     m = new QDirModel();

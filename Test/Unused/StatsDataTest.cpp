@@ -333,7 +333,7 @@ StatsDataArray::Pointer createStatsDataArray()
 {
 
   StatsDataArray::Pointer statsArray = StatsDataArray::New();
-  StatsData::Pointer s0; // Create a NULL instance of StatsData;
+  StatsData::Pointer s0; // Create a nullptr instance of StatsData;
   statsArray->setStatsData(0, s0); // The underlying storage will resize as needed.
 
   float m_PhaseFraction = 0.25;
@@ -434,7 +434,7 @@ void TestStatsData()
 
   StatsDataArray& arrayRef = *statsArray;
   StatsData::Pointer t0 = arrayRef[0];
-  DREAM3D_REQUIRE_EQUAL(NULL, t0.get());
+  DREAM3D_REQUIRE_EQUAL(nullptr, t0.get());
 
 }
 

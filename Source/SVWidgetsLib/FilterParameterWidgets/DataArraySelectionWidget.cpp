@@ -68,7 +68,7 @@ DataArraySelectionWidget::DataArraySelectionWidget(FilterParameter* parameter, A
   m_DidCausePreflight(false)
 {
   m_FilterParameter = dynamic_cast<DataArraySelectionFilterParameter*>(parameter);
-  Q_ASSERT_X(m_FilterParameter != NULL, "NULL Pointer", "DataArraySelectionWidget can ONLY be used with a DataArraySelectionFilterParameter object");
+  Q_ASSERT_X(m_FilterParameter != nullptr, "nullptr Pointer", "DataArraySelectionWidget can ONLY be used with a DataArraySelectionFilterParameter object");
 
   setupUi(this);
   setupGui();
@@ -78,7 +78,7 @@ DataArraySelectionWidget::DataArraySelectionWidget(FilterParameter* parameter, A
 //
 // -----------------------------------------------------------------------------
 DataArraySelectionWidget::DataArraySelectionWidget(QWidget* parent) :
-  FilterParameterWidget(NULL, NULL, parent),
+  FilterParameterWidget(nullptr, nullptr, parent),
   m_DidCausePreflight(false)
 {
   setupUi(this);
@@ -110,11 +110,11 @@ void DataArraySelectionWidget::initializeWidget(FilterParameter* parameter, Abst
 void DataArraySelectionWidget::setupGui()
 {
   // Sanity Check the filter and the filter parameter
-  if(getFilter() == NULL)
+  if(getFilter() == nullptr)
   {
     return;
   }
-  if (getFilterParameter() == NULL)
+  if (getFilterParameter() == nullptr)
   {
     return;
   }
@@ -156,7 +156,7 @@ void DataArraySelectionWidget::createSelectionMenu()
   // Now get the DataContainerArray from the Filter instance
   // We are going to use this to get all the current DataContainers
   DataContainerArray::Pointer dca = getFilter()->getDataContainerArray();
-  if(NULL == dca.get()) { return; }
+  if(nullptr == dca.get()) { return; }
 
   // Get the menu and clear it out
   QMenu* menu = m_SelectedDataArrayPath->menu();
@@ -187,8 +187,8 @@ void DataArraySelectionWidget::createSelectionMenu()
 
     IGeometry::Pointer geom = IGeometry::NullPointer();
     uint32_t geomType = 999;
-    if (NULL != dc.get()) { geom = dc->getGeometry(); }
-    if (NULL != geom.get()) { geomType = geom->getGeometryType(); }
+    if (nullptr != dc.get()) { geom = dc->getGeometry(); }
+    if (nullptr != geom.get()) { geomType = geom->getGeometryType(); }
 
 
     QMenu* dcMenu = new QMenu(dc->getName());
@@ -212,7 +212,7 @@ void DataArraySelectionWidget::createSelectionMenu()
       QMenu* amMenu = new QMenu(amName);
       dcMenu->addMenu(amMenu);
 
-      if (NULL != am.get() && amTypes.isEmpty() == false && amTypes.contains(am->getType()) == false)
+      if (nullptr != am.get() && amTypes.isEmpty() == false && amTypes.contains(am->getType()) == false)
       {
         amMenu->setDisabled(true);
       }
@@ -293,7 +293,7 @@ void DataArraySelectionWidget::setSelectedPath(DataArrayPath daPath)
   m_SelectedDataArrayPath->setToolTip("");
 
   DataContainerArray::Pointer dca = getFilter()->getDataContainerArray();
-  if(NULL == dca.get()) { return; }
+  if(nullptr == dca.get()) { return; }
 
   if(dca->doesAttributeArrayExist(daPath))
   {
@@ -332,7 +332,7 @@ QString DataArraySelectionWidget::checkStringValues(QString curDcName, QString f
 // -----------------------------------------------------------------------------
 void DataArraySelectionWidget::beforePreflight()
 {
-  if (NULL == getFilter()) { return; }
+  if (nullptr == getFilter()) { return; }
   if(m_DidCausePreflight == true)
   {
     // std::cout << "***  DataArraySelectionWidget already caused a preflight, just returning" << std::endl;
@@ -348,7 +348,7 @@ void DataArraySelectionWidget::beforePreflight()
 void DataArraySelectionWidget::afterPreflight()
 {
   DataContainerArray::Pointer dca = getFilter()->getDataContainerArray();
-  if(NULL == dca.get()) { return; }
+  if(nullptr == dca.get()) { return; }
 
 
   if(dca->doesAttributeArrayExist(DataArrayPath::Deserialize(m_SelectedDataArrayPath->text(), Detail::Delimiter)))

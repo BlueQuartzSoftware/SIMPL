@@ -73,9 +73,9 @@ class SVWidgetsLib_EXPORT DataArrayInformationDisplayWidget : public FilterParam
     * @param filter The instance of the filter that this parameter is a part of
     * @param parent The parent QWidget for this Widget
     */
-    DataArrayInformationDisplayWidget(FilterParameter* parameter, AbstractFilter* filter = NULL, QWidget* parent = NULL);
+    DataArrayInformationDisplayWidget(FilterParameter* parameter, AbstractFilter* filter = nullptr, QWidget* parent = nullptr);
 
-    DataArrayInformationDisplayWidget(QWidget* parent = NULL);
+    DataArrayInformationDisplayWidget(QWidget* parent = nullptr);
 
     virtual ~DataArrayInformationDisplayWidget();
 

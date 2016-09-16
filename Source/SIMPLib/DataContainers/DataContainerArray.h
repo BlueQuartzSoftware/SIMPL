@@ -37,7 +37,7 @@
 #ifndef _datacontainerarray_h_
 #define _datacontainerarray_h_
 
-#include <stddef.h>       // for NULL
+#include <stddef.h>       // for nullptr
 
 #include <QtCore/QObject> // for Q_OBJECT
 #include <QtCore/QString>
@@ -180,7 +180,7 @@ class SIMPLib_EXPORT DataContainerArray : public QObject
     virtual int readDataContainersFromHDF5(bool preflight,
                                            hid_t dcaGid,
                                            DataContainerArrayProxy& dcaProxy,
-                                           Observable* obs = NULL);
+                                           Observable* obs = nullptr);
 
 
     /**
@@ -245,7 +245,7 @@ class SIMPLib_EXPORT DataContainerArray : public QObject
     DataContainer::Pointer getPrereqDataContainer(Filter* filter, const QString& name, bool createIfNotExists = false)
     {
       DataContainer::Pointer dc = getDataContainer(name);
-      if(NULL == dc.get() && createIfNotExists == false)
+      if(nullptr == dc.get() && createIfNotExists == false)
       {
         if (filter)
         {
@@ -255,7 +255,7 @@ class SIMPLib_EXPORT DataContainerArray : public QObject
         }
         return dc;
       }
-      else if(NULL != dc && createIfNotExists == true)
+      else if(nullptr != dc && createIfNotExists == true)
       {
         DataContainer::Pointer dataContainer = DataContainer::New(name); // Create a new Data Container
         addDataContainer(dataContainer); // Put the new DataContainer into the array
@@ -324,7 +324,7 @@ class SIMPLib_EXPORT DataContainerArray : public QObject
     {
       typename GeometryType::Pointer geom = GeometryType::NullPointer();
       DataContainer::Pointer dc = getPrereqDataContainer<Filter>(filter, dcName, false);
-      if(NULL == dc) { return geom; }
+      if(nullptr == dc) { return geom; }
 
       return dc->getPrereqGeometry<GeometryType>(filter);
     }
@@ -342,9 +342,9 @@ class SIMPLib_EXPORT DataContainerArray : public QObject
     AttributeMatrix::Pointer getPrereqAttributeMatrixFromPath(Filter* filter, const DataArrayPath& path, int err)
     {
       // First try to get the Parent DataContainer. If an error occurs the error message will have been set
-      // so just return a NULL shared pointer
+      // so just return a nullptr shared pointer
       DataContainer::Pointer dc = getPrereqDataContainer<Filter>(filter, path.getDataContainerName(), false);
-      if(NULL == dc) { return AttributeMatrix::NullPointer(); }
+      if(nullptr == dc) { return AttributeMatrix::NullPointer(); }
 
       // Now just return what ever the DataContainer gives us. if the AttributeMatrix was not available then an
       // error message and code will have been set into the "filter" object if that object was non-null itself.
@@ -353,10 +353,10 @@ class SIMPLib_EXPORT DataContainerArray : public QObject
 
     /**
      * @brief getPrereqArrayFromPath
-     * @param filter Instance of an AbstractFilter. Can be NULL
+     * @param filter Instance of an AbstractFilter. Can be nullptr
      * @param path The path to the IDataArray
      * @param cDims The component dimensions of the IDataArray subclass
-     * @return Valid or NULL shared pointer based on availability of the array
+     * @return Valid or nullptr shared pointer based on availability of the array
      */
     template<class ArrayType, class Filter>
     typename ArrayType::Pointer getPrereqArrayFromPath(Filter* filter, const DataArrayPath& path, QVector<size_t> cDims)
@@ -393,7 +393,7 @@ class SIMPLib_EXPORT DataContainerArray : public QObject
 
 
       DataContainer::Pointer dc = getDataContainer(dcName);
-      if(NULL == dc.get())
+      if(nullptr == dc.get())
       {
         if(filter)
         {
@@ -405,7 +405,7 @@ class SIMPLib_EXPORT DataContainerArray : public QObject
       }
 
       AttributeMatrix::Pointer attrMat = dc->getAttributeMatrix(amName);
-      if(NULL == attrMat.get())
+      if(nullptr == attrMat.get())
       {
         if(filter)
         {
@@ -461,7 +461,7 @@ class SIMPLib_EXPORT DataContainerArray : public QObject
 
 
       DataContainer::Pointer dc = getDataContainer(dcName);
-      if(NULL == dc.get())
+      if(nullptr == dc.get())
       {
         if(filter)
         {
@@ -473,7 +473,7 @@ class SIMPLib_EXPORT DataContainerArray : public QObject
       }
 
       AttributeMatrix::Pointer attrMat = dc->getAttributeMatrix(amName);
-      if(NULL == attrMat.get())
+      if(nullptr == attrMat.get())
       {
         if(filter)
         {
@@ -564,7 +564,7 @@ class SIMPLib_EXPORT DataContainerArray : public QObject
       }
 
       DataContainer::Pointer dc = getDataContainer(path.getDataContainerName());
-      if(NULL == dc.get())
+      if(nullptr == dc.get())
       {
         if(filter)
         {
@@ -576,7 +576,7 @@ class SIMPLib_EXPORT DataContainerArray : public QObject
       }
 
       AttributeMatrix::Pointer attrMat = dc->getAttributeMatrix(path.getAttributeMatrixName());
-      if(NULL == attrMat.get())
+      if(nullptr == attrMat.get())
       {
         if(filter)
         {
@@ -595,7 +595,7 @@ class SIMPLib_EXPORT DataContainerArray : public QObject
 
     /**
      * @brief validateNumberOfTuples This method will validate that all of the DataArray
-     * paths supplied are valid, return non-NULL DataArray pointers, and that all have the
+     * paths supplied are valid, return non-nullptr DataArray pointers, and that all have the
      * same number of tuples.  It will return false if and any of the checks fail, or
      * if the QVector of input paths has 0 or 1 element.
      * @param filter The filter calling the validation
@@ -609,7 +609,7 @@ class SIMPLib_EXPORT DataContainerArray : public QObject
       QVector<IDataArray::Pointer> dataArrays;
       bool valid = true;
       QString ss;
-      if (paths.at(0).isValid() == false && NULL != filter)
+      if (paths.at(0).isValid() == false && nullptr != filter)
       {
         filter->setErrorCondition(-10000);
         ss = QObject::tr("DataContainerArray::validateNumberOfTuples Error at line %1. The DataArrayPath object was not valid meaning one of the strings in the object is empty. The path is %2").arg(__LINE__).arg(paths.at(0).serialize());
@@ -618,7 +618,7 @@ class SIMPLib_EXPORT DataContainerArray : public QObject
         return valid;
       }
       IDataArray::Pointer array0 = getPrereqIDataArrayFromPath<IDataArray, Filter>(filter, paths.at(0));
-      if (NULL == array0.get() && NULL != filter)
+      if (nullptr == array0.get() && nullptr != filter)
       {
         filter->setErrorCondition(-10100);
         ss = QObject::tr("DataContainerArray::validateNumberOfTuples Error at line %1. The DataArray object was not available. The path is %2").arg(__LINE__).arg(paths.at(0).serialize());
@@ -630,7 +630,7 @@ class SIMPLib_EXPORT DataContainerArray : public QObject
       dataArrays.push_back(array0);
       for (int32_t i = 1; i < paths.size(); i++)
       {
-        if (paths.at(i).isValid() == false && NULL != filter)
+        if (paths.at(i).isValid() == false && nullptr != filter)
         {
           filter->setErrorCondition(-10000);
           ss = QObject::tr("DataContainerArray::validateNumberOfTuples Error at line %1. The DataArrayPath object was not valid meaning one of the strings in the object is empty. The path is %2").arg(__LINE__).arg(paths.at(i).serialize());
@@ -639,7 +639,7 @@ class SIMPLib_EXPORT DataContainerArray : public QObject
           return valid;
         }
         IDataArray::Pointer nextArray = getPrereqIDataArrayFromPath<IDataArray, Filter>(filter, paths.at(i));
-        if (NULL == nextArray.get() && NULL != filter)
+        if (nullptr == nextArray.get() && nullptr != filter)
         {
           filter->setErrorCondition(-10100);
           ss = QObject::tr("DataContainerArray::validateNumberOfTuples Error at line %1. The DataArray object was not available. The path is %2").arg(__LINE__).arg(paths.at(i).serialize());
@@ -653,7 +653,7 @@ class SIMPLib_EXPORT DataContainerArray : public QObject
       size_t numTuples = dataArrays[0]->getNumberOfTuples();
       for (int32_t i = 1; i < dataArrays.size(); i++)
       {
-        if (numTuples != dataArrays[i]->getNumberOfTuples() && NULL != filter)
+        if (numTuples != dataArrays[i]->getNumberOfTuples() && nullptr != filter)
         {
           filter->setErrorCondition(-10200);
           ss = QObject::tr("The number of tuples for the DataArray %1 is %2 and for DataArray %3 is %4. The number of tuples must match.")
@@ -667,7 +667,7 @@ class SIMPLib_EXPORT DataContainerArray : public QObject
 
     /**
      * @brief validateNumberOfTuples This method will validate that all of the DataArray
-     * objects supplied are non-NULL and that all are have the same number of tuples.
+     * objects supplied are non-nullptr and that all are have the same number of tuples.
      * It will return false if and any of the checks fail, or
      * if the QVector of input DataArray objects has 0 or 1 element.
      * @param filter The filter calling the validation
@@ -682,7 +682,7 @@ class SIMPLib_EXPORT DataContainerArray : public QObject
       QString ss;
       for (int32_t i = 0; i < dataArrays.size(); i++)
       {
-        if (NULL == dataArrays.at(i).get() && NULL != filter)
+        if (nullptr == dataArrays.at(i).get() && nullptr != filter)
         {
           filter->setErrorCondition(-10100);
           ss = QObject::tr("DataContainerArray::validateNumberOfTuples Error at line %1. The DataArray object was not available").arg(__LINE__);
@@ -693,7 +693,7 @@ class SIMPLib_EXPORT DataContainerArray : public QObject
       size_t numTuples = dataArrays[0]->getNumberOfTuples();
       for (int32_t i = 1; i < dataArrays.size(); i++)
       {
-        if (numTuples != dataArrays[i]->getNumberOfTuples() && NULL != filter)
+        if (numTuples != dataArrays[i]->getNumberOfTuples() && nullptr != filter)
         {
           filter->setErrorCondition(-10200);
           ss = QObject::tr("The number of tuples for the DataArray %1 is %2 and for DataArray %3 is %4. The number of tuples must match.")

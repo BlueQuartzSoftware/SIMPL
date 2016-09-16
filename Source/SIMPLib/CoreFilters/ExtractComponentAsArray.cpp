@@ -58,8 +58,8 @@ ExtractComponentAsArray::ExtractComponentAsArray() :
   m_SelectedArrayPath("", "", ""),
   m_CompNumber(0),
   m_NewArrayArrayName(""),
-  m_InArray(NULL),
-  m_NewArray(NULL)
+  m_InArray(nullptr),
+  m_NewArray(nullptr)
 {
   setupFilterParameters();
 }
@@ -171,7 +171,7 @@ void extractComponent(IDataArray::Pointer inputData, IDataArray::Pointer newData
   typename DataArray<T>::Pointer inputArrayPtr = std::dynamic_pointer_cast<DataArray<T> >(inputData);
   typename DataArray<T>::Pointer newArrayPtr = std::dynamic_pointer_cast<DataArray<T> >(newData);
 
-  if (NULL == inputArrayPtr || NULL == newArrayPtr) { return; }
+  if (nullptr == inputArrayPtr || nullptr == newArrayPtr) { return; }
 
   T* inputArray = inputArrayPtr->getPointer(0);
   T* newArray = newArrayPtr->getPointer(0);

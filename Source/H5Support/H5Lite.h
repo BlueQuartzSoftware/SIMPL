@@ -247,7 +247,7 @@ namespace H5Support_NAMESPACE
 
         std::cout  << "Error: HDFTypeForPrimitive - Unknown Type: " << (typeid(value).name()) << std::endl;
         const char* name = typeid(value).name();
-        if (NULL != name && name[0] == 'l' )
+        if (nullptr != name && name[0] == 'l' )
         {
           std::cout << "You are using 'long int' as a type which is not 32/64 bit safe. Suggest you use one of the H5SupportTypes defined in <Common/H5SupportTypes.h> such as int32_t or uint32_t." << std::endl;
         }
@@ -324,7 +324,7 @@ namespace H5Support_NAMESPACE
         {
           _dims[i] = static_cast<hsize_t>(dims[i]);
         }
-        sid = H5Screate_simple( static_cast<int>(size), &(_dims.front()), NULL );
+        sid = H5Screate_simple( static_cast<int>(size), &(_dims.front()), nullptr );
         if (sid < 0)
         {
           return -101;
@@ -383,7 +383,7 @@ namespace H5Support_NAMESPACE
         hid_t sid     = -1;
         herr_t retErr = 0;
 
-        if(NULL == data) { return -2;}
+        if(nullptr == data) { return -2;}
         hid_t dataType = H5Lite::HDFTypeForPrimitive(data[0]);
         if(dataType == -1)
         {
@@ -397,8 +397,8 @@ namespace H5Support_NAMESPACE
         {
           _dims[i] = static_cast<hsize_t>(dims[i]);
         }
-//  sid = H5Screate_simple( size, &(_dims.front()), NULL );
-        sid = H5Screate_simple( rank, dims, NULL);
+//  sid = H5Screate_simple( size, &(_dims.front()), nullptr );
+        sid = H5Screate_simple( rank, dims, nullptr);
         if (sid < 0)
         {
           return sid;
@@ -472,8 +472,8 @@ namespace H5Support_NAMESPACE
         {
           _dims[i] = static_cast<hsize_t>(dims[i]);
         }
-//  sid = H5Screate_simple( size, &(_dims.front()), NULL );
-        sid = H5Screate_simple( rank, dims, NULL);
+//  sid = H5Screate_simple( size, &(_dims.front()), nullptr );
+        sid = H5Screate_simple( rank, dims, nullptr);
         if (sid < 0)
         {
           return sid;
@@ -558,7 +558,7 @@ namespace H5Support_NAMESPACE
           return -1;
         }
         //Create the DataSpace
-        sid = H5Screate_simple( rank, dims, NULL );
+        sid = H5Screate_simple( rank, dims, nullptr );
         if (sid < 0)
         {
           return sid;
@@ -624,7 +624,7 @@ namespace H5Support_NAMESPACE
           return -1;
         }
         //Create the DataSpace
-        sid = H5Screate_simple( rank, &(dims), NULL );
+        sid = H5Screate_simple( rank, &(dims), nullptr );
         if (sid < 0)
         {
           return sid;
@@ -752,7 +752,7 @@ namespace H5Support_NAMESPACE
         }
         dimsPtr = &(_dims.front() );
 
-        sid = H5Screate_simple( rank, dimsPtr, NULL );
+        sid = H5Screate_simple( rank, dimsPtr, nullptr );
         if ( sid >= 0 )
         {
           /* Verify if the attribute already exists */
@@ -870,7 +870,7 @@ namespace H5Support_NAMESPACE
         }
         dimsPtr = &(_dims.front() );
 
-        sid = H5Screate_simple( static_cast<int>(dims.size()), dimsPtr, NULL );
+        sid = H5Screate_simple( static_cast<int>(dims.size()), dimsPtr, nullptr );
         if ( sid >= 0 )
         {
           /* Verify if the attribute already exists */
@@ -1030,7 +1030,7 @@ namespace H5Support_NAMESPACE
         }
 
         /* Create the data space for the attribute. */
-        sid = H5Screate_simple( rank, &dims, NULL );
+        sid = H5Screate_simple( rank, &dims, nullptr );
         if ( sid >= 0 )
         {
           /* Verify if the attribute already exists */
@@ -1122,9 +1122,9 @@ namespace H5Support_NAMESPACE
           std::cout  << "loc_id was Negative: This is not allowed." << std::endl;
           return -2;
         }
-        if (NULL == data)
+        if (nullptr == data)
         {
-          std::cout  << "The Pointer to hold the data is NULL. This is NOT allowed." << std::endl;
+          std::cout  << "The Pointer to hold the data is nullptr. This is NOT allowed." << std::endl;
           return -3;
         }
         did = H5Dopen( loc_id, dsetName.c_str(), H5P_DEFAULT );
@@ -1199,7 +1199,7 @@ namespace H5Support_NAMESPACE
             {
               std::vector<hsize_t> dims;
               dims.resize(rank);// Allocate enough room for the dims
-              err = H5Sget_simple_extent_dims(spaceId, &(dims.front()), NULL);
+              err = H5Sget_simple_extent_dims(spaceId, &(dims.front()), nullptr);
               hsize_t numElements = 1;
               for (std::vector<hsize_t>::iterator iter = dims.begin(); iter < dims.end(); ++iter )
               {
@@ -1279,7 +1279,7 @@ namespace H5Support_NAMESPACE
             {
               std::vector<hsize_t> dims;
               dims.resize(rank);// Allocate enough room for the dims
-              err = H5Sget_simple_extent_dims(spaceId, &(dims.front()), NULL);
+              err = H5Sget_simple_extent_dims(spaceId, &(dims.front()), nullptr);
               hsize_t numElements = 1;
               for (std::vector<hsize_t>::iterator iter = dims.begin(); iter < dims.end(); ++iter )
               {

@@ -63,7 +63,7 @@ class SVWidgetsLib_EXPORT QtSFSDropLineEdit : public QLineEdit
       FS_WARNING_STYLE
     };
 
-    QtSFSDropLineEdit(QWidget* parent = NULL);
+    QtSFSDropLineEdit(QWidget* parent = nullptr);
 
     void dragEnterEvent(QDragEnterEvent* event);
     void dropEvent(QDropEvent* event);

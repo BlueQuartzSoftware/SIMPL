@@ -194,7 +194,7 @@ class SIMPLib_EXPORT StatsData
     QJsonArray generateJsonArrayFromDataArray(typename DataArray<T>::Pointer data)
     {
       QJsonArray json;
-      if(NULL != data.get()) {
+      if(nullptr != data.get()) {
         for(size_t i = 0; i < data->getSize(); i++)
         {
           json.append(QJsonValue(static_cast<double>( data->getValue(i))));

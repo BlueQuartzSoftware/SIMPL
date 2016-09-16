@@ -73,7 +73,7 @@ ThresholdFilterHelper::~ThresholdFilterHelper()
 // -----------------------------------------------------------------------------
 int ThresholdFilterHelper::execute(IDataArray* input, IDataArray* output)
 {
-  if (NULL == input)
+  if (nullptr == input)
   {
     return -1;
   }

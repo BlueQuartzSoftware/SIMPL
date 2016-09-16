@@ -71,7 +71,7 @@ class SVWidgetsLib_EXPORT StringWidget : public FilterParameterWidget, private U
     * @param filter The instance of the filter that this parameter is a part of
     * @param parent The parent QWidget for this Widget
     */
-    StringWidget(FilterParameter* parameter, AbstractFilter* filter = NULL, QWidget* parent = NULL);
+    StringWidget(FilterParameter* parameter, AbstractFilter* filter = nullptr, QWidget* parent = nullptr);
 
     virtual ~StringWidget();
 

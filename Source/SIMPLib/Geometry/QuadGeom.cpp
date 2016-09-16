@@ -176,11 +176,11 @@ QuadGeom::Pointer QuadGeom::CreateGeometry(SharedQuadList::Pointer quads, Shared
   {
     return NullPointer();
   }
-  if (vertices.get() == NULL)
+  if (vertices.get() == nullptr)
   {
     return QuadGeom::NullPointer();
   }
-  if (quads.get() == NULL)
+  if (quads.get() == nullptr)
   {
     return QuadGeom::NullPointer();
   }
@@ -211,15 +211,15 @@ void QuadGeom::addAttributeMatrix(const QString& name, AttributeMatrix::Pointer 
     // QuadGeom can only accept vertex, edge, or face Attribute Matrices
     return;
   }
-  if (data->getType() == 0 && static_cast<int64_t>(data->getNumTuples()) != getNumberOfVertices())
+  if (data->getType() == 0 && static_cast<int64_t>(data->getNumberOfTuples()) != getNumberOfVertices())
   {
     return;
   }
-  if (data->getType() == 1 && static_cast<int64_t>(data->getNumTuples()) != getNumberOfEdges())
+  if (data->getType() == 1 && static_cast<int64_t>(data->getNumberOfTuples()) != getNumberOfEdges())
   {
     return;
   }
-  if (data->getType() == 2 && data->getNumTuples() != getNumberOfElements())
+  if (data->getType() == 2 && data->getNumberOfTuples() != getNumberOfElements())
   {
     return;
   }
@@ -245,7 +245,7 @@ int QuadGeom::findEdges()
 {
   m_EdgeList = CreateSharedEdgeList(0);
   GeometryHelpers::Connectivity::Find2DElementEdges<int64_t>(m_QuadList, m_EdgeList);
-  if (m_EdgeList.get() == NULL)
+  if (m_EdgeList.get() == nullptr)
   {
     return -1;
   }
@@ -267,7 +267,7 @@ int QuadGeom::findElementsContainingVert()
 {
   m_QuadsContainingVert = ElementDynamicList::New();
   GeometryHelpers::Connectivity::FindElementsContainingVert<uint16_t, int64_t>(m_QuadList, m_QuadsContainingVert, getNumberOfVertices());
-  if (m_QuadsContainingVert.get() == NULL)
+  if (m_QuadsContainingVert.get() == nullptr)
   {
     return -1;
   }
@@ -304,14 +304,14 @@ void QuadGeom::deleteElementsContainingVert()
 int QuadGeom::findElementNeighbors()
 {
   int err = 0;
-  if (m_QuadsContainingVert.get() == NULL)
+  if (m_QuadsContainingVert.get() == nullptr)
   {
     err = findElementsContainingVert();
     if (err < 0) { return err; }
   }
   m_QuadNeighbors = ElementDynamicList::New();
   err = GeometryHelpers::Connectivity::FindElementNeighbors<uint16_t, int64_t>(m_QuadList, m_QuadsContainingVert, m_QuadNeighbors, SIMPL::GeometryType::QuadGeometry);
-  if (m_QuadNeighbors.get() == NULL)
+  if (m_QuadNeighbors.get() == nullptr)
   {
     return -1;
   }
@@ -350,7 +350,7 @@ int QuadGeom::findElementCentroids()
   QVector<size_t> cDims(1, 3);
   m_QuadCentroids = FloatArrayType::CreateArray(getNumberOfQuads(), cDims, SIMPL::StringConstants::QuadCentroids);
   GeometryHelpers::Topology::FindElementCentroids<int64_t>(m_QuadList, m_VertexList, m_QuadCentroids);
-  if (m_QuadCentroids.get() == NULL)
+  if (m_QuadCentroids.get() == nullptr)
   {
     return -1;
   }
@@ -389,7 +389,7 @@ int QuadGeom::findUnsharedEdges()
   QVector<size_t> cDims(1, 2);
   m_UnsharedEdgeList = SharedEdgeList::CreateArray(0, cDims, SIMPL::Geometry::UnsharedEdgeList);
   GeometryHelpers::Connectivity::Find2DUnsharedEdges<int64_t>(m_QuadList, m_UnsharedEdgeList);
-  if (m_UnsharedEdgeList.get() == NULL)
+  if (m_UnsharedEdgeList.get() == nullptr)
   {
     return -1;
   }
@@ -491,7 +491,7 @@ int QuadGeom::writeGeometryToHDF5(hid_t parentId, bool SIMPL_NOT_USED(writeXdmf)
 {
   herr_t err = 0;
 
-  if (m_VertexList.get() != NULL)
+  if (m_VertexList.get() != nullptr)
   {
     err = GeometryHelpers::GeomIO::WriteListToHDF5(parentId, m_VertexList);
     if (err < 0)
@@ -500,7 +500,7 @@ int QuadGeom::writeGeometryToHDF5(hid_t parentId, bool SIMPL_NOT_USED(writeXdmf)
     }
   }
 
-  if (m_EdgeList.get() != NULL)
+  if (m_EdgeList.get() != nullptr)
   {
     err = GeometryHelpers::GeomIO::WriteListToHDF5(parentId, m_EdgeList);
     if (err < 0)
@@ -509,7 +509,7 @@ int QuadGeom::writeGeometryToHDF5(hid_t parentId, bool SIMPL_NOT_USED(writeXdmf)
     }
   }
 
-  if (m_QuadList.get() != NULL)
+  if (m_QuadList.get() != nullptr)
   {
     err = GeometryHelpers::GeomIO::WriteListToHDF5(parentId, m_QuadList);
     if (err < 0)
@@ -518,7 +518,7 @@ int QuadGeom::writeGeometryToHDF5(hid_t parentId, bool SIMPL_NOT_USED(writeXdmf)
     }
   }
 
-  if (m_UnsharedEdgeList.get() != NULL)
+  if (m_UnsharedEdgeList.get() != nullptr)
   {
     err = GeometryHelpers::GeomIO::WriteListToHDF5(parentId, m_UnsharedEdgeList);
     if (err < 0)
@@ -527,7 +527,7 @@ int QuadGeom::writeGeometryToHDF5(hid_t parentId, bool SIMPL_NOT_USED(writeXdmf)
     }
   }
 
-  if (m_QuadCentroids.get() != NULL)
+  if (m_QuadCentroids.get() != nullptr)
   {
     err = GeometryHelpers::GeomIO::WriteListToHDF5(parentId, m_QuadCentroids);
     if (err < 0)
@@ -536,7 +536,7 @@ int QuadGeom::writeGeometryToHDF5(hid_t parentId, bool SIMPL_NOT_USED(writeXdmf)
     }
   }
 
-  if (m_QuadNeighbors.get() != NULL)
+  if (m_QuadNeighbors.get() != nullptr)
   {
     size_t numQuads = getNumberOfQuads();
     err = GeometryHelpers::GeomIO::WriteDynamicListToHDF5<uint16_t, int64_t>(parentId, m_QuadNeighbors, numQuads, SIMPL::StringConstants::QuadNeighbors);
@@ -546,7 +546,7 @@ int QuadGeom::writeGeometryToHDF5(hid_t parentId, bool SIMPL_NOT_USED(writeXdmf)
     }
   }
 
-  if (m_QuadsContainingVert.get() != NULL)
+  if (m_QuadsContainingVert.get() != nullptr)
   {
     size_t numVerts = getNumberOfVertices();
     err = GeometryHelpers::GeomIO::WriteDynamicListToHDF5<uint16_t, int64_t>(parentId, m_QuadsContainingVert, numVerts, SIMPL::StringConstants::QuadsContainingVert);
@@ -575,7 +575,7 @@ int QuadGeom::writeXdmf(QTextStream& out, QString dcName, QString hdfFileName)
   out << "      </DataItem>" << "\n";
   out << "    </Topology>" << "\n";
 
-  if (m_VertexList.get() == NULL)
+  if (m_VertexList.get() == nullptr)
   {
     out << "<!-- ********************* GEOMETRY ERROR ****************************************\n";
     out << "The Geometry with name '" << getName() << "' in DataContainer '" << dcName <<  "' \n";
@@ -627,7 +627,7 @@ int QuadGeom::readGeometryFromHDF5(hid_t parentId, bool preflight)
   herr_t err = 0;
   SharedVertexList::Pointer vertices = GeometryHelpers::GeomIO::ReadListFromHDF5<SharedVertexList>(SIMPL::Geometry::SharedVertexList, parentId, preflight, err);
   SharedQuadList::Pointer quads = GeometryHelpers::GeomIO::ReadListFromHDF5<SharedQuadList>(SIMPL::Geometry::SharedQuadList, parentId, preflight, err);
-  if (quads.get() == NULL || vertices.get() == NULL)
+  if (quads.get() == nullptr || vertices.get() == nullptr)
   {
     return -1;
   }

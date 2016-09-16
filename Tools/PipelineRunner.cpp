@@ -136,7 +136,7 @@ int main (int argc, char*  argv[])
     return EXIT_FAILURE;
   }
 
-  if (NULL == pipeline.get())
+  if (nullptr == pipeline.get())
   {
     std::cout << "An error occurred trying to read the pipeline file. Exiting now." << std::endl;
     return EXIT_FAILURE;

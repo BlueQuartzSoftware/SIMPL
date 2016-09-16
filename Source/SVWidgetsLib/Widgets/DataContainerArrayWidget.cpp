@@ -47,7 +47,7 @@
 // -----------------------------------------------------------------------------
 DataContainerArrayWidget::DataContainerArrayWidget(QWidget* parent) :
   QWidget(parent),
-  m_Filter(NULL)
+  m_Filter(nullptr)
 {
   setupUi(this);
   setupGui();
@@ -103,7 +103,7 @@ void DataContainerArrayWidget::setupGui()
   dataContainerInfoLabel->setText("");
   clearStandardItemModel();
 
-  if(NULL != m_Filter)
+  if(nullptr != m_Filter)
   {
     connect(m_Filter, SIGNAL(preflightExecuted()),
             this, SLOT(updateView()));
@@ -118,11 +118,11 @@ void DataContainerArrayWidget::updateView()
 {
 
   // Sanity check our filter object
-  if (NULL == m_Filter) { return; }
+  if (nullptr == m_Filter) { return; }
 
   // Get an check out DataContainerArray object
   DataContainerArray::Pointer dca = m_Filter->getDataContainerArray();
-  if(dca.get() == NULL) { return; }
+  if(dca.get() == nullptr) { return; }
 
 
 
@@ -133,7 +133,7 @@ void DataContainerArrayWidget::updateView()
     QStandardItem* item = model->itemFromIndex(currIndex);
     // Get what is selected and save it
 
-    while(NULL != item)
+    while(nullptr != item)
     {
       path.push_front(item->text());
       item = item->parent();

@@ -135,12 +135,12 @@ bool createAndWriteToFile(T* dataArray, size_t dataSize, T* junkArray, size_t ju
 {
   /* Any of these combinations will return failure:
    *      If the junkArray has values and junkPlacement is set to NONE
-   *      If junkArray is NULL and junkPlacement is not set to NONE
+   *      If junkArray is nullptr and junkPlacement is not set to NONE
    *      If junkPlacement is set to an invalid value
-   *    If the dataArray is NULL
+   *    If the dataArray is nullptr
    */
-  if ( (NULL != junkArray && junkPlacement <= 0) || (NULL == junkArray && junkPlacement > 0)
-       || junkPlacement < 0 || dataArray == NULL)
+  if ( (nullptr != junkArray && junkPlacement <= 0) || (nullptr == junkArray && junkPlacement > 0)
+       || junkPlacement < 0 || dataArray == nullptr)
   {
     return false;
   }
@@ -176,8 +176,8 @@ bool createAndWriteToFile(T* dataArray, size_t dataSize, T* junkArray, size_t ju
     dataArray = dataArray + numWritten;
   }
 
-  // Reset the pointer back to the front of the array, and set dataArrayFront to NULL
-  dataArrayFront = NULL;
+  // Reset the pointer back to the front of the array, and set dataArrayFront to nullptr
+  dataArrayFront = nullptr;
 
   // If junkPlacement is set to END or BOTH, write junk to file
   numWritten = 0;
@@ -254,8 +254,8 @@ int testCase1_Execute(const QString& name, int scalarType)
     dataArray[i] = static_cast<T>(i);
   }
 
-  // Create junkArray and set it to NULL because there is no junk in this test case
-  T* junkArray = NULL;
+  // Create junkArray and set it to nullptr because there is no junk in this test case
+  T* junkArray = nullptr;
 
   // Create the file and write to it.  If any of the information is wrong, the result will be false
   bool result = createAndWriteToFile(dataArray, dataArraySize, junkArray, junkArraySize, Detail::None);
@@ -355,8 +355,8 @@ void testCase2_Execute(const QString& name, int scalarType)
     dataArray[i] = static_cast<T>(i);
   }
 
-  // Create junkArray and set it to NULL because there is no junk in this test case
-  T* junkArray = NULL;
+  // Create junkArray and set it to nullptr because there is no junk in this test case
+  T* junkArray = nullptr;
 
   // Create the file and write to it.  If any of the information is wrong, the result will be false
   bool result = createAndWriteToFile(dataArray, dataArraySize, junkArray, junkArraySize, Detail::None);

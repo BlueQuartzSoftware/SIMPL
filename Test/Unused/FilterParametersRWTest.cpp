@@ -346,7 +346,7 @@ int WritePipelineToQSettings(FilterPipeline::Pointer pipeline, QString filePath)
   // Now starting with the first filter in the pipeline, start the actual writing
   AbstractFilter::Pointer currentFilter = filters.at(0);
   int index = 0;
-  while(NULL != currentFilter.get())
+  while(nullptr != currentFilter.get())
   {
     index = currentFilter->writeFilterParameters(parametersWriter.get(), index);
     currentFilter = currentFilter->getNextFilter();
@@ -533,7 +533,7 @@ void VerifyArraySelectionExampleHDF5FilterParameters()
   hid_t fid = -1;
   H5FilterParametersReader::Pointer reader = H5FilterParametersReader::OpenDREAM3DFileForReadingPipeline(UnitTest::FilterParametersRWTest::ArraySelectionFile, fid);
   DREAM3D_REQUIRED(fid, > , 0)
-  DREAM3D_REQUIRED(filt.get(), != , NULL)
+  DREAM3D_REQUIRED(filt.get(), != , nullptr)
 
   // The Generic Filter is the second (index = 1) filter in the pipeline, so set this index value
   int index = 1;
@@ -756,7 +756,7 @@ void VerifyGenericExampleHDF5FilterParameters()
   hid_t fid = -1;
   H5FilterParametersReader::Pointer reader = H5FilterParametersReader::OpenDREAM3DFileForReadingPipeline(UnitTest::FilterParametersRWTest::GenericExampleFile, fid);
   DREAM3D_REQUIRED(fid, > , 0);
-  DREAM3D_REQUIRED(filt.get(), != , NULL);
+  DREAM3D_REQUIRED(filt.get(), != , nullptr);
 
   // The Generic Filter is the second (index = 1) filter in the pipeline, so set this index value
   int index = 1;
@@ -902,7 +902,7 @@ void VerifyThresholdExampleQSettingsFilterParameters()
   ValidateThresholdExampleFilter(filt);
 
   FilterPipeline::Pointer pipeline = QFilterParametersReader::ReadPipelineFromFile(UnitTest::FilterParametersRWTest::ThresholdFile, QSettings::IniFormat);
-  DREAM3D_REQUIRE(pipeline.get() != NULL)
+  DREAM3D_REQUIRE(pipeline.get() != nullptr)
 }
 
 
@@ -915,7 +915,7 @@ void VerifyThresholdExampleHDF5FilterParameters()
   hid_t fid = -1;
   H5FilterParametersReader::Pointer reader = H5FilterParametersReader::OpenDREAM3DFileForReadingPipeline(UnitTest::FilterParametersRWTest::ThresholdFile, fid);
   DREAM3D_REQUIRED(fid, > , 0)
-  DREAM3D_REQUIRED(filt.get(), != , NULL)
+  DREAM3D_REQUIRED(filt.get(), != , nullptr)
 
   // The Generic Filter is the second (index = 1) filter in the pipeline, so set this index value
   int index = 1;
@@ -931,7 +931,7 @@ void VerifyThresholdExampleHDF5FilterParameters()
   H5Fclose(fid); // Closes the file
 
   FilterPipeline::Pointer pipeline = H5FilterParametersReader::ReadPipelineFromFile(UnitTest::FilterParametersRWTest::ThresholdFile);
-  DREAM3D_REQUIRE(pipeline.get() != NULL)
+  DREAM3D_REQUIRE(pipeline.get() != nullptr)
 }
 
 
@@ -1047,9 +1047,9 @@ void FilterManagerTest()
 
 
   IFilterFactory::Pointer ff = fm->getFactoryForFilter(DataContainerReader::ClassName());
-  DREAM3D_REQUIRE_NE(ff.get(), NULL)
+  DREAM3D_REQUIRE_NE(ff.get(), nullptr)
   AbstractFilter::Pointer reader = ff->create();
-  DREAM3D_REQUIRE_NE(reader.get(), NULL)
+  DREAM3D_REQUIRE_NE(reader.get(), nullptr)
 
   int comp = DataContainerReader::ClassName().compare(reader->getNameOfClass());
   DREAM3D_REQUIRE_EQUAL(comp, 0);

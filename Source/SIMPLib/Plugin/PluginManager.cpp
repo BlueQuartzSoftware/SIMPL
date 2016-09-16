@@ -35,7 +35,7 @@
 
 #include "PluginManager.h"
 
-PluginManager* PluginManager::self = NULL;
+PluginManager* PluginManager::self = nullptr;
 
 // -----------------------------------------------------------------------------
 //
@@ -61,9 +61,9 @@ PluginManager::~PluginManager()
 PluginManager* PluginManager::Instance()
 {
 
-  if (self == NULL)
+  if (self == nullptr)
   {
-    //  qDebug() << "PluginManager::Instance self was NULL" << "\n";
+    //  qDebug() << "PluginManager::Instance self was nullptr" << "\n";
     self = new PluginManager();
   }
   return self;
@@ -97,7 +97,7 @@ QList<QString> PluginManager::getPluginNames()
   for (QVector<ISIMPLibPlugin*>::iterator iter = plugins.begin(); iter != plugins.end(); ++iter)
   {
     ISIMPLibPlugin* plugin = *iter;
-    if(NULL != plugin)
+    if(nullptr != plugin)
     {
       pluginNames.push_back(plugin->getPluginName());
     }
@@ -147,5 +147,5 @@ ISIMPLibPlugin* PluginManager::findPlugin(QString pluginName)
   }
 
   // If the plugin isn't found in the vector...
-  return NULL;
+  return nullptr;
 }

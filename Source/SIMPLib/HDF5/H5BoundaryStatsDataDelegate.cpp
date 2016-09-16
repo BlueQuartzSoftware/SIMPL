@@ -81,7 +81,7 @@ int H5BoundaryStatsDataDelegate::readBoundaryStatsData(BoundaryStatsData* data, 
 // -----------------------------------------------------------------------------
 int H5BoundaryStatsDataDelegate::writeBoundaryStatsData(BoundaryStatsData* data, hid_t groupId)
 {
-  if (NULL == data)
+  if (nullptr == data)
   {
     return -1;
   }

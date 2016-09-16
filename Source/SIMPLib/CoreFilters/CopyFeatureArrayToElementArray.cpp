@@ -58,8 +58,8 @@ CopyFeatureArrayToElementArray::CopyFeatureArrayToElementArray() :
   m_SelectedFeatureArrayPath("", "", ""),
   m_FeatureIdsArrayPath("", "", ""),
   m_CreatedArrayName(""),
-  m_FeatureIds(NULL),
-  m_InArray(NULL)
+  m_FeatureIds(nullptr),
+  m_InArray(nullptr)
 {
   setupFilterParameters();
 }
@@ -131,7 +131,7 @@ void CopyFeatureArrayToElementArray::dataCheck()
 
   QVector<size_t> cDims(1, 1);
   m_FeatureIdsPtr = getDataContainerArray()->getPrereqArrayFromPath<DataArray<int32_t>, AbstractFilter>(this, getFeatureIdsArrayPath(), cDims); /* Assigns the shared_ptr<> to an instance variable that is a weak_ptr<> */
-  if( NULL != m_FeatureIdsPtr.lock().get() ) /* Validate the Weak Pointer wraps a non-NULL pointer to a DataArray<T> object */
+  if( nullptr != m_FeatureIdsPtr.lock().get() ) /* Validate the Weak Pointer wraps a non-nullptr pointer to a DataArray<T> object */
   { m_FeatureIds = m_FeatureIdsPtr.lock()->getPointer(0); }    /* Now assign the raw pointer to data from the DataArray<T> object */
 
   m_InArrayPtr = getDataContainerArray()->getPrereqIDataArrayFromPath<IDataArray, AbstractFilter>(this, getSelectedFeatureArrayPath()); /* Assigns the shared_ptr<> to an instance variable that is a weak_ptr<> */
@@ -167,7 +167,7 @@ IDataArray::Pointer copyData(IDataArray::Pointer inputData, size_t totalPoints, 
   QString cellArrayName = inputData->getName();
 
   typename DataArray<T>::Pointer feature = std::dynamic_pointer_cast<DataArray<T> >(inputData);
-  if (NULL == feature) { return IDataArray::NullPointer();  }
+  if (nullptr == feature) { return IDataArray::NullPointer();  }
 
   QVector<size_t> cDims = inputData->getComponentDimensions();
   typename DataArray<T>::Pointer cell = DataArray<T>::CreateArray(totalPoints, cDims, cellArrayName);
@@ -292,7 +292,7 @@ void CopyFeatureArrayToElementArray::execute()
     notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
   }
 
-  if (p.get() != NULL)
+  if (p.get() != nullptr)
   {
     p->setName(getCreatedArrayName());
     AttributeMatrix::Pointer am = getDataContainerArray()->getAttributeMatrix(getFeatureIdsArrayPath());

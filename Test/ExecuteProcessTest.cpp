@@ -108,7 +108,7 @@ class ExecuteProcessTest
     QString filtName = "ExecuteProcess";
     FilterManager* fm = FilterManager::Instance();
     IFilterFactory::Pointer filterFactory = fm->getFactoryForFilter(filtName);
-    if (NULL == filterFactory.get())
+    if (nullptr == filterFactory.get())
     {
       std::stringstream ss;
       ss << "The ExecuteProcessTest Requires the use of the " << filtName.toStdString() << " filter which is found in CoreFilters";

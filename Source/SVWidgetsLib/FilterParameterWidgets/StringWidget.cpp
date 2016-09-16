@@ -54,7 +54,7 @@ StringWidget::StringWidget(FilterParameter* parameter, AbstractFilter* filter, Q
   FilterParameterWidget(parameter, filter, parent)
 {
   m_FilterParameter = dynamic_cast<StringFilterParameter*>(parameter);
-  Q_ASSERT_X(m_FilterParameter != NULL, "NULL Pointer", "StringWidget can ONLY be used with a StringFilterParameter object");
+  Q_ASSERT_X(m_FilterParameter != nullptr, "nullptr Pointer", "StringWidget can ONLY be used with a StringFilterParameter object");
 
   setupUi(this);
   setupGui();
@@ -74,7 +74,7 @@ void StringWidget::setupGui()
 
 
   blockSignals(true);
-  if (getFilterParameter() != NULL)
+  if (getFilterParameter() != nullptr)
   {
     label->setText(getFilterParameter()->getHumanLabel() );
 

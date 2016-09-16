@@ -226,7 +226,7 @@ void PrecipitateStatsData::writeJson(QJsonObject &json)
   json.insert(SIMPL::StringConstants::Feature_Diameter_Info, diamInfoArray);
 
   // Write the Bin Numbers
-  if(NULL == getBinNumbers().get())
+  if(nullptr == getBinNumbers().get())
   {
     generateBinNumbers();
   }
@@ -244,7 +244,7 @@ void PrecipitateStatsData::writeJson(QJsonObject &json)
   json.insert(SIMPL::StringConstants::Feature_Size_Distribution, avgSizeDist);
 
   // Write RDF Distribution Data
-  if(NULL != m_RadialDistFunction.get())
+  if(nullptr != m_RadialDistFunction.get())
   {
     m_RadialDistFunction->writeJson(json);
   }

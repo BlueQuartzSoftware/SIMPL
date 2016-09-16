@@ -60,7 +60,7 @@ void buildInitializerList(QString hFile, QString cppFile)
       chunks = chunks.at(1).split(QRegExp("\\)"));
       QString s = QString("m_") + chunks.at(0) + QString("ArrayName");
       initializerList << s;
-      s = QString("m_") + chunks.at(0) + "(NULL)";
+      s = QString("m_") + chunks.at(0) + "(nullptr)";
       s = s.trimmed();
       initializerList << s;
     }
@@ -135,7 +135,7 @@ void buildInitializerList(QString hFile, QString cppFile)
     else
     {
 
-      if(line.contains("NULL") == false)
+      if(line.contains("nullptr") == false)
       {
         newList << line + QString("");
       }
@@ -190,7 +190,7 @@ void replaceText1(QString hFile, QString cppFile)
 
   bool doReplace = false;
 
-  QString searchStr("size_t totalFeatures = m->getAttributeMatrix(getCellFeatureAttributeMatrixName())->getNumTuples();");
+  QString searchStr("size_t totalFeatures = m->getAttributeMatrix(getCellFeatureAttributeMatrixName())->getNumberOfTuples();");
   int index = cpp.indexOf(searchStr);
   int hIndex = -1;
   if(index > 0)
@@ -204,7 +204,7 @@ void replaceText1(QString hFile, QString cppFile)
   }
 
 
-  searchStr = QString("size_t totalEnsembles = m->getAttributeMatrix(getCellEnsembleAttributeMatrixName())->getNumTuples();");
+  searchStr = QString("size_t totalEnsembles = m->getAttributeMatrix(getCellEnsembleAttributeMatrixName())->getNumberOfTuples();");
   index = cpp.indexOf(searchStr);
   hIndex = -1;
   if(index > 0)

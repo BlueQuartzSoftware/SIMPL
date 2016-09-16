@@ -59,7 +59,7 @@ class SVWidgetsLib_EXPORT FilterListToolboxWidget : public QWidget, private Ui::
     Q_OBJECT
 
   public:
-    FilterListToolboxWidget(QWidget* parent = NULL);
+    FilterListToolboxWidget(QWidget* parent = nullptr);
     virtual ~FilterListToolboxWidget();
 
     QList<QString> serializeString(QString string, char token);

@@ -60,7 +60,7 @@ class SVWidgetsLib_EXPORT FilterInputWidget : public QWidget, private Ui::Filter
     Q_OBJECT
 
   public:
-    FilterInputWidget(QString filterClassName, PipelineFilterObject *filterObj, QWidget* parent = NULL);
+    FilterInputWidget(QString filterClassName, PipelineFilterObject *filterObj, QWidget* parent = nullptr);
     virtual ~FilterInputWidget();
 
     virtual void setupGui();
@@ -94,9 +94,9 @@ class SVWidgetsLib_EXPORT FilterInputWidget : public QWidget, private Ui::Filter
     QString                           m_BrandingLabel;
     static QString                    m_OpenDialogLastDirectory;
 
-    QVBoxLayout*                      m_VariablesVerticalLayout;
-    QWidget*                          m_VariablesWidget;
-    QWidget*                          m_CurrentStructureWidget;
+    QVBoxLayout*                      m_VariablesVerticalLayout = nullptr;
+    QWidget*                          m_VariablesWidget = nullptr;
+    QWidget*                          m_CurrentStructureWidget = nullptr;
     QMap<QString, QWidget*>           m_PropertyToWidget;
 
     /**

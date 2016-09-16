@@ -54,7 +54,7 @@
 //
 // -----------------------------------------------------------------------------
 AttributeMatrixSelectionWidget::AttributeMatrixSelectionWidget(QWidget* parent) :
-  FilterParameterWidget(NULL, NULL, parent),
+  FilterParameterWidget(nullptr, nullptr, parent),
   m_DidCausePreflight(false)
 {
   setupUi(this);
@@ -73,7 +73,7 @@ AttributeMatrixSelectionWidget::AttributeMatrixSelectionWidget(FilterParameter* 
   m_DidCausePreflight(false)
 {
   m_FilterParameter = dynamic_cast<AttributeMatrixSelectionFilterParameter*>(parameter);
-  Q_ASSERT_X(m_FilterParameter != NULL, "NULL Pointer", "AttributeMatrixSelectionWidget can ONLY be used with an AttributeMatrixSelectionFilterParameter object");
+  Q_ASSERT_X(m_FilterParameter != nullptr, "nullptr Pointer", "AttributeMatrixSelectionWidget can ONLY be used with an AttributeMatrixSelectionFilterParameter object");
 
   setupUi(this);
   setupGui();
@@ -92,11 +92,11 @@ AttributeMatrixSelectionWidget::~AttributeMatrixSelectionWidget()
 // -----------------------------------------------------------------------------
 void AttributeMatrixSelectionWidget::setupGui()
 {
-  if(getFilter() == NULL)
+  if(getFilter() == nullptr)
   {
     return;
   }
-  if (getFilterParameter() == NULL)
+  if (getFilterParameter() == nullptr)
   {
     return;
   }
@@ -145,7 +145,7 @@ void AttributeMatrixSelectionWidget::createSelectionMenu()
   // Now get the DataContainerArray from the Filter instance
   // We are going to use this to get all the current DataContainers
   DataContainerArray::Pointer dca = getFilter()->getDataContainerArray();
-  if(NULL == dca.get()) { return; }
+  if(nullptr == dca.get()) { return; }
 
   // Get the menu and clear it out
   QMenu* menu = m_SelectedAttributeMatrixPath->menu();
@@ -174,8 +174,8 @@ void AttributeMatrixSelectionWidget::createSelectionMenu()
 
     IGeometry::Pointer geom = IGeometry::NullPointer();
     uint32_t geomType = 999;
-    if (NULL != dc.get()) { geom = dc->getGeometry(); }
-    if (NULL != geom.get()) { geomType = geom->getGeometryType(); }
+    if (nullptr != dc.get()) { geom = dc->getGeometry(); }
+    if (nullptr != geom.get()) { geomType = geom->getGeometryType(); }
 
 
     QMenu* dcMenu = new QMenu(dc->getName());
@@ -254,7 +254,7 @@ void AttributeMatrixSelectionWidget::setSelectedPath(QString path)
   m_SelectedAttributeMatrixPath->setToolTip("");
 
   DataContainerArray::Pointer dca = getFilter()->getDataContainerArray();
-  if(NULL == dca.get()) { return; }
+  if(nullptr == dca.get()) { return; }
 
   int err = 0;
   AttributeMatrix::Pointer attrMat = dca->getPrereqAttributeMatrixFromPath(getFilter(), amPath, err);
@@ -270,7 +270,7 @@ void AttributeMatrixSelectionWidget::setSelectedPath(QString path)
 // -----------------------------------------------------------------------------
 void AttributeMatrixSelectionWidget::beforePreflight()
 {
-  if (NULL == getFilter()) { return; }
+  if (nullptr == getFilter()) { return; }
   if(m_DidCausePreflight == true)
   {
     //std::cout << "***  AttributeMatrixSelectionWidget already caused a preflight, just returning" << std::endl;

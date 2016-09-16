@@ -64,7 +64,7 @@ DataArrayInformationDisplayWidget::DataArrayInformationDisplayWidget(FilterParam
 //
 // -----------------------------------------------------------------------------
 DataArrayInformationDisplayWidget::DataArrayInformationDisplayWidget(QWidget* parent) :
-  FilterParameterWidget(NULL, NULL, parent)
+  FilterParameterWidget(nullptr, nullptr, parent)
 {
   setupUi(this);
   setupGui();

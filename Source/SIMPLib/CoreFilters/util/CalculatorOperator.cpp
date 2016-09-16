@@ -156,7 +156,7 @@ DoubleArrayType::Pointer CalculatorOperator::createNewArray(AbstractFilter* filt
   DataArrayPath calculatedAMPath(calculatedPath.getDataContainerName(), calculatedPath.getAttributeMatrixName(), "");
   AttributeMatrix::Pointer calculatedAM = filter->getDataContainerArray()->getPrereqAttributeMatrixFromPath<AbstractFilter>(filter, calculatedAMPath, err);
 
-  DoubleArrayType::Pointer newArray = DoubleArrayType::CreateArray(calculatedAM->getNumTuples(), dataArray->getArray()->getComponentDimensions(), calculatedPath.getDataArrayName());
+  DoubleArrayType::Pointer newArray = DoubleArrayType::CreateArray(calculatedAM->getNumberOfTuples(), dataArray->getArray()->getComponentDimensions(), calculatedPath.getDataArrayName());
 
   return newArray;
 }

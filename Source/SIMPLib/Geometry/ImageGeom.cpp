@@ -532,7 +532,7 @@ void ImageGeom::addAttributeMatrix(const QString& name, AttributeMatrix::Pointer
     // ImageGeom can only accept cell Attribute Matrices
     return;
   }
-  if (data->getNumTuples() != getNumberOfElements())
+  if (data->getNumberOfTuples() != getNumberOfElements())
   {
     return;
   }

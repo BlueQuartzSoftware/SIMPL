@@ -44,7 +44,7 @@
 // Include the MOC generated CPP file which has all the QMetaObject methods/data
 #include "moc_BookmarksModel.cpp"
 
-BookmarksModel* BookmarksModel::self = NULL;
+BookmarksModel* BookmarksModel::self = nullptr;
 
 // -----------------------------------------------------------------------------
 //
@@ -75,7 +75,7 @@ BookmarksModel::~BookmarksModel()
 // -----------------------------------------------------------------------------
 BookmarksModel* BookmarksModel::Instance()
 {
-  if (self == NULL)
+  if (self == nullptr)
   {
     self = new BookmarksModel();
   }
@@ -92,7 +92,7 @@ BookmarksModel* BookmarksModel::NewInstance(QtSSettings* prefs)
   if (self)
   {
     delete self;
-    self = NULL;
+    self = nullptr;
   }
 
   QJsonObject modelObj = prefs->value("Bookmarks Model", QJsonObject());
@@ -602,7 +602,7 @@ void BookmarksModel::updateModel(const QModelIndex& topLeft, const QModelIndex& 
   {
     QString path = index(topLeft.row(), BookmarksItem::Path, topLeft.parent()).data().toString();
     QFileInfo fi(path);
-    if (NULL != m_Watcher && path.isEmpty() == false && fi.exists())
+    if (nullptr != m_Watcher && path.isEmpty() == false && fi.exists())
     {
       m_Watcher->addPath(path);
     }
@@ -611,7 +611,7 @@ void BookmarksModel::updateModel(const QModelIndex& topLeft, const QModelIndex& 
   {
     QString path = index(bottomRight.row(), BookmarksItem::Path, bottomRight.parent()).data().toString();
     QFileInfo fi(path);
-    if (NULL != m_Watcher && path.isEmpty() == false && fi.exists())
+    if (nullptr != m_Watcher && path.isEmpty() == false && fi.exists())
     {
       m_Watcher->addPath(path);
     }

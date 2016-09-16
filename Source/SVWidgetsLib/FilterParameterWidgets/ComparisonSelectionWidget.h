@@ -75,7 +75,7 @@ class ComparisonSelectionWidget : public FilterParameterWidget, private Ui::Comp
 
     Q_OBJECT
   public:
-    ComparisonSelectionWidget(FilterParameter* parameter, AbstractFilter* filter = NULL, QWidget* parent = NULL);
+    ComparisonSelectionWidget(FilterParameter* parameter, AbstractFilter* filter = nullptr, QWidget* parent = nullptr);
     virtual ~ComparisonSelectionWidget();
 
     enum ArrayListType

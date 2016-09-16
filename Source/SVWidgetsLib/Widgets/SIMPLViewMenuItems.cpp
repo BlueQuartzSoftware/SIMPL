@@ -49,7 +49,7 @@
 // Include the MOC generated CPP file which has all the QMetaObject methods/data
 #include "moc_SIMPLViewMenuItems.cpp"
 
-SIMPLViewMenuItems* SIMPLViewMenuItems::self = NULL;
+SIMPLViewMenuItems* SIMPLViewMenuItems::self = nullptr;
 
 // -----------------------------------------------------------------------------
 //
@@ -116,7 +116,7 @@ SIMPLViewMenuItems::~SIMPLViewMenuItems()
 // -----------------------------------------------------------------------------
 SIMPLViewMenuItems* SIMPLViewMenuItems::Instance()
 {
-  if (NULL == self)
+  if (nullptr == self)
   {
     self = new SIMPLViewMenuItems();
   }

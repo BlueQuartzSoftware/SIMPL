@@ -37,7 +37,7 @@
 // Include the MOC generated CPP file which has all the QMetaObject methods/data
 #include "moc_SIMPLViewToolbox.cpp"
 
-SIMPLViewToolbox* SIMPLViewToolbox::self = NULL;
+SIMPLViewToolbox* SIMPLViewToolbox::self = nullptr;
 
 // -----------------------------------------------------------------------------
 //
@@ -63,7 +63,7 @@ SIMPLViewToolbox::~SIMPLViewToolbox()
 // -----------------------------------------------------------------------------
 SIMPLViewToolbox* SIMPLViewToolbox::Instance(QWidget* parent, Qt::WindowFlags flags)
 {
-  if (self == NULL)
+  if (self == nullptr)
   {
     self = new SIMPLViewToolbox(parent, flags);
   }

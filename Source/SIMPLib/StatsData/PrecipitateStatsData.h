@@ -136,7 +136,7 @@ class SIMPLib_EXPORT PrecipitateStatsData : public StatsData
 
     size_t getNumberOfBins()
     {
-      return (m_BinNumbers.get() == NULL) ? 0 : m_BinNumbers->getSize();
+      return (m_BinNumbers.get() == nullptr) ? 0 : m_BinNumbers->getSize();
     }
 
 

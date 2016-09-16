@@ -93,21 +93,21 @@ QFileInfo getFilterParameterPath(AbstractFilter* filter, FilterParameter* parame
   QString currentPath = "";
   fType.clear();
   ext.clear();
-  if (NULL != dynamic_cast<DataContainerReaderFilterParameter*>(parameter))
+  if (nullptr != dynamic_cast<DataContainerReaderFilterParameter*>(parameter))
   {
     DataContainerReaderFilterParameter* rParam = dynamic_cast<DataContainerReaderFilterParameter*>(parameter);
     currentPath = filter->property(rParam->getInputFileProperty().toLatin1().constData()).toString();
     fType.append(rParam->getFileType());
     ext.append(rParam->getFileExtension());
   }
-  else if(NULL != dynamic_cast<InputFileFilterParameter*>(parameter))
+  else if(nullptr != dynamic_cast<InputFileFilterParameter*>(parameter))
   {
     InputFileFilterParameter* rParam = dynamic_cast<InputFileFilterParameter*>(parameter);
     currentPath = filter->property(rParam->getPropertyName().toLatin1().constData()).toString();
     fType.append(rParam->getFileType());
     ext.append(rParam->getFileExtension());
   }
-  else if(NULL != dynamic_cast<InputPathFilterParameter*>(parameter))
+  else if(nullptr != dynamic_cast<InputPathFilterParameter*>(parameter))
   {
     InputPathFilterParameter* rParam = dynamic_cast<InputPathFilterParameter*>(parameter);
     currentPath = filter->property(rParam->getPropertyName().toLatin1().constData()).toString();
@@ -134,10 +134,7 @@ QFileInfo getFilterParameterPath(AbstractFilter* filter, FilterParameter* parame
 FilterInputWidget::FilterInputWidget(QString filterClassName, PipelineFilterObject* filterObj, QWidget* parent) :
   QWidget(parent),
   m_FilterClassName(filterClassName),
-  m_AdvFadedOut(false),
-  m_VariablesVerticalLayout(NULL),
-  m_VariablesWidget(NULL),
-  m_CurrentStructureWidget(NULL)
+  m_AdvFadedOut(false)
 {
   setupUi(this);
   setupGui();
@@ -284,7 +281,7 @@ void FilterInputWidget::layoutWidgets(AbstractFilter::Pointer filter)
     FilterParameter* parameter = (*iter).get();
 
     // Check to make sure that this is in fact a file system filter parameter
-    if (NULL != dynamic_cast<InputFileFilterParameter*>(parameter) || NULL != dynamic_cast<InputPathFilterParameter*>(parameter) || NULL != dynamic_cast<DataContainerReaderFilterParameter*>(parameter))
+    if (nullptr != dynamic_cast<InputFileFilterParameter*>(parameter) || nullptr != dynamic_cast<InputPathFilterParameter*>(parameter) || nullptr != dynamic_cast<DataContainerReaderFilterParameter*>(parameter))
     {
       validateFileSystemFilterParameter(parameter, filter);
     }
@@ -292,7 +289,7 @@ void FilterInputWidget::layoutWidgets(AbstractFilter::Pointer filter)
     QWidget* filterParameterWidget = fwm->createWidget(parameter, filter.get());
     m_PropertyToWidget.insert(parameter->getPropertyName(), filterParameterWidget); // Update our Map of Filter Parameter Properties to the Widget
 
-    if (NULL == filterParameterWidget)
+    if (nullptr == filterParameterWidget)
     {
       continue;
     }
@@ -415,7 +412,7 @@ void FilterInputWidget::validateFileSystemFilterParameter(FilterParameter* param
     QString s = fType + QString(" Files (*") + ext + QString(");;All Files (*.*)");
     QString defaultName = m_OpenDialogLastDirectory + QDir::separator() + "Untitled";
 
-    if (NULL != dynamic_cast<InputFileFilterParameter*>(parameter))
+    if (nullptr != dynamic_cast<InputFileFilterParameter*>(parameter))
     {
       InputFileFilterParameter* fsParam = dynamic_cast<InputFileFilterParameter*>(parameter);
 
@@ -433,7 +430,7 @@ void FilterInputWidget::validateFileSystemFilterParameter(FilterParameter* param
       filter->setProperty(fsParam->getPropertyName().toLatin1().constData(), file);
     }
 
-    else if (NULL != dynamic_cast<InputPathFilterParameter*>(parameter))
+    else if (nullptr != dynamic_cast<InputPathFilterParameter*>(parameter))
     {
       InputPathFilterParameter* fsParam = dynamic_cast<InputPathFilterParameter*>(parameter);
 
@@ -451,7 +448,7 @@ void FilterInputWidget::validateFileSystemFilterParameter(FilterParameter* param
       filter->setProperty(fsParam->getPropertyName().toLatin1().constData(), file);
     }
 
-    else if (NULL != dynamic_cast<DataContainerReaderFilterParameter*>(parameter))
+    else if (nullptr != dynamic_cast<DataContainerReaderFilterParameter*>(parameter))
     {
       DataContainerReaderFilterParameter* fsParam = dynamic_cast<DataContainerReaderFilterParameter*>(parameter);
 
@@ -482,7 +479,7 @@ void FilterInputWidget::linkConditionalWidgets(QVector<FilterParameter::Pointer>
     FilterParameter::Pointer filterParameter = (*iter);
     LinkedBooleanFilterParameter::Pointer filterParameterPtr = std::dynamic_pointer_cast<LinkedBooleanFilterParameter>(filterParameter);
 
-    if(NULL != filterParameterPtr.get() )
+    if(nullptr != filterParameterPtr.get() )
     {
       QStringList linkedProps = filterParameterPtr->getConditionalProperties();
 
@@ -514,7 +511,7 @@ void FilterInputWidget::linkConditionalWidgets(QVector<FilterParameter::Pointer>
     // Figure out if we have any Linked ComboBox Widgets to hook up to other widgets
     LinkedChoicesFilterParameter::Pointer optionPtr2 = std::dynamic_pointer_cast<LinkedChoicesFilterParameter>(filterParameter);
 
-    if(NULL != optionPtr2.get())
+    if(nullptr != optionPtr2.get())
     {
       QStringList linkedProps = optionPtr2->getLinkedProperties();
 

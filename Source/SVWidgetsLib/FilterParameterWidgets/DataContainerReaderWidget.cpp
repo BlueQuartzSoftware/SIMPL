@@ -108,7 +108,7 @@ namespace Detail
   template<typename T>
   QStandardItem* getColumnItem(QStandardItem* parent, QString name, T& proxy)
   {
-    QStandardItem* item = NULL;
+    QStandardItem* item = nullptr;
     QList<QStandardItem*> items = findChildItems(parent, name);
     if (items.count() == 0)
     {
@@ -120,7 +120,7 @@ namespace Detail
     }
     else if (items.count() > 1)
     {
-      item = NULL;
+      item = nullptr;
     }
     else
     {
@@ -138,8 +138,8 @@ namespace Detail
   template<typename T>
   QStandardItem* updateProxyItem(QStandardItem* parent, QString name, T& proxy)
   {
-    QStandardItem* item = NULL;
-    if(NULL == parent) { return item; }
+    QStandardItem* item = nullptr;
+    if(nullptr == parent) { return item; }
     QList<QStandardItem*> items = findChildItems(parent, name);
     if (items.count() == 1)
     {
@@ -249,9 +249,9 @@ DataContainerReaderWidget::DataContainerReaderWidget(FilterParameter* parameter,
   m_DidCausePreflight(false)
 {
   m_FilterParameter = dynamic_cast<DataContainerReaderFilterParameter*>(parameter);
-  Q_ASSERT_X(m_FilterParameter != NULL, "NULL Pointer", "DataContainerReaderWidget can ONLY be used with a DataContainerReaderFilterParameter object");
+  Q_ASSERT_X(m_FilterParameter != nullptr, "nullptr Pointer", "DataContainerReaderWidget can ONLY be used with a DataContainerReaderFilterParameter object");
   m_Filter = dynamic_cast<DataContainerReader*>(filter);
-  Q_ASSERT_X(getFilter() != NULL, "NULL Pointer", "DataContainerReaderWidget can ONLY be used with a DataContainerReader object");
+  Q_ASSERT_X(getFilter() != nullptr, "nullptr Pointer", "DataContainerReaderWidget can ONLY be used with a DataContainerReader object");
 
   if ( m_OpenDialogLastDirectory.isEmpty() )
   {
@@ -266,9 +266,9 @@ DataContainerReaderWidget::DataContainerReaderWidget(FilterParameter* parameter,
 //
 // -----------------------------------------------------------------------------
 DataContainerReaderWidget::DataContainerReaderWidget(QWidget* parent) :
-  FilterParameterWidget(NULL, NULL, parent),
-  m_Filter(NULL),
-  m_FilterParameter(NULL),
+  FilterParameterWidget(nullptr, nullptr, parent),
+  m_Filter(nullptr),
+  m_FilterParameter(nullptr),
   m_DidCausePreflight(false)
 {
   setupUi(this);
@@ -342,12 +342,12 @@ void DataContainerReaderWidget::setupGui()
   connect(dcaProxyView, SIGNAL(clicked(const QModelIndex&)),
           this, SLOT(itemActivated(const QModelIndex)));
 
-  if (getFilterParameter() != NULL)
+  if (getFilterParameter() != nullptr)
   {
     label->setText(getFilterParameter()->getHumanLabel() );
   }
 
-  if(getFilter() != NULL)
+  if(getFilter() != nullptr)
   {
     QString path = m_Filter->getInputFile();
 
@@ -395,7 +395,7 @@ void DataContainerReaderWidget::updateModelFromProxy(DataContainerArrayProxy& pr
     DataContainerProxy dcProxy = containerIter.next();
     dcList.push_back(dcProxy.name);
     QStandardItem* dcItem = Detail::getColumnItem<DataContainerProxy>(rootItem, dcProxy.name, dcProxy);
-    assert(dcItem != NULL);
+    assert(dcItem != nullptr);
     //    qDebug() << "**  " << dcProxy.name;
     // We found the proper Data Container, now populate the AttributeMatrix List
     QMap<QString, AttributeMatrixProxy>& attrMats = dcProxy.attributeMatricies;
@@ -406,7 +406,7 @@ void DataContainerReaderWidget::updateModelFromProxy(DataContainerArrayProxy& pr
       QString amName = attrMatsIter.key();
       AttributeMatrixProxy& attrProxy = attrMatsIter.value();
       QStandardItem* amItem = Detail::getColumnItem<AttributeMatrixProxy>(dcItem, amName, attrProxy);
-      assert(amItem != NULL);
+      assert(amItem != nullptr);
 
       //  qDebug() << "@@@ " << amName;
       // We found the selected AttributeMatrix, so loop over this attribute matrix arrays and populate the list widget
@@ -419,9 +419,9 @@ void DataContainerReaderWidget::updateModelFromProxy(DataContainerArrayProxy& pr
         QString daName = dataArraysIter.key();
         //   qDebug() << "#### " << daName;
         QStandardItem* daItem = Detail::getColumnItem<DataArrayProxy>(amItem, daName, daProxy);
-        if (NULL == daItem)
+        if (nullptr == daItem)
         {
-          Q_ASSERT_X(daItem != NULL, "daItem was NULL. This can not happen", "");
+          Q_ASSERT_X(daItem != nullptr, "daItem was nullptr. This can not happen", "");
         }
 
       }
@@ -619,12 +619,12 @@ void DataContainerReaderWidget::on_filePath_fileDropped(const QString& text)
 
   if (verifyPathExists(text, filePath) == true)
   {
-    if(getFilter() != NULL)
+    if(getFilter() != nullptr)
     {
       if(m_Filter->getLastFileRead().compare(text) != 0)
       {
         QStandardItemModel* model = qobject_cast<QStandardItemModel*>(dcaProxyView->model());
-        if(NULL != model)
+        if(nullptr != model)
         {
           model->clear();
         }

@@ -116,7 +116,7 @@ class StructArray : public IDataArray
     virtual ~StructArray()
     {
       //qDebug() << "~StructArrayTemplate '" << m_Name << "'" ;
-      if ((NULL != m_Array) && (true == this->_ownsData))
+      if ((nullptr != m_Array) && (true == this->_ownsData))
       {
         _deallocate();
       }
@@ -205,11 +205,11 @@ class StructArray : public IDataArray
      */
     int32_t Allocate()
     {
-      if ((NULL != m_Array) && (true == this->_ownsData))
+      if ((nullptr != m_Array) && (true == this->_ownsData))
       {
         _deallocate();
       }
-      m_Array = NULL;
+      m_Array = nullptr;
       this->_ownsData = true;
       this->m_IsAllocated = false;
 
@@ -241,11 +241,11 @@ class StructArray : public IDataArray
      */
     virtual void initialize()
     {
-      if (NULL != m_Array && true == this->_ownsData)
+      if (nullptr != m_Array && true == this->_ownsData)
       {
         _deallocate();
       }
-      m_Array = NULL;
+      m_Array = nullptr;
       this->m_Size = 0;
       this->_ownsData = true;
       this->m_MaxId = 0;
@@ -307,7 +307,7 @@ class StructArray : public IDataArray
 
       // Calculate the new size of the array to copy into
       size_t newSize = (getNumberOfTuples() - idxs.size());
-      T* currentSrc = NULL;
+      T* currentSrc = nullptr;
 
       // Create a new Array to copy into
       T* newArray = (T*)malloc(newSize * sizeof(T));
@@ -428,11 +428,11 @@ class StructArray : public IDataArray
   virtual bool copyData(size_t destTupleOffset, IDataArray::Pointer sourceArray)
   {
     if(!m_IsAllocated) { return false; }
-    if(NULL == m_Array) { return false; }
+    if(nullptr == m_Array) { return false; }
     if(destTupleOffset >= m_MaxId) { return false; }
     if(!sourceArray->isAllocated()) { return false; }
     Self* source = dynamic_cast<Self*>(sourceArray.get());
-    if(NULL == source->getPointer(0)) { return false; }
+    if(nullptr == source->getPointer(0)) { return false; }
 
     size_t sourceNTuples = source->getNumberOfTuples();
 
@@ -513,15 +513,15 @@ class StructArray : public IDataArray
 
 
     /**
-     * @brief Returns a void pointer pointing to the index of the array. NULL
+     * @brief Returns a void pointer pointing to the index of the array. nullptr
      * pointers are entirely possible. No checks are performed to make sure
      * the index is with in the range of the internal data array.
      * @param i The index to have the returned pointer pointing to.
-     * @return Void Pointer. Possibly NULL.
+     * @return Void Pointer. Possibly nullptr.
      */
     virtual void* getVoidPointer(size_t i)
     {
-      if (i >= m_Size) { return NULL;}
+      if (i >= m_Size) { return nullptr;}
 
       return (void*)(&(m_Array[i]));
     }
@@ -731,7 +731,7 @@ class StructArray : public IDataArray
      * @param takeOwnership Will the class clean up the memory. Default=true
      */
     StructArray(size_t numElements, bool ownsData = true) :
-      m_Array(NULL),
+      m_Array(nullptr),
       m_Size(numElements),
       _ownsData(ownsData),
       m_IsAllocated(false)
@@ -747,7 +747,7 @@ class StructArray : public IDataArray
     {
       // We are going to splat 0xABABAB across the first value of the array as a debugging aid
       unsigned char* cptr = reinterpret_cast<unsigned char*>(m_Array);
-      if(NULL != cptr)
+      if(nullptr != cptr)
       {
         if (m_Size > 0)
         {
@@ -774,7 +774,7 @@ class StructArray : public IDataArray
 #else
       free(m_Array);
 #endif
-      m_Array = NULL;
+      m_Array = nullptr;
       this->m_IsAllocated = false;
     }
 
@@ -816,7 +816,7 @@ class StructArray : public IDataArray
 #endif
 
       // Allocate a new array if we DO NOT own the current array
-      if ((NULL != m_Array) && (false == this->_ownsData))
+      if ((nullptr != m_Array) && (false == this->_ownsData))
       {
         // The old array is owned by the user so we cannot try to
         // reallocate it.  Just allocate new memory that we will own.
@@ -850,7 +850,7 @@ class StructArray : public IDataArray
         }
 
         // Copy the data from the old array.
-        if (m_Array != NULL)
+        if (m_Array != nullptr)
         {
           memcpy(newArray, m_Array, (newSize < this->m_Size ? newSize : this->m_Size) * sizeof(T));
         }

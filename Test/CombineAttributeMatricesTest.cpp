@@ -202,7 +202,7 @@ class CombineAttributeMatricesTest
       QString filtName = "CombineAttributeMatrices";
       FilterManager* fm = FilterManager::Instance();
       IFilterFactory::Pointer filterFactory = fm->getFactoryForFilter(filtName);
-      if (NULL == filterFactory.get())
+      if (nullptr == filterFactory.get())
       {
         std::stringstream ss;
         ss << "The CombineAttribtueMatricesTest Requires the use of the " << filtName.toStdString() << " filter which is found in Core Filters";
@@ -355,7 +355,7 @@ class CombineAttributeMatricesTest
       temp.update(attrMat1.getDataContainerName(), newAttrMat, "");
       AttributeMatrix::Pointer newAttrMatPtr = dca->getAttributeMatrix(temp);
       //new combined feature AM should have 5 tuples (3 + 3 - 1)
-      DREAM3D_REQUIRE_EQUAL(newAttrMatPtr->getNumTuples(), 5)
+      DREAM3D_REQUIRE_EQUAL(newAttrMatPtr->getNumberOfTuples(), 5)
           // combined feature AM should have ensembleIds, sizes, shapes arrays
           DREAM3D_REQUIRE_EQUAL(newAttrMatPtr->getNumAttributeArrays(), 3)
           //use the featureIds1 path from cAM to get the cAM and ask for the newFeatureIds out of that matrix
@@ -381,7 +381,7 @@ class CombineAttributeMatricesTest
       temp.update(attrMat1.getDataContainerName(), newAttrMat, "");
       AttributeMatrix::Pointer newAttrMatPtr = dca->getAttributeMatrix(temp);
       //new combined ensemble AM should have 3 tuples (2 + 2 - 1)
-      DREAM3D_REQUIRE_EQUAL(newAttrMatPtr->getNumTuples(), 3)
+      DREAM3D_REQUIRE_EQUAL(newAttrMatPtr->getNumberOfTuples(), 3)
           // combined ensemble AM should only have crystal structures array
           DREAM3D_REQUIRE_EQUAL(newAttrMatPtr->getNumAttributeArrays(), 1)
           //use the ensembleIds path from fAM1 to get the fAM1 and ask for the newEnsembleIds out of that matrix
@@ -448,10 +448,10 @@ class CombineAttributeMatricesTest
       QString filtName = "CombineAttributeMatrices";
       FilterManager* fm = FilterManager::Instance();
       IFilterFactory::Pointer factory = fm->getFactoryForFilter(filtName);
-      DREAM3D_REQUIRE(factory.get() != NULL)
+      DREAM3D_REQUIRE(factory.get() != nullptr)
 
           AbstractFilter::Pointer combineAttributeMatricesFilter = factory->create();
-      DREAM3D_REQUIRE(combineAttributeMatricesFilter.get() != NULL)
+      DREAM3D_REQUIRE(combineAttributeMatricesFilter.get() != nullptr)
 
           combineAttributeMatricesFilter->setDataContainerArray(dca);
 

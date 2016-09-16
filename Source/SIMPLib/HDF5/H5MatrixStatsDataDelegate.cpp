@@ -74,7 +74,7 @@ int H5MatrixStatsDataDelegate::readMatrixStatsData(MatrixStatsData* data, hid_t 
 // -----------------------------------------------------------------------------
 int H5MatrixStatsDataDelegate::writeMatrixStatsData(MatrixStatsData* data, hid_t groupId)
 {
-  if (NULL == data)
+  if (nullptr == data)
   {
     return -1;
   }

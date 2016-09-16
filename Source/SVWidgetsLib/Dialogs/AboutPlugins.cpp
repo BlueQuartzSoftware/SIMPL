@@ -196,17 +196,17 @@ void AboutPlugins::addPluginToTable(ISIMPLibPlugin* plugin, int row)
   pluginsTable->setItem(row, ENABLED_INDEX, enabledItem);
 
   // Add check box that is centered in the cell
-  QCheckBox* checkBox = new QCheckBox(NULL);
+  QCheckBox* checkBox = new QCheckBox(nullptr);
   readCheckState(checkBox, plugin->getPluginName());
 
   connect(checkBox, SIGNAL(stateChanged(int)), this, SLOT(togglePluginState(int)));
   connect(checkBox, SIGNAL(stateChanged(int)), this, SLOT(setLoadPreferencesFlag(int)));
 
-  QHBoxLayout* layout = new QHBoxLayout(NULL);
+  QHBoxLayout* layout = new QHBoxLayout(nullptr);
   layout->addWidget(checkBox);
   layout->setAlignment(Qt::AlignCenter);
   layout->setContentsMargins(0, 0, 0, 0);
-  QWidget* widget = new QWidget(NULL);
+  QWidget* widget = new QWidget(nullptr);
   widget->setLayout(layout);
   pluginsTable->setCellWidget(row, CHECKBOX_INDEX, widget);
 
@@ -292,7 +292,7 @@ void AboutPlugins::on_detailsBtn_clicked()
 // -----------------------------------------------------------------------------
 void AboutPlugins::on_pluginsTable_currentItemChanged(QTableWidgetItem* current, QTableWidgetItem* previous)
 {
-  if (NULL != current && current->text() == NOT_FOUND_STRING)
+  if (nullptr != current && current->text() == NOT_FOUND_STRING)
   {
     detailsBtn->setDisabled(true);
     removePluginBtn->setVisible(true);
@@ -388,7 +388,7 @@ void AboutPlugins::on_removePluginBtn_pressed()
   int currentRow = pluginsTable->currentRow();
   QTableWidgetItem* nameItem = pluginsTable->item(currentRow, NAME_INDEX);
 
-  if (NULL != nameItem)
+  if (nullptr != nameItem)
   {
     QString pluginName = nameItem->text();
 
@@ -403,7 +403,7 @@ void AboutPlugins::on_removePluginBtn_pressed()
     {
       deletePlugin(nameItem);
       QTableWidgetItem* newSelection = pluginsTable->item(currentRow, NAME_INDEX);
-      if (NULL != newSelection)
+      if (nullptr != newSelection)
       {
         // Select the row that is next after the one that was just deleted
         pluginsTable->setCurrentItem(newSelection);
@@ -486,7 +486,7 @@ void AboutPlugins::displayDetailsWindow(QTableWidgetItem* item)
 {
   QTableWidgetItem* statusItem = pluginsTable->item(item->row(), STATUS_INDEX);
 
-  if (NULL != statusItem && statusItem->text() != NOT_FOUND_STRING)
+  if (nullptr != statusItem && statusItem->text() != NOT_FOUND_STRING)
   {
     on_detailsBtn_clicked();
   }
@@ -508,23 +508,23 @@ QList<PluginProxy::Pointer> AboutPlugins::getPluginCheckBoxSettingsFromGUI()
     PluginProxy::Pointer proxy = PluginProxy::New();
     proxy->setPluginName(pluginName);
 
-    if (pluginsTable->cellWidget(row, CHECKBOX_INDEX) != NULL)
+    if (pluginsTable->cellWidget(row, CHECKBOX_INDEX) != nullptr)
     {
       QWidget* widget = pluginsTable->cellWidget(row, CHECKBOX_INDEX);
 
-      if (NULL == widget)
+      if (nullptr == widget)
       {
         return QList<PluginProxy::Pointer>();
       }
       QHBoxLayout* layout = qobject_cast<QHBoxLayout*>(widget->layout());
 
-      if (NULL == layout)
+      if (nullptr == layout)
       {
         return QList<PluginProxy::Pointer>();
       }
       QCheckBox* checkBox = qobject_cast<QCheckBox*>(layout->itemAt(0)->widget());
 
-      if (NULL == checkBox)
+      if (nullptr == checkBox)
       {
         return QList<PluginProxy::Pointer>();
       }

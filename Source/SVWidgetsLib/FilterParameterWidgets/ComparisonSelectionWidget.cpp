@@ -56,10 +56,10 @@ ComparisonSelectionWidget::ComparisonSelectionWidget(FilterParameter* parameter,
   FilterParameterWidget(parameter, filter, parent),
   m_ShowOperators(true),
   m_DidCausePreflight(false),
-  m_ComparisonSelectionTableModel(NULL)
+  m_ComparisonSelectionTableModel(nullptr)
 {
   m_FilterParameter = dynamic_cast<ComparisonSelectionFilterParameter*>(parameter);
-  Q_ASSERT_X(m_FilterParameter != NULL, "NULL Pointer", "ComparisonSelectionWidget can ONLY be used with a ComparisonSelectionFilterParameter object");
+  Q_ASSERT_X(m_FilterParameter != nullptr, "nullptr Pointer", "ComparisonSelectionWidget can ONLY be used with a ComparisonSelectionFilterParameter object");
 
   setupUi(this);
   setupGui();
@@ -78,7 +78,7 @@ ComparisonSelectionWidget::~ComparisonSelectionWidget()
 ComparisonInputs ComparisonSelectionWidget::getComparisonInputs()
 {
   ComparisonInputs comps;
-  if (m_ComparisonSelectionTableModel == NULL) { return comps; }
+  if (m_ComparisonSelectionTableModel == nullptr) { return comps; }
 
   int filterCount = m_ComparisonSelectionTableModel->rowCount();
   QVector<QString> featureNames;
@@ -107,11 +107,11 @@ ComparisonInputs ComparisonSelectionWidget::getComparisonInputs()
 // -----------------------------------------------------------------------------
 void ComparisonSelectionWidget::setupGui()
 {
-  if (getFilter() == NULL)
+  if (getFilter() == nullptr)
   {
     return;
   }
-  if (getFilterParameter() == NULL)
+  if (getFilterParameter() == nullptr)
   {
     return;
   }
@@ -357,7 +357,7 @@ void ComparisonSelectionWidget::filterNeedsInputParameters(AbstractFilter* filte
 // -----------------------------------------------------------------------------
 void ComparisonSelectionWidget::beforePreflight()
 {
-  if (NULL == getFilter()) { return; }
+  if (nullptr == getFilter()) { return; }
   if(m_DidCausePreflight == true)
   {
     // std::cout << "***  ComparisonSelectionWidget already caused a preflight, just returning" << std::endl;
@@ -386,7 +386,7 @@ void ComparisonSelectionWidget::populateButtonText()
   // Now get the DataContainerArray from the Filter instance
   // We are going to use this to get all the current DataContainers
   DataContainerArray::Pointer dca = getFilter()->getDataContainerArray();
-  if(NULL == dca.get()) { return; }
+  if(nullptr == dca.get()) { return; }
 
   // Check to see if we have any DataContainers to actually populate drop downs with.
   if(dca->getDataContainers().size() == 0)
@@ -448,7 +448,7 @@ void ComparisonSelectionWidget::setSelectedPath(QString path)
   m_SelectedAttributeMatrixPath->setToolTip("");
 
   DataContainerArray::Pointer dca = getFilter()->getDataContainerArray();
-  if(NULL == dca.get()) { return; }
+  if(nullptr == dca.get()) { return; }
 
   if(dca->doesAttributeMatrixExist(amPath) )
   {
@@ -458,7 +458,7 @@ void ComparisonSelectionWidget::setSelectedPath(QString path)
     m_SelectedAttributeMatrixPath->setText(path);
   }
 
-  if(NULL != m_ComparisonSelectionTableModel)
+  if(nullptr != m_ComparisonSelectionTableModel)
   {
     m_ComparisonSelectionTableModel = createComparisonModel();
   }
@@ -471,7 +471,7 @@ ComparisonSelectionTableModel* ComparisonSelectionWidget::createComparisonModel(
 {
   ComparisonSelectionTableModel* newModel = new ComparisonSelectionTableModel(m_ShowOperators);
   QAbstractItemModel* oldModel = comparisonSelectionTableView->model();
-  if(NULL != oldModel) { delete oldModel; }
+  if(nullptr != oldModel) { delete oldModel; }
 
   comparisonSelectionTableView->setModel(newModel);
   newModel->setNumberOfPhases(1);
@@ -508,7 +508,7 @@ void ComparisonSelectionWidget::createSelectionMenu()
   // Now get the DataContainerArray from the Filter instance
   // We are going to use this to get all the current DataContainers
   DataContainerArray::Pointer dca = getFilter()->getDataContainerArray();
-  if(NULL == dca.get()) { return; }
+  if(nullptr == dca.get()) { return; }
 
   // Get the menu and clear it out
   QMenu* menu = m_SelectedAttributeMatrixPath->menu();
@@ -540,8 +540,8 @@ void ComparisonSelectionWidget::createSelectionMenu()
 
     IGeometry::Pointer geom = IGeometry::NullPointer();
     uint32_t geomType = 999;
-    if (NULL != dc.get()) { geom = dc->getGeometry(); }
-    if (NULL != geom.get()) { geomType = geom->getGeometryType(); }
+    if (nullptr != dc.get()) { geom = dc->getGeometry(); }
+    if (nullptr != geom.get()) { geomType = geom->getGeometryType(); }
 
 
     QMenu* dcMenu = new QMenu(dc->getName());

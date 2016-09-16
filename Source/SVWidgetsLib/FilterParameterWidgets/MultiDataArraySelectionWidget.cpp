@@ -64,7 +64,7 @@ MultiDataArraySelectionWidget::MultiDataArraySelectionWidget(FilterParameter* pa
   m_DidCausePreflight(false)
 {
   m_FilterParameter = dynamic_cast<MultiDataArraySelectionFilterParameter*>(parameter);
-  Q_ASSERT_X(m_FilterParameter != NULL, "NULL Pointer", "MultiDataArraySelectionWidget can ONLY be used with a MultiDataArraySelectionFilterParameter object");
+  Q_ASSERT_X(m_FilterParameter != nullptr, "nullptr Pointer", "MultiDataArraySelectionWidget can ONLY be used with a MultiDataArraySelectionFilterParameter object");
 
   setupUi(this);
   setupGui();
@@ -74,7 +74,7 @@ MultiDataArraySelectionWidget::MultiDataArraySelectionWidget(FilterParameter* pa
 //
 // -----------------------------------------------------------------------------
 MultiDataArraySelectionWidget::MultiDataArraySelectionWidget(QWidget* parent) :
-  FilterParameterWidget(NULL, NULL, parent),
+  FilterParameterWidget(nullptr, nullptr, parent),
   m_DidCausePreflight(false)
 {
   setupUi(this);
@@ -105,11 +105,11 @@ void MultiDataArraySelectionWidget::initializeWidget(FilterParameter* parameter,
 void MultiDataArraySelectionWidget::setupGui()
 {
   // Sanity Check the filter and the filter parameter
-  if (getFilter() == NULL)
+  if (getFilter() == nullptr)
   {
     return;
   }
-  if (getFilterParameter() == NULL)
+  if (getFilterParameter() == nullptr)
   {
     return;
   }
@@ -168,7 +168,7 @@ void MultiDataArraySelectionWidget::createSelectionMenu()
   // Now get the DataContainerArray from the Filter instance
   // We are going to use this to get all the current DataContainers
   DataContainerArray::Pointer dca = getFilter()->getDataContainerArray();
-  if(NULL == dca.get()) { return; }
+  if(nullptr == dca.get()) { return; }
 
   // Get the menu and clear it out
   QMenu* menu = m_SelectedAttributeMatrixPath->menu();
@@ -197,8 +197,8 @@ void MultiDataArraySelectionWidget::createSelectionMenu()
 
     IGeometry::Pointer geom = IGeometry::NullPointer();
     uint32_t geomType = 999;
-    if (NULL != dc.get()) { geom = dc->getGeometry(); }
-    if (NULL != geom.get()) { geomType = geom->getGeometryType(); }
+    if (nullptr != dc.get()) { geom = dc->getGeometry(); }
+    if (nullptr != geom.get()) { geomType = geom->getGeometryType(); }
 
 
     QMenu* dcMenu = new QMenu(dc->getName());
@@ -279,7 +279,7 @@ void MultiDataArraySelectionWidget::setSelectedPath(QString path)
   attributeArraysOrderWidget->clear();
 
   DataContainerArray::Pointer dca = getFilter()->getDataContainerArray();
-  if(NULL == dca.get()) { return; }
+  if(nullptr == dca.get()) { return; }
 
   int err = 0;
   AttributeMatrix::Pointer attrMat = dca->getPrereqAttributeMatrixFromPath(getFilter(), amPath, err);
@@ -388,7 +388,7 @@ void MultiDataArraySelectionWidget::on_downBtn_pressed()
 // -----------------------------------------------------------------------------
 void MultiDataArraySelectionWidget::beforePreflight()
 {
-  if (NULL == getFilter()) { return; }
+  if (nullptr == getFilter()) { return; }
   if (m_DidCausePreflight == true)
   {
    // std::cout << "***  MultiDataArraySelectionWidget already caused a preflight, just returning" << std::endl;

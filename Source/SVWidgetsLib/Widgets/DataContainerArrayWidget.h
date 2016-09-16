@@ -29,8 +29,8 @@ class SVWidgetsLib_EXPORT DataContainerArrayWidget : public QWidget, private Ui:
     Q_OBJECT
 
   public:
-    DataContainerArrayWidget(QWidget* parent = NULL);
-    DataContainerArrayWidget(AbstractFilter* filter, QWidget* parent = NULL);
+    DataContainerArrayWidget(QWidget* parent = nullptr);
+    DataContainerArrayWidget(AbstractFilter* filter, QWidget* parent = nullptr);
 
     virtual ~DataContainerArrayWidget();
 

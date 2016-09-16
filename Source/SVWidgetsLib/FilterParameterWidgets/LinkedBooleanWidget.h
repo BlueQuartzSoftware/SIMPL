@@ -68,7 +68,7 @@ class SVWidgetsLib_EXPORT LinkedBooleanWidget : public FilterParameterWidget, pr
     * @param filter The instance of the filter that this parameter is a part of
     * @param parent The parent QWidget for this Widget
     */
-    LinkedBooleanWidget(FilterParameter* parameter, AbstractFilter* filter = NULL, QWidget* parent = NULL);
+    LinkedBooleanWidget(FilterParameter* parameter, AbstractFilter* filter = nullptr, QWidget* parent = nullptr);
 
     virtual ~LinkedBooleanWidget();
 

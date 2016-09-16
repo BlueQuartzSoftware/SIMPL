@@ -74,11 +74,11 @@ class GenerateGrainIds : public AbstractFilter
     {
       setErrorCondition(0);
       VoxelDataContainer* m = getVoxelDataContainer();
-      if(NULL == m)
+      if(nullptr == m)
       {
         setErrorCondition(-1);
         QStringstream ss;
-        ss << " DataContainer was NULL";
+        ss << " DataContainer was nullptr";
         setErrorMessage(ss.str());
         return;
       }
@@ -109,7 +109,7 @@ class GenerateGrainIds : public AbstractFilter
     GenerateGrainIds() :
       AbstractFilter(),
       m_GrainIdsArrayName(SIMPL::CellData::GrainIds),
-      m_GrainIds(NULL)
+      m_GrainIds(nullptr)
     {
     }
 
@@ -122,7 +122,7 @@ class GenerateGrainIds : public AbstractFilter
       QStringstream ss;
       VoxelDataContainer* m = getVoxelDataContainer();
       m_GrainIdsPtr = attrMat->createNonPrereqArray<DataArray<int32_t>, AbstractFilter, int32_t>(this, m_CellAttributeMatrixName,  m_GrainIdsArrayName, 0, voxels, 1); /* Assigns the shared_ptr<> to an instance variable that is a weak_ptr<> */
-      if( NULL != m_GrainIdsPtr.lock().get() ) /* Validate the Weak Pointer wraps a non-NULL pointer to a DataArray<T> object */
+      if( nullptr != m_GrainIdsPtr.lock().get() ) /* Validate the Weak Pointer wraps a non-nullptr pointer to a DataArray<T> object */
       { m_GrainIds = m_GrainIdsPtr.lock()->getPointer(0); } /* Now assign the raw pointer to data from the DataArray<T> object */
 
       setErrorMessage(ss.str());

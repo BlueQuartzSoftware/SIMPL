@@ -77,17 +77,17 @@ class SVWidgetsLib_EXPORT DataContainerReaderWidget : public FilterParameterWidg
     * @param filter The instance of the filter that this parameter is a part of
     * @param parent The parent QWidget for this Widget
     */
-    DataContainerReaderWidget(FilterParameter* parameter, AbstractFilter* filter = NULL, QWidget* parent = NULL);
+    DataContainerReaderWidget(FilterParameter* parameter, AbstractFilter* filter = nullptr, QWidget* parent = nullptr);
 
     /**
      * @brief DataContainerReaderWidget
      * @param parent
      */
-    DataContainerReaderWidget(QWidget* parent = NULL);
+    DataContainerReaderWidget(QWidget* parent = nullptr);
 
     virtual ~DataContainerReaderWidget();
 
-    void initialize(FilterParameter* parameter, AbstractFilter* filter = NULL);
+    void initialize(FilterParameter* parameter, AbstractFilter* filter = nullptr);
 
     /**
     * @brief This method does additional GUI widget connections
