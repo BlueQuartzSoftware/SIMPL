@@ -406,7 +406,7 @@ void MultiDataArraySelectionWidget::removeNonexistantPaths(QVector<DataArrayPath
 		
 		if (!valid)
 		{
-			QString& pathName = paths[i].getDataArrayName();
+      const QString& pathName = paths[i].getDataArrayName();
 			QList<QListWidgetItem*> invalidDataArrayWidgets = attributeArraysOrderWidget->findItems(pathName, Qt::MatchExactly);
 			for (int j = 0; j < invalidDataArrayWidgets.size(); j++)
 			{
