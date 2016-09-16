@@ -143,7 +143,7 @@ class SVWidgetsLib_EXPORT MultiDataArraySelectionWidget : public FilterParameter
 
     bool m_DidCausePreflight;
 
-    QSignalMapper*  m_MenuMapper;
+    QPointer<QSignalMapper> m_MenuMapper;
 
     MultiDataArraySelectionFilterParameter* m_FilterParameter;
 

@@ -213,7 +213,7 @@ class ComparisonSelectionWidget : public FilterParameterWidget, private Ui::Comp
 
     bool m_DidCausePreflight;
 
-    QSignalMapper*  m_MenuMapper;
+    QPointer<QSignalMapper> m_MenuMapper;
 
     ComparisonSelectionTableModel* m_ComparisonSelectionTableModel;
 

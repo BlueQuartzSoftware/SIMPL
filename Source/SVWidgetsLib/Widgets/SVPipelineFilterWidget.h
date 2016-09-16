@@ -143,7 +143,7 @@ class SVWidgetsLib_EXPORT SVPipelineFilterWidget : public QFrame, public Pipelin
      * @brief filterWidgetRemoved
      * @param widget
      */
-    void filterWidgetRemoved(PipelineFilterObject* widget, bool allowUndo);
+    void filterWidgetRemoved(PipelineFilterObject* widget);
 
     /**
      * @brief dragStarted

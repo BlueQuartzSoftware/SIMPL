@@ -777,6 +777,8 @@ QVector<CalculatorItem::Pointer> ArrayCalculator::toRPN(QVector<CalculatorItem::
     rpnEquation.push_back(item);
   }
 
+  if (oneComponent != nullptr) { delete oneComponent; }
+
   return rpnEquation;
 }
 

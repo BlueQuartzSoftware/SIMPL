@@ -146,6 +146,8 @@ class SVWidgetsLib_EXPORT UpdateCheckDialog : public QDialog, private Ui::Update
     DialogState         m_DialogState;
     UpdateCheck::SIMPLVersionData_t m_VersionData;
 
+    QAction*            m_CloseAction = nullptr;
+
     UpdateCheckDialog(const UpdateCheckDialog&); // Copy Constructor Not Implemented
     void operator=(const UpdateCheckDialog&); // Operator '=' Not Implemented
 

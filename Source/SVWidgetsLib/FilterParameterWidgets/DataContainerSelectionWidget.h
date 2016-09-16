@@ -129,7 +129,7 @@ class SVWidgetsLib_EXPORT DataContainerSelectionWidget : public FilterParameterW
 
     DataContainerSelectionFilterParameter* m_FilterParameter;
 
-    QSignalMapper*  m_MenuMapper;
+    QPointer<QSignalMapper> m_MenuMapper;
 
     void setSelectedPath(QString path);
 

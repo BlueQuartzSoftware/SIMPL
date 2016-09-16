@@ -85,7 +85,9 @@ AboutPlugins::AboutPlugins(QWidget* parent) :
 // -----------------------------------------------------------------------------
 AboutPlugins::~AboutPlugins()
 {
-
+#if defined (Q_OS_MAC)
+  delete m_CloseAction;
+#endif
 }
 
 // -----------------------------------------------------------------------------
@@ -129,10 +131,10 @@ void AboutPlugins::setupGui()
   setWindowFlags(this->windowFlags() & ~Qt::WindowContextHelpButtonHint);
 
 #if defined (Q_OS_MAC)
-  QAction* closeAction = new QAction(this);
-  closeAction->setShortcut(QKeySequence(Qt::CTRL + Qt::Key_W));
-  connect(closeAction, SIGNAL(triggered()), this, SLOT(close()));
-  addAction(closeAction);
+  m_CloseAction = new QAction(this);
+  m_CloseAction->setShortcut(QKeySequence(Qt::CTRL + Qt::Key_W));
+  connect(m_CloseAction, SIGNAL(triggered()), this, SLOT(close()));
+  addAction(m_CloseAction);
 #endif
 }
 
@@ -171,6 +173,7 @@ void AboutPlugins::loadPlugins(QList<PluginProxy::Pointer> proxies)
       plugin->setPluginName(proxyName);
       plugin->setStatus(NOT_FOUND_STRING);
       addPlaceHolderToTable(plugin, 0);
+      delete plugin;
     }
   }
 }

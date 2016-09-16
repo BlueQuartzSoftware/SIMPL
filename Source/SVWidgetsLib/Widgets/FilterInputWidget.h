@@ -72,8 +72,6 @@ class SVWidgetsLib_EXPORT FilterInputWidget : public QWidget, private Ui::Filter
 
     QWidget* getVariablesTabContentsWidget();
 
-    QVector<QWidget*>& getFilterParameterWidgets();
-
   public slots :
     void on_filterHelpBtn_pressed();
 
@@ -94,14 +92,11 @@ class SVWidgetsLib_EXPORT FilterInputWidget : public QWidget, private Ui::Filter
     QPointer<QtSFaderWidget>          m_FaderWidget;
     bool                              m_AdvFadedOut;
     QString                           m_BrandingLabel;
-    QVector<QWidget*>                 m_FilterParameterWidgets;
     static QString                    m_OpenDialogLastDirectory;
-    PipelineFilterObject*             m_PipelineFilterObject;
 
-    QVBoxLayout*                      m_VariablesVerticalLayout;
-    QVBoxLayout*                      m_CurrStrucVerticalLayout;
-    QWidget*                          m_VariablesWidget;
-    QWidget*                          m_CurrentStructureWidget;
+    QVBoxLayout*                      m_VariablesVerticalLayout = nullptr;
+    QWidget*                          m_VariablesWidget = nullptr;
+    QWidget*                          m_CurrentStructureWidget = nullptr;
     QMap<QString, QWidget*>           m_PropertyToWidget;
 
     /**
