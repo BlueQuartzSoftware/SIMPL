@@ -12,6 +12,8 @@ set(SIMPLView_PARAMETER_WIDGETS
     CalculatorWidget
     ChoiceWidget
     ComparisonSelectionWidget
+    ConstrainedDoubleWidget
+    ConstrainedIntWidget
     DataArrayCreationWidget
     DataArraySelectionWidget
     DataContainerArrayProxyWidget
