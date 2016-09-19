@@ -81,6 +81,13 @@ class SIMPLib_EXPORT AbstractFilter : public Observable
     virtual ~AbstractFilter();
 
     /**
+     * @brief CreateFilterFromClassName
+     * @param className
+     * @return
+     */
+    static AbstractFilter::Pointer CreateFilterFromClassName(const QString &className);
+
+    /**
      * @brief getGroupName Returns the group name for the filter, which determines its
      * top level sorting in the GUI
      * @return Group name

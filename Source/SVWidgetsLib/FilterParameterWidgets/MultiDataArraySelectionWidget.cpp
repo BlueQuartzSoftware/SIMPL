@@ -386,6 +386,50 @@ void MultiDataArraySelectionWidget::on_downBtn_pressed()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
+void MultiDataArraySelectionWidget::removeNonexistantPaths(QVector<DataArrayPath> &paths)
+{
+	AbstractFilter* filter = getFilter();
+	if (nullptr == filter) { return; }
+
+	bool reloadPath = false;
+	DataArrayPath amPath = DataArrayPath::GetAttributeMatrixPath(paths);
+
+	for (int i = 0; i < paths.size(); i++)
+	{
+		bool valid = true;
+
+		if (nullptr == filter->getDataContainerArray()->getAttributeMatrix(paths[i])->getAttributeArray(paths[i].getDataArrayName()))
+			valid = false;
+		
+		if (false == paths[i].isValid())
+			valid = false;
+		
+		if (!valid)
+		{
+      const QString& pathName = paths[i].getDataArrayName();
+			QList<QListWidgetItem*> invalidDataArrayWidgets = attributeArraysOrderWidget->findItems(pathName, Qt::MatchExactly);
+			for (int j = 0; j < invalidDataArrayWidgets.size(); j++)
+			{
+				invalidDataArrayWidgets[j]->setCheckState(Qt::Unchecked);
+				on_attributeArraysSelectWidget_itemChanged(invalidDataArrayWidgets[j]);
+			}
+			
+			paths.removeAt(i);
+			i--;
+
+			reloadPath = true;
+		}
+	}
+
+	if (reloadPath && !amPath.isEmpty())
+	{
+		setSelectedPath(amPath.serialize(Detail::Delimiter));
+	}
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
 void MultiDataArraySelectionWidget::beforePreflight()
 {
   if (nullptr == getFilter()) { return; }
@@ -396,6 +440,9 @@ void MultiDataArraySelectionWidget::beforePreflight()
   }
 
   QVector<DataArrayPath> paths = getFilter()->property(PROPERTY_NAME_AS_CHAR).value<QVector<DataArrayPath> >();
+
+  removeNonexistantPaths(paths);
+  getFilter()->property(PROPERTY_NAME_AS_CHAR).setValue(paths);
 
   DataArrayPath amPath = DataArrayPath::GetAttributeMatrixPath(paths);
 

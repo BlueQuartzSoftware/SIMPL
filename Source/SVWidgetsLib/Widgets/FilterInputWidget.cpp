@@ -134,11 +134,7 @@ QFileInfo getFilterParameterPath(AbstractFilter* filter, FilterParameter* parame
 FilterInputWidget::FilterInputWidget(QString filterClassName, PipelineFilterObject* filterObj, QWidget* parent) :
   QWidget(parent),
   m_FilterClassName(filterClassName),
-  m_AdvFadedOut(false),
-  m_VariablesVerticalLayout(nullptr),
-  m_CurrStrucVerticalLayout(nullptr),
-  m_VariablesWidget(nullptr),
-  m_CurrentStructureWidget(nullptr)
+  m_AdvFadedOut(false)
 {
   setupUi(this);
   setupGui();
@@ -157,7 +153,9 @@ FilterInputWidget::FilterInputWidget(QString filterClassName, PipelineFilterObje
 // -----------------------------------------------------------------------------
 FilterInputWidget::~FilterInputWidget()
 {
-
+  if (m_VariablesVerticalLayout != nullptr) { delete m_VariablesVerticalLayout; }
+  if (m_VariablesWidget != nullptr) { delete m_VariablesWidget; }
+  if (m_CurrentStructureWidget != nullptr) { delete m_CurrentStructureWidget; }
 }
 
 // -----------------------------------------------------------------------------
@@ -597,14 +595,21 @@ void FilterInputWidget::removeWidgetInputs(SVPipelineFilterWidget* w)
 void FilterInputWidget::displayFilterParameters(PipelineFilterObject* w)
 {
   clearInputWidgets();
-  variablesGrid->addWidget(m_VariablesWidget);
-  currentStructureGrid->addWidget(m_CurrentStructureWidget);
+
+  if (m_VariablesWidget != nullptr)
+  {
+    variablesGrid->addWidget(m_VariablesWidget);
+    m_VariablesWidget->setVisible(true);
+  }
+
+  if (m_CurrentStructureWidget != nullptr)
+  {
+    currentStructureGrid->addWidget(m_CurrentStructureWidget);
+    m_CurrentStructureWidget->setVisible(true);
+  }
 
   // Set the current index to the basic tab by default
   tabWidget->setCurrentIndex(BASIC_TAB);
-
-  m_VariablesWidget->setVisible(true);
-  m_CurrentStructureWidget->setVisible(true);
 
   // Add a label at the top of the Inputs Tabs to show what filter we are working on
   filterHumanLabel->setText(w->getHumanLabel());
@@ -656,14 +661,6 @@ void FilterInputWidget::fadeOutWidget(QWidget* widget)
 QWidget* FilterInputWidget::getVariablesTabContentsWidget()
 {
   return variablesTabContents;
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-QVector<QWidget*>& FilterInputWidget::getFilterParameterWidgets()
-{
-  return m_FilterParameterWidgets;
 }
 
 
