@@ -58,7 +58,7 @@ void GEOM_CLASS_NAME::resizeQuadList(int64_t newNumQuads)
 // -----------------------------------------------------------------------------
 void GEOM_CLASS_NAME::setQuads(SharedQuadList::Pointer quads)
 {
-  if (quads.get() != NULL)
+  if (quads.get() != nullptr)
   {
     if (quads->getName().compare(SIMPL::Geometry::SharedQuadList) != 0)
     {

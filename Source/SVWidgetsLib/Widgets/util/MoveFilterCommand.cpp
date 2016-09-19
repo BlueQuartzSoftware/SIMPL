@@ -46,13 +46,13 @@
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-MoveFilterCommand::MoveFilterCommand(PipelineFilterObject* filterWidget, QVariant origin, QVariant destination, PipelineView* pipelineView, bool runFirstTime, QUndoCommand* parent) :
+MoveFilterCommand::MoveFilterCommand(PipelineFilterObject* filterWidget, QVariant origin, QVariant destination, PipelineView* pipelineView, QUndoCommand* parent) :
   QUndoCommand(parent),
   m_PipelineView(pipelineView),
   m_FilterWidget(filterWidget),
   m_Origin(origin),
   m_Destination(destination),
-  m_FirstRun(!runFirstTime)
+  m_FirstRun(true)
 {
   setText(QObject::tr("\"Move '%1'\"").arg(m_FilterWidget->getFilter()->getHumanLabel()));
 }
@@ -70,7 +70,17 @@ MoveFilterCommand::~MoveFilterCommand()
 // -----------------------------------------------------------------------------
 void MoveFilterCommand::undo()
 {
-  moveFilter(m_Destination, m_Origin);
+  PipelineFilterObject* filterObject = m_PipelineView->filterObjectAt(m_Destination);
+
+  m_PipelineView->removeFilterObject(filterObject, false);
+
+  m_PipelineView->addFilterObject(filterObject, m_Origin);
+
+  m_PipelineView->setSelectedFilterObject(filterObject, Qt::NoModifier);
+
+  m_PipelineView->reindexWidgetTitles();
+  m_PipelineView->recheckWindowTitleAndModification();
+  m_PipelineView->preflightPipeline();
 }
 
 // -----------------------------------------------------------------------------
@@ -78,22 +88,27 @@ void MoveFilterCommand::undo()
 // -----------------------------------------------------------------------------
 void MoveFilterCommand::redo()
 {
-  moveFilter(m_Origin, m_Destination);
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-void MoveFilterCommand::moveFilter(QVariant origin, QVariant destination)
-{  
-  if (m_FirstRun == false)
+  if (m_FirstRun == true)
   {
-    m_PipelineView->moveFilterWidget(m_FilterWidget, origin, destination, false);
+    m_PipelineView->addFilterObject(m_FilterWidget, m_Destination);
+
+    m_PipelineView->setSelectedFilterObject(m_FilterWidget, Qt::NoModifier);
+
+    m_FirstRun = false;
   }
   else
   {
-    m_FirstRun = false;
+    PipelineFilterObject* filterObject = m_PipelineView->filterObjectAt(m_Origin);
+
+    m_PipelineView->removeFilterObject(filterObject, false);
+    m_PipelineView->addFilterObject(filterObject, m_Destination);
+
+    m_PipelineView->setSelectedFilterObject(filterObject, Qt::NoModifier);
   }
+
+  m_PipelineView->reindexWidgetTitles();
+  m_PipelineView->recheckWindowTitleAndModification();
+  m_PipelineView->preflightPipeline();
 }
 
 

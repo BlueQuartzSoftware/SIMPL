@@ -65,7 +65,7 @@ CustomWidget::~CustomWidget()
 // -----------------------------------------------------------------------------
 void CustomWidget::setupGui()
 {
-  if (getFilterParameter() != NULL)
+  if (getFilterParameter() != nullptr)
   {
     CustomWidgetLabel->setText(getFilterParameter()->getHumanLabel() );
   }

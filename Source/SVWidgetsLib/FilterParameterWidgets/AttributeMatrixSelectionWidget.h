@@ -116,7 +116,7 @@ class SVWidgetsLib_EXPORT AttributeMatrixSelectionWidget : public FilterParamete
 
     bool m_DidCausePreflight;
 
-    QSignalMapper*  m_MenuMapper;
+    QPointer<QSignalMapper> m_MenuMapper;
 
     AttributeMatrixSelectionFilterParameter*  m_FilterParameter;
 

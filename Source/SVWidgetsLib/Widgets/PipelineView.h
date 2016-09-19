@@ -61,6 +61,9 @@
 #include "SVWidgetsLib/SVWidgetsLib.h"
 #include "SVWidgetsLib/Widgets/SVPipelineFilterWidget.h"
 #include "SVWidgetsLib/Widgets/DropBoxWidget.h"
+#include "SVWidgetsLib/Widgets/util/AddFilterCommand.h"
+#include "SVWidgetsLib/Widgets/util/MoveFilterCommand.h"
+#include "SVWidgetsLib/Widgets/util/RemoveFilterCommand.h"
 #include "SVWidgetsLib/QtSupport/QtSFileDragMessageBox.h"
 
 class QScrollArea;
@@ -81,6 +84,26 @@ class SVWidgetsLib_EXPORT PipelineView
 
     PipelineView(QWidget* parent = 0);
     virtual ~PipelineView();
+
+    // -----------------------------------------------------------------------------
+    // We normally don't use the friend keyword, but we have to here so that the
+    // undo command classes are able to add/remove filter objects with the private
+    // addFilterObject(...) and removeFilterObject(...) PipelineView functions.
+    // This allows us to keep these functions private from everything else except
+    // this class and the undo commands.  The undo commands have to call these
+    // functions in their undo and redo functions.
+    // -----------------------------------------------------------------------------
+    friend void AddFilterCommand::undo();
+    friend void AddFilterCommand::redo();
+
+    friend void MoveFilterCommand::undo();
+    friend void MoveFilterCommand::redo();
+
+    friend void RemoveFilterCommand::undo();
+    friend void RemoveFilterCommand::redo();
+    // -----------------------------------------------------------------------------
+    // *****************************************************************************
+    // -----------------------------------------------------------------------------
 
     /**
      * @brief filterCount
@@ -141,86 +164,12 @@ class SVWidgetsLib_EXPORT PipelineView
     virtual void populatePipelineView(FilterPipeline::Pointer pipeline, QVariant value);
 
     /**
-     * @brief addFilter
-     * @param filter
-     * @param index
-     * @param allowUndo
-     */
-    virtual void addFilter(AbstractFilter::Pointer filter, QVariant value, bool allowUndo = true, QUuid previousNode = QUuid(), QUuid nextNode = QUuid());
-
-    /**
-     * @brief addFilter
-     * @param filterClassName
-     * @param index
-     * param allowUndo
-     */
-    virtual void addFilter(const QString& filterClassName, QVariant value, bool allowUndo = true, QUuid previousNode = QUuid(), QUuid nextNode = QUuid());
-
-    /**
-     * @brief addFilter
-     * @param filter
-     * @param index
-     * @param allowUndo
-     */
-    virtual void addFilters(QList<AbstractFilter::Pointer> filters, QVariant value, bool allowUndo = true, QUuid previousNode = QUuid(), QUuid nextNode = QUuid());
-
-    /**
-     * @brief addFilterWidget
-     * @param fw
-     * @param index
-     * @param allowUndo
-     */
-    virtual void addFilterObject(PipelineFilterObject* filterObject, QVariant value, bool allowUndo = true, QUuid previousNodeId = QUuid(), QUuid nextNodeId = QUuid());
-
-    /**
-     * @brief addFilterWidget
-     * @param fw
-     * @param index
-     * @param allowUndo
-     */
-    virtual void addFilterObjects(QList<PipelineFilterObject*> filterObjects, QVariant value, bool allowUndo = true);
-
-    /**
      * @brief moveFilterWidget
      * @param fw
      * @param origin
      * @param destination
      */
-    virtual void moveFilterWidget(PipelineFilterObject* fw, QVariant origin, QVariant destination, bool allowUndo = true);
-
-    /**
-     * @brief pasteFilters
-     * @param filters
-     */
-    virtual void pasteFilters(QList<AbstractFilter::Pointer> filters, QVariant value, bool allowUndo = true);
-
-    /**
-     * @brief pasteFilterWidgets
-     * @param jsonString
-     * @param index
-     * @param allowUndo
-     */
-    virtual void pasteFilterWidgets(const QString &jsonString, QVariant value, bool allowUndo = true);
-
-    /**
-     * @brief removeFilterWidget
-     * @param filterWidget
-     * @param allowUndo
-     */
-    virtual void removeFilterObject(PipelineFilterObject* filterWidget, bool allowUndo = true, bool deleteWidget = true);
-
-    /**
-     * @brief addFilterWidget
-     * @param filterWidgets
-     */
-    virtual void cutFilterWidgets(QList<PipelineFilterObject*> filterWidgets, bool allowUndo = true);
-
-    /**
-     * @brief removeFilterWidget
-     * @param filterWidgets
-     * @param allowUndo
-     */
-    virtual void removeFilterObjects(QList<PipelineFilterObject*> filterWidgets, bool allowUndo = true, bool deleteWidgets = true);
+    virtual void moveFilterWidget(PipelineFilterObject* fw, QVariant origin, QVariant destination);
 
     /**
      * @brief setSelectedFilterObject
@@ -228,6 +177,11 @@ class SVWidgetsLib_EXPORT PipelineView
      * @param modifiers
      */
     virtual void setSelectedFilterObject(PipelineFilterObject* w, Qt::KeyboardModifiers modifiers);
+
+    /**
+     * @brief recheckWindowTitleAndModification
+     */
+    virtual void recheckWindowTitleAndModification();
 
     /**
      * @brief preflightPipeline
@@ -248,7 +202,12 @@ class SVWidgetsLib_EXPORT PipelineView
     /**
     * @brief clearWidgets
     */
-    virtual void clearFilterWidgets(bool allowUndo = false);
+    virtual void clearFilterWidgets();
+
+    /**
+     * @brief reindexWidgetTitles
+     */
+    virtual void reindexWidgetTitles();
 
     /**
     * @brief addUndoCommand
@@ -256,6 +215,28 @@ class SVWidgetsLib_EXPORT PipelineView
     virtual void addUndoCommand(QUndoCommand* cmd);
 
     void showFilterHelp(const QString& className);
+
+    /**
+     * @brief createFilterObjectFromFilter
+     * @param filter
+     * @return
+     */
+    virtual PipelineFilterObject* createFilterObjectFromFilter(AbstractFilter::Pointer filter);
+
+  protected:
+    /**
+     * @brief addFilterObject
+     * @param filterObject
+     * @param value
+     */
+    virtual void addFilterObject(PipelineFilterObject* filterObject, QVariant value);
+
+    /**
+     * @brief removeFilterObject
+     * @param filterWidget
+     * @param deleteWidget
+     */
+    virtual void removeFilterObject(PipelineFilterObject* filterWidget, bool deleteWidget = true);
 
   private:
 

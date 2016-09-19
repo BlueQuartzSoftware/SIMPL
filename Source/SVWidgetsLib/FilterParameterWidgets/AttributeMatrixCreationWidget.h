@@ -140,14 +140,14 @@ signals:
   private slots:
 
 private:
-  bool m_DidCausePreflight;
+  bool                                            m_DidCausePreflight;
 
-  AttributeMatrixCreationFilterParameter* m_FilterParameter;
+  AttributeMatrixCreationFilterParameter*         m_FilterParameter;
 
-  QSignalMapper*  m_MenuMapper = nullptr;
+  QSignalMapper*                                  m_MenuMapper = nullptr;
 
-  QMenu*        m_MenuPtr = nullptr;
-  bool          m_OwnsMenuPtr = false;
+  QMenu*                                          m_MenuPtr = nullptr;
+  bool                                            m_OwnsMenuPtr = false;
   void setSelectedPath(QString path);
 
   AttributeMatrixCreationWidget(const AttributeMatrixCreationWidget&); // Copy Constructor Not Implemented

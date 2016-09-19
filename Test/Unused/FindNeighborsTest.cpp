@@ -291,7 +291,7 @@ void TestDataContainerReader()
   pipeline->pushBack(h5Reader);
 
 #if 0
-  IDataArray* iDataPtr = NULL;
+  IDataArray* iDataPtr = nullptr;
   iDataPtr = m->getFeatureData(SIMPL::EnsembleData::CrystalStructures).get();
   UInt32ArrayType* data = UInt32ArrayType::SafeObjectDownCast<IDataArray*, UInt32ArrayType*>(iDataPtr);
   m_CrystalStructure = data->GetValue(index);
@@ -361,7 +361,7 @@ void OtherTest()
   err = reader->getErrorCondition();
 
   IDataArray::Pointer iPtr = m->getEnsembleData(SIMPL::EnsembleData::CrystalStructures);
-  DREAM3D_REQUIRE_NE(NULL, iPtr.get());
+  DREAM3D_REQUIRE_NE(nullptr, iPtr.get());
 
 
   DataContainerWriter::Pointer writer = DataContainerWriter::New();

@@ -51,10 +51,10 @@
 // -----------------------------------------------------------------------------
 AddFilterCommand::AddFilterCommand(AbstractFilter::Pointer filter, PipelineView* destination, QString actionText, QVariant value, QUuid previousNode, QUuid nextNode, QUndoCommand* parent) :
   QUndoCommand(parent),
+  m_FilterCount(1),
   m_ActionText(actionText),
   m_Destination(destination),
   m_Value(value),
-  m_FilterWidgetGeometry(QRect()),
   m_PreviousNodeId(previousNode),
   m_NextNodeId(nextNode)
 {
@@ -67,8 +67,42 @@ AddFilterCommand::AddFilterCommand(AbstractFilter::Pointer filter, PipelineView*
     }
   }
 
+  setText(QObject::tr("\"%1 '%2'\"").arg(actionText).arg(filter->getHumanLabel()));
+
   FilterPipeline::Pointer pipeline = FilterPipeline::New();
   pipeline->pushBack(filter);
+  JsonFilterParametersWriter::Pointer jsonWriter = JsonFilterParametersWriter::New();
+  m_JsonString = jsonWriter->writePipelineToString(pipeline, "");
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+AddFilterCommand::AddFilterCommand(QList<AbstractFilter::Pointer> filters, PipelineView* destination, QString actionText, QVariant value, QUuid previousNode, QUuid nextNode, QUndoCommand* parent) :
+  QUndoCommand(parent),
+  m_FilterCount(filters.size()),
+  m_ActionText(actionText),
+  m_Destination(destination),
+  m_Value(value),
+  m_PreviousNodeId(previousNode),
+  m_NextNodeId(nextNode)
+{
+  if (m_Value.canConvert<int>())
+  {
+    int index = value.toInt();
+    if (index < 0)
+    {
+      m_Value.setValue(destination->filterCount());
+    }
+  }
+
+  setText(QObject::tr("\"%1 %2 Filters\"").arg(actionText).arg(filters.size()));
+
+  FilterPipeline::Pointer pipeline = FilterPipeline::New();
+  for (int i=0; i<filters.size(); i++)
+  {
+    pipeline->pushBack(filters[i]);
+  }
   JsonFilterParametersWriter::Pointer jsonWriter = JsonFilterParametersWriter::New();
   m_JsonString = jsonWriter->writePipelineToString(pipeline, "");
 }
@@ -86,8 +120,31 @@ AddFilterCommand::~AddFilterCommand()
 // -----------------------------------------------------------------------------
 void AddFilterCommand::undo()
 {
-  m_Destination->removeFilterObject(m_Destination->filterObjectAt(m_Value), false);
+  if (m_Value.canConvert<int>())
+  {
+    int index = m_Value.toInt();
 
+    for (int i=0; i < m_FilterCount; i++)
+    {
+      m_Destination->removeFilterObject(m_Destination->filterObjectAt(index));
+      // No need to increment index, because after removing the filter above, the next filter
+      // will move up to this index
+    }
+  }
+  else if (m_Value.canConvert<QPointF>())
+  {
+    QPointF pointF = m_Value.toPointF();
+
+    for (int i=0; i < m_FilterCount; i++)
+    {
+      m_Destination->removeFilterObject(m_Destination->filterObjectAt(pointF));
+      pointF.setX(pointF.x() + 50);
+      pointF.setY(pointF.y() + 50);
+    }
+  }
+
+  m_Destination->reindexWidgetTitles();
+  m_Destination->recheckWindowTitleAndModification();
   m_Destination->preflightPipeline();
 }
 
@@ -97,12 +154,37 @@ void AddFilterCommand::undo()
 void AddFilterCommand::redo()
 {
   JsonFilterParametersReader::Pointer jsonReader = JsonFilterParametersReader::New();
+  jsonReader->setMaxFilterIndex(m_FilterCount);
   FilterPipeline::Pointer pipeline = jsonReader->readPipelineFromString(m_JsonString);
-  AbstractFilter::Pointer filter = pipeline->getFilterContainer()[0];
+  FilterPipeline::FilterContainerType container = pipeline->getFilterContainer();
 
-  setText(QObject::tr("\"%1 '%2'\"").arg(m_ActionText).arg(filter->getHumanLabel()));
+  if (m_Value.canConvert<int>())
+  {
+    int index = m_Value.toInt();
 
-  m_Destination->addFilter(filter, m_Value, false, m_PreviousNodeId, m_NextNodeId);
+    for (int i=0; i<container.size(); i++)
+    {
+      PipelineFilterObject* filterObject = m_Destination->createFilterObjectFromFilter(container[i]);
+      m_Destination->addFilterObject(filterObject, index);
+      index++;
+    }
+  }
+  else if (m_Value.canConvert<QPointF>())
+  {
+    QPointF pointF = m_Value.toPointF();
+
+    for (int i=0; i<container.size(); i++)
+    {
+      PipelineFilterObject* filterObject = m_Destination->createFilterObjectFromFilter(container[i]);
+      m_Destination->addFilterObject(filterObject, pointF);
+      pointF.setX(pointF.x() + 50);
+      pointF.setY(pointF.y() + 50);
+    }
+  }
+
+  m_Destination->reindexWidgetTitles();
+  m_Destination->recheckWindowTitleAndModification();
+  m_Destination->preflightPipeline();
 }
 
 

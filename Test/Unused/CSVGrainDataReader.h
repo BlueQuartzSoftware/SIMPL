@@ -43,10 +43,10 @@
   type* get##name##Pointer() { return m_##name; }\
   void set##name##Pointer(type* f)\
   {\
-    if (m_##var != NULL && m_##var != f)\
+    if (m_##var != nullptr && m_##var != f)\
     {\
       deallocateArrayData(m_##var);\
-      m_##var = NULL;\
+      m_##var = nullptr;\
     }\
     m_##var = f;\
   }
@@ -110,7 +110,7 @@ class CSVGrainDataReader
     */
     void initPointers(size_t numElements);
 
-    /** @brief 'free's the allocated memory and sets the pointer to NULL
+    /** @brief 'free's the allocated memory and sets the pointer to nullptr
     */
     void deletePointers();
 
@@ -134,20 +134,20 @@ class CSVGrainDataReader
 
     /**
      * @brief Deallocates memory that has been previously allocated. This will set the
-     * value of the pointer passed in as the argument to NULL.
+     * value of the pointer passed in as the argument to nullptr.
      * @param ptr The pointer to be freed.
      */
     template<typename T>
     void deallocateArrayData(T*& ptr)
     {
-      if (ptr != NULL && this->m_ManageMemory == true)
+      if (ptr != nullptr && this->m_ManageMemory == true)
       {
 #if defined ( AIM_USE_SSE ) && defined ( __SSE2__ )
         _mm_free(ptr );
 #else
         delete[] ptr;
 #endif
-        ptr = NULL;
+        ptr = nullptr;
         m_NumberOfElements = 0;
       }
     }

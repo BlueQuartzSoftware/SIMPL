@@ -61,18 +61,18 @@ CSVGrainDataReader::CSVGrainDataReader() :
   m_NumberOfElements(0),
   m_ManageMemory(true)
 {
-  // Init all the arrays to NULL
-  m_GrainId = NULL;
-  m_Phi1 = NULL;
-  m_Phi = NULL;
-  m_Phi2 = NULL;
-  m_EquivDiam = NULL;
-  m_B_Over_A = NULL;
-  m_C_Over_A = NULL;
-  m_Omega3 = NULL;
-  m_OutsideBoundingBox = NULL;
-  m_NumNeighbors = NULL;
-  m_SurfaceGrain = NULL;
+  // Init all the arrays to nullptr
+  m_GrainId = nullptr;
+  m_Phi1 = nullptr;
+  m_Phi = nullptr;
+  m_Phi2 = nullptr;
+  m_EquivDiam = nullptr;
+  m_B_Over_A = nullptr;
+  m_C_Over_A = nullptr;
+  m_Omega3 = nullptr;
+  m_OutsideBoundingBox = nullptr;
+  m_NumNeighbors = nullptr;
+  m_SurfaceGrain = nullptr;
 
   m_NumFeatures = 11;
 
@@ -195,16 +195,16 @@ int CSVGrainDataReader::readFile()
 
   initPointers(m_NumberOfElements);
 
-  if (NULL == m_GrainId ||
-      NULL == m_Phi1 ||
-      NULL == m_Phi ||
-      NULL == m_Phi2 ||
-      NULL == m_EquivDiam ||
-      NULL == m_NumNeighbors ||
-      NULL == m_B_Over_A ||
-      NULL == m_C_Over_A ||
-      m_Omega3 == NULL ||
-      m_OutsideBoundingBox == NULL)
+  if (nullptr == m_GrainId ||
+      nullptr == m_Phi1 ||
+      nullptr == m_Phi ||
+      nullptr == m_Phi2 ||
+      nullptr == m_EquivDiam ||
+      nullptr == m_NumNeighbors ||
+      nullptr == m_B_Over_A ||
+      nullptr == m_C_Over_A ||
+      m_Omega3 == nullptr ||
+      m_OutsideBoundingBox == nullptr)
   {
     return -1;
   }

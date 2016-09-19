@@ -58,7 +58,7 @@ void GEOM_CLASS_NAME::resizeTriList(int64_t newNumTris)
 // -----------------------------------------------------------------------------
 void GEOM_CLASS_NAME::setTriangles(SharedTriList::Pointer triangles)
 {
-  if (triangles.get() != NULL)
+  if (triangles.get() != nullptr)
   {
     if (triangles->getName().compare(SIMPL::Geometry::SharedTriList) != 0)
     {

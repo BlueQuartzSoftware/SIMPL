@@ -83,7 +83,9 @@ AttributeMatrixSelectionWidget::AttributeMatrixSelectionWidget(FilterParameter* 
 //
 // -----------------------------------------------------------------------------
 AttributeMatrixSelectionWidget::~AttributeMatrixSelectionWidget()
-{}
+{
+  if(m_MenuMapper) { delete m_MenuMapper; }
+}
 
 // -----------------------------------------------------------------------------
 //

@@ -58,7 +58,7 @@ void GEOM_CLASS_NAME::resizeVertexList(int64_t newNumVertices)
 // -----------------------------------------------------------------------------
 void GEOM_CLASS_NAME::setVertices(SharedVertexList::Pointer vertices)
 {
-  if (vertices.get() != NULL)
+  if (vertices.get() != nullptr)
   {
     if (vertices->getName().compare(SIMPL::Geometry::SharedVertexList) != 0)
     {

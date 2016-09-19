@@ -108,7 +108,7 @@ void QtSDisclosableGroupBox::disclose(bool on)
   foreach(QObject* obj, objs)
   {
     QWidget* w = qobject_cast<QWidget*>(obj);
-    if(NULL != w)
+    if(nullptr != w)
     {
       if(on) w->show();
       else w->hide();

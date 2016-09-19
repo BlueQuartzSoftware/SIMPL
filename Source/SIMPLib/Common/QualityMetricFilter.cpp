@@ -66,7 +66,7 @@ QualityMetricFilter::~QualityMetricFilter()
 int QualityMetricFilter::filter()
 {
   int err = 0;
-  if (m_Output.get() == NULL)
+  if (m_Output.get() == nullptr)
   {
     m_Output = DataArray<bool>::CreateArray(0, getFeatureName());
   }
