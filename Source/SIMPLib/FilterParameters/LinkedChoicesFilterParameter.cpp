@@ -90,7 +90,7 @@ QString LinkedChoicesFilterParameter::getWidgetType()
 void LinkedChoicesFilterParameter::readJson(const QJsonObject &json)
 {
   QJsonValue jsonValue = json[getPropertyName()];
-  if(!jsonValue.isUndefined() && m_SetterCallback.target<void(int)>() )
+  if(!jsonValue.isUndefined() )
   {
     m_SetterCallback(jsonValue.toInt(0.0));
   }
@@ -101,9 +101,6 @@ void LinkedChoicesFilterParameter::readJson(const QJsonObject &json)
 // -----------------------------------------------------------------------------
 void LinkedChoicesFilterParameter::writeJson(QJsonObject &json)
 {
-  if(m_GetterCallback.target<int(void)>())
-  {
-    json[getPropertyName()] = m_GetterCallback();
-  }
+  json[getPropertyName()] = m_GetterCallback();
 }
 
