@@ -44,8 +44,8 @@
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-ExpOperator::ExpOperator() :
-  UnaryOperator()
+ExpOperator::ExpOperator()
+: UnaryOperator()
 {
   setNumberOfArguments(1);
 }
@@ -55,14 +55,12 @@ ExpOperator::ExpOperator() :
 // -----------------------------------------------------------------------------
 ExpOperator::~ExpOperator()
 {
-
 }
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void ExpOperator::calculate(AbstractFilter* filter, DataArrayPath calculatedArrayPath, QStack<ICalculatorArray::Pointer> &executionStack)
+void ExpOperator::calculate(AbstractFilter* filter, DataArrayPath calculatedArrayPath, QStack<ICalculatorArray::Pointer>& executionStack)
 {
   CREATE_NEW_ARRAY_STANDARD_UNARY(filter, calculatedArrayPath, executionStack, exp)
 }
-

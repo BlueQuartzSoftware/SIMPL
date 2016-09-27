@@ -37,59 +37,57 @@
 
 #include <iostream>
 
-
-#include <QtCore/QFileInfo>
-#include <QtCore/QUrl>
 #include <QtCore/QDir>
-#include <QtCore/QTemporaryFile>
-#include <QtCore/QMimeData>
+#include <QtCore/QFileInfo>
 #include <QtCore/QJsonDocument>
 #include <QtCore/QJsonObject>
+#include <QtCore/QMimeData>
+#include <QtCore/QTemporaryFile>
+#include <QtCore/QUrl>
 
-#include <QtGui/QMouseEvent>
-#include <QtGui/QDropEvent>
+#include <QtGui/QClipboard>
+#include <QtGui/QDrag>
 #include <QtGui/QDragEnterEvent>
 #include <QtGui/QDragLeaveEvent>
 #include <QtGui/QDragMoveEvent>
-#include <QtGui/QDrag>
-#include <QtGui/QClipboard>
-#include <QtWidgets/QLabel>
+#include <QtGui/QDropEvent>
+#include <QtGui/QMouseEvent>
 #include <QtGui/QPixmap>
-#include <QtWidgets/QUndoStack>
-#include <QtWidgets/QUndoCommand>
-#include <QtWidgets/QVBoxLayout>
 #include <QtWidgets/QHeaderView>
+#include <QtWidgets/QLabel>
+#include <QtWidgets/QMessageBox>
+#include <QtWidgets/QProgressDialog>
 #include <QtWidgets/QScrollArea>
 #include <QtWidgets/QScrollBar>
-#include <QtWidgets/QProgressDialog>
-#include <QtWidgets/QMessageBox>
+#include <QtWidgets/QUndoCommand>
+#include <QtWidgets/QUndoStack>
+#include <QtWidgets/QVBoxLayout>
 
-#include "SIMPLib/SIMPLib.h"
-#include "SIMPLib/Common/SIMPLibSetGetMacros.h"
-#include "SIMPLib/Common/PipelineMessage.h"
+#include "SIMPLib/Common/FilterFactory.hpp"
 #include "SIMPLib/Common/FilterManager.h"
 #include "SIMPLib/Common/IFilterFactory.hpp"
-#include "SIMPLib/Common/FilterFactory.hpp"
+#include "SIMPLib/Common/PipelineMessage.h"
+#include "SIMPLib/Common/SIMPLibSetGetMacros.h"
 #include "SIMPLib/CoreFilters/Breakpoint.h"
 #include "SIMPLib/FilterParameters/JsonFilterParametersReader.h"
 #include "SIMPLib/FilterParameters/JsonFilterParametersWriter.h"
+#include "SIMPLib/SIMPLib.h"
 
-#include "SVWidgetsLib/QtSupport/QtSDroppableScrollArea.h"
-#include "SVWidgetsLib/Core/SVWidgetsLibConstants.h"
 #include "SVWidgetsLib/Core/FilterWidgetManager.h"
 #include "SVWidgetsLib/Core/PipelineViewPtrMimeData.h"
+#include "SVWidgetsLib/Core/SVWidgetsLibConstants.h"
+#include "SVWidgetsLib/FilterParameterWidgets/FilterParameterWidgetsDialogs.h"
+#include "SVWidgetsLib/QtSupport/QtSDroppableScrollArea.h"
 #include "SVWidgetsLib/Widgets/BreakpointFilterWidget.h"
 #include "SVWidgetsLib/Widgets/util/AddFilterCommand.h"
 #include "SVWidgetsLib/Widgets/util/MoveFilterCommand.h"
 #include "SVWidgetsLib/Widgets/util/RemoveFilterCommand.h"
-#include "SVWidgetsLib/FilterParameterWidgets/FilterParameterWidgetsDialogs.h"
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
 PipelineView::PipelineView(QWidget* parent)
 {
-
 }
 
 // -----------------------------------------------------------------------------
@@ -97,7 +95,6 @@ PipelineView::PipelineView(QWidget* parent)
 // -----------------------------------------------------------------------------
 PipelineView::~PipelineView()
 {
-  
 }
 
 // -----------------------------------------------------------------------------
@@ -236,7 +233,7 @@ PipelineFilterObject* PipelineView::createFilterObjectFromFilter(AbstractFilter:
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void PipelineView::setSelectedFilterObject(PipelineFilterObject *w, Qt::KeyboardModifiers modifiers)
+void PipelineView::setSelectedFilterObject(PipelineFilterObject* w, Qt::KeyboardModifiers modifiers)
 {
   Q_UNUSED(w)
   Q_UNUSED(modifiers)

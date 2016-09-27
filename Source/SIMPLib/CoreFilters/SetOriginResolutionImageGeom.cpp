@@ -33,19 +33,18 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-
 #include "SetOriginResolutionImageGeom.h"
 
 #ifdef SIMPLib_USE_PARALLEL_ALGORITHMS
-#include <tbb/parallel_for.h>
 #include <tbb/blocked_range.h>
+#include <tbb/parallel_for.h>
 #include <tbb/partitioner.h>
 #include <tbb/task_scheduler_init.h>
 #endif
 
 #include "SIMPLib/Common/Constants.h"
-#include "SIMPLib/SIMPLibVersion.h"
 #include "SIMPLib/FilterParameters/AbstractFilterParametersReader.h"
+#include "SIMPLib/SIMPLibVersion.h"
 
 #include "SIMPLib/FilterParameters/DataContainerSelectionFilterParameter.h"
 #include "SIMPLib/FilterParameters/FloatVec3FilterParameter.h"
@@ -58,51 +57,50 @@
  */
 class UpdateVerticesImpl
 {
-    float* m_Nodes;
-    float* m_Delta;
+  float* m_Nodes;
+  float* m_Delta;
 
-  public:
-    UpdateVerticesImpl(float* nodes, float* delta) :
-      m_Nodes(nodes),
-      m_Delta(delta)
+public:
+  UpdateVerticesImpl(float* nodes, float* delta)
+  : m_Nodes(nodes)
+  , m_Delta(delta)
+  {
+  }
+
+  virtual ~UpdateVerticesImpl()
+  {
+  }
+
+  void generate(size_t start, size_t end) const
+  {
+
+    for(size_t i = start; i < end; i++)
     {
+      m_Nodes[3 * i] -= m_Delta[0];
+      m_Nodes[3 * i + 1] -= m_Delta[1];
+      m_Nodes[3 * i + 2] -= m_Delta[2];
     }
-
-    virtual ~UpdateVerticesImpl() {}
-
-    void generate(size_t start, size_t end) const
-    {
-
-      for (size_t i = start; i < end; i++)
-      {
-        m_Nodes[3 * i] -= m_Delta[0];
-        m_Nodes[3 * i + 1] -= m_Delta[1];
-        m_Nodes[3 * i + 2] -= m_Delta[2];
-      }
-
-    }
+  }
 
 #ifdef SIMPLib_USE_PARALLEL_ALGORITHMS
-    void operator()(const tbb::blocked_range<size_t>& r) const
-    {
-      generate(r.begin(), r.end());
-    }
+  void operator()(const tbb::blocked_range<size_t>& r) const
+  {
+    generate(r.begin(), r.end());
+  }
 #endif
 };
 
 // Include the MOC generated file for this class
 #include "moc_SetOriginResolutionImageGeom.cpp"
 
-
-
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-SetOriginResolutionImageGeom::SetOriginResolutionImageGeom() :
-  AbstractFilter(),
-  m_DataContainerName(""),
-  m_ChangeOrigin(false),
-  m_ChangeResolution(false)
+SetOriginResolutionImageGeom::SetOriginResolutionImageGeom()
+: AbstractFilter()
+, m_DataContainerName("")
+, m_ChangeOrigin(false)
+, m_ChangeResolution(false)
 {
   m_Origin.x = 0.0f;
   m_Origin.y = 0.0f;
@@ -138,12 +136,10 @@ void SetOriginResolutionImageGeom::setupFilterParameters()
   parameters.push_back(SIMPL_NEW_LINKED_BOOL_FP("Change Origin", ChangeOrigin, FilterParameter::Parameter, SetOriginResolutionImageGeom, linkedProps));
   parameters.push_back(SIMPL_NEW_FLOAT_VEC3_FP("Origin", Origin, FilterParameter::Parameter, SetOriginResolutionImageGeom));
 
-
   linkedProps.clear();
   linkedProps << "Resolution";
   parameters.push_back(SIMPL_NEW_LINKED_BOOL_FP("Change Resolution", ChangeResolution, FilterParameter::Parameter, SetOriginResolutionImageGeom, linkedProps));
   parameters.push_back(SIMPL_NEW_FLOAT_VEC3_FP("Resolution", Resolution, FilterParameter::Parameter, SetOriginResolutionImageGeom));
-
 
   setFilterParameters(parameters);
 }
@@ -154,10 +150,10 @@ void SetOriginResolutionImageGeom::setupFilterParameters()
 void SetOriginResolutionImageGeom::readFilterParameters(AbstractFilterParametersReader* reader, int index)
 {
   reader->openFilterGroup(this, index);
-  setChangeOrigin( reader->readValue("ChangeOrigin", getChangeOrigin()) );
-  setChangeResolution( reader->readValue("ChangeResolution", getChangeResolution()) );
-  setOrigin( reader->readFloatVec3("Origin", getOrigin() ) );
-  setResolution(reader->readFloatVec3("Resolution", getResolution() ) );
+  setChangeOrigin(reader->readValue("ChangeOrigin", getChangeOrigin()));
+  setChangeResolution(reader->readValue("ChangeResolution", getChangeResolution()));
+  setOrigin(reader->readFloatVec3("Origin", getOrigin()));
+  setResolution(reader->readFloatVec3("Resolution", getResolution()));
   setDataContainerName(reader->readString("DataContainerName", getDataContainerName()));
   reader->closeFilterGroup();
 }
@@ -167,7 +163,6 @@ void SetOriginResolutionImageGeom::readFilterParameters(AbstractFilterParameters
 // -----------------------------------------------------------------------------
 void SetOriginResolutionImageGeom::initialize()
 {
-
 }
 
 // -----------------------------------------------------------------------------
@@ -212,7 +207,10 @@ void SetOriginResolutionImageGeom::execute()
 {
   setErrorCondition(0);
   dataCheck();
-  if(getErrorCondition() < 0) { return; }
+  if(getErrorCondition() < 0)
+  {
+    return;
+  }
 
   notifyStatusMessage(getHumanLabel(), "Complete");
 }
@@ -234,7 +232,9 @@ AbstractFilter::Pointer SetOriginResolutionImageGeom::newFilterInstance(bool cop
 //
 // -----------------------------------------------------------------------------
 const QString SetOriginResolutionImageGeom::getCompiledLibraryName()
-{ return Core::CoreBaseName; }
+{
+  return Core::CoreBaseName;
+}
 
 // -----------------------------------------------------------------------------
 //
@@ -251,26 +251,30 @@ const QString SetOriginResolutionImageGeom::getFilterVersion()
 {
   QString version;
   QTextStream vStream(&version);
-  vStream <<  SIMPLib::Version::Major() << "." << SIMPLib::Version::Minor() << "." << SIMPLib::Version::Patch();
+  vStream << SIMPLib::Version::Major() << "." << SIMPLib::Version::Minor() << "." << SIMPLib::Version::Patch();
   return version;
 }
-
-
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
 const QString SetOriginResolutionImageGeom::getGroupName()
-{ return SIMPL::FilterGroups::CoreFilters; }
+{
+  return SIMPL::FilterGroups::CoreFilters;
+}
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
 const QString SetOriginResolutionImageGeom::getSubGroupName()
-{ return SIMPL::FilterSubGroups::SpatialFilters; }
+{
+  return SIMPL::FilterSubGroups::SpatialFilters;
+}
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
 const QString SetOriginResolutionImageGeom::getHumanLabel()
-{ return "Set Origin & Resolution (Image)"; }
+{
+  return "Set Origin & Resolution (Image)";
+}

@@ -33,7 +33,6 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-
 #include "ShapeOps.h"
 
 #include "SIMPLib/Math/SIMPLibMath.h"
@@ -45,7 +44,6 @@
 #include "SIMPLib/Geometry/ShapeOps/EllipsoidOps.h"
 #include "SIMPLib/Geometry/ShapeOps/SuperEllipsoidOps.h"
 
-
 static const float cube_root_of_one = powf(1.0f, 0.333333333f);
 
 // -----------------------------------------------------------------------------
@@ -53,7 +51,6 @@ static const float cube_root_of_one = powf(1.0f, 0.333333333f);
 // -----------------------------------------------------------------------------
 ShapeOps::ShapeOps()
 {
-
 }
 
 // -----------------------------------------------------------------------------
@@ -61,7 +58,6 @@ ShapeOps::ShapeOps()
 // -----------------------------------------------------------------------------
 ShapeOps::~ShapeOps()
 {
-
 }
 
 // -----------------------------------------------------------------------------
@@ -111,4 +107,3 @@ float ShapeOps::inside(float axis1comp, float axis2comp, float axis3comp)
 {
   return -1.0;
 }
-

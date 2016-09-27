@@ -35,16 +35,16 @@
 
 #include "SIMPLibPluginLoader.h"
 
-#if ! defined(_MSC_VER)
+#if !defined(_MSC_VER)
 #include <unistd.h>
 #endif
 
 // Qt Includes
 #include <QtCore/QCoreApplication>
-#include <QtCore/QtDebug>
+#include <QtCore/QDir>
 #include <QtCore/QPluginLoader>
 #include <QtCore/QStringList>
-#include <QtCore/QDir>
+#include <QtCore/QtDebug>
 
 #include "SIMPLib/Common/FilterManager.h"
 #include "SIMPLib/Plugin/ISIMPLibPlugin.h"
@@ -54,7 +54,8 @@
 //
 // -----------------------------------------------------------------------------
 SIMPLibPluginLoader::SIMPLibPluginLoader()
-{}
+{
+}
 
 // -----------------------------------------------------------------------------
 //
@@ -78,18 +79,18 @@ void SIMPLibPluginLoader::LoadPluginFilters(FilterManager* filterManager)
 
   QDir aPluginDir = QDir(qApp->applicationDirPath());
   qDebug() << "Loading DREAM3D Plugins....";
-  //qDebug() << "aPluginDir: " << aPluginDir.absolutePath() << "\n";
+  // qDebug() << "aPluginDir: " << aPluginDir.absolutePath() << "\n";
   QString thePath;
 
 #if defined(Q_OS_WIN)
-  if (aPluginDir.cd("plugins") )
+  if(aPluginDir.cd("plugins"))
   {
     thePath = aPluginDir.absolutePath();
     m_PluginDirs << thePath;
   }
 #elif defined(Q_OS_MAC)
   // Look to see if we are inside an .app package or inside the 'tools' directory
-  if (aPluginDir.dirName() == "MacOS")
+  if(aPluginDir.dirName() == "MacOS")
   {
     aPluginDir.cdUp();
     thePath = aPluginDir.absolutePath() + "/Plugins";
@@ -100,7 +101,7 @@ void SIMPLibPluginLoader::LoadPluginFilters(FilterManager* filterManager)
     // We need this because Apple (in their infinite wisdom) changed how the current working directory is set in OS X 10.9 and above. Thanks Apple.
     chdir(aPluginDir.absolutePath().toLatin1().constData());
   }
-  if (aPluginDir.dirName() == "bin")
+  if(aPluginDir.dirName() == "bin")
   {
     aPluginDir.cdUp();
     // thePath = aPluginDir.absolutePath() + "/Plugins";
@@ -114,7 +115,7 @@ void SIMPLibPluginLoader::LoadPluginFilters(FilterManager* filterManager)
   qDebug() << "  Adding Path " << thePath;
   m_PluginDirs << thePath;
 
-  // This is here for Xcode compatibility
+// This is here for Xcode compatibility
 #ifdef CMAKE_INTDIR
   aPluginDir.cdUp();
   thePath = aPluginDir.absolutePath() + "/Plugins/" + CMAKE_INTDIR;
@@ -123,7 +124,7 @@ void SIMPLibPluginLoader::LoadPluginFilters(FilterManager* filterManager)
 #else
   // We are on Linux - I think
   // Try the current location of where the application was launched from
-  if (aPluginDir.cd("Plugins"))
+  if(aPluginDir.cd("Plugins"))
   {
     thePath = aPluginDir.absolutePath();
     m_PluginDirs << thePath;
@@ -131,7 +132,7 @@ void SIMPLibPluginLoader::LoadPluginFilters(FilterManager* filterManager)
   // Now try moving up a directory which is what should happen when running from a
   // proper distribution of DREAM3D
   aPluginDir.cdUp();
-  if (aPluginDir.cd("plugins"))
+  if(aPluginDir.cd("plugins"))
   {
     thePath = aPluginDir.absolutePath();
     m_PluginDirs << thePath;
@@ -140,23 +141,23 @@ void SIMPLibPluginLoader::LoadPluginFilters(FilterManager* filterManager)
 
   QStringList pluginFilePaths;
 
-  foreach (QString pluginDirString, m_PluginDirs)
+  foreach(QString pluginDirString, m_PluginDirs)
   {
     qDebug() << "Plugin Directory being Searched: " << pluginDirString;
     aPluginDir = QDir(pluginDirString);
-    foreach (QString fileName, aPluginDir.entryList(QDir::Files))
+    foreach(QString fileName, aPluginDir.entryList(QDir::Files))
     {
-      //   qDebug() << "File: " << fileName() << "\n";
+//   qDebug() << "File: " << fileName() << "\n";
 #ifdef QT_DEBUG
-      if (fileName.endsWith("_debug.plugin", Qt::CaseSensitive))
+      if(fileName.endsWith("_debug.plugin", Qt::CaseSensitive))
 #else
-      if (fileName.endsWith( ".plugin", Qt::CaseSensitive) // We want ONLY Release plugins
-          && ! fileName.endsWith("_debug.plugin", Qt::CaseSensitive)) // so ignore these plugins
+      if(fileName.endsWith(".plugin", Qt::CaseSensitive)            // We want ONLY Release plugins
+         && !fileName.endsWith("_debug.plugin", Qt::CaseSensitive)) // so ignore these plugins
 #endif
       {
         pluginFilePaths << aPluginDir.absoluteFilePath(fileName);
-        //qWarning(aPluginDir.absoluteFilePath(fileName).toLatin1(), "%s");
-        //qDebug() << "Adding " << aPluginDir.absoluteFilePath(fileName)() << "\n";
+        // qWarning(aPluginDir.absoluteFilePath(fileName).toLatin1(), "%s");
+        // qDebug() << "Adding " << aPluginDir.absoluteFilePath(fileName)() << "\n";
       }
     }
   }
@@ -175,10 +176,10 @@ void SIMPLibPluginLoader::LoadPluginFilters(FilterManager* filterManager)
     QString fileName = fi.fileName();
     QObject* plugin = loader.instance();
     qDebug() << "    Pointer: " << plugin << "\n";
-    if (plugin && pluginFileNames.contains(fileName, Qt::CaseSensitive) == false)
+    if(plugin && pluginFileNames.contains(fileName, Qt::CaseSensitive) == false)
     {
       ISIMPLibPlugin* ipPlugin = qobject_cast<ISIMPLibPlugin*>(plugin);
-      if (ipPlugin)
+      if(ipPlugin)
       {
         loadedPlugins.push_back(ipPlugin);
         ipPlugin->registerFilters(filterManager);
@@ -196,4 +197,3 @@ void SIMPLibPluginLoader::LoadPluginFilters(FilterManager* filterManager)
     }
   }
 }
-

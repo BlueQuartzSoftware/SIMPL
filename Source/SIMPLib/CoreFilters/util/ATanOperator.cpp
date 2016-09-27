@@ -44,8 +44,8 @@
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-ATanOperator::ATanOperator() :
-  UnaryOperator()
+ATanOperator::ATanOperator()
+: UnaryOperator()
 {
   setNumberOfArguments(1);
 }
@@ -55,14 +55,12 @@ ATanOperator::ATanOperator() :
 // -----------------------------------------------------------------------------
 ATanOperator::~ATanOperator()
 {
-
 }
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void ATanOperator::calculate(AbstractFilter* filter, DataArrayPath calculatedArrayPath, QStack<ICalculatorArray::Pointer> &executionStack)
+void ATanOperator::calculate(AbstractFilter* filter, DataArrayPath calculatedArrayPath, QStack<ICalculatorArray::Pointer>& executionStack)
 {
   CREATE_NEW_ARRAY_ARCTRIG(filter, calculatedArrayPath, executionStack, atan)
 }
-

@@ -33,19 +33,16 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-
 #include "H5BoundaryStatsDataDelegate.h"
 
 #include "H5Support/QH5Lite.h"
 #include "H5Support/QH5Utilities.h"
-
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
 H5BoundaryStatsDataDelegate::H5BoundaryStatsDataDelegate()
 {
-
 }
 
 // -----------------------------------------------------------------------------
@@ -61,10 +58,10 @@ H5BoundaryStatsDataDelegate::~H5BoundaryStatsDataDelegate()
 int H5BoundaryStatsDataDelegate::readBoundaryStatsData(BoundaryStatsData* data, hid_t groupId)
 {
   int err = 0;
-  //Read the NumFeatures
+  // Read the NumFeatures
   err = readBoundaryArea(data, groupId);
 
-  //Read the PhaseFraction
+  // Read the PhaseFraction
   err = readPhaseFraction(data, groupId);
 
   // Read the Parent Phase
@@ -75,13 +72,12 @@ int H5BoundaryStatsDataDelegate::readBoundaryStatsData(BoundaryStatsData* data, 
   return err;
 }
 
-
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
 int H5BoundaryStatsDataDelegate::writeBoundaryStatsData(BoundaryStatsData* data, hid_t groupId)
 {
-  if (nullptr == data)
+  if(nullptr == data)
   {
     return -1;
   }
@@ -89,27 +85,27 @@ int H5BoundaryStatsDataDelegate::writeBoundaryStatsData(BoundaryStatsData* data,
 
   // Write the Boundary Area
   err = writeBoundaryArea(data, groupId);
-  if (err < 0)
+  if(err < 0)
   {
     return err;
   }
 
   // Write the Phase Fraction
   err = writePhaseFraction(data, groupId);
-  if (err < 0)
+  if(err < 0)
   {
     return err;
   }
 
   // Write the Parent Phase
   err = writeParentPhase(data, groupId);
-  if (err < 0)
+  if(err < 0)
   {
     return err;
   }
 
   err = QH5Lite::writeStringDataset(groupId, SIMPL::StringConstants::Name, data->getName());
-  if (err < 0)
+  if(err < 0)
   {
     return err;
   }
@@ -160,7 +156,7 @@ int H5BoundaryStatsDataDelegate::readPhaseFraction(BoundaryStatsData* data, hid_
 // -----------------------------------------------------------------------------
 int H5BoundaryStatsDataDelegate::writeParentPhase(BoundaryStatsData* data, hid_t pid)
 {
-  unsigned int var = static_cast<unsigned int>( data->getParentPhase() );
+  unsigned int var = static_cast<unsigned int>(data->getParentPhase());
   return QH5Lite::writeScalarDataset(pid, SIMPL::StringConstants::ParentPhase, var);
 }
 
@@ -171,6 +167,6 @@ int H5BoundaryStatsDataDelegate::readParentPhase(BoundaryStatsData* data, hid_t 
 {
   unsigned int parentPhase = static_cast<unsigned int>(0.0f);
   int err = QH5Lite::readScalarDataset(pid, SIMPL::StringConstants::ParentPhase, parentPhase);
-  data->setParentPhase( static_cast<float>(parentPhase) );
+  data->setParentPhase(static_cast<float>(parentPhase));
   return err;
 }

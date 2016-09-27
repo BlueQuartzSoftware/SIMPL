@@ -38,18 +38,18 @@
 #include <QtCore/QThread>
 #include <QtCore/QTimer>
 
-#include "SIMPLib/SIMPLib.h"
-#include "SIMPLib/SIMPLibVersion.h"
-#include "SIMPLib/Math/SIMPLibMath.h"
 #include "SIMPLib/Common/Constants.h"
-#include "SIMPLib/Common/FilterManager.h"
 #include "SIMPLib/Common/FilterFactory.hpp"
+#include "SIMPLib/Common/FilterManager.h"
 #include "SIMPLib/Common/FilterPipeline.h"
 #include "SIMPLib/Common/TemplateHelpers.hpp"
+#include "SIMPLib/Math/SIMPLibMath.h"
 #include "SIMPLib/Plugin/ISIMPLibPlugin.h"
 #include "SIMPLib/Plugin/SIMPLibPluginLoader.h"
-#include "SIMPLib/Utilities/UnitTestSupport.hpp"
+#include "SIMPLib/SIMPLib.h"
+#include "SIMPLib/SIMPLibVersion.h"
 #include "SIMPLib/Utilities/QMetaObjectUtilities.h"
+#include "SIMPLib/Utilities/UnitTestSupport.hpp"
 
 #include "SIMPLib/CoreFilters/Breakpoint.h"
 #include "SIMPLib/TestFilters/ChangeGlobalValue.h"
@@ -63,13 +63,14 @@ class PipelinePauseTest : public QObject
   Q_OBJECT
 
 public:
-  PipelinePauseTest() :
-    m_WorkerThread(nullptr)
+  PipelinePauseTest()
+  : m_WorkerThread(nullptr)
   {
-
   }
 
-  virtual ~PipelinePauseTest() {}
+  virtual ~PipelinePauseTest()
+  {
+  }
   SIMPL_TYPE_MACRO(PipelinePauseTest)
 
   // -----------------------------------------------------------------------------
@@ -106,10 +107,10 @@ public:
   // -----------------------------------------------------------------------------
   void PauseTest()
   {
-    if (m_WorkerThread != nullptr)
+    if(m_WorkerThread != nullptr)
     {
       m_WorkerThread->wait(); // Wait until the thread is complete
-      if (m_WorkerThread->isFinished() == true)
+      if(m_WorkerThread->isFinished() == true)
       {
         delete m_WorkerThread;
         m_WorkerThread = nullptr;
@@ -120,24 +121,19 @@ public:
     m_Pipeline = createPipeline();
 
     // When the thread starts its event loop, start the PipelineBuilder going
-    connect(m_WorkerThread, SIGNAL(started()),
-      m_Pipeline.get(), SLOT(run()));
+    connect(m_WorkerThread, SIGNAL(started()), m_Pipeline.get(), SLOT(run()));
 
     // When the pipeline pauses then tell this object that it has paused
-    connect(m_Pipeline.get(), SIGNAL(pipelineHasPaused()),
-      this, SLOT(PipelinePaused()));
+    connect(m_Pipeline.get(), SIGNAL(pipelineHasPaused()), this, SLOT(PipelinePaused()));
 
     // When the pipeline pauses then tell this object that it has paused
-    connect(this, SIGNAL(pipelineIsResuming()),
-      m_Pipeline.get(), SIGNAL(pipelineIsResuming()), Qt::DirectConnection);
+    connect(this, SIGNAL(pipelineIsResuming()), m_Pipeline.get(), SIGNAL(pipelineIsResuming()), Qt::DirectConnection);
 
     // When the pipeline ends then tell the QThread to stop its event loop
-    connect(m_Pipeline.get(), SIGNAL(pipelineFinished()),
-      m_WorkerThread, SLOT(quit()));
+    connect(m_Pipeline.get(), SIGNAL(pipelineFinished()), m_WorkerThread, SLOT(quit()));
 
     // When the QThread finishes, tell this object that it has finished.
-    connect(m_WorkerThread, SIGNAL(finished()),
-      this, SLOT(PipelineDidFinish()));
+    connect(m_WorkerThread, SIGNAL(finished()), this, SLOT(PipelineDidFinish()));
 
     m_Pipeline->moveToThread(m_WorkerThread);
 
@@ -182,11 +178,11 @@ signals:
   void testFinished();
 
 private:
-  QThread*                                              m_WorkerThread;
-  FilterPipeline::Pointer                               m_Pipeline;
+  QThread* m_WorkerThread;
+  FilterPipeline::Pointer m_Pipeline;
 
   PipelinePauseTest(const PipelinePauseTest&); // Copy Constructor Not Implemented
-  void operator=(const PipelinePauseTest&); // Operator '=' Not Implemented
+  void operator=(const PipelinePauseTest&);    // Operator '=' Not Implemented
 };
 
 #include "moc_PipelinePauseTest.cpp"
@@ -221,4 +217,3 @@ int main(int argc, char** argv)
 
   return err;
 }
-

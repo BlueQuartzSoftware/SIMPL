@@ -44,8 +44,8 @@
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-RootOperator::RootOperator() :
-  UnaryOperator()
+RootOperator::RootOperator()
+: UnaryOperator()
 {
   setNumberOfArguments(2);
 }
@@ -55,14 +55,12 @@ RootOperator::RootOperator() :
 // -----------------------------------------------------------------------------
 RootOperator::~RootOperator()
 {
-
 }
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void RootOperator::calculate(AbstractFilter* filter, DataArrayPath calculatedArrayPath, QStack<ICalculatorArray::Pointer> &executionStack)
+void RootOperator::calculate(AbstractFilter* filter, DataArrayPath calculatedArrayPath, QStack<ICalculatorArray::Pointer>& executionStack)
 {
   CREATE_NEW_ARRAY_TWO_ARGUMENTS(filter, calculatedArrayPath, executionStack, root)
 }
-

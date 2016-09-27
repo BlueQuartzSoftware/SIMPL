@@ -38,21 +38,23 @@
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-FileListInfoFilterParameter::FileListInfoFilterParameter() :
-  FilterParameter()
-{}
+FileListInfoFilterParameter::FileListInfoFilterParameter()
+: FilterParameter()
+{
+}
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
 FileListInfoFilterParameter::~FileListInfoFilterParameter()
-{}
+{
+}
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-FileListInfoFilterParameter::Pointer FileListInfoFilterParameter::New(const QString& humanLabel, const QString& propertyName,
-    const FileListInfo_t& defaultValue, FilterParameter::Category category, SetterCallbackType setterCallback, GetterCallbackType getterCallback)
+FileListInfoFilterParameter::Pointer FileListInfoFilterParameter::New(const QString& humanLabel, const QString& propertyName, const FileListInfo_t& defaultValue, FilterParameter::Category category,
+                                                                      SetterCallbackType setterCallback, GetterCallbackType getterCallback)
 {
 
   FileListInfoFilterParameter::Pointer ptr = FileListInfoFilterParameter::New();
@@ -79,10 +81,10 @@ QString FileListInfoFilterParameter::getWidgetType()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void FileListInfoFilterParameter::readJson(const QJsonObject &json)
+void FileListInfoFilterParameter::readJson(const QJsonObject& json)
 {
   QJsonValue jsonValue = json[getPropertyName()];
-  if(!jsonValue.isUndefined() )
+  if(!jsonValue.isUndefined())
   {
     QJsonObject jsonObj = jsonValue.toObject();
     FileListInfo_t fileListInfo;
@@ -94,11 +96,10 @@ void FileListInfoFilterParameter::readJson(const QJsonObject &json)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void FileListInfoFilterParameter::writeJson(QJsonObject &json)
+void FileListInfoFilterParameter::writeJson(QJsonObject& json)
 {
   FileListInfo_t fileListInfo = m_GetterCallback();
   QJsonObject jsonObj;
   fileListInfo.writeJson(jsonObj);
   json[getPropertyName()] = jsonObj;
 }
-

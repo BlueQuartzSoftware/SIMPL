@@ -33,30 +33,26 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-
-
 #include "CreateAttributeMatrix.h"
 
 #include "SIMPLib/Common/Constants.h"
-#include "SIMPLib/SIMPLibVersion.h"
 #include "SIMPLib/FilterParameters/AbstractFilterParametersReader.h"
 #include "SIMPLib/FilterParameters/AttributeMatrixCreationFilterParameter.h"
 #include "SIMPLib/FilterParameters/ChoiceFilterParameter.h"
 #include "SIMPLib/FilterParameters/DynamicTableFilterParameter.h"
+#include "SIMPLib/SIMPLibVersion.h"
 
 // Include the MOC generated file for this class
 #include "moc_CreateAttributeMatrix.cpp"
 
-
-
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-CreateAttributeMatrix::CreateAttributeMatrix() :
-  AbstractFilter(),
-  m_CreatedAttributeMatrix("", "AttributeMatrix", ""),
-  m_AttributeMatrixType(SIMPL::AttributeMatrixType::Generic),
-  m_TupleDimensions()
+CreateAttributeMatrix::CreateAttributeMatrix()
+: AbstractFilter()
+, m_CreatedAttributeMatrix("", "AttributeMatrix", "")
+, m_AttributeMatrixType(SIMPL::AttributeMatrixType::Generic)
+, m_TupleDimensions()
 {
   setupFilterParameters();
 }
@@ -123,7 +119,6 @@ void CreateAttributeMatrix::readFilterParameters(AbstractFilterParametersReader*
 // -----------------------------------------------------------------------------
 void CreateAttributeMatrix::initialize()
 {
-
 }
 
 // -----------------------------------------------------------------------------
@@ -134,10 +129,13 @@ void CreateAttributeMatrix::dataCheck()
   setErrorCondition(0);
 
   DataContainer::Pointer m = getDataContainerArray()->getPrereqDataContainer<AbstractFilter>(this, getCreatedAttributeMatrix().getDataContainerName());
-  if(getErrorCondition() < 0) { return; }
+  if(getErrorCondition() < 0)
+  {
+    return;
+  }
 
   DynamicTableData dtd = getTupleDimensions();
-  std::vector<std::vector<double> > rows = dtd.getTableData();
+  std::vector<std::vector<double>> rows = dtd.getTableData();
 
   if(rows.size() != 1)
   {
@@ -155,8 +153,10 @@ void CreateAttributeMatrix::dataCheck()
   }
 
   m->createNonPrereqAttributeMatrix<AbstractFilter>(this, getCreatedAttributeMatrix().getAttributeMatrixName(), tDims, getAttributeMatrixType());
-  if(getErrorCondition() < 0) { return; }
-
+  if(getErrorCondition() < 0)
+  {
+    return;
+  }
 }
 
 // -----------------------------------------------------------------------------
@@ -165,12 +165,12 @@ void CreateAttributeMatrix::dataCheck()
 void CreateAttributeMatrix::preflight()
 {
   // These are the REQUIRED lines of CODE to make sure the filter behaves correctly
-  setInPreflight(true); // Set the fact that we are preflighting.
-  emit preflightAboutToExecute(); // Emit this signal so that other widgets can do one file update
+  setInPreflight(true);              // Set the fact that we are preflighting.
+  emit preflightAboutToExecute();    // Emit this signal so that other widgets can do one file update
   emit updateFilterParameters(this); // Emit this signal to have the widgets push their values down to the filter
-  dataCheck(); // Run our DataCheck to make sure everthing is setup correctly
-  emit preflightExecuted(); // We are done preflighting this filter
-  setInPreflight(false); // Inform the system this filter is NOT in preflight mode anymore.
+  dataCheck();                       // Run our DataCheck to make sure everthing is setup correctly
+  emit preflightExecuted();          // We are done preflighting this filter
+  setInPreflight(false);             // Inform the system this filter is NOT in preflight mode anymore.
 }
 
 // -----------------------------------------------------------------------------
@@ -180,9 +180,15 @@ void CreateAttributeMatrix::execute()
 {
   setErrorCondition(0);
   dataCheck();
-  if(getErrorCondition() < 0) { return; }
+  if(getErrorCondition() < 0)
+  {
+    return;
+  }
 
-  if (getCancel() == true) { return; }
+  if(getCancel() == true)
+  {
+    return;
+  }
 
   notifyStatusMessage(getHumanLabel(), "Complete");
 }
@@ -204,7 +210,9 @@ AbstractFilter::Pointer CreateAttributeMatrix::newFilterInstance(bool copyFilter
 //
 // -----------------------------------------------------------------------------
 const QString CreateAttributeMatrix::getCompiledLibraryName()
-{ return Core::CoreBaseName; }
+{
+  return Core::CoreBaseName;
+}
 
 // -----------------------------------------------------------------------------
 //
@@ -221,27 +229,30 @@ const QString CreateAttributeMatrix::getFilterVersion()
 {
   QString version;
   QTextStream vStream(&version);
-  vStream <<  SIMPLib::Version::Major() << "." << SIMPLib::Version::Minor() << "." << SIMPLib::Version::Patch();
+  vStream << SIMPLib::Version::Major() << "." << SIMPLib::Version::Minor() << "." << SIMPLib::Version::Patch();
   return version;
 }
-
-
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
 const QString CreateAttributeMatrix::getGroupName()
-{ return SIMPL::FilterGroups::CoreFilters; }
+{
+  return SIMPL::FilterGroups::CoreFilters;
+}
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
 const QString CreateAttributeMatrix::getHumanLabel()
-{ return "Create Attribute Matrix"; }
+{
+  return "Create Attribute Matrix";
+}
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
 const QString CreateAttributeMatrix::getSubGroupName()
-{ return SIMPL::FilterSubGroups::GenerationFilters; }
-
+{
+  return SIMPL::FilterSubGroups::GenerationFilters;
+}

@@ -35,11 +35,11 @@
 
 #include "InputFileWidget.h"
 
-#include <QtCore/QMetaProperty>
 #include <QtCore/QDir>
+#include <QtCore/QMetaProperty>
 
-#include <QtWidgets/QLabel>
 #include <QtWidgets/QFileDialog>
+#include <QtWidgets/QLabel>
 
 #include "SIMPLib/FilterParameters/InputFileFilterParameter.h"
 
@@ -58,8 +58,8 @@ QString InputFileWidget::m_OpenDialogLastDirectory = "";
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-InputFileWidget::InputFileWidget(FilterParameter* parameter, AbstractFilter* filter, QWidget* parent) :
-  FilterParameterWidget(parameter, filter, parent)
+InputFileWidget::InputFileWidget(FilterParameter* parameter, AbstractFilter* filter, QWidget* parent)
+: FilterParameterWidget(parameter, filter, parent)
 {
   m_FilterParameter = dynamic_cast<InputFileFilterParameter*>(parameter);
   Q_ASSERT_X(m_FilterParameter != nullptr, "nullptr Pointer", "InputFileWidget can ONLY be used with a InputFileFilterParameter object");
@@ -81,7 +81,6 @@ InputFileWidget::InputFileWidget(FilterParameter* parameter, AbstractFilter* fil
       m_OpenDialogLastDirectory = QDir::homePath();
     }
   }
-
 }
 
 // -----------------------------------------------------------------------------
@@ -114,16 +113,13 @@ void InputFileWidget::setupGui()
 {
 
   // Catch when the filter is about to execute the preflight
-  connect(getFilter(), SIGNAL(preflightAboutToExecute()),
-          this, SLOT(beforePreflight()));
+  connect(getFilter(), SIGNAL(preflightAboutToExecute()), this, SLOT(beforePreflight()));
 
   // Catch when the filter is finished running the preflight
-  connect(getFilter(), SIGNAL(preflightExecuted()),
-          this, SLOT(afterPreflight()));
+  connect(getFilter(), SIGNAL(preflightExecuted()), this, SLOT(afterPreflight()));
 
   // Catch when the filter wants its values updated
-  connect(getFilter(), SIGNAL(updateFilterParameters(AbstractFilter*)),
-          this, SLOT(filterNeedsInputParameters(AbstractFilter*)));
+  connect(getFilter(), SIGNAL(updateFilterParameters(AbstractFilter*)), this, SLOT(filterNeedsInputParameters(AbstractFilter*)));
 
   // Put a file path completer to help out the user to select a valid file
   //  QtSFileCompleter* com = new QtSFileCompleter(this, false);
@@ -136,10 +132,10 @@ void InputFileWidget::setupGui()
   inputFileFont.setItalic(true);
   inputFileFont.setWeight(75);
   inputFileFont.setStyleStrategy(QFont::PreferAntialias);
-  // inputFileFont.setFamily(QString::fromUtf8("Times New Roman"));
-#if defined (Q_OS_MAC)
+// inputFileFont.setFamily(QString::fromUtf8("Times New Roman"));
+#if defined(Q_OS_MAC)
   inputFileFont.setPointSize(12);
-#elif defined (Q_OS_WIN)
+#elif defined(Q_OS_WIN)
   inputFileFont.setPointSize(9);
 #else
   inputFileFont.setPointSize(10);
@@ -148,15 +144,13 @@ void InputFileWidget::setupGui()
   value->setFont(inputFileFont);
 
   // See if we can get the default value from the filter instance
-  if (getFilterParameter() != nullptr)
+  if(getFilterParameter() != nullptr)
   {
-    selectBtn->setText(getFilterParameter()->getHumanLabel()  + " ...");
+    selectBtn->setText(getFilterParameter()->getHumanLabel() + " ...");
 
     QString currentPath = getFilter()->property(PROPERTY_NAME_AS_CHAR).toString();
     value->setText(currentPath);
   }
-
-
 }
 
 // -----------------------------------------------------------------------------
@@ -165,9 +159,9 @@ void InputFileWidget::setupGui()
 bool InputFileWidget::verifyPathExists(QString filePath, QtSFSDropLabel* lineEdit)
 {
   QFileInfo fileinfo(filePath);
-  if (false == fileinfo.exists())
+  if(false == fileinfo.exists())
   {
-    //lineEdit->setStyleSheet("border: 1px solid red;");
+    // lineEdit->setStyleSheet("border: 1px solid red;");
     lineEdit->changeStyleSheet(QtSFSDropLabel::FS_DOESNOTEXIST_STYLE);
   }
   else
@@ -208,7 +202,7 @@ void InputFileWidget::on_value_fileDropped(const QString& text)
 {
   setOpenDialogLastDirectory(text);
   // Set/Remove the red outline if the file does exist
-  if (verifyPathExists(text, value) == true)
+  if(verifyPathExists(text, value) == true)
   {
     emit parametersChanged(); // This should force the preflight to run because we are emitting a signal
   }
@@ -220,11 +214,11 @@ void InputFileWidget::on_value_fileDropped(const QString& text)
 void InputFileWidget::on_selectBtn_clicked()
 {
 
-  //QString currentPath = getFilter()->property(PROPERTY_NAME_AS_CHAR).toString();
+  // QString currentPath = getFilter()->property(PROPERTY_NAME_AS_CHAR).toString();
   QString Ftype = m_FilterParameter->getFileType();
   QString ext = m_FilterParameter->getFileExtension();
   QString s = Ftype + QString(" Files (") + ext + QString(");;All Files(*.*)");
-  //QString defaultName = m_OpenDialogLastDirectory + QDir::separator() + "Untitled";
+  // QString defaultName = m_OpenDialogLastDirectory + QDir::separator() + "Untitled";
   QString file = QFileDialog::getOpenFileName(this, tr("Select Input File"), m_OpenDialogLastDirectory, s);
 
   if(true == file.isEmpty())
@@ -246,15 +240,15 @@ void InputFileWidget::on_selectBtn_clicked()
 void InputFileWidget::filterNeedsInputParameters(AbstractFilter* filter)
 {
   QString text = value->text();
-  if (verifyPathExists(text, value) == true ) {}
+  if(verifyPathExists(text, value) == true)
+  {
+  }
 
   bool ok = filter->setProperty(PROPERTY_NAME_AS_CHAR, text);
   if(false == ok)
   {
     FilterParameterWidgetsDialogs::ShowCouldNotSetFilterParameter(getFilter(), getFilterParameter());
   }
-
-
 }
 
 // -----------------------------------------------------------------------------
@@ -262,7 +256,6 @@ void InputFileWidget::filterNeedsInputParameters(AbstractFilter* filter)
 // -----------------------------------------------------------------------------
 void InputFileWidget::beforePreflight()
 {
-
 }
 
 // -----------------------------------------------------------------------------
@@ -270,5 +263,4 @@ void InputFileWidget::beforePreflight()
 // -----------------------------------------------------------------------------
 void InputFileWidget::afterPreflight()
 {
-
 }

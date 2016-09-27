@@ -42,7 +42,6 @@
 
 #include "SIMPLib/HDF5/H5PrecipitateStatsDataDelegate.h"
 
-
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
@@ -56,7 +55,6 @@ PrecipitateStatsData::PrecipitateStatsData()
 // -----------------------------------------------------------------------------
 PrecipitateStatsData::~PrecipitateStatsData()
 {
-
 }
 
 // -----------------------------------------------------------------------------
@@ -75,7 +73,6 @@ unsigned int PrecipitateStatsData::getPhaseType()
   return SIMPL::PhaseType::PrecipitatePhase;
 }
 
-
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
@@ -85,7 +82,7 @@ FloatArrayType::Pointer PrecipitateStatsData::generateBinNumbers()
   getFeatureDiameterInfo(featureDiameterInfo);
   QVector<float> bins;
   float d = featureDiameterInfo[2];
-  while (d <= featureDiameterInfo[1])
+  while(d <= featureDiameterInfo[1])
   {
     //  qDebug() << d << "\n";
     bins.push_back(d);
@@ -94,12 +91,11 @@ FloatArrayType::Pointer PrecipitateStatsData::generateBinNumbers()
   if(bins.size() > 0)
   {
     // Copy this into the DataArray<float>
-    m_BinNumbers = FloatArrayType::CreateArray(bins.size(), SIMPL::StringConstants::BinNumber );
+    m_BinNumbers = FloatArrayType::CreateArray(bins.size(), SIMPL::StringConstants::BinNumber);
     ::memcpy(m_BinNumbers->getVoidPointer(0), &(bins.front()), bins.size() * sizeof(float));
   }
   return m_BinNumbers;
 }
-
 
 // -----------------------------------------------------------------------------
 //
@@ -112,29 +108,34 @@ StatsData::Pointer PrecipitateStatsData::deepCopy()
   ptr->setPrecipBoundaryFraction(getPrecipBoundaryFraction());
   ptr->setName(getName());
 
-  float diamInfo[3] = { 0.0f, 0.0f, 0.0f};
+  float diamInfo[3] = {0.0f, 0.0f, 0.0f};
   getFeatureDiameterInfo(diamInfo);
   ptr->setFeatureDiameterInfo(diamInfo);
 
   SD_DEEP_COPY_VECTOR(FeatureSizeDistribution);
 
-  if (nullptr != m_RadialDistFunction) {
+  if(nullptr != m_RadialDistFunction)
+  {
     ptr->setRadialDistFunction(getRadialDistFunction()->deepCopy());
   }
 
-  if (nullptr != m_BinNumbers) {
+  if(nullptr != m_BinNumbers)
+  {
     ptr->setBinNumbers(std::dynamic_pointer_cast<FloatArrayType>(getBinNumbers()->deepCopy()));
   }
 
-  if (nullptr != m_ODF) {
+  if(nullptr != m_ODF)
+  {
     ptr->setODF(std::dynamic_pointer_cast<FloatArrayType>(getODF()->deepCopy()));
   }
 
-  if (nullptr != m_MisorientationBins) {
+  if(nullptr != m_MisorientationBins)
+  {
     ptr->setMisorientationBins(std::dynamic_pointer_cast<FloatArrayType>(getMisorientationBins()->deepCopy()));
   }
 
-  if (nullptr != m_AxisOrientation) {
+  if(nullptr != m_AxisOrientation)
+  {
     ptr->setAxisOrientation(std::dynamic_pointer_cast<FloatArrayType>(getAxisOrientation()->deepCopy()));
   }
 
@@ -149,10 +150,10 @@ StatsData::Pointer PrecipitateStatsData::deepCopy()
   ptr->setOmegas_DistType(getOmegas_DistType());
   SD_DEEP_COPY_VECTOR(FeatureSize_Omegas)
 
-  //Miso Bins
+  // Miso Bins
   SD_DEEP_COPY_VECTOR(MDF_Weights)
 
-  //ODF
+  // ODF
   SD_DEEP_COPY_VECTOR(ODF_Weights)
 
   // Axis ODF
@@ -167,7 +168,7 @@ StatsData::Pointer PrecipitateStatsData::deepCopy()
 void PrecipitateStatsData::initialize()
 {
   m_FeatureSize_DistType = SIMPL::DistributionType::LogNormal;
-//  m_RadialDistFunctionType = SIMPL::DistributionType::UnknownDistributionType;
+  //  m_RadialDistFunctionType = SIMPL::DistributionType::UnknownDistributionType;
   m_BOverA_DistType = SIMPL::DistributionType::Beta;
   m_COverA_DistType = SIMPL::DistributionType::Beta;
   m_Clustering_DistType = SIMPL::DistributionType::LogNormal;
@@ -176,7 +177,6 @@ void PrecipitateStatsData::initialize()
   m_FeatureDiameterInfo[0] = 0.1f; // Bin Step Size
   m_FeatureDiameterInfo[1] = 1.0f; // MaxFeatureDiameter
   m_FeatureDiameterInfo[2] = 0.1f; // MinFeatureDiameter
-
 }
 
 // -----------------------------------------------------------------------------
@@ -190,7 +190,6 @@ int PrecipitateStatsData::writeHDF5Data(hid_t groupId)
   return err;
 }
 
-
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
@@ -202,11 +201,10 @@ int PrecipitateStatsData::readHDF5Data(hid_t groupId)
   return err;
 }
 
-
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void PrecipitateStatsData::writeJson(QJsonObject &json)
+void PrecipitateStatsData::writeJson(QJsonObject& json)
 {
   // Write the name of the phase
   json.insert(SIMPL::StringConstants::Name, getName());
@@ -222,7 +220,7 @@ void PrecipitateStatsData::writeJson(QJsonObject &json)
   // Write the Feature Diameter Info
   float diamInfo[3];
   getFeatureDiameterInfo(diamInfo);
-  QJsonArray diamInfoArray = { diamInfo[0], diamInfo[1], diamInfo[2] };
+  QJsonArray diamInfoArray = {diamInfo[0], diamInfo[1], diamInfo[2]};
   json.insert(SIMPL::StringConstants::Feature_Diameter_Info, diamInfoArray);
 
   // Write the Bin Numbers
@@ -232,14 +230,13 @@ void PrecipitateStatsData::writeJson(QJsonObject &json)
   }
   json.insert(SIMPL::StringConstants::BinNumber, generateJsonArrayFromDataArray<float>(getBinNumbers()));
   json.insert(SIMPL::StringConstants::BinCount, static_cast<double>(getNumberOfBins()));
-  //json.insert(SIMPL::StringConstants::BinStepSize, static_cast<double>(getBinStepSize()));
+  // json.insert(SIMPL::StringConstants::BinStepSize, static_cast<double>(getBinStepSize()));
 
   // Write the Feature Size Distribution
   QJsonObject avgSizeDist;
   for(size_t i = 0; i < m_FeatureSizeDistribution.size(); i++)
   {
-    avgSizeDist.insert(m_FeatureSizeDistribution[i]->getName(),
-                        m_FeatureSizeDistribution[i]->getValue(0));
+    avgSizeDist.insert(m_FeatureSizeDistribution[i]->getName(), m_FeatureSizeDistribution[i]->getValue(0));
   }
   json.insert(SIMPL::StringConstants::Feature_Size_Distribution, avgSizeDist);
 
@@ -266,14 +263,12 @@ void PrecipitateStatsData::writeJson(QJsonObject &json)
 
   // Write the Axis ODF Weights
   writeJsonDistributionArrays(json, getAxisODF_Weights(), SIMPL::StringConstants::AxisODFWeights, SIMPL::DistributionType::UnknownDistributionType);
-
 }
-
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void PrecipitateStatsData::readJson(const QJsonObject &json)
+void PrecipitateStatsData::readJson(const QJsonObject& json)
 {
 
   // Read the boundary area
@@ -303,16 +298,16 @@ void PrecipitateStatsData::readJson(const QJsonObject &json)
   }
 
   // Read the Feature Diameter Info
-  float fVec3[3] = { 0.0f, 0.0f, 0.0f};
-  if (ParseFloat3Vec(json, SIMPL::StringConstants::Feature_Diameter_Info, fVec3, 0.0) == -1)
+  float fVec3[3] = {0.0f, 0.0f, 0.0f};
+  if(ParseFloat3Vec(json, SIMPL::StringConstants::Feature_Diameter_Info, fVec3, 0.0) == -1)
   {
-  // Throw warning
+    // Throw warning
   }
   setFeatureDiameterInfo(fVec3);
 
   // Read the Feature Size Distribution
   jsonValue = json[SIMPL::StringConstants::Feature_Size_Distribution];
-  if (!jsonValue.isUndefined() && jsonValue.isObject())
+  if(!jsonValue.isUndefined() && jsonValue.isObject())
   {
     QJsonObject avgSizeDist = jsonValue.toObject();
     QStringList keys = avgSizeDist.keys();
@@ -334,14 +329,13 @@ void PrecipitateStatsData::readJson(const QJsonObject &json)
   jsonValue = json[SIMPL::StringConstants::BinNumber];
   QJsonArray jArray = jsonValue.toArray();
   FloatArrayType::Pointer binNumbers = FloatArrayType::CreateArray(jArray.count(), SIMPL::StringConstants::BinNumber, true);
-  for (int i = 0; i < jArray.count(); i++)
+  for(int i = 0; i < jArray.count(); i++)
   {
     binNumbers->setValue(i, jArray[i].toDouble());
   }
   setBinNumbers(binNumbers);
-//  jsonValue = json[SIMPL::StringConstants::BinStepSize];
-//  if(!jsonValue.isUndefined() && jsonValue.isDouble()) { setBinStepSize(jsonValue.toInt(0)); }
-
+  //  jsonValue = json[SIMPL::StringConstants::BinStepSize];
+  //  if(!jsonValue.isUndefined() && jsonValue.isDouble()) { setBinStepSize(jsonValue.toInt(0)); }
 
   // Read the B Over A Distribution
   int disType = SIMPL::DistributionType::UnknownDistributionType;
@@ -349,7 +343,7 @@ void PrecipitateStatsData::readJson(const QJsonObject &json)
   setBOverA_DistType(disType);
   setFeatureSize_BOverA(arrays);
 
-    // Read the C Over A
+  // Read the C Over A
   disType = SIMPL::DistributionType::UnknownDistributionType;
   arrays = ReadJsonDistributionArrays(json, SIMPL::StringConstants::Feature_SizeVCoverA_Distributions, disType);
   setCOverA_DistType(disType);
@@ -372,8 +366,4 @@ void PrecipitateStatsData::readJson(const QJsonObject &json)
   // Read the Axis ODF
   arrays = ReadJsonVectorOfFloatsArrays(json, SIMPL::StringConstants::AxisODFWeights);
   setAxisODF_Weights(arrays);
-
-
 }
-
-

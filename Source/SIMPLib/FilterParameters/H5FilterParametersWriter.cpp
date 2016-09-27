@@ -39,21 +39,19 @@
 #include <QtCore/QFile>
 #include <QtCore/QJsonDocument>
 
-#include "H5Support/QH5Utilities.h"
 #include "H5Support/QH5Lite.h"
+#include "H5Support/QH5Utilities.h"
 
-#include "SIMPLib/SIMPLibVersion.h"
+#include "SIMPLib/Common/Constants.h"
 #include "SIMPLib/FilterParameters/H5FilterParametersConstants.h"
 #include "SIMPLib/FilterParameters/JsonFilterParametersWriter.h"
-#include "SIMPLib/Common/Constants.h"
-
+#include "SIMPLib/SIMPLibVersion.h"
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
 H5FilterParametersWriter::H5FilterParametersWriter()
 {
-
 }
 
 // -----------------------------------------------------------------------------
@@ -76,9 +74,9 @@ hid_t H5FilterParametersWriter::getCurrentGroupId() const
 // -----------------------------------------------------------------------------
 int H5FilterParametersWriter::writePipelineToFile(FilterPipeline::Pointer pipeline, QString filePath, QString pipelineName, IObserver* obs)
 {
-  if (nullptr == pipeline.get())
+  if(nullptr == pipeline.get())
   {
-    if (nullptr != obs)
+    if(nullptr != obs)
     {
       PipelineMessage pm(H5FilterParametersWriter::ClassName(), "FilterPipeline Object was nullptr for writing", -1, PipelineMessage::Error);
       obs->processPipelineMessage(pm);
@@ -90,7 +88,7 @@ int H5FilterParametersWriter::writePipelineToFile(FilterPipeline::Pointer pipeli
   hid_t fileId = -1;
 
   QFileInfo fi(filePath);
-  if (fi.exists())
+  if(fi.exists())
   {
     fileId = QH5Utilities::openFile(filePath);
   }
@@ -99,9 +97,9 @@ int H5FilterParametersWriter::writePipelineToFile(FilterPipeline::Pointer pipeli
     fileId = QH5Utilities::createFile(filePath);
   }
 
-  if (fileId < 0)
+  if(fileId < 0)
   {
-    if (nullptr != obs)
+    if(nullptr != obs)
     {
       PipelineMessage pm(H5FilterParametersWriter::ClassName(), "Output .dream3d file could not be created.", -1, PipelineMessage::Error);
       obs->processPipelineMessage(pm);
@@ -116,7 +114,7 @@ int H5FilterParametersWriter::writePipelineToFile(FilterPipeline::Pointer pipeli
 
   // Write our File Version string to the Root "/" group
   QH5Lite::writeStringAttribute(fileId, "/", SIMPL::HDF5::FileVersionName, SIMPL::HDF5::FileVersion);
-  QH5Lite::writeStringAttribute(fileId, "/", SIMPL::HDF5::DREAM3DVersion, SIMPLib::Version::Complete() );
+  QH5Lite::writeStringAttribute(fileId, "/", SIMPL::HDF5::DREAM3DVersion, SIMPLib::Version::Complete());
 
   hid_t pipelineGroupId = QH5Utilities::createGroup(fileId, SIMPL::StringConstants::PipelineGroupName);
   scopedFileSentinel.addGroupId(&pipelineGroupId);
@@ -172,7 +170,7 @@ int H5FilterParametersWriter::writeValue(const QString name, const QVector<QStri
 {
   int vectorSize = value.size();
   int err = QH5Lite::writeScalarDataset(m_CurrentGroupId, name, vectorSize);
-  for (int i = 0; i < vectorSize; i++)
+  for(int i = 0; i < vectorSize; i++)
   {
     QString ss = QString::number(i, 10);
     QString repl = value[i];
@@ -191,7 +189,7 @@ int H5FilterParametersWriter::writeValue(const QString name, const QStringList v
 {
   int vectorSize = value.size();
   int err = QH5Lite::writeScalarDataset(m_CurrentGroupId, name, vectorSize);
-  for (int i = 0; i < vectorSize; i++)
+  for(int i = 0; i < vectorSize; i++)
   {
     QString ss = QString::number(i, 10);
     err = QH5Lite::writeStringAttribute(m_CurrentGroupId, name, ss, value[i]);
@@ -308,7 +306,7 @@ int H5FilterParametersWriter::writeValue(const QString name, QVector<int8_t> val
 {
   int vectorSize = value.size();
   int err = QH5Lite::writeScalarDataset(m_CurrentGroupId, name, vectorSize);
-  for (int i = 0; i < vectorSize; i++)
+  for(int i = 0; i < vectorSize; i++)
   {
     QString ss = QString::number(i, 10);
     err = QH5Lite::writeScalarAttribute(m_CurrentGroupId, name, ss, value[i]);
@@ -324,7 +322,7 @@ int H5FilterParametersWriter::writeValue(const QString name, QVector<int16_t> va
 {
   int vectorSize = value.size();
   int err = QH5Lite::writeScalarDataset(m_CurrentGroupId, name, vectorSize);
-  for (int i = 0; i < vectorSize; i++)
+  for(int i = 0; i < vectorSize; i++)
   {
     QString ss = QString::number(i, 10);
     err = QH5Lite::writeScalarAttribute(m_CurrentGroupId, name, ss, value[i]);
@@ -340,7 +338,7 @@ int H5FilterParametersWriter::writeValue(const QString name, QVector<int32_t> va
 {
   int vectorSize = value.size();
   int err = QH5Lite::writeScalarDataset(m_CurrentGroupId, name, vectorSize);
-  for (int i = 0; i < vectorSize; i++)
+  for(int i = 0; i < vectorSize; i++)
   {
     QString ss = QString::number(i, 10);
     err = QH5Lite::writeScalarAttribute(m_CurrentGroupId, name, ss, value[i]);
@@ -356,7 +354,7 @@ int H5FilterParametersWriter::writeValue(const QString name, QVector<int64_t> va
 {
   int vectorSize = value.size();
   int err = QH5Lite::writeScalarDataset(m_CurrentGroupId, name, vectorSize);
-  for (int i = 0; i < vectorSize; i++)
+  for(int i = 0; i < vectorSize; i++)
   {
     QString ss = QString::number(i, 10);
     err = QH5Lite::writeScalarAttribute(m_CurrentGroupId, name, ss, value[i]);
@@ -372,7 +370,7 @@ int H5FilterParametersWriter::writeValue(const QString name, QVector<uint8_t> va
 {
   int vectorSize = value.size();
   int err = QH5Lite::writeScalarDataset(m_CurrentGroupId, name, vectorSize);
-  for (int i = 0; i < vectorSize; i++)
+  for(int i = 0; i < vectorSize; i++)
   {
     QString ss = QString::number(i, 10);
     err = QH5Lite::writeScalarAttribute(m_CurrentGroupId, name, ss, value[i]);
@@ -388,7 +386,7 @@ int H5FilterParametersWriter::writeValue(const QString name, QVector<uint16_t> v
 {
   int vectorSize = value.size();
   int err = QH5Lite::writeScalarDataset(m_CurrentGroupId, name, vectorSize);
-  for (int i = 0; i < vectorSize; i++)
+  for(int i = 0; i < vectorSize; i++)
   {
     QString ss = QString::number(i, 10);
     err = QH5Lite::writeScalarAttribute(m_CurrentGroupId, name, ss, value[i]);
@@ -404,7 +402,7 @@ int H5FilterParametersWriter::writeValue(const QString name, QVector<uint32_t> v
 {
   int vectorSize = value.size();
   int err = QH5Lite::writeScalarDataset(m_CurrentGroupId, name, vectorSize);
-  for (int i = 0; i < vectorSize; i++)
+  for(int i = 0; i < vectorSize; i++)
   {
     QString ss = QString::number(i, 10);
     err = QH5Lite::writeScalarAttribute(m_CurrentGroupId, name, ss, value[i]);
@@ -420,7 +418,7 @@ int H5FilterParametersWriter::writeValue(const QString name, QVector<uint64_t> v
 {
   int vectorSize = value.size();
   int err = QH5Lite::writeScalarDataset(m_CurrentGroupId, name, vectorSize);
-  for (int i = 0; i < vectorSize; i++)
+  for(int i = 0; i < vectorSize; i++)
   {
     QString ss = QString::number(i, 10);
     err = QH5Lite::writeScalarAttribute(m_CurrentGroupId, name, ss, value[i]);
@@ -436,7 +434,7 @@ int H5FilterParametersWriter::writeValue(const QString name, QVector<float> valu
 {
   int vectorSize = value.size();
   int err = QH5Lite::writeScalarDataset(m_CurrentGroupId, name, vectorSize);
-  for (int i = 0; i < vectorSize; i++)
+  for(int i = 0; i < vectorSize; i++)
   {
     QString ss = QString::number(i, 10);
     err = QH5Lite::writeScalarAttribute(m_CurrentGroupId, name, ss, value[i]);
@@ -452,7 +450,7 @@ int H5FilterParametersWriter::writeValue(const QString name, QVector<double> val
 {
   int vectorSize = value.size();
   int err = QH5Lite::writeScalarDataset(m_CurrentGroupId, name, vectorSize);
-  for (int i = 0; i < vectorSize; i++)
+  for(int i = 0; i < vectorSize; i++)
   {
     QString ss = QString::number(i, 10);
     err = QH5Lite::writeScalarAttribute(m_CurrentGroupId, name, ss, value[i]);
@@ -468,8 +466,8 @@ int H5FilterParametersWriter::writeValue(const QString name, IntVec3_t v)
 {
   int err = 0;
   int32_t rank = 1;
-  hsize_t dims[1] = { 3 };
-  err = QH5Lite::writePointerDataset<int32_t>(m_CurrentGroupId, name, rank, dims, reinterpret_cast<int32_t*>(&v) );
+  hsize_t dims[1] = {3};
+  err = QH5Lite::writePointerDataset<int32_t>(m_CurrentGroupId, name, rank, dims, reinterpret_cast<int32_t*>(&v));
   return err;
 }
 
@@ -480,8 +478,8 @@ int H5FilterParametersWriter::writeValue(const QString name, FloatVec3_t v)
 {
   int err = 0;
   int32_t rank = 1;
-  hsize_t dims[1] = { 3 };
-  err = QH5Lite::writePointerDataset<float>(m_CurrentGroupId, name, rank, dims, reinterpret_cast<float*>(&v) );
+  hsize_t dims[1] = {3};
+  err = QH5Lite::writePointerDataset<float>(m_CurrentGroupId, name, rank, dims, reinterpret_cast<float*>(&v));
   return err;
 }
 
@@ -492,8 +490,8 @@ int H5FilterParametersWriter::writeValue(const QString name, Float2ndOrderPoly_t
 {
   int err = 0;
   int32_t rank = 1;
-  hsize_t dims[1] = { 6 };
-  err = QH5Lite::writePointerDataset<float>(m_CurrentGroupId, name, rank, dims, reinterpret_cast<float*>(&v) );
+  hsize_t dims[1] = {6};
+  err = QH5Lite::writePointerDataset<float>(m_CurrentGroupId, name, rank, dims, reinterpret_cast<float*>(&v));
   return err;
 }
 
@@ -504,8 +502,8 @@ int H5FilterParametersWriter::writeValue(const QString name, Float3rdOrderPoly_t
 {
   int err = 0;
   int32_t rank = 1;
-  hsize_t dims[1] = { 21 };
-  err = QH5Lite::writePointerDataset<float>(m_CurrentGroupId, name, rank, dims, reinterpret_cast<float*>(&v) );
+  hsize_t dims[1] = {21};
+  err = QH5Lite::writePointerDataset<float>(m_CurrentGroupId, name, rank, dims, reinterpret_cast<float*>(&v));
   return err;
 }
 
@@ -516,8 +514,8 @@ int H5FilterParametersWriter::writeValue(const QString name, Float4thOrderPoly_t
 {
   int err = 0;
   int32_t rank = 1;
-  hsize_t dims[1] = { 21 };
-  err = QH5Lite::writePointerDataset<float>(m_CurrentGroupId, name, rank, dims, reinterpret_cast<float*>(&v) );
+  hsize_t dims[1] = {21};
+  err = QH5Lite::writePointerDataset<float>(m_CurrentGroupId, name, rank, dims, reinterpret_cast<float*>(&v));
   return err;
 }
 
@@ -529,14 +527,14 @@ int H5FilterParametersWriter::writeValue(const QString name, FileListInfo_t v)
   int err = 0;
   hid_t dcaGid = QH5Utilities::createGroup(m_CurrentGroupId, name);
 
-  err = QH5Lite::writeScalarDataset<qint32>(dcaGid, "EndIndex", v.EndIndex );
-  err = QH5Lite::writeScalarDataset<qint32>(dcaGid, "StartIndex", v.StartIndex );
-  err = QH5Lite::writeScalarDataset<qint32>(dcaGid, "PaddingDigits", v.PaddingDigits );
-  err = QH5Lite::writeScalarDataset<quint32>(dcaGid, "Ordering", v.Ordering );
-  err = QH5Lite::writeStringDataset(dcaGid, "FileExtension", v.FileExtension );
-  err = QH5Lite::writeStringDataset(dcaGid, "FilePrefix", v.FilePrefix );
-  err = QH5Lite::writeStringDataset(dcaGid, "FileSuffix", v.FileSuffix );
-  err = QH5Lite::writeStringDataset(dcaGid, "InputPath", v.InputPath );
+  err = QH5Lite::writeScalarDataset<qint32>(dcaGid, "EndIndex", v.EndIndex);
+  err = QH5Lite::writeScalarDataset<qint32>(dcaGid, "StartIndex", v.StartIndex);
+  err = QH5Lite::writeScalarDataset<qint32>(dcaGid, "PaddingDigits", v.PaddingDigits);
+  err = QH5Lite::writeScalarDataset<quint32>(dcaGid, "Ordering", v.Ordering);
+  err = QH5Lite::writeStringDataset(dcaGid, "FileExtension", v.FileExtension);
+  err = QH5Lite::writeStringDataset(dcaGid, "FilePrefix", v.FilePrefix);
+  err = QH5Lite::writeStringDataset(dcaGid, "FileSuffix", v.FileSuffix);
+  err = QH5Lite::writeStringDataset(dcaGid, "InputPath", v.InputPath);
   dcaGid = H5Gclose(dcaGid);
   return err;
 }
@@ -556,7 +554,7 @@ int H5FilterParametersWriter::writeValue(const QString name, ComparisonInput_t c
 // -----------------------------------------------------------------------------
 int H5FilterParametersWriter::writeValue(const QString name, ComparisonInputs v)
 {
-  int numQFilters = static_cast<int>( v.size() );
+  int numQFilters = static_cast<int>(v.size());
   int err = 0;
   QString buf;
   QTextStream ss(&buf);
@@ -565,19 +563,19 @@ int H5FilterParametersWriter::writeValue(const QString name, ComparisonInputs v)
   // to mark the end of each ComparisonOpertor struct
   for(int i = 0; i < numQFilters; i++)
   {
-    ss << v[i].dataContainerName << "," << v[i].attributeMatrixName << "," << v[i].attributeArrayName << "," <<  v[i].compOperator << "," << v[i].compValue << "\n";
+    ss << v[i].dataContainerName << "," << v[i].attributeMatrixName << "," << v[i].attributeArrayName << "," << v[i].compOperator << "," << v[i].compValue << "\n";
   }
 
   // Write the data set to the file and attach an attribute that says how many there were.
   if(numQFilters > 0)
   {
     err = QH5Lite::writeStringDataset(m_CurrentGroupId, name, buf);
-    if (err < 0)
+    if(err < 0)
     {
       return err;
     }
     err = QH5Lite::writeScalarAttribute(m_CurrentGroupId, name, "NumInputs", numQFilters);
-    if (err < 0)
+    if(err < 0)
     {
       return err;
     }
@@ -591,20 +589,20 @@ int H5FilterParametersWriter::writeValue(const QString name, ComparisonInputs v)
 // -----------------------------------------------------------------------------
 int H5FilterParametersWriter::writeValue(const QString name, AxisAngleInput_t v)
 {
-  int numQFilters = static_cast<int>( 1 );
-  int err = writeValue(name,  numQFilters);
-  if (err < 0)
+  int numQFilters = static_cast<int>(1);
+  int err = writeValue(name, numQFilters);
+  if(err < 0)
   {
     return err;
   }
   QString parseOrder = "Angle, H, K, L";
   err = QH5Lite::writeStringAttribute(m_CurrentGroupId, name, "Data Order", parseOrder);
-  if (err < 0)
+  if(err < 0)
   {
     return err;
   }
   err = writeValue(name, v, 0);
-  if (err < 0)
+  if(err < 0)
   {
     return err;
   }
@@ -618,36 +616,35 @@ int H5FilterParametersWriter::writeValue(const QString name, AxisAngleInput_t v,
 {
   int err = 0;
   int32_t rank = 1;
-  hsize_t dims[1] = { 4 };
+  hsize_t dims[1] = {4};
 
   QString ss = QString::number(vectorPos) + H5FilterParameter::AxisAngleInput;
 
-  err = QH5Lite::writePointerAttribute<float>(m_CurrentGroupId, name, ss, rank, dims, reinterpret_cast<float*>(&v) );
+  err = QH5Lite::writePointerAttribute<float>(m_CurrentGroupId, name, ss, rank, dims, reinterpret_cast<float*>(&v));
   return err;
 }
-
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
 int H5FilterParametersWriter::writeValue(const QString name, QVector<AxisAngleInput_t> v)
 {
-  int numQFilters = static_cast<int>( v.size() );
-  int err = writeValue(name,  numQFilters);
-  if (err < 0)
+  int numQFilters = static_cast<int>(v.size());
+  int err = writeValue(name, numQFilters);
+  if(err < 0)
   {
     return err;
   }
   QString parseOrder = "Angle, H, K, L";
   err = QH5Lite::writeStringAttribute(m_CurrentGroupId, name, "Data Order", parseOrder);
-  if (err < 0)
+  if(err < 0)
   {
     return err;
   }
   for(int i = 0; i < numQFilters; i++)
   {
     err = writeValue(name, v[i], i);
-    if (err < 0)
+    if(err < 0)
     {
       return err;
     }
@@ -662,17 +659,17 @@ int H5FilterParametersWriter::writeArraySelections(const QString name, QSet<QStr
 {
   size_t size = v.size();
   herr_t err = 0;
-  if (size > 0)
+  if(size > 0)
   {
     QString setStr = "";
     QSet<QString>::iterator iter = v.begin();
-    for (; iter != v.end(); iter++)
+    for(; iter != v.end(); iter++)
     {
       setStr.append(*iter).append("\n");
     }
 
     err = QH5Lite::writeStringDataset(m_CurrentGroupId, name, setStr);
-    if (err < 0)
+    if(err < 0)
     {
       return err;
     }
@@ -680,14 +677,13 @@ int H5FilterParametersWriter::writeArraySelections(const QString name, QSet<QStr
   if(size > 0)
   {
     err = QH5Lite::writeScalarAttribute(m_CurrentGroupId, name, "NumArrays", size);
-    if (err < 0)
+    if(err < 0)
     {
       return err;
     }
   }
   return err;
 }
-
 
 // -----------------------------------------------------------------------------
 //
@@ -699,12 +695,12 @@ int H5FilterParametersWriter::writeValue(const QString name, const DataContainer
   QListIterator<DataContainerProxy> dcIter(dcProxies);
   hid_t dcaGid = QH5Utilities::createGroup(m_CurrentGroupId, name);
 
-  while (dcIter.hasNext()) // DataContainerLevel
+  while(dcIter.hasNext()) // DataContainerLevel
   {
-    const DataContainerProxy& dcProxy =  dcIter.next();
+    const DataContainerProxy& dcProxy = dcIter.next();
     if(dcProxy.flag == Qt::Unchecked)
     {
-      continue;    // Skip to the next DataContainer if we are not reading this one.
+      continue; // Skip to the next DataContainer if we are not reading this one.
     }
     hid_t dcGid = QH5Utilities::createGroup(dcaGid, dcProxy.name);
 
@@ -717,7 +713,7 @@ int H5FilterParametersWriter::writeValue(const QString name, const DataContainer
       const AttributeMatrixProxy& amProxy = amIter.value();
       if(amProxy.flag == Qt::Unchecked)
       {
-        continue;    // Skip to the next AttributeMatrix if not reading this one
+        continue; // Skip to the next AttributeMatrix if not reading this one
       }
       hid_t amGid = QH5Utilities::createGroup(dcGid, amProxy.name);
 
@@ -729,7 +725,7 @@ int H5FilterParametersWriter::writeValue(const QString name, const DataContainer
         const DataArrayProxy& daProxy = dIter.value();
         if(daProxy.flag == SIMPL::Unchecked)
         {
-          continue;    // Skip to the next DataArray if not reading this one
+          continue; // Skip to the next DataArray if not reading this one
         }
 
         flat << dIter.value().name;
@@ -746,8 +742,6 @@ int H5FilterParametersWriter::writeValue(const QString name, const DataContainer
   H5Gclose(dcaGid);
   return err;
 }
-
-
 
 // -----------------------------------------------------------------------------
 //
@@ -769,7 +763,7 @@ int H5FilterParametersWriter::writeValue(const QString name, const QVector<DataA
   QString pathStr;
   QTextStream ss(&pathStr);
   char sep = '\n'; // Use a new line to separate each record.
-  for (int i = 0; i < v.size(); i++)
+  for(int i = 0; i < v.size(); i++)
   {
     DataArrayPath path = v.at(i);
     ss << path.serialize("|") << sep;
@@ -794,9 +788,15 @@ int H5FilterParametersWriter::writeValue(const QString name, const DynamicTableD
   dims[1] = v.getNumCols();
 
   err = QH5Lite::writeVectorDataset(m_CurrentGroupId, name, dims, flat);
-  if (err < 0) { return err; }
+  if(err < 0)
+  {
+    return err;
+  }
   err = QH5Lite::writeStringAttribute(m_CurrentGroupId, name, "RowHeaders", rHeaders);
-  if (err < 0) { return err; }
+  if(err < 0)
+  {
+    return err;
+  }
   err = QH5Lite::writeStringAttribute(m_CurrentGroupId, name, "ColHeaders", cHeaders);
 
   return err;
@@ -805,12 +805,14 @@ int H5FilterParametersWriter::writeValue(const QString name, const DynamicTableD
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-int H5FilterParametersWriter::writeValue(const QString name, const QPair<double, double> & v)
+int H5FilterParametersWriter::writeValue(const QString name, const QPair<double, double>& v)
 {
   int err = QH5Lite::writeScalarDataset(m_CurrentGroupId, name + "_Min", v.first);
-  if (err < 0) { return err; }
+  if(err < 0)
+  {
+    return err;
+  }
   err = QH5Lite::writeScalarDataset(m_CurrentGroupId, name + "_Max", v.second);
 
   return err;
 }
-

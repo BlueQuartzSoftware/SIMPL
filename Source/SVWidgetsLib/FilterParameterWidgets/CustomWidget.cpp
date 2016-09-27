@@ -37,9 +37,7 @@
 
 #include <QtCore/QMetaProperty>
 
-
 #include "FilterWidgetsLib/Widgets/moc_CustomWidget.cxx"
-
 
 // Include the MOC generated file for this class
 #include "moc_CustomWidget.cpp"
@@ -47,8 +45,8 @@
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-CustomWidget::CustomWidget(FilterParameter* parameter, AbstractFilter* filter, QWidget* parent) :
-  FilterParameterWidget(parameter, filter, parent)
+CustomWidget::CustomWidget(FilterParameter* parameter, AbstractFilter* filter, QWidget* parent)
+: FilterParameterWidget(parameter, filter, parent)
 {
   setupUi(this);
   setupGui();
@@ -58,16 +56,16 @@ CustomWidget::CustomWidget(FilterParameter* parameter, AbstractFilter* filter, Q
 //
 // -----------------------------------------------------------------------------
 CustomWidget::~CustomWidget()
-{}
+{
+}
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
 void CustomWidget::setupGui()
 {
-  if (getFilterParameter() != nullptr)
+  if(getFilterParameter() != nullptr)
   {
-    CustomWidgetLabel->setText(getFilterParameter()->getHumanLabel() );
+    CustomWidgetLabel->setText(getFilterParameter()->getHumanLabel());
   }
 }
-

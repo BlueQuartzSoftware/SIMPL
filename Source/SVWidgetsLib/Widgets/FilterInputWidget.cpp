@@ -33,50 +33,48 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-
 #include "FilterInputWidget.h"
 
-#include <QtCore/QMetaProperty>
+#include <QtCore/QDir>
 #include <QtCore/QFileInfo>
+#include <QtCore/QMetaProperty>
 #include <QtCore/QPropertyAnimation>
 #include <QtCore/QSequentialAnimationGroup>
-#include <QtCore/QDir>
-#include <QtWidgets/QLabel>
-#include <QtWidgets/QVBoxLayout>
-#include <QtWidgets/QFormLayout>
-#include <QtWidgets/QLineEdit>
-#include <QtWidgets/QGroupBox>
 #include <QtWidgets/QFileDialog>
+#include <QtWidgets/QFormLayout>
+#include <QtWidgets/QGroupBox>
+#include <QtWidgets/QLabel>
+#include <QtWidgets/QLineEdit>
+#include <QtWidgets/QVBoxLayout>
 
 #include "SIMPLib/Common/DocRequestManager.h"
-#include "SIMPLib/FilterParameters/LinkedChoicesFilterParameter.h"
-#include "SIMPLib/FilterParameters/LinkedBooleanFilterParameter.h"
 #include "SIMPLib/FilterParameters/DataContainerReaderFilterParameter.h"
 #include "SIMPLib/FilterParameters/InputFileFilterParameter.h"
 #include "SIMPLib/FilterParameters/InputPathFilterParameter.h"
+#include "SIMPLib/FilterParameters/LinkedBooleanFilterParameter.h"
+#include "SIMPLib/FilterParameters/LinkedChoicesFilterParameter.h"
 
 #include "SVWidgetsLib/QtSupport/QtSHelpUrlGenerator.h"
 #include "SVWidgetsLib/QtSupport/QtSStyles.h"
 
-#include "SVWidgetsLib/FilterParameterWidgets/LinkedBooleanWidget.h"
 #include "SVWidgetsLib/FilterParameterWidgets/ChoiceWidget.h"
+#include "SVWidgetsLib/FilterParameterWidgets/LinkedBooleanWidget.h"
 
-#include "SVWidgetsLib/Core/SVWidgetsLibConstants.h"
 #include "SVWidgetsLib/Core/FilterWidgetManager.h"
-#include "SVWidgetsLib/Widgets/SVPipelineFilterWidget.h"
+#include "SVWidgetsLib/Core/SVWidgetsLibConstants.h"
 #include "SVWidgetsLib/Widgets/DataContainerArrayWidget.h"
+#include "SVWidgetsLib/Widgets/SVPipelineFilterWidget.h"
 
 #if 0
 #include "ctkCollapsibleGroupBox.h"
 #define QGroupBox ctkCollapsibleGroupBox
 #endif
 
-
 // Include the MOC generated CPP file which has all the QMetaObject methods/data
 #include "moc_FilterInputWidget.cpp"
 
 // Initialize private static member variable
-QString FilterInputWidget::m_OpenDialogLastDirectory = "";\
+QString FilterInputWidget::m_OpenDialogLastDirectory = "";
 
 enum TabIndices
 {
@@ -88,12 +86,12 @@ enum TabIndices
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-QFileInfo getFilterParameterPath(AbstractFilter* filter, FilterParameter* parameter, QString& fType, QString& ext, int &err)
+QFileInfo getFilterParameterPath(AbstractFilter* filter, FilterParameter* parameter, QString& fType, QString& ext, int& err)
 {
   QString currentPath = "";
   fType.clear();
   ext.clear();
-  if (nullptr != dynamic_cast<DataContainerReaderFilterParameter*>(parameter))
+  if(nullptr != dynamic_cast<DataContainerReaderFilterParameter*>(parameter))
   {
     DataContainerReaderFilterParameter* rParam = dynamic_cast<DataContainerReaderFilterParameter*>(parameter);
     currentPath = filter->property(rParam->getInputFileProperty().toLatin1().constData()).toString();
@@ -120,7 +118,7 @@ QFileInfo getFilterParameterPath(AbstractFilter* filter, FilterParameter* parame
   }
 
   QFileInfo fi;
-  if (currentPath.isEmpty() == false)
+  if(currentPath.isEmpty() == false)
   {
     fi.setFile(currentPath);
   }
@@ -131,15 +129,15 @@ QFileInfo getFilterParameterPath(AbstractFilter* filter, FilterParameter* parame
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-FilterInputWidget::FilterInputWidget(QString filterClassName, PipelineFilterObject* filterObj, QWidget* parent) :
-  QWidget(parent),
-  m_FilterClassName(filterClassName),
-  m_AdvFadedOut(false)
+FilterInputWidget::FilterInputWidget(QString filterClassName, PipelineFilterObject* filterObj, QWidget* parent)
+: QWidget(parent)
+, m_FilterClassName(filterClassName)
+, m_AdvFadedOut(false)
 {
   setupUi(this);
   setupGui();
 
-  if ( m_OpenDialogLastDirectory.isEmpty() )
+  if(m_OpenDialogLastDirectory.isEmpty())
   {
     m_OpenDialogLastDirectory = QDir::homePath();
   }
@@ -147,15 +145,23 @@ FilterInputWidget::FilterInputWidget(QString filterClassName, PipelineFilterObje
   layoutWidgets(filterObj->getFilter());
 }
 
-
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
 FilterInputWidget::~FilterInputWidget()
 {
-  if (m_VariablesVerticalLayout != nullptr) { delete m_VariablesVerticalLayout; }
-  if (m_VariablesWidget != nullptr) { delete m_VariablesWidget; }
-  if (m_CurrentStructureWidget != nullptr) { delete m_CurrentStructureWidget; }
+  if(m_VariablesVerticalLayout != nullptr)
+  {
+    delete m_VariablesVerticalLayout;
+  }
+  if(m_VariablesWidget != nullptr)
+  {
+    delete m_VariablesWidget;
+  }
+  if(m_CurrentStructureWidget != nullptr)
+  {
+    delete m_CurrentStructureWidget;
+  }
 }
 
 // -----------------------------------------------------------------------------
@@ -163,14 +169,14 @@ FilterInputWidget::~FilterInputWidget()
 // -----------------------------------------------------------------------------
 bool FilterInputWidget::eventFilter(QObject* o, QEvent* e)
 {
-  if ( e->type() == QEvent::Resize && qobject_cast<QLabel*>(o) && brandingLabel == o)
+  if(e->type() == QEvent::Resize && qobject_cast<QLabel*>(o) && brandingLabel == o)
   {
     QFontMetrics metrics(brandingLabel->font());
     QString elidedText = metrics.elidedText(m_BrandingLabel, Qt::ElideMiddle, brandingLabel->width());
     brandingLabel->setText(elidedText);
     return true;
   }
-  return QWidget::eventFilter( o, e );
+  return QWidget::eventFilter(o, e);
 }
 
 // -----------------------------------------------------------------------------
@@ -188,7 +194,9 @@ void FilterInputWidget::setupGui()
   if(releaseType.compare("Official") == 0)
   {
     brandingLabel->hide();
-  } else {
+  }
+  else
+  {
     brandingLabel->setFont(brandingFont);
     brandingLabel->installEventFilter(this);
   }
@@ -220,7 +228,6 @@ void FilterInputWidget::toIdleState()
   }
 }
 
-
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
@@ -246,7 +253,6 @@ void FilterInputWidget::layoutWidgets(AbstractFilter::Pointer filter)
   ss << "    padding: 0 5px;";
   ss << "    font-weight: bold;";
   ss << "}";
-
 
   QGroupBox* parametersGroupBox = new QGroupBox("Parameters", this);
   QVBoxLayout* pLayout = new QVBoxLayout(parametersGroupBox);
@@ -276,12 +282,13 @@ void FilterInputWidget::layoutWidgets(AbstractFilter::Pointer filter)
   bool addSpacer = true;
 
   int pCount = 0, rCount = 0, cCount = 0;
-  for (QVector<FilterParameter::Pointer>::iterator iter = filterParameters.begin(); iter != filterParameters.end(); ++iter )
+  for(QVector<FilterParameter::Pointer>::iterator iter = filterParameters.begin(); iter != filterParameters.end(); ++iter)
   {
     FilterParameter* parameter = (*iter).get();
 
     // Check to make sure that this is in fact a file system filter parameter
-    if (nullptr != dynamic_cast<InputFileFilterParameter*>(parameter) || nullptr != dynamic_cast<InputPathFilterParameter*>(parameter) || nullptr != dynamic_cast<DataContainerReaderFilterParameter*>(parameter))
+    if(nullptr != dynamic_cast<InputFileFilterParameter*>(parameter) || nullptr != dynamic_cast<InputPathFilterParameter*>(parameter) ||
+       nullptr != dynamic_cast<DataContainerReaderFilterParameter*>(parameter))
     {
       validateFileSystemFilterParameter(parameter, filter);
     }
@@ -289,7 +296,7 @@ void FilterInputWidget::layoutWidgets(AbstractFilter::Pointer filter)
     QWidget* filterParameterWidget = fwm->createWidget(parameter, filter.get());
     m_PropertyToWidget.insert(parameter->getPropertyName(), filterParameterWidget); // Update our Map of Filter Parameter Properties to the Widget
 
-    if (nullptr == filterParameterWidget)
+    if(nullptr == filterParameterWidget)
     {
       continue;
     }
@@ -320,24 +327,25 @@ void FilterInputWidget::layoutWidgets(AbstractFilter::Pointer filter)
     }
 
     FilterParameterWidget* fpwPtr = qobject_cast<FilterParameterWidget*>(filterParameterWidget);
-    if(fpwPtr) {
-      if(fpwPtr->getWidgetIsExpanding()) { addSpacer = false; }
+    if(fpwPtr)
+    {
+      if(fpwPtr->getWidgetIsExpanding())
+      {
+        addSpacer = false;
+      }
     }
 
     // Connect up some signals and slots
-    connect(filterParameterWidget, SIGNAL(parametersChanged() ),
-            this, SIGNAL(filterParametersChanged() ) );
+    connect(filterParameterWidget, SIGNAL(parametersChanged()), this, SIGNAL(filterParametersChanged()));
 
-    connect(filterParameterWidget, SIGNAL(errorSettingFilterParameter(const QString&)),
-            this, SIGNAL(errorSettingFilterParameter(const QString&)));
-
+    connect(filterParameterWidget, SIGNAL(errorSettingFilterParameter(const QString&)), this, SIGNAL(errorSettingFilterParameter(const QString&)));
   }
 
   // Now link any boolean widgets to any conditional Widgets that they might control.
   linkConditionalWidgets(filterParameters);
 
   // If there are widgets in the parameters group box, add it to the overall layout.  If not, remove the group box.
-  if (pLayout->isEmpty() == false || pCount > 0)
+  if(pLayout->isEmpty() == false || pCount > 0)
   {
     m_VariablesVerticalLayout->addWidget(parametersGroupBox);
   }
@@ -347,7 +355,7 @@ void FilterInputWidget::layoutWidgets(AbstractFilter::Pointer filter)
   }
 
   // If there are widgets in the required arrays group box, add it to the overall layout.  If not, remove the group box.
-  if (rLayout->isEmpty() == false || rCount > 0)
+  if(rLayout->isEmpty() == false || rCount > 0)
   {
     m_VariablesVerticalLayout->addWidget(requiredGroupBox);
   }
@@ -357,7 +365,7 @@ void FilterInputWidget::layoutWidgets(AbstractFilter::Pointer filter)
   }
 
   // If there are widgets in the created arrays group box, add it to the overall layout.  If not, remove the group box.
-  if (cLayout->isEmpty() == false || cCount > 0)
+  if(cLayout->isEmpty() == false || cCount > 0)
   {
     m_VariablesVerticalLayout->addWidget(createdGroupBox);
   }
@@ -367,7 +375,7 @@ void FilterInputWidget::layoutWidgets(AbstractFilter::Pointer filter)
   }
 
   // If there are widgets in the uncategorized group box, add it to the overall layout.  If not, remove the group box.
-  if (nLayout->isEmpty() == false)
+  if(nLayout->isEmpty() == false)
   {
     m_VariablesVerticalLayout->addWidget(noCategoryGroupBox);
   }
@@ -398,21 +406,20 @@ void FilterInputWidget::validateFileSystemFilterParameter(FilterParameter* param
   int errCode = 0;
   QFileInfo fi = getFilterParameterPath(filter.get(), parameter, fType, ext, errCode);
 
-  if (errCode < 0)
+  if(errCode < 0)
   {
     // Throw an error, because we have the wrong filter parameter type
   }
 
   QString currentPath = fi.absoluteFilePath();
 
-
-  if (currentPath.isEmpty() == false && fi.exists() == false)
+  if(currentPath.isEmpty() == false && fi.exists() == false)
   {
 
     QString s = fType + QString(" Files (*") + ext + QString(");;All Files (*.*)");
     QString defaultName = m_OpenDialogLastDirectory + QDir::separator() + "Untitled";
 
-    if (nullptr != dynamic_cast<InputFileFilterParameter*>(parameter))
+    if(nullptr != dynamic_cast<InputFileFilterParameter*>(parameter))
     {
       InputFileFilterParameter* fsParam = dynamic_cast<InputFileFilterParameter*>(parameter);
 
@@ -430,7 +437,7 @@ void FilterInputWidget::validateFileSystemFilterParameter(FilterParameter* param
       filter->setProperty(fsParam->getPropertyName().toLatin1().constData(), file);
     }
 
-    else if (nullptr != dynamic_cast<InputPathFilterParameter*>(parameter))
+    else if(nullptr != dynamic_cast<InputPathFilterParameter*>(parameter))
     {
       InputPathFilterParameter* fsParam = dynamic_cast<InputPathFilterParameter*>(parameter);
 
@@ -448,14 +455,14 @@ void FilterInputWidget::validateFileSystemFilterParameter(FilterParameter* param
       filter->setProperty(fsParam->getPropertyName().toLatin1().constData(), file);
     }
 
-    else if (nullptr != dynamic_cast<DataContainerReaderFilterParameter*>(parameter))
+    else if(nullptr != dynamic_cast<DataContainerReaderFilterParameter*>(parameter))
     {
       DataContainerReaderFilterParameter* fsParam = dynamic_cast<DataContainerReaderFilterParameter*>(parameter);
 
       QString title = QObject::tr("Select a replacement input file for parameter '%1' in filter '%2'").arg(fsParam->getHumanLabel()).arg(filter->getHumanLabel());
 
       QString file = QFileDialog::getOpenFileName(this, title, defaultName, s);
-      if (true == file.isEmpty())
+      if(true == file.isEmpty())
       {
         file = currentPath;
       }
@@ -474,12 +481,12 @@ void FilterInputWidget::validateFileSystemFilterParameter(FilterParameter* param
 void FilterInputWidget::linkConditionalWidgets(QVector<FilterParameter::Pointer>& filterParameters)
 {
   // Figure out if we have any "Linked Boolean Widgets" to hook up to other widgets
-  for (QVector<FilterParameter::Pointer>::iterator iter = filterParameters.begin(); iter != filterParameters.end(); ++iter )
+  for(QVector<FilterParameter::Pointer>::iterator iter = filterParameters.begin(); iter != filterParameters.end(); ++iter)
   {
     FilterParameter::Pointer filterParameter = (*iter);
     LinkedBooleanFilterParameter::Pointer filterParameterPtr = std::dynamic_pointer_cast<LinkedBooleanFilterParameter>(filterParameter);
 
-    if(nullptr != filterParameterPtr.get() )
+    if(nullptr != filterParameterPtr.get())
     {
       QStringList linkedProps = filterParameterPtr->getConditionalProperties();
 
@@ -491,8 +498,7 @@ void FilterInputWidget::linkConditionalWidgets(QVector<FilterParameter::Pointer>
         QWidget* w = m_PropertyToWidget[propName];
         if(w)
         {
-          connect(checkboxSource, SIGNAL(conditionalPropertyChanged(int)),
-                  w, SLOT(setLinkedConditionalState(int) ) );
+          connect(checkboxSource, SIGNAL(conditionalPropertyChanged(int)), w, SLOT(setLinkedConditionalState(int)));
           LinkedBooleanWidget* lbw = qobject_cast<LinkedBooleanWidget*>(checkboxSource);
           if(lbw && lbw->getLinkedState() != Qt::Checked)
           {
@@ -506,7 +512,6 @@ void FilterInputWidget::linkConditionalWidgets(QVector<FilterParameter::Pointer>
         boolWidget->updateLinkedWidgets();
       }
     }
-
 
     // Figure out if we have any Linked ComboBox Widgets to hook up to other widgets
     LinkedChoicesFilterParameter::Pointer optionPtr2 = std::dynamic_pointer_cast<LinkedChoicesFilterParameter>(filterParameter);
@@ -523,9 +528,8 @@ void FilterInputWidget::linkConditionalWidgets(QVector<FilterParameter::Pointer>
         QWidget* w = m_PropertyToWidget[propName];
         if(w)
         {
-          //qDebug() << "Connecting: " << optionPtr2->getPropertyName() << " to " << propName;
-          connect(checkboxSource, SIGNAL(conditionalPropertyChanged(int)),
-                  w, SLOT(setLinkedComboBoxState(int) ) );
+          // qDebug() << "Connecting: " << optionPtr2->getPropertyName() << " to " << propName;
+          connect(checkboxSource, SIGNAL(conditionalPropertyChanged(int)), w, SLOT(setLinkedComboBoxState(int)));
 
           ChoiceWidget* choiceWidget = qobject_cast<ChoiceWidget*>(checkboxSource);
           if(choiceWidget)
@@ -574,7 +578,6 @@ void FilterInputWidget::clearInputWidgets()
     }
   }
 
-
   filterHumanLabel->setText("No Filter Selected");
   brandingLabel->clear();
 }
@@ -588,7 +591,6 @@ void FilterInputWidget::removeWidgetInputs(SVPipelineFilterWidget* w)
   clearInputWidgets();
 }
 
-
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
@@ -596,13 +598,13 @@ void FilterInputWidget::displayFilterParameters(PipelineFilterObject* w)
 {
   clearInputWidgets();
 
-  if (m_VariablesWidget != nullptr)
+  if(m_VariablesWidget != nullptr)
   {
     variablesGrid->addWidget(m_VariablesWidget);
     m_VariablesWidget->setVisible(true);
   }
 
-  if (m_CurrentStructureWidget != nullptr)
+  if(m_CurrentStructureWidget != nullptr)
   {
     currentStructureGrid->addWidget(m_CurrentStructureWidget);
     m_CurrentStructureWidget->setVisible(true);
@@ -615,18 +617,17 @@ void FilterInputWidget::displayFilterParameters(PipelineFilterObject* w)
   filterHumanLabel->setText(w->getHumanLabel());
 
   AbstractFilter::Pointer filter = w->getFilter();
-  m_BrandingLabel = filter->getBrandingString()  + "  [" + w->getCompiledLibraryName() + "/" + w->getFilterGroup() + "/" + w->getFilterClassName() + "]";
+  m_BrandingLabel = filter->getBrandingString() + "  [" + w->getCompiledLibraryName() + "/" + w->getFilterGroup() + "/" + w->getFilterClassName() + "]";
 
   brandingLabel->setText(m_BrandingLabel);
 }
-
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
 void FilterInputWidget::fadeInWidget(QWidget* widget)
 {
-  if (m_FaderWidget)
+  if(m_FaderWidget)
   {
     m_FaderWidget->close();
   }
@@ -642,15 +643,14 @@ void FilterInputWidget::fadeInWidget(QWidget* widget)
 void FilterInputWidget::fadeOutWidget(QWidget* widget)
 {
 
-  if (m_FaderWidget)
+  if(m_FaderWidget)
   {
     m_FaderWidget->close();
   }
   m_FaderWidget = new QtSFaderWidget(widget);
   m_FaderWidget->setFadeOut();
   m_FaderWidget->setStartColor(SIMPLView::Defaults::AdvancedColor);
-  connect(m_FaderWidget, SIGNAL(animationComplete() ),
-          widget, SLOT(hide()));
+  connect(m_FaderWidget, SIGNAL(animationComplete()), widget, SLOT(hide()));
   m_FaderWidget->start();
   m_AdvFadedOut = true;
 }
@@ -662,6 +662,3 @@ QWidget* FilterInputWidget::getVariablesTabContentsWidget()
 {
   return variablesTabContents;
 }
-
-
-

@@ -34,19 +34,17 @@
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 #include "DataContainerArray.h"
 
-#include "SIMPLib/DataContainers/DataContainerProxy.h"
 #include "SIMPLib/DataContainers/DataContainerArrayProxy.h"
+#include "SIMPLib/DataContainers/DataContainerProxy.h"
 
 #include "moc_DataContainerArray.cpp"
-
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-DataContainerArray::DataContainerArray() :
-  QObject()
+DataContainerArray::DataContainerArray()
+: QObject()
 {
-
 }
 
 // -----------------------------------------------------------------------------
@@ -72,7 +70,6 @@ int DataContainerArray::getNumDataContainers()
   return m_Array.size();
 }
 
-
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
@@ -80,7 +77,6 @@ void DataContainerArray::clearDataContainers()
 {
   m_Array.clear();
 }
-
 
 #if 0
 // -----------------------------------------------------------------------------
@@ -181,7 +177,7 @@ bool DataContainerArray::renameDataContainer(const QString& oldName, const QStri
       }
     }
   }
-  else if (nullptr != dc)
+  else if(nullptr != dc)
   {
     // We found an existing Data Container with the 'newname' but we do NOT want to over write it so just bail out now
     return false;
@@ -223,15 +219,13 @@ DataContainer::Pointer DataContainerArray::getDataContainer(const DataArrayPath&
 AttributeMatrix::Pointer DataContainerArray::getAttributeMatrix(const DataArrayPath& path)
 {
   DataContainer::Pointer dc = getDataContainer(path);
-  if(nullptr == dc.get() )
+  if(nullptr == dc.get())
   {
     return AttributeMatrix::NullPointer();
   }
 
-  return dc->getAttributeMatrix(path.getAttributeMatrixName() );
+  return dc->getAttributeMatrix(path.getAttributeMatrixName());
 }
-
-
 
 // -----------------------------------------------------------------------------
 //
@@ -284,37 +278,36 @@ QList<DataContainer::Pointer>& DataContainerArray::getDataContainers()
 // -----------------------------------------------------------------------------
 void DataContainerArray::printDataContainerNames(QTextStream& out)
 {
-  out << "---------------------------------------------------------------------" ;
-  for (QList<DataContainer::Pointer>::iterator iter = m_Array.begin(); iter != m_Array.end(); ++iter )
+  out << "---------------------------------------------------------------------";
+  for(QList<DataContainer::Pointer>::iterator iter = m_Array.begin(); iter != m_Array.end(); ++iter)
   {
-    out << (*iter)->getNameOfClass() ;
+    out << (*iter)->getNameOfClass();
   }
-  out << "---------------------------------------------------------------------" ;
+  out << "---------------------------------------------------------------------";
 }
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-int DataContainerArray::readDataContainersFromHDF5(bool preflight,
-                                                   hid_t dcaGid,
-                                                   DataContainerArrayProxy& dcaProxy,
-                                                   Observable* obs)
+int DataContainerArray::readDataContainersFromHDF5(bool preflight, hid_t dcaGid, DataContainerArrayProxy& dcaProxy, Observable* obs)
 {
   int err = 0;
   QList<DataContainerProxy> dcsToRead = dcaProxy.dataContainers.values();
   QListIterator<DataContainerProxy> dcIter(dcsToRead);
-  while (dcIter.hasNext()) // DataContainerLevel
+  while(dcIter.hasNext()) // DataContainerLevel
   {
-    const DataContainerProxy& dcProxy =  dcIter.next();
+    const DataContainerProxy& dcProxy = dcIter.next();
     if(dcProxy.flag == Qt::Unchecked)
     {
       continue;
     }
-    if (this->doesDataContainerExist(dcProxy.name) == true )
+    if(this->doesDataContainerExist(dcProxy.name) == true)
     {
       if(nullptr != obs)
       {
-        QString ss = QObject::tr("A Data Container with name %1 already exists in Memory. Reading a Data Container with the same name would over write the one in memory. Currently this is not allowed.").arg(dcProxy.name);
+        QString ss =
+            QObject::tr("A Data Container with name %1 already exists in Memory. Reading a Data Container with the same name would over write the one in memory. Currently this is not allowed.")
+                .arg(dcProxy.name);
         obs->notifyErrorMessage(getNameOfClass(), ss, -198745600);
       }
       return -198745600;
@@ -324,8 +317,8 @@ int DataContainerArray::readDataContainersFromHDF5(bool preflight,
     this->addDataContainer(dc);
 
     // Now open the DataContainer Group in the HDF5 file
-    hid_t dcGid = H5Gopen(dcaGid, dcProxy.name.toLatin1().data(), H5P_DEFAULT );
-    if (dcGid < 0)
+    hid_t dcGid = H5Gopen(dcaGid, dcProxy.name.toLatin1().data(), H5P_DEFAULT);
+    if(dcGid < 0)
     {
       if(nullptr != obs)
       {
@@ -346,7 +339,7 @@ int DataContainerArray::readDataContainersFromHDF5(bool preflight,
       return -198745603;
     }
     err = this->getDataContainer(dcProxy.name)->readAttributeMatricesFromHDF5(preflight, dcGid, dcProxy);
-    if (err < 0)
+    if(err < 0)
     {
       if(nullptr != obs)
       {
@@ -366,7 +359,7 @@ bool DataContainerArray::doesDataContainerExist(const QString& name)
 {
   for(QList<DataContainer::Pointer>::iterator it = m_Array.begin(); it != m_Array.end(); ++it)
   {
-    if( (*it)->getName().compare(name) == 0 )
+    if((*it)->getName().compare(name) == 0)
     {
       return true;
     }
@@ -379,7 +372,10 @@ bool DataContainerArray::doesDataContainerExist(const QString& name)
 // -----------------------------------------------------------------------------
 bool DataContainerArray::doesAttributeMatrixExist(const DataArrayPath& path)
 {
-  if ( !doesDataContainerExist(path.getDataContainerName())) { return false; }
+  if(!doesDataContainerExist(path.getDataContainerName()))
+  {
+    return false;
+  }
 
   DataContainer::Pointer dc = getDataContainer(path);
   return dc->doesAttributeMatrixExist(path.getAttributeMatrixName());
@@ -390,13 +386,18 @@ bool DataContainerArray::doesAttributeMatrixExist(const DataArrayPath& path)
 // -----------------------------------------------------------------------------
 bool DataContainerArray::doesAttributeArrayExist(const DataArrayPath& path)
 {
-  if ( !doesDataContainerExist(path.getDataContainerName())) { return false; }
-  if ( !doesAttributeMatrixExist(path) ) { return false; }
+  if(!doesDataContainerExist(path.getDataContainerName()))
+  {
+    return false;
+  }
+  if(!doesAttributeMatrixExist(path))
+  {
+    return false;
+  }
   AttributeMatrix::Pointer attrMat = getAttributeMatrix(path);
 
   return attrMat->doesAttributeArrayExist(path.getDataArrayName());
 }
-
 
 // -----------------------------------------------------------------------------
 //
@@ -456,12 +457,12 @@ void DataContainerArray::removeDataContainerFromBundles(const QString& name)
   for(QMap<QString, IDataContainerBundle::Pointer>::iterator iter = m_DataContainerBundles.begin(); iter != m_DataContainerBundles.end(); ++iter)
   {
     IDataContainerBundle::Pointer dcbPtr = iter.value();
-    if (dcbPtr.get() != nullptr)
+    if(dcbPtr.get() != nullptr)
     {
       QVector<QString> dcbNames = dcbPtr->getDataContainerNames();
-      for (qint32 i = 0; i < dcbNames.size(); i++)
+      for(qint32 i = 0; i < dcbNames.size(); i++)
       {
-        if (dcbNames[i].compare(name) == 0)
+        if(dcbNames[i].compare(name) == 0)
         {
           dcbPtr->removeDataContainer(name);
         }
@@ -469,7 +470,6 @@ void DataContainerArray::removeDataContainerFromBundles(const QString& name)
     }
   }
 }
-
 
 // -----------------------------------------------------------------------------
 //
@@ -480,16 +480,16 @@ bool DataContainerArray::renameDataContainerBundle(const QString& oldName, const
   QMap<QString, IDataContainerBundle::Pointer>::iterator iter = m_DataContainerBundles.find(newName);
 
   // Now rename the DataContainerBundle
-  if (iter == m_DataContainerBundles.end() )
+  if(iter == m_DataContainerBundles.end())
   {
     iter = m_DataContainerBundles.find(oldName);
-    if (iter == m_DataContainerBundles.end() )
+    if(iter == m_DataContainerBundles.end())
     {
       return false;
     }
     else
     {
-      m_DataContainerBundles.insert(newName, iter.value() );
+      m_DataContainerBundles.insert(newName, iter.value());
       iter.value()->setName(newName);
       m_DataContainerBundles.remove(oldName);
     }

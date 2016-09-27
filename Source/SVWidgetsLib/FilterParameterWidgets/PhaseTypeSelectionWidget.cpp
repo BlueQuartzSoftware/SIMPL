@@ -35,8 +35,8 @@
 
 #include "PhaseTypeSelectionWidget.h"
 
-#include <QtCore/QMetaProperty>
 #include <QtCore/QList>
+#include <QtCore/QMetaProperty>
 #include <QtCore/QSignalMapper>
 
 #include <QtWidgets/QComboBox>
@@ -58,9 +58,9 @@
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-PhaseTypeSelectionWidget::PhaseTypeSelectionWidget(FilterParameter* parameter, AbstractFilter* filter, QWidget* parent) :
-  FilterParameterWidget(parameter, filter, parent),
-  m_DidCausePreflight(false)
+PhaseTypeSelectionWidget::PhaseTypeSelectionWidget(FilterParameter* parameter, AbstractFilter* filter, QWidget* parent)
+: FilterParameterWidget(parameter, filter, parent)
+, m_DidCausePreflight(false)
 {
   m_FilterParameter = dynamic_cast<PhaseTypeSelectionFilterParameter*>(parameter);
   Q_ASSERT_X(m_FilterParameter != nullptr, "nullptr Pointer", "PhaseTypeSelectionWidget can ONLY be used with a PhaseTypeSelectionFilterParameter object");
@@ -72,9 +72,9 @@ PhaseTypeSelectionWidget::PhaseTypeSelectionWidget(FilterParameter* parameter, A
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-PhaseTypeSelectionWidget::PhaseTypeSelectionWidget(QWidget* parent) :
-  FilterParameterWidget(nullptr, nullptr, parent),
-  m_DidCausePreflight(false)
+PhaseTypeSelectionWidget::PhaseTypeSelectionWidget(QWidget* parent)
+: FilterParameterWidget(nullptr, nullptr, parent)
+, m_DidCausePreflight(false)
 {
   setupUi(this);
   setupGui();
@@ -84,8 +84,8 @@ PhaseTypeSelectionWidget::PhaseTypeSelectionWidget(QWidget* parent) :
 //
 // -----------------------------------------------------------------------------
 PhaseTypeSelectionWidget::~PhaseTypeSelectionWidget()
-{}
-
+{
+}
 
 // -----------------------------------------------------------------------------
 //
@@ -97,32 +97,28 @@ void PhaseTypeSelectionWidget::setupGui()
     return;
   }
 
-  label->setText(m_FilterParameter->getHumanLabel() );
+  label->setText(m_FilterParameter->getHumanLabel());
 
   // Get the default path from the Filter instance to cache
-  //UInt32Vector_t data = getFilter()->property(PROPERTY_NAME_AS_CHAR).value<DataArrayPath>();
-  //data.d =
+  // UInt32Vector_t data = getFilter()->property(PROPERTY_NAME_AS_CHAR).value<DataArrayPath>();
+  // data.d =
 
   m_SelectedAttributeMatrixPath->setStyleSheet(QtSStyles::DAPSelectionButtonStyle(true));
 
   m_MenuMapper = new QSignalMapper(this);
-  connect(m_MenuMapper, SIGNAL(mapped(QString)),
-            this, SLOT(attributeMatrixSelected(QString)));
+  connect(m_MenuMapper, SIGNAL(mapped(QString)), this, SLOT(attributeMatrixSelected(QString)));
 
   attributeMatrixSelected(m_DefaultPath.serialize(Detail::Delimiter));
   createSelectionMenu();
 
   // Catch when the filter is about to execute the preflight
-  connect(getFilter(), SIGNAL(preflightAboutToExecute()),
-          this, SLOT(beforePreflight()));
+  connect(getFilter(), SIGNAL(preflightAboutToExecute()), this, SLOT(beforePreflight()));
 
   // Catch when the filter is finished running the preflight
-  connect(getFilter(), SIGNAL(preflightExecuted()),
-          this, SLOT(afterPreflight()));
+  connect(getFilter(), SIGNAL(preflightExecuted()), this, SLOT(afterPreflight()));
 
   // Catch when the filter wants its values updated
-  connect(getFilter(), SIGNAL(updateFilterParameters(AbstractFilter*)),
-          this, SLOT(filterNeedsInputParameters(AbstractFilter*)));
+  connect(getFilter(), SIGNAL(updateFilterParameters(AbstractFilter*)), this, SLOT(filterNeedsInputParameters(AbstractFilter*)));
 
   updatePhaseComboBoxes();
 }
@@ -133,11 +129,17 @@ void PhaseTypeSelectionWidget::setupGui()
 QString PhaseTypeSelectionWidget::checkStringValues(QString curDcName, QString filtDcName)
 {
   if(curDcName.isEmpty() == true && filtDcName.isEmpty() == false)
-  {return filtDcName;}
+  {
+    return filtDcName;
+  }
   else if(curDcName.isEmpty() == false && filtDcName.isEmpty() == true)
-  {return curDcName;}
+  {
+    return curDcName;
+  }
   else if(curDcName.isEmpty() == false && filtDcName.isEmpty() == false && m_DidCausePreflight == true)
-  { return curDcName;}
+  {
+    return curDcName;
+  }
 
   return filtDcName;
 }
@@ -150,7 +152,10 @@ void PhaseTypeSelectionWidget::createSelectionMenu()
   // Now get the DataContainerArray from the Filter instance
   // We are going to use this to get all the current DataContainers
   DataContainerArray::Pointer dca = getFilter()->getDataContainerArray();
-  if(nullptr == dca.get()) { return; }
+  if(nullptr == dca.get())
+  {
+    return;
+  }
 
   // Get the menu and clear it out
   QMenu* menu = m_SelectedAttributeMatrixPath->menu();
@@ -160,7 +165,8 @@ void PhaseTypeSelectionWidget::createSelectionMenu()
     m_SelectedAttributeMatrixPath->setMenu(menu);
     menu->installEventFilter(this);
   }
-  if(menu) {
+  if(menu)
+  {
     menu->clear();
   }
 
@@ -177,23 +183,27 @@ void PhaseTypeSelectionWidget::createSelectionMenu()
 
     IGeometry::Pointer geom = IGeometry::NullPointer();
     uint32_t geomType = 999;
-    if (nullptr != dc.get()) { geom = dc->getGeometry(); }
-    if (nullptr != geom.get()) { geomType = geom->getGeometryType(); }
-
+    if(nullptr != dc.get())
+    {
+      geom = dc->getGeometry();
+    }
+    if(nullptr != geom.get())
+    {
+      geomType = geom->getGeometryType();
+    }
 
     QMenu* dcMenu = new QMenu(dc->getName());
     dcMenu->setDisabled(false);
     menu->addMenu(dcMenu);
-    if(geomTypes.isEmpty() == false && geomTypes.contains(geomType) == false )
+    if(geomTypes.isEmpty() == false && geomTypes.contains(geomType) == false)
     {
       dcMenu->setDisabled(true);
     }
 
-
     // We found the proper Data Container, now populate the AttributeMatrix List
     DataContainer::AttributeMatrixMap_t attrMats = dc->getAttributeMatrices();
     QMapIterator<QString, AttributeMatrix::Pointer> attrMatsIter(attrMats);
-    while(attrMatsIter.hasNext() )
+    while(attrMatsIter.hasNext())
     {
       attrMatsIter.next();
       QString amName = attrMatsIter.key();
@@ -211,7 +221,7 @@ void PhaseTypeSelectionWidget::createSelectionMenu()
       bool amIsNotNull = (nullptr != am.get()) ? true : false;
       bool amValidType = (amTypes.isEmpty() == false && amTypes.contains(am->getType()) == false) ? true : false;
 
-      if (amIsNotNull && amValidType)
+      if(amIsNotNull && amValidType)
       {
         action->setDisabled(true);
       }
@@ -224,7 +234,7 @@ void PhaseTypeSelectionWidget::createSelectionMenu()
 // -----------------------------------------------------------------------------
 bool PhaseTypeSelectionWidget::eventFilter(QObject* obj, QEvent* event)
 {
-  if (event->type() == QEvent::Show && obj == m_SelectedAttributeMatrixPath->menu())
+  if(event->type() == QEvent::Show && obj == m_SelectedAttributeMatrixPath->menu())
   {
     QPoint pos = adjustedMenuPosition(m_SelectedAttributeMatrixPath);
     m_SelectedAttributeMatrixPath->menu()->move(pos);
@@ -241,11 +251,14 @@ void PhaseTypeSelectionWidget::attributeMatrixSelected(QString path)
   m_SelectedAttributeMatrixPath->setText(path);
 
   DataContainerArray::Pointer dca = getFilter()->getDataContainerArray();
-  if(nullptr == dca.get()) { return; }
-
+  if(nullptr == dca.get())
+  {
+    return;
+  }
 
   IDataArray::Pointer attrArray = dca->getPrereqIDataArrayFromPath<IDataArray, AbstractFilter>(getFilter(), DataArrayPath::Deserialize(path, Detail::Delimiter));
-  if(nullptr != attrArray.get()) {
+  if(nullptr != attrArray.get())
+  {
     QString html = attrArray->getInfoString(SIMPL::HtmlFormat);
     m_SelectedAttributeMatrixPath->setToolTip(html);
   }
@@ -269,7 +282,7 @@ void PhaseTypeSelectionWidget::updatePhaseComboBoxes()
 
   UInt32Vector_t vectorWrapper = getFilter()->property(phaseDataProp.toLatin1().constData()).value<UInt32Vector_t>();
   QVector<quint32> dataFromFilter = vectorWrapper.d;
-  if(phaseCount < 0 && dataFromFilter.size() < 10)   // there was an issue getting the phase Count from the Filter.
+  if(phaseCount < 0 && dataFromFilter.size() < 10) // there was an issue getting the phase Count from the Filter.
   {
     phaseCount = dataFromFilter.size(); // So lets just use the count from the actual phase data
   }
@@ -282,10 +295,10 @@ void PhaseTypeSelectionWidget::updatePhaseComboBoxes()
   // Get our list of Phase Type Strings
   QStringList phaseListChoices = m_FilterParameter->getPhaseListChoices();
 
-  for (int i = 1; i < phaseCount; i++)
+  for(int i = 1; i < phaseCount; i++)
   {
     QComboBox* cb = new QComboBox(nullptr);
-    for (int s = 0; s < phaseListChoices.size(); ++s)
+    for(int s = 0; s < phaseListChoices.size(); ++s)
     {
       cb->addItem((phaseListChoices[s]), phaseTypeEnums[s]);
       cb->setItemData(static_cast<int>(s), phaseTypeEnums[s], Qt::UserRole);
@@ -295,12 +308,11 @@ void PhaseTypeSelectionWidget::updatePhaseComboBoxes()
     phaseListWidget->addItem(item);
     phaseListWidget->setItemWidget(item, cb);
 
-    if (i < dataFromFilter.size())
+    if(i < dataFromFilter.size())
     {
       cb->setCurrentIndex(dataFromFilter[i]);
     }
-    connect(cb, SIGNAL(currentIndexChanged(int)),
-            this, SLOT(phaseTypeComboBoxChanged(int)) );
+    connect(cb, SIGNAL(currentIndexChanged(int)), this, SLOT(phaseTypeComboBoxChanged(int)));
   }
 }
 
@@ -321,20 +333,25 @@ void PhaseTypeSelectionWidget::resetPhaseComboBoxes()
 {
   int count = phaseListWidget->count();
 
-  for (int i = 0; i < count; ++i)
+  for(int i = 0; i < count; ++i)
   {
     QComboBox* cb = qobject_cast<QComboBox*>(phaseListWidget->itemWidget(phaseListWidget->item(i)));
-    if (cb) { cb->setCurrentIndex(-1); }
+    if(cb)
+    {
+      cb->setCurrentIndex(-1);
+    }
   }
 }
-
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
 void PhaseTypeSelectionWidget::beforePreflight()
 {
-  if (nullptr == getFilter()) { return; }
+  if(nullptr == getFilter())
+  {
+    return;
+  }
   if(m_DidCausePreflight == true)
   {
     return;
@@ -357,9 +374,9 @@ void PhaseTypeSelectionWidget::afterPreflight()
 void PhaseTypeSelectionWidget::filterNeedsInputParameters(AbstractFilter* filter)
 {
   int count = phaseListWidget->count();
-//  {
-//    std::cout << "PhaseTypeSelectionWidget::filterNeedsInputParameters Count = " << count << std::endl;
-//  }
+  //  {
+  //    std::cout << "PhaseTypeSelectionWidget::filterNeedsInputParameters Count = " << count << std::endl;
+  //  }
 
   PhaseTypeSelectionFilterParameter* p = dynamic_cast<PhaseTypeSelectionFilterParameter*>(getFilterParameter());
   QVariant var;
@@ -368,11 +385,11 @@ void PhaseTypeSelectionWidget::filterNeedsInputParameters(AbstractFilter* filter
   QVector<uint32_t> phaseTypes(count + 1, SIMPL::PhaseType::UnknownPhaseType);
   bool ok = false;
   phaseTypes[0] = SIMPL::PhaseType::UnknownPhaseType;
-  for (int i = 0; i < count; ++i)
+  for(int i = 0; i < count; ++i)
   {
     QComboBox* cb = qobject_cast<QComboBox*>(phaseListWidget->itemWidget(phaseListWidget->item(i)));
     unsigned int sType = static_cast<unsigned int>(cb->itemData(cb->currentIndex(), Qt::UserRole).toUInt(&ok));
-    //phaseTypes[i+1] = sType;
+    // phaseTypes[i+1] = sType;
     phaseTypes[i + 1] = sType;
   }
 

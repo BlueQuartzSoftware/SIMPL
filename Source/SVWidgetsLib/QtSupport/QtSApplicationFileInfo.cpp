@@ -38,13 +38,11 @@
 #include <QtCore/QDir>
 #include <QtWidgets/QApplication>
 
-
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
 QtSApplicationFileInfo::QtSApplicationFileInfo()
 {
-
 }
 
 // -----------------------------------------------------------------------------
@@ -52,7 +50,6 @@ QtSApplicationFileInfo::QtSApplicationFileInfo()
 // -----------------------------------------------------------------------------
 QtSApplicationFileInfo::~QtSApplicationFileInfo()
 {
-
 }
 
 // -----------------------------------------------------------------------------
@@ -67,7 +64,7 @@ QString QtSApplicationFileInfo::GenerateFileSystemPath(QString pathEnding)
 #if defined(Q_OS_WIN)
 
 #elif defined(Q_OS_MAC)
-  if (dir.dirName() == "MacOS")
+  if(dir.dirName() == "MacOS")
   {
     dir.cdUp();
     dir.cdUp();
@@ -76,7 +73,7 @@ QString QtSApplicationFileInfo::GenerateFileSystemPath(QString pathEnding)
 #else
   // We are on Linux - I think
   QFileInfo fi(dir.absolutePath() + pathEnding);
-  if (fi.exists() == false)
+  if(fi.exists() == false)
   {
     // The help file does not exist at the default location because we are probably running from the build tree.
     // Try up one more directory
@@ -84,9 +81,9 @@ QString QtSApplicationFileInfo::GenerateFileSystemPath(QString pathEnding)
   }
 #endif
 
-#if defined(Q_OS_WIN) || defined (Q_OS_MAC)
+#if defined(Q_OS_WIN) || defined(Q_OS_MAC)
   QFileInfo fi(dir.absolutePath() + pathEnding);
-  if (fi.exists() == false)
+  if(fi.exists() == false)
   {
     // The help file does not exist at the default location because we are probably running from visual studio.
     // Try up one more directory
@@ -98,6 +95,3 @@ QString QtSApplicationFileInfo::GenerateFileSystemPath(QString pathEnding)
   filePath = QDir::toNativeSeparators(filePath);
   return filePath;
 }
-
-
-

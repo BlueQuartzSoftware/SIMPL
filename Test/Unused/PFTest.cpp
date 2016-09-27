@@ -33,29 +33,24 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-
-
-
-#include <QtCore/QVector>
 #include <QtCore/QDir>
+#include <QtCore/QVector>
 
-#include <QtWidgets/QApplication>
 #include <QtGui/QImage>
+#include <QtWidgets/QApplication>
 
-#include "EbsdLib/EbsdLib.h"
 #include "EbsdLib/EbsdConstants.h"
+#include "EbsdLib/EbsdLib.h"
 
-
-#include "SIMPLib/SIMPLib.h"
-#include "SIMPLib/Common/Texture.hpp"
 #include "SIMPLib/Common/StatsGen.hpp"
+#include "SIMPLib/Common/Texture.hpp"
+#include "SIMPLib/SIMPLib.h"
 
 #define PFTEST_NO_QOBJECT 1
 
 #include "SVWidgetsLib/QtSupport/PoleFigureImageUtilities.h"
 
 #include "TestFileLocations.h"
-
 
 // -----------------------------------------------------------------------------
 //
@@ -68,8 +63,7 @@ void poleFigureGenerationComplete()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-unsigned int makePoleFigures(QVector<float> e1s, QVector<float> e2s, QVector<float> e3s,
-                             QVector<float> weights, QVector<float> sigmas, QString prefix)
+unsigned int makePoleFigures(QVector<float> e1s, QVector<float> e2s, QVector<float> e3s, QVector<float> weights, QVector<float> sigmas, QString prefix)
 {
 
   return EXIT_SUCCESS;
@@ -85,8 +79,6 @@ int main(int argc, char* argv[])
 
   QDir d(QString::fromStdString(UnitTest::PFTest::TestDir));
   d.mkdir(QString::fromStdString(UnitTest::PFTest::TestDir));
-
-
 
   return EXIT_SUCCESS;
 }

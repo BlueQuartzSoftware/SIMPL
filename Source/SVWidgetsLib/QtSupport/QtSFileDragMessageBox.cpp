@@ -33,7 +33,6 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-
 #include "QtSFileDragMessageBox.h"
 
 #include "moc_QtSFileDragMessageBox.cpp"
@@ -41,8 +40,8 @@
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-QtSFileDragMessageBox::QtSFileDragMessageBox(QWidget* parent) :
-  okBtnPressed(false)
+QtSFileDragMessageBox::QtSFileDragMessageBox(QWidget* parent)
+: okBtnPressed(false)
 {
   setupUi(this);
   setWindowFlags(windowFlags() | Qt::WindowStaysOnTopHint);
@@ -85,5 +84,3 @@ bool QtSFileDragMessageBox::didPressOkBtn()
 {
   return okBtnPressed;
 }
-
-

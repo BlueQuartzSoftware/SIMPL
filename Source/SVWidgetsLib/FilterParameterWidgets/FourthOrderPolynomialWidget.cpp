@@ -1,4 +1,4 @@
-  /* ============================================================================
+/* ============================================================================
 * Copyright (c) 2009-2016 BlueQuartz Software, LLC
 *
 * Redistribution and use in source and binary forms, with or without modification,
@@ -51,8 +51,8 @@
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-FourthOrderPolynomialWidget::FourthOrderPolynomialWidget(FilterParameter* parameter, AbstractFilter* filter, QWidget* parent) :
-  FilterParameterWidget(parameter, filter, parent)
+FourthOrderPolynomialWidget::FourthOrderPolynomialWidget(FilterParameter* parameter, AbstractFilter* filter, QWidget* parent)
+: FilterParameterWidget(parameter, filter, parent)
 {
   m_FilterParameter = dynamic_cast<FourthOrderPolynomialFilterParameter*>(parameter);
   Q_ASSERT_X(m_FilterParameter != nullptr, "nullptr Pointer", "FourthOrderPolynomialWidget can ONLY be used with a FourthOrderPolynomialFilterParameter object");
@@ -68,24 +68,19 @@ FourthOrderPolynomialWidget::~FourthOrderPolynomialWidget()
 {
 }
 
-
-
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
 void FourthOrderPolynomialWidget::setupGui()
 {
   // Catch when the filter is about to execute the preflight
-  connect(getFilter(), SIGNAL(preflightAboutToExecute()),
-          this, SLOT(beforePreflight()));
+  connect(getFilter(), SIGNAL(preflightAboutToExecute()), this, SLOT(beforePreflight()));
 
   // Catch when the filter is finished running the preflight
-  connect(getFilter(), SIGNAL(preflightExecuted()),
-          this, SLOT(afterPreflight()));
+  connect(getFilter(), SIGNAL(preflightExecuted()), this, SLOT(afterPreflight()));
 
   // Catch when the filter wants its values updated
-  connect(getFilter(), SIGNAL(updateFilterParameters(AbstractFilter*)),
-          this, SLOT(filterNeedsInputParameters(AbstractFilter*)));
+  connect(getFilter(), SIGNAL(updateFilterParameters(AbstractFilter*)), this, SLOT(filterNeedsInputParameters(AbstractFilter*)));
 
   QLocale loc = QLocale::system();
 
@@ -105,33 +100,30 @@ void FourthOrderPolynomialWidget::setupGui()
   FOPW_SETUP_WIDGET(c01)
   FOPW_SETUP_WIDGET(c00)
 
-
-  if (getFilterParameter() != nullptr)
+  if(getFilterParameter() != nullptr)
   {
-    label->setText(getFilterParameter()->getHumanLabel() );
+    label->setText(getFilterParameter()->getHumanLabel());
 
     Float4thOrderPoly_t data = getFilter()->property(PROPERTY_NAME_AS_CHAR).value<Float4thOrderPoly_t>();
-    c40->setText( loc.toString(data.c40)  );
-    c04->setText( loc.toString(data.c04)  );
-    c31->setText( loc.toString(data.c31)  );
-    c13->setText( loc.toString(data.c13) );
-    c22->setText( loc.toString(data.c22)  );
-    c30->setText( loc.toString(data.c30)  );
-    c03->setText( loc.toString(data.c03)  );
-    c21->setText( loc.toString(data.c21)  );
-    c12->setText( loc.toString(data.c12) );
-    c20->setText( loc.toString(data.c20)  );
-    c02->setText( loc.toString(data.c02)  );
-    c11->setText( loc.toString(data.c11)  );
-    c10->setText( loc.toString(data.c10) );
-    c01->setText( loc.toString(data.c01) );
-    c00->setText( loc.toString(data.c00) );
+    c40->setText(loc.toString(data.c40));
+    c04->setText(loc.toString(data.c04));
+    c31->setText(loc.toString(data.c31));
+    c13->setText(loc.toString(data.c13));
+    c22->setText(loc.toString(data.c22));
+    c30->setText(loc.toString(data.c30));
+    c03->setText(loc.toString(data.c03));
+    c21->setText(loc.toString(data.c21));
+    c12->setText(loc.toString(data.c12));
+    c20->setText(loc.toString(data.c20));
+    c02->setText(loc.toString(data.c02));
+    c11->setText(loc.toString(data.c11));
+    c10->setText(loc.toString(data.c10));
+    c01->setText(loc.toString(data.c01));
+    c00->setText(loc.toString(data.c00));
   }
 
   errorLabel->hide();
 }
-
-
 
 // -----------------------------------------------------------------------------
 //
@@ -159,7 +151,6 @@ void FourthOrderPolynomialWidget::widgetChanged(const QString& text)
 
   emit parametersChanged();
 }
-
 
 // -----------------------------------------------------------------------------
 //
@@ -195,7 +186,6 @@ void FourthOrderPolynomialWidget::filterNeedsInputParameters(AbstractFilter* fil
   {
     FilterParameterWidgetsDialogs::ShowCouldNotSetFilterParameter(getFilter(), getFilterParameter());
   }
-
 }
 
 // -----------------------------------------------------------------------------
@@ -203,7 +193,6 @@ void FourthOrderPolynomialWidget::filterNeedsInputParameters(AbstractFilter* fil
 // -----------------------------------------------------------------------------
 void FourthOrderPolynomialWidget::beforePreflight()
 {
-
 }
 
 // -----------------------------------------------------------------------------
@@ -211,5 +200,4 @@ void FourthOrderPolynomialWidget::beforePreflight()
 // -----------------------------------------------------------------------------
 void FourthOrderPolynomialWidget::afterPreflight()
 {
-
 }

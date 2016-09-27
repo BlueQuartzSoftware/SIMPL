@@ -33,65 +33,21 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-
 #include "SuperEllipsoidOps.h"
 
 #include "SIMPLib/Math/SIMPLibMath.h"
 
-
-
-
-
-float ShapeClass2Omega3[41][2] = {{0.0f, 0.0f},
-  {0.0f, 0.25f},
-  {0.0f, 0.5f},
-  {0.0f, 0.75f},
-  {0.0f, 1.0f},
-  {0.0f, 1.25f},
-  {0.0f, 1.5f},
-  {0.0f, 1.75f},
-  {0.0f, 2.0f},
-  {0.0f, 2.25f},
-  {0.0f, 2.5f},
-  {0.0f, 2.75f},
-  {0.0f, 3.0f},
-  {0.0f, 3.25f},
-  {0.0f, 3.5f},
-  {0.0f, 3.75f},
-  {0.0f, 4.0f},
-  {0.0f, 4.25f},
-  {0.0f, 4.5f},
-  {0.0f, 4.75f},
-  {0.0f, 5.0f},
-  {0.0f, 5.25f},
-  {0.0f, 5.5f},
-  {0.0f, 5.75f},
-  {0.0f, 6.0f},
-  {0.0f, 6.25f},
-  {0.0f, 6.5f},
-  {0.0f, 6.75f},
-  {0.0f, 7.0f},
-  {0.0f, 7.25f},
-  {0.0f, 7.5f},
-  {0.0f, 7.75f},
-  {0.0f, 8.0f},
-  {0.0f, 8.25f},
-  {0.0f, 8.5f},
-  {0.0f, 8.75f},
-  {0.0f, 9.0f},
-  {0.0f, 9.25f},
-  {0.0f, 9.5f},
-  {0.0f, 9.75f},
-  {0.0f, 10.0f}
-};
+float ShapeClass2Omega3[41][2] = {{0.0f, 0.0f},  {0.0f, 0.25f}, {0.0f, 0.5f},  {0.0f, 0.75f}, {0.0f, 1.0f},  {0.0f, 1.25f}, {0.0f, 1.5f},  {0.0f, 1.75f}, {0.0f, 2.0f},  {0.0f, 2.25f}, {0.0f, 2.5f},
+                                  {0.0f, 2.75f}, {0.0f, 3.0f},  {0.0f, 3.25f}, {0.0f, 3.5f},  {0.0f, 3.75f}, {0.0f, 4.0f},  {0.0f, 4.25f}, {0.0f, 4.5f},  {0.0f, 4.75f}, {0.0f, 5.0f},  {0.0f, 5.25f},
+                                  {0.0f, 5.5f},  {0.0f, 5.75f}, {0.0f, 6.0f},  {0.0f, 6.25f}, {0.0f, 6.5f},  {0.0f, 6.75f}, {0.0f, 7.0f},  {0.0f, 7.25f}, {0.0f, 7.5f},  {0.0f, 7.75f}, {0.0f, 8.0f},
+                                  {0.0f, 8.25f}, {0.0f, 8.5f},  {0.0f, 8.75f}, {0.0f, 9.0f},  {0.0f, 9.25f}, {0.0f, 9.5f},  {0.0f, 9.75f}, {0.0f, 10.0f}};
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-SuperEllipsoidOps::SuperEllipsoidOps() :
-  Nvalue(0.0f)
+SuperEllipsoidOps::SuperEllipsoidOps()
+: Nvalue(0.0f)
 {
-
 }
 
 // -----------------------------------------------------------------------------
@@ -115,15 +71,15 @@ float SuperEllipsoidOps::radcur1(QMap<ArgName, float> args)
   float bovera = args[B_OverA];
   float covera = args[C_OverA];
 
-  for (int i = 0; i < 41; i++)
+  for(int i = 0; i < 41; i++)
   {
     float a = SIMPLibMath::Gamma(1.0f + 1.0f / ShapeClass2Omega3[i][1]);
     float b = SIMPLibMath::Gamma(5.0f / ShapeClass2Omega3[i][1]);
     float c = SIMPLibMath::Gamma(3.0f / ShapeClass2Omega3[i][1]);
     float d = SIMPLibMath::Gamma(1.0f + 3.0f / ShapeClass2Omega3[i][1]);
-    ShapeClass2Omega3[i][0] = static_cast<float>( powf(20.0f * ((a * a * a) * b) / (c * powf(d, 5.0f / 3.0f)), 3.0f) / (2000.0f * M_PI * M_PI / 9.0f) );
+    ShapeClass2Omega3[i][0] = static_cast<float>(powf(20.0f * ((a * a * a) * b) / (c * powf(d, 5.0f / 3.0f)), 3.0f) / (2000.0f * M_PI * M_PI / 9.0f));
     Nvaluedist = fabsf(omega3 - ShapeClass2Omega3[i][0]);
-    if (Nvaluedist < bestNvaluedist)
+    if(Nvaluedist < bestNvaluedist)
     {
       bestNvaluedist = Nvaluedist;
       Nvalue = ShapeClass2Omega3[i][1];

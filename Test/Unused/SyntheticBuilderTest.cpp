@@ -33,33 +33,31 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-
-
 #include <stdlib.h>
 
 #include <iostream>
 #include <string>
 
 #include "MXA/Common/LogTime.h"
+#include "MXA/Utilities/MXAFileInfo.h"
 #include <QtCore/QDir>
 #include <QtCore/QFile>
-#include "MXA/Utilities/MXAFileInfo.h"
 
-#include "SIMPLib/SIMPLib.h"
 #include "SIMPLib/Common/AbstractPipeline.h"
-#include "SIMPLib/Common/Observer.h"
 #include "SIMPLib/Common/FilterPipeline.h"
+#include "SIMPLib/Common/Observer.h"
+#include "SIMPLib/SIMPLib.h"
 #include "SIMPLib/VTKUtils/VTKFileWriters.hpp"
 //#include "SIMPLib/HDF5/H5VoxelReader.h"
 #include "SIMPLib/IOFilters/DataContainerWriter.h"
-#include "SIMPLib/IOFilters/VtkRectilinearGridWriter.h"
-#include "SIMPLib/SyntheticBuilderFilters/InitializeSyntheticVolume.h"
-#include "SIMPLib/SyntheticBuilderFilters/MatchCrystallography.h"
-#include "SIMPLib/SyntheticBuilderFilters/InsertPrecipitatePhases.h"
-#include "SIMPLib/SyntheticBuilderFilters/InitializeSyntheticVolume.h"
-#include "SIMPLib/SyntheticBuilderFilters/PackPrimaryPhases.h"
-#include "SIMPLib/SyntheticBuilderFilters/AdjustVolume.h"
 #include "SIMPLib/IOFilters/FeatureDataCSVWriter.h"
+#include "SIMPLib/IOFilters/VtkRectilinearGridWriter.h"
+#include "SIMPLib/SyntheticBuilderFilters/AdjustVolume.h"
+#include "SIMPLib/SyntheticBuilderFilters/InitializeSyntheticVolume.h"
+#include "SIMPLib/SyntheticBuilderFilters/InitializeSyntheticVolume.h"
+#include "SIMPLib/SyntheticBuilderFilters/InsertPrecipitatePhases.h"
+#include "SIMPLib/SyntheticBuilderFilters/MatchCrystallography.h"
+#include "SIMPLib/SyntheticBuilderFilters/PackPrimaryPhases.h"
 
 #include "UnitTestSupport.hpp"
 
@@ -67,8 +65,6 @@
 
 #define PACK_GRAINS_ERROR_TXT_OUT 1
 #define PACK_GRAINS_VTK_FILE_OUT 1
-
-
 
 QString m_H5StatsFile("");
 QString m_OutputDirectory = UnitTest::SyntheticBuilderTest::TestDir;
@@ -78,7 +74,6 @@ size_t m_YPoints = 150;
 size_t m_ZPoints = 150;
 
 typedef DataArray<unsigned int> ShapeTypeArrayType;
-
 
 float m_XResolution = 0.25f;
 float m_YResolution = 0.25f;
@@ -100,7 +95,6 @@ bool m_WriteIPFColor = true;
 
 bool m_WriteHDF5GrainFile = false;
 
-
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
@@ -112,17 +106,14 @@ QString getH5StatsFile()
 
 void setCurrentFilter(AbstractFilter::Pointer f)
 {
-
 }
 
 void pipelineFinished()
 {
-
 }
 
 void setErrorCondition(int err)
 {
-
 }
 // -----------------------------------------------------------------------------
 //
@@ -144,7 +135,6 @@ void TestSyntheticBuilder()
   dir.mkpath(".");
 
   Observer* observer = new Observer;
-
 
   int err = 0;
 
@@ -174,11 +164,11 @@ void TestSyntheticBuilder()
   pack_grains->setPeriodicBoundaries(m_PeriodicBoundary);
   pack_grains->setNeighborhoodErrorWeight(m_NeighborhoodErrorWeight);
 #if PACK_GRAINS_ERROR_TXT_OUT
-  MAKE_OUTPUT_FILE_PATH( errorFile, SIMPL::SyntheticBuilder::ErrorFile)
+  MAKE_OUTPUT_FILE_PATH(errorFile, SIMPL::SyntheticBuilder::ErrorFile)
   pack_grains->setErrorOutputFile(errorFile);
 #endif
 #if PACK_GRAINS_VTK_FILE_OUT
-  MAKE_OUTPUT_FILE_PATH( vtkFile, SIMPL::SyntheticBuilder::VtkFile)
+  MAKE_OUTPUT_FILE_PATH(vtkFile, SIMPL::SyntheticBuilder::VtkFile)
   pack_grains->setVtkOutputFile(vtkFile);
 #endif
   pipeline->pushBack(pack_grains);
@@ -191,7 +181,7 @@ void TestSyntheticBuilder()
   pipeline->pushBack(place_precipitates);
 
   MatchCrystallography::Pointer match_crystallography = MatchCrystallography::New();
-//  pipeline->pushBack(match_crystallography);
+  //  pipeline->pushBack(match_crystallography);
 
   FeatureDataCSVWriter::Pointer write_featuredata = FeatureDataCSVWriter::New();
   write_featuredata->setFeatureDataFile(UnitTest::SyntheticBuilderTest::CsvFile);
@@ -236,8 +226,6 @@ void TestSyntheticBuilder()
   delete observer;
 }
 
-
-
 // -----------------------------------------------------------------------------
 //  Use unit test framework
 // -----------------------------------------------------------------------------
@@ -246,20 +234,15 @@ int main(int argc, char** argv)
   int err = EXIT_SUCCESS;
 
 #if !REMOVE_TEST_FILES
-  DREAM3D_REGISTER_TEST( RemoveTestFiles() )
+  DREAM3D_REGISTER_TEST(RemoveTestFiles())
 #endif
 
-  DREAM3D_REGISTER_TEST( TestSyntheticBuilder() )
+  DREAM3D_REGISTER_TEST(TestSyntheticBuilder())
 
 #if REMOVE_TEST_FILES
-  DREAM3D_REGISTER_TEST( RemoveTestFiles() )
+  DREAM3D_REGISTER_TEST(RemoveTestFiles())
 #endif
-
 
   PRINT_TEST_SUMMARY();
   return err;
 }
-
-
-
-

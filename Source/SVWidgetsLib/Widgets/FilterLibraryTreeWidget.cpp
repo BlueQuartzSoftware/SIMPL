@@ -33,15 +33,14 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-
 #include "FilterLibraryTreeWidget.h"
 
+#include <QtCore/QJsonDocument>
+#include <QtCore/QJsonObject>
+#include <QtCore/QMimeData>
+#include <QtGui/QDrag>
 #include <QtGui/QMouseEvent>
 #include <QtWidgets/QApplication>
-#include <QtCore/QMimeData>
-#include <QtCore/QJsonObject>
-#include <QtCore/QJsonDocument>
-#include <QtGui/QDrag>
 
 #include "SVWidgetsLib/Core/SVWidgetsLibConstants.h"
 
@@ -52,7 +51,7 @@
 //
 // -----------------------------------------------------------------------------
 FilterLibraryTreeWidget::FilterLibraryTreeWidget(QWidget* parent)
-  : QTreeWidget(parent)
+: QTreeWidget(parent)
 {
   setAcceptDrops(false);
 }
@@ -69,8 +68,10 @@ FilterLibraryTreeWidget::~FilterLibraryTreeWidget()
 // -----------------------------------------------------------------------------
 void FilterLibraryTreeWidget::mousePressEvent(QMouseEvent* event)
 {
-  if (event->button() == Qt::LeftButton)
-  { startPos = event->pos(); }
+  if(event->button() == Qt::LeftButton)
+  {
+    startPos = event->pos();
+  }
   QTreeWidget::mousePressEvent(event);
 }
 
@@ -79,11 +80,13 @@ void FilterLibraryTreeWidget::mousePressEvent(QMouseEvent* event)
 // -----------------------------------------------------------------------------
 void FilterLibraryTreeWidget::mouseMoveEvent(QMouseEvent* event)
 {
-  if (event->buttons() & Qt::LeftButton)
+  if(event->buttons() & Qt::LeftButton)
   {
     int distance = (event->pos() - startPos).manhattanLength();
-    if (distance >= QApplication::startDragDistance())
-    { performDrag(); }
+    if(distance >= QApplication::startDragDistance())
+    {
+      performDrag();
+    }
   }
   QTreeWidget::mouseMoveEvent(event);
 }
@@ -120,24 +123,21 @@ void FilterLibraryTreeWidget::performDrag()
 // -----------------------------------------------------------------------------
 void FilterLibraryTreeWidget::dragEnterEvent(QDragEnterEvent* event)
 {
-  FilterLibraryTreeWidget* source =
-    qobject_cast<FilterLibraryTreeWidget*>(event->source());
-  if (source && source != this)
+  FilterLibraryTreeWidget* source = qobject_cast<FilterLibraryTreeWidget*>(event->source());
+  if(source && source != this)
   {
     event->setDropAction(Qt::MoveAction);
     event->accept();
   }
 }
 
-
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
 void FilterLibraryTreeWidget::dragMoveEvent(QDragMoveEvent* event)
 {
-  FilterLibraryTreeWidget* source =
-    qobject_cast<FilterLibraryTreeWidget*>(event->source());
-  if (source && source != this)
+  FilterLibraryTreeWidget* source = qobject_cast<FilterLibraryTreeWidget*>(event->source());
+  if(source && source != this)
   {
     event->setDropAction(Qt::MoveAction);
     event->accept();
@@ -159,4 +159,3 @@ void FilterLibraryTreeWidget::dropEvent(QDropEvent* event)
   }
 #endif
 }
-

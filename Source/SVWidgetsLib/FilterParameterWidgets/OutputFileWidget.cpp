@@ -35,16 +35,15 @@
 
 #include "OutputFileWidget.h"
 
-#include <QtCore/QMetaProperty>
 #include <QtCore/QDir>
+#include <QtCore/QMetaProperty>
 
 #include <QtWidgets/QFileDialog>
 
 #include "SIMPLib/FilterParameters/OutputFileFilterParameter.h"
 
-#include "SVWidgetsLib/QtSupport/QtSFileCompleter.h"
 #include "SVWidgetsLib/Core/SVWidgetsLibConstants.h"
-
+#include "SVWidgetsLib/QtSupport/QtSFileCompleter.h"
 
 #include "FilterParameterWidgetsDialogs.h"
 
@@ -57,8 +56,8 @@ QString OutputFileWidget::m_OpenDialogLastDirectory = "";
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-OutputFileWidget::OutputFileWidget(FilterParameter* parameter, AbstractFilter* filter, QWidget* parent) :
-  FilterParameterWidget(parameter, filter, parent)
+OutputFileWidget::OutputFileWidget(FilterParameter* parameter, AbstractFilter* filter, QWidget* parent)
+: FilterParameterWidget(parameter, filter, parent)
 {
   m_FilterParameter = dynamic_cast<OutputFileFilterParameter*>(parameter);
   Q_ASSERT_X(m_FilterParameter != nullptr, "nullptr Pointer", "OutputFileWidget can ONLY be used with a OutputFileFilterParameter object");
@@ -88,7 +87,8 @@ OutputFileWidget::OutputFileWidget(FilterParameter* parameter, AbstractFilter* f
 //
 // -----------------------------------------------------------------------------
 OutputFileWidget::~OutputFileWidget()
-{}
+{
+}
 
 // -----------------------------------------------------------------------------
 //
@@ -113,34 +113,28 @@ void OutputFileWidget::setupGui()
 {
 
   // Catch when the filter is about to execute the preflight
-  connect(getFilter(), SIGNAL(preflightAboutToExecute()),
-          this, SLOT(beforePreflight()));
+  connect(getFilter(), SIGNAL(preflightAboutToExecute()), this, SLOT(beforePreflight()));
 
   // Catch when the filter is finished running the preflight
-  connect(getFilter(), SIGNAL(preflightExecuted()),
-          this, SLOT(afterPreflight()));
+  connect(getFilter(), SIGNAL(preflightExecuted()), this, SLOT(afterPreflight()));
 
   // Catch when the filter wants its values updated
-  connect(getFilter(), SIGNAL(updateFilterParameters(AbstractFilter*)),
-          this, SLOT(filterNeedsInputParameters(AbstractFilter*)));
+  connect(getFilter(), SIGNAL(updateFilterParameters(AbstractFilter*)), this, SLOT(filterNeedsInputParameters(AbstractFilter*)));
 
   QtSFileCompleter* com = new QtSFileCompleter(this, false);
   value->setCompleter(com);
-  QObject::connect( com, SIGNAL(activated(const QString&)),
-                    this, SLOT(on_value_textChanged(const QString&)));
+  QObject::connect(com, SIGNAL(activated(const QString&)), this, SLOT(on_value_textChanged(const QString&)));
 
-  if (getFilterParameter() != nullptr)
+  if(getFilterParameter() != nullptr)
   {
-    label->setText(getFilterParameter()->getHumanLabel() );
+    label->setText(getFilterParameter()->getHumanLabel());
 
     QString currentPath = getFilter()->property(PROPERTY_NAME_AS_CHAR).toString();
     value->setText(currentPath);
-    if(verifyPathExists(currentPath, value) )
+    if(verifyPathExists(currentPath, value))
     {
-
     }
   }
-
 }
 
 // -----------------------------------------------------------------------------
@@ -149,7 +143,7 @@ void OutputFileWidget::setupGui()
 bool OutputFileWidget::verifyPathExists(QString filePath, QLineEdit* lineEdit)
 {
   QFileInfo fileinfo(filePath);
-  if (false == fileinfo.exists())
+  if(false == fileinfo.exists())
   {
     lineEdit->setStyleSheet("border: 1px solid red;");
   }
@@ -214,7 +208,6 @@ void OutputFileWidget::on_selectBtn_clicked()
   QString defaultName = m_OpenDialogLastDirectory + QDir::separator() + "Untitled";
   QString file = QFileDialog::getSaveFileName(this, tr("Save File As"), defaultName, s);
 
-
   if(true == file.isEmpty())
   {
     return;
@@ -240,7 +233,6 @@ void OutputFileWidget::filterNeedsInputParameters(AbstractFilter* filter)
   {
     FilterParameterWidgetsDialogs::ShowCouldNotSetFilterParameter(getFilter(), getFilterParameter());
   }
-
 }
 
 // -----------------------------------------------------------------------------
@@ -248,7 +240,6 @@ void OutputFileWidget::filterNeedsInputParameters(AbstractFilter* filter)
 // -----------------------------------------------------------------------------
 void OutputFileWidget::beforePreflight()
 {
-
 }
 
 // -----------------------------------------------------------------------------
@@ -256,5 +247,4 @@ void OutputFileWidget::beforePreflight()
 // -----------------------------------------------------------------------------
 void OutputFileWidget::afterPreflight()
 {
-
 }

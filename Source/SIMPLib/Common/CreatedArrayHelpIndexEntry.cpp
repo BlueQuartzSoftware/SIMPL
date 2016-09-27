@@ -33,17 +33,14 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-
 #include "CreatedArrayHelpIndexEntry.h"
-
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-CreatedArrayHelpIndexEntry::CreatedArrayHelpIndexEntry() :
-  m_ArrayNumComponents(0)
+CreatedArrayHelpIndexEntry::CreatedArrayHelpIndexEntry()
+: m_ArrayNumComponents(0)
 {
-
 }
 
 // -----------------------------------------------------------------------------
@@ -51,5 +48,4 @@ CreatedArrayHelpIndexEntry::CreatedArrayHelpIndexEntry() :
 // -----------------------------------------------------------------------------
 CreatedArrayHelpIndexEntry::~CreatedArrayHelpIndexEntry()
 {
-
 }

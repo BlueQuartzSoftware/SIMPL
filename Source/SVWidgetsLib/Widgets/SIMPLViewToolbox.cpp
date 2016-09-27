@@ -42,8 +42,8 @@ SIMPLViewToolbox* SIMPLViewToolbox::self = nullptr;
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-SIMPLViewToolbox::SIMPLViewToolbox(QWidget* parent, Qt::WindowFlags flags) :
-QMainWindow(parent, flags)
+SIMPLViewToolbox::SIMPLViewToolbox(QWidget* parent, Qt::WindowFlags flags)
+: QMainWindow(parent, flags)
 {
   setupUi(this);
 
@@ -55,7 +55,6 @@ QMainWindow(parent, flags)
 // -----------------------------------------------------------------------------
 SIMPLViewToolbox::~SIMPLViewToolbox()
 {
-
 }
 
 // -----------------------------------------------------------------------------
@@ -63,7 +62,7 @@ SIMPLViewToolbox::~SIMPLViewToolbox()
 // -----------------------------------------------------------------------------
 SIMPLViewToolbox* SIMPLViewToolbox::Instance(QWidget* parent, Qt::WindowFlags flags)
 {
-  if (self == nullptr)
+  if(self == nullptr)
   {
     self = new SIMPLViewToolbox(parent, flags);
   }
@@ -92,21 +91,21 @@ void SIMPLViewToolbox::readSettings()
 
   bool showBookmarksValue = prefs->value(bookmarksWidget->objectName(), true).toBool();
   m_ActionShowBookmarks->setChecked(showBookmarksValue);
-  if (showBookmarksValue == false)
+  if(showBookmarksValue == false)
   {
     tabWidget->removeTab(tabWidget->indexOf(bookmarksTab));
   }
 
   bool showFilterListValue = prefs->value(filterListWidget->objectName(), true).toBool();
   m_ActionShowFilterList->setChecked(showFilterListValue);
-  if (showFilterListValue == false)
+  if(showFilterListValue == false)
   {
     tabWidget->removeTab(tabWidget->indexOf(filterListTab));
   }
 
   bool showFilterLibraryValue = prefs->value(filterLibraryWidget->objectName(), true).toBool();
   m_ActionShowFilterLibrary->setChecked(showFilterLibraryValue);
-  if (showFilterLibraryValue == false)
+  if(showFilterLibraryValue == false)
   {
     tabWidget->removeTab(tabWidget->indexOf(filterLibraryTab));
   }
@@ -117,7 +116,7 @@ void SIMPLViewToolbox::readSettings()
   // Read dock widget settings
   prefs->beginGroup("Bookmarks Widget");
   bookmarksWidget->readSettings(prefs.data());
-  if (prefs->value("PrebuiltsRead", QVariant(false)).toBool() == false)
+  if(prefs->value("PrebuiltsRead", QVariant(false)).toBool() == false)
   {
     bookmarksWidget->readPrebuiltPipelines();
   }
@@ -142,13 +141,14 @@ void SIMPLViewToolbox::readWindowSettings(QtSSettings* prefs)
   bool ok = false;
   prefs->beginGroup("WindowSettings");
   QStringList childGroups = prefs->childGroups();
-  if (prefs->contains(QString("MainWindowGeometry")))
+  if(prefs->contains(QString("MainWindowGeometry")))
   {
     QByteArray geo_data = prefs->value("MainWindowGeometry", QByteArray(""));
     ok = restoreGeometry(geo_data);
-    if (!ok)
+    if(!ok)
     {
-      qDebug() << "Error Restoring the Window Geometry" << "\n";
+      qDebug() << "Error Restoring the Window Geometry"
+               << "\n";
     }
   }
 
@@ -164,15 +164,15 @@ void SIMPLViewToolbox::readWindowSettings(QtSSettings* prefs)
   int currentIndex = prefs->value("Current Index", QVariant(0)).toInt();
 
   // Re-add the tabs in the order that they were in from last launch (if index is less than 0, it was hidden during last launch)
-  if (filterListIndex >= 0)
+  if(filterListIndex >= 0)
   {
     tabWidget->insertTab(filterListIndex, filterListTab, "Filter List");
   }
-  if (filterLibraryIndex >= 0)
+  if(filterLibraryIndex >= 0)
   {
     tabWidget->insertTab(filterLibraryIndex, filterLibraryTab, "Filter Library");
   }
-  if (bookmarksIndex >= 0)
+  if(bookmarksIndex >= 0)
   {
     tabWidget->insertTab(bookmarksIndex, bookmarksTab, "Bookmarks");
   }
@@ -220,7 +220,7 @@ void SIMPLViewToolbox::writeSettings()
 // -----------------------------------------------------------------------------
 void SIMPLViewToolbox::changeEvent(QEvent* event)
 {
-  if (event->type() == QEvent::ActivationChange)
+  if(event->type() == QEvent::ActivationChange)
   {
     emit toolboxChangedState();
   }
@@ -259,7 +259,7 @@ void SIMPLViewToolbox::writeWindowSettings(QtSSettings* prefs)
 // -----------------------------------------------------------------------------
 void SIMPLViewToolbox::actionShowFilterLibrary_triggered(bool enabled)
 {
-  if (enabled == true)
+  if(enabled == true)
   {
     tabWidget->addTab(filterLibraryTab, "Filter Library");
   }
@@ -274,7 +274,7 @@ void SIMPLViewToolbox::actionShowFilterLibrary_triggered(bool enabled)
 // -----------------------------------------------------------------------------
 void SIMPLViewToolbox::actionShowFilterList_triggered(bool enabled)
 {
-  if (enabled == true)
+  if(enabled == true)
   {
     tabWidget->addTab(filterListTab, "Filter List");
   }
@@ -289,7 +289,7 @@ void SIMPLViewToolbox::actionShowFilterList_triggered(bool enabled)
 // -----------------------------------------------------------------------------
 void SIMPLViewToolbox::actionShowBookmarks_triggered(bool enabled)
 {
-  if (enabled == true)
+  if(enabled == true)
   {
     tabWidget->addTab(bookmarksTab, "Bookmarks");
   }
@@ -328,18 +328,16 @@ FilterLibraryToolboxWidget* SIMPLViewToolbox::getFilterLibraryWidget()
 // -----------------------------------------------------------------------------
 void SIMPLViewToolbox::setCurrentTab(ToolboxTabs tab)
 {
-  if (tab == SIMPLViewToolbox::FilterList)
+  if(tab == SIMPLViewToolbox::FilterList)
   {
     tabWidget->setCurrentWidget(filterListTab);
   }
-  else if (tab == SIMPLViewToolbox::FilterLibrary)
+  else if(tab == SIMPLViewToolbox::FilterLibrary)
   {
     tabWidget->setCurrentWidget(filterLibraryTab);
   }
-  else if (tab == SIMPLViewToolbox::Bookmarks)
+  else if(tab == SIMPLViewToolbox::Bookmarks)
   {
     tabWidget->setCurrentWidget(bookmarksTab);
   }
 }
-
-

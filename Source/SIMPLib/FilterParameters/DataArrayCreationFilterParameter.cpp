@@ -39,22 +39,23 @@
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-DataArrayCreationFilterParameter::DataArrayCreationFilterParameter() :
-  FilterParameter()
-{}
+DataArrayCreationFilterParameter::DataArrayCreationFilterParameter()
+: FilterParameter()
+{
+}
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
 DataArrayCreationFilterParameter::~DataArrayCreationFilterParameter()
-{}
+{
+}
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-DataArrayCreationFilterParameter::Pointer DataArrayCreationFilterParameter::New(const QString& humanLabel, const QString& propertyName,
-                                              const DataArrayPath& defaultValue, Category category, SetterCallbackType setterCallback,
-                                              GetterCallbackType getterCallback, const RequirementType req, int groupIndex)
+DataArrayCreationFilterParameter::Pointer DataArrayCreationFilterParameter::New(const QString& humanLabel, const QString& propertyName, const DataArrayPath& defaultValue, Category category,
+                                                                                SetterCallbackType setterCallback, GetterCallbackType getterCallback, const RequirementType req, int groupIndex)
 {
 
   DataArrayCreationFilterParameter::Pointer ptr = DataArrayCreationFilterParameter::New();
@@ -80,7 +81,6 @@ QString DataArrayCreationFilterParameter::getWidgetType()
 {
   return QString("DataArrayCreationWidget");
 }
-
 
 // -----------------------------------------------------------------------------
 //
@@ -118,13 +118,13 @@ DataArrayCreationFilterParameter::RequirementType DataArrayCreationFilterParamet
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-DataArrayCreationFilterParameter::RequirementType DataArrayCreationFilterParameter::CreateRequirement(uint32_t attributeMatrixType,
-    uint32_t geometryType)
+DataArrayCreationFilterParameter::RequirementType DataArrayCreationFilterParameter::CreateRequirement(uint32_t attributeMatrixType, uint32_t geometryType)
 {
   DataArrayCreationFilterParameter::RequirementType req;
   if(SIMPL::Defaults::AnyAttributeMatrix != attributeMatrixType)
   {
-    req.amTypes = QVector<unsigned int>(1, attributeMatrixType);;
+    req.amTypes = QVector<unsigned int>(1, attributeMatrixType);
+    ;
   }
   if(SIMPL::Defaults::AnyGeometry != geometryType)
   {
@@ -136,10 +136,10 @@ DataArrayCreationFilterParameter::RequirementType DataArrayCreationFilterParamet
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void DataArrayCreationFilterParameter::readJson(const QJsonObject &json)
+void DataArrayCreationFilterParameter::readJson(const QJsonObject& json)
 {
   QJsonValue jsonValue = json[getPropertyName()];
-  if(!jsonValue.isUndefined() )
+  if(!jsonValue.isUndefined())
   {
     QJsonObject obj = jsonValue.toObject();
     DataArrayPath dap;
@@ -151,7 +151,7 @@ void DataArrayCreationFilterParameter::readJson(const QJsonObject &json)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void DataArrayCreationFilterParameter::writeJson(QJsonObject &json)
+void DataArrayCreationFilterParameter::writeJson(QJsonObject& json)
 {
   DataArrayPath dap = m_GetterCallback();
   QJsonObject obj;

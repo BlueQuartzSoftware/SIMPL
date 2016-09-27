@@ -35,63 +35,64 @@
 
 #include "QMetaObjectUtilities.h"
 
-#include <QtCore/QVector>
 #include <QtCore/QDataStream>
+#include <QtCore/QVector>
 
-#include "SIMPLib/FilterParameters/RangeFilterParameter.h"
-#include "SIMPLib/FilterParameters/IntVec3FilterParameter.h"
-#include "SIMPLib/FilterParameters/FloatVec3FilterParameter.h"
-#include "SIMPLib/FilterParameters/PhaseTypeSelectionFilterParameter.h"
-#include "SIMPLib/FilterParameters/AxisAngleFilterParameter.h"
-#include "SIMPLib/FilterParameters/DynamicTableData.h"
-#include "SIMPLib/Common/PipelineMessage.h"
 #include "SIMPLib/Common/ComparisonInputs.h"
+#include "SIMPLib/Common/PipelineMessage.h"
+#include "SIMPLib/CoreFilters/CreateDataArray.h"
 #include "SIMPLib/DataContainers/DataArrayPath.h"
 #include "SIMPLib/DataContainers/DataContainerArrayProxy.h"
-#include "SIMPLib/CoreFilters/CreateDataArray.h"
+#include "SIMPLib/FilterParameters/AxisAngleFilterParameter.h"
+#include "SIMPLib/FilterParameters/DynamicTableData.h"
+#include "SIMPLib/FilterParameters/FloatVec3FilterParameter.h"
+#include "SIMPLib/FilterParameters/IntVec3FilterParameter.h"
+#include "SIMPLib/FilterParameters/PhaseTypeSelectionFilterParameter.h"
+#include "SIMPLib/FilterParameters/RangeFilterParameter.h"
 
 // These Streams need to be implemented so that our 3 Element Vectors can be read/write to disk/prefs files
-QDataStream& operator<<( QDataStream& out, const IntVec3_t& v)
+QDataStream& operator<<(QDataStream& out, const IntVec3_t& v)
 {
   out << v.x << v.y << v.z;
   return out;
 }
-QDataStream& operator>>( QDataStream& in, IntVec3_t& v)
+QDataStream& operator>>(QDataStream& in, IntVec3_t& v)
 {
   in >> v.x >> v.y >> v.z;
   return in;
 }
 
-QDataStream& operator<<( QDataStream& out, const FloatVec3_t& v)
+QDataStream& operator<<(QDataStream& out, const FloatVec3_t& v)
 {
   out << v.x << v.y << v.z;
   return out;
 }
-QDataStream& operator>>( QDataStream& in, FloatVec3_t& v)
+QDataStream& operator>>(QDataStream& in, FloatVec3_t& v)
 {
   in >> v.x >> v.y >> v.z;
   return in;
 }
 
-QDataStream& operator<<( QDataStream& out, const DataArrayPath& v)
+QDataStream& operator<<(QDataStream& out, const DataArrayPath& v)
 {
   out << v.getDataContainerName() << "|" << v.getAttributeMatrixName() << "|" << v.getDataArrayName();
   return out;
 }
-//QDataStream& operator>>( QDataStream& in, DataArrayPath& v) { in >> v.getDataContainerName() >> "|" >> v.getAttributeMatrixName() >> "|" >> v.getDataArrayName(); return in;}
-
+// QDataStream& operator>>( QDataStream& in, DataArrayPath& v) { in >> v.getDataContainerName() >> "|" >> v.getAttributeMatrixName() >> "|" >> v.getDataArrayName(); return in;}
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
 QMetaObjectUtilities::QMetaObjectUtilities()
-{}
+{
+}
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
 QMetaObjectUtilities::~QMetaObjectUtilities()
-{}
+{
+}
 
 // -----------------------------------------------------------------------------
 //
@@ -113,4 +114,3 @@ void QMetaObjectUtilities::RegisterMetaTypes()
   qRegisterMetaTypeStreamOperators<IntVec3_t>("IntVec3_t");
   qRegisterMetaTypeStreamOperators<FloatVec3_t>("FloatVec3_t");
 }
-

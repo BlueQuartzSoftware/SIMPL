@@ -33,32 +33,30 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-
 #include "ComparisonSelectionItemDelegate.h"
 
 #include <limits>
 
 #include <QtCore/QAbstractItemModel>
-#include <QtWidgets/QStyleOptionViewItemV4>
-#include <QtWidgets/QLineEdit>
-#include <QtGui/QDoubleValidator>
-#include <QtWidgets/QComboBox>
-#include <QtGui/QPainter>
 #include <QtCore/QDebug>
+#include <QtGui/QDoubleValidator>
+#include <QtGui/QPainter>
+#include <QtWidgets/QComboBox>
+#include <QtWidgets/QLineEdit>
+#include <QtWidgets/QStyleOptionViewItemV4>
 
 #include "SVWidgetsLib/FilterParameterWidgets/ComparisonSelectionTableModel.h"
 
 // Include the MOC generated CPP file which has all the QMetaObject methods/data
 #include "moc_ComparisonSelectionItemDelegate.cpp"
 
-
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-ComparisonSelectionItemDelegate::ComparisonSelectionItemDelegate(QStringList possibleFeatures, int numPhases, QObject* parent) :
-  QStyledItemDelegate(parent),
-  m_FeatureList(possibleFeatures),
-  m_NumberOfPhases(numPhases)
+ComparisonSelectionItemDelegate::ComparisonSelectionItemDelegate(QStringList possibleFeatures, int numPhases, QObject* parent)
+: QStyledItemDelegate(parent)
+, m_FeatureList(possibleFeatures)
+, m_NumberOfPhases(numPhases)
 {
 }
 
@@ -66,12 +64,16 @@ ComparisonSelectionItemDelegate::ComparisonSelectionItemDelegate(QStringList pos
 //
 // -----------------------------------------------------------------------------
 ComparisonSelectionItemDelegate::~ComparisonSelectionItemDelegate()
-{}
+{
+}
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void ComparisonSelectionItemDelegate::setNumberOfPhases(int n) { m_NumberOfPhases = n; }
+void ComparisonSelectionItemDelegate::setNumberOfPhases(int n)
+{
+  m_NumberOfPhases = n;
+}
 
 // -----------------------------------------------------------------------------
 //
@@ -80,8 +82,6 @@ void ComparisonSelectionItemDelegate::paint(QPainter* painter, const QStyleOptio
 {
   QStyledItemDelegate::paint(painter, option, index);
 }
-
-
 
 // -----------------------------------------------------------------------------
 //
@@ -98,17 +98,15 @@ QWidget* ComparisonSelectionItemDelegate::createEditor(QWidget* widgetParent, co
 {
   QLineEdit* featureValue = nullptr;
   QDoubleValidator* featureValueValidator = nullptr;
- 
+
   QComboBox* operatorCombo = nullptr;
 
   ComparisonSelectionTableModel* tableModel = qobject_cast<ComparisonSelectionTableModel*>(parent());
 
   QStringList operators;
-  operators << (SIMPL::Comparison::Strings::LessThan)
-            << (SIMPL::Comparison::Strings::GreaterThan)
-            << (SIMPL::Comparison::Strings::Equal);
+  operators << (SIMPL::Comparison::Strings::LessThan) << (SIMPL::Comparison::Strings::GreaterThan) << (SIMPL::Comparison::Strings::Equal);
 
-  //QComboBox* phaseCombo = nullptr;
+  // QComboBox* phaseCombo = nullptr;
   QStringList phases;
   for(int i = 0; i < m_NumberOfPhases; ++i)
   {
@@ -118,59 +116,54 @@ QWidget* ComparisonSelectionItemDelegate::createEditor(QWidget* widgetParent, co
   qint32 col = index.column();
   switch(col)
   {
-    case ComparisonSelectionTableModel::FeatureName:
-      operatorCombo = new QComboBox(widgetParent);
-      operatorCombo->addItems(m_FeatureList);
-      operatorCombo->setAutoFillBackground(true);
-      if(tableModel)
-      {
-        connect(operatorCombo, SIGNAL(currentIndexChanged(int)),
-                this, SLOT(arrayNameChangedData(int)));
-      }
-      return operatorCombo;
-    case ComparisonSelectionTableModel::FeatureValue:
+  case ComparisonSelectionTableModel::FeatureName:
+    operatorCombo = new QComboBox(widgetParent);
+    operatorCombo->addItems(m_FeatureList);
+    operatorCombo->setAutoFillBackground(true);
+    if(tableModel)
     {
-      featureValue = new QLineEdit(widgetParent);
-      featureValue->setFrame(false);
-      featureValueValidator = new QDoubleValidator(featureValue);
-      featureValueValidator->setRange(-1.0f * std::numeric_limits<float>::max(), std::numeric_limits<float>::max(), 6);
-      featureValueValidator->setLocale(QLocale::system());
-      featureValue->setValidator(featureValueValidator);
-      QVariant var = index.model()->data(index);
-      QLocale loc = QLocale::system();
-
-      QString dStr = loc.toString(var.toDouble(&ok));
-      featureValue->setText(dStr);
-
-      if (tableModel)
-      {
-        connect(featureValue, SIGNAL(textChanged(const QString&)),
-                this, SLOT(valueChangedData(const QString&)));
-      }
-      return featureValue;
+      connect(operatorCombo, SIGNAL(currentIndexChanged(int)), this, SLOT(arrayNameChangedData(int)));
     }
-    case ComparisonSelectionTableModel::FeatureOperator:
-      operatorCombo = new QComboBox(widgetParent);
-      operatorCombo->addItems(operators);
-      operatorCombo->setAutoFillBackground(true);
-      if (tableModel)
-      {
-        connect(operatorCombo, SIGNAL(currentIndexChanged(int)),
-                this, SLOT(operatorChangedData(int)));
-      }
-      return operatorCombo;
-    //        case ComparisonSelectionTableModel::FeaturePhaseValue:
-    //          phaseCombo = new QComboBox(parent);
-    //          phaseCombo->addItems(phases);
-    //          phaseCombo->setAutoFillBackground(true);
-    //          return phaseCombo;
-    default:
-      break;
+    return operatorCombo;
+  case ComparisonSelectionTableModel::FeatureValue:
+  {
+    featureValue = new QLineEdit(widgetParent);
+    featureValue->setFrame(false);
+    featureValueValidator = new QDoubleValidator(featureValue);
+    featureValueValidator->setRange(-1.0f * std::numeric_limits<float>::max(), std::numeric_limits<float>::max(), 6);
+    featureValueValidator->setLocale(QLocale::system());
+    featureValue->setValidator(featureValueValidator);
+    QVariant var = index.model()->data(index);
+    QLocale loc = QLocale::system();
+
+    QString dStr = loc.toString(var.toDouble(&ok));
+    featureValue->setText(dStr);
+
+    if(tableModel)
+    {
+      connect(featureValue, SIGNAL(textChanged(const QString&)), this, SLOT(valueChangedData(const QString&)));
+    }
+    return featureValue;
+  }
+  case ComparisonSelectionTableModel::FeatureOperator:
+    operatorCombo = new QComboBox(widgetParent);
+    operatorCombo->addItems(operators);
+    operatorCombo->setAutoFillBackground(true);
+    if(tableModel)
+    {
+      connect(operatorCombo, SIGNAL(currentIndexChanged(int)), this, SLOT(operatorChangedData(int)));
+    }
+    return operatorCombo;
+  //        case ComparisonSelectionTableModel::FeaturePhaseValue:
+  //          phaseCombo = new QComboBox(parent);
+  //          phaseCombo->addItems(phases);
+  //          phaseCombo->setAutoFillBackground(true);
+  //          return phaseCombo;
+  default:
+    break;
   }
   return QStyledItemDelegate::createEditor(widgetParent, option, index);
 }
-
-
 
 // -----------------------------------------------------------------------------
 //
@@ -179,36 +172,39 @@ void ComparisonSelectionItemDelegate::setEditorData(QWidget* editor, const QMode
 {
   qint32 col = index.column();
   // bool ok = false;
-  if (col == ComparisonSelectionTableModel::FeatureName)
+  if(col == ComparisonSelectionTableModel::FeatureName)
   {
     QString objName = QString::number(index.row()) + "," + QString::number(ComparisonSelectionTableModel::FeatureName);
     QString state = index.model()->data(index).toString();
-    QComboBox* comboBox = qobject_cast<QComboBox* > (editor);
+    QComboBox* comboBox = qobject_cast<QComboBox*>(editor);
     Q_ASSERT(comboBox);
     comboBox->setObjectName(objName);
     comboBox->setCurrentIndex(comboBox->findText(state));
   }
-  else if (col == ComparisonSelectionTableModel::FeatureValue )
+  else if(col == ComparisonSelectionTableModel::FeatureValue)
   {
     QString objName = QString::number(index.row()) + "," + QString::number(ComparisonSelectionTableModel::FeatureValue);
-    QLineEdit* lineEdit = qobject_cast<QLineEdit* > (editor);
+    QLineEdit* lineEdit = qobject_cast<QLineEdit*>(editor);
     Q_ASSERT(lineEdit);
     lineEdit->setObjectName(objName);
-//    QVariant var = index.model()->data(index);
-//    double d = var.toDouble();
-//    qDebug() << lineEdit->text();
-//    lineEdit->setText(QString::number(d));
+    //    QVariant var = index.model()->data(index);
+    //    double d = var.toDouble();
+    //    qDebug() << lineEdit->text();
+    //    lineEdit->setText(QString::number(d));
   }
-  else if (col == ComparisonSelectionTableModel::FeatureOperator)
+  else if(col == ComparisonSelectionTableModel::FeatureOperator)
   {
     QString objName = QString::number(index.row()) + "," + QString::number(ComparisonSelectionTableModel::FeatureOperator);
     QString state = index.model()->data(index).toString();
-    QComboBox* comboBox = qobject_cast<QComboBox* > (editor);
+    QComboBox* comboBox = qobject_cast<QComboBox*>(editor);
     Q_ASSERT(comboBox);
     comboBox->setObjectName(objName);
     comboBox->setCurrentIndex(comboBox->findText(state));
   }
-  else { QStyledItemDelegate::setEditorData(editor, index); }
+  else
+  {
+    QStyledItemDelegate::setEditorData(editor, index);
+  }
 }
 
 // -----------------------------------------------------------------------------
@@ -217,27 +213,30 @@ void ComparisonSelectionItemDelegate::setEditorData(QWidget* editor, const QMode
 void ComparisonSelectionItemDelegate::setModelData(QWidget* editor, QAbstractItemModel* model, const QModelIndex& index) const
 {
   qint32 col = index.column();
-  if (col == ComparisonSelectionTableModel::FeatureName)
+  if(col == ComparisonSelectionTableModel::FeatureName)
   {
-    QComboBox* comboBox = qobject_cast<QComboBox* > (editor);
+    QComboBox* comboBox = qobject_cast<QComboBox*>(editor);
     Q_ASSERT(comboBox);
     model->setData(index, comboBox->currentText());
   }
-  else if (col == ComparisonSelectionTableModel::FeatureValue)
+  else if(col == ComparisonSelectionTableModel::FeatureValue)
   {
-    QLineEdit* lineEdit = qobject_cast<QLineEdit* > (editor);
+    QLineEdit* lineEdit = qobject_cast<QLineEdit*>(editor);
     Q_ASSERT(lineEdit);
     QLocale loc = QLocale::system();
     double v = loc.toFloat(lineEdit->text());
     model->setData(index, v);
   }
-  else if (col == ComparisonSelectionTableModel::FeatureOperator)
+  else if(col == ComparisonSelectionTableModel::FeatureOperator)
   {
-    QComboBox* comboBox = qobject_cast<QComboBox* > (editor);
+    QComboBox* comboBox = qobject_cast<QComboBox*>(editor);
     Q_ASSERT(comboBox);
     model->setData(index, comboBox->currentText());
   }
-  else { QStyledItemDelegate::setModelData(editor, model, index); }
+  else
+  {
+    QStyledItemDelegate::setModelData(editor, model, index);
+  }
 }
 
 // -----------------------------------------------------------------------------
@@ -265,13 +264,13 @@ void ComparisonSelectionItemDelegate::operatorChangedData(int i)
 {
   ComparisonSelectionTableModel* tableModel = qobject_cast<ComparisonSelectionTableModel*>(parent());
   QWidget* w = qobject_cast<QWidget*>(sender());
-  if (tableModel && w)
+  if(tableModel && w)
   {
     QString objName = w->objectName();
     QStringList tokens = objName.split(',');
     int row = tokens[0].toInt();
     int col = tokens[1].toInt();
-    //ComparisonSelectionTableModel::FeatureName
+    // ComparisonSelectionTableModel::FeatureName
     QModelIndex index = tableModel->index(row, col);
 
     setModelData(w, tableModel, index);
@@ -285,13 +284,13 @@ void ComparisonSelectionItemDelegate::valueChangedData(const QString& text)
 {
   ComparisonSelectionTableModel* tableModel = qobject_cast<ComparisonSelectionTableModel*>(parent());
   QWidget* w = qobject_cast<QWidget*>(sender());
-  if (tableModel && w)
+  if(tableModel && w)
   {
     QString objName = w->objectName();
     QStringList tokens = objName.split(',');
     int row = tokens[0].toInt();
     int col = tokens[1].toInt();
-    //ComparisonSelectionTableModel::FeatureName
+    // ComparisonSelectionTableModel::FeatureName
     QModelIndex index = tableModel->index(row, col);
 
     setModelData(w, tableModel, index);

@@ -35,15 +35,15 @@
 
 #include "OutputPathWidget.h"
 
-#include <QtCore/QMetaProperty>
 #include <QtCore/QDir>
+#include <QtCore/QMetaProperty>
 
 #include <QtWidgets/QFileDialog>
 
 #include "SIMPLib/FilterParameters/OutputPathFilterParameter.h"
 
-#include "SVWidgetsLib/QtSupport/QtSFileCompleter.h"
 #include "SVWidgetsLib/Core/SVWidgetsLibConstants.h"
+#include "SVWidgetsLib/QtSupport/QtSFileCompleter.h"
 
 #include "FilterParameterWidgetsDialogs.h"
 
@@ -55,8 +55,8 @@ QString OutputPathWidget::m_OpenDialogLastDirectory = "";
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-OutputPathWidget::OutputPathWidget(FilterParameter* parameter, AbstractFilter* filter, QWidget* parent) :
-  FilterParameterWidget(parameter, filter, parent)
+OutputPathWidget::OutputPathWidget(FilterParameter* parameter, AbstractFilter* filter, QWidget* parent)
+: FilterParameterWidget(parameter, filter, parent)
 {
   m_FilterParameter = dynamic_cast<OutputPathFilterParameter*>(parameter);
   Q_ASSERT_X(m_FilterParameter != nullptr, "nullptr Pointer", "OutputPathWidget can ONLY be used with a OutputPathFilterParameter object");
@@ -84,7 +84,8 @@ OutputPathWidget::OutputPathWidget(FilterParameter* parameter, AbstractFilter* f
 //
 // -----------------------------------------------------------------------------
 OutputPathWidget::~OutputPathWidget()
-{}
+{
+}
 
 // -----------------------------------------------------------------------------
 //
@@ -108,35 +109,29 @@ FilterParameter* OutputPathWidget::getFilterParameter() const
 void OutputPathWidget::setupGui()
 {
   // Catch when the filter is about to execute the preflight
-  connect(getFilter(), SIGNAL(preflightAboutToExecute()),
-          this, SLOT(beforePreflight()));
+  connect(getFilter(), SIGNAL(preflightAboutToExecute()), this, SLOT(beforePreflight()));
 
   // Catch when the filter is finished running the preflight
-  connect(getFilter(), SIGNAL(preflightExecuted()),
-          this, SLOT(afterPreflight()));
+  connect(getFilter(), SIGNAL(preflightExecuted()), this, SLOT(afterPreflight()));
 
   // Catch when the filter wants its values updated
-  connect(getFilter(), SIGNAL(updateFilterParameters(AbstractFilter*)),
-          this, SLOT(filterNeedsInputParameters(AbstractFilter*)));
+  connect(getFilter(), SIGNAL(updateFilterParameters(AbstractFilter*)), this, SLOT(filterNeedsInputParameters(AbstractFilter*)));
 
   //  connect(value, SIGNAL(textChanged(const QString&)),
   //          this, SLOT(widgetChanged(const QString&)));
 
   QtSFileCompleter* com = new QtSFileCompleter(this, false);
   value->setCompleter(com);
-  QObject::connect( com, SIGNAL(activated(const QString&)),
-                    this, SLOT(on_value_textChanged(const QString&)));
+  QObject::connect(com, SIGNAL(activated(const QString&)), this, SLOT(on_value_textChanged(const QString&)));
 
-  if (getFilterParameter() != nullptr)
+  if(getFilterParameter() != nullptr)
   {
-    label->setText(getFilterParameter()->getHumanLabel() );
+    label->setText(getFilterParameter()->getHumanLabel());
 
     QString currentPath = getFilter()->property(PROPERTY_NAME_AS_CHAR).toString();
     value->setText(currentPath);
   }
-
 }
-
 
 // -----------------------------------------------------------------------------
 //
@@ -152,10 +147,7 @@ void OutputPathWidget::on_selectBtn_clicked()
   QString ext = m_FilterParameter->getFileExtension();
   QString s = Ftype + QString(" Files (") + ext + QString(");;All Files(*.*)");
   QString defaultName = currentPath + QDir::separator() + "Untitled";
-  QString file = QFileDialog::getExistingDirectory(this,
-                                                   tr("Select Output Folder"),
-                                                   defaultName,
-                                                   QFileDialog::ShowDirsOnly);
+  QString file = QFileDialog::getExistingDirectory(this, tr("Select Output Folder"), defaultName, QFileDialog::ShowDirsOnly);
 
   if(true == file.isEmpty())
   {
@@ -171,11 +163,10 @@ void OutputPathWidget::on_selectBtn_clicked()
   on_value_editingFinished();
 }
 
-
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-//void OutputPathWidget::widgetChanged(const QString &text)
+// void OutputPathWidget::widgetChanged(const QString &text)
 //{
 //  emit parametersChanged();
 //}
@@ -196,7 +187,6 @@ void OutputPathWidget::on_value_textChanged(const QString& text)
   // We dont want to run a preflight for every character that is typed
 }
 
-
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
@@ -208,17 +198,13 @@ void OutputPathWidget::filterNeedsInputParameters(AbstractFilter* filter)
   {
     FilterParameterWidgetsDialogs::ShowCouldNotSetFilterParameter(getFilter(), getFilterParameter());
   }
-
 }
-
-
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
 void OutputPathWidget::beforePreflight()
 {
-
 }
 
 // -----------------------------------------------------------------------------
@@ -226,5 +212,4 @@ void OutputPathWidget::beforePreflight()
 // -----------------------------------------------------------------------------
 void OutputPathWidget::afterPreflight()
 {
-
 }

@@ -44,8 +44,8 @@
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-SqrtOperator::SqrtOperator() :
-  UnaryOperator()
+SqrtOperator::SqrtOperator()
+: UnaryOperator()
 {
   setNumberOfArguments(1);
 }
@@ -55,14 +55,12 @@ SqrtOperator::SqrtOperator() :
 // -----------------------------------------------------------------------------
 SqrtOperator::~SqrtOperator()
 {
-
 }
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void SqrtOperator::calculate(AbstractFilter* filter, DataArrayPath calculatedArrayPath, QStack<ICalculatorArray::Pointer> &executionStack)
+void SqrtOperator::calculate(AbstractFilter* filter, DataArrayPath calculatedArrayPath, QStack<ICalculatorArray::Pointer>& executionStack)
 {
   CREATE_NEW_ARRAY_STANDARD_UNARY(filter, calculatedArrayPath, executionStack, sqrt)
 }
-

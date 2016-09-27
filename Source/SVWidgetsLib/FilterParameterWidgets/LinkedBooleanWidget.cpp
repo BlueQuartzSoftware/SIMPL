@@ -41,15 +41,14 @@
 
 #include "FilterParameterWidgetsDialogs.h"
 
-
 // Include the MOC generated file for this class
 #include "moc_LinkedBooleanWidget.cpp"
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-LinkedBooleanWidget::LinkedBooleanWidget(FilterParameter* parameter, AbstractFilter* filter, QWidget* parent) :
-  FilterParameterWidget(parameter, filter, parent)
+LinkedBooleanWidget::LinkedBooleanWidget(FilterParameter* parameter, AbstractFilter* filter, QWidget* parent)
+: FilterParameterWidget(parameter, filter, parent)
 {
   m_FilterParameter = dynamic_cast<LinkedBooleanFilterParameter*>(parameter);
   Q_ASSERT_X(m_FilterParameter != nullptr, "nullptr Pointer", "LinkedBooleanWidget can ONLY be used with a LinkedBooleanFilterParameter object");
@@ -62,7 +61,8 @@ LinkedBooleanWidget::LinkedBooleanWidget(FilterParameter* parameter, AbstractFil
 //
 // -----------------------------------------------------------------------------
 LinkedBooleanWidget::~LinkedBooleanWidget()
-{}
+{
+}
 
 // -----------------------------------------------------------------------------
 //
@@ -71,26 +71,22 @@ void LinkedBooleanWidget::setupGui()
 {
 
   // Catch when the filter is about to execute the preflight
-  connect(getFilter(), SIGNAL(preflightAboutToExecute()),
-          this, SLOT(beforePreflight()));
+  connect(getFilter(), SIGNAL(preflightAboutToExecute()), this, SLOT(beforePreflight()));
 
   // Catch when the filter is finished running the preflight
-  connect(getFilter(), SIGNAL(preflightExecuted()),
-          this, SLOT(afterPreflight()));
+  connect(getFilter(), SIGNAL(preflightExecuted()), this, SLOT(afterPreflight()));
 
   // Catch when the filter wants its values updated
-  connect(getFilter(), SIGNAL(updateFilterParameters(AbstractFilter*)),
-          this, SLOT(filterNeedsInputParameters(AbstractFilter*)));
+  connect(getFilter(), SIGNAL(updateFilterParameters(AbstractFilter*)), this, SLOT(filterNeedsInputParameters(AbstractFilter*)));
 
-  connect(value, SIGNAL(stateChanged(int)),
-          this, SLOT(widgetChanged(int) ) );
+  connect(value, SIGNAL(stateChanged(int)), this, SLOT(widgetChanged(int)));
 
-  if (getFilterParameter() != nullptr)
+  if(getFilterParameter() != nullptr)
   {
-    label->setText(getFilterParameter()->getHumanLabel() );
+    label->setText(getFilterParameter()->getHumanLabel());
 
     QVariant objValue = getFilter()->property(PROPERTY_NAME_AS_CHAR);
-    if (objValue.isValid() == true)
+    if(objValue.isValid() == true)
     {
       value->setChecked(objValue.toBool());
     }
@@ -100,9 +96,7 @@ void LinkedBooleanWidget::setupGui()
       emit errorSettingFilterParameter(ss);
       qDebug() << ss;
     }
-
   }
-
 }
 
 // -----------------------------------------------------------------------------
@@ -110,7 +104,7 @@ void LinkedBooleanWidget::setupGui()
 // -----------------------------------------------------------------------------
 void LinkedBooleanWidget::updateLinkedWidgets()
 {
-  //QVariant objValue = getFilter()->property(PROPERTY_NAME_AS_CHAR);
+  // QVariant objValue = getFilter()->property(PROPERTY_NAME_AS_CHAR);
   int state = value->checkState();
   emit conditionalPropertyChanged(state);
 }
@@ -139,13 +133,12 @@ void LinkedBooleanWidget::widgetChanged(int state)
 void LinkedBooleanWidget::filterNeedsInputParameters(AbstractFilter* filter)
 {
 
-  QVariant var(value->isChecked() );
+  QVariant var(value->isChecked());
   bool ok = filter->setProperty(PROPERTY_NAME_AS_CHAR, var);
   if(false == ok)
   {
     FilterParameterWidgetsDialogs::ShowCouldNotSetFilterParameter(getFilter(), getFilterParameter());
   }
-
 }
 
 // -----------------------------------------------------------------------------
@@ -153,7 +146,6 @@ void LinkedBooleanWidget::filterNeedsInputParameters(AbstractFilter* filter)
 // -----------------------------------------------------------------------------
 void LinkedBooleanWidget::beforePreflight()
 {
-
 }
 
 // -----------------------------------------------------------------------------
@@ -161,6 +153,4 @@ void LinkedBooleanWidget::beforePreflight()
 // -----------------------------------------------------------------------------
 void LinkedBooleanWidget::afterPreflight()
 {
-
 }
-

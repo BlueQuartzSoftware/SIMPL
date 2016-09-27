@@ -33,7 +33,6 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
@@ -58,9 +57,9 @@ void GEOM_CLASS_NAME::resizeTetList(int64_t newNumTets)
 // -----------------------------------------------------------------------------
 void GEOM_CLASS_NAME::setTetrahedra(SharedTetList::Pointer tets)
 {
-  if (tets.get() != nullptr)
+  if(tets.get() != nullptr)
   {
-    if (tets->getName().compare(SIMPL::Geometry::SharedTetList) != 0)
+    if(tets->getName().compare(SIMPL::Geometry::SharedTetList) != 0)
     {
       tets->setName(SIMPL::Geometry::SharedTetList);
     }

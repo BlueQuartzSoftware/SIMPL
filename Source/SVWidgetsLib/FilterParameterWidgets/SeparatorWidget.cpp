@@ -43,15 +43,14 @@
 
 #include "FilterParameterWidgetsDialogs.h"
 
-
 // Include the MOC generated file for this class
 #include "moc_SeparatorWidget.cpp"
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-SeparatorWidget::SeparatorWidget(FilterParameter* parameter, AbstractFilter* filter, QWidget* parent) :
-  FilterParameterWidget(parameter, filter, parent)
+SeparatorWidget::SeparatorWidget(FilterParameter* parameter, AbstractFilter* filter, QWidget* parent)
+: FilterParameterWidget(parameter, filter, parent)
 {
   m_FilterParameter = dynamic_cast<SeparatorFilterParameter*>(parameter);
   Q_ASSERT_X(m_FilterParameter != nullptr, "nullptr Pointer", "SeparatorWidget can ONLY be used with a SeparatorFilterParameter object");
@@ -64,7 +63,8 @@ SeparatorWidget::SeparatorWidget(FilterParameter* parameter, AbstractFilter* fil
 //
 // -----------------------------------------------------------------------------
 SeparatorWidget::~SeparatorWidget()
-{}
+{
+}
 
 // -----------------------------------------------------------------------------
 //
@@ -93,24 +93,20 @@ void SeparatorWidget::setupGui()
 {
 
   // Catch when the filter is about to execute the preflight
-  connect(getFilter(), SIGNAL(preflightAboutToExecute()),
-          this, SLOT(beforePreflight()));
+  connect(getFilter(), SIGNAL(preflightAboutToExecute()), this, SLOT(beforePreflight()));
 
   // Catch when the filter is finished running the preflight
-  connect(getFilter(), SIGNAL(preflightExecuted()),
-          this, SLOT(afterPreflight()));
+  connect(getFilter(), SIGNAL(preflightExecuted()), this, SLOT(afterPreflight()));
 
   // Catch when the filter wants its values updated
-  connect(getFilter(), SIGNAL(updateFilterParameters(AbstractFilter*)),
-          this, SLOT(filterNeedsInputParameters(AbstractFilter*)));
-
+  connect(getFilter(), SIGNAL(updateFilterParameters(AbstractFilter*)), this, SLOT(filterNeedsInputParameters(AbstractFilter*)));
 
   label->setStyleSheet(getLabelStyleSheet());
 
   blockSignals(true);
-  if (getFilterParameter() != nullptr)
+  if(getFilterParameter() != nullptr)
   {
-    label->setText(getFilterParameter()->getHumanLabel() );
+    label->setText(getFilterParameter()->getHumanLabel());
   }
   blockSignals(false);
 }
@@ -120,7 +116,6 @@ void SeparatorWidget::setupGui()
 // -----------------------------------------------------------------------------
 void SeparatorWidget::filterNeedsInputParameters(AbstractFilter* filter)
 {
-
 }
 
 // -----------------------------------------------------------------------------
@@ -128,7 +123,6 @@ void SeparatorWidget::filterNeedsInputParameters(AbstractFilter* filter)
 // -----------------------------------------------------------------------------
 void SeparatorWidget::beforePreflight()
 {
-
 }
 
 // -----------------------------------------------------------------------------
@@ -136,5 +130,4 @@ void SeparatorWidget::beforePreflight()
 // -----------------------------------------------------------------------------
 void SeparatorWidget::afterPreflight()
 {
-
 }

@@ -35,8 +35,8 @@
 
 #include "DataArrayCreationWidget.h"
 
-#include <QtCore/QMetaProperty>
 #include <QtCore/QList>
+#include <QtCore/QMetaProperty>
 #include <QtCore/QSignalMapper>
 
 #include <QtGui/QStandardItemModel>
@@ -48,9 +48,8 @@
 #include "SVWidgetsLib/Core/SVWidgetsLibConstants.h"
 #include "SVWidgetsLib/QtSupport/QtSStyles.h"
 
-#include "FilterParameterWidgetsDialogs.h"
 #include "FilterParameterWidgetUtils.hpp"
-
+#include "FilterParameterWidgetsDialogs.h"
 
 // Include the MOC generated file for this class
 #include "moc_DataArrayCreationWidget.cpp"
@@ -58,9 +57,9 @@
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-DataArrayCreationWidget::DataArrayCreationWidget(FilterParameter* parameter, AbstractFilter* filter, QWidget* parent) :
-  FilterParameterWidget(parameter, filter, parent),
-  m_DidCausePreflight(false)
+DataArrayCreationWidget::DataArrayCreationWidget(FilterParameter* parameter, AbstractFilter* filter, QWidget* parent)
+: FilterParameterWidget(parameter, filter, parent)
+, m_DidCausePreflight(false)
 {
   m_FilterParameter = dynamic_cast<DataArrayCreationFilterParameter*>(parameter);
   Q_ASSERT_X(m_FilterParameter != nullptr, "nullptr Pointer", "DataArrayCreationWidget can ONLY be used with a DataArrayCreationFilterParameter object");
@@ -72,9 +71,9 @@ DataArrayCreationWidget::DataArrayCreationWidget(FilterParameter* parameter, Abs
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-DataArrayCreationWidget::DataArrayCreationWidget(QWidget* parent) :
-  FilterParameterWidget(nullptr, nullptr, parent),
-  m_DidCausePreflight(false)
+DataArrayCreationWidget::DataArrayCreationWidget(QWidget* parent)
+: FilterParameterWidget(nullptr, nullptr, parent)
+, m_DidCausePreflight(false)
 {
   setupUi(this);
   setupGui();
@@ -85,8 +84,14 @@ DataArrayCreationWidget::DataArrayCreationWidget(QWidget* parent) :
 // -----------------------------------------------------------------------------
 DataArrayCreationWidget::~DataArrayCreationWidget()
 {
-  if(m_OwnsMenuPtr && m_MenuPtr) { delete m_MenuPtr; }
-  if(m_MenuMapper) { delete m_MenuMapper; }
+  if(m_OwnsMenuPtr && m_MenuPtr)
+  {
+    delete m_MenuPtr;
+  }
+  if(m_MenuMapper)
+  {
+    delete m_MenuMapper;
+  }
 }
 
 // -----------------------------------------------------------------------------
@@ -99,14 +104,13 @@ void DataArrayCreationWidget::initializeWidget(FilterParameter* parameter, Abstr
   setupGui();
 }
 
-
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
 void DataArrayCreationWidget::setupGui()
 {
   blockSignals(true);
-  if (getFilterParameter() != nullptr)
+  if(getFilterParameter() != nullptr)
   {
     QString str = getFilterParameter()->getHumanLabel();
     label->setText(str);
@@ -121,23 +125,18 @@ void DataArrayCreationWidget::setupGui()
   m_SelectedAttributeMatrixPath->setStyleSheet(QtSStyles::DAPSelectionButtonStyle(true));
 
   m_MenuMapper = new QSignalMapper(this);
-  connect(m_MenuMapper, SIGNAL(mapped(QString)),
-            this, SLOT(attributeMatrixSelected(QString)));
+  connect(m_MenuMapper, SIGNAL(mapped(QString)), this, SLOT(attributeMatrixSelected(QString)));
 
   // Catch when the filter is about to execute the preflight
-  connect(getFilter(), SIGNAL(preflightAboutToExecute()),
-          this, SLOT(beforePreflight()));
+  connect(getFilter(), SIGNAL(preflightAboutToExecute()), this, SLOT(beforePreflight()));
 
   // Catch when the filter is finished running the preflight
-  connect(getFilter(), SIGNAL(preflightExecuted()),
-          this, SLOT(afterPreflight()));
+  connect(getFilter(), SIGNAL(preflightExecuted()), this, SLOT(afterPreflight()));
 
   // Catch when the filter wants its values updated
-  connect(getFilter(), SIGNAL(updateFilterParameters(AbstractFilter*)),
-          this, SLOT(filterNeedsInputParameters(AbstractFilter*)));
+  connect(getFilter(), SIGNAL(updateFilterParameters(AbstractFilter*)), this, SLOT(filterNeedsInputParameters(AbstractFilter*)));
 
-  connect(dataArrayName, SIGNAL(textEdited(const QString&)),
-          this, SLOT(widgetChanged(const QString&)));
+  connect(dataArrayName, SIGNAL(textEdited(const QString&)), this, SLOT(widgetChanged(const QString&)));
 }
 
 // -----------------------------------------------------------------------------
@@ -146,11 +145,17 @@ void DataArrayCreationWidget::setupGui()
 QString DataArrayCreationWidget::checkStringValues(QString curDcName, QString filtDcName)
 {
   if(curDcName.isEmpty() == true && filtDcName.isEmpty() == false)
-  {return filtDcName;}
+  {
+    return filtDcName;
+  }
   else if(curDcName.isEmpty() == false && filtDcName.isEmpty() == true)
-  {return curDcName;}
+  {
+    return curDcName;
+  }
   else if(curDcName.isEmpty() == false && filtDcName.isEmpty() == false && m_DidCausePreflight == true)
-  { return curDcName;}
+  {
+    return curDcName;
+  }
 
   return filtDcName;
 }
@@ -163,11 +168,15 @@ void DataArrayCreationWidget::createSelectionMenu()
   // Now get the DataContainerArray from the Filter instance
   // We are going to use this to get all the current DataContainers
   DataContainerArray::Pointer dca = getFilter()->getDataContainerArray();
-  if(nullptr == dca.get()) { return; }
+  if(nullptr == dca.get())
+  {
+    return;
+  }
 
   // Get the menu and clear it out
   QMenu* btnMenu = m_SelectedAttributeMatrixPath->menu();
-  if(btnMenu) {
+  if(btnMenu)
+  {
     btnMenu->clear();
   }
   else
@@ -192,29 +201,34 @@ void DataArrayCreationWidget::createSelectionMenu()
 
     IGeometry::Pointer geom = IGeometry::NullPointer();
     uint32_t geomType = 999;
-    if (nullptr != dc.get()) { geom = dc->getGeometry(); }
-    if (nullptr != geom.get()) { geomType = geom->getGeometryType(); }
+    if(nullptr != dc.get())
+    {
+      geom = dc->getGeometry();
+    }
+    if(nullptr != geom.get())
+    {
+      geomType = geom->getGeometryType();
+    }
 
     QMenu* dcMenu = btnMenu->addMenu(dc->getName()); // BtnMenu owns the new QMenu
     dcMenu->setDisabled(false);
 
-    if(geomTypes.isEmpty() == false && geomTypes.contains(geomType) == false )
+    if(geomTypes.isEmpty() == false && geomTypes.contains(geomType) == false)
     {
       dcMenu->setDisabled(true);
     }
 
-
     // We found the proper Data Container, now populate the AttributeMatrix List
     DataContainer::AttributeMatrixMap_t attrMats = dc->getAttributeMatrices();
     QMapIterator<QString, AttributeMatrix::Pointer> attrMatsIter(attrMats);
-    while(attrMatsIter.hasNext() )
+    while(attrMatsIter.hasNext())
     {
       attrMatsIter.next();
       QString amName = attrMatsIter.key();
       AttributeMatrix::Pointer am = attrMatsIter.value();
 
       QAction* amAction = dcMenu->addAction(amName); // dcMenu owns the created action
-      //QAction* action = new QAction(amName, dcMenu);
+      // QAction* action = new QAction(amName, dcMenu);
       DataArrayPath daPath(dc->getName(), amName, "");
       QString path = daPath.serialize(Detail::Delimiter);
       amAction->setData(path);
@@ -225,7 +239,7 @@ void DataArrayCreationWidget::createSelectionMenu()
       bool amIsNotNull = (nullptr != am.get()) ? true : false;
       bool amValidType = (amTypes.isEmpty() == false && amTypes.contains(am->getType()) == false) ? true : false;
 
-      if (amIsNotNull && amValidType)
+      if(amIsNotNull && amValidType)
       {
         amAction->setDisabled(true);
       }
@@ -238,7 +252,7 @@ void DataArrayCreationWidget::createSelectionMenu()
 // -----------------------------------------------------------------------------
 bool DataArrayCreationWidget::eventFilter(QObject* obj, QEvent* event)
 {
-  if (event->type() == QEvent::Show && obj == m_SelectedAttributeMatrixPath->menu())
+  if(event->type() == QEvent::Show && obj == m_SelectedAttributeMatrixPath->menu())
   {
     QPoint pos = adjustedMenuPosition(m_SelectedAttributeMatrixPath);
     m_SelectedAttributeMatrixPath->menu()->move(pos);
@@ -255,11 +269,14 @@ void DataArrayCreationWidget::attributeMatrixSelected(QString path)
   m_SelectedAttributeMatrixPath->setText(path);
 
   DataContainerArray::Pointer dca = getFilter()->getDataContainerArray();
-  if(nullptr == dca.get()) { return; }
-
+  if(nullptr == dca.get())
+  {
+    return;
+  }
 
   IDataArray::Pointer attrArray = dca->getPrereqIDataArrayFromPath<IDataArray, AbstractFilter>(getFilter(), DataArrayPath::Deserialize(path, Detail::Delimiter));
-  if(nullptr != attrArray.get()) {
+  if(nullptr != attrArray.get())
+  {
     QString html = attrArray->getInfoString(SIMPL::HtmlFormat);
     m_SelectedAttributeMatrixPath->setToolTip(html);
   }
@@ -306,17 +323,24 @@ void DataArrayCreationWidget::widgetChanged(const QString& text)
 void DataArrayCreationWidget::setSelectedPath(QString path)
 {
   DataArrayPath amPath = DataArrayPath::Deserialize(path, Detail::Delimiter);
-  if (amPath.isEmpty()) { return; }
+  if(amPath.isEmpty())
+  {
+    return;
+  }
 
   m_SelectedAttributeMatrixPath->setText("");
   m_SelectedAttributeMatrixPath->setToolTip("");
 
   DataContainerArray::Pointer dca = getFilter()->getDataContainerArray();
-  if(nullptr == dca.get()) { return; }
+  if(nullptr == dca.get())
+  {
+    return;
+  }
 
   int err = 0;
   AttributeMatrix::Pointer attrMat = dca->getPrereqAttributeMatrixFromPath(getFilter(), amPath, err);
-  if(nullptr != attrMat.get()) {
+  if(nullptr != attrMat.get())
+  {
     QString html = attrMat->getInfoString(SIMPL::HtmlFormat);
     m_SelectedAttributeMatrixPath->setToolTip(html);
     m_SelectedAttributeMatrixPath->setText(path);
@@ -328,10 +352,13 @@ void DataArrayCreationWidget::setSelectedPath(QString path)
 // -----------------------------------------------------------------------------
 void DataArrayCreationWidget::beforePreflight()
 {
-  if (nullptr == getFilter()) { return; }
+  if(nullptr == getFilter())
+  {
+    return;
+  }
   if(m_DidCausePreflight == true)
   {
-   // std::cout << "***  DataArrayCreationWidget already caused a preflight, just returning" << std::endl;
+    // std::cout << "***  DataArrayCreationWidget already caused a preflight, just returning" << std::endl;
     return;
   }
 
@@ -382,14 +409,13 @@ void DataArrayCreationWidget::on_applyChangesBtn_clicked()
   QPointer<QtSFaderWidget> faderWidget = new QtSFaderWidget(applyChangesBtn);
   setFaderWidget(faderWidget);
 
-  if (getFaderWidget())
+  if(getFaderWidget())
   {
     faderWidget->close();
   }
   faderWidget = new QtSFaderWidget(applyChangesBtn);
   faderWidget->setFadeOut();
-  connect(faderWidget, SIGNAL(animationComplete() ),
-          this, SLOT(hideButton()));
+  connect(faderWidget, SIGNAL(animationComplete()), this, SLOT(hideButton()));
   faderWidget->start();
   m_DidCausePreflight = false;
 }

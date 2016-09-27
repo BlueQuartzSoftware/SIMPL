@@ -40,8 +40,8 @@
 #include <QtGui/QIntValidator>
 #include <QtGui/QPainter>
 
-#include "SVWidgetsLib/Widgets/BookmarksItemDelegate.h"
 #include "SVWidgetsLib/Widgets/BookmarksItem.h"
+#include "SVWidgetsLib/Widgets/BookmarksItemDelegate.h"
 #include "SVWidgetsLib/Widgets/BookmarksModel.h"
 
 // Include the MOC generated CPP file which has all the QMetaObject methods/data
@@ -49,10 +49,9 @@
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-BookmarksItemDelegate::BookmarksItemDelegate(QObject* parent) :
-  QStyledItemDelegate(parent)
+BookmarksItemDelegate::BookmarksItemDelegate(QObject* parent)
+: QStyledItemDelegate(parent)
 {
-
 }
 
 // -----------------------------------------------------------------------------
@@ -60,7 +59,6 @@ BookmarksItemDelegate::BookmarksItemDelegate(QObject* parent) :
 // -----------------------------------------------------------------------------
 BookmarksItemDelegate::~BookmarksItemDelegate()
 {
-
 }
 
 // -----------------------------------------------------------------------------
@@ -92,7 +90,7 @@ void BookmarksItemDelegate::setModelData(QWidget* editor, QAbstractItemModel* mo
   QLineEdit* line = static_cast<QLineEdit*>(editor);
   QString value = line->text();
 
-  if (value.isEmpty() == false)
+  if(value.isEmpty() == false)
   {
     QModelIndex bIndex = bModel->index(index.row(), BookmarksItem::Name, index.parent());
     bModel->setData(bIndex, value, Qt::DisplayRole);
@@ -112,7 +110,7 @@ void BookmarksItemDelegate::updateEditorGeometry(QWidget* editor, const QStyleOp
 // -----------------------------------------------------------------------------
 void BookmarksItemDelegate::paint(QPainter* painter, const QStyleOptionViewItem& option, const QModelIndex& index) const
 {
-// Place any painting code here
+  // Place any painting code here
 
   QStyledItemDelegate::paint(painter, option, index);
 }

@@ -38,12 +38,11 @@
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-ThresholdFilterHelper::ThresholdFilterHelper(SIMPL::Comparison::Enumeration compType, double compValue, BoolArrayType* output) :
-  comparisonOperator(compType),
-  comparisonValue(compValue),
-  m_Output(output)
+ThresholdFilterHelper::ThresholdFilterHelper(SIMPL::Comparison::Enumeration compType, double compValue, BoolArrayType* output)
+: comparisonOperator(compType)
+, comparisonValue(compValue)
+, m_Output(output)
 {
-
 }
 
 // -----------------------------------------------------------------------------
@@ -51,29 +50,29 @@ ThresholdFilterHelper::ThresholdFilterHelper(SIMPL::Comparison::Enumeration comp
 // -----------------------------------------------------------------------------
 ThresholdFilterHelper::~ThresholdFilterHelper()
 {
-
 }
-
-
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-#define FILTER_DATA_HELPER(dType, ops, Type) \
-  if (dType.compare(#Type) == 0) {\
-    if (ops == SIMPL::Comparison::Operator_LessThan) filterDataLessThan<Type>(input);\
-    else if (ops == SIMPL::Comparison::Operator_GreaterThan) filterDataGreaterThan<Type>(input);\
-    else if (ops == SIMPL::Comparison::Operator_Equal) filterDataEqualTo<Type>(input);\
-    return 1;\
+#define FILTER_DATA_HELPER(dType, ops, Type)                                                                                                                                                           \
+  if(dType.compare(#Type) == 0)                                                                                                                                                                        \
+  {                                                                                                                                                                                                    \
+    if(ops == SIMPL::Comparison::Operator_LessThan)                                                                                                                                                    \
+      filterDataLessThan<Type>(input);                                                                                                                                                                 \
+    else if(ops == SIMPL::Comparison::Operator_GreaterThan)                                                                                                                                            \
+      filterDataGreaterThan<Type>(input);                                                                                                                                                              \
+    else if(ops == SIMPL::Comparison::Operator_Equal)                                                                                                                                                  \
+      filterDataEqualTo<Type>(input);                                                                                                                                                                  \
+    return 1;                                                                                                                                                                                          \
   }
-
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
 int ThresholdFilterHelper::execute(IDataArray* input, IDataArray* output)
 {
-  if (nullptr == input)
+  if(nullptr == input)
   {
     return -1;
   }
@@ -85,7 +84,7 @@ int ThresholdFilterHelper::execute(IDataArray* input, IDataArray* output)
 
   FILTER_DATA_HELPER(dType, comparisonOperator, int8_t);
   FILTER_DATA_HELPER(dType, comparisonOperator, uint8_t);
-# if CMP_TYPE_CHAR_IS_SIGNED
+#if CMP_TYPE_CHAR_IS_SIGNED
   FILTER_DATA_HELPER(dType, comparisonOperator, char);
 #else
   FILTER_DATA_HELPER(dType, comparisonOperator, char);
@@ -93,35 +92,31 @@ int ThresholdFilterHelper::execute(IDataArray* input, IDataArray* output)
   FILTER_DATA_HELPER(dType, comparisonOperator, signed char);
   FILTER_DATA_HELPER(dType, comparisonOperator, unsigned char);
 
-
   FILTER_DATA_HELPER(dType, comparisonOperator, int16_t);
   FILTER_DATA_HELPER(dType, comparisonOperator, short);
   FILTER_DATA_HELPER(dType, comparisonOperator, signed short);
   FILTER_DATA_HELPER(dType, comparisonOperator, uint16_t);
   FILTER_DATA_HELPER(dType, comparisonOperator, unsigned short);
 
-
   FILTER_DATA_HELPER(dType, comparisonOperator, int32_t);
   FILTER_DATA_HELPER(dType, comparisonOperator, uint32_t);
-#if (CMP_SIZEOF_INT == 4)
+#if(CMP_SIZEOF_INT == 4)
   FILTER_DATA_HELPER(dType, comparisonOperator, int);
   FILTER_DATA_HELPER(dType, comparisonOperator, signed int);
   FILTER_DATA_HELPER(dType, comparisonOperator, unsigned int);
 #endif
 
-
-#if (CMP_SIZEOF_LONG == 4)
+#if(CMP_SIZEOF_LONG == 4)
   FILTER_DATA_HELPER(dType, comparisonOperator, long int);
   FILTER_DATA_HELPER(dType, comparisonOperator, signed long int);
   FILTER_DATA_HELPER(dType, comparisonOperator, unsigned long int);
-#elif (CMP_SIZEOF_LONG == 8)
+#elif(CMP_SIZEOF_LONG == 8)
   FILTER_DATA_HELPER(dType, comparisonOperator, long int);
   FILTER_DATA_HELPER(dType, comparisonOperator, signed long int);
   FILTER_DATA_HELPER(dType, comparisonOperator, unsigned long int);
 #endif
 
-
-#if (CMP_SIZEOF_LONG_LONG == 8)
+#if(CMP_SIZEOF_LONG_LONG == 8)
   FILTER_DATA_HELPER(dType, comparisonOperator, long long int);
   FILTER_DATA_HELPER(dType, comparisonOperator, signed long long int);
   FILTER_DATA_HELPER(dType, comparisonOperator, unsigned long long int);

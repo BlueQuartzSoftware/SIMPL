@@ -44,8 +44,8 @@
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-LogOperator::LogOperator() :
-  UnaryOperator()
+LogOperator::LogOperator()
+: UnaryOperator()
 {
   setNumberOfArguments(2);
 }
@@ -55,13 +55,12 @@ LogOperator::LogOperator() :
 // -----------------------------------------------------------------------------
 LogOperator::~LogOperator()
 {
-
 }
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void LogOperator::calculate(AbstractFilter* filter, DataArrayPath calculatedArrayPath, QStack<ICalculatorArray::Pointer> &executionStack)
+void LogOperator::calculate(AbstractFilter* filter, DataArrayPath calculatedArrayPath, QStack<ICalculatorArray::Pointer>& executionStack)
 {
   CREATE_NEW_ARRAY_TWO_ARGUMENTS(filter, calculatedArrayPath, executionStack, log_arbitrary_base)
 }
@@ -73,4 +72,3 @@ double LogOperator::log_arbitrary_base(double base, double value)
 {
   return log(value) / log(base);
 }
-

@@ -33,7 +33,6 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-
 /*
    A C-program for MT19937, with initialization improved 2002/1/26.
    Coded by Takuji Nishimura and Makoto Matsumoto.
@@ -81,12 +80,11 @@
 
 #include "SIMPLibRandom.h"
 
-#include <stdlib.h>
 #include <assert.h>
 #include <stdio.h>
+#include <stdlib.h>
 
 #include <math.h>
-
 
 /* Period parameters */
 
@@ -94,10 +92,8 @@
 #define UPPER_MASK 0x80000000UL /* most significant w-r bits */
 #define LOWER_MASK 0x7fffffffUL /* least significant r bits */
 
-//static unsigned long mt[N]; /* the array for the state vector  */
-//static int mti=N+1; /* mti==N+1 means mt[N] is not initialized */
-
-
+// static unsigned long mt[N]; /* the array for the state vector  */
+// static int mti=N+1; /* mti==N+1 means mt[N] is not initialized */
 
 // -----------------------------------------------------------------------------
 //
@@ -119,10 +115,9 @@ void SIMPLibRandom::init_genrand(unsigned long s)
 
   mti = MERSENNNE_TWISTER_N + 1;
   mt[0] = s & 0xffffffffUL;
-  for (mti = 1; mti < MERSENNNE_TWISTER_N; mti++)
+  for(mti = 1; mti < MERSENNNE_TWISTER_N; mti++)
   {
-    mt[mti] =
-      (1812433253UL * (mt[mti - 1] ^ (mt[mti - 1] >> 30)) + mti);
+    mt[mti] = (1812433253UL * (mt[mti - 1] ^ (mt[mti - 1] >> 30)) + mti);
     /* See Knuth TAOCP Vol2. 3rd Ed. P.106 for multiplier. */
     /* In the previous versions, MSBs of the seed affect   */
     /* only MSBs of the array mt[].                        */
@@ -130,7 +125,6 @@ void SIMPLibRandom::init_genrand(unsigned long s)
     mt[mti] &= 0xffffffffUL;
     /* for >32 bit machines */
   }
-
 }
 
 /* initialize by an array with array-length */
@@ -145,30 +139,28 @@ void SIMPLibRandom::init_by_array(unsigned long init_key[], int key_length)
   i = 1;
   j = 0;
   k = (MERSENNNE_TWISTER_N > key_length ? MERSENNNE_TWISTER_N : key_length);
-  for (; k; k--)
+  for(; k; k--)
   {
-    mt[i] = (mt[i] ^ ((mt[i - 1] ^ (mt[i - 1] >> 30)) * 1664525UL))
-            + init_key[j] + j; /* non linear */
-    mt[i] &= 0xffffffffUL; /* for WORDSIZE > 32 machines */
+    mt[i] = (mt[i] ^ ((mt[i - 1] ^ (mt[i - 1] >> 30)) * 1664525UL)) + init_key[j] + j; /* non linear */
+    mt[i] &= 0xffffffffUL;                                                             /* for WORDSIZE > 32 machines */
     i++;
     j++;
-    if (i >= MERSENNNE_TWISTER_N)
+    if(i >= MERSENNNE_TWISTER_N)
     {
       mt[0] = mt[MERSENNNE_TWISTER_N - 1];
       i = 1;
     }
-    if (j >= key_length)
+    if(j >= key_length)
     {
       j = 0;
     }
   }
-  for (k = MERSENNNE_TWISTER_N - 1; k; k--)
+  for(k = MERSENNNE_TWISTER_N - 1; k; k--)
   {
-    mt[i] = (mt[i] ^ ((mt[i - 1] ^ (mt[i - 1] >> 30)) * 1566083941UL))
-            - i; /* non linear */
-    mt[i] &= 0xffffffffUL; /* for WORDSIZE > 32 machines */
+    mt[i] = (mt[i] ^ ((mt[i - 1] ^ (mt[i - 1] >> 30)) * 1566083941UL)) - i; /* non linear */
+    mt[i] &= 0xffffffffUL;                                                  /* for WORDSIZE > 32 machines */
     i++;
-    if (i >= MERSENNNE_TWISTER_N)
+    if(i >= MERSENNNE_TWISTER_N)
     {
       mt[0] = mt[MERSENNNE_TWISTER_N - 1];
       i = 1;
@@ -186,21 +178,21 @@ unsigned long SIMPLibRandom::genrand_int32()
 
   /* mag01[x] = x * MATRIX_A  for x=0,1 */
 
-  if (mti >= MERSENNNE_TWISTER_N)   /* generate N words at one time */
+  if(mti >= MERSENNNE_TWISTER_N) /* generate N words at one time */
   {
     int kk;
 
-    if (mti == MERSENNNE_TWISTER_N + 1) /* if init_genrand() has not been called, */
+    if(mti == MERSENNNE_TWISTER_N + 1) /* if init_genrand() has not been called, */
     {
-      init_genrand(5489UL);    /* a default initial seed is used */
+      init_genrand(5489UL); /* a default initial seed is used */
     }
 
-    for (kk = 0; kk < MERSENNNE_TWISTER_N - MERSENNNE_TWISTER_M; kk++)
+    for(kk = 0; kk < MERSENNNE_TWISTER_N - MERSENNNE_TWISTER_M; kk++)
     {
       y = (mt[kk] & UPPER_MASK) | (mt[kk + 1] & LOWER_MASK);
       mt[kk] = mt[kk + MERSENNNE_TWISTER_M] ^ (y >> 1) ^ mag01[y & 0x1UL];
     }
-    for (; kk < MERSENNNE_TWISTER_N - 1; kk++)
+    for(; kk < MERSENNNE_TWISTER_N - 1; kk++)
     {
       y = (mt[kk] & UPPER_MASK) | (mt[kk + 1] & LOWER_MASK);
       mt[kk] = mt[kk + (MERSENNNE_TWISTER_M - MERSENNNE_TWISTER_N)] ^ (y >> 1) ^ mag01[y & 0x1UL];
@@ -254,9 +246,8 @@ double SIMPLibRandom::genrand_real3()
 double SIMPLibRandom::genrand_res53()
 {
   unsigned long a = genrand_int32() >> 5, b = genrand_int32() >> 6;
-  return(a * 67108864.0 + b) * (1.0 / 9007199254740992.0);
+  return (a * 67108864.0 + b) * (1.0 / 9007199254740992.0);
 }
-
 
 // -----------------------------------------------------------------------------
 //
@@ -443,7 +434,7 @@ double SIMPLibRandom::genrand_norm(double m, double s)
   double u, t, p, q, z;
 
   u = genrand_res53();
-  if (u < 0.5)
+  if(u < 0.5)
   {
     t = sqrt(-2.0 * log(u));
   }
@@ -451,9 +442,9 @@ double SIMPLibRandom::genrand_norm(double m, double s)
   {
     t = sqrt(-2.0 * log(1.0 - u));
   }
-  p   = p0 + t * (p1 + t * (p2 + t * (p3 + t * p4)));
-  q   = q0 + t * (q1 + t * (q2 + t * (q3 + t * q4)));
-  if (u < 0.5)
+  p = p0 + t * (p1 + t * (p2 + t * (p3 + t * p4)));
+  q = q0 + t * (q1 + t * (q2 + t * (q3 + t * q4)));
+  if(u < 0.5)
   {
     z = (p / q) - t;
   }

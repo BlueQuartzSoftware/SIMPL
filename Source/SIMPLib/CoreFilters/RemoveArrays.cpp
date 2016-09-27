@@ -33,24 +33,21 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-
 #include "RemoveArrays.h"
 
 #include "SIMPLib/Common/Constants.h"
-#include "SIMPLib/SIMPLibVersion.h"
 #include "SIMPLib/FilterParameters/AbstractFilterParametersReader.h"
 #include "SIMPLib/FilterParameters/DataContainerArrayProxyFilterParameter.h"
+#include "SIMPLib/SIMPLibVersion.h"
 
 // Include the MOC generated file for this class
 #include "moc_RemoveArrays.cpp"
 
-
-
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-RemoveArrays::RemoveArrays() :
-  AbstractFilter()
+RemoveArrays::RemoveArrays()
+: AbstractFilter()
 {
   setupFilterParameters();
 }
@@ -90,7 +87,7 @@ void RemoveArrays::setupFilterParameters()
 void RemoveArrays::readFilterParameters(AbstractFilterParametersReader* reader, int index)
 {
   reader->openFilterGroup(this, index);
-  DataContainerArrayProxy proxy = reader->readDataContainerArrayProxy("DataArraysToRemove", getDataArraysToRemove() );
+  DataContainerArrayProxy proxy = reader->readDataContainerArrayProxy("DataArraysToRemove", getDataArraysToRemove());
   setDataArraysToRemove(proxy);
   reader->closeFilterGroup();
 }
@@ -100,7 +97,6 @@ void RemoveArrays::readFilterParameters(AbstractFilterParametersReader* reader, 
 // -----------------------------------------------------------------------------
 void RemoveArrays::initialize()
 {
-
 }
 
 // -----------------------------------------------------------------------------
@@ -134,7 +130,6 @@ void RemoveArrays::preflight()
 // -----------------------------------------------------------------------------
 void RemoveArrays::markSelectionsForDeletion(DataContainerArray* dca, Qt::CheckState state)
 {
-
 }
 
 // -----------------------------------------------------------------------------
@@ -146,29 +141,32 @@ void RemoveArrays::removeSelectionsFromDataContainerArray(DataContainerArray* dc
   QList<DataContainerProxy> containers = m_DataArraysToRemove.dataContainers.values();
   QListIterator<DataContainerProxy> containerIter(containers);
   QStringList dcList;
-  while (containerIter.hasNext())
+  while(containerIter.hasNext())
   {
     DataContainerProxy dcProxy = containerIter.next();
     dcList.push_back(dcProxy.name);
     DataContainer::Pointer dcItem = dca->getPrereqDataContainer<AbstractFilter>(this, dcProxy.name);
-    if (getErrorCondition() < 0 || dcItem.get() == nullptr) { continue; }
+    if(getErrorCondition() < 0 || dcItem.get() == nullptr)
+    {
+      continue;
+    }
 
     // Check to see if the DataContainer is checked, if it is checked then we remove the entire DataContainer from
     // the DataContainerArray
-    if (dcProxy.flag == state)
+    if(dcProxy.flag == state)
     {
       dca->removeDataContainer(dcProxy.name); // Remove it out
-      continue; // Continue to the next DataContainer
+      continue;                               // Continue to the next DataContainer
     }
     QMap<QString, AttributeMatrixProxy>& attrMats = dcProxy.attributeMatricies;
     QMapIterator<QString, AttributeMatrixProxy> attrMatsIter(attrMats);
-    while (attrMatsIter.hasNext() )
+    while(attrMatsIter.hasNext())
     {
       attrMatsIter.next();
       QString amName = attrMatsIter.key();
       AttributeMatrix::Pointer amItem = dcItem->getAttributeMatrix(amName);
-      //assert(amItem.get() != nullptr);
-      if (amItem.get() == nullptr)
+      // assert(amItem.get() != nullptr);
+      if(amItem.get() == nullptr)
       {
         setErrorCondition(-11008);
         QString ss = QObject::tr("The AttributeMatrix '%1' could not be removed because it was not found in DataContainer '%2'").arg(amName).arg(dcProxy.name);
@@ -177,7 +175,7 @@ void RemoveArrays::removeSelectionsFromDataContainerArray(DataContainerArray* dc
       }
       AttributeMatrixProxy attrProxy = attrMatsIter.value();
       // Check to see if this AttributeMatrix is checked, if not then remove it from the DataContainer and go to the next loop
-      if (attrProxy.flag == state)
+      if(attrProxy.flag == state)
       {
         dcItem->removeAttributeMatrix(amName);
         continue;
@@ -185,12 +183,12 @@ void RemoveArrays::removeSelectionsFromDataContainerArray(DataContainerArray* dc
       // We found the selected AttributeMatrix, so loop over this attribute matrix arrays and populate the list widget
       QMap<QString, DataArrayProxy>& dataArrays = attrProxy.dataArrays;
       QMapIterator<QString, DataArrayProxy> dataArraysIter(dataArrays);
-      while (dataArraysIter.hasNext() )
+      while(dataArraysIter.hasNext())
       {
         dataArraysIter.next();
         QString daName = dataArraysIter.key();
         IDataArray::Pointer daItem = amItem->getAttributeArray(daName);
-        if (daItem.get() == nullptr)
+        if(daItem.get() == nullptr)
         {
           setErrorCondition(-11014);
           QString ss = QObject::tr("The DataArray '%1' could not be removed because it was not found in AttributeMatrix '%2'").arg(daName).arg(amName);
@@ -199,7 +197,7 @@ void RemoveArrays::removeSelectionsFromDataContainerArray(DataContainerArray* dc
         }
         DataArrayProxy daProxy = dataArraysIter.value();
         // Check to see if the user selected this item
-        if (daProxy.flag == state)
+        if(daProxy.flag == state)
         {
           amItem->removeAttributeArray(daName);
           continue;
@@ -217,7 +215,10 @@ void RemoveArrays::execute()
   setErrorCondition(0);
   // Simply running the preflight will do what we need it to.
   dataCheck();
-  if(getErrorCondition() < 0) { return; }
+  if(getErrorCondition() < 0)
+  {
+    return;
+  }
 
   notifyStatusMessage(getHumanLabel(), "Complete");
 }
@@ -239,7 +240,9 @@ AbstractFilter::Pointer RemoveArrays::newFilterInstance(bool copyFilterParameter
 //
 // -----------------------------------------------------------------------------
 const QString RemoveArrays::getCompiledLibraryName()
-{ return Core::CoreBaseName; }
+{
+  return Core::CoreBaseName;
+}
 
 // -----------------------------------------------------------------------------
 //
@@ -256,26 +259,30 @@ const QString RemoveArrays::getFilterVersion()
 {
   QString version;
   QTextStream vStream(&version);
-  vStream <<  SIMPLib::Version::Major() << "." << SIMPLib::Version::Minor() << "." << SIMPLib::Version::Patch();
+  vStream << SIMPLib::Version::Major() << "." << SIMPLib::Version::Minor() << "." << SIMPLib::Version::Patch();
   return version;
 }
-
-
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
 const QString RemoveArrays::getGroupName()
-{ return SIMPL::FilterGroups::CoreFilters; }
+{
+  return SIMPL::FilterGroups::CoreFilters;
+}
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
 const QString RemoveArrays::getSubGroupName()
-{ return SIMPL::FilterSubGroups::MemoryManagementFilters; }
+{
+  return SIMPL::FilterSubGroups::MemoryManagementFilters;
+}
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
 const QString RemoveArrays::getHumanLabel()
-{ return "Delete Data"; }
+{
+  return "Delete Data";
+}

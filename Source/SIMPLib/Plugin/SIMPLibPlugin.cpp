@@ -41,14 +41,13 @@
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-SIMPLibPlugin::SIMPLibPlugin() :
-  m_PluginName(""),
-  m_Version(""),
-  m_Vendor(""),
-  m_Location(""),
-  m_Status("")
+SIMPLibPlugin::SIMPLibPlugin()
+: m_PluginName("")
+, m_Version("")
+, m_Vendor("")
+, m_Location("")
+, m_Status("")
 {
-
 }
 
 // -----------------------------------------------------------------------------
@@ -137,4 +136,3 @@ void SIMPLibPlugin::setStatus(QString status)
 {
   m_Status = status;
 }
-

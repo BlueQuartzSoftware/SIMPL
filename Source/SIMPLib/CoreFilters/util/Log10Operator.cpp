@@ -44,8 +44,8 @@
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-Log10Operator::Log10Operator() :
-  UnaryOperator()
+Log10Operator::Log10Operator()
+: UnaryOperator()
 {
   setNumberOfArguments(1);
 }
@@ -55,14 +55,12 @@ Log10Operator::Log10Operator() :
 // -----------------------------------------------------------------------------
 Log10Operator::~Log10Operator()
 {
-
 }
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void Log10Operator::calculate(AbstractFilter* filter, DataArrayPath calculatedArrayPath, QStack<ICalculatorArray::Pointer> &executionStack)
+void Log10Operator::calculate(AbstractFilter* filter, DataArrayPath calculatedArrayPath, QStack<ICalculatorArray::Pointer>& executionStack)
 {
   CREATE_NEW_ARRAY_STANDARD_UNARY(filter, calculatedArrayPath, executionStack, log10)
 }
-

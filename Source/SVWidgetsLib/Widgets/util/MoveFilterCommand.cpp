@@ -40,19 +40,19 @@
 #include "SVWidgetsLib/Widgets/PipelineFilterObject.h"
 #include "SVWidgetsLib/Widgets/PipelineView.h"
 
-#include "SIMPLib/FilterParameters/JsonFilterParametersWriter.h"
 #include "SIMPLib/FilterParameters/JsonFilterParametersReader.h"
+#include "SIMPLib/FilterParameters/JsonFilterParametersWriter.h"
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-MoveFilterCommand::MoveFilterCommand(PipelineFilterObject* filterWidget, QVariant origin, QVariant destination, PipelineView* pipelineView, QUndoCommand* parent) :
-  QUndoCommand(parent),
-  m_PipelineView(pipelineView),
-  m_FilterWidget(filterWidget),
-  m_Origin(origin),
-  m_Destination(destination),
-  m_FirstRun(true)
+MoveFilterCommand::MoveFilterCommand(PipelineFilterObject* filterWidget, QVariant origin, QVariant destination, PipelineView* pipelineView, QUndoCommand* parent)
+: QUndoCommand(parent)
+, m_PipelineView(pipelineView)
+, m_FilterWidget(filterWidget)
+, m_Origin(origin)
+, m_Destination(destination)
+, m_FirstRun(true)
 {
   setText(QObject::tr("\"Move '%1'\"").arg(m_FilterWidget->getFilter()->getHumanLabel()));
 }
@@ -62,7 +62,6 @@ MoveFilterCommand::MoveFilterCommand(PipelineFilterObject* filterWidget, QVarian
 // -----------------------------------------------------------------------------
 MoveFilterCommand::~MoveFilterCommand()
 {
-
 }
 
 // -----------------------------------------------------------------------------
@@ -88,7 +87,7 @@ void MoveFilterCommand::undo()
 // -----------------------------------------------------------------------------
 void MoveFilterCommand::redo()
 {
-  if (m_FirstRun == true)
+  if(m_FirstRun == true)
   {
     m_PipelineView->addFilterObject(m_FilterWidget, m_Destination);
 
@@ -110,6 +109,3 @@ void MoveFilterCommand::redo()
   m_PipelineView->recheckWindowTitleAndModification();
   m_PipelineView->preflightPipeline();
 }
-
-
-

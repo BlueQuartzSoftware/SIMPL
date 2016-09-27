@@ -45,19 +45,18 @@
 
 #include "FilterParameterWidgetsDialogs.h"
 
-
 // Include the MOC generated file for this class
 #include "moc_CalculatorWidget.cpp"
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-CalculatorWidget::CalculatorWidget(FilterParameter* parameter, AbstractFilter* filter, QWidget* parent) :
-  FilterParameterWidget(parameter, filter, parent),
-  m_ScalarsMenu(nullptr),
-  m_VectorsMenu(nullptr),
-  m_SelectedText(""),
-  m_SelectionStart(-1)
+CalculatorWidget::CalculatorWidget(FilterParameter* parameter, AbstractFilter* filter, QWidget* parent)
+: FilterParameterWidget(parameter, filter, parent)
+, m_ScalarsMenu(nullptr)
+, m_VectorsMenu(nullptr)
+, m_SelectedText("")
+, m_SelectionStart(-1)
 {
   m_Filter = dynamic_cast<ArrayCalculator*>(filter);
   Q_ASSERT_X(m_Filter != nullptr, "nullptr Pointer", "CalculatorWidget can ONLY be used with an ArrayCalculator filter");
@@ -73,7 +72,8 @@ CalculatorWidget::CalculatorWidget(FilterParameter* parameter, AbstractFilter* f
 //
 // -----------------------------------------------------------------------------
 CalculatorWidget::~CalculatorWidget()
-{}
+{
+}
 
 // -----------------------------------------------------------------------------
 //
@@ -81,7 +81,7 @@ CalculatorWidget::~CalculatorWidget()
 void CalculatorWidget::setupGui()
 {
   blockSignals(true);
-  if (getFilterParameter() != nullptr)
+  if(getFilterParameter() != nullptr)
   {
     QString str = getFilter()->property(PROPERTY_NAME_AS_CHAR).toString();
     equation->setText(str);
@@ -89,22 +89,17 @@ void CalculatorWidget::setupGui()
   blockSignals(false);
 
   // Catch when the filter is about to execute the preflight
-  connect(getFilter(), SIGNAL(preflightAboutToExecute()),
-          this, SLOT(beforePreflight()));
+  connect(getFilter(), SIGNAL(preflightAboutToExecute()), this, SLOT(beforePreflight()));
 
   // Catch when the filter is finished running the preflight
-  connect(getFilter(), SIGNAL(preflightExecuted()),
-          this, SLOT(afterPreflight()));
+  connect(getFilter(), SIGNAL(preflightExecuted()), this, SLOT(afterPreflight()));
 
   // Catch when the filter wants its values updated
-  connect(getFilter(), SIGNAL(updateFilterParameters(AbstractFilter*)),
-          this, SLOT(filterNeedsInputParameters(AbstractFilter*)));
+  connect(getFilter(), SIGNAL(updateFilterParameters(AbstractFilter*)), this, SLOT(filterNeedsInputParameters(AbstractFilter*)));
 
-  connect(equation, SIGNAL(textChanged(const QString&)),
-          this, SLOT(widgetChanged(const QString&)));
+  connect(equation, SIGNAL(textChanged(const QString&)), this, SLOT(widgetChanged(const QString&)));
 
-  connect(equation, SIGNAL(selectionChanged()),
-          this, SLOT(updateSelection()));
+  connect(equation, SIGNAL(selectionChanged()), this, SLOT(updateSelection()));
 
   // Unary Operator Buttons
   connect(absBtn, SIGNAL(pressed()), this, SLOT(printUnaryButtonName()));
@@ -149,7 +144,7 @@ void CalculatorWidget::setupGui()
 void CalculatorWidget::printUnaryButtonName()
 {
   QPushButton* button = static_cast<QPushButton*>(sender());
-  if (nullptr != button)
+  if(nullptr != button)
   {
     printStringToEquation(button->text() + "(");
   }
@@ -161,7 +156,7 @@ void CalculatorWidget::printUnaryButtonName()
 void CalculatorWidget::printButtonName()
 {
   QPushButton* button = static_cast<QPushButton*>(sender());
-  if (nullptr != button)
+  if(nullptr != button)
   {
     printStringToEquation(button->text());
   }
@@ -171,9 +166,9 @@ void CalculatorWidget::printButtonName()
 //
 // -----------------------------------------------------------------------------
 void CalculatorWidget::printActionName()
-{ 
+{
   QAction* action = static_cast<QAction*>(sender());
-  if (nullptr != action)
+  if(nullptr != action)
   {
     printStringToEquation(action->text());
   }
@@ -186,7 +181,7 @@ void CalculatorWidget::printStringToEquation(QString str)
 {
   QString equationText = equation->text();
 
-  if (m_SelectedText.isEmpty() == false && m_SelectionStart >= 0)
+  if(m_SelectedText.isEmpty() == false && m_SelectionStart >= 0)
   {
     equationText.replace(m_SelectionStart, m_SelectedText.size(), str);
     equation->setFocus();
@@ -271,7 +266,7 @@ void CalculatorWidget::on_rootBtn_pressed()
 // -----------------------------------------------------------------------------
 void CalculatorWidget::on_scalarsBtn_pressed()
 {
-  if (nullptr != m_VectorsMenu)
+  if(nullptr != m_VectorsMenu)
   {
     delete m_ScalarsMenu;
     m_ScalarsMenu = nullptr;
@@ -281,16 +276,16 @@ void CalculatorWidget::on_scalarsBtn_pressed()
   m_ScalarsMenu = new QMenu(this);
 
   AttributeMatrix::Pointer am = m_Filter->getDataContainerArray()->getAttributeMatrix(m_Filter->getSelectedAttributeMatrix());
-  if (nullptr == am)
+  if(nullptr == am)
   {
     return;
   }
 
   QStringList nameList = am->getAttributeArrayNames();
 
-  for (int i = 0; i < nameList.size(); i++)
+  for(int i = 0; i < nameList.size(); i++)
   {
-    if (am->getAttributeArray(nameList[i])->getComponentDimensions()[0] == 1)
+    if(am->getAttributeArray(nameList[i])->getComponentDimensions()[0] == 1)
     {
       QAction* action = new QAction(nameList[i], m_ScalarsMenu);
       connect(action, SIGNAL(triggered()), this, SLOT(printActionName()));
@@ -308,7 +303,7 @@ void CalculatorWidget::on_scalarsBtn_pressed()
 // -----------------------------------------------------------------------------
 void CalculatorWidget::on_vectorsBtn_pressed()
 {
-  if (nullptr != m_VectorsMenu)
+  if(nullptr != m_VectorsMenu)
   {
     delete m_VectorsMenu;
     m_VectorsMenu = nullptr;
@@ -318,16 +313,16 @@ void CalculatorWidget::on_vectorsBtn_pressed()
   m_VectorsMenu = new QMenu(this);
 
   AttributeMatrix::Pointer am = m_Filter->getDataContainerArray()->getAttributeMatrix(m_Filter->getSelectedAttributeMatrix());
-  if (nullptr == am)
+  if(nullptr == am)
   {
     return;
   }
 
   QStringList nameList = am->getAttributeArrayNames();
 
-  for (int i = 0; i < nameList.size(); i++)
+  for(int i = 0; i < nameList.size(); i++)
   {
-    if (am->getAttributeArray(nameList[i])->getComponentDimensions()[0] > 1)
+    if(am->getAttributeArray(nameList[i])->getComponentDimensions()[0] > 1)
     {
       QAction* action = new QAction(nameList[i], m_VectorsMenu);
       connect(action, SIGNAL(triggered()), this, SLOT(printActionName()));
@@ -345,7 +340,7 @@ void CalculatorWidget::on_vectorsBtn_pressed()
 // -----------------------------------------------------------------------------
 void CalculatorWidget::on_equation_returnPressed()
 {
-  //qDebug() << "DataArrayCreationWidget::on_value_returnPressed() " << this;
+  // qDebug() << "DataArrayCreationWidget::on_value_returnPressed() " << this;
   m_DidCausePreflight = true;
   on_applyChangesBtn_clicked();
   m_DidCausePreflight = false;
@@ -356,7 +351,7 @@ void CalculatorWidget::on_equation_returnPressed()
 // -----------------------------------------------------------------------------
 void CalculatorWidget::updateSelection()
 {
-  if (equation->hasFocus())
+  if(equation->hasFocus())
   {
     m_SelectedText = equation->selectedText();
     m_SelectionStart = equation->selectionStart();
@@ -391,7 +386,6 @@ void CalculatorWidget::widgetChanged(const QString& text)
 // -----------------------------------------------------------------------------
 void CalculatorWidget::beforePreflight()
 {
-
 }
 
 // -----------------------------------------------------------------------------
@@ -399,7 +393,6 @@ void CalculatorWidget::beforePreflight()
 // -----------------------------------------------------------------------------
 void CalculatorWidget::afterPreflight()
 {
-
 }
 
 // -----------------------------------------------------------------------------
@@ -408,7 +401,7 @@ void CalculatorWidget::afterPreflight()
 void CalculatorWidget::filterNeedsInputParameters(AbstractFilter* filter)
 {
   bool ok = filter->setProperty(PROPERTY_NAME_AS_CHAR, equation->text());
-  if (false == ok)
+  if(false == ok)
   {
     FilterParameterWidgetsDialogs::ShowCouldNotSetFilterParameter(getFilter(), getFilterParameter());
   }
@@ -416,7 +409,7 @@ void CalculatorWidget::filterNeedsInputParameters(AbstractFilter* filter)
   ArrayCalculator* calculatorFilter = dynamic_cast<ArrayCalculator*>(filter);
   Q_ASSERT_X(calculatorFilter != nullptr, "nullptr Pointer", "CalculatorWidget can ONLY be used with an ArrayCalculator filter");
 
-  if (radiansBtn->isChecked())
+  if(radiansBtn->isChecked())
   {
     calculatorFilter->setUnits(ArrayCalculator::Radians);
   }
@@ -437,14 +430,12 @@ void CalculatorWidget::on_applyChangesBtn_clicked()
   QPointer<QtSFaderWidget> faderWidget = new QtSFaderWidget(applyChangesBtn);
   setFaderWidget(faderWidget);
 
-  if (getFaderWidget())
+  if(getFaderWidget())
   {
     faderWidget->close();
   }
   faderWidget = new QtSFaderWidget(applyChangesBtn);
   faderWidget->setFadeOut();
-  connect(faderWidget, SIGNAL(animationComplete() ),
-          this, SLOT(hideButton()));
+  connect(faderWidget, SIGNAL(animationComplete()), this, SLOT(hideButton()));
   faderWidget->start();
 }
-

@@ -37,52 +37,51 @@
 
 #include <iostream>
 
-
-#include <QtCore/QFileInfo>
-#include <QtCore/QUrl>
 #include <QtCore/QDir>
-#include <QtCore/QTemporaryFile>
-#include <QtCore/QMimeData>
+#include <QtCore/QFileInfo>
 #include <QtCore/QJsonDocument>
 #include <QtCore/QJsonObject>
+#include <QtCore/QMimeData>
+#include <QtCore/QTemporaryFile>
+#include <QtCore/QUrl>
 
-#include <QtGui/QMouseEvent>
-#include <QtGui/QDropEvent>
+#include <QtGui/QClipboard>
+#include <QtGui/QDrag>
 #include <QtGui/QDragEnterEvent>
 #include <QtGui/QDragLeaveEvent>
 #include <QtGui/QDragMoveEvent>
-#include <QtGui/QDrag>
-#include <QtGui/QClipboard>
-#include <QtWidgets/QLabel>
+#include <QtGui/QDropEvent>
+#include <QtGui/QMouseEvent>
 #include <QtGui/QPixmap>
-#include <QtWidgets/QVBoxLayout>
 #include <QtWidgets/QHeaderView>
+#include <QtWidgets/QLabel>
+#include <QtWidgets/QMessageBox>
+#include <QtWidgets/QProgressDialog>
 #include <QtWidgets/QScrollArea>
 #include <QtWidgets/QScrollBar>
-#include <QtWidgets/QProgressDialog>
-#include <QtWidgets/QMessageBox>
+#include <QtWidgets/QVBoxLayout>
 
-#include "SIMPLib/SIMPLib.h"
-#include "SIMPLib/Common/SIMPLibSetGetMacros.h"
-#include "SIMPLib/Common/PipelineMessage.h"
+#include "SIMPLib/Common/FilterFactory.hpp"
 #include "SIMPLib/Common/FilterManager.h"
 #include "SIMPLib/Common/IFilterFactory.hpp"
-#include "SIMPLib/Common/FilterFactory.hpp"
+#include "SIMPLib/Common/PipelineMessage.h"
+#include "SIMPLib/Common/SIMPLibSetGetMacros.h"
 #include "SIMPLib/CoreFilters/Breakpoint.h"
 #include "SIMPLib/FilterParameters/JsonFilterParametersReader.h"
 #include "SIMPLib/FilterParameters/JsonFilterParametersWriter.h"
+#include "SIMPLib/SIMPLib.h"
 
 #include "SVWidgetsLib/QtSupport/QtSDroppableScrollArea.h"
 
-#include "SVWidgetsLib/Core/SVWidgetsLibConstants.h"
 #include "SVWidgetsLib/Core/FilterWidgetManager.h"
 #include "SVWidgetsLib/Core/PipelineViewPtrMimeData.h"
+#include "SVWidgetsLib/Core/SVWidgetsLibConstants.h"
+#include "SVWidgetsLib/FilterParameterWidgets/FilterParameterWidgetsDialogs.h"
 #include "SVWidgetsLib/Widgets/BreakpointFilterWidget.h"
+#include "SVWidgetsLib/Widgets/SIMPLViewMenuItems.h"
 #include "SVWidgetsLib/Widgets/util/AddFilterCommand.h"
 #include "SVWidgetsLib/Widgets/util/MoveFilterCommand.h"
 #include "SVWidgetsLib/Widgets/util/RemoveFilterCommand.h"
-#include "SVWidgetsLib/Widgets/SIMPLViewMenuItems.h"
-#include "SVWidgetsLib/FilterParameterWidgets/FilterParameterWidgetsDialogs.h"
 
 // Include the MOC generated CPP file which has all the QMetaObject methods/data
 #include "moc_SVPipelineViewWidget.cpp"
@@ -90,17 +89,17 @@
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-SVPipelineViewWidget::SVPipelineViewWidget(QWidget* parent) :
-  QFrame(parent),
-  PipelineView(parent),
-  m_PipelineIsRunning(false),
-  m_FilterOrigPos(-1),
-  m_DropIndex(-1),
-  m_AutoScroll(true),
-  m_AutoScrollMargin(10),
-  m_autoScrollCount(0),
-  m_UndoStack(new QUndoStack(this)),
-  m_BlockPreflight(false)
+SVPipelineViewWidget::SVPipelineViewWidget(QWidget* parent)
+: QFrame(parent)
+, PipelineView(parent)
+, m_PipelineIsRunning(false)
+, m_FilterOrigPos(-1)
+, m_DropIndex(-1)
+, m_AutoScroll(true)
+, m_AutoScrollMargin(10)
+, m_autoScrollCount(0)
+, m_UndoStack(new QUndoStack(this))
+, m_BlockPreflight(false)
 {
   setupGui();
 }
@@ -110,8 +109,14 @@ SVPipelineViewWidget::SVPipelineViewWidget(QWidget* parent) :
 // -----------------------------------------------------------------------------
 SVPipelineViewWidget::~SVPipelineViewWidget()
 {
-  if(m_ContextMenu) { delete m_ContextMenu;}
-  if(m_DropBox && !m_DropBox->parent()) { delete m_DropBox; }
+  if(m_ContextMenu)
+  {
+    delete m_ContextMenu;
+  }
+  if(m_DropBox && !m_DropBox->parent())
+  {
+    delete m_DropBox;
+  }
 }
 
 // -----------------------------------------------------------------------------
@@ -122,10 +127,9 @@ void SVPipelineViewWidget::setupGui()
   newEmptyPipelineViewLayout();
   connect(&m_autoScrollTimer, SIGNAL(timeout()), this, SLOT(doAutoScroll()));
 
-  //connect(this, SIGNAL(deleteKeyPressed(PipelineView*)), dream3dApp, SLOT(on_pipelineViewWidget_deleteKeyPressed(PipelineView*)));
+  // connect(this, SIGNAL(deleteKeyPressed(PipelineView*)), dream3dApp, SLOT(on_pipelineViewWidget_deleteKeyPressed(PipelineView*)));
   m_UndoStack = QSharedPointer<QUndoStack>(new QUndoStack(this));
   m_UndoStack->setUndoLimit(10);
-
 
   m_DropBox = new DropBoxWidget();
   m_DropBox->setObjectName("m_DropBox");
@@ -134,7 +138,6 @@ void SVPipelineViewWidget::setupGui()
   m_ActionRedo = m_UndoStack->createRedoAction(nullptr);
   m_ActionUndo->setShortcut(QKeySequence(Qt::CTRL + Qt::Key_Z));
   m_ActionRedo->setShortcut(QKeySequence(Qt::CTRL + Qt::SHIFT + Qt::Key_Z));
-
 
   m_autoScrollTimer.setParent(this);
 
@@ -155,7 +158,7 @@ PipelineFilterObject* SVPipelineViewWidget::createFilterObjectFromFilter(Abstrac
 
   // Create a FilterWidget object
   SVPipelineFilterWidget* fw;
-  if (NULL != breakpoint)
+  if(NULL != breakpoint)
   {
     fw = new BreakpointFilterWidget(filter, nullptr, this);
   }
@@ -170,7 +173,7 @@ PipelineFilterObject* SVPipelineViewWidget::createFilterObjectFromFilter(Abstrac
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-QMenu* SVPipelineViewWidget::createPipelineFilterWidgetMenu(SVPipelineFilterWidget *filterWidget)
+QMenu* SVPipelineViewWidget::createPipelineFilterWidgetMenu(SVPipelineFilterWidget* filterWidget)
 {
   // Creating Pipeline Filter Widget Menu
   SIMPLViewMenuItems* menuItems = SIMPLViewMenuItems::Instance();
@@ -244,7 +247,7 @@ void SVPipelineViewWidget::newEmptyPipelineViewLayout()
                                                           "}"));
     m_EmptyPipelineLabel->setAlignment(Qt::AlignCenter);
     QString text;
-    QTextStream ss (&text);
+    QTextStream ss(&text);
     ss << "<h2>Creating a Pipeline</h2>";
     ss << "<hr>";
     ss << "File > Open <br />";
@@ -253,7 +256,6 @@ void SVPipelineViewWidget::newEmptyPipelineViewLayout()
     ss << "Double click a Bookmark<br />";
     ss << "Double click a Prebuilt Pipeline<br />";
     m_EmptyPipelineLabel->setText(text);
-
 
     gridLayout->addWidget(m_EmptyPipelineLabel, 1, 1, 1, 1);
 
@@ -276,7 +278,7 @@ int SVPipelineViewWidget::filterCount(QUuid startId)
   Q_UNUSED(startId)
 
   int count = 0;
-  if (nullptr != m_FilterWidgetLayout)
+  if(nullptr != m_FilterWidgetLayout)
   {
     count = m_FilterWidgetLayout->count() - 1;
   }
@@ -289,7 +291,7 @@ int SVPipelineViewWidget::filterCount(QUuid startId)
 void SVPipelineViewWidget::focusInEvent(QFocusEvent* event)
 {
   QList<PipelineFilterObject*> filterWidgets = getSelectedFilterObjects();
-  for(int i=0; i<filterWidgets.size(); i++)
+  for(int i = 0; i < filterWidgets.size(); i++)
   {
     PipelineFilterObject* fw = filterWidgets[i];
     fw->setHasFocus(true);
@@ -303,7 +305,7 @@ void SVPipelineViewWidget::focusInEvent(QFocusEvent* event)
 void SVPipelineViewWidget::focusOutEvent(QFocusEvent* event)
 {
   QList<PipelineFilterObject*> filterWidgets = getSelectedFilterObjects();
-  for(int i=0; i<filterWidgets.size(); i++)
+  for(int i = 0; i < filterWidgets.size(); i++)
   {
     PipelineFilterObject* fw = filterWidgets[i];
     fw->setHasFocus(false);
@@ -318,15 +320,18 @@ PipelineFilterObject* SVPipelineViewWidget::filterObjectAt(QVariant value)
 {
   bool ok;
   int index = value.toInt(&ok);
-  if (ok == false) { return nullptr; }
+  if(ok == false)
+  {
+    return nullptr;
+  }
 
-  if (index < 0)
+  if(index < 0)
   {
     index = filterCount();
   }
 
   SVPipelineFilterWidget* fw = nullptr;
-  if (m_FilterWidgetLayout != nullptr)
+  if(m_FilterWidgetLayout != nullptr)
   {
     QLayoutItem* layoutItem = m_FilterWidgetLayout->itemAt(index);
     QWidget* w = layoutItem->widget();
@@ -341,7 +346,10 @@ PipelineFilterObject* SVPipelineViewWidget::filterObjectAt(QVariant value)
 QVariant SVPipelineViewWidget::valueOfFilterWidget(PipelineFilterObject* filterObject)
 {
   SVPipelineFilterWidget* filterWidget = dynamic_cast<SVPipelineFilterWidget*>(filterObject);
-  if (filterWidget == nullptr) { return QVariant(); }
+  if(filterWidget == nullptr)
+  {
+    return QVariant();
+  }
 
   return m_FilterWidgetLayout->indexOf(filterWidget);
 }
@@ -352,14 +360,14 @@ QVariant SVPipelineViewWidget::valueOfFilterWidget(PipelineFilterObject* filterO
 void SVPipelineViewWidget::resetLayout()
 {
   // Check to see if we have removed all the filters
-  if (filterCount() <= 0)
+  if(filterCount() <= 0)
   {
     // Emit a signal to tell SIMPLView_UI to erase the Filter Input Widget.
     emit filterInputWidgetNeedsCleared();
 
     // Remove the current Layout
     QLayout* l = layout();
-    if (nullptr != l && l == m_FilterWidgetLayout)
+    if(nullptr != l && l == m_FilterWidgetLayout)
     {
       qDeleteAll(l->children());
       delete l;
@@ -379,7 +387,7 @@ void SVPipelineViewWidget::clearFilterWidgets()
   int numFilters = filterCount();
 
   QList<PipelineFilterObject*> filterObjects;
-  for (int i = 0; i < numFilters; i++)
+  for(int i = 0; i < numFilters; i++)
   {
 #if 1
     filterObjects.push_back(dynamic_cast<SVPipelineFilterWidget*>(m_FilterWidgetLayout->itemAt(i)->widget()));
@@ -392,7 +400,7 @@ void SVPipelineViewWidget::clearFilterWidgets()
     {
       QWidget* w = m_FilterWidgetLayout->itemAt(i)->widget();
       QSpacerItem* spacer = m_FilterWidgetLayout->itemAt(i)->spacerItem();
-      if (nullptr != w)
+      if(nullptr != w)
       {
         m_FilterWidgetLayout->removeWidget(w);
         SVPipelineFilterWidget* fw = qobject_cast<SVPipelineFilterWidget*>(w);
@@ -403,7 +411,7 @@ void SVPipelineViewWidget::clearFilterWidgets()
         }
         w->deleteLater();
       }
-      else if (nullptr != spacer)
+      else if(nullptr != spacer)
       {
         m_FilterWidgetLayout->removeItem(spacer);
       }
@@ -425,7 +433,7 @@ void SVPipelineViewWidget::reindexWidgetTitles()
   for(qint32 i = 0; i < count; ++i)
   {
     PipelineFilterObject* fw = filterObjectAt(i);
-    if (fw)
+    if(fw)
     {
       QString hl = fw->getFilter()->getHumanLabel();
       hl = QString("[") + QString::number(i + 1) + QString("] ") + hl;
@@ -448,18 +456,17 @@ FilterPipeline::Pointer SVPipelineViewWidget::getFilterPipeline(QUuid startId)
   for(qint32 i = 0; i < count; ++i)
   {
     PipelineFilterObject* fw = filterObjectAt(i);
-    if (fw)
+    if(fw)
     {
       AbstractFilter::Pointer filter = fw->getFilter();
       Breakpoint::Pointer breakpoint = std::dynamic_pointer_cast<Breakpoint>(filter);
-      if (nullptr != breakpoint)
+      if(nullptr != breakpoint)
       {
         connect(pipeline.get(), SIGNAL(pipelineCanceled()), breakpoint.get(), SLOT(resumePipeline()));
       }
 
       pipeline->pushBack(filter);
     }
-
   }
   pipeline->addMessageReceiver(m_PipelineMessageObserver);
   return pipeline;
@@ -477,13 +484,12 @@ FilterPipeline::Pointer SVPipelineViewWidget::getCopyOfFilterPipeline()
   for(qint32 i = 0; i < count; ++i)
   {
     PipelineFilterObject* fw = filterObjectAt(i);
-    if (fw)
+    if(fw)
     {
       AbstractFilter::Pointer filter = fw->getFilter();
       AbstractFilter::Pointer copy = filter->newFilterInstance(true);
       pipeline->pushBack(copy);
     }
-
   }
   pipeline->addMessageReceiver(m_PipelineMessageObserver);
   return pipeline;
@@ -495,10 +501,9 @@ FilterPipeline::Pointer SVPipelineViewWidget::getCopyOfFilterPipeline()
 int SVPipelineViewWidget::openPipeline(const QString& filePath, QVariant value, const bool& setOpenedFilePath, const bool& changeTitle)
 {
   QFileInfo fi(filePath);
-  if (fi.exists() == false)
+  if(fi.exists() == false)
   {
-    QMessageBox::warning(this, QString::fromLatin1("Pipeline Read Error"),
-                         QString::fromLatin1("There was an error opening the specified pipeline file. The pipeline file does not exist."));
+    QMessageBox::warning(this, QString::fromLatin1("Pipeline Read Error"), QString::fromLatin1("There was an error opening the specified pipeline file. The pipeline file does not exist."));
     return -1;
   }
 
@@ -512,7 +517,7 @@ int SVPipelineViewWidget::openPipeline(const QString& filePath, QVariant value, 
   FilterPipeline::Pointer pipeline = readPipelineFromFile(filePath);
 
   // Check that a valid extension was read...
-  if (pipeline == FilterPipeline::NullPointer())
+  if(pipeline == FilterPipeline::NullPointer())
   {
     emit statusMessage(tr("The pipeline was not read correctly from file '%1'. '%2' is an unsupported file extension.").arg(name).arg(ext));
     return -1;
@@ -537,27 +542,33 @@ int SVPipelineViewWidget::openPipeline(const QString& filePath, QVariant value, 
 void SVPipelineViewWidget::addFilterObject(PipelineFilterObject* filterObject, QVariant value)
 {
   SVPipelineFilterWidget* filterWidget = dynamic_cast<SVPipelineFilterWidget*>(filterObject);
-  if (filterWidget == nullptr) { return; }
+  if(filterWidget == nullptr)
+  {
+    return;
+  }
 
   bool ok;
   int index = value.toInt(&ok);
-  if (ok == false) { return; }
-  if (index < 0)
+  if(ok == false)
+  {
+    return;
+  }
+  if(index < 0)
   {
     index = filterCount();
   }
 
   bool addSpacer = false;
-  if (filterCount() <= 0)
+  if(filterCount() <= 0)
   {
-    if (NULL != m_EmptyPipelineLabel)
+    if(NULL != m_EmptyPipelineLabel)
     {
       m_EmptyPipelineLabel->hide();
       delete m_EmptyPipelineLabel;
       m_EmptyPipelineLabel = NULL;
     }
     QLayout* l = layout();
-    if (NULL != l)
+    if(NULL != l)
     {
       qDeleteAll(l->children());
       delete l;
@@ -576,32 +587,25 @@ void SVPipelineViewWidget::addFilterObject(PipelineFilterObject* filterObject, Q
     addSpacer = true;
   }
 
-
   // The layout will take control of the SVPipelineFilterWidget 'w' instance
   m_FilterWidgetLayout->insertWidget(index, filterWidget);
   // Set the Parent
   filterWidget->setParent(this);
 
-
   /// Now setup all the connections between the various widgets
 
   // When the filter is removed from this view
-  connect(filterWidget, SIGNAL(filterWidgetRemoved(PipelineFilterObject*)),
-          this, SLOT(slot_removeFilterObject(PipelineFilterObject*)) );
+  connect(filterWidget, SIGNAL(filterWidgetRemoved(PipelineFilterObject*)), this, SLOT(slot_removeFilterObject(PipelineFilterObject*)));
 
   // When the FilterWidget is selected
-  connect(filterWidget, SIGNAL(filterWidgetPressed(PipelineFilterObject*, Qt::KeyboardModifiers)),
-          this, SLOT(setSelectedFilterObject(PipelineFilterObject*, Qt::KeyboardModifiers)));
+  connect(filterWidget, SIGNAL(filterWidgetPressed(PipelineFilterObject*, Qt::KeyboardModifiers)), this, SLOT(setSelectedFilterObject(PipelineFilterObject*, Qt::KeyboardModifiers)));
 
   // When the filter widget is dragged
-  connect(filterWidget, SIGNAL(dragStarted(QMouseEvent*, SVPipelineFilterWidget*)),
-          this, SLOT(startDrag(QMouseEvent*, SVPipelineFilterWidget*)));
+  connect(filterWidget, SIGNAL(dragStarted(QMouseEvent*, SVPipelineFilterWidget*)), this, SLOT(startDrag(QMouseEvent*, SVPipelineFilterWidget*)));
 
-  connect(filterWidget, SIGNAL(parametersChanged(QUuid)),
-          this, SLOT(preflightPipeline(QUuid)));
+  connect(filterWidget, SIGNAL(parametersChanged(QUuid)), this, SLOT(preflightPipeline(QUuid)));
 
-  connect(filterWidget, SIGNAL(parametersChanged(QUuid)),
-          this, SLOT(handleFilterParameterChanged(QUuid)));
+  connect(filterWidget, SIGNAL(parametersChanged(QUuid)), this, SLOT(handleFilterParameterChanged(QUuid)));
 
   connect(filterWidget, SIGNAL(focusInEventStarted(QFocusEvent*)), this, SLOT(on_focusInEventStarted(QFocusEvent*)));
 
@@ -609,9 +613,8 @@ void SVPipelineViewWidget::addFilterObject(PipelineFilterObject* filterObject, Q
 
   filterWidget->installEventFilter(this);
 
-
   // Check to make sure at least the vertical spacer is in the Layout
-  if (addSpacer)
+  if(addSpacer)
 
   {
     QSpacerItem* verticalSpacer = new QSpacerItem(20, 361, QSizePolicy::Minimum, QSizePolicy::Expanding);
@@ -623,7 +626,7 @@ void SVPipelineViewWidget::addFilterObject(PipelineFilterObject* filterObject, Q
   filterWidget->setSelected(true);
 
   // Get the filter to ignore Scroll Wheel Events
-  filterWidget->installEventFilter( this);
+  filterWidget->installEventFilter(this);
 }
 
 // -----------------------------------------------------------------------------
@@ -632,7 +635,7 @@ void SVPipelineViewWidget::addFilterObject(PipelineFilterObject* filterObject, Q
 void SVPipelineViewWidget::startDrag(QMouseEvent* event, SVPipelineFilterWidget* fw)
 {
   // The user is dragging the filter widget so we should set it as selected.
-  if (fw->isSelected() == false)
+  if(fw->isSelected() == false)
   {
     setSelectedFilterObject(fw, Qt::NoModifier);
   }
@@ -654,10 +657,13 @@ void SVPipelineViewWidget::startDrag(QMouseEvent* event, SVPipelineFilterWidget*
   p.begin(&transparent);
   p.setOpacity(0.70);
   int offset = 0;
-  for (int i = 0; i < selectedObjects.size(); i++)
+  for(int i = 0; i < selectedObjects.size(); i++)
   {
     SVPipelineFilterWidget* filterWidget = dynamic_cast<SVPipelineFilterWidget*>(selectedObjects[i]);
-    if (filterWidget == nullptr) { continue; }
+    if(filterWidget == nullptr)
+    {
+      continue;
+    }
 
     QPixmap currentPixmap = filterWidget->grab();
     p.drawPixmap(0, offset, currentPixmap);
@@ -681,18 +687,18 @@ void SVPipelineViewWidget::startDrag(QMouseEvent* event, SVPipelineFilterWidget*
 // -----------------------------------------------------------------------------
 bool SVPipelineViewWidget::eventFilter(QObject* o, QEvent* e)
 {
-  if ( e->type() == QEvent::Wheel && qobject_cast<SVPipelineFilterWidget*>(o) )
+  if(e->type() == QEvent::Wheel && qobject_cast<SVPipelineFilterWidget*>(o))
   {
     return false;
   }
-  else if (dynamic_cast<SVPipelineFilterWidget*>(o) != nullptr && e->type() == QEvent::MouseButtonPress)
+  else if(dynamic_cast<SVPipelineFilterWidget*>(o) != nullptr && e->type() == QEvent::MouseButtonPress)
   {
     QMouseEvent* mouseEvent = dynamic_cast<QMouseEvent*>(e);
-    if (mouseEvent != nullptr && mouseEvent->button() == Qt::RightButton)
+    if(mouseEvent != nullptr && mouseEvent->button() == Qt::RightButton)
     {
       SVPipelineFilterWidget* filterWidget = dynamic_cast<SVPipelineFilterWidget*>(o);
 
-      if (filterWidget != nullptr && filterWidget->getFilter() != nullptr)
+      if(filterWidget != nullptr && filterWidget->getFilter() != nullptr)
       {
         filterWidget->setHasRightClickTarget(true);
 
@@ -707,7 +713,7 @@ bool SVPipelineViewWidget::eventFilter(QObject* o, QEvent* e)
     }
   }
 
-  return QFrame::eventFilter( o, e );
+  return QFrame::eventFilter(o, e);
 }
 
 // -----------------------------------------------------------------------------
@@ -733,11 +739,16 @@ void SVPipelineViewWidget::on_focusOutEventStarted(QFocusEvent* event)
 // -----------------------------------------------------------------------------
 void SVPipelineViewWidget::blockPreflightSignals(bool b)
 {
-  if(b) { m_BlockPreflightStack.push(b); }
-  else { m_BlockPreflightStack.pop(); }
+  if(b)
+  {
+    m_BlockPreflightStack.push(b);
+  }
+  else
+  {
+    m_BlockPreflightStack.pop();
+  }
 
   m_BlockPreflight = (m_BlockPreflightStack.size() > 0) ? true : false;
-
 }
 
 // -----------------------------------------------------------------------------
@@ -746,7 +757,10 @@ void SVPipelineViewWidget::blockPreflightSignals(bool b)
 void SVPipelineViewWidget::preflightPipeline(QUuid id)
 {
   Q_UNUSED(id)
-  if(m_BlockPreflight) { return; }
+  if(m_BlockPreflight)
+  {
+    return;
+  }
 
   emit pipelineIssuesCleared();
   // Create a Pipeline Object and fill it with the filters from this View
@@ -756,7 +770,7 @@ void SVPipelineViewWidget::preflightPipeline(QUuid id)
   for(int i = 0; i < filters.size(); i++)
   {
     PipelineFilterObject* fw = filterObjectAt(i);
-    if (fw)
+    if(fw)
     {
       fw->setHasPreflightErrors(false);
     }
@@ -764,28 +778,30 @@ void SVPipelineViewWidget::preflightPipeline(QUuid id)
     filters.at(i)->setCancel(false);
   }
 
-
   QProgressDialog progress("Preflight Pipeline", "", 0, 1, this);
   progress.setWindowModality(Qt::WindowModal);
 
   // Preflight the pipeline
   int err = pipeline->preflightPipeline();
-  if (err < 0)
+  if(err < 0)
   {
-    //FIXME: Implement error handling.
+    // FIXME: Implement error handling.
   }
   progress.setValue(1);
 
   int count = pipeline->getFilterContainer().size();
-  //Now that the preflight has been executed loop through the filters and check their error condition and set the
+  // Now that the preflight has been executed loop through the filters and check their error condition and set the
   // outline on the filter widget if there were errors or warnings
   for(qint32 i = 0; i < count; ++i)
   {
     PipelineFilterObject* fw = filterObjectAt(i);
-    if (fw)
+    if(fw)
     {
       AbstractFilter::Pointer filter = fw->getFilter();
-      if(filter->getErrorCondition() < 0) {fw->setHasPreflightErrors(true);}
+      if(filter->getErrorCondition() < 0)
+      {
+        fw->setHasPreflightErrors(true);
+      }
     }
   }
   emit preflightPipelineComplete();
@@ -807,19 +823,22 @@ void SVPipelineViewWidget::slot_removeFilterObject(PipelineFilterObject* filterO
 void SVPipelineViewWidget::removeFilterObject(PipelineFilterObject* filterObject, bool deleteWidget)
 {
   SVPipelineFilterWidget* filterWidget = dynamic_cast<SVPipelineFilterWidget*>(filterObject);
-  if (filterWidget == nullptr) { return; }
+  if(filterWidget == nullptr)
+  {
+    return;
+  }
 
-  if (filterWidget)
+  if(filterWidget)
   {
     QWidget* w = qobject_cast<QWidget*>(filterWidget);
     m_FilterWidgetLayout->removeWidget(w);
 
-    if (w)
+    if(w)
     {
       filterWidget->getFilter()->setPreviousFilter(AbstractFilter::NullPointer());
       filterWidget->getFilter()->setNextFilter(AbstractFilter::NullPointer());
 
-      if (deleteWidget == true)
+      if(deleteWidget == true)
       {
         w->deleteLater();
       }
@@ -828,44 +847,38 @@ void SVPipelineViewWidget::removeFilterObject(PipelineFilterObject* filterObject
         w->setParent(nullptr);
 
         // When the filter is removed from this view
-        disconnect(filterWidget, SIGNAL(filterWidgetRemoved(PipelineFilterObject*)),
-                   this, SLOT(slot_removeFilterObject(PipelineFilterObject*)) );
+        disconnect(filterWidget, SIGNAL(filterWidgetRemoved(PipelineFilterObject*)), this, SLOT(slot_removeFilterObject(PipelineFilterObject*)));
 
         // When the FilterWidget is selected
-        disconnect(filterWidget, SIGNAL(filterWidgetPressed(PipelineFilterObject*, Qt::KeyboardModifiers)),
-                   this, SLOT(setSelectedFilterObject(PipelineFilterObject*, Qt::KeyboardModifiers)));
+        disconnect(filterWidget, SIGNAL(filterWidgetPressed(PipelineFilterObject*, Qt::KeyboardModifiers)), this, SLOT(setSelectedFilterObject(PipelineFilterObject*, Qt::KeyboardModifiers)));
 
         // When the filter widget is dragged
-        disconnect(filterWidget, SIGNAL(dragStarted(QMouseEvent*, SVPipelineFilterWidget*)),
-                   this, SLOT(startDrag(QMouseEvent*, SVPipelineFilterWidget*)));
+        disconnect(filterWidget, SIGNAL(dragStarted(QMouseEvent*, SVPipelineFilterWidget*)), this, SLOT(startDrag(QMouseEvent*, SVPipelineFilterWidget*)));
 
-        disconnect(filterWidget, SIGNAL(parametersChanged(QUuid)),
-                   this, SLOT(preflightPipeline(QUuid)));
+        disconnect(filterWidget, SIGNAL(parametersChanged(QUuid)), this, SLOT(preflightPipeline(QUuid)));
 
-        disconnect(filterWidget, SIGNAL(parametersChanged(QUuid)),
-                   this, SLOT(handleFilterParameterChanged(QUuid)));
+        disconnect(filterWidget, SIGNAL(parametersChanged(QUuid)), this, SLOT(handleFilterParameterChanged(QUuid)));
 
         disconnect(filterWidget, SIGNAL(focusInEventStarted(QFocusEvent*)), this, SLOT(on_focusInEventStarted(QFocusEvent*)));
 
         disconnect(filterWidget, SIGNAL(focusOutEventStarted(QFocusEvent*)), this, SLOT(on_focusOutEventStarted(QFocusEvent*)));
-
       }
     }
 
-    if (getSelectedFilterObjects().isEmpty())
+    if(getSelectedFilterObjects().isEmpty())
     {
       m_ShiftStart = NULL;
     }
 
     QSpacerItem* spacer = m_FilterWidgetLayout->itemAt(0)->spacerItem();
-    if (NULL != spacer)
+    if(NULL != spacer)
     {
       m_FilterWidgetLayout->removeItem(spacer);
       delete spacer;
     }
 
     QList<PipelineFilterObject*> selectedObjs = getSelectedFilterObjects();
-    if (selectedObjs.size() <= 0 || selectedObjs.size() >= 2)
+    if(selectedObjs.size() <= 0 || selectedObjs.size() >= 2)
     {
       emit filterInputWidgetNeedsCleared();
     }
@@ -892,20 +905,23 @@ void SVPipelineViewWidget::addUndoCommand(QUndoCommand* cmd)
 void SVPipelineViewWidget::setSelectedFilterObject(PipelineFilterObject* w, Qt::KeyboardModifiers modifiers)
 {
   SVPipelineFilterWidget* filterWidget = dynamic_cast<SVPipelineFilterWidget*>(w);
-  if (filterWidget == nullptr) { return; }
+  if(filterWidget == nullptr)
+  {
+    return;
+  }
 
-  if (modifiers == Qt::ShiftModifier)
+  if(modifiers == Qt::ShiftModifier)
   {
     clearSelectedFilterObjects();
 
-    if (nullptr == m_ShiftStart)
+    if(nullptr == m_ShiftStart)
     {
       m_ShiftStart = filterWidget;
     }
 
     int begin;
     int end;
-    if (m_FilterWidgetLayout->indexOf(filterWidget) < m_FilterWidgetLayout->indexOf(m_ShiftStart))
+    if(m_FilterWidgetLayout->indexOf(filterWidget) < m_FilterWidgetLayout->indexOf(m_ShiftStart))
     {
       // The filter widget that was just selected is before the "active" widget
       begin = m_FilterWidgetLayout->indexOf(filterWidget);
@@ -918,22 +934,23 @@ void SVPipelineViewWidget::setSelectedFilterObject(PipelineFilterObject* w, Qt::
       end = m_FilterWidgetLayout->indexOf(filterWidget);
     }
 
-    for (int i = begin; i <= end; i++)
+    for(int i = begin; i <= end; i++)
     {
       SVPipelineFilterWidget* fw = dynamic_cast<SVPipelineFilterWidget*>(filterObjectAt(i));
-      if(fw) {
+      if(fw)
+      {
         fw->setSelected(true);
       }
     }
   }
-  else if (modifiers == Qt::ControlModifier)
+  else if(modifiers == Qt::ControlModifier)
   {
     m_ShiftStart = filterWidget;
 
-    if (filterWidget->isSelected())
+    if(filterWidget->isSelected())
     {
       filterWidget->setSelected(true);
-      if (getSelectedFilterObjects().isEmpty())
+      if(getSelectedFilterObjects().isEmpty())
       {
         m_ShiftStart = nullptr;
       }
@@ -953,7 +970,7 @@ void SVPipelineViewWidget::setSelectedFilterObject(PipelineFilterObject* w, Qt::
 
   QList<PipelineFilterObject*> selectedObjects = getSelectedFilterObjects();
 
-  if (selectedObjects.size() == 1)
+  if(selectedObjects.size() == 1)
   {
     emit filterInputWidgetChanged(selectedObjects[0]->getFilterInputWidget());
   }
@@ -970,16 +987,16 @@ void SVPipelineViewWidget::setSelectedFilterObject(PipelineFilterObject* w, Qt::
 // -----------------------------------------------------------------------------
 void SVPipelineViewWidget::clearSelectedFilterObjects()
 {
-  for (int i=0; i<filterCount(); i++)
+  for(int i = 0; i < filterCount(); i++)
   {
-    if (nullptr != dynamic_cast<DropBoxWidget*>(m_FilterWidgetLayout->itemAt(i)->widget()))
+    if(nullptr != dynamic_cast<DropBoxWidget*>(m_FilterWidgetLayout->itemAt(i)->widget()))
     {
       continue;
     }
     else
     {
       SVPipelineFilterWidget* fw = dynamic_cast<SVPipelineFilterWidget*>(m_FilterWidgetLayout->itemAt(i)->widget());
-      if (fw != nullptr)
+      if(fw != nullptr)
       {
         fw->setSelected(false);
       }
@@ -1005,12 +1022,19 @@ void SVPipelineViewWidget::addSIMPLViewReaderFilter(const QString& filePath, QVa
 // -----------------------------------------------------------------------------
 void SVPipelineViewWidget::populatePipelineView(FilterPipeline::Pointer pipeline, QVariant value)
 {
-  if (nullptr == pipeline.get()) { clearFilterWidgets(); return; }
+  if(nullptr == pipeline.get())
+  {
+    clearFilterWidgets();
+    return;
+  }
 
   bool ok;
   int index = value.toInt(&ok);
-  if (ok == false) { return; }
-  if (index < 0)
+  if(ok == false)
+  {
+    return;
+  }
+  if(index < 0)
   {
     index = filterCount();
   }
@@ -1020,10 +1044,10 @@ void SVPipelineViewWidget::populatePipelineView(FilterPipeline::Pointer pipeline
   AddFilterCommand* addCmd = new AddFilterCommand(container, this, "Paste", index);
   addUndoCommand(addCmd);
 
-  if (filterCount() > 0)
+  if(filterCount() > 0)
   {
     SVPipelineFilterWidget* fw = dynamic_cast<SVPipelineFilterWidget*>(m_FilterWidgetLayout->itemAt(0)->widget());
-    if (fw)
+    if(fw)
     {
       setSelectedFilterObject(fw, Qt::NoModifier);
     }
@@ -1033,21 +1057,21 @@ void SVPipelineViewWidget::populatePipelineView(FilterPipeline::Pointer pipeline
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void SVPipelineViewWidget::keyPressEvent(QKeyEvent *event)
+void SVPipelineViewWidget::keyPressEvent(QKeyEvent* event)
 {
-  if (event->key() == Qt::Key_Backspace || event->key() == Qt::Key_Delete)
+  if(event->key() == Qt::Key_Backspace || event->key() == Qt::Key_Delete)
   {
     bool isRunning = getPipelineIsRunning();
-    if (isRunning == false)
+    if(isRunning == false)
     {
       emit deleteKeyPressed(this);
     }
   }
-  else if (event->key() == Qt::Key_A && qApp->queryKeyboardModifiers() == Qt::ControlModifier)
+  else if(event->key() == Qt::Key_A && qApp->queryKeyboardModifiers() == Qt::ControlModifier)
   {
     clearSelectedFilterObjects();
 
-    for (int i=0; i<filterCount(); i++)
+    for(int i = 0; i < filterCount(); i++)
     {
       SVPipelineFilterWidget* filterWidget = qobject_cast<SVPipelineFilterWidget*>(m_FilterWidgetLayout->itemAt(i)->widget());
       setSelectedFilterObject(filterWidget, Qt::ControlModifier);
@@ -1062,11 +1086,14 @@ void SVPipelineViewWidget::keyPressEvent(QKeyEvent *event)
 // -----------------------------------------------------------------------------
 bool SVPipelineViewWidget::containsFilterWidget(PipelineFilterObject* filterWidget)
 {
-  if (filterWidget == nullptr) { return false; }
-
-  for (int i = 0; i < m_FilterWidgetLayout->count(); i++)
+  if(filterWidget == nullptr)
   {
-    if (dynamic_cast<SVPipelineFilterWidget*>(m_FilterWidgetLayout->itemAt(i)->widget()) == filterWidget)
+    return false;
+  }
+
+  for(int i = 0; i < m_FilterWidgetLayout->count(); i++)
+  {
+    if(dynamic_cast<SVPipelineFilterWidget*>(m_FilterWidgetLayout->itemAt(i)->widget()) == filterWidget)
     {
       return true;
     }
@@ -1102,12 +1129,12 @@ FilterPipeline::Pointer SVPipelineViewWidget::readPipelineFromFile(const QString
   QString ext = fi.suffix();
 
   FilterPipeline::Pointer pipeline;
-  if (ext == "dream3d")
+  if(ext == "dream3d")
   {
     H5FilterParametersReader::Pointer dream3dReader = H5FilterParametersReader::New();
     pipeline = dream3dReader->readPipelineFromFile(filePath);
   }
-  else if (ext == "json")
+  else if(ext == "json")
   {
     JsonFilterParametersReader::Pointer jsonReader = JsonFilterParametersReader::New();
     pipeline = jsonReader->readPipelineFromFile(filePath);
@@ -1128,14 +1155,13 @@ int SVPipelineViewWidget::writePipeline(QString filePath)
   QFileInfo fi(filePath);
   QString ext = fi.completeSuffix();
 
-  //If the filePath already exists - delete it so that we get a clean write to the file
-  if (fi.exists() == true && (ext == "dream3d" || ext == "json"))
+  // If the filePath already exists - delete it so that we get a clean write to the file
+  if(fi.exists() == true && (ext == "dream3d" || ext == "json"))
   {
     QFile f(filePath);
-    if (f.remove() == false)
+    if(f.remove() == false)
     {
-      QMessageBox::warning(this, QString::fromLatin1("Pipeline Write Error"),
-                           QString::fromLatin1("There was an error removing the existing pipeline file. The pipeline was NOT saved."));
+      QMessageBox::warning(this, QString::fromLatin1("Pipeline Write Error"), QString::fromLatin1("There was an error removing the existing pipeline file. The pipeline was NOT saved."));
       return -1;
     }
   }
@@ -1144,12 +1170,12 @@ int SVPipelineViewWidget::writePipeline(QString filePath)
   FilterPipeline::Pointer pipeline = getFilterPipeline();
 
   int err = 0;
-  if (ext == "dream3d")
+  if(ext == "dream3d")
   {
     H5FilterParametersWriter::Pointer dream3dWriter = H5FilterParametersWriter::New();
     err = dream3dWriter->writePipelineToFile(pipeline, fi.absoluteFilePath(), fi.fileName(), reinterpret_cast<IObserver*>(m_PipelineMessageObserver));
   }
-  else if (ext == "json")
+  else if(ext == "json")
   {
     JsonFilterParametersWriter::Pointer jsonWriter = JsonFilterParametersWriter::New();
     jsonWriter->writePipelineToFile(pipeline, fi.absoluteFilePath(), fi.fileName(), reinterpret_cast<IObserver*>(m_PipelineMessageObserver));
@@ -1160,7 +1186,7 @@ int SVPipelineViewWidget::writePipeline(QString filePath)
     return -1;
   }
 
-  if (err < 0)
+  if(err < 0)
   {
     emit statusMessage(tr("There was an error while saving the pipeline to file '%1'.").arg(fi.fileName()));
     return -1;
@@ -1179,14 +1205,14 @@ int SVPipelineViewWidget::writePipeline(QString filePath)
 void SVPipelineViewWidget::dragMoveEvent(QDragMoveEvent* event)
 {
   // Remove the drop box, if it exists
-  if (nullptr != m_FilterWidgetLayout && m_FilterWidgetLayout->indexOf(m_DropBox) != -1)
+  if(nullptr != m_FilterWidgetLayout && m_FilterWidgetLayout->indexOf(m_DropBox) != -1)
   {
     m_FilterWidgetLayout->removeWidget(m_DropBox);
     m_DropBox->setParent(nullptr);
   }
 
   // If cursor is within margin boundaries, start scrolling
-  if (shouldAutoScroll(event->pos()))
+  if(shouldAutoScroll(event->pos()))
   {
     startAutoScroll();
   }
@@ -1197,29 +1223,32 @@ void SVPipelineViewWidget::dragMoveEvent(QDragMoveEvent* event)
   }
 
   const QMimeData* mimedata = event->mimeData();
-  if (nullptr != dynamic_cast<const PipelineViewPtrMimeData*>(mimedata))
+  if(nullptr != dynamic_cast<const PipelineViewPtrMimeData*>(mimedata))
   {
     // The user is moving existing filter widgets, either within the same pipeline view or between pipeline views
     SVPipelineViewWidget* origin = dynamic_cast<const PipelineViewPtrMimeData*>(mimedata)->getPipelineViewPtr();
 
-    if (origin == this)
+    if(origin == this)
     {
-      if (qApp->queryKeyboardModifiers() != Qt::AltModifier)
+      if(qApp->queryKeyboardModifiers() != Qt::AltModifier)
       {
         QList<PipelineFilterObject*> draggedFilterObjects = getDraggedFilterObjects();
-        if (draggedFilterObjects.size() > 1)
+        if(draggedFilterObjects.size() > 1)
         {
           event->ignore();
           return;
         }
-        else if (draggedFilterObjects.size() == 1)
+        else if(draggedFilterObjects.size() == 1)
         {
           // Remove the filter widget
-          if (nullptr != m_FilterWidgetLayout && origin->containsFilterWidget(draggedFilterObjects[0]))
+          if(nullptr != m_FilterWidgetLayout && origin->containsFilterWidget(draggedFilterObjects[0]))
           {
             PipelineFilterObject* draggedObject = draggedFilterObjects[0];
             SVPipelineFilterWidget* filterWidget = dynamic_cast<SVPipelineFilterWidget*>(draggedObject);
-            if (filterWidget == nullptr) { return; }
+            if(filterWidget == nullptr)
+            {
+              return;
+            }
 
             m_FilterOrigPos = origin->valueOfFilterWidget(filterWidget).toInt();
             m_FilterWidgetLayout->removeWidget(filterWidget);
@@ -1230,36 +1259,36 @@ void SVPipelineViewWidget::dragMoveEvent(QDragMoveEvent* event)
     }
 
     int count = filterCount();
-    if (count == 0)
+    if(count == 0)
     {
       return;
     }
 
-    for (int i = 0; i <= count; ++i)
+    for(int i = 0; i <= count; ++i)
     {
       SVPipelineFilterWidget* w;
-      if (nullptr == m_FilterWidgetLayout)
+      if(nullptr == m_FilterWidgetLayout)
       {
         return;
       }
-      else if (i == count)
+      else if(i == count)
       {
-        w = qobject_cast<SVPipelineFilterWidget*>(m_FilterWidgetLayout->itemAt(i-1)->widget());
+        w = qobject_cast<SVPipelineFilterWidget*>(m_FilterWidgetLayout->itemAt(i - 1)->widget());
       }
       else
       {
         w = qobject_cast<SVPipelineFilterWidget*>(m_FilterWidgetLayout->itemAt(i)->widget());
       }
-      if (w != nullptr)
+      if(w != nullptr)
       {
-        if ((i == count && event->pos().y() >= w->geometry().y() + w->geometry().height() / 2) || (event->pos().y() <= w->geometry().y() + w->geometry().height() / 2))
+        if((i == count && event->pos().y() >= w->geometry().y() + w->geometry().height() / 2) || (event->pos().y() <= w->geometry().y() + w->geometry().height() / 2))
         {
           QList<PipelineFilterObject*> draggedObjects = origin->getDraggedFilterObjects();
-          if (draggedObjects.size() > 1)
+          if(draggedObjects.size() > 1)
           {
             m_DropBox->setLabel("Place " + QString::number(draggedObjects.size()) + " Filters Here");
           }
-          else if (draggedObjects.size() == 1)
+          else if(draggedObjects.size() == 1)
           {
             m_DropBox->setLabel("    [" + QString::number(i + 1) + "] " + draggedObjects[0]->getHumanLabel());
           }
@@ -1277,26 +1306,26 @@ void SVPipelineViewWidget::dragMoveEvent(QDragMoveEvent* event)
 
     event->accept();
   }
-  else if (mimedata->hasUrls() || mimedata->hasFormat(SIMPLView::DragAndDrop::BookmarkItem) || mimedata->hasFormat(SIMPLView::DragAndDrop::FilterItem))
+  else if(mimedata->hasUrls() || mimedata->hasFormat(SIMPLView::DragAndDrop::BookmarkItem) || mimedata->hasFormat(SIMPLView::DragAndDrop::FilterItem))
   {
     QString data;
-    if (mimedata->hasUrls())
+    if(mimedata->hasUrls())
     {
       data = mimedata->text();
       QUrl url(data);
       data = url.toLocalFile();
     }
-    else if (mimedata->hasText())
+    else if(mimedata->hasText())
     {
       data = mimedata->text();
     }
-    else if (mimedata->hasFormat(SIMPLView::DragAndDrop::BookmarkItem))
+    else if(mimedata->hasFormat(SIMPLView::DragAndDrop::BookmarkItem))
     {
       QByteArray jsonArray = mimedata->data(SIMPLView::DragAndDrop::BookmarkItem);
       QJsonDocument doc = QJsonDocument::fromJson(jsonArray);
       QJsonObject obj = doc.object();
 
-      if (obj.size() > 1)
+      if(obj.size() > 1)
       {
         event->accept();
         return;
@@ -1317,11 +1346,14 @@ void SVPipelineViewWidget::dragMoveEvent(QDragMoveEvent* event)
     QFileInfo fi(data);
     QString ext = fi.completeSuffix();
     FilterManager* fm = FilterManager::Instance();
-    if (nullptr == fm) { return; }
+    if(nullptr == fm)
+    {
+      return;
+    }
     IFilterFactory::Pointer wf = fm->getFactoryForFilter(data);
 
     // If the dragged item is a filter item...
-    if (nullptr != wf)
+    if(nullptr != wf)
     {
       QString humanName = wf->getFilterHumanLabel();
 
@@ -1329,10 +1361,10 @@ void SVPipelineViewWidget::dragMoveEvent(QDragMoveEvent* event)
       // This path is taken if a filter is dragged from the list of filters
 
       int count = filterCount();
-      for (int i = 0; i < count; ++i)
+      for(int i = 0; i < count; ++i)
       {
         SVPipelineFilterWidget* w = qobject_cast<SVPipelineFilterWidget*>(m_FilterWidgetLayout->itemAt(i)->widget());
-        if (nullptr != w && event->pos().y() <= w->geometry().y() + w->geometry().height() / 2)
+        if(nullptr != w && event->pos().y() <= w->geometry().y() + w->geometry().height() / 2)
         {
           m_DropBox->setLabel("    [" + QString::number(i + 1) + "] " + humanName);
           m_FilterWidgetLayout->insertWidget(i, m_DropBox);
@@ -1342,10 +1374,10 @@ void SVPipelineViewWidget::dragMoveEvent(QDragMoveEvent* event)
         }
       }
       // Check to see if we are trying to move it to the end
-      if (false == didInsert && count > 0)
+      if(false == didInsert && count > 0)
       {
         SVPipelineFilterWidget* w = qobject_cast<SVPipelineFilterWidget*>(m_FilterWidgetLayout->itemAt(count - 1)->widget());
-        if (nullptr != w && event->pos().y() >= w->geometry().y() + w->geometry().height() / 2)
+        if(nullptr != w && event->pos().y() >= w->geometry().y() + w->geometry().height() / 2)
         {
           m_DropBox->setLabel("    [" + QString::number(count) + "] " + humanName);
           m_FilterWidgetLayout->insertWidget(count, m_DropBox);
@@ -1356,7 +1388,7 @@ void SVPipelineViewWidget::dragMoveEvent(QDragMoveEvent* event)
       event->accept();
     }
     // If the dragged item is a pipeline file...
-    else if (ext == "dream3d" || ext == "json" || ext == "ini" || ext == "txt")
+    else if(ext == "dream3d" || ext == "json" || ext == "ini" || ext == "txt")
     {
       QString pipelineName = fi.baseName();
 
@@ -1364,10 +1396,10 @@ void SVPipelineViewWidget::dragMoveEvent(QDragMoveEvent* event)
       // This path is taken if a filter is dragged from the list of filters
 
       int count = filterCount();
-      for (int i = 0; i < count; ++i)
+      for(int i = 0; i < count; ++i)
       {
         SVPipelineFilterWidget* w = qobject_cast<SVPipelineFilterWidget*>(m_FilterWidgetLayout->itemAt(i)->widget());
-        if (nullptr != w && event->pos().y() <= w->geometry().y() + w->geometry().height() / 2)
+        if(nullptr != w && event->pos().y() <= w->geometry().y() + w->geometry().height() / 2)
         {
           m_DropBox->setLabel("Place '" + pipelineName + "' Here");
           m_FilterWidgetLayout->insertWidget(i, m_DropBox);
@@ -1377,10 +1409,10 @@ void SVPipelineViewWidget::dragMoveEvent(QDragMoveEvent* event)
         }
       }
       // Check to see if we are trying to move it to the end
-      if (false == didInsert && count > 0)
+      if(false == didInsert && count > 0)
       {
         SVPipelineFilterWidget* w = qobject_cast<SVPipelineFilterWidget*>(m_FilterWidgetLayout->itemAt(count - 1)->widget());
-        if (nullptr != w && event->pos().y() >= w->geometry().y() + w->geometry().height() / 2)
+        if(nullptr != w && event->pos().y() >= w->geometry().y() + w->geometry().height() / 2)
         {
           m_DropBox->setLabel("Place '" + pipelineName + "' Here");
           m_FilterWidgetLayout->insertWidget(count, m_DropBox);
@@ -1403,21 +1435,21 @@ void SVPipelineViewWidget::dragMoveEvent(QDragMoveEvent* event)
 void SVPipelineViewWidget::dropEvent(QDropEvent* event)
 {
   const QMimeData* mimedata = event->mimeData();
-  if (mimedata->hasUrls() || mimedata->hasText() || mimedata->hasFormat(SIMPLView::DragAndDrop::BookmarkItem) || mimedata->hasFormat(SIMPLView::DragAndDrop::FilterItem))
+  if(mimedata->hasUrls() || mimedata->hasText() || mimedata->hasFormat(SIMPLView::DragAndDrop::BookmarkItem) || mimedata->hasFormat(SIMPLView::DragAndDrop::FilterItem))
   {
     QString data;
 
-    if (mimedata->hasUrls())
+    if(mimedata->hasUrls())
     {
       data = mimedata->text();
       QUrl url(data);
       data = url.toLocalFile();
     }
-    else if (mimedata->hasText())
+    else if(mimedata->hasText())
     {
       data = mimedata->text();
     }
-    else if (mimedata->hasFormat(SIMPLView::DragAndDrop::FilterItem))
+    else if(mimedata->hasFormat(SIMPLView::DragAndDrop::FilterItem))
     {
       QByteArray jsonArray = mimedata->data(SIMPLView::DragAndDrop::FilterItem);
       QJsonDocument doc = QJsonDocument::fromJson(jsonArray);
@@ -1431,7 +1463,7 @@ void SVPipelineViewWidget::dropEvent(QDropEvent* event)
       QJsonDocument doc = QJsonDocument::fromJson(jsonArray);
       QJsonObject obj = doc.object();
 
-      if (obj.size() > 1)
+      if(obj.size() > 1)
       {
         QMessageBox::warning(nullptr, "Warning", "This application currently does not support dragging and dropping multiple bookmarks.", QMessageBox::Ok);
         event->ignore();
@@ -1445,16 +1477,19 @@ void SVPipelineViewWidget::dropEvent(QDropEvent* event)
     QFileInfo fi(data);
     QString ext = fi.completeSuffix();
     FilterManager* fm = FilterManager::Instance();
-    if (nullptr == fm) { return; }
+    if(nullptr == fm)
+    {
+      return;
+    }
     IFilterFactory::Pointer wf = fm->getFactoryForFilter(data);
 
     // If the dragged item is a filter item...
-    if (nullptr != wf)
+    if(nullptr != wf)
     {
       int index;
 
       // We need to figure out where it was dropped relative to other filters
-      if (nullptr != m_FilterWidgetLayout && m_FilterWidgetLayout->indexOf(m_DropBox) != -1)
+      if(nullptr != m_FilterWidgetLayout && m_FilterWidgetLayout->indexOf(m_DropBox) != -1)
       {
         index = m_FilterWidgetLayout->indexOf(m_DropBox);
       }
@@ -1470,29 +1505,29 @@ void SVPipelineViewWidget::dropEvent(QDropEvent* event)
       event->accept();
     }
     // If the dragged item is a pipeline file...
-    else if (ext == "dream3d" || ext == "json" || ext == "ini" || ext == "txt")
+    else if(ext == "dream3d" || ext == "json" || ext == "ini" || ext == "txt")
     {
       int index = 0;
-      if (nullptr != m_FilterWidgetLayout)
+      if(nullptr != m_FilterWidgetLayout)
       {
         index = m_FilterWidgetLayout->indexOf(m_DropBox);
       }
 
-      if (ext == "json" || ext == "ini" || ext == "txt")
+      if(ext == "json" || ext == "ini" || ext == "txt")
       {
         openPipeline(data, index, false, false);
 
         emit windowNeedsRecheck();
       }
-      else if (ext == "dream3d")
+      else if(ext == "dream3d")
       {
         QtSFileDragMessageBox* msgBox = new QtSFileDragMessageBox(this);
         msgBox->exec();
         msgBox->deleteLater();
 
-        if (msgBox->didPressOkBtn() == true)
+        if(msgBox->didPressOkBtn() == true)
         {
-          if (msgBox->isExtractPipelineBtnChecked() == true)
+          if(msgBox->isExtractPipelineBtnChecked() == true)
           {
             openPipeline(data, index, false, false);
           }
@@ -1510,13 +1545,13 @@ void SVPipelineViewWidget::dropEvent(QDropEvent* event)
       event->ignore();
     }
   }
-  else if (nullptr != dynamic_cast<const PipelineViewPtrMimeData*>(mimedata))
+  else if(nullptr != dynamic_cast<const PipelineViewPtrMimeData*>(mimedata))
   {
     SVPipelineViewWidget* origin = dynamic_cast<const PipelineViewPtrMimeData*>(mimedata)->getPipelineViewPtr();
 
     // The drop box, if it exists, marks the index where the filter should be dropped
     int index;
-    if (nullptr != m_FilterWidgetLayout && m_FilterWidgetLayout->indexOf(m_DropBox) != -1)
+    if(nullptr != m_FilterWidgetLayout && m_FilterWidgetLayout->indexOf(m_DropBox) != -1)
     {
       index = m_FilterWidgetLayout->indexOf(m_DropBox);
       m_FilterWidgetLayout->removeWidget(m_DropBox);
@@ -1529,11 +1564,11 @@ void SVPipelineViewWidget::dropEvent(QDropEvent* event)
 
     QList<PipelineFilterObject*> draggedFilterObjects = getDraggedFilterObjects();
 
-    if (origin != this || (origin == this && qApp->queryKeyboardModifiers() == Qt::AltModifier))
+    if(origin != this || (origin == this && qApp->queryKeyboardModifiers() == Qt::AltModifier))
     {
       QList<PipelineFilterObject*> filterObjects = origin->getDraggedFilterObjects();
       QList<AbstractFilter::Pointer> filters;
-      for (int i=0; i<filterObjects.size(); i++)
+      for(int i = 0; i < filterObjects.size(); i++)
       {
         filters.push_back(filterObjects[i]->getFilter());
       }
@@ -1541,8 +1576,8 @@ void SVPipelineViewWidget::dropEvent(QDropEvent* event)
       AddFilterCommand* addCmd = new AddFilterCommand(filters, this, "Paste", index);
       addUndoCommand(addCmd);
 
-      if (qApp->queryKeyboardModifiers() != Qt::AltModifier)
-      { 
+      if(qApp->queryKeyboardModifiers() != Qt::AltModifier)
+      {
         RemoveFilterCommand* removeCmd = new RemoveFilterCommand(filterObjects, origin, "Cut");
         origin->addUndoCommand(removeCmd);
       }
@@ -1550,7 +1585,7 @@ void SVPipelineViewWidget::dropEvent(QDropEvent* event)
       origin->setDraggedFilterObjects(QList<PipelineFilterObject*>());
       event->accept();
     }
-    else if (draggedFilterObjects.size() == 1)
+    else if(draggedFilterObjects.size() == 1)
     {
       MoveFilterCommand* cmd = new MoveFilterCommand(draggedFilterObjects[0], m_FilterOrigPos, index, this);
       addUndoCommand(cmd);
@@ -1568,7 +1603,7 @@ void SVPipelineViewWidget::dropEvent(QDropEvent* event)
   stopAutoScroll();
 
   // Remove the drop line, if it exists
-  if (nullptr != m_FilterWidgetLayout && m_FilterWidgetLayout->indexOf(m_DropBox) != -1)
+  if(nullptr != m_FilterWidgetLayout && m_FilterWidgetLayout->indexOf(m_DropBox) != -1)
   {
     m_FilterWidgetLayout->removeWidget(m_DropBox);
     m_DropBox->setParent(nullptr);
@@ -1582,13 +1617,13 @@ void SVPipelineViewWidget::dropEvent(QDropEvent* event)
 void SVPipelineViewWidget::dragLeaveEvent(QDragLeaveEvent* event)
 {
   int index;
-  if (nullptr != m_FilterWidgetLayout)
+  if(nullptr != m_FilterWidgetLayout)
   {
     index = m_FilterWidgetLayout->indexOf(m_DropBox);
   }
 
   // Remove the placeholder drop box
-  if (nullptr != m_FilterWidgetLayout && index != -1)
+  if(nullptr != m_FilterWidgetLayout && index != -1)
   {
     m_FilterWidgetLayout->removeWidget(m_DropBox);
     m_DropBox->setParent(nullptr);
@@ -1597,10 +1632,13 @@ void SVPipelineViewWidget::dragLeaveEvent(QDragLeaveEvent* event)
   QList<PipelineFilterObject*> draggedFilterObjects = getDraggedFilterObjects();
 
   // Put filter widget back to original position
-  if (draggedFilterObjects.size() == 1 && qApp->queryKeyboardModifiers() != Qt::AltModifier)
+  if(draggedFilterObjects.size() == 1 && qApp->queryKeyboardModifiers() != Qt::AltModifier)
   {
     SVPipelineFilterWidget* filterWidget = dynamic_cast<SVPipelineFilterWidget*>(draggedFilterObjects[0]);
-    if (filterWidget == nullptr) { return; }
+    if(filterWidget == nullptr)
+    {
+      return;
+    }
 
     m_FilterWidgetLayout->insertWidget(m_FilterOrigPos, filterWidget);
     setSelectedFilterObject(filterWidget, Qt::NoModifier);
@@ -1608,11 +1646,10 @@ void SVPipelineViewWidget::dragLeaveEvent(QDragLeaveEvent* event)
 
   reindexWidgetTitles();
 
-//  // Set the current filter as previous, and nullify the current
-//  m_PreviousFilterBeingDragged = m_CurrentFilterBeingDragged;
-//  m_CurrentFilterBeingDragged = nullptr;
+  //  // Set the current filter as previous, and nullify the current
+  //  m_PreviousFilterBeingDragged = m_CurrentFilterBeingDragged;
+  //  m_CurrentFilterBeingDragged = nullptr;
 }
-
 
 // -----------------------------------------------------------------------------
 //
@@ -1621,11 +1658,11 @@ void SVPipelineViewWidget::dragEnterEvent(QDragEnterEvent* event)
 {
   event->acceptProposedAction();
 
-//  // If there is a previous filter, set it as current
-//  if (nullptr != m_PreviousFilterBeingDragged && event->dropAction() == Qt::MoveAction)
-//  {
-//    m_CurrentFilterBeingDragged = m_PreviousFilterBeingDragged;
-//  }
+  //  // If there is a previous filter, set it as current
+  //  if (nullptr != m_PreviousFilterBeingDragged && event->dropAction() == Qt::MoveAction)
+  //  {
+  //    m_CurrentFilterBeingDragged = m_PreviousFilterBeingDragged;
+  //  }
 }
 
 // -----------------------------------------------------------------------------
@@ -1655,8 +1692,10 @@ void SVPipelineViewWidget::doAutoScroll()
   // find how much we should scroll with
   int verticalStep = m_ScrollArea->verticalScrollBar()->pageStep();
   int horizontalStep = m_ScrollArea->horizontalScrollBar()->pageStep();
-  if (m_autoScrollCount < qMax(verticalStep, horizontalStep))
-  { m_autoScrollCount = m_autoScrollCount + 15; }
+  if(m_autoScrollCount < qMax(verticalStep, horizontalStep))
+  {
+    m_autoScrollCount = m_autoScrollCount + 15;
+  }
 
   int margin = m_AutoScrollMargin;
   int verticalValue = m_ScrollArea->verticalScrollBar()->value();
@@ -1666,10 +1705,14 @@ void SVPipelineViewWidget::doAutoScroll()
   QRect area = m_ScrollArea->geometry();
 
   // do the scrolling if we are in the scroll margins
-  if (pos.y() - area.top() < margin)
-  { m_ScrollArea->verticalScrollBar()->setValue(verticalValue - m_autoScrollCount); }
-  else if (area.bottom() - pos.y() < margin)
-  { m_ScrollArea-> verticalScrollBar()->setValue(verticalValue + m_autoScrollCount); }
+  if(pos.y() - area.top() < margin)
+  {
+    m_ScrollArea->verticalScrollBar()->setValue(verticalValue - m_autoScrollCount);
+  }
+  else if(area.bottom() - pos.y() < margin)
+  {
+    m_ScrollArea->verticalScrollBar()->setValue(verticalValue + m_autoScrollCount);
+  }
   //  if (pos.x() - area.left() < margin)
   //    m_ScrollArea->horizontalScrollBar()->setValue(horizontalValue - d->m_autoScrollCount);
   //  else if (area.right() - pos.x() < margin)
@@ -1677,7 +1720,7 @@ void SVPipelineViewWidget::doAutoScroll()
   // if nothing changed, stop scrolling
   bool verticalUnchanged = (verticalValue == m_ScrollArea->verticalScrollBar()->value());
   bool horizontalUnchanged = (horizontalValue == m_ScrollArea->horizontalScrollBar()->value());
-  if (verticalUnchanged && horizontalUnchanged)
+  if(verticalUnchanged && horizontalUnchanged)
   {
     stopAutoScroll();
   }
@@ -1685,7 +1728,6 @@ void SVPipelineViewWidget::doAutoScroll()
   {
     m_ScrollArea->viewport()->update();
   }
-
 }
 
 // -----------------------------------------------------------------------------
@@ -1693,15 +1735,18 @@ void SVPipelineViewWidget::doAutoScroll()
 // -----------------------------------------------------------------------------
 bool SVPipelineViewWidget::shouldAutoScroll(const QPoint& pos)
 {
-  if (nullptr == m_ScrollArea) { return false; }
+  if(nullptr == m_ScrollArea)
+  {
+    return false;
+  }
   QPoint scpos = m_ScrollArea->viewport()->mapFromGlobal(QCursor::pos());
   QRect rect = m_ScrollArea->geometry();
 
-  if (scpos.y() <= getAutoScrollMargin())
+  if(scpos.y() <= getAutoScrollMargin())
   {
     return true;
   }
-  else if (pos.y() >= rect.height() - getAutoScrollMargin())
+  else if(pos.y() >= rect.height() - getAutoScrollMargin())
   {
     return true;
   }
@@ -1721,7 +1766,7 @@ void SVPipelineViewWidget::recheckWindowTitleAndModification()
 // -----------------------------------------------------------------------------
 void SVPipelineViewWidget::mousePressEvent(QMouseEvent* event)
 {
-  if (event->button() == Qt::LeftButton)
+  if(event->button() == Qt::LeftButton)
   {
     clearSelectedFilterObjects();
     m_ShiftStart = nullptr;
@@ -1745,18 +1790,18 @@ void SVPipelineViewWidget::requestContextMenu(const QPoint& pos)
 //
 // -----------------------------------------------------------------------------
 QList<PipelineFilterObject*> SVPipelineViewWidget::getSelectedFilterObjects()
-{ 
+{
   QList<PipelineFilterObject*> filterObjects;
-  for (int i=0; i<filterCount(); i++)
+  for(int i = 0; i < filterCount(); i++)
   {
-    if (nullptr != dynamic_cast<DropBoxWidget*>(m_FilterWidgetLayout->itemAt(i)->widget()))
+    if(nullptr != dynamic_cast<DropBoxWidget*>(m_FilterWidgetLayout->itemAt(i)->widget()))
     {
       continue;
     }
     else
     {
       SVPipelineFilterWidget* fw = dynamic_cast<SVPipelineFilterWidget*>(m_FilterWidgetLayout->itemAt(i)->widget());
-      if (fw != nullptr && (fw->isSelected() == true || fw->hasRightClickTarget() == true))
+      if(fw != nullptr && (fw->isSelected() == true || fw->hasRightClickTarget() == true))
       {
         filterObjects.push_back(fw);
       }
@@ -1788,10 +1833,8 @@ void SVPipelineViewWidget::setPipelineMessageObserver(QObject* pipelineMessageOb
 {
   m_PipelineMessageObserver = pipelineMessageObserver;
   // setup our connection
-  connect(this, SIGNAL(pipelineIssuesCleared()),
-          m_PipelineMessageObserver, SLOT(clearIssues()) );
-  connect(this, SIGNAL(preflightPipelineComplete()),
-          m_PipelineMessageObserver, SLOT(displayCachedMessages()));
+  connect(this, SIGNAL(pipelineIssuesCleared()), m_PipelineMessageObserver, SLOT(clearIssues()));
+  connect(this, SIGNAL(preflightPipelineComplete()), m_PipelineMessageObserver, SLOT(displayCachedMessages()));
 }
 
 // -----------------------------------------------------------------------------

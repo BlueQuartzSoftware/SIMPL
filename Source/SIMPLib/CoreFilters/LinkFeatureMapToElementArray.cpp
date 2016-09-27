@@ -33,32 +33,29 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-
 #include "LinkFeatureMapToElementArray.h"
 
 #include "SIMPLib/Common/Constants.h"
-#include "SIMPLib/SIMPLibVersion.h"
 #include "SIMPLib/FilterParameters/AbstractFilterParametersReader.h"
+#include "SIMPLib/SIMPLibVersion.h"
 
 #include "SIMPLib/FilterParameters/DataArraySelectionFilterParameter.h"
-#include "SIMPLib/FilterParameters/StringFilterParameter.h"
 #include "SIMPLib/FilterParameters/SeparatorFilterParameter.h"
+#include "SIMPLib/FilterParameters/StringFilterParameter.h"
 
 // Include the MOC generated file for this class
 #include "moc_LinkFeatureMapToElementArray.cpp"
 
-
-
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-LinkFeatureMapToElementArray::LinkFeatureMapToElementArray() :
-  AbstractFilter(),
-  m_CellFeatureAttributeMatrixName(""),
-  m_SelectedCellArrayPath("", "", ""),
-  m_ActiveArrayName(""),
-  m_SelectedCellData(nullptr),
-  m_Active(nullptr)
+LinkFeatureMapToElementArray::LinkFeatureMapToElementArray()
+: AbstractFilter()
+, m_CellFeatureAttributeMatrixName("")
+, m_SelectedCellArrayPath("", "", "")
+, m_ActiveArrayName("")
+, m_SelectedCellData(nullptr)
+, m_Active(nullptr)
 {
   setupFilterParameters();
 }
@@ -96,7 +93,7 @@ void LinkFeatureMapToElementArray::readFilterParameters(AbstractFilterParameters
   reader->openFilterGroup(this, index);
   setCellFeatureAttributeMatrixName(reader->readString("CellFeatureAttributeMatrixName", getCellFeatureAttributeMatrixName()));
   setActiveArrayName(reader->readString("ActiveArrayName", getActiveArrayName()));
-  setSelectedCellArrayPath( reader->readDataArrayPath( "SelectedCellArrayPath", getSelectedCellArrayPath() ) );
+  setSelectedCellArrayPath(reader->readDataArrayPath("SelectedCellArrayPath", getSelectedCellArrayPath()));
   reader->closeFilterGroup();
 }
 
@@ -107,8 +104,10 @@ void LinkFeatureMapToElementArray::updateFeatureInstancePointers()
 {
   setErrorCondition(0);
 
-  if( nullptr != m_ActivePtr.lock().get() ) /* Validate the Weak Pointer wraps a non-nullptr pointer to a DataArray<T> object */
-  { m_Active = m_ActivePtr.lock()->getPointer(0); } /* Now assign the raw pointer to data from the DataArray<T> object */
+  if(nullptr != m_ActivePtr.lock().get()) /* Validate the Weak Pointer wraps a non-nullptr pointer to a DataArray<T> object */
+  {
+    m_Active = m_ActivePtr.lock()->getPointer(0);
+  } /* Now assign the raw pointer to data from the DataArray<T> object */
 }
 
 // -----------------------------------------------------------------------------
@@ -116,7 +115,6 @@ void LinkFeatureMapToElementArray::updateFeatureInstancePointers()
 // -----------------------------------------------------------------------------
 void LinkFeatureMapToElementArray::initialize()
 {
-
 }
 
 // -----------------------------------------------------------------------------
@@ -128,22 +126,34 @@ void LinkFeatureMapToElementArray::dataCheck()
   DataArrayPath tempPath;
 
   DataContainer::Pointer m = getDataContainerArray()->getPrereqDataContainer<AbstractFilter>(this, getSelectedCellArrayPath().getDataContainerName(), false);
-  if(getErrorCondition() < 0 || nullptr == m.get()) { return; }
+  if(getErrorCondition() < 0 || nullptr == m.get())
+  {
+    return;
+  }
 
   QVector<size_t> tDims(1, 0);
   m->createNonPrereqAttributeMatrix<AbstractFilter>(this, getCellFeatureAttributeMatrixName(), tDims, SIMPL::AttributeMatrixType::CellFeature);
 
   QVector<size_t> cDims(1, 1);
-  m_SelectedCellDataPtr = getDataContainerArray()->getPrereqArrayFromPath<DataArray<int32_t>, AbstractFilter>(this, getSelectedCellArrayPath(), cDims); /* Assigns the shared_ptr<> to an instance variable that is a weak_ptr<> */
-  if( nullptr != m_SelectedCellDataPtr.lock().get() ) /* Validate the Weak Pointer wraps a non-nullptr pointer to a DataArray<T> object */
-  { m_SelectedCellData = m_SelectedCellDataPtr.lock()->getPointer(0); } /* Now assign the raw pointer to data from the DataArray<T> object */
+  m_SelectedCellDataPtr = getDataContainerArray()->getPrereqArrayFromPath<DataArray<int32_t>, AbstractFilter>(this, getSelectedCellArrayPath(),
+                                                                                                              cDims); /* Assigns the shared_ptr<> to an instance variable that is a weak_ptr<> */
+  if(nullptr != m_SelectedCellDataPtr.lock().get()) /* Validate the Weak Pointer wraps a non-nullptr pointer to a DataArray<T> object */
+  {
+    m_SelectedCellData = m_SelectedCellDataPtr.lock()->getPointer(0);
+  } /* Now assign the raw pointer to data from the DataArray<T> object */
 
-  if(getErrorCondition() < 0) { return; }
+  if(getErrorCondition() < 0)
+  {
+    return;
+  }
 
-  tempPath.update(getSelectedCellArrayPath().getDataContainerName(), getCellFeatureAttributeMatrixName(), getActiveArrayName() );
-  m_ActivePtr = getDataContainerArray()->createNonPrereqArrayFromPath<DataArray<bool>, AbstractFilter, bool>(this, tempPath, 0, cDims); /* Assigns the shared_ptr<> to an instance variable that is a weak_ptr<> */
-  if( nullptr != m_ActivePtr.lock().get() ) /* Validate the Weak Pointer wraps a non-nullptr pointer to a DataArray<T> object */
-  { m_Active = m_ActivePtr.lock()->getPointer(0); }    /* Now assign the raw pointer to data from the DataArray<T> object */
+  tempPath.update(getSelectedCellArrayPath().getDataContainerName(), getCellFeatureAttributeMatrixName(), getActiveArrayName());
+  m_ActivePtr = getDataContainerArray()->createNonPrereqArrayFromPath<DataArray<bool>, AbstractFilter, bool>(this, tempPath, 0,
+                                                                                                             cDims); /* Assigns the shared_ptr<> to an instance variable that is a weak_ptr<> */
+  if(nullptr != m_ActivePtr.lock().get()) /* Validate the Weak Pointer wraps a non-nullptr pointer to a DataArray<T> object */
+  {
+    m_Active = m_ActivePtr.lock()->getPointer(0);
+  } /* Now assign the raw pointer to data from the DataArray<T> object */
 }
 
 // -----------------------------------------------------------------------------
@@ -166,17 +176,20 @@ void LinkFeatureMapToElementArray::execute()
 {
   setErrorCondition(0);
   dataCheck();
-  if(getErrorCondition() < 0) { return; }
+  if(getErrorCondition() < 0)
+  {
+    return;
+  }
 
   DataContainer::Pointer m = getDataContainerArray()->getDataContainer(getSelectedCellArrayPath().getDataContainerName());
   size_t totalPoints = m_SelectedCellDataPtr.lock()->getNumberOfTuples();
 
   int32_t maxIndex = 0;
   std::vector<bool> active;
-  for (size_t i = 0; i < totalPoints; i++)
+  for(size_t i = 0; i < totalPoints; i++)
   {
     int32_t index = m_SelectedCellData[i];
-    if ((index + 1) > maxIndex)
+    if((index + 1) > maxIndex)
     {
       active.resize(index + 1);
       active[index] = true;
@@ -188,7 +201,7 @@ void LinkFeatureMapToElementArray::execute()
   m->getAttributeMatrix(getCellFeatureAttributeMatrixName())->resizeAttributeArrays(tDims);
   updateFeatureInstancePointers();
 
-  for (int32_t i = 0; i < maxIndex; i++)
+  for(int32_t i = 0; i < maxIndex; i++)
   {
     m_Active[i] = active[i];
   }
@@ -213,7 +226,9 @@ AbstractFilter::Pointer LinkFeatureMapToElementArray::newFilterInstance(bool cop
 //
 // -----------------------------------------------------------------------------
 const QString LinkFeatureMapToElementArray::getCompiledLibraryName()
-{ return Core::CoreBaseName; }
+{
+  return Core::CoreBaseName;
+}
 
 // -----------------------------------------------------------------------------
 //
@@ -230,26 +245,30 @@ const QString LinkFeatureMapToElementArray::getFilterVersion()
 {
   QString version;
   QTextStream vStream(&version);
-  vStream <<  SIMPLib::Version::Major() << "." << SIMPLib::Version::Minor() << "." << SIMPLib::Version::Patch();
+  vStream << SIMPLib::Version::Major() << "." << SIMPLib::Version::Minor() << "." << SIMPLib::Version::Patch();
   return version;
 }
-
-
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
 const QString LinkFeatureMapToElementArray::getGroupName()
-{ return SIMPL::FilterGroups::CoreFilters; }
+{
+  return SIMPL::FilterGroups::CoreFilters;
+}
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
 const QString LinkFeatureMapToElementArray::getSubGroupName()
-{ return SIMPL::FilterSubGroups::MemoryManagementFilters; }
+{
+  return SIMPL::FilterSubGroups::MemoryManagementFilters;
+}
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
 const QString LinkFeatureMapToElementArray::getHumanLabel()
-{ return "Link Feature Attribute Matrix to Element Attribute Array"; }
+{
+  return "Link Feature Attribute Matrix to Element Attribute Array";
+}

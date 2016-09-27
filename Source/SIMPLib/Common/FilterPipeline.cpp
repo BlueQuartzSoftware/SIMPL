@@ -33,7 +33,6 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-
 #include "FilterPipeline.h"
 #include "SIMPLib/DataContainers/DataContainerArray.h"
 
@@ -42,12 +41,11 @@
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-FilterPipeline::FilterPipeline() :
-  QObject(),
-  m_ErrorCondition(0),
-  m_Cancel(false)
+FilterPipeline::FilterPipeline()
+: QObject()
+, m_ErrorCondition(0)
+, m_Cancel(false)
 {
-
 }
 
 // -----------------------------------------------------------------------------
@@ -63,7 +61,7 @@ FilterPipeline::~FilterPipeline()
 void FilterPipeline::setCancel(bool value)
 {
   this->m_Cancel = value;
-  if (nullptr != m_CurrentFilter.get())
+  if(nullptr != m_CurrentFilter.get())
   {
     m_CurrentFilter->setCancel(value);
   }
@@ -159,7 +157,7 @@ void FilterPipeline::erase(size_t index)
 // -----------------------------------------------------------------------------
 void FilterPipeline::clear()
 {
-  for (FilterContainerType::iterator iter = m_Pipeline.begin(); iter != m_Pipeline.end(); ++iter)
+  for(FilterContainerType::iterator iter = m_Pipeline.begin(); iter != m_Pipeline.end(); ++iter)
   {
     (*iter)->setPreviousFilter(AbstractFilter::NullPointer());
     (*iter)->setNextFilter(AbstractFilter::NullPointer());
@@ -217,7 +215,7 @@ void FilterPipeline::updatePrevNextFilters()
   FilterContainerType::iterator prev;
   FilterContainerType::iterator next;
 
-  for (FilterContainerType::iterator iter = m_Pipeline.begin(); iter != m_Pipeline.end(); ++iter)
+  for(FilterContainerType::iterator iter = m_Pipeline.begin(); iter != m_Pipeline.end(); ++iter)
   {
     (*iter)->setPreviousFilter(AbstractFilter::NullPointer());
     (*iter)->setNextFilter(AbstractFilter::NullPointer());
@@ -241,7 +239,7 @@ void FilterPipeline::updatePrevNextFilters()
     }
   }
   int index = 0;
-  for (FilterContainerType::iterator filter = m_Pipeline.begin(); filter != m_Pipeline.end(); ++filter)
+  for(FilterContainerType::iterator filter = m_Pipeline.begin(); filter != m_Pipeline.end(); ++filter)
   {
     (*filter)->setPipelineIndex(index++);
   }
@@ -262,10 +260,8 @@ void FilterPipeline::connectFilterNotifications(QObject* filter)
 {
   for(int i = 0; i < m_MessageReceivers.size(); i++)
   {
-    connect(filter, SIGNAL(filterGeneratedMessage(const PipelineMessage&)),
-            m_MessageReceivers.at(i), SLOT(processPipelineMessage(const PipelineMessage&)) );
+    connect(filter, SIGNAL(filterGeneratedMessage(const PipelineMessage&)), m_MessageReceivers.at(i), SLOT(processPipelineMessage(const PipelineMessage&)));
   }
-
 }
 
 // -----------------------------------------------------------------------------
@@ -275,8 +271,7 @@ void FilterPipeline::disconnectFilterNotifications(QObject* filter)
 {
   for(int i = 0; i < m_MessageReceivers.size(); i++)
   {
-    disconnect(filter, SIGNAL(filterGeneratedMessage(const PipelineMessage&)),
-               m_MessageReceivers.at(i), SLOT(processPipelineMessage(const PipelineMessage&)) );
+    disconnect(filter, SIGNAL(filterGeneratedMessage(const PipelineMessage&)), m_MessageReceivers.at(i), SLOT(processPipelineMessage(const PipelineMessage&)));
   }
 }
 
@@ -292,17 +287,17 @@ int FilterPipeline::preflightPipeline()
   int preflightError = 0;
 
   // Start looping through each filter in the Pipeline and preflight everything
-  for (FilterContainerType::iterator filter = m_Pipeline.begin(); filter != m_Pipeline.end(); ++filter)
+  for(FilterContainerType::iterator filter = m_Pipeline.begin(); filter != m_Pipeline.end(); ++filter)
   {
     (*filter)->setDataContainerArray(dca);
     setCurrentFilter(*filter);
-    connectFilterNotifications( (*filter).get() );
+    connectFilterNotifications((*filter).get());
     (*filter)->preflight();
-    disconnectFilterNotifications( (*filter).get() );
+    disconnectFilterNotifications((*filter).get());
 
     DataContainerArray::Pointer dcaCopy = DataContainerArray::New();
     QList<DataContainer::Pointer> dcs = dca->getDataContainers();
-    for (int i=0; i<dcs.size(); i++)
+    for(int i = 0; i < dcs.size(); i++)
     {
       DataContainer::Pointer dcCopy = dcs[i]->deepCopy();
       dcaCopy->addDataContainer(dcCopy);
@@ -314,7 +309,6 @@ int FilterPipeline::preflightPipeline()
   setCurrentFilter(AbstractFilter::NullPointer());
   return preflightError;
 }
-
 
 // -----------------------------------------------------------------------------
 //
@@ -333,31 +327,29 @@ void FilterPipeline::execute()
   // Connect this object to anything that wants to know about PipelineMessages
   for(int i = 0; i < m_MessageReceivers.size(); i++)
   {
-    connect(this, SIGNAL(pipelineGeneratedMessage(const PipelineMessage&)),
-            m_MessageReceivers.at(i), SLOT(processPipelineMessage(const PipelineMessage&)) );
+    connect(this, SIGNAL(pipelineGeneratedMessage(const PipelineMessage&)), m_MessageReceivers.at(i), SLOT(processPipelineMessage(const PipelineMessage&)));
   }
 
   PipelineMessage progValue("", "", 0, PipelineMessage::ProgressValue, -1);
-  for (FilterContainerType::iterator filter = m_Pipeline.begin(); filter != m_Pipeline.end(); ++filter)
+  for(FilterContainerType::iterator filter = m_Pipeline.begin(); filter != m_Pipeline.end(); ++filter)
   {
     progress = progress + 1.0f;
     progValue.setType(PipelineMessage::ProgressValue);
-    progValue.setProgressValue(static_cast<int>( progress / (m_Pipeline.size() + 1) * 100.0f ));
+    progValue.setProgressValue(static_cast<int>(progress / (m_Pipeline.size() + 1) * 100.0f));
     emit pipelineGeneratedMessage(progValue);
 
-    QString ss = QObject::tr("[%1/%2] %3 ").arg(progress).arg(m_Pipeline.size()).arg( (*filter)->getHumanLabel());
+    QString ss = QObject::tr("[%1/%2] %3 ").arg(progress).arg(m_Pipeline.size()).arg((*filter)->getHumanLabel());
 
     progValue.setType(PipelineMessage::StatusMessage);
     progValue.setText(ss);
     emit pipelineGeneratedMessage(progValue);
 
-
     (*filter)->setMessagePrefix(ss);
-    connectFilterNotifications( (*filter).get() );
+    connectFilterNotifications((*filter).get());
     (*filter)->setDataContainerArray(dca);
     setCurrentFilter(*filter);
     (*filter)->execute();
-    disconnectFilterNotifications( (*filter).get() );
+    disconnectFilterNotifications((*filter).get());
     (*filter)->setDataContainerArray(DataContainerArray::NullPointer());
     err = (*filter)->getErrorCondition();
     if(err < 0)
@@ -371,7 +363,7 @@ void FilterPipeline::execute()
       emit pipelineFinished();
       return;
     }
-    if (this->getCancel() == true)
+    if(this->getCancel() == true)
     {
       break;
     }
@@ -391,12 +383,12 @@ void FilterPipeline::execute()
 // -----------------------------------------------------------------------------
 void FilterPipeline::printFilterNames(QTextStream& out)
 {
-  out << "---------------------------------------------------------------------" ;
-  for (FilterContainerType::iterator iter = m_Pipeline.begin(); iter != m_Pipeline.end(); ++iter )
+  out << "---------------------------------------------------------------------";
+  for(FilterContainerType::iterator iter = m_Pipeline.begin(); iter != m_Pipeline.end(); ++iter)
   {
     out << (*iter)->getNameOfClass() << "\n";
   }
-  out << "---------------------------------------------------------------------" ;
+  out << "---------------------------------------------------------------------";
 }
 
 // -----------------------------------------------------------------------------
@@ -404,7 +396,7 @@ void FilterPipeline::printFilterNames(QTextStream& out)
 // -----------------------------------------------------------------------------
 void FilterPipeline::connectSignalsSlots()
 {
-  for (int i=0; i < m_Pipeline.size(); i++)
+  for(int i = 0; i < m_Pipeline.size(); i++)
   {
     AbstractFilter::Pointer filter = m_Pipeline[i];
     connect(this, SIGNAL(pipelineFinished()), filter.get(), SLOT(cleanupFilter()));
@@ -416,7 +408,7 @@ void FilterPipeline::connectSignalsSlots()
 // -----------------------------------------------------------------------------
 void FilterPipeline::disconnectSignalsSlots()
 {
-  for (int i=0; i < m_Pipeline.size(); i++)
+  for(int i = 0; i < m_Pipeline.size(); i++)
   {
     AbstractFilter::Pointer filter = m_Pipeline[i];
     disconnect(this, SIGNAL(pipelineFinished()), filter.get(), SLOT(cleanupFilter()));

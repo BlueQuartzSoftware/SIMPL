@@ -35,8 +35,8 @@
 
 #include "DropBoxWidget.h"
 
-#include <QtCore/QFileInfo>
 #include <QtCore/QDir>
+#include <QtCore/QFileInfo>
 #include <QtCore/QTextStream>
 
 #include <QtWidgets/QMessageBox>
@@ -49,8 +49,8 @@
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-DropBoxWidget::DropBoxWidget(QWidget* parent) :
-  QWidget(parent)
+DropBoxWidget::DropBoxWidget(QWidget* parent)
+: QWidget(parent)
 {
   setupUi(this);
 
@@ -62,7 +62,6 @@ DropBoxWidget::DropBoxWidget(QWidget* parent) :
 // -----------------------------------------------------------------------------
 DropBoxWidget::~DropBoxWidget()
 {
-
 }
 
 // -----------------------------------------------------------------------------
@@ -122,10 +121,3 @@ void DropBoxWidget::setLabel(QString text)
 {
   label->setText(text);
 }
-
-
-
-
-
-
-

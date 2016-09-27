@@ -33,14 +33,13 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-
 #include "IssuesDockWidget.h"
 
 #include <iostream>
 
 #include <QtWidgets/QLabel>
-#include <QtWidgets/QTableWidgetItem>
 #include <QtWidgets/QMainWindow>
+#include <QtWidgets/QTableWidgetItem>
 
 #include "SVWidgetsLib/QtSupport/QtSSettings.h"
 
@@ -54,13 +53,12 @@
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-IssuesDockWidget::IssuesDockWidget(QWidget* parent) :
-  QDockWidget(parent)
+IssuesDockWidget::IssuesDockWidget(QWidget* parent)
+: QDockWidget(parent)
 {
   setupUi(this);
   setupGui();
 }
-
 
 // -----------------------------------------------------------------------------
 //
@@ -84,11 +82,9 @@ void IssuesDockWidget::setupGui()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void IssuesDockWidget::on_errorTableWidget_itemClicked( QTableWidgetItem* item )
+void IssuesDockWidget::on_errorTableWidget_itemClicked(QTableWidgetItem* item)
 {
-
 }
-
 
 // -----------------------------------------------------------------------------
 //
@@ -120,14 +116,14 @@ void IssuesDockWidget::displayCachedMessages()
     PipelineMessage msg = m_CachedMessages[i];
     switch(msg.getType())
     {
-      case PipelineMessage::Error:
-        count++;
-        break;
-      case PipelineMessage::Warning:
-        count++;
-        break;
-      default:
-        break;
+    case PipelineMessage::Error:
+      count++;
+      break;
+    case PipelineMessage::Warning:
+      count++;
+      break;
+    default:
+      break;
     }
   }
 
@@ -143,84 +139,83 @@ void IssuesDockWidget::displayCachedMessages()
     QColor msgColor;
     switch(msg.getType())
     {
-      case PipelineMessage::Error:
-        // m_hasErrors = true;
-        msgColor.setRed(255);
-        msgColor.setGreen(191);
-        msgColor.setBlue(193);
+    case PipelineMessage::Error:
+      // m_hasErrors = true;
+      msgColor.setRed(255);
+      msgColor.setGreen(191);
+      msgColor.setBlue(193);
+      {
+        QBrush msgBrush(msgColor);
+
+        QString msgDesc = (msg.getText());
+        int msgCode = msg.getCode();
+
+        QString msgPrefix = (msg.getPrefix());
+        QTableWidgetItem* filterNameWidgetItem = new QTableWidgetItem(msgPrefix);
+        filterNameWidgetItem->setTextAlignment(Qt::AlignCenter);
+        QTableWidgetItem* descriptionWidgetItem = new QTableWidgetItem(msgDesc);
+        QTableWidgetItem* codeWidgetItem = new QTableWidgetItem(QString::number(msgCode));
+        codeWidgetItem->setTextAlignment(Qt::AlignCenter);
+
+        filterNameWidgetItem->setBackground(msgBrush);
+        descriptionWidgetItem->setBackground(msgBrush);
+        codeWidgetItem->setBackground(msgBrush);
+
+        QLabel* hyperlinkLabel = createHyperlinkLabel(msg);
+        if(hyperlinkLabel == nullptr)
         {
-          QBrush msgBrush(msgColor);
-
-          QString msgDesc = (msg.getText());
-          int msgCode = msg.getCode();
-
-          QString msgPrefix = (msg.getPrefix());
-          QTableWidgetItem* filterNameWidgetItem = new QTableWidgetItem(msgPrefix);
-          filterNameWidgetItem->setTextAlignment(Qt::AlignCenter);
-          QTableWidgetItem* descriptionWidgetItem = new QTableWidgetItem(msgDesc);
-          QTableWidgetItem* codeWidgetItem = new QTableWidgetItem(QString::number(msgCode));
-          codeWidgetItem->setTextAlignment(Qt::AlignCenter);
-
-          filterNameWidgetItem->setBackground(msgBrush);
-          descriptionWidgetItem->setBackground(msgBrush);
-          codeWidgetItem->setBackground(msgBrush);
-
-          QLabel* hyperlinkLabel = createHyperlinkLabel(msg);
-          if (hyperlinkLabel == nullptr)
-          {
-            errorTableWidget->setItem(row, 0, filterNameWidgetItem);
-          }
-          else
-          {
-            errorTableWidget->setCellWidget(row, 0, hyperlinkLabel);
-          }
-          errorTableWidget->setItem(row, 1, descriptionWidgetItem);
-          errorTableWidget->setItem(row, 2, codeWidgetItem);
+          errorTableWidget->setItem(row, 0, filterNameWidgetItem);
         }
-        row++;
-        break;
-
-      case PipelineMessage::Warning:
-        //  m_hasWarnings = true;
-        msgColor.setRed(251);
-        msgColor.setGreen(254);
-        msgColor.setBlue(137);
-
+        else
         {
-          QBrush msgBrush(msgColor);
-
-          QString msgName = (msg.getPrefix());
-          QString msgDesc = (msg.getText());
-          int msgCode = msg.getCode();
-
-          QTableWidgetItem* filterNameWidgetItem = new QTableWidgetItem(msgName);
-          filterNameWidgetItem->setTextAlignment(Qt::AlignCenter);
-          QTableWidgetItem* descriptionWidgetItem = new QTableWidgetItem(msgDesc);
-          QTableWidgetItem* codeWidgetItem = new QTableWidgetItem(QString::number(msgCode));
-          codeWidgetItem->setTextAlignment(Qt::AlignCenter);
-
-          filterNameWidgetItem->setBackground(msgBrush);
-          descriptionWidgetItem->setBackground(msgBrush);
-          codeWidgetItem->setBackground(msgBrush);
-
-          QLabel* hyperlinkLabel = createHyperlinkLabel(msg);
-          if (hyperlinkLabel == nullptr)
-          {
-            errorTableWidget->setItem(row, 0, filterNameWidgetItem);
-          }
-          else
-          {
-            errorTableWidget->setCellWidget(row, 0, hyperlinkLabel);
-          }
-          errorTableWidget->setItem(row, 1, descriptionWidgetItem);
-          errorTableWidget->setItem(row, 2, codeWidgetItem);
+          errorTableWidget->setCellWidget(row, 0, hyperlinkLabel);
         }
-        row++;
-        break;
+        errorTableWidget->setItem(row, 1, descriptionWidgetItem);
+        errorTableWidget->setItem(row, 2, codeWidgetItem);
+      }
+      row++;
+      break;
 
+    case PipelineMessage::Warning:
+      //  m_hasWarnings = true;
+      msgColor.setRed(251);
+      msgColor.setGreen(254);
+      msgColor.setBlue(137);
 
-      default:
-        break;
+      {
+        QBrush msgBrush(msgColor);
+
+        QString msgName = (msg.getPrefix());
+        QString msgDesc = (msg.getText());
+        int msgCode = msg.getCode();
+
+        QTableWidgetItem* filterNameWidgetItem = new QTableWidgetItem(msgName);
+        filterNameWidgetItem->setTextAlignment(Qt::AlignCenter);
+        QTableWidgetItem* descriptionWidgetItem = new QTableWidgetItem(msgDesc);
+        QTableWidgetItem* codeWidgetItem = new QTableWidgetItem(QString::number(msgCode));
+        codeWidgetItem->setTextAlignment(Qt::AlignCenter);
+
+        filterNameWidgetItem->setBackground(msgBrush);
+        descriptionWidgetItem->setBackground(msgBrush);
+        codeWidgetItem->setBackground(msgBrush);
+
+        QLabel* hyperlinkLabel = createHyperlinkLabel(msg);
+        if(hyperlinkLabel == nullptr)
+        {
+          errorTableWidget->setItem(row, 0, filterNameWidgetItem);
+        }
+        else
+        {
+          errorTableWidget->setCellWidget(row, 0, hyperlinkLabel);
+        }
+        errorTableWidget->setItem(row, 1, descriptionWidgetItem);
+        errorTableWidget->setItem(row, 2, codeWidgetItem);
+      }
+      row++;
+      break;
+
+    default:
+      break;
     }
   }
 }
@@ -230,19 +225,25 @@ void IssuesDockWidget::displayCachedMessages()
 // -----------------------------------------------------------------------------
 QLabel* IssuesDockWidget::createHyperlinkLabel(PipelineMessage msg)
 {
-  QString filterClassName = (msg.getFilterClassName() );
-  QString filterHumanLabel = (msg.getFilterHumanLabel() );
+  QString filterClassName = (msg.getFilterClassName());
+  QString filterHumanLabel = (msg.getFilterHumanLabel());
   QString msgPrefix = (msg.getPrefix());
 
-  if ( filterClassName.isEmpty() || filterHumanLabel.isEmpty() )
+  if(filterClassName.isEmpty() || filterHumanLabel.isEmpty())
   {
-    if(filterClassName.isEmpty() == false) { return new QLabel(filterClassName); }
-    else if(filterHumanLabel.isEmpty() == false) { return new QLabel(filterHumanLabel); }
+    if(filterClassName.isEmpty() == false)
+    {
+      return new QLabel(filterClassName);
+    }
+    else if(filterHumanLabel.isEmpty() == false)
+    {
+      return new QLabel(filterHumanLabel);
+    }
 
     return new QLabel("Unknown Filter Class");
   }
 
-  QUrl filterURL = QtSHelpUrlGenerator::generateHTMLUrl( filterClassName.toLower() );
+  QUrl filterURL = QtSHelpUrlGenerator::generateHTMLUrl(filterClassName.toLower());
   QString filterHTMLText("<a href=\"");
   filterHTMLText.append(filterURL.toString()).append("\">").append(filterHumanLabel).append("</a>");
 
@@ -258,7 +259,7 @@ QLabel* IssuesDockWidget::createHyperlinkLabel(PipelineMessage msg)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void IssuesDockWidget::showFilterHelp(const QString &urlString)
+void IssuesDockWidget::showFilterHelp(const QString& urlString)
 {
   QUrl helpURL(urlString);
 

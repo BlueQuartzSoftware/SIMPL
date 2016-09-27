@@ -33,19 +33,21 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-
 #include <H5Support/QH5Utilities.h>
 
-#include <QtCore/QtDebug>
 #include <QtCore/QFileInfo>
+#include <QtCore/QtDebug>
 
-#define CheckValidLocId(locId)\
-  if (locId < 0 ) {qDebug() << "Invalid HDF Location ID: " << locId;return -1;}
+#define CheckValidLocId(locId)                                                                                                                                                                         \
+  if(locId < 0)                                                                                                                                                                                        \
+  {                                                                                                                                                                                                    \
+    qDebug() << "Invalid HDF Location ID: " << locId;                                                                                                                                                  \
+    return -1;                                                                                                                                                                                         \
+  }
 
-#if defined (H5Support_NAMESPACE)
+#if defined(H5Support_NAMESPACE)
 using namespace H5Support_NAMESPACE;
 #endif
-
 
 // -----------------------------------------------------------------------------
 //
@@ -78,7 +80,6 @@ QString QH5Utilities::getObjectPath(hid_t loc_id, bool trim)
   return QString::fromStdString(H5Utilities::getObjectPath(loc_id, trim));
 }
 
-
 // -----------------------------------------------------------------------------
 // @brief Retrieves the HDF object type for obj_name at loc_id and stores
 //    it in the parameter obj_type passed in.
@@ -87,8 +88,6 @@ herr_t QH5Utilities::getObjectType(hid_t objId, const QString& objName, int32_t*
 {
   return H5Utilities::getObjectType(objId, objName.toStdString(), objType);
 }
-
-
 
 // Opens and returns the HDF object (since the HDF api requires
 //  different open and close methods for different types of objects
@@ -105,7 +104,6 @@ herr_t QH5Utilities::closeHDF5Object(hid_t obj_id)
   return H5Utilities::closeHDF5Object(obj_id);
 }
 
-
 //--------------------------------------------------------------------//
 // HDF Group Methods
 //--------------------------------------------------------------------//
@@ -118,12 +116,11 @@ herr_t QH5Utilities::getGroupObjects(hid_t loc_id, int32_t typeFilter, QList<QSt
   names.clear();
   for(std::list<std::string>::iterator name = sNames.begin(); name != sNames.end(); ++name)
   {
-    names.push_back( QString::fromStdString(*name));
+    names.push_back(QString::fromStdString(*name));
   }
 
   return err;
 }
-
 
 // -----------------------------------------------------------------------------
 // HDF Creation/Modification Methods
@@ -141,7 +138,6 @@ int32_t QH5Utilities::createGroupsForDataset(const QString& datasetPath, hid_t p
   return H5Utilities::createGroupsForDataset(datasetPath.toStdString(), parent);
 }
 
-
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
@@ -158,13 +154,10 @@ QString QH5Utilities::extractObjectName(const QString& path)
   return QString::fromStdString(H5Utilities::extractObjectName(path.toStdString()));
 }
 
-
 //--------------------------------------------------------------------//
 // HDF Attribute Methods
 //--------------------------------------------------------------------//
-bool QH5Utilities::probeForAttribute(hid_t loc_id,
-                                     const QString& obj_name,
-                                     const QString& attr_name)
+bool QH5Utilities::probeForAttribute(hid_t loc_id, const QString& obj_name, const QString& attr_name)
 {
   return H5Utilities::probeForAttribute(loc_id, obj_name.toStdString(), attr_name.toStdString());
 }
@@ -173,8 +166,7 @@ bool QH5Utilities::probeForAttribute(hid_t loc_id,
 // Returns a QList of all attribute names attached to the object
 //  referred to by obj_id
 //--------------------------------------------------------------------//
-herr_t QH5Utilities::getAllAttributeNames(hid_t obj_id,
-                                          QList<QString>& names)
+herr_t QH5Utilities::getAllAttributeNames(hid_t obj_id, QList<QString>& names)
 {
   names.clear();
   std::list<std::string> sResults;
@@ -189,9 +181,7 @@ herr_t QH5Utilities::getAllAttributeNames(hid_t obj_id,
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-herr_t QH5Utilities::getAllAttributeNames(hid_t loc_id,
-                                          const QString& obj_name,
-                                          QList<QString>& names)
+herr_t QH5Utilities::getAllAttributeNames(hid_t loc_id, const QString& obj_name, QList<QString>& names)
 {
   names.clear();
   std::list<std::string> sResults;
@@ -220,7 +210,6 @@ void QH5Utilities::printHDFClassType(H5T_class_t class_type)
   qDebug() << QString::fromStdString(hType);
 }
 
-
 // -----------------------------------------------------------------------------
 //  Returns a QString that is the name of the object at the given index
 // -----------------------------------------------------------------------------
@@ -247,7 +236,7 @@ QString QH5Utilities::fileNameFromFileId(hid_t fileId)
 {
   H5SUPPORT_MUTEX_LOCK()
 
-// Get the name of the .dream3d file that we are writing to:
+  // Get the name of the .dream3d file that we are writing to:
   ssize_t nameSize = H5Fget_name(fileId, nullptr, 0) + 1;
   QByteArray nameBuffer(nameSize, 0);
   nameSize = H5Fget_name(fileId, nameBuffer.data(), nameSize);
@@ -265,7 +254,7 @@ QString QH5Utilities::absoluteFilePathFromFileId(hid_t fileId)
 {
   H5SUPPORT_MUTEX_LOCK()
 
-// Get the name of the .dream3d file that we are writing to:
+  // Get the name of the .dream3d file that we are writing to:
   ssize_t nameSize = H5Fget_name(fileId, nullptr, 0) + 1;
   QByteArray nameBuffer(nameSize, 0);
   nameSize = H5Fget_name(fileId, nameBuffer.data(), nameSize);

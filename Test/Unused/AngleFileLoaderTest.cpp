@@ -33,14 +33,11 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-
-
-#include <stdlib.h>
 #include <stdio.h>
+#include <stdlib.h>
 
-#include "UnitTestSupport.hpp"
 #include "TestFileLocations.h"
-
+#include "UnitTestSupport.hpp"
 
 // -----------------------------------------------------------------------------
 //
@@ -61,12 +58,10 @@ void MyTest()
   int j = 1;
 
   // This will pass because i < j
-  DREAM3D_REQUIRED(i, < , j)
+  DREAM3D_REQUIRED(i, <, j)
 
   // This will FAIL because i != j
   DREAM3D_REQUIRE_EQUAL(i, j)
-
-
 }
 
 // -----------------------------------------------------------------------------
@@ -75,11 +70,8 @@ void MyTest()
 int main(int argc, char** argv)
 {
   int err = EXIT_SUCCESS;
-  DREAM3D_REGISTER_TEST( MyTest() )
-
+  DREAM3D_REGISTER_TEST(MyTest())
 
   PRINT_TEST_SUMMARY();
   return err;
 }
-
-

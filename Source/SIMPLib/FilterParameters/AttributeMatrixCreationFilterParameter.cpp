@@ -38,21 +38,24 @@
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-AttributeMatrixCreationFilterParameter::AttributeMatrixCreationFilterParameter() :
-  FilterParameter()
-{}
+AttributeMatrixCreationFilterParameter::AttributeMatrixCreationFilterParameter()
+: FilterParameter()
+{
+}
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
 AttributeMatrixCreationFilterParameter::~AttributeMatrixCreationFilterParameter()
-{}
+{
+}
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-AttributeMatrixCreationFilterParameter::Pointer AttributeMatrixCreationFilterParameter::New(const QString& humanLabel, const QString& propertyName,
-    const DataArrayPath& defaultValue, Category category, SetterCallbackType setterCallback, GetterCallbackType getterCallback, const RequirementType req, int groupIndex)
+AttributeMatrixCreationFilterParameter::Pointer AttributeMatrixCreationFilterParameter::New(const QString& humanLabel, const QString& propertyName, const DataArrayPath& defaultValue,
+                                                                                            Category category, SetterCallbackType setterCallback, GetterCallbackType getterCallback,
+                                                                                            const RequirementType req, int groupIndex)
 {
   AttributeMatrixCreationFilterParameter::Pointer ptr = AttributeMatrixCreationFilterParameter::New();
   ptr->setHumanLabel(humanLabel);
@@ -80,10 +83,10 @@ QString AttributeMatrixCreationFilterParameter::getWidgetType()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void AttributeMatrixCreationFilterParameter::readJson(const QJsonObject &json)
+void AttributeMatrixCreationFilterParameter::readJson(const QJsonObject& json)
 {
   QJsonValue jsonValue = json[getPropertyName()];
-  if(!jsonValue.isUndefined() )
+  if(!jsonValue.isUndefined())
   {
     QJsonObject obj = jsonValue.toObject();
     DataArrayPath dap;
@@ -95,11 +98,10 @@ void AttributeMatrixCreationFilterParameter::readJson(const QJsonObject &json)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void AttributeMatrixCreationFilterParameter::writeJson(QJsonObject &json)
+void AttributeMatrixCreationFilterParameter::writeJson(QJsonObject& json)
 {
   DataArrayPath dap = m_GetterCallback();
   QJsonObject obj;
   dap.writeJson(obj);
   json[getPropertyName()] = obj;
 }
-

@@ -33,27 +33,24 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-
 #include "RenameAttributeMatrix.h"
 
 #include "SIMPLib/Common/Constants.h"
-#include "SIMPLib/SIMPLibVersion.h"
 #include "SIMPLib/FilterParameters/AbstractFilterParametersReader.h"
 #include "SIMPLib/FilterParameters/AttributeMatrixSelectionFilterParameter.h"
 #include "SIMPLib/FilterParameters/StringFilterParameter.h"
+#include "SIMPLib/SIMPLibVersion.h"
 
 // Include the MOC generated file for this class
 #include "moc_RenameAttributeMatrix.cpp"
 
-
-
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-RenameAttributeMatrix::RenameAttributeMatrix() :
-  AbstractFilter(),
-  m_SelectedAttributeMatrixPath("", "", ""),
-  m_NewAttributeMatrix("")
+RenameAttributeMatrix::RenameAttributeMatrix()
+: AbstractFilter()
+, m_SelectedAttributeMatrixPath("", "", "")
+, m_NewAttributeMatrix("")
 {
   setupFilterParameters();
 }
@@ -88,8 +85,8 @@ void RenameAttributeMatrix::setupFilterParameters()
 void RenameAttributeMatrix::readFilterParameters(AbstractFilterParametersReader* reader, int index)
 {
   reader->openFilterGroup(this, index);
-  setSelectedAttributeMatrixPath( reader->readDataArrayPath("SelectedAttributeMatrixPath", getSelectedAttributeMatrixPath()) );
-  setNewAttributeMatrix( reader->readString( "NewAttributeMatrix", getNewAttributeMatrix() ) );
+  setSelectedAttributeMatrixPath(reader->readDataArrayPath("SelectedAttributeMatrixPath", getSelectedAttributeMatrixPath()));
+  setNewAttributeMatrix(reader->readString("NewAttributeMatrix", getNewAttributeMatrix()));
   reader->closeFilterGroup();
 }
 
@@ -98,7 +95,6 @@ void RenameAttributeMatrix::readFilterParameters(AbstractFilterParametersReader*
 // -----------------------------------------------------------------------------
 void RenameAttributeMatrix::initialize()
 {
-
 }
 
 // -----------------------------------------------------------------------------
@@ -108,7 +104,7 @@ void RenameAttributeMatrix::dataCheck()
 {
   setErrorCondition(0);
 
-  if (m_NewAttributeMatrix.isEmpty() == true)
+  if(m_NewAttributeMatrix.isEmpty() == true)
   {
     setErrorCondition(-11004);
     QString ss = QObject::tr("The new Attribute Matrix name must be set");
@@ -121,10 +117,13 @@ void RenameAttributeMatrix::dataCheck()
   DataContainer::Pointer dc = getDataContainerArray()->getPrereqDataContainer<AbstractFilter>(this, getSelectedAttributeMatrixPath().getDataContainerName());
   getDataContainerArray()->getPrereqAttributeMatrixFromPath<AbstractFilter>(this, getSelectedAttributeMatrixPath(), -301);
 
-  if(getErrorCondition() < 0) { return; }
+  if(getErrorCondition() < 0)
+  {
+    return;
+  }
 
-  bool check = dc->renameAttributeMatrix(amName, getNewAttributeMatrix() );
-  if (check == false)
+  bool check = dc->renameAttributeMatrix(amName, getNewAttributeMatrix());
+  if(check == false)
   {
     setErrorCondition(-11006);
     QString ss = QObject::tr("Attempt to rename Attribute Matrix '%1' to '%2' failed").arg(amName).arg(getNewAttributeMatrix());
@@ -152,7 +151,10 @@ void RenameAttributeMatrix::execute()
 {
   setErrorCondition(0);
   dataCheck(); // calling the dataCheck will rename the array, so nothing is required here
-  if(getErrorCondition() < 0) { return; }
+  if(getErrorCondition() < 0)
+  {
+    return;
+  }
 
   notifyStatusMessage(getHumanLabel(), "Complete");
 }
@@ -173,7 +175,9 @@ AbstractFilter::Pointer RenameAttributeMatrix::newFilterInstance(bool copyFilter
 //
 // -----------------------------------------------------------------------------
 const QString RenameAttributeMatrix::getCompiledLibraryName()
-{ return Core::CoreBaseName; }
+{
+  return Core::CoreBaseName;
+}
 
 // -----------------------------------------------------------------------------
 //
@@ -190,26 +194,30 @@ const QString RenameAttributeMatrix::getFilterVersion()
 {
   QString version;
   QTextStream vStream(&version);
-  vStream <<  SIMPLib::Version::Major() << "." << SIMPLib::Version::Minor() << "." << SIMPLib::Version::Patch();
+  vStream << SIMPLib::Version::Major() << "." << SIMPLib::Version::Minor() << "." << SIMPLib::Version::Patch();
   return version;
 }
-
-
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
 const QString RenameAttributeMatrix::getGroupName()
-{ return SIMPL::FilterGroups::CoreFilters; }
+{
+  return SIMPL::FilterGroups::CoreFilters;
+}
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
 const QString RenameAttributeMatrix::getSubGroupName()
-{ return SIMPL::FilterSubGroups::MemoryManagementFilters; }
+{
+  return SIMPL::FilterSubGroups::MemoryManagementFilters;
+}
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
 const QString RenameAttributeMatrix::getHumanLabel()
-{ return "Rename Attribute Matrix"; }
+{
+  return "Rename Attribute Matrix";
+}

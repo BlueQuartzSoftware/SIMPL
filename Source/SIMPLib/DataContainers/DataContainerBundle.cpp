@@ -33,9 +33,7 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-
 #include "DataContainerBundle.h"
-
 
 #include "SIMPLib/DataArrays/StringDataArray.hpp"
 #include "SIMPLib/DataContainers/DataArrayPath.h"
@@ -47,33 +45,33 @@
 // -----------------------------------------------------------------------------
 namespace Detail
 {
-  class H5GroupAutoCloser
+class H5GroupAutoCloser
+{
+public:
+  H5GroupAutoCloser(hid_t* groupId)
+  : gid(groupId)
   {
-    public:
-      H5GroupAutoCloser(hid_t* groupId) :
-        gid(groupId)
-      {}
+  }
 
-      virtual ~H5GroupAutoCloser()
-      {
-        if (*gid > 0)
-        {
-          H5Gclose(*gid);
-        }
-      }
-    private:
-      hid_t* gid;
-  };
+  virtual ~H5GroupAutoCloser()
+  {
+    if(*gid > 0)
+    {
+      H5Gclose(*gid);
+    }
+  }
+
+private:
+  hid_t* gid;
+};
 }
-
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-DataContainerBundle::DataContainerBundle() :
-  m_MetaDataAMName(SIMPL::StringConstants::MetaData)
+DataContainerBundle::DataContainerBundle()
+: m_MetaDataAMName(SIMPL::StringConstants::MetaData)
 {
-
 }
 
 // -----------------------------------------------------------------------------
@@ -105,7 +103,7 @@ void DataContainerBundle::setDataContainers(QVector<DataContainer::Pointer>& con
 QVector<QString> DataContainerBundle::getDataContainerNames()
 {
   QVector<QString> dcNames;
-  for (qint32 i = 0; i < m_DataContainers.size(); i++)
+  for(qint32 i = 0; i < m_DataContainers.size(); i++)
   {
     dcNames.push_back(m_DataContainers[i]->getName());
   }
@@ -182,7 +180,6 @@ void DataContainerBundle::clear()
   return m_DataContainers.clear();
 }
 
-
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
@@ -209,7 +206,7 @@ QVector<DataArrayPath> DataContainerBundle::findCommonDataArrayPaths(bool filter
 
   int count = m_DataContainers.count();
   // We already have the first DataContainer, so start at the 2nd
-  for (int dcIdx = 1; dcIdx < count; ++dcIdx)
+  for(int dcIdx = 1; dcIdx < count; ++dcIdx)
   {
     DataContainer::Pointer dcX = m_DataContainers[dcIdx];
     QVector<DataArrayPath> paths = dcX->getAllDataArrayPaths();
@@ -223,12 +220,12 @@ QVector<DataArrayPath> DataContainerBundle::findCommonDataArrayPaths(bool filter
       bool match = false;
       foreach(DataArrayPath path, paths)
       {
-        //qDebug() << "Comparing " << dc0Path.serialize() << " TO " << path.serialize();
-        if(path.hasSameAttributeMatrix(dc0Path) &&  path.hasSameDataArray(dc0Path) )
+        // qDebug() << "Comparing " << dc0Path.serialize() << " TO " << path.serialize();
+        if(path.hasSameAttributeMatrix(dc0Path) && path.hasSameDataArray(dc0Path))
         {
           match = true;
         }
-        if(filterMetaData == true && (path.getAttributeMatrixName() == SIMPL::StringConstants::MetaData) )
+        if(filterMetaData == true && (path.getAttributeMatrixName() == SIMPL::StringConstants::MetaData))
         {
           match = false;
         }
@@ -245,7 +242,6 @@ QVector<DataArrayPath> DataContainerBundle::findCommonDataArrayPaths(bool filter
   return commonPaths;
 }
 
-
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
@@ -259,7 +255,7 @@ int DataContainerBundle::writeH5Data(hid_t groupId)
   size_t count = static_cast<size_t>(m_DataContainers.size());
   QStringList dcNameList;
 
-  for (size_t i = 0; i < count; i++)
+  for(size_t i = 0; i < count; i++)
   {
     dcNameList << m_DataContainers.at(i)->getName();
   }
@@ -291,7 +287,5 @@ int DataContainerBundle::readH5Data(hid_t groupId)
 {
   int err = -1;
 
-
   return err;
 }
-

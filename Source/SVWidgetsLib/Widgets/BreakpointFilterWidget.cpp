@@ -33,7 +33,6 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-
 #include "BreakpointFilterWidget.h"
 
 // Include the MOC generated CPP file which has all the QMetaObject methods/data
@@ -42,9 +41,9 @@
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-BreakpointFilterWidget::BreakpointFilterWidget(QWidget* parent) :
-  SVPipelineFilterWidget(parent),
-  m_Filter(nullptr)
+BreakpointFilterWidget::BreakpointFilterWidget(QWidget* parent)
+: SVPipelineFilterWidget(parent)
+, m_Filter(nullptr)
 {
   setupGui();
 }
@@ -52,13 +51,13 @@ BreakpointFilterWidget::BreakpointFilterWidget(QWidget* parent) :
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-BreakpointFilterWidget::BreakpointFilterWidget(AbstractFilter::Pointer filter, IObserver* observer, QWidget* parent) :
-  SVPipelineFilterWidget(filter, observer, parent),
-  m_Filter(nullptr)
+BreakpointFilterWidget::BreakpointFilterWidget(AbstractFilter::Pointer filter, IObserver* observer, QWidget* parent)
+: SVPipelineFilterWidget(filter, observer, parent)
+, m_Filter(nullptr)
 {
   m_Filter = std::dynamic_pointer_cast<Breakpoint>(SVPipelineFilterWidget::getFilter());
 
-  if (nullptr != m_Filter)
+  if(nullptr != m_Filter)
   {
     connect(m_Filter.get(), SIGNAL(pipelineHasPaused()), this, SLOT(showResumeBtn()));
     connect(m_Filter.get(), SIGNAL(pipelineHasResumed()), this, SLOT(hideResumeBtn()));
@@ -72,7 +71,6 @@ BreakpointFilterWidget::BreakpointFilterWidget(AbstractFilter::Pointer filter, I
 // -----------------------------------------------------------------------------
 BreakpointFilterWidget::~BreakpointFilterWidget()
 {
-
 }
 
 // -----------------------------------------------------------------------------
@@ -119,5 +117,3 @@ Breakpoint::Pointer BreakpointFilterWidget::getBreakpointFilter()
 {
   return m_Filter;
 }
-
-

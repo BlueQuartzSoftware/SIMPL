@@ -33,28 +33,22 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-
-
 #include "CreateDataContainer.h"
 
 #include "SIMPLib/Common/Constants.h"
-#include "SIMPLib/SIMPLibVersion.h"
 #include "SIMPLib/FilterParameters/AbstractFilterParametersReader.h"
 #include "SIMPLib/FilterParameters/DataContainerCreationFilterParameter.h"
-
-
+#include "SIMPLib/SIMPLibVersion.h"
 
 // Include the MOC generated file for this class
 #include "moc_CreateDataContainer.cpp"
 
-
-
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-CreateDataContainer::CreateDataContainer() :
-  AbstractFilter(),
-  m_CreatedDataContainer("DataContainer")
+CreateDataContainer::CreateDataContainer()
+: AbstractFilter()
+, m_CreatedDataContainer("DataContainer")
 {
   setupFilterParameters();
 }
@@ -91,7 +85,6 @@ void CreateDataContainer::readFilterParameters(AbstractFilterParametersReader* r
 // -----------------------------------------------------------------------------
 void CreateDataContainer::initialize()
 {
-
 }
 
 // -----------------------------------------------------------------------------
@@ -110,12 +103,12 @@ void CreateDataContainer::dataCheck()
 void CreateDataContainer::preflight()
 {
   // These are the REQUIRED lines of CODE to make sure the filter behaves correctly
-  setInPreflight(true); // Set the fact that we are preflighting.
-  emit preflightAboutToExecute(); // Emit this signal so that other widgets can do one file update
+  setInPreflight(true);              // Set the fact that we are preflighting.
+  emit preflightAboutToExecute();    // Emit this signal so that other widgets can do one file update
   emit updateFilterParameters(this); // Emit this signal to have the widgets push their values down to the filter
-  dataCheck(); // Run our DataCheck to make sure everthing is setup correctly
-  emit preflightExecuted(); // We are done preflighting this filter
-  setInPreflight(false); // Inform the system this filter is NOT in preflight mode anymore.
+  dataCheck();                       // Run our DataCheck to make sure everthing is setup correctly
+  emit preflightExecuted();          // We are done preflighting this filter
+  setInPreflight(false);             // Inform the system this filter is NOT in preflight mode anymore.
 }
 
 // -----------------------------------------------------------------------------
@@ -125,11 +118,17 @@ void CreateDataContainer::execute()
 {
   setErrorCondition(0);
   dataCheck();
-  if(getErrorCondition() < 0) { return; }
+  if(getErrorCondition() < 0)
+  {
+    return;
+  }
 
-  if (getCancel() == true) { return; }
+  if(getCancel() == true)
+  {
+    return;
+  }
 
-  if (getErrorCondition() < 0)
+  if(getErrorCondition() < 0)
   {
     QString ss = QObject::tr("Some error message");
     setErrorCondition(-99999999);
@@ -157,7 +156,9 @@ AbstractFilter::Pointer CreateDataContainer::newFilterInstance(bool copyFilterPa
 //
 // -----------------------------------------------------------------------------
 const QString CreateDataContainer::getCompiledLibraryName()
-{ return Core::CoreBaseName; }
+{
+  return Core::CoreBaseName;
+}
 
 // -----------------------------------------------------------------------------
 //
@@ -174,7 +175,7 @@ const QString CreateDataContainer::getFilterVersion()
 {
   QString version;
   QTextStream vStream(&version);
-  vStream <<  SIMPLib::Version::Major() << "." << SIMPLib::Version::Minor() << "." << SIMPLib::Version::Patch();
+  vStream << SIMPLib::Version::Major() << "." << SIMPLib::Version::Minor() << "." << SIMPLib::Version::Patch();
   return version;
 }
 
@@ -182,17 +183,22 @@ const QString CreateDataContainer::getFilterVersion()
 //
 // -----------------------------------------------------------------------------
 const QString CreateDataContainer::getGroupName()
-{ return SIMPL::FilterGroups::CoreFilters; }
+{
+  return SIMPL::FilterGroups::CoreFilters;
+}
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
 const QString CreateDataContainer::getHumanLabel()
-{ return "Create Data Container"; }
+{
+  return "Create Data Container";
+}
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
 const QString CreateDataContainer::getSubGroupName()
-{ return SIMPL::FilterSubGroups::GenerationFilters; }
-
+{
+  return SIMPL::FilterSubGroups::GenerationFilters;
+}

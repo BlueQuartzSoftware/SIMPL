@@ -33,23 +33,20 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-
-
 #include <string>
 
-#include <QtCore/QString>
 #include <QtCore/QDir>
 #include <QtCore/QFile>
 #include <QtCore/QFileInfo>
+#include <QtCore/QString>
 
-#include "SIMPLib/SIMPLib.h"
 #include "SIMPLib/Common/Constants.h"
 #include "SIMPLib/DataArrays/StructArray.hpp"
 #include "SIMPLib/FilterParameters/FilterParameter.h"
+#include "SIMPLib/SIMPLib.h"
 
-
-#include "UnitTestSupport.hpp"
 #include "TestFileLocations.h"
+#include "UnitTestSupport.hpp"
 
 // -----------------------------------------------------------------------------
 //
@@ -66,10 +63,7 @@ void RemoveTestFiles()
 // -----------------------------------------------------------------------------
 void Test2PhaseMatrixPrecipitate()
 {
-
 }
-
-
 
 // -----------------------------------------------------------------------------
 //  Use unit test framework
@@ -78,10 +72,9 @@ int main(int argc, char** argv)
 {
   int err = EXIT_SUCCESS;
 
-  DREAM3D_REGISTER_TEST( Test2PhaseMatrixPrecipitate() )
-  DREAM3D_REGISTER_TEST( RemoveTestFiles() )
+  DREAM3D_REGISTER_TEST(Test2PhaseMatrixPrecipitate())
+  DREAM3D_REGISTER_TEST(RemoveTestFiles())
   PRINT_TEST_SUMMARY();
 
   return err;
 }
-

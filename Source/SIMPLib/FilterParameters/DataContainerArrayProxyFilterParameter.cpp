@@ -38,9 +38,9 @@
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-DataContainerArrayProxyFilterParameter::DataContainerArrayProxyFilterParameter() :
-  FilterParameter(),
-  m_DefaultFlagValue(Qt::Checked)
+DataContainerArrayProxyFilterParameter::DataContainerArrayProxyFilterParameter()
+: FilterParameter()
+, m_DefaultFlagValue(Qt::Checked)
 {
 }
 
@@ -48,13 +48,14 @@ DataContainerArrayProxyFilterParameter::DataContainerArrayProxyFilterParameter()
 //
 // -----------------------------------------------------------------------------
 DataContainerArrayProxyFilterParameter::~DataContainerArrayProxyFilterParameter()
-{}
+{
+}
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-DataContainerArrayProxyFilterParameter::Pointer DataContainerArrayProxyFilterParameter::New(const QString& humanLabel, const QString& propertyName,
-    DataContainerArrayProxy defaultValue, Category category, SetterCallbackType setterCallback, GetterCallbackType getterCallback,
+DataContainerArrayProxyFilterParameter::Pointer DataContainerArrayProxyFilterParameter::New(const QString& humanLabel, const QString& propertyName, DataContainerArrayProxy defaultValue,
+                                                                                            Category category, SetterCallbackType setterCallback, GetterCallbackType getterCallback,
                                                                                             DataContainerArrayProxy proxy, Qt::CheckState defValue, int groupIndex)
 {
   DataContainerArrayProxyFilterParameter::Pointer ptr = DataContainerArrayProxyFilterParameter::New();
@@ -84,10 +85,10 @@ QString DataContainerArrayProxyFilterParameter::getWidgetType()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void DataContainerArrayProxyFilterParameter::readJson(const QJsonObject &json)
-{     
+void DataContainerArrayProxyFilterParameter::readJson(const QJsonObject& json)
+{
   QJsonValue jsonValue = json[getPropertyName()];
-  if(!jsonValue.isUndefined() )
+  if(!jsonValue.isUndefined())
   {
     QJsonObject jsonObject = jsonValue.toObject();
     DataContainerArrayProxy proxy;
@@ -99,11 +100,10 @@ void DataContainerArrayProxyFilterParameter::readJson(const QJsonObject &json)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void DataContainerArrayProxyFilterParameter::writeJson(QJsonObject &json)
+void DataContainerArrayProxyFilterParameter::writeJson(QJsonObject& json)
 {
   DataContainerArrayProxy proxy = m_GetterCallback();
   QJsonObject obj;
   proxy.writeJson(obj);
   json[getPropertyName()] = obj;
 }
-

@@ -42,8 +42,8 @@
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-QtSHoverButton::QtSHoverButton(QWidget* parent) :
-  QPushButton(parent)
+QtSHoverButton::QtSHoverButton(QWidget* parent)
+: QPushButton(parent)
 {
   setFlat(true);
 }
@@ -51,22 +51,24 @@ QtSHoverButton::QtSHoverButton(QWidget* parent) :
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-QtSHoverButton::~QtSHoverButton() {}
+QtSHoverButton::~QtSHoverButton()
+{
+}
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
 bool QtSHoverButton::event(QEvent* event)
 {
-  if (event->type() == QEvent::HoverEnter)
+  if(event->type() == QEvent::HoverEnter)
   {
-    if (isEnabled())
+    if(isEnabled())
     {
       setFlat(false);
     }
   }
 
-  if (event->type() == QEvent::HoverLeave)
+  if(event->type() == QEvent::HoverLeave)
   {
     setFlat(true);
   }

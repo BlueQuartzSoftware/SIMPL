@@ -1,20 +1,19 @@
 
 #include "QtSSearchLineEdit.h"
 
-
-#include <QtCore/QEvent>
-#include <QtCore/QDebug>
-#include <QtCore/QString>
-#include <QPropertyAnimation>
-#include <QtWidgets/QApplication>
-#include <QtWidgets/QMenu>
 #include <QMouseEvent>
-#include <QtWidgets/QLabel>
-#include <QtWidgets/QAbstractButton>
-#include <QPainter>
-#include <QtWidgets/QStyle>
 #include <QPaintEvent>
+#include <QPainter>
+#include <QPropertyAnimation>
+#include <QtCore/QDebug>
+#include <QtCore/QEvent>
+#include <QtCore/QString>
+#include <QtWidgets/QAbstractButton>
+#include <QtWidgets/QApplication>
 #include <QtWidgets/QDesktopWidget>
+#include <QtWidgets/QLabel>
+#include <QtWidgets/QMenu>
+#include <QtWidgets/QStyle>
 
 #include "moc_QtSSearchLineEdit.cpp"
 
@@ -29,9 +28,9 @@ static void execMenuAtWidget(QMenu* menu, QWidget* widget)
   QRect screen = QApplication::desktop()->availableGeometry(widget);
   QSize sh = menu->sizeHint();
   QRect rect = widget->rect();
-  if (widget->isRightToLeft())
+  if(widget->isRightToLeft())
   {
-    if (widget->mapToGlobal(QPoint(0, rect.bottom())).y() + sh.height() <= screen.height())
+    if(widget->mapToGlobal(QPoint(0, rect.bottom())).y() + sh.height() <= screen.height())
     {
       p = widget->mapToGlobal(rect.bottomRight());
     }
@@ -43,7 +42,7 @@ static void execMenuAtWidget(QMenu* menu, QWidget* widget)
   }
   else
   {
-    if (widget->mapToGlobal(QPoint(0, rect.bottom())).y() + sh.height() <= screen.height())
+    if(widget->mapToGlobal(QPoint(0, rect.bottom())).y() + sh.height() <= screen.height())
     {
       p = widget->mapToGlobal(rect.bottomLeft());
     }
@@ -58,41 +57,40 @@ static void execMenuAtWidget(QMenu* menu, QWidget* widget)
   menu->exec(p);
 }
 
-
-enum { margin = 6 };
+enum
+{
+  margin = 6
+};
 
 #define ICONBUTTON_HEIGHT 18
 #define FADE_TIME 160
-
-
 
 /**
  * @brief The SearchLineEditPrivate class
  */
 class SearchLineEditPrivate : public QObject
 {
-  public:
-    explicit SearchLineEditPrivate(QtSSearchLineEdit* parent);
+public:
+  explicit SearchLineEditPrivate(QtSSearchLineEdit* parent);
 
-    virtual bool eventFilter(QObject* obj, QEvent* event);
+  virtual bool eventFilter(QObject* obj, QEvent* event);
 
-    QtSSearchLineEdit* m_LineEdit;
-    QPixmap m_PixMaps[2];
-    QMenu* m_ButtonMenus[2];
-    bool m_MenuTabFocusTriggers[2];
-    IconButton* m_IconButtons[2];
-    bool m_IconEnabled[2];
+  QtSSearchLineEdit* m_LineEdit;
+  QPixmap m_PixMaps[2];
+  QMenu* m_ButtonMenus[2];
+  bool m_MenuTabFocusTriggers[2];
+  IconButton* m_IconButtons[2];
+  bool m_IconEnabled[2];
 };
-
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-SearchLineEditPrivate::SearchLineEditPrivate(QtSSearchLineEdit* parent) :
-  QObject(parent),
-  m_LineEdit(parent)
+SearchLineEditPrivate::SearchLineEditPrivate(QtSSearchLineEdit* parent)
+: QObject(parent)
+, m_LineEdit(parent)
 {
-  for (int i = 0; i < 2; ++i)
+  for(int i = 0; i < 2; ++i)
   {
     m_ButtonMenus[i] = 0;
     m_MenuTabFocusTriggers[i] = false;
@@ -110,38 +108,39 @@ SearchLineEditPrivate::SearchLineEditPrivate(QtSSearchLineEdit* parent) :
 bool SearchLineEditPrivate::eventFilter(QObject* obj, QEvent* event)
 {
   int buttonIndex = -1;
-  for (int i = 0; i < 2; ++i)
+  for(int i = 0; i < 2; ++i)
   {
-    if (obj == m_IconButtons[i])
+    if(obj == m_IconButtons[i])
     {
       buttonIndex = i;
       break;
     }
   }
-  if (buttonIndex == -1)
-  { return QObject::eventFilter(obj, event); }
-  switch (event->type())
+  if(buttonIndex == -1)
   {
-    case QEvent::FocusIn:
-      if (m_MenuTabFocusTriggers[buttonIndex] && m_ButtonMenus[buttonIndex])
-      {
-        m_LineEdit->setFocus();
-        execMenuAtWidget(m_ButtonMenus[buttonIndex], m_IconButtons[buttonIndex]);
-        return true;
-      }
-    default:
-      break;
+    return QObject::eventFilter(obj, event);
+  }
+  switch(event->type())
+  {
+  case QEvent::FocusIn:
+    if(m_MenuTabFocusTriggers[buttonIndex] && m_ButtonMenus[buttonIndex])
+    {
+      m_LineEdit->setFocus();
+      execMenuAtWidget(m_ButtonMenus[buttonIndex], m_IconButtons[buttonIndex]);
+      return true;
+    }
+  default:
+    break;
   }
   return QObject::eventFilter(obj, event);
 }
 
-
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-QtSSearchLineEdit::QtSSearchLineEdit(QWidget* parent) :
-  QLineEdit(parent),
-  d(new SearchLineEditPrivate(this))
+QtSSearchLineEdit::QtSSearchLineEdit(QWidget* parent)
+: QLineEdit(parent)
+, d(new SearchLineEditPrivate(this))
 {
   ensurePolished();
   updateMargins();
@@ -156,12 +155,14 @@ QtSSearchLineEdit::QtSSearchLineEdit(QWidget* parent) :
 // -----------------------------------------------------------------------------
 void QtSSearchLineEdit::checkButtons(const QString& text)
 {
-  if (m_OldText.isEmpty() || text.isEmpty())
+  if(m_OldText.isEmpty() || text.isEmpty())
   {
-    for (int i = 0; i < 2; ++i)
+    for(int i = 0; i < 2; ++i)
     {
-      if (d->m_IconButtons[i]->hasAutoHide())
-      { d->m_IconButtons[i]->animateShow(!text.isEmpty()); }
+      if(d->m_IconButtons[i]->hasAutoHide())
+      {
+        d->m_IconButtons[i]->animateShow(!text.isEmpty());
+      }
     }
     m_OldText = text;
   }
@@ -199,22 +200,30 @@ void QtSSearchLineEdit::iconClicked()
 {
   IconButton* button = qobject_cast<IconButton*>(sender());
   int index = -1;
-  for (int i = 0; i < 2; ++i)
-    if (d->m_IconButtons[i] == button)
-    { index = i; }
-  if (index == -1)
-  { return; }
-  if (d->m_ButtonMenus[index])
+  for(int i = 0; i < 2; ++i)
+    if(d->m_IconButtons[i] == button)
+    {
+      index = i;
+    }
+  if(index == -1)
+  {
+    return;
+  }
+  if(d->m_ButtonMenus[index])
   {
     execMenuAtWidget(d->m_ButtonMenus[index], button);
   }
   else
   {
     emit buttonClicked((Side)index);
-    if (index == Left)
-    { emit leftButtonClicked(); }
-    else if (index == Right)
-    { emit rightButtonClicked(); }
+    if(index == Left)
+    {
+      emit leftButtonClicked();
+    }
+    else if(index == Right)
+    {
+      emit rightButtonClicked();
+    }
   }
 }
 
@@ -230,14 +239,13 @@ void QtSSearchLineEdit::updateMargins()
   int leftMargin = d->m_IconButtons[realLeft]->pixmap().width() + 8;
   int rightMargin = d->m_IconButtons[realRight]->pixmap().width() + 8;
   // Note KDE does not reserve space for the highlight color
-  if (style()->inherits("OxygenStyle"))
+  if(style()->inherits("OxygenStyle"))
   {
     leftMargin = qMax(24, leftMargin);
     rightMargin = qMax(24, rightMargin);
   }
 
-  QMargins margins((d->m_IconEnabled[realLeft] ? leftMargin : 0), 0,
-                   (d->m_IconEnabled[realRight] ? rightMargin : 0), 0);
+  QMargins margins((d->m_IconEnabled[realLeft] ? leftMargin : 0), 0, (d->m_IconEnabled[realRight] ? rightMargin : 0), 0);
 
   setTextMargins(margins);
 }
@@ -248,13 +256,15 @@ void QtSSearchLineEdit::updateMargins()
 void QtSSearchLineEdit::updateButtonPositions()
 {
   QRect contentRect = rect();
-  for (int i = 0; i < 2; ++i)
+  for(int i = 0; i < 2; ++i)
   {
     Side iconpos = (Side)i;
-    if (layoutDirection() == Qt::RightToLeft)
-    { iconpos = (iconpos == Left ? Right : Left); }
+    if(layoutDirection() == Qt::RightToLeft)
+    {
+      iconpos = (iconpos == Left ? Right : Left);
+    }
 
-    if (iconpos == QtSSearchLineEdit::Right)
+    if(iconpos == QtSSearchLineEdit::Right)
     {
       const int iconoffset = textMargins().right() + 4;
       d->m_IconButtons[i]->setGeometry(contentRect.adjusted(width() - iconoffset, 0, 0, 0));
@@ -308,7 +318,7 @@ void QtSSearchLineEdit::setButtonMenu(Side side, QMenu* buttonMenu)
 // -----------------------------------------------------------------------------
 QMenu* QtSSearchLineEdit::buttonMenu(Side side) const
 {
-  return  d->m_ButtonMenus[side];
+  return d->m_ButtonMenus[side];
 }
 
 // -----------------------------------------------------------------------------
@@ -324,8 +334,10 @@ bool QtSSearchLineEdit::hasMenuTabFocusTrigger(Side side) const
 // -----------------------------------------------------------------------------
 void QtSSearchLineEdit::setMenuTabFocusTrigger(Side side, bool v)
 {
-  if (d->m_MenuTabFocusTriggers[side] == v)
-  { return; }
+  if(d->m_MenuTabFocusTriggers[side] == v)
+  {
+    return;
+  }
 
   d->m_MenuTabFocusTriggers[side] = v;
   d->m_IconButtons[side]->setFocusPolicy(v ? Qt::TabFocus : Qt::NoFocus);
@@ -345,10 +357,14 @@ bool QtSSearchLineEdit::hasAutoHideButton(Side side) const
 void QtSSearchLineEdit::setAutoHideButton(Side side, bool h)
 {
   d->m_IconButtons[side]->setAutoHide(h);
-  if (h)
-  { d->m_IconButtons[side]->setIconOpacity(text().isEmpty() ?  0.0 : 1.0); }
+  if(h)
+  {
+    d->m_IconButtons[side]->setIconOpacity(text().isEmpty() ? 0.0 : 1.0);
+  }
   else
-  { d->m_IconButtons[side]->setIconOpacity(1.0); }
+  {
+    d->m_IconButtons[side]->setIconOpacity(1.0);
+  }
 }
 
 // -----------------------------------------------------------------------------
@@ -372,7 +388,8 @@ void QtSSearchLineEdit::setButtonFocusPolicy(Side side, Qt::FocusPolicy policy)
 //
 // -----------------------------------------------------------------------------
 IconButton::IconButton(QWidget* parent)
-  : QAbstractButton(parent), m_autoHide(false)
+: QAbstractButton(parent)
+, m_autoHide(false)
 {
   setCursor(Qt::ArrowCursor);
   setFocusPolicy(Qt::NoFocus);
@@ -387,8 +404,10 @@ void IconButton::paintEvent(QPaintEvent*)
   QRect pixmapRect = QRect(0, 0, m_pixmap.width(), m_pixmap.height());
   pixmapRect.moveCenter(rect().center());
 
-  if (m_autoHide)
-  { painter.setOpacity(m_iconOpacity); }
+  if(m_autoHide)
+  {
+    painter.setOpacity(m_iconOpacity);
+  }
 
   painter.drawPixmap(pixmapRect, m_pixmap);
 }
@@ -398,7 +417,7 @@ void IconButton::paintEvent(QPaintEvent*)
 // -----------------------------------------------------------------------------
 void IconButton::animateShow(bool visible)
 {
-  if (visible)
+  if(visible)
   {
     QPropertyAnimation* animation = new QPropertyAnimation(this, "iconOpacity");
     animation->setDuration(FADE_TIME);
@@ -413,5 +432,3 @@ void IconButton::animateShow(bool visible)
     animation->start(QAbstractAnimation::DeleteWhenStopped);
   }
 }
-
-

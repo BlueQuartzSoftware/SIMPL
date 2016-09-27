@@ -33,7 +33,6 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-
 #include "FeatureCountDecision.h"
 
 #include <QtCore/QJsonDocument>
@@ -50,11 +49,11 @@
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-FeatureCountDecision::FeatureCountDecision() :
-  AbstractDecisionFilter(),
-  m_FeatureIdsArrayPath("", "", ""),
-  m_MaxGrains(0),
-  m_FeatureIds(nullptr)
+FeatureCountDecision::FeatureCountDecision()
+: AbstractDecisionFilter()
+, m_FeatureIdsArrayPath("", "", "")
+, m_MaxGrains(0)
+, m_FeatureIds(nullptr)
 {
   setupFilterParameters();
 }
@@ -74,10 +73,12 @@ void FeatureCountDecision::setupFilterParameters()
   FilterParameterVector parameters = getFilterParameters();
   parameters.push_back(SeparatorFilterParameter::New("Cell Ensemble Data", FilterParameter::RequiredArray));
   {
-    DataArraySelectionFilterParameter::RequirementType req = DataArraySelectionFilterParameter::CreateRequirement(SIMPL::TypeNames::Int32, 1, SIMPL::AttributeMatrixType::CellEnsemble, SIMPL::Defaults::AnyGeometry);
+    DataArraySelectionFilterParameter::RequirementType req =
+        DataArraySelectionFilterParameter::CreateRequirement(SIMPL::TypeNames::Int32, 1, SIMPL::AttributeMatrixType::CellEnsemble, SIMPL::Defaults::AnyGeometry);
     parameters.push_back(SIMPL_NEW_DA_SELECTION_FP("Feature Ids", FeatureIdsArrayPath, FilterParameter::RequiredArray, FeatureCountDecision, req));
   }
-  parameters.push_back(SIMPL_NEW_INTEGER_FP("Maximum Number of Features", MaxGrains, FilterParameter::Parameter, FeatureCountDecision, 0));  setFilterParameters(parameters);
+  parameters.push_back(SIMPL_NEW_INTEGER_FP("Maximum Number of Features", MaxGrains, FilterParameter::Parameter, FeatureCountDecision, 0));
+  setFilterParameters(parameters);
 }
 
 // -----------------------------------------------------------------------------
@@ -97,7 +98,6 @@ void FeatureCountDecision::readFilterParameters(AbstractFilterParametersReader* 
 // -----------------------------------------------------------------------------
 void FeatureCountDecision::initialize()
 {
-
 }
 
 // -----------------------------------------------------------------------------
@@ -111,9 +111,12 @@ void FeatureCountDecision::dataCheck()
 
   QVector<size_t> cDims(1, 1);
 
-  m_FeatureIdsPtr = getDataContainerArray()->getPrereqArrayFromPath<DataArray<int32_t>, AbstractFilter>(this, getFeatureIdsArrayPath(), cDims); /* Assigns the shared_ptr<> to an instance variable that is a weak_ptr<> */
-  if (nullptr != m_FeatureIdsPtr.lock().get()) /* Validate the Weak Pointer wraps a non-nullptr pointer to a DataArray<T> object */
-  {  m_FeatureIds = m_FeatureIdsPtr.lock()->getPointer(0); } /* Now assign the raw pointer to data from the DataArray<T> object */
+  m_FeatureIdsPtr = getDataContainerArray()->getPrereqArrayFromPath<DataArray<int32_t>, AbstractFilter>(this, getFeatureIdsArrayPath(),
+                                                                                                        cDims); /* Assigns the shared_ptr<> to an instance variable that is a weak_ptr<> */
+  if(nullptr != m_FeatureIdsPtr.lock().get())                                                                   /* Validate the Weak Pointer wraps a non-nullptr pointer to a DataArray<T> object */
+  {
+    m_FeatureIds = m_FeatureIdsPtr.lock()->getPointer(0);
+  } /* Now assign the raw pointer to data from the DataArray<T> object */
 }
 
 // -----------------------------------------------------------------------------
@@ -136,7 +139,10 @@ void FeatureCountDecision::execute()
 {
   setErrorCondition(0);
   dataCheck();
-  if (getErrorCondition() < 0) { return; }
+  if(getErrorCondition() < 0)
+  {
+    return;
+  }
 
   // Assumes a SINGLE Phase. This WILL BREAK if there is more than 1 phase.
   qDebug() << "MaxGrains: " << m_MaxGrains;
@@ -144,7 +150,7 @@ void FeatureCountDecision::execute()
 
   bool dm = true;
 
-  if (m_MaxGrains < m_FeatureIds[1])
+  if(m_MaxGrains < m_FeatureIds[1])
   {
     dm = false;
   }
@@ -152,24 +158,24 @@ void FeatureCountDecision::execute()
   emit decisionMade(dm);
   emit targetValue(m_FeatureIds[1]);
 
-
   notifyStatusMessage(getHumanLabel(), "Complete");
 }
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void FeatureCountDecision::extractProperties(const QJsonDocument &jsonDoc)
+void FeatureCountDecision::extractProperties(const QJsonDocument& jsonDoc)
 {
   QJsonObject json = jsonDoc.object();
   QJsonValue jvalue = json.value(this->getNameOfClass());
-  if (jvalue.isUndefined()) {
+  if(jvalue.isUndefined())
+  {
     return;
   }
 
   {
     QJsonValue propValue = jvalue.toObject()["MaxGrains"];
-    if (!propValue.isUndefined())
+    if(!propValue.isUndefined())
     {
       setMaxGrains(propValue.toInt());
     }
@@ -177,13 +183,12 @@ void FeatureCountDecision::extractProperties(const QJsonDocument &jsonDoc)
 
   {
     QJsonValue propValue = jvalue.toObject()["FeatureIdsArrayPath"];
-    if (!propValue.isUndefined())
+    if(!propValue.isUndefined())
     {
       QJsonObject jObj = propValue.toObject();
       m_FeatureIdsArrayPath.readJson(jObj);
     }
   }
-
 }
 
 // -----------------------------------------------------------------------------
@@ -203,22 +208,30 @@ AbstractFilter::Pointer FeatureCountDecision::newFilterInstance(bool copyFilterP
 //
 // -----------------------------------------------------------------------------
 const QString FeatureCountDecision::getCompiledLibraryName()
-{ return Core::CoreBaseName; }
+{
+  return Core::CoreBaseName;
+}
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
 const QString FeatureCountDecision::getGroupName()
-{ return SIMPL::FilterGroups::CoreFilters; }
+{
+  return SIMPL::FilterGroups::CoreFilters;
+}
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
 const QString FeatureCountDecision::getSubGroupName()
-{ return SIMPL::FilterSubGroups::MiscFilters; }
+{
+  return SIMPL::FilterSubGroups::MiscFilters;
+}
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
 const QString FeatureCountDecision::getHumanLabel()
-{ return "Feature Count Decision"; }
+{
+  return "Feature Count Decision";
+}

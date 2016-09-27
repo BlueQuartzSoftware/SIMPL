@@ -33,72 +33,62 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-
 #include "SIMPLibMath.h"
 #include <limits>
 
-
-
 static const float k_MachineEpsilon = 5E-16f;
-//static const float k_MaxRealNumber = 1E300;
-//static const float k_MinRealNumber = 1E-300;
-
+// static const float k_MaxRealNumber = 1E300;
+// static const float k_MinRealNumber = 1E-300;
 
 SIMPLibMath::SIMPLibMath()
 {
-
 }
 
 SIMPLibMath::~SIMPLibMath()
 {
 }
 
-
 float SIMPLibMath::Gamma(float x)
 {
   int i, k, m;
   float ga, gr, r, z;
 
+  static float g[] = {1.0f,
+                      0.5772156649015329f,
+                      -0.6558780715202538f,
+                      -0.420026350340952e-1f,
+                      0.1665386113822915f,
+                      -0.421977345555443e-1f,
+                      -0.9621971527877e-2f,
+                      0.7218943246663e-2f,
+                      -0.11651675918591e-2f,
+                      -0.2152416741149e-3f,
+                      0.1280502823882e-3f,
+                      -0.201348547807e-4f,
+                      -0.12504934821e-5f,
+                      0.1133027232e-5f,
+                      -0.2056338417e-6f,
+                      0.6116095e-8f,
+                      0.50020075e-8f,
+                      -0.11812746e-8f,
+                      0.1043427e-9f,
+                      0.77823e-11f,
+                      -0.36968e-11f,
+                      0.51e-12f,
+                      -0.206e-13f,
+                      -0.54e-14f,
+                      0.14e-14f};
 
-  static float g[] =
+  if(x > 34.0f)
   {
-    1.0f,
-    0.5772156649015329f,
-    -0.6558780715202538f,
-    -0.420026350340952e-1f,
-    0.1665386113822915f,
-    -0.421977345555443e-1f,
-    -0.9621971527877e-2f,
-    0.7218943246663e-2f,
-    -0.11651675918591e-2f,
-    -0.2152416741149e-3f,
-    0.1280502823882e-3f,
-    -0.201348547807e-4f,
-    -0.12504934821e-5f,
-    0.1133027232e-5f,
-    -0.2056338417e-6f,
-    0.6116095e-8f,
-    0.50020075e-8f,
-    -0.11812746e-8f,
-    0.1043427e-9f,
-    0.77823e-11f,
-    -0.36968e-11f,
-    0.51e-12f,
-    -0.206e-13f,
-    -0.54e-14f,
-    0.14e-14f
-  };
-
-  if (x > 34.0f)
-  {
-    return std::numeric_limits<float>::max();    // This value is an overflow flag.
+    return std::numeric_limits<float>::max(); // This value is an overflow flag.
   }
-  if (x == (int)x)
+  if(x == (int)x)
   {
-    if (x > 0.0)
+    if(x > 0.0)
     {
-      ga = 1.0;               // use factorial
-      for (i = 2; i < x; i++)
+      ga = 1.0; // use factorial
+      for(i = 2; i < x; i++)
       {
         ga *= i;
       }
@@ -110,12 +100,12 @@ float SIMPLibMath::Gamma(float x)
   }
   else
   {
-    if (fabs(x) > 1.0)
+    if(fabs(x) > 1.0)
     {
       z = fabs(x);
       m = (int)z;
       r = 1.0;
-      for (k = 1; k <= m; k++)
+      for(k = 1; k <= m; k++)
       {
         r *= (z - k);
       }
@@ -126,15 +116,15 @@ float SIMPLibMath::Gamma(float x)
       z = x;
     }
     gr = g[24];
-    for (k = 23; k >= 0; k--)
+    for(k = 23; k >= 0; k--)
     {
       gr = gr * z + g[k];
     }
     ga = 1.0f / (gr * z);
-    if (fabs(x) > 1.0f)
+    if(fabs(x) > 1.0f)
     {
       ga *= r;
-      if (x < 0.0f)
+      if(x < 0.0f)
       {
         ga = -1 * SIMPLib::Constants::k_Pif / (x * ga * sinf(SIMPLib::Constants::k_Pif * x));
       }
@@ -142,7 +132,6 @@ float SIMPLibMath::Gamma(float x)
   }
   return ga;
 }
-
 
 float SIMPLibMath::gammastirf(float x)
 {
@@ -197,7 +186,7 @@ float SIMPLibMath::LnGamma(float x, float& sgngam)
     w = LnGamma(q, tmp);
     p = (floor(q));
     i = static_cast<int>(floor(p + 0.5f));
-    if( i % 2 == 0 )
+    if(i % 2 == 0)
     {
       sgngam = -1;
     }
@@ -296,7 +285,6 @@ float SIMPLibMath::erf(float x)
   float s;
   float p;
   float q;
-
 
   s = 1;
   if(x < 0)
@@ -457,7 +445,7 @@ float SIMPLibMath::incompletebeta(float a, float b, float x)
     t = t / a;
     t = t * w;
     t = t * (SIMPLibMath::Gamma(a + b) / (SIMPLibMath::Gamma(a) * SIMPLibMath::Gamma(b)));
-    if( flag == 1 )
+    if(flag == 1)
     {
       if(t <= k_MachineEpsilon)
       {
@@ -594,8 +582,7 @@ float SIMPLibMath::incompletebetafe(float a, float b, float x, float big, float 
       qkm1 = qkm1 * big;
     }
     n = n + 1;
-  }
-  while(n != 300);
+  } while(n != 300);
   result = ans;
   return result;
 }
@@ -697,8 +684,7 @@ float SIMPLibMath::incompletebetafe2(float a, float b, float x, float big, float
       qkm1 = qkm1 * big;
     }
     n = n + 1;
-  }
-  while(n != 300);
+  } while(n != 300);
   result = ans;
   return result;
 }

@@ -42,7 +42,6 @@
 
 #include "SIMPLib/HDF5/H5StatsDataDelegate.h"
 
-
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
@@ -56,9 +55,7 @@ StatsData::StatsData()
 // -----------------------------------------------------------------------------
 StatsData::~StatsData()
 {
-
 }
-
 
 // -----------------------------------------------------------------------------
 //
@@ -79,13 +76,14 @@ unsigned int StatsData::getPhaseType()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-VectorOfFloatArray StatsData::DeepCopyVectorOFloatArray(VectorOfFloatArray &arrays)
+VectorOfFloatArray StatsData::DeepCopyVectorOFloatArray(VectorOfFloatArray& arrays)
 {
   size_t count = arrays.size();
   VectorOfFloatArray copies(count);
-  for (size_t c = 0; c < count; c++)
+  for(size_t c = 0; c < count; c++)
   {
-    if(nullptr != arrays[c]) {
+    if(nullptr != arrays[c])
+    {
       FloatArrayType::Pointer ptr = std::dynamic_pointer_cast<FloatArrayType>(arrays[c]->deepCopy());
       copies[c] = ptr;
     }
@@ -167,7 +165,7 @@ StatsData::Pointer StatsData::deepCopy()
 // -----------------------------------------------------------------------------
 void StatsData::initialize()
 {
-  //These should be implemented in the subclasses.
+  // These should be implemented in the subclasses.
 }
 
 // -----------------------------------------------------------------------------
@@ -177,10 +175,9 @@ int StatsData::writeHDF5Data(hid_t groupId)
 {
   int err = 0;
   Q_UNUSED(groupId)
-  //These should be implemented in the subclasses.
+  // These should be implemented in the subclasses.
   return err;
 }
-
 
 // -----------------------------------------------------------------------------
 //
@@ -189,34 +186,32 @@ int StatsData::readHDF5Data(hid_t groupId)
 {
   int err = 0;
   Q_UNUSED(groupId)
-  //These should be implemented in the subclasses.
+  // These should be implemented in the subclasses.
   return err;
 }
 
-
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void StatsData::writeJson(QJsonObject &json)
+void StatsData::writeJson(QJsonObject& json)
 {
   Q_UNUSED(json)
-  //These should be implemented in the subclasses.
-}
-
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-void StatsData::readJson(const QJsonObject &json)
-{
-  Q_UNUSED(json)
-  //These should be implemented in the subclasses.
+  // These should be implemented in the subclasses.
 }
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void StatsData::generateJsonArrays(VectorOfFloatArray &arrays, QJsonObject &json)
+void StatsData::readJson(const QJsonObject& json)
+{
+  Q_UNUSED(json)
+  // These should be implemented in the subclasses.
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void StatsData::generateJsonArrays(VectorOfFloatArray& arrays, QJsonObject& json)
 {
 
   for(int i = 0; i < arrays.size(); i++)
@@ -224,7 +219,6 @@ void StatsData::generateJsonArrays(VectorOfFloatArray &arrays, QJsonObject &json
     DataArray<float>::Pointer array = arrays[i];
     json.insert(array->getName(), generateJsonArrayFromDataArray<float>(array));
   }
-
 }
 
 // -----------------------------------------------------------------------------
@@ -235,20 +229,20 @@ QString StatsData::decodeDistributionType(int disType)
   QString disTypeStr;
   switch(disType)
   {
-    case SIMPL::DistributionType::Beta:
-      disTypeStr = SIMPL::StringConstants::BetaDistribution;
-      break;
-    case SIMPL::DistributionType::LogNormal:
-      disTypeStr = SIMPL::StringConstants::LogNormalDistribution;
-      break;
-//    case SIMPL::DistributionType::Power:
-//      disTypeStr = SIMPL::StringConstants::PowerLawDistribution;
-//      break;
-    case SIMPL::DistributionType::UnknownDistributionType:
-      disTypeStr = SIMPL::StringConstants::UnknownDistribution;
-      break;
-    default:
-      disTypeStr = SIMPL::StringConstants::UnknownDistribution;
+  case SIMPL::DistributionType::Beta:
+    disTypeStr = SIMPL::StringConstants::BetaDistribution;
+    break;
+  case SIMPL::DistributionType::LogNormal:
+    disTypeStr = SIMPL::StringConstants::LogNormalDistribution;
+    break;
+  //    case SIMPL::DistributionType::Power:
+  //      disTypeStr = SIMPL::StringConstants::PowerLawDistribution;
+  //      break;
+  case SIMPL::DistributionType::UnknownDistributionType:
+    disTypeStr = SIMPL::StringConstants::UnknownDistribution;
+    break;
+  default:
+    disTypeStr = SIMPL::StringConstants::UnknownDistribution;
   }
   return disTypeStr;
 }
@@ -259,26 +253,26 @@ QString StatsData::decodeDistributionType(int disType)
 int StatsData::EncodeDistributionType(QString distTypeName)
 {
   int distType = SIMPL::DistributionType::UnknownDistributionType;
-  if (distTypeName == SIMPL::StringConstants::BetaDistribution)
+  if(distTypeName == SIMPL::StringConstants::BetaDistribution)
   {
     distType = SIMPL::DistributionType::Beta;
   }
-  else if (distTypeName == SIMPL::StringConstants::LogNormalDistribution)
+  else if(distTypeName == SIMPL::StringConstants::LogNormalDistribution)
   {
     distType = SIMPL::DistributionType::LogNormal;
   }
-  else if (distTypeName == SIMPL::StringConstants::UnknownDistribution)
+  else if(distTypeName == SIMPL::StringConstants::UnknownDistribution)
   {
     distType = SIMPL::DistributionType::UnknownDistributionType;
   }
-  
+
   return distType;
 }
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-QStringList StatsData::ArrayNamesFromDistributionType(const QString &disType)
+QStringList StatsData::ArrayNamesFromDistributionType(const QString& disType)
 {
   QStringList disTypeStr;
   if(disType.compare(SIMPL::StringConstants::BetaDistribution) == 0)
@@ -298,12 +292,13 @@ QStringList StatsData::ArrayNamesFromDistributionType(const QString &disType)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void StatsData::writeJsonDistributionArrays(QJsonObject &json, VectorOfFloatArray arrays, QString key, int disType)
+void StatsData::writeJsonDistributionArrays(QJsonObject& json, VectorOfFloatArray arrays, QString key, int disType)
 {
   QJsonObject obj;
   generateJsonArrays(arrays, obj);
 
-  if(disType != SIMPL::DistributionType::UnknownDistributionType) {
+  if(disType != SIMPL::DistributionType::UnknownDistributionType)
+  {
     obj.insert(SIMPL::StringConstants::DistributionType, decodeDistributionType(disType));
   }
   json.insert(key, obj);
@@ -312,8 +307,7 @@ void StatsData::writeJsonDistributionArrays(QJsonObject &json, VectorOfFloatArra
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-template<typename T>
-typename DataArray<T>::Pointer decodeDataArrayFromJsonDoubleArray(const QString &name, const QJsonArray &array)
+template <typename T> typename DataArray<T>::Pointer decodeDataArrayFromJsonDoubleArray(const QString& name, const QJsonArray& array)
 {
   int count = array.count();
   typename DataArray<T>::Pointer dataArray = DataArray<T>::CreateArray(count, name, true);
@@ -327,8 +321,7 @@ typename DataArray<T>::Pointer decodeDataArrayFromJsonDoubleArray(const QString 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-template<typename T>
-typename DataArray<T>::Pointer decodeDataArrayFromJsonIntArray(const QString &name, const QJsonArray &array)
+template <typename T> typename DataArray<T>::Pointer decodeDataArrayFromJsonIntArray(const QString& name, const QJsonArray& array)
 {
   int count = array.count();
   typename DataArray<T>::Pointer dataArray = DataArray<T>::CreateArray(count, name, true);
@@ -342,10 +335,10 @@ typename DataArray<T>::Pointer decodeDataArrayFromJsonIntArray(const QString &na
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-VectorOfFloatArray StatsData::ReadJsonDistributionArrays(const QJsonObject &json, const QString &key, int &disType)
+VectorOfFloatArray StatsData::ReadJsonDistributionArrays(const QJsonObject& json, const QString& key, int& disType)
 {
   Q_UNUSED(disType)
-  //These should be implemented in the subclasses.
+  // These should be implemented in the subclasses.
   // We assume that all of the arrays are encoded as "double" values in the JSON
   // file and not ints.
   VectorOfFloatArray arrays;
@@ -356,7 +349,10 @@ VectorOfFloatArray StatsData::ReadJsonDistributionArrays(const QJsonObject &json
   }
   // Determine the Distribution Type which will tell us the names of the arrays to use:
   QJsonValue jValue = jDistribution[SIMPL::StringConstants::DistributionType];
-  if(jValue.isUndefined()) { return arrays; }
+  if(jValue.isUndefined())
+  {
+    return arrays;
+  }
   QString disTypeString = jValue.toString(SIMPL::StringConstants::UnknownDistribution);
   disType = StatsData::EncodeDistributionType(disTypeString);
 
@@ -374,7 +370,7 @@ VectorOfFloatArray StatsData::ReadJsonDistributionArrays(const QJsonObject &json
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-VectorOfFloatArray StatsData::ReadJsonVectorOfFloatsArrays(const QJsonObject &json, const QString &key)
+VectorOfFloatArray StatsData::ReadJsonVectorOfFloatsArrays(const QJsonObject& json, const QString& key)
 {
   VectorOfFloatArray arrays;
   QJsonObject obj = json[key].toObject();
@@ -401,7 +397,7 @@ VectorOfFloatArray StatsData::ReadJsonVectorOfFloatsArrays(const QJsonObject &js
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-int StatsData::ParseFloat3Vec(const QJsonObject &json, const QString key, float* values, float defaultValue)
+int StatsData::ParseFloat3Vec(const QJsonObject& json, const QString key, float* values, float defaultValue)
 {
   QJsonValue jsonValue = json[key];
   if(!jsonValue.isUndefined() && jsonValue.isArray())
@@ -412,11 +408,11 @@ int StatsData::ParseFloat3Vec(const QJsonObject &json, const QString key, float*
     values[2] = array.at(2).toDouble(0.0f);
     return 0;
   }
-  else {
+  else
+  {
     values[0] = defaultValue;
     values[1] = defaultValue;
     values[2] = defaultValue;
   }
   return -1;
 }
-

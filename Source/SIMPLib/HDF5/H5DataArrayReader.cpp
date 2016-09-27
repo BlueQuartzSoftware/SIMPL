@@ -33,13 +33,12 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-
 #include "H5DataArrayReader.h"
 
 #include <vector>
 
-#include "H5Support/QH5Utilities.h"
 #include "H5Support/QH5Lite.h"
+#include "H5Support/QH5Utilities.h"
 
 #include "SIMPLib/DataArrays/DataArray.hpp"
 #include "SIMPLib/DataArrays/NeighborList.hpp"
@@ -52,7 +51,6 @@
 // -----------------------------------------------------------------------------
 H5DataArrayReader::H5DataArrayReader()
 {
-
 }
 
 // -----------------------------------------------------------------------------
@@ -60,7 +58,6 @@ H5DataArrayReader::H5DataArrayReader()
 // -----------------------------------------------------------------------------
 H5DataArrayReader::~H5DataArrayReader()
 {
-
 }
 
 namespace Detail
@@ -68,26 +65,22 @@ namespace Detail
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-  template<typename T>
-  IDataArray::Pointer readH5Dataset(hid_t locId,
-                                    const QString& datasetPath,
-                                    const QVector<size_t>& tDims,
-                                    const QVector<size_t>& cDims)
+template <typename T> IDataArray::Pointer readH5Dataset(hid_t locId, const QString& datasetPath, const QVector<size_t>& tDims, const QVector<size_t>& cDims)
+{
+  herr_t err = -1;
+  IDataArray::Pointer ptr;
+
+  ptr = DataArray<T>::CreateArray(tDims, cDims, datasetPath);
+
+  T* data = (T*)(ptr->getVoidPointer(0));
+  err = QH5Lite::readPointerDataset(locId, datasetPath, data);
+  if(err < 0)
   {
-    herr_t err = -1;
-    IDataArray::Pointer ptr;
-
-    ptr = DataArray<T>::CreateArray(tDims, cDims, datasetPath);
-
-    T* data = (T*)(ptr->getVoidPointer(0));
-    err = QH5Lite::readPointerDataset(locId, datasetPath, data);
-    if(err < 0)
-    {
-      qDebug() << "readH5Data read error: " << __FILE__ << "(" << __LINE__ << ")" ;
-      ptr = IDataArray::NullPointer();
-    }
-    return ptr;
+    qDebug() << "readH5Data read error: " << __FILE__ << "(" << __LINE__ << ")";
+    ptr = IDataArray::NullPointer();
   }
+  return ptr;
+}
 }
 
 // -----------------------------------------------------------------------------
@@ -98,7 +91,7 @@ int H5DataArrayReader::ReadRequiredAttributes(hid_t gid, const QString& name, QS
   int err = 0;
   int retErr = 0;
   err = QH5Lite::readStringAttribute(gid, name, SIMPL::HDF5::ObjectType, objType);
-  if (err < 0)
+  if(err < 0)
   {
     retErr = err;
   }
@@ -112,7 +105,7 @@ int H5DataArrayReader::ReadRequiredAttributes(hid_t gid, const QString& name, QS
 
   // Read the tuple dimensions as an attribute
   err = QH5Lite::readVectorAttribute(gid, name, SIMPL::HDF5::TupleDimensions, tDims);
-  if (err < 0)
+  if(err < 0)
   {
     retErr = err;
     qDebug() << "Missing TupleDimensions for Array with Name: " << name;
@@ -120,7 +113,7 @@ int H5DataArrayReader::ReadRequiredAttributes(hid_t gid, const QString& name, QS
 
   // Read the component dimensions as  an attribute
   err = QH5Lite::readVectorAttribute(gid, name, SIMPL::HDF5::ComponentDimensions, cDims);
-  if (err < 0)
+  if(err < 0)
   {
     retErr = err;
     qDebug() << "Missing ComponentDimensions for Array with Name: " << name;
@@ -135,28 +128,27 @@ int H5DataArrayReader::ReadRequiredAttributes(hid_t gid, const QString& name, QS
 IDataArray::Pointer H5DataArrayReader::ReadStringDataArray(hid_t gid, const QString& name, bool metaDataOnly)
 {
   herr_t err = -1;
-  //herr_t retErr = 1;
+  // herr_t retErr = 1;
   hid_t typeId = -1;
   H5T_class_t attr_type;
   size_t attr_size;
   QString res;
 
-  QVector<hsize_t> dims; //Reusable for the loop
+  QVector<hsize_t> dims; // Reusable for the loop
   IDataArray::Pointer ptr = IDataArray::NullPointer();
-  //qDebug() << "Reading Attribute " << *iter ;
+  // qDebug() << "Reading Attribute " << *iter ;
   typeId = QH5Lite::getDatasetType(gid, name);
-  if (typeId < 0)
+  if(typeId < 0)
   {
     return ptr;
   }
   err = QH5Lite::getDatasetInfo(gid, name, dims, attr_type, attr_size);
   if(err < 0)
   {
-    qDebug() << "Error in getAttributeInfo method in readUserMetaData." ;
+    qDebug() << "Error in getAttributeInfo method in readUserMetaData.";
     err = H5Tclose(typeId);
     return ptr;
   }
-
 
   QString classType;
   int version = 0;
@@ -170,8 +162,7 @@ IDataArray::Pointer H5DataArrayReader::ReadStringDataArray(hid_t gid, const QStr
     return ptr;
   }
 
-
-  //Sanity Check the combination of the Tuple and Component Dims. They should match in aggregate what we got from the getDatasetInfo above.
+  // Sanity Check the combination of the Tuple and Component Dims. They should match in aggregate what we got from the getDatasetInfo above.
   qint32 offset = 0;
   for(qint32 i = 0; i < tDims.size(); i++)
   {
@@ -186,7 +177,6 @@ IDataArray::Pointer H5DataArrayReader::ReadStringDataArray(hid_t gid, const QStr
   // Strings are stored as variable length arrays so trying to match the component
   // dimensions does not make sense.
   StringDataArray::Pointer strTemp = StringDataArray::CreateArray(dims[0], name);
-
 
   std::vector<std::string> strings;
   err = H5Lite::readVectorOfStringDataset(gid, name.toStdString(), strings);
@@ -206,7 +196,6 @@ IDataArray::Pointer H5DataArrayReader::ReadStringDataArray(hid_t gid, const QStr
   return ptr;
 }
 
-
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
@@ -214,17 +203,17 @@ IDataArray::Pointer H5DataArrayReader::ReadIDataArray(hid_t gid, const QString& 
 {
 
   herr_t err = -1;
-  //herr_t retErr = 1;
+  // herr_t retErr = 1;
   hid_t typeId = -1;
   H5T_class_t attr_type;
   size_t attr_size;
   QString res;
 
-  QVector<hsize_t> dims; //Reusable for the loop
+  QVector<hsize_t> dims; // Reusable for the loop
   IDataArray::Pointer ptr = IDataArray::NullPointer();
-  //qDebug() << "Reading Attribute " << *iter ;
+  // qDebug() << "Reading Attribute " << *iter ;
   typeId = QH5Lite::getDatasetType(gid, name);
-  if (typeId < 0)
+  if(typeId < 0)
   {
     return ptr;
   }
@@ -232,7 +221,7 @@ IDataArray::Pointer H5DataArrayReader::ReadIDataArray(hid_t gid, const QString& 
   err = QH5Lite::getDatasetInfo(gid, name, dims, attr_type, attr_size);
   if(err < 0)
   {
-    qDebug() << "Error in getAttributeInfo method in readUserMetaData." ;
+    qDebug() << "Error in getAttributeInfo method in readUserMetaData.";
   }
   else
   {
@@ -241,18 +230,16 @@ IDataArray::Pointer H5DataArrayReader::ReadIDataArray(hid_t gid, const QString& 
     QVector<size_t> tDims;
     QVector<size_t> cDims;
 
-
     err = ReadRequiredAttributes(gid, name, classType, version, tDims, cDims);
     if(err < 0)
     {
       return ptr;
     }
 
-
     // Check to see if we are reading a bool array and if so read it and return
-    if (classType.compare("DataArray<bool>") == 0)
+    if(classType.compare("DataArray<bool>") == 0)
     {
-      if (metaDataOnly == false)
+      if(metaDataOnly == false)
       {
         ptr = Detail::readH5Dataset<bool>(gid, name, tDims, cDims);
       }
@@ -265,148 +252,148 @@ IDataArray::Pointer H5DataArrayReader::ReadIDataArray(hid_t gid, const QString& 
     }
     switch(attr_type)
     {
-      case H5T_STRING:
-        res.clear(); //Clear the string out first
-        err = QH5Lite::readStringDataset(gid, name, res);
-        //        if(err >= 0)
-        //        {
-        //          IDataArray::Pointer attr = MXAAsciiStringData::Create(res);
-        //          attr->setName(name);
-        //          attributes[*iter] = attr;
-        //        }
-        break;
-      case H5T_INTEGER:
-        //qDebug() << "User Meta Data Type is Integer" ;
-        if(H5Tequal(typeId, H5T_STD_U8BE) || H5Tequal(typeId, H5T_STD_U8LE))
+    case H5T_STRING:
+      res.clear(); // Clear the string out first
+      err = QH5Lite::readStringDataset(gid, name, res);
+      //        if(err >= 0)
+      //        {
+      //          IDataArray::Pointer attr = MXAAsciiStringData::Create(res);
+      //          attr->setName(name);
+      //          attributes[*iter] = attr;
+      //        }
+      break;
+    case H5T_INTEGER:
+      // qDebug() << "User Meta Data Type is Integer" ;
+      if(H5Tequal(typeId, H5T_STD_U8BE) || H5Tequal(typeId, H5T_STD_U8LE))
+      {
+        if(metaDataOnly == false)
         {
-          if (metaDataOnly == false)
-          {
-            ptr = Detail::readH5Dataset<uint8_t>(gid, name, tDims, cDims);
-          }
-          else
-          {
-            ptr = DataArray<uint8_t>::CreateArray(tDims, cDims, name, false);
-          }
-        }
-        else if(H5Tequal(typeId, H5T_STD_U16BE) || H5Tequal(typeId, H5T_STD_U16LE))
-        {
-          if (metaDataOnly == false)
-          {
-            ptr = Detail::readH5Dataset<uint16_t>(gid, name, tDims, cDims);
-          }
-          else
-          {
-            ptr = DataArray<uint16_t>::CreateArray(tDims, cDims, name, false);
-          }
-        }
-        else if(H5Tequal(typeId, H5T_STD_U32BE) || H5Tequal(typeId, H5T_STD_U32LE))
-        {
-          if (metaDataOnly == false)
-          {
-            ptr = Detail::readH5Dataset<uint32_t>(gid, name, tDims, cDims);
-          }
-          else
-          {
-            ptr = DataArray<uint32_t>::CreateArray(tDims, cDims, name, false);
-          }
-        }
-        else if(H5Tequal(typeId, H5T_STD_U64BE) || H5Tequal(typeId, H5T_STD_U64LE))
-        {
-          if (metaDataOnly == false)
-          {
-            ptr = Detail::readH5Dataset<uint64_t>(gid, name, tDims, cDims);
-          }
-          else
-          {
-            ptr = DataArray<uint64_t>::CreateArray(tDims, cDims, name, false);
-          }
-        }
-        else if(H5Tequal(typeId, H5T_STD_I8BE) || H5Tequal(typeId, H5T_STD_I8LE))
-        {
-          if (metaDataOnly == false)
-          {
-            ptr = Detail::readH5Dataset<int8_t>(gid, name, tDims, cDims);
-          }
-          else
-          {
-            ptr = DataArray<int8_t>::CreateArray(tDims, cDims, name, false);
-          }
-        }
-        else if(H5Tequal(typeId, H5T_STD_I16BE) || H5Tequal(typeId, H5T_STD_I16LE))
-        {
-          if (metaDataOnly == false)
-          {
-            ptr = Detail::readH5Dataset<int16_t>(gid, name, tDims, cDims);
-          }
-          else
-          {
-            ptr = DataArray<int16_t>::CreateArray(tDims, cDims, name, false);
-          }
-        }
-        else if(H5Tequal(typeId, H5T_STD_I32BE) || H5Tequal(typeId, H5T_STD_I32LE))
-        {
-          if (metaDataOnly == false)
-          {
-            ptr = Detail::readH5Dataset<int32_t>(gid, name, tDims, cDims);
-          }
-          else
-          {
-            ptr = DataArray<int32_t>::CreateArray(tDims, cDims, name, false);
-          }
-        }
-        else if(H5Tequal(typeId, H5T_STD_I64BE) || H5Tequal(typeId, H5T_STD_I64LE))
-        {
-          if (metaDataOnly == false)
-          {
-            ptr = Detail::readH5Dataset<int64_t>(gid, name, tDims, cDims);
-          }
-          else
-          {
-            ptr = DataArray<int64_t>::CreateArray(tDims, cDims, name, false);
-          }
+          ptr = Detail::readH5Dataset<uint8_t>(gid, name, tDims, cDims);
         }
         else
         {
-          qDebug() << "Unknown Type: " << typeId << " at " << name ;
-          err = -1;
+          ptr = DataArray<uint8_t>::CreateArray(tDims, cDims, name, false);
         }
-        break;
-      case H5T_FLOAT:
-        if(attr_size == 4)
+      }
+      else if(H5Tequal(typeId, H5T_STD_U16BE) || H5Tequal(typeId, H5T_STD_U16LE))
+      {
+        if(metaDataOnly == false)
         {
-          if (metaDataOnly == false)
-          {
-            ptr = Detail::readH5Dataset<float>(gid, name, tDims, cDims);
-          }
-          else
-          {
-            ptr = DataArray<float>::CreateArray(tDims, cDims, name, false);
-          }
-        }
-        else if(attr_size == 8)
-        {
-          if (metaDataOnly == false)
-          {
-            ptr = Detail::readH5Dataset<double>(gid, name, tDims, cDims);
-          }
-          else
-          {
-            ptr = DataArray<double>::CreateArray(tDims, cDims, name, false);
-          }
+          ptr = Detail::readH5Dataset<uint16_t>(gid, name, tDims, cDims);
         }
         else
         {
-          qDebug() << "Unknown Floating point type" ;
-          err = -1;
+          ptr = DataArray<uint16_t>::CreateArray(tDims, cDims, name, false);
         }
-        break;
-      default:
-        qDebug() << "Error: readUserMetaData() Unknown attribute type: " << attr_type ;
-        QH5Utilities::printHDFClassType(attr_type);
+      }
+      else if(H5Tequal(typeId, H5T_STD_U32BE) || H5Tequal(typeId, H5T_STD_U32LE))
+      {
+        if(metaDataOnly == false)
+        {
+          ptr = Detail::readH5Dataset<uint32_t>(gid, name, tDims, cDims);
+        }
+        else
+        {
+          ptr = DataArray<uint32_t>::CreateArray(tDims, cDims, name, false);
+        }
+      }
+      else if(H5Tequal(typeId, H5T_STD_U64BE) || H5Tequal(typeId, H5T_STD_U64LE))
+      {
+        if(metaDataOnly == false)
+        {
+          ptr = Detail::readH5Dataset<uint64_t>(gid, name, tDims, cDims);
+        }
+        else
+        {
+          ptr = DataArray<uint64_t>::CreateArray(tDims, cDims, name, false);
+        }
+      }
+      else if(H5Tequal(typeId, H5T_STD_I8BE) || H5Tequal(typeId, H5T_STD_I8LE))
+      {
+        if(metaDataOnly == false)
+        {
+          ptr = Detail::readH5Dataset<int8_t>(gid, name, tDims, cDims);
+        }
+        else
+        {
+          ptr = DataArray<int8_t>::CreateArray(tDims, cDims, name, false);
+        }
+      }
+      else if(H5Tequal(typeId, H5T_STD_I16BE) || H5Tequal(typeId, H5T_STD_I16LE))
+      {
+        if(metaDataOnly == false)
+        {
+          ptr = Detail::readH5Dataset<int16_t>(gid, name, tDims, cDims);
+        }
+        else
+        {
+          ptr = DataArray<int16_t>::CreateArray(tDims, cDims, name, false);
+        }
+      }
+      else if(H5Tequal(typeId, H5T_STD_I32BE) || H5Tequal(typeId, H5T_STD_I32LE))
+      {
+        if(metaDataOnly == false)
+        {
+          ptr = Detail::readH5Dataset<int32_t>(gid, name, tDims, cDims);
+        }
+        else
+        {
+          ptr = DataArray<int32_t>::CreateArray(tDims, cDims, name, false);
+        }
+      }
+      else if(H5Tequal(typeId, H5T_STD_I64BE) || H5Tequal(typeId, H5T_STD_I64LE))
+      {
+        if(metaDataOnly == false)
+        {
+          ptr = Detail::readH5Dataset<int64_t>(gid, name, tDims, cDims);
+        }
+        else
+        {
+          ptr = DataArray<int64_t>::CreateArray(tDims, cDims, name, false);
+        }
+      }
+      else
+      {
+        qDebug() << "Unknown Type: " << typeId << " at " << name;
+        err = -1;
+      }
+      break;
+    case H5T_FLOAT:
+      if(attr_size == 4)
+      {
+        if(metaDataOnly == false)
+        {
+          ptr = Detail::readH5Dataset<float>(gid, name, tDims, cDims);
+        }
+        else
+        {
+          ptr = DataArray<float>::CreateArray(tDims, cDims, name, false);
+        }
+      }
+      else if(attr_size == 8)
+      {
+        if(metaDataOnly == false)
+        {
+          ptr = Detail::readH5Dataset<double>(gid, name, tDims, cDims);
+        }
+        else
+        {
+          ptr = DataArray<double>::CreateArray(tDims, cDims, name, false);
+        }
+      }
+      else
+      {
+        qDebug() << "Unknown Floating point type";
+        err = -1;
+      }
+      break;
+    default:
+      qDebug() << "Error: readUserMetaData() Unknown attribute type: " << attr_type;
+      QH5Utilities::printHDFClassType(attr_type);
     }
 
     err = H5Tclose(typeId);
-    //Close the H5A type Id that was retrieved during the loop
+    // Close the H5A type Id that was retrieved during the loop
   }
 
   return ptr;
@@ -424,14 +411,14 @@ IDataArray::Pointer H5DataArrayReader::ReadNeighborListData(hid_t gid, const QSt
   size_t attr_size;
   QString res;
 
-  QVector<hsize_t> dims; //Reusable for the loop
+  QVector<hsize_t> dims; // Reusable for the loop
   IDataArray::Pointer iDataArray = IDataArray::NullPointer();
-  //qDebug() << "Reading Attribute " << *iter ;
+  // qDebug() << "Reading Attribute " << *iter ;
   typeId = QH5Lite::getDatasetType(gid, name);
   err = QH5Lite::getDatasetInfo(gid, name, dims, attr_type, attr_size);
   if(err < 0)
   {
-    qDebug() << "Error in getAttributeInfo method in readUserMetaData." ;
+    qDebug() << "Error in getAttributeInfo method in readUserMetaData.";
   }
   else
   {
@@ -446,126 +433,125 @@ IDataArray::Pointer H5DataArrayReader::ReadNeighborListData(hid_t gid, const QSt
       return iDataArray;
     }
 
-
     switch(attr_type)
     {
-      case H5T_STRING:
-        res.clear(); //Clear the string out first
-        err = QH5Lite::readStringDataset(gid, name, res);
-        break;
-      case H5T_INTEGER:
-        if(H5Tequal(typeId, H5T_STD_U8BE) || H5Tequal(typeId, H5T_STD_U8LE))
+    case H5T_STRING:
+      res.clear(); // Clear the string out first
+      err = QH5Lite::readStringDataset(gid, name, res);
+      break;
+    case H5T_INTEGER:
+      if(H5Tequal(typeId, H5T_STD_U8BE) || H5Tequal(typeId, H5T_STD_U8LE))
+      {
+        NeighborList<uint8_t>::Pointer ptr = NeighborList<uint8_t>::CreateArray(tDims, cDims, name, false);
+        if(false == metaDataOnly)
         {
-          NeighborList<uint8_t>::Pointer ptr = NeighborList<uint8_t>::CreateArray(tDims, cDims, name, false);
-          if(false == metaDataOnly)
-          {
-            ptr->readH5Data(gid);
-          }
-          iDataArray = ptr;
+          ptr->readH5Data(gid);
         }
-        else if(H5Tequal(typeId, H5T_STD_U16BE) || H5Tequal(typeId, H5T_STD_U16LE))
+        iDataArray = ptr;
+      }
+      else if(H5Tequal(typeId, H5T_STD_U16BE) || H5Tequal(typeId, H5T_STD_U16LE))
+      {
+        NeighborList<uint16_t>::Pointer ptr = NeighborList<uint16_t>::CreateArray(tDims, cDims, name, false);
+        if(false == metaDataOnly)
         {
-          NeighborList<uint16_t>::Pointer ptr = NeighborList<uint16_t>::CreateArray(tDims, cDims, name, false);
-          if(false == metaDataOnly)
-          {
-            ptr->readH5Data(gid);
-          }
-          iDataArray = ptr;
+          ptr->readH5Data(gid);
         }
-        else if(H5Tequal(typeId, H5T_STD_U32BE) || H5Tequal(typeId, H5T_STD_U32LE))
+        iDataArray = ptr;
+      }
+      else if(H5Tequal(typeId, H5T_STD_U32BE) || H5Tequal(typeId, H5T_STD_U32LE))
+      {
+        NeighborList<uint32_t>::Pointer ptr = NeighborList<uint32_t>::CreateArray(tDims, cDims, name, false);
+        if(false == metaDataOnly)
         {
-          NeighborList<uint32_t>::Pointer ptr = NeighborList<uint32_t>::CreateArray(tDims, cDims, name, false);
-          if(false == metaDataOnly)
-          {
-            ptr->readH5Data(gid);
-          }
-          iDataArray = ptr;
+          ptr->readH5Data(gid);
         }
-        else if(H5Tequal(typeId, H5T_STD_U64BE) || H5Tequal(typeId, H5T_STD_U64LE))
+        iDataArray = ptr;
+      }
+      else if(H5Tequal(typeId, H5T_STD_U64BE) || H5Tequal(typeId, H5T_STD_U64LE))
+      {
+        NeighborList<uint64_t>::Pointer ptr = NeighborList<uint64_t>::CreateArray(tDims, cDims, name, false);
+        if(false == metaDataOnly)
         {
-          NeighborList<uint64_t>::Pointer ptr = NeighborList<uint64_t>::CreateArray(tDims, cDims, name, false);
-          if(false == metaDataOnly)
-          {
-            ptr->readH5Data(gid);
-          }
-          iDataArray = ptr;
+          ptr->readH5Data(gid);
         }
-        else if(H5Tequal(typeId, H5T_STD_I8BE) || H5Tequal(typeId, H5T_STD_I8LE))
+        iDataArray = ptr;
+      }
+      else if(H5Tequal(typeId, H5T_STD_I8BE) || H5Tequal(typeId, H5T_STD_I8LE))
+      {
+        NeighborList<int8_t>::Pointer ptr = NeighborList<int8_t>::CreateArray(tDims, cDims, name, false);
+        if(false == metaDataOnly)
         {
-          NeighborList<int8_t>::Pointer ptr = NeighborList<int8_t>::CreateArray(tDims, cDims, name, false);
-          if(false == metaDataOnly)
-          {
-            ptr->readH5Data(gid);
-          }
-          iDataArray = ptr;
+          ptr->readH5Data(gid);
         }
-        else if(H5Tequal(typeId, H5T_STD_I16BE) || H5Tequal(typeId, H5T_STD_I16LE))
+        iDataArray = ptr;
+      }
+      else if(H5Tequal(typeId, H5T_STD_I16BE) || H5Tequal(typeId, H5T_STD_I16LE))
+      {
+        NeighborList<int16_t>::Pointer ptr = NeighborList<int16_t>::CreateArray(tDims, cDims, name, false);
+        if(false == metaDataOnly)
         {
-          NeighborList<int16_t>::Pointer ptr = NeighborList<int16_t>::CreateArray(tDims, cDims, name, false);
-          if(false == metaDataOnly)
-          {
-            ptr->readH5Data(gid);
-          }
-          iDataArray = ptr;
+          ptr->readH5Data(gid);
         }
-        else if(H5Tequal(typeId, H5T_STD_I32BE) || H5Tequal(typeId, H5T_STD_I32LE))
+        iDataArray = ptr;
+      }
+      else if(H5Tequal(typeId, H5T_STD_I32BE) || H5Tequal(typeId, H5T_STD_I32LE))
+      {
+        NeighborList<int32_t>::Pointer ptr = NeighborList<int32_t>::CreateArray(tDims, cDims, name, false);
+        if(false == metaDataOnly)
         {
-          NeighborList<int32_t>::Pointer ptr = NeighborList<int32_t>::CreateArray(tDims, cDims, name, false);
-          if(false == metaDataOnly)
-          {
-            ptr->readH5Data(gid);
-          }
-          iDataArray = ptr;
+          ptr->readH5Data(gid);
         }
-        else if(H5Tequal(typeId, H5T_STD_I64BE) || H5Tequal(typeId, H5T_STD_I64LE))
+        iDataArray = ptr;
+      }
+      else if(H5Tequal(typeId, H5T_STD_I64BE) || H5Tequal(typeId, H5T_STD_I64LE))
+      {
+        NeighborList<int64_t>::Pointer ptr = NeighborList<int64_t>::CreateArray(tDims, cDims, name, false);
+        if(false == metaDataOnly)
         {
-          NeighborList<int64_t>::Pointer ptr = NeighborList<int64_t>::CreateArray(tDims, cDims, name, false);
-          if(false == metaDataOnly)
-          {
-            ptr->readH5Data(gid);
-          }
-          iDataArray = ptr;
+          ptr->readH5Data(gid);
         }
-        else
+        iDataArray = ptr;
+      }
+      else
+      {
+        qDebug() << "Unknown Type: " << typeId << " at " << name;
+        err = -1;
+      }
+      break;
+    case H5T_FLOAT:
+      if(attr_size == 4)
+      {
+        NeighborList<float>::Pointer ptr = NeighborList<float>::CreateArray(tDims, cDims, name, false);
+        if(false == metaDataOnly)
         {
-          qDebug() << "Unknown Type: " << typeId << " at " << name ;
-          err = -1;
+          ptr->readH5Data(gid);
         }
-        break;
-      case H5T_FLOAT:
-        if(attr_size == 4)
+        iDataArray = ptr;
+      }
+      else if(attr_size == 8)
+      {
+        NeighborList<double>::Pointer ptr = NeighborList<double>::CreateArray(tDims, cDims, name, false);
+        if(false == metaDataOnly)
         {
-          NeighborList<float>::Pointer ptr = NeighborList<float>::CreateArray(tDims, cDims, name, false);
-          if(false == metaDataOnly)
-          {
-            ptr->readH5Data(gid);
-          }
-          iDataArray = ptr;
+          ptr->readH5Data(gid);
         }
-        else if(attr_size == 8)
-        {
-          NeighborList<double>::Pointer ptr = NeighborList<double>::CreateArray(tDims, cDims, name, false);
-          if(false == metaDataOnly)
-          {
-            ptr->readH5Data(gid);
-          }
-          iDataArray = ptr;
-        }
-        else
-        {
-          qDebug() << "Unknown Floating point type" ;
-          err = -1;
-        }
-        break;
-      default:
-        qDebug() << "Error: readUserMetaData() Unknown attribute type: " << attr_type ;
-        QH5Utilities::printHDFClassType(attr_type);
+        iDataArray = ptr;
+      }
+      else
+      {
+        qDebug() << "Unknown Floating point type";
+        err = -1;
+      }
+      break;
+    default:
+      qDebug() << "Error: readUserMetaData() Unknown attribute type: " << attr_type;
+      QH5Utilities::printHDFClassType(attr_type);
     }
 
     err = H5Tclose(typeId);
-    //Close the H5A type Id that was retrieved during the loop
+    // Close the H5A type Id that was retrieved during the loop
   }
-  if (err < 0 )
+  if(err < 0)
   {
     iDataArray = IDataArray::NullPointer();
   }

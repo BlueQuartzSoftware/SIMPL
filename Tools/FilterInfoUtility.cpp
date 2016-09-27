@@ -30,31 +30,24 @@
  *
  * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-
-
-
-#include <QtCore/QtDebug>
 #include <QtCore/QCoreApplication>
-#include <QtCore/QJsonObject>
+#include <QtCore/QDir>
 #include <QtCore/QFile>
 #include <QtCore/QFileInfo>
-#include <QtCore/QDir>
 #include <QtCore/QJsonDocument>
+#include <QtCore/QJsonObject>
+#include <QtCore/QtDebug>
 
-
-
-#include "SIMPLib/SIMPLib.h"
-#include "SIMPLib/Common/Observer.h"
-#include "SIMPLib/Common/FilterManager.h"
-#include "SIMPLib/Common/FilterFactory.hpp"
 #include "SIMPLib/Common/AbstractFilter.h"
-#include "SIMPLib/Plugin/ISIMPLibPlugin.h"
-#include "SIMPLib/Plugin/SIMPLibPluginLoader.h"
-#include "SIMPLib/Plugin/PluginManager.h"
+#include "SIMPLib/Common/FilterFactory.hpp"
+#include "SIMPLib/Common/FilterManager.h"
+#include "SIMPLib/Common/Observer.h"
 #include "SIMPLib/FilterParameters/JsonFilterParametersWriter.h"
+#include "SIMPLib/Plugin/ISIMPLibPlugin.h"
+#include "SIMPLib/Plugin/PluginManager.h"
+#include "SIMPLib/Plugin/SIMPLibPluginLoader.h"
+#include "SIMPLib/SIMPLib.h"
 #include "SIMPLib/Utilities/QMetaObjectUtilities.h"
-
-
 
 // -----------------------------------------------------------------------------
 //  Use unit test framework
@@ -68,7 +61,6 @@ int main(int argc, char** argv)
   QCoreApplication::setOrganizationDomain("bluequartz.net");
   QCoreApplication::setApplicationName("PreflightTest");
 
-
   // Load all the plugins and
   // Register all the filters including trying to load those from Plugins
   FilterManager* fm = FilterManager::Instance();
@@ -80,7 +72,6 @@ int main(int argc, char** argv)
 
   QMetaObjectUtilities::RegisterMetaTypes();
 
-
   QJsonObject rootObj;
 
   PluginManager* pluginManager = PluginManager::Instance();
@@ -88,7 +79,6 @@ int main(int argc, char** argv)
   foreach(ISIMPLibPlugin* plugin, plugins)
   {
     QJsonObject jobj;
-
 
     QList<QString> filters = plugin->getFilters();
 
@@ -103,28 +93,24 @@ int main(int argc, char** argv)
       AbstractFilter::Pointer fPtr = FilterManager::Instance()->getFactoryForFilter(filter)->create();
       fPtr->writeFilterParameters(writer.get(), index);
 
-
       jobj[filter] = writer->getCurrentGroupObject();
     }
-    //jobj["Filters"] = jArray;
+    // jobj["Filters"] = jArray;
 
-    rootObj[ plugin->getPluginName() ] = jobj;
+    rootObj[plugin->getPluginName()] = jobj;
   }
 
-
   QFile out(argv[1]);
-  if( !out.open(QFile::WriteOnly) )
+  if(!out.open(QFile::WriteOnly))
   {
-     qDebug() << "Error opening JSON file for writing. No output generated.";
-     return EXIT_FAILURE;
+    qDebug() << "Error opening JSON file for writing. No output generated.";
+    return EXIT_FAILURE;
   }
 
   qDebug() << "Writing JSON file.. ";
   QJsonDocument doc(rootObj);
   out.write(doc.toJson());
   out.close();
-
-
 
   return EXIT_SUCCESS;
 }

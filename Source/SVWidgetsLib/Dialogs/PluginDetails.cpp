@@ -52,7 +52,9 @@ PluginDetails::PluginDetails(QString pluginName, QWidget* parent)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-PluginDetails::~PluginDetails() {}
+PluginDetails::~PluginDetails()
+{
+}
 
 // -----------------------------------------------------------------------------
 //
@@ -76,7 +78,7 @@ void PluginDetails::loadPluginDetails()
   // Add plugin details to PluginDetails dialog box
   nameLabel->setText(plugin->getPluginName());
 
-  if (plugin->getDidLoad() == true)
+  if(plugin->getDidLoad() == true)
   {
     statusLabel->setText("Enabled");
   }
@@ -95,7 +97,7 @@ void PluginDetails::loadPluginDetails()
   licenseTextEdit->setText(plugin->getLicense());
 
   QList<QString> filters = plugin->getFilters();
-  for (QList<QString>::iterator iter = filters.begin(); iter != filters.end(); iter++)
+  for(QList<QString>::iterator iter = filters.begin(); iter != filters.end(); iter++)
   {
     filtersListWidget->addItem(*iter);
   }
@@ -115,5 +117,3 @@ void PluginDetails::on_closeBtn_clicked()
   // Close the dialog box
   close();
 }
-
-

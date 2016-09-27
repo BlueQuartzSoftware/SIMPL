@@ -11,10 +11,10 @@
 
 #include "IDataArray.h"
 
-
 IDataArray::IDataArray()
-{}
+{
+}
 
 IDataArray::~IDataArray()
-{}
-
+{
+}

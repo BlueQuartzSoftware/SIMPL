@@ -33,36 +33,32 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-
 #include "DataContainerReader.h"
 
 #include <QtCore/QFileInfo>
 
 #include "SIMPLib/Common/Constants.h"
-#include "SIMPLib/SIMPLibVersion.h"
 #include "SIMPLib/Common/FilterManager.h"
+#include "SIMPLib/DataContainers/DataContainerBundle.h"
 #include "SIMPLib/FilterParameters/AbstractFilterParametersReader.h"
 #include "SIMPLib/FilterParameters/BooleanFilterParameter.h"
 #include "SIMPLib/FilterParameters/DataContainerReaderFilterParameter.h"
 #include "SIMPLib/FilterParameters/H5FilterParametersReader.h"
-#include "SIMPLib/DataContainers/DataContainerBundle.h"
-
+#include "SIMPLib/SIMPLibVersion.h"
 
 // Include the MOC generated file for this class
 #include "moc_DataContainerReader.cpp"
 
-
-
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-DataContainerReader::DataContainerReader() :
-  AbstractFilter(),
-  m_InputFile(""),
-  m_OverwriteExistingDataContainers(false),
-  m_LastFileRead(""),
-  m_LastRead(QDateTime::currentDateTime()),
-  m_InputFileDataContainerArrayProxy()
+DataContainerReader::DataContainerReader()
+: AbstractFilter()
+, m_InputFile("")
+, m_OverwriteExistingDataContainers(false)
+, m_LastFileRead("")
+, m_LastRead(QDateTime::currentDateTime())
+, m_InputFileDataContainerArrayProxy()
 {
   m_PipelineFromFile = FilterPipeline::New();
 
@@ -104,17 +100,17 @@ void DataContainerReader::setupFilterParameters()
 void DataContainerReader::readFilterParameters(AbstractFilterParametersReader* reader, int index)
 {
   reader->openFilterGroup(this, index);
-  setInputFile(reader->readString("InputFile", getInputFile() ) );
-  setInputFileDataContainerArrayProxy(reader->readDataContainerArrayProxy("InputFileDataContainerArrayProxy", getInputFileDataContainerArrayProxy() ) );
-  syncProxies();  // Sync the file proxy and currently cached proxy together into one proxy
-  setOverwriteExistingDataContainers(reader->readValue("OverwriteExistingDataContainers", getOverwriteExistingDataContainers() ) );
+  setInputFile(reader->readString("InputFile", getInputFile()));
+  setInputFileDataContainerArrayProxy(reader->readDataContainerArrayProxy("InputFileDataContainerArrayProxy", getInputFileDataContainerArrayProxy()));
+  syncProxies(); // Sync the file proxy and currently cached proxy together into one proxy
+  setOverwriteExistingDataContainers(reader->readValue("OverwriteExistingDataContainers", getOverwriteExistingDataContainers()));
   reader->closeFilterGroup();
 }
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void DataContainerReader::readFilterParameters(QJsonObject &obj)
+void DataContainerReader::readFilterParameters(QJsonObject& obj)
 {
   AbstractFilter::readFilterParameters(obj);
   syncProxies();
@@ -123,7 +119,7 @@ void DataContainerReader::readFilterParameters(QJsonObject &obj)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void DataContainerReader::writeFilterParameters(QJsonObject &obj)
+void DataContainerReader::writeFilterParameters(QJsonObject& obj)
 {
   writeExistingPipelineToFile(obj);
   AbstractFilter::writeFilterParameters(obj);
@@ -134,7 +130,6 @@ void DataContainerReader::writeFilterParameters(QJsonObject &obj)
 // -----------------------------------------------------------------------------
 void DataContainerReader::initialize()
 {
-
 }
 
 // -----------------------------------------------------------------------------
@@ -144,19 +139,19 @@ void DataContainerReader::dataCheck()
 {
   // Sync the file proxy and cached proxy if the time stamps are different
   QFileInfo fi(getInputFile());
-  if (getInputFile() == getLastFileRead() && getLastRead() < fi.lastModified())
+  if(getInputFile() == getLastFileRead() && getLastRead() < fi.lastModified())
   {
     syncProxies();
   }
 
   QString ss;
-  if (getInputFile().isEmpty() == true)
+  if(getInputFile().isEmpty() == true)
   {
     ss = QObject::tr("The input file must be set");
     setErrorCondition(-387);
     notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
   }
-  else if (fi.exists() == false)
+  else if(fi.exists() == false)
   {
     ss = QObject::tr("The input file does not exist");
     setErrorCondition(-388);
@@ -179,13 +174,13 @@ void DataContainerReader::dataCheck()
 
   QList<DataContainer::Pointer>& tempContainers = tempDCA->getDataContainers();
   QListIterator<DataContainer::Pointer> iter(tempContainers);
-  while (iter.hasNext())
+  while(iter.hasNext())
   {
     DataContainer::Pointer container = iter.next();
 
-    if (getOverwriteExistingDataContainers() == true )
+    if(getOverwriteExistingDataContainers() == true)
     {
-      if (dca->doesDataContainerExist(container->getName()) == true)
+      if(dca->doesDataContainerExist(container->getName()) == true)
       {
         dca->removeDataContainer(container->getName());
       }
@@ -193,7 +188,7 @@ void DataContainerReader::dataCheck()
     }
     else
     {
-      if (dca->doesDataContainerExist(container->getName()) == true)
+      if(dca->doesDataContainerExist(container->getName()) == true)
       {
         ss = QObject::tr("The input file has a DataContainer with a name (%1) that already exists in the current DataContainerArray structure").arg(container->getName());
         setErrorCondition(-390);
@@ -258,7 +253,7 @@ void DataContainerReader::readData(bool preflight, DataContainerArrayProxy& prox
 
   // Read the Meta Data and Array names from the file
   hid_t fileId = QH5Utilities::openFile(m_InputFile, true); // Open the file Read Only
-  if (fileId < 0)
+  if(fileId < 0)
   {
     ss = QObject::tr("Error opening input file '%1'").arg(m_InputFile);
     setErrorCondition(-150);
@@ -271,7 +266,7 @@ void DataContainerReader::readData(bool preflight, DataContainerArrayProxy& prox
   // Check to see if version of .dream3d file is prior to new data container names
   err = QH5Lite::readStringAttribute(fileId, "/", SIMPL::HDF5::FileVersionName, m_FileVersion);
   fVersion = m_FileVersion.toFloat(&check);
-  if (fVersion < 5.0 || err < 0)
+  if(fVersion < 5.0 || err < 0)
   {
     QH5Utilities::closeFile(fileId);
     fileId = QH5Utilities::openFile(m_InputFile, false); // Re-Open the file as Read/Write
@@ -281,7 +276,7 @@ void DataContainerReader::readData(bool preflight, DataContainerArrayProxy& prox
     QH5Utilities::closeFile(fileId);
     fileId = QH5Utilities::openFile(m_InputFile, true); // Re-Open the file as Read Only
   }
-  if (fVersion < 7.0)
+  if(fVersion < 7.0)
   {
     ss = QObject::tr("File unable to be read - file structure older than 7.0");
     setErrorCondition(-250);
@@ -289,7 +284,7 @@ void DataContainerReader::readData(bool preflight, DataContainerArrayProxy& prox
     return;
   }
   hid_t dcaGid = H5Gopen(fileId, SIMPL::StringConstants::DataContainerGroupName.toLatin1().data(), 0);
-  if (dcaGid < 0)
+  if(dcaGid < 0)
   {
     setErrorCondition(-1923123);
     QString ss = QObject::tr("Error attempting to open the HDF5 Group '%1'").arg(SIMPL::StringConstants::DataContainerGroupName);
@@ -300,7 +295,7 @@ void DataContainerReader::readData(bool preflight, DataContainerArrayProxy& prox
   scopedFileSentinel.addGroupId(&dcaGid);
 
   err = dca->readDataContainersFromHDF5(preflight, dcaGid, proxy, this);
-  if (err < 0)
+  if(err < 0)
   {
     setErrorCondition(err);
     QString ss = QObject::tr("Error trying to read the DataContainers from the file '%1'").arg(getInputFile());
@@ -310,14 +305,14 @@ void DataContainerReader::readData(bool preflight, DataContainerArrayProxy& prox
   dcaGid = -1;
 
   err = readDataContainerBundles(fileId, dca);
-  if (err < 0)
+  if(err < 0)
   {
     setErrorCondition(err);
     QString ss = QObject::tr("Error trying to read the DataContainerBundles from the file '%1'").arg(getInputFile());
     notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
   }
 
-  if (!getInPreflight())
+  if(!getInPreflight())
   {
     err = readExistingPipelineFromFile(fileId);
     if(err < 0)
@@ -336,14 +331,14 @@ DataContainerArrayProxy DataContainerReader::readDataContainerArrayStructure(con
 {
   DataContainerArrayProxy proxy;
   QFileInfo fi(path);
-  if (path.isEmpty() == true)
+  if(path.isEmpty() == true)
   {
     QString ss = QObject::tr("SIMPLView File Path is empty");
     setErrorCondition(-70);
     notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
     return proxy;
   }
-  else if (fi.exists() == false)
+  else if(fi.exists() == false)
   {
     QString ss = QObject::tr("The input file does not exist");
     setErrorCondition(-388);
@@ -365,7 +360,7 @@ DataContainerArrayProxy DataContainerReader::readDataContainerArrayStructure(con
   // Check the DREAM3D File Version to make sure we are reading the proper version
   QString d3dVersion;
   err = QH5Lite::readStringAttribute(fileId, "/", SIMPL::HDF5::DREAM3DVersion, d3dVersion);
-  if (err < 0)
+  if(err < 0)
   {
     QString ss = QObject::tr("HDF5 Attribute '%1' was not found on the HDF5 root node and this is required").arg(SIMPL::HDF5::DREAM3DVersion);
     setErrorCondition(-72);
@@ -378,9 +373,9 @@ DataContainerArrayProxy DataContainerReader::readDataContainerArrayStructure(con
 
   QString fileVersion;
   err = QH5Lite::readStringAttribute(fileId, "/", SIMPL::HDF5::FileVersionName, fileVersion);
-  if (err < 0)
+  if(err < 0)
   {
-    //std::cout << "Attribute '" << SIMPL::HDF5::FileVersionName.toStdString() << " was not found" << std::endl;
+    // std::cout << "Attribute '" << SIMPL::HDF5::FileVersionName.toStdString() << " was not found" << std::endl;
     QString ss = QObject::tr("HDF5 Attribute '%1' was not found on the HDF5 root node and this is required").arg(SIMPL::HDF5::FileVersionName);
     setErrorCondition(-73);
     notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
@@ -391,7 +386,7 @@ DataContainerArrayProxy DataContainerReader::readDataContainerArrayStructure(con
   //  }
 
   hid_t dcArrayGroupId = H5Gopen(fileId, SIMPL::StringConstants::DataContainerGroupName.toLatin1().constData(), H5P_DEFAULT);
-  if (dcArrayGroupId < 0)
+  if(dcArrayGroupId < 0)
   {
     QString ss = QObject::tr("Error opening HDF5 Group '%1'").arg(SIMPL::StringConstants::DataContainerGroupName);
     setErrorCondition(-74);
@@ -428,25 +423,25 @@ int DataContainerReader::readExistingPipelineFromFile(hid_t fileId)
 
   // Loop over the items getting the "ClassName" attribute from each group
   QString classNameStr = "";
-  for (int32_t i = 0; i < groupList.size(); i++)
+  for(int32_t i = 0; i < groupList.size(); i++)
   {
     QString ss = QString::number(i, 10);
 
     err = QH5Lite::readStringAttribute(pipelineGroupId, ss, "ClassName", classNameStr);
-    if (err < 0)
+    if(err < 0)
     {
       qDebug() << "Filter Index = " << i;
     }
     // Instantiate a new filter using the FilterFactory based on the value of the className attribute
     FilterManager* fm = FilterManager::Instance();
     IFilterFactory::Pointer ff = fm->getFactoryForFilter(classNameStr);
-    if (nullptr != ff.get())
+    if(nullptr != ff.get())
     {
       AbstractFilter::Pointer filter = ff->create();
-      if (nullptr != filter.get())
+      if(nullptr != filter.get())
       {
         // Read the parameters
-        filter->readFilterParameters( reader.get(), i);
+        filter->readFilterParameters(reader.get(), i);
 
         // Add filter to m_PipelineFromFile
         m_PipelineFromFile->pushBack(filter);
@@ -460,14 +455,14 @@ int DataContainerReader::readExistingPipelineFromFile(hid_t fileId)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void DataContainerReader::writeExistingPipelineToFile(QJsonObject &json)
+void DataContainerReader::writeExistingPipelineToFile(QJsonObject& json)
 {
   FilterPipeline::FilterContainerType container = m_PipelineFromFile->getFilterContainer();
 
   for(FilterPipeline::FilterContainerType::iterator iter = container.begin(); iter != container.end(); ++iter)
   {
     AbstractFilter::Pointer filter = *iter;
-    if (nullptr != filter.get())
+    if(nullptr != filter.get())
     {
       filter->writeFilterParameters(json);
     }
@@ -485,7 +480,7 @@ int DataContainerReader::readDataContainerBundles(hid_t fileId, DataContainerArr
 {
   herr_t err = 0;
   hid_t dcbGroupId = H5Gopen(fileId, SIMPL::StringConstants::DataContainerBundleGroupName.toLatin1().constData(), H5P_DEFAULT);
-  if (dcbGroupId < 0)
+  if(dcbGroupId < 0)
   {
     // NO Bundles are available to read so just return.
 
@@ -499,7 +494,7 @@ int DataContainerReader::readDataContainerBundles(hid_t fileId, DataContainerArr
 
   QList<QString> groupNames;
   err = QH5Utilities::getGroupObjects(dcbGroupId, H5Utilities::H5Support_GROUP, groupNames);
-  if (err < 0)
+  if(err < 0)
   {
     QString ss = QObject::tr("Error getting group objects from HDF5 group '%1' ").arg(SIMPL::StringConstants::DataContainerBundleGroupName);
     setErrorCondition(-76);
@@ -509,7 +504,7 @@ int DataContainerReader::readDataContainerBundles(hid_t fileId, DataContainerArr
 
   char sep = 0x1E;
   QListIterator<QString> iter(groupNames);
-  while (iter.hasNext() )
+  while(iter.hasNext())
   {
     QString bundleName = iter.next();
     DataContainerBundle::Pointer bundle = DataContainerBundle::New(bundleName);
@@ -520,7 +515,7 @@ int DataContainerReader::readDataContainerBundles(hid_t fileId, DataContainerArr
     // Read in the Data Container Names
     QString dcNames;
     err = QH5Lite::readStringDataset(bundleId, SIMPL::StringConstants::DataContainerNames, dcNames);
-    if (err < 0)
+    if(err < 0)
     {
       QString ss = QObject::tr("Error reading DataContainer group names from HDF5 group '%1' ").arg(bundleName);
       setErrorCondition(-75);
@@ -530,21 +525,21 @@ int DataContainerReader::readDataContainerBundles(hid_t fileId, DataContainerArr
     QStringList dcNameList = dcNames.split(QString(sep));
 
     QStringListIterator nameIter(dcNameList);
-    while(nameIter.hasNext() )
+    while(nameIter.hasNext())
     {
       QString dcName = nameIter.next();
       DataContainer::Pointer dc = dca->getDataContainer(dcName);
-      if (nullptr == dc.get() )
+      if(nullptr == dc.get())
       {
-        qDebug() << "Data Container '" << dcName << "' was nullptr" << " " << __FILE__ << "(" << __LINE__ << ")";
+        qDebug() << "Data Container '" << dcName << "' was nullptr"
+                 << " " << __FILE__ << "(" << __LINE__ << ")";
       }
       bundle->addDataContainer(dc);
     }
 
-
     QString metaArrays;
     err = QH5Lite::readStringDataset(bundleId, SIMPL::StringConstants::MetaDataArrays, metaArrays);
-    if (err < 0)
+    if(err < 0)
     {
       QString ss = QObject::tr("Error reading DataContainerBundle meta data arrays from HDF5 group '%1' ").arg(bundleName);
       setErrorCondition(-76);
@@ -568,7 +563,7 @@ int DataContainerReader::readDataContainerBundles(hid_t fileId, DataContainerArr
 void DataContainerReader::syncProxies()
 {
   // If there is something in the cached proxy...
-  if (m_InputFileDataContainerArrayProxy.dataContainers.size() > 0)
+  if(m_InputFileDataContainerArrayProxy.dataContainers.size() > 0)
   {
     DataContainerArrayProxy fileProxy = readDataContainerArrayStructure(getInputFile());
     DataContainerArrayProxy cacheProxy = getInputFileDataContainerArrayProxy();
@@ -609,7 +604,9 @@ AbstractFilter::Pointer DataContainerReader::newFilterInstance(bool copyFilterPa
 //
 // -----------------------------------------------------------------------------
 const QString DataContainerReader::getCompiledLibraryName()
-{ return Core::CoreBaseName; }
+{
+  return Core::CoreBaseName;
+}
 
 // -----------------------------------------------------------------------------
 //
@@ -626,29 +623,33 @@ const QString DataContainerReader::getFilterVersion()
 {
   QString version;
   QTextStream vStream(&version);
-  vStream <<  SIMPLib::Version::Major() << "." << SIMPLib::Version::Minor() << "." << SIMPLib::Version::Patch();
+  vStream << SIMPLib::Version::Major() << "." << SIMPLib::Version::Minor() << "." << SIMPLib::Version::Patch();
   return version;
 }
-
-
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
 const QString DataContainerReader::getGroupName()
-{ return SIMPL::FilterGroups::IOFilters; }
+{
+  return SIMPL::FilterGroups::IOFilters;
+}
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
 const QString DataContainerReader::getSubGroupName()
-{ return SIMPL::FilterSubGroups::InputFilters; }
+{
+  return SIMPL::FilterSubGroups::InputFilters;
+}
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
 const QString DataContainerReader::getHumanLabel()
-{ return "Read DREAM.3D Data File"; }
+{
+  return "Read DREAM.3D Data File";
+}
 
 // -----------------------------------------------------------------------------
 //

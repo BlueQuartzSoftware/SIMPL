@@ -33,7 +33,6 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-
 /* ============================================================================
  * TetrahedralGeom re-implements code from the following vtk modules:
  *
@@ -48,8 +47,8 @@
 #include "SIMPLib/Geometry/TetrahedralGeom.h"
 
 #ifdef SIMPLib_USE_PARALLEL_ALGORITHMS
-#include <tbb/parallel_for.h>
 #include <tbb/blocked_range.h>
+#include <tbb/parallel_for.h>
 #include <tbb/partitioner.h>
 #include <tbb/task_scheduler_init.h>
 #endif
@@ -63,61 +62,64 @@
  */
 class FindTetDerivativesImpl
 {
-  public:
-    FindTetDerivativesImpl(TetrahedralGeom* tets, DoubleArrayType::Pointer field, DoubleArrayType::Pointer derivs) :
-      m_Tets(tets),
-      m_Field(field),
-      m_Derivatives(derivs)
-    {}
-    virtual ~FindTetDerivativesImpl() {}
+public:
+  FindTetDerivativesImpl(TetrahedralGeom* tets, DoubleArrayType::Pointer field, DoubleArrayType::Pointer derivs)
+  : m_Tets(tets)
+  , m_Field(field)
+  , m_Derivatives(derivs)
+  {
+  }
+  virtual ~FindTetDerivativesImpl()
+  {
+  }
 
-    void compute(int64_t start, int64_t end) const
+  void compute(int64_t start, int64_t end) const
+  {
+    int32_t cDims = m_Field->getNumberOfComponents();
+    double* fieldPtr = m_Field->getPointer(0);
+    double* derivsPtr = m_Derivatives->getPointer(0);
+    double values[4] = {0.0, 0.0, 0.0, 0.0};
+    double derivs[3] = {0.0, 0.0, 0.0};
+    int64_t verts[4]{0, 0, 0, 0};
+
+    int64_t counter = 0;
+    int64_t totalElements = m_Tets->getNumberOfTets();
+    int64_t progIncrement = static_cast<int64_t>(totalElements / 100);
+
+    for(int64_t i = start; i < end; i++)
     {
-      int32_t cDims = m_Field->getNumberOfComponents();
-      double* fieldPtr = m_Field->getPointer(0);
-      double* derivsPtr = m_Derivatives->getPointer(0);
-      double values[4] = { 0.0, 0.0, 0.0, 0.0 };
-      double derivs[3] = { 0.0, 0.0, 0.0 };
-      int64_t verts[4] { 0, 0, 0, 0 };
-
-      int64_t counter = 0;
-      int64_t totalElements = m_Tets->getNumberOfTets();
-      int64_t progIncrement = static_cast<int64_t>(totalElements / 100);
-
-      for (int64_t i = start; i < end; i++)
+      m_Tets->getVertsAtTet(i, verts);
+      for(int32_t j = 0; j < cDims; j++)
       {
-        m_Tets->getVertsAtTet(i, verts);
-        for (int32_t j = 0; j < cDims; j++)
+        for(size_t k = 0; k < 4; k++)
         {
-          for (size_t k = 0; k < 4; k++)
-          {
-            values[k] = fieldPtr[cDims * verts[k] + j];
-          }
-          DerivativeHelpers::TetDeriv()(m_Tets, i, values, derivs);
-          derivsPtr[i * 3 * cDims + j * 3] = derivs[0];
-          derivsPtr[i * 3 * cDims + j * 3 + 1] = derivs[1];
-          derivsPtr[i * 3 * cDims + j * 3 + 2] = derivs[2];
+          values[k] = fieldPtr[cDims * verts[k] + j];
         }
-
-        if (counter > progIncrement)
-        {
-          m_Tets->sendThreadSafeProgressMessage(counter, totalElements);
-          counter = 0;
-        }
-        counter++;
+        DerivativeHelpers::TetDeriv()(m_Tets, i, values, derivs);
+        derivsPtr[i * 3 * cDims + j * 3] = derivs[0];
+        derivsPtr[i * 3 * cDims + j * 3 + 1] = derivs[1];
+        derivsPtr[i * 3 * cDims + j * 3 + 2] = derivs[2];
       }
+
+      if(counter > progIncrement)
+      {
+        m_Tets->sendThreadSafeProgressMessage(counter, totalElements);
+        counter = 0;
+      }
+      counter++;
     }
+  }
 
 #ifdef SIMPLib_USE_PARALLEL_ALGORITHMS
-    void operator()(const tbb::blocked_range<int64_t>& r) const
-    {
-      compute(r.begin(), r.end());
-    }
+  void operator()(const tbb::blocked_range<int64_t>& r) const
+  {
+    compute(r.begin(), r.end());
+  }
 #endif
-  private:
-    TetrahedralGeom* m_Tets;
-    DoubleArrayType::Pointer m_Field;
-    DoubleArrayType::Pointer m_Derivatives;
+private:
+  TetrahedralGeom* m_Tets;
+  DoubleArrayType::Pointer m_Field;
+  DoubleArrayType::Pointer m_Derivatives;
 };
 
 // -----------------------------------------------------------------------------
@@ -149,14 +151,15 @@ TetrahedralGeom::TetrahedralGeom()
 //
 // -----------------------------------------------------------------------------
 TetrahedralGeom::~TetrahedralGeom()
-{}
+{
+}
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
 TetrahedralGeom::Pointer TetrahedralGeom::CreateGeometry(int64_t numTets, SharedVertexList::Pointer vertices, const QString& name, bool allocate)
 {
-  if (name.isEmpty() == true)
+  if(name.isEmpty() == true)
   {
     return NullPointer();
   }
@@ -174,15 +177,15 @@ TetrahedralGeom::Pointer TetrahedralGeom::CreateGeometry(int64_t numTets, Shared
 // -----------------------------------------------------------------------------
 TetrahedralGeom::Pointer TetrahedralGeom::CreateGeometry(SharedTetList::Pointer tets, SharedVertexList::Pointer vertices, const QString& name)
 {
-  if (name.isEmpty() == true)
+  if(name.isEmpty() == true)
   {
     return NullPointer();
   }
-  if (vertices.get() == nullptr)
+  if(vertices.get() == nullptr)
   {
     return TetrahedralGeom::NullPointer();
   }
-  if (tets.get() == nullptr)
+  if(tets.get() == nullptr)
   {
     return TetrahedralGeom::NullPointer();
   }
@@ -208,28 +211,28 @@ void TetrahedralGeom::initializeWithZeros()
 // -----------------------------------------------------------------------------
 void TetrahedralGeom::addAttributeMatrix(const QString& name, AttributeMatrix::Pointer data)
 {
-  if (data->getType() != 0 || data->getType() != 1 || data->getType() != 2 || data->getType() != 3)
+  if(data->getType() != 0 || data->getType() != 1 || data->getType() != 2 || data->getType() != 3)
   {
     // TetrahedralGeom can only accept vertex, edge, face or cell Attribute Matrices
     return;
   }
-  if (data->getType() == 0 && static_cast<int64_t>(data->getNumberOfTuples()) != getNumberOfVertices())
+  if(data->getType() == 0 && static_cast<int64_t>(data->getNumberOfTuples()) != getNumberOfVertices())
   {
     return;
   }
-  if (data->getType() == 1 && static_cast<int64_t>(data->getNumberOfTuples()) != getNumberOfEdges())
+  if(data->getType() == 1 && static_cast<int64_t>(data->getNumberOfTuples()) != getNumberOfEdges())
   {
     return;
   }
-  if (data->getType() == 2 && static_cast<int64_t>(data->getNumberOfTuples()) != getNumberOfTris())
+  if(data->getType() == 2 && static_cast<int64_t>(data->getNumberOfTuples()) != getNumberOfTris())
   {
     return;
   }
-  if (data->getType() == 3 && data->getNumberOfTuples() != getNumberOfElements())
+  if(data->getType() == 3 && data->getNumberOfTuples() != getNumberOfElements())
   {
     return;
   }
-  if (data->getName().compare(name) != 0)
+  if(data->getName().compare(name) != 0)
   {
     data->setName(name);
   }
@@ -251,7 +254,7 @@ int TetrahedralGeom::findEdges()
 {
   m_EdgeList = CreateSharedEdgeList(0);
   GeometryHelpers::Connectivity::FindTetEdges<int64_t>(m_TetList, m_EdgeList);
-  if (m_EdgeList.get() == nullptr)
+  if(m_EdgeList.get() == nullptr)
   {
     return -1;
   }
@@ -273,7 +276,7 @@ int TetrahedralGeom::findFaces()
 {
   m_TriList = CreateSharedTriList(0);
   GeometryHelpers::Connectivity::FindTetFaces<int64_t>(m_TetList, m_TriList);
-  if (m_TriList.get() == nullptr)
+  if(m_TriList.get() == nullptr)
   {
     return -1;
   }
@@ -295,7 +298,7 @@ int TetrahedralGeom::findElementsContainingVert()
 {
   m_TetsContainingVert = ElementDynamicList::New();
   GeometryHelpers::Connectivity::FindElementsContainingVert<uint16_t, int64_t>(m_TetList, m_TetsContainingVert, getNumberOfVertices());
-  if (m_TetsContainingVert.get() == nullptr)
+  if(m_TetsContainingVert.get() == nullptr)
   {
     return -1;
   }
@@ -332,14 +335,17 @@ void TetrahedralGeom::deleteElementsContainingVert()
 int TetrahedralGeom::findElementNeighbors()
 {
   int err = 0;
-  if (m_TetsContainingVert.get() == nullptr)
+  if(m_TetsContainingVert.get() == nullptr)
   {
     err = findElementsContainingVert();
-    if (err < 0) { return err; }
+    if(err < 0)
+    {
+      return err;
+    }
   }
   m_TetNeighbors = ElementDynamicList::New();
   err = GeometryHelpers::Connectivity::FindElementNeighbors<uint16_t, int64_t>(m_TetList, m_TetsContainingVert, m_TetNeighbors, SIMPL::GeometryType::TetrahedralGeometry);
-  if (m_TetNeighbors.get() == nullptr)
+  if(m_TetNeighbors.get() == nullptr)
   {
     return -1;
   }
@@ -378,7 +384,7 @@ int TetrahedralGeom::findElementCentroids()
   QVector<size_t> cDims(1, 3);
   m_TetCentroids = FloatArrayType::CreateArray(getNumberOfTets(), cDims, SIMPL::StringConstants::TetCentroids);
   GeometryHelpers::Topology::FindElementCentroids<int64_t>(m_TetList, m_VertexList, m_TetCentroids);
-  if (m_TetCentroids.get() == nullptr)
+  if(m_TetCentroids.get() == nullptr)
   {
     return -1;
   }
@@ -417,7 +423,7 @@ int TetrahedralGeom::findUnsharedEdges()
   QVector<size_t> cDims(1, 2);
   m_UnsharedEdgeList = SharedEdgeList::CreateArray(0, cDims, SIMPL::Geometry::UnsharedEdgeList);
   GeometryHelpers::Connectivity::FindUnsharedTetEdges<int64_t>(m_TetList, m_UnsharedEdgeList);
-  if (m_UnsharedEdgeList.get() == nullptr)
+  if(m_UnsharedEdgeList.get() == nullptr)
   {
     return -1;
   }
@@ -456,7 +462,7 @@ int TetrahedralGeom::findUnsharedFaces()
   QVector<size_t> cDims(1, 3);
   m_UnsharedTriList = SharedTriList::CreateArray(0, cDims, SIMPL::Geometry::UnsharedFaceList);
   GeometryHelpers::Connectivity::FindUnsharedTetFaces<int64_t>(m_TetList, m_UnsharedTriList);
-  if (m_UnsharedTriList.get() == nullptr)
+  if(m_UnsharedTriList.get() == nullptr)
   {
     return -1;
   }
@@ -531,10 +537,9 @@ void TetrahedralGeom::findDerivatives(DoubleArrayType::Pointer field, DoubleArra
   m_ProgressCounter = 0;
   int64_t numTets = getNumberOfTets();
 
-  if (observable)
+  if(observable)
   {
-    connect(this, SIGNAL(filterGeneratedMessage(const PipelineMessage&)),
-            observable, SLOT(broadcastPipelineMessage(const PipelineMessage&)));
+    connect(this, SIGNAL(filterGeneratedMessage(const PipelineMessage&)), observable, SLOT(broadcastPipelineMessage(const PipelineMessage&)));
   }
 
 #ifdef SIMPLib_USE_PARALLEL_ALGORITHMS
@@ -543,10 +548,9 @@ void TetrahedralGeom::findDerivatives(DoubleArrayType::Pointer field, DoubleArra
 #endif
 
 #ifdef SIMPLib_USE_PARALLEL_ALGORITHMS
-  if (doParallel == true)
+  if(doParallel == true)
   {
-    tbb::parallel_for(tbb::blocked_range<int64_t>(0, numTets),
-                      FindTetDerivativesImpl(this, field, derivatives), tbb::auto_partitioner());
+    tbb::parallel_for(tbb::blocked_range<int64_t>(0, numTets), FindTetDerivativesImpl(this, field, derivatives), tbb::auto_partitioner());
   }
   else
 #endif
@@ -563,84 +567,84 @@ int TetrahedralGeom::writeGeometryToHDF5(hid_t parentId, bool SIMPL_NOT_USED(wri
 {
   herr_t err = 0;
 
-  if (m_VertexList.get() != nullptr)
+  if(m_VertexList.get() != nullptr)
   {
     err = GeometryHelpers::GeomIO::WriteListToHDF5(parentId, m_VertexList);
-    if (err < 0)
+    if(err < 0)
     {
       return err;
     }
   }
 
-  if (m_EdgeList.get() != nullptr)
+  if(m_EdgeList.get() != nullptr)
   {
     err = GeometryHelpers::GeomIO::WriteListToHDF5(parentId, m_EdgeList);
-    if (err < 0)
+    if(err < 0)
     {
       return err;
     }
   }
 
-  if (m_TriList.get() != nullptr)
+  if(m_TriList.get() != nullptr)
   {
     err = GeometryHelpers::GeomIO::WriteListToHDF5(parentId, m_TriList);
-    if (err < 0)
+    if(err < 0)
     {
       return err;
     }
   }
 
-  if (m_TetList.get() != nullptr)
+  if(m_TetList.get() != nullptr)
   {
     err = GeometryHelpers::GeomIO::WriteListToHDF5(parentId, m_TetList);
-    if (err < 0)
+    if(err < 0)
     {
       return err;
     }
   }
 
-  if (m_UnsharedEdgeList.get() != nullptr)
+  if(m_UnsharedEdgeList.get() != nullptr)
   {
     err = GeometryHelpers::GeomIO::WriteListToHDF5(parentId, m_UnsharedEdgeList);
-    if (err < 0)
+    if(err < 0)
     {
       return err;
     }
   }
 
-  if (m_UnsharedTriList.get() != nullptr)
+  if(m_UnsharedTriList.get() != nullptr)
   {
     err = GeometryHelpers::GeomIO::WriteListToHDF5(parentId, m_UnsharedTriList);
-    if (err < 0)
+    if(err < 0)
     {
       return err;
     }
   }
 
-  if (m_TetCentroids.get() != nullptr)
+  if(m_TetCentroids.get() != nullptr)
   {
     err = GeometryHelpers::GeomIO::WriteListToHDF5(parentId, m_TetCentroids);
-    if (err < 0)
+    if(err < 0)
     {
       return err;
     }
   }
 
-  if (m_TetNeighbors.get() != nullptr)
+  if(m_TetNeighbors.get() != nullptr)
   {
     size_t numTets = getNumberOfTets();
     err = GeometryHelpers::GeomIO::WriteDynamicListToHDF5<uint16_t, int64_t>(parentId, m_TetNeighbors, numTets, SIMPL::StringConstants::TetNeighbors);
-    if (err < 0)
+    if(err < 0)
     {
       return err;
     }
   }
 
-  if (m_TetsContainingVert.get() != nullptr)
+  if(m_TetsContainingVert.get() != nullptr)
   {
     size_t numVerts = getNumberOfVertices();
     err = GeometryHelpers::GeomIO::WriteDynamicListToHDF5<uint16_t, int64_t>(parentId, m_TetsContainingVert, numVerts, SIMPL::StringConstants::TetsContainingVert);
-    if (err < 0)
+    if(err < 0)
     {
       return err;
     }
@@ -657,19 +661,25 @@ int TetrahedralGeom::writeXdmf(QTextStream& out, QString dcName, QString hdfFile
   herr_t err = 0;
 
   // Always start the grid
-  out << "  <!-- *************** START OF " << dcName << " *************** -->" << "\n";
-  out << "  <Grid Name=\"" << dcName << "\" GridType=\"Uniform\">" << "\n";
+  out << "  <!-- *************** START OF " << dcName << " *************** -->"
+      << "\n";
+  out << "  <Grid Name=\"" << dcName << "\" GridType=\"Uniform\">"
+      << "\n";
 
-  out << "    <Topology TopologyType=\"Tetrahedron\" NumberOfElements=\"" << getNumberOfTets() << "\">" << "\n";
-  out << "      <DataItem Format=\"HDF\" NumberType=\"Int\" Dimensions=\"" << getNumberOfTets() << " 4\">" << "\n";
+  out << "    <Topology TopologyType=\"Tetrahedron\" NumberOfElements=\"" << getNumberOfTets() << "\">"
+      << "\n";
+  out << "      <DataItem Format=\"HDF\" NumberType=\"Int\" Dimensions=\"" << getNumberOfTets() << " 4\">"
+      << "\n";
   out << "        " << hdfFileName << ":/DataContainers/" << dcName << "/" << SIMPL::Geometry::Geometry << "/" << SIMPL::Geometry::SharedTetList << "\n";
-  out << "      </DataItem>" << "\n";
-  out << "    </Topology>" << "\n";
+  out << "      </DataItem>"
+      << "\n";
+  out << "    </Topology>"
+      << "\n";
 
-  if (m_VertexList.get() == nullptr)
+  if(m_VertexList.get() == nullptr)
   {
     out << "<!-- ********************* GEOMETRY ERROR ****************************************\n";
-    out << "The Geometry with name '" << getName() << "' in DataContainer '" << dcName <<  "' \n";
+    out << "The Geometry with name '" << getName() << "' in DataContainer '" << dcName << "' \n";
     out << "did not have any vertices assigned.\n";
     out << "The Geometry types will be missing from the Xdmf which will cause issues when\n";
     out << "trying to load the file\n";
@@ -677,12 +687,17 @@ int TetrahedralGeom::writeXdmf(QTextStream& out, QString dcName, QString hdfFile
   }
   else
   {
-    out << "    <Geometry Type=\"XYZ\">" << "\n";
-    out << "      <DataItem Format=\"HDF\"  Dimensions=\"" << getNumberOfVertices() << " 3\" NumberType=\"Float\" Precision=\"4\">" << "\n";
+    out << "    <Geometry Type=\"XYZ\">"
+        << "\n";
+    out << "      <DataItem Format=\"HDF\"  Dimensions=\"" << getNumberOfVertices() << " 3\" NumberType=\"Float\" Precision=\"4\">"
+        << "\n";
     out << "        " << hdfFileName << ":/DataContainers/" << dcName << "/" << SIMPL::Geometry::Geometry << "/" << SIMPL::Geometry::SharedVertexList << "\n";
-    out << "      </DataItem>" << "\n";
-    out << "    </Geometry>" << "\n";
-    out << "" << "\n";
+    out << "      </DataItem>"
+        << "\n";
+    out << "    </Geometry>"
+        << "\n";
+    out << ""
+        << "\n";
   }
 
   return err;
@@ -694,7 +709,7 @@ int TetrahedralGeom::writeXdmf(QTextStream& out, QString dcName, QString hdfFile
 QString TetrahedralGeom::getInfoString(SIMPL::InfoStringFormat format)
 {
   QString info;
-  QTextStream ss (&info);
+  QTextStream ss(&info);
 
   if(format == SIMPL::HtmlFormat)
   {
@@ -704,7 +719,6 @@ QString TetrahedralGeom::getInfoString(SIMPL::InfoStringFormat format)
   }
   else
   {
-
   }
   return info;
 }
@@ -717,44 +731,44 @@ int TetrahedralGeom::readGeometryFromHDF5(hid_t parentId, bool preflight)
   herr_t err = 0;
   SharedVertexList::Pointer vertices = GeometryHelpers::GeomIO::ReadListFromHDF5<SharedVertexList>(SIMPL::Geometry::SharedVertexList, parentId, preflight, err);
   SharedTetList::Pointer tets = GeometryHelpers::GeomIO::ReadListFromHDF5<SharedTetList>(SIMPL::Geometry::SharedTetList, parentId, preflight, err);
-  if (tets.get() == nullptr || vertices.get() == nullptr)
+  if(tets.get() == nullptr || vertices.get() == nullptr)
   {
     return -1;
   }
   size_t numTets = tets->getNumberOfTuples();
   size_t numVerts = vertices->getNumberOfTuples();
   SharedTriList::Pointer tris = GeometryHelpers::GeomIO::ReadListFromHDF5<SharedTriList>(SIMPL::Geometry::SharedTriList, parentId, preflight, err);
-  if (err < 0 && err != -2)
+  if(err < 0 && err != -2)
   {
     return -1;
   }
   SharedTriList::Pointer bTris = GeometryHelpers::GeomIO::ReadListFromHDF5<SharedTriList>(SIMPL::Geometry::UnsharedFaceList, parentId, preflight, err);
-  if (err < 0 && err != -2)
+  if(err < 0 && err != -2)
   {
     return -1;
   }
   SharedEdgeList::Pointer edges = GeometryHelpers::GeomIO::ReadListFromHDF5<SharedEdgeList>(SIMPL::Geometry::SharedEdgeList, parentId, preflight, err);
-  if (err < 0 && err != -2)
+  if(err < 0 && err != -2)
   {
     return -1;
   }
   SharedEdgeList::Pointer bEdges = GeometryHelpers::GeomIO::ReadListFromHDF5<SharedEdgeList>(SIMPL::Geometry::UnsharedEdgeList, parentId, preflight, err);
-  if (err < 0 && err != -2)
+  if(err < 0 && err != -2)
   {
     return -1;
   }
   FloatArrayType::Pointer tetCentroids = GeometryHelpers::GeomIO::ReadListFromHDF5<FloatArrayType>(SIMPL::StringConstants::TetCentroids, parentId, preflight, err);
-  if (err < 0 && err != -2)
+  if(err < 0 && err != -2)
   {
     return -1;
   }
   ElementDynamicList::Pointer tetNeighbors = GeometryHelpers::GeomIO::ReadDynamicListFromHDF5<uint16_t, int64_t>(SIMPL::StringConstants::TetNeighbors, parentId, numTets, preflight, err);
-  if (err < 0 && err != -2)
+  if(err < 0 && err != -2)
   {
     return -1;
   }
   ElementDynamicList::Pointer tetsContainingVert = GeometryHelpers::GeomIO::ReadDynamicListFromHDF5<uint16_t, int64_t>(SIMPL::StringConstants::TetsContainingVert, parentId, numVerts, preflight, err);
-  if (err < 0 && err != -2)
+  if(err < 0 && err != -2)
   {
     return -1;
   }
@@ -797,7 +811,7 @@ IGeometry::Pointer TetrahedralGeom::deepCopy()
 
 // Shared ops includes
 #define GEOM_CLASS_NAME TetrahedralGeom
-#include "SIMPLib/Geometry/SharedVertexOps.cpp"
 #include "SIMPLib/Geometry/SharedEdgeOps.cpp"
-#include "SIMPLib/Geometry/SharedTriOps.cpp"
 #include "SIMPLib/Geometry/SharedTetOps.cpp"
+#include "SIMPLib/Geometry/SharedTriOps.cpp"
+#include "SIMPLib/Geometry/SharedVertexOps.cpp"

@@ -38,21 +38,23 @@
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-SecondOrderPolynomialFilterParameter::SecondOrderPolynomialFilterParameter() :
-FilterParameter()
-{}
+SecondOrderPolynomialFilterParameter::SecondOrderPolynomialFilterParameter()
+: FilterParameter()
+{
+}
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
 SecondOrderPolynomialFilterParameter::~SecondOrderPolynomialFilterParameter()
-{}
+{
+}
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-SecondOrderPolynomialFilterParameter::Pointer SecondOrderPolynomialFilterParameter::New(const QString& humanLabel, const QString& propertyName,
-  const Float2ndOrderPoly_t& defaultValue, Category category, SetterCallbackType setterCallback, GetterCallbackType getterCallback, int groupIndex)
+SecondOrderPolynomialFilterParameter::Pointer SecondOrderPolynomialFilterParameter::New(const QString& humanLabel, const QString& propertyName, const Float2ndOrderPoly_t& defaultValue,
+                                                                                        Category category, SetterCallbackType setterCallback, GetterCallbackType getterCallback, int groupIndex)
 {
 
   SecondOrderPolynomialFilterParameter::Pointer ptr = SecondOrderPolynomialFilterParameter::New();
@@ -80,10 +82,10 @@ QString SecondOrderPolynomialFilterParameter::getWidgetType()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void SecondOrderPolynomialFilterParameter::readJson(const QJsonObject &json)
+void SecondOrderPolynomialFilterParameter::readJson(const QJsonObject& json)
 {
   QJsonValue jsonValue = json[getPropertyName()];
-  if(!jsonValue.isUndefined() )
+  if(!jsonValue.isUndefined())
   {
     QJsonObject obj = jsonValue.toObject();
     Float2ndOrderPoly_t poly;
@@ -95,11 +97,10 @@ void SecondOrderPolynomialFilterParameter::readJson(const QJsonObject &json)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void SecondOrderPolynomialFilterParameter::writeJson(QJsonObject &json)
+void SecondOrderPolynomialFilterParameter::writeJson(QJsonObject& json)
 {
   Float2ndOrderPoly_t poly = m_GetterCallback();
   QJsonObject obj;
   poly.writeJson(obj);
   json[getPropertyName()] = obj;
 }
-

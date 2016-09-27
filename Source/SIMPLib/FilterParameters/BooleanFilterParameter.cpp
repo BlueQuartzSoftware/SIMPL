@@ -38,22 +38,23 @@
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-BooleanFilterParameter::BooleanFilterParameter() :
-FilterParameter()
-{}
+BooleanFilterParameter::BooleanFilterParameter()
+: FilterParameter()
+{
+}
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
 BooleanFilterParameter::~BooleanFilterParameter()
-{}
+{
+}
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-BooleanFilterParameter::Pointer BooleanFilterParameter::New(const QString& humanLabel, const QString& propertyName,
-  const bool& defaultValue, Category category, SetterCallbackType setterCallback, GetterCallbackType getterCallback,
-                                                             int groupIndex)
+BooleanFilterParameter::Pointer BooleanFilterParameter::New(const QString& humanLabel, const QString& propertyName, const bool& defaultValue, Category category, SetterCallbackType setterCallback,
+                                                            GetterCallbackType getterCallback, int groupIndex)
 {
 
   BooleanFilterParameter::Pointer ptr = BooleanFilterParameter::New();
@@ -79,10 +80,10 @@ QString BooleanFilterParameter::getWidgetType()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void BooleanFilterParameter::readJson(const QJsonObject &json)
+void BooleanFilterParameter::readJson(const QJsonObject& json)
 {
   QJsonValue jsonValue = json[getPropertyName()];
-  if(!jsonValue.isUndefined() )
+  if(!jsonValue.isUndefined())
   {
     m_SetterCallback(static_cast<bool>(jsonValue.toInt()));
   }
@@ -91,8 +92,7 @@ void BooleanFilterParameter::readJson(const QJsonObject &json)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void BooleanFilterParameter::writeJson(QJsonObject &json)
+void BooleanFilterParameter::writeJson(QJsonObject& json)
 {
   json[getPropertyName()] = static_cast<int>(m_GetterCallback());
 }
-

@@ -6,9 +6,11 @@
 //
 //
 
-
 #include "PhaseType.h"
 
-
-PhaseType::PhaseType() {}
-PhaseType::~PhaseType() {}
+PhaseType::PhaseType()
+{
+}
+PhaseType::~PhaseType()
+{
+}

@@ -44,8 +44,8 @@
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-SubtractionOperator::SubtractionOperator() :
-BinaryOperator()
+SubtractionOperator::SubtractionOperator()
+: BinaryOperator()
 {
   setPrecedence(A_Precedence);
 }
@@ -55,14 +55,12 @@ BinaryOperator()
 // -----------------------------------------------------------------------------
 SubtractionOperator::~SubtractionOperator()
 {
-
 }
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void SubtractionOperator::calculate(AbstractFilter* filter, DataArrayPath calculatedArrayPath, QStack<ICalculatorArray::Pointer> &executionStack)
+void SubtractionOperator::calculate(AbstractFilter* filter, DataArrayPath calculatedArrayPath, QStack<ICalculatorArray::Pointer>& executionStack)
 {
   CREATE_NEW_ARRAY_STANDARD_BINARY(filter, calculatedArrayPath, executionStack, -)
 }
-

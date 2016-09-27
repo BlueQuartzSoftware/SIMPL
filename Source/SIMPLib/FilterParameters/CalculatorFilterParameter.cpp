@@ -38,21 +38,23 @@
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-CalculatorFilterParameter::CalculatorFilterParameter() :
-FilterParameter()
-{}
+CalculatorFilterParameter::CalculatorFilterParameter()
+: FilterParameter()
+{
+}
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
 CalculatorFilterParameter::~CalculatorFilterParameter()
-{}
+{
+}
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-CalculatorFilterParameter::Pointer CalculatorFilterParameter::New(const QString& humanLabel, const QString& propertyName,
-  const QString& defaultValue, Category category, SetterCallbackType setterCallback, GetterCallbackType getterCallback, int groupIndex)
+CalculatorFilterParameter::Pointer CalculatorFilterParameter::New(const QString& humanLabel, const QString& propertyName, const QString& defaultValue, Category category,
+                                                                  SetterCallbackType setterCallback, GetterCallbackType getterCallback, int groupIndex)
 {
 
   CalculatorFilterParameter::Pointer ptr = CalculatorFilterParameter::New();
@@ -67,7 +69,6 @@ CalculatorFilterParameter::Pointer CalculatorFilterParameter::New(const QString&
   return ptr;
 }
 
-
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
@@ -79,10 +80,10 @@ QString CalculatorFilterParameter::getWidgetType()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void CalculatorFilterParameter::readJson(const QJsonObject &json)
+void CalculatorFilterParameter::readJson(const QJsonObject& json)
 {
   QJsonValue jsonValue = json[getPropertyName()];
-  if(!jsonValue.isUndefined() )
+  if(!jsonValue.isUndefined())
   {
     m_SetterCallback(jsonValue.toString(""));
   }
@@ -91,8 +92,7 @@ void CalculatorFilterParameter::readJson(const QJsonObject &json)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void CalculatorFilterParameter::writeJson(QJsonObject &json)
+void CalculatorFilterParameter::writeJson(QJsonObject& json)
 {
   json[getPropertyName()] = m_GetterCallback();
 }
-

@@ -40,8 +40,6 @@
 // -----------------------------------------------------------------------------
 AbstractFilterParametersReader::AbstractFilterParametersReader()
 {
-
-
 }
 
 // -----------------------------------------------------------------------------
@@ -49,7 +47,6 @@ AbstractFilterParametersReader::AbstractFilterParametersReader()
 // -----------------------------------------------------------------------------
 AbstractFilterParametersReader::~AbstractFilterParametersReader()
 {
-
 }
 
 // -----------------------------------------------------------------------------
@@ -340,7 +337,6 @@ QVector<double> AbstractFilterParametersReader::readArray(const QString name, QV
   return QVector<double>();
 }
 
-
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
@@ -364,7 +360,6 @@ FloatVec3_t AbstractFilterParametersReader::readFloatVec3(const QString name, Fl
   // This should never be executed
   return FloatVec3_t();
 }
-
 
 // -----------------------------------------------------------------------------
 //
@@ -535,4 +530,3 @@ QPair<double, double> AbstractFilterParametersReader::readPairOfDoubles(const QS
   // This should never be executed
   return QPair<double, double>();
 }
-

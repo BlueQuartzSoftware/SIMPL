@@ -33,7 +33,6 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-
 #include "AbstractDecisionFilter.h"
 
 #include "SIMPLib/FilterParameters/AbstractFilterParametersReader.h"
@@ -44,8 +43,8 @@
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-AbstractDecisionFilter::AbstractDecisionFilter() :
-  AbstractFilter()
+AbstractDecisionFilter::AbstractDecisionFilter()
+: AbstractFilter()
 {
   setupFilterParameters();
 }
@@ -62,9 +61,9 @@ AbstractDecisionFilter::~AbstractDecisionFilter()
 // -----------------------------------------------------------------------------
 void AbstractDecisionFilter::setupFilterParameters()
 {
-  //FilterParameterVector parameters;
+  // FilterParameterVector parameters;
 
-  //setFilterParameters(parameters);
+  // setFilterParameters(parameters);
 }
 
 // -----------------------------------------------------------------------------
@@ -72,9 +71,9 @@ void AbstractDecisionFilter::setupFilterParameters()
 // -----------------------------------------------------------------------------
 void AbstractDecisionFilter::readFilterParameters(AbstractFilterParametersReader* reader, int index)
 {
-  //reader->openFilterGroup(this, index);
+  // reader->openFilterGroup(this, index);
 
-  //reader->closeFilterGroup();
+  // reader->closeFilterGroup();
 }
 
 // -----------------------------------------------------------------------------
@@ -82,7 +81,6 @@ void AbstractDecisionFilter::readFilterParameters(AbstractFilterParametersReader
 // -----------------------------------------------------------------------------
 void AbstractDecisionFilter::initialize()
 {
-
 }
 
 // -----------------------------------------------------------------------------
@@ -113,15 +111,17 @@ void AbstractDecisionFilter::execute()
 {
   setErrorCondition(0);
   dataCheck();
-  if(getErrorCondition() < 0) { return; }
+  if(getErrorCondition() < 0)
+  {
+    return;
+  }
 }
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void AbstractDecisionFilter::extractProperties(const QJsonDocument &jsonDoc)
+void AbstractDecisionFilter::extractProperties(const QJsonDocument& jsonDoc)
 {
-
 }
 
 // -----------------------------------------------------------------------------
@@ -149,16 +149,22 @@ const QString AbstractDecisionFilter::getCompiledLibraryName()
 //
 // -----------------------------------------------------------------------------
 const QString AbstractDecisionFilter::getGroupName()
-{ return ""; }
+{
+  return "";
+}
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
 const QString AbstractDecisionFilter::getSubGroupName()
-{ return ""; }
+{
+  return "";
+}
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
 const QString AbstractDecisionFilter::getHumanLabel()
-{ return ""; }
+{
+  return "";
+}

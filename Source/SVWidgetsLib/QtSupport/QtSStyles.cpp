@@ -47,32 +47,35 @@
 //
 // -----------------------------------------------------------------------------
 QtSStyles::QtSStyles()
-{}
+{
+}
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
 QtSStyles::~QtSStyles()
-{}
-
+{
+}
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
 QString QtSStyles::GetUIFont()
 {
-#if defined (Q_OS_MAC)
-  //return QString::fromUtf8("Helvetica");
+#if defined(Q_OS_MAC)
+  // return QString::fromUtf8("Helvetica");
   QFont font;
   return font.defaultFamily();
-#elif defined (Q_OS_WIN)
+#elif defined(Q_OS_WIN)
   return QString::fromUtf8("Trebuchet MS");
 #else
   QFont font("DejaVu Sans");
-  if (font.fromString("DejaVu Sans") )
+  if(font.fromString("DejaVu Sans"))
   {
     return font.toString();
-  } else {
+  }
+  else
+  {
     QFont font;
     return font.defaultFamily();
   }
@@ -91,9 +94,9 @@ QFont QtSStyles::GetHumanLabelFont()
   humanLabelFont.setStyleStrategy(QFont::PreferAntialias);
   humanLabelFont.setFamily(GetUIFont());
 
-#if defined (Q_OS_MAC)
+#if defined(Q_OS_MAC)
   humanLabelFont.setPointSize(16);
-#elif defined (Q_OS_WIN)
+#elif defined(Q_OS_WIN)
   humanLabelFont.setPointSize(12);
 #endif
   return humanLabelFont;
@@ -111,16 +114,15 @@ QFont QtSStyles::GetBrandingLabelFont()
   brandingFont.setStyleStrategy(QFont::PreferAntialias);
   brandingFont.setFamily(GetUIFont());
 
-#if defined (Q_OS_MAC)
+#if defined(Q_OS_MAC)
   brandingFont.setPointSize(11);
-#elif defined (Q_OS_WIN)
+#elif defined(Q_OS_WIN)
   brandingFont.setPointSize(8);
 #else
   brandingFont.setPointSize(9);
 #endif
   return brandingFont;
 }
-
 
 // -----------------------------------------------------------------------------
 //
@@ -133,9 +135,9 @@ QFont QtSStyles::GetCategoryFont()
   categoryFont.setStyleStrategy(QFont::PreferAntialias);
   categoryFont.setFamily(GetUIFont());
 
-#if defined (Q_OS_MAC)
+#if defined(Q_OS_MAC)
   categoryFont.setPointSize(14);
-#elif defined (Q_OS_WIN)
+#elif defined(Q_OS_WIN)
   categoryFont.setPointSize(10);
 #endif
 
@@ -153,9 +155,9 @@ QFont QtSStyles::GetTitleFont()
   categoryFont.setStyleStrategy(QFont::PreferAntialias);
   categoryFont.setFamily(GetUIFont());
 
-#if defined (Q_OS_MAC)
+#if defined(Q_OS_MAC)
   categoryFont.setPointSize(16);
-#elif defined (Q_OS_WIN)
+#elif defined(Q_OS_WIN)
   categoryFont.setPointSize(12);
 #endif
 
@@ -167,13 +169,13 @@ QFont QtSStyles::GetTitleFont()
 // -----------------------------------------------------------------------------
 void QtSStyles::LineEditErrorStyle(QLineEdit* lineEdit)
 {
-    QString str;
-    QTextStream ss(&str);
-    ss << "QLineEdit#" << lineEdit->objectName() << "{";
-    //  ss << "border: 1px solid rgb(180, 0, 0);";
-    ss << "background-color: rgb(255, 246, 179);"; // Yellow background
-    ss << "}";
-    lineEdit->setStyleSheet(str);
+  QString str;
+  QTextStream ss(&str);
+  ss << "QLineEdit#" << lineEdit->objectName() << "{";
+  //  ss << "border: 1px solid rgb(180, 0, 0);";
+  ss << "background-color: rgb(255, 246, 179);"; // Yellow background
+  ss << "}";
+  lineEdit->setStyleSheet(str);
 }
 
 // -----------------------------------------------------------------------------

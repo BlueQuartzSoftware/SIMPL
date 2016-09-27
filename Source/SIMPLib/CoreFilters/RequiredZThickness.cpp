@@ -33,14 +33,13 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-
 #include "RequiredZThickness.h"
 
 #include "SIMPLib/Common/Constants.h"
 #include "SIMPLib/FilterParameters/AbstractFilterParametersReader.h"
+#include "SIMPLib/FilterParameters/BooleanFilterParameter.h"
 #include "SIMPLib/FilterParameters/DataArraySelectionFilterParameter.h"
 #include "SIMPLib/FilterParameters/DataContainerSelectionFilterParameter.h"
-#include "SIMPLib/FilterParameters/BooleanFilterParameter.h"
 #include "SIMPLib/FilterParameters/IntFilterParameter.h"
 #include "SIMPLib/FilterParameters/SeparatorFilterParameter.h"
 #include "SIMPLib/Geometry/ImageGeom.h"
@@ -49,11 +48,11 @@
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-RequiredZThickness::RequiredZThickness() :
-  AbstractDecisionFilter(),
-  m_DataContainerSelection(""),
-  m_NumZVoxels(-1),
-  m_PreflightCheck(false)
+RequiredZThickness::RequiredZThickness()
+: AbstractDecisionFilter()
+, m_DataContainerSelection("")
+, m_NumZVoxels(-1)
+, m_PreflightCheck(false)
 {
   setupFilterParameters();
 }
@@ -99,7 +98,6 @@ void RequiredZThickness::readFilterParameters(AbstractFilterParametersReader* re
 // -----------------------------------------------------------------------------
 void RequiredZThickness::initialize()
 {
-
 }
 
 // -----------------------------------------------------------------------------
@@ -108,24 +106,29 @@ void RequiredZThickness::initialize()
 void RequiredZThickness::dataCheck()
 {
   setErrorCondition(0);
-  if(getErrorCondition() < 0) { return; }
+  if(getErrorCondition() < 0)
+  {
+    return;
+  }
 
   DataContainer::Pointer dataContainer = getDataContainerArray()->getPrereqDataContainer<AbstractFilter>(this, getDataContainerSelection());
-  if (getErrorCondition() < 0) { return; }
+  if(getErrorCondition() < 0)
+  {
+    return;
+  }
 
   ImageGeom::Pointer image = dataContainer->getGeometryAs<ImageGeom>();
-  if( nullptr == image.get() )
+  if(nullptr == image.get())
   {
     setErrorCondition(-7789);
     notifyErrorMessage(getHumanLabel(), "Missing Image Geometry in the selected DataContainer", getErrorCondition());
     return;
   }
 
-  size_t dims[3] = { 0, 0, 0 };
+  size_t dims[3] = {0, 0, 0};
   image->getDimensions(dims);
 
-
-  if (dims[2] < getNumZVoxels() && m_PreflightCheck)
+  if(dims[2] < getNumZVoxels() && m_PreflightCheck)
   {
     setErrorCondition(-7787);
     QString str;
@@ -135,8 +138,8 @@ void RequiredZThickness::dataCheck()
     ss << "  Current Z Voxels: " << dims[2];
 
     notifyErrorMessage(getHumanLabel(), str, getErrorCondition());
-  } 
-  else if (dims[2] < getNumZVoxels() && !m_PreflightCheck)
+  }
+  else if(dims[2] < getNumZVoxels() && !m_PreflightCheck)
   {
     QString str;
     QTextStream ss(&str);
@@ -146,7 +149,6 @@ void RequiredZThickness::dataCheck()
 
     notifyWarningMessage(getHumanLabel(), str, getErrorCondition());
   }
-
 }
 
 // -----------------------------------------------------------------------------
@@ -169,18 +171,23 @@ void RequiredZThickness::execute()
 {
   setErrorCondition(0);
   dataCheck();
-  if(getErrorCondition() < 0) { return; }
+  if(getErrorCondition() < 0)
+  {
+    return;
+  }
 
   DataContainer::Pointer dataContainer = getDataContainerArray()->getPrereqDataContainer<AbstractFilter>(this, getDataContainerSelection());
-  if (getErrorCondition() < 0) { return; }
+  if(getErrorCondition() < 0)
+  {
+    return;
+  }
 
   ImageGeom::Pointer image = dataContainer->getGeometryAs<ImageGeom>();
 
-  size_t dims[3] = { 0, 0, 0 };
+  size_t dims[3] = {0, 0, 0};
   image->getDimensions(dims);
 
-
-  if (dims[2] < getNumZVoxels())
+  if(dims[2] < getNumZVoxels())
   {
     QString str;
     QTextStream ss(&str);
@@ -238,4 +245,6 @@ const QString RequiredZThickness::getSubGroupName()
 //
 // -----------------------------------------------------------------------------
 const QString RequiredZThickness::getHumanLabel()
-{ return "Required Z Dimension (Image Geometry)"; }
+{
+  return "Required Z Dimension (Image Geometry)";
+}

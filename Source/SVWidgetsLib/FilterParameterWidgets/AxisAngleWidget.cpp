@@ -44,15 +44,14 @@
 
 #include "FilterParameterWidgetsDialogs.h"
 
-
 // Include the MOC generated file for this class
 #include "moc_AxisAngleWidget.cpp"
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-AxisAngleWidget::AxisAngleWidget(FilterParameter* parameter, AbstractFilter* filter, QWidget* parent) :
-  FilterParameterWidget(parameter, filter, parent)
+AxisAngleWidget::AxisAngleWidget(FilterParameter* parameter, AbstractFilter* filter, QWidget* parent)
+: FilterParameterWidget(parameter, filter, parent)
 {
   m_FilterParameter = dynamic_cast<AxisAngleFilterParameter*>(parameter);
   Q_ASSERT_X(m_FilterParameter != nullptr, "nullptr Pointer", "AxisAngleWidget can ONLY be used with an AxisAngleFilterParameter object");
@@ -74,28 +73,19 @@ AxisAngleWidget::~AxisAngleWidget()
 void AxisAngleWidget::setupGui()
 {
 
-
-
   // Catch when the filter is about to execute the preflight
-  connect(getFilter(), SIGNAL(preflightAboutToExecute()),
-          this, SLOT(beforePreflight()));
+  connect(getFilter(), SIGNAL(preflightAboutToExecute()), this, SLOT(beforePreflight()));
 
   // Catch when the filter is finished running the preflight
-  connect(getFilter(), SIGNAL(preflightExecuted()),
-          this, SLOT(afterPreflight()));
+  connect(getFilter(), SIGNAL(preflightExecuted()), this, SLOT(afterPreflight()));
 
   // Catch when the filter wants its values updated
-  connect(getFilter(), SIGNAL(updateFilterParameters(AbstractFilter*)),
-          this, SLOT(filterNeedsInputParameters(AbstractFilter*)));
+  connect(getFilter(), SIGNAL(updateFilterParameters(AbstractFilter*)), this, SLOT(filterNeedsInputParameters(AbstractFilter*)));
 
-  connect(angle, SIGNAL(textChanged(const QString&)),
-          this, SLOT(widgetChanged(const QString&) ) );
-  connect(h, SIGNAL(textChanged(const QString&)),
-          this, SLOT(widgetChanged(const QString&) ) );
-  connect(k, SIGNAL(textChanged(const QString&)),
-          this, SLOT(widgetChanged(const QString&) ) );
-  connect(l, SIGNAL(textChanged(const QString&)),
-          this, SLOT(widgetChanged(const QString&) ) );
+  connect(angle, SIGNAL(textChanged(const QString&)), this, SLOT(widgetChanged(const QString&)));
+  connect(h, SIGNAL(textChanged(const QString&)), this, SLOT(widgetChanged(const QString&)));
+  connect(k, SIGNAL(textChanged(const QString&)), this, SLOT(widgetChanged(const QString&)));
+  connect(l, SIGNAL(textChanged(const QString&)), this, SLOT(widgetChanged(const QString&)));
 
   QLocale loc = QLocale::system();
 
@@ -104,16 +94,15 @@ void AxisAngleWidget::setupGui()
   FOPW_SETUP_WIDGET(l)
   FOPW_SETUP_WIDGET(angle)
 
-  if (getFilterParameter() != nullptr)
+  if(getFilterParameter() != nullptr)
   {
-    label->setText(getFilterParameter()->getHumanLabel() );
+    label->setText(getFilterParameter()->getHumanLabel());
     AxisAngleInput_t data = getFilter()->property(PROPERTY_NAME_AS_CHAR).value<AxisAngleInput_t>();
-    h->setText(loc.toString(data.h) );
-    k->setText(loc.toString(data.k) );
-    l->setText(loc.toString(data.l) );
-    angle->setText(loc.toString(data.angle) );
+    h->setText(loc.toString(data.h));
+    k->setText(loc.toString(data.k));
+    l->setText(loc.toString(data.l));
+    angle->setText(loc.toString(data.angle));
   }
-
 }
 
 // -----------------------------------------------------------------------------
@@ -149,16 +138,13 @@ void AxisAngleWidget::filterNeedsInputParameters(AbstractFilter* filter)
   {
     FilterParameterWidgetsDialogs::ShowCouldNotSetFilterParameter(getFilter(), getFilterParameter());
   }
-
 }
-
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
 void AxisAngleWidget::beforePreflight()
 {
-
 }
 
 // -----------------------------------------------------------------------------
@@ -166,5 +152,4 @@ void AxisAngleWidget::beforePreflight()
 // -----------------------------------------------------------------------------
 void AxisAngleWidget::afterPreflight()
 {
-
 }

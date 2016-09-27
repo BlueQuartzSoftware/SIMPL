@@ -33,41 +33,37 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-
-#include <stdlib.h>
 #include <math.h>
+#include <stdlib.h>
 
 #include <iostream>
 
 #include "SIMPLib/Math/SIMPLibMath.h"
 
-static const float CubicQuatSym[24][4] =
-{
-  { 0.000000000f, 0.000000000f, 0.000000000f, 1.000000000f},
-  { 1.000000000f, 0.000000000f, 0.000000000f, 0.000000000f},
-  { 0.000000000f, 1.000000000f, 0.000000000f, 0.000000000f},
-  { 0.000000000f, 0.000000000f, 1.000000000f, 0.000000000f},
-  { SIMPLib::Constants::k_1OverRoot2, 0.000000000f, 0.000000000f, SIMPLib::Constants::k_1OverRoot2},
-  { 0.000000000f, SIMPLib::Constants::k_1OverRoot2, 0.000000000f, SIMPLib::Constants::k_1OverRoot2},
-  { 0.000000000f, 0.000000000f, SIMPLib::Constants::k_1OverRoot2, SIMPLib::Constants::k_1OverRoot2},
-  { -SIMPLib::Constants::k_1OverRoot2, 0.000000000f, 0.000000000f, SIMPLib::Constants::k_1OverRoot2},
-  { 0.000000000f, -SIMPLib::Constants::k_1OverRoot2, 0.000000000f, SIMPLib::Constants::k_1OverRoot2},
-  { 0.000000000f, 0.000000000f, -SIMPLib::Constants::k_1OverRoot2, SIMPLib::Constants::k_1OverRoot2},
-  { SIMPLib::Constants::k_1OverRoot2, SIMPLib::Constants::k_1OverRoot2, 0.000000000f, 0.000000000f},
-  { -SIMPLib::Constants::k_1OverRoot2, SIMPLib::Constants::k_1OverRoot2, 0.000000000f, 0.000000000f},
-  { 0.000000000f, SIMPLib::Constants::k_1OverRoot2, SIMPLib::Constants::k_1OverRoot2, 0.000000000f},
-  { 0.000000000f, -SIMPLib::Constants::k_1OverRoot2, SIMPLib::Constants::k_1OverRoot2, 0.000000000f},
-  { SIMPLib::Constants::k_1OverRoot2, 0.000000000f, SIMPLib::Constants::k_1OverRoot2, 0.000000000f},
-  { -SIMPLib::Constants::k_1OverRoot2, 0.000000000f, SIMPLib::Constants::k_1OverRoot2, 0.000000000f},
-  { 0.500000000f, 0.500000000f, 0.500000000f, 0.500000000f},
-  { -0.500000000f, -0.500000000f, -0.500000000f, 0.500000000f},
-  { 0.500000000f, -0.500000000f, 0.500000000f, 0.500000000f},
-  { -0.500000000f, 0.500000000f, -0.500000000f, 0.500000000f},
-  { -0.500000000f, 0.500000000f, 0.500000000f, 0.500000000f},
-  { 0.500000000f, -0.500000000f, -0.500000000f, 0.500000000f},
-  { -0.500000000f, -0.500000000f, 0.500000000f, 0.500000000f},
-  { 0.500000000f, 0.500000000f, -0.500000000f, 0.500000000f}
-};
+static const float CubicQuatSym[24][4] = {{0.000000000f, 0.000000000f, 0.000000000f, 1.000000000f},
+                                          {1.000000000f, 0.000000000f, 0.000000000f, 0.000000000f},
+                                          {0.000000000f, 1.000000000f, 0.000000000f, 0.000000000f},
+                                          {0.000000000f, 0.000000000f, 1.000000000f, 0.000000000f},
+                                          {SIMPLib::Constants::k_1OverRoot2, 0.000000000f, 0.000000000f, SIMPLib::Constants::k_1OverRoot2},
+                                          {0.000000000f, SIMPLib::Constants::k_1OverRoot2, 0.000000000f, SIMPLib::Constants::k_1OverRoot2},
+                                          {0.000000000f, 0.000000000f, SIMPLib::Constants::k_1OverRoot2, SIMPLib::Constants::k_1OverRoot2},
+                                          {-SIMPLib::Constants::k_1OverRoot2, 0.000000000f, 0.000000000f, SIMPLib::Constants::k_1OverRoot2},
+                                          {0.000000000f, -SIMPLib::Constants::k_1OverRoot2, 0.000000000f, SIMPLib::Constants::k_1OverRoot2},
+                                          {0.000000000f, 0.000000000f, -SIMPLib::Constants::k_1OverRoot2, SIMPLib::Constants::k_1OverRoot2},
+                                          {SIMPLib::Constants::k_1OverRoot2, SIMPLib::Constants::k_1OverRoot2, 0.000000000f, 0.000000000f},
+                                          {-SIMPLib::Constants::k_1OverRoot2, SIMPLib::Constants::k_1OverRoot2, 0.000000000f, 0.000000000f},
+                                          {0.000000000f, SIMPLib::Constants::k_1OverRoot2, SIMPLib::Constants::k_1OverRoot2, 0.000000000f},
+                                          {0.000000000f, -SIMPLib::Constants::k_1OverRoot2, SIMPLib::Constants::k_1OverRoot2, 0.000000000f},
+                                          {SIMPLib::Constants::k_1OverRoot2, 0.000000000f, SIMPLib::Constants::k_1OverRoot2, 0.000000000f},
+                                          {-SIMPLib::Constants::k_1OverRoot2, 0.000000000f, SIMPLib::Constants::k_1OverRoot2, 0.000000000f},
+                                          {0.500000000f, 0.500000000f, 0.500000000f, 0.500000000f},
+                                          {-0.500000000f, -0.500000000f, -0.500000000f, 0.500000000f},
+                                          {0.500000000f, -0.500000000f, 0.500000000f, 0.500000000f},
+                                          {-0.500000000f, 0.500000000f, -0.500000000f, 0.500000000f},
+                                          {-0.500000000f, 0.500000000f, 0.500000000f, 0.500000000f},
+                                          {0.500000000f, -0.500000000f, -0.500000000f, 0.500000000f},
+                                          {-0.500000000f, -0.500000000f, 0.500000000f, 0.500000000f},
+                                          {0.500000000f, 0.500000000f, -0.500000000f, 0.500000000f}};
 
 /**
  * @brief eulertoQuat This converts an Euler Angle to a Quaternion
@@ -107,10 +103,12 @@ void QuattoEuler(float* q, float& ea1, float& ea2, float& ea3)
   ea3 = (sum - diff);
   tmp = (q[2] * q[2]) + (q[3] * q[3]);
   tmp = sqrt(tmp);
-  if(tmp > 1.0f) { tmp = 1.0f; }
+  if(tmp > 1.0f)
+  {
+    tmp = 1.0f;
+  }
   ea2 = 2 * acos(tmp);
 }
-
 
 /**
  * @brief main
@@ -118,9 +116,9 @@ void QuattoEuler(float* q, float& ea1, float& ea2, float& ea3)
  * @param argv
  * @return
  */
-int main (int argc, char** argv)
+int main(int argc, char** argv)
 {
-  if (argc != 4)
+  if(argc != 4)
   {
     std::cout << "This program needs 3 Euler Angles as arguments" << std::endl;
     return EXIT_FAILURE;
@@ -148,7 +146,7 @@ int main (int argc, char** argv)
 
   // Loop on all 24 Symmetries. Note that the first symmetry will give you back the input angle so you can use this
   // as a check to make sure things are going correctly.
-  for (int i = 0; i < 24; ++i)
+  for(int i = 0; i < 24; ++i)
   {
     out[0] = CubicQuatSym[i][3] * q[0] + CubicQuatSym[i][0] * q[3] + CubicQuatSym[i][2] * q[1] - CubicQuatSym[i][1] * q[2];
     out[1] = CubicQuatSym[i][3] * q[1] + CubicQuatSym[i][1] * q[3] + CubicQuatSym[i][0] * q[2] - CubicQuatSym[i][2] * q[0];
@@ -158,7 +156,6 @@ int main (int argc, char** argv)
     QuattoEuler(out, outEa0, outEa1, outEa2);
     std::cout << "[" << i << "]:    " << outEa0 << ", " << outEa1 << ", " << outEa2 << std::endl;
   }
-
 
   return EXIT_SUCCESS;
 }

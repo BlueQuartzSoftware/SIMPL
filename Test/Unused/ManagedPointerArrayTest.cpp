@@ -33,22 +33,18 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-
 #include <stdlib.h>
-
 
 #include <QtCore/QDir>
 #include <QtCore/QFile>
 
-#include "SIMPLib/SIMPLib.h"
 #include "SIMPLib/DataArrays/ManagedArrayOfArrays.hpp"
+#include "SIMPLib/SIMPLib.h"
 
-
-#include "UnitTestSupport.hpp"
 #include "TestFileLocations.h"
+#include "UnitTestSupport.hpp"
 
-
-#define NUM_ELEMENTS  10
+#define NUM_ELEMENTS 10
 
 // -----------------------------------------------------------------------------
 //
@@ -63,8 +59,7 @@ void RemoveTestFiles()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-template<typename T>
-void __TestManagedArray()
+template <typename T> void __TestManagedArray()
 {
 
   typename ManagedArrayOfArrays<T>::Pointer mArray = ManagedArrayOfArrays<T>::CreateArray(NUM_ELEMENTS, "test");
@@ -112,8 +107,6 @@ int TestManagedPointerArray()
   return EXIT_SUCCESS;
 }
 
-
-
 // -----------------------------------------------------------------------------
 //  Use test framework
 // -----------------------------------------------------------------------------
@@ -121,11 +114,9 @@ int main(int argc, char** argv)
 {
   int err = EXIT_SUCCESS;
 
-  DREAM3D_REGISTER_TEST( TestManagedPointerArray() )
+  DREAM3D_REGISTER_TEST(TestManagedPointerArray())
 
-  DREAM3D_REGISTER_TEST( RemoveTestFiles() )
+  DREAM3D_REGISTER_TEST(RemoveTestFiles())
   PRINT_TEST_SUMMARY();
   return err;
 }
-
-
