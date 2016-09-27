@@ -64,6 +64,7 @@ set(_PublicFilters
   ExtractComponentAsArray
   FeatureCountDecision
   FindDerivatives
+  GenerateColorTable
   LinkFeatureMapToElementArray
   MaskCountDecision
   MoveData
