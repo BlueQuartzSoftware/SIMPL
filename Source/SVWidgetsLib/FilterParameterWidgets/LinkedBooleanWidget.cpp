@@ -51,7 +51,7 @@ LinkedBooleanWidget::LinkedBooleanWidget(FilterParameter* parameter, AbstractFil
 : FilterParameterWidget(parameter, filter, parent)
 {
   m_FilterParameter = dynamic_cast<LinkedBooleanFilterParameter*>(parameter);
-  Q_ASSERT_X(m_FilterParameter != nullptr, "nullptr Pointer", "LinkedBooleanWidget can ONLY be used with a LinkedBooleanFilterParameter object");
+  Q_ASSERT_X(m_FilterParameter != nullptr, "NULL Pointer", "LinkedBooleanWidget can ONLY be used with a LinkedBooleanFilterParameter object");
 
   setupUi(this);
   setupGui();

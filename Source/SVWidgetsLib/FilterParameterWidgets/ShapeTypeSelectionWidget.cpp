@@ -60,7 +60,7 @@ ShapeTypeSelectionWidget::ShapeTypeSelectionWidget(FilterParameter* parameter, A
 , m_DidCausePreflight(false)
 {
   m_FilterParameter = dynamic_cast<ShapeTypeSelectionFilterParameter*>(parameter);
-  Q_ASSERT_X(m_FilterParameter != nullptr, "nullptr Pointer", "ShapeTypeSelectionWidget can ONLY be used with a ShapeTypeSelectionFilterParameter object");
+  Q_ASSERT_X(m_FilterParameter != nullptr, "NULL Pointer", "ShapeTypeSelectionWidget can ONLY be used with a ShapeTypeSelectionFilterParameter object");
 
   setupUi(this);
   setupGui();

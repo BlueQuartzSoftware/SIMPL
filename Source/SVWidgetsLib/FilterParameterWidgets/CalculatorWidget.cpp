@@ -59,10 +59,10 @@ CalculatorWidget::CalculatorWidget(FilterParameter* parameter, AbstractFilter* f
 , m_SelectionStart(-1)
 {
   m_Filter = dynamic_cast<ArrayCalculator*>(filter);
-  Q_ASSERT_X(m_Filter != nullptr, "nullptr Pointer", "CalculatorWidget can ONLY be used with an ArrayCalculator filter");
+  Q_ASSERT_X(m_Filter != nullptr, "NULL Pointer", "CalculatorWidget can ONLY be used with an ArrayCalculator filter");
 
   m_FilterParameter = dynamic_cast<CalculatorFilterParameter*>(parameter);
-  Q_ASSERT_X(m_FilterParameter != nullptr, "nullptr Pointer", "CalculatorWidget can ONLY be used with a CalculatorFilterParameter object");
+  Q_ASSERT_X(m_FilterParameter != nullptr, "NULL Pointer", "CalculatorWidget can ONLY be used with a CalculatorFilterParameter object");
 
   setupUi(this);
   setupGui();
@@ -407,7 +407,7 @@ void CalculatorWidget::filterNeedsInputParameters(AbstractFilter* filter)
   }
 
   ArrayCalculator* calculatorFilter = dynamic_cast<ArrayCalculator*>(filter);
-  Q_ASSERT_X(calculatorFilter != nullptr, "nullptr Pointer", "CalculatorWidget can ONLY be used with an ArrayCalculator filter");
+  Q_ASSERT_X(calculatorFilter != nullptr, "NULL Pointer", "CalculatorWidget can ONLY be used with an ArrayCalculator filter");
 
   if(radiansBtn->isChecked())
   {

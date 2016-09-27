@@ -53,7 +53,7 @@ DataContainerCreationWidget::DataContainerCreationWidget(FilterParameter* parame
 : FilterParameterWidget(parameter, filter, parent)
 {
   m_FilterParameter = dynamic_cast<DataContainerCreationFilterParameter*>(parameter);
-  Q_ASSERT_X(m_FilterParameter != nullptr, "nullptr Pointer", "DataContainerCreationWidget can ONLY be used with a DataContainerCreationFilterParameter object");
+  Q_ASSERT_X(m_FilterParameter != nullptr, "NULL Pointer", "DataContainerCreationWidget can ONLY be used with a DataContainerCreationFilterParameter object");
 
   setupUi(this);
   setupGui();

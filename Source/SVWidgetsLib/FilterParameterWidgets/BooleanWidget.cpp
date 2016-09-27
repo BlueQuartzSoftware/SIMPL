@@ -51,7 +51,7 @@ BooleanWidget::BooleanWidget(FilterParameter* parameter, AbstractFilter* filter,
 : FilterParameterWidget(parameter, filter, parent)
 {
   m_FilterParameter = dynamic_cast<BooleanFilterParameter*>(parameter);
-  Q_ASSERT_X(m_FilterParameter != nullptr, "nullptr Pointer", "BooleanWidget can ONLY be used with a BooleanFilterParameter object");
+  Q_ASSERT_X(m_FilterParameter != nullptr, "NULL Pointer", "BooleanWidget can ONLY be used with a BooleanFilterParameter object");
 
   setupUi(this);
   setupGui();

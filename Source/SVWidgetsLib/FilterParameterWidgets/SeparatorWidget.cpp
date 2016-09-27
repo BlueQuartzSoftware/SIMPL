@@ -53,7 +53,7 @@ SeparatorWidget::SeparatorWidget(FilterParameter* parameter, AbstractFilter* fil
 : FilterParameterWidget(parameter, filter, parent)
 {
   m_FilterParameter = dynamic_cast<SeparatorFilterParameter*>(parameter);
-  Q_ASSERT_X(m_FilterParameter != nullptr, "nullptr Pointer", "SeparatorWidget can ONLY be used with a SeparatorFilterParameter object");
+  Q_ASSERT_X(m_FilterParameter != nullptr, "NULL Pointer", "SeparatorWidget can ONLY be used with a SeparatorFilterParameter object");
 
   setupUi(this);
   setupGui();

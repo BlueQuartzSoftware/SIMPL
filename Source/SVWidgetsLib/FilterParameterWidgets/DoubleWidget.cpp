@@ -53,7 +53,7 @@ DoubleWidget::DoubleWidget(FilterParameter* parameter, AbstractFilter* filter, Q
 : FilterParameterWidget(parameter, filter, parent)
 {
   m_FilterParameter = dynamic_cast<DoubleFilterParameter*>(parameter);
-  Q_ASSERT_X(m_FilterParameter != nullptr, "nullptr Pointer", "DoubleWidget can ONLY be used with a DoubleFilterParameter object");
+  Q_ASSERT_X(m_FilterParameter != nullptr, "NULL Pointer", "DoubleWidget can ONLY be used with a DoubleFilterParameter object");
 
   setupUi(this);
   setupGui();

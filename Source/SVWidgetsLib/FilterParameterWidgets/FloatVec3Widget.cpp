@@ -55,7 +55,7 @@ FloatVec3Widget::FloatVec3Widget(FilterParameter* parameter, AbstractFilter* fil
 : FilterParameterWidget(parameter, filter, parent)
 {
   m_FilterParameter = dynamic_cast<FloatVec3FilterParameter*>(parameter);
-  Q_ASSERT_X(m_FilterParameter != nullptr, "nullptr Pointer", "FloatVec3Widget can ONLY be used with a FloatVec3FilterParameter object");
+  Q_ASSERT_X(m_FilterParameter != nullptr, "NULL Pointer", "FloatVec3Widget can ONLY be used with a FloatVec3FilterParameter object");
 
   setupUi(this);
   setupGui();

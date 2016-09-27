@@ -53,7 +53,7 @@ IntVec3Widget::IntVec3Widget(FilterParameter* parameter, AbstractFilter* filter,
 : FilterParameterWidget(parameter, filter, parent)
 {
   m_FilterParameter = dynamic_cast<IntVec3FilterParameter*>(parameter);
-  Q_ASSERT_X(m_FilterParameter != nullptr, "nullptr Pointer", "IntVec3Widget can ONLY be used with a IntVec3FilterParameter object");
+  Q_ASSERT_X(m_FilterParameter != nullptr, "NULL Pointer", "IntVec3Widget can ONLY be used with a IntVec3FilterParameter object");
 
   setupUi(this);
   setupGui();

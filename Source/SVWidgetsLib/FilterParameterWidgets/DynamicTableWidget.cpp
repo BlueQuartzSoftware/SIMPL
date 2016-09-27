@@ -64,7 +64,7 @@ DynamicTableWidget::DynamicTableWidget(FilterParameter* parameter, AbstractFilte
 : FilterParameterWidget(parameter, filter, parent)
 {
   m_FilterParameter = dynamic_cast<DynamicTableFilterParameter*>(parameter);
-  Q_ASSERT_X(m_FilterParameter != nullptr, "nullptr Pointer", "DynamicTableWidget can ONLY be used with a DynamicTableFilterParameter object");
+  Q_ASSERT_X(m_FilterParameter != nullptr, "NULL Pointer", "DynamicTableWidget can ONLY be used with a DynamicTableFilterParameter object");
 
   setupUi(this);
   setupGui();

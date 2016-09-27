@@ -26,6 +26,7 @@ set(SIMPLView_PARAMETER_WIDGETS
     FileListInfoWidget
     FloatVec3Widget
     FourthOrderPolynomialWidget
+    GenerateColorTableWidget
     InputFileWidget
     InputPathWidget
     IntVec3Widget
