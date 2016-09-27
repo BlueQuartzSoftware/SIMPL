@@ -41,15 +41,14 @@
 
 #include "FilterParameterWidgetsDialogs.h"
 
-
 // Include the MOC generated file for this class
 #include "moc_BooleanWidget.cpp"
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-BooleanWidget::BooleanWidget(FilterParameter* parameter, AbstractFilter* filter, QWidget* parent) :
-  FilterParameterWidget(parameter, filter, parent)
+BooleanWidget::BooleanWidget(FilterParameter* parameter, AbstractFilter* filter, QWidget* parent)
+: FilterParameterWidget(parameter, filter, parent)
 {
   m_FilterParameter = dynamic_cast<BooleanFilterParameter*>(parameter);
   Q_ASSERT_X(m_FilterParameter != nullptr, "nullptr Pointer", "BooleanWidget can ONLY be used with a BooleanFilterParameter object");
@@ -62,7 +61,8 @@ BooleanWidget::BooleanWidget(FilterParameter* parameter, AbstractFilter* filter,
 //
 // -----------------------------------------------------------------------------
 BooleanWidget::~BooleanWidget()
-{}
+{
+}
 
 // -----------------------------------------------------------------------------
 //
@@ -71,26 +71,22 @@ void BooleanWidget::setupGui()
 {
 
   // Catch when the filter is about to execute the preflight
-  connect(getFilter(), SIGNAL(preflightAboutToExecute()),
-          this, SLOT(beforePreflight()));
+  connect(getFilter(), SIGNAL(preflightAboutToExecute()), this, SLOT(beforePreflight()));
 
   // Catch when the filter is finished running the preflight
-  connect(getFilter(), SIGNAL(preflightExecuted()),
-          this, SLOT(afterPreflight()));
+  connect(getFilter(), SIGNAL(preflightExecuted()), this, SLOT(afterPreflight()));
 
   // Catch when the filter wants its values updated
-  connect(getFilter(), SIGNAL(updateFilterParameters(AbstractFilter*)),
-          this, SLOT(filterNeedsInputParameters(AbstractFilter*)));
+  connect(getFilter(), SIGNAL(updateFilterParameters(AbstractFilter*)), this, SLOT(filterNeedsInputParameters(AbstractFilter*)));
 
-  connect(value, SIGNAL(stateChanged(int)),
-          this, SLOT(widgetChanged(int) ) );
+  connect(value, SIGNAL(stateChanged(int)), this, SLOT(widgetChanged(int)));
 
-  if (getFilterParameter() != nullptr)
+  if(getFilterParameter() != nullptr)
   {
-    label->setText(getFilterParameter()->getHumanLabel() );
+    label->setText(getFilterParameter()->getHumanLabel());
 
     QVariant objValue = getFilter()->property(PROPERTY_NAME_AS_CHAR);
-    if (objValue.isValid() == true)
+    if(objValue.isValid() == true)
     {
       value->setChecked(objValue.toBool());
     }
@@ -100,9 +96,7 @@ void BooleanWidget::setupGui()
       emit errorSettingFilterParameter(ss);
       qDebug() << ss;
     }
-
   }
-
 }
 
 // -----------------------------------------------------------------------------
@@ -119,22 +113,19 @@ void BooleanWidget::widgetChanged(int state)
 void BooleanWidget::filterNeedsInputParameters(AbstractFilter* filter)
 {
 
-  QVariant var(value->isChecked() );
+  QVariant var(value->isChecked());
   bool ok = filter->setProperty(PROPERTY_NAME_AS_CHAR, var);
   if(false == ok)
   {
     FilterParameterWidgetsDialogs::ShowCouldNotSetFilterParameter(getFilter(), getFilterParameter());
   }
-
 }
-
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
 void BooleanWidget::beforePreflight()
 {
-
 }
 
 // -----------------------------------------------------------------------------
@@ -142,5 +133,4 @@ void BooleanWidget::beforePreflight()
 // -----------------------------------------------------------------------------
 void BooleanWidget::afterPreflight()
 {
-
 }

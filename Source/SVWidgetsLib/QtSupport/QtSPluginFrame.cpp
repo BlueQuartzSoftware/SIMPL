@@ -33,11 +33,10 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-
 #include "QtSPluginFrame.h"
 
-#include <QtCore/QFileInfo>
 #include <QtCore/QDir>
+#include <QtCore/QFileInfo>
 
 #include <QtWidgets/QLineEdit>
 #include <QtWidgets/QMessageBox>
@@ -46,9 +45,9 @@
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-QtSPluginFrame::QtSPluginFrame(QWidget* parent) :
-  QFrame(parent),
-  m_StatusBar(nullptr)
+QtSPluginFrame::QtSPluginFrame(QWidget* parent)
+: QFrame(parent)
+, m_StatusBar(nullptr)
 {
 }
 
@@ -65,7 +64,7 @@ QtSPluginFrame::~QtSPluginFrame()
 bool QtSPluginFrame::verifyOutputPathParentExists(QString outFilePath, QLineEdit* lineEdit)
 {
   QFileInfo fileinfo(outFilePath);
-  QDir parent (fileinfo.dir() );
+  QDir parent(fileinfo.dir());
   //  if (false == parent.exists() )
   //  {
   //    lineEdit->setStyleSheet("border: 1px solid red;");
@@ -77,7 +76,6 @@ bool QtSPluginFrame::verifyOutputPathParentExists(QString outFilePath, QLineEdit
   return parent.exists();
 }
 
-
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
@@ -85,7 +83,7 @@ bool QtSPluginFrame::verifyPathExists(QString outFilePath, QLineEdit* lineEdit)
 {
   //  qDebug() << "outFilePath: " << outFilePath() << "\n";
   QFileInfo fileinfo(outFilePath);
-  if (false == fileinfo.exists() )
+  if(false == fileinfo.exists())
   {
     lineEdit->setStyleSheet("border: 1px solid red;");
   }
@@ -95,7 +93,6 @@ bool QtSPluginFrame::verifyPathExists(QString outFilePath, QLineEdit* lineEdit)
   }
   return fileinfo.exists();
 }
-
 
 // -----------------------------------------------------------------------------
 //
@@ -119,38 +116,30 @@ QStatusBar* QtSPluginFrame::statusBar()
 bool QtSPluginFrame::sanityCheckOutputDirectory(QLineEdit* le, QString msgTitle)
 {
 
-  if (le->text().isEmpty() == true)
+  if(le->text().isEmpty() == true)
   {
-    QMessageBox::critical(this, msgTitle,
-                          "The output directory has NOT been set. Please set a directory path and try again.",
-                          QMessageBox::Ok | QMessageBox::Default);
+    QMessageBox::critical(this, msgTitle, "The output directory has NOT been set. Please set a directory path and try again.", QMessageBox::Ok | QMessageBox::Default);
     return false;
   }
 
-  if (verifyPathExists(le->text(), le) == false)
+  if(verifyPathExists(le->text(), le) == false)
   {
     QString msg("The Output Directory '");
     msg.append(le->text()).append("'\ndoes not exist. Would you like to create it?");
-    int ret = QMessageBox::warning(this, msgTitle,
-                                   msg,
-                                   QMessageBox::Yes | QMessageBox::Default,
-                                   QMessageBox::No);
-    if (ret == QMessageBox::No)
+    int ret = QMessageBox::warning(this, msgTitle, msg, QMessageBox::Yes | QMessageBox::Default, QMessageBox::No);
+    if(ret == QMessageBox::No)
     {
       return false;
     }
-    else if (ret == QMessageBox::Yes)
+    else if(ret == QMessageBox::Yes)
     {
       QDir outputDir(le->text());
-      if (outputDir.exists() == false)
+      if(outputDir.exists() == false)
       {
         bool ok = outputDir.mkpath(".");
-        if (ok == false)
+        if(ok == false)
         {
-          QMessageBox::critical(this,
-                                tr("Output Directory Creation"),
-                                tr("The output directory could not be created."),
-                                QMessageBox::Ok);
+          QMessageBox::critical(this, tr("Output Directory Creation"), tr("The output directory could not be created."), QMessageBox::Ok);
           return false;
         }
         else
@@ -161,9 +150,7 @@ bool QtSPluginFrame::sanityCheckOutputDirectory(QLineEdit* le, QString msgTitle)
     }
   }
   return true;
-
 }
-
 
 // -----------------------------------------------------------------------------
 //
@@ -180,13 +167,16 @@ void QtSPluginFrame::displayDialogBox(QString title, QString text, QMessageBox::
   msgBox.exec();
 }
 
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void QtSPluginFrame::writeSettings(QSettings& prefs)
+{
+}
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void QtSPluginFrame::writeSettings(QSettings& prefs) {}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-void QtSPluginFrame::readSettings(QSettings& prefs, bool shouldClear) {}
+void QtSPluginFrame::readSettings(QSettings& prefs, bool shouldClear)
+{
+}

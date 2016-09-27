@@ -38,21 +38,24 @@
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-DataContainerSelectionFilterParameter::DataContainerSelectionFilterParameter() :
-  FilterParameter()
-{}
+DataContainerSelectionFilterParameter::DataContainerSelectionFilterParameter()
+: FilterParameter()
+{
+}
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
 DataContainerSelectionFilterParameter::~DataContainerSelectionFilterParameter()
-{}
+{
+}
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-DataContainerSelectionFilterParameter::Pointer DataContainerSelectionFilterParameter::New(const QString& humanLabel, const QString& propertyName,
-    const QString& defaultValue, Category category, SetterCallbackType setterCallback, GetterCallbackType getterCallback, const RequirementType req, int groupIndex)
+DataContainerSelectionFilterParameter::Pointer DataContainerSelectionFilterParameter::New(const QString& humanLabel, const QString& propertyName, const QString& defaultValue, Category category,
+                                                                                          SetterCallbackType setterCallback, GetterCallbackType getterCallback, const RequirementType req,
+                                                                                          int groupIndex)
 {
   DataContainerSelectionFilterParameter::Pointer ptr = DataContainerSelectionFilterParameter::New();
   ptr->setHumanLabel(humanLabel);
@@ -80,10 +83,10 @@ QString DataContainerSelectionFilterParameter::getWidgetType()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void DataContainerSelectionFilterParameter::readJson(const QJsonObject &json)
+void DataContainerSelectionFilterParameter::readJson(const QJsonObject& json)
 {
   QJsonValue jsonValue = json[getPropertyName()];
-  if(!jsonValue.isUndefined() )
+  if(!jsonValue.isUndefined())
   {
     m_SetterCallback(jsonValue.toString(""));
   }
@@ -92,8 +95,7 @@ void DataContainerSelectionFilterParameter::readJson(const QJsonObject &json)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void DataContainerSelectionFilterParameter::writeJson(QJsonObject &json)
+void DataContainerSelectionFilterParameter::writeJson(QJsonObject& json)
 {
   json[getPropertyName()] = m_GetterCallback();
 }
-

@@ -33,19 +33,16 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-
 #include "H5PrimaryStatsDataDelegate.h"
 
 #include "H5Support/QH5Lite.h"
 #include "H5Support/QH5Utilities.h"
-
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
 H5PrimaryStatsDataDelegate::H5PrimaryStatsDataDelegate()
 {
-
 }
 
 // -----------------------------------------------------------------------------
@@ -68,7 +65,7 @@ VectorOfFloatArray H5PrimaryStatsDataDelegate::createBetaDistributionArrays()
   return vect;
 }
 
-//VectorOfFloatArray H5PrimaryStatsDataDelegate::createPowerDistributionArrays()
+// VectorOfFloatArray H5PrimaryStatsDataDelegate::createPowerDistributionArrays()
 //{
 //  FloatArrayType::Pointer alphas = FloatArrayType::CreateArray(0, SIMPL::StringConstants::Alpha);
 //  FloatArrayType::Pointer ks = FloatArrayType::CreateArray(0, SIMPL::StringConstants::Exp_k);
@@ -90,21 +87,20 @@ VectorOfFloatArray H5PrimaryStatsDataDelegate::createLogNormalDistributionArrays
   return vect;
 }
 
-
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
 VectorOfFloatArray H5PrimaryStatsDataDelegate::createDistributionVector(unsigned int distType)
 {
-  if (distType == SIMPL::DistributionType::Beta)
+  if(distType == SIMPL::DistributionType::Beta)
   {
     return createBetaDistributionArrays();
   }
-//  else if (distType == SIMPL::DistributionType::Power)
-//  {
-//    return createPowerDistributionArrays();
-//  }
-  else if (distType == SIMPL::DistributionType::LogNormal)
+  //  else if (distType == SIMPL::DistributionType::Power)
+  //  {
+  //    return createPowerDistributionArrays();
+  //  }
+  else if(distType == SIMPL::DistributionType::LogNormal)
   {
     return createLogNormalDistributionArrays();
   }
@@ -112,19 +108,18 @@ VectorOfFloatArray H5PrimaryStatsDataDelegate::createDistributionVector(unsigned
   return empty;
 }
 
-
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
 int H5PrimaryStatsDataDelegate::readPrimaryStatsData(PrimaryStatsData* data, hid_t groupId)
 {
   int err = 0;
-  //Read the NumFeatures
+  // Read the NumFeatures
   err = readBoundaryArea(data, groupId);
 
   err = readStatsDataName(data, groupId);
 
-  //Read the PhaseFraction
+  // Read the PhaseFraction
   err = readPhaseFraction(data, groupId);
 
   // Read the Feature Diameter Info
@@ -134,9 +129,7 @@ int H5PrimaryStatsDataDelegate::readPrimaryStatsData(PrimaryStatsData* data, hid
   uint32_t dType = readDistributionType(groupId, SIMPL::StringConstants::Feature_Size_Distribution);
   data->setFeatureSize_DistType(dType);
   data->setFeatureSizeDistribution(createDistributionVector(data->getFeatureSize_DistType()));
-  err = readDistributionData(groupId,
-                             SIMPL::StringConstants::Feature_Size_Distribution,
-                             data->getFeatureSizeDistribution());
+  err = readDistributionData(groupId, SIMPL::StringConstants::Feature_Size_Distribution, data->getFeatureSizeDistribution());
 
   // Read the Bin Numbers
   err = readBinNumbers(data, groupId);
@@ -144,39 +137,31 @@ int H5PrimaryStatsDataDelegate::readPrimaryStatsData(PrimaryStatsData* data, hid
   // Read the B Over A
   dType = readDistributionType(groupId, SIMPL::StringConstants::Feature_SizeVBoverA_Distributions);
   data->setBOverA_DistType(dType);
-  data->setFeatureSize_BOverA( createDistributionVector(data->getBOverA_DistType()));
-  err = readDistributionData(groupId,
-                             SIMPL::StringConstants::Feature_SizeVBoverA_Distributions,
-                             data->getFeatureSize_BOverA());
+  data->setFeatureSize_BOverA(createDistributionVector(data->getBOverA_DistType()));
+  err = readDistributionData(groupId, SIMPL::StringConstants::Feature_SizeVBoverA_Distributions, data->getFeatureSize_BOverA());
 
   // Read the C Over A
   dType = readDistributionType(groupId, SIMPL::StringConstants::Feature_SizeVCoverA_Distributions);
   data->setCOverA_DistType(dType);
-  data->setFeatureSize_COverA( createDistributionVector(data->getCOverA_DistType()));
-  err = readDistributionData(groupId,
-                             SIMPL::StringConstants::Feature_SizeVCoverA_Distributions,
-                             data->getFeatureSize_COverA());
+  data->setFeatureSize_COverA(createDistributionVector(data->getCOverA_DistType()));
+  err = readDistributionData(groupId, SIMPL::StringConstants::Feature_SizeVCoverA_Distributions, data->getFeatureSize_COverA());
 
   // Read the Neighbors
   dType = readDistributionType(groupId, SIMPL::StringConstants::Feature_SizeVNeighbors_Distributions);
   data->setNeighbors_DistType(dType);
-  data->setFeatureSize_Neighbors( createDistributionVector(data->getNeighbors_DistType()));
-  err = readDistributionData(groupId,
-                             SIMPL::StringConstants::Feature_SizeVNeighbors_Distributions,
-                             data->getFeatureSize_Neighbors());
+  data->setFeatureSize_Neighbors(createDistributionVector(data->getNeighbors_DistType()));
+  err = readDistributionData(groupId, SIMPL::StringConstants::Feature_SizeVNeighbors_Distributions, data->getFeatureSize_Neighbors());
 
   // Read the Omegas
   dType = readDistributionType(groupId, SIMPL::StringConstants::Feature_SizeVOmega3_Distributions);
   data->setOmegas_DistType(dType);
-  data->setFeatureSize_Omegas( createDistributionVector(data->getOmegas_DistType()));
-  err = readDistributionData(groupId,
-                             SIMPL::StringConstants::Feature_SizeVOmega3_Distributions,
-                             data->getFeatureSize_Omegas());
+  data->setFeatureSize_Omegas(createDistributionVector(data->getOmegas_DistType()));
+  err = readDistributionData(groupId, SIMPL::StringConstants::Feature_SizeVOmega3_Distributions, data->getFeatureSize_Omegas());
 
   // Read the Misorientation Bins
   FloatArrayType::Pointer misoBins = FloatArrayType::CreateArray(0, SIMPL::StringConstants::MisorientationBins);
   err = misoBins->readH5Data(groupId);
-  if (err < 0)
+  if(err < 0)
   {
     misoBins = FloatArrayType::NullPointer();
   }
@@ -186,7 +171,7 @@ int H5PrimaryStatsDataDelegate::readPrimaryStatsData(PrimaryStatsData* data, hid
   // Read the ODF Data
   FloatArrayType::Pointer odfBins = FloatArrayType::CreateArray(0, SIMPL::StringConstants::ODF);
   err = odfBins->readH5Data(groupId);
-  if (err < 0)
+  if(err < 0)
   {
     odfBins = FloatArrayType::NullPointer();
   }
@@ -196,7 +181,7 @@ int H5PrimaryStatsDataDelegate::readPrimaryStatsData(PrimaryStatsData* data, hid
   // Read the Axis ODF Data
   FloatArrayType::Pointer axisOdfBins = FloatArrayType::CreateArray(0, SIMPL::StringConstants::AxisOrientation);
   err = axisOdfBins->readH5Data(groupId);
-  if (err < 0)
+  if(err < 0)
   {
     axisOdfBins = FloatArrayType::NullPointer();
   }
@@ -206,33 +191,32 @@ int H5PrimaryStatsDataDelegate::readPrimaryStatsData(PrimaryStatsData* data, hid
   return err;
 }
 
-
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
 int H5PrimaryStatsDataDelegate::writePrimaryStatsData(PrimaryStatsData* data, hid_t groupId)
 {
-  if (nullptr == data)
+  if(nullptr == data)
   {
     return -1;
   }
   int err = 0;
 
   err = QH5Lite::writeStringDataset(groupId, SIMPL::StringConstants::Name, data->getName());
-  if (err < 0)
+  if(err < 0)
   {
     return err;
   }
   // Write the Boundary Area Fraction
   err = writeBoundaryArea(data, groupId);
-  if (err < 0)
+  if(err < 0)
   {
     return err;
   }
 
   // Write the PhaseFraction
   err = writePhaseFraction(data, groupId);
-  if (err < 0)
+  if(err < 0)
   {
     return err;
   }
@@ -241,40 +225,25 @@ int H5PrimaryStatsDataDelegate::writePrimaryStatsData(PrimaryStatsData* data, hi
   err = writeFeatureDiameterInfo(data, groupId);
 
   // Write the Feature Size Distribution
-  err = writeDistributionData(groupId,
-                              data->getFeatureSize_DistType(),
-                              SIMPL::StringConstants::Feature_Size_Distribution,
-                              data->getFeatureSizeDistribution());
+  err = writeDistributionData(groupId, data->getFeatureSize_DistType(), SIMPL::StringConstants::Feature_Size_Distribution, data->getFeatureSizeDistribution());
 
   // Write the Bin Numbers
   err = writeBinNumbers(data, groupId);
 
   // Write the B Over A
-  err = writeDistributionData(groupId,
-                              data->getBOverA_DistType(),
-                              SIMPL::StringConstants::Feature_SizeVBoverA_Distributions,
-                              data->getFeatureSize_BOverA());
+  err = writeDistributionData(groupId, data->getBOverA_DistType(), SIMPL::StringConstants::Feature_SizeVBoverA_Distributions, data->getFeatureSize_BOverA());
 
   // Write the C Over A
-  err = writeDistributionData(groupId,
-                              data->getCOverA_DistType(),
-                              SIMPL::StringConstants::Feature_SizeVCoverA_Distributions,
-                              data->getFeatureSize_COverA());
+  err = writeDistributionData(groupId, data->getCOverA_DistType(), SIMPL::StringConstants::Feature_SizeVCoverA_Distributions, data->getFeatureSize_COverA());
 
   // Write the Neighbors
-  err = writeDistributionData(groupId,
-                              data->getNeighbors_DistType(),
-                              SIMPL::StringConstants::Feature_SizeVNeighbors_Distributions,
-                              data->getFeatureSize_Neighbors());
+  err = writeDistributionData(groupId, data->getNeighbors_DistType(), SIMPL::StringConstants::Feature_SizeVNeighbors_Distributions, data->getFeatureSize_Neighbors());
 
   // Write the Omegas
-  err = writeDistributionData(groupId,
-                              data->getOmegas_DistType(),
-                              SIMPL::StringConstants::Feature_SizeVOmega3_Distributions,
-                              data->getFeatureSize_Omegas());
+  err = writeDistributionData(groupId, data->getOmegas_DistType(), SIMPL::StringConstants::Feature_SizeVOmega3_Distributions, data->getFeatureSize_Omegas());
 
   // Write the Misorientation Bins
-  if (nullptr != data->getMisorientationBins().get())
+  if(nullptr != data->getMisorientationBins().get())
   {
     QVector<size_t> tDims(1, data->getMisorientationBins()->getNumberOfTuples());
     err = data->getMisorientationBins()->writeH5Data(groupId, tDims);
@@ -282,18 +251,16 @@ int H5PrimaryStatsDataDelegate::writePrimaryStatsData(PrimaryStatsData* data, hi
 
   err = writeWeightsData(groupId, SIMPL::StringConstants::MDFWeights, data->getMDF_Weights());
 
-
   // Write the ODF
-  if (nullptr != data->getODF().get())
+  if(nullptr != data->getODF().get())
   {
     QVector<size_t> tDims(1, data->getODF()->getNumberOfTuples());
     err = data->getODF()->writeH5Data(groupId, tDims);
   }
   err = writeWeightsData(groupId, SIMPL::StringConstants::ODFWeights, data->getODF_Weights());
 
-
   // Write the Axis ODF
-  if (nullptr != data->getAxisOrientation().get())
+  if(nullptr != data->getAxisOrientation().get())
   {
     QVector<size_t> tDims(1, data->getAxisOrientation()->getNumberOfTuples());
     err = data->getAxisOrientation()->writeH5Data(groupId, tDims);
@@ -306,17 +273,16 @@ int H5PrimaryStatsDataDelegate::writePrimaryStatsData(PrimaryStatsData* data, hi
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-int H5PrimaryStatsDataDelegate::writeVectorOfArrays(hid_t pid,
-                                                    VectorOfFloatArray colData)
+int H5PrimaryStatsDataDelegate::writeVectorOfArrays(hid_t pid, VectorOfFloatArray colData)
 {
   herr_t err = 0;
   herr_t retErr = 0;
 
   // Loop through all the column data and write each one to the HDF5 file
   size_t numColumns = colData.size();
-  for (size_t c = 0; c < numColumns; ++c)
+  for(size_t c = 0; c < numColumns; ++c)
   {
-    //qDebug() << "Writing Dataset:" << hdf5GroupName << "/" << columnHeaders[c] ;
+    // qDebug() << "Writing Dataset:" << hdf5GroupName << "/" << columnHeaders[c] ;
     err = -1;
     if(nullptr != colData[c].get() && colData[c]->getSize() > 0)
     {
@@ -330,12 +296,11 @@ int H5PrimaryStatsDataDelegate::writeVectorOfArrays(hid_t pid,
     }
     else
     {
-      qDebug() << ":Null Data Column had no data. Did you create the data?" ;
-      qDebug() << "  File: " << __FILE__ ;
-      qDebug() << "  Line: " << __LINE__ ;
+      qDebug() << ":Null Data Column had no data. Did you create the data?";
+      qDebug() << "  File: " << __FILE__;
+      qDebug() << "  Line: " << __LINE__;
       break;
     }
-
   }
   return retErr;
 }
@@ -347,11 +312,11 @@ int H5PrimaryStatsDataDelegate::readVectorOfArrays(hid_t pid, VectorOfFloatArray
 {
   int err = 0;
 
-  for (VectorOfFloatArray::iterator iter = colData.begin(); iter != colData.end(); ++iter )
+  for(VectorOfFloatArray::iterator iter = colData.begin(); iter != colData.end(); ++iter)
   {
     FloatArrayType::Pointer d = *iter;
     err = d->readH5Data(pid);
-    if (err < 0)
+    if(err < 0)
     {
       return err;
     }
@@ -378,7 +343,7 @@ int H5PrimaryStatsDataDelegate::readMDFWeights(hid_t pid, PrimaryStatsData* data
   mdfWeights.push_back(axis);
 
   hid_t groupId = QH5Utilities::openHDF5Object(pid, SIMPL::StringConstants::MDFWeights);
-  if (groupId > 0)
+  if(groupId > 0)
   {
     err = readVectorOfArrays(groupId, mdfWeights);
     if(err >= 0)
@@ -425,7 +390,6 @@ int H5PrimaryStatsDataDelegate::readODFWeights(hid_t pid, PrimaryStatsData* data
   return err;
 }
 
-
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
@@ -448,7 +412,7 @@ int H5PrimaryStatsDataDelegate::readAxisODFWeights(hid_t pid, PrimaryStatsData* 
   odfWeights.push_back(weight);
 
   hid_t groupId = QH5Utilities::openHDF5Object(pid, SIMPL::StringConstants::AxisODFWeights);
-  if (groupId > 0)
+  if(groupId > 0)
   {
     err = readVectorOfArrays(groupId, odfWeights);
     if(err >= 0)
@@ -464,17 +428,16 @@ int H5PrimaryStatsDataDelegate::readAxisODFWeights(hid_t pid, PrimaryStatsData* 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-int H5PrimaryStatsDataDelegate::writeWeightsData(hid_t pid, const QString& hdf5GroupName,
-                                                 VectorOfFloatArray colData)
+int H5PrimaryStatsDataDelegate::writeWeightsData(hid_t pid, const QString& hdf5GroupName, VectorOfFloatArray colData)
 {
   herr_t err = 0;
-  if (colData.size() == 0)
+  if(colData.size() == 0)
   {
     return err;
   }
   // Create the Group Folder
   hid_t disId = QH5Utilities::createGroup(pid, hdf5GroupName);
-  if (disId > 0)
+  if(disId > 0)
   {
     err = writeVectorOfArrays(disId, colData);
   }
@@ -483,14 +446,10 @@ int H5PrimaryStatsDataDelegate::writeWeightsData(hid_t pid, const QString& hdf5G
   return err;
 }
 
-
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-int H5PrimaryStatsDataDelegate::writeDistributionData(hid_t pid,
-                                                      uint32_t disType,
-                                                      const QString& hdf5GroupName,
-                                                      VectorOfFloatArray colData)
+int H5PrimaryStatsDataDelegate::writeDistributionData(hid_t pid, uint32_t disType, const QString& hdf5GroupName, VectorOfFloatArray colData)
 {
   herr_t err = 0;
   herr_t retErr = 0;
@@ -498,25 +457,25 @@ int H5PrimaryStatsDataDelegate::writeDistributionData(hid_t pid,
   QString disTypeStr;
   switch(disType)
   {
-    case SIMPL::DistributionType::Beta:
-      disTypeStr = SIMPL::StringConstants::BetaDistribution;
-      break;
-    case SIMPL::DistributionType::LogNormal:
-      disTypeStr = SIMPL::StringConstants::LogNormalDistribution;
-      break;
-//    case SIMPL::DistributionType::Power:
-//      disTypeStr = SIMPL::StringConstants::PowerLawDistribution;
-//      break;
-    case SIMPL::DistributionType::UnknownDistributionType:
-      disTypeStr = SIMPL::StringConstants::UnknownDistribution;
-      break;
-    default:
-      disTypeStr = SIMPL::StringConstants::UnknownDistribution;
+  case SIMPL::DistributionType::Beta:
+    disTypeStr = SIMPL::StringConstants::BetaDistribution;
+    break;
+  case SIMPL::DistributionType::LogNormal:
+    disTypeStr = SIMPL::StringConstants::LogNormalDistribution;
+    break;
+  //    case SIMPL::DistributionType::Power:
+  //      disTypeStr = SIMPL::StringConstants::PowerLawDistribution;
+  //      break;
+  case SIMPL::DistributionType::UnknownDistributionType:
+    disTypeStr = SIMPL::StringConstants::UnknownDistribution;
+    break;
+  default:
+    disTypeStr = SIMPL::StringConstants::UnknownDistribution;
   }
 
   // Create the Group Folder
   hid_t disId = QH5Utilities::createGroup(pid, hdf5GroupName);
-  if (disId > 0)
+  if(disId > 0)
   {
     err = QH5Lite::writeStringAttribute(pid, hdf5GroupName, SIMPL::StringConstants::DistributionType, disTypeStr);
     if(err >= 0)
@@ -552,28 +511,25 @@ uint32_t H5PrimaryStatsDataDelegate::readDistributionType(hid_t pid, const QStri
   {
     return dType;
   }
-  if (disTypeStr.compare(SIMPL::StringConstants::BetaDistribution) == 0)
+  if(disTypeStr.compare(SIMPL::StringConstants::BetaDistribution) == 0)
   {
     dType = SIMPL::DistributionType::Beta;
   }
-  else   if (disTypeStr.compare(SIMPL::StringConstants::LogNormalDistribution) == 0)
+  else if(disTypeStr.compare(SIMPL::StringConstants::LogNormalDistribution) == 0)
   {
     dType = SIMPL::DistributionType::LogNormal;
   }
-//  else   if (disTypeStr.compare(SIMPL::StringConstants::PowerLawDistribution) == 0)
-//  {
-//    dType = SIMPL::DistributionType::Power;
-//  }
+  //  else   if (disTypeStr.compare(SIMPL::StringConstants::PowerLawDistribution) == 0)
+  //  {
+  //    dType = SIMPL::DistributionType::Power;
+  //  }
   return dType;
 }
-
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-int H5PrimaryStatsDataDelegate::readDistributionData(hid_t pid,
-                                                     const QString& hdf5GroupName,
-                                                     VectorOfFloatArray colData)
+int H5PrimaryStatsDataDelegate::readDistributionData(hid_t pid, const QString& hdf5GroupName, VectorOfFloatArray colData)
 {
   int err = 0;
   hid_t disId = QH5Utilities::openHDF5Object(pid, hdf5GroupName);
@@ -582,7 +538,7 @@ int H5PrimaryStatsDataDelegate::readDistributionData(hid_t pid,
     return -1;
   }
 
-  for (VectorOfFloatArray::iterator iter = colData.begin(); iter != colData.end(); ++iter)
+  for(VectorOfFloatArray::iterator iter = colData.begin(); iter != colData.end(); ++iter)
   {
     FloatArrayType::Pointer d = *iter;
     err |= d->readH5Data(disId);
@@ -657,8 +613,7 @@ int H5PrimaryStatsDataDelegate::readFeatureDiameterInfo(PrimaryStatsData* data, 
   /*
    * Feature Diameter Info is encode as 3 floats: BinStepSize, MaxDiameter, MinDiameter
    */
-  float featureDiameterInfo[3] =
-  { 0.0f, 0.0f, 0.0f };
+  float featureDiameterInfo[3] = {0.0f, 0.0f, 0.0f};
 
   err = QH5Lite::readPointerDataset(groupId, SIMPL::StringConstants::Feature_Diameter_Info, featureDiameterInfo);
   data->setFeatureDiameterInfo(featureDiameterInfo);
@@ -690,7 +645,3 @@ int H5PrimaryStatsDataDelegate::readBinNumbers(PrimaryStatsData* data, hid_t gro
   data->setBinNumbers(p);
   return err;
 }
-
-
-
-

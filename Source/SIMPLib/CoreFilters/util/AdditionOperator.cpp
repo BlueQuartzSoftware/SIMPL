@@ -44,8 +44,8 @@
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-AdditionOperator::AdditionOperator() :
-  BinaryOperator()
+AdditionOperator::AdditionOperator()
+: BinaryOperator()
 {
   setPrecedence(A_Precedence);
 }
@@ -55,14 +55,12 @@ AdditionOperator::AdditionOperator() :
 // -----------------------------------------------------------------------------
 AdditionOperator::~AdditionOperator()
 {
-
 }
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void AdditionOperator::calculate(AbstractFilter* filter, DataArrayPath calculatedArrayPath, QStack<ICalculatorArray::Pointer> &executionStack)
-{ 
+void AdditionOperator::calculate(AbstractFilter* filter, DataArrayPath calculatedArrayPath, QStack<ICalculatorArray::Pointer>& executionStack)
+{
   CREATE_NEW_ARRAY_STANDARD_BINARY(filter, calculatedArrayPath, executionStack, +)
 }
-

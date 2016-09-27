@@ -33,19 +33,16 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-
 #include "H5MatrixStatsDataDelegate.h"
 
 #include "H5Support/QH5Lite.h"
 #include "H5Support/QH5Utilities.h"
-
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
 H5MatrixStatsDataDelegate::H5MatrixStatsDataDelegate()
 {
-
 }
 
 // -----------------------------------------------------------------------------
@@ -61,20 +58,19 @@ H5MatrixStatsDataDelegate::~H5MatrixStatsDataDelegate()
 int H5MatrixStatsDataDelegate::readMatrixStatsData(MatrixStatsData* data, hid_t groupId)
 {
   int err = 0;
-  //Read the PhaseFraction
+  // Read the PhaseFraction
   err = readPhaseFraction(data, groupId);
   err = readStatsDataName(data, groupId);
 
   return err;
 }
 
-
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
 int H5MatrixStatsDataDelegate::writeMatrixStatsData(MatrixStatsData* data, hid_t groupId)
 {
-  if (nullptr == data)
+  if(nullptr == data)
   {
     return -1;
   }
@@ -82,13 +78,13 @@ int H5MatrixStatsDataDelegate::writeMatrixStatsData(MatrixStatsData* data, hid_t
 
   // Write the PhaseFraction
   err = writePhaseFraction(data, groupId);
-  if (err < 0)
+  if(err < 0)
   {
     return err;
   }
 
   err = QH5Lite::writeStringDataset(groupId, SIMPL::StringConstants::Name, data->getName());
-  if (err < 0)
+  if(err < 0)
   {
     return err;
   }

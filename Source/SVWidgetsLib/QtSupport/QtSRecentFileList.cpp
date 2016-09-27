@@ -33,13 +33,12 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-
 #include "QtSRecentFileList.h"
 
-#include <QtCore/QSettings>
+#include <QtCore/QDir>
 #include <QtCore/QFile>
 #include <QtCore/QFileInfo>
-#include <QtCore/QDir>
+#include <QtCore/QSettings>
 #include <QtWidgets/QMenu>
 
 #include "moc_QtSRecentFileList.cpp"
@@ -47,9 +46,9 @@
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-QtSRecentFileList::QtSRecentFileList(QObject* parent) :
-  QObject(parent),
-  m_Watcher(new QFileSystemWatcher(this))
+QtSRecentFileList::QtSRecentFileList(QObject* parent)
+: QObject(parent)
+, m_Watcher(new QFileSystemWatcher(this))
 {
   connect(m_Watcher, SIGNAL(fileChanged(const QString&)), this, SLOT(removeFile(const QString&)));
 }
@@ -68,16 +67,15 @@ QtSRecentFileList::~QtSRecentFileList()
 // -----------------------------------------------------------------------------
 QtSRecentFileList* QtSRecentFileList::instance()
 {
-// qDebug() << "QtSRecentFileList::instance()" << "\n";
+  // qDebug() << "QtSRecentFileList::instance()" << "\n";
   static QtSRecentFileList* singleton;
 
-  if (singleton == nullptr)
+  if(singleton == nullptr)
   {
     singleton = new QtSRecentFileList();
   }
   return singleton;
 }
-
 
 // -----------------------------------------------------------------------------
 //
@@ -87,23 +85,22 @@ bool QtSRecentFileList::contains(const QString& file)
   return this->recentFiles.contains(file);
 }
 
-
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
 void QtSRecentFileList::addFile(const QString& file, AddType type)
 {
-  if (QFile::exists(file) == true)
+  if(QFile::exists(file) == true)
   {
     // Remove the file from wherever it is in the list
     removeFile(file);
 
-    if (recentFiles.size() == 7)
+    if(recentFiles.size() == 7)
     {
       recentFiles.pop_back();
     }
 
-    if (type == APPEND)
+    if(type == APPEND)
     {
       this->recentFiles.append(file);
     }
@@ -167,11 +164,11 @@ void QtSRecentFileList::readList(QtSSettings* prefs)
 
   QStringList list = prefs->value("Recent Files", QStringList());
 
-  for (int i = 0; i < list.size(); i++)
+  for(int i = 0; i < list.size(); i++)
   {
     QString filePath = list[i];
     QFile file(filePath);
-    if (file.exists())
+    if(file.exists())
     {
       this->addFile(filePath, APPEND);
     }
@@ -196,4 +193,3 @@ QString QtSRecentFileList::parentAndFileName(const QString& file)
   QDir parent = fileinfo.dir();
   return parent.dirName() + QDir::separator() + fileinfo.fileName();
 }
-

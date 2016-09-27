@@ -4,23 +4,20 @@
 
 #include "TestFilters.h"
 #include "SIMPLib/FilterParameters/AbstractFilterParametersReader.h"
-#include "SIMPLib/FilterParameters/IntFilterParameter.h"
 #include "SIMPLib/FilterParameters/DoubleFilterParameter.h"
-
+#include "SIMPLib/FilterParameters/IntFilterParameter.h"
 
 // Include the MOC generated file for this class
 #include "moc_TestFilters.cpp"
 
-
-
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-Filt0::Filt0() :
-  AbstractFilter(),
-  m_DataContainerName(SIMPL::Defaults::DataContainerName),
-  m_Filt0_Float(6.6f),
-  m_Filt0_Integer(15)
+Filt0::Filt0()
+: AbstractFilter()
+, m_DataContainerName(SIMPL::Defaults::DataContainerName)
+, m_Filt0_Float(6.6f)
+, m_Filt0_Integer(15)
 {
   setupFilterParameters();
 }
@@ -49,7 +46,6 @@ void Filt0::setupFilterParameters()
     parameters.push_back(SIMPL_NEW_DOUBLE_FP("Float Value", Filt0_Float, FilterParameter::Parameter, Filt0));
   }
 
-
   setFilterParameters(parameters);
 }
 
@@ -61,8 +57,8 @@ void Filt0::readFilterParameters(AbstractFilterParametersReader* reader, int ind
   float dummyFloat = 0.0f;
   int dummyInt = 0;
   reader->openFilterGroup(this, index);
-  setFilt0_Float( reader->readValue("Filt0_Float", dummyFloat) );
-  setFilt0_Integer( reader->readValue("Filt0_Integer", dummyInt) );
+  setFilt0_Float(reader->readValue("Filt0_Float", dummyFloat));
+  setFilt0_Integer(reader->readValue("Filt0_Integer", dummyInt));
   reader->closeFilterGroup();
 }
 
@@ -71,7 +67,6 @@ void Filt0::readFilterParameters(AbstractFilterParametersReader* reader, int ind
 // -----------------------------------------------------------------------------
 void Filt0::initialize()
 {
-
 }
 
 // -----------------------------------------------------------------------------
@@ -81,7 +76,6 @@ void Filt0::dataCheck()
 {
   setErrorCondition(0);
 }
-
 
 // -----------------------------------------------------------------------------
 //
@@ -101,7 +95,7 @@ void Filt0::execute()
   setErrorCondition(err);
   setErrorCondition(err);
   DataContainer::Pointer m = getDataContainerArray()->getDataContainer(getDataContainerName());
-  if (nullptr == m)
+  if(nullptr == m)
   {
     setErrorCondition(-1);
     QString ss = QObject::tr(" DataContainer was nullptr");
@@ -119,11 +113,11 @@ void Filt0::execute()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-Filt1::Filt1() :
-  AbstractFilter(),
-  m_DataContainerName(SIMPL::Defaults::DataContainerName),
-  m_Filt1_Float(9.9f),
-  m_Filt1_Integer(123)
+Filt1::Filt1()
+: AbstractFilter()
+, m_DataContainerName(SIMPL::Defaults::DataContainerName)
+, m_Filt1_Float(9.9f)
+, m_Filt1_Integer(123)
 {
   setupFilterParameters();
 }
@@ -152,7 +146,6 @@ void Filt1::setupFilterParameters()
     parameters.push_back(SIMPL_NEW_DOUBLE_FP("Float Value", Filt1_Float, FilterParameter::Parameter, Filt1));
   }
 
-
   setFilterParameters(parameters);
 }
 
@@ -164,8 +157,8 @@ void Filt1::readFilterParameters(AbstractFilterParametersReader* reader, int ind
   float dummyFloat = 0.0f;
   int dummyInt = 0;
   reader->openFilterGroup(this, index);
-  setFilt1_Float( reader->readValue("Filt1_Float", dummyFloat) );
-  setFilt1_Integer( reader->readValue("Filt1_Integer", dummyInt) );
+  setFilt1_Float(reader->readValue("Filt1_Float", dummyFloat));
+  setFilt1_Integer(reader->readValue("Filt1_Integer", dummyInt));
   reader->closeFilterGroup();
 }
 
@@ -174,7 +167,6 @@ void Filt1::readFilterParameters(AbstractFilterParametersReader* reader, int ind
 // -----------------------------------------------------------------------------
 void Filt1::initialize()
 {
-
 }
 
 // -----------------------------------------------------------------------------
@@ -184,7 +176,6 @@ void Filt1::dataCheck()
 {
   setErrorCondition(0);
 }
-
 
 // -----------------------------------------------------------------------------
 //
@@ -203,7 +194,7 @@ void Filt1::execute()
   int err = 0;
   setErrorCondition(err);
   DataContainer::Pointer m = getDataContainerArray()->getDataContainer(getDataContainerName());
-  if (nullptr == m.get())
+  if(nullptr == m.get())
   {
     setErrorCondition(-1);
     QString ss = QObject::tr(" DataContainer was nullptr");

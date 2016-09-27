@@ -42,9 +42,9 @@
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-QtSBookmarkMissingDialog::QtSBookmarkMissingDialog(QWidget* parent, Qt::WindowFlags flags) :
-  QDialog(parent, flags),
-  m_OpenDialogLastDirectory("")
+QtSBookmarkMissingDialog::QtSBookmarkMissingDialog(QWidget* parent, Qt::WindowFlags flags)
+: QDialog(parent, flags)
+, m_OpenDialogLastDirectory("")
 {
   setupUi(this);
 }
@@ -54,7 +54,6 @@ QtSBookmarkMissingDialog::QtSBookmarkMissingDialog(QWidget* parent, Qt::WindowFl
 // -----------------------------------------------------------------------------
 QtSBookmarkMissingDialog::~QtSBookmarkMissingDialog()
 {
-
 }
 
 // -----------------------------------------------------------------------------
@@ -83,6 +82,3 @@ void QtSBookmarkMissingDialog::setBookmarkName(QString name)
   text = text.replace("@BookmarkName@", name);
   headerLabel->setText(text);
 }
-
-
-

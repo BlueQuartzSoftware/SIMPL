@@ -37,16 +37,15 @@
 
 #include <assert.h>
 
-
-#include <QtCore/QMetaProperty>
+#include <QtCore/QDateTime>
 #include <QtCore/QDir>
 #include <QtCore/QFile>
-#include <QtCore/QDateTime>
+#include <QtCore/QMetaProperty>
 
-#include <QtWidgets/QLabel>
-#include <QtWidgets/QFileDialog>
-#include <QtGui/QStandardItemModel>
 #include <QtCore/QItemSelectionModel>
+#include <QtGui/QStandardItemModel>
+#include <QtWidgets/QFileDialog>
+#include <QtWidgets/QLabel>
 #include <QtWidgets/QListWidget>
 
 #include "SIMPLib/CoreFilters/DataContainerReader.h"
@@ -60,183 +59,182 @@ QString DataContainerReaderWidget::m_OpenDialogLastDirectory = "";
 
 namespace Detail
 {
-  // -----------------------------------------------------------------------------
-  //
-  // -----------------------------------------------------------------------------
-  QList<QStandardItem*> findChildItems(QStandardItem* parent, QString text)
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+QList<QStandardItem*> findChildItems(QStandardItem* parent, QString text)
+{
+  QList<QStandardItem*> list;
+  if(parent->hasChildren() == false)
   {
-    QList<QStandardItem*> list;
-    if (parent->hasChildren() == false) { return list; } // No children, nothing to find
-    int childCount = parent->rowCount();
-
-    for(int i = 0; i < childCount; i++)
-    {
-      QStandardItem* item = parent->child(i);
-      if(text.compare(item->text()) == 0)
-      {
-        list.push_back(item);
-      }
-    }
     return list;
+  } // No children, nothing to find
+  int childCount = parent->rowCount();
+
+  for(int i = 0; i < childCount; i++)
+  {
+    QStandardItem* item = parent->child(i);
+    if(text.compare(item->text()) == 0)
+    {
+      list.push_back(item);
+    }
+  }
+  return list;
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void removeNonExistantChildren(QStandardItem* parent, QStringList possibleNames)
+{
+  int childCount = parent->rowCount();
+
+  // iterate from back to front as we may pop values out of the model which would screw up the index
+  for(int i = childCount - 1; i >= 0; i--)
+  {
+    QStandardItem* item = parent->child(i);
+    QStringList list = possibleNames.filter(item->text());
+    if(list.size() == 0) // the name is in the model but NOT in the proxy so we need to remove it
+    {
+      // qDebug() << "!! Removing " << item->text();
+      parent->removeRow(i);
+    }
+  }
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+template <typename T> QStandardItem* getColumnItem(QStandardItem* parent, QString name, T& proxy)
+{
+  QStandardItem* item = nullptr;
+  QList<QStandardItem*> items = findChildItems(parent, name);
+  if(items.count() == 0)
+  {
+    // Create a new item because we did not find this item already
+    item = new QStandardItem(proxy.name);
+    item->setCheckState((proxy.flag == 2 ? Qt::Checked : Qt::Unchecked));
+    item->setCheckable(true);
+    parent->appendRow(item);
+  }
+  else if(items.count() > 1)
+  {
+    item = nullptr;
+  }
+  else
+  {
+    item = items.at(0);
+    item->setCheckState((proxy.flag == 2 ? Qt::Checked : Qt::Unchecked));
+    item->setCheckable(true);
   }
 
-  // -----------------------------------------------------------------------------
-  //
-  // -----------------------------------------------------------------------------
-  void removeNonExistantChildren(QStandardItem* parent, QStringList possibleNames)
+  return item;
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+template <typename T> QStandardItem* updateProxyItem(QStandardItem* parent, QString name, T& proxy)
+{
+  QStandardItem* item = nullptr;
+  if(nullptr == parent)
   {
-    int childCount = parent->rowCount();
-
-    // iterate from back to front as we may pop values out of the model which would screw up the index
-    for(int i = childCount - 1; i >= 0; i--)
-    {
-      QStandardItem* item = parent->child(i);
-      QStringList list = possibleNames.filter(item->text() );
-      if(list.size() == 0) // the name is in the model but NOT in the proxy so we need to remove it
-      {
-        // qDebug() << "!! Removing " << item->text();
-        parent->removeRow(i);
-      }
-    }
-
-
-  }
-
-  // -----------------------------------------------------------------------------
-  //
-  // -----------------------------------------------------------------------------
-  template<typename T>
-  QStandardItem* getColumnItem(QStandardItem* parent, QString name, T& proxy)
-  {
-    QStandardItem* item = nullptr;
-    QList<QStandardItem*> items = findChildItems(parent, name);
-    if (items.count() == 0)
-    {
-      // Create a new item because we did not find this item already
-      item = new QStandardItem(proxy.name);
-      item->setCheckState( (proxy.flag == 2 ? Qt::Checked : Qt::Unchecked) );
-      item->setCheckable(true);
-      parent->appendRow(item);
-    }
-    else if (items.count() > 1)
-    {
-      item = nullptr;
-    }
-    else
-    {
-      item = items.at(0);
-      item->setCheckState( (proxy.flag == 2 ? Qt::Checked : Qt::Unchecked) );
-      item->setCheckable(true);
-    }
-
     return item;
   }
-
-  // -----------------------------------------------------------------------------
-  //
-  // -----------------------------------------------------------------------------
-  template<typename T>
-  QStandardItem* updateProxyItem(QStandardItem* parent, QString name, T& proxy)
+  QList<QStandardItem*> items = findChildItems(parent, name);
+  if(items.count() == 1)
   {
-    QStandardItem* item = nullptr;
-    if(nullptr == parent) { return item; }
-    QList<QStandardItem*> items = findChildItems(parent, name);
-    if (items.count() == 1)
-    {
-      item = items.at(0);
-      //   qDebug() << parent->text() << " | " << item->text() << " ::"  << proxy.flag << " (Going to Change to) " << item->checkState();
-      proxy.flag = item->checkState();
-    }
-
-    return item;
+    item = items.at(0);
+    //   qDebug() << parent->text() << " | " << item->text() << " ::"  << proxy.flag << " (Going to Change to) " << item->checkState();
+    proxy.flag = item->checkState();
   }
 
-  // -----------------------------------------------------------------------------
-  //
-  // -----------------------------------------------------------------------------
-  void transferDataContainFlags(const DataContainerProxy& source, DataContainerArrayProxy& dest)
+  return item;
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void transferDataContainFlags(const DataContainerProxy& source, DataContainerArrayProxy& dest)
+{
+  QMap<QString, DataContainerProxy>& dcProxies = dest.dataContainers;
+  for(QMap<QString, DataContainerProxy>::iterator dcIter = dcProxies.begin(); dcIter != dcProxies.end(); ++dcIter)
   {
-    QMap<QString, DataContainerProxy>& dcProxies = dest.dataContainers;
-    for (QMap<QString, DataContainerProxy>::iterator dcIter = dcProxies.begin(); dcIter != dcProxies.end(); ++dcIter)
+    DataContainerProxy& dcProxy = dcIter.value();
+    if(dcProxy.name.compare(source.name) == 0)
     {
-      DataContainerProxy& dcProxy = dcIter.value();
-      if(dcProxy.name.compare(source.name) == 0)
-      {
-        // we have the correct DataContainer, so transfer the flags
-        dcProxy.flag = source.flag;
-      }
+      // we have the correct DataContainer, so transfer the flags
+      dcProxy.flag = source.flag;
     }
   }
+}
 
-  // -----------------------------------------------------------------------------
-  //
-  // -----------------------------------------------------------------------------
-  void transferAttributeMatrixFlags(const QString dcName, const AttributeMatrixProxy& source, DataContainerArrayProxy& dest)
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void transferAttributeMatrixFlags(const QString dcName, const AttributeMatrixProxy& source, DataContainerArrayProxy& dest)
+{
+  QMap<QString, DataContainerProxy>& dcProxies = dest.dataContainers;
+  for(QMap<QString, DataContainerProxy>::iterator dcIter = dcProxies.begin(); dcIter != dcProxies.end(); ++dcIter)
   {
-    QMap<QString, DataContainerProxy>& dcProxies = dest.dataContainers;
-    for (QMap<QString, DataContainerProxy>::iterator dcIter = dcProxies.begin(); dcIter != dcProxies.end(); ++dcIter)
+    DataContainerProxy& dcProxy = dcIter.value();
+    if(dcProxy.name.compare(dcName) == 0)
     {
-      DataContainerProxy& dcProxy = dcIter.value();
-      if (dcProxy.name.compare(dcName) == 0)
+      // we have the correct DataContainer, so transfer the flags
+      //      dcProxy.flag = source.flag;
+      QMap<QString, AttributeMatrixProxy>& amProxies = dcProxy.attributeMatricies;
+      for(QMap<QString, AttributeMatrixProxy>::iterator amIter = amProxies.begin(); amIter != amProxies.end(); ++amIter)
       {
-        // we have the correct DataContainer, so transfer the flags
-        //      dcProxy.flag = source.flag;
-        QMap<QString, AttributeMatrixProxy>& amProxies = dcProxy.attributeMatricies;
-        for (QMap<QString, AttributeMatrixProxy>::iterator amIter = amProxies.begin(); amIter != amProxies.end(); ++amIter)
+        QString amName = amIter.key();
+        if(amName.compare(source.name) == 0)
         {
-          QString amName = amIter.key();
-          if (amName.compare(source.name) == 0)
-          {
-            AttributeMatrixProxy& attrProxy = amIter.value();
-            attrProxy.flag = source.flag;
-          }
+          AttributeMatrixProxy& attrProxy = amIter.value();
+          attrProxy.flag = source.flag;
         }
       }
     }
   }
+}
 
-
-  // -----------------------------------------------------------------------------
-  //
-  // -----------------------------------------------------------------------------
-  void transferDataArrayFlags(const QString dc_name, const QString am_name, const DataArrayProxy& source, DataContainerArrayProxy& dest)
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void transferDataArrayFlags(const QString dc_name, const QString am_name, const DataArrayProxy& source, DataContainerArrayProxy& dest)
+{
+  QMap<QString, DataContainerProxy>& dcProxies = dest.dataContainers;
+  for(QMap<QString, DataContainerProxy>::iterator dcIter = dcProxies.begin(); dcIter != dcProxies.end(); ++dcIter)
   {
-    QMap<QString, DataContainerProxy>& dcProxies = dest.dataContainers;
-    for (QMap<QString, DataContainerProxy>::iterator dcIter = dcProxies.begin(); dcIter != dcProxies.end(); ++dcIter)
+    DataContainerProxy& dcProxy = dcIter.value();
+    if(dcProxy.name.compare(dc_name) == 0)
     {
-      DataContainerProxy& dcProxy = dcIter.value();
-      if (dcProxy.name.compare(dc_name) == 0)
+      // we have the correct DataContainer, so transfer the flags
+      // dcProxy.flag = source.flag;
+      QMap<QString, AttributeMatrixProxy>& amProxies = dcProxy.attributeMatricies;
+      for(QMap<QString, AttributeMatrixProxy>::iterator amIter = amProxies.begin(); amIter != amProxies.end(); ++amIter)
       {
-        // we have the correct DataContainer, so transfer the flags
-        //dcProxy.flag = source.flag;
-        QMap<QString, AttributeMatrixProxy>& amProxies = dcProxy.attributeMatricies;
-        for (QMap<QString, AttributeMatrixProxy>::iterator amIter = amProxies.begin(); amIter != amProxies.end(); ++amIter)
+        QString amName = amIter.key();
+        if(amName.compare(am_name) == 0)
         {
-          QString amName = amIter.key();
-          if (amName.compare(am_name) == 0)
-          {
-            AttributeMatrixProxy& amProxy = amIter.value();
-            //attrProxy.flag = source.flag;
+          AttributeMatrixProxy& amProxy = amIter.value();
+          // attrProxy.flag = source.flag;
 
-            QMap<QString, DataArrayProxy>& daProxies = amProxy.dataArrays;
-            for (QMap<QString, DataArrayProxy>::iterator daIter = daProxies.begin(); daIter != daProxies.end(); ++daIter)
+          QMap<QString, DataArrayProxy>& daProxies = amProxy.dataArrays;
+          for(QMap<QString, DataArrayProxy>::iterator daIter = daProxies.begin(); daIter != daProxies.end(); ++daIter)
+          {
+            QString daName = daIter.key();
+            if(daName.compare(source.name) == 0)
             {
-              QString daName = daIter.key();
-              if (daName.compare(source.name) == 0)
-              {
-                DataArrayProxy& daProxy = daIter.value();
-                daProxy = source;
-              }
+              DataArrayProxy& daProxy = daIter.value();
+              daProxy = source;
             }
           }
         }
       }
     }
   }
-
+}
 
 } /* end namespace Detail */
-
 
 // Include the MOC generated file for this class
 #include "moc_DataContainerReaderWidget.cpp"
@@ -244,16 +242,16 @@ namespace Detail
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-DataContainerReaderWidget::DataContainerReaderWidget(FilterParameter* parameter, AbstractFilter* filter, QWidget* parent) :
-  FilterParameterWidget(parameter, filter, parent),
-  m_DidCausePreflight(false)
+DataContainerReaderWidget::DataContainerReaderWidget(FilterParameter* parameter, AbstractFilter* filter, QWidget* parent)
+: FilterParameterWidget(parameter, filter, parent)
+, m_DidCausePreflight(false)
 {
   m_FilterParameter = dynamic_cast<DataContainerReaderFilterParameter*>(parameter);
   Q_ASSERT_X(m_FilterParameter != nullptr, "nullptr Pointer", "DataContainerReaderWidget can ONLY be used with a DataContainerReaderFilterParameter object");
   m_Filter = dynamic_cast<DataContainerReader*>(filter);
   Q_ASSERT_X(getFilter() != nullptr, "nullptr Pointer", "DataContainerReaderWidget can ONLY be used with a DataContainerReader object");
 
-  if ( m_OpenDialogLastDirectory.isEmpty() )
+  if(m_OpenDialogLastDirectory.isEmpty())
   {
     m_OpenDialogLastDirectory = QDir::homePath();
   }
@@ -265,16 +263,15 @@ DataContainerReaderWidget::DataContainerReaderWidget(FilterParameter* parameter,
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-DataContainerReaderWidget::DataContainerReaderWidget(QWidget* parent) :
-  FilterParameterWidget(nullptr, nullptr, parent),
-  m_Filter(nullptr),
-  m_FilterParameter(nullptr),
-  m_DidCausePreflight(false)
+DataContainerReaderWidget::DataContainerReaderWidget(QWidget* parent)
+: FilterParameterWidget(nullptr, nullptr, parent)
+, m_Filter(nullptr)
+, m_FilterParameter(nullptr)
+, m_DidCausePreflight(false)
 {
   setupUi(this);
   setupGui();
 }
-
 
 // -----------------------------------------------------------------------------
 //
@@ -299,7 +296,6 @@ AbstractFilter* DataContainerReaderWidget::getFilter() const
   return m_Filter;
 }
 
-
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
@@ -322,15 +318,11 @@ FilterParameter* DataContainerReaderWidget::getFilterParameter() const
 void DataContainerReaderWidget::setupGui()
 {
 
-  connect(getFilter(), SIGNAL(preflightAboutToExecute()),
-          this, SLOT(beforePreflight()));
+  connect(getFilter(), SIGNAL(preflightAboutToExecute()), this, SLOT(beforePreflight()));
 
-  connect(getFilter(), SIGNAL(preflightExecuted()),
-          this, SLOT(afterPreflight()));
+  connect(getFilter(), SIGNAL(preflightExecuted()), this, SLOT(afterPreflight()));
 
-  connect(getFilter(), SIGNAL(updateFilterParameters(AbstractFilter*)),
-          this, SLOT(filterNeedsInputParameters(AbstractFilter*)));
-
+  connect(getFilter(), SIGNAL(updateFilterParameters(AbstractFilter*)), this, SLOT(filterNeedsInputParameters(AbstractFilter*)));
 
   // Put in a QStandardItemModel
   QAbstractItemModel* oldModel = dcaProxyView->model();
@@ -339,12 +331,11 @@ void DataContainerReaderWidget::setupGui()
   delete oldModel;
 
   //  void activated(const QModelIndex& index);
-  connect(dcaProxyView, SIGNAL(clicked(const QModelIndex&)),
-          this, SLOT(itemActivated(const QModelIndex)));
+  connect(dcaProxyView, SIGNAL(clicked(const QModelIndex&)), this, SLOT(itemActivated(const QModelIndex)));
 
-  if (getFilterParameter() != nullptr)
+  if(getFilterParameter() != nullptr)
   {
-    label->setText(getFilterParameter()->getHumanLabel() );
+    label->setText(getFilterParameter()->getHumanLabel());
   }
 
   if(getFilter() != nullptr)
@@ -354,10 +345,7 @@ void DataContainerReaderWidget::setupGui()
     filePath->setText(path);
     on_filePath_fileDropped(path);
   }
-
-
 }
-
 
 // -----------------------------------------------------------------------------
 //
@@ -366,7 +354,7 @@ void DataContainerReaderWidget::itemActivated(const QModelIndex& index)
 {
   m_DidCausePreflight = true;
   updateProxyFromModel();
-  m_Filter->setInputFileDataContainerArrayProxy(m_DcaProxy);    // Set the new proxy into filter
+  m_Filter->setInputFileDataContainerArrayProxy(m_DcaProxy); // Set the new proxy into filter
 
   emit parametersChanged();
   m_DidCausePreflight = false;
@@ -400,7 +388,7 @@ void DataContainerReaderWidget::updateModelFromProxy(DataContainerArrayProxy& pr
     // We found the proper Data Container, now populate the AttributeMatrix List
     QMap<QString, AttributeMatrixProxy>& attrMats = dcProxy.attributeMatricies;
     QMutableMapIterator<QString, AttributeMatrixProxy> attrMatsIter(attrMats);
-    while(attrMatsIter.hasNext() )
+    while(attrMatsIter.hasNext())
     {
       attrMatsIter.next();
       QString amName = attrMatsIter.key();
@@ -412,32 +400,29 @@ void DataContainerReaderWidget::updateModelFromProxy(DataContainerArrayProxy& pr
       // We found the selected AttributeMatrix, so loop over this attribute matrix arrays and populate the list widget
       QMap<QString, DataArrayProxy>& dataArrays = attrProxy.dataArrays;
       QMutableMapIterator<QString, DataArrayProxy> dataArraysIter(dataArrays);
-      while(dataArraysIter.hasNext() )
+      while(dataArraysIter.hasNext())
       {
         dataArraysIter.next();
         DataArrayProxy& daProxy = dataArraysIter.value();
         QString daName = dataArraysIter.key();
         //   qDebug() << "#### " << daName;
         QStandardItem* daItem = Detail::getColumnItem<DataArrayProxy>(amItem, daName, daProxy);
-        if (nullptr == daItem)
+        if(nullptr == daItem)
         {
           Q_ASSERT_X(daItem != nullptr, "daItem was nullptr. This can not happen", "");
         }
-
       }
 
       // Now remove those items that are still in the model but NOT the proxy. This can happen if a filter upstream
       // renames something
-      Detail::removeNonExistantChildren(amItem, dataArrays.keys() );
+      Detail::removeNonExistantChildren(amItem, dataArrays.keys());
     }
     // Now remove any nonexistant AttributeMatrix objects
-    Detail::removeNonExistantChildren(dcItem, attrMats.keys() );
+    Detail::removeNonExistantChildren(dcItem, attrMats.keys());
   }
   // Remove any Data Containers from the model
   Detail::removeNonExistantChildren(rootItem, dcList);
 }
-
-
 
 // -----------------------------------------------------------------------------
 //
@@ -445,7 +430,7 @@ void DataContainerReaderWidget::updateModelFromProxy(DataContainerArrayProxy& pr
 void DataContainerReaderWidget::updateProxyFromModel()
 {
   QStandardItemModel* model = qobject_cast<QStandardItemModel*>(dcaProxyView->model());
-  if (!model)
+  if(!model)
   {
     Q_ASSERT_X(model, "Model was not a QStandardItemModel in QColumnView", "");
     return;
@@ -454,7 +439,7 @@ void DataContainerReaderWidget::updateProxyFromModel()
   QStandardItem* rootItem = model->invisibleRootItem();
   // Loop over the data containers until we find the proper data container
   QMap<QString, DataContainerProxy>& dcProxies = m_DcaProxy.dataContainers;
-  for (QMap<QString, DataContainerProxy>::iterator dcIter = dcProxies.begin(); dcIter != dcProxies.end(); ++dcIter)
+  for(QMap<QString, DataContainerProxy>::iterator dcIter = dcProxies.begin(); dcIter != dcProxies.end(); ++dcIter)
   {
     DataContainerProxy& dcProxy = dcIter.value();
     //  dcList.push_back(dcProxy.name);
@@ -463,7 +448,7 @@ void DataContainerReaderWidget::updateProxyFromModel()
     //    qDebug() << "**  " << dcProxy.name;
     // We found the proper Data Container, now populate the AttributeMatrix List
     QMap<QString, AttributeMatrixProxy>& amProxies = dcProxy.attributeMatricies;
-    for (QMap<QString, AttributeMatrixProxy>::iterator amIter = amProxies.begin(); amIter != amProxies.end(); ++amIter)
+    for(QMap<QString, AttributeMatrixProxy>::iterator amIter = amProxies.begin(); amIter != amProxies.end(); ++amIter)
     {
       QString amName = amIter.key();
       AttributeMatrixProxy& amProxy = amIter.value();
@@ -472,7 +457,7 @@ void DataContainerReaderWidget::updateProxyFromModel()
       //   qDebug() << "@@@ " << amName;
       // We found the selected AttributeMatrix, so loop over this attribute matrix arrays and populate the list widget
       QMap<QString, DataArrayProxy>& daProxies = amProxy.dataArrays;
-      for (QMap<QString, DataArrayProxy>::iterator daIter = daProxies.begin(); daIter != daProxies.end(); ++daIter)
+      for(QMap<QString, DataArrayProxy>::iterator daIter = daProxies.begin(); daIter != daProxies.end(); ++daIter)
       {
         DataArrayProxy& daProxy = daIter.value();
         QString daName = daIter.key();
@@ -485,7 +470,6 @@ void DataContainerReaderWidget::updateProxyFromModel()
 
   //  m_DcaProxy.print("updateProxy AFTER Updating");
 }
-
 
 // -----------------------------------------------------------------------------
 //
@@ -511,7 +495,7 @@ void DataContainerReaderWidget::updateProxyFromProxy(DataContainerArrayProxy& cu
 
     QMap<QString, AttributeMatrixProxy>& attrMats = dcProxy.attributeMatricies;
     QMapIterator<QString, AttributeMatrixProxy> attrMatsIter(attrMats);
-    while(attrMatsIter.hasNext() )
+    while(attrMatsIter.hasNext())
     {
       attrMatsIter.next();
       QString amName = attrMatsIter.key();
@@ -523,7 +507,7 @@ void DataContainerReaderWidget::updateProxyFromProxy(DataContainerArrayProxy& cu
       // Loop over the current AttributeMatrixProxy and see if we need to transfer any flags.
       const QMap<QString, DataArrayProxy> dataArrays = attrProxy.dataArrays;
       QMapIterator<QString, DataArrayProxy> dataArraysIter(dataArrays);
-      while(dataArraysIter.hasNext() )
+      while(dataArraysIter.hasNext())
       {
         dataArraysIter.next();
         DataArrayProxy daProxy = dataArraysIter.value();
@@ -532,9 +516,7 @@ void DataContainerReaderWidget::updateProxyFromProxy(DataContainerArrayProxy& cu
       }
     }
   }
-
 }
-
 
 // -----------------------------------------------------------------------------
 //
@@ -564,18 +546,16 @@ void DataContainerReaderWidget::beforePreflight()
 #endif
 }
 
-
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
 void DataContainerReaderWidget::filterNeedsInputParameters(AbstractFilter* filter)
 {
-// qDebug() << "DataContainerReaderWidget::filterNeedsInputParameters()";
+  // qDebug() << "DataContainerReaderWidget::filterNeedsInputParameters()";
   m_Filter->setInputFile(filePath->text());
   updateProxyFromModel(); // Will update m_DcaProxy with the latest selections from the Model
   m_Filter->setInputFileDataContainerArrayProxy(m_DcaProxy);
 }
-
 
 // -----------------------------------------------------------------------------
 //
@@ -587,17 +567,15 @@ void DataContainerReaderWidget::afterPreflight()
   updateModelFromProxy(p);
 }
 
-
-
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
 bool DataContainerReaderWidget::verifyPathExists(QString filePath, QtSFSDropLabel* lineEdit)
 {
   QFileInfo fileinfo(filePath);
-  if (false == fileinfo.exists())
+  if(false == fileinfo.exists())
   {
-    //lineEdit->setStyleSheet("border: 1px solid red;");
+    // lineEdit->setStyleSheet("border: 1px solid red;");
     lineEdit->changeStyleSheet(QtSFSDropLabel::FS_DOESNOTEXIST_STYLE);
   }
   else
@@ -617,7 +595,7 @@ void DataContainerReaderWidget::on_filePath_fileDropped(const QString& text)
   setOpenDialogLastDirectory(text);
   // Set/Remove the red outline if the file does exist
 
-  if (verifyPathExists(text, filePath) == true)
+  if(verifyPathExists(text, filePath) == true)
   {
     if(getFilter() != nullptr)
     {
@@ -629,7 +607,7 @@ void DataContainerReaderWidget::on_filePath_fileDropped(const QString& text)
           model->clear();
         }
 
-        if (m_Filter->getInputFileDataContainerArrayProxy().dataContainers.size() > 0 && (text == m_Filter->getLastFileRead() || m_Filter->getLastFileRead().isEmpty()))
+        if(m_Filter->getInputFileDataContainerArrayProxy().dataContainers.size() > 0 && (text == m_Filter->getLastFileRead() || m_Filter->getLastFileRead().isEmpty()))
         {
           proxy = m_Filter->getInputFileDataContainerArrayProxy();
         }
@@ -648,15 +626,14 @@ void DataContainerReaderWidget::on_filePath_fileDropped(const QString& text)
   }
 }
 
-
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
 void DataContainerReaderWidget::on_selectBtn_clicked()
 {
   QString currentPath = getFilter()->property(PROPERTY_NAME_AS_CHAR).toString();
-  QString Ftype = ""; //getFilterParameter()->getFileType();
-  QString ext = "*.dream3d"; //getFilterParameter()->getFileExtension();
+  QString Ftype = "";        // getFilterParameter()->getFileType();
+  QString ext = "*.dream3d"; // getFilterParameter()->getFileExtension();
   QString s = Ftype + QString(" Files (") + ext + QString(");;All Files(*.*)");
   QString defaultName = m_OpenDialogLastDirectory + QDir::separator() + "Untitled";
   QString file = QFileDialog::getOpenFileName(this, tr("Select Input File"), defaultName, s);
@@ -681,12 +658,12 @@ void DataContainerReaderWidget::on_selectBtn_clicked()
 // -----------------------------------------------------------------------------
 void DataContainerReaderWidget::on_dcaProxyView_updatePreviewWidget(const QModelIndex& index)
 {
-//    QVariant var = index.data();
-//    QString name = var.toString();
+  //    QVariant var = index.data();
+  //    QString name = var.toString();
 
-//    DataArrayInformationDisplayWidget::Pointer widget = DataArrayInformationDisplayWidget::New();
-//    widget->setNameText(name);
+  //    DataArrayInformationDisplayWidget::Pointer widget = DataArrayInformationDisplayWidget::New();
+  //    widget->setNameText(name);
 
-//    // Create widget and add to dcaProxyView
-//    dcaProxyView->setPreviewWidget(widget.get());
+  //    // Create widget and add to dcaProxyView
+  //    dcaProxyView->setPreviewWidget(widget.get());
 }

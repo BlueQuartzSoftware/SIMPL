@@ -33,45 +33,39 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-
 #include "SVPipelineFilterWidget.h"
 
-
-
-#include <QtCore/QTimer>
-#include <QtCore/QResource>
 #include <QtCore/QDir>
 #include <QtCore/QMimeData>
+#include <QtCore/QResource>
+#include <QtCore/QTimer>
 
-#include <QtWidgets/QLabel>
-#include <QtWidgets/QVBoxLayout>
 #include <QtGui/QMouseEvent>
 #include <QtGui/QPainter>
+#include <QtWidgets/QLabel>
+#include <QtWidgets/QVBoxLayout>
 
 #include <QtWidgets/QFileDialog>
 #include <QtWidgets/QGroupBox>
 
-
 #include "SVWidgetsLib/QtSupport/QtSStyles.h"
 
+#include "SIMPLib/Common/DocRequestManager.h"
+#include "SIMPLib/Common/FilterFactory.hpp"
 #include "SIMPLib/Common/FilterManager.h"
 #include "SIMPLib/Common/IFilterFactory.hpp"
-#include "SIMPLib/Common/FilterFactory.hpp"
-#include "SIMPLib/Common/DocRequestManager.h"
 #include "SIMPLib/Common/IObserver.h"
-#include "SIMPLib/FilterParameters/LinkedChoicesFilterParameter.h"
-#include "SIMPLib/FilterParameters/LinkedBooleanFilterParameter.h"
 #include "SIMPLib/FilterParameters/DataContainerReaderFilterParameter.h"
 #include "SIMPLib/FilterParameters/InputFileFilterParameter.h"
 #include "SIMPLib/FilterParameters/InputPathFilterParameter.h"
+#include "SIMPLib/FilterParameters/LinkedBooleanFilterParameter.h"
+#include "SIMPLib/FilterParameters/LinkedChoicesFilterParameter.h"
 
 #include "SVWidgetsLib/Core/FilterWidgetManager.h"
-#include "SVWidgetsLib/FilterParameterWidgets/LinkedBooleanWidget.h"
 #include "SVWidgetsLib/FilterParameterWidgets/ChoiceWidget.h"
-#include "SVWidgetsLib/Widgets/SVPipelineViewWidget.h"
+#include "SVWidgetsLib/FilterParameterWidgets/LinkedBooleanWidget.h"
 #include "SVWidgetsLib/Widgets/DataContainerArrayWidget.h"
-
-
+#include "SVWidgetsLib/Widgets/SVPipelineViewWidget.h"
 
 #define PADDING 5
 #define BORDER 2
@@ -84,12 +78,12 @@
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-SVPipelineFilterWidget::SVPipelineFilterWidget(QWidget* parent) :
-  QFrame(parent),
-  PipelineFilterObject(AbstractFilter::NullPointer()),
-  m_Observer(nullptr),
-  m_Selected(false),
-  m_HasRightClickTarget(false)
+SVPipelineFilterWidget::SVPipelineFilterWidget(QWidget* parent)
+: QFrame(parent)
+, PipelineFilterObject(AbstractFilter::NullPointer())
+, m_Observer(nullptr)
+, m_Selected(false)
+, m_HasRightClickTarget(false)
 {
   initialize();
 }
@@ -97,12 +91,12 @@ SVPipelineFilterWidget::SVPipelineFilterWidget(QWidget* parent) :
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-SVPipelineFilterWidget::SVPipelineFilterWidget(AbstractFilter::Pointer filter, IObserver* observer, QWidget* parent) :
-  QFrame(parent),
-  PipelineFilterObject(filter),
-  m_Observer(observer),
-  m_Selected(false),
-  m_HasRightClickTarget(false)
+SVPipelineFilterWidget::SVPipelineFilterWidget(AbstractFilter::Pointer filter, IObserver* observer, QWidget* parent)
+: QFrame(parent)
+, PipelineFilterObject(filter)
+, m_Observer(observer)
+, m_Selected(false)
+, m_HasRightClickTarget(false)
 {
   initialize();
 }
@@ -112,7 +106,7 @@ SVPipelineFilterWidget::SVPipelineFilterWidget(AbstractFilter::Pointer filter, I
 // -----------------------------------------------------------------------------
 SVPipelineFilterWidget::~SVPipelineFilterWidget()
 {
-  if (m_Observer != nullptr)
+  if(m_Observer != nullptr)
   {
     delete m_Observer;
     m_Observer = nullptr;
@@ -137,7 +131,7 @@ void SVPipelineFilterWidget::initialize()
   m_DeleteRect.setHeight(IMAGE_HEIGHT);
 
   // Set the Name of the filter into the FilterWidget
-  filterName->setText(getFilter()->getHumanLabel() );
+  filterName->setText(getFilter()->getHumanLabel());
 }
 
 // -----------------------------------------------------------------------------
@@ -179,7 +173,7 @@ void SVPipelineFilterWidget::setHasRightClickTarget(bool value)
 // -----------------------------------------------------------------------------
 void SVPipelineFilterWidget::adjustLayout(QWidget* w, int state)
 {
-  if (state == Qt::Checked)
+  if(state == Qt::Checked)
   {
     w->show();
   }
@@ -225,7 +219,7 @@ void SVPipelineFilterWidget::changeStyle()
   {
     ss << "border: 2px solid MediumBlue;";
   }
-  else if (isSelected() == true && isFocused() == false)
+  else if(isSelected() == true && isFocused() == false)
   {
     ss << "border: 2px solid DarkSlateGray;";
   }
@@ -235,7 +229,7 @@ void SVPipelineFilterWidget::changeStyle()
     ss << "margin: 1px;";
   }
 
-  if (isSelected() == false && hasRightClickTarget() == true)
+  if(isSelected() == false && hasRightClickTarget() == true)
   {
     ss << "border-style: dotted;";
   }
@@ -254,10 +248,9 @@ void SVPipelineFilterWidget::updateWidgetStyle()
 
   ss << "SVPipelineFilterWidget {\n";
 
-
-  if (getHasPreflightErrors() == true)
+  if(getHasPreflightErrors() == true)
   {
-    //ss << "background-color: rgb(200, 75, 75);\ncolor: rgb(255, 255, 255);";
+    // ss << "background-color: rgb(200, 75, 75);\ncolor: rgb(255, 255, 255);";
     ss << "background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0 rgba(180, 55, 55, 255), stop:0.5 rgba(235, 110, 110, 255), stop:1 rgba(180, 55, 55, 255));\n";
   }
   else
@@ -284,12 +277,11 @@ void SVPipelineFilterWidget::updateWidgetStyle()
   ss << "font-weight: bold;";
 #endif
 
-  if (getHasPreflightErrors() == true)
+  if(getHasPreflightErrors() == true)
   {
     ss << "color: rgb(240, 240, 240);";
   }
   ss << "}\n";
-
 
   setStyleSheet(style);
 }
@@ -297,7 +289,7 @@ void SVPipelineFilterWidget::updateWidgetStyle()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void SVPipelineFilterWidget::mousePressEvent ( QMouseEvent* event )
+void SVPipelineFilterWidget::mousePressEvent(QMouseEvent* event)
 {
   if(event->button() == Qt::RightButton)
   {
@@ -355,7 +347,7 @@ void SVPipelineFilterWidget::focusOutEvent(QFocusEvent* event)
 // -----------------------------------------------------------------------------
 void SVPipelineFilterWidget::getGuiParametersFromFilter(AbstractFilter* filt)
 {
-  Q_ASSERT("SVPipelineFilterWidget::getGuiParametersFromFilter executed");    // Code should never enter this function
+  Q_ASSERT("SVPipelineFilterWidget::getGuiParametersFromFilter executed"); // Code should never enter this function
 }
 
 // -----------------------------------------------------------------------------
@@ -383,7 +375,6 @@ void SVPipelineFilterWidget::launchHelpForItem()
 
   DocRequestManager* docRequester = DocRequestManager::Instance();
   docRequester->requestFilterDocs(className);
-
 }
 
 // -----------------------------------------------------------------------------
@@ -391,7 +382,7 @@ void SVPipelineFilterWidget::launchHelpForItem()
 // -----------------------------------------------------------------------------
 void SVPipelineFilterWidget::toRunningState()
 {
-  getFilterInputWidget()->toRunningState(); //getVariablesTabContentsWidget()->setDisabled(true);
+  getFilterInputWidget()->toRunningState(); // getVariablesTabContentsWidget()->setDisabled(true);
   deleteBtn->setDisabled(true);
 }
 
@@ -400,7 +391,7 @@ void SVPipelineFilterWidget::toRunningState()
 // -----------------------------------------------------------------------------
 void SVPipelineFilterWidget::toIdleState()
 {
-  getFilterInputWidget()->toIdleState(); //getVariablesTabContentsWidget()->setEnabled(true);
+  getFilterInputWidget()->toIdleState(); // getVariablesTabContentsWidget()->setEnabled(true);
   deleteBtn->setEnabled(true);
 }
 

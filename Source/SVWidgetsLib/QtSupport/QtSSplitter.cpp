@@ -38,19 +38,17 @@
 
 #include "SVWidgetsLib/QtSupport/QtSSplitterHandle.h"
 
-#include "SIMPLib/SIMPLib.h"
 #include "SIMPLib/Common/SIMPLibSetGetMacros.h"
-
+#include "SIMPLib/SIMPLib.h"
 
 #include "moc_QtSSplitter.cpp"
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-QtSSplitter::QtSSplitter(QWidget* parent) :
-  QSplitter(parent)
+QtSSplitter::QtSSplitter(QWidget* parent)
+: QSplitter(parent)
 {
-
 }
 
 // -----------------------------------------------------------------------------
@@ -58,7 +56,6 @@ QtSSplitter::QtSSplitter(QWidget* parent) :
 // -----------------------------------------------------------------------------
 QtSSplitter::~QtSSplitter()
 {
-
 }
 
 // -----------------------------------------------------------------------------
@@ -68,6 +65,3 @@ QSplitterHandle* QtSSplitter::createHandle()
 {
   return new QtSSplitterHandle(orientation(), this);
 }
-
-
-

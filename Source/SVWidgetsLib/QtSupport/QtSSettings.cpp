@@ -37,10 +37,10 @@
 
 #include <iostream>
 
-#include <QtCore/QDir>
-#include <QtCore/QSettings>
 #include <QtCore/QCoreApplication>
+#include <QtCore/QDir>
 #include <QtCore/QJsonDocument>
+#include <QtCore/QSettings>
 #include <QtCore/QTextCodec>
 
 #include <QtWidgets/QTreeWidgetItemIterator>
@@ -53,7 +53,7 @@ QtSSettings::QtSSettings(QObject* parent)
 {
   setParent(parent);
 
-#if defined (Q_OS_MAC)
+#if defined(Q_OS_MAC)
   QSettings::Format format = QSettings::NativeFormat;
 #else
   QSettings::Format format = QSettings::IniFormat;
@@ -70,7 +70,7 @@ QtSSettings::QtSSettings(QObject* parent)
     appName = QString("Application");
   }
 
-#if defined (Q_OS_MAC)
+#if defined(Q_OS_MAC)
 
   QString domain = QCoreApplication::organizationDomain();
   if(domain.isEmpty())
@@ -85,7 +85,6 @@ QtSSettings::QtSSettings(QObject* parent)
   {
     domain = domain + iter.previous() + QString(".");
   }
-
 
   QString newFilePath = fi.path() + "/" + domain + appName + ".json";
 #else
@@ -116,7 +115,6 @@ QtSSettings::QtSSettings(const QString& filePath, QObject* parent)
 // -----------------------------------------------------------------------------
 QtSSettings::~QtSSettings()
 {
-
 }
 
 // -----------------------------------------------------------------------------
@@ -140,11 +138,11 @@ bool QtSSettings::contains(const QString& key)
 // -----------------------------------------------------------------------------
 bool QtSSettings::beginGroup(const QString& prefix)
 {
-  if (prefix.isEmpty())
+  if(prefix.isEmpty())
   {
     return false;
   }
-  else if (m_Stack.isEmpty() == false && m_Stack.top()->group.contains(prefix) == true && m_Stack.top()->group[prefix].isObject() == true)
+  else if(m_Stack.isEmpty() == false && m_Stack.top()->group.contains(prefix) == true && m_Stack.top()->group[prefix].isObject() == true)
   {
     SIMPLViewSettingsGroup::Pointer newGroup = SIMPLViewSettingsGroup::Pointer(new SIMPLViewSettingsGroup(prefix, m_Stack.top()->group[prefix].toObject()));
     m_Stack.push(newGroup);
@@ -165,7 +163,7 @@ void QtSSettings::endGroup()
 {
   writeToFile();
 
-  if (m_Stack.size() > 1)
+  if(m_Stack.size() > 1)
   {
     SIMPLViewSettingsGroup::Pointer group = m_Stack.pop();
   }
@@ -181,9 +179,9 @@ QStringList QtSSettings::childGroups()
 
   QStringList keyList = obj.keys();
 
-  for (int i = 0; i < keyList.size(); i++)
+  for(int i = 0; i < keyList.size(); i++)
   {
-    if (obj.value(keyList[i]).isObject())
+    if(obj.value(keyList[i]).isObject())
     {
       list.append(keyList[i]);
     }
@@ -216,7 +214,7 @@ void QtSSettings::clear()
 // -----------------------------------------------------------------------------
 QVariant QtSSettings::value(const QString& key, const QVariant& defaultValue)
 {
-  if (m_Stack.top()->group.contains(key) == false)
+  if(m_Stack.top()->group.contains(key) == false)
   {
     return defaultValue;
   }
@@ -229,12 +227,12 @@ QVariant QtSSettings::value(const QString& key, const QVariant& defaultValue)
 // -----------------------------------------------------------------------------
 QJsonObject QtSSettings::value(const QString& key, const QJsonObject& defaultObject)
 {
-  if (m_Stack.top()->group.contains(key) == false)
+  if(m_Stack.top()->group.contains(key) == false)
   {
     return defaultObject;
   }
 
-  if (m_Stack.top()->group[key].isObject())
+  if(m_Stack.top()->group[key].isObject())
   {
     return m_Stack.top()->group[key].toObject();
   }
@@ -246,7 +244,7 @@ QJsonObject QtSSettings::value(const QString& key, const QJsonObject& defaultObj
 // -----------------------------------------------------------------------------
 QStringList QtSSettings::value(const QString& key, const QStringList& defaultList)
 {
-  if (m_Stack.top()->group[key].isArray() == false)
+  if(m_Stack.top()->group[key].isArray() == false)
   {
     return defaultList;
   }
@@ -254,7 +252,7 @@ QStringList QtSSettings::value(const QString& key, const QStringList& defaultLis
   QJsonArray jsonArray = m_Stack.top()->group[key].toArray();
   QStringList list;
 
-  for (int i = 0; i < jsonArray.size(); i++)
+  for(int i = 0; i < jsonArray.size(); i++)
   {
     QString str = jsonArray[i].toString();
     list.push_back(str);
@@ -273,7 +271,6 @@ QByteArray QtSSettings::value(const QString& key, const QByteArray& defaultValue
   QByteArray byteArray8Bit = value.toLocal8Bit();
   QByteArray byteArray = QByteArray::fromBase64(byteArray8Bit);
   return byteArray;
-
 }
 
 // -----------------------------------------------------------------------------
@@ -293,7 +290,7 @@ void QtSSettings::setValue(const QString& key, const QVariant& value)
 
   QJsonValue val = QJsonValue::fromVariant(value);
 
-  if (QString::fromStdString(std::string(value.typeName())) == "QString")
+  if(QString::fromStdString(std::string(value.typeName())) == "QString")
   {
     QJsonArray jsonArray;
     jsonArray.insert(Value, val);
@@ -304,9 +301,8 @@ void QtSSettings::setValue(const QString& key, const QVariant& value)
     m_Stack.top()->group.insert(key, val);
   }
 
-
   // If this is the root, write to the file
-  if (m_Stack.top()->groupName.isEmpty())
+  if(m_Stack.top()->groupName.isEmpty())
   {
     writeToFile();
   }
@@ -320,7 +316,7 @@ void QtSSettings::setValue(const QString& key, const QJsonObject& object)
   m_Stack.top()->group.insert(key, object);
 
   // If this is the root, write to the file
-  if (m_Stack.top()->groupName.isEmpty())
+  if(m_Stack.top()->groupName.isEmpty())
   {
     writeToFile();
   }
@@ -333,7 +329,7 @@ void QtSSettings::setValue(const QString& key, const QStringList& list)
 {
   QJsonArray jsonArray;
 
-  for (int i = 0; i < list.size(); i++)
+  for(int i = 0; i < list.size(); i++)
   {
     jsonArray.push_back(list[i]);
   }
@@ -341,7 +337,7 @@ void QtSSettings::setValue(const QString& key, const QStringList& list)
   m_Stack.top()->group.insert(key, jsonArray);
 
   // If this is the root, write to the file
-  if (m_Stack.top()->groupName.isEmpty())
+  if(m_Stack.top()->groupName.isEmpty())
   {
     writeToFile();
   }
@@ -352,13 +348,13 @@ void QtSSettings::setValue(const QString& key, const QStringList& list)
 // -----------------------------------------------------------------------------
 void QtSSettings::openFile()
 {
-  if (m_Stack.size() > 0)
+  if(m_Stack.size() > 0)
   {
     closeFile();
   }
 
   QFile inputFile(m_FilePath);
-  if (inputFile.open(QIODevice::ReadOnly))
+  if(inputFile.open(QIODevice::ReadOnly))
   {
     QByteArray byteArray = inputFile.readAll();
     QJsonDocument doc = QJsonDocument::fromJson(byteArray);
@@ -387,7 +383,7 @@ void QtSSettings::writeToFile()
 {
   /* Percolate the information that has changed all the way to the root group
      (The root group is what will ultimately be written to the file) */
-  for (int i = m_Stack.size() - 2; i >= 0; i--)
+  for(int i = m_Stack.size() - 2; i >= 0; i--)
   {
     m_Stack[i]->group[m_Stack[i + 1]->groupName] = m_Stack[i + 1]->group;
   }
@@ -398,23 +394,20 @@ void QtSSettings::writeToFile()
   QString parentPath = info.absolutePath();
   QDir parentDir(parentPath);
 
-  if (parentDir.exists() == false)
+  if(parentDir.exists() == false)
   {
     parentDir.mkpath(parentPath);
   }
 
   QJsonDocument doc(m_Stack.front()->group);
 
-  if (outputFile.exists() == true)
+  if(outputFile.exists() == true)
   {
     outputFile.remove();
   }
-  if (outputFile.open(QIODevice::WriteOnly))
+  if(outputFile.open(QIODevice::WriteOnly))
   {
     outputFile.write(doc.toJson());
     outputFile.close();
   }
 }
-
-
-

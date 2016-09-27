@@ -38,8 +38,8 @@
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-LinkedChoicesFilterParameter::LinkedChoicesFilterParameter() :
-  ChoiceFilterParameter()
+LinkedChoicesFilterParameter::LinkedChoicesFilterParameter()
+: ChoiceFilterParameter()
 {
 }
 
@@ -47,19 +47,15 @@ LinkedChoicesFilterParameter::LinkedChoicesFilterParameter() :
 //
 // -----------------------------------------------------------------------------
 LinkedChoicesFilterParameter::~LinkedChoicesFilterParameter()
-{}
+{
+}
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-LinkedChoicesFilterParameter::Pointer LinkedChoicesFilterParameter::New(const QString& humanLabel, const QString& propertyName,
-    const int& defaultValue,
-    Category category,
-    SetterCallbackType setterCallback,
-    GetterCallbackType getterCallback,
-    QVector<QString> choices,
-    QStringList linkedProperties,
-    int groupIndex)
+LinkedChoicesFilterParameter::Pointer LinkedChoicesFilterParameter::New(const QString& humanLabel, const QString& propertyName, const int& defaultValue, Category category,
+                                                                        SetterCallbackType setterCallback, GetterCallbackType getterCallback, QVector<QString> choices, QStringList linkedProperties,
+                                                                        int groupIndex)
 {
   LinkedChoicesFilterParameter::Pointer ptr = LinkedChoicesFilterParameter::New();
   ptr->setHumanLabel(humanLabel);
@@ -87,10 +83,10 @@ QString LinkedChoicesFilterParameter::getWidgetType()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void LinkedChoicesFilterParameter::readJson(const QJsonObject &json)
+void LinkedChoicesFilterParameter::readJson(const QJsonObject& json)
 {
   QJsonValue jsonValue = json[getPropertyName()];
-  if(!jsonValue.isUndefined() )
+  if(!jsonValue.isUndefined())
   {
     m_SetterCallback(jsonValue.toInt(0.0));
   }
@@ -99,8 +95,7 @@ void LinkedChoicesFilterParameter::readJson(const QJsonObject &json)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void LinkedChoicesFilterParameter::writeJson(QJsonObject &json)
+void LinkedChoicesFilterParameter::writeJson(QJsonObject& json)
 {
   json[getPropertyName()] = m_GetterCallback();
 }
-

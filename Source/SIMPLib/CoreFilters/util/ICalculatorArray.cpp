@@ -38,10 +38,9 @@
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-ICalculatorArray::ICalculatorArray() :
-  CalculatorItem()
+ICalculatorArray::ICalculatorArray()
+: CalculatorItem()
 {
-
 }
 
 // -----------------------------------------------------------------------------
@@ -49,7 +48,6 @@ ICalculatorArray::ICalculatorArray() :
 // -----------------------------------------------------------------------------
 ICalculatorArray::~ICalculatorArray()
 {
-
 }
 
 // -----------------------------------------------------------------------------
@@ -78,4 +76,3 @@ ICalculatorArray::ValueType ICalculatorArray::getType()
   // This should never be called
   return ICalculatorArray::Array;
 }
-

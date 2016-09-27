@@ -49,8 +49,8 @@
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-DoubleWidget::DoubleWidget(FilterParameter* parameter, AbstractFilter* filter, QWidget* parent) :
-  FilterParameterWidget(parameter, filter, parent)
+DoubleWidget::DoubleWidget(FilterParameter* parameter, AbstractFilter* filter, QWidget* parent)
+: FilterParameterWidget(parameter, filter, parent)
 {
   m_FilterParameter = dynamic_cast<DoubleFilterParameter*>(parameter);
   Q_ASSERT_X(m_FilterParameter != nullptr, "nullptr Pointer", "DoubleWidget can ONLY be used with a DoubleFilterParameter object");
@@ -63,7 +63,8 @@ DoubleWidget::DoubleWidget(FilterParameter* parameter, AbstractFilter* filter, Q
 //
 // -----------------------------------------------------------------------------
 DoubleWidget::~DoubleWidget()
-{}
+{
+}
 
 // -----------------------------------------------------------------------------
 //
@@ -71,19 +72,15 @@ DoubleWidget::~DoubleWidget()
 void DoubleWidget::setupGui()
 {
   // Catch when the filter is about to execute the preflight
-  connect(getFilter(), SIGNAL(preflightAboutToExecute()),
-          this, SLOT(beforePreflight()));
+  connect(getFilter(), SIGNAL(preflightAboutToExecute()), this, SLOT(beforePreflight()));
 
   // Catch when the filter is finished running the preflight
-  connect(getFilter(), SIGNAL(preflightExecuted()),
-          this, SLOT(afterPreflight()));
+  connect(getFilter(), SIGNAL(preflightExecuted()), this, SLOT(afterPreflight()));
 
   // Catch when the filter wants its values updated
-  connect(getFilter(), SIGNAL(updateFilterParameters(AbstractFilter*)),
-          this, SLOT(filterNeedsInputParameters(AbstractFilter*)));
+  connect(getFilter(), SIGNAL(updateFilterParameters(AbstractFilter*)), this, SLOT(filterNeedsInputParameters(AbstractFilter*)));
 
-  connect(value, SIGNAL(textChanged(const QString&)),
-          this, SLOT(widgetChanged(const QString&)));
+  connect(value, SIGNAL(textChanged(const QString&)), this, SLOT(widgetChanged(const QString&)));
 
   QLocale loc = QLocale::system();
 
@@ -91,19 +88,17 @@ void DoubleWidget::setupGui()
   value->setValidator(xVal);
   xVal->setLocale(loc);
 
-
-  if (getFilterParameter() != nullptr)
+  if(getFilterParameter() != nullptr)
   {
-    label->setText(getFilterParameter()->getHumanLabel() );
-      bool ok = false;
+    label->setText(getFilterParameter()->getHumanLabel());
+    bool ok = false;
 
-    double d =  getFilter()->property(PROPERTY_NAME_AS_CHAR).toDouble(&ok);
+    double d = getFilter()->property(PROPERTY_NAME_AS_CHAR).toDouble(&ok);
     QString str = loc.toString(d);
 
-  //  QString str = getFilter()->property(PROPERTY_NAME_AS_CHAR).toString();
+    //  QString str = getFilter()->property(PROPERTY_NAME_AS_CHAR).toString();
     value->setText(str);
   }
-
 }
 
 // -----------------------------------------------------------------------------
@@ -124,12 +119,12 @@ void DoubleWidget::filterNeedsInputParameters(AbstractFilter* filter)
   double i = defValue;
   QLocale loc;
   // Next make sure there is something in the
-  if (!value->text().isEmpty())
+  if(!value->text().isEmpty())
   {
     i = loc.toDouble(value->text(), &ok);
-    //i = value->text().toDouble(&ok);
+    // i = value->text().toDouble(&ok);
     //  make sure we can convert the entered value to a 32 bit signed int
-    if (!ok)
+    if(!ok)
     {
       errorLabel->setStyleSheet(QString::fromLatin1("color: rgb(255, 0, 0);"));
       errorLabel->setText("Value entered is beyond the representable range for a double.\nThe filter will use the default value of " + getFilterParameter()->getDefaultValue().toString());
@@ -153,11 +148,10 @@ void DoubleWidget::filterNeedsInputParameters(AbstractFilter* filter)
 
   QVariant v(i);
   ok = filter->setProperty(PROPERTY_NAME_AS_CHAR, v);
-  if (false == ok)
+  if(false == ok)
   {
     FilterParameterWidgetsDialogs::ShowCouldNotSetFilterParameter(getFilter(), getFilterParameter());
   }
-
 }
 
 // -----------------------------------------------------------------------------
@@ -165,7 +159,6 @@ void DoubleWidget::filterNeedsInputParameters(AbstractFilter* filter)
 // -----------------------------------------------------------------------------
 void DoubleWidget::beforePreflight()
 {
-
 }
 
 // -----------------------------------------------------------------------------
@@ -173,5 +166,4 @@ void DoubleWidget::beforePreflight()
 // -----------------------------------------------------------------------------
 void DoubleWidget::afterPreflight()
 {
-
 }

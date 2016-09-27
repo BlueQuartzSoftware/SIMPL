@@ -38,41 +38,38 @@
 #include "SIMPLib/DataArrays/StringDataArray.hpp"
 #include "SIMPLib/FilterParameters/AbstractFilterParametersReader.h"
 
-#include "SIMPLib/FilterParameters/StringFilterParameter.h"
 #include "SIMPLib/FilterParameters/SeparatorFilterParameter.h"
+#include "SIMPLib/FilterParameters/StringFilterParameter.h"
 #include "SIMPLib/Geometry/ImageGeom.h"
 #include "SIMPLib/Geometry/VertexGeom.h"
 
 // Include the MOC generated file for this class
 #include "moc_MakeDataContainer.cpp"
 
-
-
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-MakeDataContainer::MakeDataContainer() :
-  AbstractFilter(),
-  m_DataContainerName(SIMPL::Defaults::DataContainerName),
-  m_CellEnsembleAttributeMatrixName(SIMPL::Defaults::CellEnsembleAttributeMatrixName),
-  m_CellAttributeMatrixName(SIMPL::Defaults::CellAttributeMatrixName),
-  m_PhaseNameArrayName("Phase"),
-  m_MaterialNameArrayName(SIMPL::EnsembleData::MaterialName),
-  m_FeatureIdsArrayName(SIMPL::CellData::FeatureIds),
-  m_CellEulerAnglesArrayName(SIMPL::CellData::EulerAngles),
-  m_CellPhasesArrayName(SIMPL::CellData::Phases),
-  m_CrystalStructuresArrayName(SIMPL::EnsembleData::CrystalStructures),
-  m_LatticeConstantsArrayName(SIMPL::EnsembleData::LatticeConstants),
-  m_FeatureIds(nullptr),
-  m_CellPhases(nullptr),
-  m_CellEulerAngles(nullptr),
-  m_CrystalStructures(nullptr),
-  m_LatticeConstants(nullptr)
+MakeDataContainer::MakeDataContainer()
+: AbstractFilter()
+, m_DataContainerName(SIMPL::Defaults::DataContainerName)
+, m_CellEnsembleAttributeMatrixName(SIMPL::Defaults::CellEnsembleAttributeMatrixName)
+, m_CellAttributeMatrixName(SIMPL::Defaults::CellAttributeMatrixName)
+, m_PhaseNameArrayName("Phase")
+, m_MaterialNameArrayName(SIMPL::EnsembleData::MaterialName)
+, m_FeatureIdsArrayName(SIMPL::CellData::FeatureIds)
+, m_CellEulerAnglesArrayName(SIMPL::CellData::EulerAngles)
+, m_CellPhasesArrayName(SIMPL::CellData::Phases)
+, m_CrystalStructuresArrayName(SIMPL::EnsembleData::CrystalStructures)
+, m_LatticeConstantsArrayName(SIMPL::EnsembleData::LatticeConstants)
+, m_FeatureIds(nullptr)
+, m_CellPhases(nullptr)
+, m_CellEulerAngles(nullptr)
+, m_CrystalStructures(nullptr)
+, m_LatticeConstants(nullptr)
 {
 
   setupFilterParameters();
 }
-
 
 // -----------------------------------------------------------------------------
 //
@@ -96,13 +93,11 @@ void MakeDataContainer::setupFilterParameters()
   setFilterParameters(parameters);
 }
 
-
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
 void MakeDataContainer::readFilterParameters(AbstractFilterParametersReader* reader, int index)
 {
-
 }
 
 // -----------------------------------------------------------------------------
@@ -110,7 +105,6 @@ void MakeDataContainer::readFilterParameters(AbstractFilterParametersReader* rea
 // -----------------------------------------------------------------------------
 void MakeDataContainer::initialize()
 {
-
 }
 
 // -----------------------------------------------------------------------------
@@ -121,13 +115,13 @@ void MakeDataContainer::dataCheck()
   DataArrayPath tempPath;
   setErrorCondition(0);
   DataContainer::Pointer m = getDataContainerArray()->createNonPrereqDataContainer<AbstractFilter>(this, getDataContainerName());
-  if (getErrorCondition() < 0)
+  if(getErrorCondition() < 0)
   {
     return;
   }
   QVector<size_t> tDims(3, 64);
   AttributeMatrix::Pointer cellAttrMat = m->createNonPrereqAttributeMatrix<AbstractFilter>(this, getCellAttributeMatrixName(), tDims, SIMPL::AttributeMatrixType::Cell);
-  if (getErrorCondition() < 0)
+  if(getErrorCondition() < 0)
   {
     return;
   }
@@ -140,24 +134,25 @@ void MakeDataContainer::dataCheck()
   //  }
 
   QVector<size_t> dims(1, 1);
-  m_FeatureIdsPtr = cellAttrMat->createNonPrereqArray<DataArray<int32_t>, AbstractFilter, int32_t>(this,  m_FeatureIdsArrayName, 0, dims); /* Assigns the shared_ptr<> to an instance variable that is a weak_ptr<> */
-  if( nullptr != m_FeatureIdsPtr.lock().get() ) /* Validate the Weak Pointer wraps a non-nullptr pointer to a DataArray<T> object */
+  m_FeatureIdsPtr =
+      cellAttrMat->createNonPrereqArray<DataArray<int32_t>, AbstractFilter, int32_t>(this, m_FeatureIdsArrayName, 0, dims); /* Assigns the shared_ptr<> to an instance variable that is a weak_ptr<> */
+  if(nullptr != m_FeatureIdsPtr.lock().get()) /* Validate the Weak Pointer wraps a non-nullptr pointer to a DataArray<T> object */
   {
-    m_FeatureIds = m_FeatureIdsPtr.lock()->getPointer(0);    /* Now assign the raw pointer to data from the DataArray<T> object */
+    m_FeatureIds = m_FeatureIdsPtr.lock()->getPointer(0); /* Now assign the raw pointer to data from the DataArray<T> object */
   }
 
-  //ImageGeom::Pointer image = ImageGeom::CreateGeometry("TestImageGeom");
-  //image->setResolution(0.1f, 0.2f, 0.3f);
-  //image->setOrigin(100.3f, 987.234f, 0.0f);
-  //image->setDimensions(64, 64, 64);
-  //m->setGeometry(image);
+  // ImageGeom::Pointer image = ImageGeom::CreateGeometry("TestImageGeom");
+  // image->setResolution(0.1f, 0.2f, 0.3f);
+  // image->setOrigin(100.3f, 987.234f, 0.0f);
+  // image->setDimensions(64, 64, 64);
+  // m->setGeometry(image);
 
   VertexGeom::Pointer vertices = VertexGeom::CreateGeometry(100, "TestVertexGeom", !getInPreflight());
-  if (!getInPreflight())
+  if(!getInPreflight())
   {
     SharedVertexList::Pointer test = vertices->getVertices();
     float* verts = test->getPointer(0);
-    for (int64_t i = 0; i < vertices->getNumberOfVertices(); i++)
+    for(int64_t i = 0; i < vertices->getNumberOfVertices(); i++)
     {
       verts[3 * i] = float(0.1 + i);
       verts[3 * i + 1] = float(0.2 + i);
@@ -165,9 +160,7 @@ void MakeDataContainer::dataCheck()
     }
   }
   m->setGeometry(vertices);
-
 }
-
 
 // -----------------------------------------------------------------------------
 //
@@ -182,7 +175,6 @@ void MakeDataContainer::preflight()
   setInPreflight(false);
 }
 
-
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
@@ -193,18 +185,18 @@ void MakeDataContainer::execute()
 
   // Run the data check to get references to all of our data arrays initialized to the values stored in memory
   dataCheck();
-  if (getErrorCondition() < 0)
+  if(getErrorCondition() < 0)
   {
     return;
   }
 
-  //ImageGeom::Pointer image = getDataContainerArray()->getDataContainer(getDataContainerName())->getGeometryAs<ImageGeom>();
+  // ImageGeom::Pointer image = getDataContainerArray()->getDataContainer(getDataContainerName())->getGeometryAs<ImageGeom>();
 
-  //size_t index;
-  //size_t iDims[3] = {0, 0, 0};
-  //image->getDimensions(iDims);
+  // size_t index;
+  // size_t iDims[3] = {0, 0, 0};
+  // image->getDimensions(iDims);
 
-  //for (size_t z=0;z<image->getZPoints();z++)
+  // for (size_t z=0;z<image->getZPoints();z++)
   //{
   //  for (size_t y=0;y<image->getYPoints();y++)
   //  {
@@ -218,15 +210,13 @@ void MakeDataContainer::execute()
 
   VertexGeom::Pointer verts = getDataContainerArray()->getDataContainer(getDataContainerName())->getGeometryAs<VertexGeom>();
 
-  for (int64_t i = 0; i < verts->getNumberOfVertices(); i++)
+  for(int64_t i = 0; i < verts->getNumberOfVertices(); i++)
   {
     m_FeatureIds[i] = i;
   }
 
-
   /* Let the GUI know we are done with this filter */
   notifyStatusMessage(getHumanLabel(), "Complete");
-
 }
 // -----------------------------------------------------------------------------
 //
@@ -249,7 +239,6 @@ const QString MakeDataContainer::getCompiledLibraryName()
   return Test::TestBaseName;
 }
 
-
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
@@ -257,7 +246,6 @@ const QString MakeDataContainer::getGroupName()
 {
   return SIMPL::FilterGroups::TestFilters;
 }
-
 
 // -----------------------------------------------------------------------------
 //
@@ -267,7 +255,6 @@ const QString MakeDataContainer::getSubGroupName()
   return "Create Stuff";
 }
 
-
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
@@ -275,4 +262,3 @@ const QString MakeDataContainer::getHumanLabel()
 {
   return "Make DataContainer";
 }
-

@@ -38,21 +38,23 @@
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-DataContainerCreationFilterParameter::DataContainerCreationFilterParameter() :
-FilterParameter()
-{}
+DataContainerCreationFilterParameter::DataContainerCreationFilterParameter()
+: FilterParameter()
+{
+}
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
 DataContainerCreationFilterParameter::~DataContainerCreationFilterParameter()
-{}
+{
+}
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-DataContainerCreationFilterParameter::Pointer DataContainerCreationFilterParameter::New(const QString& humanLabel, const QString& propertyName,
-  const QString& defaultValue, Category category, SetterCallbackType setterCallback, GetterCallbackType getterCallback, int groupIndex)
+DataContainerCreationFilterParameter::Pointer DataContainerCreationFilterParameter::New(const QString& humanLabel, const QString& propertyName, const QString& defaultValue, Category category,
+                                                                                        SetterCallbackType setterCallback, GetterCallbackType getterCallback, int groupIndex)
 {
 
   DataContainerCreationFilterParameter::Pointer ptr = DataContainerCreationFilterParameter::New();
@@ -63,7 +65,6 @@ DataContainerCreationFilterParameter::Pointer DataContainerCreationFilterParamet
   ptr->setGroupIndex(groupIndex);
   ptr->setSetterCallback(setterCallback);
   ptr->setGetterCallback(getterCallback);
-
 
   return ptr;
 }
@@ -79,10 +80,10 @@ QString DataContainerCreationFilterParameter::getWidgetType()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void DataContainerCreationFilterParameter::readJson(const QJsonObject &json)
+void DataContainerCreationFilterParameter::readJson(const QJsonObject& json)
 {
   QJsonValue jsonValue = json[getPropertyName()];
-  if(!jsonValue.isUndefined() )
+  if(!jsonValue.isUndefined())
   {
     m_SetterCallback(jsonValue.toString(""));
   }
@@ -91,8 +92,7 @@ void DataContainerCreationFilterParameter::readJson(const QJsonObject &json)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void DataContainerCreationFilterParameter::writeJson(QJsonObject &json)
+void DataContainerCreationFilterParameter::writeJson(QJsonObject& json)
 {
   json[getPropertyName()] = m_GetterCallback();
 }
-

@@ -33,31 +33,27 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-
 #include "QtSFSDropLineEdit.h"
 
-#include <QtCore/QFileInfo>
 #include <QtCore/QDir>
-#include <QtCore/QUrl>
-#include <QtCore/QTextStream>
+#include <QtCore/QFileInfo>
 #include <QtCore/QMimeData>
-#include <QtWidgets/QWidget>
+#include <QtCore/QTextStream>
+#include <QtCore/QUrl>
 #include <QtGui/QDragEnterEvent>
+#include <QtWidgets/QWidget>
 
 #include "SVWidgetsLib/QtSupport/QtSStyles.h"
 
 #include "moc_QtSFSDropLineEdit.cpp"
 
-
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
 QtSFSDropLineEdit::QtSFSDropLineEdit(QWidget* parent)
-  : QLineEdit(parent)
+: QLineEdit(parent)
 {
-
 }
-
 
 // -----------------------------------------------------------------------------
 //
@@ -78,7 +74,6 @@ void QtSFSDropLineEdit::changeStyleSheet(int style)
 
   if(style == FS_STANDARD_STYLE)
   {
-
   }
   else if(style == FS_DRAGGING_STYLE)
   {
@@ -94,13 +89,10 @@ void QtSFSDropLineEdit::changeStyleSheet(int style)
     ss << "color: rgb(255, 140, 0); font: bold;";
   }
 
-
   ss << "}";
 
   setStyleSheet(styleSheet);
 }
-
-
 
 // -----------------------------------------------------------------------------
 //
@@ -108,7 +100,7 @@ void QtSFSDropLineEdit::changeStyleSheet(int style)
 void QtSFSDropLineEdit::dragEnterEvent(QDragEnterEvent* event)
 {
   // accept just text/uri-list mime format
-  if (event->mimeData()->hasFormat("text/uri-list"))
+  if(event->mimeData()->hasFormat("text/uri-list"))
   {
     event->acceptProposedAction();
   }
@@ -123,22 +115,20 @@ void QtSFSDropLineEdit::dropEvent(QDropEvent* event)
   QString fName;
   QFileInfo info;
 
-  if (event->mimeData()->hasUrls())
+  if(event->mimeData()->hasUrls())
   {
     urlList = event->mimeData()->urls(); // returns list of QUrls
     // if just text was dropped, urlList is empty (size == 0)
 
-    if ( urlList.size() > 0) // if at least one QUrl is present in list
+    if(urlList.size() > 0) // if at least one QUrl is present in list
     {
       fName = urlList[0].toLocalFile(); // convert first QUrl to local path
       fName = QDir::toNativeSeparators(fName);
-      info.setFile( fName ); // information about file
-      setText( fName ); // if is file, setText
+      info.setFile(fName); // information about file
+      setText(fName);      // if is file, setText
       emit fileDropped(fName);
     }
   }
 
   event->acceptProposedAction();
 }
-
-

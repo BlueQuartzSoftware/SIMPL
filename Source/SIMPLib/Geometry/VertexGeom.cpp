@@ -33,7 +33,6 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-
 /* ============================================================================
  * VertexGeom re-implements code from the following vtk modules:
  *
@@ -66,14 +65,15 @@ VertexGeom::VertexGeom()
 //
 // -----------------------------------------------------------------------------
 VertexGeom::~VertexGeom()
-{}
+{
+}
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
 VertexGeom::Pointer VertexGeom::CreateGeometry(int64_t numVertices, const QString& name, bool allocate)
 {
-  if (name.isEmpty() == true)
+  if(name.isEmpty() == true)
   {
     return NullPointer();
   }
@@ -90,11 +90,11 @@ VertexGeom::Pointer VertexGeom::CreateGeometry(int64_t numVertices, const QStrin
 // -----------------------------------------------------------------------------
 VertexGeom::Pointer VertexGeom::CreateGeometry(SharedVertexList::Pointer vertices, const QString& name)
 {
-  if (name.isEmpty() == true)
+  if(name.isEmpty() == true)
   {
     return VertexGeom::NullPointer();
   }
-  if (vertices.get() == nullptr)
+  if(vertices.get() == nullptr)
   {
     return VertexGeom::NullPointer();
   }
@@ -118,16 +118,16 @@ void VertexGeom::initializeWithZeros()
 // -----------------------------------------------------------------------------
 void VertexGeom::addAttributeMatrix(const QString& name, AttributeMatrix::Pointer data)
 {
-  if (data->getType() != 0)
+  if(data->getType() != 0)
   {
     // VertexGeom can only accept vertex Attribute Matrices
     return;
   }
-  if (data->getNumberOfTuples() != getNumberOfElements())
+  if(data->getNumberOfTuples() != getNumberOfElements())
   {
     return;
   }
-  if (data->getName().compare(name) != 0)
+  if(data->getName().compare(name) != 0)
   {
     data->setName(name);
   }
@@ -278,10 +278,10 @@ int VertexGeom::writeGeometryToHDF5(hid_t parentId, bool writeXdmf)
   herr_t err = 0;
   QVector<size_t> tDims(1, 0);
 
-  if (m_VertexList.get() != nullptr)
+  if(m_VertexList.get() != nullptr)
   {
     err = GeometryHelpers::GeomIO::WriteListToHDF5(parentId, m_VertexList);
-    if (err < 0)
+    if(err < 0)
     {
       return err;
     }
@@ -310,8 +310,10 @@ int VertexGeom::writeXdmf(QTextStream& out, QString dcName, QString hdfFileName)
   herr_t err = 0;
 
   // Always start the grid
-  out << "  <!-- *************** START OF " << dcName << " *************** -->" << "\n";
-  out << "  <Grid Name=\"" << dcName << "\" GridType=\"Uniform\">" << "\n";
+  out << "  <!-- *************** START OF " << dcName << " *************** -->"
+      << "\n";
+  out << "  <Grid Name=\"" << dcName << "\" GridType=\"Uniform\">"
+      << "\n";
 
 #if 0
   DataArrayPath dap = getTemporalDataPath();
@@ -323,18 +325,29 @@ int VertexGeom::writeXdmf(QTextStream& out, QString dcName, QString hdfFileName)
   }
 #endif
 
-  out << "    <Topology TopologyType=\"Polyvertex\" NumberOfElements=\"" << getNumberOfVertices() << "\">" << "\n";
-  out << "      <DataItem Format=\"HDF\" NumberType=\"Int\" Dimensions=\"" << getNumberOfVertices() << "\">" << "\n";
-  out << "        " << hdfFileName << ":/DataContainers/" << dcName << "/" << SIMPL::Geometry::Geometry << "/" << "Verts" << "\n";
-  out << "      </DataItem>" << "\n";
-  out << "    </Topology>" << "\n";
+  out << "    <Topology TopologyType=\"Polyvertex\" NumberOfElements=\"" << getNumberOfVertices() << "\">"
+      << "\n";
+  out << "      <DataItem Format=\"HDF\" NumberType=\"Int\" Dimensions=\"" << getNumberOfVertices() << "\">"
+      << "\n";
+  out << "        " << hdfFileName << ":/DataContainers/" << dcName << "/" << SIMPL::Geometry::Geometry << "/"
+      << "Verts"
+      << "\n";
+  out << "      </DataItem>"
+      << "\n";
+  out << "    </Topology>"
+      << "\n";
 
-  out << "    <Geometry Type=\"XYZ\">" << "\n";
-  out << "      <DataItem Format=\"HDF\"  Dimensions=\"" << getNumberOfVertices() << " 3\" NumberType=\"Float\" Precision=\"4\">" << "\n";
+  out << "    <Geometry Type=\"XYZ\">"
+      << "\n";
+  out << "      <DataItem Format=\"HDF\"  Dimensions=\"" << getNumberOfVertices() << " 3\" NumberType=\"Float\" Precision=\"4\">"
+      << "\n";
   out << "        " << hdfFileName << ":/DataContainers/" << dcName << "/" << SIMPL::Geometry::Geometry << "/" << SIMPL::Geometry::SharedVertexList << "\n";
-  out << "      </DataItem>" << "\n";
-  out << "    </Geometry>" << "\n";
-  out << "" << "\n";
+  out << "      </DataItem>"
+      << "\n";
+  out << "    </Geometry>"
+      << "\n";
+  out << ""
+      << "\n";
 
   return err;
 }
@@ -345,7 +358,7 @@ int VertexGeom::writeXdmf(QTextStream& out, QString dcName, QString hdfFileName)
 QString VertexGeom::getInfoString(SIMPL::InfoStringFormat format)
 {
   QString info;
-  QTextStream ss (&info);
+  QTextStream ss(&info);
 
   if(format == SIMPL::HtmlFormat)
   {
@@ -355,11 +368,9 @@ QString VertexGeom::getInfoString(SIMPL::InfoStringFormat format)
   }
   else
   {
-
   }
   return info;
 }
-
 
 // -----------------------------------------------------------------------------
 //
@@ -369,7 +380,7 @@ int VertexGeom::readGeometryFromHDF5(hid_t parentId, bool preflight)
   herr_t err = 0;
   SharedVertexList::Pointer vertices = SharedVertexList::NullPointer();
   vertices = GeometryHelpers::GeomIO::ReadListFromHDF5<SharedVertexList>(SIMPL::Geometry::SharedVertexList, parentId, preflight, err);
-  if (vertices.get() == nullptr)
+  if(vertices.get() == nullptr)
   {
     return -1;
   }
@@ -398,4 +409,3 @@ IGeometry::Pointer VertexGeom::deepCopy()
 // Shared ops includes
 #define GEOM_CLASS_NAME VertexGeom
 #include "SIMPLib/Geometry/SharedVertexOps.cpp"
-

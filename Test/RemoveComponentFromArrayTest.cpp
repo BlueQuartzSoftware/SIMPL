@@ -33,465 +33,426 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-
 #include <QtCore/QCoreApplication>
 #include <QtCore/QDir>
 
-#include "SIMPLib/SIMPLib.h"
+#include "SIMPLib/Common/FilterFactory.hpp"
+#include "SIMPLib/Common/FilterManager.h"
+#include "SIMPLib/Common/FilterPipeline.h"
 #include "SIMPLib/Common/SIMPLibSetGetMacros.h"
 #include "SIMPLib/DataArrays/DataArray.hpp"
-#include "SIMPLib/Common/FilterPipeline.h"
-#include "SIMPLib/Common/FilterManager.h"
-#include "SIMPLib/Common/FilterFactory.hpp"
+#include "SIMPLib/DataContainers/DataContainer.h"
 #include "SIMPLib/Plugin/ISIMPLibPlugin.h"
 #include "SIMPLib/Plugin/SIMPLibPluginLoader.h"
-#include "SIMPLib/Utilities/UnitTestSupport.hpp"
+#include "SIMPLib/SIMPLib.h"
 #include "SIMPLib/Utilities/QMetaObjectUtilities.h"
-#include "SIMPLib/DataContainers/DataContainer.h"
+#include "SIMPLib/Utilities/UnitTestSupport.hpp"
 
 #include "SIMPLTestFileLocations.h"
-
-
-
 
 size_t numTuples = 5;
 size_t numComps = 4;
 
 class RemoveComponentFromArrayTest
 {
-  public:
-    RemoveComponentFromArrayTest() {}
-    virtual ~RemoveComponentFromArrayTest() {}
+public:
+  RemoveComponentFromArrayTest()
+  {
+  }
+  virtual ~RemoveComponentFromArrayTest()
+  {
+  }
 
-    enum ErrorCodes
+  enum ErrorCodes
+  {
+    NO_ERROR = 0,
+    INT8_ERROR = -4050
+  };
+
+  // -----------------------------------------------------------------------------
+  //
+  // -----------------------------------------------------------------------------
+  int TestFilterAvailability()
+  {
+    // Now instantiate the CreateDataArray Filter from the FilterManager
+    QString filtName = "CreateDataArray";
+    FilterManager* fm = FilterManager::Instance();
+    IFilterFactory::Pointer filterFactory = fm->getFactoryForFilter(filtName);
+    if(nullptr == filterFactory.get())
     {
-      NO_ERROR = 0,
-      INT8_ERROR = -4050
-    };
-
-
-    // -----------------------------------------------------------------------------
-    //
-    // -----------------------------------------------------------------------------
-    int TestFilterAvailability()
-    {
-      // Now instantiate the CreateDataArray Filter from the FilterManager
-      QString filtName = "CreateDataArray";
-      FilterManager* fm = FilterManager::Instance();
-      IFilterFactory::Pointer filterFactory = fm->getFactoryForFilter(filtName);
-      if (nullptr == filterFactory.get() )
-      {
-        std::stringstream ss;
-        ss << "The CreateDataArrayTest Requires the use of the " << filtName.toStdString() << " filter which is found in the IO Plugin";
-        DREAM3D_TEST_THROW_EXCEPTION(ss.str())
-      }
-
-      // Now instantiate the CreateDataContainer Filter from the FilterManager
-      filtName = "CreateDataContainer";
-      filterFactory = fm->getFactoryForFilter(filtName);
-      if (nullptr == filterFactory.get() )
-      {
-        std::stringstream ss;
-        ss << "The CreateDataArrayTest Requires the use of the " << filtName.toStdString() << " filter which is found in the IO Plugin";
-        DREAM3D_TEST_THROW_EXCEPTION(ss.str())
-      }
-
-      // Now instantiate the CreateDataContainer Filter from the FilterManager
-      filtName = "CreateAttributeMatrix";
-      fm = FilterManager::Instance();
-      filterFactory = fm->getFactoryForFilter(filtName);
-      if (nullptr == filterFactory.get() )
-      {
-        std::stringstream ss;
-        ss << "The CreateDataArrayTest Requires the use of the " << filtName.toStdString() << " filter which is found in the IO Plugin";
-        DREAM3D_TEST_THROW_EXCEPTION(ss.str())
-      }
-
-      return EXIT_SUCCESS;
+      std::stringstream ss;
+      ss << "The CreateDataArrayTest Requires the use of the " << filtName.toStdString() << " filter which is found in the IO Plugin";
+      DREAM3D_TEST_THROW_EXCEPTION(ss.str())
     }
 
-
-    // -----------------------------------------------------------------------------
-    //
-    // -----------------------------------------------------------------------------
-    int TestCreateDataContainerAndAttributeMatrix ()
+    // Now instantiate the CreateDataContainer Filter from the FilterManager
+    filtName = "CreateDataContainer";
+    filterFactory = fm->getFactoryForFilter(filtName);
+    if(nullptr == filterFactory.get())
     {
-
-      int err = 0;
-      bool propWasSet = false;
-      // bool ok = false;
-      QVariant var;
-
-      DataContainerArray::Pointer dca = DataContainerArray::New();
-
-      // Now instantiate the CreateDataArray Filter from the FilterManager
-      FilterManager* fm = FilterManager::Instance();
-
-      QString filtName = "CreateDataContainer";
-      IFilterFactory::Pointer filterFactory = fm->getFactoryForFilter(filtName);
-      if (nullptr != filterFactory.get())
-      {
-        // If we get this far, the Factory is good so creating the filter should not fail unless something has
-        // horribly gone wrong in which case the system is going to come down quickly after this.
-        AbstractFilter::Pointer filter = filterFactory->create();
-
-        filter->setDataContainerArray(dca);
-
-        // Test 1 set int32 array with an initialization of -5 and read value for comparison
-        var.setValue(QString::fromLatin1("Test Data Container"));
-        propWasSet = filter->setProperty("CreatedDataContainer", var);
-        DREAM3D_REQUIRE_EQUAL(propWasSet, true)
-
-            filter->preflight();
-        err = filter->getErrorCondition();
-        DREAM3D_REQUIRED(err, >=, 0)
-      }
-
-
-
-
-      filtName = "CreateAttributeMatrix";
-      filterFactory = fm->getFactoryForFilter(filtName);
-      if (nullptr != filterFactory.get())
-      {
-        // If we get this far, the Factory is good so creating the filter should not fail unless something has
-        // horribly gone wrong in which case the system is going to come down quickly after this.
-        AbstractFilter::Pointer filter = filterFactory->create();
-
-        filter->setDataContainerArray(dca);
-
-        var.setValue(QString::fromLatin1("Test Data Container"));
-        propWasSet = filter->setProperty("CreatedDataContainer", var);
-        DREAM3D_REQUIRE_EQUAL(propWasSet, true)
-
-
-            var.setValue(QString::fromLatin1("Cell Attribute Matrix"));
-        propWasSet = filter->setProperty("CreatedAttributeMatrix", var);
-        DREAM3D_REQUIRE_EQUAL(propWasSet, true)
-
-            filter->preflight();
-        err = filter->getErrorCondition();
-        DREAM3D_REQUIRED(err, >=, 0)
-      }
-
-      return EXIT_SUCCESS;
+      std::stringstream ss;
+      ss << "The CreateDataArrayTest Requires the use of the " << filtName.toStdString() << " filter which is found in the IO Plugin";
+      DREAM3D_TEST_THROW_EXCEPTION(ss.str())
     }
 
-    // -----------------------------------------------------------------------------
-    //
-    // -----------------------------------------------------------------------------
-    DataContainerArray::Pointer CreateDataContainerArray()
+    // Now instantiate the CreateDataContainer Filter from the FilterManager
+    filtName = "CreateAttributeMatrix";
+    fm = FilterManager::Instance();
+    filterFactory = fm->getFactoryForFilter(filtName);
+    if(nullptr == filterFactory.get())
     {
-      DataContainerArray::Pointer dca = DataContainerArray::New();
-      DataContainer::Pointer m = DataContainer::New(SIMPL::Defaults::DataContainerName);
-      dca->addDataContainer(m);
-      AttributeMatrix::Pointer attrMatrix = AttributeMatrix::New(QVector<size_t>(1, numTuples), SIMPL::Defaults::AttributeMatrixName, SIMPL::AttributeMatrixType::Generic);
-      m->addAttributeMatrix(SIMPL::Defaults::AttributeMatrixName, attrMatrix);
-      return dca;
+      std::stringstream ss;
+      ss << "The CreateDataArrayTest Requires the use of the " << filtName.toStdString() << " filter which is found in the IO Plugin";
+      DREAM3D_TEST_THROW_EXCEPTION(ss.str())
     }
-    // -----------------------------------------------------------------------------
-    //
-    // -----------------------------------------------------------------------------
-    void TestNewArray(AbstractFilter::Pointer filter, DataArrayPath path, DataContainerArray::Pointer dca)
+
+    return EXIT_SUCCESS;
+  }
+
+  // -----------------------------------------------------------------------------
+  //
+  // -----------------------------------------------------------------------------
+  int TestCreateDataContainerAndAttributeMatrix()
+  {
+
+    int err = 0;
+    bool propWasSet = false;
+    // bool ok = false;
+    QVariant var;
+
+    DataContainerArray::Pointer dca = DataContainerArray::New();
+
+    // Now instantiate the CreateDataArray Filter from the FilterManager
+    FilterManager* fm = FilterManager::Instance();
+
+    QString filtName = "CreateDataContainer";
+    IFilterFactory::Pointer filterFactory = fm->getFactoryForFilter(filtName);
+    if(nullptr != filterFactory.get())
     {
-      QVariant var;
-      int err;
-      bool propWasSet = false;
-      int compNumber = 2;
-      int badCompNumber = numComps + 5;
+      // If we get this far, the Factory is good so creating the filter should not fail unless something has
+      // horribly gone wrong in which case the system is going to come down quickly after this.
+      AbstractFilter::Pointer filter = filterFactory->create();
 
       filter->setDataContainerArray(dca);
 
-
-      QString NewArrayArrayName = "RemovedComp";
-      QString ReducedArrayArrayName = "ReducedArray";
-
-      //Test to make sure reduced array returns correct values
-      var.setValue(compNumber);
-      propWasSet = filter->setProperty("CompNumber", var); //
+      // Test 1 set int32 array with an initialization of -5 and read value for comparison
+      var.setValue(QString::fromLatin1("Test Data Container"));
+      propWasSet = filter->setProperty("CreatedDataContainer", var);
       DREAM3D_REQUIRE_EQUAL(propWasSet, true)
 
-          var.setValue(path);
-      propWasSet = filter->setProperty("SelectedArrayPath", var); //
-      DREAM3D_REQUIRE_EQUAL(propWasSet, true)
-
-          var.setValue(true);
-      propWasSet = filter->setProperty("SaveRemovedComponent", var); //
-      DREAM3D_REQUIRE_EQUAL(propWasSet, true)
-
-
-          var.setValue(NewArrayArrayName);
-      propWasSet = filter->setProperty("NewArrayArrayName", var); //
-      DREAM3D_REQUIRE_EQUAL(propWasSet, true)
-
-          var.setValue(ReducedArrayArrayName);
-      propWasSet = filter->setProperty("ReducedArrayArrayName", var); //
-      DREAM3D_REQUIRE_EQUAL(propWasSet, true)
-
-          filter->execute();
+      filter->preflight();
       err = filter->getErrorCondition();
-      DREAM3D_REQUIRE_EQUAL(err, NO_ERROR);
+      DREAM3D_REQUIRED(err, >=, 0)
+    }
 
-      IDataArray::Pointer ReducedArrayPtr = dca->getDataContainer(SIMPL::Defaults::DataContainerName)->getAttributeMatrix(path.getAttributeMatrixName())->getAttributeArray(ReducedArrayArrayName);
-      Int8ArrayType::Pointer ReducedArray = std::dynamic_pointer_cast<Int8ArrayType>(ReducedArrayPtr);
-      DREAM3D_REQUIRE_VALID_POINTER(ReducedArray.get());
+    filtName = "CreateAttributeMatrix";
+    filterFactory = fm->getFactoryForFilter(filtName);
+    if(nullptr != filterFactory.get())
+    {
+      // If we get this far, the Factory is good so creating the filter should not fail unless something has
+      // horribly gone wrong in which case the system is going to come down quickly after this.
+      AbstractFilter::Pointer filter = filterFactory->create();
 
+      filter->setDataContainerArray(dca);
 
+      var.setValue(QString::fromLatin1("Test Data Container"));
+      propWasSet = filter->setProperty("CreatedDataContainer", var);
+      DREAM3D_REQUIRE_EQUAL(propWasSet, true)
 
-      //We had originally created an array whose (flattened) index was it's value (mostly for simplicity - it could be any array really).
-      //Now we test to make sure when we remove a component that the new array has all the values except for the ones corresponding to that component/index.
+      var.setValue(QString::fromLatin1("Cell Attribute Matrix"));
+      propWasSet = filter->setProperty("CreatedAttributeMatrix", var);
+      DREAM3D_REQUIRE_EQUAL(propWasSet, true)
 
-      size_t count = 0;
-      size_t value = 0;
-      for(size_t i = 0; i < numTuples; i++)
+      filter->preflight();
+      err = filter->getErrorCondition();
+      DREAM3D_REQUIRED(err, >=, 0)
+    }
+
+    return EXIT_SUCCESS;
+  }
+
+  // -----------------------------------------------------------------------------
+  //
+  // -----------------------------------------------------------------------------
+  DataContainerArray::Pointer CreateDataContainerArray()
+  {
+    DataContainerArray::Pointer dca = DataContainerArray::New();
+    DataContainer::Pointer m = DataContainer::New(SIMPL::Defaults::DataContainerName);
+    dca->addDataContainer(m);
+    AttributeMatrix::Pointer attrMatrix = AttributeMatrix::New(QVector<size_t>(1, numTuples), SIMPL::Defaults::AttributeMatrixName, SIMPL::AttributeMatrixType::Generic);
+    m->addAttributeMatrix(SIMPL::Defaults::AttributeMatrixName, attrMatrix);
+    return dca;
+  }
+  // -----------------------------------------------------------------------------
+  //
+  // -----------------------------------------------------------------------------
+  void TestNewArray(AbstractFilter::Pointer filter, DataArrayPath path, DataContainerArray::Pointer dca)
+  {
+    QVariant var;
+    int err;
+    bool propWasSet = false;
+    int compNumber = 2;
+    int badCompNumber = numComps + 5;
+
+    filter->setDataContainerArray(dca);
+
+    QString NewArrayArrayName = "RemovedComp";
+    QString ReducedArrayArrayName = "ReducedArray";
+
+    // Test to make sure reduced array returns correct values
+    var.setValue(compNumber);
+    propWasSet = filter->setProperty("CompNumber", var); //
+    DREAM3D_REQUIRE_EQUAL(propWasSet, true)
+
+    var.setValue(path);
+    propWasSet = filter->setProperty("SelectedArrayPath", var); //
+    DREAM3D_REQUIRE_EQUAL(propWasSet, true)
+
+    var.setValue(true);
+    propWasSet = filter->setProperty("SaveRemovedComponent", var); //
+    DREAM3D_REQUIRE_EQUAL(propWasSet, true)
+
+    var.setValue(NewArrayArrayName);
+    propWasSet = filter->setProperty("NewArrayArrayName", var); //
+    DREAM3D_REQUIRE_EQUAL(propWasSet, true)
+
+    var.setValue(ReducedArrayArrayName);
+    propWasSet = filter->setProperty("ReducedArrayArrayName", var); //
+    DREAM3D_REQUIRE_EQUAL(propWasSet, true)
+
+    filter->execute();
+    err = filter->getErrorCondition();
+    DREAM3D_REQUIRE_EQUAL(err, NO_ERROR);
+
+    IDataArray::Pointer ReducedArrayPtr = dca->getDataContainer(SIMPL::Defaults::DataContainerName)->getAttributeMatrix(path.getAttributeMatrixName())->getAttributeArray(ReducedArrayArrayName);
+    Int8ArrayType::Pointer ReducedArray = std::dynamic_pointer_cast<Int8ArrayType>(ReducedArrayPtr);
+    DREAM3D_REQUIRE_VALID_POINTER(ReducedArray.get());
+
+    // We had originally created an array whose (flattened) index was it's value (mostly for simplicity - it could be any array really).
+    // Now we test to make sure when we remove a component that the new array has all the values except for the ones corresponding to that component/index.
+
+    size_t count = 0;
+    size_t value = 0;
+    for(size_t i = 0; i < numTuples; i++)
+    {
+      for(size_t j = 0; j < numComps - 1; j++)
       {
-        for (size_t j = 0; j < numComps-1; j++)
+
+        if(j == compNumber)
         {
-
-          if (j == compNumber)
-          {
-            value++;
-          }
-          DREAM3D_REQUIRE_EQUAL(ReducedArray->getValue(count), value);
-          count ++;
-          value ++;
-
+          value++;
         }
+        DREAM3D_REQUIRE_EQUAL(ReducedArray->getValue(count), value);
+        count++;
+        value++;
       }
-
-      //Test to make sure saving removed component array works
-
-      IDataArray::Pointer NewArrayPtr = dca->getDataContainer(SIMPL::Defaults::DataContainerName)->getAttributeMatrix(path.getAttributeMatrixName())->getAttributeArray(NewArrayArrayName);
-      Int8ArrayType::Pointer NewArray = std::dynamic_pointer_cast<Int8ArrayType>(NewArrayPtr);
-      DREAM3D_REQUIRE_VALID_POINTER(NewArray.get());
-
-
-      for(size_t i = 0; i < numTuples; i++)
-      {
-        DREAM3D_REQUIRE_EQUAL(NewArray->getValue(i), i*numComps + compNumber);
-
-      }
-
-      // test to make sure component filter fails if component number is larger than total number of components
-      var.setValue(badCompNumber);
-      propWasSet = filter->setProperty("CompNumber", var); //
-      DREAM3D_REQUIRE_EQUAL(propWasSet, true)
-
-          filter->execute();
-      err = filter->getErrorCondition();
-      DREAM3D_REQUIRE_EQUAL(err, -11004);
-
-      //Test to make sure sending in a single component array fails.
-      //We use the single component array created from the extraction of the previous array
-
-      var.setValue(0);
-      propWasSet = filter->setProperty("CompNumber", var); //
-      DREAM3D_REQUIRE_EQUAL(propWasSet, true)
-
-          path = DataArrayPath(SIMPL::Defaults::DataContainerName, SIMPL::Defaults::AttributeMatrixName, NewArrayArrayName);
-      var.setValue(path);
-      propWasSet = filter->setProperty("SelectedArrayPath", var); //
-      DREAM3D_REQUIRE_EQUAL(propWasSet, true)
-
-          var.setValue(false);
-      propWasSet = filter->setProperty("SaveRemovedComponent", var); //
-      DREAM3D_REQUIRE_EQUAL(propWasSet, true)
-
-          ReducedArrayArrayName = "SecondReducedArray";
-      var.setValue(ReducedArrayArrayName);
-      propWasSet = filter->setProperty("ReducedArrayArrayName", var); //
-      DREAM3D_REQUIRE_EQUAL(propWasSet, true)
-
-          filter->execute();
-      err = filter->getErrorCondition();
-      DREAM3D_REQUIRE_EQUAL(err, -11003);
-
-
     }
 
+    // Test to make sure saving removed component array works
 
+    IDataArray::Pointer NewArrayPtr = dca->getDataContainer(SIMPL::Defaults::DataContainerName)->getAttributeMatrix(path.getAttributeMatrixName())->getAttributeArray(NewArrayArrayName);
+    Int8ArrayType::Pointer NewArray = std::dynamic_pointer_cast<Int8ArrayType>(NewArrayPtr);
+    DREAM3D_REQUIRE_VALID_POINTER(NewArray.get());
 
-    int TestRemoveComponent(DataContainerArray::Pointer dca)
+    for(size_t i = 0; i < numTuples; i++)
     {
-
-
-      // Now instantiate the CreateDataArray Filter from the FilterManager
-      QString filtName = "RemoveComponentFromArray";
-      FilterManager* fm = FilterManager::Instance();
-      IFilterFactory::Pointer filterFactory = fm->getFactoryForFilter(filtName);
-      if (nullptr != filterFactory.get())
-      {
-        // If we get this far, the Factory is good so creating the filter should not fail unless something has
-        // horribly gone wrong in which case the system is going to come down quickly after this.
-        AbstractFilter::Pointer filter = filterFactory->create();
-        DataArrayPath path = DataArrayPath(SIMPL::Defaults::DataContainerName, SIMPL::Defaults::AttributeMatrixName, "testArray");
-
-        TestNewArray(filter, path, dca);
-
-
-      }
-      else
-      {
-        QString ss = QObject::tr("RemoveComponentFromArray Error creating filter '%1'. Filter was not created/executed. Please notify the developers.").arg(filtName);
-        DREAM3D_REQUIRE_EQUAL(0, 1)
-      }
-
-
-
-
-
-      return EXIT_SUCCESS;
-
+      DREAM3D_REQUIRE_EQUAL(NewArray->getValue(i), i * numComps + compNumber);
     }
 
+    // test to make sure component filter fails if component number is larger than total number of components
+    var.setValue(badCompNumber);
+    propWasSet = filter->setProperty("CompNumber", var); //
+    DREAM3D_REQUIRE_EQUAL(propWasSet, true)
 
-    // -----------------------------------------------------------------------------
-    //
-    // -----------------------------------------------------------------------------
-    template<typename T>
-    void TestScalarType(AbstractFilter::Pointer filter, DataArrayPath path, int scalarType)
+    filter->execute();
+    err = filter->getErrorCondition();
+    DREAM3D_REQUIRE_EQUAL(err, -11004);
+
+    // Test to make sure sending in a single component array fails.
+    // We use the single component array created from the extraction of the previous array
+
+    var.setValue(0);
+    propWasSet = filter->setProperty("CompNumber", var); //
+    DREAM3D_REQUIRE_EQUAL(propWasSet, true)
+
+    path = DataArrayPath(SIMPL::Defaults::DataContainerName, SIMPL::Defaults::AttributeMatrixName, NewArrayArrayName);
+    var.setValue(path);
+    propWasSet = filter->setProperty("SelectedArrayPath", var); //
+    DREAM3D_REQUIRE_EQUAL(propWasSet, true)
+
+    var.setValue(false);
+    propWasSet = filter->setProperty("SaveRemovedComponent", var); //
+    DREAM3D_REQUIRE_EQUAL(propWasSet, true)
+
+    ReducedArrayArrayName = "SecondReducedArray";
+    var.setValue(ReducedArrayArrayName);
+    propWasSet = filter->setProperty("ReducedArrayArrayName", var); //
+    DREAM3D_REQUIRE_EQUAL(propWasSet, true)
+
+    filter->execute();
+    err = filter->getErrorCondition();
+    DREAM3D_REQUIRE_EQUAL(err, -11003);
+  }
+
+  int TestRemoveComponent(DataContainerArray::Pointer dca)
+  {
+
+    // Now instantiate the CreateDataArray Filter from the FilterManager
+    QString filtName = "RemoveComponentFromArray";
+    FilterManager* fm = FilterManager::Instance();
+    IFilterFactory::Pointer filterFactory = fm->getFactoryForFilter(filtName);
+    if(nullptr != filterFactory.get())
     {
+      // If we get this far, the Factory is good so creating the filter should not fail unless something has
+      // horribly gone wrong in which case the system is going to come down quickly after this.
+      AbstractFilter::Pointer filter = filterFactory->create();
+      DataArrayPath path = DataArrayPath(SIMPL::Defaults::DataContainerName, SIMPL::Defaults::AttributeMatrixName, "testArray");
 
-      DataContainerArray::Pointer dca = CreateDataContainerArray();
-      filter->setDataContainerArray(dca);
+      TestNewArray(filter, path, dca);
+    }
+    else
+    {
+      QString ss = QObject::tr("RemoveComponentFromArray Error creating filter '%1'. Filter was not created/executed. Please notify the developers.").arg(filtName);
+      DREAM3D_REQUIRE_EQUAL(0, 1)
+    }
 
-      QVariant var;
-      int err = 0;
-      bool propWasSet = false;
+    return EXIT_SUCCESS;
+  }
 
+  // -----------------------------------------------------------------------------
+  //
+  // -----------------------------------------------------------------------------
+  template <typename T> void TestScalarType(AbstractFilter::Pointer filter, DataArrayPath path, int scalarType)
+  {
 
-      var.setValue(scalarType);
-      propWasSet = filter->setProperty("ScalarType", var); //
-      DREAM3D_REQUIRE_EQUAL(propWasSet, true)
+    DataContainerArray::Pointer dca = CreateDataContainerArray();
+    filter->setDataContainerArray(dca);
 
-          var.setValue(numComps);
-      propWasSet = filter->setProperty("NumberOfComponents", var); // multi-component
-      DREAM3D_REQUIRE_EQUAL(propWasSet, true)
+    QVariant var;
+    int err = 0;
+    bool propWasSet = false;
 
-          var.setValue(path);
-      propWasSet = filter->setProperty("NewArray", var); // array path
-      DREAM3D_REQUIRE_EQUAL(propWasSet, true)
+    var.setValue(scalarType);
+    propWasSet = filter->setProperty("ScalarType", var); //
+    DREAM3D_REQUIRE_EQUAL(propWasSet, true)
 
-          /* ==== Test The Maximum Value for the primitive type ===== */
-          T max = std::numeric_limits<T>::max();
-      var.setValue(QString::number(max));
-      propWasSet = filter->setProperty("InitializationValue", var); // initialize with
-      DREAM3D_REQUIRE_EQUAL(propWasSet, true)
+    var.setValue(numComps);
+    propWasSet = filter->setProperty("NumberOfComponents", var); // multi-component
+    DREAM3D_REQUIRE_EQUAL(propWasSet, true)
 
-          filter->preflight();
-      err = filter->getErrorCondition();
-      DREAM3D_REQUIRE_EQUAL(err, NO_ERROR);
+    var.setValue(path);
+    propWasSet = filter->setProperty("NewArray", var); // array path
+    DREAM3D_REQUIRE_EQUAL(propWasSet, true)
 
-      dca = CreateDataContainerArray();
-      filter->setDataContainerArray(dca);
-      filter->execute();
-      err = filter->getErrorCondition();
-      DREAM3D_REQUIRE_EQUAL(err, NO_ERROR);
+    /* ==== Test The Maximum Value for the primitive type ===== */
+    T max = std::numeric_limits<T>::max();
+    var.setValue(QString::number(max));
+    propWasSet = filter->setProperty("InitializationValue", var); // initialize with
+    DREAM3D_REQUIRE_EQUAL(propWasSet, true)
 
-      {
-        IDataArray::Pointer testArrayPtr = dca->getDataContainer(SIMPL::Defaults::DataContainerName)->getAttributeMatrix(path.getAttributeMatrixName())->getAttributeArray(path.getDataArrayName());
-        typedef DataArray<T> DataArrayType;
-        typename DataArrayType::Pointer inputArray = std::dynamic_pointer_cast<DataArrayType>(testArrayPtr);
-        DREAM3D_REQUIRE_VALID_POINTER(inputArray.get());
-        T* inputArrayPtr = inputArray->getPointer(0); // pointer to the int array created from the filter
-        DREAM3D_REQUIRE_EQUAL(inputArrayPtr[0], max)
-      }
+    filter->preflight();
+    err = filter->getErrorCondition();
+    DREAM3D_REQUIRE_EQUAL(err, NO_ERROR);
 
-      dca = CreateDataContainerArray();
-      filter->setDataContainerArray(dca);
+    dca = CreateDataContainerArray();
+    filter->setDataContainerArray(dca);
+    filter->execute();
+    err = filter->getErrorCondition();
+    DREAM3D_REQUIRE_EQUAL(err, NO_ERROR);
 
-      var.setValue(0);
-      propWasSet = filter->setProperty("InitializationValue", var); // initialize with
-      DREAM3D_REQUIRE_EQUAL(propWasSet, true)
-
-          filter->preflight();
-      err = filter->getErrorCondition();
-      DREAM3D_REQUIRE_EQUAL(err, NO_ERROR);
-
-      dca = CreateDataContainerArray();
-      filter->setDataContainerArray(dca);
-
-      filter->execute();
-      err = filter->getErrorCondition();
-      DREAM3D_REQUIRE_EQUAL(err, NO_ERROR);
-
-
+    {
       IDataArray::Pointer testArrayPtr = dca->getDataContainer(SIMPL::Defaults::DataContainerName)->getAttributeMatrix(path.getAttributeMatrixName())->getAttributeArray(path.getDataArrayName());
       typedef DataArray<T> DataArrayType;
       typename DataArrayType::Pointer inputArray = std::dynamic_pointer_cast<DataArrayType>(testArrayPtr);
       DREAM3D_REQUIRE_VALID_POINTER(inputArray.get());
-
-      size_t count = 0;
-
-      for(size_t i = 0; i < numTuples; i++)
-      {
-        for (size_t j = 0; j < numComps; j++)
-        {
-          inputArray->setValue(count, count);
-          count++;
-        }
-      }
-
-      std::cout << "pause" << std::endl;
-
-      err = TestRemoveComponent(dca);
-
-
+      T* inputArrayPtr = inputArray->getPointer(0); // pointer to the int array created from the filter
+      DREAM3D_REQUIRE_EQUAL(inputArrayPtr[0], max)
     }
 
+    dca = CreateDataContainerArray();
+    filter->setDataContainerArray(dca);
 
+    var.setValue(0);
+    propWasSet = filter->setProperty("InitializationValue", var); // initialize with
+    DREAM3D_REQUIRE_EQUAL(propWasSet, true)
 
+    filter->preflight();
+    err = filter->getErrorCondition();
+    DREAM3D_REQUIRE_EQUAL(err, NO_ERROR);
 
-    // -----------------------------------------------------------------------------
-    //
-    // -----------------------------------------------------------------------------
-    int TestCreateDataArray()
+    dca = CreateDataContainerArray();
+    filter->setDataContainerArray(dca);
+
+    filter->execute();
+    err = filter->getErrorCondition();
+    DREAM3D_REQUIRE_EQUAL(err, NO_ERROR);
+
+    IDataArray::Pointer testArrayPtr = dca->getDataContainer(SIMPL::Defaults::DataContainerName)->getAttributeMatrix(path.getAttributeMatrixName())->getAttributeArray(path.getDataArrayName());
+    typedef DataArray<T> DataArrayType;
+    typename DataArrayType::Pointer inputArray = std::dynamic_pointer_cast<DataArrayType>(testArrayPtr);
+    DREAM3D_REQUIRE_VALID_POINTER(inputArray.get());
+
+    size_t count = 0;
+
+    for(size_t i = 0; i < numTuples; i++)
     {
-      //  bool propWasSet = false;
-      //  bool ok = false;
-      //  int err = 0;
-
-      // Now instantiate the CreateDataArray Filter from the FilterManager
-      QString filtName = "CreateDataArray";
-      FilterManager* fm = FilterManager::Instance();
-      IFilterFactory::Pointer filterFactory = fm->getFactoryForFilter(filtName);
-      if (nullptr != filterFactory.get())
+      for(size_t j = 0; j < numComps; j++)
       {
-        // If we get this far, the Factory is good so creating the filter should not fail unless something has
-        // horribly gone wrong in which case the system is going to come down quickly after this.
-        AbstractFilter::Pointer filter = filterFactory->create();
-        DataArrayPath path = DataArrayPath(SIMPL::Defaults::DataContainerName, SIMPL::Defaults::AttributeMatrixName, "testArray");
-        DataArrayPath path1 = DataArrayPath(SIMPL::Defaults::DataContainerName, SIMPL::Defaults::AttributeMatrixName, "testArray");
-
-        TestScalarType<int8_t>(filter, path, 0);
-
-
+        inputArray->setValue(count, count);
+        count++;
       }
-      else
-      {
-        QString ss = QObject::tr("CreateDataArrayTest Error creating filter '%1'. Filter was not created/executed. Please notify the developers.").arg(filtName);
-        DREAM3D_REQUIRE_EQUAL(0, 1)
-      }
-      return EXIT_SUCCESS;
     }
 
-    // -----------------------------------------------------------------------------
-    //
-    // -----------------------------------------------------------------------------
-    void operator()()
+    std::cout << "pause" << std::endl;
+
+    err = TestRemoveComponent(dca);
+  }
+
+  // -----------------------------------------------------------------------------
+  //
+  // -----------------------------------------------------------------------------
+  int TestCreateDataArray()
+  {
+    //  bool propWasSet = false;
+    //  bool ok = false;
+    //  int err = 0;
+
+    // Now instantiate the CreateDataArray Filter from the FilterManager
+    QString filtName = "CreateDataArray";
+    FilterManager* fm = FilterManager::Instance();
+    IFilterFactory::Pointer filterFactory = fm->getFactoryForFilter(filtName);
+    if(nullptr != filterFactory.get())
     {
-      std::cout << "#### RemoveComponentFromArrayTest Starting ####" << std::endl;
+      // If we get this far, the Factory is good so creating the filter should not fail unless something has
+      // horribly gone wrong in which case the system is going to come down quickly after this.
+      AbstractFilter::Pointer filter = filterFactory->create();
+      DataArrayPath path = DataArrayPath(SIMPL::Defaults::DataContainerName, SIMPL::Defaults::AttributeMatrixName, "testArray");
+      DataArrayPath path1 = DataArrayPath(SIMPL::Defaults::DataContainerName, SIMPL::Defaults::AttributeMatrixName, "testArray");
 
-      int err = EXIT_SUCCESS;
-
-      DREAM3D_REGISTER_TEST( TestFilterAvailability() );
-      DREAM3D_REGISTER_TEST(TestCreateDataArray())
-
-
+      TestScalarType<int8_t>(filter, path, 0);
     }
+    else
+    {
+      QString ss = QObject::tr("CreateDataArrayTest Error creating filter '%1'. Filter was not created/executed. Please notify the developers.").arg(filtName);
+      DREAM3D_REQUIRE_EQUAL(0, 1)
+    }
+    return EXIT_SUCCESS;
+  }
 
-  private:
-    RemoveComponentFromArrayTest(const RemoveComponentFromArrayTest&); // Copy Constructor Not Implemented
-    void operator=(const RemoveComponentFromArrayTest&); // Operator '=' Not Implemented
+  // -----------------------------------------------------------------------------
+  //
+  // -----------------------------------------------------------------------------
+  void operator()()
+  {
+    std::cout << "#### RemoveComponentFromArrayTest Starting ####" << std::endl;
+
+    int err = EXIT_SUCCESS;
+
+    DREAM3D_REGISTER_TEST(TestFilterAvailability());
+    DREAM3D_REGISTER_TEST(TestCreateDataArray())
+  }
+
+private:
+  RemoveComponentFromArrayTest(const RemoveComponentFromArrayTest&); // Copy Constructor Not Implemented
+  void operator=(const RemoveComponentFromArrayTest&);               // Operator '=' Not Implemented
 };
-

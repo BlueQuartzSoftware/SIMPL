@@ -38,15 +38,17 @@
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-SeparatorFilterParameter::SeparatorFilterParameter() :
-  FilterParameter()
-{}
+SeparatorFilterParameter::SeparatorFilterParameter()
+: FilterParameter()
+{
+}
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
 SeparatorFilterParameter::~SeparatorFilterParameter()
-{}
+{
+}
 
 // -----------------------------------------------------------------------------
 //
@@ -62,7 +64,6 @@ SeparatorFilterParameter::Pointer SeparatorFilterParameter::New(const QString& h
   return ptr;
 }
 
-
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
@@ -70,4 +71,3 @@ QString SeparatorFilterParameter::getWidgetType()
 {
   return QString("SeparatorWidget");
 }
-

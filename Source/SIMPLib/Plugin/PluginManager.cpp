@@ -42,7 +42,7 @@ PluginManager* PluginManager::self = nullptr;
 // -----------------------------------------------------------------------------
 PluginManager::PluginManager()
 {
-//  qDebug() << "PluginManager()" << this;
+  //  qDebug() << "PluginManager()" << this;
   Q_ASSERT_X(!self, "PluginManager", "There should be only one PluginManager object");
   PluginManager::self = this;
 }
@@ -52,7 +52,7 @@ PluginManager::PluginManager()
 // -----------------------------------------------------------------------------
 PluginManager::~PluginManager()
 {
-//  qDebug() << "~PluginManager()" << this;
+  //  qDebug() << "~PluginManager()" << this;
 }
 
 // -----------------------------------------------------------------------------
@@ -61,7 +61,7 @@ PluginManager::~PluginManager()
 PluginManager* PluginManager::Instance()
 {
 
-  if (self == nullptr)
+  if(self == nullptr)
   {
     //  qDebug() << "PluginManager::Instance self was nullptr" << "\n";
     self = new PluginManager();
@@ -94,7 +94,7 @@ void PluginManager::addPlugin(ISIMPLibPlugin* plugin)
 QList<QString> PluginManager::getPluginNames()
 {
   QList<QString> pluginNames;
-  for (QVector<ISIMPLibPlugin*>::iterator iter = plugins.begin(); iter != plugins.end(); ++iter)
+  for(QVector<ISIMPLibPlugin*>::iterator iter = plugins.begin(); iter != plugins.end(); ++iter)
   {
     ISIMPLibPlugin* plugin = *iter;
     if(nullptr != plugin)
@@ -111,11 +111,11 @@ QList<QString> PluginManager::getPluginNames()
 QString PluginManager::getPluginName(QString filtName)
 {
   QVector<ISIMPLibPlugin*> plugins = getPluginsVector();
-  for (int i = 0; i < plugins.size(); i++)
+  for(int i = 0; i < plugins.size(); i++)
   {
     ISIMPLibPlugin* plugin = plugins[i];
 
-    if (plugin->getFilters().contains(filtName))
+    if(plugin->getFilters().contains(filtName))
     {
       return plugin->getPluginName();
     }
@@ -137,10 +137,10 @@ QVector<ISIMPLibPlugin*> PluginManager::getPluginsVector()
 // -----------------------------------------------------------------------------
 ISIMPLibPlugin* PluginManager::findPlugin(QString pluginName)
 {
-  for (QVector<ISIMPLibPlugin*>::iterator iter = plugins.begin(); iter != plugins.end(); iter++)
+  for(QVector<ISIMPLibPlugin*>::iterator iter = plugins.begin(); iter != plugins.end(); iter++)
   {
     ISIMPLibPlugin* plugin = *iter;
-    if (plugin->getPluginName() == pluginName)
+    if(plugin->getPluginName() == pluginName)
     {
       return plugin;
     }

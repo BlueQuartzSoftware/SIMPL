@@ -33,27 +33,24 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-
 #include "RenameDataContainer.h"
 
 #include "SIMPLib/Common/Constants.h"
-#include "SIMPLib/SIMPLibVersion.h"
 #include "SIMPLib/FilterParameters/AbstractFilterParametersReader.h"
 #include "SIMPLib/FilterParameters/DataContainerSelectionFilterParameter.h"
 #include "SIMPLib/FilterParameters/StringFilterParameter.h"
+#include "SIMPLib/SIMPLibVersion.h"
 
 // Include the MOC generated file for this class
 #include "moc_RenameDataContainer.cpp"
 
-
-
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-RenameDataContainer::RenameDataContainer() :
-  AbstractFilter(),
-  m_SelectedDataContainerName(""),
-  m_NewDataContainerName("")
+RenameDataContainer::RenameDataContainer()
+: AbstractFilter()
+, m_SelectedDataContainerName("")
+, m_NewDataContainerName("")
 {
   setupFilterParameters();
 }
@@ -88,8 +85,8 @@ void RenameDataContainer::setupFilterParameters()
 void RenameDataContainer::readFilterParameters(AbstractFilterParametersReader* reader, int index)
 {
   reader->openFilterGroup(this, index);
-  setSelectedDataContainerName( reader->readString("SelectedDataContainerName", getSelectedDataContainerName()) );
-  setNewDataContainerName( reader->readString( "NewDataContainerName", getNewDataContainerName() ) );
+  setSelectedDataContainerName(reader->readString("SelectedDataContainerName", getSelectedDataContainerName()));
+  setNewDataContainerName(reader->readString("NewDataContainerName", getNewDataContainerName()));
   reader->closeFilterGroup();
 }
 
@@ -98,7 +95,6 @@ void RenameDataContainer::readFilterParameters(AbstractFilterParametersReader* r
 // -----------------------------------------------------------------------------
 void RenameDataContainer::initialize()
 {
-
 }
 
 // -----------------------------------------------------------------------------
@@ -108,7 +104,7 @@ void RenameDataContainer::dataCheck()
 {
   setErrorCondition(0);
 
-  if (getNewDataContainerName().isEmpty() == true)
+  if(getNewDataContainerName().isEmpty() == true)
   {
     setErrorCondition(-11001);
     QString ss = QObject::tr("The new Data Container name must be set");
@@ -117,10 +113,13 @@ void RenameDataContainer::dataCheck()
   }
 
   getDataContainerArray()->getPrereqDataContainer<AbstractFilter>(this, getSelectedDataContainerName());
-  if(getErrorCondition() < 0) { return; }
+  if(getErrorCondition() < 0)
+  {
+    return;
+  }
 
   bool check = getDataContainerArray()->renameDataContainer(getSelectedDataContainerName(), getNewDataContainerName());
-  if (check == false)
+  if(check == false)
   {
     setErrorCondition(-11006);
     QString ss = QObject::tr("Attempt to rename DataContainer '%1' to '%2' failed").arg(getSelectedDataContainerName()).arg(getNewDataContainerName());
@@ -148,7 +147,10 @@ void RenameDataContainer::execute()
 {
   setErrorCondition(0);
   dataCheck(); // calling the dataCheck will rename the array, so nothing is required here
-  if(getErrorCondition() < 0) { return; }
+  if(getErrorCondition() < 0)
+  {
+    return;
+  }
 
   notifyStatusMessage(getHumanLabel(), "Complete");
 }
@@ -169,7 +171,9 @@ AbstractFilter::Pointer RenameDataContainer::newFilterInstance(bool copyFilterPa
 //
 // -----------------------------------------------------------------------------
 const QString RenameDataContainer::getCompiledLibraryName()
-{ return Core::CoreBaseName; }
+{
+  return Core::CoreBaseName;
+}
 
 // -----------------------------------------------------------------------------
 //
@@ -186,26 +190,30 @@ const QString RenameDataContainer::getFilterVersion()
 {
   QString version;
   QTextStream vStream(&version);
-  vStream <<  SIMPLib::Version::Major() << "." << SIMPLib::Version::Minor() << "." << SIMPLib::Version::Patch();
+  vStream << SIMPLib::Version::Major() << "." << SIMPLib::Version::Minor() << "." << SIMPLib::Version::Patch();
   return version;
 }
-
-
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
 const QString RenameDataContainer::getGroupName()
-{ return SIMPL::FilterGroups::CoreFilters; }
+{
+  return SIMPL::FilterGroups::CoreFilters;
+}
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
 const QString RenameDataContainer::getSubGroupName()
-{ return SIMPL::FilterSubGroups::MemoryManagementFilters; }
+{
+  return SIMPL::FilterSubGroups::MemoryManagementFilters;
+}
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
 const QString RenameDataContainer::getHumanLabel()
-{ return "Rename Data Container"; }
+{
+  return "Rename Data Container";
+}

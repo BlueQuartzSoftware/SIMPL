@@ -35,15 +35,15 @@
 
 #include "FavoritesChangedDialog.h"
 
-#include <QtWidgets/QFileDialog>
 #include "moc_FavoritesChangedDialog.cpp"
+#include <QtWidgets/QFileDialog>
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-FavoritesChangedDialog::FavoritesChangedDialog(QWidget* parent) :
-  QDialog(parent),
-  m_OpenDialogLastDirectory("")
+FavoritesChangedDialog::FavoritesChangedDialog(QWidget* parent)
+: QDialog(parent)
+, m_OpenDialogLastDirectory("")
 {
   setupUi(this);
 }
@@ -53,7 +53,6 @@ FavoritesChangedDialog::FavoritesChangedDialog(QWidget* parent) :
 // -----------------------------------------------------------------------------
 FavoritesChangedDialog::~FavoritesChangedDialog()
 {
-
 }
 
 // -----------------------------------------------------------------------------
@@ -63,7 +62,7 @@ void FavoritesChangedDialog::on_selectBtn_clicked()
 {
   QString outputFile = m_OpenDialogLastDirectory + QDir::separator();
   outputFile = QFileDialog::getExistingDirectory(this, tr("Select Directory"), outputFile);
-  if (!outputFile.isNull())
+  if(!outputFile.isNull())
   {
     outputDir->setText(QDir::toNativeSeparators(outputFile));
     m_OpenDialogLastDirectory = outputFile;
@@ -77,7 +76,7 @@ void FavoritesChangedDialog::on_outputDir_textChanged(const QString& text)
 {
   QFileInfo fi(text);
 
-  if (fi.exists() == false)
+  if(fi.exists() == false)
   {
     exportBtn->setDisabled(true);
   }

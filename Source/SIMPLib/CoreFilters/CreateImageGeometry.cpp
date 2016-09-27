@@ -35,28 +35,24 @@
 #include "CreateImageGeometry.h"
 
 #include "SIMPLib/Common/Constants.h"
-#include "SIMPLib/SIMPLibVersion.h"
 #include "SIMPLib/FilterParameters/AbstractFilterParametersReader.h"
+#include "SIMPLib/SIMPLibVersion.h"
 
 #include "SIMPLib/FilterParameters/DataContainerSelectionFilterParameter.h"
-#include "SIMPLib/FilterParameters/IntVec3FilterParameter.h"
 #include "SIMPLib/FilterParameters/FloatVec3FilterParameter.h"
+#include "SIMPLib/FilterParameters/IntVec3FilterParameter.h"
 #include "SIMPLib/FilterParameters/LinkedBooleanFilterParameter.h"
 #include "SIMPLib/Geometry/ImageGeom.h"
-
-
 
 // Include the MOC generated file for this class
 #include "moc_CreateImageGeometry.cpp"
 
-
-
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-CreateImageGeometry::CreateImageGeometry() :
-  AbstractFilter(),
-  m_SelectedDataContainer("ImageGeomDataContainer")
+CreateImageGeometry::CreateImageGeometry()
+: AbstractFilter()
+, m_SelectedDataContainer("ImageGeomDataContainer")
 {
   m_Dimensions.x = 0;
   m_Dimensions.y = 0;
@@ -104,9 +100,9 @@ void CreateImageGeometry::setupFilterParameters()
 void CreateImageGeometry::readFilterParameters(AbstractFilterParametersReader* reader, int index)
 {
   reader->openFilterGroup(this, index);
-  setDimensions( reader->readIntVec3("Dimensions", getDimensions() ) );
-  setOrigin( reader->readFloatVec3("Origin", getOrigin() ) );
-  setResolution( reader->readFloatVec3("Resolution", getResolution() ) );
+  setDimensions(reader->readIntVec3("Dimensions", getDimensions()));
+  setOrigin(reader->readFloatVec3("Origin", getOrigin()));
+  setResolution(reader->readFloatVec3("Resolution", getResolution()));
   setSelectedDataContainer(reader->readString("SelectedDataContainer", getSelectedDataContainer()));
   reader->closeFilterGroup();
 }
@@ -116,7 +112,6 @@ void CreateImageGeometry::readFilterParameters(AbstractFilterParametersReader* r
 // -----------------------------------------------------------------------------
 void CreateImageGeometry::initialize()
 {
-
 }
 
 // -----------------------------------------------------------------------------
@@ -126,7 +121,7 @@ void CreateImageGeometry::dataCheck()
 {
   setErrorCondition(0);
 
-  if (m_Dimensions.x == 0 || m_Dimensions.y == 0 || m_Dimensions.z == 0)
+  if(m_Dimensions.x == 0 || m_Dimensions.y == 0 || m_Dimensions.z == 0)
   {
     QString ss = QObject::tr("One of the dimensions has a size less than or equal to zero. The minimum size must be postive");
     setErrorCondition(-390);
@@ -141,15 +136,16 @@ void CreateImageGeometry::dataCheck()
     return;
   }
   DataContainer::Pointer m = getDataContainerArray()->getPrereqDataContainer<AbstractFilter>(this, getSelectedDataContainer());
-  if(getErrorCondition() < 0) { return; }
-
+  if(getErrorCondition() < 0)
+  {
+    return;
+  }
 
   ImageGeom::Pointer image = ImageGeom::CreateGeometry("ImageGeometry");
   image->setDimensions(m_Dimensions.x, m_Dimensions.y, m_Dimensions.z);
   image->setResolution(m_Resolution.x, m_Resolution.y, m_Resolution.z);
   image->setOrigin(m_Origin.x, m_Origin.y, m_Origin.z);
   m->setGeometry(image);
-
 }
 
 // -----------------------------------------------------------------------------
@@ -172,7 +168,10 @@ void CreateImageGeometry::execute()
 {
   setErrorCondition(0);
   dataCheck();
-  if(getErrorCondition() < 0) { return; }
+  if(getErrorCondition() < 0)
+  {
+    return;
+  }
 
   notifyStatusMessage(getHumanLabel(), "Complete");
 }
@@ -194,7 +193,9 @@ AbstractFilter::Pointer CreateImageGeometry::newFilterInstance(bool copyFilterPa
 //
 // -----------------------------------------------------------------------------
 const QString CreateImageGeometry::getCompiledLibraryName()
-{ return Core::CoreBaseName; }
+{
+  return Core::CoreBaseName;
+}
 
 // -----------------------------------------------------------------------------
 //
@@ -211,26 +212,30 @@ const QString CreateImageGeometry::getFilterVersion()
 {
   QString version;
   QTextStream vStream(&version);
-  vStream <<  SIMPLib::Version::Major() << "." << SIMPLib::Version::Minor() << "." << SIMPLib::Version::Patch();
+  vStream << SIMPLib::Version::Major() << "." << SIMPLib::Version::Minor() << "." << SIMPLib::Version::Patch();
   return version;
 }
-
-
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
 const QString CreateImageGeometry::getGroupName()
-{ return SIMPL::FilterGroups::CoreFilters; }
+{
+  return SIMPL::FilterGroups::CoreFilters;
+}
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
 const QString CreateImageGeometry::getSubGroupName()
-{ return SIMPL::FilterSubGroups::GenerationFilters; }
+{
+  return SIMPL::FilterSubGroups::GenerationFilters;
+}
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
 const QString CreateImageGeometry::getHumanLabel()
-{ return "Create Geometry (Image)"; }
+{
+  return "Create Geometry (Image)";
+}

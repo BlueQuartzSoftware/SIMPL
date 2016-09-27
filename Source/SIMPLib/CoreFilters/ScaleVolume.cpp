@@ -33,25 +33,24 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-
 #include "ScaleVolume.h"
 
 #ifdef SIMPLib_USE_PARALLEL_ALGORITHMS
-#include <tbb/parallel_for.h>
 #include <tbb/blocked_range.h>
+#include <tbb/parallel_for.h>
 #include <tbb/partitioner.h>
 #include <tbb/task_scheduler_init.h>
 #endif
 
 #include "SIMPLib/Common/Constants.h"
-#include "SIMPLib/SIMPLibVersion.h"
 #include "SIMPLib/FilterParameters/AbstractFilterParametersReader.h"
+#include "SIMPLib/SIMPLibVersion.h"
 
-#include "SIMPLib/FilterParameters/FloatVec3FilterParameter.h"
 #include "SIMPLib/FilterParameters/DataContainerSelectionFilterParameter.h"
+#include "SIMPLib/FilterParameters/FloatVec3FilterParameter.h"
 #include "SIMPLib/FilterParameters/LinkedBooleanFilterParameter.h"
-#include "SIMPLib/Geometry/ImageGeom.h"
 #include "SIMPLib/Geometry/IGeometry2D.h"
+#include "SIMPLib/Geometry/ImageGeom.h"
 
 /**
  * @brief The CalculateCentroidsImpl class implements a threaded algorithm that scales the
@@ -59,51 +58,51 @@
  */
 class UpdateVerticesImpl
 {
-    float* m_Nodes;
-    float* m_Min;
-    FloatVec3_t m_ScaleFactor;
+  float* m_Nodes;
+  float* m_Min;
+  FloatVec3_t m_ScaleFactor;
 
-  public:
-    UpdateVerticesImpl(float* nodes, float* min, FloatVec3_t scale) :
-      m_Nodes(nodes),
-      m_Min(min),
-      m_ScaleFactor(scale)
-    {
-    }
-    virtual ~UpdateVerticesImpl() {}
+public:
+  UpdateVerticesImpl(float* nodes, float* min, FloatVec3_t scale)
+  : m_Nodes(nodes)
+  , m_Min(min)
+  , m_ScaleFactor(scale)
+  {
+  }
+  virtual ~UpdateVerticesImpl()
+  {
+  }
 
-    void generate(size_t start, size_t end) const
+  void generate(size_t start, size_t end) const
+  {
+    for(size_t i = start; i < end; i++)
     {
-      for (size_t i = start; i < end; i++)
-      {
-        m_Nodes[3 * i] = m_Min[0] + (m_Nodes[3 * i] - m_Min[0]) * m_ScaleFactor.x;
-        m_Nodes[3 * i + 1] = m_Min[1] + (m_Nodes[3 * i + 1] - m_Min[1]) * m_ScaleFactor.y;
-        m_Nodes[3 * i + 2] = m_Min[2] + (m_Nodes[3 * i + 2] - m_Min[2]) * m_ScaleFactor.z;
-      }
+      m_Nodes[3 * i] = m_Min[0] + (m_Nodes[3 * i] - m_Min[0]) * m_ScaleFactor.x;
+      m_Nodes[3 * i + 1] = m_Min[1] + (m_Nodes[3 * i + 1] - m_Min[1]) * m_ScaleFactor.y;
+      m_Nodes[3 * i + 2] = m_Min[2] + (m_Nodes[3 * i + 2] - m_Min[2]) * m_ScaleFactor.z;
     }
+  }
 
 #ifdef SIMPLib_USE_PARALLEL_ALGORITHMS
-    void operator()(const tbb::blocked_range<size_t>& r) const
-    {
-      generate(r.begin(), r.end());
-    }
+  void operator()(const tbb::blocked_range<size_t>& r) const
+  {
+    generate(r.begin(), r.end());
+  }
 #endif
 };
 
 // Include the MOC generated file for this class
 #include "moc_ScaleVolume.cpp"
 
-
-
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-ScaleVolume::ScaleVolume() :
-  AbstractFilter(),
-  m_DataContainerName(""),
-  m_SurfaceDataContainerName(""),
-  m_ApplyToVoxelVolume(true),
-  m_ApplyToSurfaceMesh(true)
+ScaleVolume::ScaleVolume()
+: AbstractFilter()
+, m_DataContainerName("")
+, m_SurfaceDataContainerName("")
+, m_ApplyToVoxelVolume(true)
+, m_ApplyToSurfaceMesh(true)
 {
   m_ScaleFactor.x = 1.0f;
   m_ScaleFactor.y = 1.0f;
@@ -127,7 +126,6 @@ void ScaleVolume::setupFilterParameters()
   FilterParameterVector parameters;
 
   parameters.push_back(SIMPL_NEW_FLOAT_VEC3_FP("Scaling Factor", ScaleFactor, FilterParameter::Parameter, ScaleVolume));
-
 
   QStringList linkedProps("DataContainerName");
   parameters.push_back(SIMPL_NEW_LINKED_BOOL_FP("Apply to Image Geometry", ApplyToVoxelVolume, FilterParameter::Parameter, ScaleVolume, linkedProps));
@@ -157,9 +155,9 @@ void ScaleVolume::setupFilterParameters()
 void ScaleVolume::readFilterParameters(AbstractFilterParametersReader* reader, int index)
 {
   reader->openFilterGroup(this, index);
-  setApplyToVoxelVolume( reader->readValue("ApplyToVoxelVolume", getApplyToVoxelVolume()) );
-  setApplyToSurfaceMesh( reader->readValue("ApplyToSurfaceMesh", getApplyToSurfaceMesh()) );
-  setScaleFactor( reader->readFloatVec3("ScaleFactor", getScaleFactor() ) );
+  setApplyToVoxelVolume(reader->readValue("ApplyToVoxelVolume", getApplyToVoxelVolume()));
+  setApplyToSurfaceMesh(reader->readValue("ApplyToSurfaceMesh", getApplyToSurfaceMesh()));
+  setScaleFactor(reader->readFloatVec3("ScaleFactor", getScaleFactor()));
   setDataContainerName(reader->readString("DataContainerName", getDataContainerName()));
   setSurfaceDataContainerName(reader->readString("SurfaceDataContainerName", getSurfaceDataContainerName()));
   reader->closeFilterGroup();
@@ -170,7 +168,6 @@ void ScaleVolume::readFilterParameters(AbstractFilterParametersReader* reader, i
 // -----------------------------------------------------------------------------
 void ScaleVolume::initialize()
 {
-
 }
 
 // -----------------------------------------------------------------------------
@@ -180,12 +177,12 @@ void ScaleVolume::dataCheck()
 {
   setErrorCondition(0);
 
-  if (m_ApplyToVoxelVolume == true)
+  if(m_ApplyToVoxelVolume == true)
   {
     getDataContainerArray()->getPrereqGeometryFromDataContainer<ImageGeom, AbstractFilter>(this, getDataContainerName());
   }
 
-  if (m_ApplyToSurfaceMesh == true)
+  if(m_ApplyToSurfaceMesh == true)
   {
     getDataContainerArray()->getPrereqGeometryFromDataContainer<IGeometry2D, AbstractFilter>(this, getSurfaceDataContainerName());
   }
@@ -221,44 +218,43 @@ void ScaleVolume::updateSurfaceMesh()
 
   // First get the min/max coords.
 
-  float min[3] = { std::numeric_limits<float>::max(), std::numeric_limits<float>::max(), std::numeric_limits<float>::max() };
-  float max[3] = { std::numeric_limits<float>::min(), std::numeric_limits<float>::min(), std::numeric_limits<float>::min() };
+  float min[3] = {std::numeric_limits<float>::max(), std::numeric_limits<float>::max(), std::numeric_limits<float>::max()};
+  float max[3] = {std::numeric_limits<float>::min(), std::numeric_limits<float>::min(), std::numeric_limits<float>::min()};
 
   int64_t count = geom2D->getNumberOfVertices();
-  for (int64_t i = 0; i < count; i++)
+  for(int64_t i = 0; i < count; i++)
   {
-    if (nodes[3 * i] > max[0])
+    if(nodes[3 * i] > max[0])
     {
       max[0] = nodes[3 * i];
     }
-    if (nodes[3 * i + 1] > max[1])
+    if(nodes[3 * i + 1] > max[1])
     {
       max[1] = nodes[3 * i + 1];
     }
-    if (nodes[3 * i + 2] > max[2])
+    if(nodes[3 * i + 2] > max[2])
     {
       max[2] = nodes[3 * i + 2];
     }
 
-    if (nodes[3 * i] < min[0])
+    if(nodes[3 * i] < min[0])
     {
       min[0] = nodes[3 * i];
     }
-    if (nodes[3 * i + 1] < min[1])
+    if(nodes[3 * i + 1] < min[1])
     {
       min[1] = nodes[3 * i + 1];
     }
-    if (nodes[3 * i + 2] < min[2])
+    if(nodes[3 * i + 2] < min[2])
     {
       min[2] = nodes[3 * i + 2];
     }
   }
 
 #ifdef SIMPLib_USE_PARALLEL_ALGORITHMS
-  if (doParallel == true)
+  if(doParallel == true)
   {
-    tbb::parallel_for(tbb::blocked_range<size_t>(0, count),
-                      UpdateVerticesImpl(nodes, min, m_ScaleFactor), tbb::auto_partitioner());
+    tbb::parallel_for(tbb::blocked_range<size_t>(0, count), UpdateVerticesImpl(nodes, min, m_ScaleFactor), tbb::auto_partitioner());
   }
   else
 #endif
@@ -275,14 +271,17 @@ void ScaleVolume::execute()
 {
   setErrorCondition(0);
   dataCheck();
-  if(getErrorCondition() < 0) { return; }
+  if(getErrorCondition() < 0)
+  {
+    return;
+  }
 
-  if (m_ApplyToVoxelVolume == true)
+  if(m_ApplyToVoxelVolume == true)
   {
     DataContainer::Pointer m = getDataContainerArray()->getDataContainer(getDataContainerName());
     ImageGeom::Pointer image = m->getGeometryAs<ImageGeom>();
 
-    float resolution[3] = { 0.0f, 0.0f, 0.0f };
+    float resolution[3] = {0.0f, 0.0f, 0.0f};
     image->getResolution(resolution);
     resolution[0] *= m_ScaleFactor.x;
     resolution[1] *= m_ScaleFactor.y;
@@ -290,7 +289,7 @@ void ScaleVolume::execute()
     image->setResolution(resolution);
   }
 
-  if (m_ApplyToSurfaceMesh == true)
+  if(m_ApplyToSurfaceMesh == true)
   {
     updateSurfaceMesh();
   }
@@ -315,7 +314,9 @@ AbstractFilter::Pointer ScaleVolume::newFilterInstance(bool copyFilterParameters
 //
 // -----------------------------------------------------------------------------
 const QString ScaleVolume::getCompiledLibraryName()
-{ return Core::CoreBaseName; }
+{
+  return Core::CoreBaseName;
+}
 
 // -----------------------------------------------------------------------------
 //
@@ -332,26 +333,30 @@ const QString ScaleVolume::getFilterVersion()
 {
   QString version;
   QTextStream vStream(&version);
-  vStream <<  SIMPLib::Version::Major() << "." << SIMPLib::Version::Minor() << "." << SIMPLib::Version::Patch();
+  vStream << SIMPLib::Version::Major() << "." << SIMPLib::Version::Minor() << "." << SIMPLib::Version::Patch();
   return version;
 }
-
-
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
 const QString ScaleVolume::getGroupName()
-{ return SIMPL::FilterGroups::CoreFilters; }
+{
+  return SIMPL::FilterGroups::CoreFilters;
+}
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
 const QString ScaleVolume::getSubGroupName()
-{ return SIMPL::FilterSubGroups::SpatialFilters; }
+{
+  return SIMPL::FilterSubGroups::SpatialFilters;
+}
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
 const QString ScaleVolume::getHumanLabel()
-{ return "Change Scaling of Volume"; }
+{
+  return "Change Scaling of Volume";
+}

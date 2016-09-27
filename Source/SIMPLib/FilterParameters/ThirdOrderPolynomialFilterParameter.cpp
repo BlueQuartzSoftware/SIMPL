@@ -38,21 +38,23 @@
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-ThirdOrderPolynomialFilterParameter::ThirdOrderPolynomialFilterParameter() :
-FilterParameter()
-{}
+ThirdOrderPolynomialFilterParameter::ThirdOrderPolynomialFilterParameter()
+: FilterParameter()
+{
+}
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
 ThirdOrderPolynomialFilterParameter::~ThirdOrderPolynomialFilterParameter()
-{}
+{
+}
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-ThirdOrderPolynomialFilterParameter::Pointer ThirdOrderPolynomialFilterParameter::New(const QString& humanLabel, const QString& propertyName,
-  const Float3rdOrderPoly_t& defaultValue, Category category, SetterCallbackType setterCallback, GetterCallbackType getterCallback, int groupIndex)
+ThirdOrderPolynomialFilterParameter::Pointer ThirdOrderPolynomialFilterParameter::New(const QString& humanLabel, const QString& propertyName, const Float3rdOrderPoly_t& defaultValue,
+                                                                                      Category category, SetterCallbackType setterCallback, GetterCallbackType getterCallback, int groupIndex)
 {
 
   ThirdOrderPolynomialFilterParameter::Pointer ptr = ThirdOrderPolynomialFilterParameter::New();
@@ -80,10 +82,10 @@ QString ThirdOrderPolynomialFilterParameter::getWidgetType()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void ThirdOrderPolynomialFilterParameter::readJson(const QJsonObject &json)
+void ThirdOrderPolynomialFilterParameter::readJson(const QJsonObject& json)
 {
   QJsonValue jsonValue = json[getPropertyName()];
-  if(!jsonValue.isUndefined() )
+  if(!jsonValue.isUndefined())
   {
     QJsonObject obj = jsonValue.toObject();
     Float3rdOrderPoly_t poly;
@@ -95,11 +97,10 @@ void ThirdOrderPolynomialFilterParameter::readJson(const QJsonObject &json)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void ThirdOrderPolynomialFilterParameter::writeJson(QJsonObject &json)
+void ThirdOrderPolynomialFilterParameter::writeJson(QJsonObject& json)
 {
   Float3rdOrderPoly_t poly = m_GetterCallback();
   QJsonObject obj;
   poly.writeJson(obj);
   json[getPropertyName()] = obj;
 }
-

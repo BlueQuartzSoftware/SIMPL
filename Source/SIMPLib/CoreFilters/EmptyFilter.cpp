@@ -36,21 +36,19 @@
 #include "EmptyFilter.h"
 
 #include "SIMPLib/Common/Constants.h"
-#include "SIMPLib/SIMPLibVersion.h"
 #include "SIMPLib/FilterParameters/AbstractFilterParametersReader.h"
 #include "SIMPLib/FilterParameters/UnknownFilterParameter.h"
+#include "SIMPLib/SIMPLibVersion.h"
 
 // Include the MOC generated file for this class
 #include "moc_EmptyFilter.cpp"
 
-
-
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-EmptyFilter::EmptyFilter() :
-  AbstractFilter(),
-  m_HumanLabel("Unknown Filter")
+EmptyFilter::EmptyFilter()
+: AbstractFilter()
+, m_HumanLabel("Unknown Filter")
 {
   setupFilterParameters();
 }
@@ -133,7 +131,6 @@ void EmptyFilter::execute()
   notifyStatusMessage(getHumanLabel(), "Complete");
 }
 
-
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
@@ -170,7 +167,7 @@ const QString EmptyFilter::getFilterVersion()
 {
   QString version;
   QTextStream vStream(&version);
-  vStream <<  SIMPLib::Version::Major() << "." << SIMPLib::Version::Minor() << "." << SIMPLib::Version::Patch();
+  vStream << SIMPLib::Version::Major() << "." << SIMPLib::Version::Minor() << "." << SIMPLib::Version::Patch();
   return version;
 }
 

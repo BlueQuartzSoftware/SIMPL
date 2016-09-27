@@ -41,20 +41,22 @@
 //
 // -----------------------------------------------------------------------------
 ColorUtilities::ColorUtilities()
-{}
+{
+}
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
 ColorUtilities::~ColorUtilities()
-{}
+{
+}
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
 SIMPL::Rgb ColorUtilities::convertHSVtoRgb(float h, float s, float v)
 {
-//hsv to rgb (from wikipedia hsv/hsl page)
+  // hsv to rgb (from wikipedia hsv/hsl page)
   float c = v * s;
   h = h * 6.0f;
   float x = c * (1.0f - fabs(fmod(h, 2.0f) - 1.0f));
@@ -84,7 +86,7 @@ SIMPL::Rgb ColorUtilities::convertHSVtoRgb(float h, float s, float v)
       g = x;
       b = c;
     }
-    else if (h < 5.0f)
+    else if(h < 5.0f)
     {
       r = x;
       b = c;
@@ -96,7 +98,7 @@ SIMPL::Rgb ColorUtilities::convertHSVtoRgb(float h, float s, float v)
     }
   }
 
-  //adjust lumosity
+  // adjust lumosity
   r = r + (v - c);
   g = g + (v - c);
   b = b + (v - c);

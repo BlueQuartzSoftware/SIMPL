@@ -39,22 +39,23 @@
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-DataArraySelectionFilterParameter::DataArraySelectionFilterParameter() :
-  FilterParameter()
-{}
+DataArraySelectionFilterParameter::DataArraySelectionFilterParameter()
+: FilterParameter()
+{
+}
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
 DataArraySelectionFilterParameter::~DataArraySelectionFilterParameter()
-{}
+{
+}
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-DataArraySelectionFilterParameter::Pointer DataArraySelectionFilterParameter::New(const QString& humanLabel, const QString& propertyName,
-    const DataArrayPath& defaultValue, Category category, SetterCallbackType setterCallback, GetterCallbackType getterCallback,
-                                                                                  const RequirementType req, int groupIndex)
+DataArraySelectionFilterParameter::Pointer DataArraySelectionFilterParameter::New(const QString& humanLabel, const QString& propertyName, const DataArrayPath& defaultValue, Category category,
+                                                                                  SetterCallbackType setterCallback, GetterCallbackType getterCallback, const RequirementType req, int groupIndex)
 {
 
   DataArraySelectionFilterParameter::Pointer ptr = DataArraySelectionFilterParameter::New();
@@ -86,9 +87,8 @@ QString DataArraySelectionFilterParameter::getWidgetType()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-DataArraySelectionFilterParameter::RequirementType DataArraySelectionFilterParameter::CreateCategoryRequirement(const QString& primitiveType,
-    size_t allowedCompDim,
-    unsigned int attributeMatrixCategory)
+DataArraySelectionFilterParameter::RequirementType DataArraySelectionFilterParameter::CreateCategoryRequirement(const QString& primitiveType, size_t allowedCompDim,
+                                                                                                                unsigned int attributeMatrixCategory)
 {
   typedef QVector<size_t> QVectorOfSizeType;
   DataArraySelectionFilterParameter::RequirementType req;
@@ -123,20 +123,18 @@ DataArraySelectionFilterParameter::RequirementType DataArraySelectionFilterParam
   {
     req.componentDimensions = QVector<QVectorOfSizeType>(1, QVectorOfSizeType(1, allowedCompDim));
   }
-//  if(SIMPL::GeometryType::UnknownGeometry != geometryType)
-//  {
-//    req.dcGeometryTypes = QVector<unsigned int>(1, geometryType);
-//  }
+  //  if(SIMPL::GeometryType::UnknownGeometry != geometryType)
+  //  {
+  //    req.dcGeometryTypes = QVector<unsigned int>(1, geometryType);
+  //  }
   return req;
 }
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-DataArraySelectionFilterParameter::RequirementType DataArraySelectionFilterParameter::CreateRequirement(const QString& primitiveType,
-                                                                                    size_t allowedCompDim,
-                                                                                    unsigned int attributeMatrixType,
-                                                                                    unsigned int geometryType)
+DataArraySelectionFilterParameter::RequirementType DataArraySelectionFilterParameter::CreateRequirement(const QString& primitiveType, size_t allowedCompDim, unsigned int attributeMatrixType,
+                                                                                                        unsigned int geometryType)
 {
   typedef QVector<size_t> QVectorOfSizeType;
   DataArraySelectionFilterParameter::RequirementType req;
@@ -163,10 +161,10 @@ DataArraySelectionFilterParameter::RequirementType DataArraySelectionFilterParam
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void DataArraySelectionFilterParameter::readJson(const QJsonObject &json)
+void DataArraySelectionFilterParameter::readJson(const QJsonObject& json)
 {
   QJsonValue jsonValue = json[getPropertyName()];
-  if(!jsonValue.isUndefined() )
+  if(!jsonValue.isUndefined())
   {
     QJsonObject obj = jsonValue.toObject();
     DataArrayPath dap;
@@ -178,7 +176,7 @@ void DataArraySelectionFilterParameter::readJson(const QJsonObject &json)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void DataArraySelectionFilterParameter::writeJson(QJsonObject &json)
+void DataArraySelectionFilterParameter::writeJson(QJsonObject& json)
 {
   DataArrayPath dap = m_GetterCallback();
   QJsonObject obj;

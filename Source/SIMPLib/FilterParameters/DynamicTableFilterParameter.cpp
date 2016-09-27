@@ -38,29 +38,31 @@
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-DynamicTableFilterParameter::DynamicTableFilterParameter() :
-  FilterParameter(),
-  m_DefaultRowCount(0),
-  m_DefaultColCount(0),
-  m_AreRowsDynamic(false),
-  m_AreColsDynamic(false),
-  m_MinRowCount(0),
-  m_MinColCount(0),
-  m_ErrorCondition(0)
-{}
+DynamicTableFilterParameter::DynamicTableFilterParameter()
+: FilterParameter()
+, m_DefaultRowCount(0)
+, m_DefaultColCount(0)
+, m_AreRowsDynamic(false)
+, m_AreColsDynamic(false)
+, m_MinRowCount(0)
+, m_MinColCount(0)
+, m_ErrorCondition(0)
+{
+}
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
 DynamicTableFilterParameter::~DynamicTableFilterParameter()
-{}
+{
+}
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-DynamicTableFilterParameter::Pointer DynamicTableFilterParameter::New(const QString& humanLabel, const QString& propertyName, DynamicTableData defaultTableData,
-    FilterParameter::Category category, SetterCallbackType setterCallback, GetterCallbackType getterCallback,
-    bool areRowsDynamic, bool areColsDynamic, int minRowCount, int minColCount, int groupIndex)
+DynamicTableFilterParameter::Pointer DynamicTableFilterParameter::New(const QString& humanLabel, const QString& propertyName, DynamicTableData defaultTableData, FilterParameter::Category category,
+                                                                      SetterCallbackType setterCallback, GetterCallbackType getterCallback, bool areRowsDynamic, bool areColsDynamic, int minRowCount,
+                                                                      int minColCount, int groupIndex)
 {
   DynamicTableFilterParameter::Pointer ptr = DynamicTableFilterParameter::New();
   ptr->setHumanLabel(humanLabel);
@@ -77,14 +79,14 @@ DynamicTableFilterParameter::Pointer DynamicTableFilterParameter::New(const QStr
   ptr->setGetterCallback(getterCallback);
 
   // Check that all columns are initialized to the same size
-  if (defaultTableData.getTableData().size() > 0)
+  if(defaultTableData.getTableData().size() > 0)
   {
     QSet<int> colSizes;
     colSizes.insert(defaultTableData.getTableData()[0].size());
-    for (int i = 1; i < defaultTableData.getTableData().size(); i++)
+    for(int i = 1; i < defaultTableData.getTableData().size(); i++)
     {
       colSizes.insert(defaultTableData.getTableData()[i].size());
-      if (colSizes.size() > 1)
+      if(colSizes.size() > 1)
       {
         ptr->setErrorCondition(-100);
         // Use HTML code in the error message, because this will be displayed in RichText format.
@@ -110,10 +112,10 @@ QString DynamicTableFilterParameter::getWidgetType()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void DynamicTableFilterParameter::readJson(const QJsonObject &json)
+void DynamicTableFilterParameter::readJson(const QJsonObject& json)
 {
   QJsonValue jsonValue = json[getPropertyName()];
-  if(!jsonValue.isUndefined() )
+  if(!jsonValue.isUndefined())
   {
     QJsonObject jsonObj = jsonValue.toObject();
     DynamicTableData dynamicData;
@@ -125,11 +127,10 @@ void DynamicTableFilterParameter::readJson(const QJsonObject &json)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void DynamicTableFilterParameter::writeJson(QJsonObject &json)
+void DynamicTableFilterParameter::writeJson(QJsonObject& json)
 {
   DynamicTableData dynamicData = m_GetterCallback();
   QJsonObject jsonObj;
   dynamicData.writeJson(jsonObj);
   json[getPropertyName()] = jsonObj;
 }
-

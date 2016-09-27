@@ -33,13 +33,12 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-
 #include "DREAM3DListWidget.h"
 
 #include <QtWidgets/QApplication>
 
-#include <iostream>
 #include <QtCore/QMimeData>
+#include <iostream>
 
 #include <QtGui/QDrag>
 #include <QtGui/QDropEvent>
@@ -51,9 +50,8 @@
 //
 // -----------------------------------------------------------------------------
 DREAM3DListWidget::DREAM3DListWidget(QWidget* parent)
-  : QListWidget(parent)
+: QListWidget(parent)
 {
-
 }
 
 // -----------------------------------------------------------------------------
@@ -61,7 +59,6 @@ DREAM3DListWidget::DREAM3DListWidget(QWidget* parent)
 // -----------------------------------------------------------------------------
 DREAM3DListWidget::~DREAM3DListWidget()
 {
-
 }
 
 // -----------------------------------------------------------------------------
@@ -69,7 +66,7 @@ DREAM3DListWidget::~DREAM3DListWidget()
 // -----------------------------------------------------------------------------
 void DREAM3DListWidget::mousePressEvent(QMouseEvent* event)
 {
-  if (event->button() == Qt::LeftButton)
+  if(event->button() == Qt::LeftButton)
   {
     startPos = event->pos();
   }
@@ -81,10 +78,10 @@ void DREAM3DListWidget::mousePressEvent(QMouseEvent* event)
 // -----------------------------------------------------------------------------
 void DREAM3DListWidget::mouseMoveEvent(QMouseEvent* event)
 {
-  if (event->buttons() & Qt::LeftButton)
+  if(event->buttons() & Qt::LeftButton)
   {
     int distance = (event->pos() - startPos).manhattanLength();
-    if (distance >= QApplication::startDragDistance())
+    if(distance >= QApplication::startDragDistance())
     {
       performDrag();
     }
@@ -98,7 +95,7 @@ void DREAM3DListWidget::mouseMoveEvent(QMouseEvent* event)
 void DREAM3DListWidget::performDrag()
 {
   QDrag* drag = new QDrag(this);
-  drag->setMimeData(new QMimeData());   // Set empty mime data into drag to shut up compiler
+  drag->setMimeData(new QMimeData()); // Set empty mime data into drag to shut up compiler
   drag->exec(Qt::MoveAction);
 }
 
@@ -107,9 +104,8 @@ void DREAM3DListWidget::performDrag()
 // -----------------------------------------------------------------------------
 void DREAM3DListWidget::dragEnterEvent(QDragEnterEvent* event)
 {
-  QListWidget* source =
-    qobject_cast<QListWidget*>(event->source());
-  if (source && source != this)
+  QListWidget* source = qobject_cast<QListWidget*>(event->source());
+  if(source && source != this)
   {
     event->setDropAction(Qt::MoveAction);
     event->accept();
@@ -121,15 +117,13 @@ void DREAM3DListWidget::dragEnterEvent(QDragEnterEvent* event)
 // -----------------------------------------------------------------------------
 void DREAM3DListWidget::dropEvent(QDropEvent* event)
 {
-  QListWidget* source =
-    qobject_cast<QListWidget*>(event->source());
-  if (source && source != this)
+  QListWidget* source = qobject_cast<QListWidget*>(event->source());
+  if(source && source != this)
   {
     event->setDropAction(Qt::MoveAction);
-    emit dropOccurred();    // We want to emit this signal so that we can respond in a slot when a drop occurs
+    emit dropOccurred(); // We want to emit this signal so that we can respond in a slot when a drop occurs
     event->accept();
   }
 
   event->ignore();
 }
-

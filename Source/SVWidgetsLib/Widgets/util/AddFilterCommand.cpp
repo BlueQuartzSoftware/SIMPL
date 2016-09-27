@@ -37,31 +37,30 @@
 
 #include <QtCore/QObject>
 
-#include "SIMPLib/FilterParameters/JsonFilterParametersWriter.h"
-#include "SIMPLib/FilterParameters/JsonFilterParametersReader.h"
 #include "SIMPLib/CoreFilters/Breakpoint.h"
+#include "SIMPLib/FilterParameters/JsonFilterParametersReader.h"
+#include "SIMPLib/FilterParameters/JsonFilterParametersWriter.h"
 
-
+#include "SVWidgetsLib/Widgets/BreakpointFilterWidget.h"
 #include "SVWidgetsLib/Widgets/PipelineFilterObject.h"
 #include "SVWidgetsLib/Widgets/SVPipelineViewWidget.h"
-#include "SVWidgetsLib/Widgets/BreakpointFilterWidget.h"
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-AddFilterCommand::AddFilterCommand(AbstractFilter::Pointer filter, PipelineView* destination, QString actionText, QVariant value, QUuid previousNode, QUuid nextNode, QUndoCommand* parent) :
-  QUndoCommand(parent),
-  m_FilterCount(1),
-  m_ActionText(actionText),
-  m_Destination(destination),
-  m_Value(value),
-  m_PreviousNodeId(previousNode),
-  m_NextNodeId(nextNode)
+AddFilterCommand::AddFilterCommand(AbstractFilter::Pointer filter, PipelineView* destination, QString actionText, QVariant value, QUuid previousNode, QUuid nextNode, QUndoCommand* parent)
+: QUndoCommand(parent)
+, m_FilterCount(1)
+, m_ActionText(actionText)
+, m_Destination(destination)
+, m_Value(value)
+, m_PreviousNodeId(previousNode)
+, m_NextNodeId(nextNode)
 {
-  if (m_Value.canConvert<int>())
+  if(m_Value.canConvert<int>())
   {
     int index = value.toInt();
-    if (index < 0)
+    if(index < 0)
     {
       m_Value.setValue(destination->filterCount());
     }
@@ -78,19 +77,19 @@ AddFilterCommand::AddFilterCommand(AbstractFilter::Pointer filter, PipelineView*
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-AddFilterCommand::AddFilterCommand(QList<AbstractFilter::Pointer> filters, PipelineView* destination, QString actionText, QVariant value, QUuid previousNode, QUuid nextNode, QUndoCommand* parent) :
-  QUndoCommand(parent),
-  m_FilterCount(filters.size()),
-  m_ActionText(actionText),
-  m_Destination(destination),
-  m_Value(value),
-  m_PreviousNodeId(previousNode),
-  m_NextNodeId(nextNode)
+AddFilterCommand::AddFilterCommand(QList<AbstractFilter::Pointer> filters, PipelineView* destination, QString actionText, QVariant value, QUuid previousNode, QUuid nextNode, QUndoCommand* parent)
+: QUndoCommand(parent)
+, m_FilterCount(filters.size())
+, m_ActionText(actionText)
+, m_Destination(destination)
+, m_Value(value)
+, m_PreviousNodeId(previousNode)
+, m_NextNodeId(nextNode)
 {
-  if (m_Value.canConvert<int>())
+  if(m_Value.canConvert<int>())
   {
     int index = value.toInt();
-    if (index < 0)
+    if(index < 0)
     {
       m_Value.setValue(destination->filterCount());
     }
@@ -99,7 +98,7 @@ AddFilterCommand::AddFilterCommand(QList<AbstractFilter::Pointer> filters, Pipel
   setText(QObject::tr("\"%1 %2 Filters\"").arg(actionText).arg(filters.size()));
 
   FilterPipeline::Pointer pipeline = FilterPipeline::New();
-  for (int i=0; i<filters.size(); i++)
+  for(int i = 0; i < filters.size(); i++)
   {
     pipeline->pushBack(filters[i]);
   }
@@ -112,7 +111,6 @@ AddFilterCommand::AddFilterCommand(QList<AbstractFilter::Pointer> filters, Pipel
 // -----------------------------------------------------------------------------
 AddFilterCommand::~AddFilterCommand()
 {
-
 }
 
 // -----------------------------------------------------------------------------
@@ -120,22 +118,22 @@ AddFilterCommand::~AddFilterCommand()
 // -----------------------------------------------------------------------------
 void AddFilterCommand::undo()
 {
-  if (m_Value.canConvert<int>())
+  if(m_Value.canConvert<int>())
   {
     int index = m_Value.toInt();
 
-    for (int i=0; i < m_FilterCount; i++)
+    for(int i = 0; i < m_FilterCount; i++)
     {
       m_Destination->removeFilterObject(m_Destination->filterObjectAt(index));
       // No need to increment index, because after removing the filter above, the next filter
       // will move up to this index
     }
   }
-  else if (m_Value.canConvert<QPointF>())
+  else if(m_Value.canConvert<QPointF>())
   {
     QPointF pointF = m_Value.toPointF();
 
-    for (int i=0; i < m_FilterCount; i++)
+    for(int i = 0; i < m_FilterCount; i++)
     {
       m_Destination->removeFilterObject(m_Destination->filterObjectAt(pointF));
       pointF.setX(pointF.x() + 50);
@@ -158,22 +156,22 @@ void AddFilterCommand::redo()
   FilterPipeline::Pointer pipeline = jsonReader->readPipelineFromString(m_JsonString);
   FilterPipeline::FilterContainerType container = pipeline->getFilterContainer();
 
-  if (m_Value.canConvert<int>())
+  if(m_Value.canConvert<int>())
   {
     int index = m_Value.toInt();
 
-    for (int i=0; i<container.size(); i++)
+    for(int i = 0; i < container.size(); i++)
     {
       PipelineFilterObject* filterObject = m_Destination->createFilterObjectFromFilter(container[i]);
       m_Destination->addFilterObject(filterObject, index);
       index++;
     }
   }
-  else if (m_Value.canConvert<QPointF>())
+  else if(m_Value.canConvert<QPointF>())
   {
     QPointF pointF = m_Value.toPointF();
 
-    for (int i=0; i<container.size(); i++)
+    for(int i = 0; i < container.size(); i++)
     {
       PipelineFilterObject* filterObject = m_Destination->createFilterObjectFromFilter(container[i]);
       m_Destination->addFilterObject(filterObject, pointF);
@@ -186,6 +184,3 @@ void AddFilterCommand::redo()
   m_Destination->recheckWindowTitleAndModification();
   m_Destination->preflightPipeline();
 }
-
-
-

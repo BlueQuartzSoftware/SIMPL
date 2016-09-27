@@ -41,15 +41,14 @@
 
 #include "FilterParameterWidgetsDialogs.h"
 
-
 // Include the MOC generated file for this class
 #include "moc_PreflightUpdatedValueWidget.cpp"
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-PreflightUpdatedValueWidget::PreflightUpdatedValueWidget(FilterParameter* parameter, AbstractFilter* filter, QWidget* parent) :
-  FilterParameterWidget(parameter, filter, parent)
+PreflightUpdatedValueWidget::PreflightUpdatedValueWidget(FilterParameter* parameter, AbstractFilter* filter, QWidget* parent)
+: FilterParameterWidget(parameter, filter, parent)
 {
   m_FilterParameter = dynamic_cast<PreflightUpdatedValueFilterParameter*>(parameter);
   Q_ASSERT_X(m_FilterParameter != nullptr, "nullptr Pointer", "PreflightUpdatedValueWidget can ONLY be used with a PreflightUpdatedValueFilterParameter object");
@@ -62,7 +61,8 @@ PreflightUpdatedValueWidget::PreflightUpdatedValueWidget(FilterParameter* parame
 //
 // -----------------------------------------------------------------------------
 PreflightUpdatedValueWidget::~PreflightUpdatedValueWidget()
-{}
+{
+}
 
 // -----------------------------------------------------------------------------
 //
@@ -71,22 +71,18 @@ void PreflightUpdatedValueWidget::setupGui()
 {
 
   // Catch when the filter is about to execute the preflight
-  connect(getFilter(), SIGNAL(preflightAboutToExecute()),
-          this, SLOT(beforePreflight()));
+  connect(getFilter(), SIGNAL(preflightAboutToExecute()), this, SLOT(beforePreflight()));
 
   // Catch when the filter is finished running the preflight
-  connect(getFilter(), SIGNAL(preflightExecuted()),
-          this, SLOT(afterPreflight()));
+  connect(getFilter(), SIGNAL(preflightExecuted()), this, SLOT(afterPreflight()));
 
   // Catch when the filter wants its values updated
-  connect(getFilter(), SIGNAL(updateFilterParameters(AbstractFilter*)),
-          this, SLOT(filterNeedsInputParameters(AbstractFilter*)));
-
+  connect(getFilter(), SIGNAL(updateFilterParameters(AbstractFilter*)), this, SLOT(filterNeedsInputParameters(AbstractFilter*)));
 
   blockSignals(true);
-  if (getFilterParameter() != nullptr)
+  if(getFilterParameter() != nullptr)
   {
-    label->setText(getFilterParameter()->getHumanLabel() );
+    label->setText(getFilterParameter()->getHumanLabel());
 
     QString str = getFilter()->property(PROPERTY_NAME_AS_CHAR).toString();
     value->setText(str);
@@ -99,7 +95,6 @@ void PreflightUpdatedValueWidget::setupGui()
 // -----------------------------------------------------------------------------
 void PreflightUpdatedValueWidget::filterNeedsInputParameters(AbstractFilter* filter)
 {
-
 }
 
 // -----------------------------------------------------------------------------
@@ -107,7 +102,6 @@ void PreflightUpdatedValueWidget::filterNeedsInputParameters(AbstractFilter* fil
 // -----------------------------------------------------------------------------
 void PreflightUpdatedValueWidget::beforePreflight()
 {
-
 }
 
 // -----------------------------------------------------------------------------
@@ -116,7 +110,7 @@ void PreflightUpdatedValueWidget::beforePreflight()
 void PreflightUpdatedValueWidget::afterPreflight()
 {
   QVariant var = getFilter()->property(PROPERTY_NAME_AS_CHAR);
-  if (var.isValid() )
+  if(var.isValid())
   {
     value->setText(var.toString());
   }

@@ -60,5 +60,4 @@ void Observer::processPipelineMessage(const PipelineMessage& pm)
 {
   // Just call the superclass
   IObserver::processPipelineMessage(pm);
-
 }

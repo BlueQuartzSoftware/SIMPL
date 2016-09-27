@@ -33,18 +33,17 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-
 #include "DataContainerWriter.h"
 
 #include <QtCore/QDir>
 
 #include "SIMPLib/Common/Constants.h"
-#include "SIMPLib/SIMPLibVersion.h"
-#include "SIMPLib/SIMPLibVersion.h"
 #include "SIMPLib/FilterParameters/AbstractFilterParametersReader.h"
-#include "SIMPLib/FilterParameters/OutputFileFilterParameter.h"
 #include "SIMPLib/FilterParameters/BooleanFilterParameter.h"
 #include "SIMPLib/FilterParameters/H5FilterParametersWriter.h"
+#include "SIMPLib/FilterParameters/OutputFileFilterParameter.h"
+#include "SIMPLib/SIMPLibVersion.h"
+#include "SIMPLib/SIMPLibVersion.h"
 
 #ifdef _WIN32
 extern Q_CORE_EXPORT int qt_ntfs_permission_lookup;
@@ -55,40 +54,40 @@ extern Q_CORE_EXPORT int qt_ntfs_permission_lookup;
 
 namespace Detail
 {
-  class H5GroupAutoCloser
+class H5GroupAutoCloser
+{
+public:
+  H5GroupAutoCloser(hid_t* groupId)
+  : gid(groupId)
   {
-    public:
-      H5GroupAutoCloser(hid_t* groupId) :
-        gid(groupId)
-      {}
+  }
 
-      virtual ~H5GroupAutoCloser()
-      {
-        if (*gid > 0)
-        {
-          H5Gclose(*gid);
-        }
-      }
-    private:
-      hid_t* gid;
-  };
+  virtual ~H5GroupAutoCloser()
+  {
+    if(*gid > 0)
+    {
+      H5Gclose(*gid);
+    }
+  }
+
+private:
+  hid_t* gid;
+};
 }
 
 // Include the MOC generated file for this class
 #include "moc_DataContainerWriter.cpp"
 
-
-
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-DataContainerWriter::DataContainerWriter() :
-  AbstractFilter(),
-  m_OutputFile(""),
-  m_WritePipeline(true),
-  m_WriteXdmfFile(true),
-  m_AppendToExisting(false),
-  m_FileId(-1)
+DataContainerWriter::DataContainerWriter()
+: AbstractFilter()
+, m_OutputFile("")
+, m_WritePipeline(true)
+, m_WriteXdmfFile(true)
+, m_AppendToExisting(false)
+, m_FileId(-1)
 {
   setupFilterParameters();
 }
@@ -120,8 +119,8 @@ void DataContainerWriter::setupFilterParameters()
 void DataContainerWriter::readFilterParameters(AbstractFilterParametersReader* reader, int index)
 {
   reader->openFilterGroup(this, index);
-  setOutputFile( reader->readString( "OutputFile", getOutputFile() ) );
-  setWriteXdmfFile( reader->readValue("WriteXdmfFile", getWriteXdmfFile()) );
+  setOutputFile(reader->readString("OutputFile", getOutputFile()));
+  setWriteXdmfFile(reader->readValue("WriteXdmfFile", getWriteXdmfFile()));
   reader->closeFilterGroup();
 }
 
@@ -141,7 +140,7 @@ void DataContainerWriter::dataCheck()
   setErrorCondition(0);
   QString ss;
 
-  if (m_OutputFile.isEmpty() == true)
+  if(m_OutputFile.isEmpty() == true)
   {
     setErrorCondition(-10000);
     ss = QObject::tr("The output file must be set");
@@ -150,12 +149,12 @@ void DataContainerWriter::dataCheck()
 
   QFileInfo fi(m_OutputFile);
   QDir parentPath(fi.path());
-  if (parentPath.exists() == false)
+  if(parentPath.exists() == false)
   {
     ss = QObject::tr("The directory path for the output file does not exist. SIMPLView will attempt to create this path during execution of the filter");
     notifyWarningMessage(getHumanLabel(), ss, -1);
   }
-  if (fi.suffix().compare("") == 0)
+  if(fi.suffix().compare("") == 0)
   {
     m_OutputFile.append(".dream3d");
   }
@@ -173,7 +172,7 @@ void DataContainerWriter::dataCheck()
 
   QFileInfo dirInfo(fi.path());
 
-  if (dirInfo.isWritable() == false && parentPath.exists() == true)
+  if(dirInfo.isWritable() == false && parentPath.exists() == true)
   {
     setErrorCondition(-10002);
     ss = QObject::tr("The user does not have the proper permissions to write to the output file");
@@ -201,7 +200,10 @@ void DataContainerWriter::execute()
 {
   setErrorCondition(0);
   dataCheck();
-  if(getErrorCondition() < 0) { return; }
+  if(getErrorCondition() < 0)
+  {
+    return;
+  }
 
   int err = 0;
 
@@ -210,7 +212,7 @@ void DataContainerWriter::execute()
   QFileInfo fi(m_OutputFile);
   QString parentPath = fi.path();
   QDir dir;
-  if (!dir.mkpath(parentPath))
+  if(!dir.mkpath(parentPath))
   {
     QString ss = QObject::tr("Error creating parent path '%1'").arg(parentPath);
     setErrorCondition(-11110);
@@ -219,37 +221,37 @@ void DataContainerWriter::execute()
   }
 
   err = openFile(m_AppendToExisting); // Do NOT append to any existing file
-  if (err < 0)
+  if(err < 0)
   {
     QString ss = QObject::tr("The HDF5 file could not be opened or created.\n The given filename was:\n\t[%1]").arg(m_OutputFile);
     setErrorCondition(-11112);
     notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
     return;
   }
-  //qDebug() << "DREAM3D File: " << m_OutputFile;
+  // qDebug() << "DREAM3D File: " << m_OutputFile;
 
   // This will make sure if we return early from this method that the HDF5 File is properly closed.
   HDF5ScopedFileSentinel scopedFileSentinel(&m_FileId, true);
 
   // Write our File Version string to the Root "/" group
   QH5Lite::writeStringAttribute(m_FileId, "/", SIMPL::HDF5::FileVersionName, SIMPL::HDF5::FileVersion);
-  QH5Lite::writeStringAttribute(m_FileId, "/", SIMPL::HDF5::DREAM3DVersion, SIMPLib::Version::Complete() );
+  QH5Lite::writeStringAttribute(m_FileId, "/", SIMPL::HDF5::DREAM3DVersion, SIMPLib::Version::Complete());
   QFile xdmfFile;
   QTextStream xdmfOut(&xdmfFile);
-  if (m_WriteXdmfFile == true)
+  if(m_WriteXdmfFile == true)
   {
     QFileInfo ofFi(m_OutputFile);
     QString name = ofFi.baseName();
-    if (parentPath.isEmpty() == true)
+    if(parentPath.isEmpty() == true)
     {
       name = name + ".xdmf";
     }
     else
     {
-      name =  parentPath + "/" + name + ".xdmf";
+      name = parentPath + "/" + name + ".xdmf";
     }
     xdmfFile.setFileName(name);
-    if (xdmfFile.open(QIODevice::WriteOnly | QIODevice::Text))
+    if(xdmfFile.open(QIODevice::WriteOnly | QIODevice::Text))
     {
       writeXdmfHeader(xdmfOut);
     }
@@ -259,23 +261,23 @@ void DataContainerWriter::execute()
   err = writePipeline();
 
   err = H5Utilities::createGroupsFromPath(SIMPL::StringConstants::DataContainerGroupName.toLatin1().data(), m_FileId);
-  if (err < 0)
+  if(err < 0)
   {
     QString ss = QObject::tr("Error creating HDF5 Group '%1'").arg(SIMPL::StringConstants::DataContainerGroupName);
     setErrorCondition(-60);
     notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
     return;
   }
-  hid_t dcaGid = H5Gopen(m_FileId, SIMPL::StringConstants::DataContainerGroupName.toLatin1().data(), H5P_DEFAULT );
+  hid_t dcaGid = H5Gopen(m_FileId, SIMPL::StringConstants::DataContainerGroupName.toLatin1().data(), H5P_DEFAULT);
   scopedFileSentinel.addGroupId(&dcaGid);
 
   QList<QString> dcNames = getDataContainerArray()->getDataContainerNames();
-  for (size_t iter = 0; iter < getDataContainerArray()->getNumDataContainers(); iter++)
+  for(size_t iter = 0; iter < getDataContainerArray()->getNumDataContainers(); iter++)
   {
     DataContainer::Pointer dc = getDataContainerArray()->getDataContainer(dcNames[iter]);
     IGeometry::Pointer geometry = dc->getGeometry();
     err = H5Utilities::createGroupsFromPath(dcNames[iter].toLatin1().data(), dcaGid);
-    if (err < 0)
+    if(err < 0)
     {
       QString ss = QObject::tr("Error creating HDF5 Group '%1'").arg(dcNames[iter]);
       setErrorCondition(-60);
@@ -283,29 +285,29 @@ void DataContainerWriter::execute()
       return;
     }
 
-    hid_t dcGid = H5Gopen(dcaGid, dcNames[iter].toLatin1().data(), H5P_DEFAULT );
+    hid_t dcGid = H5Gopen(dcaGid, dcNames[iter].toLatin1().data(), H5P_DEFAULT);
     HDF5ScopedGroupSentinel groupSentinel(&dcGid, false);
-    //QString ss = QObject::tr("%1 |--> Writing %2 DataContainer ").arg(getMessagePrefix()).arg(dcNames[iter]);
+    // QString ss = QObject::tr("%1 |--> Writing %2 DataContainer ").arg(getMessagePrefix()).arg(dcNames[iter]);
 
     // Have the DataContainer write all of its Attribute Matrices and its Mesh
     err = dc->writeAttributeMatricesToHDF5(dcGid);
-    if (err < 0)
+    if(err < 0)
     {
       notifyErrorMessage(getHumanLabel(), "Error writing DataContainer AttributeMatrices", -803);
       return;
     }
     err = dc->writeMeshToHDF5(dcGid, m_WriteXdmfFile);
-    if (err < 0)
+    if(err < 0)
     {
       notifyErrorMessage(getHumanLabel(), "Error writing DataContainer Geometry", -804);
       return;
     }
-    if (m_WriteXdmfFile == true && geometry.get() != nullptr)
+    if(m_WriteXdmfFile == true && geometry.get() != nullptr)
     {
       QString hdfFileName = QH5Utilities::fileNameFromFileId(m_FileId);
 
       err = dc->writeXdmf(xdmfOut, hdfFileName);
-      if (err < 0)
+      if(err < 0)
       {
         notifyErrorMessage(getHumanLabel(), "Error writing Xdmf File", -805);
         return;
@@ -315,7 +317,7 @@ void DataContainerWriter::execute()
 
   // Write the Data ContainerBundles
   err = writeDataContainerBundles(m_FileId);
-  if (err < 0)
+  if(err < 0)
   {
     QString ss = QObject::tr("Error writing DataContainerBundles");
     setErrorCondition(-11113);
@@ -324,7 +326,7 @@ void DataContainerWriter::execute()
   }
 
   // Write the XDMF File
-  if (m_WriteXdmfFile == true)
+  if(m_WriteXdmfFile == true)
   {
     writeXdmfFooter(xdmfOut);
   }
@@ -342,25 +344,25 @@ void DataContainerWriter::execute()
 int DataContainerWriter::writeDataContainerBundles(hid_t fileId)
 {
   int err = QH5Utilities::createGroupsFromPath(SIMPL::StringConstants::DataContainerBundleGroupName, m_FileId);
-  if (err < 0)
+  if(err < 0)
   {
     QString ss = QObject::tr("Error creating HDF5 Group '%1'").arg(SIMPL::StringConstants::DataContainerBundleGroupName);
     setErrorCondition(-61);
     notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
     return -1;
   }
-  hid_t dcbGid = H5Gopen(m_FileId, SIMPL::StringConstants::DataContainerBundleGroupName.toLatin1().data(), H5P_DEFAULT );
+  hid_t dcbGid = H5Gopen(m_FileId, SIMPL::StringConstants::DataContainerBundleGroupName.toLatin1().data(), H5P_DEFAULT);
 
   Detail::H5GroupAutoCloser groupCloser(&dcbGid);
 
   QMap<QString, IDataContainerBundle::Pointer>& bundles = getDataContainerArray()->getDataContainerBundles();
   QMapIterator<QString, IDataContainerBundle::Pointer> iter(bundles);
-  while (iter.hasNext())
+  while(iter.hasNext())
   {
     iter.next();
     IDataContainerBundle::Pointer bundle = iter.value();
     err = bundle->writeH5Data(dcbGid);
-    if (err < 0)
+    if(err < 0)
     {
       return err;
     }
@@ -375,10 +377,14 @@ int DataContainerWriter::writeDataContainerBundles(hid_t fileId)
 // -----------------------------------------------------------------------------
 void DataContainerWriter::writeXdmfHeader(QTextStream& xdmf)
 {
-  xdmf << "<?xml version=\"1.0\"?>" << "\n";
-  xdmf << "<!DOCTYPE Xdmf SYSTEM \"Xdmf.dtd\"[]>" << "\n";
-  xdmf << "<Xdmf xmlns:xi=\"http://www.w3.org/2003/XInclude\" Version=\"2.2\">" << "\n";
-  xdmf << " <Domain>" << "\n";
+  xdmf << "<?xml version=\"1.0\"?>"
+       << "\n";
+  xdmf << "<!DOCTYPE Xdmf SYSTEM \"Xdmf.dtd\"[]>"
+       << "\n";
+  xdmf << "<Xdmf xmlns:xi=\"http://www.w3.org/2003/XInclude\" Version=\"2.2\">"
+       << "\n";
+  xdmf << " <Domain>"
+       << "\n";
 }
 
 // -----------------------------------------------------------------------------
@@ -386,8 +392,10 @@ void DataContainerWriter::writeXdmfHeader(QTextStream& xdmf)
 // -----------------------------------------------------------------------------
 void DataContainerWriter::writeXdmfFooter(QTextStream& xdmf)
 {
-  xdmf << " </Domain>" << "\n";
-  xdmf << "</Xdmf>" << "\n";
+  xdmf << " </Domain>"
+       << "\n";
+  xdmf << "</Xdmf>"
+       << "\n";
 }
 
 // -----------------------------------------------------------------------------
@@ -400,9 +408,9 @@ int DataContainerWriter::writePipeline()
 
   // Now start walking BACKWARDS through the pipeline to find the first filter.
   AbstractFilter::Pointer previousFilter = getPreviousFilter().lock();
-  while (previousFilter.get() != nullptr)
+  while(previousFilter.get() != nullptr)
   {
-    if (nullptr == previousFilter->getPreviousFilter().lock().get())
+    if(nullptr == previousFilter->getPreviousFilter().lock().get())
     {
       break;
     }
@@ -417,7 +425,7 @@ int DataContainerWriter::writePipeline()
   // Now starting with the first filter in the pipeline, start the actual writing
   AbstractFilter::Pointer currentFilter = previousFilter;
   AbstractFilter::Pointer nextFilter;
-  while (nullptr != currentFilter.get())
+  while(nullptr != currentFilter.get())
   {
     nextFilter = currentFilter->getNextFilter().lock();
     pipeline->pushBack(currentFilter);
@@ -433,14 +441,14 @@ int DataContainerWriter::writePipeline()
 hid_t DataContainerWriter::openFile(bool appendData)
 {
   // Try to open a file to append data into
-  if (APPEND_DATA_TRUE == appendData)
+  if(APPEND_DATA_TRUE == appendData)
   {
     m_FileId = QH5Utilities::openFile(m_OutputFile, false);
   }
   // No file was found or we are writing new data only to a clean file
-  if (APPEND_DATA_FALSE == appendData || m_FileId < 0)
+  if(APPEND_DATA_FALSE == appendData || m_FileId < 0)
   {
-    m_FileId = QH5Utilities::createFile (m_OutputFile);
+    m_FileId = QH5Utilities::createFile(m_OutputFile);
   }
   return m_FileId;
 }
@@ -451,7 +459,7 @@ hid_t DataContainerWriter::openFile(bool appendData)
 herr_t DataContainerWriter::closeFile()
 {
   // Close the file when we are finished with it
-  if (m_FileId > 0)
+  if(m_FileId > 0)
   {
     return QH5Utilities::closeFile(m_FileId);
   }
@@ -475,7 +483,9 @@ AbstractFilter::Pointer DataContainerWriter::newFilterInstance(bool copyFilterPa
 //
 // -----------------------------------------------------------------------------
 const QString DataContainerWriter::getCompiledLibraryName()
-{ return Core::CoreBaseName; }
+{
+  return Core::CoreBaseName;
+}
 
 // -----------------------------------------------------------------------------
 //
@@ -492,7 +502,7 @@ const QString DataContainerWriter::getFilterVersion()
 {
   QString version;
   QTextStream vStream(&version);
-  vStream <<  SIMPLib::Version::Major() << "." << SIMPLib::Version::Minor() << "." << SIMPLib::Version::Patch();
+  vStream << SIMPLib::Version::Major() << "." << SIMPLib::Version::Minor() << "." << SIMPLib::Version::Patch();
   return version;
 }
 
@@ -500,16 +510,22 @@ const QString DataContainerWriter::getFilterVersion()
 //
 // -----------------------------------------------------------------------------
 const QString DataContainerWriter::getGroupName()
-{ return SIMPL::FilterGroups::IOFilters; }
+{
+  return SIMPL::FilterGroups::IOFilters;
+}
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
 const QString DataContainerWriter::getSubGroupName()
-{ return SIMPL::FilterSubGroups::OutputFilters; }
+{
+  return SIMPL::FilterSubGroups::OutputFilters;
+}
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
 const QString DataContainerWriter::getHumanLabel()
-{ return "Write DREAM.3D Data File"; }
+{
+  return "Write DREAM.3D Data File";
+}

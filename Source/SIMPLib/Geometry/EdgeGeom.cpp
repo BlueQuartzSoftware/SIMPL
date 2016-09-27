@@ -33,7 +33,6 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-
 /* ============================================================================
  * EdgeGeom re-implements code from the following vtk modules:
  *
@@ -48,14 +47,14 @@
 #include "SIMPLib/Geometry/EdgeGeom.h"
 
 #ifdef SIMPLib_USE_PARALLEL_ALGORITHMS
-#include <tbb/parallel_for.h>
 #include <tbb/blocked_range.h>
+#include <tbb/parallel_for.h>
 #include <tbb/partitioner.h>
 #include <tbb/task_scheduler_init.h>
 #endif
 
-#include "SIMPLib/Geometry/GeometryHelpers.hpp"
 #include "SIMPLib/Geometry/DerivativeHelpers.h"
+#include "SIMPLib/Geometry/GeometryHelpers.hpp"
 
 /**
  * @brief The FindEdgeDerivativesImpl class implements a threaded algorithm that computes the
@@ -63,61 +62,64 @@
  */
 class FindEdgeDerivativesImpl
 {
-  public:
-    FindEdgeDerivativesImpl(EdgeGeom* edges, DoubleArrayType::Pointer field, DoubleArrayType::Pointer derivs) :
-      m_Edges(edges),
-      m_Field(field),
-      m_Derivatives(derivs)
-    {}
-    virtual ~FindEdgeDerivativesImpl() {}
+public:
+  FindEdgeDerivativesImpl(EdgeGeom* edges, DoubleArrayType::Pointer field, DoubleArrayType::Pointer derivs)
+  : m_Edges(edges)
+  , m_Field(field)
+  , m_Derivatives(derivs)
+  {
+  }
+  virtual ~FindEdgeDerivativesImpl()
+  {
+  }
 
-    void compute(int64_t start, int64_t end) const
+  void compute(int64_t start, int64_t end) const
+  {
+    int32_t cDims = m_Field->getNumberOfComponents();
+    double* fieldPtr = m_Field->getPointer(0);
+    double* derivsPtr = m_Derivatives->getPointer(0);
+    double values[2] = {0.0, 0.0};
+    double derivs[3] = {0.0, 0.0, 0.0};
+    int64_t verts[2] = {0, 0};
+
+    int64_t counter = 0;
+    int64_t totalElements = m_Edges->getNumberOfEdges();
+    int64_t progIncrement = static_cast<int64_t>(totalElements / 100);
+
+    for(int64_t i = start; i < end; i++)
     {
-      int32_t cDims = m_Field->getNumberOfComponents();
-      double* fieldPtr = m_Field->getPointer(0);
-      double* derivsPtr = m_Derivatives->getPointer(0);
-      double values[2] = { 0.0, 0.0 };
-      double derivs[3] = { 0.0, 0.0, 0.0 };
-      int64_t verts[2] = { 0, 0 };
-
-      int64_t counter = 0;
-      int64_t totalElements = m_Edges->getNumberOfEdges();
-      int64_t progIncrement = static_cast<int64_t>(totalElements / 100);
-
-      for (int64_t i = start; i < end; i++)
+      m_Edges->getVertsAtEdge(i, verts);
+      for(int32_t j = 0; j < cDims; j++)
       {
-        m_Edges->getVertsAtEdge(i, verts);
-        for (int32_t j = 0; j < cDims; j++)
+        for(size_t k = 0; k < 2; k++)
         {
-          for (size_t k = 0; k < 2; k++)
-          {
-            values[k] = fieldPtr[cDims * verts[k] + j];
-          }
-          DerivativeHelpers::EdgeDeriv()(m_Edges, i, values, derivs);
-          derivsPtr[i * 3 * cDims + j * 3] = derivs[0];
-          derivsPtr[i * 3 * cDims + j * 3 + 1] = derivs[1];
-          derivsPtr[i * 3 * cDims + j * 3 + 2] = derivs[2];
+          values[k] = fieldPtr[cDims * verts[k] + j];
         }
-
-        if (counter > progIncrement)
-        {
-          m_Edges->sendThreadSafeProgressMessage(counter, totalElements);
-          counter = 0;
-        }
-        counter++;
+        DerivativeHelpers::EdgeDeriv()(m_Edges, i, values, derivs);
+        derivsPtr[i * 3 * cDims + j * 3] = derivs[0];
+        derivsPtr[i * 3 * cDims + j * 3 + 1] = derivs[1];
+        derivsPtr[i * 3 * cDims + j * 3 + 2] = derivs[2];
       }
+
+      if(counter > progIncrement)
+      {
+        m_Edges->sendThreadSafeProgressMessage(counter, totalElements);
+        counter = 0;
+      }
+      counter++;
     }
+  }
 
 #ifdef SIMPLib_USE_PARALLEL_ALGORITHMS
-    void operator()(const tbb::blocked_range<int64_t>& r) const
-    {
-      compute(r.begin(), r.end());
-    }
+  void operator()(const tbb::blocked_range<int64_t>& r) const
+  {
+    compute(r.begin(), r.end());
+  }
 #endif
-  private:
-    EdgeGeom* m_Edges;
-    DoubleArrayType::Pointer m_Field;
-    DoubleArrayType::Pointer m_Derivatives;
+private:
+  EdgeGeom* m_Edges;
+  DoubleArrayType::Pointer m_Field;
+  DoubleArrayType::Pointer m_Derivatives;
 };
 
 // -----------------------------------------------------------------------------
@@ -145,14 +147,15 @@ EdgeGeom::EdgeGeom()
 //
 // -----------------------------------------------------------------------------
 EdgeGeom::~EdgeGeom()
-{}
+{
+}
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
 EdgeGeom::Pointer EdgeGeom::CreateGeometry(int64_t numEdges, SharedVertexList::Pointer vertices, const QString& name, bool allocate)
 {
-  if (name.isEmpty() == true)
+  if(name.isEmpty() == true)
   {
     return NullPointer();
   }
@@ -170,15 +173,15 @@ EdgeGeom::Pointer EdgeGeom::CreateGeometry(int64_t numEdges, SharedVertexList::P
 // -----------------------------------------------------------------------------
 EdgeGeom::Pointer EdgeGeom::CreateGeometry(SharedEdgeList::Pointer edges, SharedVertexList::Pointer vertices, const QString& name)
 {
-  if (name.isEmpty() == true)
+  if(name.isEmpty() == true)
   {
     return EdgeGeom::NullPointer();
   }
-  if (vertices.get() == nullptr)
+  if(vertices.get() == nullptr)
   {
     return EdgeGeom::NullPointer();
   }
-  if (edges.get() == nullptr)
+  if(edges.get() == nullptr)
   {
     return EdgeGeom::NullPointer();
   }
@@ -204,20 +207,20 @@ void EdgeGeom::initializeWithZeros()
 // -----------------------------------------------------------------------------
 void EdgeGeom::addAttributeMatrix(const QString& name, AttributeMatrix::Pointer data)
 {
-  if (data->getType() != 0 || data->getType() != 1)
+  if(data->getType() != 0 || data->getType() != 1)
   {
     // EdgeGeom can only accept vertex or edge Attribute Matrices
     return;
   }
-  if (data->getType() == 0 && static_cast<int64_t>(data->getNumberOfTuples()) != getNumberOfVertices())
+  if(data->getType() == 0 && static_cast<int64_t>(data->getNumberOfTuples()) != getNumberOfVertices())
   {
     return;
   }
-  if (data->getType() == 1 && data->getNumberOfTuples() != getNumberOfElements())
+  if(data->getType() == 1 && data->getNumberOfTuples() != getNumberOfElements())
   {
     return;
   }
-  if (data->getName().compare(name) != 0)
+  if(data->getName().compare(name) != 0)
   {
     data->setName(name);
   }
@@ -239,7 +242,7 @@ int EdgeGeom::findElementsContainingVert()
 {
   m_EdgesContainingVert = ElementDynamicList::New();
   GeometryHelpers::Connectivity::FindElementsContainingVert<uint16_t, int64_t>(m_EdgeList, m_EdgesContainingVert, getNumberOfVertices());
-  if (m_EdgesContainingVert.get() == nullptr)
+  if(m_EdgesContainingVert.get() == nullptr)
   {
     return -1;
   }
@@ -276,14 +279,17 @@ void EdgeGeom::deleteElementsContainingVert()
 int EdgeGeom::findElementNeighbors()
 {
   int err = 0;
-  if (m_EdgesContainingVert.get() == nullptr)
+  if(m_EdgesContainingVert.get() == nullptr)
   {
     err = findElementsContainingVert();
-    if (err < 0) { return err; }
+    if(err < 0)
+    {
+      return err;
+    }
   }
   m_EdgeNeighbors = ElementDynamicList::New();
   err = GeometryHelpers::Connectivity::FindElementNeighbors<uint16_t, int64_t>(m_EdgeList, m_EdgesContainingVert, m_EdgeNeighbors, SIMPL::GeometryType::EdgeGeometry);
-  if (m_EdgeNeighbors.get() == nullptr)
+  if(m_EdgeNeighbors.get() == nullptr)
   {
     err = -1;
   }
@@ -322,7 +328,7 @@ int EdgeGeom::findElementCentroids()
   QVector<size_t> cDims(1, 3);
   m_EdgeCentroids = FloatArrayType::CreateArray(getNumberOfEdges(), cDims, SIMPL::StringConstants::EdgeCentroids);
   GeometryHelpers::Topology::FindElementCentroids<int64_t>(m_EdgeList, m_VertexList, m_EdgeCentroids);
-  if (m_EdgeCentroids.get() == nullptr)
+  if(m_EdgeCentroids.get() == nullptr)
   {
     return -1;
   }
@@ -382,10 +388,9 @@ void EdgeGeom::findDerivatives(DoubleArrayType::Pointer field, DoubleArrayType::
   m_ProgressCounter = 0;
   int64_t numEdges = getNumberOfEdges();
 
-  if (observable)
+  if(observable)
   {
-    connect(this, SIGNAL(filterGeneratedMessage(const PipelineMessage&)),
-            observable, SLOT(broadcastPipelineMessage(const PipelineMessage&)));
+    connect(this, SIGNAL(filterGeneratedMessage(const PipelineMessage&)), observable, SLOT(broadcastPipelineMessage(const PipelineMessage&)));
   }
 
 #ifdef SIMPLib_USE_PARALLEL_ALGORITHMS
@@ -394,10 +399,9 @@ void EdgeGeom::findDerivatives(DoubleArrayType::Pointer field, DoubleArrayType::
 #endif
 
 #ifdef SIMPLib_USE_PARALLEL_ALGORITHMS
-  if (doParallel == true)
+  if(doParallel == true)
   {
-    tbb::parallel_for(tbb::blocked_range<int64_t>(0, numEdges),
-                      FindEdgeDerivativesImpl(this, field, derivatives), tbb::auto_partitioner());
+    tbb::parallel_for(tbb::blocked_range<int64_t>(0, numEdges), FindEdgeDerivativesImpl(this, field, derivatives), tbb::auto_partitioner());
   }
   else
 #endif
@@ -414,48 +418,48 @@ int EdgeGeom::writeGeometryToHDF5(hid_t parentId, bool SIMPL_NOT_USED(writeXdmf)
 {
   herr_t err = 0;
 
-  if (m_VertexList.get() != nullptr)
+  if(m_VertexList.get() != nullptr)
   {
     err = GeometryHelpers::GeomIO::WriteListToHDF5(parentId, m_VertexList);
-    if (err < 0)
+    if(err < 0)
     {
       return err;
     }
   }
 
-  if (m_EdgeList.get() != nullptr)
+  if(m_EdgeList.get() != nullptr)
   {
     err = GeometryHelpers::GeomIO::WriteListToHDF5(parentId, m_EdgeList);
-    if (err < 0)
+    if(err < 0)
     {
       return err;
     }
   }
 
-  if (m_EdgeCentroids.get() != nullptr)
+  if(m_EdgeCentroids.get() != nullptr)
   {
     err = GeometryHelpers::GeomIO::WriteListToHDF5(parentId, m_EdgeCentroids);
-    if (err < 0)
+    if(err < 0)
     {
       return err;
     }
   }
 
-  if (m_EdgeNeighbors.get() != nullptr)
+  if(m_EdgeNeighbors.get() != nullptr)
   {
     size_t numEdges = getNumberOfEdges();
     err = GeometryHelpers::GeomIO::WriteDynamicListToHDF5<uint16_t, int64_t>(parentId, m_EdgeNeighbors, numEdges, SIMPL::StringConstants::EdgeNeighbors);
-    if (err < 0)
+    if(err < 0)
     {
       return err;
     }
   }
 
-  if (m_EdgesContainingVert.get() != nullptr)
+  if(m_EdgesContainingVert.get() != nullptr)
   {
     size_t numVerts = getNumberOfVertices();
     err = GeometryHelpers::GeomIO::WriteDynamicListToHDF5<uint16_t, int64_t>(parentId, m_EdgesContainingVert, numVerts, SIMPL::StringConstants::EdgesContainingVert);
-    if (err < 0)
+    if(err < 0)
     {
       return err;
     }
@@ -472,19 +476,25 @@ int EdgeGeom::writeXdmf(QTextStream& out, QString dcName, QString hdfFileName)
   herr_t err = 0;
 
   // Always start the grid
-  out << "  <!-- *************** START OF " << dcName << " *************** -->" << "\n";
-  out << "  <Grid Name=\"" << dcName << "\" GridType=\"Uniform\">" << "\n";
+  out << "  <!-- *************** START OF " << dcName << " *************** -->"
+      << "\n";
+  out << "  <Grid Name=\"" << dcName << "\" GridType=\"Uniform\">"
+      << "\n";
 
-  out << "    <Topology TopologyType=\"Polyline\" NodesPerElement=\"2\" NumberOfElements=\"" << getNumberOfEdges() << "\">" << "\n";
-  out << "      <DataItem Format=\"HDF\" NumberType=\"Int\" Dimensions=\"" << getNumberOfEdges() << " 2\">" << "\n";
+  out << "    <Topology TopologyType=\"Polyline\" NodesPerElement=\"2\" NumberOfElements=\"" << getNumberOfEdges() << "\">"
+      << "\n";
+  out << "      <DataItem Format=\"HDF\" NumberType=\"Int\" Dimensions=\"" << getNumberOfEdges() << " 2\">"
+      << "\n";
   out << "        " << hdfFileName << ":/DataContainers/" << dcName << "/" << SIMPL::Geometry::Geometry << "/" << SIMPL::Geometry::SharedEdgeList << "\n";
-  out << "      </DataItem>" << "\n";
-  out << "    </Topology>" << "\n";
+  out << "      </DataItem>"
+      << "\n";
+  out << "    </Topology>"
+      << "\n";
 
-  if (m_VertexList.get() == nullptr)
+  if(m_VertexList.get() == nullptr)
   {
     out << "<!-- ********************* GEOMETRY ERROR ****************************************\n";
-    out << "The Geometry with name '" << getName() << "' in DataContainer '" << dcName <<  "' \n";
+    out << "The Geometry with name '" << getName() << "' in DataContainer '" << dcName << "' \n";
     out << "did not have any vertices assigned.\n";
     out << "The Geometry types will be missing from the Xdmf which will cause issues when\n";
     out << "trying to load the file\n";
@@ -492,12 +502,17 @@ int EdgeGeom::writeXdmf(QTextStream& out, QString dcName, QString hdfFileName)
   }
   else
   {
-    out << "    <Geometry Type=\"XYZ\">" << "\n";
-    out << "      <DataItem Format=\"HDF\"  Dimensions=\"" << getNumberOfVertices() << " 3\" NumberType=\"Float\" Precision=\"4\">" << "\n";
+    out << "    <Geometry Type=\"XYZ\">"
+        << "\n";
+    out << "      <DataItem Format=\"HDF\"  Dimensions=\"" << getNumberOfVertices() << " 3\" NumberType=\"Float\" Precision=\"4\">"
+        << "\n";
     out << "        " << hdfFileName << ":/DataContainers/" << dcName << "/" << SIMPL::Geometry::Geometry << "/" << SIMPL::Geometry::SharedVertexList << "\n";
-    out << "      </DataItem>" << "\n";
-    out << "    </Geometry>" << "\n";
-    out << "" << "\n";
+    out << "      </DataItem>"
+        << "\n";
+    out << "    </Geometry>"
+        << "\n";
+    out << ""
+        << "\n";
   }
 
   return err;
@@ -509,7 +524,7 @@ int EdgeGeom::writeXdmf(QTextStream& out, QString dcName, QString hdfFileName)
 QString EdgeGeom::getInfoString(SIMPL::InfoStringFormat format)
 {
   QString info;
-  QTextStream ss (&info);
+  QTextStream ss(&info);
 
   if(format == SIMPL::HtmlFormat)
   {
@@ -520,7 +535,6 @@ QString EdgeGeom::getInfoString(SIMPL::InfoStringFormat format)
   }
   else
   {
-
   }
   return info;
 }
@@ -533,24 +547,25 @@ int EdgeGeom::readGeometryFromHDF5(hid_t parentId, bool preflight)
   herr_t err = 0;
   SharedVertexList::Pointer vertices = GeometryHelpers::GeomIO::ReadListFromHDF5<SharedVertexList>(SIMPL::Geometry::SharedVertexList, parentId, preflight, err);
   SharedEdgeList::Pointer edges = GeometryHelpers::GeomIO::ReadListFromHDF5<SharedEdgeList>(SIMPL::Geometry::SharedEdgeList, parentId, preflight, err);
-  if (edges.get() == nullptr || vertices.get() == nullptr)
+  if(edges.get() == nullptr || vertices.get() == nullptr)
   {
     return -1;
   }
   size_t numEdges = edges->getNumberOfTuples();
   size_t numVerts = vertices->getNumberOfTuples();
   FloatArrayType::Pointer edgeCentroids = GeometryHelpers::GeomIO::ReadListFromHDF5<FloatArrayType>(SIMPL::StringConstants::EdgeCentroids, parentId, preflight, err);
-  if (err < 0 && err != -2)
+  if(err < 0 && err != -2)
   {
     return -1;
   }
   ElementDynamicList::Pointer edgeNeighbors = GeometryHelpers::GeomIO::ReadDynamicListFromHDF5<uint16_t, int64_t>(SIMPL::StringConstants::EdgeNeighbors, parentId, numEdges, preflight, err);
-  if (err < 0 && err != -2)
+  if(err < 0 && err != -2)
   {
     return -1;
   }
-  ElementDynamicList::Pointer edgesContainingVert = GeometryHelpers::GeomIO::ReadDynamicListFromHDF5<uint16_t, int64_t>(SIMPL::StringConstants::EdgesContainingVert, parentId, numVerts, preflight, err);
-  if (err < 0 && err != -2)
+  ElementDynamicList::Pointer edgesContainingVert =
+      GeometryHelpers::GeomIO::ReadDynamicListFromHDF5<uint16_t, int64_t>(SIMPL::StringConstants::EdgesContainingVert, parentId, numVerts, preflight, err);
+  if(err < 0 && err != -2)
   {
     return -1;
   }
@@ -585,5 +600,5 @@ IGeometry::Pointer EdgeGeom::deepCopy()
 
 // Shared ops includes
 #define GEOM_CLASS_NAME EdgeGeom
-#include "SIMPLib/Geometry/SharedVertexOps.cpp"
 #include "SIMPLib/Geometry/SharedEdgeOps.cpp"
+#include "SIMPLib/Geometry/SharedVertexOps.cpp"

@@ -35,10 +35,8 @@
 
 #include <iostream>
 
-
-#include "H5Support/H5Utilities.h"
 #include "H5Support/H5Lite.h"
-
+#include "H5Support/H5Utilities.h"
 
 int main(int argc, char** argv)
 {
@@ -48,7 +46,7 @@ int main(int argc, char** argv)
 
   hid_t fileId = H5Utilities::createFile("/tmp/BIG_HDF5_DATASET.h5");
   hid_t groupId = H5Utilities::createGroup(fileId, "big_data");
-  if (groupId < 0)
+  if(groupId < 0)
   {
     std::cout << "Error creating Group" << std::endl;
     return EXIT_FAILURE;
@@ -56,7 +54,7 @@ int main(int argc, char** argv)
 
   hsize_t dims[2] = {size, 0};
   herr_t err = H5Lite::writePointerDataset(groupId, "TEST", 1, dims, data);
-  if (err < 0)
+  if(err < 0)
   {
     return EXIT_FAILURE;
   }

@@ -37,33 +37,32 @@
 
 #include <QtCore/QTextStream>
 
-#include "SIMPLib/DataContainers/DataContainerProxy.h"
-#include "SIMPLib/DataContainers/DataContainerArrayProxy.h"
 #include "SIMPLib/DataContainers/DataArrayPath.h"
+#include "SIMPLib/DataContainers/DataContainerArrayProxy.h"
+#include "SIMPLib/DataContainers/DataContainerProxy.h"
 
-
-#include "SIMPLib/Geometry/ImageGeom.h"
-#include "SIMPLib/Geometry/RectGridGeom.h"
-#include "SIMPLib/Geometry/VertexGeom.h"
 #include "SIMPLib/Geometry/EdgeGeom.h"
-#include "SIMPLib/Geometry/TriangleGeom.h"
+#include "SIMPLib/Geometry/ImageGeom.h"
 #include "SIMPLib/Geometry/QuadGeom.h"
+#include "SIMPLib/Geometry/RectGridGeom.h"
 #include "SIMPLib/Geometry/TetrahedralGeom.h"
+#include "SIMPLib/Geometry/TriangleGeom.h"
+#include "SIMPLib/Geometry/VertexGeom.h"
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-DataContainer::DataContainer() :
-  Observable()
+DataContainer::DataContainer()
+: Observable()
 {
 }
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-DataContainer::DataContainer(const QString name) :
-  Observable(),
-  m_Name(name)
+DataContainer::DataContainer(const QString name)
+: Observable()
+, m_Name(name)
 {
 }
 
@@ -97,7 +96,7 @@ void DataContainer::ReadDataContainerStructure(hid_t dcArrayGroupId, DataContain
       std::cout << "Data Container:" << dataContainerName.toStdString() << std::endl;
     }
     hid_t containerGid = H5Gopen(dcArrayGroupId, dataContainerName.toLatin1().constData(), H5P_DEFAULT);
-    if (containerGid < 0)
+    if(containerGid < 0)
     {
       continue;
     }
@@ -160,7 +159,7 @@ DataContainer::AttributeMatrixMap_t& DataContainer::getAttributeMatrices()
 // -----------------------------------------------------------------------------
 bool DataContainer::doesAttributeMatrixExist(const QString& name)
 {
-  return  m_AttributeMatrices.contains(name);
+  return m_AttributeMatrices.contains(name);
 }
 
 // -----------------------------------------------------------------------------
@@ -178,7 +177,7 @@ AttributeMatrix::Pointer DataContainer::createAndAddAttributeMatrix(QVector<size
 // -----------------------------------------------------------------------------
 void DataContainer::addAttributeMatrix(const QString& name, AttributeMatrix::Pointer data)
 {
-  if (data->getName().compare(name) != 0)
+  if(data->getName().compare(name) != 0)
   {
     qDebug() << "Adding Attribute Matrix with different array name than key name";
     qDebug() << "Key name: " << name;
@@ -196,7 +195,7 @@ AttributeMatrix::Pointer DataContainer::getAttributeMatrix(const QString& name)
 {
   QMap<QString, AttributeMatrix::Pointer>::iterator it;
   it = m_AttributeMatrices.find(name);
-  if ( it == m_AttributeMatrices.end() )
+  if(it == m_AttributeMatrices.end())
   {
     return AttributeMatrix::NullPointer();
   }
@@ -210,7 +209,7 @@ AttributeMatrix::Pointer DataContainer::getAttributeMatrix(const DataArrayPath& 
 {
   QMap<QString, AttributeMatrix::Pointer>::iterator it;
   it = m_AttributeMatrices.find(path.getAttributeMatrixName());
-  if (it == m_AttributeMatrices.end())
+  if(it == m_AttributeMatrices.end())
   {
     return AttributeMatrix::NullPointer();
   }
@@ -223,8 +222,8 @@ AttributeMatrix::Pointer DataContainer::getAttributeMatrix(const DataArrayPath& 
 AttributeMatrix::Pointer DataContainer::removeAttributeMatrix(const QString& name)
 {
   QMap<QString, AttributeMatrix::Pointer>::iterator it;
-  it =  m_AttributeMatrices.find(name);
-  if ( it == m_AttributeMatrices.end() )
+  it = m_AttributeMatrices.find(name);
+  if(it == m_AttributeMatrices.end())
   {
     // DO NOT return a NullPointer for any reason other than "Attribute Matrix was not found"
     return AttributeMatrix::NullPointer();
@@ -240,8 +239,8 @@ AttributeMatrix::Pointer DataContainer::removeAttributeMatrix(const QString& nam
 bool DataContainer::renameAttributeMatrix(const QString& oldname, const QString& newname, bool overwrite)
 {
   QMap<QString, AttributeMatrix::Pointer>::iterator it;
-  it =  m_AttributeMatrices.find(oldname);
-  if ( it == m_AttributeMatrices.end() )
+  it = m_AttributeMatrices.find(oldname);
+  if(it == m_AttributeMatrices.end())
   {
     return false;
   }
@@ -250,8 +249,8 @@ bool DataContainer::renameAttributeMatrix(const QString& oldname, const QString&
   removeAttributeMatrix(oldname);
 
   // Now check to make sure there isn't one with the same name
-  it =  m_AttributeMatrices.find(newname);
-  if ( it == m_AttributeMatrices.end() ) // Didn't find another AttributeMatrix with the new name
+  it = m_AttributeMatrices.find(newname);
+  if(it == m_AttributeMatrices.end()) // Didn't find another AttributeMatrix with the new name
   {
     addAttributeMatrix(newname, p);
   }
@@ -283,7 +282,7 @@ QList<QString> DataContainer::getAttributeMatrixNames()
   QList<QString> keys;
   for(QMap<QString, AttributeMatrix::Pointer>::iterator iter = m_AttributeMatrices.begin(); iter != m_AttributeMatrices.end(); ++iter)
   {
-    keys.push_back( iter.key() );
+    keys.push_back(iter.key());
   }
   return keys;
 }
@@ -354,13 +353,13 @@ int DataContainer::readAttributeMatricesFromHDF5(bool preflight, hid_t dcGid, co
     amType = SIMPL::AttributeMatrixType::Unknown;
     err = QH5Lite::readScalarAttribute(dcGid, amName, SIMPL::StringConstants::AttributeMatrixType, amType);
     err = QH5Lite::readVectorAttribute(dcGid, amName, SIMPL::HDF5::TupleDimensions, tDims);
-    if (err < 0)
+    if(err < 0)
     {
       return -1;
     }
 
-    hid_t amGid = H5Gopen(dcGid, amName.toLatin1().data(), H5P_DEFAULT );
-    if (amGid < 0)
+    hid_t amGid = H5Gopen(dcGid, amName.toLatin1().data(), H5P_DEFAULT);
+    if(amGid < 0)
     {
       return -1;
     }
@@ -393,13 +392,13 @@ DataContainer::Pointer DataContainer::deepCopy()
   DataContainer::Pointer dcCopy = DataContainer::New(getName());
   dcCopy->setName(getName());
 
-  if (m_Geometry.get() != nullptr)
+  if(m_Geometry.get() != nullptr)
   {
     IGeometry::Pointer geomCopy = m_Geometry->deepCopy();
     dcCopy->setGeometry(geomCopy);
   }
 
-  for (AttributeMatrixMap_t::iterator iter = getAttributeMatrices().begin(); iter != getAttributeMatrices().end(); ++iter)
+  for(AttributeMatrixMap_t::iterator iter = getAttributeMatrices().begin(); iter != getAttributeMatrices().end(); ++iter)
   {
     AttributeMatrix::Pointer attrMat = (*iter)->deepCopy();
     dcCopy->addAttributeMatrix(attrMat->getName(), attrMat);
@@ -416,26 +415,26 @@ int DataContainer::writeMeshToHDF5(hid_t dcGid, bool writeXdmf)
   int err;
   hid_t geometryId;
   err = QH5Utilities::createGroupsFromPath(SIMPL::Geometry::Geometry, dcGid);
-  if (err < 0)
+  if(err < 0)
   {
     return err;
   }
   geometryId = H5Gopen(dcGid, SIMPL::Geometry::Geometry.toLatin1().data(), H5P_DEFAULT);
-  if (geometryId < 0)
+  if(geometryId < 0)
   {
     return -1;
   }
   HDF5ScopedGroupSentinel gSentinel(&geometryId, false);
 
-  if (nullptr == m_Geometry.get())
+  if(nullptr == m_Geometry.get())
   {
     err = QH5Lite::writeScalarAttribute(dcGid, SIMPL::Geometry::Geometry, SIMPL::Geometry::GeometryType, SIMPL::GeometryType::UnknownGeometry);
-    if (err < 0)
+    if(err < 0)
     {
       return err;
     }
     err = QH5Lite::writeStringAttribute(dcGid, SIMPL::Geometry::Geometry, SIMPL::Geometry::GeometryTypeName, SIMPL::Geometry::UnknownGeometry);
-    if (err < 0)
+    if(err < 0)
     {
       return err;
     }
@@ -443,32 +442,32 @@ int DataContainer::writeMeshToHDF5(hid_t dcGid, bool writeXdmf)
   else
   {
     err = QH5Lite::writeScalarAttribute(dcGid, SIMPL::Geometry::Geometry, SIMPL::Geometry::GeometryType, m_Geometry->getGeometryType());
-    if (err < 0)
+    if(err < 0)
     {
       return err;
     }
     err = QH5Lite::writeStringAttribute(dcGid, SIMPL::Geometry::Geometry, SIMPL::Geometry::GeometryTypeName, m_Geometry->getGeometryTypeAsString());
-    if (err < 0)
+    if(err < 0)
     {
       return err;
     }
     err = QH5Lite::writeStringAttribute(dcGid, SIMPL::Geometry::Geometry, SIMPL::Geometry::GeometryName, m_Geometry->getName());
-    if (err < 0)
+    if(err < 0)
     {
       return err;
     }
     err = QH5Lite::writeScalarAttribute(dcGid, SIMPL::Geometry::Geometry, SIMPL::Geometry::UnitDimensionality, m_Geometry->getUnitDimensionality());
-    if (err < 0)
+    if(err < 0)
     {
       return err;
     }
     err = QH5Lite::writeScalarAttribute(dcGid, SIMPL::Geometry::Geometry, SIMPL::Geometry::SpatialDimensionality, m_Geometry->getSpatialDimensionality());
-    if (err < 0)
+    if(err < 0)
     {
       return err;
     }
     err = m_Geometry->writeGeometryToHDF5(geometryId, writeXdmf);
-    if (err < 0)
+    if(err < 0)
     {
       return err;
     }
@@ -482,7 +481,7 @@ int DataContainer::writeMeshToHDF5(hid_t dcGid, bool writeXdmf)
 // -----------------------------------------------------------------------------
 int DataContainer::writeXdmf(QTextStream& out, QString hdfFileName)
 {
-  if (nullptr == m_Geometry.get())
+  if(nullptr == m_Geometry.get())
   {
     return -1;
   }
@@ -501,105 +500,105 @@ int DataContainer::writeXdmf(QTextStream& out, QString hdfFileName)
     uint32_t amType = attrMat->getType();
     switch(geomType)
     {
-      case SIMPL::GeometryType::VertexGeometry:
-        switch(amType)
-        {
-          //FIXME: There are more AttributeMatrix Types that should be implemented
-          case SIMPL::AttributeMatrixType::Vertex:
-            xdmfCenter = SIMPL::XdmfCenterType::Node;
-            break;
-          default:
-            break;
-        }
-      case SIMPL::GeometryType::EdgeGeometry:
-        switch(amType)
-        {
-          //FIXME: There are more AttributeMatrix Types that should be implemented
-          case SIMPL::AttributeMatrixType::Vertex:
-            xdmfCenter = SIMPL::XdmfCenterType::Node;
-            break;
-          case SIMPL::AttributeMatrixType::Edge:
-            xdmfCenter = SIMPL::XdmfCenterType::Cell;
-            break;
-          default:
-            break;
-        }
-      case SIMPL::GeometryType::TriangleGeometry:
-        switch(amType)
-        {
-          //FIXME: There are more AttributeMatrix Types that should be implemented
-          case SIMPL::AttributeMatrixType::Vertex:
-            xdmfCenter = SIMPL::XdmfCenterType::Node;
-            break;
-          case SIMPL::AttributeMatrixType::Edge:
-            xdmfCenter = SIMPL::XdmfCenterType::Cell;
-            break;
-          case SIMPL::AttributeMatrixType::Face:
-            xdmfCenter = SIMPL::XdmfCenterType::Cell;
-            break;
-          case SIMPL::AttributeMatrixType::Cell:
-            xdmfCenter = SIMPL::XdmfCenterType::Cell;
-            break;
-          default:
-            break;
-        }
-      case SIMPL::GeometryType::QuadGeometry:
-        switch(amType)
-        {
-          //FIXME: There are more AttributeMatrix Types that should be implemented
-          case SIMPL::AttributeMatrixType::Vertex:
-            xdmfCenter = SIMPL::XdmfCenterType::Node;
-            break;
-          case SIMPL::AttributeMatrixType::Edge:
-            xdmfCenter = SIMPL::XdmfCenterType::Cell;
-            break;
-          case SIMPL::AttributeMatrixType::Face:
-            xdmfCenter = SIMPL::XdmfCenterType::Cell;
-            break;
-          case SIMPL::AttributeMatrixType::Cell:
-            xdmfCenter = SIMPL::XdmfCenterType::Cell;
-            break;
-          default:
-            break;
-        }
-      case SIMPL::GeometryType::TetrahedralGeometry:
-        switch(amType)
-        {
-          //FIXME: There are more AttributeMatrix Types that should be implemented
-          case SIMPL::AttributeMatrixType::Vertex:
-            xdmfCenter = SIMPL::XdmfCenterType::Node;
-            break;
-          case SIMPL::AttributeMatrixType::Edge:
-            xdmfCenter = SIMPL::XdmfCenterType::Cell;
-            break;
-          case SIMPL::AttributeMatrixType::Face:
-            xdmfCenter = SIMPL::XdmfCenterType::Cell;
-            break;
-          case SIMPL::AttributeMatrixType::Cell:
-            xdmfCenter = SIMPL::XdmfCenterType::Cell;
-            break;
-          default:
-            break;
-        }
-      case SIMPL::GeometryType::ImageGeometry:
-        switch(amType)
-        {
-          //FIXME: There are more AttributeMatrix Types that should be implemented
-          case SIMPL::AttributeMatrixType::Vertex:
-            xdmfCenter = SIMPL::XdmfCenterType::Node;
-            break;
-          case SIMPL::AttributeMatrixType::Edge:
-            xdmfCenter = SIMPL::XdmfCenterType::Cell;
-            break;
-          case SIMPL::AttributeMatrixType::Face:
-            xdmfCenter = SIMPL::XdmfCenterType::Cell;
-            break;
-          case SIMPL::AttributeMatrixType::Cell:
-            xdmfCenter = SIMPL::XdmfCenterType::Cell;
-            break;
-          default:
-            break;
-        }
+    case SIMPL::GeometryType::VertexGeometry:
+      switch(amType)
+      {
+      // FIXME: There are more AttributeMatrix Types that should be implemented
+      case SIMPL::AttributeMatrixType::Vertex:
+        xdmfCenter = SIMPL::XdmfCenterType::Node;
+        break;
+      default:
+        break;
+      }
+    case SIMPL::GeometryType::EdgeGeometry:
+      switch(amType)
+      {
+      // FIXME: There are more AttributeMatrix Types that should be implemented
+      case SIMPL::AttributeMatrixType::Vertex:
+        xdmfCenter = SIMPL::XdmfCenterType::Node;
+        break;
+      case SIMPL::AttributeMatrixType::Edge:
+        xdmfCenter = SIMPL::XdmfCenterType::Cell;
+        break;
+      default:
+        break;
+      }
+    case SIMPL::GeometryType::TriangleGeometry:
+      switch(amType)
+      {
+      // FIXME: There are more AttributeMatrix Types that should be implemented
+      case SIMPL::AttributeMatrixType::Vertex:
+        xdmfCenter = SIMPL::XdmfCenterType::Node;
+        break;
+      case SIMPL::AttributeMatrixType::Edge:
+        xdmfCenter = SIMPL::XdmfCenterType::Cell;
+        break;
+      case SIMPL::AttributeMatrixType::Face:
+        xdmfCenter = SIMPL::XdmfCenterType::Cell;
+        break;
+      case SIMPL::AttributeMatrixType::Cell:
+        xdmfCenter = SIMPL::XdmfCenterType::Cell;
+        break;
+      default:
+        break;
+      }
+    case SIMPL::GeometryType::QuadGeometry:
+      switch(amType)
+      {
+      // FIXME: There are more AttributeMatrix Types that should be implemented
+      case SIMPL::AttributeMatrixType::Vertex:
+        xdmfCenter = SIMPL::XdmfCenterType::Node;
+        break;
+      case SIMPL::AttributeMatrixType::Edge:
+        xdmfCenter = SIMPL::XdmfCenterType::Cell;
+        break;
+      case SIMPL::AttributeMatrixType::Face:
+        xdmfCenter = SIMPL::XdmfCenterType::Cell;
+        break;
+      case SIMPL::AttributeMatrixType::Cell:
+        xdmfCenter = SIMPL::XdmfCenterType::Cell;
+        break;
+      default:
+        break;
+      }
+    case SIMPL::GeometryType::TetrahedralGeometry:
+      switch(amType)
+      {
+      // FIXME: There are more AttributeMatrix Types that should be implemented
+      case SIMPL::AttributeMatrixType::Vertex:
+        xdmfCenter = SIMPL::XdmfCenterType::Node;
+        break;
+      case SIMPL::AttributeMatrixType::Edge:
+        xdmfCenter = SIMPL::XdmfCenterType::Cell;
+        break;
+      case SIMPL::AttributeMatrixType::Face:
+        xdmfCenter = SIMPL::XdmfCenterType::Cell;
+        break;
+      case SIMPL::AttributeMatrixType::Cell:
+        xdmfCenter = SIMPL::XdmfCenterType::Cell;
+        break;
+      default:
+        break;
+      }
+    case SIMPL::GeometryType::ImageGeometry:
+      switch(amType)
+      {
+      // FIXME: There are more AttributeMatrix Types that should be implemented
+      case SIMPL::AttributeMatrixType::Vertex:
+        xdmfCenter = SIMPL::XdmfCenterType::Node;
+        break;
+      case SIMPL::AttributeMatrixType::Edge:
+        xdmfCenter = SIMPL::XdmfCenterType::Cell;
+        break;
+      case SIMPL::AttributeMatrixType::Face:
+        xdmfCenter = SIMPL::XdmfCenterType::Cell;
+        break;
+      case SIMPL::AttributeMatrixType::Cell:
+        xdmfCenter = SIMPL::XdmfCenterType::Cell;
+        break;
+      default:
+        break;
+      }
     }
 
     if(xdmfCenter.isEmpty() == false)
@@ -619,8 +618,10 @@ int DataContainer::writeXdmf(QTextStream& out, QString hdfFileName)
 // -----------------------------------------------------------------------------
 void DataContainer::writeXdmfFooter(QTextStream& xdmf)
 {
-  xdmf << "  </Grid>" << "\n";
-  xdmf << "  <!-- *************** END OF " << getName() << " *************** -->" << "\n";
+  xdmf << "  </Grid>"
+       << "\n";
+  xdmf << "  <!-- *************** END OF " << getName() << " *************** -->"
+       << "\n";
 }
 
 // -----------------------------------------------------------------------------
@@ -632,13 +633,13 @@ int DataContainer::readMeshDataFromHDF5(hid_t dcGid, bool preflight)
   QString geometryTypeName = SIMPL::Geometry::UnknownGeometry;
 
   err = QH5Lite::readStringAttribute(dcGid, SIMPL::Geometry::Geometry, SIMPL::Geometry::GeometryTypeName, geometryTypeName);
-  if (err < 0)
+  if(err < 0)
   {
     return err;
   }
 
   hid_t geometryId = H5Gopen(dcGid, SIMPL::Geometry::Geometry.toLatin1().data(), H5P_DEFAULT);
-  if (geometryId < 0)
+  if(geometryId < 0)
   {
     return -1;
   }
@@ -646,58 +647,58 @@ int DataContainer::readMeshDataFromHDF5(hid_t dcGid, bool preflight)
 
   IGeometry::Pointer geomPtr = IGeometry::NullPointer();
 
-  if (nullptr == m_Geometry.get())
+  if(nullptr == m_Geometry.get())
   {
-    if (geometryTypeName.compare(SIMPL::Geometry::ImageGeometry) == 0)
+    if(geometryTypeName.compare(SIMPL::Geometry::ImageGeometry) == 0)
     {
       ImageGeom::Pointer image = ImageGeom::New();
       err = image->readGeometryFromHDF5(geometryId, preflight);
       err = GeometryHelpers::GeomIO::ReadMetaDataFromHDF5(dcGid, image);
       setGeometry(image);
     }
-    else if (geometryTypeName.compare(SIMPL::Geometry::RectGridGeometry) == 0)
+    else if(geometryTypeName.compare(SIMPL::Geometry::RectGridGeometry) == 0)
     {
       RectGridGeom::Pointer rectGrid = RectGridGeom::New();
       err = rectGrid->readGeometryFromHDF5(geometryId, preflight);
       err = GeometryHelpers::GeomIO::ReadMetaDataFromHDF5(dcGid, rectGrid);
       setGeometry(rectGrid);
     }
-    else if (geometryTypeName.compare(SIMPL::Geometry::VertexGeometry) == 0)
+    else if(geometryTypeName.compare(SIMPL::Geometry::VertexGeometry) == 0)
     {
       VertexGeom::Pointer vertices = VertexGeom::New();
       err = vertices->readGeometryFromHDF5(geometryId, preflight);
       err = GeometryHelpers::GeomIO::ReadMetaDataFromHDF5(dcGid, vertices);
       setGeometry(vertices);
     }
-    else if (geometryTypeName.compare(SIMPL::Geometry::EdgeGeometry) == 0)
+    else if(geometryTypeName.compare(SIMPL::Geometry::EdgeGeometry) == 0)
     {
       EdgeGeom::Pointer edges = EdgeGeom::New();
       err = edges->readGeometryFromHDF5(geometryId, preflight);
       err = GeometryHelpers::GeomIO::ReadMetaDataFromHDF5(dcGid, edges);
       setGeometry(edges);
     }
-    else if (geometryTypeName.compare(SIMPL::Geometry::TriangleGeometry) == 0)
+    else if(geometryTypeName.compare(SIMPL::Geometry::TriangleGeometry) == 0)
     {
       TriangleGeom::Pointer triangles = TriangleGeom::New();
       err = triangles->readGeometryFromHDF5(geometryId, preflight);
       err = GeometryHelpers::GeomIO::ReadMetaDataFromHDF5(dcGid, triangles);
       setGeometry(triangles);
     }
-    else if (geometryTypeName.compare(SIMPL::Geometry::QuadGeometry) == 0)
+    else if(geometryTypeName.compare(SIMPL::Geometry::QuadGeometry) == 0)
     {
       QuadGeom::Pointer quads = QuadGeom::New();
       err = quads->readGeometryFromHDF5(geometryId, preflight);
       err = GeometryHelpers::GeomIO::ReadMetaDataFromHDF5(dcGid, quads);
       setGeometry(quads);
     }
-    else if (geometryTypeName.compare(SIMPL::Geometry::TetrahedralGeometry) == 0)
+    else if(geometryTypeName.compare(SIMPL::Geometry::TetrahedralGeometry) == 0)
     {
       TetrahedralGeom::Pointer tets = TetrahedralGeom::New();
       err = tets->readGeometryFromHDF5(geometryId, preflight);
       err = GeometryHelpers::GeomIO::ReadMetaDataFromHDF5(dcGid, tets);
       setGeometry(tets);
     }
-    else if (geometryTypeName.compare(SIMPL::Geometry::UnknownGeometry) == 0)
+    else if(geometryTypeName.compare(SIMPL::Geometry::UnknownGeometry) == 0)
     {
       setGeometry(geomPtr);
     }
@@ -739,7 +740,7 @@ QVector<DataArrayPath> DataContainer::getAllDataArrayPaths()
 QString DataContainer::getInfoString(SIMPL::InfoStringFormat format)
 {
   QString info;
-  QTextStream ss (&info);
+  QTextStream ss(&info);
   if(format == SIMPL::HtmlFormat)
   {
     ss << "<html><head></head>\n";
@@ -762,9 +763,6 @@ QString DataContainer::getInfoString(SIMPL::InfoStringFormat format)
   }
   else
   {
-
   }
   return info;
 }
-
-

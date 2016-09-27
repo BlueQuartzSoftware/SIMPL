@@ -44,11 +44,11 @@
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-UnknownWidget::UnknownWidget(FilterParameter* parameter, AbstractFilter* filter, QWidget* parent) :
-  FilterParameterWidget(parameter, filter, parent)
+UnknownWidget::UnknownWidget(FilterParameter* parameter, AbstractFilter* filter, QWidget* parent)
+: FilterParameterWidget(parameter, filter, parent)
 {
   m_FilterParameter = dynamic_cast<UnknownFilterParameter*>(parameter);
-  //Q_ASSERT_X(m_FilterParameter != nullptr, "nullptr Pointer", "UnknownWidget can ONLY be used with a UnknownFilterParameter object");
+  // Q_ASSERT_X(m_FilterParameter != nullptr, "nullptr Pointer", "UnknownWidget can ONLY be used with a UnknownFilterParameter object");
 
   setupUi(this);
   setupGui();
@@ -58,7 +58,8 @@ UnknownWidget::UnknownWidget(FilterParameter* parameter, AbstractFilter* filter,
 //
 // -----------------------------------------------------------------------------
 UnknownWidget::~UnknownWidget()
-{}
+{
+}
 
 // -----------------------------------------------------------------------------
 //
@@ -66,21 +67,18 @@ UnknownWidget::~UnknownWidget()
 void UnknownWidget::setupGui()
 {
   // Catch when the filter is about to execute the preflight
-  connect(getFilter(), SIGNAL(preflightAboutToExecute()),
-          this, SLOT(beforePreflight()));
+  connect(getFilter(), SIGNAL(preflightAboutToExecute()), this, SLOT(beforePreflight()));
 
   // Catch when the filter is finished running the preflight
-  connect(getFilter(), SIGNAL(preflightExecuted()),
-          this, SLOT(afterPreflight()));
+  connect(getFilter(), SIGNAL(preflightExecuted()), this, SLOT(afterPreflight()));
 
   // Catch when the filter wants its values updated
-  connect(getFilter(), SIGNAL(updateFilterParameters(AbstractFilter*)),
-          this, SLOT(filterNeedsInputParameters(AbstractFilter*)));
+  connect(getFilter(), SIGNAL(updateFilterParameters(AbstractFilter*)), this, SLOT(filterNeedsInputParameters(AbstractFilter*)));
 
-  if (getFilterParameter() != nullptr)
+  if(getFilterParameter() != nullptr)
   {
     QString str = QObject::tr("%1: Unknown Filter ParameterWidgetType: %2.").arg(getFilterParameter()->getHumanLabel()).arg(getFilterParameter()->getWidgetType());
-    label->setText( str );
+    label->setText(str);
   }
 }
 
@@ -97,9 +95,7 @@ void UnknownWidget::widgetChanged(const QString& text)
 // -----------------------------------------------------------------------------
 void UnknownWidget::filterNeedsInputParameters(AbstractFilter* filter)
 {
-
 }
-
 
 // -----------------------------------------------------------------------------
 //
@@ -108,7 +104,6 @@ void UnknownWidget::afterPreflight()
 {
   // std::cout << "After Preflight" << std::endl;
 }
-
 
 // -----------------------------------------------------------------------------
 //

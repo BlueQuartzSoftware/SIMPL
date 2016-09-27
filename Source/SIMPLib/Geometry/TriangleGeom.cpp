@@ -33,7 +33,6 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-
 /* ============================================================================
  * TriangleGeom re-implements code from the following vtk modules:
  *
@@ -48,8 +47,8 @@
 #include "SIMPLib/Geometry/TriangleGeom.h"
 
 #ifdef SIMPLib_USE_PARALLEL_ALGORITHMS
-#include <tbb/parallel_for.h>
 #include <tbb/blocked_range.h>
+#include <tbb/parallel_for.h>
 #include <tbb/partitioner.h>
 #include <tbb/task_scheduler_init.h>
 #endif
@@ -63,61 +62,64 @@
  */
 class FindTriangleDerivativesImpl
 {
-  public:
-    FindTriangleDerivativesImpl(TriangleGeom* tris, DoubleArrayType::Pointer field, DoubleArrayType::Pointer derivs) :
-      m_Tris(tris),
-      m_Field(field),
-      m_Derivatives(derivs)
-    {}
-    virtual ~FindTriangleDerivativesImpl() {}
+public:
+  FindTriangleDerivativesImpl(TriangleGeom* tris, DoubleArrayType::Pointer field, DoubleArrayType::Pointer derivs)
+  : m_Tris(tris)
+  , m_Field(field)
+  , m_Derivatives(derivs)
+  {
+  }
+  virtual ~FindTriangleDerivativesImpl()
+  {
+  }
 
-    void compute(int64_t start, int64_t end) const
+  void compute(int64_t start, int64_t end) const
+  {
+    int32_t cDims = m_Field->getNumberOfComponents();
+    double* fieldPtr = m_Field->getPointer(0);
+    double* derivsPtr = m_Derivatives->getPointer(0);
+    double values[3] = {0.0, 0.0, 0.0};
+    double derivs[3] = {0.0, 0.0, 0.0};
+    int64_t verts[3]{0, 0, 0};
+
+    int64_t counter = 0;
+    int64_t totalElements = m_Tris->getNumberOfTris();
+    int64_t progIncrement = static_cast<int64_t>(totalElements / 100);
+
+    for(int64_t i = start; i < end; i++)
     {
-      int32_t cDims = m_Field->getNumberOfComponents();
-      double* fieldPtr = m_Field->getPointer(0);
-      double* derivsPtr = m_Derivatives->getPointer(0);
-      double values[3] = { 0.0, 0.0, 0.0 };
-      double derivs[3] = { 0.0, 0.0, 0.0 };
-      int64_t verts[3] { 0, 0, 0 };
-
-      int64_t counter = 0;
-      int64_t totalElements = m_Tris->getNumberOfTris();
-      int64_t progIncrement = static_cast<int64_t>(totalElements / 100);
-
-      for (int64_t i = start; i < end; i++)
+      m_Tris->getVertsAtTri(i, verts);
+      for(int32_t j = 0; j < cDims; j++)
       {
-        m_Tris->getVertsAtTri(i, verts);
-        for (int32_t j = 0; j < cDims; j++)
+        for(size_t k = 0; k < 3; k++)
         {
-          for (size_t k = 0; k < 3; k++)
-          {
-            values[k] = fieldPtr[cDims * verts[k] + j];
-          }
-          DerivativeHelpers::TriangleDeriv()(m_Tris, i, values, derivs);
-          derivsPtr[i * 3 * cDims + j * 3] = derivs[0];
-          derivsPtr[i * 3 * cDims + j * 3 + 1] = derivs[1];
-          derivsPtr[i * 3 * cDims + j * 3 + 2] = derivs[2];
+          values[k] = fieldPtr[cDims * verts[k] + j];
         }
-
-        if (counter > progIncrement)
-        {
-          m_Tris->sendThreadSafeProgressMessage(counter, totalElements);
-          counter = 0;
-        }
-        counter++;
+        DerivativeHelpers::TriangleDeriv()(m_Tris, i, values, derivs);
+        derivsPtr[i * 3 * cDims + j * 3] = derivs[0];
+        derivsPtr[i * 3 * cDims + j * 3 + 1] = derivs[1];
+        derivsPtr[i * 3 * cDims + j * 3 + 2] = derivs[2];
       }
+
+      if(counter > progIncrement)
+      {
+        m_Tris->sendThreadSafeProgressMessage(counter, totalElements);
+        counter = 0;
+      }
+      counter++;
     }
+  }
 
 #ifdef SIMPLib_USE_PARALLEL_ALGORITHMS
-    void operator()(const tbb::blocked_range<int64_t>& r) const
-    {
-      compute(r.begin(), r.end());
-    }
+  void operator()(const tbb::blocked_range<int64_t>& r) const
+  {
+    compute(r.begin(), r.end());
+  }
 #endif
-  private:
-    TriangleGeom* m_Tris;
-    DoubleArrayType::Pointer m_Field;
-    DoubleArrayType::Pointer m_Derivatives;
+private:
+  TriangleGeom* m_Tris;
+  DoubleArrayType::Pointer m_Field;
+  DoubleArrayType::Pointer m_Derivatives;
 };
 
 // -----------------------------------------------------------------------------
@@ -147,14 +149,15 @@ TriangleGeom::TriangleGeom()
 //
 // -----------------------------------------------------------------------------
 TriangleGeom::~TriangleGeom()
-{}
+{
+}
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
 TriangleGeom::Pointer TriangleGeom::CreateGeometry(int64_t numTriangles, SharedVertexList::Pointer vertices, const QString& name, bool allocate)
 {
-  if (name.isEmpty() == true)
+  if(name.isEmpty() == true)
   {
     return NullPointer();
   }
@@ -172,15 +175,15 @@ TriangleGeom::Pointer TriangleGeom::CreateGeometry(int64_t numTriangles, SharedV
 // -----------------------------------------------------------------------------
 TriangleGeom::Pointer TriangleGeom::CreateGeometry(SharedTriList::Pointer triangles, SharedVertexList::Pointer vertices, const QString& name)
 {
-  if (name.isEmpty() == true)
+  if(name.isEmpty() == true)
   {
     return NullPointer();
   }
-  if (vertices.get() == nullptr)
+  if(vertices.get() == nullptr)
   {
     return TriangleGeom::NullPointer();
   }
-  if (triangles.get() == nullptr)
+  if(triangles.get() == nullptr)
   {
     return TriangleGeom::NullPointer();
   }
@@ -206,24 +209,24 @@ void TriangleGeom::initializeWithZeros()
 // -----------------------------------------------------------------------------
 void TriangleGeom::addAttributeMatrix(const QString& name, AttributeMatrix::Pointer data)
 {
-  if (data->getType() != 0 || data->getType() != 1 || data->getType() != 2)
+  if(data->getType() != 0 || data->getType() != 1 || data->getType() != 2)
   {
     // TriangleGeom can only accept vertex, edge, or face Attribute Matrices
     return;
   }
-  if (data->getType() == 0 && static_cast<int64_t>(data->getNumberOfTuples()) != getNumberOfVertices())
+  if(data->getType() == 0 && static_cast<int64_t>(data->getNumberOfTuples()) != getNumberOfVertices())
   {
     return;
   }
-  if (data->getType() == 1 && static_cast<int64_t>(data->getNumberOfTuples()) != getNumberOfEdges())
+  if(data->getType() == 1 && static_cast<int64_t>(data->getNumberOfTuples()) != getNumberOfEdges())
   {
     return;
   }
-  if (data->getType() == 2 && data->getNumberOfTuples() != getNumberOfElements())
+  if(data->getType() == 2 && data->getNumberOfTuples() != getNumberOfElements())
   {
     return;
   }
-  if (data->getName().compare(name) != 0)
+  if(data->getName().compare(name) != 0)
   {
     data->setName(name);
   }
@@ -245,7 +248,7 @@ int TriangleGeom::findEdges()
 {
   m_EdgeList = CreateSharedEdgeList(0);
   GeometryHelpers::Connectivity::Find2DElementEdges<int64_t>(m_TriList, m_EdgeList);
-  if (m_EdgeList.get() == nullptr)
+  if(m_EdgeList.get() == nullptr)
   {
     return -1;
   }
@@ -260,7 +263,6 @@ void TriangleGeom::deleteEdges()
   m_EdgeList = SharedEdgeList::NullPointer();
 }
 
-
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
@@ -268,7 +270,7 @@ int TriangleGeom::findElementsContainingVert()
 {
   m_TrianglesContainingVert = ElementDynamicList::New();
   GeometryHelpers::Connectivity::FindElementsContainingVert<uint16_t, int64_t>(m_TriList, m_TrianglesContainingVert, getNumberOfVertices());
-  if (m_TrianglesContainingVert.get() == nullptr)
+  if(m_TrianglesContainingVert.get() == nullptr)
   {
     return -1;
   }
@@ -305,14 +307,17 @@ void TriangleGeom::deleteElementsContainingVert()
 int TriangleGeom::findElementNeighbors()
 {
   int err = 0;
-  if (m_TrianglesContainingVert.get() == nullptr)
+  if(m_TrianglesContainingVert.get() == nullptr)
   {
     err = findElementsContainingVert();
-    if (err < 0) { return err; }
+    if(err < 0)
+    {
+      return err;
+    }
   }
   m_TriangleNeighbors = ElementDynamicList::New();
   err = GeometryHelpers::Connectivity::FindElementNeighbors<uint16_t, int64_t>(m_TriList, m_TrianglesContainingVert, m_TriangleNeighbors, SIMPL::GeometryType::TriangleGeometry);
-  if (m_TriangleNeighbors.get() == nullptr)
+  if(m_TriangleNeighbors.get() == nullptr)
   {
     return -1;
   }
@@ -351,7 +356,7 @@ int TriangleGeom::findElementCentroids()
   QVector<size_t> cDims(1, 3);
   m_TriangleCentroids = FloatArrayType::CreateArray(getNumberOfTris(), cDims, SIMPL::StringConstants::TriangleCentroids);
   GeometryHelpers::Topology::FindElementCentroids<int64_t>(m_TriList, m_VertexList, m_TriangleCentroids);
-  if (m_TriangleCentroids.get() == nullptr)
+  if(m_TriangleCentroids.get() == nullptr)
   {
     return -1;
   }
@@ -390,7 +395,7 @@ int TriangleGeom::findUnsharedEdges()
   QVector<size_t> cDims(1, 2);
   m_UnsharedEdgeList = SharedEdgeList::CreateArray(0, cDims, SIMPL::Geometry::UnsharedEdgeList);
   GeometryHelpers::Connectivity::Find2DUnsharedEdges<int64_t>(m_TriList, m_UnsharedEdgeList);
-  if (m_UnsharedEdgeList.get() == nullptr)
+  if(m_UnsharedEdgeList.get() == nullptr)
   {
     return -1;
   }
@@ -457,10 +462,9 @@ void TriangleGeom::findDerivatives(DoubleArrayType::Pointer field, DoubleArrayTy
   m_ProgressCounter = 0;
   int64_t numTris = getNumberOfTris();
 
-  if (observable)
+  if(observable)
   {
-    connect(this, SIGNAL(filterGeneratedMessage(const PipelineMessage&)),
-            observable, SLOT(broadcastPipelineMessage(const PipelineMessage&)));
+    connect(this, SIGNAL(filterGeneratedMessage(const PipelineMessage&)), observable, SLOT(broadcastPipelineMessage(const PipelineMessage&)));
   }
 
 #ifdef SIMPLib_USE_PARALLEL_ALGORITHMS
@@ -469,10 +473,9 @@ void TriangleGeom::findDerivatives(DoubleArrayType::Pointer field, DoubleArrayTy
 #endif
 
 #ifdef SIMPLib_USE_PARALLEL_ALGORITHMS
-  if (doParallel == true)
+  if(doParallel == true)
   {
-    tbb::parallel_for(tbb::blocked_range<int64_t>(0, numTris),
-                      FindTriangleDerivativesImpl(this, field, derivatives), tbb::auto_partitioner());
+    tbb::parallel_for(tbb::blocked_range<int64_t>(0, numTris), FindTriangleDerivativesImpl(this, field, derivatives), tbb::auto_partitioner());
   }
   else
 #endif
@@ -489,66 +492,66 @@ int TriangleGeom::writeGeometryToHDF5(hid_t parentId, bool SIMPL_NOT_USED(writeX
 {
   herr_t err = 0;
 
-  if (m_VertexList.get() != nullptr)
+  if(m_VertexList.get() != nullptr)
   {
     err = GeometryHelpers::GeomIO::WriteListToHDF5(parentId, m_VertexList);
-    if (err < 0)
+    if(err < 0)
     {
       return err;
     }
   }
 
-  if (m_EdgeList.get() != nullptr)
+  if(m_EdgeList.get() != nullptr)
   {
     err = GeometryHelpers::GeomIO::WriteListToHDF5(parentId, m_EdgeList);
-    if (err < 0)
+    if(err < 0)
     {
       return err;
     }
   }
 
-  if (m_TriList.get() != nullptr)
+  if(m_TriList.get() != nullptr)
   {
     err = GeometryHelpers::GeomIO::WriteListToHDF5(parentId, m_TriList);
-    if (err < 0)
+    if(err < 0)
     {
       return err;
     }
   }
 
-  if (m_UnsharedEdgeList.get() != nullptr)
+  if(m_UnsharedEdgeList.get() != nullptr)
   {
     err = GeometryHelpers::GeomIO::WriteListToHDF5(parentId, m_UnsharedEdgeList);
-    if (err < 0)
+    if(err < 0)
     {
       return err;
     }
   }
 
-  if (m_TriangleCentroids.get() != nullptr)
+  if(m_TriangleCentroids.get() != nullptr)
   {
     err = GeometryHelpers::GeomIO::WriteListToHDF5(parentId, m_TriangleCentroids);
-    if (err < 0)
+    if(err < 0)
     {
       return err;
     }
   }
 
-  if (m_TriangleNeighbors.get() != nullptr)
+  if(m_TriangleNeighbors.get() != nullptr)
   {
     size_t numTris = getNumberOfTris();
     err = GeometryHelpers::GeomIO::WriteDynamicListToHDF5<uint16_t, int64_t>(parentId, m_TriangleNeighbors, numTris, SIMPL::StringConstants::TriangleNeighbors);
-    if (err < 0)
+    if(err < 0)
     {
       return err;
     }
   }
 
-  if (m_TrianglesContainingVert.get() != nullptr)
+  if(m_TrianglesContainingVert.get() != nullptr)
   {
     size_t numVerts = getNumberOfVertices();
     err = GeometryHelpers::GeomIO::WriteDynamicListToHDF5<uint16_t, int64_t>(parentId, m_TrianglesContainingVert, numVerts, SIMPL::StringConstants::TrianglesContainingVert);
-    if (err < 0)
+    if(err < 0)
     {
       return err;
     }
@@ -565,19 +568,25 @@ int TriangleGeom::writeXdmf(QTextStream& out, QString dcName, QString hdfFileNam
   herr_t err = 0;
 
   // Always start the grid
-  out << "  <!-- *************** START OF " << dcName << " *************** -->" << "\n";
-  out << "  <Grid Name=\"" << dcName << "\" GridType=\"Uniform\">" << "\n";
+  out << "  <!-- *************** START OF " << dcName << " *************** -->"
+      << "\n";
+  out << "  <Grid Name=\"" << dcName << "\" GridType=\"Uniform\">"
+      << "\n";
 
-  out << "    <Topology TopologyType=\"Triangle\" NumberOfElements=\"" << getNumberOfTris() << "\">" << "\n";
-  out << "      <DataItem Format=\"HDF\" NumberType=\"Int\" Dimensions=\"" << getNumberOfTris() << " 3\">" << "\n";
+  out << "    <Topology TopologyType=\"Triangle\" NumberOfElements=\"" << getNumberOfTris() << "\">"
+      << "\n";
+  out << "      <DataItem Format=\"HDF\" NumberType=\"Int\" Dimensions=\"" << getNumberOfTris() << " 3\">"
+      << "\n";
   out << "        " << hdfFileName << ":/DataContainers/" << dcName << "/" << SIMPL::Geometry::Geometry << "/" << SIMPL::Geometry::SharedTriList << "\n";
-  out << "      </DataItem>" << "\n";
-  out << "    </Topology>" << "\n";
+  out << "      </DataItem>"
+      << "\n";
+  out << "    </Topology>"
+      << "\n";
 
-  if (m_VertexList.get() == nullptr)
+  if(m_VertexList.get() == nullptr)
   {
     out << "<!-- ********************* GEOMETRY ERROR ****************************************\n";
-    out << "The Geometry with name '" << getName() << "' in DataContainer '" << dcName <<  "' \n";
+    out << "The Geometry with name '" << getName() << "' in DataContainer '" << dcName << "' \n";
     out << "did not have any vertices assigned.\n";
     out << "The Geometry types will be missing from the Xdmf which will cause issues when\n";
     out << "trying to load the file\n";
@@ -585,12 +594,17 @@ int TriangleGeom::writeXdmf(QTextStream& out, QString dcName, QString hdfFileNam
   }
   else
   {
-    out << "    <Geometry Type=\"XYZ\">" << "\n";
-    out << "      <DataItem Format=\"HDF\"  Dimensions=\"" << getNumberOfVertices() << " 3\" NumberType=\"Float\" Precision=\"4\">" << "\n";
+    out << "    <Geometry Type=\"XYZ\">"
+        << "\n";
+    out << "      <DataItem Format=\"HDF\"  Dimensions=\"" << getNumberOfVertices() << " 3\" NumberType=\"Float\" Precision=\"4\">"
+        << "\n";
     out << "        " << hdfFileName << ":/DataContainers/" << dcName << "/" << SIMPL::Geometry::Geometry << "/" << SIMPL::Geometry::SharedVertexList << "\n";
-    out << "      </DataItem>" << "\n";
-    out << "    </Geometry>" << "\n";
-    out << "" << "\n";
+    out << "      </DataItem>"
+        << "\n";
+    out << "    </Geometry>"
+        << "\n";
+    out << ""
+        << "\n";
   }
 
   return err;
@@ -602,7 +616,7 @@ int TriangleGeom::writeXdmf(QTextStream& out, QString dcName, QString hdfFileNam
 QString TriangleGeom::getInfoString(SIMPL::InfoStringFormat format)
 {
   QString info;
-  QTextStream ss (&info);
+  QTextStream ss(&info);
 
   if(format == SIMPL::HtmlFormat)
   {
@@ -612,7 +626,6 @@ QString TriangleGeom::getInfoString(SIMPL::InfoStringFormat format)
   }
   else
   {
-
   }
   return info;
 }
@@ -625,34 +638,35 @@ int TriangleGeom::readGeometryFromHDF5(hid_t parentId, bool preflight)
   herr_t err = 0;
   SharedVertexList::Pointer vertices = GeometryHelpers::GeomIO::ReadListFromHDF5<SharedVertexList>(SIMPL::Geometry::SharedVertexList, parentId, preflight, err);
   SharedTriList::Pointer tris = GeometryHelpers::GeomIO::ReadListFromHDF5<SharedQuadList>(SIMPL::Geometry::SharedTriList, parentId, preflight, err);
-  if (tris.get() == nullptr || vertices.get() == nullptr)
+  if(tris.get() == nullptr || vertices.get() == nullptr)
   {
     return -1;
   }
   size_t numTris = tris->getNumberOfTuples();
   size_t numVerts = vertices->getNumberOfTuples();
   SharedEdgeList::Pointer edges = GeometryHelpers::GeomIO::ReadListFromHDF5<SharedEdgeList>(SIMPL::Geometry::SharedEdgeList, parentId, preflight, err);
-  if (err < 0 && err != -2)
+  if(err < 0 && err != -2)
   {
     return -1;
   }
   SharedEdgeList::Pointer bEdges = GeometryHelpers::GeomIO::ReadListFromHDF5<SharedEdgeList>(SIMPL::Geometry::UnsharedEdgeList, parentId, preflight, err);
-  if (err < 0 && err != -2)
+  if(err < 0 && err != -2)
   {
     return -1;
   }
   FloatArrayType::Pointer triCentroids = GeometryHelpers::GeomIO::ReadListFromHDF5<FloatArrayType>(SIMPL::StringConstants::TriangleCentroids, parentId, preflight, err);
-  if (err < 0 && err != -2)
+  if(err < 0 && err != -2)
   {
     return -1;
   }
   ElementDynamicList::Pointer triNeighbors = GeometryHelpers::GeomIO::ReadDynamicListFromHDF5<uint16_t, int64_t>(SIMPL::StringConstants::TriangleNeighbors, parentId, numTris, preflight, err);
-  if (err < 0 && err != -2)
+  if(err < 0 && err != -2)
   {
     return -1;
   }
-  ElementDynamicList::Pointer trisContainingVert = GeometryHelpers::GeomIO::ReadDynamicListFromHDF5<uint16_t, int64_t>(SIMPL::StringConstants::TrianglesContainingVert, parentId, numVerts, preflight, err);
-  if (err < 0 && err != -2)
+  ElementDynamicList::Pointer trisContainingVert =
+      GeometryHelpers::GeomIO::ReadDynamicListFromHDF5<uint16_t, int64_t>(SIMPL::StringConstants::TrianglesContainingVert, parentId, numVerts, preflight, err);
+  if(err < 0 && err != -2)
   {
     return -1;
   }
@@ -691,6 +705,6 @@ IGeometry::Pointer TriangleGeom::deepCopy()
 
 // Shared ops includes
 #define GEOM_CLASS_NAME TriangleGeom
-#include "SIMPLib/Geometry/SharedVertexOps.cpp"
 #include "SIMPLib/Geometry/SharedEdgeOps.cpp"
 #include "SIMPLib/Geometry/SharedTriOps.cpp"
+#include "SIMPLib/Geometry/SharedVertexOps.cpp"

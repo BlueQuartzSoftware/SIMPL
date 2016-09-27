@@ -37,29 +37,29 @@
 
 #include <iostream>
 
+#include <QtCore/QMimeData>
 #include <QtCore/QString>
 #include <QtCore/QtDebug>
-#include <QtCore/QMimeData>
-#include <QtGui/QMouseEvent>
-#include <QtGui/QDropEvent>
 #include <QtGui/QDragEnterEvent>
 #include <QtGui/QDragLeaveEvent>
 #include <QtGui/QDragMoveEvent>
+#include <QtGui/QDropEvent>
+#include <QtGui/QMouseEvent>
 
 #include "moc_QtSDroppableScrollArea.cpp"
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
 QtSDroppableScrollArea::QtSDroppableScrollArea(QWidget* parent)
-  : QScrollArea(parent)
+: QScrollArea(parent)
 {
-//  setAcceptDrops(true);
-//  setFrameShape(QFrame::Box);
-//  setFrameShadow(QFrame::Plain);
-//  QSizePolicy sizePolicy2(QSizePolicy::Expanding, QSizePolicy::Expanding);
-//  sizePolicy2.setHorizontalStretch(0);
-//  sizePolicy2.setVerticalStretch(0);
-//  setSizePolicy(sizePolicy2);
+  //  setAcceptDrops(true);
+  //  setFrameShape(QFrame::Box);
+  //  setFrameShadow(QFrame::Plain);
+  //  QSizePolicy sizePolicy2(QSizePolicy::Expanding, QSizePolicy::Expanding);
+  //  sizePolicy2.setHorizontalStretch(0);
+  //  sizePolicy2.setVerticalStretch(0);
+  //  setSizePolicy(sizePolicy2);
 }
 
 // -----------------------------------------------------------------------------
@@ -68,7 +68,7 @@ QtSDroppableScrollArea::QtSDroppableScrollArea(QWidget* parent)
 void QtSDroppableScrollArea::dragEnterEvent(QDragEnterEvent* event)
 {
   // accept just text/uri-list mime format
-// if (event->mimeData()->hasFormat("text/uri-list"))
+  // if (event->mimeData()->hasFormat("text/uri-list"))
   {
     event->acceptProposedAction();
   }
@@ -79,30 +79,29 @@ void QtSDroppableScrollArea::dragEnterEvent(QDragEnterEvent* event)
 // -----------------------------------------------------------------------------
 void QtSDroppableScrollArea::dropEvent(QDropEvent* event)
 {
-  qDebug() << "QtSDroppableScrollArea::dropEvent" << "\n";
-  if (event->mimeData()->hasText())
+  qDebug() << "QtSDroppableScrollArea::dropEvent"
+           << "\n";
+  if(event->mimeData()->hasText())
   {
-    QByteArray dropData =  event->mimeData()->data("text/plain");
+    QByteArray dropData = event->mimeData()->data("text/plain");
     QString name(dropData);
     //  qDebug() << "name: " << name() << "\n";
     emit filterDropped(name);
   }
 
-
-//  event->acceptProposedAction();
-//  event->setAccepted(true);
+  //  event->acceptProposedAction();
+  //  event->setAccepted(true);
 }
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void QtSDroppableScrollArea::dragMoveEvent( QDragMoveEvent* event)
+void QtSDroppableScrollArea::dragMoveEvent(QDragMoveEvent* event)
 {
-// qDebug() << "QScrollContentsWidget::dragMoveEvent: " << event->pos().x() << ", " << event->pos().y() << "\n";
-// QObject* w = qobject_cast<QObject*>(childAt(event->pos()));
-// if (w != nullptr)
+  // qDebug() << "QScrollContentsWidget::dragMoveEvent: " << event->pos().x() << ", " << event->pos().y() << "\n";
+  // QObject* w = qobject_cast<QObject*>(childAt(event->pos()));
+  // if (w != nullptr)
   {
-//   qDebug() << "--- Child at Pos: " << w->objectName() << "\n";
+    //   qDebug() << "--- Child at Pos: " << w->objectName() << "\n";
   }
 }
-

@@ -42,7 +42,6 @@
 
 #include "SIMPLib/HDF5/H5MatrixStatsDataDelegate.h"
 
-
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
@@ -56,7 +55,6 @@ MatrixStatsData::MatrixStatsData()
 // -----------------------------------------------------------------------------
 MatrixStatsData::~MatrixStatsData()
 {
-
 }
 
 // -----------------------------------------------------------------------------
@@ -75,7 +73,6 @@ StatsData::Pointer MatrixStatsData::deepCopy()
 // -----------------------------------------------------------------------------
 void MatrixStatsData::initialize()
 {
-
 }
 
 // -----------------------------------------------------------------------------
@@ -105,7 +102,6 @@ int MatrixStatsData::writeHDF5Data(hid_t groupId)
   return err;
 }
 
-
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
@@ -117,11 +113,10 @@ int MatrixStatsData::readHDF5Data(hid_t groupId)
   return err;
 }
 
-
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void MatrixStatsData::writeJson(QJsonObject &json)
+void MatrixStatsData::writeJson(QJsonObject& json)
 {
   json.insert(SIMPL::StringConstants::PhaseType, SIMPL::PhaseType::Matrix);
   // Write the Phase Fraction
@@ -130,11 +125,10 @@ void MatrixStatsData::writeJson(QJsonObject &json)
   json.insert(SIMPL::StringConstants::Name, getName());
 }
 
-
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void MatrixStatsData::readJson(const QJsonObject &json)
+void MatrixStatsData::readJson(const QJsonObject& json)
 {
   QJsonValue fValue = json[SIMPL::StringConstants::PhaseFraction];
   if(!fValue.isUndefined() && fValue.isDouble())
@@ -147,4 +141,3 @@ void MatrixStatsData::readJson(const QJsonObject &json)
     setName(fValue.toString("Matrix"));
   }
 }
-

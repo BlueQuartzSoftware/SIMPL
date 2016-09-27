@@ -35,9 +35,9 @@
 
 #include "ChangeGlobalValue.h"
 
-#include "SIMPLib/SIMPLibVersion.h"
 #include "SIMPLib/Common/Constants.h"
 #include "SIMPLib/FilterParameters/AbstractFilterParametersReader.h"
+#include "SIMPLib/SIMPLibVersion.h"
 
 // Include the MOC generated file for this class
 #include "moc_ChangeGlobalValue.cpp"
@@ -45,10 +45,9 @@
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-ChangeGlobalValue::ChangeGlobalValue() :
-AbstractFilter()
+ChangeGlobalValue::ChangeGlobalValue()
+: AbstractFilter()
 {
-
 }
 
 // -----------------------------------------------------------------------------
@@ -56,7 +55,6 @@ AbstractFilter()
 // -----------------------------------------------------------------------------
 ChangeGlobalValue::~ChangeGlobalValue()
 {
-
 }
 
 // -----------------------------------------------------------------------------

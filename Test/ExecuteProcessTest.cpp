@@ -37,16 +37,16 @@
 #include <QtCore/QFile>
 #include <QtCore/QObject>
 
-#include "SIMPLib/SIMPLib.h"
+#include "SIMPLib/Common/FilterFactory.hpp"
+#include "SIMPLib/Common/FilterManager.h"
+#include "SIMPLib/Common/FilterPipeline.h"
 #include "SIMPLib/Common/SIMPLibSetGetMacros.h"
 #include "SIMPLib/DataArrays/DataArray.hpp"
-#include "SIMPLib/Common/FilterPipeline.h"
-#include "SIMPLib/Common/FilterManager.h"
-#include "SIMPLib/Common/FilterFactory.hpp"
 #include "SIMPLib/Plugin/ISIMPLibPlugin.h"
 #include "SIMPLib/Plugin/SIMPLibPluginLoader.h"
-#include "SIMPLib/Utilities/UnitTestSupport.hpp"
+#include "SIMPLib/SIMPLib.h"
 #include "SIMPLib/Utilities/QMetaObjectUtilities.h"
+#include "SIMPLib/Utilities/UnitTestSupport.hpp"
 
 #include "SIMPLib/CoreFilters/ExecuteProcess.h"
 
@@ -54,50 +54,58 @@
 
 class ExecuteProcessObserver : public QObject, public IObserver
 {
-    Q_OBJECT
+  Q_OBJECT
 
-  public:
-    ExecuteProcessObserver() {}
-    SIMPL_TYPE_MACRO_SUPER(ExecuteProcessObserver, IObserver)
+public:
+  ExecuteProcessObserver()
+  {
+  }
+  SIMPL_TYPE_MACRO_SUPER(ExecuteProcessObserver, IObserver)
 
-    virtual ~ExecuteProcessObserver() {}
+  virtual ~ExecuteProcessObserver()
+  {
+  }
 
-    QString getStdOutput()
+  QString getStdOutput()
+  {
+    return m_StdOutput;
+  }
+
+  void clearStdOutput()
+  {
+    m_StdOutput.clear();
+  }
+
+public slots:
+  virtual void processPipelineMessage(const PipelineMessage& pm)
+  {
+    if(pm.getType() == PipelineMessage::StandardOutputMessage)
     {
-      return m_StdOutput;
+      PipelineMessage msg = pm;
+      QString str;
+      QTextStream ss(&str);
+      ss << msg.generateStandardOutputString();
+      m_StdOutput.append(str);
     }
+  }
 
-    void clearStdOutput()
-    {
-      m_StdOutput.clear();
-    }
+private:
+  QString m_StdOutput;
 
-  public slots:
-    virtual void processPipelineMessage(const PipelineMessage& pm)
-    {
-      if(pm.getType() == PipelineMessage::StandardOutputMessage)
-      {
-        PipelineMessage msg = pm;
-        QString str;
-        QTextStream ss(&str);
-        ss << msg.generateStandardOutputString();
-        m_StdOutput.append(str);
-      }
-    }
-
-  private:
-    QString                               m_StdOutput;
-
-    ExecuteProcessObserver(const ExecuteProcessObserver&); // Copy Constructor Not Implemented
-    void operator=(const ExecuteProcessObserver&); // Operator '=' Not Implemented
+  ExecuteProcessObserver(const ExecuteProcessObserver&); // Copy Constructor Not Implemented
+  void operator=(const ExecuteProcessObserver&);         // Operator '=' Not Implemented
 };
 
 class ExecuteProcessTest
 {
 
-  public:
-    ExecuteProcessTest() {}
-    virtual ~ExecuteProcessTest() {}
+public:
+  ExecuteProcessTest()
+  {
+  }
+  virtual ~ExecuteProcessTest()
+  {
+  }
 
   // -----------------------------------------------------------------------------
   //
@@ -108,7 +116,7 @@ class ExecuteProcessTest
     QString filtName = "ExecuteProcess";
     FilterManager* fm = FilterManager::Instance();
     IFilterFactory::Pointer filterFactory = fm->getFactoryForFilter(filtName);
-    if (nullptr == filterFactory.get())
+    if(nullptr == filterFactory.get())
     {
       std::stringstream ss;
       ss << "The ExecuteProcessTest Requires the use of the " << filtName.toStdString() << " filter which is found in CoreFilters";
@@ -126,8 +134,7 @@ class ExecuteProcessTest
       ExecuteProcess::Pointer filter = ExecuteProcess::New();
       ExecuteProcessObserver obs;
 
-      QObject::connect(filter.get(), SIGNAL(filterGeneratedMessage(const PipelineMessage&)),
-                       &obs, SLOT(processPipelineMessage(const PipelineMessage&)));
+      QObject::connect(filter.get(), SIGNAL(filterGeneratedMessage(const PipelineMessage&)), &obs, SLOT(processPipelineMessage(const PipelineMessage&)));
 
       filter->setArguments(QObject::tr("%1 -v").arg(UnitTest::ExecuteProcessTest::QMakeLocation));
       filter->execute();
@@ -145,8 +152,7 @@ class ExecuteProcessTest
       ExecuteProcess::Pointer filter = ExecuteProcess::New();
       ExecuteProcessObserver obs;
 
-      QObject::connect(filter.get(), SIGNAL(filterGeneratedMessage(const PipelineMessage&)),
-                       &obs, SLOT(processPipelineMessage(const PipelineMessage&)));
+      QObject::connect(filter.get(), SIGNAL(filterGeneratedMessage(const PipelineMessage&)), &obs, SLOT(processPipelineMessage(const PipelineMessage&)));
 
       filter->setArguments(QObject::tr("%1 -version").arg(UnitTest::ExecuteProcessTest::CMakeLocation));
       filter->execute();
@@ -164,8 +170,7 @@ class ExecuteProcessTest
       ExecuteProcess::Pointer filter = ExecuteProcess::New();
       ExecuteProcessObserver obs;
 
-      QObject::connect(filter.get(), SIGNAL(filterGeneratedMessage(const PipelineMessage&)),
-                       &obs, SLOT(processPipelineMessage(const PipelineMessage&)));
+      QObject::connect(filter.get(), SIGNAL(filterGeneratedMessage(const PipelineMessage&)), &obs, SLOT(processPipelineMessage(const PipelineMessage&)));
 
       filter->setArguments("sdhsdrtfn");
       filter->execute();
@@ -185,16 +190,14 @@ class ExecuteProcessTest
   {
     int err = EXIT_SUCCESS;
 
-    DREAM3D_REGISTER_TEST( TestFilterAvailability() );
+    DREAM3D_REGISTER_TEST(TestFilterAvailability());
 
-    DREAM3D_REGISTER_TEST( TestExecuteProcess() )
+    DREAM3D_REGISTER_TEST(TestExecuteProcess())
   }
 
-  private:
-
-    ExecuteProcessTest(const ExecuteProcessTest&); // Copy Constructor Not Implemented
-    void operator=(const ExecuteProcessTest&); // Operator '=' Not Implemented
+private:
+  ExecuteProcessTest(const ExecuteProcessTest&); // Copy Constructor Not Implemented
+  void operator=(const ExecuteProcessTest&);     // Operator '=' Not Implemented
 };
 
 #include "moc_ExecuteProcessTest.cpp"
-

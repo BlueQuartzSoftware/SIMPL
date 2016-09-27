@@ -37,7 +37,6 @@
 
 #include <QtCore/QDir>
 
-
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
@@ -50,17 +49,13 @@ FilePathGenerator::FilePathGenerator()
 // -----------------------------------------------------------------------------
 FilePathGenerator::~FilePathGenerator()
 {
-
 }
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-QVector<QString> FilePathGenerator::GenerateFileList(int start, int end, bool& hasMissingFiles,
-                                                     bool stackLowToHigh, const QString& inputPath,
-                                                     const QString& filePrefix,
-                                                     const QString& fileSuffix, const QString& fileExtension,
-                                                     int paddingDigits)
+QVector<QString> FilePathGenerator::GenerateFileList(int start, int end, bool& hasMissingFiles, bool stackLowToHigh, const QString& inputPath, const QString& filePrefix, const QString& fileSuffix,
+                                                     const QString& fileExtension, int paddingDigits)
 {
   QVector<QString> fileList;
   QDir dir(inputPath);
@@ -71,9 +66,9 @@ QVector<QString> FilePathGenerator::GenerateFileList(int start, int end, bool& h
   int index = 0;
 
   QString filename;
-  for (int i = 0; i < (end - start) + 1; ++i)
+  for(int i = 0; i < (end - start) + 1; ++i)
   {
-    if (stackLowToHigh)
+    if(stackLowToHigh)
     {
       index = start + i;
     }
@@ -81,9 +76,7 @@ QVector<QString> FilePathGenerator::GenerateFileList(int start, int end, bool& h
     {
       index = end - i;
     }
-    filename = QString("%1%2%3.%4").arg(filePrefix)
-               .arg(QString::number(index), paddingDigits, '0')
-               .arg(fileSuffix).arg(fileExtension);
+    filename = QString("%1%2%3.%4").arg(filePrefix).arg(QString::number(index), paddingDigits, '0').arg(fileSuffix).arg(fileExtension);
     QString filePath = inputPath + QDir::separator() + filename;
     filePath = QDir::toNativeSeparators(filePath);
     fileList.push_back(filePath);
@@ -91,15 +84,11 @@ QVector<QString> FilePathGenerator::GenerateFileList(int start, int end, bool& h
   return fileList;
 }
 
-
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-QVector<QString> FilePathGenerator::GenerateVectorFileList(int start, int end, int compStart, int compEnd, bool& hasMissingFiles,
-                                                           bool stackLowToHigh, const QString& inputPath,
-                                                           const QString& filePrefix, const QString& separator,
-                                                           const QString& fileSuffix, const QString& fileExtension,
-                                                           int paddingDigits)
+QVector<QString> FilePathGenerator::GenerateVectorFileList(int start, int end, int compStart, int compEnd, bool& hasMissingFiles, bool stackLowToHigh, const QString& inputPath,
+                                                           const QString& filePrefix, const QString& separator, const QString& fileSuffix, const QString& fileExtension, int paddingDigits)
 {
   QVector<QString> fileList;
   QDir dir(inputPath);
@@ -111,11 +100,11 @@ QVector<QString> FilePathGenerator::GenerateVectorFileList(int start, int end, i
   int index2 = 0;
 
   QString filename;
-  for (int i = 0; i < (end - start) + 1; ++i)
+  for(int i = 0; i < (end - start) + 1; ++i)
   {
     for(int j = 0; j < (compEnd - compStart) + 1; j++)
     {
-      if (stackLowToHigh)
+      if(stackLowToHigh)
       {
         index = start + i;
       }
@@ -126,11 +115,8 @@ QVector<QString> FilePathGenerator::GenerateVectorFileList(int start, int end, i
 
       index2 = compStart + j;
 
-      filename = QString("%1%2%3%4%5.%6").arg(filePrefix)
-                 .arg(QString::number(index), paddingDigits, '0')
-                 .arg(separator)
-                 .arg(QString::number(index2), paddingDigits, '0')
-                 .arg(fileSuffix).arg(fileExtension);
+      filename =
+          QString("%1%2%3%4%5.%6").arg(filePrefix).arg(QString::number(index), paddingDigits, '0').arg(separator).arg(QString::number(index2), paddingDigits, '0').arg(fileSuffix).arg(fileExtension);
       QString filePath = inputPath + QDir::separator() + filename;
       filePath = QDir::toNativeSeparators(filePath);
       fileList.push_back(filePath);
@@ -138,4 +124,3 @@ QVector<QString> FilePathGenerator::GenerateVectorFileList(int start, int end, i
   }
   return fileList;
 }
-

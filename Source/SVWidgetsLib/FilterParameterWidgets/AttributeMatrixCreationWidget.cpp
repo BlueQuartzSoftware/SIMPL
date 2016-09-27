@@ -35,21 +35,21 @@
 
 #include "AttributeMatrixCreationWidget.h"
 
-#include <QtCore/QSignalMapper>
-#include <QtCore/QMetaProperty>
 #include <QtCore/QList>
+#include <QtCore/QMetaProperty>
+#include <QtCore/QSignalMapper>
 
 #include <QtGui/QStandardItemModel>
 
-#include <QtWidgets/QMenu>
 #include <QtWidgets/QListWidgetItem>
+#include <QtWidgets/QMenu>
 
 #include "SIMPLib/DataContainers/DataArrayPath.h"
 #include "SVWidgetsLib/Core/SVWidgetsLibConstants.h"
 #include "SVWidgetsLib/QtSupport/QtSStyles.h"
 
-#include "FilterParameterWidgetsDialogs.h"
 #include "FilterParameterWidgetUtils.hpp"
+#include "FilterParameterWidgetsDialogs.h"
 
 // Include the MOC generated file for this class
 #include "moc_AttributeMatrixCreationWidget.cpp"
@@ -57,9 +57,9 @@
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-AttributeMatrixCreationWidget::AttributeMatrixCreationWidget(FilterParameter* parameter, AbstractFilter* filter, QWidget* parent) :
-FilterParameterWidget(parameter, filter, parent),
-m_DidCausePreflight(false)
+AttributeMatrixCreationWidget::AttributeMatrixCreationWidget(FilterParameter* parameter, AbstractFilter* filter, QWidget* parent)
+: FilterParameterWidget(parameter, filter, parent)
+, m_DidCausePreflight(false)
 {
   m_FilterParameter = dynamic_cast<AttributeMatrixCreationFilterParameter*>(parameter);
   Q_ASSERT_X(m_FilterParameter != nullptr, "nullptr Pointer", "AttributeMatrixCreationWidget can ONLY be used with a AttributeMatrixCreationFilterParameter object");
@@ -71,9 +71,9 @@ m_DidCausePreflight(false)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-AttributeMatrixCreationWidget::AttributeMatrixCreationWidget(QWidget* parent) :
-FilterParameterWidget(nullptr, nullptr, parent),
-m_DidCausePreflight(false)
+AttributeMatrixCreationWidget::AttributeMatrixCreationWidget(QWidget* parent)
+: FilterParameterWidget(nullptr, nullptr, parent)
+, m_DidCausePreflight(false)
 {
   setupUi(this);
   setupGui();
@@ -84,8 +84,14 @@ m_DidCausePreflight(false)
 // -----------------------------------------------------------------------------
 AttributeMatrixCreationWidget::~AttributeMatrixCreationWidget()
 {
-  if(m_OwnsMenuPtr && m_MenuPtr) { delete m_MenuPtr; }
-  if(m_MenuMapper) { delete m_MenuMapper; }
+  if(m_OwnsMenuPtr && m_MenuPtr)
+  {
+    delete m_MenuPtr;
+  }
+  if(m_MenuMapper)
+  {
+    delete m_MenuMapper;
+  }
 }
 
 // -----------------------------------------------------------------------------
@@ -98,14 +104,13 @@ void AttributeMatrixCreationWidget::initializeWidget(FilterParameter* parameter,
   setupGui();
 }
 
-
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
 void AttributeMatrixCreationWidget::setupGui()
 {
   blockSignals(true);
-  if (getFilterParameter() != nullptr)
+  if(getFilterParameter() != nullptr)
   {
     label->setText(getFilterParameter()->getHumanLabel());
 
@@ -120,23 +125,18 @@ void AttributeMatrixCreationWidget::setupGui()
   m_SelectedDataContainerPath->setStyleSheet(QtSStyles::DAPSelectionButtonStyle(true));
 
   m_MenuMapper = new QSignalMapper(this);
-  connect(m_MenuMapper, SIGNAL(mapped(QString)),
-            this, SLOT(dataContainerSelected(QString)));
+  connect(m_MenuMapper, SIGNAL(mapped(QString)), this, SLOT(dataContainerSelected(QString)));
 
   // Catch when the filter is about to execute the preflight
-  connect(getFilter(), SIGNAL(preflightAboutToExecute()),
-    this, SLOT(beforePreflight()));
+  connect(getFilter(), SIGNAL(preflightAboutToExecute()), this, SLOT(beforePreflight()));
 
   // Catch when the filter is finished running the preflight
-  connect(getFilter(), SIGNAL(preflightExecuted()),
-    this, SLOT(afterPreflight()));
+  connect(getFilter(), SIGNAL(preflightExecuted()), this, SLOT(afterPreflight()));
 
   // Catch when the filter wants its values updated
-  connect(getFilter(), SIGNAL(updateFilterParameters(AbstractFilter*)),
-    this, SLOT(filterNeedsInputParameters(AbstractFilter*)));
+  connect(getFilter(), SIGNAL(updateFilterParameters(AbstractFilter*)), this, SLOT(filterNeedsInputParameters(AbstractFilter*)));
 
-  connect(attributeMatrixName, SIGNAL(textEdited(const QString&)),
-    this, SLOT(widgetChanged(const QString&)));
+  connect(attributeMatrixName, SIGNAL(textEdited(const QString&)), this, SLOT(widgetChanged(const QString&)));
 
   attributeMatrixName->blockSignals(true);
   attributeMatrixName->clear();
@@ -151,21 +151,20 @@ void AttributeMatrixCreationWidget::setupGui()
 // -----------------------------------------------------------------------------
 QString AttributeMatrixCreationWidget::checkStringValues(QString curDcName, QString filtDcName)
 {
-  if (curDcName.isEmpty() == true && filtDcName.isEmpty() == false)
+  if(curDcName.isEmpty() == true && filtDcName.isEmpty() == false)
   {
     return filtDcName;
   }
-  else if (curDcName.isEmpty() == false && filtDcName.isEmpty() == true)
+  else if(curDcName.isEmpty() == false && filtDcName.isEmpty() == true)
   {
     return curDcName;
   }
-  else if (curDcName.isEmpty() == false && filtDcName.isEmpty() == false && m_DidCausePreflight == true)
+  else if(curDcName.isEmpty() == false && filtDcName.isEmpty() == false && m_DidCausePreflight == true)
   {
     return curDcName;
   }
 
   return filtDcName;
-
 }
 
 // -----------------------------------------------------------------------------
@@ -176,11 +175,15 @@ void AttributeMatrixCreationWidget::createSelectionMenu()
   // Now get the DataContainerArray from the Filter instance
   // We are going to use this to get all the current DataContainers
   DataContainerArray::Pointer dca = getFilter()->getDataContainerArray();
-  if(nullptr == dca.get()) { return; }
+  if(nullptr == dca.get())
+  {
+    return;
+  }
 
   // Get the menu and clear it out
   QMenu* btnMenu = m_SelectedDataContainerPath->menu();
-  if(btnMenu) {
+  if(btnMenu)
+  {
     btnMenu->clear();
   }
   else
@@ -191,7 +194,6 @@ void AttributeMatrixCreationWidget::createSelectionMenu()
     m_SelectedDataContainerPath->setMenu(btnMenu);
     btnMenu->installEventFilter(this);
   }
-
 
   // Get the DataContainerArray object
   // Loop over the data containers until we find the proper data container
@@ -205,8 +207,14 @@ void AttributeMatrixCreationWidget::createSelectionMenu()
 
     IGeometry::Pointer geom = IGeometry::NullPointer();
     uint32_t geomType = 999;
-    if (nullptr != dc.get()) { geom = dc->getGeometry(); }
-    if (nullptr != geom.get()) { geomType = geom->getGeometryType(); }
+    if(nullptr != dc.get())
+    {
+      geom = dc->getGeometry();
+    }
+    if(nullptr != geom.get())
+    {
+      geomType = geom->getGeometryType();
+    }
 
     QString dcName = dc->getName();
 
@@ -219,7 +227,7 @@ void AttributeMatrixCreationWidget::createSelectionMenu()
     connect(dcAction, SIGNAL(triggered(bool)), m_MenuMapper, SLOT(map()));
     m_MenuMapper->setMapping(dcAction, path);
 
-    if(geomTypes.isEmpty() == false && geomTypes.contains(geomType) == false )
+    if(geomTypes.isEmpty() == false && geomTypes.contains(geomType) == false)
     {
       dcAction->setDisabled(true);
     }
@@ -231,7 +239,7 @@ void AttributeMatrixCreationWidget::createSelectionMenu()
 // -----------------------------------------------------------------------------
 bool AttributeMatrixCreationWidget::eventFilter(QObject* obj, QEvent* event)
 {
-  if (event->type() == QEvent::Show && obj == m_SelectedDataContainerPath->menu())
+  if(event->type() == QEvent::Show && obj == m_SelectedDataContainerPath->menu())
   {
     QPoint pos = adjustedMenuPosition(m_SelectedDataContainerPath);
     m_SelectedDataContainerPath->menu()->move(pos);
@@ -258,17 +266,24 @@ void AttributeMatrixCreationWidget::dataContainerSelected(QString path)
 void AttributeMatrixCreationWidget::setSelectedPath(QString path)
 {
   DataArrayPath amPath = DataArrayPath::Deserialize(path, Detail::Delimiter);
-  if (amPath.isEmpty()) { return; }
+  if(amPath.isEmpty())
+  {
+    return;
+  }
 
   m_SelectedDataContainerPath->setText("");
   m_SelectedDataContainerPath->setToolTip("");
   attributeMatrixName->clear();
 
   DataContainerArray::Pointer dca = getFilter()->getDataContainerArray();
-  if(nullptr == dca.get()) { return; }
+  if(nullptr == dca.get())
+  {
+    return;
+  }
 
   DataContainer::Pointer dc = dca->getPrereqDataContainer<AbstractFilter>(getFilter(), amPath.getDataContainerName());
-  if(nullptr != dc.get()) {
+  if(nullptr != dc.get())
+  {
     QString html = dc->getInfoString(SIMPL::HtmlFormat);
     m_SelectedDataContainerPath->setToolTip(html);
     m_SelectedDataContainerPath->setText(amPath.getDataContainerName());
@@ -300,7 +315,7 @@ void AttributeMatrixCreationWidget::widgetChanged(const QString& text)
 {
   attributeMatrixName->setStyleSheet(QString::fromLatin1("color: rgb(255, 0, 0);"));
   attributeMatrixName->setToolTip("Press the 'Return' key to apply your changes");
-  if (applyChangesBtn->isVisible() == false)
+  if(applyChangesBtn->isVisible() == false)
   {
     applyChangesBtn->setVisible(true);
     fadeInWidget(applyChangesBtn);
@@ -312,10 +327,13 @@ void AttributeMatrixCreationWidget::widgetChanged(const QString& text)
 // -----------------------------------------------------------------------------
 void AttributeMatrixCreationWidget::beforePreflight()
 {
-  if (nullptr == getFilter()) { return; }
-  if (m_DidCausePreflight == true)
+  if(nullptr == getFilter())
   {
-   // std::cout << "***  AttributeMatrixCreationWidget already caused a preflight, just returning" << std::endl;
+    return;
+  }
+  if(m_DidCausePreflight == true)
+  {
+    // std::cout << "***  AttributeMatrixCreationWidget already caused a preflight, just returning" << std::endl;
     return;
   }
 
@@ -346,7 +364,7 @@ void AttributeMatrixCreationWidget::filterNeedsInputParameters(AbstractFilter* f
   bool ok = false;
   // Set the value into the Filter
   ok = filter->setProperty(PROPERTY_NAME_AS_CHAR, var);
-  if (false == ok)
+  if(false == ok)
   {
     FilterParameterWidgetsDialogs::ShowCouldNotSetFilterParameter(getFilter(), getFilterParameter());
   }
@@ -365,14 +383,13 @@ void AttributeMatrixCreationWidget::on_applyChangesBtn_clicked()
   QPointer<QtSFaderWidget> faderWidget = new QtSFaderWidget(applyChangesBtn);
   setFaderWidget(faderWidget);
 
-  if (getFaderWidget())
+  if(getFaderWidget())
   {
     faderWidget->close();
   }
   faderWidget = new QtSFaderWidget(applyChangesBtn);
   faderWidget->setFadeOut();
-  connect(faderWidget, SIGNAL(animationComplete()),
-    this, SLOT(hideButton()));
+  connect(faderWidget, SIGNAL(animationComplete()), this, SLOT(hideButton()));
   faderWidget->start();
 
   m_DidCausePreflight = false;

@@ -38,27 +38,23 @@
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-DynamicChoiceFilterParameter::DynamicChoiceFilterParameter() :
-  FilterParameter()
-{}
+DynamicChoiceFilterParameter::DynamicChoiceFilterParameter()
+: FilterParameter()
+{
+}
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
 DynamicChoiceFilterParameter::~DynamicChoiceFilterParameter()
-{}
+{
+}
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-DynamicChoiceFilterParameter::Pointer DynamicChoiceFilterParameter::New(const QString& humanLabel,
-    const QString& propertyName,
-    const QString& defaultValue,
-    Category category,
-    SetterCallbackType setterCallback,
-    GetterCallbackType getterCallback,
-    const QString& listProperty,
-    int groupIndex)
+DynamicChoiceFilterParameter::Pointer DynamicChoiceFilterParameter::New(const QString& humanLabel, const QString& propertyName, const QString& defaultValue, Category category,
+                                                                        SetterCallbackType setterCallback, GetterCallbackType getterCallback, const QString& listProperty, int groupIndex)
 {
   DynamicChoiceFilterParameter::Pointer ptr = DynamicChoiceFilterParameter::New();
   ptr->setHumanLabel(humanLabel);
@@ -83,10 +79,10 @@ QString DynamicChoiceFilterParameter::getWidgetType()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void DynamicChoiceFilterParameter::readJson(const QJsonObject &json)
+void DynamicChoiceFilterParameter::readJson(const QJsonObject& json)
 {
   QJsonValue jsonValue = json[getPropertyName()];
-  if(!jsonValue.isUndefined() )
+  if(!jsonValue.isUndefined())
   {
     m_SetterCallback(jsonValue.toString(""));
   }
@@ -95,8 +91,7 @@ void DynamicChoiceFilterParameter::readJson(const QJsonObject &json)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void DynamicChoiceFilterParameter::writeJson(QJsonObject &json)
+void DynamicChoiceFilterParameter::writeJson(QJsonObject& json)
 {
   json[getPropertyName()] = m_GetterCallback();
 }
-

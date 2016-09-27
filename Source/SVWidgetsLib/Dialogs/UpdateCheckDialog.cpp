@@ -33,22 +33,20 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-
-
 #include "UpdateCheckDialog.h"
 
 #include <iostream>
 
+#include <QtCore/QDate>
+#include <QtCore/QDir>
 #include <QtCore/QString>
 #include <QtCore/QStringList>
-#include <QtCore/QDir>
-#include <QtCore/QDate>
 
 #include <QtGui/QDesktopServices>
 
 #include <QtNetwork/QNetworkAccessManager>
-#include <QtNetwork/QNetworkRequest>
 #include <QtNetwork/QNetworkReply>
+#include <QtNetwork/QNetworkRequest>
 
 #include "SVWidgetsLib/Dialogs/UpdateCheckData.h"
 
@@ -57,33 +55,32 @@
 
 namespace Detail
 {
-  const QString UpdatePreferencesGroup("UpdatePreferences");
-  const QString UpdateCheckDateKey("LastUpdateCheckDate");
-  const QString UpdateFrequencyKey("Frequency");
+const QString UpdatePreferencesGroup("UpdatePreferences");
+const QString UpdateCheckDateKey("LastUpdateCheckDate");
+const QString UpdateFrequencyKey("Frequency");
 }
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-UpdateCheckDialog::UpdateCheckDialog(UpdateCheck::SIMPLVersionData_t versionData, QWidget* parent) :
-  QDialog(parent),
-  m_WhenToCheck(UpdateCheckMonthly),
-  m_UpdateCheck(nullptr),
-  m_UpdateCheckThread(nullptr),
-  m_DialogState(DefaultDialog),
-  m_VersionData(versionData)
+UpdateCheckDialog::UpdateCheckDialog(UpdateCheck::SIMPLVersionData_t versionData, QWidget* parent)
+: QDialog(parent)
+, m_WhenToCheck(UpdateCheckMonthly)
+, m_UpdateCheck(nullptr)
+, m_UpdateCheckThread(nullptr)
+, m_DialogState(DefaultDialog)
+, m_VersionData(versionData)
 {
 
   setupUi(this);
 
   setupGui();
 
-
   QtSSettings updatePrefs;
 
   updatePrefs.beginGroup(Detail::UpdatePreferencesGroup);
   // If the update preferences exist in the preferences file, read them in
-  if ( updatePrefs.contains(Detail::UpdateFrequencyKey) )
+  if(updatePrefs.contains(Detail::UpdateFrequencyKey))
   {
     updatePrefs.endGroup();
     readUpdatePreferences(updatePrefs);
@@ -102,7 +99,7 @@ UpdateCheckDialog::UpdateCheckDialog(UpdateCheck::SIMPLVersionData_t versionData
 // -----------------------------------------------------------------------------
 UpdateCheckDialog::~UpdateCheckDialog()
 {
-#if defined (Q_OS_MAC)
+#if defined(Q_OS_MAC)
   delete m_CloseAction;
 #endif
 }
@@ -226,7 +223,7 @@ void UpdateCheckDialog::setWhenToCheck(int whenToCheck)
 
 {
   m_WhenToCheck = whenToCheck;
-  if (m_WhenToCheck == UpdateCheckDialog::UpdateCheckManual)
+  if(m_WhenToCheck == UpdateCheckDialog::UpdateCheckManual)
   {
     manually->setChecked(true);
     howOften->setEnabled(false);
@@ -260,14 +257,13 @@ void UpdateCheckDialog::setupGui()
 
   setWindowFlags(this->windowFlags() & ~Qt::WindowContextHelpButtonHint);
 
-#if defined (Q_OS_MAC)
+#if defined(Q_OS_MAC)
   m_CloseAction = new QAction(this);
   m_CloseAction->setShortcut(QKeySequence(Qt::CTRL + Qt::Key_W));
   connect(m_CloseAction, SIGNAL(triggered()), this, SLOT(close()));
   addAction(m_CloseAction);
 #endif
 }
-
 
 // -----------------------------------------------------------------------------
 //
@@ -278,8 +274,7 @@ void UpdateCheckDialog::on_checkNowBtn_clicked()
   feedbackText->setText("Checking for Updates...");
   m_UpdateCheck = new UpdateCheck(m_VersionData, this);
 
-  connect(m_UpdateCheck, SIGNAL( latestVersion(UpdateCheckData*) ),
-          this, SLOT( LatestVersionReplied(UpdateCheckData*) ) );
+  connect(m_UpdateCheck, SIGNAL(latestVersion(UpdateCheckData*)), this, SLOT(LatestVersionReplied(UpdateCheckData*)));
 
   m_UpdateCheck->checkVersion(m_UpdateWebSite);
   checkNowBtn->setEnabled(true);
@@ -290,15 +285,15 @@ void UpdateCheckDialog::on_checkNowBtn_clicked()
 // -----------------------------------------------------------------------------
 void UpdateCheckDialog::on_howOften_currentIndexChanged(int index)
 {
-  if (index == UpdateCheckDialog::UpdateCheckDaily)
+  if(index == UpdateCheckDialog::UpdateCheckDaily)
   {
     setWhenToCheck(UpdateCheckDialog::UpdateCheckDaily);
   }
-  else if (index == UpdateCheckDialog::UpdateCheckWeekly)
+  else if(index == UpdateCheckDialog::UpdateCheckWeekly)
   {
     setWhenToCheck(UpdateCheckDialog::UpdateCheckWeekly);
   }
-  else if (index == UpdateCheckDialog::UpdateCheckMonthly)
+  else if(index == UpdateCheckDialog::UpdateCheckMonthly)
   {
     setWhenToCheck(UpdateCheckDialog::UpdateCheckMonthly);
   }
@@ -312,17 +307,17 @@ void UpdateCheckDialog::on_howOften_currentIndexChanged(int index)
 // -----------------------------------------------------------------------------
 void UpdateCheckDialog::on_automatically_toggled(bool boolValue)
 {
-  if ( automatically->isChecked() )
+  if(automatically->isChecked())
   {
-    if (howOften->currentIndex() == UpdateCheckDialog::UpdateCheckDaily)
+    if(howOften->currentIndex() == UpdateCheckDialog::UpdateCheckDaily)
     {
       setWhenToCheck(UpdateCheckDialog::UpdateCheckDaily);
     }
-    else if (howOften->currentIndex() == UpdateCheckDialog::UpdateCheckWeekly)
+    else if(howOften->currentIndex() == UpdateCheckDialog::UpdateCheckWeekly)
     {
       setWhenToCheck(UpdateCheckDialog::UpdateCheckWeekly);
     }
-    else if (howOften->currentIndex() == UpdateCheckDialog::UpdateCheckMonthly)
+    else if(howOften->currentIndex() == UpdateCheckDialog::UpdateCheckMonthly)
     {
       setWhenToCheck(UpdateCheckDialog::UpdateCheckMonthly);
     }
@@ -337,7 +332,7 @@ void UpdateCheckDialog::on_automatically_toggled(bool boolValue)
 // -----------------------------------------------------------------------------
 void UpdateCheckDialog::on_manually_toggled(bool)
 {
-  if ( manually->isChecked() )
+  if(manually->isChecked())
   {
     setWhenToCheck(UpdateCheckDialog::UpdateCheckManual);
 
@@ -354,10 +349,10 @@ void UpdateCheckDialog::readUpdatePreferences(QtSSettings& prefs)
   // Read in value from preferences file
   prefs.beginGroup(Detail::UpdatePreferencesGroup);
   bool ok = false;
-  m_WhenToCheck = static_cast<UpdateType>( prefs.value(Detail::UpdateFrequencyKey, -1).toInt(&ok) );
+  m_WhenToCheck = static_cast<UpdateType>(prefs.value(Detail::UpdateFrequencyKey, -1).toInt(&ok));
   prefs.endGroup();
 
-  if (m_WhenToCheck == UpdateCheckManual)
+  if(m_WhenToCheck == UpdateCheckManual)
   {
     manually->blockSignals(true);
     manually->setChecked(true);
@@ -370,11 +365,11 @@ void UpdateCheckDialog::readUpdatePreferences(QtSSettings& prefs)
     manually->blockSignals(true);
     howOften->blockSignals(true);
     automatically->setChecked(true);
-    if (m_WhenToCheck == UpdateCheckDaily)
+    if(m_WhenToCheck == UpdateCheckDaily)
     {
       howOften->setCurrentIndex(UpdateCheckDaily);
     }
-    else if (m_WhenToCheck == UpdateCheckWeekly)
+    else if(m_WhenToCheck == UpdateCheckWeekly)
     {
       howOften->setCurrentIndex(UpdateCheckWeekly);
     }
@@ -405,11 +400,11 @@ void UpdateCheckDialog::LatestVersionReplied(UpdateCheckData* dataObj)
 {
   QString message = dataObj->getMessageDescription();
   feedbackText->setText(message);
-  if (!dataObj->hasError())
+  if(!dataObj->hasError())
   {
-    //currentVersion->setText( dataObj->getAppString() );
-    //setCurrentVersion( dataObj->getAppString() );
-    latestVersion->setText( dataObj->getServerString() );
+    // currentVersion->setText( dataObj->getAppString() );
+    // setCurrentVersion( dataObj->getAppString() );
+    latestVersion->setText(dataObj->getServerString());
   }
   else
   {
@@ -423,7 +418,7 @@ void UpdateCheckDialog::LatestVersionReplied(UpdateCheckData* dataObj)
 void UpdateCheckDialog::toSimpleUpdateCheckDialog()
 {
   // Exit immediately if the dialog is already in simple state
-  if (m_DialogState == SimpleDialog)
+  if(m_DialogState == SimpleDialog)
   {
     return;
   }
@@ -444,7 +439,7 @@ void UpdateCheckDialog::toSimpleUpdateCheckDialog()
 void UpdateCheckDialog::toDefaultUpdateCheckDialog()
 {
   // Exit immediately if the dialog is already in default state
-  if (m_DialogState == DefaultDialog)
+  if(m_DialogState == DefaultDialog)
   {
     return;
   }

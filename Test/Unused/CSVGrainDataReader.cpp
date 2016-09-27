@@ -33,33 +33,29 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-
 #include "CSVGrainDataReader.h"
 
 #include <string.h>
 
-#include <iostream>
-#include <fstream>
-#include <sstream>
 #include <algorithm>
+#include <fstream>
+#include <iostream>
+#include <sstream>
 
-
-
-#define PI_OVER_2f       1.57079632679489661f
+#define PI_OVER_2f 1.57079632679489661f
 #define THREE_PI_OVER_2f 4.71238898038468985f
-#define TWO_PIf          6.28318530717958647f
-#define ONE_PIf          3.14159265358979323f
+#define TWO_PIf 6.28318530717958647f
+#define ONE_PIf 3.14159265358979323f
 
 #define kBufferSize 1024
-
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-CSVGrainDataReader::CSVGrainDataReader() :
-  m_FileName(""),
-  m_NumberOfElements(0),
-  m_ManageMemory(true)
+CSVGrainDataReader::CSVGrainDataReader()
+: m_FileName("")
+, m_NumberOfElements(0)
+, m_ManageMemory(true)
 {
   // Init all the arrays to nullptr
   m_GrainId = nullptr;
@@ -75,7 +71,6 @@ CSVGrainDataReader::CSVGrainDataReader() :
   m_SurfaceGrain = nullptr;
 
   m_NumFeatures = 11;
-
 }
 
 // -----------------------------------------------------------------------------
@@ -92,17 +87,17 @@ CSVGrainDataReader::~CSVGrainDataReader()
 void CSVGrainDataReader::initPointers(size_t numElements)
 {
   size_t numBytes = numElements * sizeof(float);
-  m_GrainId = allocateArray<int > (numElements);
-  m_Phi1 = allocateArray<float > (numElements);
-  m_Phi = allocateArray<float > (numElements);
-  m_Phi2 = allocateArray<float > (numElements);
-  m_EquivDiam = allocateArray<float > (numElements);
-  m_B_Over_A = allocateArray<float > (numElements);
-  m_C_Over_A = allocateArray<float> (numElements);
-  m_Omega3 = allocateArray<float > (numElements);
-  m_OutsideBoundingBox = allocateArray<int > (numElements);
-  m_NumNeighbors = allocateArray<int > (numElements);
-  m_SurfaceGrain = allocateArray<int > (numElements);
+  m_GrainId = allocateArray<int>(numElements);
+  m_Phi1 = allocateArray<float>(numElements);
+  m_Phi = allocateArray<float>(numElements);
+  m_Phi2 = allocateArray<float>(numElements);
+  m_EquivDiam = allocateArray<float>(numElements);
+  m_B_Over_A = allocateArray<float>(numElements);
+  m_C_Over_A = allocateArray<float>(numElements);
+  m_Omega3 = allocateArray<float>(numElements);
+  m_OutsideBoundingBox = allocateArray<int>(numElements);
+  m_NumNeighbors = allocateArray<int>(numElements);
+  m_SurfaceGrain = allocateArray<int>(numElements);
 
   ::memset(m_GrainId, 0, numBytes);
   ::memset(m_Phi1, 0, numBytes);
@@ -122,17 +117,17 @@ void CSVGrainDataReader::initPointers(size_t numElements)
 // -----------------------------------------------------------------------------
 void CSVGrainDataReader::deletePointers()
 {
-  this->deallocateArrayData<int > (m_GrainId);
-  this->deallocateArrayData<float > (m_Phi1);
-  this->deallocateArrayData<float > (m_Phi);
-  this->deallocateArrayData<float > (m_Phi2);
-  this->deallocateArrayData<float > (m_EquivDiam);
-  this->deallocateArrayData<float > (m_B_Over_A);
-  this->deallocateArrayData<float > (m_C_Over_A);
-  this->deallocateArrayData<float > (m_Omega3);
-  this->deallocateArrayData<int > (m_OutsideBoundingBox);
-  this->deallocateArrayData<int > (m_NumNeighbors);
-  this->deallocateArrayData<int > (m_SurfaceGrain);
+  this->deallocateArrayData<int>(m_GrainId);
+  this->deallocateArrayData<float>(m_Phi1);
+  this->deallocateArrayData<float>(m_Phi);
+  this->deallocateArrayData<float>(m_Phi2);
+  this->deallocateArrayData<float>(m_EquivDiam);
+  this->deallocateArrayData<float>(m_B_Over_A);
+  this->deallocateArrayData<float>(m_C_Over_A);
+  this->deallocateArrayData<float>(m_Omega3);
+  this->deallocateArrayData<int>(m_OutsideBoundingBox);
+  this->deallocateArrayData<int>(m_NumNeighbors);
+  this->deallocateArrayData<int>(m_SurfaceGrain);
 }
 
 // -----------------------------------------------------------------------------
@@ -144,13 +139,13 @@ int CSVGrainDataReader::readHeaderOnly()
   char buf[kBufferSize];
   std::ifstream in(m_FileName.c_str());
   m_headerComplete = false;
-  if (!in.is_open())
+  if(!in.is_open())
   {
     std::cout << "CSV file could not be opened: " << m_FileName << std::endl;
     return -100;
   }
 
-  while (!in.eof() && !m_headerComplete)
+  while(!in.eof() && !m_headerComplete)
   {
     ::memset(buf, 0, kBufferSize);
     in.getline(buf, kBufferSize);
@@ -169,7 +164,7 @@ int CSVGrainDataReader::readFile()
   m_headerComplete = false;
   std::ifstream in(m_FileName.c_str());
 
-  if (!in.is_open())
+  if(!in.is_open())
   {
     std::cout << "Ang file could not be opened: " << m_FileName << std::endl;
     return -100;
@@ -177,7 +172,7 @@ int CSVGrainDataReader::readFile()
 
   ::memset(buf, 0, kBufferSize);
   in.getline(buf, kBufferSize);
-  if (sscanf(buf, "%lu", &m_NumberOfElements) != 1)
+  if(sscanf(buf, "%lu", &m_NumberOfElements) != 1)
   {
     std::cout << "First Line of file not parsed." << std::endl;
   }
@@ -195,16 +190,8 @@ int CSVGrainDataReader::readFile()
 
   initPointers(m_NumberOfElements);
 
-  if (nullptr == m_GrainId ||
-      nullptr == m_Phi1 ||
-      nullptr == m_Phi ||
-      nullptr == m_Phi2 ||
-      nullptr == m_EquivDiam ||
-      nullptr == m_NumNeighbors ||
-      nullptr == m_B_Over_A ||
-      nullptr == m_C_Over_A ||
-      m_Omega3 == nullptr ||
-      m_OutsideBoundingBox == nullptr)
+  if(nullptr == m_GrainId || nullptr == m_Phi1 || nullptr == m_Phi || nullptr == m_Phi2 || nullptr == m_EquivDiam || nullptr == m_NumNeighbors || nullptr == m_B_Over_A || nullptr == m_C_Over_A ||
+     m_Omega3 == nullptr || m_OutsideBoundingBox == nullptr)
   {
     return -1;
   }
@@ -218,14 +205,11 @@ int CSVGrainDataReader::readFile()
     ++counter;
   }
 
-
-  if (counter != m_NumberOfElements && in.eof() == true)
+  if(counter != m_NumberOfElements && in.eof() == true)
   {
 
-    std::cout << "Premature End Of File reached.\n" << m_FileName
-              << "\nNumRows=" << m_NumberOfElements
-              << "\ncounter=" << counter << " m_NumberOfElements=" << m_NumberOfElements
-              << "\nTotal Data Points Read=" << counter << std::endl;
+    std::cout << "Premature End Of File reached.\n"
+              << m_FileName << "\nNumRows=" << m_NumberOfElements << "\ncounter=" << counter << " m_NumberOfElements=" << m_NumberOfElements << "\nTotal Data Points Read=" << counter << std::endl;
   }
 
   return err;
@@ -236,11 +220,10 @@ int CSVGrainDataReader::readFile()
 // -----------------------------------------------------------------------------
 void CSVGrainDataReader::parseHeaderLine(char* buf, size_t length)
 {
-  if (buf[0] != '#')
+  if(buf[0] != '#')
   {
     m_headerComplete = true;
   }
-
 }
 
 // -----------------------------------------------------------------------------
@@ -257,12 +240,11 @@ void CSVGrainDataReader::readData(const QString& line, int row, size_t i)
    *
    *
    */
-  float  p1, p, p2, eq, ba, ca, o3;
+  float p1, p, p2, eq, ba, ca, o3;
 
   int gid, obb, nn, sg;
 
   m_NumFeatures = sscanf(line.c_str(), "%d,%f,%f,%f,%f,%f,%f,%f,%d,%d,%d", &gid, &p1, &p, &p2, &eq, &ba, &ca, &o3, &obb, &nn, &sg);
-
 
   m_GrainId[row] = gid;
   m_Phi1[row] = p1;
@@ -276,4 +258,3 @@ void CSVGrainDataReader::readData(const QString& line, int row, size_t i)
   m_NumNeighbors[row] = nn;
   m_SurfaceGrain[row] = sg;
 }
-

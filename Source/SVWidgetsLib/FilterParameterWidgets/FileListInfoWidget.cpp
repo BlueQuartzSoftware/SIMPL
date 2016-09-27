@@ -33,7 +33,6 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-
 #include "FileListInfoWidget.h"
 
 //-- Qt Includes
@@ -41,8 +40,8 @@
 #include <QtWidgets/QFileDialog>
 
 #include "SIMPLib/Common/Constants.h"
-#include "SIMPLib/Utilities/FilePathGenerator.h"
 #include "SIMPLib/FilterParameters/FileListInfoFilterParameter.h"
+#include "SIMPLib/Utilities/FilePathGenerator.h"
 
 #include "SVWidgetsLib/QtSupport/QtSFileCompleter.h"
 
@@ -59,10 +58,10 @@ QString FileListInfoWidget::m_OpenDialogLastDirectory = "";
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-FileListInfoWidget::FileListInfoWidget(FilterParameter* parameter, AbstractFilter* filter, QWidget* parent) :
-  FilterParameterWidget(parameter, filter, parent),
-  m_OrderingGroup(nullptr),
-  m_DidCausePreflight(false)
+FileListInfoWidget::FileListInfoWidget(FilterParameter* parameter, AbstractFilter* filter, QWidget* parent)
+: FilterParameterWidget(parameter, filter, parent)
+, m_OrderingGroup(nullptr)
+, m_DidCausePreflight(false)
 {
   FileListInfoFilterParameter* fli = dynamic_cast<FileListInfoFilterParameter*>(parameter);
   if(nullptr == fli)
@@ -83,7 +82,6 @@ FileListInfoWidget::FileListInfoWidget(FilterParameter* parameter, AbstractFilte
 // -----------------------------------------------------------------------------
 FileListInfoWidget::~FileListInfoWidget()
 {
-
 }
 
 // -----------------------------------------------------------------------------
@@ -91,7 +89,7 @@ FileListInfoWidget::~FileListInfoWidget()
 // -----------------------------------------------------------------------------
 void FileListInfoWidget::setWidgetListEnabled(bool b)
 {
-  foreach (QWidget* w, m_WidgetList)
+  foreach(QWidget* w, m_WidgetList)
   {
     w->setEnabled(b);
   }
@@ -103,23 +101,18 @@ void FileListInfoWidget::setWidgetListEnabled(bool b)
 void FileListInfoWidget::setupGui()
 {
 
-
   // Catch when the filter is about to execute the preflight
-  connect(getFilter(), SIGNAL(preflightAboutToExecute()),
-          this, SLOT(beforePreflight()));
+  connect(getFilter(), SIGNAL(preflightAboutToExecute()), this, SLOT(beforePreflight()));
 
   // Catch when the filter is finished running the preflight
-  connect(getFilter(), SIGNAL(preflightExecuted()),
-          this, SLOT(afterPreflight()));
+  connect(getFilter(), SIGNAL(preflightExecuted()), this, SLOT(afterPreflight()));
 
   // Catch when the filter wants its values updated
-  connect(getFilter(), SIGNAL(updateFilterParameters(AbstractFilter*)),
-          this, SLOT(filterNeedsInputParameters(AbstractFilter*)));
+  connect(getFilter(), SIGNAL(updateFilterParameters(AbstractFilter*)), this, SLOT(filterNeedsInputParameters(AbstractFilter*)));
 
   QtSFileCompleter* com = new QtSFileCompleter(this, true);
   m_InputDir->setCompleter(com);
-  QObject::connect( com, SIGNAL(activated(const QString&)),
-                    this, SLOT(on_m_InputDir_textChanged(const QString&)));
+  QObject::connect(com, SIGNAL(activated(const QString&)), this, SLOT(on_m_InputDir_textChanged(const QString&)));
 
   m_WidgetList << m_InputDir << m_InputDirBtn;
   m_WidgetList << m_FileExt << m_ErrorMessage << m_TotalDigits << m_FileSuffix;
@@ -131,8 +124,7 @@ void FileListInfoWidget::setupGui()
   m_OrderingGroup->addButton(m_OrderAscending);
   m_OrderingGroup->addButton(m_OrderDescending);
 
-  connect(m_OrderAscending, SIGNAL(toggled(bool)),
-          this, SLOT(orderingChanged(bool)));
+  connect(m_OrderAscending, SIGNAL(toggled(bool)), this, SLOT(orderingChanged(bool)));
 
   validateInputFile();
   getGuiParametersFromFilter();
@@ -171,13 +163,12 @@ void FileListInfoWidget::validateInputFile()
 
   QString currentPath = data.InputPath;
   QFileInfo fi(currentPath);
-  if (currentPath.isEmpty() == false && fi.exists() == false)
+  if(currentPath.isEmpty() == false && fi.exists() == false)
   {
-//    QString Ftype = getFilterParameter()->getFileType();
-//    QString ext = getFilterParameter()->getFileExtension();
-//    QString s = Ftype + QString(" Files (") + ext + QString(");;All Files(*.*)");
+    //    QString Ftype = getFilterParameter()->getFileType();
+    //    QString ext = getFilterParameter()->getFileExtension();
+    //    QString s = Ftype + QString(" Files (") + ext + QString(");;All Files(*.*)");
     QString defaultName = m_OpenDialogLastDirectory;
-
 
     QString title = QObject::tr("Select a replacement input file in filter '%2'").arg(getFilter()->getHumanLabel());
 
@@ -195,9 +186,8 @@ void FileListInfoWidget::validateInputFile()
     QVariant v;
     v.setValue(data);
     bool ok = getFilter()->setProperty(PROPERTY_NAME_AS_CHAR, v);
-    if (!ok)
+    if(!ok)
     {
-
     }
   }
 }
@@ -209,7 +199,7 @@ bool FileListInfoWidget::verifyPathExists(QString outFilePath, QLineEdit* lineEd
 {
   //  std::cout << "outFilePath: " << outFilePath << std::endl;
   QFileInfo fileinfo(outFilePath);
-  if (false == fileinfo.exists() )
+  if(false == fileinfo.exists())
   {
     lineEdit->setStyleSheet("border: 1px solid red;");
   }
@@ -225,7 +215,7 @@ bool FileListInfoWidget::verifyPathExists(QString outFilePath, QLineEdit* lineEd
 // -----------------------------------------------------------------------------
 void FileListInfoWidget::checkIOFiles()
 {
-  if (true == this->verifyPathExists(m_InputDir->text(), this->m_InputDir))
+  if(true == this->verifyPathExists(m_InputDir->text(), this->m_InputDir))
   {
     findMaxSliceAndPrefix();
   }
@@ -239,7 +229,7 @@ void FileListInfoWidget::on_m_InputDirBtn_clicked()
   // std::cout << "on_angDirBtn_clicked" << std::endl;
   QString outputFile = this->getOpenDialogLastDirectory() + QDir::separator();
   outputFile = QFileDialog::getExistingDirectory(this, tr("Select EBSD Directory"), outputFile);
-  if (!outputFile.isNull())
+  if(!outputFile.isNull())
   {
     m_InputDir->blockSignals(true);
     m_InputDir->setText(QDir::toNativeSeparators(outputFile));
@@ -249,13 +239,12 @@ void FileListInfoWidget::on_m_InputDirBtn_clicked()
   }
 }
 
-
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
 void FileListInfoWidget::on_m_InputDir_textChanged(const QString& text)
 {
-  if (verifyPathExists(m_InputDir->text(), m_InputDir) )
+  if(verifyPathExists(m_InputDir->text(), m_InputDir))
   {
 
     findMaxSliceAndPrefix();
@@ -279,8 +268,14 @@ void FileListInfoWidget::on_m_InputDir_textChanged(const QString& text)
 // -----------------------------------------------------------------------------
 uint32_t FileListInfoWidget::getOrdering()
 {
-  if (m_OrderAscending->isChecked()) { return 0; }
-  if (m_OrderDescending->isChecked()) { return 1; }
+  if(m_OrderAscending->isChecked())
+  {
+    return 0;
+  }
+  if(m_OrderDescending->isChecked())
+  {
+    return 1;
+  }
   return 999;
 }
 
@@ -289,16 +284,15 @@ uint32_t FileListInfoWidget::getOrdering()
 // -----------------------------------------------------------------------------
 void FileListInfoWidget::setOrdering(uint32_t ref)
 {
-  if (ref == 0)
+  if(ref == 0)
   {
     m_OrderAscending->setChecked(true);
   }
-  if (ref == 1)
+  if(ref == 1)
   {
     m_OrderDescending->setChecked(true);
   }
 }
-
 
 // -----------------------------------------------------------------------------
 //
@@ -363,17 +357,13 @@ void FileListInfoWidget::on_m_FilePrefix_textChanged(const QString& string)
   emit parametersChanged();
 }
 
-
-
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
 void FileListInfoWidget::generateExampleInputFile()
 {
 
-  QString filename = QString("%1%2%3.%4").arg(m_FilePrefix->text())
-                     .arg(m_StartIndex->text(), m_TotalDigits->value(), '0')
-                     .arg(m_FileSuffix->text()).arg(m_FileExt->text());
+  QString filename = QString("%1%2%3.%4").arg(m_FilePrefix->text()).arg(m_StartIndex->text(), m_TotalDigits->value(), '0').arg(m_FileSuffix->text()).arg(m_FileExt->text());
   m_GeneratedFileNameExample->setText(filename);
 
   int start = m_StartIndex->value();
@@ -381,12 +371,8 @@ void FileListInfoWidget::generateExampleInputFile()
   bool hasMissingFiles = false;
 
   // Now generate all the file names the user is asking for and populate the table
-  QVector<QString> fileList = FilePathGenerator::GenerateFileList(start, end, hasMissingFiles, m_OrderAscending->isChecked(),
-                              m_InputDir->text(),
-                              m_FilePrefix->text(),
-                              m_FileSuffix->text(),
-                              m_FileExt->text(),
-                              m_TotalDigits->value());
+  QVector<QString> fileList = FilePathGenerator::GenerateFileList(start, end, hasMissingFiles, m_OrderAscending->isChecked(), m_InputDir->text(), m_FilePrefix->text(), m_FileSuffix->text(),
+                                                                  m_FileExt->text(), m_TotalDigits->value());
   m_FileListView->clear();
   QIcon greenDot = QIcon(QString(":/bullet_ball_green.png"));
   QIcon redDot = QIcon(QString(":/bullet_ball_red.png"));
@@ -394,8 +380,8 @@ void FileListInfoWidget::generateExampleInputFile()
   {
     QString filePath(fileList.at(i));
     QFileInfo fi(filePath);
-    QListWidgetItem* item = new QListWidgetItem( filePath, m_FileListView);
-    if (fi.exists() == true)
+    QListWidgetItem* item = new QListWidgetItem(filePath, m_FileListView);
+    if(fi.exists() == true)
     {
       item->setIcon(greenDot);
     }
@@ -406,7 +392,7 @@ void FileListInfoWidget::generateExampleInputFile()
     }
   }
 
-  if (hasMissingFiles == true)
+  if(hasMissingFiles == true)
   {
     m_ErrorMessage->setVisible(true);
     m_ErrorMessage->setText("Alert: Red Dot File(s) on the list do NOT exist on the filesystem. Please make sure all files exist");
@@ -423,11 +409,14 @@ void FileListInfoWidget::generateExampleInputFile()
 // -----------------------------------------------------------------------------
 void FileListInfoWidget::findMaxSliceAndPrefix()
 {
-  if (m_InputDir->text().length() == 0) { return; }
+  if(m_InputDir->text().length() == 0)
+  {
+    return;
+  }
   QDir dir(m_InputDir->text());
 
   // Final check to make sure we have a valid file extension
-  if (m_FileExt->text().isEmpty() == true)
+  if(m_FileExt->text().isEmpty() == true)
   {
     return;
   }
@@ -453,13 +442,13 @@ void FileListInfoWidget::findMaxSliceAndPrefix()
   int minTotalDigits = 1000;
   foreach(QFileInfo fi, angList)
   {
-    if (fi.suffix().compare(ext) && fi.isFile() == true)
+    if(fi.suffix().compare(ext) && fi.isFile() == true)
     {
       pos = 0;
       list.clear();
       QString fn = fi.baseName();
       QString fns = fn;
-      int length =  fn.length();
+      int length = fn.length();
       digitEnd = length - 1;
       while(digitEnd >= 0 && fn[digitEnd] >= '0' && fn[digitEnd] <= '9')
       {
@@ -469,7 +458,7 @@ void FileListInfoWidget::findMaxSliceAndPrefix()
 
       digitStart = pos = rx.indexIn(fn, pos);
       digitEnd = digitStart;
-      while ((pos = rx.indexIn(fn, pos)) != -1)
+      while((pos = rx.indexIn(fn, pos)) != -1)
       {
         list << rx.cap(0);
         fPrefix = fn.left(pos);
@@ -480,14 +469,27 @@ void FileListInfoWidget::findMaxSliceAndPrefix()
         ++digitEnd;
       }
 
-      if ( digitEnd - digitStart < minTotalDigits) { minTotalDigits = digitEnd - digitStart; }
+      if(digitEnd - digitStart < minTotalDigits)
+      {
+        minTotalDigits = digitEnd - digitStart;
+      }
       m_TotalDigits->setValue(minTotalDigits);
-      if (list.size() > 0)
+      if(list.size() > 0)
       {
         currValue = list.front().toInt(&ok);
-        if (false == flag) { minSlice = currValue; flag = true;}
-        if (currValue > maxSlice) { maxSlice = currValue; }
-        if (currValue < minSlice) { minSlice = currValue; }
+        if(false == flag)
+        {
+          minSlice = currValue;
+          flag = true;
+        }
+        if(currValue > maxSlice)
+        {
+          maxSlice = currValue;
+        }
+        if(currValue < minSlice)
+        {
+          minSlice = currValue;
+        }
       }
       ++totalOimFilesFound;
     }
@@ -497,7 +499,6 @@ void FileListInfoWidget::findMaxSliceAndPrefix()
   this->m_StartIndex->setValue(minSlice);
   this->m_EndIndex->setValue(maxSlice);
 }
-
 
 // -----------------------------------------------------------------------------
 //
@@ -512,7 +513,7 @@ void FileListInfoWidget::widgetChanged(const QString& text)
 // -----------------------------------------------------------------------------
 void FileListInfoWidget::filterNeedsInputParameters(AbstractFilter* filter)
 {
-  if (nullptr == filter)
+  if(nullptr == filter)
   {
     QString ss = QObject::tr("Error Setting FileListStack Gui values to Filter instance. Filter instance was nullptr.").arg(getFilterParameter()->getPropertyName());
     emit errorSettingFilterParameter(ss);
@@ -543,9 +544,8 @@ void FileListInfoWidget::filterNeedsInputParameters(AbstractFilter* filter)
 // -----------------------------------------------------------------------------
 void FileListInfoWidget::beforePreflight()
 {
-  if (m_DidCausePreflight == false)
+  if(m_DidCausePreflight == false)
   {
-
   }
 }
 
@@ -554,6 +554,4 @@ void FileListInfoWidget::beforePreflight()
 // -----------------------------------------------------------------------------
 void FileListInfoWidget::afterPreflight()
 {
-
 }
-

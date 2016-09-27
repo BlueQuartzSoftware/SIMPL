@@ -33,18 +33,16 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-
 #include "AppVersion.h"
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-AppVersion::AppVersion() :
-  m_MajorNum(-1),
-  m_MinorNum(-1),
-  m_PatchNum(-1)
+AppVersion::AppVersion()
+: m_MajorNum(-1)
+, m_MinorNum(-1)
+, m_PatchNum(-1)
 {
-
 }
 
 // -----------------------------------------------------------------------------
@@ -62,7 +60,6 @@ AppVersion::AppVersion(int majorNum, int minorNum, int patchNum)
 // -----------------------------------------------------------------------------
 AppVersion::~AppVersion()
 {
-
 }
 
 // -----------------------------------------------------------------------------
@@ -90,9 +87,7 @@ void AppVersion::operator=(const AppVersion& rhs)
 // -----------------------------------------------------------------------------
 bool AppVersion::operator==(const AppVersion& rhs)
 {
-  return (m_MajorNum == rhs.m_MajorNum &&
-          m_MinorNum == rhs.m_MinorNum &&
-          m_PatchNum == rhs.m_PatchNum);
+  return (m_MajorNum == rhs.m_MajorNum && m_MinorNum == rhs.m_MinorNum && m_PatchNum == rhs.m_PatchNum);
 }
 
 // -----------------------------------------------------------------------------
@@ -100,19 +95,19 @@ bool AppVersion::operator==(const AppVersion& rhs)
 // -----------------------------------------------------------------------------
 bool AppVersion::operator>(const AppVersion& rhs)
 {
-  if (m_MajorNum > rhs.m_MajorNum)
+  if(m_MajorNum > rhs.m_MajorNum)
   {
     return true;
   }
-  else if (m_MajorNum == rhs.m_MajorNum)
+  else if(m_MajorNum == rhs.m_MajorNum)
   {
-    if (m_MinorNum > rhs.m_MinorNum)
+    if(m_MinorNum > rhs.m_MinorNum)
     {
       return true;
     }
-    else if (m_MinorNum == rhs.m_MinorNum)
+    else if(m_MinorNum == rhs.m_MinorNum)
     {
-      if (m_PatchNum > rhs.m_PatchNum)
+      if(m_PatchNum > rhs.m_PatchNum)
       {
         return true;
       }
@@ -137,19 +132,19 @@ bool AppVersion::operator>(const AppVersion& rhs)
 // -----------------------------------------------------------------------------
 bool AppVersion::operator<(const AppVersion& rhs)
 {
-  if (m_MajorNum < rhs.m_MajorNum)
+  if(m_MajorNum < rhs.m_MajorNum)
   {
     return true;
   }
-  else if (m_MajorNum == rhs.m_MajorNum)
+  else if(m_MajorNum == rhs.m_MajorNum)
   {
-    if (m_MinorNum < rhs.m_MinorNum)
+    if(m_MinorNum < rhs.m_MinorNum)
     {
       return true;
     }
-    else if (m_MinorNum == rhs.m_MinorNum)
+    else if(m_MinorNum == rhs.m_MinorNum)
     {
-      if (m_PatchNum < rhs.m_PatchNum)
+      if(m_PatchNum < rhs.m_PatchNum)
       {
         return true;
       }

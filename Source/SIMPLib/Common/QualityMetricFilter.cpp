@@ -33,9 +33,7 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-
 #include "QualityMetricFilter.h"
-
 
 // -----------------------------------------------------------------------------
 //
@@ -51,14 +49,13 @@ QualityMetricFilter::~QualityMetricFilter()
 {
 }
 
-
-
-
-#define FILTER_DATA(m_msgType) \
-  if (m_FeatureOperator.compare("<") == 0) filterDataLessThan<m_msgType>();\
-  else if (m_FeatureOperator.compare(">") == 0) filterDataGreaterThan<m_msgType>();\
-  else if (m_FeatureOperator.compare("=") == 0) filterDataEqualTo<m_msgType>();
-
+#define FILTER_DATA(m_msgType)                                                                                                                                                                         \
+  if(m_FeatureOperator.compare("<") == 0)                                                                                                                                                              \
+    filterDataLessThan<m_msgType>();                                                                                                                                                                   \
+  else if(m_FeatureOperator.compare(">") == 0)                                                                                                                                                         \
+    filterDataGreaterThan<m_msgType>();                                                                                                                                                                \
+  else if(m_FeatureOperator.compare("=") == 0)                                                                                                                                                         \
+    filterDataEqualTo<m_msgType>();
 
 // -----------------------------------------------------------------------------
 //
@@ -66,54 +63,53 @@ QualityMetricFilter::~QualityMetricFilter()
 int QualityMetricFilter::filter()
 {
   int err = 0;
-  if (m_Output.get() == nullptr)
+  if(m_Output.get() == nullptr)
   {
     m_Output = DataArray<bool>::CreateArray(0, getFeatureName());
   }
   m_Output->Resize(m_NumValues);
   m_Output->initializeWithZeros();
 
-  if (m_DataType == Ebsd::Int8)
+  if(m_DataType == Ebsd::Int8)
   {
     FILTER_DATA(int8_t);
   }
-  if (m_DataType == Ebsd::UInt8)
+  if(m_DataType == Ebsd::UInt8)
   {
     FILTER_DATA(uint8_t);
   }
-  if (m_DataType == Ebsd::Int16)
+  if(m_DataType == Ebsd::Int16)
   {
     FILTER_DATA(int16_t);
   }
-  if (m_DataType == Ebsd::UInt16)
+  if(m_DataType == Ebsd::UInt16)
   {
     FILTER_DATA(uint16_t);
   }
-  if (m_DataType == Ebsd::Int32)
+  if(m_DataType == Ebsd::Int32)
   {
     FILTER_DATA(int32_t);
   }
-  if (m_DataType == Ebsd::UInt32)
+  if(m_DataType == Ebsd::UInt32)
   {
     FILTER_DATA(uint32_t);
   }
-  if (m_DataType == Ebsd::Int64)
+  if(m_DataType == Ebsd::Int64)
   {
     FILTER_DATA(int64_t);
   }
-  if (m_DataType == Ebsd::UInt64)
+  if(m_DataType == Ebsd::UInt64)
   {
     FILTER_DATA(uint64_t);
   }
-  if (m_DataType == Ebsd::Float)
+  if(m_DataType == Ebsd::Float)
   {
     FILTER_DATA(float);
   }
-  if (m_DataType == Ebsd::Double)
+  if(m_DataType == Ebsd::Double)
   {
     FILTER_DATA(double);
   }
-
 
   return err;
 }

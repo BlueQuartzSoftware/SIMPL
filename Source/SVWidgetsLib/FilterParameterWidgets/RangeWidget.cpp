@@ -37,12 +37,11 @@
 
 #include <QtCore/QMetaProperty>
 
+#include "SVWidgetsLib/Core/SVWidgetsLibConstants.h"
 #include <QtCore/QPropertyAnimation>
 #include <QtCore/QSequentialAnimationGroup>
-#include "SVWidgetsLib/Core/SVWidgetsLibConstants.h"
 
 #include "FilterParameterWidgetsDialogs.h"
-
 
 // Include the MOC generated file for this class
 #include "moc_RangeWidget.cpp"
@@ -50,8 +49,8 @@
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-RangeWidget::RangeWidget(FilterParameter* parameter, AbstractFilter* filter, QWidget* parent) :
-  FilterParameterWidget(parameter, filter, parent)
+RangeWidget::RangeWidget(FilterParameter* parameter, AbstractFilter* filter, QWidget* parent)
+: FilterParameterWidget(parameter, filter, parent)
 {
   m_FilterParameter = dynamic_cast<RangeFilterParameter*>(parameter);
   Q_ASSERT_X(m_FilterParameter != nullptr, "nullptr Pointer", "RangeWidget can ONLY be used with a RangeFilterParameter object");
@@ -64,7 +63,8 @@ RangeWidget::RangeWidget(FilterParameter* parameter, AbstractFilter* filter, QWi
 //
 // -----------------------------------------------------------------------------
 RangeWidget::~RangeWidget()
-{}
+{
+}
 
 // -----------------------------------------------------------------------------
 //
@@ -72,11 +72,11 @@ RangeWidget::~RangeWidget()
 void RangeWidget::setupGui()
 {
   blockSignals(true);
-  if (getFilterParameter() != nullptr)
+  if(getFilterParameter() != nullptr)
   {
-    label->setText(getFilterParameter()->getHumanLabel() );
+    label->setText(getFilterParameter()->getHumanLabel());
 
-    QPair<double, double> range = getFilter()->property(PROPERTY_NAME_AS_CHAR).value<QPair<double, double> >();
+    QPair<double, double> range = getFilter()->property(PROPERTY_NAME_AS_CHAR).value<QPair<double, double>>();
     minValue->setText(QString::number(range.first));
     maxValue->setText(QString::number(range.second));
   }
@@ -86,16 +86,13 @@ void RangeWidget::setupGui()
   maxValue->setValidator(new QDoubleValidator(maxValue));
 
   // Catch when the filter is about to execute the preflight
-  connect(getFilter(), SIGNAL(preflightAboutToExecute()),
-          this, SLOT(beforePreflight()));
+  connect(getFilter(), SIGNAL(preflightAboutToExecute()), this, SLOT(beforePreflight()));
 
   // Catch when the filter is finished running the preflight
-  connect(getFilter(), SIGNAL(preflightExecuted()),
-          this, SLOT(afterPreflight()));
+  connect(getFilter(), SIGNAL(preflightExecuted()), this, SLOT(afterPreflight()));
 
   // Catch when the filter wants its values updated
-  connect(getFilter(), SIGNAL(updateFilterParameters(AbstractFilter*)),
-          this, SLOT(filterNeedsInputParameters(AbstractFilter*)));
+  connect(getFilter(), SIGNAL(updateFilterParameters(AbstractFilter*)), this, SLOT(filterNeedsInputParameters(AbstractFilter*)));
 }
 
 // -----------------------------------------------------------------------------
@@ -103,7 +100,6 @@ void RangeWidget::setupGui()
 // -----------------------------------------------------------------------------
 void RangeWidget::beforePreflight()
 {
-
 }
 
 // -----------------------------------------------------------------------------
@@ -111,7 +107,6 @@ void RangeWidget::beforePreflight()
 // -----------------------------------------------------------------------------
 void RangeWidget::afterPreflight()
 {
-
 }
 
 // -----------------------------------------------------------------------------
@@ -147,6 +142,4 @@ void RangeWidget::filterNeedsInputParameters(AbstractFilter* filter)
   {
     FilterParameterWidgetsDialogs::ShowCouldNotSetFilterParameter(getFilter(), getFilterParameter());
   }
-
 }
-

@@ -33,20 +33,17 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-
 #include "H5PrecipitateStatsDataDelegate.h"
 
+#include "H5Support/HDF5ScopedFileSentinel.h"
 #include "H5Support/QH5Lite.h"
 #include "H5Support/QH5Utilities.h"
-#include "H5Support/HDF5ScopedFileSentinel.h"
-
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
 H5PrecipitateStatsDataDelegate::H5PrecipitateStatsDataDelegate()
 {
-
 }
 
 // -----------------------------------------------------------------------------
@@ -69,7 +66,7 @@ VectorOfFloatArray H5PrecipitateStatsDataDelegate::createBetaDistributionArrays(
   return vect;
 }
 
-//VectorOfFloatArray H5PrecipitateStatsDataDelegate::createPowerDistributionArrays()
+// VectorOfFloatArray H5PrecipitateStatsDataDelegate::createPowerDistributionArrays()
 //{
 //  FloatArrayType::Pointer alphas = FloatArrayType::CreateArray(0, SIMPL::StringConstants::Alpha);
 //  FloatArrayType::Pointer ks = FloatArrayType::CreateArray(0, SIMPL::StringConstants::Exp_k);
@@ -99,30 +96,29 @@ VectorOfFloatArray H5PrecipitateStatsDataDelegate::createRDFMaxMinDistributionAr
   return vect;
 }
 
-
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
 VectorOfFloatArray H5PrecipitateStatsDataDelegate::createDistributionVector(unsigned int distType)
 {
   QVector<FloatArrayType::Pointer> empty;
-  if (distType == SIMPL::DistributionType::Beta)
+  if(distType == SIMPL::DistributionType::Beta)
   {
     return createBetaDistributionArrays();
   }
-//  else if (distType == SIMPL::DistributionType::Power)
-//  {
-//    return createPowerDistributionArrays();
-//  }
-  else if (distType == SIMPL::DistributionType::LogNormal)
+  //  else if (distType == SIMPL::DistributionType::Power)
+  //  {
+  //    return createPowerDistributionArrays();
+  //  }
+  else if(distType == SIMPL::DistributionType::LogNormal)
   {
     return createLogNormalDistributionArrays();
   }
-//  else if (distType == SIMPL::DistributionType::RDFFrequency)
-//  {
-//    return empty();
-//  }
-  else if (distType == SIMPL::DistributionType::RDFMaxMin)
+  //  else if (distType == SIMPL::DistributionType::RDFFrequency)
+  //  {
+  //    return empty();
+  //  }
+  else if(distType == SIMPL::DistributionType::RDFMaxMin)
   {
     return createRDFMaxMinDistributionArrays();
   }
@@ -130,19 +126,18 @@ VectorOfFloatArray H5PrecipitateStatsDataDelegate::createDistributionVector(unsi
   return empty;
 }
 
-
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
 int H5PrecipitateStatsDataDelegate::readPrecipitateStatsData(PrecipitateStatsData* data, hid_t groupId)
 {
   int err = 0;
-  //Read the NumFeatures
+  // Read the NumFeatures
   err = readBoundaryArea(data, groupId);
 
   err = readStatsDataName(data, groupId);
 
-  //Read the PhaseFraction
+  // Read the PhaseFraction
   err = readPhaseFraction(data, groupId);
 
   // Read the Precip Boundary Fraction
@@ -156,16 +151,12 @@ int H5PrecipitateStatsDataDelegate::readPrecipitateStatsData(PrecipitateStatsDat
   data->setFeatureSize_DistType(dType);
   data->setFeatureSizeDistribution(createDistributionVector(data->getFeatureSize_DistType()));
   data->getRadialDistFunction();
-  err = readDistributionData(groupId,
-                             SIMPL::StringConstants::Feature_Size_Distribution,
-                             data->getFeatureSizeDistribution());
+  err = readDistributionData(groupId, SIMPL::StringConstants::Feature_Size_Distribution, data->getFeatureSizeDistribution());
 
   //  // Read the Radial Distribution Function
   RdfData::Pointer rdfData = RdfData::New();
   data->setRadialDistFunction(rdfData);
-  err = readRDFDistributionData(groupId,
-                                SIMPL::StringConstants::RadialDistFunc,
-                                data->getRadialDistFunction() );
+  err = readRDFDistributionData(groupId, SIMPL::StringConstants::RadialDistFunc, data->getRadialDistFunction());
   if(err < 0)
   {
     data->setRadialDistFunction(RdfData::NullPointer());
@@ -177,40 +168,34 @@ int H5PrecipitateStatsDataDelegate::readPrecipitateStatsData(PrecipitateStatsDat
   // Read the B Over A
   dType = readDistributionType(groupId, SIMPL::StringConstants::Feature_SizeVBoverA_Distributions);
   data->setBOverA_DistType(dType);
-  data->setFeatureSize_BOverA( createDistributionVector(data->getBOverA_DistType()));
-  err = readDistributionData(groupId,
-                             SIMPL::StringConstants::Feature_SizeVBoverA_Distributions,
-                             data->getFeatureSize_BOverA());
+  data->setFeatureSize_BOverA(createDistributionVector(data->getBOverA_DistType()));
+  err = readDistributionData(groupId, SIMPL::StringConstants::Feature_SizeVBoverA_Distributions, data->getFeatureSize_BOverA());
 
   // Read the C Over A
   dType = readDistributionType(groupId, SIMPL::StringConstants::Feature_SizeVCoverA_Distributions);
   data->setCOverA_DistType(dType);
-  data->setFeatureSize_COverA( createDistributionVector(data->getCOverA_DistType()));
-  err = readDistributionData(groupId,
-                             SIMPL::StringConstants::Feature_SizeVCoverA_Distributions,
-                             data->getFeatureSize_COverA());
+  data->setFeatureSize_COverA(createDistributionVector(data->getCOverA_DistType()));
+  err = readDistributionData(groupId, SIMPL::StringConstants::Feature_SizeVCoverA_Distributions, data->getFeatureSize_COverA());
 
   // Read the Clustering
   // FIXME: NO CLUSTERING DATA IS CURRENTLY GENERATED BY STATSGENERATOR, DISABLING THIS FOR NOW
-//  dType = readDistributionType(groupId, SIMPL::StringConstants::Feature_SizeVClustering_Distributions);
-//  data->setClustering_DistType(dType);
-//  data->setFeatureSize_Clustering( createDistributionVector(data->getClustering_DistType()));
-//  err = readDistributionData(groupId,
-//                             SIMPL::StringConstants::Feature_SizeVClustering_Distributions,
-//                             data->getFeatureSize_Clustering());
+  //  dType = readDistributionType(groupId, SIMPL::StringConstants::Feature_SizeVClustering_Distributions);
+  //  data->setClustering_DistType(dType);
+  //  data->setFeatureSize_Clustering( createDistributionVector(data->getClustering_DistType()));
+  //  err = readDistributionData(groupId,
+  //                             SIMPL::StringConstants::Feature_SizeVClustering_Distributions,
+  //                             data->getFeatureSize_Clustering());
 
   // Read the Omegas
   dType = readDistributionType(groupId, SIMPL::StringConstants::Feature_SizeVOmega3_Distributions);
   data->setOmegas_DistType(dType);
-  data->setFeatureSize_Omegas( createDistributionVector(data->getOmegas_DistType()));
-  err = readDistributionData(groupId,
-                             SIMPL::StringConstants::Feature_SizeVOmega3_Distributions,
-                             data->getFeatureSize_Omegas());
+  data->setFeatureSize_Omegas(createDistributionVector(data->getOmegas_DistType()));
+  err = readDistributionData(groupId, SIMPL::StringConstants::Feature_SizeVOmega3_Distributions, data->getFeatureSize_Omegas());
 
   // Read the Misorientation Bins
   FloatArrayType::Pointer misoBins = FloatArrayType::CreateArray(0, SIMPL::StringConstants::MisorientationBins);
   err = misoBins->readH5Data(groupId);
-  if (err < 0)
+  if(err < 0)
   {
     misoBins = FloatArrayType::NullPointer();
   }
@@ -220,7 +205,7 @@ int H5PrecipitateStatsDataDelegate::readPrecipitateStatsData(PrecipitateStatsDat
   // Read the ODF Data
   FloatArrayType::Pointer odfBins = FloatArrayType::CreateArray(0, SIMPL::StringConstants::ODF);
   err = odfBins->readH5Data(groupId);
-  if (err < 0)
+  if(err < 0)
   {
     odfBins = FloatArrayType::NullPointer();
   }
@@ -230,7 +215,7 @@ int H5PrecipitateStatsDataDelegate::readPrecipitateStatsData(PrecipitateStatsDat
   // Read the Axis ODF Data
   FloatArrayType::Pointer axisOdfBins = FloatArrayType::CreateArray(0, SIMPL::StringConstants::AxisOrientation);
   err = axisOdfBins->readH5Data(groupId);
-  if (err < 0)
+  if(err < 0)
   {
     axisOdfBins = FloatArrayType::NullPointer();
   }
@@ -240,33 +225,32 @@ int H5PrecipitateStatsDataDelegate::readPrecipitateStatsData(PrecipitateStatsDat
   return err;
 }
 
-
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
 int H5PrecipitateStatsDataDelegate::writePrecipitateStatsData(PrecipitateStatsData* data, hid_t groupId)
 {
-  if (nullptr == data)
+  if(nullptr == data)
   {
     return -1;
   }
   int err = 0;
 
   err = QH5Lite::writeStringDataset(groupId, SIMPL::StringConstants::Name, data->getName());
-  if (err < 0)
+  if(err < 0)
   {
     return err;
   }
   // Write the NumFeatures
   err = writeBoundaryArea(data, groupId);
-  if (err < 0)
+  if(err < 0)
   {
     return err;
   }
 
   // Write the PhaseFraction
   err = writePhaseFraction(data, groupId);
-  if (err < 0)
+  if(err < 0)
   {
     return err;
   }
@@ -278,10 +262,7 @@ int H5PrecipitateStatsDataDelegate::writePrecipitateStatsData(PrecipitateStatsDa
   err = writeFeatureDiameterInfo(data, groupId);
 
   // Write the Feature Size Distribution
-  err = writeDistributionData(groupId,
-                              data->getFeatureSize_DistType(),
-                              SIMPL::StringConstants::Feature_Size_Distribution,
-                              data->getFeatureSizeDistribution());
+  err = writeDistributionData(groupId, data->getFeatureSize_DistType(), SIMPL::StringConstants::Feature_Size_Distribution, data->getFeatureSizeDistribution());
 
   // Write the Radial Distribution Function
   err = writeRDFDistributionData(groupId, data->getRadialDistFunction(), SIMPL::StringConstants::RadialDistFunc);
@@ -290,32 +271,23 @@ int H5PrecipitateStatsDataDelegate::writePrecipitateStatsData(PrecipitateStatsDa
   err = writeBinNumbers(data, groupId);
 
   // Write the B Over A
-  err = writeDistributionData(groupId,
-                              data->getBOverA_DistType(),
-                              SIMPL::StringConstants::Feature_SizeVBoverA_Distributions,
-                              data->getFeatureSize_BOverA());
+  err = writeDistributionData(groupId, data->getBOverA_DistType(), SIMPL::StringConstants::Feature_SizeVBoverA_Distributions, data->getFeatureSize_BOverA());
 
   // Write the C Over A
-  err = writeDistributionData(groupId,
-                              data->getCOverA_DistType(),
-                              SIMPL::StringConstants::Feature_SizeVCoverA_Distributions,
-                              data->getFeatureSize_COverA());
+  err = writeDistributionData(groupId, data->getCOverA_DistType(), SIMPL::StringConstants::Feature_SizeVCoverA_Distributions, data->getFeatureSize_COverA());
 
   // Write the Clustering
-  //FIXME: NO CLUSTERING DATA IS CURRENTLY GENERATED BY STATSGENERATOR, DISABLING THIS FOR NOW
-//  err = writeDistributionData(groupId,
-//                              data->getClustering_DistType(),
-//                              SIMPL::StringConstants::Feature_SizeVClustering_Distributions,
-//                              data->getFeatureSize_Clustering());
+  // FIXME: NO CLUSTERING DATA IS CURRENTLY GENERATED BY STATSGENERATOR, DISABLING THIS FOR NOW
+  //  err = writeDistributionData(groupId,
+  //                              data->getClustering_DistType(),
+  //                              SIMPL::StringConstants::Feature_SizeVClustering_Distributions,
+  //                              data->getFeatureSize_Clustering());
 
   // Write the Omegas
-  err = writeDistributionData(groupId,
-                              data->getOmegas_DistType(),
-                              SIMPL::StringConstants::Feature_SizeVOmega3_Distributions,
-                              data->getFeatureSize_Omegas());
+  err = writeDistributionData(groupId, data->getOmegas_DistType(), SIMPL::StringConstants::Feature_SizeVOmega3_Distributions, data->getFeatureSize_Omegas());
 
   // Write the Misorientation Bins
-  if (nullptr != data->getMisorientationBins().get())
+  if(nullptr != data->getMisorientationBins().get())
   {
     QVector<size_t> tDims(1, data->getMisorientationBins()->getNumberOfTuples());
     err = data->getMisorientationBins()->writeH5Data(groupId, tDims);
@@ -323,18 +295,16 @@ int H5PrecipitateStatsDataDelegate::writePrecipitateStatsData(PrecipitateStatsDa
 
   err = writeWeightsData(groupId, SIMPL::StringConstants::MDFWeights, data->getMDF_Weights());
 
-
   // Write the ODF
-  if (nullptr != data->getODF().get())
+  if(nullptr != data->getODF().get())
   {
     QVector<size_t> tDims(1, data->getODF()->getNumberOfTuples());
     err = data->getODF()->writeH5Data(groupId, tDims);
   }
   err = writeWeightsData(groupId, SIMPL::StringConstants::ODFWeights, data->getODF_Weights());
 
-
   // Write the Axis ODF
-  if (nullptr != data->getAxisOrientation().get())
+  if(nullptr != data->getAxisOrientation().get())
   {
     QVector<size_t> tDims(1, data->getAxisOrientation()->getNumberOfTuples());
     err = data->getAxisOrientation()->writeH5Data(groupId, tDims);
@@ -347,17 +317,16 @@ int H5PrecipitateStatsDataDelegate::writePrecipitateStatsData(PrecipitateStatsDa
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-int H5PrecipitateStatsDataDelegate::writeVectorOfArrays(hid_t pid,
-                                                        VectorOfFloatArray colData)
+int H5PrecipitateStatsDataDelegate::writeVectorOfArrays(hid_t pid, VectorOfFloatArray colData)
 {
   herr_t err = 0;
   herr_t retErr = 0;
 
   // Loop through all the column data and write each one to the HDF5 file
   size_t numColumns = colData.size();
-  for (size_t c = 0; c < numColumns; ++c)
+  for(size_t c = 0; c < numColumns; ++c)
   {
-    //qDebug() << "Writing Dataset:" << hdf5GroupName << "/" << columnHeaders[c] ;
+    // qDebug() << "Writing Dataset:" << hdf5GroupName << "/" << columnHeaders[c] ;
     err = -1;
     if(nullptr != colData[c].get() && colData[c]->getSize() > 0)
     {
@@ -371,12 +340,11 @@ int H5PrecipitateStatsDataDelegate::writeVectorOfArrays(hid_t pid,
     }
     else
     {
-      qDebug() << ":Null Data Column had no data. Did you create the data?" ;
-      qDebug() << "  File: " << __FILE__ ;
-      qDebug() << "  Line: " << __LINE__ ;
+      qDebug() << ":Null Data Column had no data. Did you create the data?";
+      qDebug() << "  File: " << __FILE__;
+      qDebug() << "  Line: " << __LINE__;
       break;
     }
-
   }
   return retErr;
 }
@@ -388,11 +356,11 @@ int H5PrecipitateStatsDataDelegate::readVectorOfArrays(hid_t pid, VectorOfFloatA
 {
   int err = 0;
 
-  for (VectorOfFloatArray::iterator iter = colData.begin(); iter != colData.end(); ++iter )
+  for(VectorOfFloatArray::iterator iter = colData.begin(); iter != colData.end(); ++iter)
   {
     FloatArrayType::Pointer d = *iter;
     err = d->readH5Data(pid);
-    if (err < 0)
+    if(err < 0)
     {
       return err;
     }
@@ -421,7 +389,7 @@ int H5PrecipitateStatsDataDelegate::readMDFWeights(hid_t pid, PrecipitateStatsDa
   hid_t groupId = QH5Utilities::openHDF5Object(pid, SIMPL::StringConstants::MDFWeights);
 
   err = readVectorOfArrays(groupId, mdfWeights);
-  if (err >= 0)
+  if(err >= 0)
   {
     data->setMDF_Weights(mdfWeights);
   }
@@ -464,7 +432,6 @@ int H5PrecipitateStatsDataDelegate::readODFWeights(hid_t pid, PrecipitateStatsDa
   return err;
 }
 
-
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
@@ -502,17 +469,16 @@ int H5PrecipitateStatsDataDelegate::readAxisODFWeights(hid_t pid, PrecipitateSta
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-int H5PrecipitateStatsDataDelegate::writeWeightsData(hid_t pid, const QString& hdf5GroupName,
-                                                     VectorOfFloatArray colData)
+int H5PrecipitateStatsDataDelegate::writeWeightsData(hid_t pid, const QString& hdf5GroupName, VectorOfFloatArray colData)
 {
   herr_t err = 0;
-  if (colData.size() == 0)
+  if(colData.size() == 0)
   {
     return err;
   }
   // Create the Group Folder
   hid_t disId = QH5Utilities::createGroup(pid, hdf5GroupName);
-  if (disId > 0)
+  if(disId > 0)
   {
     err = writeVectorOfArrays(disId, colData);
   }
@@ -521,14 +487,10 @@ int H5PrecipitateStatsDataDelegate::writeWeightsData(hid_t pid, const QString& h
   return err;
 }
 
-
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-int H5PrecipitateStatsDataDelegate::writeDistributionData(hid_t pid,
-                                                          uint32_t disType,
-                                                          const QString& hdf5GroupName,
-                                                          VectorOfFloatArray colData)
+int H5PrecipitateStatsDataDelegate::writeDistributionData(hid_t pid, uint32_t disType, const QString& hdf5GroupName, VectorOfFloatArray colData)
 {
   herr_t err = 0;
   herr_t retErr = 0;
@@ -536,25 +498,25 @@ int H5PrecipitateStatsDataDelegate::writeDistributionData(hid_t pid,
   QString disTypeStr;
   switch(disType)
   {
-    case SIMPL::DistributionType::Beta:
-      disTypeStr = SIMPL::StringConstants::BetaDistribution;
-      break;
-    case SIMPL::DistributionType::LogNormal:
-      disTypeStr = SIMPL::StringConstants::LogNormalDistribution;
-      break;
-//    case SIMPL::DistributionType::Power:
-//      disTypeStr = SIMPL::StringConstants::PowerLawDistribution;
-//      break;
-    case SIMPL::DistributionType::UnknownDistributionType:
-      disTypeStr = SIMPL::StringConstants::UnknownDistribution;
-      break;
-    default:
-      disTypeStr = SIMPL::StringConstants::UnknownDistribution;
+  case SIMPL::DistributionType::Beta:
+    disTypeStr = SIMPL::StringConstants::BetaDistribution;
+    break;
+  case SIMPL::DistributionType::LogNormal:
+    disTypeStr = SIMPL::StringConstants::LogNormalDistribution;
+    break;
+  //    case SIMPL::DistributionType::Power:
+  //      disTypeStr = SIMPL::StringConstants::PowerLawDistribution;
+  //      break;
+  case SIMPL::DistributionType::UnknownDistributionType:
+    disTypeStr = SIMPL::StringConstants::UnknownDistribution;
+    break;
+  default:
+    disTypeStr = SIMPL::StringConstants::UnknownDistribution;
   }
 
   // Create the Group Folder
   hid_t disId = QH5Utilities::createGroup(pid, hdf5GroupName);
-  if (disId > 0)
+  if(disId > 0)
   {
     err = QH5Lite::writeStringAttribute(pid, hdf5GroupName, SIMPL::StringConstants::DistributionType, disTypeStr);
     if(err >= 0)
@@ -578,23 +540,22 @@ int H5PrecipitateStatsDataDelegate::writeDistributionData(hid_t pid,
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-int H5PrecipitateStatsDataDelegate::writeRDFDistributionData(hid_t pid, RdfData::Pointer rdfData,
-    const QString& hdf5GroupName)
+int H5PrecipitateStatsDataDelegate::writeRDFDistributionData(hid_t pid, RdfData::Pointer rdfData, const QString& hdf5GroupName)
 {
   herr_t err = 0;
   herr_t retErr = 0;
 
-  if (nullptr != rdfData)
+  if(nullptr != rdfData)
   {
     QString disTypeStr = rdfData->getDistributionType();
 
     // Create the Group Folder
     hid_t disId = QH5Utilities::createGroup(pid, hdf5GroupName);
-    if (disId > 0)
+    if(disId > 0)
     {
       HDF5ScopedGroupSentinel sentinel(&disId, false);
       std::vector<hsize_t> dims(1);
-      //Write the Frequencies
+      // Write the Frequencies
       std::vector<float> freqs = rdfData->getFrequencies();
       dims[0] = freqs.size();
       if(dims[0] != 0)
@@ -648,43 +609,39 @@ int H5PrecipitateStatsDataDelegate::writeRDFDistributionData(hid_t pid, RdfData:
   return retErr;
 }
 
-
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
 uint32_t H5PrecipitateStatsDataDelegate::readDistributionType(hid_t pid, const QString& hdf5GroupName)
 {
-  //int err = 0;
+  // int err = 0;
   uint32_t dType = SIMPL::DistributionType::UnknownDistributionType;
 
   QString disTypeStr;
   int err = QH5Lite::readStringAttribute(pid, hdf5GroupName, SIMPL::StringConstants::DistributionType, disTypeStr);
-  if (err < 0)
+  if(err < 0)
   {
     return dType;
   }
-  if (disTypeStr.compare(SIMPL::StringConstants::BetaDistribution) == 0)
+  if(disTypeStr.compare(SIMPL::StringConstants::BetaDistribution) == 0)
   {
     dType = SIMPL::DistributionType::Beta;
   }
-  else   if (disTypeStr.compare(SIMPL::StringConstants::LogNormalDistribution) == 0)
+  else if(disTypeStr.compare(SIMPL::StringConstants::LogNormalDistribution) == 0)
   {
     dType = SIMPL::DistributionType::LogNormal;
   }
-//  else   if (disTypeStr.compare(SIMPL::StringConstants::PowerLawDistribution) == 0)
-//  {
-//    dType = SIMPL::DistributionType::Power;
-//  }
+  //  else   if (disTypeStr.compare(SIMPL::StringConstants::PowerLawDistribution) == 0)
+  //  {
+  //    dType = SIMPL::DistributionType::Power;
+  //  }
   return dType;
 }
-
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-int H5PrecipitateStatsDataDelegate::readDistributionData(hid_t pid,
-                                                         const QString& hdf5GroupName,
-                                                         VectorOfFloatArray colData)
+int H5PrecipitateStatsDataDelegate::readDistributionData(hid_t pid, const QString& hdf5GroupName, VectorOfFloatArray colData)
 {
   int err = 0;
   hid_t disId = QH5Utilities::openHDF5Object(pid, hdf5GroupName);
@@ -693,13 +650,11 @@ int H5PrecipitateStatsDataDelegate::readDistributionData(hid_t pid,
     return -1;
   }
 
-  for (VectorOfFloatArray::iterator iter = colData.begin(); iter != colData.end(); ++iter)
+  for(VectorOfFloatArray::iterator iter = colData.begin(); iter != colData.end(); ++iter)
   {
     FloatArrayType::Pointer d = *iter;
     err |= d->readH5Data(disId);
   }
-
-
 
   err |= QH5Utilities::closeHDF5Object(disId);
   return err;
@@ -707,9 +662,7 @@ int H5PrecipitateStatsDataDelegate::readDistributionData(hid_t pid,
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-int H5PrecipitateStatsDataDelegate::readRDFDistributionData(hid_t pid,
-                                                            const QString& hdf5GroupName,
-                                                            RdfData::Pointer rdfData)
+int H5PrecipitateStatsDataDelegate::readRDFDistributionData(hid_t pid, const QString& hdf5GroupName, RdfData::Pointer rdfData)
 {
   int err = 0;
   hid_t disId = QH5Utilities::openHDF5Object(pid, hdf5GroupName);
@@ -718,7 +671,6 @@ int H5PrecipitateStatsDataDelegate::readRDFDistributionData(hid_t pid,
     return -1;
   }
   HDF5ScopedGroupSentinel sentinel(&disId, false);
-
 
   std::vector<float> freqs;
   err = H5Lite::readVectorDataset(disId, SIMPL::StringConstants::Frequencies.toStdString(), freqs);
@@ -743,9 +695,7 @@ int H5PrecipitateStatsDataDelegate::readRDFDistributionData(hid_t pid,
   }
   rdfData->setMinDistance(val);
 
-
-
-  float boxDims[3] = { 0.0f, 0.0f, 0.0f};
+  float boxDims[3] = {0.0f, 0.0f, 0.0f};
   err = QH5Lite::readPointerDataset(disId, SIMPL::StringConstants::RdfBoxDims, boxDims);
   if(err < 0)
   {
@@ -753,8 +703,7 @@ int H5PrecipitateStatsDataDelegate::readRDFDistributionData(hid_t pid,
   }
   rdfData->setBoxSize(boxDims);
 
-
-  float boxRes[3] = { 0.0f, 0.0f, 0.0f};
+  float boxRes[3] = {0.0f, 0.0f, 0.0f};
   err = QH5Lite::readPointerDataset(disId, SIMPL::StringConstants::RdfBoxRes, boxRes);
   if(err < 0)
   {
@@ -851,8 +800,7 @@ int H5PrecipitateStatsDataDelegate::readFeatureDiameterInfo(PrecipitateStatsData
   /*
    * Feature Diameter Info is encode as 3 floats: BinStepSize, MaxDiameter, MinDiameter
    */
-  float featureDiameterInfo[3] =
-  { 0.0f, 0.0f, 0.0f };
+  float featureDiameterInfo[3] = {0.0f, 0.0f, 0.0f};
 
   err = QH5Lite::readPointerDataset(groupId, SIMPL::StringConstants::Feature_Diameter_Info, featureDiameterInfo);
   data->setFeatureDiameterInfo(featureDiameterInfo);
@@ -884,7 +832,3 @@ int H5PrecipitateStatsDataDelegate::readBinNumbers(PrecipitateStatsData* data, h
   data->setBinNumbers(p);
   return err;
 }
-
-
-
-

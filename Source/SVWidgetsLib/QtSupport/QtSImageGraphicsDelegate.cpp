@@ -35,20 +35,19 @@
 
 #include "QtSImageGraphicsDelegate.h"
 
-
 //-- STL includes
 #include <iostream>
 
 //-- Qt Includes
 #include <QtCore/QPoint>
-#include <QtWidgets/QMainWindow>
-#include <QtWidgets/QTableWidget>
 #include <QtGui/QPixmap>
 #include <QtWidgets/QGraphicsItem>
+#include <QtWidgets/QGraphicsPixmapItem>
 #include <QtWidgets/QGraphicsScene>
 #include <QtWidgets/QGraphicsView>
 #include <QtWidgets/QHeaderView>
-#include <QtWidgets/QGraphicsPixmapItem>
+#include <QtWidgets/QMainWindow>
+#include <QtWidgets/QTableWidget>
 
 #include "moc_QtSImageGraphicsDelegate.cpp"
 
@@ -58,17 +57,16 @@
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-QtSImageGraphicsDelegate::QtSImageGraphicsDelegate(QObject* parent) :
-  QObject(parent),
-  m_MainWindow(nullptr),
-  m_GraphicsView(nullptr),
-  m_GraphicsScene(nullptr),
-  m_CompositeImages(false),
-  m_CurrentGraphicsItem(nullptr),
-  _zoomFactor(1.0),
-  _shouldFitToWindow(false)
+QtSImageGraphicsDelegate::QtSImageGraphicsDelegate(QObject* parent)
+: QObject(parent)
+, m_MainWindow(nullptr)
+, m_GraphicsView(nullptr)
+, m_GraphicsScene(nullptr)
+, m_CompositeImages(false)
+, m_CurrentGraphicsItem(nullptr)
+, _zoomFactor(1.0)
+, _shouldFitToWindow(false)
 {
-
 
   _zoomFactors[0] = 0.05;
   _zoomFactors[1] = 0.1;
@@ -92,7 +90,6 @@ QtSImageGraphicsDelegate::~QtSImageGraphicsDelegate()
 {
 }
 
-
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
@@ -102,13 +99,12 @@ void QtSImageGraphicsDelegate::resetCaches()
   this->m_OverlayImage = QImage();
 }
 
-
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
 void QtSImageGraphicsDelegate::displayTextMessage(QString message)
 {
-  _displayTextMessage( message );
+  _displayTextMessage(message);
 }
 
 // -----------------------------------------------------------------------------
@@ -117,32 +113,35 @@ void QtSImageGraphicsDelegate::displayTextMessage(QString message)
 void QtSImageGraphicsDelegate::increaseZoom()
 {
   _shouldFitToWindow = false;
-  if (m_CachedImage.isNull() == true) { return; }
+  if(m_CachedImage.isNull() == true)
+  {
+    return;
+  }
   // Find the next scaling factor up from where we are currently
   QSize imageSize = this->m_CachedImage.size();
   int gvWidth = m_GraphicsView->size().width();
   int gvHeight = m_GraphicsView->size().height();
   gvWidth -= 4;
   gvHeight -= 4;
-  if (imageSize.width() > imageSize.height() )
+  if(imageSize.width() > imageSize.height())
   {
-    for (int i = 0; i < ZOOM_INDEX_MAX - 1; ++i )
+    for(int i = 0; i < ZOOM_INDEX_MAX - 1; ++i)
     {
-      if (_zoomFactor < this->_zoomFactors[i] && i > 0)
+      if(_zoomFactor < this->_zoomFactors[i] && i > 0)
       {
         this->_zoomIndex = i;
-        this->_zoomFactor = this->_zoomFactors[this->_zoomIndex ];
+        this->_zoomFactor = this->_zoomFactors[this->_zoomIndex];
         break;
       }
     }
   }
 
-  for (int i = 0; i < ZOOM_INDEX_MAX - 1; ++i )
+  for(int i = 0; i < ZOOM_INDEX_MAX - 1; ++i)
   {
-    if (_zoomFactor < this->_zoomFactors[i] && i > 0)
+    if(_zoomFactor < this->_zoomFactors[i] && i > 0)
     {
       this->_zoomIndex = i;
-      this->_zoomFactor = this->_zoomFactors[this->_zoomIndex ];
+      this->_zoomFactor = this->_zoomFactors[this->_zoomIndex];
       break;
     }
   }
@@ -157,31 +156,34 @@ void QtSImageGraphicsDelegate::decreaseZoom()
 {
   _shouldFitToWindow = false;
   // Find the next scaling factor down
-  if (m_CachedImage.isNull() == true) { return; }
-  QSize imageSize = this->m_CachedImage.size();
-//  int gvWidth = m_GraphicsView->size().width();
-//  int gvHeight = m_GraphicsView->size().height();
-//  gvWidth -= 4;
-//  gvHeight -= 4;
-  if (imageSize.width() > imageSize.height() )
+  if(m_CachedImage.isNull() == true)
   {
-    for (int i = 0; i < ZOOM_INDEX_MAX - 1; ++i )
+    return;
+  }
+  QSize imageSize = this->m_CachedImage.size();
+  //  int gvWidth = m_GraphicsView->size().width();
+  //  int gvHeight = m_GraphicsView->size().height();
+  //  gvWidth -= 4;
+  //  gvHeight -= 4;
+  if(imageSize.width() > imageSize.height())
+  {
+    for(int i = 0; i < ZOOM_INDEX_MAX - 1; ++i)
     {
-      if (_zoomFactor < this->_zoomFactors[i] && i > 0)
+      if(_zoomFactor < this->_zoomFactors[i] && i > 0)
       {
         this->_zoomIndex = i - 1;
-        this->_zoomFactor = this->_zoomFactors[this->_zoomIndex ];
+        this->_zoomFactor = this->_zoomFactors[this->_zoomIndex];
         break;
       }
     }
   }
 
-  for (int i = ZOOM_INDEX_MAX - 1; i >= 0; --i )
+  for(int i = ZOOM_INDEX_MAX - 1; i >= 0; --i)
   {
-    if (_zoomFactor > this->_zoomFactors[i] && i > 0)
+    if(_zoomFactor > this->_zoomFactors[i] && i > 0)
     {
       this->_zoomIndex = i;
-      this->_zoomFactor = this->_zoomFactors[this->_zoomIndex ];
+      this->_zoomFactor = this->_zoomFactors[this->_zoomIndex];
       break;
     }
   }
@@ -193,7 +195,10 @@ void QtSImageGraphicsDelegate::decreaseZoom()
 // -----------------------------------------------------------------------------
 void QtSImageGraphicsDelegate::fitToWindow()
 {
-  if (m_CachedImage.isNull() == true) { return; }
+  if(m_CachedImage.isNull() == true)
+  {
+    return;
+  }
   _shouldFitToWindow = true;
   _zoomIndex = ZOOM_INDEX_MAX;
   this->setZoomFactor(_zoomFactors[_zoomIndex]);
@@ -203,7 +208,7 @@ void QtSImageGraphicsDelegate::fitToWindow()
   int gvHeight = m_GraphicsView->size().height();
   gvWidth -= 4;
   gvHeight -= 4;
-  if (imageSize.width() > imageSize.height() )
+  if(imageSize.width() > imageSize.height())
   {
     double zf = (double)(gvWidth) / (double)(imageSize.width());
     this->setZoomFactor(zf);
@@ -216,7 +221,6 @@ void QtSImageGraphicsDelegate::fitToWindow()
   updateGraphicsScene();
 }
 
-
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
@@ -225,25 +229,24 @@ void QtSImageGraphicsDelegate::setZoomFactor(double zoomFactor)
   this->_zoomFactor = zoomFactor;
 }
 
-
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
 QImage QtSImageGraphicsDelegate::_scaleImage()
 {
-  //qDebug() << "  QtSImageGraphicsDelegate::_scaleImage()" << "\n";
+  // qDebug() << "  QtSImageGraphicsDelegate::_scaleImage()" << "\n";
   QSize imageSize = this->m_CachedImage.size();
-// qDebug() << "    imageSize (W x H) :" << imageSize.width() << " x " << imageSize.height() << "\n";
-//  int gvWidth = m_GraphicsView->size().width();
-//  int gvHeight = m_GraphicsView->size().height();
-// qDebug() << "    GV Size (W X H) :" << gvWidth << " x " << gvHeight << "\n";
-  if (_zoomFactor > -1.0)
+  // qDebug() << "    imageSize (W x H) :" << imageSize.width() << " x " << imageSize.height() << "\n";
+  //  int gvWidth = m_GraphicsView->size().width();
+  //  int gvHeight = m_GraphicsView->size().height();
+  // qDebug() << "    GV Size (W X H) :" << gvWidth << " x " << gvHeight << "\n";
+  if(_zoomFactor > -1.0)
   {
     // qDebug() << "  _zoomFactor: " << _zoomFactor << "\n";
     imageSize *= _zoomFactor;
   }
 
-  return this->m_CachedImage.scaled(imageSize, Qt::KeepAspectRatio );
+  return this->m_CachedImage.scaled(imageSize, Qt::KeepAspectRatio);
 }
 
 // -----------------------------------------------------------------------------
@@ -251,19 +254,19 @@ QImage QtSImageGraphicsDelegate::_scaleImage()
 // -----------------------------------------------------------------------------
 QImage QtSImageGraphicsDelegate::_scaleImage(QImage image)
 {
-  //qDebug() << "  QtSImageGraphicsDelegate::_scaleImage()" << "\n";
+  // qDebug() << "  QtSImageGraphicsDelegate::_scaleImage()" << "\n";
   QSize imageSize = image.size();
-// qDebug() << "    imageSize (W x H) :" << imageSize.width() << " x " << imageSize.height() << "\n";
-//  int gvWidth = m_GraphicsView->size().width();
-//  int gvHeight = m_GraphicsView->size().height();
-// qDebug() << "    GV Size (W X H) :" << gvWidth << " x " << gvHeight << "\n";
-  if (_zoomFactor > -1.0)
+  // qDebug() << "    imageSize (W x H) :" << imageSize.width() << " x " << imageSize.height() << "\n";
+  //  int gvWidth = m_GraphicsView->size().width();
+  //  int gvHeight = m_GraphicsView->size().height();
+  // qDebug() << "    GV Size (W X H) :" << gvWidth << " x " << gvHeight << "\n";
+  if(_zoomFactor > -1.0)
   {
     // qDebug() << "  _zoomFactor: " << _zoomFactor << "\n";
     imageSize *= _zoomFactor;
   }
 
-  return image.scaled(imageSize, Qt::KeepAspectRatio );
+  return image.scaled(imageSize, Qt::KeepAspectRatio);
 }
 
 // -----------------------------------------------------------------------------
@@ -271,11 +274,11 @@ QImage QtSImageGraphicsDelegate::_scaleImage(QImage image)
 // -----------------------------------------------------------------------------
 void QtSImageGraphicsDelegate::on_parentResized()
 {
-  //qDebug() << "  QtSImageGraphicsDelegate::on_parentResized" << "\n";
-//  int gvWidth = m_GraphicsView->size().width();
-//  int gvHeight = m_GraphicsView->size().height();
-// qDebug() << "    GV Size (W X H) :" << gvWidth << " x " << gvHeight << "\n";
-  if (_shouldFitToWindow == true)
+  // qDebug() << "  QtSImageGraphicsDelegate::on_parentResized" << "\n";
+  //  int gvWidth = m_GraphicsView->size().width();
+  //  int gvHeight = m_GraphicsView->size().height();
+  // qDebug() << "    GV Size (W X H) :" << gvWidth << " x " << gvHeight << "\n";
+  if(_shouldFitToWindow == true)
   {
     fitToWindow();
   }
@@ -291,20 +294,20 @@ void QtSImageGraphicsDelegate::on_parentResized()
 void QtSImageGraphicsDelegate::updateGraphicsScene(bool update)
 {
 
-  if (this->m_CachedImage.isNull() == true)
+  if(this->m_CachedImage.isNull() == true)
   {
     return;
   }
-  if (nullptr != m_CurrentGraphicsItem)
+  if(nullptr != m_CurrentGraphicsItem)
   {
-    m_GraphicsScene->removeItem(m_CurrentGraphicsItem); //Remove the image that is displaying
-    m_CurrentGraphicsItem->setParentItem(nullptr); // Set the parent to nullptr
-    delete m_CurrentGraphicsItem; // Delete the object
+    m_GraphicsScene->removeItem(m_CurrentGraphicsItem); // Remove the image that is displaying
+    m_CurrentGraphicsItem->setParentItem(nullptr);      // Set the parent to nullptr
+    delete m_CurrentGraphicsItem;                       // Delete the object
   }
 
   QImage dataImage = _scaleImage();
   QPixmap imagePixmap;
-  if (m_CompositeImages == true && m_OverlayImage.isNull() == false)
+  if(m_CompositeImages == true && m_OverlayImage.isNull() == false)
   {
     QImage topImage = _scaleImage(m_OverlayImage);
     QPainter painter;
@@ -313,7 +316,7 @@ void QtSImageGraphicsDelegate::updateGraphicsScene(bool update)
     painter.begin(&paintImage);
     // Draw the fixed Image first
     painter.setPen(Qt::NoPen);
-    painter.drawImage(point, topImage );
+    painter.drawImage(point, topImage);
     // Draw the moving image next
     painter.setCompositionMode(m_composition_mode);
     painter.drawImage(point, dataImage);
@@ -330,7 +333,7 @@ void QtSImageGraphicsDelegate::updateGraphicsScene(bool update)
   m_GraphicsScene->setSceneRect(rect);
   m_GraphicsView->setScene(m_GraphicsScene);
   m_GraphicsView->centerOn(m_CurrentGraphicsItem);
-  if (update)
+  if(update)
   {
     m_GraphicsScene->update(rect);
   }
@@ -341,11 +344,11 @@ void QtSImageGraphicsDelegate::updateGraphicsScene(bool update)
 // -----------------------------------------------------------------------------
 void QtSImageGraphicsDelegate::_displayTextMessage(QString message)
 {
-  if ( nullptr != m_CurrentGraphicsItem )
+  if(nullptr != m_CurrentGraphicsItem)
   {
-    m_GraphicsScene->removeItem(m_CurrentGraphicsItem); //Remove the image that is displaying
-    m_CurrentGraphicsItem->setParentItem(nullptr); // Set the parent to nullptr
-    delete m_CurrentGraphicsItem; // Delete the object
+    m_GraphicsScene->removeItem(m_CurrentGraphicsItem); // Remove the image that is displaying
+    m_CurrentGraphicsItem->setParentItem(nullptr);      // Set the parent to nullptr
+    delete m_CurrentGraphicsItem;                       // Delete the object
   }
   m_CurrentGraphicsItem = nullptr;
   QGraphicsTextItem* tItem = m_GraphicsScene->addText(message); // Add the new image into the display
@@ -356,4 +359,3 @@ void QtSImageGraphicsDelegate::_displayTextMessage(QString message)
   m_GraphicsView->centerOn(tItem);
   m_GraphicsScene->update(rect);
 }
-

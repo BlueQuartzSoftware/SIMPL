@@ -35,44 +35,41 @@
 
 #include "UpdateCheck.h"
 
-#include <QtCore/QSysInfo>
 #include <QtCore/QDate>
-#include <QtCore/QSettings>
-#include <QtCore/QJsonDocument>
 #include <QtCore/QJsonArray>
+#include <QtCore/QJsonDocument>
 #include <QtCore/QJsonObject>
-
+#include <QtCore/QSettings>
+#include <QtCore/QSysInfo>
 
 #include <QtWidgets/QMessageBox>
 #include <QtWidgets/QWidget>
 
 #include <QtNetwork/QNetworkAccessManager>
-#include <QtNetwork/QNetworkRequest>
 #include <QtNetwork/QNetworkReply>
+#include <QtNetwork/QNetworkRequest>
 
-
-#include "SIMPLib/SIMPLibVersion.h"
 #include "SIMPLib/Common/AppVersion.h"
 #include "SIMPLib/Common/Constants.h"
+#include "SIMPLib/SIMPLibVersion.h"
 
 #include "SVWidgetsLib/QtSupport/QtSSettings.h"
 
+#include "SVWidgetsLib/Dialogs/UpdateCheckData.h"
+#include "SVWidgetsLib/Dialogs/UpdateCheckDialog.h"
 #include "SVWidgetsLib/SVWidgetsLib.h"
 #include "SVWidgetsLib/SVWidgetsLibVersion.h"
-#include "SVWidgetsLib/Dialogs/UpdateCheckDialog.h"
-#include "SVWidgetsLib/Dialogs/UpdateCheckData.h"
 
 #include "moc_UpdateCheck.cpp"
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-UpdateCheck::UpdateCheck(SIMPLVersionData_t versionData, QObject* parent) :
-  QObject(parent),
-  m_Nam(nullptr),
-  m_VersionData(versionData)
+UpdateCheck::UpdateCheck(SIMPLVersionData_t versionData, QObject* parent)
+: QObject(parent)
+, m_Nam(nullptr)
+, m_VersionData(versionData)
 {
-
 }
 
 // -----------------------------------------------------------------------------
@@ -80,7 +77,6 @@ UpdateCheck::UpdateCheck(SIMPLVersionData_t versionData, QObject* parent) :
 // -----------------------------------------------------------------------------
 UpdateCheck::~UpdateCheck()
 {
-
 }
 
 // -----------------------------------------------------------------------------
@@ -90,18 +86,16 @@ void UpdateCheck::checkVersion(QUrl website)
 {
   writeUpdateCheckDate();
 
-  if (m_Nam != nullptr)
+  if(m_Nam != nullptr)
   {
     m_Nam->deleteLater();
   }
   m_Nam = new QNetworkAccessManager(this);
 
-  QObject::connect(m_Nam, SIGNAL(finished(QNetworkReply*)),
-                   this, SLOT(networkReplied(QNetworkReply*)));
+  QObject::connect(m_Nam, SIGNAL(finished(QNetworkReply*)), this, SLOT(networkReplied(QNetworkReply*)));
 
   QNetworkRequest request;
   request.setUrl(website);
-
 
   QString header;
   QTextStream out(&header);
@@ -127,7 +121,7 @@ void UpdateCheck::networkReplied(QNetworkReply* reply)
   // see CS001432 on how to handle this
 
   // no error received?
-  if (reply->error() == QNetworkReply::NoError)
+  if(reply->error() == QNetworkReply::NoError)
   {
     QString appName = m_VersionData.appName;
 
@@ -135,7 +129,7 @@ void UpdateCheck::networkReplied(QNetworkReply* reply)
     QString message;
     QTextStream outMsg(&message);
 
-    QByteArray byteArray = reply->readAll();  // bytes
+    QByteArray byteArray = reply->readAll(); // bytes
 
     QJsonParseError parseError;
     QJsonDocument doc = QJsonDocument::fromJson(byteArray, &parseError);
@@ -156,17 +150,17 @@ void UpdateCheck::networkReplied(QNetworkReply* reply)
 
     bool ok = false;
     AppVersion appVersion;
-    appVersion.setMajorNum( appMajor.toInt(&ok) );
-    appVersion.setMinorNum( appMinor.toInt(&ok) );
-    appVersion.setPatchNum( appPatch.toInt(&ok) );
+    appVersion.setMajorNum(appMajor.toInt(&ok));
+    appVersion.setMinorNum(appMinor.toInt(&ok));
+    appVersion.setPatchNum(appPatch.toInt(&ok));
 
     AppVersion serverVersion;
-    serverVersion.setMajorNum( serverMajor.toInt(&ok) );
-    serverVersion.setMinorNum( serverMinor.toInt(&ok) );
-    serverVersion.setPatchNum( serverPatch.toInt(&ok) );
+    serverVersion.setMajorNum(serverMajor.toInt(&ok));
+    serverVersion.setMinorNum(serverMinor.toInt(&ok));
+    serverVersion.setPatchNum(serverPatch.toInt(&ok));
 
     // If the server returned garbage values
-    if ( serverVersion.getMajorNum() == 0 && serverVersion.getMinorNum() == 0 && serverVersion.getPatchNum() == 0 )
+    if(serverVersion.getMajorNum() == 0 && serverVersion.getMinorNum() == 0 && serverVersion.getPatchNum() == 0)
     {
       QString errorMessage = "Bad latest version values were read in from the SIMPLView database. ";
       errorMessage.append("Please contact the SIMPLView developers for more information.\n");
@@ -180,11 +174,11 @@ void UpdateCheck::networkReplied(QNetworkReply* reply)
     QString serverVersionStr = serverMajor + "." + serverMinor + "." + serverPatch;
 
     // If the server returned a legitimate version, compare it with the app version
-    if (serverVersion > appVersion)
+    if(serverVersion > appVersion)
     {
       dataObj->setHasUpdate(true);
       outMsg << "<qt><b>There is an update available for " << appName;
-      outMsg  << ". The update is a " << releaseType << " and was released on " << releaseDate;
+      outMsg << ". The update is a " << releaseType << " and was released on " << releaseDate;
       outMsg << ".</b><br /><br />  You are currently running version " << appVersionStr;
       outMsg << ". If you are ready to update you can go to the main download <a href=\"http://dream3d.bluequartz.net\">website</a>.</qt>";
     }
@@ -205,13 +199,12 @@ void UpdateCheck::networkReplied(QNetworkReply* reply)
     QString errorMessage = "There was an error while reading information from the SIMPLView server. ";
     errorMessage.append("Please contact the SIMPLView developers for more information.\n\n");
     errorMessage.append("Error Message: ");
-    errorMessage.append( reply->errorString() );
+    errorMessage.append(reply->errorString());
     dataObj->setMessageDescription(errorMessage);
     dataObj->setHasError(true);
     emit latestVersion(dataObj);
     reply->abort();
   }
-
 }
 
 // -----------------------------------------------------------------------------
@@ -224,7 +217,7 @@ void UpdateCheck::writeUpdateCheckDate()
 
   QtSSettings updatePrefs;
 
-  updatePrefs.beginGroup( UpdateCheckDialog::GetUpdatePreferencesGroup() );
-  updatePrefs.setValue (UpdateCheckDialog::GetUpdateCheckKey(), currentDateToday.currentDate());
+  updatePrefs.beginGroup(UpdateCheckDialog::GetUpdatePreferencesGroup());
+  updatePrefs.setValue(UpdateCheckDialog::GetUpdateCheckKey(), currentDateToday.currentDate());
   updatePrefs.endGroup();
 }

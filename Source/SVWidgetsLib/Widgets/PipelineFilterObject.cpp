@@ -44,28 +44,27 @@
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-PipelineFilterObject::PipelineFilterObject() :
-  m_Running(false),
-  m_Filter(AbstractFilter::NullPointer()),
-  m_FilterInputWidget(nullptr),
-  m_IsFocused(false),
-  m_HasPreflightErrors(false),
-  m_HasPreflightWarnings(false)
+PipelineFilterObject::PipelineFilterObject()
+: m_Running(false)
+, m_Filter(AbstractFilter::NullPointer())
+, m_FilterInputWidget(nullptr)
+, m_IsFocused(false)
+, m_HasPreflightErrors(false)
+, m_HasPreflightWarnings(false)
 {
-
 }
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-PipelineFilterObject::PipelineFilterObject(AbstractFilter::Pointer filter, IObserver* observer) :
-  m_Filter(filter),
-  m_FilterInputWidget(nullptr),
-  m_IsFocused(false),
-  m_HasPreflightErrors(false),
-  m_HasPreflightWarnings(false)
+PipelineFilterObject::PipelineFilterObject(AbstractFilter::Pointer filter, IObserver* observer)
+: m_Filter(filter)
+, m_FilterInputWidget(nullptr)
+, m_IsFocused(false)
+, m_HasPreflightErrors(false)
+, m_HasPreflightWarnings(false)
 {
-  if (filter != AbstractFilter::NullPointer())
+  if(filter != AbstractFilter::NullPointer())
   {
     setupFilterInputWidget();
   }
@@ -76,14 +75,14 @@ PipelineFilterObject::PipelineFilterObject(AbstractFilter::Pointer filter, IObse
 // -----------------------------------------------------------------------------
 PipelineFilterObject::~PipelineFilterObject()
 {
-  if (m_Filter != AbstractFilter::NullPointer())
+  if(m_Filter != AbstractFilter::NullPointer())
   {
     m_Filter->setPreviousFilter(AbstractFilter::NullPointer());
     m_Filter->setNextFilter(AbstractFilter::NullPointer());
     m_Filter = AbstractFilter::NullPointer();
   }
 
-  if (nullptr != m_FilterInputWidget)
+  if(nullptr != m_FilterInputWidget)
   {
     delete m_FilterInputWidget;
     m_FilterInputWidget = nullptr;
@@ -139,8 +138,10 @@ bool PipelineFilterObject::getHasPreflightWarnings()
 // -----------------------------------------------------------------------------
 QString PipelineFilterObject::getHumanLabel()
 {
-  if (nullptr != m_Filter.get())
-  { return m_Filter->getHumanLabel(); }
+  if(nullptr != m_Filter.get())
+  {
+    return m_Filter->getHumanLabel();
+  }
 
   return "";
 }
@@ -150,8 +151,10 @@ QString PipelineFilterObject::getHumanLabel()
 // -----------------------------------------------------------------------------
 QString PipelineFilterObject::getFilterClassName()
 {
-  if (nullptr != m_Filter.get())
-  { return m_Filter->getNameOfClass(); }
+  if(nullptr != m_Filter.get())
+  {
+    return m_Filter->getNameOfClass();
+  }
 
   return "";
 }
@@ -161,8 +164,10 @@ QString PipelineFilterObject::getFilterClassName()
 // -----------------------------------------------------------------------------
 QString PipelineFilterObject::getCompiledLibraryName()
 {
-  if (nullptr != m_Filter.get())
-  { return m_Filter->getCompiledLibraryName(); }
+  if(nullptr != m_Filter.get())
+  {
+    return m_Filter->getCompiledLibraryName();
+  }
 
   return "";
 }
@@ -172,8 +177,10 @@ QString PipelineFilterObject::getCompiledLibraryName()
 // -----------------------------------------------------------------------------
 QString PipelineFilterObject::getFilterGroup()
 {
-  if (nullptr != m_Filter.get())
-  { return m_Filter->getGroupName(); }
+  if(nullptr != m_Filter.get())
+  {
+    return m_Filter->getGroupName();
+  }
 
   return "";
 }
@@ -183,8 +190,10 @@ QString PipelineFilterObject::getFilterGroup()
 // -----------------------------------------------------------------------------
 QString PipelineFilterObject::getFilterSubGroup()
 {
-  if (nullptr != m_Filter.get())
-  { return m_Filter->getSubGroupName(); }
+  if(nullptr != m_Filter.get())
+  {
+    return m_Filter->getSubGroupName();
+  }
 
   return "";
 }

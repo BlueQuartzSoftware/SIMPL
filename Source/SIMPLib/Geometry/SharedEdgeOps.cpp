@@ -33,7 +33,6 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
@@ -58,9 +57,9 @@ void GEOM_CLASS_NAME::resizeEdgeList(int64_t newNumEdges)
 // -----------------------------------------------------------------------------
 void GEOM_CLASS_NAME::setEdges(SharedEdgeList::Pointer edges)
 {
-  if (edges.get() != nullptr)
+  if(edges.get() != nullptr)
   {
-    if (edges->getName().compare(SIMPL::Geometry::SharedEdgeList) != 0)
+    if(edges->getName().compare(SIMPL::Geometry::SharedEdgeList) != 0)
     {
       edges->setName(SIMPL::Geometry::SharedEdgeList);
     }

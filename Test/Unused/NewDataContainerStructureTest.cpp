@@ -33,19 +33,17 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-
-
 #include <stdlib.h>
 
 #include <QtCore/QDir>
 #include <QtCore/QFile>
 #include <QtCore/QList>
-#include <QtCore/QString>
 #include <QtCore/QMap>
+#include <QtCore/QString>
 #include <QtCore/QVector>
 
-#include "SIMPLib/SIMPLib.h"
 #include "EbsdLib/EbsdConstants.h"
+#include "SIMPLib/SIMPLib.h"
 
 // DREAM3D Lib
 #include "SIMPLib/Common/AbstractFilter.h"
@@ -84,12 +82,9 @@
 //#include "SurfaceMeshing/SurfaceMeshingFilters/LaplacianSmoothing.h"
 //#include "SurfaceMeshing/SurfaceMeshingFilters/QuickSurfaceMesh.h"
 
-
 #include "UnitTestSupport.hpp"
 
 #include "TestFileLocations.h"
-
-
 
 void BuildNewDream3dFile()
 {
@@ -109,8 +104,10 @@ void BuildNewDream3dFile()
   int64_t* m_FeatureIds;
   AbstractFilter::Pointer filt = AbstractFilter::New();
   m_FeatureIdsPtr = cellAttrMat->getPrereqArray<DataArray<int64_t>, AbstractFilter>(filt.get(), "Ids", -300, dims); /* Assigns the shared_ptr<> to an instance variable that is a weak_ptr<> */
-  if( nullptr != m_FeatureIdsPtr.lock().get() ) /* Validate the Weak Pointer wraps a non-nullptr pointer to a DataArray<T> object */
-  { m_FeatureIds = m_FeatureIdsPtr.lock()->getPointer(0); } /* Now assign the raw pointer to data from the DataArray<T> object */
+  if(nullptr != m_FeatureIdsPtr.lock().get())                                                                       /* Validate the Weak Pointer wraps a non-nullptr pointer to a DataArray<T> object */
+  {
+    m_FeatureIds = m_FeatureIdsPtr.lock()->getPointer(0);
+  } /* Now assign the raw pointer to data from the DataArray<T> object */
 
   for(int i = 0; i < (128 * 128 * 128); i++)
   {
@@ -126,28 +123,31 @@ void BuildNewDream3dFile()
   cellEnsembleAttrMat->createAndAddAttributeArray<DataArray<unsigned int>, unsigned int>("PhaseTypes", SIMPL::PhaseType::PrimaryPhase, dims);
   DataArray<unsigned int>::WeakPointer m_PhaseTypesPtr;
   unsigned int* m_PhaseTypes;
-  m_PhaseTypesPtr = cellEnsembleAttrMat->getPrereqArray<DataArray<unsigned int>, AbstractFilter>(filt.get(), "PhaseTypes", -300, dims); /* Assigns the shared_ptr<> to an instance variable that is a weak_ptr<> */
-  if( nullptr != m_PhaseTypesPtr.lock().get() ) /* Validate the Weak Pointer wraps a non-nullptr pointer to a DataArray<T> object */
+  m_PhaseTypesPtr =
+      cellEnsembleAttrMat->getPrereqArray<DataArray<unsigned int>, AbstractFilter>(filt.get(), "PhaseTypes", -300, dims); /* Assigns the shared_ptr<> to an instance variable that is a weak_ptr<> */
+  if(nullptr != m_PhaseTypesPtr.lock().get()) /* Validate the Weak Pointer wraps a non-nullptr pointer to a DataArray<T> object */
   {
-    m_PhaseTypes = m_PhaseTypesPtr.lock()->getPointer(0);  /* Now assign the raw pointer to data from the DataArray<T> object */
+    m_PhaseTypes = m_PhaseTypesPtr.lock()->getPointer(0); /* Now assign the raw pointer to data from the DataArray<T> object */
     m_PhaseTypes[0] = SIMPL::PhaseType::UnknownPhaseType;
   }
 
   cellEnsembleAttrMat->createAndAddAttributeArray<DataArray<unsigned int>, unsigned int>("ShapeTypes", SIMPL::ShapeType::EllipsoidShape, dims);
   DataArray<unsigned int>::WeakPointer m_ShapeTypesPtr;
   unsigned int* m_ShapeTypes;
-  m_ShapeTypesPtr = cellEnsembleAttrMat->getPrereqArray<DataArray<unsigned int>, AbstractFilter>(filt.get(), "ShapeTypes", -300, dims); /* Assigns the shared_ptr<> to an instance variable that is a weak_ptr<> */
-  if( nullptr != m_ShapeTypesPtr.lock().get() ) /* Validate the Weak Pointer wraps a non-nullptr pointer to a DataArray<T> object */
+  m_ShapeTypesPtr =
+      cellEnsembleAttrMat->getPrereqArray<DataArray<unsigned int>, AbstractFilter>(filt.get(), "ShapeTypes", -300, dims); /* Assigns the shared_ptr<> to an instance variable that is a weak_ptr<> */
+  if(nullptr != m_ShapeTypesPtr.lock().get()) /* Validate the Weak Pointer wraps a non-nullptr pointer to a DataArray<T> object */
   {
-    m_ShapeTypes = m_ShapeTypesPtr.lock()->getPointer(0);  /* Now assign the raw pointer to data from the DataArray<T> object */
+    m_ShapeTypes = m_ShapeTypesPtr.lock()->getPointer(0); /* Now assign the raw pointer to data from the DataArray<T> object */
     m_ShapeTypes[0] = SIMPL::ShapeType::UnknownShapeType;
   }
 
   cellEnsembleAttrMat->createAndAddAttributeArray<DataArray<unsigned int>, unsigned int>("CrystalStructures", Ebsd::CrystalStructure::Cubic_High, dims);
   DataArray<unsigned int>::WeakPointer m_CrystalStructuresPtr;
   unsigned int* m_CrystalStructures;
-  m_CrystalStructuresPtr = cellEnsembleAttrMat->getPrereqArray<DataArray<unsigned int>, AbstractFilter>(filt.get(), "CrystalStructures", -300, dims); /* Assigns the shared_ptr<> to an instance variable that is a weak_ptr<> */
-  if( nullptr != m_CrystalStructuresPtr.lock().get() ) /* Validate the Weak Pointer wraps a non-nullptr pointer to a DataArray<T> object */
+  m_CrystalStructuresPtr = cellEnsembleAttrMat->getPrereqArray<DataArray<unsigned int>, AbstractFilter>(filt.get(), "CrystalStructures", -300,
+                                                                                                        dims); /* Assigns the shared_ptr<> to an instance variable that is a weak_ptr<> */
+  if(nullptr != m_CrystalStructuresPtr.lock().get())                                                           /* Validate the Weak Pointer wraps a non-nullptr pointer to a DataArray<T> object */
   {
     m_CrystalStructures = m_CrystalStructuresPtr.lock()->getPointer(0); /* Now assign the raw pointer to data from the DataArray<T> object */
     m_CrystalStructures[0] = Ebsd::CrystalStructure::UnknownCrystalStructure;
@@ -237,12 +237,11 @@ void BuildNewDream3dFile()
   FloatArrayType::Pointer axisodf;
   axisodf = FloatArrayType::CreateArray((36 * 36 * 36), SIMPL::StringConstants::AxisOrientation);
   float val = 1.0 / (36.0 * 36.0 * 36.0);
-  for (int j = 0; j < (36 * 36 * 36); j++)
+  for(int j = 0; j < (36 * 36 * 36); j++)
   {
     axisodf->setValue(j, val);
   }
   pp->setAxisOrientation(axisodf);
-
 
   DataContainerWriter::Pointer dcw = DataContainerWriter::New();
   dcw->setOutputFile(UnitTest::NewDataContainerStructureTest::SyntheticInputFile);
@@ -282,22 +281,22 @@ void RunPipeline1()
   pipeline->pushBack(ppp);
 
   FindNeighbors::Pointer fn = FindNeighbors::New();
-//  pipeline->pushBack(fn);
+  //  pipeline->pushBack(fn);
 
   FindNumFeatures::Pointer fnf = FindNumFeatures::New();
-//  pipeline->pushBack(fnf);
+  //  pipeline->pushBack(fnf);
 
   MatchCrystallography::Pointer mc = MatchCrystallography::New();
   mc->setMaxIterations(100000);
-//  pipeline->pushBack(mc);
+  //  pipeline->pushBack(mc);
 
   GenerateIPFColors::Pointer gipfc = GenerateIPFColors::New();
-//  pipeline->pushBack(gipfc);
+  //  pipeline->pushBack(gipfc);
 
-//  ChangeResolution::Pointer cr = ChangeResolution::New();
-//  FloatVec3_t res = {0.2, 0.2, 0.2};
-//  cr->setResolution(res);
-//  pipeline->pushBack(cr);
+  //  ChangeResolution::Pointer cr = ChangeResolution::New();
+  //  FloatVec3_t res = {0.2, 0.2, 0.2};
+  //  cr->setResolution(res);
+  //  pipeline->pushBack(cr);
 
   DataContainerWriter::Pointer dcw = DataContainerWriter::New();
   dcw->setOutputFile(UnitTest::NewDataContainerStructureTest::SyntheticOutputFile);
@@ -312,7 +311,7 @@ void RunPipeline1()
   pipeline->run();
 }
 
-//void RunPipeline2()
+// void RunPipeline2()
 //{
 //  FilterPipeline::Pointer pipeline = FilterPipeline::New();
 //
@@ -348,7 +347,7 @@ void RunPipeline1()
 //  pipeline->run();
 //}
 //
-//void RunPipeline3()
+// void RunPipeline3()
 //{
 //  FilterPipeline::Pointer pipeline = FilterPipeline::New();
 //
@@ -392,7 +391,7 @@ void RunPipeline1()
 //  pipeline->run();
 //}
 //
-//void RunPipeline4()
+// void RunPipeline4()
 //{
 //  FilterPipeline::Pointer pipeline = FilterPipeline::New();
 //
@@ -417,7 +416,7 @@ void RunPipeline1()
 //  pipeline->run();
 //}
 //
-//void RunPipeline5()
+// void RunPipeline5()
 //{
 //  FilterPipeline::Pointer pipeline = FilterPipeline::New();
 //
@@ -442,7 +441,7 @@ void RunPipeline1()
 //  pipeline->run();
 //}
 //
-//void RunPipeline6()
+// void RunPipeline6()
 //{
 //  FilterPipeline::Pointer pipeline = FilterPipeline::New();
 //
@@ -473,7 +472,7 @@ void RunPipeline1()
 //  pipeline->run();
 //}
 //
-//void RunPipeline7()
+// void RunPipeline7()
 //{
 //  FilterPipeline::Pointer pipeline = FilterPipeline::New();
 //
@@ -515,7 +514,7 @@ void RunPipeline1()
 //  pipeline->run();
 //}
 //
-//void RunPipeline8()
+// void RunPipeline8()
 //{
 //  FilterPipeline::Pointer pipeline = FilterPipeline::New();
 //
@@ -585,16 +584,15 @@ int main(int argc, char** argv)
 {
   int err = EXIT_SUCCESS;
 
-//  BuildNewDream3dFile();
+  //  BuildNewDream3dFile();
   RunPipeline1();
-//  RunPipeline2();
-//  RunPipeline3();
-//  RunPipeline4();
-//  RunPipeline5();
-//  RunPipeline6();
-//  RunPipeline7();
-//  RunPipeline8();
+  //  RunPipeline2();
+  //  RunPipeline3();
+  //  RunPipeline4();
+  //  RunPipeline5();
+  //  RunPipeline6();
+  //  RunPipeline7();
+  //  RunPipeline8();
 
   return err;
 }
-

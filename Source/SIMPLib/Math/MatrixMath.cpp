@@ -76,7 +76,7 @@ void MatrixMath::Normalize3x1(double& i, double& j, double& k)
 {
   double denom;
   denom = sqrt(((i * i) + (j * j) + (k * k)));
-  if (denom == 0)
+  if(denom == 0)
   {
     return;
   }
@@ -91,7 +91,7 @@ void MatrixMath::Normalize3x1(float& i, float& j, float& k)
 {
   float denom;
   denom = sqrtf(((i * i) + (j * j) + (k * k)));
-  if (denom == 0)
+  if(denom == 0)
   {
     return;
   }
@@ -503,7 +503,6 @@ float MatrixMath::Magnitude4x1(float a[4])
   return (sqrtf((a[0] * a[0]) + (a[1] * a[1]) + (a[2] * a[2]) + (a[3] * a[3])));
 }
 
-
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
@@ -511,7 +510,6 @@ float MatrixMath::DotProduct3x1(float a[3], float b[3])
 {
   return (a[0] * b[0] + a[1] * b[1] + a[2] * b[2]);
 }
-
 
 // -----------------------------------------------------------------------------
 //

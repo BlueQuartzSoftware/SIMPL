@@ -33,7 +33,6 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-
 #include "ComparisonSelectionWidget.h"
 
 #include <QtCore/QSignalMapper>
@@ -43,8 +42,8 @@
 #include "SVWidgetsLib/Core/SVWidgetsLibConstants.h"
 #include "SVWidgetsLib/QtSupport/QtSStyles.h"
 
-#include "FilterParameterWidgetsDialogs.h"
 #include "FilterParameterWidgetUtils.hpp"
+#include "FilterParameterWidgetsDialogs.h"
 
 // Include the MOC generated file for this class
 #include "moc_ComparisonSelectionWidget.cpp"
@@ -52,11 +51,11 @@
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-ComparisonSelectionWidget::ComparisonSelectionWidget(FilterParameter* parameter, AbstractFilter* filter, QWidget* parent) :
-  FilterParameterWidget(parameter, filter, parent),
-  m_ShowOperators(true),
-  m_DidCausePreflight(false),
-  m_ComparisonSelectionTableModel(nullptr)
+ComparisonSelectionWidget::ComparisonSelectionWidget(FilterParameter* parameter, AbstractFilter* filter, QWidget* parent)
+: FilterParameterWidget(parameter, filter, parent)
+, m_ShowOperators(true)
+, m_DidCausePreflight(false)
+, m_ComparisonSelectionTableModel(nullptr)
 {
   m_FilterParameter = dynamic_cast<ComparisonSelectionFilterParameter*>(parameter);
   Q_ASSERT_X(m_FilterParameter != nullptr, "nullptr Pointer", "ComparisonSelectionWidget can ONLY be used with a ComparisonSelectionFilterParameter object");
@@ -78,7 +77,10 @@ ComparisonSelectionWidget::~ComparisonSelectionWidget()
 ComparisonInputs ComparisonSelectionWidget::getComparisonInputs()
 {
   ComparisonInputs comps;
-  if (m_ComparisonSelectionTableModel == nullptr) { return comps; }
+  if(m_ComparisonSelectionTableModel == nullptr)
+  {
+    return comps;
+  }
 
   int filterCount = m_ComparisonSelectionTableModel->rowCount();
   QVector<QString> featureNames;
@@ -87,7 +89,6 @@ ComparisonInputs ComparisonSelectionWidget::getComparisonInputs()
   m_ComparisonSelectionTableModel->getTableData(featureNames, featureValues, featureOperators);
 
   DataArrayPath amPath = DataArrayPath::Deserialize(m_SelectedAttributeMatrixPath->text(), Detail::Delimiter);
-
 
   for(int i = 0; i < filterCount; ++i)
   {
@@ -107,26 +108,23 @@ ComparisonInputs ComparisonSelectionWidget::getComparisonInputs()
 // -----------------------------------------------------------------------------
 void ComparisonSelectionWidget::setupGui()
 {
-  if (getFilter() == nullptr)
+  if(getFilter() == nullptr)
   {
     return;
   }
-  if (getFilterParameter() == nullptr)
+  if(getFilterParameter() == nullptr)
   {
     return;
   }
 
   // Catch when the filter is about to execute the preflight
-  connect(getFilter(), SIGNAL(preflightAboutToExecute()),
-          this, SLOT(beforePreflight()));
+  connect(getFilter(), SIGNAL(preflightAboutToExecute()), this, SLOT(beforePreflight()));
 
   // Catch when the filter is finished running the preflight
-  connect(getFilter(), SIGNAL(preflightExecuted()),
-          this, SLOT(afterPreflight()));
+  connect(getFilter(), SIGNAL(preflightExecuted()), this, SLOT(afterPreflight()));
 
   // Catch when the filter wants its values updated
-  connect(getFilter(), SIGNAL(updateFilterParameters(AbstractFilter*)),
-          this, SLOT(filterNeedsInputParameters(AbstractFilter*)));
+  connect(getFilter(), SIGNAL(updateFilterParameters(AbstractFilter*)), this, SLOT(filterNeedsInputParameters(AbstractFilter*)));
 
   // Create the table model
   m_ComparisonSelectionTableModel = createComparisonModel();
@@ -138,11 +136,9 @@ void ComparisonSelectionWidget::setupGui()
   m_SelectedAttributeMatrixPath->setStyleSheet(QtSStyles::DAPSelectionButtonStyle(true));
 
   m_MenuMapper = new QSignalMapper(this);
-  connect(m_MenuMapper, SIGNAL(mapped(QString)),
-            this, SLOT(setSelectedPath(QString)));
+  connect(m_MenuMapper, SIGNAL(mapped(QString)), this, SLOT(setSelectedPath(QString)));
 
   createSelectionMenu();
-
 
 #if 0
   // is the filter parameter tied to a boolean property of the Filter Instance, if it is then we need to make the check box visible
@@ -165,7 +161,6 @@ void ComparisonSelectionWidget::setupGui()
     linkRight->deleteLater();
   }
 #endif
-
 }
 
 #if 0
@@ -192,15 +187,13 @@ void ComparisonSelectionWidget::on_conditionalCB_stateChanged(int state)
 }
 #endif
 
-
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-QStringList ComparisonSelectionWidget::generateAttributeArrayList(const QString& currentDCName, const QString &currentAttrMatName)
+QStringList ComparisonSelectionWidget::generateAttributeArrayList(const QString& currentDCName, const QString& currentAttrMatName)
 {
-//  std::cout << "ComparisonSelectionWidget::generateAttributeArrayList()" << std::endl;
+  //  std::cout << "ComparisonSelectionWidget::generateAttributeArrayList()" << std::endl;
   QStringList attributeArrayList;
-
 
   // Loop over the data containers until we find the proper data container
   QList<DataContainerProxy> containers = m_DcaProxy.dataContainers.values();
@@ -208,26 +201,26 @@ QStringList ComparisonSelectionWidget::generateAttributeArrayList(const QString&
   while(containerIter.hasNext())
   {
     DataContainerProxy dc = containerIter.next();
-    if(dc.name.compare(currentDCName) == 0 )
+    if(dc.name.compare(currentDCName) == 0)
     {
       // We found the proper Data Container, now populate the AttributeMatrix List
       QMap<QString, AttributeMatrixProxy> attrMats = dc.attributeMatricies;
       QMapIterator<QString, AttributeMatrixProxy> attrMatsIter(attrMats);
-      while(attrMatsIter.hasNext() )
+      while(attrMatsIter.hasNext())
       {
         attrMatsIter.next();
         QString amName = attrMatsIter.key();
-        if(amName.compare(currentAttrMatName) == 0 )
+        if(amName.compare(currentAttrMatName) == 0)
         {
 
           // We found the selected AttributeMatrix, so loop over this attribute matrix arrays and populate the list widget
           AttributeMatrixProxy amProxy = attrMatsIter.value();
           QMap<QString, DataArrayProxy> dataArrays = amProxy.dataArrays;
           QMapIterator<QString, DataArrayProxy> dataArraysIter(dataArrays);
-          while(dataArraysIter.hasNext() )
+          while(dataArraysIter.hasNext())
           {
             dataArraysIter.next();
-            //DataArrayProxy daProxy = dataArraysIter.value();
+            // DataArrayProxy daProxy = dataArraysIter.value();
             QString daName = dataArraysIter.key();
             attributeArrayList << daName;
           }
@@ -239,21 +232,25 @@ QStringList ComparisonSelectionWidget::generateAttributeArrayList(const QString&
   return attributeArrayList;
 }
 
-
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
 QString ComparisonSelectionWidget::checkStringValues(QString curDcName, QString filtDcName)
 {
   if(curDcName.isEmpty() == true && filtDcName.isEmpty() == false)
-  {return filtDcName;}
+  {
+    return filtDcName;
+  }
   else if(curDcName.isEmpty() == false && filtDcName.isEmpty() == true)
-  {return curDcName;}
+  {
+    return curDcName;
+  }
   else if(curDcName.isEmpty() == false && filtDcName.isEmpty() == false && m_DidCausePreflight == true)
-  { return curDcName;}
+  {
+    return curDcName;
+  }
 
   return filtDcName;
-
 }
 
 // -----------------------------------------------------------------------------
@@ -284,7 +281,7 @@ void ComparisonSelectionWidget::widgetChanged(const QString& text)
 // -----------------------------------------------------------------------------
 void ComparisonSelectionWidget::on_addComparison_clicked()
 {
-  if (!m_ComparisonSelectionTableModel->insertRow(m_ComparisonSelectionTableModel->rowCount()))
+  if(!m_ComparisonSelectionTableModel->insertRow(m_ComparisonSelectionTableModel->rowCount()))
   {
     return;
   }
@@ -296,7 +293,6 @@ void ComparisonSelectionWidget::on_addComparison_clicked()
   comparisonSelectionTableView->setFocus();
 }
 
-
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
@@ -304,11 +300,17 @@ void ComparisonSelectionWidget::on_removeComparison_clicked()
 {
   QItemSelectionModel* selectionModel = comparisonSelectionTableView->selectionModel();
 
-  if (!selectionModel->hasSelection()) { return; }
+  if(!selectionModel->hasSelection())
+  {
+    return;
+  }
   QModelIndex index = selectionModel->currentIndex();
-  if (!index.isValid()) { return; }
+  if(!index.isValid())
+  {
+    return;
+  }
   m_ComparisonSelectionTableModel->removeRow(index.row(), index.parent());
-  if (m_ComparisonSelectionTableModel->rowCount() > 0)
+  if(m_ComparisonSelectionTableModel->rowCount() > 0)
   {
     comparisonSelectionTableView->resizeColumnsToContents();
   }
@@ -322,9 +324,9 @@ void ComparisonSelectionWidget::setComparisons(QVector<ComparisonInput_t> compar
   qint32 count = comparisons.size();
 
   QVector<QString> arrayNames(count);
-  QVector<int>   compOperators(count);
+  QVector<int> compOperators(count);
   QVector<float> compValues(count);
-  //bool ok = false;
+  // bool ok = false;
   for(int i = 0; i < count; ++i)
   {
     arrayNames[i] = (comparisons[i].attributeArrayName);
@@ -333,7 +335,6 @@ void ComparisonSelectionWidget::setComparisons(QVector<ComparisonInput_t> compar
   }
   m_ComparisonSelectionTableModel->setTableData(arrayNames, compValues, compOperators);
 }
-
 
 // -----------------------------------------------------------------------------
 //
@@ -357,7 +358,10 @@ void ComparisonSelectionWidget::filterNeedsInputParameters(AbstractFilter* filte
 // -----------------------------------------------------------------------------
 void ComparisonSelectionWidget::beforePreflight()
 {
-  if (nullptr == getFilter()) { return; }
+  if(nullptr == getFilter())
+  {
+    return;
+  }
   if(m_DidCausePreflight == true)
   {
     // std::cout << "***  ComparisonSelectionWidget already caused a preflight, just returning" << std::endl;
@@ -386,7 +390,10 @@ void ComparisonSelectionWidget::populateButtonText()
   // Now get the DataContainerArray from the Filter instance
   // We are going to use this to get all the current DataContainers
   DataContainerArray::Pointer dca = getFilter()->getDataContainerArray();
-  if(nullptr == dca.get()) { return; }
+  if(nullptr == dca.get())
+  {
+    return;
+  }
 
   // Check to see if we have any DataContainers to actually populate drop downs with.
   if(dca->getDataContainers().size() == 0)
@@ -417,23 +424,20 @@ void ComparisonSelectionWidget::populateButtonText()
   QString amName = checkStringValues(curAmName, filtAmName);
 
   m_SelectedAttributeMatrixPath->setText(dcName + Detail::Delimiter + amName);
-
 }
-
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
 bool ComparisonSelectionWidget::eventFilter(QObject* obj, QEvent* event)
 {
-  if (event->type() == QEvent::Show && obj == m_SelectedAttributeMatrixPath->menu())
+  if(event->type() == QEvent::Show && obj == m_SelectedAttributeMatrixPath->menu())
   {
     QPoint pos = adjustedMenuPosition(m_SelectedAttributeMatrixPath);
     m_SelectedAttributeMatrixPath->menu()->move(pos);
     return true;
   }
   return false;
-
 }
 
 // -----------------------------------------------------------------------------
@@ -442,15 +446,21 @@ bool ComparisonSelectionWidget::eventFilter(QObject* obj, QEvent* event)
 void ComparisonSelectionWidget::setSelectedPath(QString path)
 {
   DataArrayPath amPath = DataArrayPath::Deserialize(path, Detail::Delimiter);
-  if (amPath.isEmpty()) { return; }
+  if(amPath.isEmpty())
+  {
+    return;
+  }
 
   m_SelectedAttributeMatrixPath->setText("");
   m_SelectedAttributeMatrixPath->setToolTip("");
 
   DataContainerArray::Pointer dca = getFilter()->getDataContainerArray();
-  if(nullptr == dca.get()) { return; }
+  if(nullptr == dca.get())
+  {
+    return;
+  }
 
-  if(dca->doesAttributeMatrixExist(amPath) )
+  if(dca->doesAttributeMatrixExist(amPath))
   {
     AttributeMatrix::Pointer attrMat = dca->getAttributeMatrix(amPath);
     QString html = attrMat->getInfoString(SIMPL::HtmlFormat);
@@ -471,22 +481,22 @@ ComparisonSelectionTableModel* ComparisonSelectionWidget::createComparisonModel(
 {
   ComparisonSelectionTableModel* newModel = new ComparisonSelectionTableModel(m_ShowOperators);
   QAbstractItemModel* oldModel = comparisonSelectionTableView->model();
-  if(nullptr != oldModel) { delete oldModel; }
+  if(nullptr != oldModel)
+  {
+    delete oldModel;
+  }
 
   comparisonSelectionTableView->setModel(newModel);
   newModel->setNumberOfPhases(1);
   comparisonSelectionTableView->resizeColumnsToContents();
 
-
-
   // Now connect all the signals and slots
-  connect(newModel, SIGNAL(dataChanged(const QModelIndex&, const QModelIndex)),
-          this, SLOT(tableDataWasChanged(const QModelIndex&, const QModelIndex&)));
+  connect(newModel, SIGNAL(dataChanged(const QModelIndex&, const QModelIndex)), this, SLOT(tableDataWasChanged(const QModelIndex&, const QModelIndex&)));
 
   DataArrayPath amPath = DataArrayPath::Deserialize(m_SelectedAttributeMatrixPath->text(), Detail::Delimiter);
-  if (amPath.isEmpty()) {
+  if(amPath.isEmpty())
+  {
     return newModel;
-
   }
 
   QStringList possibleArrays = generateAttributeArrayList(amPath.getDataContainerName(), amPath.getAttributeMatrixName());
@@ -495,7 +505,6 @@ ComparisonSelectionTableModel* ComparisonSelectionWidget::createComparisonModel(
   // Set the ItemDelegate for the table.
   QAbstractItemDelegate* aid = newModel->getItemDelegate();
   comparisonSelectionTableView->setItemDelegate(aid);
-
 
   return newModel;
 }
@@ -508,7 +517,10 @@ void ComparisonSelectionWidget::createSelectionMenu()
   // Now get the DataContainerArray from the Filter instance
   // We are going to use this to get all the current DataContainers
   DataContainerArray::Pointer dca = getFilter()->getDataContainerArray();
-  if(nullptr == dca.get()) { return; }
+  if(nullptr == dca.get())
+  {
+    return;
+  }
 
   // Get the menu and clear it out
   QMenu* menu = m_SelectedAttributeMatrixPath->menu();
@@ -518,7 +530,8 @@ void ComparisonSelectionWidget::createSelectionMenu()
     m_SelectedAttributeMatrixPath->setMenu(menu);
     menu->installEventFilter(this);
   }
-  if(menu) {
+  if(menu)
+  {
     menu->clear();
   }
 
@@ -531,8 +544,6 @@ void ComparisonSelectionWidget::createSelectionMenu()
   QVector<unsigned int> amTypes = m_FilterParameter->getDefaultAttributeMatrixTypes();
   QVector<unsigned int> geomTypes = m_FilterParameter->getDefaultGeometryTypes();
 
-
-
   QListIterator<DataContainer::Pointer> containerIter(containers);
   while(containerIter.hasNext())
   {
@@ -540,23 +551,27 @@ void ComparisonSelectionWidget::createSelectionMenu()
 
     IGeometry::Pointer geom = IGeometry::NullPointer();
     uint32_t geomType = 999;
-    if (nullptr != dc.get()) { geom = dc->getGeometry(); }
-    if (nullptr != geom.get()) { geomType = geom->getGeometryType(); }
-
+    if(nullptr != dc.get())
+    {
+      geom = dc->getGeometry();
+    }
+    if(nullptr != geom.get())
+    {
+      geomType = geom->getGeometryType();
+    }
 
     QMenu* dcMenu = new QMenu(dc->getName());
     dcMenu->setDisabled(false);
     menu->addMenu(dcMenu);
-    if(geomTypes.isEmpty() == false && geomTypes.contains(geomType) == false )
+    if(geomTypes.isEmpty() == false && geomTypes.contains(geomType) == false)
     {
       dcMenu->setDisabled(true);
     }
 
-
     // We found the proper Data Container, now populate the AttributeMatrix List
     DataContainer::AttributeMatrixMap_t attrMats = dc->getAttributeMatrices();
     QMapIterator<QString, AttributeMatrix::Pointer> attrMatsIter(attrMats);
-    while(attrMatsIter.hasNext() )
+    while(attrMatsIter.hasNext())
     {
       attrMatsIter.next();
       QString amName = attrMatsIter.key();
@@ -574,7 +589,7 @@ void ComparisonSelectionWidget::createSelectionMenu()
       bool amIsNotNull = (nullptr != am.get()) ? true : false;
       bool amValidType = (amTypes.isEmpty() == false && amTypes.contains(am->getType()) == false) ? true : false;
 
-      if (amIsNotNull && amValidType)
+      if(amIsNotNull && amValidType)
       {
         action->setDisabled(true);
       }

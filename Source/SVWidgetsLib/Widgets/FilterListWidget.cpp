@@ -33,14 +33,13 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-
 #include "FilterListWidget.h"
 
-#include <QtCore/QMimeData>
-#include <QtCore/QJsonObject>
 #include <QtCore/QJsonDocument>
-#include <QtGui/QMouseEvent>
+#include <QtCore/QJsonObject>
+#include <QtCore/QMimeData>
 #include <QtGui/QDrag>
+#include <QtGui/QMouseEvent>
 #include <QtWidgets/QApplication>
 
 #include "SVWidgetsLib/Core/SVWidgetsLibConstants.h"
@@ -52,7 +51,7 @@
 //
 // -----------------------------------------------------------------------------
 FilterListWidget::FilterListWidget(QWidget* parent)
-  : QListWidget(parent)
+: QListWidget(parent)
 {
   setAcceptDrops(false);
   setDragEnabled(true);
@@ -75,8 +74,10 @@ FilterListWidget::~FilterListWidget()
 // -----------------------------------------------------------------------------
 void FilterListWidget::mousePressEvent(QMouseEvent* event)
 {
-  if (event->button() == Qt::LeftButton)
-  { startPos = event->pos(); }
+  if(event->button() == Qt::LeftButton)
+  {
+    startPos = event->pos();
+  }
   QListWidget::mousePressEvent(event);
 }
 
@@ -85,11 +86,13 @@ void FilterListWidget::mousePressEvent(QMouseEvent* event)
 // -----------------------------------------------------------------------------
 void FilterListWidget::mouseMoveEvent(QMouseEvent* event)
 {
-  if (event->buttons() & Qt::LeftButton)
+  if(event->buttons() & Qt::LeftButton)
   {
     int distance = (event->pos() - startPos).manhattanLength();
-    if (distance >= QApplication::startDragDistance())
-    { performDrag(); }
+    if(distance >= QApplication::startDragDistance())
+    {
+      performDrag();
+    }
   }
   QListWidget::mouseMoveEvent(event);
 }
@@ -122,24 +125,21 @@ void FilterListWidget::performDrag()
 // -----------------------------------------------------------------------------
 void FilterListWidget::dragEnterEvent(QDragEnterEvent* event)
 {
-  FilterListWidget* source =
-    qobject_cast<FilterListWidget*>(event->source());
-  if (source && source != this)
+  FilterListWidget* source = qobject_cast<FilterListWidget*>(event->source());
+  if(source && source != this)
   {
     event->setDropAction(Qt::MoveAction);
     event->accept();
   }
 }
 
-
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
 void FilterListWidget::dragMoveEvent(QDragMoveEvent* event)
 {
-  FilterListWidget* source =
-    qobject_cast<FilterListWidget*>(event->source());
-  if (source && source != this)
+  FilterListWidget* source = qobject_cast<FilterListWidget*>(event->source());
+  if(source && source != this)
   {
     event->setDropAction(Qt::MoveAction);
     event->accept();
@@ -151,13 +151,11 @@ void FilterListWidget::dragMoveEvent(QDragMoveEvent* event)
 // -----------------------------------------------------------------------------
 void FilterListWidget::dropEvent(QDropEvent* event)
 {
-  FilterListWidget* source =
-    qobject_cast<FilterListWidget*>(event->source());
-  if (source && source != this)
+  FilterListWidget* source = qobject_cast<FilterListWidget*>(event->source());
+  if(source && source != this)
   {
     addItem(event->mimeData()->text());
     event->setDropAction(Qt::MoveAction);
     event->accept();
   }
 }
-

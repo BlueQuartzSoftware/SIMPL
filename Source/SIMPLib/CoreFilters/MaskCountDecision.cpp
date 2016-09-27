@@ -33,7 +33,6 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-
 #include "MaskCountDecision.h"
 
 #include <QtCore/QJsonDocument>
@@ -48,11 +47,11 @@
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-MaskCountDecision::MaskCountDecision() :
-  AbstractDecisionFilter(),
-  m_MaskArrayPath("", "", ""),
-  m_NumberOfTrues(0),
-  m_Mask(nullptr)
+MaskCountDecision::MaskCountDecision()
+: AbstractDecisionFilter()
+, m_MaskArrayPath("", "", "")
+, m_NumberOfTrues(0)
+, m_Mask(nullptr)
 {
   setupFilterParameters();
 }
@@ -70,9 +69,11 @@ MaskCountDecision::~MaskCountDecision()
 void MaskCountDecision::setupFilterParameters()
 {
   FilterParameterVector parameters = getFilterParameters();
-  DataArraySelectionFilterParameter::RequirementType req = DataArraySelectionFilterParameter::CreateRequirement(SIMPL::TypeNames::Bool, 1, SIMPL::Defaults::AnyAttributeMatrix, SIMPL::Defaults::AnyGeometry);
+  DataArraySelectionFilterParameter::RequirementType req =
+      DataArraySelectionFilterParameter::CreateRequirement(SIMPL::TypeNames::Bool, 1, SIMPL::Defaults::AnyAttributeMatrix, SIMPL::Defaults::AnyGeometry);
   parameters.push_back(SIMPL_NEW_DA_SELECTION_FP("Mask", MaskArrayPath, FilterParameter::RequiredArray, MaskCountDecision, req));
-  parameters.push_back(SIMPL_NEW_INTEGER_FP("Number of True Instances", NumberOfTrues, FilterParameter::Parameter, MaskCountDecision, 0));  setFilterParameters(parameters);
+  parameters.push_back(SIMPL_NEW_INTEGER_FP("Number of True Instances", NumberOfTrues, FilterParameter::Parameter, MaskCountDecision, 0));
+  setFilterParameters(parameters);
 }
 
 // -----------------------------------------------------------------------------
@@ -92,7 +93,6 @@ void MaskCountDecision::readFilterParameters(AbstractFilterParametersReader* rea
 // -----------------------------------------------------------------------------
 void MaskCountDecision::initialize()
 {
-
 }
 
 // -----------------------------------------------------------------------------
@@ -104,9 +104,12 @@ void MaskCountDecision::dataCheck()
 
   QVector<size_t> cDims(1, 1);
 
-  m_MaskPtr = getDataContainerArray()->getPrereqArrayFromPath<DataArray<bool>, AbstractFilter>(this, getMaskArrayPath(), cDims); /* Assigns the shared_ptr<> to an instance variable that is a weak_ptr<> */
-  if (nullptr != m_MaskPtr.lock().get()) /* Validate the Weak Pointer wraps a non-nullptr pointer to a DataArray<T> object */
-  { m_Mask = m_MaskPtr.lock()->getPointer(0); } /* Now assign the raw pointer to data from the DataArray<T> object */
+  m_MaskPtr =
+      getDataContainerArray()->getPrereqArrayFromPath<DataArray<bool>, AbstractFilter>(this, getMaskArrayPath(), cDims); /* Assigns the shared_ptr<> to an instance variable that is a weak_ptr<> */
+  if(nullptr != m_MaskPtr.lock().get()) /* Validate the Weak Pointer wraps a non-nullptr pointer to a DataArray<T> object */
+  {
+    m_Mask = m_MaskPtr.lock()->getPointer(0);
+  } /* Now assign the raw pointer to data from the DataArray<T> object */
 }
 
 // -----------------------------------------------------------------------------
@@ -129,7 +132,10 @@ void MaskCountDecision::execute()
 {
   setErrorCondition(0);
   dataCheck();
-  if (getErrorCondition() < 0) { return; }
+  if(getErrorCondition() < 0)
+  {
+    return;
+  }
 
   size_t numTuples = m_MaskPtr.lock()->getNumberOfTuples();
 
@@ -138,16 +144,19 @@ void MaskCountDecision::execute()
 
   qDebug() << "NumberOfTrues: " << m_NumberOfTrues;
 
-  for (size_t i = 0; i < numTuples; i++)
+  for(size_t i = 0; i < numTuples; i++)
   {
-    if (m_NumberOfTrues < 0 && !m_Mask[i])
+    if(m_NumberOfTrues < 0 && !m_Mask[i])
     {
       qDebug() << "First if check: " << dm;
       emit decisionMade(dm);
       return;
     }
-    if (m_Mask[i]) { trueCount++; }
-    if (trueCount >= m_NumberOfTrues)
+    if(m_Mask[i])
+    {
+      trueCount++;
+    }
+    if(trueCount >= m_NumberOfTrues)
     {
       dm = false;
       qDebug() << "Second if check: " << dm;
@@ -168,19 +177,18 @@ void MaskCountDecision::execute()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void MaskCountDecision::extractProperties(const QJsonDocument &jsonDoc)
+void MaskCountDecision::extractProperties(const QJsonDocument& jsonDoc)
 {
   QJsonObject json = jsonDoc.object();
   QJsonValue jvalue = json.value(this->getNameOfClass());
-  if (jvalue.isUndefined()) {
+  if(jvalue.isUndefined())
+  {
     return;
   }
 
-
-
   {
     QJsonValue propValue = jvalue.toObject()["MaskArrayPath"];
-    if (!propValue.isUndefined())
+    if(!propValue.isUndefined())
     {
       QJsonObject jObj = propValue.toObject();
       m_MaskArrayPath.readJson(jObj);
@@ -189,13 +197,12 @@ void MaskCountDecision::extractProperties(const QJsonDocument &jsonDoc)
 
   {
     QJsonValue propValue = jvalue.toObject()["NumberOfTrues"];
-    if (!propValue.isUndefined())
+    if(!propValue.isUndefined())
     {
       int numTrues = propValue.toInt();
       setNumberOfTrues(numTrues);
     }
   }
-
 }
 
 // -----------------------------------------------------------------------------
@@ -215,22 +222,30 @@ AbstractFilter::Pointer MaskCountDecision::newFilterInstance(bool copyFilterPara
 //
 // -----------------------------------------------------------------------------
 const QString MaskCountDecision::getCompiledLibraryName()
-{ return Core::CoreBaseName; }
+{
+  return Core::CoreBaseName;
+}
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
 const QString MaskCountDecision::getGroupName()
-{ return SIMPL::FilterGroups::CoreFilters; }
+{
+  return SIMPL::FilterGroups::CoreFilters;
+}
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
 const QString MaskCountDecision::getSubGroupName()
-{ return SIMPL::FilterSubGroups::MiscFilters; }
+{
+  return SIMPL::FilterSubGroups::MiscFilters;
+}
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
 const QString MaskCountDecision::getHumanLabel()
-{ return "Mask Count Decision"; }
+{
+  return "Mask Count Decision";
+}

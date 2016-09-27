@@ -34,34 +34,32 @@
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
 #include <iostream>
-#include <vector>
 #include <string>
-
+#include <vector>
 
 class Patch
 {
-  public:
-    int verts[3];
-    virtual ~Patch() {}
-    Patch() {};
-    Patch(const Patch& p)
-    {
-      std::cout << "Patch(const Patch& p)" << std::endl;
-//      verts[0] = p.verts[0];
-//      verts[1] = p.verts[1];
-//      verts[2] = p.verts[2];
-    }
+public:
+  int verts[3];
+  virtual ~Patch()
+  {
+  }
+  Patch(){};
+  Patch(const Patch& p)
+  {
+    std::cout << "Patch(const Patch& p)" << std::endl;
+    //      verts[0] = p.verts[0];
+    //      verts[1] = p.verts[1];
+    //      verts[2] = p.verts[2];
+  }
 
-    void print()
-    {
-      std::cout << "vert[0]: " << verts[0] << "  vert[1]: " << verts[1] << "  vert[2]: " << verts[2] << std::endl;
-    }
+  void print()
+  {
+    std::cout << "vert[0]: " << verts[0] << "  vert[1]: " << verts[1] << "  vert[2]: " << verts[2] << std::endl;
+  }
 
-  private:
-
-    //void operator=(const Patch&); // Operator '=' Not Implemented
-
-
+private:
+  // void operator=(const Patch&); // Operator '=' Not Implemented
 };
 
 int main(int argc, char** argv)
@@ -83,8 +81,5 @@ int main(int argc, char** argv)
   ps[1].print();
   p0.print();
 
-
   return 0;
-
 }
-

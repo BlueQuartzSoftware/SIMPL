@@ -37,9 +37,9 @@
 
 #include <QtCore/QCoreApplication>
 
-#include "SIMPLib/SIMPLibVersion.h"
 #include "SIMPLib/Common/Constants.h"
 #include "SIMPLib/FilterParameters/AbstractFilterParametersReader.h"
+#include "SIMPLib/SIMPLibVersion.h"
 
 // Include the MOC generated file for this class
 #include "moc_Breakpoint.cpp"
@@ -47,8 +47,8 @@
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-Breakpoint::Breakpoint() :
-  AbstractFilter()
+Breakpoint::Breakpoint()
+: AbstractFilter()
 {
   setupFilterParameters();
 }
@@ -85,7 +85,6 @@ void Breakpoint::readFilterParameters(AbstractFilterParametersReader* reader, in
 // -----------------------------------------------------------------------------
 void Breakpoint::initialize()
 {
-
 }
 
 // -----------------------------------------------------------------------------
@@ -102,12 +101,12 @@ void Breakpoint::dataCheck()
 void Breakpoint::preflight()
 {
   // These are the REQUIRED lines of CODE to make sure the filter behaves correctly
-  setInPreflight(true); // Set the fact that we are preflighting.
-  emit preflightAboutToExecute(); // Emit this signal so that other widgets can do one file update
+  setInPreflight(true);              // Set the fact that we are preflighting.
+  emit preflightAboutToExecute();    // Emit this signal so that other widgets can do one file update
   emit updateFilterParameters(this); // Emit this signal to have the widgets push their values down to the filter
-  dataCheck(); // Run our DataCheck to make sure everthing is setup correctly
-  emit preflightExecuted(); // We are done preflighting this filter
-  setInPreflight(false); // Inform the system this filter is NOT in preflight mode anymore.
+  dataCheck();                       // Run our DataCheck to make sure everthing is setup correctly
+  emit preflightExecuted();          // We are done preflighting this filter
+  setInPreflight(false);             // Inform the system this filter is NOT in preflight mode anymore.
 }
 
 // -----------------------------------------------------------------------------
@@ -160,13 +159,17 @@ AbstractFilter::Pointer Breakpoint::newFilterInstance(bool copyFilterParameters)
 //
 // -----------------------------------------------------------------------------
 const QString Breakpoint::getCompiledLibraryName()
-{ return Core::CoreBaseName; }
+{
+  return Core::CoreBaseName;
+}
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
 const QString Breakpoint::getBrandingString()
-{ return "SIMPLib Core Filter"; }
+{
+  return "SIMPLib Core Filter";
+}
 
 // -----------------------------------------------------------------------------
 //
@@ -183,17 +186,22 @@ const QString Breakpoint::getFilterVersion()
 //
 // -----------------------------------------------------------------------------
 const QString Breakpoint::getGroupName()
-{ return SIMPL::FilterGroups::CoreFilters; }
+{
+  return SIMPL::FilterGroups::CoreFilters;
+}
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
 const QString Breakpoint::getSubGroupName()
-{ return SIMPL::FilterSubGroups::MiscFilters; }
+{
+  return SIMPL::FilterSubGroups::MiscFilters;
+}
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
 const QString Breakpoint::getHumanLabel()
-{ return "Breakpoint"; }
-
+{
+  return "Breakpoint";
+}

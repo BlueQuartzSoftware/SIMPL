@@ -38,16 +38,15 @@
 
 #include "SVWidgetsLib/Core/SVWidgetsLibConstants.h"
 
-
 // Include the MOC generated CPP file which has all the QMetaObject methods/data
 #include "moc_DataContainerArrayWidget.cpp"
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-DataContainerArrayWidget::DataContainerArrayWidget(QWidget* parent) :
-  QWidget(parent),
-  m_Filter(nullptr)
+DataContainerArrayWidget::DataContainerArrayWidget(QWidget* parent)
+: QWidget(parent)
+, m_Filter(nullptr)
 {
   setupUi(this);
   setupGui();
@@ -56,9 +55,9 @@ DataContainerArrayWidget::DataContainerArrayWidget(QWidget* parent) :
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-DataContainerArrayWidget::DataContainerArrayWidget(AbstractFilter* filter, QWidget* parent) :
-  QWidget(parent),
-  m_Filter(filter)
+DataContainerArrayWidget::DataContainerArrayWidget(AbstractFilter* filter, QWidget* parent)
+: QWidget(parent)
+, m_Filter(filter)
 {
   setupUi(this);
   setupGui();
@@ -70,7 +69,6 @@ DataContainerArrayWidget::DataContainerArrayWidget(AbstractFilter* filter, QWidg
 DataContainerArrayWidget::~DataContainerArrayWidget()
 {
 }
-
 
 // -----------------------------------------------------------------------------
 //
@@ -87,12 +85,12 @@ void DataContainerArrayWidget::initializeWithFilter(AbstractFilter* filter)
 void DataContainerArrayWidget::clearStandardItemModel()
 {
   // Put in a QStandardItemModel
-  //qDebug() << "clearStandardItemModel()";
+  // qDebug() << "clearStandardItemModel()";
   QAbstractItemModel* oldModel = dcaProxyView->model();
   QStandardItemModel* model = new QStandardItemModel;
   dcaProxyView->setModel(model);
   model->setParent(dcaProxyView); // Set the parent so it gets cleaned up
-  delete oldModel; // Clean up the old model now.
+  delete oldModel;                // Clean up the old model now.
 }
 
 // -----------------------------------------------------------------------------
@@ -105,10 +103,8 @@ void DataContainerArrayWidget::setupGui()
 
   if(nullptr != m_Filter)
   {
-    connect(m_Filter, SIGNAL(preflightExecuted()),
-            this, SLOT(updateView()));
+    connect(m_Filter, SIGNAL(preflightExecuted()), this, SLOT(updateView()));
   }
-
 }
 
 // -----------------------------------------------------------------------------
@@ -118,13 +114,17 @@ void DataContainerArrayWidget::updateView()
 {
 
   // Sanity check our filter object
-  if (nullptr == m_Filter) { return; }
+  if(nullptr == m_Filter)
+  {
+    return;
+  }
 
   // Get an check out DataContainerArray object
   DataContainerArray::Pointer dca = m_Filter->getDataContainerArray();
-  if(dca.get() == nullptr) { return; }
-
-
+  if(dca.get() == nullptr)
+  {
+    return;
+  }
 
   QStandardItemModel* model = qobject_cast<QStandardItemModel*>(dcaProxyView->model());
   QVector<QString> path;
@@ -146,8 +146,7 @@ void DataContainerArrayWidget::updateView()
   QItemSelectionModel* selectionModel = dcaProxyView->selectionModel();
   if(selectionModel)
   {
-    connect(selectionModel, SIGNAL(currentChanged(const QModelIndex&, const QModelIndex&)),
-            this, SLOT(dcaProxyView_indexChanged(const QModelIndex&, const QModelIndex&)) );
+    connect(selectionModel, SIGNAL(currentChanged(const QModelIndex&, const QModelIndex&)), this, SLOT(dcaProxyView_indexChanged(const QModelIndex&, const QModelIndex&)));
   }
 
   // Sanity check model
@@ -157,14 +156,13 @@ void DataContainerArrayWidget::updateView()
     return;
   }
 
-
   QStandardItem* rootItem = model->invisibleRootItem();
 
   // Loop over the data containers until we find the proper data container
   QList<DataContainer::Pointer> containers = dca->getDataContainers();
 
   QListIterator<DataContainer::Pointer> containerIter(containers);
-  //QStringList dcList;
+  // QStringList dcList;
   int row0 = 0;
   while(containerIter.hasNext())
   {
@@ -184,7 +182,7 @@ void DataContainerArrayWidget::updateView()
     DataContainer::AttributeMatrixMap_t attrMats = dc->getAttributeMatrices();
     QMapIterator<QString, AttributeMatrix::Pointer> attrMatsIter(attrMats);
     int row1 = 0;
-    while(attrMatsIter.hasNext() )
+    while(attrMatsIter.hasNext())
     {
       attrMatsIter.next();
       QString amName = attrMatsIter.key();
@@ -203,7 +201,7 @@ void DataContainerArrayWidget::updateView()
       QList<QString> attrArrayNames = am->getAttributeArrayNames();
       QListIterator<QString> dataArraysIter(attrArrayNames);
       int row2 = 0;
-      while(dataArraysIter.hasNext() )
+      while(dataArraysIter.hasNext())
       {
         QString attrArrayName = dataArraysIter.next();
         IDataArray::Pointer attrArray = am->getAttributeArray(attrArrayName);
@@ -223,10 +221,7 @@ void DataContainerArrayWidget::updateView()
     }
     row0++;
   }
-
 }
-
-
 
 // -----------------------------------------------------------------------------
 //

@@ -33,16 +33,11 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-
-
-
-
 #include "EbsdLib/EbsdConstants.h"
-#include "SIMPLib/SIMPLib.h"
-#include "SIMPLib/OrientationOps/CubicOps.h"
 #include "SIMPLib/OrientationOps/CubicLowOps.h"
-#include "SIMPLib/OrientationOps/HexagonalOps.h"
+#include "SIMPLib/OrientationOps/CubicOps.h"
 #include "SIMPLib/OrientationOps/HexagonalLowOps.h"
+#include "SIMPLib/OrientationOps/HexagonalOps.h"
 #include "SIMPLib/OrientationOps/MonoclinicOps.h"
 #include "SIMPLib/OrientationOps/OrthoRhombicOps.h"
 #include "SIMPLib/OrientationOps/TetragonalLowOps.h"
@@ -50,12 +45,11 @@
 #include "SIMPLib/OrientationOps/TriclinicOps.h"
 #include "SIMPLib/OrientationOps/TrigonalLowOps.h"
 #include "SIMPLib/OrientationOps/TrigonalOps.h"
+#include "SIMPLib/SIMPLib.h"
 #include "SIMPLib/Utilities/ColorTable.h"
 
-
-
-#include "UnitTestSupport.hpp"
 #include "TestFileLocations.h"
+#include "UnitTestSupport.hpp"
 
 // -----------------------------------------------------------------------------
 //
@@ -86,7 +80,6 @@ void TestCrystalStructureTest()
 
   b = Ebsd::CrystalStructure::Hexagonal_High == clow;
   DREAM3D_REQUIRE_EQUAL(b, false)
-
 }
 
 // -----------------------------------------------------------------------------
@@ -136,14 +129,10 @@ void TestEbsdColoring()
 int main(int argc, char** argv)
 {
   int err = EXIT_SUCCESS;
-  DREAM3D_REGISTER_TEST( TestEbsdColoring() )
+  DREAM3D_REGISTER_TEST(TestEbsdColoring())
 
-  DREAM3D_REGISTER_TEST( TestCrystalStructureTest() )
+  DREAM3D_REGISTER_TEST(TestCrystalStructureTest())
 
   PRINT_TEST_SUMMARY();
   return err;
 }
-
-
-
-

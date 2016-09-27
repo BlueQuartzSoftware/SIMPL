@@ -40,8 +40,6 @@
 // -----------------------------------------------------------------------------
 AbstractFilterParametersWriter::AbstractFilterParametersWriter()
 {
-  
-
 }
 
 // -----------------------------------------------------------------------------
@@ -49,7 +47,6 @@ AbstractFilterParametersWriter::AbstractFilterParametersWriter()
 // -----------------------------------------------------------------------------
 AbstractFilterParametersWriter::~AbstractFilterParametersWriter()
 {
-  
 }
 
 // -----------------------------------------------------------------------------
@@ -448,7 +445,6 @@ int AbstractFilterParametersWriter::writeValue(const QString name, AxisAngleInpu
   return -1;
 }
 
-
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
@@ -473,7 +469,6 @@ int AbstractFilterParametersWriter::writeArraySelections(const QString name, QSe
   return -1;
 }
 
-
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
@@ -485,8 +480,6 @@ int AbstractFilterParametersWriter::writeValue(const QString name, const DataCon
   // This should never be executed
   return -1;
 }
-
-
 
 // -----------------------------------------------------------------------------
 //
@@ -527,7 +520,7 @@ int AbstractFilterParametersWriter::writeValue(const QString name, const Dynamic
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-int AbstractFilterParametersWriter::writeValue(const QString name, const QPair<double, double> & v)
+int AbstractFilterParametersWriter::writeValue(const QString name, const QPair<double, double>& v)
 {
   Q_UNUSED(name)
   Q_UNUSED(v)
@@ -535,4 +528,3 @@ int AbstractFilterParametersWriter::writeValue(const QString name, const QPair<d
   // This should never be executed
   return -1;
 }
-

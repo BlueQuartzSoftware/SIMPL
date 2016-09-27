@@ -38,9 +38,9 @@
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-DataContainerReaderFilterParameter::DataContainerReaderFilterParameter() :
-  FilterParameter(),
-  m_DefaultFlagValue(Qt::Checked)
+DataContainerReaderFilterParameter::DataContainerReaderFilterParameter()
+: FilterParameter()
+, m_DefaultFlagValue(Qt::Checked)
 {
   setFileExtension(".dream3d");
   setFileType("");
@@ -50,13 +50,14 @@ DataContainerReaderFilterParameter::DataContainerReaderFilterParameter() :
 //
 // -----------------------------------------------------------------------------
 DataContainerReaderFilterParameter::~DataContainerReaderFilterParameter()
-{}
+{
+}
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-DataContainerReaderFilterParameter::Pointer DataContainerReaderFilterParameter::New(const QString& humanLabel, const QString& propertyName,
-    const QString& defaultValue, Category category, DataContainerReader* filter, int groupIndex)
+DataContainerReaderFilterParameter::Pointer DataContainerReaderFilterParameter::New(const QString& humanLabel, const QString& propertyName, const QString& defaultValue, Category category,
+                                                                                    DataContainerReader* filter, int groupIndex)
 {
   DataContainerReaderFilterParameter::Pointer ptr = DataContainerReaderFilterParameter::New();
   ptr->setHumanLabel(humanLabel);
@@ -82,10 +83,10 @@ QString DataContainerReaderFilterParameter::getWidgetType()
 // -----------------------------------------------------------------------------
 // THIS IS A SPECIAL CASE AND IS NOT STANDARD.  DO NOT COPY THIS CODE.
 // -----------------------------------------------------------------------------
-void DataContainerReaderFilterParameter::readJson(const QJsonObject &json)
+void DataContainerReaderFilterParameter::readJson(const QJsonObject& json)
 {
   QJsonValue jsonValue = json[getPropertyName()];
-  if(!jsonValue.isUndefined() )
+  if(!jsonValue.isUndefined())
   {
     QJsonObject jsonObject = jsonValue.toObject();
     DataContainerArrayProxy proxy;
@@ -99,7 +100,7 @@ void DataContainerReaderFilterParameter::readJson(const QJsonObject &json)
 // -----------------------------------------------------------------------------
 // THIS IS A SPECIAL CASE AND IS NOT STANDARD.  DO NOT COPY THIS CODE.
 // -----------------------------------------------------------------------------
-void DataContainerReaderFilterParameter::writeJson(QJsonObject &json)
+void DataContainerReaderFilterParameter::writeJson(QJsonObject& json)
 {
   DataContainerArrayProxy proxy = m_Filter->getInputFileDataContainerArrayProxy();
   QJsonObject obj;
@@ -107,4 +108,3 @@ void DataContainerReaderFilterParameter::writeJson(QJsonObject &json)
   json[getPropertyName()] = obj;
   json["InputFile"] = m_Filter->getInputFile();
 }
-

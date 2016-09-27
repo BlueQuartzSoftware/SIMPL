@@ -33,24 +33,21 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-
-
+#include <iostream>
 #include <stdlib.h>
 #include <string>
-#include <iostream>
 
 #include "CSVGrainDataReader.h"
 
 int main(int argc, char** argv)
 {
 
-  QString csvFile (argv[1]);
-
+  QString csvFile(argv[1]);
 
   CSVGrainDataReader reader;
   reader.setFileName(csvFile);
   int err = reader.readFile();
-  if (err < 0)
+  if(err < 0)
   {
     std::cout << "Error occurred reading the CSV Grain Data file" << std::endl;
     return EXIT_FAILURE;
@@ -59,12 +56,10 @@ int main(int argc, char** argv)
   // If the 'reader' object goes out of scope then all the pointers are going
   // to be invalid as the CSVGrainDataReader manages the memory for you.
   int* grain_ids = reader.getGrainIdPointer();
-  if (grain_ids > 0)
+  if(grain_ids > 0)
   {
-
   }
   std::cout << "Success Reading the Grain Data File" << std::endl;
-
 
   return EXIT_SUCCESS;
 }

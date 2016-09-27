@@ -33,26 +33,23 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-
 #include "QtSHelpDialog.h"
 
 #include <iostream>
 
-#include <QtCore/QFileInfo>
-#include <QtCore/QFile>
 #include <QtCore/QDir>
+#include <QtCore/QFile>
+#include <QtCore/QFileInfo>
 #include <QtCore/QTextStream>
 #include <QtCore/QUrl>
-
-
 
 #include "moc_QtSHelpDialog.cpp"
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-QtSHelpDialog::QtSHelpDialog(QWidget* parent) :
-  QDialog(parent)
+QtSHelpDialog::QtSHelpDialog(QWidget* parent)
+: QDialog(parent)
 {
   this->setupUi(this);
 }
@@ -73,16 +70,16 @@ void QtSHelpDialog::setContentFile(QUrl sourceLocation)
   QString aPluginDirStr = aPluginDir.absolutePath();
   QString thePath;
 #if defined(Q_OS_WIN)
-  if (aPluginDir.cd("Help") )
+  if(aPluginDir.cd("Help"))
   {
     thePath = aPluginDir.absolutePath();
   }
-  else if (aPluginDir.cd("../Help") )
+  else if(aPluginDir.cd("../Help"))
   {
     thePath = aPluginDir.absolutePath();
   }
 #elif defined(Q_OS_MAC)
-  if (aPluginDir.dirName() == "MacOS")
+  if(aPluginDir.dirName() == "MacOS")
   {
     aPluginDir.cdUp();
     aPluginDir.cdUp();
@@ -91,14 +88,14 @@ void QtSHelpDialog::setContentFile(QUrl sourceLocation)
   // aPluginDir.cd("Plugins");
   thePath = aPluginDir.absolutePath() + "/Help";
 #else
-  if (aPluginDir.cd("Help"))
+  if(aPluginDir.cd("Help"))
   {
     thePath = aPluginDir.absolutePath();
   }
 #endif
   thePath = QString("file:///").append(thePath).append("/").append(sourceLocation.toString());
 
-//  qDebug() << "Help File Path:" << thePath() << "\n";
+  //  qDebug() << "Help File Path:" << thePath() << "\n";
 
   helpBrowser->setSource(QUrl(thePath));
   // Set the Home Page File

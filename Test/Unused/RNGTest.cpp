@@ -33,9 +33,8 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-
-#include <stdlib.h>
 #include <iostream>
+#include <stdlib.h>
 
 #include "SIMPLib/Utilities/SIMPLibRandom.h"
 
@@ -44,20 +43,15 @@ int main(int argc, char** argv)
   std::cout << "RNGTest Start..." << std::endl;
   SIMPL_RANDOMNG_NEW()
   float random;
-  for (int i = 0; i < 1000000; ++i)
+  for(int i = 0; i < 1000000; ++i)
   {
-    random = static_cast<float>( rg.genrand_res53() );
-    if (random > 0.95)
+    random = static_cast<float>(rg.genrand_res53());
+    if(random > 0.95)
     {
       std::cout << "Here" << std::endl;
     }
-
   }
 
   std::cout << "RNGTest Ending" << std::endl;
   return EXIT_SUCCESS;
 }
-
-
-
-

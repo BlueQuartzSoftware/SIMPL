@@ -40,11 +40,9 @@
 #include "SIMPLib/Common/AbstractFilter.h"
 #include "SIMPLib/FilterParameters/LinkedChoicesFilterParameter.h"
 
-
 #include "FilterParameterWidgetsDialogs.h"
 
 #include "SVWidgetsLib/Core/SVWidgetsLibConstants.h"
-
 
 // Include the MOC generated file for this class
 #include "moc_ChoiceWidget.cpp"
@@ -52,8 +50,8 @@
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-ChoiceWidget::ChoiceWidget(FilterParameter* parameter, AbstractFilter* filter, QWidget* parent) :
-  FilterParameterWidget(parameter, filter, parent)
+ChoiceWidget::ChoiceWidget(FilterParameter* parameter, AbstractFilter* filter, QWidget* parent)
+: FilterParameterWidget(parameter, filter, parent)
 {
   m_FilterParameter = dynamic_cast<ChoiceFilterParameter*>(parameter);
   Q_ASSERT_X(m_FilterParameter != nullptr, "nullptr Pointer", "ChoiceWidget can ONLY be used with a ChoiceFilterParameter object");
@@ -66,7 +64,8 @@ ChoiceWidget::ChoiceWidget(FilterParameter* parameter, AbstractFilter* filter, Q
 //
 // -----------------------------------------------------------------------------
 ChoiceWidget::~ChoiceWidget()
-{}
+{
+}
 
 // -----------------------------------------------------------------------------
 //
@@ -75,23 +74,19 @@ void ChoiceWidget::setupGui()
 {
 
   // Catch when the filter is about to execute the preflight
-  connect(getFilter(), SIGNAL(preflightAboutToExecute()),
-          this, SLOT(beforePreflight()));
+  connect(getFilter(), SIGNAL(preflightAboutToExecute()), this, SLOT(beforePreflight()));
 
   // Catch when the filter is finished running the preflight
-  connect(getFilter(), SIGNAL(preflightExecuted()),
-          this, SLOT(afterPreflight()));
+  connect(getFilter(), SIGNAL(preflightExecuted()), this, SLOT(afterPreflight()));
 
   // Catch when the filter wants its values updated
-  connect(getFilter(), SIGNAL(updateFilterParameters(AbstractFilter*)),
-          this, SLOT(filterNeedsInputParameters(AbstractFilter*)));
+  connect(getFilter(), SIGNAL(updateFilterParameters(AbstractFilter*)), this, SLOT(filterNeedsInputParameters(AbstractFilter*)));
 
-  connect(value, SIGNAL(currentIndexChanged(int)),
-          this, SLOT(widgetChanged(int) ) );
+  connect(value, SIGNAL(currentIndexChanged(int)), this, SLOT(widgetChanged(int)));
 
-  if (getFilterParameter() != nullptr)
+  if(getFilterParameter() != nullptr)
   {
-    label->setText(getFilterParameter()->getHumanLabel() );
+    label->setText(getFilterParameter()->getHumanLabel());
 
     // setup the list of choices for the widget
     ChoiceFilterParameter* choice = dynamic_cast<ChoiceFilterParameter*>(getFilterParameter());
@@ -132,7 +127,6 @@ void ChoiceWidget::widgetChanged(int index, bool emitParametersChanged)
     emit conditionalPropertyChanged(index);
   }
 
-
   // We emit no matter what
   if(emitParametersChanged)
   {
@@ -160,7 +154,6 @@ void ChoiceWidget::filterNeedsInputParameters(AbstractFilter* filter)
 // -----------------------------------------------------------------------------
 void ChoiceWidget::beforePreflight()
 {
-
 }
 
 // -----------------------------------------------------------------------------
@@ -168,5 +161,4 @@ void ChoiceWidget::beforePreflight()
 // -----------------------------------------------------------------------------
 void ChoiceWidget::afterPreflight()
 {
-
 }

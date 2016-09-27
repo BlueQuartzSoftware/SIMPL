@@ -34,26 +34,25 @@
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
 #include <QtCore/QCoreApplication>
-#include <QtCore/QPluginLoader>
-#include <QtCore/QFileInfo>
-#include <QtCore/QFile>
 #include <QtCore/QDir>
+#include <QtCore/QFile>
+#include <QtCore/QFileInfo>
+#include <QtCore/QPluginLoader>
 
 //#include "Applications/DREAM3D/DREAM3DApplication.h"
 
-#include "SIMPLib/SIMPLib.h"
-#include "SIMPLib/Common/Observer.h"
-#include "SIMPLib/Common/FilterPipeline.h"
 #include "SIMPLib/Common/FilterManager.h"
+#include "SIMPLib/Common/FilterPipeline.h"
+#include "SIMPLib/Common/Observer.h"
 #include "SIMPLib/Plugin/ISIMPLibPlugin.h"
-
+#include "SIMPLib/SIMPLib.h"
 
 #ifdef SIMPLib_BUILD_TEST_FILTERS
-#include "SIMPLib/TestFilters/GenericExample.h"
 #include "SIMPLib/TestFilters/ArraySelectionExample.h"
+#include "SIMPLib/TestFilters/GenericExample.h"
 #include "SIMPLib/TestFilters/MakeDataContainer.h"
-#include "SIMPLib/TestFilters/ThresholdExample.h"
 #include "SIMPLib/TestFilters/TestFilters.h"
+#include "SIMPLib/TestFilters/ThresholdExample.h"
 #endif
 
 #include "SIMPLib/Utilities/UnitTestSupport.hpp"
@@ -62,125 +61,125 @@
 
 class FilterPipelineTest
 {
-  public:
-    FilterPipelineTest() {}
-    virtual ~FilterPipelineTest() {}
+public:
+  FilterPipelineTest()
+  {
+  }
+  virtual ~FilterPipelineTest()
+  {
+  }
 
-    // -----------------------------------------------------------------------------
-    // These are input files
-    // -----------------------------------------------------------------------------
-    QString testFile1()
-    {
-      return UnitTest::DataDir + QString("/SmallIN100/Slice_1.ang");
-    }
-    QString testFile2()
-    {
-      return UnitTest::DataDir + QString("/SmallIN100/Slice_1.ang");
-    }
-    QString testFile3()
-    {
-      return UnitTest::DataDir + QString("/SmallIN100/Slice_1.ang");
-    }
+  // -----------------------------------------------------------------------------
+  // These are input files
+  // -----------------------------------------------------------------------------
+  QString testFile1()
+  {
+    return UnitTest::DataDir + QString("/SmallIN100/Slice_1.ang");
+  }
+  QString testFile2()
+  {
+    return UnitTest::DataDir + QString("/SmallIN100/Slice_1.ang");
+  }
+  QString testFile3()
+  {
+    return UnitTest::DataDir + QString("/SmallIN100/Slice_1.ang");
+  }
 
-    // -----------------------------------------------------------------------------
-    // These are the output files
-    // -----------------------------------------------------------------------------
-    QString outputDREAM3DFile()
-    {
-      return UnitTest::TestTempDir + QString("/FilterPipelineTest.dream3d");
-    }
+  // -----------------------------------------------------------------------------
+  // These are the output files
+  // -----------------------------------------------------------------------------
+  QString outputDREAM3DFile()
+  {
+    return UnitTest::TestTempDir + QString("/FilterPipelineTest.dream3d");
+  }
 
-    // -----------------------------------------------------------------------------
-    //
-    // -----------------------------------------------------------------------------
-    void RemoveTestFiles()
-    {
+  // -----------------------------------------------------------------------------
+  //
+  // -----------------------------------------------------------------------------
+  void RemoveTestFiles()
+  {
 #if REMOVE_TEST_FILES
-      QFile::remove(outputDREAM3DFile());
+    QFile::remove(outputDREAM3DFile());
 #endif
-    }
+  }
 
-
-    // -----------------------------------------------------------------------------
-    //
-    // -----------------------------------------------------------------------------
-    void TestPipelinePushPop()
-    {
+  // -----------------------------------------------------------------------------
+  //
+  // -----------------------------------------------------------------------------
+  void TestPipelinePushPop()
+  {
 
 #ifdef SIMPLib_BUILD_TEST_FILTERS
 
-      // Create our Pipeline object
-      FilterPipeline::Pointer pipeline = FilterPipeline::New();
+    // Create our Pipeline object
+    FilterPipeline::Pointer pipeline = FilterPipeline::New();
 
-      MakeDataContainer::Pointer read_h5ebsd = MakeDataContainer::New();
-      //  pipeline->pushBack(read_h5ebsd);
+    MakeDataContainer::Pointer read_h5ebsd = MakeDataContainer::New();
+    //  pipeline->pushBack(read_h5ebsd);
 
-      GenericExample::Pointer align_sections = GenericExample::New();
-      pipeline->pushBack(align_sections);
+    GenericExample::Pointer align_sections = GenericExample::New();
+    pipeline->pushBack(align_sections);
 
-      ArraySelectionExample::Pointer segment_features = ArraySelectionExample::New();
-      pipeline->pushBack(segment_features);
+    ArraySelectionExample::Pointer segment_features = ArraySelectionExample::New();
+    pipeline->pushBack(segment_features);
 
-      ThresholdExample::Pointer min_size = ThresholdExample::New();
-      pipeline->pushBack(min_size);
+    ThresholdExample::Pointer min_size = ThresholdExample::New();
+    pipeline->pushBack(min_size);
 
-      Filt0::Pointer writer = Filt0::New();
-      pipeline->pushBack(writer);
+    Filt0::Pointer writer = Filt0::New();
+    pipeline->pushBack(writer);
 
-      Filt1::Pointer vtkWriter = Filt1::New();
-      pipeline->pushBack(vtkWriter);
+    Filt1::Pointer vtkWriter = Filt1::New();
+    pipeline->pushBack(vtkWriter);
 
-      pipeline->popFront();
-      //  pipeline->printFilterNames(std::cout);
-      DREAM3D_REQUIRE_EQUAL(4, pipeline->size());
+    pipeline->popFront();
+    //  pipeline->printFilterNames(std::cout);
+    DREAM3D_REQUIRE_EQUAL(4, pipeline->size());
 
-      pipeline->pushFront(align_sections);
-      //  pipeline->printFilterNames(std::cout);
-      DREAM3D_REQUIRE_EQUAL(5, pipeline->size());
+    pipeline->pushFront(align_sections);
+    //  pipeline->printFilterNames(std::cout);
+    DREAM3D_REQUIRE_EQUAL(5, pipeline->size());
 
-      pipeline->pushFront(read_h5ebsd);
-      //  pipeline->printFilterNames(std::cout);
-      DREAM3D_REQUIRE_EQUAL(6, pipeline->size());
+    pipeline->pushFront(read_h5ebsd);
+    //  pipeline->printFilterNames(std::cout);
+    DREAM3D_REQUIRE_EQUAL(6, pipeline->size());
 
-      pipeline->popBack(); // Pop off the vtkwriter
-      //  pipeline->printFilterNames(std::cout);
-      DREAM3D_REQUIRE_EQUAL(5, pipeline->size());
+    pipeline->popBack(); // Pop off the vtkwriter
+    //  pipeline->printFilterNames(std::cout);
+    DREAM3D_REQUIRE_EQUAL(5, pipeline->size());
 
-      pipeline->erase(pipeline->size() - 1); // Erase the data container writer
-      //  pipeline->printFilterNames(std::cout);
-      DREAM3D_REQUIRE_EQUAL(4, pipeline->size());
+    pipeline->erase(pipeline->size() - 1); // Erase the data container writer
+    //  pipeline->printFilterNames(std::cout);
+    DREAM3D_REQUIRE_EQUAL(4, pipeline->size());
 
-      pipeline->insert(pipeline->size(), writer);
-      pipeline->insert(pipeline->size(), vtkWriter);
-      //  pipeline->printFilterNames(std::cout);
-      DREAM3D_REQUIRE_EQUAL(6, pipeline->size());
+    pipeline->insert(pipeline->size(), writer);
+    pipeline->insert(pipeline->size(), vtkWriter);
+    //  pipeline->printFilterNames(std::cout);
+    DREAM3D_REQUIRE_EQUAL(6, pipeline->size());
 #endif
-    }
+  }
 
+  // -----------------------------------------------------------------------------
+  //
+  // -----------------------------------------------------------------------------
+  void operator()()
+  {
+    std::cout << "#### FilterPipelineTest Starting ####" << std::endl;
 
-
-    // -----------------------------------------------------------------------------
-    //
-    // -----------------------------------------------------------------------------
-    void operator()()
-    {
-      std::cout << "#### FilterPipelineTest Starting ####" << std::endl;
-
-      int err = EXIT_SUCCESS;
+    int err = EXIT_SUCCESS;
 
 #if !REMOVE_TEST_FILES
-      DREAM3D_REGISTER_TEST( RemoveTestFiles() );
+    DREAM3D_REGISTER_TEST(RemoveTestFiles());
 #endif
 
-      DREAM3D_REGISTER_TEST( TestPipelinePushPop() );
+    DREAM3D_REGISTER_TEST(TestPipelinePushPop());
 
 #if REMOVE_TEST_FILES
-      //  DREAM3D_REGISTER_TEST( RemoveTestFiles() );
+//  DREAM3D_REGISTER_TEST( RemoveTestFiles() );
 #endif
-    }
+  }
 
-  private:
-    FilterPipelineTest(const FilterPipelineTest&); // Copy Constructor Not Implemented
-    void operator=(const FilterPipelineTest&); // Operator '=' Not Implemented
+private:
+  FilterPipelineTest(const FilterPipelineTest&); // Copy Constructor Not Implemented
+  void operator=(const FilterPipelineTest&);     // Operator '=' Not Implemented
 };
-

@@ -35,8 +35,8 @@
 
 #include "ShapeTypeSelectionWidget.h"
 
-#include <QtCore/QMetaProperty>
 #include <QtCore/QList>
+#include <QtCore/QMetaProperty>
 
 #include <QtWidgets/QComboBox>
 #include <QtWidgets/QLabel>
@@ -49,16 +49,15 @@
 
 #include "FilterParameterWidgetsDialogs.h"
 
-
 // Include the MOC generated file for this class
 #include "moc_ShapeTypeSelectionWidget.cpp"
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-ShapeTypeSelectionWidget::ShapeTypeSelectionWidget(FilterParameter* parameter, AbstractFilter* filter, QWidget* parent) :
-  FilterParameterWidget(parameter, filter, parent),
-  m_DidCausePreflight(false)
+ShapeTypeSelectionWidget::ShapeTypeSelectionWidget(FilterParameter* parameter, AbstractFilter* filter, QWidget* parent)
+: FilterParameterWidget(parameter, filter, parent)
+, m_DidCausePreflight(false)
 {
   m_FilterParameter = dynamic_cast<ShapeTypeSelectionFilterParameter*>(parameter);
   Q_ASSERT_X(m_FilterParameter != nullptr, "nullptr Pointer", "ShapeTypeSelectionWidget can ONLY be used with a ShapeTypeSelectionFilterParameter object");
@@ -70,9 +69,9 @@ ShapeTypeSelectionWidget::ShapeTypeSelectionWidget(FilterParameter* parameter, A
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-ShapeTypeSelectionWidget::ShapeTypeSelectionWidget(QWidget* parent) :
-  FilterParameterWidget(nullptr, nullptr, parent),
-  m_DidCausePreflight(false)
+ShapeTypeSelectionWidget::ShapeTypeSelectionWidget(QWidget* parent)
+: FilterParameterWidget(nullptr, nullptr, parent)
+, m_DidCausePreflight(false)
 {
   setupUi(this);
   setupGui();
@@ -82,8 +81,8 @@ ShapeTypeSelectionWidget::ShapeTypeSelectionWidget(QWidget* parent) :
 //
 // -----------------------------------------------------------------------------
 ShapeTypeSelectionWidget::~ShapeTypeSelectionWidget()
-{}
-
+{
+}
 
 // -----------------------------------------------------------------------------
 //
@@ -95,25 +94,21 @@ void ShapeTypeSelectionWidget::setupGui()
     return;
   }
   // Catch when the filter is about to execute the preflight
-  connect(getFilter(), SIGNAL(preflightAboutToExecute()),
-          this, SLOT(beforePreflight()));
+  connect(getFilter(), SIGNAL(preflightAboutToExecute()), this, SLOT(beforePreflight()));
 
   // Catch when the filter is finished running the preflight
-  connect(getFilter(), SIGNAL(preflightExecuted()),
-          this, SLOT(afterPreflight()));
+  connect(getFilter(), SIGNAL(preflightExecuted()), this, SLOT(afterPreflight()));
 
   // Catch when the filter wants its values updated
-  connect(getFilter(), SIGNAL(updateFilterParameters(AbstractFilter*)),
-          this, SLOT(filterNeedsInputParameters(AbstractFilter*)));
+  connect(getFilter(), SIGNAL(updateFilterParameters(AbstractFilter*)), this, SLOT(filterNeedsInputParameters(AbstractFilter*)));
 
-  if (getFilterParameter() == nullptr)
+  if(getFilterParameter() == nullptr)
   {
     return;
   }
-  label->setText(getFilterParameter()->getHumanLabel() );
+  label->setText(getFilterParameter()->getHumanLabel());
 
   updateComboBoxes();
-
 }
 
 // -----------------------------------------------------------------------------
@@ -139,7 +134,7 @@ void ShapeTypeSelectionWidget::updateComboBoxes()
 
   // Remove all the items from the GUI and from the internal tracking Lists
   QLayoutItem* child;
-  while ((formLayout_2->count() > 0) && (child = formLayout_2->takeAt(0)) != 0)
+  while((formLayout_2->count() > 0) && (child = formLayout_2->takeAt(0)) != 0)
   {
     delete child;
   }
@@ -158,7 +153,7 @@ void ShapeTypeSelectionWidget::updateComboBoxes()
   m_ShapeTypeScrollArea->setWidget(m_ShapeTypeScrollContents);
 
   // We skip the first Ensemble as it is always a dummy
-  for (int i = 0; i < size - 1; i++)
+  for(int i = 0; i < size - 1; i++)
   {
     QLabel* shapeTypeLabel = new QLabel(m_ShapeTypeScrollContents);
     QString str("Phase ");
@@ -173,23 +168,19 @@ void ShapeTypeSelectionWidget::updateComboBoxes()
     QComboBox* cb = new QComboBox(m_ShapeTypeScrollContents);
     str.append(" ComboBox");
     cb->setObjectName(str);
-    for (int32_t s = 0; s < shapeTypeStrings.size(); ++s)
+    for(int32_t s = 0; s < shapeTypeStrings.size(); ++s)
     {
       cb->addItem((shapeTypeStrings[s]), shapeTypeEnums[s]);
       cb->setItemData(static_cast<int>(s), shapeTypeEnums[s], Qt::UserRole);
     }
     m_ShapeTypeCombos << cb;
     formLayout_2->setWidget(i, QFormLayout::FieldRole, cb);
-    if (i + 1 < dataFromFilter.size())
+    if(i + 1 < dataFromFilter.size())
     {
       cb->setCurrentIndex(dataFromFilter[i + 1]);
     }
-    connect(cb, SIGNAL(currentIndexChanged(int)),
-            this, SLOT(comboboxChanged(int)) );
-
+    connect(cb, SIGNAL(currentIndexChanged(int)), this, SLOT(comboboxChanged(int)));
   }
-
-
 }
 
 // -----------------------------------------------------------------------------
@@ -207,13 +198,15 @@ void ShapeTypeSelectionWidget::comboboxChanged(int index)
 // -----------------------------------------------------------------------------
 void ShapeTypeSelectionWidget::beforePreflight()
 {
-  if (nullptr == getFilter()) { return; }
-  if(m_DidCausePreflight == true)
+  if(nullptr == getFilter())
   {
-  //  std::cout << "***  ShapeTypeSelectionWidget already caused a preflight, just returning" << std::endl;
     return;
   }
-
+  if(m_DidCausePreflight == true)
+  {
+    //  std::cout << "***  ShapeTypeSelectionWidget already caused a preflight, just returning" << std::endl;
+    return;
+  }
 }
 
 // -----------------------------------------------------------------------------
@@ -232,7 +225,7 @@ void ShapeTypeSelectionWidget::filterNeedsInputParameters(AbstractFilter* filter
   int count = m_ShapeTypeCombos.count();
   QVector<uint32_t> shapeTypes(count + 1, SIMPL::ShapeType::UnknownShapeType);
   bool ok = false;
-  for (int i = 0; i < count; ++i)
+  for(int i = 0; i < count; ++i)
   {
     QComboBox* cb = m_ShapeTypeCombos.at(i);
     unsigned int sType = static_cast<unsigned int>(cb->itemData(cb->currentIndex(), Qt::UserRole).toUInt(&ok));
@@ -251,5 +244,4 @@ void ShapeTypeSelectionWidget::filterNeedsInputParameters(AbstractFilter* filter
   {
     FilterParameterWidgetsDialogs::ShowCouldNotSetFilterParameter(getFilter(), getFilterParameter());
   }
-
 }

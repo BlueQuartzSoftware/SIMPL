@@ -44,8 +44,8 @@
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-MultiplicationOperator::MultiplicationOperator() :
-BinaryOperator()
+MultiplicationOperator::MultiplicationOperator()
+: BinaryOperator()
 {
   setPrecedence(B_Precedence);
 }
@@ -55,14 +55,12 @@ BinaryOperator()
 // -----------------------------------------------------------------------------
 MultiplicationOperator::~MultiplicationOperator()
 {
-
 }
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void MultiplicationOperator::calculate(AbstractFilter* filter, DataArrayPath calculatedArrayPath, QStack<ICalculatorArray::Pointer> &executionStack)
+void MultiplicationOperator::calculate(AbstractFilter* filter, DataArrayPath calculatedArrayPath, QStack<ICalculatorArray::Pointer>& executionStack)
 {
   CREATE_NEW_ARRAY_STANDARD_BINARY(filter, calculatedArrayPath, executionStack, *)
 }
-

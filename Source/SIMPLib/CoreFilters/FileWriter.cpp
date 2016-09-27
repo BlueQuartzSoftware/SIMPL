@@ -33,7 +33,6 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-
 #include "FileWriter.h"
 
 #include <QtCore/QDir>
@@ -44,14 +43,12 @@
 // Include the MOC generated file for this class
 #include "moc_FileWriter.cpp"
 
-
-
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-FileWriter::FileWriter() :
-  AbstractFilter(),
-  m_OutputFile("")
+FileWriter::FileWriter()
+: AbstractFilter()
+, m_OutputFile("")
 {
 }
 
@@ -94,7 +91,7 @@ void FileWriter::execute()
   QFileInfo fi(m_OutputFile);
   QString parentPath = fi.path();
   QDir dir;
-  if (!dir.mkpath(parentPath))
+  if(!dir.mkpath(parentPath))
   {
     setErrorCondition(-200);
     QString ss = QObject::tr("Error creating parent path '%1'").arg(parentPath);
@@ -103,7 +100,7 @@ void FileWriter::execute()
   }
 
   int32_t err = writeHeader();
-  if (err < 0)
+  if(err < 0)
   {
     QString ss = QObject::tr("Error writing the header portion of the file");
     setErrorCondition(err);
@@ -111,7 +108,7 @@ void FileWriter::execute()
     return;
   }
   err = writeFile();
-  if (err < 0)
+  if(err < 0)
   {
     QString ss = QObject::tr("Error writing the data to the file");
     setErrorCondition(err);
