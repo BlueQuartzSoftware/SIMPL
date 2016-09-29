@@ -111,8 +111,6 @@ foreach(f ${_PrivateFilters} )
                         ${SIMPLProj_BINARY_DIR})
 endforeach()
 
-
-
 source_group("${SIMPLib_SOURCE_DIR} ${_filterGroupName} util" FILES ${HEADERS} ${SOURCES})
 
 ADD_SIMPL_SUPPORT_HEADER(${SIMPLib_SOURCE_DIR} ${_filterGroupName}/util CalculatorItem.h)
@@ -213,6 +211,8 @@ ADD_SIMPL_SUPPORT_SOURCE(${SIMPLib_SOURCE_DIR} ${_filterGroupName}/util CeilOper
 # -- Add the binary directory for this subdirectory to the include path which is where the moc files are generated
 include_directories( ${SIMPLib_BINARY_DIR}/${_filterGroupName})
 
+# -- Run MOC and UIC on the necessary files
+QT5_ADD_RESOURCES( SIMPLib_${_filterGroupName}_Generated_RCS_SRCS "${SIMPLib_SOURCE_DIR}/CoreFilters/CoreResources.qrc"  )
 
 #-----------------
 # This makes sure some Filter Group meta data is written to build files that is needed later

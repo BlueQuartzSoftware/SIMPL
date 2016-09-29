@@ -7,6 +7,7 @@
 #include "SIMPLib/Common/Constants.h"
 #include "SIMPLib/FilterParameters/AbstractFilterParametersReader.h"
 #include "SIMPLib/FilterParameters/AbstractFilterParametersWriter.h"
+#include "SIMPLib/FilterParameters/GenerateColorTableFilterParameter.h"
 #include "SIMPLib/SIMPLibVersion.h"
 
 // Include the MOC generated file for this class
@@ -44,6 +45,14 @@ void GenerateColorTable::initialize()
 void GenerateColorTable::setupFilterParameters()
 {
   FilterParameterVector parameters;
+
+  {
+    GenerateColorTableFilterParameter::Pointer parameter = GenerateColorTableFilterParameter::New();
+    parameter->setHumanLabel("Select Preset");
+    parameter->setCategory(FilterParameter::Parameter);
+    parameter->setFilter(this);
+    parameters.push_back(parameter);
+  }
 
   setFilterParameters(parameters);
 }
