@@ -128,10 +128,19 @@ void RemoveFilterCommand::undo()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
+bool variantCompare(const QVariant &v1, const QVariant &v2)
+{
+    return v1.toInt() > v2.toInt();
+}
+
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
 void RemoveFilterCommand::redo()
 {
   QList<QVariant> descendingList = m_FilterPositions;
-  std::sort(descendingList.rbegin(), descendingList.rend());
+  qSort(descendingList.begin(), descendingList.end(), variantCompare);
 
   for(int i = 0; i < descendingList.size(); i++)
   {
