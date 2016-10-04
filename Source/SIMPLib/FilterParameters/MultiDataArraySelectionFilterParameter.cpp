@@ -169,7 +169,7 @@ MultiDataArraySelectionFilterParameter::RequirementType MultiDataArraySelectionF
 void MultiDataArraySelectionFilterParameter::readJson(const QJsonObject& json)
 {
   QJsonValue jsonValue = json[getPropertyName()];
-  if(!jsonValue.isUndefined())
+  if(!jsonValue.isUndefined() && m_SetterCallback)
   {
     QJsonArray arrayObj = jsonValue.toArray();
     QVector<DataArrayPath> dapVec;
@@ -190,16 +190,19 @@ void MultiDataArraySelectionFilterParameter::readJson(const QJsonObject& json)
 // -----------------------------------------------------------------------------
 void MultiDataArraySelectionFilterParameter::writeJson(QJsonObject& json)
 {
-  QVector<DataArrayPath> dapVec = m_GetterCallback();
-  QJsonArray arrayObj;
-
-  for(int i = 0; i < dapVec.size(); i++)
+  if (m_GetterCallback)
   {
-    DataArrayPath dap = dapVec[i];
-    QJsonObject obj;
-    dap.writeJson(obj);
-    arrayObj.push_back(obj);
-  }
+    QVector<DataArrayPath> dapVec = m_GetterCallback();
+    QJsonArray arrayObj;
 
-  json[getPropertyName()] = arrayObj;
+    for(int i = 0; i < dapVec.size(); i++)
+    {
+      DataArrayPath dap = dapVec[i];
+      QJsonObject obj;
+      dap.writeJson(obj);
+      arrayObj.push_back(obj);
+    }
+
+    json[getPropertyName()] = arrayObj;
+  }
 }

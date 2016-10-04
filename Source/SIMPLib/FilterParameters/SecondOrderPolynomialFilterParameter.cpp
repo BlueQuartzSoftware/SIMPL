@@ -85,7 +85,7 @@ QString SecondOrderPolynomialFilterParameter::getWidgetType()
 void SecondOrderPolynomialFilterParameter::readJson(const QJsonObject& json)
 {
   QJsonValue jsonValue = json[getPropertyName()];
-  if(!jsonValue.isUndefined())
+  if(!jsonValue.isUndefined() && m_SetterCallback)
   {
     QJsonObject obj = jsonValue.toObject();
     Float2ndOrderPoly_t poly;
@@ -99,8 +99,11 @@ void SecondOrderPolynomialFilterParameter::readJson(const QJsonObject& json)
 // -----------------------------------------------------------------------------
 void SecondOrderPolynomialFilterParameter::writeJson(QJsonObject& json)
 {
-  Float2ndOrderPoly_t poly = m_GetterCallback();
-  QJsonObject obj;
-  poly.writeJson(obj);
-  json[getPropertyName()] = obj;
+  if (m_GetterCallback)
+  {
+    Float2ndOrderPoly_t poly = m_GetterCallback();
+    QJsonObject obj;
+    poly.writeJson(obj);
+    json[getPropertyName()] = obj;
+  }
 }

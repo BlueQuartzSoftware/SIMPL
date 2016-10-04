@@ -86,7 +86,7 @@ QString AttributeMatrixCreationFilterParameter::getWidgetType()
 void AttributeMatrixCreationFilterParameter::readJson(const QJsonObject& json)
 {
   QJsonValue jsonValue = json[getPropertyName()];
-  if(!jsonValue.isUndefined())
+  if(!jsonValue.isUndefined() && m_SetterCallback)
   {
     QJsonObject obj = jsonValue.toObject();
     DataArrayPath dap;
@@ -100,8 +100,11 @@ void AttributeMatrixCreationFilterParameter::readJson(const QJsonObject& json)
 // -----------------------------------------------------------------------------
 void AttributeMatrixCreationFilterParameter::writeJson(QJsonObject& json)
 {
-  DataArrayPath dap = m_GetterCallback();
-  QJsonObject obj;
-  dap.writeJson(obj);
-  json[getPropertyName()] = obj;
+  if (m_GetterCallback)
+  {
+    DataArrayPath dap = m_GetterCallback();
+    QJsonObject obj;
+    dap.writeJson(obj);
+    json[getPropertyName()] = obj;
+  }
 }

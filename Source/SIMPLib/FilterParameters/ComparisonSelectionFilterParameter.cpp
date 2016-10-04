@@ -89,7 +89,7 @@ QString ComparisonSelectionFilterParameter::getWidgetType()
 void ComparisonSelectionFilterParameter::readJson(const QJsonObject& json)
 {
   QJsonValue jsonValue = json[getPropertyName()];
-  if(!jsonValue.isUndefined())
+  if(!jsonValue.isUndefined() && m_SetterCallback)
   {
     QJsonArray jsonArray = jsonValue.toArray();
 
@@ -111,16 +111,19 @@ void ComparisonSelectionFilterParameter::readJson(const QJsonObject& json)
 // -----------------------------------------------------------------------------
 void ComparisonSelectionFilterParameter::writeJson(QJsonObject& json)
 {
-  QJsonArray inputsArray;
-
-  ComparisonInputs inputs = m_GetterCallback();
-  for(int i = 0; i < inputs.size(); i++)
+  if (m_GetterCallback)
   {
-    ComparisonInput_t input = inputs[i];
-    QJsonObject obj;
-    input.writeJson(obj);
-    inputsArray.push_back(obj);
-  }
+    QJsonArray inputsArray;
 
-  json[getPropertyName()] = inputsArray;
+    ComparisonInputs inputs = m_GetterCallback();
+    for(int i = 0; i < inputs.size(); i++)
+    {
+      ComparisonInput_t input = inputs[i];
+      QJsonObject obj;
+      input.writeJson(obj);
+      inputsArray.push_back(obj);
+    }
+
+    json[getPropertyName()] = inputsArray;
+  }
 }

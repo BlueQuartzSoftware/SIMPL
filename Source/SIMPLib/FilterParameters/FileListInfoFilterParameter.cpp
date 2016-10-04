@@ -84,7 +84,7 @@ QString FileListInfoFilterParameter::getWidgetType()
 void FileListInfoFilterParameter::readJson(const QJsonObject& json)
 {
   QJsonValue jsonValue = json[getPropertyName()];
-  if(!jsonValue.isUndefined())
+  if(!jsonValue.isUndefined() && m_SetterCallback)
   {
     QJsonObject jsonObj = jsonValue.toObject();
     FileListInfo_t fileListInfo;
@@ -98,8 +98,11 @@ void FileListInfoFilterParameter::readJson(const QJsonObject& json)
 // -----------------------------------------------------------------------------
 void FileListInfoFilterParameter::writeJson(QJsonObject& json)
 {
-  FileListInfo_t fileListInfo = m_GetterCallback();
-  QJsonObject jsonObj;
-  fileListInfo.writeJson(jsonObj);
-  json[getPropertyName()] = jsonObj;
+  if (m_GetterCallback)
+  {
+    FileListInfo_t fileListInfo = m_GetterCallback();
+    QJsonObject jsonObj;
+    fileListInfo.writeJson(jsonObj);
+    json[getPropertyName()] = jsonObj;
+  }
 }

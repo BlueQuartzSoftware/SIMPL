@@ -84,7 +84,7 @@ QString AxisAngleFilterParameter::getWidgetType()
 void AxisAngleFilterParameter::readJson(const QJsonObject& json)
 {
   QJsonValue jsonValue = json[getPropertyName()];
-  if(!jsonValue.isUndefined())
+  if(!jsonValue.isUndefined() && m_SetterCallback)
   {
     QJsonObject axisObj = jsonValue.toObject();
     AxisAngleInput_t axisAngle;
@@ -98,8 +98,11 @@ void AxisAngleFilterParameter::readJson(const QJsonObject& json)
 // -----------------------------------------------------------------------------
 void AxisAngleFilterParameter::writeJson(QJsonObject& json)
 {
-  QJsonObject axisObj;
-  AxisAngleInput_t axisAngle = m_GetterCallback();
-  axisAngle.writeJson(axisObj);
-  json[getPropertyName()] = axisObj;
+  if (m_GetterCallback)
+  {
+    QJsonObject axisObj;
+    AxisAngleInput_t axisAngle = m_GetterCallback();
+    axisAngle.writeJson(axisObj);
+    json[getPropertyName()] = axisObj;
+  }
 }

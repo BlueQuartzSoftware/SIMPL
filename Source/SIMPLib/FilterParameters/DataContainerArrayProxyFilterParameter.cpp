@@ -88,7 +88,7 @@ QString DataContainerArrayProxyFilterParameter::getWidgetType()
 void DataContainerArrayProxyFilterParameter::readJson(const QJsonObject& json)
 {
   QJsonValue jsonValue = json[getPropertyName()];
-  if(!jsonValue.isUndefined())
+  if(!jsonValue.isUndefined() && m_SetterCallback)
   {
     QJsonObject jsonObject = jsonValue.toObject();
     DataContainerArrayProxy proxy;
@@ -102,8 +102,11 @@ void DataContainerArrayProxyFilterParameter::readJson(const QJsonObject& json)
 // -----------------------------------------------------------------------------
 void DataContainerArrayProxyFilterParameter::writeJson(QJsonObject& json)
 {
-  DataContainerArrayProxy proxy = m_GetterCallback();
-  QJsonObject obj;
-  proxy.writeJson(obj);
-  json[getPropertyName()] = obj;
+  if (m_GetterCallback)
+  {
+    DataContainerArrayProxy proxy = m_GetterCallback();
+    QJsonObject obj;
+    proxy.writeJson(obj);
+    json[getPropertyName()] = obj;
+  }
 }
