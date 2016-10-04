@@ -81,7 +81,7 @@ QString ConstrainedDoubleFilterParameter::getWidgetType()
 void ConstrainedDoubleFilterParameter::readJson(const QJsonObject &json)
 {
   QJsonValue jsonValue = json[getPropertyName()];
-  if(!jsonValue.isUndefined() )
+  if(!jsonValue.isUndefined() && m_SetterCallback)
   {
     m_SetterCallback(jsonValue.toDouble());
   }
@@ -92,6 +92,9 @@ void ConstrainedDoubleFilterParameter::readJson(const QJsonObject &json)
 // -----------------------------------------------------------------------------
 void ConstrainedDoubleFilterParameter::writeJson(QJsonObject &json)
 {
-  json[getPropertyName()] = m_GetterCallback();
+  if (m_GetterCallback)
+  {
+    json[getPropertyName()] = m_GetterCallback();
+  }
 }
 

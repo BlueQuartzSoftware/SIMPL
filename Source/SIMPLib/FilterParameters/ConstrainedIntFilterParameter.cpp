@@ -82,7 +82,7 @@ QString ConstrainedIntFilterParameter::getWidgetType()
 void ConstrainedIntFilterParameter::readJson(const QJsonObject &json)
 {
   QJsonValue jsonValue = json[getPropertyName()];
-  if(!jsonValue.isUndefined() )
+  if(!jsonValue.isUndefined() && m_SetterCallback)
   {
     m_SetterCallback(jsonValue.toInt(0.0));
   }
@@ -93,6 +93,9 @@ void ConstrainedIntFilterParameter::readJson(const QJsonObject &json)
 // -----------------------------------------------------------------------------
 void ConstrainedIntFilterParameter::writeJson(QJsonObject &json)
 {
-  json[getPropertyName()] = m_GetterCallback();
+  if (m_GetterCallback)
+  {
+    json[getPropertyName()] = m_GetterCallback();
+  }
 }
 
