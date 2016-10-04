@@ -152,10 +152,11 @@ namespace UnitTest
 
   namespace ExecuteProcessTest
   {
-    const QString QMakeVersionString("@QtQMake_VersionString@");
-    const QString CMakeVersionString("@CMake_VersionString@");
+    const QString QMakeVersionString("@QMAKE_VERSION@");
     const QString QMakeLocation("@QtQMake_location@");
+
     const QString CMakeLocation("@CMAKE_COMMAND@");
+    const QString CMakeVersionString("@CMake_VersionString@");
   }
 }
 

@@ -94,5 +94,8 @@ void IntFilterParameter::readJson(const QJsonObject& json)
 // -----------------------------------------------------------------------------
 void IntFilterParameter::writeJson(QJsonObject& json)
 {
-  json[getPropertyName()] = m_GetterCallback();
+  if(m_GetterCallback)
+  {
+    json[getPropertyName()] = m_GetterCallback();
+  }
 }
