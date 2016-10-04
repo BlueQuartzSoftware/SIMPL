@@ -33,106 +33,105 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-
-#include <stdlib.h>
 #include <iostream>
+#include <stdlib.h>
 #include <vector>
 
 #include <QtCore/QDir>
 #include <QtCore/QFile>
 
+#include "SIMPLib/Common/FilterPipeline.h"
 #include "SIMPLib/Common/SIMPLibSetGetMacros.h"
 #include "SIMPLib/DataArrays/DataArray.hpp"
-#include "SIMPLib/Common/FilterPipeline.h"
-#include "SIMPLib/IOFilters/VtkGrainIdWriter.h"
 #include "SIMPLib/IOFilters/VtkGrainIdReader.h"
+#include "SIMPLib/IOFilters/VtkGrainIdWriter.h"
 
-#include "UnitTestSupport.hpp"
 #include "TestFileLocations.h"
+#include "UnitTestSupport.hpp"
 
 class GenerateGrainIds : public AbstractFilter
 {
-    Q_OBJECT
-  public:
-    SIMPL_SHARED_POINTERS(GenerateGrainIds)
-    SIMPL_STATIC_NEW_MACRO(GenerateGrainIds)
-    SIMPL_TYPE_MACRO_SUPER(GenerateGrainIds, AbstractFilter)
+  Q_OBJECT
+public:
+  SIMPL_SHARED_POINTERS(GenerateGrainIds)
+  SIMPL_STATIC_NEW_MACRO(GenerateGrainIds)
+  SIMPL_TYPE_MACRO_SUPER(GenerateGrainIds, AbstractFilter)
 
-    //------ Required Cell Data
-    SIMPL_INSTANCE_STRING_PROPERTY(GrainIdsArrayName)
+  //------ Required Cell Data
+  SIMPL_INSTANCE_STRING_PROPERTY(GrainIdsArrayName)
 
-    virtual ~GenerateGrainIds() {};
-    virtual const QString getGroupName()
+  virtual ~GenerateGrainIds(){};
+  virtual const QString getGroupName()
+  {
+    return "UnitTest";
+  }
+  virtual const QString getHumanLabel()
+  {
+    return "Generate Grain Ids";
+  }
+  virtual void execute()
+  {
+    setErrorCondition(0);
+    VoxelDataContainer* m = getVoxelDataContainer();
+    if(nullptr == m)
     {
-      return "UnitTest";
-    }
-    virtual const QString getHumanLabel()
-    {
-      return "Generate Grain Ids";
-    }
-    virtual void execute()
-    {
-      setErrorCondition(0);
-      VoxelDataContainer* m = getVoxelDataContainer();
-      if(nullptr == m)
-      {
-        setErrorCondition(-1);
-        QStringstream ss;
-        ss << " DataContainer was nullptr";
-        setErrorMessage(ss.str());
-        return;
-      }
-      int size = UnitTest::VtkGrainIdIOTest::XSize * UnitTest::VtkGrainIdIOTest::YSize * UnitTest::VtkGrainIdIOTest::ZSize;
-
-      int64_t nx = UnitTest::VtkGrainIdIOTest::XSize;
-      int64_t ny = UnitTest::VtkGrainIdIOTest::YSize;
-      int64_t nz = UnitTest::VtkGrainIdIOTest::ZSize;
-      m->setDimensions(nx, ny, nz);
-      m->setResolution(2.0f, 3.0f, 4.0f);
-      m->setOrigin(1.0f, 2.0f, 3.0f);
-
-      int64_t totalPoints = m->getTotalPoints();
-      dataCheck();
-      // Set the default data into the GrainIds
-      for (int i = 0; i < size; ++i)
-      {
-        m_GrainIds[i] = i + UnitTest::VtkGrainIdIOTest::Offset;
-      }
-
-    }
-    virtual void preflight()
-    {
-      dataCheck();
-    }
-
-  protected:
-    GenerateGrainIds() :
-      AbstractFilter(),
-      m_GrainIdsArrayName(SIMPL::CellData::GrainIds),
-      m_GrainIds(nullptr)
-    {
-    }
-
-  private:
-    int32_t* m_GrainIds;
-
-    void dataCheck()
-    {
-      setErrorCondition(0);
+      setErrorCondition(-1);
       QStringstream ss;
-      VoxelDataContainer* m = getVoxelDataContainer();
-      m_GrainIdsPtr = attrMat->createNonPrereqArray<DataArray<int32_t>, AbstractFilter, int32_t>(this, m_CellAttributeMatrixName,  m_GrainIdsArrayName, 0, voxels, 1); /* Assigns the shared_ptr<> to an instance variable that is a weak_ptr<> */
-      if( nullptr != m_GrainIdsPtr.lock().get() ) /* Validate the Weak Pointer wraps a non-nullptr pointer to a DataArray<T> object */
-      { m_GrainIds = m_GrainIdsPtr.lock()->getPointer(0); } /* Now assign the raw pointer to data from the DataArray<T> object */
-
+      ss << " DataContainer was nullptr";
       setErrorMessage(ss.str());
+      return;
     }
+    int size = UnitTest::VtkGrainIdIOTest::XSize * UnitTest::VtkGrainIdIOTest::YSize * UnitTest::VtkGrainIdIOTest::ZSize;
 
-    GenerateGrainIds(const GenerateGrainIds&); // Copy Constructor Not Implemented
-    void operator=(const GenerateGrainIds&); // Operator '=' Not Implemented
+    int64_t nx = UnitTest::VtkGrainIdIOTest::XSize;
+    int64_t ny = UnitTest::VtkGrainIdIOTest::YSize;
+    int64_t nz = UnitTest::VtkGrainIdIOTest::ZSize;
+    m->setDimensions(nx, ny, nz);
+    m->setResolution(2.0f, 3.0f, 4.0f);
+    m->setOrigin(1.0f, 2.0f, 3.0f);
+
+    int64_t totalPoints = m->getTotalPoints();
+    dataCheck();
+    // Set the default data into the GrainIds
+    for(int i = 0; i < size; ++i)
+    {
+      m_GrainIds[i] = i + UnitTest::VtkGrainIdIOTest::Offset;
+    }
+  }
+  virtual void preflight()
+  {
+    dataCheck();
+  }
+
+protected:
+  GenerateGrainIds()
+  : AbstractFilter()
+  , m_GrainIdsArrayName(SIMPL::CellData::GrainIds)
+  , m_GrainIds(nullptr)
+  {
+  }
+
+private:
+  int32_t* m_GrainIds;
+
+  void dataCheck()
+  {
+    setErrorCondition(0);
+    QStringstream ss;
+    VoxelDataContainer* m = getVoxelDataContainer();
+    m_GrainIdsPtr = attrMat->createNonPrereqArray<DataArray<int32_t>, AbstractFilter, int32_t>(this, m_CellAttributeMatrixName, m_GrainIdsArrayName, 0, voxels,
+                                                                                               1); /* Assigns the shared_ptr<> to an instance variable that is a weak_ptr<> */
+    if(nullptr != m_GrainIdsPtr.lock().get())                                                      /* Validate the Weak Pointer wraps a non-nullptr pointer to a DataArray<T> object */
+    {
+      m_GrainIds = m_GrainIdsPtr.lock()->getPointer(0);
+    } /* Now assign the raw pointer to data from the DataArray<T> object */
+
+    setErrorMessage(ss.str());
+  }
+
+  GenerateGrainIds(const GenerateGrainIds&); // Copy Constructor Not Implemented
+  void operator=(const GenerateGrainIds&);   // Operator '=' Not Implemented
 };
-
-
 
 // -----------------------------------------------------------------------------
 //
@@ -163,7 +162,6 @@ int TestVtkGrainIdWriter()
   // Now create some GrainIds and lets setup a real pipeline that should work
   pipeline->clear(); // Remove any filters from the pipeline first
 
-
   GenerateGrainIds::Pointer generateGrainIds = GenerateGrainIds::New();
   pipeline->pushBack(generateGrainIds);
 
@@ -192,9 +190,9 @@ int TestVtkGrainIdReader()
 
   VoxelDataContainer::Pointer m = VoxelDataContainer::New();
   reader->setVoxelDataContainer(m.get());
-  reader->execute( );
+  reader->execute();
   int err = reader->getErrorCondition();
-  if (err < 0)
+  if(err < 0)
   {
     std::cout << reader->getErrorMessage() << std::endl;
   }
@@ -203,24 +201,21 @@ int TestVtkGrainIdReader()
 
   IDataArray::Pointer mdata = reader->getVoxelDataContainer()->getCellData(SIMPL::CellData::GrainIds);
 
-
   DREAM3D_REQUIRE_EQUAL(nx, UnitTest::VtkGrainIdIOTest::XSize);
   DREAM3D_REQUIRE_EQUAL(ny, UnitTest::VtkGrainIdIOTest::YSize);
   DREAM3D_REQUIRE_EQUAL(nz, UnitTest::VtkGrainIdIOTest::ZSize);
   int size = UnitTest::VtkGrainIdIOTest::XSize * UnitTest::VtkGrainIdIOTest::YSize * UnitTest::VtkGrainIdIOTest::ZSize;
   int32_t* data = Int32ArrayType::SafeReinterpretCast<IDataArray*, Int32ArrayType*, int32_t*>(mdata.get());
 
-  for (int i = 0; i < size; ++i)
+  for(int i = 0; i < size; ++i)
   {
     int32_t file_value = data[i];
     int32_t memory_value = i + UnitTest::VtkGrainIdIOTest::Offset;
-    DREAM3D_REQUIRE_EQUAL( memory_value, file_value );
+    DREAM3D_REQUIRE_EQUAL(memory_value, file_value);
   }
-
 
   return EXIT_SUCCESS;
 }
-
 
 // -----------------------------------------------------------------------------
 //  Use test framework
@@ -229,11 +224,10 @@ int main(int argc, char** argv)
 {
   int err = EXIT_SUCCESS;
 
-  DREAM3D_REGISTER_TEST( TestVtkGrainIdWriter() )
-  DREAM3D_REGISTER_TEST( TestVtkGrainIdReader() )
+  DREAM3D_REGISTER_TEST(TestVtkGrainIdWriter())
+  DREAM3D_REGISTER_TEST(TestVtkGrainIdReader())
 
-  DREAM3D_REGISTER_TEST( RemoveTestFiles() )
+  DREAM3D_REGISTER_TEST(RemoveTestFiles())
   PRINT_TEST_SUMMARY();
   return err;
 }
-

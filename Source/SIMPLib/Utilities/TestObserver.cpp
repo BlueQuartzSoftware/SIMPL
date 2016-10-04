@@ -31,7 +31,6 @@
  * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 #include "TestObserver.h"
 
-
 #include <iostream>
 
 #include "moc_TestObserver.cpp"
@@ -39,10 +38,9 @@
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-TestObserver::TestObserver() :
-  IObserver()
+TestObserver::TestObserver()
+: IObserver()
 {
-
 }
 
 // -----------------------------------------------------------------------------
@@ -50,7 +48,6 @@ TestObserver::TestObserver() :
 // -----------------------------------------------------------------------------
 TestObserver::~TestObserver()
 {
-
 }
 
 // -----------------------------------------------------------------------------
@@ -71,14 +68,14 @@ void TestObserver::processPipelineMessage(const PipelineMessage& pm)
   }
   else if(msg.getType() == PipelineMessage::StatusMessage)
   {
- //   ss << msg.generateStatusString();
+    //   ss << msg.generateStatusString();
   }
   else if(msg.getType() == PipelineMessage::ProgressValue)
   {
- //   ss << msg.getProgressValue() << "%";
+    //   ss << msg.getProgressValue() << "%";
   }
   else if(msg.getType() == PipelineMessage::StatusMessageAndProgressValue)
   {
- //   ss << msg.getProgressValue() << msg.generateStatusString();
+    //   ss << msg.getProgressValue() << msg.generateStatusString();
   }
 }

@@ -33,15 +33,11 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-
 #include "IFilterWidgetFactory.h"
 
 #include <QtWidgets/QWidget>
 
-
-
 #include "SIMPLib/FilterParameters/FilterParameter.h"
-
 
 // -----------------------------------------------------------------------------
 //
@@ -55,15 +51,13 @@ IFilterWidgetFactory::IFilterWidgetFactory()
 // -----------------------------------------------------------------------------
 IFilterWidgetFactory::~IFilterWidgetFactory()
 {
-  //qDebug() << "~IFilterWidgetFactory()" << this;
+  // qDebug() << "~IFilterWidgetFactory()" << this;
 }
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-QWidget* IFilterWidgetFactory::createWidget(FilterParameter* parameter,
-                                            AbstractFilter* filter,
-                                            QWidget* parent)
+QWidget* IFilterWidgetFactory::createWidget(FilterParameter* parameter, AbstractFilter* filter, QWidget* parent)
 {
   Q_ASSERT(false);
   return nullptr;

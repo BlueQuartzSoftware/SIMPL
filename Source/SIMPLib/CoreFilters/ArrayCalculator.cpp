@@ -33,8 +33,6 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-
-
 #include "ArrayCalculator.h"
 
 #include <QtCore/QMapIterator>
@@ -43,103 +41,103 @@
 
 #include "SIMPLib/Common/Constants.h"
 #include "SIMPLib/Common/TemplateHelpers.hpp"
-#include "SIMPLib/SIMPLibVersion.h"
 #include "SIMPLib/FilterParameters/AbstractFilterParametersReader.h"
 #include "SIMPLib/FilterParameters/AttributeMatrixSelectionFilterParameter.h"
 #include "SIMPLib/FilterParameters/CalculatorFilterParameter.h"
 #include "SIMPLib/FilterParameters/DataArrayCreationFilterParameter.h"
+#include "SIMPLib/SIMPLibVersion.h"
 
-#include "util/CalculatorArray.hpp"
-#include "util/LeftParenthesisItem.h"
-#include "util/RightParenthesisItem.h"
-#include "util/CommaSeparator.h"
-#include "util/AdditionOperator.h"
-#include "util/SubtractionOperator.h"
-#include "util/MultiplicationOperator.h"
-#include "util/DivisionOperator.h"
-#include "util/NegativeOperator.h"
-#include "util/IndexOperator.h"
 #include "util/ABSOperator.h"
-#include "util/SinOperator.h"
-#include "util/CosOperator.h"
-#include "util/TanOperator.h"
-#include "util/ASinOperator.h"
 #include "util/ACosOperator.h"
+#include "util/ASinOperator.h"
 #include "util/ATanOperator.h"
-#include "util/SqrtOperator.h"
+#include "util/AdditionOperator.h"
+#include "util/CalculatorArray.hpp"
+#include "util/CeilOperator.h"
+#include "util/CommaSeparator.h"
+#include "util/CosOperator.h"
+#include "util/DivisionOperator.h"
+#include "util/ExpOperator.h"
+#include "util/FloorOperator.h"
+#include "util/IndexOperator.h"
+#include "util/LeftParenthesisItem.h"
+#include "util/LnOperator.h"
 #include "util/Log10Operator.h"
 #include "util/LogOperator.h"
+#include "util/MultiplicationOperator.h"
+#include "util/NegativeOperator.h"
 #include "util/PowOperator.h"
+#include "util/RightParenthesisItem.h"
 #include "util/RootOperator.h"
-#include "util/ExpOperator.h"
-#include "util/LnOperator.h"
-#include "util/FloorOperator.h"
-#include "util/CeilOperator.h"
+#include "util/SinOperator.h"
+#include "util/SqrtOperator.h"
+#include "util/SubtractionOperator.h"
+#include "util/TanOperator.h"
 
 // Include the MOC generated file for this class
 #include "moc_ArrayCalculator.cpp"
 
-#define CREATE_CALCULATOR_ARRAY(itemPtr, iDataArrayPtr)\
-    if(TemplateHelpers::CanDynamicCast<FloatArrayType>()(iDataArrayPtr))\
-    {\
-      FloatArrayType::Pointer arrayCast = std::dynamic_pointer_cast<FloatArrayType>(iDataArrayPtr);\
-      itemPtr = CalculatorArray<float>::New(arrayCast, ICalculatorArray::Array, !getInPreflight());\
-    }\
-    else if(TemplateHelpers::CanDynamicCast<DoubleArrayType>()(iDataArrayPtr))\
-    {\
-      DoubleArrayType::Pointer arrayCast = std::dynamic_pointer_cast<DoubleArrayType>(iDataArrayPtr);\
-      itemPtr = CalculatorArray<double>::New(arrayCast, ICalculatorArray::Array, !getInPreflight());\
-    }\
-    else if(TemplateHelpers::CanDynamicCast<Int8ArrayType>()(iDataArrayPtr))\
-    {\
-      Int8ArrayType::Pointer arrayCast = std::dynamic_pointer_cast<Int8ArrayType>(iDataArrayPtr);\
-      itemPtr = CalculatorArray<int8_t>::New(arrayCast, ICalculatorArray::Array, !getInPreflight());\
-    }\
-    else if(TemplateHelpers::CanDynamicCast<UInt8ArrayType>()(iDataArrayPtr))\
-    {\
-      UInt8ArrayType::Pointer arrayCast = std::dynamic_pointer_cast<UInt8ArrayType>(iDataArrayPtr);\
-      itemPtr = CalculatorArray<uint8_t>::New(arrayCast, ICalculatorArray::Array, !getInPreflight());\
-    }\
-    else if(TemplateHelpers::CanDynamicCast<Int16ArrayType>()(iDataArrayPtr))\
-    {\
-      Int16ArrayType::Pointer arrayCast = std::dynamic_pointer_cast<Int16ArrayType>(iDataArrayPtr);\
-      itemPtr = CalculatorArray<int16_t>::New(arrayCast, ICalculatorArray::Array, !getInPreflight());\
-    }\
-    else if(TemplateHelpers::CanDynamicCast<UInt16ArrayType>()(iDataArrayPtr))\
-    {\
-      UInt16ArrayType::Pointer arrayCast = std::dynamic_pointer_cast<UInt16ArrayType>(iDataArrayPtr);\
-      itemPtr = CalculatorArray<uint16_t>::New(arrayCast, ICalculatorArray::Array, !getInPreflight());\
-    }\
-    else if(TemplateHelpers::CanDynamicCast<Int32ArrayType>()(iDataArrayPtr))\
-    {\
-      Int32ArrayType::Pointer arrayCast = std::dynamic_pointer_cast<Int32ArrayType>(iDataArrayPtr);\
-      itemPtr = CalculatorArray<int32_t>::New(arrayCast, ICalculatorArray::Array, !getInPreflight());\
-    }\
-    else if(TemplateHelpers::CanDynamicCast<UInt32ArrayType>()(iDataArrayPtr))\
-    {\
-      UInt32ArrayType::Pointer arrayCast = std::dynamic_pointer_cast<UInt32ArrayType>(iDataArrayPtr);\
-      itemPtr = CalculatorArray<uint32_t>::New(arrayCast, ICalculatorArray::Array, !getInPreflight());\
-    }\
-    else if(TemplateHelpers::CanDynamicCast<Int64ArrayType>()(iDataArrayPtr))\
-    {\
-      Int64ArrayType::Pointer arrayCast = std::dynamic_pointer_cast<Int64ArrayType>(iDataArrayPtr);\
-      itemPtr = CalculatorArray<int64_t>::New(arrayCast, ICalculatorArray::Array, !getInPreflight());\
-    }\
-    else if(TemplateHelpers::CanDynamicCast<UInt64ArrayType>()(iDataArrayPtr))\
-    {\
-      UInt64ArrayType::Pointer arrayCast = std::dynamic_pointer_cast<UInt64ArrayType>(iDataArrayPtr);\
-      itemPtr = CalculatorArray<uint64_t>::New(arrayCast, ICalculatorArray::Array, !getInPreflight());\
-    }\
+#define CREATE_CALCULATOR_ARRAY(itemPtr, iDataArrayPtr)                                                                                                                                                \
+  if(TemplateHelpers::CanDynamicCast<FloatArrayType>()(iDataArrayPtr))                                                                                                                                 \
+  {                                                                                                                                                                                                    \
+    FloatArrayType::Pointer arrayCast = std::dynamic_pointer_cast<FloatArrayType>(iDataArrayPtr);                                                                                                      \
+    itemPtr = CalculatorArray<float>::New(arrayCast, ICalculatorArray::Array, !getInPreflight());                                                                                                      \
+  }                                                                                                                                                                                                    \
+  else if(TemplateHelpers::CanDynamicCast<DoubleArrayType>()(iDataArrayPtr))                                                                                                                           \
+  {                                                                                                                                                                                                    \
+    DoubleArrayType::Pointer arrayCast = std::dynamic_pointer_cast<DoubleArrayType>(iDataArrayPtr);                                                                                                    \
+    itemPtr = CalculatorArray<double>::New(arrayCast, ICalculatorArray::Array, !getInPreflight());                                                                                                     \
+  }                                                                                                                                                                                                    \
+  else if(TemplateHelpers::CanDynamicCast<Int8ArrayType>()(iDataArrayPtr))                                                                                                                             \
+  {                                                                                                                                                                                                    \
+    Int8ArrayType::Pointer arrayCast = std::dynamic_pointer_cast<Int8ArrayType>(iDataArrayPtr);                                                                                                        \
+    itemPtr = CalculatorArray<int8_t>::New(arrayCast, ICalculatorArray::Array, !getInPreflight());                                                                                                     \
+  }                                                                                                                                                                                                    \
+  else if(TemplateHelpers::CanDynamicCast<UInt8ArrayType>()(iDataArrayPtr))                                                                                                                            \
+  {                                                                                                                                                                                                    \
+    UInt8ArrayType::Pointer arrayCast = std::dynamic_pointer_cast<UInt8ArrayType>(iDataArrayPtr);                                                                                                      \
+    itemPtr = CalculatorArray<uint8_t>::New(arrayCast, ICalculatorArray::Array, !getInPreflight());                                                                                                    \
+  }                                                                                                                                                                                                    \
+  else if(TemplateHelpers::CanDynamicCast<Int16ArrayType>()(iDataArrayPtr))                                                                                                                            \
+  {                                                                                                                                                                                                    \
+    Int16ArrayType::Pointer arrayCast = std::dynamic_pointer_cast<Int16ArrayType>(iDataArrayPtr);                                                                                                      \
+    itemPtr = CalculatorArray<int16_t>::New(arrayCast, ICalculatorArray::Array, !getInPreflight());                                                                                                    \
+  }                                                                                                                                                                                                    \
+  else if(TemplateHelpers::CanDynamicCast<UInt16ArrayType>()(iDataArrayPtr))                                                                                                                           \
+  {                                                                                                                                                                                                    \
+    UInt16ArrayType::Pointer arrayCast = std::dynamic_pointer_cast<UInt16ArrayType>(iDataArrayPtr);                                                                                                    \
+    itemPtr = CalculatorArray<uint16_t>::New(arrayCast, ICalculatorArray::Array, !getInPreflight());                                                                                                   \
+  }                                                                                                                                                                                                    \
+  else if(TemplateHelpers::CanDynamicCast<Int32ArrayType>()(iDataArrayPtr))                                                                                                                            \
+  {                                                                                                                                                                                                    \
+    Int32ArrayType::Pointer arrayCast = std::dynamic_pointer_cast<Int32ArrayType>(iDataArrayPtr);                                                                                                      \
+    itemPtr = CalculatorArray<int32_t>::New(arrayCast, ICalculatorArray::Array, !getInPreflight());                                                                                                    \
+  }                                                                                                                                                                                                    \
+  else if(TemplateHelpers::CanDynamicCast<UInt32ArrayType>()(iDataArrayPtr))                                                                                                                           \
+  {                                                                                                                                                                                                    \
+    UInt32ArrayType::Pointer arrayCast = std::dynamic_pointer_cast<UInt32ArrayType>(iDataArrayPtr);                                                                                                    \
+    itemPtr = CalculatorArray<uint32_t>::New(arrayCast, ICalculatorArray::Array, !getInPreflight());                                                                                                   \
+  }                                                                                                                                                                                                    \
+  else if(TemplateHelpers::CanDynamicCast<Int64ArrayType>()(iDataArrayPtr))                                                                                                                            \
+  {                                                                                                                                                                                                    \
+    Int64ArrayType::Pointer arrayCast = std::dynamic_pointer_cast<Int64ArrayType>(iDataArrayPtr);                                                                                                      \
+    itemPtr = CalculatorArray<int64_t>::New(arrayCast, ICalculatorArray::Array, !getInPreflight());                                                                                                    \
+  }                                                                                                                                                                                                    \
+  else if(TemplateHelpers::CanDynamicCast<UInt64ArrayType>()(iDataArrayPtr))                                                                                                                           \
+  {                                                                                                                                                                                                    \
+    UInt64ArrayType::Pointer arrayCast = std::dynamic_pointer_cast<UInt64ArrayType>(iDataArrayPtr);                                                                                                    \
+    itemPtr = CalculatorArray<uint64_t>::New(arrayCast, ICalculatorArray::Array, !getInPreflight());                                                                                                   \
+  }
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-ArrayCalculator::ArrayCalculator() :
-  AbstractFilter(),
-  m_SelectedAttributeMatrix("", "", ""),
-  m_InfixEquation(QString()),
-  m_CalculatedArray("", "", "Output"),
-  m_Units(Radians)
+ArrayCalculator::ArrayCalculator()
+: AbstractFilter()
+, m_SelectedAttributeMatrix("", "", "")
+, m_InfixEquation(QString())
+, m_CalculatedArray("", "", "Output")
+, m_Units(Radians)
 {
   setupFilterParameters();
 
@@ -213,7 +211,7 @@ void ArrayCalculator::readFilterParameters(AbstractFilterParametersReader* reade
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void ArrayCalculator::readFilterParameters(QJsonObject &obj)
+void ArrayCalculator::readFilterParameters(QJsonObject& obj)
 {
   AbstractFilter::readFilterParameters(obj);
   setUnits(static_cast<ArrayCalculator::AngleUnits>(obj["Units"].toInt()));
@@ -224,7 +222,7 @@ void ArrayCalculator::readFilterParameters(QJsonObject &obj)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void ArrayCalculator::writeFilterParameters(QJsonObject &obj)
+void ArrayCalculator::writeFilterParameters(QJsonObject& obj)
 {
   AbstractFilter::writeFilterParameters(obj);
   obj["Units"] = static_cast<int>(getUnits());
@@ -247,9 +245,12 @@ void ArrayCalculator::dataCheck()
   setWarningCondition(0);
 
   getDataContainerArray()->getPrereqAttributeMatrixFromPath<AbstractFilter>(this, m_SelectedAttributeMatrix, -301);
-  if (getErrorCondition() < 0) { return; }
+  if(getErrorCondition() < 0)
+  {
+    return;
+  }
 
-  if (m_InfixEquation.isEmpty() == true || m_InfixEquation.split(" ", QString::SkipEmptyParts).size() <= 0)
+  if(m_InfixEquation.isEmpty() == true || m_InfixEquation.split(" ", QString::SkipEmptyParts).size() <= 0)
   {
     QString ss = QObject::tr("The infix expression is empty");
     setErrorCondition(EMPTY_EQUATION);
@@ -258,20 +259,23 @@ void ArrayCalculator::dataCheck()
   }
 
   QVector<CalculatorItem::Pointer> parsedInfix = parseInfixEquation(m_InfixEquation);
-  if (parsedInfix.isEmpty() == true) { return; }
+  if(parsedInfix.isEmpty() == true)
+  {
+    return;
+  }
 
   bool hasArrayGreaterThan1 = false;
   bool hasValue = false;
   bool checkCompDims = true;
   QVector<size_t> compDims(1, 1);
   QVector<size_t> tmpCompDims(1, 1);
-  for (int32_t i = 0; i < parsedInfix.size(); i++)
+  for(int32_t i = 0; i < parsedInfix.size(); i++)
   {
     CalculatorItem::Pointer currentItem = parsedInfix[i];
-    if (nullptr != std::dynamic_pointer_cast<CalculatorOperator>(currentItem))
+    if(nullptr != std::dynamic_pointer_cast<CalculatorOperator>(currentItem))
     {
       bool result = std::dynamic_pointer_cast<CalculatorOperator>(currentItem)->checkValidity(parsedInfix, i);
-      if (result == false)
+      if(result == false)
       {
         QString ss = QObject::tr("The chosen infix expression is not a valid expression");
         setErrorCondition(INVALID_EQUATION);
@@ -279,20 +283,20 @@ void ArrayCalculator::dataCheck()
         return;
       }
     }
-    else if (nullptr != std::dynamic_pointer_cast<ICalculatorArray>(currentItem))
+    else if(nullptr != std::dynamic_pointer_cast<ICalculatorArray>(currentItem))
     {
       hasValue = true;
       ICalculatorArray::Pointer calcArray = std::dynamic_pointer_cast<ICalculatorArray>(currentItem);
-      if (calcArray->getArray()->getNumberOfTuples() > 1)
+      if(calcArray->getArray()->getNumberOfTuples() > 1)
       {
         hasArrayGreaterThan1 = true;
       }
 
       // If the calculator array items are truly arrays, verify that they
       // all have the same component dimensions
-      if (calcArray->getType() == ICalculatorArray::Array)
+      if(calcArray->getType() == ICalculatorArray::Array)
       {
-        if (checkCompDims)
+        if(checkCompDims)
         {
           tmpCompDims = calcArray->getArray()->getComponentDimensions();
           checkCompDims = false;
@@ -300,7 +304,7 @@ void ArrayCalculator::dataCheck()
         else
         {
           compDims = calcArray->getArray()->getComponentDimensions();
-          if (tmpCompDims != compDims)
+          if(tmpCompDims != compDims)
           {
             QString ss = QObject::tr("All Attribute Arrays in the infix expression must have the same component dimensions");
             setErrorCondition(INCONSISTENT_COMP_DIMS);
@@ -316,7 +320,7 @@ void ArrayCalculator::dataCheck()
   // one array in the infix expression
   compDims = tmpCompDims;
 
-  if (hasValue == false)
+  if(hasValue == false)
   {
     QString ss = QObject::tr("The chosen infix expression is not a valid expression");
     setErrorCondition(INVALID_EQUATION);
@@ -326,7 +330,7 @@ void ArrayCalculator::dataCheck()
 
   DataArrayPath calculatedAMPath(m_CalculatedArray.getDataContainerName(), m_CalculatedArray.getAttributeMatrixName(), "");
 
-  if (hasArrayGreaterThan1 == false)
+  if(hasArrayGreaterThan1 == false)
   {
     QString ss = QObject::tr("The result of the chosen expression will be a numeric value or contain one tuple\n"
                              "This numeric value will be stored in an array with the number of tuples equal to 1");
@@ -334,9 +338,12 @@ void ArrayCalculator::dataCheck()
     notifyWarningMessage(getHumanLabel(), ss, getWarningCondition());
 
     AttributeMatrix::Pointer calculatedAM = getDataContainerArray()->getPrereqAttributeMatrixFromPath<AbstractFilter>(this, calculatedAMPath, -301);
-    if (getErrorCondition() < 0) { return; }
+    if(getErrorCondition() < 0)
+    {
+      return;
+    }
 
-    if (calculatedAM->getNumberOfTuples() != 1)
+    if(calculatedAM->getNumberOfTuples() != 1)
     {
       QString ss = QObject::tr("The tuple count of the output Attribute Matrix is not equal to 1");
       setErrorCondition(INCORRECT_TUPLE_COUNT);
@@ -348,8 +355,11 @@ void ArrayCalculator::dataCheck()
   {
     AttributeMatrix::Pointer selectedAM = getDataContainerArray()->getPrereqAttributeMatrixFromPath<AbstractFilter>(this, m_SelectedAttributeMatrix, -301);
     AttributeMatrix::Pointer calculatedAM = getDataContainerArray()->getPrereqAttributeMatrixFromPath<AbstractFilter>(this, calculatedAMPath, -301);
-    if (getErrorCondition() < 0) { return; }
-    if (nullptr != selectedAM && calculatedAM->getNumberOfTuples() != selectedAM->getNumberOfTuples())
+    if(getErrorCondition() < 0)
+    {
+      return;
+    }
+    if(nullptr != selectedAM && calculatedAM->getNumberOfTuples() != selectedAM->getNumberOfTuples())
     {
       QString ss = QObject::tr("The tuple count of the output Attribute Matrix is not equal to the tuple count of the selected Attribute Matrix");
       setErrorCondition(INCORRECT_TUPLE_COUNT);
@@ -359,7 +369,10 @@ void ArrayCalculator::dataCheck()
   }
 
   QVector<CalculatorItem::Pointer> rpn = toRPN(parsedInfix);
-  if (rpn.isEmpty() == true) { return; }
+  if(rpn.isEmpty() == true)
+  {
+    return;
+  }
 
   getDataContainerArray()->createNonPrereqArrayFromPath<DoubleArrayType, AbstractFilter, double>(this, m_CalculatedArray, 0, compDims);
 }
@@ -385,7 +398,10 @@ void ArrayCalculator::execute()
   setErrorCondition(0);
   setWarningCondition(0);
   dataCheck();
-  if(getErrorCondition() < 0) { return; }
+  if(getErrorCondition() < 0)
+  {
+    return;
+  }
   initialize();
 
   DataArrayPath calculatedAMPath(m_CalculatedArray.getDataContainerName(), m_CalculatedArray.getAttributeMatrixName(), "");
@@ -399,13 +415,13 @@ void ArrayCalculator::execute()
 
   // Execute the RPN expression
   int totalItems = rpn.size();
-  for (int rpnCount = 0; rpnCount < totalItems; rpnCount++)
+  for(int rpnCount = 0; rpnCount < totalItems; rpnCount++)
   {
     notifyStatusMessage(getMessagePrefix(), getHumanLabel(), "Computing Operator " + QString::number(rpnCount + 1) + "/" + QString::number(totalItems));
 
     CalculatorItem::Pointer rpnItem = rpn[rpnCount];
     ICalculatorArray::Pointer calcArray = std::dynamic_pointer_cast<ICalculatorArray>(rpnItem);
-    if (nullptr != calcArray)
+    if(nullptr != calcArray)
     {
       // This is an array
       m_ExecutionStack.push(calcArray);
@@ -416,30 +432,33 @@ void ArrayCalculator::execute()
       CalculatorOperator::Pointer rpnOperator = std::dynamic_pointer_cast<CalculatorOperator>(rpnItem);
 
       rpnOperator->calculate(this, m_CalculatedArray, m_ExecutionStack);
-      if (getErrorCondition() < 0)
+      if(getErrorCondition() < 0)
       {
         return;
       }
     }
 
-    if (getCancel() == true) { return; }
+    if(getCancel() == true)
+    {
+      return;
+    }
   }
 
   // Grab the result from the stack
-  ICalculatorArray::Pointer arrayItem =  ICalculatorArray::NullPointer();
+  ICalculatorArray::Pointer arrayItem = ICalculatorArray::NullPointer();
   if(!m_ExecutionStack.isEmpty())
   {
     arrayItem = m_ExecutionStack.pop();
   }
 
-  if (nullptr != arrayItem)
+  if(nullptr != arrayItem)
   {
     IDataArray::Pointer resultArray = IDataArray::NullPointer();
     resultArray = arrayItem->getArray();
 
     DataArrayPath createdAMPath(m_CalculatedArray.getDataContainerName(), m_CalculatedArray.getAttributeMatrixName(), "");
     AttributeMatrix::Pointer createdAM = getDataContainerArray()->getAttributeMatrix(createdAMPath);
-    if (nullptr != createdAM)
+    if(nullptr != createdAM)
     {
       resultArray->setName(m_CalculatedArray.getDataArrayName());
       createdAM->addAttributeArray(resultArray->getName(), resultArray);
@@ -470,9 +489,10 @@ QVector<CalculatorItem::Pointer> ArrayCalculator::parseInfixEquation(QString exp
   QVector<QString> itemList;
   // Match all array names that start with two alphabetical characters and have spaces.  Match all numbers, decimal or integer.
   // Match one letter array names.  Match all special character operators.
-  QRegularExpression regExp("(\"((\\[)?\\d+(\\.\\d+)?(\\])?|(\\[)?\\.\\d+(\\])?|\\w{1,1}((\\w|\\s|\\d)*(\\w|\\d){1,1})?|\\S)\")|(((\\[)?\\d+(\\.\\d+)?(\\])?|(\\[)?\\.\\d+(\\])?|\\w{1,1}((\\w|\\s|\\d)*(\\w|\\d){1,1})?|\\S))");
+  QRegularExpression regExp("(\"((\\[)?\\d+(\\.\\d+)?(\\])?|(\\[)?\\.\\d+(\\])?|\\w{1,1}((\\w|\\s|\\d)*(\\w|\\d){1,1})?|\\S)\")|(((\\[)?\\d+(\\.\\d+)?(\\])?|(\\[)?\\.\\d+(\\])?|\\w{1,1}((\\w|\\s|\\d)"
+                            "*(\\w|\\d){1,1})?|\\S))");
   QRegularExpressionMatchIterator iter = regExp.globalMatch(m_InfixEquation);
-  while (iter.hasNext())
+  while(iter.hasNext())
   {
     QRegularExpressionMatch match = iter.next();
     itemList.push_back(match.captured());
@@ -482,14 +502,14 @@ QVector<CalculatorItem::Pointer> ArrayCalculator::parseInfixEquation(QString exp
   QVector<CalculatorItem::Pointer> parsedInfix;
   int firstArray_NumTuples = -1;
   QString firstArray_Name = "";
-  for (int i = 0; i < itemList.size(); i++)
+  for(int i = 0; i < itemList.size(); i++)
   {
     QString strItem = itemList[i];
     CalculatorItem::Pointer itemPtr;
 
     bool ok;
     double num = strItem.toDouble(&ok);
-    if (ok == true)
+    if(ok == true)
     {
       // This is a number, so create an array with numOfTuples equal to 1 and set the value into it
       DoubleArrayType::Pointer ptr = DoubleArrayType::CreateArray(1, QVector<size_t>(1, 1), "INTERNAL_USE_ONLY_NumberArray");
@@ -500,19 +520,13 @@ QVector<CalculatorItem::Pointer> ArrayCalculator::parseInfixEquation(QString exp
       QString ss = QObject::tr("Item '%1' in the infix expression is the name of an array in the selected Attribute Matrix, but it is currently being used as a number").arg(strItem);
       checkForAmbiguousArrayName(strItem, ss);
     }
-    else if (strItem == "-")
+    else if(strItem == "-")
     {
       // This could be either a negative sign or subtraction sign, so we need to figure out which one it is
-      if (
-           i == 0 ||
-           (
-             (
-               (nullptr != std::dynamic_pointer_cast<CalculatorOperator>(parsedInfix.back()) && std::dynamic_pointer_cast<CalculatorOperator>(parsedInfix.back())->getOperatorType() == CalculatorOperator::Binary)
-               || nullptr != std::dynamic_pointer_cast<LeftParenthesisItem>(parsedInfix.back())
-             )
-             && nullptr == std::dynamic_pointer_cast<RightParenthesisItem>(parsedInfix.back())
-           )
-         )
+      if(i == 0 || (((nullptr != std::dynamic_pointer_cast<CalculatorOperator>(parsedInfix.back()) &&
+                      std::dynamic_pointer_cast<CalculatorOperator>(parsedInfix.back())->getOperatorType() == CalculatorOperator::Binary) ||
+                     nullptr != std::dynamic_pointer_cast<LeftParenthesisItem>(parsedInfix.back())) &&
+                    nullptr == std::dynamic_pointer_cast<RightParenthesisItem>(parsedInfix.back())))
       {
         // By context, this is a negative sign
         itemPtr = NegativeOperator::New();
@@ -528,7 +542,7 @@ QVector<CalculatorItem::Pointer> ArrayCalculator::parseInfixEquation(QString exp
       QString ss = QObject::tr("Item '%1' in the infix expression is the name of an array in the selected attribute matrix, but it is currently being used as a mathematical operator").arg(strItem);
       checkForAmbiguousArrayName(strItem, ss);
     }
-    else if (strItem.contains("[") && strItem.contains("]"))
+    else if(strItem.contains("[") && strItem.contains("]"))
     {
       // This is an array index, so create an index operator
       strItem.remove("[");
@@ -536,7 +550,7 @@ QVector<CalculatorItem::Pointer> ArrayCalculator::parseInfixEquation(QString exp
 
       bool ok;
       int index = strItem.toInt(&ok);
-      if (ok == false)
+      if(ok == false)
       {
         QString ss = QObject::tr("The chosen infix expression is not a valid expression");
         setErrorCondition(INVALID_EQUATION);
@@ -545,7 +559,7 @@ QVector<CalculatorItem::Pointer> ArrayCalculator::parseInfixEquation(QString exp
       }
 
       ICalculatorArray::Pointer calcArray = std::dynamic_pointer_cast<ICalculatorArray>(parsedInfix.back());
-      if (nullptr != calcArray && index >= calcArray->getArray()->getNumberOfComponents())
+      if(nullptr != calcArray && index >= calcArray->getArray()->getNumberOfComponents())
       {
         QString ss = QObject::tr("'%1' has an component index that is out of range").arg(calcArray->getArray()->getName());
         setErrorCondition(COMPONENT_OUT_OF_RANGE);
@@ -563,9 +577,10 @@ QVector<CalculatorItem::Pointer> ArrayCalculator::parseInfixEquation(QString exp
     {
       itemPtr = m_SymbolMap.value(strItem);
 
-      if (nullptr != std::dynamic_pointer_cast<CommaSeparator>(itemPtr))
+      if(nullptr != std::dynamic_pointer_cast<CommaSeparator>(itemPtr))
       {
-        QString ss = QObject::tr("Item '%1' in the infix expression is the name of an array in the selected Attribute Matrix, but it is currently being detected as a comma in a mathematical operator").arg(strItem);
+        QString ss = QObject::tr("Item '%1' in the infix expression is the name of an array in the selected Attribute Matrix, but it is currently being detected as a comma in a mathematical operator")
+                         .arg(strItem);
         checkForAmbiguousArrayName(strItem, ss);
 
         // This is a comma, so make sure that this comma has a valid unary operator before it
@@ -573,16 +588,16 @@ QVector<CalculatorItem::Pointer> ArrayCalculator::parseInfixEquation(QString exp
           QVectorIterator<CalculatorItem::Pointer> iter(parsedInfix);
           iter.toBack();
           bool foundUnaryOperator = false;
-          while (iter.hasPrevious())
+          while(iter.hasPrevious())
           {
             CalculatorItem::Pointer item = iter.previous();
-            if (nullptr != std::dynamic_pointer_cast<UnaryOperator>(item))
+            if(nullptr != std::dynamic_pointer_cast<UnaryOperator>(item))
             {
               foundUnaryOperator = true;
             }
           }
 
-          if (foundUnaryOperator == false)
+          if(foundUnaryOperator == false)
           {
             QString ss = QObject::tr("The chosen infix expression is not a valid expression");
             setErrorCondition(INVALID_EQUATION);
@@ -597,10 +612,9 @@ QVector<CalculatorItem::Pointer> ArrayCalculator::parseInfixEquation(QString exp
 
         QVector<CalculatorItem::Pointer>::iterator iter = parsedInfix.end();
         iter--;
-        while (iter != parsedInfix.begin())
+        while(iter != parsedInfix.begin())
         {
-          if (nullptr != std::dynamic_pointer_cast<CommaSeparator>(*iter)
-            || nullptr != std::dynamic_pointer_cast<LeftParenthesisItem>(*iter))
+          if(nullptr != std::dynamic_pointer_cast<CommaSeparator>(*iter) || nullptr != std::dynamic_pointer_cast<LeftParenthesisItem>(*iter))
           {
             iter++;
             parsedInfix.insert(iter, LeftParenthesisItem::New());
@@ -612,17 +626,17 @@ QVector<CalculatorItem::Pointer> ArrayCalculator::parseInfixEquation(QString exp
 
         parsedInfix.push_back(itemPtr);
       }
-      else if (nullptr != itemPtr)
+      else if(nullptr != itemPtr)
       {
         QString ss = QObject::tr("Item '%1' in the infix expression is the name of an array in the selected Attribute Matrix, but it is currently being used as a mathematical operator").arg(strItem);
         checkForAmbiguousArrayName(strItem, ss);
 
         parsedInfix.push_back(itemPtr);
       }
-      else if (selectedAM->getAttributeArrayNames().contains(strItem) || (strItem.isEmpty() == false && strItem[0] == '\"' && strItem[strItem.size()-1] == '\"'))
+      else if(selectedAM->getAttributeArrayNames().contains(strItem) || (strItem.isEmpty() == false && strItem[0] == '\"' && strItem[strItem.size() - 1] == '\"'))
       {
         strItem.remove("\"");
-        if (selectedAM->getAttributeArrayNames().contains(strItem) == false)
+        if(selectedAM->getAttributeArrayNames().contains(strItem) == false)
         {
           QString ss = QObject::tr("The item '%1' is not the name of any valid array in the selected Attribute Matrix").arg(strItem);
           setErrorCondition(INVALID_ARRAY_NAME);
@@ -631,12 +645,12 @@ QVector<CalculatorItem::Pointer> ArrayCalculator::parseInfixEquation(QString exp
         }
 
         IDataArray::Pointer dataArray = selectedAM->getAttributeArray(strItem);
-        if (firstArray_NumTuples < 0 && firstArray_Name.isEmpty() == true)
+        if(firstArray_NumTuples < 0 && firstArray_Name.isEmpty() == true)
         {
           firstArray_NumTuples = dataArray->getNumberOfTuples();
           firstArray_Name = dataArray->getName();
         }
-        else if (dataArray->getNumberOfTuples() != firstArray_NumTuples)
+        else if(dataArray->getNumberOfTuples() != firstArray_NumTuples)
         {
           QString ss = QObject::tr("Arrays '%1' and '%2' in the infix expression have an inconsistent number of tuples").arg(firstArray_Name).arg(dataArray->getName());
           setErrorCondition(INCONSISTENT_TUPLES);
@@ -672,28 +686,28 @@ QVector<CalculatorItem::Pointer> ArrayCalculator::toRPN(QVector<CalculatorItem::
   bool* oneComponent = nullptr;
 
   // Iterate through the infix expression items
-  for (int i = 0; i < infixEquation.size(); i++)
+  for(int i = 0; i < infixEquation.size(); i++)
   {
     CalculatorItem::Pointer calcItem = infixEquation[i];
-    if (nullptr != std::dynamic_pointer_cast<ICalculatorArray>(calcItem))
+    if(nullptr != std::dynamic_pointer_cast<ICalculatorArray>(calcItem))
     {
       ICalculatorArray::Pointer arrayItem = std::dynamic_pointer_cast<ICalculatorArray>(calcItem);
 
       // This is a number or array, so push it onto the rpn expression output
       rpnEquation.push_back(arrayItem);
 
-      if (arrayItem->getType() == ICalculatorArray::Array)
+      if(arrayItem->getType() == ICalculatorArray::Array)
       {
-        if (i + 1 < infixEquation.size() && nullptr != std::dynamic_pointer_cast<IndexOperator>(infixEquation[i + 1]) && nullptr == oneComponent)
+        if(i + 1 < infixEquation.size() && nullptr != std::dynamic_pointer_cast<IndexOperator>(infixEquation[i + 1]) && nullptr == oneComponent)
         {
           oneComponent = new bool(true);
         }
-        else if ((i + 1 >= infixEquation.size() || nullptr == std::dynamic_pointer_cast<IndexOperator>(infixEquation[i + 1])) && nullptr == oneComponent)
+        else if((i + 1 >= infixEquation.size() || nullptr == std::dynamic_pointer_cast<IndexOperator>(infixEquation[i + 1])) && nullptr == oneComponent)
         {
           oneComponent = new bool(false);
         }
-        else if (((i + 1 >= infixEquation.size() || nullptr == std::dynamic_pointer_cast<IndexOperator>(infixEquation[i + 1])) && *oneComponent == true)
-          || ((i + 1 < infixEquation.size() && nullptr != std::dynamic_pointer_cast<IndexOperator>(infixEquation[i + 1])) && *oneComponent == false))
+        else if(((i + 1 >= infixEquation.size() || nullptr == std::dynamic_pointer_cast<IndexOperator>(infixEquation[i + 1])) && *oneComponent == true) ||
+                ((i + 1 < infixEquation.size() && nullptr != std::dynamic_pointer_cast<IndexOperator>(infixEquation[i + 1])) && *oneComponent == false))
         {
           QString ss = QObject::tr("Not all arrays have a component index. All arrays must specify a component index (i.e. %1[0]), or none at all").arg(arrayItem->getArray()->getName());
           setErrorCondition(INCONSISTENT_INDEXING);
@@ -702,20 +716,20 @@ QVector<CalculatorItem::Pointer> ArrayCalculator::toRPN(QVector<CalculatorItem::
         }
       }
     }
-    else if (nullptr != std::dynamic_pointer_cast<LeftParenthesisItem>(calcItem))
+    else if(nullptr != std::dynamic_pointer_cast<LeftParenthesisItem>(calcItem))
     {
       // This is a left parenthesis, so push it onto the item stack
       itemStack.push_back(calcItem);
     }
-    else if (nullptr != std::dynamic_pointer_cast<RightParenthesisItem>(calcItem))
+    else if(nullptr != std::dynamic_pointer_cast<RightParenthesisItem>(calcItem))
     {
       // This is a right parenthesis, so push operators from the item stack onto the rpn expression output until we get to the left parenthesis
-      while (itemStack.isEmpty() == false && nullptr == std::dynamic_pointer_cast<LeftParenthesisItem>(itemStack.top()))
+      while(itemStack.isEmpty() == false && nullptr == std::dynamic_pointer_cast<LeftParenthesisItem>(itemStack.top()))
       {
         rpnEquation.push_back(itemStack.pop());
       }
 
-      if (itemStack.isEmpty() == true)
+      if(itemStack.isEmpty() == true)
       {
         QString ss = QObject::tr("One or more parentheses are mismatched in the chosen infix expression '%1'").arg(m_InfixEquation);
         setErrorCondition(MISMATCHED_PARENTHESES);
@@ -726,7 +740,7 @@ QVector<CalculatorItem::Pointer> ArrayCalculator::toRPN(QVector<CalculatorItem::
       // Discard the left parenthesis that we found
       itemStack.pop();
     }
-    else if (nullptr != std::dynamic_pointer_cast<CalculatorSeparator>(calcItem))
+    else if(nullptr != std::dynamic_pointer_cast<CalculatorSeparator>(calcItem))
     {
       // This is a comma, so we want to continue without adding it to anything
       continue;
@@ -736,16 +750,16 @@ QVector<CalculatorItem::Pointer> ArrayCalculator::toRPN(QVector<CalculatorItem::
       // This is an operator
       CalculatorOperator::Pointer incomingOperator = std::dynamic_pointer_cast<CalculatorOperator>(calcItem);
 
-      if (itemStack.isEmpty() == false)
+      if(itemStack.isEmpty() == false)
       {
         /* If the operator's precedence is lower than the precedence of the operator on top of the item stack, push the operator at the top
            of the item stack onto the rpn expression output.  Keeping doing this until there isn't another operator at the top of the item
            stack or the operator has a higher precedence than the one currently on top of the stack */
         CalculatorOperator::Pointer topOperator = std::dynamic_pointer_cast<CalculatorOperator>(itemStack.top());
-        while (nullptr != topOperator && incomingOperator->hasHigherPrecedence(topOperator) == false)
+        while(nullptr != topOperator && incomingOperator->hasHigherPrecedence(topOperator) == false)
         {
           rpnEquation.push_back(itemStack.pop());
-          if (itemStack.isEmpty() == false)
+          if(itemStack.isEmpty() == false)
           {
             topOperator = std::dynamic_pointer_cast<CalculatorOperator>(itemStack.top());
           }
@@ -763,10 +777,10 @@ QVector<CalculatorItem::Pointer> ArrayCalculator::toRPN(QVector<CalculatorItem::
 
   /* After we are done iterating through the infix expression items, keep transferring items from the item stack to the
      rpn expression output until the stack is empty. */
-  while (itemStack.isEmpty() == false)
+  while(itemStack.isEmpty() == false)
   {
     CalculatorItem::Pointer item = itemStack.pop();
-    if (nullptr != std::dynamic_pointer_cast<LeftParenthesisItem>(item))
+    if(nullptr != std::dynamic_pointer_cast<LeftParenthesisItem>(item))
     {
       QString ss = QObject::tr("One or more parentheses are mismatched in the chosen infix expression '%1'").arg(m_InfixEquation);
       setErrorCondition(MISMATCHED_PARENTHESES);
@@ -777,7 +791,10 @@ QVector<CalculatorItem::Pointer> ArrayCalculator::toRPN(QVector<CalculatorItem::
     rpnEquation.push_back(item);
   }
 
-  if (oneComponent != nullptr) { delete oneComponent; }
+  if(oneComponent != nullptr)
+  {
+    delete oneComponent;
+  }
 
   return rpnEquation;
 }
@@ -787,12 +804,15 @@ QVector<CalculatorItem::Pointer> ArrayCalculator::toRPN(QVector<CalculatorItem::
 // -----------------------------------------------------------------------------
 void ArrayCalculator::checkForAmbiguousArrayName(QString strItem, QString warningMsg)
 {
-  if (getInPreflight())
+  if(getInPreflight())
   {
     int err = 0;
     AttributeMatrix::Pointer selectedAM = getDataContainerArray()->getPrereqAttributeMatrixFromPath<AbstractFilter>(this, m_SelectedAttributeMatrix, err);
-    if (getErrorCondition() < 0) { return; }
-    if (selectedAM->getAttributeArrayNames().contains(strItem))
+    if(getErrorCondition() < 0)
+    {
+      return;
+    }
+    if(selectedAM->getAttributeArrayNames().contains(strItem))
     {
       IDataArray::Pointer dataArray = selectedAM->getAttributeArray(strItem);
 
@@ -821,7 +841,9 @@ AbstractFilter::Pointer ArrayCalculator::newFilterInstance(bool copyFilterParame
 //
 // -----------------------------------------------------------------------------
 const QString ArrayCalculator::getCompiledLibraryName()
-{ return Core::CoreBaseName; }
+{
+  return Core::CoreBaseName;
+}
 
 // -----------------------------------------------------------------------------
 //
@@ -838,7 +860,7 @@ const QString ArrayCalculator::getFilterVersion()
 {
   QString version;
   QTextStream vStream(&version);
-  vStream <<  SIMPLib::Version::Major() << "." << SIMPLib::Version::Minor() << "." << SIMPLib::Version::Patch();
+  vStream << SIMPLib::Version::Major() << "." << SIMPLib::Version::Minor() << "." << SIMPLib::Version::Patch();
   return version;
 }
 
@@ -846,17 +868,22 @@ const QString ArrayCalculator::getFilterVersion()
 //
 // -----------------------------------------------------------------------------
 const QString ArrayCalculator::getGroupName()
-{ return SIMPL::FilterGroups::CoreFilters; }
+{
+  return SIMPL::FilterGroups::CoreFilters;
+}
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
 const QString ArrayCalculator::getSubGroupName()
-{ return SIMPL::FilterSubGroups::GenerationFilters; }
+{
+  return SIMPL::FilterSubGroups::GenerationFilters;
+}
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
 const QString ArrayCalculator::getHumanLabel()
-{ return "Attribute Array Calculator"; }
-
+{
+  return "Attribute Array Calculator";
+}

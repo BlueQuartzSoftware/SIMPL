@@ -33,18 +33,15 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-
 #include "ColorTable.h"
 
 #include "SIMPLib/Common/SIMPLibSetGetMacros.h"
-
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
 SIMPLColorTable::SIMPLColorTable()
 {
-
 }
 
 // -----------------------------------------------------------------------------
@@ -52,7 +49,6 @@ SIMPLColorTable::SIMPLColorTable()
 // -----------------------------------------------------------------------------
 SIMPLColorTable::~SIMPLColorTable()
 {
-
 }
 
 // -----------------------------------------------------------------------------
@@ -61,22 +57,21 @@ SIMPLColorTable::~SIMPLColorTable()
 void SIMPLColorTable::GetColorTable(int numColors, QVector<float>& colors)
 {
   static const int numColorNodes = 8;
-  float color[numColorNodes][3] =
-  {
-    {0.0f, 0.0f / 255.0f, 255.0f / 255.0f}, // blue
-    {105.0f / 255.0f, 145.0f / 255.0f, 2.0f / 255.0f}, // yellow
-    {0.0f / 255.0f, 255.0f / 255.0f, 29.0f / 255.0f}, // Green
-    {180.0f / 255.0f, 255.0f / 255.0f, 0.0f / 255.0f},
-    {255.0f / 255.0f, 215.0f / 255.0f, 6.0f / 255.0f},
-    {255.0f / 255.0f, 143.0f / 255.0f, 1.0f / 255.0f},
-    {255.0f / 255.0f, 69.0f / 255.0f, 0.0f / 255.0f},
-    {255.0f / 255.0f, 0.0f / 255.0f, 0.0f / 255.0f} // red
+  float color[numColorNodes][3] = {
+      {0.0f, 0.0f / 255.0f, 255.0f / 255.0f},            // blue
+      {105.0f / 255.0f, 145.0f / 255.0f, 2.0f / 255.0f}, // yellow
+      {0.0f / 255.0f, 255.0f / 255.0f, 29.0f / 255.0f},  // Green
+      {180.0f / 255.0f, 255.0f / 255.0f, 0.0f / 255.0f},
+      {255.0f / 255.0f, 215.0f / 255.0f, 6.0f / 255.0f},
+      {255.0f / 255.0f, 143.0f / 255.0f, 1.0f / 255.0f},
+      {255.0f / 255.0f, 69.0f / 255.0f, 0.0f / 255.0f},
+      {255.0f / 255.0f, 0.0f / 255.0f, 0.0f / 255.0f} // red
   };
 
   float val = 0.0f, r = 0.0f, g = 0.0f, b = 0.0f;
   float step = 1.0 / float(numColors);
   float nodeStep = 1.0f / float(numColorNodes - 1);
-  for (int i = 0; i < (numColors); i++)
+  for(int i = 0; i < (numColors); i++)
   {
     val = float(i) * step;
     int currColorBin = int(val / nodeStep);

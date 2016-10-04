@@ -44,8 +44,8 @@
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-SinOperator::SinOperator() :
-  UnaryOperator()
+SinOperator::SinOperator()
+: UnaryOperator()
 {
   setNumberOfArguments(1);
 }
@@ -55,14 +55,12 @@ SinOperator::SinOperator() :
 // -----------------------------------------------------------------------------
 SinOperator::~SinOperator()
 {
-
 }
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void SinOperator::calculate(AbstractFilter* filter, DataArrayPath calculatedArrayPath, QStack<ICalculatorArray::Pointer> &executionStack)
+void SinOperator::calculate(AbstractFilter* filter, DataArrayPath calculatedArrayPath, QStack<ICalculatorArray::Pointer>& executionStack)
 {
   CREATE_NEW_ARRAY_TRIG(filter, calculatedArrayPath, executionStack, sin)
 }
-

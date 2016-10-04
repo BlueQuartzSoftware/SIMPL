@@ -33,28 +33,27 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-
-#include <stdlib.h>
 #include <stdio.h>
+#include <stdlib.h>
 
-#include <iostream>
-#include <fstream>
-#include <sstream>
 #include <algorithm>
+#include <fstream>
+#include <iostream>
+#include <sstream>
 
 #include <tclap/CmdLine.h>
 #include <tclap/ValueArg.h>
 
 #include <QtCore/QDir>
+#include <QtCore/QDir>
+#include <QtCore/QFile>
 #include <QtCore/QFile>
 #include <QtCore/QFileInfo>
-#include <QtCore/QFile>
-#include <QtCore/QDir>
 
 #include "EbsdLib/TSL/AngReader.h"
 
-#include "SIMPLib/SIMPLibVersion.h"
 #include "SIMPLib/Common/SIMPLibSetGetMacros.h"
+#include "SIMPLib/SIMPLibVersion.h"
 
 #define kBufferSize 1024
 
@@ -64,25 +63,24 @@
 
 class AngResFixer
 {
-  public:
-    AngResFixer();
-    virtual~AngResFixer() {}
+public:
+  AngResFixer();
+  virtual ~AngResFixer()
+  {
+  }
 
-    virtual int fixFile();
-    QString headerWord(QByteArray buf);
-    int fixHeaderValues(QString in,
-                        QVector<QString>& headerLines);
+  virtual int fixFile();
+  QString headerWord(QByteArray buf);
+  int fixHeaderValues(QString in, QVector<QString>& headerLines);
 
-    /** @brief Sets the file name of the ebsd file to be read */
-    SIMPL_INSTANCE_STRING_PROPERTY(FileName)
-    SIMPL_INSTANCE_STRING_PROPERTY(OutputFileName)
-    SIMPL_INSTANCE_PROPERTY(float, XStepFix)
-    SIMPL_INSTANCE_PROPERTY(float, YStepFix)
-  private:
-
-
-    AngResFixer(const AngResFixer&); // Copy Constructor Not Implemented
-    void operator=(const AngResFixer&); // Operator '=' Not Implemented
+  /** @brief Sets the file name of the ebsd file to be read */
+  SIMPL_INSTANCE_STRING_PROPERTY(FileName)
+  SIMPL_INSTANCE_STRING_PROPERTY(OutputFileName)
+  SIMPL_INSTANCE_PROPERTY(float, XStepFix)
+  SIMPL_INSTANCE_PROPERTY(float, YStepFix)
+private:
+  AngResFixer(const AngResFixer&);    // Copy Constructor Not Implemented
+  void operator=(const AngResFixer&); // Operator '=' Not Implemented
 };
 
 // -----------------------------------------------------------------------------
@@ -95,24 +93,23 @@ AngResFixer::AngResFixer()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-int AngResFixer::fixHeaderValues(QString str,
-                                 QVector<QString>& headerLines)
+int AngResFixer::fixHeaderValues(QString str, QVector<QString>& headerLines)
 {
   QTextStream in(&str);
   int err = 0;
   QString buf = in.readLine();
-  while (!in.atEnd() )
+  while(!in.atEnd())
   {
 
     QStringList tokens = buf.split(' ');
     QString word(tokens[1]);
 
-    if (word.size() > 0 && word.startsWith(Ebsd::Ang::XStep) == 0)
+    if(word.size() > 0 && word.startsWith(Ebsd::Ang::XStep) == 0)
     {
       QString fix = QString("# XSTEP: %1\r\n").arg(m_XStepFix);
       headerLines.push_back(fix);
     }
-    else if (word.size() > 0 && word.startsWith(Ebsd::Ang::YStep) == 0)
+    else if(word.size() > 0 && word.startsWith(Ebsd::Ang::YStep) == 0)
     {
       QString fix = QString("# YSTEP: %1\r\n").arg(m_YStepFix);
       headerLines.push_back(fix);
@@ -122,9 +119,6 @@ int AngResFixer::fixHeaderValues(QString str,
   }
   return err;
 }
-
-
-
 
 // -----------------------------------------------------------------------------
 //
@@ -137,7 +131,7 @@ int AngResFixer::fixFile()
   AngReader reader;
   reader.setFileName(m_FileName);
   err |= reader.readFile();
-  if (err != 0)
+  if(err != 0)
   {
     return err;
   }
@@ -146,11 +140,10 @@ int AngResFixer::fixFile()
   QString in(reader.getOriginalHeader());
   err = fixHeaderValues(in, headerLines);
 
-
   FILE* out = fopen(m_OutputFileName.toLatin1().data(), "wb");
 
   // Write out the header
-  for (QVector<QString>::iterator hline = headerLines.begin(); hline != headerLines.end(); ++hline )
+  for(QVector<QString>::iterator hline = headerLines.begin(); hline != headerLines.end(); ++hline)
   {
     fprintf(out, "%s", (*hline).toLatin1().data());
   }
@@ -167,20 +160,18 @@ int AngResFixer::fixFile()
   float* fit = reader.getFitPointer();
 
   size_t count = reader.getNumberOfElements();
-// float xstep_old = reader.getXStep();
-// float ystep_old = reader.getYStep();
+  // float xstep_old = reader.getXStep();
+  // float ystep_old = reader.getYStep();
   float xFactor = m_XStepFix / reader.getXStep();
   float yFactor = m_YStepFix / reader.getYStep();
 
   for(size_t i = 0; i < count; ++i)
   {
-    fprintf(out, "  %.5f  %.5f  %.5f  %.5f  %.5f  %.1f  %0.3f %d  %d  %.3f\n", p1[i], p[i], p2[i],
-            x[i]*xFactor, y[i]*yFactor, iqual[i], conf[i], ph[i], (int)(semSignal[i]), fit[i]);
+    fprintf(out, "  %.5f  %.5f  %.5f  %.5f  %.5f  %.1f  %0.3f %d  %d  %.3f\n", p1[i], p[i], p2[i], x[i] * xFactor, y[i] * yFactor, iqual[i], conf[i], ph[i], (int)(semSignal[i]), fit[i]);
   }
 
   fclose(out);
   return err;
-
 }
 
 // -----------------------------------------------------------------------------
@@ -195,21 +186,21 @@ int main(int argc, char** argv)
     // Handle program options passed on command line.
     TCLAP::CmdLine cmd("ResFixer", ' ', SIMPLib::Version::Complete().toStdString());
 
-    TCLAP::ValueArg<float> xres( "x", "xres", "New X Resolution", true, 0.0f, "New X Resolution");
+    TCLAP::ValueArg<float> xres("x", "xres", "New X Resolution", true, 0.0f, "New X Resolution");
     cmd.add(xres);
 
-    TCLAP::ValueArg<float> yres( "y", "yres", "New Y Resolution", true, 0.0f, "New Y Resolution");
+    TCLAP::ValueArg<float> yres("y", "yres", "New Y Resolution", true, 0.0f, "New Y Resolution");
     cmd.add(yres);
 
-    TCLAP::ValueArg<std::string> inputDir( "i", "inputdir", "Input Directory", true, "", "Input Directory");
+    TCLAP::ValueArg<std::string> inputDir("i", "inputdir", "Input Directory", true, "", "Input Directory");
     cmd.add(inputDir);
 
-    TCLAP::ValueArg<std::string> outputDir( "o", "outputdir", "Output Directory", true, "", "Output Directory");
+    TCLAP::ValueArg<std::string> outputDir("o", "outputdir", "Output Directory", true, "", "Output Directory");
     cmd.add(outputDir);
 
     // Parse the argv array.
     cmd.parse(argc, argv);
-    if (argc == 1)
+    if(argc == 1)
     {
       std::cout << "ResFixer program was not provided any arguments. Use the --help argument to show the help listing." << std::endl;
       return EXIT_FAILURE;
@@ -223,21 +214,21 @@ int main(int argc, char** argv)
     std::cout << "New Y Step: " << yres.getValue() << std::endl;
 
     QDir dir(QString::fromStdString(outputDir.getValue()));
-    if (dir.exists() == false)
+    if(dir.exists() == false)
     {
       dir.mkpath(".");
     }
 
-    QDir inputD( QString::fromStdString(inputDir.getValue()));
+    QDir inputD(QString::fromStdString(inputDir.getValue()));
     QStringList entryList = inputD.entryList();
     foreach(QString file, entryList)
     {
       QFileInfo fi(file);
-      if (fi.suffix().compare("ang") == 0 )
+      if(fi.suffix().compare("ang") == 0)
       {
         std::cout << "Fixing file " << file.toStdString() << std::endl;
         AngResFixer fixer;
-        fixer.setFileName( QString::fromStdString(inputDir.getValue()) + "/" + fi.fileName() );
+        fixer.setFileName(QString::fromStdString(inputDir.getValue()) + "/" + fi.fileName());
         fixer.setXStepFix(xres.getValue());
         fixer.setYStepFix(yres.getValue());
         QString outFile = QString::fromStdString(outputDir.getValue()) + "/" + fi.fileName();
@@ -247,13 +238,10 @@ int main(int argc, char** argv)
       }
     }
 
-  }
-  catch (TCLAP::ArgException& e) // catch any exceptions
+  } catch(TCLAP::ArgException& e) // catch any exceptions
   {
-    std::cerr  << " error: " << e.error() << " for arg " << e.argId() << std::endl;
+    std::cerr << " error: " << e.error() << " for arg " << e.argId() << std::endl;
     return EXIT_FAILURE;
   }
   return EXIT_SUCCESS;
 }
-
-

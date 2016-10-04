@@ -33,41 +33,40 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-
 // C Includes
-#include <stdlib.h>
 #include <assert.h>
+#include <stdlib.h>
 
 // C++ Includes
 #include <iostream>
 
 // Qt Includes
-#include <QtCore/QtDebug>
+#include <QtCore/QCommandLineOption>
+#include <QtCore/QCommandLineParser>
 #include <QtCore/QCoreApplication>
-#include <QtCore/QString>
 #include <QtCore/QDir>
 #include <QtCore/QFile>
 #include <QtCore/QSettings>
-#include <QtCore/QCommandLineOption>
-#include <QtCore/QCommandLineParser>
+#include <QtCore/QString>
+#include <QtCore/QtDebug>
 
 // DREAM3DLib includes
-#include "SIMPLib/SIMPLib.h"
-#include "SIMPLib/SIMPLibVersion.h"
 #include "SIMPLib/Common/Constants.h"
-#include "SIMPLib/Common/FilterManager.h"
 #include "SIMPLib/Common/FilterFactory.hpp"
+#include "SIMPLib/Common/FilterManager.h"
 #include "SIMPLib/Common/FilterPipeline.h"
-#include "SIMPLib/Plugin/ISIMPLibPlugin.h"
-#include "SIMPLib/Plugin/SIMPLibPluginLoader.h"
 #include "SIMPLib/FilterParameters/H5FilterParametersReader.h"
 #include "SIMPLib/FilterParameters/JsonFilterParametersReader.h"
+#include "SIMPLib/Plugin/ISIMPLibPlugin.h"
+#include "SIMPLib/Plugin/SIMPLibPluginLoader.h"
+#include "SIMPLib/SIMPLib.h"
+#include "SIMPLib/SIMPLibVersion.h"
 #include "SIMPLib/Utilities/QMetaObjectUtilities.h"
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-int main (int argc, char*  argv[])
+int main(int argc, char* argv[])
 {
 
   // Instantiate the QCoreApplication that we need to get the current path and load plugins.
@@ -80,15 +79,16 @@ int main (int argc, char*  argv[])
   QCommandLineParser parser;
   QString str;
   QTextStream ss(&str);
-  ss << "Pipeline Runner (" << SIMPLib::Version::Major() << "." << SIMPLib::Version::Minor() << "."
-     << SIMPLib::Version::Patch()
+  ss << "Pipeline Runner (" << SIMPLib::Version::Major() << "." << SIMPLib::Version::Minor() << "." << SIMPLib::Version::Patch()
      << "): This application will run a SIMPLView pipeline stored in a JSON formatted pipeline file. ";
   parser.setApplicationDescription(str);
   parser.addHelpOption();
   parser.addVersionOption();
 
   // A boolean option with a single name (-p)
-  QCommandLineOption pipelineFileArg(QStringList() << "p" << "pipeline", "Pipeline File as a JSON file.", "file");
+  QCommandLineOption pipelineFileArg(QStringList() << "p"
+                                                   << "pipeline",
+                                     "Pipeline File as a JSON file.", "file");
   parser.addOption(pipelineFileArg);
 
   // Process the actual command line arguments given by the user
@@ -120,12 +120,12 @@ int main (int argc, char*  argv[])
   QString ext = fi.completeSuffix();
 
   FilterPipeline::Pointer pipeline;
-  if (ext == "dream3d")
+  if(ext == "dream3d")
   {
     H5FilterParametersReader::Pointer dream3dReader = H5FilterParametersReader::New();
     pipeline = dream3dReader->readPipelineFromFile(pipelineFile);
   }
-  else if (ext == "json")
+  else if(ext == "json")
   {
     JsonFilterParametersReader::Pointer jsonReader = JsonFilterParametersReader::New();
     pipeline = jsonReader->readPipelineFromFile(pipelineFile);
@@ -136,7 +136,7 @@ int main (int argc, char*  argv[])
     return EXIT_FAILURE;
   }
 
-  if (nullptr == pipeline.get())
+  if(nullptr == pipeline.get())
   {
     std::cout << "An error occurred trying to read the pipeline file. Exiting now." << std::endl;
     return EXIT_FAILURE;
@@ -147,7 +147,7 @@ int main (int argc, char*  argv[])
   pipeline->addMessageReceiver(&obs);
   // Preflight the pipeline
   err = pipeline->preflightPipeline();
-  if (err < 0)
+  if(err < 0)
   {
     std::cout << "Errors preflighting the pipeline. Exiting Now." << std::endl;
     return EXIT_FAILURE;
@@ -155,7 +155,7 @@ int main (int argc, char*  argv[])
   // Now actually execute the pipeline
   pipeline->execute();
   err = pipeline->getErrorCondition();
-  if (err < 0)
+  if(err < 0)
   {
     std::cout << "Error Condition of Pipeline: " << err << std::endl;
     return EXIT_FAILURE;
@@ -163,4 +163,3 @@ int main (int argc, char*  argv[])
 
   return EXIT_SUCCESS;
 }
-

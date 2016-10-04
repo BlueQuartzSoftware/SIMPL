@@ -33,12 +33,11 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-
 #include "ComparisonSelectionTableModel.h"
 
 #include <QtCore/QDebug>
-#include <QtWidgets/QStyleOptionComboBox>
 #include <QtWidgets/QAbstractItemDelegate>
+#include <QtWidgets/QStyleOptionComboBox>
 
 #include "ComparisonSelectionItemDelegate.h"
 
@@ -48,12 +47,12 @@
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-ComparisonSelectionTableModel::ComparisonSelectionTableModel(bool showOperators, QObject* parent) :
-  QAbstractTableModel(parent),
-  m_RowCount(0),
-  m_NumberOfPhases(1)
+ComparisonSelectionTableModel::ComparisonSelectionTableModel(bool showOperators, QObject* parent)
+: QAbstractTableModel(parent)
+, m_RowCount(0)
+, m_NumberOfPhases(1)
 {
-  if (showOperators)
+  if(showOperators)
   {
     m_ColumnCount = ColumnCount; // this comes from the enumerator in the header file
   }
@@ -61,7 +60,6 @@ ComparisonSelectionTableModel::ComparisonSelectionTableModel(bool showOperators,
   {
     m_ColumnCount = 1;
   }
-
 }
 
 // -----------------------------------------------------------------------------
@@ -71,33 +69,32 @@ ComparisonSelectionTableModel::~ComparisonSelectionTableModel()
 {
 }
 
-
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
 Qt::ItemFlags ComparisonSelectionTableModel::flags(const QModelIndex& index) const
 {
   //  qDebug() << "ComparisonSelectionTableModel::flags" << "\n";
-  if (!index.isValid())
+  if(!index.isValid())
   {
     return Qt::NoItemFlags;
   }
   Qt::ItemFlags theFlags = QAbstractTableModel::flags(index);
-  if (index.isValid())
+  if(index.isValid())
   {
     // theFlags |= Qt::ItemIsEditable | Qt::ItemIsSelectable | Qt::ItemIsEnabled;
 
     int col = index.column();
-    if (col == FeatureName || col == FeatureValue || col == FeatureOperator)
+    if(col == FeatureName || col == FeatureValue || col == FeatureOperator)
     {
       theFlags = Qt::ItemIsEditable | Qt::ItemIsSelectable | Qt::ItemIsEnabled;
     }
-//    else if ( col == FeaturePhaseValue)
-//    {
-//      if (m_NumberOfPhases > 1) {
-//        theFlags = Qt::ItemIsEditable | Qt::ItemIsSelectable | Qt::ItemIsEnabled;
-//      }
-//    }
+    //    else if ( col == FeaturePhaseValue)
+    //    {
+    //      if (m_NumberOfPhases > 1) {
+    //        theFlags = Qt::ItemIsEditable | Qt::ItemIsSelectable | Qt::ItemIsEnabled;
+    //      }
+    //    }
   }
   return theFlags;
 }
@@ -108,89 +105,91 @@ Qt::ItemFlags ComparisonSelectionTableModel::flags(const QModelIndex& index) con
 QVariant ComparisonSelectionTableModel::data(const QModelIndex& index, qint32 role) const
 {
 
-  if (!index.isValid())
+  if(!index.isValid())
   {
     return QVariant();
   }
 
-  if (role == Qt::SizeHintRole)
+  if(role == Qt::SizeHintRole)
   {
     QStyleOptionComboBox comboBox;
 
     switch(index.column())
     {
-      case FeatureName:
+    case FeatureName:
+    {
+      comboBox.currentText = QString("Confidence Index");
+      const QString header = headerData(FeatureName, Qt::Horizontal, Qt::DisplayRole).toString();
+      if(header.length() > comboBox.currentText.length())
       {
-        comboBox.currentText = QString("Confidence Index");
-        const QString header = headerData(FeatureName, Qt::Horizontal, Qt::DisplayRole).toString();
-        if (header.length() > comboBox.currentText.length())
-        {
-          comboBox.currentText = header;
-        }
-        break;
+        comboBox.currentText = header;
       }
-      case FeatureValue:
-      {
-        comboBox.currentText = QString("0.005");
-        const QString header = headerData(FeatureName, Qt::Horizontal, Qt::DisplayRole).toString();
-        if (header.length() > comboBox.currentText.length())
-        {comboBox.currentText = header;}
-        break;
-      }
-      case FeatureOperator:
-      {
-        comboBox.currentText = QString(" > ");
-        const QString header = headerData(FeatureOperator, Qt::Horizontal, Qt::DisplayRole).toString();
-        if (header.length() > comboBox.currentText.length())
-        {
-          comboBox.currentText = header;
-        }
-        break;
-      }
-//      case FeaturePhaseValue:
-//      {
-//        comboBox.currentText = QString("1");
-//        const QString header = headerData(FeaturePhaseValue, Qt::Horizontal, Qt::DisplayRole).toString();
-//        if (header.length() > comboBox.currentText.length())
-//        {
-//          comboBox.currentText = header;
-//        }
-//        break;
-//      }
-      default:
-        Q_ASSERT(false);
+      break;
     }
-    QFontMetrics fontMetrics(data(index, Qt::FontRole) .value<QFont > ());
+    case FeatureValue:
+    {
+      comboBox.currentText = QString("0.005");
+      const QString header = headerData(FeatureName, Qt::Horizontal, Qt::DisplayRole).toString();
+      if(header.length() > comboBox.currentText.length())
+      {
+        comboBox.currentText = header;
+      }
+      break;
+    }
+    case FeatureOperator:
+    {
+      comboBox.currentText = QString(" > ");
+      const QString header = headerData(FeatureOperator, Qt::Horizontal, Qt::DisplayRole).toString();
+      if(header.length() > comboBox.currentText.length())
+      {
+        comboBox.currentText = header;
+      }
+      break;
+    }
+    //      case FeaturePhaseValue:
+    //      {
+    //        comboBox.currentText = QString("1");
+    //        const QString header = headerData(FeaturePhaseValue, Qt::Horizontal, Qt::DisplayRole).toString();
+    //        if (header.length() > comboBox.currentText.length())
+    //        {
+    //          comboBox.currentText = header;
+    //        }
+    //        break;
+    //      }
+    default:
+      Q_ASSERT(false);
+    }
+    QFontMetrics fontMetrics(data(index, Qt::FontRole).value<QFont>());
     comboBox.fontMetrics = fontMetrics;
     QSize size(fontMetrics.width(comboBox.currentText), fontMetrics.height());
-    //FIXME: Is this size correct? Can we get a more accurate size without using QApplication
+    // FIXME: Is this size correct? Can we get a more accurate size without using QApplication
     return size;
 
-    //return dream3dApp->style()->sizeFromContents(QStyle::CT_ComboBox, &comboBox, size);
+    // return dream3dApp->style()->sizeFromContents(QStyle::CT_ComboBox, &comboBox, size);
   }
-  else if (role == Qt::TextAlignmentRole)
+  else if(role == Qt::TextAlignmentRole)
   {
     return int(Qt::AlignRight | Qt::AlignVCenter);
   }
-  else if (role == Qt::DisplayRole || role == Qt::EditRole)
+  else if(role == Qt::DisplayRole || role == Qt::EditRole)
   {
     int col = index.column();
-    if (col == FeatureName)
+    if(col == FeatureName)
     {
       return QVariant(m_FeatureNames[index.row()]);
     }
-    else if (col == FeatureValue)
+    else if(col == FeatureValue)
     {
       return QVariant(m_FeatureValues[index.row()]);
     }
-    else if (col == FeatureOperator)
+    else if(col == FeatureOperator)
     {
       return QVariant(m_FeatureOperators[index.row()]);
     }
-//    else if (col == FeaturePhaseValue)
-//    {
-//      return QVariant(m_FeaturePhaseValues[index.row()]);
-//    }
+    //    else if (col == FeaturePhaseValue)
+    //    {
+    //      return QVariant(m_FeaturePhaseValues[index.row()]);
+    //    }
   }
 
   return QVariant();
@@ -201,26 +200,25 @@ QVariant ComparisonSelectionTableModel::data(const QModelIndex& index, qint32 ro
 // -----------------------------------------------------------------------------
 QVariant ComparisonSelectionTableModel::headerData(int section, Qt::Orientation orientation, int role) const
 {
-  if (orientation == Qt::Horizontal && role == Qt::DisplayRole)
+  if(orientation == Qt::Horizontal && role == Qt::DisplayRole)
   {
     switch(section)
     {
-      case FeatureName:
-        return QVariant(QString("Array"));
-        break;
-      case FeatureValue:
-        return QVariant(QString("Threshold Value"));
-        break;
-      case FeatureOperator:
-        return QVariant(QString("Operator"));
-        break;
-//      case FeaturePhaseValue:
-//        return QVariant(QString("Phase"));
-//        break;
-      default:
-        break;
+    case FeatureName:
+      return QVariant(QString("Array"));
+      break;
+    case FeatureValue:
+      return QVariant(QString("Threshold Value"));
+      break;
+    case FeatureOperator:
+      return QVariant(QString("Operator"));
+      break;
+    //      case FeaturePhaseValue:
+    //        return QVariant(QString("Phase"));
+    //        break;
+    default:
+      break;
     }
-
   }
   return QVariant();
 }
@@ -249,14 +247,12 @@ bool ComparisonSelectionTableModel::setHeaderData(int col, Qt::Orientation o, co
   return false;
 }
 
-
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
 bool ComparisonSelectionTableModel::setData(const QModelIndex& index, const QVariant& value, int role)
 {
-  if (!index.isValid() || role != Qt::EditRole || index.row() < 0 || index.row() >= m_FeatureNames.count() || index.column() < 0 || index.column()
-      >= m_ColumnCount)
+  if(!index.isValid() || role != Qt::EditRole || index.row() < 0 || index.row() >= m_FeatureNames.count() || index.column() < 0 || index.column() >= m_ColumnCount)
   {
     return false;
   }
@@ -265,17 +261,17 @@ bool ComparisonSelectionTableModel::setData(const QModelIndex& index, const QVar
   qint32 col = index.column();
   switch(col)
   {
-    case FeatureName:
-      m_FeatureNames[row] = value.toString();
-      break;
-    case FeatureValue:
-      m_FeatureValues[row] = value.toFloat(&ok);
-      break;
-    case FeatureOperator:
-      m_FeatureOperators[row] =  value.toString();
-      break;
-    default:
-      Q_ASSERT(false);
+  case FeatureName:
+    m_FeatureNames[row] = value.toString();
+    break;
+  case FeatureValue:
+    m_FeatureValues[row] = value.toFloat(&ok);
+    break;
+  case FeatureOperator:
+    m_FeatureOperators[row] = value.toString();
+    break;
+  default:
+    Q_ASSERT(false);
   }
 
   emit dataChanged(index, index);
@@ -287,26 +283,26 @@ bool ComparisonSelectionTableModel::setData(const QModelIndex& index, const QVar
 // -----------------------------------------------------------------------------
 bool ComparisonSelectionTableModel::insertRows(int row, int count, const QModelIndex& index)
 {
-  if (m_PossibleFeatures.size() < 1) {
+  if(m_PossibleFeatures.size() < 1)
+  {
     return false;
   }
   QString featureName = m_PossibleFeatures.at(0);
   float featureValue = 0.0f;
   QString featureOperator = ">";
-  //int featurePhaseValue = 1;
+  // int featurePhaseValue = 1;
 
   beginInsertRows(QModelIndex(), row, row + count - 1);
-  for (int i = 0; i < count; ++i)
+  for(int i = 0; i < count; ++i)
   {
     m_FeatureNames.append(featureName);
     m_FeatureValues.append(featureValue);
     m_FeatureOperators.append(featureOperator);
-    //m_FeaturePhaseValues.append(featurePhaseValue);
+    // m_FeaturePhaseValues.append(featurePhaseValue);
     m_RowCount = m_FeatureNames.count();
   }
   endInsertRows();
-  emit
-  dataChanged(index, index);
+  emit dataChanged(index, index);
   return true;
 }
 
@@ -315,12 +311,12 @@ bool ComparisonSelectionTableModel::insertRows(int row, int count, const QModelI
 // -----------------------------------------------------------------------------
 bool ComparisonSelectionTableModel::removeRows(int row, int count, const QModelIndex& index)
 {
-  if (count < 1)
+  if(count < 1)
   {
     return true;
   } // No Rows to remove
   beginRemoveRows(QModelIndex(), row, row + count - 1);
-  for (int i = 0; i < count; ++i)
+  for(int i = 0; i < count; ++i)
   {
     m_FeatureNames.remove(row);
     m_FeatureValues.remove(row);
@@ -329,24 +325,24 @@ bool ComparisonSelectionTableModel::removeRows(int row, int count, const QModelI
     m_RowCount = m_FeatureNames.count();
   }
   endRemoveRows();
-  emit
-  dataChanged(index, index);
+  emit dataChanged(index, index);
   return true;
 }
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void ComparisonSelectionTableModel::setTableData(QVector<QString> featureNames,
-                                                 QVector<float> featureValues,
-                                                 QVector<int> featureOperators)
+void ComparisonSelectionTableModel::setTableData(QVector<QString> featureNames, QVector<float> featureValues, QVector<int> featureOperators)
 {
   qint32 count = featureNames.count();
   qint32 row = 0;
   // Remove all the current rows in the table model
   removeRows(0, rowCount());
   // Check to make sure we have data to insert.
-  if (count == 0) { return; }
+  if(count == 0)
+  {
+    return;
+  }
   // Now mass insert the data to the table then emit that the data has changed
   beginInsertRows(QModelIndex(), row, row + count - 1);
   m_FeatureNames = featureNames;
@@ -355,9 +351,18 @@ void ComparisonSelectionTableModel::setTableData(QVector<QString> featureNames,
   m_FeatureOperators.resize(featureOperators.size());
   for(int i = 0; i < m_FeatureOperators.size(); ++i)
   {
-    if (featureOperators[i] == SIMPL::Comparison::Operator_LessThan) { m_FeatureOperators[i] = (SIMPL::Comparison::Strings::LessThan); }
-    if (featureOperators[i] == SIMPL::Comparison::Operator_GreaterThan) { m_FeatureOperators[i] = (SIMPL::Comparison::Strings::GreaterThan); }
-    if (featureOperators[i] == SIMPL::Comparison::Operator_Equal) { m_FeatureOperators[i] = (SIMPL::Comparison::Strings::Equal); }
+    if(featureOperators[i] == SIMPL::Comparison::Operator_LessThan)
+    {
+      m_FeatureOperators[i] = (SIMPL::Comparison::Strings::LessThan);
+    }
+    if(featureOperators[i] == SIMPL::Comparison::Operator_GreaterThan)
+    {
+      m_FeatureOperators[i] = (SIMPL::Comparison::Strings::GreaterThan);
+    }
+    if(featureOperators[i] == SIMPL::Comparison::Operator_Equal)
+    {
+      m_FeatureOperators[i] = (SIMPL::Comparison::Strings::Equal);
+    }
   }
   m_RowCount = count;
   endInsertRows();
@@ -376,7 +381,10 @@ void ComparisonSelectionTableModel::setTableData(ComparisonInputs& comps)
   // Remove all the current rows in the table model
   removeRows(0, rowCount());
   // Check to make sure we have data to insert.
-  if (count == 0) { return; }
+  if(count == 0)
+  {
+    return;
+  }
   // Now mass insert the data to the table then emit that the data has changed
   beginInsertRows(QModelIndex(), row, row + count - 1);
 
@@ -387,9 +395,18 @@ void ComparisonSelectionTableModel::setTableData(ComparisonInputs& comps)
   {
     m_FeatureNames[i] = comps[i].attributeArrayName;
     m_FeatureValues[i] = comps[i].compValue;
-    if (comps[i].compOperator == SIMPL::Comparison::Operator_LessThan) { m_FeatureOperators[i] = (SIMPL::Comparison::Strings::LessThan); }
-    if (comps[i].compOperator == SIMPL::Comparison::Operator_GreaterThan) { m_FeatureOperators[i] = (SIMPL::Comparison::Strings::GreaterThan); }
-    if (comps[i].compOperator == SIMPL::Comparison::Operator_Equal) { m_FeatureOperators[i] = (SIMPL::Comparison::Strings::Equal); }
+    if(comps[i].compOperator == SIMPL::Comparison::Operator_LessThan)
+    {
+      m_FeatureOperators[i] = (SIMPL::Comparison::Strings::LessThan);
+    }
+    if(comps[i].compOperator == SIMPL::Comparison::Operator_GreaterThan)
+    {
+      m_FeatureOperators[i] = (SIMPL::Comparison::Strings::GreaterThan);
+    }
+    if(comps[i].compOperator == SIMPL::Comparison::Operator_Equal)
+    {
+      m_FeatureOperators[i] = (SIMPL::Comparison::Strings::Equal);
+    }
   }
   m_RowCount = count;
   endInsertRows();
@@ -401,17 +418,29 @@ void ComparisonSelectionTableModel::setTableData(ComparisonInputs& comps)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void ComparisonSelectionTableModel::getTableData( QVector<QString>& featureNames, QVector<float>& featureValues,  QVector<int>& featureOperators)
+void ComparisonSelectionTableModel::getTableData(QVector<QString>& featureNames, QVector<float>& featureValues, QVector<int>& featureOperators)
 {
   featureNames = m_FeatureNames;
   featureValues = m_FeatureValues;
   featureOperators.resize(m_FeatureOperators.size());
   for(int i = 0; i < m_FeatureOperators.size(); ++i)
   {
-    if (m_FeatureOperators[i].compare((SIMPL::Comparison::Strings::LessThan)) == 0) { featureOperators[i] = SIMPL::Comparison::Operator_LessThan; }
-    else if (m_FeatureOperators[i].compare((SIMPL::Comparison::Strings::GreaterThan)) == 0) { featureOperators[i] = SIMPL::Comparison::Operator_GreaterThan; }
-    else if (m_FeatureOperators[i].compare((SIMPL::Comparison::Strings::Equal)) == 0) { featureOperators[i] = SIMPL::Comparison::Operator_Equal; }
-    else { featureOperators[i] = SIMPL::Comparison::Operator_Unknown; }
+    if(m_FeatureOperators[i].compare((SIMPL::Comparison::Strings::LessThan)) == 0)
+    {
+      featureOperators[i] = SIMPL::Comparison::Operator_LessThan;
+    }
+    else if(m_FeatureOperators[i].compare((SIMPL::Comparison::Strings::GreaterThan)) == 0)
+    {
+      featureOperators[i] = SIMPL::Comparison::Operator_GreaterThan;
+    }
+    else if(m_FeatureOperators[i].compare((SIMPL::Comparison::Strings::Equal)) == 0)
+    {
+      featureOperators[i] = SIMPL::Comparison::Operator_Equal;
+    }
+    else
+    {
+      featureOperators[i] = SIMPL::Comparison::Operator_Unknown;
+    }
   }
 }
 
@@ -422,7 +451,7 @@ void ComparisonSelectionTableModel::setNumberOfPhases(int n)
 {
   m_NumberOfPhases = n;
   ComparisonSelectionItemDelegate* dlg = qobject_cast<ComparisonSelectionItemDelegate*>(getItemDelegate());
-  if (dlg)
+  if(dlg)
   {
     dlg->setNumberOfPhases(n);
     delete dlg;
@@ -447,14 +476,14 @@ void ComparisonSelectionTableModel::setPossibleFeatures(QStringList features)
   qint32 count = m_FeatureNames.count();
   for(qint32 i = 0; i < count; ++i)
   {
-    if (m_PossibleFeatures.contains(m_FeatureNames.at(i)) == false && m_PossibleFeatures.count() > 0)
+    if(m_PossibleFeatures.contains(m_FeatureNames.at(i)) == false && m_PossibleFeatures.count() > 0)
     {
       m_FeatureNames[i] = m_PossibleFeatures[0]; // Just set it to the first index
     }
   }
 
   ComparisonSelectionItemDelegate* dlg = qobject_cast<ComparisonSelectionItemDelegate*>(getItemDelegate());
-  if (dlg)
+  if(dlg)
   {
     dlg->setFeatureList(m_PossibleFeatures);
   }
@@ -476,15 +505,14 @@ void ComparisonSelectionTableModel::setPossibleFeatures(QList<QString>& features
   qint32 count = m_FeatureNames.count();
   for(qint32 i = 0; i < count; ++i)
   {
-    if (m_PossibleFeatures.contains(m_FeatureNames.at(i)) == false && m_PossibleFeatures.count() > 0)
+    if(m_PossibleFeatures.contains(m_FeatureNames.at(i)) == false && m_PossibleFeatures.count() > 0)
     {
       m_FeatureNames[i] = m_PossibleFeatures[0]; // Just set it to the first index
     }
   }
 
-
   ComparisonSelectionItemDelegate* dlg = qobject_cast<ComparisonSelectionItemDelegate*>(getItemDelegate());
-  if (dlg)
+  if(dlg)
   {
     dlg->setFeatureList(m_PossibleFeatures);
   }

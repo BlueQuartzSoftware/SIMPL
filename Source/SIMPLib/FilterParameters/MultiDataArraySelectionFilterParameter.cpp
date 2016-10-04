@@ -42,23 +42,25 @@
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-MultiDataArraySelectionFilterParameter::MultiDataArraySelectionFilterParameter() :
-  FilterParameter(),
-  m_DefaultPaths(QVector<DataArrayPath>())
-{}
+MultiDataArraySelectionFilterParameter::MultiDataArraySelectionFilterParameter()
+: FilterParameter()
+, m_DefaultPaths(QVector<DataArrayPath>())
+{
+}
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
 MultiDataArraySelectionFilterParameter::~MultiDataArraySelectionFilterParameter()
-{}
+{
+}
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-MultiDataArraySelectionFilterParameter::Pointer MultiDataArraySelectionFilterParameter::New(const QString& humanLabel, const QString& propertyName,
-    const QVector<DataArrayPath>& defaultValue, Category category, SetterCallbackType setterCallback,
-    GetterCallbackType getterCallback, const RequirementType req, int groupIndex)
+MultiDataArraySelectionFilterParameter::Pointer MultiDataArraySelectionFilterParameter::New(const QString& humanLabel, const QString& propertyName, const QVector<DataArrayPath>& defaultValue,
+                                                                                            Category category, SetterCallbackType setterCallback, GetterCallbackType getterCallback,
+                                                                                            const RequirementType req, int groupIndex)
 {
 
   MultiDataArraySelectionFilterParameter::Pointer ptr = MultiDataArraySelectionFilterParameter::New();
@@ -87,13 +89,11 @@ QString MultiDataArraySelectionFilterParameter::getWidgetType()
   return QString("MultiDataArraySelectionWidget");
 }
 
-
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-MultiDataArraySelectionFilterParameter::RequirementType MultiDataArraySelectionFilterParameter::CreateCategoryRequirement(const QString& primitiveType,
-    size_t allowedCompDim,
-    unsigned int attributeMatrixCategory)
+MultiDataArraySelectionFilterParameter::RequirementType MultiDataArraySelectionFilterParameter::CreateCategoryRequirement(const QString& primitiveType, size_t allowedCompDim,
+                                                                                                                          unsigned int attributeMatrixCategory)
 {
   typedef QVector<size_t> QVectorOfSizeType;
   MultiDataArraySelectionFilterParameter::RequirementType req;
@@ -128,19 +128,17 @@ MultiDataArraySelectionFilterParameter::RequirementType MultiDataArraySelectionF
   {
     req.componentDimensions = QVector<QVectorOfSizeType>(1, QVectorOfSizeType(1, allowedCompDim));
   }
-//  if(SIMPL::GeometryType::UnknownGeometry != geometryType)
-//  {
-//    req.dcGeometryTypes = QVector<unsigned int>(1, geometryType);
-//  }
+  //  if(SIMPL::GeometryType::UnknownGeometry != geometryType)
+  //  {
+  //    req.dcGeometryTypes = QVector<unsigned int>(1, geometryType);
+  //  }
   return req;
 }
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-MultiDataArraySelectionFilterParameter::RequirementType MultiDataArraySelectionFilterParameter::CreateRequirement(const QString& primitiveType,
-                                                                                                                  size_t allowedCompDim,
-                                                                                                                  unsigned int attributeMatrixType,
+MultiDataArraySelectionFilterParameter::RequirementType MultiDataArraySelectionFilterParameter::CreateRequirement(const QString& primitiveType, size_t allowedCompDim, unsigned int attributeMatrixType,
                                                                                                                   unsigned int geometryType)
 {
   typedef QVector<size_t> QVectorOfSizeType;
@@ -168,14 +166,14 @@ MultiDataArraySelectionFilterParameter::RequirementType MultiDataArraySelectionF
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void MultiDataArraySelectionFilterParameter::readJson(const QJsonObject &json)
+void MultiDataArraySelectionFilterParameter::readJson(const QJsonObject& json)
 {
   QJsonValue jsonValue = json[getPropertyName()];
-  if(!jsonValue.isUndefined() )
+  if(!jsonValue.isUndefined() && m_SetterCallback)
   {
     QJsonArray arrayObj = jsonValue.toArray();
     QVector<DataArrayPath> dapVec;
-    for (int i=0; i<arrayObj.size(); i++)
+    for(int i = 0; i < arrayObj.size(); i++)
     {
       QJsonObject obj = arrayObj.at(i).toObject();
       DataArrayPath dap;
@@ -190,18 +188,21 @@ void MultiDataArraySelectionFilterParameter::readJson(const QJsonObject &json)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void MultiDataArraySelectionFilterParameter::writeJson(QJsonObject &json)
+void MultiDataArraySelectionFilterParameter::writeJson(QJsonObject& json)
 {
-  QVector<DataArrayPath> dapVec = m_GetterCallback();
-  QJsonArray arrayObj;
-
-  for (int i=0; i<dapVec.size(); i++)
+  if (m_GetterCallback)
   {
-    DataArrayPath dap = dapVec[i];
-    QJsonObject obj;
-    dap.writeJson(obj);
-    arrayObj.push_back(obj);
-  }
+    QVector<DataArrayPath> dapVec = m_GetterCallback();
+    QJsonArray arrayObj;
 
-  json[getPropertyName()] = arrayObj;
+    for(int i = 0; i < dapVec.size(); i++)
+    {
+      DataArrayPath dap = dapVec[i];
+      QJsonObject obj;
+      dap.writeJson(obj);
+      arrayObj.push_back(obj);
+    }
+
+    json[getPropertyName()] = arrayObj;
+  }
 }

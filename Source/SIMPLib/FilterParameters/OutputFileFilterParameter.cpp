@@ -38,22 +38,24 @@
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-OutputFileFilterParameter::OutputFileFilterParameter() :
-FilterParameter()
-{}
+OutputFileFilterParameter::OutputFileFilterParameter()
+: FilterParameter()
+{
+}
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
 OutputFileFilterParameter::~OutputFileFilterParameter()
-{}
+{
+}
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-OutputFileFilterParameter::Pointer OutputFileFilterParameter::New(const QString& humanLabel, const QString& propertyName,
-  const QString& defaultValue, Category category, SetterCallbackType setterCallback, GetterCallbackType getterCallback,
-  const QString& fileExtension, const QString& fileType, int groupIndex)
+OutputFileFilterParameter::Pointer OutputFileFilterParameter::New(const QString& humanLabel, const QString& propertyName, const QString& defaultValue, Category category,
+                                                                  SetterCallbackType setterCallback, GetterCallbackType getterCallback, const QString& fileExtension, const QString& fileType,
+                                                                  int groupIndex)
 {
   OutputFileFilterParameter::Pointer ptr = OutputFileFilterParameter::New();
   ptr->setHumanLabel(humanLabel);
@@ -80,10 +82,10 @@ QString OutputFileFilterParameter::getWidgetType()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void OutputFileFilterParameter::readJson(const QJsonObject &json)
+void OutputFileFilterParameter::readJson(const QJsonObject& json)
 {
   QJsonValue jsonValue = json[getPropertyName()];
-  if(!jsonValue.isUndefined() )
+  if(!jsonValue.isUndefined() && m_SetterCallback)
   {
     m_SetterCallback(jsonValue.toString(""));
   }
@@ -92,8 +94,10 @@ void OutputFileFilterParameter::readJson(const QJsonObject &json)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void OutputFileFilterParameter::writeJson(QJsonObject &json)
+void OutputFileFilterParameter::writeJson(QJsonObject& json)
 {
-  json[getPropertyName()] = m_GetterCallback();
+  if(m_GetterCallback)
+  {
+    json[getPropertyName()] = m_GetterCallback();
+  }
 }
-

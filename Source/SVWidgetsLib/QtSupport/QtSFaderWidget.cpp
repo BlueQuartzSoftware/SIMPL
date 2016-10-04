@@ -29,13 +29,17 @@
 //
 // -----------------------------------------------------------------------------
 QtSFaderWidget::QtSFaderWidget(QWidget* parent)
-  : QWidget(parent),
-    timer(nullptr)
+: QWidget(parent)
+, timer(nullptr)
 {
-  if (parent)
-  { startColor = Qt::white; /* parent->palette().window().color();*/ }
+  if(parent)
+  {
+    startColor = Qt::white; /* parent->palette().window().color();*/
+  }
   else
-  { startColor = Qt::white; }
+  {
+    startColor = Qt::white;
+  }
 
   fadeIn = true;
 
@@ -46,7 +50,10 @@ QtSFaderWidget::QtSFaderWidget(QWidget* parent)
   connect(timer, SIGNAL(timeout()), this, SLOT(update()));
 
   setAttribute(Qt::WA_DeleteOnClose);
-  if(parent) { resize(parent->size()); }
+  if(parent)
+  {
+    resize(parent->size());
+  }
 }
 
 // -----------------------------------------------------------------------------
@@ -100,7 +107,10 @@ QColor QtSFaderWidget::getStartColor()
 void QtSFaderWidget::start()
 {
   currentAlpha = 255;
-  if(!fadeIn) { currentAlpha = 0; }
+  if(!fadeIn)
+  {
+    currentAlpha = 0;
+  }
   timer->start(50);
   show();
 }
@@ -114,12 +124,18 @@ void QtSFaderWidget::paintEvent(QPaintEvent* /* event */)
   QColor semiTransparentColor = startColor;
   semiTransparentColor.setAlpha(currentAlpha);
   painter.fillRect(rect(), semiTransparentColor);
-  if(fadeIn) { currentAlpha -= 255 * timer->interval() / duration;}
-  else { currentAlpha += 255 * timer->interval() / duration; }
+  if(fadeIn)
+  {
+    currentAlpha -= 255 * timer->interval() / duration;
+  }
+  else
+  {
+    currentAlpha += 255 * timer->interval() / duration;
+  }
 
   // qDebug() << currentAlpha;
 
-  if (currentAlpha <= 0 || currentAlpha >= 255)
+  if(currentAlpha <= 0 || currentAlpha >= 255)
   {
     timer->stop();
     close();

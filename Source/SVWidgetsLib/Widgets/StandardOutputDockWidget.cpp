@@ -33,7 +33,6 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-
 #include "StandardOutputDockWidget.h"
 
 #include <iostream>
@@ -46,13 +45,12 @@
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-StandardOutputDockWidget::StandardOutputDockWidget(QWidget* parent) :
-  QDockWidget(parent)
+StandardOutputDockWidget::StandardOutputDockWidget(QWidget* parent)
+: QDockWidget(parent)
 {
   setupUi(this);
   setupGui();
 }
-
 
 // -----------------------------------------------------------------------------
 //

@@ -33,7 +33,6 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-
 #include "QtSDistributionTypeWidget.h"
 
 #include "SIMPLib/Common/Constants.h"
@@ -42,8 +41,8 @@
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-QtSDistributionTypeWidget::QtSDistributionTypeWidget(QString distributionName, QWidget* parent) :
-  QWidget(parent)
+QtSDistributionTypeWidget::QtSDistributionTypeWidget(QString distributionName, QWidget* parent)
+: QWidget(parent)
 {
   this->setupUi(this);
   setupGui();
@@ -55,7 +54,6 @@ QtSDistributionTypeWidget::QtSDistributionTypeWidget(QString distributionName, Q
 // -----------------------------------------------------------------------------
 QtSDistributionTypeWidget::~QtSDistributionTypeWidget()
 {
-
 }
 
 // -----------------------------------------------------------------------------
@@ -67,7 +65,6 @@ void QtSDistributionTypeWidget::setupGui()
   distributionTypeCombo->addItem(SIMPL::StringConstants::BetaDistribution);
   distributionTypeCombo->addItem(SIMPL::StringConstants::LogNormalDistribution);
   distributionTypeCombo->addItem(SIMPL::StringConstants::PowerLawDistribution);
-
 }
 
 // -----------------------------------------------------------------------------

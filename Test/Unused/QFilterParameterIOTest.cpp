@@ -33,34 +33,30 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-
-
-#include <QtCore/QtDebug>
-#include <QtCore/QString>
 #include <QtCore/QDir>
 #include <QtCore/QFile>
-#include <QtCore/QSettings>
 #include <QtCore/QSet>
+#include <QtCore/QSettings>
+#include <QtCore/QString>
+#include <QtCore/QtDebug>
 
-#include "SIMPLib/SIMPLib.h"
-#include "SIMPLib/SIMPLibVersion.h"
-#include "SIMPLib/Common/Constants.h"
-#include "SIMPLib/SIMPLibVersion.h"
-#include "SIMPLib/Common/FilterManager.h"
-#include "SIMPLib/Common/FilterFactory.hpp"
-#include "SIMPLib/Common/FilterPipeline.h"
 #include "SIMPLib/Common/AbstractFilter.h"
-#include "SIMPLib/IOFilters/ReadH5Ebsd.h"
+#include "SIMPLib/Common/Constants.h"
+#include "SIMPLib/Common/FilterFactory.hpp"
+#include "SIMPLib/Common/FilterManager.h"
+#include "SIMPLib/Common/FilterPipeline.h"
 #include "SIMPLib/FilterParameters/QFilterParametersReader.h"
 #include "SIMPLib/FilterParameters/QFilterParametersWriter.h"
 #include "SIMPLib/IOFilters/DataContainerReader.h"
+#include "SIMPLib/IOFilters/ReadH5Ebsd.h"
+#include "SIMPLib/SIMPLib.h"
+#include "SIMPLib/SIMPLibVersion.h"
+#include "SIMPLib/SIMPLibVersion.h"
 
 #include "SIMPLib/IOFilters/EbsdToH5Ebsd.h"
 
-#include "UnitTestSupport.hpp"
 #include "TestFileLocations.h"
-
-
+#include "UnitTestSupport.hpp"
 
 // -----------------------------------------------------------------------------
 //
@@ -88,7 +84,7 @@ void writePipeline(FilterPipeline::Pointer pipeline)
   prefs->setValue(SIMPL::Settings::Version, SIMPLib::Version::Complete());
   prefs->endGroup();
 
-  for (int i = 0; i < count; ++i)
+  for(int i = 0; i < count; ++i)
   {
     AbstractFilter::Pointer filter = pipeline->getFilterContainer().at(i);
     filter->writeFilterParameters(writer.get(), i);
@@ -137,9 +133,12 @@ void readPipeline(QFilterParametersReader::Pointer paramsReader, FilterPipeline:
   bool ok = false;
   int filterCount = prefs->value(SIMPL::Settings::NumFilters).toInt(&ok);
   prefs->endGroup();
-  if (false == ok) {filterCount = 0;}
+  if(false == ok)
+  {
+    filterCount = 0;
+  }
 
-  for (int i = 0; i < filterCount; ++i)
+  for(int i = 0; i < filterCount; ++i)
   {
     QString gName = QString::number(i);
 
@@ -162,11 +161,9 @@ void readPipeline(QFilterParametersReader::Pointer paramsReader, FilterPipeline:
   writePipeline(pipeline);
 }
 
-
 QString m_FilePrefix("Small_IN100_");
 QString m_FileSuffix("");
 QString m_FileExt("ang");
-
 
 // -----------------------------------------------------------------------------
 //
@@ -176,9 +173,9 @@ QVector<QString> generateFileList(int start, int end, bool& hasMissingFiles, boo
   int index = 0;
   QVector<QString> fileList;
 
-  for (int i = 0; i < (end - start) + 1; ++i)
+  for(int i = 0; i < (end - start) + 1; ++i)
   {
-    if (stackLowToHigh)
+    if(stackLowToHigh)
     {
       index = start + i;
     }
@@ -194,14 +191,12 @@ QVector<QString> generateFileList(int start, int end, bool& hasMissingFiles, boo
   return fileList;
 }
 
-
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
 void importSmallIN100()
 {
   Observer obs;
-
 
   EbsdToH5Ebsd::Pointer filter = EbsdToH5Ebsd::New();
   filter->setOutputFile(UnitTest::QFilterParameterIOTest::SmallIn100_H5EBSD_FILE);
@@ -222,7 +217,7 @@ void importSmallIN100()
   transAxis[2] = 1.0f;
   filter->setEulerTransformationAxis(transAxis);
 
-  filter->setRefFrameZDir( Ebsd::HightoLow );
+  filter->setRefFrameZDir(Ebsd::HightoLow);
 
   int start = filter->getZStartIndex();
   int end = filter->getZEndIndex();
@@ -235,14 +230,13 @@ void importSmallIN100()
   {
     QString filePath = (fileList[i]);
     QFileInfo fi(filePath);
-    if (fi.exists())
+    if(fi.exists())
     {
       realFileList.push_back(fileList[i]);
     }
   }
 
   filter->setEbsdFileList(realFileList);
-
 
   // Run the preflight
   filter->preflight();
@@ -267,7 +261,6 @@ void importSmallIN100()
       qDebug() << msgs[i].generateErrorString();
     }
   }
-
 }
 
 // -----------------------------------------------------------------------------
@@ -309,8 +302,6 @@ void TestReadQSettingsBasedFile()
   pipeline->execute();
   err = pipeline->getErrorCondition();
   DREAM3D_REQUIRE(err >= 0)
-
-
 }
 
 // -----------------------------------------------------------------------------
@@ -320,14 +311,14 @@ int main(int argc, char* argv[])
 {
   int err = EXIT_SUCCESS;
 
-  DREAM3D_REGISTER_TEST( RemoveTestFiles() )
+  DREAM3D_REGISTER_TEST(RemoveTestFiles())
 
-  DREAM3D_REGISTER_TEST( TestWriteQSettingsBasedFile() )
+  DREAM3D_REGISTER_TEST(TestWriteQSettingsBasedFile())
 
 //  DREAM3D_REGISTER_TEST( TestReadQSettingsBasedFile() )
 
 #if REMOVE_TEST_FILES
-  DREAM3D_REGISTER_TEST( RemoveTestFiles() )
+  DREAM3D_REGISTER_TEST(RemoveTestFiles())
 #endif
 
   PRINT_TEST_SUMMARY();

@@ -35,19 +35,16 @@
 
 #include "InputPathWidget.h"
 
-#include <QtCore/QMetaProperty>
 #include <QtCore/QDir>
+#include <QtCore/QMetaProperty>
 
 #include <QtWidgets/QFileDialog>
 
 #include "SVWidgetsLib/QtSupport/QtSFileCompleter.h"
 
-
-
 #include "SVWidgetsLib/Core/SVWidgetsLibConstants.h"
 
 #include "FilterParameterWidgetsDialogs.h"
-
 
 // Initialize private static member variable
 QString InputPathWidget::m_OpenDialogLastDirectory = "";
@@ -58,8 +55,8 @@ QString InputPathWidget::m_OpenDialogLastDirectory = "";
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-InputPathWidget::InputPathWidget(FilterParameter* parameter, AbstractFilter* filter, QWidget* parent) :
-  FilterParameterWidget(parameter, filter, parent)
+InputPathWidget::InputPathWidget(FilterParameter* parameter, AbstractFilter* filter, QWidget* parent)
+: FilterParameterWidget(parameter, filter, parent)
 {
   m_FilterParameter = dynamic_cast<InputPathFilterParameter*>(parameter);
   Q_ASSERT_X(m_FilterParameter != nullptr, "nullptr Pointer", "InputPathWidget can ONLY be used with a InputPathFilterParameter object");
@@ -88,7 +85,8 @@ InputPathWidget::InputPathWidget(FilterParameter* parameter, AbstractFilter* fil
 //
 // -----------------------------------------------------------------------------
 InputPathWidget::~InputPathWidget()
-{}
+{
+}
 
 // -----------------------------------------------------------------------------
 //
@@ -111,34 +109,27 @@ FilterParameter* InputPathWidget::getFilterParameter() const
 void InputPathWidget::setupGui()
 {
   // Catch when the filter is about to execute the preflight
-  connect(getFilter(), SIGNAL(preflightAboutToExecute()),
-          this, SLOT(beforePreflight()));
+  connect(getFilter(), SIGNAL(preflightAboutToExecute()), this, SLOT(beforePreflight()));
 
   // Catch when the filter is finished running the preflight
-  connect(getFilter(), SIGNAL(preflightExecuted()),
-          this, SLOT(afterPreflight()));
+  connect(getFilter(), SIGNAL(preflightExecuted()), this, SLOT(afterPreflight()));
 
   // Catch when the filter wants its values updated
-  connect(getFilter(), SIGNAL(updateFilterParameters(AbstractFilter*)),
-          this, SLOT(filterNeedsInputParameters(AbstractFilter*)));
+  connect(getFilter(), SIGNAL(updateFilterParameters(AbstractFilter*)), this, SLOT(filterNeedsInputParameters(AbstractFilter*)));
 
-  connect(value, SIGNAL(textChanged(const QString&)),
-          this, SLOT(widgetChanged(const QString&)));
+  connect(value, SIGNAL(textChanged(const QString&)), this, SLOT(widgetChanged(const QString&)));
 
   QtSFileCompleter* com = new QtSFileCompleter(this, false);
   value->setCompleter(com);
-  QObject::connect( com, SIGNAL(activated(const QString&)),
-                    this, SLOT(widgetChanged(const QString&)));
+  QObject::connect(com, SIGNAL(activated(const QString&)), this, SLOT(widgetChanged(const QString&)));
 
-  if (getFilterParameter() != nullptr)
+  if(getFilterParameter() != nullptr)
   {
-    label->setText(getFilterParameter()->getHumanLabel() );
+    label->setText(getFilterParameter()->getHumanLabel());
 
     QString currentPath = getFilter()->property(PROPERTY_NAME_AS_CHAR).toString();
     value->setText(currentPath);
   }
-
-
 }
 
 // -----------------------------------------------------------------------------
@@ -147,9 +138,9 @@ void InputPathWidget::setupGui()
 bool InputPathWidget::verifyPathExists(QString filePath, QLineEdit* lineEdit)
 {
   QFileInfo fileinfo(filePath);
-  if (false == fileinfo.exists())
+  if(false == fileinfo.exists())
   {
-    //lineEdit->setStyleSheet("border: 1px solid red;");
+    // lineEdit->setStyleSheet("border: 1px solid red;");
     lineEdit->setStyleSheet("color: rgb(255, 0, 0);");
   }
   else
@@ -166,7 +157,6 @@ void InputPathWidget::on_value_editingFinished()
 {
   emit parametersChanged(); // This should force the preflight to run because we are emitting a signal
 }
-
 
 // -----------------------------------------------------------------------------
 //
@@ -190,16 +180,13 @@ void InputPathWidget::on_selectBtn_clicked()
   QString ext = m_FilterParameter->getFileExtension();
   QString s = Ftype + QString(" Files (") + ext + QString(");;All Files(*.*)");
   QString defaultName = currentPath + QDir::separator() + "Untitled";
-  QString file = QFileDialog::getExistingDirectory(this,
-                                                   tr("Select Input Folder"),
-                                                   defaultName,
-                                                   QFileDialog::ShowDirsOnly);
+  QString file = QFileDialog::getExistingDirectory(this, tr("Select Input Folder"), defaultName, QFileDialog::ShowDirsOnly);
 
   if(true == file.isEmpty())
   {
     return;
   }
-  //bool ok = false;
+  // bool ok = false;
   file = QDir::toNativeSeparators(file);
   // Store the last used directory into the private instance variable
   QFileInfo fi(file);
@@ -229,7 +216,6 @@ void InputPathWidget::filterNeedsInputParameters(AbstractFilter* filter)
   {
     FilterParameterWidgetsDialogs::ShowCouldNotSetFilterParameter(getFilter(), getFilterParameter());
   }
-
 }
 
 // -----------------------------------------------------------------------------
@@ -237,7 +223,6 @@ void InputPathWidget::filterNeedsInputParameters(AbstractFilter* filter)
 // -----------------------------------------------------------------------------
 void InputPathWidget::beforePreflight()
 {
-
 }
 
 // -----------------------------------------------------------------------------
@@ -245,5 +230,4 @@ void InputPathWidget::beforePreflight()
 // -----------------------------------------------------------------------------
 void InputPathWidget::afterPreflight()
 {
-
 }

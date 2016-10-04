@@ -43,29 +43,28 @@
 
 #include "SVWidgetsLib/Core/SVWidgetsLibConstants.h"
 
-
 // Include the MOC generated file for this class
 #include "moc_DynamicChoiceWidget.cpp"
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-DynamicChoiceWidget::DynamicChoiceWidget(FilterParameter* parameter, AbstractFilter* filter, QWidget* parent) :
-  FilterParameterWidget(parameter, filter, parent)
+DynamicChoiceWidget::DynamicChoiceWidget(FilterParameter* parameter, AbstractFilter* filter, QWidget* parent)
+: FilterParameterWidget(parameter, filter, parent)
 {
   m_FilterParameter = dynamic_cast<DynamicChoiceFilterParameter*>(parameter);
   Q_ASSERT_X(m_FilterParameter != nullptr, "nullptr Pointer", "DynamicChoiceWidget can ONLY be used with a DynamicChoiceFilterParameter object");
 
   setupUi(this);
   setupGui();
-
 }
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
 DynamicChoiceWidget::~DynamicChoiceWidget()
-{}
+{
+}
 
 // -----------------------------------------------------------------------------
 //
@@ -90,21 +89,17 @@ void DynamicChoiceWidget::setupGui()
 {
 
   // Catch when the filter is about to execute the preflight
-  connect(getFilter(), SIGNAL(preflightAboutToExecute()),
-          this, SLOT(beforePreflight()));
+  connect(getFilter(), SIGNAL(preflightAboutToExecute()), this, SLOT(beforePreflight()));
 
   // Catch when the filter is finished running the preflight
-  connect(getFilter(), SIGNAL(preflightExecuted()),
-          this, SLOT(afterPreflight()));
+  connect(getFilter(), SIGNAL(preflightExecuted()), this, SLOT(afterPreflight()));
 
   // Catch when the filter wants its values updated
-  connect(getFilter(), SIGNAL(updateFilterParameters(AbstractFilter*)),
-          this, SLOT(filterNeedsInputParameters(AbstractFilter*)));
+  connect(getFilter(), SIGNAL(updateFilterParameters(AbstractFilter*)), this, SLOT(filterNeedsInputParameters(AbstractFilter*)));
 
-  connect(value, SIGNAL(currentIndexChanged(int)),
-          this, SLOT(widgetChanged(int) ) );
+  connect(value, SIGNAL(currentIndexChanged(int)), this, SLOT(widgetChanged(int)));
 
-  if (m_FilterParameter != nullptr)
+  if(m_FilterParameter != nullptr)
   {
     QString units = m_FilterParameter->getUnits();
     if(units.isEmpty() == false)
@@ -113,12 +108,11 @@ void DynamicChoiceWidget::setupGui()
     }
     else
     {
-      label->setText(m_FilterParameter->getHumanLabel() );
+      label->setText(m_FilterParameter->getHumanLabel());
     }
     updateComboBox();
   }
 }
-
 
 #define LIST_PROPERTY_NAME_AS_CHAR m_FilterParameter->getListProperty().toLatin1().constData()
 
@@ -134,8 +128,8 @@ void DynamicChoiceWidget::updateComboBox()
     //  QString currentText = value->currentText();
 
     // Get the list of choices from the filter
-    QString listProp =  m_FilterParameter->getListProperty();
-    //qDebug() << listProp;
+    QString listProp = m_FilterParameter->getListProperty();
+    // qDebug() << listProp;
 
     QVariant var = getFilter()->property(listProp.toLatin1().constData());
     if(var.isValid() == false)
@@ -147,12 +141,11 @@ void DynamicChoiceWidget::updateComboBox()
     value->blockSignals(true);
     value->clear(); // Remove everything
 
-
-//    if(choices.size() == 0)
-//    {
-//      value->addItem(m_FilterParameter->getDefaultValue().toString());
-//    }
-//    else
+    //    if(choices.size() == 0)
+    //    {
+    //      value->addItem(m_FilterParameter->getDefaultValue().toString());
+    //    }
+    //    else
     {
       value->addItems(choices);
     }
@@ -162,7 +155,6 @@ void DynamicChoiceWidget::updateComboBox()
     value->setCurrentIndex(index);
     value->blockSignals(false);
   }
-
 }
 
 // -----------------------------------------------------------------------------
@@ -182,12 +174,12 @@ void DynamicChoiceWidget::filterNeedsInputParameters(AbstractFilter* filter)
 {
   QString index = value->currentText();
 
-  if (index.isEmpty() == false)
+  if(index.isEmpty() == false)
   {
     QVariant v(index);
     bool ok = filter->setProperty(PROPERTY_NAME_AS_CHAR, v);
 
-    if (false == ok)
+    if(false == ok)
     {
       FilterParameterWidgetsDialogs::ShowCouldNotSetFilterParameter(getFilter(), m_FilterParameter);
     }
@@ -199,7 +191,6 @@ void DynamicChoiceWidget::filterNeedsInputParameters(AbstractFilter* filter)
 // -----------------------------------------------------------------------------
 void DynamicChoiceWidget::beforePreflight()
 {
-
 }
 
 // -----------------------------------------------------------------------------

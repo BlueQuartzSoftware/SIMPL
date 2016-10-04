@@ -33,12 +33,11 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-
-#include <QtCore/QFile>
 #include <QtCore/QDir>
+#include <QtCore/QFile>
 #include <QtCore/QJsonArray>
-#include <QtCore/QJsonObject>
 #include <QtCore/QJsonDocument>
+#include <QtCore/QJsonObject>
 
 #include "JsonFilterParametersWriter.h"
 #include "SIMPLib/Common/Constants.h"
@@ -46,19 +45,18 @@
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-JsonFilterParametersWriter::JsonFilterParametersWriter() :
-  m_MaxFilterIndex(-1),
-  m_CurrentIndex(0)
+JsonFilterParametersWriter::JsonFilterParametersWriter()
+: m_MaxFilterIndex(-1)
+, m_CurrentIndex(0)
 {
-
 }
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-JsonFilterParametersWriter::JsonFilterParametersWriter(QString& fileName, QString& pipelineName, int& numFilters) :
-  m_MaxFilterIndex(-1),
-  m_CurrentIndex(0)
+JsonFilterParametersWriter::JsonFilterParametersWriter(QString& fileName, QString& pipelineName, int& numFilters)
+: m_MaxFilterIndex(-1)
+, m_CurrentIndex(0)
 {
   m_FileName = fileName;
   m_PipelineName = pipelineName;
@@ -69,7 +67,6 @@ JsonFilterParametersWriter::JsonFilterParametersWriter(QString& fileName, QStrin
 // -----------------------------------------------------------------------------
 JsonFilterParametersWriter::~JsonFilterParametersWriter()
 {
-
 }
 
 // -----------------------------------------------------------------------------
@@ -79,7 +76,10 @@ int JsonFilterParametersWriter::writePipelineToFile(FilterPipeline::Pointer pipe
 {
   int err = 0;
   err = populateWriter(pipeline, pipelineName, obs);
-  if (err < 0) { return err; }
+  if(err < 0)
+  {
+    return err;
+  }
 
   setFileName(filePath);
   writePipeline();
@@ -107,9 +107,9 @@ QString JsonFilterParametersWriter::writePipelineToString(FilterPipeline::Pointe
 // -----------------------------------------------------------------------------
 int JsonFilterParametersWriter::populateWriter(FilterPipeline::Pointer pipeline, QString pipelineName, IObserver* obs)
 {
-  if (nullptr == pipeline.get())
+  if(nullptr == pipeline.get())
   {
-    if (nullptr != obs)
+    if(nullptr != obs)
     {
       PipelineMessage pm(JsonFilterParametersWriter::ClassName(), "FilterPipeline Object was nullptr for writing", -1, PipelineMessage::Error);
       obs->processPipelineMessage(pm);
@@ -127,10 +127,10 @@ int JsonFilterParametersWriter::populateWriter(FilterPipeline::Pointer pipeline,
 
   // Loop over each filter and write it's input parameters to the file
   int count = filters.size();
-  for (qint32 i = 0; i < count; ++i)
+  for(qint32 i = 0; i < count; ++i)
   {
     AbstractFilter::Pointer filter = filters.at(i);
-    if (nullptr != filter.get())
+    if(nullptr != filter.get())
     {
       openFilterGroup(filter.get(), i);
       filter->writeFilterParameters(m_CurrentFilterIndex);
@@ -154,25 +154,25 @@ int JsonFilterParametersWriter::populateWriter(FilterPipeline::Pointer pipeline,
 void JsonFilterParametersWriter::writePipeline()
 {
   // Write the contents
-  if (m_FileName.isEmpty() == false)
+  if(m_FileName.isEmpty() == false)
   {
     QFile outputFile(m_FileName);
     QFileInfo info(outputFile);
     QString parentPath = info.absolutePath();
     QDir parentDir(parentPath);
 
-    if (parentDir.exists() == false)
+    if(parentDir.exists() == false)
     {
       parentDir.mkpath(parentPath);
     }
 
     QJsonDocument doc = toDocument();
 
-    if (outputFile.exists() == true)
+    if(outputFile.exists() == true)
     {
       outputFile.remove();
     }
-    if (outputFile.open(QIODevice::WriteOnly))
+    if(outputFile.open(QIODevice::WriteOnly))
     {
       outputFile.write(doc.toJson());
       outputFile.close();
@@ -200,7 +200,7 @@ QJsonDocument JsonFilterParametersWriter::toDocument()
   meta[SIMPL::Settings::PipelineName] = m_PipelineName;
   meta[SIMPL::Settings::Version] = SIMPL::PipelineVersionNumbers::CurrentVersion;
 
-  if (m_Root.size() > 0)
+  if(m_Root.size() > 0)
   {
     meta[SIMPL::Settings::NumFilters] = m_CurrentIndex + 1;
   }
@@ -217,7 +217,6 @@ QJsonDocument JsonFilterParametersWriter::toDocument()
   return doc;
 }
 
-
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
@@ -225,7 +224,6 @@ QJsonObject& JsonFilterParametersWriter::getCurrentGroupObject()
 {
   return m_CurrentFilterIndex;
 }
-
 
 // -----------------------------------------------------------------------------
 //
@@ -235,7 +233,7 @@ int JsonFilterParametersWriter::openFilterGroup(AbstractFilter* filter, int inde
   m_CurrentIndex = index;
   QString numStr = generateIndexString(m_CurrentIndex);
 
-  if (m_Root.contains(numStr))
+  if(m_Root.contains(numStr))
   {
     m_CurrentFilterIndex = m_Root.value(numStr).toObject();
   }
@@ -246,7 +244,7 @@ int JsonFilterParametersWriter::openFilterGroup(AbstractFilter* filter, int inde
     {
       m_CurrentFilterIndex[SIMPL::Settings::FilterName] = filter->getNameOfClass();
       m_CurrentFilterIndex[SIMPL::Settings::HumanLabel] = filter->getHumanLabel();
-      //m_CurrentFilterIndex[SIMPL::Settings::FilterVersion] = filter->getFilterVersion();
+      // m_CurrentFilterIndex[SIMPL::Settings::FilterVersion] = filter->getFilterVersion();
     }
   }
 
@@ -275,11 +273,12 @@ QString JsonFilterParametersWriter::generateIndexString(int currentIndex)
   {
     int mag = 0;
     int max = m_MaxFilterIndex;
-    while(max > 0) {
+    while(max > 0)
+    {
       mag++;
       max = max / 10;
     }
-    numStr = ""; // Clear the string
+    numStr = "";             // Clear the string
     QTextStream ss(&numStr); // Create a QTextStream to set up the padding
     ss.setFieldWidth(mag);
     ss.setPadChar('0');
@@ -287,5 +286,3 @@ QString JsonFilterParametersWriter::generateIndexString(int currentIndex)
   }
   return numStr;
 }
-
-

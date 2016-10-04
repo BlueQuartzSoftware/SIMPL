@@ -33,33 +33,30 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-
 #include "ExtractComponentAsArray.h"
 
 #include "SIMPLib/Common/Constants.h"
-#include "SIMPLib/SIMPLibVersion.h"
 #include "SIMPLib/Common/TemplateHelpers.hpp"
 #include "SIMPLib/FilterParameters/AbstractFilterParametersReader.h"
-#include "SIMPLib/FilterParameters/IntFilterParameter.h"
 #include "SIMPLib/FilterParameters/DataArraySelectionFilterParameter.h"
-#include "SIMPLib/FilterParameters/StringFilterParameter.h"
+#include "SIMPLib/FilterParameters/IntFilterParameter.h"
 #include "SIMPLib/FilterParameters/SeparatorFilterParameter.h"
+#include "SIMPLib/FilterParameters/StringFilterParameter.h"
+#include "SIMPLib/SIMPLibVersion.h"
 
 // Include the MOC generated file for this class
 #include "moc_ExtractComponentAsArray.cpp"
 
-
-
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-ExtractComponentAsArray::ExtractComponentAsArray() :
-  AbstractFilter(),
-  m_SelectedArrayPath("", "", ""),
-  m_CompNumber(0),
-  m_NewArrayArrayName(""),
-  m_InArray(nullptr),
-  m_NewArray(nullptr)
+ExtractComponentAsArray::ExtractComponentAsArray()
+: AbstractFilter()
+, m_SelectedArrayPath("", "", "")
+, m_CompNumber(0)
+, m_NewArrayArrayName("")
+, m_InArray(nullptr)
+, m_NewArray(nullptr)
 {
   setupFilterParameters();
 }
@@ -96,9 +93,9 @@ void ExtractComponentAsArray::setupFilterParameters()
 void ExtractComponentAsArray::readFilterParameters(AbstractFilterParametersReader* reader, int index)
 {
   reader->openFilterGroup(this, index);
-  setNewArrayArrayName(reader->readString("NewArrayArrayName", getNewArrayArrayName() ) );
-  setCompNumber(reader->readValue("CompNumber", getCompNumber() ) );
-  setSelectedArrayPath( reader->readDataArrayPath( "SelectedArrayPath", getSelectedArrayPath() ) );
+  setNewArrayArrayName(reader->readString("NewArrayArrayName", getNewArrayArrayName()));
+  setCompNumber(reader->readValue("CompNumber", getCompNumber()));
+  setSelectedArrayPath(reader->readDataArrayPath("SelectedArrayPath", getSelectedArrayPath()));
   reader->closeFilterGroup();
 }
 
@@ -107,7 +104,6 @@ void ExtractComponentAsArray::readFilterParameters(AbstractFilterParametersReade
 // -----------------------------------------------------------------------------
 void ExtractComponentAsArray::initialize()
 {
-
 }
 
 // -----------------------------------------------------------------------------
@@ -119,18 +115,23 @@ void ExtractComponentAsArray::dataCheck()
 
   m_InArrayPtr = getDataContainerArray()->getPrereqIDataArrayFromPath<IDataArray, AbstractFilter>(this, getSelectedArrayPath());
 
-  if (m_NewArrayArrayName.isEmpty() == true)
+  if(m_NewArrayArrayName.isEmpty() == true)
   {
     setErrorCondition(-11003);
     notifyErrorMessage(getHumanLabel(), "New array name must be set.", getErrorCondition());
     return;
   }
 
-  if(getErrorCondition() < 0) { return; }
-
-  if (m_InArrayPtr.lock()->getNumberOfComponents() < 2)
+  if(getErrorCondition() < 0)
   {
-    QString ss = QObject::tr("Selected array '%1' must have more than 1 component. The number of components is %2").arg(getSelectedArrayPath().getDataArrayName()).arg(m_InArrayPtr.lock()->getNumberOfComponents());
+    return;
+  }
+
+  if(m_InArrayPtr.lock()->getNumberOfComponents() < 2)
+  {
+    QString ss = QObject::tr("Selected array '%1' must have more than 1 component. The number of components is %2")
+                     .arg(getSelectedArrayPath().getDataArrayName())
+                     .arg(m_InArrayPtr.lock()->getNumberOfComponents());
     setErrorCondition(-11002);
     notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
     return;
@@ -139,7 +140,10 @@ void ExtractComponentAsArray::dataCheck()
   if(m_CompNumber >= m_InArrayPtr.lock()->getNumberOfComponents())
   {
     setErrorCondition(-11003);
-    QString ss = QObject::tr("Component to extract (%1) is larger than the number of components (%2) for array selected: '%1'").arg(m_CompNumber).arg(m_InArrayPtr.lock()->getNumberOfComponents()).arg(getSelectedArrayPath().getDataArrayName());
+    QString ss = QObject::tr("Component to extract (%1) is larger than the number of components (%2) for array selected: '%1'")
+                     .arg(m_CompNumber)
+                     .arg(m_InArrayPtr.lock()->getNumberOfComponents())
+                     .arg(getSelectedArrayPath().getDataArrayName());
     notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
     return;
   }
@@ -165,20 +169,22 @@ void ExtractComponentAsArray::preflight()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-template<typename T>
-void extractComponent(IDataArray::Pointer inputData, IDataArray::Pointer newData, int compNumber)
+template <typename T> void extractComponent(IDataArray::Pointer inputData, IDataArray::Pointer newData, int compNumber)
 {
-  typename DataArray<T>::Pointer inputArrayPtr = std::dynamic_pointer_cast<DataArray<T> >(inputData);
-  typename DataArray<T>::Pointer newArrayPtr = std::dynamic_pointer_cast<DataArray<T> >(newData);
+  typename DataArray<T>::Pointer inputArrayPtr = std::dynamic_pointer_cast<DataArray<T>>(inputData);
+  typename DataArray<T>::Pointer newArrayPtr = std::dynamic_pointer_cast<DataArray<T>>(newData);
 
-  if (nullptr == inputArrayPtr || nullptr == newArrayPtr) { return; }
+  if(nullptr == inputArrayPtr || nullptr == newArrayPtr)
+  {
+    return;
+  }
 
   T* inputArray = inputArrayPtr->getPointer(0);
   T* newArray = newArrayPtr->getPointer(0);
   size_t numPoints = inputArrayPtr->getNumberOfTuples();
   size_t numComps = inputArrayPtr->getNumberOfComponents();
 
-  for (size_t i = 0; i < numPoints; i++)
+  for(size_t i = 0; i < numPoints; i++)
   {
     newArray[i] = inputArray[numComps * i + compNumber];
   }
@@ -191,7 +197,10 @@ void ExtractComponentAsArray::execute()
 {
   setErrorCondition(0);
   dataCheck();
-  if(getErrorCondition() < 0) { return; }
+  if(getErrorCondition() < 0)
+  {
+    return;
+  }
 
   EXECUTE_FUNCTION_TEMPLATE(this, extractComponent, m_InArrayPtr.lock(), m_InArrayPtr.lock(), m_NewArrayPtr.lock(), m_CompNumber)
 
@@ -215,7 +224,9 @@ AbstractFilter::Pointer ExtractComponentAsArray::newFilterInstance(bool copyFilt
 //
 // -----------------------------------------------------------------------------
 const QString ExtractComponentAsArray::getCompiledLibraryName()
-{ return Core::CoreBaseName; }
+{
+  return Core::CoreBaseName;
+}
 
 // -----------------------------------------------------------------------------
 //
@@ -232,26 +243,30 @@ const QString ExtractComponentAsArray::getFilterVersion()
 {
   QString version;
   QTextStream vStream(&version);
-  vStream <<  SIMPLib::Version::Major() << "." << SIMPLib::Version::Minor() << "." << SIMPLib::Version::Patch();
+  vStream << SIMPLib::Version::Major() << "." << SIMPLib::Version::Minor() << "." << SIMPLib::Version::Patch();
   return version;
 }
-
-
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
 const QString ExtractComponentAsArray::getGroupName()
-{ return SIMPL::FilterGroups::CoreFilters; }
+{
+  return SIMPL::FilterGroups::CoreFilters;
+}
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
 const QString ExtractComponentAsArray::getSubGroupName()
-{ return SIMPL::FilterSubGroups::MemoryManagementFilters; }
+{
+  return SIMPL::FilterSubGroups::MemoryManagementFilters;
+}
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
 const QString ExtractComponentAsArray::getHumanLabel()
-{ return "Extract Component as Attribute Array"; }
+{
+  return "Extract Component as Attribute Array";
+}

@@ -33,24 +33,20 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-
 #include "ThresholdExample.h"
 
 #include "SIMPLib/FilterParameters/ComparisonSelectionFilterParameter.h"
 
-
 // Include the MOC generated file for this class
 #include "moc_ThresholdExample.cpp"
-
-
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-ThresholdExample::ThresholdExample() :
-  AbstractFilter(),
-  m_DataContainerName(SIMPL::Defaults::DataContainerName),
-  m_CellAttributeMatrixName(SIMPL::Defaults::CellAttributeMatrixName)
+ThresholdExample::ThresholdExample()
+: AbstractFilter()
+, m_DataContainerName(SIMPL::Defaults::DataContainerName)
+, m_CellAttributeMatrixName(SIMPL::Defaults::CellAttributeMatrixName)
 {
   setupFilterParameters();
 }
@@ -145,7 +141,6 @@ void ThresholdExample::readFilterParameters(AbstractFilterParametersReader* read
 // -----------------------------------------------------------------------------
 void ThresholdExample::initialize()
 {
-
 }
 
 // -----------------------------------------------------------------------------
@@ -171,10 +166,7 @@ void ThresholdExample::dataCheck()
     notifyErrorMessage(getNameOfClass(), ss.str(), -1);
   }
   */
-
-
 }
-
 
 // -----------------------------------------------------------------------------
 //
@@ -230,7 +222,6 @@ const QString ThresholdExample::getCompiledLibraryName()
   return Test::TestBaseName;
 }
 
-
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
@@ -238,7 +229,6 @@ const QString ThresholdExample::getGroupName()
 {
   return SIMPL::FilterGroups::TestFilters;
 }
-
 
 // -----------------------------------------------------------------------------
 //
@@ -248,7 +238,6 @@ const QString ThresholdExample::getSubGroupName()
   return "Misc";
 }
 
-
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
@@ -256,4 +245,3 @@ const QString ThresholdExample::getHumanLabel()
 {
   return "Threshold Example";
 }
-

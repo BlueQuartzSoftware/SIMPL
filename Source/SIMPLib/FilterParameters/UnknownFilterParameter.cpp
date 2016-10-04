@@ -38,21 +38,22 @@
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-UnknownFilterParameter::UnknownFilterParameter() :
-FilterParameter()
-{}
+UnknownFilterParameter::UnknownFilterParameter()
+: FilterParameter()
+{
+}
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
 UnknownFilterParameter::~UnknownFilterParameter()
-{}
+{
+}
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-UnknownFilterParameter::Pointer UnknownFilterParameter::New(const QString& humanLabel, const QString& propertyName,
-  const QString& defaultValue, Category category, int groupIndex)
+UnknownFilterParameter::Pointer UnknownFilterParameter::New(const QString& humanLabel, const QString& propertyName, const QString& defaultValue, Category category, int groupIndex)
 {
   UnknownFilterParameter::Pointer ptr = UnknownFilterParameter::New();
   ptr->setHumanLabel(humanLabel);
@@ -70,4 +71,3 @@ QString UnknownFilterParameter::getWidgetType()
 {
   return QString("UnknownWidget");
 }
-

@@ -35,20 +35,17 @@
 
 #include "QtSHelpUrlGenerator.h"
 
-#include <QtCore/QDir>
 #include <QtCore/QCoreApplication>
+#include <QtCore/QDir>
 #include <QtGui/QDesktopServices>
-#include <QtWidgets/QMessageBox>
 #include <QtWidgets/QApplication>
-
-
+#include <QtWidgets/QMessageBox>
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
 QtSHelpUrlGenerator::QtSHelpUrlGenerator()
 {
-
 }
 
 // -----------------------------------------------------------------------------
@@ -56,7 +53,6 @@ QtSHelpUrlGenerator::QtSHelpUrlGenerator()
 // -----------------------------------------------------------------------------
 QtSHelpUrlGenerator::~QtSHelpUrlGenerator()
 {
-
 }
 
 // -----------------------------------------------------------------------------
@@ -69,11 +65,10 @@ QUrl QtSHelpUrlGenerator::generateHTMLUrl(QString htmlName)
   QDir helpDir = QDir(appPath);
   QString s("file://");
 
-
 #if defined(Q_OS_WIN)
   s = s + "/"; // Need the third slash on windows because file paths start with a drive letter
 #elif defined(Q_OS_MAC)
-  if (helpDir.dirName() == "MacOS")
+  if(helpDir.dirName() == "MacOS")
   {
     helpDir.cdUp();
     helpDir.cdUp();
@@ -81,12 +76,10 @@ QUrl QtSHelpUrlGenerator::generateHTMLUrl(QString htmlName)
   }
 #endif
 
-
-
-#if defined(Q_OS_WIN) || defined (Q_OS_MAC) || defined (Q_OS_LINUX)
-  QString helpFilePath=QString("%1/Help/%2/%3.html").arg(helpDir.absolutePath()).arg(QCoreApplication::instance()->applicationName()).arg(htmlName);
+#if defined(Q_OS_WIN) || defined(Q_OS_MAC) || defined(Q_OS_LINUX)
+  QString helpFilePath = QString("%1/Help/%2/%3.html").arg(helpDir.absolutePath()).arg(QCoreApplication::instance()->applicationName()).arg(htmlName);
   QFileInfo fi(helpFilePath);
-  if (fi.exists() == false)
+  if(fi.exists() == false)
   {
     // The help file does not exist at the default location because we are probably running from Visual Studio or Xcode
     // Try up one more directory
@@ -106,9 +99,8 @@ void QtSHelpUrlGenerator::openHTMLUrl(QUrl URL, QWidget* parent)
   bool didOpen = QDesktopServices::openUrl(URL);
   if(false == didOpen)
   {
-    QMessageBox::critical(parent, "Error Opening Help File",
-                          QString("%1 could not open the help file path %2").arg(QCoreApplication::instance()->applicationName()).arg(URL.path()),
-                          QMessageBox::Ok, QMessageBox::Ok);
+    QMessageBox::critical(parent, "Error Opening Help File", QString("%1 could not open the help file path %2").arg(QCoreApplication::instance()->applicationName()).arg(URL.path()), QMessageBox::Ok,
+                          QMessageBox::Ok);
   }
 }
 
@@ -120,4 +112,3 @@ void QtSHelpUrlGenerator::generateAndOpenHTMLUrl(QString helpName, QWidget* pare
   QUrl URL = generateHTMLUrl(helpName);
   openHTMLUrl(URL, parent);
 }
-

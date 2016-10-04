@@ -39,21 +39,24 @@
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-AttributeMatrixSelectionFilterParameter::AttributeMatrixSelectionFilterParameter() :
-  FilterParameter()
-{}
+AttributeMatrixSelectionFilterParameter::AttributeMatrixSelectionFilterParameter()
+  : FilterParameter()
+{
+}
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
 AttributeMatrixSelectionFilterParameter::~AttributeMatrixSelectionFilterParameter()
-{}
+{
+}
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-AttributeMatrixSelectionFilterParameter::Pointer AttributeMatrixSelectionFilterParameter::New(const QString& humanLabel, const QString& propertyName,
-    const DataArrayPath& defaultValue, Category category, SetterCallbackType setterCallback, GetterCallbackType getterCallback, const RequirementType req, int groupIndex)
+AttributeMatrixSelectionFilterParameter::Pointer AttributeMatrixSelectionFilterParameter::New(const QString& humanLabel, const QString& propertyName, const DataArrayPath& defaultValue,
+                                                                                              Category category, SetterCallbackType setterCallback, GetterCallbackType getterCallback,
+                                                                                              const RequirementType req, int groupIndex)
 {
 
   AttributeMatrixSelectionFilterParameter::Pointer ptr = AttributeMatrixSelectionFilterParameter::New();
@@ -116,13 +119,13 @@ AttributeMatrixSelectionFilterParameter::RequirementType AttributeMatrixSelectio
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-AttributeMatrixSelectionFilterParameter::RequirementType AttributeMatrixSelectionFilterParameter::CreateRequirement(uint32_t attributeMatrixType,
-    uint32_t geometryType)
+AttributeMatrixSelectionFilterParameter::RequirementType AttributeMatrixSelectionFilterParameter::CreateRequirement(uint32_t attributeMatrixType, uint32_t geometryType)
 {
   AttributeMatrixSelectionFilterParameter::RequirementType req;
   if(SIMPL::Defaults::AnyAttributeMatrix != attributeMatrixType)
   {
-    req.amTypes = QVector<unsigned int>(1, attributeMatrixType);;
+    req.amTypes = QVector<unsigned int>(1, attributeMatrixType);
+    ;
   }
   if(SIMPL::Defaults::AnyGeometry != geometryType)
   {
@@ -134,10 +137,10 @@ AttributeMatrixSelectionFilterParameter::RequirementType AttributeMatrixSelectio
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void AttributeMatrixSelectionFilterParameter::readJson(const QJsonObject &json)
+void AttributeMatrixSelectionFilterParameter::readJson(const QJsonObject& json)
 {
   QJsonValue jsonValue = json[getPropertyName()];
-  if(!jsonValue.isUndefined() )
+  if(!jsonValue.isUndefined() && m_SetterCallback)
   {
     QJsonObject obj = jsonValue.toObject();
     DataArrayPath dap;
@@ -149,10 +152,13 @@ void AttributeMatrixSelectionFilterParameter::readJson(const QJsonObject &json)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void AttributeMatrixSelectionFilterParameter::writeJson(QJsonObject &json)
+void AttributeMatrixSelectionFilterParameter::writeJson(QJsonObject& json)
 {
-  DataArrayPath dap = m_GetterCallback();
-  QJsonObject obj;
-  dap.writeJson(obj);
-  json[getPropertyName()] = obj;
+  if (m_GetterCallback)
+  {
+    DataArrayPath dap = m_GetterCallback();
+    QJsonObject obj;
+    dap.writeJson(obj);
+    json[getPropertyName()] = obj;
+  }
 }

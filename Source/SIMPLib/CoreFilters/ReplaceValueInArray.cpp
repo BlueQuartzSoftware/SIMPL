@@ -36,26 +36,24 @@
 #include "ReplaceValueInArray.h"
 
 #include "SIMPLib/Common/Constants.h"
-#include "SIMPLib/SIMPLibVersion.h"
 #include "SIMPLib/Common/TemplateHelpers.hpp"
 #include "SIMPLib/FilterParameters/AbstractFilterParametersReader.h"
-#include "SIMPLib/FilterParameters/DoubleFilterParameter.h"
 #include "SIMPLib/FilterParameters/DataArraySelectionFilterParameter.h"
+#include "SIMPLib/FilterParameters/DoubleFilterParameter.h"
+#include "SIMPLib/SIMPLibVersion.h"
 
 // Include the MOC generated file for this class
 #include "moc_ReplaceValueInArray.cpp"
 
-
-
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-ReplaceValueInArray::ReplaceValueInArray() :
-  AbstractFilter(),
-  m_SelectedArray("", "", ""),
-  m_RemoveValue(0.0),
-  m_ReplaceValue(0.0),
-  m_Array(nullptr)
+ReplaceValueInArray::ReplaceValueInArray()
+: AbstractFilter()
+, m_SelectedArray("", "", "")
+, m_RemoveValue(0.0)
+, m_ReplaceValue(0.0)
+, m_Array(nullptr)
 {
   setupFilterParameters();
 }
@@ -98,18 +96,17 @@ void ReplaceValueInArray::readFilterParameters(AbstractFilterParametersReader* r
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-template<typename T>
-void checkValuesInt(AbstractFilter* filter, double removeValue, double replaceValue, QString strType)
+template <typename T> void checkValuesInt(AbstractFilter* filter, double removeValue, double replaceValue, QString strType)
 {
   QString ss;
 
-  if (!((removeValue >= std::numeric_limits<T>::min()) && (removeValue <= std::numeric_limits<T>::max())))
+  if(!((removeValue >= std::numeric_limits<T>::min()) && (removeValue <= std::numeric_limits<T>::max())))
   {
     ss = QObject::tr("The %1 remove value was invalid. The valid range is %2 to %3").arg(strType).arg(std::numeric_limits<T>::min()).arg(std::numeric_limits<T>::max());
     filter->setErrorCondition(-100);
     filter->notifyErrorMessage(filter->getHumanLabel(), ss, filter->getErrorCondition());
   }
-  if (!((replaceValue >= std::numeric_limits<T>::min()) && (replaceValue <= std::numeric_limits<T>::max())))
+  if(!((replaceValue >= std::numeric_limits<T>::min()) && (replaceValue <= std::numeric_limits<T>::max())))
   {
     ss = QObject::tr("The %1 replace value was invalid. The valid range is %2 to %3").arg(strType).arg(std::numeric_limits<T>::min()).arg(std::numeric_limits<T>::max());
     filter->setErrorCondition(-100);
@@ -120,20 +117,19 @@ void checkValuesInt(AbstractFilter* filter, double removeValue, double replaceVa
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-template<typename T>
-void checkValuesFloatDouble(AbstractFilter* filter, double removeValue, double replaceValue, QString strType)
+template <typename T> void checkValuesFloatDouble(AbstractFilter* filter, double removeValue, double replaceValue, QString strType)
 {
   QString ss;
 
-  if (!(((removeValue >= static_cast<T>(-1) * std::numeric_limits<T>::max()) && (removeValue <= static_cast<T>(-1) * std::numeric_limits<T>::min())) ||
-        (removeValue == 0) || ((removeValue >= std::numeric_limits<T>::min()) && (removeValue <= std::numeric_limits<T>::max()))))
+  if(!(((removeValue >= static_cast<T>(-1) * std::numeric_limits<T>::max()) && (removeValue <= static_cast<T>(-1) * std::numeric_limits<T>::min())) || (removeValue == 0) ||
+       ((removeValue >= std::numeric_limits<T>::min()) && (removeValue <= std::numeric_limits<T>::max()))))
   {
     ss = QObject::tr("The %1 remove value was invalid. The valid ranges are -%3 to -%2, 0, %2 to %3").arg(strType).arg(std::numeric_limits<T>::min()).arg(std::numeric_limits<T>::max());
     filter->setErrorCondition(-101);
     filter->notifyErrorMessage(filter->getHumanLabel(), ss, filter->getErrorCondition());
   }
-  if (!(((replaceValue >= static_cast<T>(-1) * std::numeric_limits<T>::max()) && (replaceValue <= static_cast<T>(-1) * std::numeric_limits<T>::min())) ||
-        (replaceValue == 0) || ((replaceValue >= std::numeric_limits<T>::min()) && (replaceValue <= std::numeric_limits<T>::max()))))
+  if(!(((replaceValue >= static_cast<T>(-1) * std::numeric_limits<T>::max()) && (replaceValue <= static_cast<T>(-1) * std::numeric_limits<T>::min())) || (replaceValue == 0) ||
+       ((replaceValue >= std::numeric_limits<T>::min()) && (replaceValue <= std::numeric_limits<T>::max()))))
   {
     ss = QObject::tr("The %1 replace value was invalid. The valid ranges are -%3 to -%2, 0, %2 to %3").arg(strType).arg(std::numeric_limits<T>::min()).arg(std::numeric_limits<T>::max());
     filter->setErrorCondition(-101);
@@ -145,10 +141,9 @@ void checkValuesFloatDouble(AbstractFilter* filter, double removeValue, double r
 //
 // -----------------------------------------------------------------------------
 
-template<typename T>
-void replaceValue(AbstractFilter* filter, IDataArray::Pointer inDataPtr, double removeValue, double replaceValue)
+template <typename T> void replaceValue(AbstractFilter* filter, IDataArray::Pointer inDataPtr, double removeValue, double replaceValue)
 {
-  typename DataArray<T>::Pointer inputArrayPtr = std::dynamic_pointer_cast<DataArray<T> >(inDataPtr);
+  typename DataArray<T>::Pointer inputArrayPtr = std::dynamic_pointer_cast<DataArray<T>>(inDataPtr);
 
   T removeVal = static_cast<T>(removeValue);
   T replaceVal = static_cast<T>(replaceValue);
@@ -156,9 +151,12 @@ void replaceValue(AbstractFilter* filter, IDataArray::Pointer inDataPtr, double 
   T* inData = inputArrayPtr->getPointer(0);
   size_t numTuples = inputArrayPtr->getNumberOfTuples();
 
-  for (size_t iter = 0; iter < numTuples; iter++)
+  for(size_t iter = 0; iter < numTuples; iter++)
   {
-    if (inData[iter] == removeVal) { inData[iter] = replaceVal; }
+    if(inData[iter] == removeVal)
+    {
+      inData[iter] = replaceVal;
+    }
   }
 }
 
@@ -167,7 +165,6 @@ void replaceValue(AbstractFilter* filter, IDataArray::Pointer inDataPtr, double 
 // -----------------------------------------------------------------------------
 void ReplaceValueInArray::initialize()
 {
-
 }
 
 // -----------------------------------------------------------------------------
@@ -178,34 +175,69 @@ void ReplaceValueInArray::dataCheck()
   setErrorCondition(0);
 
   m_ArrayPtr = getDataContainerArray()->getPrereqIDataArrayFromPath<IDataArray, AbstractFilter>(this, getSelectedArray());
-  if (getErrorCondition() < 0) { return; }
-
-  if (m_ArrayPtr.lock()->getNumberOfComponents() > 1)
+  if(getErrorCondition() < 0)
   {
-    QString ss = QObject::tr("Selected array '%1' must be a scalar array (1 component). The number of components is %2").arg(getSelectedArray().getDataArrayName()).arg(m_ArrayPtr.lock()->getNumberOfComponents());
+    return;
+  }
+
+  if(m_ArrayPtr.lock()->getNumberOfComponents() > 1)
+  {
+    QString ss = QObject::tr("Selected array '%1' must be a scalar array (1 component). The number of components is %2")
+                     .arg(getSelectedArray().getDataArrayName())
+                     .arg(m_ArrayPtr.lock()->getNumberOfComponents());
     setErrorCondition(-11002);
     notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
     return;
   }
 
   QString dType = m_ArrayPtr.lock()->getTypeAsString();
-  if (dType.compare(SIMPL::TypeNames::Int8) == 0) { checkValuesInt<int8_t>(this, m_RemoveValue, m_ReplaceValue, SIMPL::TypeNames::Int8); }
-  else if (dType.compare(SIMPL::TypeNames::UInt8) == 0) { checkValuesInt<uint8_t>(this, m_RemoveValue, m_ReplaceValue, SIMPL::TypeNames::UInt8); }
-  else if (dType.compare(SIMPL::TypeNames::Int16) == 0) { checkValuesInt<int16_t>(this, m_RemoveValue, m_ReplaceValue, SIMPL::TypeNames::Int16); }
-  else if (dType.compare(SIMPL::TypeNames::UInt16) == 0) { checkValuesInt<uint16_t>(this, m_RemoveValue, m_ReplaceValue, SIMPL::TypeNames::UInt16); }
-  else if (dType.compare(SIMPL::TypeNames::Int32) == 0) { checkValuesInt<int32_t>(this, m_RemoveValue, m_ReplaceValue, SIMPL::TypeNames::Int32); }
-  else if (dType.compare(SIMPL::TypeNames::UInt32) == 0) { checkValuesInt<uint32_t>(this, m_RemoveValue, m_ReplaceValue, SIMPL::TypeNames::UInt32); }
-  else if (dType.compare(SIMPL::TypeNames::Int64) == 0) { checkValuesInt<int64_t>(this, m_RemoveValue, m_ReplaceValue, SIMPL::TypeNames::Int64); }
-  else if (dType.compare(SIMPL::TypeNames::UInt64) == 0) { checkValuesInt<uint64_t>(this, m_RemoveValue, m_ReplaceValue, SIMPL::TypeNames::UInt64); }
-  else if (dType.compare(SIMPL::TypeNames::Float) == 0) { checkValuesFloatDouble<float>(this, m_RemoveValue, m_ReplaceValue, SIMPL::TypeNames::Float); }
-  else if (dType.compare(SIMPL::TypeNames::Double) == 0) { checkValuesFloatDouble<double>(this, m_RemoveValue, m_ReplaceValue, SIMPL::TypeNames::Double); }
-  else if (dType.compare(SIMPL::TypeNames::Bool) == 0)
+  if(dType.compare(SIMPL::TypeNames::Int8) == 0)
   {
-    if (m_RemoveValue != 0.0)
+    checkValuesInt<int8_t>(this, m_RemoveValue, m_ReplaceValue, SIMPL::TypeNames::Int8);
+  }
+  else if(dType.compare(SIMPL::TypeNames::UInt8) == 0)
+  {
+    checkValuesInt<uint8_t>(this, m_RemoveValue, m_ReplaceValue, SIMPL::TypeNames::UInt8);
+  }
+  else if(dType.compare(SIMPL::TypeNames::Int16) == 0)
+  {
+    checkValuesInt<int16_t>(this, m_RemoveValue, m_ReplaceValue, SIMPL::TypeNames::Int16);
+  }
+  else if(dType.compare(SIMPL::TypeNames::UInt16) == 0)
+  {
+    checkValuesInt<uint16_t>(this, m_RemoveValue, m_ReplaceValue, SIMPL::TypeNames::UInt16);
+  }
+  else if(dType.compare(SIMPL::TypeNames::Int32) == 0)
+  {
+    checkValuesInt<int32_t>(this, m_RemoveValue, m_ReplaceValue, SIMPL::TypeNames::Int32);
+  }
+  else if(dType.compare(SIMPL::TypeNames::UInt32) == 0)
+  {
+    checkValuesInt<uint32_t>(this, m_RemoveValue, m_ReplaceValue, SIMPL::TypeNames::UInt32);
+  }
+  else if(dType.compare(SIMPL::TypeNames::Int64) == 0)
+  {
+    checkValuesInt<int64_t>(this, m_RemoveValue, m_ReplaceValue, SIMPL::TypeNames::Int64);
+  }
+  else if(dType.compare(SIMPL::TypeNames::UInt64) == 0)
+  {
+    checkValuesInt<uint64_t>(this, m_RemoveValue, m_ReplaceValue, SIMPL::TypeNames::UInt64);
+  }
+  else if(dType.compare(SIMPL::TypeNames::Float) == 0)
+  {
+    checkValuesFloatDouble<float>(this, m_RemoveValue, m_ReplaceValue, SIMPL::TypeNames::Float);
+  }
+  else if(dType.compare(SIMPL::TypeNames::Double) == 0)
+  {
+    checkValuesFloatDouble<double>(this, m_RemoveValue, m_ReplaceValue, SIMPL::TypeNames::Double);
+  }
+  else if(dType.compare(SIMPL::TypeNames::Bool) == 0)
+  {
+    if(m_RemoveValue != 0.0)
     {
       m_RemoveValue = 1.0; // anything that is not a zero is a one
     }
-    if (m_ReplaceValue != 0.0)
+    if(m_ReplaceValue != 0.0)
     {
       m_ReplaceValue = 1.0; // anything that is not a zero is a one
     }
@@ -239,7 +271,9 @@ void ReplaceValueInArray::execute()
   setErrorCondition(0);
   dataCheck();
   if(getErrorCondition() < 0)
-  { return; }
+  {
+    return;
+  }
 
   EXECUTE_FUNCTION_TEMPLATE(this, replaceValue, m_ArrayPtr.lock(), this, m_ArrayPtr.lock(), m_RemoveValue, m_ReplaceValue)
 
@@ -264,7 +298,9 @@ AbstractFilter::Pointer ReplaceValueInArray::newFilterInstance(bool copyFilterPa
 //
 // -----------------------------------------------------------------------------
 const QString ReplaceValueInArray::getCompiledLibraryName()
-{ return Core::CoreBaseName; }
+{
+  return Core::CoreBaseName;
+}
 
 // -----------------------------------------------------------------------------
 //
@@ -281,26 +317,30 @@ const QString ReplaceValueInArray::getFilterVersion()
 {
   QString version;
   QTextStream vStream(&version);
-  vStream <<  SIMPLib::Version::Major() << "." << SIMPLib::Version::Minor() << "." << SIMPLib::Version::Patch();
+  vStream << SIMPLib::Version::Major() << "." << SIMPLib::Version::Minor() << "." << SIMPLib::Version::Patch();
   return version;
 }
-
-
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
 const QString ReplaceValueInArray::getGroupName()
-{ return SIMPL::FilterGroups::CoreFilters; }
+{
+  return SIMPL::FilterGroups::CoreFilters;
+}
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
 const QString ReplaceValueInArray::getSubGroupName()
-{ return SIMPL::FilterSubGroups::MemoryManagementFilters; }
+{
+  return SIMPL::FilterSubGroups::MemoryManagementFilters;
+}
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
 const QString ReplaceValueInArray::getHumanLabel()
-{ return "Replace Value in Array"; }
+{
+  return "Replace Value in Array";
+}

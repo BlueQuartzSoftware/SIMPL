@@ -44,9 +44,8 @@
 #include "SIMPLib/Common/ModifiedLambertProjection.h"
 #include "SIMPLib/Common/ModifiedLambertProjectionArray.h"
 
-#include "UnitTestSupport.hpp"
 #include "TestFileLocations.h"
-
+#include "UnitTestSupport.hpp"
 
 // -----------------------------------------------------------------------------
 //
@@ -66,7 +65,7 @@ void TestLambertWrite()
   FloatArrayType::Pointer xyzCoords = FloatArrayType::CreateArray(0, "XYZ Coords");
   int lambertDim = 22;
   float sphereRadius = 1.0;
-  size_t gbcdDims[3] = { 40, 20, 40};
+  size_t gbcdDims[3] = {40, 20, 40};
   // Allocate a typical GBCD Data Array
   QVector<ModifiedLambertProjection::Pointer> lamberts(gbcdDims[0] * gbcdDims[1] * gbcdDims[2]);
   qint32 count = lamberts.size();
@@ -80,7 +79,6 @@ void TestLambertWrite()
   // Create something to hold all the GBCD Data
   ModifiedLambertProjectionArray::Pointer gbcdData = ModifiedLambertProjectionArray::New();
   gbcdData->setModifiedLambertProjectionArray(lamberts);
-
 
   // Now open an HDF5 File for writing
   hid_t fid = QH5Utilities::createFile(UnitTest::LambertRWTest::TestFile);
@@ -97,7 +95,6 @@ void TestLambertWrite()
 // -----------------------------------------------------------------------------
 void TestLambertRead()
 {
-
 }
 
 // -----------------------------------------------------------------------------
@@ -109,22 +106,16 @@ int main(int argc, char** argv)
   int err = EXIT_SUCCESS;
 
 #if !REMOVE_TEST_FILES
-  DREAM3D_REGISTER_TEST( RemoveTestFiles() )
+  DREAM3D_REGISTER_TEST(RemoveTestFiles())
 #endif
 
-  DREAM3D_REGISTER_TEST( TestLambertWrite() )
-  DREAM3D_REGISTER_TEST( TestLambertRead() )
+  DREAM3D_REGISTER_TEST(TestLambertWrite())
+  DREAM3D_REGISTER_TEST(TestLambertRead())
 
 #if REMOVE_TEST_FILES
-  DREAM3D_REGISTER_TEST( RemoveTestFiles() )
+  DREAM3D_REGISTER_TEST(RemoveTestFiles())
 #endif
 
   PRINT_TEST_SUMMARY();
   return err;
 }
-
-
-
-
-
-

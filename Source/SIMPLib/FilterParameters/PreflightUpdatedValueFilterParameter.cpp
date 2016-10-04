@@ -46,13 +46,14 @@ PreflightUpdatedValueFilterParameter::PreflightUpdatedValueFilterParameter()
 //
 // -----------------------------------------------------------------------------
 PreflightUpdatedValueFilterParameter::~PreflightUpdatedValueFilterParameter()
-{}
+{
+}
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-PreflightUpdatedValueFilterParameter::Pointer PreflightUpdatedValueFilterParameter::New(const QString& humanLabel, const QString& propertyName, const QString& defaultValue,
-  Category category, GetterCallbackType getterCallback, int groupIndex)
+PreflightUpdatedValueFilterParameter::Pointer PreflightUpdatedValueFilterParameter::New(const QString& humanLabel, const QString& propertyName, const QString& defaultValue, Category category,
+                                                                                        GetterCallbackType getterCallback, int groupIndex)
 {
   PreflightUpdatedValueFilterParameter::Pointer ptr = PreflightUpdatedValueFilterParameter::New();
   ptr->setHumanLabel(humanLabel);
@@ -60,7 +61,6 @@ PreflightUpdatedValueFilterParameter::Pointer PreflightUpdatedValueFilterParamet
   ptr->setDefaultValue(defaultValue);
   ptr->setCategory(category);
   ptr->setGroupIndex(groupIndex);
- // ptr->setSetterCallback(setterCallback);
   ptr->setGetterCallback(getterCallback);
 
   return ptr;
@@ -77,8 +77,10 @@ QString PreflightUpdatedValueFilterParameter::getWidgetType()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void PreflightUpdatedValueFilterParameter::writeJson(QJsonObject &json)
+void PreflightUpdatedValueFilterParameter::writeJson(QJsonObject& json)
 {
-  json[getPropertyName()] = m_GetterCallback();
+  if(m_GetterCallback)
+  {
+    json[getPropertyName()] = m_GetterCallback();
+  }
 }
-

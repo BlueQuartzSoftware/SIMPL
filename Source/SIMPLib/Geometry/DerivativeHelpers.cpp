@@ -33,7 +33,6 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-
 /* ============================================================================
  * DerivativeHelpers re-implements the exterior derivative calculations
  * from the following vtk modules:
@@ -54,21 +53,21 @@
 #include "SIMPLib/Math/MatrixMath.h"
 
 #include "EdgeGeom.h"
-#include "TriangleGeom.h"
 #include "QuadGeom.h"
 #include "TetrahedralGeom.h"
+#include "TriangleGeom.h"
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
 void DerivativeHelpers::EdgeDeriv::operator()(EdgeGeom* edges, int64_t edgeId, double values[2], double derivs[3])
 {
-  float vert0_f[3] = { 0.0f, 0.0f, 0.0f };
-  float vert1_f[3] = { 0.0f, 0.0f, 0.0f };
-  double vert0[3] = { 0.0, 0.0, 0.0 };
-  double vert1[3] = { 0.0, 0.0, 0.0 };
-  double delta[3] = { 0.0, 0.0, 0.0 };
-  int64_t verts[2] = { 0, 0 };
+  float vert0_f[3] = {0.0f, 0.0f, 0.0f};
+  float vert1_f[3] = {0.0f, 0.0f, 0.0f};
+  double vert0[3] = {0.0, 0.0, 0.0};
+  double vert1[3] = {0.0, 0.0, 0.0};
+  double delta[3] = {0.0, 0.0, 0.0};
+  int64_t verts[2] = {0, 0};
 
   edges->getVertsAtEdge(edgeId, verts);
   edges->getCoords(verts[0], vert0_f);
@@ -77,14 +76,14 @@ void DerivativeHelpers::EdgeDeriv::operator()(EdgeGeom* edges, int64_t edgeId, d
   std::copy(vert0_f, vert0_f + 3, vert0);
   std::copy(vert1_f, vert1_f + 3, vert1);
 
-  for (size_t i = 0; i < 3; i++)
+  for(size_t i = 0; i < 3; i++)
   {
     delta[i] = vert1[i] - vert0[i];
   }
 
-  for (size_t i = 0; i < 3; i++)
+  for(size_t i = 0; i < 3; i++)
   {
-    if (delta[i] != 0.0 )
+    if(delta[i] != 0.0)
     {
       derivs[i] = (values[1] - values[0]) / delta[i];
     }
@@ -100,26 +99,26 @@ void DerivativeHelpers::EdgeDeriv::operator()(EdgeGeom* edges, int64_t edgeId, d
 // -----------------------------------------------------------------------------
 void DerivativeHelpers::TriangleDeriv::operator()(TriangleGeom* triangles, int64_t triId, double values[3], double derivs[3])
 {
-  float vert0_f[3] = { 0.0f, 0.0f, 0.0f };
-  float vert1_f[3] = { 0.0f, 0.0f, 0.0f };
-  float vert2_f[3] = { 0.0f, 0.0f, 0.0f };
-  double vert0[3] = { 0.0, 0.0, 0.0 };
-  double vert1[3] = { 0.0, 0.0, 0.0 };
-  double vert2[3] = { 0.0, 0.0, 0.0 };
-  double vert0_2d[2] = { 0.0, 0.0 };
-  double vert1_2d[2] = { 0.0, 0.0 };
-  double vert2_2d[2] = { 0.0, 0.0 };
-  double vector20[3] = { 0.0, 0.0, 0.0 };
-  double basis1[3] = { 0.0, 0.0, 0.0 };
-  double basis2[3] = { 0.0, 0.0, 0.0 };
+  float vert0_f[3] = {0.0f, 0.0f, 0.0f};
+  float vert1_f[3] = {0.0f, 0.0f, 0.0f};
+  float vert2_f[3] = {0.0f, 0.0f, 0.0f};
+  double vert0[3] = {0.0, 0.0, 0.0};
+  double vert1[3] = {0.0, 0.0, 0.0};
+  double vert2[3] = {0.0, 0.0, 0.0};
+  double vert0_2d[2] = {0.0, 0.0};
+  double vert1_2d[2] = {0.0, 0.0};
+  double vert2_2d[2] = {0.0, 0.0};
+  double vector20[3] = {0.0, 0.0, 0.0};
+  double basis1[3] = {0.0, 0.0, 0.0};
+  double basis2[3] = {0.0, 0.0, 0.0};
   double mag_basis1 = 0.0;
   double mag_basis2 = 0.0;
-  double normal[3] = { 0.0, 0.0, 0.0 };
-  double shapeFunctions[6] = { 0.0, 0.0, 0.0, 0.0, 0.0, 0.0 };
-  double sum[2] = { 0.0, 0.0 };
+  double normal[3] = {0.0, 0.0, 0.0};
+  double shapeFunctions[6] = {0.0, 0.0, 0.0, 0.0, 0.0, 0.0};
+  double sum[2] = {0.0, 0.0};
   double dBydx = 0.0;
   double dBydy = 0.0;
-  int64_t verts[3] = { 0, 0, 0 };
+  int64_t verts[3] = {0, 0, 0};
 
   triangles->getVertsAtTri(triId, verts);
   triangles->getCoords(verts[0], vert0_f);
@@ -133,7 +132,7 @@ void DerivativeHelpers::TriangleDeriv::operator()(TriangleGeom* triangles, int64
   GeometryMath::FindPlaneNormalVector(vert0, vert1, vert2, normal);
   MatrixMath::Normalize3x1(normal);
 
-  for (size_t i = 0; i < 3; i++)
+  for(size_t i = 0; i < 3; i++)
   {
     basis1[i] = vert1[i] - vert0[i];
     vector20[i] = vert2[i] - vert0[i];
@@ -144,9 +143,9 @@ void DerivativeHelpers::TriangleDeriv::operator()(TriangleGeom* triangles, int64
   mag_basis1 = MatrixMath::Magnitude3x1(basis1);
   mag_basis2 = MatrixMath::Magnitude3x1(basis2);
 
-  if ( mag_basis1 <= 0.0 || mag_basis2 <= 0.0 )
+  if(mag_basis1 <= 0.0 || mag_basis2 <= 0.0)
   {
-    for (size_t i = 0; i < 3; i++ )
+    for(size_t i = 0; i < 3; i++)
     {
       derivs[i] = 0.0;
     }
@@ -170,7 +169,7 @@ void DerivativeHelpers::TriangleDeriv::operator()(TriangleGeom* triangles, int64
 
   // Compute Jacobian and inverse Jacobian using Eigen
   // Jacobian is constant for a triangle, so inverse must exist
-  double jPtr[4] = { 0.0, 0.0, 0.0, 0.0 };
+  double jPtr[4] = {0.0, 0.0, 0.0, 0.0};
 
   jPtr[0] = vert1_2d[0] - vert0_2d[0];
   jPtr[1] = vert1_2d[1] - vert0_2d[1];
@@ -184,7 +183,7 @@ void DerivativeHelpers::TriangleDeriv::operator()(TriangleGeom* triangles, int64
 
   // Loop over derivative values. For each set of values, compute
   // derivatives in local 2D system and then transform into original 3D system
-  for (size_t i = 0; i < 3; i++)
+  for(size_t i = 0; i < 3; i++)
   {
     sum[0] += shapeFunctions[i] * values[i];
     sum[1] += shapeFunctions[3 + i] * values[i];
@@ -203,31 +202,31 @@ void DerivativeHelpers::TriangleDeriv::operator()(TriangleGeom* triangles, int64
 // -----------------------------------------------------------------------------
 void DerivativeHelpers::QuadDeriv::operator()(QuadGeom* quads, int64_t quadId, double values[4], double derivs[3])
 {
-  float vert0_f[3] = { 0.0f, 0.0f, 0.0f };
-  float vert1_f[3] = { 0.0f, 0.0f, 0.0f };
-  float vert2_f[3] = { 0.0f, 0.0f, 0.0f };
-  float vert3_f[3] = { 0.0f, 0.0f, 0.0f };
-  double vert0[3] = { 0.0, 0.0, 0.0 };
-  double vert1[3] = { 0.0, 0.0, 0.0 };
-  double vert2[3] = { 0.0, 0.0, 0.0 };
-  double vert3[3] = { 0.0, 0.0, 0.0 };
-  double vert0_2d[2] = { 0.0, 0.0 };
-  double vert1_2d[2] = { 0.0, 0.0 };
-  double vert2_2d[2] = { 0.0, 0.0 };
-  double vert3_2d[2] = { 0.0, 0.0 };
-  double vector20[3] = { 0.0, 0.0, 0.0 };
-  double vector30[3] = { 0.0, 0.0, 0.0 };
-  double basis1[3] = { 0.0, 0.0, 0.0 };
-  double basis2[3] = { 0.0, 0.0, 0.0 };
+  float vert0_f[3] = {0.0f, 0.0f, 0.0f};
+  float vert1_f[3] = {0.0f, 0.0f, 0.0f};
+  float vert2_f[3] = {0.0f, 0.0f, 0.0f};
+  float vert3_f[3] = {0.0f, 0.0f, 0.0f};
+  double vert0[3] = {0.0, 0.0, 0.0};
+  double vert1[3] = {0.0, 0.0, 0.0};
+  double vert2[3] = {0.0, 0.0, 0.0};
+  double vert3[3] = {0.0, 0.0, 0.0};
+  double vert0_2d[2] = {0.0, 0.0};
+  double vert1_2d[2] = {0.0, 0.0};
+  double vert2_2d[2] = {0.0, 0.0};
+  double vert3_2d[2] = {0.0, 0.0};
+  double vector20[3] = {0.0, 0.0, 0.0};
+  double vector30[3] = {0.0, 0.0, 0.0};
+  double basis1[3] = {0.0, 0.0, 0.0};
+  double basis2[3] = {0.0, 0.0, 0.0};
   double mag_basis1 = 0.0;
   double mag_basis2 = 0.0;
-  double normal[3] = { 0.0, 0.0, 0.0 };
-  double shapeFunctions[8] = { 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0 };
-  double pCoords[3] { 0.0, 0.0, 0.0 };
-  double sum[2] = { 0.0, 0.0 };
+  double normal[3] = {0.0, 0.0, 0.0};
+  double shapeFunctions[8] = {0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0};
+  double pCoords[3]{0.0, 0.0, 0.0};
+  double sum[2] = {0.0, 0.0};
   double dBydx = 0.0;
   double dBydy = 0.0;
-  int64_t verts[4] = { 0, 0, 0, 0 };
+  int64_t verts[4] = {0, 0, 0, 0};
 
   quads->getVertsAtQuad(quadId, verts);
   quads->getCoords(verts[0], vert0_f);
@@ -244,13 +243,13 @@ void DerivativeHelpers::QuadDeriv::operator()(QuadGeom* quads, int64_t quadId, d
   MatrixMath::Normalize3x1(normal);
 
   // If vertices 0, 1, & 2 are co-linear, use vertex 3 to find the normal
-  if (normal[0] == 0.0 && normal[1] == 0.0 && normal[2] == 0.0)
+  if(normal[0] == 0.0 && normal[1] == 0.0 && normal[2] == 0.0)
   {
     GeometryMath::FindPlaneNormalVector(vert0, vert1, vert2, normal);
     MatrixMath::Normalize3x1(normal);
   }
 
-  for (size_t i = 0; i < 3; i++)
+  for(size_t i = 0; i < 3; i++)
   {
     basis1[i] = vert1[i] - vert0[i];
     vector20[i] = vert2[i] - vert0[i];
@@ -262,9 +261,9 @@ void DerivativeHelpers::QuadDeriv::operator()(QuadGeom* quads, int64_t quadId, d
   mag_basis1 = MatrixMath::Magnitude3x1(basis1);
   mag_basis2 = MatrixMath::Magnitude3x1(basis2);
 
-  if ( mag_basis1 <= 0.0 || mag_basis2 <= 0.0 )
+  if(mag_basis1 <= 0.0 || mag_basis2 <= 0.0)
   {
-    for (size_t i = 0; i < 3; i++ )
+    for(size_t i = 0; i < 3; i++)
     {
       derivs[i] = 0.0;
     }
@@ -289,16 +288,12 @@ void DerivativeHelpers::QuadDeriv::operator()(QuadGeom* quads, int64_t quadId, d
   quads->getShapeFunctions(pCoords, shapeFunctions);
 
   // Compute Jacobian and inverse Jacobian using Eigen
-  double jPtr[4] = { 0.0, 0.0, 0.0, 0.0 };
+  double jPtr[4] = {0.0, 0.0, 0.0, 0.0};
 
-  jPtr[0] = vert0_2d[0] * shapeFunctions[0] + vert1_2d[0] * shapeFunctions[1] +
-            vert2_2d[0] * shapeFunctions[2] + vert3_2d[0] * shapeFunctions[3];
-  jPtr[1] = vert0_2d[1] * shapeFunctions[0] + vert1_2d[1] * shapeFunctions[1] +
-            vert2_2d[1] * shapeFunctions[2] + vert3_2d[1] * shapeFunctions[3];
-  jPtr[2] = vert0_2d[0] * shapeFunctions[4] + vert1_2d[0] * shapeFunctions[5] +
-            vert2_2d[0] * shapeFunctions[6] + vert3_2d[0] * shapeFunctions[7];
-  jPtr[3] = vert0_2d[1] * shapeFunctions[4] + vert1_2d[1] * shapeFunctions[5] +
-            vert2_2d[1] * shapeFunctions[6] + vert3_2d[1] * shapeFunctions[7];
+  jPtr[0] = vert0_2d[0] * shapeFunctions[0] + vert1_2d[0] * shapeFunctions[1] + vert2_2d[0] * shapeFunctions[2] + vert3_2d[0] * shapeFunctions[3];
+  jPtr[1] = vert0_2d[1] * shapeFunctions[0] + vert1_2d[1] * shapeFunctions[1] + vert2_2d[1] * shapeFunctions[2] + vert3_2d[1] * shapeFunctions[3];
+  jPtr[2] = vert0_2d[0] * shapeFunctions[4] + vert1_2d[0] * shapeFunctions[5] + vert2_2d[0] * shapeFunctions[6] + vert3_2d[0] * shapeFunctions[7];
+  jPtr[3] = vert0_2d[1] * shapeFunctions[4] + vert1_2d[1] * shapeFunctions[5] + vert2_2d[1] * shapeFunctions[6] + vert3_2d[1] * shapeFunctions[7];
 
   Eigen::Map<QuadJacobian> jMat(jPtr);
   QuadJacobian jMatI;
@@ -308,9 +303,9 @@ void DerivativeHelpers::QuadDeriv::operator()(QuadGeom* quads, int64_t quadId, d
 
   // Jacobian is non-constant for a quad, so must check if inverse exists
   // If the Jacobian is not invertible, set derivatives to 0
-  if (!invertible)
+  if(!invertible)
   {
-    for (size_t i = 0; i < 3; i++ )
+    for(size_t i = 0; i < 3; i++)
     {
       derivs[i] = 0.0;
     }
@@ -318,7 +313,7 @@ void DerivativeHelpers::QuadDeriv::operator()(QuadGeom* quads, int64_t quadId, d
 
   // Loop over derivative values. For each set of values, compute
   // derivatives in local 2D system and then transform into original 3D system
-  for (size_t i = 0; i < 4; i++)
+  for(size_t i = 0; i < 4; i++)
   {
     sum[0] += shapeFunctions[i] * values[i];
     sum[1] += shapeFunctions[4 + i] * values[i];
@@ -337,28 +332,27 @@ void DerivativeHelpers::QuadDeriv::operator()(QuadGeom* quads, int64_t quadId, d
 // -----------------------------------------------------------------------------
 void DerivativeHelpers::TetDeriv::operator()(TetrahedralGeom* tets, int64_t tetId, double values[4], double derivs[3])
 {
-  double shapeFunctions[12] = { 0.0, 0.0, 0.0, 0.0, 0.0, 0.0,
-                                0.0, 0.0, 0.0, 0.0, 0.0, 0.0};
-  int64_t verts[4] = { 0, 0, 0, 0 };
-  double sum[3] = { 0.0, 0.0, 0.0 };
+  double shapeFunctions[12] = {0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0};
+  int64_t verts[4] = {0, 0, 0, 0};
+  double sum[3] = {0.0, 0.0, 0.0};
 
   tets->getShapeFunctions(nullptr, shapeFunctions);
 
   // Compute 3x3 Jacobian from vertex coordinates and tet shape functions,
   // then find the inverse Jacobian using Eigen
-  double jPtr[9] = { 0.0, 0.0, 0.0,
-                     0.0, 0.0, 0.0,
-                     0.0, 0.0, 0.0, };
+  double jPtr[9] = {
+      0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0,
+  };
 
   tets->getVertsAtTet(tetId, verts);
 
-  for (size_t i = 0; i < 4; i++)
+  for(size_t i = 0; i < 4; i++)
   {
-    float tmpCoords_f[3] = { 0.0, 0.0, 0.0 };
-    double tmpCoords[3] = { 0.0, 0.0, 0.0 };
+    float tmpCoords_f[3] = {0.0, 0.0, 0.0};
+    double tmpCoords[3] = {0.0, 0.0, 0.0};
     tets->getCoords(verts[i], tmpCoords_f);
     std::copy(tmpCoords_f, tmpCoords_f + 3, tmpCoords);
-    for (size_t j = 0; j < 3; j++)
+    for(size_t j = 0; j < 3; j++)
     {
       jPtr[j] += tmpCoords[j] * shapeFunctions[i];
       jPtr[j + 3] += tmpCoords[j] * shapeFunctions[4 + i];
@@ -374,15 +368,15 @@ void DerivativeHelpers::TetDeriv::operator()(TetrahedralGeom* tets, int64_t tetI
 
   // Jacobian is non-constant for a tet, so must check if inverse exists
   // If the Jacobian is not invertible, set derivatives to 0
-  if (!invertible)
+  if(!invertible)
   {
-    for (size_t i = 0; i < 3; i++ )
+    for(size_t i = 0; i < 3; i++)
     {
       derivs[i] = 0.0;
     }
   }
 
-  for (size_t i = 0; i < 4; i++)
+  for(size_t i = 0; i < 4; i++)
   {
     sum[0] += shapeFunctions[i] * values[i];
     sum[1] += shapeFunctions[4 + i] * values[i];

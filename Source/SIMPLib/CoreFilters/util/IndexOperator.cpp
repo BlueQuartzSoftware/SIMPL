@@ -39,16 +39,16 @@
 
 #include "SIMPLib/CoreFilters/ArrayCalculator.h"
 
-#include "CalculatorArray.hpp"
 #include "BinaryOperator.h"
+#include "CalculatorArray.hpp"
 #include "LeftParenthesisItem.h"
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-IndexOperator::IndexOperator(int index) :
-CalculatorOperator(),
-m_Index(index)
+IndexOperator::IndexOperator(int index)
+: CalculatorOperator()
+, m_Index(index)
 {
   setPrecedence(E_Precedence);
 }
@@ -58,15 +58,14 @@ m_Index(index)
 // -----------------------------------------------------------------------------
 IndexOperator::~IndexOperator()
 {
-
 }
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void IndexOperator::calculate(AbstractFilter* filter, DataArrayPath calculatedArrayPath, QStack<ICalculatorArray::Pointer> &executionStack)
+void IndexOperator::calculate(AbstractFilter* filter, DataArrayPath calculatedArrayPath, QStack<ICalculatorArray::Pointer>& executionStack)
 {
-  if (executionStack.size() >= 1)
+  if(executionStack.size() >= 1)
   {
     ICalculatorArray::Pointer arrayPtr = executionStack.pop();
 
@@ -76,7 +75,7 @@ void IndexOperator::calculate(AbstractFilter* filter, DataArrayPath calculatedAr
     DoubleArrayType::Pointer newArray = DoubleArrayType::CreateArray(calculatedAM->getNumberOfTuples(), QVector<size_t>(1, 1), calculatedArrayPath.getDataArrayName());
 
     int numComps = arrayPtr->getArray()->getNumberOfComponents();
-    for (int i = 0; i < newArray->getNumberOfTuples(); i++)
+    for(int i = 0; i < newArray->getNumberOfTuples(); i++)
     {
       int index = numComps * i + m_Index;
       double num = arrayPtr->getValue(index);
@@ -98,12 +97,10 @@ void IndexOperator::calculate(AbstractFilter* filter, DataArrayPath calculatedAr
 // -----------------------------------------------------------------------------
 bool IndexOperator::checkValidity(QVector<CalculatorItem::Pointer> infixVector, int currentIndex)
 {
-  if (currentIndex - 1 >= 0 && nullptr != std::dynamic_pointer_cast<ICalculatorArray>(infixVector[currentIndex-1]))
+  if(currentIndex - 1 >= 0 && nullptr != std::dynamic_pointer_cast<ICalculatorArray>(infixVector[currentIndex - 1]))
   {
     return true;
   }
 
   return false;
 }
-
-

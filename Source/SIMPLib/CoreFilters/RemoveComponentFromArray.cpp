@@ -33,37 +33,34 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-
 #include "RemoveComponentFromArray.h"
 
 #include "SIMPLib/Common/Constants.h"
-#include "SIMPLib/SIMPLibVersion.h"
 #include "SIMPLib/Common/TemplateHelpers.hpp"
 #include "SIMPLib/FilterParameters/AbstractFilterParametersReader.h"
-#include "SIMPLib/FilterParameters/IntFilterParameter.h"
 #include "SIMPLib/FilterParameters/DataArraySelectionFilterParameter.h"
-#include "SIMPLib/FilterParameters/StringFilterParameter.h"
+#include "SIMPLib/FilterParameters/IntFilterParameter.h"
 #include "SIMPLib/FilterParameters/LinkedBooleanFilterParameter.h"
 #include "SIMPLib/FilterParameters/SeparatorFilterParameter.h"
+#include "SIMPLib/FilterParameters/StringFilterParameter.h"
+#include "SIMPLib/SIMPLibVersion.h"
 
 // Include the MOC generated file for this class
 #include "moc_RemoveComponentFromArray.cpp"
 
-
-
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-RemoveComponentFromArray::RemoveComponentFromArray() :
-  AbstractFilter(),
-  m_SelectedArrayPath("", "", ""),
-  m_CompNumber(0),
-  m_SaveRemovedComponent(false),
-  m_NewArrayArrayName(""),
-  m_ReducedArrayArrayName(""),
-  m_InArray(nullptr),
-  m_NewArray(nullptr),
-  m_ReducedArray(nullptr)
+RemoveComponentFromArray::RemoveComponentFromArray()
+: AbstractFilter()
+, m_SelectedArrayPath("", "", "")
+, m_CompNumber(0)
+, m_SaveRemovedComponent(false)
+, m_NewArrayArrayName("")
+, m_ReducedArrayArrayName("")
+, m_InArray(nullptr)
+, m_NewArray(nullptr)
+, m_ReducedArray(nullptr)
 {
   setupFilterParameters();
 }
@@ -84,7 +81,8 @@ void RemoveComponentFromArray::setupFilterParameters()
 
   parameters.push_back(SIMPL_NEW_INTEGER_FP("Component Number to Remove", CompNumber, FilterParameter::Parameter, RemoveComponentFromArray));
 
-  DataArraySelectionFilterParameter::RequirementType req = DataArraySelectionFilterParameter::CreateCategoryRequirement(SIMPL::Defaults::AnyPrimitive, SIMPL::Defaults::AnyComponentSize, SIMPL::AttributeMatrixObjectType::Any);
+  DataArraySelectionFilterParameter::RequirementType req =
+      DataArraySelectionFilterParameter::CreateCategoryRequirement(SIMPL::Defaults::AnyPrimitive, SIMPL::Defaults::AnyComponentSize, SIMPL::AttributeMatrixObjectType::Any);
   parameters.push_back(SIMPL_NEW_DA_SELECTION_FP("Multicomponent Attribute Array", SelectedArrayPath, FilterParameter::RequiredArray, RemoveComponentFromArray, req));
 
   parameters.push_back(SIMPL_NEW_STRING_FP("Removed Component Attribute Array", NewArrayArrayName, FilterParameter::CreatedArray, RemoveComponentFromArray));
@@ -96,8 +94,6 @@ void RemoveComponentFromArray::setupFilterParameters()
   linkedProps << "NewArrayArrayName";
   parameters.push_back(SIMPL_NEW_LINKED_BOOL_FP("Save Removed Component in New Array", SaveRemovedComponent, FilterParameter::Parameter, RemoveComponentFromArray, linkedProps));
 
-
-
   setFilterParameters(parameters);
 }
 
@@ -107,10 +103,10 @@ void RemoveComponentFromArray::setupFilterParameters()
 void RemoveComponentFromArray::readFilterParameters(AbstractFilterParametersReader* reader, int index)
 {
   reader->openFilterGroup(this, index);
-  setNewArrayArrayName(reader->readString("NewArrayArrayName", getNewArrayArrayName() ) );
-  setNewArrayArrayName(reader->readString("ReducedArrayArrayName", getReducedArrayArrayName() ) );
-  setCompNumber(reader->readValue("CompNumber", getCompNumber() ) );
-  setSelectedArrayPath( reader->readDataArrayPath( "SelectedArrayPath", getSelectedArrayPath() ) );
+  setNewArrayArrayName(reader->readString("NewArrayArrayName", getNewArrayArrayName()));
+  setNewArrayArrayName(reader->readString("ReducedArrayArrayName", getReducedArrayArrayName()));
+  setCompNumber(reader->readValue("CompNumber", getCompNumber()));
+  setSelectedArrayPath(reader->readDataArrayPath("SelectedArrayPath", getSelectedArrayPath()));
   setSaveRemovedComponent(reader->readValue("SaveRemovedComponent", getSaveRemovedComponent()));
   reader->closeFilterGroup();
 }
@@ -120,7 +116,6 @@ void RemoveComponentFromArray::readFilterParameters(AbstractFilterParametersRead
 // -----------------------------------------------------------------------------
 void RemoveComponentFromArray::initialize()
 {
-
 }
 
 // -----------------------------------------------------------------------------
@@ -132,9 +127,9 @@ void RemoveComponentFromArray::dataCheck()
 
   m_InArrayPtr = getDataContainerArray()->getPrereqIDataArrayFromPath<IDataArray, AbstractFilter>(this, getSelectedArrayPath());
 
-  if (m_SaveRemovedComponent == true)
+  if(m_SaveRemovedComponent == true)
   {
-    if (m_NewArrayArrayName.isEmpty() == true)
+    if(m_NewArrayArrayName.isEmpty() == true)
     {
       setErrorCondition(-11001);
       notifyErrorMessage(getHumanLabel(), "Removed Component array name must be set.", getErrorCondition());
@@ -142,19 +137,24 @@ void RemoveComponentFromArray::dataCheck()
     }
   }
 
-  if (m_ReducedArrayArrayName.isEmpty() == true)
+  if(m_ReducedArrayArrayName.isEmpty() == true)
   {
     setErrorCondition(-11002);
     notifyErrorMessage(getHumanLabel(), "Reduced array name must be set.", getErrorCondition());
     return;
   }
 
-  if(getErrorCondition() < 0) { return; }
+  if(getErrorCondition() < 0)
+  {
+    return;
+  }
 
-  if (m_InArrayPtr.lock()->getNumberOfComponents() < 2)
+  if(m_InArrayPtr.lock()->getNumberOfComponents() < 2)
   {
     setErrorCondition(-11003);
-    QString ss = QObject::tr("Selected array '%1' must have more than 1 component. The number of components is %2").arg(getSelectedArrayPath().getDataArrayName()).arg(m_InArrayPtr.lock()->getNumberOfComponents());
+    QString ss = QObject::tr("Selected array '%1' must have more than 1 component. The number of components is %2")
+                     .arg(getSelectedArrayPath().getDataArrayName())
+                     .arg(m_InArrayPtr.lock()->getNumberOfComponents());
     notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
     return;
   }
@@ -162,13 +162,16 @@ void RemoveComponentFromArray::dataCheck()
   if(m_CompNumber >= m_InArrayPtr.lock()->getNumberOfComponents())
   {
     setErrorCondition(-11004);
-    QString ss = QObject::tr("Component to extract (%1) is larger than the number of components (%2) for array selected: '%1'").arg(m_CompNumber).arg(m_InArrayPtr.lock()->getNumberOfComponents()).arg(getSelectedArrayPath().getDataArrayName());
+    QString ss = QObject::tr("Component to extract (%1) is larger than the number of components (%2) for array selected: '%1'")
+                     .arg(m_CompNumber)
+                     .arg(m_InArrayPtr.lock()->getNumberOfComponents())
+                     .arg(getSelectedArrayPath().getDataArrayName());
     notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
     return;
   }
 
   QVector<size_t> cDims(1, 1);
-  if (m_SaveRemovedComponent == true)
+  if(m_SaveRemovedComponent == true)
   {
     DataArrayPath tempPath(getSelectedArrayPath().getDataContainerName(), getSelectedArrayPath().getAttributeMatrixName(), getNewArrayArrayName());
     m_NewArrayPtr = TemplateHelpers::CreateNonPrereqArrayFromArrayType()(this, tempPath, cDims, m_InArrayPtr.lock());
@@ -195,14 +198,16 @@ void RemoveComponentFromArray::preflight()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-template<typename T>
-void extractComponent(IDataArray::Pointer inputData, IDataArray::Pointer newData, IDataArray::Pointer reducedData, int compNumber)
+template <typename T> void extractComponent(IDataArray::Pointer inputData, IDataArray::Pointer newData, IDataArray::Pointer reducedData, int compNumber)
 {
-  typename DataArray<T>::Pointer inputArrayPtr = std::dynamic_pointer_cast<DataArray<T> >(inputData);
-  typename DataArray<T>::Pointer newArrayPtr = std::dynamic_pointer_cast<DataArray<T> >(newData);
-  typename DataArray<T>::Pointer reducedArrayPtr = std::dynamic_pointer_cast<DataArray<T> >(reducedData);
+  typename DataArray<T>::Pointer inputArrayPtr = std::dynamic_pointer_cast<DataArray<T>>(inputData);
+  typename DataArray<T>::Pointer newArrayPtr = std::dynamic_pointer_cast<DataArray<T>>(newData);
+  typename DataArray<T>::Pointer reducedArrayPtr = std::dynamic_pointer_cast<DataArray<T>>(reducedData);
 
-  if (nullptr == inputArrayPtr || nullptr == newArrayPtr) { return; }
+  if(nullptr == inputArrayPtr || nullptr == newArrayPtr)
+  {
+    return;
+  }
 
   T* inputArray = inputArrayPtr->getPointer(0);
   T* newArray = newArrayPtr->getPointer(0);
@@ -211,21 +216,21 @@ void extractComponent(IDataArray::Pointer inputData, IDataArray::Pointer newData
   size_t numPoints = inputArrayPtr->getNumberOfTuples();
   size_t numComps = inputArrayPtr->getNumberOfComponents();
 
-  for (size_t i = 0; i < numPoints; i++)
+  for(size_t i = 0; i < numPoints; i++)
   {
-    for (size_t j = 0; j < numComps; j++)
+    for(size_t j = 0; j < numComps; j++)
     {
-      if (j == compNumber)
+      if(j == compNumber)
       {
         newArray[i] = inputArray[numComps * i + j];
       }
-      else if (j > compNumber)
+      else if(j > compNumber)
       {
-        reducedArray[(numComps - 1)*i + j - 1] = inputArray[numComps * i + j];
+        reducedArray[(numComps - 1) * i + j - 1] = inputArray[numComps * i + j];
       }
-      else if (j < compNumber)
+      else if(j < compNumber)
       {
-        reducedArray[(numComps - 1)*i + j] = inputArray[numComps * i + j];
+        reducedArray[(numComps - 1) * i + j] = inputArray[numComps * i + j];
       }
     }
   }
@@ -234,13 +239,15 @@ void extractComponent(IDataArray::Pointer inputData, IDataArray::Pointer newData
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-template<typename T>
-void reduceArrayOnly(IDataArray::Pointer inputData, IDataArray::Pointer reducedData, int compNumber)
+template <typename T> void reduceArrayOnly(IDataArray::Pointer inputData, IDataArray::Pointer reducedData, int compNumber)
 {
-  typename DataArray<T>::Pointer inputArrayPtr = std::dynamic_pointer_cast<DataArray<T> >(inputData);
-  typename DataArray<T>::Pointer reducedArrayPtr = std::dynamic_pointer_cast<DataArray<T> >(reducedData);
+  typename DataArray<T>::Pointer inputArrayPtr = std::dynamic_pointer_cast<DataArray<T>>(inputData);
+  typename DataArray<T>::Pointer reducedArrayPtr = std::dynamic_pointer_cast<DataArray<T>>(reducedData);
 
-  if (nullptr == inputArrayPtr) { return; }
+  if(nullptr == inputArrayPtr)
+  {
+    return;
+  }
 
   T* inputArray = inputArrayPtr->getPointer(0);
   T* reducedArray = reducedArrayPtr->getPointer(0);
@@ -248,23 +255,22 @@ void reduceArrayOnly(IDataArray::Pointer inputData, IDataArray::Pointer reducedD
   size_t numPoints = inputArrayPtr->getNumberOfTuples();
   size_t numComps = inputArrayPtr->getNumberOfComponents();
 
-  for (size_t i = 0; i < numPoints; i++)
+  for(size_t i = 0; i < numPoints; i++)
   {
-    for (size_t j = 0; j < numComps; j++)
+    for(size_t j = 0; j < numComps; j++)
     {
 
-      if (j > compNumber)
+      if(j > compNumber)
       {
-        reducedArray[(numComps - 1)*i + j - 1] = inputArray[numComps * i + j];
+        reducedArray[(numComps - 1) * i + j - 1] = inputArray[numComps * i + j];
       }
-      else if (j < compNumber)
+      else if(j < compNumber)
       {
-        reducedArray[(numComps - 1)*i + j] = inputArray[numComps * i + j];
+        reducedArray[(numComps - 1) * i + j] = inputArray[numComps * i + j];
       }
     }
   }
 }
-
 
 // -----------------------------------------------------------------------------
 //
@@ -273,17 +279,19 @@ void RemoveComponentFromArray::execute()
 {
   setErrorCondition(0);
   dataCheck();
-  if(getErrorCondition() < 0) { return; }
+  if(getErrorCondition() < 0)
+  {
+    return;
+  }
 
-  if (m_SaveRemovedComponent == true)
+  if(m_SaveRemovedComponent == true)
   {
     EXECUTE_FUNCTION_TEMPLATE(this, extractComponent, m_InArrayPtr.lock(), m_InArrayPtr.lock(), m_NewArrayPtr.lock(), m_ReducedArrayPtr.lock(), m_CompNumber)
   }
-  else if (m_SaveRemovedComponent == false)
+  else if(m_SaveRemovedComponent == false)
   {
     EXECUTE_FUNCTION_TEMPLATE(this, reduceArrayOnly, m_InArrayPtr.lock(), m_InArrayPtr.lock(), m_ReducedArrayPtr.lock(), m_CompNumber)
   }
-
 
   notifyStatusMessage(getHumanLabel(), "Complete");
 }
@@ -305,7 +313,9 @@ AbstractFilter::Pointer RemoveComponentFromArray::newFilterInstance(bool copyFil
 //
 // -----------------------------------------------------------------------------
 const QString RemoveComponentFromArray::getCompiledLibraryName()
-{ return Core::CoreBaseName; }
+{
+  return Core::CoreBaseName;
+}
 
 // -----------------------------------------------------------------------------
 //
@@ -322,26 +332,30 @@ const QString RemoveComponentFromArray::getFilterVersion()
 {
   QString version;
   QTextStream vStream(&version);
-  vStream <<  SIMPLib::Version::Major() << "." << SIMPLib::Version::Minor() << "." << SIMPLib::Version::Patch();
+  vStream << SIMPLib::Version::Major() << "." << SIMPLib::Version::Minor() << "." << SIMPLib::Version::Patch();
   return version;
 }
-
-
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
 const QString RemoveComponentFromArray::getGroupName()
-{ return SIMPL::FilterGroups::CoreFilters; }
+{
+  return SIMPL::FilterGroups::CoreFilters;
+}
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
 const QString RemoveComponentFromArray::getSubGroupName()
-{ return SIMPL::FilterSubGroups::MemoryManagementFilters; }
+{
+  return SIMPL::FilterSubGroups::MemoryManagementFilters;
+}
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
 const QString RemoveComponentFromArray::getHumanLabel()
-{ return "Remove Component From Array"; }
+{
+  return "Remove Component From Array";
+}

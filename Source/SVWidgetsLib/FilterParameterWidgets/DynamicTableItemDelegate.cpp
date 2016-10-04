@@ -34,8 +34,8 @@
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
 #include "DynamicTableItemDelegate.h"
-#include <QLineEdit>
 #include <QIntValidator>
+#include <QLineEdit>
 
 // Include the MOC generated CPP file which has all the QMetaObject methods/data
 #include "moc_DynamicTableItemDelegate.cpp"
@@ -43,10 +43,9 @@
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-DynamicTableItemDelegate::DynamicTableItemDelegate(QObject* parent) :
-  QStyledItemDelegate(parent)
+DynamicTableItemDelegate::DynamicTableItemDelegate(QObject* parent)
+: QStyledItemDelegate(parent)
 {
-
 }
 
 // -----------------------------------------------------------------------------
@@ -54,7 +53,6 @@ DynamicTableItemDelegate::DynamicTableItemDelegate(QObject* parent) :
 // -----------------------------------------------------------------------------
 DynamicTableItemDelegate::~DynamicTableItemDelegate()
 {
-
 }
 
 // -----------------------------------------------------------------------------

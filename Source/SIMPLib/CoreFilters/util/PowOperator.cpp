@@ -44,8 +44,8 @@
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-PowOperator::PowOperator() :
-  BinaryOperator()
+PowOperator::PowOperator()
+: BinaryOperator()
 {
   setPrecedence(C_Precedence);
 }
@@ -55,14 +55,12 @@ PowOperator::PowOperator() :
 // -----------------------------------------------------------------------------
 PowOperator::~PowOperator()
 {
-
 }
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void PowOperator::calculate(AbstractFilter* filter, DataArrayPath calculatedArrayPath, QStack<ICalculatorArray::Pointer> &executionStack)
-{ 
+void PowOperator::calculate(AbstractFilter* filter, DataArrayPath calculatedArrayPath, QStack<ICalculatorArray::Pointer>& executionStack)
+{
   CREATE_NEW_ARRAY_TWO_ARGUMENTS(filter, calculatedArrayPath, executionStack, pow)
 }
-

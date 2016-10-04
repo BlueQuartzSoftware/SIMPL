@@ -33,7 +33,6 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-
 #include "FileReader.h"
 
 #include "SIMPLib/Common/Constants.h"
@@ -42,13 +41,11 @@
 // Include the MOC generated file for this class
 #include "moc_FileReader.cpp"
 
-
-
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-FileReader::FileReader() :
-  AbstractFilter()
+FileReader::FileReader()
+: AbstractFilter()
 {
 }
 
@@ -64,7 +61,6 @@ FileReader::~FileReader()
 // -----------------------------------------------------------------------------
 void FileReader::initialize()
 {
-
 }
 
 // -----------------------------------------------------------------------------
@@ -80,7 +76,7 @@ void FileReader::dataCheck()
 int32_t FileReader::readHeader()
 {
   setErrorCondition(-1);
-  notifyErrorMessage(getHumanLabel(),  "FileReader should be subclassed and functionality implemented there", -1);
+  notifyErrorMessage(getHumanLabel(), "FileReader should be subclassed and functionality implemented there", -1);
   return -1;
 }
 
@@ -101,12 +97,12 @@ void FileReader::execute()
 {
   int32_t err = 0;
   err = readHeader();
-  if (err < 0)
+  if(err < 0)
   {
     return;
   }
   err = readFile();
-  if (err < 0)
+  if(err < 0)
   {
     return;
   }

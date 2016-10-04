@@ -35,8 +35,8 @@
 
 #include "DataArrayInformationDisplayWidget.h"
 
-#include <QtCore/QMetaProperty>
 #include <QtCore/QList>
+#include <QtCore/QMetaProperty>
 #include <QtWidgets/QListWidgetItem>
 
 #include "SIMPLib/DataContainers/DataArrayPath.h"
@@ -53,8 +53,8 @@
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-DataArrayInformationDisplayWidget::DataArrayInformationDisplayWidget(FilterParameter* parameter, AbstractFilter* filter, QWidget* parent) :
-  FilterParameterWidget(parameter, filter, parent)
+DataArrayInformationDisplayWidget::DataArrayInformationDisplayWidget(FilterParameter* parameter, AbstractFilter* filter, QWidget* parent)
+: FilterParameterWidget(parameter, filter, parent)
 {
   setupUi(this);
   setupGui();
@@ -63,8 +63,8 @@ DataArrayInformationDisplayWidget::DataArrayInformationDisplayWidget(FilterParam
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-DataArrayInformationDisplayWidget::DataArrayInformationDisplayWidget(QWidget* parent) :
-  FilterParameterWidget(nullptr, nullptr, parent)
+DataArrayInformationDisplayWidget::DataArrayInformationDisplayWidget(QWidget* parent)
+: FilterParameterWidget(nullptr, nullptr, parent)
 {
   setupUi(this);
   setupGui();
@@ -74,15 +74,14 @@ DataArrayInformationDisplayWidget::DataArrayInformationDisplayWidget(QWidget* pa
 //
 // -----------------------------------------------------------------------------
 DataArrayInformationDisplayWidget::~DataArrayInformationDisplayWidget()
-{}
-
+{
+}
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
 void DataArrayInformationDisplayWidget::setupGui()
 {
-
 }
 
 // -----------------------------------------------------------------------------

@@ -48,22 +48,16 @@ PhaseTypeSelectionFilterParameter::PhaseTypeSelectionFilterParameter()
 //
 // -----------------------------------------------------------------------------
 PhaseTypeSelectionFilterParameter::~PhaseTypeSelectionFilterParameter()
-{}
+{
+}
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-PhaseTypeSelectionFilterParameter::Pointer PhaseTypeSelectionFilterParameter::New(const QString& humanLabel,
-                                                                                  const QString& phaseTypeDataProperty,
-                                                                                  const DataArrayPath attributeMatrixDefault,
-                                                                                  Category category,
-                                                                                  SetterCallbackType setterCallback,
-                                                                                  GetterCallbackType getterCallback,
-                                                                                  const QString& PhaseTypesArrayName,
-                                                                                  const QString& phaseTypeCountProperty,
-                                                                                  const QString& attributeMatrixProperty,
-                                                                                  const QStringList phaseListChoices,
-                                                                                  int groupIndex)
+PhaseTypeSelectionFilterParameter::Pointer PhaseTypeSelectionFilterParameter::New(const QString& humanLabel, const QString& phaseTypeDataProperty, const DataArrayPath attributeMatrixDefault,
+                                                                                  Category category, SetterCallbackType setterCallback, GetterCallbackType getterCallback,
+                                                                                  const QString& PhaseTypesArrayName, const QString& phaseTypeCountProperty, const QString& attributeMatrixProperty,
+                                                                                  const QStringList phaseListChoices, int groupIndex)
 {
   PhaseTypeSelectionFilterParameter::Pointer ptr = PhaseTypeSelectionFilterParameter::New();
   ptr->setHumanLabel(humanLabel);
@@ -77,7 +71,6 @@ PhaseTypeSelectionFilterParameter::Pointer PhaseTypeSelectionFilterParameter::Ne
   ptr->setAttributeMatrixPathDefault(attributeMatrixDefault);
   ptr->setSetterCallback(setterCallback);
   ptr->setGetterCallback(getterCallback);
-
 
   return ptr;
 }
@@ -93,14 +86,14 @@ QString PhaseTypeSelectionFilterParameter::getWidgetType()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void PhaseTypeSelectionFilterParameter::readJson(const QJsonObject &json)
+void PhaseTypeSelectionFilterParameter::readJson(const QJsonObject& json)
 {
   QJsonValue jsonValue = json[getPropertyName()];
-  if(!jsonValue.isUndefined() )
+  if(!jsonValue.isUndefined() && m_SetterCallback)
   {
     QJsonArray jsonArray = jsonValue.toArray();
     UInt32Vector_t vec;
-    for (int i=0; i<jsonArray.size(); i++)
+    for(int i = 0; i < jsonArray.size(); i++)
     {
       vec.d.push_back(static_cast<unsigned int>(jsonArray[i].toDouble()));
     }
@@ -111,16 +104,18 @@ void PhaseTypeSelectionFilterParameter::readJson(const QJsonObject &json)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void PhaseTypeSelectionFilterParameter::writeJson(QJsonObject &json)
+void PhaseTypeSelectionFilterParameter::writeJson(QJsonObject& json)
 {
-  UInt32Vector_t vec = m_GetterCallback();
-  QJsonArray jsonArray;
-
-  for (int i=0; i<vec.d.size(); i++)
+  if (m_GetterCallback)
   {
-    jsonArray.push_back(static_cast<double>(vec.d[i]));
+    UInt32Vector_t vec = m_GetterCallback();
+    QJsonArray jsonArray;
+
+    for(int i = 0; i < vec.d.size(); i++)
+    {
+      jsonArray.push_back(static_cast<double>(vec.d[i]));
+    }
+
+    json[getPropertyName()] = jsonArray;
   }
-
-  json[getPropertyName()] = jsonArray;
 }
-

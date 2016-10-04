@@ -38,22 +38,23 @@
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-IntVec3FilterParameter::IntVec3FilterParameter() :
-FilterParameter()
-{}
+IntVec3FilterParameter::IntVec3FilterParameter()
+: FilterParameter()
+{
+}
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
 IntVec3FilterParameter::~IntVec3FilterParameter()
-{}
+{
+}
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-IntVec3FilterParameter::Pointer IntVec3FilterParameter::New(const QString& humanLabel, const QString& propertyName,
-                                                            const IntVec3_t& defaultValue, Category category,
-                                                            SetterCallbackType setterCallback, GetterCallbackType getterCallback, int groupIndex)
+IntVec3FilterParameter::Pointer IntVec3FilterParameter::New(const QString& humanLabel, const QString& propertyName, const IntVec3_t& defaultValue, Category category, SetterCallbackType setterCallback,
+                                                            GetterCallbackType getterCallback, int groupIndex)
 {
 
   IntVec3FilterParameter::Pointer ptr = IntVec3FilterParameter::New();
@@ -81,10 +82,10 @@ QString IntVec3FilterParameter::getWidgetType()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void IntVec3FilterParameter::readJson(const QJsonObject &json)
+void IntVec3FilterParameter::readJson(const QJsonObject& json)
 {
   QJsonValue jsonValue = json[getPropertyName()];
-  if(!jsonValue.isUndefined() )
+  if(!jsonValue.isUndefined() && m_SetterCallback)
   {
     QJsonObject obj = jsonValue.toObject();
     IntVec3_t intVec3;
@@ -96,11 +97,13 @@ void IntVec3FilterParameter::readJson(const QJsonObject &json)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void IntVec3FilterParameter::writeJson(QJsonObject &json)
+void IntVec3FilterParameter::writeJson(QJsonObject& json)
 {
-  IntVec3_t intVec3 = m_GetterCallback();
-  QJsonObject obj;
-  intVec3.writeJson(obj);
-  json[getPropertyName()] = obj;
+  if (m_GetterCallback)
+  {
+    IntVec3_t intVec3 = m_GetterCallback();
+    QJsonObject obj;
+    intVec3.writeJson(obj);
+    json[getPropertyName()] = obj;
+  }
 }
-

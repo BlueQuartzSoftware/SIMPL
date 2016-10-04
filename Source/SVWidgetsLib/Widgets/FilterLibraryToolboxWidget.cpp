@@ -38,15 +38,14 @@
 
 #include <QtWidgets/QMainWindow>
 
-#include "SIMPLib/Common/IFilterFactory.hpp"
-#include "SIMPLib/Common/FilterFactory.hpp"
 #include "SIMPLib/Common/DocRequestManager.h"
+#include "SIMPLib/Common/FilterFactory.hpp"
+#include "SIMPLib/Common/IFilterFactory.hpp"
 
 #include "FilterListToolboxWidget.h"
 
 // Include the MOC generated CPP file which has all the QMetaObject methods/data
 #include "moc_FilterLibraryToolboxWidget.cpp"
-
 
 #define LIBRARY_NODE_TYPE 0
 #define PLUGIN_NODE_TYPE 1
@@ -56,15 +55,14 @@
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-FilterLibraryToolboxWidget::FilterLibraryToolboxWidget(QWidget* parent) :
-  QWidget(parent),
-  m_ContextMenu(new QMenu(this)),
-  m_Mapper(nullptr)
+FilterLibraryToolboxWidget::FilterLibraryToolboxWidget(QWidget* parent)
+: QWidget(parent)
+, m_ContextMenu(new QMenu(this))
+, m_Mapper(nullptr)
 {
   setupUi(this);
   setupGui();
 }
-
 
 // -----------------------------------------------------------------------------
 //
@@ -78,9 +76,7 @@ FilterLibraryToolboxWidget::~FilterLibraryToolboxWidget()
 // -----------------------------------------------------------------------------
 void FilterLibraryToolboxWidget::connectFilterList(FilterListToolboxWidget* filterListWidget)
 {
-  connect(this, SIGNAL(filterListGenerated(const QStringList&, bool)),
-          filterListWidget, SLOT(updateFilterList(const QStringList&, bool) ) );
-
+  connect(this, SIGNAL(filterListGenerated(const QStringList&, bool)), filterListWidget, SLOT(updateFilterList(const QStringList&, bool)));
 }
 
 // -----------------------------------------------------------------------------
@@ -101,7 +97,7 @@ void FilterLibraryToolboxWidget::refreshFilterGroups()
   QTreeWidgetItem* library = new QTreeWidgetItem(bookmarksTreeView);
   library->setText(0, SIMPL::Settings::Library);
   library->setIcon(0, QIcon(":/Groups/cubes.png"));
-  library->setData(0, Qt::UserRole, QVariant(LIBRARY_NODE_TYPE) );
+  library->setData(0, Qt::UserRole, QVariant(LIBRARY_NODE_TYPE));
 #else
   QTreeWidgetItem* library = bookmarksTreeView->invisibleRootItem();
   library->setText(0, SIMPL::Settings::Library);
@@ -116,7 +112,7 @@ void FilterLibraryToolboxWidget::refreshFilterGroups()
     iconName.append("_Icon.png");
     // Validate the icon is in the resource system
     QFileInfo iconInfo(iconName);
-    if (iconInfo.exists() == false)
+    if(iconInfo.exists() == false)
     {
       iconName = ":/Groups/Plugin_Icon.png"; // Switch to our generic icon for Plugins that do not provide their own
     }
@@ -182,21 +178,18 @@ void FilterLibraryToolboxWidget::setupGui()
   connect(bookmarksTreeView, SIGNAL(customContextMenuRequested(const QPoint&)), this, SLOT(showContextMenuForWidget(const QPoint&)));
 }
 
-
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void FilterLibraryToolboxWidget::on_bookmarksTreeView_itemClicked( QTreeWidgetItem* item, int column )
+void FilterLibraryToolboxWidget::on_bookmarksTreeView_itemClicked(QTreeWidgetItem* item, int column)
 {
-
 }
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void FilterLibraryToolboxWidget::on_bookmarksTreeView_itemChanged( QTreeWidgetItem* item, int column )
+void FilterLibraryToolboxWidget::on_bookmarksTreeView_itemChanged(QTreeWidgetItem* item, int column)
 {
-
 }
 
 // -----------------------------------------------------------------------------
@@ -206,7 +199,7 @@ void FilterLibraryToolboxWidget::showContextMenuForWidget(const QPoint& pos)
 {
   QTreeWidgetItem* item = bookmarksTreeView->itemAt(pos);
 
-  if (nullptr != item && item->childCount() == 0)
+  if(nullptr != item && item->childCount() == 0)
   {
     // Clear the existing context menu
     m_ContextMenu->clear();
@@ -218,11 +211,9 @@ void FilterLibraryToolboxWidget::showContextMenuForWidget(const QPoint& pos)
     QAction* actionLaunchHelp = new QAction(m_ContextMenu);
     actionLaunchHelp->setObjectName(QString::fromUtf8("actionLaunchHelp"));
     actionLaunchHelp->setText(QApplication::translate("SIMPLView_UI", "Filter Help", 0));
-    connect(actionLaunchHelp, SIGNAL(triggered()),
-            m_Mapper, SLOT(map()));
+    connect(actionLaunchHelp, SIGNAL(triggered()), m_Mapper, SLOT(map()));
     m_Mapper->setMapping(actionLaunchHelp, itemName);
-    connect(m_Mapper, SIGNAL(mapped(QString)),
-            this, SLOT(launchHelpForItem(QString)));
+    connect(m_Mapper, SIGNAL(mapped(QString)), this, SLOT(launchHelpForItem(QString)));
 
     m_ContextMenu->addAction(actionLaunchHelp);
     m_ContextMenu->exec(QCursor::pos());
@@ -235,17 +226,17 @@ void FilterLibraryToolboxWidget::showContextMenuForWidget(const QPoint& pos)
 void FilterLibraryToolboxWidget::launchHelpForItem(QString humanLabel)
 {
   FilterManager* fm = FilterManager::Instance();
-  if (nullptr == fm)
+  if(nullptr == fm)
   {
     return;
   }
   IFilterFactory::Pointer factory = fm->getFactoryForFilterHumanName(humanLabel);
-  if (nullptr == factory.get())
+  if(nullptr == factory.get())
   {
     return;
   }
   AbstractFilter::Pointer filter = factory->create();
-  if (nullptr == filter.get())
+  if(nullptr == filter.get())
   {
     return;
   }
@@ -253,15 +244,14 @@ void FilterLibraryToolboxWidget::launchHelpForItem(QString humanLabel)
 
   DocRequestManager* docRequester = DocRequestManager::Instance();
   docRequester->requestFilterDocs(className);
-
 }
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void FilterLibraryToolboxWidget::on_bookmarksTreeView_currentItemChanged(QTreeWidgetItem* item, QTreeWidgetItem* previous )
+void FilterLibraryToolboxWidget::on_bookmarksTreeView_currentItemChanged(QTreeWidgetItem* item, QTreeWidgetItem* previous)
 {
-  if (nullptr == item)
+  if(nullptr == item)
   {
     return;
   }
@@ -270,18 +260,18 @@ void FilterLibraryToolboxWidget::on_bookmarksTreeView_currentItemChanged(QTreeWi
   FilterManager* fm = FilterManager::Instance();
   FilterManager::Collection factories;
 
-  //If the user clicks on Detail::Library, display all
-  if ( item->text(0).compare(SIMPL::Settings::Library) == 0)
+  // If the user clicks on Detail::Library, display all
+  if(item->text(0).compare(SIMPL::Settings::Library) == 0)
   {
     factories = fm->getFactories();
     updateFilterGroupList(factories);
   }
-  else if (nullptr != item->parent() && item->parent()->text(0).compare(SIMPL::Settings::Library) == 0)
+  else if(nullptr != item->parent() && item->parent()->text(0).compare(SIMPL::Settings::Library) == 0)
   {
     factories = fm->getFactories(item->text(0));
     updateFilterGroupList(factories);
   }
-  else if (nullptr != item->parent() && nullptr != item->parent()->parent() && item->parent()->parent()->text(0).compare(SIMPL::Settings::Library) == 0)
+  else if(nullptr != item->parent() && nullptr != item->parent()->parent() && item->parent()->parent()->text(0).compare(SIMPL::Settings::Library) == 0)
   {
     factories = fm->getFactories(item->parent()->text(0), item->text(0));
     updateFilterGroupList(factories);
@@ -296,7 +286,7 @@ void FilterLibraryToolboxWidget::on_bookmarksTreeView_currentItemChanged(QTreeWi
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void FilterLibraryToolboxWidget::on_bookmarksTreeView_itemDoubleClicked( QTreeWidgetItem* item, int column )
+void FilterLibraryToolboxWidget::on_bookmarksTreeView_itemDoubleClicked(QTreeWidgetItem* item, int column)
 {
   Q_UNUSED(column)
 
@@ -314,7 +304,7 @@ void FilterLibraryToolboxWidget::on_bookmarksTreeView_itemDoubleClicked( QTreeWi
 void FilterLibraryToolboxWidget::updateFilterGroupList(FilterManager::Collection& factories)
 {
   QStringList filterNames;
-  for (FilterManager::Collection::iterator factory = factories.begin(); factory != factories.end(); ++factory)
+  for(FilterManager::Collection::iterator factory = factories.begin(); factory != factories.end(); ++factory)
   {
     filterNames << factory.key();
   }

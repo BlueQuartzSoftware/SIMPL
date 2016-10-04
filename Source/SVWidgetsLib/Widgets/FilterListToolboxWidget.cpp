@@ -37,15 +37,14 @@
 #include <QtCore/QBitArray>
 #include <QtCore/QFileInfo>
 #include <QtCore/QMapIterator>
-#include <QtWidgets/QTreeWidgetItem>
-#include <QtWidgets/QMainWindow>
 #include <QtGui/QPainter>
+#include <QtWidgets/QMainWindow>
+#include <QtWidgets/QTreeWidgetItem>
 
-
+#include "SIMPLib/Common/DocRequestManager.h"
+#include "SIMPLib/Common/FilterFactory.hpp"
 #include "SIMPLib/Common/FilterManager.h"
 #include "SIMPLib/Common/IFilterFactory.hpp"
-#include "SIMPLib/Common/FilterFactory.hpp"
-#include "SIMPLib/Common/DocRequestManager.h"
 
 // Include the MOC generated CPP file which has all the QMetaObject methods/data
 #include "moc_FilterListToolboxWidget.cpp"
@@ -53,13 +52,13 @@
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-FilterListToolboxWidget::FilterListToolboxWidget(QWidget* parent) :
-  QWidget(parent),
-  m_ContextMenu(new QMenu(this)),
-  m_Mapper(nullptr),
-  m_SearchAnyWords(false),
-  m_SearchExactPhrase(false),
-  m_SearchAllWords(true)
+FilterListToolboxWidget::FilterListToolboxWidget(QWidget* parent)
+: QWidget(parent)
+, m_ContextMenu(new QMenu(this))
+, m_Mapper(nullptr)
+, m_SearchAnyWords(false)
+, m_SearchExactPhrase(false)
+, m_SearchAllWords(true)
 {
   setupUi(this);
 
@@ -119,8 +118,7 @@ void FilterListToolboxWidget::setupSearchField()
     m_ActionAllWords->setCheckable(true);
     m_ActionAllWords->setChecked(m_SearchAllWords);
     filterSearch->addAction(m_ActionAllWords);
-    connect(m_ActionAllWords, SIGNAL(toggled(bool)),
-            this, SLOT(searchFieldsChanged(bool)));
+    connect(m_ActionAllWords, SIGNAL(toggled(bool)), this, SLOT(searchFieldsChanged(bool)));
     lineEditMenu->addAction(m_ActionAllWords);
   }
 
@@ -131,8 +129,7 @@ void FilterListToolboxWidget::setupSearchField()
     m_ActionAnyWords->setCheckable(true);
     m_ActionAnyWords->setChecked(m_SearchAnyWords);
     filterSearch->addAction(m_ActionAnyWords);
-    connect(m_ActionAnyWords, SIGNAL(toggled(bool)),
-            this, SLOT(searchFieldsChanged(bool)));
+    connect(m_ActionAnyWords, SIGNAL(toggled(bool)), this, SLOT(searchFieldsChanged(bool)));
     lineEditMenu->addAction(m_ActionAnyWords);
   }
 
@@ -143,8 +140,7 @@ void FilterListToolboxWidget::setupSearchField()
     m_ActionExactPhrase->setCheckable(true);
     m_ActionExactPhrase->setChecked(m_SearchExactPhrase);
     filterSearch->addAction(m_ActionExactPhrase);
-    connect(m_ActionExactPhrase, SIGNAL(toggled(bool)),
-            this, SLOT(searchFieldsChanged(bool)));
+    connect(m_ActionExactPhrase, SIGNAL(toggled(bool)), this, SLOT(searchFieldsChanged(bool)));
     lineEditMenu->addAction(m_ActionExactPhrase);
   }
 }
@@ -164,13 +160,11 @@ void FilterListToolboxWidget::showContextMenuForWidget(const QPoint& pos)
     QAction* actionLaunchHelp = new QAction(m_ContextMenu);
     actionLaunchHelp->setObjectName(QString::fromUtf8("actionLaunchHelp"));
     actionLaunchHelp->setText(QApplication::translate("SIMPLView_UI", "Filter Help", 0));
-    connect(actionLaunchHelp, SIGNAL(triggered()),
-            m_Mapper, SLOT(map()));
+    connect(actionLaunchHelp, SIGNAL(triggered()), m_Mapper, SLOT(map()));
 
     QString itemName = item->text();
     m_Mapper->setMapping(actionLaunchHelp, itemName);
-    connect(m_Mapper, SIGNAL(mapped(QString)),
-            this, SLOT(launchHelpForItem(QString)));
+    connect(m_Mapper, SIGNAL(mapped(QString)), this, SLOT(launchHelpForItem(QString)));
 
     m_ContextMenu->addAction(actionLaunchHelp);
     m_ContextMenu->exec(QCursor::pos());
@@ -183,17 +177,17 @@ void FilterListToolboxWidget::showContextMenuForWidget(const QPoint& pos)
 void FilterListToolboxWidget::launchHelpForItem(QString humanLabel)
 {
   FilterManager* fm = FilterManager::Instance();
-  if (nullptr == fm)
+  if(nullptr == fm)
   {
     return;
   }
   IFilterFactory::Pointer factory = fm->getFactoryForFilterHumanName(humanLabel);
-  if (nullptr == factory.get())
+  if(nullptr == factory.get())
   {
     return;
   }
   AbstractFilter::Pointer filter = factory->create();
-  if (nullptr == filter.get())
+  if(nullptr == filter.get())
   {
     return;
   }
@@ -201,7 +195,6 @@ void FilterListToolboxWidget::launchHelpForItem(QString humanLabel)
 
   DocRequestManager* docRequester = DocRequestManager::Instance();
   docRequester->requestFilterDocs(className);
-
 }
 
 // -----------------------------------------------------------------------------
@@ -224,7 +217,7 @@ void FilterListToolboxWidget::updateFilterList(bool sortItems)
   {
     iter.next();
     IFilterFactory::Pointer factory = iter.value();
-    if (nullptr == factory.get() )
+    if(nullptr == factory.get())
     {
       continue;
     }
@@ -237,7 +230,7 @@ void FilterListToolboxWidget::updateFilterList(bool sortItems)
 
     addItemToList(filter);
   }
-  if (sortItems)
+  if(sortItems)
   {
     filterList->sortItems(Qt::AscendingOrder);
   }
@@ -252,12 +245,12 @@ void FilterListToolboxWidget::addItemToList(AbstractFilter::Pointer filter)
 
   QString humanName = filter->getHumanLabel();
   QString iconName(":/Groups/");
-  iconName.append( filter->getGroupName() );
+  iconName.append(filter->getGroupName());
   iconName.append("_Icon.png");
 
   // Validate the icon is in the resource system
   QFileInfo iconInfo(iconName);
-  if (iconInfo.exists() == false)
+  if(iconInfo.exists() == false)
   {
     iconName = ":/Groups/Plugin_Icon.png"; // Switch to our generic icon for Plugins that do not provide their own
   }
@@ -268,7 +261,7 @@ void FilterListToolboxWidget::addItemToList(AbstractFilter::Pointer filter)
   // Set an "internal" QString that is the name of the filter. We need this value
   // when the item is clicked in order to retreive the Filter Widget from the
   // filter widget manager.
-  filterItem->setData( Qt::UserRole, filter->getNameOfClass());
+  filterItem->setData(Qt::UserRole, filter->getNameOfClass());
   // Allow a basic mouse hover tool tip that gives some summary information on the filter.
   filterItem->setToolTip(filter->generateHtmlSummary());
 
@@ -300,12 +293,12 @@ QList<QString> FilterListToolboxWidget::serializeString(QString string, char tok
   int spaceIndex = 0;
   QString strPart = "";
 
-  while (spaceIndex >= 0 && string.isEmpty() == false)
+  while(spaceIndex >= 0 && string.isEmpty() == false)
   {
     spaceIndex = string.indexOf(token);
     strPart = string.left(spaceIndex);
     strPart = strPart.simplified();
-    if (strPart != "")
+    if(strPart != "")
     {
       list.push_back(strPart);
     }
@@ -322,7 +315,7 @@ QList<QString> FilterListToolboxWidget::serializeString(QString string, char tok
 QString FilterListToolboxWidget::deserializeString(QList<QString> list, char token)
 {
   QString str = "";
-  for (int i = 0; i < list.size(); i++)
+  for(int i = 0; i < list.size(); i++)
   {
     str.append(list[i]);
     str.append(" ");
@@ -342,17 +335,17 @@ void FilterListToolboxWidget::matchFilter(QMapIterator<QString, IFilterFactory::
   QMap<AbstractFilter::Pointer, int> wordCountMap;
   QMultiMap<int, AbstractFilter::Pointer> relevanceMap;
 
-  while (iter.hasNext())
+  while(iter.hasNext())
   {
     iter.next();
     IFilterFactory::Pointer factory = iter.value();
-    if (nullptr == factory.get())
+    if(nullptr == factory.get())
     {
       continue;
     }
 
     AbstractFilter::Pointer filter = factory->create();
-    if (nullptr == filter.get())
+    if(nullptr == filter.get())
     {
       continue;
     }
@@ -361,28 +354,28 @@ void FilterListToolboxWidget::matchFilter(QMapIterator<QString, IFilterFactory::
     QBitArray bitArray(wordList.size(), false);
 
     int consecutiveWordsCount = 0, maxConsecutiveWordsCount = 0, consecutiveWordsStartingIndex = 0;
-    for (int i = 0; i < wordList.size(); i++)
+    for(int i = 0; i < wordList.size(); i++)
     {
       QString keyword = wordList[i];
 
-      if (filterHumanLabel.contains(keyword, Qt::CaseInsensitive) == true && filterList->findItems(filterHumanLabel, Qt::MatchExactly).size() <= 0)
+      if(filterHumanLabel.contains(keyword, Qt::CaseInsensitive) == true && filterList->findItems(filterHumanLabel, Qt::MatchExactly).size() <= 0)
       {
         bitArray.setBit(i, true);
 
         QList<QString> phraseList;
-        for (int j = consecutiveWordsStartingIndex; j <= i; j++)
+        for(int j = consecutiveWordsStartingIndex; j <= i; j++)
         {
           phraseList.append(wordList[j]);
         }
         QString phrase = deserializeString(phraseList, ' ');
 
-        if (filterHumanLabel.contains(phrase, Qt::CaseInsensitive) && consecutiveWordsCount < phraseList.size())
+        if(filterHumanLabel.contains(phrase, Qt::CaseInsensitive) && consecutiveWordsCount < phraseList.size())
         {
           consecutiveWordsCount++;
         }
         else
         {
-          if (consecutiveWordsCount > maxConsecutiveWordsCount)
+          if(consecutiveWordsCount > maxConsecutiveWordsCount)
           {
             maxConsecutiveWordsCount = consecutiveWordsCount;
           }
@@ -392,12 +385,12 @@ void FilterListToolboxWidget::matchFilter(QMapIterator<QString, IFilterFactory::
       }
     }
 
-    if (consecutiveWordsCount > maxConsecutiveWordsCount)
+    if(consecutiveWordsCount > maxConsecutiveWordsCount)
     {
       maxConsecutiveWordsCount = consecutiveWordsCount;
     }
 
-    if (wordCountMap.contains(filter) == false && bitArray.count(true) > 0)
+    if(wordCountMap.contains(filter) == false && bitArray.count(true) > 0)
     {
       wordCountMap.insert(filter, bitArray.count(true));
       relevanceMap.insert(maxConsecutiveWordsCount, filter);
@@ -405,13 +398,13 @@ void FilterListToolboxWidget::matchFilter(QMapIterator<QString, IFilterFactory::
   }
 
   // Match according to "Exact Phrase"
-  if (m_ActionExactPhrase->isChecked())
+  if(m_ActionExactPhrase->isChecked())
   {
     QList<AbstractFilter::Pointer> filterList = relevanceMap.values(wordList.size());
-    for (QList<AbstractFilter::Pointer>::iterator iter = filterList.begin(); iter != filterList.end(); ++iter)
+    for(QList<AbstractFilter::Pointer>::iterator iter = filterList.begin(); iter != filterList.end(); ++iter)
     {
       // Do not display results that have the exact phrase in the middle or end of the search phrase
-      if ((*iter)->getHumanLabel().startsWith(fullWord))
+      if((*iter)->getHumanLabel().startsWith(fullWord))
       {
         addItemToList(*iter);
         filterCount++;
@@ -419,17 +412,17 @@ void FilterListToolboxWidget::matchFilter(QMapIterator<QString, IFilterFactory::
     }
   }
   // Match according to "All Words"
-  else if (m_ActionAllWords->isChecked())
+  else if(m_ActionAllWords->isChecked())
   {
     QList<AbstractFilter::Pointer> filterList = wordCountMap.keys(wordList.size());
     QMapIterator<int, AbstractFilter::Pointer> iter(relevanceMap);
     iter.toBack();
-    while (iter.hasPrevious())
+    while(iter.hasPrevious())
     {
       iter.previous();
       AbstractFilter::Pointer filter = iter.value();
 
-      if (filterList.contains(filter))
+      if(filterList.contains(filter))
       {
         addItemToList(filter);
         filterCount++;
@@ -437,12 +430,12 @@ void FilterListToolboxWidget::matchFilter(QMapIterator<QString, IFilterFactory::
     }
   }
   // Match according to "Any Words"
-  else if (m_ActionAnyWords->isChecked())
+  else if(m_ActionAnyWords->isChecked())
   {
-    //QList<AbstractFilter::Pointer> filterList = wordCountMap.keys();
+    // QList<AbstractFilter::Pointer> filterList = wordCountMap.keys();
     QMapIterator<int, AbstractFilter::Pointer> iter(relevanceMap);
     iter.toBack();
-    while (iter.hasPrevious())
+    while(iter.hasPrevious())
     {
       iter.previous();
       AbstractFilter::Pointer filter = iter.value();
@@ -461,7 +454,7 @@ void FilterListToolboxWidget::searchFilters(QString text)
   // Set scroll bar back to the top
   filterList->scrollToTop();
 
-  if( text.isEmpty() )
+  if(text.isEmpty())
   {
     // Put back the entire list of Filters
     updateFilterList(true);
@@ -488,7 +481,7 @@ void FilterListToolboxWidget::searchFilters(QString text)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void FilterListToolboxWidget::on_filterList_itemDoubleClicked( QListWidgetItem* item )
+void FilterListToolboxWidget::on_filterList_itemDoubleClicked(QListWidgetItem* item)
 {
   emit filterItemDoubleClicked(item->data(Qt::UserRole).toString());
 }
@@ -498,26 +491,26 @@ void FilterListToolboxWidget::on_filterList_itemDoubleClicked( QListWidgetItem* 
 // -----------------------------------------------------------------------------
 void FilterListToolboxWidget::keyPressEvent(QKeyEvent* event)
 {
-  if (searchInProgress() == true)
+  if(searchInProgress() == true)
   {
-    if (nullptr == filterList || filterList->count() <= 0)
+    if(nullptr == filterList || filterList->count() <= 0)
     {
       return;
     }
 
     QList<QListWidgetItem*> selectedList = filterList->selectedItems();
 
-    if (event->key() == Qt::Key_Down)
+    if(event->key() == Qt::Key_Down)
     {
-      if (selectedList.size() == 0)
+      if(selectedList.size() == 0)
       {
         filterList->setItemSelected(filterList->item(0), true);
         filterList->setFocus();
       }
     }
-    else if (event->key() == Qt::Key_Return)
+    else if(event->key() == Qt::Key_Return)
     {
-      if (selectedList.size() == 1)
+      if(selectedList.size() == 1)
       {
         QListWidgetItem* selectedItem = selectedList[0];
         on_filterList_itemDoubleClicked(selectedItem);
@@ -533,23 +526,23 @@ void FilterListToolboxWidget::searchFieldsChanged(bool isChecked)
 {
   QAction* senderAction = qobject_cast<QAction*>(sender());
 
-  if (isChecked == true)
+  if(isChecked == true)
   {
     m_ActionExactPhrase->blockSignals(true);
     m_ActionAllWords->blockSignals(true);
     m_ActionAnyWords->blockSignals(true);
 
-    if (senderAction == m_ActionAnyWords)
+    if(senderAction == m_ActionAnyWords)
     {
       m_ActionExactPhrase->setChecked(false);
       m_ActionAllWords->setChecked(false);
     }
-    else if (senderAction == m_ActionExactPhrase)
+    else if(senderAction == m_ActionExactPhrase)
     {
       m_ActionAnyWords->setChecked(false);
       m_ActionAllWords->setChecked(false);
     }
-    else if (senderAction == m_ActionAllWords)
+    else if(senderAction == m_ActionAllWords)
     {
       m_ActionExactPhrase->setChecked(false);
       m_ActionAnyWords->setChecked(false);
@@ -572,11 +565,11 @@ void FilterListToolboxWidget::searchFieldsChanged(bool isChecked)
 // -----------------------------------------------------------------------------
 QAction* FilterListToolboxWidget::getActiveSearchAction()
 {
-  if (m_ActionExactPhrase->isChecked())
+  if(m_ActionExactPhrase->isChecked())
   {
     return m_ActionExactPhrase;
   }
-  else if (m_ActionAnyWords->isChecked())
+  else if(m_ActionAnyWords->isChecked())
   {
     return m_ActionAnyWords;
   }
@@ -623,7 +616,7 @@ QList<QAction*> FilterListToolboxWidget::getSearchActionList()
 QMap<QString, AbstractFilter::Pointer> FilterListToolboxWidget::getHumanNameMap(QList<AbstractFilter::Pointer> list)
 {
   QMap<QString, AbstractFilter::Pointer> map;
-  for (int i = 0; i < list.size(); i++)
+  for(int i = 0; i < list.size(); i++)
   {
     map.insert(list[i]->getHumanLabel(), list[i]);
   }
@@ -658,9 +651,9 @@ void FilterListToolboxWidget::readSettings(QtSSettings* prefs)
   QList<QAction*> list = getSearchActionList();
 
   bool didCheck = false;
-  for (int i = 0; i < list.size(); i++)
+  for(int i = 0; i < list.size(); i++)
   {
-    if (list[i]->objectName() == objectName)
+    if(list[i]->objectName() == objectName)
     {
       list[i]->setChecked(true);
       didCheck = true;
@@ -671,7 +664,7 @@ void FilterListToolboxWidget::readSettings(QtSSettings* prefs)
     }
   }
 
-  if (didCheck == false && list.size() > 0)
+  if(didCheck == false && list.size() > 0)
   {
     // Set "All Words" as checked by default
     list[0]->setChecked(true);
@@ -686,7 +679,7 @@ void FilterListToolboxWidget::readSettings(QtSSettings* prefs)
 // -----------------------------------------------------------------------------
 bool FilterListToolboxWidget::searchInProgress()
 {
-  if (filterSearch->text().isEmpty())
+  if(filterSearch->text().isEmpty())
   {
     return false;
   }
@@ -700,5 +693,3 @@ FilterListWidget* FilterListToolboxWidget::getFilterListWidget()
 {
   return filterList;
 }
-
-

@@ -2,14 +2,13 @@
 
 #include "DSplashScreen.h"
 
-
-#include <QtWidgets/QApplication>
-#include <QtWidgets/QDesktopWidget>
+#include <QtCore/QDebug>
 #include <QtGui/QPainter>
 #include <QtGui/QPixmap>
-#include <QtGui/QTextDocument>
 #include <QtGui/QTextCursor>
-#include <QtCore/QDebug>
+#include <QtGui/QTextDocument>
+#include <QtWidgets/QApplication>
+#include <QtWidgets/QDesktopWidget>
 #include <QtWidgets/QWidget>
 
 // Include the MOC generated CPP file which has all the QMetaObject methods/data
@@ -21,13 +20,13 @@
 class DSplashScreenPrivate
 {
 
-  public:
-    QPixmap pixmap;
-    QString currStatus;
-    QColor currColor;
-    int currAlign;
+public:
+  QPixmap pixmap;
+  QString currStatus;
+  QColor currColor;
+  int currAlign;
 
-    inline DSplashScreenPrivate();
+  inline DSplashScreenPrivate();
 };
 
 /**
@@ -37,10 +36,10 @@ class DSplashScreenPrivate
     perhaps Qt::WindowStaysOnTopHint.
 */
 DSplashScreen::DSplashScreen(const QPixmap& pixmap, Qt::WindowFlags f)
-  : QWidget(0, Qt::SplashScreen | Qt::FramelessWindowHint | f)
+: QWidget(0, Qt::SplashScreen | Qt::FramelessWindowHint | f)
 {
   d_ptr = new DSplashScreenPrivate;
-  setPixmap(pixmap);  // Does an implicit repaint
+  setPixmap(pixmap); // Does an implicit repaint
 }
 
 /**
@@ -52,11 +51,11 @@ DSplashScreen::DSplashScreen(const QPixmap& pixmap, Qt::WindowFlags f)
     one. In that case pass the proper desktop() as the \a parent.
 */
 DSplashScreen::DSplashScreen(QWidget* parent, const QPixmap& pixmap, Qt::WindowFlags f)
-  : QWidget(parent, Qt::SplashScreen | f)
+: QWidget(parent, Qt::SplashScreen | f)
 {
   d_ptr = new DSplashScreenPrivate;
   d_func()->pixmap = pixmap;
-  setPixmap(d_func()->pixmap);  // Does an implicit repaint
+  setPixmap(d_func()->pixmap); // Does an implicit repaint
 }
 
 /**
@@ -97,8 +96,6 @@ void DSplashScreen::repaint()
     \sa showMessage(), clearMessage()
 */
 
-
-
 /**
     Draws the \a message text onto the splash screen with color \a
     color and aligns the text according to the flags in \a alignment.
@@ -112,8 +109,7 @@ void DSplashScreen::repaint()
 
     \sa Qt::Alignment, clearMessage()
 */
-void DSplashScreen::showMessage(const QString& message, int alignment,
-                                const QColor& color)
+void DSplashScreen::showMessage(const QString& message, int alignment, const QColor& color)
 {
   Q_D(DSplashScreen);
   d->currStatus = message;
@@ -141,12 +137,12 @@ void DSplashScreen::clearMessage()
 */
 void DSplashScreen::finish(QWidget* mainWin)
 {
-  if (mainWin)
+  if(mainWin)
   {
 #if defined(Q_WS_X11)
-    /** FIXME: This fails to compile on Linux with Qt 4.8.6. Commented out for now.
-        qt_x11_wait_for_window_manager(mainWin);
-     */
+/** FIXME: This fails to compile on Linux with Qt 4.8.6. Commented out for now.
+    qt_x11_wait_for_window_manager(mainWin);
+ */
 #endif
   }
   close();
@@ -166,8 +162,10 @@ void DSplashScreen::setPixmap(const QPixmap& pixmap)
   QRect r(QPoint(), d->pixmap.size());
   resize(r.size());
   move(QApplication::desktop()->screenGeometry().center() - r.center());
-  if (isVisible())
-  { repaint(); }
+  if(isVisible())
+  {
+    repaint();
+  }
 }
 
 /**
@@ -182,7 +180,8 @@ const QPixmap DSplashScreen::pixmap() const
 /**
     \internal
 */
-inline DSplashScreenPrivate::DSplashScreenPrivate() : currAlign(Qt::AlignLeft)
+inline DSplashScreenPrivate::DSplashScreenPrivate()
+: currAlign(Qt::AlignLeft)
 {
 }
 
@@ -209,15 +208,15 @@ void DSplashScreen::drawContents(QPainter* painter)
 /** \reimp */
 bool DSplashScreen::event(QEvent* e)
 {
-  if (e->type() == QEvent::Paint)
+  if(e->type() == QEvent::Paint)
   {
     Q_D(DSplashScreen);
     QPainter painter(this);
-    if (!d->pixmap.isNull())
-    { painter.drawPixmap(QPoint(), d->pixmap); }
+    if(!d->pixmap.isNull())
+    {
+      painter.drawPixmap(QPoint(), d->pixmap);
+    }
     drawContents(&painter);
   }
   return QWidget::event(e);
 }
-
-

@@ -41,10 +41,9 @@
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-PipelineViewPtrMimeData::PipelineViewPtrMimeData() :
-QMimeData()
+PipelineViewPtrMimeData::PipelineViewPtrMimeData()
+: QMimeData()
 {
-  
 }
 
 // -----------------------------------------------------------------------------
@@ -52,8 +51,4 @@ QMimeData()
 // -----------------------------------------------------------------------------
 PipelineViewPtrMimeData::~PipelineViewPtrMimeData()
 {
-
 }
-
-
-

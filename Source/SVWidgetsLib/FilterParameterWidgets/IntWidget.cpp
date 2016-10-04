@@ -43,15 +43,14 @@
 
 #include "FilterParameterWidgetsDialogs.h"
 
-
 // Include the MOC generated file for this class
 #include "moc_IntWidget.cpp"
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-IntWidget::IntWidget(FilterParameter* parameter, AbstractFilter* filter, QWidget* parent) :
-  FilterParameterWidget(parameter, filter, parent)
+IntWidget::IntWidget(FilterParameter* parameter, AbstractFilter* filter, QWidget* parent)
+: FilterParameterWidget(parameter, filter, parent)
 {
   m_FilterParameter = dynamic_cast<IntFilterParameter*>(parameter);
   Q_ASSERT_X(m_FilterParameter != nullptr, "nullptr Pointer", "IntWidget can ONLY be used with a IntFilterParameter object");
@@ -64,7 +63,8 @@ IntWidget::IntWidget(FilterParameter* parameter, AbstractFilter* filter, QWidget
 //
 // -----------------------------------------------------------------------------
 IntWidget::~IntWidget()
-{}
+{
+}
 
 // -----------------------------------------------------------------------------
 //
@@ -72,33 +72,27 @@ IntWidget::~IntWidget()
 void IntWidget::setupGui()
 {
   // Catch when the filter is about to execute the preflight
-  connect(getFilter(), SIGNAL(preflightAboutToExecute()),
-          this, SLOT(beforePreflight()));
+  connect(getFilter(), SIGNAL(preflightAboutToExecute()), this, SLOT(beforePreflight()));
 
   // Catch when the filter is finished running the preflight
-  connect(getFilter(), SIGNAL(preflightExecuted()),
-          this, SLOT(afterPreflight()));
+  connect(getFilter(), SIGNAL(preflightExecuted()), this, SLOT(afterPreflight()));
 
   // Catch when the filter wants its values updated
-  connect(getFilter(), SIGNAL(updateFilterParameters(AbstractFilter*)),
-          this, SLOT(filterNeedsInputParameters(AbstractFilter*)));
+  connect(getFilter(), SIGNAL(updateFilterParameters(AbstractFilter*)), this, SLOT(filterNeedsInputParameters(AbstractFilter*)));
 
-  connect(value, SIGNAL(textChanged(const QString&)),
-          this, SLOT(widgetChanged(const QString&)));
+  connect(value, SIGNAL(textChanged(const QString&)), this, SLOT(widgetChanged(const QString&)));
 
   QIntValidator* xVal = new QIntValidator(value);
   value->setValidator(xVal);
 
-  if (getFilterParameter() != nullptr)
+  if(getFilterParameter() != nullptr)
   {
-    label->setText(getFilterParameter()->getHumanLabel() );
+    label->setText(getFilterParameter()->getHumanLabel());
 
     QString str = getFilter()->property(PROPERTY_NAME_AS_CHAR).toString();
     value->setText(str);
   }
-
 }
-
 
 // -----------------------------------------------------------------------------
 //
@@ -118,11 +112,11 @@ void IntWidget::filterNeedsInputParameters(AbstractFilter* filter)
   int i = defValue;
 
   // Next make sure there is something in the
-  if (!value->text().isEmpty())
+  if(!value->text().isEmpty())
   {
     i = value->text().toInt(&ok);
     //  make sure we can convert the entered value to a 32 bit signed int
-    if (!ok)
+    if(!ok)
     {
       errorLabel->setStyleSheet(QString::fromLatin1("color: rgb(255, 0, 0);"));
       errorLabel->setText("Value entered is beyond the representable range for a 32 bit integer. The filter will use the default value of " + getFilterParameter()->getDefaultValue().toString());
@@ -146,11 +140,10 @@ void IntWidget::filterNeedsInputParameters(AbstractFilter* filter)
 
   QVariant v(i);
   ok = filter->setProperty(PROPERTY_NAME_AS_CHAR, v);
-  if (false == ok)
+  if(false == ok)
   {
     FilterParameterWidgetsDialogs::ShowCouldNotSetFilterParameter(getFilter(), getFilterParameter());
   }
-
 }
 
 // -----------------------------------------------------------------------------
@@ -158,7 +151,6 @@ void IntWidget::filterNeedsInputParameters(AbstractFilter* filter)
 // -----------------------------------------------------------------------------
 void IntWidget::beforePreflight()
 {
-
 }
 
 // -----------------------------------------------------------------------------
@@ -166,5 +158,4 @@ void IntWidget::beforePreflight()
 // -----------------------------------------------------------------------------
 void IntWidget::afterPreflight()
 {
-
 }

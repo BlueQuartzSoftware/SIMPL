@@ -34,8 +34,8 @@
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 #include "AboutPlugins.h"
 
-#include <QtWidgets/QMessageBox>
 #include <QtWidgets/QFileDialog>
+#include <QtWidgets/QMessageBox>
 
 #include <QtCore/QPluginLoader>
 
@@ -69,8 +69,8 @@ static const QString NOT_FOUND_STRING = "Not Found";
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-AboutPlugins::AboutPlugins(QWidget* parent) :
-  m_loadPreferencesDidChange(false)
+AboutPlugins::AboutPlugins(QWidget* parent)
+: m_loadPreferencesDidChange(false)
 {
   setupUi(this);
 
@@ -85,7 +85,7 @@ AboutPlugins::AboutPlugins(QWidget* parent) :
 // -----------------------------------------------------------------------------
 AboutPlugins::~AboutPlugins()
 {
-#if defined (Q_OS_MAC)
+#if defined(Q_OS_MAC)
   delete m_CloseAction;
 #endif
 }
@@ -117,7 +117,7 @@ void AboutPlugins::setupGui()
   pluginsTable->setCurrentCell(0, 0);
   QTableWidgetItem* statusItem = pluginsTable->item(pluginsTable->currentRow(), STATUS_INDEX);
 
-  if (statusItem->text() == NOT_FOUND_STRING)
+  if(statusItem->text() == NOT_FOUND_STRING)
   {
     removePluginBtn->setVisible(true);
   }
@@ -130,7 +130,7 @@ void AboutPlugins::setupGui()
 
   setWindowFlags(this->windowFlags() & ~Qt::WindowContextHelpButtonHint);
 
-#if defined (Q_OS_MAC)
+#if defined(Q_OS_MAC)
   m_CloseAction = new QAction(this);
   m_CloseAction->setShortcut(QKeySequence(Qt::CTRL + Qt::Key_W));
   connect(m_CloseAction, SIGNAL(triggered()), this, SLOT(close()));
@@ -148,7 +148,7 @@ void AboutPlugins::loadPlugins(QList<PluginProxy::Pointer> proxies)
   pluginsTable->setRowCount(vector.size());
 
   // Iterate over PluginManager and add each entry to the plugin table
-  for (int row = 0; row < vector.size(); row++)
+  for(int row = 0; row < vector.size(); row++)
   {
     ISIMPLibPlugin* plugin = vector.at(row);
     addPluginToTable(plugin, row);
@@ -158,15 +158,15 @@ void AboutPlugins::loadPlugins(QList<PluginProxy::Pointer> proxies)
   QList<QString> managerNames = manager->getPluginNames();
   QList<QString> pluginNames;
 
-  for (QList<PluginProxy::Pointer>::iterator proxyIter = proxies.begin(); proxyIter != proxies.end(); proxyIter++)
+  for(QList<PluginProxy::Pointer>::iterator proxyIter = proxies.begin(); proxyIter != proxies.end(); proxyIter++)
   {
     pluginNames.push_back((*proxyIter)->getPluginName());
   }
 
-  for (QList<QString>::iterator nameIter = pluginNames.begin(); nameIter != pluginNames.end(); nameIter++)
+  for(QList<QString>::iterator nameIter = pluginNames.begin(); nameIter != pluginNames.end(); nameIter++)
   {
     QString proxyName = *nameIter;
-    if ( managerNames.contains(proxyName) == false )
+    if(managerNames.contains(proxyName) == false)
     {
       qDebug() << "The plugin " << proxyName << " was not found in the PluginManager.";
       SIMPLibPlugin* plugin = new SIMPLibPlugin();
@@ -210,10 +210,9 @@ void AboutPlugins::addPluginToTable(ISIMPLibPlugin* plugin, int row)
   widget->setLayout(layout);
   pluginsTable->setCellWidget(row, CHECKBOX_INDEX, widget);
 
-
   QTableWidgetItem* statusItem;
   // Add load status information
-  if (plugin->getDidLoad() == true)
+  if(plugin->getDidLoad() == true)
   {
     statusItem = new QTableWidgetItem("Enabled");
   }
@@ -292,7 +291,7 @@ void AboutPlugins::on_detailsBtn_clicked()
 // -----------------------------------------------------------------------------
 void AboutPlugins::on_pluginsTable_currentItemChanged(QTableWidgetItem* current, QTableWidgetItem* previous)
 {
-  if (nullptr != current && current->text() == NOT_FOUND_STRING)
+  if(nullptr != current && current->text() == NOT_FOUND_STRING)
   {
     detailsBtn->setDisabled(true);
     removePluginBtn->setVisible(true);
@@ -327,7 +326,7 @@ void AboutPlugins::on_addPluginBtn_pressed()
 {
   QString pluginPath = QFileDialog::getOpenFileName(this, tr("Open Plugin File Path"), "", tr("Plugin Files (*.plugin)"));
   QFileInfo fileInfo(pluginPath);
-  if (fileInfo.suffix() == "plugin")
+  if(fileInfo.suffix() == "plugin")
   {
     addPlugin(pluginPath);
   }
@@ -344,17 +343,17 @@ void AboutPlugins::addPlugin(QString pluginPath)
 {
   PluginManager* pluginManager = PluginManager::Instance();
   FilterManager* fm = FilterManager::Instance();
-  FilterWidgetManager*  fwm = FilterWidgetManager::Instance();
+  FilterWidgetManager* fwm = FilterWidgetManager::Instance();
 
   QApplication::instance()->processEvents();
   QPluginLoader* loader = new QPluginLoader(pluginPath);
   QFileInfo fi(pluginPath);
   QString fileName = fi.fileName();
   QObject* plugin = loader->instance();
-  if (plugin)
+  if(plugin)
   {
     ISIMPLibPlugin* ipPlugin = qobject_cast<ISIMPLibPlugin*>(plugin);
-    if (ipPlugin)
+    if(ipPlugin)
     {
       QString pluginName = ipPlugin->getPluginName();
 
@@ -373,9 +372,7 @@ void AboutPlugins::addPlugin(QString pluginPath)
   {
     QString message("The plugin did not load with the following error\n");
     message.append(loader->errorString());
-    QMessageBox::critical(this, "SIMPLView Plugin Load Error",
-                          message,
-                          QMessageBox::Ok | QMessageBox::Default);
+    QMessageBox::critical(this, "SIMPLView Plugin Load Error", message, QMessageBox::Ok | QMessageBox::Default);
     delete loader;
   }
 }
@@ -388,7 +385,7 @@ void AboutPlugins::on_removePluginBtn_pressed()
   int currentRow = pluginsTable->currentRow();
   QTableWidgetItem* nameItem = pluginsTable->item(currentRow, NAME_INDEX);
 
-  if (nullptr != nameItem)
+  if(nullptr != nameItem)
   {
     QString pluginName = nameItem->text();
 
@@ -399,11 +396,11 @@ void AboutPlugins::on_removePluginBtn_pressed()
     confirm.setWindowTitle("Remove Plugin");
     int answer = confirm.exec();
 
-    if (answer == QMessageBox::Yes)
+    if(answer == QMessageBox::Yes)
     {
       deletePlugin(nameItem);
       QTableWidgetItem* newSelection = pluginsTable->item(currentRow, NAME_INDEX);
-      if (nullptr != newSelection)
+      if(nullptr != newSelection)
       {
         // Select the row that is next after the one that was just deleted
         pluginsTable->setCurrentItem(newSelection);
@@ -436,7 +433,7 @@ void AboutPlugins::deletePlugin(QTableWidgetItem* nameItem)
   prefs.endGroup();
 
   // Remove entry from plugin table
-  pluginsTable->removeRow( nameItem->row() );
+  pluginsTable->removeRow(nameItem->row());
 }
 
 // -----------------------------------------------------------------------------
@@ -450,7 +447,7 @@ void AboutPlugins::writePluginCache()
 
   QList<PluginProxy::Pointer> proxies = getPluginCheckBoxSettingsFromGUI();
 
-  for (QList<PluginProxy::Pointer>::iterator proxyIter = proxies.begin(); proxyIter != proxies.end(); proxyIter++)
+  for(QList<PluginProxy::Pointer>::iterator proxyIter = proxies.begin(); proxyIter != proxies.end(); proxyIter++)
   {
     QString pluginName = (*proxyIter)->getPluginName();
     QString filePath = (*proxyIter)->getFilePath();
@@ -486,7 +483,7 @@ void AboutPlugins::displayDetailsWindow(QTableWidgetItem* item)
 {
   QTableWidgetItem* statusItem = pluginsTable->item(item->row(), STATUS_INDEX);
 
-  if (nullptr != statusItem && statusItem->text() != NOT_FOUND_STRING)
+  if(nullptr != statusItem && statusItem->text() != NOT_FOUND_STRING)
   {
     on_detailsBtn_clicked();
   }
@@ -500,7 +497,7 @@ QList<PluginProxy::Pointer> AboutPlugins::getPluginCheckBoxSettingsFromGUI()
   PluginManager* manager = PluginManager::Instance();
   QList<PluginProxy::Pointer> list;
 
-  for (int row = 0; row < pluginsTable->rowCount(); row++)
+  for(int row = 0; row < pluginsTable->rowCount(); row++)
   {
     QString pluginName = pluginsTable->item(row, NAME_INDEX)->text();
     ISIMPLibPlugin* plugin = manager->findPlugin(pluginName);
@@ -508,28 +505,28 @@ QList<PluginProxy::Pointer> AboutPlugins::getPluginCheckBoxSettingsFromGUI()
     PluginProxy::Pointer proxy = PluginProxy::New();
     proxy->setPluginName(pluginName);
 
-    if (pluginsTable->cellWidget(row, CHECKBOX_INDEX) != nullptr)
+    if(pluginsTable->cellWidget(row, CHECKBOX_INDEX) != nullptr)
     {
       QWidget* widget = pluginsTable->cellWidget(row, CHECKBOX_INDEX);
 
-      if (nullptr == widget)
+      if(nullptr == widget)
       {
         return QList<PluginProxy::Pointer>();
       }
       QHBoxLayout* layout = qobject_cast<QHBoxLayout*>(widget->layout());
 
-      if (nullptr == layout)
+      if(nullptr == layout)
       {
         return QList<PluginProxy::Pointer>();
       }
       QCheckBox* checkBox = qobject_cast<QCheckBox*>(layout->itemAt(0)->widget());
 
-      if (nullptr == checkBox)
+      if(nullptr == checkBox)
       {
         return QList<PluginProxy::Pointer>();
       }
 
-      if (checkBox->checkState() == Qt::Checked)
+      if(checkBox->checkState() == Qt::Checked)
       {
         proxy->setEnabled(true);
       }
@@ -539,7 +536,7 @@ QList<PluginProxy::Pointer> AboutPlugins::getPluginCheckBoxSettingsFromGUI()
       }
     }
 
-    if ( plugin )
+    if(plugin)
     {
       QString filePath = plugin->getLocation();
       proxy->setFilePath(filePath);
@@ -563,7 +560,7 @@ QList<PluginProxy::Pointer> AboutPlugins::readPluginCache()
   prefs.beginGroup("Plugin Preferences");
   QStringList pluginNameList = prefs.childGroups();
 
-  for (QStringList::iterator iter = pluginNameList.begin(); iter != pluginNameList.end(); iter++)
+  for(QStringList::iterator iter = pluginNameList.begin(); iter != pluginNameList.end(); iter++)
   {
     PluginProxy::Pointer proxy = PluginProxy::New();
     QString pluginName = *iter;
@@ -594,8 +591,4 @@ bool AboutPlugins::getLoadPreferencesDidChange()
 // -----------------------------------------------------------------------------
 void AboutPlugins::togglePluginState(int state)
 {
-
 }
-
-
-

@@ -35,7 +35,6 @@
 
 #include "ComparisonInputs.h"
 
-
 #include "moc_ComparisonInputs.cpp"
 
 // -----------------------------------------------------------------------------
@@ -43,7 +42,6 @@
 // -----------------------------------------------------------------------------
 ComparisonInputs::ComparisonInputs()
 {
-
 }
 
 // -----------------------------------------------------------------------------
@@ -54,22 +52,19 @@ ComparisonInputs::ComparisonInputs(const ComparisonInputs& rhs)
   m_Inputs = rhs.m_Inputs;
 }
 
-
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-//ComparisonInputs::ComparisonInputs(ComparisonInputs& rhs)
+// ComparisonInputs::ComparisonInputs(ComparisonInputs& rhs)
 //{
 //  m_Inputs = rhs.m_Inputs;
 //}
-
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
 ComparisonInputs::~ComparisonInputs()
 {
-
 }
 
 // -----------------------------------------------------------------------------
@@ -133,5 +128,3 @@ void ComparisonInputs::operator=(const ComparisonInputs& rhs)
 {
   m_Inputs = rhs.m_Inputs;
 }
-
-

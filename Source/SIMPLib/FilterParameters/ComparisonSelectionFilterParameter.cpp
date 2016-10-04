@@ -40,21 +40,24 @@
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-ComparisonSelectionFilterParameter::ComparisonSelectionFilterParameter() :
-m_ShowOperators(true) {}
+ComparisonSelectionFilterParameter::ComparisonSelectionFilterParameter()
+: m_ShowOperators(true)
+{
+}
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
 ComparisonSelectionFilterParameter::~ComparisonSelectionFilterParameter()
-{}
+{
+}
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-ComparisonSelectionFilterParameter::Pointer ComparisonSelectionFilterParameter::New(const QString& humanLabel, const QString& propertyName,
-  ComparisonInputs defaultValue, Category category, SetterCallbackType setterCallback, GetterCallbackType getterCallback, QVector<QString> choices,
-  bool showOperators, int groupIndex)
+ComparisonSelectionFilterParameter::Pointer ComparisonSelectionFilterParameter::New(const QString& humanLabel, const QString& propertyName, ComparisonInputs defaultValue, Category category,
+                                                                                    SetterCallbackType setterCallback, GetterCallbackType getterCallback, QVector<QString> choices, bool showOperators,
+                                                                                    int groupIndex)
 {
   ComparisonSelectionFilterParameter::Pointer ptr = ComparisonSelectionFilterParameter::New();
   ptr->setHumanLabel(humanLabel);
@@ -83,15 +86,15 @@ QString ComparisonSelectionFilterParameter::getWidgetType()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void ComparisonSelectionFilterParameter::readJson(const QJsonObject &json)
+void ComparisonSelectionFilterParameter::readJson(const QJsonObject& json)
 {
   QJsonValue jsonValue = json[getPropertyName()];
-  if(!jsonValue.isUndefined() )
+  if(!jsonValue.isUndefined() && m_SetterCallback)
   {
     QJsonArray jsonArray = jsonValue.toArray();
 
     ComparisonInputs inputs;
-    for (int i=0; i<jsonArray.size(); i++)
+    for(int i = 0; i < jsonArray.size(); i++)
     {
       QJsonObject comparisonObj = jsonArray[i].toObject();
       ComparisonInput_t input;
@@ -101,25 +104,26 @@ void ComparisonSelectionFilterParameter::readJson(const QJsonObject &json)
 
     m_SetterCallback(inputs);
   }
-
 }
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void ComparisonSelectionFilterParameter::writeJson(QJsonObject &json)
+void ComparisonSelectionFilterParameter::writeJson(QJsonObject& json)
 {
-  QJsonArray inputsArray;
-
-  ComparisonInputs inputs = m_GetterCallback();
-  for (int i=0; i<inputs.size(); i++)
+  if (m_GetterCallback)
   {
-    ComparisonInput_t input = inputs[i];
-    QJsonObject obj;
-    input.writeJson(obj);
-    inputsArray.push_back(obj);
+    QJsonArray inputsArray;
+
+    ComparisonInputs inputs = m_GetterCallback();
+    for(int i = 0; i < inputs.size(); i++)
+    {
+      ComparisonInput_t input = inputs[i];
+      QJsonObject obj;
+      input.writeJson(obj);
+      inputsArray.push_back(obj);
+    }
+
+    json[getPropertyName()] = inputsArray;
   }
-
-  json[getPropertyName()] = inputsArray;
 }
-

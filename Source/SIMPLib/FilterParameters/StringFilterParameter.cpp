@@ -38,22 +38,23 @@
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-StringFilterParameter::StringFilterParameter() :
-FilterParameter()
-{}
+StringFilterParameter::StringFilterParameter()
+: FilterParameter()
+{
+}
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
 StringFilterParameter::~StringFilterParameter()
-{}
+{
+}
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-StringFilterParameter::Pointer StringFilterParameter::New(const QString& humanLabel, const QString& propertyName,
-  const QString& defaultValue, Category category, SetterCallbackType setterCallback, GetterCallbackType getterCallback,
-  int groupIndex)
+StringFilterParameter::Pointer StringFilterParameter::New(const QString& humanLabel, const QString& propertyName, const QString& defaultValue, Category category, SetterCallbackType setterCallback,
+                                                          GetterCallbackType getterCallback, int groupIndex)
 {
 
   StringFilterParameter::Pointer ptr = StringFilterParameter::New();
@@ -64,7 +65,6 @@ StringFilterParameter::Pointer StringFilterParameter::New(const QString& humanLa
   ptr->setGroupIndex(groupIndex);
   ptr->setSetterCallback(setterCallback);
   ptr->setGetterCallback(getterCallback);
-
 
   return ptr;
 }
@@ -80,10 +80,10 @@ QString StringFilterParameter::getWidgetType()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void StringFilterParameter::readJson(const QJsonObject &json)
+void StringFilterParameter::readJson(const QJsonObject& json)
 {
   QJsonValue jsonValue = json[getPropertyName()];
-  if(!jsonValue.isUndefined() )
+  if(!jsonValue.isUndefined() && m_SetterCallback)
   {
     m_SetterCallback(jsonValue.toString(""));
   }
@@ -92,8 +92,10 @@ void StringFilterParameter::readJson(const QJsonObject &json)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void StringFilterParameter::writeJson(QJsonObject &json)
+void StringFilterParameter::writeJson(QJsonObject& json)
 {
-  json[getPropertyName()] = m_GetterCallback();
+  if(m_GetterCallback)
+  {
+    json[getPropertyName()] = m_GetterCallback();
+  }
 }
-

@@ -39,24 +39,24 @@
 #include <iostream>
 
 #include <QtCore/QTimer>
+#include <QtGui/QPainter>
 #include <QtWidgets/QApplication>
-#include <QtWidgets/QHBoxLayout>
-#include <QtWidgets/QVBoxLayout>
 #include <QtWidgets/QFormLayout>
 #include <QtWidgets/QGridLayout>
-#include <QtGui/QPainter>
+#include <QtWidgets/QHBoxLayout>
+#include <QtWidgets/QVBoxLayout>
 
-#include <QtWidgets/QPushButton>
-#include <QtWidgets/QFileDialog>
 #include <QtGui/QMouseEvent>
+#include <QtWidgets/QFileDialog>
+#include <QtWidgets/QPushButton>
 
 #include "moc_QtSDisclosableGroupBox.cpp"
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-QtSDisclosableGroupBox::QtSDisclosableGroupBox(QWidget* parent) :
-  QGroupBox(parent)
+QtSDisclosableGroupBox::QtSDisclosableGroupBox(QWidget* parent)
+: QGroupBox(parent)
 {
   connect(this, SIGNAL(toggled(bool)), this, SLOT(disclose(bool)));
 }
@@ -95,7 +95,7 @@ void QtSDisclosableGroupBox::setupGui()
 // -----------------------------------------------------------------------------
 void QtSDisclosableGroupBox::disclose(bool on)
 {
-  if (on)
+  if(on)
   {
     this->setMaximumHeight(260000);
   }
@@ -110,10 +110,10 @@ void QtSDisclosableGroupBox::disclose(bool on)
     QWidget* w = qobject_cast<QWidget*>(obj);
     if(nullptr != w)
     {
-      if(on) w->show();
-      else w->hide();
+      if(on)
+        w->show();
+      else
+        w->hide();
     }
   }
-
 }
-

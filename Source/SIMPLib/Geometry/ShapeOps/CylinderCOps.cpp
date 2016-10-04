@@ -37,7 +37,6 @@
 
 #include "SIMPLib/Math/SIMPLibMath.h"
 
-
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
@@ -52,7 +51,6 @@ CylinderCOps::~CylinderCOps()
 {
 }
 
-
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
@@ -64,9 +62,9 @@ float CylinderCOps::radcur1(QMap<ArgName, float> args)
   float bovera = args[B_OverA];
   float covera = args[C_OverA];
 
-  //the equation for volume for a C cylinder is pi*a*b*h where a and b are semi axis lengths, but
-  //h is a full axis length - meaning h = 2c.  However, since our aspect ratios relate semi axis lengths, the 2.0
-  //factor can be ingored in this part
+  // the equation for volume for a C cylinder is pi*a*b*h where a and b are semi axis lengths, but
+  // h is a full axis length - meaning h = 2c.  However, since our aspect ratios relate semi axis lengths, the 2.0
+  // factor can be ingored in this part
   radcur1 = static_cast<float>((volcur * SIMPLib::Constants::k_1OverPi * (1.0f / bovera) * (1.0f / covera)));
   radcur1 = powf(radcur1, 0.333333333333f);
   return radcur1;
@@ -78,14 +76,14 @@ float CylinderCOps::radcur1(QMap<ArgName, float> args)
 float CylinderCOps::inside(float axis1comp, float axis2comp, float axis3comp)
 {
   float inside = -1.0;
-  if (fabs(axis3comp) <= 1.0)
+  if(fabs(axis3comp) <= 1.0)
   {
     // inside = 1.0;
     axis1comp = fabs(axis1comp);
     axis2comp = fabs(axis2comp);
     axis1comp = axis1comp * axis1comp;
     axis2comp = axis2comp * axis2comp;
-    inside = static_cast<float>( 1.0 - axis1comp - axis2comp );
+    inside = static_cast<float>(1.0 - axis1comp - axis2comp);
   }
   return inside;
 }

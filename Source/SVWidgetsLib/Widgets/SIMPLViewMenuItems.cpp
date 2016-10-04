@@ -54,8 +54,8 @@ SIMPLViewMenuItems* SIMPLViewMenuItems::self = nullptr;
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-SIMPLViewMenuItems::SIMPLViewMenuItems(QObject* parent) :
-QObject(parent)
+SIMPLViewMenuItems::SIMPLViewMenuItems(QObject* parent)
+: QObject(parent)
 {
   createMenus();
   createActions();
@@ -116,7 +116,7 @@ SIMPLViewMenuItems::~SIMPLViewMenuItems()
 // -----------------------------------------------------------------------------
 SIMPLViewMenuItems* SIMPLViewMenuItems::Instance()
 {
-  if (nullptr == self)
+  if(nullptr == self)
   {
     self = new SIMPLViewMenuItems();
   }
@@ -182,7 +182,6 @@ void SIMPLViewMenuItems::createActions()
   m_ActionShowBookmarkInFileSystem->setText("Show in File System");
 #endif
 
-
   m_ActionClearPipeline->setShortcut(QKeySequence(Qt::CTRL + Qt::Key_Backspace));
   m_ActionOpen->setShortcut(QKeySequence(Qt::CTRL + Qt::Key_O));
   m_ActionNew->setShortcut(QKeySequence(Qt::CTRL + Qt::Key_N));
@@ -219,7 +218,7 @@ void SIMPLViewMenuItems::updatePasteAvailability()
 
   JsonFilterParametersReader::Pointer jsonReader = JsonFilterParametersReader::New();
   FilterPipeline::Pointer pipeline = jsonReader->readPipelineFromString(text);
-  if (text.isEmpty() || FilterPipeline::NullPointer() == pipeline)
+  if(text.isEmpty() || FilterPipeline::NullPointer() == pipeline)
   {
     m_CanPaste = false;
   }
@@ -230,6 +229,3 @@ void SIMPLViewMenuItems::updatePasteAvailability()
 
   emit clipboardHasChanged(m_CanPaste);
 }
-
-
-

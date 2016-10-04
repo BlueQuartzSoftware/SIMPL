@@ -33,13 +33,11 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-
 #include <stdlib.h>
 #include <string.h>
 
-
-#include <limits>
 #include <iostream>
+#include <limits>
 #include <limits>
 #include <string>
 
@@ -48,15 +46,15 @@
 
 #include "H5Support/H5Utilities.h"
 
-#include "SIMPLib/SIMPLib.h"
-#include "SIMPLib/Math/SIMPLibMath.h"
 #include "SIMPLib/Common/StatsGen.h"
 #include "SIMPLib/DataArrays/DataArray.hpp"
-#include "SIMPLib/DataContainers/DataContainer.h"
 #include "SIMPLib/DataArrays/StatsDataArray.h"
-#include "SIMPLib/StatsData/StatsData.h"
-#include "SIMPLib/IOFilters/DataContainerWriter.h"
+#include "SIMPLib/DataContainers/DataContainer.h"
 #include "SIMPLib/IOFilters/DataContainerReader.h"
+#include "SIMPLib/IOFilters/DataContainerWriter.h"
+#include "SIMPLib/Math/SIMPLibMath.h"
+#include "SIMPLib/SIMPLib.h"
+#include "SIMPLib/StatsData/StatsData.h"
 
 #include "UnitTestSupport.hpp"
 
@@ -82,7 +80,7 @@ void initializeOmega3(StatsData::Pointer statsData, int count, uint32_t distType
   FloatArrayType::Pointer alphas = FloatArrayType::CreateArray(count, SIMPL::StringConstants::Alpha);
   FloatArrayType::Pointer betas = FloatArrayType::CreateArray(count, SIMPL::StringConstants::Beta);
 
-  for (int32_t i = 0; i < count; ++i)
+  for(int32_t i = 0; i < count; ++i)
   {
     alpha = (0 * i) + 10.0 + rg.genrand_res53();
     beta = (0 * i) + 1.5 + (0.5 * rg.genrand_res53());
@@ -105,7 +103,7 @@ void initializeBOverA(StatsData::Pointer statsData, int count, uint32_t distType
   FloatArrayType::Pointer alphas = FloatArrayType::CreateArray(count, SIMPL::StringConstants::Alpha);
   FloatArrayType::Pointer betas = FloatArrayType::CreateArray(count, SIMPL::StringConstants::Beta);
 
-  for (int32_t i = 0; i < count; ++i)
+  for(int32_t i = 0; i < count; ++i)
   {
     alpha = (0 * i) + 15.0 + rg.genrand_res53();
     beta = (0 * i) + 1.25 + (0.5 * rg.genrand_res53());
@@ -128,7 +126,7 @@ void initializeCOverA(StatsData::Pointer statsData, int count, uint32_t distType
   FloatArrayType::Pointer alphas = FloatArrayType::CreateArray(count, SIMPL::StringConstants::Alpha);
   FloatArrayType::Pointer betas = FloatArrayType::CreateArray(count, SIMPL::StringConstants::Beta);
 
-  for (int32_t i = 0; i < count; ++i)
+  for(int32_t i = 0; i < count; ++i)
   {
     alpha = (0 * i) + 14.0 + rg.genrand_res53();
     beta = (0 * i) + 1.15 + (0.5 * rg.genrand_res53());
@@ -156,7 +154,7 @@ void initializeNeighbors(StatsData::Pointer statsData, std::vector<float> binNum
 
   int middlebin = count / 2;
 
-  for (int32_t i = 0; i < count; ++i)
+  for(int32_t i = 0; i < count; ++i)
   {
     alpha = (4 * (binNumbers[i] / binNumbers[middlebin])) + rg.genrand_res53();
     k = 2 + (0.2 * (binNumbers[i] / binNumbers[middlebin])) + (0.05 * rg.genrand_res53());
@@ -190,7 +188,7 @@ void initializeODF_MDF(StatsData::Pointer statsData)
 
   // Stupid, but copy the data from the vector to the DataArray<float> instance
   FloatArrayType::Pointer odfData = FloatArrayType::CreateArray(odf.size(), SIMPL::StringConstants::ODF);
-  for (size_t i = 0; i < odf.size(); ++i)
+  for(size_t i = 0; i < odf.size(); ++i)
   {
     odfData->SetValue(i, odf[i]);
   }
@@ -219,12 +217,12 @@ void initializeODF_MDF(StatsData::Pointer statsData)
     statsData->setODF_Weights(odfWeights);
     statsData->setAxisODF_Weights(odfWeights);
   }
-  //unsigned long long int nElements = 18 * 18 * 18;
+  // unsigned long long int nElements = 18 * 18 * 18;
   Texture::calculateMDFData<std::vector<float>, CubicOps>(angles, axes, weights, odf, mdf);
 
   // Stupid, but copy the data from the vector to the DataArray<float> instance
   FloatArrayType::Pointer mdfData = FloatArrayType::CreateArray(mdf.size(), SIMPL::StringConstants::MisorientationBins);
-  for (size_t i = 0; i < mdf.size(); ++i)
+  for(size_t i = 0; i < mdf.size(); ++i)
   {
     mdfData->SetValue(i, mdf[i]);
   }
@@ -265,7 +263,7 @@ void initializeAxisODF(StatsData::Pointer statsData)
 
   // Stupid, but copy the data from the vector to the DataArray<float> instance
   FloatArrayType::Pointer aodfData = FloatArrayType::CreateArray(aodf.size(), SIMPL::StringConstants::AxisOrientation);
-  for (size_t i = 0; i < aodf.size(); ++i)
+  for(size_t i = 0; i < aodf.size(); ++i)
   {
     aodfData->SetValue(i, aodf[i]);
   }
@@ -277,33 +275,23 @@ void initializeAxisODF(StatsData::Pointer statsData)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-int computeBinsAndCutOffs(float mu,
-                          float sigma,
-                          float minCutOff,
-                          float maxCutOff,
-                          float binStepSize,
-                          std::vector<float>& binsizes,
-                          std::vector<float>& xCo,
-                          std::vector<float>& yCo,
-                          float& xMax,
-                          float& yMax,
-                          std::vector<float>& x,
-                          std::vector<float>& y)
+int computeBinsAndCutOffs(float mu, float sigma, float minCutOff, float maxCutOff, float binStepSize, std::vector<float>& binsizes, std::vector<float>& xCo, std::vector<float>& yCo, float& xMax,
+                          float& yMax, std::vector<float>& x, std::vector<float>& y)
 {
   int err = 0;
   int size = 250;
 
   StatsGen sg;
-  err = sg.GenLogNormalPlotData<std::vector<float> >(mu, sigma, x, y, size);
+  err = sg.GenLogNormalPlotData<std::vector<float>>(mu, sigma, x, y, size);
   if(err == 1)
   {
-    //TODO: Present Error Message
+    // TODO: Present Error Message
     return -1;
   }
 
-//  float xMax = std::numeric_limits<float >::min();
-//  float yMax = std::numeric_limits<float >::min();
-  for (int i = 0; i < size; ++i)
+  //  float xMax = std::numeric_limits<float >::min();
+  //  float yMax = std::numeric_limits<float >::min();
+  for(int i = 0; i < size; ++i)
   {
     //   std::cout << x[i] << "  " << y[i] << std::endl;
     if(x[i] > xMax)
@@ -321,7 +309,7 @@ int computeBinsAndCutOffs(float mu,
   int numsizebins = 1;
   binsizes.clear();
   // std::vector<int> numgrains;
-  err = sg.GenCutOff<float, std::vector<float> >(mu, sigma, minCutOff, maxCutOff, binStepSize, xCo, yCo, yMax, numsizebins, binsizes);
+  err = sg.GenCutOff<float, std::vector<float>>(mu, sigma, minCutOff, maxCutOff, binStepSize, xCo, yCo, yMax, numsizebins, binsizes);
 
   return 0;
 }
@@ -333,7 +321,7 @@ StatsDataArray::Pointer createStatsDataArray()
 {
 
   StatsDataArray::Pointer statsArray = StatsDataArray::New();
-  StatsData::Pointer s0; // Create a nullptr instance of StatsData;
+  StatsData::Pointer s0;           // Create a nullptr instance of StatsData;
   statsArray->setStatsData(0, s0); // The underlying storage will resize as needed.
 
   float m_PhaseFraction = 0.25;
@@ -362,20 +350,19 @@ StatsDataArray::Pointer createStatsDataArray()
   // We need to compute the Max and Min Diameter Bin Values
   float mindiameter = xCo[0];
   float maxdiameter = xCo[1];
-//  float avglogdiam = mu;
-//  float sdlogdiam = sigma;
+  //  float avglogdiam = mu;
+  //  float sdlogdiam = sigma;
 
   size_t nBins = binsizes.size();
   // Copy this into the DataArray<float>
   FloatArrayType::Pointer binNumbers = FloatArrayType::CreateArray(nBins, SIMPL::StringConstants::BinNumber);
   ::memcpy(binNumbers->getVoidPointer(0), &(binsizes.front()), binsizes.size() * sizeof(float));
 
-
   // Phase 1
   StatsData::Pointer data1 = StatsData::New();
   data1->setPhaseFraction(calcPhaseFraction);
   data1->setGrainDiameterInfo(binStep, maxdiameter, mindiameter);
-//  data1->setGrainSizeDistribution(avglogdiam, sdlogdiam);
+  //  data1->setGrainSizeDistribution(avglogdiam, sdlogdiam);
   data1->setBinNumbers(binNumbers);
   initializeOmega3(data1, nBins);
   initializeBOverA(data1, nBins);
@@ -390,7 +377,7 @@ StatsDataArray::Pointer createStatsDataArray()
   calcPhaseFraction = 0.75f;
   data2->setPhaseFraction(calcPhaseFraction);
   data2->setGrainDiameterInfo(binStep, maxdiameter, mindiameter);
-//  data2->setGrainSizeDistribution(avglogdiam, sdlogdiam);
+  //  data2->setGrainSizeDistribution(avglogdiam, sdlogdiam);
   data2->setBinNumbers(binNumbers);
   initializeOmega3(data2, nBins);
   initializeBOverA(data2, nBins);
@@ -431,11 +418,9 @@ void TestStatsData()
   statsArray->setStatsData(2, s2);
   DREAM3D_REQUIRE_EQUAL(3, statsArray->GetNumberOfTuples());
 
-
   StatsDataArray& arrayRef = *statsArray;
   StatsData::Pointer t0 = arrayRef[0];
   DREAM3D_REQUIRE_EQUAL(nullptr, t0.get());
-
 }
 
 // -----------------------------------------------------------------------------
@@ -472,14 +457,12 @@ void TestWriteData()
   shapeTypes->SetValue(2, SIMPL::ShapeType::EllipsoidShape);
   m->addEnsembleData(SIMPL::EnsembleData::ShapeTypes, shapeTypes);
 
-
   DataContainerWriter::Pointer writer = DataContainerWriter::New();
   // H5StatsDataWriter::Pointer writer = H5StatsDataWriter::New();
   writer->setVoxelDataContainer(m.get());
   writer->setOutputFile(UnitTest::StatsDataTest::TestFile);
   writer->execute();
-  DREAM3D_REQUIRE( writer->getErrorCondition() >= 0)
-
+  DREAM3D_REQUIRE(writer->getErrorCondition() >= 0)
 
   // This is an example of getting the StatsDataArray back from the DataContiner
   // and being able to do something meaningful with it.
@@ -508,7 +491,7 @@ void TestWriteData()
   // Both shared pointer objects should wrapp the SAME StatsData Pointer. This line
   // will verify that. You would NOT use this next line in normal production code. It
   // is for Unit Testing ONLY.
-  DREAM3D_REQUIRE_EQUAL( (s1.get()), (s1_Alt.get()))
+  DREAM3D_REQUIRE_EQUAL((s1.get()), (s1_Alt.get()))
 
   size_t numBins = s1->getNumberOfBins();
 
@@ -525,7 +508,7 @@ void TestWriteData()
   // anything you do to this array (adding, erasing, changing values) you are doing
   // to the arrays stored in the Data Container.
   alphas->SetValue(0, 100.0f); // This sets the value at index 0 to 100.0
-  betas->SetValue(0, 6.0f); // This sets the value at index 0 to 6.0
+  betas->SetValue(0, 6.0f);    // This sets the value at index 0 to 6.0
 }
 
 // -----------------------------------------------------------------------------
@@ -540,11 +523,11 @@ void TestReadData()
   reader->setVoxelDataContainer(m.get());
   reader->execute();
   int err = reader->getErrorCondition();
-  if (err < 0)
+  if(err < 0)
   {
     std::cout << reader->getErrorMessage() << std::endl;
   }
-  DREAM3D_REQUIRE( err >= 0);
+  DREAM3D_REQUIRE(err >= 0);
 
   IDataArray::Pointer p = m->getEnsembleData(SIMPL::EnsembleData::Statistics);
   DREAM3D_REQUIRE_EQUAL(p->GetNumberOfTuples(), 3);
@@ -554,11 +537,11 @@ void TestReadData()
   writer->setVoxelDataContainer(m.get());
   writer->execute();
   err = writer->getErrorCondition();
-  if (err < 0)
+  if(err < 0)
   {
     std::cout << "Rewriting the data failed" << std::endl;
   }
-  DREAM3D_REQUIRE( err >= 0);
+  DREAM3D_REQUIRE(err >= 0);
 }
 
 // -----------------------------------------------------------------------------
@@ -568,18 +551,17 @@ int main(int argc, char** argv)
 {
   int err = EXIT_SUCCESS;
 #if !REMOVE_TEST_FILES
-  DREAM3D_REGISTER_TEST( RemoveTestFiles())
+  DREAM3D_REGISTER_TEST(RemoveTestFiles())
 #endif
 
-  DREAM3D_REGISTER_TEST( TestStatsData())
-  DREAM3D_REGISTER_TEST( TestWriteData())
-  DREAM3D_REGISTER_TEST( TestReadData())
+  DREAM3D_REGISTER_TEST(TestStatsData())
+  DREAM3D_REGISTER_TEST(TestWriteData())
+  DREAM3D_REGISTER_TEST(TestReadData())
 
 #if REMOVE_TEST_FILES
-  DREAM3D_REGISTER_TEST( RemoveTestFiles() )
+  DREAM3D_REGISTER_TEST(RemoveTestFiles())
 #endif
 
   PRINT_TEST_SUMMARY();
   return err;
 }
-

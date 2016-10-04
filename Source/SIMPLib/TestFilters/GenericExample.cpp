@@ -33,69 +33,66 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-
 #include "GenericExample.h"
 
 #include "SIMPLib/FilterParameters/AbstractFilterParametersReader.h"
 
-#include "SIMPLib/FilterParameters/StringFilterParameter.h"
-#include "SIMPLib/FilterParameters/OutputFileFilterParameter.h"
-#include "SIMPLib/FilterParameters/OutputPathFilterParameter.h"
-#include "SIMPLib/FilterParameters/DataContainerCreationFilterParameter.h"
-#include "SIMPLib/FilterParameters/DynamicChoiceFilterParameter.h"
-#include "SIMPLib/FilterParameters/ComparisonSelectionFilterParameter.h"
-#include "SIMPLib/FilterParameters/ShapeTypeSelectionFilterParameter.h"
+#include "SIMPLib/FilterParameters/AttributeMatrixCreationFilterParameter.h"
+#include "SIMPLib/FilterParameters/AttributeMatrixSelectionFilterParameter.h"
+#include "SIMPLib/FilterParameters/AxisAngleFilterParameter.h"
 #include "SIMPLib/FilterParameters/BooleanFilterParameter.h"
-#include "SIMPLib/FilterParameters/PreflightUpdatedValueFilterParameter.h"
-#include "SIMPLib/FilterParameters/IntVec3FilterParameter.h"
-#include "SIMPLib/FilterParameters/DataArraySelectionFilterParameter.h"
-#include "SIMPLib/FilterParameters/DoubleFilterParameter.h"
-#include "SIMPLib/FilterParameters/RangeFilterParameter.h"
 #include "SIMPLib/FilterParameters/CalculatorFilterParameter.h"
 #include "SIMPLib/FilterParameters/ChoiceFilterParameter.h"
-#include "SIMPLib/FilterParameters/AttributeMatrixSelectionFilterParameter.h"
-#include "SIMPLib/FilterParameters/AttributeMatrixCreationFilterParameter.h"
-#include "SIMPLib/FilterParameters/IntFilterParameter.h"
+#include "SIMPLib/FilterParameters/ComparisonSelectionFilterParameter.h"
+#include "SIMPLib/FilterParameters/DataArrayCreationFilterParameter.h"
+#include "SIMPLib/FilterParameters/DataArraySelectionFilterParameter.h"
+#include "SIMPLib/FilterParameters/DataContainerArrayProxyFilterParameter.h"
+#include "SIMPLib/FilterParameters/DataContainerCreationFilterParameter.h"
+#include "SIMPLib/FilterParameters/DataContainerSelectionFilterParameter.h"
+#include "SIMPLib/FilterParameters/DoubleFilterParameter.h"
+#include "SIMPLib/FilterParameters/DynamicChoiceFilterParameter.h"
+#include "SIMPLib/FilterParameters/FloatVec3FilterParameter.h"
 #include "SIMPLib/FilterParameters/InputFileFilterParameter.h"
 #include "SIMPLib/FilterParameters/InputPathFilterParameter.h"
-#include "SIMPLib/FilterParameters/DataArrayCreationFilterParameter.h"
-#include "SIMPLib/FilterParameters/FloatVec3FilterParameter.h"
-#include "SIMPLib/FilterParameters/AxisAngleFilterParameter.h"
-#include "SIMPLib/FilterParameters/DataContainerSelectionFilterParameter.h"
-#include "SIMPLib/FilterParameters/DataContainerArrayProxyFilterParameter.h"
-#include "SIMPLib/FilterParameters/LinkedChoicesFilterParameter.h"
+#include "SIMPLib/FilterParameters/IntFilterParameter.h"
+#include "SIMPLib/FilterParameters/IntVec3FilterParameter.h"
 #include "SIMPLib/FilterParameters/LinkedBooleanFilterParameter.h"
+#include "SIMPLib/FilterParameters/LinkedChoicesFilterParameter.h"
 #include "SIMPLib/FilterParameters/MultiDataArraySelectionFilterParameter.h"
+#include "SIMPLib/FilterParameters/OutputFileFilterParameter.h"
+#include "SIMPLib/FilterParameters/OutputPathFilterParameter.h"
+#include "SIMPLib/FilterParameters/PreflightUpdatedValueFilterParameter.h"
+#include "SIMPLib/FilterParameters/RangeFilterParameter.h"
 #include "SIMPLib/FilterParameters/SeparatorFilterParameter.h"
+#include "SIMPLib/FilterParameters/ShapeTypeSelectionFilterParameter.h"
+#include "SIMPLib/FilterParameters/StringFilterParameter.h"
 
 // Include the MOC generated file for this class
 #include "moc_GenericExample.cpp"
 
-
-
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-GenericExample::GenericExample() :
-  AbstractFilter(),
-  m_StlFilePrefix("Some Prefix"),
-  m_ShowPrefix(false),
-  m_MaxIterations(0),
-  m_MisorientationTolerance(0),
-  m_InputFile("/Some/Path/file.cpp"),
-  m_InputPath("/Some/Path"),
-  m_OutputFile("/Some/Path/Out.bin"),
-  m_OutputPath("/Some/Path"),
-  m_WriteAlignmentShifts(false),
-  m_ConversionType(0),
-  m_FeatureIdsArrayPath(SIMPL::Defaults::DataContainerName, SIMPL::Defaults::CellAttributeMatrixName, "Garbly Gook"),
-  m_AttributeMatrixPath(SIMPL::Defaults::DataContainerName, SIMPL::Defaults::NewCellFeatureAttributeMatrixName, ""),
-  m_DataContainerName(SIMPL::Defaults::StatsGenerator),
-  m_CreatedDataArray(SIMPL::Defaults::DataContainerName, SIMPL::Defaults::CellAttributeMatrixName, SIMPL::CellData::EulerColor),
-  m_Bool1(false),
-  m_Bool2(false),
-  m_AlgorithmSelection(0),
-  m_DistanceMetric(1)
+GenericExample::GenericExample()
+: AbstractFilter()
+, m_StlFilePrefix("Some Prefix")
+, m_ShowPrefix(false)
+, m_MaxIterations(0)
+, m_MisorientationTolerance(0)
+, m_InputFile("/Some/Path/file.cpp")
+, m_InputPath("/Some/Path")
+, m_OutputFile("/Some/Path/Out.bin")
+, m_OutputPath("/Some/Path")
+, m_WriteAlignmentShifts(false)
+, m_ConversionType(0)
+, m_FeatureIdsArrayPath(SIMPL::Defaults::DataContainerName, SIMPL::Defaults::CellAttributeMatrixName, "Garbly Gook")
+, m_AttributeMatrixPath(SIMPL::Defaults::DataContainerName, SIMPL::Defaults::NewCellFeatureAttributeMatrixName, "")
+, m_DataContainerName(SIMPL::Defaults::StatsGenerator)
+, m_CreatedDataArray(SIMPL::Defaults::DataContainerName, SIMPL::Defaults::CellAttributeMatrixName, SIMPL::CellData::EulerColor)
+, m_Bool1(false)
+, m_Bool2(false)
+, m_AlgorithmSelection(0)
+, m_DistanceMetric(1)
 {
   m_Dimensions.x = 0;
   m_Dimensions.y = 0;
@@ -198,7 +195,8 @@ void GenericExample::setupFilterParameters()
 
   {
     QStringList linkedProps;
-    linkedProps << "Bool2" << "Double2";
+    linkedProps << "Bool2"
+                << "Double2";
     parameters.push_back(SIMPL_NEW_LINKED_BOOL_FP("Bool1", Bool1, FilterParameter::Parameter, GenericExample, linkedProps));
     parameters.push_back(SIMPL_NEW_DOUBLE_FP("Double 2", Double2, FilterParameter::Parameter, GenericExample));
   }
@@ -235,22 +233,23 @@ void GenericExample::setupFilterParameters()
     choices.push_back("Alt Choice 2");
     parameter->setChoices(choices);
     QStringList linkedProps;
-    linkedProps << "MaxIterations" << "MisorientationTolerance" << "InputFile" << "InputPath";
+    linkedProps << "MaxIterations"
+                << "MisorientationTolerance"
+                << "InputFile"
+                << "InputPath";
     parameter->setLinkedProperties(linkedProps);
     parameter->setEditable(false);
     parameter->setCategory(FilterParameter::Parameter);
     parameters.push_back(parameter);
 
     /*  For an Integer use this code*/
-    parameters.push_back(SIMPL_NEW_INTEGER_FP("Max Iterations", MaxIterations, FilterParameter::Parameter, GenericExample, 0));    /*  For a Floating point value use this code*/
+    parameters.push_back(SIMPL_NEW_INTEGER_FP("Max Iterations", MaxIterations, FilterParameter::Parameter, GenericExample, 0)); /*  For a Floating point value use this code*/
     parameters.push_back(SIMPL_NEW_DOUBLE_FP("Misorientation Tolerance", MisorientationTolerance, FilterParameter::Parameter, GenericExample, 1));
     /*   For an input file use this code*/
     parameters.push_back(SIMPL_NEW_INPUT_FILE_FP("Input File", InputFile, FilterParameter::Parameter, GenericExample, "*.txt", "", 1));
     /*   For an input path use this code*/
     parameters.push_back(SIMPL_NEW_INPUT_PATH_FP("Input Path", InputPath, FilterParameter::Parameter, GenericExample, "*.txt", "", 2));
   }
-
-
 
   parameters.push_back(SeparatorFilterParameter::New("Linked Combo Box Example (2)", FilterParameter::Parameter));
 
@@ -270,7 +269,10 @@ void GenericExample::setupFilterParameters()
     choices.push_back("Choice 2");
     parameter->setChoices(choices);
     QStringList linkedProps;
-    linkedProps << "CreatedDataArray" << "Origin" << "CrystalSymmetryRotations" << "DataContainerName";
+    linkedProps << "CreatedDataArray"
+                << "Origin"
+                << "CrystalSymmetryRotations"
+                << "DataContainerName";
     parameter->setLinkedProperties(linkedProps);
     parameter->setEditable(false);
     parameter->setCategory(FilterParameter::Parameter);
@@ -312,19 +314,19 @@ void GenericExample::readFilterParameters(AbstractFilterParametersReader* reader
 {
 
   reader->openFilterGroup(this, index);
-  setFeatureIdsArrayPath(reader->readDataArrayPath("FeatureIdsArrayPath", getFeatureIdsArrayPath() ) );
+  setFeatureIdsArrayPath(reader->readDataArrayPath("FeatureIdsArrayPath", getFeatureIdsArrayPath()));
   setSelectedMultiArrayPaths(reader->readDataArrayPathVector("SelectedMultiArrayPaths", getSelectedMultiArrayPaths()));
-  setStlFilePrefix( reader->readString("StlFilePrefix", getStlFilePrefix()) );
-  setMaxIterations( reader->readValue("MaxIterations", getMaxIterations()) );
-  setMisorientationTolerance( reader->readValue("MisorientationTolerance", getMisorientationTolerance()) );
-  setInputFile( reader->readString("InputFile", getInputFile()) );
-  setInputPath( reader->readString("InputPath", getInputPath()) );
-  setOutputFile( reader->readString("OutputFile", getOutputFile()) );
-  setOutputPath( reader->readString("OutputPath", getOutputPath()) );
-  setWriteAlignmentShifts( reader->readValue("WriteAlignmentShifts", getWriteAlignmentShifts()) );
-  setConversionType( reader->readValue("ConversionType", getConversionType()) );
-  setDimensions( reader->readIntVec3("Dimensions", getDimensions()) );
-  setOrigin( reader->readFloatVec3("Origin", getOrigin()) );
+  setStlFilePrefix(reader->readString("StlFilePrefix", getStlFilePrefix()));
+  setMaxIterations(reader->readValue("MaxIterations", getMaxIterations()));
+  setMisorientationTolerance(reader->readValue("MisorientationTolerance", getMisorientationTolerance()));
+  setInputFile(reader->readString("InputFile", getInputFile()));
+  setInputPath(reader->readString("InputPath", getInputPath()));
+  setOutputFile(reader->readString("OutputFile", getOutputFile()));
+  setOutputPath(reader->readString("OutputPath", getOutputPath()));
+  setWriteAlignmentShifts(reader->readValue("WriteAlignmentShifts", getWriteAlignmentShifts()));
+  setConversionType(reader->readValue("ConversionType", getConversionType()));
+  setDimensions(reader->readIntVec3("Dimensions", getDimensions()));
+  setOrigin(reader->readFloatVec3("Origin", getOrigin()));
 
   reader->closeFilterGroup();
 }
@@ -332,7 +334,7 @@ void GenericExample::readFilterParameters(AbstractFilterParametersReader* reader
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void GenericExample::readFilterParameters(QJsonObject &obj)
+void GenericExample::readFilterParameters(QJsonObject& obj)
 {
   AbstractFilter::readFilterParameters(obj);
   setInputFile(obj["InputFile"].toString());
@@ -346,7 +348,7 @@ void GenericExample::readFilterParameters(QJsonObject &obj)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void GenericExample::writeFilterParameters(QJsonObject &obj)
+void GenericExample::writeFilterParameters(QJsonObject& obj)
 {
   AbstractFilter::writeFilterParameters(obj);
   obj["InputFile"] = getInputFile();
@@ -360,7 +362,6 @@ void GenericExample::writeFilterParameters(QJsonObject &obj)
 // -----------------------------------------------------------------------------
 void GenericExample::initialize()
 {
-
 }
 
 // -----------------------------------------------------------------------------
@@ -370,8 +371,6 @@ void GenericExample::dataCheck()
 {
   DataArrayPath tempPath;
   setErrorCondition(0);
-
-
 }
 
 // -----------------------------------------------------------------------------
@@ -392,9 +391,7 @@ void GenericExample::preflight()
 // -----------------------------------------------------------------------------
 void computeEulerAngle(float pq, float* eulerAngle)
 {
-
 }
-
 
 // -----------------------------------------------------------------------------
 //
@@ -437,7 +434,6 @@ const QString GenericExample::getCompiledLibraryName()
   return Test::TestBaseName;
 }
 
-
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
@@ -445,7 +441,6 @@ const QString GenericExample::getGroupName()
 {
   return SIMPL::FilterGroups::TestFilters;
 }
-
 
 // -----------------------------------------------------------------------------
 //
@@ -455,7 +450,6 @@ const QString GenericExample::getSubGroupName()
   return "Misc";
 }
 
-
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
@@ -463,4 +457,3 @@ const QString GenericExample::getHumanLabel()
 {
   return "Generic Example";
 }
-

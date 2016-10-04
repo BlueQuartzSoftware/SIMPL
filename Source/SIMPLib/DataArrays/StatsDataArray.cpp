@@ -37,21 +37,20 @@
 
 #include <QtCore/QList>
 
-#include "SIMPLib/StatsData/PrimaryStatsData.h"
-#include "SIMPLib/StatsData/PrecipitateStatsData.h"
-#include "SIMPLib/StatsData/TransformationStatsData.h"
 #include "SIMPLib/StatsData/BoundaryStatsData.h"
 #include "SIMPLib/StatsData/MatrixStatsData.h"
+#include "SIMPLib/StatsData/PrecipitateStatsData.h"
+#include "SIMPLib/StatsData/PrimaryStatsData.h"
+#include "SIMPLib/StatsData/TransformationStatsData.h"
 
-
-#include "H5Support/QH5Utilities.h"
 #include "H5Support/HDF5ScopedFileSentinel.h"
+#include "H5Support/QH5Utilities.h"
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-StatsDataArray::StatsDataArray() :
-  m_Name(SIMPL::EnsembleData::Statistics)
+StatsDataArray::StatsDataArray()
+: m_Name(SIMPL::EnsembleData::Statistics)
 {
   m_IsAllocated = true;
 }
@@ -68,14 +67,17 @@ StatsDataArray::~StatsDataArray()
 // -----------------------------------------------------------------------------
 StatsDataArray::Pointer StatsDataArray::CreateArray(size_t numElements, const QString& name, bool allocate)
 {
-  if (name.isEmpty() == true)
+  if(name.isEmpty() == true)
   {
     return NullPointer();
   }
   StatsDataArray::Pointer ptr = StatsDataArray::New();
   ptr->setName(name);
   std::vector<unsigned int> phase_types(numElements, SIMPL::PhaseType::UnknownPhaseType);
-  if(allocate && numElements > 0) { ptr->fillArrayWithNewStatsData(numElements, &(phase_types.front()) ); }
+  if(allocate && numElements > 0)
+  {
+    ptr->fillArrayWithNewStatsData(numElements, &(phase_types.front()));
+  }
   return ptr;
 }
 
@@ -84,14 +86,17 @@ StatsDataArray::Pointer StatsDataArray::CreateArray(size_t numElements, const QS
 // -----------------------------------------------------------------------------
 StatsDataArray::Pointer StatsDataArray::CreateArray(size_t numTuples, int rank, size_t* dims, const QString& name, bool allocate)
 {
-  if (name.isEmpty() == true)
+  if(name.isEmpty() == true)
   {
     return NullPointer();
   }
   StatsDataArray::Pointer ptr = StatsDataArray::New();
   ptr->setName(name);
   std::vector<unsigned int> phase_types(numTuples, SIMPL::PhaseType::UnknownPhaseType);
-  if(allocate) { ptr->fillArrayWithNewStatsData(numTuples, &(phase_types.front()) ); }
+  if(allocate)
+  {
+    ptr->fillArrayWithNewStatsData(numTuples, &(phase_types.front()));
+  }
   return ptr;
 }
 
@@ -100,14 +105,17 @@ StatsDataArray::Pointer StatsDataArray::CreateArray(size_t numTuples, int rank, 
 // -----------------------------------------------------------------------------
 StatsDataArray::Pointer StatsDataArray::CreateArray(size_t numTuples, std::vector<size_t> cDims, const QString& name, bool allocate)
 {
-  if (name.isEmpty() == true)
+  if(name.isEmpty() == true)
   {
     return NullPointer();
   }
   StatsDataArray::Pointer ptr = StatsDataArray::New();
   ptr->setName(name);
   std::vector<unsigned int> phase_types(numTuples, SIMPL::PhaseType::UnknownPhaseType);
-  if(allocate) { ptr->fillArrayWithNewStatsData(numTuples, &(phase_types.front()) ); }
+  if(allocate)
+  {
+    ptr->fillArrayWithNewStatsData(numTuples, &(phase_types.front()));
+  }
   return ptr;
 }
 
@@ -116,14 +124,17 @@ StatsDataArray::Pointer StatsDataArray::CreateArray(size_t numTuples, std::vecto
 // -----------------------------------------------------------------------------
 StatsDataArray::Pointer StatsDataArray::CreateArray(size_t numTuples, QVector<size_t> cDims, const QString& name, bool allocate)
 {
-  if (name.isEmpty() == true)
+  if(name.isEmpty() == true)
   {
     return NullPointer();
   }
   StatsDataArray::Pointer ptr = StatsDataArray::New();
   ptr->setName(name);
   std::vector<unsigned int> phase_types(numTuples, SIMPL::PhaseType::UnknownPhaseType);
-  if(allocate) { ptr->fillArrayWithNewStatsData(numTuples, &(phase_types.front()) ); }
+  if(allocate)
+  {
+    ptr->fillArrayWithNewStatsData(numTuples, &(phase_types.front()));
+  }
   return ptr;
 }
 
@@ -132,7 +143,7 @@ StatsDataArray::Pointer StatsDataArray::CreateArray(size_t numTuples, QVector<si
 // -----------------------------------------------------------------------------
 StatsDataArray::Pointer StatsDataArray::CreateArray(QVector<size_t> tDims, QVector<size_t> cDims, const QString& name, bool allocate)
 {
-  if (name.isEmpty() == true)
+  if(name.isEmpty() == true)
   {
     return NullPointer();
   }
@@ -145,10 +156,12 @@ StatsDataArray::Pointer StatsDataArray::CreateArray(QVector<size_t> tDims, QVect
   StatsDataArray::Pointer ptr = StatsDataArray::New();
   ptr->setName(name);
   std::vector<unsigned int> phase_types(numTuples, SIMPL::PhaseType::UnknownPhaseType);
-  if(allocate) { ptr->fillArrayWithNewStatsData(numTuples, &(phase_types.front()) ); }
+  if(allocate)
+  {
+    ptr->fillArrayWithNewStatsData(numTuples, &(phase_types.front()));
+  }
   return ptr;
 }
-
 
 // -----------------------------------------------------------------------------
 //
@@ -173,7 +186,6 @@ IDataArray::Pointer StatsDataArray::createNewArray(size_t numElements, QVector<s
 {
   return StatsDataArray::NullPointer();
 }
-
 
 // -----------------------------------------------------------------------------
 //
@@ -284,7 +296,7 @@ int StatsDataArray::eraseTuples(QVector<size_t>& idxs)
     return 0;
   }
 
-  if ( static_cast<size_t>(idxs.size()) >= getNumberOfTuples() )
+  if(static_cast<size_t>(idxs.size()) >= getNumberOfTuples())
   {
     resize(0);
     return 0;
@@ -294,12 +306,11 @@ int StatsDataArray::eraseTuples(QVector<size_t>& idxs)
   // off the end of the array and return an error code.
   for(QVector<size_t>::size_type i = 0; i < idxs.size(); ++i)
   {
-    if (idxs[i] >= static_cast<size_t>(m_StatsDataArray.size()))
+    if(idxs[i] >= static_cast<size_t>(m_StatsDataArray.size()))
     {
       return -100;
     }
   }
-
 
   QVector<StatsData::Pointer> replacement(m_StatsDataArray.size() - idxs.size());
   size_t idxsIndex = 0;
@@ -307,7 +318,7 @@ int StatsDataArray::eraseTuples(QVector<size_t>& idxs)
   size_t size = static_cast<size_t>(m_StatsDataArray.size());
   for(size_t dIdx = 0; dIdx < size; ++dIdx)
   {
-    if (dIdx != idxs[idxsIndex])
+    if(dIdx != idxs[idxsIndex])
     {
       replacement[rIdx] = m_StatsDataArray[dIdx];
       ++rIdx;
@@ -315,7 +326,7 @@ int StatsDataArray::eraseTuples(QVector<size_t>& idxs)
     else
     {
       ++idxsIndex;
-      if (idxsIndex == static_cast<size_t>(idxs.size()))
+      if(idxsIndex == static_cast<size_t>(idxs.size()))
       {
         idxsIndex--;
       }
@@ -339,15 +350,33 @@ int StatsDataArray::copyTuple(size_t currentPos, size_t newPos)
 // -----------------------------------------------------------------------------
 bool StatsDataArray::copyData(size_t destTupleOffset, IDataArray::Pointer sourceArray)
 {
-  if(!m_IsAllocated) { return false; }
-  if(0 == m_StatsDataArray.size()) { return false; }
-  if(destTupleOffset >= m_StatsDataArray.size()) { return false; }
-  if(!sourceArray->isAllocated()) { return false; }
+  if(!m_IsAllocated)
+  {
+    return false;
+  }
+  if(0 == m_StatsDataArray.size())
+  {
+    return false;
+  }
+  if(destTupleOffset >= m_StatsDataArray.size())
+  {
+    return false;
+  }
+  if(!sourceArray->isAllocated())
+  {
+    return false;
+  }
   Self* source = dynamic_cast<Self*>(sourceArray.get());
 
-  if(sourceArray->getNumberOfComponents() != getNumberOfComponents()) { return false; }
+  if(sourceArray->getNumberOfComponents() != getNumberOfComponents())
+  {
+    return false;
+  }
 
-  if( sourceArray->getNumberOfTuples()*sourceArray->getNumberOfComponents() + destTupleOffset*getNumberOfComponents() > m_StatsDataArray.size() ) { return false; }
+  if(sourceArray->getNumberOfTuples() * sourceArray->getNumberOfComponents() + destTupleOffset * getNumberOfComponents() > m_StatsDataArray.size())
+  {
+    return false;
+  }
 
   size_t sourceNTuples = source->getNumberOfTuples();
 
@@ -358,7 +387,6 @@ bool StatsDataArray::copyData(size_t destTupleOffset, IDataArray::Pointer source
 
   return true;
 }
-
 
 // -----------------------------------------------------------------------------
 //
@@ -378,7 +406,6 @@ void StatsDataArray::initializeWithZeros()
   {
     m_StatsDataArray[i]->initialize();
   }
-
 }
 
 // -----------------------------------------------------------------------------
@@ -392,7 +419,8 @@ IDataArray::Pointer StatsDataArray::deepCopy(bool forceNoAllocate)
   for(size_t i = 0; i < getNumberOfTuples(); i++)
   {
     // This should be a Deep Copy of each of the StatsData subclasses instead of a reference copy
-    if(nullptr != m_StatsDataArray[i]) {
+    if(nullptr != m_StatsDataArray[i])
+    {
       daCopyPtr->setStatsData(i, m_StatsDataArray[i]->deepCopy());
     }
     else
@@ -443,7 +471,7 @@ int StatsDataArray::writeH5Data(hid_t parentId, QVector<size_t> tDims)
 {
   herr_t err = 0;
   hid_t gid = QH5Utilities::createGroup(parentId, m_Name);
-  if (gid < 0)
+  if(gid < 0)
   {
     return -1;
   }
@@ -452,12 +480,12 @@ int StatsDataArray::writeH5Data(hid_t parentId, QVector<size_t> tDims)
   // We start numbering our phases at 1. Anything in slot 0 is considered "Dummy" or invalid
   for(qint32 i = 1; i < m_StatsDataArray.size(); ++i)
   {
-    if (m_StatsDataArray[i].get() != nullptr)
+    if(m_StatsDataArray[i].get() != nullptr)
     {
       QString indexString = QString::number(i);
       hid_t tupleId = QH5Utilities::createGroup(gid, indexString);
-      err = QH5Lite::writeStringAttribute(gid, indexString, SIMPL::StringConstants::StatsType, m_StatsDataArray[i]->getStatsType() );
-      err = QH5Lite::writeScalarAttribute(gid, indexString, SIMPL::StringConstants::PhaseType, m_StatsDataArray[i]->getPhaseType() );
+      err = QH5Lite::writeStringAttribute(gid, indexString, SIMPL::StringConstants::StatsType, m_StatsDataArray[i]->getStatsType());
+      err = QH5Lite::writeScalarAttribute(gid, indexString, SIMPL::StringConstants::PhaseType, m_StatsDataArray[i]->getPhaseType());
       err = m_StatsDataArray[i]->writeHDF5Data(tupleId);
       err = QH5Utilities::closeHDF5Object(tupleId);
     }
@@ -490,7 +518,7 @@ int StatsDataArray::readH5Data(hid_t parentId)
     return err;
   }
 
-  for (QList<QString>::iterator iter = names.begin(); iter != names.end(); ++iter)
+  for(QList<QString>::iterator iter = names.begin(); iter != names.end(); ++iter)
   {
     int index = 0;
     statsType = "";
@@ -535,7 +563,7 @@ int StatsDataArray::readH5Data(hid_t parentId)
     }
     else
     {
-      qDebug() << "The Type of the stats data could not be read." ;
+      qDebug() << "The Type of the stats data could not be read.";
       return -1100;
     }
     err |= QH5Utilities::closeHDF5Object(statId);
@@ -550,24 +578,21 @@ int StatsDataArray::readH5Data(hid_t parentId)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-int StatsDataArray::writeToJson(QJsonObject &jsonRoot, UInt32ArrayType::Pointer crystalStructures)
+int StatsDataArray::writeToJson(QJsonObject& jsonRoot, UInt32ArrayType::Pointer crystalStructures)
 {
   int error = 0;
 
-  QJsonObject statsObj
-  {
-    {"Phase Count", static_cast<double>(getNumberOfTuples()) },
-    {"Name", SIMPL::EnsembleData::Statistics }
-  };
-
+  QJsonObject statsObj{{"Phase Count", static_cast<double>(getNumberOfTuples())}, {"Name", SIMPL::EnsembleData::Statistics}};
 
   for(size_t i = 1; i < getNumberOfTuples(); i++)
   {
     StatsData::Pointer statsData = getStatsData(i);
-    if(nullptr != statsData.get() ) {
+    if(nullptr != statsData.get())
+    {
       QJsonObject phaseObj;
       statsData->writeJson(phaseObj);
-      if(crystalStructures) {
+      if(crystalStructures)
+      {
         phaseObj.insert(SIMPL::EnsembleData::CrystalSymmetry, static_cast<int>(crystalStructures->getValue(i)));
       }
       statsObj.insert(QString::number(i), phaseObj);
@@ -582,7 +607,7 @@ int StatsDataArray::writeToJson(QJsonObject &jsonRoot, UInt32ArrayType::Pointer 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-int StatsDataArray::readFromJson(const QJsonObject &jsonRoot)
+int StatsDataArray::readFromJson(const QJsonObject& jsonRoot)
 {
   QJsonObject statsObject = jsonRoot["StatsDataArray"].toObject();
 
@@ -631,8 +656,8 @@ int StatsDataArray::readFromJson(const QJsonObject &jsonRoot)
     else
     {
       qDebug() << "While reading a StatsDataArray object from a Json Object the type\n"
-      << "of StatsData object did not match any known types. The type retrieved from the\n"
-      << "JSON object was '" << statsType << "'. The known types are:";
+               << "of StatsData object did not match any known types. The type retrieved from the\n"
+               << "JSON object was '" << statsType << "'. The known types are:";
       qDebug() << SIMPL::StringConstants::PrimaryStatsData;
       qDebug() << SIMPL::StringConstants::PrecipitateStatsData;
       qDebug() << SIMPL::StringConstants::TransformationStatsData;
@@ -642,14 +667,12 @@ int StatsDataArray::readFromJson(const QJsonObject &jsonRoot)
     }
   }
   return 0;
-
 }
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-int StatsDataArray::writeXdmfAttribute(QTextStream& out, int64_t* volDims, const QString& hdfFileName,
-                                       const QString& groupPath, const QString& labelb)
+int StatsDataArray::writeXdmfAttribute(QTextStream& out, int64_t* volDims, const QString& hdfFileName, const QString& groupPath, const QString& labelb)
 {
   out << "<!-- Xdmf is not supported for " << getNameOfClass() << " with type " << getTypeAsString() << " --> ";
   return -1;
@@ -661,7 +684,7 @@ int StatsDataArray::writeXdmfAttribute(QTextStream& out, int64_t* volDims, const
 QString StatsDataArray::getInfoString(SIMPL::InfoStringFormat format)
 {
   QString info;
-  QTextStream ss (&info);
+  QTextStream ss(&info);
   if(format == SIMPL::HtmlFormat)
   {
     ss << "<html><head></head>\n";
@@ -672,21 +695,20 @@ QString StatsDataArray::getInfoString(SIMPL::InfoStringFormat format)
 
     ss << "<tr bgcolor=\"#C3C8D0\"><th align=\"right\">Name:</th><td>" << getName() << "</td></tr>";
 
-
     ss << "<tr bgcolor=\"#C3C8D0\"><th align=\"right\">Type:</th><td>" << getTypeAsString() << "</td></tr>";
     ss << "<tr bgcolor=\"#C3C8D0\"><th align=\"right\">Number of Tuples:</th><td>" << getNumberOfTuples() << "</td></tr>";
 
-//    QString compDimStr = "(";
-//    for(int i = 0; i < m_CompDims.size(); i++)
-//    {
-//      compDimStr = compDimStr + QString::number(m_CompDims[i]);
-//      if(i < m_CompDims.size() - 1) {
-//         compDimStr = compDimStr + QString(", ");
-//      }
-//    }
-//    compDimStr = compDimStr + ")";
-//    ss << "<tr bgcolor=\"#C3C8D0\"><th align=\"right\">Component Dimensions:</th><td>" << compDimStr << "</td></tr>";
-//    ss << "<tr bgcolor=\"#C3C8D0\"><th align=\"right\">Total Elements:</th><td>" << m_Size << "</td></tr>";
+    //    QString compDimStr = "(";
+    //    for(int i = 0; i < m_CompDims.size(); i++)
+    //    {
+    //      compDimStr = compDimStr + QString::number(m_CompDims[i]);
+    //      if(i < m_CompDims.size() - 1) {
+    //         compDimStr = compDimStr + QString(", ");
+    //      }
+    //    }
+    //    compDimStr = compDimStr + ")";
+    //    ss << "<tr bgcolor=\"#C3C8D0\"><th align=\"right\">Component Dimensions:</th><td>" << compDimStr << "</td></tr>";
+    //    ss << "<tr bgcolor=\"#C3C8D0\"><th align=\"right\">Total Elements:</th><td>" << m_Size << "</td></tr>";
 
     ss << "</tbody></table>\n";
     ss << "<br/>";
@@ -694,7 +716,6 @@ QString StatsDataArray::getInfoString(SIMPL::InfoStringFormat format)
   }
   else
   {
-
   }
   return info;
 }
@@ -703,7 +724,9 @@ QString StatsDataArray::getInfoString(SIMPL::InfoStringFormat format)
 //
 // -----------------------------------------------------------------------------
 QString StatsDataArray::getTypeAsString()
-{ return "StatsDataArray"; }
+{
+  return "StatsDataArray";
+}
 
 // -----------------------------------------------------------------------------
 //
@@ -740,7 +763,7 @@ void StatsDataArray::setStatsData(int index, StatsData::Pointer statsData)
     size_t old = m_StatsDataArray.size();
     m_StatsDataArray.resize(index + 1);
     // Initialize with zero length Vectors
-    for (int i = old; i < m_StatsDataArray.size(); ++i)
+    for(int i = old; i < m_StatsDataArray.size(); ++i)
     {
       m_StatsDataArray[i] = StatsData::New();
     }
@@ -754,18 +777,39 @@ void StatsDataArray::setStatsData(int index, StatsData::Pointer statsData)
 void StatsDataArray::fillArrayWithNewStatsData(size_t n, unsigned int* phase_types)
 {
   m_StatsDataArray.resize(n);
-  for (size_t i = 0; i < n; ++i)
+  for(size_t i = 0; i < n; ++i)
   {
-    if (phase_types != nullptr)
+    if(phase_types != nullptr)
     {
-      if(phase_types[i] == SIMPL::PhaseType::PrimaryPhase) { m_StatsDataArray[i] = PrimaryStatsData::New(); }
-      else if(phase_types[i] == SIMPL::PhaseType::PrecipitatePhase) { m_StatsDataArray[i] = PrecipitateStatsData::New(); }
-      else if(phase_types[i] == SIMPL::PhaseType::TransformationPhase) { m_StatsDataArray[i] = TransformationStatsData::New(); }
-      else if(phase_types[i] == SIMPL::PhaseType::BoundaryPhase) { m_StatsDataArray[i] = BoundaryStatsData::New(); }
-      else if(phase_types[i] == SIMPL::PhaseType::MatrixPhase) { m_StatsDataArray[i] = MatrixStatsData::New(); }
-      else { m_StatsDataArray[i] = StatsData::New(); }
+      if(phase_types[i] == SIMPL::PhaseType::PrimaryPhase)
+      {
+        m_StatsDataArray[i] = PrimaryStatsData::New();
+      }
+      else if(phase_types[i] == SIMPL::PhaseType::PrecipitatePhase)
+      {
+        m_StatsDataArray[i] = PrecipitateStatsData::New();
+      }
+      else if(phase_types[i] == SIMPL::PhaseType::TransformationPhase)
+      {
+        m_StatsDataArray[i] = TransformationStatsData::New();
+      }
+      else if(phase_types[i] == SIMPL::PhaseType::BoundaryPhase)
+      {
+        m_StatsDataArray[i] = BoundaryStatsData::New();
+      }
+      else if(phase_types[i] == SIMPL::PhaseType::MatrixPhase)
+      {
+        m_StatsDataArray[i] = MatrixStatsData::New();
+      }
+      else
+      {
+        m_StatsDataArray[i] = StatsData::New();
+      }
     }
-    if(phase_types == nullptr) { m_StatsDataArray[i] = StatsData::New(); }
+    if(phase_types == nullptr)
+    {
+      m_StatsDataArray[i] = StatsData::New();
+    }
   }
 }
 
@@ -796,4 +840,3 @@ StatsData::Pointer StatsDataArray::operator[](int idx)
 #endif
   return m_StatsDataArray[idx];
 }
-

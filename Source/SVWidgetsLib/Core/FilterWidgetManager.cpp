@@ -35,7 +35,6 @@
 
 #include "FilterWidgetManager.h"
 
-
 #include "PipelineFilterWidgetFactory.hpp"
 
 #include "SIMPLib/FilterParameters/UnknownFilterParameter.h"
@@ -49,7 +48,7 @@ FilterWidgetManager* FilterWidgetManager::self = 0;
 // -----------------------------------------------------------------------------
 FilterWidgetManager::FilterWidgetManager()
 {
-// qDebug() << "FilterWidgetManager()" << this;
+  // qDebug() << "FilterWidgetManager()" << this;
 
   Q_ASSERT_X(!self, "FilterWidgetManager", "there should be only one FilterWidgetManager object");
   FilterWidgetManager::self = this;
@@ -60,7 +59,7 @@ FilterWidgetManager::FilterWidgetManager()
 // -----------------------------------------------------------------------------
 FilterWidgetManager::~FilterWidgetManager()
 {
-// qDebug() << "~FilterWidgetManager()" << this;
+  // qDebug() << "~FilterWidgetManager()" << this;
 }
 
 // -----------------------------------------------------------------------------
@@ -68,12 +67,12 @@ FilterWidgetManager::~FilterWidgetManager()
 // -----------------------------------------------------------------------------
 FilterWidgetManager* FilterWidgetManager::Instance()
 {
-  if (self == nullptr)
+  if(self == nullptr)
   {
-//   qDebug() << "FilterWidgetManager::Instance self was nullptr" << "\n";
+    //   qDebug() << "FilterWidgetManager::Instance self was nullptr" << "\n";
     self = new FilterWidgetManager();
   }
-//  qDebug() << "self.get(): " << self << "\n";
+  //  qDebug() << "self.get(): " << self << "\n";
   return self;
 }
 
@@ -82,11 +81,11 @@ FilterWidgetManager* FilterWidgetManager::Instance()
 // -----------------------------------------------------------------------------
 void FilterWidgetManager::RegisterFilterWidgetFactory(const QString& name, IFilterWidgetFactory::Pointer factory)
 {
-  if (nullptr != factory.get() )
+  if(nullptr != factory.get())
   {
     // Instantiate the Instance Manager for IFilterWidgetFactory
     FilterWidgetManager* idManager = FilterWidgetManager::Instance();
-    idManager->addFilterWidgetFactory( name, factory );
+    idManager->addFilterWidgetFactory(name, factory);
   }
 }
 
@@ -112,9 +111,8 @@ void FilterWidgetManager::addFilterWidgetFactory(const QString& name, IFilterWid
 void FilterWidgetManager::RegisterKnownFilterWidgets()
 {
   FilterWidgetManager* idManager = FilterWidgetManager::Instance();
-  // This next file is generated with CMake
+// This next file is generated with CMake
 #include "SVWidgetsLib/FilterWidgetManager_RegisterWidgets.cpp"
-
 }
 
 // -----------------------------------------------------------------------------
@@ -130,6 +128,3 @@ QWidget* FilterWidgetManager::createWidget(FilterParameter* parameter, AbstractF
   UnknownWidget* unknownWidget = new UnknownWidget(parameter, filter, nullptr);
   return unknownWidget;
 }
-
-
-

@@ -38,22 +38,24 @@
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-InputPathFilterParameter::InputPathFilterParameter() :
-FilterParameter()
-{}
+InputPathFilterParameter::InputPathFilterParameter()
+: FilterParameter()
+{
+}
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
 InputPathFilterParameter::~InputPathFilterParameter()
-{}
+{
+}
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-InputPathFilterParameter::Pointer InputPathFilterParameter::New(const QString& humanLabel, const QString& propertyName,
-  const QString& defaultValue, Category category, SetterCallbackType setterCallback, GetterCallbackType getterCallback,
-  const QString& fileExtension, const QString& fileType, int groupIndex)
+InputPathFilterParameter::Pointer InputPathFilterParameter::New(const QString& humanLabel, const QString& propertyName, const QString& defaultValue, Category category,
+                                                                SetterCallbackType setterCallback, GetterCallbackType getterCallback, const QString& fileExtension, const QString& fileType,
+                                                                int groupIndex)
 {
   InputPathFilterParameter::Pointer ptr = InputPathFilterParameter::New();
   ptr->setHumanLabel(humanLabel);
@@ -80,10 +82,10 @@ QString InputPathFilterParameter::getWidgetType()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void InputPathFilterParameter::readJson(const QJsonObject &json)
+void InputPathFilterParameter::readJson(const QJsonObject& json)
 {
   QJsonValue jsonValue = json[getPropertyName()];
-  if(!jsonValue.isUndefined() )
+  if(!jsonValue.isUndefined() && m_SetterCallback)
   {
     m_SetterCallback(jsonValue.toString(""));
   }
@@ -92,8 +94,10 @@ void InputPathFilterParameter::readJson(const QJsonObject &json)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void InputPathFilterParameter::writeJson(QJsonObject &json)
+void InputPathFilterParameter::writeJson(QJsonObject& json)
 {
-  json[getPropertyName()] = m_GetterCallback();
+  if(m_GetterCallback)
+  {
+    json[getPropertyName()] = m_GetterCallback();
+  }
 }
-

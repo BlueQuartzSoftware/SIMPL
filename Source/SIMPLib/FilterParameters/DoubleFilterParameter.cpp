@@ -38,21 +38,23 @@
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-DoubleFilterParameter::DoubleFilterParameter() :
-FilterParameter()
-{}
+DoubleFilterParameter::DoubleFilterParameter()
+: FilterParameter()
+{
+}
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
 DoubleFilterParameter::~DoubleFilterParameter()
-{}
+{
+}
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-DoubleFilterParameter::Pointer DoubleFilterParameter::New(const QString& humanLabel, const QString& propertyName,
-  const double& defaultValue, Category category, SetterCallbackType setterCallback, GetterCallbackType getterCallback, int groupIndex)
+DoubleFilterParameter::Pointer DoubleFilterParameter::New(const QString& humanLabel, const QString& propertyName, const double& defaultValue, Category category, SetterCallbackType setterCallback,
+                                                          GetterCallbackType getterCallback, int groupIndex)
 {
 
   DoubleFilterParameter::Pointer ptr = DoubleFilterParameter::New();
@@ -78,10 +80,10 @@ QString DoubleFilterParameter::getWidgetType()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void DoubleFilterParameter::readJson(const QJsonObject &json)
+void DoubleFilterParameter::readJson(const QJsonObject& json)
 {
   QJsonValue jsonValue = json[getPropertyName()];
-  if(!jsonValue.isUndefined() )
+  if(!jsonValue.isUndefined() && m_SetterCallback)
   {
     m_SetterCallback(jsonValue.toDouble());
   }
@@ -90,8 +92,10 @@ void DoubleFilterParameter::readJson(const QJsonObject &json)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void DoubleFilterParameter::writeJson(QJsonObject &json)
+void DoubleFilterParameter::writeJson(QJsonObject& json)
 {
-  json[getPropertyName()] = m_GetterCallback();
+  if(m_GetterCallback)
+  {
+    json[getPropertyName()] = m_GetterCallback();
+  }
 }
-

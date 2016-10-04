@@ -38,22 +38,23 @@
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-IntFilterParameter::IntFilterParameter() :
-FilterParameter()
-{}
+IntFilterParameter::IntFilterParameter()
+: FilterParameter()
+{
+}
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
 IntFilterParameter::~IntFilterParameter()
-{}
+{
+}
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-IntFilterParameter::Pointer IntFilterParameter::New(const QString& humanLabel, const QString& propertyName,
-  const int& defaultValue, Category category, SetterCallbackType setterCallback, GetterCallbackType getterCallback,
-  int groupIndex)
+IntFilterParameter::Pointer IntFilterParameter::New(const QString& humanLabel, const QString& propertyName, const int& defaultValue, Category category, SetterCallbackType setterCallback,
+                                                    GetterCallbackType getterCallback, int groupIndex)
 {
 
   IntFilterParameter::Pointer ptr = IntFilterParameter::New();
@@ -79,10 +80,10 @@ QString IntFilterParameter::getWidgetType()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void IntFilterParameter::readJson(const QJsonObject &json)
+void IntFilterParameter::readJson(const QJsonObject& json)
 {
   QJsonValue jsonValue = json[getPropertyName()];
-  if(!jsonValue.isUndefined() )
+  if(!jsonValue.isUndefined() && m_SetterCallback)
   {
     m_SetterCallback(jsonValue.toInt(0.0));
   }
@@ -91,8 +92,10 @@ void IntFilterParameter::readJson(const QJsonObject &json)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void IntFilterParameter::writeJson(QJsonObject &json)
+void IntFilterParameter::writeJson(QJsonObject& json)
 {
-  json[getPropertyName()] = m_GetterCallback();
+  if(m_GetterCallback)
+  {
+    json[getPropertyName()] = m_GetterCallback();
+  }
 }
-

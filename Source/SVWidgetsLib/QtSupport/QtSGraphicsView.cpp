@@ -33,22 +33,20 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-
-
 #include "QtSGraphicsView.h"
 
 #include <QtCore/QFileInfo>
+#include <QtCore/QMimeData>
 #include <QtCore/QUrl>
 #include <QtCore/QtDebug>
-#include <QtCore/QMimeData>
 
 #include <QDragEnterEvent>
 #include <QDragLeaveEvent>
 #include <QDropEvent>
-#include <QtWidgets/QWidget>
+#include <QtGui/QImageReader>
 #include <QtGui/QPixmap>
 #include <QtWidgets/QGraphicsPolygonItem>
-#include <QtGui/QImageReader>
+#include <QtWidgets/QWidget>
 
 #include "moc_QtSGraphicsView.cpp"
 
@@ -56,9 +54,9 @@
 //
 // -----------------------------------------------------------------------------
 QtSGraphicsView::QtSGraphicsView(QWidget* parent)
-  : QGraphicsView(parent),
-    m_ImageGraphicsItem(nullptr),
-    m_UseColorTable(false)
+: QGraphicsView(parent)
+, m_ImageGraphicsItem(nullptr)
+, m_UseColorTable(false)
 {
   setAcceptDrops(true);
   setDragMode(RubberBandDrag);
@@ -79,11 +77,10 @@ QtSGraphicsView::QtSGraphicsView(QWidget* parent)
   m_OverlayTransparency = 1.0f; // Fully opaque
 
   m_CustomColorTable.resize(256);
-  for (quint32 i = 0; i < 256; ++i)
+  for(quint32 i = 0; i < 256; ++i)
   {
     m_CustomColorTable[i] = qRgb(i, i, i);
   }
-
 }
 
 // -----------------------------------------------------------------------------
@@ -100,7 +97,6 @@ void QtSGraphicsView::setOverlayTransparency(float f)
 void QtSGraphicsView::useCustomColorTable(bool b)
 {
   m_UseColorTable = b;
-
 }
 
 // -----------------------------------------------------------------------------
@@ -119,16 +115,15 @@ void QtSGraphicsView::zoomOut()
   scale(1.0 / 1.1, 1.0 / 1.1);
 }
 
-
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
 void QtSGraphicsView::setZoomIndex(int index)
 {
-  if (index == 9)
+  if(index == 9)
   {
     QGraphicsScene* scenePtr = scene();
-    if (nullptr != scenePtr)
+    if(nullptr != scenePtr)
     {
       QRectF r = scenePtr->sceneRect();
       fitInView(r, Qt::KeepAspectRatio);
@@ -140,18 +135,16 @@ void QtSGraphicsView::setZoomIndex(int index)
     transform.scale(m_ZoomFactors[index], m_ZoomFactors[index]);
     setTransform(transform);
   }
-
 }
-
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
 void QtSGraphicsView::dragEnterEvent(QDragEnterEvent* event)
 {
-// qWarning("QFSDroppableGraphicsView::dragEnterEvent(QDragEnterEvent *event)");
+  // qWarning("QFSDroppableGraphicsView::dragEnterEvent(QDragEnterEvent *event)");
   // accept just text/uri-list mime format
-  if (event->mimeData()->hasFormat("text/uri-list"))
+  if(event->mimeData()->hasFormat("text/uri-list"))
   {
     event->acceptProposedAction();
   }
@@ -164,7 +157,7 @@ void QtSGraphicsView::dragEnterEvent(QDragEnterEvent* event)
 void QtSGraphicsView::dragLeaveEvent(QDragLeaveEvent* event)
 {
   Q_UNUSED(event);
-//  qWarning("QFSDroppableGraphicsView::dragLeaveEvent(QDragLeaveEvent *event)");
+  //  qWarning("QFSDroppableGraphicsView::dragLeaveEvent(QDragLeaveEvent *event)");
   this->setStyleSheet("");
 }
 
@@ -174,29 +167,24 @@ void QtSGraphicsView::dragLeaveEvent(QDragLeaveEvent* event)
 void QtSGraphicsView::dropEvent(QDropEvent* event)
 {
   this->setStyleSheet("");
-//  qWarning("QFSDroppableGraphicsView::dropEvent(QDropEvent *event)");
+  //  qWarning("QFSDroppableGraphicsView::dropEvent(QDropEvent *event)");
   QList<QUrl> urlList;
   QString fName;
   QFileInfo info;
 
-  if (event->mimeData()->hasUrls())
+  if(event->mimeData()->hasUrls())
   {
     urlList = event->mimeData()->urls(); // returns list of QUrls
     // if just text was dropped, urlList is empty (size == 0)
 
-    if ( urlList.size() > 0) // if at least one QUrl is present in list
+    if(urlList.size() > 0) // if at least one QUrl is present in list
     {
       fName = urlList[0].toLocalFile(); // convert first QUrl to local path
-      info.setFile( fName ); // information about file
+      info.setFile(fName);              // information about file
       QString ext = info.suffix().toLower();
-      if (ext.compare("tif") == 0
-          || ext.compare("tiff") == 0
-          || ext.compare("jpg") == 0
-          || ext.compare("jpeg") == 0
-          || ext.compare("png") == 0
-          || ext.compare("bmp") == 0)
+      if(ext.compare("tif") == 0 || ext.compare("tiff") == 0 || ext.compare("jpg") == 0 || ext.compare("jpeg") == 0 || ext.compare("png") == 0 || ext.compare("bmp") == 0)
       {
-        //m_MainGui->openBaseImageFile(fName);
+        // m_MainGui->openBaseImageFile(fName);
       }
     }
   }
@@ -206,7 +194,7 @@ void QtSGraphicsView::dropEvent(QDropEvent* event)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-//QImage QtSGraphicsView::getCompositedImage()
+// QImage QtSGraphicsView::getCompositedImage()
 //{
 //  return m_CompositedImage;
 //}
@@ -216,12 +204,16 @@ void QtSGraphicsView::dropEvent(QDropEvent* event)
 // -----------------------------------------------------------------------------
 QImage& QtSGraphicsView::blend(QImage& src, QImage& dst, float opacity)
 {
-  if (src.width() <= 0 || src.height() <= 0)
-  { return dst; }
-  if (dst.width() <= 0 || dst.height() <= 0)
-  { return dst; }
+  if(src.width() <= 0 || src.height() <= 0)
+  {
+    return dst;
+  }
+  if(dst.width() <= 0 || dst.height() <= 0)
+  {
+    return dst;
+  }
 
-  if (src.width() != dst.width() || src.height() != dst.height())
+  if(src.width() != dst.width() || src.height() != dst.height())
   {
 #ifndef NDEBUG
     std::cerr << "WARNING: ImageEffect::blend : src and destination images are not the same size\n";
@@ -229,7 +221,7 @@ QImage& QtSGraphicsView::blend(QImage& src, QImage& dst, float opacity)
     return dst;
   }
 
-  if (opacity < 0.0 || opacity > 1.0)
+  if(opacity < 0.0 || opacity > 1.0)
   {
 #ifndef NDEBUG
     std::cerr << "WARNING: ImageEffect::blend : invalid opacity. Range [0, 1]\n";
@@ -237,20 +229,26 @@ QImage& QtSGraphicsView::blend(QImage& src, QImage& dst, float opacity)
     return dst;
   }
 
-  if (src.depth() != 32) { src = src.convertToFormat(QImage::Format_ARGB32); }
-  if (dst.depth() != 32) { dst = dst.convertToFormat(QImage::Format_ARGB32); }
+  if(src.depth() != 32)
+  {
+    src = src.convertToFormat(QImage::Format_ARGB32);
+  }
+  if(dst.depth() != 32)
+  {
+    dst = dst.convertToFormat(QImage::Format_ARGB32);
+  }
 
   int pixels = src.width() * src.height();
   {
-#ifdef WORDS_BIGENDIAN   // ARGB (skip alpha)
+#ifdef WORDS_BIGENDIAN // ARGB (skip alpha)
     register unsigned char* data1 = (unsigned char*)dst.bits() + 1;
     register unsigned char* data2 = (unsigned char*)src.bits() + 1;
-#else                    // BGRA
+#else // BGRA
     unsigned char* data1 = static_cast<unsigned char*>(dst.bits());
     unsigned char* data2 = static_cast<unsigned char*>(src.bits());
 #endif
 
-    for (int i = 0; i < pixels; i++)
+    for(int i = 0; i < pixels; i++)
     {
 #ifdef WORDS_BIGENDIAN
       *data1 += (unsigned char)((*(data2++) - *data1) * opacity);
@@ -281,10 +279,10 @@ QImage& QtSGraphicsView::blend(QImage& src, QImage& dst, float opacity)
 void QtSGraphicsView::updateDisplay()
 {
 
-//  std::cout << "QtSGraphicsView::updateDisplay()" << std::endl;
+  //  std::cout << "QtSGraphicsView::updateDisplay()" << std::endl;
   QPainter painter;
   QSize pSize(0, 0);
-  if (m_BaseImage.isNull() == false)
+  if(m_BaseImage.isNull() == false)
   {
     pSize = m_BaseImage.size();
   }
@@ -297,18 +295,18 @@ void QtSGraphicsView::updateDisplay()
   QPoint point(0, 0);
   painter.begin(&paintImage);
   painter.setPen(Qt::NoPen);
-  if (m_ImageDisplayType == EmMpm_Constants::OriginalImage)
+  if(m_ImageDisplayType == EmMpm_Constants::OriginalImage)
   {
     painter.drawImage(point, m_BaseImage);
   }
 
   painter.end();
 
-  if (paintImage.isNull() == true)
+  if(paintImage.isNull() == true)
   {
     return;
   }
-  QGraphicsPixmapItem* pixItem = qgraphicsitem_cast<QGraphicsPixmapItem*> (m_ImageGraphicsItem);
+  QGraphicsPixmapItem* pixItem = qgraphicsitem_cast<QGraphicsPixmapItem*>(m_ImageGraphicsItem);
   pixItem->setPixmap(QPixmap::fromImage(paintImage));
 
   this->update();
@@ -418,7 +416,7 @@ QImage QtSGraphicsView::getOverlayImage()
 // -----------------------------------------------------------------------------
 void QtSGraphicsView::setBaseImage(QImage image)
 {
-  if (image.isNull() == true)
+  if(image.isNull() == true)
   {
     return;
   }
@@ -427,20 +425,20 @@ void QtSGraphicsView::setBaseImage(QImage image)
   QSize pSize(0, 0);
   pSize = m_BaseImage.size();
 
-  QVector<QRgb > colorTable(256);
-  for (quint32 i = 0; i < 256; ++i)
+  QVector<QRgb> colorTable(256);
+  for(quint32 i = 0; i < 256; ++i)
   {
     colorTable[i] = qRgb(i, i, i);
   }
   m_BaseImage.setColorTable(colorTable);
 
-  if (m_BaseImage.isNull() == true)
+  if(m_BaseImage.isNull() == true)
   {
     std::cout << "Base Image was nullptr for some reason. Returning" << std::endl;
     return;
   }
   QGraphicsScene* gScene = scene();
-  if (gScene == nullptr)
+  if(gScene == nullptr)
   {
     gScene = new QGraphicsScene(this);
     setScene(gScene);
@@ -456,7 +454,7 @@ void QtSGraphicsView::setBaseImage(QImage image)
     delete m_ImageGraphicsItem;
     m_ImageGraphicsItem = nullptr;
   }
-  if (nullptr == m_ImageGraphicsItem)
+  if(nullptr == m_ImageGraphicsItem)
   {
     QPixmap pixmap = QPixmap::fromImage(image);
     m_ImageGraphicsItem = gScene->addPixmap(pixmap);
@@ -464,14 +462,10 @@ void QtSGraphicsView::setBaseImage(QImage image)
   m_ImageGraphicsItem->setAcceptDrops(true);
   m_ImageGraphicsItem->setZValue(-1);
 
-
   QRectF rect = m_ImageGraphicsItem->boundingRect();
   gScene->setSceneRect(rect);
   centerOn(m_ImageGraphicsItem);
   this->updateDisplay();
-
-
-
 }
 
 // -----------------------------------------------------------------------------
@@ -482,14 +476,12 @@ QImage QtSGraphicsView::getBaseImage()
   return m_BaseImage;
 }
 
-
-
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void QtSGraphicsView::updateColorTables( QVector<QRgb> colorTable)
+void QtSGraphicsView::updateColorTables(QVector<QRgb> colorTable)
 {
-  for (quint32 i = 0; i < 256; ++i)
+  for(quint32 i = 0; i < 256; ++i)
   {
     m_CustomColorTable[i] = qRgb(i, i, i);
   }
@@ -499,9 +491,7 @@ void QtSGraphicsView::updateColorTables( QVector<QRgb> colorTable)
   {
     m_CustomColorTable[index] = colorTable[index];
   }
-
 }
-
 
 // -----------------------------------------------------------------------------
 //
@@ -511,78 +501,78 @@ void QtSGraphicsView::setCompositeMode(EmMpm_Constants::CompositeType mode)
   m_ImageDisplayType = EmMpm_Constants::CompositedImage;
   switch(mode)
   {
-    case EmMpm_Constants::Exclusion:
-      m_composition_mode = QPainter::CompositionMode_Exclusion;
-      break;
-    case EmMpm_Constants::Difference:
-      m_composition_mode = QPainter::CompositionMode_Difference;
-      break;
-    case EmMpm_Constants::Alpha_Blend:
-      m_composition_mode = QPainter::CompositionMode_SourceOver;
-      break;
+  case EmMpm_Constants::Exclusion:
+    m_composition_mode = QPainter::CompositionMode_Exclusion;
+    break;
+  case EmMpm_Constants::Difference:
+    m_composition_mode = QPainter::CompositionMode_Difference;
+    break;
+  case EmMpm_Constants::Alpha_Blend:
+    m_composition_mode = QPainter::CompositionMode_SourceOver;
+    break;
 
-    case EmMpm_Constants::Plus:
-      m_composition_mode = QPainter::CompositionMode_Plus;
-      break;
-    case EmMpm_Constants::Multiply:
-      m_composition_mode = QPainter::CompositionMode_Multiply;
-      break;
-    case EmMpm_Constants::Screen:
-      m_composition_mode = QPainter::CompositionMode_Screen;
-      break;
-    case EmMpm_Constants::Darken:
-      m_composition_mode = QPainter::CompositionMode_Darken;
-      break;
-    case EmMpm_Constants::Lighten:
-      m_composition_mode = QPainter::CompositionMode_Lighten;
-      break;
-    case EmMpm_Constants::ColorDodge:
-      m_composition_mode = QPainter::CompositionMode_ColorDodge;
-      break;
-    case EmMpm_Constants::ColorBurn:
-      m_composition_mode = QPainter::CompositionMode_ColorBurn;
-      break;
-    case EmMpm_Constants::HardLight:
-      m_composition_mode = QPainter::CompositionMode_HardLight;
-      break;
-    case EmMpm_Constants::SoftLight:
-      m_composition_mode = QPainter::CompositionMode_SoftLight;
-      break;
+  case EmMpm_Constants::Plus:
+    m_composition_mode = QPainter::CompositionMode_Plus;
+    break;
+  case EmMpm_Constants::Multiply:
+    m_composition_mode = QPainter::CompositionMode_Multiply;
+    break;
+  case EmMpm_Constants::Screen:
+    m_composition_mode = QPainter::CompositionMode_Screen;
+    break;
+  case EmMpm_Constants::Darken:
+    m_composition_mode = QPainter::CompositionMode_Darken;
+    break;
+  case EmMpm_Constants::Lighten:
+    m_composition_mode = QPainter::CompositionMode_Lighten;
+    break;
+  case EmMpm_Constants::ColorDodge:
+    m_composition_mode = QPainter::CompositionMode_ColorDodge;
+    break;
+  case EmMpm_Constants::ColorBurn:
+    m_composition_mode = QPainter::CompositionMode_ColorBurn;
+    break;
+  case EmMpm_Constants::HardLight:
+    m_composition_mode = QPainter::CompositionMode_HardLight;
+    break;
+  case EmMpm_Constants::SoftLight:
+    m_composition_mode = QPainter::CompositionMode_SoftLight;
+    break;
 
-    case EmMpm_Constants::Destination:
-      m_composition_mode = QPainter::CompositionMode_Destination;
-      break;
-    case EmMpm_Constants::Source:
-      m_composition_mode = QPainter::CompositionMode_Source;
-      break;
-    case EmMpm_Constants::DestinationOver:
-      m_composition_mode = QPainter::CompositionMode_DestinationOver;
-      break;
-    case EmMpm_Constants::SourceIn:
-      m_composition_mode = QPainter::CompositionMode_SourceIn;
-      break;
-    case EmMpm_Constants::DestinationIn:
-      m_composition_mode = QPainter::CompositionMode_DestinationIn;
-      break;
-    case EmMpm_Constants::DestinationOut:
-      m_composition_mode = QPainter::CompositionMode_DestinationOut;
-      break;
-    case EmMpm_Constants::SourceAtop:
-      m_composition_mode = QPainter::CompositionMode_SourceAtop;
-      break;
-    case EmMpm_Constants::DestinationAtop:
-      m_composition_mode = QPainter::CompositionMode_DestinationAtop;
-      break;
-    case EmMpm_Constants::Overlay:
-      m_composition_mode = QPainter::CompositionMode_Overlay;
-      break;
-    case EmMpm_Constants::Clear:
-      m_composition_mode = QPainter::CompositionMode_Clear;
-      break;
+  case EmMpm_Constants::Destination:
+    m_composition_mode = QPainter::CompositionMode_Destination;
+    break;
+  case EmMpm_Constants::Source:
+    m_composition_mode = QPainter::CompositionMode_Source;
+    break;
+  case EmMpm_Constants::DestinationOver:
+    m_composition_mode = QPainter::CompositionMode_DestinationOver;
+    break;
+  case EmMpm_Constants::SourceIn:
+    m_composition_mode = QPainter::CompositionMode_SourceIn;
+    break;
+  case EmMpm_Constants::DestinationIn:
+    m_composition_mode = QPainter::CompositionMode_DestinationIn;
+    break;
+  case EmMpm_Constants::DestinationOut:
+    m_composition_mode = QPainter::CompositionMode_DestinationOut;
+    break;
+  case EmMpm_Constants::SourceAtop:
+    m_composition_mode = QPainter::CompositionMode_SourceAtop;
+    break;
+  case EmMpm_Constants::DestinationAtop:
+    m_composition_mode = QPainter::CompositionMode_DestinationAtop;
+    break;
+  case EmMpm_Constants::Overlay:
+    m_composition_mode = QPainter::CompositionMode_Overlay;
+    break;
+  case EmMpm_Constants::Clear:
+    m_composition_mode = QPainter::CompositionMode_Clear;
+    break;
 
-    default:
-      m_composition_mode = QPainter::CompositionMode_Exclusion;
-      break;
+  default:
+    m_composition_mode = QPainter::CompositionMode_Exclusion;
+    break;
   }
 
   this->setImageDisplayType(m_ImageDisplayType);

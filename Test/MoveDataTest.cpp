@@ -13,7 +13,6 @@
 #ifdef _MSC_VER
 #include <cstdlib>
 
-
 /*
  "It's a known, long-standing bug in the compiler system's headers.  For
  some reason the manufacturer, in its infinite wisdom, chose to #define
@@ -35,7 +34,6 @@
 
 #endif
 
-
 //-- C++ includes
 #include <iostream>
 
@@ -43,14 +41,14 @@
 
 #include <QtCore/QObject>
 
-#include "SIMPLib/CoreFilters/RemoveArrays.h"
-#include "SIMPLib/CoreFilters/RenameDataContainer.h"
-#include "SIMPLib/CoreFilters/RenameAttributeMatrix.h"
-#include "SIMPLib/CoreFilters/RenameAttributeArray.h"
-#include "SIMPLib/CoreFilters/MoveData.h"
-#include "SIMPLib/CoreFilters/CopyDataContainer.h"
-#include "SIMPLib/CoreFilters/CopyAttributeMatrix.h"
 #include "SIMPLib/CoreFilters/CopyAttributeArray.h"
+#include "SIMPLib/CoreFilters/CopyAttributeMatrix.h"
+#include "SIMPLib/CoreFilters/CopyDataContainer.h"
+#include "SIMPLib/CoreFilters/MoveData.h"
+#include "SIMPLib/CoreFilters/RemoveArrays.h"
+#include "SIMPLib/CoreFilters/RenameAttributeArray.h"
+#include "SIMPLib/CoreFilters/RenameAttributeMatrix.h"
+#include "SIMPLib/CoreFilters/RenameDataContainer.h"
 #include "SIMPLib/Utilities/UnitTestSupport.hpp"
 
 #include "DREAM3DTestFileLocations.h"
@@ -81,8 +79,6 @@ enum ErrorCodes
   AA_NEW_NAME_EXISTS = -11017,
   TUPLES_NOT_MATCH = -11019
 };
-
-
 
 // -----------------------------------------------------------------------------
 //
@@ -132,28 +128,28 @@ void setDeleteSelections(DataContainerArrayProxy& proxy)
 
   QMap<QString, DataContainerProxy>& dcProxies = proxy.dataContainers;
 
-  for (QMap<QString, DataContainerProxy>::iterator dcIter = dcProxies.begin(); dcIter != dcProxies.end(); ++dcIter)
+  for(QMap<QString, DataContainerProxy>::iterator dcIter = dcProxies.begin(); dcIter != dcProxies.end(); ++dcIter)
   {
-    DataContainerProxy& dcProxy =  dcIter.value();
-    if (dcProxy.name == "DataContainer1")
+    DataContainerProxy& dcProxy = dcIter.value();
+    if(dcProxy.name == "DataContainer1")
     {
       dcProxy.flag = Qt::Checked;
     }
 
     QMap<QString, AttributeMatrixProxy>& amProxies = dcProxy.attributeMatricies;
-    for (QMap<QString, AttributeMatrixProxy>::iterator amIter = amProxies.begin(); amIter != amProxies.end(); ++amIter)
+    for(QMap<QString, AttributeMatrixProxy>::iterator amIter = amProxies.begin(); amIter != amProxies.end(); ++amIter)
     {
       AttributeMatrixProxy& amProxy = amIter.value();
-      if (amProxy.name == "AttributeMatrix5")
+      if(amProxy.name == "AttributeMatrix5")
       {
         amProxy.flag = Qt::Checked;
       }
 
       QMap<QString, DataArrayProxy>& daProxies = amProxy.dataArrays;
-      for (QMap<QString, DataArrayProxy>::iterator daIter = daProxies.begin(); daIter != daProxies.end(); ++daIter)
+      for(QMap<QString, DataArrayProxy>::iterator daIter = daProxies.begin(); daIter != daProxies.end(); ++daIter)
       {
         DataArrayProxy& daProxy = daIter.value();
-        if (daProxy.name == "DataArray4")
+        if(daProxy.name == "DataArray4")
         {
           daProxy.flag = Qt::Checked;
         }
@@ -171,9 +167,10 @@ void displayErrors(RemoveArraysObserver::Pointer ptr)
   QList<PipelineMessage>::iterator iter = list.begin();
 
   int i = 1;
-  for (; iter != list.end(); iter++)
+  for(; iter != list.end(); iter++)
   {
-    qDebug() << "Error " << i << " - " << "Error Code: " << (*iter).getCode();
+    qDebug() << "Error " << i << " - "
+             << "Error Code: " << (*iter).getCode();
     i++;
   }
 }
@@ -261,12 +258,12 @@ void CopyDataTest()
   // "DataContainerArray Not Found" Test
   CopyDataContainer::Pointer copyDataContainerPtr = CopyDataContainer::New();
 
-//    DataContainerArray::Pointer dca_not_found = DataContainerArray::NullPointer();
-//    copyDataContainerPtr->setDataContainerArray(dca_not_found);
-//    copyDataContainerPtr->setSelectedDataContainerName("DataContainer1");
-//    copyDataContainerPtr->setNewDataContainerName("DataContainer3");
-//    copyDataContainerPtr->execute();
-//    DREAM3D_REQUIRE_EQUAL(copyDataContainerPtr->getErrorCondition(), DCA_NOT_FOUND)
+  //    DataContainerArray::Pointer dca_not_found = DataContainerArray::NullPointer();
+  //    copyDataContainerPtr->setDataContainerArray(dca_not_found);
+  //    copyDataContainerPtr->setSelectedDataContainerName("DataContainer1");
+  //    copyDataContainerPtr->setNewDataContainerName("DataContainer3");
+  //    copyDataContainerPtr->execute();
+  //    DREAM3D_REQUIRE_EQUAL(copyDataContainerPtr->getErrorCondition(), DCA_NOT_FOUND)
 
   DataContainerArray::Pointer dca = createDataContainerArray();
   copyDataContainerPtr->setDataContainerArray(dca);
@@ -380,14 +377,14 @@ void RenameDataTest()
   /***** Rename Data Container *****/
   RenameDataContainer::Pointer renameDataContainerPtr = RenameDataContainer::New();
 
-//    DataContainerArray::Pointer dca_not_found = DataContainerArray::NullPointer();
-//    renameDataContainerPtr->setDataContainerArray(dca_not_found);
+  //    DataContainerArray::Pointer dca_not_found = DataContainerArray::NullPointer();
+  //    renameDataContainerPtr->setDataContainerArray(dca_not_found);
 
-//    // "DataContainerArray Is Null" Test
-//    renameDataContainerPtr->setNewDataContainerName("IShouldBeAbleToRenameThis");
-//    renameDataContainerPtr->setSelectedDataContainerName("DataContainer1");
-//    renameDataContainerPtr->execute();
-//    DREAM3D_REQUIRE_EQUAL(renameDataContainerPtr->getErrorCondition(), DCA_NOT_FOUND)
+  //    // "DataContainerArray Is Null" Test
+  //    renameDataContainerPtr->setNewDataContainerName("IShouldBeAbleToRenameThis");
+  //    renameDataContainerPtr->setSelectedDataContainerName("DataContainer1");
+  //    renameDataContainerPtr->execute();
+  //    DREAM3D_REQUIRE_EQUAL(renameDataContainerPtr->getErrorCondition(), DCA_NOT_FOUND)
 
   DataContainerArray::Pointer dca = createDataContainerArray();
   renameDataContainerPtr->setDataContainerArray(dca);
@@ -419,12 +416,12 @@ void RenameDataTest()
   /***** Rename Attribute Matrix *****/
   RenameAttributeMatrix::Pointer renameAttrMatPtr = RenameAttributeMatrix::New();
 
-//    // "DataContainerArray Is Null" Test
-//    renameAttrMatPtr->setDataContainerArray(dca_not_found);
-//    renameAttrMatPtr->setSelectedAttributeMatrixPath(DataArrayPath("DataContainer1", "AttributeMatrix1", "DataArray1"));
-//    renameAttrMatPtr->setNewAttributeMatrix("NewAttributeMatrixName");
-//    renameAttrMatPtr->execute();
-//    DREAM3D_REQUIRE_EQUAL(renameAttrMatPtr->getErrorCondition(), DCA_NOT_FOUND)
+  //    // "DataContainerArray Is Null" Test
+  //    renameAttrMatPtr->setDataContainerArray(dca_not_found);
+  //    renameAttrMatPtr->setSelectedAttributeMatrixPath(DataArrayPath("DataContainer1", "AttributeMatrix1", "DataArray1"));
+  //    renameAttrMatPtr->setNewAttributeMatrix("NewAttributeMatrixName");
+  //    renameAttrMatPtr->execute();
+  //    DREAM3D_REQUIRE_EQUAL(renameAttrMatPtr->getErrorCondition(), DCA_NOT_FOUND)
 
   dca = createDataContainerArray();
   renameAttrMatPtr->setDataContainerArray(dca);
@@ -505,7 +502,6 @@ void RenameDataTest()
   renameAttrArrayPtr->setNewArrayName("NewDataArrayName");
   renameAttrArrayPtr->execute();
   DREAM3D_REQUIRE_EQUAL(renameAttrArrayPtr->getErrorCondition(), 0)
-
 }
 
 // -----------------------------------------------------------------------------
@@ -533,8 +529,7 @@ void RemoveDataTest()
 
   RemoveArraysObserver::Pointer obs = RemoveArraysObserver::New();
   QObject foo;
-  foo.connect(removeDataPtr.get(), SIGNAL(filterGeneratedMessage(const PipelineMessage&)),
-              obs.get(), SLOT(processPipelineMessage(const PipelineMessage&)));
+  foo.connect(removeDataPtr.get(), SIGNAL(filterGeneratedMessage(const PipelineMessage&)), obs.get(), SLOT(processPipelineMessage(const PipelineMessage&)));
 
   removeDataPtr->execute();
   QList<PipelineMessage> list = obs->getErrorList();
@@ -545,9 +540,9 @@ void RemoveDataTest()
 
   DREAM3D_REQUIRE_EQUAL((*iter).getCode(), DC_NOT_FOUND)
   iter++;
-//    DREAM3D_REQUIRE_EQUAL((*iter).getCode(), AA_NOT_FOUND)
-//    iter++;
-//    DREAM3D_REQUIRE_EQUAL((*iter).getCode(), AM_NOT_FOUND)
+  //    DREAM3D_REQUIRE_EQUAL((*iter).getCode(), AA_NOT_FOUND)
+  //    iter++;
+  //    DREAM3D_REQUIRE_EQUAL((*iter).getCode(), AM_NOT_FOUND)
 }
 
 // -----------------------------------------------------------------------------
@@ -557,14 +552,12 @@ int main(int argc, char** argv)
 {
   int err = EXIT_SUCCESS;
 
-  DREAM3D_REGISTER_TEST( MoveDataTest() )
-  DREAM3D_REGISTER_TEST( CopyDataTest() )
-  DREAM3D_REGISTER_TEST( RenameDataTest() )
-  DREAM3D_REGISTER_TEST( RemoveDataTest() )
+  DREAM3D_REGISTER_TEST(MoveDataTest())
+  DREAM3D_REGISTER_TEST(CopyDataTest())
+  DREAM3D_REGISTER_TEST(RenameDataTest())
+  DREAM3D_REGISTER_TEST(RemoveDataTest())
 
   PRINT_TEST_SUMMARY();
 
   return err;
 }
-
-

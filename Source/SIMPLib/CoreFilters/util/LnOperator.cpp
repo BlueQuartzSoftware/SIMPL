@@ -44,8 +44,8 @@
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-LnOperator::LnOperator() :
-  UnaryOperator()
+LnOperator::LnOperator()
+: UnaryOperator()
 {
   setNumberOfArguments(1);
 }
@@ -55,14 +55,12 @@ LnOperator::LnOperator() :
 // -----------------------------------------------------------------------------
 LnOperator::~LnOperator()
 {
-
 }
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void LnOperator::calculate(AbstractFilter* filter, DataArrayPath calculatedArrayPath, QStack<ICalculatorArray::Pointer> &executionStack)
+void LnOperator::calculate(AbstractFilter* filter, DataArrayPath calculatedArrayPath, QStack<ICalculatorArray::Pointer>& executionStack)
 {
   CREATE_NEW_ARRAY_STANDARD_UNARY(filter, calculatedArrayPath, executionStack, log)
 }
-

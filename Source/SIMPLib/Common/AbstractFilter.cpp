@@ -33,26 +33,25 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-
 #include "AbstractFilter.h"
 
-#include "SIMPLib/SIMPLibVersion.h"
-#include "SIMPLib/Plugin/PluginManager.h"
-#include "SIMPLib/Common/PipelineMessage.h"
+#include "SIMPLib/Common/FilterFactory.hpp"
 #include "SIMPLib/Common/FilterManager.h"
 #include "SIMPLib/Common/IFilterFactory.hpp"
-#include "SIMPLib/Common/FilterFactory.hpp"
+#include "SIMPLib/Common/PipelineMessage.h"
+#include "SIMPLib/Plugin/PluginManager.h"
+#include "SIMPLib/SIMPLibVersion.h"
 
 #include "moc_AbstractFilter.cpp"
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-AbstractFilter::AbstractFilter() :
-  Observable(),
-  m_ErrorCondition(0),
-  m_WarningCondition(0),
-  m_InPreflight(false),
-  m_Cancel(false)
+AbstractFilter::AbstractFilter()
+: Observable()
+, m_ErrorCondition(0)
+, m_WarningCondition(0)
+, m_InPreflight(false)
+, m_Cancel(false)
 {
   m_DataContainerArray = DataContainerArray::New();
   setupFilterParameters();
@@ -80,12 +79,18 @@ AbstractFilter::~AbstractFilter()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-AbstractFilter::Pointer AbstractFilter::CreateFilterFromClassName(const QString &className)
+AbstractFilter::Pointer AbstractFilter::CreateFilterFromClassName(const QString& className)
 {
   FilterManager* fm = FilterManager::Instance();
-  if(NULL == fm) { return AbstractFilter::NullPointer(); }
+  if(NULL == fm)
+  {
+    return AbstractFilter::NullPointer();
+  }
   IFilterFactory::Pointer wf = fm->getFactoryForFilter(className);
-  if (NULL == wf.get()) { return AbstractFilter::NullPointer(); }
+  if(NULL == wf.get())
+  {
+    return AbstractFilter::NullPointer();
+  }
 
   // Create an instance of the filter. Since we are dealing with the AbstractFilter interface we can not
   // actually use the concrete filter class. We are going to have to rely on QProperties or Signals/Slots
@@ -138,7 +143,7 @@ bool AbstractFilter::doesPipelineContainFilterBeforeThis(const QString& name)
   AbstractFilter::Pointer prev = getPreviousFilter().lock();
   while(prev.get() != nullptr)
   {
-    if (prev->getNameOfClass().compare(name) == 0)
+    if(prev->getNameOfClass().compare(name) == 0)
     {
       contains = true;
       break;
@@ -158,7 +163,7 @@ bool AbstractFilter::doesPipelineContainFilterAfterThis(const QString& name)
   AbstractFilter::Pointer next = getNextFilter().lock();
   while(next.get() != nullptr)
   {
-    if (next->getNameOfClass().compare(name) == 0)
+    if(next->getNameOfClass().compare(name) == 0)
     {
       contains = true;
       break;
@@ -168,24 +173,24 @@ bool AbstractFilter::doesPipelineContainFilterAfterThis(const QString& name)
   return contains;
 }
 
-
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
 void AbstractFilter::readFilterParameters(AbstractFilterParametersReader* reader, int index)
 {
   Q_ASSERT(reader != nullptr);
-  qDebug() << "AbstractFilter::readFilterParameters() -> Writing Filter Options" << "\n";
+  qDebug() << "AbstractFilter::readFilterParameters() -> Writing Filter Options"
+           << "\n";
   return;
 }
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void AbstractFilter::readFilterParameters(QJsonObject &obj)
+void AbstractFilter::readFilterParameters(QJsonObject& obj)
 {
   QVector<FilterParameter::Pointer> filterParameters = getFilterParameters();
-  for (int i=0; i<filterParameters.size(); i++)
+  for(int i = 0; i < filterParameters.size(); i++)
   {
     FilterParameter::Pointer fp = filterParameters[i];
     fp->readJson(obj);
@@ -195,10 +200,10 @@ void AbstractFilter::readFilterParameters(QJsonObject &obj)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void AbstractFilter::writeFilterParameters(QJsonObject &obj)
+void AbstractFilter::writeFilterParameters(QJsonObject& obj)
 {
   QVector<FilterParameter::Pointer> filterParameters = getFilterParameters();
-  for (int i=0; i<filterParameters.size(); i++)
+  for(int i = 0; i < filterParameters.size(); i++)
   {
     FilterParameter::Pointer fp = filterParameters[i];
     fp->writeJson(obj);
@@ -237,15 +242,15 @@ AbstractFilter::Pointer AbstractFilter::newFilterInstance(bool copyFilterParamet
 // -----------------------------------------------------------------------------
 void AbstractFilter::copyFilterParameterInstanceVariables(AbstractFilter* filter)
 {
-  filter->setFilterParameters(getFilterParameters() );
+  filter->setFilterParameters(getFilterParameters());
 
-  //Loop over each Filter Parameter that is registered to the filter either through this class or a parent class
+  // Loop over each Filter Parameter that is registered to the filter either through this class or a parent class
   // and copy the value from the current instance of the object into the "new" instance that was just created
   QVector<FilterParameter::Pointer> options = getFilterParameters(); // Get the current set of filter parameters
-  for (QVector<FilterParameter::Pointer>::iterator iter = options.begin(); iter != options.end(); ++iter )
+  for(QVector<FilterParameter::Pointer>::iterator iter = options.begin(); iter != options.end(); ++iter)
   {
     FilterParameter* parameter = (*iter).get();
-    if (parameter->getReadOnly() == true )
+    if(parameter->getReadOnly() == true)
     {
       continue; // Skip this type of filter parameter as it has nothing to do with anything in the filter.
     }
@@ -256,8 +261,12 @@ void AbstractFilter::copyFilterParameterInstanceVariables(AbstractFilter* filter
       bool ok = filter->setProperty(parameter->getPropertyName().toLatin1().constData(), var);
       if(false == ok)
       {
-        QString ss = QString("Error occurred transferring the Filter Parameter '%1' in Filter '%2' to the filter instance. The pipeline may run but the underlying filter will NOT be using the values from the GUI."
-                             " Please report this issue to the developers of this filter.").arg(parameter->getPropertyName()).arg(filter->getHumanLabel());
+        QString ss =
+            QString(
+                "Error occurred transferring the Filter Parameter '%1' in Filter '%2' to the filter instance. The pipeline may run but the underlying filter will NOT be using the values from the GUI."
+                " Please report this issue to the developers of this filter.")
+                .arg(parameter->getPropertyName())
+                .arg(filter->getHumanLabel());
         Q_ASSERT_X(ok, __FILE__, ss.toLatin1().constData());
       }
     }
@@ -342,7 +351,6 @@ const QString AbstractFilter::generateHtmlSummary()
 // -----------------------------------------------------------------------------
 void AbstractFilter::printValues(std::ostream& out) const
 {
-
 }
 
 // -----------------------------------------------------------------------------
@@ -350,5 +358,4 @@ void AbstractFilter::printValues(std::ostream& out) const
 // -----------------------------------------------------------------------------
 void AbstractFilter::cleanupFilter()
 {
-
 }

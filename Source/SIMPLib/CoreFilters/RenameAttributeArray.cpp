@@ -33,27 +33,24 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-
 #include "RenameAttributeArray.h"
 
 #include "SIMPLib/Common/Constants.h"
-#include "SIMPLib/SIMPLibVersion.h"
 #include "SIMPLib/FilterParameters/AbstractFilterParametersReader.h"
 #include "SIMPLib/FilterParameters/DataArraySelectionFilterParameter.h"
 #include "SIMPLib/FilterParameters/StringFilterParameter.h"
+#include "SIMPLib/SIMPLibVersion.h"
 
 // Include the MOC generated file for this class
 #include "moc_RenameAttributeArray.cpp"
 
-
-
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-RenameAttributeArray::RenameAttributeArray() :
-  AbstractFilter(),
-  m_SelectedArrayPath("", "", ""),
-  m_NewArrayName("")
+RenameAttributeArray::RenameAttributeArray()
+: AbstractFilter()
+, m_SelectedArrayPath("", "", "")
+, m_NewArrayName("")
 {
   setupFilterParameters();
 }
@@ -86,8 +83,8 @@ void RenameAttributeArray::setupFilterParameters()
 void RenameAttributeArray::readFilterParameters(AbstractFilterParametersReader* reader, int index)
 {
   reader->openFilterGroup(this, index);
-  setSelectedArrayPath( reader->readDataArrayPath("SelectedArrayPath", getSelectedArrayPath()) );
-  setNewArrayName( reader->readString( "NewArrayName", getNewArrayName() ) );
+  setSelectedArrayPath(reader->readDataArrayPath("SelectedArrayPath", getSelectedArrayPath()));
+  setNewArrayName(reader->readString("NewArrayName", getNewArrayName()));
   reader->closeFilterGroup();
 }
 
@@ -96,7 +93,6 @@ void RenameAttributeArray::readFilterParameters(AbstractFilterParametersReader* 
 // -----------------------------------------------------------------------------
 void RenameAttributeArray::initialize()
 {
-
 }
 
 // -----------------------------------------------------------------------------
@@ -106,7 +102,7 @@ void RenameAttributeArray::dataCheck()
 {
   setErrorCondition(0);
 
-  if (m_NewArrayName.isEmpty() == true)
+  if(m_NewArrayName.isEmpty() == true)
   {
     setErrorCondition(-11009);
     QString ss = QObject::tr("The new Attribute Array name must be set");
@@ -117,30 +113,33 @@ void RenameAttributeArray::dataCheck()
   QString daName = getSelectedArrayPath().getDataArrayName();
 
   AttributeMatrix::Pointer attrMat = getDataContainerArray()->getPrereqAttributeMatrixFromPath<AbstractFilter>(this, getSelectedArrayPath(), -301);
-  if(getErrorCondition() < 0) { return; }
+  if(getErrorCondition() < 0)
+  {
+    return;
+  }
 
   RenameErrorCodes code = attrMat->renameAttributeArray(daName, m_NewArrayName, false);
-  switch (code)
+  switch(code)
   {
-    case OLD_DOES_NOT_EXIST:
-    {
-      setErrorCondition(-11016);
-      QString ss = QObject::tr("A DataArray with the name '%1' was not found in the AttributeMatrix").arg(daName);
-      notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
-      return;
-    }
-    case NEW_EXISTS:
-    {
-      setErrorCondition(-11017);
-      QString ss = QObject::tr("A DataArray with the name '%1' already exists in the AttributeMatrix").arg(m_NewArrayName);
-      notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
-      return;
-    }
-    case SUCCESS:
-    {
-      setErrorCondition(0);
-      return;
-    }
+  case OLD_DOES_NOT_EXIST:
+  {
+    setErrorCondition(-11016);
+    QString ss = QObject::tr("A DataArray with the name '%1' was not found in the AttributeMatrix").arg(daName);
+    notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
+    return;
+  }
+  case NEW_EXISTS:
+  {
+    setErrorCondition(-11017);
+    QString ss = QObject::tr("A DataArray with the name '%1' already exists in the AttributeMatrix").arg(m_NewArrayName);
+    notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
+    return;
+  }
+  case SUCCESS:
+  {
+    setErrorCondition(0);
+    return;
+  }
   }
 }
 
@@ -164,7 +163,10 @@ void RenameAttributeArray::execute()
 {
   setErrorCondition(0);
   dataCheck(); // calling the dataCheck will rename the array, so nothing is required here
-  if(getErrorCondition() < 0) { return; }
+  if(getErrorCondition() < 0)
+  {
+    return;
+  }
 
   notifyStatusMessage(getHumanLabel(), "Complete");
 }
@@ -185,7 +187,9 @@ AbstractFilter::Pointer RenameAttributeArray::newFilterInstance(bool copyFilterP
 //
 // -----------------------------------------------------------------------------
 const QString RenameAttributeArray::getCompiledLibraryName()
-{ return Core::CoreBaseName; }
+{
+  return Core::CoreBaseName;
+}
 
 // -----------------------------------------------------------------------------
 //
@@ -202,26 +206,30 @@ const QString RenameAttributeArray::getFilterVersion()
 {
   QString version;
   QTextStream vStream(&version);
-  vStream <<  SIMPLib::Version::Major() << "." << SIMPLib::Version::Minor() << "." << SIMPLib::Version::Patch();
+  vStream << SIMPLib::Version::Major() << "." << SIMPLib::Version::Minor() << "." << SIMPLib::Version::Patch();
   return version;
 }
-
-
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
 const QString RenameAttributeArray::getGroupName()
-{ return SIMPL::FilterGroups::CoreFilters; }
+{
+  return SIMPL::FilterGroups::CoreFilters;
+}
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
 const QString RenameAttributeArray::getSubGroupName()
-{ return SIMPL::FilterSubGroups::MemoryManagementFilters; }
+{
+  return SIMPL::FilterSubGroups::MemoryManagementFilters;
+}
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
 const QString RenameAttributeArray::getHumanLabel()
-{ return "Rename Attribute Array"; }
+{
+  return "Rename Attribute Array";
+}

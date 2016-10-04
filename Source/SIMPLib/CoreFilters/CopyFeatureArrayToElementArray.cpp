@@ -33,33 +33,30 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-
 #include "CopyFeatureArrayToElementArray.h"
 
 #include "SIMPLib/Common/Constants.h"
-#include "SIMPLib/SIMPLibVersion.h"
 #include "SIMPLib/Common/TemplateHelpers.hpp"
 #include "SIMPLib/FilterParameters/AbstractFilterParametersReader.h"
+#include "SIMPLib/SIMPLibVersion.h"
 
 #include "SIMPLib/FilterParameters/DataArraySelectionFilterParameter.h"
-#include "SIMPLib/FilterParameters/StringFilterParameter.h"
 #include "SIMPLib/FilterParameters/SeparatorFilterParameter.h"
+#include "SIMPLib/FilterParameters/StringFilterParameter.h"
 
 // Include the MOC generated file for this class
 #include "moc_CopyFeatureArrayToElementArray.cpp"
 
-
-
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-CopyFeatureArrayToElementArray::CopyFeatureArrayToElementArray() :
-  AbstractFilter(),
-  m_SelectedFeatureArrayPath("", "", ""),
-  m_FeatureIdsArrayPath("", "", ""),
-  m_CreatedArrayName(""),
-  m_FeatureIds(nullptr),
-  m_InArray(nullptr)
+CopyFeatureArrayToElementArray::CopyFeatureArrayToElementArray()
+: AbstractFilter()
+, m_SelectedFeatureArrayPath("", "", "")
+, m_FeatureIdsArrayPath("", "", "")
+, m_CreatedArrayName("")
+, m_FeatureIds(nullptr)
+, m_InArray(nullptr)
 {
   setupFilterParameters();
 }
@@ -80,7 +77,8 @@ void CopyFeatureArrayToElementArray::setupFilterParameters()
   parameters.push_back(SeparatorFilterParameter::New("Feature Data", FilterParameter::RequiredArray));
 
   {
-    DataArraySelectionFilterParameter::RequirementType req = DataArraySelectionFilterParameter::CreateCategoryRequirement(SIMPL::Defaults::AnyPrimitive, SIMPL::Defaults::AnyComponentSize, SIMPL::AttributeMatrixObjectType::Feature);
+    DataArraySelectionFilterParameter::RequirementType req =
+        DataArraySelectionFilterParameter::CreateCategoryRequirement(SIMPL::Defaults::AnyPrimitive, SIMPL::Defaults::AnyComponentSize, SIMPL::AttributeMatrixObjectType::Feature);
     parameters.push_back(SIMPL_NEW_DA_SELECTION_FP("Feature Data to Copy to Element Data", SelectedFeatureArrayPath, FilterParameter::RequiredArray, CopyFeatureArrayToElementArray, req));
   }
   parameters.push_back(SeparatorFilterParameter::New("Element Data", FilterParameter::RequiredArray));
@@ -101,9 +99,9 @@ void CopyFeatureArrayToElementArray::setupFilterParameters()
 void CopyFeatureArrayToElementArray::readFilterParameters(AbstractFilterParametersReader* reader, int index)
 {
   reader->openFilterGroup(this, index);
-  setFeatureIdsArrayPath(reader->readDataArrayPath("FeatureIdsArrayPath", getFeatureIdsArrayPath() ) );
-  setSelectedFeatureArrayPath(reader->readDataArrayPath( "SelectedFeatureArrayPath", getSelectedFeatureArrayPath() ) );
-  setCreatedArrayName(reader->readString("CreatedArrayName", getCreatedArrayName() ) );
+  setFeatureIdsArrayPath(reader->readDataArrayPath("FeatureIdsArrayPath", getFeatureIdsArrayPath()));
+  setSelectedFeatureArrayPath(reader->readDataArrayPath("SelectedFeatureArrayPath", getSelectedFeatureArrayPath()));
+  setCreatedArrayName(reader->readString("CreatedArrayName", getCreatedArrayName()));
   reader->closeFilterGroup();
 }
 
@@ -112,7 +110,6 @@ void CopyFeatureArrayToElementArray::readFilterParameters(AbstractFilterParamete
 // -----------------------------------------------------------------------------
 void CopyFeatureArrayToElementArray::initialize()
 {
-
 }
 
 // -----------------------------------------------------------------------------
@@ -122,7 +119,7 @@ void CopyFeatureArrayToElementArray::dataCheck()
 {
   setErrorCondition(0);
 
-  if (getCreatedArrayName().isEmpty() == true)
+  if(getCreatedArrayName().isEmpty() == true)
   {
     setErrorCondition(-11002);
     notifyErrorMessage(getHumanLabel(), "The new Element array name must be set", getErrorCondition());
@@ -130,16 +127,23 @@ void CopyFeatureArrayToElementArray::dataCheck()
   }
 
   QVector<size_t> cDims(1, 1);
-  m_FeatureIdsPtr = getDataContainerArray()->getPrereqArrayFromPath<DataArray<int32_t>, AbstractFilter>(this, getFeatureIdsArrayPath(), cDims); /* Assigns the shared_ptr<> to an instance variable that is a weak_ptr<> */
-  if( nullptr != m_FeatureIdsPtr.lock().get() ) /* Validate the Weak Pointer wraps a non-nullptr pointer to a DataArray<T> object */
-  { m_FeatureIds = m_FeatureIdsPtr.lock()->getPointer(0); }    /* Now assign the raw pointer to data from the DataArray<T> object */
+  m_FeatureIdsPtr = getDataContainerArray()->getPrereqArrayFromPath<DataArray<int32_t>, AbstractFilter>(this, getFeatureIdsArrayPath(),
+                                                                                                        cDims); /* Assigns the shared_ptr<> to an instance variable that is a weak_ptr<> */
+  if(nullptr != m_FeatureIdsPtr.lock().get())                                                                   /* Validate the Weak Pointer wraps a non-nullptr pointer to a DataArray<T> object */
+  {
+    m_FeatureIds = m_FeatureIdsPtr.lock()->getPointer(0);
+  } /* Now assign the raw pointer to data from the DataArray<T> object */
 
-  m_InArrayPtr = getDataContainerArray()->getPrereqIDataArrayFromPath<IDataArray, AbstractFilter>(this, getSelectedFeatureArrayPath()); /* Assigns the shared_ptr<> to an instance variable that is a weak_ptr<> */
+  m_InArrayPtr =
+      getDataContainerArray()->getPrereqIDataArrayFromPath<IDataArray, AbstractFilter>(this, getSelectedFeatureArrayPath()); /* Assigns the shared_ptr<> to an instance variable that is a weak_ptr<> */
 
   DataArrayPath tempPath(getFeatureIdsArrayPath().getDataContainerName(), getFeatureIdsArrayPath().getAttributeMatrixName(), "");
   getDataContainerArray()->getPrereqAttributeMatrixFromPath<AbstractFilter>(this, tempPath, -301);
 
-  if(getErrorCondition() < 0 ) { return; }
+  if(getErrorCondition() < 0)
+  {
+    return;
+  }
 
   tempPath.update(getFeatureIdsArrayPath().getDataContainerName(), getFeatureIdsArrayPath().getAttributeMatrixName(), getCreatedArrayName());
   TemplateHelpers::CreateNonPrereqArrayFromArrayType()(this, tempPath, m_InArrayPtr.lock()->getComponentDimensions(), m_InArrayPtr.lock());
@@ -161,13 +165,15 @@ void CopyFeatureArrayToElementArray::preflight()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-template<typename T>
-IDataArray::Pointer copyData(IDataArray::Pointer inputData, size_t totalPoints, int32_t* featureIds)
+template <typename T> IDataArray::Pointer copyData(IDataArray::Pointer inputData, size_t totalPoints, int32_t* featureIds)
 {
   QString cellArrayName = inputData->getName();
 
-  typename DataArray<T>::Pointer feature = std::dynamic_pointer_cast<DataArray<T> >(inputData);
-  if (nullptr == feature) { return IDataArray::NullPointer();  }
+  typename DataArray<T>::Pointer feature = std::dynamic_pointer_cast<DataArray<T>>(inputData);
+  if(nullptr == feature)
+  {
+    return IDataArray::NullPointer();
+  }
 
   QVector<size_t> cDims = inputData->getComponentDimensions();
   typename DataArray<T>::Pointer cell = DataArray<T>::CreateArray(totalPoints, cDims, cellArrayName);
@@ -178,7 +184,7 @@ IDataArray::Pointer copyData(IDataArray::Pointer inputData, size_t totalPoints, 
   int32_t numComp = feature->getNumberOfComponents();
   int32_t featureIdx = 0;
 
-  for (size_t i = 0; i < totalPoints; ++i)
+  for(size_t i = 0; i < totalPoints; ++i)
   {
     // Get the feature id (or what ever the user has selected as their "Feature" identifier
     featureIdx = featureIds[i];
@@ -200,7 +206,10 @@ void CopyFeatureArrayToElementArray::execute()
 {
   setErrorCondition(0);
   dataCheck();
-  if(getErrorCondition() < 0) { return; }
+  if(getErrorCondition() < 0)
+  {
+    return;
+  }
 
   // Validate that the selected InArray has tuples equal to the largest
   // Feature Id; the filter would not crash otherwise, but the user should
@@ -210,12 +219,12 @@ void CopyFeatureArrayToElementArray::execute()
   bool mismatchedFeatures = false;
   int32_t largestFeature = 0;
   size_t totalPoints = m_FeatureIdsPtr.lock()->getNumberOfTuples();
-  for (size_t i = 0; i < totalPoints; i ++)
+  for(size_t i = 0; i < totalPoints; i++)
   {
-    if (m_FeatureIds[i] > largestFeature)
+    if(m_FeatureIds[i] > largestFeature)
     {
       largestFeature = m_FeatureIds[i];
-      if (largestFeature >= numFeatures)
+      if(largestFeature >= numFeatures)
       {
         mismatchedFeatures = true;
         break;
@@ -223,7 +232,7 @@ void CopyFeatureArrayToElementArray::execute()
     }
   }
 
-  if (mismatchedFeatures == true)
+  if(mismatchedFeatures == true)
   {
     QString ss = QObject::tr("The number of Features in the InArray array (%1) is larger than the largest Feature Id in the FeatureIds array").arg(numFeatures);
     setErrorCondition(-5555);
@@ -231,7 +240,7 @@ void CopyFeatureArrayToElementArray::execute()
     return;
   }
 
-  if (largestFeature != (numFeatures - 1))
+  if(largestFeature != (numFeatures - 1))
   {
     QString ss = QObject::tr("The number of Features in the InArray array (%1) does not match the largest Feature Id in the FeatureIds array").arg(numFeatures);
     setErrorCondition(-5555);
@@ -241,47 +250,47 @@ void CopyFeatureArrayToElementArray::execute()
 
   IDataArray::Pointer p = IDataArray::NullPointer();
 
-  if (TemplateHelpers::CanDynamicCast<Int8ArrayType>()(m_InArrayPtr.lock()))
+  if(TemplateHelpers::CanDynamicCast<Int8ArrayType>()(m_InArrayPtr.lock()))
   {
     p = copyData<int8_t>(m_InArrayPtr.lock(), totalPoints, m_FeatureIds);
   }
-  else if (TemplateHelpers::CanDynamicCast<UInt8ArrayType>()(m_InArrayPtr.lock()))
+  else if(TemplateHelpers::CanDynamicCast<UInt8ArrayType>()(m_InArrayPtr.lock()))
   {
     p = copyData<uint8_t>(m_InArrayPtr.lock(), totalPoints, m_FeatureIds);
   }
-  else if (TemplateHelpers::CanDynamicCast<Int16ArrayType>()(m_InArrayPtr.lock()))
+  else if(TemplateHelpers::CanDynamicCast<Int16ArrayType>()(m_InArrayPtr.lock()))
   {
     p = copyData<int16_t>(m_InArrayPtr.lock(), totalPoints, m_FeatureIds);
   }
-  else if (TemplateHelpers::CanDynamicCast<UInt16ArrayType>()(m_InArrayPtr.lock()))
+  else if(TemplateHelpers::CanDynamicCast<UInt16ArrayType>()(m_InArrayPtr.lock()))
   {
     p = copyData<uint16_t>(m_InArrayPtr.lock(), totalPoints, m_FeatureIds);
   }
-  else if (TemplateHelpers::CanDynamicCast<Int32ArrayType>()(m_InArrayPtr.lock()))
+  else if(TemplateHelpers::CanDynamicCast<Int32ArrayType>()(m_InArrayPtr.lock()))
   {
     p = copyData<int32_t>(m_InArrayPtr.lock(), totalPoints, m_FeatureIds);
   }
-  else if (TemplateHelpers::CanDynamicCast<UInt32ArrayType>()(m_InArrayPtr.lock()))
+  else if(TemplateHelpers::CanDynamicCast<UInt32ArrayType>()(m_InArrayPtr.lock()))
   {
     p = copyData<uint32_t>(m_InArrayPtr.lock(), totalPoints, m_FeatureIds);
   }
-  else if (TemplateHelpers::CanDynamicCast<Int64ArrayType>()(m_InArrayPtr.lock()))
+  else if(TemplateHelpers::CanDynamicCast<Int64ArrayType>()(m_InArrayPtr.lock()))
   {
     p = copyData<int64_t>(m_InArrayPtr.lock(), totalPoints, m_FeatureIds);
   }
-  else if (TemplateHelpers::CanDynamicCast<UInt64ArrayType>()(m_InArrayPtr.lock()))
+  else if(TemplateHelpers::CanDynamicCast<UInt64ArrayType>()(m_InArrayPtr.lock()))
   {
     p = copyData<uint64_t>(m_InArrayPtr.lock(), totalPoints, m_FeatureIds);
   }
-  else if (TemplateHelpers::CanDynamicCast<FloatArrayType>()(m_InArrayPtr.lock()))
+  else if(TemplateHelpers::CanDynamicCast<FloatArrayType>()(m_InArrayPtr.lock()))
   {
     p = copyData<float>(m_InArrayPtr.lock(), totalPoints, m_FeatureIds);
   }
-  else if (TemplateHelpers::CanDynamicCast<DoubleArrayType>()(m_InArrayPtr.lock()))
+  else if(TemplateHelpers::CanDynamicCast<DoubleArrayType>()(m_InArrayPtr.lock()))
   {
     p = copyData<double>(m_InArrayPtr.lock(), totalPoints, m_FeatureIds);
   }
-  else if (TemplateHelpers::CanDynamicCast<BoolArrayType>()(m_InArrayPtr.lock()))
+  else if(TemplateHelpers::CanDynamicCast<BoolArrayType>()(m_InArrayPtr.lock()))
   {
     p = copyData<bool>(m_InArrayPtr.lock(), totalPoints, m_FeatureIds);
   }
@@ -292,7 +301,7 @@ void CopyFeatureArrayToElementArray::execute()
     notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
   }
 
-  if (p.get() != nullptr)
+  if(p.get() != nullptr)
   {
     p->setName(getCreatedArrayName());
     AttributeMatrix::Pointer am = getDataContainerArray()->getAttributeMatrix(getFeatureIdsArrayPath());
@@ -319,7 +328,9 @@ AbstractFilter::Pointer CopyFeatureArrayToElementArray::newFilterInstance(bool c
 //
 // -----------------------------------------------------------------------------
 const QString CopyFeatureArrayToElementArray::getCompiledLibraryName()
-{ return Core::CoreBaseName; }
+{
+  return Core::CoreBaseName;
+}
 
 // -----------------------------------------------------------------------------
 //
@@ -336,26 +347,30 @@ const QString CopyFeatureArrayToElementArray::getFilterVersion()
 {
   QString version;
   QTextStream vStream(&version);
-  vStream <<  SIMPLib::Version::Major() << "." << SIMPLib::Version::Minor() << "." << SIMPLib::Version::Patch();
+  vStream << SIMPLib::Version::Major() << "." << SIMPLib::Version::Minor() << "." << SIMPLib::Version::Patch();
   return version;
 }
-
-
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
 const QString CopyFeatureArrayToElementArray::getGroupName()
-{ return SIMPL::FilterGroups::CoreFilters; }
+{
+  return SIMPL::FilterGroups::CoreFilters;
+}
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
 const QString CopyFeatureArrayToElementArray::getSubGroupName()
-{ return SIMPL::FilterSubGroups::MemoryManagementFilters; }
+{
+  return SIMPL::FilterSubGroups::MemoryManagementFilters;
+}
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
 const QString CopyFeatureArrayToElementArray::getHumanLabel()
-{ return "Create Element Array from Feature Array"; }
+{
+  return "Create Element Array from Feature Array";
+}

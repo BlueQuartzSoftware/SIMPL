@@ -33,63 +33,57 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-
-
+#include <QtCore/QDir>
 #include <QtCore/QFile>
 #include <QtCore/QFileInfo>
-#include <QtCore/QDir>
 
 #include "EbsdLib/EbsdLib.h"
-#include "EbsdLib/TSL/AngFields.h"
 #include "EbsdLib/HKL/CtfFields.h"
+#include "EbsdLib/TSL/AngFields.h"
 
-
-#include "SIMPLib/SIMPLib.h"
 #include "SIMPLib/Common/FilterPipeline.h"
+#include "SIMPLib/SIMPLib.h"
 #include "SIMPLib/TestFilters/GenericExample.h"
 #include "SIMPLib/TestFilters/MakeVolumeDataContainer.h"
 
-#include "SIMPLib/IOFilters/DataContainerWriter.h"
-#include "SIMPLib/FilterParameters/QFilterParametersWriter.h"
+#include "SIMPLib/FilterParameters/H5FilterParametersReader.h"
 #include "SIMPLib/FilterParameters/H5FilterParametersWriter.h"
 #include "SIMPLib/FilterParameters/QFilterParametersReader.h"
-#include "SIMPLib/FilterParameters/H5FilterParametersReader.h"
+#include "SIMPLib/FilterParameters/QFilterParametersWriter.h"
+#include "SIMPLib/IOFilters/DataContainerWriter.h"
 
-
-#include "UnitTestSupport.hpp"
 #include "TestFileLocations.h"
+#include "UnitTestSupport.hpp"
 
 namespace GenericFilterTest
 {
-  QString TestDir()
-  {
-    return UnitTest::TestTempDir + QString::fromLatin1("/GenericFilterTest");
-  }
-
-  QString TestTSLPipelineFile()
-  {
-    return TestDir() + QString::fromLatin1("/ReadH5Ebsd_AngFileExample.ini");
-  }
-
-  QString TestHKLPipelineFile()
-  {
-    return TestDir() + QString::fromLatin1("/ReadH5Ebsd_HklFileExample.ini");
-  }
-
-  QString DREAM3DFile()
-  {
-    return TestDir() + QString::fromLatin1("/SmallIN100.dream3d");
-  }
-
-  //// ****************** This file is a reference file from the DREAM3D Data Directory
-  /// ******************** DO NOT FREAKING DELETE IT!!!!!!!!!!
-  QString SmallIN100File()
-  {
-    return UnitTest::DataDir + QString::fromLatin1("/SmallIN100/SmallIN100.h5ebsd");
-  }
-
+QString TestDir()
+{
+  return UnitTest::TestTempDir + QString::fromLatin1("/GenericFilterTest");
 }
 
+QString TestTSLPipelineFile()
+{
+  return TestDir() + QString::fromLatin1("/ReadH5Ebsd_AngFileExample.ini");
+}
+
+QString TestHKLPipelineFile()
+{
+  return TestDir() + QString::fromLatin1("/ReadH5Ebsd_HklFileExample.ini");
+}
+
+QString DREAM3DFile()
+{
+  return TestDir() + QString::fromLatin1("/SmallIN100.dream3d");
+}
+
+//// ****************** This file is a reference file from the DREAM3D Data Directory
+/// ******************** DO NOT FREAKING DELETE IT!!!!!!!!!!
+QString SmallIN100File()
+{
+  return UnitTest::DataDir + QString::fromLatin1("/SmallIN100/SmallIN100.h5ebsd");
+}
+}
 
 // -----------------------------------------------------------------------------
 //
@@ -132,7 +126,6 @@ void TestGenericFilter()
   err = pipeline->getErrorCondition();
 
   DREAM3D_REQUIRE(err >= 0)
-
 }
 
 // -----------------------------------------------------------------------------
@@ -168,16 +161,15 @@ void TestTslReadH5Ebsd()
 
   pipeline->pushBack(reader); // Push the H5EbsdReader into the Pipeline
 
-
   DataContainerWriter::Pointer dcWriter = DataContainerWriter::New();
   dcWriter->setOutputFile(GenericFilterTest::DREAM3DFile());
   pipeline->pushBack(dcWriter); // Push the DREAM3D writer into the Pipeline
 
-// Now create a QSettings based writer to write the parameters to a .ini file
+  // Now create a QSettings based writer to write the parameters to a .ini file
   QFilterParametersWriter::Pointer qWriter = QFilterParametersWriter::New();
   QString iniFile(GenericFilterTest::TestTSLPipelineFile());
   QFileInfo fi(iniFile);
-  if (fi.exists() == true)
+  if(fi.exists() == true)
   {
     QFile(iniFile).remove();
   }
@@ -187,8 +179,7 @@ void TestTslReadH5Ebsd()
   dcWriter->writeFilterParameters(qWriter.get(), idx);
   qWriter->closeFile();
 
-
-// Now preflight and run the Pipeline
+  // Now preflight and run the Pipeline
   int err = pipeline->preflightPipeline();
   if(err < 0)
   {
@@ -232,16 +223,15 @@ void TestHklReadH5Ebsd()
 
   pipeline->pushBack(reader); // Push the H5EbsdReader into the Pipeline
 
-
   DataContainerWriter::Pointer dcWriter = DataContainerWriter::New();
   dcWriter->setOutputFile(GenericFilterTest::DREAM3DFile());
   pipeline->pushBack(dcWriter); // Push the DREAM3D writer into the Pipeline
 
-// Now create a QSettings based writer to write the parameters to a .ini file
+  // Now create a QSettings based writer to write the parameters to a .ini file
   QFilterParametersWriter::Pointer qWriter = QFilterParametersWriter::New();
   QString iniFile(GenericFilterTest::TestHKLPipelineFile());
   QFileInfo fi(iniFile);
-  if (fi.exists() == true)
+  if(fi.exists() == true)
   {
     QFile(iniFile).remove();
   }
@@ -251,16 +241,15 @@ void TestHklReadH5Ebsd()
   dcWriter->writeFilterParameters(qWriter.get(), idx);
   qWriter->closeFile();
 
-
-// Now preflight and run the Pipeline
-//  int err = pipeline->preflightPipeline();
-//  if(err < 0)
-//  {
-//    std::cout << "Failed Preflight" << std::endl;
-//  }
-//  pipeline->run();
-//  err = pipeline->getErrorCondition();
-//  DREAM3D_REQUIRE(err >= 0);
+  // Now preflight and run the Pipeline
+  //  int err = pipeline->preflightPipeline();
+  //  if(err < 0)
+  //  {
+  //    std::cout << "Failed Preflight" << std::endl;
+  //  }
+  //  pipeline->run();
+  //  err = pipeline->getErrorCondition();
+  //  DREAM3D_REQUIRE(err >= 0);
 }
 
 // -----------------------------------------------------------------------------
@@ -274,19 +263,17 @@ int main(int argc, char** argv)
   dir.mkpath(".");
 
 #if REMOVE_TEST_FILES
-  DREAM3D_REGISTER_TEST( RemoveTestFiles() )
+  DREAM3D_REGISTER_TEST(RemoveTestFiles())
 #endif
 
-  DREAM3D_REGISTER_TEST( TestTslReadH5Ebsd() )
-  DREAM3D_REGISTER_TEST( TestHklReadH5Ebsd() )
-  DREAM3D_REGISTER_TEST( TestGenericFilter() )
+  DREAM3D_REGISTER_TEST(TestTslReadH5Ebsd())
+  DREAM3D_REGISTER_TEST(TestHklReadH5Ebsd())
+  DREAM3D_REGISTER_TEST(TestGenericFilter())
 
 #if REMOVE_TEST_FILES
-  //   DREAM3D_REGISTER_TEST( RemoveTestFiles() )
+//   DREAM3D_REGISTER_TEST( RemoveTestFiles() )
 #endif
 
   PRINT_TEST_SUMMARY();
   return err;
 }
-
-

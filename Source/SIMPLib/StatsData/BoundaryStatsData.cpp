@@ -42,7 +42,6 @@
 
 #include "SIMPLib/HDF5/H5BoundaryStatsDataDelegate.h"
 
-
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
@@ -56,7 +55,6 @@ BoundaryStatsData::BoundaryStatsData()
 // -----------------------------------------------------------------------------
 BoundaryStatsData::~BoundaryStatsData()
 {
-
 }
 
 // -----------------------------------------------------------------------------
@@ -77,9 +75,7 @@ StatsData::Pointer BoundaryStatsData::deepCopy()
 // -----------------------------------------------------------------------------
 void BoundaryStatsData::initialize()
 {
-
 }
-
 
 // -----------------------------------------------------------------------------
 //
@@ -89,7 +85,6 @@ QString BoundaryStatsData::getStatsType()
   return SIMPL::StringConstants::BoundaryStatsData;
 }
 
-
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
@@ -97,7 +92,6 @@ unsigned int BoundaryStatsData::getPhaseType()
 {
   return SIMPL::PhaseType::BoundaryPhase;
 }
-
 
 // -----------------------------------------------------------------------------
 //
@@ -109,7 +103,6 @@ int BoundaryStatsData::writeHDF5Data(hid_t groupId)
   err = writer->writeBoundaryStatsData(this, groupId);
   return err;
 }
-
 
 // -----------------------------------------------------------------------------
 //
@@ -125,7 +118,7 @@ int BoundaryStatsData::readHDF5Data(hid_t groupId)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void BoundaryStatsData::writeJson(QJsonObject &json)
+void BoundaryStatsData::writeJson(QJsonObject& json)
 {
   json.insert(SIMPL::StringConstants::PhaseType, SIMPL::PhaseType::Boundary);
   // Write the precipitate boundary fraction
@@ -136,13 +129,12 @@ void BoundaryStatsData::writeJson(QJsonObject &json)
   json.insert(SIMPL::StringConstants::ParentPhase, getParentPhase());
   // Write the name of the phase
   json.insert(SIMPL::StringConstants::Name, getName());
-
 }
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void BoundaryStatsData::readJson(const QJsonObject &json)
+void BoundaryStatsData::readJson(const QJsonObject& json)
 {
 
   QJsonValue fValue = json[SIMPL::StringConstants::BoundaryArea];

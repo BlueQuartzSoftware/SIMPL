@@ -34,8 +34,8 @@
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
 #include "RadialDistributionFunction.h"
-#include "SIMPLib/Utilities/SIMPLibRandom.h"
 #include "SIMPLib/StatsData/StatsData.h"
+#include "SIMPLib/Utilities/SIMPLibRandom.h"
 
 #include "math.h"
 
@@ -45,11 +45,11 @@
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-RdfData::RdfData() :
-  m_MinDistance(0.0f),
-  m_MaxDistance(0.0f),
-  m_NumberOfBins(50),
-  m_DistributionType(SIMPL::StringConstants::UnknownDistribution)
+RdfData::RdfData()
+: m_MinDistance(0.0f)
+, m_MaxDistance(0.0f)
+, m_NumberOfBins(50)
+, m_DistributionType(SIMPL::StringConstants::UnknownDistribution)
 {
   m_BoxResolution[0] = 0.1f;
   m_BoxResolution[1] = 0.1f;
@@ -84,7 +84,7 @@ RdfData::Pointer RdfData::deepCopy()
   ptr->setMinDistance(getMinDistance());
   ptr->setMaxDistance(getMaxDistance());
   ptr->setDistributionType(getDistributionType());
-  float temp[3] = { 0.0f, 0.0f, 0.0f};
+  float temp[3] = {0.0f, 0.0f, 0.0f};
   getBoxSize(temp);
   ptr->setBoxSize(temp);
   getBoxResolution(temp);
@@ -95,27 +95,33 @@ RdfData::Pointer RdfData::deepCopy()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-int RdfData::readJson(const QJsonObject &json)
+int RdfData::readJson(const QJsonObject& json)
 {
   int err = 0;
-  float boxDims[3] = { 0.0f, 0.0f, 0.0f};
+  float boxDims[3] = {0.0f, 0.0f, 0.0f};
 
   QJsonObject rdfJson = json[SIMPL::StringConstants::RadialDistFunc].toObject();
 
   QJsonValue jsonValue = rdfJson[SIMPL::StringConstants::RdfMinDistance];
-  if (!jsonValue.isUndefined() && jsonValue.isDouble()) { setMinDistance(static_cast<float>(jsonValue.toDouble(0.0))); }
+  if(!jsonValue.isUndefined() && jsonValue.isDouble())
+  {
+    setMinDistance(static_cast<float>(jsonValue.toDouble(0.0)));
+  }
   jsonValue = rdfJson[SIMPL::StringConstants::RdfMaxDistance];
-  if (!jsonValue.isUndefined() && jsonValue.isDouble()) { setMaxDistance(static_cast<float>(jsonValue.toDouble(0.0))); }
+  if(!jsonValue.isUndefined() && jsonValue.isDouble())
+  {
+    setMaxDistance(static_cast<float>(jsonValue.toDouble(0.0)));
+  }
 
-  if (StatsData::ParseFloat3Vec(rdfJson, SIMPL::StringConstants::RdfBoxDims, boxDims, 0.0) == 0)
+  if(StatsData::ParseFloat3Vec(rdfJson, SIMPL::StringConstants::RdfBoxDims, boxDims, 0.0) == 0)
   {
     // Throw warning
   }
   setBoxSize(boxDims);
 
-  float boxRes[3] = { 0.0f, 0.0f, 0.0f};
+  float boxRes[3] = {0.0f, 0.0f, 0.0f};
 
-  if (StatsData::ParseFloat3Vec(rdfJson, SIMPL::StringConstants::RdfBoxRes, boxRes, 0.0) == 0)
+  if(StatsData::ParseFloat3Vec(rdfJson, SIMPL::StringConstants::RdfBoxRes, boxRes, 0.0) == 0)
   {
     // Throw warning
   }
@@ -123,11 +129,14 @@ int RdfData::readJson(const QJsonObject &json)
 
   int numBins = 0;
   jsonValue = rdfJson[SIMPL::StringConstants::BinCount];
-  if(!jsonValue.isUndefined() && jsonValue.isDouble()) { numBins = jsonValue.toInt(0); }
+  if(!jsonValue.isUndefined() && jsonValue.isDouble())
+  {
+    numBins = jsonValue.toInt(0);
+  }
   setNumberOfBins(numBins);
 
-  std::vector<float> bd = { boxDims[0], boxDims[1], boxDims[2] };
-  std::vector<float> br = { boxRes[0], boxRes[1], boxRes[2] };
+  std::vector<float> bd = {boxDims[0], boxDims[1], boxDims[2]};
+  std::vector<float> br = {boxRes[0], boxRes[1], boxRes[2]};
   std::vector<float> freqs = RadialDistributionFunction::GenerateRandomDistribution(m_MinDistance, m_MaxDistance, numBins, bd, br);
   setFrequencies(freqs);
 
@@ -137,7 +146,7 @@ int RdfData::readJson(const QJsonObject &json)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-int RdfData::writeJson(QJsonObject &json)
+int RdfData::writeJson(QJsonObject& json)
 {
   int err = 0;
   QJsonObject rdfJson;
@@ -147,11 +156,17 @@ int RdfData::writeJson(QJsonObject &json)
   QJsonArray boxArray;
   float boxDims[3];
   getBoxSize(boxDims);
-  for(int i = 0; i < 3; i++) { boxArray.insert(i, boxDims[i]); }
+  for(int i = 0; i < 3; i++)
+  {
+    boxArray.insert(i, boxDims[i]);
+  }
   rdfJson.insert(SIMPL::StringConstants::RdfBoxDims, boxArray);
 
   getBoxResolution(boxDims);
-  for(int i = 0; i < 3; i++) { boxArray.replace(i, boxDims[i]); }
+  for(int i = 0; i < 3; i++)
+  {
+    boxArray.replace(i, boxDims[i]);
+  }
   rdfJson.insert(SIMPL::StringConstants::RdfBoxRes, boxArray);
 
   json.insert(SIMPL::StringConstants::RadialDistFunc, rdfJson);
@@ -163,7 +178,6 @@ int RdfData::writeJson(QJsonObject &json)
 // -----------------------------------------------------------------------------
 RadialDistributionFunction::RadialDistributionFunction()
 {
-
 }
 
 // -----------------------------------------------------------------------------
@@ -171,7 +185,6 @@ RadialDistributionFunction::RadialDistributionFunction()
 // -----------------------------------------------------------------------------
 RadialDistributionFunction::~RadialDistributionFunction()
 {
-
 }
 
 // -----------------------------------------------------------------------------
@@ -181,7 +194,7 @@ std::vector<float> RadialDistributionFunction::GenerateRandomDistribution(float 
 {
   std::vector<float> freq(numBins, 0);
   std::vector<float> randomCentroids;
-  std::vector<std::vector<float> > distancelist;
+  std::vector<std::vector<float>> distancelist;
   int32_t largeNumber = 1000;
   int32_t numDistances = largeNumber * (largeNumber - 1);
 
@@ -201,20 +214,18 @@ std::vector<float> RadialDistributionFunction::GenerateRandomDistribution(float 
   size_t featureOwnerIdx = 0;
   size_t column, row, plane;
 
-
   float stepsize = (maxDistance - minDistance) / numBins;
   float maxBoxDistance = sqrtf((boxdims[0] * boxdims[0]) + (boxdims[1] * boxdims[1]) + (boxdims[2] * boxdims[2]));
   int32_t current_num_bins = ceil((maxBoxDistance - minDistance) / (stepsize));
 
   freq.resize(current_num_bins + 1);
 
-
   SIMPL_RANDOMNG_NEW();
 
   randomCentroids.resize(largeNumber * 3);
 
-  //Generating all of the random points and storing their coordinates in randomCentroids
-  for (int32_t i = 0; i < largeNumber; i++)
+  // Generating all of the random points and storing their coordinates in randomCentroids
+  for(int32_t i = 0; i < largeNumber; i++)
   {
     featureOwnerIdx = static_cast<size_t>(rg.genrand_res53() * totalpoints);
 
@@ -222,28 +233,26 @@ std::vector<float> RadialDistributionFunction::GenerateRandomDistribution(float 
     row = int(featureOwnerIdx / xpoints) % ypoints;
     plane = featureOwnerIdx / (xpoints * ypoints);
 
-    xc = static_cast<float>(column * boxres[0]) ;
+    xc = static_cast<float>(column * boxres[0]);
     yc = static_cast<float>(row * boxres[1]);
     zc = static_cast<float>(plane * boxres[2]);
 
     randomCentroids[3 * i] = xc;
     randomCentroids[3 * i + 1] = yc;
     randomCentroids[3 * i + 2] = zc;
-
   }
 
   distancelist.resize(largeNumber);
 
-
-//Calculating all of the distances and storing them in the distnace list
-  for (int32_t i = 1; i < largeNumber; i++)
+  // Calculating all of the distances and storing them in the distnace list
+  for(int32_t i = 1; i < largeNumber; i++)
   {
 
     x = randomCentroids[3 * i];
     y = randomCentroids[3 * i + 1];
     z = randomCentroids[3 * i + 2];
 
-    for (int32_t j = i + 1; j < largeNumber; j++)
+    for(int32_t j = i + 1; j < largeNumber; j++)
     {
 
       xn = randomCentroids[3 * j];
@@ -254,33 +263,28 @@ std::vector<float> RadialDistributionFunction::GenerateRandomDistribution(float 
 
       distancelist[i].push_back(r);
       distancelist[j].push_back(r);
-
     }
-
   }
 
-  //bin up the distance list
-  for (int32_t i = 0; i < largeNumber; i++)
+  // bin up the distance list
+  for(int32_t i = 0; i < largeNumber; i++)
   {
-    for (size_t j = 0; j < distancelist[i].size(); j++)
+    for(size_t j = 0; j < distancelist[i].size(); j++)
     {
       bin = (distancelist[i][j] - minDistance) / stepsize;
 
-      if (distancelist[i][j] < minDistance)
+      if(distancelist[i][j] < minDistance)
       {
         bin = -1;
       }
       freq[bin + 1]++;
-
     }
   }
 
-  for (int32_t i = 0; i < current_num_bins + 1; i++)
+  for(int32_t i = 0; i < current_num_bins + 1; i++)
   {
     freq[i] = freq[i] / (numDistances);
   }
 
-
   return freq;
-
 }

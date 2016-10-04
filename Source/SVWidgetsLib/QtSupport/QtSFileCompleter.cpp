@@ -38,14 +38,13 @@
 
 #include "moc_QtSFileCompleter.cpp"
 
-
 // -----------------------------------------------------------------------------
 // use same QDirModel for all completers
 // -----------------------------------------------------------------------------
 static QDirModel* fileDirModel()
 {
   static QDirModel* m = nullptr;
-  if (!m)
+  if(!m)
   {
     m = new QDirModel();
     QStringList nameFilters;
@@ -62,7 +61,7 @@ static QDirModel* fileDirModel()
 static QDirModel* pathDirModel()
 {
   static QDirModel* m = nullptr;
-  if (!m)
+  if(!m)
   {
     m = new QDirModel();
     m->setFilter(QDir::AllDirs | QDir::Drives | QDir::NoDotAndDotDot);
@@ -73,8 +72,8 @@ static QDirModel* pathDirModel()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-QtSFileCompleter::QtSFileCompleter(QObject* o, bool dirs) :
-  QCompleter(o)
+QtSFileCompleter::QtSFileCompleter(QObject* o, bool dirs)
+: QCompleter(o)
 {
   QDirModel* m = dirs ? pathDirModel() : fileDirModel();
   this->setModel(m);
@@ -87,4 +86,3 @@ QString QtSFileCompleter::pathFromIndex(const QModelIndex& idx) const
 {
   return QDir::toNativeSeparators(QCompleter::pathFromIndex(idx));
 }
-

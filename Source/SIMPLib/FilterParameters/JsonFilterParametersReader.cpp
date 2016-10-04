@@ -34,27 +34,25 @@
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 #include "JsonFilterParametersReader.h"
 
-#include <QtCore/QMetaType>
 #include <QtCore/QDataStream>
-#include <QtCore/QStringList>
 #include <QtCore/QFileInfo>
-#include <QtCore/QJsonDocument>
 #include <QtCore/QJsonArray>
+#include <QtCore/QJsonDocument>
+#include <QtCore/QMetaType>
+#include <QtCore/QStringList>
 
-#include "SIMPLib/Common/FilterManager.h"
-#include "SIMPLib/Common/FilterFactory.hpp"
-#include "SIMPLib/CoreFilters/EmptyFilter.h"
 #include "SIMPLib/Common/Constants.h"
-
+#include "SIMPLib/Common/FilterFactory.hpp"
+#include "SIMPLib/Common/FilterManager.h"
+#include "SIMPLib/CoreFilters/EmptyFilter.h"
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-JsonFilterParametersReader::JsonFilterParametersReader() :
-  AbstractFilterParametersReader(),
-  m_MaxFilterIndex(-1)
+JsonFilterParametersReader::JsonFilterParametersReader()
+: AbstractFilterParametersReader()
+, m_MaxFilterIndex(-1)
 {
-
 }
 
 // -----------------------------------------------------------------------------
@@ -62,7 +60,6 @@ JsonFilterParametersReader::JsonFilterParametersReader() :
 // -----------------------------------------------------------------------------
 JsonFilterParametersReader::~JsonFilterParametersReader()
 {
-
 }
 
 // -----------------------------------------------------------------------------
@@ -72,21 +69,21 @@ FilterPipeline::Pointer JsonFilterParametersReader::readPipelineFromFile(QString
 {
   QFileInfo fInfo(filePath);
 
-  if (filePath.isEmpty() == true)
+  if(filePath.isEmpty() == true)
   {
     return FilterPipeline::NullPointer();
   }
   QFileInfo fi(filePath);
-  if (fi.exists() == false)
+  if(fi.exists() == false)
   {
     return FilterPipeline::NullPointer();
   }
 
   int err = openFile(filePath);
 
-  if (err != QJsonParseError::NoError)
+  if(err != QJsonParseError::NoError)
   {
-    if (nullptr != obs)
+    if(nullptr != obs)
     {
       PipelineMessage pm(JsonFilterParametersReader::ClassName(), "File '" + fInfo.fileName() + "' could not be opened for reading.", -1, PipelineMessage::Error);
       obs->processPipelineMessage(pm);
@@ -103,19 +100,18 @@ FilterPipeline::Pointer JsonFilterParametersReader::readPipelineFromFile(QString
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-QString generateErrorHtml(const QString &errorText)
+QString generateErrorHtml(const QString& errorText)
 {
-    QString html;
-    QTextStream ss(&html);
-    ss << "<html><head></head>\n";
-    ss << "<body>\n";
-    ss << "<h2>";
-    ss << errorText;
-    ss << "</h2>";
-    ss << "</body></html>";
-    return html;
+  QString html;
+  QTextStream ss(&html);
+  ss << "<html><head></head>\n";
+  ss << "<body>\n";
+  ss << "<h2>";
+  ss << errorText;
+  ss << "</h2>";
+  ss << "</body></html>";
+  return html;
 }
-
 
 // -----------------------------------------------------------------------------
 //
@@ -123,117 +119,122 @@ QString generateErrorHtml(const QString &errorText)
 QString JsonFilterParametersReader::HtmlSummaryFromFile(QString filePath, IObserver* obs)
 {
 
-    QFileInfo fInfo(filePath);
+  QFileInfo fInfo(filePath);
 
-    if (filePath.isEmpty() == true)
+  if(filePath.isEmpty() == true)
+  {
+    // Build up the Html formatted Error Message
+    return generateErrorHtml(QString("The file path was empty"));
+  }
+  QFileInfo fi(filePath);
+  if(fi.exists() == false)
+  {
+    // Build up the Html formatted Error Message
+    return generateErrorHtml(QString("The file path does not exist on the system."));
+  }
+
+  QJsonObject m_Root;
+
+  int err = -100;
+  QFile inputFile(filePath);
+  if(inputFile.open(QIODevice::ReadOnly))
+  {
+    QJsonParseError parseError;
+    QByteArray byteArray = inputFile.readAll();
+    QJsonDocument doc = QJsonDocument::fromJson(byteArray, &parseError);
+    if(parseError.error != QJsonParseError::NoError)
     {
-        // Build up the Html formatted Error Message
-        return generateErrorHtml(QString("The file path was empty"));
+      // Build up the Html formatted Error Message
+      return generateErrorHtml(QString("Error parsing the Json file: (%1) %2").arg(parseError.error).arg(parseError.errorString()));
     }
-    QFileInfo fi(filePath);
-    if (fi.exists() == false)
-    {
-        // Build up the Html formatted Error Message
-        return generateErrorHtml(QString("The file path does not exist on the system."));
-    }
+    m_Root = doc.object();
 
-    QJsonObject m_Root;
+    err = QJsonParseError::NoError;
+    inputFile.close();
+  }
 
-    int err = -100;
-    QFile inputFile(filePath);
-    if (inputFile.open(QIODevice::ReadOnly))
-    {
-      QJsonParseError parseError;
-      QByteArray byteArray = inputFile.readAll();
-      QJsonDocument doc = QJsonDocument::fromJson(byteArray, &parseError);
-      if (parseError.error != QJsonParseError::NoError)
-      {
-          // Build up the Html formatted Error Message
-        return generateErrorHtml(QString("Error parsing the Json file: (%1) %2").arg(parseError.error).arg(parseError.errorString()));
+  QJsonValueRef pBuildRef = m_Root["PipelineBuilder"];
+  if(pBuildRef.isUndefined())
+  {
+    // Build up the Html formatted Error Message
+    return generateErrorHtml(QString("The 'PipelineBuilder' object was not found in the pipeline file."));
+  }
 
-      }
-      m_Root = doc.object();
+  QJsonObject pBuildObj = pBuildRef.toObject();
+  QString name = pBuildObj["Name"].toString();
+  QString dVers = pBuildObj["Version"].toString();
+  int filterCount = pBuildObj["Number_Filters"].toInt();
 
-      err = QJsonParseError::NoError;
-      inputFile.close();
-    }
+  QString html;
+  QTextStream ss(&html);
+  ss << "<html><head></head>\n";
+  ss << "<body>\n";
 
-    QJsonValueRef pBuildRef = m_Root["PipelineBuilder"];
-    if(pBuildRef.isUndefined())
-    {
-        // Build up the Html formatted Error Message
-        return generateErrorHtml(QString("The 'PipelineBuilder' object was not found in the pipeline file."));
-    }
+  // A table for the summary items
+  ss << "<table cellpadding=\"2\" cellspacing=\"0\" border=\"0\">\n";
+  ss << "<tbody>\n";
+  ss << "	<tr><th align=\"right\">Pipeline Name:</th><td>" << name << "</td></tr>\n";
+  ss << "	<tr><th align=\"right\">Filter Count:</th><td>" << filterCount << "</td></tr>\n";
+  ss << "	<tr><th align=\"right\">Version:</th><td>" << dVers << "</td></tr>\n";
+  ss << "</tbody>\n";
+  ss << "</table>\n";
+  ss << "<p></p>\n";
 
-    QJsonObject pBuildObj = pBuildRef.toObject();
-    QString name = pBuildObj["Name"].toString();
-    QString dVers = pBuildObj["Version"].toString();
-    int filterCount = pBuildObj["Number_Filters"].toInt();
-
-    QString html;
-    QTextStream ss(&html);
-    ss << "<html><head></head>\n";
-    ss << "<body>\n";
-
-    // A table for the summary items
-    ss << "<table cellpadding=\"2\" cellspacing=\"0\" border=\"0\">\n";
-    ss << "<tbody>\n";
-    ss << "	<tr><th align=\"right\">Pipeline Name:</th><td>" << name << "</td></tr>\n";
-    ss << "	<tr><th align=\"right\">Filter Count:</th><td>" << filterCount << "</td></tr>\n";
-    ss << "	<tr><th align=\"right\">Version:</th><td>" << dVers << "</td></tr>\n";
-    ss << "</tbody>\n";
-    ss << "</table>\n";
-    ss << "<p></p>\n";
-
-    // Start the table of the Pipeline
-    ss << "<table cellpadding=\"2\" cellspacing=\"0\" border=\"0\" width=\"300px\">\n";
-    ss << "<tbody>\n";
-    ss << "<tr bgcolor=\"#A2E99C\"><th>Index</th><th>Name Label</th><th>Filter Name</th></tr>\n";
+  // Start the table of the Pipeline
+  ss << "<table cellpadding=\"2\" cellspacing=\"0\" border=\"0\" width=\"300px\">\n";
+  ss << "<tbody>\n";
+  ss << "<tr bgcolor=\"#A2E99C\"><th>Index</th><th>Name Label</th><th>Filter Name</th></tr>\n";
 
   //  FilterManager* filtManager = FilterManager::Instance();
-    char rowColor = 0;
-    QString red("#FFAAAA");
-    QString odd("#FFFFFF");
-    QString even("#B0E4FF");
-    QString color = odd;
-    bool unknownFilters = false;
+  char rowColor = 0;
+  QString red("#FFAAAA");
+  QString odd("#FFFFFF");
+  QString even("#B0E4FF");
+  QString color = odd;
+  bool unknownFilters = false;
 
-
-    for (int i = 0; i < filterCount; ++i)
+  for(int i = 0; i < filterCount; ++i)
+  {
+    if(rowColor == 0)
     {
-      if (rowColor == 0) { rowColor = 1; color = odd; }
-      else { rowColor = 0; color = even; }
-
-      QJsonValueRef filtRef = m_Root[QString::number(i)];
-
-      if(filtRef.isUndefined()) {
-           ss << "<tr bgcolor=\"" << color << "\"><td>" << i << "</td><td> Filter Missing </td><td></td></tr>\n";
-           unknownFilters = true;
-      }
-      else {
-          QJsonObject filtObj = filtRef.toObject();
-          QString filtName = filtObj["Filter_Name"].toString();
-          QString filtLabel = filtObj["Filter_Human_Label"].toString();
-        ss << "<tr bgcolor=\"" << color << "\"><td>" << i << "</td><td>" << filtLabel << "</td><td>" << filtName << "</td></tr>\n";
-      }
+      rowColor = 1;
+      color = odd;
+    }
+    else
+    {
+      rowColor = 0;
+      color = even;
     }
 
+    QJsonValueRef filtRef = m_Root[QString::number(i)];
 
-    if(unknownFilters)
+    if(filtRef.isUndefined())
     {
-      color = red;
-      ss << "<tr bgcolor=\"" << color << "\"><th colspan=\"3\">There are filters in the pipeline that the currently running version of SIMPLView does not know about. This ";
-      ss << "can happen if you are missing plugins that contain the filters or if the pipeline was created in a prior version ";
-      ss << "of SIMPLView in which case those filters may have been renamed. Please consult the SIMPLView documentation for more details ";
-      ss << "or ask the individual who gave you the pipeline file for more details.</th></tr>\n";
+      ss << "<tr bgcolor=\"" << color << "\"><td>" << i << "</td><td> Filter Missing </td><td></td></tr>\n";
+      unknownFilters = true;
     }
-    ss << "</tbody></table>\n";
+    else
+    {
+      QJsonObject filtObj = filtRef.toObject();
+      QString filtName = filtObj["Filter_Name"].toString();
+      QString filtLabel = filtObj["Filter_Human_Label"].toString();
+      ss << "<tr bgcolor=\"" << color << "\"><td>" << i << "</td><td>" << filtLabel << "</td><td>" << filtName << "</td></tr>\n";
+    }
+  }
 
-    ss << "</body></html>";
+  if(unknownFilters)
+  {
+    color = red;
+    ss << "<tr bgcolor=\"" << color << "\"><th colspan=\"3\">There are filters in the pipeline that the currently running version of SIMPLView does not know about. This ";
+    ss << "can happen if you are missing plugins that contain the filters or if the pipeline was created in a prior version ";
+    ss << "of SIMPLView in which case those filters may have been renamed. Please consult the SIMPLView documentation for more details ";
+    ss << "or ask the individual who gave you the pipeline file for more details.</th></tr>\n";
+  }
+  ss << "</tbody></table>\n";
 
+  ss << "</body></html>";
 
-    return html;
-
+  return html;
 }
 
 // -----------------------------------------------------------------------------
@@ -260,11 +261,12 @@ QString JsonFilterParametersReader::generateIndexString(int index, int maxIndex)
   {
     int mag = 0;
     int max = maxIndex;
-    while(max > 0) {
+    while(max > 0)
+    {
       mag++;
       max = max / 10;
     }
-    numStr = ""; // Clear the string
+    numStr = "";             // Clear the string
     QTextStream ss(&numStr); // Create a QTextStream to set up the padding
     ss.setFieldWidth(mag);
     ss.setPadChar('0');
@@ -282,7 +284,7 @@ FilterPipeline::Pointer JsonFilterParametersReader::readPipeline(IObserver* obs)
   FilterFactory<EmptyFilter>::Pointer emptyFilterFactory = FilterFactory<EmptyFilter>::New();
   filtManager->addFilterFactory("EmptyFilter", emptyFilterFactory);
 
-  if (containsGroup(SIMPL::Settings::PipelineBuilderGroup) == false)
+  if(containsGroup(SIMPL::Settings::PipelineBuilderGroup) == false)
   {
     return FilterPipeline::NullPointer();
   }
@@ -291,7 +293,7 @@ FilterPipeline::Pointer JsonFilterParametersReader::readPipeline(IObserver* obs)
   int filterCount = builderObj[SIMPL::Settings::NumFilters].toInt();
 
   FilterPipeline::Pointer pipeline;
-  if (filterCount >= 0)
+  if(filterCount >= 0)
   {
     pipeline = FilterPipeline::New();
   }
@@ -300,27 +302,27 @@ FilterPipeline::Pointer JsonFilterParametersReader::readPipeline(IObserver* obs)
     pipeline = FilterPipeline::NullPointer();
   }
 
-  for (int i = 0; i < filterCount; ++i)
+  for(int i = 0; i < filterCount; ++i)
   {
     openFilterGroup(nullptr, i);
 
     QString filterName = m_CurrentFilterIndex[SIMPL::Settings::FilterName].toString();
 
-    if (filterName.isEmpty() == false)
+    if(filterName.isEmpty() == false)
     {
       IFilterFactory::Pointer factory = filtManager->getFactoryForFilter(filterName);
-      if (factory.get() != nullptr)
+      if(factory.get() != nullptr)
       {
         AbstractFilter::Pointer filter = factory->create();
 
-        if (nullptr != filter.get())
+        if(nullptr != filter.get())
         {
           filter->readFilterParameters(m_CurrentFilterIndex);
           pipeline->pushBack(filter);
         }
       }
       else // Could not find the filter because the specific name has not been registered. This could
-        // be due to a name change for the filter.
+      // be due to a name change for the filter.
       {
         EmptyFilter::Pointer filter = EmptyFilter::New();
         QString humanLabel = QString("UNKNOWN FILTER: ") + filterName;
@@ -328,9 +330,11 @@ FilterPipeline::Pointer JsonFilterParametersReader::readPipeline(IObserver* obs)
         filter->setOriginalFilterName(filterName);
         pipeline->pushBack(filter);
 
-        if (nullptr != obs)
+        if(nullptr != obs)
         {
-          QString ss = QObject::tr("An implementation for filter '%1' could not be located. Possible reasons include a name change of the filter, plugin not loading or a simple spelling mistake? A blank filter has been inserted in its place.").arg(filterName);
+          QString ss = QObject::tr("An implementation for filter '%1' could not be located. Possible reasons include a name change of the filter, plugin not loading or a simple spelling mistake? A "
+                                   "blank filter has been inserted in its place.")
+                           .arg(filterName);
           PipelineMessage pm(filterName, ss, -66066, PipelineMessage::Error);
           pm.setPrefix("JsonFilterParametersReader::ReadPipelineFromFile()");
           obs->processPipelineMessage(pm);
@@ -345,7 +349,7 @@ FilterPipeline::Pointer JsonFilterParametersReader::readPipeline(IObserver* obs)
       filter->setOriginalFilterName(filterName);
       pipeline->pushBack(filter);
 
-      if (nullptr != obs)
+      if(nullptr != obs)
       {
         QString gName = QString::number(i);
         QString ss = QObject::tr("A filter for index '%1' is missing in the file. Is the numbering of the filters correct in the pipeline file?").arg(gName);
@@ -367,14 +371,14 @@ void JsonFilterParametersReader::readNameOfPipelineFromFile(QString filePath, QS
 {
   QFileInfo fInfo(filePath);
 
-  if (filePath.isEmpty() == true)
+  if(filePath.isEmpty() == true)
   {
     name = QString("ERROR: No File Path Specified");
     version = QString("ERROR: No File Path Specified");
     return;
   }
   QFileInfo fi(filePath);
-  if (fi.exists() == false)
+  if(fi.exists() == false)
   {
     name = QString("ERROR: File Path Does Not Exist");
     version = QString("ERROR: File Path Does Not Exist");
@@ -383,9 +387,9 @@ void JsonFilterParametersReader::readNameOfPipelineFromFile(QString filePath, QS
 
   int err = openFile(filePath);
 
-  if (err != QJsonParseError::NoError)
+  if(err != QJsonParseError::NoError)
   {
-    if (nullptr != obs)
+    if(nullptr != obs)
     {
       PipelineMessage pm(JsonFilterParametersReader::ClassName(), "File '" + fInfo.fileName() + "' could not be opened for reading.", -1, PipelineMessage::Error);
       obs->processPipelineMessage(pm);
@@ -414,18 +418,18 @@ QJsonObject& JsonFilterParametersReader::getCurrentGroupObject()
 // -----------------------------------------------------------------------------
 int JsonFilterParametersReader::openFile(QString filePath)
 {
-  if (m_Root.isEmpty() == false || m_CurrentFilterIndex.isEmpty() == false)
+  if(m_Root.isEmpty() == false || m_CurrentFilterIndex.isEmpty() == false)
   {
     closeFile();
   }
   int err = -100;
   QFile inputFile(filePath);
-  if (inputFile.open(QIODevice::ReadOnly))
+  if(inputFile.open(QIODevice::ReadOnly))
   {
     QJsonParseError parseError;
     QByteArray byteArray = inputFile.readAll();
     QJsonDocument doc = QJsonDocument::fromJson(byteArray, &parseError);
-    if (parseError.error != QJsonParseError::NoError)
+    if(parseError.error != QJsonParseError::NoError)
     {
       return parseError.error;
     }
@@ -445,7 +449,7 @@ int JsonFilterParametersReader::openFile(QString filePath)
 // -----------------------------------------------------------------------------
 int JsonFilterParametersReader::setPipelineContents(QString contents)
 {
-  if (m_Root.isEmpty() == false || m_CurrentFilterIndex.isEmpty() == false)
+  if(m_Root.isEmpty() == false || m_CurrentFilterIndex.isEmpty() == false)
   {
     closeFile();
   }
@@ -455,7 +459,7 @@ int JsonFilterParametersReader::setPipelineContents(QString contents)
   QJsonParseError parseError;
   QByteArray byteArray = QByteArray::fromStdString(contents.toStdString());
   QJsonDocument doc = QJsonDocument::fromJson(byteArray, &parseError);
-  if (parseError.error != QJsonParseError::NoError)
+  if(parseError.error != QJsonParseError::NoError)
   {
     return parseError.error;
   }
@@ -512,12 +516,12 @@ int JsonFilterParametersReader::closeFilterGroup()
 // -----------------------------------------------------------------------------
 bool JsonFilterParametersReader::containsGroup(QString key)
 {
-  if (m_Root.isEmpty() == false)
+  if(m_Root.isEmpty() == false)
   {
-    if (m_Root[key].isObject() == true)
+    if(m_Root[key].isObject() == true)
     {
       QJsonObject obj = m_Root[key].toObject();
-      if (obj.isEmpty() == false)
+      if(obj.isEmpty() == false)
       {
         return true;
       }

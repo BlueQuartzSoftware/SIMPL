@@ -33,40 +33,33 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-
-
-#include <stdlib.h>
 #include <stdio.h>
+#include <stdlib.h>
 
 #include <QtCore/QDir>
 #include <QtCore/QFile>
 
 #include "H5Support/QH5Utilities.h"
 
-#include "SIMPLib/SIMPLib.h"
-#include "SIMPLib/Common/FilterManager.h"
-#include "SIMPLib/Common/IFilterFactory.hpp"
 #include "SIMPLib/Common/FilterFactory.hpp"
+#include "SIMPLib/Common/FilterManager.h"
 #include "SIMPLib/Common/FilterPipeline.h"
-#include "SIMPLib/Math/SIMPLibMath.h"
-#include "SIMPLib/IOFilters/DataContainerWriter.h"
-#include "SIMPLib/IOFilters/DataContainerReader.h"
+#include "SIMPLib/Common/IFilterFactory.hpp"
 #include "SIMPLib/FilterParameters/H5FilterParametersReader.h"
 #include "SIMPLib/FilterParameters/QFilterParametersReader.h"
 #include "SIMPLib/FilterParameters/QFilterParametersWriter.h"
-#include "SIMPLib/TestFilters/GenericExample.h"
-#include "SIMPLib/TestFilters/ThresholdExample.h"
+#include "SIMPLib/IOFilters/DataContainerReader.h"
+#include "SIMPLib/IOFilters/DataContainerWriter.h"
+#include "SIMPLib/Math/SIMPLibMath.h"
+#include "SIMPLib/SIMPLib.h"
 #include "SIMPLib/TestFilters/ArraySelectionExample.h"
+#include "SIMPLib/TestFilters/GenericExample.h"
 #include "SIMPLib/TestFilters/TestFilters.h"
+#include "SIMPLib/TestFilters/ThresholdExample.h"
 
-
-
-#include "UnitTestSupport.hpp"
-#include "TestFileLocations.h"
 #include "GenerateFeatureIds.h"
-
-
-
+#include "TestFileLocations.h"
+#include "UnitTestSupport.hpp"
 
 #define StlFilePrefixTestValue "StlFilePrefixTestValue"
 #define MaxIterationsTestValue 20
@@ -188,8 +181,6 @@ enum TestCases
   Test3
 };
 
-
-
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
@@ -221,8 +212,7 @@ QSet<QString> getSet(QString name1, QString name2, QString name3, QString name4)
 // -----------------------------------------------------------------------------
 //  Function used to generate test comparison input vectors
 // -----------------------------------------------------------------------------
-QVector<ComparisonInput_t> getComparisonInputsVector(QString arrayName1, int compOperator1, double compValue1,
-                                                     QString arrayName2, int compOperator2, double compValue2)
+QVector<ComparisonInput_t> getComparisonInputsVector(QString arrayName1, int compOperator1, double compValue1, QString arrayName2, int compOperator2, double compValue2)
 {
   ComparisonInput_t comparison1, comparison2;
   comparison1.arrayName = arrayName1;
@@ -243,8 +233,7 @@ QVector<ComparisonInput_t> getComparisonInputsVector(QString arrayName1, int com
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-template<typename T>
-T getValue()
+template <typename T> T getValue()
 {
   return std::numeric_limits<T>::max();
 }
@@ -252,17 +241,15 @@ T getValue()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-template<typename T>
-bool validateValue(T value)
+template <typename T> bool validateValue(T value)
 {
-  return (value == std::numeric_limits<T>::max() );
+  return (value == std::numeric_limits<T>::max());
 }
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-template<typename T>
-QVector<T> getArray()
+template <typename T> QVector<T> getArray()
 {
   QVector<T> data(4);
   data[0] = std::numeric_limits<T>::min();
@@ -275,8 +262,7 @@ QVector<T> getArray()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-template<typename T>
-void validateArray(QVector<T> data)
+template <typename T> void validateArray(QVector<T> data)
 {
   DREAM3D_REQUIRE_EQUAL(data.size(), 4)
   DREAM3D_REQUIRE_EQUAL(data[0], std::numeric_limits<T>::min());
@@ -356,7 +342,6 @@ int WritePipelineToQSettings(FilterPipeline::Pointer pipeline, QString filePath)
   return err;
 }
 
-
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
@@ -367,48 +352,38 @@ void GenerateArraySelectionExamplePipelineFiles()
 
   ArraySelectionExample::Pointer filt = ArraySelectionExample::New();
 
-  QSet<QString> set1 = getSet(SelectedVolumeCellArraysString1, SelectedVolumeCellArraysString2,
-                              SelectedVolumeCellArraysString3, SelectedVolumeCellArraysString4);
+  QSet<QString> set1 = getSet(SelectedVolumeCellArraysString1, SelectedVolumeCellArraysString2, SelectedVolumeCellArraysString3, SelectedVolumeCellArraysString4);
   filt->setSelectedVolumeCellArrays(set1);
 
-  QSet<QString> set2 = getSet(SelectedVolumeCellFeatureArraysString1, SelectedVolumeCellFeatureArraysString2,
-                              SelectedVolumeCellFeatureArraysString3, SelectedVolumeCellFeatureArraysString4);
+  QSet<QString> set2 = getSet(SelectedVolumeCellFeatureArraysString1, SelectedVolumeCellFeatureArraysString2, SelectedVolumeCellFeatureArraysString3, SelectedVolumeCellFeatureArraysString4);
   filt->setSelectedVolumeCellFeatureArrays(set2);
 
-  QSet<QString> set3 = getSet(SelectedVolumeCellEnsembleArraysString1, SelectedVolumeCellEnsembleArraysString2,
-                              SelectedVolumeCellEnsembleArraysString3, SelectedVolumeCellEnsembleArraysString4);
+  QSet<QString> set3 = getSet(SelectedVolumeCellEnsembleArraysString1, SelectedVolumeCellEnsembleArraysString2, SelectedVolumeCellEnsembleArraysString3, SelectedVolumeCellEnsembleArraysString4);
   filt->setSelectedVolumeCellEnsembleArrays(set3);
 
-  QSet<QString> set4 = getSet(SelectedSurfaceVertexArraysString1, SelectedSurfaceVertexArraysString2,
-                              SelectedSurfaceVertexArraysString3, SelectedSurfaceVertexArraysString4);
+  QSet<QString> set4 = getSet(SelectedSurfaceVertexArraysString1, SelectedSurfaceVertexArraysString2, SelectedSurfaceVertexArraysString3, SelectedSurfaceVertexArraysString4);
   filt->setSelectedSurfaceVertexArrays(set4);
 
-  QSet<QString> set5 = getSet(SelectedSurfaceFaceArraysString1, SelectedSurfaceFaceArraysString2,
-                              SelectedSurfaceFaceArraysString3, SelectedSurfaceFaceArraysString4);
+  QSet<QString> set5 = getSet(SelectedSurfaceFaceArraysString1, SelectedSurfaceFaceArraysString2, SelectedSurfaceFaceArraysString3, SelectedSurfaceFaceArraysString4);
   filt->setSelectedSurfaceFaceArrays(set5);
 
-  QSet<QString> set6 = getSet(SelectedSurfaceEdgeArraysString1, SelectedSurfaceEdgeArraysString2,
-                              SelectedSurfaceEdgeArraysString3, SelectedSurfaceEdgeArraysString4);
+  QSet<QString> set6 = getSet(SelectedSurfaceEdgeArraysString1, SelectedSurfaceEdgeArraysString2, SelectedSurfaceEdgeArraysString3, SelectedSurfaceEdgeArraysString4);
   filt->setSelectedSurfaceEdgeArrays(set6);
 
-  QSet<QString> set7 = getSet(SelectedSurfaceFaceFeatureArraysString1, SelectedSurfaceFaceFeatureArraysString2,
-                              SelectedSurfaceFaceFeatureArraysString3, SelectedSurfaceFaceFeatureArraysString4);
+  QSet<QString> set7 = getSet(SelectedSurfaceFaceFeatureArraysString1, SelectedSurfaceFaceFeatureArraysString2, SelectedSurfaceFaceFeatureArraysString3, SelectedSurfaceFaceFeatureArraysString4);
   filt->setSelectedSurfaceFaceFeatureArrays(set7);
 
-  QSet<QString> set8 = getSet(SelectedSurfaceFaceEnsembleArraysString1, SelectedSurfaceFaceEnsembleArraysString2,
-                              SelectedSurfaceFaceEnsembleArraysString3, SelectedSurfaceFaceEnsembleArraysString4);
+  QSet<QString> set8 = getSet(SelectedSurfaceFaceEnsembleArraysString1, SelectedSurfaceFaceEnsembleArraysString2, SelectedSurfaceFaceEnsembleArraysString3, SelectedSurfaceFaceEnsembleArraysString4);
   filt->setSelectedSurfaceFaceEnsembleArrays(set8);
 
-  QSet<QString> set9 = getSet(SelectedVertexVertexArraysString1, SelectedVertexVertexArraysString2,
-                              SelectedVertexVertexArraysString3, SelectedVertexVertexArraysString4);
+  QSet<QString> set9 = getSet(SelectedVertexVertexArraysString1, SelectedVertexVertexArraysString2, SelectedVertexVertexArraysString3, SelectedVertexVertexArraysString4);
   filt->setSelectedVertexVertexArrays(set9);
 
-  QSet<QString> set10 = getSet(SelectedVertexVertexFeatureArraysString1, SelectedVertexVertexFeatureArraysString2,
-                               SelectedVertexVertexFeatureArraysString3, SelectedVertexVertexFeatureArraysString4);
+  QSet<QString> set10 = getSet(SelectedVertexVertexFeatureArraysString1, SelectedVertexVertexFeatureArraysString2, SelectedVertexVertexFeatureArraysString3, SelectedVertexVertexFeatureArraysString4);
   filt->setSelectedVertexVertexFeatureArrays(set10);
 
-  QSet<QString> set11 = getSet(SelectedVertexVertexEnsembleArraysString1, SelectedVertexVertexEnsembleArraysString2,
-                               SelectedVertexVertexEnsembleArraysString3, SelectedVertexVertexEnsembleArraysString4);
+  QSet<QString> set11 =
+      getSet(SelectedVertexVertexEnsembleArraysString1, SelectedVertexVertexEnsembleArraysString2, SelectedVertexVertexEnsembleArraysString3, SelectedVertexVertexEnsembleArraysString4);
   filt->setSelectedVertexVertexEnsembleArrays(set11);
 
   DataContainerWriter::Pointer writer = DataContainerWriter::New();
@@ -422,12 +397,10 @@ void GenerateArraySelectionExamplePipelineFiles()
 
   pipeline->execute();
   int err = pipeline->getErrorCondition();
-  DREAM3D_REQUIRED(err, >= , 0)
-
+  DREAM3D_REQUIRED(err, >=, 0)
 
   WritePipelineToQSettings(pipeline, UnitTest::FilterParametersRWTest::ArraySelectionFileQSettings);
 }
-
 
 // -----------------------------------------------------------------------------
 //
@@ -436,74 +409,71 @@ void ValidateArraySelectionExampleFilter(ArraySelectionExample::Pointer filt)
 {
   QSet<QString> comp = filt->getSelectedVolumeCellArrays();
   DREAM3D_REQUIRE_EQUAL(comp.size(), 4);
-  DREAM3D_REQUIRED(comp.contains(SelectedVolumeCellArraysString1), == , true)
-  DREAM3D_REQUIRED(comp.contains(SelectedVolumeCellArraysString2), == , true)
-  DREAM3D_REQUIRED(comp.contains(SelectedVolumeCellArraysString3), == , true)
-  DREAM3D_REQUIRED(comp.contains(SelectedVolumeCellArraysString4), == , true)
+  DREAM3D_REQUIRED(comp.contains(SelectedVolumeCellArraysString1), ==, true)
+  DREAM3D_REQUIRED(comp.contains(SelectedVolumeCellArraysString2), ==, true)
+  DREAM3D_REQUIRED(comp.contains(SelectedVolumeCellArraysString3), ==, true)
+  DREAM3D_REQUIRED(comp.contains(SelectedVolumeCellArraysString4), ==, true)
 
   comp = filt->getSelectedVolumeCellFeatureArrays();
-  DREAM3D_REQUIRED(comp.contains(SelectedVolumeCellFeatureArraysString1), == , true)
-  DREAM3D_REQUIRED(comp.contains(SelectedVolumeCellFeatureArraysString2), == , true)
-  DREAM3D_REQUIRED(comp.contains(SelectedVolumeCellFeatureArraysString3), == , true)
-  DREAM3D_REQUIRED(comp.contains(SelectedVolumeCellFeatureArraysString4), == , true)
+  DREAM3D_REQUIRED(comp.contains(SelectedVolumeCellFeatureArraysString1), ==, true)
+  DREAM3D_REQUIRED(comp.contains(SelectedVolumeCellFeatureArraysString2), ==, true)
+  DREAM3D_REQUIRED(comp.contains(SelectedVolumeCellFeatureArraysString3), ==, true)
+  DREAM3D_REQUIRED(comp.contains(SelectedVolumeCellFeatureArraysString4), ==, true)
 
   comp = filt->getSelectedVolumeCellEnsembleArrays();
-  DREAM3D_REQUIRED(comp.contains(SelectedVolumeCellEnsembleArraysString1), == , true)
-  DREAM3D_REQUIRED(comp.contains(SelectedVolumeCellEnsembleArraysString2), == , true)
-  DREAM3D_REQUIRED(comp.contains(SelectedVolumeCellEnsembleArraysString3), == , true)
-  DREAM3D_REQUIRED(comp.contains(SelectedVolumeCellEnsembleArraysString4), == , true)
+  DREAM3D_REQUIRED(comp.contains(SelectedVolumeCellEnsembleArraysString1), ==, true)
+  DREAM3D_REQUIRED(comp.contains(SelectedVolumeCellEnsembleArraysString2), ==, true)
+  DREAM3D_REQUIRED(comp.contains(SelectedVolumeCellEnsembleArraysString3), ==, true)
+  DREAM3D_REQUIRED(comp.contains(SelectedVolumeCellEnsembleArraysString4), ==, true)
 
   comp = filt->getSelectedSurfaceVertexArrays();
-  DREAM3D_REQUIRED(comp.contains(SelectedSurfaceVertexArraysString1), == , true)
-  DREAM3D_REQUIRED(comp.contains(SelectedSurfaceVertexArraysString2), == , true)
-  DREAM3D_REQUIRED(comp.contains(SelectedSurfaceVertexArraysString3), == , true)
-  DREAM3D_REQUIRED(comp.contains(SelectedSurfaceVertexArraysString4), == , true)
+  DREAM3D_REQUIRED(comp.contains(SelectedSurfaceVertexArraysString1), ==, true)
+  DREAM3D_REQUIRED(comp.contains(SelectedSurfaceVertexArraysString2), ==, true)
+  DREAM3D_REQUIRED(comp.contains(SelectedSurfaceVertexArraysString3), ==, true)
+  DREAM3D_REQUIRED(comp.contains(SelectedSurfaceVertexArraysString4), ==, true)
 
   comp = filt->getSelectedSurfaceFaceArrays();
-  DREAM3D_REQUIRED(comp.contains(SelectedSurfaceFaceArraysString1), == , true)
-  DREAM3D_REQUIRED(comp.contains(SelectedSurfaceFaceArraysString2), == , true)
-  DREAM3D_REQUIRED(comp.contains(SelectedSurfaceFaceArraysString3), == , true)
-  DREAM3D_REQUIRED(comp.contains(SelectedSurfaceFaceArraysString4), == , true)
+  DREAM3D_REQUIRED(comp.contains(SelectedSurfaceFaceArraysString1), ==, true)
+  DREAM3D_REQUIRED(comp.contains(SelectedSurfaceFaceArraysString2), ==, true)
+  DREAM3D_REQUIRED(comp.contains(SelectedSurfaceFaceArraysString3), ==, true)
+  DREAM3D_REQUIRED(comp.contains(SelectedSurfaceFaceArraysString4), ==, true)
 
   comp = filt->getSelectedSurfaceEdgeArrays();
-  DREAM3D_REQUIRED(comp.contains(SelectedSurfaceEdgeArraysString1), == , true)
-  DREAM3D_REQUIRED(comp.contains(SelectedSurfaceEdgeArraysString2), == , true)
-  DREAM3D_REQUIRED(comp.contains(SelectedSurfaceEdgeArraysString3), == , true)
-  DREAM3D_REQUIRED(comp.contains(SelectedSurfaceEdgeArraysString4), == , true)
+  DREAM3D_REQUIRED(comp.contains(SelectedSurfaceEdgeArraysString1), ==, true)
+  DREAM3D_REQUIRED(comp.contains(SelectedSurfaceEdgeArraysString2), ==, true)
+  DREAM3D_REQUIRED(comp.contains(SelectedSurfaceEdgeArraysString3), ==, true)
+  DREAM3D_REQUIRED(comp.contains(SelectedSurfaceEdgeArraysString4), ==, true)
 
   comp = filt->getSelectedSurfaceFaceFeatureArrays();
-  DREAM3D_REQUIRED(comp.contains(SelectedSurfaceFaceFeatureArraysString1), == , true)
-  DREAM3D_REQUIRED(comp.contains(SelectedSurfaceFaceFeatureArraysString2), == , true)
-  DREAM3D_REQUIRED(comp.contains(SelectedSurfaceFaceFeatureArraysString3), == , true)
-  DREAM3D_REQUIRED(comp.contains(SelectedSurfaceFaceFeatureArraysString4), == , true)
+  DREAM3D_REQUIRED(comp.contains(SelectedSurfaceFaceFeatureArraysString1), ==, true)
+  DREAM3D_REQUIRED(comp.contains(SelectedSurfaceFaceFeatureArraysString2), ==, true)
+  DREAM3D_REQUIRED(comp.contains(SelectedSurfaceFaceFeatureArraysString3), ==, true)
+  DREAM3D_REQUIRED(comp.contains(SelectedSurfaceFaceFeatureArraysString4), ==, true)
 
   comp = filt->getSelectedSurfaceFaceEnsembleArrays();
-  DREAM3D_REQUIRED(comp.contains(SelectedSurfaceFaceEnsembleArraysString1), == , true)
-  DREAM3D_REQUIRED(comp.contains(SelectedSurfaceFaceEnsembleArraysString2), == , true)
-  DREAM3D_REQUIRED(comp.contains(SelectedSurfaceFaceEnsembleArraysString3), == , true)
-  DREAM3D_REQUIRED(comp.contains(SelectedSurfaceFaceEnsembleArraysString4), == , true)
+  DREAM3D_REQUIRED(comp.contains(SelectedSurfaceFaceEnsembleArraysString1), ==, true)
+  DREAM3D_REQUIRED(comp.contains(SelectedSurfaceFaceEnsembleArraysString2), ==, true)
+  DREAM3D_REQUIRED(comp.contains(SelectedSurfaceFaceEnsembleArraysString3), ==, true)
+  DREAM3D_REQUIRED(comp.contains(SelectedSurfaceFaceEnsembleArraysString4), ==, true)
 
   comp = filt->getSelectedVertexVertexArrays();
-  DREAM3D_REQUIRED(comp.contains(SelectedVertexVertexArraysString1), == , true)
-  DREAM3D_REQUIRED(comp.contains(SelectedVertexVertexArraysString2), == , true)
-  DREAM3D_REQUIRED(comp.contains(SelectedVertexVertexArraysString3), == , true)
-  DREAM3D_REQUIRED(comp.contains(SelectedVertexVertexArraysString4), == , true)
+  DREAM3D_REQUIRED(comp.contains(SelectedVertexVertexArraysString1), ==, true)
+  DREAM3D_REQUIRED(comp.contains(SelectedVertexVertexArraysString2), ==, true)
+  DREAM3D_REQUIRED(comp.contains(SelectedVertexVertexArraysString3), ==, true)
+  DREAM3D_REQUIRED(comp.contains(SelectedVertexVertexArraysString4), ==, true)
 
   comp = filt->getSelectedVertexVertexFeatureArrays();
-  DREAM3D_REQUIRED(comp.contains(SelectedVertexVertexFeatureArraysString1), == , true)
-  DREAM3D_REQUIRED(comp.contains(SelectedVertexVertexFeatureArraysString2), == , true)
-  DREAM3D_REQUIRED(comp.contains(SelectedVertexVertexFeatureArraysString3), == , true)
-  DREAM3D_REQUIRED(comp.contains(SelectedVertexVertexFeatureArraysString4), == , true)
+  DREAM3D_REQUIRED(comp.contains(SelectedVertexVertexFeatureArraysString1), ==, true)
+  DREAM3D_REQUIRED(comp.contains(SelectedVertexVertexFeatureArraysString2), ==, true)
+  DREAM3D_REQUIRED(comp.contains(SelectedVertexVertexFeatureArraysString3), ==, true)
+  DREAM3D_REQUIRED(comp.contains(SelectedVertexVertexFeatureArraysString4), ==, true)
 
   comp = filt->getSelectedVertexVertexEnsembleArrays();
-  DREAM3D_REQUIRED(comp.contains(SelectedVertexVertexEnsembleArraysString1), == , true)
-  DREAM3D_REQUIRED(comp.contains(SelectedVertexVertexEnsembleArraysString2), == , true)
-  DREAM3D_REQUIRED(comp.contains(SelectedVertexVertexEnsembleArraysString3), == , true)
-  DREAM3D_REQUIRED(comp.contains(SelectedVertexVertexEnsembleArraysString4), == , true)
-
+  DREAM3D_REQUIRED(comp.contains(SelectedVertexVertexEnsembleArraysString1), ==, true)
+  DREAM3D_REQUIRED(comp.contains(SelectedVertexVertexEnsembleArraysString2), ==, true)
+  DREAM3D_REQUIRED(comp.contains(SelectedVertexVertexEnsembleArraysString3), ==, true)
+  DREAM3D_REQUIRED(comp.contains(SelectedVertexVertexEnsembleArraysString4), ==, true)
 }
-
-
 
 // -----------------------------------------------------------------------------
 //
@@ -515,13 +485,11 @@ void VerifyArraySelectionExampleQSettingsFilterParameters()
   reader->openFile(UnitTest::FilterParametersRWTest::ArraySelectionFileQSettings, QSettings::IniFormat);
   int index = 1;
   // This next line should read all the filter parameters into the filter.
-  filt->readFilterParameters( reader.get(), index);
+  filt->readFilterParameters(reader.get(), index);
 
   // Compare the filter to what was read from the file
   ValidateArraySelectionExampleFilter(filt);
 }
-
-
 
 // -----------------------------------------------------------------------------
 //
@@ -532,24 +500,22 @@ void VerifyArraySelectionExampleHDF5FilterParameters()
   ArraySelectionExample::Pointer filt = ArraySelectionExample::New();
   hid_t fid = -1;
   H5FilterParametersReader::Pointer reader = H5FilterParametersReader::OpenDREAM3DFileForReadingPipeline(UnitTest::FilterParametersRWTest::ArraySelectionFile, fid);
-  DREAM3D_REQUIRED(fid, > , 0)
-  DREAM3D_REQUIRED(filt.get(), != , nullptr)
+  DREAM3D_REQUIRED(fid, >, 0)
+  DREAM3D_REQUIRED(filt.get(), !=, nullptr)
 
   // The Generic Filter is the second (index = 1) filter in the pipeline, so set this index value
   int index = 1;
 
   // This next line should read all the filter parameters into the filter.
-  filt->readFilterParameters( reader.get(), index);
+  filt->readFilterParameters(reader.get(), index);
 
   // Compare the filter to what was read from the file
   ValidateArraySelectionExampleFilter(filt);
 
   // Close up the HDF5 file
   H5Gclose(reader->getPipelineGroupId()); // Closes the "Pipeline" group
-  H5Fclose(fid); // Closes the file
+  H5Fclose(fid);                          // Closes the file
 }
-
-
 
 // -----------------------------------------------------------------------------
 //
@@ -612,7 +578,6 @@ GenericExample::Pointer GenerateGenericExample()
   filt->setFloatValue(-1.521);
   filt->setDoubleValue(2.36547);
 
-
   IntVec3Widget_t intWidget;
   intWidget.x = IntWidgetXTestValue;
   intWidget.y = IntWidgetYTestValue;
@@ -645,7 +610,6 @@ GenericExample::Pointer GenerateGenericExample()
   return filt;
 }
 
-
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
@@ -653,60 +617,59 @@ void ValidateGenericExampleFilter(GenericExample::Pointer filt)
 {
   // Now one by one, compare each of the filter parameters that you have stored in some constant somewhere to the values that are now in the filt variable.
   // Use DREAM3D_REQUIRED() to make sure each one is what you think it is.
-  DREAM3D_REQUIRED( StlFilePrefixTestValue, == , filt->getStlFilePrefix() )
-  DREAM3D_REQUIRED( MaxIterationsTestValue, == , filt->getMaxIterations() )
-  DREAM3D_REQUIRED( MisorientationToleranceTestValue, == , filt->getMisorientationTolerance() )
-  DREAM3D_REQUIRED( InputFileTestValue, == , filt->getInputFile() )
-  DREAM3D_REQUIRED( InputPathTestValue, == , filt->getInputPath() )
-  DREAM3D_REQUIRED( OutputFileTestValue, == , filt->getOutputFile() )
-  DREAM3D_REQUIRED( OutputPathTestValue, == , filt->getOutputPath() )
-  DREAM3D_REQUIRED( WriteAlignmentShiftsTestValue, == , filt->getWriteAlignmentShifts() )
-  DREAM3D_REQUIRED( ConversionTypeTestValue, == , filt->getConversionType() )
-  DREAM3D_REQUIRED( SelectedCellArrayNameTestValue, == , filt->getSelectedVolumeCellArrayName() )
-  DREAM3D_REQUIRED( SelectedFeatureArrayNameTestValue, == , filt->getSelectedVolumeFeatureArrayName() )
-  DREAM3D_REQUIRED( SelectedEnsembleArrayNameTestValue, == , filt->getSelectedVolumeEnsembleArrayName() )
-  DREAM3D_REQUIRED( SurfaceMeshVertexArrayNameTestValue, == , filt->getSelectedSurfaceVertexArrayName() )
-  DREAM3D_REQUIRED( SurfaceMeshFaceArrayNameTestValue, == , filt->getSelectedSurfaceFaceArrayName() )
-  DREAM3D_REQUIRED( SurfaceMeshEdgeArrayNameTestValue, == , filt->getSelectedSurfaceEdgeArrayName() )
-  DREAM3D_REQUIRED( SolidMeshVertexArrayNameTestValue, == , filt->getSelectedVertexVertexArrayName() )
-  DREAM3D_REQUIRED( SolidMeshFaceArrayNameTestValue, == , filt->getSelectedVertexFeatureArrayName() )
-  DREAM3D_REQUIRED( SolidMeshEdgeArrayNameTestValue, == , filt->getSelectedVertexEnsembleArrayName() )
+  DREAM3D_REQUIRED(StlFilePrefixTestValue, ==, filt->getStlFilePrefix())
+  DREAM3D_REQUIRED(MaxIterationsTestValue, ==, filt->getMaxIterations())
+  DREAM3D_REQUIRED(MisorientationToleranceTestValue, ==, filt->getMisorientationTolerance())
+  DREAM3D_REQUIRED(InputFileTestValue, ==, filt->getInputFile())
+  DREAM3D_REQUIRED(InputPathTestValue, ==, filt->getInputPath())
+  DREAM3D_REQUIRED(OutputFileTestValue, ==, filt->getOutputFile())
+  DREAM3D_REQUIRED(OutputPathTestValue, ==, filt->getOutputPath())
+  DREAM3D_REQUIRED(WriteAlignmentShiftsTestValue, ==, filt->getWriteAlignmentShifts())
+  DREAM3D_REQUIRED(ConversionTypeTestValue, ==, filt->getConversionType())
+  DREAM3D_REQUIRED(SelectedCellArrayNameTestValue, ==, filt->getSelectedVolumeCellArrayName())
+  DREAM3D_REQUIRED(SelectedFeatureArrayNameTestValue, ==, filt->getSelectedVolumeFeatureArrayName())
+  DREAM3D_REQUIRED(SelectedEnsembleArrayNameTestValue, ==, filt->getSelectedVolumeEnsembleArrayName())
+  DREAM3D_REQUIRED(SurfaceMeshVertexArrayNameTestValue, ==, filt->getSelectedSurfaceVertexArrayName())
+  DREAM3D_REQUIRED(SurfaceMeshFaceArrayNameTestValue, ==, filt->getSelectedSurfaceFaceArrayName())
+  DREAM3D_REQUIRED(SurfaceMeshEdgeArrayNameTestValue, ==, filt->getSelectedSurfaceEdgeArrayName())
+  DREAM3D_REQUIRED(SolidMeshVertexArrayNameTestValue, ==, filt->getSelectedVertexVertexArrayName())
+  DREAM3D_REQUIRED(SolidMeshFaceArrayNameTestValue, ==, filt->getSelectedVertexFeatureArrayName())
+  DREAM3D_REQUIRED(SolidMeshEdgeArrayNameTestValue, ==, filt->getSelectedVertexEnsembleArrayName())
 
   // Test the IntVec3Widget
   IntVec3Widget_t intWidgetRead = filt->getDimensions();
-  DREAM3D_REQUIRED(IntWidgetXTestValue, == , intWidgetRead.x)
-  DREAM3D_REQUIRED(IntWidgetYTestValue, == , intWidgetRead.y)
-  DREAM3D_REQUIRED(IntWidgetZTestValue, == , intWidgetRead.z)
+  DREAM3D_REQUIRED(IntWidgetXTestValue, ==, intWidgetRead.x)
+  DREAM3D_REQUIRED(IntWidgetYTestValue, ==, intWidgetRead.y)
+  DREAM3D_REQUIRED(IntWidgetZTestValue, ==, intWidgetRead.z)
 
   // Test the FloatVec3Widget
   FloatVec3Widget_t floatWidgetRead = filt->getOrigin();
-  DREAM3D_REQUIRED(FloatWidgetXTestValue, == , floatWidgetRead.x)
-  DREAM3D_REQUIRED(FloatWidgetYTestValue, == , floatWidgetRead.y)
-  DREAM3D_REQUIRED(FloatWidgetZTestValue, == , floatWidgetRead.z)
+  DREAM3D_REQUIRED(FloatWidgetXTestValue, ==, floatWidgetRead.x)
+  DREAM3D_REQUIRED(FloatWidgetYTestValue, ==, floatWidgetRead.y)
+  DREAM3D_REQUIRED(FloatWidgetZTestValue, ==, floatWidgetRead.z)
 
   // Test the AxisAngleInput
   QVector<AxisAngleInput_t> axisAngleVectorRead = filt->getAxisAngleInputs();
   AxisAngleInput_t axisAngles1Read = axisAngleVectorRead[0];
   AxisAngleInput_t axisAngles2Read = axisAngleVectorRead[1];
 
-  DREAM3D_REQUIRED(AxisAngles1AngleTestValue, == , axisAngles1Read.angle)
-  DREAM3D_REQUIRED(AxisAngles1HTestValue, == , axisAngles1Read.h)
-  DREAM3D_REQUIRED(AxisAngles1KTestValue, == , axisAngles1Read.k)
-  DREAM3D_REQUIRED(AxisAngles1LTestValue, == , axisAngles1Read.l)
-  DREAM3D_REQUIRED(AxisAngles2AngleTestValue, == , axisAngles2Read.angle)
-  DREAM3D_REQUIRED(AxisAngles2HTestValue, == , axisAngles2Read.h)
-  DREAM3D_REQUIRED(AxisAngles2KTestValue, == , axisAngles2Read.k)
-  DREAM3D_REQUIRED(AxisAngles2LTestValue, == , axisAngles2Read.l)
+  DREAM3D_REQUIRED(AxisAngles1AngleTestValue, ==, axisAngles1Read.angle)
+  DREAM3D_REQUIRED(AxisAngles1HTestValue, ==, axisAngles1Read.h)
+  DREAM3D_REQUIRED(AxisAngles1KTestValue, ==, axisAngles1Read.k)
+  DREAM3D_REQUIRED(AxisAngles1LTestValue, ==, axisAngles1Read.l)
+  DREAM3D_REQUIRED(AxisAngles2AngleTestValue, ==, axisAngles2Read.angle)
+  DREAM3D_REQUIRED(AxisAngles2HTestValue, ==, axisAngles2Read.h)
+  DREAM3D_REQUIRED(AxisAngles2KTestValue, ==, axisAngles2Read.k)
+  DREAM3D_REQUIRED(AxisAngles2LTestValue, ==, axisAngles2Read.l)
 
   // Test the string vector
   QVector<QString> strVectorRead = filt->getStrVector();
-  DREAM3D_REQUIRED(SurfaceMeshVertexArrayNameTestValue, == , strVectorRead[0])
-  DREAM3D_REQUIRED(SurfaceMeshFaceArrayNameTestValue, == , strVectorRead[1])
-  DREAM3D_REQUIRED(SurfaceMeshEdgeArrayNameTestValue, == , strVectorRead[2])
-  DREAM3D_REQUIRED(SolidMeshVertexArrayNameTestValue, == , strVectorRead[3])
-  DREAM3D_REQUIRED(SolidMeshFaceArrayNameTestValue, == , strVectorRead[4])
-  DREAM3D_REQUIRED(SolidMeshEdgeArrayNameTestValue, == , strVectorRead[5])
-
+  DREAM3D_REQUIRED(SurfaceMeshVertexArrayNameTestValue, ==, strVectorRead[0])
+  DREAM3D_REQUIRED(SurfaceMeshFaceArrayNameTestValue, ==, strVectorRead[1])
+  DREAM3D_REQUIRED(SurfaceMeshEdgeArrayNameTestValue, ==, strVectorRead[2])
+  DREAM3D_REQUIRED(SolidMeshVertexArrayNameTestValue, ==, strVectorRead[3])
+  DREAM3D_REQUIRED(SolidMeshFaceArrayNameTestValue, ==, strVectorRead[4])
+  DREAM3D_REQUIRED(SolidMeshEdgeArrayNameTestValue, ==, strVectorRead[5])
 
   validateArray<int8_t>(filt->getInt8Array());
   validateArray<int16_t>(filt->getInt16Array());
@@ -719,14 +682,14 @@ void ValidateGenericExampleFilter(GenericExample::Pointer filt)
   validateArray(filt->getFloatArray());
   validateArray(filt->getDoubleArray());
 
-  DREAM3D_REQUIRED(validateValue<int8_t>(filt->getInt8Value()), == , true);
-  DREAM3D_REQUIRED(validateValue<int16_t>(filt->getInt16Value()), == , true);
-  DREAM3D_REQUIRED(validateValue<int32_t>(filt->getInt32Value()), == , true);
-  DREAM3D_REQUIRED(validateValue<int64_t>(filt->getInt64Value()), == , true);
-  DREAM3D_REQUIRED(validateValue<uint8_t>(filt->getUInt8Value()), == , true);
-  DREAM3D_REQUIRED(validateValue<uint16_t>(filt->getUInt16Value()), == , true);
-  DREAM3D_REQUIRED(validateValue<uint32_t>(filt->getUInt32Value()), == , true);
-  DREAM3D_REQUIRED(validateValue<uint64_t>(filt->getUInt64Value()), == , true);
+  DREAM3D_REQUIRED(validateValue<int8_t>(filt->getInt8Value()), ==, true);
+  DREAM3D_REQUIRED(validateValue<int16_t>(filt->getInt16Value()), ==, true);
+  DREAM3D_REQUIRED(validateValue<int32_t>(filt->getInt32Value()), ==, true);
+  DREAM3D_REQUIRED(validateValue<int64_t>(filt->getInt64Value()), ==, true);
+  DREAM3D_REQUIRED(validateValue<uint8_t>(filt->getUInt8Value()), ==, true);
+  DREAM3D_REQUIRED(validateValue<uint16_t>(filt->getUInt16Value()), ==, true);
+  DREAM3D_REQUIRED(validateValue<uint32_t>(filt->getUInt32Value()), ==, true);
+  DREAM3D_REQUIRED(validateValue<uint64_t>(filt->getUInt64Value()), ==, true);
   DREAM3D_COMPARE_FLOATS(-1.521, filt->getFloatValue(), 10);
   DREAM3D_REQUIRE_EQUAL(2.36547, filt->getDoubleValue());
 }
@@ -741,7 +704,7 @@ void VerifyGenericExampleQSettingsFilterParameters()
   reader->openFile(UnitTest::FilterParametersRWTest::GenericExampleFileQSettings, QSettings::IniFormat);
   int index = 1;
   // This next line should read all the filter parameters into the filter.
-  filt->readFilterParameters( reader.get(), index);
+  filt->readFilterParameters(reader.get(), index);
 
   // Compare the filter to what was read from the file
   ValidateGenericExampleFilter(filt);
@@ -755,21 +718,21 @@ void VerifyGenericExampleHDF5FilterParameters()
   GenericExample::Pointer filt = GenericExample::New();
   hid_t fid = -1;
   H5FilterParametersReader::Pointer reader = H5FilterParametersReader::OpenDREAM3DFileForReadingPipeline(UnitTest::FilterParametersRWTest::GenericExampleFile, fid);
-  DREAM3D_REQUIRED(fid, > , 0);
-  DREAM3D_REQUIRED(filt.get(), != , nullptr);
+  DREAM3D_REQUIRED(fid, >, 0);
+  DREAM3D_REQUIRED(filt.get(), !=, nullptr);
 
   // The Generic Filter is the second (index = 1) filter in the pipeline, so set this index value
   int index = 1;
 
   // This next line should read all the filter parameters into the filter.
-  filt->readFilterParameters( reader.get(), index);
+  filt->readFilterParameters(reader.get(), index);
 
   // Compare the filter to what was read from the file
   ValidateGenericExampleFilter(filt);
 
   // Close up the HDF5 file
   H5Gclose(reader->getPipelineGroupId()); // Closes the "Pipeline" group
-  H5Fclose(fid); // Closes the file
+  H5Fclose(fid);                          // Closes the file
 }
 
 // -----------------------------------------------------------------------------
@@ -795,12 +758,10 @@ void GenerateGenericExamplePipelineFiles()
 
   pipeline->execute();
   int err = pipeline->getErrorCondition();
-  DREAM3D_REQUIRED(err, >= , 0)
+  DREAM3D_REQUIRED(err, >=, 0)
 
   WritePipelineToQSettings(pipeline, UnitTest::FilterParametersRWTest::GenericExampleFileQSettings);
-
 }
-
 
 // -----------------------------------------------------------------------------
 //
@@ -832,13 +793,12 @@ void ValidateThresholdExampleFilter(ThresholdExample::Pointer filt)
   ComparisonInput_t edgeComparisonInputs1 = edgeComparisonInputsVectorRead[0];
   ComparisonInput_t edgeComparisonInputs2 = edgeComparisonInputsVectorRead[1];
 
-  DREAM3D_REQUIRED(CellComparisonInputsArrayName1, == , cellComparisonInputs1.arrayName)
-  DREAM3D_REQUIRED(CellComparisonInputsCompOperator1, == , cellComparisonInputs1.compOperator)
-  DREAM3D_REQUIRED(CellComparisonInputsCompValue1, == , cellComparisonInputs1.compValue)
-  DREAM3D_REQUIRED(CellComparisonInputsArrayName2, == , cellComparisonInputs2.arrayName)
-  DREAM3D_REQUIRED(CellComparisonInputsCompOperator2, == , cellComparisonInputs2.compOperator)
-  DREAM3D_REQUIRED(CellComparisonInputsCompValue2, == , cellComparisonInputs2.compValue)
-
+  DREAM3D_REQUIRED(CellComparisonInputsArrayName1, ==, cellComparisonInputs1.arrayName)
+  DREAM3D_REQUIRED(CellComparisonInputsCompOperator1, ==, cellComparisonInputs1.compOperator)
+  DREAM3D_REQUIRED(CellComparisonInputsCompValue1, ==, cellComparisonInputs1.compValue)
+  DREAM3D_REQUIRED(CellComparisonInputsArrayName2, ==, cellComparisonInputs2.arrayName)
+  DREAM3D_REQUIRED(CellComparisonInputsCompOperator2, ==, cellComparisonInputs2.compOperator)
+  DREAM3D_REQUIRED(CellComparisonInputsCompValue2, ==, cellComparisonInputs2.compValue)
 
   //  union {
   //  int64_t i;
@@ -849,42 +809,41 @@ void ValidateThresholdExampleFilter(ThresholdExample::Pointer filt)
   //  comp.d = featureComparisonInputs1.compValue;
   //  printf("%llx\n", comp.i);
 
-  DREAM3D_REQUIRED(FeatureComparisonInputsArrayName1, == , featureComparisonInputs1.arrayName)
-  DREAM3D_REQUIRED(FeatureComparisonInputsCompOperator1, == , featureComparisonInputs1.compOperator)
-  DREAM3D_REQUIRED(FeatureComparisonInputsCompValue1, == , featureComparisonInputs1.compValue)
-  DREAM3D_REQUIRED(FeatureComparisonInputsArrayName2, == , featureComparisonInputs2.arrayName)
-  DREAM3D_REQUIRED(FeatureComparisonInputsCompOperator2, == , featureComparisonInputs2.compOperator)
-  DREAM3D_REQUIRED(FeatureComparisonInputsCompValue2, == , featureComparisonInputs2.compValue)
+  DREAM3D_REQUIRED(FeatureComparisonInputsArrayName1, ==, featureComparisonInputs1.arrayName)
+  DREAM3D_REQUIRED(FeatureComparisonInputsCompOperator1, ==, featureComparisonInputs1.compOperator)
+  DREAM3D_REQUIRED(FeatureComparisonInputsCompValue1, ==, featureComparisonInputs1.compValue)
+  DREAM3D_REQUIRED(FeatureComparisonInputsArrayName2, ==, featureComparisonInputs2.arrayName)
+  DREAM3D_REQUIRED(FeatureComparisonInputsCompOperator2, ==, featureComparisonInputs2.compOperator)
+  DREAM3D_REQUIRED(FeatureComparisonInputsCompValue2, ==, featureComparisonInputs2.compValue)
 
-  DREAM3D_REQUIRED(EnsembleComparisonInputsArrayName1, == , ensembleComparisonInputs1.arrayName)
-  DREAM3D_REQUIRED(EnsembleComparisonInputsCompOperator1, == , ensembleComparisonInputs1.compOperator)
-  DREAM3D_REQUIRED(EnsembleComparisonInputsCompValue1, == , ensembleComparisonInputs1.compValue)
-  DREAM3D_REQUIRED(EnsembleComparisonInputsArrayName2, == , ensembleComparisonInputs2.arrayName)
-  DREAM3D_REQUIRED(EnsembleComparisonInputsCompOperator2, == , ensembleComparisonInputs2.compOperator)
-  DREAM3D_REQUIRED(EnsembleComparisonInputsCompValue2, == , ensembleComparisonInputs2.compValue)
+  DREAM3D_REQUIRED(EnsembleComparisonInputsArrayName1, ==, ensembleComparisonInputs1.arrayName)
+  DREAM3D_REQUIRED(EnsembleComparisonInputsCompOperator1, ==, ensembleComparisonInputs1.compOperator)
+  DREAM3D_REQUIRED(EnsembleComparisonInputsCompValue1, ==, ensembleComparisonInputs1.compValue)
+  DREAM3D_REQUIRED(EnsembleComparisonInputsArrayName2, ==, ensembleComparisonInputs2.arrayName)
+  DREAM3D_REQUIRED(EnsembleComparisonInputsCompOperator2, ==, ensembleComparisonInputs2.compOperator)
+  DREAM3D_REQUIRED(EnsembleComparisonInputsCompValue2, ==, ensembleComparisonInputs2.compValue)
 
-  DREAM3D_REQUIRED(PointComparisonInputsArrayName1, == , pointComparisonInputs1.arrayName)
-  DREAM3D_REQUIRED(PointComparisonInputsCompOperator1, == , pointComparisonInputs1.compOperator)
-  DREAM3D_REQUIRED(PointComparisonInputsCompValue1, == , pointComparisonInputs1.compValue)
-  DREAM3D_REQUIRED(PointComparisonInputsArrayName2, == , pointComparisonInputs2.arrayName)
-  DREAM3D_REQUIRED(PointComparisonInputsCompOperator2, == , pointComparisonInputs2.compOperator)
-  DREAM3D_REQUIRED(PointComparisonInputsCompValue2, == , pointComparisonInputs2.compValue)
+  DREAM3D_REQUIRED(PointComparisonInputsArrayName1, ==, pointComparisonInputs1.arrayName)
+  DREAM3D_REQUIRED(PointComparisonInputsCompOperator1, ==, pointComparisonInputs1.compOperator)
+  DREAM3D_REQUIRED(PointComparisonInputsCompValue1, ==, pointComparisonInputs1.compValue)
+  DREAM3D_REQUIRED(PointComparisonInputsArrayName2, ==, pointComparisonInputs2.arrayName)
+  DREAM3D_REQUIRED(PointComparisonInputsCompOperator2, ==, pointComparisonInputs2.compOperator)
+  DREAM3D_REQUIRED(PointComparisonInputsCompValue2, ==, pointComparisonInputs2.compValue)
 
-  DREAM3D_REQUIRED(FaceComparisonInputsArrayName1, == , faceComparisonInputs1.arrayName)
-  DREAM3D_REQUIRED(FaceComparisonInputsCompOperator1, == , faceComparisonInputs1.compOperator)
-  DREAM3D_REQUIRED(FaceComparisonInputsCompValue1, == , faceComparisonInputs1.compValue)
-  DREAM3D_REQUIRED(FaceComparisonInputsArrayName2, == , faceComparisonInputs2.arrayName)
-  DREAM3D_REQUIRED(FaceComparisonInputsCompOperator2, == , faceComparisonInputs2.compOperator)
-  DREAM3D_REQUIRED(FaceComparisonInputsCompValue2, == , faceComparisonInputs2.compValue)
+  DREAM3D_REQUIRED(FaceComparisonInputsArrayName1, ==, faceComparisonInputs1.arrayName)
+  DREAM3D_REQUIRED(FaceComparisonInputsCompOperator1, ==, faceComparisonInputs1.compOperator)
+  DREAM3D_REQUIRED(FaceComparisonInputsCompValue1, ==, faceComparisonInputs1.compValue)
+  DREAM3D_REQUIRED(FaceComparisonInputsArrayName2, ==, faceComparisonInputs2.arrayName)
+  DREAM3D_REQUIRED(FaceComparisonInputsCompOperator2, ==, faceComparisonInputs2.compOperator)
+  DREAM3D_REQUIRED(FaceComparisonInputsCompValue2, ==, faceComparisonInputs2.compValue)
 
-  DREAM3D_REQUIRED(EdgeComparisonInputsArrayName1, == , edgeComparisonInputs1.arrayName)
-  DREAM3D_REQUIRED(EdgeComparisonInputsCompOperator1, == , edgeComparisonInputs1.compOperator)
-  DREAM3D_REQUIRED(EdgeComparisonInputsCompValue1, == , edgeComparisonInputs1.compValue)
-  DREAM3D_REQUIRED(EdgeComparisonInputsArrayName2, == , edgeComparisonInputs2.arrayName)
-  DREAM3D_REQUIRED(EdgeComparisonInputsCompOperator2, == , edgeComparisonInputs2.compOperator)
-  DREAM3D_REQUIRED(EdgeComparisonInputsCompValue2, == , edgeComparisonInputs2.compValue)
+  DREAM3D_REQUIRED(EdgeComparisonInputsArrayName1, ==, edgeComparisonInputs1.arrayName)
+  DREAM3D_REQUIRED(EdgeComparisonInputsCompOperator1, ==, edgeComparisonInputs1.compOperator)
+  DREAM3D_REQUIRED(EdgeComparisonInputsCompValue1, ==, edgeComparisonInputs1.compValue)
+  DREAM3D_REQUIRED(EdgeComparisonInputsArrayName2, ==, edgeComparisonInputs2.arrayName)
+  DREAM3D_REQUIRED(EdgeComparisonInputsCompOperator2, ==, edgeComparisonInputs2.compOperator)
+  DREAM3D_REQUIRED(EdgeComparisonInputsCompValue2, ==, edgeComparisonInputs2.compValue)
 }
-
 
 // -----------------------------------------------------------------------------
 //
@@ -896,7 +855,7 @@ void VerifyThresholdExampleQSettingsFilterParameters()
   reader->openFile(UnitTest::FilterParametersRWTest::ThresholdFileQSettings, QSettings::IniFormat);
   int index = 1;
   // This next line should read all the filter parameters into the filter.
-  filt->readFilterParameters( reader.get(), index);
+  filt->readFilterParameters(reader.get(), index);
 
   // Compare the filter to what was read from the file
   ValidateThresholdExampleFilter(filt);
@@ -904,7 +863,6 @@ void VerifyThresholdExampleQSettingsFilterParameters()
   FilterPipeline::Pointer pipeline = QFilterParametersReader::ReadPipelineFromFile(UnitTest::FilterParametersRWTest::ThresholdFile, QSettings::IniFormat);
   DREAM3D_REQUIRE(pipeline.get() != nullptr)
 }
-
 
 // -----------------------------------------------------------------------------
 //
@@ -914,26 +872,25 @@ void VerifyThresholdExampleHDF5FilterParameters()
   ThresholdExample::Pointer filt = ThresholdExample::New();
   hid_t fid = -1;
   H5FilterParametersReader::Pointer reader = H5FilterParametersReader::OpenDREAM3DFileForReadingPipeline(UnitTest::FilterParametersRWTest::ThresholdFile, fid);
-  DREAM3D_REQUIRED(fid, > , 0)
-  DREAM3D_REQUIRED(filt.get(), != , nullptr)
+  DREAM3D_REQUIRED(fid, >, 0)
+  DREAM3D_REQUIRED(filt.get(), !=, nullptr)
 
   // The Generic Filter is the second (index = 1) filter in the pipeline, so set this index value
   int index = 1;
 
   // This next line should read all the filter parameters into the filter.
-  filt->readFilterParameters( reader.get(), index);
+  filt->readFilterParameters(reader.get(), index);
 
   // Compare the filter to what was read from the file
   ValidateThresholdExampleFilter(filt);
 
   // Close up the HDF5 file
   H5Gclose(reader->getPipelineGroupId()); // Closes the "Pipeline" group
-  H5Fclose(fid); // Closes the file
+  H5Fclose(fid);                          // Closes the file
 
   FilterPipeline::Pointer pipeline = H5FilterParametersReader::ReadPipelineFromFile(UnitTest::FilterParametersRWTest::ThresholdFile);
   DREAM3D_REQUIRE(pipeline.get() != nullptr)
 }
-
 
 // -----------------------------------------------------------------------------
 //
@@ -943,37 +900,30 @@ void GenerateThresholdExamplePipelineFiles()
   // Create our Pipeline object
   FilterPipeline::Pointer pipeline = FilterPipeline::New();
 
-
   ThresholdExample::Pointer filt = ThresholdExample::New();
 
-  QVector<ComparisonInput_t> cellComparisonInputsVector = getComparisonInputsVector(CellComparisonInputsArrayName1, CellComparisonInputsCompOperator1,
-                                                          CellComparisonInputsCompValue1, CellComparisonInputsArrayName2,
-                                                          CellComparisonInputsCompOperator2, CellComparisonInputsCompValue2);
+  QVector<ComparisonInput_t> cellComparisonInputsVector = getComparisonInputsVector(CellComparisonInputsArrayName1, CellComparisonInputsCompOperator1, CellComparisonInputsCompValue1,
+                                                                                    CellComparisonInputsArrayName2, CellComparisonInputsCompOperator2, CellComparisonInputsCompValue2);
   filt->setCellComparisonInputs(cellComparisonInputsVector);
 
-  QVector<ComparisonInput_t> featureComparisonInputsVector = getComparisonInputsVector(FeatureComparisonInputsArrayName1, FeatureComparisonInputsCompOperator1,
-                                                             FeatureComparisonInputsCompValue1, FeatureComparisonInputsArrayName2,
-                                                             FeatureComparisonInputsCompOperator2, FeatureComparisonInputsCompValue2);
+  QVector<ComparisonInput_t> featureComparisonInputsVector = getComparisonInputsVector(FeatureComparisonInputsArrayName1, FeatureComparisonInputsCompOperator1, FeatureComparisonInputsCompValue1,
+                                                                                       FeatureComparisonInputsArrayName2, FeatureComparisonInputsCompOperator2, FeatureComparisonInputsCompValue2);
   filt->setFeatureComparisonInputs(featureComparisonInputsVector);
 
-  QVector<ComparisonInput_t> ensembleComparisonInputsVector = getComparisonInputsVector(EnsembleComparisonInputsArrayName1, EnsembleComparisonInputsCompOperator1,
-                                                              EnsembleComparisonInputsCompValue1, EnsembleComparisonInputsArrayName2,
-                                                              EnsembleComparisonInputsCompOperator2, EnsembleComparisonInputsCompValue2);
+  QVector<ComparisonInput_t> ensembleComparisonInputsVector = getComparisonInputsVector(EnsembleComparisonInputsArrayName1, EnsembleComparisonInputsCompOperator1, EnsembleComparisonInputsCompValue1,
+                                                                                        EnsembleComparisonInputsArrayName2, EnsembleComparisonInputsCompOperator2, EnsembleComparisonInputsCompValue2);
   filt->setEnsembleComparisonInputs(ensembleComparisonInputsVector);
 
-  QVector<ComparisonInput_t> pointComparisonInputsVector = getComparisonInputsVector(PointComparisonInputsArrayName1, PointComparisonInputsCompOperator1,
-                                                           PointComparisonInputsCompValue1, PointComparisonInputsArrayName2,
-                                                           PointComparisonInputsCompOperator2, PointComparisonInputsCompValue2);
+  QVector<ComparisonInput_t> pointComparisonInputsVector = getComparisonInputsVector(PointComparisonInputsArrayName1, PointComparisonInputsCompOperator1, PointComparisonInputsCompValue1,
+                                                                                     PointComparisonInputsArrayName2, PointComparisonInputsCompOperator2, PointComparisonInputsCompValue2);
   filt->setPointComparisonInputs(pointComparisonInputsVector);
 
-  QVector<ComparisonInput_t> faceComparisonInputsVector = getComparisonInputsVector(FaceComparisonInputsArrayName1, FaceComparisonInputsCompOperator1,
-                                                          FaceComparisonInputsCompValue1, FaceComparisonInputsArrayName2,
-                                                          FaceComparisonInputsCompOperator2, FaceComparisonInputsCompValue2);
+  QVector<ComparisonInput_t> faceComparisonInputsVector = getComparisonInputsVector(FaceComparisonInputsArrayName1, FaceComparisonInputsCompOperator1, FaceComparisonInputsCompValue1,
+                                                                                    FaceComparisonInputsArrayName2, FaceComparisonInputsCompOperator2, FaceComparisonInputsCompValue2);
   filt->setFaceComparisonInputs(faceComparisonInputsVector);
 
-  QVector<ComparisonInput_t> edgeComparisonInputsVector = getComparisonInputsVector(EdgeComparisonInputsArrayName1, EdgeComparisonInputsCompOperator1,
-                                                          EdgeComparisonInputsCompValue1, EdgeComparisonInputsArrayName2,
-                                                          EdgeComparisonInputsCompOperator2, EdgeComparisonInputsCompValue2);
+  QVector<ComparisonInput_t> edgeComparisonInputsVector = getComparisonInputsVector(EdgeComparisonInputsArrayName1, EdgeComparisonInputsCompOperator1, EdgeComparisonInputsCompValue1,
+                                                                                    EdgeComparisonInputsArrayName2, EdgeComparisonInputsCompOperator2, EdgeComparisonInputsCompValue2);
   filt->setEdgeComparisonInputs(edgeComparisonInputsVector);
 
   DataContainerWriter::Pointer writer = DataContainerWriter::New();
@@ -987,7 +937,7 @@ void GenerateThresholdExamplePipelineFiles()
 
   pipeline->execute();
   int err = pipeline->getErrorCondition();
-  DREAM3D_REQUIRED(err, >= , 0)
+  DREAM3D_REQUIRED(err, >=, 0)
 
   WritePipelineToQSettings(pipeline, UnitTest::FilterParametersRWTest::ThresholdFileQSettings);
 }
@@ -1045,7 +995,6 @@ void FilterManagerTest()
 {
   FilterManager::Pointer fm = FilterManager::Instance();
 
-
   IFilterFactory::Pointer ff = fm->getFactoryForFilter(DataContainerReader::ClassName());
   DREAM3D_REQUIRE_NE(ff.get(), nullptr)
   AbstractFilter::Pointer reader = ff->create();
@@ -1054,16 +1003,13 @@ void FilterManagerTest()
   int comp = DataContainerReader::ClassName().compare(reader->getNameOfClass());
   DREAM3D_REQUIRE_EQUAL(comp, 0);
 
-
-
   /* Get all the factories which should be at least 1 */
   FilterManager::Collection factories = fm->getFactories();
 
-  DREAM3D_REQUIRED(factories.size(), > , 0)
+  DREAM3D_REQUIRED(factories.size(), >, 0)
 
   Filt0::Pointer filt0 = Filt0::New();
   Filt1::Pointer filt1 = Filt1::New();
-
 }
 
 // -----------------------------------------------------------------------------
@@ -1081,27 +1027,26 @@ void ExistingPipelineTest(QString outputFile, QString inputFile, TestCases test_
   DataContainerReader::Pointer r = DataContainerReader::New();
   r->setInputFile(inputFile);
 
-
   filt0->setFilt0_Float(13.1f + test_case);
   filt0->setFilt0_Integer(12 + test_case);
   filt1->setFilt1_Float(2.3f + test_case);
   filt1->setFilt1_Integer(4 + test_case);
   w->setOutputFile(outputFile);
 
-  if (test_case == Test1)
+  if(test_case == Test1)
   {
     pipeline->pushBack(filt0);
     pipeline->pushBack(filt1);
     pipeline->pushBack(w);
   }
-  else if (test_case == Test2)
+  else if(test_case == Test2)
   {
     pipeline->pushBack(r);
     pipeline->pushBack(filt0);
     pipeline->pushBack(filt1);
     pipeline->pushBack(w);
   }
-  else if (test_case == Test3)
+  else if(test_case == Test3)
   {
     pipeline->pushBack(filt0);
     pipeline->pushBack(filt1);
@@ -1115,9 +1060,7 @@ void ExistingPipelineTest(QString outputFile, QString inputFile, TestCases test_
 
   pipeline->execute();
   int err = pipeline->getErrorCondition();
-  DREAM3D_REQUIRED(err, >= , 0)
-
-
+  DREAM3D_REQUIRED(err, >=, 0)
 }
 
 // -----------------------------------------------------------------------------
@@ -1134,79 +1077,77 @@ void ExistingPipelineCheck(QString fileName)
   pipeline->pushBack(r);
   pipeline->execute();
   int err = pipeline->getErrorCondition();
-  DREAM3D_REQUIRED(err, >= , 0)
-
+  DREAM3D_REQUIRED(err, >=, 0)
 
   FilterPipeline::Pointer filePipeline = r.get()->getPipelinePointer();
 
   AbstractFilter::Pointer absFilter = AbstractFilter::New();
   FilterPipeline::FilterContainerType container = filePipeline->getFilterContainer();
 
-  DREAM3D_REQUIRED(container.size(), == , 11)
+  DREAM3D_REQUIRED(container.size(), ==, 11)
 
   FilterPipeline::FilterContainerType::iterator iter = container.begin();
 
   absFilter = *iter;
   Filt0* f0_1 = Filt0::SafePointerDownCast(absFilter.get());
-  DREAM3D_REQUIRED(f0_1->getFilt0_Float(), == , 15.1f)
-  DREAM3D_REQUIRED(f0_1->getFilt0_Integer(), == , 14)
+  DREAM3D_REQUIRED(f0_1->getFilt0_Float(), ==, 15.1f)
+  DREAM3D_REQUIRED(f0_1->getFilt0_Integer(), ==, 14)
   iter++;
 
   absFilter = *iter;
   Filt1* f1_1 = Filt1::SafePointerDownCast(absFilter.get());
-  DREAM3D_REQUIRED(f1_1->getFilt1_Float(), == , 4.3f)
-  DREAM3D_REQUIRED(f1_1->getFilt1_Integer(), == , 6)
+  DREAM3D_REQUIRED(f1_1->getFilt1_Float(), ==, 4.3f)
+  DREAM3D_REQUIRED(f1_1->getFilt1_Integer(), ==, 6)
   iter++;
 
   absFilter = *iter;
   Filt0* f0_2 = Filt0::SafePointerDownCast(absFilter.get());
-  DREAM3D_REQUIRED(f0_2->getFilt0_Float(), == , 13.1f)
-  DREAM3D_REQUIRED(f0_2->getFilt0_Integer(), == , 12)
+  DREAM3D_REQUIRED(f0_2->getFilt0_Float(), ==, 13.1f)
+  DREAM3D_REQUIRED(f0_2->getFilt0_Integer(), ==, 12)
   iter++;
 
   absFilter = *iter;
   Filt1* f1_2 = Filt1::SafePointerDownCast(absFilter.get());
-  DREAM3D_REQUIRED(f1_2->getFilt1_Float(), == , 2.3f)
-  DREAM3D_REQUIRED(f1_2->getFilt1_Integer(), == , 4)
+  DREAM3D_REQUIRED(f1_2->getFilt1_Float(), ==, 2.3f)
+  DREAM3D_REQUIRED(f1_2->getFilt1_Integer(), ==, 4)
   iter++;
 
   absFilter = *iter;
   DataContainerWriter* w1 = DataContainerWriter::SafePointerDownCast(absFilter.get());
-  DREAM3D_REQUIRED(w1->getNameOfClass(), == , "DataContainerWriter")
+  DREAM3D_REQUIRED(w1->getNameOfClass(), ==, "DataContainerWriter")
   iter++;
 
   absFilter = *iter;
   DataContainerReader* r1 = DataContainerReader::SafePointerDownCast(absFilter.get());
-  DREAM3D_REQUIRED(r1->getNameOfClass(), == , "DataContainerReader")
+  DREAM3D_REQUIRED(r1->getNameOfClass(), ==, "DataContainerReader")
   iter++;
 
   absFilter = *iter;
   Filt0* f0_3 = Filt0::SafePointerDownCast(absFilter.get());
-  DREAM3D_REQUIRED(f0_3->getFilt0_Float(), == , 14.1f)
-  DREAM3D_REQUIRED(f0_3->getFilt0_Integer(), == , 13)
+  DREAM3D_REQUIRED(f0_3->getFilt0_Float(), ==, 14.1f)
+  DREAM3D_REQUIRED(f0_3->getFilt0_Integer(), ==, 13)
   iter++;
 
   absFilter = *iter;
   Filt1* f1_3 = Filt1::SafePointerDownCast(absFilter.get());
-  DREAM3D_REQUIRED(f1_3->getFilt1_Float(), == , 3.3f)
-  DREAM3D_REQUIRED(f1_3->getFilt1_Integer(), == , 5)
+  DREAM3D_REQUIRED(f1_3->getFilt1_Float(), ==, 3.3f)
+  DREAM3D_REQUIRED(f1_3->getFilt1_Integer(), ==, 5)
   iter++;
 
   absFilter = *iter;
   DataContainerWriter* w2 = DataContainerWriter::SafePointerDownCast(absFilter.get());
-  DREAM3D_REQUIRED(w2->getNameOfClass(), == , "DataContainerWriter")
+  DREAM3D_REQUIRED(w2->getNameOfClass(), ==, "DataContainerWriter")
   iter++;
 
   absFilter = *iter;
   DataContainerReader* r2 = DataContainerReader::SafePointerDownCast(absFilter.get());
-  DREAM3D_REQUIRED(r2->getNameOfClass(), == , "DataContainerReader")
+  DREAM3D_REQUIRED(r2->getNameOfClass(), ==, "DataContainerReader")
   iter++;
 
   absFilter = *iter;
   DataContainerWriter* w3 = DataContainerWriter::SafePointerDownCast(absFilter.get());
-  DREAM3D_REQUIRED(w3->getNameOfClass(), == , "DataContainerWriter")
+  DREAM3D_REQUIRED(w3->getNameOfClass(), ==, "DataContainerWriter")
 }
-
 
 // -----------------------------------------------------------------------------
 //  Use unit test framework
@@ -1222,29 +1163,23 @@ int main(int argc, char** argv)
 
   int err = EXIT_SUCCESS;
 
-  DREAM3D_REGISTER_TEST( RemoveTestFiles() )
+  DREAM3D_REGISTER_TEST(RemoveTestFiles())
 
+  DREAM3D_REGISTER_TEST(GenerateGenericExamplePipelineFiles())
+  DREAM3D_REGISTER_TEST(VerifyGenericExampleHDF5FilterParameters())
+  DREAM3D_REGISTER_TEST(VerifyGenericExampleQSettingsFilterParameters())
 
-  DREAM3D_REGISTER_TEST( GenerateGenericExamplePipelineFiles() )
-  DREAM3D_REGISTER_TEST( VerifyGenericExampleHDF5FilterParameters() )
-  DREAM3D_REGISTER_TEST( VerifyGenericExampleQSettingsFilterParameters() )
+  DREAM3D_REGISTER_TEST(GenerateThresholdExamplePipelineFiles())
+  DREAM3D_REGISTER_TEST(VerifyThresholdExampleHDF5FilterParameters())
+  DREAM3D_REGISTER_TEST(VerifyThresholdExampleQSettingsFilterParameters())
 
-
-  DREAM3D_REGISTER_TEST( GenerateThresholdExamplePipelineFiles() )
-  DREAM3D_REGISTER_TEST( VerifyThresholdExampleHDF5FilterParameters() )
-  DREAM3D_REGISTER_TEST( VerifyThresholdExampleQSettingsFilterParameters() )
-
-
-  DREAM3D_REGISTER_TEST( GenerateArraySelectionExamplePipelineFiles() )
-  DREAM3D_REGISTER_TEST( VerifyArraySelectionExampleHDF5FilterParameters() )
-  DREAM3D_REGISTER_TEST( VerifyArraySelectionExampleQSettingsFilterParameters() )
-
+  DREAM3D_REGISTER_TEST(GenerateArraySelectionExamplePipelineFiles())
+  DREAM3D_REGISTER_TEST(VerifyArraySelectionExampleHDF5FilterParameters())
+  DREAM3D_REGISTER_TEST(VerifyArraySelectionExampleQSettingsFilterParameters())
 
 #if REMOVE_TEST_FILES
-  //  DREAM3D_REGISTER_TEST( RemoveTestFiles() )
+//  DREAM3D_REGISTER_TEST( RemoveTestFiles() )
 #endif
-
-
 
   PRINT_TEST_SUMMARY();
   return err;

@@ -33,19 +33,16 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-
 #include "H5StatsDataDelegate.h"
 
 #include "H5Support/QH5Lite.h"
 #include "H5Support/QH5Utilities.h"
-
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
 H5StatsDataDelegate::H5StatsDataDelegate()
 {
-
 }
 
 // -----------------------------------------------------------------------------
@@ -63,7 +60,6 @@ int H5StatsDataDelegate::readStatsData(StatsData* data, hid_t groupId)
   int err = 0;
   return err;
 }
-
 
 // -----------------------------------------------------------------------------
 //
@@ -84,4 +80,3 @@ int H5StatsDataDelegate::readStatsDataName(StatsData* data, hid_t groupId)
   data->setName(name);
   return err;
 }
-

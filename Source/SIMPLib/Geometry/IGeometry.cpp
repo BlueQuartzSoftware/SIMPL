@@ -33,21 +33,21 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-
 #include "SIMPLib/Geometry/IGeometry.h"
-
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
 IGeometry::IGeometry()
-{}
+{
+}
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
 IGeometry::~IGeometry()
-{}
+{
+}
 
 // -----------------------------------------------------------------------------
 //
@@ -93,7 +93,7 @@ void IGeometry::sendThreadSafeProgressMessage(int64_t counter, int64_t max)
   int64_t progIncrement = max / 100;
   int64_t prog = 1;
 
-  if (m_ProgressCounter > prog)
+  if(m_ProgressCounter > prog)
   {
     int64_t progressInt = static_cast<int64_t>((static_cast<float>(m_ProgressCounter) / max) * 100.0f);
     QString ss = m_MessageTitle + QObject::tr(" || %1% Complete").arg(progressInt);
@@ -191,7 +191,7 @@ AttributeMatrix::Pointer IGeometry::getAttributeMatrix(const QString& name)
 {
   AttributeMatrixMap_t::iterator it;
   it = m_AttributeMatrices.find(name);
-  if ( it == m_AttributeMatrices.end() )
+  if(it == m_AttributeMatrices.end())
   {
     return AttributeMatrix::NullPointer();
   }
@@ -204,8 +204,8 @@ AttributeMatrix::Pointer IGeometry::getAttributeMatrix(const QString& name)
 AttributeMatrix::Pointer IGeometry::removeAttributeMatrix(const QString& name)
 {
   QMap<QString, AttributeMatrix::Pointer>::iterator it;
-  it =  m_AttributeMatrices.find(name);
-  if ( it == m_AttributeMatrices.end() )
+  it = m_AttributeMatrices.find(name);
+  if(it == m_AttributeMatrices.end())
   {
     // DO NOT return a NullPointer for any reason other than "Attribute Matrix was not found"
     return AttributeMatrix::NullPointer();

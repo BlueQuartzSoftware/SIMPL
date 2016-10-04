@@ -35,16 +35,16 @@
 
 #include "QtSCheckboxDialog.h"
 
-#include <QtWidgets/QVBoxLayout>
 #include <QtWidgets/QCheckBox>
 #include <QtWidgets/QDialogButtonBox>
+#include <QtWidgets/QVBoxLayout>
 
 #include "moc_QtSCheckboxDialog.cpp"
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-QtSCheckboxDialog::QtSCheckboxDialog(QVector<QString> list, QWidget* parent) :
-  QDialog(parent)
+QtSCheckboxDialog::QtSCheckboxDialog(QVector<QString> list, QWidget* parent)
+: QDialog(parent)
 {
   m_List = list;
   setupGui();
@@ -81,7 +81,6 @@ void QtSCheckboxDialog::setupGui()
   buttonBox->setStandardButtons(QDialogButtonBox::Cancel | QDialogButtonBox::Ok);
   verticalLayout_2->addWidget(buttonBox);
 
-
   QObject::connect(buttonBox, SIGNAL(accepted()), this, SLOT(accept()));
   QObject::connect(buttonBox, SIGNAL(rejected()), this, SLOT(reject()));
 
@@ -90,11 +89,11 @@ void QtSCheckboxDialog::setupGui()
   setWindowTitle("Output Options");
   setSizeGripEnabled(false);
 
-//  TextureDialog->resize(690, 406);
+  //  TextureDialog->resize(690, 406);
   QSizePolicy sizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
   sizePolicy.setHorizontalStretch(0);
   sizePolicy.setVerticalStretch(0);
-  //sizePolicy.setHeightForWidth(this->sizePolicy().hasHeightForWidth());
+  // sizePolicy.setHeightForWidth(this->sizePolicy().hasHeightForWidth());
   this->setSizePolicy(sizePolicy);
 }
 
@@ -104,7 +103,7 @@ void QtSCheckboxDialog::setupGui()
 bool QtSCheckboxDialog::getValue(QString key)
 {
   QCheckBox* cb = m_WidgetMap[key];
-  if (nullptr != cb)
+  if(nullptr != cb)
   {
     return cb->isChecked();
   }
@@ -118,10 +117,8 @@ bool QtSCheckboxDialog::getValue(QString key)
 void QtSCheckboxDialog::setValue(QString key, bool value)
 {
   QCheckBox* cb = m_WidgetMap[key];
-  if (nullptr != cb)
+  if(nullptr != cb)
   {
     cb->setChecked(value);
   }
 }
-
-

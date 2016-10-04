@@ -33,55 +33,53 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-
 #include <stdlib.h>
 
 #include <string>
 #include <vector>
 
-#include "MXA/MXA.h"
 #include "MXA/Common/LogTime.h"
+#include "MXA/MXA.h"
 #include <QtCore/QDir>
 #include <QtCore/QFile>
 
-#include "EbsdLib/EbsdLib.h"
 #include "EbsdLib/EbsdConstants.h"
-#include "EbsdLib/TSL/AngConstants.h"
+#include "EbsdLib/EbsdLib.h"
 #include "EbsdLib/HKL/CtfConstants.h"
+#include "EbsdLib/TSL/AngConstants.h"
 
-
-#include "SIMPLib/SIMPLib.h"
-#include "SIMPLib/Common/Observer.h"
 #include "SIMPLib/Common/FilterPipeline.h"
+#include "SIMPLib/Common/Observer.h"
 #include "SIMPLib/Common/QualityMetricFilter.h"
-#include "SIMPLib/IOFilters/DataContainerWriter.h"
+#include "SIMPLib/GenericFilters/FindNeighbors.h"
 #include "SIMPLib/IOFilters/DataContainerReader.h"
-#include "SIMPLib/IOFilters/VtkRectilinearGridWriter.h"
+#include "SIMPLib/IOFilters/DataContainerWriter.h"
 #include "SIMPLib/IOFilters/ReadH5Ebsd.h"
+#include "SIMPLib/IOFilters/VtkRectilinearGridWriter.h"
+#include "SIMPLib/ProcessingFilters/MinNeighbors.h"
+#include "SIMPLib/ProcessingFilters/MinSize.h"
 #include "SIMPLib/ReconstructionFilters/AlignSectionsFeature.h"
 #include "SIMPLib/ReconstructionFilters/EBSDSegmentGrains.h"
-#include "SIMPLib/ProcessingFilters/MinSize.h"
-#include "SIMPLib/ProcessingFilters/MinNeighbors.h"
-#include "SIMPLib/GenericFilters/FindNeighbors.h"
-#include "SIMPLib/StatisticsFilters/FindSizes.h"
-#include "SIMPLib/StatisticsFilters/FindShapes.h"
+#include "SIMPLib/SIMPLib.h"
 #include "SIMPLib/StatisticsFilters/FindAvgOrientations.h"
+#include "SIMPLib/StatisticsFilters/FindMDF.h"
 #include "SIMPLib/StatisticsFilters/FindNeighborhoods.h"
 #include "SIMPLib/StatisticsFilters/FindODF.h"
-#include "SIMPLib/StatisticsFilters/FindMDF.h"
+#include "SIMPLib/StatisticsFilters/FindShapes.h"
+#include "SIMPLib/StatisticsFilters/FindSizes.h"
 
-#include "UnitTestSupport.hpp"
 #include "TestFileLocations.h"
-
+#include "UnitTestSupport.hpp"
 
 #define DREAM3D_BENCHMARKS 1
 
 #if DREAM3D_BENCHMARKS
-#define START_CLOCK()\
-  unsigned long long int millis;\
+#define START_CLOCK()                                                                                                                                                                                  \
+  unsigned long long int millis;                                                                                                                                                                       \
   millis = MXA::getMilliSeconds();
 #else
-#define START_CLOCK() unsigned long long int millis = 0;\
+#define START_CLOCK()                                                                                                                                                                                  \
+  unsigned long long int millis = 0;                                                                                                                                                                   \
   millis = 0;
 #endif
 
@@ -94,7 +92,6 @@ void RemoveTestFiles()
   QFile::remove(UnitTest::FindNeighborTest::VtkOutputFile);
 }
 
-
 void updateProgressAndMessage(const QString& msg, int prog)
 {
   std::cout << prog << "% - " << msg << std::endl;
@@ -106,12 +103,17 @@ QString getH5EbsdFile()
   return s;
 }
 
-int getZStartIndex() { return 50; }
-int getZEndIndex() { return 250; }
+int getZStartIndex()
+{
+  return 50;
+}
+int getZEndIndex()
+{
+  return 250;
+}
 DataArray<unsigned int>::Pointer getPhaseTypes()
 {
-  DataArray<unsigned int>::Pointer phaseTypes
-    = DataArray<unsigned int>::CreateArray(2, SIMPL::EnsembleData::PhaseTypes);
+  DataArray<unsigned int>::Pointer phaseTypes = DataArray<unsigned int>::CreateArray(2, SIMPL::EnsembleData::PhaseTypes);
   phaseTypes->SetValue(0, SIMPL::PhaseType::UnknownPhaseType);
   phaseTypes->SetValue(1, SIMPL::PhaseType::PrimaryPhase);
   return phaseTypes;
@@ -184,7 +186,7 @@ void pipelineFinished()
   std::cout << "Pipeline Complete." << std::endl;
 }
 
-typedef std::vector<AbstractFilter::Pointer>  FilterContainerType;
+typedef std::vector<AbstractFilter::Pointer> FilterContainerType;
 
 // -----------------------------------------------------------------------------
 //
@@ -207,7 +209,7 @@ void TestFindNeighbors()
   QDir dir(m_OutputDirectory);
   dir.mkpath(".");
 
-// updateProgressAndMessage(("Loading Slices"), 10);
+  // updateProgressAndMessage(("Loading Slices"), 10);
   ReadH5Ebsd::Pointer read_h5ebsd = ReadH5Ebsd::New();
   read_h5ebsd->setH5EbsdFile(getH5EbsdFile());
   read_h5ebsd->setRefFrameZDir(Ebsd::LowtoHigh);
@@ -218,7 +220,7 @@ void TestFindNeighbors()
   pipeline->pushBack(read_h5ebsd);
 
   AlignSectionsFeature::Pointer align_sections = AlignSectionsFeature::New();
-// align_sections->setCrystalStructures(xtal);
+  // align_sections->setCrystalStructures(xtal);
   pipeline->pushBack(align_sections);
 
   EBSDSegmentGrains::Pointer ebsdsegment_grains = EBSDSegmentGrains::New();
@@ -231,8 +233,7 @@ void TestFindNeighbors()
 
   MinNeighbors::Pointer min_neighbors = MinNeighbors::New();
   min_neighbors->setMinNumNeighbors(m_MinNumNeighbors);
-//  pipeline->pushBack(min_neighbors);
-
+  //  pipeline->pushBack(min_neighbors);
 
   bool m_WriteVtkFile(true);
   bool m_WriteBinaryVTKFiles(true);
@@ -260,7 +261,6 @@ void TestFindNeighbors()
   int err = pipeline->preflightPipeline();
   DREAM3D_REQUIRE_EQUAL(err, 0);
 
-
   std::cout << "********* RUNNING PIPELINE **********************" << std::endl;
   pipeline->run();
   err = pipeline->getErrorCondition();
@@ -284,7 +284,6 @@ void TestDataContainerReader()
 
   // Create a Vector to hold all the filters. Later on we will execute all the filters
   FilterPipeline::Pointer pipeline = FilterPipeline::New();
-
 
   DataContainerReader::Pointer h5Reader = DataContainerReader::New();
   h5Reader->setInputFile(UnitTest::FindNeighborTest::OutputFile);
@@ -325,21 +324,16 @@ void TestDataContainerReader()
   writer->setOutputFile(UnitTest::FindNeighborTest::StatsFile);
   pipeline->pushBack(writer);
 
-
-//  std::cout << "********* RUNNING PREFLIGHT **********************" << std::endl;
-//  int err = pipeline->preflightPipeline();
-//  DREAM3D_REQUIRE_EQUAL(err, 0);
-
+  //  std::cout << "********* RUNNING PREFLIGHT **********************" << std::endl;
+  //  int err = pipeline->preflightPipeline();
+  //  DREAM3D_REQUIRE_EQUAL(err, 0);
 
   std::cout << "********* RUNNING PIPELINE **********************" << std::endl;
   VoxelDataContainer::Pointer m = VoxelDataContainer::New();
   pipeline->run();
   err = pipeline->getErrorCondition();
   DREAM3D_REQUIRE_EQUAL(err, 0);
-
-
 }
-
 
 void OtherTest()
 {
@@ -363,7 +357,6 @@ void OtherTest()
   IDataArray::Pointer iPtr = m->getEnsembleData(SIMPL::EnsembleData::CrystalStructures);
   DREAM3D_REQUIRE_NE(nullptr, iPtr.get());
 
-
   DataContainerWriter::Pointer writer = DataContainerWriter::New();
   writer->setOutputFile(UnitTest::FindNeighborTest::OutputFile2);
   writer->setVoxelDataContainer(m.get());
@@ -371,7 +364,6 @@ void OtherTest()
   err = writer->getErrorCondition();
 
   DREAM3D_REQUIRE_EQUAL(err, 0);
-
 }
 
 // -----------------------------------------------------------------------------
@@ -383,11 +375,11 @@ int main(int argc, char** argv)
 #if !REMOVE_TEST_FILES
 //  DREAM3D_REGISTER_TEST( RemoveTestFiles() )
 #endif
-  DREAM3D_REGISTER_TEST( TestFindNeighbors() )
+  DREAM3D_REGISTER_TEST(TestFindNeighbors())
 //  DREAM3D_REGISTER_TEST( TestDataContainerReader() )
 //  DREAM3D_REGISTER_TEST( OtherTest() )
 #if REMOVE_TEST_FILES
-  DREAM3D_REGISTER_TEST( RemoveTestFiles() )
+  DREAM3D_REGISTER_TEST(RemoveTestFiles())
 #endif
   PRINT_TEST_SUMMARY();
   return err;

@@ -51,8 +51,8 @@
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-FloatVec3Widget::FloatVec3Widget(FilterParameter* parameter, AbstractFilter* filter, QWidget* parent) :
-  FilterParameterWidget(parameter, filter, parent)
+FloatVec3Widget::FloatVec3Widget(FilterParameter* parameter, AbstractFilter* filter, QWidget* parent)
+: FilterParameterWidget(parameter, filter, parent)
 {
   m_FilterParameter = dynamic_cast<FloatVec3FilterParameter*>(parameter);
   Q_ASSERT_X(m_FilterParameter != nullptr, "nullptr Pointer", "FloatVec3Widget can ONLY be used with a FloatVec3FilterParameter object");
@@ -74,24 +74,17 @@ FloatVec3Widget::~FloatVec3Widget()
 void FloatVec3Widget::setupGui()
 {
   // Catch when the filter is about to execute the preflight
-  connect(getFilter(), SIGNAL(preflightAboutToExecute()),
-          this, SLOT(beforePreflight()));
+  connect(getFilter(), SIGNAL(preflightAboutToExecute()), this, SLOT(beforePreflight()));
 
   // Catch when the filter is finished running the preflight
-  connect(getFilter(), SIGNAL(preflightExecuted()),
-          this, SLOT(afterPreflight()));
+  connect(getFilter(), SIGNAL(preflightExecuted()), this, SLOT(afterPreflight()));
 
   // Catch when the filter wants its values updated
-  connect(getFilter(), SIGNAL(updateFilterParameters(AbstractFilter*)),
-          this, SLOT(filterNeedsInputParameters(AbstractFilter*)));
+  connect(getFilter(), SIGNAL(updateFilterParameters(AbstractFilter*)), this, SLOT(filterNeedsInputParameters(AbstractFilter*)));
 
-
-  connect(xData, SIGNAL(textChanged(const QString&)),
-          this, SLOT(widgetChanged(const QString&) ) );
-  connect(yData, SIGNAL(textChanged(const QString&)),
-          this, SLOT(widgetChanged(const QString&) ) );
-  connect(zData, SIGNAL(textChanged(const QString&)),
-          this, SLOT(widgetChanged(const QString&) ) );
+  connect(xData, SIGNAL(textChanged(const QString&)), this, SLOT(widgetChanged(const QString&)));
+  connect(yData, SIGNAL(textChanged(const QString&)), this, SLOT(widgetChanged(const QString&)));
+  connect(zData, SIGNAL(textChanged(const QString&)), this, SLOT(widgetChanged(const QString&)));
 
   QLocale loc = QLocale::system();
 
@@ -106,9 +99,9 @@ void FloatVec3Widget::setupGui()
   QDoubleValidator* zVal = new QDoubleValidator(zData);
   zData->setValidator(zVal);
   zVal->setLocale(loc);
-  if (getFilterParameter() != nullptr)
+  if(getFilterParameter() != nullptr)
   {
-    label->setText(getFilterParameter()->getHumanLabel() );
+    label->setText(getFilterParameter()->getHumanLabel());
 
     FloatVec3_t data = getFilter()->property(PROPERTY_NAME_AS_CHAR).value<FloatVec3_t>();
 
@@ -118,7 +111,6 @@ void FloatVec3Widget::setupGui()
   }
 
   errorLabel->hide();
-
 }
 
 // -----------------------------------------------------------------------------
@@ -129,9 +121,9 @@ void FloatVec3Widget::widgetChanged(const QString& text)
   Q_UNUSED(text);
 
   QLineEdit* le = nullptr;
-  (sender() == xData) ? le = xData: le = nullptr;
-  (sender() == yData) ? le = yData: le = nullptr;
-  (sender() == zData) ? le = zData: le = nullptr;
+  (sender() == xData) ? le = xData : le = nullptr;
+  (sender() == yData) ? le = yData : le = nullptr;
+  (sender() == zData) ? le = zData : le = nullptr;
 
   errorLabel->hide();
 
@@ -160,7 +152,6 @@ void FloatVec3Widget::filterNeedsInputParameters(AbstractFilter* filter)
   FloatVec3_t data;
 
   QLocale loc;
-
 
   data.x = loc.toFloat(xData->text(), &ok);
   if(!ok)
@@ -192,7 +183,6 @@ void FloatVec3Widget::filterNeedsInputParameters(AbstractFilter* filter)
     data.z = defValue.z;
   }
 
-
   QVariant v;
   v.setValue(data);
   ok = filter->setProperty(PROPERTY_NAME_AS_CHAR, v);
@@ -200,7 +190,6 @@ void FloatVec3Widget::filterNeedsInputParameters(AbstractFilter* filter)
   {
     FilterParameterWidgetsDialogs::ShowCouldNotSetFilterParameter(getFilter(), getFilterParameter());
   }
-
 }
 
 // -----------------------------------------------------------------------------
@@ -208,7 +197,6 @@ void FloatVec3Widget::filterNeedsInputParameters(AbstractFilter* filter)
 // -----------------------------------------------------------------------------
 void FloatVec3Widget::beforePreflight()
 {
-
 }
 
 // -----------------------------------------------------------------------------
@@ -216,5 +204,4 @@ void FloatVec3Widget::beforePreflight()
 // -----------------------------------------------------------------------------
 void FloatVec3Widget::afterPreflight()
 {
-
 }

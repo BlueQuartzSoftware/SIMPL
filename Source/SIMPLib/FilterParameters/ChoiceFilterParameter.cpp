@@ -38,23 +38,24 @@
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-ChoiceFilterParameter::ChoiceFilterParameter() :
-  FilterParameter(),
-  m_Editable(false)
-{}
+ChoiceFilterParameter::ChoiceFilterParameter()
+: FilterParameter()
+, m_Editable(false)
+{
+}
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
 ChoiceFilterParameter::~ChoiceFilterParameter()
-{}
+{
+}
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
 ChoiceFilterParameter::Pointer ChoiceFilterParameter::New(const QString& humanLabel, const QString& propertyName, const int& defaultValue, Category category, SetterCallbackType setterCallback,
-                                                          GetterCallbackType getterCallback,
-                                                          QVector<QString> choices, bool editable, int groupIndex)
+                                                          GetterCallbackType getterCallback, QVector<QString> choices, bool editable, int groupIndex)
 
 {
   ChoiceFilterParameter::Pointer ptr = ChoiceFilterParameter::New();
@@ -82,10 +83,10 @@ QString ChoiceFilterParameter::getWidgetType()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void ChoiceFilterParameter::readJson(const QJsonObject &json)
+void ChoiceFilterParameter::readJson(const QJsonObject& json)
 {
   QJsonValue jsonValue = json[getPropertyName()];
-  if(!jsonValue.isUndefined() )
+  if(!jsonValue.isUndefined() && m_SetterCallback)
   {
     m_SetterCallback(jsonValue.toInt(0.0));
   }
@@ -94,8 +95,10 @@ void ChoiceFilterParameter::readJson(const QJsonObject &json)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void ChoiceFilterParameter::writeJson(QJsonObject &json)
+void ChoiceFilterParameter::writeJson(QJsonObject& json)
 {
-  json[getPropertyName()] = m_GetterCallback();
+  if(m_GetterCallback)
+  {
+    json[getPropertyName()] = m_GetterCallback();
+  }
 }
-

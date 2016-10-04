@@ -33,7 +33,6 @@
 
 #include "moc_DocRequestManager.cpp"
 
- 
 DocRequestManager* DocRequestManager::self = nullptr;
 
 // -----------------------------------------------------------------------------
@@ -41,7 +40,6 @@ DocRequestManager* DocRequestManager::self = nullptr;
 // -----------------------------------------------------------------------------
 DocRequestManager::DocRequestManager()
 {
-
 }
 
 // -----------------------------------------------------------------------------
@@ -49,7 +47,6 @@ DocRequestManager::DocRequestManager()
 // -----------------------------------------------------------------------------
 DocRequestManager::~DocRequestManager()
 {
-
 }
 
 // -----------------------------------------------------------------------------
@@ -57,7 +54,7 @@ DocRequestManager::~DocRequestManager()
 // -----------------------------------------------------------------------------
 DocRequestManager* DocRequestManager::Instance()
 {
-  if (self == nullptr)
+  if(self == nullptr)
   {
     self = new DocRequestManager();
   }
@@ -67,7 +64,7 @@ DocRequestManager* DocRequestManager::Instance()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void DocRequestManager::requestFilterDocs(const QString &filter)
+void DocRequestManager::requestFilterDocs(const QString& filter)
 {
   emit showFilterDocs(filter);
 }
@@ -75,7 +72,7 @@ void DocRequestManager::requestFilterDocs(const QString &filter)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void DocRequestManager::requestFilterDocUrl(const QUrl &url)
+void DocRequestManager::requestFilterDocUrl(const QUrl& url)
 {
   emit showFilterDocUrl(url);
 }

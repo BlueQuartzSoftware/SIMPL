@@ -33,39 +33,36 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-
 #include "MoveData.h"
 
 #include "SIMPLib/Common/Constants.h"
-#include "SIMPLib/SIMPLibVersion.h"
 #include "SIMPLib/FilterParameters/AbstractFilterParametersReader.h"
+#include "SIMPLib/SIMPLibVersion.h"
 
 #include "SIMPLib/FilterParameters/AttributeMatrixSelectionFilterParameter.h"
-#include "SIMPLib/FilterParameters/DataContainerSelectionFilterParameter.h"
 #include "SIMPLib/FilterParameters/DataArraySelectionFilterParameter.h"
+#include "SIMPLib/FilterParameters/DataContainerSelectionFilterParameter.h"
 #include "SIMPLib/FilterParameters/LinkedChoicesFilterParameter.h"
 
 namespace
 {
-  static const int32_t k_MoveAttributeMatrix = 0;
-  static const int32_t k_MoveDataArray = 1;
+static const int32_t k_MoveAttributeMatrix = 0;
+static const int32_t k_MoveDataArray = 1;
 }
 
 // Include the MOC generated file for this class
 #include "moc_MoveData.cpp"
 
-
-
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-MoveData::MoveData() :
-  AbstractFilter(),
-  m_WhatToMove(k_MoveAttributeMatrix),
-  m_DataContainerDestination(""),
-  m_AttributeMatrixSource(),
-  m_AttributeMatrixDestination(),
-  m_DataArraySource()
+MoveData::MoveData()
+: AbstractFilter()
+, m_WhatToMove(k_MoveAttributeMatrix)
+, m_DataContainerDestination("")
+, m_AttributeMatrixSource()
+, m_AttributeMatrixDestination()
+, m_DataArraySource()
 {
   setupFilterParameters();
 }
@@ -85,7 +82,10 @@ void MoveData::setupFilterParameters()
   FilterParameterVector parameters;
 
   QStringList linkedProps;
-  linkedProps << "DataContainerDestination" << "AttributeMatrixSource" << "AttributeMatrixDestination" << "DataArraySource";
+  linkedProps << "DataContainerDestination"
+              << "AttributeMatrixSource"
+              << "AttributeMatrixDestination"
+              << "DataArraySource";
   {
     LinkedChoicesFilterParameter::Pointer parameter = LinkedChoicesFilterParameter::New();
     parameter->setHumanLabel("Object to Move");
@@ -130,11 +130,11 @@ void MoveData::setupFilterParameters()
 void MoveData::readFilterParameters(AbstractFilterParametersReader* reader, int index)
 {
   reader->openFilterGroup(this, index);
-  setWhatToMove( reader->readValue("WhatToMove", getWhatToMove() ) );
-  setDataContainerDestination( reader->readString("DataContainerDestination", getDataContainerDestination() ) );
-  setAttributeMatrixSource( reader->readDataArrayPath("AttributeMatrixSource", getAttributeMatrixSource() ) );
-  setAttributeMatrixDestination( reader->readDataArrayPath("AttributeMatrixDestination", getAttributeMatrixDestination() ) );
-  setDataArraySource( reader->readDataArrayPath("DataArraySource", getDataArraySource() ) );
+  setWhatToMove(reader->readValue("WhatToMove", getWhatToMove()));
+  setDataContainerDestination(reader->readString("DataContainerDestination", getDataContainerDestination()));
+  setAttributeMatrixSource(reader->readDataArrayPath("AttributeMatrixSource", getAttributeMatrixSource()));
+  setAttributeMatrixDestination(reader->readDataArrayPath("AttributeMatrixDestination", getAttributeMatrixDestination()));
+  setDataArraySource(reader->readDataArrayPath("DataArraySource", getDataArraySource()));
   reader->closeFilterGroup();
 }
 
@@ -143,7 +143,6 @@ void MoveData::readFilterParameters(AbstractFilterParametersReader* reader, int 
 // -----------------------------------------------------------------------------
 void MoveData::initialize()
 {
-
 }
 
 // -----------------------------------------------------------------------------
@@ -156,15 +155,18 @@ void MoveData::dataCheck()
   DataArrayPath amDestPath = getAttributeMatrixDestination();
   DataArrayPath daSrcPath = getDataArraySource();
 
-  if (getWhatToMove() == k_MoveAttributeMatrix)
+  if(getWhatToMove() == k_MoveAttributeMatrix)
   {
     DataContainer::Pointer amDestDataContainer = getDataContainerArray()->getPrereqDataContainer<AbstractFilter>(this, getDataContainerDestination());
     DataContainer::Pointer amSrcDataContainer = getDataContainerArray()->getPrereqDataContainer<AbstractFilter>(this, amSrcPath.getDataContainerName());
     AttributeMatrix::Pointer amSrcAttributeMatrix = getDataContainerArray()->getPrereqAttributeMatrixFromPath<AbstractFilter>(this, amSrcPath, -301);
 
-    if(getErrorCondition() < 0) { return; }
+    if(getErrorCondition() < 0)
+    {
+      return;
+    }
 
-    if (amSrcDataContainer->getName() == amDestDataContainer->getName())
+    if(amSrcDataContainer->getName() == amDestDataContainer->getName())
     {
       QString ss = QObject::tr("The source and destination Data Container are the same.  Is this what you meant to do?");
       notifyWarningMessage(getHumanLabel(), ss, getErrorCondition());
@@ -174,22 +176,27 @@ void MoveData::dataCheck()
     amDestDataContainer->addAttributeMatrix(amSrcAttributeMatrix->getName(), amSrcAttributeMatrix);
     amSrcDataContainer->removeAttributeMatrix(amSrcAttributeMatrix->getName());
   }
-  else if (getWhatToMove() == k_MoveDataArray )
+  else if(getWhatToMove() == k_MoveDataArray)
   {
     AttributeMatrix::Pointer daSrcAttributeMatrix = getDataContainerArray()->getPrereqAttributeMatrixFromPath<AbstractFilter>(this, daSrcPath, -301);
     AttributeMatrix::Pointer daDestAttributeMatrix = getDataContainerArray()->getPrereqAttributeMatrixFromPath<AbstractFilter>(this, amDestPath, -301);
     IDataArray::Pointer daSrcDataArray = getDataContainerArray()->getPrereqIDataArrayFromPath<IDataArray, AbstractFilter>(this, daSrcPath);
 
-    if(getErrorCondition() < 0) { return; }
+    if(getErrorCondition() < 0)
+    {
+      return;
+    }
 
-    if (daDestAttributeMatrix->getNumberOfTuples() != daSrcDataArray->getNumberOfTuples())
+    if(daDestAttributeMatrix->getNumberOfTuples() != daSrcDataArray->getNumberOfTuples())
     {
       setErrorCondition(-11019);
-      QString ss = QObject::tr("The number of tuples of source Attribute Array (%1) and destination Attribute Matrix (%2) do not match").arg(daSrcDataArray->getNumberOfTuples()).arg(daDestAttributeMatrix->getNumberOfTuples());
+      QString ss = QObject::tr("The number of tuples of source Attribute Array (%1) and destination Attribute Matrix (%2) do not match")
+                       .arg(daSrcDataArray->getNumberOfTuples())
+                       .arg(daDestAttributeMatrix->getNumberOfTuples());
       notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
       return;
     }
-    else if (amSrcPath == amDestPath)
+    else if(amSrcPath == amDestPath)
     {
       QString ss = QObject::tr("The source and destination Attribute Matrix are the same.  Is this what you meant to do?");
       notifyWarningMessage(getHumanLabel(), ss, getErrorCondition());
@@ -229,7 +236,10 @@ void MoveData::execute()
   setErrorCondition(0);
   // Simply running the preflight will do what we need it to.
   dataCheck();
-  if(getErrorCondition() < 0) { return; }
+  if(getErrorCondition() < 0)
+  {
+    return;
+  }
 
   notifyStatusMessage(getHumanLabel(), "Complete");
 }
@@ -251,7 +261,9 @@ AbstractFilter::Pointer MoveData::newFilterInstance(bool copyFilterParameters)
 //
 // -----------------------------------------------------------------------------
 const QString MoveData::getCompiledLibraryName()
-{ return Core::CoreBaseName; }
+{
+  return Core::CoreBaseName;
+}
 
 // -----------------------------------------------------------------------------
 //
@@ -268,26 +280,30 @@ const QString MoveData::getFilterVersion()
 {
   QString version;
   QTextStream vStream(&version);
-  vStream <<  SIMPLib::Version::Major() << "." << SIMPLib::Version::Minor() << "." << SIMPLib::Version::Patch();
+  vStream << SIMPLib::Version::Major() << "." << SIMPLib::Version::Minor() << "." << SIMPLib::Version::Patch();
   return version;
 }
-
-
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
 const QString MoveData::getGroupName()
-{ return SIMPL::FilterGroups::CoreFilters; }
+{
+  return SIMPL::FilterGroups::CoreFilters;
+}
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
 const QString MoveData::getSubGroupName()
-{ return SIMPL::FilterSubGroups::MemoryManagementFilters;}
+{
+  return SIMPL::FilterSubGroups::MemoryManagementFilters;
+}
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
 const QString MoveData::getHumanLabel()
-{ return "Move Data";}
+{
+  return "Move Data";
+}

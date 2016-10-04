@@ -35,14 +35,14 @@
 #include "CombineAttributeMatrices.h"
 
 #include "SIMPLib/Common/Constants.h"
-#include "SIMPLib/SIMPLibVersion.h"
 #include "SIMPLib/Common/TemplateHelpers.hpp"
 #include "SIMPLib/FilterParameters/AbstractFilterParametersReader.h"
+#include "SIMPLib/SIMPLibVersion.h"
 
 #include "SIMPLib/FilterParameters/AttributeMatrixSelectionFilterParameter.h"
 #include "SIMPLib/FilterParameters/DataArraySelectionFilterParameter.h"
-#include "SIMPLib/FilterParameters/StringFilterParameter.h"
 #include "SIMPLib/FilterParameters/SeparatorFilterParameter.h"
+#include "SIMPLib/FilterParameters/StringFilterParameter.h"
 
 // Include the MOC generated file for this class
 #include "moc_CombineAttributeMatrices.cpp"
@@ -50,17 +50,17 @@
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-CombineAttributeMatrices::CombineAttributeMatrices() :
-AbstractFilter(),
-m_FirstAttributeMatrixPath("", "", ""),
-m_SecondAttributeMatrixPath("", "", ""),
-m_FirstIndexArrayPath("", "", ""),
-m_SecondIndexArrayPath("", "", ""),
-m_CombinedAttributeMatrixName(""),
-m_NewIndexArrayName(""),
-m_FirstIndex(nullptr),
-m_SecondIndex(nullptr),
-m_NewIndex(nullptr)
+CombineAttributeMatrices::CombineAttributeMatrices()
+: AbstractFilter()
+, m_FirstAttributeMatrixPath("", "", "")
+, m_SecondAttributeMatrixPath("", "", "")
+, m_FirstIndexArrayPath("", "", "")
+, m_SecondIndexArrayPath("", "", "")
+, m_CombinedAttributeMatrixName("")
+, m_NewIndexArrayName("")
+, m_FirstIndex(nullptr)
+, m_SecondIndex(nullptr)
+, m_NewIndex(nullptr)
 {
   setupFilterParameters();
 }
@@ -112,7 +112,7 @@ void CombineAttributeMatrices::setupFilterParameters()
     amTypes.push_back(SIMPL::AttributeMatrixType::VertexFeature);
     QVector<QString> daTypes;
     daTypes.push_back(SIMPL::TypeNames::Int32);
-    QVector<QVector<size_t> > compDims;
+    QVector<QVector<size_t>> compDims;
     compDims.resize(1);
     compDims[0].resize(1);
     compDims[0][0] = 1;
@@ -152,7 +152,6 @@ void CombineAttributeMatrices::readFilterParameters(AbstractFilterParametersRead
 // -----------------------------------------------------------------------------
 void CombineAttributeMatrices::initialize()
 {
-
 }
 
 // -----------------------------------------------------------------------------
@@ -164,16 +163,19 @@ void CombineAttributeMatrices::dataCheck()
   DataArrayPath tempPath;
 
   DataContainer::Pointer m = getDataContainerArray()->getPrereqDataContainer<AbstractFilter>(this, getFirstAttributeMatrixPath().getDataContainerName(), false);
-  if (getErrorCondition() < 0 || nullptr == m.get()) { return; }
+  if(getErrorCondition() < 0 || nullptr == m.get())
+  {
+    return;
+  }
 
-  if (getFirstAttributeMatrixPath().getDataContainerName().compare(getSecondAttributeMatrixPath().getDataContainerName()) != 0)
+  if(getFirstAttributeMatrixPath().getDataContainerName().compare(getSecondAttributeMatrixPath().getDataContainerName()) != 0)
   {
     QString ss = QObject::tr("The selected attribute matrices must be in the same data container and currently are not");
     setErrorCondition(-5557);
     notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
   }
 
-  if (getFirstAttributeMatrixPath().getAttributeMatrixName().compare(getSecondAttributeMatrixPath().getAttributeMatrixName()) == 0)
+  if(getFirstAttributeMatrixPath().getAttributeMatrixName().compare(getSecondAttributeMatrixPath().getAttributeMatrixName()) == 0)
   {
     QString ss = QObject::tr("The selected attribute matrices must be different and currently are the same");
     setErrorCondition(-5558);
@@ -182,60 +184,77 @@ void CombineAttributeMatrices::dataCheck()
 
   AttributeMatrix::Pointer firstAttrMat = m->getPrereqAttributeMatrix(this, getFirstAttributeMatrixPath().getAttributeMatrixName(), -301);
   AttributeMatrix::Pointer secondAttrMat = m->getPrereqAttributeMatrix(this, getSecondAttributeMatrixPath().getAttributeMatrixName(), -301);
-  if (getErrorCondition() < 0) { return; }
+  if(getErrorCondition() < 0)
+  {
+    return;
+  }
 
-  if (firstAttrMat->getType() != secondAttrMat->getType())
+  if(firstAttrMat->getType() != secondAttrMat->getType())
   {
     QString ss = QObject::tr("The selected attribute matrices must be of the same type (ie Feature) and currently are not");
     setErrorCondition(-5559);
     notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
   }
 
-  if (getErrorCondition() < 0) { return; }
+  if(getErrorCondition() < 0)
+  {
+    return;
+  }
 
-  //Note that the minus 1 in the totalTuples calculation is to account for the fact that the zeroth tuple in the two attribute matrices should only be counted once, not twice.
-  //All Feature or Ensemble AMs should start from 1 and the zeroth tuple can be combined in the two AMs
+  // Note that the minus 1 in the totalTuples calculation is to account for the fact that the zeroth tuple in the two attribute matrices should only be counted once, not twice.
+  // All Feature or Ensemble AMs should start from 1 and the zeroth tuple can be combined in the two AMs
   size_t totalTuples = firstAttrMat->getNumberOfTuples() + secondAttrMat->getNumberOfTuples() - 1;
   QVector<size_t> tDims(1, totalTuples);
   m->createNonPrereqAttributeMatrix<AbstractFilter>(this, getCombinedAttributeMatrixName(), tDims, firstAttrMat->getType());
-  if (getErrorCondition() < 0) { return; }
+  if(getErrorCondition() < 0)
+  {
+    return;
+  }
   AttributeMatrix::Pointer combinedAttrMat = m->getAttributeMatrix(getCombinedAttributeMatrixName());
 
   QVector<size_t> cDims(1, 1);
-  m_FirstIndexPtr = getDataContainerArray()->getPrereqArrayFromPath<DataArray<int32_t>, AbstractFilter>(this, getFirstIndexArrayPath(), cDims); /* Assigns the shared_ptr<> to an instance variable that is a weak_ptr<> */
-  if (nullptr != m_FirstIndexPtr.lock().get()) /* Validate the Weak Pointer wraps a non-nullptr pointer to a DataArray<T> object */
+  m_FirstIndexPtr = getDataContainerArray()->getPrereqArrayFromPath<DataArray<int32_t>, AbstractFilter>(this, getFirstIndexArrayPath(),
+                                                                                                        cDims); /* Assigns the shared_ptr<> to an instance variable that is a weak_ptr<> */
+  if(nullptr != m_FirstIndexPtr.lock().get())                                                                   /* Validate the Weak Pointer wraps a non-nullptr pointer to a DataArray<T> object */
   {
     m_FirstIndex = m_FirstIndexPtr.lock()->getPointer(0);
   } /* Now assign the raw pointer to data from the DataArray<T> object */
-  if (getErrorCondition() < 0) { return; }
+  if(getErrorCondition() < 0)
+  {
+    return;
+  }
 
-  m_SecondIndexPtr = getDataContainerArray()->getPrereqArrayFromPath<DataArray<int32_t>, AbstractFilter>(this, getSecondIndexArrayPath(), cDims); /* Assigns the shared_ptr<> to an instance variable that is a weak_ptr<> */
-  if (nullptr != m_SecondIndexPtr.lock().get()) /* Validate the Weak Pointer wraps a non-nullptr pointer to a DataArray<T> object */
+  m_SecondIndexPtr = getDataContainerArray()->getPrereqArrayFromPath<DataArray<int32_t>, AbstractFilter>(this, getSecondIndexArrayPath(),
+                                                                                                         cDims); /* Assigns the shared_ptr<> to an instance variable that is a weak_ptr<> */
+  if(nullptr != m_SecondIndexPtr.lock().get())                                                                   /* Validate the Weak Pointer wraps a non-nullptr pointer to a DataArray<T> object */
   {
     m_SecondIndex = m_SecondIndexPtr.lock()->getPointer(0);
   } /* Now assign the raw pointer to data from the DataArray<T> object */
-  if (getErrorCondition() < 0) { return; }
+  if(getErrorCondition() < 0)
+  {
+    return;
+  }
 
   // Create arrays on the reference grid to hold data present on the sampling grid
   QList<QString> fArrayNames = firstAttrMat->getAttributeArrayNames();
-  for (QList<QString>::iterator iter = fArrayNames.begin(); iter != fArrayNames.end(); ++iter)
+  for(QList<QString>::iterator iter = fArrayNames.begin(); iter != fArrayNames.end(); ++iter)
   {
     tempPath.update(getFirstAttributeMatrixPath().getDataContainerName(), getCombinedAttributeMatrixName(), *iter);
     IDataArray::Pointer tmpDataArray = firstAttrMat->getPrereqIDataArray<IDataArray, AbstractFilter>(this, *iter, -90001);
-    if (getErrorCondition() >= 0)
+    if(getErrorCondition() >= 0)
     {
       QVector<size_t> cDims = tmpDataArray->getComponentDimensions();
       TemplateHelpers::CreateNonPrereqArrayFromArrayType()(this, tempPath, cDims, tmpDataArray);
     }
   }
   QList<QString> sArrayNames = secondAttrMat->getAttributeArrayNames();
-  for (QList<QString>::iterator iter = sArrayNames.begin(); iter != sArrayNames.end(); ++iter)
+  for(QList<QString>::iterator iter = sArrayNames.begin(); iter != sArrayNames.end(); ++iter)
   {
     tempPath.update(getSecondAttributeMatrixPath().getDataContainerName(), getCombinedAttributeMatrixName(), *iter);
     IDataArray::Pointer tmpDataArray = secondAttrMat->getPrereqIDataArray<IDataArray, AbstractFilter>(this, *iter, -90001);
-    if (getErrorCondition() >= 0)
+    if(getErrorCondition() >= 0)
     {
-      if (fArrayNames.contains(*iter) == false)
+      if(fArrayNames.contains(*iter) == false)
       {
         QVector<size_t> cDims = tmpDataArray->getComponentDimensions();
         TemplateHelpers::CreateNonPrereqArrayFromArrayType()(this, tempPath, cDims, tmpDataArray);
@@ -244,12 +263,16 @@ void CombineAttributeMatrices::dataCheck()
   }
 
   tempPath.update(getFirstIndexArrayPath().getDataContainerName(), getFirstIndexArrayPath().getAttributeMatrixName(), getNewIndexArrayName());
-  m_NewIndexPtr = getDataContainerArray()->createNonPrereqArrayFromPath<DataArray<int32_t>, AbstractFilter, int32_t>(this, tempPath, 0, cDims); /* Assigns the shared_ptr<> to an instance variable that is a weak_ptr<> */
-  if (nullptr != m_NewIndexPtr.lock().get()) /* Validate the Weak Pointer wraps a non-nullptr pointer to a DataArray<T> object */
+  m_NewIndexPtr = getDataContainerArray()->createNonPrereqArrayFromPath<DataArray<int32_t>, AbstractFilter, int32_t>(this, tempPath, 0,
+                                                                                                                     cDims); /* Assigns the shared_ptr<> to an instance variable that is a weak_ptr<> */
+  if(nullptr != m_NewIndexPtr.lock().get()) /* Validate the Weak Pointer wraps a non-nullptr pointer to a DataArray<T> object */
   {
     m_NewIndex = m_NewIndexPtr.lock()->getPointer(0);
-  }    /* Now assign the raw pointer to data from the DataArray<T> object */
-  if (getErrorCondition() < 0) { return; }
+  } /* Now assign the raw pointer to data from the DataArray<T> object */
+  if(getErrorCondition() < 0)
+  {
+    return;
+  }
 }
 
 // -----------------------------------------------------------------------------
@@ -265,13 +288,12 @@ void CombineAttributeMatrices::preflight()
   setInPreflight(false);
 }
 
-template<typename T>
-void copyData(IDataArray::Pointer fromData, IDataArray::Pointer toData, size_t location)
+template <typename T> void copyData(IDataArray::Pointer fromData, IDataArray::Pointer toData, size_t location)
 {
   typename DataArray<T>::Pointer fData = std::dynamic_pointer_cast<DataArray<T>>(fromData);
   typename DataArray<T>::Pointer tData = std::dynamic_pointer_cast<DataArray<T>>(toData);
 
-  //only wanting to grab data from tuple 1 to numTuples of the fromData array,s ince the zeroth slot is a placeholder the first AM should already have
+  // only wanting to grab data from tuple 1 to numTuples of the fromData array,s ince the zeroth slot is a placeholder the first AM should already have
   T* src = fData->getPointer(1 * fromData->getNumberOfComponents());
   T* dest = tData->getPointer(location * toData->getNumberOfComponents());
   size_t bytes = sizeof(T) * (fromData->getNumberOfTuples() - 1) * fromData->getNumberOfComponents();
@@ -285,7 +307,10 @@ void CombineAttributeMatrices::execute()
 {
   setErrorCondition(0);
   dataCheck();
-  if (getErrorCondition() < 0) { return; }
+  if(getErrorCondition() < 0)
+  {
+    return;
+  }
 
   DataContainer::Pointer m = getDataContainerArray()->getDataContainer(getFirstAttributeMatrixPath().getDataContainerName());
   AttributeMatrix::Pointer firstAttrMat = m->getAttributeMatrix(getFirstAttributeMatrixPath().getAttributeMatrixName());
@@ -295,15 +320,19 @@ void CombineAttributeMatrices::execute()
 
   size_t totalTuples1 = m_SecondIndexPtr.lock()->getNumberOfTuples();
   size_t totalTuples2 = m_SecondIndexPtr.lock()->getNumberOfTuples();
-  for (size_t i = 0; i < totalTuples1; i++)
+  for(size_t i = 0; i < totalTuples1; i++)
   {
-    if (m_FirstIndex > 0) { m_NewIndex[i] = m_FirstIndex[i]; }
+    if(m_FirstIndex > 0)
+    {
+      m_NewIndex[i] = m_FirstIndex[i];
+    }
   }
-  for (size_t i = 0; i < totalTuples2; i++)
+  for(size_t i = 0; i < totalTuples2; i++)
   {
-    //subtract 1 from the index plus numTuples because the second index should be shifted to account for the zeroth tuple (all AMs above element start at tuple 1)
-    if (m_SecondIndex[i] > 0 && m_NewIndex[i] == 0) m_NewIndex[i] = m_SecondIndex[i] + firstAttrMatNumTuples - 1;
-    else if (m_SecondIndex[i] > 0 && m_NewIndex[i] != 0)
+    // subtract 1 from the index plus numTuples because the second index should be shifted to account for the zeroth tuple (all AMs above element start at tuple 1)
+    if(m_SecondIndex[i] > 0 && m_NewIndex[i] == 0)
+      m_NewIndex[i] = m_SecondIndex[i] + firstAttrMatNumTuples - 1;
+    else if(m_SecondIndex[i] > 0 && m_NewIndex[i] != 0)
     {
       QString ss = QObject::tr("When copying the indices, the indices of the two attribute matrices overlapped.  The index of the first attribute matrix was kept.");
       notifyWarningMessage(getHumanLabel(), ss, -111);
@@ -312,7 +341,7 @@ void CombineAttributeMatrices::execute()
 
   QList<QString> arrayNames = firstAttrMat->getAttributeArrayNames();
   size_t location = 0;
-  for (QList<QString>::iterator iter = arrayNames.begin(); iter != arrayNames.end(); ++iter)
+  for(QList<QString>::iterator iter = arrayNames.begin(); iter != arrayNames.end(); ++iter)
   {
     IDataArray::Pointer fromDataArray = firstAttrMat->getAttributeArray(*iter);
     IDataArray::Pointer toDataArray = combinedAttrMat->getAttributeArray(*iter);
@@ -322,7 +351,7 @@ void CombineAttributeMatrices::execute()
   arrayNames.clear();
   arrayNames = secondAttrMat->getAttributeArrayNames();
   location = firstAttrMatNumTuples;
-  for (QList<QString>::iterator iter = arrayNames.begin(); iter != arrayNames.end(); ++iter)
+  for(QList<QString>::iterator iter = arrayNames.begin(); iter != arrayNames.end(); ++iter)
   {
     IDataArray::Pointer fromDataArray = secondAttrMat->getAttributeArray(*iter);
     IDataArray::Pointer toDataArray = combinedAttrMat->getAttributeArray(*iter);
@@ -338,7 +367,7 @@ void CombineAttributeMatrices::execute()
 AbstractFilter::Pointer CombineAttributeMatrices::newFilterInstance(bool copyFilterParameters)
 {
   CombineAttributeMatrices::Pointer filter = CombineAttributeMatrices::New();
-  if (true == copyFilterParameters)
+  if(true == copyFilterParameters)
   {
     copyFilterParameterInstanceVariables(filter.get());
   }
@@ -368,7 +397,7 @@ const QString CombineAttributeMatrices::getFilterVersion()
 {
   QString version;
   QTextStream vStream(&version);
-  vStream <<  SIMPLib::Version::Major() << "." << SIMPLib::Version::Minor() << "." << SIMPLib::Version::Patch();
+  vStream << SIMPLib::Version::Major() << "." << SIMPLib::Version::Minor() << "." << SIMPLib::Version::Patch();
   return version;
 }
 

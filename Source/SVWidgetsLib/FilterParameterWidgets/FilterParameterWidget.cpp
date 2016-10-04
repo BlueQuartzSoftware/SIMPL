@@ -34,39 +34,36 @@
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 #include "FilterParameterWidget.h"
 
-#include <QtCore/QTimer>
 #include <QtCore/QPropertyAnimation>
+#include <QtCore/QTimer>
 
-#include <QtWidgets/QGraphicsOpacityEffect>
 #include <QtWidgets/QApplication>
-#include <QtWidgets/QMenu>
 #include <QtWidgets/QDesktopWidget>
+#include <QtWidgets/QGraphicsOpacityEffect>
+#include <QtWidgets/QMenu>
 
 #include "SIMPLib/Common/AbstractFilter.h"
 #include "SIMPLib/FilterParameters/FilterParameter.h"
 
 #include "SVWidgetsLib/Core/SVWidgetsLibConstants.h"
 
-
 namespace detail
 {
-  static const float Max = 1.0;
-  static const int Duration = 400;
+static const float Max = 1.0;
+static const int Duration = 400;
 }
-
-
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-FilterParameterWidget::FilterParameterWidget(QWidget* parent) :
-  QFrame(parent),
-  m_Filter(nullptr),
-  m_FilterParameter(nullptr),
-  m_WidgetIsExpanding(false),
-  m_Timer(nullptr),
-  animation(nullptr),
-  effect(nullptr)
+FilterParameterWidget::FilterParameterWidget(QWidget* parent)
+: QFrame(parent)
+, m_Filter(nullptr)
+, m_FilterParameter(nullptr)
+, m_WidgetIsExpanding(false)
+, m_Timer(nullptr)
+, animation(nullptr)
+, effect(nullptr)
 {
   fadeIn = true;
 }
@@ -77,14 +74,14 @@ FilterParameterWidget::FilterParameterWidget(QWidget* parent) :
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-FilterParameterWidget::FilterParameterWidget(FilterParameter* parameter, AbstractFilter* filter, QWidget* parent) :
-  QFrame(parent),
-  m_Filter(filter),
-  m_FilterParameter(parameter),
-  m_WidgetIsExpanding(false),
-  m_Timer(nullptr),
-  animation(nullptr),
-  effect(nullptr)
+FilterParameterWidget::FilterParameterWidget(FilterParameter* parameter, AbstractFilter* filter, QWidget* parent)
+: QFrame(parent)
+, m_Filter(filter)
+, m_FilterParameter(parameter)
+, m_WidgetIsExpanding(false)
+, m_Timer(nullptr)
+, animation(nullptr)
+, effect(nullptr)
 {
   fadeIn = true;
 }
@@ -95,7 +92,6 @@ FilterParameterWidget::FilterParameterWidget(FilterParameter* parameter, Abstrac
 FilterParameterWidget::~FilterParameterWidget()
 {
 }
-
 
 // -----------------------------------------------------------------------------
 //
@@ -130,7 +126,6 @@ QPointer<QtSFaderWidget> FilterParameterWidget::getFaderWidget() const
   return m_FaderWidget;
 }
 
-
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
@@ -160,7 +155,6 @@ void FilterParameterWidget::fadeInWidget(QWidget* widget)
 // -----------------------------------------------------------------------------
 void FilterParameterWidget::setupGui()
 {
-
 }
 
 // -----------------------------------------------------------------------------
@@ -176,20 +170,20 @@ QPoint FilterParameterWidget::adjustedMenuPosition(QPushButton* pushButton)
   int desktopHeight = QApplication::desktop()->availableGeometry(pushButton).height();
 
   // If the menu is going to go off the screen in the X-axis, reposition it until it's completely on the screen
-  while (point.x() + menuSize.width() > desktopWidth)
+  while(point.x() + menuSize.width() > desktopWidth)
   {
     point.setX(point.x() - 1);
   }
 
   QPoint localButtonCoords = pushButton->geometry().bottomLeft();
   QPoint globalButtonCoords = mapToGlobal(localButtonCoords);
-//  qDebug() << "QApplication::desktop()->geometry().width(): " << desktopWidth << "," << desktopHeight;
-//  qDebug() << "localButtonCoords: " << localButtonCoords << "\tglobalButtonCoords: " << globalButtonCoords;
+  //  qDebug() << "QApplication::desktop()->geometry().width(): " << desktopWidth << "," << desktopHeight;
+  //  qDebug() << "localButtonCoords: " << localButtonCoords << "\tglobalButtonCoords: " << globalButtonCoords;
 
   point.setY(globalButtonCoords.y());
 
   // If the menu is going to go off the screen in the Y-axis, reposition it until it's completely on the screen
-  while (point.y() + menuSize.height() > desktopHeight)
+  while(point.y() + menuSize.height() > desktopHeight)
   {
     point.setY(point.y() - 1);
   }
@@ -232,13 +226,13 @@ void FilterParameterWidget::fadeWidget(QWidget* widget, bool in)
   fadeIn = in;
 
   QString styleSheet;
-  QTextStream ss (&styleSheet);
+  QTextStream ss(&styleSheet);
   ss << "QFrame#" << this->objectName() << " { ";
   ss << "background-color: rgb(223, 183, 175);";
   ss << "border: 0px Solid;";
   ss << "border-color: rgb(223, 183, 175);";
   ss << "border-radius: 5px;";
-  ss <<  "}";
+  ss << "}";
 
   if(!fadeIn)
   {
@@ -249,7 +243,7 @@ void FilterParameterWidget::fadeWidget(QWidget* widget, bool in)
   {
     widget->show();
     widget->setStyleSheet(styleSheet);
-    //qDebug() << styleSheet();
+    // qDebug() << styleSheet();
 
     fadeIn = in;
     startValue = 0;
@@ -265,17 +259,15 @@ void FilterParameterWidget::fadeWidget(QWidget* widget, bool in)
   {
     effect = new QGraphicsOpacityEffect(this);
     effect->setOpacityMask(alphaGradient);
-    //this->setGraphicsEffect(effect);
+    // this->setGraphicsEffect(effect);
   }
 
   if(!animation)
   {
     animation = new QPropertyAnimation(effect, "opacity", this);
     animation->setDuration(detail::Duration);
-    connect(animation, SIGNAL(finished()),
-            this, SLOT(animationFinished()));
-    connect(animation, SIGNAL(finished()),
-            this, SLOT(showBorder()));
+    connect(animation, SIGNAL(finished()), this, SLOT(animationFinished()));
+    connect(animation, SIGNAL(finished()), this, SLOT(showBorder()));
   }
 
   animation->setStartValue(startValue);
@@ -284,7 +276,6 @@ void FilterParameterWidget::fadeWidget(QWidget* widget, bool in)
   animation->start();
 
 #endif
-
 }
 
 // -----------------------------------------------------------------------------
@@ -303,7 +294,7 @@ void FilterParameterWidget::animationFinished()
 // -----------------------------------------------------------------------------
 void FilterParameterWidget::showBorder()
 {
-  if (nullptr != m_Timer)
+  if(nullptr != m_Timer)
   {
     delete m_Timer;
     m_Timer = nullptr;

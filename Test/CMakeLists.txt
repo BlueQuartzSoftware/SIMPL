@@ -47,6 +47,10 @@ set(TEST_TEMP_DIR ${SIMPLTest_BINARY_DIR}/Temp)
 file(MAKE_DIRECTORY ${TEST_TEMP_DIR})
 
 
+get_target_property(QtQMake_location Qt5::qmake LOCATION)
+execute_process(COMMAND "${QtQMake_location}" -query QMAKE_VERSION OUTPUT_VARIABLE QMAKE_VERSION OUTPUT_STRIP_TRAILING_WHITESPACE)
+
+
 configure_file(${SIMPLTest_SOURCE_DIR}/TestFileLocations.h.in
                ${SIMPLTest_BINARY_DIR}/SIMPLTestFileLocations.h @ONLY IMMEDIATE)
 

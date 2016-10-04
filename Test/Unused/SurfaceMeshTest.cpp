@@ -33,25 +33,23 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-
 #include <stdio.h>
 
 #include <iostream>
+#include <set>
 #include <sstream>
 #include <string>
 #include <vector>
-#include <set>
 
-#include "SIMPLib/SIMPLib.h"
+#include "SIMPLib/Common/Observer.h"
 #include "SIMPLib/Common/ScopedFileMonitor.hpp"
 #include "SIMPLib/DataContainers/DataContainer.h"
 #include "SIMPLib/DataContainers/MeshStructs.h"
-#include "SIMPLib/Common/Observer.h"
-#include "SurfaceMeshing/SurfaceMeshingFilters/util/TriangleOps.h"
+#include "SIMPLib/SIMPLib.h"
 #include "SurfaceMeshing/SurfaceMeshingFilters/BinaryNodesTrianglesReader.h"
+#include "SurfaceMeshing/SurfaceMeshingFilters/util/TriangleOps.h"
 
 #include "SurfaceMeshing/SurfaceMeshingFilters/LaplacianSmoothing.h"
-
 
 // -----------------------------------------------------------------------------
 //
@@ -59,7 +57,7 @@
 int main(int argc, char** argv)
 {
   std::cout << "Starting SurfaceMeshTest" << std::endl;
-  if (argc < 3)
+  if(argc < 3)
   {
     std::cout << "2 Arguments needed:\n  (1) Binary Nodes File\n  (2) Binary Triangle File" << std::endl;
     return EXIT_FAILURE;
@@ -87,10 +85,9 @@ int main(int argc, char** argv)
   binaryReader->execute();
   if(binaryReader->getErrorCondition() < 0)
   {
-    std::cout << "Error Code: " << binaryReader->getErrorCondition()  << std::endl;
+    std::cout << "Error Code: " << binaryReader->getErrorCondition() << std::endl;
   }
   // END_CLOCK("Reading Nodes & Triangles");
-
 
   START_CLOCK;
   sm->getFaces()->findFacesContainingVert();

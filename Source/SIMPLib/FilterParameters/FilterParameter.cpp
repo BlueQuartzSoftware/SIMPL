@@ -40,24 +40,26 @@
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-FilterParameter::FilterParameter() :
-  m_HumanLabel(""),
-  m_PropertyName(""),
-  m_Category(Uncategorized),
-  m_ReadOnly(false),
-  m_GroupIndex(-1)
-{}
+FilterParameter::FilterParameter()
+: m_HumanLabel("")
+, m_PropertyName("")
+, m_Category(Uncategorized)
+, m_ReadOnly(false)
+, m_GroupIndex(-1)
+{
+}
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
 FilterParameter::~FilterParameter()
-{}
+{
+}
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void FilterParameter::readJson(const QJsonObject &json)
+void FilterParameter::readJson(const QJsonObject& json)
 {
   Q_UNUSED(json)
 }
@@ -65,8 +67,7 @@ void FilterParameter::readJson(const QJsonObject &json)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void FilterParameter::writeJson(QJsonObject &json)
+void FilterParameter::writeJson(QJsonObject& json)
 {
   Q_UNUSED(json)
 }
-

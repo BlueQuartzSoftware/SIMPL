@@ -40,11 +40,10 @@
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-CalculatorOperator::CalculatorOperator() :
-  CalculatorItem(),
-  m_Precedence(Unknown_Precedence)
+CalculatorOperator::CalculatorOperator()
+: CalculatorItem()
+, m_Precedence(Unknown_Precedence)
 {
-
 }
 
 // -----------------------------------------------------------------------------
@@ -52,7 +51,6 @@ CalculatorOperator::CalculatorOperator() :
 // -----------------------------------------------------------------------------
 CalculatorOperator::~CalculatorOperator()
 {
-
 }
 
 // -----------------------------------------------------------------------------
@@ -60,7 +58,7 @@ CalculatorOperator::~CalculatorOperator()
 // -----------------------------------------------------------------------------
 bool CalculatorOperator::hasHigherPrecedence(const CalculatorOperator::Pointer other)
 {
-  if (m_Precedence > other->m_Precedence)
+  if(m_Precedence > other->m_Precedence)
   {
     return true;
   }
@@ -71,7 +69,7 @@ bool CalculatorOperator::hasHigherPrecedence(const CalculatorOperator::Pointer o
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void CalculatorOperator::calculate(AbstractFilter* filter, DataArrayPath calculatedArrayPath, QStack<ICalculatorArray::Pointer> &executionStack)
+void CalculatorOperator::calculate(AbstractFilter* filter, DataArrayPath calculatedArrayPath, QStack<ICalculatorArray::Pointer>& executionStack)
 {
   // This should never be executed
   return;
@@ -139,7 +137,7 @@ double CalculatorOperator::toRadians(double degrees)
 // -----------------------------------------------------------------------------
 double CalculatorOperator::root(double base, double root)
 {
-  if (root == 0)
+  if(root == 0)
   {
     return std::numeric_limits<double>().infinity();
   }
@@ -160,4 +158,3 @@ DoubleArrayType::Pointer CalculatorOperator::createNewArray(AbstractFilter* filt
 
   return newArray;
 }
-

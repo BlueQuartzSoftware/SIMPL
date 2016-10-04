@@ -52,7 +52,7 @@ void QtSSplitterHandle::paintEvent(QPaintEvent*)
   QColor gradientStart(252, 252, 252);
   QColor gradientStop(223, 223, 223);
 
-  if (orientation() == Qt::Vertical)
+  if(orientation() == Qt::Vertical)
   {
     painter.setPen(topColor);
     painter.drawLine(0, 0, width(), 0);
@@ -86,7 +86,7 @@ void QtSSplitterHandle::paintEvent(QPaintEvent*)
 QSize QtSSplitterHandle::sizeHint() const
 {
   QSize parent = QSplitterHandle::sizeHint();
-  //if (orientation() == Qt::Vertical) {
+  // if (orientation() == Qt::Vertical) {
   return parent + QSize(3, 3);
   //        } else {
   //            return QSize(1, parent.height());

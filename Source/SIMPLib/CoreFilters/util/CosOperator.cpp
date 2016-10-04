@@ -44,8 +44,8 @@
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-CosOperator::CosOperator() :
-  UnaryOperator()
+CosOperator::CosOperator()
+: UnaryOperator()
 {
   setNumberOfArguments(1);
 }
@@ -55,14 +55,12 @@ CosOperator::CosOperator() :
 // -----------------------------------------------------------------------------
 CosOperator::~CosOperator()
 {
-
 }
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void CosOperator::calculate(AbstractFilter* filter, DataArrayPath calculatedArrayPath, QStack<ICalculatorArray::Pointer> &executionStack)
+void CosOperator::calculate(AbstractFilter* filter, DataArrayPath calculatedArrayPath, QStack<ICalculatorArray::Pointer>& executionStack)
 {
   CREATE_NEW_ARRAY_TRIG(filter, calculatedArrayPath, executionStack, cos)
 }
-

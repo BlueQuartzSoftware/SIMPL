@@ -37,12 +37,11 @@
 
 #include <QtCore/QMetaProperty>
 
+#include "SVWidgetsLib/Core/SVWidgetsLibConstants.h"
 #include <QtCore/QPropertyAnimation>
 #include <QtCore/QSequentialAnimationGroup>
-#include "SVWidgetsLib/Core/SVWidgetsLibConstants.h"
 
 #include "FilterParameterWidgetsDialogs.h"
-
 
 // Include the MOC generated file for this class
 #include "moc_StringWidget.cpp"
@@ -50,8 +49,8 @@
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-StringWidget::StringWidget(FilterParameter* parameter, AbstractFilter* filter, QWidget* parent) :
-  FilterParameterWidget(parameter, filter, parent)
+StringWidget::StringWidget(FilterParameter* parameter, AbstractFilter* filter, QWidget* parent)
+: FilterParameterWidget(parameter, filter, parent)
 {
   m_FilterParameter = dynamic_cast<StringFilterParameter*>(parameter);
   Q_ASSERT_X(m_FilterParameter != nullptr, "nullptr Pointer", "StringWidget can ONLY be used with a StringFilterParameter object");
@@ -64,7 +63,8 @@ StringWidget::StringWidget(FilterParameter* parameter, AbstractFilter* filter, Q
 //
 // -----------------------------------------------------------------------------
 StringWidget::~StringWidget()
-{}
+{
+}
 
 // -----------------------------------------------------------------------------
 //
@@ -72,11 +72,10 @@ StringWidget::~StringWidget()
 void StringWidget::setupGui()
 {
 
-
   blockSignals(true);
-  if (getFilterParameter() != nullptr)
+  if(getFilterParameter() != nullptr)
   {
-    label->setText(getFilterParameter()->getHumanLabel() );
+    label->setText(getFilterParameter()->getHumanLabel());
 
     QString str = getFilter()->property(PROPERTY_NAME_AS_CHAR).toString();
     value->setText(str);
@@ -86,23 +85,16 @@ void StringWidget::setupGui()
   applyChangesBtn->setVisible(false);
 
   // Catch when the filter is about to execute the preflight
-  connect(getFilter(), SIGNAL(preflightAboutToExecute()),
-          this, SLOT(beforePreflight()));
+  connect(getFilter(), SIGNAL(preflightAboutToExecute()), this, SLOT(beforePreflight()));
 
   // Catch when the filter is finished running the preflight
-  connect(getFilter(), SIGNAL(preflightExecuted()),
-          this, SLOT(afterPreflight()));
+  connect(getFilter(), SIGNAL(preflightExecuted()), this, SLOT(afterPreflight()));
 
   // Catch when the filter wants its values updated
-  connect(getFilter(), SIGNAL(updateFilterParameters(AbstractFilter*)),
-          this, SLOT(filterNeedsInputParameters(AbstractFilter*)));
+  connect(getFilter(), SIGNAL(updateFilterParameters(AbstractFilter*)), this, SLOT(filterNeedsInputParameters(AbstractFilter*)));
 
-
-  connect(value, SIGNAL(textChanged(const QString&)),
-          this, SLOT(widgetChanged(const QString&)));
-
+  connect(value, SIGNAL(textChanged(const QString&)), this, SLOT(widgetChanged(const QString&)));
 }
-
 
 // -----------------------------------------------------------------------------
 //
@@ -112,7 +104,6 @@ void StringWidget::on_value_returnPressed()
   on_applyChangesBtn_clicked();
 }
 
-
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
@@ -121,14 +112,13 @@ void StringWidget::on_applyChangesBtn_clicked()
   value->setStyleSheet(QString(""));
   emit parametersChanged();
 
-  if (getFaderWidget())
+  if(getFaderWidget())
   {
     getFaderWidget()->close();
   }
   QPointer<QtSFaderWidget> faderWidget = new QtSFaderWidget(applyChangesBtn);
   faderWidget->setFadeOut();
-  connect(faderWidget, SIGNAL(animationComplete() ),
-          this, SLOT(hideButton()));
+  connect(faderWidget, SIGNAL(animationComplete()), this, SLOT(hideButton()));
   faderWidget->start();
   setFaderWidget(faderWidget);
 }
@@ -156,13 +146,11 @@ void StringWidget::widgetChanged(const QString& text)
   }
 }
 
-
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
 void StringWidget::beforePreflight()
 {
-
 }
 
 // -----------------------------------------------------------------------------
@@ -170,7 +158,6 @@ void StringWidget::beforePreflight()
 // -----------------------------------------------------------------------------
 void StringWidget::afterPreflight()
 {
-
 }
 
 // -----------------------------------------------------------------------------
@@ -183,6 +170,4 @@ void StringWidget::filterNeedsInputParameters(AbstractFilter* filter)
   {
     FilterParameterWidgetsDialogs::ShowCouldNotSetFilterParameter(getFilter(), getFilterParameter());
   }
-
 }
-

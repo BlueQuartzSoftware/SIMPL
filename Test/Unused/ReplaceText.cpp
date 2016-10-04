@@ -4,12 +4,12 @@
 
 #include <QtCore/QFile>
 
-#include <QtCore/QString>
-#include <QtCore/QFileInfo>
-#include <QtCore/QtDebug>
-#include <QtCore/QStringList>
 #include <QtCore/QDir>
 #include <QtCore/QDirIterator>
+#include <QtCore/QFileInfo>
+#include <QtCore/QString>
+#include <QtCore/QStringList>
+#include <QtCore/QtDebug>
 
 #include "TestFileLocations.h"
 
@@ -31,12 +31,12 @@ void buildInitializerList(QString hFile, QString cppFile)
   list = header.split(QRegExp("\\n"));
 
   QStringListIterator lines(list);
-  while (lines.hasNext())
+  while(lines.hasNext())
   {
 
     QString line = lines.next();
     // std::cout << line.toStdString() << std::endl;
-    if(line.contains(QString("SIMPL_INSTANCE_STRING_PROPERTY")) )
+    if(line.contains(QString("SIMPL_INSTANCE_STRING_PROPERTY")))
     {
       QStringList chunks = line.split(QRegExp("\\("));
       chunks = chunks.at(1).split(QRegExp("\\)"));
@@ -45,7 +45,7 @@ void buildInitializerList(QString hFile, QString cppFile)
       initializerList << s;
     }
 
-    if(line.contains(QString("SIMPL_INSTANCE_PROPERTY")) )
+    if(line.contains(QString("SIMPL_INSTANCE_PROPERTY")))
     {
       QStringList chunks = line.split(QRegExp(", "));
       chunks = chunks.at(1).split(QRegExp("\\)"));
@@ -54,7 +54,7 @@ void buildInitializerList(QString hFile, QString cppFile)
       initializerList << s;
     }
 
-    if(line.contains(QString("DEFINE_DATAARRAY_VARIABLE")) )
+    if(line.contains(QString("DEFINE_DATAARRAY_VARIABLE")))
     {
       QStringList chunks = line.split(QRegExp(", "));
       chunks = chunks.at(1).split(QRegExp("\\)"));
@@ -64,7 +64,6 @@ void buildInitializerList(QString hFile, QString cppFile)
       s = s.trimmed();
       initializerList << s;
     }
-
   }
   //  lines = QStringListIterator(initializerList);
   //  while (lines.hasNext())
@@ -83,15 +82,12 @@ void buildInitializerList(QString hFile, QString cppFile)
   outSource.open(QFile::WriteOnly);
   QTextStream stream(&outSource);
 
-
-
-
   QString constructor = fi.baseName() + "::" + fi.baseName();
   QStringList existinInitializerList;
 
   list = cpp.split(QRegExp("\\n"));
   QStringListIterator sourceLines(list);
-  while (sourceLines.hasNext())
+  while(sourceLines.hasNext())
   {
     QString line = sourceLines.next();
     stream << line << "\n";
@@ -106,8 +102,14 @@ void buildInitializerList(QString hFile, QString cppFile)
       {
         QStringList chunks = line.split(',');
         existinInitializerList << chunks.at(0).trimmed();
-        if(chunks.size() == 1) { stop = true; }
-        else { line = sourceLines.next(); }
+        if(chunks.size() == 1)
+        {
+          stop = true;
+        }
+        else
+        {
+          line = sourceLines.next();
+        }
       }
       break;
     }
@@ -122,7 +124,7 @@ void buildInitializerList(QString hFile, QString cppFile)
   QStringList newList;
 
   lines = QStringListIterator(initializerList);
-  while (lines.hasNext())
+  while(lines.hasNext())
   {
     QString line = lines.next();
     QStringList result;
@@ -151,17 +153,23 @@ void buildInitializerList(QString hFile, QString cppFile)
   QTextStream ss(&outS);
 
   lines = QStringListIterator(newList);
-  while (lines.hasNext())
+  while(lines.hasNext())
   {
     ss << "  " << lines.next();
-    if(lines.hasNext() == true) { ss << ",\n"; }
-    else { ss << "\n"; }
+    if(lines.hasNext() == true)
+    {
+      ss << ",\n";
+    }
+    else
+    {
+      ss << "\n";
+    }
   }
 
   stream << outS;
 
   // Finish writing the source file back out
-  while (sourceLines.hasNext())
+  while(sourceLines.hasNext())
   {
     QString line = sourceLines.next();
     stream << line << "\n";
@@ -169,7 +177,6 @@ void buildInitializerList(QString hFile, QString cppFile)
 
   outSource.close();
 }
-
 
 // -----------------------------------------------------------------------------
 //
@@ -203,7 +210,6 @@ void replaceText1(QString hFile, QString cppFile)
     }
   }
 
-
   searchStr = QString("size_t totalEnsembles = m->getAttributeMatrix(getCellEnsembleAttributeMatrixName())->getNumberOfTuples();");
   index = cpp.indexOf(searchStr);
   hIndex = -1;
@@ -227,16 +233,13 @@ void replaceText1(QString hFile, QString cppFile)
     QFile hOut(cppFile);
 #endif
     hOut.open(QFile::WriteOnly);
-    QTextStream stream( &hOut );
+    QTextStream stream(&hOut);
     stream << cpp;
     hOut.close();
 
     qDebug() << "Saved File " << cppFile;
   }
-
 }
-
-
 
 // -----------------------------------------------------------------------------
 //
@@ -258,7 +261,7 @@ void replaceText(QString hFile, QString cppFile)
   int index = cpp.indexOf("cellAttrMat->getPrereqArray<");
   int endIdx = 0;
   bool doReplace = false;
-  while (index > 0)
+  while(index > 0)
   {
     endIdx = cpp.indexOf(";", index);
     QString sub = cpp.mid(index, endIdx - index);
@@ -270,29 +273,31 @@ void replaceText(QString hFile, QString cppFile)
     varNames << sub;
     doReplace = true;
     index = cpp.indexOf("cellAttrMat->getPrereqArray<", index + 1);
-    //break;
+    // break;
   }
 
-  if (doReplace == false) { return; }
+  if(doReplace == false)
+  {
+    return;
+  }
   doReplace = false;
   // Now open the header file and read that.
-  for (int i = 0; i < varNames.size(); ++i)
+  for(int i = 0; i < varNames.size(); ++i)
   {
     QString s("SIMPL_INSTANCE_STRING_PROPERTY(" + varNames.at(i) + "AttributeMatrixName)");
     index = header.indexOf(s, 0);
-    if (index < 0)   // Not found
+    if(index < 0) // Not found
     {
 
       QString dc("SIMPL_INSTANCE_STRING_PROPERTY(SurfaceDataContainerName)\n");
       int idx = header.indexOf(dc, 0);
-      if (idx > 0)
+      if(idx > 0)
       {
-        header.replace(dc,  dc + "    " + s + "\n");
+        header.replace(dc, dc + "    " + s + "\n");
         doReplace = true;
       }
     }
   }
-
 
   //// WRITE THE HEADER BACK OUT TO A FILE
   if(doReplace == true)
@@ -304,15 +309,13 @@ void replaceText(QString hFile, QString cppFile)
     QFile hOut(hFile);
 #endif
     hOut.open(QFile::WriteOnly);
-    QTextStream stream( &hOut );
+    QTextStream stream(&hOut);
     stream << header;
     hOut.close();
 
     qDebug() << "Saved File " << hFile;
   }
-
 }
-
 
 // -----------------------------------------------------------------------------
 //
@@ -340,12 +343,11 @@ void fixDataCheck(QString hFile, QString cppFile)
   bool hasCellCreate = false;
   bool alreadyHasDecl = false;
 
-
   QStringListIterator sourceLines(list);
-  while (sourceLines.hasNext())
+  while(sourceLines.hasNext())
   {
     QString line = sourceLines.next();
-    if(line.contains(dataCheck) )
+    if(line.contains(dataCheck))
     {
       // We are in the constructor
       bool stop = false;
@@ -365,9 +367,14 @@ void fixDataCheck(QString hFile, QString cppFile)
           alreadyHasDecl = true;
         }
 
-
-        if(line.contains(preflight)) { stop = true; }
-        if(sourceLines.hasNext() == false) { stop = true; }
+        if(line.contains(preflight))
+        {
+          stop = true;
+        }
+        if(sourceLines.hasNext() == false)
+        {
+          stop = true;
+        }
       }
       break;
     }
@@ -381,9 +388,10 @@ void fixDataCheck(QString hFile, QString cppFile)
     needCellAttrCreate = true;
   }
 
-
-
-  if (!needCellAttrGet && !needCellAttrCreate) { return; }
+  if(!needCellAttrGet && !needCellAttrCreate)
+  {
+    return;
+  }
 
   qDebug("Updating %s", qPrintable(cppFile));
 
@@ -395,12 +403,11 @@ void fixDataCheck(QString hFile, QString cppFile)
   fout.open(QFile::WriteOnly);
   QTextStream out(&fout);
 
-
   sourceLines = QStringListIterator(list);
-  while (sourceLines.hasNext())
+  while(sourceLines.hasNext())
   {
     QString line = sourceLines.next();
-    if(line.contains(dataCheck) )
+    if(line.contains(dataCheck))
     {
       out << line << "\n";
       // We are in the constructor
@@ -420,7 +427,8 @@ void fixDataCheck(QString hFile, QString cppFile)
           }
           if(needCellAttrCreate)
           {
-            out << "  AttributeMatrix::Pointer cellEnsembleAttrMat = m->createNonPrereqAttributeMatrix<AbstractFilter>(this, getCellEnsembleAttributeMatrixName(), SIMPL::AttributeMatrixType::CellEnsemble);\n";
+            out << "  AttributeMatrix::Pointer cellEnsembleAttrMat = m->createNonPrereqAttributeMatrix<AbstractFilter>(this, getCellEnsembleAttributeMatrixName(), "
+                   "SIMPL::AttributeMatrixType::CellEnsemble);\n";
             out << "  if(getErrorCondition() < 0) { return; }\n";
           }
 
@@ -430,33 +438,37 @@ void fixDataCheck(QString hFile, QString cppFile)
         {
           out << line << "\n";
         }
-        if(line.contains(preflight)) { out << line << "\n"; stop = true; }
-
+        if(line.contains(preflight))
+        {
+          out << line << "\n";
+          stop = true;
+        }
       }
     }
     else
     {
-      if (sourceLines.hasNext()) { out << line << "\n"; }
+      if(sourceLines.hasNext())
+      {
+        out << line << "\n";
+      }
     }
-
   }
 
   fout.close();
 }
 
-
 void scanDirIter(QDir dir)
 {
   QDirIterator iterator(dir.absolutePath(), QDirIterator::Subdirectories);
-  while (iterator.hasNext())
+  while(iterator.hasNext())
   {
     iterator.next();
-    if (!iterator.fileInfo().isDir())
+    if(!iterator.fileInfo().isDir())
     {
       QString filename = iterator.fileName();
-      if (filename.endsWith(".cpp") )
+      if(filename.endsWith(".cpp"))
       {
-        //qDebug("Found %s matching pattern.", qPrintable(filename));
+        // qDebug("Found %s matching pattern.", qPrintable(filename));
         QFileInfo fi(iterator.filePath());
         QString header = fi.path() + "/" + fi.baseName() + ".h";
         QString source = iterator.filePath();
@@ -464,23 +476,20 @@ void scanDirIter(QDir dir)
       }
     }
   }
-
 }
-
-
 
 int main(int argc, char* argv[])
 {
   Q_ASSERT(false); // We don't want anyone to run this program.
 
-//#if 0
-//  QString header = argv[1];
-//  QString source = argv[2];
-//  buildInitializerList(header, source);
-//#else
-//  scanDirIter(UnitTest::DREAM3DProjDir + QString("/Source/DREAM3DLib"));
-//  scanDirIter(UnitTest::DREAM3DProjDir + QString("/Source/Plugins"));
-//#endif
+  //#if 0
+  //  QString header = argv[1];
+  //  QString source = argv[2];
+  //  buildInitializerList(header, source);
+  //#else
+  //  scanDirIter(UnitTest::DREAM3DProjDir + QString("/Source/DREAM3DLib"));
+  //  scanDirIter(UnitTest::DREAM3DProjDir + QString("/Source/Plugins"));
+  //#endif
 
   return 0;
 }
