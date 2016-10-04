@@ -87,6 +87,8 @@ class SIMPLib_EXPORT RgbColor
 
 };
 
+class QJsonArray;
+
 /**
  * @class ColorTable ColorTable.h /Utilities/ColorTable.h
  * @brief This class has functions that help create color tables and also define the ARGB Quadruplet
@@ -115,6 +117,8 @@ class SIMPLib_EXPORT SIMPLColorTable
     * @param min
     */
     static void GetColorTable(int numColors, QVector<float>& colors);
+
+    static QVector<int> GetColorTable(int numColors, QJsonArray colorNodeArray);
 
   private:
     SIMPLColorTable(const SIMPLColorTable&); // Copy Constructor Not Implemented

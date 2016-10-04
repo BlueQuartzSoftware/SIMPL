@@ -37,6 +37,8 @@
 
 #include "SIMPLib/FilterParameters/GenerateColorTableFilterParameter.h"
 
+#include "SVWidgetsLib/Dialogs/ColorPresetsDialog.h"
+
 // Include the MOC generated file for this class
 #include "moc_GenerateColorTableWidget.cpp"
 
@@ -137,7 +139,8 @@ void GenerateColorTableWidget::setupGui()
 // -----------------------------------------------------------------------------
 void GenerateColorTableWidget::on_choosePresetBtn_pressed()
 {
-  std::cout << "Test";
+  ColorPresetsDialog dialog(this);
+  dialog.exec();
 }
 
 // -----------------------------------------------------------------------------

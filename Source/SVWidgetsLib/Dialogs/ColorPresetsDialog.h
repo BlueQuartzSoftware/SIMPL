@@ -32,8 +32,9 @@
 *    United States Prime Contract Navy N00173-07-C-2068
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
-#ifndef pqPresetDialog_h
-#define pqPresetDialog_h
+
+#ifndef _colorpresetsdialog_h
+#define _colorpresetsdialog_h
 
 #include <QtCore/QModelIndex>
 #include <QtCore/QScopedPointer>
@@ -62,37 +63,29 @@ class SVWidgetsLib_EXPORT ColorPresetsDialog : public QDialog
   Q_OBJECT
 
 public:
-  /// Used to control what kinds of presets are shown in the dialog.
-  /// This merely affects the presets that are hidden from the view.
-  enum Modes
-    {
-    SHOW_ALL,
-    SHOW_INDEXED_COLORS_ONLY,
-    SHOW_NON_INDEXED_COLORS_ONLY
-    };
-
-  ColorPresetsDialog(QWidget* parent=0, Modes mode=SHOW_ALL);
+  ColorPresetsDialog(QWidget* parent=0);
   virtual ~ColorPresetsDialog();
 
   /// Set the current preset using its name.
   void setCurrentPreset(const char* presetName);
 
   /// Return current preset, if any.
-  const Json::Value& currentPreset();
+  const QJsonObject currentPreset();
 
 signals:
-  void applyPreset(const Json::Value& preset);
+  void applyPreset(const QJsonObject& preset);
 
 protected slots:
   void updateEnabledStateForSelection();
-  void updateForSelectedIndex(const QModelIndex& proxyIndex);
-  void triggerApply(const QModelIndex& proxyIndex=QModelIndex());
+  void updateForSelectedIndex(const QModelIndex& idx);
+  void triggerApply(const QModelIndex& _idx=QModelIndex());
 
 private:
-  QSharedPointer<ColorPresetsDialogTableModel> Model;
+  class pqInternals;
+  const QScopedPointer<pqInternals> Internals;
 
   ColorPresetsDialog(const ColorPresetsDialog&); // Copy Constructor Not Implemented
   void operator=(const ColorPresetsDialog&); // Operator '=' Not Implemented
 };
 
-#endif
+#endif /* _colorpresetsdialog_h */

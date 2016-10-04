@@ -3,12 +3,11 @@
 
 
 set(SVWidgetsLib_Dialogs_HDRS
-
+  ${SVWidgetsLib_SOURCE_DIR}/Dialogs/ColorPresets.h
 )
 
 set(SVWidgetsLib_Dialogs_MOC_HDRS
   ${SVWidgetsLib_SOURCE_DIR}/Dialogs/AboutPlugins.h
-  ${SVWidgetsLib_SOURCE_DIR}/Dialogs/ColorPresets.h
   ${SVWidgetsLib_SOURCE_DIR}/Dialogs/ColorPresetsDialog.h
   ${SVWidgetsLib_SOURCE_DIR}/Dialogs/ColorPresetsDialogTableModel.h
   ${SVWidgetsLib_SOURCE_DIR}/Dialogs/FavoritesChangedDialog.h

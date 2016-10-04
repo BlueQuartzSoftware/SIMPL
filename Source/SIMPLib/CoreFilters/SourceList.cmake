@@ -212,7 +212,8 @@ ADD_SIMPL_SUPPORT_SOURCE(${SIMPLib_SOURCE_DIR} ${_filterGroupName}/util CeilOper
 include_directories( ${SIMPLib_BINARY_DIR}/${_filterGroupName})
 
 # -- Run MOC and UIC on the necessary files
-QT5_ADD_RESOURCES( SIMPLib_${_filterGroupName}_Generated_RCS_SRCS "${SIMPLib_SOURCE_DIR}/CoreFilters/CoreResources.qrc"  )
+QT5_ADD_RESOURCES( SIMPLib_CoreFilters_Generated_RCS_SRCS "${SIMPLib_SOURCE_DIR}/CoreFilters/CoreResources.qrc"  )
+set(Project_SRCS ${Project_SRCS} ${SIMPLib_CoreFilters_Generated_RCS_SRCS})
 
 #-----------------
 # This makes sure some Filter Group meta data is written to build files that is needed later

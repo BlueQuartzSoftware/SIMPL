@@ -32,7 +32,10 @@
 *    United States Prime Contract Navy N00173-07-C-2068
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
+
 #include "ColorPresetsDialogTableModel.h"
+
+#include "moc_ColorPresetsDialogTableModel.cpp"
 
 // -----------------------------------------------------------------------------
 //
@@ -40,6 +43,7 @@
 ColorPresetsDialogTableModel::ColorPresetsDialogTableModel(QObject* parentObject) :
   QAbstractTableModel(parentObject)
 {
+  Presets = ColorPresets::New();
   this->Pixmaps.reserve(this->Presets->GetNumberOfPresets());
 }
 
@@ -106,7 +110,7 @@ QVariant ColorPresetsDialogTableModel::data(const QModelIndex &idx, int role) co
   case Qt::ToolTipRole:
   case Qt::StatusTipRole:
   case Qt::EditRole:
-    return this->Presets->GetPresetName(idx.row()).c_str();
+    return this->Presets->GetPresetName(idx.row());
 
   case Qt::DecorationRole:
     return this->pixmap(idx.row());
@@ -121,37 +125,10 @@ QVariant ColorPresetsDialogTableModel::data(const QModelIndex &idx, int role) co
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-bool ColorPresetsDialogTableModel::setData(const QModelIndex &idx, const QVariant &value, int role)
-{
-  Q_UNUSED(role)
-
-  if (!idx.isValid() || idx.model() != this)
-  {
-    return false;
-  }
-
-  if (this->Presets->RenamePreset(idx.row(), value.toString().toStdString().c_str()))
-  {
-    emit this->dataChanged(idx, idx);
-    return true;
-  }
-
-  return true;
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
 Qt::ItemFlags ColorPresetsDialogTableModel::flags(const QModelIndex &idx) const
 {
-  Qt::ItemFlags flgs = this->Superclass::flags(idx);
-  if (!idx.isValid() || idx.model() != this)
-  {
-    return flgs;
-  }
-
-  // mark non-builtin presets as editable.
-  return this->Presets->IsPresetBuiltin(idx.row())?flgs : (flgs | Qt::ItemIsEditable);
+  Qt::ItemFlags flgs = QAbstractTableModel::flags(idx);
+  return flgs;
 }
 
 // -----------------------------------------------------------------------------
@@ -189,8 +166,16 @@ const QPixmap& ColorPresetsDialogTableModel::pixmap(int row) const
 
   if (Pixmaps[row].isNull())
   {
-    Pixmaps[row] = PixmapRenderer.render(Presets->GetPreset(row), QSize(180, 20));
+    Pixmaps[row] = Presets->getPixmapFromPreset(row);
   }
 
   return Pixmaps[row];
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+ColorPresets::Pointer ColorPresetsDialogTableModel::getPresets()
+{
+  return Presets;
 }

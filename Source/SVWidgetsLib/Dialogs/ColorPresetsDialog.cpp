@@ -32,6 +32,7 @@
 *    United States Prime Contract Navy N00173-07-C-2068
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
+
 #include "ColorPresetsDialog.h"
 
 #include <QtCore/QList>
@@ -43,33 +44,41 @@
 
 #include "SVWidgetsLib/Dialogs/ColorPresetsDialogTableModel.h"
 
-//#include "pqFileDialog.h"
-//#include "pqPropertiesPanel.h"
-//#include "vtkNew.h"
-//#include "vtkSMTransferFunctionPresets.h"
-//#include "vtkSMTransferFunctionProxy.h"
+#include "moc_ColorPresetsDialog.cpp"
 
 #include "ui_ColorPresetsDialog.h"
+
+class ColorPresetsDialog::pqInternals
+{
+public:
+  Ui::ColorPresetsDialog Ui;
+  QSharedPointer<ColorPresetsDialogTableModel> Model;
+
+  pqInternals(ColorPresetsDialog* self)
+    : Model(new ColorPresetsDialogTableModel(self))
+  {
+    this->Ui.setupUi(self);
+    this->Ui.gradients->setModel(this->Model.data());
+
+  }
+};
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-ColorPresetsDialog::ColorPresetsDialog(QWidget* parentObject, ColorPresetsDialog::Modes mode) :
+ColorPresetsDialog::ColorPresetsDialog(QWidget* parentObject) :
   QDialog(parentObject),
-  Internals(new ColorPresetsDialog::pqInternals(mode, this))
+  Internals(new ColorPresetsDialog::pqInternals(this))
 {
   const Ui::ColorPresetsDialog &ui = this->Internals->Ui;
   this->connect(ui.gradients->selectionModel(),
-    SIGNAL(selectionChanged(const QItemSelection &, const QItemSelection &)),
-    SLOT(updateEnabledStateForSelection()));
+                SIGNAL(selectionChanged(const QItemSelection &, const QItemSelection &)),
+                SLOT(updateEnabledStateForSelection()));
   this->updateEnabledStateForSelection();
 
-  this->connect(ui.remove, SIGNAL(clicked()), SLOT(removePreset()));
   this->connect(ui.gradients, SIGNAL(doubleClicked(const QModelIndex&)),
-    SLOT(triggerApply(const QModelIndex&)));
+                SLOT(triggerApply(const QModelIndex&)));
   this->connect(ui.apply, SIGNAL(clicked()), SLOT(triggerApply()));
-  this->connect(ui.importPresets, SIGNAL(clicked()), SLOT(importPresets()));
-  this->connect(ui.exportPresets, SIGNAL(clicked()), SLOT(exportPresets()));
 }
 
 // -----------------------------------------------------------------------------
@@ -86,12 +95,11 @@ void ColorPresetsDialog::setCurrentPreset(const char* presetName)
 {
   pqInternals& internals = (*this->Internals);
   QModelIndex idx = internals.Model->indexFromName(presetName);
-  idx = internals.ProxyModel->mapFromSource(idx);
   if (idx.isValid())
-    {
+  {
     internals.Ui.gradients->selectionModel()->setCurrentIndex(
-      idx, QItemSelectionModel::ClearAndSelect);
-    }
+          idx, QItemSelectionModel::ClearAndSelect);
+  }
 }
 
 // -----------------------------------------------------------------------------
@@ -102,81 +110,65 @@ void ColorPresetsDialog::updateEnabledStateForSelection()
   const Ui::ColorPresetsDialog &ui = this->Internals->Ui;
   QModelIndexList selectedRows = ui.gradients->selectionModel()->selectedRows();
   if (selectedRows.size() == 1)
-    {
+  {
     this->updateForSelectedIndex(selectedRows[0]);
-    }
+  }
   else
-    {
-    ui.colors->setEnabled(false);
-    ui.usePresetRange->setEnabled(false);
-    ui.opacities->setEnabled(false);
-    ui.annotations->setEnabled(false);
+  {
     ui.apply->setEnabled(false);
-    ui.exportPresets->setEnabled(selectedRows.size() > 0);
 
     bool isEditable = true;
     foreach (const QModelIndex &idx, selectedRows)
-      {
-      isEditable &= this->Internals->ProxyModel->flags(idx).testFlag(Qt::ItemIsEditable);
-      }
-    ui.remove->setEnabled((selectedRows.size() > 0) && isEditable);
+    {
+      isEditable &= this->Internals->Model->flags(idx).testFlag(Qt::ItemIsEditable);
     }
+  }
 }
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void ColorPresetsDialog::updateForSelectedIndex(const QModelIndex& proxyIndex)
+void ColorPresetsDialog::updateForSelectedIndex(const QModelIndex& idx)
 {
   // update "options" based on what's available.
   const pqInternals& internals = *this->Internals;
-  QModelIndex idx = internals.ProxyModel->mapToSource(proxyIndex);
-  const Json::Value& preset = internals.Model->Presets->GetPreset(idx.row());
-  Q_ASSERT(preset.empty() == false);
+  const QJsonObject& preset = internals.Model->getPresets()->GetPreset(idx.row());
+  Q_ASSERT(preset.isEmpty() == false);
 
   const Ui::ColorPresetsDialog &ui = internals.Ui;
 
-  ui.colors->setEnabled(true);
-  ui.usePresetRange->setEnabled(!internals.Model->Presets->GetPresetHasIndexedColors(preset));
-  ui.opacities->setEnabled(internals.Model->Presets->GetPresetHasOpacities(preset));
-  ui.annotations->setEnabled(internals.Model->Presets->GetPresetHasAnnotations(preset));
   ui.apply->setEnabled(true);
-  ui.exportPresets->setEnabled(true);
-  ui.remove->setEnabled(internals.Model->flags(idx).testFlag(Qt::ItemIsEditable));
 }
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void ColorPresetsDialog::triggerApply(const QModelIndex& _proxyIndex)
+void ColorPresetsDialog::triggerApply(const QModelIndex& idx)
 {
   const pqInternals& internals = *this->Internals;
   const Ui::ColorPresetsDialog &ui = this->Internals->Ui;
 
-  const QModelIndex proxyIndex =  _proxyIndex.isValid()?
-    _proxyIndex : ui.gradients->selectionModel()->currentIndex();
-  QModelIndex idx = internals.ProxyModel->mapToSource(proxyIndex);
-  const Json::Value& preset = internals.Model->Presets->GetPreset(idx.row());
+  const QModelIndex index =  idx.isValid()?
+        idx : ui.gradients->selectionModel()->currentIndex();
+  const QJsonObject& preset = internals.Model->getPresets()->GetPreset(index.row());
   Q_ASSERT(preset.empty() == false);
-  emit this->applyPreset(preset);
+  emit applyPreset(preset);
 }
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const Json::Value& ColorPresetsDialog::currentPreset()
+const QJsonObject ColorPresetsDialog::currentPreset()
 {
   const pqInternals& internals = *this->Internals;
   const Ui::ColorPresetsDialog &ui = this->Internals->Ui;
-  QModelIndex proxyIndex = ui.gradients->selectionModel()->currentIndex();
-  if (proxyIndex.isValid())
-    {
-    QModelIndex idx = internals.ProxyModel->mapToSource(proxyIndex);
-    const Json::Value& preset = internals.Model->Presets->GetPreset(idx.row());
+  QModelIndex idx = ui.gradients->selectionModel()->currentIndex();
+  if (idx.isValid())
+  {
+    const QJsonObject& preset = internals.Model->getPresets()->GetPreset(idx.row());
     Q_ASSERT(preset.empty() == false);
     return preset;
-    }
+  }
 
-  static Json::Value nullValue;
-  return nullValue;
+  return QJsonObject();
 }

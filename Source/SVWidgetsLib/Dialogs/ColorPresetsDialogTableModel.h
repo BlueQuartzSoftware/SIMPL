@@ -32,6 +32,7 @@
 *    United States Prime Contract Navy N00173-07-C-2068
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
+
 #ifndef _colorpresetsdialogtablemodel_h
 #define _colorpresetsdialogtablemodel_h
 
@@ -40,7 +41,7 @@
 
 #include <QtWidgets/QDialog>
 
-//#include "pqPresetToPixmap.h"
+#include "SVWidgetsLib/Dialogs/ColorPresets.h"
 
 #include "SVWidgetsLib/SVWidgetsLib.h"
 
@@ -61,17 +62,16 @@ public:
 
   virtual QVariant data(const QModelIndex &idx, int role) const;
 
-  virtual bool setData(const QModelIndex &idx, const QVariant &value, int role);
-
   virtual Qt::ItemFlags flags(const QModelIndex &idx) const;
 
   virtual QVariant headerData(int section, Qt::Orientation orientation, int role) const;
 
   const QPixmap& pixmap(int row) const;
 
+  ColorPresets::Pointer getPresets();
+
 private:
-  //vtkNew<vtkSMTransferFunctionPresets> Presets;
-  //pqPresetToPixmap PixmapRenderer;
+  ColorPresets::Pointer Presets;
 
   // 'mutable' allows us to avoid having to pregenerate all the pixmaps.
   mutable QList<QPixmap> Pixmaps;

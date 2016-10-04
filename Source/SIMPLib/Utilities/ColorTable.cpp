@@ -35,6 +35,10 @@
 
 #include "ColorTable.h"
 
+#include <iostream>
+
+#include <QtCore/QJsonArray>
+
 #include "SIMPLib/Common/SIMPLibSetGetMacros.h"
 
 // -----------------------------------------------------------------------------
@@ -88,3 +92,87 @@ void SIMPLColorTable::GetColorTable(int numColors, QVector<float>& colors)
     colors[3 * i + 2] = b;
   }
 }
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+QVector<int> SIMPLColorTable::GetColorTable(int numColors, QJsonArray colorControlPoints)
+{
+  int numControlColors = colorControlPoints.count() / 4;
+  int numComponents = 4;
+  std::vector<std::vector<double> > controlPoints(numControlColors, std::vector<double>(numComponents));
+
+  // Migrate colorControlPoints values from QJsonArray to 2D array.  Store A-values in binPoints vector.
+  QVector<float> binPoints;
+  for (int i=0; i<numControlColors; i++)
+  {
+    for (int j=0; j<numComponents; j++)
+    {
+      controlPoints[i][j] = static_cast<float>(colorControlPoints[numComponents*i + j].toDouble());
+      if (j == 0)
+      {
+        binPoints.push_back(controlPoints[i][j]);
+      }
+    }
+  }
+
+  // Normalize binPoints values
+  float min = binPoints[0];
+  float max = binPoints[binPoints.size() - 1];
+  for (int i=0; i<binPoints.size(); i++)
+  {
+    binPoints[i] = (binPoints[i] - min) / (max - min);
+  }
+
+  QVector<int> generatedColors(numColors * 3);
+  int currentBinIndex = 0;
+  float currFraction = 0.0f;
+  float allColorVal = 0.0f;
+  int r = 0, g = 0, b = 0;
+  float colorStep = 1.0 / float(numColors);
+  for(int i = 0; i < numColors; i++)
+  {
+    // Calculate what point we are at in the entire color range
+    allColorVal = float(i) * colorStep;
+
+    // If we have crossed into the next color bin, increment the currentBinIndex variable.
+    if (currentBinIndex+1 < binPoints.size() && allColorVal > binPoints[currentBinIndex+1])
+    {
+      // We have crossed into the next bin
+      currentBinIndex++;
+    }
+
+    // Find the fractional distance traveled between the beginning and end of the current color bin
+    if (currentBinIndex + 1 < binPoints.size())
+    {
+      currFraction = (allColorVal - binPoints[currentBinIndex]) / (binPoints[currentBinIndex+1] - binPoints[currentBinIndex]);
+    }
+    else
+    {
+      currFraction = (allColorVal - binPoints[currentBinIndex]) / (1 - binPoints[currentBinIndex]);
+    }
+
+    // If the current color bin index is larger than the total number of control colors, automatically set the currentBinIndex
+    // to the last control color.
+    if(currentBinIndex > numControlColors - 1)
+    {
+      currentBinIndex = numControlColors - 1;
+    }
+
+    // Calculate the RGB values
+    r = (controlPoints[currentBinIndex][1] * (1.0 - currFraction) + controlPoints[currentBinIndex + 1][1] * currFraction) * 255;
+    g = (controlPoints[currentBinIndex][2] * (1.0 - currFraction) + controlPoints[currentBinIndex + 1][2] * currFraction) * 255;
+    b = (controlPoints[currentBinIndex][3] * (1.0 - currFraction) + controlPoints[currentBinIndex + 1][3] * currFraction) * 255;
+
+    // Store the RGB values in the RGB generatedColors vector
+    generatedColors[3 * i] = r;
+    generatedColors[3 * i + 1] = g;
+    generatedColors[3 * i + 2] = b;
+  }
+
+  return generatedColors;
+}
+
+
+
+
