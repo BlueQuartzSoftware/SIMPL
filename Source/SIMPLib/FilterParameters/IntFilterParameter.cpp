@@ -83,7 +83,7 @@ QString IntFilterParameter::getWidgetType()
 void IntFilterParameter::readJson(const QJsonObject& json)
 {
   QJsonValue jsonValue = json[getPropertyName()];
-  if(!jsonValue.isUndefined())
+  if(!jsonValue.isUndefined() && m_SetterCallback)
   {
     m_SetterCallback(jsonValue.toInt(0.0));
   }

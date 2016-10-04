@@ -61,7 +61,6 @@ PreflightUpdatedValueFilterParameter::Pointer PreflightUpdatedValueFilterParamet
   ptr->setDefaultValue(defaultValue);
   ptr->setCategory(category);
   ptr->setGroupIndex(groupIndex);
-  // ptr->setSetterCallback(setterCallback);
   ptr->setGetterCallback(getterCallback);
 
   return ptr;

@@ -83,7 +83,7 @@ QString RangeFilterParameter::getWidgetType()
 void RangeFilterParameter::readJson(const QJsonObject& json)
 {
   QJsonValue jsonValue = json[getPropertyName()];
-  if(!jsonValue.isUndefined())
+  if(!jsonValue.isUndefined() && m_SetterCallback)
   {
     QJsonObject obj = jsonValue.toObject();
     QPair<double, double> pair;
@@ -100,11 +100,14 @@ void RangeFilterParameter::readJson(const QJsonObject& json)
 // -----------------------------------------------------------------------------
 void RangeFilterParameter::writeJson(QJsonObject& json)
 {
-  QPair<double, double> pair = m_GetterCallback();
-  QJsonObject obj;
+  if (m_GetterCallback)
+  {
+    QPair<double, double> pair = m_GetterCallback();
+    QJsonObject obj;
 
-  obj["Min"] = pair.first;
-  obj["Max"] = pair.second;
+    obj["Min"] = pair.first;
+    obj["Max"] = pair.second;
 
-  json[getPropertyName()] = obj;
+    json[getPropertyName()] = obj;
+  }
 }

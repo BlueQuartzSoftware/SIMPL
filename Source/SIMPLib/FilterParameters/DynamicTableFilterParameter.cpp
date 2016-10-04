@@ -115,7 +115,7 @@ QString DynamicTableFilterParameter::getWidgetType()
 void DynamicTableFilterParameter::readJson(const QJsonObject& json)
 {
   QJsonValue jsonValue = json[getPropertyName()];
-  if(!jsonValue.isUndefined())
+  if(!jsonValue.isUndefined() && m_SetterCallback)
   {
     QJsonObject jsonObj = jsonValue.toObject();
     DynamicTableData dynamicData;
@@ -129,8 +129,11 @@ void DynamicTableFilterParameter::readJson(const QJsonObject& json)
 // -----------------------------------------------------------------------------
 void DynamicTableFilterParameter::writeJson(QJsonObject& json)
 {
-  DynamicTableData dynamicData = m_GetterCallback();
-  QJsonObject jsonObj;
-  dynamicData.writeJson(jsonObj);
-  json[getPropertyName()] = jsonObj;
+  if (m_GetterCallback)
+  {
+    DynamicTableData dynamicData = m_GetterCallback();
+    QJsonObject jsonObj;
+    dynamicData.writeJson(jsonObj);
+    json[getPropertyName()] = jsonObj;
+  }
 }

@@ -40,7 +40,7 @@
 //
 // -----------------------------------------------------------------------------
 AttributeMatrixSelectionFilterParameter::AttributeMatrixSelectionFilterParameter()
-: FilterParameter()
+  : FilterParameter()
 {
 }
 
@@ -140,7 +140,7 @@ AttributeMatrixSelectionFilterParameter::RequirementType AttributeMatrixSelectio
 void AttributeMatrixSelectionFilterParameter::readJson(const QJsonObject& json)
 {
   QJsonValue jsonValue = json[getPropertyName()];
-  if(!jsonValue.isUndefined())
+  if(!jsonValue.isUndefined() && m_SetterCallback)
   {
     QJsonObject obj = jsonValue.toObject();
     DataArrayPath dap;
@@ -154,8 +154,11 @@ void AttributeMatrixSelectionFilterParameter::readJson(const QJsonObject& json)
 // -----------------------------------------------------------------------------
 void AttributeMatrixSelectionFilterParameter::writeJson(QJsonObject& json)
 {
-  DataArrayPath dap = m_GetterCallback();
-  QJsonObject obj;
-  dap.writeJson(obj);
-  json[getPropertyName()] = obj;
+  if (m_GetterCallback)
+  {
+    DataArrayPath dap = m_GetterCallback();
+    QJsonObject obj;
+    dap.writeJson(obj);
+    json[getPropertyName()] = obj;
+  }
 }

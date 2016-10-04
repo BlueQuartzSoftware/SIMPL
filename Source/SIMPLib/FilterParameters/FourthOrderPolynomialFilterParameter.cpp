@@ -85,7 +85,7 @@ QString FourthOrderPolynomialFilterParameter::getWidgetType()
 void FourthOrderPolynomialFilterParameter::readJson(const QJsonObject& json)
 {
   QJsonValue jsonValue = json[getPropertyName()];
-  if(!jsonValue.isUndefined())
+  if(!jsonValue.isUndefined() && m_SetterCallback)
   {
     QJsonObject obj = jsonValue.toObject();
     Float4thOrderPoly_t poly;
@@ -99,8 +99,11 @@ void FourthOrderPolynomialFilterParameter::readJson(const QJsonObject& json)
 // -----------------------------------------------------------------------------
 void FourthOrderPolynomialFilterParameter::writeJson(QJsonObject& json)
 {
-  Float4thOrderPoly_t poly = m_GetterCallback();
-  QJsonObject obj;
-  poly.writeJson(obj);
-  json[getPropertyName()] = obj;
+  if (m_GetterCallback)
+  {
+    Float4thOrderPoly_t poly = m_GetterCallback();
+    QJsonObject obj;
+    poly.writeJson(obj);
+    json[getPropertyName()] = obj;
+  }
 }

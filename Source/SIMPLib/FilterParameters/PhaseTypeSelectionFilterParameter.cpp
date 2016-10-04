@@ -89,7 +89,7 @@ QString PhaseTypeSelectionFilterParameter::getWidgetType()
 void PhaseTypeSelectionFilterParameter::readJson(const QJsonObject& json)
 {
   QJsonValue jsonValue = json[getPropertyName()];
-  if(!jsonValue.isUndefined())
+  if(!jsonValue.isUndefined() && m_SetterCallback)
   {
     QJsonArray jsonArray = jsonValue.toArray();
     UInt32Vector_t vec;
@@ -106,13 +106,16 @@ void PhaseTypeSelectionFilterParameter::readJson(const QJsonObject& json)
 // -----------------------------------------------------------------------------
 void PhaseTypeSelectionFilterParameter::writeJson(QJsonObject& json)
 {
-  UInt32Vector_t vec = m_GetterCallback();
-  QJsonArray jsonArray;
-
-  for(int i = 0; i < vec.d.size(); i++)
+  if (m_GetterCallback)
   {
-    jsonArray.push_back(static_cast<double>(vec.d[i]));
-  }
+    UInt32Vector_t vec = m_GetterCallback();
+    QJsonArray jsonArray;
 
-  json[getPropertyName()] = jsonArray;
+    for(int i = 0; i < vec.d.size(); i++)
+    {
+      jsonArray.push_back(static_cast<double>(vec.d[i]));
+    }
+
+    json[getPropertyName()] = jsonArray;
+  }
 }
