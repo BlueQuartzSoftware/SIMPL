@@ -47,6 +47,7 @@
 // -----------------------------------------------------------------------------
 GenerateColorTableWidget::GenerateColorTableWidget(FilterParameter* parameter, AbstractFilter* filter, QWidget* parent)
 : FilterParameterWidget(parameter, filter, parent),
+  m_PresetsDialog(nullptr),
   m_DidCausePreflight(false)
 {
   m_FilterParameter = dynamic_cast<GenerateColorTableFilterParameter*>(parameter);
@@ -65,6 +66,7 @@ GenerateColorTableWidget::GenerateColorTableWidget(QWidget* parent)
 : FilterParameterWidget(nullptr, nullptr, parent),
   m_Filter(nullptr),
   m_FilterParameter(nullptr),
+  m_PresetsDialog(nullptr),
   m_DidCausePreflight(false)
 {
   setupUi(this);
@@ -132,6 +134,12 @@ void GenerateColorTableWidget::setupGui()
   {
 
   }
+
+  m_PresetsDialog = QSharedPointer<ColorPresetsDialog>(new ColorPresetsDialog(this));
+  connect(m_PresetsDialog.data(), SIGNAL(applyPreset(const QJsonObject&, const QPixmap&)), this, SLOT(presetSelected(const QJsonObject&, const QPixmap&)));
+
+  chosenPresetText->hide();
+  imageLabel->hide();
 }
 
 // -----------------------------------------------------------------------------
@@ -139,8 +147,24 @@ void GenerateColorTableWidget::setupGui()
 // -----------------------------------------------------------------------------
 void GenerateColorTableWidget::on_choosePresetBtn_pressed()
 {
-  ColorPresetsDialog dialog(this);
-  dialog.exec();
+  m_PresetsDialog->exec();
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void GenerateColorTableWidget::presetSelected(const QJsonObject& preset, const QPixmap& pixmap)
+{
+  QString presetName = "Unknown Preset";
+  if (preset.contains("Name") && preset["Name"].isString())
+  {
+    presetName = preset["Name"].toString();
+  }
+  chosenPresetText->setText(presetName);
+  chosenPresetText->show();
+
+  imageLabel->setPixmap(pixmap);
+  imageLabel->show();
 }
 
 // -----------------------------------------------------------------------------

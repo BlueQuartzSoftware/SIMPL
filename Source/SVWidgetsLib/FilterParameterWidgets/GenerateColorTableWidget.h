@@ -52,6 +52,7 @@
 
 class GenerateColorTable;
 class GenerateColorTableFilterParameter;
+class ColorPresetsDialog;
 
 /**
 * @brief
@@ -100,14 +101,17 @@ class SVWidgetsLib_EXPORT GenerateColorTableWidget : public FilterParameterWidge
   protected slots:
     void on_choosePresetBtn_pressed();
 
+    void presetSelected(const QJsonObject& preset, const QPixmap &pixmap);
+
   signals:
     void errorSettingFilterParameter(const QString& msg);
     void parametersChanged();
 
   private:
-    GenerateColorTable*   m_Filter;
-    GenerateColorTableFilterParameter*  m_FilterParameter;
-    bool m_DidCausePreflight;
+    GenerateColorTable*                       m_Filter;
+    GenerateColorTableFilterParameter*        m_FilterParameter;
+    QSharedPointer<ColorPresetsDialog>        m_PresetsDialog;
+    bool                                      m_DidCausePreflight;
 
     GenerateColorTableWidget(const GenerateColorTableWidget&); // Copy Constructor Not Implemented
     void operator=(const GenerateColorTableWidget&); // Operator '=' Not Implemented

@@ -23,7 +23,11 @@ class GenerateColorTable : public AbstractFilter
 
     virtual ~GenerateColorTable();
 
+    SIMPL_INSTANCE_PROPERTY(DataArrayPath, SelectedDataArray)
+    Q_PROPERTY(DataArrayPath SelectedDataArray READ getSelectedDataArray WRITE setSelectedDataArray)
 
+    SIMPL_INSTANCE_PROPERTY(QString, RGB_ArrayName)
+    Q_PROPERTY(QString RGB_ArrayName READ getRGB_ArrayName WRITE setRGB_ArrayName)
 
     /**
      * @brief getCompiledLibraryName Reimplemented from @see AbstractFilter class

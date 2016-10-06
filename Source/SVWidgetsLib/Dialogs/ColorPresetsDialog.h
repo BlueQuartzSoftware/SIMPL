@@ -73,12 +73,12 @@ public:
   const QJsonObject currentPreset();
 
 signals:
-  void applyPreset(const QJsonObject& preset);
+  void applyPreset(const QJsonObject& preset, const QPixmap& pixmap);
 
 protected slots:
   void updateEnabledStateForSelection();
   void updateForSelectedIndex(const QModelIndex& idx);
-  void triggerApply(const QModelIndex& _idx=QModelIndex());
+  void triggerApply();
 
 private:
   class pqInternals;

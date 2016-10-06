@@ -76,9 +76,16 @@ ColorPresetsDialog::ColorPresetsDialog(QWidget* parentObject) :
                 SLOT(updateEnabledStateForSelection()));
   this->updateEnabledStateForSelection();
 
-  this->connect(ui.gradients, SIGNAL(doubleClicked(const QModelIndex&)),
-                SLOT(triggerApply(const QModelIndex&)));
-  this->connect(ui.apply, SIGNAL(clicked()), SLOT(triggerApply()));
+  this->connect(ui.okBtn, SIGNAL(clicked()), SLOT(triggerApply()));
+
+  if (ui.gradients->selectionModel()->selectedRows().size() <= 0)
+  {
+    ui.okBtn->setDisabled(true);
+  }
+  else
+  {
+    ui.okBtn->setEnabled(true);
+  }
 }
 
 // -----------------------------------------------------------------------------
@@ -115,7 +122,7 @@ void ColorPresetsDialog::updateEnabledStateForSelection()
   }
   else
   {
-    ui.apply->setEnabled(false);
+    ui.okBtn->setEnabled(false);
 
     bool isEditable = true;
     foreach (const QModelIndex &idx, selectedRows)
@@ -137,22 +144,23 @@ void ColorPresetsDialog::updateForSelectedIndex(const QModelIndex& idx)
 
   const Ui::ColorPresetsDialog &ui = internals.Ui;
 
-  ui.apply->setEnabled(true);
+  ui.okBtn->setEnabled(true);
 }
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void ColorPresetsDialog::triggerApply(const QModelIndex& idx)
+void ColorPresetsDialog::triggerApply()
 {
   const pqInternals& internals = *this->Internals;
   const Ui::ColorPresetsDialog &ui = this->Internals->Ui;
 
-  const QModelIndex index =  idx.isValid()?
-        idx : ui.gradients->selectionModel()->currentIndex();
+  const QModelIndex index =  ui.gradients->selectionModel()->currentIndex();
   const QJsonObject& preset = internals.Model->getPresets()->GetPreset(index.row());
-  Q_ASSERT(preset.empty() == false);
-  emit applyPreset(preset);
+  QPixmap presetPixmap = internals.Model->data(index, Qt::DecorationRole).value<QPixmap>();
+  Q_ASSERT(preset.isEmpty() == false);
+  emit applyPreset(preset, presetPixmap);
+  close();
 }
 
 // -----------------------------------------------------------------------------

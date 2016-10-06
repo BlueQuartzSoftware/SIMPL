@@ -5,8 +5,8 @@
 #include "GenerateColorTable.h"
 
 #include "SIMPLib/Common/Constants.h"
-#include "SIMPLib/FilterParameters/AbstractFilterParametersReader.h"
-#include "SIMPLib/FilterParameters/AbstractFilterParametersWriter.h"
+#include "SIMPLib/FilterParameters/DataArraySelectionFilterParameter.h"
+#include "SIMPLib/FilterParameters/StringFilterParameter.h"
 #include "SIMPLib/FilterParameters/GenerateColorTableFilterParameter.h"
 #include "SIMPLib/SIMPLibVersion.h"
 
@@ -48,11 +48,18 @@ void GenerateColorTable::setupFilterParameters()
 
   {
     GenerateColorTableFilterParameter::Pointer parameter = GenerateColorTableFilterParameter::New();
-    parameter->setHumanLabel("Select Preset");
+    parameter->setHumanLabel("Select Preset...");
     parameter->setCategory(FilterParameter::Parameter);
     parameter->setFilter(this);
     parameters.push_back(parameter);
   }
+
+  {
+    DataArraySelectionFilterParameter::RequirementType req;
+    parameters.push_back(SIMPL_NEW_DA_SELECTION_FP("Data Array", SelectedDataArray, FilterParameter::RequiredArray, GenerateColorTable, req));
+  }
+
+  parameters.push_back(SIMPL_NEW_STRING_FP("RGB Array Name", RGB_ArrayName, FilterParameter::CreatedArray, GenerateColorTable));
 
   setFilterParameters(parameters);
 }
