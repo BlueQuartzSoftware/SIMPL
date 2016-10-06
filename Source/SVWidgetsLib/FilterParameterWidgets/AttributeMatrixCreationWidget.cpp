@@ -139,9 +139,13 @@ void AttributeMatrixCreationWidget::setupGui()
   connect(attributeMatrixName, SIGNAL(textEdited(const QString&)), this, SLOT(widgetChanged(const QString&)));
 
   attributeMatrixName->blockSignals(true);
-  attributeMatrixName->clear();
+  m_SelectedDataContainerPath->blockSignals(true);
+  DataArrayPath amPath = getFilter()->property(PROPERTY_NAME_AS_CHAR).value<DataArrayPath>();
+  m_SelectedDataContainerPath->setText(amPath.getDataContainerName());
+  attributeMatrixName->setText(amPath.getAttributeMatrixName());
   // Now let the gui send signals like normal
   attributeMatrixName->blockSignals(false);
+  m_SelectedDataContainerPath->blockSignals(false);
 
   hideButton();
 }
@@ -265,15 +269,19 @@ void AttributeMatrixCreationWidget::dataContainerSelected(QString path)
 // -----------------------------------------------------------------------------
 void AttributeMatrixCreationWidget::setSelectedPath(QString path)
 {
-  DataArrayPath amPath = DataArrayPath::Deserialize(path, Detail::Delimiter);
-  if(amPath.isEmpty())
-  {
-    return;
-  }
+  DataArrayPath dcPath = DataArrayPath::Deserialize(path, Detail::Delimiter);
+  setSelectedPath(dcPath);
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void AttributeMatrixCreationWidget::setSelectedPath(DataArrayPath dcPath)
+{
+  if (dcPath.isEmpty()) { return; }
 
   m_SelectedDataContainerPath->setText("");
   m_SelectedDataContainerPath->setToolTip("");
-  attributeMatrixName->clear();
 
   DataContainerArray::Pointer dca = getFilter()->getDataContainerArray();
   if(nullptr == dca.get())
@@ -281,13 +289,12 @@ void AttributeMatrixCreationWidget::setSelectedPath(QString path)
     return;
   }
 
-  DataContainer::Pointer dc = dca->getPrereqDataContainer<AbstractFilter>(getFilter(), amPath.getDataContainerName());
-  if(nullptr != dc.get())
+  if (dca->doesDataContainerExist(dcPath.getDataContainerName()))
   {
+    DataContainer::Pointer dc = dca->getDataContainer(dcPath.getDataContainerName());
     QString html = dc->getInfoString(SIMPL::HtmlFormat);
     m_SelectedDataContainerPath->setToolTip(html);
-    m_SelectedDataContainerPath->setText(amPath.getDataContainerName());
-    attributeMatrixName->setText(amPath.getAttributeMatrixName());
+    m_SelectedDataContainerPath->setText(dcPath.getDataContainerName());
   }
 }
 
@@ -337,9 +344,6 @@ void AttributeMatrixCreationWidget::beforePreflight()
     return;
   }
 
-  DataArrayPath path = getFilter()->property(PROPERTY_NAME_AS_CHAR).value<DataArrayPath>();
-
-  setSelectedPath(path.serialize(Detail::Delimiter));
   createSelectionMenu();
 }
 
@@ -348,7 +352,22 @@ void AttributeMatrixCreationWidget::beforePreflight()
 // -----------------------------------------------------------------------------
 void AttributeMatrixCreationWidget::afterPreflight()
 {
-  // std::cout << "After Preflight" << std::endl;
+  DataContainerArray::Pointer dca = getFilter()->getDataContainerArray();
+  if (NULL == dca.get()) { return; }
+
+  if (dca->doesDataContainerExist(m_SelectedDataContainerPath->text()))
+  {
+    DataContainer::Pointer dc = dca->getDataContainer(m_SelectedDataContainerPath->text());
+    if (nullptr != dc.get()) {
+      QString html = dc->getInfoString(SIMPL::HtmlFormat);
+      m_SelectedDataContainerPath->setToolTip(html);
+      m_SelectedDataContainerPath->setStyleSheet(QtSStyles::DAPSelectionButtonStyle(true));
+    }
+  }
+  else
+  {
+    m_SelectedDataContainerPath->setStyleSheet(QtSStyles::DAPSelectionButtonStyle(false));
+  }
 }
 
 // -----------------------------------------------------------------------------
