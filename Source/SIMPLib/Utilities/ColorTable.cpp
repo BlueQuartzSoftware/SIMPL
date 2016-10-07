@@ -96,7 +96,7 @@ void SIMPLColorTable::GetColorTable(int numColors, QVector<float>& colors)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-QVector<int> SIMPLColorTable::GetColorTable(int numColors, QJsonArray colorControlPoints)
+std::vector<unsigned char> SIMPLColorTable::GetColorTable(int numColors, QJsonArray colorControlPoints)
 {
   int numControlColors = colorControlPoints.count() / 4;
   int numComponents = 4;
@@ -124,11 +124,11 @@ QVector<int> SIMPLColorTable::GetColorTable(int numColors, QJsonArray colorContr
     binPoints[i] = (binPoints[i] - min) / (max - min);
   }
 
-  QVector<int> generatedColors(numColors * 3);
+  std::vector<unsigned char> generatedColors(numColors * 3);
   int currentBinIndex = 0;
   float currFraction = 0.0f;
   float allColorVal = 0.0f;
-  int r = 0, g = 0, b = 0;
+  unsigned char r = 0, g = 0, b = 0;
   float colorStep = 1.0 / float(numColors);
   for(int i = 0; i < numColors; i++)
   {

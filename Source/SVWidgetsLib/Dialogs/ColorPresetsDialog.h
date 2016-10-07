@@ -66,11 +66,23 @@ public:
   ColorPresetsDialog(QWidget* parent=0);
   virtual ~ColorPresetsDialog();
 
-  /// Set the current preset using its name.
-  void setCurrentPreset(const char* presetName);
+  /**
+   * @brief setCurrentPreset
+   * @param presetName
+   */
+  void setCurrentPreset(const char* presetName, bool applyPreset = true);
 
-  /// Return current preset, if any.
+  /**
+   * @brief currentPreset
+   * @return
+   */
   const QJsonObject currentPreset();
+
+  /**
+   * @brief currentPresetIndex
+   * @return
+   */
+  int currentPresetIndex();
 
 signals:
   void applyPreset(const QJsonObject& preset, const QPixmap& pixmap);

@@ -205,7 +205,7 @@ QPixmap ColorPresets::getPixmapFromPreset(unsigned int index)
   {
     QJsonArray presetArray = presetObj["RGBPoints"].toArray();
     int numSamples = resolution.width();
-    QVector<int> colorValues = SIMPLColorTable::GetColorTable(numSamples, presetArray);
+    std::vector<unsigned char> colorValues = SIMPLColorTable::GetColorTable(numSamples, presetArray);
 
     QImage image(numSamples, 1, QImage::Format_RGB888);
 

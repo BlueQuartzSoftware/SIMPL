@@ -98,7 +98,7 @@ ColorPresetsDialog::~ColorPresetsDialog()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void ColorPresetsDialog::setCurrentPreset(const char* presetName)
+void ColorPresetsDialog::setCurrentPreset(const char* presetName, bool applyPreset)
 {
   pqInternals& internals = (*this->Internals);
   QModelIndex idx = internals.Model->indexFromName(presetName);
@@ -106,6 +106,11 @@ void ColorPresetsDialog::setCurrentPreset(const char* presetName)
   {
     internals.Ui.gradients->selectionModel()->setCurrentIndex(
           idx, QItemSelectionModel::ClearAndSelect);
+
+    if (applyPreset)
+    {
+      triggerApply();
+    }
   }
 }
 
@@ -160,7 +165,7 @@ void ColorPresetsDialog::triggerApply()
   QPixmap presetPixmap = internals.Model->data(index, Qt::DecorationRole).value<QPixmap>();
   Q_ASSERT(preset.isEmpty() == false);
   emit applyPreset(preset, presetPixmap);
-  close();
+  done(1);
 }
 
 // -----------------------------------------------------------------------------
@@ -179,4 +184,19 @@ const QJsonObject ColorPresetsDialog::currentPreset()
   }
 
   return QJsonObject();
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+int ColorPresetsDialog::currentPresetIndex()
+{
+  const Ui::ColorPresetsDialog &ui = this->Internals->Ui;
+  QModelIndex idx = ui.gradients->selectionModel()->currentIndex();
+  if (idx.isValid())
+  {
+    return idx.row();
+  }
+
+  return -1;
 }

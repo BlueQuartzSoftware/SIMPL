@@ -81,16 +81,11 @@ QString GenerateColorTableFilterParameter::getWidgetType()
 // -----------------------------------------------------------------------------
 void GenerateColorTableFilterParameter::readJson(const QJsonObject& json)
 {
-//  QJsonValue jsonValue = json[getPropertyName()];
-//  if(!jsonValue.isUndefined())
-//  {
-//    QJsonObject jsonObject = jsonValue.toObject();
-//    DataContainerArrayProxy proxy;
-//    proxy.readJson(jsonObject);
-//    m_Filter->setInputFileDataContainerArrayProxy(proxy);
-//  }
+  QString presetName = json["SelectedPresetName"].toString();
+  m_Filter->setSelectedPresetName(presetName);
 
-//  m_Filter->setInputFile(json["InputFile"].toString());
+  QJsonArray presetControlPoints = json["SelectedPresetControlPoints"].toArray();
+  m_Filter->setSelectedPresetControlPoints(presetControlPoints);
 }
 
 // -----------------------------------------------------------------------------
@@ -98,9 +93,9 @@ void GenerateColorTableFilterParameter::readJson(const QJsonObject& json)
 // -----------------------------------------------------------------------------
 void GenerateColorTableFilterParameter::writeJson(QJsonObject& json)
 {
-//  DataContainerArrayProxy proxy = m_Filter->getInputFileDataContainerArrayProxy();
-//  QJsonObject obj;
-//  proxy.writeJson(obj);
-//  json[getPropertyName()] = obj;
-//  json["InputFile"] = m_Filter->getInputFile();
+  QString presetName = m_Filter->getSelectedPresetName();
+  QJsonArray presetControlPoints = m_Filter->getSelectedPresetControlPoints();
+
+  json["SelectedPresetName"] = presetName;
+  json["SelectedPresetControlPoints"] = presetControlPoints;
 }

@@ -5,6 +5,8 @@
 #ifndef _generatecolortable_h_
 #define _generatecolortable_h_
 
+#include <QtCore/QJsonObject>
+
 #include "SIMPLib/SIMPLib.h"
 #include "SIMPLib/Common/AbstractFilter.h"
 #include "SIMPLib/Common/SIMPLibSetGetMacros.h"
@@ -23,8 +25,14 @@ class GenerateColorTable : public AbstractFilter
 
     virtual ~GenerateColorTable();
 
-    SIMPL_INSTANCE_PROPERTY(DataArrayPath, SelectedDataArray)
-    Q_PROPERTY(DataArrayPath SelectedDataArray READ getSelectedDataArray WRITE setSelectedDataArray)
+    SIMPL_INSTANCE_PROPERTY(QString, SelectedPresetName)
+    Q_PROPERTY(QString SelectedPresetName READ getSelectedPresetName WRITE setSelectedPresetName)
+
+    SIMPL_INSTANCE_PROPERTY(QJsonArray, SelectedPresetControlPoints)
+    Q_PROPERTY(QJsonArray SelectedPresetControlPoints READ getSelectedPresetControlPoints WRITE setSelectedPresetControlPoints)
+
+    SIMPL_INSTANCE_PROPERTY(DataArrayPath, SelectedDataArrayPath)
+    Q_PROPERTY(DataArrayPath SelectedDataArrayPath READ getSelectedDataArrayPath WRITE setSelectedDataArrayPath)
 
     SIMPL_INSTANCE_PROPERTY(QString, RGB_ArrayName)
     Q_PROPERTY(QString RGB_ArrayName READ getRGB_ArrayName WRITE setRGB_ArrayName)
@@ -120,6 +128,13 @@ class GenerateColorTable : public AbstractFilter
     void initialize();
 
   private:
+
+    /**
+     * @brief findNumOfUniqueValues
+     */
+    template <typename T>
+    void generateColorArray(typename DataArray<T>::Pointer arrayPtr);
+
     GenerateColorTable(const GenerateColorTable&); // Copy Constructor Not Implemented
     void operator=(const GenerateColorTable&); // Operator '=' Not Implemented
 };

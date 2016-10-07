@@ -118,7 +118,7 @@ class SIMPLib_EXPORT SIMPLColorTable
     */
     static void GetColorTable(int numColors, QVector<float>& colors);
 
-    static QVector<int> GetColorTable(int numColors, QJsonArray colorNodeArray);
+    static std::vector<unsigned char> GetColorTable(int numColors, QJsonArray colorNodeArray);
 
   private:
     SIMPLColorTable(const SIMPLColorTable&); // Copy Constructor Not Implemented

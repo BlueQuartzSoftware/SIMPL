@@ -130,16 +130,20 @@ void GenerateColorTableWidget::setupGui()
     choosePresetBtn->setText(m_FilterParameter->getHumanLabel());
   }
 
-  if(getFilter() != nullptr)
-  {
-
-  }
-
   m_PresetsDialog = QSharedPointer<ColorPresetsDialog>(new ColorPresetsDialog(this));
   connect(m_PresetsDialog.data(), SIGNAL(applyPreset(const QJsonObject&, const QPixmap&)), this, SLOT(presetSelected(const QJsonObject&, const QPixmap&)));
 
-  chosenPresetText->hide();
-  imageLabel->hide();
+  if(getFilter() != nullptr)
+  {
+    QString presetName = m_Filter->getSelectedPresetName();
+    m_PresetsDialog->setCurrentPreset(presetName.toStdString().c_str());
+
+    if (presetName.isEmpty())
+    {
+      chosenPresetText->hide();
+      imageLabel->hide();
+    }
+  }
 }
 
 // -----------------------------------------------------------------------------
@@ -147,7 +151,15 @@ void GenerateColorTableWidget::setupGui()
 // -----------------------------------------------------------------------------
 void GenerateColorTableWidget::on_choosePresetBtn_pressed()
 {
-  m_PresetsDialog->exec();
+  QJsonObject preset = m_PresetsDialog->currentPreset();
+  int exitCode = m_PresetsDialog->exec();
+  if (exitCode == QDialog::Rejected)
+  {
+    if (preset.contains("Name") && preset["Name"].isString())
+    {
+      m_PresetsDialog->setCurrentPreset(preset["Name"].toString().toStdString().c_str(), false);
+    }
+  }
 }
 
 // -----------------------------------------------------------------------------
@@ -165,6 +177,8 @@ void GenerateColorTableWidget::presetSelected(const QJsonObject& preset, const Q
 
   imageLabel->setPixmap(pixmap);
   imageLabel->show();
+
+  emit parametersChanged();
 }
 
 // -----------------------------------------------------------------------------
@@ -172,10 +186,19 @@ void GenerateColorTableWidget::presetSelected(const QJsonObject& preset, const Q
 // -----------------------------------------------------------------------------
 void GenerateColorTableWidget::filterNeedsInputParameters(AbstractFilter* filter)
 {
-//  // qDebug() << "GenerateColorTableWidget::filterNeedsInputParameters()";
-//  m_Filter->setInputFile(filePath->text());
-//  updateProxyFromModel(); // Will update m_DcaProxy with the latest selections from the Model
-//  m_Filter->setInputFileDataContainerArrayProxy(m_DcaProxy);
+  Q_UNUSED(filter)
+
+  QJsonObject preset = m_PresetsDialog->currentPreset();
+
+  if (preset.contains("Name") && preset["Name"].isString())
+  {
+    m_Filter->setSelectedPresetName(preset["Name"].toString());
+  }
+
+  if (preset.contains("RGBPoints") && preset["RGBPoints"].isArray())
+  {
+    m_Filter->setSelectedPresetControlPoints(preset["RGBPoints"].toArray());
+  }
 }
 
 // -----------------------------------------------------------------------------
