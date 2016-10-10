@@ -88,6 +88,8 @@ class SVWidgetsLib_EXPORT FilterParameterWidget : public QFrame
 
     virtual void setupGui();
 
+    QString wrapStringInHtml(const QString& message);
+
   public slots:
 
     void setLinkedConditionalState(int state);
