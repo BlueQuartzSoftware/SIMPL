@@ -178,42 +178,106 @@ void GenerateColorTable::execute()
 // -----------------------------------------------------------------------------
 template <typename T>
 void GenerateColorTable::generateColorArray(typename DataArray<T>::Pointer arrayPtr)
-{
-  QSet<T> valueSet;
+{  
+  if (arrayPtr->getNumberOfTuples() <= 0) { return; }
 
-  for (int i=0; i<arrayPtr->getNumberOfTuples(); i++)
-  {
-    valueSet.insert(arrayPtr->getValue(i));
-  }
-
-  int numOfUniqueValues = valueSet.size();
+  /* For each item in the data array:
+   * 1. Normalize the value to between 0 and 1
+   * 2. Figure out which bin it is located in
+   * 3. Find the location of the value within that bin
+   * 4. Calculate the RGB value
+   * 5. Add RGB value to colorArray array
+  */
 
   QJsonArray presetControlPoints = getSelectedPresetControlPoints();
-  std::vector<unsigned char> rgbArray = SIMPLColorTable::GetColorTable(numOfUniqueValues, presetControlPoints);
-  QMap<T, std::vector<unsigned char> > valueToColorMap;
+  if (presetControlPoints.size() <= 0) { return; }
 
-  int colorIdx = 0;
-  for (typename QSet<T>::iterator valueIter = valueSet.begin(); valueIter != valueSet.end(); valueIter++)
+  int numControlColors = presetControlPoints.count() / 4;
+  int numComponents = 4;
+  std::vector<std::vector<double> > controlPoints(numControlColors, std::vector<double>(numComponents));
+
+  // Migrate colorControlPoints values from QJsonArray to 2D array.  Store A-values in binPoints vector.
+  QVector<float> binPoints;
+  for (int i=0; i<numControlColors; i++)
   {
-    T value = *valueIter;
-    std::vector<unsigned char> color {rgbArray[colorIdx + 0], rgbArray[colorIdx + 1], rgbArray[colorIdx + 2]};
-    valueToColorMap.insert(value, color);
-    colorIdx = colorIdx + 3;
+    for (int j=0; j<numComponents; j++)
+    {
+      controlPoints[i][j] = static_cast<float>(presetControlPoints[numComponents*i + j].toDouble());
+      if (j == 0)
+      {
+        binPoints.push_back(controlPoints[i][j]);
+      }
+    }
+  }
+
+  // Normalize binPoints values
+  float binMin = binPoints[0];
+  float binMax = binPoints[binPoints.size() - 1];
+  for (int i=0; i<binPoints.size(); i++)
+  {
+    binPoints[i] = (binPoints[i] - binMin) / (binMax - binMin);
+  }
+
+  T min = arrayPtr->getValue(0);
+  T max = arrayPtr->getValue(0);
+  for (int i=1; i<arrayPtr->getNumberOfTuples(); i++)
+  {
+    if (arrayPtr->getValue(i) < min) { min = arrayPtr->getValue(i); }
+    if (arrayPtr->getValue(i) > max) { max = arrayPtr->getValue(i); }
   }
 
   DataArrayPath tmpPath = getSelectedDataArrayPath();
   tmpPath.setDataArrayName(getRGB_ArrayName());
 
-  UInt8ArrayType::Pointer colorArray = getDataContainerArray()->getPrereqArrayFromPath<DataArray<uint8_t>, AbstractFilter>(this, tmpPath, QVector<size_t>(1, 3));
+  UInt8ArrayType::Pointer colorArray = getDataContainerArray()->getPrereqArrayFromPath<UInt8ArrayType, AbstractFilter>(this, tmpPath, QVector<size_t>(1, 3));
   if (getErrorCondition() < 0) { return; }
 
   for (int i=0; i<arrayPtr->getNumberOfTuples(); i++)
   {
-    std::vector<unsigned char> rgbColor = valueToColorMap.value(arrayPtr->getValue(i));
+    // Normalize value
+    T nValue = (arrayPtr->getValue(i) - min) / (max - min);
 
-    colorArray->setComponent(i, 0, rgbColor[0]);
-    colorArray->setComponent(i, 1, rgbColor[1]);
-    colorArray->setComponent(i, 2, rgbColor[2]);
+    /* This is a brute-force way of finding the proper bins.
+       We will need to change this method to a binary search. */
+    int rightBinIndex = 0;
+    while (binPoints[rightBinIndex] < nValue)
+    {
+      rightBinIndex++;
+    }
+    int leftBinIndex = rightBinIndex - 1;
+    if (leftBinIndex < 0)
+    {
+      leftBinIndex = 0;
+      rightBinIndex = 1;
+    }
+    // *********************************************************
+
+    // Find the fractional distance traveled between the beginning and end of the current color bin
+    float currFraction = 0.0f;
+    if (rightBinIndex < binPoints.size())
+    {
+      currFraction = (nValue - binPoints[leftBinIndex]) / (binPoints[rightBinIndex] - binPoints[leftBinIndex]);
+    }
+    else
+    {
+      currFraction = (nValue - binPoints[leftBinIndex]) / (1 - binPoints[leftBinIndex]);
+    }
+
+    // If the current color bin index is larger than the total number of control colors, automatically set the currentBinIndex
+    // to the last control color.
+    if(leftBinIndex > numControlColors - 1)
+    {
+      leftBinIndex = numControlColors - 1;
+    }
+
+    // Calculate the RGB values
+    unsigned char r = (controlPoints[leftBinIndex][1] * (1.0 - currFraction) + controlPoints[rightBinIndex][1] * currFraction) * 255;
+    unsigned char g = (controlPoints[leftBinIndex][2] * (1.0 - currFraction) + controlPoints[rightBinIndex][2] * currFraction) * 255;
+    unsigned char b = (controlPoints[leftBinIndex][3] * (1.0 - currFraction) + controlPoints[rightBinIndex][3] * currFraction) * 255;
+
+    colorArray->setComponent(i, 0, r);
+    colorArray->setComponent(i, 1, g);
+    colorArray->setComponent(i, 2, b);
   }
 }
 
