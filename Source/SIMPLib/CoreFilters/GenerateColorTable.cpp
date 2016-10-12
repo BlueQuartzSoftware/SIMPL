@@ -237,20 +237,14 @@ void GenerateColorTable::generateColorArray(typename DataArray<T>::Pointer array
     // Normalize value
     T nValue = (arrayPtr->getValue(i) - min) / (max - min);
 
-    /* This is a brute-force way of finding the proper bins.
-       We will need to change this method to a binary search. */
-    int rightBinIndex = 0;
-    while (binPoints[rightBinIndex] < nValue)
-    {
-      rightBinIndex++;
-    }
+    int rightBinIndex = findRightBinIndex_Binary<T>(nValue, binPoints);
+
     int leftBinIndex = rightBinIndex - 1;
     if (leftBinIndex < 0)
     {
       leftBinIndex = 0;
       rightBinIndex = 1;
     }
-    // *********************************************************
 
     // Find the fractional distance traveled between the beginning and end of the current color bin
     float currFraction = 0.0f;
@@ -279,6 +273,45 @@ void GenerateColorTable::generateColorArray(typename DataArray<T>::Pointer array
     colorArray->setComponent(i, 1, g);
     colorArray->setComponent(i, 2, b);
   }
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+template <typename T>
+int GenerateColorTable::findRightBinIndex(T nValue, QVector<float> binPoints)
+{
+  /* This is a brute-force way of finding the proper bins.
+     We will need to change this method to a binary search. */
+  int rightBinIndex = 0;
+  while (binPoints[rightBinIndex] < nValue)
+  {
+    rightBinIndex++;
+  }
+
+  return rightBinIndex;
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+template <typename T>
+int GenerateColorTable::findRightBinIndex_Binary(T nValue, QVector<float> binPoints)
+{
+  int min = 0, max = binPoints.size() - 1;
+  while (min < max)
+  {
+    int middle = (min + max) / 2;
+    if (nValue > binPoints[middle])
+    {
+      min = middle + 1;
+    }
+    else
+    {
+      max = middle;
+    }
+  }
+  return min;
 }
 
 // -----------------------------------------------------------------------------
