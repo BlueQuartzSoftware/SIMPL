@@ -151,7 +151,7 @@ public:
   // -----------------------------------------------------------------------------
   void CheckPreset(QString presetName, QString presetFilePath, DataContainerArray::Pointer dca)
   {
-    // Apply Black, Blue and White Preset
+    // Apply Preset
     {
       GenerateColorTable::Pointer filter = GenerateColorTable::New();
       filter->setRGB_ArrayName("CI_RGB");
@@ -203,6 +203,8 @@ public:
   // -----------------------------------------------------------------------------
   int TestGenerateColorTable()
   {
+    ReadPresets();
+
     DataContainerArray::Pointer dca = DataContainerArray::New();
 
     // Read Image File
