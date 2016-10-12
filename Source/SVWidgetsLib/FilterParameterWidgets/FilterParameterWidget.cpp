@@ -160,6 +160,21 @@ void FilterParameterWidget::setupGui()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
+QString FilterParameterWidget::wrapStringInHtml(const QString &message)
+{
+  QString html;
+  QTextStream ss (&html);
+  ss << "<html><head></head>\n";
+  ss << "<body>\n";
+  ss << "<b>" << message << "</b>\n";
+  ss << "<br/>";
+  ss << "</body></html>";
+  return html;
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
 QPoint FilterParameterWidget::adjustedMenuPosition(QPushButton* pushButton)
 {
   QSize menuSize = pushButton->menu()->sizeHint();

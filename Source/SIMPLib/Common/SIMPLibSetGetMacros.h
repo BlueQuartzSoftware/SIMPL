@@ -258,7 +258,7 @@
     } \
     return superclass::IsTypeOf(type); \
   } \
-  virtual int IsA(const char *type) override \
+  virtual int IsA(const char *type)  \
   { \
     return this->thisClass::IsTypeOf(type); \
   } \

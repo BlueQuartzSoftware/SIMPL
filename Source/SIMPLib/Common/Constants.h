@@ -593,6 +593,7 @@ namespace SIMPL
     const QString MetaData("_META_DATA");
 
     const QString Name("Name");
+    const QString Index("Index");
   }
 
   namespace CellType
@@ -661,6 +662,7 @@ namespace SIMPL
       RawDistDataColumnCount = 1,   //!<
       UnknownColumCount = 0      //!<
     };
+
 
   }
 

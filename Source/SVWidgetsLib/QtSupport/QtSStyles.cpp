@@ -43,6 +43,11 @@
 
 #include "moc_QtSStyles.cpp"
 
+namespace  {
+const QString kNormalColor("#8f8f91");
+const QString kErrorColor("#BC0000");
+}
+
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
@@ -211,11 +216,11 @@ QString QtSStyles::DAPSelectionButtonStyle(bool exists)
   ss << "QPushButton {\n";
   if(exists)
   {
-    ss << "border: 1px solid #8f8f91;\n";
+    ss << "border: 1px solid " << ::kNormalColor << ";\n";
   }
   else
   {
-    ss << "border: 1px solid #ff8f91;\n";
+    ss << "border: 1px solid " << ::kErrorColor << ";\n";
   }
   ss << "border-radius: 4px;\n";
   ss << "background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,\nstop: 0 #DDDDDD, stop: 1 #FFFFFF);\n";
@@ -245,11 +250,11 @@ QString QtSStyles::DAPSelectionButtonStyle(bool exists)
   ss << "QPushButton:hover {\n";
   if(exists)
   {
-    ss << "border: 2px solid #8f8f91;\n";
+    ss << "border: 2px solid  " << ::kNormalColor << ";\n";
   }
   else
   {
-    ss << "border: 2px solid #ff8f91;\n";
+    ss << "border: 2px solid " << ::kErrorColor << ";\n";
   }
   ss << "border-radius: 4px;\n";
   ss << "}\n";
