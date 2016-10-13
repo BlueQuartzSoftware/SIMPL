@@ -129,18 +129,6 @@ class GenerateColorTable : public AbstractFilter
 
   private:
 
-    /**
-     * @brief findNumOfUniqueValues
-     */
-    template <typename T>
-    void generateColorArray(typename DataArray<T>::Pointer arrayPtr);
-
-    template <typename T>
-    int findRightBinIndex(T nValue, QVector<float> binPoints);
-
-    template <typename T>
-    int findRightBinIndex_Binary(T nValue, QVector<float> binPoints);
-
     GenerateColorTable(const GenerateColorTable&); // Copy Constructor Not Implemented
     void operator=(const GenerateColorTable&); // Operator '=' Not Implemented
 };

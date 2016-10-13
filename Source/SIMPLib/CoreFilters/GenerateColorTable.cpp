@@ -4,6 +4,13 @@
 
 #include "GenerateColorTable.h"
 
+#ifdef SIMPLib_USE_PARALLEL_ALGORITHMS
+#include <tbb/blocked_range.h>
+#include <tbb/parallel_for.h>
+#include <tbb/partitioner.h>
+#include <tbb/task_scheduler_init.h>
+#endif
+
 #include "SIMPLib/Common/Constants.h"
 #include "SIMPLib/FilterParameters/DataArraySelectionFilterParameter.h"
 #include "SIMPLib/FilterParameters/StringFilterParameter.h"
@@ -13,6 +20,194 @@
 
 // Include the MOC generated file for this class
 #include "moc_GenerateColorTable.cpp"
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+template <typename T>
+int findRightBinIndex(T nValue, QVector<float> binPoints)
+{
+  /* This is a brute-force way of finding the proper bins.
+     We will need to change this method to a binary search. */
+  int rightBinIndex = 0;
+  while (binPoints[rightBinIndex] < nValue)
+  {
+    rightBinIndex++;
+  }
+
+  return rightBinIndex;
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+template <typename T>
+int findRightBinIndex_Binary(T nValue, QVector<float> binPoints)
+{
+  int min = 0, max = binPoints.size() - 1;
+  while (min < max)
+  {
+    int middle = (min + max) / 2;
+    if (nValue > binPoints[middle])
+    {
+      min = middle + 1;
+    }
+    else
+    {
+      max = middle;
+    }
+  }
+  return min;
+}
+
+/**
+ * @brief The GenerateColorTableImpl class implements a threaded algorithm that computes the RGB values
+ * for each element in a given array of data
+ */
+template <typename T>
+class GenerateColorTableImpl
+{
+public:
+  GenerateColorTableImpl(typename DataArray<T>::Pointer arrayPtr, QVector<float> binPoints,
+                         std::vector<std::vector<double> > controlPoints, int numControlColors, UInt8ArrayType::Pointer colorArray) :
+    m_ArrayPtr(arrayPtr),
+    m_BinPoints(binPoints),
+    m_NumControlColors(numControlColors),
+    m_ControlPoints(controlPoints),
+    m_ColorArray(colorArray)
+  {
+    m_ArrayMin = arrayPtr->getValue(0);
+    m_ArrayMax = arrayPtr->getValue(0);
+    for (int i=1; i<arrayPtr->getNumberOfTuples(); i++)
+    {
+      if (arrayPtr->getValue(i) < m_ArrayMin) { m_ArrayMin = arrayPtr->getValue(i); }
+      if (arrayPtr->getValue(i) > m_ArrayMax) { m_ArrayMax = arrayPtr->getValue(i); }
+    }
+  }
+  virtual ~GenerateColorTableImpl()
+  {
+  }
+
+  void convert(size_t start, size_t end) const
+  {
+    for (size_t i = start; i < end; i++)
+    {
+      // Normalize value
+      T nValue = (m_ArrayPtr->getValue(i) - m_ArrayMin) / (m_ArrayMax - m_ArrayMin);
+
+      int rightBinIndex = findRightBinIndex_Binary<T>(nValue, m_BinPoints);
+
+      int leftBinIndex = rightBinIndex - 1;
+      if (leftBinIndex < 0)
+      {
+        leftBinIndex = 0;
+        rightBinIndex = 1;
+      }
+
+      // Find the fractional distance traveled between the beginning and end of the current color bin
+      float currFraction = 0.0f;
+      if (rightBinIndex < m_BinPoints.size())
+      {
+        currFraction = (nValue - m_BinPoints[leftBinIndex]) / (m_BinPoints[rightBinIndex] - m_BinPoints[leftBinIndex]);
+      }
+      else
+      {
+        currFraction = (nValue - m_BinPoints[leftBinIndex]) / (1 - m_BinPoints[leftBinIndex]);
+      }
+
+      // If the current color bin index is larger than the total number of control colors, automatically set the currentBinIndex
+      // to the last control color.
+      if(leftBinIndex > m_NumControlColors - 1)
+      {
+        leftBinIndex = m_NumControlColors - 1;
+      }
+
+      // Calculate the RGB values
+      unsigned char r = (m_ControlPoints[leftBinIndex][1] * (1.0 - currFraction) + m_ControlPoints[rightBinIndex][1] * currFraction) * 255;
+      unsigned char g = (m_ControlPoints[leftBinIndex][2] * (1.0 - currFraction) + m_ControlPoints[rightBinIndex][2] * currFraction) * 255;
+      unsigned char b = (m_ControlPoints[leftBinIndex][3] * (1.0 - currFraction) + m_ControlPoints[rightBinIndex][3] * currFraction) * 255;
+
+      m_ColorArray->setComponent(i, 0, r);
+      m_ColorArray->setComponent(i, 1, g);
+      m_ColorArray->setComponent(i, 2, b);
+    }
+  }
+
+#ifdef SIMPLib_USE_PARALLEL_ALGORITHMS
+  void operator()(const tbb::blocked_range<size_t>& r) const
+  {
+    convert(r.begin(), r.end());
+  }
+#endif
+private:
+  typename DataArray<T>::Pointer                        m_ArrayPtr;
+  QVector<float>                                        m_BinPoints;
+  T                                                     m_ArrayMin;
+  T                                                     m_ArrayMax;
+  int                                                   m_NumControlColors;
+  std::vector<std::vector<double> >                     m_ControlPoints;
+  UInt8ArrayType::Pointer                               m_ColorArray;
+};
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+template <typename T>
+void generateColorArray(typename DataArray<T>::Pointer arrayPtr, QJsonArray presetControlPoints, DataArrayPath selectedDAP, QString rgbArrayName, DataContainerArray::Pointer dca)
+{
+  if (arrayPtr->getNumberOfTuples() <= 0) { return; }
+
+  if (presetControlPoints.size() <= 0) { return; }
+
+  int numControlColors = presetControlPoints.count() / 4;
+  int numComponents = 4;
+  std::vector<std::vector<double> > controlPoints(numControlColors, std::vector<double>(numComponents));
+
+  // Migrate colorControlPoints values from QJsonArray to 2D array.  Store A-values in binPoints vector.
+  QVector<float> binPoints;
+  for (int i=0; i<numControlColors; i++)
+  {
+    for (int j=0; j<numComponents; j++)
+    {
+      controlPoints[i][j] = static_cast<float>(presetControlPoints[numComponents*i + j].toDouble());
+      if (j == 0)
+      {
+        binPoints.push_back(controlPoints[i][j]);
+      }
+    }
+  }
+
+  // Normalize binPoints values
+  float binMin = binPoints[0];
+  float binMax = binPoints[binPoints.size() - 1];
+  for (int i=0; i<binPoints.size(); i++)
+  {
+    binPoints[i] = (binPoints[i] - binMin) / (binMax - binMin);
+  }
+
+  DataArrayPath tmpPath = selectedDAP;
+  tmpPath.setDataArrayName(rgbArrayName);
+
+  UInt8ArrayType::Pointer colorArray = dca->getPrereqArrayFromPath<UInt8ArrayType, AbstractFilter>(nullptr, tmpPath, QVector<size_t>(1, 3));
+  if (colorArray.get() == nullptr) { return; }
+
+#ifdef SIMPLib_USE_PARALLEL_ALGORITHMS
+  bool doParallel = true;
+#endif
+
+#ifdef SIMPLib_USE_PARALLEL_ALGORITHMS
+  if(doParallel == true)
+  {
+    tbb::parallel_for(tbb::blocked_range<size_t>(0, arrayPtr->getNumberOfTuples()), GenerateColorTableImpl<T>(arrayPtr, binPoints, controlPoints, numControlColors, colorArray),
+                      tbb::auto_partitioner());
+  }
+  else
+#endif
+  {
+    GenerateColorTableImpl<T> serial(arrayPtr, binPoints, controlPoints, numControlColors, colorArray);
+    serial.convert(0, arrayPtr->getNumberOfTuples());
+  }
+}
 
 // -----------------------------------------------------------------------------
 //
@@ -110,57 +305,57 @@ void GenerateColorTable::execute()
   if (getDataContainerArray()->getPrereqArrayFromPath<Int8ArrayType, AbstractFilter>(nullptr, getSelectedDataArrayPath(), QVector<size_t>(1, 1)).get() != nullptr)
   {
     Int8ArrayType::Pointer ptr = getDataContainerArray()->getPrereqArrayFromPath<Int8ArrayType, AbstractFilter>(this, getSelectedDataArrayPath(), QVector<size_t>(1, 1));
-    generateColorArray<int8_t>(ptr);
+    generateColorArray<int8_t>(ptr, getSelectedPresetControlPoints(), getSelectedDataArrayPath(), getRGB_ArrayName(), getDataContainerArray());
   }
   else if (getDataContainerArray()->getPrereqArrayFromPath<UInt8ArrayType, AbstractFilter>(nullptr, getSelectedDataArrayPath(), QVector<size_t>(1, 1)).get() != nullptr)
   {
     UInt8ArrayType::Pointer ptr = getDataContainerArray()->getPrereqArrayFromPath<UInt8ArrayType, AbstractFilter>(this, getSelectedDataArrayPath(), QVector<size_t>(1, 1));
-    generateColorArray<uint8_t>(ptr);
+    generateColorArray<uint8_t>(ptr, getSelectedPresetControlPoints(), getSelectedDataArrayPath(), getRGB_ArrayName(), getDataContainerArray());
   }
   else if (getDataContainerArray()->getPrereqArrayFromPath<Int16ArrayType, AbstractFilter>(nullptr, getSelectedDataArrayPath(), QVector<size_t>(1, 1)).get() != nullptr)
   {
     Int16ArrayType::Pointer ptr = getDataContainerArray()->getPrereqArrayFromPath<Int16ArrayType, AbstractFilter>(this, getSelectedDataArrayPath(), QVector<size_t>(1, 1));
-    generateColorArray<int16_t>(ptr);
+    generateColorArray<int16_t>(ptr, getSelectedPresetControlPoints(), getSelectedDataArrayPath(), getRGB_ArrayName(), getDataContainerArray());
   }
   else if (getDataContainerArray()->getPrereqArrayFromPath<UInt16ArrayType, AbstractFilter>(nullptr, getSelectedDataArrayPath(), QVector<size_t>(1, 1)).get() != nullptr)
   {
     UInt16ArrayType::Pointer ptr = getDataContainerArray()->getPrereqArrayFromPath<UInt16ArrayType, AbstractFilter>(this, getSelectedDataArrayPath(), QVector<size_t>(1, 1));
-    generateColorArray<uint16_t>(ptr);
+    generateColorArray<uint16_t>(ptr, getSelectedPresetControlPoints(), getSelectedDataArrayPath(), getRGB_ArrayName(), getDataContainerArray());
   }
   else if (getDataContainerArray()->getPrereqArrayFromPath<Int32ArrayType, AbstractFilter>(nullptr, getSelectedDataArrayPath(), QVector<size_t>(1, 1)).get() != nullptr)
   {
     Int32ArrayType::Pointer ptr = getDataContainerArray()->getPrereqArrayFromPath<Int32ArrayType, AbstractFilter>(this, getSelectedDataArrayPath(), QVector<size_t>(1, 1));
-    generateColorArray<int32_t>(ptr);
+    generateColorArray<int32_t>(ptr, getSelectedPresetControlPoints(), getSelectedDataArrayPath(), getRGB_ArrayName(), getDataContainerArray());
   }
   else if (getDataContainerArray()->getPrereqArrayFromPath<UInt32ArrayType, AbstractFilter>(nullptr, getSelectedDataArrayPath(), QVector<size_t>(1, 1)).get() != nullptr)
   {
     UInt32ArrayType::Pointer ptr = getDataContainerArray()->getPrereqArrayFromPath<UInt32ArrayType, AbstractFilter>(this, getSelectedDataArrayPath(), QVector<size_t>(1, 1));
-    generateColorArray<uint32_t>(ptr);
+    generateColorArray<uint32_t>(ptr, getSelectedPresetControlPoints(), getSelectedDataArrayPath(), getRGB_ArrayName(), getDataContainerArray());
   }
   else if (getDataContainerArray()->getPrereqArrayFromPath<Int64ArrayType, AbstractFilter>(nullptr, getSelectedDataArrayPath(), QVector<size_t>(1, 1)).get() != nullptr)
   {
     Int64ArrayType::Pointer ptr = getDataContainerArray()->getPrereqArrayFromPath<Int64ArrayType, AbstractFilter>(this, getSelectedDataArrayPath(), QVector<size_t>(1, 1));
-    generateColorArray<int64_t>(ptr);
+    generateColorArray<int64_t>(ptr, getSelectedPresetControlPoints(), getSelectedDataArrayPath(), getRGB_ArrayName(), getDataContainerArray());
   }
   else if (getDataContainerArray()->getPrereqArrayFromPath<UInt64ArrayType, AbstractFilter>(nullptr, getSelectedDataArrayPath(), QVector<size_t>(1, 1)).get() != nullptr)
   {
     UInt64ArrayType::Pointer ptr = getDataContainerArray()->getPrereqArrayFromPath<UInt64ArrayType, AbstractFilter>(this, getSelectedDataArrayPath(), QVector<size_t>(1, 1));
-    generateColorArray<uint64_t>(ptr);
+    generateColorArray<uint64_t>(ptr, getSelectedPresetControlPoints(), getSelectedDataArrayPath(), getRGB_ArrayName(), getDataContainerArray());
   }
   else if (getDataContainerArray()->getPrereqArrayFromPath<DoubleArrayType, AbstractFilter>(nullptr, getSelectedDataArrayPath(), QVector<size_t>(1, 1)).get() != nullptr)
   {
     DoubleArrayType::Pointer ptr = getDataContainerArray()->getPrereqArrayFromPath<DoubleArrayType, AbstractFilter>(this, getSelectedDataArrayPath(), QVector<size_t>(1, 1));
-    generateColorArray<double>(ptr);
+    generateColorArray<double>(ptr, getSelectedPresetControlPoints(), getSelectedDataArrayPath(), getRGB_ArrayName(), getDataContainerArray());
   }
   else if (getDataContainerArray()->getPrereqArrayFromPath<FloatArrayType, AbstractFilter>(nullptr, getSelectedDataArrayPath(), QVector<size_t>(1, 1)).get() != nullptr)
   {
     FloatArrayType::Pointer ptr = getDataContainerArray()->getPrereqArrayFromPath<FloatArrayType, AbstractFilter>(this, getSelectedDataArrayPath(), QVector<size_t>(1, 1));
-    generateColorArray<float>(ptr);
+    generateColorArray<float>(ptr, getSelectedPresetControlPoints(), getSelectedDataArrayPath(), getRGB_ArrayName(), getDataContainerArray());
   }
   else if (getDataContainerArray()->getPrereqArrayFromPath<BoolArrayType, AbstractFilter>(nullptr, getSelectedDataArrayPath(), QVector<size_t>(1, 1)).get() != nullptr)
   {
     BoolArrayType::Pointer ptr = getDataContainerArray()->getPrereqArrayFromPath<BoolArrayType, AbstractFilter>(this, getSelectedDataArrayPath(), QVector<size_t>(1, 1));
-    generateColorArray<bool>(ptr);
+    generateColorArray<bool>(ptr, getSelectedPresetControlPoints(), getSelectedDataArrayPath(), getRGB_ArrayName(), getDataContainerArray());
   }
   else
   {
@@ -171,147 +366,6 @@ void GenerateColorTable::execute()
   }
 
   notifyStatusMessage(getHumanLabel(), "Complete");
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-template <typename T>
-void GenerateColorTable::generateColorArray(typename DataArray<T>::Pointer arrayPtr)
-{  
-  if (arrayPtr->getNumberOfTuples() <= 0) { return; }
-
-  /* For each item in the data array:
-   * 1. Normalize the value to between 0 and 1
-   * 2. Figure out which bin it is located in
-   * 3. Find the location of the value within that bin
-   * 4. Calculate the RGB value
-   * 5. Add RGB value to colorArray array
-  */
-
-  QJsonArray presetControlPoints = getSelectedPresetControlPoints();
-  if (presetControlPoints.size() <= 0) { return; }
-
-  int numControlColors = presetControlPoints.count() / 4;
-  int numComponents = 4;
-  std::vector<std::vector<double> > controlPoints(numControlColors, std::vector<double>(numComponents));
-
-  // Migrate colorControlPoints values from QJsonArray to 2D array.  Store A-values in binPoints vector.
-  QVector<float> binPoints;
-  for (int i=0; i<numControlColors; i++)
-  {
-    for (int j=0; j<numComponents; j++)
-    {
-      controlPoints[i][j] = static_cast<float>(presetControlPoints[numComponents*i + j].toDouble());
-      if (j == 0)
-      {
-        binPoints.push_back(controlPoints[i][j]);
-      }
-    }
-  }
-
-  // Normalize binPoints values
-  float binMin = binPoints[0];
-  float binMax = binPoints[binPoints.size() - 1];
-  for (int i=0; i<binPoints.size(); i++)
-  {
-    binPoints[i] = (binPoints[i] - binMin) / (binMax - binMin);
-  }
-
-  T min = arrayPtr->getValue(0);
-  T max = arrayPtr->getValue(0);
-  for (int i=1; i<arrayPtr->getNumberOfTuples(); i++)
-  {
-    if (arrayPtr->getValue(i) < min) { min = arrayPtr->getValue(i); }
-    if (arrayPtr->getValue(i) > max) { max = arrayPtr->getValue(i); }
-  }
-
-  DataArrayPath tmpPath = getSelectedDataArrayPath();
-  tmpPath.setDataArrayName(getRGB_ArrayName());
-
-  UInt8ArrayType::Pointer colorArray = getDataContainerArray()->getPrereqArrayFromPath<UInt8ArrayType, AbstractFilter>(this, tmpPath, QVector<size_t>(1, 3));
-  if (getErrorCondition() < 0) { return; }
-
-  for (int i=0; i<arrayPtr->getNumberOfTuples(); i++)
-  {
-    // Normalize value
-    T nValue = (arrayPtr->getValue(i) - min) / (max - min);
-
-    int rightBinIndex = findRightBinIndex_Binary<T>(nValue, binPoints);
-
-    int leftBinIndex = rightBinIndex - 1;
-    if (leftBinIndex < 0)
-    {
-      leftBinIndex = 0;
-      rightBinIndex = 1;
-    }
-
-    // Find the fractional distance traveled between the beginning and end of the current color bin
-    float currFraction = 0.0f;
-    if (rightBinIndex < binPoints.size())
-    {
-      currFraction = (nValue - binPoints[leftBinIndex]) / (binPoints[rightBinIndex] - binPoints[leftBinIndex]);
-    }
-    else
-    {
-      currFraction = (nValue - binPoints[leftBinIndex]) / (1 - binPoints[leftBinIndex]);
-    }
-
-    // If the current color bin index is larger than the total number of control colors, automatically set the currentBinIndex
-    // to the last control color.
-    if(leftBinIndex > numControlColors - 1)
-    {
-      leftBinIndex = numControlColors - 1;
-    }
-
-    // Calculate the RGB values
-    unsigned char r = (controlPoints[leftBinIndex][1] * (1.0 - currFraction) + controlPoints[rightBinIndex][1] * currFraction) * 255;
-    unsigned char g = (controlPoints[leftBinIndex][2] * (1.0 - currFraction) + controlPoints[rightBinIndex][2] * currFraction) * 255;
-    unsigned char b = (controlPoints[leftBinIndex][3] * (1.0 - currFraction) + controlPoints[rightBinIndex][3] * currFraction) * 255;
-
-    colorArray->setComponent(i, 0, r);
-    colorArray->setComponent(i, 1, g);
-    colorArray->setComponent(i, 2, b);
-  }
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-template <typename T>
-int GenerateColorTable::findRightBinIndex(T nValue, QVector<float> binPoints)
-{
-  /* This is a brute-force way of finding the proper bins.
-     We will need to change this method to a binary search. */
-  int rightBinIndex = 0;
-  while (binPoints[rightBinIndex] < nValue)
-  {
-    rightBinIndex++;
-  }
-
-  return rightBinIndex;
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-template <typename T>
-int GenerateColorTable::findRightBinIndex_Binary(T nValue, QVector<float> binPoints)
-{
-  int min = 0, max = binPoints.size() - 1;
-  while (min < max)
-  {
-    int middle = (min + max) / 2;
-    if (nValue > binPoints[middle])
-    {
-      min = middle + 1;
-    }
-    else
-    {
-      max = middle;
-    }
-  }
-  return min;
 }
 
 // -----------------------------------------------------------------------------
