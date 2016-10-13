@@ -40,6 +40,15 @@
   <file>arrow_down_green@2x.png</file>
   <file>arrow_up_green.png</file>
   <file>arrow_up_green@2x.png</file>
+  <file>arrow_right_green.png</file>
+  <file>arrow_right_green@2x.png</file>
+  <file>arrow_left_green.png</file>
+  <file>arrow_left_green@2x.png</file>
+
+  <file>sort_up.png</file>
+  <file>sort_up@2x.png</file>
+  <file>sort_down.png</file>
+  <file>sort_down@2x.png</file>
 
   <file>disclosablegroupboxheader.png</file>
 

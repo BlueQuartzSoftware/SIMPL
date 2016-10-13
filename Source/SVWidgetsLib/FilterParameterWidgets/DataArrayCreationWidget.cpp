@@ -139,7 +139,9 @@ void DataArrayCreationWidget::setupGui()
   connect(dataArrayName, SIGNAL(textEdited(const QString&)), this, SLOT(widgetChanged(const QString&)));
 
   DataArrayPath defaultPath = getFilter()->property(PROPERTY_NAME_AS_CHAR).value<DataArrayPath>();
-  m_SelectedAttributeMatrixPath->setText(defaultPath.serialize(Detail::Delimiter));
+  DataArrayPath amPath(defaultPath.getDataContainerName(), defaultPath.getAttributeMatrixName(), "");
+  m_SelectedAttributeMatrixPath->setText(amPath.serialize(Detail::Delimiter));
+  dataArrayName->setText(defaultPath.getDataArrayName());
 }
 
 // -----------------------------------------------------------------------------
