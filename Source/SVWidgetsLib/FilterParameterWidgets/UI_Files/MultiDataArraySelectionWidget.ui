@@ -241,7 +241,7 @@
         </size>
        </property>
        <property name="toolTip">
-        <string>Use this button to move arrays out of the &quot;Selected Data Arrays&quot; column</string>
+        <string>Use this button to remove non-existant arrays out of the &quot;Selected Data Arrays&quot; column</string>
        </property>
        <property name="text">
         <string/>
