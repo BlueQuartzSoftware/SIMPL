@@ -115,9 +115,6 @@ class SVWidgetsLib_EXPORT MultiDataArraySelectionWidget : public FilterParameter
 
     void attributeMatrixSelected(QString path);
 
-    void on_attributeArraysSelectWidget_itemChanged(QListWidgetItem* item);
-
-
   protected:
     /**
      * @brief createSelectionMenu

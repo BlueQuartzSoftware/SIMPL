@@ -311,12 +311,6 @@ void MultiDataArraySelectionWidget::setSelectedPath(DataArrayPath amPath)
     QString html = attrMat->getInfoString(SIMPL::HtmlFormat);
     m_SelectedAttributeMatrixPath->setToolTip(html);
     m_SelectedAttributeMatrixPath->setText(amPath.serialize(Detail::Delimiter));
-    QList<QString> arrayNames = attrMat->getAttributeArrayNames();
-    for(int i = 0; i < arrayNames.size(); i++)
-    {
-      QString daName = arrayNames[i];
-      attributeArraysSelectWidget->addItem(daName);
-    }
   }
 }
 
@@ -330,6 +324,10 @@ void MultiDataArraySelectionWidget::on_selectBtn_pressed()
   if (item)
   {
     attributeArraysOrderWidget->addItem(item);
+
+    m_DidCausePreflight = true;
+    emit parametersChanged();
+    m_DidCausePreflight = false;
   }
 }
 
@@ -343,18 +341,11 @@ void MultiDataArraySelectionWidget::on_deselectBtn_pressed()
   if (item)
   {
     attributeArraysSelectWidget->addItem(item);
+
+    m_DidCausePreflight = true;
+    emit parametersChanged();
+    m_DidCausePreflight = false;
   }
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-void MultiDataArraySelectionWidget::on_attributeArraysSelectWidget_itemChanged(QListWidgetItem* item)
-{
-
-  m_DidCausePreflight = true;
-  emit parametersChanged();
-  m_DidCausePreflight = false;
 }
 
 // -----------------------------------------------------------------------------
@@ -426,7 +417,7 @@ void MultiDataArraySelectionWidget::removeNonexistantPaths(QVector<DataArrayPath
       for(int j = 0; j < invalidDataArrayWidgets.size(); j++)
       {
         invalidDataArrayWidgets[j]->setCheckState(Qt::Unchecked);
-        on_attributeArraysSelectWidget_itemChanged(invalidDataArrayWidgets[j]);
+        attributeArraysOrderWidget->removeItemWidget(invalidDataArrayWidgets[j]);
       }
 
       paths.removeAt(i);
@@ -475,6 +466,35 @@ void MultiDataArraySelectionWidget::afterPreflight()
       QString html = am->getInfoString(SIMPL::HtmlFormat);
       m_SelectedAttributeMatrixPath->setToolTip(html);
       m_SelectedAttributeMatrixPath->setStyleSheet(QtSStyles::DAPSelectionButtonStyle(true));
+
+      QList<QString> arrayNames = am->getAttributeArrayNames();
+
+      QList<QString> selectListNames;
+      for (int i=0; i<attributeArraysSelectWidget->count(); i++)
+      {
+        selectListNames.append(attributeArraysSelectWidget->item(i)->text());
+      }
+
+      QList<QString> orderListNames;
+      for (int i=0; i<attributeArraysOrderWidget->count(); i++)
+      {
+        QListWidgetItem* item = attributeArraysOrderWidget->item(i);
+        QString name = item->text();
+        orderListNames.append(name);
+        if (arrayNames.contains(name) == false)
+        {
+          //item->setFlags(item->flags() & ~Qt::ItemIsEnabled);
+          item->setBackgroundColor(QColor(235, 110, 110));
+        }
+      }
+
+      for (int i=0; i<arrayNames.size(); i++)
+      {
+        if (selectListNames.contains(arrayNames[i]) == false && orderListNames.contains(arrayNames[i]) == false)
+        {
+          attributeArraysSelectWidget->addItem(arrayNames[i]);
+        }
+      }
     }
   }
   else
