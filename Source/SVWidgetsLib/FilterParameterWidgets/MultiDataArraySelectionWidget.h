@@ -126,13 +126,16 @@ class SVWidgetsLib_EXPORT MultiDataArraySelectionWidget : public FilterParameter
     void on_downBtn_pressed();
     void on_selectBtn_pressed();
     void on_deselectBtn_pressed();
+    void on_removeBtn_pressed();
+
+    void on_attributeArraysOrderWidget_currentItemChanged(QListWidgetItem* current, QListWidgetItem* previous);
+    void on_attributeArraysSelectWidget_currentItemChanged(QListWidgetItem* current, QListWidgetItem* previous);
 
   signals:
     void errorSettingFilterParameter(const QString& msg);
     void parametersChanged();
 
   private:
-
     bool m_DidCausePreflight;
 
     QPointer<QSignalMapper> m_MenuMapper;

@@ -37,11 +37,13 @@
 #include <QtCore/QList>
 #include <QtCore/QMetaProperty>
 #include <QtCore/QSignalMapper>
+#include <QtCore/QModelIndex>
 
 #include <QtGui/QStandardItemModel>
 
 #include <QtWidgets/QListWidgetItem>
 #include <QtWidgets/QMenu>
+#include <QtWidgets/QStyledItemDelegate>
 
 #include "SIMPLib/Common/AbstractFilter.h"
 #include "SIMPLib/DataContainers/DataArrayPath.h"
@@ -114,6 +116,9 @@ void MultiDataArraySelectionWidget::setupGui()
     return;
   }
 
+  attributeArraysOrderWidget->installEventFilter(this);
+  attributeArraysSelectWidget->installEventFilter(this);
+
   // Generate the text for the QLabel
   label->setText(getFilterParameter()->getHumanLabel());
 
@@ -140,6 +145,10 @@ void MultiDataArraySelectionWidget::setupGui()
     DataArrayPath selectedPath = selectedPaths[i];
     attributeArraysOrderWidget->addItem(selectedPath.getDataArrayName());
   }
+
+  selectBtn->setDisabled(true);
+  deselectBtn->setDisabled(true);
+  removeBtn->hide();
 }
 
 // -----------------------------------------------------------------------------
@@ -259,6 +268,14 @@ bool MultiDataArraySelectionWidget::eventFilter(QObject* obj, QEvent* event)
     QPoint pos = adjustedMenuPosition(m_SelectedAttributeMatrixPath);
     m_SelectedAttributeMatrixPath->menu()->move(pos);
     return true;
+  }
+  else if ( event->type() == QEvent::FocusIn && obj == attributeArraysOrderWidget )
+  {
+    on_attributeArraysOrderWidget_currentItemChanged(attributeArraysOrderWidget->currentItem(), nullptr);
+  }
+  else if ( event->type() == QEvent::FocusIn && obj == attributeArraysSelectWidget )
+  {
+    on_attributeArraysSelectWidget_currentItemChanged(attributeArraysSelectWidget->currentItem(), nullptr);
   }
   return false;
 }
@@ -389,6 +406,23 @@ void MultiDataArraySelectionWidget::on_downBtn_pressed()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
+void MultiDataArraySelectionWidget::on_removeBtn_pressed()
+{
+  QListWidgetItem* item = attributeArraysOrderWidget->currentItem();
+  if (item)
+  {
+    attributeArraysOrderWidget->removeItemWidget(item);
+    delete item;
+
+    m_DidCausePreflight = true;
+    emit parametersChanged();
+    m_DidCausePreflight = false;
+  }
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
 void MultiDataArraySelectionWidget::removeNonexistantPaths(QVector<DataArrayPath>& paths)
 {
   AbstractFilter* filter = getFilter();
@@ -430,6 +464,54 @@ void MultiDataArraySelectionWidget::removeNonexistantPaths(QVector<DataArrayPath
   if(reloadPath && !amPath.isEmpty())
   {
     setSelectedPath(amPath.serialize(Detail::Delimiter));
+  }
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void MultiDataArraySelectionWidget::on_attributeArraysOrderWidget_currentItemChanged(QListWidgetItem* current, QListWidgetItem* previous)
+{
+  Q_UNUSED(previous)
+
+  if (current == nullptr)
+  {
+    selectBtn->setDisabled(true);
+    deselectBtn->setDisabled(true);
+    removeBtn->hide();
+  }
+  else if (current->backgroundColor() == QColor(235, 110, 110))
+  {
+    selectBtn->setDisabled(true);
+    deselectBtn->setDisabled(true);
+    removeBtn->show();
+  }
+  else
+  {
+    selectBtn->setDisabled(true);
+    deselectBtn->setEnabled(true);
+    removeBtn->hide();
+  }
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void MultiDataArraySelectionWidget::on_attributeArraysSelectWidget_currentItemChanged(QListWidgetItem* current, QListWidgetItem* previous)
+{
+  Q_UNUSED(previous)
+
+  if (current == nullptr)
+  {
+    selectBtn->setDisabled(true);
+    deselectBtn->setDisabled(true);
+    removeBtn->hide();
+  }
+  else
+  {
+    selectBtn->setEnabled(true);
+    deselectBtn->setDisabled(true);
+    removeBtn->hide();
   }
 }
 
