@@ -370,7 +370,11 @@ void ComparisonSelectionWidget::beforePreflight()
     return;
   }
 
-  populateButtonText();
+  if (m_SelectedAttributeMatrixPath->text().isEmpty())
+  {
+    populateButtonText();
+  }
+
   createSelectionMenu();
 }
 
