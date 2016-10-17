@@ -11,7 +11,16 @@
    </rect>
   </property>
   <layout class="QHBoxLayout" name="horizontalLayout">
-   <property name="margin">
+   <property name="leftMargin">
+    <number>2</number>
+   </property>
+   <property name="topMargin">
+    <number>2</number>
+   </property>
+   <property name="rightMargin">
+    <number>2</number>
+   </property>
+   <property name="bottomMargin">
     <number>2</number>
    </property>
    <item>
@@ -44,7 +53,7 @@
   </layout>
  </widget>
  <resources>
-  <include location="../../../../Resources/icons/images/Icons.qrc"/>
+  <include location="../../icons/images/Icons.qrc"/>
  </resources>
  <connections/>
 </ui>
