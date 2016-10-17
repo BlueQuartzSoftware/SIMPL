@@ -108,9 +108,6 @@ void PhaseTypeSelectionWidget::setupGui()
   m_MenuMapper = new QSignalMapper(this);
   connect(m_MenuMapper, SIGNAL(mapped(QString)), this, SLOT(attributeMatrixSelected(QString)));
 
-  attributeMatrixSelected(m_DefaultPath.serialize(Detail::Delimiter));
-  createSelectionMenu();
-
   // Catch when the filter is about to execute the preflight
   connect(getFilter(), SIGNAL(preflightAboutToExecute()), this, SLOT(beforePreflight()));
 
@@ -119,6 +116,10 @@ void PhaseTypeSelectionWidget::setupGui()
 
   // Catch when the filter wants its values updated
   connect(getFilter(), SIGNAL(updateFilterParameters(AbstractFilter*)), this, SLOT(filterNeedsInputParameters(AbstractFilter*)));
+
+  QString pathProp = m_FilterParameter->getAttributeMatrixPathProperty();
+  DataArrayPath defaultPath = getFilter()->property(pathProp.toLatin1().constData()).value<DataArrayPath>();
+  m_SelectedAttributeMatrixPath->setText(defaultPath.serialize(Detail::Delimiter));
 
   updatePhaseComboBoxes();
 }
@@ -248,20 +249,7 @@ bool PhaseTypeSelectionWidget::eventFilter(QObject* obj, QEvent* event)
 // -----------------------------------------------------------------------------
 void PhaseTypeSelectionWidget::attributeMatrixSelected(QString path)
 {
-  m_SelectedAttributeMatrixPath->setText(path);
-
-  DataContainerArray::Pointer dca = getFilter()->getDataContainerArray();
-  if(nullptr == dca.get())
-  {
-    return;
-  }
-
-  IDataArray::Pointer attrArray = dca->getPrereqIDataArrayFromPath<IDataArray, AbstractFilter>(getFilter(), DataArrayPath::Deserialize(path, Detail::Delimiter));
-  if(nullptr != attrArray.get())
-  {
-    QString html = attrArray->getInfoString(SIMPL::HtmlFormat);
-    m_SelectedAttributeMatrixPath->setToolTip(html);
-  }
+  setSelectedPath(path);
 
   m_DidCausePreflight = true;
   emit parametersChanged();
@@ -271,14 +259,47 @@ void PhaseTypeSelectionWidget::attributeMatrixSelected(QString path)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
+void PhaseTypeSelectionWidget::setSelectedPath(QString path)
+{
+  DataArrayPath amPath = DataArrayPath::Deserialize(path, Detail::Delimiter);
+  setSelectedPath(amPath);
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void PhaseTypeSelectionWidget::setSelectedPath(DataArrayPath amPath)
+{
+  if (amPath.isEmpty()) { return; }
+
+  m_SelectedAttributeMatrixPath->setText("");
+  m_SelectedAttributeMatrixPath->setToolTip("");
+
+  DataContainerArray::Pointer dca = getFilter()->getDataContainerArray();
+  if(nullptr == dca.get())
+  {
+    return;
+  }
+
+  if (dca->doesAttributeMatrixExist(amPath))
+  {
+    AttributeMatrix::Pointer am = dca->getAttributeMatrix(amPath);
+    QString html = am->getInfoString(SIMPL::HtmlFormat);
+    m_SelectedAttributeMatrixPath->setToolTip(html);
+    m_SelectedAttributeMatrixPath->setText(amPath.serialize(Detail::Delimiter));
+  }
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
 void PhaseTypeSelectionWidget::updatePhaseComboBoxes()
 {
   bool ok = false;
   // setup the list of choices for the widget
-  PhaseTypeSelectionFilterParameter* phaseTypes = dynamic_cast<PhaseTypeSelectionFilterParameter*>(getFilterParameter());
-  QString countProp = phaseTypes->getPhaseTypeCountProperty();
+  QString countProp = m_FilterParameter->getPhaseTypeCountProperty();
   int phaseCount = getFilter()->property(countProp.toLatin1().constData()).toInt(&ok);
-  QString phaseDataProp = phaseTypes->getPhaseTypeDataProperty();
+  QString phaseDataProp = m_FilterParameter->getPhaseTypeDataProperty();
 
   UInt32Vector_t vectorWrapper = getFilter()->property(phaseDataProp.toLatin1().constData()).value<UInt32Vector_t>();
   QVector<quint32> dataFromFilter = vectorWrapper.d;
@@ -365,6 +386,23 @@ void PhaseTypeSelectionWidget::beforePreflight()
 // -----------------------------------------------------------------------------
 void PhaseTypeSelectionWidget::afterPreflight()
 {
+  DataContainerArray::Pointer dca = getFilter()->getDataContainerArray();
+  if (NULL == dca.get()) { return; }
+
+  if (dca->doesAttributeMatrixExist(DataArrayPath::Deserialize(m_SelectedAttributeMatrixPath->text(), Detail::Delimiter)))
+  {
+    AttributeMatrix::Pointer am = dca->getAttributeMatrix(DataArrayPath::Deserialize(m_SelectedAttributeMatrixPath->text(), Detail::Delimiter));
+    if (nullptr != am.get()) {
+      QString html = am->getInfoString(SIMPL::HtmlFormat);
+      m_SelectedAttributeMatrixPath->setToolTip(html);
+      m_SelectedAttributeMatrixPath->setStyleSheet(QtSStyles::DAPSelectionButtonStyle(true));
+    }
+  }
+  else
+  {
+    m_SelectedAttributeMatrixPath->setStyleSheet(QtSStyles::DAPSelectionButtonStyle(false));
+  }
+
   updatePhaseComboBoxes();
 }
 
@@ -378,7 +416,6 @@ void PhaseTypeSelectionWidget::filterNeedsInputParameters(AbstractFilter* filter
   //    std::cout << "PhaseTypeSelectionWidget::filterNeedsInputParameters Count = " << count << std::endl;
   //  }
 
-  PhaseTypeSelectionFilterParameter* p = dynamic_cast<PhaseTypeSelectionFilterParameter*>(getFilterParameter());
   QVariant var;
 
   // QVector<uint32_t> phaseTypes(count, SIMPL::PhaseType::UnknownPhaseType);
@@ -399,7 +436,7 @@ void PhaseTypeSelectionWidget::filterNeedsInputParameters(AbstractFilter* filter
   ok = false;
 
   // Set the value into the Filter
-  ok = filter->setProperty(p->getPhaseTypeDataProperty().toLatin1().constData(), var);
+  ok = filter->setProperty(m_FilterParameter->getPhaseTypeDataProperty().toLatin1().constData(), var);
   if(false == ok)
   {
     FilterParameterWidgetsDialogs::ShowCouldNotSetFilterParameter(getFilter(), getFilterParameter());
@@ -410,7 +447,7 @@ void PhaseTypeSelectionWidget::filterNeedsInputParameters(AbstractFilter* filter
   var.setValue(path);
   ok = false;
   // Set the value into the Filter
-  ok = filter->setProperty(p->getAttributeMatrixPathProperty().toLatin1().constData(), var);
+  ok = filter->setProperty(m_FilterParameter->getAttributeMatrixPathProperty().toLatin1().constData(), var);
   if(false == ok)
   {
     FilterParameterWidgetsDialogs::ShowCouldNotSetFilterParameter(getFilter(), getFilterParameter());
