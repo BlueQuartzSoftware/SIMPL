@@ -567,6 +567,7 @@ namespace SIMPL
     const QString PrecipitateBoundaryFraction("Precipitate Boundary Fraction");
     const QString PrecipitateStatsData("PrecipitateStatsData");
     const QString PrimaryStatsData("PrimaryStatsData");
+    const QString PresetName("PresetName");
 
     const QString RadialDistFunc("Radial Distribution Function");
     const QString RdfMinDistance("Min");
