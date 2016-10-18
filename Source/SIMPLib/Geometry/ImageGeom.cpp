@@ -53,6 +53,7 @@
 #endif
 
 #include "H5Support/H5Lite.h"
+#include "SIMPLib/Geometry/GeometryHelpers.hpp"
 #include "SIMPLib/HDF5/VTKH5Constants.h"
 
 /**
@@ -417,6 +418,7 @@ ImageGeom::ImageGeom()
   m_Origin[0] = 0.0f;
   m_Origin[1] = 0.0f;
   m_Origin[2] = 0.0f;
+  m_VoxelSizes = FloatArrayType::NullPointer();
   m_ProgressCounter = 0;
 }
 
@@ -651,6 +653,44 @@ void ImageGeom::deleteElementCentroids()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
+int ImageGeom::findElementSizes()
+{
+  if (getXRes() <= 0.0f || getYRes() <= 0.0f || getZRes() <= 0.0f)
+  {
+    return -1;
+  }
+  m_VoxelSizes = FloatArrayType::CreateArray(getNumberOfElements(), SIMPL::StringConstants::VoxelSizes);
+  m_VoxelSizes->initializeWithValue(getXRes() * getYRes() * getZRes());
+  return 1;
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+FloatArrayType::Pointer ImageGeom::getElementSizes()
+{
+  return m_VoxelSizes;
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void ImageGeom::setElementSizes(FloatArrayType::Pointer elementSizes)
+{
+  m_VoxelSizes = elementSizes;
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void ImageGeom::deleteElementSizes()
+{
+  m_VoxelSizes = FloatArrayType::NullPointer();
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
 void ImageGeom::getParametricCenter(double pCoords[3])
 {
   pCoords[0] = 0.5;
@@ -764,6 +804,14 @@ int ImageGeom::writeGeometryToHDF5(hid_t parentId, bool SIMPL_NOT_USED(writeXdmf
   {
     return err;
   }
+  if(m_VoxelSizes.get() != nullptr)
+  {
+    err = GeometryHelpers::GeomIO::WriteListToHDF5(parentId, m_VoxelSizes);
+    if(err < 0)
+    {
+      return err;
+    }
+  }
 
   err = H5Gclose(parentId);
 
@@ -841,7 +889,7 @@ int ImageGeom::readGeometryFromHDF5(hid_t parentId, bool preflight)
   float origin[3] = {0.0f, 0.0f, 0.0f};
   unsigned int spatialDims = 0;
   QString geomName = "";
-  err = gatherMetaData(parentId, volDims, spacing, origin, spatialDims, geomName);
+  err = gatherMetaData(parentId, volDims, spacing, origin, spatialDims, geomName, preflight);
   if(err < 0)
   {
     return err;
@@ -866,6 +914,7 @@ IGeometry::Pointer ImageGeom::deepCopy()
   imageCopy->setDimensions(volDims);
   imageCopy->setResolution(spacing);
   imageCopy->setOrigin(origin);
+  imageCopy->setElementSizes(getElementSizes());
   imageCopy->setSpatialDimensionality(getSpatialDimensionality());
 
   return imageCopy;
@@ -874,7 +923,7 @@ IGeometry::Pointer ImageGeom::deepCopy()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-int ImageGeom::gatherMetaData(hid_t parentId, size_t volDims[3], float spacing[3], float origin[3], unsigned int spatialDims, QString geomName)
+int ImageGeom::gatherMetaData(hid_t parentId, size_t volDims[3], float spacing[3], float origin[3], unsigned int spatialDims, QString geomName, bool preflight)
 {
   int err = QH5Lite::readPointerDataset(parentId, H5_DIMENSIONS, volDims);
   if(err < 0)
@@ -891,9 +940,15 @@ int ImageGeom::gatherMetaData(hid_t parentId, size_t volDims[3], float spacing[3
   {
     return err;
   }
+  FloatArrayType::Pointer voxelSizes = GeometryHelpers::GeomIO::ReadListFromHDF5<FloatArrayType>(SIMPL::StringConstants::VoxelSizes, parentId, preflight, err);
+  if(err < 0 && err != -2)
+  {
+    return -1;
+  }
   setDimensions(volDims[0], volDims[1], volDims[2]);
   setResolution(spacing);
   setOrigin(origin);
+  setElementSizes(voxelSizes);
 
   return err;
 }

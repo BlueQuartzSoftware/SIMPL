@@ -174,6 +174,23 @@ class SIMPLib_EXPORT QuadGeom : public IGeometry2D
     virtual size_t getNumberOfElements();
 
     /**
+     * @brief findElementSizes
+     * @return
+     */
+    virtual int findElementSizes();
+
+    /**
+     * @brief getElementSizes
+     * @return
+     */
+    virtual FloatArrayType::Pointer getElementSizes();
+
+    /**
+     * @brief deleteElementSizes
+     */
+    virtual void deleteElementSizes();
+
+    /**
      * @brief findElementsContainingVert
      * @return
      */
@@ -433,6 +450,12 @@ class SIMPLib_EXPORT QuadGeom : public IGeometry2D
     virtual void setElementCentroids(FloatArrayType::Pointer elementCentroids);
 
     /**
+     * @brief setElementSizes
+     * @param elementSizes
+     */
+    virtual void setElementSizes(FloatArrayType::Pointer elementSizes);
+
+    /**
      * @brief setEdges
      * @param edges
      */
@@ -452,6 +475,7 @@ class SIMPLib_EXPORT QuadGeom : public IGeometry2D
     ElementDynamicList::Pointer m_QuadsContainingVert;
     ElementDynamicList::Pointer m_QuadNeighbors;
     FloatArrayType::Pointer m_QuadCentroids;
+    FloatArrayType::Pointer m_QuadSizes;
 
     friend class FindQuadDerivativesImpl;
 

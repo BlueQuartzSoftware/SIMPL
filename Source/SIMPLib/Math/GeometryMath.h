@@ -41,9 +41,9 @@
 #include "SIMPLib/SIMPLib.h"
 #include "SIMPLib/Common/SIMPLibSetGetMacros.h"
 #include "SIMPLib/DataArrays/DynamicListArray.hpp"
-#include "SIMPLib/Geometry/VertexGeom.h"
-#include "SIMPLib/Geometry/TriangleGeom.h"
 
+class VertexGeom;
+class TriangleGeom;
 
 /*
  * @class GeometryMath GeometryMath.h DREAM3DLib/Common/GeometryMath.h
@@ -107,6 +107,15 @@ class SIMPLib_EXPORT GeometryMath
      * @return
      */
     static void FindTetrahedronVolume(const float a[3], const float b[3], const float c[3], const float d[3], float& volume);
+
+    /**
+     * @brief Generic function to compute the normal of a planar polygon embedded in 3D.
+     * This functions will consistently handle concave polygons.
+     * @param vertices
+     * @param numVerts
+     * @param n
+     */
+    static void FindPolygonNormal(const float* vertices, const int64_t numVerts, float n[3]);
 
     /**
      * @brief Computes the normal vector to a plane containing 3 points (AB X AC).
@@ -177,9 +186,9 @@ class SIMPLib_EXPORT GeometryMath
      * @param radius
      * @return
      */
-    static char PointInPolyhedron(const TriangleGeom::Pointer faces,
+    static char PointInPolyhedron(TriangleGeom* faces,
                                   const Int32Int32DynamicListArray::ElementList& faceIds,
-                                  const VertexGeom::Pointer faceBBs,
+                                  VertexGeom* faceBBs,
                                   const float* q,
                                   const float* ll,
                                   const float* ur,
@@ -194,9 +203,9 @@ class SIMPLib_EXPORT GeometryMath
     * @param distToBoundary
     * @return
     */
-    static char PointInPolyhedron(const TriangleGeom::Pointer faces,
+    static char PointInPolyhedron(TriangleGeom* faces,
                                   const Int32Int32DynamicListArray::ElementList& faceIds,
-                                  const VertexGeom::Pointer faceBBs,
+                                  VertexGeom* faceBBs,
                                   const float* q,
                                   const float* ll,
                                   const float* ur,
@@ -259,7 +268,7 @@ class SIMPLib_EXPORT GeometryMath
      * @param upperRight
      * @return
      */
-    static void FindBoundingBoxOfVertices(VertexGeom::Pointer verts, float* lowerLeft, float* upperRight);
+    static void FindBoundingBoxOfVertices(VertexGeom* verts, float* lowerLeft, float* upperRight);
 
     /**
      * @brief Determines the bounding box defined by the lower left and upper right corners of a set of vertices
@@ -268,7 +277,7 @@ class SIMPLib_EXPORT GeometryMath
      * @param upperRight
      * @return
      */
-    static void FindBoundingBoxOfFace(TriangleGeom::Pointer faces, int faceId, float* lowerLeft, float* upperRight);
+    static void FindBoundingBoxOfFace(TriangleGeom* faces, int faceId, float* lowerLeft, float* upperRight);
 
     /**
      * @brief Determines the bounding box defined by the lower left and upper right corners of a set of vertices
@@ -277,7 +286,7 @@ class SIMPLib_EXPORT GeometryMath
      * @param upperRight
      * @return
      */
-    static void FindBoundingBoxOfRotatedFace(TriangleGeom::Pointer faces, int faceId, float g[3][3], float* lowerLeft, float* upperRight);
+    static void FindBoundingBoxOfRotatedFace(TriangleGeom* faces, int faceId, float g[3][3], float* lowerLeft, float* upperRight);
 
     /**
      * @brief Determines the bounding box defined by the lower left and upper right corners of a set of faces
@@ -286,7 +295,7 @@ class SIMPLib_EXPORT GeometryMath
      * @param upperRight
      * @return
      */
-    static void FindBoundingBoxOfFaces(TriangleGeom::Pointer faces, Int32Int32DynamicListArray::ElementList faceIds, float* lowerLeft, float* upperRight);
+    static void FindBoundingBoxOfFaces(TriangleGeom* faces, Int32Int32DynamicListArray::ElementList faceIds, float* lowerLeft, float* upperRight);
 
     /**
      * @brief Determines the bounding box defined by the lower left and upper right corners of a set of rotated faces
@@ -296,7 +305,7 @@ class SIMPLib_EXPORT GeometryMath
      * @param upperRight
      * @return
      */
-    static void FindBoundingBoxOfRotatedFaces(TriangleGeom::Pointer faces, Int32Int32DynamicListArray::ElementList faceIds, float g[3][3], float* lowerLeft, float* upperRight);
+    static void FindBoundingBoxOfRotatedFaces(TriangleGeom* faces, Int32Int32DynamicListArray::ElementList faceIds, float g[3][3], float* lowerLeft, float* upperRight);
 
     /**
      * @brief Determines if a segment between two points intersects a triangle defined by 3 points

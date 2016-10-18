@@ -415,6 +415,7 @@ RectGridGeom::RectGridGeom()
   m_xBounds = FloatArrayType::NullPointer();
   m_yBounds = FloatArrayType::NullPointer();
   m_zBounds = FloatArrayType::NullPointer();
+  m_VoxelSizes = FloatArrayType::NullPointer();
   m_ProgressCounter = 0;
 }
 
@@ -719,6 +720,67 @@ void RectGridGeom::deleteElementCentroids()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
+int RectGridGeom::findElementSizes()
+{
+  m_VoxelSizes = FloatArrayType::CreateArray(getNumberOfElements(), SIMPL::StringConstants::VoxelSizes);
+
+  float* sizes = m_VoxelSizes->getPointer(0);
+  float* xBnds = m_xBounds->getPointer(0);
+  float* yBnds = m_yBounds->getPointer(0);
+  float* zBnds = m_zBounds->getPointer(0);
+  float xRes = 0.0f;
+  float yRes = 0.0f;
+  float zRes = 0.0f;
+
+  for(size_t z = 0; z < m_Dimensions[2]; z++)
+  {
+    for(size_t y = 0; y < m_Dimensions[1]; y++)
+    {
+      for(size_t x = 0; x < m_Dimensions[0]; x++)
+      {
+        xRes = xBnds[x + 1] - xBnds[x];
+        yRes = yBnds[y + 1] - yBnds[y];
+        zRes = zBnds[z + 1] - zBnds[z];
+        if(xRes <= 0.0f || yRes <= 0.0f || zRes <= 0.0f)
+        {
+          m_VoxelSizes = FloatArrayType::NullPointer();
+          return -1;
+        }
+        sizes[(m_Dimensions[0] * m_Dimensions[1] * z) + (m_Dimensions[0] * y) + x] = zRes * yRes * xRes;
+      }
+    }
+  }
+
+  return 1;
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+FloatArrayType::Pointer RectGridGeom::getElementSizes()
+{
+  return m_VoxelSizes;
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void RectGridGeom::setElementSizes(FloatArrayType::Pointer elementSizes)
+{
+  m_VoxelSizes = elementSizes;
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void RectGridGeom::deleteElementSizes()
+{
+  m_VoxelSizes = FloatArrayType::NullPointer();
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
 void RectGridGeom::getParametricCenter(double pCoords[3])
 {
   pCoords[0] = 0.5;
@@ -843,6 +905,14 @@ int RectGridGeom::writeGeometryToHDF5(hid_t parentId, bool SIMPL_NOT_USED(writeX
       return err;
     }
   }
+  if(m_VoxelSizes.get() != nullptr)
+  {
+    err = GeometryHelpers::GeomIO::WriteListToHDF5(parentId, m_VoxelSizes);
+    if(err < 0)
+    {
+       return err;
+    }
+  }
 
   err |= H5Gclose(parentId);
 
@@ -932,20 +1002,18 @@ int RectGridGeom::readGeometryFromHDF5(hid_t parentId, bool preflight)
 // -----------------------------------------------------------------------------
 IGeometry::Pointer RectGridGeom::deepCopy()
 {
-  RectGridGeom::Pointer RectGridCopy = RectGridGeom::CreateGeometry(getName());
+  RectGridGeom::Pointer rectGridCopy = RectGridGeom::CreateGeometry(getName());
 
-  size_t volDims[3] = {0, 0, 0};
+  size_t volDims[3] = { 0, 0, 0 };
   getDimensions(volDims);
-  FloatArrayType::Pointer xBnds = getXBounds();
-  FloatArrayType::Pointer yBnds = getYBounds();
-  FloatArrayType::Pointer zBnds = getZBounds();
-  RectGridCopy->setDimensions(volDims);
-  RectGridCopy->setXBounds(xBnds);
-  RectGridCopy->setYBounds(yBnds);
-  RectGridCopy->setZBounds(zBnds);
-  RectGridCopy->setSpatialDimensionality(getSpatialDimensionality());
+  rectGridCopy->setDimensions(volDims);
+  rectGridCopy->setXBounds(getXBounds());
+  rectGridCopy->setYBounds(getYBounds());
+  rectGridCopy->setZBounds(getZBounds());
+  rectGridCopy->setElementSizes(getElementSizes());
+  rectGridCopy->setSpatialDimensionality(getSpatialDimensionality());
 
-  return RectGridCopy;
+  return rectGridCopy;
 }
 
 // -----------------------------------------------------------------------------
@@ -973,10 +1041,16 @@ int RectGridGeom::gatherMetaData(hid_t parentId, size_t volDims[3], bool preflig
   {
     return -1;
   }
+  FloatArrayType::Pointer voxelSizes = GeometryHelpers::GeomIO::ReadListFromHDF5<FloatArrayType>(SIMPL::StringConstants::VoxelSizes, parentId, preflight, err);
+  if(err < 0 && err != -2)
+  {
+    return -1;
+  }
   setDimensions(volDims[0], volDims[1], volDims[2]);
   setXBounds(xBnds);
   setYBounds(yBnds);
   setZBounds(zBnds);
+  setElementSizes(voxelSizes);
 
   return err;
 }

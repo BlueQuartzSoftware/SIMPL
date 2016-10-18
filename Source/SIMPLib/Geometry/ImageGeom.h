@@ -100,6 +100,23 @@ class SIMPLib_EXPORT ImageGeom : public IGeometry
     virtual size_t getNumberOfElements();
 
     /**
+     * @brief findElementSizes
+     * @return
+     */
+    virtual int findElementSizes();
+
+    /**
+     * @brief getElementSizes
+     * @return
+     */
+    virtual FloatArrayType::Pointer getElementSizes();
+
+    /**
+     * @brief deleteElementSizes
+     */
+    virtual void deleteElementSizes();
+
+    /**
      * @brief findElementsContainingVert
      * @return
      */
@@ -218,14 +235,17 @@ class SIMPLib_EXPORT ImageGeom : public IGeometry
     ImageGeom();
 
     /**
-     * @brief Gathers the image geometry from an HDF5 file
+     * @brief gatherMetaData
      * @param parentid
      * @param volDims
      * @param spacing
      * @param origin
+     * @param spatialDims
+     * @param geomName
+     * @param preflight
      * @return
      */
-    virtual int gatherMetaData(hid_t parentid, size_t volDims[3], float spacing[3], float origin[3], unsigned int spatialDims, QString geomName);
+    virtual int gatherMetaData(hid_t parentid, size_t volDims[3], float spacing[3], float origin[3], unsigned int spatialDims, QString geomName, bool preflight);
 
     /**
      * @brief setElementsContaingVert
@@ -245,7 +265,14 @@ class SIMPLib_EXPORT ImageGeom : public IGeometry
      */
     virtual void setElementCentroids(FloatArrayType::Pointer elementCentroids);
 
+    /**
+     * @brief setElementSizes
+     * @param elementSizes
+     */
+    virtual void setElementSizes(FloatArrayType::Pointer elementSizes);
+
   private:
+    FloatArrayType::Pointer m_VoxelSizes;
 
     friend class FindImageDerivativesImpl;
 

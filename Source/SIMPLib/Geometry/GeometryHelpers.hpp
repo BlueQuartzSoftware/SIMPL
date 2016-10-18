@@ -1,5 +1,5 @@
-#ifndef _GeometryHelpers_H_
-#define _GeometryHelpers_H_
+#ifndef _geometryhelpers_h_
+#define _geometryhelpers_h_
 
 #include <math.h>
 
@@ -12,6 +12,8 @@
 #include "SIMPLib/DataArrays/DataArray.hpp"
 #include "SIMPLib/Geometry/IGeometry.h"
 #include "SIMPLib/HDF5/H5DataArrayReader.h"
+#include "SIMPLib/Math/GeometryMath.h"
+#include "SIMPLib/Math/MatrixMath.h"
 
 /**
 * @brief This file contains a namespace with classes for manipulating IGeometry objects
@@ -92,7 +94,7 @@ namespace GeometryHelpers
       static int WriteListToHDF5(hid_t parentId, IDataArray::Pointer list)
       {
         herr_t err = 0;
-        if (list->getNumberOfTuples() == 0) { return err; }
+        if(list->getNumberOfTuples() == 0) { return err; }
         QVector<size_t> tDims(1, list->getNumberOfTuples());
         err = list->writeH5Data(parentId, tDims);
         return err;
@@ -710,6 +712,100 @@ namespace GeometryHelpers
           }
         }
       }
+
+      /**
+       * @brief Find2DElementAreas
+       * @param elemList
+       * @param vertices
+       * @param areas
+       */
+      template<typename T>
+      static void Find2DElementAreas(typename DataArray<T>::Pointer elemList, FloatArrayType::Pointer vertices, FloatArrayType::Pointer areas)
+      {
+        float nx, ny, nz;
+        int32_t projection;
+
+        size_t numElems = elemList->getNumberOfTuples();
+        int64_t numVertsPerElem = static_cast<int64_t>(elemList->getNumberOfComponents());
+        if(numVertsPerElem < 3) { return; }
+        float* vertex = vertices->getPointer(0);
+        float* elemAreas = areas->getPointer(0);
+        float normal[3] = {0.0f, 0.0f, 0.0f};
+        std::vector<float> coords(3 * numVertsPerElem, 0.0f);
+        float vert0[3] = {0.0f, 0.0f, 0.0f};
+        float vert1[3] = {0.0f, 0.0f, 0.0f};
+        float vert2[3] = {0.0f, 0.0f, 0.0f};
+
+        for(size_t i = 0; i < numElems; i++)
+        {
+          float area = 0.0f;
+          T* elem = elemList->getTuplePointer(i);
+
+          // Create a contiguous vertex coordinates list
+          // This simplifies the pointer arithmetic a bit
+          for (int64_t j = 0; j < numVertsPerElem; j++)
+          {
+            std::copy(vertex + (3 * elem[j]), vertex + (3 * elem[j] + 3), coords.begin() + (3 * j));
+          }
+
+          float* coordinates = coords.data();
+          GeometryMath::FindPolygonNormal(coordinates, numVertsPerElem, normal);
+          MatrixMath::Normalize3x1(normal);
+
+          nx = (normal[0] > 0.0 ? normal[0] : -normal[0]);
+          ny = (normal[1] > 0.0 ? normal[1] : -normal[1]);
+          nz = (normal[2] > 0.0 ? normal[2] : -normal[2]);
+          projection = (nx > ny ? (nx > nz ? 0 : 2) : (ny > nz ? 1 : 2));
+
+          for(int64_t j = 0; j < numVertsPerElem; j++)
+          {
+            std::copy(coordinates + (3 * j), coordinates + (3 * j + 3), vert0);
+            std::copy(coordinates + (3 * ((j + 1) % numVertsPerElem)), coordinates + (3 * ((j + 1) % numVertsPerElem) + 3), vert1);
+            std::copy(coordinates + (3 * ((j + 2) % numVertsPerElem)), coordinates + (3 * ((j + 2) % numVertsPerElem) + 3), vert2);
+
+            switch (projection)
+            {
+              case 0:
+              {
+                area += coordinates[3 * ((j + 1) % numVertsPerElem) + 1] *
+                    (coordinates[3 * ((j + 2) % numVertsPerElem) + 2] - coordinates[3 * j + 2]);
+                continue;
+              }
+              case 1:
+              {
+                area += coordinates[3 * ((j + 1) % numVertsPerElem) + 0] *
+                    (coordinates[3 * ((j + 2) % numVertsPerElem) + 2] - coordinates[3 * j + 2]);
+                continue;
+              }
+              case 2:
+              {
+                area += coordinates[3 * ((j + 1) % numVertsPerElem) + 0] *
+                    (coordinates[3 * ((j + 2) % numVertsPerElem) + 1] - coordinates[3 * j + 1]);
+                continue;
+              }
+            }
+          }
+
+          switch (projection)
+          {
+            case 0:
+            {
+              area /= (2.0f * nx);
+              break;
+            }
+            case 1:
+            {
+              area /= (2.0f * ny);
+              break;
+            }
+            case 2:
+            {
+              area /= (2.0f * nz);
+            }
+          }
+          elemAreas[i] = fabsf(area);
+        }
+      }
   };
 
   /**
@@ -850,4 +946,4 @@ namespace GeometryHelpers
 
 }
 
-#endif /* _GeometryHelpers_H_ */
+#endif /* _geometryhelpers_h_ */

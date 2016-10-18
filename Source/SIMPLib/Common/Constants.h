@@ -510,6 +510,7 @@ namespace SIMPL
     const QString EdgesContainingVert("EdgesContainingVert");
     const QString EdgesName("Edges");
     const QString EdgeCentroids("EdgeCentroids");
+    const QString EdgeLengths("EdgeLengths");
     const QString Euler1("Euler 1");
     const QString Euler2("Euler 2");
     const QString Euler3("Euler 3");
@@ -522,17 +523,22 @@ namespace SIMPL
     const QString TriangleNeighbors("TriangleNeighbors");
     const QString TrianglesContainingVert("TrianglesContainingVert");
     const QString TriangleCentroids("TriangleCentroids");
+    const QString TriangleAreas("TriangleAreas");
     const QString Frequencies("Frequencies");
 
     const QString QuadsName("Quadrilaterals");
     const QString QuadNeighbors("QuadrilateralNeighbors");
     const QString QuadsContainingVert("QuadrilateralsContainingVerts");
     const QString QuadCentroids("QuadrilateralCentroids");
+    const QString QuadAreas("QuadrilateralAreas");
 
     const QString TetsName("Tetrahedra");
     const QString TetNeighbors("TetrahedralNeighbors");
     const QString TetsContainingVert("TetrahedraContainingVerts");
     const QString TetCentroids("TetrahedralCentroids");
+
+    const QString VoxelSizes("VoxelSizes");
+    const QString VertexSizes("VertexSizes");
 
     const QString GBCD("GBCD");
     const QString FeatureAvgDisorientation ("FeatureAvgDisorientation");

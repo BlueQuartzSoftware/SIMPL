@@ -100,6 +100,23 @@ class SIMPLib_EXPORT RectGridGeom : public IGeometry
     virtual size_t getNumberOfElements();
 
     /**
+     * @brief findElementSizes
+     * @return
+     */
+    virtual int findElementSizes();
+
+    /**
+     * @brief getElementSizes
+     * @return
+     */
+    virtual FloatArrayType::Pointer getElementSizes();
+
+    /**
+     * @brief deleteElementSizes
+     */
+    virtual void deleteElementSizes();
+
+    /**
      * @brief findElementsContainingVert
      * @return
      */
@@ -245,10 +262,17 @@ class SIMPLib_EXPORT RectGridGeom : public IGeometry
      */
     virtual void setElementCentroids(FloatArrayType::Pointer elementCentroids);
 
+    /**
+     * @brief setElementSizes
+     * @param elementSizes
+     */
+    virtual void setElementSizes(FloatArrayType::Pointer elementSizes);
+
   private:
     FloatArrayType::Pointer m_xBounds;
     FloatArrayType::Pointer m_yBounds;
     FloatArrayType::Pointer m_zBounds;
+    FloatArrayType::Pointer m_VoxelSizes;
 
     friend class FindRectGridDerivativesImpl;
 

@@ -297,7 +297,7 @@ void GeometryMath::GenerateRandomRay(float length, float ray[3])
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void GeometryMath::FindBoundingBoxOfVertices(VertexGeom::Pointer verts, float* ll, float* ur)
+void GeometryMath::FindBoundingBoxOfVertices(VertexGeom* verts, float* ll, float* ur)
 {
   ll[0] = 100000000.0;
   ll[1] = 100000000.0;
@@ -340,7 +340,7 @@ void GeometryMath::FindBoundingBoxOfVertices(VertexGeom::Pointer verts, float* l
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void GeometryMath::FindBoundingBoxOfFaces(TriangleGeom::Pointer faces, Int32Int32DynamicListArray::ElementList faceIds, float* ll, float* ur)
+void GeometryMath::FindBoundingBoxOfFaces(TriangleGeom* faces, Int32Int32DynamicListArray::ElementList faceIds, float* ll, float* ur)
 {
   ll[0] = 100000000.0;
   ll[1] = 100000000.0;
@@ -396,7 +396,7 @@ void GeometryMath::FindBoundingBoxOfFaces(TriangleGeom::Pointer faces, Int32Int3
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void GeometryMath::FindBoundingBoxOfRotatedFaces(TriangleGeom::Pointer faces, Int32Int32DynamicListArray::ElementList faceIds, float g[3][3], float* ll, float* ur)
+void GeometryMath::FindBoundingBoxOfRotatedFaces(TriangleGeom* faces, Int32Int32DynamicListArray::ElementList faceIds, float g[3][3], float* ll, float* ur)
 {
   ll[0] = 100000000.0;
   ll[1] = 100000000.0;
@@ -452,7 +452,7 @@ void GeometryMath::FindBoundingBoxOfRotatedFaces(TriangleGeom::Pointer faces, In
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void GeometryMath::FindBoundingBoxOfFace(TriangleGeom::Pointer faces, int faceId, float* ll, float* ur)
+void GeometryMath::FindBoundingBoxOfFace(TriangleGeom* faces, int faceId, float* ll, float* ur)
 {
   float a[3], b[3], c[3];
 
@@ -516,7 +516,7 @@ void GeometryMath::FindBoundingBoxOfFace(TriangleGeom::Pointer faces, int faceId
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void GeometryMath::FindBoundingBoxOfRotatedFace(TriangleGeom::Pointer faces, int faceId, float g[3][3], float* ll, float* ur)
+void GeometryMath::FindBoundingBoxOfRotatedFace(TriangleGeom* faces, int faceId, float g[3][3], float* ll, float* ur)
 {
   float a[3], b[3], c[3];
   float p1[3], p2[3], p3[3];
@@ -588,6 +588,64 @@ void GeometryMath::FindBoundingBoxOfRotatedFace(TriangleGeom::Pointer faces, int
   if(p3r[2] > ur[2])
   {
     ur[2] = p3r[2];
+  }
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void GeometryMath::FindPolygonNormal(const float* vertices, const int64_t numVerts, float n[3])
+{
+  // Return immediately if the  number of vertices cannot form a polygon
+  if(numVerts < 3) { return; }
+
+  // If the polygon is a triangle, then just compute its normal using simple cross product
+  if(numVerts == 3)
+  {
+    GeometryMath::FindPlaneNormalVector(&vertices[0], &vertices[3], &vertices[6], n);
+    return;
+  }
+
+  // If the polygon is not a triangle, then it may be concave; robustly
+  // determine the normal by accumulating cross product
+  std::vector<float> verts(3 * size_t(numVerts), 0.0f);
+  std::copy(vertices, vertices + (3 * numVerts), verts.begin());
+  float* vertPtr = verts.data();
+  float array[3][3];
+  float* a = array[0];
+  float* b = array[1];
+  float* c = array[2];
+  float* tmp;
+  std::copy(b, b + 3, vertPtr);
+  std::copy(c, c + 3, vertPtr + 3);
+  float vec0[3] = {0.0f, 0.0f, 0.0f};
+  float vec1[3] = {0.0f, 0.0f, 0.0f};
+  float tmpNormal[3] = {0.0f, 0.0f, 0.0f};
+
+  // Cycle through point triplets, computing cross productes and accumulating
+  // Two vertex positions remain the same (initialized above as a and b),
+  // while the third is cycled to create each unique triplet
+  for(int64_t i = 0; i < numVerts; i++)
+  {
+    tmp = a;
+    a = b;
+    b = c;
+    c = tmp;
+
+    c[0] = vertPtr[3 * ((i + 2) % numVerts) + 0];
+    c[1] = vertPtr[3 * ((i + 2) % numVerts) + 1];
+    c[2] = vertPtr[3 * ((i + 2) % numVerts) + 2];
+
+    vec0[0] = c[0] - b[0];
+    vec0[1] = c[1] - b[1];
+    vec0[2] = c[2] - b[2];
+
+    vec1[0] = a[0] - b[0];
+    vec1[1] = a[1] - b[1];
+    vec1[2] = a[2] - b[2];
+
+    MatrixMath::CrossProduct(vec0, vec1, tmpNormal);
+    std::transform(n, n + 3, tmpNormal, n, std::plus<float>());
   }
 }
 
@@ -888,7 +946,7 @@ char GeometryMath::RayCrossesTriangle(const float* a, const float* b, const floa
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-char GeometryMath::PointInPolyhedron(const TriangleGeom::Pointer faces, const Int32Int32DynamicListArray::ElementList& faceIds, const VertexGeom::Pointer faceBBs, const float* q, const float* ll,
+char GeometryMath::PointInPolyhedron(TriangleGeom* faces, const Int32Int32DynamicListArray::ElementList& faceIds, VertexGeom* faceBBs, const float* q, const float* ll,
                                      const float* ur, float radius)
 {
   float ray[3]; /* Ray */
@@ -979,7 +1037,7 @@ LOOP:
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-char GeometryMath::PointInPolyhedron(const TriangleGeom::Pointer faces, const Int32Int32DynamicListArray::ElementList& faceIds, const VertexGeom::Pointer faceBBs, const float* q, const float* ll,
+char GeometryMath::PointInPolyhedron(TriangleGeom* faces, const Int32Int32DynamicListArray::ElementList& faceIds, VertexGeom* faceBBs, const float* q, const float* ll,
                                      const float* ur, float radius, float& distToBoundary)
 {
   float ray[3] = {0.0f, 0.0f, 0.0f}; /* Ray */
