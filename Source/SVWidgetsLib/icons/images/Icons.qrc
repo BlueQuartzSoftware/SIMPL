@@ -111,6 +111,8 @@
   <file>DREAM3D.png</file>
 
   <!-- These are needed for Stats Generator  -->
+  <file>cube_molecule.png</file>
+  <file>cube_molecule@2x.png</file>
   <file>cube_molecule_add.png</file>
   <file>cube_molecule_delete.png</file>
   <file>cube_molecule_view.png</file>
