@@ -536,6 +536,7 @@ namespace SIMPL
     const QString TetNeighbors("TetrahedralNeighbors");
     const QString TetsContainingVert("TetrahedraContainingVerts");
     const QString TetCentroids("TetrahedralCentroids");
+    const QString TetVolumes("TetrahedralVolumes");
 
     const QString VoxelSizes("VoxelSizes");
     const QString VertexSizes("VertexSizes");

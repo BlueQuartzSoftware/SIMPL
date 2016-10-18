@@ -574,6 +574,7 @@ class SIMPLib_EXPORT TetrahedralGeom : public IGeometry3D
     ElementDynamicList::Pointer m_TetsContainingVert;
     ElementDynamicList::Pointer m_TetNeighbors;
     FloatArrayType::Pointer m_TetCentroids;
+    FloatArrayType::Pointer m_TetSizes;
 
     friend class FindTetDerivativesImpl;
 

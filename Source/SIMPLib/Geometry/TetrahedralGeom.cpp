@@ -144,6 +144,7 @@ TetrahedralGeom::TetrahedralGeom()
   m_TetsContainingVert = ElementDynamicList::NullPointer();
   m_TetNeighbors = ElementDynamicList::NullPointer();
   m_TetCentroids = FloatArrayType::NullPointer();
+  m_TetSizes = FloatArrayType::NullPointer();
   m_ProgressCounter = 0;
 }
 
@@ -421,7 +422,14 @@ void TetrahedralGeom::deleteElementCentroids()
 // -----------------------------------------------------------------------------
 int TetrahedralGeom::findElementSizes()
 {
-  return -1;
+  QVector<size_t> cDims(1, 1);
+  m_TetSizes = FloatArrayType::CreateArray(getNumberOfTets(), cDims, SIMPL::StringConstants::TetVolumes);
+  GeometryHelpers::Topology::FindTetVolumes<int64_t>(m_TetList, m_VertexList, m_TetSizes);
+  if(m_TetSizes.get() == nullptr)
+  {
+    return -1;
+  }
+  return 1;
 }
 
 // -----------------------------------------------------------------------------
@@ -429,15 +437,15 @@ int TetrahedralGeom::findElementSizes()
 // -----------------------------------------------------------------------------
 FloatArrayType::Pointer TetrahedralGeom::getElementSizes()
 {
-  return FloatArrayType::NullPointer();
+  return m_TetSizes;
 }
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void TetrahedralGeom::setElementSizes(FloatArrayType::Pointer SIMPL_NOT_USED(elementSizes))
+void TetrahedralGeom::setElementSizes(FloatArrayType::Pointer elementSizes)
 {
-  return;
+  m_TetSizes = elementSizes;
 }
 
 // -----------------------------------------------------------------------------
@@ -445,7 +453,7 @@ void TetrahedralGeom::setElementSizes(FloatArrayType::Pointer SIMPL_NOT_USED(ele
 // -----------------------------------------------------------------------------
 void TetrahedralGeom::deleteElementSizes()
 {
-  return;
+  m_TetSizes = FloatArrayType::NullPointer();
 }
 
 // -----------------------------------------------------------------------------
@@ -663,6 +671,15 @@ int TetrahedralGeom::writeGeometryToHDF5(hid_t parentId, bool SIMPL_NOT_USED(wri
     }
   }
 
+  if(m_TetSizes.get() != nullptr)
+  {
+    err = GeometryHelpers::GeomIO::WriteListToHDF5(parentId, m_TetSizes);
+    if(err < 0)
+    {
+      return err;
+    }
+  }
+
   if(m_TetNeighbors.get() != nullptr)
   {
     size_t numTets = getNumberOfTets();
@@ -795,6 +812,11 @@ int TetrahedralGeom::readGeometryFromHDF5(hid_t parentId, bool preflight)
   {
     return -1;
   }
+  FloatArrayType::Pointer tetSizes = GeometryHelpers::GeomIO::ReadListFromHDF5<FloatArrayType>(SIMPL::StringConstants::TetVolumes, parentId, preflight, err);
+  if(err < 0 && err != -2)
+  {
+    return -1;
+  }
   ElementDynamicList::Pointer tetNeighbors = GeometryHelpers::GeomIO::ReadDynamicListFromHDF5<uint16_t, int64_t>(SIMPL::StringConstants::TetNeighbors, parentId, numTets, preflight, err);
   if(err < 0 && err != -2)
   {
@@ -813,6 +835,7 @@ int TetrahedralGeom::readGeometryFromHDF5(hid_t parentId, bool preflight)
   setTriangles(tris);
   setUnsharedFaces(bTris);
   setElementCentroids(tetCentroids);
+  setElementSizes(tetSizes);
   setElementNeighbors(tetNeighbors);
   setElementsContainingVert(tetsContainingVert);
 
@@ -833,6 +856,7 @@ IGeometry::Pointer TetrahedralGeom::deepCopy()
   tetCopy->setElementsContainingVert(getElementsContainingVert());
   tetCopy->setElementNeighbors(getElementNeighbors());
   tetCopy->setElementCentroids(getElementCentroids());
+  tetCopy->setElementSizes(getElementSizes());
   tetCopy->setSpatialDimensionality(getSpatialDimensionality());
 
   return tetCopy;

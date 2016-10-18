@@ -806,6 +806,36 @@ namespace GeometryHelpers
           elemAreas[i] = fabsf(area);
         }
       }
+
+      /**
+       * @brief FindTetVolumes
+       * @param tetList
+       * @param vertices
+       * @param volumes
+       */
+      template<typename T>
+      static void FindTetVolumes(typename DataArray<T>::Pointer tetList, FloatArrayType::Pointer vertices, FloatArrayType::Pointer volumes)
+      {
+        size_t numTets = tetList->getNumberOfTuples();
+        float* vertex = vertices->getPointer(0);
+        float* volumePtr = volumes->getPointer(0);
+
+        for(size_t i = 0; i < numTets; i++)
+        {
+          T* tet = tetList->getTuplePointer(i);
+          float vert0[3] = {vertex[3 * tet[0] + 0], vertex[3 * tet[0] + 1], vertex[3 * tet[0] + 2]};
+          float vert1[3] = {vertex[3 * tet[1] + 0], vertex[3 * tet[1] + 1], vertex[3 * tet[1] + 2]};
+          float vert2[3] = {vertex[3 * tet[2] + 0], vertex[3 * tet[2] + 1], vertex[3 * tet[2] + 2]};
+          float vert3[3] = {vertex[3 * tet[3] + 0], vertex[3 * tet[3] + 1], vertex[3 * tet[3] + 2]};
+
+          float vertMatrix[3][3] = { { vert1[0] - vert0[0], vert2[0] - vert0[0], vert3[0] - vert0[0] },
+                                     { vert1[1] - vert0[1], vert2[1] - vert0[1], vert3[1] - vert0[1] },
+                                     { vert1[2] - vert0[2], vert2[2] - vert0[2], vert3[2] - vert0[2] }
+                                   };
+
+          volumePtr[i] = (MatrixMath::Determinant3x3(vertMatrix) / 6.0f);
+        }
+      }
   };
 
   /**
