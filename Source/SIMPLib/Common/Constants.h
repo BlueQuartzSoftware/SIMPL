@@ -349,6 +349,7 @@ namespace SIMPL
     const QString NeighborhoodList("NeighborhoodList");
     const QString Neighborhoods("Neighborhoods");
     const QString NumCells("NumCells");
+    const QString NumElements("NumElements");
     const QString NumFeaturesPerParent("NumFeaturesPerParent");
     const QString NumNeighbors("NumNeighbors");
     const QString Omega3s("Omega3s");
