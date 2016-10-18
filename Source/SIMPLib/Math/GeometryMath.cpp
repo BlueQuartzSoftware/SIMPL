@@ -616,8 +616,8 @@ void GeometryMath::FindPolygonNormal(const float* vertices, const int64_t numVer
   float* b = array[1];
   float* c = array[2];
   float* tmp;
-  std::copy(b, b + 3, vertPtr);
-  std::copy(c, c + 3, vertPtr + 3);
+  std::copy(vertPtr, vertPtr + 3, b);
+  std::copy(vertPtr + 3, vertPtr + 6, c);
   float vec0[3] = {0.0f, 0.0f, 0.0f};
   float vec1[3] = {0.0f, 0.0f, 0.0f};
   float tmpNormal[3] = {0.0f, 0.0f, 0.0f};
