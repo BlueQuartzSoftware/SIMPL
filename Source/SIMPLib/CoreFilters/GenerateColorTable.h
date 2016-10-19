@@ -14,7 +14,7 @@
 /**
  * @brief The GenerateColorTable class. See [Filter documentation](@ref generatecolortable) for details.
  */
-class GenerateColorTable : public AbstractFilter
+class SIMPLib_EXPORT GenerateColorTable : public AbstractFilter
 {
   Q_OBJECT
 

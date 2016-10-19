@@ -48,7 +48,7 @@
 /**
  * @brief The FindDerivatives class. See [Filter documentation](@ref findderivatives) for details.
  */
-class FindDerivatives : public AbstractFilter
+class SIMPLib_EXPORT FindDerivatives : public AbstractFilter
 {
   Q_OBJECT
 
