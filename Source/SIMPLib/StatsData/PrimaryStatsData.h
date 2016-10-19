@@ -104,8 +104,6 @@ class SIMPLib_EXPORT PrimaryStatsData : public StatsData
     virtual unsigned int getPhaseType();
 
     SIMPL_INSTANCE_PROPERTY(float, BoundaryArea)
-    SIMPL_INSTANCE_PROPERTY(float, PhaseFraction)
-
 
     /**
       * @breif this will generate the Bin Numbers values;

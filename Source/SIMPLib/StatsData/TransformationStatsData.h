@@ -104,7 +104,6 @@ class SIMPLib_EXPORT TransformationStatsData : public StatsData
     virtual unsigned int getPhaseType();
 
     SIMPL_INSTANCE_PROPERTY(float, BoundaryArea)
-    SIMPL_INSTANCE_PROPERTY(float, PhaseFraction)
     SIMPL_INSTANCE_PROPERTY(float, ParentPhase)
 
     /**

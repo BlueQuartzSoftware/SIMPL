@@ -100,6 +100,8 @@ class SIMPLib_EXPORT StatsData
      */
     SIMPL_INSTANCE_STRING_PROPERTY(Name)
 
+    SIMPL_INSTANCE_PROPERTY(float, PhaseFraction)
+
     /**
      * @brief GetTypeName Returns a string representation of the type of data that is stored by this class. This
      * can be a primitive like char, float, int or the name of a class.

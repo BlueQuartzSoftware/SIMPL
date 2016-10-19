@@ -102,7 +102,6 @@ class SIMPLib_EXPORT PrecipitateStatsData : public StatsData
     }
 
     SIMPL_INSTANCE_PROPERTY(float, BoundaryArea)
-    SIMPL_INSTANCE_PROPERTY(float, PhaseFraction)
     SIMPL_INSTANCE_PROPERTY(float, PrecipBoundaryFraction)
 
     virtual QString getStatsType();
