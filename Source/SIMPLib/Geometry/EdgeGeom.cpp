@@ -377,7 +377,7 @@ int EdgeGeom::findElementSizes()
     float length = 0.0f;
     for(size_t j = 0; j < 3; j++)
     {
-      length += (vert0[i] - vert1[i]) * (vert0[i] - vert1[i]);
+      length += (vert0[j] - vert1[j]) * (vert0[j] - vert1[j]);
     }
     sizes[i] = sqrtf(length);
   }
