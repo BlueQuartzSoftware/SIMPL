@@ -206,6 +206,23 @@ class SIMPLib_EXPORT EdgeGeom : public IGeometry
     virtual size_t getNumberOfElements();
 
     /**
+     * @brief findElementSizes
+     * @return
+     */
+    virtual int findElementSizes();
+
+    /**
+     * @brief getElementSizes
+     * @return
+     */
+    virtual FloatArrayType::Pointer getElementSizes();
+
+    /**
+     * @brief deleteElementSizes
+     */
+    virtual void deleteElementSizes();
+
+    /**
      * @brief findElementsContainingVert
      * @return
      */
@@ -341,12 +358,19 @@ class SIMPLib_EXPORT EdgeGeom : public IGeometry
      */
     virtual void setElementCentroids(FloatArrayType::Pointer elementCentroids);
 
+    /**
+     * @brief setElementSizes
+     * @param elementSizes
+     */
+    virtual void setElementSizes(FloatArrayType::Pointer elementSizes);
+
   private:
     SharedVertexList::Pointer m_VertexList;
     SharedEdgeList::Pointer m_EdgeList;
     ElementDynamicList::Pointer m_EdgesContainingVert;
     ElementDynamicList::Pointer m_EdgeNeighbors;
     FloatArrayType::Pointer m_EdgeCentroids;
+    FloatArrayType::Pointer m_EdgeSizes;
 
     friend class FindEdgeDerivativesImpl;
 

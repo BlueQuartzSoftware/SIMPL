@@ -173,6 +173,23 @@ class SIMPLib_EXPORT TriangleGeom : public IGeometry2D
     virtual size_t getNumberOfElements();
 
     /**
+     * @brief findElementSizes
+     * @return
+     */
+    virtual int findElementSizes();
+
+    /**
+     * @brief getElementSizes
+     * @return
+     */
+    virtual FloatArrayType::Pointer getElementSizes();
+
+    /**
+     * @brief deleteElementSizes
+     */
+    virtual void deleteElementSizes();
+
+    /**
      * @brief findElementsContainingVert
      * @return
      */
@@ -432,6 +449,12 @@ class SIMPLib_EXPORT TriangleGeom : public IGeometry2D
     virtual void setElementCentroids(FloatArrayType::Pointer elementCentroids);
 
     /**
+     * @brief setElementSizes
+     * @param elementSizes
+     */
+    virtual void setElementSizes(FloatArrayType::Pointer elementSizes);
+
+    /**
      * @brief setEdges
      * @param edges
      */
@@ -443,7 +466,6 @@ class SIMPLib_EXPORT TriangleGeom : public IGeometry2D
      */
     virtual void setUnsharedEdges(SharedEdgeList::Pointer bEdgeList);
 
-
   private:
     SharedVertexList::Pointer m_VertexList;
     SharedEdgeList::Pointer m_EdgeList;
@@ -452,6 +474,7 @@ class SIMPLib_EXPORT TriangleGeom : public IGeometry2D
     ElementDynamicList::Pointer m_TrianglesContainingVert;
     ElementDynamicList::Pointer m_TriangleNeighbors;
     FloatArrayType::Pointer m_TriangleCentroids;
+    FloatArrayType::Pointer m_TriangleSizes;
 
     friend class FindTriangleDerivativesImpl;
 

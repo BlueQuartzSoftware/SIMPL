@@ -37,6 +37,7 @@ set(SUBDIR_NAME Geometry)
 
 set(SIMPLib_${SUBDIR_NAME}_HDRS
   ${SIMPLib_SOURCE_DIR}/Geometry/IGeometry.h
+  ${SIMPLib_SOURCE_DIR}/Geometry/IGeometryGrid.h
   ${SIMPLib_SOURCE_DIR}/Geometry/IGeometry2D.h
   ${SIMPLib_SOURCE_DIR}/Geometry/IGeometry3D.h
   ${SIMPLib_SOURCE_DIR}/Geometry/ImageGeom.h
@@ -60,6 +61,7 @@ set(SIMPLib_${SUBDIR_NAME}_HDRS
 
 set(SIMPLib_${SUBDIR_NAME}_SRCS
   ${SIMPLib_SOURCE_DIR}/Geometry/IGeometry.cpp
+  ${SIMPLib_SOURCE_DIR}/Geometry/IGeometryGrid.cpp
   ${SIMPLib_SOURCE_DIR}/Geometry/IGeometry2D.cpp
   ${SIMPLib_SOURCE_DIR}/Geometry/IGeometry3D.cpp
   ${SIMPLib_SOURCE_DIR}/Geometry/ImageGeom.cpp

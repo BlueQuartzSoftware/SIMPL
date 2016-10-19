@@ -37,12 +37,12 @@
 #define _imagegeom_h_
 
 #include "SIMPLib/Common/SIMPLibSetGetMacros.h"
-#include "SIMPLib/Geometry/IGeometry.h"
+#include "SIMPLib/Geometry/IGeometryGrid.h"
 
 /**
  * @brief The ImageGeom class represents a structured rectlinear grid
  */
-class SIMPLib_EXPORT ImageGeom : public IGeometry
+class SIMPLib_EXPORT ImageGeom : public IGeometryGrid
 {
   public:
     SIMPL_SHARED_POINTERS(ImageGeom)
@@ -58,12 +58,6 @@ class SIMPLib_EXPORT ImageGeom : public IGeometry
      */
     static Pointer CreateGeometry(const QString& name);
 
-    SIMPL_INSTANCE_VEC3_PROPERTY(size_t, Dimensions)
-
-    inline size_t getXPoints() { return m_Dimensions[0]; }
-    inline size_t getYPoints() { return m_Dimensions[1]; }
-    inline size_t getZPoints() { return m_Dimensions[2]; }
-
     SIMPL_INSTANCE_VEC3_PROPERTY(float, Resolution)
 
     inline float getXRes() { return m_Resolution[0]; }
@@ -71,18 +65,6 @@ class SIMPLib_EXPORT ImageGeom : public IGeometry
     inline float getZRes() { return m_Resolution[2]; }
 
     SIMPL_INSTANCE_VEC3_PROPERTY(float, Origin)
-
-    void getCoords(size_t idx[3], float coords[3]);
-
-    void getCoords(size_t x, size_t y, size_t z, float coords[3]);
-
-    void getCoords(size_t idx, float coords[3]);
-
-    void getCoords(size_t idx[3], double coords[3]);
-
-    void getCoords(size_t x, size_t y, size_t z, double coords[3]);
-
-    void getCoords(size_t idx, double coords[3]);
 
 // -----------------------------------------------------------------------------
 // Inherited from IGeometry
@@ -98,6 +80,23 @@ class SIMPLib_EXPORT ImageGeom : public IGeometry
      * @return
      */
     virtual size_t getNumberOfElements();
+
+    /**
+     * @brief findElementSizes
+     * @return
+     */
+    virtual int findElementSizes();
+
+    /**
+     * @brief getElementSizes
+     * @return
+     */
+    virtual FloatArrayType::Pointer getElementSizes();
+
+    /**
+     * @brief deleteElementSizes
+     */
+    virtual void deleteElementSizes();
 
     /**
      * @brief findElementsContainingVert
@@ -212,20 +211,47 @@ class SIMPLib_EXPORT ImageGeom : public IGeometry
      * @brief addAttributeMatrix
      */
     virtual void addAttributeMatrix(const QString& name, AttributeMatrix::Pointer data);
+    
+// -----------------------------------------------------------------------------
+// Inherited from IGeometryGrid
+// -----------------------------------------------------------------------------
+
+    virtual void setDimensions(size_t dims[3]) { std::copy(dims, dims + 3, m_Dimensions); }
+    virtual void setDimensions(size_t xDim, size_t yDim, size_t zDim) { m_Dimensions[0] = xDim;
+                                                                        m_Dimensions[1] = yDim;
+                                                                        m_Dimensions[2] = zDim; }
+    virtual void getDimensions(size_t dims[3]) { std::copy(m_Dimensions, m_Dimensions + 3, dims); }
+    virtual void getDimensions(size_t& xDim, size_t& yDim, size_t& zDim) { xDim = m_Dimensions[0];
+                                                                           yDim = m_Dimensions[1];
+                                                                           zDim = m_Dimensions[2]; }
+    
+    virtual size_t getXPoints() { return m_Dimensions[0]; }
+    virtual size_t getYPoints() { return m_Dimensions[1]; }
+    virtual size_t getZPoints() { return m_Dimensions[2]; }
+
+    virtual void getCoords(size_t idx[3], float coords[3]);
+    virtual void getCoords(size_t x, size_t y, size_t z, float coords[3]);
+    virtual void getCoords(size_t idx, float coords[3]);
+    virtual void getCoords(size_t idx[3], double coords[3]);
+    virtual void getCoords(size_t x, size_t y, size_t z, double coords[3]);
+    virtual void getCoords(size_t idx, double coords[3]);
 
   protected:
 
     ImageGeom();
 
     /**
-     * @brief Gathers the image geometry from an HDF5 file
+     * @brief gatherMetaData
      * @param parentid
      * @param volDims
      * @param spacing
      * @param origin
+     * @param spatialDims
+     * @param geomName
+     * @param preflight
      * @return
      */
-    virtual int gatherMetaData(hid_t parentid, size_t volDims[3], float spacing[3], float origin[3], unsigned int spatialDims, QString geomName);
+    virtual int gatherMetaData(hid_t parentid, size_t volDims[3], float spacing[3], float origin[3], unsigned int spatialDims, QString geomName, bool preflight);
 
     /**
      * @brief setElementsContaingVert
@@ -245,7 +271,15 @@ class SIMPLib_EXPORT ImageGeom : public IGeometry
      */
     virtual void setElementCentroids(FloatArrayType::Pointer elementCentroids);
 
+    /**
+     * @brief setElementSizes
+     * @param elementSizes
+     */
+    virtual void setElementSizes(FloatArrayType::Pointer elementSizes);
+
   private:
+    size_t m_Dimensions[3];
+    FloatArrayType::Pointer m_VoxelSizes;
 
     friend class FindImageDerivativesImpl;
 

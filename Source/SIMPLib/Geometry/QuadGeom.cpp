@@ -142,6 +142,7 @@ QuadGeom::QuadGeom()
   m_QuadsContainingVert = ElementDynamicList::NullPointer();
   m_QuadNeighbors = ElementDynamicList::NullPointer();
   m_QuadCentroids = FloatArrayType::NullPointer();
+  m_QuadSizes = FloatArrayType::NullPointer();
   m_ProgressCounter = 0;
 }
 
@@ -390,6 +391,45 @@ void QuadGeom::deleteElementCentroids()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
+int QuadGeom::findElementSizes()
+{
+  QVector<size_t> cDims(1, 1);
+  m_QuadSizes = FloatArrayType::CreateArray(getNumberOfQuads(), cDims, SIMPL::StringConstants::QuadAreas);
+  GeometryHelpers::Topology::Find2DElementAreas<int64_t>(m_QuadList, m_VertexList, m_QuadSizes);
+  if(m_QuadSizes.get() == nullptr)
+  {
+    return -1;
+  }
+  return 1;
+}
+
+// -----------------------------------------------------------------------------
+//z
+// -----------------------------------------------------------------------------
+FloatArrayType::Pointer QuadGeom::getElementSizes()
+{
+  return m_QuadSizes;
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void QuadGeom::setElementSizes(FloatArrayType::Pointer elementSizes)
+{
+  m_QuadSizes = elementSizes;
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void QuadGeom::deleteElementSizes()
+{
+  m_QuadSizes = FloatArrayType::NullPointer();
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
 int QuadGeom::findUnsharedEdges()
 {
   QVector<size_t> cDims(1, 2);
@@ -540,6 +580,15 @@ int QuadGeom::writeGeometryToHDF5(hid_t parentId, bool SIMPL_NOT_USED(writeXdmf)
     }
   }
 
+  if(m_QuadSizes.get() != nullptr)
+  {
+    err = GeometryHelpers::GeomIO::WriteListToHDF5(parentId, m_QuadSizes);
+    if(err < 0)
+    {
+      return err;
+    }
+  }
+
   if(m_QuadNeighbors.get() != nullptr)
   {
     size_t numQuads = getNumberOfQuads();
@@ -662,6 +711,11 @@ int QuadGeom::readGeometryFromHDF5(hid_t parentId, bool preflight)
   {
     return -1;
   }
+  FloatArrayType::Pointer quadSizes = GeometryHelpers::GeomIO::ReadListFromHDF5<FloatArrayType>(SIMPL::StringConstants::QuadAreas, parentId, preflight, err);
+  if(err < 0 && err != -2)
+  {
+    return -1;
+  }
   ElementDynamicList::Pointer quadNeighbors = GeometryHelpers::GeomIO::ReadDynamicListFromHDF5<uint16_t, int64_t>(SIMPL::StringConstants::QuadNeighbors, parentId, numQuads, preflight, err);
   if(err < 0 && err != -2)
   {
@@ -679,6 +733,7 @@ int QuadGeom::readGeometryFromHDF5(hid_t parentId, bool preflight)
   setUnsharedEdges(bEdges);
   setQuads(quads);
   setElementCentroids(quadCentroids);
+  setElementSizes(quadSizes);
   setElementNeighbors(quadNeighbors);
   setElementsContainingVert(quadsContainingVert);
 
@@ -697,6 +752,7 @@ IGeometry::Pointer QuadGeom::deepCopy()
   quadCopy->setElementsContainingVert(getElementsContainingVert());
   quadCopy->setElementNeighbors(getElementNeighbors());
   quadCopy->setElementCentroids(getElementCentroids());
+  quadCopy->setElementSizes(getElementSizes());
   quadCopy->setSpatialDimensionality(getSpatialDimensionality());
 
   return quadCopy;

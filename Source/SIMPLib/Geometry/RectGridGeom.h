@@ -37,12 +37,12 @@
 #define _rectgridgeom_h_
 
 #include "SIMPLib/Common/SIMPLibSetGetMacros.h"
-#include "SIMPLib/Geometry/IGeometry.h"
+#include "SIMPLib/Geometry/IGeometryGrid.h"
 
 /**
  * @brief The RectGridGeom class represents a structured rectlinear grid
  */
-class SIMPLib_EXPORT RectGridGeom : public IGeometry
+class SIMPLib_EXPORT RectGridGeom : public IGeometryGrid
 {
   public:
     SIMPL_SHARED_POINTERS(RectGridGeom)
@@ -57,13 +57,7 @@ class SIMPLib_EXPORT RectGridGeom : public IGeometry
      * @return
      */
     static Pointer CreateGeometry(const QString& name);
-
-    SIMPL_INSTANCE_VEC3_PROPERTY(size_t, Dimensions)
-
-    inline size_t getXPoints() { return m_Dimensions[0]; }
-    inline size_t getYPoints() { return m_Dimensions[1]; }
-    inline size_t getZPoints() { return m_Dimensions[2]; }
-
+    
     void setXBounds(FloatArrayType::Pointer xBounds);
     void setYBounds(FloatArrayType::Pointer yBounds);
     void setZBounds(FloatArrayType::Pointer zBounds);
@@ -71,18 +65,6 @@ class SIMPLib_EXPORT RectGridGeom : public IGeometry
     inline FloatArrayType::Pointer getXBounds() { return m_xBounds; }
     inline FloatArrayType::Pointer getYBounds() { return m_yBounds; }
     inline FloatArrayType::Pointer getZBounds() { return m_zBounds; }
-
-    void getCoords(size_t idx[3], float coords[3]);
-
-    void getCoords(size_t x, size_t y, size_t z, float coords[3]);
-
-    void getCoords(size_t idx, float coords[3]);
-
-    void getCoords(size_t idx[3], double coords[3]);
-
-    void getCoords(size_t x, size_t y, size_t z, double coords[3]);
-
-    void getCoords(size_t idx, double coords[3]);
 
 // -----------------------------------------------------------------------------
 // Inherited from IGeometry
@@ -98,6 +80,23 @@ class SIMPLib_EXPORT RectGridGeom : public IGeometry
      * @return
      */
     virtual size_t getNumberOfElements();
+
+    /**
+     * @brief findElementSizes
+     * @return
+     */
+    virtual int findElementSizes();
+
+    /**
+     * @brief getElementSizes
+     * @return
+     */
+    virtual FloatArrayType::Pointer getElementSizes();
+
+    /**
+     * @brief deleteElementSizes
+     */
+    virtual void deleteElementSizes();
 
     /**
      * @brief findElementsContainingVert
@@ -212,6 +211,30 @@ class SIMPLib_EXPORT RectGridGeom : public IGeometry
      * @brief addAttributeMatrix
      */
     virtual void addAttributeMatrix(const QString& name, AttributeMatrix::Pointer data);
+    
+// -----------------------------------------------------------------------------
+// Inherited from IGeometryGrid
+// -----------------------------------------------------------------------------
+
+    virtual void setDimensions(size_t dims[3]) { std::copy(dims, dims + 3, m_Dimensions); }
+    virtual void setDimensions(size_t xDim, size_t yDim, size_t zDim) { m_Dimensions[0] = xDim;
+                                                                        m_Dimensions[1] = yDim;
+                                                                        m_Dimensions[2] = zDim; }
+    virtual void getDimensions(size_t dims[3]) { std::copy(m_Dimensions, m_Dimensions + 3, dims); }
+    virtual void getDimensions(size_t& xDim, size_t& yDim, size_t& zDim) { xDim = m_Dimensions[0];
+                                                                           yDim = m_Dimensions[1];
+                                                                           zDim = m_Dimensions[2]; }
+    
+    virtual size_t getXPoints() { return m_Dimensions[0]; }
+    virtual size_t getYPoints() { return m_Dimensions[1]; }
+    virtual size_t getZPoints() { return m_Dimensions[2]; }
+
+    virtual void getCoords(size_t idx[3], float coords[3]);
+    virtual void getCoords(size_t x, size_t y, size_t z, float coords[3]);
+    virtual void getCoords(size_t idx, float coords[3]);
+    virtual void getCoords(size_t idx[3], double coords[3]);
+    virtual void getCoords(size_t x, size_t y, size_t z, double coords[3]);
+    virtual void getCoords(size_t idx, double coords[3]);
 
   protected:
 
@@ -245,10 +268,18 @@ class SIMPLib_EXPORT RectGridGeom : public IGeometry
      */
     virtual void setElementCentroids(FloatArrayType::Pointer elementCentroids);
 
+    /**
+     * @brief setElementSizes
+     * @param elementSizes
+     */
+    virtual void setElementSizes(FloatArrayType::Pointer elementSizes);
+
   private:
+    size_t m_Dimensions[3];
     FloatArrayType::Pointer m_xBounds;
     FloatArrayType::Pointer m_yBounds;
     FloatArrayType::Pointer m_zBounds;
+    FloatArrayType::Pointer m_VoxelSizes;
 
     friend class FindRectGridDerivativesImpl;
 

@@ -126,6 +126,23 @@ class SIMPLib_EXPORT IGeometry : public Observable
     virtual size_t getNumberOfElements() = 0;
 
     /**
+     * @brief findElementSizes
+     * @return
+     */
+    virtual int findElementSizes() = 0;
+
+    /**
+     * @brief getElementSizes
+     * @return
+     */
+    virtual FloatArrayType::Pointer getElementSizes() = 0;
+
+    /**
+     * @brief deleteElementSizes
+     */
+    virtual void deleteElementSizes() = 0;
+
+    /**
      * @brief findElementCentroids
      * @return
      */
@@ -352,6 +369,12 @@ class SIMPLib_EXPORT IGeometry : public Observable
      * @param elementCentroids
      */
     virtual void setElementCentroids(FloatArrayType::Pointer elementCentroids) = 0;
+
+    /**
+     * @brief setElementSizes
+     * @param elementSizes
+     */
+    virtual void setElementSizes(FloatArrayType::Pointer elementSizes) = 0;
 
   private:
 

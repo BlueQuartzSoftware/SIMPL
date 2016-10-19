@@ -58,6 +58,7 @@ VertexGeom::VertexGeom()
   m_UnitDimensionality = 0;
   m_SpatialDimensionality = 3;
   m_VertexList = VertexGeom::CreateSharedVertexList(0);
+  m_VertexSizes = FloatArrayType::NullPointer();
   m_ProgressCounter = 0;
 }
 
@@ -241,6 +242,42 @@ void VertexGeom::deleteElementCentroids()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
+int VertexGeom::findElementSizes()
+{
+  // Vertices are 0-dimensional (they have no size),
+  // so simply splat 0 over the sizes array
+  m_VertexSizes = FloatArrayType::CreateArray(getNumberOfElements(), SIMPL::StringConstants::VoxelSizes);
+  m_VertexSizes->initializeWithValue(0.0f);
+  return 1;
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+FloatArrayType::Pointer VertexGeom::getElementSizes()
+{
+  return m_VertexSizes;
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void VertexGeom::setElementSizes(FloatArrayType::Pointer elementSizes)
+{
+  m_VertexSizes = elementSizes;
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void VertexGeom::deleteElementSizes()
+{
+  m_VertexSizes = FloatArrayType::NullPointer();
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
 void VertexGeom::getParametricCenter(double pCoords[3])
 {
   pCoords[0] = 0.0;
@@ -296,6 +333,14 @@ int VertexGeom::writeGeometryToHDF5(hid_t parentId, bool writeXdmf)
       }
       tDims[0] = vertsPtr->getNumberOfTuples();
       err = vertsPtr->writeH5Data(parentId, tDims);
+    }
+  }
+  if(m_VertexSizes.get() != nullptr)
+  {
+    err = GeometryHelpers::GeomIO::WriteListToHDF5(parentId, m_VertexSizes);
+    if(err < 0)
+    {
+      return err;
     }
   }
 
@@ -378,14 +423,19 @@ QString VertexGeom::getInfoString(SIMPL::InfoStringFormat format)
 int VertexGeom::readGeometryFromHDF5(hid_t parentId, bool preflight)
 {
   herr_t err = 0;
-  SharedVertexList::Pointer vertices = SharedVertexList::NullPointer();
-  vertices = GeometryHelpers::GeomIO::ReadListFromHDF5<SharedVertexList>(SIMPL::Geometry::SharedVertexList, parentId, preflight, err);
+  SharedVertexList::Pointer vertices = GeometryHelpers::GeomIO::ReadListFromHDF5<SharedVertexList>(SIMPL::Geometry::SharedVertexList, parentId, preflight, err);
   if(vertices.get() == nullptr)
+  {
+    return -1;
+  }
+  FloatArrayType::Pointer vertexSizes = GeometryHelpers::GeomIO::ReadListFromHDF5<FloatArrayType>(SIMPL::StringConstants::VertexSizes, parentId, preflight, err);
+  if(err < 0 && err != -2)
   {
     return -1;
   }
 
   setVertices(vertices);
+  setElementSizes(vertexSizes);
 
   return 1;
 }
@@ -397,6 +447,7 @@ IGeometry::Pointer VertexGeom::deepCopy()
 {
   VertexGeom::Pointer vertexCopy = VertexGeom::CreateGeometry(getVertices(), getName());
 
+  vertexCopy->setElementSizes(getElementSizes());
   vertexCopy->setSpatialDimensionality(getSpatialDimensionality());
 
   return vertexCopy;

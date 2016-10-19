@@ -143,6 +143,23 @@ class SIMPLib_EXPORT VertexGeom : public IGeometry
     virtual size_t getNumberOfElements();
 
     /**
+     * @brief findElementSizes
+     * @return
+     */
+    virtual int findElementSizes();
+
+    /**
+     * @brief getElementSizes
+     * @return
+     */
+    virtual FloatArrayType::Pointer getElementSizes();
+
+    /**
+     * @brief deleteElementSizes
+     */
+    virtual void deleteElementSizes();
+
+    /**
      * @brief findElementsContainingVert
      * @return
      */
@@ -278,8 +295,15 @@ class SIMPLib_EXPORT VertexGeom : public IGeometry
      */
     virtual void setElementCentroids(FloatArrayType::Pointer elementCentroids);
 
+    /**
+     * @brief setElementSizes
+     * @param elementSizes
+     */
+    virtual void setElementSizes(FloatArrayType::Pointer elementSizes);
+
   private:
     SharedVertexList::Pointer m_VertexList;
+    FloatArrayType::Pointer m_VertexSizes;
 
     VertexGeom(const VertexGeom&); // Copy Constructor Not Implemented
     void operator=(const VertexGeom&); // Operator '=' Not Implemented

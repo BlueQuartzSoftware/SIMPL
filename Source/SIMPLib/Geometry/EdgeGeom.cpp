@@ -140,6 +140,7 @@ EdgeGeom::EdgeGeom()
   m_EdgesContainingVert = ElementDynamicList::NullPointer();
   m_EdgeNeighbors = ElementDynamicList::NullPointer();
   m_EdgeCentroids = FloatArrayType::NullPointer();
+  m_EdgeSizes = FloatArrayType::NullPointer();
   m_ProgressCounter = 0;
 }
 
@@ -326,7 +327,7 @@ void EdgeGeom::deleteElementNeighbors()
 int EdgeGeom::findElementCentroids()
 {
   QVector<size_t> cDims(1, 3);
-  m_EdgeCentroids = FloatArrayType::CreateArray(getNumberOfEdges(), cDims, SIMPL::StringConstants::EdgeCentroids);
+  m_EdgeCentroids = FloatArrayType::CreateArray(getNumberOfElements(), cDims, SIMPL::StringConstants::EdgeCentroids);
   GeometryHelpers::Topology::FindElementCentroids<int64_t>(m_EdgeList, m_VertexList, m_EdgeCentroids);
   if(m_EdgeCentroids.get() == nullptr)
   {
@@ -357,6 +358,55 @@ void EdgeGeom::setElementCentroids(FloatArrayType::Pointer elementCentroids)
 void EdgeGeom::deleteElementCentroids()
 {
   m_EdgeCentroids = FloatArrayType::NullPointer();
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+int EdgeGeom::findElementSizes()
+{
+  m_EdgeSizes = FloatArrayType::CreateArray(getNumberOfElements(), SIMPL::StringConstants::EdgeLengths);
+
+  float* sizes = m_EdgeSizes->getPointer(0);
+  float vert0[3] = {0.0f, 0.0f, 0.0f};
+  float vert1[3] = {0.0f, 0.0f, 0.0f};
+
+  for(int64_t i = 0; i < getNumberOfEdges(); i++)
+  {
+    getVertCoordsAtEdge(i, vert0, vert1);
+    float length = 0.0f;
+    for(size_t j = 0; j < 3; j++)
+    {
+      length += (vert0[j] - vert1[j]) * (vert0[j] - vert1[j]);
+    }
+    sizes[i] = sqrtf(length);
+  }
+
+  return 1;
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+FloatArrayType::Pointer EdgeGeom::getElementSizes()
+{
+  return m_EdgeSizes;
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void EdgeGeom::setElementSizes(FloatArrayType::Pointer elementSizes)
+{
+  m_EdgeSizes = elementSizes;
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void EdgeGeom::deleteElementSizes()
+{
+  m_EdgeSizes = FloatArrayType::NullPointer();
 }
 
 // -----------------------------------------------------------------------------
@@ -445,9 +495,18 @@ int EdgeGeom::writeGeometryToHDF5(hid_t parentId, bool SIMPL_NOT_USED(writeXdmf)
     }
   }
 
+  if(m_EdgeSizes.get() != nullptr)
+  {
+    err = GeometryHelpers::GeomIO::WriteListToHDF5(parentId, m_EdgeSizes);
+    if(err < 0)
+    {
+      return err;
+    }
+  }
+
   if(m_EdgeNeighbors.get() != nullptr)
   {
-    size_t numEdges = getNumberOfEdges();
+    size_t numEdges = static_cast<size_t>(getNumberOfEdges());
     err = GeometryHelpers::GeomIO::WriteDynamicListToHDF5<uint16_t, int64_t>(parentId, m_EdgeNeighbors, numEdges, SIMPL::StringConstants::EdgeNeighbors);
     if(err < 0)
     {
@@ -457,7 +516,7 @@ int EdgeGeom::writeGeometryToHDF5(hid_t parentId, bool SIMPL_NOT_USED(writeXdmf)
 
   if(m_EdgesContainingVert.get() != nullptr)
   {
-    size_t numVerts = getNumberOfVertices();
+    size_t numVerts = static_cast<size_t>(getNumberOfVertices());
     err = GeometryHelpers::GeomIO::WriteDynamicListToHDF5<uint16_t, int64_t>(parentId, m_EdgesContainingVert, numVerts, SIMPL::StringConstants::EdgesContainingVert);
     if(err < 0)
     {
@@ -558,6 +617,11 @@ int EdgeGeom::readGeometryFromHDF5(hid_t parentId, bool preflight)
   {
     return -1;
   }
+  FloatArrayType::Pointer edgeSizes = GeometryHelpers::GeomIO::ReadListFromHDF5<FloatArrayType>(SIMPL::StringConstants::EdgeLengths, parentId, preflight, err);
+  if(err < 0 && err != -2)
+  {
+    return -1;
+  }
   ElementDynamicList::Pointer edgeNeighbors = GeometryHelpers::GeomIO::ReadDynamicListFromHDF5<uint16_t, int64_t>(SIMPL::StringConstants::EdgeNeighbors, parentId, numEdges, preflight, err);
   if(err < 0 && err != -2)
   {
@@ -573,6 +637,7 @@ int EdgeGeom::readGeometryFromHDF5(hid_t parentId, bool preflight)
   setVertices(vertices);
   setEdges(edges);
   setElementCentroids(edgeCentroids);
+  setElementSizes(edgeSizes);
   setElementNeighbors(edgeNeighbors);
   setElementsContainingVert(edgesContainingVert);
 
@@ -589,6 +654,7 @@ IGeometry::Pointer EdgeGeom::deepCopy()
   edgeCopy->setElementsContainingVert(getElementsContainingVert());
   edgeCopy->setElementNeighbors(getElementNeighbors());
   edgeCopy->setElementCentroids(getElementCentroids());
+  edgeCopy->setElementSizes(getElementSizes());
   edgeCopy->setSpatialDimensionality(getSpatialDimensionality());
 
   return edgeCopy;

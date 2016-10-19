@@ -238,6 +238,23 @@ class SIMPLib_EXPORT TetrahedralGeom : public IGeometry3D
     virtual size_t getNumberOfElements();
 
     /**
+     * @brief findElementSizes
+     * @return
+     */
+    virtual int findElementSizes();
+
+    /**
+     * @brief getElementSizes
+     * @return
+     */
+    virtual FloatArrayType::Pointer getElementSizes();
+
+    /**
+     * @brief deleteElementSizes
+     */
+    virtual void deleteElementSizes();
+
+    /**
      * @brief findElementsContainingVert
      * @return
      */
@@ -524,6 +541,12 @@ class SIMPLib_EXPORT TetrahedralGeom : public IGeometry3D
     virtual void setElementCentroids(FloatArrayType::Pointer elementCentroids);
 
     /**
+     * @brief setElementSizes
+     * @param elementSizes
+     */
+    virtual void setElementSizes(FloatArrayType::Pointer elementSizes);
+
+    /**
      * @brief setEdges
      * @param edges
      */
@@ -551,6 +574,7 @@ class SIMPLib_EXPORT TetrahedralGeom : public IGeometry3D
     ElementDynamicList::Pointer m_TetsContainingVert;
     ElementDynamicList::Pointer m_TetNeighbors;
     FloatArrayType::Pointer m_TetCentroids;
+    FloatArrayType::Pointer m_TetSizes;
 
     friend class FindTetDerivativesImpl;
 

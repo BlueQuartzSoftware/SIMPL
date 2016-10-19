@@ -142,6 +142,7 @@ TriangleGeom::TriangleGeom()
   m_TrianglesContainingVert = ElementDynamicList::NullPointer();
   m_TriangleNeighbors = ElementDynamicList::NullPointer();
   m_TriangleCentroids = FloatArrayType::NullPointer();
+  m_TriangleSizes = FloatArrayType::NullPointer();
   m_ProgressCounter = 0;
 }
 
@@ -390,6 +391,45 @@ void TriangleGeom::deleteElementCentroids()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
+int TriangleGeom::findElementSizes()
+{
+  QVector<size_t> cDims(1, 1);
+  m_TriangleSizes = FloatArrayType::CreateArray(getNumberOfTris(), cDims, SIMPL::StringConstants::TriangleAreas);
+  GeometryHelpers::Topology::Find2DElementAreas<int64_t>(m_TriList, m_VertexList, m_TriangleSizes);
+  if(m_TriangleSizes.get() == nullptr)
+  {
+    return -1;
+  }
+  return 1;
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+FloatArrayType::Pointer TriangleGeom::getElementSizes()
+{
+  return m_TriangleSizes;
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void TriangleGeom::setElementSizes(FloatArrayType::Pointer elementSizes)
+{
+  m_TriangleSizes = elementSizes;
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void TriangleGeom::deleteElementSizes()
+{
+  m_TriangleSizes = FloatArrayType::NullPointer();
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
 int TriangleGeom::findUnsharedEdges()
 {
   QVector<size_t> cDims(1, 2);
@@ -537,6 +577,16 @@ int TriangleGeom::writeGeometryToHDF5(hid_t parentId, bool SIMPL_NOT_USED(writeX
     }
   }
 
+  if(m_TriangleSizes.get() != nullptr)
+  {
+    err = GeometryHelpers::GeomIO::WriteListToHDF5(parentId, m_TriangleSizes);
+    if(err < 0)
+    {
+      return err;
+    }
+  }
+
+
   if(m_TriangleNeighbors.get() != nullptr)
   {
     size_t numTris = getNumberOfTris();
@@ -659,6 +709,11 @@ int TriangleGeom::readGeometryFromHDF5(hid_t parentId, bool preflight)
   {
     return -1;
   }
+  FloatArrayType::Pointer triSizes = GeometryHelpers::GeomIO::ReadListFromHDF5<FloatArrayType>(SIMPL::StringConstants::TriangleAreas, parentId, preflight, err);
+  if(err < 0 && err != -2)
+  {
+    return -1;
+  }
   ElementDynamicList::Pointer triNeighbors = GeometryHelpers::GeomIO::ReadDynamicListFromHDF5<uint16_t, int64_t>(SIMPL::StringConstants::TriangleNeighbors, parentId, numTris, preflight, err);
   if(err < 0 && err != -2)
   {
@@ -676,6 +731,7 @@ int TriangleGeom::readGeometryFromHDF5(hid_t parentId, bool preflight)
   setUnsharedEdges(bEdges);
   setTriangles(tris);
   setElementCentroids(triCentroids);
+  setElementSizes(triSizes);
   setElementNeighbors(triNeighbors);
   setElementsContainingVert(trisContainingVert);
 
@@ -694,6 +750,7 @@ IGeometry::Pointer TriangleGeom::deepCopy()
   triCopy->setElementsContainingVert(getElementsContainingVert());
   triCopy->setElementNeighbors(getElementNeighbors());
   triCopy->setElementCentroids(getElementCentroids());
+  triCopy->setElementSizes(getElementSizes());
   triCopy->setSpatialDimensionality(getSpatialDimensionality());
 
   return triCopy;
