@@ -114,7 +114,6 @@ class SIMPLib_EXPORT BoundaryStatsData : public StatsData
 
 
     SIMPL_INSTANCE_PROPERTY(float, BoundaryArea)
-    SIMPL_INSTANCE_PROPERTY(float, PhaseFraction)
     SIMPL_INSTANCE_PROPERTY(float, ParentPhase)
 
     /**

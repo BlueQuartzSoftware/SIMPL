@@ -106,7 +106,7 @@ class SIMPLib_EXPORT AttributeMatrix : public Observable
      * @li const unsigned int CellEnsemble = 11; //!<
      * @li const unsigned int Unknown = 999; //!<
      *
-     * @see DREAM3DLib/Common/Constants.h file.
+     * @see SIMPLib/Common/Constants.h file.
      * @return
      */
     static Pointer New(QVector<size_t> tupleDims, const QString& name, unsigned int attrType)

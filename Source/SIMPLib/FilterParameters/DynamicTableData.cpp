@@ -488,9 +488,6 @@ QStringList DynamicTableData::getRowHeaders() const
 void DynamicTableData::setRowHeaders(const QStringList& rHeaders)
 {
   m_RowHeaders = rHeaders;
-
-  // Adjust dimensions
-  checkAndAdjustDimensions();
 }
 
 // -----------------------------------------------------------------------------
@@ -507,9 +504,6 @@ QStringList DynamicTableData::getColHeaders() const
 void DynamicTableData::setColHeaders(const QStringList& cHeaders)
 {
   m_ColHeaders = cHeaders;
-
-  // Adjust dimensions
-  checkAndAdjustDimensions();
 }
 
 // -----------------------------------------------------------------------------

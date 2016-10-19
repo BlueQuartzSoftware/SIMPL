@@ -100,7 +100,6 @@ class SIMPLib_EXPORT MatrixStatsData : public StatsData
       precision = 0;
     }
 
-    SIMPL_INSTANCE_PROPERTY(float, PhaseFraction)
 
     /**
      * @brief getStatsType
