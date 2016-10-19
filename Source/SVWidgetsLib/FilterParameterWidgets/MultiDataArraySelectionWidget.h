@@ -101,12 +101,6 @@ class SVWidgetsLib_EXPORT MultiDataArraySelectionWidget : public FilterParameter
     void initializeWidget(FilterParameter* parameter, AbstractFilter* filter);
 
     /**
-    * @brief This method updates the Select All checkbox, based on what items are currently
-    * selected in the list.
-    */
-    void updateSelectAllCheckbox();
-
-    /**
      * @brief eventFilter
      * @param obj
      * @param event
@@ -121,9 +115,6 @@ class SVWidgetsLib_EXPORT MultiDataArraySelectionWidget : public FilterParameter
 
     void attributeMatrixSelected(QString path);
 
-    void on_attributeArraysSelectWidget_itemChanged(QListWidgetItem* item);
-
-
   protected:
     /**
      * @brief createSelectionMenu
@@ -131,17 +122,20 @@ class SVWidgetsLib_EXPORT MultiDataArraySelectionWidget : public FilterParameter
     void createSelectionMenu();
 
   protected slots:
-    void on_selectCheckBox_stateChanged(int state);
     void on_upBtn_pressed();
     void on_downBtn_pressed();
+    void on_selectBtn_pressed();
+    void on_deselectBtn_pressed();
+    void on_removeBtn_pressed();
 
+    void on_attributeArraysOrderWidget_currentItemChanged(QListWidgetItem* current, QListWidgetItem* previous);
+    void on_attributeArraysSelectWidget_currentItemChanged(QListWidgetItem* current, QListWidgetItem* previous);
 
   signals:
     void errorSettingFilterParameter(const QString& msg);
     void parametersChanged();
 
   private:
-
     bool m_DidCausePreflight;
 
     QPointer<QSignalMapper> m_MenuMapper;
@@ -149,7 +143,10 @@ class SVWidgetsLib_EXPORT MultiDataArraySelectionWidget : public FilterParameter
     MultiDataArraySelectionFilterParameter* m_FilterParameter;
 
     void setSelectedPath(QString path);
-	void removeNonexistantPaths(QVector<DataArrayPath> &paths);
+
+    void setSelectedPath(DataArrayPath amPath);
+
+    void removeNonexistantPaths(QVector<DataArrayPath> &paths);
 
     MultiDataArraySelectionWidget(const MultiDataArraySelectionWidget&); // Copy Constructor Not Implemented
     void operator=(const MultiDataArraySelectionWidget&); // Operator '=' Not Implemented

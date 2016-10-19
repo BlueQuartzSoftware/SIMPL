@@ -124,9 +124,11 @@ class SVWidgetsLib_EXPORT PhaseTypeSelectionWidget : public FilterParameterWidge
 
     QPointer<QSignalMapper> m_MenuMapper;
 
-    DataArrayPath  m_DefaultPath;
-
     PhaseTypeSelectionFilterParameter* m_FilterParameter;
+
+    void setSelectedPath(QString path);
+
+    void setSelectedPath(DataArrayPath amPath);
 
     PhaseTypeSelectionWidget(const PhaseTypeSelectionWidget&); // Copy Constructor Not Implemented
     void operator=(const PhaseTypeSelectionWidget&); // Operator '=' Not Implemented

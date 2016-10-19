@@ -133,6 +133,8 @@ class SVWidgetsLib_EXPORT DataContainerSelectionWidget : public FilterParameterW
 
     void setSelectedPath(QString path);
 
+    void setSelectedPath(DataArrayPath dcPath);
+
     DataContainerSelectionWidget(const DataContainerSelectionWidget&); // Copy Constructor Not Implemented
     void operator=(const DataContainerSelectionWidget&); // Operator '=' Not Implemented
 

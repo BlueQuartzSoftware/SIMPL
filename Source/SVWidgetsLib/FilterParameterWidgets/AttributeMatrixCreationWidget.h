@@ -148,7 +148,10 @@ private:
 
   QMenu*                                          m_MenuPtr = nullptr;
   bool                                            m_OwnsMenuPtr = false;
+
   void setSelectedPath(QString path);
+
+  void setSelectedPath(DataArrayPath dcPath);
 
   AttributeMatrixCreationWidget(const AttributeMatrixCreationWidget&); // Copy Constructor Not Implemented
   void operator=(const AttributeMatrixCreationWidget&); // Operator '=' Not Implemented

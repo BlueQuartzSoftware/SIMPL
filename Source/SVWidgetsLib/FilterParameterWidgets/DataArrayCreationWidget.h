@@ -139,6 +139,8 @@ class SVWidgetsLib_EXPORT DataArrayCreationWidget : public FilterParameterWidget
 
     void setSelectedPath(QString path);
 
+    void setSelectedPath(DataArrayPath amPath);
+
     DataArrayCreationWidget(const DataArrayCreationWidget&); // Copy Constructor Not Implemented
     void operator=(const DataArrayCreationWidget&); // Operator '=' Not Implemented
 

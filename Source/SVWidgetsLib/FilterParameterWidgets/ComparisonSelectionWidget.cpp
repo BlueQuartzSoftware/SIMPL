@@ -133,12 +133,14 @@ void ComparisonSelectionWidget::setupGui()
   ComparisonInputs comps = getFilter()->property(PROPERTY_NAME_AS_CHAR).value<ComparisonInputs>();
   m_ComparisonSelectionTableModel->setTableData(comps);
 
-  m_SelectedAttributeMatrixPath->setStyleSheet(QtSStyles::DAPSelectionButtonStyle(true));
+  m_SelectedAttributeMatrixPath->setStyleSheet(QtSStyles::DAPSelectionButtonStyle(false));
 
   m_MenuMapper = new QSignalMapper(this);
-  connect(m_MenuMapper, SIGNAL(mapped(QString)), this, SLOT(setSelectedPath(QString)));
+  connect(m_MenuMapper, SIGNAL(mapped(QString)),
+            this, SLOT(attributeMatrixSelected(QString)));
 
-  createSelectionMenu();
+  DataArrayPath defaultPath = getFilter()->property(PROPERTY_NAME_AS_CHAR).value<DataArrayPath>();
+  m_SelectedAttributeMatrixPath->setText(defaultPath.serialize(Detail::Delimiter));
 
 #if 0
   // is the filter parameter tied to a boolean property of the Filter Instance, if it is then we need to make the check box visible
@@ -368,7 +370,11 @@ void ComparisonSelectionWidget::beforePreflight()
     return;
   }
 
-  populateButtonText();
+  if (m_SelectedAttributeMatrixPath->text().isEmpty())
+  {
+    populateButtonText();
+  }
+
   createSelectionMenu();
 }
 
@@ -377,7 +383,22 @@ void ComparisonSelectionWidget::beforePreflight()
 // -----------------------------------------------------------------------------
 void ComparisonSelectionWidget::afterPreflight()
 {
-  // qDebug() << getFilter()->getNameOfClass() << " DataContainerArrayProxyWidget::afterPreflight()";
+  DataContainerArray::Pointer dca = getFilter()->getDataContainerArray();
+  if (NULL == dca.get()) { return; }
+
+  if (dca->doesAttributeMatrixExist(DataArrayPath::Deserialize(m_SelectedAttributeMatrixPath->text(), Detail::Delimiter)))
+  {
+    AttributeMatrix::Pointer am = dca->getAttributeMatrix(DataArrayPath::Deserialize(m_SelectedAttributeMatrixPath->text(), Detail::Delimiter));
+    if (nullptr != am.get()) {
+      QString html = am->getInfoString(SIMPL::HtmlFormat);
+      m_SelectedAttributeMatrixPath->setToolTip(html);
+      m_SelectedAttributeMatrixPath->setStyleSheet(QtSStyles::DAPSelectionButtonStyle(true));
+    }
+  }
+  else
+  {
+    m_SelectedAttributeMatrixPath->setStyleSheet(QtSStyles::DAPSelectionButtonStyle(false));
+  }
 }
 
 // -----------------------------------------------------------------------------
@@ -443,13 +464,30 @@ bool ComparisonSelectionWidget::eventFilter(QObject* obj, QEvent* event)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
+void ComparisonSelectionWidget::attributeMatrixSelected(QString path)
+{
+  setSelectedPath(path);
+
+  m_DidCausePreflight = true;
+  emit parametersChanged();
+  m_DidCausePreflight = false;
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
 void ComparisonSelectionWidget::setSelectedPath(QString path)
 {
   DataArrayPath amPath = DataArrayPath::Deserialize(path, Detail::Delimiter);
-  if(amPath.isEmpty())
-  {
-    return;
-  }
+  setSelectedPath(amPath);
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void ComparisonSelectionWidget::setSelectedPath(DataArrayPath amPath)
+{
+  if (amPath.isEmpty()) { return; }
 
   m_SelectedAttributeMatrixPath->setText("");
   m_SelectedAttributeMatrixPath->setToolTip("");
@@ -462,10 +500,10 @@ void ComparisonSelectionWidget::setSelectedPath(QString path)
 
   if(dca->doesAttributeMatrixExist(amPath))
   {
-    AttributeMatrix::Pointer attrMat = dca->getAttributeMatrix(amPath);
-    QString html = attrMat->getInfoString(SIMPL::HtmlFormat);
+    AttributeMatrix::Pointer am = dca->getAttributeMatrix(amPath);
+    QString html = am->getInfoString(SIMPL::HtmlFormat);
     m_SelectedAttributeMatrixPath->setToolTip(html);
-    m_SelectedAttributeMatrixPath->setText(path);
+    m_SelectedAttributeMatrixPath->setText(amPath.serialize(Detail::Delimiter));
   }
 
   if(nullptr != m_ComparisonSelectionTableModel)
