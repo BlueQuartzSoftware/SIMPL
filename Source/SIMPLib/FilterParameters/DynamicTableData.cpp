@@ -152,32 +152,12 @@ void DynamicTableData::checkAndAdjustDimensions()
         m_RowHeaders.pop_back();
       }
     }
-    // If row header dimension is less than default row dimension, add blank headers
-    else
-    {
-      int count = m_RowHeaders.size();
-      while(m_RowHeaders.size() < nRows)
-      {
-        m_RowHeaders.push_back(QString::number(count));
-        count++;
-      }
-    }
     // If column header dimension is greater than default column dimension, remove the extra headers
     if(m_ColHeaders.size() > nCols)
     {
       while(m_ColHeaders.size() > nCols)
       {
         m_ColHeaders.pop_back();
-      }
-    }
-    // If column header dimension is less than default column dimension, add blank headers
-    else
-    {
-      int count = m_ColHeaders.size();
-      while(m_ColHeaders.size() < nCols)
-      {
-        m_ColHeaders.push_back(QString::number(count));
-        count++;
       }
     }
   }

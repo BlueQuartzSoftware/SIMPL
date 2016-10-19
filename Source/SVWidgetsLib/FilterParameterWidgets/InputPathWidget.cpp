@@ -59,7 +59,7 @@ InputPathWidget::InputPathWidget(FilterParameter* parameter, AbstractFilter* fil
 : FilterParameterWidget(parameter, filter, parent)
 {
   m_FilterParameter = dynamic_cast<InputPathFilterParameter*>(parameter);
-  Q_ASSERT_X(m_FilterParameter != nullptr, "nullptr Pointer", "InputPathWidget can ONLY be used with a InputPathFilterParameter object");
+  Q_ASSERT_X(m_FilterParameter != nullptr, "NULL Pointer", "InputPathWidget can ONLY be used with a InputPathFilterParameter object");
 
   setupUi(this);
   setupGui();

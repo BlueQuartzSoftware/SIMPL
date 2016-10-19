@@ -63,7 +63,7 @@ PhaseTypeSelectionWidget::PhaseTypeSelectionWidget(FilterParameter* parameter, A
 , m_DidCausePreflight(false)
 {
   m_FilterParameter = dynamic_cast<PhaseTypeSelectionFilterParameter*>(parameter);
-  Q_ASSERT_X(m_FilterParameter != nullptr, "nullptr Pointer", "PhaseTypeSelectionWidget can ONLY be used with a PhaseTypeSelectionFilterParameter object");
+  Q_ASSERT_X(m_FilterParameter != nullptr, "NULL Pointer", "PhaseTypeSelectionWidget can ONLY be used with a PhaseTypeSelectionFilterParameter object");
 
   setupUi(this);
   setupGui();

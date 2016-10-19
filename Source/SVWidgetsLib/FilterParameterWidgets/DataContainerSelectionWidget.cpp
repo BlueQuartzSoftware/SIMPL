@@ -62,7 +62,7 @@ DataContainerSelectionWidget::DataContainerSelectionWidget(FilterParameter* para
 , m_DidCausePreflight(false)
 {
   m_FilterParameter = dynamic_cast<DataContainerSelectionFilterParameter*>(parameter);
-  Q_ASSERT_X(m_FilterParameter != nullptr, "nullptr Pointer", "DataContainerSelectionWidget can ONLY be used with a DataContainerSelectionFilterParameter object");
+  Q_ASSERT_X(m_FilterParameter != nullptr, "NULL Pointer", "DataContainerSelectionWidget can ONLY be used with a DataContainerSelectionFilterParameter object");
 
   setupUi(this);
   setupGui();

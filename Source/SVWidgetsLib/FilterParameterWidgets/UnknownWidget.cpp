@@ -48,7 +48,7 @@ UnknownWidget::UnknownWidget(FilterParameter* parameter, AbstractFilter* filter,
 : FilterParameterWidget(parameter, filter, parent)
 {
   m_FilterParameter = dynamic_cast<UnknownFilterParameter*>(parameter);
-  // Q_ASSERT_X(m_FilterParameter != nullptr, "nullptr Pointer", "UnknownWidget can ONLY be used with a UnknownFilterParameter object");
+  // Q_ASSERT_X(m_FilterParameter != nullptr, "NULL Pointer", "UnknownWidget can ONLY be used with a UnknownFilterParameter object");
 
   setupUi(this);
   setupGui();

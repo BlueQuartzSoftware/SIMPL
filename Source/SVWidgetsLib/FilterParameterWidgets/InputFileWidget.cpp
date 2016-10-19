@@ -62,7 +62,7 @@ InputFileWidget::InputFileWidget(FilterParameter* parameter, AbstractFilter* fil
 : FilterParameterWidget(parameter, filter, parent)
 {
   m_FilterParameter = dynamic_cast<InputFileFilterParameter*>(parameter);
-  Q_ASSERT_X(m_FilterParameter != nullptr, "nullptr Pointer", "InputFileWidget can ONLY be used with a InputFileFilterParameter object");
+  Q_ASSERT_X(m_FilterParameter != nullptr, "NULL Pointer", "InputFileWidget can ONLY be used with a InputFileFilterParameter object");
 
   setupUi(this);
   setupGui();

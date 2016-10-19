@@ -12,6 +12,8 @@ set(SIMPLView_PARAMETER_WIDGETS
     CalculatorWidget
     ChoiceWidget
     ComparisonSelectionWidget
+    ConstrainedDoubleWidget
+    ConstrainedIntWidget
     DataArrayCreationWidget
     DataArraySelectionWidget
     DataContainerArrayProxyWidget
@@ -24,6 +26,7 @@ set(SIMPLView_PARAMETER_WIDGETS
     FileListInfoWidget
     FloatVec3Widget
     FourthOrderPolynomialWidget
+    GenerateColorTableWidget
     InputFileWidget
     InputPathWidget
     IntVec3Widget

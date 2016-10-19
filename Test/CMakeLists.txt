@@ -43,6 +43,8 @@ include_directories(${SIMPLTest_SOURCE_DIR})
 include(${SIMPLProj_SOURCE_DIR}/Test/SIMPLTestFunctions.cmake)
 
 set(TEST_TEMP_DIR ${SIMPLTest_BINARY_DIR}/Temp)
+set(TEST_IMAGEASCII_DIR ${SIMPLTest_BINARY_DIR}/ImageASCII)
+
 # Make sure the directory is created during CMake time
 file(MAKE_DIRECTORY ${TEST_TEMP_DIR})
 
@@ -75,6 +77,7 @@ set(TEST_NAMES
   FilterParametersRWTest
   FilterPipelineTest
   FindDerivativesFilterTest
+  GenerateColorTableTest
   QuaternionMathTest
   RemoveComponentFromArrayTest
   ReplaceValueTest
@@ -117,6 +120,15 @@ STRING(REPLACE "|" ";" TestMainFunctors ${TestMainFunctors}   )
 
 configure_file(${SIMPLTest_SOURCE_DIR}/TestMain.cpp.in
                ${SIMPLTest_BINARY_DIR}/SIMPLUnitTest.cpp @ONLY)
+
+#-------------------------------------------------------------------------------
+#- This copies all the Prebuilt Pipeline files into the Build directory so the help
+#- works from the Build Tree
+add_custom_target(ImageASCIICopy ALL
+            COMMAND ${CMAKE_COMMAND} -E copy_directory ${SIMPLTest_SOURCE_DIR}/ImageASCII
+            ${SIMPLTest_BINARY_DIR}/ImageASCII/
+            COMMENT "Copying Test Images into Binary Directory")
+set_target_properties(ImageASCIICopy PROPERTIES FOLDER ZZ_COPY_FILES)
 
 
 # Set the source files properties on each source file.

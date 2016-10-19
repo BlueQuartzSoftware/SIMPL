@@ -55,7 +55,7 @@ FourthOrderPolynomialWidget::FourthOrderPolynomialWidget(FilterParameter* parame
 : FilterParameterWidget(parameter, filter, parent)
 {
   m_FilterParameter = dynamic_cast<FourthOrderPolynomialFilterParameter*>(parameter);
-  Q_ASSERT_X(m_FilterParameter != nullptr, "nullptr Pointer", "FourthOrderPolynomialWidget can ONLY be used with a FourthOrderPolynomialFilterParameter object");
+  Q_ASSERT_X(m_FilterParameter != nullptr, "NULL Pointer", "FourthOrderPolynomialWidget can ONLY be used with a FourthOrderPolynomialFilterParameter object");
 
   setupUi(this);
   setupGui();

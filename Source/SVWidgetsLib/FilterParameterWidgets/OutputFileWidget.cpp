@@ -60,7 +60,7 @@ OutputFileWidget::OutputFileWidget(FilterParameter* parameter, AbstractFilter* f
 : FilterParameterWidget(parameter, filter, parent)
 {
   m_FilterParameter = dynamic_cast<OutputFileFilterParameter*>(parameter);
-  Q_ASSERT_X(m_FilterParameter != nullptr, "nullptr Pointer", "OutputFileWidget can ONLY be used with a OutputFileFilterParameter object");
+  Q_ASSERT_X(m_FilterParameter != nullptr, "NULL Pointer", "OutputFileWidget can ONLY be used with a OutputFileFilterParameter object");
 
   m_OpenDialogLastDirectory = QDir::homePath();
 

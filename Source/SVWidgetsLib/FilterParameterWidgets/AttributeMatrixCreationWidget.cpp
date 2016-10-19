@@ -62,7 +62,7 @@ AttributeMatrixCreationWidget::AttributeMatrixCreationWidget(FilterParameter* pa
 , m_DidCausePreflight(false)
 {
   m_FilterParameter = dynamic_cast<AttributeMatrixCreationFilterParameter*>(parameter);
-  Q_ASSERT_X(m_FilterParameter != nullptr, "nullptr Pointer", "AttributeMatrixCreationWidget can ONLY be used with a AttributeMatrixCreationFilterParameter object");
+  Q_ASSERT_X(m_FilterParameter != nullptr, "NULL Pointer", "AttributeMatrixCreationWidget can ONLY be used with a AttributeMatrixCreationFilterParameter object");
 
   setupUi(this);
   setupGui();

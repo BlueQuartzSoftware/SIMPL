@@ -3,11 +3,13 @@
 
 
 set(SVWidgetsLib_Dialogs_HDRS
-
+  ${SVWidgetsLib_SOURCE_DIR}/Dialogs/ColorPresets.h
 )
 
 set(SVWidgetsLib_Dialogs_MOC_HDRS
   ${SVWidgetsLib_SOURCE_DIR}/Dialogs/AboutPlugins.h
+  ${SVWidgetsLib_SOURCE_DIR}/Dialogs/ColorPresetsDialog.h
+  ${SVWidgetsLib_SOURCE_DIR}/Dialogs/ColorPresetsDialogTableModel.h
   ${SVWidgetsLib_SOURCE_DIR}/Dialogs/FavoritesChangedDialog.h
   ${SVWidgetsLib_SOURCE_DIR}/Dialogs/PluginDetails.h
   ${SVWidgetsLib_SOURCE_DIR}/Dialogs/UpdateCheck.h
@@ -17,6 +19,9 @@ set(SVWidgetsLib_Dialogs_MOC_HDRS
 
 set(SVWidgetsLib_Dialogs_SRCS
   ${SVWidgetsLib_SOURCE_DIR}/Dialogs/AboutPlugins.cpp
+  ${SVWidgetsLib_SOURCE_DIR}/Dialogs/ColorPresets.cpp
+  ${SVWidgetsLib_SOURCE_DIR}/Dialogs/ColorPresetsDialog.cpp
+  ${SVWidgetsLib_SOURCE_DIR}/Dialogs/ColorPresetsDialogTableModel.cpp
   ${SVWidgetsLib_SOURCE_DIR}/Dialogs/FavoritesChangedDialog.cpp
   ${SVWidgetsLib_SOURCE_DIR}/Dialogs/PluginDetails.cpp
   ${SVWidgetsLib_SOURCE_DIR}/Dialogs/UpdateCheck.cpp
@@ -38,6 +43,7 @@ set_source_files_properties( ${SVWidgetsLib_Dialogs_Generated_MOC_SRCS} PROPERTI
 # Continue on with our Qt4 section
 QT5_WRAP_UI( SVWidgetsLib_Dialogs_Generated_UI_HDRS   
   ${SVWidgetsLib_SOURCE_DIR}/Dialogs/UI_Files/AboutPlugins.ui
+  ${SVWidgetsLib_SOURCE_DIR}/Dialogs/UI_Files/ColorPresetsDialog.ui
   ${SVWidgetsLib_SOURCE_DIR}/Dialogs/UI_Files/PluginDetails.ui
   ${SVWidgetsLib_SOURCE_DIR}/Dialogs/UI_Files/FavoritesChangedDialog.ui
 	${SVWidgetsLib_SOURCE_DIR}/Dialogs/UI_Files/UpdateCheckDialog.ui

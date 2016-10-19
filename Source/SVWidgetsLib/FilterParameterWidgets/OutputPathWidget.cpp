@@ -59,7 +59,7 @@ OutputPathWidget::OutputPathWidget(FilterParameter* parameter, AbstractFilter* f
 : FilterParameterWidget(parameter, filter, parent)
 {
   m_FilterParameter = dynamic_cast<OutputPathFilterParameter*>(parameter);
-  Q_ASSERT_X(m_FilterParameter != nullptr, "nullptr Pointer", "OutputPathWidget can ONLY be used with a OutputPathFilterParameter object");
+  Q_ASSERT_X(m_FilterParameter != nullptr, "NULL Pointer", "OutputPathWidget can ONLY be used with a OutputPathFilterParameter object");
 
   setupUi(this);
   setupGui();
