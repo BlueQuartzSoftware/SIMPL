@@ -61,6 +61,15 @@ class SIMPLib_EXPORT DynamicTableData : public QObject
 
     virtual ~DynamicTableData();
 
+    SIMPL_INSTANCE_PROPERTY(QStringList, ColHeaders)
+    SIMPL_INSTANCE_PROPERTY(QStringList, RowHeaders)
+    SIMPL_INSTANCE_PROPERTY(bool, DynamicRows)
+    SIMPL_INSTANCE_PROPERTY(bool, DynamicCols)
+    SIMPL_INSTANCE_PROPERTY(int, MinRows)
+    SIMPL_INSTANCE_PROPERTY(int, MinCols)
+    SIMPL_INSTANCE_PROPERTY(int, DefaultRowCount)
+    SIMPL_INSTANCE_PROPERTY(int, DefaultColCount)
+
     /**
     * @brief This deserializes a string of data and returns the original 2D array.
     */
@@ -117,18 +126,6 @@ class SIMPLib_EXPORT DynamicTableData : public QObject
     void setTableData(const std::vector<std::vector<double> > data);
 
     /**
-    * @brief Row headers getter and setter
-    */
-    QStringList getRowHeaders() const;
-    void setRowHeaders(const QStringList& rHeaders);
-
-    /**
-    * @brief Column headers getter and setter
-    */
-    QStringList getColHeaders() const;
-    void setColHeaders(const QStringList& cHeaders);
-
-    /**
     * @brief Calculates and returns the number of rows
     */
     int getNumRows() const;
@@ -149,9 +146,7 @@ class SIMPLib_EXPORT DynamicTableData : public QObject
     bool operator!=(const DynamicTableData& rhs) const;
 
   private:
-    std::vector<std::vector<double> > m_TableData;
-    QStringList m_RowHeaders;
-    QStringList m_ColHeaders;
+    std::vector<std::vector<double> >       m_TableData;
 
     /**
     * @brief Writes the contents of the data to a QJsonObject

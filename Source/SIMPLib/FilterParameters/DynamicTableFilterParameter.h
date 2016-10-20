@@ -96,18 +96,11 @@ class SIMPLib_EXPORT DynamicTableFilterParameter : public FilterParameter
     static Pointer New(const QString& humanLabel, const QString& propertyName,
                        DynamicTableData defaultTableData, FilterParameter::Category category,
                        SetterCallbackType setterCallback, GetterCallbackType getterCallback,
-                       bool isRowsDynamic = true, bool isColsDynamic = true,
-                       int minRowCount = 0, int minColCount = 0, int groupIndex = -1);
+                       int groupIndex = -1);
 
     virtual ~DynamicTableFilterParameter();
 
-    SIMPL_INSTANCE_PROPERTY(int, DefaultRowCount)
-    SIMPL_INSTANCE_PROPERTY(int, DefaultColCount)
     SIMPL_INSTANCE_PROPERTY(DynamicTableData, DefaultTableData)
-    SIMPL_INSTANCE_PROPERTY(bool, AreRowsDynamic)
-    SIMPL_INSTANCE_PROPERTY(bool, AreColsDynamic)
-    SIMPL_INSTANCE_PROPERTY(int, MinRowCount)
-    SIMPL_INSTANCE_PROPERTY(int, MinColCount)
     SIMPL_INSTANCE_PROPERTY(int, ErrorCondition)
     SIMPL_INSTANCE_PROPERTY(QString, ErrorMessage)
 

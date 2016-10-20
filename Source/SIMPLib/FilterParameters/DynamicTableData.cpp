@@ -40,14 +40,27 @@
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-DynamicTableData::DynamicTableData()
+DynamicTableData::DynamicTableData() :
+  m_DynamicRows(false),
+  m_DynamicCols(false),
+  m_MinRows(0),
+  m_MinCols(0),
+  m_DefaultRowCount(0),
+  m_DefaultColCount(0)
 {
+
 }
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-DynamicTableData::DynamicTableData(int nRows, int nCols)
+DynamicTableData::DynamicTableData(int nRows, int nCols) :
+  m_DynamicRows(false),
+  m_DynamicCols(false),
+  m_MinRows(0),
+  m_MinCols(0),
+  m_DefaultRowCount(0),
+  m_DefaultColCount(0)
 {
   std::vector<std::vector<double>> data(nRows, std::vector<double>(nCols, 0));
   m_TableData = data;
@@ -71,7 +84,13 @@ DynamicTableData::DynamicTableData(int nRows, int nCols)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-DynamicTableData::DynamicTableData(int nRows, int nCols, QStringList rHeaders, QStringList cHeaders)
+DynamicTableData::DynamicTableData(int nRows, int nCols, QStringList rHeaders, QStringList cHeaders) :
+  m_DynamicRows(false),
+  m_DynamicCols(false),
+  m_MinRows(0),
+  m_MinCols(0),
+  m_DefaultRowCount(0),
+  m_DefaultColCount(0)
 {
   std::vector<std::vector<double>> data(nRows, std::vector<double>(nCols, 0));
   m_TableData = data;
@@ -86,7 +105,13 @@ DynamicTableData::DynamicTableData(int nRows, int nCols, QStringList rHeaders, Q
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-DynamicTableData::DynamicTableData(std::vector<std::vector<double>> data, QStringList rHeaders, QStringList cHeaders)
+DynamicTableData::DynamicTableData(std::vector<std::vector<double>> data, QStringList rHeaders, QStringList cHeaders) :
+  m_DynamicRows(false),
+  m_DynamicCols(false),
+  m_MinRows(0),
+  m_MinCols(0),
+  m_DefaultRowCount(0),
+  m_DefaultColCount(0)
 {
   m_TableData = data;
   m_RowHeaders = rHeaders;
@@ -344,6 +369,13 @@ void DynamicTableData::writeJson(QJsonObject& json) const
     cHeaders.push_back(header);
   }
   json["Column Headers"] = cHeaders;
+
+  json["HasDynamicRows"] = m_DynamicRows;
+  json["HasDynamicCols"] = m_DynamicCols;
+  json["MinRowCount"] = m_MinRows;
+  json["MinColCount"] = m_MinCols;
+  json["DefaultRowCount"] = m_DefaultRowCount;
+  json["DefaultColCount"] = m_DefaultColCount;
 }
 
 // -----------------------------------------------------------------------------
@@ -378,6 +410,14 @@ bool DynamicTableData::readJson(QJsonObject& json)
       m_ColHeaders.push_back(val.toString());
     }
   }
+
+  m_DynamicRows = json["HasDynamicRows"].toBool();
+  m_DynamicCols = json["HasDynamicCols"].toBool();
+  m_MinRows = json["MinRowCount"].toInt();
+  m_MinCols = json["MinColCount"].toInt();
+  m_DefaultRowCount = json["DefaultRowCount"].toInt();
+  m_DefaultColCount = json["DefaultColCount"].toInt();
+
   return true;
 }
 
@@ -457,38 +497,6 @@ void DynamicTableData::setTableData(std::vector<std::vector<double>> data)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-QStringList DynamicTableData::getRowHeaders() const
-{
-  return m_RowHeaders;
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-void DynamicTableData::setRowHeaders(const QStringList& rHeaders)
-{
-  m_RowHeaders = rHeaders;
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-QStringList DynamicTableData::getColHeaders() const
-{
-  return m_ColHeaders;
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-void DynamicTableData::setColHeaders(const QStringList& cHeaders)
-{
-  m_ColHeaders = cHeaders;
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
 int DynamicTableData::getNumRows() const
 {
   return m_TableData.size();
@@ -517,6 +525,12 @@ DynamicTableData::DynamicTableData(const DynamicTableData& rhs)
   m_TableData = rhs.m_TableData;
   m_RowHeaders = rhs.m_RowHeaders;
   m_ColHeaders = rhs.m_ColHeaders;
+  m_DynamicRows = rhs.m_DynamicRows;
+  m_DynamicCols = rhs.m_DynamicCols;
+  m_MinRows = rhs.m_MinRows;
+  m_MinCols = rhs.m_MinCols;
+  m_DefaultRowCount = rhs.m_DefaultRowCount;
+  m_DefaultColCount = rhs.m_DefaultColCount;
 }
 
 // -----------------------------------------------------------------------------
@@ -527,6 +541,12 @@ void DynamicTableData::operator=(const DynamicTableData& rhs)
   m_TableData = rhs.m_TableData;
   m_RowHeaders = rhs.m_RowHeaders;
   m_ColHeaders = rhs.m_ColHeaders;
+  m_DynamicRows = rhs.m_DynamicRows;
+  m_DynamicCols = rhs.m_DynamicCols;
+  m_MinRows = rhs.m_MinRows;
+  m_MinCols = rhs.m_MinCols;
+  m_DefaultRowCount = rhs.m_DefaultRowCount;
+  m_DefaultColCount = rhs.m_DefaultColCount;
 }
 
 // -----------------------------------------------------------------------------
@@ -534,7 +554,9 @@ void DynamicTableData::operator=(const DynamicTableData& rhs)
 // -----------------------------------------------------------------------------
 bool DynamicTableData::operator==(const DynamicTableData& rhs) const
 {
-  if(m_RowHeaders == rhs.m_RowHeaders && m_ColHeaders == rhs.m_ColHeaders)
+  if(m_RowHeaders == rhs.m_RowHeaders && m_ColHeaders == rhs.m_ColHeaders && m_DynamicRows == rhs.m_DynamicRows
+     && m_DynamicCols == rhs.m_DynamicCols && m_MinRows == rhs.m_MinRows && m_MinCols == rhs.m_MinCols
+     && m_DefaultRowCount == rhs.m_DefaultRowCount && m_DefaultColCount == rhs.m_DefaultColCount)
   {
     for(int i = 0; i < m_TableData.size(); i++)
     {
@@ -557,7 +579,9 @@ bool DynamicTableData::operator==(const DynamicTableData& rhs) const
 // -----------------------------------------------------------------------------
 bool DynamicTableData::operator!=(const DynamicTableData& rhs) const
 {
-  if(m_RowHeaders == rhs.m_RowHeaders && m_ColHeaders == rhs.m_ColHeaders)
+  if(m_RowHeaders == rhs.m_RowHeaders && m_ColHeaders == rhs.m_ColHeaders && m_DynamicRows == rhs.m_DynamicRows
+     && m_DynamicCols == rhs.m_DynamicCols && m_MinRows == rhs.m_MinRows && m_MinCols == rhs.m_MinCols
+     && m_DefaultRowCount == rhs.m_DefaultRowCount && m_DefaultColCount == rhs.m_DefaultColCount)
   {
     for(int i = 0; i < m_TableData.size(); i++)
     {

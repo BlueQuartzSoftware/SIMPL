@@ -114,7 +114,7 @@ class SVWidgetsLib_EXPORT DynamicTableWidget : public FilterParameterWidget, pri
     bool m_DidCausePreflight;
 
     void populateTable();
-    void populateHeaders(QStringList rHeaders, QStringList cHeaders);
+    void populateHeaders();
     void renumberDynamicHeaders();
     void updateDynamicButtons();
     void resizeColumnsFromContents();

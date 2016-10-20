@@ -67,7 +67,7 @@ void DynamicTableExample::setupFilterParameters()
   // Table 1 - Fixed rows and columns, no default data passed in
   {
     // We are using the expanded way to create the filter parameter, because the getter and setter variables are different
-    parameters.push_back(SIMPL_NEW_DYN_TABLE_FP("Dynamic Table 1", DynamicData1, FilterParameter::Parameter, DynamicTableExample, false, false, 0, 0, 0));
+    parameters.push_back(SIMPL_NEW_DYN_TABLE_FP("Dynamic Table 1", DynamicData1, FilterParameter::Parameter, DynamicTableExample));
   }
 
   // Table 2 - Fixed rows and columns, default data passed in
@@ -79,7 +79,7 @@ void DynamicTableExample::setupFilterParameters()
     m_DynamicData2.setColHeaders(cHeaders);
     m_DynamicData2.setRowHeaders(rHeaders);
     m_DynamicData2.setTableData(defaultTable);
-    parameters.push_back(SIMPL_NEW_DYN_TABLE_FP("Dynamic Table 2", DynamicData2, FilterParameter::Parameter, DynamicTableExample, false, false, 0, 0, 0));
+    parameters.push_back(SIMPL_NEW_DYN_TABLE_FP("Dynamic Table 2", DynamicData2, FilterParameter::Parameter, DynamicTableExample));
   }
 
   // Table 3 - Dynamic rows and fixed columns, default data passed in
@@ -91,7 +91,8 @@ void DynamicTableExample::setupFilterParameters()
     m_DynamicData3.setColHeaders(cHeaders);
     m_DynamicData3.setRowHeaders(rHeaders);
     m_DynamicData3.setTableData(defaultTable);
-    parameters.push_back(SIMPL_NEW_DYN_TABLE_FP("Dynamic Table 3", DynamicData3, FilterParameter::Parameter, DynamicTableExample, true, false, 0, 0, 0));
+    m_DynamicData3.setDynamicRows(true);
+    parameters.push_back(SIMPL_NEW_DYN_TABLE_FP("Dynamic Table 3", DynamicData3, FilterParameter::Parameter, DynamicTableExample));
   }
 
   // Table 4 - Fixed rows and dynamic columns, default data passed in
@@ -103,7 +104,8 @@ void DynamicTableExample::setupFilterParameters()
     m_DynamicData4.setColHeaders(cHeaders);
     m_DynamicData4.setRowHeaders(rHeaders);
     m_DynamicData4.setTableData(defaultTable);
-    parameters.push_back(SIMPL_NEW_DYN_TABLE_FP("Dynamic Table 4", DynamicData4, FilterParameter::Parameter, DynamicTableExample, false, true, 0, 0, 0));
+    m_DynamicData4.setDynamicCols(true);
+    parameters.push_back(SIMPL_NEW_DYN_TABLE_FP("Dynamic Table 4", DynamicData4, FilterParameter::Parameter, DynamicTableExample));
   }
 
   // Table 5 - Dynamic rows and dynamic columns, default data passed in
@@ -115,7 +117,13 @@ void DynamicTableExample::setupFilterParameters()
     m_DynamicData5.setColHeaders(cHeaders);
     m_DynamicData5.setRowHeaders(rHeaders);
     m_DynamicData5.setTableData(defaultTable);
-    parameters.push_back(SIMPL_NEW_DYN_TABLE_FP("Dynamic Table 5", DynamicData5, FilterParameter::Parameter, DynamicTableExample, true, true, 0, 0, 0));
+    m_DynamicData5.setDynamicRows(true);
+    m_DynamicData5.setDynamicCols(true);
+    m_DynamicData5.setMinRows(6);
+    m_DynamicData5.setDefaultRowCount(3);
+    m_DynamicData5.setMinCols(3);
+    m_DynamicData5.setDefaultColCount(5);
+    parameters.push_back(SIMPL_NEW_DYN_TABLE_FP("Dynamic Table 5", DynamicData5, FilterParameter::Parameter, DynamicTableExample));
   }
 
   setFilterParameters(parameters);

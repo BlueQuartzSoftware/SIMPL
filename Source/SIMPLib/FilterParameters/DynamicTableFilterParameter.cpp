@@ -40,12 +40,6 @@
 // -----------------------------------------------------------------------------
 DynamicTableFilterParameter::DynamicTableFilterParameter()
 : FilterParameter()
-, m_DefaultRowCount(0)
-, m_DefaultColCount(0)
-, m_AreRowsDynamic(false)
-, m_AreColsDynamic(false)
-, m_MinRowCount(0)
-, m_MinColCount(0)
 , m_ErrorCondition(0)
 {
 }
@@ -60,19 +54,12 @@ DynamicTableFilterParameter::~DynamicTableFilterParameter()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-DynamicTableFilterParameter::Pointer DynamicTableFilterParameter::New(const QString& humanLabel, const QString& propertyName, DynamicTableData defaultTableData, FilterParameter::Category category,
-                                                                      SetterCallbackType setterCallback, GetterCallbackType getterCallback, bool areRowsDynamic, bool areColsDynamic, int minRowCount,
-                                                                      int minColCount, int groupIndex)
+DynamicTableFilterParameter::Pointer DynamicTableFilterParameter::New(const QString& humanLabel, const QString& propertyName, DynamicTableData defaultTableData, FilterParameter::Category category, SetterCallbackType setterCallback, GetterCallbackType getterCallback, int groupIndex)
 {
   DynamicTableFilterParameter::Pointer ptr = DynamicTableFilterParameter::New();
   ptr->setHumanLabel(humanLabel);
   ptr->setPropertyName(propertyName);
   ptr->setCategory(category);
-  ptr->setDefaultTableData(defaultTableData);
-  ptr->setAreRowsDynamic(areRowsDynamic);
-  ptr->setAreColsDynamic(areColsDynamic);
-  ptr->setMinRowCount(minRowCount);
-  ptr->setMinColCount(minColCount);
   ptr->setReadOnly(false);
   ptr->setGroupIndex(groupIndex);
   ptr->setSetterCallback(setterCallback);

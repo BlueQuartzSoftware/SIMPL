@@ -93,7 +93,7 @@ void CreateAttributeMatrix::setupFilterParameters()
   QStringList rHeaders, cHeaders;
   rHeaders << "Tuple Dimensions";
 
-  parameters.push_back(SIMPL_NEW_DYN_TABLE_FP("Tuple Dimensions", TupleDimensions, FilterParameter::Parameter, CreateAttributeMatrix, false, true, 0));
+  parameters.push_back(SIMPL_NEW_DYN_TABLE_FP("Tuple Dimensions", TupleDimensions, FilterParameter::Parameter, CreateAttributeMatrix));
   {
     AttributeMatrixCreationFilterParameter::RequirementType req;
     parameters.push_back(SIMPL_NEW_AM_CREATION_FP("Created Attribute Matrix", CreatedAttributeMatrix, FilterParameter::CreatedArray, CreateAttributeMatrix, req));

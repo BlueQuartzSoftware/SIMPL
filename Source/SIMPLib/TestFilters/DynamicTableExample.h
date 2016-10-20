@@ -66,13 +66,13 @@ class SIMPLib_EXPORT DynamicTableExample : public AbstractFilter
     Q_PROPERTY(DynamicTableData DynamicData2 READ getDynamicData2 WRITE setDynamicData2)
 
     SIMPL_FILTER_PARAMETER(DynamicTableData, DynamicData3)
-    Q_PROPERTY(DynamicTableData DynamicData3 READ getDynamicData1 WRITE setDynamicData3)
+    Q_PROPERTY(DynamicTableData DynamicData3 READ getDynamicData3 WRITE setDynamicData3)
 
     SIMPL_FILTER_PARAMETER(DynamicTableData, DynamicData4)
-    Q_PROPERTY(DynamicTableData DynamicData4 READ getDynamicData1 WRITE setDynamicData4)
+    Q_PROPERTY(DynamicTableData DynamicData4 READ getDynamicData4 WRITE setDynamicData4)
 
     SIMPL_FILTER_PARAMETER(DynamicTableData, DynamicData5)
-    Q_PROPERTY(DynamicTableData DynamicData5 READ getDynamicData1 WRITE setDynamicData5)
+    Q_PROPERTY(DynamicTableData DynamicData5 READ getDynamicData5 WRITE setDynamicData5)
 
 
     virtual const QString getCompiledLibraryName();
