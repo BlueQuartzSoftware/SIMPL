@@ -123,6 +123,9 @@ void DynamicTableWidget::setupGui()
 
   tableLabel->setText(m_FilterParameter->getHumanLabel());
 
+  dynamicTable->verticalHeader()->setSectionResizeMode(QHeaderView::ResizeToContents);
+  dynamicTable->horizontalHeader()->setSectionResizeMode(QHeaderView::ResizeToContents);
+
   // Set the item delegate so that we can only enter 'double' values into the table
   m_ItemDelegate = new DynamicTableItemDelegate;
   dynamicTable->setItemDelegate(m_ItemDelegate);
@@ -275,9 +278,6 @@ void DynamicTableWidget::on_addRowBtn_pressed()
     dynamicTable->setItem(row, col, item);
   }
 
-  // Update size of Columns
-  resizeColumnsFromContents();
-
   // Update buttons
   updateDynamicButtons();
 
@@ -317,9 +317,6 @@ void DynamicTableWidget::on_addColBtn_pressed()
     dynamicTable->setItem(row, col, item);
   }
 
-  // Update size of Columns
-  resizeColumnsFromContents();
-
   // Update buttons
   updateDynamicButtons();
 
@@ -343,9 +340,6 @@ void DynamicTableWidget::on_deleteRowBtn_pressed()
       dynamicTable->removeColumn(0);
     }
   }
-
-  // Update size of Columns
-  resizeColumnsFromContents();
 
   // Update buttons
   updateDynamicButtons();
@@ -374,9 +368,6 @@ void DynamicTableWidget::on_deleteColBtn_pressed()
     }
   }
 
-  // Update size of Columns
-  resizeColumnsFromContents();
-
   // Update buttons
   updateDynamicButtons();
 
@@ -385,86 +376,6 @@ void DynamicTableWidget::on_deleteColBtn_pressed()
 
   // Cause a preflight
   on_dynamicTable_cellChanged(0, 0);
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-void DynamicTableWidget::resizeColumnsFromContents()
-{
-  if(dynamicTable->columnCount() == 0)
-  {
-    return;
-  }
-
-  int col = dynamicTable->columnCount() - 1;
-  QSize size = dynamicTable->viewport()->size();
-  int width = size.width();
-  if(col != 0)
-  {
-    width /= dynamicTable->columnCount();
-  }
-
-  QFontMetrics fm(dynamicTable->font());
-  QString filler("000000");
-  int minWidth = fm.width(filler);
-
-  QFontMetrics hfm(dynamicTable->horizontalHeader()->font());
-  QString header = dynamicTable->horizontalHeaderItem(col)->data(Qt::DisplayRole).toString();
-  int headerWidth = hfm.width(header) + 10;
-
-  if(dynamicTable->horizontalScrollBar()->isVisible())
-  {
-    if(width < headerWidth)
-    {
-      width = headerWidth;
-    }
-    if(width < minWidth)
-    {
-      width = minWidth;
-    }
-    dynamicTable->horizontalHeader()->resizeSection(col, width);
-  }
-  else
-  {
-    for(int i = 0; i < dynamicTable->columnCount(); i++)
-    {
-      QString header = dynamicTable->horizontalHeaderItem(i)->data(Qt::DisplayRole).toString();
-      headerWidth = hfm.width(header) + 10;
-      // qDebug() << tableLabel->text() << header << width << headerWidth << minWidth;
-
-      if(width < headerWidth)
-      {
-        width = headerWidth;
-      }
-      if(width < minWidth)
-      {
-        width = minWidth;
-      }
-      dynamicTable->horizontalHeader()->resizeSection(i, width);
-      // qDebug() << "    " << dynamicTable->horizontalHeader()->sectionSize(i);
-    }
-  }
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-void DynamicTableWidget::resizeRowsFromContents()
-{
-  // QSize size = dynamicTable->size();
-  int preferredHeight = 0;
-  QFontMetrics fm(dynamicTable->horizontalHeader()->font());
-  preferredHeight += fm.height();
-  fm = QFontMetrics(dynamicTable->font());
-  int rowCount = dynamicTable->rowCount();
-  for(int i = 0; i < rowCount; i++)
-  {
-    dynamicTable->setRowHeight(i, fm.height() * 1.15);
-  }
-  //  preferredHeight += (dynamicTable->rowCount() * fm.height());
-  //  preferredHeight += dynamicTable->horizontalScrollBar()->size().height();
-  // dynamicTable->setMaximumHeight(dynamicTable->rowCount() * preferredHeight);
 }
 
 // -----------------------------------------------------------------------------
@@ -555,9 +466,6 @@ void DynamicTableWidget::populateTable()
 
     // Populate row and column headers
     populateHeaders();
-
-    // Resize rows and columns to contents
-    resizeColumnsFromContents();
 
     // Update the state of the Add/Remove buttons
     updateDynamicButtons();
