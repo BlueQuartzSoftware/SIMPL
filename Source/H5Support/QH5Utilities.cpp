@@ -89,6 +89,22 @@ herr_t QH5Utilities::getObjectType(hid_t objId, const QString& objName, int32_t*
   return H5Utilities::getObjectType(objId, objName.toStdString(), objType);
 }
 
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+QString QH5Utilities::getParentPath(hid_t objId)
+{
+  return QString::fromStdString(H5Utilities::getParentPath(objId));
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+QString QH5Utilities::getParentPath(const QString& objectPath)
+{
+  return QString::fromStdString(H5Utilities::getParentPath(objectPath.toStdString()));
+}
+
 // Opens and returns the HDF object (since the HDF api requires
 //  different open and close methods for different types of objects
 hid_t QH5Utilities::openHDF5Object(hid_t loc_id, const QString& objName)

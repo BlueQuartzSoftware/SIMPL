@@ -215,6 +215,26 @@ hid_t H5Utilities::openHDF5Object(hid_t loc_id, const std::string& objName)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
+std::string H5Utilities::getParentPath(hid_t objId)
+{
+  std::string objPath = getObjectPath(objId);
+  return getParentPath(objPath);
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+std::string H5Utilities::getParentPath(const std::string& objectPath)
+{
+  std::string parentPath = objectPath;
+  size_t start = parentPath.find_last_of('/');
+  parentPath.erase(start, parentPath.size() - start);
+  return parentPath;
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
 herr_t H5Utilities::closeHDF5Object(hid_t obj_id)
 {
   H5SUPPORT_MUTEX_LOCK()
@@ -479,14 +499,13 @@ int32_t H5Utilities::createGroupsFromPath(const std::string& pathToCheck, hid_t 
 // -----------------------------------------------------------------------------
 std::string H5Utilities::extractObjectName(const std::string& path)
 {
-
   std::string::size_type pos;
   pos = path.find_last_of('/');
-  if(pos == std::string::npos)
+  if(pos == std::string::npos || path == "/")
   {
     return path;
   }
-  return path.substr(pos);
+  return path.substr(pos+1);
 }
 
 //--------------------------------------------------------------------//

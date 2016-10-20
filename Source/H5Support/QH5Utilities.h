@@ -96,6 +96,22 @@ class QH5Utilities
     static H5Support_EXPORT herr_t objectNameAtIndex(hid_t fileId, int32_t idx, QString& name);
 
     /**
+    * @brief Returns the path to an object's parent
+    * @param objId The HDF5 id of the object
+    * @param trim set to False to trim the path
+    * @return  The path to the object relative to the objId
+    */
+    static H5Support_EXPORT QString getParentPath(hid_t objId);
+
+    /**
+    * @brief Returns the path to an object's parent
+    * @param objectPath The HDF5 path to the object
+    * @param trim set to False to trim the path
+    * @return  The path to the object relative to the objId
+    */
+    static H5Support_EXPORT QString getParentPath(const QString& objectPath);
+
+    /**
     * @brief Returns if a given hdf5 object is a group
     * @param objId The hdf5 object that contains an object with name objName
     * @param objName The name of the object to check
