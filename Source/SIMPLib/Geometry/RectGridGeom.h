@@ -229,6 +229,13 @@ class SIMPLib_EXPORT RectGridGeom : public IGeometryGrid
     virtual size_t getYPoints() { return m_Dimensions[1]; }
     virtual size_t getZPoints() { return m_Dimensions[2]; }
 
+    virtual void getPlaneCoords(size_t idx[3], float coords[3]);
+    virtual void getPlaneCoords(size_t x, size_t y, size_t z, float coords[3]);
+    virtual void getPlaneCoords(size_t idx, float coords[3]);
+    virtual void getPlaneCoords(size_t idx[3], double coords[3]);
+    virtual void getPlaneCoords(size_t x, size_t y, size_t z, double coords[3]);
+    virtual void getPlaneCoords(size_t idx, double coords[3]);
+
     virtual void getCoords(size_t idx[3], float coords[3]);
     virtual void getCoords(size_t x, size_t y, size_t z, float coords[3]);
     virtual void getCoords(size_t idx, float coords[3]);

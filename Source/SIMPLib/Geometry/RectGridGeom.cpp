@@ -489,6 +489,98 @@ void RectGridGeom::setZBounds(FloatArrayType::Pointer zBnds)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
+void RectGridGeom::getPlaneCoords(size_t idx[3], float coords[3])
+{
+  float* xBnds = m_xBounds->getPointer(0);
+  float* yBnds = m_yBounds->getPointer(0);
+  float* zBnds = m_zBounds->getPointer(0);
+
+  coords[0] = xBnds[idx[0]];
+  coords[1] = yBnds[idx[1]];
+  coords[2] = zBnds[idx[2]];
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void RectGridGeom::getPlaneCoords(size_t x, size_t y, size_t z, float coords[3])
+{
+  float* xBnds = m_xBounds->getPointer(0);
+  float* yBnds = m_yBounds->getPointer(0);
+  float* zBnds = m_zBounds->getPointer(0);
+
+  coords[0] = xBnds[x];
+  coords[1] = yBnds[y];
+  coords[2] = zBnds[z];
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void RectGridGeom::getPlaneCoords(size_t idx, float coords[3])
+{
+  size_t column = idx % m_Dimensions[0];
+  size_t row = (idx / m_Dimensions[0]) % m_Dimensions[1];
+  size_t plane = idx / (m_Dimensions[0] * m_Dimensions[1]);
+
+  float* xBnds = m_xBounds->getPointer(0);
+  float* yBnds = m_yBounds->getPointer(0);
+  float* zBnds = m_zBounds->getPointer(0);
+
+  coords[0] = xBnds[column];
+  coords[1] = yBnds[row];
+  coords[2] = zBnds[plane];
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void RectGridGeom::getPlaneCoords(size_t idx[3], double coords[3])
+{
+  float* xBnds = m_xBounds->getPointer(0);
+  float* yBnds = m_yBounds->getPointer(0);
+  float* zBnds = m_zBounds->getPointer(0);
+
+  coords[0] = static_cast<double>(xBnds[idx[0]]);
+  coords[1] = static_cast<double>(yBnds[idx[1]]);
+  coords[2] = static_cast<double>(zBnds[idx[2]]);
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void RectGridGeom::getPlaneCoords(size_t x, size_t y, size_t z, double coords[3])
+{
+  float* xBnds = m_xBounds->getPointer(0);
+  float* yBnds = m_yBounds->getPointer(0);
+  float* zBnds = m_zBounds->getPointer(0);
+
+  coords[0] = static_cast<double>(xBnds[x]);
+  coords[1] = static_cast<double>(yBnds[y]);
+  coords[2] = static_cast<double>(zBnds[z]);
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void RectGridGeom::getPlaneCoords(size_t idx, double coords[3])
+{
+  size_t column = idx % m_Dimensions[0];
+  size_t row = (idx / m_Dimensions[0]) % m_Dimensions[1];
+  size_t plane = idx / (m_Dimensions[0] * m_Dimensions[1]);
+
+  float* xBnds = m_xBounds->getPointer(0);
+  float* yBnds = m_yBounds->getPointer(0);
+  float* zBnds = m_zBounds->getPointer(0);
+
+  coords[0] = static_cast<double>(xBnds[column]);
+  coords[1] = static_cast<double>(yBnds[row]);
+  coords[2] = static_cast<double>(zBnds[plane]);
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
 void RectGridGeom::getCoords(size_t idx[3], float coords[3])
 {
   float* xBnds = m_xBounds->getPointer(0);

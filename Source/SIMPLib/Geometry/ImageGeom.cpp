@@ -447,7 +447,7 @@ ImageGeom::Pointer ImageGeom::CreateGeometry(const QString& name)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void ImageGeom::getCoords(size_t idx[3], float coords[3])
+void ImageGeom::getPlaneCoords(size_t idx[3], float coords[3])
 {
   coords[0] = idx[0] * m_Resolution[0] + m_Origin[0];
   coords[1] = idx[1] * m_Resolution[1] + m_Origin[1];
@@ -457,7 +457,7 @@ void ImageGeom::getCoords(size_t idx[3], float coords[3])
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void ImageGeom::getCoords(size_t x, size_t y, size_t z, float coords[3])
+void ImageGeom::getPlaneCoords(size_t x, size_t y, size_t z, float coords[3])
 {
   coords[0] = x * m_Resolution[0] + m_Origin[0];
   coords[1] = y * m_Resolution[1] + m_Origin[1];
@@ -467,7 +467,7 @@ void ImageGeom::getCoords(size_t x, size_t y, size_t z, float coords[3])
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void ImageGeom::getCoords(size_t idx, float coords[3])
+void ImageGeom::getPlaneCoords(size_t idx, float coords[3])
 {
   size_t column = idx % m_Dimensions[0];
   size_t row = (idx / m_Dimensions[0]) % m_Dimensions[1];
@@ -481,7 +481,7 @@ void ImageGeom::getCoords(size_t idx, float coords[3])
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void ImageGeom::getCoords(size_t idx[3], double coords[3])
+void ImageGeom::getPlaneCoords(size_t idx[3], double coords[3])
 {
   coords[0] = static_cast<double>(idx[0] * m_Resolution[0] + m_Origin[0]);
   coords[1] = static_cast<double>(idx[1] * m_Resolution[1] + m_Origin[1]);
@@ -491,11 +491,79 @@ void ImageGeom::getCoords(size_t idx[3], double coords[3])
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void ImageGeom::getCoords(size_t x, size_t y, size_t z, double coords[3])
+void ImageGeom::getPlaneCoords(size_t x, size_t y, size_t z, double coords[3])
 {
   coords[0] = static_cast<double>(x * m_Resolution[0] + m_Origin[0]);
   coords[1] = static_cast<double>(y * m_Resolution[1] + m_Origin[1]);
   coords[2] = static_cast<double>(z * m_Resolution[2] + m_Origin[2]);
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void ImageGeom::getPlaneCoords(size_t idx, double coords[3])
+{
+  size_t column = idx % m_Dimensions[0];
+  size_t row = (idx / m_Dimensions[0]) % m_Dimensions[1];
+  size_t plane = idx / (m_Dimensions[0] * m_Dimensions[1]);
+
+  coords[0] = static_cast<double>(column * m_Resolution[0] + m_Origin[0]);
+  coords[1] = static_cast<double>(row * m_Resolution[1] + m_Origin[1]);
+  coords[2] = static_cast<double>(plane * m_Resolution[2] + m_Origin[2]);
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void ImageGeom::getCoords(size_t idx[3], float coords[3])
+{
+  coords[0] = idx[0] * m_Resolution[0] + m_Origin[0] + (0.5f * m_Resolution[0]);
+  coords[1] = idx[1] * m_Resolution[1] + m_Origin[1] + (0.5f * m_Resolution[1]);
+  coords[2] = idx[2] * m_Resolution[2] + m_Origin[2] + (0.5f * m_Resolution[2]);
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void ImageGeom::getCoords(size_t x, size_t y, size_t z, float coords[3])
+{
+  coords[0] = x * m_Resolution[0] + m_Origin[0] + (0.5f * m_Resolution[0]);
+  coords[1] = y * m_Resolution[1] + m_Origin[1] + (0.5f * m_Resolution[1]);
+  coords[2] = z * m_Resolution[2] + m_Origin[2] + (0.5f * m_Resolution[2]);
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void ImageGeom::getCoords(size_t idx, float coords[3])
+{
+  size_t column = idx % m_Dimensions[0];
+  size_t row = (idx / m_Dimensions[0]) % m_Dimensions[1];
+  size_t plane = idx / (m_Dimensions[0] * m_Dimensions[1]);
+
+  coords[0] = column * m_Resolution[0] + m_Origin[0] + (0.5f * m_Resolution[0]);
+  coords[1] = row * m_Resolution[1] + m_Origin[1] + (0.5f * m_Resolution[1]);
+  coords[2] = plane * m_Resolution[2] + m_Origin[2] + (0.5f * m_Resolution[2]);
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void ImageGeom::getCoords(size_t idx[3], double coords[3])
+{
+  coords[0] = static_cast<double>(idx[0] * m_Resolution[0] + m_Origin[0] + (0.5f * m_Resolution[0]));
+  coords[1] = static_cast<double>(idx[1] * m_Resolution[1] + m_Origin[1] + (0.5f * m_Resolution[1]));
+  coords[2] = static_cast<double>(idx[2] * m_Resolution[2] + m_Origin[2] + (0.5f * m_Resolution[2]));
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void ImageGeom::getCoords(size_t x, size_t y, size_t z, double coords[3])
+{
+  coords[0] = static_cast<double>(x * m_Resolution[0] + m_Origin[0] + (0.5f * m_Resolution[0]));
+  coords[1] = static_cast<double>(y * m_Resolution[1] + m_Origin[1] + (0.5f * m_Resolution[1]));
+  coords[2] = static_cast<double>(z * m_Resolution[2] + m_Origin[2] + (0.5f * m_Resolution[2]));
 }
 
 // -----------------------------------------------------------------------------
@@ -507,9 +575,9 @@ void ImageGeom::getCoords(size_t idx, double coords[3])
   size_t row = (idx / m_Dimensions[0]) % m_Dimensions[1];
   size_t plane = idx / (m_Dimensions[0] * m_Dimensions[1]);
 
-  coords[0] = static_cast<double>(column * m_Resolution[0] + m_Origin[0]);
-  coords[1] = static_cast<double>(row * m_Resolution[1] + m_Origin[1]);
-  coords[2] = static_cast<double>(plane * m_Resolution[2] + m_Origin[2]);
+  coords[0] = static_cast<double>(column * m_Resolution[0] + m_Origin[0] + (0.5f * m_Resolution[0]));
+  coords[1] = static_cast<double>(row * m_Resolution[1] + m_Origin[1] + (0.5f * m_Resolution[1]));
+  coords[2] = static_cast<double>(plane * m_Resolution[2] + m_Origin[2] + (0.5f * m_Resolution[2]));
 }
 
 // -----------------------------------------------------------------------------
