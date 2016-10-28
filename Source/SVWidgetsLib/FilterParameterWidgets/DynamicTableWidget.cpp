@@ -253,8 +253,6 @@ void DynamicTableWidget::on_addRowBtn_pressed()
 {
   int row = dynamicTable->rowCount();
 
-  DynamicTableData data = getFilter()->property(PROPERTY_NAME_AS_CHAR).value<DynamicTableData>();
-
   // If we are adding the first row, add the first column too.
   if(row <= 0 && dynamicTable->columnCount() <= 0)
   {
@@ -291,8 +289,6 @@ void DynamicTableWidget::on_addRowBtn_pressed()
 void DynamicTableWidget::on_addColBtn_pressed()
 {
   int col = dynamicTable->columnCount();
-
-  DynamicTableData data = getFilter()->property(PROPERTY_NAME_AS_CHAR).value<DynamicTableData>();
 
   // If we are adding the first column, add the first row too.
   if(col <= 0 && dynamicTable->rowCount() <= 0)
