@@ -256,7 +256,7 @@ void DynamicTableWidget::on_addRowBtn_pressed()
   DynamicTableData data = getFilter()->property(PROPERTY_NAME_AS_CHAR).value<DynamicTableData>();
 
   // If we are adding the first row, add the first column too.
-  if(row <= 0 && data.getDynamicCols() == true)
+  if(row <= 0 && dynamicTable->columnCount() <= 0)
   {
     dynamicTable->insertColumn(0);
     dynamicTable->setHorizontalHeaderItem(0, new QTableWidgetItem("0"));
@@ -295,7 +295,7 @@ void DynamicTableWidget::on_addColBtn_pressed()
   DynamicTableData data = getFilter()->property(PROPERTY_NAME_AS_CHAR).value<DynamicTableData>();
 
   // If we are adding the first column, add the first row too.
-  if(col <= 0 && data.getDynamicRows() == true)
+  if(col <= 0 && dynamicTable->rowCount() <= 0)
   {
     dynamicTable->insertRow(0);
     dynamicTable->setVerticalHeaderItem(0, new QTableWidgetItem("0"));
