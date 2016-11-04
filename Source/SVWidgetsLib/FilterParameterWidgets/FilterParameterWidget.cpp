@@ -177,30 +177,74 @@ QString FilterParameterWidget::wrapStringInHtml(const QString &message)
 // -----------------------------------------------------------------------------
 QPoint FilterParameterWidget::adjustedMenuPosition(QPushButton* pushButton)
 {
-  QSize menuSize = pushButton->menu()->sizeHint();
-  QPoint point = QCursor::pos();
-  point.setX(QCursor::pos().x() - menuSize.width() / 2);
-
-  int desktopWidth = QApplication::desktop()->availableGeometry(pushButton).width();
-  int desktopHeight = QApplication::desktop()->availableGeometry(pushButton).height();
-
-  // If the menu is going to go off the screen in the X-axis, reposition it until it's completely on the screen
-  while(point.x() + menuSize.width() > desktopWidth)
+  // Calculate the actual virtual desktop QRect.
+  int screenCount = QApplication::desktop()->screenCount();
+  int xMin = std::numeric_limits<int>::max();
+  int yMin = std::numeric_limits<int>::max();
+  int xMax = std::numeric_limits<int>::min();
+  int yMax = std::numeric_limits<int>::min();
+  QRect virtDesktopRect;
+  for(int i = 0; i < screenCount; i++)
   {
-    point.setX(point.x() - 1);
+    QRect rect = QApplication::desktop()->availableGeometry(i);
+    // qDebug() << i << "\t" << rect;
+
+    if(rect.x() < xMin)
+    {
+      xMin = rect.x();
+    }
+    if(rect.y() < yMin)
+    {
+      yMin = rect.y();
+    }
+    if(rect.x() + rect.width() > xMax)
+    {
+      xMax = rect.x() + rect.width();
+    }
+    if(rect.y() + rect.height() > yMax)
+    {
+      yMax = rect.y() + rect.height();
+    }
   }
 
+  virtDesktopRect.setTopLeft(QPoint(xMin, yMin));
+  virtDesktopRect.setBottomRight(QPoint(xMax, yMax));
+
+  QSize menuSize = pushButton->menu()->sizeHint();
+  QPoint point = QCursor::pos();
+
+  // Move the x position to the left by half the width of the menu so the menu
+  // is centered up under the mouse
+  point.setX(point.x() - menuSize.width() / 2);
+
+  // If the menu is going to go off the screen in the X-axis, reposition it until it's completely on the screen
+  if(point.x() + menuSize.width() > virtDesktopRect.right())
+  {
+    //  int diffX = point.x() + menuSize.width() - virtDesktopRect.right();
+    point.setX(virtDesktopRect.right() - menuSize.width());
+  }
+
+  // Make sure the menu will not get positioned off the left side of the desktop
+  if(point.x() - 0.5 * menuSize.width() < virtDesktopRect.left())
+  {
+    point.setX(virtDesktopRect.left() + 2); //
+  }
+
+  // Find the "Y" Position that the menu should be displayed at. We want the menu
+  // to appear just below the button so the button and it's text are not obscurred.
   QPoint localButtonCoords = pushButton->geometry().bottomLeft();
   QPoint globalButtonCoords = mapToGlobal(localButtonCoords);
-  //  qDebug() << "QApplication::desktop()->geometry().width(): " << desktopWidth << "," << desktopHeight;
-  //  qDebug() << "localButtonCoords: " << localButtonCoords << "\tglobalButtonCoords: " << globalButtonCoords;
 
   point.setY(globalButtonCoords.y());
 
-  // If the menu is going to go off the screen in the Y-axis, reposition it until it's completely on the screen
-  while(point.y() + menuSize.height() > desktopHeight)
+  int screenNum = QApplication::desktop()->screenNumber(pushButton);
+  int desktopHeight = QApplication::desktop()->availableGeometry(screenNum).height();
+
+  if(point.y() > desktopHeight)
   {
-    point.setY(point.y() - 1);
+    localButtonCoords = pushButton->geometry().topLeft();
+    globalButtonCoords = mapToGlobal(localButtonCoords);
+    point.setY(globalButtonCoords.y() - menuSize.height());
   }
 
   return point;
