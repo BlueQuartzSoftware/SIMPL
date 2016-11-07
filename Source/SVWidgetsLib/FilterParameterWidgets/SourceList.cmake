@@ -24,6 +24,7 @@ set(SIMPLView_PARAMETER_WIDGETS
     DynamicChoiceWidget
     DynamicTableWidget
     FileListInfoWidget
+    FloatVec2Widget
     FloatVec3Widget
     FourthOrderPolynomialWidget
     GenerateColorTableWidget
