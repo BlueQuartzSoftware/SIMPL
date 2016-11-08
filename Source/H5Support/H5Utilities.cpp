@@ -235,6 +235,17 @@ std::string H5Utilities::getParentPath(const std::string& objectPath)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
+std::string H5Utilities::getObjectNameFromPath(const std::string& objectPath)
+{
+  std::string str = objectPath;
+  size_t end = str.find_last_of('/');
+  str.erase(0, end+1);
+  return str;
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
 herr_t H5Utilities::closeHDF5Object(hid_t obj_id)
 {
   H5SUPPORT_MUTEX_LOCK()

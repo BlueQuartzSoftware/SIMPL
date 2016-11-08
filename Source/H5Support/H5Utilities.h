@@ -104,6 +104,13 @@ namespace H5Support_NAMESPACE
       static H5Support_EXPORT std::string getParentPath(const std::string& objectPath);
 
       /**
+      * @brief Returns the object's name from object path
+      * @param objectPath The HDF5 path to the object
+      * @return  The object name
+      */
+      static H5Support_EXPORT std::string getObjectNameFromPath(const std::string& objectPath);
+
+      /**
       * @brief Returns if a given hdf5 object is a group
       * @param objId The hdf5 object that contains an object with name objName
       * @param objName The name of the object to check

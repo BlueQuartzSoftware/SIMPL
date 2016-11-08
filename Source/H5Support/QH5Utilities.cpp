@@ -105,6 +105,14 @@ QString QH5Utilities::getParentPath(const QString& objectPath)
   return QString::fromStdString(H5Utilities::getParentPath(objectPath.toStdString()));
 }
 
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+QString QH5Utilities::getObjectNameFromPath(const QString& objectPath)
+{
+  return QString::fromStdString(H5Utilities::getObjectNameFromPath(objectPath.toStdString()));
+}
+
 // Opens and returns the HDF object (since the HDF api requires
 //  different open and close methods for different types of objects
 hid_t QH5Utilities::openHDF5Object(hid_t loc_id, const QString& objName)
