@@ -209,14 +209,17 @@ void MatrixMath::Cofactor3x3(float g[3][3], float outMat[3][3])
 {
   float temp[3][3];
   Minors3x3(g, temp);
+  // Row 0
   outMat[0][0] = temp[0][0];
-  outMat[0][1] = -temp[1][0];
-  outMat[0][2] = temp[2][0];
-  outMat[1][0] = -temp[0][1];
+  outMat[0][1] = -temp[0][1];
+  outMat[0][2] = temp[0][2];
+  // Row 1
+  outMat[1][0] = -temp[1][0];
   outMat[1][1] = temp[1][1];
-  outMat[1][2] = -temp[2][1];
-  outMat[2][0] = temp[0][2];
-  outMat[2][1] = -temp[1][2];
+  outMat[1][2] = -temp[1][2];
+  // Row 2
+  outMat[2][0] = temp[2][0];
+  outMat[2][1] = -temp[2][1];
   outMat[2][2] = temp[2][2];
 }
 
