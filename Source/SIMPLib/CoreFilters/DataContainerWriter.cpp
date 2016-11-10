@@ -178,6 +178,10 @@ void DataContainerWriter::dataCheck()
     ss = QObject::tr("The user does not have the proper permissions to write to the output file");
     notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
   }
+#ifdef _WIN32
+  // Turn file permission checking off
+  qt_ntfs_permission_lookup--;
+#endif
 }
 
 // -----------------------------------------------------------------------------
