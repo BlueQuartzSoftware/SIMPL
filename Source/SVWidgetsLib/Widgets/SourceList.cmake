@@ -13,7 +13,6 @@ set(SVWidgetsLib_Widgets_MOC_HDRS
   ${SVWidgetsLib_SOURCE_DIR}/Widgets/BookmarksTreeView.h
   ${SVWidgetsLib_SOURCE_DIR}/Widgets/BreakpointFilterWidget.h
   ${SVWidgetsLib_SOURCE_DIR}/Widgets/DREAM3DListWidget.h
-  ${SVWidgetsLib_SOURCE_DIR}/Widgets/DSplashScreen.h
   ${SVWidgetsLib_SOURCE_DIR}/Widgets/DataContainerArrayWidget.h
   ${SVWidgetsLib_SOURCE_DIR}/Widgets/DropBoxWidget.h
   ${SVWidgetsLib_SOURCE_DIR}/Widgets/FilterLibraryToolboxWidget.h
@@ -43,7 +42,6 @@ set(SVWidgetsLib_Widgets_SRCS
   ${SVWidgetsLib_SOURCE_DIR}/Widgets/BookmarksTreeView.cpp
   ${SVWidgetsLib_SOURCE_DIR}/Widgets/BreakpointFilterWidget.cpp
   ${SVWidgetsLib_SOURCE_DIR}/Widgets/DREAM3DListWidget.cpp
-  ${SVWidgetsLib_SOURCE_DIR}/Widgets/DSplashScreen.cpp
   ${SVWidgetsLib_SOURCE_DIR}/Widgets/DataContainerArrayWidget.cpp
   ${SVWidgetsLib_SOURCE_DIR}/Widgets/DropBoxWidget.cpp
   ${SVWidgetsLib_SOURCE_DIR}/Widgets/FilterLibraryToolboxWidget.cpp
