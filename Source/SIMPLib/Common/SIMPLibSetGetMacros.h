@@ -306,6 +306,54 @@
 #define SIMPL_SET_FILTER_PARAMETER(type, prpty)\
   void set##prpty(type value) { this->m_##prpty = value; emit parametersChanged(); }
 
+
+#define SIMPL_SET_PROPERTY_DECL(type, prpty)\
+  void set##prpty(type value);
+
+#define SIMPL_GET_PROPERTY_DECL(type, prpty)\
+  type get##prpty() const;
+
+#define SIMPL_INSTANCE_PROPERTY_DECL(type, prpty)\
+  private:\
+  type   m_##prpty;\
+  public:\
+  SIMPL_SET_PROPERTY_DECL(type, prpty)\
+  SIMPL_GET_PROPERTY_DECL(type, prpty)
+
+#define SIMPL_INSTANCE_PROPERTY_DECL(type, prpty)\
+  private:\
+  type   m_##prpty;\
+  public:\
+  SIMPL_SET_PROPERTY_DECL(type, prpty)\
+  SIMPL_GET_PROPERTY_DECL(type, prpty)
+
+#define SIMPL_VIRTUAL_INSTANCE_PROPERTY_DECL(type, prpty)\
+  private:\
+  type   m_##prpty;\
+  public:\
+  virtual SIMPL_SET_PROPERTY_DECL(type, prpty)\
+  virtual SIMPL_GET_PROPERTY_DECL(type, prpty)
+
+
+#define SIMPL_SET_PROPERTY_DEF(class, type, prpty)\
+  void class::set##prpty(type value) { this->m_##prpty = value; }
+
+#define SIMPL_GET_PROPERTY_DEF(class, type, prpty)\
+  type class::get##prpty() const { return m_##prpty; }
+
+#define SIMPL_INSTANCE_PROPERTY_DEF(class, type, prpty)\
+      SIMPL_SET_PROPERTY_DEF(class, type, prpty)\
+      SIMPL_GET_PROPERTY_DEF(class, type, prpty)
+
+#define SIMPL_INSTANCE_PROPERTY_DEF(class, type, prpty)\
+      SIMPL_SET_PROPERTY_DEF(class, type, prpty)\
+      SIMPL_GET_PROPERTY_DEF(class, type, prpty)
+
+#define SIMPL_VIRTUAL_INSTANCE_PROPERTY_DEF(class, type, prpty)\
+      SIMPL_SET_PROPERTY_DEF(class, type, prpty)\
+      SIMPL_GET_PROPERTY_DEF(class, type, prpty)
+
+
 /**
 * @brief
 */
