@@ -413,9 +413,9 @@ void MatrixMath::Sort3x1Ascending(float g[3])
 {
   float temp;
 
-  if(g[0] >= g[1] && g[0] >= g[2])
+  if(g[0] <= g[1] && g[0] <= g[2])
   {
-    if(g[1] >= g[2])
+    if(g[1] <= g[2])
     {
       g[0] = g[0];
       g[1] = g[1];
@@ -429,9 +429,9 @@ void MatrixMath::Sort3x1Ascending(float g[3])
       g[2] = temp;
     }
   }
-  else if(g[1] >= g[0] && g[1] >= g[2])
+  else if(g[1] <= g[0] && g[1] <= g[2])
   {
-    if(g[0] >= g[2])
+    if(g[0] <= g[2])
     {
       temp = g[0];
       g[0] = g[1];
@@ -446,9 +446,9 @@ void MatrixMath::Sort3x1Ascending(float g[3])
       g[2] = temp;
     }
   }
-  else if(g[2] >= g[0] && g[2] >= g[1])
+  else if(g[2] <= g[0] && g[2] <= g[1])
   {
-    if(g[0] >= g[1])
+    if(g[0] <= g[1])
     {
       temp = g[0];
       g[0] = g[2];
