@@ -2,6 +2,7 @@
 #include <stdlib.h>
 
 #include <iostream>
+#include <cmath>
 
 #include "SIMPLib/Math/MatrixMath.h"
 #include "SIMPLib/Utilities/UnitTestSupport.hpp"
@@ -507,7 +508,7 @@ public:
 		{
 			for (int c = 0; c < 3; c++)
 			{
-				DREAM3D_REQUIRE(abs(matrix[r][c] - correct[r][c]) < threshold)
+        DREAM3D_REQUIRE(std::abs(matrix[r][c] - correct[r][c]) < threshold)
 			}
 		}
 	}
@@ -526,7 +527,7 @@ public:
 
 		for (int r = 0; r < 3; r++)
 		{
-			DREAM3D_REQUIRE(abs(matrix[r] - correct[r]) < threshold)
+      DREAM3D_REQUIRE(std::abs(matrix[r] - correct[r]) < threshold)
 		}
 	}
 
@@ -544,7 +545,7 @@ public:
 
 		for (int r = 0; r < 3; r++)
 		{
-			DREAM3D_REQUIRE(abs(matrix[r] - correct[r]) < threshold)
+      DREAM3D_REQUIRE(std::abs(matrix[r] - correct[r]) < threshold)
 		}
 	}
 
@@ -562,7 +563,7 @@ public:
 
 		for (int r = 0; r < 3; r++)
 		{
-			DREAM3D_REQUIRE(abs(matrix[r] - correct[r]) < threshold)
+      DREAM3D_REQUIRE(std::abs(matrix[r] - correct[r]) < threshold)
 		}
 	}
 
@@ -606,7 +607,7 @@ public:
 
 		float threshold = 0.001f;
 
-		DREAM3D_REQUIRE(abs(magnitude - correct) < threshold)
+    DREAM3D_REQUIRE(std::abs(magnitude - correct) < threshold)
 	}
 
 	// -----------------------------------------------------------------------------
@@ -621,7 +622,7 @@ public:
 
 		float threshold = 0.001f;
 
-		DREAM3D_REQUIRE(abs(magnitude - correct) < threshold)
+    DREAM3D_REQUIRE(std::abs(magnitude - correct) < threshold)
 	}
 
 	// -----------------------------------------------------------------------------
@@ -669,7 +670,7 @@ public:
 
 		for (int r = 0; r < 3; r++)
 		{
-			DREAM3D_REQUIRE(abs(crossProduct[r] - correct[r]) < threshold)
+      DREAM3D_REQUIRE(std::abs(crossProduct[r] - correct[r]) < threshold)
 		}
 	}
 
@@ -690,7 +691,7 @@ public:
 
 		for (int r = 0; r < 3; r++)
 		{
-			DREAM3D_REQUIRE(abs(crossProduct[r] - correct[r]) < threshold)
+      DREAM3D_REQUIRE(std::abs(crossProduct[r] - correct[r]) < threshold)
 		}
 	}
 
