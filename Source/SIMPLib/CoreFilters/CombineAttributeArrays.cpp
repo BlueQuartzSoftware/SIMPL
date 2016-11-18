@@ -282,9 +282,10 @@ void CombineAttributeArrays::dataCheck()
       totalComps += numComps;
     }
   }
-
-  EXECUTE_FUNCTION_TEMPLATE(this, verifyArrayList, m_SelectedWeakPtrVector[0].lock(), this, m_SelectedWeakPtrVector)
-
+  if(! m_SelectedWeakPtrVector.isEmpty() )
+  {
+    EXECUTE_FUNCTION_TEMPLATE(this, verifyArrayList, m_SelectedWeakPtrVector[0].lock(), this, m_SelectedWeakPtrVector)
+  }
   if(getErrorCondition() < 0)
   {
     return;

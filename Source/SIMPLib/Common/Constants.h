@@ -95,6 +95,7 @@ namespace SIMPL
     const QString StatsDataArray("StatsDataArray");
     const QString NeighborList("NeighborList<T>");
     const QString StringArray("StringDataArray");
+    const QString Unknown("Unknown");
     const QString SupportedTypeList(TypeNames::StringArray + ", " + TypeNames::Int8 + ", " + TypeNames::UInt8 + ", " + TypeNames::Int16 + ", " + TypeNames::UInt16 + ", " + TypeNames::Int32 + ", " + TypeNames::UInt32 + ", " + TypeNames::Int64 + ", " + TypeNames::UInt64 + ", " + TypeNames::Float + ", " + TypeNames::Double);
   }
 
