@@ -1,5 +1,5 @@
-#ifndef _ToolConfiguration_H_
-#define _ToolConfiguration_H_
+#ifndef _simpl_tool_configuration_H_
+#define _simpl_tool_configuration_H_
 
 
 #include <QtCore/QString>
@@ -7,14 +7,14 @@
 namespace D3DTools
 {
 
-  QString GetDREAM3DProjDir()
+  QString GetSIMPLProjDir()
   {
-    return QString::fromLatin1("@DREAM3DProj_SOURCE_DIR_NORM@");
+    return QString::fromLatin1("@SIMPLProj_SOURCE_DIR_NORM@");
   }
 
-  QString GetDREAM3DSourceDir()
+  QString GetSIMPLSourceDir()
   {
-    return QString::fromLatin1("@DREAM3DProj_SOURCE_DIR_NORM@/Source");
+    return QString::fromLatin1("@SIMPLProj_SOURCE_DIR_NORM@/Source");
   }
 
   QString GetSIMPLibDir()
@@ -27,9 +27,14 @@ namespace D3DTools
     return QString::fromLatin1("@SIMPLib_PLUGIN_DIR_NORM@");
   }
 
-  QString GetDREAM3DProjParentDir()
+  QString GetSIMPLProjParentDir()
   {
-    return QString::fromLatin1("@DREAM3DProj_PARENT_DIR_NORM@");
+    return QString::fromLatin1("@SIMPLProj_PARENT_DIR_NORM@");
+  }
+
+  QString GetSIMPLBinaryDir()
+  {
+    return QString::fromLatin1("@SIMPLProj_BINARY_DIR@");
   }
 
   QString GetDREAM3DBinaryDir()

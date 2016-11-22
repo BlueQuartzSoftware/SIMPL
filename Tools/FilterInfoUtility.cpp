@@ -87,11 +87,10 @@ int main(int argc, char** argv)
     foreach(QString filter, filters)
     {
       QJsonObject parameters;
-      int index = 0;
       JsonFilterParametersWriter::Pointer writer = JsonFilterParametersWriter::New();
 
       AbstractFilter::Pointer fPtr = FilterManager::Instance()->getFactoryForFilter(filter)->create();
-      fPtr->writeFilterParameters(writer.get(), index);
+      fPtr->writeFilterParameters(parameters);
 
       jobj[filter] = writer->getCurrentGroupObject();
     }
