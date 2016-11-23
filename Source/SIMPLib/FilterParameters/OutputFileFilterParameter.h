@@ -63,15 +63,15 @@
  */
 class SIMPLib_EXPORT OutputFileFilterParameter : public FilterParameter
 {
-public:
-  SIMPL_SHARED_POINTERS(OutputFileFilterParameter)
+  public:
+    SIMPL_SHARED_POINTERS(OutputFileFilterParameter)
     SIMPL_STATIC_NEW_MACRO(OutputFileFilterParameter)
     SIMPL_TYPE_MACRO(OutputFileFilterParameter)
 
-  typedef std::function<void(QString)> SetterCallbackType;
-  typedef std::function<QString(void)> GetterCallbackType;
+    typedef std::function<void(QString)> SetterCallbackType;
+    typedef std::function<QString(void)> GetterCallbackType;
 
-  /**
+    /**
    * @brief New This function instantiates an instance of the OutputFileFilterParameter. Although this function is available to be used,
    * the preferable way to instantiate an instance of this class is to use the SIMPL_NEW_OUTPUT_FILE_FP(...) macro at the top of this file.
 
@@ -90,16 +90,16 @@ public:
    * @return
    */
     static Pointer New(const QString& humanLabel, const QString& propertyName,
-    const QString& defaultValue, Category category,
-    SetterCallbackType setterCallback, GetterCallbackType getterCallback,
-    const QString& fileExtension = QString(""),
-    const QString& fileType = QString(""),
-    int groupIndex = -1);
+                       const QString& defaultValue, Category category,
+                       SetterCallbackType setterCallback, GetterCallbackType getterCallback,
+                       const QString& fileExtension = QString(""),
+                       const QString& fileType = QString(""),
+                       int groupIndex = -1);
 
     virtual ~OutputFileFilterParameter();
 
     SIMPL_INSTANCE_STRING_PROPERTY(FileExtension)
-      SIMPL_INSTANCE_STRING_PROPERTY(FileType)
+    SIMPL_INSTANCE_STRING_PROPERTY(FileType)
 
     /**
      * @brief getWidgetType Returns the type of widget that displays and controls
@@ -135,16 +135,16 @@ public:
     SIMPL_INSTANCE_PROPERTY(GetterCallbackType, GetterCallback)
 
 
-protected:
+    protected:
       /**
-       * @brief OutputFileFilterParameter The default constructor.  It is protected because this
-       * filter parameter should only be instantiated using its New(...) function or short-form macro.
-       */
-  OutputFileFilterParameter();
+         * @brief OutputFileFilterParameter The default constructor.  It is protected because this
+         * filter parameter should only be instantiated using its New(...) function or short-form macro.
+         */
+      OutputFileFilterParameter();
 
-private:
-  OutputFileFilterParameter(const OutputFileFilterParameter&); // Copy Constructor Not Implemented
-  void operator=(const OutputFileFilterParameter&); // Operator '=' Not Implemented
+  private:
+    OutputFileFilterParameter(const OutputFileFilterParameter&); // Copy Constructor Not Implemented
+    void operator=(const OutputFileFilterParameter&); // Operator '=' Not Implemented
 };
 
 #endif /* _OutputFileFilterParameter_H_ */

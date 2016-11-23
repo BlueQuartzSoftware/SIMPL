@@ -65,6 +65,7 @@ set(_PublicFilters
   FeatureCountDecision
   FindDerivatives
   GenerateColorTable
+  ImportAsciDataArray
   LinkFeatureMapToElementArray
   MaskCountDecision
   MoveData

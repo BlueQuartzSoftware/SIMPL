@@ -78,6 +78,7 @@ set(TEST_NAMES
   FilterPipelineTest
   FindDerivativesFilterTest
   GenerateColorTableTest
+  ImportAsciDataArrayTest
   MatrixMathTest
   QuaternionMathTest
   RemoveComponentFromArrayTest
