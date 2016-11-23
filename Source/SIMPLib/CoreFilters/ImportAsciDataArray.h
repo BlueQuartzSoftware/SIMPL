@@ -68,8 +68,8 @@ class SIMPLib_EXPORT ImportAsciDataArray : public AbstractFilter
     SIMPL_FILTER_PARAMETER(QString, InputFile)
     Q_PROPERTY(QString InputFile READ getInputFile WRITE setInputFile)
 
-    SIMPL_FILTER_PARAMETER(int, Delimeter)
-    Q_PROPERTY(int Delimeter READ getDelimeter WRITE setDelimeter)
+    SIMPL_FILTER_PARAMETER(int, Delimiter)
+    Q_PROPERTY(int Delimiter READ getDelimiter WRITE setDelimiter)
 
     enum DelimeterType
     {
@@ -174,7 +174,7 @@ class SIMPLib_EXPORT ImportAsciDataArray : public AbstractFilter
      * @brief Converts from the enumeration to a char
      * @return
      */
-    char converSelectedDelimeter();
+    char converSelectedDelimiter();
 
   private:
     IDataArray::Pointer m_Array;

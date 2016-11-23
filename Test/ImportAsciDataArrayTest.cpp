@@ -31,7 +31,7 @@ public:
     return m_FilePath;
   }
 
-  void writeFile(char delimeter)
+  void writeFile(char delimiter)
   {
     std::ofstream outfile;
 
@@ -43,7 +43,7 @@ public:
       {
         outfile << index++;
         //if(x < m_XDim - 1)
-        { outfile << delimeter; }
+        { outfile << delimiter; }
       }
       outfile << std::endl;
     }
@@ -53,7 +53,7 @@ public:
   // -----------------------------------------------------------------------------
   //
   // -----------------------------------------------------------------------------
-  int RunTest(char sep, int delimeter)
+  int RunTest(char sep, int delimiter)
   {
     writeFile(sep);
 
@@ -108,8 +108,8 @@ public:
     propSet = filter->setProperty("InputFile", value);
     DREAM3D_REQUIRE_EQUAL(propSet, true);
 
-    value.setValue(delimeter);
-    propSet = filter->setProperty("Delimeter", value);
+    value.setValue(delimiter);
+    propSet = filter->setProperty("Delimiter", value);
     DREAM3D_REQUIRE_EQUAL(propSet, true);
 
 #if 0

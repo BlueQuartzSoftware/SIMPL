@@ -107,15 +107,15 @@ int32_t readLine(std::istream& in, char* result, size_t length)
 }
 
 
-class DelimeterType : public std::ctype<char>
+class DelimiterType : public std::ctype<char>
 {
     mask my_table[table_size];
   public:
-    DelimeterType(char delimeter, size_t refs = 0)
+    DelimiterType(char delimiter, size_t refs = 0)
       : std::ctype<char>(&my_table[0], false, refs)
     {
       std::copy_n(classic_table(), table_size, my_table);
-      my_table[static_cast<mask>(delimeter)] = (mask)space;
+      my_table[static_cast<mask>(delimiter)] = (mask)space;
     }
 };
 
@@ -128,7 +128,7 @@ class DelimeterType : public std::ctype<char>
 template <typename T, typename K> int32_t readAsciFile(typename DataArray<T>::Pointer data,
                                            const QString& filename,
                                            int32_t skipHeaderLines,
-                                           char delimeter)
+                                           char delimiter)
 {
   int32_t err = 0;
   QFileInfo fi(filename);
@@ -144,7 +144,7 @@ template <typename T, typename K> int32_t readAsciFile(typename DataArray<T>::Po
     return RBR_FILE_NOT_OPEN;
   }
 
-  in.imbue(std::locale(std::locale(), new Detail::DelimeterType(delimeter)));
+  in.imbue(std::locale(std::locale(), new Detail::DelimiterType(delimiter)));
 
   QByteArray buf(kBufferSize, '\0');
   char* buffer = buf.data();
@@ -201,7 +201,7 @@ ImportAsciDataArray::ImportAsciDataArray()
 , m_NumberOfComponents(0)
 , m_SkipHeaderLines(0)
 , m_InputFile("")
-, m_Delimeter(0)
+, m_Delimiter(0)
 {
   setupFilterParameters();
 }
@@ -248,10 +248,10 @@ void ImportAsciDataArray::setupFilterParameters()
   parameters.push_back(SIMPL_NEW_INTEGER_FP("Skip Header Lines", SkipHeaderLines, FilterParameter::Parameter, ImportAsciDataArray));
   {
     ChoiceFilterParameter::Pointer parameter = ChoiceFilterParameter::New();
-    parameter->setHumanLabel("Delimeter");
-    parameter->setPropertyName("Delimeter");
-    parameter->setSetterCallback(SIMPL_BIND_SETTER(ImportAsciDataArray, this, Delimeter));
-    parameter->setGetterCallback(SIMPL_BIND_GETTER(ImportAsciDataArray, this, Delimeter));
+    parameter->setHumanLabel("Delimiter");
+    parameter->setPropertyName("Delimiter");
+    parameter->setSetterCallback(SIMPL_BIND_SETTER(ImportAsciDataArray, this, Delimiter));
+    parameter->setGetterCallback(SIMPL_BIND_GETTER(ImportAsciDataArray, this, Delimiter));
 
     QVector<QString> choices;
     choices.push_back(", (comma)");
@@ -391,13 +391,13 @@ void ImportAsciDataArray::execute()
 
   DataContainer::Pointer m = getDataContainerArray()->getDataContainer(getCreatedAttributeArrayPath().getDataContainerName());
 
-  char delimeter = converSelectedDelimeter();
+  char delimiter = converSelectedDelimiter();
 
   QVector<size_t> cDims(1, m_NumberOfComponents);
   if(m_ScalarType == Detail::Int8)
   {
     Int8ArrayType::Pointer p = getDataContainerArray()->getPrereqIDataArrayFromPath<Int8ArrayType, AbstractFilter>(this, getCreatedAttributeArrayPath());
-    err = readAsciFile<int8_t, int32_t>(p, m_InputFile, m_SkipHeaderLines, delimeter);
+    err = readAsciFile<int8_t, int32_t>(p, m_InputFile, m_SkipHeaderLines, delimiter);
     if(err >= 0)
     {
       m_Array = p;
@@ -406,7 +406,7 @@ void ImportAsciDataArray::execute()
   else if(m_ScalarType == Detail::UInt8)
   {
     UInt8ArrayType::Pointer p = getDataContainerArray()->getPrereqIDataArrayFromPath<UInt8ArrayType, AbstractFilter>(this, getCreatedAttributeArrayPath());
-    err = readAsciFile<uint8_t, uint32_t>(p, m_InputFile, m_SkipHeaderLines, delimeter);
+    err = readAsciFile<uint8_t, uint32_t>(p, m_InputFile, m_SkipHeaderLines, delimiter);
     if(err >= 0)
     {
       m_Array = p;
@@ -415,7 +415,7 @@ void ImportAsciDataArray::execute()
   else if(m_ScalarType == Detail::Int16)
   {
     Int16ArrayType::Pointer p = getDataContainerArray()->getPrereqIDataArrayFromPath<Int16ArrayType, AbstractFilter>(this, getCreatedAttributeArrayPath());
-    err = readAsciFile<int16_t,int16_t>(p, m_InputFile, m_SkipHeaderLines, delimeter);
+    err = readAsciFile<int16_t,int16_t>(p, m_InputFile, m_SkipHeaderLines, delimiter);
     if(err >= 0)
     {
       m_Array = p;
@@ -424,7 +424,7 @@ void ImportAsciDataArray::execute()
   else if(m_ScalarType == Detail::UInt16)
   {
     UInt16ArrayType::Pointer p = getDataContainerArray()->getPrereqIDataArrayFromPath<UInt16ArrayType, AbstractFilter>(this, getCreatedAttributeArrayPath());
-    err = readAsciFile<uint16_t,uint16_t>(p, m_InputFile, m_SkipHeaderLines, delimeter);
+    err = readAsciFile<uint16_t,uint16_t>(p, m_InputFile, m_SkipHeaderLines, delimiter);
     if(err >= 0)
     {
       m_Array = p;
@@ -433,7 +433,7 @@ void ImportAsciDataArray::execute()
   else if(m_ScalarType == Detail::Int32)
   {
     Int32ArrayType::Pointer p = getDataContainerArray()->getPrereqIDataArrayFromPath<Int32ArrayType, AbstractFilter>(this, getCreatedAttributeArrayPath());
-    err = readAsciFile<int32_t,int32_t>(p, m_InputFile, m_SkipHeaderLines, delimeter);
+    err = readAsciFile<int32_t,int32_t>(p, m_InputFile, m_SkipHeaderLines, delimiter);
     if(err >= 0)
     {
       m_Array = p;
@@ -442,7 +442,7 @@ void ImportAsciDataArray::execute()
   else if(m_ScalarType == Detail::UInt32)
   {
     UInt32ArrayType::Pointer p = getDataContainerArray()->getPrereqIDataArrayFromPath<UInt32ArrayType, AbstractFilter>(this, getCreatedAttributeArrayPath());
-    err = readAsciFile<uint32_t,uint32_t>(p, m_InputFile, m_SkipHeaderLines, delimeter);
+    err = readAsciFile<uint32_t,uint32_t>(p, m_InputFile, m_SkipHeaderLines, delimiter);
     if(err >= 0)
     {
       m_Array = p;
@@ -451,7 +451,7 @@ void ImportAsciDataArray::execute()
   else if(m_ScalarType == Detail::Int64)
   {
     Int64ArrayType::Pointer p = getDataContainerArray()->getPrereqIDataArrayFromPath<Int64ArrayType, AbstractFilter>(this, getCreatedAttributeArrayPath());
-    err = readAsciFile<int64_t,int64_t>(p, m_InputFile, m_SkipHeaderLines, delimeter);
+    err = readAsciFile<int64_t,int64_t>(p, m_InputFile, m_SkipHeaderLines, delimiter);
     if(err >= 0)
     {
       m_Array = p;
@@ -460,7 +460,7 @@ void ImportAsciDataArray::execute()
   else if(m_ScalarType == Detail::UInt64)
   {
     UInt64ArrayType::Pointer p = getDataContainerArray()->getPrereqIDataArrayFromPath<UInt64ArrayType, AbstractFilter>(this, getCreatedAttributeArrayPath());
-    err = readAsciFile<uint64_t,uint64_t>(p, m_InputFile, m_SkipHeaderLines, delimeter);
+    err = readAsciFile<uint64_t,uint64_t>(p, m_InputFile, m_SkipHeaderLines, delimiter);
     if(err >= 0)
     {
       m_Array = p;
@@ -469,7 +469,7 @@ void ImportAsciDataArray::execute()
   else if(m_ScalarType == Detail::Float)
   {
     FloatArrayType::Pointer p = getDataContainerArray()->getPrereqIDataArrayFromPath<FloatArrayType, AbstractFilter>(this, getCreatedAttributeArrayPath());
-    err = readAsciFile<float,float>(p, m_InputFile, m_SkipHeaderLines, delimeter);
+    err = readAsciFile<float,float>(p, m_InputFile, m_SkipHeaderLines, delimiter);
     if(err >= 0)
     {
       m_Array = p;
@@ -478,7 +478,7 @@ void ImportAsciDataArray::execute()
   else if(m_ScalarType == Detail::Double)
   {
     DoubleArrayType::Pointer p = getDataContainerArray()->getPrereqIDataArrayFromPath<DoubleArrayType, AbstractFilter>(this, getCreatedAttributeArrayPath());
-    err = readAsciFile<double,double>(p, m_InputFile, m_SkipHeaderLines, delimeter);
+    err = readAsciFile<double,double>(p, m_InputFile, m_SkipHeaderLines, delimiter);
     if(err >= 0)
     {
       m_Array = p;
@@ -517,13 +517,13 @@ void ImportAsciDataArray::execute()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-char ImportAsciDataArray::converSelectedDelimeter()
+char ImportAsciDataArray::converSelectedDelimiter()
 {
-  if (getDelimeter() ==  ImportAsciDataArray::Comma) return ',';
-  if (getDelimeter() ==  ImportAsciDataArray::Semicolon) return ';';
-  if (getDelimeter() ==  ImportAsciDataArray::Space) return ' ';
-  if (getDelimeter() ==  ImportAsciDataArray::Colon) return ':';
-  if (getDelimeter() ==  ImportAsciDataArray::Tab) return '\t';
+  if (getDelimiter() ==  ImportAsciDataArray::Comma) return ',';
+  if (getDelimiter() ==  ImportAsciDataArray::Semicolon) return ';';
+  if (getDelimiter() ==  ImportAsciDataArray::Space) return ' ';
+  if (getDelimiter() ==  ImportAsciDataArray::Colon) return ':';
+  if (getDelimiter() ==  ImportAsciDataArray::Tab) return '\t';
   return ' ';
 }
 // -----------------------------------------------------------------------------
