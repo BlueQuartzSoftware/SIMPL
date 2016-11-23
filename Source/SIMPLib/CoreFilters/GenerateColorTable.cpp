@@ -250,6 +250,7 @@ void GenerateColorTable::setupFilterParameters()
     GenerateColorTableFilterParameter::Pointer parameter = GenerateColorTableFilterParameter::New();
     parameter->setHumanLabel("Select Preset...");
     parameter->setCategory(FilterParameter::Parameter);
+    parameter->setPropertyName("SelectedPresetName");
     parameter->setFilter(this);
     parameters.push_back(parameter);
   }
