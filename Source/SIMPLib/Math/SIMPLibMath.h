@@ -41,29 +41,40 @@
  */
 
 #if defined(_MSC_VER)
-/* [i_a] MSVC again: see the comment from Microsoft's math.h below (MSVC2005).
+  /* [i_a] MSVC again: see the comment from Microsoft's math.h below (MSVC2005).
 
-   Other compilers may also lack M_PI / M_PI_2 which both are used in the
-   OpenEXR (test) code.
+     Other compilers may also lack M_PI / M_PI_2 which both are used in the
+     OpenEXR (test) code.
 
-   Microsoft says:
+     Microsoft says:
 
-       Define _USE_MATH_DEFINES before including math.h to expose these macro
-       definitions for common math constants.  These are placed under an #ifdef
-       since these commonly-defined names are not part of the C/C standards.
+         Define _USE_MATH_DEFINES before including math.h to expose these macro
+         definitions for common math constants.  These are placed under an #ifdef
+         since these commonly-defined names are not part of the C/C standards.
 
-   End of quote.
+     End of quote.
 
-   The other defines have been added for completeness sake (they exist on
-   BSD and Linux at least and other code may expect these).
+     The other defines have been added for completeness sake (they exist on
+     BSD and Linux at least and other code may expect these).
 
-   Microsoft doesn't define M_2PI ever, other compilers may lack some of these
-   too, hence the sequence as it is: load math.h, then see what's lacking still.
-*/
-#ifndef _USE_MATH_DEFINES
-#define _USE_MATH_DEFINES 1
+     Microsoft doesn't define M_2PI ever, other compilers may lack some of these
+     too, hence the sequence as it is: load math.h, then see what's lacking still.
+  */
+  #ifndef _USE_MATH_DEFINES
+   #define _USE_MATH_DEFINES 1
+  #endif
 
-#endif
+  /*
+  "It's a known, long-standing bug in the compiler system's headers.  For
+  some reason the manufacturer, in its infinite wisdom, chose to #define
+  macros min() and max() in violation of the upper-case convention and so
+  break any legitimate functions with those names, including those in the
+  standard C++ library."
+  */
+  #ifndef NOMINMAX
+    #define NOMINMAX
+  #endif
+
 #endif
 
 #include <stddef.h>
