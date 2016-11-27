@@ -41,6 +41,7 @@
 #include "SIMPLib/Common/ComparisonInputs.h"
 #include "SIMPLib/DataContainers/AttributeMatrix.h"
 #include "SIMPLib/FilterParameters/FilterParameter.h"
+#include "SIMPLib/Geometry/IGeometry.h"
 
 /**
  * @brief SIMPL_NEW_COMP_SEL_FP This macro is a short-form way of instantiating an instance of
@@ -101,7 +102,7 @@ class SIMPLib_EXPORT ComparisonSelectionFilterParameter : public FilterParameter
     SIMPL_INSTANCE_PROPERTY(QVector<QString>, Choices)
     SIMPL_INSTANCE_PROPERTY(bool, ShowOperators)
 
-    SIMPL_INSTANCE_PROPERTY(QVector<unsigned int>, DefaultGeometryTypes)
+    SIMPL_INSTANCE_PROPERTY(IGeometry::Types, DefaultGeometryTypes)
     SIMPL_INSTANCE_PROPERTY(AttributeMatrix::Types, DefaultAttributeMatrixTypes)
 
     /**

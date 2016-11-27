@@ -68,6 +68,20 @@ class SIMPLib_EXPORT DataContainer : public Observable
     virtual ~DataContainer();
 
     /**
+     * @brief The Type enum
+     */
+    enum class Type : unsigned int
+    {
+      Volume = 0, //!<
+      Surface = 1, //!<
+      EdgeData = 2, //!<
+      Vertex = 3, //!<
+      Unknown = 999, //!<
+    };
+
+    using Types = QVector<Type>;
+
+    /**
      * @brief AttributeMatrixMap_t
      */
     typedef QMap<QString, AttributeMatrix::Pointer> AttributeMatrixMap_t;

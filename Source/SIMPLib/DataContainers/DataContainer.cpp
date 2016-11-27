@@ -429,7 +429,7 @@ int DataContainer::writeMeshToHDF5(hid_t dcGid, bool writeXdmf)
 
   if(nullptr == m_Geometry.get())
   {
-    err = QH5Lite::writeScalarAttribute(dcGid, SIMPL::Geometry::Geometry, SIMPL::Geometry::GeometryType, SIMPL::GeometryType::UnknownGeometry);
+    err = QH5Lite::writeScalarAttribute(dcGid, SIMPL::Geometry::Geometry, SIMPL::Geometry::GeometryType, IGeometry::Type::Unknown);
     if(err < 0)
     {
       return err;
@@ -488,7 +488,7 @@ int DataContainer::writeXdmf(QTextStream& out, QString hdfFileName)
   }
 
   m_Geometry->writeXdmf(out, getName(), hdfFileName);
-  unsigned int geomType = m_Geometry->getGeometryType();
+  IGeometry::Type geomType = m_Geometry->getGeometryType();
 
   // Get all of our AttributeMatrices
   AttributeMatrixMap_t amMap = getAttributeMatrices();
@@ -501,7 +501,7 @@ int DataContainer::writeXdmf(QTextStream& out, QString hdfFileName)
     AttributeMatrix::Type amType = attrMat->getType();
     switch(geomType)
     {
-    case SIMPL::GeometryType::VertexGeometry:
+    case IGeometry::Type::Vertex:
       switch(amType)
       {
       // FIXME: There are more AttributeMatrix Types that should be implemented
@@ -511,20 +511,7 @@ int DataContainer::writeXdmf(QTextStream& out, QString hdfFileName)
       default:
         break;
       }
-    case SIMPL::GeometryType::EdgeGeometry:
-      switch(amType)
-      {
-      // FIXME: There are more AttributeMatrix Types that should be implemented
-      case AttributeMatrix::Type::Vertex:
-        xdmfCenter = SIMPL::XdmfCenterType::Node;
-        break;
-      case AttributeMatrix::Type::Edge:
-        xdmfCenter = SIMPL::XdmfCenterType::Cell;
-        break;
-      default:
-        break;
-      }
-    case SIMPL::GeometryType::TriangleGeometry:
+    case IGeometry::Type::Edge:
       switch(amType)
       {
       // FIXME: There are more AttributeMatrix Types that should be implemented
@@ -534,16 +521,10 @@ int DataContainer::writeXdmf(QTextStream& out, QString hdfFileName)
       case AttributeMatrix::Type::Edge:
         xdmfCenter = SIMPL::XdmfCenterType::Cell;
         break;
-      case AttributeMatrix::Type::Face:
-        xdmfCenter = SIMPL::XdmfCenterType::Cell;
-        break;
-      case AttributeMatrix::Type::Cell:
-        xdmfCenter = SIMPL::XdmfCenterType::Cell;
-        break;
       default:
         break;
       }
-    case SIMPL::GeometryType::QuadGeometry:
+    case IGeometry::Type::Triangle:
       switch(amType)
       {
       // FIXME: There are more AttributeMatrix Types that should be implemented
@@ -562,7 +543,7 @@ int DataContainer::writeXdmf(QTextStream& out, QString hdfFileName)
       default:
         break;
       }
-    case SIMPL::GeometryType::TetrahedralGeometry:
+    case IGeometry::Type::Quad:
       switch(amType)
       {
       // FIXME: There are more AttributeMatrix Types that should be implemented
@@ -581,7 +562,26 @@ int DataContainer::writeXdmf(QTextStream& out, QString hdfFileName)
       default:
         break;
       }
-    case SIMPL::GeometryType::ImageGeometry:
+    case IGeometry::Type::Tetrahedral:
+      switch(amType)
+      {
+      // FIXME: There are more AttributeMatrix Types that should be implemented
+      case AttributeMatrix::Type::Vertex:
+        xdmfCenter = SIMPL::XdmfCenterType::Node;
+        break;
+      case AttributeMatrix::Type::Edge:
+        xdmfCenter = SIMPL::XdmfCenterType::Cell;
+        break;
+      case AttributeMatrix::Type::Face:
+        xdmfCenter = SIMPL::XdmfCenterType::Cell;
+        break;
+      case AttributeMatrix::Type::Cell:
+        xdmfCenter = SIMPL::XdmfCenterType::Cell;
+        break;
+      default:
+        break;
+      }
+    case IGeometry::Type::Image:
       switch(amType)
       {
       // FIXME: There are more AttributeMatrix Types that should be implemented

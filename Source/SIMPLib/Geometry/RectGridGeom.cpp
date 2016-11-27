@@ -402,7 +402,7 @@ private:
 RectGridGeom::RectGridGeom()
 {
   m_GeometryTypeName = SIMPL::Geometry::RectGridGeometry;
-  m_GeometryType = SIMPL::GeometryType::RectGridGeometry;
+  m_GeometryType = IGeometry::Type::RectGrid;
   m_XdmfGridType = SIMPL::XdmfGridType::RectilinearGrid;
   m_MessagePrefix = "";
   m_MessageTitle = "";

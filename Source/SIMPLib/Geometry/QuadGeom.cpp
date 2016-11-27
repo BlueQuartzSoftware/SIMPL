@@ -128,7 +128,7 @@ private:
 QuadGeom::QuadGeom()
 {
   m_GeometryTypeName = SIMPL::Geometry::QuadGeometry;
-  m_GeometryType = SIMPL::GeometryType::QuadGeometry;
+  m_GeometryType = IGeometry::Type::Quad;
   m_XdmfGridType = SIMPL::XdmfGridType::PolyData;
   m_MessagePrefix = "";
   m_MessageTitle = "";
@@ -317,7 +317,7 @@ int QuadGeom::findElementNeighbors()
     }
   }
   m_QuadNeighbors = ElementDynamicList::New();
-  err = GeometryHelpers::Connectivity::FindElementNeighbors<uint16_t, int64_t>(m_QuadList, m_QuadsContainingVert, m_QuadNeighbors, SIMPL::GeometryType::QuadGeometry);
+  err = GeometryHelpers::Connectivity::FindElementNeighbors<uint16_t, int64_t>(m_QuadList, m_QuadsContainingVert, m_QuadNeighbors, IGeometry::Type::Quad);
   if(m_QuadNeighbors.get() == nullptr)
   {
     return -1;

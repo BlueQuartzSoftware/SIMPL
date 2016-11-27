@@ -171,7 +171,7 @@ void DataArraySelectionWidget::createSelectionMenu()
   QVector<QString> daTypes = m_FilterParameter->getDefaultAttributeArrayTypes();
   QVector<QVector<size_t>> cDims = m_FilterParameter->getDefaultComponentDimensions();
   QVector<AttributeMatrix::Type> amTypes = m_FilterParameter->getDefaultAttributeMatrixTypes();
-  QVector<unsigned int> geomTypes = m_FilterParameter->getDefaultGeometryTypes();
+  IGeometry::Types geomTypes = m_FilterParameter->getDefaultGeometryTypes();
 
   QListIterator<DataContainer::Pointer> containerIter(containers);
   while(containerIter.hasNext())
@@ -179,7 +179,7 @@ void DataArraySelectionWidget::createSelectionMenu()
     DataContainer::Pointer dc = containerIter.next();
 
     IGeometry::Pointer geom = IGeometry::NullPointer();
-    uint32_t geomType = 999;
+    IGeometry::Type geomType = IGeometry::Type::Unknown;
     if(nullptr != dc.get())
     {
       geom = dc->getGeometry();

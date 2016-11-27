@@ -50,7 +50,7 @@
 VertexGeom::VertexGeom()
 {
   m_GeometryTypeName = SIMPL::Geometry::VertexGeometry;
-  m_GeometryType = SIMPL::GeometryType::VertexGeometry;
+  m_GeometryType = IGeometry::Type::Vertex;
   m_XdmfGridType = SIMPL::XdmfGridType::PolyData;
   m_MessagePrefix = "";
   m_MessageTitle = "";

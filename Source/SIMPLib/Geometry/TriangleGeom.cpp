@@ -128,7 +128,7 @@ private:
 TriangleGeom::TriangleGeom()
 {
   m_GeometryTypeName = SIMPL::Geometry::TriangleGeometry;
-  m_GeometryType = SIMPL::GeometryType::TriangleGeometry;
+  m_GeometryType = IGeometry::Type::Triangle;
   m_XdmfGridType = SIMPL::XdmfGridType::PolyData;
   m_MessagePrefix = "";
   m_MessageTitle = "";
@@ -317,7 +317,7 @@ int TriangleGeom::findElementNeighbors()
     }
   }
   m_TriangleNeighbors = ElementDynamicList::New();
-  err = GeometryHelpers::Connectivity::FindElementNeighbors<uint16_t, int64_t>(m_TriList, m_TrianglesContainingVert, m_TriangleNeighbors, SIMPL::GeometryType::TriangleGeometry);
+  err = GeometryHelpers::Connectivity::FindElementNeighbors<uint16_t, int64_t>(m_TriList, m_TrianglesContainingVert, m_TriangleNeighbors, IGeometry::Type::Triangle);
   if(m_TriangleNeighbors.get() == nullptr)
   {
     return -1;

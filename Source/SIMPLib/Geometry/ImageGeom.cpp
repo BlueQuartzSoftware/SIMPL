@@ -402,7 +402,7 @@ private:
 ImageGeom::ImageGeom()
 {
   m_GeometryTypeName = SIMPL::Geometry::ImageGeometry;
-  m_GeometryType = SIMPL::GeometryType::ImageGeometry;
+  m_GeometryType = IGeometry::Type::Image;
   m_XdmfGridType = SIMPL::XdmfGridType::RectilinearGrid;
   m_MessagePrefix = "";
   m_MessageTitle = "";

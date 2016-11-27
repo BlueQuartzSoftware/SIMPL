@@ -41,6 +41,7 @@
 #include "SIMPLib/FilterParameters/FilterParameter.h"
 #include "SIMPLib/DataContainers/DataArrayPath.h"
 #include "SIMPLib/DataContainers/AttributeMatrix.h"
+#include "SIMPLib/Geometry/IGeometry.h"
 
 
 // FP: Documentation incomplete because there isn't currently a way to instantiate this filter parameter
@@ -129,7 +130,7 @@ public:
    */
   void writeJson(QJsonObject &json);
 
-  SIMPL_INSTANCE_PROPERTY(QVector<unsigned int>, DefaultGeometryTypes)
+  SIMPL_INSTANCE_PROPERTY(IGeometry::Types, DefaultGeometryTypes)
   SIMPL_INSTANCE_PROPERTY(AttributeMatrix::Types, DefaultAttributeMatrixTypes)
 
   /**

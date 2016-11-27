@@ -81,7 +81,7 @@ void CombineAttributeMatrices::setupFilterParameters()
   parameters.push_back(SeparatorFilterParameter::New("Feature/Ensemble Data", FilterParameter::RequiredArray));
   {
     AttributeMatrixSelectionFilterParameter::RequirementType req;
-    QVector<uint32_t> dcGeomTypes;
+    IGeometry::Types dcGeomTypes;
     AttributeMatrix::Types amTypes;
     amTypes.push_back(AttributeMatrix::Type::CellEnsemble);
     amTypes.push_back(AttributeMatrix::Type::CellFeature);
@@ -91,7 +91,7 @@ void CombineAttributeMatrices::setupFilterParameters()
     amTypes.push_back(AttributeMatrix::Type::FaceFeature);
     amTypes.push_back(AttributeMatrix::Type::VertexEnsemble);
     amTypes.push_back(AttributeMatrix::Type::VertexFeature);
-    dcGeomTypes.push_back(SIMPL::Defaults::AnyGeometry);
+    dcGeomTypes.push_back(IGeometry::Type::Any);
     req.amTypes = amTypes;
     req.dcGeometryTypes = dcGeomTypes;
     parameters.push_back(SIMPL_NEW_AM_SELECTION_FP("First Feature/Ensemble Attribute Matrix", FirstAttributeMatrixPath, FilterParameter::RequiredArray, CombineAttributeMatrices, req));
@@ -99,7 +99,7 @@ void CombineAttributeMatrices::setupFilterParameters()
   }
   {
     DataArraySelectionFilterParameter::RequirementType req;
-    QVector<uint32_t> dcGeomTypes;
+    IGeometry::Types dcGeomTypes;
     req.dcGeometryTypes = dcGeomTypes;
     AttributeMatrix::Types amTypes;
     amTypes.push_back(AttributeMatrix::Type::Cell);

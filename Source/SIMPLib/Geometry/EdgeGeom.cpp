@@ -128,7 +128,7 @@ private:
 EdgeGeom::EdgeGeom()
 {
   m_GeometryTypeName = SIMPL::Geometry::EdgeGeometry;
-  m_GeometryType = SIMPL::GeometryType::EdgeGeometry;
+  m_GeometryType = IGeometry::Type::Edge;
   m_XdmfGridType = SIMPL::XdmfGridType::PolyData;
   m_MessagePrefix = "";
   m_MessageTitle = "";
@@ -289,7 +289,7 @@ int EdgeGeom::findElementNeighbors()
     }
   }
   m_EdgeNeighbors = ElementDynamicList::New();
-  err = GeometryHelpers::Connectivity::FindElementNeighbors<uint16_t, int64_t>(m_EdgeList, m_EdgesContainingVert, m_EdgeNeighbors, SIMPL::GeometryType::EdgeGeometry);
+  err = GeometryHelpers::Connectivity::FindElementNeighbors<uint16_t, int64_t>(m_EdgeList, m_EdgesContainingVert, m_EdgeNeighbors, IGeometry::Type::Edge);
   if(m_EdgeNeighbors.get() == nullptr)
   {
     err = -1;

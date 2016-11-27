@@ -128,7 +128,7 @@ private:
 TetrahedralGeom::TetrahedralGeom()
 {
   m_GeometryTypeName = SIMPL::Geometry::TetrahedralGeometry;
-  m_GeometryType = SIMPL::GeometryType::TetrahedralGeometry;
+  m_GeometryType = IGeometry::Type::Tetrahedral;
   m_XdmfGridType = SIMPL::XdmfGridType::PolyData;
   m_MessagePrefix = "";
   m_MessageTitle = "";
@@ -347,7 +347,7 @@ int TetrahedralGeom::findElementNeighbors()
     }
   }
   m_TetNeighbors = ElementDynamicList::New();
-  err = GeometryHelpers::Connectivity::FindElementNeighbors<uint16_t, int64_t>(m_TetList, m_TetsContainingVert, m_TetNeighbors, SIMPL::GeometryType::TetrahedralGeometry);
+  err = GeometryHelpers::Connectivity::FindElementNeighbors<uint16_t, int64_t>(m_TetList, m_TetsContainingVert, m_TetNeighbors, IGeometry::Type::Tetrahedral);
   if(m_TetNeighbors.get() == nullptr)
   {
     return -1;

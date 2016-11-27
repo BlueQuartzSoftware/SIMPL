@@ -73,6 +73,24 @@ class SIMPLib_EXPORT IGeometry : public Observable
     virtual ~IGeometry();
 
     /**
+     * @brief The Type enum
+     */
+    enum class Type : unsigned int
+    {
+       Image = 11,
+       RectGrid = 11,
+       Vertex = 1,
+       Edge = 3,
+       Triangle = 5,
+       Quad = 9,
+       Tetrahedral = 10,
+       Unknown = 999,
+       Any = 4294967295U
+    };
+
+    using Types = QVector<Type>;
+
+    /**
      * @brief AttributeMatrixMap_t
      */
     typedef QMap<QString, AttributeMatrix::Pointer> AttributeMatrixMap_t;
@@ -199,7 +217,7 @@ class SIMPLib_EXPORT IGeometry : public Observable
      * @brief getGeometryType
      * @return
      */
-    virtual unsigned int getGeometryType() final;
+    virtual Type getGeometryType() final;
 
     /**
      * @brief getGeometryTypeAsString
@@ -335,7 +353,7 @@ class SIMPLib_EXPORT IGeometry : public Observable
     QString m_MessagePrefix;
     QString m_MessageTitle;
     QString m_MessageLabel;
-    unsigned int m_GeometryType;
+    Type m_GeometryType;
     unsigned int m_XdmfGridType;
     unsigned int m_UnitDimensionality;
     unsigned int m_SpatialDimensionality;

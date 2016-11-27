@@ -121,16 +121,16 @@ AttributeMatrixSelectionFilterParameter::RequirementType AttributeMatrixSelectio
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-AttributeMatrixSelectionFilterParameter::RequirementType AttributeMatrixSelectionFilterParameter::CreateRequirement(AttributeMatrix::Type attributeMatrixType, uint32_t geometryType)
+AttributeMatrixSelectionFilterParameter::RequirementType AttributeMatrixSelectionFilterParameter::CreateRequirement(AttributeMatrix::Type attributeMatrixType, IGeometry::Type geometryType)
 {
   AttributeMatrixSelectionFilterParameter::RequirementType req;
   if(AttributeMatrix::Type::Any != attributeMatrixType)
   {
     req.amTypes = QVector<AttributeMatrix::Type>(1, attributeMatrixType);
   }
-  if(SIMPL::Defaults::AnyGeometry != geometryType)
+  if(IGeometry::Type::Any != geometryType)
   {
-    req.dcGeometryTypes = QVector<uint32_t>(1, geometryType);
+    req.dcGeometryTypes = IGeometry::Types(1, geometryType);
   }
   return req;
 }

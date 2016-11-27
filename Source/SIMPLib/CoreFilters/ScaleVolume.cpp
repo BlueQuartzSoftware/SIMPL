@@ -131,7 +131,7 @@ void ScaleVolume::setupFilterParameters()
   parameters.push_back(SIMPL_NEW_LINKED_BOOL_FP("Apply to Image Geometry", ApplyToVoxelVolume, FilterParameter::Parameter, ScaleVolume, linkedProps));
   {
     DataContainerSelectionFilterParameter::RequirementType req;
-    req.dcGeometryTypes = QVector<unsigned int>(1, SIMPL::GeometryType::ImageGeometry);
+    req.dcGeometryTypes = IGeometry::Types(1, IGeometry::Type::Image);
     parameters.push_back(SIMPL_NEW_DC_SELECTION_FP("Data Container Image Geometry to Scale", DataContainerName, FilterParameter::RequiredArray, ScaleVolume, req));
   }
   linkedProps.clear();
@@ -139,9 +139,9 @@ void ScaleVolume::setupFilterParameters()
   parameters.push_back(SIMPL_NEW_LINKED_BOOL_FP("Apply to Surface Geometry", ApplyToSurfaceMesh, FilterParameter::Parameter, ScaleVolume, linkedProps));
   {
     DataContainerSelectionFilterParameter::RequirementType req;
-    QVector<unsigned int> dcGeometryTypes;
-    dcGeometryTypes.push_back(SIMPL::GeometryType::TriangleGeometry);
-    dcGeometryTypes.push_back(SIMPL::GeometryType::QuadGeometry);
+    IGeometry::Types dcGeometryTypes;
+    dcGeometryTypes.push_back(IGeometry::Type::Triangle);
+    dcGeometryTypes.push_back(IGeometry::Type::Quad);
     req.dcGeometryTypes = dcGeometryTypes;
     parameters.push_back(SIMPL_NEW_DC_SELECTION_FP("Data Container Surface Geometry to Scale", SurfaceDataContainerName, FilterParameter::RequiredArray, ScaleVolume, req));
   }

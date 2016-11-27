@@ -254,7 +254,7 @@ namespace GeometryHelpers
        */
       template<typename T, typename K>
       static int FindElementNeighbors(typename DataArray<K>::Pointer elemList, typename DynamicListArray<T, K>::Pointer elemsContainingVert,
-                                      typename DynamicListArray<T, K>::Pointer dynamicList, uint32_t geometryType)
+                                      typename DynamicListArray<T, K>::Pointer dynamicList, IGeometry::Type geometryType)
       {
         size_t numElems = elemList->getNumberOfTuples();
         size_t numVertsPerElem = elemList->getNumberOfComponents();
@@ -264,22 +264,22 @@ namespace GeometryHelpers
 
         switch (geometryType)
         {
-          case 3: // edges
+          case IGeometry::Type::Edge: // edges
           {
             numSharedVerts = 1;
             break;
           }
-          case 5: // triangles
+          case IGeometry::Type::Triangle: // triangles
           {
             numSharedVerts = 2;
             break;
           }
-          case 9: // quadrilaterals
+          case IGeometry::Type::Quad: // quadrilaterals
           {
             numSharedVerts = 2;
             break;
           }
-          case 10: // tetrahedra
+          case IGeometry::Type::Tetrahedral: // tetrahedra
           {
             numSharedVerts = 3;
             break;

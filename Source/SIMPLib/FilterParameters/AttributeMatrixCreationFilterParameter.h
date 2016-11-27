@@ -41,6 +41,7 @@
 
 #include "SIMPLib/FilterParameters/FilterParameter.h"
 #include "SIMPLib/DataContainers/DataArrayPath.h"
+#include "SIMPLib/Geometry/IGeometry.h"
 
 /**
  * @brief SIMPL_NEW_AM_CREATION_FP This macro is a short-form way of instantiating an instance of
@@ -77,7 +78,7 @@ class SIMPLib_EXPORT AttributeMatrixCreationFilterParameter : public FilterParam
 
     typedef struct
     {
-      QVector<unsigned int> dcGeometryTypes;
+      IGeometry::Types dcGeometryTypes;
     } RequirementType;
 
     /**
@@ -130,7 +131,7 @@ class SIMPLib_EXPORT AttributeMatrixCreationFilterParameter : public FilterParam
     * @param DefaultGeometryTypes Default geometry types required for Data Container selections
     * @return
     */
-    SIMPL_INSTANCE_PROPERTY(QVector<unsigned int>, DefaultGeometryTypes)
+    SIMPL_INSTANCE_PROPERTY(IGeometry::Types, DefaultGeometryTypes)
 
     /**
     * @param SetterCallback The method in the AbstractFilter subclass that <i>sets</i> the value of the property

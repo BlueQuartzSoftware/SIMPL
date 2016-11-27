@@ -128,9 +128,9 @@ MultiDataArraySelectionFilterParameter::RequirementType MultiDataArraySelectionF
   {
     req.componentDimensions = QVector<QVectorOfSizeType>(1, QVectorOfSizeType(1, allowedCompDim));
   }
-  //  if(SIMPL::GeometryType::UnknownGeometry != geometryType)
+  //  if(IGeometry::Type::Unknown != geometryType)
   //  {
-  //    req.dcGeometryTypes = QVector<unsigned int>(1, geometryType);
+  //    req.dcGeometryTypes = IGeometry::Types(1, geometryType);
   //  }
   return req;
 }
@@ -139,7 +139,7 @@ MultiDataArraySelectionFilterParameter::RequirementType MultiDataArraySelectionF
 //
 // -----------------------------------------------------------------------------
 MultiDataArraySelectionFilterParameter::RequirementType MultiDataArraySelectionFilterParameter::CreateRequirement(const QString& primitiveType, size_t allowedCompDim, AttributeMatrix::Type attributeMatrixType,
-                                                                                                                  unsigned int geometryType)
+                                                                                                                  IGeometry::Type geometryType)
 {
   typedef QVector<size_t> QVectorOfSizeType;
   MultiDataArraySelectionFilterParameter::RequirementType req;
@@ -156,9 +156,9 @@ MultiDataArraySelectionFilterParameter::RequirementType MultiDataArraySelectionF
     QVector<AttributeMatrix::Type> amTypes(1, attributeMatrixType);
     req.amTypes = amTypes;
   }
-  if(SIMPL::Defaults::AnyGeometry != geometryType)
+  if(IGeometry::Type::Any != geometryType)
   {
-    req.dcGeometryTypes = QVector<unsigned int>(1, geometryType);
+    req.dcGeometryTypes = IGeometry::Types(1, geometryType);
   }
   return req;
 }

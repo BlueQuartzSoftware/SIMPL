@@ -77,7 +77,7 @@ void FindDerivatives::setupFilterParameters()
   FilterParameterVector parameters;
   {
     DataArraySelectionFilterParameter::RequirementType req =
-        DataArraySelectionFilterParameter::CreateRequirement(SIMPL::Defaults::AnyPrimitive, SIMPL::Defaults::AnyComponentSize, AttributeMatrix::Type::Any, SIMPL::Defaults::AnyGeometry);
+        DataArraySelectionFilterParameter::CreateRequirement(SIMPL::Defaults::AnyPrimitive, SIMPL::Defaults::AnyComponentSize, AttributeMatrix::Type::Any, IGeometry::Type::Any);
     AttributeMatrix::Types amTypes;
     amTypes.push_back(AttributeMatrix::Type::Cell);
     amTypes.push_back(AttributeMatrix::Type::Face);
@@ -148,11 +148,11 @@ template <typename DataType> void interpolateCellValues(IDataArray::Pointer inDa
   }
 
   ElementDynamicList::Pointer elemsContainingVert = geom->getElementsContainingVert();
-  uint32_t geomType = geom->getGeometryType();
+  IGeometry::Type geomType = geom->getGeometryType();
 
   switch(geomType)
   {
-  case SIMPL::GeometryType::EdgeGeometry:
+  case IGeometry::Type::Edge:
   {
     EdgeGeom::Pointer edgeGeom = m->getGeometryAs<EdgeGeom>();
     SharedVertexList::Pointer verts = edgeGeom->getVertices();
@@ -160,7 +160,7 @@ template <typename DataType> void interpolateCellValues(IDataArray::Pointer inDa
     GeometryHelpers::Generic::AverageCellArrayValues<int64_t, DataType, uint16_t, double>(elemsContainingVert, verts, inputDataPtr, outDataPtr);
     break;
   }
-  case SIMPL::GeometryType::TriangleGeometry:
+  case IGeometry::Type::Triangle:
   {
     TriangleGeom::Pointer triGeom = m->getGeometryAs<TriangleGeom>();
     SharedVertexList::Pointer verts = triGeom->getVertices();
@@ -168,7 +168,7 @@ template <typename DataType> void interpolateCellValues(IDataArray::Pointer inDa
     GeometryHelpers::Generic::AverageCellArrayValues<int64_t, DataType, uint16_t, double>(elemsContainingVert, verts, inputDataPtr, outDataPtr);
     break;
   }
-  case SIMPL::GeometryType::QuadGeometry:
+  case IGeometry::Type::Quad:
   {
     QuadGeom::Pointer quadGeom = m->getGeometryAs<QuadGeom>();
     SharedVertexList::Pointer verts = quadGeom->getVertices();
@@ -176,7 +176,7 @@ template <typename DataType> void interpolateCellValues(IDataArray::Pointer inDa
     GeometryHelpers::Generic::AverageCellArrayValues<int64_t, DataType, uint16_t, double>(elemsContainingVert, verts, inputDataPtr, outDataPtr);
     break;
   }
-  case SIMPL::GeometryType::TetrahedralGeometry:
+  case IGeometry::Type::Tetrahedral:
   {
     TetrahedralGeom::Pointer tets = m->getGeometryAs<TetrahedralGeom>();
     SharedVertexList::Pointer verts = tets->getVertices();
@@ -227,11 +227,11 @@ void FindDerivatives::dataCheck()
 
   AttributeMatrix::Type inAttrMatType = inAttrMat->getType();
   AttributeMatrix::Type destAttrMatType = destAttrMat->getType();
-  uint32_t geomType = geom->getGeometryType();
+  IGeometry::Type geomType = geom->getGeometryType();
   QString geomName = geom->getGeometryTypeAsString();
   QString ss;
 
-  if(geomType == SIMPL::GeometryType::ImageGeometry || geomType == SIMPL::GeometryType::RectGridGeometry) // validate AttributeMatrices for ImageGeom and RectGridGeom
+  if(geomType == IGeometry::Type::Image || geomType == IGeometry::Type::RectGrid) // validate AttributeMatrices for ImageGeom and RectGridGeom
   {
     if(inAttrMatType != AttributeMatrix::Type::Cell)
     {
@@ -247,7 +247,7 @@ void FindDerivatives::dataCheck()
       notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
     }
   }
-  else if(geomType == SIMPL::GeometryType::VertexGeometry) // validate AttributeMatrices for VertexGeom
+  else if(geomType == IGeometry::Type::Vertex) // validate AttributeMatrices for VertexGeom
   {
     if(inAttrMatType != AttributeMatrix::Type::Vertex)
     {

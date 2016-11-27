@@ -180,7 +180,7 @@ void DataContainerSelectionWidget::createSelectionMenu()
   // Get the DataContainerArray object
   // Loop over the data containers until we find the proper data container
   QList<DataContainer::Pointer> containers = dca->getDataContainers();
-  QVector<unsigned int> geomTypes = m_FilterParameter->getDefaultGeometryTypes();
+  IGeometry::Types geomTypes = m_FilterParameter->getDefaultGeometryTypes();
 
   QListIterator<DataContainer::Pointer> containerIter(containers);
   while(containerIter.hasNext())
@@ -188,7 +188,7 @@ void DataContainerSelectionWidget::createSelectionMenu()
     DataContainer::Pointer dc = containerIter.next();
 
     IGeometry::Pointer geom = IGeometry::NullPointer();
-    uint32_t geomType = 999;
+    IGeometry::Type geomType = IGeometry::Type::Unknown;
     if(nullptr != dc.get())
     {
       geom = dc->getGeometry();

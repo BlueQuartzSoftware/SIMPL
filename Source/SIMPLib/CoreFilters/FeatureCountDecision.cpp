@@ -74,7 +74,7 @@ void FeatureCountDecision::setupFilterParameters()
   parameters.push_back(SeparatorFilterParameter::New("Cell Ensemble Data", FilterParameter::RequiredArray));
   {
     DataArraySelectionFilterParameter::RequirementType req =
-        DataArraySelectionFilterParameter::CreateRequirement(SIMPL::TypeNames::Int32, 1, AttributeMatrix::Type::CellEnsemble, SIMPL::Defaults::AnyGeometry);
+        DataArraySelectionFilterParameter::CreateRequirement(SIMPL::TypeNames::Int32, 1, AttributeMatrix::Type::CellEnsemble, IGeometry::Type::Any);
     parameters.push_back(SIMPL_NEW_DA_SELECTION_FP("Feature Ids", FeatureIdsArrayPath, FilterParameter::RequiredArray, FeatureCountDecision, req));
   }
   parameters.push_back(SIMPL_NEW_INTEGER_FP("Maximum Number of Features", MaxGrains, FilterParameter::Parameter, FeatureCountDecision, 0));

@@ -68,7 +68,7 @@ QString IGeometry::getName()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-unsigned int IGeometry::getGeometryType()
+IGeometry::Type IGeometry::getGeometryType()
 {
   return m_GeometryType;
 }

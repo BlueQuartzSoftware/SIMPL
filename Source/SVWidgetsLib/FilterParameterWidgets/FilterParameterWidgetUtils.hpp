@@ -43,13 +43,13 @@ class FilterParameterWidgetUtils
       QList<DataContainerProxy> dcList = dcaProxy.dataContainers.values();
       QListIterator<DataContainerProxy> iter(dcList);
       dcCombo->clear();
-      QVector<unsigned int> geomTypes = fp->getDefaultGeometryTypes();
+      IGeometry::Types geomTypes = fp->getDefaultGeometryTypes();
       while(iter.hasNext() )
       {
         DataContainerProxy dcProxy = iter.next();
         DataContainer::Pointer dc = dca->getDataContainer(dcProxy.name);
         IGeometry::Pointer geom = IGeometry::NullPointer();
-        uint32_t geomType = 999;
+        IGeometry::Type geomType = IGeometry::Type::Unknown;
         if (nullptr != dc.get()) { geom = dc->getGeometry(); }
         if (nullptr != geom.get()) { geomType = geom->getGeometryType(); }
         dcCombo->addItem(dcProxy.name);

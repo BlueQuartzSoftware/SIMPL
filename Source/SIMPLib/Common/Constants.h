@@ -129,7 +129,7 @@ namespace SIMPL
     const QString AnyPrimitive("Any");
     static const size_t AnyComponentSize = std::numeric_limits<size_t>::max();
     //static const uint32_t AnyAttributeMatrix = std::numeric_limits<uint32_t>::max();
-    static const uint32_t AnyGeometry = std::numeric_limits<uint32_t>::max();
+    //static const uint32_t AnyGeometry = std::numeric_limits<uint32_t>::max();
 
     const QString AttributeMatrixName("AttributeMatrix");
     const QString ElementAttributeMatrixName("ElementAttributeMatrix");
@@ -721,14 +721,14 @@ namespace SIMPL
     const unsigned int UnknownOverlap = 999; //!<
   }
 
-  namespace DataContainerType
-  {
-    const unsigned int VolumeDataContainer = 0; //!<
-    const unsigned int SurfaceDataContainer = 1; //!<
-    const unsigned int EdgeDataContainer = 2; //!<
-    const unsigned int VertexDataContainer = 3; //!<
-    const unsigned int UnknownDataContainer = 999; //!<
-  }
+//  namespace DataContainerType
+//  {
+//    const unsigned int VolumeDataContainer = 0; //!<
+//    const unsigned int SurfaceDataContainer = 1; //!<
+//    const unsigned int EdgeDataContainer = 2; //!<
+//    const unsigned int VertexDataContainer = 3; //!<
+//    const unsigned int UnknownDataContainer = 999; //!<
+//  }
 
 //  namespace AttributeMatrixType
 //  {
@@ -788,17 +788,17 @@ namespace SIMPL
     const QString UnsharedFaceList("UnsharedFaceList");
   }
 
-  namespace GeometryType
-  {
-    const unsigned int ImageGeometry = 11;
-    const unsigned int RectGridGeometry = 11;
-    const unsigned int VertexGeometry = 1;
-    const unsigned int EdgeGeometry = 3;
-    const unsigned int TriangleGeometry = 5;
-    const unsigned int QuadGeometry = 9;
-    const unsigned int TetrahedralGeometry = 10;
-    const unsigned int UnknownGeometry = 999;
-  }
+//  namespace GeometryType
+//  {
+//    const unsigned int ImageGeometry = 11;
+//    const unsigned int RectGridGeometry = 11;
+//    const unsigned int VertexGeometry = 1;
+//    const unsigned int EdgeGeometry = 3;
+//    const unsigned int TriangleGeometry = 5;
+//    const unsigned int QuadGeometry = 9;
+//    const unsigned int TetrahedralGeometry = 10;
+//    const unsigned int UnknownGeometry = 999;
+//  }
 
   namespace XdmfGridType
   {

@@ -41,6 +41,7 @@
 #include "SIMPLib/FilterParameters/FilterParameter.h"
 #include "SIMPLib/DataContainers/DataArrayPath.h"
 #include "SIMPLib/DataContainers/AttributeMatrix.h"
+#include "SIMPLib/Geometry/IGeometry.h"
 
 /**
  * @brief SIMPL_NEW_MDA_SELECTION_FP This macro is a short-form way of instantiating an instance of
@@ -76,7 +77,7 @@ class SIMPLib_EXPORT MultiDataArraySelectionFilterParameter : public FilterParam
 
     typedef struct
     {
-      QVector<unsigned int> dcGeometryTypes;
+      IGeometry::Types dcGeometryTypes;
       AttributeMatrix::Types amTypes;
       QVector<QString> daTypes;
       QVector< QVector<size_t> > componentDimensions;
@@ -131,7 +132,7 @@ class SIMPLib_EXPORT MultiDataArraySelectionFilterParameter : public FilterParam
     static RequirementType CreateRequirement(const QString& primitiveType,
                                              size_t allowedCompDim,
                                              AttributeMatrix::Type attributeMatrixType,
-                                             unsigned int geometryType);
+                                             IGeometry::Type geometryType);
 
     SIMPL_INSTANCE_PROPERTY(QVector<DataArrayPath>, DefaultPaths)
 
@@ -154,7 +155,7 @@ class SIMPLib_EXPORT MultiDataArraySelectionFilterParameter : public FilterParam
      */
     void writeJson(QJsonObject &json);
 
-    SIMPL_INSTANCE_PROPERTY(QVector<unsigned int>, DefaultGeometryTypes)
+    SIMPL_INSTANCE_PROPERTY(IGeometry::Types, DefaultGeometryTypes)
     SIMPL_INSTANCE_PROPERTY(QVector<AttributeMatrix::Type>, DefaultAttributeMatrixTypes)
     SIMPL_INSTANCE_PROPERTY(QVector<QString>, DefaultAttributeArrayTypes)
     SIMPL_INSTANCE_PROPERTY(QVector< QVector<size_t> >, DefaultComponentDimensions)
