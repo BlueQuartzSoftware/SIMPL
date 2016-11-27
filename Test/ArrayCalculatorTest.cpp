@@ -96,8 +96,8 @@ public:
   {
     DataContainerArray::Pointer dca = DataContainerArray::New();
     DataContainer::Pointer dc = DataContainer::New("DataContainer");
-    AttributeMatrix::Pointer am1 = AttributeMatrix::New(QVector<size_t>(1, 10), "AttributeMatrix", 3);
-    AttributeMatrix::Pointer am2 = AttributeMatrix::New(QVector<size_t>(1, 1), "NumericMatrix", 3);
+    AttributeMatrix::Pointer am1 = AttributeMatrix::New(QVector<size_t>(1, 10), "AttributeMatrix", AttributeMatrix::Type::Cell);
+    AttributeMatrix::Pointer am2 = AttributeMatrix::New(QVector<size_t>(1, 1), "NumericMatrix", AttributeMatrix::Type::Cell);
     FloatArrayType::Pointer array1 = FloatArrayType::CreateArray(10, "InputArray1");
     array1->initializeWithValue(-12, 0);
     UInt32ArrayType::Pointer array2 = UInt32ArrayType::CreateArray(10, "InputArray2");

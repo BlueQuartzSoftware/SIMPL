@@ -220,6 +220,18 @@ bool AbstractFilterParametersReader::readValue(const QString name, bool value)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
+AttributeMatrix::Type AbstractFilterParametersReader::readValue(const QString name, AttributeMatrix::Type value)
+{
+  Q_UNUSED(name)
+  Q_UNUSED(value)
+
+  // This should never be executed
+  return AttributeMatrix::Type::Unknown;
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
 QVector<int8_t> AbstractFilterParametersReader::readArray(const QString name, QVector<int8_t> value)
 {
   Q_UNUSED(name)

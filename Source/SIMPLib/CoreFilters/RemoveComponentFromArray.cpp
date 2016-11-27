@@ -82,7 +82,7 @@ void RemoveComponentFromArray::setupFilterParameters()
   parameters.push_back(SIMPL_NEW_INTEGER_FP("Component Number to Remove", CompNumber, FilterParameter::Parameter, RemoveComponentFromArray));
 
   DataArraySelectionFilterParameter::RequirementType req =
-      DataArraySelectionFilterParameter::CreateCategoryRequirement(SIMPL::Defaults::AnyPrimitive, SIMPL::Defaults::AnyComponentSize, SIMPL::AttributeMatrixObjectType::Any);
+      DataArraySelectionFilterParameter::CreateCategoryRequirement(SIMPL::Defaults::AnyPrimitive, SIMPL::Defaults::AnyComponentSize, AttributeMatrix::Category::Any);
   parameters.push_back(SIMPL_NEW_DA_SELECTION_FP("Multicomponent Attribute Array", SelectedArrayPath, FilterParameter::RequiredArray, RemoveComponentFromArray, req));
 
   parameters.push_back(SIMPL_NEW_STRING_FP("Removed Component Attribute Array", NewArrayArrayName, FilterParameter::CreatedArray, RemoveComponentFromArray));

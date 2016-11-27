@@ -48,17 +48,18 @@
 
 // DREAM3D Includes
 #include "SIMPLib/DataArrays/StatsDataArray.h"
-#include "SIMPLib/DataContainers/AttributeMatrixProxy.h"
-#include "SIMPLib/DataContainers/DataContainerProxy.h"
 #include "SIMPLib/HDF5/H5DataArrayReader.h"
 #include "SIMPLib/HDF5/VTKH5Constants.h"
 #include "SIMPLib/Math/SIMPLibMath.h"
 #include "SIMPLib/Utilities/SIMPLibRandom.h"
+#include "SIMPLib/DataContainers/AttributeMatrixProxy.h"
+#include "SIMPLib/DataContainers/DataContainerProxy.h"
+
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-AttributeMatrix::AttributeMatrix(QVector<size_t> tDims, const QString& name, unsigned int attrType)
+AttributeMatrix::AttributeMatrix(QVector<size_t> tDims, const QString& name, AttributeMatrix::Type attrType)
 : m_Name(name)
 , m_TupleDims(tDims)
 , m_Type(attrType)
@@ -76,7 +77,7 @@ AttributeMatrix::~AttributeMatrix()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void AttributeMatrix::ReadAttributeMatrixStructure(hid_t containerId, DataContainerProxy& dcProxy, QString h5InternalPath)
+void AttributeMatrix::ReadAttributeMatrixStructure(hid_t containerId, DataContainerProxy* dcProxy, QString h5InternalPath)
 {
   QList<QString> attributeMatrixNames;
   QH5Utilities::getGroupObjects(containerId, H5Utilities::H5Support_GROUP, attributeMatrixNames);
@@ -111,7 +112,7 @@ void AttributeMatrix::ReadAttributeMatrixStructure(hid_t containerId, DataContai
       DataArrayProxy::ReadDataArrayStructure(attrMatGid, daProxies, h5Path);
 
       // Insert the AttributeMatrixProxy proxy into the dataContainer proxy
-      dcProxy.attributeMatricies.insert(attributeMatrixName, amProxy);
+      dcProxy->attributeMatricies.insert(attributeMatrixName, amProxy);
     }
   }
 }
@@ -119,14 +120,14 @@ void AttributeMatrix::ReadAttributeMatrixStructure(hid_t containerId, DataContai
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void AttributeMatrix::setType(uint32_t value)
+void AttributeMatrix::setType(AttributeMatrix::Type value)
 {
   m_Type = value;
 }
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-uint32_t AttributeMatrix::getType()
+AttributeMatrix::Type AttributeMatrix::getType()
 {
   return m_Type;
 }
@@ -275,9 +276,9 @@ bool AttributeMatrix::removeInactiveObjects(QVector<bool> activeObjects, Int32Ar
 {
   bool acceptableMatrix = false;
   // Only valid for feature or ensemble type matrices
-  if(m_Type == SIMPL::AttributeMatrixType::VertexFeature || m_Type == SIMPL::AttributeMatrixType::VertexEnsemble || m_Type == SIMPL::AttributeMatrixType::EdgeFeature ||
-     m_Type == SIMPL::AttributeMatrixType::EdgeEnsemble || m_Type == SIMPL::AttributeMatrixType::FaceFeature || m_Type == SIMPL::AttributeMatrixType::FaceEnsemble ||
-     m_Type == SIMPL::AttributeMatrixType::CellFeature || m_Type == SIMPL::AttributeMatrixType::CellEnsemble)
+  if(m_Type == AttributeMatrix::Type::VertexFeature || m_Type == AttributeMatrix::Type::VertexEnsemble || m_Type == AttributeMatrix::Type::EdgeFeature ||
+     m_Type == AttributeMatrix::Type::EdgeEnsemble || m_Type == AttributeMatrix::Type::FaceFeature || m_Type == AttributeMatrix::Type::FaceEnsemble ||
+     m_Type == AttributeMatrix::Type::CellFeature || m_Type == AttributeMatrix::Type::CellEnsemble)
   {
     acceptableMatrix = true;
   }
@@ -489,10 +490,10 @@ int AttributeMatrix::addAttributeArrayFromHDF5Path(hid_t gid, QString name, bool
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-int AttributeMatrix::readAttributeArraysFromHDF5(hid_t amGid, bool preflight, AttributeMatrixProxy& attrMatProxy)
+int AttributeMatrix::readAttributeArraysFromHDF5(hid_t amGid, bool preflight, AttributeMatrixProxy* attrMatProxy)
 {
   int err = 0;
-  QMap<QString, DataArrayProxy> dasToRead = attrMatProxy.dataArrays;
+  QMap<QString, DataArrayProxy> dasToRead = attrMatProxy->dataArrays;
   QString classType;
   for(QMap<QString, DataArrayProxy>::iterator iter = dasToRead.begin(); iter != dasToRead.end(); ++iter)
   {
@@ -582,46 +583,46 @@ QString AttributeMatrix::getInfoString(SIMPL::InfoStringFormat format)
     QString typeString;
     switch(m_Type)
     {
-    case SIMPL::AttributeMatrixType::Vertex:
+    case AttributeMatrix::Type::Vertex:
       typeString = "Vertex";
       break;
-    case SIMPL::AttributeMatrixType::Edge:
+    case AttributeMatrix::Type::Edge:
       typeString = "Edge";
       break;
-    case SIMPL::AttributeMatrixType::Face:
+    case AttributeMatrix::Type::Face:
       typeString = "Face";
       break;
-    case SIMPL::AttributeMatrixType::Cell:
+    case AttributeMatrix::Type::Cell:
       typeString = "Cell";
       break;
-    case SIMPL::AttributeMatrixType::VertexFeature:
+    case AttributeMatrix::Type::VertexFeature:
       typeString = "Vertex Feature";
       break;
-    case SIMPL::AttributeMatrixType::EdgeFeature:
+    case AttributeMatrix::Type::EdgeFeature:
       typeString = "Edge Feature";
       break;
-    case SIMPL::AttributeMatrixType::FaceFeature:
+    case AttributeMatrix::Type::FaceFeature:
       typeString = "Face Feature";
       break;
-    case SIMPL::AttributeMatrixType::CellFeature:
+    case AttributeMatrix::Type::CellFeature:
       typeString = "Cell Feature";
       break;
-    case SIMPL::AttributeMatrixType::VertexEnsemble:
+    case AttributeMatrix::Type::VertexEnsemble:
       typeString = "Vertex Ensemble";
       break;
-    case SIMPL::AttributeMatrixType::EdgeEnsemble:
+    case AttributeMatrix::Type::EdgeEnsemble:
       typeString = "Edge Ensemble";
       break;
-    case SIMPL::AttributeMatrixType::FaceEnsemble:
+    case AttributeMatrix::Type::FaceEnsemble:
       typeString = "Face Ensemble";
       break;
-    case SIMPL::AttributeMatrixType::CellEnsemble:
+    case AttributeMatrix::Type::CellEnsemble:
       typeString = "Cell Ensemble";
       break;
-    case SIMPL::AttributeMatrixType::MetaData:
+    case AttributeMatrix::Type::MetaData:
       typeString = "MetaData";
       break;
-    case SIMPL::AttributeMatrixType::Generic:
+    case AttributeMatrix::Type::Generic:
       typeString = "Generic";
     default:
       typeString = "Unknown";

@@ -51,7 +51,7 @@
 CreateAttributeMatrix::CreateAttributeMatrix()
 : AbstractFilter()
 , m_CreatedAttributeMatrix("", "AttributeMatrix", "")
-, m_AttributeMatrixType(SIMPL::AttributeMatrixType::Generic)
+, m_AttributeMatrixType(static_cast<uint32_t>(AttributeMatrix::Type::Generic))
 , m_TupleDimensions()
 {
   setupFilterParameters();
@@ -150,7 +150,8 @@ void CreateAttributeMatrix::dataCheck()
     tDims[i] = static_cast<size_t>(cols[i]);
   }
 
-  m->createNonPrereqAttributeMatrix<AbstractFilter>(this, getCreatedAttributeMatrix().getAttributeMatrixName(), tDims, getAttributeMatrixType());
+
+  m->createNonPrereqAttributeMatrix<AbstractFilter>(this, getCreatedAttributeMatrix().getAttributeMatrixName(), tDims, static_cast<AttributeMatrix::Type>(getAttributeMatrixType()));
   if(getErrorCondition() < 0)
   {
     return;

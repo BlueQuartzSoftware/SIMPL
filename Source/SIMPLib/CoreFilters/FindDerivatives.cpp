@@ -77,22 +77,22 @@ void FindDerivatives::setupFilterParameters()
   FilterParameterVector parameters;
   {
     DataArraySelectionFilterParameter::RequirementType req =
-        DataArraySelectionFilterParameter::CreateRequirement(SIMPL::Defaults::AnyPrimitive, SIMPL::Defaults::AnyComponentSize, SIMPL::Defaults::AnyAttributeMatrix, SIMPL::Defaults::AnyGeometry);
-    QVector<uint32_t> amTypes;
-    amTypes.push_back(SIMPL::AttributeMatrixType::Cell);
-    amTypes.push_back(SIMPL::AttributeMatrixType::Face);
-    amTypes.push_back(SIMPL::AttributeMatrixType::Edge);
-    amTypes.push_back(SIMPL::AttributeMatrixType::Vertex);
+        DataArraySelectionFilterParameter::CreateRequirement(SIMPL::Defaults::AnyPrimitive, SIMPL::Defaults::AnyComponentSize, AttributeMatrix::Type::Any, SIMPL::Defaults::AnyGeometry);
+    AttributeMatrix::Types amTypes;
+    amTypes.push_back(AttributeMatrix::Type::Cell);
+    amTypes.push_back(AttributeMatrix::Type::Face);
+    amTypes.push_back(AttributeMatrix::Type::Edge);
+    amTypes.push_back(AttributeMatrix::Type::Vertex);
     req.amTypes = amTypes;
     parameters.push_back(SIMPL_NEW_DA_SELECTION_FP("Data Array to Process", SelectedArrayPath, FilterParameter::RequiredArray, FindDerivatives, req));
   }
   {
-    DataArrayCreationFilterParameter::RequirementType req = DataArrayCreationFilterParameter::CreateRequirement(SIMPL::AttributeMatrixType::Unknown);
-    QVector<uint32_t> amTypes;
-    amTypes.push_back(SIMPL::AttributeMatrixType::Cell);
-    amTypes.push_back(SIMPL::AttributeMatrixType::Face);
-    amTypes.push_back(SIMPL::AttributeMatrixType::Edge);
-    amTypes.push_back(SIMPL::AttributeMatrixType::Vertex);
+    DataArrayCreationFilterParameter::RequirementType req = DataArrayCreationFilterParameter::CreateRequirement(AttributeMatrix::Category::Unknown);
+    AttributeMatrix::Types amTypes;
+    amTypes.push_back(AttributeMatrix::Type::Cell);
+    amTypes.push_back(AttributeMatrix::Type::Face);
+    amTypes.push_back(AttributeMatrix::Type::Edge);
+    amTypes.push_back(AttributeMatrix::Type::Vertex);
     req.amTypes = amTypes;
     parameters.push_back(SIMPL_NEW_DA_CREATION_FP("Derivatives Array", DerivativesArrayPath, FilterParameter::CreatedArray, FindDerivatives, req));
   }
@@ -225,22 +225,22 @@ void FindDerivatives::dataCheck()
     return;
   }
 
-  uint32_t inAttrMatType = inAttrMat->getType();
-  uint32_t destAttrMatType = destAttrMat->getType();
+  AttributeMatrix::Type inAttrMatType = inAttrMat->getType();
+  AttributeMatrix::Type destAttrMatType = destAttrMat->getType();
   uint32_t geomType = geom->getGeometryType();
   QString geomName = geom->getGeometryTypeAsString();
   QString ss;
 
   if(geomType == SIMPL::GeometryType::ImageGeometry || geomType == SIMPL::GeometryType::RectGridGeometry) // validate AttributeMatrices for ImageGeom and RectGridGeom
   {
-    if(inAttrMatType != SIMPL::AttributeMatrixType::Cell)
+    if(inAttrMatType != AttributeMatrix::Type::Cell)
     {
       ss = QObject::tr("The Geometry type is %1, but the selected DataArray does not belong to a CellAttributeMatrix").arg(geomName);
       setErrorCondition(-11002);
       notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
       return;
     }
-    if(destAttrMatType != SIMPL::AttributeMatrixType::Cell)
+    if(destAttrMatType != AttributeMatrix::Type::Cell)
     {
       ss = QObject::tr("The Geometry type is %1, but the selected destination AttributeMatrix is not a CellAttributeMatrix").arg(geomName);
       setErrorCondition(-11002);
@@ -249,13 +249,13 @@ void FindDerivatives::dataCheck()
   }
   else if(geomType == SIMPL::GeometryType::VertexGeometry) // validate AttributeMatrices for VertexGeom
   {
-    if(inAttrMatType != SIMPL::AttributeMatrixType::Vertex)
+    if(inAttrMatType != AttributeMatrix::Type::Vertex)
     {
       ss = QObject::tr("The Geometry type is %1, but the selected DataArray does not belong to a VertexAttributeMatrix").arg(geomName);
       setErrorCondition(-11002);
       notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
     }
-    if(destAttrMatType != SIMPL::AttributeMatrixType::Vertex)
+    if(destAttrMatType != AttributeMatrix::Type::Vertex)
     {
       ss = QObject::tr("The Geometry type is %1, but the selected destination AttributeMatrix is not a VertexAttributeMatrix").arg(geomName);
       setErrorCondition(-11002);
@@ -264,13 +264,13 @@ void FindDerivatives::dataCheck()
   }
   else // validate AttributeMatrices for all other geometries
   {
-    if(inAttrMatType == SIMPL::AttributeMatrixType::Cell || inAttrMatType == SIMPL::AttributeMatrixType::Face ||
-       inAttrMatType == SIMPL::AttributeMatrixType::Edge) // need to interpolate values if the array is cell centered
+    if(inAttrMatType == AttributeMatrix::Type::Cell || inAttrMatType == AttributeMatrix::Type::Face ||
+       inAttrMatType == AttributeMatrix::Type::Edge) // need to interpolate values if the array is cell centered
     {
       m_Interpolate = true;
     }
-    if(inAttrMatType != SIMPL::AttributeMatrixType::Vertex && inAttrMatType != SIMPL::AttributeMatrixType::Edge && inAttrMatType != SIMPL::AttributeMatrixType::Face &&
-       inAttrMatType != SIMPL::AttributeMatrixType::Cell)
+    if(inAttrMatType != AttributeMatrix::Type::Vertex && inAttrMatType != AttributeMatrix::Type::Edge && inAttrMatType != AttributeMatrix::Type::Face &&
+       inAttrMatType != AttributeMatrix::Type::Cell)
     {
       ss = QObject::tr("The Geometry type is %1, but the selected DataArray does not belong to a Cell, Face, Edge or Vertex AttributeMatrix").arg(geomName);
       setErrorCondition(-11002);
@@ -278,7 +278,7 @@ void FindDerivatives::dataCheck()
     }
     if(geomName == SIMPL::Geometry::QuadGeometry || geomName == SIMPL::Geometry::TriangleGeometry)
     {
-      if(destAttrMatType != SIMPL::AttributeMatrixType::Face)
+      if(destAttrMatType != AttributeMatrix::Type::Face)
       {
         ss = QObject::tr("The Geometry type is %1, but the selected destination Attribute Matrix is not a Face Attribute Matrix").arg(geomName);
         setErrorCondition(-11002);
@@ -287,7 +287,7 @@ void FindDerivatives::dataCheck()
     }
     else if(geomName == SIMPL::Geometry::TetrahedralGeometry)
     {
-      if(destAttrMatType != SIMPL::AttributeMatrixType::Cell)
+      if(destAttrMatType != AttributeMatrix::Type::Cell)
       {
         ss = QObject::tr("The Geometry type is %1, but the selected destination Attribute Matrix is not an Cell Attribute Matrix").arg(geomName);
         setErrorCondition(-11002);
@@ -296,7 +296,7 @@ void FindDerivatives::dataCheck()
     }
     else if(geomName == SIMPL::Geometry::EdgeGeometry)
     {
-      if(destAttrMatType != SIMPL::AttributeMatrixType::Edge)
+      if(destAttrMatType != AttributeMatrix::Type::Edge)
       {
         ss = QObject::tr("The Geometry type is %1, but the selected destination Attribute Matrix is not an Edge Attribute Matrix").arg(geomName);
         setErrorCondition(-11002);

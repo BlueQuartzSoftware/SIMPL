@@ -107,7 +107,7 @@ void DataContainer::ReadDataContainerStructure(hid_t dcArrayGroupId, DataContain
 
     QString h5Path = h5InternalPath + "/" + dataContainerName;
     // Read the Attribute Matricies for this Data Container
-    AttributeMatrix::ReadAttributeMatrixStructure(containerGid, dcProxy, h5Path);
+    AttributeMatrix::ReadAttributeMatrixStructure(containerGid, &dcProxy, h5Path);
 
     // Insert the DataContainerProxy proxy into the DataContainerArrayProxy
     proxy.dataContainers.insert(dcProxy.name, dcProxy);
@@ -165,7 +165,7 @@ bool DataContainer::doesAttributeMatrixExist(const QString& name)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-AttributeMatrix::Pointer DataContainer::createAndAddAttributeMatrix(QVector<size_t> tDims, const QString& attrMatName, unsigned int attrType)
+AttributeMatrix::Pointer DataContainer::createAndAddAttributeMatrix(QVector<size_t> tDims, const QString& attrMatName, AttributeMatrix::Type attrType)
 {
   AttributeMatrix::Pointer attrMat = AttributeMatrix::New(tDims, attrMatName, attrType);
   addAttributeMatrix(attrMatName, attrMat);
@@ -341,7 +341,7 @@ int DataContainer::readAttributeMatricesFromHDF5(bool preflight, hid_t dcGid, co
   QVector<size_t> tDims;
 
   QMap<QString, AttributeMatrixProxy> attrMatsToRead = dcProxy.attributeMatricies;
-  unsigned int amType = SIMPL::AttributeMatrixType::Unknown;
+  AttributeMatrix::Type amType = AttributeMatrix::Type::Unknown;
   QString amName;
   for(QMap<QString, AttributeMatrixProxy>::iterator iter = attrMatsToRead.begin(); iter != attrMatsToRead.end(); ++iter)
   {
@@ -350,7 +350,7 @@ int DataContainer::readAttributeMatricesFromHDF5(bool preflight, hid_t dcGid, co
       continue;
     }
     amName = iter.key();
-    amType = SIMPL::AttributeMatrixType::Unknown;
+    amType = AttributeMatrix::Type::Unknown;
     err = QH5Lite::readScalarAttribute(dcGid, amName, SIMPL::StringConstants::AttributeMatrixType, amType);
     err = QH5Lite::readVectorAttribute(dcGid, amName, SIMPL::HDF5::TupleDimensions, tDims);
     if(err < 0)
@@ -370,7 +370,8 @@ int DataContainer::readAttributeMatricesFromHDF5(bool preflight, hid_t dcGid, co
       addAttributeMatrix(amName, am);
     }
 
-    err = getAttributeMatrix(amName)->readAttributeArraysFromHDF5(amGid, preflight, iter.value());
+    AttributeMatrixProxy amProxy = iter.value();
+    err = getAttributeMatrix(amName)->readAttributeArraysFromHDF5(amGid, preflight, &amProxy);
     if(err < 0)
     {
       err |= H5Gclose(dcGid);
@@ -497,14 +498,14 @@ int DataContainer::writeXdmf(QTextStream& out, QString hdfFileName)
   {
     xdmfCenter = "";
     AttributeMatrix::Pointer attrMat = iter.value();
-    uint32_t amType = attrMat->getType();
+    AttributeMatrix::Type amType = attrMat->getType();
     switch(geomType)
     {
     case SIMPL::GeometryType::VertexGeometry:
       switch(amType)
       {
       // FIXME: There are more AttributeMatrix Types that should be implemented
-      case SIMPL::AttributeMatrixType::Vertex:
+      case AttributeMatrix::Type::Vertex:
         xdmfCenter = SIMPL::XdmfCenterType::Node;
         break;
       default:
@@ -514,10 +515,10 @@ int DataContainer::writeXdmf(QTextStream& out, QString hdfFileName)
       switch(amType)
       {
       // FIXME: There are more AttributeMatrix Types that should be implemented
-      case SIMPL::AttributeMatrixType::Vertex:
+      case AttributeMatrix::Type::Vertex:
         xdmfCenter = SIMPL::XdmfCenterType::Node;
         break;
-      case SIMPL::AttributeMatrixType::Edge:
+      case AttributeMatrix::Type::Edge:
         xdmfCenter = SIMPL::XdmfCenterType::Cell;
         break;
       default:
@@ -527,16 +528,16 @@ int DataContainer::writeXdmf(QTextStream& out, QString hdfFileName)
       switch(amType)
       {
       // FIXME: There are more AttributeMatrix Types that should be implemented
-      case SIMPL::AttributeMatrixType::Vertex:
+      case AttributeMatrix::Type::Vertex:
         xdmfCenter = SIMPL::XdmfCenterType::Node;
         break;
-      case SIMPL::AttributeMatrixType::Edge:
+      case AttributeMatrix::Type::Edge:
         xdmfCenter = SIMPL::XdmfCenterType::Cell;
         break;
-      case SIMPL::AttributeMatrixType::Face:
+      case AttributeMatrix::Type::Face:
         xdmfCenter = SIMPL::XdmfCenterType::Cell;
         break;
-      case SIMPL::AttributeMatrixType::Cell:
+      case AttributeMatrix::Type::Cell:
         xdmfCenter = SIMPL::XdmfCenterType::Cell;
         break;
       default:
@@ -546,16 +547,16 @@ int DataContainer::writeXdmf(QTextStream& out, QString hdfFileName)
       switch(amType)
       {
       // FIXME: There are more AttributeMatrix Types that should be implemented
-      case SIMPL::AttributeMatrixType::Vertex:
+      case AttributeMatrix::Type::Vertex:
         xdmfCenter = SIMPL::XdmfCenterType::Node;
         break;
-      case SIMPL::AttributeMatrixType::Edge:
+      case AttributeMatrix::Type::Edge:
         xdmfCenter = SIMPL::XdmfCenterType::Cell;
         break;
-      case SIMPL::AttributeMatrixType::Face:
+      case AttributeMatrix::Type::Face:
         xdmfCenter = SIMPL::XdmfCenterType::Cell;
         break;
-      case SIMPL::AttributeMatrixType::Cell:
+      case AttributeMatrix::Type::Cell:
         xdmfCenter = SIMPL::XdmfCenterType::Cell;
         break;
       default:
@@ -565,16 +566,16 @@ int DataContainer::writeXdmf(QTextStream& out, QString hdfFileName)
       switch(amType)
       {
       // FIXME: There are more AttributeMatrix Types that should be implemented
-      case SIMPL::AttributeMatrixType::Vertex:
+      case AttributeMatrix::Type::Vertex:
         xdmfCenter = SIMPL::XdmfCenterType::Node;
         break;
-      case SIMPL::AttributeMatrixType::Edge:
+      case AttributeMatrix::Type::Edge:
         xdmfCenter = SIMPL::XdmfCenterType::Cell;
         break;
-      case SIMPL::AttributeMatrixType::Face:
+      case AttributeMatrix::Type::Face:
         xdmfCenter = SIMPL::XdmfCenterType::Cell;
         break;
-      case SIMPL::AttributeMatrixType::Cell:
+      case AttributeMatrix::Type::Cell:
         xdmfCenter = SIMPL::XdmfCenterType::Cell;
         break;
       default:
@@ -584,16 +585,16 @@ int DataContainer::writeXdmf(QTextStream& out, QString hdfFileName)
       switch(amType)
       {
       // FIXME: There are more AttributeMatrix Types that should be implemented
-      case SIMPL::AttributeMatrixType::Vertex:
+      case AttributeMatrix::Type::Vertex:
         xdmfCenter = SIMPL::XdmfCenterType::Node;
         break;
-      case SIMPL::AttributeMatrixType::Edge:
+      case AttributeMatrix::Type::Edge:
         xdmfCenter = SIMPL::XdmfCenterType::Cell;
         break;
-      case SIMPL::AttributeMatrixType::Face:
+      case AttributeMatrix::Type::Face:
         xdmfCenter = SIMPL::XdmfCenterType::Cell;
         break;
-      case SIMPL::AttributeMatrixType::Cell:
+      case AttributeMatrix::Type::Cell:
         xdmfCenter = SIMPL::XdmfCenterType::Cell;
         break;
       default:

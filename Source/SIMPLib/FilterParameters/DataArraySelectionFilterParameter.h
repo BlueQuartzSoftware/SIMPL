@@ -39,6 +39,7 @@
 #include <QtCore/QJsonObject>
 
 #include "SIMPLib/FilterParameters/FilterParameter.h"
+#include "SIMPLib/DataContainers/AttributeMatrix.h"
 #include "SIMPLib/DataContainers/DataArrayPath.h"
 
 /**
@@ -76,7 +77,7 @@ class SIMPLib_EXPORT DataArraySelectionFilterParameter : public FilterParameter
     typedef struct
     {
       QVector<unsigned int> dcGeometryTypes;
-      QVector<unsigned int> amTypes;
+      AttributeMatrix::Types amTypes;
       QVector<QString> daTypes;
       QVector< QVector<size_t> > componentDimensions;
     } RequirementType;
@@ -117,7 +118,7 @@ class SIMPLib_EXPORT DataArraySelectionFilterParameter : public FilterParameter
      */
     static RequirementType CreateCategoryRequirement(const QString& primitiveType,
                                                      size_t allowedCompDim,
-                                                     unsigned int attributeMatrixCategory);
+                                                     AttributeMatrix::Category attributeMatrixCategory);
 
     /**
      * @brief CreateRequirement
@@ -129,7 +130,7 @@ class SIMPLib_EXPORT DataArraySelectionFilterParameter : public FilterParameter
      */
     static RequirementType CreateRequirement(const QString& primitiveType,
                                              size_t allowedCompDim,
-                                             unsigned int attributeMatrixType,
+                                             AttributeMatrix::Type attributeMatrixType,
                                              unsigned int geometryType);
 
 
@@ -162,7 +163,7 @@ class SIMPLib_EXPORT DataArraySelectionFilterParameter : public FilterParameter
     * @param DefaultAttributeMatrixTypes Default attribute matrix types required for Attribute Matrix selections
     * @return
     */
-    SIMPL_INSTANCE_PROPERTY(QVector<unsigned int>, DefaultAttributeMatrixTypes)
+    SIMPL_INSTANCE_PROPERTY(QVector<AttributeMatrix::Type>, DefaultAttributeMatrixTypes)
 
     /**
     * @param DefaultAttributeArrayTypes Default attribute array types required for Attribute Array selections

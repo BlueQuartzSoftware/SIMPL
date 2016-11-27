@@ -415,6 +415,18 @@ bool H5FilterParametersReader::readValue(const QString name, bool value)
   return value;
 }
 
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+AttributeMatrix::Type H5FilterParametersReader::readValue(const QString name, AttributeMatrix::Type value)
+{
+  uint32_t v = static_cast<uint32_t>(value);
+  QH5Lite::readScalarDataset(m_CurrentGroupId, name, v);
+  value = static_cast<AttributeMatrix::Type>(v);
+  return value;
+}
+
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------

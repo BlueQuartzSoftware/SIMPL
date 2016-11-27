@@ -75,7 +75,7 @@ void ReplaceValueInArray::setupFilterParameters()
 
   parameters.push_back(SIMPL_NEW_DOUBLE_FP("New Value", ReplaceValue, FilterParameter::Parameter, ReplaceValueInArray));
   {
-    DataArraySelectionFilterParameter::RequirementType req = DataArraySelectionFilterParameter::CreateCategoryRequirement(SIMPL::Defaults::AnyPrimitive, 1, SIMPL::AttributeMatrixObjectType::Any);
+    DataArraySelectionFilterParameter::RequirementType req = DataArraySelectionFilterParameter::CreateCategoryRequirement(SIMPL::Defaults::AnyPrimitive, 1, AttributeMatrix::Category::Any);
     parameters.push_back(SIMPL_NEW_DA_SELECTION_FP("Attribute Array", SelectedArray, FilterParameter::RequiredArray, ReplaceValueInArray, req));
   }
   setFilterParameters(parameters);

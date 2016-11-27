@@ -263,7 +263,7 @@ class SIMPLib_EXPORT DataContainer : public Observable
     AttributeMatrix::Pointer createNonPrereqAttributeMatrix(Filter* filter,
                                                             const QString& attributeMatrixName,
                                                             QVector<size_t> tDims,
-                                                            unsigned int amType)
+                                                            AttributeMatrix::Type amType)
     {
       typename AttributeMatrix::Pointer attributeMatrix = AttributeMatrix::NullPointer();
 
@@ -369,7 +369,7 @@ class SIMPLib_EXPORT DataContainer : public Observable
      * @param attrType The Type of AttributeMatrix to create
      * @return
      */
-    virtual AttributeMatrix::Pointer createAndAddAttributeMatrix(QVector<size_t> tDims, const QString& attrMatName, unsigned int attrType);
+    virtual AttributeMatrix::Pointer createAndAddAttributeMatrix(QVector<size_t> tDims, const QString& attrMatName, AttributeMatrix::Type attrType);
 
     /**
     * @brief Writes all the Attribute Matrices to HDF5 file

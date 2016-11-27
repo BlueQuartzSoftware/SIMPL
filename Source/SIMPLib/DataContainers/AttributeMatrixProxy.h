@@ -41,9 +41,8 @@
 #include <QtCore/QMap>
 
 
-#include "SIMPLib/Common/Constants.h"
+#include "SIMPLib/DataContainers/AttributeMatrix.h"
 #include "SIMPLib/DataContainers/DataArrayProxy.h"
-
 
 class AttributeMatrixProxy
 {
@@ -51,11 +50,7 @@ class AttributeMatrixProxy
     /**
      * @brief AttributeMatrixProxy
      */
-    AttributeMatrixProxy() :
-      flag(0),
-      name(""),
-      amType(SIMPL::AttributeMatrixType::Unknown)
-    {}
+    AttributeMatrixProxy();
 
     /**
      * @brief AttributeMatrixProxy
@@ -63,119 +58,60 @@ class AttributeMatrixProxy
      * @param read_am
      * @param am_type
      */
-    AttributeMatrixProxy(QString am_name, uint8_t read_am = Qt::Checked, unsigned int am_type = SIMPL::AttributeMatrixType::Unknown) :
-      flag(read_am),
-      name(am_name),
-      amType(am_type)
-    {}
+    AttributeMatrixProxy(QString am_name, uint8_t read_am = Qt::Checked, AttributeMatrix::Type am_type = AttributeMatrix::Type::Unknown);
 
     /**
     * @brief Copy Constructor
     */
-    AttributeMatrixProxy(const AttributeMatrixProxy& amp)
-    {
-      flag = amp.flag;
-      name = amp.name;
-      amType = amp.amType;
-      dataArrays = amp.dataArrays;
-    }
+    AttributeMatrixProxy(const AttributeMatrixProxy& amp);
+
+    virtual ~AttributeMatrixProxy();
 
     /**
     * @brief operator = method
     */
-    void operator=(const AttributeMatrixProxy& amp)
-    {
-      flag = amp.flag;
-      name = amp.name;
-      amType = amp.amType;
-      dataArrays = amp.dataArrays;
-    }
+    void operator=(const AttributeMatrixProxy& amp);
 
     /**
     * @brief operator == method
     */
-    bool operator==(const AttributeMatrixProxy& amp) const
-    {
-      if (flag == amp.flag && name == amp.name && amType == amp.amType && dataArrays == amp.dataArrays)
-      {
-        return true;
-      }
-
-      return false;
-    }
+    bool operator==(const AttributeMatrixProxy& amp) const;
 
     /**
     * @brief Writes the contents of the proxy to the json object 'json'
     * @param json
     * @return
     */
-    void writeJson(QJsonObject& json)
-    {
-      json["Flag"] = static_cast<double>(flag);
-      json["Name"] = name;
-      json["Type"] = static_cast<double>(amType);
-      json["Data Arrays"] = writeMap(dataArrays);
-    }
+    void writeJson(QJsonObject& json);
 
     /**
     * @brief Reads the contents of the the json object 'json' into the proxy
     * @param json
     * @return
     */
-    bool readJson(QJsonObject& json)
-    {
-      if (json["Flag"].isDouble() && json["Name"].isString() && json["Type"].isDouble() && json["Data Arrays"].isArray())
-      {
-        if (json["Flag"].toDouble() >= std::numeric_limits<uint8_t>().min() && json["Flag"].toDouble() <= std::numeric_limits<uint8_t>().max())
-        {
-          flag = static_cast<uint8_t>(json["Flag"].toDouble());
-        }
-        name = json["Name"].toString();
-        if (json["Type"].toDouble() >= std::numeric_limits<unsigned int>().min() && json["Type"].toDouble() <= std::numeric_limits<unsigned int>().max())
-        {
-          amType = static_cast<unsigned int>(json["Type"].toDouble());
-        }
-        dataArrays = readMap(json["Data Arrays"].toArray());
-        return true;
-      }
-      return false;
-    }
+    bool readJson(QJsonObject& json);
 
     //----- Our variables, publicly available
     uint8_t flag;
     QString name;
-    unsigned int amType;
+    AttributeMatrix::Type amType;
     QMap<QString, DataArrayProxy> dataArrays;
 
   private:
 
+    /**
+     * @brief writeMap
+     * @param map
+     * @return
+     */
+    QJsonArray writeMap(QMap<QString, DataArrayProxy> map);
 
-    QJsonArray writeMap(QMap<QString, DataArrayProxy> map)
-    {
-      QJsonArray daArray;
-      for (QMap<QString, DataArrayProxy>::iterator iter = map.begin(); iter != map.end(); ++iter)
-      {
-        QJsonObject obj;
-        (*iter).writeJson(obj);
-        daArray.push_back(obj);
-      }
-      return daArray;
-    }
-
-    QMap<QString, DataArrayProxy> readMap(QJsonArray jsonArray)
-    {
-      QMap<QString, DataArrayProxy> map;
-      foreach(QJsonValue val, jsonArray)
-      {
-        if (val.isObject())
-        {
-          DataArrayProxy da;
-          da.readJson(val.toObject());
-          map.insert(da.name, da);
-        }
-      }
-      return map;
-    }
+    /**
+     * @brief readMap
+     * @param jsonArray
+     * @return
+     */
+    QMap<QString, DataArrayProxy> readMap(QJsonArray jsonArray);
 
 };
 Q_DECLARE_METATYPE(AttributeMatrixProxy)

@@ -40,6 +40,8 @@
 
 #include "SIMPLib/FilterParameters/FilterParameter.h"
 #include "SIMPLib/DataContainers/DataArrayPath.h"
+#include "SIMPLib/DataContainers/AttributeMatrix.h"
+
 
 /**
  * @brief SIMPL_NEW_AM_SELECTION_FP This macro is a short-form way of instantiating an instance of
@@ -76,7 +78,7 @@ class SIMPLib_EXPORT AttributeMatrixSelectionFilterParameter : public FilterPara
     typedef struct
     {
       QVector<unsigned int> dcGeometryTypes;
-      QVector<unsigned int> amTypes;
+      AttributeMatrix::Types amTypes;
     } RequirementType;
 
     /**
@@ -111,7 +113,7 @@ class SIMPLib_EXPORT AttributeMatrixSelectionFilterParameter : public FilterPara
      * @param attributeMatrixType
      * @return
      */
-    static RequirementType CreateRequirement(unsigned int attributeMatrixObjectType);
+    static RequirementType CreateRequirement(AttributeMatrix::Category attributeMatrixObjectType);
 
     /**
      * @brief CreateRequirement
@@ -119,7 +121,7 @@ class SIMPLib_EXPORT AttributeMatrixSelectionFilterParameter : public FilterPara
      * @param geometryType
      * @return
      */
-    static RequirementType CreateRequirement(uint32_t attributeMatrixType,
+    static RequirementType CreateRequirement(AttributeMatrix::Type attributeMatrixType,
                                              uint32_t geometryType);
 
     /**
@@ -151,7 +153,7 @@ class SIMPLib_EXPORT AttributeMatrixSelectionFilterParameter : public FilterPara
     * @param DefaultAttributeMatrixTypes Default attribute matrix types required for Attribute Matrix selections
     * @return
     */
-    SIMPL_INSTANCE_PROPERTY(QVector<unsigned int>, DefaultAttributeMatrixTypes)
+    SIMPL_INSTANCE_PROPERTY(QVector<AttributeMatrix::Type>, DefaultAttributeMatrixTypes)
 
     /**
     * @param SetterCallback The method in the AbstractFilter subclass that <i>sets</i> the value of the property

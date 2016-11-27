@@ -54,8 +54,14 @@ DataArraySelectionFilterParameter::~DataArraySelectionFilterParameter()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-DataArraySelectionFilterParameter::Pointer DataArraySelectionFilterParameter::New(const QString& humanLabel, const QString& propertyName, const DataArrayPath& defaultValue, Category category,
-                                                                                  SetterCallbackType setterCallback, GetterCallbackType getterCallback, const RequirementType req, int groupIndex)
+DataArraySelectionFilterParameter::Pointer DataArraySelectionFilterParameter::New(const QString& humanLabel,
+                                                                                  const QString& propertyName,
+                                                                                  const DataArrayPath& defaultValue,
+                                                                                  Category category,
+                                                                                  SetterCallbackType setterCallback,
+                                                                                  GetterCallbackType getterCallback,
+                                                                                  const RequirementType req,
+                                                                                  int groupIndex)
 {
 
   DataArraySelectionFilterParameter::Pointer ptr = DataArraySelectionFilterParameter::New();
@@ -87,32 +93,33 @@ QString DataArraySelectionFilterParameter::getWidgetType()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-DataArraySelectionFilterParameter::RequirementType DataArraySelectionFilterParameter::CreateCategoryRequirement(const QString& primitiveType, size_t allowedCompDim,
-                                                                                                                unsigned int attributeMatrixCategory)
+DataArraySelectionFilterParameter::RequirementType DataArraySelectionFilterParameter::CreateCategoryRequirement(const QString& primitiveType,
+                                                                                                                size_t allowedCompDim,
+                                                                                                                AttributeMatrix::Category attributeMatrixCategory)
 {
   typedef QVector<size_t> QVectorOfSizeType;
   DataArraySelectionFilterParameter::RequirementType req;
-  QVector<unsigned int> amTypes;
-  if(attributeMatrixCategory == SIMPL::AttributeMatrixObjectType::Element)
+  AttributeMatrix::Types amTypes;
+  if(attributeMatrixCategory == AttributeMatrix::Category::Element)
   {
-    amTypes.push_back(SIMPL::AttributeMatrixType::Cell);
-    amTypes.push_back(SIMPL::AttributeMatrixType::Face);
-    amTypes.push_back(SIMPL::AttributeMatrixType::Edge);
-    amTypes.push_back(SIMPL::AttributeMatrixType::Vertex);
+    amTypes.push_back(AttributeMatrix::Type::Cell);
+    amTypes.push_back(AttributeMatrix::Type::Face);
+    amTypes.push_back(AttributeMatrix::Type::Edge);
+    amTypes.push_back(AttributeMatrix::Type::Vertex);
   }
-  else if(attributeMatrixCategory == SIMPL::AttributeMatrixObjectType::Feature)
+  else if(attributeMatrixCategory == AttributeMatrix::Category::Feature)
   {
-    amTypes.push_back(SIMPL::AttributeMatrixType::CellFeature);
-    amTypes.push_back(SIMPL::AttributeMatrixType::FaceFeature);
-    amTypes.push_back(SIMPL::AttributeMatrixType::EdgeFeature);
-    amTypes.push_back(SIMPL::AttributeMatrixType::VertexFeature);
+    amTypes.push_back(AttributeMatrix::Type::CellFeature);
+    amTypes.push_back(AttributeMatrix::Type::FaceFeature);
+    amTypes.push_back(AttributeMatrix::Type::EdgeFeature);
+    amTypes.push_back(AttributeMatrix::Type::VertexFeature);
   }
-  else if(attributeMatrixCategory == SIMPL::AttributeMatrixObjectType::Ensemble)
+  else if(attributeMatrixCategory == AttributeMatrix::Category::Ensemble)
   {
-    amTypes.push_back(SIMPL::AttributeMatrixType::CellEnsemble);
-    amTypes.push_back(SIMPL::AttributeMatrixType::FaceEnsemble);
-    amTypes.push_back(SIMPL::AttributeMatrixType::EdgeEnsemble);
-    amTypes.push_back(SIMPL::AttributeMatrixType::VertexEnsemble);
+    amTypes.push_back(AttributeMatrix::Type::CellEnsemble);
+    amTypes.push_back(AttributeMatrix::Type::FaceEnsemble);
+    amTypes.push_back(AttributeMatrix::Type::EdgeEnsemble);
+    amTypes.push_back(AttributeMatrix::Type::VertexEnsemble);
   }
   req.amTypes = amTypes;
   if(primitiveType.compare(SIMPL::Defaults::AnyPrimitive) != 0)
@@ -133,7 +140,9 @@ DataArraySelectionFilterParameter::RequirementType DataArraySelectionFilterParam
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-DataArraySelectionFilterParameter::RequirementType DataArraySelectionFilterParameter::CreateRequirement(const QString& primitiveType, size_t allowedCompDim, unsigned int attributeMatrixType,
+DataArraySelectionFilterParameter::RequirementType DataArraySelectionFilterParameter::CreateRequirement(const QString& primitiveType,
+                                                                                                        size_t allowedCompDim,
+                                                                                                        AttributeMatrix::Type attributeMatrixType,
                                                                                                         unsigned int geometryType)
 {
   typedef QVector<size_t> QVectorOfSizeType;
@@ -146,9 +155,9 @@ DataArraySelectionFilterParameter::RequirementType DataArraySelectionFilterParam
   {
     req.componentDimensions = QVector<QVectorOfSizeType>(1, QVectorOfSizeType(1, allowedCompDim));
   }
-  if(SIMPL::Defaults::AnyAttributeMatrix != attributeMatrixType)
+  if(AttributeMatrix::Type::Any != attributeMatrixType)
   {
-    QVector<unsigned int> amTypes(1, attributeMatrixType);
+    QVector<AttributeMatrix::Type> amTypes(1, attributeMatrixType);
     req.amTypes = amTypes;
   }
   if(SIMPL::Defaults::AnyGeometry != geometryType)

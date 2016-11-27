@@ -196,7 +196,7 @@ void DataArrayCreationWidget::createSelectionMenu()
   // Get the DataContainerArray object
   // Loop over the data containers until we find the proper data container
   QList<DataContainer::Pointer> containers = dca->getDataContainers();
-  QVector<unsigned int> amTypes = m_FilterParameter->getDefaultAttributeMatrixTypes();
+  QVector<AttributeMatrix::Type> amTypes = m_FilterParameter->getDefaultAttributeMatrixTypes();
   QVector<unsigned int> geomTypes = m_FilterParameter->getDefaultGeometryTypes();
 
   QListIterator<DataContainer::Pointer> containerIter(containers);

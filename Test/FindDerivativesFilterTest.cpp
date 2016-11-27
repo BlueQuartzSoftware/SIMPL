@@ -173,16 +173,16 @@ public:
   {
     AttributeMatrix::Pointer attrMat;
     QString ss = QObject::tr("AttrMatType%1").arg(0);
-    attrMat = AttributeMatrix::New(tDimsVert, ss, 0);
+    attrMat = AttributeMatrix::New(tDimsVert, ss, AttributeMatrix::Type::Vertex);
     m->addAttributeMatrix(ss, attrMat);
     ss = QObject::tr("AttrMatType%1").arg(1);
-    attrMat = AttributeMatrix::New(tDimsVert, ss, 1);
+    attrMat = AttributeMatrix::New(tDimsVert, ss, AttributeMatrix::Type::Edge);
     m->addAttributeMatrix(ss, attrMat);
     ss = QObject::tr("AttrMatType%1").arg(2);
-    attrMat = AttributeMatrix::New(tDimsVert, ss, 2);
+    attrMat = AttributeMatrix::New(tDimsVert, ss, AttributeMatrix::Type::Face);
     m->addAttributeMatrix(ss, attrMat);
     ss = QObject::tr("AttrMatType%1").arg(3);
-    attrMat = AttributeMatrix::New(tDimsCell, ss, 3);
+    attrMat = AttributeMatrix::New(tDimsCell, ss, AttributeMatrix::Type::Cell);
     m->addAttributeMatrix(ss, attrMat);
   }
 

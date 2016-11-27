@@ -95,14 +95,14 @@ public:
     cDims[1] = 3;
 
     DataContainer::Pointer dc0 = DataContainer::New("DC 0");
-    AttributeMatrix::Pointer am = AttributeMatrix::New(tDims, "CellAttributeMatrix", SIMPL::AttributeMatrixType::Cell);
+    AttributeMatrix::Pointer am = AttributeMatrix::New(tDims, "CellAttributeMatrix", AttributeMatrix::Type::Cell);
     AddDataArray<uint8_t>(am, "Uint8 Array", tDims, cDims);
     AddDataArray<float>(am, "Float Array", tDims, cDims);
     AddDataArray<int32_t>(am, "int32 Array", tDims, cDims);
     dc0->addAttributeMatrix(am->getName(), am);
 
     QVector<size_t> tupleDims(1, 1);
-    AttributeMatrix::Pointer metaAm = AttributeMatrix::New(tupleDims, DataContainerBundle::GetMetaDataName(), SIMPL::AttributeMatrixType::MetaData);
+    AttributeMatrix::Pointer metaAm = AttributeMatrix::New(tupleDims, DataContainerBundle::GetMetaDataName(), AttributeMatrix::Type::MetaData);
     dc0->addAttributeMatrix(metaAm->getName(), metaAm);
 
     DataContainer::Pointer dc1 = dc0->deepCopy();

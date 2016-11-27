@@ -768,7 +768,7 @@ namespace H5Support_NAMESPACE
         herr_t err = 0;
         herr_t retErr = 0;
         hid_t attr_id;
-        T test = 0x00;
+        T test = static_cast<T>(0x00);
         hid_t dataType = QH5Lite::HDFTypeForPrimitive(test);
         if (dataType == -1)
         {

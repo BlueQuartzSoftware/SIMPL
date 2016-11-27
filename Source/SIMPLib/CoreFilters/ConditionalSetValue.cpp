@@ -74,11 +74,11 @@ void ConditionalSetValue::setupFilterParameters()
   FilterParameterVector parameters;
   parameters.push_back(SIMPL_NEW_DOUBLE_FP("New Value", ReplaceValue, FilterParameter::Parameter, ConditionalSetValue));
   {
-    DataArraySelectionFilterParameter::RequirementType req = DataArraySelectionFilterParameter::CreateCategoryRequirement(SIMPL::TypeNames::Bool, 1, SIMPL::AttributeMatrixObjectType::Any);
+    DataArraySelectionFilterParameter::RequirementType req = DataArraySelectionFilterParameter::CreateCategoryRequirement(SIMPL::TypeNames::Bool, 1, AttributeMatrix::Category::Any);
     parameters.push_back(SIMPL_NEW_DA_SELECTION_FP("Conditional Array", ConditionalArrayPath, FilterParameter::RequiredArray, ConditionalSetValue, req));
   }
   {
-    DataArraySelectionFilterParameter::RequirementType req = DataArraySelectionFilterParameter::CreateCategoryRequirement(SIMPL::Defaults::AnyPrimitive, 1, SIMPL::AttributeMatrixObjectType::Any);
+    DataArraySelectionFilterParameter::RequirementType req = DataArraySelectionFilterParameter::CreateCategoryRequirement(SIMPL::Defaults::AnyPrimitive, 1, AttributeMatrix::Category::Any);
     parameters.push_back(SIMPL_NEW_DA_SELECTION_FP("Attribute Array", SelectedArrayPath, FilterParameter::RequiredArray, ConditionalSetValue, req));
   }
   setFilterParameters(parameters);

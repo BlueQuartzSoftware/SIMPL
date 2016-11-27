@@ -265,7 +265,7 @@ void AbstractFilter::copyFilterParameterInstanceVariables(AbstractFilter* filter
             QString(
                 "Error occurred transferring the Filter Parameter '%1' in Filter '%2' to the filter instance. The pipeline may run but the underlying filter will NOT be using the values from the GUI."
                 " Please report this issue to the developers of this filter.")
-                .arg(parameter->getPropertyName())
+              .arg(parameter->getPropertyName())
                 .arg(filter->getHumanLabel());
         Q_ASSERT_X(ok, __FILE__, ss.toLatin1().constData());
       }

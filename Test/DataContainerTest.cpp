@@ -236,7 +236,7 @@ public:
   void PopulateVolumeDataContainer(DataContainer::Pointer dc, QVector<size_t> tupleDims, const QString& name)
   {
     // Create the attribute matrix with the dimensions and name
-    AttributeMatrix::Pointer attrMat = AttributeMatrix::New(tupleDims, name, SIMPL::AttributeMatrixType::Cell);
+    AttributeMatrix::Pointer attrMat = AttributeMatrix::New(tupleDims, name, AttributeMatrix::Type::Cell);
     QVector<size_t> compDims(1, 1); // Create a Single Scalar Component (numComp = 1) Data Array
     FillAttributeMatrix(attrMat, compDims);
 
@@ -254,7 +254,7 @@ public:
     dc->addAttributeMatrix(attrMat->getName(), attrMat);
 
     QString autoAddName = name + QString::fromLatin1("_Auto");
-    AttributeMatrix::Pointer autoAttrMat = dc->createNonPrereqAttributeMatrix<AbstractFilter>(nullptr, autoAddName, tupleDims, SIMPL::AttributeMatrixType::Cell);
+    AttributeMatrix::Pointer autoAttrMat = dc->createNonPrereqAttributeMatrix<AbstractFilter>(nullptr, autoAddName, tupleDims, AttributeMatrix::Type::Cell);
     compDims.resize(0);
     compDims.push_back(1);
     FillAttributeMatrix(autoAttrMat, compDims);
@@ -312,7 +312,7 @@ public:
     dca->addDataContainer(m);
     m->setGeometry(image);
 
-    AttributeMatrix::Pointer attrMatrix = AttributeMatrix::New(tupleDims, getCellFeatureAttributeMatrixName(), SIMPL::AttributeMatrixType::CellFeature);
+    AttributeMatrix::Pointer attrMatrix = AttributeMatrix::New(tupleDims, getCellFeatureAttributeMatrixName(), AttributeMatrix::Type::CellFeature);
     m->addAttributeMatrix(getCellFeatureAttributeMatrixName(), attrMatrix);
 
     int size = nx * ny * nz;
@@ -342,7 +342,7 @@ public:
 
     tupleDims.resize(1);
     tupleDims[0] = 4;
-    AttributeMatrix::Pointer ensemAttrMat = AttributeMatrix::New(tupleDims, getCellEnsembleAttributeMatrixName(), SIMPL::AttributeMatrixType::CellEnsemble);
+    AttributeMatrix::Pointer ensemAttrMat = AttributeMatrix::New(tupleDims, getCellEnsembleAttributeMatrixName(), AttributeMatrix::Type::CellEnsemble);
     m->addAttributeMatrix(getCellEnsembleAttributeMatrixName(), ensemAttrMat);
 
     FloatArrayType::Pointer surfArea = FloatArrayType::CreateArray(4, SIMPL::EnsembleData::TotalSurfaceAreas);
@@ -476,7 +476,7 @@ public:
 
     // Now add an AttributeMatrix to the DataContainer
     QVector<size_t> tDims(1, 0);
-    AttributeMatrix::Pointer attrMat = m->createAndAddAttributeMatrix(tDims, getCellAttributeMatrixName(), SIMPL::AttributeMatrixType::Cell);
+    AttributeMatrix::Pointer attrMat = m->createAndAddAttributeMatrix(tDims, getCellAttributeMatrixName(), AttributeMatrix::Type::Cell);
     DREAM3D_REQUIRE_VALID_POINTER(attrMat.get())
 
     // Now create an Array and add it to the Attribute Matrix

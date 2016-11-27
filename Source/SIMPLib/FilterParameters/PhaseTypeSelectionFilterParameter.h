@@ -40,6 +40,8 @@
 
 #include "SIMPLib/FilterParameters/FilterParameter.h"
 #include "SIMPLib/DataContainers/DataArrayPath.h"
+#include "SIMPLib/DataContainers/AttributeMatrix.h"
+
 
 // FP: Documentation incomplete because there isn't currently a way to instantiate this filter parameter
 //     in one line.
@@ -128,7 +130,7 @@ public:
   void writeJson(QJsonObject &json);
 
   SIMPL_INSTANCE_PROPERTY(QVector<unsigned int>, DefaultGeometryTypes)
-  SIMPL_INSTANCE_PROPERTY(QVector<unsigned int>, DefaultAttributeMatrixTypes)
+  SIMPL_INSTANCE_PROPERTY(AttributeMatrix::Types, DefaultAttributeMatrixTypes)
 
   /**
   * @param SetterCallback The method in the AbstractFilter subclass that <i>sets</i> the value of the property

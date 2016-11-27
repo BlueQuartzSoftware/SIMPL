@@ -606,7 +606,7 @@ public:
   {
 
     QVector<size_t> tDims(10);
-    AttributeMatrix::Pointer am = AttributeMatrix::New(tDims, "AttributeMatrix", SIMPL::AttributeMatrixType::Cell);
+    AttributeMatrix::Pointer am = AttributeMatrix::New(tDims, "AttributeMatrix", AttributeMatrix::Type::Cell);
 
     typename NeighborList<T>::Pointer neiList = NeighborList<T>::CreateArray(10, "NeighborList");
 

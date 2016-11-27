@@ -61,8 +61,8 @@ class SIMPLib_EXPORT CreateAttributeMatrix : public AbstractFilter
     SIMPL_FILTER_PARAMETER(DataArrayPath, CreatedAttributeMatrix)
     Q_PROPERTY(DataArrayPath CreatedAttributeMatrix READ getCreatedAttributeMatrix WRITE setCreatedAttributeMatrix)
 
-    SIMPL_FILTER_PARAMETER(int, AttributeMatrixType)
-    Q_PROPERTY(int AttributeMatrixType READ getAttributeMatrixType WRITE setAttributeMatrixType)
+    SIMPL_FILTER_PARAMETER(uint32_t, AttributeMatrixType)
+    Q_PROPERTY(uint32_t AttributeMatrixType READ getAttributeMatrixType WRITE setAttributeMatrixType)
 
     SIMPL_FILTER_PARAMETER(DynamicTableData, TupleDimensions)
     Q_PROPERTY(DynamicTableData TupleDimensions READ getTupleDimensions WRITE setTupleDimensions)

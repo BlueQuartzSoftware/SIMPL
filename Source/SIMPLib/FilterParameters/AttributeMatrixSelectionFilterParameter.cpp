@@ -34,7 +34,9 @@
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
 #include "AttributeMatrixSelectionFilterParameter.h"
+
 #include "SIMPLib/Common/Constants.h"
+#include "SIMPLib/DataContainers/AttributeMatrix.h"
 
 // -----------------------------------------------------------------------------
 //
@@ -86,30 +88,30 @@ QString AttributeMatrixSelectionFilterParameter::getWidgetType()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-AttributeMatrixSelectionFilterParameter::RequirementType AttributeMatrixSelectionFilterParameter::CreateRequirement(uint32_t attributeMatrixObjectType)
+AttributeMatrixSelectionFilterParameter::RequirementType AttributeMatrixSelectionFilterParameter::CreateRequirement(AttributeMatrix::Category attributeMatrixObjectType)
 {
   AttributeMatrixSelectionFilterParameter::RequirementType req;
-  QVector<unsigned int> amTypes;
-  if(attributeMatrixObjectType == SIMPL::AttributeMatrixObjectType::Element)
+  AttributeMatrix::Types amTypes;
+  if(attributeMatrixObjectType == AttributeMatrix::Category::Element)
   {
-    amTypes.push_back(SIMPL::AttributeMatrixType::Cell);
-    amTypes.push_back(SIMPL::AttributeMatrixType::Face);
-    amTypes.push_back(SIMPL::AttributeMatrixType::Edge);
-    amTypes.push_back(SIMPL::AttributeMatrixType::Vertex);
+    amTypes.push_back(AttributeMatrix::Type::Cell);
+    amTypes.push_back(AttributeMatrix::Type::Face);
+    amTypes.push_back(AttributeMatrix::Type::Edge);
+    amTypes.push_back(AttributeMatrix::Type::Vertex);
   }
-  else if(attributeMatrixObjectType == SIMPL::AttributeMatrixObjectType::Feature)
+  else if(attributeMatrixObjectType == AttributeMatrix::Category::Feature)
   {
-    amTypes.push_back(SIMPL::AttributeMatrixType::CellFeature);
-    amTypes.push_back(SIMPL::AttributeMatrixType::FaceFeature);
-    amTypes.push_back(SIMPL::AttributeMatrixType::EdgeFeature);
-    amTypes.push_back(SIMPL::AttributeMatrixType::VertexFeature);
+    amTypes.push_back(AttributeMatrix::Type::CellFeature);
+    amTypes.push_back(AttributeMatrix::Type::FaceFeature);
+    amTypes.push_back(AttributeMatrix::Type::EdgeFeature);
+    amTypes.push_back(AttributeMatrix::Type::VertexFeature);
   }
-  else if(attributeMatrixObjectType == SIMPL::AttributeMatrixObjectType::Ensemble)
+  else if(attributeMatrixObjectType == AttributeMatrix::Category::Ensemble)
   {
-    amTypes.push_back(SIMPL::AttributeMatrixType::CellEnsemble);
-    amTypes.push_back(SIMPL::AttributeMatrixType::FaceEnsemble);
-    amTypes.push_back(SIMPL::AttributeMatrixType::EdgeEnsemble);
-    amTypes.push_back(SIMPL::AttributeMatrixType::VertexEnsemble);
+    amTypes.push_back(AttributeMatrix::Type::CellEnsemble);
+    amTypes.push_back(AttributeMatrix::Type::FaceEnsemble);
+    amTypes.push_back(AttributeMatrix::Type::EdgeEnsemble);
+    amTypes.push_back(AttributeMatrix::Type::VertexEnsemble);
   }
   req.amTypes = amTypes;
 
@@ -119,13 +121,12 @@ AttributeMatrixSelectionFilterParameter::RequirementType AttributeMatrixSelectio
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-AttributeMatrixSelectionFilterParameter::RequirementType AttributeMatrixSelectionFilterParameter::CreateRequirement(uint32_t attributeMatrixType, uint32_t geometryType)
+AttributeMatrixSelectionFilterParameter::RequirementType AttributeMatrixSelectionFilterParameter::CreateRequirement(AttributeMatrix::Type attributeMatrixType, uint32_t geometryType)
 {
   AttributeMatrixSelectionFilterParameter::RequirementType req;
-  if(SIMPL::Defaults::AnyAttributeMatrix != attributeMatrixType)
+  if(AttributeMatrix::Type::Any != attributeMatrixType)
   {
-    req.amTypes = QVector<unsigned int>(1, attributeMatrixType);
-    ;
+    req.amTypes = QVector<AttributeMatrix::Type>(1, attributeMatrixType);
   }
   if(SIMPL::Defaults::AnyGeometry != geometryType)
   {

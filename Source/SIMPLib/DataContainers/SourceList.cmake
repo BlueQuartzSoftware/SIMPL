@@ -61,6 +61,7 @@ set(SIMPLib_${SUBDIR_NAME}_HDRS
 )
 
 set(SIMPLib_${SUBDIR_NAME}_SRCS
+  ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/AttributeMatrixProxy.cpp
   ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/DataContainer.cpp
   ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/DataContainerArray.cpp
   ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/AttributeMatrix.cpp

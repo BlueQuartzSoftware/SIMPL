@@ -170,7 +170,7 @@ void DataArraySelectionWidget::createSelectionMenu()
   QList<DataContainer::Pointer> containers = dca->getDataContainers();
   QVector<QString> daTypes = m_FilterParameter->getDefaultAttributeArrayTypes();
   QVector<QVector<size_t>> cDims = m_FilterParameter->getDefaultComponentDimensions();
-  QVector<unsigned int> amTypes = m_FilterParameter->getDefaultAttributeMatrixTypes();
+  QVector<AttributeMatrix::Type> amTypes = m_FilterParameter->getDefaultAttributeMatrixTypes();
   QVector<unsigned int> geomTypes = m_FilterParameter->getDefaultGeometryTypes();
 
   QListIterator<DataContainer::Pointer> containerIter(containers);

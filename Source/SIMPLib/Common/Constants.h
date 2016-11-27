@@ -128,7 +128,7 @@ namespace SIMPL
     const QString None("None");
     const QString AnyPrimitive("Any");
     static const size_t AnyComponentSize = std::numeric_limits<size_t>::max();
-    static const uint32_t AnyAttributeMatrix = std::numeric_limits<uint32_t>::max();
+    //static const uint32_t AnyAttributeMatrix = std::numeric_limits<uint32_t>::max();
     static const uint32_t AnyGeometry = std::numeric_limits<uint32_t>::max();
 
     const QString AttributeMatrixName("AttributeMatrix");
@@ -730,32 +730,32 @@ namespace SIMPL
     const unsigned int UnknownDataContainer = 999; //!<
   }
 
-  namespace AttributeMatrixType
-  {
-    const unsigned int Vertex = 0; //!<
-    const unsigned int Edge = 1; //!<
-    const unsigned int Face = 2; //!<
-    const unsigned int Cell = 3; //!<
-    const unsigned int VertexFeature = 4; //!<
-    const unsigned int EdgeFeature = 5; //!<
-    const unsigned int FaceFeature = 6; //!<
-    const unsigned int CellFeature = 7; //!<
-    const unsigned int VertexEnsemble = 8; //!<
-    const unsigned int EdgeEnsemble = 9; //!<
-    const unsigned int FaceEnsemble = 10; //!<
-    const unsigned int CellEnsemble = 11; //!<
-    const unsigned int MetaData = 12; //!<
-    const unsigned int Generic = 13; //!<
-    const unsigned int Unknown = 999; //!<
-  }
+//  namespace AttributeMatrixType
+//  {
+//    const unsigned int Vertex = 0; //!<
+//    const unsigned int Edge = 1; //!<
+//    const unsigned int Face = 2; //!<
+//    const unsigned int Cell = 3; //!<
+//    const unsigned int VertexFeature = 4; //!<
+//    const unsigned int EdgeFeature = 5; //!<
+//    const unsigned int FaceFeature = 6; //!<
+//    const unsigned int CellFeature = 7; //!<
+//    const unsigned int VertexEnsemble = 8; //!<
+//    const unsigned int EdgeEnsemble = 9; //!<
+//    const unsigned int FaceEnsemble = 10; //!<
+//    const unsigned int CellEnsemble = 11; //!<
+//    const unsigned int MetaData = 12; //!<
+//    const unsigned int Generic = 13; //!<
+//    const unsigned int Unknown = 999; //!<
+//  }
 
-  namespace AttributeMatrixObjectType
-  {
-    const unsigned int Element = 0;
-    const unsigned int Feature = 1;
-    const unsigned int Ensemble = 2;
-    const unsigned int Any = 3;
-  }
+//  namespace AttributeMatrixObjectType
+//  {
+//    const unsigned int Element = 0;
+//    const unsigned int Feature = 1;
+//    const unsigned int Ensemble = 2;
+//    const unsigned int Any = 3;
+//  }
 
   namespace Geometry
   {

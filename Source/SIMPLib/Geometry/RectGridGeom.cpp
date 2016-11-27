@@ -689,7 +689,7 @@ void RectGridGeom::initializeWithZeros()
 // -----------------------------------------------------------------------------
 void RectGridGeom::addAttributeMatrix(const QString& name, AttributeMatrix::Pointer data)
 {
-  if(data->getType() != 3)
+  if(data->getType() != AttributeMatrix::Type::Cell)
   {
     // RectGridGeom can only accept cell Attribute Matrices
     return;

@@ -125,7 +125,7 @@ public:
     m->setName("CombineAttributeArraysTest");
 
     QVector<size_t> tDims(1, 100);
-    AttributeMatrix::Pointer attrMat = AttributeMatrix::New(tDims, "CombineAttributeArraysTest", SIMPL::AttributeMatrixType::Cell);
+    AttributeMatrix::Pointer attrMat = AttributeMatrix::New(tDims, "CombineAttributeArraysTest", AttributeMatrix::Type::Cell);
     m->addAttributeMatrix("CombineAttributeArraysTest", attrMat);
     dca->addDataContainer(m);
 

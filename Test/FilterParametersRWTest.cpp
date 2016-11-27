@@ -115,7 +115,7 @@ public:
 
       AttributeMatrixProxy amProxy = AttributeMatrixProxy("AttributeMatrixProxyTestName");
       amProxy.dataArrays.insert("TestName", daProxy);
-      amProxy.amType = 2;
+      amProxy.amType = AttributeMatrix::Type::Face;
       amProxy.flag = 3;
       amProxy.name = "AttributeMatrixProxyTestName";
 

@@ -119,7 +119,7 @@ void VertexGeom::initializeWithZeros()
 // -----------------------------------------------------------------------------
 void VertexGeom::addAttributeMatrix(const QString& name, AttributeMatrix::Pointer data)
 {
-  if(data->getType() != 0)
+  if(data->getType() != AttributeMatrix::Type::Vertex)
   {
     // VertexGeom can only accept vertex Attribute Matrices
     return;

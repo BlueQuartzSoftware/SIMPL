@@ -46,7 +46,7 @@
 #include "SIMPLib/Common/FilterPipeline.h"
 #include "SIMPLib/FilterParameters/AbstractFilterParametersReader.h"
 #include "SIMPLib/DataContainers/DataContainerArrayProxy.h"
-
+#include "SIMPLib/DataContainers/AttributeMatrix.h"
 
 /*
  *
@@ -100,6 +100,7 @@ class SIMPLib_EXPORT H5FilterParametersReader : public AbstractFilterParametersR
     virtual float readValue(const QString name, float value);
     virtual double readValue(const QString name, double value);
     virtual bool readValue(const QString name, bool value);
+    virtual AttributeMatrix::Type readValue(const QString name, AttributeMatrix::Type value);
 
     virtual QVector<int8_t> readArray(const QString name, QVector<int8_t> value);
     virtual QVector<int16_t> readArray(const QString name, QVector<int16_t> value);

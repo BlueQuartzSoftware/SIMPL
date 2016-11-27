@@ -159,7 +159,7 @@ public:
 
     // Create Attribute Matrices with different tDims to test validation of tuple compatibility
     QVector<size_t> tDims(1, 100);
-    AttributeMatrix::Pointer attrMat = AttributeMatrix::New(tDims, "ReplaceValueAttrMat", 3);
+    AttributeMatrix::Pointer attrMat = AttributeMatrix::New(tDims, "ReplaceValueAttrMat", AttributeMatrix::Type::Cell);
 
     m->addAttributeMatrix("ReplaceValueAttrMat", attrMat);
 

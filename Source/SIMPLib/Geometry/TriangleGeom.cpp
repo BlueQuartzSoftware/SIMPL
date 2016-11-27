@@ -210,20 +210,20 @@ void TriangleGeom::initializeWithZeros()
 // -----------------------------------------------------------------------------
 void TriangleGeom::addAttributeMatrix(const QString& name, AttributeMatrix::Pointer data)
 {
-  if(data->getType() != 0 || data->getType() != 1 || data->getType() != 2)
+  if(data->getType() != AttributeMatrix::Type::Vertex || data->getType() != AttributeMatrix::Type::Edge || data->getType() != AttributeMatrix::Type::Face)
   {
     // TriangleGeom can only accept vertex, edge, or face Attribute Matrices
     return;
   }
-  if(data->getType() == 0 && static_cast<int64_t>(data->getNumberOfTuples()) != getNumberOfVertices())
+  if(data->getType() == AttributeMatrix::Type::Vertex && static_cast<int64_t>(data->getNumberOfTuples()) != getNumberOfVertices())
   {
     return;
   }
-  if(data->getType() == 1 && static_cast<int64_t>(data->getNumberOfTuples()) != getNumberOfEdges())
+  if(data->getType() == AttributeMatrix::Type::Edge && static_cast<int64_t>(data->getNumberOfTuples()) != getNumberOfEdges())
   {
     return;
   }
-  if(data->getType() == 2 && data->getNumberOfTuples() != getNumberOfElements())
+  if(data->getType() == AttributeMatrix::Type::Face && data->getNumberOfTuples() != getNumberOfElements())
   {
     return;
   }

@@ -101,7 +101,7 @@ class FilterParameterWidgetUtils
       // Loop over the data containers until we find the proper data container
       QList<DataContainerProxy> containers = dcaProxy.dataContainers.values();
       QListIterator<DataContainerProxy> containerIter(containers);
-      QVector<unsigned int> defVec = fp->getDefaultAttributeMatrixTypes();
+      QVector<AttributeMatrix::Type> defVec = fp->getDefaultAttributeMatrixTypes();
       while(containerIter.hasNext())
       {
         DataContainerProxy dc = containerIter.next();

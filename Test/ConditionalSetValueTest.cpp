@@ -161,7 +161,7 @@ public:
 
     // Create Attribute Matrices with different tDims to test validation of tuple compatibility
     QVector<size_t> tDims(1, 10);
-    AttributeMatrix::Pointer attrMat = AttributeMatrix::New(tDims, "ConditionalSetValueAttrMat", 3);
+    AttributeMatrix::Pointer attrMat = AttributeMatrix::New(tDims, "ConditionalSetValueAttrMat", AttributeMatrix::Type::Cell);
 
     m->addAttributeMatrix("ConditionalSetValueAttrMat", attrMat);
 
