@@ -106,7 +106,7 @@ class SIMPLib_EXPORT AttributeMatrix : public Observable
       MetaData = 12, //!<
       Generic = 13, //!<
       Unknown = 999, //!<
-      Any = std::numeric_limits<uint32_t>::max()
+      Any = 4294967295U
     };
 
     using Types = QVector<Type>;
