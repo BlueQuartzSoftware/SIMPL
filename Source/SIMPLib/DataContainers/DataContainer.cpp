@@ -439,7 +439,7 @@ int DataContainer::writeMeshToHDF5(hid_t dcGid, bool writeXdmf)
 
   if(nullptr == m_Geometry.get())
   {
-    err = QH5Lite::writeScalarAttribute(dcGid, SIMPL::Geometry::Geometry, SIMPL::Geometry::GeometryType, IGeometry::Type::Unknown);
+    err = QH5Lite::writeScalarAttribute(dcGid, SIMPL::Geometry::Geometry, SIMPL::Geometry::GeometryType,  static_cast<AttributeMatrix::EnumType>(IGeometry::Type::Unknown));
     if(err < 0)
     {
       return err;
