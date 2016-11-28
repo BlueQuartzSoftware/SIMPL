@@ -44,7 +44,7 @@
 #include "SIMPLib/DataContainers/AttributeMatrix.h"
 #include "SIMPLib/DataContainers/DataArrayProxy.h"
 
-class AttributeMatrixProxy
+class SIMPLib_EXPORT AttributeMatrixProxy
 {
   public:
     /**
