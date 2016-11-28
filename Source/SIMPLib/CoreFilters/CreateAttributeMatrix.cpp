@@ -51,7 +51,7 @@
 CreateAttributeMatrix::CreateAttributeMatrix()
 : AbstractFilter()
 , m_CreatedAttributeMatrix("", "AttributeMatrix", "")
-, m_AttributeMatrixType(static_cast<uint32_t>(AttributeMatrix::Type::Generic))
+, m_AttributeMatrixType(static_cast<int32_t>(AttributeMatrix::Type::Generic))
 , m_TupleDimensions()
 {
   setupFilterParameters();
