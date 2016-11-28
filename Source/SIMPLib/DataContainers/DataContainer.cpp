@@ -610,6 +610,10 @@ int DataContainer::writeXdmf(QTextStream& out, QString hdfFileName)
       default:
         break;
       }
+    case IGeometry::Type::Unknown:
+      break;
+    case IGeometry::Type::Any:
+      break;
     }
 
     if(xdmfCenter.isEmpty() == false)
