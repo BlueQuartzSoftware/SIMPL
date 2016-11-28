@@ -304,6 +304,8 @@ int DataContainer::writeAttributeMatricesToHDF5(hid_t parentId)
   hid_t attributeMatrixId;
   for(QMap<QString, AttributeMatrix::Pointer>::iterator iter = m_AttributeMatrices.begin(); iter != m_AttributeMatrices.end(); ++iter)
   {
+    AttributeMatrix::Pointer attrMat = iter.value();
+
     err = QH5Utilities::createGroupsFromPath(iter.key(), parentId);
     if(err < 0)
     {
@@ -312,7 +314,8 @@ int DataContainer::writeAttributeMatricesToHDF5(hid_t parentId)
     attributeMatrixId = H5Gopen(parentId, iter.key().toLatin1().data(), H5P_DEFAULT);
     HDF5ScopedGroupSentinel gSentinel(&attributeMatrixId, false);
 
-    err = QH5Lite::writeScalarAttribute(parentId, iter.key(), SIMPL::StringConstants::AttributeMatrixType, (*iter)->getType());
+    AttributeMatrix::EnumType attrMatType = static_cast<AttributeMatrix::EnumType>(attrMat->getType());
+    err = QH5Lite::writeScalarAttribute(parentId, iter.key(), SIMPL::StringConstants::AttributeMatrixType, attrMatType);
     if(err < 0)
     {
       return err;
@@ -350,8 +353,14 @@ int DataContainer::readAttributeMatricesFromHDF5(bool preflight, hid_t dcGid, co
       continue;
     }
     amName = iter.key();
-    amType = AttributeMatrix::Type::Unknown;
-    err = QH5Lite::readScalarAttribute(dcGid, amName, SIMPL::StringConstants::AttributeMatrixType, amType);
+
+    unsigned int amTypeTmp = static_cast<unsigned int>(AttributeMatrix::Type::Unknown);
+    err = QH5Lite::readScalarAttribute(dcGid, amName, SIMPL::StringConstants::AttributeMatrixType, amTypeTmp);
+    if(err < 0)
+    {
+        return -1;
+    }
+
     err = QH5Lite::readVectorAttribute(dcGid, amName, SIMPL::HDF5::TupleDimensions, tDims);
     if(err < 0)
     {
@@ -366,6 +375,7 @@ int DataContainer::readAttributeMatricesFromHDF5(bool preflight, hid_t dcGid, co
 
     if(getAttributeMatrix(amName) == nullptr)
     {
+        amType = static_cast<AttributeMatrix::Type>(amTypeTmp);
       AttributeMatrix::Pointer am = AttributeMatrix::New(tDims, amName, amType);
       addAttributeMatrix(amName, am);
     }
@@ -442,7 +452,7 @@ int DataContainer::writeMeshToHDF5(hid_t dcGid, bool writeXdmf)
   }
   else
   {
-    err = QH5Lite::writeScalarAttribute(dcGid, SIMPL::Geometry::Geometry, SIMPL::Geometry::GeometryType, m_Geometry->getGeometryType());
+    err = QH5Lite::writeScalarAttribute(dcGid, SIMPL::Geometry::Geometry, SIMPL::Geometry::GeometryType, static_cast<AttributeMatrix::EnumType>(m_Geometry->getGeometryType()));
     if(err < 0)
     {
       return err;

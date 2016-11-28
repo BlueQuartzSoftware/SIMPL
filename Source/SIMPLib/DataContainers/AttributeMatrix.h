@@ -89,7 +89,12 @@ class SIMPLib_EXPORT AttributeMatrix : public Observable
 
     virtual ~AttributeMatrix();
 
-    enum class Type : unsigned int
+    using EnumType = unsigned int;
+
+    /**
+    * @brief The Type is an enum that describes the type of data that the AttributeMatrix holds
+    */
+    enum class Type : EnumType
     {
       Vertex = 0, //!<
       Edge = 1, //!<
@@ -111,7 +116,10 @@ class SIMPLib_EXPORT AttributeMatrix : public Observable
 
     using Types = QVector<Type>;
 
-    enum class Category : unsigned int //C++11 scoped enum
+    /**
+     * @brief The Category enum describes the general category of data in the AttributeMatrix
+     */
+    enum class Category : EnumType //C++11 scoped enum
     {
       Element = 0,
       Feature = 1,
@@ -168,7 +176,7 @@ class SIMPLib_EXPORT AttributeMatrix : public Observable
      * @brief getType
      * @return
      */
-    AttributeMatrix::Type getType();
+    AttributeMatrix::Type getType() const;
 
 
     /**
@@ -210,7 +218,7 @@ class SIMPLib_EXPORT AttributeMatrix : public Observable
      * @brief Returns bool of whether a named array exists
      * @param name The name of the data array
      */
-    virtual bool doesAttributeArrayExist(const QString& name);
+    virtual bool doesAttributeArrayExist(const QString& name) const;
 
 
     /**
@@ -244,7 +252,7 @@ class SIMPLib_EXPORT AttributeMatrix : public Observable
     * @brief Returns the total number of arrays that are stored in the Cell group
     * @return
     */
-    virtual int getNumAttributeArrays();
+    virtual int getNumAttributeArrays() const;
 
 
     /**

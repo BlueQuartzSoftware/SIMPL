@@ -276,7 +276,7 @@ void DataContainerWriter::execute()
   scopedFileSentinel.addGroupId(&dcaGid);
 
   QList<QString> dcNames = getDataContainerArray()->getDataContainerNames();
-  for(size_t iter = 0; iter < getDataContainerArray()->getNumDataContainers(); iter++)
+  for(int iter = 0; iter < getDataContainerArray()->getNumDataContainers(); iter++)
   {
     DataContainer::Pointer dc = getDataContainerArray()->getDataContainer(dcNames[iter]);
     IGeometry::Pointer geometry = dc->getGeometry();

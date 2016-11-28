@@ -99,11 +99,13 @@ void AttributeMatrix::ReadAttributeMatrixStructure(hid_t containerId, DataContai
       AttributeMatrixProxy amProxy(attributeMatrixName);
       amProxy.name = attributeMatrixName;
       amProxy.flag = Qt::Checked;
-      herr_t err = QH5Lite::readScalarAttribute(containerId, attributeMatrixName, SIMPL::StringConstants::AttributeMatrixType, amProxy.amType);
+      AttributeMatrix::EnumType amTypeTmp = static_cast<AttributeMatrix::EnumType>(AttributeMatrix::Type::Unknown);
+      herr_t err = QH5Lite::readScalarAttribute(containerId, attributeMatrixName, SIMPL::StringConstants::AttributeMatrixType, amTypeTmp);
       if(err < 0)
       {
         std::cout << "Error Reading the AttributeMatrix Type for AttributeMatrix " << attributeMatrixName.toStdString() << std::endl;
       }
+      amProxy.amType = static_cast<AttributeMatrix::Type>(amTypeTmp);
 
       QString h5Path = h5InternalPath + "/" + attributeMatrixName;
 
@@ -127,14 +129,14 @@ void AttributeMatrix::setType(AttributeMatrix::Type value)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-AttributeMatrix::Type AttributeMatrix::getType()
+AttributeMatrix::Type AttributeMatrix::getType() const
 {
   return m_Type;
 }
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-bool AttributeMatrix::doesAttributeArrayExist(const QString& name)
+bool AttributeMatrix::doesAttributeArrayExist(const QString& name) const
 {
   return m_AttributeArrays.contains(name);
 }
@@ -386,7 +388,7 @@ QList<QString> AttributeMatrix::getAttributeArrayNames()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-int AttributeMatrix::getNumAttributeArrays()
+int AttributeMatrix::getNumAttributeArrays() const
 {
   return static_cast<int>(m_AttributeArrays.size());
 }

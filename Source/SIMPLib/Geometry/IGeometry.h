@@ -72,10 +72,12 @@ class SIMPLib_EXPORT IGeometry : public Observable
     IGeometry();
     virtual ~IGeometry();
 
+    using EnumType = unsigned int;
+
     /**
      * @brief The Type enum
      */
-    enum class Type : unsigned int
+    enum class Type : EnumType
     {
        Image = 11,
        RectGrid = 11,
