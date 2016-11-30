@@ -232,18 +232,6 @@ AttributeMatrix::Type AbstractFilterParametersReader::readValue(const QString na
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-SIMPL::Layout AbstractFilterParametersReader::readValue(const QString name, SIMPL::Layout value)
-{
-  Q_UNUSED(name)
-  Q_UNUSED(value)
-
-  // This should never be executed
-  return SIMPL::Layout::Square;
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
 QVector<int8_t> AbstractFilterParametersReader::readArray(const QString name, QVector<int8_t> value)
 {
   Q_UNUSED(name)
