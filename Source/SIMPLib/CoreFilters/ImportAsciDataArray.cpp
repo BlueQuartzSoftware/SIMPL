@@ -587,5 +587,5 @@ const QString ImportAsciDataArray::getSubGroupName()
 // -----------------------------------------------------------------------------
 const QString ImportAsciDataArray::getHumanLabel()
 {
-  return "Import ASCI AttributeArray";
+  return "Import ASCII Attribute Array";
 }
