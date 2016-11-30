@@ -903,11 +903,11 @@ namespace SIMPL
 
   }
 
-	enum class Layout : signed int
+	namespace Layout
 	{
-		Horizontal = 0,
-		Vertical = 1,
-		Square = 2
+    const signed int Horizontal = 0;
+    const signed int Vertical = 1;
+    const signed int Square = 2;
 	};
 
 }
