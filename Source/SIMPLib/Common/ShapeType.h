@@ -59,6 +59,22 @@ class SIMPLib_EXPORT ShapeType
 
     virtual ~ShapeType();
 
+    using EnumType = unsigned int;
+
+		enum class Type : EnumType
+		{
+			EllipsoidShape = 0, //!<
+			SuperEllipsoidShape = 1, //!<
+			CubeOctahedronShape = 2, //!<
+			CylinderAShape = 3, //!<
+			CylinderBShape = 4, //!<
+			CylinderCShape = 5, //!<
+			ShapeTypeEnd = 6,
+			UnknownShapeType = 999 //!<
+		};
+
+		using Types = QVector<Type>;
+
     static QString EllipsoidStr() { return QString("Ellipsoid"); }
     static QString SuperEllipsoid() { return QString("Super Ellipsoid"); }
     static QString CubeOctahedronStr() { return QString("Cube Octahedron"); }
@@ -67,23 +83,23 @@ class SIMPLib_EXPORT ShapeType
     static QString CylinderCStr() { return QString("Cylinder (C)"); }
     static QString UnknownShapeTypeStr() { return QString("Unknown Shape Type"); }
 
-    static QString getShapeTypeString(unsigned int ShapeType)
+    static QString getShapeTypeString(Type ShapeType)
     {
       switch(ShapeType)
       {
-        case SIMPL::ShapeType::EllipsoidShape:
+         case Type::EllipsoidShape:
           return EllipsoidStr();
-        case SIMPL::ShapeType::SuperEllipsoidShape:
+        case Type::SuperEllipsoidShape:
           return SuperEllipsoid();
-        case SIMPL::ShapeType::CubeOctahedronShape:
+        case Type::CubeOctahedronShape:
           return CubeOctahedronStr();
-        case SIMPL::ShapeType::CylinderAShape:
+        case Type::CylinderAShape:
           return CylinderAStr();
-        case SIMPL::ShapeType::CylinderBShape:
+        case Type::CylinderBShape:
           return CylinderBStr();
-        case SIMPL::ShapeType::CylinderCShape:
+        case Type::CylinderCShape:
           return CylinderCStr();
-        case SIMPL::ShapeType::UnknownShapeType:
+        case Type::UnknownShapeType:
           return UnknownShapeTypeStr();
         default:
           break;
@@ -91,33 +107,33 @@ class SIMPLib_EXPORT ShapeType
       return QString("Undefined ShapeType (Error)");
     }
 
-    static unsigned int getShapeType(const char* str)
+		static Type getShapeType(const char* str)
     {
       if (EllipsoidStr().compare(str) == 0)
       {
-        return SIMPL::ShapeType::EllipsoidShape;
+        return Type::EllipsoidShape;
       }
       else if (SuperEllipsoid().compare(str) == 0)
       {
-        return SIMPL::ShapeType::SuperEllipsoidShape;
+        return Type::SuperEllipsoidShape;
       }
       else if (CubeOctahedronStr().compare(str) == 0)
       {
-        return SIMPL::ShapeType::CubeOctahedronShape;
+        return Type::CubeOctahedronShape;
       }
       else if (CylinderAStr().compare(str) == 0)
       {
-        return SIMPL::ShapeType::CylinderAShape;
+        return Type::CylinderAShape;
       }
       else if (CylinderBStr().compare(str) == 0)
       {
-        return SIMPL::ShapeType::CylinderBShape;
+        return Type::CylinderBShape;
       }
       else if (CylinderCStr().compare(str) == 0)
       {
-        return SIMPL::ShapeType::CylinderCShape;
+        return Type::CylinderCShape;
       }
-      return SIMPL::ShapeType::UnknownShapeType;
+      return Type::UnknownShapeType;
     }
 
 
@@ -133,28 +149,28 @@ class SIMPLib_EXPORT ShapeType
       strings.push_back(UnknownShapeTypeStr());
     }
 
-    static void getShapeTypeEnums(QVector<unsigned int>& types)
+		static void getShapeTypeEnums(QVector<Type>& types)
     {
       types.clear();
-      types.push_back(SIMPL::ShapeType::EllipsoidShape);
-      types.push_back(SIMPL::ShapeType::SuperEllipsoidShape);
-      types.push_back(SIMPL::ShapeType::CubeOctahedronShape);
-      types.push_back(SIMPL::ShapeType::CylinderAShape);
-      types.push_back(SIMPL::ShapeType::CylinderBShape);
-      types.push_back(SIMPL::ShapeType::CylinderCShape);
-      types.push_back(SIMPL::ShapeType::UnknownShapeType);
+      types.push_back(Type::EllipsoidShape);
+      types.push_back(Type::SuperEllipsoidShape);
+      types.push_back(Type::CubeOctahedronShape);
+      types.push_back(Type::CylinderAShape);
+      types.push_back(Type::CylinderBShape);
+      types.push_back(Type::CylinderCShape);
+      types.push_back(Type::UnknownShapeType);
     }
 
-    static void getShapeTypeMap(QMap<int, QString>& map)
+		static void getShapeTypeMap(QMap<Type, QString>& map)
     {
       map.clear();
-      map[SIMPL::ShapeType::EllipsoidShape] = EllipsoidStr();
-      map[SIMPL::ShapeType::SuperEllipsoidShape] = SuperEllipsoid();
-      map[SIMPL::ShapeType::CubeOctahedronShape] = CubeOctahedronStr();
-      map[SIMPL::ShapeType::CylinderAShape] = CylinderAStr();
-      map[SIMPL::ShapeType::CylinderBShape] = CylinderBStr();
-      map[SIMPL::ShapeType::CylinderCShape] = CylinderCStr();
-      map[SIMPL::ShapeType::UnknownShapeType] = UnknownShapeTypeStr();
+      map[Type::EllipsoidShape] = EllipsoidStr();
+      map[Type::SuperEllipsoidShape] = SuperEllipsoid();
+      map[Type::CubeOctahedronShape] = CubeOctahedronStr();
+      map[Type::CylinderAShape] = CylinderAStr();
+      map[Type::CylinderBShape] = CylinderBStr();
+      map[Type::CylinderCShape] = CylinderCStr();
+      map[Type::UnknownShapeType] = UnknownShapeTypeStr();
     }
   protected:
     ShapeType();
@@ -165,6 +181,8 @@ class SIMPLib_EXPORT ShapeType
 
 
 };
+
+Q_DECLARE_METATYPE(ShapeType::Type)
 
 #endif /* SHAPETYPE_H_ */
 

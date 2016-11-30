@@ -129,7 +129,7 @@ void ShapeTypeSelectionWidget::updateComboBoxes()
   QVector<QString> shapeTypeStrings;
   ShapeType::getShapeTypeStrings(shapeTypeStrings);
   // Get our list of predefined enumeration values
-  QVector<unsigned int> shapeTypeEnums;
+  ShapeType::Types shapeTypeEnums;
   ShapeType::getShapeTypeEnums(shapeTypeEnums);
 
   // Remove all the items from the GUI and from the internal tracking Lists
@@ -170,8 +170,8 @@ void ShapeTypeSelectionWidget::updateComboBoxes()
     cb->setObjectName(str);
     for(int32_t s = 0; s < shapeTypeStrings.size(); ++s)
     {
-      cb->addItem((shapeTypeStrings[s]), shapeTypeEnums[s]);
-      cb->setItemData(static_cast<int>(s), shapeTypeEnums[s], Qt::UserRole);
+      cb->addItem((shapeTypeStrings[s]), static_cast<ShapeType::EnumType>(shapeTypeEnums[s]));
+      cb->setItemData(static_cast<int>(s), static_cast<ShapeType::EnumType>(shapeTypeEnums[s]), Qt::UserRole);
     }
     m_ShapeTypeCombos << cb;
     formLayout_2->setWidget(i, QFormLayout::FieldRole, cb);
@@ -223,12 +223,12 @@ void ShapeTypeSelectionWidget::afterPreflight()
 void ShapeTypeSelectionWidget::filterNeedsInputParameters(AbstractFilter* filter)
 {
   int count = m_ShapeTypeCombos.count();
-  QVector<uint32_t> shapeTypes(count + 1, SIMPL::ShapeType::UnknownShapeType);
+	QVector<ShapeType::EnumType> shapeTypes(count + 1, static_cast<ShapeType::EnumType>(ShapeType::Type::UnknownShapeType));
   bool ok = false;
   for(int i = 0; i < count; ++i)
   {
     QComboBox* cb = m_ShapeTypeCombos.at(i);
-    unsigned int sType = static_cast<unsigned int>(cb->itemData(cb->currentIndex(), Qt::UserRole).toUInt(&ok));
+    ShapeType::EnumType sType = static_cast<ShapeType::EnumType>(cb->itemData(cb->currentIndex(), Qt::UserRole).toUInt(&ok));
     shapeTypes[i + 1] = sType;
   }
 

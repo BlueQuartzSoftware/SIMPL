@@ -815,25 +815,25 @@ namespace SIMPL
     const QString Grid("Grid");
   }
 
-  namespace ShapeType
-  {
-    const unsigned int EllipsoidShape = 0; //!<
-    const unsigned int SuperEllipsoidShape = 1; //!<
-    const unsigned int CubeOctahedronShape = 2; //!<
-    const unsigned int CylinderAShape = 3; //!<
-    const unsigned int CylinderBShape = 4; //!<
-    const unsigned int CylinderCShape = 5; //!<
-    const unsigned int ShapeTypeEnd = 6;
-    const unsigned int UnknownShapeType = 999; //!<
-  }
+  //namespace ShapeType
+  //{
+  //  const unsigned int EllipsoidShape = 0; //!<
+  //  const unsigned int SuperEllipsoidShape = 1; //!<
+  //  const unsigned int CubeOctahedronShape = 2; //!<
+  //  const unsigned int CylinderAShape = 3; //!<
+  //  const unsigned int CylinderBShape = 4; //!<
+  //  const unsigned int CylinderCShape = 5; //!<
+  //  const unsigned int ShapeTypeEnd = 6;
+  //  const unsigned int UnknownShapeType = 999; //!<
+  //}
 
-  namespace Precipitates
-  {
-    const unsigned int NoPrecipitates = 0; //!<
-    const unsigned int BoundaryPrecipitates = 1; //!<
-    const unsigned int BulkPrecipitates = 2; //!<
-    const unsigned int UnknownPrecipitates = 999; //!<
-  }
+	enum class Precipitates : unsigned int
+	{
+		NoPrecipitates = 0, //!<
+		BoundaryPrecipitates = 1, //!<
+		BulkPrecipitates = 2, //!<
+		UnknownPrecipitates = 999 //!<
+	};
 
   namespace Reconstruction
   {
@@ -903,12 +903,12 @@ namespace SIMPL
 
   }
 
-  namespace Layout
-  {
-    const signed int Horizontal = 0;
-    const signed int Vertical = 1;
-    const signed int Square = 2;
-  }
+	enum class Layout : signed int
+	{
+		Horizontal = 0,
+		Vertical = 1,
+		Square = 2
+	};
 
 }
 
