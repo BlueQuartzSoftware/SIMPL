@@ -59,6 +59,20 @@ class SIMPLib_EXPORT PhaseType
 
     virtual ~PhaseType();
 
+    using EnumType = unsigned int;
+
+    enum class Type : EnumType
+    {
+      PrimaryPhase = 0,           //!<
+      PrecipitatePhase = 1,       //!<
+      TransformationPhase = 2,    //!<
+      MatrixPhase = 3,            //!<
+      BoundaryPhase = 4,          //!<
+      UnknownPhaseType = 999      //!<
+    };
+
+    using Types = QVector<Type>;
+
     static QString PrimaryStr() { return QString("Primary"); }
     static QString PrecipitateStr() { return QString("Precipitate"); }
     static QString TransformationStr() { return QString("Transformation"); }
@@ -67,21 +81,21 @@ class SIMPLib_EXPORT PhaseType
     static QString UnknownPhaseTypeStr() { return QString("Unknown Phase Type"); }
 
 
-    static QString getPhaseTypeString(unsigned int phaseType)
+    static QString getPhaseTypeString(Type phaseType)
     {
       switch(phaseType)
       {
-        case SIMPL::PhaseType::PrimaryPhase:
+        case Type::PrimaryPhase:
           return PrimaryStr();
-        case SIMPL::PhaseType::PrecipitatePhase:
+        case Type::PrecipitatePhase:
           return PrecipitateStr();
-        case SIMPL::PhaseType::TransformationPhase:
+        case Type::TransformationPhase:
           return TransformationStr();
-        case SIMPL::PhaseType::MatrixPhase:
+        case Type::MatrixPhase:
           return MatrixStr();
-        case SIMPL::PhaseType::BoundaryPhase:
+        case Type::BoundaryPhase:
           return BoundaryStr();
-        case SIMPL::PhaseType::UnknownPhaseType:
+        case Type::UnknownPhaseType:
           return UnknownPhaseTypeStr();
         default:
           break;
@@ -89,29 +103,29 @@ class SIMPLib_EXPORT PhaseType
       return QString("Undefined Phase Type (Error)");
     }
 
-    static unsigned int getPhaseType(const char* str)
+    static Type getPhaseType(const char* str)
     {
       if (PrimaryStr().compare(str) == 0)
       {
-        return SIMPL::PhaseType::PrimaryPhase;
+        return Type::PrimaryPhase;
       }
       else if (PrecipitateStr().compare(str) == 0)
       {
-        return SIMPL::PhaseType::PrecipitatePhase;
+        return Type::PrecipitatePhase;
       }
       else if (TransformationStr().compare(str) == 0)
       {
-        return SIMPL::PhaseType::TransformationPhase;
+        return Type::TransformationPhase;
       }
       else if (MatrixStr().compare(str) == 0)
       {
-        return SIMPL::PhaseType::MatrixPhase;
+        return Type::MatrixPhase;
       }
       else if (BoundaryStr().compare(str) == 0)
       {
-        return SIMPL::PhaseType::BoundaryPhase;
+        return Type::BoundaryPhase;
       }
-      return SIMPL::PhaseType::UnknownPhaseType;
+      return Type::UnknownPhaseType;
     }
 
 
@@ -126,26 +140,26 @@ class SIMPLib_EXPORT PhaseType
       strings.push_back(UnknownPhaseTypeStr());
     }
 
-    static void getPhaseTypeEnums(QVector<unsigned int>& types)
+    static void getPhaseTypeEnums(QVector<Type>& types)
     {
       types.clear();
-      types.push_back(SIMPL::PhaseType::PrimaryPhase);
-      types.push_back(SIMPL::PhaseType::PrecipitatePhase);
-      types.push_back(SIMPL::PhaseType::TransformationPhase);
-      types.push_back(SIMPL::PhaseType::MatrixPhase);
-      types.push_back(SIMPL::PhaseType::BoundaryPhase);
-      types.push_back(SIMPL::PhaseType::UnknownPhaseType);
+      types.push_back(Type::PrimaryPhase);
+      types.push_back(Type::PrecipitatePhase);
+      types.push_back(Type::TransformationPhase);
+      types.push_back(Type::MatrixPhase);
+      types.push_back(Type::BoundaryPhase);
+      types.push_back(Type::UnknownPhaseType);
     }
 
-    static void getPhaseTypeMap(QMap<int, QString>& map)
+    static void getPhaseTypeMap(QMap<Type, QString>& map)
     {
       map.clear();
-      map[SIMPL::PhaseType::PrimaryPhase] = PrimaryStr();
-      map[SIMPL::PhaseType::PrecipitatePhase] = PrecipitateStr();
-      map[SIMPL::PhaseType::TransformationPhase] = TransformationStr();
-      map[SIMPL::PhaseType::MatrixPhase] = MatrixStr();
-      map[SIMPL::PhaseType::BoundaryPhase] = BoundaryStr();
-      map[SIMPL::PhaseType::UnknownPhaseType] = UnknownPhaseTypeStr();
+      map[Type::PrimaryPhase] = PrimaryStr();
+      map[Type::PrecipitatePhase] = PrecipitateStr();
+      map[Type::TransformationPhase] = TransformationStr();
+      map[Type::MatrixPhase] = MatrixStr();
+      map[Type::BoundaryPhase] = BoundaryStr();
+      map[Type::UnknownPhaseType] = UnknownPhaseTypeStr();
     }
 
   protected:

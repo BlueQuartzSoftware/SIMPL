@@ -68,9 +68,9 @@ QString StatsData::getStatsType()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-unsigned int StatsData::getPhaseType()
+PhaseType::Type StatsData::getPhaseType()
 {
-  return SIMPL::PhaseType::UnknownPhaseType;
+  return PhaseType::Type::UnknownPhaseType;
 }
 
 // -----------------------------------------------------------------------------

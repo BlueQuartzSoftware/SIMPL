@@ -70,9 +70,9 @@ QString PrimaryStatsData::getStatsType()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-unsigned int PrimaryStatsData::getPhaseType()
+PhaseType::Type PrimaryStatsData::getPhaseType()
 {
-  return SIMPL::PhaseType::PrimaryPhase;
+  return PhaseType::Type::PrimaryPhase;
 }
 
 // -----------------------------------------------------------------------------
@@ -202,7 +202,7 @@ void PrimaryStatsData::writeJson(QJsonObject& json)
   // Write the name of the phase
   json.insert(SIMPL::StringConstants::Name, getName());
 
-  json.insert(SIMPL::StringConstants::PhaseType, SIMPL::PhaseType::Primary);
+  json.insert(SIMPL::StringConstants::PhaseType, PhaseType::PrimaryStr());
   // Write the Boundary Area
   json.insert(SIMPL::StringConstants::BoundaryArea, getBoundaryArea());
   // Write the Phase Fraction

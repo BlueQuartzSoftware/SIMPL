@@ -68,9 +68,9 @@ QString TransformationStatsData::getStatsType()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-unsigned int TransformationStatsData::getPhaseType()
+PhaseType::Type TransformationStatsData::getPhaseType()
 {
-  return SIMPL::PhaseType::TransformationPhase;
+  return PhaseType::Type::TransformationPhase;
 }
 
 // -----------------------------------------------------------------------------
@@ -202,7 +202,7 @@ void TransformationStatsData::writeJson(QJsonObject& json)
   // Write the name of the phase
   json.insert(SIMPL::StringConstants::Name, getName());
 
-  json.insert(SIMPL::StringConstants::PhaseType, SIMPL::PhaseType::Transformation);
+  json.insert(SIMPL::StringConstants::PhaseType, PhaseType::TransformationStr());
 
   // Write the boundary fraction
   json.insert(SIMPL::StringConstants::BoundaryArea, getBoundaryArea());

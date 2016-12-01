@@ -309,7 +309,7 @@ void PhaseTypeSelectionWidget::updatePhaseComboBoxes()
   }
 
   // Get our list of predefined enumeration values
-  QVector<unsigned int> phaseTypeEnums;
+  QVector<PhaseType::Type> phaseTypeEnums;
   PhaseType::getPhaseTypeEnums(phaseTypeEnums);
 
   phaseListWidget->clear();
@@ -321,8 +321,8 @@ void PhaseTypeSelectionWidget::updatePhaseComboBoxes()
     QComboBox* cb = new QComboBox(nullptr);
     for(int s = 0; s < phaseListChoices.size(); ++s)
     {
-      cb->addItem((phaseListChoices[s]), phaseTypeEnums[s]);
-      cb->setItemData(static_cast<int>(s), phaseTypeEnums[s], Qt::UserRole);
+      cb->addItem((phaseListChoices[s]), static_cast<PhaseType::EnumType>(phaseTypeEnums[s]));
+      cb->setItemData(static_cast<int>(s), static_cast<PhaseType::EnumType>(phaseTypeEnums[s]), Qt::UserRole);
     }
 
     QListWidgetItem* item = new QListWidgetItem(phaseListWidget);
@@ -418,14 +418,14 @@ void PhaseTypeSelectionWidget::filterNeedsInputParameters(AbstractFilter* filter
 
   QVariant var;
 
-  // QVector<uint32_t> phaseTypes(count, SIMPL::PhaseType::UnknownPhaseType);
-  QVector<uint32_t> phaseTypes(count + 1, SIMPL::PhaseType::UnknownPhaseType);
+  // QVector<uint32_t> phaseTypes(count, PhaseType::Type::UnknownPhaseType);
+  QVector<PhaseType::EnumType> phaseTypes(count + 1, static_cast<PhaseType::EnumType>(PhaseType::Type::UnknownPhaseType));
   bool ok = false;
-  phaseTypes[0] = SIMPL::PhaseType::UnknownPhaseType;
+  phaseTypes[0] = static_cast<PhaseType::EnumType>(PhaseType::Type::UnknownPhaseType);
   for(int i = 0; i < count; ++i)
   {
     QComboBox* cb = qobject_cast<QComboBox*>(phaseListWidget->itemWidget(phaseListWidget->item(i)));
-    unsigned int sType = static_cast<unsigned int>(cb->itemData(cb->currentIndex(), Qt::UserRole).toUInt(&ok));
+    PhaseType::EnumType sType = static_cast<PhaseType::EnumType>(cb->itemData(cb->currentIndex(), Qt::UserRole).toUInt(&ok));
     // phaseTypes[i+1] = sType;
     phaseTypes[i + 1] = sType;
   }

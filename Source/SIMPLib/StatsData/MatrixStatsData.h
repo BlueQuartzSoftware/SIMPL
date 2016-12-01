@@ -42,6 +42,7 @@
 
 #include "SIMPLib/SIMPLib.h"
 #include "SIMPLib/Common/SIMPLibSetGetMacros.h"
+#include "SIMPLib/Common/PhaseType.h"
 #include "SIMPLib/DataArrays/DataArray.hpp"
 #include "SIMPLib/StatsData/StatsData.h"
 
@@ -111,7 +112,7 @@ class SIMPLib_EXPORT MatrixStatsData : public StatsData
      * @brief getPhaseType
      * @return
      */
-    virtual unsigned int getPhaseType();
+    virtual PhaseType::Type getPhaseType();
 
     /**
      * @brief deepCopy

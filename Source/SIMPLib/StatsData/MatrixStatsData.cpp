@@ -86,9 +86,9 @@ QString MatrixStatsData::getStatsType()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-unsigned int MatrixStatsData::getPhaseType()
+PhaseType::Type MatrixStatsData::getPhaseType()
 {
-  return SIMPL::PhaseType::MatrixPhase;
+  return PhaseType::Type::MatrixPhase;
 }
 
 // -----------------------------------------------------------------------------
@@ -118,7 +118,7 @@ int MatrixStatsData::readHDF5Data(hid_t groupId)
 // -----------------------------------------------------------------------------
 void MatrixStatsData::writeJson(QJsonObject& json)
 {
-  json.insert(SIMPL::StringConstants::PhaseType, SIMPL::PhaseType::Matrix);
+  json.insert(SIMPL::StringConstants::PhaseType, PhaseType::MatrixStr());
   // Write the Phase Fraction
   json.insert(SIMPL::StringConstants::PhaseFraction, getPhaseFraction());
   // Write the name of the phase

@@ -88,9 +88,9 @@ QString BoundaryStatsData::getStatsType()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-unsigned int BoundaryStatsData::getPhaseType()
+PhaseType::Type BoundaryStatsData::getPhaseType()
 {
-  return SIMPL::PhaseType::BoundaryPhase;
+  return PhaseType::Type::BoundaryPhase;
 }
 
 // -----------------------------------------------------------------------------
@@ -120,7 +120,7 @@ int BoundaryStatsData::readHDF5Data(hid_t groupId)
 // -----------------------------------------------------------------------------
 void BoundaryStatsData::writeJson(QJsonObject& json)
 {
-  json.insert(SIMPL::StringConstants::PhaseType, SIMPL::PhaseType::Boundary);
+  json.insert(SIMPL::StringConstants::PhaseType, PhaseType::BoundaryStr());
   // Write the precipitate boundary fraction
   json.insert(SIMPL::StringConstants::BoundaryArea, getBoundaryArea());
   // Write the Phase Fraction

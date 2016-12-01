@@ -44,6 +44,7 @@
 #include "SIMPLib/Common/SIMPLibSetGetMacros.h"
 #include "SIMPLib/DataArrays/DataArray.hpp"
 #include "SIMPLib/StatsData/StatsData.h"
+#include "SIMPLib/Common/PhaseType.h"
 
 typedef QVector<FloatArrayType::Pointer> VectorOfFloatArray;
 
@@ -101,7 +102,7 @@ class SIMPLib_EXPORT PrimaryStatsData : public StatsData
     }
 
     virtual QString getStatsType();
-    virtual unsigned int getPhaseType();
+    virtual PhaseType::Type getPhaseType();
 
     SIMPL_INSTANCE_PROPERTY(float, BoundaryArea)
 

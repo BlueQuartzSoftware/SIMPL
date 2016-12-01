@@ -101,7 +101,7 @@ class SIMPLib_EXPORT TransformationStatsData : public StatsData
     }
 
     virtual QString getStatsType();
-    virtual unsigned int getPhaseType();
+    virtual PhaseType::Type getPhaseType();
 
     SIMPL_INSTANCE_PROPERTY(float, BoundaryArea)
     SIMPL_INSTANCE_PROPERTY(float, ParentPhase)

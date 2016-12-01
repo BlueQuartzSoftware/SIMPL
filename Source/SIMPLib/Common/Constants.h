@@ -617,22 +617,22 @@ namespace SIMPL
     const QString Node("Node");
   }
 
-  namespace PhaseType
-  {
-    const unsigned int PrimaryPhase = 0;              //!<
-    const unsigned int PrecipitatePhase = 1;          //!<
-    const unsigned int TransformationPhase = 2;       //!<
-    const unsigned int MatrixPhase = 3;              //!<
-    const unsigned int BoundaryPhase = 4;              //!<
-    const unsigned int UnknownPhaseType = 999;    //!<
+  //namespace PhaseType
+  //{
+  //  //const unsigned int PrimaryPhase = 0;              //!<
+  //  //const unsigned int PrecipitatePhase = 1;          //!<
+  //  //const unsigned int TransformationPhase = 2;       //!<
+  //  //const unsigned int MatrixPhase = 3;              //!<
+  //  //const unsigned int BoundaryPhase = 4;              //!<
+  //  //const unsigned int UnknownPhaseType = 999;    //!<
 
-    const QString Primary("Primary");
-    const QString Precipitate("Precipitate");
-    const QString Transformation("Transformation");
-    const QString Matrix("Matrix");
-    const QString Boundary("Boundary");
-    const QString UnknownPhase("UnknownPhaseType");
-  }
+  //  const QString Primary("Primary");
+  //  const QString Precipitate("Precipitate");
+  //  const QString Transformation("Transformation");
+  //  const QString Matrix("Matrix");
+  //  const QString Boundary("Boundary");
+  //  const QString UnknownPhase("UnknownPhaseType");
+  //}
 
   namespace AlignmentMethod
   {

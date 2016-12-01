@@ -68,9 +68,9 @@ QString PrecipitateStatsData::getStatsType()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-unsigned int PrecipitateStatsData::getPhaseType()
+PhaseType::Type PrecipitateStatsData::getPhaseType()
 {
-  return SIMPL::PhaseType::PrecipitatePhase;
+  return PhaseType::Type::PrecipitatePhase;
 }
 
 // -----------------------------------------------------------------------------
@@ -209,7 +209,7 @@ void PrecipitateStatsData::writeJson(QJsonObject& json)
   // Write the name of the phase
   json.insert(SIMPL::StringConstants::Name, getName());
 
-  json.insert(SIMPL::StringConstants::PhaseType, SIMPL::PhaseType::Precipitate);
+  json.insert(SIMPL::StringConstants::PhaseType, PhaseType::PrecipitateStr());
   // Write the boundary area
   json.insert(SIMPL::StringConstants::BoundaryArea, getBoundaryArea());
   // Write the Phase Fraction

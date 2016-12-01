@@ -42,6 +42,7 @@
 
 #include "SIMPLib/SIMPLib.h"
 #include "SIMPLib/Common/SIMPLibSetGetMacros.h"
+#include "SIMPLib/Common/PhaseType.h"
 #include "SIMPLib/DataArrays/DataArray.hpp"
 #include "SIMPLib/StatsData/StatsData.h"
 #include "SIMPLib/Math/RadialDistributionFunction.h"
@@ -105,7 +106,7 @@ class SIMPLib_EXPORT PrecipitateStatsData : public StatsData
     SIMPL_INSTANCE_PROPERTY(float, PrecipBoundaryFraction)
 
     virtual QString getStatsType();
-    virtual unsigned int getPhaseType();
+    virtual PhaseType::Type getPhaseType();
 
     /**
       * @breif this will generate the Bin Numbers values;

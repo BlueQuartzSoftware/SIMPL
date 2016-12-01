@@ -145,7 +145,12 @@ class SIMPLib_EXPORT StatsDataArray : public IDataArray
     /**
     *
     */
-    void fillArrayWithNewStatsData(size_t n, unsigned int* phase_types);
+    void fillArrayWithNewStatsData(size_t n, PhaseType::Type* phase_types);
+
+    /**
+    *
+    */
+    void fillArrayWithNewStatsData(size_t n, PhaseType::EnumType* phase_types);
 
     /**
      *
