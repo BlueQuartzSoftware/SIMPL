@@ -223,7 +223,7 @@ void ShapeTypeSelectionWidget::afterPreflight()
 void ShapeTypeSelectionWidget::filterNeedsInputParameters(AbstractFilter* filter)
 {
   int count = m_ShapeTypeCombos.count();
-	QVector<ShapeType::EnumType> shapeTypes(count + 1, static_cast<ShapeType::EnumType>(ShapeType::Type::UnknownShapeType));
+  QVector<ShapeType::EnumType> shapeTypes(count + 1, static_cast<ShapeType::EnumType>(ShapeType::Type::Unknown));
   bool ok = false;
   for(int i = 0; i < count; ++i)
   {

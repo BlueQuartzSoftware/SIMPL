@@ -48,3 +48,157 @@ ShapeType::ShapeType()
 ShapeType::~ShapeType()
 {
 }
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+QString ShapeType::EllipsoidStr()
+{
+  return QString("Ellipsoid");
+}
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+QString ShapeType::SuperEllipsoid()
+{
+  return QString("Super Ellipsoid");
+}
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+QString ShapeType::CubeOctahedronStr()
+{
+  return QString("Cube Octahedron");
+}
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+QString ShapeType::CylinderAStr()
+{
+  return QString("Cylinder (A)");
+}
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+QString ShapeType::CylinderBStr()
+{
+  return QString("Cylinder (B)");
+}
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+QString ShapeType::CylinderCStr()
+{
+  return QString("Cylinder (C)");
+}
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+QString ShapeType::UnknownShapeTypeStr()
+{
+  return QString("Unknown Shape Type");
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+QString ShapeType::getShapeTypeString(Type ShapeType)
+{
+  switch(ShapeType)
+  {
+  case Type::Ellipsoid:
+    return EllipsoidStr();
+  case Type::SuperEllipsoid:
+    return SuperEllipsoid();
+  case Type::CubeOctahedron:
+    return CubeOctahedronStr();
+  case Type::CylinderA:
+    return CylinderAStr();
+  case Type::CylinderB:
+    return CylinderBStr();
+  case Type::CylinderC:
+    return CylinderCStr();
+  case Type::Unknown:
+    return UnknownShapeTypeStr();
+  default:
+    break;
+  }
+  return QString("Undefined ShapeType (Error)");
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+ShapeType::Type ShapeType::getShapeType(const char* str)
+{
+  if(EllipsoidStr().compare(str) == 0)
+  {
+    return Type::Ellipsoid;
+  }
+  else if(SuperEllipsoid().compare(str) == 0)
+  {
+    return Type::SuperEllipsoid;
+  }
+  else if(CubeOctahedronStr().compare(str) == 0)
+  {
+    return Type::CubeOctahedron;
+  }
+  else if(CylinderAStr().compare(str) == 0)
+  {
+    return Type::CylinderA;
+  }
+  else if(CylinderBStr().compare(str) == 0)
+  {
+    return Type::CylinderB;
+  }
+  else if(CylinderCStr().compare(str) == 0)
+  {
+    return Type::CylinderC;
+  }
+  return Type::Unknown;
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void ShapeType::getShapeTypeStrings(QVector<QString>& strings)
+{
+  strings.clear();
+  strings.push_back(EllipsoidStr());
+  strings.push_back(SuperEllipsoid());
+  strings.push_back(CubeOctahedronStr());
+  strings.push_back(CylinderAStr());
+  strings.push_back(CylinderBStr());
+  strings.push_back(CylinderCStr());
+  strings.push_back(UnknownShapeTypeStr());
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void ShapeType::getShapeTypeEnums(ShapeType::Types& types)
+{
+  types.clear();
+  types.push_back(Type::Ellipsoid);
+  types.push_back(Type::SuperEllipsoid);
+  types.push_back(Type::CubeOctahedron);
+  types.push_back(Type::CylinderA);
+  types.push_back(Type::CylinderB);
+  types.push_back(Type::CylinderC);
+  types.push_back(Type::Unknown);
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void ShapeType::getShapeTypeMap(QMap<ShapeType::Type, QString>& map)
+{
+  map.clear();
+  map[Type::Ellipsoid] = EllipsoidStr();
+  map[Type::SuperEllipsoid] = SuperEllipsoid();
+  map[Type::CubeOctahedron] = CubeOctahedronStr();
+  map[Type::CylinderA] = CylinderAStr();
+  map[Type::CylinderB] = CylinderBStr();
+  map[Type::CylinderC] = CylinderCStr();
+  map[Type::Unknown] = UnknownShapeTypeStr();
+}

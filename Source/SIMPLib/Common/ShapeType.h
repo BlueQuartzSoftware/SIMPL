@@ -36,15 +36,13 @@
 #ifndef _shapetype_h_
 #define _shapetype_h_
 
-
-#include <QtCore/QString>
-#include <QtCore/QVector>
 #include <QtCore/QMap>
+#include <QtCore/QString>
+#include <QtCore/QTextStream>
+#include <QtCore/QVector>
 
-#include "SIMPLib/SIMPLib.h"
 #include "SIMPLib/Common/Constants.h"
-
-
+#include "SIMPLib/SIMPLib.h"
 
 /**
  * @class ShapeType ShapeType.h PathToHeader/ShapeType.h
@@ -55,134 +53,51 @@
  */
 class SIMPLib_EXPORT ShapeType
 {
-  public:
+public:
+  virtual ~ShapeType();
 
-    virtual ~ShapeType();
+  using EnumType = unsigned int;
 
-    using EnumType = unsigned int;
+  enum class Type : EnumType
+  {
+    Ellipsoid = 0,      //!<
+    SuperEllipsoid = 1, //!<
+    CubeOctahedron = 2, //!<
+    CylinderA = 3,      //!<
+    CylinderB = 4,      //!<
+    CylinderC = 5,      //!<
+    ShapeTypeEnd = 6,   //!<
+    Unknown = 999       //!<
+  };
 
-		enum class Type : EnumType
-		{
-			EllipsoidShape = 0, //!<
-			SuperEllipsoidShape = 1, //!<
-			CubeOctahedronShape = 2, //!<
-			CylinderAShape = 3, //!<
-			CylinderBShape = 4, //!<
-			CylinderCShape = 5, //!<
-			ShapeTypeEnd = 6,
-			UnknownShapeType = 999 //!<
-		};
+  using Types = QVector<Type>;
 
-		using Types = QVector<Type>;
+  static QString EllipsoidStr();
+  static QString SuperEllipsoid();
+  static QString CubeOctahedronStr();
+  static QString CylinderAStr();
+  static QString CylinderBStr();
+  static QString CylinderCStr();
+  static QString UnknownShapeTypeStr();
 
-    static QString EllipsoidStr() { return QString("Ellipsoid"); }
-    static QString SuperEllipsoid() { return QString("Super Ellipsoid"); }
-    static QString CubeOctahedronStr() { return QString("Cube Octahedron"); }
-    static QString CylinderAStr() { return QString("Cylinder (A)"); }
-    static QString CylinderBStr() { return QString("Cylinder (B)"); }
-    static QString CylinderCStr() { return QString("Cylinder (C)"); }
-    static QString UnknownShapeTypeStr() { return QString("Unknown Shape Type"); }
+  static QString getShapeTypeString(Type ShapeType);
 
-    static QString getShapeTypeString(Type ShapeType)
-    {
-      switch(ShapeType)
-      {
-         case Type::EllipsoidShape:
-          return EllipsoidStr();
-        case Type::SuperEllipsoidShape:
-          return SuperEllipsoid();
-        case Type::CubeOctahedronShape:
-          return CubeOctahedronStr();
-        case Type::CylinderAShape:
-          return CylinderAStr();
-        case Type::CylinderBShape:
-          return CylinderBStr();
-        case Type::CylinderCShape:
-          return CylinderCStr();
-        case Type::UnknownShapeType:
-          return UnknownShapeTypeStr();
-        default:
-          break;
-      }
-      return QString("Undefined ShapeType (Error)");
-    }
+  static Type getShapeType(const char* str);
 
-		static Type getShapeType(const char* str)
-    {
-      if (EllipsoidStr().compare(str) == 0)
-      {
-        return Type::EllipsoidShape;
-      }
-      else if (SuperEllipsoid().compare(str) == 0)
-      {
-        return Type::SuperEllipsoidShape;
-      }
-      else if (CubeOctahedronStr().compare(str) == 0)
-      {
-        return Type::CubeOctahedronShape;
-      }
-      else if (CylinderAStr().compare(str) == 0)
-      {
-        return Type::CylinderAShape;
-      }
-      else if (CylinderBStr().compare(str) == 0)
-      {
-        return Type::CylinderBShape;
-      }
-      else if (CylinderCStr().compare(str) == 0)
-      {
-        return Type::CylinderCShape;
-      }
-      return Type::UnknownShapeType;
-    }
+  static void getShapeTypeStrings(QVector<QString>& strings);
 
+  static void getShapeTypeEnums(ShapeType::Types& types);
 
-    static void getShapeTypeStrings(QVector<QString>& strings)
-    {
-      strings.clear();
-      strings.push_back(EllipsoidStr());
-      strings.push_back(SuperEllipsoid());
-      strings.push_back(CubeOctahedronStr());
-      strings.push_back(CylinderAStr());
-      strings.push_back(CylinderBStr());
-      strings.push_back(CylinderCStr());
-      strings.push_back(UnknownShapeTypeStr());
-    }
+  static void getShapeTypeMap(QMap<Type, QString>& map);
 
-		static void getShapeTypeEnums(QVector<Type>& types)
-    {
-      types.clear();
-      types.push_back(Type::EllipsoidShape);
-      types.push_back(Type::SuperEllipsoidShape);
-      types.push_back(Type::CubeOctahedronShape);
-      types.push_back(Type::CylinderAShape);
-      types.push_back(Type::CylinderBShape);
-      types.push_back(Type::CylinderCShape);
-      types.push_back(Type::UnknownShapeType);
-    }
+protected:
+  ShapeType();
 
-		static void getShapeTypeMap(QMap<Type, QString>& map)
-    {
-      map.clear();
-      map[Type::EllipsoidShape] = EllipsoidStr();
-      map[Type::SuperEllipsoidShape] = SuperEllipsoid();
-      map[Type::CubeOctahedronShape] = CubeOctahedronStr();
-      map[Type::CylinderAShape] = CylinderAStr();
-      map[Type::CylinderBShape] = CylinderBStr();
-      map[Type::CylinderCShape] = CylinderCStr();
-      map[Type::UnknownShapeType] = UnknownShapeTypeStr();
-    }
-  protected:
-    ShapeType();
-  private:
-    ShapeType(const ShapeType&); //Not Implemented
-    void operator=(const ShapeType&); //Not Implemented
-
-
-
+private:
+  ShapeType(const ShapeType&);      // Not Implemented
+  void operator=(const ShapeType&); // Not Implemented
 };
 
 Q_DECLARE_METATYPE(ShapeType::Type)
 
 #endif /* SHAPETYPE_H_ */
-

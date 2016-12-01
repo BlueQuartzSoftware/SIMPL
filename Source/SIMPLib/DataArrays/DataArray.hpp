@@ -107,7 +107,7 @@ class DataArray : public IDataArray
      */
     void getXdmfTypeAndSize(QString& xdmfTypeName, int& precision)
     {
-      T value = 0x00;
+      T value = static_cast<T>(0x00);
       xdmfTypeName = "UNKNOWN";
       precision = 0;
       if (typeid(value) == typeid(int8_t)) { xdmfTypeName = "Char"; precision = 1;}
@@ -137,7 +137,7 @@ class DataArray : public IDataArray
 
     NumType getType()
     {
-      T value = 0x00;
+      T value = static_cast<T>(0x00);
       if (typeid(value) == typeid(int8_t)) { return Int8;}
       if (typeid(value) == typeid(uint8_t)) { return UInt8;}
 
@@ -933,7 +933,7 @@ class DataArray : public IDataArray
     virtual void printTuple(QTextStream& out, size_t i, char delimiter = ',')
     {
       int precision = out.realNumberPrecision();
-      T value = 0x00;
+      T value = static_cast<T>(0x00);
       if (typeid(value) == typeid(float)) { out.setRealNumberPrecision(8); }
       if (typeid(value) == typeid(double)) { out.setRealNumberPrecision(16);}
 
