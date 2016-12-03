@@ -72,7 +72,7 @@ QString PrimaryStatsData::getStatsType()
 // -----------------------------------------------------------------------------
 PhaseType::Type PrimaryStatsData::getPhaseType()
 {
-  return PhaseType::Type::PrimaryPhase;
+  return PhaseType::Type::Primary;
 }
 
 // -----------------------------------------------------------------------------

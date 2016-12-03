@@ -70,7 +70,7 @@ QString PrecipitateStatsData::getStatsType()
 // -----------------------------------------------------------------------------
 PhaseType::Type PrecipitateStatsData::getPhaseType()
 {
-  return PhaseType::Type::PrecipitatePhase;
+  return PhaseType::Type::Precipitate;
 }
 
 // -----------------------------------------------------------------------------

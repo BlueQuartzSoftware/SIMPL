@@ -90,7 +90,7 @@ QString BoundaryStatsData::getStatsType()
 // -----------------------------------------------------------------------------
 PhaseType::Type BoundaryStatsData::getPhaseType()
 {
-  return PhaseType::Type::BoundaryPhase;
+  return PhaseType::Type::Boundary;
 }
 
 // -----------------------------------------------------------------------------

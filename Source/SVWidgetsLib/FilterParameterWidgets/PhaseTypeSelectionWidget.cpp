@@ -418,10 +418,10 @@ void PhaseTypeSelectionWidget::filterNeedsInputParameters(AbstractFilter* filter
 
   QVariant var;
 
-  // QVector<uint32_t> phaseTypes(count, PhaseType::Type::UnknownPhaseType);
-  QVector<PhaseType::EnumType> phaseTypes(count + 1, static_cast<PhaseType::EnumType>(PhaseType::Type::UnknownPhaseType));
+  // QVector<uint32_t> phaseTypes(count, PhaseType::Type::Unknown);
+  QVector<PhaseType::EnumType> phaseTypes(count + 1, static_cast<PhaseType::EnumType>(PhaseType::Type::Unknown));
   bool ok = false;
-  phaseTypes[0] = static_cast<PhaseType::EnumType>(PhaseType::Type::UnknownPhaseType);
+  phaseTypes[0] = static_cast<PhaseType::EnumType>(PhaseType::Type::Unknown);
   for(int i = 0; i < count; ++i)
   {
     QComboBox* cb = qobject_cast<QComboBox*>(phaseListWidget->itemWidget(phaseListWidget->item(i)));

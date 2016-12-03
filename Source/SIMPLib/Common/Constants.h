@@ -624,14 +624,14 @@ namespace SIMPL
   //  //const unsigned int TransformationPhase = 2;       //!<
   //  //const unsigned int MatrixPhase = 3;              //!<
   //  //const unsigned int BoundaryPhase = 4;              //!<
-  //  //const unsigned int UnknownPhaseType = 999;    //!<
+  //  //const unsigned int Unknown = 999;    //!<
 
   //  const QString Primary("Primary");
   //  const QString Precipitate("Precipitate");
   //  const QString Transformation("Transformation");
   //  const QString Matrix("Matrix");
   //  const QString Boundary("Boundary");
-  //  const QString UnknownPhase("UnknownPhaseType");
+  //  const QString UnknownPhase("Unknown");
   //}
 
   namespace AlignmentMethod

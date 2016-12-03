@@ -36,140 +36,114 @@
 #ifndef _phasetype_h_
 #define _phasetype_h_
 
-
+#include <QtCore/QMap>
 #include <QtCore/QString>
 #include <QtCore/QVector>
-#include <QtCore/QStringList>
-#include <QtCore/QMap>
+
 
 #include "SIMPLib/SIMPLib.h"
-#include "SIMPLib/Common/Constants.h"
-
 
 /**
  * @class PhaseType PhaseType.h PathToHeader/PhaseType.h
  * @brief
  * @author Mike Jackson for BlueQuartz.net
- * @date May 13, 2011
  * @version 1.0
  */
 class SIMPLib_EXPORT PhaseType
 {
-  public:
+public:
+  virtual ~PhaseType();
 
-    virtual ~PhaseType();
+  using EnumType = unsigned int;
 
-    using EnumType = unsigned int;
+  enum class Type : EnumType
+  {
+    Primary = 0,        //!<
+    Precipitate = 1,    //!<
+    Transformation = 2, //!<
+    Matrix = 3,         //!<
+    Boundary = 4,       //!<
+    Unknown = 999,   //!<
+    Any = 4294967295U
 
-    enum class Type : EnumType
-    {
-      PrimaryPhase = 0,           //!<
-      PrecipitatePhase = 1,       //!<
-      TransformationPhase = 2,    //!<
-      MatrixPhase = 3,            //!<
-      BoundaryPhase = 4,          //!<
-      UnknownPhaseType = 999      //!<
-    };
+  };
 
-    using Types = QVector<Type>;
+  using Types = QVector<Type>;
 
-    static QString PrimaryStr() { return QString("Primary"); }
-    static QString PrecipitateStr() { return QString("Precipitate"); }
-    static QString TransformationStr() { return QString("Transformation"); }
-    static QString MatrixStr() { return QString("Matrix"); }
-    static QString BoundaryStr() { return QString("Boundary"); }
-    static QString UnknownPhaseTypeStr() { return QString("Unknown Phase Type"); }
+  /**
+   * @brief PrimaryStr
+   * @return
+   */
+  static QString PrimaryStr();
 
+  /**
+   * @brief PrecipitateStr
+   * @return
+   */
+  static QString PrecipitateStr();
 
-    static QString getPhaseTypeString(Type phaseType)
-    {
-      switch(phaseType)
-      {
-        case Type::PrimaryPhase:
-          return PrimaryStr();
-        case Type::PrecipitatePhase:
-          return PrecipitateStr();
-        case Type::TransformationPhase:
-          return TransformationStr();
-        case Type::MatrixPhase:
-          return MatrixStr();
-        case Type::BoundaryPhase:
-          return BoundaryStr();
-        case Type::UnknownPhaseType:
-          return UnknownPhaseTypeStr();
-        default:
-          break;
-      }
-      return QString("Undefined Phase Type (Error)");
-    }
+  /**
+   * @brief TransformationStr
+   * @return
+   */
+  static QString TransformationStr();
 
-    static Type getPhaseType(const char* str)
-    {
-      if (PrimaryStr().compare(str) == 0)
-      {
-        return Type::PrimaryPhase;
-      }
-      else if (PrecipitateStr().compare(str) == 0)
-      {
-        return Type::PrecipitatePhase;
-      }
-      else if (TransformationStr().compare(str) == 0)
-      {
-        return Type::TransformationPhase;
-      }
-      else if (MatrixStr().compare(str) == 0)
-      {
-        return Type::MatrixPhase;
-      }
-      else if (BoundaryStr().compare(str) == 0)
-      {
-        return Type::BoundaryPhase;
-      }
-      return Type::UnknownPhaseType;
-    }
+  /**
+   * @brief MatrixStr
+   * @return
+   */
+  static QString MatrixStr();
 
+  /**
+   * @brief BoundaryStr
+   * @return
+   */
+  static QString BoundaryStr();
 
-    static void getPhaseTypeStrings(QStringList& strings)
-    {
-      strings.clear();
-      strings.push_back(PrimaryStr());
-      strings.push_back(PrecipitateStr());
-      strings.push_back(TransformationStr());
-      strings.push_back(MatrixStr());
-      strings.push_back(BoundaryStr());
-      strings.push_back(UnknownPhaseTypeStr());
-    }
+  /**
+   * @brief UnknownStr
+   * @return
+   */
+  static QString UnknownStr();
 
-    static void getPhaseTypeEnums(QVector<Type>& types)
-    {
-      types.clear();
-      types.push_back(Type::PrimaryPhase);
-      types.push_back(Type::PrecipitatePhase);
-      types.push_back(Type::TransformationPhase);
-      types.push_back(Type::MatrixPhase);
-      types.push_back(Type::BoundaryPhase);
-      types.push_back(Type::UnknownPhaseType);
-    }
+  /**
+   * @brief getPhaseTypeString
+   * @param phaseType
+   * @return
+   */
+  static QString getPhaseTypeString(Type phaseType);
 
-    static void getPhaseTypeMap(QMap<Type, QString>& map)
-    {
-      map.clear();
-      map[Type::PrimaryPhase] = PrimaryStr();
-      map[Type::PrecipitatePhase] = PrecipitateStr();
-      map[Type::TransformationPhase] = TransformationStr();
-      map[Type::MatrixPhase] = MatrixStr();
-      map[Type::BoundaryPhase] = BoundaryStr();
-      map[Type::UnknownPhaseType] = UnknownPhaseTypeStr();
-    }
+  /**
+   * @brief getPhaseType
+   * @param str
+   * @return
+   */
+  static Type getPhaseType(const char* str);
 
-  protected:
-    PhaseType();
-  private:
-    PhaseType(const PhaseType&); //Not Implemented
-    void operator=(const PhaseType&); //Not Implemented
+  /**
+   * @brief getPhaseTypeStrings
+   * @param strings
+   */
+  static void getPhaseTypeStrings(QStringList& strings);
 
+  /**
+   * @brief getPhaseTypeEnums
+   * @param types
+   */
+  static void getPhaseTypeEnums(QVector<Type>& types);
+
+  /**
+   * @brief getPhaseTypeMap
+   * @param map
+   */
+  static void getPhaseTypeMap(QMap<Type, QString>& map);
+
+protected:
+  PhaseType();
+
+private:
+  PhaseType(const PhaseType&);      // Not Implemented
+  void operator=(const PhaseType&); // Not Implemented
 };
-
-
 
 #endif //_PhaseType_h_

@@ -70,7 +70,7 @@ QString StatsData::getStatsType()
 // -----------------------------------------------------------------------------
 PhaseType::Type StatsData::getPhaseType()
 {
-  return PhaseType::Type::UnknownPhaseType;
+  return PhaseType::Type::Unknown;
 }
 
 // -----------------------------------------------------------------------------

@@ -70,7 +70,7 @@ QString TransformationStatsData::getStatsType()
 // -----------------------------------------------------------------------------
 PhaseType::Type TransformationStatsData::getPhaseType()
 {
-  return PhaseType::Type::TransformationPhase;
+  return PhaseType::Type::Transformation;
 }
 
 // -----------------------------------------------------------------------------

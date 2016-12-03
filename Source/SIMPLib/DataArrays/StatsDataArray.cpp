@@ -74,7 +74,7 @@ StatsDataArray::Pointer StatsDataArray::CreateArray(size_t numElements, const QS
   }
   StatsDataArray::Pointer ptr = StatsDataArray::New();
   ptr->setName(name);
-  std::vector<PhaseType::Type> phase_types(numElements, PhaseType::Type::UnknownPhaseType);
+  std::vector<PhaseType::Type> phase_types(numElements, PhaseType::Type::Unknown);
   if(allocate && numElements > 0)
   {
     ptr->fillArrayWithNewStatsData(numElements, &(phase_types.front()));
@@ -93,7 +93,7 @@ StatsDataArray::Pointer StatsDataArray::CreateArray(size_t numTuples, int rank, 
   }
   StatsDataArray::Pointer ptr = StatsDataArray::New();
   ptr->setName(name);
-  std::vector<PhaseType::Type> phase_types(numTuples, PhaseType::Type::UnknownPhaseType);
+  std::vector<PhaseType::Type> phase_types(numTuples, PhaseType::Type::Unknown);
   if(allocate)
   {
     ptr->fillArrayWithNewStatsData(numTuples, &(phase_types.front()));
@@ -112,7 +112,7 @@ StatsDataArray::Pointer StatsDataArray::CreateArray(size_t numTuples, std::vecto
   }
   StatsDataArray::Pointer ptr = StatsDataArray::New();
   ptr->setName(name);
-  std::vector<PhaseType::Type> phase_types(numTuples, PhaseType::Type::UnknownPhaseType);
+  std::vector<PhaseType::Type> phase_types(numTuples, PhaseType::Type::Unknown);
   if(allocate)
   {
     ptr->fillArrayWithNewStatsData(numTuples, &(phase_types.front()));
@@ -131,7 +131,7 @@ StatsDataArray::Pointer StatsDataArray::CreateArray(size_t numTuples, QVector<si
   }
   StatsDataArray::Pointer ptr = StatsDataArray::New();
   ptr->setName(name);
-  std::vector<PhaseType::Type> phase_types(numTuples, PhaseType::Type::UnknownPhaseType);
+  std::vector<PhaseType::Type> phase_types(numTuples, PhaseType::Type::Unknown);
   if(allocate)
   {
     ptr->fillArrayWithNewStatsData(numTuples, &(phase_types.front()));
@@ -156,7 +156,7 @@ StatsDataArray::Pointer StatsDataArray::CreateArray(QVector<size_t> tDims, QVect
   }
   StatsDataArray::Pointer ptr = StatsDataArray::New();
   ptr->setName(name);
-  std::vector<PhaseType::Type> phase_types(numTuples, PhaseType::Type::UnknownPhaseType);
+  std::vector<PhaseType::Type> phase_types(numTuples, PhaseType::Type::Unknown);
   if(allocate)
   {
     ptr->fillArrayWithNewStatsData(numTuples, &(phase_types.front()));
@@ -782,23 +782,23 @@ void StatsDataArray::fillArrayWithNewStatsData(size_t n, PhaseType::Type* phase_
   {
     if(phase_types != nullptr)
     {
-      if(phase_types[i] == PhaseType::Type::PrimaryPhase)
+      if(phase_types[i] == PhaseType::Type::Primary)
       {
         m_StatsDataArray[i] = PrimaryStatsData::New();
       }
-      else if(phase_types[i] == PhaseType::Type::PrecipitatePhase)
+      else if(phase_types[i] == PhaseType::Type::Precipitate)
       {
         m_StatsDataArray[i] = PrecipitateStatsData::New();
       }
-      else if(phase_types[i] == PhaseType::Type::TransformationPhase)
+      else if(phase_types[i] == PhaseType::Type::Transformation)
       {
         m_StatsDataArray[i] = TransformationStatsData::New();
       }
-      else if(phase_types[i] == PhaseType::Type::BoundaryPhase)
+      else if(phase_types[i] == PhaseType::Type::Boundary)
       {
         m_StatsDataArray[i] = BoundaryStatsData::New();
       }
-      else if(phase_types[i] == PhaseType::Type::MatrixPhase)
+      else if(phase_types[i] == PhaseType::Type::Matrix)
       {
         m_StatsDataArray[i] = MatrixStatsData::New();
       }
@@ -824,23 +824,23 @@ void StatsDataArray::fillArrayWithNewStatsData(size_t n, PhaseType::EnumType* ph
   {
     if (phase_types != nullptr)
     {
-      if (phase_types[i] == static_cast<PhaseType::EnumType>(PhaseType::Type::PrimaryPhase))
+      if (phase_types[i] == static_cast<PhaseType::EnumType>(PhaseType::Type::Primary))
       {
         m_StatsDataArray[i] = PrimaryStatsData::New();
       }
-      else if (phase_types[i] == static_cast<PhaseType::EnumType>(PhaseType::Type::PrecipitatePhase))
+      else if (phase_types[i] == static_cast<PhaseType::EnumType>(PhaseType::Type::Precipitate))
       {
         m_StatsDataArray[i] = PrecipitateStatsData::New();
       }
-      else if (phase_types[i] == static_cast<PhaseType::EnumType>(PhaseType::Type::TransformationPhase))
+      else if (phase_types[i] == static_cast<PhaseType::EnumType>(PhaseType::Type::Transformation))
       {
         m_StatsDataArray[i] = TransformationStatsData::New();
       }
-      else if (phase_types[i] == static_cast<PhaseType::EnumType>(PhaseType::Type::BoundaryPhase))
+      else if (phase_types[i] == static_cast<PhaseType::EnumType>(PhaseType::Type::Boundary))
       {
         m_StatsDataArray[i] = BoundaryStatsData::New();
       }
-      else if (phase_types[i] == static_cast<PhaseType::EnumType>(PhaseType::Type::MatrixPhase))
+      else if (phase_types[i] == static_cast<PhaseType::EnumType>(PhaseType::Type::Matrix))
       {
         m_StatsDataArray[i] = MatrixStatsData::New();
       }

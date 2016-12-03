@@ -88,7 +88,7 @@ QString MatrixStatsData::getStatsType()
 // -----------------------------------------------------------------------------
 PhaseType::Type MatrixStatsData::getPhaseType()
 {
-  return PhaseType::Type::MatrixPhase;
+  return PhaseType::Type::Matrix;
 }
 
 // -----------------------------------------------------------------------------
