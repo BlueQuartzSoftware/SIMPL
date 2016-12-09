@@ -41,8 +41,7 @@ int findRightBinIndex(T nValue, QVector<float> binPoints)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-template <typename T>
-int findRightBinIndex_Binary(T nValue, QVector<float> binPoints)
+int findRightBinIndex_Binary(float nValue, QVector<float> binPoints)
 {
   int min = 0, max = binPoints.size() - 1;
   while (min < max)
@@ -93,9 +92,9 @@ public:
     for (size_t i = start; i < end; i++)
     {
       // Normalize value
-      T nValue = (m_ArrayPtr->getValue(i) - m_ArrayMin) / (m_ArrayMax - m_ArrayMin);
+      float nValue = (static_cast<float>(m_ArrayPtr->getValue(i) - m_ArrayMin)) / static_cast<float>((m_ArrayMax - m_ArrayMin));
 
-      int rightBinIndex = findRightBinIndex_Binary<T>(nValue, m_BinPoints);
+      int rightBinIndex = findRightBinIndex_Binary(nValue, m_BinPoints);
 
       int leftBinIndex = rightBinIndex - 1;
       if (leftBinIndex < 0)
