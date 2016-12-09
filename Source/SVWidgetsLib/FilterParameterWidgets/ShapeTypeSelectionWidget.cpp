@@ -43,6 +43,7 @@
 
 #include "SIMPLib/Common/ShapeType.h"
 #include "SIMPLib/DataContainers/DataArrayPath.h"
+#include "SIMPLib/DataArrays/StringDataArray.hpp"
 #include "SIMPLib/FilterParameters/ShapeTypeSelectionFilterParameter.h"
 #include "SIMPLib/Utilities/QMetaObjectUtilities.h"
 #include "SVWidgetsLib/Core/SVWidgetsLibConstants.h"
@@ -116,71 +117,129 @@ void ShapeTypeSelectionWidget::setupGui()
 // -----------------------------------------------------------------------------
 void ShapeTypeSelectionWidget::updateComboBoxes()
 {
+
+  StringDataArray::Pointer names = StringDataArray::NullPointer();
+
+  // If there is a PhaseName array in the Ensemble AttributeMatrix then use that to
+  // label the QComboBoxes.
+  AbstractFilter* filter = getFilter();
+  if(filter)
+  {
+    DataArrayPath phasePath = getFilter()->property("InputPhaseTypesArrayPath").value<DataArrayPath>();
+    phasePath.setDataArrayName("PhaseName");
+    DataContainer::Pointer dc = filter->getDataContainerArray()->getDataContainer(phasePath);
+    if(dc)
+    {
+      AttributeMatrix::Pointer am = dc->getAttributeMatrix(phasePath);
+      if(am)
+      {
+        names = am->getAttributeArrayAs<StringDataArray>("PhaseName");
+      }
+    }
+  }
+
+
   bool ok = false;
   // setup the list of choices for the widget
   ShapeTypeSelectionFilterParameter* shapeType = dynamic_cast<ShapeTypeSelectionFilterParameter*>(getFilterParameter());
   QString countProp = shapeType->getPhaseTypeCountProperty();
-  int size = getFilter()->property(countProp.toLatin1().constData()).toInt(&ok);
+  int numPhases = getFilter()->property(countProp.toLatin1().constData()).toInt(&ok);
 
-  UInt32Vector_t vectorWrapper = getFilter()->property(PROPERTY_NAME_AS_CHAR).value<UInt32Vector_t>();
-  QVector<quint32> dataFromFilter = vectorWrapper.d;
+  ShapeType::Types shapeTypesFromFilter = getFilter()->property(PROPERTY_NAME_AS_CHAR).value<ShapeType::Types>();
 
   // Get our list of predefined Shape Type Strings
   QVector<QString> shapeTypeStrings;
   ShapeType::getShapeTypeStrings(shapeTypeStrings);
+  // Pop the back value off because it will invariably allow us to walk off the end of an array
+  shapeTypeStrings.pop_back();
+  shapeTypeStrings.pop_back();
   // Get our list of predefined enumeration values
   ShapeType::Types shapeTypeEnums;
   ShapeType::getShapeTypeEnums(shapeTypeEnums);
-
-  // Remove all the items from the GUI and from the internal tracking Lists
-  QLayoutItem* child;
-  while((formLayout_2->count() > 0) && (child = formLayout_2->takeAt(0)) != 0)
-  {
-    delete child;
-  }
-  m_ShapeTypeLabels.clear();
-  m_ShapeTypeCombos.clear();
-
-  // Create a whole new QWidget to hold everything
-  m_ShapeTypeScrollContents = new QWidget();
-  m_ShapeTypeScrollContents->setObjectName(QString::fromUtf8("m_ShapeTypeScrollContents"));
-  formLayout_2 = new QFormLayout(m_ShapeTypeScrollContents);
-  formLayout_2->setContentsMargins(4, 4, 4, 4);
-  formLayout_2->setObjectName(QString::fromUtf8("formLayout_2"));
-  formLayout_2->setFieldGrowthPolicy(QFormLayout::FieldsStayAtSizeHint);
-  formLayout_2->setHorizontalSpacing(6);
-  formLayout_2->setVerticalSpacing(6);
-  m_ShapeTypeScrollArea->setWidget(m_ShapeTypeScrollContents);
+  shapeTypeEnums.pop_back();
+  shapeTypeEnums.pop_back();
 
   // We skip the first Ensemble as it is always a dummy
-  for(int i = 0; i < size - 1; i++)
+  QLabel* shapeTypeLabel = nullptr;
+  QComboBox* shapeTypeComboBox = nullptr;
+
+  for(int i = 1; i < numPhases; i++)
   {
-    QLabel* shapeTypeLabel = new QLabel(m_ShapeTypeScrollContents);
-    QString str("Phase ");
-    str.append(QString::number(i + 1, 10));
-    str.append(":");
-    shapeTypeLabel->setText(str);
-    shapeTypeLabel->setObjectName(str);
-    m_ShapeTypeLabels << shapeTypeLabel;
-
-    formLayout_2->setWidget(i, QFormLayout::LabelRole, shapeTypeLabel);
-
-    QComboBox* cb = new QComboBox(m_ShapeTypeScrollContents);
-    str.append(" ComboBox");
-    cb->setObjectName(str);
-    for(int32_t s = 0; s < shapeTypeStrings.size(); ++s)
+    shapeTypeLabel = nullptr;
+    shapeTypeComboBox = nullptr;
+    if(i > m_ShapeTypeLabels.size() )
     {
-      cb->addItem((shapeTypeStrings[s]), static_cast<ShapeType::EnumType>(shapeTypeEnums[s]));
-      cb->setItemData(static_cast<int>(s), static_cast<ShapeType::EnumType>(shapeTypeEnums[s]), Qt::UserRole);
+      shapeTypeLabel = new QLabel(m_ShapeTypeScrollContents);
+      QString str;
+      if(names.get() && names->getNumberOfTuples() > 0)
+      {
+        str = names->getValue(i);
+      }
+      else
+      {
+        str = QString("Phase ");
+        str.append(QString::number(i, 10));
+      }
+
+      str.append(":");
+      shapeTypeLabel->setText(str);
+      shapeTypeLabel->setObjectName(str);
+      m_ShapeTypeLabels.push_back(shapeTypeLabel);
+      m_ShapeTypeScrollContentsLayout->setWidget(i-1, QFormLayout::LabelRole, shapeTypeLabel);
+      shapeTypeComboBox = new QComboBox(m_ShapeTypeScrollContents);
+      str.append(" ComboBox");
+      shapeTypeComboBox->setObjectName(str);
+      for(int32_t s = 0; s < static_cast<int>(ShapeType::Type::ShapeTypeEnd); ++s)
+      {
+        shapeTypeComboBox->addItem((shapeTypeStrings[s]), static_cast<ShapeType::EnumType>(shapeTypeEnums[s]));
+        shapeTypeComboBox->setItemData(static_cast<int>(s), static_cast<ShapeType::EnumType>(shapeTypeEnums[s]), Qt::UserRole);
+      }
+      m_ShapeTypeCombos.push_back(shapeTypeComboBox);
+      m_ShapeTypeScrollContentsLayout->setWidget(i-1, QFormLayout::FieldRole, shapeTypeComboBox);
+      connect(shapeTypeComboBox, SIGNAL(currentIndexChanged(int)), this, SLOT(comboboxChanged(int)));
+
     }
-    m_ShapeTypeCombos << cb;
-    formLayout_2->setWidget(i, QFormLayout::FieldRole, cb);
-    if(i + 1 < dataFromFilter.size())
-    {
-      cb->setCurrentIndex(dataFromFilter[i + 1]);
+    else {
+      shapeTypeLabel = m_ShapeTypeLabels.at(i-1);
+      shapeTypeComboBox = m_ShapeTypeCombos.at(i-1);
+
+      QString str;
+      if(names.get() && names->getNumberOfTuples() > 0)
+      {
+        str = names->getValue(i);
+      }
+      else
+      {
+        str = QString("Phase ");
+        str.append(QString::number(i, 10));
+      }
+      str.append(":");
+      shapeTypeLabel->setText(str);
     }
-    connect(cb, SIGNAL(currentIndexChanged(int)), this, SLOT(comboboxChanged(int)));
+
+    if(i<shapeTypesFromFilter.size()) {
+      shapeTypeComboBox->setCurrentIndex( static_cast<int>(shapeTypesFromFilter[i]));
+    }
   }
+
+  // Check to see if we lost a phase during the preflight
+  int diff = m_ShapeTypeCombos.size() - numPhases;
+
+  for(int i = 0; i < diff + 1; i++)
+  {
+    if(!m_ShapeTypeLabels.isEmpty() && !m_ShapeTypeCombos.isEmpty())
+    {
+      shapeTypeLabel = m_ShapeTypeLabels.takeLast();
+      shapeTypeComboBox = m_ShapeTypeCombos.takeLast();
+      shapeTypeLabel->setParent(nullptr);
+      shapeTypeComboBox->setParent(nullptr);
+      shapeTypeLabel->setVisible(false);
+      shapeTypeComboBox->setVisible(false);
+      shapeTypeLabel->deleteLater();
+      shapeTypeComboBox->deleteLater();
+    }
+  }
+
 }
 
 // -----------------------------------------------------------------------------
@@ -188,6 +247,7 @@ void ShapeTypeSelectionWidget::updateComboBoxes()
 // -----------------------------------------------------------------------------
 void ShapeTypeSelectionWidget::comboboxChanged(int index)
 {
+  Q_UNUSED(index)
   m_DidCausePreflight = true;
   emit parametersChanged();
   m_DidCausePreflight = false;
@@ -223,20 +283,17 @@ void ShapeTypeSelectionWidget::afterPreflight()
 void ShapeTypeSelectionWidget::filterNeedsInputParameters(AbstractFilter* filter)
 {
   int count = m_ShapeTypeCombos.count();
-  QVector<ShapeType::EnumType> shapeTypes(count + 1, static_cast<ShapeType::EnumType>(ShapeType::Type::Unknown));
+  ShapeType::Types shapeTypes(count + 1, static_cast<ShapeType::Type>(ShapeType::Type::Unknown));
   bool ok = false;
   for(int i = 0; i < count; ++i)
   {
     QComboBox* cb = m_ShapeTypeCombos.at(i);
-    ShapeType::EnumType sType = static_cast<ShapeType::EnumType>(cb->itemData(cb->currentIndex(), Qt::UserRole).toUInt(&ok));
+    ShapeType::Type sType = static_cast<ShapeType::Type>(cb->itemData(cb->currentIndex(), Qt::UserRole).toUInt(&ok));
     shapeTypes[i + 1] = sType;
   }
 
-  UInt32Vector_t data;
-  data.d = shapeTypes;
-
   QVariant var;
-  var.setValue(data);
+  var.setValue(shapeTypes);
   ok = false;
   // Set the value into the Filter
   ok = filter->setProperty(PROPERTY_NAME_AS_CHAR, var);
