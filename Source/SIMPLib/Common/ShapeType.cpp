@@ -52,6 +52,33 @@ ShapeType::~ShapeType()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
+QVector<ShapeType::EnumType> ShapeType::ToQVector(Types &types)
+{
+  QVector<ShapeType::EnumType> vec(types.size());
+  for(int i = 0; i < types.size(); i++)
+  {
+    vec[i] = static_cast<ShapeType::EnumType>(types[i]);
+  }
+  return vec;
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+ShapeType::Types ShapeType::FromQVector(QVector<ShapeType::EnumType> &vec)
+{
+  ShapeType::Types types(vec.size());
+  for(int i = 0; i < vec.size(); i++)
+  {
+    types[i] = static_cast<ShapeType::Type>(vec[i]);
+  }
+  return types;
+}
+
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
 QString ShapeType::EllipsoidStr()
 {
   return QString("Ellipsoid");
@@ -91,6 +118,15 @@ QString ShapeType::CylinderCStr()
 {
   return QString("Cylinder (C)");
 }
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+QString ShapeType::ShapeTypeEndStr()
+{
+  return QString("Shape Type End");
+}
+
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
@@ -118,6 +154,8 @@ QString ShapeType::getShapeTypeString(Type ShapeType)
     return CylinderBStr();
   case Type::CylinderC:
     return CylinderCStr();
+  case Type::ShapeTypeEnd:
+      return ShapeTypeEndStr();
   case Type::Unknown:
     return UnknownShapeTypeStr();
   default:
@@ -155,6 +193,11 @@ ShapeType::Type ShapeType::getShapeType(const char* str)
   {
     return Type::CylinderC;
   }
+  else if(ShapeTypeEndStr().compare(str) == 0)
+  {
+    return Type::ShapeTypeEnd;
+  }
+
   return Type::Unknown;
 }
 
@@ -170,7 +213,9 @@ void ShapeType::getShapeTypeStrings(QVector<QString>& strings)
   strings.push_back(CylinderAStr());
   strings.push_back(CylinderBStr());
   strings.push_back(CylinderCStr());
+  strings.push_back(ShapeTypeEndStr());
   strings.push_back(UnknownShapeTypeStr());
+
 }
 
 // -----------------------------------------------------------------------------
@@ -185,6 +230,7 @@ void ShapeType::getShapeTypeEnums(ShapeType::Types& types)
   types.push_back(Type::CylinderA);
   types.push_back(Type::CylinderB);
   types.push_back(Type::CylinderC);
+  types.push_back(Type::ShapeTypeEnd);
   types.push_back(Type::Unknown);
 }
 
@@ -200,5 +246,6 @@ void ShapeType::getShapeTypeMap(QMap<ShapeType::Type, QString>& map)
   map[Type::CylinderA] = CylinderAStr();
   map[Type::CylinderB] = CylinderBStr();
   map[Type::CylinderC] = CylinderCStr();
+  map[Type::ShapeTypeEnd] = ShapeTypeEndStr();
   map[Type::Unknown] = UnknownShapeTypeStr();
 }

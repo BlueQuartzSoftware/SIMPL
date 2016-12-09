@@ -66,11 +66,29 @@ public:
     CylinderA = 3,      //!<
     CylinderB = 4,      //!<
     CylinderC = 5,      //!<
-    ShapeTypeEnd = 6,   //!<
-    Unknown = 999       //!<
+    ShapeTypeEnd = 6, //!
+    Unknown = 999,       //!<
+    Any = 4294967295U
+
   };
 
   using Types = QVector<Type>;
+
+  /**
+   * @brief Converts to a QVector<EnumType>. Useful for
+   * writing to/from HDF5 or other streams that do not understand Type
+   * @param types
+   * @return
+   */
+  static QVector<EnumType> ToQVector(Types &types);
+
+  /**
+   * @brief Converts <b>From</b> a QVector<EnumType> to QVector<Type>. Useful for
+   * writing to/from HDF5 or other streams that do not understand Type
+   * @param types
+   * @return
+   */
+  static Types FromQVector(QVector<EnumType> &types);
 
   static QString EllipsoidStr();
   static QString SuperEllipsoid();
@@ -78,6 +96,7 @@ public:
   static QString CylinderAStr();
   static QString CylinderBStr();
   static QString CylinderCStr();
+  static QString ShapeTypeEndStr();
   static QString UnknownShapeTypeStr();
 
   static QString getShapeTypeString(Type ShapeType);
@@ -99,5 +118,6 @@ private:
 };
 
 Q_DECLARE_METATYPE(ShapeType::Type)
+Q_DECLARE_METATYPE(ShapeType::Types)
 
 #endif /* SHAPETYPE_H_ */

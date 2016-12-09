@@ -208,8 +208,8 @@ public:
     m_DataArrayPaths1.push_back(dap2);
 
     {
-      m_UInt32Vector_1.d.push_back(3);
-      m_UInt32Vector_1.d.push_back(4);
+      m_ShapeTypeVector_1.push_back(ShapeType::Type::CylinderA);
+      m_ShapeTypeVector_1.push_back(ShapeType::Type::CylinderB);
     }
 
     {
@@ -301,10 +301,16 @@ public:
   SIMPL_INSTANCE_PROPERTY(QVector<DataArrayPath>, DataArrayPaths2)
   Q_PROPERTY(QVector<DataArrayPath> DataArrayPaths2 READ getDataArrayPaths2 WRITE setDataArrayPaths2)
 
+  SIMPL_INSTANCE_PROPERTY(ShapeType::Types, ShapeTypeVector_1)
+  Q_PROPERTY(ShapeType::Types ShapeTypeVector_1 READ getShapeTypeVector_1 WRITE setShapeTypeVector_1)
+  SIMPL_INSTANCE_PROPERTY(ShapeType::Types, ShapeTypeVector_2)
+  Q_PROPERTY(ShapeType::Types ShapeTypeVector_2 READ getShapeTypeVector_2 WRITE setShapeTypeVector_2)
+
   SIMPL_INSTANCE_PROPERTY(UInt32Vector_t, UInt32Vector_1)
   Q_PROPERTY(UInt32Vector_t UInt32Vector_1 READ getUInt32Vector_1 WRITE setUInt32Vector_1)
   SIMPL_INSTANCE_PROPERTY(UInt32Vector_t, UInt32Vector_2)
   Q_PROPERTY(UInt32Vector_t UInt32Vector_2 READ getUInt32Vector_2 WRITE setUInt32Vector_2)
+
 
   typedef QPair<double, double> DoublesPair;
 
@@ -756,16 +762,16 @@ public:
 
     {
       PhaseTypeSelectionFilterParameter::Pointer fp =
-          PhaseTypeSelectionFilterParameter::New("Test", "UInt32Vector_2", DataArrayPath(), FilterParameter::Parameter, SIMPL_BIND_SETTER(FilterParametersRWTest, this, UInt32Vector_2),
+          PhaseTypeSelectionFilterParameter::New("Test", "ShapeTypeVector_2", DataArrayPath(), FilterParameter::Parameter, SIMPL_BIND_SETTER(FilterParametersRWTest, this, UInt32Vector_2),
                                                  SIMPL_BIND_GETTER(FilterParametersRWTest, this, UInt32Vector_1), "", "", "", QStringList());
 
       QJsonObject obj;
       fp->writeJson(obj);
       fp->readJson(obj);
 
-      DREAM3D_REQUIRE_EQUAL(m_UInt32Vector_1.d.size(), m_UInt32Vector_2.d.size())
+      DREAM3D_REQUIRE_EQUAL(m_ShapeTypeVector_1.size(), m_ShapeTypeVector_2.size())
 
-      for(int i = 0; i < m_UInt32Vector_1.d.size(); i++)
+      for(int i = 0; i < m_ShapeTypeVector_1.size(); i++)
       {
         DREAM3D_REQUIRE_EQUAL(m_UInt32Vector_1.d[i], m_UInt32Vector_2.d[i])
       }
@@ -822,26 +828,29 @@ public:
 
       m_Float2ndOrderPoly_2 = Float2ndOrderPoly_t();
     }
-
+#if 0
     {
+      ShapeType::Types shapeData;
       ShapeTypeSelectionFilterParameter::Pointer fp =
-          ShapeTypeSelectionFilterParameter::New("Test", "String1", UInt32Vector_t(), FilterParameter::Parameter, SIMPL_BIND_SETTER(FilterParametersRWTest, this, UInt32Vector_2),
-                                                 SIMPL_BIND_GETTER(FilterParametersRWTest, this, UInt32Vector_1), "String1", "");
+          ShapeTypeSelectionFilterParameter::New("Test", "String1", shapeData, FilterParameter::Parameter, SIMPL_BIND_SETTER(FilterParametersRWTest, this, ShapeType::Types),
+                                                 SIMPL_BIND_GETTER(FilterParametersRWTest, this, ShapeType::Types), "String1", "");
+
+      //SIMPL_NEW_SHAPETYPE_SELECTION_FP("Shape Types", ShapeTypeData, FilterParameter::CreatedArray, EstablishShapeTypes, "PhaseCount", "InputPhaseTypesArrayPath");
 
       QJsonObject obj;
       fp->writeJson(obj);
       fp->readJson(obj);
 
-      DREAM3D_REQUIRE_EQUAL(m_UInt32Vector_1.d.size(), m_UInt32Vector_2.d.size())
+      DREAM3D_REQUIRE_EQUAL(m_ShapeTypeVector_1.size(), m_ShapeTypeVector_2.size())
 
-      for(int i = 0; i < m_UInt32Vector_1.d.size(); i++)
+      for(int i = 0; i < m_ShapeTypeVector_1.size(); i++)
       {
-        DREAM3D_REQUIRE_EQUAL(m_UInt32Vector_1.d[i], m_UInt32Vector_2.d[i])
+        DREAM3D_REQUIRE_EQUAL(static_cast<ShapeType::EnumType>(m_ShapeTypeVector_1[i]), static_cast<ShapeType::EnumType>(m_ShapeTypeVector_2[i]))
       }
 
-      m_UInt32Vector_2 = UInt32Vector_t();
+      m_ShapeTypeVector_2 = ShapeType::Types();
     }
-
+#endif
     {
       StringFilterParameter::Pointer fp = StringFilterParameter::New("Test", "String1", getString1(), FilterParameter::Parameter, SIMPL_BIND_SETTER(FilterParametersRWTest, this, String2),
                                                                      SIMPL_BIND_GETTER(FilterParametersRWTest, this, String1));

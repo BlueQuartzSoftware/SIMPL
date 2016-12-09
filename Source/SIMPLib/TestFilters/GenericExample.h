@@ -42,6 +42,7 @@
 #include "SIMPLib/Common/AbstractFilter.h"
 #include "SIMPLib/Common/SIMPLibSetGetMacros.h"
 #include "SIMPLib/Common/ComparisonInputs.h"
+#include "SIMPLib/Common/ShapeType.h"
 #include "SIMPLib/DataArrays/IDataArray.h"
 #include "SIMPLib/FilterParameters/FloatVec3FilterParameter.h"
 #include "SIMPLib/FilterParameters/SecondOrderPolynomialFilterParameter.h"
@@ -93,8 +94,8 @@ class SIMPLib_EXPORT GenericExample : public AbstractFilter
     SIMPL_FILTER_PARAMETER(DataArrayPath, InputPhaseTypesArrayPath)
     Q_PROPERTY(DataArrayPath InputPhaseTypesArrayPath READ getInputPhaseTypesArrayPath WRITE setInputPhaseTypesArrayPath)
 
-    SIMPL_FILTER_PARAMETER(UInt32Vector_t, ShapeTypeData)
-    Q_PROPERTY(UInt32Vector_t ShapeTypeData READ getShapeTypeData WRITE setShapeTypeData)
+    SIMPL_FILTER_PARAMETER(ShapeType::Types, ShapeTypeData)
+    Q_PROPERTY(ShapeType::Types ShapeTypeData READ getShapeTypeData WRITE setShapeTypeData)
 
     SIMPL_FILTER_PARAMETER(int, PhaseCount)
     Q_PROPERTY(int PhaseCount READ getPhaseCount WRITE setPhaseCount)

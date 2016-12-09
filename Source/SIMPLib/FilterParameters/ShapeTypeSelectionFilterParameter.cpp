@@ -54,7 +54,7 @@ ShapeTypeSelectionFilterParameter::~ShapeTypeSelectionFilterParameter()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-ShapeTypeSelectionFilterParameter::Pointer ShapeTypeSelectionFilterParameter::New(const QString& humanLabel, const QString& propertyName, UInt32Vector_t defaultValue, Category category,
+ShapeTypeSelectionFilterParameter::Pointer ShapeTypeSelectionFilterParameter::New(const QString& humanLabel, const QString& propertyName, ShapeType::Types defaultValue, Category category,
                                                                                   SetterCallbackType setterCallback, GetterCallbackType getterCallback, const QString& phaseTypeCountProperty,
                                                                                   const QString& phaseTypeArrayPathProperty, int groupIndex)
 {
@@ -91,10 +91,10 @@ void ShapeTypeSelectionFilterParameter::readJson(const QJsonObject& json)
   if(!jsonValue.isUndefined() && m_SetterCallback)
   {
     QJsonArray jsonArray = jsonValue.toArray();
-    UInt32Vector_t vec;
+    ShapeType::Types vec;
     for(int i = 0; i < jsonArray.size(); i++)
     {
-      vec.d.push_back(static_cast<unsigned int>(jsonArray[i].toDouble()));
+      vec.push_back(static_cast<ShapeType::Type>(jsonArray[i].toDouble()));
     }
     m_SetterCallback(vec);
   }
@@ -107,12 +107,12 @@ void ShapeTypeSelectionFilterParameter::writeJson(QJsonObject& json)
 {
   if (m_GetterCallback)
   {
-    UInt32Vector_t vec = m_GetterCallback();
+    ShapeType::Types vec = m_GetterCallback();
     QJsonArray jsonArray;
 
-    for(int i = 0; i < vec.d.size(); i++)
+    for(int i = 0; i < vec.size(); i++)
     {
-      jsonArray.push_back(static_cast<double>(vec.d[i]));
+      jsonArray.push_back(static_cast<double>(vec[i]));
     }
 
     json[getPropertyName()] = jsonArray;
