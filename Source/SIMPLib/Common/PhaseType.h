@@ -71,6 +71,22 @@ public:
   using Types = QVector<Type>;
 
   /**
+   * @brief Converts to a QVector<EnumType>. Useful for
+   * writing to/from HDF5 or other streams that do not understand Type
+   * @param types
+   * @return
+   */
+  static QVector<EnumType> ToQVector(Types &types);
+
+  /**
+   * @brief Converts <b>From</b> a QVector<EnumType> to QVector<Type>. Useful for
+   * writing to/from HDF5 or other streams that do not understand Type
+   * @param types
+   * @return
+   */
+  static Types FromQVector(QVector<EnumType> &types);
+
+  /**
    * @brief PrimaryStr
    * @return
    */

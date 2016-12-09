@@ -49,6 +49,35 @@ PhaseType::~PhaseType()
 {
 }
 
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+QVector<PhaseType::EnumType> PhaseType::ToQVector(Types &types)
+{
+  QVector<PhaseType::EnumType> vec(types.size());
+  for(int i = 0; i < types.size(); i++)
+  {
+    vec[i] = static_cast<PhaseType::EnumType>(types[i]);
+  }
+  return vec;
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+PhaseType::Types PhaseType::FromQVector(QVector<PhaseType::EnumType> &vec)
+{
+  PhaseType::Types types(vec.size());
+  for(int i = 0; i < vec.size(); i++)
+  {
+    types[i] = static_cast<PhaseType::Type>(vec[i]);
+  }
+  return types;
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
 QString PhaseType::PrimaryStr()
 {
   return QString("Primary");
