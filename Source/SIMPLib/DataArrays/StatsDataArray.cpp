@@ -486,7 +486,9 @@ int StatsDataArray::writeH5Data(hid_t parentId, QVector<size_t> tDims)
       QString indexString = QString::number(i);
       hid_t tupleId = QH5Utilities::createGroup(gid, indexString);
       err = QH5Lite::writeStringAttribute(gid, indexString, SIMPL::StringConstants::StatsType, m_StatsDataArray[i]->getStatsType());
-      err = QH5Lite::writeScalarAttribute(gid, indexString, SIMPL::StringConstants::PhaseType, m_StatsDataArray[i]->getPhaseType());
+
+      PhaseType::EnumType phaseType = static_cast<PhaseType::EnumType>(m_StatsDataArray[i]->getPhaseType());
+      err = QH5Lite::writeScalarAttribute(gid, indexString, SIMPL::StringConstants::PhaseType, phaseType);
       err = m_StatsDataArray[i]->writeHDF5Data(tupleId);
       err = QH5Utilities::closeHDF5Object(tupleId);
     }
