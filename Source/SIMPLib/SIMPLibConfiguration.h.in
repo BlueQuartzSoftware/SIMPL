@@ -14,6 +14,9 @@
 /* define to 1 if we are using parallel algorithms */
 #cmakedefine SIMPLib_USE_PARALLEL_ALGORITHMS @SIMPLib_USE_PARALLEL_ALGORITHMS@
 
+/* define to 1 if we are enabling NTFS file checking */
+#cmakedefine SIMPLib_NTFS_FILE_CHECK @SIMPLib_NTFS_FILE_CHECK@
+
 /* define to 1 if we are using the Eigen Library*/
 #cmakedefine SIMPLib_USE_EIGEN @EIGEN_FOUND@
 
@@ -37,7 +40,7 @@
 
 /* We are going to disable some warnings just to get a grip on all the warnings that get produced
 * during an MSVC build */
-#cmakedefine SIMPLib_DISABLE_MSVC_WARNINGS
+#cmakedefine SIMPLib_DISABLE_MSVC_WARNINGS @SIMPLib_DISABLE_MSVC_WARNINGS@
 
 #define __SHOW_DEBUG_MSG__ false
 

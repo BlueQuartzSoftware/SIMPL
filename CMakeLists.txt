@@ -318,6 +318,17 @@ else()
 endif()
 
 # --------------------------------------------------------------------
+# Should we use enable NTFS file checking on Windows
+# --------------------------------------------------------------------
+if(WIN32)
+  set(SIMPLib_NTFS_FILE_CHECK "")
+  option(SIMPL_ENABLE_NTFS_FILE_CHECKING "Enable NTFS File Permissions Checking" ON)
+  if(SIMPL_ENABLE_NTFS_FILE_CHECKING)
+      set(SIMPLib_NTFS_FILE_CHECK "1")
+  endif()
+endif()
+
+# --------------------------------------------------------------------
 # Now that we have found all of our required libraries and packages we can start the all
 # the tests
 
@@ -370,7 +381,11 @@ ENDif(CMAKE_COMPILER_IS_GNUCXX)
 if(MSVC)
  add_definitions(-D_CRT_SECURE_NO_WARNINGS)
  add_definitions(-D_SCL_SECURE_NO_WARNINGS)
+ set(SIMPLib_DISABLE_MSVC_WARNINGS "")
  option(SIMPL_DISABLE_MSVC_WARNINGS "Disable some MSVC Compiler warnings" OFF)
+ if(SIMPL_DISABLE_MSVC_WARNINGS)
+    set(SIMPLib_DISABLE_MSVC_WARNINGS "1")
+ endif()
 endif()
 
 
