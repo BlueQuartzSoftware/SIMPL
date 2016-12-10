@@ -94,7 +94,7 @@ void ShapeTypeSelectionFilterParameter::readJson(const QJsonObject& json)
     ShapeType::Types vec;
     for(int i = 0; i < jsonArray.size(); i++)
     {
-      vec.push_back(static_cast<ShapeType::Type>(jsonArray[i].toDouble()));
+      vec.push_back(static_cast<ShapeType::Type>(jsonArray[i].toInt()));
     }
     m_SetterCallback(vec);
   }
@@ -105,14 +105,14 @@ void ShapeTypeSelectionFilterParameter::readJson(const QJsonObject& json)
 // -----------------------------------------------------------------------------
 void ShapeTypeSelectionFilterParameter::writeJson(QJsonObject& json)
 {
-  if (m_GetterCallback)
+  if(m_GetterCallback)
   {
     ShapeType::Types vec = m_GetterCallback();
     QJsonArray jsonArray;
 
     for(int i = 0; i < vec.size(); i++)
     {
-      jsonArray.push_back(static_cast<double>(vec[i]));
+      jsonArray.push_back(static_cast<int>(vec[i]));
     }
 
     json[getPropertyName()] = jsonArray;
