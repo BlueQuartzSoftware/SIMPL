@@ -1,4 +1,10 @@
 
+#ifdef __clang__
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Winconsistent-missing-override"
+#endif
+
+
 #include <QtCore/QCoreApplication>
 
 #include "SIMPLib/Common/FilterManager.h"
@@ -37,3 +43,8 @@ int main(int argc, char** argv)
 
   return err;
 }
+
+
+#ifdef __clang__
+#pragma clang diagnostic pop
+#endif
