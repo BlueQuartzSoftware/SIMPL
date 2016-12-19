@@ -69,6 +69,7 @@ set(TEST_NAMES
   ConditionalSetValueTest
   CreateDataArrayTest
   CreateFeatureArrayFromElementArrayTest
+  CreateImageGeometryTest
   DataArrayTest
   DataContainerBundleTest
   DataContainerTest
