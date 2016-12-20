@@ -83,6 +83,7 @@ set(TEST_NAMES
   MatrixMathTest
   QuaternionMathTest
   RemoveComponentFromArrayTest
+  RemoveArraysTest
   ReplaceValueTest
   StatsDataJsonRWTest
   StringDataArrayTest
