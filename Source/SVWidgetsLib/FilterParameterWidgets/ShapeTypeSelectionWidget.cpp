@@ -117,7 +117,6 @@ void ShapeTypeSelectionWidget::setupGui()
 // -----------------------------------------------------------------------------
 void ShapeTypeSelectionWidget::updateComboBoxes()
 {
-
   StringDataArray::Pointer names = StringDataArray::NullPointer();
 
   // If there is a PhaseName array in the Ensemble AttributeMatrix then use that to
@@ -146,6 +145,10 @@ void ShapeTypeSelectionWidget::updateComboBoxes()
   int numPhases = getFilter()->property(countProp.toLatin1().constData()).toInt(&ok);
 
   ShapeType::Types shapeTypesFromFilter = getFilter()->property(PROPERTY_NAME_AS_CHAR).value<ShapeType::Types>();
+  if (shapeTypesFromFilter.size() > 1 && numPhases <= 0)
+  {
+    numPhases = shapeTypesFromFilter.size();
+  }
 
   // Get our list of predefined Shape Type Strings
   QVector<QString> shapeTypeStrings;
