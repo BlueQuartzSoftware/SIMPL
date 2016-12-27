@@ -271,11 +271,11 @@ bool MultiDataArraySelectionWidget::eventFilter(QObject* obj, QEvent* event)
   }
   else if ( event->type() == QEvent::FocusIn && obj == attributeArraysOrderWidget )
   {
-    on_attributeArraysOrderWidget_currentItemChanged(attributeArraysOrderWidget->currentItem(), nullptr);
+    on_attributeArraysOrderWidget_itemSelectionChanged();
   }
   else if ( event->type() == QEvent::FocusIn && obj == attributeArraysSelectWidget )
   {
-    on_attributeArraysSelectWidget_currentItemChanged(attributeArraysSelectWidget->currentItem(), nullptr);
+    on_attributeArraysSelectWidget_itemSelectionChanged();
   }
   return false;
 }
@@ -336,11 +336,20 @@ void MultiDataArraySelectionWidget::setSelectedPath(DataArrayPath amPath)
 // -----------------------------------------------------------------------------
 void MultiDataArraySelectionWidget::on_selectBtn_pressed()
 {
-  int row = attributeArraysSelectWidget->currentRow();
-  QListWidgetItem* item = attributeArraysSelectWidget->takeItem(row);
-  if (item)
+  QModelIndexList indexList = attributeArraysSelectWidget->selectionModel()->selectedRows();
+  if (indexList.size() > 0)
   {
-    attributeArraysOrderWidget->addItem(item);
+    int offset = 0;
+    for (int i=0; i<indexList.size(); i++)
+    {
+      int row = indexList[i].row() - offset;
+      QListWidgetItem* item = attributeArraysSelectWidget->takeItem(row);
+      offset++;
+      if (item)
+      {
+        attributeArraysOrderWidget->addItem(item);
+      }
+    }
 
     m_DidCausePreflight = true;
     emit parametersChanged();
@@ -353,11 +362,20 @@ void MultiDataArraySelectionWidget::on_selectBtn_pressed()
 // -----------------------------------------------------------------------------
 void MultiDataArraySelectionWidget::on_deselectBtn_pressed()
 {
-  int row = attributeArraysOrderWidget->currentRow();
-  QListWidgetItem* item = attributeArraysOrderWidget->takeItem(row);
-  if (item)
+  QModelIndexList indexList = attributeArraysOrderWidget->selectionModel()->selectedRows();
+  if (indexList.size() > 0)
   {
-    attributeArraysSelectWidget->addItem(item);
+    int offset = 0;
+    for (int i=0; i<indexList.size(); i++)
+    {
+      int row = indexList[i].row() - offset;
+      QListWidgetItem* item = attributeArraysOrderWidget->takeItem(row);
+      offset++;
+      if (item)
+      {
+        attributeArraysSelectWidget->addItem(item);
+      }
+    }
 
     m_DidCausePreflight = true;
     emit parametersChanged();
@@ -369,7 +387,7 @@ void MultiDataArraySelectionWidget::on_deselectBtn_pressed()
 //
 // -----------------------------------------------------------------------------
 void MultiDataArraySelectionWidget::on_upBtn_pressed()
-{
+{ 
   int currentIndex = attributeArraysOrderWidget->currentRow();
 
   if(currentIndex > 0)
@@ -476,20 +494,14 @@ void MultiDataArraySelectionWidget::on_attributeArraysOrderWidget_currentItemCha
 
   if (current == nullptr)
   {
-    selectBtn->setDisabled(true);
-    deselectBtn->setDisabled(true);
     removeBtn->hide();
   }
   else if (current->backgroundColor() == QColor(235, 110, 110))
   {
-    selectBtn->setDisabled(true);
-    deselectBtn->setDisabled(true);
     removeBtn->show();
   }
   else
   {
-    selectBtn->setDisabled(true);
-    deselectBtn->setEnabled(true);
     removeBtn->hide();
   }
 }
@@ -503,16 +515,84 @@ void MultiDataArraySelectionWidget::on_attributeArraysSelectWidget_currentItemCh
 
   if (current == nullptr)
   {
-    selectBtn->setDisabled(true);
-    deselectBtn->setDisabled(true);
     removeBtn->hide();
   }
   else
   {
-    selectBtn->setEnabled(true);
-    deselectBtn->setDisabled(true);
     removeBtn->hide();
   }
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void MultiDataArraySelectionWidget::selectionChanged()
+{
+  int selectSize = attributeArraysSelectWidget->selectionModel()->selectedRows().size();
+  int orderSize = attributeArraysOrderWidget->selectionModel()->selectedRows().size();
+
+  if (selectSize < 0 || orderSize < 0) { return; }
+
+  if (selectSize == 0 && orderSize == 0)
+  {
+    upBtn->setDisabled(true);
+    downBtn->setDisabled(true);
+    selectBtn->setDisabled(true);
+    deselectBtn->setDisabled(true);
+  }
+  else if (selectSize > 0 && orderSize == 0)
+  {
+    upBtn->setDisabled(true);
+    downBtn->setDisabled(true);
+    selectBtn->setEnabled(true);
+    deselectBtn->setDisabled(true);
+  }
+  else if (selectSize == 0 && orderSize > 0)
+  {
+    if (orderSize == 1)
+    {
+      upBtn->setEnabled(true);
+      downBtn->setEnabled(true);
+    }
+    else
+    {
+      upBtn->setDisabled(true);
+      downBtn->setDisabled(true);
+    }
+    selectBtn->setDisabled(true);
+    deselectBtn->setEnabled(true);
+  }
+  else
+  {
+    if (orderSize == 1)
+    {
+      upBtn->setEnabled(true);
+      downBtn->setEnabled(true);
+    }
+    else
+    {
+      upBtn->setDisabled(true);
+      downBtn->setDisabled(true);
+    }
+    selectBtn->setEnabled(true);
+    deselectBtn->setEnabled(true);
+  }
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void MultiDataArraySelectionWidget::on_attributeArraysSelectWidget_itemSelectionChanged()
+{
+  selectionChanged();
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void MultiDataArraySelectionWidget::on_attributeArraysOrderWidget_itemSelectionChanged()
+{
+  selectionChanged();
 }
 
 // -----------------------------------------------------------------------------
