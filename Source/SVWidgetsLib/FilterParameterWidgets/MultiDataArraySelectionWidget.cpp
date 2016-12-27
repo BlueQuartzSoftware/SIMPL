@@ -426,11 +426,18 @@ void MultiDataArraySelectionWidget::on_downBtn_pressed()
 // -----------------------------------------------------------------------------
 void MultiDataArraySelectionWidget::on_removeBtn_pressed()
 {
-  QListWidgetItem* item = attributeArraysOrderWidget->currentItem();
-  if (item)
+  QModelIndexList indexList = attributeArraysOrderWidget->selectionModel()->selectedRows();
+  if (indexList.size() > 0)
   {
-    attributeArraysOrderWidget->removeItemWidget(item);
-    delete item;
+    int offset = 0;
+    for (int i=0; i<indexList.size(); i++)
+    {
+      int row = indexList[i].row() - offset;
+      QListWidgetItem* item = attributeArraysOrderWidget->item(row);
+      attributeArraysOrderWidget->removeItemWidget(item);
+      delete item;
+      offset++;
+    }
 
     m_DidCausePreflight = true;
     emit parametersChanged();
@@ -488,94 +495,46 @@ void MultiDataArraySelectionWidget::removeNonexistantPaths(QVector<DataArrayPath
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void MultiDataArraySelectionWidget::on_attributeArraysOrderWidget_currentItemChanged(QListWidgetItem* current, QListWidgetItem* previous)
-{
-  Q_UNUSED(previous)
-
-  if (current == nullptr)
-  {
-    removeBtn->hide();
-  }
-  else if (current->backgroundColor() == QColor(235, 110, 110))
-  {
-    removeBtn->show();
-  }
-  else
-  {
-    removeBtn->hide();
-  }
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-void MultiDataArraySelectionWidget::on_attributeArraysSelectWidget_currentItemChanged(QListWidgetItem* current, QListWidgetItem* previous)
-{
-  Q_UNUSED(previous)
-
-  if (current == nullptr)
-  {
-    removeBtn->hide();
-  }
-  else
-  {
-    removeBtn->hide();
-  }
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
 void MultiDataArraySelectionWidget::selectionChanged()
 {
+  upBtn->setDisabled(true);
+  downBtn->setDisabled(true);
+  selectBtn->setDisabled(true);
+  deselectBtn->setDisabled(true);
+  removeBtn->hide();
+
   int selectSize = attributeArraysSelectWidget->selectionModel()->selectedRows().size();
   int orderSize = attributeArraysOrderWidget->selectionModel()->selectedRows().size();
 
-  if (selectSize < 0 || orderSize < 0) { return; }
+  if (selectSize > 0)
+  {
+    selectBtn->setEnabled(true);
+  }
 
-  if (selectSize == 0 && orderSize == 0)
+  if (orderSize > 0)
   {
-    upBtn->setDisabled(true);
-    downBtn->setDisabled(true);
-    selectBtn->setDisabled(true);
-    deselectBtn->setDisabled(true);
-  }
-  else if (selectSize > 0 && orderSize == 0)
-  {
-    upBtn->setDisabled(true);
-    downBtn->setDisabled(true);
-    selectBtn->setEnabled(true);
-    deselectBtn->setDisabled(true);
-  }
-  else if (selectSize == 0 && orderSize > 0)
-  {
+    deselectBtn->setEnabled(true);
+
     if (orderSize == 1)
     {
       upBtn->setEnabled(true);
       downBtn->setEnabled(true);
     }
-    else
+
+    bool allErrorRows = true;
+    for (int i=0; i<orderSize; i++)
     {
-      upBtn->setDisabled(true);
-      downBtn->setDisabled(true);
+      int row = attributeArraysOrderWidget->selectionModel()->selectedRows()[i].row();
+      if (attributeArraysOrderWidget->item(row)->backgroundColor() != QColor(235, 110, 110))
+      {
+        allErrorRows = false;
+      }
     }
-    selectBtn->setDisabled(true);
-    deselectBtn->setEnabled(true);
-  }
-  else
-  {
-    if (orderSize == 1)
+
+    if (allErrorRows == true)
     {
-      upBtn->setEnabled(true);
-      downBtn->setEnabled(true);
+      removeBtn->show();
     }
-    else
-    {
-      upBtn->setDisabled(true);
-      downBtn->setDisabled(true);
-    }
-    selectBtn->setEnabled(true);
-    deselectBtn->setEnabled(true);
   }
 }
 

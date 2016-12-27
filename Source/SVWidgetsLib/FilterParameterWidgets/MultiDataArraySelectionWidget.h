@@ -128,8 +128,6 @@ class SVWidgetsLib_EXPORT MultiDataArraySelectionWidget : public FilterParameter
     void on_deselectBtn_pressed();
     void on_removeBtn_pressed();
 
-    void on_attributeArraysSelectWidget_currentItemChanged(QListWidgetItem* current, QListWidgetItem* previous);
-    void on_attributeArraysOrderWidget_currentItemChanged(QListWidgetItem* current, QListWidgetItem* previous);
     void on_attributeArraysSelectWidget_itemSelectionChanged();
     void on_attributeArraysOrderWidget_itemSelectionChanged();
 
