@@ -158,7 +158,6 @@ public:
 
     QVariant value;
 
-    //DataArrayPath createdAttributeArrayPath("DataContainer", "AttributeMatrix", "DataArray");
     DataContainerArrayProxy dataContainerArrayProxy = DataContainerArrayProxy(filter->getDataContainerArray().get());
     setFlags(dataContainerArrayProxy, "", "", "DataArray");
 
@@ -167,11 +166,6 @@ public:
     DREAM3D_REQUIRE_EQUAL(propSet, true);
 
     filter->execute();
-
-    //filter->markSelectionsForDeletion(filter->getDataContainerArray().get(), Qt::Checked);
-
-    // Remove all the arrays, but only if they are CHECKED. This is opposite of the default
-    //filter->removeSelectionsFromDataContainerArray(filter->getDataContainerArray().get(), Qt::Checked);
 
     DataContainerArray::Pointer dca = filter->getDataContainerArray();
     DREAM3D_ASSERT(nullptr != dca);
@@ -196,7 +190,6 @@ public:
 
     QVariant value;
 
-    //DataArrayPath createdAttributeArrayPath("DataContainer", "AttributeMatrix", "DataArray");
     DataContainerArrayProxy dataContainerArrayProxy = DataContainerArrayProxy(filter->getDataContainerArray().get());
     setFlags(dataContainerArrayProxy, "", "AttributeMatrix", "");
 
@@ -205,11 +198,6 @@ public:
     DREAM3D_REQUIRE_EQUAL(propSet, true);
 
     filter->execute();
-
-    //filter->markSelectionsForDeletion(filter->getDataContainerArray().get(), Qt::Checked);
-
-    // Remove all the arrays, but only if they are CHECKED. This is opposite of the default
-    //filter->removeSelectionsFromDataContainerArray(filter->getDataContainerArray().get(), Qt::Checked);
 
     DataContainerArray::Pointer dca = filter->getDataContainerArray();
     DREAM3D_ASSERT(nullptr != dca);
@@ -231,7 +219,6 @@ public:
 
     QVariant value;
 
-    //DataArrayPath createdAttributeArrayPath("DataContainer", "AttributeMatrix", "DataArray");
     DataContainerArrayProxy dataContainerArrayProxy = DataContainerArrayProxy(filter->getDataContainerArray().get());
     setFlags(dataContainerArrayProxy, "DataContainer", "", "");
 
@@ -240,11 +227,6 @@ public:
     DREAM3D_REQUIRE_EQUAL(propSet, true);
 
     filter->execute();
-
-    //filter->markSelectionsForDeletion(filter->getDataContainerArray().get(), Qt::Checked);
-
-    // Remove all the arrays, but only if they are CHECKED. This is opposite of the default
-    //filter->removeSelectionsFromDataContainerArray(filter->getDataContainerArray().get(), Qt::Checked);
 
     DataContainerArray::Pointer dca = filter->getDataContainerArray();
     DREAM3D_ASSERT(nullptr != dca);
