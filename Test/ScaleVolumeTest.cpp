@@ -201,6 +201,9 @@ public:
     filter->setProperty("SurfaceDataContainerName", value);
   }
 
+  // -----------------------------------------------------------------------------
+  //
+  // -----------------------------------------------------------------------------
   void setNullGeometry(ScaleVolume::Pointer filter, bool imageGeometry, bool surfaceGeometry)
   {
     if (nullptr == filter)
