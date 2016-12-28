@@ -88,6 +88,7 @@ set(TEST_NAMES
   RenameAttributeMatrixTest
   RenameDataContainerTest
   ReplaceValueTest
+  ScaleVolumeTest
   StatsDataJsonRWTest
   StringDataArrayTest
   StructArrayTest
