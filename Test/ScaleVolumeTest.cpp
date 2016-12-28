@@ -53,7 +53,10 @@
 
 #include "SIMPLTestFileLocations.h"
 
-const FloatVec3_t SCALE = FloatVec3_t{ 3, 3, 3 };
+namespace ScaleVolumeTestConsts
+{
+  const FloatVec3_t SCALE = FloatVec3_t{ 3, 3, 3 };
+}
 
 class ScaleVolumeTest
 {
@@ -162,7 +165,7 @@ public:
     value.setValue(surfaceGeometry);
     filter->setProperty("ApplyToSurfaceMesh", value);
 
-    value.setValue(SCALE);
+    value.setValue(ScaleVolumeTestConsts::SCALE);
     filter->setProperty("ScaleFactor", value);
 
     value.setValue(QString("DataContainer1"));
@@ -188,7 +191,7 @@ public:
     value.setValue(surfaceGeometry);
     filter->setProperty("ApplyToSurfaceMesh", value);
 
-    value.setValue(SCALE);
+    value.setValue(ScaleVolumeTestConsts::SCALE);
     filter->setProperty("ScaleFactor", value);
 
     value.setValue(QString("DataContainer2"));
@@ -211,7 +214,7 @@ public:
     value.setValue(surfaceGeometry);
     filter->setProperty("ApplyToSurfaceMesh", value);
 
-    value.setValue(SCALE);
+    value.setValue(ScaleVolumeTestConsts::SCALE);
     filter->setProperty("ScaleFactor", value);
 
     value.setValue(QString("DataContainer3"));
@@ -239,9 +242,9 @@ public:
 
     DREAM3D_REQUIRE(imgGeom != nullptr);
 
-    DREAM3D_REQUIRE_EQUAL(imgGeom->getXRes(), SCALE.x);
-    DREAM3D_REQUIRE_EQUAL(imgGeom->getYRes(), SCALE.y);
-    DREAM3D_REQUIRE_EQUAL(imgGeom->getZRes(), SCALE.z);
+    DREAM3D_REQUIRE_EQUAL(imgGeom->getXRes(), ScaleVolumeTestConsts::SCALE.x);
+    DREAM3D_REQUIRE_EQUAL(imgGeom->getYRes(), ScaleVolumeTestConsts::SCALE.y);
+    DREAM3D_REQUIRE_EQUAL(imgGeom->getZRes(), ScaleVolumeTestConsts::SCALE.z);
   }
 
   // -----------------------------------------------------------------------------
