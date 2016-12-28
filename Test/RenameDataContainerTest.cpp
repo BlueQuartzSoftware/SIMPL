@@ -172,11 +172,11 @@ public:
     filter->setProperty("SelectedDataContainerName", value);
 
     QString newDataContainerName = "";
-    value.setValue(dataContainerName);
+    value.setValue(newDataContainerName);
     filter->setProperty("NewDataContainerName", value);
 
     filter->execute();
-    DREAM3D_REQUIRE_EQUAL(filter->getErrorCondition(), -11006);
+    DREAM3D_REQUIRE_EQUAL(filter->getErrorCondition(), -11001);
   }
 
   // -----------------------------------------------------------------------------
@@ -202,7 +202,7 @@ public:
     filter->setProperty("SelectedDataContainerName", value);
 
     QString newDataContainerName = "";
-    value.setValue(dataContainerName);
+    value.setValue(newDataContainerName);
 
     filter->execute();
     DREAM3D_REQUIRE_EQUAL(filter->getErrorCondition(), -11001);
