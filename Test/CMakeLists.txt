@@ -84,6 +84,7 @@ set(TEST_NAMES
   QuaternionMathTest
   RemoveComponentFromArrayTest
   RemoveArraysTest
+  RenameDataContainerTest
   ReplaceValueTest
   StatsDataJsonRWTest
   StringDataArrayTest
