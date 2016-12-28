@@ -89,6 +89,7 @@ set(TEST_NAMES
   RenameDataContainerTest
   ReplaceValueTest
   ScaleVolumeTest
+  SetOriginResolutionImageGeomTest
   StatsDataJsonRWTest
   StringDataArrayTest
   StructArrayTest
