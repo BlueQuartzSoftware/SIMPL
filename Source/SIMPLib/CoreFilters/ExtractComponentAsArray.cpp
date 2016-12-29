@@ -148,6 +148,17 @@ void ExtractComponentAsArray::dataCheck()
     return;
   }
 
+  if (m_CompNumber < 0)
+  {
+    setErrorCondition(-11004);
+    QString ss = QObject::tr("Component to extract (%1) cannot be less than 0")
+      .arg(m_CompNumber)
+      .arg(m_InArrayPtr.lock()->getNumberOfComponents())
+      .arg(getSelectedArrayPath().getDataArrayName());
+    notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
+    return;
+  }
+
   QVector<size_t> cDims(1, 1);
   DataArrayPath tempPath(getSelectedArrayPath().getDataContainerName(), getSelectedArrayPath().getAttributeMatrixName(), getNewArrayArrayName());
   m_NewArrayPtr = TemplateHelpers::CreateNonPrereqArrayFromArrayType()(this, tempPath, cDims, m_InArrayPtr.lock());
