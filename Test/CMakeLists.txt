@@ -75,6 +75,7 @@ set(TEST_NAMES
   DataContainerTest
   ErrorMessageTest
   ExecuteProcessTest
+  ExtractComponentAsArrayTest
   FilterParametersRWTest
   FilterPipelineTest
   FindDerivativesFilterTest
