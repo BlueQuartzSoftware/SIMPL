@@ -26,19 +26,15 @@
 * OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE
 * USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 *
-* The code contained herein was partially funded by the followig contracts:
-*    United States Air Force Prime Contract FA8650-07-D-5800
-*    United States Air Force Prime Contract FA8650-10-D-5210
-*    United States Prime Contract Navy N00173-07-C-2068
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-#include "DoubleFilterParameter.h"
+#include "FloatFilterParameter.h"
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-DoubleFilterParameter::DoubleFilterParameter()
+FloatFilterParameter::FloatFilterParameter()
 : FilterParameter()
 {
 }
@@ -46,19 +42,19 @@ DoubleFilterParameter::DoubleFilterParameter()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-DoubleFilterParameter::~DoubleFilterParameter()
+FloatFilterParameter::~FloatFilterParameter()
 {
 }
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-DoubleFilterParameter::Pointer DoubleFilterParameter::New(const QString& humanLabel, const QString& propertyName,
-                                                          const double& defaultValue, Category category, SetterCallbackType setterCallback,
+FloatFilterParameter::Pointer FloatFilterParameter::New(const QString& humanLabel, const QString& propertyName,
+                                                          const float& defaultValue, Category category, SetterCallbackType setterCallback,
                                                           GetterCallbackType getterCallback, int groupIndex)
 {
 
-  DoubleFilterParameter::Pointer ptr = DoubleFilterParameter::New();
+  FloatFilterParameter::Pointer ptr = FloatFilterParameter::New();
   ptr->setHumanLabel(humanLabel);
   ptr->setPropertyName(propertyName);
   ptr->setDefaultValue(defaultValue);
@@ -73,27 +69,28 @@ DoubleFilterParameter::Pointer DoubleFilterParameter::New(const QString& humanLa
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-QString DoubleFilterParameter::getWidgetType()
+QString FloatFilterParameter::getWidgetType()
 {
-  return QString("DoubleWidget");
+  return QString("FloatWidget");
 }
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void DoubleFilterParameter::readJson(const QJsonObject& json)
+void FloatFilterParameter::readJson(const QJsonObject& json)
 {
   QJsonValue jsonValue = json[getPropertyName()];
   if(!jsonValue.isUndefined() && m_SetterCallback)
   {
-    m_SetterCallback(jsonValue.toDouble());
+    float f = static_cast<float>(jsonValue.toDouble());
+    m_SetterCallback(f);
   }
 }
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void DoubleFilterParameter::writeJson(QJsonObject& json)
+void FloatFilterParameter::writeJson(QJsonObject& json)
 {
   if(m_GetterCallback)
   {

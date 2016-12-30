@@ -33,48 +33,48 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-#ifndef _doublefilterparameter_h_
-#define _doublefilterparameter_h_
+#ifndef _floatfilterparameter_h_
+#define _floatfilterparameter_h_
 
 #include <QtCore/QJsonObject>
 
 #include "SIMPLib/FilterParameters/FilterParameter.h"
 
 /**
- * @brief SIMPL_NEW_DOUBLE_FP This macro is a short-form way of instantiating an instance of
- * DoubleFilterParameter. There are 4 required parameters and 1 optional parameter
+ * @brief SIMPL_NEW_FLOAT_FP This macro is a short-form way of instantiating an instance of
+ * FloatFilterParameter. There are 4 required parameters and 1 optional parameter
  * that are always passed to this macro in the following order: HumanLabel, PropertyName, Category,
  * FilterName (class name), GroupIndex (optional).
  *
  * Therefore, the macro should be written like this (this is a concrete example):
- * SIMPL_NEW_DOUBLE_FP("HumanLabel", PropertyName, Category, FilterName, GroupIndex)
+ * SIMPL_NEW_FLOAT_FP("HumanLabel", PropertyName, Category, FilterName, GroupIndex)
  *
  * Example 1 (instantiated within a filter called [GenericExample](@ref genericexample), without optional GroupIndex parameter):
- * SIMPL_NEW_DOUBLE_FP("Double 2", Double2, FilterParameter::Parameter, GenericExample);
+ * SIMPL_NEW_FLOAT_FP("Float 2", Float2, FilterParameter::Parameter, GenericExample);
  */
-#define SIMPL_NEW_DOUBLE_FP(...) \
+#define SIMPL_NEW_FLOAT_FP(...) \
   SIMPL_EXPAND(_FP_GET_OVERRIDE(__VA_ARGS__, \
   SIMPL_NEW_FP_9, SIMPL_NEW_FP_8, SIMPL_NEW_FP_7, SIMPL_NEW_FP_6, SIMPL_NEW_FP_5, SIMPL_NEW_FP_4)\
-  (DoubleFilterParameter, __VA_ARGS__))
+  (FloatFilterParameter, __VA_ARGS__))
 
 
 /**
- * @brief The DoubleFilterParameter class is used by filters to instantiate an DoubleWidget.  By instantiating an instance of
- * this class in a filter's setupFilterParameters() method, a DoubleWidget will appear in the filter's "filter input" section in the DREAM3D GUI.
+ * @brief The FloatFilterParameter class is used by filters to instantiate an FloatWidget.  By instantiating an instance of
+ * this class in a filter's setupFilterParameters() method, a FloatWidget will appear in the filter's "filter input" section in the DREAM3D GUI.
  */
-class SIMPLib_EXPORT DoubleFilterParameter : public FilterParameter
+class SIMPLib_EXPORT FloatFilterParameter : public FilterParameter
 {
   public:
-    SIMPL_SHARED_POINTERS(DoubleFilterParameter)
-    SIMPL_STATIC_NEW_MACRO(DoubleFilterParameter)
-    SIMPL_TYPE_MACRO(DoubleFilterParameter)
+    SIMPL_SHARED_POINTERS(FloatFilterParameter)
+    SIMPL_STATIC_NEW_MACRO(FloatFilterParameter)
+    SIMPL_TYPE_MACRO(FloatFilterParameter)
 
-    typedef std::function<void(double)> SetterCallbackType;
-    typedef std::function<double(void)> GetterCallbackType;
+    typedef std::function<void(float)> SetterCallbackType;
+    typedef std::function<float(void)> GetterCallbackType;
 
     /**
-     * @brief New This function instantiates an instance of the DoubleFilterParameter. Although this function is available to be used,
-     * the preferable way to instantiate an instance of this class is to use the SIMPL_NEW_DOUBLE_FP(...) macro at the top of this file.
+     * @brief New This function instantiates an instance of the FloatFilterParameter. Although this function is available to be used,
+     * the preferable way to instantiate an instance of this class is to use the SIMPL_NEW_FLOAT_FP(...) macro at the top of this file.
 
      * @param humanLabel The name that the users of DREAM.3D see for this filter parameter
      * @param propertyName The internal property name for this filter parameter.
@@ -89,10 +89,10 @@ class SIMPLib_EXPORT DoubleFilterParameter : public FilterParameter
      * @return
      */
     static Pointer New(const QString& humanLabel, const QString& propertyName,
-                       const double& defaultValue, Category category, SetterCallbackType setterCallback,
+                       const float& defaultValue, Category category, SetterCallbackType setterCallback,
                        GetterCallbackType getterCallback, int groupIndex = -1);
 
-    virtual ~DoubleFilterParameter();
+    virtual ~FloatFilterParameter();
 
     /**
    * @brief getWidgetType Returns the type of widget that displays and controls
@@ -130,14 +130,14 @@ class SIMPLib_EXPORT DoubleFilterParameter : public FilterParameter
 
     protected:
       /**
-       * @brief DoubleFilterParameter The default constructor.  It is protected because this
+       * @brief FloatFilterParameter The default constructor.  It is protected because this
        * filter parameter should only be instantiated using its New(...) function or short-form macro.
        */
-      DoubleFilterParameter();
+      FloatFilterParameter();
 
   private:
-    DoubleFilterParameter(const DoubleFilterParameter&); // Copy Constructor Not Implemented
-    void operator=(const DoubleFilterParameter&); // Operator '=' Not Implemented
+    FloatFilterParameter(const FloatFilterParameter&); // Copy Constructor Not Implemented
+    void operator=(const FloatFilterParameter&); // Operator '=' Not Implemented
 };
 
-#endif /* _DoubleFilterParameter_H_ */
+#endif /* _FloatFilterParameter_H_ */

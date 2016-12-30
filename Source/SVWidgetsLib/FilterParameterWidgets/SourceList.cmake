@@ -24,6 +24,7 @@ set(SIMPLView_PARAMETER_WIDGETS
     DynamicChoiceWidget
     DynamicTableWidget
     FileListInfoWidget
+    FloatWidget
     FloatVec2Widget
     FloatVec3Widget
     FourthOrderPolynomialWidget
@@ -182,11 +183,11 @@ cmp_IDE_SOURCE_PROPERTIES( "Generated/Qt_Uic" "${SVWidgetsLib_ParameterWidgets_G
 #cmp_IDE_SOURCE_PROPERTIES( "Generated/Qt_Qrc" "${SVWidgetsLib_Generated_RC_SRCS}" "" "0")
 
 set(SVWidgetsLib_ParameterFilterWidgets_Files
-	${SVWidgetsLib_FilterParameterWidgets_HDRS}
-	${SVWidgetsLib_FilterParameterWidgets_SRCS}
-	${SVWidgetsLib_FilterParameterWidgets_MOC_HDRS}
-	${SVWidgetsLib_ParameterWidgets_Generated_MOC_SRCS}
-	${SVWidgetsLib_ParameterWidgets_Generated_UI_HDRS}
+  ${SVWidgetsLib_FilterParameterWidgets_HDRS}
+  ${SVWidgetsLib_FilterParameterWidgets_SRCS}
+  ${SVWidgetsLib_FilterParameterWidgets_MOC_HDRS}
+  ${SVWidgetsLib_ParameterWidgets_Generated_MOC_SRCS}
+  ${SVWidgetsLib_ParameterWidgets_Generated_UI_HDRS}
 )
 
 
