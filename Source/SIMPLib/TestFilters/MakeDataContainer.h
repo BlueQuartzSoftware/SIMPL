@@ -107,9 +107,6 @@ class SIMPLib_EXPORT MakeDataContainer : public AbstractFilter
     */
     virtual const QString getSubGroupName();
 
-
-
-
     /**
     * @brief This method will read the options from a file
     * @param reader The reader that is used to read the options from a file

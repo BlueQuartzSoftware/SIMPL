@@ -385,7 +385,6 @@ namespace SIMPL
     const QString ShapeTypes("ShapeTypes");
     const QString Statistics("Statistics");
     const QString PhaseName("PhaseName");
-    const QString MaterialName("MaterialName");
     const QString LatticeConstants("LatticeConstants");
     const QString GBCD("GBCD");
     const QString GBCDdimensions("GBCDdimensions");
