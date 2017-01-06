@@ -208,6 +208,7 @@ void AbstractFilter::writeFilterParameters(QJsonObject& obj)
     FilterParameter::Pointer fp = filterParameters[i];
     fp->writeJson(obj);
   }
+  obj[SIMPL::Settings::FilterVersion] = getFilterVersion();
 }
 
 // -----------------------------------------------------------------------------
