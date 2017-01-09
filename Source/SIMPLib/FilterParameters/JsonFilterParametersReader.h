@@ -136,14 +136,6 @@ class SIMPLib_EXPORT JsonFilterParametersReader : public AbstractFilterParameter
      */
     virtual int closeFilterGroup();
 
-    /**
-     * @brief generateIndexString
-     * @param index
-     * @param maxIndex
-     * @return
-     */
-    QString generateIndexString(int index, int maxIndex);
-
     /*
      * @brief getCurrentGroupObject
      * @return

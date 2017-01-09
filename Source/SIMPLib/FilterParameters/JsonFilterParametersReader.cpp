@@ -46,6 +46,33 @@
 #include "SIMPLib/Common/FilterManager.h"
 #include "SIMPLib/CoreFilters/EmptyFilter.h"
 
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+QString generateIndexString(int index, int maxIndex)
+{
+  QString numStr = QString::number(index);
+
+  if(maxIndex > 10)
+  {
+    int mag = 0;
+    int max = maxIndex;
+    while(max > 0)
+    {
+      mag++;
+      max = max / 10;
+    }
+    numStr = "";             // Clear the string
+    QTextStream ss(&numStr); // Create a QTextStream to set up the padding
+    ss.setFieldWidth(mag);
+    ss.setPadChar('0');
+    ss << index;
+  }
+  return numStr;
+}
+
+
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
@@ -123,13 +150,11 @@ QString JsonFilterParametersReader::HtmlSummaryFromFile(QString filePath, IObser
 
   if(filePath.isEmpty() == true)
   {
-    // Build up the Html formatted Error Message
     return generateErrorHtml(QString("The file path was empty"));
   }
   QFileInfo fi(filePath);
   if(fi.exists() == false)
   {
-    // Build up the Html formatted Error Message
     return generateErrorHtml(QString("The file path does not exist on the system."));
   }
 
@@ -144,7 +169,6 @@ QString JsonFilterParametersReader::HtmlSummaryFromFile(QString filePath, IObser
     QJsonDocument doc = QJsonDocument::fromJson(byteArray, &parseError);
     if(parseError.error != QJsonParseError::NoError)
     {
-      // Build up the Html formatted Error Message
       return generateErrorHtml(QString("Error parsing the Json file: (%1) %2").arg(parseError.error).arg(parseError.errorString()));
     }
     m_Root = doc.object();
@@ -206,7 +230,8 @@ QString JsonFilterParametersReader::HtmlSummaryFromFile(QString filePath, IObser
       color = even;
     }
 
-    QJsonValueRef filtRef = m_Root[QString::number(i)];
+    QString indexString = generateIndexString(i, filterCount);
+    QJsonValueRef filtRef = m_Root[indexString];
 
     if(filtRef.isUndefined())
     {
@@ -248,31 +273,6 @@ FilterPipeline::Pointer JsonFilterParametersReader::readPipelineFromString(QStri
   closeFile();
 
   return pipeline;
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-QString JsonFilterParametersReader::generateIndexString(int index, int maxIndex)
-{
-  QString numStr = QString::number(index);
-
-  if(maxIndex > 10)
-  {
-    int mag = 0;
-    int max = maxIndex;
-    while(max > 0)
-    {
-      mag++;
-      max = max / 10;
-    }
-    numStr = "";             // Clear the string
-    QTextStream ss(&numStr); // Create a QTextStream to set up the padding
-    ss.setFieldWidth(mag);
-    ss.setPadChar('0');
-    ss << index;
-  }
-  return numStr;
 }
 
 // -----------------------------------------------------------------------------
