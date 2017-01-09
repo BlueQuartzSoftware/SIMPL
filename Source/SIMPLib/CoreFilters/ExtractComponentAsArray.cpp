@@ -139,11 +139,20 @@ void ExtractComponentAsArray::dataCheck()
 
   if(m_CompNumber >= m_InArrayPtr.lock()->getNumberOfComponents())
   {
-    setErrorCondition(-11003);
+    setErrorCondition(-11004);
     QString ss = QObject::tr("Component to extract (%1) is larger than the number of components (%2) for array selected: '%1'")
                      .arg(m_CompNumber)
                      .arg(m_InArrayPtr.lock()->getNumberOfComponents())
                      .arg(getSelectedArrayPath().getDataArrayName());
+    notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
+    return;
+  }
+
+  if(m_CompNumber < 0)
+  {
+    setErrorCondition(-11005);
+    QString ss = QObject::tr("Component to extract (%1) is a negative value and this is not allowed. Value must be Zero (0) or greater.")
+                     .arg(m_CompNumber);
     notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
     return;
   }
