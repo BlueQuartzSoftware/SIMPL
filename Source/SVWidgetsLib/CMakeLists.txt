@@ -89,8 +89,6 @@ set(SVWidgetsLib_Extra_Sources)
 set(SVWidgetsLib_Extra_Headers)
 set(SVWidgetsLib_Extra_Link_Libraries)
 
-message(STATUS "SVWidgetsExtraPaths: ${SVWidgetsExtraPaths}")
-
 foreach(SVWidgetsExtraPath ${SVWidgetsExtraPaths})
   include( ${SVWidgetsExtraPath}/SourceList.cmake )
 endforeach()
