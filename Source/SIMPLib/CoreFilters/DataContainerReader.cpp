@@ -153,7 +153,7 @@ void DataContainerReader::dataCheck()
   }
   else if(fi.exists() == false)
   {
-    ss = QObject::tr("The input file does not exist");
+    ss = QObject::tr("The input file %1 does not exist").arg(getInputFile());
     setErrorCondition(-388);
     notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
   }
@@ -340,7 +340,7 @@ DataContainerArrayProxy DataContainerReader::readDataContainerArrayStructure(con
   }
   else if(fi.exists() == false)
   {
-    QString ss = QObject::tr("The input file does not exist");
+    QString ss = QObject::tr("The input file %1 does not exist").arg(path);
     setErrorCondition(-388);
     notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
     return proxy;

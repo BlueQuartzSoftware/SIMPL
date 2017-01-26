@@ -389,6 +389,7 @@ namespace SIMPL
     const QString GBCD("GBCD");
     const QString GBCDdimensions("GBCDdimensions");
     const QString FitParameters("FitParameters");
+    const QString MaterialName("MaterialName");
   }
 
 
@@ -826,13 +827,13 @@ namespace SIMPL
   //  const unsigned int UnknownShapeType = 999; //!<
   //}
 
-	enum class Precipitates : unsigned int
-	{
-		NoPrecipitates = 0, //!<
-		BoundaryPrecipitates = 1, //!<
-		BulkPrecipitates = 2, //!<
-		UnknownPrecipitates = 999 //!<
-	};
+  enum class Precipitates : unsigned int
+  {
+    NoPrecipitates = 0, //!<
+    BoundaryPrecipitates = 1, //!<
+    BulkPrecipitates = 2, //!<
+    UnknownPrecipitates = 999 //!<
+  };
 
   namespace Reconstruction
   {
@@ -902,12 +903,12 @@ namespace SIMPL
 
   }
 
-	namespace Layout
-	{
+  namespace Layout
+  {
     const signed int Horizontal = 0;
     const signed int Vertical = 1;
     const signed int Square = 2;
-	};
+  };
 
 }
 
