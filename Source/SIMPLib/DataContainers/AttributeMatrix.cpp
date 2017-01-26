@@ -77,6 +77,31 @@ AttributeMatrix::~AttributeMatrix()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
+QVector<QString> AttributeMatrix::GetTypesAsStrings()
+{
+    QVector<QString> choices;
+    choices.push_back("Vertex");
+    choices.push_back("Edge");
+    choices.push_back("Face");
+    choices.push_back("Cell");
+    choices.push_back("VertexFeature");
+    choices.push_back("EdgeFeature");
+    choices.push_back("FaceFeature");
+    choices.push_back("CellFeature");
+    choices.push_back("VertexEnsemble");
+    choices.push_back("EdgeEnsemble");
+    choices.push_back("FaceEnsemble");
+    choices.push_back("CellEnsemble");
+    choices.push_back("MetaData");
+    choices.push_back("Generic");
+    choices.push_back("Unknown");
+    choices.push_back("Any");
+    return choices;
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
 void AttributeMatrix::ReadAttributeMatrixStructure(hid_t containerId, DataContainerProxy* dcProxy, QString h5InternalPath)
 {
   QList<QString> attributeMatrixNames;
