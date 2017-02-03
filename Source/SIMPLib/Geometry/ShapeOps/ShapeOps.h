@@ -72,9 +72,9 @@ class SIMPLib_EXPORT ShapeOps
     static QVector<ShapeOps::Pointer> getShapeOpsQVector();
 
     /**
-    * @brief getOrientationOpsVector This method returns a vector of each type of SpaceGroupOps placed such that the
-    * index into the vector is the value of the constant at EBSD::CrystalStructure::***
-    * @return Vector of SpaceGroupOps subclasses.
+    * @brief getShapeOpsVector This method returns a vector of each type of Shape placed such that the
+    * index into the vector is the value of the constant at
+    * @return Vector of ShapeOps subclasses.
     */
     static std::vector<ShapeOps::Pointer> getShapeOpsVector();
 
