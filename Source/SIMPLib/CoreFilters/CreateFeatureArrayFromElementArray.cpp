@@ -261,7 +261,7 @@ void CreateFeatureArrayFromElementArray::execute()
 
   if(mismatchedFeatures == true)
   {
-    QString ss = QObject::tr("The number of Features in the InArray array (%1) is larger than the largest Feature Id in the FeatureIds array").arg(totalFeatures);
+    QString ss = QObject::tr("Attribute Matrix %1 has %2 tuples but the input array %3 has a Feature ID value of at least %4").arg(m_CellFeatureAttributeMatrixName.serialize("/")).arg(totalFeatures).arg(getFeatureIdsArrayPath().serialize("/")).arg(largestFeature);
     setErrorCondition(-5555);
     notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
     return;
