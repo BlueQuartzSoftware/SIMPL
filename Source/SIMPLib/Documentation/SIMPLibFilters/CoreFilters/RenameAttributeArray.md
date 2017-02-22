@@ -16,8 +16,9 @@ This **Filter** renames a user chosen **Attribute Array**.
 Not Applicable
 
 ## Required Objects ##
+
 | Kind | Default Name | Type | Component Dimensions | Description |
-|------|--------------|-------------|---------|-----|
+|------|--------------|------|----------------------|-------------|
 | Any **Attribute Array** | None | Any | Any | **Attribute Array** to rename |
 
 

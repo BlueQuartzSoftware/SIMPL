@@ -14,13 +14,15 @@ None
 Not Applicable
 
 ## Required Objects ##
+
 | Kind | Default Name | Type | Component Dimensions | Description |
-|------|--------------|-------------|---------|-----|
+|------|--------------|------|----------------------|-------------|
 | **Element Attribute Array**  | None | int32_t | (1) | **Element Attribute Array** to use as the **Feature** index map |
 
 ## Created Objects ##
+
 | Kind | Default Name | Type | Component Dimensions | Description |
-|------|--------------|-------------|---------|-----|
+|------|--------------|------|----------------------|-------------|
 | **Attribute Matrix**  | None | **Feature** | N/A | **Feature Attribute Matrix** to reset |
 | **Feature Attribute Array**  | Active | bool | (1) | Active **Attribute Array** name |
 

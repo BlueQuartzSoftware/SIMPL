@@ -19,16 +19,18 @@ None
 Not Applicable
 
 ## Required Objects ##
+
 | Kind | Default Name | Type | Component Dimensions | Description |
-|------|--------------|-------------|---------|-----|
+|------|--------------|------|----------------------|-------------|
 | **Attribute Matrix**  | None | **Feature or Ensemble** | N/A | **Feature Attribute Matrix** to append to |
 | **Attribute Matrix**  | None | **Feature or Ensemble** | N/A | **Feature Attribute Matrix** to append from |
 | **Element or Feature Attribute Array**  | None | int32_t | (1) | **Attribute Array** to use as the index map into the **Feature or Ensemble Attribute Matrix** being appended to |
 | **Element or Feature Attribute Array**  | None | int32_t | (1) | **Attribute Array** to use as the index map into the **Feature or Ensemble Attribute Matrix** being appended from |
 
 ## Created Objects ##
+
 | Kind | Default Name | Type | Component Dimensions | Description |
-|------|--------------|-------------|---------|-----|
+|------|--------------|------|----------------------|-------------|
 | **Attribute Matrix**  | None | **Feature or Ensemble** | N/A | Combined **Feature or Ensemble Attribute Matrix** |
 | **Attribute Arrays**  | None | varies | varies | Set of unique **Attribute Arrays** from the two **Attribute Matrices** being combined. |
 

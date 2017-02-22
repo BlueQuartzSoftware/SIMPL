@@ -77,13 +77,13 @@ Not Applicable
 ## Required Objects ##
 
 | Kind | Default Name | Type | Component Dimensions | Description |
-|------|--------------|-------------|---------|-----|
+|------|--------------|------|----------------------|-------------|
 | **Attribute Matrix**  | None         | DataArrayPath | N/A | **Attribute Matrix** to store imported data into |
 
 ## Created Objects ##
 
 | Kind | Default Name | Type | Component Dimensions | Description |
-|------|--------------|-------------|---------|-----|
+|------|--------------|------|----------------------|-------------|
 | **Attribute Array** | N/A | See Table above | based on number of components | The created Attribute Array |
 
 ## License & Copyright ##

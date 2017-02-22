@@ -14,8 +14,9 @@ None
 Not Applicable
 
 ## Required Objects ##
+
 | Kind | Default Name | Type | Component Dimensions | Description |
-|------|--------------|-------------|---------|-----|
+|------|--------------|------|----------------------|-------------|
 | Any  | None         | Any | Any | Objects to delete |
 
 ## Created Objects ##
