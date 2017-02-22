@@ -69,6 +69,7 @@ set(_PublicFilters
   LinkFeatureMapToElementArray
   MaskCountDecision
   MoveData
+  PostSlackMessage
   RawBinaryReader
   RemoveArrays
   RemoveComponentFromArray

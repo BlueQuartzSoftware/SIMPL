@@ -175,7 +175,7 @@ include_directories( ${HDF5_INCLUDE_DIR} )
 include_directories( ${PROJECT_CODE_DIR} )
 include_directories( ${SIMPLib_BINARY_DIR} )
 
-set(${PROJECT_NAME}_LINK_LIBS Qt5::Core H5Support)
+set(${PROJECT_NAME}_LINK_LIBS Qt5::Core Qt5::Network H5Support)
 if( "${SIMPL_USE_MULTITHREADED_ALGOS}" STREQUAL "ON")
   list(APPEND ${PROJECT_NAME}_LINK_LIBS ${TBB_LIBRARIES})
 endif()
