@@ -242,9 +242,9 @@ option(SIMPL_BUILD_WIDGETS "Build the QtWidgets that are needed for GUI Applicat
 # --------------------------------------------------------------------
 # Find and Use the Qt5 Libraries
 include(${CMP_SOURCE_DIR}/ExtLib/Qt5Support.cmake)
-set(SIMPL_Qt5_COMPONENTS Core )
+set(SIMPL_Qt5_COMPONENTS Core Network)
 if( SIMPL_BUILD_WIDGETS)
-  set(SIMPL_Qt5_COMPONENTS Core Widgets Network Gui Concurrent Svg Xml OpenGL PrintSupport)
+  set(SIMPL_Qt5_COMPONENTS Core Widgets Gui Concurrent Svg Xml OpenGL PrintSupport)
 endif()
 set(USE_QtWebEngine FALSE)
 CMP_AddQt5Support( "${SIMPL_Qt5_COMPONENTS}" "${USE_QtWebEngine}" "${SIMPLProj_BINARY_DIR}" "SIMPL")
