@@ -234,7 +234,7 @@ void CopyFeatureArrayToElementArray::execute()
 
   if(mismatchedFeatures == true)
   {
-    QString ss = QObject::tr("The number of Features in the InArray array (%1) is larger than the largest Feature Id in the FeatureIds array").arg(numFeatures);
+    QString ss = QObject::tr("The largest Feature Id (%1) in the FeatureIds array is larger than the number of Features in the InArray array (%2)").arg(largestFeature).arg(numFeatures);
     setErrorCondition(-5555);
     notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
     return;
