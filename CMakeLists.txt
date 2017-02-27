@@ -339,14 +339,11 @@ set(SIMPLProj_INSTALL_FILES "${PROJECT_INSTALL_HEADERS}")
 # Generate our ReadMe and License Files
 configure_file(${PROJECT_RESOURCES_DIR}/SIMPL/SIMPLLicense.txt
                 ${PROJECT_BINARY_DIR}/SIMPL/SIMPLLicense.txt )
-configure_file(${PROJECT_SOURCE_DIR}/ReadMe-SIMPL.md
-                ${PROJECT_BINARY_DIR}/ReadMe-SIMPL.md )
 
 # --------------------------------------------------------------------
 # Generate install rules for the text files
-install(FILES ${PROJECT_BINARY_DIR}/ReadMe-SIMPL.md
-              ${PROJECT_BINARY_DIR}/SIMPL/SIMPLLicense.txt
-        DESTINATION .
+install(FILES ${PROJECT_BINARY_DIR}/SIMPL/SIMPLLicense.txt
+        DESTINATION ${DREAM3D_PACKAGE_DEST_PREFIX}
         COMPONENT Applications)
 
 # Include some directories for the compiler
@@ -428,10 +425,10 @@ set(ConfigPackageLocation lib/cmake/SIMPL)
 
 install(
   FILES
-    ${SIMPLProj_SOURCE_DIR}/SIMPLConfig.cmake
+    "${SIMPLProj_SOURCE_DIR}/SIMPLConfig.cmake"
     "${CMAKE_CURRENT_BINARY_DIR}/SIMPL/SIMPLTargetsConfigVersion.cmake"
   DESTINATION
-    ${ConfigPackageLocation}
+    ${DREAM3D_PACKAGE_DEST_PREFIX}${ConfigPackageLocation}
   COMPONENT
     Devel
 )

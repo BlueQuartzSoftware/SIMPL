@@ -197,9 +197,9 @@ endif()
     INSTALL(TARGETS ${PROJECT_NAME}
         EXPORT ${PROJECT_NAME}Targets
         COMPONENT Applications
-        RUNTIME DESTINATION ${install_dir}
-        LIBRARY DESTINATION ${lib_install_dir}
-        ARCHIVE DESTINATION ${lib_install_dir}
+        RUNTIME DESTINATION ${DREAM3D_PACKAGE_DEST_PREFIX}${install_dir}
+        LIBRARY DESTINATION ${DREAM3D_PACKAGE_DEST_PREFIX}${lib_install_dir}
+        ARCHIVE DESTINATION ${DREAM3D_PACKAGE_DEST_PREFIX}${lib_install_dir}
         BUNDLE DESTINATION "."
     )
 #endif()
@@ -221,7 +221,7 @@ install(EXPORT SIMPLibTargets
   NAMESPACE
     SIMPL::
   DESTINATION
-    ${ConfigPackageLocation}
+    ${DREAM3D_PACKAGE_DEST_PREFIX}${ConfigPackageLocation}
 )
 
 
