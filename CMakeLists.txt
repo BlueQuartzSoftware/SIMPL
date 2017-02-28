@@ -343,7 +343,7 @@ configure_file(${PROJECT_RESOURCES_DIR}/SIMPL/SIMPLLicense.txt
 # --------------------------------------------------------------------
 # Generate install rules for the text files
 install(FILES ${PROJECT_BINARY_DIR}/SIMPL/SIMPLLicense.txt
-        DESTINATION ${DREAM3D_PACKAGE_DEST_PREFIX}
+        DESTINATION "${DREAM3D_PACKAGE_DEST_PREFIX}"
         COMPONENT Applications)
 
 # Include some directories for the compiler
