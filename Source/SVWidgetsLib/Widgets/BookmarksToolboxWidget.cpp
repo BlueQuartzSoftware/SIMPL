@@ -309,8 +309,14 @@ QDir BookmarksToolboxWidget::findPipelinesDirectory()
   if(pipelinesDir.dirName() == "MacOS")
   {
     pipelinesDir.cdUp();
-    pipelinesDir.cdUp();
-    pipelinesDir.cdUp();
+
+    // Check if we are running from a .app installation where the Help dir is embeded in the app bundle.
+    QFileInfo fi(pipelinesDir.absolutePath() + "/PrebuiltPipeliines");
+    if(!fi.exists())
+    {
+      pipelinesDir.cdUp();
+      pipelinesDir.cdUp();
+    }
   }
 #else
   // We are on Linux - I think
