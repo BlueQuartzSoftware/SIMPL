@@ -888,6 +888,21 @@ namespace SIMPL
     const QString VoxelsFile("voxels_v5.txt");
   }
 
+  namespace Union
+  {
+    namespace Strings
+    {
+      const QString And("And");
+      const QString Or("Or");
+    }
+    enum Enumeration
+    {
+      Operator_And = 0,
+      Operator_Or,
+      Operator_Unknown
+    };
+  }
+
   namespace Comparison
   {
     namespace Strings
@@ -895,12 +910,14 @@ namespace SIMPL
       const QString LessThan("<");
       const QString GreaterThan(">");
       const QString Equal("=");
+      const QString NotEqual("!=");
     }
     enum Enumeration
     {
       Operator_LessThan = 0,
       Operator_GreaterThan,
       Operator_Equal,
+      Operator_NotEqual,
       Operator_Unknown
     };
 

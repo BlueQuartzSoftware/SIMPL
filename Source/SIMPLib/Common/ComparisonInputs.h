@@ -45,6 +45,7 @@
 
 typedef struct
 {
+  int unionOperator;
   QString dataContainerName;
   QString attributeMatrixName;
   QString attributeArrayName;
@@ -53,6 +54,7 @@ typedef struct
 
   void writeJson(QJsonObject& json)
   {
+    json["Union Operator"] = unionOperator;
     json["Data Container Name"] = dataContainerName;
     json["Attribute Matrix Name"] = attributeMatrixName;
     json["Attribute Array Name"] = attributeArrayName;
@@ -62,9 +64,11 @@ typedef struct
 
   bool readJson(QJsonObject& json)
   {
-    if (json["Data Container Name"].isString() && json["Attribute Matrix Name"].isString() && json["Attribute Array Name"].isString()
+    if (json["Union Operator"].isDouble()
+        && json["Data Container Name"].isString() && json["Attribute Matrix Name"].isString() && json["Attribute Array Name"].isString()
         && json["Comparison Operator"].isDouble() && json["Comparison Value"].isDouble())
     {
+      unionOperator = json["Union Operator"].toInt();
       dataContainerName = json["Data Container Name"].toString();
       attributeMatrixName = json["Attribute Matrix Name"].toString();
       attributeArrayName = json["Attribute Array Name"].toString();
@@ -97,7 +101,8 @@ class SIMPLib_EXPORT ComparisonInputs : public QObject
 
     int size();
 
-    void addInput(const QString dataContainerName,
+    void addInput(int unionOperator,
+                  const QString dataContainerName,
                   const QString attributeMatrixName,
                   const QString arrayName,
                   int compOperator,

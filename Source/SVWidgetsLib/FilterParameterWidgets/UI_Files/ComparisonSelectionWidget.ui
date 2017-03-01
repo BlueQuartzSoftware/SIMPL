@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>564</width>
-    <height>158</height>
+    <height>159</height>
    </rect>
   </property>
   <layout class="QGridLayout" name="widgetLayout">
@@ -46,6 +46,9 @@
        <height>16777215</height>
       </size>
      </property>
+     <property name="acceptDrops">
+      <bool>true</bool>
+     </property>
      <property name="editTriggers">
       <set>QAbstractItemView::AllEditTriggers</set>
      </property>
@@ -54,6 +57,12 @@
      </property>
      <property name="dragDropOverwriteMode">
       <bool>false</bool>
+     </property>
+     <property name="dragDropMode">
+      <enum>QAbstractItemView::InternalMove</enum>
+     </property>
+     <property name="defaultDropAction">
+      <enum>Qt::MoveAction</enum>
      </property>
      <property name="alternatingRowColors">
       <bool>true</bool>

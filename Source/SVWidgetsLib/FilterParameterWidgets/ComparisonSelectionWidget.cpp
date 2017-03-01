@@ -83,16 +83,18 @@ ComparisonInputs ComparisonSelectionWidget::getComparisonInputs()
   }
 
   int filterCount = m_ComparisonSelectionTableModel->rowCount();
+  QVector<int> unionOperators;
   QVector<QString> featureNames;
   QVector<float> featureValues;
   QVector<int> featureOperators;
-  m_ComparisonSelectionTableModel->getTableData(featureNames, featureValues, featureOperators);
+  m_ComparisonSelectionTableModel->getTableData(unionOperators, featureNames, featureValues, featureOperators);
 
   DataArrayPath amPath = DataArrayPath::Deserialize(m_SelectedAttributeMatrixPath->text(), Detail::Delimiter);
 
   for(int i = 0; i < filterCount; ++i)
   {
     ComparisonInput_t comp;
+    comp.unionOperator = unionOperators[i];
     comp.dataContainerName = amPath.getDataContainerName();
     comp.attributeMatrixName = amPath.getAttributeMatrixName();
     comp.attributeArrayName = featureNames[i];
@@ -325,17 +327,19 @@ void ComparisonSelectionWidget::setComparisons(QVector<ComparisonInput_t> compar
 {
   qint32 count = comparisons.size();
 
+  QVector<QString> unionOperators(count);
   QVector<QString> arrayNames(count);
   QVector<int> compOperators(count);
   QVector<float> compValues(count);
   // bool ok = false;
   for(int i = 0; i < count; ++i)
   {
+    unionOperators[i] = comparisons[i].unionOperator;
     arrayNames[i] = (comparisons[i].attributeArrayName);
     compOperators[i] = comparisons[i].compOperator;
     compValues[i] = comparisons[i].compValue;
   }
-  m_ComparisonSelectionTableModel->setTableData(arrayNames, compValues, compOperators);
+  m_ComparisonSelectionTableModel->setTableData(unionOperators, arrayNames, compValues, compOperators);
 }
 
 // -----------------------------------------------------------------------------

@@ -103,6 +103,21 @@ class SIMPLib_EXPORT ThresholdFilterHelper : public IDataArrayFilter
       }
     }
 
+    /**
+    *
+    */
+    template<typename T>
+    void filterDataNotEqualTo(IDataArray* m_Input)
+    {
+      size_t m_NumValues = m_Input->getNumberOfTuples();
+      T v = static_cast<T>(comparisonValue);
+      T* data = IDataArray::SafeReinterpretCast<IDataArray*, DataArray<T>*, T*>(m_Input);
+      for (size_t i = 0; i < m_NumValues; ++i)
+      {
+        bool b = (data[i] != v);
+        m_Output->setValue(i, b);
+      }
+    }
 
     /**
     * @brief execute

@@ -85,7 +85,7 @@ Qt::ItemFlags ComparisonSelectionTableModel::flags(const QModelIndex& index) con
     // theFlags |= Qt::ItemIsEditable | Qt::ItemIsSelectable | Qt::ItemIsEnabled;
 
     int col = index.column();
-    if(col == FeatureName || col == FeatureValue || col == FeatureOperator)
+    if(col == UnionOperator || col == FeatureName || col == FeatureValue || col == FeatureOperator)
     {
       theFlags = Qt::ItemIsEditable | Qt::ItemIsSelectable | Qt::ItemIsEnabled;
     }
@@ -116,6 +116,16 @@ QVariant ComparisonSelectionTableModel::data(const QModelIndex& index, qint32 ro
 
     switch(index.column())
     {
+    case UnionOperator:
+    {
+      comboBox.currentText = QString(" And ");
+      const QString header = headerData(UnionOperator, Qt::Horizontal, Qt::DisplayRole).toString();
+      if (header.length() > comboBox.currentText.length())
+      {
+        comboBox.currentText = header;
+      }
+      break;
+    }
     case FeatureName:
     {
       comboBox.currentText = QString("Confidence Index");
@@ -174,7 +184,11 @@ QVariant ComparisonSelectionTableModel::data(const QModelIndex& index, qint32 ro
   else if(role == Qt::DisplayRole || role == Qt::EditRole)
   {
     int col = index.column();
-    if(col == FeatureName)
+    if (col == UnionOperator)
+    {
+      return QVariant(m_UnionOperators[index.row()]);
+    }
+    else if(col == FeatureName)
     {
       return QVariant(m_FeatureNames[index.row()]);
     }
@@ -204,6 +218,9 @@ QVariant ComparisonSelectionTableModel::headerData(int section, Qt::Orientation 
   {
     switch(section)
     {
+    case UnionOperator:
+      return QVariant(QString("Union"));
+      break;
     case FeatureName:
       return QVariant(QString("Array"));
       break;
@@ -261,6 +278,9 @@ bool ComparisonSelectionTableModel::setData(const QModelIndex& index, const QVar
   qint32 col = index.column();
   switch(col)
   {
+  case UnionOperator:
+    m_UnionOperators[row] = value.toString();
+    break;
   case FeatureName:
     m_FeatureNames[row] = value.toString();
     break;
@@ -287,6 +307,7 @@ bool ComparisonSelectionTableModel::insertRows(int row, int count, const QModelI
   {
     return false;
   }
+  QString unionOperator = "And";
   QString featureName = m_PossibleFeatures.at(0);
   float featureValue = 0.0f;
   QString featureOperator = ">";
@@ -295,6 +316,7 @@ bool ComparisonSelectionTableModel::insertRows(int row, int count, const QModelI
   beginInsertRows(QModelIndex(), row, row + count - 1);
   for(int i = 0; i < count; ++i)
   {
+    m_UnionOperators.append(unionOperator);
     m_FeatureNames.append(featureName);
     m_FeatureValues.append(featureValue);
     m_FeatureOperators.append(featureOperator);
@@ -318,6 +340,7 @@ bool ComparisonSelectionTableModel::removeRows(int row, int count, const QModelI
   beginRemoveRows(QModelIndex(), row, row + count - 1);
   for(int i = 0; i < count; ++i)
   {
+    m_UnionOperators.remove(row);
     m_FeatureNames.remove(row);
     m_FeatureValues.remove(row);
     m_FeatureOperators.remove(row);
@@ -332,7 +355,7 @@ bool ComparisonSelectionTableModel::removeRows(int row, int count, const QModelI
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void ComparisonSelectionTableModel::setTableData(QVector<QString> featureNames, QVector<float> featureValues, QVector<int> featureOperators)
+void ComparisonSelectionTableModel::setTableData(QVector<QString> unionOperators, QVector<QString> featureNames, QVector<float> featureValues, QVector<int> featureOperators)
 {
   qint32 count = featureNames.count();
   qint32 row = 0;
@@ -345,6 +368,7 @@ void ComparisonSelectionTableModel::setTableData(QVector<QString> featureNames, 
   }
   // Now mass insert the data to the table then emit that the data has changed
   beginInsertRows(QModelIndex(), row, row + count - 1);
+  m_UnionOperators = unionOperators;
   m_FeatureNames = featureNames;
   m_FeatureValues = featureValues;
 
@@ -388,11 +412,24 @@ void ComparisonSelectionTableModel::setTableData(ComparisonInputs& comps)
   // Now mass insert the data to the table then emit that the data has changed
   beginInsertRows(QModelIndex(), row, row + count - 1);
 
+  m_UnionOperators.resize(count);
   m_FeatureNames.resize(count);
   m_FeatureValues.resize(count);
   m_FeatureOperators.resize(count);
   for(int i = 0; i < comps.size(); ++i)
   {
+    if (comps[i].unionOperator == SIMPL::Union::Operator_And)
+    {
+      m_UnionOperators[i] = SIMPL::Union::Strings::And;
+    }
+    else if (comps[i].unionOperator == SIMPL::Union::Operator_Or)
+    {
+      m_UnionOperators[i] = SIMPL::Union::Strings::Or;
+    }
+    else
+    {
+      m_UnionOperators[i] = SIMPL::Union::Strings::And;
+    }
     m_FeatureNames[i] = comps[i].attributeArrayName;
     m_FeatureValues[i] = comps[i].compValue;
     if(comps[i].compOperator == SIMPL::Comparison::Operator_LessThan)
@@ -418,8 +455,20 @@ void ComparisonSelectionTableModel::setTableData(ComparisonInputs& comps)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void ComparisonSelectionTableModel::getTableData(QVector<QString>& featureNames, QVector<float>& featureValues, QVector<int>& featureOperators)
+void ComparisonSelectionTableModel::getTableData(QVector<int>& unionOperators, QVector<QString>& featureNames, QVector<float>& featureValues, QVector<int>& featureOperators)
 {
+  unionOperators.resize(m_UnionOperators.size());
+  for (int i = 0; i < m_UnionOperators.size(); ++i)
+  {
+    if (m_UnionOperators[i].compare(SIMPL::Union::Strings::And) == 0)
+    {
+      unionOperators[i] = SIMPL::Union::Operator_And;
+    }
+    else if (m_UnionOperators[i].compare(SIMPL::Union::Strings::Or) == 0)
+    {
+      unionOperators[i] = SIMPL::Union::Operator_Or;
+    }
+  }
   featureNames = m_FeatureNames;
   featureValues = m_FeatureValues;
   featureOperators.resize(m_FeatureOperators.size());
