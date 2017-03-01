@@ -66,6 +66,25 @@ class SIMPLib_EXPORT ImageGeom : public IGeometryGrid
 
     SIMPL_INSTANCE_VEC3_PROPERTY(float, Origin)
 
+    /**
+     * @brief Returns the bounding box for this geometry
+     * @param xMin
+     * @param xMax
+     * @param yMin
+     * @param yMax
+     * @param zMin
+     * @param zMax
+     */
+    void getBoundingBox(float &xMin, float &xMax, float &yMin, float &yMax, float &zMin, float &zMax);
+
+    /**
+     * @brief getBoundingBox
+     * @param boundingBox The bounding box will be stored in the input argument in the following order:
+     * xMin, xMax, yMin, yMax, zMin, zMax
+     */
+    void getBoundingBox(float boundingBox[6]);
+
+
 // -----------------------------------------------------------------------------
 // Inherited from IGeometry
 // -----------------------------------------------------------------------------
@@ -211,7 +230,7 @@ class SIMPLib_EXPORT ImageGeom : public IGeometryGrid
      * @brief addAttributeMatrix
      */
     virtual void addAttributeMatrix(const QString& name, AttributeMatrix::Pointer data);
-    
+
 // -----------------------------------------------------------------------------
 // Inherited from IGeometryGrid
 // -----------------------------------------------------------------------------
@@ -224,7 +243,7 @@ class SIMPLib_EXPORT ImageGeom : public IGeometryGrid
     virtual void getDimensions(size_t& xDim, size_t& yDim, size_t& zDim) { xDim = m_Dimensions[0];
                                                                            yDim = m_Dimensions[1];
                                                                            zDim = m_Dimensions[2]; }
-    
+
     virtual size_t getXPoints() { return m_Dimensions[0]; }
     virtual size_t getYPoints() { return m_Dimensions[1]; }
     virtual size_t getZPoints() { return m_Dimensions[2]; }
