@@ -548,6 +548,12 @@ ComparisonSelectionTableModel* ComparisonSelectionWidget::createComparisonModel(
   QAbstractItemDelegate* aid = newModel->getItemDelegate();
   comparisonSelectionTableView->setItemDelegate(aid);
 
+  // Enable Drag and Drop for rows
+  comparisonSelectionTableView->verticalHeader()->setVisible(true);
+  comparisonSelectionTableView->verticalHeader()->setSectionsMovable(true);
+  comparisonSelectionTableView->verticalHeader()->setDragEnabled(true);
+  comparisonSelectionTableView->verticalHeader()->setDragDropMode(QAbstractItemView::InternalMove);
+
   return newModel;
 }
 
