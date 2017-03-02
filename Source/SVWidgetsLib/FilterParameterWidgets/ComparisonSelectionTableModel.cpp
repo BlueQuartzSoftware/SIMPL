@@ -387,6 +387,10 @@ void ComparisonSelectionTableModel::setTableData(QVector<QString> unionOperators
     {
       m_FeatureOperators[i] = (SIMPL::Comparison::Strings::Equal);
     }
+    if (featureOperators[i] == SIMPL::Comparison::Operator_NotEqual)
+    {
+      m_FeatureOperators[i] = (SIMPL::Comparison::Strings::NotEqual);
+    }
   }
   m_RowCount = count;
   endInsertRows();
@@ -444,6 +448,10 @@ void ComparisonSelectionTableModel::setTableData(ComparisonInputs& comps)
     {
       m_FeatureOperators[i] = (SIMPL::Comparison::Strings::Equal);
     }
+    if (comps[i].compOperator == SIMPL::Comparison::Operator_NotEqual)
+    {
+      m_FeatureOperators[i] = (SIMPL::Comparison::Strings::NotEqual);
+    }
   }
   m_RowCount = count;
   endInsertRows();
@@ -485,6 +493,10 @@ void ComparisonSelectionTableModel::getTableData(QVector<int>& unionOperators, Q
     else if(m_FeatureOperators[i].compare((SIMPL::Comparison::Strings::Equal)) == 0)
     {
       featureOperators[i] = SIMPL::Comparison::Operator_Equal;
+    }
+    else if (m_FeatureOperators[i].compare((SIMPL::Comparison::Strings::NotEqual)) == 0)
+    {
+      featureOperators[i] = SIMPL::Comparison::Operator_NotEqual;
     }
     else
     {
