@@ -237,6 +237,10 @@ QVariant ComparisonSelectionTableModel::headerData(int section, Qt::Orientation 
       break;
     }
   }
+  else if (orientation == Qt::Vertical && role == Qt::DisplayRole)
+  {
+    return QVariant(section);
+  }
   return QVariant();
 }
 
