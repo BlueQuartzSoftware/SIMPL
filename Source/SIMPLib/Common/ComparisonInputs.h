@@ -42,6 +42,7 @@
 #include <QtCore/QJsonObject>
 
 #include "SIMPLib/SIMPLib.h"
+#include "SIMPLib/Common/Constants.h"
 
 typedef struct
 {
@@ -64,11 +65,17 @@ typedef struct
 
   bool readJson(QJsonObject& json)
   {
-    if (json["Union Operator"].isDouble()
-        && json["Data Container Name"].isString() && json["Attribute Matrix Name"].isString() && json["Attribute Array Name"].isString()
+    if (json["Data Container Name"].isString() && json["Attribute Matrix Name"].isString() && json["Attribute Array Name"].isString()
         && json["Comparison Operator"].isDouble() && json["Comparison Value"].isDouble())
     {
-      unionOperator = json["Union Operator"].toInt();
+      if (json["Union Operator"].isDouble())
+      {
+        unionOperator = json["Union Operator"].toInt();
+      }
+      else
+      {
+        unionOperator = SIMPL::Union::Operator_And;
+      }
       dataContainerName = json["Data Container Name"].toString();
       attributeMatrixName = json["Attribute Matrix Name"].toString();
       attributeArrayName = json["Attribute Array Name"].toString();
