@@ -56,6 +56,7 @@ set(SIMPLib_${SUBDIR_NAME}_HDRS
   ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/CalculatorFilterParameter.h
   ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/ChoiceFilterParameter.h
   ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/ComparisonSelectionFilterParameter.h
+  ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/ComparisonSelectionAdvancedFilterParameter.h
   ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/ConstrainedDoubleFilterParameter.h
   ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/ConstrainedIntFilterParameter.h
   ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/DataArrayCreationFilterParameter.h
@@ -109,6 +110,7 @@ set(SIMPLib_${SUBDIR_NAME}_SRCS
   ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/CalculatorFilterParameter.cpp
   ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/ChoiceFilterParameter.cpp
   ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/ComparisonSelectionFilterParameter.cpp
+  ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/ComparisonSelectionAdvancedFilterParameter.cpp
   ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/ConstrainedDoubleFilterParameter.cpp
   ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/ConstrainedIntFilterParameter.cpp
   ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/DataArrayCreationFilterParameter.cpp
