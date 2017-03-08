@@ -51,6 +51,7 @@
 #include "SIMPLib/Common/Constants.h"
 #include "SIMPLib/FilterParameters/H5FilterParametersConstants.h"
 #include "SIMPLib/FilterParameters/JsonFilterParametersReader.h"
+#include "SIMPLib/FilterParameters/JsonFilterParametersWriter.h"
 
 // -----------------------------------------------------------------------------
 //
@@ -205,6 +206,103 @@ FilterPipeline::Pointer H5FilterParametersReader::readPipelineFromFile(QString f
 
   FilterPipeline::Pointer pipeline = readPipelineFromFile(fid, obs);
   return pipeline;
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+QString H5FilterParametersReader::getJsonFromFile(QString filePath, IObserver* obs)
+{
+  hid_t fid = -1;
+  fid = QH5Utilities::openFile(filePath);
+  if(fid < 0)
+  {
+    return QString();
+  }
+
+  HDF5ScopedFileSentinel sentinel(&fid, true);
+
+  // Open the Pipeline Group
+  hid_t pipelineGroupId = H5Gopen(fid, SIMPL::StringConstants::PipelineGroupName.toLatin1().data(), H5P_DEFAULT);
+  if(pipelineGroupId < 0)
+  {
+    H5Fclose(fid);
+    fid = -1;
+    return QString();
+  }
+
+  sentinel.addGroupId(&pipelineGroupId);
+
+  setPipelineGroupId(pipelineGroupId);
+
+  m_Version = -1;
+
+  QString jsonString = "";
+  if(QH5Lite::findAttribute(pipelineGroupId, SIMPL::StringConstants::PipelineVersionName) > 0)
+  {
+    herr_t err = QH5Lite::readScalarAttribute(pipelineGroupId, "/" + SIMPL::StringConstants::PipelineGroupName, SIMPL::StringConstants::PipelineVersionName, m_Version);
+    if(err < 0)
+    {
+      return QString();
+    }
+
+    if(m_Version == 2)
+    {
+      herr_t err = QH5Lite::readStringDataset(pipelineGroupId, SIMPL::StringConstants::PipelineGroupName, jsonString);
+      if(err < 0)
+      {
+        return QString();
+      }
+    }
+    else if(nullptr != obs)
+    {
+      QString ss = QObject::tr("The input file contains an unrecognizable pipeline version number, and is therefore incompatible and cannot be read.");
+      PipelineMessage pm("", ss, -66066, PipelineMessage::Error);
+      pm.setPrefix("H5FilterParametersReader::ReadPipelineFromFile(...)");
+      obs->processPipelineMessage(pm);
+      return QString();
+    }
+  }
+  else
+  {
+    // Use QH5Lite to ask how many "groups" are in the "Pipeline Group"
+    QList<QString> groupList;
+    herr_t err = QH5Utilities::getGroupObjects(pipelineGroupId, H5Utilities::H5Support_GROUP, groupList);
+
+    // Get a FilterManager Instance
+    FilterManager* filterManager = FilterManager::Instance();
+
+    // Loop over the items getting the "ClassName" attribute from each group
+    QString classNameStr = "";
+    FilterPipeline::Pointer pipeline = FilterPipeline::New();
+    for(int i = 0; i < groupList.size(); i++)
+    {
+
+      QString iStr = QString::number(i);
+      err = QH5Lite::readStringAttribute(pipelineGroupId, iStr, "ClassName", classNameStr);
+
+      // Instantiate a new filter using the FilterFactory based on the value of the className attribute
+      IFilterFactory::Pointer ff = filterManager->getFactoryForFilter(classNameStr);
+      if(nullptr != ff)
+      {
+        AbstractFilter::Pointer filter = ff->create();
+        if(nullptr != ff)
+        {
+          // Read the parameters
+          filter->readFilterParameters(this, i);
+
+          // Add filter to pipeline
+          pipeline->pushBack(filter);
+        }
+      }
+    }
+
+    JsonFilterParametersWriter::Pointer jsonWriter = JsonFilterParametersWriter::New();
+    jsonWriter->setExpandReaderFilters(false);
+    jsonString = jsonWriter->writePipelineToString(pipeline, "");
+  }
+
+  return jsonString;
 }
 
 // -----------------------------------------------------------------------------

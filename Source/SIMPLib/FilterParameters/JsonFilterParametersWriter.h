@@ -64,6 +64,7 @@ class SIMPLib_EXPORT JsonFilterParametersWriter : public AbstractFilterParameter
 
     SIMPL_INSTANCE_PROPERTY(QString, FileName)
     SIMPL_INSTANCE_PROPERTY(QString, PipelineName)
+    SIMPL_INSTANCE_PROPERTY(bool, ExpandReaderFilters)
 
     JsonFilterParametersWriter(QString& fileName, QString& pipelineName, int& numFilters);
 

@@ -159,9 +159,9 @@ class SVWidgetsLib_EXPORT PipelineView
 
     /**
      * @brief populatePipelineView
-     * @param pipeline
+     * @param jsonString
      */
-    virtual void populatePipelineView(FilterPipeline::Pointer pipeline, QVariant value);
+    virtual void populatePipelineView(QString jsonString, QVariant value);
 
     /**
      * @brief moveFilterWidget

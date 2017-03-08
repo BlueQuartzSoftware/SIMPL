@@ -49,6 +49,7 @@
 JsonFilterParametersWriter::JsonFilterParametersWriter()
 : m_MaxFilterIndex(-1)
 , m_CurrentIndex(0)
+, m_ExpandReaderFilters(true)
 {
 }
 
@@ -135,7 +136,7 @@ int JsonFilterParametersWriter::populateWriter(FilterPipeline::Pointer pipeline,
     if(nullptr != filter.get())
     {
       DataContainerReader::Pointer reader = std::dynamic_pointer_cast<DataContainerReader>(filter);
-      if(reader.get())
+      if(reader.get() && m_ExpandReaderFilters == true)
       {
         offset = reader->writeExistingPipelineToFile(m_Root, i);
       }

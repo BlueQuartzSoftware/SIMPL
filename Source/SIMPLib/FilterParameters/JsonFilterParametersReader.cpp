@@ -127,6 +127,49 @@ FilterPipeline::Pointer JsonFilterParametersReader::readPipelineFromFile(QString
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
+QString JsonFilterParametersReader::getJsonFromFile(QString filePath, IObserver* obs)
+{
+  QFileInfo fInfo(filePath);
+
+  if(filePath.isEmpty() == true)
+  {
+    return QString();
+  }
+  QFileInfo fi(filePath);
+  if(fi.exists() == false)
+  {
+    return QString();
+  }
+
+  QString jsonString = "";
+  if(m_Root.isEmpty() == false || m_CurrentFilterIndex.isEmpty() == false)
+  {
+    closeFile();
+  }
+
+  QFile inputFile(filePath);
+  if(inputFile.open(QIODevice::ReadOnly))
+  {
+    QJsonParseError parseError;
+    QByteArray byteArray = inputFile.readAll();
+    QJsonDocument doc = QJsonDocument::fromJson(byteArray, &parseError);
+    if(parseError.error != QJsonParseError::NoError)
+    {
+      return QString();
+    }
+
+    byteArray = doc.toJson();
+    jsonString = QString(byteArray);
+  }
+
+  closeFile();
+
+  return jsonString;
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
 QString generateErrorHtml(const QString& errorText)
 {
   QString html;
@@ -267,6 +310,8 @@ QString JsonFilterParametersReader::HtmlSummaryFromFile(QString filePath, IObser
 // -----------------------------------------------------------------------------
 FilterPipeline::Pointer JsonFilterParametersReader::readPipelineFromString(QString contents, IObserver* obs)
 {
+  std::cout << contents.toStdString() << std::endl;
+
   setPipelineContents(contents);
 
   FilterPipeline::Pointer pipeline = readPipeline(obs);
