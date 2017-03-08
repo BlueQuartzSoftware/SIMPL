@@ -85,6 +85,14 @@ class SIMPLib_EXPORT H5FilterParametersReader : public AbstractFilterParametersR
      */
     FilterPipeline::Pointer readPipelineFromFile(QString filePath, IObserver *obs = nullptr);
 
+    /**
+     * @brief readPipelineFromFile
+     * @param fid
+     * @param obs
+     * @return
+     */
+    FilterPipeline::Pointer readPipelineFromFile(hid_t fid, IObserver *obs = nullptr);
+
     virtual QString readString(const QString name, QString value);
     virtual QVector<QString> readStrings(const QString name, QVector<QString> value);
     virtual QStringList readStringList(const QString name, QStringList value);

@@ -291,6 +291,7 @@ FilterPipeline::Pointer JsonFilterParametersReader::readPipeline(IObserver* obs)
 
   QJsonObject builderObj = m_Root[SIMPL::Settings::PipelineBuilderGroup].toObject();
   int filterCount = builderObj[SIMPL::Settings::NumFilters].toInt();
+  m_MaxFilterIndex = filterCount - 1; // Zero based indexing
 
   FilterPipeline::Pointer pipeline;
   if(filterCount >= 0)
@@ -485,10 +486,14 @@ void JsonFilterParametersReader::closeFile()
 // -----------------------------------------------------------------------------
 int JsonFilterParametersReader::openFilterGroup(AbstractFilter* unused, int index)
 {
+  Q_UNUSED(unused);
   Q_ASSERT(m_Root.isEmpty() == false);
   int err = 0;
   QString numStr = QString::number(index);
-  m_CurrentFilterIndex = m_Root[numStr].toObject();
+  if(m_Root.find(numStr) != m_Root.end() )
+  {
+    m_CurrentFilterIndex = m_Root[numStr].toObject();
+  }
   if(m_CurrentFilterIndex.isEmpty())
   {
     numStr = generateIndexString(index, m_MaxFilterIndex);

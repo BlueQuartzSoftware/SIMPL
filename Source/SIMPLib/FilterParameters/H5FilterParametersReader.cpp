@@ -103,16 +103,8 @@ H5FilterParametersReader::Pointer H5FilterParametersReader::OpenDREAM3DFileForRe
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-FilterPipeline::Pointer H5FilterParametersReader::readPipelineFromFile(QString filePath, IObserver* obs)
+FilterPipeline::Pointer H5FilterParametersReader::readPipelineFromFile(hid_t fid, IObserver* obs)
 {
-  hid_t fid = -1;
-  fid = QH5Utilities::openFile(filePath);
-  if(fid < 0)
-  {
-    return FilterPipeline::NullPointer();
-  }
-
-  HDF5ScopedFileSentinel sentinel(&fid, true);
 
   // Open the Pipeline Group
   hid_t pipelineGroupId = H5Gopen(fid, SIMPL::StringConstants::PipelineGroupName.toLatin1().data(), H5P_DEFAULT);
@@ -123,7 +115,7 @@ FilterPipeline::Pointer H5FilterParametersReader::readPipelineFromFile(QString f
     return FilterPipeline::NullPointer();
   }
 
-  sentinel.addGroupId(&pipelineGroupId);
+  HDF5ScopedGroupSentinel sentinel(&pipelineGroupId, true);
 
   setPipelineGroupId(pipelineGroupId);
 
@@ -154,8 +146,7 @@ FilterPipeline::Pointer H5FilterParametersReader::readPipelineFromFile(QString f
     }
     else if(nullptr != obs)
     {
-      QFileInfo fi(filePath);
-      QString ss = QObject::tr("The file '%1' contains an unrecognizable version number, and is therefore incompatible and cannot be read.").arg(fi.fileName());
+      QString ss = QObject::tr("The input file contains an unrecognizable pipeline version number, and is therefore incompatible and cannot be read.");
       PipelineMessage pm("", ss, -66066, PipelineMessage::Error);
       pm.setPrefix("H5FilterParametersReader::ReadPipelineFromFile(...)");
       obs->processPipelineMessage(pm);
@@ -195,7 +186,24 @@ FilterPipeline::Pointer H5FilterParametersReader::readPipelineFromFile(QString f
       }
     }
   }
+  return pipeline;
+}
 
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+FilterPipeline::Pointer H5FilterParametersReader::readPipelineFromFile(QString filePath, IObserver* obs)
+{
+  hid_t fid = -1;
+  fid = QH5Utilities::openFile(filePath);
+  if(fid < 0)
+  {
+    return FilterPipeline::NullPointer();
+  }
+
+  HDF5ScopedFileSentinel sentinel(&fid, true);
+
+  FilterPipeline::Pointer pipeline = readPipelineFromFile(fid, obs);
   return pipeline;
 }
 
