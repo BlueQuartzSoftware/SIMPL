@@ -66,6 +66,19 @@ ConvertPathToHeaderCompatible(${SIMPLProj_PARENT_DIR_NORM})
 configure_file( ${SIMPLTools_SOURCE_DIR}/ToolConfiguration.h.in
                 ${SIMPLTools_BINARY_DIR}/ToolConfiguration.h)
 
+set(install_dir "bin")
+set(lib_install_dir "lib")
+
+if(APPLE)
+  get_property(DREAM3D_PACKAGE_DEST_PREFIX GLOBAL PROPERTY DREAM3D_PACKAGE_DEST_PREFIX)
+  set(install_dir "${DREAM3D_PACKAGE_DEST_PREFIX}bin")
+  set(lib_install_dir "${DREAM3D_PACKAGE_DEST_PREFIX}lib")
+elseif(WIN32)
+  set(install_dir ".")
+  set(lib_install_dir ".")
+endif()
+
+
 #-------------------------------------------------------------------------------
 # Function COMPILE_TOOL to help alleviate lots of extra code below for adding
 # simple command line tools that just need one or two source files
@@ -107,7 +120,7 @@ COMPILE_TOOL(
     VERSION_PATCH ${SIMPL_VER_PATCH}
     BINARY_DIR    ${${PROJECT_NAME}_BINARY_DIR}
     COMPONENT     Tools
-    INSTALL_DEST  "${DREAM3D_PACKAGE_DEST_PREFIX}${install_dir}"
+    INSTALL_DEST  "${install_dir}"
     LINK_LIBRARIES SIMPLib
 )
 
@@ -123,7 +136,7 @@ if (FALSE)
       VERSION_PATCH ${SIMPL_VER_PATCH}
       BINARY_DIR    ${${PROJECT_NAME}_BINARY_DIR}
       COMPONENT     Tools
-      INSTALL_DEST  "${DREAM3D_PACKAGE_DEST_PREFIX}${install_dir}"
+      INSTALL_DEST  "}${install_dir}"
       LINK_LIBRARIES SIMPLib
   )
 
@@ -136,7 +149,7 @@ if (FALSE)
       VERSION_PATCH ${SIMPL_VER_PATCH}
       BINARY_DIR    ${${PROJECT_NAME}_BINARY_DIR}
       COMPONENT     Tools
-      INSTALL_DEST  "${DREAM3D_PACKAGE_DEST_PREFIX}${install_dir}"
+      INSTALL_DEST  "${install_dir}"
       LINK_LIBRARIES SIMPLib
   )
 
@@ -150,7 +163,7 @@ if (FALSE)
       VERSION_PATCH ${SIMPL_VER_PATCH}
       BINARY_DIR    ${${PROJECT_NAME}_BINARY_DIR}
       COMPONENT     Tools
-      INSTALL_DEST  "${DREAM3D_PACKAGE_DEST_PREFIX}${install_dir}"
+      INSTALL_DEST  "${install_dir}"
       LINK_LIBRARIES SIMPLib
   )
 endif()

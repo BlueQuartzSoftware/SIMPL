@@ -187,23 +187,24 @@ LibraryProperties( ${PROJECT_NAME} ${EXE_DEBUG_EXTENSION} )
 
 set(install_dir "tools")
 set(lib_install_dir "lib")
-if(WIN32)
-    set(install_dir ".")
-    set(lib_install_dir "")
+
+if(APPLE)
+  get_property(DREAM3D_PACKAGE_DEST_PREFIX GLOBAL PROPERTY DREAM3D_PACKAGE_DEST_PREFIX)
+  set(install_dir "${DREAM3D_PACKAGE_DEST_PREFIX}tools")
+  set(lib_install_dir "${DREAM3D_PACKAGE_DEST_PREFIX}lib")
+elseif(WIN32)
+  set(install_dir ".")
+  set(lib_install_dir ".")
 endif()
 
-
-#if(BUILD_SHARED_LIBS  AND NOT APPLE)
-    INSTALL(TARGETS ${PROJECT_NAME}
-        EXPORT ${PROJECT_NAME}Targets
-        COMPONENT Applications
-        RUNTIME DESTINATION ${DREAM3D_PACKAGE_DEST_PREFIX}${install_dir}
-        LIBRARY DESTINATION ${DREAM3D_PACKAGE_DEST_PREFIX}${lib_install_dir}
-        ARCHIVE DESTINATION ${DREAM3D_PACKAGE_DEST_PREFIX}${lib_install_dir}
-        BUNDLE DESTINATION "."
-    )
-#endif()
-
+INSTALL(TARGETS ${PROJECT_NAME}
+    EXPORT ${PROJECT_NAME}Targets
+    COMPONENT Applications
+    RUNTIME DESTINATION ${install_dir}
+    LIBRARY DESTINATION ${lib_install_dir}
+    ARCHIVE DESTINATION ${lib_install_dir}
+    BUNDLE DESTINATION "."
+)
 
 
 # --------------------------------------------------------------------
@@ -221,7 +222,7 @@ install(EXPORT SIMPLibTargets
   NAMESPACE
     SIMPL::
   DESTINATION
-    ${DREAM3D_PACKAGE_DEST_PREFIX}${ConfigPackageLocation}
+    ${ConfigPackageLocation}
 )
 
 

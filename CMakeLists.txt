@@ -422,13 +422,16 @@ configure_file(${SIMPLProj_SOURCE_DIR}/SIMPLConfig.cmake
 )
 
 set(ConfigPackageLocation lib/cmake/SIMPL)
+if(APPLE)
+  set(ConfigPackageLocation ${DREAM3D_PACKAGE_DEST_PREFIX}${ConfigPackageLocation})
+endif()
 
 install(
   FILES
     "${SIMPLProj_SOURCE_DIR}/SIMPLConfig.cmake"
     "${CMAKE_CURRENT_BINARY_DIR}/SIMPL/SIMPLTargetsConfigVersion.cmake"
   DESTINATION
-    ${DREAM3D_PACKAGE_DEST_PREFIX}${ConfigPackageLocation}
+    ${ConfigPackageLocation}
   COMPONENT
     Devel
 )
