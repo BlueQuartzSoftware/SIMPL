@@ -40,7 +40,7 @@
 
 #include <QtCore/QVector>
 
-class ComparisonSet : public AbstractComparison
+class SIMPLib_EXPORT ComparisonSet : public AbstractComparison
 {
 public:
   SIMPL_SHARED_POINTERS(ComparisonSet)
@@ -53,16 +53,17 @@ public:
   bool readJson(QJsonObject& json);
 
   bool getInvertComparison();
-  QVector<AbstractComparison::Pointer> getComparisonValues();
+  QVector<AbstractComparison::Pointer> getComparisons();
 
   void setInvertComparison(bool invert);
-  void setComparisonValues(QVector<AbstractComparison::Pointer> comparisonValues);
+  void setComparisons(QVector<AbstractComparison::Pointer> comparisonValues);
 
+  void addComparison(AbstractComparison::Pointer comparison);
   void insertComparison(int index, AbstractComparison::Pointer comparison);
 
 protected:
   bool m_invertComparison;
-  QVector<AbstractComparison::Pointer> m_comparisonValues;
+  QVector<AbstractComparison::Pointer> m_comparisons;
 
   ComparisonSet();
 };

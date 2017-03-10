@@ -52,7 +52,7 @@ ComparisonSet::ComparisonSet() : AbstractComparison()
 // -----------------------------------------------------------------------------
 ComparisonSet::~ComparisonSet()
 {
-  m_comparisonValues.clear();
+  m_comparisons.clear();
 }
 
 // -----------------------------------------------------------------------------
@@ -64,10 +64,10 @@ void ComparisonSet::writeJson(QJsonObject& json)
   json["Invert Comparison"] = m_invertComparison;
 
   QJsonArray jsonArray;
-  for (int i = 0; i < m_comparisonValues.size(); i++)
+  for (int i = 0; i < m_comparisons.size(); i++)
   {
     QJsonObject valueObj;
-    m_comparisonValues[i]->writeJson(valueObj);
+    m_comparisons[i]->writeJson(valueObj);
 
     jsonArray.push_back(valueObj);
   }
@@ -85,7 +85,7 @@ bool ComparisonSet::readJson(QJsonObject& json)
     m_unionOperator = json["Union Operator"].toInt();
     m_invertComparison = json["Invert Comparison"].toBool();
 
-    m_comparisonValues.clear();
+    m_comparisons.clear();
     QJsonArray jsonArray = json["Comparison Values"].toArray();
     for (int i = 0; i < jsonArray.size(); i++)
     {
@@ -96,7 +96,7 @@ bool ComparisonSet::readJson(QJsonObject& json)
         ComparisonSet::Pointer childSet = ComparisonSet::New();
         if (childSet->readJson(jsonObj))
         {
-          m_comparisonValues.push_back(childSet);
+          m_comparisons.push_back(childSet);
         }
         else
         {
@@ -108,7 +108,7 @@ bool ComparisonSet::readJson(QJsonObject& json)
         ComparisonValue::Pointer childValue = ComparisonValue::New();
         if (childValue->readJson(jsonObj))
         {
-          m_comparisonValues.push_back(childValue);
+          m_comparisons.push_back(childValue);
         }
         else
         {
@@ -131,9 +131,9 @@ bool ComparisonSet::getInvertComparison()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-QVector<AbstractComparison::Pointer> ComparisonSet::getComparisonValues()
+QVector<AbstractComparison::Pointer> ComparisonSet::getComparisons()
 {
-  return m_comparisonValues;
+  return m_comparisons;
 }
 
 // -----------------------------------------------------------------------------
@@ -147,9 +147,17 @@ void ComparisonSet::setInvertComparison(bool invert)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void ComparisonSet::setComparisonValues(QVector<AbstractComparison::Pointer> comparisonValues)
+void ComparisonSet::setComparisons(QVector<AbstractComparison::Pointer> comparisonValues)
 {
-  m_comparisonValues = comparisonValues;
+  m_comparisons = comparisonValues;
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void ComparisonSet::addComparison(AbstractComparison::Pointer comparison)
+{
+  m_comparisons.push_back(comparison);
 }
 
 // -----------------------------------------------------------------------------
@@ -157,8 +165,8 @@ void ComparisonSet::setComparisonValues(QVector<AbstractComparison::Pointer> com
 // -----------------------------------------------------------------------------
 void ComparisonSet::insertComparison(int index, AbstractComparison::Pointer comparison)
 {
-  if (index >= 0 && index <= m_comparisonValues.size())
+  if (index >= 0 && index <= m_comparisons.size())
   {
-    m_comparisonValues.insert(index, comparison);
+    m_comparisons.insert(index, comparison);
   }
 }

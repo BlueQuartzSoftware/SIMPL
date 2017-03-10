@@ -83,6 +83,12 @@ class SIMPLib_EXPORT ComparisonInputsAdvanced : public QObject
     AbstractComparison::Pointer getInput(int index);
     QVector<AbstractComparison::Pointer>& getInputs();
 
+    QString getDataContainerName();
+    QString getAttributeMatrixName();
+
+    void setDataContainerName(QString dcName);
+    void setAttributeMatrixName(QString amName);
+
     void operator=(const ComparisonInputsAdvanced&);
 
     AbstractComparison::Pointer operator[](int index);
@@ -90,12 +96,12 @@ class SIMPLib_EXPORT ComparisonInputsAdvanced : public QObject
   private:
 
     QVector<AbstractComparison::Pointer> m_Inputs;
-
+    QString m_dataContainerName;
+    QString m_attributeMatrixName;
 
 };
 
 
-//Q_DECLARE_METATYPE(ComparisonBase_t)
 Q_DECLARE_METATYPE(ComparisonInputsAdvanced)
 
 

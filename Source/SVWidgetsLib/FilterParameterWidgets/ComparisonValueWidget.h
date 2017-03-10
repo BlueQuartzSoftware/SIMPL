@@ -33,52 +33,32 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-#ifndef _ComparisonValue_h_
-#define _ComparisonValue_h_
+#ifndef _ComparisonValueWidget_h_
+#define _ComparisonValueWidget_h_
 
-#include "AbstractComparison.h"
+#include <QtWidgets/QWidget>
 
-#include <QtCore/QString>
+#include "SIMPLib/Common/ComparisonValue.h"
 
-#include "SIMPLib/Common/ComparisonSet.h"
+#include "SVWidgetsLib/FilterParameterWidgets/IComparisonWidget.h"
 
-class SIMPLib_EXPORT ComparisonValue : public AbstractComparison
+#include "ui_ComparisonValueWidget.h"
+
+class SVWidgetsLib_EXPORT ComparisonValueWidget : public IComparisonWidget, private Ui::ComparisonValueWidget
 {
 public:
-  SIMPL_SHARED_POINTERS(ComparisonValue)
-  SIMPL_STATIC_NEW_MACRO(ComparisonValue)
-  SIMPL_TYPE_MACRO_SUPER(ComparisonValue, AbstractComparison)
+  ComparisonValueWidget(QWidget* parent, ComparisonValue::Pointer comparisonValue = nullptr);
+  ~ComparisonValueWidget();
 
-  ~ComparisonValue();
+  ComparisonValue::Pointer getComparisonValue();
+  void setComparisonValue(ComparisonValue::Pointer value);
 
-  void writeJson(QJsonObject& json);
-  bool readJson(QJsonObject& json);
+  AbstractComparison::Pointer getCurrentComparison();
 
-  QString getDataContainerName();
-  QString getAttributeMatrixName();
-  QString getAttributeArrayName();
-  int getCompOperator();
-  double getCompValue();
-  
-  void setDataContainerName(QString name);
-  void setAttributeMatrixName(QString name);
-  void setAttributeArrayName(QString name);
-  void setCompOperator(int compOperator);
-  void setCompValue(double value);
+  void apply();
 
-  ComparisonSet::Pointer getParentSet();
-  void setParentSet(ComparisonSet::Pointer parentSet);
-
-protected:
-  QString m_dataContainerName;
-  QString m_attributeMatrixName;
-  QString m_attributeArrayName;
-  int m_compOperator;
-  double m_compValue;
-
-  ComparisonSet::Pointer m_parentSet;
-
-  ComparisonValue();
+private:
+  ComparisonValue::Pointer m_comparisonValue;
 };
 
 #endif

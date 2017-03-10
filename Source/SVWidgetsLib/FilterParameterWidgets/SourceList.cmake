@@ -12,6 +12,7 @@ set(SIMPLView_PARAMETER_WIDGETS
     CalculatorWidget
     ChoiceWidget
     ComparisonSelectionWidget
+    ComparisonSelectionAdvancedWidget
     ConstrainedDoubleWidget
     ConstrainedIntWidget
     DataArrayCreationWidget
@@ -135,13 +136,16 @@ set(SVWidgetsLib_FilterParameterWidgets_MOC_HDRS
   ${SVWidgetsLib_SOURCE_DIR}/FilterParameterWidgets/ComparisonSelectionTableModel.h
   ${SVWidgetsLib_SOURCE_DIR}/FilterParameterWidgets/ComparisonSelectionItemDelegate.h
   ${SVWidgetsLib_SOURCE_DIR}/FilterParameterWidgets/DynamicTableItemDelegate.h
-
+  ${SVWidgetsLib_SOURCE_DIR}/FilterParameterWidgets/ComparisonContainerWidget.h
+  ${SVWidgetsLib_SOURCE_DIR}/FilterParameterWidgets/IComparisonWidget.h
+  ${SVWidgetsLib_SOURCE_DIR}/FilterParameterWidgets/ComparisonSetWidget.h
 )
 
 set(SVWidgetsLib_FilterParameterWidgets_HDRS
   ${SVWidgetsLib_FilterParameterWidgets_MOC_HDRS}
   ${SVWidgetsLib_SOURCE_DIR}/FilterParameterWidgets/FilterParameterWidgetsDialogs.h
   ${SVWidgetsLib_SOURCE_DIR}/FilterParameterWidgets/FilterParameterWidgetUtils.hpp
+  ${SVWidgetsLib_SOURCE_DIR}/FilterParameterWidgets/ComparisonValueWidget.h
 )
 
 
@@ -152,9 +156,16 @@ set(SVWidgetsLib_FilterParameterWidgets_SRCS
   ${SVWidgetsLib_SOURCE_DIR}/FilterParameterWidgets/ComparisonSelectionItemDelegate.cpp
   ${SVWidgetsLib_SOURCE_DIR}/FilterParameterWidgets/DynamicTableItemDelegate.cpp
   ${SVWidgetsLib_SOURCE_DIR}/FilterParameterWidgets/FilterParameterWidgetsDialogs.cpp
+  ${SVWidgetsLib_SOURCE_DIR}/FilterParameterWidgets/ComparisonContainerWidget.cpp
+  ${SVWidgetsLib_SOURCE_DIR}/FilterParameterWidgets/IComparisonWidget.cpp
+  ${SVWidgetsLib_SOURCE_DIR}/FilterParameterWidgets/ComparisonSetWidget.cpp
+  ${SVWidgetsLib_SOURCE_DIR}/FilterParameterWidgets/ComparisonValueWidget.cpp
 )
 set(SVWidgetsLib_FilterParameterWidgets_UIS
   ${SVWidgetsLib_FilterParameterWidgets_UIS}
+  ${SVWidgetsLib_SOURCE_DIR}/FilterParameterWidgets/UI_Files/ComparisonContainerWidget.ui
+  ${SVWidgetsLib_SOURCE_DIR}/FilterParameterWidgets/UI_Files/ComparisonSetWidget.ui
+  ${SVWidgetsLib_SOURCE_DIR}/FilterParameterWidgets/UI_Files/ComparisonValueWidget.ui
 )
 
 

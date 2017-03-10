@@ -33,52 +33,58 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-#ifndef _ComparisonValue_h_
-#define _ComparisonValue_h_
+#ifndef _ComparisonContainerWidget_h_
+#define _ComparisonContainerWidget_h_
 
-#include "AbstractComparison.h"
+#include <QtWidgets/QWidget>
+#include <QtGui/QMouseEvent>
 
-#include <QtCore/QString>
+#include "SIMPLib/Common/AbstractComparison.h"
 
-#include "SIMPLib/Common/ComparisonSet.h"
+#include "SVWidgetsLib/SVWidgetsLib.h"
+#include "SVWidgetsLib/FilterParameterWidgets/IComparisonWidget.h"
 
-class SIMPLib_EXPORT ComparisonValue : public AbstractComparison
+#include "ui_ComparisonContainerWidget.h"
+
+class SVWidgetsLib_EXPORT ComparisonContainerWidget : public QWidget, private Ui::ComparisonContainerWidget
 {
+  Q_OBJECT
+
 public:
-  SIMPL_SHARED_POINTERS(ComparisonValue)
-  SIMPL_STATIC_NEW_MACRO(ComparisonValue)
-  SIMPL_TYPE_MACRO_SUPER(ComparisonValue, AbstractComparison)
+  ComparisonContainerWidget(QWidget* parent);
+  ~ComparisonContainerWidget();
 
-  ~ComparisonValue();
+  int getUnionOperator();
+  void setUnionOperator(int unionOperator);
 
-  void writeJson(QJsonObject& json);
-  bool readJson(QJsonObject& json);
+  void showUnionOperator();
+  void hideUnionOperator();
 
-  QString getDataContainerName();
-  QString getAttributeMatrixName();
-  QString getAttributeArrayName();
-  int getCompOperator();
-  double getCompValue();
-  
-  void setDataContainerName(QString name);
-  void setAttributeMatrixName(QString name);
-  void setAttributeArrayName(QString name);
-  void setCompOperator(int compOperator);
-  void setCompValue(double value);
+  void setComparison(AbstractComparison::Pointer comparison);
+  void setComparisonWidget(IComparisonWidget* widget);
 
-  ComparisonSet::Pointer getParentSet();
-  void setParentSet(ComparisonSet::Pointer parentSet);
+  AbstractComparison::Pointer getCurrentComparison();
+
+  void select();
+  void deselect();
 
 protected:
-  QString m_dataContainerName;
-  QString m_attributeMatrixName;
-  QString m_attributeArrayName;
-  int m_compOperator;
-  double m_compValue;
+  static ComparisonContainerWidget* SelectedItem;
+  static QString BorderStyleSheet;
 
-  ComparisonSet::Pointer m_parentSet;
+  void mousePressEvent(QMouseEvent* event);
+  void mouseMoveEvent(QMouseEvent* event);
+  void mouseReleaseEvent(QMouseEvent* event);
 
-  ComparisonValue();
+//protected slots:
+//  void deleteItem();
+
+private:
+  int m_unionOperator;
+
+  IComparisonWidget* m_comparisonWidget;
+
+  QPoint m_startDragPoint;
 };
 
 #endif

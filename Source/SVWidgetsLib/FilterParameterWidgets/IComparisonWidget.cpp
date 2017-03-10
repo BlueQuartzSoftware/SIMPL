@@ -33,52 +33,47 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-#ifndef _ComparisonValue_h_
-#define _ComparisonValue_h_
-
-#include "AbstractComparison.h"
-
-#include <QtCore/QString>
+#include "IComparisonWidget.h"
 
 #include "SIMPLib/Common/ComparisonSet.h"
+#include "SIMPLib/Common/ComparisonValue.h"
 
-class SIMPLib_EXPORT ComparisonValue : public AbstractComparison
+#include "SVWidgetsLib/FilterParameterWidgets/ComparisonSetWidget.h"
+#include "SVWidgetsLib/FilterParameterWidgets/ComparisonValueWidget.h"
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+IComparisonWidget::IComparisonWidget(QWidget* parent) : QWidget(parent)
 {
-public:
-  SIMPL_SHARED_POINTERS(ComparisonValue)
-  SIMPL_STATIC_NEW_MACRO(ComparisonValue)
-  SIMPL_TYPE_MACRO_SUPER(ComparisonValue, AbstractComparison)
 
-  ~ComparisonValue();
+}
 
-  void writeJson(QJsonObject& json);
-  bool readJson(QJsonObject& json);
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+IComparisonWidget::~IComparisonWidget()
+{
 
-  QString getDataContainerName();
-  QString getAttributeMatrixName();
-  QString getAttributeArrayName();
-  int getCompOperator();
-  double getCompValue();
-  
-  void setDataContainerName(QString name);
-  void setAttributeMatrixName(QString name);
-  void setAttributeArrayName(QString name);
-  void setCompOperator(int compOperator);
-  void setCompValue(double value);
+}
 
-  ComparisonSet::Pointer getParentSet();
-  void setParentSet(ComparisonSet::Pointer parentSet);
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+IComparisonWidget* IComparisonWidget::CreateWidget(AbstractComparison::Pointer comparison)
+{
+  IComparisonWidget* widget = nullptr;
 
-protected:
-  QString m_dataContainerName;
-  QString m_attributeMatrixName;
-  QString m_attributeArrayName;
-  int m_compOperator;
-  double m_compValue;
+  if (nullptr != std::dynamic_pointer_cast<ComparisonSet>(comparison))
+  {
+    ComparisonSet::Pointer comparisonSet = std::dynamic_pointer_cast<ComparisonSet>(comparison);
+    widget = new ComparisonSetWidget(nullptr, comparisonSet);
+  }
+  else if (nullptr != std::dynamic_pointer_cast<ComparisonValue>(comparison))
+  {
+    ComparisonValue::Pointer comparisonValue = std::dynamic_pointer_cast<ComparisonValue>(comparison);
+    widget = new ComparisonValueWidget(nullptr, comparisonValue);
+  }
 
-  ComparisonSet::Pointer m_parentSet;
-
-  ComparisonValue();
-};
-
-#endif
+  return widget;
+}

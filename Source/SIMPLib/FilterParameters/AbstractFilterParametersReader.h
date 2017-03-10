@@ -42,6 +42,7 @@
 #include "SIMPLib/SIMPLib.h"
 #include "SIMPLib/Common/SIMPLibSetGetMacros.h"
 #include "SIMPLib/Common/ComparisonInputs.h"
+#include "SIMPLib/Common/ComparisonInputsAdvanced.h"
 #include "SIMPLib/FilterParameters/IntVec3FilterParameter.h"
 #include "SIMPLib/FilterParameters/FloatVec3FilterParameter.h"
 #include "SIMPLib/FilterParameters/SecondOrderPolynomialFilterParameter.h"
@@ -117,6 +118,7 @@ class SIMPLib_EXPORT AbstractFilterParametersReader
     virtual FileListInfo_t readFileListInfo(const QString name, FileListInfo_t v);
     virtual ComparisonInput_t readComparisonInput(const QString name, ComparisonInput_t v, int vectorPos);
     virtual ComparisonInputs readComparisonInputs(const QString name, ComparisonInputs v);
+    virtual ComparisonInputsAdvanced readComparisonInputsAdvanced(const QString name, ComparisonInputsAdvanced v);
     virtual AxisAngleInput_t readAxisAngle(const QString name, AxisAngleInput_t v, int vectorPos);
     virtual QVector<AxisAngleInput_t> readAxisAngles(const QString name, QVector<AxisAngleInput_t> v);
     virtual QSet<QString> readArraySelections(const QString name, QSet<QString> v);

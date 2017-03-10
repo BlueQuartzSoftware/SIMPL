@@ -33,146 +33,206 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-#include "ComparisonInputsAdvanced.h"
+#include "ComparisonContainerWidget.h"
 
-#include "SIMPLib/Common/ComparisonSet.h"
-#include "SIMPLib/Common/ComparisonValue.h"
+#include <QtGui/QDrag>
+#include <QtCore/QMimeData>
 
-#include "moc_ComparisonInputsAdvanced.cpp"
+#include "SVWidgetsLib/FilterParameterWidgets/ComparisonSetWidget.h"
+#include "SVWidgetsLib/FilterParameterWidgets/ComparisonValueWidget.h"
+
+#include "moc_ComparisonContainerWidget.cpp"
+
+ComparisonContainerWidget* ComparisonContainerWidget::SelectedItem = nullptr;
+QString ComparisonContainerWidget::BorderStyleSheet = "ComparisonContainerWidget { border-style: outset; border-width: 2px; border-radius: 5px; border-color: blue; }";
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-ComparisonInputsAdvanced::ComparisonInputsAdvanced()
+ComparisonContainerWidget::ComparisonContainerWidget(QWidget* parent) : QWidget(parent)
 {
+  setupUi(this);
+
+  m_comparisonWidget = nullptr;
 }
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-ComparisonInputsAdvanced::ComparisonInputsAdvanced(const ComparisonInputsAdvanced& rhs)
+ComparisonContainerWidget::~ComparisonContainerWidget()
 {
-  m_Inputs = rhs.m_Inputs;
+
 }
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-// ComparisonInputs::ComparisonInputs(ComparisonInputs& rhs)
+int ComparisonContainerWidget::getUnionOperator()
+{
+  return m_unionOperator;
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void ComparisonContainerWidget::setUnionOperator(int unionOperator)
+{
+  m_unionOperator = unionOperator;
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void ComparisonContainerWidget::showUnionOperator()
+{
+  unionComboBox->show();
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void ComparisonContainerWidget::hideUnionOperator()
+{
+  unionComboBox->hide();
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void ComparisonContainerWidget::setComparison(AbstractComparison::Pointer comparison)
+{
+  setUnionOperator(comparison->getUnionOperator());
+
+  // create widget, replace current widget, and save the pointer
+  IComparisonWidget* widget = IComparisonWidget::CreateWidget(comparison);
+
+  setComparisonWidget(widget);
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void ComparisonContainerWidget::setComparisonWidget(IComparisonWidget* widget)
+{
+  // replace current widget, save pointer
+  if (m_comparisonWidget)
+  {
+    m_comparisonWidget->hide();
+    m_comparisonWidget->setParent(nullptr);
+    m_comparisonWidget->deleteLater();
+  }
+
+  if (widget)
+  {
+    contentsLayout->addWidget(widget);
+  }
+
+  m_comparisonWidget = widget;
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+AbstractComparison::Pointer ComparisonContainerWidget::getCurrentComparison()
+{
+  if (nullptr == m_comparisonWidget)
+  {
+    return nullptr;
+  }
+
+  AbstractComparison::Pointer comparison = m_comparisonWidget->getCurrentComparison();
+  comparison->setUnionOperator(getUnionOperator());
+
+  return comparison;
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+//void ComparisonContainerWidget::deleteItem()
 //{
-//  m_Inputs = rhs.m_Inputs;
+//  hide();
+//  setParent(nullptr);
+//
+//  if (m_comparisonSetWidget)
+//  {
+//    m_comparisonSetWidget->update();
+//    QCoreApplication::processEvents();
+//    m_comparisonSetWidget->updateItems();
+//
+//    delete m_comparisonWidget;
+//    m_comparisonWidget = nullptr;
+//  }
+//
+//  close();
 //}
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-ComparisonInputsAdvanced::~ComparisonInputsAdvanced()
+void ComparisonContainerWidget::mousePressEvent(QMouseEvent* event)
 {
+  if (!(event->buttons() & Qt::LeftButton))
+    return;
+
+  m_startDragPoint = event->pos();
+
+  select();
 }
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-int ComparisonInputsAdvanced::size()
+void ComparisonContainerWidget::select()
 {
-  return m_Inputs.size();
+  if (nullptr == this)
+    return;
+
+  setStyleSheet(ComparisonContainerWidget::BorderStyleSheet);
+
+  if (ComparisonContainerWidget::SelectedItem)
+    ComparisonContainerWidget::SelectedItem->deselect();
+
+  ComparisonContainerWidget::SelectedItem = this;
 }
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void ComparisonInputsAdvanced::addInput(int unionOperator, const QString dataContainerName, const QString attributeMatrixName, const QString arrayName, int compOperator, double compValue)
+void ComparisonContainerWidget::deselect()
 {
-  ComparisonValue::Pointer v = ComparisonValue::New();
-  v->setUnionOperator(unionOperator);
-  v->setDataContainerName(dataContainerName);
-  v->setAttributeMatrixName(attributeMatrixName);
-  v->setAttributeArrayName(arrayName);
-  v->setCompOperator(compOperator);
-  v->setCompValue(compValue);
-  m_Inputs.push_back(v);
+  if (nullptr == this)
+    return;
+
+  if (ComparisonContainerWidget::SelectedItem == this)
+    ComparisonContainerWidget::SelectedItem = nullptr;
+
+  setStyleSheet("");
 }
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void ComparisonInputsAdvanced::addInput(int unionOperator, bool invertComparison, QVector<AbstractComparison::Pointer> comparisons)
+void ComparisonContainerWidget::mouseMoveEvent(QMouseEvent* event)
 {
-  ComparisonSet::Pointer s = ComparisonSet::New();
-  s->setUnionOperator(unionOperator);
-  s->setInvertComparison(invertComparison);
-  s->setComparisons(comparisons);
-  m_Inputs.push_back(s);
+  if (!(event->buttons() & Qt::LeftButton))
+    return;
+  if ((event->pos() - m_startDragPoint).manhattanLength()
+    < QApplication::startDragDistance())
+    return;
+
+  QDrag *drag = new QDrag(this);
+  QMimeData *mimeData = new QMimeData;
+
+  drag->setMimeData(mimeData);
+
+  Qt::DropAction dropAction = drag->exec(Qt::MoveAction);
 }
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void ComparisonInputsAdvanced::addInput(const AbstractComparison::Pointer input)
+void ComparisonContainerWidget::mouseReleaseEvent(QMouseEvent* event)
 {
-  m_Inputs.push_back(input);
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-AbstractComparison::Pointer ComparisonInputsAdvanced::getInput(int index)
-{
-  return m_Inputs[index];
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-AbstractComparison::Pointer ComparisonInputsAdvanced::operator[](int index)
-{
-  return m_Inputs[index];
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-QVector<AbstractComparison::Pointer>& ComparisonInputsAdvanced::getInputs()
-{
-  return m_Inputs;
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-QString ComparisonInputsAdvanced::getDataContainerName()
-{
-  return m_dataContainerName;
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-QString ComparisonInputsAdvanced::getAttributeMatrixName()
-{
-  return m_attributeMatrixName;
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-void ComparisonInputsAdvanced::setDataContainerName(QString dcName)
-{
-  m_dataContainerName = dcName;
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-void ComparisonInputsAdvanced::setAttributeMatrixName(QString amName)
-{
-  m_attributeMatrixName = amName;
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-void ComparisonInputsAdvanced::operator=(const ComparisonInputsAdvanced& rhs)
-{
-  m_Inputs = rhs.m_Inputs;
+  deselect();
 }
