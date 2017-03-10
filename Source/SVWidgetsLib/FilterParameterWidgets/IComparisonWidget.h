@@ -33,52 +33,26 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-#ifndef _ComparisonValue_h_
-#define _ComparisonValue_h_
+#ifndef _IComparisonWidget_h_
+#define _IComparisonWidget_h_
 
-#include "AbstractComparison.h"
+#include <QtWidgets/QWidget>
 
-#include <QtCore/QString>
+#include "SIMPLib/Common/AbstractComparison.h"
 
-#include "SIMPLib/Common/ComparisonSet.h"
+#include "SVWidgetsLib/SVWidgetsLib.h"
 
-class SIMPLib_EXPORT ComparisonValue : public AbstractComparison
+class SVWidgetsLib_EXPORT IComparisonWidget : public QWidget
 {
 public:
-  SIMPL_SHARED_POINTERS(ComparisonValue)
-  SIMPL_STATIC_NEW_MACRO(ComparisonValue)
-  SIMPL_TYPE_MACRO_SUPER(ComparisonValue, AbstractComparison)
+  IComparisonWidget(QWidget* parent = nullptr);
+  ~IComparisonWidget();
 
-  ~ComparisonValue();
+  static IComparisonWidget* CreateWidget(AbstractComparison::Pointer comparison);
 
-  void writeJson(QJsonObject& json);
-  bool readJson(QJsonObject& json);
+  virtual AbstractComparison::Pointer getCurrentComparison() = 0;
 
-  QString getDataContainerName();
-  QString getAttributeMatrixName();
-  QString getAttributeArrayName();
-  int getCompOperator();
-  double getCompValue();
-  
-  void setDataContainerName(QString name);
-  void setAttributeMatrixName(QString name);
-  void setAttributeArrayName(QString name);
-  void setCompOperator(int compOperator);
-  void setCompValue(double value);
-
-  ComparisonSet::Pointer getParentSet();
-  void setParentSet(ComparisonSet::Pointer parentSet);
-
-protected:
-  QString m_dataContainerName;
-  QString m_attributeMatrixName;
-  QString m_attributeArrayName;
-  int m_compOperator;
-  double m_compValue;
-
-  ComparisonSet::Pointer m_parentSet;
-
-  ComparisonValue();
+  virtual void apply() = 0;
 };
 
 #endif

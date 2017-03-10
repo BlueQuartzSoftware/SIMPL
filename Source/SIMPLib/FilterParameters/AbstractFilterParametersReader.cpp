@@ -449,6 +449,18 @@ ComparisonInputs AbstractFilterParametersReader::readComparisonInputs(const QStr
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
+ComparisonInputsAdvanced AbstractFilterParametersReader::readComparisonInputsAdvanced(const QString name, ComparisonInputs defValue)
+{
+  Q_UNUSED(name)
+  Q_UNUSED(defValue)
+
+  // This should never be executed
+  return ComparisonInputsAdvanced();
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
 AxisAngleInput_t AbstractFilterParametersReader::readAxisAngle(const QString name, AxisAngleInput_t v, int vectorPos)
 {
   Q_UNUSED(name)

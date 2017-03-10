@@ -41,7 +41,7 @@
 
 #include <QtCore/QJsonObject>
 
-class AbstractComparison
+class SIMPLib_EXPORT AbstractComparison
 {
 public:
   SIMPL_SHARED_POINTERS(AbstractComparison)
