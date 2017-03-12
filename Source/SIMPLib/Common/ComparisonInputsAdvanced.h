@@ -93,6 +93,8 @@ class SIMPLib_EXPORT ComparisonInputsAdvanced : public QObject
 
     AbstractComparison::Pointer operator[](int index);
 
+    bool hasComparisonValue();
+
   private:
 
     QVector<AbstractComparison::Pointer> m_Inputs;
