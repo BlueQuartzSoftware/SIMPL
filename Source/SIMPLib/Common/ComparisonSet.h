@@ -61,6 +61,8 @@ public:
   void addComparison(AbstractComparison::Pointer comparison);
   void insertComparison(int index, AbstractComparison::Pointer comparison);
 
+  bool hasComparisonValue();
+
 protected:
   bool m_invertComparison;
   QVector<AbstractComparison::Pointer> m_comparisons;

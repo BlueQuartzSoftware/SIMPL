@@ -176,3 +176,30 @@ void ComparisonInputsAdvanced::operator=(const ComparisonInputsAdvanced& rhs)
 {
   m_Inputs = rhs.m_Inputs;
 }
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+bool ComparisonInputsAdvanced::hasComparisonValue()
+{
+  if (m_Inputs.size() == 0)
+    return false;
+
+  for (int i = 0; i < m_Inputs.size(); i++)
+  {
+    if (std::dynamic_pointer_cast<ComparisonValue>(m_Inputs[i]))
+    {
+      return true;
+    }
+    if (std::dynamic_pointer_cast<ComparisonSet>(m_Inputs[i]))
+    {
+      ComparisonSet::Pointer comparisonSet = std::dynamic_pointer_cast<ComparisonSet>(m_Inputs[i]);
+      if (comparisonSet->hasComparisonValue())
+      {
+        return true;
+      }
+    }
+  }
+
+  return false;
+}

@@ -170,3 +170,30 @@ void ComparisonSet::insertComparison(int index, AbstractComparison::Pointer comp
     m_comparisons.insert(index, comparison);
   }
 }
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+bool ComparisonSet::hasComparisonValue()
+{
+  if (m_comparisons.size() == 0)
+    return false;
+
+  for (int i = 0; i < m_comparisons.size(); i++)
+  {
+    if (std::dynamic_pointer_cast<ComparisonValue>(m_comparisons[i]))
+    {
+      return true;
+    }
+    if (std::dynamic_pointer_cast<ComparisonSet>(m_comparisons[i]))
+    {
+      ComparisonSet::Pointer comparisonSet = std::dynamic_pointer_cast<ComparisonSet>(m_comparisons[i]);
+      if (comparisonSet->hasComparisonValue())
+      {
+        return true;
+      }
+    }
+  }
+
+  return false;
+}
