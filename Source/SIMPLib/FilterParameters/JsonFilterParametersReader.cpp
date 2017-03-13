@@ -310,8 +310,6 @@ QString JsonFilterParametersReader::HtmlSummaryFromFile(QString filePath, IObser
 // -----------------------------------------------------------------------------
 FilterPipeline::Pointer JsonFilterParametersReader::readPipelineFromString(QString contents, IObserver* obs)
 {
-  std::cout << contents.toStdString() << std::endl;
-
   setPipelineContents(contents);
 
   FilterPipeline::Pointer pipeline = readPipeline(obs);
