@@ -514,17 +514,17 @@ int SVPipelineViewWidget::openPipeline(const QString& filePath, QVariant value, 
   QString name = fi.fileName();
 
   // Read the pipeline from the file
-  FilterPipeline::Pointer pipeline = readPipelineFromFile(filePath);
+  QString jsonString = getJsonFromFile(filePath);
 
   // Check that a valid extension was read...
-  if(pipeline == FilterPipeline::NullPointer())
+  if(jsonString.isEmpty())
   {
     emit statusMessage(tr("The pipeline was not read correctly from file '%1'. '%2' is an unsupported file extension.").arg(name).arg(ext));
     return -1;
   }
 
   // Populate the pipeline view
-  populatePipelineView(pipeline, value);
+  populatePipelineView(jsonString, value);
 
   // Notify user of successful read
   emit statusMessage(tr("The pipeline has been read successfully from '%1'.").arg(name));
@@ -1020,9 +1020,9 @@ void SVPipelineViewWidget::addSIMPLViewReaderFilter(const QString& filePath, QVa
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void SVPipelineViewWidget::populatePipelineView(FilterPipeline::Pointer pipeline, QVariant value)
+void SVPipelineViewWidget::populatePipelineView(QString jsonString, QVariant value)
 {
-  if(nullptr == pipeline.get())
+  if(jsonString.isEmpty())
   {
     clearFilterWidgets();
     return;
@@ -1039,9 +1039,7 @@ void SVPipelineViewWidget::populatePipelineView(FilterPipeline::Pointer pipeline
     index = filterCount();
   }
 
-  FilterPipeline::FilterContainerType container = pipeline->getFilterContainer();
-
-  AddFilterCommand* addCmd = new AddFilterCommand(container, this, "Paste", index);
+  AddFilterCommand* addCmd = new AddFilterCommand(jsonString, this, "Paste", index);
   addUndoCommand(addCmd);
 
   if(filterCount() > 0)
@@ -1145,6 +1143,29 @@ FilterPipeline::Pointer SVPipelineViewWidget::readPipelineFromFile(const QString
   }
 
   return pipeline;
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+QString SVPipelineViewWidget::getJsonFromFile(const QString& filePath)
+{
+  QFileInfo fi(filePath);
+  QString ext = fi.suffix();
+
+  QString jsonString = "";
+  if(ext == "dream3d")
+  {
+    H5FilterParametersReader::Pointer dream3dReader = H5FilterParametersReader::New();
+    jsonString = dream3dReader->getJsonFromFile(filePath);
+  }
+  else if(ext == "json")
+  {
+    JsonFilterParametersReader::Pointer jsonReader = JsonFilterParametersReader::New();
+    jsonString = jsonReader->getJsonFromFile(filePath);
+  }
+
+  return jsonString;
 }
 
 // -----------------------------------------------------------------------------

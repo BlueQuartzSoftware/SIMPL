@@ -41,6 +41,7 @@
 
 #include "JsonFilterParametersWriter.h"
 #include "SIMPLib/Common/Constants.h"
+#include "SIMPLib/CoreFilters/DataContainerReader.h"
 
 // -----------------------------------------------------------------------------
 //
@@ -48,6 +49,7 @@
 JsonFilterParametersWriter::JsonFilterParametersWriter()
 : m_MaxFilterIndex(-1)
 , m_CurrentIndex(0)
+, m_ExpandReaderFilters(true)
 {
 }
 
@@ -119,7 +121,6 @@ int JsonFilterParametersWriter::populateWriter(FilterPipeline::Pointer pipeline,
 
   QFileInfo info(pipelineName);
 
-  // WRITE THE PIPELINE TO THE JSON FILE
   setPipelineName(info.completeBaseName());
 
   FilterPipeline::FilterContainerType& filters = pipeline->getFilterContainer();
@@ -127,19 +128,26 @@ int JsonFilterParametersWriter::populateWriter(FilterPipeline::Pointer pipeline,
 
   // Loop over each filter and write it's input parameters to the file
   int count = filters.size();
+  int offset = 0;
   for(qint32 i = 0; i < count; ++i)
   {
+
     AbstractFilter::Pointer filter = filters.at(i);
     if(nullptr != filter.get())
     {
-      openFilterGroup(filter.get(), i);
+      DataContainerReader::Pointer reader = std::dynamic_pointer_cast<DataContainerReader>(filter);
+      if(reader.get() && m_ExpandReaderFilters == true)
+      {
+        offset = reader->writeExistingPipelineToFile(m_Root, i);
+      }
+      openFilterGroup(filter.get(), i + offset);
       filter->writeFilterParameters(m_CurrentFilterIndex);
       closeFilterGroup();
     }
     else
     {
       AbstractFilter::Pointer badFilter = AbstractFilter::New();
-      openFilterGroup(badFilter.get(), i);
+      openFilterGroup(badFilter.get(), i + offset);
       m_CurrentFilterIndex["Unknown Filter"] = "ERROR: Filter instance was nullptr within the SVPipelineFilterWidget instance. Report this error to the DREAM3D Developers";
       closeFilterGroup();
     }
@@ -244,7 +252,6 @@ int JsonFilterParametersWriter::openFilterGroup(AbstractFilter* filter, int inde
     {
       m_CurrentFilterIndex[SIMPL::Settings::FilterName] = filter->getNameOfClass();
       m_CurrentFilterIndex[SIMPL::Settings::HumanLabel] = filter->getHumanLabel();
-      // m_CurrentFilterIndex[SIMPL::Settings::FilterVersion] = filter->getFilterVersion();
     }
   }
 

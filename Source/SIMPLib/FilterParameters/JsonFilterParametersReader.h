@@ -74,6 +74,17 @@ class SIMPLib_EXPORT JsonFilterParametersReader : public AbstractFilterParameter
     FilterPipeline::Pointer readPipelineFromFile(QString filePath, IObserver* obs = nullptr);
 
     /**
+    * @brief getJsonFromFile Reads the Json formatted file and returns a json string
+    * that contains all the filters that could be found. If a filter can not be found then that filter is simply skipped.
+    * If the IObserver is NON-Null then an error message will be passed to it with an error message
+    * @param filePath The path to the INI formatted file
+    * @param format The format of the file which is anything that QSettings understands
+    * @param obs An IObserver object to report errors.
+    * @return Shared Pointer to a FilterPipeline Instance
+    */
+    QString getJsonFromFile(QString filePath, IObserver* obs = nullptr);
+
+    /**
     * @brief ReadPipelineFromString Reads the Json formatted file and returns a FilterPipeline object
     * that contains all the filters that could be found. If a filter can not be found then that filter is simply skipped.
     * If the IObserver is NON-Null then an error message will be passed to it with an error message

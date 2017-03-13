@@ -127,6 +127,49 @@ FilterPipeline::Pointer JsonFilterParametersReader::readPipelineFromFile(QString
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
+QString JsonFilterParametersReader::getJsonFromFile(QString filePath, IObserver* obs)
+{
+  QFileInfo fInfo(filePath);
+
+  if(filePath.isEmpty() == true)
+  {
+    return QString();
+  }
+  QFileInfo fi(filePath);
+  if(fi.exists() == false)
+  {
+    return QString();
+  }
+
+  QString jsonString = "";
+  if(m_Root.isEmpty() == false || m_CurrentFilterIndex.isEmpty() == false)
+  {
+    closeFile();
+  }
+
+  QFile inputFile(filePath);
+  if(inputFile.open(QIODevice::ReadOnly))
+  {
+    QJsonParseError parseError;
+    QByteArray byteArray = inputFile.readAll();
+    QJsonDocument doc = QJsonDocument::fromJson(byteArray, &parseError);
+    if(parseError.error != QJsonParseError::NoError)
+    {
+      return QString();
+    }
+
+    byteArray = doc.toJson();
+    jsonString = QString(byteArray);
+  }
+
+  closeFile();
+
+  return jsonString;
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
 QString generateErrorHtml(const QString& errorText)
 {
   QString html;
@@ -267,6 +310,8 @@ QString JsonFilterParametersReader::HtmlSummaryFromFile(QString filePath, IObser
 // -----------------------------------------------------------------------------
 FilterPipeline::Pointer JsonFilterParametersReader::readPipelineFromString(QString contents, IObserver* obs)
 {
+  std::cout << contents.toStdString() << std::endl;
+
   setPipelineContents(contents);
 
   FilterPipeline::Pointer pipeline = readPipeline(obs);
@@ -291,6 +336,7 @@ FilterPipeline::Pointer JsonFilterParametersReader::readPipeline(IObserver* obs)
 
   QJsonObject builderObj = m_Root[SIMPL::Settings::PipelineBuilderGroup].toObject();
   int filterCount = builderObj[SIMPL::Settings::NumFilters].toInt();
+  m_MaxFilterIndex = filterCount - 1; // Zero based indexing
 
   FilterPipeline::Pointer pipeline;
   if(filterCount >= 0)
@@ -485,10 +531,14 @@ void JsonFilterParametersReader::closeFile()
 // -----------------------------------------------------------------------------
 int JsonFilterParametersReader::openFilterGroup(AbstractFilter* unused, int index)
 {
+  Q_UNUSED(unused);
   Q_ASSERT(m_Root.isEmpty() == false);
   int err = 0;
   QString numStr = QString::number(index);
-  m_CurrentFilterIndex = m_Root[numStr].toObject();
+  if(m_Root.find(numStr) != m_Root.end() )
+  {
+    m_CurrentFilterIndex = m_Root[numStr].toObject();
+  }
   if(m_CurrentFilterIndex.isEmpty())
   {
     numStr = generateIndexString(index, m_MaxFilterIndex);
