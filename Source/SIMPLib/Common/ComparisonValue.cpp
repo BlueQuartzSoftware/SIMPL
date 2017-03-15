@@ -42,8 +42,6 @@
 // -----------------------------------------------------------------------------
 ComparisonValue::ComparisonValue() : AbstractComparison()
 {
-  m_dataContainerName = "";
-  m_attributeMatrixName = "";
   m_attributeArrayName = "";
   m_compOperator = SIMPL::Comparison::Operator_GreaterThan;
   m_compValue = 0;
@@ -63,8 +61,6 @@ ComparisonValue::~ComparisonValue()
 void ComparisonValue::writeJson(QJsonObject& json)
 {
   json["Union Operator"] = m_unionOperator;
-  json["Data Container Name"] = m_dataContainerName;
-  json["Attribute Matrix Name"] = m_attributeMatrixName;
   json["Attribute Array Name"] = m_attributeArrayName;
   json["Comparison Operator"] = m_compOperator;
   json["Comparison Value"] = m_compValue;
@@ -75,8 +71,7 @@ void ComparisonValue::writeJson(QJsonObject& json)
 // -----------------------------------------------------------------------------
 bool ComparisonValue::readJson(QJsonObject& json)
 {
-  if (json["Data Container Name"].isString() && json["Attribute Matrix Name"].isString() && json["Attribute Array Name"].isString()
-    && json["Comparison Operator"].isDouble() && json["Comparison Value"].isDouble())
+  if (json["Attribute Array Name"].isString() && json["Comparison Operator"].isDouble() && json["Comparison Value"].isDouble())
   {
     // allow reading legacy stored data without union operators
     if (json["Union Operator"].isDouble())
@@ -87,31 +82,13 @@ bool ComparisonValue::readJson(QJsonObject& json)
     {
       m_unionOperator = SIMPL::Union::Operator_And;
     }
-    
-    m_dataContainerName = json["Data Container Name"].toString();
-    m_attributeMatrixName = json["Attribute Matrix Name"].toString();
+
     m_attributeArrayName = json["Attribute Array Name"].toString();
     m_compOperator = json["Comparison Operator"].toInt();
     m_compValue = json["Comparison Value"].toDouble();
     return true;
   }
   return false;
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-QString ComparisonValue::getDataContainerName()
-{
-  return m_dataContainerName;
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-QString ComparisonValue::getAttributeMatrixName()
-{
-  return m_attributeMatrixName;
 }
 
 // -----------------------------------------------------------------------------
@@ -136,22 +113,6 @@ int ComparisonValue::getCompOperator()
 double ComparisonValue::getCompValue()
 {
   return m_compValue;
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-void ComparisonValue::setDataContainerName(QString dcName)
-{
-  m_dataContainerName = dcName;
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-void ComparisonValue::setAttributeMatrixName(QString amName)
-{
-  m_attributeMatrixName = amName;
 }
 
 // -----------------------------------------------------------------------------

@@ -197,3 +197,29 @@ bool ComparisonSet::hasComparisonValue()
 
   return false;
 }
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+QVector<AbstractComparison::Pointer> ComparisonSet::getComparisonValues()
+{
+  QVector<AbstractComparison::Pointer> comparisonValues;
+
+  for (int i = 0; i < m_comparisons.size(); i++)
+  {
+    if (std::dynamic_pointer_cast<ComparisonValue>(m_comparisons[i]))
+    {
+      ComparisonValue::Pointer compValue = std::dynamic_pointer_cast<ComparisonValue>(m_comparisons[i]);
+      comparisonValues.push_back(compValue);
+    }
+    if (std::dynamic_pointer_cast<ComparisonSet>(m_comparisons[i]))
+    {
+      ComparisonSet::Pointer comparisonSet = std::dynamic_pointer_cast<ComparisonSet>(m_comparisons[i]);
+      QVector<AbstractComparison::Pointer> setValues = comparisonSet->getComparisonValues();
+
+      comparisonValues.append(setValues);
+    }
+  }
+
+  return comparisonValues;
+}

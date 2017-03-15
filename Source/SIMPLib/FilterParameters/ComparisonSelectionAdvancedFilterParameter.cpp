@@ -91,9 +91,14 @@ void ComparisonSelectionAdvancedFilterParameter::readJson(const QJsonObject& jso
   QJsonValue jsonValue = json[getPropertyName()];
   if(!jsonValue.isUndefined() && m_SetterCallback)
   {
-    QJsonArray jsonArray = jsonValue.toArray();
+    QJsonObject jsonObject = jsonValue.toObject();
 
     ComparisonInputsAdvanced inputs;
+
+    inputs.setDataContainerName(jsonObject.value("Data Container Name").toString());
+    inputs.setAttributeMatrixName(jsonObject.value("Attribute Matrix Name").toString());
+
+    QJsonArray jsonArray = jsonObject.value("Thresholds").toArray();
     for(int i = 0; i < jsonArray.size(); i++)
     {
       QJsonObject comparisonObj = jsonArray[i].toObject();
@@ -113,9 +118,19 @@ void ComparisonSelectionAdvancedFilterParameter::writeJson(QJsonObject& json)
 {
   if (m_GetterCallback)
   {
-    QJsonArray inputsArray;
-
     ComparisonInputsAdvanced inputs = m_GetterCallback();
+
+    QJsonObject inputsObj;
+    QJsonValue dcName;
+    QJsonValue amName;
+    
+    dcName = inputs.getDataContainerName();
+    amName = inputs.getAttributeMatrixName();
+
+    inputsObj["Data Container Name"] = dcName;
+    inputsObj["Attribute Matrix Name"] = amName;
+
+    QJsonArray inputsArray;
     for(int i = 0; i < inputs.size(); i++)
     {
       AbstractComparison::Pointer input = inputs[i];
@@ -124,6 +139,7 @@ void ComparisonSelectionAdvancedFilterParameter::writeJson(QJsonObject& json)
       inputsArray.push_back(obj);
     }
 
-    json[getPropertyName()] = inputsArray;
+    inputsObj["Thresholds"] = inputsArray;
+    json[getPropertyName()] = inputsObj;
   }
 }

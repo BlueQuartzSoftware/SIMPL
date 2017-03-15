@@ -70,8 +70,6 @@ class SIMPLib_EXPORT ComparisonInputsAdvanced : public QObject
     int size();
 
     void addInput(int unionOperator,
-                  const QString dataContainerName,
-                  const QString attributeMatrixName,
                   const QString arrayName,
                   int compOperator,
                   double compValue);
@@ -82,6 +80,8 @@ class SIMPLib_EXPORT ComparisonInputsAdvanced : public QObject
 
     AbstractComparison::Pointer getInput(int index);
     QVector<AbstractComparison::Pointer>& getInputs();
+
+    void setInputs(QVector<AbstractComparison::Pointer> comparisons);
 
     QString getDataContainerName();
     QString getAttributeMatrixName();
@@ -94,13 +94,17 @@ class SIMPLib_EXPORT ComparisonInputsAdvanced : public QObject
     AbstractComparison::Pointer operator[](int index);
 
     bool hasComparisonValue();
+    QVector<AbstractComparison::Pointer> getComparisonValues();
+
+    bool shouldInvert();
+    void setInvert(bool invert);
 
   private:
-
     QVector<AbstractComparison::Pointer> m_Inputs;
     QString m_dataContainerName;
     QString m_attributeMatrixName;
 
+    bool m_invert;
 };
 
 

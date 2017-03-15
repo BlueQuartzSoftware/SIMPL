@@ -45,6 +45,7 @@
 // -----------------------------------------------------------------------------
 ComparisonInputsAdvanced::ComparisonInputsAdvanced()
 {
+  m_invert = false;
 }
 
 // -----------------------------------------------------------------------------
@@ -52,7 +53,11 @@ ComparisonInputsAdvanced::ComparisonInputsAdvanced()
 // -----------------------------------------------------------------------------
 ComparisonInputsAdvanced::ComparisonInputsAdvanced(const ComparisonInputsAdvanced& rhs)
 {
+  m_dataContainerName = rhs.m_dataContainerName;
+  m_attributeMatrixName = rhs.m_attributeMatrixName;
   m_Inputs = rhs.m_Inputs;
+
+  m_invert = rhs.m_invert;
 }
 
 // -----------------------------------------------------------------------------
@@ -81,12 +86,10 @@ int ComparisonInputsAdvanced::size()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void ComparisonInputsAdvanced::addInput(int unionOperator, const QString dataContainerName, const QString attributeMatrixName, const QString arrayName, int compOperator, double compValue)
+void ComparisonInputsAdvanced::addInput(int unionOperator, const QString arrayName, int compOperator, double compValue)
 {
   ComparisonValue::Pointer v = ComparisonValue::New();
   v->setUnionOperator(unionOperator);
-  v->setDataContainerName(dataContainerName);
-  v->setAttributeMatrixName(attributeMatrixName);
   v->setAttributeArrayName(arrayName);
   v->setCompOperator(compOperator);
   v->setCompValue(compValue);
@@ -111,6 +114,14 @@ void ComparisonInputsAdvanced::addInput(int unionOperator, bool invertComparison
 void ComparisonInputsAdvanced::addInput(const AbstractComparison::Pointer input)
 {
   m_Inputs.push_back(input);
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void ComparisonInputsAdvanced::setInputs(QVector<AbstractComparison::Pointer> comparisons)
+{
+  m_Inputs = comparisons;
 }
 
 // -----------------------------------------------------------------------------
@@ -174,7 +185,11 @@ void ComparisonInputsAdvanced::setAttributeMatrixName(QString amName)
 // -----------------------------------------------------------------------------
 void ComparisonInputsAdvanced::operator=(const ComparisonInputsAdvanced& rhs)
 {
+  m_dataContainerName = rhs.m_dataContainerName;
+  m_attributeMatrixName = rhs.m_attributeMatrixName;
   m_Inputs = rhs.m_Inputs;
+
+  m_invert = rhs.m_invert;
 }
 
 // -----------------------------------------------------------------------------
@@ -202,4 +217,46 @@ bool ComparisonInputsAdvanced::hasComparisonValue()
   }
 
   return false;
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+QVector<AbstractComparison::Pointer> ComparisonInputsAdvanced::getComparisonValues()
+{
+  QVector<AbstractComparison::Pointer> comparisonValues;
+
+  for (int i = 0; i < m_Inputs.size(); i++)
+  {
+    if (std::dynamic_pointer_cast<ComparisonValue>(m_Inputs[i]))
+    {
+      ComparisonValue::Pointer compValue = std::dynamic_pointer_cast<ComparisonValue>(m_Inputs[i]);
+      comparisonValues.push_back(compValue);
+    }
+    if (std::dynamic_pointer_cast<ComparisonSet>(m_Inputs[i]))
+    {
+      ComparisonSet::Pointer comparisonSet = std::dynamic_pointer_cast<ComparisonSet>(m_Inputs[i]);
+      QVector<AbstractComparison::Pointer> setValues = comparisonSet->getComparisonValues();
+      
+      comparisonValues.append(setValues);
+    }
+  }
+
+  return comparisonValues;
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+bool ComparisonInputsAdvanced::shouldInvert()
+{
+  return m_invert;
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void ComparisonInputsAdvanced::setInvert(bool invert)
+{
+  m_invert = invert;
 }

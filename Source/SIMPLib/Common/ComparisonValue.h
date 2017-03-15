@@ -36,7 +36,8 @@
 #ifndef _ComparisonValue_h_
 #define _ComparisonValue_h_
 
-#include "AbstractComparison.h"
+#include "SIMPLib/Common/AbstractComparison.h"
+#include "SIMPLib/Common/ComparisonSet.h"
 
 #include <QtCore/QString>
 
@@ -54,14 +55,10 @@ public:
   void writeJson(QJsonObject& json);
   bool readJson(QJsonObject& json);
 
-  QString getDataContainerName();
-  QString getAttributeMatrixName();
   QString getAttributeArrayName();
   int getCompOperator();
   double getCompValue();
   
-  void setDataContainerName(QString name);
-  void setAttributeMatrixName(QString name);
   void setAttributeArrayName(QString name);
   void setCompOperator(int compOperator);
   void setCompValue(double value);
@@ -70,8 +67,6 @@ public:
   void setParentSet(ComparisonSet::Pointer parentSet);
 
 protected:
-  QString m_dataContainerName;
-  QString m_attributeMatrixName;
   QString m_attributeArrayName;
   int m_compOperator;
   double m_compValue;

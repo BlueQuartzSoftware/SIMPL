@@ -66,15 +66,13 @@ AbstractComparison::Pointer AbstractComparison::FromJson(QJsonObject& json)
   {
     return value;
   }
-  else
+  
+  ComparisonSet::Pointer set = ComparisonSet::New();
+  if (set->readJson(json))
   {
-    ComparisonSet::Pointer set = ComparisonSet::New();
-    if (set->readJson(json))
-    {
-      return set;
-    }
+    return set;
   }
-
+  
   return nullptr;
 }
 

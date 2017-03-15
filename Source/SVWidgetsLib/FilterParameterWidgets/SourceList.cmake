@@ -139,13 +139,13 @@ set(SVWidgetsLib_FilterParameterWidgets_MOC_HDRS
   ${SVWidgetsLib_SOURCE_DIR}/FilterParameterWidgets/ComparisonContainerWidget.h
   ${SVWidgetsLib_SOURCE_DIR}/FilterParameterWidgets/IComparisonWidget.h
   ${SVWidgetsLib_SOURCE_DIR}/FilterParameterWidgets/ComparisonSetWidget.h
+  ${SVWidgetsLib_SOURCE_DIR}/FilterParameterWidgets/ComparisonValueWidget.h
 )
 
 set(SVWidgetsLib_FilterParameterWidgets_HDRS
   ${SVWidgetsLib_FilterParameterWidgets_MOC_HDRS}
   ${SVWidgetsLib_SOURCE_DIR}/FilterParameterWidgets/FilterParameterWidgetsDialogs.h
   ${SVWidgetsLib_SOURCE_DIR}/FilterParameterWidgets/FilterParameterWidgetUtils.hpp
-  ${SVWidgetsLib_SOURCE_DIR}/FilterParameterWidgets/ComparisonValueWidget.h
 )
 
 

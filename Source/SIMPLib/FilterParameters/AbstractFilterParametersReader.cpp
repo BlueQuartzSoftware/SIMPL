@@ -449,7 +449,7 @@ ComparisonInputs AbstractFilterParametersReader::readComparisonInputs(const QStr
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-ComparisonInputsAdvanced AbstractFilterParametersReader::readComparisonInputsAdvanced(const QString name, ComparisonInputs defValue)
+ComparisonInputsAdvanced AbstractFilterParametersReader::readComparisonInputsAdvanced(const QString name, ComparisonInputsAdvanced defValue)
 {
   Q_UNUSED(name)
   Q_UNUSED(defValue)

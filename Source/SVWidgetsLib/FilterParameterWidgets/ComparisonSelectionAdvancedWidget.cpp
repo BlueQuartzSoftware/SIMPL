@@ -81,6 +81,13 @@ ComparisonInputsAdvanced ComparisonSelectionAdvancedWidget::getComparisonInputs(
   }
 
   DataArrayPath amPath = DataArrayPath::Deserialize(m_SelectedAttributeMatrixPath->text(), Detail::Delimiter);
+  comps.setDataContainerName(amPath.getDataContainerName());
+  comps.setAttributeMatrixName(amPath.getAttributeMatrixName());
+
+  QString dcName = comps.getDataContainerName();
+  QString amName = comps.getAttributeMatrixName();
+
+  comps.setInvert(comparisonSetWidget->getComparisonSet()->getInvertComparison());
 
   QVector<AbstractComparison::Pointer> comparisons = comparisonSetWidget->getComparisons();
 
@@ -116,10 +123,7 @@ void ComparisonSelectionAdvancedWidget::setupGui()
 
   // Create the Comparison Set
   comparisonSetWidget->setComparisonSet(ComparisonSet::New());
-
-  // Set the data into the Comparison Set
-  ComparisonInputsAdvanced comps = getFilter()->property(PROPERTY_NAME_AS_CHAR).value<ComparisonInputsAdvanced>();
-  comparisonSetWidget->getComparisonSet()->setComparisons(comps.getInputs());
+  connect(comparisonSetWidget, SIGNAL(comparisonChanged()), SIGNAL(parametersChanged()));
 
   m_SelectedAttributeMatrixPath->setStyleSheet(QtSStyles::DAPSelectionButtonStyle(false));
 
@@ -129,6 +133,18 @@ void ComparisonSelectionAdvancedWidget::setupGui()
 
   DataArrayPath defaultPath = getFilter()->property(PROPERTY_NAME_AS_CHAR).value<DataArrayPath>();
   m_SelectedAttributeMatrixPath->setText(defaultPath.serialize(Detail::Delimiter));
+
+  // Copy the data into the Comparison Set
+  ComparisonInputsAdvanced comps = getFilter()->property(PROPERTY_NAME_AS_CHAR).value<ComparisonInputsAdvanced>();
+  comparisonSetWidget->setComparisons(comps.getInputs());
+
+  DataArrayPath currentPath;
+  currentPath.setDataContainerName(comps.getDataContainerName());
+  currentPath.setAttributeMatrixName(comps.getAttributeMatrixName());
+  if (!currentPath.isEmpty())
+  {
+    setSelectedPath(currentPath);
+  }
 
 #if 0
   // is the filter parameter tied to a boolean property of the Filter Instance, if it is then we need to make the check box visible
@@ -323,6 +339,11 @@ void ComparisonSelectionAdvancedWidget::afterPreflight()
       QString html = am->getInfoString(SIMPL::HtmlFormat);
       m_SelectedAttributeMatrixPath->setToolTip(html);
       m_SelectedAttributeMatrixPath->setStyleSheet(QtSStyles::DAPSelectionButtonStyle(true));
+
+      if (nullptr == comparisonSetWidget->getAttributeMatrix())
+      {
+        comparisonSetWidget->setAttributeMatrix(am);
+      }
     }
   }
   else
@@ -428,11 +449,12 @@ void ComparisonSelectionAdvancedWidget::setSelectedPath(DataArrayPath amPath)
     QString html = am->getInfoString(SIMPL::HtmlFormat);
     m_SelectedAttributeMatrixPath->setToolTip(html);
     m_SelectedAttributeMatrixPath->setText(amPath.serialize(Detail::Delimiter));
-  }
 
-  if (nullptr != comparisonSetWidget->getComparisonSet())
-  {
-    comparisonSetWidget->setComparisonSet(ComparisonSet::New());
+    if (nullptr != comparisonSetWidget->getComparisonSet())
+    {
+      comparisonSetWidget->setAttributeMatrix(am);
+      comparisonSetWidget->setComparisonSet(ComparisonSet::New());
+    }
   }
 }
 

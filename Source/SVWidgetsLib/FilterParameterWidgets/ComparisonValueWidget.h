@@ -46,6 +46,8 @@
 
 class SVWidgetsLib_EXPORT ComparisonValueWidget : public IComparisonWidget, private Ui::ComparisonValueWidget
 {
+  Q_OBJECT
+
 public:
   ComparisonValueWidget(QWidget* parent, ComparisonValue::Pointer comparisonValue = nullptr);
   ~ComparisonValueWidget();
@@ -53,9 +55,22 @@ public:
   ComparisonValue::Pointer getComparisonValue();
   void setComparisonValue(ComparisonValue::Pointer value);
 
-  AbstractComparison::Pointer getCurrentComparison();
+  AbstractComparison::Pointer getComparison();
 
-  void apply();
+  void setAttributeMatrix(AttributeMatrix::Pointer am) override;
+  
+  /**
+  * @brief This method does additional GUI widget connections
+  */
+  void setupGui();
+
+protected:
+  void setupDataArrayComboBox();
+
+protected slots:
+  void dataArrayChanged(int index);
+  void comparisonOperatorChanged(int index);
+  void comparisonValueChanged(double value);
 
 private:
   ComparisonValue::Pointer m_comparisonValue;

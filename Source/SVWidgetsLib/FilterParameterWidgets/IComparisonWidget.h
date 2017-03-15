@@ -39,20 +39,30 @@
 #include <QtWidgets/QWidget>
 
 #include "SIMPLib/Common/AbstractComparison.h"
+#include "SIMPLib/DataContainers/AttributeMatrix.h"
 
 #include "SVWidgetsLib/SVWidgetsLib.h"
 
 class SVWidgetsLib_EXPORT IComparisonWidget : public QWidget
 {
+  Q_OBJECT
+
 public:
-  IComparisonWidget(QWidget* parent = nullptr);
+  IComparisonWidget(QWidget* parent);
   ~IComparisonWidget();
 
   static IComparisonWidget* CreateWidget(AbstractComparison::Pointer comparison);
 
-  virtual AbstractComparison::Pointer getCurrentComparison() = 0;
+  virtual AbstractComparison::Pointer getComparison() = 0;
 
-  virtual void apply() = 0;
+  AttributeMatrix::Pointer getAttributeMatrix();
+  virtual void setAttributeMatrix(AttributeMatrix::Pointer am);
+
+signals:
+  void comparisonChanged();
+
+private:
+  AttributeMatrix::Pointer m_attributeMatrix;
 };
 
 #endif

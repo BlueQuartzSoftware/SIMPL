@@ -36,7 +36,7 @@
 #ifndef _ComparisonContainerWidget_h_
 #define _ComparisonContainerWidget_h_
 
-#include <QtWidgets/QWidget>
+#include <QtWidgets/QFrame>
 #include <QtGui/QMouseEvent>
 
 #include "SIMPLib/Common/AbstractComparison.h"
@@ -46,27 +46,41 @@
 
 #include "ui_ComparisonContainerWidget.h"
 
-class SVWidgetsLib_EXPORT ComparisonContainerWidget : public QWidget, private Ui::ComparisonContainerWidget
+class ComparisonSetWidget;
+
+class SVWidgetsLib_EXPORT ComparisonContainerWidget : public QFrame, private Ui::ComparisonContainerWidget
 {
   Q_OBJECT
 
 public:
-  ComparisonContainerWidget(QWidget* parent);
+  ComparisonContainerWidget(QWidget* parent, AbstractComparison::Pointer comparison);
   ~ComparisonContainerWidget();
 
   int getUnionOperator();
   void setUnionOperator(int unionOperator);
 
-  void showUnionOperator();
+  void showUnionOperator(bool enabled = true);
   void hideUnionOperator();
 
   void setComparison(AbstractComparison::Pointer comparison);
   void setComparisonWidget(IComparisonWidget* widget);
 
   AbstractComparison::Pointer getCurrentComparison();
+  IComparisonWidget* getComparisonWidget();
+
+  ComparisonSetWidget* getComparisonSetWidget();
+  void setComparisonSetWidget(ComparisonSetWidget* comparisonSetWidget);
 
   void select();
   void deselect();
+
+  /**
+  * @brief This method does additional GUI widget connections
+  */
+  void setupGui();
+
+signals:
+  void comparisonChanged();
 
 protected:
   static ComparisonContainerWidget* SelectedItem;
@@ -76,13 +90,13 @@ protected:
   void mouseMoveEvent(QMouseEvent* event);
   void mouseReleaseEvent(QMouseEvent* event);
 
-//protected slots:
-//  void deleteItem();
+protected slots:
+  void deleteItem();
+  void unionOperatorChanged(int unionOp);
 
 private:
-  int m_unionOperator;
-
   IComparisonWidget* m_comparisonWidget;
+  ComparisonSetWidget* m_comparisonSetWidget;
 
   QPoint m_startDragPoint;
 };
