@@ -41,12 +41,14 @@
 #include "SVWidgetsLib/FilterParameterWidgets/ComparisonSetWidget.h"
 #include "SVWidgetsLib/FilterParameterWidgets/ComparisonValueWidget.h"
 
+#include "moc_IComparisonWidget.cpp"
+
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
 IComparisonWidget::IComparisonWidget(QWidget* parent) : QWidget(parent)
 {
-
+  m_attributeMatrix = nullptr;
 }
 
 // -----------------------------------------------------------------------------
@@ -76,4 +78,21 @@ IComparisonWidget* IComparisonWidget::CreateWidget(AbstractComparison::Pointer c
   }
 
   return widget;
+}
+
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void IComparisonWidget::setAttributeMatrix(AttributeMatrix::Pointer am)
+{
+  m_attributeMatrix = am;
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+AttributeMatrix::Pointer IComparisonWidget::getAttributeMatrix()
+{
+  return m_attributeMatrix;
 }

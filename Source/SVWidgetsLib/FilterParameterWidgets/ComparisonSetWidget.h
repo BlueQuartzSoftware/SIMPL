@@ -37,14 +37,20 @@
 #define _ComparisonSetWidget_h_
 
 #include <QtWidgets/QWidget>
+#include <QtGui/QDragEnterEvent>
+#include <QtGui/QDragMoveEvent>
+#include <QtGui/QDropEvent>
 
 #include <vector>
 
 #include "SIMPLib/Common/ComparisonSet.h"
+#include "SIMPLib/DataContainers/AttributeMatrix.h"
 
 #include "SVWidgetsLib/FilterParameterWidgets/IComparisonWidget.h"
 
 #include "ui_ComparisonSetWidget.h"
+
+class ComparisonContainerWidget;
 
 class SVWidgetsLib_EXPORT ComparisonSetWidget : public IComparisonWidget, private Ui::ComparisonSetWidget
 {
@@ -55,7 +61,6 @@ public:
   ~ComparisonSetWidget();
 
   QVector<AbstractComparison::Pointer> getComparisons();
-  QVector<AbstractComparison::Pointer> getCurrentComparisons();
   void setComparisons(QVector<AbstractComparison::Pointer> comparisons);
   void addComparison(AbstractComparison::Pointer comparison);
 
@@ -64,12 +69,37 @@ public:
   ComparisonSet::Pointer getComparisonSet();
   void setComparisonSet(ComparisonSet::Pointer comparisonSet);
 
-  AbstractComparison::Pointer getCurrentComparison();
+  AbstractComparison::Pointer getComparison();
 
-  void apply();
+  void setAttributeMatrix(AttributeMatrix::Pointer am) override;
 
+  void updateItems();
+
+  /**
+  * @brief This method does additional GUI widget connections
+  */
+  void setupGui();
+  
 protected:
-  void addComparisonWidget(AbstractComparison::Pointer comparison);
+
+  QVector<IComparisonWidget*> getComparisonWidgets();
+
+  void addComparisonWidget(AbstractComparison::Pointer comparison, int index = -1);
+  int insertIndex();
+  int insertIndexByPoint(QPoint pos, ComparisonContainerWidget* ignore = nullptr);
+
+  void dragEnterEvent(QDragEnterEvent* event);
+  void dragMoveEvent(QDragMoveEvent* event);
+  void dropEvent(QDropEvent* event);
+
+protected slots:
+  void showContextMenu(QPoint pos);
+  void showAddItemMenu();
+
+  void createComparisonSet();
+  void createComparisonValue();
+
+  void setInverse(int newInverse);
 
 private:
   ComparisonSet::Pointer m_comparisonSet;

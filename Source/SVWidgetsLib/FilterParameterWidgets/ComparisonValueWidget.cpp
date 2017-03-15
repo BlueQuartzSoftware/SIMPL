@@ -1,5 +1,9 @@
 #include "ComparisonValueWidget.h"
 
+#include "SIMPLib/DataContainers/DataArrayPath.h"
+
+#include "moc_ComparisonValueWidget.cpp"
+
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
@@ -7,14 +11,9 @@ ComparisonValueWidget::ComparisonValueWidget(QWidget* parent, ComparisonValue::P
 {
   setupUi(this);
 
-  if (nullptr == comparisonValue)
-  {
-    m_comparisonValue = ComparisonValue::New();
-  }
-  else
-  {
-    m_comparisonValue = comparisonValue;
-  }
+  setComparisonValue(comparisonValue);
+
+  setupGui();
 }
 
 // -----------------------------------------------------------------------------
@@ -22,7 +21,6 @@ ComparisonValueWidget::ComparisonValueWidget(QWidget* parent, ComparisonValue::P
 // -----------------------------------------------------------------------------
 ComparisonValueWidget::~ComparisonValueWidget()
 {
-
 }
 
 // -----------------------------------------------------------------------------
@@ -38,7 +36,16 @@ ComparisonValue::Pointer ComparisonValueWidget::getComparisonValue()
 // -----------------------------------------------------------------------------
 void ComparisonValueWidget::setComparisonValue(ComparisonValue::Pointer value)
 {
-  m_comparisonValue = value;
+  if (nullptr == value)
+  {
+    m_comparisonValue = ComparisonValue::New();
+  }
+  else
+  {
+    m_comparisonValue = value;
+  }
+
+  setupDataArrayComboBox();
 
   // Set Widget contents to ComparisonValue
   arrayNameComboBox->setCurrentText(m_comparisonValue->getAttributeArrayName());
@@ -49,25 +56,74 @@ void ComparisonValueWidget::setComparisonValue(ComparisonValue::Pointer value)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-AbstractComparison::Pointer ComparisonValueWidget::getCurrentComparison()
+AbstractComparison::Pointer ComparisonValueWidget::getComparison()
 {
-  ComparisonValue::Pointer value = ComparisonValue::New();
-
-  // Set Widget Contents to Value
-  value->setAttributeArrayName(arrayNameComboBox->currentText());
-  value->setCompOperator(operatorComboBox->currentIndex());
-  value->setCompValue(valueSpinBox->value());
-
-  return value;
+  return m_comparisonValue;
 }
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void ComparisonValueWidget::apply()
+void ComparisonValueWidget::setupDataArrayComboBox()
 {
-  // Set Array Name Combo Box
+  arrayNameComboBox->clear();
+
+  AttributeMatrix::Pointer am = getAttributeMatrix();
+  if (nullptr != am)
+  {
+    arrayNameComboBox->addItems(am->getAttributeArrayNames());
+  }
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void ComparisonValueWidget::setAttributeMatrix(AttributeMatrix::Pointer am)
+{
+  IComparisonWidget::setAttributeMatrix(am);
+
+  setupDataArrayComboBox();
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void ComparisonValueWidget::dataArrayChanged(int index)
+{
   m_comparisonValue->setAttributeArrayName(arrayNameComboBox->currentText());
-  m_comparisonValue->setCompOperator(operatorComboBox->currentIndex());
-  m_comparisonValue->setCompValue(valueSpinBox->value());
+
+  emit comparisonChanged();
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void ComparisonValueWidget::comparisonOperatorChanged(int index)
+{
+  m_comparisonValue->setCompOperator(index);
+
+  emit comparisonChanged();
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void ComparisonValueWidget::comparisonValueChanged(double value)
+{
+  m_comparisonValue->setCompValue(value);
+
+  emit comparisonChanged();
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void ComparisonValueWidget::setupGui()
+{
+  connect(arrayNameComboBox, SIGNAL(currentIndexChanged(int)),
+    this, SLOT(dataArrayChanged(int)));
+  connect(operatorComboBox, SIGNAL(currentIndexChanged(int)),
+    this, SLOT(comparisonOperatorChanged(int)));
+  connect(valueSpinBox, SIGNAL(valueChanged(double)),
+    this, SLOT(comparisonValueChanged(double)));
 }

@@ -43,17 +43,22 @@
 
 #include "moc_ComparisonContainerWidget.cpp"
 
+// Border stylesheet requires QFrame
 ComparisonContainerWidget* ComparisonContainerWidget::SelectedItem = nullptr;
 QString ComparisonContainerWidget::BorderStyleSheet = "ComparisonContainerWidget { border-style: outset; border-width: 2px; border-radius: 5px; border-color: blue; }";
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-ComparisonContainerWidget::ComparisonContainerWidget(QWidget* parent) : QWidget(parent)
+ComparisonContainerWidget::ComparisonContainerWidget(QWidget* parent, AbstractComparison::Pointer comparison) : QFrame(parent)
 {
   setupUi(this);
 
   m_comparisonWidget = nullptr;
+  m_comparisonSetWidget = nullptr;
+  setComparison(comparison);
+
+  setupGui();
 }
 
 // -----------------------------------------------------------------------------
@@ -61,7 +66,20 @@ ComparisonContainerWidget::ComparisonContainerWidget(QWidget* parent) : QWidget(
 // -----------------------------------------------------------------------------
 ComparisonContainerWidget::~ComparisonContainerWidget()
 {
+}
 
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void ComparisonContainerWidget::setupGui()
+{
+  contentsLayout->setAlignment(Qt::AlignTop);
+  contentsLayout->setDirection(QBoxLayout::Direction::TopToBottom);
+
+  connect(removeBtn, SIGNAL(clicked()),
+    this, SLOT(deleteItem()));
+  connect(unionComboBox, SIGNAL(currentIndexChanged(int)),
+    this, SLOT(unionOperatorChanged(int)));
 }
 
 // -----------------------------------------------------------------------------
@@ -69,7 +87,7 @@ ComparisonContainerWidget::~ComparisonContainerWidget()
 // -----------------------------------------------------------------------------
 int ComparisonContainerWidget::getUnionOperator()
 {
-  return m_unionOperator;
+  return unionComboBox->currentIndex();
 }
 
 // -----------------------------------------------------------------------------
@@ -77,15 +95,38 @@ int ComparisonContainerWidget::getUnionOperator()
 // -----------------------------------------------------------------------------
 void ComparisonContainerWidget::setUnionOperator(int unionOperator)
 {
-  m_unionOperator = unionOperator;
+  if (m_comparisonWidget)
+  {
+    m_comparisonWidget->getComparison()->setUnionOperator(unionOperator);
+  }
+  unionComboBox->setCurrentIndex(unionOperator);
 }
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void ComparisonContainerWidget::showUnionOperator()
+void ComparisonContainerWidget::unionOperatorChanged(int unionOp)
 {
-  unionComboBox->show();
+  if (m_comparisonWidget)
+  {
+    m_comparisonWidget->getComparison()->setUnionOperator(unionOp);
+    emit comparisonChanged();
+  }
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void ComparisonContainerWidget::showUnionOperator(bool enabled)
+{
+  if (enabled)
+  {
+    unionComboBox->show();
+  }
+  else
+  {
+    unionComboBox->hide();
+  }
 }
 
 // -----------------------------------------------------------------------------
@@ -101,12 +142,10 @@ void ComparisonContainerWidget::hideUnionOperator()
 // -----------------------------------------------------------------------------
 void ComparisonContainerWidget::setComparison(AbstractComparison::Pointer comparison)
 {
-  setUnionOperator(comparison->getUnionOperator());
-
   // create widget, replace current widget, and save the pointer
   IComparisonWidget* widget = IComparisonWidget::CreateWidget(comparison);
-
   setComparisonWidget(widget);
+  setUnionOperator(comparison->getUnionOperator());
 }
 
 // -----------------------------------------------------------------------------
@@ -117,6 +156,9 @@ void ComparisonContainerWidget::setComparisonWidget(IComparisonWidget* widget)
   // replace current widget, save pointer
   if (m_comparisonWidget)
   {
+    disconnect(m_comparisonWidget, SIGNAL(comparisonChanged()),
+      this, SIGNAL(comparisonChanged()));
+
     m_comparisonWidget->hide();
     m_comparisonWidget->setParent(nullptr);
     m_comparisonWidget->deleteLater();
@@ -128,6 +170,9 @@ void ComparisonContainerWidget::setComparisonWidget(IComparisonWidget* widget)
   }
 
   m_comparisonWidget = widget;
+
+  connect(widget, SIGNAL(comparisonChanged()),
+    this, SIGNAL(comparisonChanged()));
 }
 
 // -----------------------------------------------------------------------------
@@ -140,7 +185,7 @@ AbstractComparison::Pointer ComparisonContainerWidget::getCurrentComparison()
     return nullptr;
   }
 
-  AbstractComparison::Pointer comparison = m_comparisonWidget->getCurrentComparison();
+  AbstractComparison::Pointer comparison = m_comparisonWidget->getComparison();
   comparison->setUnionOperator(getUnionOperator());
 
   return comparison;
@@ -149,23 +194,62 @@ AbstractComparison::Pointer ComparisonContainerWidget::getCurrentComparison()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-//void ComparisonContainerWidget::deleteItem()
-//{
-//  hide();
-//  setParent(nullptr);
+IComparisonWidget* ComparisonContainerWidget::getComparisonWidget()
+{
+  return m_comparisonWidget;
+}
+
+// -----------------------------------------------------------------------------
 //
-//  if (m_comparisonSetWidget)
-//  {
-//    m_comparisonSetWidget->update();
-//    QCoreApplication::processEvents();
-//    m_comparisonSetWidget->updateItems();
+// -----------------------------------------------------------------------------
+ComparisonSetWidget* ComparisonContainerWidget::getComparisonSetWidget()
+{
+  return m_comparisonSetWidget;
+}
+
+// -----------------------------------------------------------------------------
 //
-//    delete m_comparisonWidget;
-//    m_comparisonWidget = nullptr;
-//  }
+// -----------------------------------------------------------------------------
+void ComparisonContainerWidget::setComparisonSetWidget(ComparisonSetWidget* comparisonSetWidget)
+{
+  if (m_comparisonSetWidget)
+  {
+    disconnect(this, SIGNAL(comparisonChanged()),
+      m_comparisonSetWidget, SIGNAL(comparisonChanged()));
+  }
+
+  m_comparisonSetWidget = comparisonSetWidget;
+
+  if (comparisonSetWidget)
+  {
+    connect(this, SIGNAL(comparisonChanged()),
+      comparisonSetWidget, SIGNAL(comparisonChanged()));
+  }
+}
+
+// -----------------------------------------------------------------------------
 //
-//  close();
-//}
+// -----------------------------------------------------------------------------
+void ComparisonContainerWidget::deleteItem()
+{
+  hide();
+  setParent(nullptr);
+
+  if (m_comparisonSetWidget)
+  {
+    m_comparisonSetWidget->updateItems();
+    emit m_comparisonSetWidget->comparisonChanged();
+
+    m_comparisonSetWidget->update();
+    QCoreApplication::processEvents();
+    m_comparisonSetWidget->updateItems();
+
+    delete m_comparisonWidget;
+    m_comparisonWidget = nullptr;
+  }
+
+  close();
+}
 
 // -----------------------------------------------------------------------------
 //
@@ -173,7 +257,9 @@ AbstractComparison::Pointer ComparisonContainerWidget::getCurrentComparison()
 void ComparisonContainerWidget::mousePressEvent(QMouseEvent* event)
 {
   if (!(event->buttons() & Qt::LeftButton))
+  {
     return;
+  }
 
   m_startDragPoint = event->pos();
 
@@ -186,12 +272,17 @@ void ComparisonContainerWidget::mousePressEvent(QMouseEvent* event)
 void ComparisonContainerWidget::select()
 {
   if (nullptr == this)
+  {
     return;
+  }
 
   setStyleSheet(ComparisonContainerWidget::BorderStyleSheet);
+  update();
 
-  if (ComparisonContainerWidget::SelectedItem)
+  if (nullptr != ComparisonContainerWidget::SelectedItem && this != ComparisonContainerWidget::SelectedItem)
+  {
     ComparisonContainerWidget::SelectedItem->deselect();
+  }
 
   ComparisonContainerWidget::SelectedItem = this;
 }
@@ -202,10 +293,14 @@ void ComparisonContainerWidget::select()
 void ComparisonContainerWidget::deselect()
 {
   if (nullptr == this)
+  {
     return;
+  }
 
   if (ComparisonContainerWidget::SelectedItem == this)
+  {
     ComparisonContainerWidget::SelectedItem = nullptr;
+  }
 
   setStyleSheet("");
 }
@@ -216,10 +311,15 @@ void ComparisonContainerWidget::deselect()
 void ComparisonContainerWidget::mouseMoveEvent(QMouseEvent* event)
 {
   if (!(event->buttons() & Qt::LeftButton))
+  {
     return;
+  }
+
   if ((event->pos() - m_startDragPoint).manhattanLength()
     < QApplication::startDragDistance())
+  {
     return;
+  }
 
   QDrag *drag = new QDrag(this);
   QMimeData *mimeData = new QMimeData;
