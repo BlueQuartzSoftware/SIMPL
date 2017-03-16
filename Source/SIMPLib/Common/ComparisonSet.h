@@ -40,6 +40,10 @@
 
 #include <QtCore/QVector>
 
+/**
+* @brief The ComparisonSet class is used by ComparisonInputsAdvanced to group ComparisonValues
+* as a single entity to apply union operators or invert the resulting comparison of the group.
+*/
 class SIMPLib_EXPORT ComparisonSet : public AbstractComparison
 {
 public:
@@ -49,19 +53,60 @@ public:
 
   ~ComparisonSet();
 
+  /**
+  * @brief Write ComparisonSet to JSon
+  * @param json
+  */
   void writeJson(QJsonObject& json);
+  /**
+  * @brief Read ComparisonSet from JSon
+  * @param json
+  */
   bool readJson(QJsonObject& json);
 
+  /**
+  * @brief Returns whether or not the results from the comparison have their values flipped
+  * @return
+  */
   bool getInvertComparison();
+  /**
+  * @brief Return the comparisons contained by the ComparisonSet
+  * @return
+  */
   QVector<AbstractComparison::Pointer> getComparisons();
 
+  /**
+  * @brief Specifies whether or not the results from the comparison should have their values flipped
+  * @param invert
+  */
   void setInvertComparison(bool invert);
+  /**
+  * @brief Changes the comparisons used by the ComparisonSet to a new set
+  * @param comparisonValues
+  */
   void setComparisons(QVector<AbstractComparison::Pointer> comparisonValues);
 
+  /**
+  * @brief Adds a new comparison to the end of the ComparisonSet
+  * @param comparison
+  */
   void addComparison(AbstractComparison::Pointer comparison);
+  /**
+  * @brief Adds a new comparison to the ComparisonSet at the given index
+  * @param index
+  * @param comparison
+  */
   void insertComparison(int index, AbstractComparison::Pointer comparison);
 
+  /**
+  * @brief Returns whether or not the ComparisonSet contains any ComparisonValues
+  * @return
+  */
   bool hasComparisonValue();
+  /**
+  * @brief Returns any ComparisonValues contained within the ComparisonSet
+  * @return
+  */
   QVector<AbstractComparison::Pointer> getComparisonValues();
 
 protected:

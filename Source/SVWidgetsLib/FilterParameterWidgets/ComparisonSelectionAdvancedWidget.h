@@ -56,6 +56,10 @@
 
 #include "ui_ComparisonSelectionAdvancedWidget.h"
 
+/**
+* @brief The ComparisonSelectionAdvancedWidget class is used to display, edit, and add AbstractComparisons
+* for the ComparisonSelectionAdvancedFilterParameter class.
+*/
 class ComparisonSelectionAdvancedWidget : public FilterParameterWidget, private Ui::ComparisonSelectionAdvancedWidget
 {
   Q_OBJECT
@@ -94,6 +98,10 @@ class ComparisonSelectionAdvancedWidget : public FilterParameterWidget, private 
     */
     void filterNeedsInputParameters(AbstractFilter* filter);
 
+    /**
+    * @brief attributeMatrixSelected
+    * @param path
+    */
     void attributeMatrixSelected(QString path);
 
   signals:
@@ -163,6 +171,10 @@ class ComparisonSelectionAdvancedWidget : public FilterParameterWidget, private 
     * @param path
     */
     void setSelectedPath(QString path);
+    /**
+    * @brief setSelectedPath
+    * @param amPath
+    */
     void setSelectedPath(DataArrayPath amPath);
 
   private:

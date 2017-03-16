@@ -44,6 +44,9 @@
 
 #include "ui_ComparisonValueWidget.h"
 
+/**
+* @brief The ComparisonValueWidget class is used to display and edit ComparisonValues for ComparisonSelectionAdvancedWidget
+*/
 class SVWidgetsLib_EXPORT ComparisonValueWidget : public IComparisonWidget, private Ui::ComparisonValueWidget
 {
   Q_OBJECT
@@ -52,11 +55,27 @@ public:
   ComparisonValueWidget(QWidget* parent, ComparisonValue::Pointer comparisonValue = nullptr);
   ~ComparisonValueWidget();
 
+  /**
+  * @brief Returns the ComparisonValue used by this widget
+  * @return
+  */
   ComparisonValue::Pointer getComparisonValue();
+  /**
+  * @brief Sets the ComparisonValue used by this widget
+  * @param value New ComparisonValue::Pointer to use
+  */
   void setComparisonValue(ComparisonValue::Pointer value);
 
+  /**
+  * @brief Returns the ComparisonValue used by this widget as an AbstractComparison::Pointer
+  * @return
+  */
   AbstractComparison::Pointer getComparison();
 
+  /**
+  * @brief Sets the AttributeMatrix used to specify DataArray names
+  * @param am AttributeMatrix to use
+  */
   void setAttributeMatrix(AttributeMatrix::Pointer am) override;
   
   /**
@@ -65,11 +84,27 @@ public:
   void setupGui();
 
 protected:
+  /**
+  * @brief Updates the DataArray combo box with names from the given AttributeMatrix
+  */
   void setupDataArrayComboBox();
 
 protected slots:
+  /**
+  * @brief Changes the DataArray used by the ComparisonValue
+  * @param index Specifies which DataArray name to use
+  */
   void dataArrayChanged(int index);
+  
+  /**
+  * @brief Changes the comparison operator for the ComparisonValue
+  * @param index Specifies the new comparisonOperator
+  */
   void comparisonOperatorChanged(int index);
+  /**
+  * @brief Changes the value used by the ComparisonValue
+  * @param value Specifies the new value to use
+  */
   void comparisonValueChanged(double value);
 
 private:

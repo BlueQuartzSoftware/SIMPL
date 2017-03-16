@@ -48,6 +48,10 @@
 
 class ComparisonSetWidget;
 
+/**
+* @brief ComparisonContainerWidget is used to display widgets for AbstractComparisons, edit the comparison's, union operator,
+* and allow the widgets to be dragged and reordered between ComparisonSetWidgets
+*/
 class SVWidgetsLib_EXPORT ComparisonContainerWidget : public QFrame, private Ui::ComparisonContainerWidget
 {
   Q_OBJECT
@@ -56,22 +60,67 @@ public:
   ComparisonContainerWidget(QWidget* parent, AbstractComparison::Pointer comparison);
   ~ComparisonContainerWidget();
 
+  /**
+  * @brief Returns the union operator for this comparison
+  * @return
+  */
   int getUnionOperator();
+  /**
+  * @brief Sets the union operator for this comparison
+  * @param unionOperator Union operator to be used by this comparison
+  */
   void setUnionOperator(int unionOperator);
 
+  /**
+  * @brief Set whether or not the union operator should be shows for this widget
+  * @param enabled Specifies whether or not the union operator is shown
+  */
   void showUnionOperator(bool enabled = true);
+  /**
+  * @brief Hides the union operator for this widget
+  */
   void hideUnionOperator();
 
+  /**
+  * @brief Sets the comparison this widget represents
+  * @param comparison AbstractComparison to be represented by this widget
+  */
   void setComparison(AbstractComparison::Pointer comparison);
+  /**
+  * @brief Sets the comparison widget to be shown in this widget
+  * @param widget the IComparisonWidget that stores the AbstractComparison shown
+  */
   void setComparisonWidget(IComparisonWidget* widget);
 
+  /**
+  * @brief Returns the value of the stored AbstractComparison
+  * @return
+  */
   AbstractComparison::Pointer getCurrentComparison();
+  /**
+  * @brief Returns the IComparisonWidget displayed
+  * @return
+  */
   IComparisonWidget* getComparisonWidget();
-
+  
+  /**
+  * @brief Returns the ComparisonSetWidget this widget belongs to
+  * @return
+  */
   ComparisonSetWidget* getComparisonSetWidget();
+  /**
+  * @brief Sets a new ComparisonSetWidget to belong to and changes any signal and slot connections to reflect the change
+  * @param comparisonSetWidget The new ComparisonSetWidget to belong to
+  */
   void setComparisonSetWidget(ComparisonSetWidget* comparisonSetWidget);
 
+  /**
+  * @brief Selects the current widget and draws a border around it to show which ComparisonContainerWidget is being moved
+  */
   void select();
+  /**
+  * @brief Removes any styling given by select() and clears the selection
+  */
   void deselect();
 
   /**
@@ -80,18 +129,43 @@ public:
   void setupGui();
 
 signals:
+  /**
+  * @brief Signifies that the comparison stored has changed
+  */
   void comparisonChanged();
 
 protected:
-  static ComparisonContainerWidget* SelectedItem;
-  static QString BorderStyleSheet;
+  static ComparisonContainerWidget* SelectedItem; // Currently Selected Widget
+  static QString BorderStyleSheet; // Style Sheet Used When Selected
 
+  /**
+  * @brief MousePressEvent
+  * @param event Move press event
+  */
   void mousePressEvent(QMouseEvent* event);
+
+  /**
+  * @brief MouseMoveEvent
+  * @param event Mouse move event
+  */
   void mouseMoveEvent(QMouseEvent* event);
+
+  /**
+  * @brief MouseReleaseEvent
+  * @param event Mouse release event
+  */
   void mouseReleaseEvent(QMouseEvent* event);
 
 protected slots:
+  /**
+  * @brief Delete this and remove the comparison from the current ComparisonSet
+  */
   void deleteItem();
+
+  /**
+  * @brief Union operator has been changed in the UI and needs to update the comparison
+  * @param unionOp New union operator
+  */
   void unionOperatorChanged(int unionOp);
 
 private:

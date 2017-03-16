@@ -45,7 +45,7 @@
 
 /**
  * @brief SIMPL_NEW_COMP_SEL_FP This macro is a short-form way of instantiating an instance of
- * ComparisonSelectionFilterParameter. There are 6 required parameters and 1 optional parameter
+ * ComparisonSelectionAdvancedFilterParameter. There are 6 required parameters and 1 optional parameter
  * that are always passed to this macro in the following order: HumanLabel, PropertyName, Category,
  * FilterName (class name), Choices, ShowOperators, GroupIndex (optional).
  *
@@ -58,11 +58,11 @@
 #define SIMPL_NEW_COMP_SEL_FP(...) \
   SIMPL_EXPAND(_FP_GET_OVERRIDE(__VA_ARGS__, \
   SIMPL_NEW_FP_9, SIMPL_NEW_FP_8, SIMPL_NEW_FP_7, SIMPL_NEW_FP_6, SIMPL_NEW_FP_5, SIMPL_NEW_FP_4)\
-  (ComparisonSelectionFilterParameter, __VA_ARGS__))
+  (ComparisonSelectionAdvancedFilterParameter, __VA_ARGS__))
 
 /**
- * @brief The ComparisonSelectionFilterParameter class is used by filters to instantiate an ComparisonSelectionWidget.  By instantiating an instance of
- * this class in a filter's setupFilterParameters() method, a ComparisonSelectionWidget will appear in the filter's "filter input" section in the DREAM3D GUI.
+ * @brief The ComparisonSelectionAdvancedFilterParameter class is used by filters to instantiate an ComparisonSelectionAdvancedWidget.  By instantiating an instance of
+ * this class in a filter's setupFilterParameters() method, a ComparisonSelectionAdvancedWidget will appear in the filter's "filter input" section in the DREAM3D GUI.
  */
 class SIMPLib_EXPORT ComparisonSelectionAdvancedFilterParameter : public FilterParameter
 {
@@ -75,7 +75,7 @@ class SIMPLib_EXPORT ComparisonSelectionAdvancedFilterParameter : public FilterP
     typedef std::function<ComparisonInputsAdvanced(void)> GetterCallbackType;
 
     /**
-     * @brief New This function instantiates an instance of the ComparisonSelectionFilterParameter. Although this function is available to be used,
+     * @brief New This function instantiates an instance of the ComparisonSelectionAdvancedFilterParameter. Although this function is available to be used,
      * the preferable way to instantiate an instance of this class is to use the SIMPL_NEW_COMP_SEL_FP(...) macro at the top of this file.
 
      * @param humanLabel The name that the users of DREAM.3D see for this filter parameter
@@ -87,7 +87,7 @@ class SIMPLib_EXPORT ComparisonSelectionAdvancedFilterParameter : public FilterP
     * that this FilterParameter subclass represents.
      * @param getterCallback The method in the AbstractFilter subclass that <i>gets</i> the value of the property
     * that this FilterParameter subclass represents.
-    * @param choices The selections to choose from in the ComparisonSelectionWidget.
+    * @param choices The selections to choose from in the ComparisonSelectionAdvancedWidget.
     * @param showOperators Boolean that determines whether to display the operators or not.
      * @param groupIndex Integer that specifies the group that this filter parameter will be placed in.
      * @return
@@ -140,7 +140,7 @@ class SIMPLib_EXPORT ComparisonSelectionAdvancedFilterParameter : public FilterP
 
   protected:
       /**
-       * @brief ComparisonSelectionFilterParameter The default constructor.  It is protected because this
+       * @brief ComparisonSelectionAdvancedFilterParameter The default constructor.  It is protected because this
        * filter parameter should only be instantiated using its New(...) function or short-form macro.
        */
     ComparisonSelectionAdvancedFilterParameter();
@@ -150,4 +150,4 @@ class SIMPLib_EXPORT ComparisonSelectionAdvancedFilterParameter : public FilterP
     void operator=(const ComparisonSelectionAdvancedFilterParameter&); // Operator '=' Not Implemented
 };
 
-#endif /* _ComparisonSelectionFilterParameter_H_ */
+#endif /* _ComparisonSelectionAdvancedFilterParameter_H_ */
