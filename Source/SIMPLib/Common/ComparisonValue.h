@@ -43,6 +43,10 @@
 
 #include "SIMPLib/Common/ComparisonSet.h"
 
+/**
+* @brief The ComparisonValue class is used to store comparison operators, values, and DataArray names
+* to be used for ComparisonInputsAdvanced
+*/
 class SIMPLib_EXPORT ComparisonValue : public AbstractComparison
 {
 public:
@@ -52,18 +56,57 @@ public:
 
   ~ComparisonValue();
 
+  /**
+  * @brief Writes the ComparisonValue to JSon
+  * @param json
+  */
   void writeJson(QJsonObject& json);
+  /**
+  * @brief Reads the ComparisonValue from JSon
+  * @param json
+  */
   bool readJson(QJsonObject& json);
 
+  /**
+  * @brief Returns the AttributeArray name
+  * @return
+  */
   QString getAttributeArrayName();
+  /**
+  * @brief Returns the comparison operator used
+  * @return
+  */
   int getCompOperator();
+  /**
+  * @brief Returns the value used by the ComparisonValue
+  */
   double getCompValue();
   
+  /**
+  * @brief Sets the AttributeArrayName used
+  * @param name
+  */
   void setAttributeArrayName(QString name);
+  /**
+  * @brief Sets the comparison operator used
+  * @param compOperator
+  */
   void setCompOperator(int compOperator);
+  /**
+  * @brief Sets the value used by the comparison
+  * @param value
+  */
   void setCompValue(double value);
 
+  /**
+  * @brief Returns the parent ComparisonSet
+  * @return
+  */
   ComparisonSet::Pointer getParentSet();
+  /**
+  * @brief Changes the parent ComparisonSet
+  * @param parentSet
+  */
   void setParentSet(ComparisonSet::Pointer parentSet);
 
 protected:

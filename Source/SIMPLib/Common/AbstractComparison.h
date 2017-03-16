@@ -41,6 +41,10 @@
 
 #include <QtCore/QJsonObject>
 
+/**
+* @brief The AbstractComparison class is used by ComparisonInputsAdvanced as a
+* base for both ComparisonSet and ComparisonValue.
+*/
 class SIMPLib_EXPORT AbstractComparison
 {
 public:
@@ -49,12 +53,32 @@ public:
 
   ~AbstractComparison();
 
+  /**
+  * @brief Create comparison from JSon
+  * @param json
+  */
   static Pointer FromJson(QJsonObject& json);
 
+  /**
+  * @brief Returns the union operator for the comparison
+  * @return
+  */
   int getUnionOperator();
+  /**
+  * @brief Sets the union operator for the comparison
+  * @param unionOperator
+  */
   void setUnionOperator(int unionOperator);
 
+  /**
+  * @brief Write comparison to JSon
+  * @param json
+  */
   virtual void writeJson(QJsonObject& json) = 0;
+  /**
+  * @brief Read comparison from JSon
+  * @param json
+  */
   virtual bool readJson(QJsonObject& json) = 0;
 
 protected:

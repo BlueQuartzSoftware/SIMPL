@@ -43,6 +43,10 @@
 
 #include "SVWidgetsLib/SVWidgetsLib.h"
 
+/**
+* @brief The IComparisonWidget is an abstract class used by ComparisonContainerWidget
+* to reference both ComparisonValueWidget and ComparisonSetWidget.
+*/
 class SVWidgetsLib_EXPORT IComparisonWidget : public QWidget
 {
   Q_OBJECT
@@ -51,14 +55,35 @@ public:
   IComparisonWidget(QWidget* parent);
   ~IComparisonWidget();
 
+  /**
+  * @brief Creates a new IComparisonWidget for a given comparison
+  * @param comparison Comparison used for creating the new widget
+  * @return
+  */
   static IComparisonWidget* CreateWidget(AbstractComparison::Pointer comparison);
 
+  /**
+  * @brief Returns the comparison used by the widget as an AbstractComparison
+  * @return
+  */
   virtual AbstractComparison::Pointer getComparison() = 0;
 
+  /**
+  * @brief Returns the AttributeMatrix used by the widget
+  * @return
+  */
   AttributeMatrix::Pointer getAttributeMatrix();
+
+  /**
+  * @brief Sets the AttributeMatrix used by the widget
+  * @param am
+  */
   virtual void setAttributeMatrix(AttributeMatrix::Pointer am);
 
 signals:
+  /**
+  * @brief Specifies that the comparison used by the widget has changed
+  */
   void comparisonChanged();
 
 private:
