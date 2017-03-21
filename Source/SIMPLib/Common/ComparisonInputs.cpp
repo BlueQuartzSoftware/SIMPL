@@ -78,10 +78,9 @@ int ComparisonInputs::size()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void ComparisonInputs::addInput(int unionOperator, const QString dataContainerName, const QString attributeMatrixName, const QString arrayName, int compOperator, double compValue)
+void ComparisonInputs::addInput(const QString dataContainerName, const QString attributeMatrixName, const QString arrayName, int compOperator, double compValue)
 {
   ComparisonInput_t v;
-  v.unionOperator = unionOperator;
   v.dataContainerName = dataContainerName;
   v.attributeMatrixName = attributeMatrixName;
   v.attributeArrayName = arrayName;
