@@ -123,6 +123,10 @@ public:
   void setupGui();
   
 protected:
+  /**
+  * @brief Clears the ComparisonSet of all values and subsets
+  */
+  void clearSet();
 
   /**
   * @brief Returns the ComparisonWidgets stored in this widget

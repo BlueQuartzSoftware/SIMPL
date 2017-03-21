@@ -1004,6 +1004,45 @@ ComparisonInputs H5FilterParametersReader::readComparisonInputs(const QString na
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
+ComparisonInputsAdvanced H5FilterParametersReader::readComparisonInputsAdvanced(const QString name, ComparisonInputsAdvanced defValue)
+{
+    /*
+    int size = 0;
+    QString strData = "";
+    bool ok = false;
+    // See if the data set actually exists, if it does NOT just return what the user passed in as a default value
+    if(false == QH5Lite::datasetExists(m_CurrentGroupId, name))
+    {
+      return defValue;
+    }
+
+    herr_t err = QH5Lite::readStringDataset(m_CurrentGroupId, name, strData);
+    if(err < 0)
+    {
+      return defValue; // If the data set does not exist no point in going any further
+    }
+
+    // Now read the the attribute that says how many arrays are in the data set.
+    err = QH5Lite::readScalarAttribute(m_CurrentGroupId, name, "NumInputs", size);
+
+    QStringList strVector = strData.split('\n', QString::SkipEmptyParts);
+    qint32 strVecSize = strVector.size();
+    if(strVecSize != size)
+    {
+      // Something has gone wrong in the tokenization and the number of tokens does not match what
+      // was written to the HDF5 file.
+      return defValue;
+    }
+    */
+
+    ComparisonInputsAdvanced inputs;
+
+    return inputs;
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
 AxisAngleInput_t H5FilterParametersReader::readAxisAngle(const QString name, AxisAngleInput_t v, int vectorPos)
 {
   int err = 0;

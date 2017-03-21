@@ -45,6 +45,10 @@
 // -----------------------------------------------------------------------------
 ComparisonInputsAdvanced::ComparisonInputsAdvanced()
 {
+  m_dataContainerName = "";
+  m_attributeMatrixName = "";
+  m_Inputs = QVector<AbstractComparison::Pointer>();
+
   m_invert = false;
 }
 
@@ -73,6 +77,52 @@ ComparisonInputsAdvanced::ComparisonInputsAdvanced(const ComparisonInputsAdvance
 // -----------------------------------------------------------------------------
 ComparisonInputsAdvanced::~ComparisonInputsAdvanced()
 {
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void ComparisonInputsAdvanced::readJson(QJsonObject obj)
+{
+  setDataContainerName(obj.value("Data Container Name").toString());
+  setAttributeMatrixName(obj.value("Attribute Matrix Name").toString());
+
+  m_Inputs.clear();
+
+  QJsonArray jsonArray = obj.value("Thresholds").toArray();
+  for(int i = 0; i < jsonArray.size(); i++)
+  {
+    QJsonObject comparisonObj = jsonArray[i].toObject();
+    AbstractComparison::Pointer input;
+    input = AbstractComparison::FromJson(comparisonObj);
+    if(input.get())
+    {
+      addInput(input);
+    }
+  }
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void ComparisonInputsAdvanced::writeJson(QJsonObject& obj)
+{
+  QJsonObject inputsObj;
+
+  inputsObj["Data Container Name"] = getDataContainerName();
+  inputsObj["Attribute Matrix Name"] = getAttributeMatrixName();
+
+  QJsonArray inputsArray;
+  for(int i = 0; i < size(); i++)
+  {
+    AbstractComparison::Pointer input = getInput(i);
+    QJsonObject obj;
+    input->writeJson(obj);
+    inputsArray.push_back(obj);
+  }
+
+  inputsObj["Thresholds"] = inputsArray;
+  obj = inputsObj;
 }
 
 // -----------------------------------------------------------------------------

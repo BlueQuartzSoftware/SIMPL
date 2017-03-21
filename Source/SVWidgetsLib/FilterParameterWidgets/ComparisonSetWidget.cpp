@@ -20,6 +20,7 @@ ComparisonSetWidget::ComparisonSetWidget(QWidget* parent, ComparisonSet::Pointer
   setComparisonSet(comparisonSet);
 
   setupGui();
+  updateItems();
 }
 
 // -----------------------------------------------------------------------------
@@ -66,6 +67,8 @@ QVector<AbstractComparison::Pointer> ComparisonSetWidget::getComparisons()
 // -----------------------------------------------------------------------------
 void ComparisonSetWidget::setComparisons(QVector<AbstractComparison::Pointer> comparisons)
 {
+  clearSet();
+
   m_comparisonSet->setComparisons(comparisons);
   
   // create widgets
@@ -73,9 +76,11 @@ void ComparisonSetWidget::setComparisons(QVector<AbstractComparison::Pointer> co
   {
     ComparisonContainerWidget* container = new ComparisonContainerWidget(nullptr, comparisons[i]);
 
-    conditionalLayout->addWidget(container);
+    conditionalLayout->insertWidget(insertIndex(), container);
     container->show();
   }
+
+  updateItems();
 }
 
 // -----------------------------------------------------------------------------
@@ -87,7 +92,7 @@ void ComparisonSetWidget::addComparison(AbstractComparison::Pointer comparison)
   
   ComparisonContainerWidget* container = new ComparisonContainerWidget(nullptr, comparison);
 
-  conditionalLayout->addWidget(container);
+  conditionalLayout->insertWidget(insertIndex(), container);
   container->show();
 }
 
@@ -118,8 +123,12 @@ ComparisonSet::Pointer ComparisonSetWidget::getComparisonSet()
 // -----------------------------------------------------------------------------
 void ComparisonSetWidget::setComparisonSet(ComparisonSet::Pointer comparisonSet)
 {
+  if(!comparisonSet.get())
+  {
+    comparisonSet = ComparisonSet::New();
+  }
   m_comparisonSet = comparisonSet;
-  
+
   // clear contents
   QObjectList childWidgets = conditionalWidgetContents->children();
   for (int i = 0; i < childWidgets.size(); i++)
@@ -134,6 +143,8 @@ void ComparisonSetWidget::setComparisonSet(ComparisonSet::Pointer comparisonSet)
     }
   }
 
+  invertConditionalCheckBox->setChecked(comparisonSet->getInvertComparison());
+
   if (nullptr != comparisonSet)
   {
     // set contents of widget to comparisonSet
@@ -142,9 +153,11 @@ void ComparisonSetWidget::setComparisonSet(ComparisonSet::Pointer comparisonSet)
     {
       ComparisonContainerWidget* container = new ComparisonContainerWidget(nullptr, comparisons[i]);
 
-      conditionalLayout->addWidget(container);
+      conditionalLayout->insertWidget(i, container);
       container->show();
     }
+
+    updateItems();
   }
 }
 
@@ -244,7 +257,13 @@ void ComparisonSetWidget::addComparisonWidget(AbstractComparison::Pointer compar
 // -----------------------------------------------------------------------------
 int ComparisonSetWidget::insertIndex()
 {
-  return conditionalWidgetContents->children().size() - 2;
+  int index = conditionalWidgetContents->children().size() - 2;
+  if(index < 0)
+  {
+      index = 0;
+  }
+
+  return index;
 }
 
 
@@ -257,9 +276,9 @@ void ComparisonSetWidget::updateItems()
 
   QVector<AbstractComparison::Pointer> updatedChildComparisons;
 
-  for (int i = 0; i < conditionalLayout->count(); i++)
+  for (int i = 0; i < conditionalWidgetContents->children().size(); i++)
   {
-    ComparisonContainerWidget* itemWidget = dynamic_cast<ComparisonContainerWidget*>(conditionalLayout->itemAt(i)->widget());
+    ComparisonContainerWidget* itemWidget = dynamic_cast<ComparisonContainerWidget*>(conditionalWidgetContents->children().at(i));
 
     if (itemWidget)
     {
@@ -330,6 +349,11 @@ void ComparisonSetWidget::dropEvent(QDropEvent* event)
 
   comparisonItemWidget->deselect();
 
+  if(this == comparisonItemWidget->getComparisonWidget())
+  {
+    return;
+  }
+
   int index = insertIndexByPoint(event->pos(), comparisonItemWidget);
   ComparisonSetWidget* ownerComparisonSet = comparisonItemWidget->getComparisonSetWidget();
 
@@ -356,13 +380,15 @@ void ComparisonSetWidget::dropEvent(QDropEvent* event)
 // -----------------------------------------------------------------------------
 void ComparisonSetWidget::setAttributeMatrix(AttributeMatrix::Pointer am)
 {
+  clearSet();
+
   IComparisonWidget::setAttributeMatrix(am);
 
-  QVector<IComparisonWidget*> comparisonWidgets = getComparisonWidgets();
-  for (int i = 0; i < comparisonWidgets.size(); i++)
-  {
-    comparisonWidgets[i]->setAttributeMatrix(am);
-  }
+  //QVector<IComparisonWidget*> comparisonWidgets = getComparisonWidgets();
+  //for (int i = 0; i < comparisonWidgets.size(); i++)
+  //{
+  //  comparisonWidgets[i]->setAttributeMatrix(am);
+  //}
 }
 
 // -----------------------------------------------------------------------------
@@ -383,4 +409,22 @@ QVector<IComparisonWidget*> ComparisonSetWidget::getComparisonWidgets()
   }
 
   return comparisonWidgets;
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void ComparisonSetWidget::clearSet()
+{
+  m_comparisonSet = ComparisonSet::New();
+  for (int i = 0; i < conditionalWidgetContents->children().size(); i++)
+  {
+    ComparisonContainerWidget* container = dynamic_cast<ComparisonContainerWidget*>(conditionalWidgetContents->children().at(i));
+
+    if (container)
+    {
+      container->deleteItem();
+      i--;
+    }
+  }
 }
