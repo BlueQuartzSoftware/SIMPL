@@ -59,8 +59,7 @@ class SVWidgetsLib_EXPORT ComparisonSelectionTableModel : public QAbstractTableM
   public:
     enum ColumnIndexes
     {
-      UnionOperator = 0,
-      FeatureName,
+      FeatureName = 0,
       FeatureOperator,
       FeatureValue,
       ColumnCount
@@ -159,11 +158,11 @@ class SVWidgetsLib_EXPORT ComparisonSelectionTableModel : public QAbstractTableM
 
     QStringList getPossibleFeatures();
 
-    virtual void setTableData(QVector<QString> unionOperators, QVector<QString> featureNames, QVector<float> featureValues,  QVector<int> featureOperators);
+    virtual void setTableData(QVector<QString> featureNames, QVector<float> featureValues,  QVector<int> featureOperators);
 
     virtual void setTableData(ComparisonInputs& comps);
 
-    void getTableData(QVector<int>& unionOperators, QVector<QString>& featureNames, QVector<float>& featureValues,  QVector<int>& featureOperators);
+    void getTableData( QVector<QString>& featureNames, QVector<float>& featureValues,  QVector<int>& featureOperators);
 
     void setNumberOfPhases(int n);
 
@@ -174,7 +173,6 @@ class SVWidgetsLib_EXPORT ComparisonSelectionTableModel : public QAbstractTableM
     int m_NumberOfPhases;
 
     QStringList   m_PossibleFeatures;
-    QVector<QString>       m_UnionOperators;
     QVector<QString>   m_FeatureNames;
     QVector<float>     m_FeatureValues;
     QVector<QString> m_FeatureOperators;
