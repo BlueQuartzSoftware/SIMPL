@@ -73,6 +73,12 @@ void ComparisonValueWidget::setupDataArrayComboBox()
   {
     arrayNameComboBox->addItems(am->getAttributeArrayNames());
   }
+  else
+  {
+    arrayNameComboBox->addItem(m_comparisonValue->getAttributeArrayName());
+  }
+
+  arrayNameComboBox->setCurrentText(m_comparisonValue->getAttributeArrayName());
 }
 
 // -----------------------------------------------------------------------------

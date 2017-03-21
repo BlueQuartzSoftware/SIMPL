@@ -123,6 +123,7 @@ class SIMPLib_EXPORT H5FilterParametersReader : public AbstractFilterParametersR
     virtual FileListInfo_t readFileListInfo(const QString name, FileListInfo_t v);
     virtual ComparisonInput_t readComparisonInput(const QString name, ComparisonInput_t v, int vectorPos);
     virtual ComparisonInputs readComparisonInputs(const QString name, ComparisonInputs v);
+    virtual ComparisonInputsAdvanced readComparisonInputsAdvanced(const QString name, ComparisonInputsAdvanced v);
     virtual AxisAngleInput_t readAxisAngle(const QString name, AxisAngleInput_t v, int vectorPos);
     virtual QVector<AxisAngleInput_t> readAxisAngles(const QString name, QVector<AxisAngleInput_t> defValue);
     virtual QSet<QString> readArraySelections(const QString name, QSet<QString> v);

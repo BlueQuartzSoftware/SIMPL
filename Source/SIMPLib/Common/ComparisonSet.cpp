@@ -116,6 +116,8 @@ bool ComparisonSet::readJson(QJsonObject& json)
         }
       }
     }
+
+    return true;
   }
   return false;
 }
@@ -125,6 +127,10 @@ bool ComparisonSet::readJson(QJsonObject& json)
 // -----------------------------------------------------------------------------
 bool ComparisonSet::getInvertComparison()
 {
+  if(nullptr == this)
+  {
+    return false;
+  }
   return m_invertComparison;
 }
 
@@ -149,6 +155,10 @@ void ComparisonSet::setInvertComparison(bool invert)
 // -----------------------------------------------------------------------------
 void ComparisonSet::setComparisons(QVector<AbstractComparison::Pointer> comparisonValues)
 {
+  if(nullptr == this)
+  {
+    return;
+  }
   m_comparisons = comparisonValues;
 }
 

@@ -99,6 +99,9 @@ class SIMPLib_EXPORT ComparisonInputsAdvanced : public QObject
     bool shouldInvert();
     void setInvert(bool invert);
 
+    void readJson(QJsonObject obj);
+    void writeJson(QJsonObject& obj);
+
   private:
     QVector<AbstractComparison::Pointer> m_Inputs;
     QString m_dataContainerName;

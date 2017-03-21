@@ -160,6 +160,11 @@ class ComparisonSelectionAdvancedWidget : public FilterParameterWidget, private 
     */
     void populateButtonText();
 
+    /**
+    * @brief Sets the AttributeMatrixButton text before any attribute matrixes are loaded.
+    */
+    void presetAttributeMatrix(DataArrayPath path);
+
   protected slots:
     /**
     * @brief widgetChanged
@@ -179,6 +184,8 @@ class ComparisonSelectionAdvancedWidget : public FilterParameterWidget, private 
 
   private:
     DataContainerArrayProxy m_DcaProxy;
+
+    DataArrayPath m_presetPath;
 
     bool m_DidCausePreflight;
 

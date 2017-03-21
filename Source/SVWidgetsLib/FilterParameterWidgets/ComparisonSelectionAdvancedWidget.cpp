@@ -58,6 +58,8 @@ ComparisonSelectionAdvancedWidget::ComparisonSelectionAdvancedWidget(FilterParam
   m_FilterParameter = dynamic_cast<ComparisonSelectionAdvancedFilterParameter*>(parameter);
   Q_ASSERT_X(m_FilterParameter != nullptr, "NULL Pointer", "ComparisonSelectionAdvancedWidget can ONLY be used with a ComparisonSelectionAdvancedFilterParameter object");
 
+  QString filterName = getFilter()->getNameOfClass();
+
   setupUi(this);
   setupGui();
 }
@@ -125,6 +127,9 @@ void ComparisonSelectionAdvancedWidget::setupGui()
   comparisonSetWidget->setComparisonSet(ComparisonSet::New());
   connect(comparisonSetWidget, SIGNAL(comparisonChanged()), SIGNAL(parametersChanged()));
 
+  // Copy the data into the Comparison Set
+  ComparisonInputsAdvanced comps = dynamic_cast<ComparisonSelectionAdvancedFilterParameter*>(getFilterParameter())->getGetterCallback()();
+
   m_SelectedAttributeMatrixPath->setStyleSheet(QtSStyles::DAPSelectionButtonStyle(false));
 
   m_MenuMapper = new QSignalMapper(this);
@@ -134,17 +139,15 @@ void ComparisonSelectionAdvancedWidget::setupGui()
   DataArrayPath defaultPath = getFilter()->property(PROPERTY_NAME_AS_CHAR).value<DataArrayPath>();
   m_SelectedAttributeMatrixPath->setText(defaultPath.serialize(Detail::Delimiter));
 
-  // Copy the data into the Comparison Set
-  ComparisonInputsAdvanced comps = getFilter()->property(PROPERTY_NAME_AS_CHAR).value<ComparisonInputsAdvanced>();
-  comparisonSetWidget->setComparisons(comps.getInputs());
-
   DataArrayPath currentPath;
   currentPath.setDataContainerName(comps.getDataContainerName());
   currentPath.setAttributeMatrixName(comps.getAttributeMatrixName());
   if (!currentPath.isEmpty())
   {
-    setSelectedPath(currentPath);
+    QStringList names = generateAttributeArrayList(currentPath.getDataContainerName(), currentPath.getAttributeMatrixName());
+    presetAttributeMatrix(currentPath);
   }
+  comparisonSetWidget->setComparisons(comps.getInputs());
 
 #if 0
   // is the filter parameter tied to a boolean property of the Filter Instance, if it is then we need to make the check box visible
@@ -218,7 +221,6 @@ QStringList ComparisonSelectionAdvancedWidget::generateAttributeArrayList(const 
         QString amName = attrMatsIter.key();
         if (amName.compare(currentAttrMatName) == 0)
         {
-
           // We found the selected AttributeMatrix, so loop over this attribute matrix arrays and populate the list widget
           AttributeMatrixProxy amProxy = attrMatsIter.value();
           QMap<QString, DataArrayProxy> dataArrays = amProxy.dataArrays;
@@ -277,7 +279,6 @@ void ComparisonSelectionAdvancedWidget::setComparisons(QVector<AbstractCompariso
 {
   qint32 count = comparisons.size();
 
-  // bool ok = false;
   for (int i = 0; i < count; ++i)
   {
     comparisonSetWidget->addComparison(comparisons[i]);
@@ -342,7 +343,9 @@ void ComparisonSelectionAdvancedWidget::afterPreflight()
 
       if (nullptr == comparisonSetWidget->getAttributeMatrix())
       {
+        ComparisonInputsAdvanced comps = getFilter()->property(PROPERTY_NAME_AS_CHAR).value<ComparisonInputsAdvanced>();
         comparisonSetWidget->setAttributeMatrix(am);
+        comparisonSetWidget->setComparisons(comps.getInputs());
       }
     }
   }
@@ -456,6 +459,15 @@ void ComparisonSelectionAdvancedWidget::setSelectedPath(DataArrayPath amPath)
       comparisonSetWidget->setComparisonSet(ComparisonSet::New());
     }
   }
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void ComparisonSelectionAdvancedWidget::presetAttributeMatrix(DataArrayPath amPath)
+{
+  m_presetPath = amPath;
+  m_SelectedAttributeMatrixPath->setText(amPath.serialize(Detail::Delimiter));
 }
 
 // -----------------------------------------------------------------------------
