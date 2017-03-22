@@ -16,8 +16,9 @@ This **Filter** renames a user chosen **Data Container**.
 Not Applicable
 
 ## Required Objects ##
+
 | Kind | Default Name | Type | Component Dimensions | Description |
-|------|--------------|-------------|---------|-----|
+|------|--------------|------|----------------------|-------------|
 | **Data Container** | None | N/A | N/A | **Data Container** to rename |
 
 ## Created Objects ##

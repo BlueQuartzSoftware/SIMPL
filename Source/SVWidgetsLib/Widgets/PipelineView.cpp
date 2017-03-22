@@ -263,9 +263,9 @@ void PipelineView::reindexWidgetTitles()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void PipelineView::populatePipelineView(FilterPipeline::Pointer pipeline, QVariant value)
+void PipelineView::populatePipelineView(QString jsonString, QVariant value)
 {
-  Q_UNUSED(pipeline)
+  Q_UNUSED(jsonString)
   Q_UNUSED(value)
 
   // The subclass should reimplement this function

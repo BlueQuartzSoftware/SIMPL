@@ -119,9 +119,17 @@ void DataContainerReader::readFilterParameters(QJsonObject& obj)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
+void DataContainerReader::preWriteFilterParameters(QJsonObject &obj, QJsonObject &rootObject)
+{
+
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
 void DataContainerReader::writeFilterParameters(QJsonObject& obj)
 {
-  writeExistingPipelineToFile(obj);
+  //writeExistingPipelineToFile(obj);
   AbstractFilter::writeFilterParameters(obj);
 }
 
@@ -153,7 +161,7 @@ void DataContainerReader::dataCheck()
   }
   else if(fi.exists() == false)
   {
-    ss = QObject::tr("The input file does not exist");
+    ss = QObject::tr("The input file %1 does not exist").arg(getInputFile());
     setErrorCondition(-388);
     notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
   }
@@ -340,7 +348,7 @@ DataContainerArrayProxy DataContainerReader::readDataContainerArrayStructure(con
   }
   else if(fi.exists() == false)
   {
-    QString ss = QObject::tr("The input file does not exist");
+    QString ss = QObject::tr("The input file %1 does not exist").arg(path);
     setErrorCondition(-388);
     notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
     return proxy;
@@ -412,6 +420,15 @@ int DataContainerReader::readExistingPipelineFromFile(hid_t fileId)
   m_PipelineFromFile->clear();
 
   H5FilterParametersReader::Pointer reader = H5FilterParametersReader::New();
+  // First try to see if we can read the newer JSON style of Pipeline from the HDF5 based file
+  m_PipelineFromFile = reader->readPipelineFromFile(fileId, nullptr);
+  if(nullptr != m_PipelineFromFile.get())
+  {
+    return err;
+  }
+
+  // If we are on the old style then the shared pointer would have come back null so create a new one.
+  m_PipelineFromFile = FilterPipeline::New();
 
   // HDF5: Open the "Pipeline" Group
   hid_t pipelineGroupId = H5Gopen(fileId, SIMPL::StringConstants::PipelineGroupName.toLatin1().data(), H5P_DEFAULT);
@@ -455,22 +472,32 @@ int DataContainerReader::readExistingPipelineFromFile(hid_t fileId)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void DataContainerReader::writeExistingPipelineToFile(QJsonObject& json)
+int DataContainerReader::writeExistingPipelineToFile(QJsonObject& rootJson, int index)
 {
   FilterPipeline::FilterContainerType container = m_PipelineFromFile->getFilterContainer();
 
   for(FilterPipeline::FilterContainerType::iterator iter = container.begin(); iter != container.end(); ++iter)
   {
     AbstractFilter::Pointer filter = *iter;
+    QJsonObject json;
+
+    QString numStr = QString::number(index++);
+
     if(nullptr != filter.get())
     {
+      json[SIMPL::Settings::FilterName] = filter->getNameOfClass();
+      json[SIMPL::Settings::HumanLabel] = filter->getHumanLabel();
+
       filter->writeFilterParameters(json);
     }
     else
     {
       json["Unknown Filter"] = "ERROR: Filter instance was nullptr within the SVPipelineFilterWidget instance. Report this error to the DREAM3D Developers";
     }
+
+    rootJson[numStr] = json;
   }
+  return index;
 }
 
 // -----------------------------------------------------------------------------

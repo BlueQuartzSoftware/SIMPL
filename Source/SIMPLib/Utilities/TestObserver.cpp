@@ -60,22 +60,22 @@ void TestObserver::processPipelineMessage(const PipelineMessage& pm)
   QTextStream ss(&str);
   if(msg.getType() == PipelineMessage::Error)
   {
-    std::cout << msg.getFilterHumanLabel().toStdString() << ": " << msg.generateErrorString().toStdString();
+    std::cout << msg.getFilterHumanLabel().toStdString() << ": " << msg.generateErrorString().toStdString() << std::endl;
   }
   else if(msg.getType() == PipelineMessage::Warning)
   {
-    std::cout << msg.getFilterHumanLabel().toStdString() << ": " << msg.generateWarningString().toStdString();
+    std::cout << msg.getFilterHumanLabel().toStdString() << ": " << msg.generateWarningString().toStdString() << std::endl;
   }
   else if(msg.getType() == PipelineMessage::StatusMessage)
   {
-    //   ss << msg.generateStatusString();
+    //   ss << msg.generateStatusString()  << std::endl;
   }
   else if(msg.getType() == PipelineMessage::ProgressValue)
   {
-    //   ss << msg.getProgressValue() << "%";
+    //   ss << msg.getProgressValue() << "%" << std::endl;
   }
   else if(msg.getType() == PipelineMessage::StatusMessageAndProgressValue)
   {
-    //   ss << msg.getProgressValue() << msg.generateStatusString();
+    //   ss << msg.getProgressValue() << msg.generateStatusString() << std::endl;
   }
 }

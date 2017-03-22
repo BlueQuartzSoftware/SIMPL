@@ -71,8 +71,13 @@ QUrl QtSHelpUrlGenerator::generateHTMLUrl(QString htmlName)
   if(helpDir.dirName() == "MacOS")
   {
     helpDir.cdUp();
-    helpDir.cdUp();
-    helpDir.cdUp();
+    // Check if we are running from a .app installation where the Help dir is embeded in the app bundle.
+    QFileInfo fi(helpDir.absolutePath() + "/Help");
+    if(!fi.exists())
+    {
+      helpDir.cdUp();
+      helpDir.cdUp();
+    }
   }
 #endif
 

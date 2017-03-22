@@ -447,6 +447,33 @@ ImageGeom::Pointer ImageGeom::CreateGeometry(const QString& name)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
+void ImageGeom::getBoundingBox(float &xMin, float &xMax, float &yMin, float &yMax, float &zMin, float &zMax)
+{
+    xMin = m_Origin[0];
+    xMax = m_Origin[0] + (m_Dimensions[0] * m_Resolution[0]);
+    yMin = m_Origin[1];
+    yMax = m_Origin[1] + (m_Dimensions[1] * m_Resolution[1]);
+    zMin = m_Origin[2];
+    zMax = m_Origin[2] + (m_Dimensions[2] * m_Resolution[2]);
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void ImageGeom::getBoundingBox(float boundingBox[6])
+{
+    boundingBox[0] = m_Origin[0];
+    boundingBox[1] = m_Origin[0] + (m_Dimensions[0] * m_Resolution[0]);
+    boundingBox[2] = m_Origin[1];
+    boundingBox[3] = m_Origin[1] + (m_Dimensions[1] * m_Resolution[1]);
+    boundingBox[4] = m_Origin[2];
+    boundingBox[5] = m_Origin[2] + (m_Dimensions[2] * m_Resolution[2]);
+}
+
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
 void ImageGeom::getPlaneCoords(size_t idx[3], float coords[3])
 {
   coords[0] = idx[0] * m_Resolution[0] + m_Origin[0];
@@ -830,9 +857,11 @@ void ImageGeom::findDerivatives(DoubleArrayType::Pointer field, DoubleArrayType:
 #endif
 
 #ifdef SIMPLib_USE_PARALLEL_ALGORITHMS
+  size_t grain = dims[2] == 1 ? 1 : dims[2] / init.default_num_threads();
+
   if(doParallel == true)
   {
-    tbb::parallel_for(tbb::blocked_range3d<size_t, size_t, size_t>(0, dims[2], dims[2] / init.default_num_threads(), 0, dims[1], dims[1], 0, dims[0], dims[0]),
+    tbb::parallel_for(tbb::blocked_range3d<size_t, size_t, size_t>(0, dims[2], grain, 0, dims[1], dims[1], 0, dims[0], dims[0]),
                       FindImageDerivativesImpl(this, field, derivatives), tbb::auto_partitioner());
   }
   else

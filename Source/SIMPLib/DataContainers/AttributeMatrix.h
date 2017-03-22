@@ -117,6 +117,12 @@ class SIMPLib_EXPORT AttributeMatrix : public Observable
     using Types = QVector<Type>;
 
     /**
+     * @brief GetTypesAsStrings
+     * @return
+     */
+    static QVector<QString> GetTypesAsStrings();
+
+    /**
      * @brief The Category enum describes the general category of data in the AttributeMatrix
      */
     enum class Category : EnumType //C++11 scoped enum

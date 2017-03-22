@@ -4,7 +4,7 @@
 
 #include "TestFilters.h"
 #include "SIMPLib/FilterParameters/AbstractFilterParametersReader.h"
-#include "SIMPLib/FilterParameters/DoubleFilterParameter.h"
+#include "SIMPLib/FilterParameters/FloatFilterParameter.h"
 #include "SIMPLib/FilterParameters/IntFilterParameter.h"
 
 // Include the MOC generated file for this class
@@ -43,7 +43,7 @@ void Filt0::setupFilterParameters()
   }
   /*  For a Floating point value use this code*/
   {
-    parameters.push_back(SIMPL_NEW_DOUBLE_FP("Float Value", Filt0_Float, FilterParameter::Parameter, Filt0));
+    parameters.push_back(SIMPL_NEW_FLOAT_FP("Float Value", Filt0_Float, FilterParameter::Parameter, Filt0));
   }
 
   setFilterParameters(parameters);
@@ -143,7 +143,7 @@ void Filt1::setupFilterParameters()
   }
   /*  For a Floating point value use this code*/
   {
-    parameters.push_back(SIMPL_NEW_DOUBLE_FP("Float Value", Filt1_Float, FilterParameter::Parameter, Filt1));
+    parameters.push_back(SIMPL_NEW_FLOAT_FP("Float Value", Filt1_Float, FilterParameter::Parameter, Filt1));
   }
 
   setFilterParameters(parameters);

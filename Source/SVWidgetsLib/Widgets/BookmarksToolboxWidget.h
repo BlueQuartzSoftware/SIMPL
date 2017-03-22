@@ -156,7 +156,7 @@ class SVWidgetsLib_EXPORT BookmarksToolboxWidget : public QWidget, private Ui::B
 
     QDir findPipelinesDirectory();
     void addPipelinesRecursively(QDir currentDir, QModelIndex parent, QString iconFileName,
-      bool allowEditing, QStringList filters, FilterLibraryTreeWidget::ItemType itemType);
+                                 bool allowEditing, QStringList filters, FilterLibraryTreeWidget::ItemType itemType);
 
   protected slots:
 

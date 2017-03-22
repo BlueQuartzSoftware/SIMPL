@@ -177,7 +177,7 @@ public:
     DataContainer::Pointer dc = dca->getDataContainer("Data Container");
     ImageGeom::Pointer geometry = std::dynamic_pointer_cast<ImageGeom>(dc->getGeometry());
 
-    DREAM3D_REQUIRE(nullptr != geometry);
+    DREAM3D_REQUIRE(nullptr != geometry.get());
 
     {
       float* res = new float[3];

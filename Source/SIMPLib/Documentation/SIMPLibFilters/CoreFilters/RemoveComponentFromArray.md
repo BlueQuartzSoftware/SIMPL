@@ -18,15 +18,16 @@ This **Filter** will remove a single component of a multicomponent array and put
 Not Applicable
 
 ## Required Objects ##
+
 | Kind | Default Name | Type | Component Dimensions | Description |
-|------|--------------|-------------|---------|-----|
+|------|--------------|------|----------------------|-------------|
 | Any **Attribute Array** | None | Any | >1 | Multicomponent **Attribute Array** to use as input |
 
 
 ## Created Objects ##
 
 | Kind | Default Name | Type | Component Dimensions | Description |
-|------|--------------|-------------|---------|-----|
+|------|--------------|------|----------------------|-------------|
 | Any **Attribute Array** | None | Any | 1 less than the required Multicomponent **Attribute Array**   | Reduced **Attribute Array** name |
 | Any **Attribute Array** | None | Any | (1)  | Removed Component (Scalar) **Attribute Array** name |
 

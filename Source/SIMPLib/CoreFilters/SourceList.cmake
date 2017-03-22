@@ -58,6 +58,7 @@ set(_PublicFilters
   CreateDataArray
   CreateFeatureArrayFromElementArray
   CreateImageGeometry
+  CreateStringArray
   DataContainerReader
   DataContainerWriter
   ExecuteProcess
@@ -69,6 +70,7 @@ set(_PublicFilters
   LinkFeatureMapToElementArray
   MaskCountDecision
   MoveData
+  PostSlackMessage
   RawBinaryReader
   RemoveArrays
   RemoveComponentFromArray

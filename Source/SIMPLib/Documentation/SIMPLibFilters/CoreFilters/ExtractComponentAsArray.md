@@ -17,15 +17,16 @@ This **Filter** will create an **Attribute Array** from a single component of a 
 Not Applicable
 
 ## Required Objects ##
+
 | Kind | Default Name | Type | Component Dimensions | Description |
-|------|--------------|-------------|---------|-----|
+|------|--------------|------|----------------------|-------------|
 | Any **Attribute Array** | None | Any | >1 | Multicomponent **Attribute Array** to use as input |
 
 
 ## Created Objects ##
 
 | Kind | Default Name | Type | Component Dimensions | Description |
-|------|--------------|-------------|---------|-----|
+|------|--------------|------|----------------------|-------------|
 | Any **Attribute Array** | None | Any | (1) | Scalar **Attribute Array** name |
 
 ## License & Copyright ##

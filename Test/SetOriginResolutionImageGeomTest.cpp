@@ -143,7 +143,7 @@ public:
     }
 
     SetOriginResolutionImageGeom::Pointer filter = std::dynamic_pointer_cast<SetOriginResolutionImageGeom>(filterFactory->create());
-    DREAM3D_REQUIRE(nullptr != filter);
+    DREAM3D_REQUIRE(nullptr != filter.get());
     
     return filter;
   }
@@ -153,8 +153,10 @@ public:
   // -----------------------------------------------------------------------------
   void setGeometryTest(SetOriginResolutionImageGeom::Pointer filter)
   {
-    if (nullptr == filter)
+    if (nullptr == filter.get())
+    {
       return;
+    }
 
     QVariant value;
 
@@ -167,8 +169,10 @@ public:
   // -----------------------------------------------------------------------------
   void setInvalidGeometry(SetOriginResolutionImageGeom::Pointer filter)
   {
-    if (nullptr == filter)
+    if (nullptr == filter.get())
+    {
       return;
+    }
 
     QVariant value;
 
@@ -181,8 +185,10 @@ public:
   // -----------------------------------------------------------------------------
   void setNullGeometry(SetOriginResolutionImageGeom::Pointer filter)
   {
-    if (nullptr == filter)
+    if (nullptr == filter.get())
+    {
       return;
+    }
 
     QVariant value;
 
@@ -195,8 +201,10 @@ public:
   // -----------------------------------------------------------------------------
   void changeOrigin(SetOriginResolutionImageGeom::Pointer filter)
   {
-    if (nullptr == filter)
+    if (nullptr == filter.get())
+    {
       return;
+    }
 
     QVariant value;
 
@@ -212,8 +220,10 @@ public:
   // -----------------------------------------------------------------------------
   void changeResolution(SetOriginResolutionImageGeom::Pointer filter)
   {
-    if (nullptr == filter)
+    if (nullptr == filter.get())
+    {
       return;
+    }
 
     QVariant value;
 

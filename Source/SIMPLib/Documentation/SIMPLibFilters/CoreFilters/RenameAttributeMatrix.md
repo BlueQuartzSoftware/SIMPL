@@ -16,8 +16,9 @@ This **Filter** renames a user chosen **Attribute Matrix**.
 Not Applicable
 
 ## Required Objects ##
+
 | Kind | Default Name | Type | Component Dimensions | Description |
-|------|--------------|-------------|---------|-----|
+|------|--------------|------|----------------------|-------------|
 | **Attribute Matrix** | None | Any | N/A | **Attribute Matrix** to rename |
 
 ## Created Objects ##

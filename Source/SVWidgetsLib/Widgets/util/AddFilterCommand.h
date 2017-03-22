@@ -57,6 +57,9 @@ class SVWidgetsLib_EXPORT AddFilterCommand : public QUndoCommand
     AddFilterCommand(QList<AbstractFilter::Pointer> filters, PipelineView* destination, QString actionText, QVariant value,
                      QUuid previousNode = QUuid(), QUuid nextNode = QUuid(), QUndoCommand* parent = 0);
 
+    AddFilterCommand(QString jsonString, PipelineView* destination, QString actionText, QVariant value,
+                     QUuid previousNode = QUuid(), QUuid nextNode = QUuid(), QUndoCommand* parent = 0);
+
     virtual ~AddFilterCommand();
 
     virtual void undo();

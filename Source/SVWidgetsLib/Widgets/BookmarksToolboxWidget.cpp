@@ -246,7 +246,7 @@ void BookmarksToolboxWidget::addPipelinesRecursively(QDir currentDir, QModelInde
     {
       // At this point we have the first level of directories and we want to do 2 things:
       // 1.Create an entry in the tree widget with this name
-      // 2.drop into the directory and look for all the .txt files and add entries for those items.
+      // 2.drop into the directory and look for all the .json files and add entries for those items.
       // qDebug() << fi.absoluteFilePath() << "\n";
       // Add a tree widget item for this  Group
       // qDebug() << fi.absoluteFilePath();
@@ -263,20 +263,21 @@ void BookmarksToolboxWidget::addPipelinesRecursively(QDir currentDir, QModelInde
   {
     QString itemFilePath = itemInfo.absoluteFilePath();
     QString itemName;
-    if(itemInfo.suffix().compare("ini") == 0 || itemInfo.suffix().compare("txt") == 0)
+    if(itemInfo.suffix().compare("json") == 0)
+    {
+      QString dVers;
+      JsonFilterParametersReader::Pointer jsonReader = JsonFilterParametersReader::New();
+      jsonReader->readNameOfPipelineFromFile(itemFilePath, itemName, dVers, nullptr);
+    }
+#if 0
+    else if(itemInfo.suffix().compare("ini") == 0 || itemInfo.suffix().compare("txt") == 0)
     {
       QSettings itemPref(itemFilePath, QSettings::IniFormat);
       itemPref.beginGroup(SIMPL::Settings::PipelineBuilderGroup);
       itemName = itemPref.value(SIMPL::Settings::PipelineName).toString();
       itemPref.endGroup();
     }
-    else if(itemInfo.suffix().compare("json") == 0)
-    {
-      QString dVers;
-      JsonFilterParametersReader::Pointer jsonReader = JsonFilterParametersReader::New();
-      jsonReader->readNameOfPipelineFromFile(itemFilePath, itemName, dVers, nullptr);
-    }
-
+#endif
     // Add tree widget for this Prebuilt Pipeline
     int row = model->rowCount(parent);
     addTreeItem(parent, itemName, QIcon(iconFileName), itemInfo.absoluteFilePath(), row, true, false, false);
@@ -308,8 +309,14 @@ QDir BookmarksToolboxWidget::findPipelinesDirectory()
   if(pipelinesDir.dirName() == "MacOS")
   {
     pipelinesDir.cdUp();
-    pipelinesDir.cdUp();
-    pipelinesDir.cdUp();
+
+    // Check if we are running from a .app installation where the Help dir is embeded in the app bundle.
+    QFileInfo fi(pipelinesDir.absolutePath() + "/PrebuiltPipeliines");
+    if(!fi.exists())
+    {
+      pipelinesDir.cdUp();
+      pipelinesDir.cdUp();
+    }
   }
 #else
   // We are on Linux - I think

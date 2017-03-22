@@ -17,8 +17,9 @@ This **Filter** allows the user to move an **Attribute Array** from one **Attrib
 Not Applicable
 
 ## Required Objects ##
+
 | Kind | Default Name | Type | Component Dimensions | Description |
-|------|--------------|-------------|---------|-----|
+|------|--------------|------|----------------------|-------------|
 | **Attribute Matrix**  | None         | Any | N/A | **Attribute Matrix** to move |
 | **Data Container**  | None         | N/A | N/A | **Data Container** in which to move the selected **Attribute Matrix** |
 | Any **Attribute Array**  | None         | Any | Any | **Attribute Array** to move |

@@ -144,7 +144,7 @@ public:
     }
 
     ScaleVolume::Pointer filter = std::dynamic_pointer_cast<ScaleVolume>(filterFactory->create());
-    DREAM3D_REQUIRE(nullptr != filter);
+    DREAM3D_REQUIRE(nullptr != filter.get());
     
     return filter;
   }
@@ -154,8 +154,10 @@ public:
   // -----------------------------------------------------------------------------
   void setGeometryTest(ScaleVolume::Pointer filter, bool imageGeometry, bool surfaceGeometry)
   {
-    if (nullptr == filter)
+    if (nullptr == filter.get())
+    {
       return;
+    }
 
     QVariant value;
 
@@ -180,8 +182,10 @@ public:
   // -----------------------------------------------------------------------------
   void setIncorrectGeometry(ScaleVolume::Pointer filter, bool imageGeometry, bool surfaceGeometry)
   {
-    if (nullptr == filter)
+    if (nullptr == filter.get())
+    {
       return;
+    }
 
     QVariant value;
 
@@ -206,8 +210,10 @@ public:
   // -----------------------------------------------------------------------------
   void setNullGeometry(ScaleVolume::Pointer filter, bool imageGeometry, bool surfaceGeometry)
   {
-    if (nullptr == filter)
+    if (nullptr == filter.get())
+    {
       return;
+    }
 
     QVariant value;
 

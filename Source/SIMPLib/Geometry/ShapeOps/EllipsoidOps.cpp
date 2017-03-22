@@ -37,8 +37,6 @@
 
 #include "SIMPLib/Math/SIMPLibMath.h"
 
-const static float m_one_over_pi = 1.0f / SIMPLib::Constants::k_Pi;
-
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
@@ -64,7 +62,7 @@ float EllipsoidOps::radcur1(QMap<ArgName, float> args)
   float bovera = args[B_OverA];
   float covera = args[C_OverA];
 
-  radcur1 = (volcur * 0.75f * (m_one_over_pi) * (1.0f / bovera) * (1.0f / covera));
+  radcur1 = (volcur * 0.75f * (SIMPLib::Constants::k_1OverPi) * (1.0f / bovera) * (1.0f / covera));
   radcur1 = powf(radcur1, 0.333333333333f);
   return radcur1;
 }

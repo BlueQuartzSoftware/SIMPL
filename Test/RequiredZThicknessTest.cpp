@@ -145,7 +145,9 @@ public:
   void setGeometryTest(RequiredZThickness::Pointer filter, int numZVoxels)
   {
     if (nullptr == filter.get())
+    {
       return;
+    }
 
     QVariant value;
 
@@ -162,7 +164,9 @@ public:
   void setInvalidGeometry(RequiredZThickness::Pointer filter, int numZVoxels)
   {
     if (nullptr == filter.get())
+    {
       return;
+    }
 
     QVariant value;
 
@@ -179,7 +183,9 @@ public:
   void setNullDataContainer(RequiredZThickness::Pointer filter)
   {
     if (nullptr == filter.get())
+    {
       return;
+    }
 
     QVariant value;
 

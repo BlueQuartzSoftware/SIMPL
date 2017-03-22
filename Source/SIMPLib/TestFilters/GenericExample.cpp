@@ -131,8 +131,6 @@ void GenericExample::setupFilterParameters()
 
   parameters.push_back(SeparatorFilterParameter::New("Choice Example", FilterParameter::Parameter));
 
-  parameters.push_back(SIMPL_NEW_CALC_FP("Calculator Expression", CalcExpression, FilterParameter::Parameter, GenericExample));
-
   parameters.push_back(SIMPL_NEW_FILELISTINFO_FP("Input File List", InputFileListInfo, FilterParameter::Parameter, GenericExample));
 
   {

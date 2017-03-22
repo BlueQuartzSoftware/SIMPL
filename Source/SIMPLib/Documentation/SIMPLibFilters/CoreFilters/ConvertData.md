@@ -36,13 +36,13 @@ Not Applicable
 ## Required Objects ##
 
 | Kind | Default Name | Type | Component Dimensions | Description |
-|------|--------------|-------------|---------|-----|
+|------|--------------|------|----------------------|-------------|
 | Any **Attribute Array**  | None | Any | Any | Array to convert |
 
 ## Created Objects ##
 
 | Kind | Default Name | Type | Component Dimensions | Description |
-|------|--------------|-------------|---------|-----|
+|------|--------------|------|----------------------|-------------|
 | Any **Attribute Array** | None | Any | Any | The converted array |
 
 ## License & Copyright ##

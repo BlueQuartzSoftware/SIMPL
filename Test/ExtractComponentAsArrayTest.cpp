@@ -120,7 +120,9 @@ public:
   void setValues(ExtractComponentAsArray::Pointer filter, QString dataArray, int component, QString newArrayName)
   {
     if (nullptr == filter.get())
+    {
       return;
+    }
 
     QVariant value;
 
@@ -184,11 +186,11 @@ public:
 
     setValues(filter, "DataArray", 2, newArrayName);
     filter->execute();
-    DREAM3D_REQUIRE_EQUAL(filter->getErrorCondition(), -11003);
+    DREAM3D_REQUIRE_EQUAL(filter->getErrorCondition(), -11004);
 
     setValues(filter, "DataArray", -1, newArrayName);
     filter->execute();
-    DREAM3D_REQUIRE_EQUAL(filter->getErrorCondition(), -11004);
+    DREAM3D_REQUIRE_EQUAL(filter->getErrorCondition(), -11005);
   }
 
   // -----------------------------------------------------------------------------

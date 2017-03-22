@@ -109,6 +109,37 @@ AddFilterCommand::AddFilterCommand(QList<AbstractFilter::Pointer> filters, Pipel
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
+AddFilterCommand::AddFilterCommand(QString jsonString, PipelineView* destination, QString actionText, QVariant value, QUuid previousNode, QUuid nextNode, QUndoCommand* parent)
+: QUndoCommand(parent)
+, m_ActionText(actionText)
+, m_Destination(destination)
+, m_Value(value)
+, m_PreviousNodeId(previousNode)
+, m_NextNodeId(nextNode)
+{
+  if(m_Value.canConvert<int>())
+  {
+    int index = value.toInt();
+    if(index < 0)
+    {
+      m_Value.setValue(destination->filterCount());
+    }
+  }
+
+  JsonFilterParametersReader::Pointer jsonReader = JsonFilterParametersReader::New();
+  FilterPipeline::Pointer pipeline = jsonReader->readPipelineFromString(jsonString);
+  FilterPipeline::FilterContainerType container = pipeline->getFilterContainer();
+
+  m_FilterCount = container.size();
+
+  setText(QObject::tr("\"%1 %2 Filters\"").arg(actionText).arg(m_FilterCount));
+
+  m_JsonString = jsonString;
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
 AddFilterCommand::~AddFilterCommand()
 {
 }

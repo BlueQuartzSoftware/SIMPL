@@ -102,7 +102,9 @@ public:
   void setValues(CreateDataContainer::Pointer filter, QString dataContainer)
   {
     if (nullptr == filter.get())
+    {
       return;
+    }
 
     QVariant value;
 

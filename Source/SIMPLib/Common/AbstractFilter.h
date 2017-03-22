@@ -148,10 +148,24 @@ class SIMPLib_EXPORT AbstractFilter : public Observable
     virtual void readFilterParameters(QJsonObject &obj);
 
     /**
+     * @brief This method is called just before the writeFilterParameters() completes
+    * @param obj The json object to add the filter parameters into
+     * @param rootObject The parent object of **obj**
+     */
+    virtual void preWriteFilterParameters(QJsonObject &obj, QJsonObject &rootObject);
+
+    /**
     * @brief writeFilterParametersToJson Writes the filter parameters to a file
-    * @param root The root json object
+    * @param obj The json object to add the filter parameters into
     */
     virtual void writeFilterParameters(QJsonObject &obj);
+
+    /**
+     * @brief This method is called just after the writeFilterParameters() completes
+    * @param obj The json object to add the filter parameters into
+     * @param rootObject The parent object of **obj**
+     */
+    virtual void postWriteFilterParameters(QJsonObject &obj, QJsonObject &rootObject);
 
     /**
      * @brief execute Implements the main functionality of the filter

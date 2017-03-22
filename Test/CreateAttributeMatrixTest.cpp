@@ -124,7 +124,9 @@ public:
   void setValues(CreateAttributeMatrix::Pointer filter, QString dataContainer, QString attributeMatrix, std::vector<std::vector<double>>tupleDims, AttributeMatrix::Type amType)
   {
     if (nullptr == filter.get())
+    {
       return;
+    }
 
     QVariant value;
 

@@ -24,8 +24,9 @@ This **Filter** changes the origin and/or the resolution of an **Image Geometry*
 Image
 
 ## Required Objects ##
+
 | Kind | Default Name | Type | Component Dimensions | Description |
-|------|--------------|-------------|---------|-----|
+|------|--------------|------|----------------------|-------------|
 | **Data Container** | None | N/A | N/A | **Data Container** with an **Image Geometry** to modify |
 
 ## Created Objects ##

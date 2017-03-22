@@ -114,7 +114,9 @@ public:
     while (dcIterator != proxy.dataContainers.end())
     {
       if (dcIterator.key() == dataContainerKey)
+      {
         dcIterator.value().flag = Qt::Checked;
+      }
       else
       {
         dcIterator.value().flag = Qt::Unchecked;
@@ -123,7 +125,9 @@ public:
         while (amIterator != dcIterator.value().attributeMatricies.end())
         {
           if (amIterator.key() == attributeMatrixKey)
+          {
             amIterator.value().flag = Qt::Checked;
+          }
           else
           {
             amIterator.value().flag = Qt::Unchecked;
@@ -132,9 +136,13 @@ public:
             while (daIterator != amIterator.value().dataArrays.end())
             {
               if (daIterator.key() == dataArrayKey)
+              {
                 daIterator.value().flag = Qt::Checked;
+              }
               else
+              {
                 daIterator.value().flag = Qt::Unchecked;
+              }
 
               daIterator++;
             } // end daIterator

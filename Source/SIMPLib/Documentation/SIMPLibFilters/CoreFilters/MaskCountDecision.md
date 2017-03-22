@@ -18,8 +18,9 @@ This **Filter** emits a *true* or *false* signal based on the number of occurren
 Any
 
 ## Required Objects ##
+
 | Kind | Default Name | Type | Component Dimensions | Description |
-|------|--------------|-------------|---------|-----|
+|------|--------------|------|----------------------|-------------|
 | Any **Attribute Array** | None | int32_t | (1) | Boolean array on which to apply decision   |
 
 ## Created Objects ##

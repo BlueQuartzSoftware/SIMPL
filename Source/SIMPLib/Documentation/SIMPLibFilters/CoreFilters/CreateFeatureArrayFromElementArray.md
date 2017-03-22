@@ -17,15 +17,17 @@ Not Applicable
 
 
 ## Required Objects ##
+
 | Kind | Default Name | Type | Component Dimensions | Description |
-|------|--------------|-------------|---------|-----|
+|------|--------------|------|----------------------|-------------|
 | Element **Attribute Array** | None | Any | Any | **Element** data to copy to **Feature** data |
 | Element **Attribute Array** | FeatureIds | int32_t | (1) | Specifies to which **Feature** each **Element** belongs |
 
 
 ## Created Objects ##
+
 | Kind | Default Name | Type | Component Dimensions | Description |
-|------|--------------|-------------|---------|-----|
+|------|--------------|------|----------------------|-------------|
 | **Attribute Matrix** | None | **Feature**  | N/A | **Feature Attribute Matrix** in which to place the copied data |
 | Feature **Attribute Array** | None | Any  | Any | Copied **Attribute Array** name |
 

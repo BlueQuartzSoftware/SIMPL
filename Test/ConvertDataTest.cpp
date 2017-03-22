@@ -171,7 +171,9 @@ public:
   void setValues(ConvertData::Pointer filter, QString dataArray, ConvertDataTestConsts::DataType type, QString outputArrayName)
   {
     if (nullptr == filter.get())
+    {
       return;
+    }
 
     QVariant value;
 

@@ -18,8 +18,9 @@ This **Filter** emits a *true* or *false* signal based on the number of **Featur
 Any
 
 ## Required Objects ##
+
 | Kind | Default Name | Type | Component Dimensions | Description |
-|------|--------------|-------------|---------|-----|
+|------|--------------|------|----------------------|-------------|
 | **Cell Ensemble Attribute Array** | Number_of_grains | int32_t | (1) | FeatureIds |
 
 ## Created Objects ##

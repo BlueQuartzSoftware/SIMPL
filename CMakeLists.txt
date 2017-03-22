@@ -242,7 +242,7 @@ option(SIMPL_BUILD_WIDGETS "Build the QtWidgets that are needed for GUI Applicat
 # --------------------------------------------------------------------
 # Find and Use the Qt5 Libraries
 include(${CMP_SOURCE_DIR}/ExtLib/Qt5Support.cmake)
-set(SIMPL_Qt5_COMPONENTS Core )
+set(SIMPL_Qt5_COMPONENTS Core Network)
 if( SIMPL_BUILD_WIDGETS)
   set(SIMPL_Qt5_COMPONENTS Core Widgets Network Gui Concurrent Svg Xml OpenGL PrintSupport)
 endif()
@@ -339,14 +339,11 @@ set(SIMPLProj_INSTALL_FILES "${PROJECT_INSTALL_HEADERS}")
 # Generate our ReadMe and License Files
 configure_file(${PROJECT_RESOURCES_DIR}/SIMPL/SIMPLLicense.txt
                 ${PROJECT_BINARY_DIR}/SIMPL/SIMPLLicense.txt )
-configure_file(${PROJECT_SOURCE_DIR}/ReadMe-SIMPL.md
-                ${PROJECT_BINARY_DIR}/ReadMe-SIMPL.md )
 
 # --------------------------------------------------------------------
 # Generate install rules for the text files
-install(FILES ${PROJECT_BINARY_DIR}/ReadMe-SIMPL.md
-              ${PROJECT_BINARY_DIR}/SIMPL/SIMPLLicense.txt
-        DESTINATION .
+install(FILES ${PROJECT_BINARY_DIR}/SIMPL/SIMPLLicense.txt
+        DESTINATION "${DREAM3D_PACKAGE_DEST_PREFIX}"
         COMPONENT Applications)
 
 # Include some directories for the compiler
@@ -425,10 +422,13 @@ configure_file(${SIMPLProj_SOURCE_DIR}/SIMPLConfig.cmake
 )
 
 set(ConfigPackageLocation lib/cmake/SIMPL)
+if(APPLE)
+  set(ConfigPackageLocation ${DREAM3D_PACKAGE_DEST_PREFIX}${ConfigPackageLocation})
+endif()
 
 install(
   FILES
-    ${SIMPLProj_SOURCE_DIR}/SIMPLConfig.cmake
+    "${SIMPLProj_SOURCE_DIR}/SIMPLConfig.cmake"
     "${CMAKE_CURRENT_BINARY_DIR}/SIMPL/SIMPLTargetsConfigVersion.cmake"
   DESTINATION
     ${ConfigPackageLocation}

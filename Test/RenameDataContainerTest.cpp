@@ -64,10 +64,32 @@ public:
   // -----------------------------------------------------------------------------
   //
   // -----------------------------------------------------------------------------
+  AbstractFilter::Pointer createFilter()
+  {
+    // Now instantiate the RenameAttributeArray Filter from the FilterManager
+    QString filtName = "RenameDataContainer";
+    FilterManager* fm = FilterManager::Instance();
+    IFilterFactory::Pointer filterFactory = fm->getFactoryForFilter(filtName);
+    if (nullptr == filterFactory.get())
+    {
+      std::stringstream ss;
+      ss << "The RenameDataContainerTest Requires the use of the " << filtName.toStdString() << " filter which is found in Core Filters";
+      DREAM3D_TEST_THROW_EXCEPTION(ss.str())
+    }
+
+    AbstractFilter::Pointer filter = filterFactory->create();
+    DREAM3D_REQUIRE(nullptr != filter.get());
+
+    return filter;
+  }
+
+  // -----------------------------------------------------------------------------
+  //
+  // -----------------------------------------------------------------------------
   void TestEmptyDataContainerArray()
   {
-    RenameDataContainer::Pointer filter = RenameDataContainer::New();
-    DREAM3D_ASSERT(nullptr != filter);
+    AbstractFilter::Pointer filter = createFilter();
+    DREAM3D_ASSERT(nullptr != filter.get());
 
     DataContainerArray::Pointer dca = DataContainerArray::New();
 
@@ -92,8 +114,8 @@ public:
   // -----------------------------------------------------------------------------
   void TestNullDataContainer()
   {
-    RenameDataContainer::Pointer filter = RenameDataContainer::New();
-    DREAM3D_ASSERT(nullptr != filter);
+    AbstractFilter::Pointer filter = createFilter();
+    DREAM3D_ASSERT(nullptr != filter.get());
 
     DataContainerArray::Pointer dca = DataContainerArray::New();
 
@@ -122,8 +144,8 @@ public:
   // -----------------------------------------------------------------------------
   void TestValidDataContainer()
   {
-    RenameDataContainer::Pointer filter = RenameDataContainer::New();
-    DREAM3D_ASSERT(nullptr != filter);
+    AbstractFilter::Pointer filter = createFilter();
+    DREAM3D_ASSERT(nullptr != filter.get());
 
     DataContainerArray::Pointer dca = DataContainerArray::New();
 
@@ -154,8 +176,8 @@ public:
   // -----------------------------------------------------------------------------
   void TestSetEmptyName()
   {
-    RenameDataContainer::Pointer filter = RenameDataContainer::New();
-    DREAM3D_ASSERT(nullptr != filter);
+    AbstractFilter::Pointer filter = createFilter();
+    DREAM3D_ASSERT(nullptr != filter.get());
 
     DataContainerArray::Pointer dca = DataContainerArray::New();
 
@@ -184,8 +206,8 @@ public:
   // -----------------------------------------------------------------------------
   void TestSetNullName()
   {
-    RenameDataContainer::Pointer filter = RenameDataContainer::New();
-    DREAM3D_ASSERT(nullptr != filter);
+    AbstractFilter::Pointer filter = createFilter();
+    DREAM3D_ASSERT(nullptr != filter.get());
 
     DataContainerArray::Pointer dca = DataContainerArray::New();
 

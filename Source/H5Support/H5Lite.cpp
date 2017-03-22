@@ -455,7 +455,7 @@ hsize_t H5Lite::getNumberOfElements(hid_t loc_id, const std::string& dsetName)
   did = H5Dopen(loc_id, dsetName.c_str(), H5P_DEFAULT);
   if(did < 0)
   {
-    std::cout << "H5Lite.h::readStringDataset(" << __LINE__ << ") Error opening Dataset at loc_id (" << loc_id << ") with object name (" << dsetName << ")" << std::endl;
+    std::cout << "H5Lite.cpp::getNumberOfElements(" << __LINE__ << ") Error opening Dataset at loc_id (" << loc_id << ") with object name (" << dsetName << ")" << std::endl;
     return -1;
   }
   if(did >= 0)

@@ -131,9 +131,9 @@ class SVWidgetsLib_EXPORT SVPipelineViewWidget : public QFrame, public PipelineV
 
     /**
      * @brief populatePipelineView
-     * @param pipeline
+     * @param jsonString
      */
-    void populatePipelineView(FilterPipeline::Pointer pipeline, QVariant value) override;
+    void populatePipelineView(QString jsonString, QVariant value) override;
 
     /**
     * @brief getSelectedFilterWidgets
@@ -165,6 +165,13 @@ class SVWidgetsLib_EXPORT SVPipelineViewWidget : public QFrame, public PipelineV
      * @return FilterPipeline::Pointer
      */
     FilterPipeline::Pointer readPipelineFromFile(const QString& filePath);
+
+    /**
+     * @brief getJsonFromFile
+     * @param filePath
+     * @return QString
+     */
+    QString getJsonFromFile(const QString& filePath);
 
     /**
     * @brief Write pipeline to a file

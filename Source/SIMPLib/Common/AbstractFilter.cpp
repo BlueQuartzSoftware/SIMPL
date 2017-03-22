@@ -200,6 +200,15 @@ void AbstractFilter::readFilterParameters(QJsonObject& obj)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
+void AbstractFilter::preWriteFilterParameters(QJsonObject &obj, QJsonObject &rootObject)
+{
+  Q_UNUSED(obj);
+  Q_UNUSED(rootObject);
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
 void AbstractFilter::writeFilterParameters(QJsonObject& obj)
 {
   QVector<FilterParameter::Pointer> filterParameters = getFilterParameters();
@@ -208,6 +217,16 @@ void AbstractFilter::writeFilterParameters(QJsonObject& obj)
     FilterParameter::Pointer fp = filterParameters[i];
     fp->writeJson(obj);
   }
+  obj[SIMPL::Settings::FilterVersion] = getFilterVersion();
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void AbstractFilter::postWriteFilterParameters(QJsonObject &obj, QJsonObject &rootObject)
+{
+  Q_UNUSED(obj);
+  Q_UNUSED(rootObject);
 }
 
 // -----------------------------------------------------------------------------
