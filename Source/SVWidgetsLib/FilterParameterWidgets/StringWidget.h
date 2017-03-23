@@ -37,11 +37,10 @@
 #define _stringwidget_h_
 
 
-
-
 #include <QtCore/QObject>
 #include <QtCore/QPointer>
 #include <QtWidgets/QWidget>
+#include <QtGui/QKeyEvent>
 
 #include "SVWidgetsLib/QtSupport/QtSFaderWidget.h"
 
@@ -88,13 +87,16 @@ class SVWidgetsLib_EXPORT StringWidget : public FilterParameterWidget, private U
     void widgetChanged(const QString& msg);
     void on_value_returnPressed();
     void on_applyChangesBtn_clicked();
-
+    void on_cancelChangesBtn_clicked();
 
     void hideButton();
 
   signals:
     void errorSettingFilterParameter(const QString& msg);
     void parametersChanged();
+
+  protected:
+    void keyPressEvent(QKeyEvent* event) override;
 
   private:
 

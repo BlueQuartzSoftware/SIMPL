@@ -40,6 +40,7 @@
 #include <QtCore/QObject>
 #include <QtCore/QPointer>
 #include <QtWidgets/QWidget>
+#include <QtGui/QKeyEvent>
 
 #include "SVWidgetsLib/QtSupport/QtSFaderWidget.h"
 
@@ -115,6 +116,7 @@ public:
 
   void on_attributeMatrixName_returnPressed();
   void on_applyChangesBtn_clicked();
+  void on_cancelChangesBtn_clicked();
   void widgetChanged(const QString& msg);
 
   void hideButton();
@@ -132,6 +134,7 @@ protected:
    * @param attrArrName
    */
   void setSelectedPath(QString dcName, QString attrMatName, QString attrArrName);
+  void keyPressEvent(QKeyEvent* event) override;
 
 signals:
   void errorSettingFilterParameter(const QString& msg);

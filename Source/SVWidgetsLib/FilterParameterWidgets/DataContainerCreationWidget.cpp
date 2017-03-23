@@ -82,6 +82,7 @@ void DataContainerCreationWidget::setupGui()
   blockSignals(false);
 
   applyChangesBtn->setVisible(false);
+  cancelChangesBtn->setVisible(false);
 
   // Do not allow the user to put a forward slash into the dataContainerName line edit
   dataContainerName->setValidator(new QRegularExpressionValidator(QRegularExpression("[^/]*"), this));
@@ -128,10 +129,37 @@ void DataContainerCreationWidget::on_applyChangesBtn_clicked()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
+void DataContainerCreationWidget::keyPressEvent(QKeyEvent* e)
+{
+  if (e->key() == Qt::Key_Escape)
+  {
+    on_cancelChangesBtn_clicked();
+  }
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void DataContainerCreationWidget::on_cancelChangesBtn_clicked()
+{
+  dataContainerName->setText(getFilter()->property(PROPERTY_NAME_AS_CHAR).toString());
+  dataContainerName->setStyleSheet(QString(""));
+
+  if (getFaderWidget())
+  {
+    getFaderWidget()->close();
+  }
+  hideButton();
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
 void DataContainerCreationWidget::hideButton()
 {
   dataContainerName->setToolTip("");
   applyChangesBtn->setVisible(false);
+  cancelChangesBtn->setVisible(false);
 }
 
 // -----------------------------------------------------------------------------
@@ -140,11 +168,17 @@ void DataContainerCreationWidget::hideButton()
 void DataContainerCreationWidget::widgetChanged(const QString& text)
 {
   dataContainerName->setStyleSheet(QString::fromLatin1("color: rgb(255, 0, 0);"));
-  dataContainerName->setToolTip("Press the 'Return' key to apply your changes");
+  dataContainerName->setToolTip("Press the 'Return' key to apply your changes\nPress the 'Esc' key to cancel your changes");
   if(applyChangesBtn->isVisible() == false)
   {
     applyChangesBtn->setVisible(true);
     fadeInWidget(applyChangesBtn);
+  }
+
+  if (cancelChangesBtn->isVisible() == false)
+  {
+    cancelChangesBtn->setVisible(true);
+    fadeInWidget(cancelChangesBtn);
   }
 }
 

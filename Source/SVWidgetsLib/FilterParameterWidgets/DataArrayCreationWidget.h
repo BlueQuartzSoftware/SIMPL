@@ -40,6 +40,7 @@
 #include <QtCore/QObject>
 #include <QtCore/QPointer>
 #include <QtWidgets/QWidget>
+#include <QtGui/QKeyEvent>
 
 #include "SVWidgetsLib/QtSupport/QtSFaderWidget.h"
 
@@ -112,6 +113,7 @@ class SVWidgetsLib_EXPORT DataArrayCreationWidget : public FilterParameterWidget
 
     void on_dataArrayName_returnPressed();
     void on_applyChangesBtn_clicked();
+    void on_cancelChangesBtn_clicked();
     void widgetChanged(const QString& msg);
 
     void hideButton();
@@ -121,6 +123,7 @@ class SVWidgetsLib_EXPORT DataArrayCreationWidget : public FilterParameterWidget
      * @brief createSelectionMenu
      */
     void createSelectionMenu();
+    void keyPressEvent(QKeyEvent* event) override;
 
   signals:
     void errorSettingFilterParameter(const QString& msg);

@@ -118,6 +118,7 @@ void DataArrayCreationWidget::setupGui()
   blockSignals(false);
 
   applyChangesBtn->setVisible(false);
+  cancelChangesBtn->setVisible(false);
 
   // Do not allow the user to put a forward slash into the attributeMatrixName line edit
   dataArrayName->setValidator(new QRegularExpressionValidator(QRegularExpression("[^/]*"), this));
@@ -327,6 +328,7 @@ void DataArrayCreationWidget::hideButton()
 {
   dataArrayName->setToolTip("");
   applyChangesBtn->setVisible(false);
+  cancelChangesBtn->setVisible(false);
 }
 
 // -----------------------------------------------------------------------------
@@ -335,11 +337,17 @@ void DataArrayCreationWidget::hideButton()
 void DataArrayCreationWidget::widgetChanged(const QString& text)
 {
   dataArrayName->setStyleSheet(QString::fromLatin1("color: rgb(255, 0, 0);"));
-  dataArrayName->setToolTip("Press the 'Return' key to apply your changes");
+  dataArrayName->setToolTip("Press the 'Return' key to apply your changes\nPress the 'Esc' key to cancel your changes");
   if(applyChangesBtn->isVisible() == false)
   {
     applyChangesBtn->setVisible(true);
     fadeInWidget(applyChangesBtn);
+  }
+
+  if (cancelChangesBtn->isVisible() == false)
+  {
+    cancelChangesBtn->setVisible(true);
+    fadeInWidget(cancelChangesBtn);
   }
 }
 
@@ -424,4 +432,31 @@ void DataArrayCreationWidget::on_applyChangesBtn_clicked()
   connect(faderWidget, SIGNAL(animationComplete()), this, SLOT(hideButton()));
   faderWidget->start();
   m_DidCausePreflight = false;
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void DataArrayCreationWidget::keyPressEvent(QKeyEvent* e)
+{
+  if (e->key() == Qt::Key_Escape)
+  {
+    on_cancelChangesBtn_clicked();
+  }
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void DataArrayCreationWidget::on_cancelChangesBtn_clicked()
+{
+  DataArrayPath path = getFilter()->property(PROPERTY_NAME_AS_CHAR).value<DataArrayPath>();
+  dataArrayName->setText(path.getDataArrayName());
+  dataArrayName->setStyleSheet(QString(""));
+
+  if (getFaderWidget())
+  {
+    getFaderWidget()->close();
+  }
+  hideButton();
 }

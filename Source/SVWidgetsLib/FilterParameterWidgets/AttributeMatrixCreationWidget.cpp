@@ -313,6 +313,7 @@ void AttributeMatrixCreationWidget::hideButton()
 {
   attributeMatrixName->setToolTip("");
   applyChangesBtn->setVisible(false);
+  cancelChangesBtn->setVisible(false);
 }
 
 // -----------------------------------------------------------------------------
@@ -321,11 +322,17 @@ void AttributeMatrixCreationWidget::hideButton()
 void AttributeMatrixCreationWidget::widgetChanged(const QString& text)
 {
   attributeMatrixName->setStyleSheet(QString::fromLatin1("color: rgb(255, 0, 0);"));
-  attributeMatrixName->setToolTip("Press the 'Return' key to apply your changes");
+  attributeMatrixName->setToolTip("Press the 'Return' key to apply your changes\nPress the 'Esc' key to cancel your changes");
   if(applyChangesBtn->isVisible() == false)
   {
     applyChangesBtn->setVisible(true);
     fadeInWidget(applyChangesBtn);
+  }
+
+  if (cancelChangesBtn->isVisible() == false)
+  {
+    cancelChangesBtn->setVisible(true);
+    fadeInWidget(cancelChangesBtn);
   }
 }
 
@@ -412,4 +419,31 @@ void AttributeMatrixCreationWidget::on_applyChangesBtn_clicked()
   faderWidget->start();
 
   m_DidCausePreflight = false;
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void AttributeMatrixCreationWidget::keyPressEvent(QKeyEvent* e)
+{
+  if (e->key() == Qt::Key_Escape)
+  {
+    on_cancelChangesBtn_clicked();
+  }
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void AttributeMatrixCreationWidget::on_cancelChangesBtn_clicked()
+{
+  DataArrayPath path = getFilter()->property(PROPERTY_NAME_AS_CHAR).value<DataArrayPath>();
+  attributeMatrixName->setText(path.getAttributeMatrixName());
+  attributeMatrixName->setStyleSheet(QString(""));
+
+  if (getFaderWidget())
+  {
+    getFaderWidget()->close();
+  }
+  hideButton();
 }
