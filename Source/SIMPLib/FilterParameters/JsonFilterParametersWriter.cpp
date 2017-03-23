@@ -47,9 +47,11 @@
 //
 // -----------------------------------------------------------------------------
 JsonFilterParametersWriter::JsonFilterParametersWriter()
-: m_MaxFilterIndex(-1)
+:
+ m_ExpandReaderFilters(true)
+, m_MaxFilterIndex(-1)
 , m_CurrentIndex(0)
-, m_ExpandReaderFilters(true)
+
 {
 }
 
