@@ -81,6 +81,7 @@ set(TEST_NAMES
   ImportAsciDataArrayTest
   MatrixMathTest
   QuaternionMathTest
+  RecursivePipelineTest
   RemoveComponentFromArrayTest
   ReplaceValueTest
   StatsDataJsonRWTest
