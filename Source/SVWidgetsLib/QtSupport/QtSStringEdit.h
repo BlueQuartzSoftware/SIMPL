@@ -59,8 +59,10 @@ public:
 
   void setupGui();
 
-  QString getStringValue();
-  void setStringValue(QString value, bool blockSignals = false);
+  QString getText();
+  void setText(QString value, bool blockSignals = false);
+
+  void setValidator(const QValidator *v);
 
 signals:
   void valueChanged(QString value);
@@ -71,7 +73,7 @@ public slots:
   void on_applyChangesBtn_clicked();
   void on_cancelChangesBtn_clicked();
 
-  void hideButton();
+  void hideButtons();
 
 protected:
   void keyPressEvent(QKeyEvent* event) override;

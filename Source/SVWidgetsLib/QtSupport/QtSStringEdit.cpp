@@ -69,7 +69,7 @@ QString QtSStringEdit::getStoredValue()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-QString QtSStringEdit::getStringValue()
+QString QtSStringEdit::getText()
 {
   return m_storedValue;
 }
@@ -77,14 +77,16 @@ QString QtSStringEdit::getStringValue()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void QtSStringEdit::setStringValue(QString newValue, bool signalsBlocked)
+void QtSStringEdit::setText(QString newValue, bool signalsBlocked)
 {
-  blockSignals(signalsBlocked);
+  value->blockSignals(signalsBlocked);
 
   m_storedValue = newValue;
   value->setText(newValue);
 
-  blockSignals(false);
+  hideButtons();
+
+  value->blockSignals(false);
 }
 
 // -----------------------------------------------------------------------------
@@ -104,7 +106,7 @@ void QtSStringEdit::on_applyChangesBtn_clicked()
   m_storedValue = value->text();
   emit valueChanged(m_storedValue);
 
-  hideButton();
+  hideButtons();
 }
 
 // -----------------------------------------------------------------------------
@@ -126,13 +128,13 @@ void QtSStringEdit::on_cancelChangesBtn_clicked()
   value->setText(m_storedValue);
   value->setStyleSheet(QString(""));
 
-  hideButton();
+  hideButtons();
 }
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void QtSStringEdit::hideButton()
+void QtSStringEdit::hideButtons()
 {
   value->setToolTip("");
   applyChangesBtn->setVisible(false);
@@ -149,4 +151,12 @@ void QtSStringEdit::widgetChanged(const QString& text)
 
   applyChangesBtn->setVisible(true);
   cancelChangesBtn->setVisible(true);
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void QtSStringEdit::setValidator(const QValidator *v)
+{
+  value->setValidator(v);
 }
