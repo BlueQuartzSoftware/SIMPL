@@ -114,13 +114,6 @@ public:
 
   void dataContainerSelected(QString path);
 
-  void on_attributeMatrixName_returnPressed();
-  void on_applyChangesBtn_clicked();
-  void on_cancelChangesBtn_clicked();
-  void widgetChanged(const QString& msg);
-
-  void hideButton();
-
 protected:
   /**
    * @brief createSelectionMenu
@@ -134,7 +127,6 @@ protected:
    * @param attrArrName
    */
   void setSelectedPath(QString dcName, QString attrMatName, QString attrArrName);
-  void keyPressEvent(QKeyEvent* event) override;
 
 signals:
   void errorSettingFilterParameter(const QString& msg);

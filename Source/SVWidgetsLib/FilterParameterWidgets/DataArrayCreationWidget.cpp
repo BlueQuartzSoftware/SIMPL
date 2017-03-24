@@ -113,15 +113,14 @@ void DataArrayCreationWidget::setupGui()
   if(getFilterParameter() != nullptr)
   {
     QString str = getFilterParameter()->getHumanLabel();
-    label->setText(str);
+    stringEdit->setText(str, true);
   }
   blockSignals(false);
 
-  applyChangesBtn->setVisible(false);
-  cancelChangesBtn->setVisible(false);
+  stringEdit->hideButtons();
 
   // Do not allow the user to put a forward slash into the attributeMatrixName line edit
-  dataArrayName->setValidator(new QRegularExpressionValidator(QRegularExpression("[^/]*"), this));
+  stringEdit->setValidator(new QRegularExpressionValidator(QRegularExpression("[^/]*"), this));
 
   m_SelectedAttributeMatrixPath->setStyleSheet(QtSStyles::DAPSelectionButtonStyle(true));
 
@@ -137,12 +136,12 @@ void DataArrayCreationWidget::setupGui()
   // Catch when the filter wants its values updated
   connect(getFilter(), SIGNAL(updateFilterParameters(AbstractFilter*)), this, SLOT(filterNeedsInputParameters(AbstractFilter*)));
 
-  connect(dataArrayName, SIGNAL(textEdited(const QString&)), this, SLOT(widgetChanged(const QString&)));
+  connect(stringEdit, SIGNAL(valueChanged(const QString&)), this, SIGNAL(parametersChanged()));
 
   DataArrayPath defaultPath = getFilter()->property(PROPERTY_NAME_AS_CHAR).value<DataArrayPath>();
   DataArrayPath amPath(defaultPath.getDataContainerName(), defaultPath.getAttributeMatrixName(), "");
   m_SelectedAttributeMatrixPath->setText(amPath.serialize(Detail::Delimiter));
-  dataArrayName->setText(defaultPath.getDataArrayName());
+  stringEdit->setText(defaultPath.getDataArrayName(), true);
 }
 
 // -----------------------------------------------------------------------------
@@ -316,44 +315,6 @@ void DataArrayCreationWidget::setSelectedPath(DataArrayPath amPath)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void DataArrayCreationWidget::on_dataArrayName_returnPressed()
-{
-  on_applyChangesBtn_clicked();
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-void DataArrayCreationWidget::hideButton()
-{
-  dataArrayName->setToolTip("");
-  applyChangesBtn->setVisible(false);
-  cancelChangesBtn->setVisible(false);
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-void DataArrayCreationWidget::widgetChanged(const QString& text)
-{
-  dataArrayName->setStyleSheet(QString::fromLatin1("color: rgb(255, 0, 0);"));
-  dataArrayName->setToolTip("Press the 'Return' key to apply your changes\nPress the 'Esc' key to cancel your changes");
-  if(applyChangesBtn->isVisible() == false)
-  {
-    applyChangesBtn->setVisible(true);
-    fadeInWidget(applyChangesBtn);
-  }
-
-  if (cancelChangesBtn->isVisible() == false)
-  {
-    cancelChangesBtn->setVisible(true);
-    fadeInWidget(cancelChangesBtn);
-  }
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
 void DataArrayCreationWidget::beforePreflight()
 {
   if(nullptr == getFilter())
@@ -399,7 +360,7 @@ void DataArrayCreationWidget::filterNeedsInputParameters(AbstractFilter* filter)
 {
   // Generate the path to the AttributeArray
   DataArrayPath selectedPath = DataArrayPath::Deserialize(m_SelectedAttributeMatrixPath->text(), Detail::Delimiter);
-  selectedPath.setDataArrayName(dataArrayName->text());
+  selectedPath.setDataArrayName(stringEdit->getText());
   QVariant var;
   var.setValue(selectedPath);
   bool ok = false;
@@ -409,54 +370,4 @@ void DataArrayCreationWidget::filterNeedsInputParameters(AbstractFilter* filter)
   {
     FilterParameterWidgetsDialogs::ShowCouldNotSetFilterParameter(getFilter(), getFilterParameter());
   }
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-void DataArrayCreationWidget::on_applyChangesBtn_clicked()
-{
-  m_DidCausePreflight = true;
-  dataArrayName->setStyleSheet(QString(""));
-  emit parametersChanged();
-
-  QPointer<QtSFaderWidget> faderWidget = new QtSFaderWidget(applyChangesBtn);
-  setFaderWidget(faderWidget);
-
-  if(getFaderWidget())
-  {
-    faderWidget->close();
-  }
-  faderWidget = new QtSFaderWidget(applyChangesBtn);
-  faderWidget->setFadeOut();
-  connect(faderWidget, SIGNAL(animationComplete()), this, SLOT(hideButton()));
-  faderWidget->start();
-  m_DidCausePreflight = false;
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-void DataArrayCreationWidget::keyPressEvent(QKeyEvent* e)
-{
-  if (e->key() == Qt::Key_Escape)
-  {
-    on_cancelChangesBtn_clicked();
-  }
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-void DataArrayCreationWidget::on_cancelChangesBtn_clicked()
-{
-  DataArrayPath path = getFilter()->property(PROPERTY_NAME_AS_CHAR).value<DataArrayPath>();
-  dataArrayName->setText(path.getDataArrayName());
-  dataArrayName->setStyleSheet(QString(""));
-
-  if (getFaderWidget())
-  {
-    getFaderWidget()->close();
-  }
-  hideButton();
 }

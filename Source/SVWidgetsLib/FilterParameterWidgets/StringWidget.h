@@ -84,19 +84,9 @@ class SVWidgetsLib_EXPORT StringWidget : public FilterParameterWidget, private U
     void afterPreflight();
     void filterNeedsInputParameters(AbstractFilter* filter);
 
-    void widgetChanged(const QString& msg);
-    void on_value_returnPressed();
-    void on_applyChangesBtn_clicked();
-    void on_cancelChangesBtn_clicked();
-
-    void hideButton();
-
   signals:
     void errorSettingFilterParameter(const QString& msg);
     void parametersChanged();
-
-  protected:
-    void keyPressEvent(QKeyEvent* event) override;
 
   private:
 

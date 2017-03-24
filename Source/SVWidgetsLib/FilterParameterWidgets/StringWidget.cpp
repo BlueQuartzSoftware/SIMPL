@@ -78,12 +78,11 @@ void StringWidget::setupGui()
     label->setText(getFilterParameter()->getHumanLabel());
 
     QString str = getFilter()->property(PROPERTY_NAME_AS_CHAR).toString();
-    value->setText(str);
+    stringEdit->setText(str, true);
   }
   blockSignals(false);
 
-  applyChangesBtn->setVisible(false);
-  cancelChangesBtn->setVisible(false);
+  stringEdit->hideButtons();
 
   // Catch when the filter is about to execute the preflight
   connect(getFilter(), SIGNAL(preflightAboutToExecute()), this, SLOT(beforePreflight()));
@@ -94,90 +93,7 @@ void StringWidget::setupGui()
   // Catch when the filter wants its values updated
   connect(getFilter(), SIGNAL(updateFilterParameters(AbstractFilter*)), this, SLOT(filterNeedsInputParameters(AbstractFilter*)));
 
-  connect(value, SIGNAL(textChanged(const QString&)), this, SLOT(widgetChanged(const QString&)));
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-void StringWidget::on_value_returnPressed()
-{
-  on_applyChangesBtn_clicked();
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-void StringWidget::on_applyChangesBtn_clicked()
-{
-  value->setStyleSheet(QString(""));
-  emit parametersChanged();
-
-  if(getFaderWidget())
-  {
-    getFaderWidget()->close();
-  }
-  QPointer<QtSFaderWidget> faderWidget = new QtSFaderWidget(applyChangesBtn);
-  faderWidget->setFadeOut();
-  connect(faderWidget, SIGNAL(animationComplete()), this, SLOT(hideButton()));
-  faderWidget->start();
-  setFaderWidget(faderWidget);
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-void StringWidget::keyPressEvent(QKeyEvent* e)
-{
-  if (e->key() == Qt::Key_Escape)
-  {
-    on_cancelChangesBtn_clicked();
-  }
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-void StringWidget::on_cancelChangesBtn_clicked()
-{
-  value->setText(getFilter()->property(PROPERTY_NAME_AS_CHAR).toString());
-  value->setStyleSheet(QString(""));
-
-  if (getFaderWidget())
-  {
-    getFaderWidget()->close();
-  }
-  hideButton();
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-void StringWidget::hideButton()
-{
-  value->setToolTip("");
-  applyChangesBtn->setVisible(false);
-  cancelChangesBtn->setVisible(false);
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-void StringWidget::widgetChanged(const QString& text)
-{
-  value->setStyleSheet(QString::fromLatin1("color: rgb(255, 0, 0);"));
-  value->setToolTip("Press the 'Return' key to apply your changes\nPress the 'Esc' key to cancel your changes");
-  if(applyChangesBtn->isVisible() == false)
-  {
-    applyChangesBtn->setVisible(true);
-    fadeInWidget(applyChangesBtn);
-  }
-
-  if (cancelChangesBtn->isVisible() == false)
-  {
-    cancelChangesBtn->setVisible(true);
-    fadeInWidget(cancelChangesBtn);
-  }
+  connect(stringEdit, SIGNAL(valueChanged(const QString&)), this, SIGNAL(parametersChanged()));
 }
 
 // -----------------------------------------------------------------------------
@@ -199,7 +115,7 @@ void StringWidget::afterPreflight()
 // -----------------------------------------------------------------------------
 void StringWidget::filterNeedsInputParameters(AbstractFilter* filter)
 {
-  bool ok = filter->setProperty(PROPERTY_NAME_AS_CHAR, value->text());
+  bool ok = filter->setProperty(PROPERTY_NAME_AS_CHAR, stringEdit->getText());
   if(false == ok)
   {
     FilterParameterWidgetsDialogs::ShowCouldNotSetFilterParameter(getFilter(), getFilterParameter());

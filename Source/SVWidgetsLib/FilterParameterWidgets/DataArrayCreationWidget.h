@@ -111,19 +111,11 @@ class SVWidgetsLib_EXPORT DataArrayCreationWidget : public FilterParameterWidget
 
     void attributeMatrixSelected(QString path);
 
-    void on_dataArrayName_returnPressed();
-    void on_applyChangesBtn_clicked();
-    void on_cancelChangesBtn_clicked();
-    void widgetChanged(const QString& msg);
-
-    void hideButton();
-
   protected:
     /**
      * @brief createSelectionMenu
      */
     void createSelectionMenu();
-    void keyPressEvent(QKeyEvent* event) override;
 
   signals:
     void errorSettingFilterParameter(const QString& msg);
