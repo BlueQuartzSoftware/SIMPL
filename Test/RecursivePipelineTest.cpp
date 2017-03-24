@@ -1,20 +1,49 @@
-///////////////////////////////////////////////////////////////////////////////
-//
-//  Copyright (c) 2007, 2010 Michael A. Jackson for BlueQuartz Software
-//  All rights reserved.
-//  BSD License: http://www.opensource.org/licenses/bsd-license.html
-//
-//  This code was written under United States Air Force Contract number
-//                           FA8650-04-C-5229
-//
-///////////////////////////////////////////////////////////////////////////////
+/* ============================================================================
+* Copyright (c) 2009-2016 BlueQuartz Software, LLC
+*
+* Redistribution and use in source and binary forms, with or without modification,
+* are permitted provided that the following conditions are met:
+*
+* Redistributions of source code must retain the above copyright notice, this
+* list of conditions and the following disclaimer.
+*
+* Redistributions in binary form must reproduce the above copyright notice, this
+* list of conditions and the following disclaimer in the documentation and/or
+* other materials provided with the distribution.
+*
+* Neither the name of BlueQuartz Software, the US Air Force, nor the names of its
+* contributors may be used to endorse or promote products derived from this software
+* without specific prior written permission.
+*
+* THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+* AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+* IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+* DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE
+* FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
+* DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
+* SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
+* CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
+* OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE
+* USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+*
+* The code contained herein was partially funded by the followig contracts:
+*    United States Air Force Prime Contract FA8650-07-D-5800
+*    United States Air Force Prime Contract FA8650-10-D-5210
+*    United States Prime Contract Navy N00173-07-C-2068
+*
+* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
 #include <iostream>
 
 #include <QtCore/QObject>
+#include <QtCore/QFile>
 
 #include "SIMPLib/CoreFilters/RemoveArrays.h"
+#include "SIMPLib/CoreFilters/DataContainerReader.h"
+#include "SIMPLib/CoreFilters/DataContainerWriter.h"
 #include "SIMPLib/Utilities/UnitTestSupport.hpp"
+#include "SIMPLib/Common/FilterPipeline.h"
+#include "SIMPLib/FilterParameters/H5FilterParametersReader.h"
 
 #include "SIMPLTestFileLocations.h"
 
@@ -31,16 +60,47 @@ class RecursivePipelineTest
     // -----------------------------------------------------------------------------
     //
     // -----------------------------------------------------------------------------
+    void RemoveTestFiles()
+    {
+  #if REMOVE_TEST_FILES
+      QFile::remove(UnitTest::RecursivePipelineTest::OutputDREAM3DFile);
+  #endif
+    }
+
+    // -----------------------------------------------------------------------------
+    //
+    // -----------------------------------------------------------------------------
     int TestFilterAvailability()
     {
-      // Now instantiate the FindDifferenceMapTest Filter from the FilterManager
-      QString filtName = "CombineAttributeMatrices";
       FilterManager* fm = FilterManager::Instance();
+
+      // Now instantiate the RemoveArrays Filter from the FilterManager
+      QString filtName = "RemoveArrays";
       IFilterFactory::Pointer filterFactory = fm->getFactoryForFilter(filtName);
       if(nullptr == filterFactory.get())
       {
         std::stringstream ss;
-        ss << "The CombineAttribtueMatricesTest Requires the use of the " << filtName.toStdString() << " filter which is found in Core Filters";
+        ss << "The RecursivePipelineTest requires the use of the " << filtName.toStdString() << " filter which is found in Core Filters";
+        DREAM3D_TEST_THROW_EXCEPTION(ss.str())
+      }
+
+      // Now instantiate the DataContainerReader Filter from the FilterManager
+      filtName = "DataContainerReader";
+      filterFactory = fm->getFactoryForFilter(filtName);
+      if(nullptr == filterFactory.get())
+      {
+        std::stringstream ss;
+        ss << "The RecursivePipelineTest requires the use of the " << filtName.toStdString() << " filter which is found in Core Filters";
+        DREAM3D_TEST_THROW_EXCEPTION(ss.str())
+      }
+
+      // Now instantiate the DataContainerWriter Filter from the FilterManager
+      filtName = "DataContainerWriter";
+      filterFactory = fm->getFactoryForFilter(filtName);
+      if(nullptr == filterFactory.get())
+      {
+        std::stringstream ss;
+        ss << "The RecursivePipelineTest requires the use of the " << filtName.toStdString() << " filter which is found in Core Filters";
         DREAM3D_TEST_THROW_EXCEPTION(ss.str())
       }
       return 0;
@@ -49,41 +109,19 @@ class RecursivePipelineTest
     // -----------------------------------------------------------------------------
     //
     // -----------------------------------------------------------------------------
-    DataContainerArray::Pointer createDataContainerArray()
+    FilterPipeline::Pointer createPipeline()
     {
-      DataContainerArray::Pointer dca = DataContainerArray::New();
+      FilterPipeline::Pointer pipeline = FilterPipeline::New();
 
-      //  DataContainer::Pointer dc1 = DataContainer::New("DataContainer1");
-      //  DataContainer::Pointer dc2 = DataContainer::New("DataContainer2");
-      //  DataContainer::Pointer dc3 = DataContainer::New("DataContainer3");
-      //  AttributeMatrix::Pointer am1 = AttributeMatrix::New(QVector<size_t>(3, 2), "AttributeMatrix1", 0);
-      //  AttributeMatrix::Pointer am2 = AttributeMatrix::New(QVector<size_t>(7, 2), "AttributeMatrix2", 0);
-      //  AttributeMatrix::Pointer am3 = AttributeMatrix::New(QVector<size_t>(4, 3), "AttributeMatrix3", 0);
-      //  AttributeMatrix::Pointer am4 = AttributeMatrix::New(QVector<size_t>(7, 2), "AttributeMatrix4", 0);
-      //  AttributeMatrix::Pointer am5 = AttributeMatrix::New(QVector<size_t>(7, 2), "AttributeMatrix5", 0);
-      //  IDataArray::Pointer da1 = DataArray<size_t>::CreateArray(8, "DataArray1");
-      //  IDataArray::Pointer da2 = DataArray<size_t>::CreateArray(128, "DataArray2");
-      //  IDataArray::Pointer da3 = DataArray<size_t>::CreateArray(128, "DataArray3");
-      //  IDataArray::Pointer da4 = DataArray<size_t>::CreateArray(81, "DataArray4");
-      //  IDataArray::Pointer da5 = DataArray<size_t>::CreateArray(81, "DataArray5");
+      DataContainerReader::Pointer reader = DataContainerReader::New();
+      reader->setInputFile(UnitTest::RecursivePipelineTest::InputDREAM3DFile);
+      pipeline->pushBack(reader);
 
-      //  am1->addAttributeArray("DataArray1", da1);
-      //  am2->addAttributeArray("DataArray2", da2);
-      //  am2->addAttributeArray("DataArray3", da3);
-      //  am3->addAttributeArray("DataArray4", da4);
-      //  am3->addAttributeArray("DataArray5", da5);
+      DataContainerWriter::Pointer writer = DataContainerWriter::New();
+      writer->setOutputFile(UnitTest::RecursivePipelineTest::OutputDREAM3DFile);
+      pipeline->pushBack(writer);
 
-      //  dc1->addAttributeMatrix("AttributeMatrix1", am1);
-      //  dc1->addAttributeMatrix("AttributeMatrix2", am2);
-      //  dc2->addAttributeMatrix("AttributeMatrix3", am3);
-      //  dc2->addAttributeMatrix("AttributeMatrix4", am4);
-      //  dc3->addAttributeMatrix("AttributeMatrix5", am5);
-
-      //  dca->addDataContainer(dc1);
-      //  dca->addDataContainer(dc2);
-      //  dca->addDataContainer(dc3);
-
-      return dca;
+      return pipeline;
     }
 
     // -----------------------------------------------------------------------------
@@ -91,18 +129,16 @@ class RecursivePipelineTest
     // -----------------------------------------------------------------------------
     void RunTest()
     {
-      DataContainerArray::Pointer dca = createDataContainerArray();
+      FilterPipeline::Pointer pipeline = createPipeline();
+      pipeline->preflightPipeline();
+      DREAM3D_REQUIRE_EQUAL(pipeline->getErrorCondition(), 0);
+      pipeline->execute();
+      DREAM3D_REQUIRE_EQUAL(pipeline->getErrorCondition(), 0);
 
-      //  MoveData::Pointer moveDataPtr = MoveData::New();
-      //  moveDataPtr->setDataContainerArray(dca);
-      //  moveDataPtr->setWhatToMove(k_MoveAttributeMatrix);
-
-      //  // "Destination Data Container Does Not Exist" Test
-      //  moveDataPtr->setDataContainerDestination("ThisDataContainerShouldNotExist");
-      //  DataArrayPath amSource("DataContainer1", "AttributeMatrix1", "");
-      //  moveDataPtr->setAttributeMatrixSource(amSource);
-      //  moveDataPtr->execute();
-      //  DREAM3D_REQUIRE_EQUAL(moveDataPtr->getErrorCondition(), DC_DEST_NOT_FOUND)
+      H5FilterParametersReader::Pointer reader = H5FilterParametersReader::New();
+      FilterPipeline::Pointer outputPipeline = reader->readPipelineFromFile(UnitTest::RecursivePipelineTest::OutputDREAM3DFile);
+      outputPipeline->preflightPipeline();
+      DREAM3D_REQUIRE_EQUAL(outputPipeline->getErrorCondition(), 0);
     }
 
     // -----------------------------------------------------------------------------
@@ -114,7 +150,9 @@ class RecursivePipelineTest
 
       int err = EXIT_SUCCESS;
 
-      DREAM3D_REGISTER_TEST(RunTest())
+      DREAM3D_REGISTER_TEST(TestFilterAvailability());
+
+      DREAM3D_REGISTER_TEST(RunTest());
     }
 
   private:
