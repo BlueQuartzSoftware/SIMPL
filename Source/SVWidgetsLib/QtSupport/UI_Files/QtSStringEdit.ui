@@ -36,7 +36,7 @@
     <widget class="QLineEdit" name="value">
      <property name="sizePolicy">
       <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
-       <horstretch>0</horstretch>
+       <horstretch>1</horstretch>
        <verstretch>0</verstretch>
       </sizepolicy>
      </property>
@@ -58,7 +58,7 @@
      </property>
      <property name="minimumSize">
       <size>
-       <width>84</width>
+       <width>0</width>
        <height>0</height>
       </size>
      </property>
@@ -72,29 +72,14 @@
       <string>Click to apply the changes and run a preflight check</string>
      </property>
      <property name="styleSheet">
-      <string notr="true"> QPushButton {
-     border: 2px solid #8f8f91;
-     border-radius: 6px;
-     background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
-                                       stop: 0 #f6f7fa, stop: 1 #dadbde);
-     min-width: 80px;
- }
-
- QPushButton:pressed {
-     background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
-                                       stop: 0 #dadbde, stop: 1 #f6f7fa);
- }
-
- QPushButton:flat {
-     border: none; /* no border for a flat push button */
- }
-
- QPushButton:default {
-     border-color: navy; /* make the default button prominent */
- }</string>
+      <string notr="true"/>
      </property>
      <property name="text">
-      <string>Apply</string>
+      <string/>
+     </property>
+     <property name="icon">
+      <iconset resource="../../icons/images/Icons.qrc">
+       <normaloff>:/check2.png</normaloff>:/check2.png</iconset>
      </property>
      <property name="autoDefault">
       <bool>false</bool>
@@ -103,17 +88,23 @@
       <bool>false</bool>
      </property>
      <property name="flat">
-      <bool>false</bool>
+      <bool>true</bool>
      </property>
     </widget>
    </item>
    <item>
     <widget class="QPushButton" name="cancelChangesBtn">
      <property name="sizePolicy">
-      <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+      <sizepolicy hsizetype="Minimum" vsizetype="Preferred">
        <horstretch>0</horstretch>
        <verstretch>0</verstretch>
       </sizepolicy>
+     </property>
+     <property name="minimumSize">
+      <size>
+       <width>0</width>
+       <height>0</height>
+      </size>
      </property>
      <property name="maximumSize">
       <size>
@@ -125,34 +116,24 @@
       <string>Click to revert the changes</string>
      </property>
      <property name="styleSheet">
-      <string notr="true"> QPushButton {
-     border: 2px solid #8f8f91;
-     border-radius: 6px;
-     background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
-                                       stop: 0 #f6f7fa, stop: 1 #dadbde);
-     min-width: 80px;
- }
-
- QPushButton:pressed {
-     background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
-                                       stop: 0 #dadbde, stop: 1 #f6f7fa);
- }
-
- QPushButton:flat {
-     border: none; /* no border for a flat push button */
- }
-
- QPushButton:default {
-     border-color: navy; /* make the default button prominent */
- }</string>
+      <string notr="true"/>
      </property>
      <property name="text">
-      <string>Cancel</string>
+      <string/>
+     </property>
+     <property name="icon">
+      <iconset resource="../../icons/images/Icons.qrc">
+       <normaloff>:/delete2.png</normaloff>:/delete2.png</iconset>
+     </property>
+     <property name="flat">
+      <bool>true</bool>
      </property>
     </widget>
    </item>
   </layout>
  </widget>
- <resources/>
+ <resources>
+  <include location="../../icons/images/Icons.qrc"/>
+ </resources>
  <connections/>
 </ui>
