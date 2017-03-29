@@ -5,6 +5,7 @@ set(SVWidgetsLib_FilterParameterWidgets_UIS "")
 
 
 set(SIMPLView_PARAMETER_WIDGETS
+    AbstractIOFileWidget
     AttributeMatrixCreationWidget
     AttributeMatrixSelectionWidget
     AxisAngleWidget
@@ -29,13 +30,11 @@ set(SIMPLView_PARAMETER_WIDGETS
     FloatVec3Widget
     FourthOrderPolynomialWidget
     GenerateColorTableWidget
-    InputFileWidget
     InputPathWidget
     IntVec3Widget
     IntWidget
     LinkedBooleanWidget
     MultiDataArraySelectionWidget
-    OutputFileWidget
     OutputPathWidget
     PreflightUpdatedValueWidget
     RangeWidget
@@ -43,6 +42,11 @@ set(SIMPLView_PARAMETER_WIDGETS
     SeparatorWidget
     StringWidget
     ThirdOrderPolynomialWidget
+)
+
+set(SIMPLView_PARAMETER_WIDGETS_NO_UI
+  InputFileWidget
+  OutputFileWidget
 )
 
 set(SIMPLView_PARAMETER_WIDGETS_NO_CODEGEN
@@ -79,6 +83,32 @@ foreach(FPW ${SIMPLView_PARAMETER_WIDGETS})
   list(APPEND SVWidgetsLib_FilterParameterWidgets_MOC_HDRS ${SVWidgetsLib_SOURCE_DIR}/FilterParameterWidgets/${FPW}.h)
   list(APPEND SVWidgetsLib_FilterParameterWidgets_SRCS ${SVWidgetsLib_SOURCE_DIR}/FilterParameterWidgets/${FPW}.cpp)
   list(APPEND SVWidgetsLib_FilterParameterWidgets_UIS ${SVWidgetsLib_SOURCE_DIR}/FilterParameterWidgets/UI_Files/${FPW}.ui)
+
+  file(APPEND  ${REGISTER_KNOWN_WIDGETS} "{\n")
+  file(APPEND  ${REGISTER_KNOWN_WIDGETS} "  PipelineFilterWidgetFactory<${FPW}>::Pointer factory = PipelineFilterWidgetFactory<${FPW}>::New();\n")
+  file(APPEND  ${REGISTER_KNOWN_WIDGETS} "  idManager->addFilterWidgetFactory( \"${FPW}\", factory );\n")
+  file(APPEND  ${REGISTER_KNOWN_WIDGETS} "}\n")
+  file(APPEND  ${FILTER_WIDGET_HEADERS} "#include \"SVWidgetsLib/FilterParameterWidgets/${FPW}.h\"\n")
+
+  file(APPEND  ${FILTER_PARAMETER_CODEGEN_INCLUDES_FILE} "#include \"DevHelper/CodeGenerators/${FPW}CodeGenerator.h\"\n")
+
+  file(APPEND  ${FILTER_PARAMETER_TYPELIST_FILE} "list.push_back(\"${FPW}\");\n")
+
+  if (loopCounter EQUAL 1)
+    file(APPEND ${FILTER_PARAMETER_CODEGEN_FILE} "if (fpType == \"${FPW}\") {\n")
+  else()
+    file(APPEND ${FILTER_PARAMETER_CODEGEN_FILE} "else if (fpType == \"${FPW}\") {\n")
+  endif()
+
+  file(APPEND ${FILTER_PARAMETER_CODEGEN_FILE} "  ${FPW}CodeGenerator::Pointer ptr = ${FPW}CodeGenerator::New(humanLabel, propertyName, fpCategory, initValue);\n")
+      file(APPEND ${FILTER_PARAMETER_CODEGEN_FILE} "  return ptr;\n}\n\n")
+
+  set(loopCounter loopCounter+1)
+endforeach()
+
+foreach(FPW ${SIMPLView_PARAMETER_WIDGETS_NO_UI})
+  list(APPEND SVWidgetsLib_FilterParameterWidgets_MOC_HDRS ${SVWidgetsLib_SOURCE_DIR}/FilterParameterWidgets/${FPW}.h)
+  list(APPEND SVWidgetsLib_FilterParameterWidgets_SRCS ${SVWidgetsLib_SOURCE_DIR}/FilterParameterWidgets/${FPW}.cpp)
 
   file(APPEND  ${REGISTER_KNOWN_WIDGETS} "{\n")
   file(APPEND  ${REGISTER_KNOWN_WIDGETS} "  PipelineFilterWidgetFactory<${FPW}>::Pointer factory = PipelineFilterWidgetFactory<${FPW}>::New();\n")

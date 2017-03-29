@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>OutputFileWidget</class>
- <widget class="QFrame" name="OutputFileWidget">
+ <class>AbstractIOFileWidget</class>
+ <widget class="QFrame" name="AbstractIOFileWidget">
   <property name="geometry">
    <rect>
     <x>0</x>

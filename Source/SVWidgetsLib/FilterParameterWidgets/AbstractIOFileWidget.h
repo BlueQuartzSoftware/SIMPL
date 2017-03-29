@@ -33,22 +33,35 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-#ifndef _outputfilewidget_h_
-#define _outputfilewidget_h_
+#ifndef _abstractiofilewidget_h_
+#define _abstractiofilewidget_h_
 
 #include <QtCore/QObject>
+#include <QtCore/QPointer>
+#include <QtWidgets/QWidget>
 
+
+#include "SVWidgetsLib/QtSupport/QtSFaderWidget.h"
+
+
+#include "SIMPLib/Common/AbstractFilter.h"
 #include "SIMPLib/FilterParameters/OutputFileFilterParameter.h"
 
 #include "SVWidgetsLib/SVWidgetsLib.h"
-#include "SVWidgetsLib/FilterParameterWidgets/AbstractIOFileWidget.h"
+#include "SVWidgetsLib/FilterParameterWidgets/FilterParameterWidget.h"
+
+
+#include "SVWidgetsLib/ui_AbstractIOFileWidget.h"
+
+class QLineEdit;
+class OutputFileFilterParameter;
 
 /**
 * @brief
 * @author
 * @version
 */
-class SVWidgetsLib_EXPORT OutputFileWidget : public AbstractIOFileWidget
+class SVWidgetsLib_EXPORT AbstractIOFileWidget : public FilterParameterWidget, protected Ui::AbstractIOFileWidget
 {
     Q_OBJECT
 
@@ -59,26 +72,49 @@ class SVWidgetsLib_EXPORT OutputFileWidget : public AbstractIOFileWidget
     * @param filter The instance of the filter that this parameter is a part of
     * @param parent The parent QWidget for this Widget
     */
-    OutputFileWidget(FilterParameter* parameter, AbstractFilter* filter = nullptr, QWidget* parent = nullptr);
+    AbstractIOFileWidget(FilterParameter* parameter, AbstractFilter* filter = nullptr, QWidget* parent = nullptr);
 
-    virtual ~OutputFileWidget();
+    virtual ~AbstractIOFileWidget();
 
     /**
     * @brief This method does additional GUI widget connections
     */
     void setupGui();
 
+    /**
+    * @brief
+    */
+    bool verifyPathExists(QString filePath, QLineEdit* lineEdit);
+
   public slots:
-    void selectOutputFile();
+    void beforePreflight();
+    void afterPreflight();
+    void filterNeedsInputParameters(AbstractFilter* filter);
+
+    void on_value_fileDropped(const QString& text);
+    void on_value_editingFinished();
+    void on_value_textChanged(const QString& text);
+    void on_value_returnPressed();
+
+
+  protected:
+    static void setOpenDialogLastDirectory(QString val) { m_OpenDialogLastDirectory = val; }
+    static QString getOpenDialogLastDirectory() { return m_OpenDialogLastDirectory; }
+
+  signals:
+    void errorSettingFilterParameter(const QString& msg);
+    void parametersChanged();
 
   private:
-    OutputFileFilterParameter*  m_FilterParameter;
+    static QString    m_OpenDialogLastDirectory;
+    bool m_DidCausePreflight;
 
-    OutputFileWidget(const OutputFileWidget&); // Copy Constructor Not Implemented
-    void operator=(const OutputFileWidget&); // Operator '=' Not Implemented
+
+    AbstractIOFileWidget(const AbstractIOFileWidget&); // Copy Constructor Not Implemented
+    void operator=(const AbstractIOFileWidget&); // Operator '=' Not Implemented
 
 };
 
-#endif /* _OutputFileWidget_H_ */
+#endif /* _abstractiofilewidget_h_ */
 
 

@@ -40,16 +40,6 @@
 
 #include <QtWidgets/QFileDialog>
 
-#include "SIMPLib/FilterParameters/OutputFileFilterParameter.h"
-
-#include "SVWidgetsLib/Core/SVWidgetsLibConstants.h"
-#include "SVWidgetsLib/QtSupport/QtSFileCompleter.h"
-
-#include "FilterParameterWidgetsDialogs.h"
-
-// Initialize private static member variable
-QString OutputFileWidget::m_OpenDialogLastDirectory = "";
-
 // Include the MOC generated file for this class
 #include "moc_OutputFileWidget.cpp"
 
@@ -57,30 +47,12 @@ QString OutputFileWidget::m_OpenDialogLastDirectory = "";
 //
 // -----------------------------------------------------------------------------
 OutputFileWidget::OutputFileWidget(FilterParameter* parameter, AbstractFilter* filter, QWidget* parent)
-: FilterParameterWidget(parameter, filter, parent)
+: AbstractIOFileWidget(parameter, filter, parent)
 {
   m_FilterParameter = dynamic_cast<OutputFileFilterParameter*>(parameter);
   Q_ASSERT_X(m_FilterParameter != nullptr, "NULL Pointer", "OutputFileWidget can ONLY be used with a OutputFileFilterParameter object");
 
-  m_OpenDialogLastDirectory = QDir::homePath();
-
-  setupUi(this);
   setupGui();
-  if(filter)
-  {
-    QString currentPath = filter->property(PROPERTY_NAME_AS_CHAR).toString();
-    if(currentPath.isEmpty() == false)
-    {
-      currentPath = QDir::toNativeSeparators(currentPath);
-      // Store the last used directory into the private instance variable
-      QFileInfo fi(currentPath);
-      m_OpenDialogLastDirectory = fi.path();
-    }
-    else
-    {
-      m_OpenDialogLastDirectory = QDir::homePath();
-    }
-  }
 }
 
 // -----------------------------------------------------------------------------
@@ -93,119 +65,25 @@ OutputFileWidget::~OutputFileWidget()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void OutputFileWidget::setFilterParameter(FilterParameter* value)
-{
-  m_FilterParameter = dynamic_cast<OutputFileFilterParameter*>(value);
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-FilterParameter* OutputFileWidget::getFilterParameter() const
-{
-  return m_FilterParameter;
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
 void OutputFileWidget::setupGui()
 {
-
-  // Catch when the filter is about to execute the preflight
-  connect(getFilter(), SIGNAL(preflightAboutToExecute()), this, SLOT(beforePreflight()));
-
-  // Catch when the filter is finished running the preflight
-  connect(getFilter(), SIGNAL(preflightExecuted()), this, SLOT(afterPreflight()));
-
-  // Catch when the filter wants its values updated
-  connect(getFilter(), SIGNAL(updateFilterParameters(AbstractFilter*)), this, SLOT(filterNeedsInputParameters(AbstractFilter*)));
-
-  QtSFileCompleter* com = new QtSFileCompleter(this, false);
-  value->setCompleter(com);
-  QObject::connect(com, SIGNAL(activated(const QString&)), this, SLOT(on_value_textChanged(const QString&)));
-
-  if(getFilterParameter() != nullptr)
-  {
-    label->setText(getFilterParameter()->getHumanLabel());
-
-    QString currentPath = getFilter()->property(PROPERTY_NAME_AS_CHAR).toString();
-    value->setText(currentPath);
-    if(verifyPathExists(currentPath, value))
-    {
-    }
-  }
+  connect(selectBtn, SIGNAL(clicked()), this, SLOT(selectOutputFile()));
 }
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-bool OutputFileWidget::verifyPathExists(QString filePath, QLineEdit* lineEdit)
-{
-  QFileInfo fileinfo(filePath);
-  if(false == fileinfo.exists())
-  {
-    lineEdit->setStyleSheet("border: 1px solid red;");
-  }
-  else
-  {
-    lineEdit->setStyleSheet("");
-  }
-  return fileinfo.exists();
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-void OutputFileWidget::on_value_editingFinished()
-{
-  value->setStyleSheet(QString(""));
-  emit parametersChanged(); // This should force the preflight to run because we are emitting a signal
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-void OutputFileWidget::on_value_returnPressed()
-{
-  on_value_editingFinished();
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-void OutputFileWidget::on_value_textChanged(const QString& text)
-{
-  value->setStyleSheet(QString::fromLatin1("color: rgb(255, 0, 0);"));
-  value->setToolTip("Press the 'Return' key to apply your changes");
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-void OutputFileWidget::on_value_fileDropped(const QString& text)
-{
-  setOpenDialogLastDirectory(text);
-  // Set/Remove the red outline if the file does exist
-  verifyPathExists(text, value);
-
-  emit parametersChanged(); // This should force the preflight to run because we are emitting a signal
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-void OutputFileWidget::on_selectBtn_clicked()
+void OutputFileWidget::selectOutputFile()
 {
   QString currentPath = getFilter()->property(PROPERTY_NAME_AS_CHAR).toString();
   if(currentPath.isEmpty() == true)
   {
-    currentPath = m_OpenDialogLastDirectory;
+    currentPath = getOpenDialogLastDirectory();
   }
   QString Ftype = m_FilterParameter->getFileType();
   QString ext = m_FilterParameter->getFileExtension();
   QString s = Ftype + QString(" Files (") + ext + QString(");;All Files(*.*)");
-  QString defaultName = m_OpenDialogLastDirectory + QDir::separator() + "Untitled";
+  QString defaultName = getOpenDialogLastDirectory() + QDir::separator() + "Untitled";
   QString file = QFileDialog::getSaveFileName(this, tr("Save File As"), defaultName, s);
 
   if(true == file.isEmpty())
@@ -216,35 +94,8 @@ void OutputFileWidget::on_selectBtn_clicked()
   file = QDir::toNativeSeparators(file);
   // Store the last used directory into the private instance variable
   QFileInfo fi(file);
-  m_OpenDialogLastDirectory = fi.path();
+  setOpenDialogLastDirectory(fi.path());
 
   value->setText(file);
   on_value_editingFinished();
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-void OutputFileWidget::filterNeedsInputParameters(AbstractFilter* filter)
-{
-  QString text = value->text();
-  bool ok = filter->setProperty(PROPERTY_NAME_AS_CHAR, text);
-  if(false == ok)
-  {
-    FilterParameterWidgetsDialogs::ShowCouldNotSetFilterParameter(getFilter(), getFilterParameter());
-  }
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-void OutputFileWidget::beforePreflight()
-{
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-void OutputFileWidget::afterPreflight()
-{
 }
