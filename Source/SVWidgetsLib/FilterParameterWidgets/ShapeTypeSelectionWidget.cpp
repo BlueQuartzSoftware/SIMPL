@@ -143,6 +143,10 @@ void ShapeTypeSelectionWidget::updateComboBoxes()
   ShapeTypeSelectionFilterParameter* shapeType = dynamic_cast<ShapeTypeSelectionFilterParameter*>(getFilterParameter());
   QString countProp = shapeType->getPhaseTypeCountProperty();
   int numPhases = getFilter()->property(countProp.toLatin1().constData()).toInt(&ok);
+  if(!ok)
+  {
+    numPhases = 0;
+  }
 
   ShapeType::Types shapeTypesFromFilter = getFilter()->property(PROPERTY_NAME_AS_CHAR).value<ShapeType::Types>();
   if (shapeTypesFromFilter.size() > 1 && numPhases <= 0)
