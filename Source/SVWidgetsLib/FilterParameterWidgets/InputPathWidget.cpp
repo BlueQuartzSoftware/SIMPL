@@ -35,19 +35,9 @@
 
 #include "InputPathWidget.h"
 
-#include <QtCore/QDir>
 #include <QtCore/QMetaProperty>
 
 #include <QtWidgets/QFileDialog>
-
-#include "SVWidgetsLib/QtSupport/QtSFileCompleter.h"
-
-#include "SVWidgetsLib/Core/SVWidgetsLibConstants.h"
-
-#include "FilterParameterWidgetsDialogs.h"
-
-// Initialize private static member variable
-QString InputPathWidget::m_OpenDialogLastDirectory = "";
 
 // Include the MOC generated file for this class
 #include "moc_InputPathWidget.cpp"
@@ -56,29 +46,12 @@ QString InputPathWidget::m_OpenDialogLastDirectory = "";
 //
 // -----------------------------------------------------------------------------
 InputPathWidget::InputPathWidget(FilterParameter* parameter, AbstractFilter* filter, QWidget* parent)
-: FilterParameterWidget(parameter, filter, parent)
+: AbstractIOFileWidget(parameter, filter, parent)
 {
   m_FilterParameter = dynamic_cast<InputPathFilterParameter*>(parameter);
   Q_ASSERT_X(m_FilterParameter != nullptr, "NULL Pointer", "InputPathWidget can ONLY be used with a InputPathFilterParameter object");
 
-  setupUi(this);
   setupGui();
-
-  if(filter)
-  {
-    QString currentPath = filter->property(PROPERTY_NAME_AS_CHAR).toString();
-    if(currentPath.isEmpty() == false)
-    {
-      currentPath = QDir::toNativeSeparators(currentPath);
-      // Store the last used directory into the private instance variable
-      QFileInfo fi(currentPath);
-      m_OpenDialogLastDirectory = fi.path();
-    }
-    else
-    {
-      m_OpenDialogLastDirectory = QDir::homePath();
-    }
-  }
 }
 
 // -----------------------------------------------------------------------------
@@ -86,95 +59,26 @@ InputPathWidget::InputPathWidget(FilterParameter* parameter, AbstractFilter* fil
 // -----------------------------------------------------------------------------
 InputPathWidget::~InputPathWidget()
 {
+
 }
 
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-void InputPathWidget::setFilterParameter(FilterParameter* value)
-{
-  m_FilterParameter = dynamic_cast<InputPathFilterParameter*>(value);
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-FilterParameter* InputPathWidget::getFilterParameter() const
-{
-  return m_FilterParameter;
-}
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
 void InputPathWidget::setupGui()
 {
-  // Catch when the filter is about to execute the preflight
-  connect(getFilter(), SIGNAL(preflightAboutToExecute()), this, SLOT(beforePreflight()));
-
-  // Catch when the filter is finished running the preflight
-  connect(getFilter(), SIGNAL(preflightExecuted()), this, SLOT(afterPreflight()));
-
-  // Catch when the filter wants its values updated
-  connect(getFilter(), SIGNAL(updateFilterParameters(AbstractFilter*)), this, SLOT(filterNeedsInputParameters(AbstractFilter*)));
-
-  connect(value, SIGNAL(textChanged(const QString&)), this, SLOT(widgetChanged(const QString&)));
-
-  QtSFileCompleter* com = new QtSFileCompleter(this, false);
-  value->setCompleter(com);
-  QObject::connect(com, SIGNAL(activated(const QString&)), this, SLOT(widgetChanged(const QString&)));
-
-  if(getFilterParameter() != nullptr)
-  {
-    label->setText(getFilterParameter()->getHumanLabel());
-
-    QString currentPath = getFilter()->property(PROPERTY_NAME_AS_CHAR).toString();
-    value->setText(currentPath);
-  }
+  connect(selectBtn, SIGNAL(clicked()), this, SLOT(selectInputPath()));
 }
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-bool InputPathWidget::verifyPathExists(QString filePath, QLineEdit* lineEdit)
-{
-  QFileInfo fileinfo(filePath);
-  if(false == fileinfo.exists())
-  {
-    // lineEdit->setStyleSheet("border: 1px solid red;");
-    lineEdit->setStyleSheet("color: rgb(255, 0, 0);");
-  }
-  else
-  {
-    lineEdit->setStyleSheet("");
-  }
-  return fileinfo.exists();
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-void InputPathWidget::on_value_editingFinished()
-{
-  emit parametersChanged(); // This should force the preflight to run because we are emitting a signal
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-void InputPathWidget::on_value_textChanged(const QString& text)
-{
-  // We dont want to run a preflight for every character that is typed
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-void InputPathWidget::on_selectBtn_clicked()
+void InputPathWidget::selectInputPath()
 {
   QString currentPath = getFilter()->property(PROPERTY_NAME_AS_CHAR).toString();
   if(currentPath.isEmpty() == true)
   {
-    currentPath = m_OpenDialogLastDirectory;
+    currentPath = getOpenDialogLastDirectory();
   }
   QString Ftype = m_FilterParameter->getFileType();
   QString ext = m_FilterParameter->getFileExtension();
@@ -190,44 +94,8 @@ void InputPathWidget::on_selectBtn_clicked()
   file = QDir::toNativeSeparators(file);
   // Store the last used directory into the private instance variable
   QFileInfo fi(file);
-  m_OpenDialogLastDirectory = fi.path();
+  setOpenDialogLastDirectory(fi.path());
 
   value->setText(file);
   on_value_editingFinished();
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-void InputPathWidget::widgetChanged(const QString& text)
-{
-  verifyPathExists(text, value);
-  emit parametersChanged();
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-void InputPathWidget::filterNeedsInputParameters(AbstractFilter* filter)
-{
-  QString text = value->text();
-  bool ok = filter->setProperty(PROPERTY_NAME_AS_CHAR, text);
-  if(false == ok)
-  {
-    FilterParameterWidgetsDialogs::ShowCouldNotSetFilterParameter(getFilter(), getFilterParameter());
-  }
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-void InputPathWidget::beforePreflight()
-{
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-void InputPathWidget::afterPreflight()
-{
 }

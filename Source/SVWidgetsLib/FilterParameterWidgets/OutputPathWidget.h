@@ -36,34 +36,19 @@
 #ifndef _outputpathwidget_h_
 #define _outputpathwidget_h_
 
-
-
-
 #include <QtCore/QObject>
-#include <QtCore/QPointer>
-#include <QtWidgets/QWidget>
 
-
-#include "SVWidgetsLib/QtSupport/QtSFaderWidget.h"
-
-
-#include "SIMPLib/Common/AbstractFilter.h"
 #include "SIMPLib/FilterParameters/OutputPathFilterParameter.h"
 
 #include "SVWidgetsLib/SVWidgetsLib.h"
-#include "SVWidgetsLib/FilterParameterWidgets/FilterParameterWidget.h"
-
-
-#include "SVWidgetsLib/ui_OutputPathWidget.h"
-
-class OutputPathFilterParameter;
+#include "SVWidgetsLib/FilterParameterWidgets/AbstractIOFileWidget.h"
 
 /**
 * @brief
 * @author
 * @version
 */
-class SVWidgetsLib_EXPORT OutputPathWidget : public FilterParameterWidget, private Ui::OutputPathWidget
+class SVWidgetsLib_EXPORT OutputPathWidget : public AbstractIOFileWidget
 {
     Q_OBJECT
 
@@ -83,31 +68,11 @@ class SVWidgetsLib_EXPORT OutputPathWidget : public FilterParameterWidget, priva
     */
     void setupGui();
 
-
-    void setFilterParameter(FilterParameter* value);
-    FilterParameter* getFilterParameter() const;
-
-
   public slots:
-    void beforePreflight();
-    void afterPreflight();
-    void filterNeedsInputParameters(AbstractFilter* filter);
-
-    void on_value_textChanged(const QString& text);
-    void on_value_editingFinished();
-    void on_selectBtn_clicked();
-
-  signals:
-    void errorSettingFilterParameter(const QString& msg);
-    void parametersChanged();
-
-
+    void selectOutputPath();
 
   private:
     OutputPathFilterParameter*  m_FilterParameter;
-    static QString    m_OpenDialogLastDirectory;
-    bool m_DidCausePreflight;
-
 
     OutputPathWidget(const OutputPathWidget&); // Copy Constructor Not Implemented
     void operator=(const OutputPathWidget&); // Operator '=' Not Implemented

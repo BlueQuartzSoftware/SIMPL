@@ -35,20 +35,10 @@
 
 #include "OutputPathWidget.h"
 
-#include <QtCore/QDir>
 #include <QtCore/QMetaProperty>
 
 #include <QtWidgets/QFileDialog>
 
-#include "SIMPLib/FilterParameters/OutputPathFilterParameter.h"
-
-#include "SVWidgetsLib/Core/SVWidgetsLibConstants.h"
-#include "SVWidgetsLib/QtSupport/QtSFileCompleter.h"
-
-#include "FilterParameterWidgetsDialogs.h"
-
-// Initialize private static member variable
-QString OutputPathWidget::m_OpenDialogLastDirectory = "";
 // Include the MOC generated file for this class
 #include "moc_OutputPathWidget.cpp"
 
@@ -56,28 +46,12 @@ QString OutputPathWidget::m_OpenDialogLastDirectory = "";
 //
 // -----------------------------------------------------------------------------
 OutputPathWidget::OutputPathWidget(FilterParameter* parameter, AbstractFilter* filter, QWidget* parent)
-: FilterParameterWidget(parameter, filter, parent)
+: AbstractIOFileWidget(parameter, filter, parent)
 {
   m_FilterParameter = dynamic_cast<OutputPathFilterParameter*>(parameter);
   Q_ASSERT_X(m_FilterParameter != nullptr, "NULL Pointer", "OutputPathWidget can ONLY be used with a OutputPathFilterParameter object");
 
-  setupUi(this);
   setupGui();
-  if(filter)
-  {
-    QString currentPath = filter->property(PROPERTY_NAME_AS_CHAR).toString();
-    if(currentPath.isEmpty() == false)
-    {
-      currentPath = QDir::toNativeSeparators(currentPath);
-      // Store the last used directory into the private instance variable
-      QFileInfo fi(currentPath);
-      m_OpenDialogLastDirectory = fi.path();
-    }
-    else
-    {
-      m_OpenDialogLastDirectory = QDir::homePath();
-    }
-  }
 }
 
 // -----------------------------------------------------------------------------
@@ -85,22 +59,7 @@ OutputPathWidget::OutputPathWidget(FilterParameter* parameter, AbstractFilter* f
 // -----------------------------------------------------------------------------
 OutputPathWidget::~OutputPathWidget()
 {
-}
 
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-void OutputPathWidget::setFilterParameter(FilterParameter* value)
-{
-  m_FilterParameter = dynamic_cast<OutputPathFilterParameter*>(value);
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-FilterParameter* OutputPathWidget::getFilterParameter() const
-{
-  return m_FilterParameter;
 }
 
 // -----------------------------------------------------------------------------
@@ -108,40 +67,18 @@ FilterParameter* OutputPathWidget::getFilterParameter() const
 // -----------------------------------------------------------------------------
 void OutputPathWidget::setupGui()
 {
-  // Catch when the filter is about to execute the preflight
-  connect(getFilter(), SIGNAL(preflightAboutToExecute()), this, SLOT(beforePreflight()));
-
-  // Catch when the filter is finished running the preflight
-  connect(getFilter(), SIGNAL(preflightExecuted()), this, SLOT(afterPreflight()));
-
-  // Catch when the filter wants its values updated
-  connect(getFilter(), SIGNAL(updateFilterParameters(AbstractFilter*)), this, SLOT(filterNeedsInputParameters(AbstractFilter*)));
-
-  //  connect(value, SIGNAL(textChanged(const QString&)),
-  //          this, SLOT(widgetChanged(const QString&)));
-
-  QtSFileCompleter* com = new QtSFileCompleter(this, false);
-  value->setCompleter(com);
-  QObject::connect(com, SIGNAL(activated(const QString&)), this, SLOT(on_value_textChanged(const QString&)));
-
-  if(getFilterParameter() != nullptr)
-  {
-    label->setText(getFilterParameter()->getHumanLabel());
-
-    QString currentPath = getFilter()->property(PROPERTY_NAME_AS_CHAR).toString();
-    value->setText(currentPath);
-  }
+  connect(selectBtn, SIGNAL(clicked()), this, SLOT(selectOutputPath()));
 }
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void OutputPathWidget::on_selectBtn_clicked()
+void OutputPathWidget::selectOutputPath()
 {
   QString currentPath = getFilter()->property(PROPERTY_NAME_AS_CHAR).toString();
   if(currentPath.isEmpty() == true)
   {
-    currentPath = m_OpenDialogLastDirectory;
+    currentPath = getOpenDialogLastDirectory();
   }
   QString Ftype = m_FilterParameter->getFileType();
   QString ext = m_FilterParameter->getFileExtension();
@@ -157,59 +94,8 @@ void OutputPathWidget::on_selectBtn_clicked()
   file = QDir::toNativeSeparators(file);
   // Store the last used directory into the private instance variable
   QFileInfo fi(file);
-  m_OpenDialogLastDirectory = fi.path();
+  setOpenDialogLastDirectory(fi.path());
 
   value->setText(file);
   on_value_editingFinished();
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-// void OutputPathWidget::widgetChanged(const QString &text)
-//{
-//  emit parametersChanged();
-//}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-void OutputPathWidget::on_value_editingFinished()
-{
-  emit parametersChanged();
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-void OutputPathWidget::on_value_textChanged(const QString& text)
-{
-  // We dont want to run a preflight for every character that is typed
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-void OutputPathWidget::filterNeedsInputParameters(AbstractFilter* filter)
-{
-  QString text = value->text();
-  bool ok = filter->setProperty(PROPERTY_NAME_AS_CHAR, text);
-  if(false == ok)
-  {
-    FilterParameterWidgetsDialogs::ShowCouldNotSetFilterParameter(getFilter(), getFilterParameter());
-  }
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-void OutputPathWidget::beforePreflight()
-{
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-void OutputPathWidget::afterPreflight()
-{
 }

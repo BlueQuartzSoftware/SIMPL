@@ -30,12 +30,10 @@ set(SIMPLView_PARAMETER_WIDGETS
     FloatVec3Widget
     FourthOrderPolynomialWidget
     GenerateColorTableWidget
-    InputPathWidget
     IntVec3Widget
     IntWidget
     LinkedBooleanWidget
     MultiDataArraySelectionWidget
-    OutputPathWidget
     PreflightUpdatedValueWidget
     RangeWidget
     SecondOrderPolynomialWidget
@@ -47,6 +45,8 @@ set(SIMPLView_PARAMETER_WIDGETS
 set(SIMPLView_PARAMETER_WIDGETS_NO_UI
   InputFileWidget
   OutputFileWidget
+  InputPathWidget
+  OutputPathWidget
 )
 
 set(SIMPLView_PARAMETER_WIDGETS_NO_CODEGEN
