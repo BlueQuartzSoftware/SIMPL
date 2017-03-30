@@ -68,6 +68,8 @@ InputPathWidget::~InputPathWidget()
 void InputPathWidget::setupGui()
 {
   connect(selectBtn, SIGNAL(clicked()), this, SLOT(selectInputPath()));
+
+  value->setPlaceholderText("Enter Input Folder Path");
 }
 
 // -----------------------------------------------------------------------------

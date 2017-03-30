@@ -31,7 +31,7 @@
     </widget>
    </item>
    <item>
-    <widget class="QtSFSDropLineEdit" name="value"/>
+    <widget class="QtSLineEdit" name="value"/>
    </item>
    <item>
     <widget class="QPushButton" name="selectBtn">
@@ -44,9 +44,9 @@
  </widget>
  <customwidgets>
   <customwidget>
-   <class>QtSFSDropLineEdit</class>
+   <class>QtSLineEdit</class>
    <extends>QLineEdit</extends>
-   <header location="global">QtSFSDropLineEdit.h</header>
+   <header location="global">QtSLineEdit.h</header>
   </customwidget>
  </customwidgets>
  <resources>

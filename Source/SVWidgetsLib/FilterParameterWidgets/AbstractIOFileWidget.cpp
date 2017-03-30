@@ -37,8 +37,13 @@
 
 #include <QtCore/QDir>
 #include <QtCore/QMetaProperty>
+#include <QtCore/QFileInfo>
+
+#include <QtGui/QDesktopServices>
+#include <QtGui/QPainter>
 
 #include <QtWidgets/QFileDialog>
+#include <QtWidgets/QMenu>
 
 #include "SIMPLib/FilterParameters/OutputFileFilterParameter.h"
 
@@ -115,6 +120,76 @@ void AbstractIOFileWidget::setupGui()
     {
     }
   }
+
+  setupMenuField();
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void AbstractIOFileWidget::setupMenuField()
+{
+  QFileInfo fi(value->text());
+
+  QMenu* lineEditMenu = new QMenu(value);
+  value->setButtonMenu(QtSLineEdit::Right, lineEditMenu);
+  if (value->text().isEmpty() == false && fi.exists())
+  {
+    value->setButtonVisible(QtSLineEdit::Right, true);
+  }
+  else
+  {
+    value->setButtonVisible(QtSLineEdit::Right, false);
+  }
+  QPixmap pixmap(16, 16);
+  pixmap.fill(Qt::transparent);
+  QPainter painter(&pixmap);
+  const QPixmap mag = QPixmap(QLatin1String(":/navigate_close.png"));
+  painter.drawPixmap(0, (pixmap.height() - mag.height()) / 2, mag);
+  value->setButtonPixmap(QtSLineEdit::Right, pixmap);
+
+  {
+    QAction* showFileAction = new QAction(lineEditMenu);
+    showFileAction->setObjectName(QString::fromUtf8("showFileAction"));
+#if defined(Q_OS_WIN)
+  showFileAction->setText("Show in Windows Explorer");
+#elif defined(Q_OS_MAC)
+  showFileAction->setText("Show in Finder");
+#else
+  showFileAction->setText("Show in File System");
+#endif
+    lineEditMenu->addAction(showFileAction);
+    connect(showFileAction, SIGNAL(triggered()), this, SLOT(showFileInFileSystem()));
+  }
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void AbstractIOFileWidget::showFileInFileSystem()
+{
+  QFileInfo fi(value->text());
+  QString path;
+  if (fi.isFile())
+  {
+    path = fi.absolutePath();
+  }
+  else
+  {
+    path = fi.absoluteFilePath();
+  }
+
+  QString s("file://");
+#if defined(Q_OS_WIN)
+  s = s + "/"; // Need the third slash on windows because file paths start with a drive letter
+#elif defined(Q_OS_MAC)
+
+#else
+  // We are on Linux - I think
+
+#endif
+  s = s + path;
+  QDesktopServices::openUrl(s);
 }
 
 // -----------------------------------------------------------------------------
@@ -156,6 +231,17 @@ void AbstractIOFileWidget::on_value_returnPressed()
 // -----------------------------------------------------------------------------
 void AbstractIOFileWidget::on_value_textChanged(const QString& text)
 {
+  QFileInfo fi(value->text());
+
+  if (value->text().isEmpty() == false && fi.exists())
+  {
+    value->setButtonVisible(QtSLineEdit::Right, true);
+  }
+  else
+  {
+    value->setButtonVisible(QtSLineEdit::Right, false);
+  }
+
   value->setStyleSheet(QString::fromLatin1("color: rgb(255, 0, 0);"));
   value->setToolTip("Press the 'Return' key to apply your changes");
 }

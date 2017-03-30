@@ -68,6 +68,8 @@ OutputPathWidget::~OutputPathWidget()
 void OutputPathWidget::setupGui()
 {
   connect(selectBtn, SIGNAL(clicked()), this, SLOT(selectOutputPath()));
+
+  value->setPlaceholderText("Enter Output Folder Path");
 }
 
 // -----------------------------------------------------------------------------

@@ -28,7 +28,7 @@ set(SVWidgetsLib_QtSupport_MOC_HDRS
   ${SVWidgetsLib_SOURCE_DIR}/QtSupport/QtSImageGraphicsDelegate.h
   ${SVWidgetsLib_SOURCE_DIR}/QtSupport/QtSPluginFrame.h
   ${SVWidgetsLib_SOURCE_DIR}/QtSupport/QtSRecentFileList.h
-  ${SVWidgetsLib_SOURCE_DIR}/QtSupport/QtSSearchLineEdit.h
+  ${SVWidgetsLib_SOURCE_DIR}/QtSupport/QtSLineEdit.h
   ${SVWidgetsLib_SOURCE_DIR}/QtSupport/QtSSettings.h
   ${SVWidgetsLib_SOURCE_DIR}/QtSupport/QtSSplitter.h
   ${SVWidgetsLib_SOURCE_DIR}/QtSupport/QtSSplitterHandle.h
@@ -58,7 +58,7 @@ set(SVWidgetsLib_QtSupport_SRCS
   ${SVWidgetsLib_SOURCE_DIR}/QtSupport/QtSImageGraphicsDelegate.cpp
   ${SVWidgetsLib_SOURCE_DIR}/QtSupport/QtSPluginFrame.cpp
   ${SVWidgetsLib_SOURCE_DIR}/QtSupport/QtSRecentFileList.cpp
-  ${SVWidgetsLib_SOURCE_DIR}/QtSupport/QtSSearchLineEdit.cpp
+  ${SVWidgetsLib_SOURCE_DIR}/QtSupport/QtSLineEdit.cpp
   ${SVWidgetsLib_SOURCE_DIR}/QtSupport/QtSSettings.cpp
   ${SVWidgetsLib_SOURCE_DIR}/QtSupport/QtSSplitter.cpp
   ${SVWidgetsLib_SOURCE_DIR}/QtSupport/QtSSplitterHandle.cpp

@@ -33,9 +33,9 @@ class SVWidgetsLib_EXPORT IconButton : public QAbstractButton
     void setAutoHide(bool hide) { m_autoHide = hide; }
     bool hasAutoHide() const { return m_autoHide; }
   private:
-    float m_iconOpacity;
-    bool m_autoHide;
-    QPixmap m_pixmap;
+    float         m_iconOpacity;
+    bool          m_autoHide;
+    QPixmap       m_pixmap;
 };
 
 /**
@@ -48,7 +48,7 @@ class SVWidgetsLib_EXPORT IconButton : public QAbstractButton
     text if isShowingHintText() returns true (that is, does not contain
     valid user input).
  */
-class SVWidgetsLib_EXPORT QtSSearchLineEdit : public QLineEdit
+class SVWidgetsLib_EXPORT QtSLineEdit : public QLineEdit
 {
     Q_OBJECT
     Q_ENUMS(Side)
@@ -56,8 +56,8 @@ class SVWidgetsLib_EXPORT QtSSearchLineEdit : public QLineEdit
   public:
     enum Side {Left = 0, Right = 1};
 
-    explicit QtSSearchLineEdit(QWidget* parent = 0);
-    ~QtSSearchLineEdit();
+    explicit QtSLineEdit(QWidget* parent = 0);
+    ~QtSLineEdit();
 
     QPixmap buttonPixmap(Side side) const;
     void setButtonPixmap(Side side, const QPixmap& pixmap);
@@ -67,6 +67,10 @@ class SVWidgetsLib_EXPORT QtSSearchLineEdit : public QLineEdit
 
     void setButtonVisible(Side side, bool visible);
     bool isButtonVisible(Side side) const;
+
+    void setButtonDisabled(Side side, bool disabled);
+    void setButtonEnabled(Side side, bool enabled);
+    bool isButtonEnabled(Side side) const;
 
     void setButtonToolTip(Side side, const QString&);
     void setButtonFocusPolicy(Side side, Qt::FocusPolicy policy);
@@ -79,10 +83,14 @@ class SVWidgetsLib_EXPORT QtSSearchLineEdit : public QLineEdit
     void setAutoHideButton(Side side, bool h);
     bool hasAutoHideButton(Side side) const;
 
+    void dragEnterEvent(QDragEnterEvent* event);
+    void dropEvent(QDropEvent* event);
+
   signals:
-    void buttonClicked(QtSSearchLineEdit::Side side);
+    void buttonClicked(QtSLineEdit::Side side);
     void leftButtonClicked();
     void rightButtonClicked();
+    void fileDropped(const QString& file);
 
   private slots:
     void checkButtons(const QString&);

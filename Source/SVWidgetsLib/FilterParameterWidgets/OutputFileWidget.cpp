@@ -68,6 +68,8 @@ OutputFileWidget::~OutputFileWidget()
 void OutputFileWidget::setupGui()
 {
   connect(selectBtn, SIGNAL(clicked()), this, SLOT(selectOutputFile()));
+
+  value->setPlaceholderText("Enter Output File Path");
 }
 
 // -----------------------------------------------------------------------------

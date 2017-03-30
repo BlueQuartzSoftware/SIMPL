@@ -1,5 +1,5 @@
 
-#include "QtSSearchLineEdit.h"
+#include "QtSLineEdit.h"
 
 #include <QMouseEvent>
 #include <QPaintEvent>
@@ -8,6 +8,9 @@
 #include <QtCore/QDebug>
 #include <QtCore/QEvent>
 #include <QtCore/QString>
+#include <QtCore/QFileInfo>
+#include <QtCore/QDir>
+#include <QtCore/QMimeData>
 #include <QtWidgets/QAbstractButton>
 #include <QtWidgets/QApplication>
 #include <QtWidgets/QDesktopWidget>
@@ -15,7 +18,7 @@
 #include <QtWidgets/QMenu>
 #include <QtWidgets/QStyle>
 
-#include "moc_QtSSearchLineEdit.cpp"
+#include "moc_QtSLineEdit.cpp"
 
 /**
  * @brief execMenuAtWidget
@@ -71,22 +74,23 @@ enum
 class SearchLineEditPrivate : public QObject
 {
 public:
-  explicit SearchLineEditPrivate(QtSSearchLineEdit* parent);
+  explicit SearchLineEditPrivate(QtSLineEdit* parent);
 
   virtual bool eventFilter(QObject* obj, QEvent* event);
 
-  QtSSearchLineEdit* m_LineEdit;
+  QtSLineEdit* m_LineEdit;
   QPixmap m_PixMaps[2];
   QMenu* m_ButtonMenus[2];
   bool m_MenuTabFocusTriggers[2];
   IconButton* m_IconButtons[2];
+  bool m_IconVisible[2];
   bool m_IconEnabled[2];
 };
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-SearchLineEditPrivate::SearchLineEditPrivate(QtSSearchLineEdit* parent)
+SearchLineEditPrivate::SearchLineEditPrivate(QtSLineEdit* parent)
 : QObject(parent)
 , m_LineEdit(parent)
 {
@@ -99,6 +103,7 @@ SearchLineEditPrivate::SearchLineEditPrivate(QtSSearchLineEdit* parent)
     m_IconButtons[i]->hide();
     m_IconButtons[i]->setAutoHide(false);
     m_IconEnabled[i] = false;
+    m_IconVisible[i] = false;
   }
 }
 
@@ -138,7 +143,7 @@ bool SearchLineEditPrivate::eventFilter(QObject* obj, QEvent* event)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-QtSSearchLineEdit::QtSSearchLineEdit(QWidget* parent)
+QtSLineEdit::QtSLineEdit(QWidget* parent)
 : QLineEdit(parent)
 , d(new SearchLineEditPrivate(this))
 {
@@ -153,7 +158,7 @@ QtSSearchLineEdit::QtSSearchLineEdit(QWidget* parent)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void QtSSearchLineEdit::checkButtons(const QString& text)
+void QtSLineEdit::checkButtons(const QString& text)
 {
   if(m_OldText.isEmpty() || text.isEmpty())
   {
@@ -171,24 +176,52 @@ void QtSSearchLineEdit::checkButtons(const QString& text)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-QtSSearchLineEdit::~QtSSearchLineEdit()
+QtSLineEdit::~QtSLineEdit()
 {
 }
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void QtSSearchLineEdit::setButtonVisible(Side side, bool visible)
+void QtSLineEdit::setButtonVisible(Side side, bool visible)
 {
   d->m_IconButtons[side]->setVisible(visible);
-  d->m_IconEnabled[side] = visible;
+  d->m_IconVisible[side] = visible;
   updateMargins();
 }
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-bool QtSSearchLineEdit::isButtonVisible(Side side) const
+void QtSLineEdit::setButtonDisabled(Side side, bool disabled)
+{
+  d->m_IconButtons[side]->setDisabled(disabled);
+  d->m_IconEnabled[side] = !disabled;
+  updateMargins();
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void QtSLineEdit::setButtonEnabled(Side side, bool enabled)
+{
+  d->m_IconButtons[side]->setEnabled(enabled);
+  d->m_IconEnabled[side] = enabled;
+  updateMargins();
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+bool QtSLineEdit::isButtonVisible(Side side) const
+{
+  return d->m_IconVisible[side];
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+bool QtSLineEdit::isButtonEnabled(Side side) const
 {
   return d->m_IconEnabled[side];
 }
@@ -196,7 +229,7 @@ bool QtSSearchLineEdit::isButtonVisible(Side side) const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void QtSSearchLineEdit::iconClicked()
+void QtSLineEdit::iconClicked()
 {
   IconButton* button = qobject_cast<IconButton*>(sender());
   int index = -1;
@@ -230,7 +263,7 @@ void QtSSearchLineEdit::iconClicked()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void QtSSearchLineEdit::updateMargins()
+void QtSLineEdit::updateMargins()
 {
   bool leftToRight = (layoutDirection() == Qt::LeftToRight);
   Side realLeft = (leftToRight ? Left : Right);
@@ -245,7 +278,7 @@ void QtSSearchLineEdit::updateMargins()
     rightMargin = qMax(24, rightMargin);
   }
 
-  QMargins margins((d->m_IconEnabled[realLeft] ? leftMargin : 0), 0, (d->m_IconEnabled[realRight] ? rightMargin : 0), 0);
+  QMargins margins((d->m_IconVisible[realLeft] ? leftMargin : 0), 0, (d->m_IconVisible[realRight] ? rightMargin : 0), 0);
 
   setTextMargins(margins);
 }
@@ -253,7 +286,7 @@ void QtSSearchLineEdit::updateMargins()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void QtSSearchLineEdit::updateButtonPositions()
+void QtSLineEdit::updateButtonPositions()
 {
   QRect contentRect = rect();
   for(int i = 0; i < 2; ++i)
@@ -264,7 +297,7 @@ void QtSSearchLineEdit::updateButtonPositions()
       iconpos = (iconpos == Left ? Right : Left);
     }
 
-    if(iconpos == QtSSearchLineEdit::Right)
+    if(iconpos == QtSLineEdit::Right)
     {
       const int iconoffset = textMargins().right() + 4;
       d->m_IconButtons[i]->setGeometry(contentRect.adjusted(width() - iconoffset, 0, 0, 0));
@@ -280,7 +313,7 @@ void QtSSearchLineEdit::updateButtonPositions()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void QtSSearchLineEdit::resizeEvent(QResizeEvent*)
+void QtSLineEdit::resizeEvent(QResizeEvent*)
 {
   updateButtonPositions();
 }
@@ -288,7 +321,46 @@ void QtSSearchLineEdit::resizeEvent(QResizeEvent*)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void QtSSearchLineEdit::setButtonPixmap(Side side, const QPixmap& buttonPixmap)
+void QtSLineEdit::dragEnterEvent(QDragEnterEvent* event)
+{
+  // accept just text/uri-list mime format
+  if(event->mimeData()->hasFormat("text/uri-list"))
+  {
+    event->acceptProposedAction();
+  }
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void QtSLineEdit::dropEvent(QDropEvent* event)
+{
+  QList<QUrl> urlList;
+  QString fName;
+  QFileInfo info;
+
+  if(event->mimeData()->hasUrls())
+  {
+    urlList = event->mimeData()->urls(); // returns list of QUrls
+    // if just text was dropped, urlList is empty (size == 0)
+
+    if(urlList.size() > 0) // if at least one QUrl is present in list
+    {
+      fName = urlList[0].toLocalFile(); // convert first QUrl to local path
+      fName = QDir::toNativeSeparators(fName);
+      info.setFile(fName); // information about file
+      setText(fName);      // if is file, setText
+      emit fileDropped(fName);
+    }
+  }
+
+  event->acceptProposedAction();
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void QtSLineEdit::setButtonPixmap(Side side, const QPixmap& buttonPixmap)
 {
   d->m_IconButtons[side]->setPixmap(buttonPixmap);
   updateMargins();
@@ -299,7 +371,7 @@ void QtSSearchLineEdit::setButtonPixmap(Side side, const QPixmap& buttonPixmap)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-QPixmap QtSSearchLineEdit::buttonPixmap(Side side) const
+QPixmap QtSLineEdit::buttonPixmap(Side side) const
 {
   return d->m_PixMaps[side];
 }
@@ -307,7 +379,7 @@ QPixmap QtSSearchLineEdit::buttonPixmap(Side side) const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void QtSSearchLineEdit::setButtonMenu(Side side, QMenu* buttonMenu)
+void QtSLineEdit::setButtonMenu(Side side, QMenu* buttonMenu)
 {
   d->m_ButtonMenus[side] = buttonMenu;
   d->m_IconButtons[side]->setIconOpacity(1.0);
@@ -316,7 +388,7 @@ void QtSSearchLineEdit::setButtonMenu(Side side, QMenu* buttonMenu)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-QMenu* QtSSearchLineEdit::buttonMenu(Side side) const
+QMenu* QtSLineEdit::buttonMenu(Side side) const
 {
   return d->m_ButtonMenus[side];
 }
@@ -324,7 +396,7 @@ QMenu* QtSSearchLineEdit::buttonMenu(Side side) const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-bool QtSSearchLineEdit::hasMenuTabFocusTrigger(Side side) const
+bool QtSLineEdit::hasMenuTabFocusTrigger(Side side) const
 {
   return d->m_MenuTabFocusTriggers[side];
 }
@@ -332,7 +404,7 @@ bool QtSSearchLineEdit::hasMenuTabFocusTrigger(Side side) const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void QtSSearchLineEdit::setMenuTabFocusTrigger(Side side, bool v)
+void QtSLineEdit::setMenuTabFocusTrigger(Side side, bool v)
 {
   if(d->m_MenuTabFocusTriggers[side] == v)
   {
@@ -346,7 +418,7 @@ void QtSSearchLineEdit::setMenuTabFocusTrigger(Side side, bool v)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-bool QtSSearchLineEdit::hasAutoHideButton(Side side) const
+bool QtSLineEdit::hasAutoHideButton(Side side) const
 {
   return d->m_IconButtons[side]->hasAutoHide();
 }
@@ -354,7 +426,7 @@ bool QtSSearchLineEdit::hasAutoHideButton(Side side) const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void QtSSearchLineEdit::setAutoHideButton(Side side, bool h)
+void QtSLineEdit::setAutoHideButton(Side side, bool h)
 {
   d->m_IconButtons[side]->setAutoHide(h);
   if(h)
@@ -370,7 +442,7 @@ void QtSSearchLineEdit::setAutoHideButton(Side side, bool h)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void QtSSearchLineEdit::setButtonToolTip(Side side, const QString& tip)
+void QtSLineEdit::setButtonToolTip(Side side, const QString& tip)
 {
   d->m_IconButtons[side]->setToolTip(tip);
 }
@@ -378,7 +450,7 @@ void QtSSearchLineEdit::setButtonToolTip(Side side, const QString& tip)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void QtSSearchLineEdit::setButtonFocusPolicy(Side side, Qt::FocusPolicy policy)
+void QtSLineEdit::setButtonFocusPolicy(Side side, Qt::FocusPolicy policy)
 {
   d->m_IconButtons[side]->setFocusPolicy(policy);
 }

@@ -69,6 +69,8 @@ InputFileWidget::~InputFileWidget()
 void InputFileWidget::setupGui()
 {
   connect(selectBtn, SIGNAL(clicked()), this, SLOT(selectInputFile()));
+
+  value->setPlaceholderText("Enter Input File Path");
 }
 
 // -----------------------------------------------------------------------------
@@ -95,3 +97,4 @@ void InputFileWidget::selectInputFile()
   //  filterNeedsInputParameters(getFilter());
   emit parametersChanged(); // This should force the preflight to run because we are emitting a signal
 }
+

@@ -101,6 +101,14 @@ class SVWidgetsLib_EXPORT AbstractIOFileWidget : public FilterParameterWidget, p
     static void setOpenDialogLastDirectory(QString val) { m_OpenDialogLastDirectory = val; }
     static QString getOpenDialogLastDirectory() { return m_OpenDialogLastDirectory; }
 
+    /**
+     * @brief setupMenuField
+     */
+    void setupMenuField();
+
+  protected slots:
+    void showFileInFileSystem();
+
   signals:
     void errorSettingFilterParameter(const QString& msg);
     void parametersChanged();

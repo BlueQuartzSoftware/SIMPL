@@ -36,7 +36,7 @@
     <number>0</number>
    </property>
    <item>
-    <widget class="QtSSearchLineEdit" name="filterSearch">
+    <widget class="QtSLineEdit" name="filterSearch">
      <property name="minimumSize">
       <size>
        <width>0</width>
@@ -121,9 +121,9 @@ QLineEdit:edit-focus {
    <header location="global">FilterListWidget.h</header>
   </customwidget>
   <customwidget>
-   <class>QtSSearchLineEdit</class>
+   <class>QtSLineEdit</class>
    <extends>QLineEdit</extends>
-   <header location="global">QtSSearchLineEdit.h</header>
+   <header location="global">QtSLineEdit.h</header>
   </customwidget>
  </customwidgets>
  <resources/>
