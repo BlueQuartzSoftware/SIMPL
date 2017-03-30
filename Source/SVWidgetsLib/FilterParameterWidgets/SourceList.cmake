@@ -5,7 +5,6 @@ set(SVWidgetsLib_FilterParameterWidgets_UIS "")
 
 
 set(SIMPLView_PARAMETER_WIDGETS
-    AbstractIOFileWidget
     AttributeMatrixCreationWidget
     AttributeMatrixSelectionWidget
     AxisAngleWidget
@@ -50,9 +49,10 @@ set(SIMPLView_PARAMETER_WIDGETS_NO_UI
 )
 
 set(SIMPLView_PARAMETER_WIDGETS_NO_CODEGEN
-      PhaseTypeSelectionWidget
-      ShapeTypeSelectionWidget
-      UnknownWidget
+  AbstractIOFileWidget
+  PhaseTypeSelectionWidget
+  ShapeTypeSelectionWidget
+  UnknownWidget
 )
 
 set(REGISTER_KNOWN_WIDGETS ${SVWidgetsLib_BINARY_DIR}/FilterWidgetManager_RegisterWidgets_tmp.cpp)
