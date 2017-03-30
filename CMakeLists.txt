@@ -328,6 +328,20 @@ if(WIN32)
   endif()
 endif()
 
+# -----------------------------------------------------------------------
+# Set a Global Prefix where everthing is going to get intalled. For OS X we are
+# going to try to install everything into the .app package
+# -----------------------------------------------------------------------
+set_property(GLOBAL PROPERTY DREAM3D_PACKAGE_DEST_PREFIX ".")
+if(APPLE)
+  if(CMAKE_BUILD_TYPE STREQUAL "Debug")
+    set_property(GLOBAL PROPERTY DREAM3D_PACKAGE_DEST_PREFIX "${SIMPLView_APPLICATION_NAME}${EXE_DEBUG_EXTENSION}.app/Contents/")
+  else()
+    set_property(GLOBAL PROPERTY DREAM3D_PACKAGE_DEST_PREFIX "${SIMPLView_APPLICATION_NAME}.app/Contents/")
+  endif()
+endif()
+get_property(DREAM3D_PACKAGE_DEST_PREFIX GLOBAL PROPERTY DREAM3D_PACKAGE_DEST_PREFIX)
+
 # --------------------------------------------------------------------
 # Now that we have found all of our required libraries and packages we can start the all
 # the tests

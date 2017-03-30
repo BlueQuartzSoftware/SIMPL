@@ -4,6 +4,8 @@
  <!--  These have HiDPI resources  -->
   <file>delete2.png</file>
   <file>delete2@2x.png</file>
+  <file>trash.png</file>
+  <file>trash@2x.png</file>
   <file>delete.png</file>
   <file>delete@2x.png</file>
   <file>add2.png</file>
@@ -15,8 +17,9 @@
 
   <file>gear_find.png</file>
   <file>gear_find@2x.png</file>
-  <file>navigate_close.png</file>
-  <file>navigate_close@2x.png</file>
+
+  <file>caret-bottom.png</file>
+  <file>caret-bottom@2x.png</file>
 
   <file>help2.png</file>
   <file>help2@2x.png</file>
