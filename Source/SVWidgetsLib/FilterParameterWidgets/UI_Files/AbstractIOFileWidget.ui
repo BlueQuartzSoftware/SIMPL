@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>519</width>
-    <height>33</height>
+    <height>34</height>
    </rect>
   </property>
   <layout class="QHBoxLayout" name="horizontalLayout">
@@ -31,7 +31,11 @@
     </widget>
    </item>
    <item>
-    <widget class="QtSLineEdit" name="value"/>
+    <widget class="QtSLineEdit" name="m_LineEdit">
+     <property name="text">
+      <string/>
+     </property>
+    </widget>
    </item>
    <item>
     <widget class="QPushButton" name="selectBtn">

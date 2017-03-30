@@ -70,7 +70,7 @@ void InputFileWidget::setupGui()
 {
   connect(selectBtn, SIGNAL(clicked()), this, SLOT(selectInputFile()));
 
-  value->setPlaceholderText("Enter Input File Path");
+  m_LineEdit->setPlaceholderText("Enter Input File Path");
 }
 
 // -----------------------------------------------------------------------------
@@ -93,7 +93,7 @@ void InputFileWidget::selectInputFile()
   // Store the last used directory into the private instance variable
   QFileInfo fi(file);
   setOpenDialogLastDirectory(fi.path());
-  value->setText(file);
+  m_LineEdit->setText(file);
   //  filterNeedsInputParameters(getFilter());
   emit parametersChanged(); // This should force the preflight to run because we are emitting a signal
 }

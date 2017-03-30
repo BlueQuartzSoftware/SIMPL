@@ -69,7 +69,7 @@ void OutputPathWidget::setupGui()
 {
   connect(selectBtn, SIGNAL(clicked()), this, SLOT(selectOutputPath()));
 
-  value->setPlaceholderText("Enter Output Folder Path");
+  m_LineEdit->setPlaceholderText("Enter Output Folder Path");
 }
 
 // -----------------------------------------------------------------------------
@@ -98,6 +98,6 @@ void OutputPathWidget::selectOutputPath()
   QFileInfo fi(file);
   setOpenDialogLastDirectory(fi.path());
 
-  value->setText(file);
-  on_value_editingFinished();
+  m_LineEdit->setText(file);
+  on_m_LineEdit_editingFinished();
 }

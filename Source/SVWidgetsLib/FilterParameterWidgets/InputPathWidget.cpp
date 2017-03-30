@@ -69,7 +69,7 @@ void InputPathWidget::setupGui()
 {
   connect(selectBtn, SIGNAL(clicked()), this, SLOT(selectInputPath()));
 
-  value->setPlaceholderText("Enter Input Folder Path");
+  m_LineEdit->setPlaceholderText("Enter Input Folder Path");
 }
 
 // -----------------------------------------------------------------------------
@@ -98,6 +98,6 @@ void InputPathWidget::selectInputPath()
   QFileInfo fi(file);
   setOpenDialogLastDirectory(fi.path());
 
-  value->setText(file);
-  on_value_editingFinished();
+  m_LineEdit->setText(file);
+  on_m_LineEdit_editingFinished();
 }

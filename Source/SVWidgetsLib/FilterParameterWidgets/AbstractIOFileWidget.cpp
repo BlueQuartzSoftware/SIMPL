@@ -103,25 +103,27 @@ void AbstractIOFileWidget::setupGui()
   // Catch when the filter is finished running the preflight
   connect(getFilter(), SIGNAL(preflightExecuted()), this, SLOT(afterPreflight()));
 
-  // Catch when the filter wants its values updated
+  // Catch when the filter wants its m_LineEdits updated
   connect(getFilter(), SIGNAL(updateFilterParameters(AbstractFilter*)), this, SLOT(filterNeedsInputParameters(AbstractFilter*)));
 
   QtSFileCompleter* com = new QtSFileCompleter(this, false);
-  value->setCompleter(com);
-  QObject::connect(com, SIGNAL(activated(const QString&)), this, SLOT(on_value_textChanged(const QString&)));
+  m_LineEdit->setCompleter(com);
+  QObject::connect(com, SIGNAL(activated(const QString&)), this, SLOT(on_m_LineEdit_textChanged(const QString&)));
+
+  setupMenuField();
 
   if(getFilterParameter() != nullptr)
   {
     label->setText(getFilterParameter()->getHumanLabel());
 
     QString currentPath = getFilter()->property(PROPERTY_NAME_AS_CHAR).toString();
-    value->setText(currentPath);
-    if(verifyPathExists(currentPath, value))
+    m_LineEdit->setText(currentPath);
+    if(verifyPathExists(currentPath, m_LineEdit))
     {
     }
   }
 
-  setupMenuField();
+
 }
 
 // -----------------------------------------------------------------------------
@@ -129,38 +131,46 @@ void AbstractIOFileWidget::setupGui()
 // -----------------------------------------------------------------------------
 void AbstractIOFileWidget::setupMenuField()
 {
-  QFileInfo fi(value->text());
+  QFileInfo fi(m_LineEdit->text());
 
-  QMenu* lineEditMenu = new QMenu(value);
-  value->setButtonMenu(QtSLineEdit::Right, lineEditMenu);
-  if (value->text().isEmpty() == false && fi.exists())
+  QMenu* lineEditMenu = new QMenu(m_LineEdit);
+  m_LineEdit->setButtonMenu(QtSLineEdit::Left, lineEditMenu);
+  QLatin1String iconPath = QLatin1String(":/caret-bottom.png");
+
+  m_LineEdit->setButtonVisible(QtSLineEdit::Left, true);
+
+  QPixmap pixmap(8, 8);
+  pixmap.fill(Qt::transparent);
+  QPainter painter(&pixmap);
+  const QPixmap mag = QPixmap(iconPath);
+  painter.drawPixmap(0, (pixmap.height() - mag.height()) / 2, mag);
+  m_LineEdit->setButtonPixmap(QtSLineEdit::Left, pixmap);
+
   {
-    value->setButtonVisible(QtSLineEdit::Right, true);
+    m_ShowFileAction = new QAction(lineEditMenu);
+    m_ShowFileAction->setObjectName(QString::fromUtf8("showFileAction"));
+#if defined(Q_OS_WIN)
+  m_ShowFileAction->setText("Show in Windows Explorer");
+#elif defined(Q_OS_MAC)
+  m_ShowFileAction->setText("Show in Finder");
+#else
+  m_ShowFileAction->setText("Show in File System");
+#endif
+    lineEditMenu->addAction(m_ShowFileAction);
+    connect(m_ShowFileAction, SIGNAL(triggered()), this, SLOT(showFileInFileSystem()));
+  }
+
+
+  if (m_LineEdit->text().isEmpty() == false && fi.exists())
+  {
+    m_ShowFileAction->setEnabled(true);
   }
   else
   {
-    value->setButtonVisible(QtSLineEdit::Right, false);
+    m_ShowFileAction->setDisabled(true);
   }
-  QPixmap pixmap(16, 16);
-  pixmap.fill(Qt::transparent);
-  QPainter painter(&pixmap);
-  const QPixmap mag = QPixmap(QLatin1String(":/navigate_close.png"));
-  painter.drawPixmap(0, (pixmap.height() - mag.height()) / 2, mag);
-  value->setButtonPixmap(QtSLineEdit::Right, pixmap);
 
-  {
-    QAction* showFileAction = new QAction(lineEditMenu);
-    showFileAction->setObjectName(QString::fromUtf8("showFileAction"));
-#if defined(Q_OS_WIN)
-  showFileAction->setText("Show in Windows Explorer");
-#elif defined(Q_OS_MAC)
-  showFileAction->setText("Show in Finder");
-#else
-  showFileAction->setText("Show in File System");
-#endif
-    lineEditMenu->addAction(showFileAction);
-    connect(showFileAction, SIGNAL(triggered()), this, SLOT(showFileInFileSystem()));
-  }
+
 }
 
 // -----------------------------------------------------------------------------
@@ -168,7 +178,7 @@ void AbstractIOFileWidget::setupMenuField()
 // -----------------------------------------------------------------------------
 void AbstractIOFileWidget::showFileInFileSystem()
 {
-  QFileInfo fi(value->text());
+  QFileInfo fi(m_LineEdit->text());
   QString path;
   if (fi.isFile())
   {
@@ -200,7 +210,7 @@ bool AbstractIOFileWidget::verifyPathExists(QString filePath, QLineEdit* lineEdi
   QFileInfo fileinfo(filePath);
   if(false == fileinfo.exists())
   {
-    lineEdit->setStyleSheet("border: 1px solid red;");
+    lineEdit->setStyleSheet("QLineEdit { border: 1px solid red; }");
   }
   else
   {
@@ -212,48 +222,48 @@ bool AbstractIOFileWidget::verifyPathExists(QString filePath, QLineEdit* lineEdi
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void AbstractIOFileWidget::on_value_editingFinished()
+void AbstractIOFileWidget::on_m_LineEdit_editingFinished()
 {
-  value->setStyleSheet(QString(""));
+  m_LineEdit->setStyleSheet(QString(""));
   emit parametersChanged(); // This should force the preflight to run because we are emitting a signal
 }
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void AbstractIOFileWidget::on_value_returnPressed()
+void AbstractIOFileWidget::on_m_LineEdit_returnPressed()
 {
-  on_value_editingFinished();
+  on_m_LineEdit_editingFinished();
 }
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void AbstractIOFileWidget::on_value_textChanged(const QString& text)
+void AbstractIOFileWidget::on_m_LineEdit_textChanged(const QString& text)
 {
-  QFileInfo fi(value->text());
+  QFileInfo fi(m_LineEdit->text());
 
-  if (value->text().isEmpty() == false && fi.exists())
+  if (m_LineEdit->text().isEmpty() == false && fi.exists())
   {
-    value->setButtonVisible(QtSLineEdit::Right, true);
+    m_ShowFileAction->setEnabled(true);
   }
   else
   {
-    value->setButtonVisible(QtSLineEdit::Right, false);
+    m_ShowFileAction->setDisabled(true);
   }
 
-  value->setStyleSheet(QString::fromLatin1("color: rgb(255, 0, 0);"));
-  value->setToolTip("Press the 'Return' key to apply your changes");
+  m_LineEdit->setStyleSheet(QString::fromLatin1("QLineEdit { color: rgb(255, 0, 0); }"));
+  m_LineEdit->setToolTip("Press the 'Return' key to apply your changes");
 }
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void AbstractIOFileWidget::on_value_fileDropped(const QString& text)
+void AbstractIOFileWidget::on_m_LineEdit_fileDropped(const QString& text)
 {
   setOpenDialogLastDirectory(text);
   // Set/Remove the red outline if the file does exist
-  verifyPathExists(text, value);
+  verifyPathExists(text, m_LineEdit);
 
   emit parametersChanged(); // This should force the preflight to run because we are emitting a signal
 }
@@ -263,7 +273,7 @@ void AbstractIOFileWidget::on_value_fileDropped(const QString& text)
 // -----------------------------------------------------------------------------
 void AbstractIOFileWidget::filterNeedsInputParameters(AbstractFilter* filter)
 {
-  QString text = value->text();
+  QString text = m_LineEdit->text();
   bool ok = filter->setProperty(PROPERTY_NAME_AS_CHAR, text);
   if(false == ok)
   {

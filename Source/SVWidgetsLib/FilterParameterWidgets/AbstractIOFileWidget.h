@@ -91,10 +91,10 @@ class SVWidgetsLib_EXPORT AbstractIOFileWidget : public FilterParameterWidget, p
     void afterPreflight();
     void filterNeedsInputParameters(AbstractFilter* filter);
 
-    void on_value_fileDropped(const QString& text);
-    void on_value_editingFinished();
-    void on_value_textChanged(const QString& text);
-    void on_value_returnPressed();
+    void on_m_LineEdit_fileDropped(const QString& text);
+    void on_m_LineEdit_editingFinished();
+    void on_m_LineEdit_textChanged(const QString& text);
+    void on_m_LineEdit_returnPressed();
 
 
   protected:
@@ -116,6 +116,7 @@ class SVWidgetsLib_EXPORT AbstractIOFileWidget : public FilterParameterWidget, p
   private:
     static QString    m_OpenDialogLastDirectory;
     bool m_DidCausePreflight;
+    QAction* m_ShowFileAction = nullptr;
 
 
     AbstractIOFileWidget(const AbstractIOFileWidget&); // Copy Constructor Not Implemented
