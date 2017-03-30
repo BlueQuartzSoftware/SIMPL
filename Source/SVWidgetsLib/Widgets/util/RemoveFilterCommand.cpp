@@ -39,6 +39,7 @@
 
 #include "SVWidgetsLib/Widgets/PipelineFilterObject.h"
 #include "SVWidgetsLib/Widgets/PipelineView.h"
+#include "SVWidgetsLib/Widgets/SIMPLViewMenuItems.h"
 
 #include "SIMPLib/FilterParameters/JsonFilterParametersReader.h"
 #include "SIMPLib/FilterParameters/JsonFilterParametersWriter.h"
@@ -123,6 +124,9 @@ void RemoveFilterCommand::undo()
   m_PipelineView->reindexWidgetTitles();
   m_PipelineView->recheckWindowTitleAndModification();
   m_PipelineView->preflightPipeline();
+
+  SIMPLViewMenuItems* menuItems = SIMPLViewMenuItems::Instance();
+  menuItems->getActionClearPipeline()->setEnabled(true);
 }
 
 // -----------------------------------------------------------------------------
@@ -150,4 +154,10 @@ void RemoveFilterCommand::redo()
   m_PipelineView->reindexWidgetTitles();
   m_PipelineView->recheckWindowTitleAndModification();
   m_PipelineView->preflightPipeline();
+
+  if (m_PipelineView->getFilterPipeline()->getFilterContainer().size() <= 0)
+  {
+    SIMPLViewMenuItems* menuItems = SIMPLViewMenuItems::Instance();
+    menuItems->getActionClearPipeline()->setDisabled(true);
+  }
 }

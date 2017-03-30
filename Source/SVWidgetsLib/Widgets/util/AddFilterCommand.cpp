@@ -44,6 +44,7 @@
 #include "SVWidgetsLib/Widgets/BreakpointFilterWidget.h"
 #include "SVWidgetsLib/Widgets/PipelineFilterObject.h"
 #include "SVWidgetsLib/Widgets/SVPipelineViewWidget.h"
+#include "SVWidgetsLib/Widgets/SIMPLViewMenuItems.h"
 
 // -----------------------------------------------------------------------------
 //
@@ -175,6 +176,12 @@ void AddFilterCommand::undo()
   m_Destination->reindexWidgetTitles();
   m_Destination->recheckWindowTitleAndModification();
   m_Destination->preflightPipeline();
+
+  if (m_Destination->getFilterPipeline()->getFilterContainer().size() <= 0)
+  {
+    SIMPLViewMenuItems* menuItems = SIMPLViewMenuItems::Instance();
+    menuItems->getActionClearPipeline()->setDisabled(true);
+  }
 }
 
 // -----------------------------------------------------------------------------
@@ -214,4 +221,7 @@ void AddFilterCommand::redo()
   m_Destination->reindexWidgetTitles();
   m_Destination->recheckWindowTitleAndModification();
   m_Destination->preflightPipeline();
+
+  SIMPLViewMenuItems* menuItems = SIMPLViewMenuItems::Instance();
+  menuItems->getActionClearPipeline()->setEnabled(true);
 }

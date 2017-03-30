@@ -538,7 +538,6 @@ int SVPipelineViewWidget::openPipeline(const QString& filePath, QVariant value, 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-
 void SVPipelineViewWidget::addFilterObject(PipelineFilterObject* filterObject, QVariant value)
 {
   SVPipelineFilterWidget* filterWidget = dynamic_cast<SVPipelineFilterWidget*>(filterObject);
