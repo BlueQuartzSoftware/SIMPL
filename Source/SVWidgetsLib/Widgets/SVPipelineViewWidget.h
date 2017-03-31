@@ -182,7 +182,7 @@ class SVWidgetsLib_EXPORT SVPipelineViewWidget : public QFrame, public PipelineV
      * @brief setPipelineMessageObserver
      * @param pipelineMessageObserver
      */
-    void setPipelineMessageObserver(QObject* pipelineMessageObserver);
+    void addPipelineMessageObserver(QObject* pipelineMessageObserver);
 
     /**
      * @brief setScrollArea
@@ -339,6 +339,7 @@ class SVWidgetsLib_EXPORT SVPipelineViewWidget : public QFrame, public PipelineV
     void contextMenuRequested(SVPipelineViewWidget* widget, const QPoint &pos);
 
     void statusMessage(const QString& message);
+    void stdOutMessage(const QString& message);
 
   protected:
     void setupGui();
@@ -382,7 +383,7 @@ class SVWidgetsLib_EXPORT SVPipelineViewWidget : public QFrame, public PipelineV
     DropBoxWidget*                      m_DropBox = nullptr;
     int                                 m_DropIndex;
     QLabel*                             m_EmptyPipelineLabel = nullptr;
-    QObject*                            m_PipelineMessageObserver = nullptr;
+    QList<QObject*>                     m_PipelineMessageObservers;
     QScrollArea*                        m_ScrollArea = nullptr;
     QTimer                              m_autoScrollTimer;
     bool                                m_AutoScroll;
