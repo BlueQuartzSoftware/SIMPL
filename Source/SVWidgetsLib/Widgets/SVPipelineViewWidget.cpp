@@ -436,8 +436,8 @@ void SVPipelineViewWidget::reindexWidgetTitles()
     if(fw)
     {
       QString hl = fw->getFilter()->getHumanLabel();
-      hl = QString("[") + QString::number(i + 1) + QString("] ") + hl;
       fw->setFilterTitle(hl);
+      fw->setFilterIndex(i+1, count);
     }
   }
 }
@@ -582,7 +582,7 @@ void SVPipelineViewWidget::addFilterObject(PipelineFilterObject* filterObject, Q
     m_FilterWidgetLayout = new QVBoxLayout(this);
     m_FilterWidgetLayout->setObjectName(QString::fromUtf8("m_FilterWidgetLayout"));
     m_FilterWidgetLayout->setContentsMargins(2, 2, 2, 2);
-    m_FilterWidgetLayout->setSpacing(3);
+    m_FilterWidgetLayout->setSpacing(5);
     addSpacer = true;
   }
 

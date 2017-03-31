@@ -69,6 +69,7 @@ class SVWidgetsLib_EXPORT PipelineFilterObject
     QString getCompiledLibraryName();
 
     virtual void setFilterTitle(const QString title);
+    virtual void setFilterIndex(int index, int numFilters);
 
     FilterInputWidget* getFilterInputWidget();
 

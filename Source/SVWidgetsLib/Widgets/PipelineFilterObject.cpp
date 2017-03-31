@@ -212,6 +212,17 @@ void PipelineFilterObject::setFilterTitle(const QString title)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
+void PipelineFilterObject::setFilterIndex(int index, int numFilters)
+{
+  Q_UNUSED(index)
+  Q_UNUSED(numFilters)
+  // This should be implemented in the subclasses
+  return;
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
 FilterInputWidget* PipelineFilterObject::getFilterInputWidget()
 {
   return m_FilterInputWidget;

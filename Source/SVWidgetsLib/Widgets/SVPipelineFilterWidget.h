@@ -89,6 +89,7 @@ class SVWidgetsLib_EXPORT SVPipelineFilterWidget : public QFrame, public Pipelin
     void setHasRightClickTarget(bool value);
 
     void setFilterTitle(const QString title) override;
+    virtual void setFilterIndex(int index, int numFilters);
 
     virtual void getGuiParametersFromFilter(AbstractFilter* filt);
 

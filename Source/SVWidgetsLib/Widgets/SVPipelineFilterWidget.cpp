@@ -206,6 +206,33 @@ void SVPipelineFilterWidget::setFilterTitle(const QString title)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
+void SVPipelineFilterWidget::setFilterIndex(int i, int numFilters)
+{
+  if (numFilters < 10) { numFilters = 11; }
+  QString numStr = QString::number(i);
+
+  if(numFilters > 9)
+  {
+    int mag = 0;
+    int max = numFilters;
+    while(max > 0)
+    {
+      mag++;
+      max = max / 10;
+    }
+    numStr = "";             // Clear the string
+    QTextStream ss(&numStr); // Create a QTextStream to set up the padding
+    ss.setFieldWidth(mag);
+    ss.setPadChar('0');
+    ss << i;
+  }
+
+  filterIndex->setText(numStr);
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
 void SVPipelineFilterWidget::changeStyle()
 {
   QString style;
@@ -214,6 +241,11 @@ void SVPipelineFilterWidget::changeStyle()
   if(getHasPreflightWarnings())
   {
     ss << "border: 2px rgb(172, 168, 0);";
+  }
+  else if(isSelected() == true && isFocused() == true && getHasPreflightErrors())
+  {
+    ss << "border-color: 2px solid rgb(179,2,5);";
+    ss << "border: 2px solid rgb(179,2,5);";
   }
   else if(isSelected() == true && isFocused() == true)
   {
@@ -250,19 +282,24 @@ void SVPipelineFilterWidget::updateWidgetStyle()
 
   if(getHasPreflightErrors() == true)
   {
-    // ss << "background-color: rgb(200, 75, 75);\ncolor: rgb(255, 255, 255);";
-    ss << "background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0 rgba(180, 55, 55, 255), stop:0.5 rgba(235, 110, 110, 255), stop:1 rgba(180, 55, 55, 255));\n";
+     ss << "background-color: rgb(210, 210, 210);\ncolor: rgb(255, 255, 255);";
+    //ss << "background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0 rgba(180, 55, 55, 255), stop:0.5 rgba(235, 110, 110, 255), stop:1 rgba(180, 55, 55, 255));\n";
+     filterIndex->setStyleSheet("QLabel\n{\nbackground-color: rgb(179, 2, 5);  \n color: rgb(237, 237, 237);\n	font: 14pt;\n	font-weight: bold;\n padding: 3 3 3 3px;\n}");
+
   }
   else
   {
-    ss << "background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0 rgba(185, 185, 185, 255), stop:0.5 rgba(216, 216, 216, 255), stop:1 rgba(170, 170, 170, 255));\n";
+    ss << "background-color: rgb(210, 210, 210);\ncolor: rgb(255, 255, 255);";
+    filterIndex->setStyleSheet("QLabel\n{\nbackground-color: rgb(128, 128, 128);\n	color: rgb(237, 237, 237);\n font: 14pt;\n font-weight: bold;\n padding: 3 3 3 3px;\n}");
+
+    //ss << "background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0 rgba(185, 185, 185, 255), stop:0.5 rgba(216, 216, 216, 255), stop:1 rgba(170, 170, 170, 255));\n";
   }
 
-  ss << "background-position: top ;\n background-repeat: repeat-x;";
+  //ss << "background-position: top ;\n background-repeat: repeat-x;";
 
   ss << getBorderColorStyle();
 
-  ss << "border-radius: 8px;";
+  ss << "border-radius: 3px;";
   ss << "padding: 0 0 0 0px;";
   ss << "}\n";
 
@@ -271,16 +308,16 @@ void SVPipelineFilterWidget::updateWidgetStyle()
 #if defined(Q_OS_WIN)
   ss << "font: 9pt \"" << QtSStyles::GetUIFont() << "\";";
 #elif defined(Q_OS_MAC)
-  ss << "font: 100 12pt \"" << QtSStyles::GetUIFont() << "\";";
+  ss << "font: 100 14pt \"" << QtSStyles::GetUIFont() << "\";";
 #else
   ss << "font: 100 9pt \"" << QtSStyles::GetUIFont() << "\";";
   ss << "font-weight: bold;";
 #endif
 
-  if(getHasPreflightErrors() == true)
-  {
-    ss << "color: rgb(240, 240, 240);";
-  }
+//  if(getHasPreflightErrors() == true)
+//  {
+//    ss << "color: rgb(240, 240, 240);";
+//  }
   ss << "}\n";
 
   setStyleSheet(style);
