@@ -44,7 +44,7 @@
 // -----------------------------------------------------------------------------
 QtSBookmarkMissingDialog::QtSBookmarkMissingDialog(QWidget* parent, Qt::WindowFlags flags)
 : QDialog(parent, flags)
-, m_OpenDialogLastDirectory("")
+, m_OpenDialogLastFilePath("")
 {
   setupUi(this);
 }

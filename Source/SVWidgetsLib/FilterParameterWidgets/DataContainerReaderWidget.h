@@ -129,8 +129,8 @@ class SVWidgetsLib_EXPORT DataContainerReaderWidget : public FilterParameterWidg
     void updateModelFromProxy(DataContainerArrayProxy& proxy);
     void updateProxyFromProxy(DataContainerArrayProxy& current, DataContainerArrayProxy& incoming);
 
-    static void setOpenDialogLastDirectory(QString val) { m_OpenDialogLastDirectory = val; }
-    static QString getOpenDialogLastDirectory() { return m_OpenDialogLastDirectory; }
+    static void setOpenDialogLastFilePath(QString val) { m_OpenDialogLastFilePath = val; }
+    static QString getOpenDialogLastFilePath() { return m_OpenDialogLastFilePath; }
 
 
   private:
@@ -139,7 +139,7 @@ class SVWidgetsLib_EXPORT DataContainerReaderWidget : public FilterParameterWidg
     DataContainerArrayProxy m_DcaProxy;
     bool m_DidCausePreflight;
 
-    static QString    m_OpenDialogLastDirectory;
+    static QString    m_OpenDialogLastFilePath;
 
 
 

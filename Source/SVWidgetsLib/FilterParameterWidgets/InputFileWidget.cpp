@@ -54,6 +54,22 @@ InputFileWidget::InputFileWidget(FilterParameter* parameter, AbstractFilter* fil
   Q_ASSERT_X(m_FilterParameter != nullptr, "NULL Pointer", "InputFileWidget can ONLY be used with a InputFileFilterParameter object");
 
   setupGui();
+
+  if(filter)
+  {
+    QString currentPath = filter->property(PROPERTY_NAME_AS_CHAR).toString();
+    if(currentPath.isEmpty() == false)
+    {
+      currentPath = QDir::toNativeSeparators(currentPath);
+      // Store the last used directory into the private instance variable
+      QFileInfo fi(currentPath);
+      setOpenDialogLastFilePath(fi.filePath());
+    }
+    else
+    {
+      setOpenDialogLastFilePath(QDir::homePath());
+    }
+  }
 }
 
 // -----------------------------------------------------------------------------
@@ -83,7 +99,7 @@ void InputFileWidget::selectInputFile()
   QString ext = m_FilterParameter->getFileExtension();
   QString s = Ftype + QString(" Files (") + ext + QString(");;All Files(*.*)");
   // QString defaultName = m_OpenDialogLastDirectory + QDir::separator() + "Untitled";
-  QString file = QFileDialog::getOpenFileName(this, tr("Select Input File"), getOpenDialogLastDirectory(), s);
+  QString file = QFileDialog::getOpenFileName(this, tr("Select Input File"), getOpenDialogLastFilePath(), s);
 
   if(true == file.isEmpty())
   {
@@ -92,7 +108,7 @@ void InputFileWidget::selectInputFile()
   file = QDir::toNativeSeparators(file);
   // Store the last used directory into the private instance variable
   QFileInfo fi(file);
-  setOpenDialogLastDirectory(fi.path());
+  setOpenDialogLastFilePath(fi.filePath());
   m_LineEdit->setText(file);
   //  filterNeedsInputParameters(getFilter());
   emit parametersChanged(); // This should force the preflight to run because we are emitting a signal

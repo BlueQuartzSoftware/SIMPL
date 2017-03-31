@@ -50,7 +50,7 @@
 #include "FilterParameterWidgetsDialogs.h"
 
 // Initialize private static member variable
-QString FileListInfoWidget::m_OpenDialogLastDirectory = "";
+QString FileListInfoWidget::m_OpenDialogLastFilePath = "";
 
 // Include the MOC generated file for this class
 #include "moc_FileListInfoWidget.cpp"
@@ -168,7 +168,7 @@ void FileListInfoWidget::validateInputFile()
     //    QString Ftype = getFilterParameter()->getFileType();
     //    QString ext = getFilterParameter()->getFileExtension();
     //    QString s = Ftype + QString(" Files (") + ext + QString(");;All Files(*.*)");
-    QString defaultName = m_OpenDialogLastDirectory;
+    QString defaultName = m_OpenDialogLastFilePath;
 
     QString title = QObject::tr("Select a replacement input file in filter '%2'").arg(getFilter()->getHumanLabel());
 
@@ -180,7 +180,7 @@ void FileListInfoWidget::validateInputFile()
     file = QDir::toNativeSeparators(file);
     // Store the last used directory into the private instance variable
     QFileInfo fi(file);
-    m_OpenDialogLastDirectory = fi.path();
+    m_OpenDialogLastFilePath = fi.filePath();
     data.InputPath = file;
 
     QVariant v;
@@ -227,14 +227,14 @@ void FileListInfoWidget::checkIOFiles()
 void FileListInfoWidget::on_m_InputDirBtn_clicked()
 {
   // std::cout << "on_angDirBtn_clicked" << std::endl;
-  QString outputFile = this->getOpenDialogLastDirectory() + QDir::separator();
+  QString outputFile = this->getOpenDialogLastFilePath();
   outputFile = QFileDialog::getExistingDirectory(this, tr("Select EBSD Directory"), outputFile);
   if(!outputFile.isNull())
   {
     m_InputDir->blockSignals(true);
     m_InputDir->setText(QDir::toNativeSeparators(outputFile));
     on_m_InputDir_textChanged(m_InputDir->text());
-    getOpenDialogLastDirectory() = outputFile;
+    getOpenDialogLastFilePath() = outputFile;
     m_InputDir->blockSignals(false);
   }
 }
@@ -246,7 +246,6 @@ void FileListInfoWidget::on_m_InputDir_textChanged(const QString& text)
 {
   if(verifyPathExists(m_InputDir->text(), m_InputDir))
   {
-
     findMaxSliceAndPrefix();
     QDir dir(m_InputDir->text());
     QString dirname = dir.dirName();

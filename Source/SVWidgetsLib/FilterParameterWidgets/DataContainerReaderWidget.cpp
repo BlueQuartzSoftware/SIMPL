@@ -55,7 +55,7 @@
 #include "FilterParameterWidgetsDialogs.h"
 
 // Initialize private static member variable
-QString DataContainerReaderWidget::m_OpenDialogLastDirectory = "";
+QString DataContainerReaderWidget::m_OpenDialogLastFilePath = "";
 
 namespace Detail
 {
@@ -251,9 +251,9 @@ DataContainerReaderWidget::DataContainerReaderWidget(FilterParameter* parameter,
   m_Filter = dynamic_cast<DataContainerReader*>(filter);
   Q_ASSERT_X(getFilter() != nullptr, "NULL Pointer", "DataContainerReaderWidget can ONLY be used with a DataContainerReader object");
 
-  if(m_OpenDialogLastDirectory.isEmpty())
+  if(m_OpenDialogLastFilePath.isEmpty())
   {
-    m_OpenDialogLastDirectory = QDir::homePath();
+    m_OpenDialogLastFilePath = QDir::homePath();
   }
 
   setupUi(this);
@@ -592,7 +592,7 @@ void DataContainerReaderWidget::on_filePath_fileDropped(const QString& text)
 {
   DataContainerArrayProxy proxy;
 
-  setOpenDialogLastDirectory(text);
+  setOpenDialogLastFilePath(text);
   // Set/Remove the red outline if the file does exist
 
   if(verifyPathExists(text, filePath) == true)
@@ -635,7 +635,7 @@ void DataContainerReaderWidget::on_selectBtn_clicked()
   QString Ftype = "";        // getFilterParameter()->getFileType();
   QString ext = "*.dream3d"; // getFilterParameter()->getFileExtension();
   QString s = Ftype + QString(" Files (") + ext + QString(");;All Files(*.*)");
-  QString defaultName = m_OpenDialogLastDirectory + QDir::separator() + "Untitled";
+  QString defaultName = m_OpenDialogLastFilePath;
   QString file = QFileDialog::getOpenFileName(this, tr("Select Input File"), defaultName, s);
 
   if(true == file.isEmpty())
@@ -645,7 +645,7 @@ void DataContainerReaderWidget::on_selectBtn_clicked()
   file = QDir::toNativeSeparators(file);
   // Store the last used directory into the private instance variable
   QFileInfo fi(file);
-  m_OpenDialogLastDirectory = fi.path();
+  m_OpenDialogLastFilePath = fi.filePath();
   filePath->setText(file);
   on_filePath_fileDropped(file);
 
