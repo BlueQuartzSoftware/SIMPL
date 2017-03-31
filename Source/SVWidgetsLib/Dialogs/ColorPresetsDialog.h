@@ -91,6 +91,7 @@ protected slots:
   void updateEnabledStateForSelection();
   void updateForSelectedIndex(const QModelIndex& idx);
   void triggerApply();
+  void cancel();
 
 private:
   class pqInternals;
