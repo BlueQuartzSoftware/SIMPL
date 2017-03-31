@@ -283,16 +283,26 @@ void SVPipelineFilterWidget::updateWidgetStyle()
   if(getHasPreflightErrors() == true)
   {
      ss << "background-color: rgb(210, 210, 210);\ncolor: rgb(255, 255, 255);";
-    //ss << "background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0 rgba(180, 55, 55, 255), stop:0.5 rgba(235, 110, 110, 255), stop:1 rgba(180, 55, 55, 255));\n";
+#if defined(Q_OS_WIN)
+     filterIndex->setStyleSheet("QLabel\n{\nbackground-color: rgb(179, 2, 5);  \n color: rgb(237, 237, 237);\n	font: 9pt;\n	font-weight: bold;\n padding: 3 3 3 3px;\n}");
+#elif defined(Q_OS_MAC)
      filterIndex->setStyleSheet("QLabel\n{\nbackground-color: rgb(179, 2, 5);  \n color: rgb(237, 237, 237);\n	font: 14pt;\n	font-weight: bold;\n padding: 3 3 3 3px;\n}");
-
+#else
+     filterIndex->setStyleSheet("QLabel\n{\nbackground-color: rgb(179, 2, 5);  \n color: rgb(237, 237, 237);\n	font: 100 9pt;\n	font-weight: bold;\n padding: 3 3 3 3px;\n}");
+#endif
   }
   else
   {
     ss << "background-color: rgb(210, 210, 210);\ncolor: rgb(255, 255, 255);";
-    filterIndex->setStyleSheet("QLabel\n{\nbackground-color: rgb(128, 128, 128);\n	color: rgb(237, 237, 237);\n font: 14pt;\n font-weight: bold;\n padding: 3 3 3 3px;\n}");
 
-    //ss << "background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0 rgba(185, 185, 185, 255), stop:0.5 rgba(216, 216, 216, 255), stop:1 rgba(170, 170, 170, 255));\n";
+#if defined(Q_OS_WIN)
+    filterIndex->setStyleSheet("QLabel\n{\nbackground-color: rgb(128, 128, 128);\n	color: rgb(237, 237, 237);\n font: 9pt;\n font-weight: bold;\n padding: 3 3 3 3px;\n}");
+
+#elif defined(Q_OS_MAC)
+    filterIndex->setStyleSheet("QLabel\n{\nbackground-color: rgb(128, 128, 128);\n	color: rgb(237, 237, 237);\n font: 14pt;\n font-weight: bold;\n padding: 3 3 3 3px;\n}");
+#else
+    filterIndex->setStyleSheet("QLabel\n{\nbackground-color: rgb(179, 2, 5);  \n color: rgb(237, 237, 237);\n	font:100 9pt;\n	font-weight: bold;\n padding: 3 3 3 3px;\n}");
+#endif
   }
 
   //ss << "background-position: top ;\n background-repeat: repeat-x;";
@@ -314,10 +324,6 @@ void SVPipelineFilterWidget::updateWidgetStyle()
   ss << "font-weight: bold;";
 #endif
 
-//  if(getHasPreflightErrors() == true)
-//  {
-//    ss << "color: rgb(240, 240, 240);";
-//  }
   ss << "}\n";
 
   setStyleSheet(style);
