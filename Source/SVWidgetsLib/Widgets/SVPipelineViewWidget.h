@@ -402,7 +402,7 @@ class SVWidgetsLib_EXPORT SVPipelineViewWidget : public QFrame, public PipelineV
     SVPipelineFilterWidget*                           m_ShiftStart = nullptr;
     QVBoxLayout*                                        m_FilterWidgetLayout = nullptr;
     int                                                         m_FilterOrigPos;
-    SVPipelineFilterOutlineWidget*               m_DropBox = nullptr;
+    SVPipelineFilterOutlineWidget*               m_FilterOutlineWidget = nullptr;
     int                                                         m_DropIndex;
     QLabel*                                                 m_EmptyPipelineLabel = nullptr;
     QList<QObject*>                                 m_PipelineMessageObservers;
