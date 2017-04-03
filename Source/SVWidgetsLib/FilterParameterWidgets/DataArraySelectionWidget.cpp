@@ -165,8 +165,6 @@ void DataArraySelectionWidget::createSelectionMenu()
     menu->clear();
   }
 
-  m_SelectedDataArrayPath->setStyleSheet("QPushButton::menu-indicator { image: url(:/media_play_green.png);\nsubcontrol-position: right bottom;\nsubcontrol-origin: content;\nright: 30px; }");
-
   // Get the DataContainerArray object
   // Loop over the data containers until we find the proper data container
   QList<DataContainer::Pointer> containers = dca->getDataContainers();

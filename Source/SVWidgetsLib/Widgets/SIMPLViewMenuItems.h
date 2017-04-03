@@ -83,8 +83,6 @@ class SVWidgetsLib_EXPORT SIMPLViewMenuItems : public QObject
     SIMPL_INSTANCE_PROPERTY(QAction*, ActionCut)
     SIMPL_INSTANCE_PROPERTY(QAction*, ActionCopy)
     SIMPL_INSTANCE_PROPERTY(QAction*, ActionPaste)
-    SIMPL_INSTANCE_PROPERTY(QAction*, ActionUndo)
-    SIMPL_INSTANCE_PROPERTY(QAction*, ActionRedo)
 
     // View Menu
     SIMPL_INSTANCE_PROPERTY(QAction*, ActionShowFilterLibrary)

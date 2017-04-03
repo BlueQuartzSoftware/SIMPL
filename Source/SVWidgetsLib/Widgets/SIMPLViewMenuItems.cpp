@@ -137,9 +137,6 @@ void SIMPLViewMenuItems::createMenus()
 // -----------------------------------------------------------------------------
 void SIMPLViewMenuItems::createActions()
 {
-  m_ActionUndo = new QAction("Undo", this);
-  m_ActionRedo = new QAction("Redo", this);
-  m_ActionRenameBookmark = new QAction("Rename Pipeline", this);
   m_ActionRenameBookmark = new QAction("Rename Pipeline", this);
   m_ActionRemoveBookmark = new QAction("Remove Bookmark", this);
   m_ActionClearPipeline = new QAction("Clear Pipeline", this);
@@ -185,8 +182,6 @@ void SIMPLViewMenuItems::createActions()
   m_ActionShowBookmarkInFileSystem->setText("Show in File System");
 #endif
 
-  m_ActionUndo->setShortcut(QKeySequence(Qt::CTRL + Qt::Key_Z));
-  m_ActionRedo->setShortcut(QKeySequence(Qt::CTRL + Qt::SHIFT + Qt::Key_Z));
   m_ActionClearPipeline->setShortcut(QKeySequence(Qt::CTRL + Qt::Key_Backspace));
   m_ActionOpen->setShortcut(QKeySequence(Qt::CTRL + Qt::Key_O));
   m_ActionNew->setShortcut(QKeySequence(Qt::CTRL + Qt::Key_N));

@@ -109,6 +109,10 @@ SVPipelineViewWidget::SVPipelineViewWidget(QWidget* parent)
 // -----------------------------------------------------------------------------
 SVPipelineViewWidget::~SVPipelineViewWidget()
 {
+  // These disconnections are needed so that the slots are not called when the undo stack is deconstructed.  Calling the slots during deconstruction causes a crash.
+  disconnect(m_UndoStack.data(), SIGNAL(undoTextChanged(const QString &)), this, SLOT(updateCurrentUndoText(const QString &)));
+  disconnect(m_UndoStack.data(), SIGNAL(redoTextChanged(const QString &)), this, SLOT(updateCurrentRedoText(const QString &)));
+
   if(m_ContextMenu)
   {
     delete m_ContextMenu;
@@ -133,6 +137,17 @@ void SVPipelineViewWidget::setupGui()
 
   m_DropBox = new DropBoxWidget();
   m_DropBox->setObjectName("m_DropBox");
+
+  m_ActionUndo = m_UndoStack->createUndoAction(nullptr);
+  m_ActionRedo = m_UndoStack->createRedoAction(nullptr);
+  m_ActionUndo->setShortcut(QKeySequence(Qt::CTRL + Qt::Key_Z));
+  m_ActionRedo->setShortcut(QKeySequence(Qt::CTRL + Qt::SHIFT + Qt::Key_Z));
+
+  connect(m_UndoStack.data(), SIGNAL(undoTextChanged(const QString &)), this, SLOT(updateCurrentUndoText(const QString &)));
+  connect(m_UndoStack.data(), SIGNAL(redoTextChanged(const QString &)), this, SLOT(updateCurrentRedoText(const QString &)));
+
+  connect(m_ActionUndo, SIGNAL(triggered()), this, SLOT(actionUndo_triggered()));
+  connect(m_ActionRedo, SIGNAL(triggered()), this, SLOT(actionRedo_triggered()));
 
   m_autoScrollTimer.setParent(this);
 
@@ -200,6 +215,44 @@ void SVPipelineViewWidget::createPipelineViewWidgetMenu()
   m_ContextMenu->addAction(menuItems->getActionPaste());
   m_ContextMenu->addSeparator();
   m_ContextMenu->addAction(menuItems->getActionClearPipeline());
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void SVPipelineViewWidget::updateCurrentUndoText(const QString &text)
+{
+  m_PreviousUndoText = m_CurrentUndoText;
+  m_CurrentUndoText = text;
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void SVPipelineViewWidget::updateCurrentRedoText(const QString &text)
+{
+  m_PreviousRedoText = m_CurrentRedoText;
+  m_CurrentRedoText = text;
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void SVPipelineViewWidget::actionUndo_triggered()
+{
+  emit stdOutMessage("Undo " + m_PreviousUndoText);
+//  QString text = m_ActionUndo->text();
+//  emit stdOutMessage(text);
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void SVPipelineViewWidget::actionRedo_triggered()
+{
+  emit stdOutMessage("Redo " + m_PreviousRedoText);
+//  QString text = m_ActionRedo->text();
+//  emit stdOutMessage(text);
 }
 
 // -----------------------------------------------------------------------------
@@ -1876,7 +1929,7 @@ QList<PipelineFilterObject*> SVPipelineViewWidget::getSelectedFilterObjects()
 // -----------------------------------------------------------------------------
 QAction* SVPipelineViewWidget::getActionRedo()
 {
-  return m_UndoStack->createRedoAction(nullptr);
+  return m_ActionRedo;
 }
 
 // -----------------------------------------------------------------------------
@@ -1884,7 +1937,7 @@ QAction* SVPipelineViewWidget::getActionRedo()
 // -----------------------------------------------------------------------------
 QAction* SVPipelineViewWidget::getActionUndo()
 {
-  return m_UndoStack->createUndoAction(nullptr);
+  return m_ActionUndo;
 }
 
 // -----------------------------------------------------------------------------
