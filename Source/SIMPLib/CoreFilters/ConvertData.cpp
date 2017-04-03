@@ -367,8 +367,16 @@ void ConvertData::execute()
   }
 
   DataContainer::Pointer m = getDataContainerArray()->getDataContainer(m_SelectedCellArrayPath.getDataContainerName());
+  AttributeMatrix::Pointer am = m->getAttributeMatrix(m_SelectedCellArrayPath.getAttributeMatrixName());
 
-  IDataArray::Pointer iArray = m->getAttributeMatrix(m_SelectedCellArrayPath.getAttributeMatrixName())->getAttributeArray(m_SelectedCellArrayPath.getDataArrayName());
+  IDataArray::Pointer iArray = am->getAttributeArray(m_SelectedCellArrayPath.getDataArrayName());
+
+  if (nullptr == iArray.get())
+  {
+    setErrorCondition(-90002);
+    return;
+  }
+
   bool completed = false;
 
   CHECK_AND_CONVERT(UInt8ArrayType, m, m_ScalarType, iArray, m_SelectedCellArrayPath.getAttributeMatrixName(), m_OutputArrayName)

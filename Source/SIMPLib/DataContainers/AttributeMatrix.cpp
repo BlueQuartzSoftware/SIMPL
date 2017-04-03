@@ -288,6 +288,11 @@ void AttributeMatrix::setTupleDimensions(QVector<size_t> tupleDims)
 // -----------------------------------------------------------------------------
 size_t AttributeMatrix::getNumberOfTuples()
 {
+  if (m_TupleDims.size() == 0)
+  {
+    return 0;
+  }
+
   size_t numTuples = m_TupleDims[0];
   for(int i = 1; i < m_TupleDims.size(); i++)
   {
