@@ -33,63 +33,130 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-#include "FavoritesChangedDialog.h"
+#include "QtSStringEdit.h"
 
-#include "moc_FavoritesChangedDialog.cpp"
-#include <QtWidgets/QFileDialog>
+#include "moc_QtSStringEdit.cpp"
 
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-FavoritesChangedDialog::FavoritesChangedDialog(QWidget* parent)
-: QDialog(parent)
-, m_OpenDialogLastFilePath("")
+QtSStringEdit::QtSStringEdit(QWidget* parent) : QWidget(parent)
 {
   setupUi(this);
+  setupGui();
 }
 
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-FavoritesChangedDialog::~FavoritesChangedDialog()
+QtSStringEdit::~QtSStringEdit()
 {
 }
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void FavoritesChangedDialog::on_selectBtn_clicked()
+void QtSStringEdit::setupGui()
 {
-  QString outputFile = m_OpenDialogLastFilePath + QDir::separator();
-  outputFile = QFileDialog::getExistingDirectory(this, tr("Select Directory"), outputFile);
-  if(!outputFile.isNull())
+  applyChangesBtn->setVisible(false);
+  cancelChangesBtn->setVisible(false);
+
+  connect(value, SIGNAL(textChanged(const QString&)), this, SLOT(widgetChanged(const QString&)));
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+QString QtSStringEdit::getStoredValue()
+{
+  return m_storedValue;
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+QString QtSStringEdit::getText()
+{
+  return m_storedValue;
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void QtSStringEdit::setText(QString newValue, bool signalsBlocked)
+{
+  value->blockSignals(signalsBlocked);
+
+  m_storedValue = newValue;
+  value->setText(newValue);
+
+  hideButtons();
+
+  value->blockSignals(false);
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void QtSStringEdit::on_value_returnPressed()
+{
+  on_applyChangesBtn_clicked();
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void QtSStringEdit::on_applyChangesBtn_clicked()
+{
+  value->setStyleSheet(QString(""));
+  m_storedValue = value->text();
+  emit valueChanged(m_storedValue);
+
+  hideButtons();
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void QtSStringEdit::keyPressEvent(QKeyEvent* e)
+{
+  if (e->key() == Qt::Key_Escape)
   {
-    outputDir->setText(QDir::toNativeSeparators(outputFile));
-    m_OpenDialogLastFilePath = outputFile;
+    on_cancelChangesBtn_clicked();
   }
 }
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void FavoritesChangedDialog::on_outputDir_textChanged(const QString& text)
+void QtSStringEdit::on_cancelChangesBtn_clicked()
 {
-  QFileInfo fi(text);
+  value->setText(m_storedValue);
+  value->setStyleSheet(QString(""));
 
-  if(fi.exists() == false)
-  {
-    exportBtn->setDisabled(true);
-  }
-  else
-  {
-    exportBtn->setEnabled(true);
-  }
+  hideButtons();
 }
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void FavoritesChangedDialog::on_exportBtn_clicked()
+void QtSStringEdit::hideButtons()
 {
-  emit exportBtnPressed(outputDir->text());
+  value->setToolTip("");
+  applyChangesBtn->setVisible(false);
+  cancelChangesBtn->setVisible(false);
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void QtSStringEdit::widgetChanged(const QString& text)
+{
+  value->setStyleSheet(QString::fromLatin1("color: rgb(255, 0, 0);"));
+  value->setToolTip("Press the 'Return' key to apply your changes\nPress the 'Esc' key to cancel your changes");
+
+  applyChangesBtn->setVisible(true);
+  cancelChangesBtn->setVisible(true);
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void QtSStringEdit::setValidator(const QValidator *v)
+{
+  value->setValidator(v);
 }

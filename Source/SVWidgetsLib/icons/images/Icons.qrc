@@ -26,6 +26,9 @@
   <file>circle-x.png</file>
   <file>circle-x@2x.png</file>
 
+  <file>check.png</file>
+  <file>check@2x.png</file>
+
   <file>caret-bottom.png</file>
   <file>caret-bottom@2x.png</file>
 
@@ -139,3 +142,4 @@
 
  </qresource>
  </RCC>
+

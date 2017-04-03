@@ -68,13 +68,18 @@ set(TEST_NAMES
   CombineAttributeArraysTest
   CombineAttributeMatricesTest
   ConditionalSetValueTest
+  ConvertDataTest
+  CreateDataContainerTest
+  CreateAttributeMatrixTest
   CreateDataArrayTest
   CreateFeatureArrayFromElementArrayTest
+  CreateImageGeometryTest
   DataArrayTest
   DataContainerBundleTest
   DataContainerTest
   ErrorMessageTest
   ExecuteProcessTest
+  ExtractComponentAsArrayTest
   FilterParametersRWTest
   FilterPipelineTest
   FindDerivativesFilterTest
@@ -84,7 +89,14 @@ set(TEST_NAMES
   QuaternionMathTest
   RecursivePipelineTest
   RemoveComponentFromArrayTest
+  RemoveArraysTest
+  RenameAttributeArrayTest
+  RenameAttributeMatrixTest
+  RenameDataContainerTest
   ReplaceValueTest
+  RequiredZThicknessTest
+  ScaleVolumeTest
+  SetOriginResolutionImageGeomTest
   StatsDataJsonRWTest
   StringDataArrayTest
   StructArrayTest

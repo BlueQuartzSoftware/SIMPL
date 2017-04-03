@@ -42,6 +42,7 @@
 #include <QtCore/QObject>
 #include <QtCore/QPointer>
 #include <QtWidgets/QWidget>
+#include <QtGui/QKeyEvent>
 
 #include "SVWidgetsLib/QtSupport/QtSFaderWidget.h"
 
@@ -84,13 +85,6 @@ class SVWidgetsLib_EXPORT DataContainerCreationWidget : public FilterParameterWi
     void beforePreflight();
     void afterPreflight();
     void filterNeedsInputParameters(AbstractFilter* filter);
-
-    void widgetChanged(const QString& msg);
-    void on_dataContainerName_returnPressed();
-    void on_applyChangesBtn_clicked();
-
-
-    void hideButton();
 
   signals:
     void errorSettingFilterParameter(const QString& msg);

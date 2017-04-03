@@ -77,6 +77,7 @@ ColorPresetsDialog::ColorPresetsDialog(QWidget* parentObject) :
   this->updateEnabledStateForSelection();
 
   this->connect(ui.okBtn, SIGNAL(clicked()), SLOT(triggerApply()));
+  this->connect(ui.cancelBtn, SIGNAL(clicked()), SLOT(cancel()));
 
   if (ui.gradients->selectionModel()->selectedRows().size() <= 0)
   {
@@ -166,6 +167,14 @@ void ColorPresetsDialog::triggerApply()
   Q_ASSERT(preset.isEmpty() == false);
   emit applyPreset(preset, presetPixmap);
   done(1);
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void ColorPresetsDialog::cancel()
+{
+  close();
 }
 
 // -----------------------------------------------------------------------------

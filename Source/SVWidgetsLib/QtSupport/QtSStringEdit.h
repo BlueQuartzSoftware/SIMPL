@@ -33,72 +33,55 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-#ifndef _colorpresetsdialog_h
-#define _colorpresetsdialog_h
+#ifndef _QtSStringEdit_h_
+#define _QtSStringEdit_h_
 
-#include <QtCore/QModelIndex>
-#include <QtCore/QScopedPointer>
+#include <QtWidgets/QWidget>
+#include <QtGui/QKeyEvent>
 
-#include <QtWidgets/QDialog>
+#include "SVWidgetsLib/QtSupport/QtSFaderWidget.h"
 
-#include "SVWidgetsLib/Dialogs/ColorPresetsDialogTableModel.h"
+#include "SIMPLib/Common/AbstractFilter.h"
+#include "SIMPLib/FilterParameters/StringFilterParameter.h"
+
 #include "SVWidgetsLib/SVWidgetsLib.h"
+#include "SVWidgetsLib/FilterParameterWidgets/FilterParameterWidget.h"
 
-class QModelIndex;
-namespace Json
-{
-  class Value;
-}
+#include <ui_QtSStringEdit.h>
 
-/// ColorPresetsDialog is the dialog used by to show the user with a choice of color
-/// maps/opacity maps/presets to choose from. The Dialog can be customized to
-/// show only indexed (or non-indexed) color maps using ColorPresetsDialog::Modes.
-/// Application code should observe the ColorPresetsDialog::applyPreset() signal to
-/// perform the applying of the preset to a specific transfer function proxy.
-/// This class works with vtkSMTransferFunctionPresets, which acts as the preset
-/// manager for the application with support to inspect existing presets as well
-/// as updating them.
-class SVWidgetsLib_EXPORT ColorPresetsDialog : public QDialog
+class QtSStringEdit : public QWidget, private Ui::QtSStringEdit
 {
   Q_OBJECT
 
 public:
-  ColorPresetsDialog(QWidget* parent=0);
-  virtual ~ColorPresetsDialog();
+  QtSStringEdit(QWidget* parent);
+  ~QtSStringEdit();
 
-  /**
-   * @brief setCurrentPreset
-   * @param presetName
-   */
-  void setCurrentPreset(const char* presetName, bool applyPreset = true);
+  void setupGui();
 
-  /**
-   * @brief currentPreset
-   * @return
-   */
-  const QJsonObject currentPreset();
+  QString getText();
+  void setText(QString value, bool blockSignals = false);
 
-  /**
-   * @brief currentPresetIndex
-   * @return
-   */
-  int currentPresetIndex();
+  void setValidator(const QValidator *v);
 
 signals:
-  void applyPreset(const QJsonObject& preset, const QPixmap& pixmap);
+  void valueChanged(QString value);
 
-protected slots:
-  void updateEnabledStateForSelection();
-  void updateForSelectedIndex(const QModelIndex& idx);
-  void triggerApply();
-  void cancel();
+public slots:
+  void widgetChanged(const QString& msg);
+  void on_value_returnPressed();
+  void on_applyChangesBtn_clicked();
+  void on_cancelChangesBtn_clicked();
+
+  void hideButtons();
+
+protected:
+  void keyPressEvent(QKeyEvent* event) override;
+
+  QString getStoredValue();
 
 private:
-  class pqInternals;
-  const QScopedPointer<pqInternals> Internals;
-
-  ColorPresetsDialog(const ColorPresetsDialog&); // Copy Constructor Not Implemented
-  void operator=(const ColorPresetsDialog&); // Operator '=' Not Implemented
+  QString m_storedValue;
 };
 
-#endif /* _colorpresetsdialog_h */
+#endif
