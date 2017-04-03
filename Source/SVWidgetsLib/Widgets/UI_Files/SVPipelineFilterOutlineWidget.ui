@@ -35,8 +35,8 @@
    <string>SVPipelineFilterOutlineWidget</string>
   </property>
   <property name="styleSheet">
-   <string notr="true">QWidget#DropBoxWidget {
-border: 1px solid rgb(149, 195, 255);
+   <string notr="true">QWidget#SVPipelineFilterOutlineWidget {
+border: 2px solid rgb(149, 195, 255);
 border-radius: 3px;
 padding: 0 0 0 0px;
 font: 100 14pt &quot;DejuVu Sans&quot;;
@@ -73,7 +73,7 @@ font-weight: bold;
       <string notr="true">QLabel
 {
 	color: rgb(51, 141, 203);
-	border: 1px solid rgb(149, 195, 255);
+	border: 2px solid rgb(149, 195, 255);
 	padding: 3 3 3 3px;
 	font: 14pt;
 	font-weight: bold;

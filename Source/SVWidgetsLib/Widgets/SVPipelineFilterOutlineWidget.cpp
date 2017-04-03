@@ -83,7 +83,7 @@ void SVPipelineFilterOutlineWidget::updateWidgetStyle()
 
   ss << "QWidget#SVPipelineFilterOutlineWidget {\n";
 
-  ss << "border: 1px solid rgb(149, 195, 255);\n";
+  ss << "border: 2px solid rgb(149, 195, 255);\n";
   ss << "border-radius: 3px;\n";
   ss << "padding: 0 0 0 0px;\n";
   ss << "font: 100 14pt \"DejuVu Sans\";\n";
