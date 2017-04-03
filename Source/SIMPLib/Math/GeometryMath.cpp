@@ -850,6 +850,57 @@ char GeometryMath::RayIntersectsPlane(const float* a, const float* b, const floa
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
+char GeometryMath::RayIntersectsPlane(const float* n, const float d, const float* q, const float* r, float* p)
+{
+  float rq[3];
+  float num, denom, t;
+
+  num = d - ((q[0] * n[0]) + (q[1] * n[1]) + (q[2] * n[2]));
+  rq[0] = r[0] - q[0];
+  rq[1] = r[1] - q[1];
+  rq[2] = r[2] - q[2];
+  denom = (rq[0] * n[0]) + (rq[1] * n[1]) + (rq[2] * n[2]);
+
+  if(denom == 0.0)
+  {
+    if(num == 0.0)
+    {
+      return 'p';
+    }
+    else
+    {
+      return '0';
+    }
+  }
+  else
+  {
+    t = num / denom;
+    for(int i = 0; i < 3; i++)
+    {
+      p[i] = q[i] + (t * (r[i] - q[i]));
+    }
+    if(t > 0.0 && t < 1.0)
+    {
+      return '1';
+    }
+    else if(num == 0.0)
+    {
+      return 'q';
+    }
+    else if(num == denom)
+    {
+      return 'r';
+    }
+    else
+    {
+      return '0';
+    }
+  }
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
 char GeometryMath::PointInTriangle3D(const float* a, const float* b, const float* c, int m, const float* p)
 {
   float pp[3], aP[3], bP[3], cP[3];
