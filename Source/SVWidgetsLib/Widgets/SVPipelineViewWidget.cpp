@@ -109,6 +109,10 @@ SVPipelineViewWidget::SVPipelineViewWidget(QWidget* parent)
 // -----------------------------------------------------------------------------
 SVPipelineViewWidget::~SVPipelineViewWidget()
 {
+  // These disconnections are needed so that the slots are not called when the undo stack is deconstructed.  Calling the slots during deconstruction causes a crash.
+  disconnect(m_UndoStack.data(), SIGNAL(undoTextChanged(const QString &)), this, SLOT(updateCurrentUndoText(const QString &)));
+  disconnect(m_UndoStack.data(), SIGNAL(redoTextChanged(const QString &)), this, SLOT(updateCurrentRedoText(const QString &)));
+
   if(m_ContextMenu)
   {
     delete m_ContextMenu;
@@ -138,6 +142,12 @@ void SVPipelineViewWidget::setupGui()
   m_ActionRedo = m_UndoStack->createRedoAction(nullptr);
   m_ActionUndo->setShortcut(QKeySequence(Qt::CTRL + Qt::Key_Z));
   m_ActionRedo->setShortcut(QKeySequence(Qt::CTRL + Qt::SHIFT + Qt::Key_Z));
+
+  connect(m_UndoStack.data(), SIGNAL(undoTextChanged(const QString &)), this, SLOT(updateCurrentUndoText(const QString &)));
+  connect(m_UndoStack.data(), SIGNAL(redoTextChanged(const QString &)), this, SLOT(updateCurrentRedoText(const QString &)));
+
+  connect(m_ActionUndo, SIGNAL(triggered()), this, SLOT(actionUndo_triggered()));
+  connect(m_ActionRedo, SIGNAL(triggered()), this, SLOT(actionRedo_triggered()));
 
   m_autoScrollTimer.setParent(this);
 
@@ -205,6 +215,44 @@ void SVPipelineViewWidget::createPipelineViewWidgetMenu()
   m_ContextMenu->addAction(menuItems->getActionPaste());
   m_ContextMenu->addSeparator();
   m_ContextMenu->addAction(menuItems->getActionClearPipeline());
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void SVPipelineViewWidget::updateCurrentUndoText(const QString &text)
+{
+  m_PreviousUndoText = m_CurrentUndoText;
+  m_CurrentUndoText = text;
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void SVPipelineViewWidget::updateCurrentRedoText(const QString &text)
+{
+  m_PreviousRedoText = m_CurrentRedoText;
+  m_CurrentRedoText = text;
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void SVPipelineViewWidget::actionUndo_triggered()
+{
+  emit stdOutMessage("Undo " + m_PreviousUndoText);
+//  QString text = m_ActionUndo->text();
+//  emit stdOutMessage(text);
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void SVPipelineViewWidget::actionRedo_triggered()
+{
+  emit stdOutMessage("Redo " + m_PreviousRedoText);
+//  QString text = m_ActionRedo->text();
+//  emit stdOutMessage(text);
 }
 
 // -----------------------------------------------------------------------------
@@ -533,12 +581,12 @@ int SVPipelineViewWidget::openPipeline(const QString& filePath, QVariant value, 
     return -1;
   }
 
-  // Populate the pipeline view
-  populatePipelineView(jsonString, value);
-
   // Notify user of successful read
   emit statusMessage(tr("Opened \"%1\" Pipeline").arg(baseName));
   emit stdOutMessage(tr("Opened \"%1\" Pipeline").arg(baseName));
+
+  // Populate the pipeline view
+  populatePipelineView(jsonString, value);
 
   QString file = filePath;
   emit pipelineOpened(file, setOpenedFilePath, changeTitle);
@@ -773,7 +821,6 @@ void SVPipelineViewWidget::preflightPipeline(QUuid id)
   }
 
   emit pipelineIssuesCleared();
-  emit stdOutMessage("Preflight starting...");
   // Create a Pipeline Object and fill it with the filters from this View
   FilterPipeline::Pointer pipeline = getFilterPipeline();
 
@@ -817,7 +864,6 @@ void SVPipelineViewWidget::preflightPipeline(QUuid id)
   }
   emit preflightPipelineComplete();
   emit preflightFinished(err);
-  emit stdOutMessage("Preflight ended.");
 }
 
 // -----------------------------------------------------------------------------
