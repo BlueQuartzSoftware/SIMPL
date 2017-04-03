@@ -392,8 +392,6 @@ class SVWidgetsLib_EXPORT SVPipelineViewWidget : public QFrame, public PipelineV
     QWidget*                            m_InputParametersWidget = nullptr;
     QMenu*                              m_ContextMenu = nullptr;
     QSharedPointer<QUndoStack>          m_UndoStack;
-    QAction*                            m_ActionUndo = nullptr;
-    QAction*                            m_ActionRedo = nullptr;
     bool                                m_BlockPreflight;
     std::stack<bool>                    m_BlockPreflightStack;
 

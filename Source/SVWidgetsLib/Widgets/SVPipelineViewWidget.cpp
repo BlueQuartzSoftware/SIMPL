@@ -134,11 +134,6 @@ void SVPipelineViewWidget::setupGui()
   m_DropBox = new DropBoxWidget();
   m_DropBox->setObjectName("m_DropBox");
 
-  m_ActionUndo = m_UndoStack->createUndoAction(nullptr);
-  m_ActionRedo = m_UndoStack->createRedoAction(nullptr);
-  m_ActionUndo->setShortcut(QKeySequence(Qt::CTRL + Qt::Key_Z));
-  m_ActionRedo->setShortcut(QKeySequence(Qt::CTRL + Qt::SHIFT + Qt::Key_Z));
-
   m_autoScrollTimer.setParent(this);
 
   setContextMenuPolicy(Qt::CustomContextMenu);
@@ -532,12 +527,12 @@ int SVPipelineViewWidget::openPipeline(const QString& filePath, QVariant value, 
     return -1;
   }
 
-  // Populate the pipeline view
-  populatePipelineView(jsonString, value);
-
   // Notify user of successful read
   emit statusMessage(tr("Opened \"%1\" Pipeline").arg(baseName));
   emit stdOutMessage(tr("Opened \"%1\" Pipeline").arg(baseName));
+
+  // Populate the pipeline view
+  populatePipelineView(jsonString, value);
 
   QString file = filePath;
   emit pipelineOpened(file, setOpenedFilePath, changeTitle);
@@ -772,7 +767,6 @@ void SVPipelineViewWidget::preflightPipeline(QUuid id)
   }
 
   emit pipelineIssuesCleared();
-  emit stdOutMessage("Preflight starting...");
   // Create a Pipeline Object and fill it with the filters from this View
   FilterPipeline::Pointer pipeline = getFilterPipeline();
 
@@ -816,7 +810,6 @@ void SVPipelineViewWidget::preflightPipeline(QUuid id)
   }
   emit preflightPipelineComplete();
   emit preflightFinished(err);
-  emit stdOutMessage("Preflight ended.");
 }
 
 // -----------------------------------------------------------------------------
@@ -1883,7 +1876,7 @@ QList<PipelineFilterObject*> SVPipelineViewWidget::getSelectedFilterObjects()
 // -----------------------------------------------------------------------------
 QAction* SVPipelineViewWidget::getActionRedo()
 {
-  return m_ActionRedo;
+  return m_UndoStack->createRedoAction(nullptr);
 }
 
 // -----------------------------------------------------------------------------
@@ -1891,7 +1884,7 @@ QAction* SVPipelineViewWidget::getActionRedo()
 // -----------------------------------------------------------------------------
 QAction* SVPipelineViewWidget::getActionUndo()
 {
-  return m_ActionUndo;
+  return m_UndoStack->createUndoAction(nullptr);
 }
 
 // -----------------------------------------------------------------------------
