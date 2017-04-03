@@ -50,8 +50,9 @@
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-QString generateIndexString(int index, int maxIndex)
+QString generateIndexString(int index, int maxIndex, bool padSingleDigits)
 {
+  if (maxIndex < 10 && padSingleDigits == true) { maxIndex = 11; }
   QString numStr = QString::number(index);
 
   if(maxIndex > 10)
@@ -273,12 +274,14 @@ QString JsonFilterParametersReader::HtmlSummaryFromFile(QString filePath, IObser
       color = even;
     }
 
-    QString indexString = generateIndexString(i, filterCount);
+    QString indexString = generateIndexString(i, filterCount, false);
     QJsonValueRef filtRef = m_Root[indexString];
+
+    QString displayString = generateIndexString(i+1, filterCount, true);
 
     if(filtRef.isUndefined())
     {
-      ss << "<tr bgcolor=\"" << color << "\"><td>" << i << "</td><td> Filter Missing </td><td></td></tr>\n";
+      ss << "<tr bgcolor=\"" << color << "\"><td>" << displayString << "</td><td> Filter Missing </td><td></td></tr>\n";
       unknownFilters = true;
     }
     else
@@ -286,7 +289,7 @@ QString JsonFilterParametersReader::HtmlSummaryFromFile(QString filePath, IObser
       QJsonObject filtObj = filtRef.toObject();
       QString filtName = filtObj["Filter_Name"].toString();
       QString filtLabel = filtObj["Filter_Human_Label"].toString();
-      ss << "<tr bgcolor=\"" << color << "\"><td>" << i << "</td><td>" << filtLabel << "</td><td>" << filtName << "</td></tr>\n";
+      ss << "<tr bgcolor=\"" << color << "\"><td>" << displayString << "</td><td>" << filtLabel << "</td><td>" << filtName << "</td></tr>\n";
     }
   }
 
@@ -539,7 +542,7 @@ int JsonFilterParametersReader::openFilterGroup(AbstractFilter* unused, int inde
   }
   if(m_CurrentFilterIndex.isEmpty())
   {
-    numStr = generateIndexString(index, m_MaxFilterIndex);
+    numStr = generateIndexString(index, m_MaxFilterIndex, false);
     m_CurrentFilterIndex = m_Root[numStr].toObject();
     if(m_CurrentFilterIndex.isEmpty())
     {
