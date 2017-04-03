@@ -23,7 +23,6 @@ set(SVWidgetsLib_QtSupport_MOC_HDRS
   ${SVWidgetsLib_SOURCE_DIR}/QtSupport/QtSFileCompleter.h
   ${SVWidgetsLib_SOURCE_DIR}/QtSupport/QtSFileDragMessageBox.h
   ${SVWidgetsLib_SOURCE_DIR}/QtSupport/QtSGraphicsView.h
-  ${SVWidgetsLib_SOURCE_DIR}/QtSupport/QtSHelpDialog.h
   ${SVWidgetsLib_SOURCE_DIR}/QtSupport/QtSHoverButton.h
   ${SVWidgetsLib_SOURCE_DIR}/QtSupport/QtSImageGraphicsDelegate.h
   ${SVWidgetsLib_SOURCE_DIR}/QtSupport/QtSPluginFrame.h
@@ -52,7 +51,6 @@ set(SVWidgetsLib_QtSupport_SRCS
   ${SVWidgetsLib_SOURCE_DIR}/QtSupport/QtSFileCompleter.cpp
   ${SVWidgetsLib_SOURCE_DIR}/QtSupport/QtSFileDragMessageBox.cpp
   ${SVWidgetsLib_SOURCE_DIR}/QtSupport/QtSGraphicsView.cpp
-  ${SVWidgetsLib_SOURCE_DIR}/QtSupport/QtSHelpDialog.cpp
   ${SVWidgetsLib_SOURCE_DIR}/QtSupport/QtSHelpUrlGenerator.cpp
   ${SVWidgetsLib_SOURCE_DIR}/QtSupport/QtSHoverButton.cpp
   ${SVWidgetsLib_SOURCE_DIR}/QtSupport/QtSImageGraphicsDelegate.cpp
@@ -85,7 +83,6 @@ ${SVWidgetsLib_SOURCE_DIR}/QtSupport/UI_Files/QtSApplicationAboutBoxDialog.ui
 ${SVWidgetsLib_SOURCE_DIR}/QtSupport/UI_Files/QtSBookmarkMissingDialog.ui
 ${SVWidgetsLib_SOURCE_DIR}/QtSupport/UI_Files/QtSDistributionTypeWidget.ui
 ${SVWidgetsLib_SOURCE_DIR}/QtSupport/UI_Files/QtSFileDragMessageBox.ui
-${SVWidgetsLib_SOURCE_DIR}/QtSupport/UI_Files/QtSHelpDialog.ui
 )
 
 # --------------------------------------------------------------------
