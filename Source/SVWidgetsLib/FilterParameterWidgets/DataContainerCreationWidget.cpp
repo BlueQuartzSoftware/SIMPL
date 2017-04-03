@@ -77,14 +77,14 @@ void DataContainerCreationWidget::setupGui()
     label->setText(getFilterParameter()->getHumanLabel());
 
     QString str = getFilter()->property(PROPERTY_NAME_AS_CHAR).toString();
-    dataContainerName->setText(str);
+    stringEdit->setText(str, true);
   }
   blockSignals(false);
 
-  applyChangesBtn->setVisible(false);
+  stringEdit->hideButtons();
 
   // Do not allow the user to put a forward slash into the dataContainerName line edit
-  dataContainerName->setValidator(new QRegularExpressionValidator(QRegularExpression("[^/]*"), this));
+  stringEdit->setValidator(new QRegularExpressionValidator(QRegularExpression("[^/]*"), this));
 
   // Catch when the filter is about to execute the preflight
   connect(getFilter(), SIGNAL(preflightAboutToExecute()), this, SLOT(beforePreflight()));
@@ -95,57 +95,7 @@ void DataContainerCreationWidget::setupGui()
   // Catch when the filter wants its dataContainerNames updated
   connect(getFilter(), SIGNAL(updateFilterParameters(AbstractFilter*)), this, SLOT(filterNeedsInputParameters(AbstractFilter*)));
 
-  connect(dataContainerName, SIGNAL(textChanged(const QString&)), this, SLOT(widgetChanged(const QString&)));
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-void DataContainerCreationWidget::on_dataContainerName_returnPressed()
-{
-  on_applyChangesBtn_clicked();
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-void DataContainerCreationWidget::on_applyChangesBtn_clicked()
-{
-  dataContainerName->setStyleSheet(QString(""));
-  emit parametersChanged();
-
-  if(getFaderWidget())
-  {
-    getFaderWidget()->close();
-  }
-  QPointer<QtSFaderWidget> faderWidget = new QtSFaderWidget(applyChangesBtn);
-  faderWidget->setFadeOut();
-  connect(faderWidget, SIGNAL(animationComplete()), this, SLOT(hideButton()));
-  faderWidget->start();
-  setFaderWidget(faderWidget);
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-void DataContainerCreationWidget::hideButton()
-{
-  dataContainerName->setToolTip("");
-  applyChangesBtn->setVisible(false);
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-void DataContainerCreationWidget::widgetChanged(const QString& text)
-{
-  dataContainerName->setStyleSheet(QString::fromLatin1("color: rgb(255, 0, 0);"));
-  dataContainerName->setToolTip("Press the 'Return' key to apply your changes");
-  if(applyChangesBtn->isVisible() == false)
-  {
-    applyChangesBtn->setVisible(true);
-    fadeInWidget(applyChangesBtn);
-  }
+  connect(stringEdit, SIGNAL(valueChanged(const QString&)), this, SIGNAL(parametersChanged()));
 }
 
 // -----------------------------------------------------------------------------
@@ -167,7 +117,7 @@ void DataContainerCreationWidget::afterPreflight()
 // -----------------------------------------------------------------------------
 void DataContainerCreationWidget::filterNeedsInputParameters(AbstractFilter* filter)
 {
-  bool ok = filter->setProperty(PROPERTY_NAME_AS_CHAR, dataContainerName->text());
+  bool ok = filter->setProperty(PROPERTY_NAME_AS_CHAR, stringEdit->getText());
   if(false == ok)
   {
     FilterParameterWidgetsDialogs::ShowCouldNotSetFilterParameter(getFilter(), getFilterParameter());

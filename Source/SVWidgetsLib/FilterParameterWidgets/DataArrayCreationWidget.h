@@ -40,6 +40,7 @@
 #include <QtCore/QObject>
 #include <QtCore/QPointer>
 #include <QtWidgets/QWidget>
+#include <QtGui/QKeyEvent>
 
 #include "SVWidgetsLib/QtSupport/QtSFaderWidget.h"
 
@@ -109,12 +110,6 @@ class SVWidgetsLib_EXPORT DataArrayCreationWidget : public FilterParameterWidget
     void filterNeedsInputParameters(AbstractFilter* filter);
 
     void attributeMatrixSelected(QString path);
-
-    void on_dataArrayName_returnPressed();
-    void on_applyChangesBtn_clicked();
-    void widgetChanged(const QString& msg);
-
-    void hideButton();
 
   protected:
     /**

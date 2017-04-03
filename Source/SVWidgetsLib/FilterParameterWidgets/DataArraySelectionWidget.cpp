@@ -196,6 +196,12 @@ void DataArraySelectionWidget::createSelectionMenu()
     {
       dcMenu->setDisabled(true);
     }
+    if (dc->getAttributeMatrixNames().size() == 0)
+    {
+      dcMenu->setDisabled(true);
+    }
+
+    bool validAmFound = false;
 
     // We found the proper Data Container, now populate the AttributeMatrix List
     DataContainer::AttributeMatrixMap_t attrMats = dc->getAttributeMatrices();
@@ -213,6 +219,8 @@ void DataArraySelectionWidget::createSelectionMenu()
       {
         amMenu->setDisabled(true);
       }
+
+      bool validDaFound = false;
 
       // We found the selected AttributeMatrix, so loop over this attribute matrix arrays and populate the menus
       QList<QString> attrArrayNames = am->getAttributeArrayNames();
@@ -238,7 +246,27 @@ void DataArraySelectionWidget::createSelectionMenu()
         {
           action->setDisabled(true);
         }
+        else
+        {
+          validDaFound = true;
+        }
       }
+
+      // Disable AttributeMatrix menu if no valid DataArray found
+      if(validDaFound)
+      {
+        validAmFound = true;
+      }
+      if(!validAmFound)
+      {
+        amMenu->setDisabled(true);
+      }
+    }
+
+    // Disable DataContainer menu if no valid AttributeMatrixes found
+    if(!validAmFound)
+    {
+      dcMenu->setDisabled(true);
     }
   }
 }

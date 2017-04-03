@@ -6,15 +6,15 @@ set(SVWidgetsLib_QtSupport_HDRS
   ${SVWidgetsLib_SOURCE_DIR}/QtSupport/QtSApplicationFileInfo.h
   ${SVWidgetsLib_SOURCE_DIR}/QtSupport/QtSMacros.h
   ${SVWidgetsLib_SOURCE_DIR}/QtSupport/QtSHelpUrlGenerator.h
-
 )
 
 set(SVWidgetsLib_QtSupport_MOC_HDRS
   ${SVWidgetsLib_SOURCE_DIR}/QtSupport/QtSApplicationAboutBoxDialog.h
-
   ${SVWidgetsLib_SOURCE_DIR}/QtSupport/QtSBookmarkMissingDialog.h
   ${SVWidgetsLib_SOURCE_DIR}/QtSupport/QtSCheckboxDialog.h
+  ${SVWidgetsLib_SOURCE_DIR}/QtSupport/QRoundProgressBar.h
   ${SVWidgetsLib_SOURCE_DIR}/QtSupport/QtSColorComboPicker.h
+  ${SVWidgetsLib_SOURCE_DIR}/QtSupport/QtSDisclosableGroupBox.h
   ${SVWidgetsLib_SOURCE_DIR}/QtSupport/QtSDistributionTypeWidget.h
   ${SVWidgetsLib_SOURCE_DIR}/QtSupport/QtSDroppableScrollArea.h
   ${SVWidgetsLib_SOURCE_DIR}/QtSupport/QtSFSDropLabel.h
@@ -23,21 +23,17 @@ set(SVWidgetsLib_QtSupport_MOC_HDRS
   ${SVWidgetsLib_SOURCE_DIR}/QtSupport/QtSFileCompleter.h
   ${SVWidgetsLib_SOURCE_DIR}/QtSupport/QtSFileDragMessageBox.h
   ${SVWidgetsLib_SOURCE_DIR}/QtSupport/QtSGraphicsView.h
-  ${SVWidgetsLib_SOURCE_DIR}/QtSupport/QtSHelpDialog.h
   ${SVWidgetsLib_SOURCE_DIR}/QtSupport/QtSHoverButton.h
   ${SVWidgetsLib_SOURCE_DIR}/QtSupport/QtSImageGraphicsDelegate.h
   ${SVWidgetsLib_SOURCE_DIR}/QtSupport/QtSPluginFrame.h
   ${SVWidgetsLib_SOURCE_DIR}/QtSupport/QtSRecentFileList.h
-  ${SVWidgetsLib_SOURCE_DIR}/QtSupport/QtSSearchLineEdit.h
+  ${SVWidgetsLib_SOURCE_DIR}/QtSupport/QtSLineEdit.h
   ${SVWidgetsLib_SOURCE_DIR}/QtSupport/QtSSettings.h
   ${SVWidgetsLib_SOURCE_DIR}/QtSupport/QtSSplitter.h
   ${SVWidgetsLib_SOURCE_DIR}/QtSupport/QtSSplitterHandle.h
   ${SVWidgetsLib_SOURCE_DIR}/QtSupport/QtSStyles.h
   ${SVWidgetsLib_SOURCE_DIR}/QtSupport/QtSDisclosableGroupBox.h
-  
-  ${SVWidgetsLib_SOURCE_DIR}/QtSupport/ctkCollapsibleGroupBox.h
-  ${SVWidgetsLib_SOURCE_DIR}/QtSupport/ctkProxyStyle.h
-
+  ${SVWidgetsLib_SOURCE_DIR}/QtSupport/QtSStringEdit.h
 )
 
 set(SVWidgetsLib_QtSupport_SRCS
@@ -45,7 +41,9 @@ set(SVWidgetsLib_QtSupport_SRCS
   ${SVWidgetsLib_SOURCE_DIR}/QtSupport/QtSApplicationFileInfo.cpp
   ${SVWidgetsLib_SOURCE_DIR}/QtSupport/QtSBookmarkMissingDialog.cpp
   ${SVWidgetsLib_SOURCE_DIR}/QtSupport/QtSCheckboxDialog.cpp
+  ${SVWidgetsLib_SOURCE_DIR}/QtSupport/QRoundProgressBar.cpp
   ${SVWidgetsLib_SOURCE_DIR}/QtSupport/QtSColorComboPicker.cpp
+  ${SVWidgetsLib_SOURCE_DIR}/QtSupport/QtSDisclosableGroupBox.cpp
   ${SVWidgetsLib_SOURCE_DIR}/QtSupport/QtSDistributionTypeWidget.cpp
   ${SVWidgetsLib_SOURCE_DIR}/QtSupport/QtSDroppableScrollArea.cpp
   ${SVWidgetsLib_SOURCE_DIR}/QtSupport/QtSFSDropLabel.cpp
@@ -54,22 +52,17 @@ set(SVWidgetsLib_QtSupport_SRCS
   ${SVWidgetsLib_SOURCE_DIR}/QtSupport/QtSFileCompleter.cpp
   ${SVWidgetsLib_SOURCE_DIR}/QtSupport/QtSFileDragMessageBox.cpp
   ${SVWidgetsLib_SOURCE_DIR}/QtSupport/QtSGraphicsView.cpp
-  ${SVWidgetsLib_SOURCE_DIR}/QtSupport/QtSHelpDialog.cpp
   ${SVWidgetsLib_SOURCE_DIR}/QtSupport/QtSHelpUrlGenerator.cpp
   ${SVWidgetsLib_SOURCE_DIR}/QtSupport/QtSHoverButton.cpp
   ${SVWidgetsLib_SOURCE_DIR}/QtSupport/QtSImageGraphicsDelegate.cpp
   ${SVWidgetsLib_SOURCE_DIR}/QtSupport/QtSPluginFrame.cpp
   ${SVWidgetsLib_SOURCE_DIR}/QtSupport/QtSRecentFileList.cpp
-  ${SVWidgetsLib_SOURCE_DIR}/QtSupport/QtSSearchLineEdit.cpp
+  ${SVWidgetsLib_SOURCE_DIR}/QtSupport/QtSLineEdit.cpp
   ${SVWidgetsLib_SOURCE_DIR}/QtSupport/QtSSettings.cpp
   ${SVWidgetsLib_SOURCE_DIR}/QtSupport/QtSSplitter.cpp
   ${SVWidgetsLib_SOURCE_DIR}/QtSupport/QtSSplitterHandle.cpp
   ${SVWidgetsLib_SOURCE_DIR}/QtSupport/QtSStyles.cpp
-  ${SVWidgetsLib_SOURCE_DIR}/QtSupport/QtSDisclosableGroupBox.cpp
-
-  ${SVWidgetsLib_SOURCE_DIR}/QtSupport/ctkCollapsibleGroupBox.cpp
-  ${SVWidgetsLib_SOURCE_DIR}/QtSupport/ctkProxyStyle.cpp
-
+  ${SVWidgetsLib_SOURCE_DIR}/QtSupport/QtSStringEdit.cpp
 )
 
 cmp_IDE_SOURCE_PROPERTIES( "SVWidgetsLib" "${SVWidgetsLib_QtSupport_HDRS};${SVWidgetsLib_QtSupport_MOC_HDRS}" "${SVWidgetsLib_QtSupport_SRCS}" "0")
@@ -89,7 +82,7 @@ ${SVWidgetsLib_SOURCE_DIR}/QtSupport/UI_Files/QtSApplicationAboutBoxDialog.ui
 ${SVWidgetsLib_SOURCE_DIR}/QtSupport/UI_Files/QtSBookmarkMissingDialog.ui
 ${SVWidgetsLib_SOURCE_DIR}/QtSupport/UI_Files/QtSDistributionTypeWidget.ui
 ${SVWidgetsLib_SOURCE_DIR}/QtSupport/UI_Files/QtSFileDragMessageBox.ui
-${SVWidgetsLib_SOURCE_DIR}/QtSupport/UI_Files/QtSHelpDialog.ui
+${SVWidgetsLib_SOURCE_DIR}/QtSupport/UI_Files/QtSStringEdit.ui
 )
 
 # --------------------------------------------------------------------

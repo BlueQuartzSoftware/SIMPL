@@ -109,6 +109,10 @@ SVPipelineViewWidget::SVPipelineViewWidget(QWidget* parent)
 // -----------------------------------------------------------------------------
 SVPipelineViewWidget::~SVPipelineViewWidget()
 {
+  // These disconnections are needed so that the slots are not called when the undo stack is deconstructed.  Calling the slots during deconstruction causes a crash.
+  disconnect(m_UndoStack.data(), SIGNAL(undoTextChanged(const QString &)), this, SLOT(updateCurrentUndoText(const QString &)));
+  disconnect(m_UndoStack.data(), SIGNAL(redoTextChanged(const QString &)), this, SLOT(updateCurrentRedoText(const QString &)));
+
   if(m_ContextMenu)
   {
     delete m_ContextMenu;
@@ -138,6 +142,12 @@ void SVPipelineViewWidget::setupGui()
   m_ActionRedo = m_UndoStack->createRedoAction(nullptr);
   m_ActionUndo->setShortcut(QKeySequence(Qt::CTRL + Qt::Key_Z));
   m_ActionRedo->setShortcut(QKeySequence(Qt::CTRL + Qt::SHIFT + Qt::Key_Z));
+
+  connect(m_UndoStack.data(), SIGNAL(undoTextChanged(const QString &)), this, SLOT(updateCurrentUndoText(const QString &)));
+  connect(m_UndoStack.data(), SIGNAL(redoTextChanged(const QString &)), this, SLOT(updateCurrentRedoText(const QString &)));
+
+  connect(m_ActionUndo, SIGNAL(triggered()), this, SLOT(actionUndo_triggered()));
+  connect(m_ActionRedo, SIGNAL(triggered()), this, SLOT(actionRedo_triggered()));
 
   m_autoScrollTimer.setParent(this);
 
@@ -205,6 +215,44 @@ void SVPipelineViewWidget::createPipelineViewWidgetMenu()
   m_ContextMenu->addAction(menuItems->getActionPaste());
   m_ContextMenu->addSeparator();
   m_ContextMenu->addAction(menuItems->getActionClearPipeline());
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void SVPipelineViewWidget::updateCurrentUndoText(const QString &text)
+{
+  m_PreviousUndoText = m_CurrentUndoText;
+  m_CurrentUndoText = text;
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void SVPipelineViewWidget::updateCurrentRedoText(const QString &text)
+{
+  m_PreviousRedoText = m_CurrentRedoText;
+  m_CurrentRedoText = text;
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void SVPipelineViewWidget::actionUndo_triggered()
+{
+  emit stdOutMessage("Undo " + m_PreviousUndoText);
+//  QString text = m_ActionUndo->text();
+//  emit stdOutMessage(text);
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void SVPipelineViewWidget::actionRedo_triggered()
+{
+  emit stdOutMessage("Redo " + m_PreviousRedoText);
+//  QString text = m_ActionRedo->text();
+//  emit stdOutMessage(text);
 }
 
 // -----------------------------------------------------------------------------
@@ -436,8 +484,9 @@ void SVPipelineViewWidget::reindexWidgetTitles()
     if(fw)
     {
       QString hl = fw->getFilter()->getHumanLabel();
-      hl = QString("[") + QString::number(i + 1) + QString("] ") + hl;
+
       fw->setFilterTitle(hl);
+      fw->setFilterIndex(i+1, count);
     }
   }
 }
@@ -468,7 +517,10 @@ FilterPipeline::Pointer SVPipelineViewWidget::getFilterPipeline(QUuid startId)
       pipeline->pushBack(filter);
     }
   }
-  pipeline->addMessageReceiver(m_PipelineMessageObserver);
+  for (int i = 0; i < m_PipelineMessageObservers.size(); i++)
+  {
+    pipeline->addMessageReceiver(m_PipelineMessageObservers[i]);
+  }
   return pipeline;
 }
 
@@ -491,7 +543,11 @@ FilterPipeline::Pointer SVPipelineViewWidget::getCopyOfFilterPipeline()
       pipeline->pushBack(copy);
     }
   }
-  pipeline->addMessageReceiver(m_PipelineMessageObserver);
+  for (int i = 0; i < m_PipelineMessageObservers.size(); i++)
+  {
+    pipeline->addMessageReceiver(m_PipelineMessageObservers[i]);
+  }
+
   return pipeline;
 }
 
@@ -512,6 +568,7 @@ int SVPipelineViewWidget::openPipeline(const QString& filePath, QVariant value, 
 
   QString ext = fi.suffix();
   QString name = fi.fileName();
+  QString baseName = fi.baseName();
 
   // Read the pipeline from the file
   QString jsonString = getJsonFromFile(filePath);
@@ -520,14 +577,16 @@ int SVPipelineViewWidget::openPipeline(const QString& filePath, QVariant value, 
   if(jsonString.isEmpty())
   {
     emit statusMessage(tr("The pipeline was not read correctly from file '%1'. '%2' is an unsupported file extension.").arg(name).arg(ext));
+    emit stdOutMessage(tr("The pipeline was not read correctly from file '%1'. '%2' is an unsupported file extension.").arg(name).arg(ext));
     return -1;
   }
 
+  // Notify user of successful read
+  emit statusMessage(tr("Opened \"%1\" Pipeline").arg(baseName));
+  emit stdOutMessage(tr("Opened \"%1\" Pipeline").arg(baseName));
+
   // Populate the pipeline view
   populatePipelineView(jsonString, value);
-
-  // Notify user of successful read
-  emit statusMessage(tr("The pipeline has been read successfully from '%1'.").arg(name));
 
   QString file = filePath;
   emit pipelineOpened(file, setOpenedFilePath, changeTitle);
@@ -538,7 +597,6 @@ int SVPipelineViewWidget::openPipeline(const QString& filePath, QVariant value, 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-
 void SVPipelineViewWidget::addFilterObject(PipelineFilterObject* filterObject, QVariant value)
 {
   SVPipelineFilterWidget* filterWidget = dynamic_cast<SVPipelineFilterWidget*>(filterObject);
@@ -583,7 +641,7 @@ void SVPipelineViewWidget::addFilterObject(PipelineFilterObject* filterObject, Q
     m_FilterWidgetLayout = new QVBoxLayout(this);
     m_FilterWidgetLayout->setObjectName(QString::fromUtf8("m_FilterWidgetLayout"));
     m_FilterWidgetLayout->setContentsMargins(2, 2, 2, 2);
-    m_FilterWidgetLayout->setSpacing(3);
+    m_FilterWidgetLayout->setSpacing(5);
     addSpacer = true;
   }
 
@@ -815,6 +873,9 @@ void SVPipelineViewWidget::slot_removeFilterObject(PipelineFilterObject* filterO
 {
   RemoveFilterCommand* removeCmd = new RemoveFilterCommand(filterObject, this, "Remove");
   addUndoCommand(removeCmd);
+
+  emit statusMessage(tr("Removed \"%1\" filter").arg(filterObject->getHumanLabel()));
+  emit stdOutMessage(tr("Removed \"%1\" filter").arg(filterObject->getHumanLabel()));
 }
 
 // -----------------------------------------------------------------------------
@@ -1015,6 +1076,9 @@ void SVPipelineViewWidget::addSIMPLViewReaderFilter(const QString& filePath, QVa
   AddFilterCommand* addCmd = new AddFilterCommand(reader, this, "Add", value);
   addCmd->setText(QObject::tr("\"%1 '%2' Filter\"").arg("Add").arg(reader->getHumanLabel()));
   addUndoCommand(addCmd);
+
+  emit statusMessage(tr("Added \"%1\" filter").arg(reader->getHumanLabel()));
+  emit stdOutMessage(tr("Added \"%1\" filter").arg(reader->getHumanLabel()));
 }
 
 // -----------------------------------------------------------------------------
@@ -1192,14 +1256,26 @@ int SVPipelineViewWidget::writePipeline(QString filePath)
 
   int err = 0;
   if(ext == "dream3d")
-  {
+  {    
+    QList<IObserver*> observers;
+    for (int i = 0; i < m_PipelineMessageObservers.size(); i++)
+    {
+      observers.push_back(reinterpret_cast<IObserver*>(m_PipelineMessageObservers[i]));
+    }
+
     H5FilterParametersWriter::Pointer dream3dWriter = H5FilterParametersWriter::New();
-    err = dream3dWriter->writePipelineToFile(pipeline, fi.absoluteFilePath(), fi.fileName(), reinterpret_cast<IObserver*>(m_PipelineMessageObserver));
+    err = dream3dWriter->writePipelineToFile(pipeline, fi.absoluteFilePath(), fi.fileName(), observers);
   }
   else if(ext == "json")
   {
+    QList<IObserver*> observers;
+    for (int i = 0; i < m_PipelineMessageObservers.size(); i++)
+    {
+      observers.push_back(reinterpret_cast<IObserver*>(m_PipelineMessageObservers[i]));
+    }
+
     JsonFilterParametersWriter::Pointer jsonWriter = JsonFilterParametersWriter::New();
-    jsonWriter->writePipelineToFile(pipeline, fi.absoluteFilePath(), fi.fileName(), reinterpret_cast<IObserver*>(m_PipelineMessageObserver));
+    jsonWriter->writePipelineToFile(pipeline, fi.absoluteFilePath(), fi.fileName(), observers);
   }
   else
   {
@@ -1523,6 +1599,9 @@ void SVPipelineViewWidget::dropEvent(QDropEvent* event)
       AddFilterCommand* addCmd = new AddFilterCommand(filter, this, "Add", index);
       addUndoCommand(addCmd);
 
+      emit statusMessage(tr("Added \"%1\" filter").arg(filter->getHumanLabel()));
+      emit stdOutMessage(tr("Added \"%1\" filter").arg(filter->getHumanLabel()));
+
       event->accept();
     }
     // If the dragged item is a pipeline file...
@@ -1597,10 +1676,22 @@ void SVPipelineViewWidget::dropEvent(QDropEvent* event)
       AddFilterCommand* addCmd = new AddFilterCommand(filters, this, "Paste", index);
       addUndoCommand(addCmd);
 
+      for (int i = 0; i < filters.size(); i++)
+      {
+        emit statusMessage(tr("Added \"%1\" filter").arg(filters[i]->getHumanLabel()));
+        emit stdOutMessage(tr("Added \"%1\" filter").arg(filters[i]->getHumanLabel()));
+      }
+
       if(qApp->queryKeyboardModifiers() != Qt::AltModifier)
       {
         RemoveFilterCommand* removeCmd = new RemoveFilterCommand(filterObjects, origin, "Cut");
         origin->addUndoCommand(removeCmd);
+
+        for (int i = 0; i < filters.size(); i++)
+        {
+          emit origin->statusMessage(tr("Removed \"%1\" filter").arg(filters[i]->getHumanLabel()));
+          emit origin->stdOutMessage(tr("Removed \"%1\" filter").arg(filters[i]->getHumanLabel()));
+        }
       }
 
       origin->setDraggedFilterObjects(QList<PipelineFilterObject*>());
@@ -1610,6 +1701,9 @@ void SVPipelineViewWidget::dropEvent(QDropEvent* event)
     {
       MoveFilterCommand* cmd = new MoveFilterCommand(draggedFilterObjects[0], m_FilterOrigPos, index, this);
       addUndoCommand(cmd);
+
+      emit statusMessage(tr("Moved \"%1\" filter").arg(draggedFilterObjects[0]->getHumanLabel()));
+      emit stdOutMessage(tr("Moved \"%1\" filter").arg(draggedFilterObjects[0]->getHumanLabel()));
 
       setDraggedFilterObjects(QList<PipelineFilterObject*>());
       event->accept();
@@ -1850,12 +1944,9 @@ QAction* SVPipelineViewWidget::getActionUndo()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void SVPipelineViewWidget::setPipelineMessageObserver(QObject* pipelineMessageObserver)
+void SVPipelineViewWidget::addPipelineMessageObserver(QObject* pipelineMessageObserver)
 {
-  m_PipelineMessageObserver = pipelineMessageObserver;
-  // setup our connection
-  connect(this, SIGNAL(pipelineIssuesCleared()), m_PipelineMessageObserver, SLOT(clearIssues()));
-  connect(this, SIGNAL(preflightPipelineComplete()), m_PipelineMessageObserver, SLOT(displayCachedMessages()));
+  m_PipelineMessageObservers.push_back(pipelineMessageObserver);
 }
 
 // -----------------------------------------------------------------------------

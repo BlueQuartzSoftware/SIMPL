@@ -67,11 +67,9 @@
 */
 void initializeArray(IDataArray::Pointer outputArrayPtr, const QString& initializationValue)
 {
-
   StringDataArray::Pointer array = std::dynamic_pointer_cast<StringDataArray>(outputArrayPtr);
   size_t count = array->getSize();
-  //array->setInitValue();
-
+  array->initializeWithValue(initializationValue);
 }
 
 
@@ -102,7 +100,8 @@ void CreateStringArray::setupFilterParameters()
 {
   FilterParameterVector parameters;
 
-  parameters.push_back(SIMPL_NEW_INTEGER_FP("Number of Components", NumberOfComponents, FilterParameter::Parameter, CreateStringArray));
+  // Do not let the user change the number of components in a StringDataArray
+  setNumberOfComponents(1);
 
   parameters.push_back(SIMPL_NEW_STRING_FP("Initialization Value", InitializationValue, FilterParameter::Parameter, CreateStringArray));
   {

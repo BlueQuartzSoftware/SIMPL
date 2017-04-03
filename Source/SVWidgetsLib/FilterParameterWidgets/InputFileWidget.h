@@ -38,24 +38,12 @@
 
 
 #include <QtCore/QObject>
-#include <QtCore/QPointer>
-#include <QtWidgets/QWidget>
 
-#include "SVWidgetsLib/QtSupport/QtSFaderWidget.h"
-
-
-
-#include "SIMPLib/Common/AbstractFilter.h"
 #include "SIMPLib/FilterParameters/InputFileFilterParameter.h"
 
 #include "SVWidgetsLib/SVWidgetsLib.h"
-#include "SVWidgetsLib/FilterParameterWidgets/FilterParameterWidget.h"
+#include "SVWidgetsLib/FilterParameterWidgets/AbstractIOFileWidget.h"
 
-
-#include "SVWidgetsLib/ui_InputFileWidget.h"
-
-class QLabel;
-class QtSFSDropLabel;
 class InputFileFilterParameter;
 
 /**
@@ -63,7 +51,7 @@ class InputFileFilterParameter;
 * @author
 * @version
 */
-class SVWidgetsLib_EXPORT InputFileWidget : public FilterParameterWidget, private Ui::InputFileWidget
+class SVWidgetsLib_EXPORT InputFileWidget : public AbstractIOFileWidget
 {
     Q_OBJECT
 
@@ -83,38 +71,11 @@ class SVWidgetsLib_EXPORT InputFileWidget : public FilterParameterWidget, privat
     */
     void setupGui();
 
-    /**
-    * @brief
-    */
-    bool verifyPathExists(QString filePath, QtSFSDropLabel* lineEdit);
-
-    void setFilterParameter(FilterParameter* value);
-    FilterParameter* getFilterParameter() const;
-
   public slots:
-    void beforePreflight();
-    void afterPreflight();
-    void filterNeedsInputParameters(AbstractFilter* filter);
-
-    void on_value_fileDropped(const QString& text);
-    void on_selectBtn_clicked();
-
-
-  protected:
-    static void setOpenDialogLastDirectory(QString val) { m_OpenDialogLastDirectory = val; }
-    static QString getOpenDialogLastDirectory() { return m_OpenDialogLastDirectory; }
-
-  signals:
-    void errorSettingFilterParameter(const QString& msg);
-    void parametersChanged();
+    void selectInputFile();
 
   private:
     InputFileFilterParameter* m_FilterParameter;
-
-    static QString    m_OpenDialogLastDirectory;
-    bool m_DidCausePreflight;
-
-
 
     InputFileWidget(const InputFileWidget&); // Copy Constructor Not Implemented
     void operator=(const InputFileWidget&); // Operator '=' Not Implemented

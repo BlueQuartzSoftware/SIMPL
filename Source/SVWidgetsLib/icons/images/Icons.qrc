@@ -4,44 +4,74 @@
  <!--  These have HiDPI resources  -->
   <file>delete2.png</file>
   <file>delete2@2x.png</file>
+
+  <file>trash.png</file>
+  <file>trash@2x.png</file>
+
   <file>delete.png</file>
   <file>delete@2x.png</file>
-  <file>add2.png</file>
-  <file>add2@2x.png</file>
+
+  <file>add.png</file>
+  <file>add@2x.png</file>
+
   <file>folder_blue.png</file>
   <file>folder_blue@2x.png</file>
+
   <file>text.png</file>
   <file>text@2x.png</file>
 
-  <file>help2.png</file>
-  <file>help2@2x.png</file>
+  <file>home.png</file>
+  <file>home@2x.png</file>
+  
+  <file>circle-x.png</file>
+  <file>circle-x@2x.png</file>
+
+  <file>check.png</file>
+  <file>check@2x.png</file>
+
+  <file>caret-bottom.png</file>
+  <file>caret-bottom@2x.png</file>
+
+  <file>data-transfer-download.png</file>
+  <file>data-transfer-download@2x.png</file>
+
+  <file>garbage_empty.png</file>
+  <file>garbage_empty@2x.png</file>
+
+  <file>question-mark.png</file>
+  <file>question-mark@2x.png</file>
+
   <file>information.png</file>
   <file>information@2x.png</file>
+
   <file>warning.png</file>
   <file>warning@2x.png</file>
+
   <file>refresh.png</file>
   <file>refresh@2x.png</file>
-  <file>gear.png</file>
-  <file>gear@2x.png</file>
+
+  <file>cog.png</file>
+  <file>cog@2x.png</file>
+
   <file>zoom_in.png</file>
   <file>zoom_in@2x.png</file>
+
   <file>zoom_out.png</file>
   <file>zoom_out@2x.png</file>
+
   <file>search_menu.png</file>
   <file>search_menu@2x.png</file>
 
-  <file>cubes_blue_add.png</file>
-  <file>cubes_blue_add@2x.png</file>
-
-  <file>cube_blue_add.png</file>
-  <file>cube_blue_add@2x.png</file>
 
   <file>arrow_down_green.png</file>
   <file>arrow_down_green@2x.png</file>
+
   <file>arrow_up_green.png</file>
   <file>arrow_up_green@2x.png</file>
+
   <file>arrow_right_green.png</file>
   <file>arrow_right_green@2x.png</file>
+
   <file>arrow_left_green.png</file>
   <file>arrow_left_green@2x.png</file>
 
@@ -49,29 +79,6 @@
   <file>sort_up@2x.png</file>
   <file>sort_down.png</file>
   <file>sort_down@2x.png</file>
-
-  <file>disclosablegroupboxheader.png</file>
-
-  <file>Import_Data.png</file>
-  <file>Import_Data@2x.png</file>
-
-  <file>bullet_triangle_blue.png</file>
-  <file>bullet_triangle_blue@2x.png</file>
-  <file>bullet_triangle_green.png</file>
-  <file>bullet_triangle_green@2x.png</file>
-  <file>bullet_triangle_grey.png</file>
-  <file>bullet_triangle_grey@2x.png</file>
-  <file>bullet_triangle_red.png</file>
-  <file>bullet_triangle_red@2x.png</file>
-  <file>bullet_triangle_yellow.png</file>
-  <file>bullet_triangle_yellow@2x.png</file>
-<file>row_add.png</file>
-<file>row_add@2x.png</file>
-<file>row_delete.png</file>
-<file>row_delete@2x.png</file>
-<file>Table_Import.png</file>
-<file>Table_Import@2x.png</file>
-
 
   <file>Groups/cubes.png</file>
   <file>Groups/cubes@2x.png</file>
@@ -103,33 +110,6 @@
   <file>Groups/Orientation Analysis_Icon@2x.png</file>
   <file>Groups/Unsupported_Icon@2x.png</file>
 
-  <file>QFilterWidgetHeaders/Generic_Header.png</file>
-  <file>QFilterWidgetHeaders/IO_Header.png</file>
-  <file>QFilterWidgetHeaders/Plugin_Header.png</file>
-  <file>QFilterWidgetHeaders/Processing_Header.png</file>
-  <file>QFilterWidgetHeaders/Reconstruction_Header.png</file>
-  <file>QFilterWidgetHeaders/Sampling_Header.png</file>
-  <file>QFilterWidgetHeaders/Statistics_Header.png</file>
-  <file>QFilterWidgetHeaders/Surface_Meshing_Header.png</file>
-  <file>QFilterWidgetHeaders/Synthetic_Builder_Header.png</file>
-  <file>QFilterWidgetHeaders/filterWidgetBorder.png</file>
-  <file>QFilterWidgetHeaders/filterWidgetBorder_Error.png</file>
-  <file>QFilterWidgetHeaders/filterWidgetBorder_Warning.png</file>
-
-
-  <file>DREAM3D.png</file>
-
-  <!-- These are needed for Stats Generator  -->
-  <file>cube_molecule.png</file>
-  <file>cube_molecule@2x.png</file>
-  <file>cube_molecule_add.png</file>
-  <file>cube_molecule_delete.png</file>
-  <file>cube_molecule_view.png</file>
-  <file>cube_molecule_add@2x.png</file>
-  <file>cube_molecule_delete@2x.png</file>
-  <file>cube_molecule_view@2x.png</file>
-
-
   <file>bullet_ball_blue.png</file>
   <file>bullet_ball_blue@2x.png</file>
   <file>bullet_ball_yellow.png</file>
@@ -139,22 +119,19 @@
   <file>bullet_ball_red.png</file>
   <file>bullet_ball_red@2x.png</file>
 
-
-
-  <file>delete-corner-pressed.png</file>
-  <file>delete-corner.png</file>
- 
+  <file>media_play_green.png</file>
+  <file>media_play_green@2x.png</file>
+  <file>media_stop_red.png</file>
+  <file>media_stop_red@2x.png</file> 
   
   <file>fitToWindow.png</file>
-  <file>minus.png</file>
-  <file>plus.png</file>
-
- 
-  <file>cube_gray.png</file>
-  <file>cube_gray@2x.png</file>
+  <file>fitToWindow@2X.png</file>
   
-  <file>cube_red.png</file>
-  <file>cube_red@2x.png</file>
+  <file>plus.png</file>
+  <file>plus@2x.png</file>
+ 
+  <file>filter_gray.png</file>
+  <file>filter_gray@2x.png</file>
 
   <file>nav_right_blue.png</file>
   <file>nav_right_blue@2x.png</file>
@@ -163,9 +140,6 @@
   <file>nav_refresh_blue.png</file>
   <file>nav_refresh_blue@2x.png</file>
 
-    <file>navigate_cross.png</file>
-  <file>navigate_cross@2x.png</file>
-  
-
  </qresource>
  </RCC>
+

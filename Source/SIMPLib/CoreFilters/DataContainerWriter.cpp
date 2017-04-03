@@ -441,7 +441,7 @@ int DataContainerWriter::writePipeline()
     currentFilter = nextFilter;
   }
 
-  return writer->writePipelineToFile(pipeline, m_OutputFile, SIMPL::StringConstants::PipelineGroupName, nullptr);
+  return writer->writePipelineToFile(pipeline, m_OutputFile, SIMPL::StringConstants::PipelineGroupName);
 }
 
 // -----------------------------------------------------------------------------

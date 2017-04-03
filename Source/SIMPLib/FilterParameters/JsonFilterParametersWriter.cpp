@@ -47,9 +47,11 @@
 //
 // -----------------------------------------------------------------------------
 JsonFilterParametersWriter::JsonFilterParametersWriter()
-: m_MaxFilterIndex(-1)
+:
+ m_ExpandReaderFilters(true)
+, m_MaxFilterIndex(-1)
 , m_CurrentIndex(0)
-, m_ExpandReaderFilters(true)
+
 {
 }
 
@@ -74,7 +76,7 @@ JsonFilterParametersWriter::~JsonFilterParametersWriter()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-int JsonFilterParametersWriter::writePipelineToFile(FilterPipeline::Pointer pipeline, QString filePath, QString pipelineName, IObserver* obs)
+int JsonFilterParametersWriter::writePipelineToFile(FilterPipeline::Pointer pipeline, QString filePath, QString pipelineName, QList<IObserver *> obs)
 {
   int err = 0;
   err = populateWriter(pipeline, pipelineName, obs);
@@ -92,7 +94,7 @@ int JsonFilterParametersWriter::writePipelineToFile(FilterPipeline::Pointer pipe
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-QString JsonFilterParametersWriter::writePipelineToString(FilterPipeline::Pointer pipeline, QString pipelineName, IObserver* obs)
+QString JsonFilterParametersWriter::writePipelineToString(FilterPipeline::Pointer pipeline, QString pipelineName, QList<IObserver*> obs)
 {
   populateWriter(pipeline, pipelineName, obs);
 
@@ -107,14 +109,21 @@ QString JsonFilterParametersWriter::writePipelineToString(FilterPipeline::Pointe
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-int JsonFilterParametersWriter::populateWriter(FilterPipeline::Pointer pipeline, QString pipelineName, IObserver* obs)
+int JsonFilterParametersWriter::populateWriter(FilterPipeline::Pointer pipeline, QString pipelineName, QList<IObserver*> obs)
 {
   if(nullptr == pipeline.get())
   {
-    if(nullptr != obs)
+    if(obs.size() > 0)
     {
       PipelineMessage pm(JsonFilterParametersWriter::ClassName(), "FilterPipeline Object was nullptr for writing", -1, PipelineMessage::Error);
-      obs->processPipelineMessage(pm);
+
+      for (int i = 0; i < obs.size(); i++)
+      {
+        if (obs[i] != nullptr)
+        {
+          obs[i]->processPipelineMessage(pm);
+        }
+      }
     }
     return -1;
   }
