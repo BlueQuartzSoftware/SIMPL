@@ -606,5 +606,5 @@ const QString RawBinaryReader::getSubGroupName()
 // -----------------------------------------------------------------------------
 const QString RawBinaryReader::getHumanLabel()
 {
-  return "Raw Binary Reader";
+  return "Raw Binary Importer";
 }

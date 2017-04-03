@@ -36,35 +36,19 @@
 #ifndef _outputfilewidget_h_
 #define _outputfilewidget_h_
 
-
-
-
 #include <QtCore/QObject>
-#include <QtCore/QPointer>
-#include <QtWidgets/QWidget>
 
-
-#include "SVWidgetsLib/QtSupport/QtSFaderWidget.h"
-
-
-#include "SIMPLib/Common/AbstractFilter.h"
 #include "SIMPLib/FilterParameters/OutputFileFilterParameter.h"
 
 #include "SVWidgetsLib/SVWidgetsLib.h"
-#include "SVWidgetsLib/FilterParameterWidgets/FilterParameterWidget.h"
-
-
-#include "SVWidgetsLib/ui_OutputFileWidget.h"
-
-class QLineEdit;
-class OutputFileFilterParameter;
+#include "SVWidgetsLib/FilterParameterWidgets/AbstractIOFileWidget.h"
 
 /**
 * @brief
 * @author
 * @version
 */
-class SVWidgetsLib_EXPORT OutputFileWidget : public FilterParameterWidget, private Ui::OutputFileWidget
+class SVWidgetsLib_EXPORT OutputFileWidget : public AbstractIOFileWidget
 {
     Q_OBJECT
 
@@ -84,39 +68,11 @@ class SVWidgetsLib_EXPORT OutputFileWidget : public FilterParameterWidget, priva
     */
     void setupGui();
 
-    /**
-    * @brief
-    */
-    bool verifyPathExists(QString filePath, QLineEdit* lineEdit);
-
-    void setFilterParameter(FilterParameter* value);
-    FilterParameter* getFilterParameter() const;
-
   public slots:
-    void beforePreflight();
-    void afterPreflight();
-    void filterNeedsInputParameters(AbstractFilter* filter);
-
-    void on_value_fileDropped(const QString& text);
-    void on_value_editingFinished();
-    void on_value_textChanged(const QString& text);
-    void on_selectBtn_clicked();
-    void on_value_returnPressed();
-
-
-  protected:
-    static void setOpenDialogLastDirectory(QString val) { m_OpenDialogLastDirectory = val; }
-    static QString getOpenDialogLastDirectory() { return m_OpenDialogLastDirectory; }
-
-  signals:
-    void errorSettingFilterParameter(const QString& msg);
-    void parametersChanged();
+    void selectOutputFile();
 
   private:
     OutputFileFilterParameter*  m_FilterParameter;
-    static QString    m_OpenDialogLastDirectory;
-    bool m_DidCausePreflight;
-
 
     OutputFileWidget(const OutputFileWidget&); // Copy Constructor Not Implemented
     void operator=(const OutputFileWidget&); // Operator '=' Not Implemented

@@ -142,11 +142,23 @@ void FilterLibraryToolboxWidget::refreshFilterGroups()
         filterTreeItem->setText(0, filter->getHumanLabel());
         if(groupName.compare(SIMPL::FilterGroups::Unsupported) == 0)
         {
-          filterTreeItem->setIcon(0, QIcon(":/cube_red.png"));
+          filterTreeItem->setIcon(0, QIcon(":/Groups/Unsupported_Icon.png"));
         }
         else
         {
-          filterTreeItem->setIcon(0, QIcon(":/cube_gray.png"));
+          QString iconName(":/Groups/");
+          iconName.append(filter->getGroupName());
+          iconName.append("_Icon.png");
+
+          // Validate the icon is in the resource system
+          QFileInfo iconInfo(iconName);
+          if(iconInfo.exists() == false)
+          {
+            iconName = ":/Groups/Plugin_Icon.png"; // Switch to our generic icon for Plugins that do not provide their own
+          }
+
+          QIcon icon(iconName);
+          filterTreeItem->setIcon(0, icon);
         }
         filterTreeItem->setData(0, Qt::UserRole, QVariant(FILTER_NODE_TYPE));
         filterTreeItem->setData(0, Qt::UserRole + 1, QVariant(filter->getNameOfClass()));

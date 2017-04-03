@@ -57,7 +57,7 @@
   </layout>
  </widget>
  <resources>
-  <include location="../../../../../ParaView/Qt/Components/Resources/pqComponents.qrc"/>
+  <include location="../../icons/images/Icons.qrc"/>
  </resources>
  <connections/>
 </ui>

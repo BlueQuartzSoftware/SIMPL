@@ -36,25 +36,13 @@
 #ifndef _inputpathwidget_h_
 #define _inputpathwidget_h_
 
-
-
-
 #include <QtCore/QObject>
-#include <QtCore/QPointer>
-#include <QtWidgets/QWidget>
 
-
-#include "SVWidgetsLib/QtSupport/QtSFaderWidget.h"
-
-
-#include "SIMPLib/Common/AbstractFilter.h"
 #include "SIMPLib/FilterParameters/InputPathFilterParameter.h"
 
 #include "SVWidgetsLib/SVWidgetsLib.h"
 #include "SVWidgetsLib/FilterParameterWidgets/FilterParameterWidget.h"
-
-
-#include "SVWidgetsLib/ui_InputPathWidget.h"
+#include "SVWidgetsLib/FilterParameterWidgets/AbstractIOFileWidget.h"
 
 class InputPathFilterParameter;
 
@@ -64,7 +52,7 @@ class InputPathFilterParameter;
 * @author
 * @version
 */
-class SVWidgetsLib_EXPORT InputPathWidget : public FilterParameterWidget, private Ui::InputPathWidget
+class SVWidgetsLib_EXPORT InputPathWidget : public AbstractIOFileWidget
 {
     Q_OBJECT
 
@@ -84,34 +72,11 @@ class SVWidgetsLib_EXPORT InputPathWidget : public FilterParameterWidget, privat
     */
     void setupGui();
 
-    /**
-    * @brief
-    */
-    bool verifyPathExists(QString filePath, QLineEdit* lineEdit);
-
-    void setFilterParameter(FilterParameter* value);
-    FilterParameter* getFilterParameter() const;
-
   public slots:
-    void widgetChanged(const QString& msg);// when something in the widget changes
-    void filterNeedsInputParameters(AbstractFilter* filter); // When the filter is ready for us to update its input parameter(s) that we are responsible for
-    void beforePreflight(); // Called just before the "dataCheck()" is called
-    void afterPreflight(); // Called just after the dataCheck() is called.
-
-    void on_value_textChanged(const QString& text);
-    void on_value_editingFinished();
-    void on_selectBtn_clicked();
-
-
-  signals:
-    void errorSettingFilterParameter(const QString& msg);
-    void parametersChanged();
+    void selectInputPath();
 
   private:
     InputPathFilterParameter*  m_FilterParameter;
-    static QString    m_OpenDialogLastDirectory;
-    bool m_DidCausePreflight;
-
 
     InputPathWidget(const InputPathWidget&); // Copy Constructor Not Implemented
     void operator=(const InputPathWidget&); // Operator '=' Not Implemented

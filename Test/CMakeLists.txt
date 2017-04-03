@@ -44,6 +44,7 @@ include(${SIMPLProj_SOURCE_DIR}/Test/SIMPLTestFunctions.cmake)
 
 set(TEST_TEMP_DIR ${SIMPLTest_BINARY_DIR}/Temp)
 set(TEST_IMAGEASCII_DIR ${SIMPLTest_BINARY_DIR}/ImageASCII)
+set(TESTFILES_SRC_DIR ${SIMPLTest_SOURCE_DIR}/TestFiles)
 
 # Make sure the directory is created during CMake time
 file(MAKE_DIRECTORY ${TEST_TEMP_DIR})
@@ -81,6 +82,7 @@ set(TEST_NAMES
   ImportAsciDataArrayTest
   MatrixMathTest
   QuaternionMathTest
+  RecursivePipelineTest
   RemoveComponentFromArrayTest
   ReplaceValueTest
   StatsDataJsonRWTest
@@ -151,3 +153,11 @@ AddSIMPLUnitTest(TESTNAME PipelinePauseTest
 if(MSVC)
   set_source_files_properties( ${SIMPLTest_BINARY_DIR}/SIMPLUnitTest.cpp PROPERTIES COMPILE_FLAGS /bigobj)
 endif()
+
+#-------------------------------------------------------------------------------
+#- This copies all the Prebuilt Pipeline files into the Build directory so the help
+#- works from the Build Tree
+add_custom_target(SIMPLFileCopy ALL
+            COMMAND ${CMAKE_COMMAND} -E copy_directory ${TESTFILES_SRC_DIR} ${TEST_TEMP_DIR}
+            COMMENT "Copying ${PROJECT_NAME} Test Files to Build directory...")
+set_target_properties(SIMPLFileCopy PROPERTIES FOLDER ZZ_COPY_FILES)

@@ -65,10 +65,28 @@ class SVWidgetsLib_EXPORT StandardOutputDockWidget : public QDockWidget, public 
     */
     void writeSettings(QtSSettings* prefs);
 
+    /**
+     * @brief appendText
+     * @param text
+     */
+    void appendText(const QString &text);
+
   protected:
     void setupGui();
 
+  protected slots:
+    /**
+     * @brief on_saveLogBtn_pressed
+     */
+    void on_saveLogBtn_pressed();
+
+    /**
+     * @brief on_clearLogBtn_pressed
+     */
+    void on_clearLogBtn_pressed();
+
   private:
+    QString             m_LastPathOpened = "";
 
     StandardOutputDockWidget(const StandardOutputDockWidget&); // Copy Constructor Not Implemented
     void operator=(const StandardOutputDockWidget&); // Operator '=' Not Implemented

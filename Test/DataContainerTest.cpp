@@ -569,7 +569,7 @@ public:
       }
 
       H5FilterParametersWriter::Pointer h5Writer = H5FilterParametersWriter::New();
-      h5Writer->writePipelineToFile(pipeline, h5File, "Pipeline", nullptr);
+      h5Writer->writePipelineToFile(pipeline, h5File, "Pipeline");
 
       H5FilterParametersReader::Pointer h5Reader = H5FilterParametersReader::New();
       pipeline = h5Reader->readPipelineFromFile(h5File, nullptr);

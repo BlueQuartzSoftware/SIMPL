@@ -37,6 +37,10 @@
 
 #include <iostream>
 
+#include <QtWidgets/QMessageBox>
+#include <QtWidgets/QCheckBox>
+#include <QtWidgets/QFileDialog>
+
 #include "SVWidgetsLib/QtSupport/QtSSettings.h"
 
 // Include the MOC generated CPP file which has all the QMetaObject methods/data
@@ -63,8 +67,9 @@ StandardOutputDockWidget::~StandardOutputDockWidget()
 //
 // -----------------------------------------------------------------------------
 void StandardOutputDockWidget::setupGui()
-{
-  stdOutTextEdit->setVisible(true);
+{  
+  clearLogBtn->setDisabled(true);
+  saveLogBtn->setDisabled(true);
 }
 
 // -----------------------------------------------------------------------------
@@ -84,4 +89,80 @@ void StandardOutputDockWidget::readSettings(QMainWindow* main, QtSSettings* pref
 
   bool b = prefs->value(objectName(), QVariant(true)).toBool();
   setHidden(b);
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void StandardOutputDockWidget::on_saveLogBtn_pressed()
+{
+  QString s = QString("Text Files (*.txt *.log);;All Files(*.*)");
+  QString defaultName = m_LastPathOpened + QDir::separator() + "Untitled";
+  QString filePath = QFileDialog::getSaveFileName(this, tr("Save File As"), defaultName, s);
+  if (true == filePath.isEmpty()) { return; }
+
+  filePath = QDir::toNativeSeparators(filePath);
+
+  QFileInfo fi(filePath);
+  m_LastPathOpened = fi.path();
+
+  QFile file(filePath);
+  if (file.open(QFile::WriteOnly))
+  {
+    file.write(stdOutTextEdit->toPlainText().toStdString().c_str());
+    file.close();
+  }
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void StandardOutputDockWidget::on_clearLogBtn_pressed()
+{
+  int answer;
+
+  QSharedPointer<QtSSettings> prefs = QSharedPointer<QtSSettings>(new QtSSettings());
+  bool displayDialog = prefs->value("DisplayClearMessageBox", true).toBool();
+  if (displayDialog == true)
+  {
+    QCheckBox* cb = new QCheckBox("Do not ask me this again");
+    QMessageBox msgBox;
+    msgBox.setWindowTitle("Clear Standard Output Log");
+    msgBox.setText("Are you sure that you want to clear the standard output log?");
+    msgBox.setIcon(QMessageBox::Icon::Warning);
+    msgBox.addButton(QMessageBox::No);
+    msgBox.addButton(QMessageBox::Yes);
+    msgBox.setDefaultButton(QMessageBox::No);
+    msgBox.setCheckBox(cb);
+
+    answer = msgBox.exec();
+
+    displayDialog = !cb->isChecked();
+    delete cb;
+
+    prefs->setValue("DisplayClearMessageBox", displayDialog);
+  }
+  else
+  {
+    answer = QMessageBox::Yes;
+  }
+
+  if (answer == QMessageBox::Yes)
+  {
+    stdOutTextEdit->clear();
+
+    clearLogBtn->setDisabled(true);
+    saveLogBtn->setDisabled(true);
+  }
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void StandardOutputDockWidget::appendText(const QString &text)
+{
+  stdOutTextEdit->append(text);
+  stdOutTextEdit->ensureCursorVisible();
+  clearLogBtn->setEnabled(true);
+  saveLogBtn->setEnabled(true);
 }

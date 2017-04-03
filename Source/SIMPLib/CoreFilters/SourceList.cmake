@@ -58,6 +58,7 @@ set(_PublicFilters
   CreateDataArray
   CreateFeatureArrayFromElementArray
   CreateImageGeometry
+  CreateStringArray
   DataContainerReader
   DataContainerWriter
   ExecuteProcess

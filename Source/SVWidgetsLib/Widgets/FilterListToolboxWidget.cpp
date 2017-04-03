@@ -99,16 +99,17 @@ void FilterListToolboxWidget::setupGui()
 void FilterListToolboxWidget::setupSearchField()
 {
   filterSearch->setAttribute(Qt::WA_MacShowFocusRect, false);
+  filterSearch->setAcceptDrops(false);
   QMenu* lineEditMenu = new QMenu(filterSearch);
-  filterSearch->setButtonMenu(QtSSearchLineEdit::Left, lineEditMenu);
-  filterSearch->setButtonVisible(QtSSearchLineEdit::Left, true);
+  filterSearch->setButtonMenu(QtSLineEdit::Left, lineEditMenu);
+  filterSearch->setButtonVisible(QtSLineEdit::Left, true);
   filterSearch->setPlaceholderText("Search for filter");
   QPixmap pixmap(24, 24);
   pixmap.fill(Qt::transparent);
   QPainter painter(&pixmap);
   const QPixmap mag = QPixmap(QLatin1String(":/search_menu.png"));
   painter.drawPixmap(0, (pixmap.height() - mag.height()) / 2, mag);
-  filterSearch->setButtonPixmap(QtSSearchLineEdit::Left, pixmap);
+  filterSearch->setButtonPixmap(QtSLineEdit::Left, pixmap);
   connect(filterSearch, SIGNAL(textChanged(QString)), this, SLOT(searchFilters(QString)));
 
   {

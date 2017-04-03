@@ -267,6 +267,7 @@ namespace SIMPL
     const QString FitQuality("FitQuality");
     const QString FlatImageData("FlatImageData");
     const QString GBEuclideanDistances("GBEuclideanDistances");
+    const QString GBManhattanDistances("GBManhattanDistances");
     const QString GlobAlpha("GlobAlpha");
     const QString GoodVoxels("GoodVoxels");
     const QString FeatureIds("FeatureIds");
@@ -292,6 +293,7 @@ namespace SIMPL
     const QString ProjectedImageStd("ProjectedImageStd");
     const QString ProjectedImageVar("ProjectedImageVar");
     const QString QPEuclideanDistances("QPEuclideanDistances");
+    const QString QPManhattanDistances("QPManhattanDistances");
     const QString Quats("Quats");
     const QString RodriguesColor("RodriguesColor");
     const QString RodriguesVectors("RodriguesVectors");
@@ -301,6 +303,7 @@ namespace SIMPL
     const QString Speed("Speed");
     const QString SurfaceMeshCells("SurfaceMeshCells");
     const QString BoundaryCells("BoundaryCells");
+    const QString TJManhattanDistances("TJManhattanDistances");
     const QString TJEuclideanDistances("TJEuclideanDistances");
     const QString VectorColor("VectorColor");
     const QString VectorData("VectorData");
