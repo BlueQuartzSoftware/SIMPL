@@ -16,6 +16,9 @@
 
   <file>text.png</file>
   <file>text@2x.png</file>
+
+  <file>home.png</file>
+  <file>home@2x.png</file>
   
   <file>circle-x.png</file>
   <file>circle-x@2x.png</file>
