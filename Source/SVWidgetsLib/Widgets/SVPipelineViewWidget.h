@@ -59,7 +59,7 @@
 #include "SVWidgetsLib/SVWidgetsLib.h"
 #include "SVWidgetsLib/Widgets/PipelineView.h"
 #include "SVWidgetsLib/Widgets/SVPipelineFilterWidget.h"
-#include "SVWidgetsLib/Widgets/DropBoxWidget.h"
+#include "SVWidgetsLib/Widgets/SVPipelineFilterOutlineWidget.h"
 
 #include "SVWidgetsLib/QtSupport/QtSFileDragMessageBox.h"
 
@@ -402,7 +402,7 @@ class SVWidgetsLib_EXPORT SVPipelineViewWidget : public QFrame, public PipelineV
     SVPipelineFilterWidget*                           m_ShiftStart = nullptr;
     QVBoxLayout*                                        m_FilterWidgetLayout = nullptr;
     int                                                         m_FilterOrigPos;
-    DropBoxWidget*                                    m_DropBox = nullptr;
+    SVPipelineFilterOutlineWidget*               m_DropBox = nullptr;
     int                                                         m_DropIndex;
     QLabel*                                                 m_EmptyPipelineLabel = nullptr;
     QList<QObject*>                                 m_PipelineMessageObservers;

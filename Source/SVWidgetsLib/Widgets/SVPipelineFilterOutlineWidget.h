@@ -33,35 +33,37 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-#ifndef _dropboxwidget_h_
-#define _dropboxwidget_h_
+#ifndef _SVPipelineFilterOutlineWidget_h_
+#define _SVPipelineFilterOutlineWidget_h_
 
 #include <QtWidgets/QWidget>
 
 #include "SVWidgetsLib/SVWidgetsLib.h"
 
-#include "ui_DropBoxWidget.h"
+#include "ui_SVPipelineFilterOutlineWidget.h"
 
 
-class SVWidgetsLib_EXPORT DropBoxWidget : public QWidget, public Ui::DropBoxWidget
+class SVWidgetsLib_EXPORT SVPipelineFilterOutlineWidget : public QWidget, public Ui::SVPipelineFilterOutlineWidget
 {
     Q_OBJECT
 
   public:
-    DropBoxWidget(QWidget* parent = 0);
-    virtual ~DropBoxWidget();
+    SVPipelineFilterOutlineWidget(QWidget* parent = 0);
+    virtual ~SVPipelineFilterOutlineWidget();
 
     void setupGui();
 
-    QFrame* getFrame();
+    void setFilterName(QString name);
 
-    void setLabel(QString text);
+    void setFilterIndex(int i, int numFilters);
 
   private:
 
-    DropBoxWidget(const DropBoxWidget&); // Copy Constructor Not Implemented
-    void operator=(const DropBoxWidget&); // Operator '=' Not Implemented
+    void updateWidgetStyle();
+
+    SVPipelineFilterOutlineWidget(const SVPipelineFilterOutlineWidget&); // Copy Constructor Not Implemented
+    void operator=(const SVPipelineFilterOutlineWidget&); // Operator '=' Not Implemented
 };
 
-#endif /* _DropBoxWidget_H */
+#endif /* _SVPipelineFilterOutlineWidget_H */
 

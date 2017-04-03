@@ -60,7 +60,7 @@
 
 #include "SVWidgetsLib/SVWidgetsLib.h"
 #include "SVWidgetsLib/Widgets/SVPipelineFilterWidget.h"
-#include "SVWidgetsLib/Widgets/DropBoxWidget.h"
+#include "SVWidgetsLib/Widgets/SVPipelineFilterOutlineWidget.h"
 #include "SVWidgetsLib/Widgets/util/AddFilterCommand.h"
 #include "SVWidgetsLib/Widgets/util/MoveFilterCommand.h"
 #include "SVWidgetsLib/Widgets/util/RemoveFilterCommand.h"

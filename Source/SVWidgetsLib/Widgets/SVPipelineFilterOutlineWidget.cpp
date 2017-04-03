@@ -33,7 +33,7 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-#include "DropBoxWidget.h"
+#include "SVPipelineFilterOutlineWidget.h"
 
 #include <QtCore/QDir>
 #include <QtCore/QFileInfo>
@@ -44,12 +44,12 @@
 #include "SVWidgetsLib/QtSupport/QtSStyles.h"
 
 // Include the MOC generated CPP file which has all the QMetaObject methods/data
-#include "moc_DropBoxWidget.cpp"
+#include "moc_SVPipelineFilterOutlineWidget.cpp"
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-DropBoxWidget::DropBoxWidget(QWidget* parent)
+SVPipelineFilterOutlineWidget::SVPipelineFilterOutlineWidget(QWidget* parent)
 : QWidget(parent)
 {
   setupUi(this);
@@ -60,64 +60,83 @@ DropBoxWidget::DropBoxWidget(QWidget* parent)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-DropBoxWidget::~DropBoxWidget()
+SVPipelineFilterOutlineWidget::~SVPipelineFilterOutlineWidget()
 {
+
 }
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void DropBoxWidget::setupGui()
+void SVPipelineFilterOutlineWidget::setupGui()
 {
-  {
-    QString frameStyle;
-    QTextStream ss(&frameStyle);
+  updateWidgetStyle();
+}
 
-    ss << "QFrame#frame{"
-       << "color: rgb(127, 0, 63);"
-       << "border: 2px solid MediumBlue;"
-       << "border-top-left-radius: 5px;"
-       << "border-top-right-radius: 5px;"
-       << "border-bottom-left-radius: 5px;"
-       << "border-bottom-right-radius: 5px; "
-       << "}";
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void SVPipelineFilterOutlineWidget::updateWidgetStyle()
+{
+  QString style;
+  QTextStream ss(&style);
 
-    frame->setStyleSheet(frameStyle);
-  }
+  ss << "QWidget#SVPipelineFilterOutlineWidget {\n";
 
-  {
-    QString labelStyle;
-    QTextStream ss(&labelStyle);
+  ss << "border: 1px solid rgb(149, 195, 255);\n";
+  ss << "border-radius: 3px;\n";
+  ss << "padding: 0 0 0 0px;\n";
+  ss << "font: 100 14pt \"DejuVu Sans\";\n";
+  ss << "font-weight: bold;\n";
+  ss << "}\n";
 
-    ss << "QLabel#label{"
-       << "color: MediumBlue;"
+  ss << "QLabel\n {\n";
 
 #if defined(Q_OS_WIN)
-       << "font: 9pt \"" << QtSStyles::GetUIFont() << "\";"
+  ss << "font: 9pt \"" << QtSStyles::GetUIFont() << "\";";
 #elif defined(Q_OS_MAC)
-       << "font: 100 italic 12pt \"" << QtSStyles::GetUIFont() << "\";"
+  ss << "font: 100 14pt \"" << QtSStyles::GetUIFont() << "\";";
 #else
-       << "font: 100 italic 10pt \"" << QtSStyles::GetUIFont() << "\";"
+  ss << "font: 100 9pt \"" << QtSStyles::GetUIFont() << "\";";
+  ss << "font-weight: bold;";
 #endif
-       << "font-weight: bold; "
-       << "}";
 
-    label->setStyleSheet(labelStyle);
+  ss << "}\n";
+
+  setStyleSheet(style);
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void SVPipelineFilterOutlineWidget::setFilterName(QString name)
+{
+  filterName->setText(name);
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void SVPipelineFilterOutlineWidget::setFilterIndex(int i, int numFilters)
+{
+  if (numFilters < 10) { numFilters = 11; }
+  QString numStr = QString::number(i);
+
+  if(numFilters > 9)
+  {
+    int mag = 0;
+    int max = numFilters;
+    while(max > 0)
+    {
+      mag++;
+      max = max / 10;
+    }
+    numStr = "";             // Clear the string
+    QTextStream ss(&numStr); // Create a QTextStream to set up the padding
+    ss.setFieldWidth(mag);
+    ss.setPadChar('0');
+    ss << i;
   }
-}
 
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-QFrame* DropBoxWidget::getFrame()
-{
-  return frame;
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-void DropBoxWidget::setLabel(QString text)
-{
-  label->setText(text);
+  filterIndex->setText(numStr);
 }

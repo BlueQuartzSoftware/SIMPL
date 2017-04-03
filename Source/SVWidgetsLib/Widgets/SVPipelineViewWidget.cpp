@@ -135,7 +135,7 @@ void SVPipelineViewWidget::setupGui()
   m_UndoStack = QSharedPointer<QUndoStack>(new QUndoStack(this));
   m_UndoStack->setUndoLimit(10);
 
-  m_DropBox = new DropBoxWidget();
+  m_DropBox = new SVPipelineFilterOutlineWidget();
   m_DropBox->setObjectName("m_DropBox");
 
   m_ActionUndo = m_UndoStack->createUndoAction(nullptr);
@@ -1050,7 +1050,7 @@ void SVPipelineViewWidget::clearSelectedFilterObjects()
 {
   for(int i = 0; i < filterCount(); i++)
   {
-    if(nullptr != dynamic_cast<DropBoxWidget*>(m_FilterWidgetLayout->itemAt(i)->widget()))
+    if(nullptr != dynamic_cast<SVPipelineFilterOutlineWidget*>(m_FilterWidgetLayout->itemAt(i)->widget()))
     {
       continue;
     }
@@ -1383,11 +1383,13 @@ void SVPipelineViewWidget::dragMoveEvent(QDragMoveEvent* event)
           QList<PipelineFilterObject*> draggedObjects = origin->getDraggedFilterObjects();
           if(draggedObjects.size() > 1)
           {
-            m_DropBox->setLabel("Place " + QString::number(draggedObjects.size()) + " Filters Here");
+            m_DropBox->setFilterIndex(i + 1, count);
+            m_DropBox->setFilterName("Place " + QString::number(draggedObjects.size()) + " Filters Here");
           }
           else if(draggedObjects.size() == 1)
           {
-            m_DropBox->setLabel("    [" + QString::number(i + 1) + "] " + draggedObjects[0]->getHumanLabel());
+            m_DropBox->setFilterIndex(i + 1, count);
+            m_DropBox->setFilterName(draggedObjects[0]->getHumanLabel());
           }
           else
           {
@@ -1463,7 +1465,8 @@ void SVPipelineViewWidget::dragMoveEvent(QDragMoveEvent* event)
         SVPipelineFilterWidget* w = qobject_cast<SVPipelineFilterWidget*>(m_FilterWidgetLayout->itemAt(i)->widget());
         if(nullptr != w && event->pos().y() <= w->geometry().y() + w->geometry().height() / 2)
         {
-          m_DropBox->setLabel("    [" + QString::number(i + 1) + "] " + humanName);
+          m_DropBox->setFilterIndex(i + 1, count + 1);
+          m_DropBox->setFilterName(humanName);
           m_FilterWidgetLayout->insertWidget(i, m_DropBox);
           reindexWidgetTitles();
           didInsert = true;
@@ -1476,7 +1479,8 @@ void SVPipelineViewWidget::dragMoveEvent(QDragMoveEvent* event)
         SVPipelineFilterWidget* w = qobject_cast<SVPipelineFilterWidget*>(m_FilterWidgetLayout->itemAt(count - 1)->widget());
         if(nullptr != w && event->pos().y() >= w->geometry().y() + w->geometry().height() / 2)
         {
-          m_DropBox->setLabel("    [" + QString::number(count) + "] " + humanName);
+          m_DropBox->setFilterIndex(count + 1, count + 1);
+          m_DropBox->setFilterName(humanName);
           m_FilterWidgetLayout->insertWidget(count, m_DropBox);
           reindexWidgetTitles();
         }
@@ -1498,7 +1502,8 @@ void SVPipelineViewWidget::dragMoveEvent(QDragMoveEvent* event)
         SVPipelineFilterWidget* w = qobject_cast<SVPipelineFilterWidget*>(m_FilterWidgetLayout->itemAt(i)->widget());
         if(nullptr != w && event->pos().y() <= w->geometry().y() + w->geometry().height() / 2)
         {
-          m_DropBox->setLabel("Place '" + pipelineName + "' Here");
+          m_DropBox->setFilterIndex(i+1, count + 1);
+          m_DropBox->setFilterName("Place '" + pipelineName + "' Here");
           m_FilterWidgetLayout->insertWidget(i, m_DropBox);
           reindexWidgetTitles();
           didInsert = true;
@@ -1511,7 +1516,8 @@ void SVPipelineViewWidget::dragMoveEvent(QDragMoveEvent* event)
         SVPipelineFilterWidget* w = qobject_cast<SVPipelineFilterWidget*>(m_FilterWidgetLayout->itemAt(count - 1)->widget());
         if(nullptr != w && event->pos().y() >= w->geometry().y() + w->geometry().height() / 2)
         {
-          m_DropBox->setLabel("Place '" + pipelineName + "' Here");
+          m_DropBox->setFilterIndex(count + 1, count + 1);
+          m_DropBox->setFilterName("Place '" + pipelineName + "' Here");
           m_FilterWidgetLayout->insertWidget(count, m_DropBox);
           reindexWidgetTitles();
         }
@@ -1909,7 +1915,7 @@ QList<PipelineFilterObject*> SVPipelineViewWidget::getSelectedFilterObjects()
   QList<PipelineFilterObject*> filterObjects;
   for(int i = 0; i < filterCount(); i++)
   {
-    if(nullptr != dynamic_cast<DropBoxWidget*>(m_FilterWidgetLayout->itemAt(i)->widget()))
+    if(nullptr != dynamic_cast<SVPipelineFilterOutlineWidget*>(m_FilterWidgetLayout->itemAt(i)->widget()))
     {
       continue;
     }
