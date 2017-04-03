@@ -92,7 +92,7 @@ class SVWidgetsLib_EXPORT FilterInputWidget : public QWidget, private Ui::Filter
     QPointer<QtSFaderWidget>          m_FaderWidget;
     bool                              m_AdvFadedOut;
     QString                           m_BrandingLabel;
-    static QString                    m_OpenDialogLastDirectory;
+    static QString                    m_OpenDialogLastFilePath;
 
     QVBoxLayout*                      m_VariablesVerticalLayout = nullptr;
     QWidget*                          m_VariablesWidget = nullptr;

@@ -74,7 +74,7 @@
 #include "moc_FilterInputWidget.cpp"
 
 // Initialize private static member variable
-QString FilterInputWidget::m_OpenDialogLastDirectory = "";
+QString FilterInputWidget::m_OpenDialogLastFilePath = "";
 
 enum TabIndices
 {
@@ -137,9 +137,9 @@ FilterInputWidget::FilterInputWidget(QString filterClassName, PipelineFilterObje
   setupUi(this);
   setupGui();
 
-  if(m_OpenDialogLastDirectory.isEmpty())
+  if(m_OpenDialogLastFilePath.isEmpty())
   {
-    m_OpenDialogLastDirectory = QDir::homePath();
+    m_OpenDialogLastFilePath = QDir::homePath();
   }
 
   layoutWidgets(filterObj->getFilter());
@@ -417,7 +417,7 @@ void FilterInputWidget::validateFileSystemFilterParameter(FilterParameter* param
   {
 
     QString s = fType + QString(" Files (*") + ext + QString(");;All Files (*.*)");
-    QString defaultName = m_OpenDialogLastDirectory + QDir::separator() + "Untitled";
+    QString defaultName = m_OpenDialogLastFilePath;
 
     if(nullptr != dynamic_cast<InputFileFilterParameter*>(parameter))
     {
@@ -433,7 +433,7 @@ void FilterInputWidget::validateFileSystemFilterParameter(FilterParameter* param
       file = QDir::toNativeSeparators(file);
       // Store the last used directory into the private instance variable
       QFileInfo fi(file);
-      m_OpenDialogLastDirectory = fi.path();
+      m_OpenDialogLastFilePath = fi.filePath();
       filter->setProperty(fsParam->getPropertyName().toLatin1().constData(), file);
     }
 
@@ -451,7 +451,7 @@ void FilterInputWidget::validateFileSystemFilterParameter(FilterParameter* param
       }
       // Store the last used directory into the private instance variable
       QFileInfo fi(file);
-      m_OpenDialogLastDirectory = fi.path();
+      m_OpenDialogLastFilePath = fi.filePath();
       filter->setProperty(fsParam->getPropertyName().toLatin1().constData(), file);
     }
 
@@ -469,7 +469,7 @@ void FilterInputWidget::validateFileSystemFilterParameter(FilterParameter* param
       file = QDir::toNativeSeparators(file);
       // Store the last used directory into the private instance variable
       QFileInfo fi(file);
-      m_OpenDialogLastDirectory = fi.path();
+      m_OpenDialogLastFilePath = fi.filePath();
       filter->setProperty(fsParam->getInputFileProperty().toLatin1().constData(), file);
     }
   }

@@ -52,6 +52,22 @@ OutputPathWidget::OutputPathWidget(FilterParameter* parameter, AbstractFilter* f
   Q_ASSERT_X(m_FilterParameter != nullptr, "NULL Pointer", "OutputPathWidget can ONLY be used with a OutputPathFilterParameter object");
 
   setupGui();
+
+  if(filter)
+  {
+    QString currentPath = filter->property(PROPERTY_NAME_AS_CHAR).toString();
+    if(currentPath.isEmpty() == false)
+    {
+      currentPath = QDir::toNativeSeparators(currentPath);
+      // Store the last used directory into the private instance variable
+      QFileInfo fi(currentPath);
+      setOpenDialogLastFilePath(fi.filePath());
+    }
+    else
+    {
+      setOpenDialogLastFilePath(QDir::homePath());
+    }
+  }
 }
 
 // -----------------------------------------------------------------------------
@@ -80,12 +96,12 @@ void OutputPathWidget::selectOutputPath()
   QString currentPath = getFilter()->property(PROPERTY_NAME_AS_CHAR).toString();
   if(currentPath.isEmpty() == true)
   {
-    currentPath = getOpenDialogLastDirectory();
+    currentPath = getOpenDialogLastFilePath();
   }
   QString Ftype = m_FilterParameter->getFileType();
   QString ext = m_FilterParameter->getFileExtension();
   QString s = Ftype + QString(" Files (") + ext + QString(");;All Files(*.*)");
-  QString defaultName = currentPath + QDir::separator() + "Untitled";
+  QString defaultName = currentPath;
   QString file = QFileDialog::getExistingDirectory(this, tr("Select Output Folder"), defaultName, QFileDialog::ShowDirsOnly);
 
   if(true == file.isEmpty())
@@ -96,7 +112,7 @@ void OutputPathWidget::selectOutputPath()
   file = QDir::toNativeSeparators(file);
   // Store the last used directory into the private instance variable
   QFileInfo fi(file);
-  setOpenDialogLastDirectory(fi.path());
+  setOpenDialogLastFilePath(fi.filePath());
 
   m_LineEdit->setText(file);
   on_m_LineEdit_editingFinished();
