@@ -49,9 +49,6 @@
 
 #include "FilterParameterWidgetsDialogs.h"
 
-// Initialize private static member variable
-QString FileListInfoWidget::m_OpenDialogLastFilePath = "";
-
 // Include the MOC generated file for this class
 #include "moc_FileListInfoWidget.cpp"
 
@@ -168,11 +165,10 @@ void FileListInfoWidget::validateInputFile()
     //    QString Ftype = getFilterParameter()->getFileType();
     //    QString ext = getFilterParameter()->getFileExtension();
     //    QString s = Ftype + QString(" Files (") + ext + QString(");;All Files(*.*)");
-    QString defaultName = m_OpenDialogLastFilePath;
-
+    
     QString title = QObject::tr("Select a replacement input file in filter '%2'").arg(getFilter()->getHumanLabel());
 
-    QString file = QFileDialog::getExistingDirectory(this, title, defaultName, QFileDialog::ShowDirsOnly);
+    QString file = QFileDialog::getExistingDirectory(this, title, getInputDirectory(), QFileDialog::ShowDirsOnly);
     if(true == file.isEmpty())
     {
       file = currentPath;
@@ -180,7 +176,7 @@ void FileListInfoWidget::validateInputFile()
     file = QDir::toNativeSeparators(file);
     // Store the last used directory into the private instance variable
     QFileInfo fi(file);
-    m_OpenDialogLastFilePath = fi.filePath();
+    setInputDirectory(fi.filePath());
     data.InputPath = file;
 
     QVariant v;
@@ -227,14 +223,13 @@ void FileListInfoWidget::checkIOFiles()
 void FileListInfoWidget::on_m_InputDirBtn_clicked()
 {
   // std::cout << "on_angDirBtn_clicked" << std::endl;
-  QString outputFile = this->getOpenDialogLastFilePath();
-  outputFile = QFileDialog::getExistingDirectory(this, tr("Select EBSD Directory"), outputFile);
+  QString outputFile = QFileDialog::getExistingDirectory(this, tr("Select EBSD Directory"), getInputDirectory());
   if(!outputFile.isNull())
   {
     m_InputDir->blockSignals(true);
     m_InputDir->setText(QDir::toNativeSeparators(outputFile));
     on_m_InputDir_textChanged(m_InputDir->text());
-    getOpenDialogLastFilePath() = outputFile;
+    setInputDirectory(outputFile);
     m_InputDir->blockSignals(false);
   }
 }
@@ -553,4 +548,20 @@ void FileListInfoWidget::beforePreflight()
 // -----------------------------------------------------------------------------
 void FileListInfoWidget::afterPreflight()
 {
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void FileListInfoWidget::setInputDirectory(QString val) 
+{
+  m_InputDir->setText(val);
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+QString FileListInfoWidget::getInputDirectory() 
+{
+  return m_InputDir->text();
 }

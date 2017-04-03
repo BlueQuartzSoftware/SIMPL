@@ -116,8 +116,8 @@ class SVWidgetsLib_EXPORT FileListInfoWidget : public FilterParameterWidget, pri
     void orderingChanged(bool checked);
 
   protected:
-    static void setOpenDialogLastFilePath(QString val) { m_OpenDialogLastFilePath = val; }
-    static QString getOpenDialogLastFilePath() { return m_OpenDialogLastFilePath; }
+    void setInputDirectory(QString val);
+    QString getInputDirectory();
 
     /**
      * @brief checkIOFiles
@@ -171,7 +171,6 @@ class SVWidgetsLib_EXPORT FileListInfoWidget : public FilterParameterWidget, pri
 
     FileListInfoFilterParameter* m_FilterParameter;
 
-    static QString                m_OpenDialogLastFilePath;
     bool m_DidCausePreflight;
 
 
