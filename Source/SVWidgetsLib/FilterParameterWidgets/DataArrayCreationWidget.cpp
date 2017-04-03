@@ -222,6 +222,12 @@ void DataArrayCreationWidget::createSelectionMenu()
     {
       dcMenu->setDisabled(true);
     }
+    if (dc->getAttributeMatrixNames().size() == 0)
+    {
+      dcMenu->setDisabled(true);
+    }
+
+    bool validAmFound = false;
 
     // We found the proper Data Container, now populate the AttributeMatrix List
     DataContainer::AttributeMatrixMap_t attrMats = dc->getAttributeMatrices();
@@ -248,6 +254,16 @@ void DataArrayCreationWidget::createSelectionMenu()
       {
         amAction->setDisabled(true);
       }
+      else
+      {
+        validAmFound = true;
+      }
+    }
+
+    // Disable the DataContainer menu if no valid AttributeMatrix was found
+    if(!validAmFound)
+    {
+      dcMenu->setDisabled(true);
     }
   }
 }

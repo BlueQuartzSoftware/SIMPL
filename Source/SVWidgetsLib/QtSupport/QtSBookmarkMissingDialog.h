@@ -62,7 +62,7 @@ class SVWidgetsLib_EXPORT QtSBookmarkMissingDialog : public QDialog, private Ui:
     void locateBtnPressed();
 
   private:
-    QString m_OpenDialogLastDirectory;
+    QString m_OpenDialogLastFilePath;
 
     QtSBookmarkMissingDialog(const QtSBookmarkMissingDialog&); // Copy Constructor Not Implemented
     void operator=(const QtSBookmarkMissingDialog&); // Operator '=' Not Implemented

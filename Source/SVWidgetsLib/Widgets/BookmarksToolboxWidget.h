@@ -193,7 +193,7 @@ class SVWidgetsLib_EXPORT BookmarksToolboxWidget : public QWidget, private Ui::B
     void updateStatusBar(const QString& msg);
 
   private:
-    QString                 m_OpenDialogLastDirectory;
+    QString                 m_OpenDialogLastFilePath;
 
     /**
     * @brief serializeTreePath

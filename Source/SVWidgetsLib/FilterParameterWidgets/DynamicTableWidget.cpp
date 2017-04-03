@@ -142,7 +142,7 @@ void DynamicTableWidget::setupGui()
   dynamicTable->resizeRowsToContents();
 
   // Set Icons
-  QIcon addIcon = QIcon(QString(":/add2.png"));
+  QIcon addIcon = QIcon(QString(":/add.png"));
   QIcon deleteIcon = QIcon(QString(":/delete2.png"));
   addRowBtn->setIcon(addIcon);
   addColBtn->setIcon(addIcon);

@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>276</width>
-    <height>36</height>
+    <width>274</width>
+    <height>45</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -19,15 +19,15 @@
   <property name="minimumSize">
    <size>
     <width>0</width>
-    <height>32</height>
+    <height>45</height>
    </size>
   </property>
   <property name="font">
    <font>
-    <family>Arial</family>
+    <family>DejuVu Sans</family>
     <pointsize>14</pointsize>
     <weight>75</weight>
-    <italic>true</italic>
+    <italic>false</italic>
     <bold>true</bold>
    </font>
   </property>
@@ -41,11 +41,14 @@
    <enum>Qt::CustomContextMenu</enum>
   </property>
   <property name="styleSheet">
-   <string notr="true">QFrame#QFilterWidget {
-	background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0 rgba(185, 185, 185, 255), stop:0.5 rgba(226, 226, 226, 255), stop:1 rgba(150, 150, 150, 255));
+   <string notr="true">QFrame#SVPipelineFilterWidget {
+/*	
+background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0 rgba(185, 185, 185, 255), stop:0.5 rgba(226, 226, 226, 255), stop:1 rgba(150, 150, 150, 255));
+*/
+	background-color: rgb(149, 195, 255);
 border: 1px solid #515151;
 border-radius: 3px;
-padding: 3 3 3 3px;
+padding: 0 0 0 0px;
 font: 100 14pt &quot;DejuVu Sans&quot;;
 font-weight: bold;
 color: rgb(255, 255, 255);
@@ -77,12 +80,16 @@ color: rgb(255, 255, 255);
      <property name="font">
       <font>
        <family>Arial</family>
+       <pointsize>13</pointsize>
+       <weight>50</weight>
+       <italic>false</italic>
+       <bold>false</bold>
       </font>
      </property>
      <property name="styleSheet">
       <string notr="true">QLabel
 {
-    background-color: rgb(128, 128, 128);
+    background-color: rgb(51, 141, 203);
 	color: rgb(237, 237, 237);
 	font: 13pt ;
 	padding: 3 3 3 3px;
@@ -90,9 +97,6 @@ color: rgb(255, 255, 255);
      </property>
      <property name="text">
       <string>01</string>
-     </property>
-     <property name="alignment">
-      <set>Qt::AlignCenter</set>
      </property>
     </widget>
    </item>
@@ -112,9 +116,6 @@ color: rgb(255, 255, 255);
        <bold>false</bold>
        <stylestrategy>PreferAntialias</stylestrategy>
       </font>
-     </property>
-     <property name="styleSheet">
-      <string notr="true"/>
      </property>
      <property name="lineWidth">
       <number>0</number>
@@ -137,8 +138,8 @@ color: rgb(255, 255, 255);
      </property>
      <property name="maximumSize">
       <size>
-       <width>16</width>
-       <height>16</height>
+       <width>24</width>
+       <height>24</height>
       </size>
      </property>
      <property name="styleSheet">
@@ -149,12 +150,12 @@ color: rgb(255, 255, 255);
      </property>
      <property name="icon">
       <iconset resource="../../icons/images/Icons.qrc">
-       <normaloff>:/delete@2x.png</normaloff>:/delete@2x.png</iconset>
+       <normaloff>:/trash@2x.png</normaloff>:/trash@2x.png</iconset>
      </property>
      <property name="iconSize">
       <size>
-       <width>16</width>
-       <height>16</height>
+       <width>24</width>
+       <height>24</height>
       </size>
      </property>
      <property name="flat">

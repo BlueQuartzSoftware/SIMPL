@@ -24,7 +24,12 @@ color: white;
 
 QDockWidget::title 
 {
+/*
 background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0 rgba(103, 93, 103, 255), stop:0.00985222 rgba(176, 166, 176, 255), stop:0.433498 rgba(127, 117, 127, 255), stop:0.448276 rgba(113, 103, 113, 255), stop:0.985222 rgba(112, 102, 112, 255), stop:1 rgba(79, 69, 79, 255));
+*/
+	font: 13pt &quot;Arial&quot;;
+font-weight: bold;
+	background-color: rgb(52, 140, 204);
 text-align: center;
 padding-left: 5px;
 }
@@ -95,6 +100,9 @@ p, li { white-space: pre-wrap; }
           <height>24</height>
          </size>
         </property>
+        <property name="toolTip">
+         <string>Clear Contents</string>
+        </property>
         <property name="text">
          <string/>
         </property>
@@ -140,12 +148,15 @@ p, li { white-space: pre-wrap; }
           <height>24</height>
          </size>
         </property>
+        <property name="toolTip">
+         <string>Save Contents to File</string>
+        </property>
         <property name="text">
          <string/>
         </property>
         <property name="icon">
          <iconset resource="../../icons/images/Icons.qrc">
-          <normaloff>:/disk_blue.png</normaloff>:/disk_blue.png</iconset>
+          <normaloff>:/data-transfer-download.png</normaloff>:/data-transfer-download.png</iconset>
         </property>
         <property name="iconSize">
          <size>
@@ -164,6 +175,9 @@ p, li { white-space: pre-wrap; }
   </widget>
  </widget>
  <resources>
+  <include location="../../icons/images/Icons.qrc"/>
+  <include location="../../icons/images/Icons.qrc"/>
+  <include location="../../icons/images/Icons.qrc"/>
   <include location="../../icons/images/Icons.qrc"/>
  </resources>
  <connections/>

@@ -212,12 +212,12 @@ void PipelineFilterObject::setFilterTitle(const QString title)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void PipelineFilterObject::setFilterIndex(int index, int numFilters)
+void PipelineFilterObject::setFilterIndex(int i, int max)
 {
-  Q_UNUSED(index)
-  Q_UNUSED(numFilters)
-  // This should be implemented in the subclasses
-  return;
+Q_UNUSED(i)
+
+// This should be implemented in the subclasses
+return;
 }
 
 // -----------------------------------------------------------------------------

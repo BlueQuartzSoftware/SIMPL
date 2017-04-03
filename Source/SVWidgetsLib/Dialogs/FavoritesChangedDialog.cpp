@@ -43,7 +43,7 @@
 // -----------------------------------------------------------------------------
 FavoritesChangedDialog::FavoritesChangedDialog(QWidget* parent)
 : QDialog(parent)
-, m_OpenDialogLastDirectory("")
+, m_OpenDialogLastFilePath("")
 {
   setupUi(this);
 }
@@ -60,12 +60,12 @@ FavoritesChangedDialog::~FavoritesChangedDialog()
 // -----------------------------------------------------------------------------
 void FavoritesChangedDialog::on_selectBtn_clicked()
 {
-  QString outputFile = m_OpenDialogLastDirectory + QDir::separator();
+  QString outputFile = m_OpenDialogLastFilePath + QDir::separator();
   outputFile = QFileDialog::getExistingDirectory(this, tr("Select Directory"), outputFile);
   if(!outputFile.isNull())
   {
     outputDir->setText(QDir::toNativeSeparators(outputFile));
-    m_OpenDialogLastDirectory = outputFile;
+    m_OpenDialogLastFilePath = outputFile;
   }
 }
 

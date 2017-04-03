@@ -53,7 +53,7 @@
 #include "FilterParameterWidgetsDialogs.h"
 
 // Initialize private static member variable
-QString AbstractIOFileWidget::m_OpenDialogLastDirectory = "";
+QString AbstractIOFileWidget::m_OpenDialogLastFilePath = "";
 
 // Include the MOC generated file for this class
 #include "moc_AbstractIOFileWidget.cpp"
@@ -64,7 +64,7 @@ QString AbstractIOFileWidget::m_OpenDialogLastDirectory = "";
 AbstractIOFileWidget::AbstractIOFileWidget(FilterParameter* parameter, AbstractFilter* filter, QWidget* parent)
 : FilterParameterWidget(parameter, filter, parent)
 {
-  m_OpenDialogLastDirectory = QDir::homePath();
+  m_OpenDialogLastFilePath = QDir::homePath();
 
   setupUi(this);
   setupGui();
@@ -76,11 +76,11 @@ AbstractIOFileWidget::AbstractIOFileWidget(FilterParameter* parameter, AbstractF
       currentPath = QDir::toNativeSeparators(currentPath);
       // Store the last used directory into the private instance variable
       QFileInfo fi(currentPath);
-      m_OpenDialogLastDirectory = fi.path();
+      m_OpenDialogLastFilePath = fi.filePath();
     }
     else
     {
-      m_OpenDialogLastDirectory = QDir::homePath();
+      m_OpenDialogLastFilePath = QDir::homePath();
     }
   }
 }
@@ -261,7 +261,7 @@ void AbstractIOFileWidget::on_m_LineEdit_textChanged(const QString& text)
 // -----------------------------------------------------------------------------
 void AbstractIOFileWidget::on_m_LineEdit_fileDropped(const QString& text)
 {
-  setOpenDialogLastDirectory(text);
+  setOpenDialogLastFilePath(text);
   // Set/Remove the red outline if the file does exist
   verifyPathExists(text, m_LineEdit);
 

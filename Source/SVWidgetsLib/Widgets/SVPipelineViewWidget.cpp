@@ -484,6 +484,7 @@ void SVPipelineViewWidget::reindexWidgetTitles()
     if(fw)
     {
       QString hl = fw->getFilter()->getHumanLabel();
+
       fw->setFilterTitle(hl);
       fw->setFilterIndex(i+1, count);
     }
