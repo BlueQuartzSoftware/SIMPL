@@ -98,8 +98,8 @@ class SVWidgetsLib_EXPORT AbstractIOFileWidget : public FilterParameterWidget, p
 
 
   protected:
-    static void setOpenDialogLastFilePath(QString val) { m_OpenDialogLastFilePath = val; }
-    static QString getOpenDialogLastFilePath() { return m_OpenDialogLastFilePath; }
+    void setOpenDialogLastFilePath(QString val);
+    QString getOpenDialogLastFilePath();
 
     /**
      * @brief setupMenuField
@@ -114,7 +114,6 @@ class SVWidgetsLib_EXPORT AbstractIOFileWidget : public FilterParameterWidget, p
     void parametersChanged();
 
   private:
-    static QString    m_OpenDialogLastFilePath;
     bool m_DidCausePreflight;
     QAction* m_ShowFileAction = nullptr;
 
