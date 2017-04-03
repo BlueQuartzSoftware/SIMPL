@@ -32,6 +32,8 @@ set(SVWidgetsLib_QtSupport_MOC_HDRS
   ${SVWidgetsLib_SOURCE_DIR}/QtSupport/QtSSplitter.h
   ${SVWidgetsLib_SOURCE_DIR}/QtSupport/QtSSplitterHandle.h
   ${SVWidgetsLib_SOURCE_DIR}/QtSupport/QtSStyles.h
+  ${SVWidgetsLib_SOURCE_DIR}/QtSupport/QtSDisclosableGroupBox.h
+  ${SVWidgetsLib_SOURCE_DIR}/QtSupport/QtSStringEdit.h
 )
 
 set(SVWidgetsLib_QtSupport_SRCS
@@ -60,6 +62,7 @@ set(SVWidgetsLib_QtSupport_SRCS
   ${SVWidgetsLib_SOURCE_DIR}/QtSupport/QtSSplitter.cpp
   ${SVWidgetsLib_SOURCE_DIR}/QtSupport/QtSSplitterHandle.cpp
   ${SVWidgetsLib_SOURCE_DIR}/QtSupport/QtSStyles.cpp
+  ${SVWidgetsLib_SOURCE_DIR}/QtSupport/QtSStringEdit.cpp
 )
 
 cmp_IDE_SOURCE_PROPERTIES( "SVWidgetsLib" "${SVWidgetsLib_QtSupport_HDRS};${SVWidgetsLib_QtSupport_MOC_HDRS}" "${SVWidgetsLib_QtSupport_SRCS}" "0")
@@ -79,6 +82,7 @@ ${SVWidgetsLib_SOURCE_DIR}/QtSupport/UI_Files/QtSApplicationAboutBoxDialog.ui
 ${SVWidgetsLib_SOURCE_DIR}/QtSupport/UI_Files/QtSBookmarkMissingDialog.ui
 ${SVWidgetsLib_SOURCE_DIR}/QtSupport/UI_Files/QtSDistributionTypeWidget.ui
 ${SVWidgetsLib_SOURCE_DIR}/QtSupport/UI_Files/QtSFileDragMessageBox.ui
+${SVWidgetsLib_SOURCE_DIR}/QtSupport/UI_Files/QtSStringEdit.ui
 )
 
 # --------------------------------------------------------------------

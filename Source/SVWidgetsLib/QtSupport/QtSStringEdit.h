@@ -33,12 +33,9 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-#ifndef _stringwidget_h_
-#define _stringwidget_h_
+#ifndef _QtSStringEdit_h_
+#define _QtSStringEdit_h_
 
-
-#include <QtCore/QObject>
-#include <QtCore/QPointer>
 #include <QtWidgets/QWidget>
 #include <QtGui/QKeyEvent>
 
@@ -50,55 +47,41 @@
 #include "SVWidgetsLib/SVWidgetsLib.h"
 #include "SVWidgetsLib/FilterParameterWidgets/FilterParameterWidget.h"
 
+#include <ui_QtSStringEdit.h>
 
-#include "SVWidgetsLib/ui_StringWidget.h"
-
-
-/**
-* @brief This widget is for Filter Parameters that are of a string type.
-* @author
-* @version
-*/
-class SVWidgetsLib_EXPORT StringWidget : public FilterParameterWidget, private Ui::StringWidget
+class QtSStringEdit : public QWidget, private Ui::QtSStringEdit
 {
-    Q_OBJECT
+  Q_OBJECT
 
-  public:
-    /**
-    * @brief Constructor
-    * @param parameter The FilterParameter object that this widget represents
-    * @param filter The instance of the filter that this parameter is a part of
-    * @param parent The parent QWidget for this Widget
-    */
-    StringWidget(FilterParameter* parameter, AbstractFilter* filter = nullptr, QWidget* parent = nullptr);
+public:
+  QtSStringEdit(QWidget* parent);
+  ~QtSStringEdit();
 
-    virtual ~StringWidget();
+  void setupGui();
 
-    /**
-    * @brief This method does additional GUI widget connections
-    */
-    void setupGui();
+  QString getText();
+  void setText(QString value, bool blockSignals = false);
 
-  public slots:
-    void beforePreflight();
-    void afterPreflight();
-    void filterNeedsInputParameters(AbstractFilter* filter);
+  void setValidator(const QValidator *v);
 
-  signals:
-    void errorSettingFilterParameter(const QString& msg);
-    void parametersChanged();
+signals:
+  void valueChanged(QString value);
 
-  private:
+public slots:
+  void widgetChanged(const QString& msg);
+  void on_value_returnPressed();
+  void on_applyChangesBtn_clicked();
+  void on_cancelChangesBtn_clicked();
 
-    bool m_DidCausePreflight;
+  void hideButtons();
 
-    StringFilterParameter* m_FilterParameter;
+protected:
+  void keyPressEvent(QKeyEvent* event) override;
 
-    StringWidget(const StringWidget&); // Copy Constructor Not Implemented
-    void operator=(const StringWidget&); // Operator '=' Not Implemented
+  QString getStoredValue();
 
+private:
+  QString m_storedValue;
 };
 
-#endif /* _StringWidget_H_ */
-
-
+#endif

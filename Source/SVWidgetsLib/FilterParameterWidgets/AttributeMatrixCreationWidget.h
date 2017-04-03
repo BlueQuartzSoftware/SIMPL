@@ -40,6 +40,7 @@
 #include <QtCore/QObject>
 #include <QtCore/QPointer>
 #include <QtWidgets/QWidget>
+#include <QtGui/QKeyEvent>
 
 #include "SVWidgetsLib/QtSupport/QtSFaderWidget.h"
 
@@ -112,12 +113,6 @@ public:
   void filterNeedsInputParameters(AbstractFilter* filter);
 
   void dataContainerSelected(QString path);
-
-  void on_attributeMatrixName_returnPressed();
-  void on_applyChangesBtn_clicked();
-  void widgetChanged(const QString& msg);
-
-  void hideButton();
 
 protected:
   /**

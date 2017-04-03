@@ -33,91 +33,130 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-#include "StringWidget.h"
+#include "QtSStringEdit.h"
 
-#include <QtCore/QMetaProperty>
+#include "moc_QtSStringEdit.cpp"
 
-#include "SVWidgetsLib/Core/SVWidgetsLibConstants.h"
-#include <QtCore/QPropertyAnimation>
-#include <QtCore/QSequentialAnimationGroup>
-
-#include "FilterParameterWidgetsDialogs.h"
-
-// Include the MOC generated file for this class
-#include "moc_StringWidget.cpp"
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-StringWidget::StringWidget(FilterParameter* parameter, AbstractFilter* filter, QWidget* parent)
-: FilterParameterWidget(parameter, filter, parent)
+QtSStringEdit::QtSStringEdit(QWidget* parent) : QWidget(parent)
 {
-  m_FilterParameter = dynamic_cast<StringFilterParameter*>(parameter);
-  Q_ASSERT_X(m_FilterParameter != nullptr, "NULL Pointer", "StringWidget can ONLY be used with a StringFilterParameter object");
-
   setupUi(this);
   setupGui();
 }
 
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-StringWidget::~StringWidget()
+QtSStringEdit::~QtSStringEdit()
 {
 }
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void StringWidget::setupGui()
+void QtSStringEdit::setupGui()
 {
+  applyChangesBtn->setVisible(false);
+  cancelChangesBtn->setVisible(false);
 
-  blockSignals(true);
-  if(getFilterParameter() != nullptr)
+  connect(value, SIGNAL(textChanged(const QString&)), this, SLOT(widgetChanged(const QString&)));
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+QString QtSStringEdit::getStoredValue()
+{
+  return m_storedValue;
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+QString QtSStringEdit::getText()
+{
+  return m_storedValue;
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void QtSStringEdit::setText(QString newValue, bool signalsBlocked)
+{
+  value->blockSignals(signalsBlocked);
+
+  m_storedValue = newValue;
+  value->setText(newValue);
+
+  hideButtons();
+
+  value->blockSignals(false);
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void QtSStringEdit::on_value_returnPressed()
+{
+  on_applyChangesBtn_clicked();
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void QtSStringEdit::on_applyChangesBtn_clicked()
+{
+  value->setStyleSheet(QString(""));
+  m_storedValue = value->text();
+  emit valueChanged(m_storedValue);
+
+  hideButtons();
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void QtSStringEdit::keyPressEvent(QKeyEvent* e)
+{
+  if (e->key() == Qt::Key_Escape)
   {
-    label->setText(getFilterParameter()->getHumanLabel());
-
-    QString str = getFilter()->property(PROPERTY_NAME_AS_CHAR).toString();
-    stringEdit->setText(str, true);
+    on_cancelChangesBtn_clicked();
   }
-  blockSignals(false);
-
-  stringEdit->hideButtons();
-
-  // Catch when the filter is about to execute the preflight
-  connect(getFilter(), SIGNAL(preflightAboutToExecute()), this, SLOT(beforePreflight()));
-
-  // Catch when the filter is finished running the preflight
-  connect(getFilter(), SIGNAL(preflightExecuted()), this, SLOT(afterPreflight()));
-
-  // Catch when the filter wants its values updated
-  connect(getFilter(), SIGNAL(updateFilterParameters(AbstractFilter*)), this, SLOT(filterNeedsInputParameters(AbstractFilter*)));
-
-  connect(stringEdit, SIGNAL(valueChanged(const QString&)), this, SIGNAL(parametersChanged()));
 }
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void StringWidget::beforePreflight()
+void QtSStringEdit::on_cancelChangesBtn_clicked()
 {
+  value->setText(m_storedValue);
+  value->setStyleSheet(QString(""));
+
+  hideButtons();
 }
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void StringWidget::afterPreflight()
+void QtSStringEdit::hideButtons()
 {
+  value->setToolTip("");
+  applyChangesBtn->setVisible(false);
+  cancelChangesBtn->setVisible(false);
 }
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void StringWidget::filterNeedsInputParameters(AbstractFilter* filter)
+void QtSStringEdit::widgetChanged(const QString& text)
 {
-  bool ok = filter->setProperty(PROPERTY_NAME_AS_CHAR, stringEdit->getText());
-  if(false == ok)
-  {
-    FilterParameterWidgetsDialogs::ShowCouldNotSetFilterParameter(getFilter(), getFilterParameter());
-  }
+  value->setStyleSheet(QString::fromLatin1("color: rgb(255, 0, 0);"));
+  value->setToolTip("Press the 'Return' key to apply your changes\nPress the 'Esc' key to cancel your changes");
+
+  applyChangesBtn->setVisible(true);
+  cancelChangesBtn->setVisible(true);
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void QtSStringEdit::setValidator(const QValidator *v)
+{
+  value->setValidator(v);
 }
