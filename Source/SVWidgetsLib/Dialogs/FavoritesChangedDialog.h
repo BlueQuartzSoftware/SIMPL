@@ -60,9 +60,11 @@ class SVWidgetsLib_EXPORT FavoritesChangedDialog : public QDialog, private Ui::F
   signals:
     void exportBtnPressed(QString directory);
 
-  private:
-    QString m_OpenDialogLastFilePath;
+  protected:
+    void setNewDirectory(QString val);
+    QString getNewDirectory();
 
+  private:
     FavoritesChangedDialog(const FavoritesChangedDialog&); // Copy Constructor Not Implemented
     void operator=(const FavoritesChangedDialog&); // Operator '=' Not Implemented
 };
