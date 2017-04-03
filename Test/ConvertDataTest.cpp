@@ -37,6 +37,7 @@
 #include <QtCore/QDir>
 
 #include <assert.h>
+#include <stdint.h>
 
 #include "SIMPLib/Common/FilterFactory.hpp"
 #include "SIMPLib/Common/FilterManager.h"
@@ -194,7 +195,7 @@ public:
   template<typename T>
   std::shared_ptr<DataArray<T>> getDataArray(AttributeMatrix::Pointer am, QString dataArray)
   {
-    DataArray<T>::Pointer da = std::dynamic_pointer_cast<DataArray<T>>(am->getAttributeArray(dataArray));
+    typename DataArray<T>::Pointer da = std::dynamic_pointer_cast<DataArray<T>>(am->getAttributeArray(dataArray));
 
     return da;
   }
@@ -240,8 +241,8 @@ public:
       DataContainer::Pointer dc = dca->getDataContainer("DataContainer");
       AttributeMatrix::Pointer am = dc->getAttributeMatrix("AttributeMatrix");
 
-      DataArray<T>::Pointer dataArray = getDataArray<T>(am, arrayName);
-      DataArray<U>::Pointer convertedDataArray = getDataArray<U>(am, newArrayName);
+      typename DataArray<T>::Pointer dataArray = getDataArray<T>(am, arrayName);
+      typename DataArray<U>::Pointer convertedDataArray = getDataArray<U>(am, newArrayName);
 
       DREAM3D_REQUIRE(nullptr != dataArray.get());
       DREAM3D_REQUIRE(nullptr != convertedDataArray.get());
