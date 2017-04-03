@@ -240,7 +240,7 @@ void SVPipelineFilterWidget::changeStyle()
 
   // Define Operating Specific Font Size here
 #if defined(Q_OS_WIN)
-  QString fontString =  QString("font: 100 14pt \"") + QtSStyles::GetUIFont() + QString("\";");
+  QString fontString =  QString("font: 100 12pt \"") + QtSStyles::GetUIFont() + QString("\";");
 #elif defined(Q_OS_MAC)
   QString fontString =  QString("font: 100 14pt \"") + QtSStyles::GetUIFont() + QString("\";");
 #else
