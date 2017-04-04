@@ -175,7 +175,7 @@ QString FilterParameterWidget::wrapStringInHtml(const QString &message)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-QPoint FilterParameterWidget::adjustedMenuPosition(QPushButton* pushButton)
+QPoint FilterParameterWidget::adjustedMenuPosition(QToolButton* pushButton)
 {
   // Calculate the actual virtual desktop QRect.
   int screenCount = QApplication::desktop()->screenCount();
