@@ -252,7 +252,7 @@ void SVPipelineFilterWidget::changeStyle()
   svWidgetStyleStream << "border-radius: 3px;";
   svWidgetStyleStream << "padding: 0 0 0 0px;";
   svWidgetStyleStream << "font-weight: bold;";
-  svWidgetStyleStream << "background-color: rgb(149, 195, 255);";
+  svWidgetStyleStream << "background-color: rgb(185, 185, 185);";
   svWidgetStyleStream << fontString;
 
   if(isSelected() == true && isFocused() == true)
@@ -287,8 +287,10 @@ void SVPipelineFilterWidget::changeStyle()
   QTextStream filterIndexStyleStream(&filterIndexStyle);
 
   filterIndexStyleStream << "QLabel\n{";
-  filterIndexStyleStream << "color: rgb(237, 237, 237);";
+  filterIndexStyleStream << "color: rgb(242, 242, 242);";
   filterIndexStyleStream << "padding: 3 3 3 3px;";
+  //filterIndexStyleStream << "border-radius: 3px;";
+
   filterIndexStyleStream << fontString;
 
   if(getHasPreflightWarnings())
@@ -301,7 +303,7 @@ void SVPipelineFilterWidget::changeStyle()
   }
   else
   {
-    filterIndexStyleStream << "background-color: rgb(51, 141, 203);";
+    filterIndexStyleStream << "background-color: rgb(64, 64, 64);";
   }
 
   // Set the style sheet for the Left hand side of the widget

@@ -75,7 +75,7 @@
        </property>
        <property name="icon">
         <iconset resource="../../icons/images/Icons.qrc">
-         <normaloff>:/sort_up.png</normaloff>:/sort_up.png</iconset>
+         <normaloff>:/arrow_up_green@2x.png</normaloff>:/arrow_up_green@2x.png</iconset>
        </property>
        <property name="iconSize">
         <size>
@@ -110,7 +110,7 @@
        </property>
        <property name="icon">
         <iconset resource="../../icons/images/Icons.qrc">
-         <normaloff>:/sort_down.png</normaloff>:/sort_down.png</iconset>
+         <normaloff>:/arrow_down_green@2x.png</normaloff>:/arrow_down_green@2x.png</iconset>
        </property>
        <property name="iconSize">
         <size>
@@ -145,7 +145,7 @@
        </property>
        <property name="icon">
         <iconset resource="../../icons/images/Icons.qrc">
-         <normaloff>:/delete2.png</normaloff>:/delete2.png</iconset>
+         <normaloff>:/delete@2x.png</normaloff>:/delete@2x.png</iconset>
        </property>
        <property name="iconSize">
         <size>

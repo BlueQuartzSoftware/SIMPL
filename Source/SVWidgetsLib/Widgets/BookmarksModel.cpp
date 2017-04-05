@@ -512,7 +512,7 @@ void BookmarksModel::addFileToTree(QString& path, QModelIndex& specifiedParent)
   {
     QModelIndex newPathIndex = self->index(rowPos, BookmarksItem::Path, specifiedParent);
     self->setData(newPathIndex, path, Qt::DisplayRole);
-    self->setData(newNameIndex, QIcon(":/text.png"), Qt::DecorationRole);
+    self->setData(newNameIndex, QIcon(":/bookmark.png"), Qt::DecorationRole);
   }
   else
   {
