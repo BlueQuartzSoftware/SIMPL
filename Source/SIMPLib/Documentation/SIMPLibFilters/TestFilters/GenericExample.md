@@ -1,4 +1,4 @@
-GenericExample {#genericexample}
+Generic Example {#genericexample}
 =====
 
 ## Group (Subgroup) ##
