@@ -235,6 +235,7 @@ void SVPipelineFilterWidget::setFilterIndex(int i, int numFilters)
 // -----------------------------------------------------------------------------
 void SVPipelineFilterWidget::changeStyle()
 {
+
   QString svWidgetStyle;
   QTextStream svWidgetStyleStream(&svWidgetStyle);
 
@@ -293,6 +294,8 @@ void SVPipelineFilterWidget::changeStyle()
 
   filterIndexStyleStream << fontString;
 
+
+
   if(getHasPreflightWarnings())
   {
     filterIndexStyleStream << "background-color: rgb(172, 168, 0);";
@@ -303,7 +306,87 @@ void SVPipelineFilterWidget::changeStyle()
   }
   else
   {
+//    filterIndexStyleStream << "background-color: rgb(51, 141, 203);";
+#if 1
     filterIndexStyleStream << "background-color: rgb(64, 64, 64);";
+#else
+    float increment = 300.0f / 14.0f;
+    int saturation = 160;
+    int value = 178;
+    int i = 0;
+    QString humanName = getFilter()->getGroupName();
+    qDebug() << humanName;
+    if(SIMPL::FilterGroups::CoreFilters.compare(humanName) == 0)
+    {
+      QColor c = QColor::fromHsv(25, saturation, value, 255);
+      filterIndexStyleStream << "background-color: rgb(" << c.red() << "," << c.green() << "," << c.blue() << ");";
+    }
+    else if(SIMPL::FilterGroups::GenericFilters.compare(humanName) == 0)
+    {
+      QColor c = QColor::fromHsv(50, saturation, value, 255);
+      filterIndexStyleStream << "background-color: rgb(" << c.red() << "," << c.green() << "," << c.blue() << ");";
+    }
+    else if(SIMPL::FilterGroups::OrientationAnalysisFilters.compare(humanName) == 0)
+    {
+      QColor c = QColor::fromHsv(75, saturation, value, 255);
+      filterIndexStyleStream << "background-color: rgb(" << c.red() << "," << c.green() << "," << c.blue() << ");";
+    }
+    else if(SIMPL::FilterGroups::IOFilters.compare(humanName) == 0)
+    {
+      QColor c = QColor::fromHsv(100, saturation, value, 255);
+      filterIndexStyleStream << "background-color: rgb(" << c.red() << "," << c.green() << "," << c.blue() << ");";
+    }
+    else if(SIMPL::FilterGroups::ProcessingFilters.compare(humanName) == 0)
+    {
+      QColor c = QColor::fromHsv(125, saturation, value, 255);
+      filterIndexStyleStream << "background-color: rgb(" << c.red() << "," << c.green() << "," << c.blue() << ");";
+    }
+    else if(SIMPL::FilterGroups::ReconstructionFilters.compare(humanName) == 0)
+    {
+      QColor c = QColor::fromHsv(150, saturation, value, 255);
+      filterIndexStyleStream << "background-color: rgb(" << c.red() << "," << c.green() << "," << c.blue() << ");";
+    }
+    else if(SIMPL::FilterGroups::SamplingFilters.compare(humanName) == 0)
+    {
+      QColor c = QColor::fromHsv(175, saturation, value, 255);
+      filterIndexStyleStream << "background-color: rgb(" << c.red() << "," << c.green() << "," << c.blue() << ");";
+    }
+    else if(SIMPL::FilterGroups::StatisticsFilters.compare(humanName) == 0)
+    {
+      QColor c = QColor::fromHsv(200, saturation, value, 255);
+      filterIndexStyleStream << "background-color: rgb(" << c.red() << "," << c.green() << "," << c.blue() << ");";
+    }
+    else if(SIMPL::FilterGroups::SyntheticBuildingFilters.compare(humanName) == 0)
+    {
+      QColor c = QColor::fromHsv(225, saturation, value, 255);
+      filterIndexStyleStream << "background-color: rgb(" << c.red() << "," << c.green() << "," << c.blue() << ");";
+    }
+    else if(SIMPL::FilterGroups::SurfaceMeshingFilters.compare(humanName) == 0)
+    {
+      QColor c = QColor::fromHsv(250, saturation, value, 255);
+      filterIndexStyleStream << "background-color: rgb(" << c.red() << "," << c.green() << "," << c.blue() << ");";
+    }
+    else if(SIMPL::FilterGroups::SolidMeshingFilters.compare(humanName) == 0)
+    {
+      QColor c = QColor::fromHsv(275, saturation, value, 255);
+      filterIndexStyleStream << "background-color: rgb(" << c.red() << "," << c.green() << "," << c.blue() << ");";
+    }
+    else if(SIMPL::FilterGroups::Utilities.compare(humanName) == 0)
+    {
+      QColor c = QColor::fromHsv(300 * increment, saturation, value, 255);
+      filterIndexStyleStream << "background-color: rgb(" << c.red() << "," << c.green() << "," << c.blue() << ");";
+    }
+    else if(SIMPL::FilterGroups::Unsupported.compare(humanName) == 0)
+    {
+      QColor c = QColor::fromHsv(325 * increment, saturation, value, 255);
+      filterIndexStyleStream << "background-color: rgb(" << c.red() << "," << c.green() << "," << c.blue() << ");";
+    }
+    else
+    {
+      filterIndexStyleStream << "background-color: rgb(68, 68, 68);";
+    }
+#endif
+
   }
 
   // Set the style sheet for the Left hand side of the widget
