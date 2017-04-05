@@ -116,7 +116,7 @@ void DataArraySelectionWidget::setupGui()
     return;
   }
 
-  m_SelectedDataArrayPath->setStyleSheet(QtSStyles::DAPSelectionButtonStyle(false));
+  m_SelectedDataArrayPath->setStyleSheet(QtSStyles::QToolSelectionButtonStyle(false));
 
   // Generate the text for the QLabel
   label->setText(getFilterParameter()->getHumanLabel());
@@ -313,8 +313,8 @@ void DataArraySelectionWidget::setSelectedPath(DataArrayPath daPath)
 {
   if(daPath.isEmpty())
   {
- //   m_SelectedDataArrayPath->setText("");
     m_SelectedDataArrayPath->setToolTip(wrapStringInHtml("DataArrayPath is empty."));
+    m_SelectedDataArrayPath->setStyleSheet(QtSStyles::QToolSelectionButtonStyle(false));
     return;
   }
 
@@ -322,7 +322,7 @@ void DataArraySelectionWidget::setSelectedPath(DataArrayPath daPath)
   if(nullptr == dca.get())
   {
     m_SelectedDataArrayPath->setText(daPath.serialize(Detail::Delimiter));
-    m_SelectedDataArrayPath->setStyleSheet(QtSStyles::DAPSelectionButtonStyle(false));
+    m_SelectedDataArrayPath->setStyleSheet(QtSStyles::QToolSelectionButtonStyle(false));
     m_SelectedDataArrayPath->setToolTip(wrapStringInHtml("DataContainerArray is not available to verify path."));
     return;
   }
@@ -334,12 +334,12 @@ void DataArraySelectionWidget::setSelectedPath(DataArrayPath daPath)
     QString html = attrArray->getInfoString(SIMPL::HtmlFormat);
     m_SelectedDataArrayPath->setToolTip(html);
     m_SelectedDataArrayPath->setText(daPath.serialize(Detail::Delimiter));
-    m_SelectedDataArrayPath->setStyleSheet(QtSStyles::DAPSelectionButtonStyle(true));
+    m_SelectedDataArrayPath->setStyleSheet(QtSStyles::QToolSelectionButtonStyle(true));
   }
   else
   {
     m_SelectedDataArrayPath->setToolTip(wrapStringInHtml("DataArrayPath does not exist."));
-    m_SelectedDataArrayPath->setStyleSheet(QtSStyles::DAPSelectionButtonStyle(false));
+    m_SelectedDataArrayPath->setStyleSheet(QtSStyles::QToolSelectionButtonStyle(false));
   }
 }
 

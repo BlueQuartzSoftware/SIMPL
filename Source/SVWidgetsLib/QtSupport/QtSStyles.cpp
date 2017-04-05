@@ -208,56 +208,56 @@ void QtSStyles::LineEditRedErrorStyle(QLineEdit* lineEdit)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-QString QtSStyles::DAPSelectionButtonStyle(bool exists)
+QString QtSStyles::QToolSelectionButtonStyle(bool exists)
 {
   QString str;
   QTextStream ss(&str);
 
-  ss << "QPushButton {\n";
+  ss << "QToolButton {\n";
   if(exists)
   {
-    ss << "border: 1px solid " << ::kNormalColor << ";\n";
+    ss << " border: 1px solid " << ::kNormalColor << ";\n";
   }
   else
   {
-    ss << "border: 1px solid " << ::kErrorColor << ";\n";
+    ss << " border: 1px solid " << ::kErrorColor << ";\n";
   }
-  ss << "border-radius: 4px;\n";
-  ss << "background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,\nstop: 0 #DDDDDD, stop: 1 #FFFFFF);\n";
-  ss << "font-size: 12pt;\n";
-  ss << "padding-left: 16px;\n";
-  ss << "padding-right: 4px;\n";
-  ss << "padding-top: 2px;\n";
-  ss << "padding-bottom: 2px;\n";
+  ss << " border-radius: 4px;\n";
+  ss << " background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,\nstop: 0 #DDDDDD, stop: 1 #FFFFFF);\n";
+  ss << " font-size: 12pt;\n";
+  ss << " padding-left: 16px;\n";
+  ss << " padding-right: 12px;\n";
+  ss << " padding-top: 2px;\n";
+  ss << " padding-bottom: 2px;\n";
   ss << "}\n";
 
-  ss << "QPushButton::menu-indicator {\n";
-  ss << "subcontrol-origin: padding;\n";
-  ss << "subcontrol-position:  left; /* */\n";
+  ss << "QToolButton::menu-indicator {\n";
+  ss << " subcontrol-origin: padding;\n";
+  ss << " subcontrol-position:  right; /* */\n";
   ss << "}\n";
 
-  ss << "QPushButton::menu-indicator:pressed, QPushButton::menu-indicator:open {\n";
-  ss << "position: relative;\n";
+  ss << "QToolButton::menu-indicator:pressed, QToolButton::menu-indicator:open {\n";
+  ss << " position: relative;\n";
   ss << "}\n";
 
-  ss << "QPushButton:pressed {\n";
-  ss << "background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,\nstop: 0 " << QApplication::palette().highlight().color().name() << ", stop: 1 #FFFFFF);\n";
+  ss << "QToolButton:pressed {\n";
+  ss << " background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,\nstop: 0 " << QApplication::palette().highlight().color().name() << ", stop: 1 #FFFFFF);\n";
   ss << "}\n";
 
-  ss << "QPushButton:flat {\n";
-  ss << "border: none;\n";
+  ss << "QToolButton:flat {\n";
+  ss << " border: none;\n";
   ss << "}\n";
-  ss << "QPushButton:hover {\n";
-  if(exists)
-  {
-    ss << "border: 2px solid  " << ::kNormalColor << ";\n";
-  }
-  else
-  {
-    ss << "border: 2px solid " << ::kErrorColor << ";\n";
-  }
-  ss << "border-radius: 4px;\n";
-  ss << "}\n";
+//  ss << "QToolButton:hover {\n";
+//  if(exists)
+//  {
+//    ss << " border: 2px solid  " << ::kNormalColor << ";\n";
+//  }
+//  else
+//  {
+//    ss << " border: 2px solid " << ::kErrorColor << ";\n";
+//  }
+//  ss << " border-radius: 4px;\n";
+//  ss << "}\n";
 
   return str;
 }

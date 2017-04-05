@@ -120,7 +120,7 @@ void DataContainerSelectionWidget::setupGui()
   }
   label->setText(getFilterParameter()->getHumanLabel());
 
-  m_SelectedDataContainerPath->setStyleSheet(QtSStyles::DAPSelectionButtonStyle(false));
+  m_SelectedDataContainerPath->setStyleSheet(QtSStyles::QToolSelectionButtonStyle(false));
 
   m_MenuMapper = new QSignalMapper(this);
   connect(m_MenuMapper, SIGNAL(mapped(QString)),
@@ -307,12 +307,12 @@ void DataContainerSelectionWidget::afterPreflight()
     if (nullptr != dc.get()) {
       QString html = dc->getInfoString(SIMPL::HtmlFormat);
       m_SelectedDataContainerPath->setToolTip(html);
-      m_SelectedDataContainerPath->setStyleSheet(QtSStyles::DAPSelectionButtonStyle(true));
+      m_SelectedDataContainerPath->setStyleSheet(QtSStyles::QToolSelectionButtonStyle(true));
     }
   }
   else
   {
-    m_SelectedDataContainerPath->setStyleSheet(QtSStyles::DAPSelectionButtonStyle(false));
+    m_SelectedDataContainerPath->setStyleSheet(QtSStyles::QToolSelectionButtonStyle(false));
   }
 }
 
