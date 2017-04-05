@@ -35,10 +35,12 @@
 
 #include <QtWidgets>
 
+#include "SIMPLib/FilterParameters/JsonFilterParametersReader.h"
+
+
 #include "SVWidgetsLib/Widgets/BookmarksModel.h"
 #include "SVWidgetsLib/Widgets/BookmarksTreeView.h"
-#include "SVWidgetsLib/Widgets/SIMPLViewToolbox.h"
-
+#include "SVWidgetsLib/Widgets/SIMPLViewToolbox.h"\
 #include "SVWidgetsLib/QtSupport/QtSSettings.h"
 
 // Include the MOC generated CPP file which has all the QMetaObject methods/data
@@ -203,16 +205,21 @@ QVariant BookmarksModel::data(const QModelIndex& index, int role) const
   }
   else if(role == Qt::ToolTipRole)
   {
-    QString tooltip = "'" + this->index(index.row(), BookmarksItem::Path, index.parent()).data().toString() +
-                      "' was not found on the file system.\nYou can either locate the file or delete the entry from the table.";
-
-    if(item->getItemHasErrors() == true)
+    QString path = item->data(1).toString();
+    QFileInfo info(path);
+    if(info.exists() == false)
     {
+      QString tooltip = "'" + this->index(index.row(), BookmarksItem::Path, index.parent()).data().toString() +
+                        "' was not found on the file system.\nYou can either locate the file or delete the entry from the table.";
       return tooltip;
     }
     else
     {
-      return item->getItemTooltip();
+      if(info.suffix().compare("json") == 0)
+      {
+        QString html = JsonFilterParametersReader::HtmlSummaryFromFile(path, nullptr);
+        return html;
+      }
     }
   }
   else if(role == Qt::DecorationRole)
@@ -228,10 +235,8 @@ QVariant BookmarksModel::data(const QModelIndex& index, int role) const
       return QVariant();
     }
   }
-  else
-  {
-    return QVariant();
-  }
+
+  return QVariant();
 }
 
 // -----------------------------------------------------------------------------

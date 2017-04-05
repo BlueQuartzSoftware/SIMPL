@@ -283,8 +283,8 @@ void BookmarksToolboxWidget::addPipelinesRecursively(QDir currentDir, QModelInde
     addTreeItem(parent, itemName, QIcon(iconFileName), itemInfo.absoluteFilePath(), row, true, false, false);
     nextIndex = model->index(row, BookmarksItem::Name, parent);
 
-    QString htmlFormattedString = generateHtmlFilterListFromPipelineFile(itemInfo.absoluteFilePath());
-    model->setData(nextIndex, htmlFormattedString, Qt::ToolTipRole);
+//    QString htmlFormattedString = generateHtmlFilterListFromPipelineFile(itemInfo.absoluteFilePath());
+//    model->setData(nextIndex, htmlFormattedString, Qt::ToolTipRole);
   }
 }
 
