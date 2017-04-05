@@ -124,7 +124,13 @@
   <file>media_stop@2x.png</file> 
   
   <file>media_stop_flat.png</file>
-  <file>media_stop_flat@2x.png</file> 
+  <file>media_stop_flat@2x.png</file>
+
+  <file>media_play_white.png</file>
+  <file>media_play_white@2x.png</file>
+
+  <file>media_stop_white.png</file>
+  <file>media_stop_white@2x.png</file> 
 
   <file>fit_to_window.png</file>
   <file>fit_to_window@2x.png</file>
