@@ -331,7 +331,7 @@ void SVPipelineFilterWidget::changeStyle()
   else
   {
 #if 1
-    filterIndexStyleStream << "background-color: rgb(40, 40, 40);";
+    filterIndexStyleStream << "background-color: rgb(48, 48, 48);";
 #else
     float increment = 300.0f / 14.0f;
     int saturation = 160;
