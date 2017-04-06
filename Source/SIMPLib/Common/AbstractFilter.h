@@ -265,9 +265,14 @@ class SIMPLib_EXPORT AbstractFilter : public Observable
 
   signals:
     /**
-     * @brief filterCompleted
+     * @brief Signal is emitted when filter has completed the execute() method
      */
     void filterCompleted();
+
+    /**
+     * @brief Signal is emitted when filter is executing
+     */
+    void filterInProgress();
 
   public slots:
 

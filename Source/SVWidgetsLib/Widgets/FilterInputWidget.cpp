@@ -256,22 +256,22 @@ void FilterInputWidget::layoutWidgets(AbstractFilter::Pointer filter)
 
   QGroupBox* parametersGroupBox = new QGroupBox("Parameters", this);
   QVBoxLayout* pLayout = new QVBoxLayout(parametersGroupBox);
-  pLayout->setContentsMargins(0, 0, 0, 0);
+  pLayout->setContentsMargins(5, 5, 5, 5);
   parametersGroupBox->setStyleSheet(groupBoxStyle);
 
   QGroupBox* requiredGroupBox = new QGroupBox("Required Objects", this);
   QVBoxLayout* rLayout = new QVBoxLayout(requiredGroupBox);
-  rLayout->setContentsMargins(0, 0, 0, 0);
+  rLayout->setContentsMargins(5, 5, 5, 5);
   requiredGroupBox->setStyleSheet(groupBoxStyle);
 
   QGroupBox* createdGroupBox = new QGroupBox("Created Objects", this);
   QVBoxLayout* cLayout = new QVBoxLayout(createdGroupBox);
-  cLayout->setContentsMargins(0, 0, 0, 0);
+  cLayout->setContentsMargins(5, 5, 5, 5);
   createdGroupBox->setStyleSheet(groupBoxStyle);
 
   QGroupBox* noCategoryGroupBox = new QGroupBox("Uncategorized", this);
   QVBoxLayout* nLayout = new QVBoxLayout(noCategoryGroupBox);
-  nLayout->setContentsMargins(0, 0, 0, 0);
+  nLayout->setContentsMargins(5, 5, 5, 5);
   noCategoryGroupBox->setStyleSheet(groupBoxStyle);
 
   // Get the FilterWidgetManagere instance so we can instantiate new FilterParameterWidgets

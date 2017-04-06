@@ -348,6 +348,7 @@ void FilterPipeline::execute()
     connectFilterNotifications((*filter).get());
     (*filter)->setDataContainerArray(dca);
     setCurrentFilter(*filter);
+    emit (*filter)->filterInProgress();
     (*filter)->execute();
     disconnectFilterNotifications((*filter).get());
     (*filter)->setDataContainerArray(DataContainerArray::NullPointer());
