@@ -53,8 +53,6 @@ class SVWidgetsLib_EXPORT PipelineFilterObject
     PipelineFilterObject(AbstractFilter::Pointer filter, IObserver* observer = nullptr);
     virtual ~PipelineFilterObject();
 
-    SIMPL_BOOL_PROPERTY(Running)
-
     AbstractFilter::Pointer getFilter();
 
     bool isFocused();
@@ -83,6 +81,16 @@ class SVWidgetsLib_EXPORT PipelineFilterObject
     void setHasPreflightErrors(bool hasPreflightErrors);
     void setHasPreflightWarnings(bool hasPreflightWarnings);
 
+    using EnumType = unsigned int;
+
+    enum class State : EnumType
+    {
+      Idle = 0,      //!<
+      Running = 1, //!<
+      Completed = 2, //!<
+    };
+    SIMPL_INSTANCE_PROPERTY(State, CurrentState)
+
     /**
      * @brief changeStyle
      */
@@ -97,6 +105,11 @@ class SVWidgetsLib_EXPORT PipelineFilterObject
     * @brief toIdleState
     */
     virtual void toIdleState();
+
+    /**
+     * @brief toCompletedState
+     */
+    virtual void toCompletedState();
 
   private:
     AbstractFilter::Pointer           m_Filter;

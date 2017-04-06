@@ -131,7 +131,13 @@ void SVPipelineFilterWidget::initialize()
   m_DeleteRect.setHeight(IMAGE_HEIGHT);
 
   // Set the Name of the filter into the FilterWidget
-  filterName->setText(getFilter()->getHumanLabel());
+  AbstractFilter::Pointer filter = getFilter();
+  if(nullptr != filter.get())
+  {
+    filterName->setText(getFilter()->getHumanLabel());
+    connect(filter.get(), SIGNAL(filterCompleted()),
+            this, SLOT(toCompletedState()));
+  }
 }
 
 // -----------------------------------------------------------------------------
@@ -253,7 +259,16 @@ void SVPipelineFilterWidget::changeStyle()
   svWidgetStyleStream << "border-radius: 3px;";
   svWidgetStyleStream << "padding: 0 0 0 0px;";
   svWidgetStyleStream << "font-weight: bold;";
-  svWidgetStyleStream << "background-color: rgb(185, 185, 185);";
+
+  if( isEnabled() )
+  {
+    svWidgetStyleStream << "background-color: rgb(190, 190, 190);";
+  }
+  else
+  {
+    svWidgetStyleStream << "background-color: rgb(160, 160, 160);";
+  }
+
   svWidgetStyleStream << fontString;
 
   if(isSelected() == true && isFocused() == true)
@@ -276,6 +291,7 @@ void SVPipelineFilterWidget::changeStyle()
 
   svWidgetStyleStream << "}\n";
 
+
   svWidgetStyleStream << "QLabel {";
   svWidgetStyleStream << fontString;
   svWidgetStyleStream << "}";
@@ -288,12 +304,16 @@ void SVPipelineFilterWidget::changeStyle()
   QTextStream filterIndexStyleStream(&filterIndexStyle);
 
   filterIndexStyleStream << "QLabel\n{";
-  filterIndexStyleStream << "color: rgb(242, 242, 242);";
-  filterIndexStyleStream << "padding: 3 3 3 3px;";
-  //filterIndexStyleStream << "border-radius: 3px;";
-
   filterIndexStyleStream << fontString;
-
+  filterIndexStyleStream << "padding: 3 3 3 3px;";
+  if( isEnabled() )
+  {
+    filterIndexStyleStream << "color: rgb(242, 242, 242);";
+  }
+  else
+  {
+    filterIndexStyleStream << "color: rgb(190, 190, 190);";
+  }
 
 
   if(getHasPreflightWarnings())
@@ -304,11 +324,14 @@ void SVPipelineFilterWidget::changeStyle()
   {
     filterIndexStyleStream << "background-color: rgb(179, 2, 5);";
   }
+  else if( getCurrentState() == PipelineFilterObject::State::Completed)
+  {
+    filterIndexStyleStream << "background-color: rgb(0, 118, 6);";
+  }
   else
   {
-//    filterIndexStyleStream << "background-color: rgb(51, 141, 203);";
 #if 1
-    filterIndexStyleStream << "background-color: rgb(64, 64, 64);";
+    filterIndexStyleStream << "background-color: rgb(40, 40, 40);";
 #else
     float increment = 300.0f / 14.0f;
     int saturation = 160;
@@ -490,8 +513,11 @@ void SVPipelineFilterWidget::launchHelpForItem()
 // -----------------------------------------------------------------------------
 void SVPipelineFilterWidget::toRunningState()
 {
-  getFilterInputWidget()->toRunningState(); // getVariablesTabContentsWidget()->setDisabled(true);
+  setCurrentState(PipelineFilterObject::State::Running);
+  getFilterInputWidget()->toRunningState();
   deleteBtn->setDisabled(true);
+  setDisabled(true);
+  changeStyle();
 }
 
 // -----------------------------------------------------------------------------
@@ -499,8 +525,23 @@ void SVPipelineFilterWidget::toRunningState()
 // -----------------------------------------------------------------------------
 void SVPipelineFilterWidget::toIdleState()
 {
-  getFilterInputWidget()->toIdleState(); // getVariablesTabContentsWidget()->setEnabled(true);
+  setCurrentState(PipelineFilterObject::State::Idle);
+  getFilterInputWidget()->toIdleState();
   deleteBtn->setEnabled(true);
+  setDisabled(false);
+  changeStyle();
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void SVPipelineFilterWidget::toCompletedState()
+{
+  setCurrentState(PipelineFilterObject::State::Completed);
+  getFilterInputWidget()->toIdleState();
+//  deleteBtn->setEnabled(true);
+//  setDisabled(false);
+  changeStyle();
 }
 
 // -----------------------------------------------------------------------------

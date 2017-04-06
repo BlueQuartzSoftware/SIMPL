@@ -45,7 +45,7 @@
 //
 // -----------------------------------------------------------------------------
 PipelineFilterObject::PipelineFilterObject()
-: m_Running(false)
+: m_CurrentState(PipelineFilterObject::State::Idle)
 , m_Filter(AbstractFilter::NullPointer())
 , m_FilterInputWidget(nullptr)
 , m_IsFocused(false)
@@ -278,6 +278,7 @@ void PipelineFilterObject::setHasPreflightWarnings(bool hasWarnings)
 void PipelineFilterObject::toRunningState()
 {
   // This should be implemented in the subclasses
+  setCurrentState(State::Running);
   return;
 }
 
@@ -287,5 +288,17 @@ void PipelineFilterObject::toRunningState()
 void PipelineFilterObject::toIdleState()
 {
   // This should be implemented in the subclasses
+  setCurrentState(State::Idle);
+
+  return;
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void PipelineFilterObject::toCompletedState()
+{
+  // This should be implemented in the subclasses
+  setCurrentState(State::Completed);
   return;
 }

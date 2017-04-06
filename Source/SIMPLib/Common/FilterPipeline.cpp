@@ -368,6 +368,7 @@ void FilterPipeline::execute()
       break;
     }
     ss = QObject::tr("%1 Filter Complete").arg((*filter)->getNameOfClass());
+    emit (*filter)->filterCompleted();
   }
 
   emit pipelineFinished();

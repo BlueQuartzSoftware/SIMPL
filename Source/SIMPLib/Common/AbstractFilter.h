@@ -263,6 +263,12 @@ class SIMPLib_EXPORT AbstractFilter : public Observable
      */
     virtual void copyFilterParameterInstanceVariables(AbstractFilter* filter);
 
+  signals:
+    /**
+     * @brief filterCompleted
+     */
+    void filterCompleted();
+
   public slots:
 
     /**

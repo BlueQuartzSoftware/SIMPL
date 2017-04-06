@@ -130,6 +130,11 @@ class SVWidgetsLib_EXPORT SVPipelineFilterWidget : public QFrame, public Pipelin
     */
     void toIdleState() override;
 
+    /**
+     * @brief toCompletedState
+     */
+    void toCompletedState() override;
+
   protected slots:
     /**
      * @brief on_deleteBtn_clicked
