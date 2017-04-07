@@ -94,7 +94,7 @@ QFont QtSStyles::GetHumanLabelFont()
   QFont humanLabelFont;
   humanLabelFont.setBold(true);
   humanLabelFont.setItalic(false);
-  humanLabelFont.setWeight(100);
+  humanLabelFont.setWeight(QFont::Bold);
   humanLabelFont.setStyleStrategy(QFont::PreferAntialias);
   humanLabelFont.setFamily(GetUIFont());
 
@@ -116,7 +116,7 @@ QFont QtSStyles::GetBrandingLabelFont()
   QFont brandingFont;
   brandingFont.setBold(true);
   brandingFont.setItalic(true);
-  brandingFont.setWeight(75);
+  brandingFont.setWeight(QFont::Bold);
   brandingFont.setStyleStrategy(QFont::PreferAntialias);
   brandingFont.setFamily(GetUIFont());
 
@@ -137,7 +137,7 @@ QFont QtSStyles::GetCategoryFont()
 {
   QFont categoryFont;
   categoryFont.setBold(true);
-  categoryFont.setWeight(100);
+  categoryFont.setWeight(QFont::Bold);
   categoryFont.setStyleStrategy(QFont::PreferAntialias);
   categoryFont.setFamily(GetUIFont());
 

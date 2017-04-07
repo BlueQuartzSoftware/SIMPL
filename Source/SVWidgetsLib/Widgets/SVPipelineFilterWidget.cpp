@@ -255,12 +255,16 @@ void SVPipelineFilterWidget::changeStyle()
 #if defined(Q_OS_MAC)
   font.pointSize() - 3
 #elif defined(Q_OS_WIN)
-  font.pointSize() - 2
+  font.pointSize() - 3
   #else
   font.pointSize() - 2
 #endif
   << "pt \"" << font.family()  << "\";";
-
+#if defined(Q_OS_WIN)
+  if(font.bold()) {
+    in << "font-weight: bold;";
+  }
+#endif
 
   // Style the over all widget
   svWidgetStyleStream << "SVPipelineFilterWidget {\n";
@@ -311,11 +315,6 @@ void SVPipelineFilterWidget::changeStyle()
   QString filterIndexStyle;
   QTextStream filterIndexStyleStream(&filterIndexStyle);
 
-#if defined(Q_OS_WIN)
-  if(font.bold()) {
-    in << "font-weight: bold;";
-  }
-#endif
 
   filterIndexStyleStream << "QLabel\n{";
   filterIndexStyleStream << fontString;
