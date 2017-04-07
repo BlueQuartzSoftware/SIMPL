@@ -244,7 +244,7 @@ void SVPipelineFilterWidget::changeStyle(int i)
 #elif defined(Q_OS_WIN)
   fontStringStream << font.pointSize() - 3;
 #else
-  fontStringStream << font.pointSize() - 2;
+  fontStringStream << font.pointSize();
 #endif
   fontStringStream <<  "pt \"" << font.family()  << "\";";
 #if defined(Q_OS_WIN)

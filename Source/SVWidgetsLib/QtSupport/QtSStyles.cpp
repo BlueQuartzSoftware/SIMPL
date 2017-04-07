@@ -103,7 +103,7 @@ QFont QtSStyles::GetHumanLabelFont()
 #elif defined(Q_OS_WIN)
   humanLabelFont.setPointSize(13);
 #else
-  humanLabelFont.setPointSize(9);
+  humanLabelFont.setPointSize(12);
 #endif
   return humanLabelFont;
 }
@@ -125,7 +125,7 @@ QFont QtSStyles::GetBrandingLabelFont()
 #elif defined(Q_OS_WIN)
   brandingFont.setPointSize(10);
 #else
-  brandingFont.setPointSize(9);
+  brandingFont.setPointSize(10);
 #endif
   return brandingFont;
 }
@@ -159,13 +159,15 @@ QFont QtSStyles::GetTitleFont()
 {
   QFont categoryFont;
   categoryFont.setBold(true);
-  categoryFont.setWeight(100);
+  categoryFont.setWeight(QFont::Bold);
   categoryFont.setStyleStrategy(QFont::PreferAntialias);
   categoryFont.setFamily(GetUIFont());
 
 #if defined(Q_OS_MAC)
   categoryFont.setPointSize(16);
 #elif defined(Q_OS_WIN)
+  categoryFont.setPointSize(12);
+#else
   categoryFont.setPointSize(12);
 #endif
 
@@ -219,20 +221,22 @@ QString QtSStyles::QToolSelectionButtonStyle(bool exists)
   QFont font;
   font.setBold(true);
   font.setItalic(true);
-  font.setWeight(75);
+  font.setWeight(QFont::Bold);
   font.setStyleStrategy(QFont::PreferAntialias);
   font.setFamily(GetUIFont());
+
+  QString fontString;
+  QTextStream in(&fontString);
 
 #if defined(Q_OS_MAC)
   font.setPointSize(12);
 #elif defined(Q_OS_WIN)
   font.setPointSize(10);
 #else
-  font.setPointSize(9);
+  font.setPointSize(10);
+  in << "font-weight:bold;";
 #endif
 
-  QString fontString;
-  QTextStream in(&fontString);
   in << "font: " << font.weight() << " " << font.pointSize() << "pt \"" << font.family()  << "\";";
 
   ss << "QToolButton {\n";
