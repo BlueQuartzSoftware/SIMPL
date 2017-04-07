@@ -247,20 +247,26 @@ void SVPipelineFilterWidget::changeStyle()
   QString svWidgetStyle;
   QTextStream svWidgetStyleStream(&svWidgetStyle);
 
-  // Define Operating Specific Font Size here
-#if defined(Q_OS_WIN)
-  QString fontString =  QString("font: 100 12pt \"") + QtSStyles::GetUIFont() + QString("\";");
-#elif defined(Q_OS_MAC)
-  QString fontString =  QString("font: 100 14pt \"") + QtSStyles::GetUIFont() + QString("\";");
-#else
-  QString fontString =  QString("font: 100 9pt \"") + QtSStyles::GetUIFont() + QString("\";");
+
+  QFont font = QtSStyles::GetHumanLabelFont();
+  QString fontString;
+  QTextStream in(&fontString);
+  in << "font: " << font.weight() << " " << 
+#if defined(Q_OS_MAC)
+  font.pointSize() - 3
+#elif defined(Q_OS_WIN)
+  font.pointSize() - 2
+  #else
+  font.pointSize() - 2
 #endif
+  << "pt \"" << font.family()  << "\";";
+
 
   // Style the over all widget
   svWidgetStyleStream << "SVPipelineFilterWidget {\n";
   svWidgetStyleStream << "border-radius: 3px;";
   svWidgetStyleStream << "padding: 0 0 0 0px;";
-  svWidgetStyleStream << "font-weight: bold;";
+  svWidgetStyleStream << fontString;
 
   if( isEnabled() )
   {
@@ -305,8 +311,15 @@ void SVPipelineFilterWidget::changeStyle()
   QString filterIndexStyle;
   QTextStream filterIndexStyleStream(&filterIndexStyle);
 
+#if defined(Q_OS_WIN)
+  if(font.bold()) {
+    in << "font-weight: bold;";
+  }
+#endif
+
   filterIndexStyleStream << "QLabel\n{";
   filterIndexStyleStream << fontString;
+  filterIndexStyleStream << "color: rgb(255, 255, 255);";
   filterIndexStyleStream << "padding: 3 3 3 3px;";
   if( isEnabled() )
   {
@@ -333,6 +346,10 @@ void SVPipelineFilterWidget::changeStyle()
   else if( getCurrentState() == PipelineFilterObject::State::Completed)
   {
     filterIndexStyleStream << "background-color: rgb(0, 118, 6);";
+  }
+  else if ( getCurrentState() == PipelineFilterObject::State::Running)
+  {
+    filterIndexStyleStream << "background-color: rgb(150, 150, 0);";
   }
   else
   {

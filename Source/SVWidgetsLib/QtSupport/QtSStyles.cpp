@@ -68,11 +68,10 @@ QtSStyles::~QtSStyles()
 QString QtSStyles::GetUIFont()
 {
 #if defined(Q_OS_MAC)
-  // return QString::fromUtf8("Helvetica");
   QFont font;
   return font.defaultFamily();
 #elif defined(Q_OS_WIN)
-  return QString::fromUtf8("Trebuchet MS");
+  return QString::fromUtf8("Arial");
 #else
   QFont font("DejaVu Sans");
   if(font.fromString("DejaVu Sans"))
@@ -95,14 +94,16 @@ QFont QtSStyles::GetHumanLabelFont()
   QFont humanLabelFont;
   humanLabelFont.setBold(true);
   humanLabelFont.setItalic(false);
-  humanLabelFont.setWeight(75);
+  humanLabelFont.setWeight(100);
   humanLabelFont.setStyleStrategy(QFont::PreferAntialias);
   humanLabelFont.setFamily(GetUIFont());
 
 #if defined(Q_OS_MAC)
   humanLabelFont.setPointSize(16);
 #elif defined(Q_OS_WIN)
-  humanLabelFont.setPointSize(12);
+  humanLabelFont.setPointSize(13);
+#else
+  humanLabelFont.setPointSize(9);
 #endif
   return humanLabelFont;
 }
@@ -122,7 +123,7 @@ QFont QtSStyles::GetBrandingLabelFont()
 #if defined(Q_OS_MAC)
   brandingFont.setPointSize(11);
 #elif defined(Q_OS_WIN)
-  brandingFont.setPointSize(8);
+  brandingFont.setPointSize(10);
 #else
   brandingFont.setPointSize(9);
 #endif
@@ -136,7 +137,7 @@ QFont QtSStyles::GetCategoryFont()
 {
   QFont categoryFont;
   categoryFont.setBold(true);
-  categoryFont.setWeight(75);
+  categoryFont.setWeight(100);
   categoryFont.setStyleStrategy(QFont::PreferAntialias);
   categoryFont.setFamily(GetUIFont());
 
@@ -144,6 +145,8 @@ QFont QtSStyles::GetCategoryFont()
   categoryFont.setPointSize(14);
 #elif defined(Q_OS_WIN)
   categoryFont.setPointSize(10);
+#else
+  categoryFont.setPointSize(9);
 #endif
 
   return categoryFont;
@@ -156,7 +159,7 @@ QFont QtSStyles::GetTitleFont()
 {
   QFont categoryFont;
   categoryFont.setBold(true);
-  categoryFont.setWeight(99);
+  categoryFont.setWeight(100);
   categoryFont.setStyleStrategy(QFont::PreferAntialias);
   categoryFont.setFamily(GetUIFont());
 
@@ -213,6 +216,25 @@ QString QtSStyles::QToolSelectionButtonStyle(bool exists)
   QString str;
   QTextStream ss(&str);
 
+  QFont font;
+  font.setBold(true);
+  font.setItalic(true);
+  font.setWeight(75);
+  font.setStyleStrategy(QFont::PreferAntialias);
+  font.setFamily(GetUIFont());
+
+#if defined(Q_OS_MAC)
+  font.setPointSize(12);
+#elif defined(Q_OS_WIN)
+  font.setPointSize(10);
+#else
+  font.setPointSize(9);
+#endif
+
+  QString fontString;
+  QTextStream in(&fontString);
+  in << "font: " << font.weight() << " " << font.pointSize() << "pt \"" << font.family()  << "\";";
+
   ss << "QToolButton {\n";
   if(exists)
   {
@@ -224,7 +246,7 @@ QString QtSStyles::QToolSelectionButtonStyle(bool exists)
   }
   ss << " border-radius: 4px;\n";
   ss << " background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,\nstop: 0 #DDDDDD, stop: 1 #FFFFFF);\n";
-  ss << " font-size: 12pt;\n";
+  ss << fontString << "\n";
   ss << " padding-left: 16px;\n";
   ss << " padding-right: 12px;\n";
   ss << " padding-top: 2px;\n";

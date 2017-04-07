@@ -186,7 +186,7 @@ void FilterInputWidget::setupGui()
 {
   QFont humanLabelFont = QtSStyles::GetHumanLabelFont();
   QFont brandingFont = QtSStyles::GetBrandingLabelFont();
-  QFont categoryFont = QtSStyles::GetCategoryFont();
+  //QFont categoryFont = QtSStyles::GetCategoryFont();
 
   filterHumanLabel->setFont(humanLabelFont);
 
