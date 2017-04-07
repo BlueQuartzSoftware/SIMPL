@@ -82,9 +82,6 @@ class SVWidgetsLib_EXPORT SVPipelineFilterWidget : public QFrame, public Pipelin
 
     SIMPL_INSTANCE_PROPERTY(QString, BorderColorStyle)
 
-    bool isSelected();
-    void setSelected(bool s);
-
     bool hasRightClickTarget();
     void setHasRightClickTarget(bool value);
 
@@ -95,12 +92,14 @@ class SVWidgetsLib_EXPORT SVPipelineFilterWidget : public QFrame, public Pipelin
 
     PipelineFilterObject* deepCopy() override;
 
+    void setSelected(bool s) override;
+
   public slots:
 
     /**
      * @brief changeStyle
      */
-    void changeStyle() override;
+    void changeStyle(int i = -1) override;
 
     /**
      * @brief displayFilterParameterWidgetError
@@ -121,19 +120,50 @@ class SVWidgetsLib_EXPORT SVPipelineFilterWidget : public QFrame, public Pipelin
     void launchHelpForItem();
 
     /**
-    * @brief toRunningState
-    */
-    void toRunningState() override;
-
-    /**
     * @brief toIdleState
     */
-    void toIdleState() override;
+    virtual void toReadyState() override;
+
+    /**
+    * @brief toRunningState
+    */
+    virtual void toExecutingState() override;
 
     /**
      * @brief toCompletedState
      */
-    void toCompletedState() override;
+    virtual void toCompletedState() override;
+
+
+    /**
+     * @brief toActiveState
+     */
+    virtual void toRunningState() override;
+
+    /**
+     * @brief toInactiveState
+     */
+    virtual void toStoppedState() override;
+
+    /**
+     * @brief toSelectedState
+     */
+    virtual void toPausedState() override;
+
+    /**
+     * @brief toOkState
+     */
+    virtual void toOkState() override;
+
+    /**
+     * @brief toErrorState
+     */
+    virtual void toErrorState() override;
+
+    /**
+     * @brief toWarningState
+     */
+    virtual void toWarningState() override;
 
   protected slots:
     /**
@@ -229,7 +259,6 @@ class SVWidgetsLib_EXPORT SVPipelineFilterWidget : public QFrame, public Pipelin
     QRect                             m_DeleteRect;
     QPoint                            dragStartPosition;
     IObserver*                        m_Observer;
-    bool                              m_Selected;
     bool                              m_HasRightClickTarget;
 
     /**
