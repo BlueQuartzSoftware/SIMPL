@@ -33,37 +33,27 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-#ifndef _standardoutputdockwidget_h_
-#define _standardoutputdockwidget_h_
+#ifndef _StandardOutputWidget_h_
+#define _StandardOutputWidget_h_
 
 #include <QtWidgets/QMainWindow>
-#include <QtWidgets/QDockWidget>
+#include <QtWidgets/QWidget>
 
 #include "SIMPLib/Common/IObserver.h"
 
 #include "SVWidgetsLib/SVWidgetsLib.h"
 
-#include "ui_StandardOutputDockWidget.h"
+#include "ui_StandardOutputWidget.h"
 
 class QtSSettings;
 
-class SVWidgetsLib_EXPORT StandardOutputDockWidget : public QDockWidget, public IObserver, private Ui::StandardOutputDockWidget
+class SVWidgetsLib_EXPORT StandardOutputWidget : public QWidget, public IObserver, private Ui::StandardOutputWidget
 {
     Q_OBJECT
 
   public:
-    StandardOutputDockWidget(QWidget* parent = nullptr);
-    virtual ~StandardOutputDockWidget();
-
-    /**
-    * @brief Reads the preferences from the users pref file
-    */
-    void readSettings(QMainWindow* main, QtSSettings* prefs);
-
-    /**
-    * @brief Writes the preferences to the users pref file
-    */
-    void writeSettings(QtSSettings* prefs);
+    StandardOutputWidget(QWidget* parent = nullptr);
+    virtual ~StandardOutputWidget();
 
     /**
      * @brief appendText
@@ -88,10 +78,10 @@ class SVWidgetsLib_EXPORT StandardOutputDockWidget : public QDockWidget, public 
   private:
     QString             m_LastPathOpened = "";
 
-    StandardOutputDockWidget(const StandardOutputDockWidget&); // Copy Constructor Not Implemented
-    void operator=(const StandardOutputDockWidget&); // Operator '=' Not Implemented
+    StandardOutputWidget(const StandardOutputWidget&); // Copy Constructor Not Implemented
+    void operator=(const StandardOutputWidget&); // Operator '=' Not Implemented
 
 
 };
 
-#endif // _standardoutputdockwidget_h_
+#endif // _StandardOutputWidget_h_

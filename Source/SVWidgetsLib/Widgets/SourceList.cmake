@@ -19,8 +19,8 @@ set(SVWidgetsLib_Widgets_MOC_HDRS
   ${SVWidgetsLib_SOURCE_DIR}/Widgets/FilterLibraryTreeWidget.h
   ${SVWidgetsLib_SOURCE_DIR}/Widgets/FilterListToolboxWidget.h
   ${SVWidgetsLib_SOURCE_DIR}/Widgets/FilterListWidget.h
-  ${SVWidgetsLib_SOURCE_DIR}/Widgets/IssuesDockWidget.h
-  ${SVWidgetsLib_SOURCE_DIR}/Widgets/StandardOutputDockWidget.h
+  ${SVWidgetsLib_SOURCE_DIR}/Widgets/IssuesWidget.h
+  ${SVWidgetsLib_SOURCE_DIR}/Widgets/StandardOutputWidget.h
   ${SVWidgetsLib_SOURCE_DIR}/Widgets/FilterInputWidget.h
   ${SVWidgetsLib_SOURCE_DIR}/Widgets/SVPipelineFilterWidget.h
   ${SVWidgetsLib_SOURCE_DIR}/Widgets/SVPipelineViewWidget.h
@@ -48,8 +48,8 @@ set(SVWidgetsLib_Widgets_SRCS
   ${SVWidgetsLib_SOURCE_DIR}/Widgets/FilterLibraryTreeWidget.cpp
   ${SVWidgetsLib_SOURCE_DIR}/Widgets/FilterListToolboxWidget.cpp
   ${SVWidgetsLib_SOURCE_DIR}/Widgets/FilterListWidget.cpp
-  ${SVWidgetsLib_SOURCE_DIR}/Widgets/IssuesDockWidget.cpp
-  ${SVWidgetsLib_SOURCE_DIR}/Widgets/StandardOutputDockWidget.cpp
+  ${SVWidgetsLib_SOURCE_DIR}/Widgets/IssuesWidget.cpp
+  ${SVWidgetsLib_SOURCE_DIR}/Widgets/StandardOutputWidget.cpp
   ${SVWidgetsLib_SOURCE_DIR}/Widgets/FilterInputWidget.cpp
   ${SVWidgetsLib_SOURCE_DIR}/Widgets/SVPipelineFilterWidget.cpp
   ${SVWidgetsLib_SOURCE_DIR}/Widgets/SVPipelineViewWidget.cpp
@@ -67,11 +67,11 @@ set(SVWidgetsLib_Widgets_UIS
   ${SVWidgetsLib_SOURCE_DIR}/Widgets/UI_Files/FilterInputWidget.ui
   ${SVWidgetsLib_SOURCE_DIR}/Widgets/UI_Files/FilterLibraryToolboxWidget.ui
   ${SVWidgetsLib_SOURCE_DIR}/Widgets/UI_Files/FilterListToolboxWidget.ui
-  ${SVWidgetsLib_SOURCE_DIR}/Widgets/UI_Files/IssuesDockWidget.ui
+  ${SVWidgetsLib_SOURCE_DIR}/Widgets/UI_Files/IssuesWidget.ui
   ${SVWidgetsLib_SOURCE_DIR}/Widgets/UI_Files/SVPipelineFilterWidget.ui
   ${SVWidgetsLib_SOURCE_DIR}/Widgets/UI_Files/PrebuiltsToolboxWidget.ui
-  ${SVWidgetsLib_SOURCE_DIR}/Widgets/UI_Files/StandardOutputDockWidget.ui
   ${SVWidgetsLib_SOURCE_DIR}/Widgets/UI_Files/SIMPLViewToolbox.ui
+  ${SVWidgetsLib_SOURCE_DIR}/Widgets/UI_Files/StandardOutputWidget.ui
   )
 
 SET(SVWidgetsLib_Widgets_Util_HDRS
