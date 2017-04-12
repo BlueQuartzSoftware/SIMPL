@@ -35,6 +35,7 @@ set(SIMPLView_PARAMETER_WIDGETS
     MultiDataArraySelectionWidget
     PreflightUpdatedValueWidget
     RangeWidget
+    ReadASCIIDataWidget
     SecondOrderPolynomialWidget
     SeparatorWidget
     StringWidget
