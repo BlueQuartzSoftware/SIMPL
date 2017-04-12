@@ -2,6 +2,9 @@
  <RCC version="1.0">
  <qresource>
  <!--  These have HiDPI resources  -->
+  <file>graph.png</file>
+  <file>graph@2x.png</file>
+
   <file>bookmark.png</file>
   <file>bookmark@2x.png</file>
 

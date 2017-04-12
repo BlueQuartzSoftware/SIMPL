@@ -33,7 +33,7 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-#include "StandardOutputDockWidget.h"
+#include "StandardOutputWidget.h"
 
 #include <iostream>
 
@@ -44,13 +44,13 @@
 #include "SVWidgetsLib/QtSupport/QtSSettings.h"
 
 // Include the MOC generated CPP file which has all the QMetaObject methods/data
-#include "moc_StandardOutputDockWidget.cpp"
+#include "moc_StandardOutputWidget.cpp"
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-StandardOutputDockWidget::StandardOutputDockWidget(QWidget* parent)
-: QDockWidget(parent)
+StandardOutputWidget::StandardOutputWidget(QWidget* parent)
+: QWidget(parent)
 {
   setupUi(this);
   setupGui();
@@ -59,14 +59,14 @@ StandardOutputDockWidget::StandardOutputDockWidget(QWidget* parent)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-StandardOutputDockWidget::~StandardOutputDockWidget()
+StandardOutputWidget::~StandardOutputWidget()
 {
 }
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void StandardOutputDockWidget::setupGui()
+void StandardOutputWidget::setupGui()
 {  
   clearLogBtn->setDisabled(true);
   saveLogBtn->setDisabled(true);
@@ -75,26 +75,7 @@ void StandardOutputDockWidget::setupGui()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void StandardOutputDockWidget::writeSettings(QtSSettings* prefs)
-{
-  prefs->setValue(objectName(), isHidden());
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-void StandardOutputDockWidget::readSettings(QMainWindow* main, QtSSettings* prefs)
-{
-  main->restoreDockWidget(this);
-
-  bool b = prefs->value(objectName(), QVariant(true)).toBool();
-  setHidden(b);
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-void StandardOutputDockWidget::on_saveLogBtn_pressed()
+void StandardOutputWidget::on_saveLogBtn_pressed()
 {
   QString s = QString("Text Files (*.txt *.log);;All Files(*.*)");
   QString defaultName = m_LastPathOpened + QDir::separator() + "Untitled";
@@ -117,7 +98,7 @@ void StandardOutputDockWidget::on_saveLogBtn_pressed()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void StandardOutputDockWidget::on_clearLogBtn_pressed()
+void StandardOutputWidget::on_clearLogBtn_pressed()
 {
   int answer;
 
@@ -159,7 +140,7 @@ void StandardOutputDockWidget::on_clearLogBtn_pressed()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void StandardOutputDockWidget::appendText(const QString &text)
+void StandardOutputWidget::appendText(const QString &text)
 {
   stdOutTextEdit->append(text);
   stdOutTextEdit->ensureCursorVisible();

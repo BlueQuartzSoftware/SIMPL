@@ -81,6 +81,7 @@ include(${SVWidgetsLib_SOURCE_DIR}/Dialogs/SourceList.cmake)
 include(${SVWidgetsLib_SOURCE_DIR}/FilterParameterWidgets/SourceList.cmake)
 include(${SVWidgetsLib_SOURCE_DIR}/QtSupport/SourceList.cmake)
 include(${SVWidgetsLib_SOURCE_DIR}/Widgets/SourceList.cmake)
+include(${SVWidgetsLib_SOURCE_DIR}/Widgets/ImportASCIIDataWizard/SourceList.cmake)
 
 #------------------------------------------------------------------------------
 # Clear these variables and look for any extra Widget Directories that the
@@ -108,6 +109,13 @@ set(Project_SRCS
   #---------------
   ${SVWidgetsLib_Extra_Sources}
   ${SVWidgetsLib_Extra_Headers}
+
+  ${SVWidgetsLib_Widgets_HDRS}
+  ${SVWidgetsLib_Widgets_HDRS_MOC}
+  ${SVWidgetsLib_Widgets_SRCS}
+  ${SVWidgetsLib_Widgets_UIS}
+  ${SVWidgetsLib_Widgets_Generated_MOC_SRCS}
+  ${SVWidgetsLib_Widgets_Generated_UI_HDRS}
 )
 
 # --------------------------------------------------------------------

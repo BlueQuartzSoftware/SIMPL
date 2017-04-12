@@ -33,65 +33,38 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-#ifndef _standardoutputdockwidget_h_
-#define _standardoutputdockwidget_h_
 
-#include <QtWidgets/QMainWindow>
-#include <QtWidgets/QDockWidget>
+#ifndef _abstractwizardpage_h_
+#define _abstractwizardpage_h_
 
-#include "SIMPLib/Common/IObserver.h"
+#include <QtWidgets/QWizardPage>
 
-#include "SVWidgetsLib/SVWidgetsLib.h"
-
-#include "ui_StandardOutputDockWidget.h"
-
-class QtSSettings;
-
-class SVWidgetsLib_EXPORT StandardOutputDockWidget : public QDockWidget, public IObserver, private Ui::StandardOutputDockWidget
+class AbstractWizardPage : public QWizardPage
 {
-    Q_OBJECT
+  Q_OBJECT
 
   public:
-    StandardOutputDockWidget(QWidget* parent = nullptr);
-    virtual ~StandardOutputDockWidget();
+    virtual ~AbstractWizardPage();
 
     /**
-    * @brief Reads the preferences from the users pref file
+    * @brief Polymorphic function that refreshes the model based on what page we are currently on
     */
-    void readSettings(QMainWindow* main, QtSSettings* prefs);
+    virtual void refreshModel();
 
     /**
-    * @brief Writes the preferences to the users pref file
+    * @brief Controls which page to navigate to after the user clicks "Next" button
     */
-    void writeSettings(QtSSettings* prefs);
-
-    /**
-     * @brief appendText
-     * @param text
-     */
-    void appendText(const QString &text);
+    virtual int nextId() const;
 
   protected:
-    void setupGui();
+    AbstractWizardPage(const QString &inputFilePath, QWidget* parent = nullptr);
 
-  protected slots:
-    /**
-     * @brief on_saveLogBtn_pressed
-     */
-    void on_saveLogBtn_pressed();
-
-    /**
-     * @brief on_clearLogBtn_pressed
-     */
-    void on_clearLogBtn_pressed();
+    QString                                         m_InputFilePath;
 
   private:
-    QString             m_LastPathOpened = "";
 
-    StandardOutputDockWidget(const StandardOutputDockWidget&); // Copy Constructor Not Implemented
-    void operator=(const StandardOutputDockWidget&); // Operator '=' Not Implemented
-
-
+    AbstractWizardPage(const AbstractWizardPage&); // Copy Constructor Not Implemented
+    void operator=(const AbstractWizardPage&); // Operator '=' Not Implemented
 };
 
-#endif // _standardoutputdockwidget_h_
+#endif /* AbstractWizardPage_H_ */

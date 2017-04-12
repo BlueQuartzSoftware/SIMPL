@@ -75,6 +75,9 @@ class SVWidgetsLib_EXPORT PipelineFilterObject
 
     void setHasFocus(bool hasFocus);
 
+    SIMPL_BOOL_PROPERTY( Selected)
+
+
     QWidget* getBasicInputsWidget();
     QWidget* getCurrentStructureWidget();
 
@@ -83,33 +86,81 @@ class SVWidgetsLib_EXPORT PipelineFilterObject
 
     using EnumType = unsigned int;
 
-    enum class State : EnumType
+    enum class WidgetState : EnumType
     {
-      Idle = 0,      //!<
-      Running = 1, //!<
+      Ready = 0,      //!<
+      Executing = 1, //!<
       Completed = 2, //!<
     };
-    SIMPL_INSTANCE_PROPERTY(State, CurrentState)
+    SIMPL_INSTANCE_PROPERTY(WidgetState, WidgetState)
+
+    enum class PipelineState : EnumType
+    {
+      Running = 0,
+      Stopped = 1,
+      Paused = 4,
+    };
+    SIMPL_INSTANCE_PROPERTY(PipelineState, PipelineState)
+
+    enum class ErrorState : EnumType
+    {
+        Ok = 0,
+        Error = 1,
+        Warning = 2,
+    };
+    SIMPL_INSTANCE_PROPERTY(ErrorState, ErrorState)
 
     /**
      * @brief changeStyle
      */
-    virtual void changeStyle();
+    virtual void changeStyle(int i = -1);
 
-    /**
-    * @brief toRunningState
-    */
-    virtual void toRunningState();
 
     /**
     * @brief toIdleState
     */
-    virtual void toIdleState();
+    virtual void toReadyState();
+
+    /**
+    * @brief toRunningState
+    */
+    virtual void toExecutingState();
 
     /**
      * @brief toCompletedState
      */
     virtual void toCompletedState();
+
+
+    /**
+     * @brief toActiveState
+     */
+    virtual void toRunningState();
+
+    /**
+     * @brief toInactiveState
+     */
+    virtual void toStoppedState();
+
+    /**
+     * @brief toSelectedState
+     */
+    virtual void toPausedState();
+
+    /**
+     * @brief toOkState
+     */
+    virtual void toOkState();
+
+    /**
+     * @brief toErrorState
+     */
+    virtual void toErrorState();
+
+    /**
+     * @brief toWarningState
+     */
+    virtual void toWarningState();
 
   private:
     AbstractFilter::Pointer           m_Filter;

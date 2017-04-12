@@ -33,11 +33,12 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-#ifndef _issuesdockwidget_h_
-#define _issuesdockwidget_h_
+#ifndef _IssuesWidget_h_
+#define _IssuesWidget_h_
 
 
-#include <QtWidgets/QDockWidget>
+#include <QtWidgets/QWidget>
+#include <QtWidgets/QMainWindow>
 
 #include "SIMPLib/SIMPLib.h"
 #include "SIMPLib/Common/IObserver.h"
@@ -45,32 +46,22 @@
 
 #include "SVWidgetsLib/SVWidgetsLib.h"
 
-#include "ui_IssuesDockWidget.h"
+#include "ui_IssuesWidget.h"
 
 class FilterListToolboxWidget;
 class QLabel;
 class QTableWidgetItem;
 class QtSSettings;
 
-class SVWidgetsLib_EXPORT IssuesDockWidget : public QDockWidget, public IObserver, private Ui::IssuesDockWidget
+class SVWidgetsLib_EXPORT IssuesWidget : public QWidget, public IObserver, private Ui::IssuesWidget
 {
 
     Q_OBJECT
   public:
-    IssuesDockWidget(QWidget* parent = nullptr);
-    virtual ~IssuesDockWidget();
+    IssuesWidget(QWidget* parent = nullptr);
+    virtual ~IssuesWidget();
 
     QLabel* createHyperlinkLabel(PipelineMessage msg);
-
-    /**
-    * @brief Reads the preferences from the users pref file
-    */
-    void readSettings(QMainWindow* main, QtSSettings* prefs);
-
-    /**
-    * @brief Writes the preferences to the users pref file
-    */
-    void writeSettings(QtSSettings* prefs);
 
   public slots:
     void processPipelineMessage(const PipelineMessage& msg);
@@ -88,8 +79,8 @@ class SVWidgetsLib_EXPORT IssuesDockWidget : public QDockWidget, public IObserve
     QVector<PipelineMessage> m_CachedMessages;
 
 
-    IssuesDockWidget(const IssuesDockWidget&); // Copy Constructor Not Implemented
-    void operator=(const IssuesDockWidget&); // Operator '=' Not Implemented
+    IssuesWidget(const IssuesWidget&); // Copy Constructor Not Implemented
+    void operator=(const IssuesWidget&); // Operator '=' Not Implemented
 
 
 };

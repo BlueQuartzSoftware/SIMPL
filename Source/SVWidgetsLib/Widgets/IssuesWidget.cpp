@@ -33,7 +33,7 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-#include "IssuesDockWidget.h"
+#include "IssuesWidget.h"
 
 #include <iostream>
 
@@ -48,13 +48,13 @@
 #include "SVWidgetsLib/QtSupport/QtSHelpUrlGenerator.h"
 
 // Include the MOC generated CPP file which has all the QMetaObject methods/data
-#include "moc_IssuesDockWidget.cpp"
+#include "moc_IssuesWidget.cpp"
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-IssuesDockWidget::IssuesDockWidget(QWidget* parent)
-: QDockWidget(parent)
+IssuesWidget::IssuesWidget(QWidget* parent)
+: QWidget(parent)
 {
   setupUi(this);
   setupGui();
@@ -63,14 +63,14 @@ IssuesDockWidget::IssuesDockWidget(QWidget* parent)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-IssuesDockWidget::~IssuesDockWidget()
+IssuesWidget::~IssuesWidget()
 {
 }
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void IssuesDockWidget::setupGui()
+void IssuesWidget::setupGui()
 {
   errorTableWidget->horizontalHeader()->setSectionResizeMode(0, QHeaderView::ResizeToContents);
   errorTableWidget->horizontalHeader()->setSectionResizeMode(1, QHeaderView::Stretch);
@@ -82,14 +82,14 @@ void IssuesDockWidget::setupGui()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void IssuesDockWidget::on_errorTableWidget_itemClicked(QTableWidgetItem* item)
+void IssuesWidget::on_errorTableWidget_itemClicked(QTableWidgetItem* item)
 {
 }
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void IssuesDockWidget::clearIssues()
+void IssuesWidget::clearIssues()
 {
   errorTableWidget->clearContents();
   errorTableWidget->setRowCount(0);
@@ -99,7 +99,7 @@ void IssuesDockWidget::clearIssues()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void IssuesDockWidget::processPipelineMessage(const PipelineMessage& msg)
+void IssuesWidget::processPipelineMessage(const PipelineMessage& msg)
 {
   m_CachedMessages.push_back(msg);
 }
@@ -107,7 +107,7 @@ void IssuesDockWidget::processPipelineMessage(const PipelineMessage& msg)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void IssuesDockWidget::displayCachedMessages()
+void IssuesWidget::displayCachedMessages()
 {
   // Figure out how many error and warning messages that we have. We ignore the rest
   int count = 0;
@@ -223,7 +223,7 @@ void IssuesDockWidget::displayCachedMessages()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-QLabel* IssuesDockWidget::createHyperlinkLabel(PipelineMessage msg)
+QLabel* IssuesWidget::createHyperlinkLabel(PipelineMessage msg)
 {
   QString filterClassName = (msg.getFilterClassName());
   QString filterHumanLabel = (msg.getFilterHumanLabel());
@@ -259,29 +259,10 @@ QLabel* IssuesDockWidget::createHyperlinkLabel(PipelineMessage msg)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void IssuesDockWidget::showFilterHelp(const QString& urlString)
+void IssuesWidget::showFilterHelp(const QString& urlString)
 {
   QUrl helpURL(urlString);
 
   DocRequestManager* docRequester = DocRequestManager::Instance();
   docRequester->requestFilterDocUrl(helpURL);
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-void IssuesDockWidget::writeSettings(QtSSettings* prefs)
-{
-  prefs->setValue(objectName(), isHidden());
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-void IssuesDockWidget::readSettings(QMainWindow* main, QtSSettings* prefs)
-{
-  main->restoreDockWidget(this);
-
-  bool b = prefs->value(objectName(), QVariant(false)).toBool();
-  setHidden(b);
 }

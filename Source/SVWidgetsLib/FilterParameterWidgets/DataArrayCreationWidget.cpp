@@ -113,6 +113,7 @@ void DataArrayCreationWidget::setupGui()
   if(getFilterParameter() != nullptr)
   {
     QString str = getFilterParameter()->getHumanLabel();
+    label->setText(str);
     stringEdit->setText(str, true);
   }
   blockSignals(false);
