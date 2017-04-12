@@ -344,6 +344,9 @@ class SVWidgetsLib_EXPORT SVPipelineViewWidget : public QFrame, public PipelineV
   protected:
     void setupGui();
 
+    int getIndexAtPoint(const QPoint& point);
+    SVPipelineFilterWidget* getFilterWidgetAtIndex(int index);
+
     void dragEnterEvent(QDragEnterEvent* event) override;
     void dragLeaveEvent(QDragLeaveEvent* event) override;
     void dragMoveEvent(QDragMoveEvent* event) override;
@@ -400,28 +403,28 @@ class SVWidgetsLib_EXPORT SVPipelineViewWidget : public QFrame, public PipelineV
 
   private:
     SVPipelineFilterWidget*                           m_ShiftStart = nullptr;
-    QVBoxLayout*                                        m_FilterWidgetLayout = nullptr;
-    int                                                         m_FilterOrigPos;
+    QVBoxLayout*                                      m_FilterWidgetLayout = nullptr;
+    int                                               m_FilterOrigPos;
     DropBoxWidget*                                    m_DropBox = nullptr;
-    int                                                         m_DropIndex;
-    QLabel*                                                 m_EmptyPipelineLabel = nullptr;
-    QList<QObject*>                                 m_PipelineMessageObservers;
-    QScrollArea*                                          m_ScrollArea = nullptr;
-    QTimer                                                  m_autoScrollTimer;
-    bool                                                      m_AutoScroll;
-    int                                                          m_AutoScrollMargin;
-    int                                                           m_autoScrollCount;
-    QWidget*                                                m_InputParametersWidget = nullptr;
-    QMenu*                                                  m_ContextMenu = nullptr;
-    QSharedPointer<QUndoStack>                m_UndoStack;
-    QAction*                                                  m_ActionUndo = nullptr;
-    QAction*                                                  m_ActionRedo = nullptr;
-    QString                                                     m_CurrentUndoText = "";
-    QString                                                     m_CurrentRedoText = "";
-    QString                                                     m_PreviousUndoText = "";
-    QString                                                     m_PreviousRedoText = "";
-    bool                                                          m_BlockPreflight;
-    std::stack<bool>                                      m_BlockPreflightStack;
+    int                                               m_DropIndex;
+    QLabel*                                           m_EmptyPipelineLabel = nullptr;
+    QList<QObject*>                                   m_PipelineMessageObservers;
+    QScrollArea*                                      m_ScrollArea = nullptr;
+    QTimer                                            m_autoScrollTimer;
+    bool                                              m_AutoScroll;
+    int                                               m_AutoScrollMargin;
+    int                                               m_autoScrollCount;
+    QWidget*                                          m_InputParametersWidget = nullptr;
+    QMenu*                                            m_ContextMenu = nullptr;
+    QSharedPointer<QUndoStack>                        m_UndoStack;
+    QAction*                                          m_ActionUndo = nullptr;
+    QAction*                                          m_ActionRedo = nullptr;
+    QString                                           m_CurrentUndoText = "";
+    QString                                           m_CurrentRedoText = "";
+    QString                                           m_PreviousUndoText = "";
+    QString                                           m_PreviousRedoText = "";
+    bool                                              m_BlockPreflight;
+    std::stack<bool>                                  m_BlockPreflightStack;
 
     /**
      * @brief addFilterObject
