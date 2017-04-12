@@ -113,6 +113,11 @@ void PipelineFilterObject::setupFilterInputWidget()
 // -----------------------------------------------------------------------------
 AbstractFilter::Pointer PipelineFilterObject::getFilter()
 {
+  if(nullptr == this)
+  {
+    return nullptr;
+  }
+
   return m_Filter;
 }
 
