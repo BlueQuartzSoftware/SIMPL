@@ -571,7 +571,7 @@ const QString ImportAsciDataArray::getFilterVersion()
 // -----------------------------------------------------------------------------
 const QString ImportAsciDataArray::getGroupName()
 {
-  return SIMPL::FilterGroups::IOFilters;
+  return SIMPL::FilterGroups::CoreFilters;
 }
 
 // -----------------------------------------------------------------------------
