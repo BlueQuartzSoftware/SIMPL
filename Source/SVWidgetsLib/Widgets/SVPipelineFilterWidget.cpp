@@ -349,7 +349,9 @@ void SVPipelineFilterWidget::changeStyle(int i)
 
   if(isSelected() == true)
   {
-
+  #if defined(Q_OS_WIN)
+    svWidgetStyleStream << "color: rgb(242, 242, 242);";
+  #endif
     svWidgetStyleStream << "border: 2px solid " <<  QApplication::palette().highlight().color().name() << ";";
     svWidgetStyleStream << "margin: 0px;";
     widgetBackgroundColor = "background-color: " +  QApplication::palette().highlight().color().name() + ";";
