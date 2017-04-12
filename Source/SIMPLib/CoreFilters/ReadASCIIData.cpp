@@ -603,6 +603,17 @@ const QString ReadASCIIData::getBrandingString()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
+const QString ReadASCIIData::getFilterVersion()
+{
+  QString version;
+  QTextStream vStream(&version);
+  vStream << SIMPLib::Version::Major() << "." << SIMPLib::Version::Minor() << "." << SIMPLib::Version::Patch();
+  return version;
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
 const QString ReadASCIIData::getGroupName()
 {
   return SIMPL::FilterGroups::CoreFilters;

@@ -51,6 +51,13 @@ class ReadASCIIData : public AbstractFilter
     virtual const QString getBrandingString();
 
     /**
+     * @brief getFilterVersion Returns a version string for this filter. Default
+     * value is an empty string.
+     * @return
+     */
+    virtual const QString getFilterVersion();
+
+    /**
      * @brief newFilterInstance Reimplemented from @see AbstractFilter class
      */
     virtual AbstractFilter::Pointer newFilterInstance(bool copyFilterParameters);
