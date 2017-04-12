@@ -64,6 +64,7 @@ set(_PublicFilters
   ExecuteProcess
   ExtractComponentAsArray
   FeatureCountDecision
+  FeatureDataCSVWriter
   FindDerivatives
   GenerateColorTable
   ImportAsciDataArray
