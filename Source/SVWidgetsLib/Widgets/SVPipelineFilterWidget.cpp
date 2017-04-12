@@ -265,6 +265,7 @@ void SVPipelineFilterWidget::changeStyle(int i)
   labelStyleStream << "QLabel {";
   labelStyleStream << fontString;
   labelStyleStream << "padding: 3 3 3 3px;";
+
   //----------------------------------------------------
   QString filterIndexStyle;
   QTextStream filterIndexStyleStream(&filterIndexStyle);
@@ -349,7 +350,6 @@ void SVPipelineFilterWidget::changeStyle(int i)
 
   if(isSelected() == true)
   {
-
     svWidgetStyleStream << "border: 2px solid " <<  QApplication::palette().highlight().color().name() << ";";
     svWidgetStyleStream << "margin: 0px;";
     widgetBackgroundColor = "background-color: " +  QApplication::palette().highlight().color().name() + ";";
@@ -377,6 +377,16 @@ void SVPipelineFilterWidget::changeStyle(int i)
   setStyleSheet(svWidgetStyle + labelStyle);
   filterIndex->setStyleSheet(filterIndexStyle);
 
+#if defined(Q_OS_WIN)
+  if (isSelected() == true)
+  {
+    filterName->setStyleSheet("color: rgb(242, 242, 242);");
+  }
+  else
+  {
+    filterName->setStyleSheet("");
+  }
+#endif
 
 }
 
