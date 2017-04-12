@@ -1467,10 +1467,10 @@ void SVPipelineViewWidget::dragMoveEvent(QDragMoveEvent* event)
     }
 
     int count = filterCount();
-    //if(count == 0)
-    //{
-    //  return;
-    //}
+    if(count <= 0)
+    {
+      return;
+    }
 
     // insert filter
     {
@@ -1580,8 +1580,7 @@ void SVPipelineViewWidget::dragMoveEvent(QDragMoveEvent* event)
       
       if(i < 0 || i > filterCount())
       {
-        i = filterCount();
-        //return;
+        return;
       }
 
       m_DropBox->setLabel("    [" + QString::number(i + 1) + "] " + humanName);
