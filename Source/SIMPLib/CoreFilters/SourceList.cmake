@@ -72,6 +72,7 @@ set(_PublicFilters
   MoveData
   PostSlackMessage
   RawBinaryReader
+  ReadASCIIData
   RemoveArrays
   RemoveComponentFromArray
   RenameAttributeArray
@@ -115,6 +116,10 @@ foreach(f ${_PrivateFilters} )
 endforeach()
 
 source_group("${SIMPLib_SOURCE_DIR} ${_filterGroupName} util" FILES ${HEADERS} ${SOURCES})
+
+ADD_SIMPL_SUPPORT_HEADER(${SIMPLib_SOURCE_DIR} ${_filterGroupName}/util AbstractDataParser.hpp)
+ADD_SIMPL_SUPPORT_HEADER(${SIMPLib_SOURCE_DIR} ${_filterGroupName}/util ASCIIWizardData.hpp)
+ADD_SIMPL_SUPPORT_HEADER(${SIMPLib_SOURCE_DIR} ${_filterGroupName}/util ParserFunctors.hpp)
 
 ADD_SIMPL_SUPPORT_HEADER(${SIMPLib_SOURCE_DIR} ${_filterGroupName}/util CalculatorItem.h)
 ADD_SIMPL_SUPPORT_SOURCE(${SIMPLib_SOURCE_DIR} ${_filterGroupName}/util CalculatorItem.cpp)
