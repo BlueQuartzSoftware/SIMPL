@@ -1342,17 +1342,6 @@ int SVPipelineViewWidget::getIndexAtPoint(const QPoint& point)
         return index;
       }
     }
-      //while (nullptr != (filterWidget = getFilterWidgetAtIndex(index)))
-      //{
-      //  QPoint widgetPos = filterWidget->pos();
-      //  if (point.y() < widgetPos.y() + filterWidget->height() / 2)
-      //  {
-      //    return index;
-      //  }
-      //  index++;
-      //}
-    
-    //return index;
   }
 
   return m_FilterWidgetLayout->count() - 1;
@@ -1406,11 +1395,6 @@ SVPipelineFilterWidget* SVPipelineViewWidget::getFilterWidgetAtIndex(int index)
 // -----------------------------------------------------------------------------
 void SVPipelineViewWidget::dragMoveEvent(QDragMoveEvent* event)
 {
-  //if(nullptr == m_FilterWidgetLayout)
-  //{
-  //  return;
-  //}
-
   // Remove the drop box, if it exists
   if(nullptr != m_FilterWidgetLayout && m_FilterWidgetLayout->indexOf(m_DropBox) != -1)
   {
