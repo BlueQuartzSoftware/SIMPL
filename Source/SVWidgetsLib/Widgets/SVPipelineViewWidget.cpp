@@ -1692,7 +1692,6 @@ void SVPipelineViewWidget::dropEvent(QDropEvent* event)
       else
       {
         index = -1;
-        return;
       }
 
       if(index < 0 || index > filterCount())
