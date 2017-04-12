@@ -83,6 +83,8 @@ set(_PublicFilters
   RequiredZThickness
   ScaleVolume
   SetOriginResolutionImageGeom
+  WriteASCIIData
+  WriteTriangleGeometry
 )
 
 
