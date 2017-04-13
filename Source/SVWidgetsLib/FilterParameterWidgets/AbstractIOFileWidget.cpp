@@ -257,7 +257,7 @@ bool AbstractIOFileWidget::hasValidFilePath(const QString &filePath)
     A valid Windows path, absolute or relative, has to have at least one part. */
   if (pathParts[0].isEmpty() == false)
   {
-    buildingPath.append(pathParts[0]);
+    buildingPath.append(pathParts[0] + QDir::separator());
   }
   else
   {
@@ -274,7 +274,7 @@ bool AbstractIOFileWidget::hasValidFilePath(const QString &filePath)
    * we are starting with the first folder part and need to add that to our pathBuildUp */
   else if (pathParts[0].isEmpty() == false && fi.isRelative())
   {
-    pathBuildUp.append(pathParts[0]);
+    pathBuildUp.append(pathParts[0] + QDir::separator());
   }
   else
   {
