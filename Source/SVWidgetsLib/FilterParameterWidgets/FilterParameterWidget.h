@@ -41,7 +41,7 @@
 #include <QtCore/QObject>
 #include <QtCore/QPointer>
 
-#include <QtWidgets/QPushButton>
+#include <QtWidgets/QToolButton>
 #include <QtWidgets/QWidget>
 #include <QtWidgets/QFrame>
 
@@ -99,7 +99,7 @@ class SVWidgetsLib_EXPORT FilterParameterWidget : public QFrame
     void animationFinished();
 
   protected:
-    QPoint adjustedMenuPosition(QPushButton* pushButton);
+    QPoint adjustedMenuPosition(QToolButton *pushButton);
 
   protected slots:
     void showBorder();

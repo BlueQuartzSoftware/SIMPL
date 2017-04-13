@@ -99,7 +99,7 @@
       </size>
      </property>
      <property name="toolTip">
-      <string/>
+      <string>Click to Add Row to Table</string>
      </property>
      <property name="text">
       <string/>
@@ -166,14 +166,14 @@
       </size>
      </property>
      <property name="toolTip">
-      <string/>
+      <string>Click to Delete Column From Table</string>
      </property>
      <property name="text">
       <string/>
      </property>
      <property name="icon">
       <iconset resource="../../icons/images/Icons.qrc">
-       <normaloff>:/delete2.png</normaloff>:/delete2.png</iconset>
+       <normaloff>:/delete@2x.png</normaloff>:/delete@2x.png</iconset>
      </property>
      <property name="iconSize">
       <size>
@@ -207,14 +207,14 @@
       </size>
      </property>
      <property name="toolTip">
-      <string/>
+      <string>Click to Remove Row From Table.</string>
      </property>
      <property name="text">
       <string/>
      </property>
      <property name="icon">
       <iconset resource="../../icons/images/Icons.qrc">
-       <normaloff>:/delete2.png</normaloff>:/delete2.png</iconset>
+       <normaloff>:/delete@2x.png</normaloff>:/delete@2x.png</iconset>
      </property>
      <property name="iconSize">
       <size>
@@ -248,7 +248,7 @@
       </size>
      </property>
      <property name="toolTip">
-      <string/>
+      <string>Click to add Column to Table</string>
      </property>
      <property name="text">
       <string/>

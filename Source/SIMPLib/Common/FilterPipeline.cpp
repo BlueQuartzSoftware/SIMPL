@@ -348,6 +348,7 @@ void FilterPipeline::execute()
     connectFilterNotifications((*filter).get());
     (*filter)->setDataContainerArray(dca);
     setCurrentFilter(*filter);
+    emit (*filter)->filterInProgress();
     (*filter)->execute();
     disconnectFilterNotifications((*filter).get());
     (*filter)->setDataContainerArray(DataContainerArray::NullPointer());
@@ -368,6 +369,7 @@ void FilterPipeline::execute()
       break;
     }
     ss = QObject::tr("%1 Filter Complete").arg((*filter)->getNameOfClass());
+    emit (*filter)->filterCompleted();
   }
 
   emit pipelineFinished();

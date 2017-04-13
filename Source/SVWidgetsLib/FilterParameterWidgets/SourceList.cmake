@@ -9,7 +9,6 @@ set(SIMPLView_PARAMETER_WIDGETS
     AttributeMatrixSelectionWidget
     AxisAngleWidget
     BooleanWidget
-    CalculatorWidget
     ChoiceWidget
     ComparisonSelectionWidget
     ConstrainedDoubleWidget
@@ -50,7 +49,9 @@ set(SIMPLView_PARAMETER_WIDGETS_NO_UI
 
 set(SIMPLView_PARAMETER_WIDGETS_NO_CODEGEN
   AbstractIOFileWidget
+  CalculatorWidget
   PhaseTypeSelectionWidget
+  ReadASCIIDataWidget
   ShapeTypeSelectionWidget
   UnknownWidget
 )

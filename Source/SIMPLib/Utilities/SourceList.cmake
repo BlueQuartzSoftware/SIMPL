@@ -56,6 +56,7 @@ set(SIMPLib_Utilities_HDRS
   ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/SIMPLibRandom.h
   ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/FilePathGenerator.h
   ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/QMetaObjectUtilities.h
+  ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/StringOperations.h
   ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/UnitTestSupport.hpp
 )
 
@@ -65,6 +66,7 @@ set(SIMPLib_Utilities_SRCS
   ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/SIMPLibRandom.cpp
   ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/FilePathGenerator.cpp
   ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/QMetaObjectUtilities.cpp
+  ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/StringOperations.cpp
   ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/TestObserver.cpp
 )
 

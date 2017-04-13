@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>274</width>
-    <height>45</height>
+    <height>40</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -18,8 +18,8 @@
   </property>
   <property name="minimumSize">
    <size>
-    <width>0</width>
-    <height>45</height>
+    <width>50</width>
+    <height>36</height>
    </size>
   </property>
   <property name="font">
@@ -45,7 +45,7 @@
 /*	
 background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0 rgba(185, 185, 185, 255), stop:0.5 rgba(226, 226, 226, 255), stop:1 rgba(150, 150, 150, 255));
 */
-	background-color: rgb(149, 195, 255);
+/* 	background-color: rgb(149, 195, 255); */
 border: 1px solid #515151;
 border-radius: 3px;
 padding: 0 0 0 0px;
@@ -89,7 +89,7 @@ color: rgb(255, 255, 255);
      <property name="styleSheet">
       <string notr="true">QLabel
 {
-    background-color: rgb(51, 141, 203);
+    background-color: rgb(128, 128, 128);
 	color: rgb(237, 237, 237);
 	font: 13pt ;
 	padding: 3 3 3 3px;
@@ -166,6 +166,9 @@ color: rgb(255, 255, 255);
   </layout>
  </widget>
  <resources>
+  <include location="../../icons/images/Icons.qrc"/>
+  <include location="../../icons/images/Icons.qrc"/>
+  <include location="../../icons/images/Icons.qrc"/>
   <include location="../../icons/images/Icons.qrc"/>
  </resources>
  <connections/>

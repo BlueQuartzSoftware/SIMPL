@@ -64,6 +64,7 @@ set(_PublicFilters
   ExecuteProcess
   ExtractComponentAsArray
   FeatureCountDecision
+  FeatureDataCSVWriter
   FindDerivatives
   GenerateColorTable
   ImportAsciDataArray
@@ -72,6 +73,7 @@ set(_PublicFilters
   MoveData
   PostSlackMessage
   RawBinaryReader
+  ReadASCIIData
   RemoveArrays
   RemoveComponentFromArray
   RenameAttributeArray
@@ -81,6 +83,8 @@ set(_PublicFilters
   RequiredZThickness
   ScaleVolume
   SetOriginResolutionImageGeom
+  WriteASCIIData
+  WriteTriangleGeometry
 )
 
 
@@ -115,6 +119,10 @@ foreach(f ${_PrivateFilters} )
 endforeach()
 
 source_group("${SIMPLib_SOURCE_DIR} ${_filterGroupName} util" FILES ${HEADERS} ${SOURCES})
+
+ADD_SIMPL_SUPPORT_HEADER(${SIMPLib_SOURCE_DIR} ${_filterGroupName}/util AbstractDataParser.hpp)
+ADD_SIMPL_SUPPORT_HEADER(${SIMPLib_SOURCE_DIR} ${_filterGroupName}/util ASCIIWizardData.hpp)
+ADD_SIMPL_SUPPORT_HEADER(${SIMPLib_SOURCE_DIR} ${_filterGroupName}/util ParserFunctors.hpp)
 
 ADD_SIMPL_SUPPORT_HEADER(${SIMPLib_SOURCE_DIR} ${_filterGroupName}/util CalculatorItem.h)
 ADD_SIMPL_SUPPORT_SOURCE(${SIMPLib_SOURCE_DIR} ${_filterGroupName}/util CalculatorItem.cpp)

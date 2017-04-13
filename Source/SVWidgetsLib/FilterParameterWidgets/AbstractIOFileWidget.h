@@ -114,10 +114,12 @@ class SVWidgetsLib_EXPORT AbstractIOFileWidget : public FilterParameterWidget, p
     void parametersChanged();
 
   private:
-    static QString    m_OpenDialogLastFilePath;
-    bool m_DidCausePreflight;
-    QAction* m_ShowFileAction = nullptr;
+    static QString                                  m_OpenDialogLastFilePath;
+    bool                                            m_DidCausePreflight;
+    QAction*                                        m_ShowFileAction = nullptr;
+    QString                                         m_CurrentlyValidPath = "";
 
+    bool hasValidFilePath(const QString &filePath);
 
     AbstractIOFileWidget(const AbstractIOFileWidget&); // Copy Constructor Not Implemented
     void operator=(const AbstractIOFileWidget&); // Operator '=' Not Implemented

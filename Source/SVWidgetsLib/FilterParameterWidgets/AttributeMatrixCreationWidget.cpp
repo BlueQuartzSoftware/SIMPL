@@ -124,7 +124,7 @@ void AttributeMatrixCreationWidget::setupGui()
   // Do not allow the user to put a forward slash into the attributeMatrixName line edit
   stringEdit->setValidator(new QRegularExpressionValidator(QRegularExpression("[^/]*"), this));
 
-  m_SelectedDataContainerPath->setStyleSheet(QtSStyles::DAPSelectionButtonStyle(true));
+  m_SelectedDataContainerPath->setStyleSheet(QtSStyles::QToolSelectionButtonStyle(true));
 
   m_MenuMapper = new QSignalMapper(this);
   connect(m_MenuMapper, SIGNAL(mapped(QString)), this, SLOT(dataContainerSelected(QString)));
@@ -327,12 +327,12 @@ void AttributeMatrixCreationWidget::afterPreflight()
     if (nullptr != dc.get()) {
       QString html = dc->getInfoString(SIMPL::HtmlFormat);
       m_SelectedDataContainerPath->setToolTip(html);
-      m_SelectedDataContainerPath->setStyleSheet(QtSStyles::DAPSelectionButtonStyle(true));
+      m_SelectedDataContainerPath->setStyleSheet(QtSStyles::QToolSelectionButtonStyle(true));
     }
   }
   else
   {
-    m_SelectedDataContainerPath->setStyleSheet(QtSStyles::DAPSelectionButtonStyle(false));
+    m_SelectedDataContainerPath->setStyleSheet(QtSStyles::QToolSelectionButtonStyle(false));
   }
 }
 

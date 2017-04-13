@@ -83,7 +83,7 @@ private:
 // -----------------------------------------------------------------------------
 DataContainerWriter::DataContainerWriter()
 : AbstractFilter()
-, m_OutputFile("")
+, m_OutputFile(QDir::toNativeSeparators(QDir::homePath() + "/Desktop/Untitled.dream3d"))
 , m_WritePipeline(true)
 , m_WriteXdmfFile(true)
 , m_AppendToExisting(false)

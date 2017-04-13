@@ -263,6 +263,17 @@ class SIMPLib_EXPORT AbstractFilter : public Observable
      */
     virtual void copyFilterParameterInstanceVariables(AbstractFilter* filter);
 
+  signals:
+    /**
+     * @brief Signal is emitted when filter has completed the execute() method
+     */
+    void filterCompleted();
+
+    /**
+     * @brief Signal is emitted when filter is executing
+     */
+    void filterInProgress();
+
   public slots:
 
     /**

@@ -191,7 +191,7 @@ void BookmarksToolboxWidget::addBookmark(const QString& filePath, const QModelIn
   BookmarksModel* model = BookmarksModel::Instance();
   QFileInfo fi(filePath);
   QString fileTitle = fi.baseName();
-  int err = addTreeItem(parent, fileTitle, QIcon(":/text.png"), filePath, model->rowCount(parent), true, false, false);
+  int err = addTreeItem(parent, fileTitle, QIcon(":/bookmark.png"), filePath, model->rowCount(parent), true, false, false);
   if(err >= 0)
   {
     emit updateStatusBar("The pipeline '" + fileTitle + "' has been added successfully.");
@@ -217,7 +217,7 @@ void BookmarksToolboxWidget::readPrebuiltPipelines()
   BookmarksModel* model = BookmarksModel::Instance();
 
   FilterLibraryTreeWidget::ItemType itemType = FilterLibraryTreeWidget::Leaf_Item_Type;
-  QString iconFileName(":/text.png");
+  QString iconFileName(":/bookmark.png");
   bool allowEditing = false;
   QStringList fileExtension;
   fileExtension.append("*.json");
@@ -283,8 +283,8 @@ void BookmarksToolboxWidget::addPipelinesRecursively(QDir currentDir, QModelInde
     addTreeItem(parent, itemName, QIcon(iconFileName), itemInfo.absoluteFilePath(), row, true, false, false);
     nextIndex = model->index(row, BookmarksItem::Name, parent);
 
-    QString htmlFormattedString = generateHtmlFilterListFromPipelineFile(itemInfo.absoluteFilePath());
-    model->setData(nextIndex, htmlFormattedString, Qt::ToolTipRole);
+//    QString htmlFormattedString = generateHtmlFilterListFromPipelineFile(itemInfo.absoluteFilePath());
+//    model->setData(nextIndex, htmlFormattedString, Qt::ToolTipRole);
   }
 }
 

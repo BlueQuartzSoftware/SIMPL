@@ -342,8 +342,8 @@ void SVPipelineViewWidget::focusInEvent(QFocusEvent* event)
   for(int i = 0; i < filterWidgets.size(); i++)
   {
     PipelineFilterObject* fw = filterWidgets[i];
-    fw->setHasFocus(true);
-    fw->changeStyle();
+//    fw->setHasFocus(true);
+//    fw->changeStyle();
   }
 }
 
@@ -356,8 +356,8 @@ void SVPipelineViewWidget::focusOutEvent(QFocusEvent* event)
   for(int i = 0; i < filterWidgets.size(); i++)
   {
     PipelineFilterObject* fw = filterWidgets[i];
-    fw->setHasFocus(false);
-    fw->changeStyle();
+//    fw->setHasFocus(false);
+//    fw->changeStyle();
   }
 }
 
