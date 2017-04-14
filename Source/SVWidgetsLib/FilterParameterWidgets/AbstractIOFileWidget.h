@@ -38,8 +38,10 @@
 
 #include <QtCore/QObject>
 #include <QtCore/QPointer>
-#include <QtWidgets/QWidget>
 
+#include <QtGui/QKeyEvent>
+
+#include <QtWidgets/QWidget>
 
 #include "SVWidgetsLib/QtSupport/QtSFaderWidget.h"
 
@@ -101,6 +103,8 @@ class SVWidgetsLib_EXPORT AbstractIOFileWidget : public FilterParameterWidget, p
     static void setOpenDialogLastFilePath(QString val) { m_OpenDialogLastFilePath = val; }
     static QString getOpenDialogLastFilePath() { return m_OpenDialogLastFilePath; }
 
+    virtual void keyPressEvent(QKeyEvent* event);
+
     /**
      * @brief setupMenuField
      */
@@ -118,6 +122,7 @@ class SVWidgetsLib_EXPORT AbstractIOFileWidget : public FilterParameterWidget, p
     bool                                            m_DidCausePreflight;
     QAction*                                        m_ShowFileAction = nullptr;
     QString                                         m_CurrentlyValidPath = "";
+    QString                                         m_CurrentText = "";
 
     bool hasValidFilePath(const QString &filePath);
 

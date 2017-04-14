@@ -123,7 +123,20 @@ void AbstractIOFileWidget::setupGui()
     }
   }
 
+  m_CurrentText = m_LineEdit->text();
+}
 
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void AbstractIOFileWidget::keyPressEvent(QKeyEvent* event)
+{
+  if (event->key() == Qt::Key_Escape)
+  {
+    m_LineEdit->setText(m_CurrentText);
+    m_LineEdit->setStyleSheet("");
+    m_LineEdit->setToolTip("");
+  }
 }
 
 // -----------------------------------------------------------------------------
@@ -225,6 +238,7 @@ bool AbstractIOFileWidget::verifyPathExists(QString filePath, QLineEdit* lineEdi
 void AbstractIOFileWidget::on_m_LineEdit_editingFinished()
 {
   m_LineEdit->setStyleSheet(QString(""));
+  m_CurrentText = m_LineEdit->text();
   emit parametersChanged(); // This should force the preflight to run because we are emitting a signal
 }
 
@@ -326,8 +340,16 @@ void AbstractIOFileWidget::on_m_LineEdit_textChanged(const QString& text)
     m_ShowFileAction->setDisabled(true);
   }
 
-  m_LineEdit->setStyleSheet(QString::fromLatin1("QLineEdit { color: rgb(255, 0, 0); }"));
-  m_LineEdit->setToolTip("Press the 'Return' key to apply your changes");
+  if (text != m_CurrentText)
+  {
+    m_LineEdit->setStyleSheet(QString::fromLatin1("QLineEdit { color: rgb(255, 0, 0); }"));
+    m_LineEdit->setToolTip("Press the 'Return' key to apply your changes");
+  }
+  else
+  {
+    m_LineEdit->setStyleSheet("");
+    m_LineEdit->setToolTip("");
+  }
 }
 
 // -----------------------------------------------------------------------------
