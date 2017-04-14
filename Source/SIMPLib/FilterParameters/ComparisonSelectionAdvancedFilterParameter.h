@@ -44,18 +44,18 @@
 #include "SIMPLib/Geometry/IGeometry.h"
 
 /**
- * @brief SIMPL_NEW_COMP_SEL_FP This macro is a short-form way of instantiating an instance of
+ * @brief SIMPL_NEW_COMP_SEL_ADV_FP This macro is a short-form way of instantiating an instance of
  * ComparisonSelectionAdvancedFilterParameter. There are 6 required parameters and 1 optional parameter
  * that are always passed to this macro in the following order: HumanLabel, PropertyName, Category,
  * FilterName (class name), Choices, ShowOperators, GroupIndex (optional).
  *
  * Therefore, the macro should be written like this (this is a concrete example):
- * SIMPL_NEW_COMP_SEL_FP("HumanLabel", PropertyName, Category, FilterName, Choices, ShowOperators, GroupIndex)
+ * SIMPL_NEW_COMP_SEL_ADV_FP("HumanLabel", PropertyName, Category, FilterName, Choices, ShowOperators, GroupIndex)
  *
  * Example 1 (instantiated within a filter called [GenericExample](@ref genericexample), without optional GroupIndex parameter):
- * SIMPL_NEW_COMP_SEL_FP("Select Arrays to Threshold", SelectedThresholds, FilterParameter::Parameter, GenericExample, choices, true);
+ * SIMPL_NEW_COMP_SEL_ADV_FP("Select Arrays to Threshold", SelectedThresholds, FilterParameter::Parameter, GenericExample, choices, true);
  */
-#define SIMPL_NEW_COMP_SEL_FP(...) \
+#define SIMPL_NEW_COMP_SEL_ADV_FP(...) \
   SIMPL_EXPAND(_FP_GET_OVERRIDE(__VA_ARGS__, \
   SIMPL_NEW_FP_9, SIMPL_NEW_FP_8, SIMPL_NEW_FP_7, SIMPL_NEW_FP_6, SIMPL_NEW_FP_5, SIMPL_NEW_FP_4)\
   (ComparisonSelectionAdvancedFilterParameter, __VA_ARGS__))
@@ -76,7 +76,7 @@ class SIMPLib_EXPORT ComparisonSelectionAdvancedFilterParameter : public FilterP
 
     /**
      * @brief New This function instantiates an instance of the ComparisonSelectionAdvancedFilterParameter. Although this function is available to be used,
-     * the preferable way to instantiate an instance of this class is to use the SIMPL_NEW_COMP_SEL_FP(...) macro at the top of this file.
+     * the preferable way to instantiate an instance of this class is to use the SIMPL_NEW_COMP_SEL_ADV_FP(...) macro at the top of this file.
 
      * @param humanLabel The name that the users of DREAM.3D see for this filter parameter
      * @param propertyName The internal property name for this filter parameter.
