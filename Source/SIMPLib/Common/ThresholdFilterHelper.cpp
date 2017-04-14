@@ -64,6 +64,8 @@ ThresholdFilterHelper::~ThresholdFilterHelper()
       filterDataGreaterThan<Type>(input);                                                                                                                                                              \
     else if(ops == SIMPL::Comparison::Operator_Equal)                                                                                                                                                  \
       filterDataEqualTo<Type>(input);                                                                                                                                                                  \
+    else if(ops == SIMPL::Comparison::Operator_NotEqual)                                                                                                                                               \
+      filterDataNotEqualTo<Type>(input);                                                                                                                                                               \
     return 1;                                                                                                                                                                                          \
   }
 
