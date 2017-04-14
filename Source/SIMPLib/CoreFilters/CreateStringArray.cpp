@@ -68,7 +68,6 @@
 void initializeArray(IDataArray::Pointer outputArrayPtr, const QString& initializationValue)
 {
   StringDataArray::Pointer array = std::dynamic_pointer_cast<StringDataArray>(outputArrayPtr);
-  size_t count = array->getSize();
   array->initializeWithValue(initializationValue);
 }
 
