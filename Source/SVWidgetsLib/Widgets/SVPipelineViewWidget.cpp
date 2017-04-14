@@ -344,13 +344,7 @@ int SVPipelineViewWidget::filterCount(QUuid startId)
 // -----------------------------------------------------------------------------
 void SVPipelineViewWidget::focusInEvent(QFocusEvent* event)
 {
-  QList<PipelineFilterObject*> filterWidgets = getSelectedFilterObjects();
-  for(int i = 0; i < filterWidgets.size(); i++)
-  {
-    PipelineFilterObject* fw = filterWidgets[i];
-//    fw->setHasFocus(true);
-//    fw->changeStyle();
-  }
+
 }
 
 // -----------------------------------------------------------------------------
@@ -358,13 +352,7 @@ void SVPipelineViewWidget::focusInEvent(QFocusEvent* event)
 // -----------------------------------------------------------------------------
 void SVPipelineViewWidget::focusOutEvent(QFocusEvent* event)
 {
-  QList<PipelineFilterObject*> filterWidgets = getSelectedFilterObjects();
-  for(int i = 0; i < filterWidgets.size(); i++)
-  {
-    PipelineFilterObject* fw = filterWidgets[i];
-//    fw->setHasFocus(false);
-//    fw->changeStyle();
-  }
+
 }
 
 // -----------------------------------------------------------------------------
