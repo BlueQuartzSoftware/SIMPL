@@ -146,11 +146,20 @@ void QtSStringEdit::hideButtons()
 // -----------------------------------------------------------------------------
 void QtSStringEdit::widgetChanged(const QString& text)
 {
-  value->setStyleSheet(QString::fromLatin1("color: rgb(255, 0, 0);"));
-  value->setToolTip("Press the 'Return' key to apply your changes\nPress the 'Esc' key to cancel your changes");
+  if(text == getStoredValue())
+  {
+    value->setStyleSheet(QString(""));
 
-  applyChangesBtn->setVisible(true);
-  cancelChangesBtn->setVisible(true);
+    hideButtons();
+  }
+  else
+  {
+    value->setStyleSheet(QString::fromLatin1("color: rgb(255, 0, 0);"));
+    value->setToolTip("Press the 'Return' key to apply your changes\nPress the 'Esc' key to cancel your changes");
+
+    applyChangesBtn->setVisible(true);
+    cancelChangesBtn->setVisible(true);
+  }
 }
 
 // -----------------------------------------------------------------------------
