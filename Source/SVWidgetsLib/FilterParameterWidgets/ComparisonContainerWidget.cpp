@@ -271,11 +271,6 @@ void ComparisonContainerWidget::mousePressEvent(QMouseEvent* event)
 // -----------------------------------------------------------------------------
 void ComparisonContainerWidget::select()
 {
-  if (nullptr == this)
-  {
-    return;
-  }
-
   setStyleSheet(ComparisonContainerWidget::BorderStyleSheet);
   update();
 
@@ -292,11 +287,6 @@ void ComparisonContainerWidget::select()
 // -----------------------------------------------------------------------------
 void ComparisonContainerWidget::deselect()
 {
-  if (nullptr == this)
-  {
-    return;
-  }
-
   if (ComparisonContainerWidget::SelectedItem == this)
   {
     ComparisonContainerWidget::SelectedItem = nullptr;
@@ -326,7 +316,7 @@ void ComparisonContainerWidget::mouseMoveEvent(QMouseEvent* event)
 
   drag->setMimeData(mimeData);
 
-  Qt::DropAction dropAction = drag->exec(Qt::MoveAction);
+  drag->exec(Qt::MoveAction);
 }
 
 // -----------------------------------------------------------------------------
@@ -334,5 +324,6 @@ void ComparisonContainerWidget::mouseMoveEvent(QMouseEvent* event)
 // -----------------------------------------------------------------------------
 void ComparisonContainerWidget::mouseReleaseEvent(QMouseEvent* event)
 {
+  Q_UNUSED(event)
   deselect();
 }

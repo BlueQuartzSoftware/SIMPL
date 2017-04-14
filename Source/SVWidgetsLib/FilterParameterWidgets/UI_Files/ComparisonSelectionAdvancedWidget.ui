@@ -39,7 +39,7 @@
       </widget>
      </item>
      <item>
-      <widget class="QPushButton" name="m_SelectedAttributeMatrixPath">
+      <widget class="QToolButton" name="m_SelectedAttributeMatrixPath">
        <property name="sizePolicy">
         <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
          <horstretch>0</horstretch>
@@ -68,9 +68,6 @@
        </property>
        <property name="shortcut">
         <string>Ctrl+S</string>
-       </property>
-       <property name="flat">
-        <bool>false</bool>
        </property>
       </widget>
      </item>

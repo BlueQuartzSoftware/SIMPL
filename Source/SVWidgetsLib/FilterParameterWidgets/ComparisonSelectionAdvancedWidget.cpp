@@ -130,7 +130,7 @@ void ComparisonSelectionAdvancedWidget::setupGui()
   // Copy the data into the Comparison Set
   ComparisonInputsAdvanced comps = dynamic_cast<ComparisonSelectionAdvancedFilterParameter*>(getFilterParameter())->getGetterCallback()();
 
-  m_SelectedAttributeMatrixPath->setStyleSheet(QtSStyles::DAPSelectionButtonStyle(false));
+  m_SelectedAttributeMatrixPath->setStyleSheet(QtSStyles::QToolSelectionButtonStyle(false));
 
   m_MenuMapper = new QSignalMapper(this);
   connect(m_MenuMapper, SIGNAL(mapped(QString)),
@@ -339,7 +339,7 @@ void ComparisonSelectionAdvancedWidget::afterPreflight()
     if (nullptr != am.get()) {
       QString html = am->getInfoString(SIMPL::HtmlFormat);
       m_SelectedAttributeMatrixPath->setToolTip(html);
-      m_SelectedAttributeMatrixPath->setStyleSheet(QtSStyles::DAPSelectionButtonStyle(true));
+      m_SelectedAttributeMatrixPath->setStyleSheet(QtSStyles::QToolSelectionButtonStyle(true));
 
       if (nullptr == comparisonSetWidget->getAttributeMatrix())
       {
@@ -351,7 +351,7 @@ void ComparisonSelectionAdvancedWidget::afterPreflight()
   }
   else
   {
-    m_SelectedAttributeMatrixPath->setStyleSheet(QtSStyles::DAPSelectionButtonStyle(false));
+    m_SelectedAttributeMatrixPath->setStyleSheet(QtSStyles::QToolSelectionButtonStyle(false));
   }
 }
 
