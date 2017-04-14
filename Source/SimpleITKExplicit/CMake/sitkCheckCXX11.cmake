@@ -25,8 +25,8 @@ function(sitkCXX11Test VARIABLE)
     message(STATUS "Performing Test ${VARIABLE}")
     set(requred_definitions "${CMAKE_REQUIRED_DEFINITIONS} -D${VARIABLE}")
     try_compile(${VARIABLE}
-      ${DREAM3DProj_BINARY_DIR}/CMakeTmp
-      ${DREAM3DProj_SOURCE_DIR}/Source/SimpleITKExplicit/CMake/sitk_check_cxx11.cxx
+      ${SIMPLProj_BINARY_DIR}/CMakeTmp
+      ${SIMPLProj_SOURCE_DIR}/Source/SimpleITKExplicit/CMake/sitk_check_cxx11.cxx
       CMAKE_FLAGS
       -DCOMPILE_DEFINITIONS:STRING=${requred_definitions}
       OUTPUT_VARIABLE output)

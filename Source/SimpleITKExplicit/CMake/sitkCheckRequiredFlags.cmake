@@ -43,7 +43,7 @@ if(required LESS 0)
 
     message(STATUS "Checking if c++11 is required...")
     try_compile(SITK_CHECK_CXX11_REQUIRED
-      ${DREAM3DProj_BINARY_DIR}/CMakeFiles/CMakeTmp
+      ${SIMPLProj_BINARY_DIR}/CMakeFiles/CMakeTmp
       ${PROJECT_CODE_DIR}/SimpleITKExplicit/CMake/sitk_check_cxx11_required.cxx
       OUTPUT_VARIABLE OUTPUT)
     if(${SITK_CHECK_CXX11_REQUIRED})

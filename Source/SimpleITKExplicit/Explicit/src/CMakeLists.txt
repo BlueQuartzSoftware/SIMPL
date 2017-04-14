@@ -37,6 +37,18 @@ sitk_install_exported_target( SimpleITKExplicit )
 LibraryProperties( SimpleITKExplicit  ${EXE_DEBUG_EXTENSION} )
 
 
+set(install_dir "bin")
+set(lib_install_dir "lib")
+
+if(APPLE)
+  get_property(DREAM3D_PACKAGE_DEST_PREFIX GLOBAL PROPERTY DREAM3D_PACKAGE_DEST_PREFIX)
+  set(install_dir "${DREAM3D_PACKAGE_DEST_PREFIX}bin")
+  set(lib_install_dir "${DREAM3D_PACKAGE_DEST_PREFIX}lib")
+elseif(WIN32)
+  set(install_dir ".")
+  set(lib_install_dir ".")
+endif()
+
 if(NOT MSVC)
     INSTALL(TARGETS SimpleITKExplicit
         COMPONENT Applications
