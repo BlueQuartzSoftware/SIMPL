@@ -174,10 +174,18 @@ cmpReplaceFileIfDifferent(OLD_FILE_PATH  ${SIMPLib_BINARY_DIR}/RegisterKnownFilt
 include_directories( ${HDF5_INCLUDE_DIR} )
 include_directories( ${PROJECT_CODE_DIR} )
 include_directories( ${SIMPLib_BINARY_DIR} )
+if(SIMPL_USE_ITK)
+  include_directories( ${SIMPLProj_SOURCE_DIR}/Source/SimpleITKExplicit/Explicit/include)
+  include_directories( ${SIMPLProj_BINARY_DIR}/SimpleITKExplicit/Common/include)
+endif()
 
 set(${PROJECT_NAME}_LINK_LIBS Qt5::Core Qt5::Network H5Support)
 if( "${SIMPL_USE_MULTITHREADED_ALGOS}" STREQUAL "ON")
   list(APPEND ${PROJECT_NAME}_LINK_LIBS ${TBB_LIBRARIES})
+endif()
+
+if( "${SIMPL_USE_ITK}" STREQUAL "ON")
+  list(APPEND ${PROJECT_NAME}_LINK_LIBS SimpleITKExplicit)
 endif()
 
 #-- Add a library for the SIMPLib Code
@@ -216,14 +224,14 @@ export(EXPORT SIMPLibTargets
   NAMESPACE SIMPL::
 )
 
-install(EXPORT SIMPLibTargets
-  FILE
-    SIMPLibTargets.cmake
-  NAMESPACE
-    SIMPL::
-  DESTINATION
-    ${ConfigPackageLocation}
-)
+# install(EXPORT SIMPLibTargets
+#   FILE
+#     SIMPLibTargets.cmake
+#   NAMESPACE
+#     SIMPL::
+#   DESTINATION
+#     ${ConfigPackageLocation}
+# )
 
 
 

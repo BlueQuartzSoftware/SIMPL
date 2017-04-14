@@ -450,6 +450,16 @@ install(
     Devel
 )
 
+
+# --------------------------------------------------------------------
+# Build the SimpleITKExplicit Library.
+option(SIMPL_USE_ITK "Use ITK For Image Processing" ON)
+if(SIMPL_USE_ITK)
+  add_subdirectory( ${SIMPLProj_SOURCE_DIR}/Source/SimpleITKExplicit ${PROJECT_BINARY_DIR}/SimpleITKExplicit)
+  get_property(SimpleITKExplicit_LIB_NAME TARGET SimpleITKExplicit PROPERTY OUTPUT_NAME)
+endif()
+
+
 # -----------------------------------------------------------------------
 # Add in the Necessary HDF5 Support Sources into a library
 # -----------------------------------------------------------------------
