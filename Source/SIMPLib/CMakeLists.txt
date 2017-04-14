@@ -185,7 +185,7 @@ if( "${SIMPL_USE_MULTITHREADED_ALGOS}" STREQUAL "ON")
 endif()
 
 if( "${SIMPL_USE_ITK}" STREQUAL "ON")
-  list(APPEND ${PROJECT_NAME}_LINK_LIBS SimpleITKExplicit)
+ list(APPEND ${PROJECT_NAME}_LINK_LIBS SimpleITKExplicit)
 endif()
 
 #-- Add a library for the SIMPLib Code
@@ -198,7 +198,7 @@ set(lib_install_dir "lib")
 
 if(APPLE)
   get_property(DREAM3D_PACKAGE_DEST_PREFIX GLOBAL PROPERTY DREAM3D_PACKAGE_DEST_PREFIX)
-  set(install_dir "${DREAM3D_PACKAGE_DEST_PREFIX}tools")
+  set(install_dir "${DREAM3D_PACKAGE_DEST_PREFIX}bin")
   set(lib_install_dir "${DREAM3D_PACKAGE_DEST_PREFIX}lib")
 elseif(WIN32)
   set(install_dir ".")
