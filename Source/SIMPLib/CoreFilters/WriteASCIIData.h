@@ -44,7 +44,7 @@
 /**
  * @brief The WriteASCIIData class. See [Filter documentation](@ref writeasciidata) for details.
  */
-class WriteASCIIData : public AbstractFilter
+class SIMPLib_EXPORT WriteASCIIData : public AbstractFilter
 {
     Q_OBJECT
   public:
