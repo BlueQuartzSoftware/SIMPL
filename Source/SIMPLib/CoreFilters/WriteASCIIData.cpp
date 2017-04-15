@@ -39,6 +39,7 @@
 
 #include "SIMPLib/Common/Constants.h"
 #include "SIMPLib/Common/TemplateHelpers.hpp"
+#include "SIMPLib/DataArrays/StringDataArray.hpp"
 #include "SIMPLib/FilterParameters/AbstractFilterParametersReader.h"
 #include "SIMPLib/FilterParameters/ChoiceFilterParameter.h"
 #include "SIMPLib/FilterParameters/IntFilterParameter.h"
@@ -247,7 +248,27 @@ void WriteASCIIData::dataCheck()
   {
     DataArrayPath path = paths.at(i);
     IDataArray::WeakPointer ptr = getDataContainerArray()->getPrereqIDataArrayFromPath<IDataArray, AbstractFilter>(this, path);
-    m_SelectedWeakPtrVector.push_back(ptr);
+
+    if( ptr.lock()->getTypeAsString().compare("NeighborList<T>") == 0)
+    {
+      setErrorCondition(TemplateHelpers::Errors::UnsupportedType);
+      notifyErrorMessage(getHumanLabel(), "NeighborList is unsupported when writing ASCII Data.", getErrorCondition());
+    }
+    else if( ptr.lock()->getTypeAsString().compare("struct") == 0)
+    {
+      setErrorCondition(TemplateHelpers::Errors::UnsupportedType);
+      notifyErrorMessage(getHumanLabel(), "StructArray is unsupported when writing ASCII Data.", getErrorCondition());
+    }
+    else if( ptr.lock()->getTypeAsString().compare("StatsDataArray") == 0)
+    {
+      setErrorCondition(TemplateHelpers::Errors::UnsupportedType);
+      notifyErrorMessage(getHumanLabel(), "StatsDataArray is unsupported when writing ASCII Data.", getErrorCondition());
+    }
+    else
+    {
+      m_SelectedWeakPtrVector.push_back(ptr);
+    }
+
   }
 }
 
@@ -302,16 +323,38 @@ void WriteASCIIData::execute()
 
   for(int32_t i = 0; i < m_SelectedWeakPtrVector.count(); i++)
   {
-    IDataArray::WeakPointer selectedArrayPtr = m_SelectedWeakPtrVector.at(i);
+    IDataArray::Pointer selectedArrayPtr = m_SelectedWeakPtrVector.at(i).lock();
 
-    QString message = QObject::tr("|| Exporting Dataset '%1'").arg(selectedArrayPtr.lock()->getName());
+    QString message = QObject::tr("|| Exporting Dataset '%1'").arg(selectedArrayPtr->getName());
     notifyStatusMessage(getMessagePrefix(), getHumanLabel(), message);
 
-    QString exportArrayFile = m_OutputPath + QDir::separator() + selectedArrayPtr.lock()->getName() + m_FileExtension; // the complete output file path, name and extension
+    QString exportArrayFile = m_OutputPath + QDir::separator() + selectedArrayPtr->getName() + m_FileExtension; // the complete output file path, name and extension
 
     char delimiter = lookupDelimiter();
 
-    EXECUTE_TEMPLATE(this, WriteASCIIDataPrivate, selectedArrayPtr.lock(), this, selectedArrayPtr.lock(), delimiter, exportArrayFile, m_MaxValPerLine)
+
+    if( std::dynamic_pointer_cast<StringDataArray>(selectedArrayPtr).get() != nullptr)
+    {
+       writeStringArray(selectedArrayPtr, exportArrayFile, delimiter);
+    }
+    else if( selectedArrayPtr->getTypeAsString().compare("NeighborList<T>") == 0)
+    {
+      setErrorCondition(TemplateHelpers::Errors::UnsupportedType);
+      notifyErrorMessage(getHumanLabel(), "NeighborList is unsupported when writing ASCII Data.", getErrorCondition());
+    }
+    else if( selectedArrayPtr->getTypeAsString().compare("struct") == 0)
+    {
+      setErrorCondition(TemplateHelpers::Errors::UnsupportedType);
+      notifyErrorMessage(getHumanLabel(), "StructArray is unsupported when writing ASCII Data.", getErrorCondition());
+    }
+    else if( selectedArrayPtr->getTypeAsString().compare("StatsDataArray") == 0)
+    {
+      setErrorCondition(TemplateHelpers::Errors::UnsupportedType);
+      notifyErrorMessage(getHumanLabel(), "StatsDataArray is unsupported when writing ASCII Data.", getErrorCondition());
+    }
+    else
+      EXECUTE_TEMPLATE(this, WriteASCIIDataPrivate, selectedArrayPtr, this, selectedArrayPtr, delimiter, exportArrayFile, m_MaxValPerLine)
+
 
     if(getErrorCondition() < 0)
     {
@@ -320,6 +363,45 @@ void WriteASCIIData::execute()
   }
 
   notifyStatusMessage(getHumanLabel(), "Complete");
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void WriteASCIIData::writeStringArray(IDataArray::Pointer inputData, QString outputFile, char delimiter)
+{
+  StringDataArray::Pointer inputArray = std::dynamic_pointer_cast<StringDataArray>(inputData);
+
+  QFile file(outputFile);
+  if(!file.open(QIODevice::WriteOnly | QIODevice::Text))
+  {
+    QString ss = QObject::tr("The output file could not be opened: '%1'").arg(outputFile);
+    setErrorCondition(-11008);
+    notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
+    return;
+  }
+
+  QTextStream out(&file);
+
+  size_t nTuples = inputArray->getNumberOfTuples();
+
+  int32_t recCount = 0;
+  for(size_t i = 0; i < nTuples; i++)
+  {
+    out << inputArray->getValue(i);
+
+    recCount++;
+
+    if(recCount >= getMaxValPerLine())
+    {
+      out << '\n';
+      recCount = 0;
+    }
+    else
+    {
+      out << delimiter;
+    }
+  }
 }
 
 // -----------------------------------------------------------------------------

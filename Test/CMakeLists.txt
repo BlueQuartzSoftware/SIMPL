@@ -101,6 +101,7 @@ set(TEST_NAMES
   StatsDataJsonRWTest
   StringDataArrayTest
   StructArrayTest
+  WriteASCIIDataTest
 )
 
 
