@@ -1,5 +1,5 @@
-#ifndef _TestFileLocation_h_
-#define _TestFileLocation_h_
+#ifndef _testFileLocation_h_
+#define _testFileLocation_h_
 
 #include <QtCore/QString>
 

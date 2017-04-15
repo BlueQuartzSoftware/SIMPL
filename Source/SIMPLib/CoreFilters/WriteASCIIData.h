@@ -181,6 +181,12 @@ class WriteASCIIData : public AbstractFilter
      */
     char lookupDelimiter();
 
+    /**
+     * @brief Specific function to write string arrays to a text file
+     * @param inputData
+     */
+    void writeStringArray(IDataArray::Pointer inputData, QString outputFile, char delimiter);
+
     QVector<IDataArray::WeakPointer> m_SelectedWeakPtrVector;
 
     WriteASCIIData(const WriteASCIIData&); // Copy Constructor Not Implemented
