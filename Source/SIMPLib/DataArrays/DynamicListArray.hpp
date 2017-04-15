@@ -178,7 +178,7 @@ class DynamicListArray
     void allocateLists(QVector<T>& linkCounts)
     {
       allocate(linkCounts.size());
-      for (K i = 0; i < linkCounts.size(); i++)
+      for (typename std::vector<T>::size_type i = 0; i < linkCounts.size(); i++)
       {
         this->m_Array[i].ncells = linkCounts[i];
         this->m_Array[i].cells = new K[this->m_Array[i].ncells];
@@ -192,7 +192,7 @@ class DynamicListArray
     void allocateLists(std::vector<T>& linkCounts)
     {
       allocate(linkCounts.size());
-      for (K i = 0; i < linkCounts.size(); i++)
+      for (typename std::vector<T>::size_type i = 0; i < linkCounts.size(); i++)
       {
         this->m_Array[i].ncells = linkCounts[i];
         this->m_Array[i].cells = new K[this->m_Array[i].ncells];
