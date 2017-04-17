@@ -82,6 +82,8 @@
 #include "SVWidgetsLib/Widgets/util/AddFilterCommand.h"
 #include "SVWidgetsLib/Widgets/util/MoveFilterCommand.h"
 #include "SVWidgetsLib/Widgets/util/RemoveFilterCommand.h"
+#include "SVWidgetsLib/Widgets/DataBrowserWidget.h"
+
 
 // Include the MOC generated CPP file which has all the QMetaObject methods/data
 #include "moc_SVPipelineViewWidget.cpp"
@@ -652,28 +654,50 @@ void SVPipelineViewWidget::addFilterObject(PipelineFilterObject* filterObject, Q
   // Clear any existing connections before recreating them
 
   // When the filter is removed from this view
-  disconnect(filterWidget, SIGNAL(filterWidgetRemoved(PipelineFilterObject*)), this, SLOT(slot_removeFilterObject(PipelineFilterObject*)));
-  connect(filterWidget, SIGNAL(filterWidgetRemoved(PipelineFilterObject*)), this, SLOT(slot_removeFilterObject(PipelineFilterObject*)));
+  disconnect(filterWidget, SIGNAL(filterWidgetRemoved(PipelineFilterObject*)),
+             this, SLOT(slot_removeFilterObject(PipelineFilterObject*)));
+  connect(filterWidget, SIGNAL(filterWidgetRemoved(PipelineFilterObject*)),
+          this, SLOT(slot_removeFilterObject(PipelineFilterObject*)));
 
   // When the FilterWidget is selected
-  disconnect(filterWidget, SIGNAL(filterWidgetPressed(PipelineFilterObject*, Qt::KeyboardModifiers)), this, SLOT(setSelectedFilterObject(PipelineFilterObject*, Qt::KeyboardModifiers)));
-  connect(filterWidget, SIGNAL(filterWidgetPressed(PipelineFilterObject*, Qt::KeyboardModifiers)), this, SLOT(setSelectedFilterObject(PipelineFilterObject*, Qt::KeyboardModifiers)));
+  disconnect(filterWidget, SIGNAL(filterWidgetPressed(PipelineFilterObject*, Qt::KeyboardModifiers)),
+             this, SLOT(setSelectedFilterObject(PipelineFilterObject*, Qt::KeyboardModifiers)));
+  connect(filterWidget, SIGNAL(filterWidgetPressed(PipelineFilterObject*, Qt::KeyboardModifiers)),
+          this, SLOT(setSelectedFilterObject(PipelineFilterObject*, Qt::KeyboardModifiers)));
 
   // When the filter widget is dragged
-  disconnect(filterWidget, SIGNAL(dragStarted(QMouseEvent*, SVPipelineFilterWidget*)), this, SLOT(startDrag(QMouseEvent*, SVPipelineFilterWidget*)));
-  connect(filterWidget, SIGNAL(dragStarted(QMouseEvent*, SVPipelineFilterWidget*)), this, SLOT(startDrag(QMouseEvent*, SVPipelineFilterWidget*)));
+  disconnect(filterWidget, SIGNAL(dragStarted(QMouseEvent*, SVPipelineFilterWidget*)),
+             this, SLOT(startDrag(QMouseEvent*, SVPipelineFilterWidget*)));
+  connect(filterWidget, SIGNAL(dragStarted(QMouseEvent*, SVPipelineFilterWidget*)),
+          this, SLOT(startDrag(QMouseEvent*, SVPipelineFilterWidget*)));
 
-  disconnect(filterWidget, SIGNAL(parametersChanged(QUuid)), this, SLOT(preflightPipeline(QUuid)));
-  connect(filterWidget, SIGNAL(parametersChanged(QUuid)), this, SLOT(preflightPipeline(QUuid)));
+  disconnect(filterWidget, SIGNAL(parametersChanged(QUuid)),
+             this, SLOT(preflightPipeline(QUuid)));
+  connect(filterWidget, SIGNAL(parametersChanged(QUuid)),
+          this, SLOT(preflightPipeline(QUuid)));
 
-  disconnect(filterWidget, SIGNAL(parametersChanged(QUuid)), this, SLOT(handleFilterParameterChanged(QUuid)));
-  connect(filterWidget, SIGNAL(parametersChanged(QUuid)), this, SLOT(handleFilterParameterChanged(QUuid)));
+  disconnect(filterWidget, SIGNAL(parametersChanged(QUuid)),
+             this, SLOT(handleFilterParameterChanged(QUuid)));
+  connect(filterWidget, SIGNAL(parametersChanged(QUuid)),
+          this, SLOT(handleFilterParameterChanged(QUuid)));
 
-  disconnect(filterWidget, SIGNAL(focusInEventStarted(QFocusEvent*)), this, SLOT(on_focusInEventStarted(QFocusEvent*)));
-  connect(filterWidget, SIGNAL(focusInEventStarted(QFocusEvent*)), this, SLOT(on_focusInEventStarted(QFocusEvent*)));
+  disconnect(filterWidget, SIGNAL(focusInEventStarted(QFocusEvent*)),
+             this, SLOT(on_focusInEventStarted(QFocusEvent*)));
+  connect(filterWidget, SIGNAL(focusInEventStarted(QFocusEvent*)),
+          this, SLOT(on_focusInEventStarted(QFocusEvent*)));
 
-  disconnect(filterWidget, SIGNAL(focusOutEventStarted(QFocusEvent*)), this, SLOT(on_focusOutEventStarted(QFocusEvent*)));
-  connect(filterWidget, SIGNAL(focusOutEventStarted(QFocusEvent*)), this, SLOT(on_focusOutEventStarted(QFocusEvent*)));
+  disconnect(filterWidget, SIGNAL(focusOutEventStarted(QFocusEvent*)),
+             this, SLOT(on_focusOutEventStarted(QFocusEvent*)));
+  connect(filterWidget, SIGNAL(focusOutEventStarted(QFocusEvent*)),
+          this, SLOT(on_focusOutEventStarted(QFocusEvent*)));
+
+  if(m_DataBrowserWidget)
+  {
+
+    connect(filterWidget, SIGNAL(parametersChanged1(PipelineFilterObject*)),
+            m_DataBrowserWidget, SLOT(handleFilterParameterChanged(PipelineFilterObject*)));
+
+  }
 
   filterWidget->installEventFilter(this);
 
@@ -1039,6 +1063,7 @@ void SVPipelineViewWidget::setSelectedFilterObject(PipelineFilterObject* w, Qt::
   if(selectedObjects.size() == 1)
   {
     emit filterInputWidgetChanged(selectedObjects[0]->getFilterInputWidget());
+    emit pipelineFilterObjectSelected(selectedObjects[0]);
   }
   else
   {
@@ -2058,4 +2083,31 @@ void SVPipelineViewWidget::handleFilterParameterChanged(QUuid id)
   Q_UNUSED(id)
 
   emit filterInputWidgetEdited();
+}
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void SVPipelineViewWidget::setDataBrowserWidget(DataBrowserWidget* w)
+{
+  if(nullptr == w)
+  {
+    disconnect(this, SIGNAL(pipelineFilterObjectSelected(PipelineFilterObject*)),
+               m_DataBrowserWidget, SLOT(filterObjectActivated(PipelineFilterObject*)));
+    m_DataBrowserWidget = w;
+  }
+  else
+  {
+    m_DataBrowserWidget = w;
+    connect(this, SIGNAL(pipelineFilterObjectSelected(PipelineFilterObject*)),
+            m_DataBrowserWidget, SLOT(filterObjectActivated(PipelineFilterObject*)));
+  }
+  return;
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+DataBrowserWidget* SVPipelineViewWidget::getDataBrowserWidget()
+{
+  return m_DataBrowserWidget;
 }
