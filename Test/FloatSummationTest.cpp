@@ -33,6 +33,8 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
+#include <cmath>
+
 #include "SIMPLib/Common/FilterManager.h"
 #include "SIMPLib/Common/FilterPipeline.h"
 #include "SIMPLib/Common/Observer.h"
@@ -63,7 +65,7 @@ public:
   {
   }
 
-  const int NUM_ITEMS = 10000;
+  const size_t NUM_ITEMS = 10000;
 
   // -----------------------------------------------------------------------------
   //
@@ -71,7 +73,7 @@ public:
   float CalculateStandardSummation(std::vector<float> values)
   {
     float sum = 0;
-    for(int i = 0; i < values.size(); i++)
+    for(std::vector<float>::size_type i = 0; i < values.size(); i++)
     {
       sum += values[i];
     }
@@ -96,7 +98,7 @@ public:
   std::vector<float> GenerateValues()
   {
     std::vector<float> values(NUM_ITEMS);
-    for(int i = 0; i < NUM_ITEMS; i++)
+    for(std::vector<float>::size_type i = 0; i < NUM_ITEMS; i++)
     {
       // Adding values in descending order increases the chance of error compared to adding in increasing order
       values.push_back(NUM_ITEMS - i);
@@ -110,7 +112,7 @@ public:
   // -----------------------------------------------------------------------------
   int GetTargetValue()
   {
-    return NUM_ITEMS * (NUM_ITEMS + 1) / 2;
+    return static_cast<int>(NUM_ITEMS * (NUM_ITEMS + 1) / 2);
   }
 
   // -----------------------------------------------------------------------------
