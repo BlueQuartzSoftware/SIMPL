@@ -78,13 +78,13 @@
          <string/>
         </property>
         <property name="icon">
-         <iconset resource="../../../../../DREAM3D/Resources/icons/images/Icons.qrc">
-          <normaloff>:/add2.png</normaloff>:/add2.png</iconset>
+         <iconset resource="../../icons/images/Icons.qrc">
+          <normaloff>:/add.png</normaloff>:/add.png</iconset>
         </property>
         <property name="iconSize">
          <size>
-          <width>24</width>
-          <height>24</height>
+          <width>32</width>
+          <height>32</height>
          </size>
         </property>
         <property name="flat">
@@ -186,7 +186,7 @@
   <tabstop>conditionalScrollArea</tabstop>
  </tabstops>
  <resources>
-  <include location="../../../../../DREAM3D/Resources/icons/images/Icons.qrc"/>
+  <include location="../../icons/images/Icons.qrc"/>
  </resources>
  <connections/>
 </ui>

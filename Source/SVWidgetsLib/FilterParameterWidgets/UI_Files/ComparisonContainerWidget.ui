@@ -170,8 +170,8 @@
          <string/>
         </property>
         <property name="icon">
-         <iconset resource="../../../../../DREAM3D/Resources/icons/images/Icons.qrc">
-          <normaloff>:/delete2.png</normaloff>:/delete2.png</iconset>
+         <iconset resource="../../icons/images/Icons.qrc">
+          <normaloff>:/delete.png</normaloff>:/delete.png</iconset>
         </property>
         <property name="iconSize">
          <size>
@@ -206,7 +206,7 @@
   </layout>
  </widget>
  <resources>
-  <include location="../../../../../DREAM3D/Resources/icons/images/Icons.qrc"/>
+  <include location="../../icons/images/Icons.qrc"/>
  </resources>
  <connections/>
 </ui>
