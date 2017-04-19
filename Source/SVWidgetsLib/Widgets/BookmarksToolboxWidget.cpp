@@ -546,7 +546,12 @@ void BookmarksToolboxWidget::readSettings(QtSSettings* prefs)
   }
 
   bookmarksTreeView->setModel(model);
-  readPrebuiltPipelines();
+
+  if(model->match(model->index(0, 0), Qt::DisplayRole, "Prebuilt Pipelines", -1, Qt::MatchFlags(Qt::MatchExactly | Qt::MatchRecursive)).size() <= 0)
+  {
+    readPrebuiltPipelines();
+    prefs->setValue("PrebuiltsRead", true);
+  }
 }
 
 // -----------------------------------------------------------------------------
