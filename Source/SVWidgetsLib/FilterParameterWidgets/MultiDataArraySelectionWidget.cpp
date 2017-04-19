@@ -607,6 +607,10 @@ void MultiDataArraySelectionWidget::afterPreflight()
           //item->setFlags(item->flags() & ~Qt::ItemIsEnabled);
           item->setBackgroundColor(QColor(235, 110, 110));
         }
+        else
+        {
+          item->setBackgroundColor(QColor(255, 255, 255));
+        }
       }
 
       for (int i=0; i<arrayNames.size(); i++)
