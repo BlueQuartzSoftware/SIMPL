@@ -356,12 +356,16 @@ void FilterPipeline::execute()
     if(err < 0)
     {
       setErrorCondition(err);
-
+      progValue.setFilterClassName( (*filter)->getHumanLabel() );
       progValue.setType(PipelineMessage::Error);
       progValue.setProgressValue(100);
+      ss = QObject::tr("[%1/%2] %3 caused an error during execution.").arg(progress).arg(m_Pipeline.size()).arg((*filter)->getHumanLabel());
+      progValue.setText(ss);
       emit pipelineGeneratedMessage(progValue);
 
       emit pipelineFinished();
+      disconnectSignalsSlots();
+
       return;
     }
     if(this->getCancel() == true)

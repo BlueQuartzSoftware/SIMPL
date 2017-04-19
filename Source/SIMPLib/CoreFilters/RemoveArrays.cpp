@@ -139,7 +139,7 @@ void RemoveArrays::removeSelectionsFromDataContainerArray(DataContainerArray* dc
 {
   // Loop over the data containers until we find the proper data container
   QList<DataContainerProxy> containers = m_DataArraysToRemove.dataContainers.values();
-  QListIterator<DataContainerProxy> containerIter(containers);
+  QMutableListIterator<DataContainerProxy> containerIter(containers);
   QStringList dcList;
   while(containerIter.hasNext())
   {
@@ -159,7 +159,7 @@ void RemoveArrays::removeSelectionsFromDataContainerArray(DataContainerArray* dc
       continue;                               // Continue to the next DataContainer
     }
     QMap<QString, AttributeMatrixProxy>& attrMats = dcProxy.attributeMatricies;
-    QMapIterator<QString, AttributeMatrixProxy> attrMatsIter(attrMats);
+    QMutableMapIterator<QString, AttributeMatrixProxy> attrMatsIter(attrMats);
     while(attrMatsIter.hasNext())
     {
       attrMatsIter.next();
@@ -182,7 +182,7 @@ void RemoveArrays::removeSelectionsFromDataContainerArray(DataContainerArray* dc
       }
       // We found the selected AttributeMatrix, so loop over this attribute matrix arrays and populate the list widget
       QMap<QString, DataArrayProxy>& dataArrays = attrProxy.dataArrays;
-      QMapIterator<QString, DataArrayProxy> dataArraysIter(dataArrays);
+      QMutableMapIterator<QString, DataArrayProxy> dataArraysIter(dataArrays);
       while(dataArraysIter.hasNext())
       {
         dataArraysIter.next();
@@ -190,9 +190,9 @@ void RemoveArrays::removeSelectionsFromDataContainerArray(DataContainerArray* dc
         IDataArray::Pointer daItem = amItem->getAttributeArray(daName);
         if(daItem.get() == nullptr)
         {
-          setErrorCondition(-11014);
-          QString ss = QObject::tr("The DataArray '%1' could not be removed because it was not found in AttributeMatrix '%2'").arg(daName).arg(amName);
-          notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
+          setErrorCondition(0);
+          QString ss = QObject::tr("%1/%2/%3 was not found. This could be due to another filter removing the array.").arg(dcProxy.name).arg(amName).arg(daName);
+          notifyWarningMessage(getHumanLabel(), ss, getErrorCondition());
           continue;
         }
         DataArrayProxy daProxy = dataArraysIter.value();
