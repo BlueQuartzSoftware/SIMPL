@@ -274,6 +274,8 @@ void SVPipelineFilterWidget::changeStyle(int i)
   filterIndexStyleStream << fontString;
   filterIndexStyleStream << "color: rgb(242, 242, 242);"; // Always have a white'ish font
   filterIndexStyleStream << "padding: 3 3 3 3px;";
+  filterIndexStyleStream << "border-top-left-radius: 3px;";
+  filterIndexStyleStream << "border-bottom-left-radius: 3px;";
 
 
   WidgetState wState = getWidgetState();

@@ -117,9 +117,9 @@ SVPipelineViewWidget::~SVPipelineViewWidget()
   {
     delete m_ContextMenu;
   }
-  if(m_DropBox && !m_DropBox->parent())
+  if(m_FilterOutlineWidget && !m_FilterOutlineWidget->parent())
   {
-    delete m_DropBox;
+    delete m_FilterOutlineWidget;
   }
 }
 
@@ -135,8 +135,8 @@ void SVPipelineViewWidget::setupGui()
   m_UndoStack = QSharedPointer<QUndoStack>(new QUndoStack(this));
   m_UndoStack->setUndoLimit(10);
 
-  m_DropBox = new DropBoxWidget();
-  m_DropBox->setObjectName("m_DropBox");
+  m_FilterOutlineWidget = new SVPipelineFilterOutlineWidget();
+  m_FilterOutlineWidget->setObjectName("m_DropBox");
 
   m_ActionUndo = m_UndoStack->createUndoAction(nullptr);
   m_ActionRedo = m_UndoStack->createRedoAction(nullptr);
@@ -1055,7 +1055,7 @@ void SVPipelineViewWidget::clearSelectedFilterObjects()
 {
   for(int i = 0; i < filterCount(); i++)
   {
-    if(nullptr != dynamic_cast<DropBoxWidget*>(m_FilterWidgetLayout->itemAt(i)->widget()))
+    if(nullptr != dynamic_cast<SVPipelineFilterOutlineWidget*>(m_FilterWidgetLayout->itemAt(i)->widget()))
     {
       continue;
     }
@@ -1384,11 +1384,11 @@ SVPipelineFilterWidget* SVPipelineViewWidget::getFilterWidgetAtIndex(int index)
 void SVPipelineViewWidget::dragMoveEvent(QDragMoveEvent* event)
 {
   // Remove the drop box, if it exists
-  if(nullptr != m_FilterWidgetLayout && m_FilterWidgetLayout->indexOf(m_DropBox) != -1)
+  if(nullptr != m_FilterWidgetLayout && m_FilterWidgetLayout->indexOf(m_FilterOutlineWidget) != -1)
   {
-    m_FilterWidgetLayout->removeWidget(m_DropBox);
-    m_DropBox->hide();
-    m_DropBox->setParent(nullptr);
+    m_FilterWidgetLayout->removeWidget(m_FilterOutlineWidget);
+    m_FilterOutlineWidget->hide();
+    m_FilterOutlineWidget->setParent(nullptr);
   }
 
   // If cursor is within margin boundaries, start scrolling
@@ -1462,19 +1462,21 @@ void SVPipelineViewWidget::dragMoveEvent(QDragMoveEvent* event)
           QList<PipelineFilterObject*> draggedObjects = origin->getDraggedFilterObjects();
           if (draggedObjects.size() > 1)
           {
-            m_DropBox->setLabel("Place " + QString::number(draggedObjects.size()) + " Filters Here");
+            m_FilterOutlineWidget->setFilterIndex(i + 1, count);
+            m_FilterOutlineWidget->setFilterName("Place " + QString::number(draggedObjects.size()) + " Filters Here");
           }
           else if (draggedObjects.size() == 1)
           {
-            m_DropBox->setLabel("    [" + QString::number(i + 1) + "] " + draggedObjects[0]->getHumanLabel());
+            m_FilterOutlineWidget->setFilterIndex(i + 1, count);
+            m_FilterOutlineWidget->setFilterName(draggedObjects[0]->getHumanLabel());
           }
           else
           {
             event->ignore();
             return;
           }
-          m_FilterWidgetLayout->insertWidget(i, m_DropBox);
-          m_DropBox->show();
+          m_FilterWidgetLayout->insertWidget(i, m_FilterOutlineWidget);
+          m_FilterOutlineWidget->show();
           reindexWidgetTitles();
         }
       }
@@ -1482,12 +1484,13 @@ void SVPipelineViewWidget::dragMoveEvent(QDragMoveEvent* event)
       {
         QList<PipelineFilterObject*> draggedObjects = origin->getDraggedFilterObjects();
         if (draggedObjects.size() == 1)
-        {
-          m_DropBox->setLabel("    [" + QString::number(i + 1) + "] " + draggedObjects[0]->getHumanLabel());
+        {          
+          m_FilterOutlineWidget->setFilterIndex(i + 1, count);
+          m_FilterOutlineWidget->setFilterName(draggedObjects[0]->getHumanLabel());
         }
 
-        m_FilterWidgetLayout->insertWidget(i, m_DropBox);
-        m_DropBox->show();
+        m_FilterWidgetLayout->insertWidget(i, m_FilterOutlineWidget);
+        m_FilterOutlineWidget->show();
         reindexWidgetTitles();
       }
 
@@ -1555,9 +1558,10 @@ void SVPipelineViewWidget::dragMoveEvent(QDragMoveEvent* event)
         return;
       }
 
-      m_DropBox->setLabel("    [" + QString::number(i + 1) + "] " + humanName);
-      m_FilterWidgetLayout->insertWidget(i, m_DropBox);
-      m_DropBox->show();
+      m_FilterOutlineWidget->setFilterIndex(i + 1, filterCount());
+      m_FilterOutlineWidget->setFilterName(humanName);
+      m_FilterWidgetLayout->insertWidget(i, m_FilterOutlineWidget);
+      m_FilterOutlineWidget->show();
       reindexWidgetTitles();
 
       event->accept();
@@ -1565,7 +1569,7 @@ void SVPipelineViewWidget::dragMoveEvent(QDragMoveEvent* event)
     // If the dragged item is a pipeline file...
     else if(ext == "dream3d" || ext == "json" || ext == "ini" || ext == "txt")
     {
-      if(nullptr == m_DropBox)
+      if(nullptr == m_FilterOutlineWidget)
       {
         event->ignore();
         return;
@@ -1583,9 +1587,10 @@ void SVPipelineViewWidget::dragMoveEvent(QDragMoveEvent* event)
         return;
       }
 
-      m_DropBox->setLabel("Place '" + pipelineName + "' Here");
-      m_FilterWidgetLayout->insertWidget(i, m_DropBox);
-      m_DropBox->show();
+      m_FilterOutlineWidget->setFilterIndex(i + 1, filterCount());
+      m_FilterOutlineWidget->setFilterName("Place '" + pipelineName + "' Here");
+      m_FilterWidgetLayout->insertWidget(i, m_FilterOutlineWidget);
+      m_FilterOutlineWidget->show();
       reindexWidgetTitles();
       
       event->accept();
@@ -1657,9 +1662,9 @@ void SVPipelineViewWidget::dropEvent(QDropEvent* event)
       int index;
 
       // We need to figure out where it was dropped relative to other filters
-      if(nullptr != m_FilterWidgetLayout && m_FilterWidgetLayout->indexOf(m_DropBox) != -1)
+      if(nullptr != m_FilterWidgetLayout && m_FilterWidgetLayout->indexOf(m_FilterOutlineWidget) != -1)
       {
-        index = m_FilterWidgetLayout->indexOf(m_DropBox);
+        index = m_FilterWidgetLayout->indexOf(m_FilterOutlineWidget);
       }
       else
       {
@@ -1686,7 +1691,7 @@ void SVPipelineViewWidget::dropEvent(QDropEvent* event)
       int index = 0;
       if(nullptr != m_FilterWidgetLayout)
       {
-        index = m_FilterWidgetLayout->indexOf(m_DropBox);
+        index = m_FilterWidgetLayout->indexOf(m_FilterOutlineWidget);
       }
       if (index < 0 || index > filterCount())
       {
@@ -1731,12 +1736,12 @@ void SVPipelineViewWidget::dropEvent(QDropEvent* event)
 
     // The drop box, if it exists, marks the index where the filter should be dropped
     int index;
-    if(nullptr != m_FilterWidgetLayout && m_FilterWidgetLayout->indexOf(m_DropBox) != -1)
+    if(nullptr != m_FilterWidgetLayout && m_FilterWidgetLayout->indexOf(m_FilterOutlineWidget) != -1)
     {
       //m_DropBox->hide();
-      index = m_FilterWidgetLayout->indexOf(m_DropBox);
-      m_FilterWidgetLayout->removeWidget(m_DropBox);
-      m_DropBox->setParent(nullptr);
+      index = m_FilterWidgetLayout->indexOf(m_FilterOutlineWidget);
+      m_FilterWidgetLayout->removeWidget(m_FilterOutlineWidget);
+      m_FilterOutlineWidget->setParent(nullptr);
     }
     else
     {
@@ -1794,9 +1799,9 @@ void SVPipelineViewWidget::dropEvent(QDropEvent* event)
       {
         m_UndoStack->undo();
 
-        m_DropBox->hide();
-        m_FilterWidgetLayout->removeWidget(m_DropBox);
-        m_DropBox->setParent(nullptr);
+        m_FilterOutlineWidget->hide();
+        m_FilterWidgetLayout->removeWidget(m_FilterOutlineWidget);
+        m_FilterOutlineWidget->setParent(nullptr);
       }
       else
       {
@@ -1817,11 +1822,11 @@ void SVPipelineViewWidget::dropEvent(QDropEvent* event)
   stopAutoScroll();
 
   // Remove the drop line, if it exists
-  if(nullptr != m_FilterWidgetLayout && m_FilterWidgetLayout->indexOf(m_DropBox) != -1)
+  if(nullptr != m_FilterWidgetLayout && m_FilterWidgetLayout->indexOf(m_FilterOutlineWidget) != -1)
   {
     //m_DropBox->hide();
-    m_FilterWidgetLayout->removeWidget(m_DropBox);
-    m_DropBox->setParent(nullptr);
+    m_FilterWidgetLayout->removeWidget(m_FilterOutlineWidget);
+    m_FilterOutlineWidget->setParent(nullptr);
     reindexWidgetTitles();
   }
 }
@@ -1834,15 +1839,15 @@ void SVPipelineViewWidget::dragLeaveEvent(QDragLeaveEvent* event)
   int index;
   if(nullptr != m_FilterWidgetLayout)
   {
-    index = m_FilterWidgetLayout->indexOf(m_DropBox);
+    index = m_FilterWidgetLayout->indexOf(m_FilterOutlineWidget);
   }
 
   // Remove the placeholder drop box
   if(nullptr != m_FilterWidgetLayout && index != -1)
   {
-    m_FilterWidgetLayout->removeWidget(m_DropBox);
-    m_DropBox->hide();
-    m_DropBox->setParent(nullptr);
+    m_FilterWidgetLayout->removeWidget(m_FilterOutlineWidget);
+    m_FilterOutlineWidget->hide();
+    m_FilterOutlineWidget->setParent(nullptr);
   }
 
   QList<PipelineFilterObject*> draggedFilterObjects = getDraggedFilterObjects();
@@ -2010,7 +2015,7 @@ QList<PipelineFilterObject*> SVPipelineViewWidget::getSelectedFilterObjects()
   QList<PipelineFilterObject*> filterObjects;
   for(int i = 0; i < filterCount(); i++)
   {
-    if(nullptr != dynamic_cast<DropBoxWidget*>(m_FilterWidgetLayout->itemAt(i)->widget()))
+    if(nullptr != dynamic_cast<SVPipelineFilterOutlineWidget*>(m_FilterWidgetLayout->itemAt(i)->widget()))
     {
       continue;
     }
