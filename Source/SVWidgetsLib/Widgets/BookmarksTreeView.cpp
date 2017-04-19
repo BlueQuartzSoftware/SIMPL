@@ -723,10 +723,6 @@ BookmarksModel* BookmarksTreeView::FromJsonObject(QJsonObject treeObject)
   keys.sort(Qt::CaseInsensitive);
   for(int i = 0; i < keys.size(); i++)
   {
-    if(keys[i].compare("Prebuilt Pipelines") == 0)
-    {
-      continue;
-    }
     QJsonValue val = treeObject.value(keys[i]);
     if(val.isObject())
     {
