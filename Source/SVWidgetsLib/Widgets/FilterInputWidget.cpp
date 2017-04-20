@@ -158,10 +158,6 @@ FilterInputWidget::~FilterInputWidget()
   {
     delete m_VariablesWidget;
   }
-  if(m_CurrentStructureWidget != nullptr)
-  {
-    delete m_CurrentStructureWidget;
-  }
 }
 
 // -----------------------------------------------------------------------------
@@ -384,12 +380,6 @@ void FilterInputWidget::layoutWidgets(AbstractFilter::Pointer filter)
     delete noCategoryGroupBox;
   }
 
-  // Now layout the Current Structure widget
-  m_CurrentStructureWidget = new DataContainerArrayWidget(filter.get(), this);
-  QString curStructName = QString::fromUtf8("advancedInputsScrollWidget_CurrStructWidget");
-  m_CurrentStructureWidget->setObjectName(curStructName);
-  m_CurrentStructureWidget->setGeometry(QRect(0, 0, 250, 267));
-
   if(!addSpacer)
   {
     scrollAreaVertSpacer->removeItem(inputVertSpacer);
@@ -567,16 +557,6 @@ void FilterInputWidget::clearInputWidgets()
       variablesGrid->removeWidget(w);
     }
   }
-  item = currentStructureGrid->itemAt(0);
-  if(item)
-  {
-    QWidget* w = item->widget();
-    if(w)
-    {
-      w->setVisible(false);
-      currentStructureGrid->removeWidget(w);
-    }
-  }
 
   filterHumanLabel->setText("No Filter Selected");
   brandingLabel->clear();
@@ -603,15 +583,6 @@ void FilterInputWidget::displayFilterParameters(PipelineFilterObject* w)
     variablesGrid->addWidget(m_VariablesWidget);
     m_VariablesWidget->setVisible(true);
   }
-
-  if(m_CurrentStructureWidget != nullptr)
-  {
-    currentStructureGrid->addWidget(m_CurrentStructureWidget);
-    m_CurrentStructureWidget->setVisible(true);
-  }
-
-  // Set the current index to the basic tab by default
-  tabWidget->setCurrentIndex(BASIC_TAB);
 
   // Add a label at the top of the Inputs Tabs to show what filter we are working on
   filterHumanLabel->setText(w->getHumanLabel());
