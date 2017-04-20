@@ -33,8 +33,8 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-#ifndef _ComparisonValueWidget_h_
-#define _ComparisonValueWidget_h_
+#ifndef _comparisonValueWidget_h_
+#define _comparisonValueWidget_h_
 
 #include <QtWidgets/QWidget>
 

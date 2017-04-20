@@ -33,8 +33,8 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-#ifndef _ComparisonSelectionAdvancedWidget_h_
-#define _ComparisonSelectionAdvancedWidget_h_
+#ifndef _comparisonSelectionAdvancedWidget_h_
+#define _comparisonSelectionAdvancedWidget_h_
 
 #include <QtCore/QObject>
 #include <QtCore/QPointer>

@@ -33,8 +33,8 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-#ifndef _IComparisonWidget_h_
-#define _IComparisonWidget_h_
+#ifndef _iComparisonWidget_h_
+#define _iComparisonWidget_h_
 
 #include <QtWidgets/QWidget>
 

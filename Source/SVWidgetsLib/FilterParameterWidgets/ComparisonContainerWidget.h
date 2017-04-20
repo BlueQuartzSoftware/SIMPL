@@ -33,8 +33,8 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-#ifndef _ComparisonContainerWidget_h_
-#define _ComparisonContainerWidget_h_
+#ifndef _comparisonContainerWidget_h_
+#define _comparisonContainerWidget_h_
 
 #include <QtWidgets/QFrame>
 #include <QtGui/QMouseEvent>
