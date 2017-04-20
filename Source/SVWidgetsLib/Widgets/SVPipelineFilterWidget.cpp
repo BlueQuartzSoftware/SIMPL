@@ -470,6 +470,7 @@ void SVPipelineFilterWidget::on_deleteBtn_clicked()
 void SVPipelineFilterWidget::filterInputWidget_filterParametersChanged()
 {
   emit parametersChanged(QUuid());
+  emit parametersChanged1(this);
 }
 
 // -----------------------------------------------------------------------------

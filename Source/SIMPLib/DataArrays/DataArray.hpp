@@ -1146,14 +1146,14 @@ class DataArray : public IDataArray
         ss << "<body>\n";
         ss << "<table cellpadding=\"4\" cellspacing=\"0\" border=\"0\">\n";
         ss << "<tbody>\n";
-        ss << "<tr bgcolor=\"#D3D8E0\"><th colspan=2>Attribute Array Info</th></tr>";
+        ss << "<tr bgcolor=\"#FFFCEA\"><th colspan=2>Attribute Array Info</th></tr>";
 
-        ss << "<tr bgcolor=\"#C3C8D0\"><th align=\"right\">Name:</th><td>" << getName() << "</td></tr>";
+        ss << "<tr bgcolor=\"#E9E7D6\"><th align=\"right\">Name:</th><td>" << getName() << "</td></tr>";
 
 
-        ss << "<tr bgcolor=\"#C3C8D0\"><th align=\"right\">Type:</th><td> DataArray&lt;" << getTypeAsString() << "&gt;</td></tr>";
+        ss << "<tr bgcolor=\"#FFFCEA\"><th align=\"right\">Type:</th><td> DataArray&lt;" << getTypeAsString() << "&gt;</td></tr>";
         QString numStr = usa.toString(static_cast<qlonglong>(getNumberOfTuples() ));
-        ss << "<tr bgcolor=\"#C3C8D0\"><th align=\"right\">Number of Tuples:</th><td>" << numStr << "</td></tr>";
+        ss << "<tr bgcolor=\"#FFFCEA\"><th align=\"right\">Number of Tuples:</th><td>" << numStr << "</td></tr>";
 
         QString compDimStr = "(";
         for(int i = 0; i < m_CompDims.size(); i++)
@@ -1165,11 +1165,11 @@ class DataArray : public IDataArray
           }
         }
         compDimStr = compDimStr + ")";
-        ss << "<tr bgcolor=\"#C3C8D0\"><th align=\"right\">Component Dimensions:</th><td>" << compDimStr << "</td></tr>";
+        ss << "<tr bgcolor=\"#FFFCEA\"><th align=\"right\">Component Dimensions:</th><td>" << compDimStr << "</td></tr>";
         numStr = usa.toString(static_cast<qlonglong>(m_Size));
-        ss << "<tr bgcolor=\"#C3C8D0\"><th align=\"right\">Total Elements:</th><td>" << numStr << "</td></tr>";
+        ss << "<tr bgcolor=\"#FFFCEA\"><th align=\"right\">Total Elements:</th><td>" << numStr << "</td></tr>";
         numStr = usa.toString(static_cast<qlonglong>(m_Size * sizeof(T)));
-        ss << "<tr bgcolor=\"#C3C8D0\"><th align=\"right\">Total Memory Required:</th><td>" << numStr << "</td></tr>";
+        ss << "<tr bgcolor=\"#FFFCEA\"><th align=\"right\">Total Memory Required:</th><td>" << numStr << "</td></tr>";
         ss << "</tbody></table>\n";
         ss << "<br/>";
         ss << "</body></html>";

@@ -35,6 +35,7 @@
 
 #include "DataArraySelectionWidget.h"
 
+#include <QtCore/QMimeData>
 #include <QtCore/QList>
 #include <QtCore/QMetaProperty>
 #include <QtCore/QSignalMapper>
@@ -413,4 +414,83 @@ void DataArraySelectionWidget::filterNeedsInputParameters(AbstractFilter* filter
   {
     FilterParameterWidgetsDialogs::ShowCouldNotSetFilterParameter(getFilter(), getFilterParameter());
   }
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void DataArraySelectionWidget::changeStyleSheet(int style)
+{
+  QString styleSheet;
+  QTextStream ss(&styleSheet);
+
+  ss << "QFrame {";
+#if 0
+#if defined(Q_OS_WIN)
+  ss << "font: italic 9 pt \"" << QtSStyles::GetUIFont() << "\";";
+#elif defined(Q_OS_MAC)
+  ss << "font: italic 12 pt \"" << QtSStyles::GetUIFont() << "\";";
+#else
+  ss << "font: italic 10 pt \"" << QtSStyles::GetUIFont() << "\";";
+#endif
+#endif
+
+  if(style == FS_STANDARD_STYLE)
+  {
+  }
+  else if(style == FS_DRAGGING_STYLE)
+  {
+    ss << "border: 2px solid rgb(34, 120, 46);";
+    ss << "border-radius: 10px;";
+  }
+  else if(style == FS_DOESNOTEXIST_STYLE)
+  {
+    ss << "color: rgb(200, 50, 50); font: bold;";
+  }
+  else if(style == FS_WARNING_STYLE)
+  {
+    ss << "color: rgb(255, 140, 0); font: bold;";
+  }
+
+  ss << "}";
+
+  ss << "QLabel#label { border: 0px solid rgb(255, 120, 46); }";
+
+  setStyleSheet(styleSheet);
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void DataArraySelectionWidget::dragEnterEvent(QDragEnterEvent* event)
+{
+  qDebug() << "DataArraySelectionWidget::dragEnterEvent";
+  changeStyleSheet(FS_DRAGGING_STYLE);
+  event->acceptProposedAction();
+
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void DataArraySelectionWidget::dragLeaveEvent(QDragLeaveEvent* event)
+{
+  qDebug() << "DataArraySelectionWidget::dragLeaveEvent";
+  changeStyleSheet(FS_STANDARD_STYLE);
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void DataArraySelectionWidget::dropEvent(QDropEvent* event)
+{
+  qDebug() << "DataArraySelectionWidget::dropEvent";
+  if(event->mimeData()->hasText())
+  {
+    QByteArray dropData = event->mimeData()->data("text/plain");
+    QString name(dropData);
+    qDebug() << name;
+  }
+  changeStyleSheet(FS_STANDARD_STYLE);
+
 }
