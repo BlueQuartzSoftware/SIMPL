@@ -90,6 +90,7 @@ class SVWidgetsLib_EXPORT SIMPLViewMenuItems : public QObject
     SIMPL_INSTANCE_PROPERTY(QAction*, ActionShowBookmarks)
     SIMPL_INSTANCE_PROPERTY(QAction*, ActionShowStdOutput)
     SIMPL_INSTANCE_PROPERTY(QAction*, ActionShowIssues)
+    SIMPL_INSTANCE_PROPERTY(QAction*, ActionShowDataBrowser)
     SIMPL_INSTANCE_PROPERTY(QAction*, ActionShowToolbox)
 
     // Bookmarks Menu
