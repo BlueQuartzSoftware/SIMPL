@@ -192,6 +192,12 @@ class SVWidgetsLib_EXPORT SVPipelineFilterWidget : public QFrame, public Pipelin
     void parametersChanged(QUuid id);
 
     /**
+     * @brief parametersChanged
+     * @param obj
+     */
+    void parametersChanged1(PipelineFilterObject* obj);
+
+    /**
      * @brief filterWidgetPressed
      */
     void filterWidgetPressed(PipelineFilterObject* fw, Qt::KeyboardModifiers modifiers);

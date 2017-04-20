@@ -33,15 +33,18 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-#ifndef _UNITTESTSUPPORT_HPP_
-#define _UNITTESTSUPPORT_HPP_
+#ifndef _uNITTESTSUPPORT_HPP_
+#define _uNITTESTSUPPORT_HPP_
 
+//-- C Includes
+#include <assert.h>
 
 //-- C++ Includes
 #include <string.h>
 #include <string>
 #include <iostream>
 #include <sstream>
+
 
 #define NUM_COLS 70
 
@@ -545,4 +548,4 @@ bool AlmostEqualUlpsFinal(float* A, float* B, int maxUlps)
   }
 
 
-#endif /* UNITTESTSUPPORT_HPP_ */
+#endif /* _uNITTESTSUPPORT_HPP_ */

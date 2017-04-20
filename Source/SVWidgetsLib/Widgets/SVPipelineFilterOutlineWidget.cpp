@@ -33,7 +33,7 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-#include "DropBoxWidget.h"
+#include "SVPipelineFilterOutlineWidget.h"
 
 #include <QtCore/QDir>
 #include <QtCore/QFileInfo>
@@ -44,12 +44,12 @@
 #include "SVWidgetsLib/QtSupport/QtSStyles.h"
 
 // Include the MOC generated CPP file which has all the QMetaObject methods/data
-#include "moc_DropBoxWidget.cpp"
+#include "moc_SVPipelineFilterOutlineWidget.cpp"
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-DropBoxWidget::DropBoxWidget(QWidget* parent)
+SVPipelineFilterOutlineWidget::SVPipelineFilterOutlineWidget(QWidget* parent)
 : QWidget(parent)
 {
   setupUi(this);
@@ -60,64 +60,87 @@ DropBoxWidget::DropBoxWidget(QWidget* parent)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-DropBoxWidget::~DropBoxWidget()
+SVPipelineFilterOutlineWidget::~SVPipelineFilterOutlineWidget()
 {
+
 }
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void DropBoxWidget::setupGui()
+void SVPipelineFilterOutlineWidget::setupGui()
 {
-  {
-    QString frameStyle;
-    QTextStream ss(&frameStyle);
+  updateWidgetFont();
+}
 
-    ss << "QFrame#frame{"
-       << "color: rgb(127, 0, 63);"
-       << "border: 2px solid MediumBlue;"
-       << "border-top-left-radius: 5px;"
-       << "border-top-right-radius: 5px;"
-       << "border-bottom-left-radius: 5px;"
-       << "border-bottom-right-radius: 5px; "
-       << "}";
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void SVPipelineFilterOutlineWidget::updateWidgetFont()
+{
+  QString fontString;
+  QTextStream fontStringStream(&fontString);
+  QFont font = QtSStyles::GetHumanLabelFont();
 
-    frame->setStyleSheet(frameStyle);
-  }
-
-  {
-    QString labelStyle;
-    QTextStream ss(&labelStyle);
-
-    ss << "QLabel#label{"
-       << "color: MediumBlue;"
-
-#if defined(Q_OS_WIN)
-       << "font: 9pt \"" << QtSStyles::GetUIFont() << "\";"
-#elif defined(Q_OS_MAC)
-       << "font: 100 italic 12pt \"" << QtSStyles::GetUIFont() << "\";"
+  fontStringStream << "font: " << font.weight() << " ";
+#if defined(Q_OS_MAC)
+  fontStringStream << font.pointSize() - 3;
+#elif defined(Q_OS_WIN)
+  fontStringStream << font.pointSize() - 3;
 #else
-       << "font: 100 italic 10pt \"" << QtSStyles::GetUIFont() << "\";"
+  fontStringStream << font.pointSize();
 #endif
-       << "font-weight: bold; "
-       << "}";
-
-    label->setStyleSheet(labelStyle);
+  fontStringStream <<  "pt \"" << font.family()  << "\";";
+#if defined(Q_OS_WIN)
+  if(font.bold()) {
+    fontStringStream << "font-weight: bold;";
   }
+#endif
+
+  QString style = styleSheet();
+  style.replace("font: 13pt;", fontString);
+  setStyleSheet(style);
+
+  style = filterName->styleSheet();
+  style.replace("font: 13pt;", fontString);
+  filterName->setStyleSheet(style);
+
+  style = filterIndex->styleSheet();
+  style.replace("font: 13pt;", fontString);
+  filterIndex->setStyleSheet(style);
 }
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-QFrame* DropBoxWidget::getFrame()
+void SVPipelineFilterOutlineWidget::setFilterName(QString name)
 {
-  return frame;
+  filterName->setText(name);
 }
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void DropBoxWidget::setLabel(QString text)
+void SVPipelineFilterOutlineWidget::setFilterIndex(int i, int numFilters)
 {
-  label->setText(text);
+  if (numFilters < 10) { numFilters = 11; }
+  QString numStr = QString::number(i);
+
+  if(numFilters > 9)
+  {
+    int mag = 0;
+    int max = numFilters;
+    while(max > 0)
+    {
+      mag++;
+      max = max / 10;
+    }
+    numStr = "";             // Clear the string
+    QTextStream ss(&numStr); // Create a QTextStream to set up the padding
+    ss.setFieldWidth(mag);
+    ss.setPadChar('0');
+    ss << i;
+  }
+
+  filterIndex->setText(numStr);
 }

@@ -33,61 +33,35 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-#ifndef _iComparisonWidget_h_
-#define _iComparisonWidget_h_
+#ifndef _databrowseritemdelegate_h_
+#define _databrowseritemdelegate_h_
 
-#include <QtWidgets/QWidget>
+#include <QtCore/QModelIndex>
 
-#include "SIMPLib/Common/AbstractComparison.h"
-#include "SIMPLib/DataContainers/AttributeMatrix.h"
+#include <QStyledItemDelegate>
 
-#include "SVWidgetsLib/SVWidgetsLib.h"
 
-/**
-* @brief The IComparisonWidget is an abstract class used by ComparisonContainerWidget
-* to reference both ComparisonValueWidget and ComparisonSetWidget.
-*/
-class SVWidgetsLib_EXPORT IComparisonWidget : public QWidget
+class DataBrowserItemDelegate : public QStyledItemDelegate
 {
-  Q_OBJECT
+    Q_OBJECT
 
-public:
-  IComparisonWidget(QWidget* parent);
-  ~IComparisonWidget();
+  public:
+    explicit DataBrowserItemDelegate(QObject* parent = 0);
 
-  /**
-  * @brief Creates a new IComparisonWidget for a given comparison
-  * @param comparison Comparison used for creating the new widget
-  * @return
-  */
-  static IComparisonWidget* CreateWidget(AbstractComparison::Pointer comparison);
+    virtual ~DataBrowserItemDelegate();
 
-  /**
-  * @brief Returns the comparison used by the widget as an AbstractComparison
-  * @return
-  */
-  virtual AbstractComparison::Pointer getComparison() = 0;
+  protected:
+    QWidget* createEditor(QWidget* parent, const QStyleOptionViewItem& option, const QModelIndex& index) const Q_DECL_OVERRIDE;
+    void setEditorData(QWidget* editor, const QModelIndex& index) const Q_DECL_OVERRIDE;
+    void setModelData(QWidget* editor, QAbstractItemModel* model, const QModelIndex& index) const Q_DECL_OVERRIDE;
+    void updateEditorGeometry(QWidget* editor, const QStyleOptionViewItem& option, const QModelIndex& index) const Q_DECL_OVERRIDE;
+    void paint(QPainter* painter, const QStyleOptionViewItem& option, const QModelIndex& index) const Q_DECL_OVERRIDE;
 
-  /**
-  * @brief Returns the AttributeMatrix used by the widget
-  * @return
-  */
-  AttributeMatrix::Pointer getAttributeMatrix();
+  private:
 
-  /**
-  * @brief Sets the AttributeMatrix used by the widget
-  * @param am
-  */
-  virtual void setAttributeMatrix(AttributeMatrix::Pointer am);
+    DataBrowserItemDelegate(const DataBrowserItemDelegate&); // Copy Constructor Not Implemented
+    void operator=(const DataBrowserItemDelegate&); // Operator '=' Not Implemented
 
-signals:
-  /**
-  * @brief Specifies that the comparison used by the widget has changed
-  */
-  void comparisonChanged();
-
-private:
-  AttributeMatrix::Pointer m_attributeMatrix;
 };
 
-#endif
+#endif // _DataBrowserItemDelegate_H

@@ -39,6 +39,7 @@
 #include <QtCore/QVector>
 
 #include "SIMPLib/Common/ComparisonInputs.h"
+#include "SIMPLib/Common/ComparisonInputsAdvanced.h"
 #include "SIMPLib/Common/PipelineMessage.h"
 #include "SIMPLib/CoreFilters/CreateDataArray.h"
 #include "SIMPLib/DataContainers/DataArrayPath.h"
@@ -103,6 +104,7 @@ void QMetaObjectUtilities::RegisterMetaTypes()
   qRegisterMetaType<AxisAngleInput_t>("AxisAngleInput_t");
   qRegisterMetaType<ComparisonInput_t>("ComparisonInput_t");
   qRegisterMetaType<ComparisonInputs>("ComparisonInputs");
+  qRegisterMetaType<ComparisonInputsAdvanced>("ComparisonInputsAdvanced");
   qRegisterMetaType<DataContainerArrayProxy>("DataContainerArrayProxy");
   qRegisterMetaType<IntVec3_t>("IntVec3_t");
   qRegisterMetaType<FloatVec3_t>("FloatVec3_t");

@@ -7,6 +7,12 @@ set(SVWidgetsLib_Widgets_UIS "")
 # Add in the remaining sources that are actually widgets but are completely Custom and do NOT use private
 # inheritance through a .ui file
 set(SVWidgetsLib_Widgets_MOC_HDRS
+  ${SVWidgetsLib_SOURCE_DIR}/Widgets/DataBrowserItemDelegate.h
+  ${SVWidgetsLib_SOURCE_DIR}/Widgets/DataBrowserWidget.h
+  ${SVWidgetsLib_SOURCE_DIR}/Widgets/DataBrowserTreeView.h
+  ${SVWidgetsLib_SOURCE_DIR}/Widgets/DataBrowserModel.h
+
+
   ${SVWidgetsLib_SOURCE_DIR}/Widgets/BookmarksItemDelegate.h
   ${SVWidgetsLib_SOURCE_DIR}/Widgets/BookmarksModel.h
   ${SVWidgetsLib_SOURCE_DIR}/Widgets/BookmarksToolboxWidget.h
@@ -14,7 +20,6 @@ set(SVWidgetsLib_Widgets_MOC_HDRS
   ${SVWidgetsLib_SOURCE_DIR}/Widgets/BreakpointFilterWidget.h
   ${SVWidgetsLib_SOURCE_DIR}/Widgets/DREAM3DListWidget.h
   ${SVWidgetsLib_SOURCE_DIR}/Widgets/DataContainerArrayWidget.h
-  ${SVWidgetsLib_SOURCE_DIR}/Widgets/DropBoxWidget.h
   ${SVWidgetsLib_SOURCE_DIR}/Widgets/FilterLibraryToolboxWidget.h
   ${SVWidgetsLib_SOURCE_DIR}/Widgets/FilterLibraryTreeWidget.h
   ${SVWidgetsLib_SOURCE_DIR}/Widgets/FilterListToolboxWidget.h
@@ -23,18 +28,27 @@ set(SVWidgetsLib_Widgets_MOC_HDRS
   ${SVWidgetsLib_SOURCE_DIR}/Widgets/StandardOutputWidget.h
   ${SVWidgetsLib_SOURCE_DIR}/Widgets/FilterInputWidget.h
   ${SVWidgetsLib_SOURCE_DIR}/Widgets/SVPipelineFilterWidget.h
+  ${SVWidgetsLib_SOURCE_DIR}/Widgets/SVPipelineFilterOutlineWidget.h
   ${SVWidgetsLib_SOURCE_DIR}/Widgets/SVPipelineViewWidget.h
   ${SVWidgetsLib_SOURCE_DIR}/Widgets/SIMPLViewToolbox.h
   ${SVWidgetsLib_SOURCE_DIR}/Widgets/SIMPLViewMenuItems.h
 )
 
 set(SVWidgetsLib_Widgets_HDRS
-    ${SVWidgetsLib_SOURCE_DIR}/Widgets/BookmarksItem.h
-    ${SVWidgetsLib_SOURCE_DIR}/Widgets/PipelineView.h
-    ${SVWidgetsLib_SOURCE_DIR}/Widgets/PipelineFilterObject.h
+  ${SVWidgetsLib_SOURCE_DIR}/Widgets/DataBrowserItem.h
+
+  ${SVWidgetsLib_SOURCE_DIR}/Widgets/BookmarksItem.h
+  ${SVWidgetsLib_SOURCE_DIR}/Widgets/PipelineView.h
+  ${SVWidgetsLib_SOURCE_DIR}/Widgets/PipelineFilterObject.h
 )
 
 set(SVWidgetsLib_Widgets_SRCS
+  ${SVWidgetsLib_SOURCE_DIR}/Widgets/DataBrowserItem.cpp
+  ${SVWidgetsLib_SOURCE_DIR}/Widgets/DataBrowserItemDelegate.cpp
+  ${SVWidgetsLib_SOURCE_DIR}/Widgets/DataBrowserWidget.cpp
+  ${SVWidgetsLib_SOURCE_DIR}/Widgets/DataBrowserTreeView.cpp
+  ${SVWidgetsLib_SOURCE_DIR}/Widgets/DataBrowserModel.cpp
+
   ${SVWidgetsLib_SOURCE_DIR}/Widgets/BookmarksItem.cpp
   ${SVWidgetsLib_SOURCE_DIR}/Widgets/BookmarksItemDelegate.cpp
   ${SVWidgetsLib_SOURCE_DIR}/Widgets/BookmarksModel.cpp
@@ -43,7 +57,6 @@ set(SVWidgetsLib_Widgets_SRCS
   ${SVWidgetsLib_SOURCE_DIR}/Widgets/BreakpointFilterWidget.cpp
   ${SVWidgetsLib_SOURCE_DIR}/Widgets/DREAM3DListWidget.cpp
   ${SVWidgetsLib_SOURCE_DIR}/Widgets/DataContainerArrayWidget.cpp
-  ${SVWidgetsLib_SOURCE_DIR}/Widgets/DropBoxWidget.cpp
   ${SVWidgetsLib_SOURCE_DIR}/Widgets/FilterLibraryToolboxWidget.cpp
   ${SVWidgetsLib_SOURCE_DIR}/Widgets/FilterLibraryTreeWidget.cpp
   ${SVWidgetsLib_SOURCE_DIR}/Widgets/FilterListToolboxWidget.cpp
@@ -52,6 +65,7 @@ set(SVWidgetsLib_Widgets_SRCS
   ${SVWidgetsLib_SOURCE_DIR}/Widgets/StandardOutputWidget.cpp
   ${SVWidgetsLib_SOURCE_DIR}/Widgets/FilterInputWidget.cpp
   ${SVWidgetsLib_SOURCE_DIR}/Widgets/SVPipelineFilterWidget.cpp
+  ${SVWidgetsLib_SOURCE_DIR}/Widgets/SVPipelineFilterOutlineWidget.cpp
   ${SVWidgetsLib_SOURCE_DIR}/Widgets/SVPipelineViewWidget.cpp
   ${SVWidgetsLib_SOURCE_DIR}/Widgets/PipelineFilterObject.cpp
   ${SVWidgetsLib_SOURCE_DIR}/Widgets/PipelineView.cpp
@@ -62,16 +76,17 @@ set(SVWidgetsLib_Widgets_SRCS
 set(SVWidgetsLib_Widgets_UIS
   ${SVWidgetsLib_SOURCE_DIR}/Widgets/UI_Files/BookmarksToolboxWidget.ui
   ${SVWidgetsLib_SOURCE_DIR}/Widgets/UI_Files/DataContainerArrayWidget.ui
-  ${SVWidgetsLib_SOURCE_DIR}/Widgets/UI_Files/DropBoxWidget.ui
   ${SVWidgetsLib_SOURCE_DIR}/Widgets/UI_Files/FavoritesDockWidget.ui
   ${SVWidgetsLib_SOURCE_DIR}/Widgets/UI_Files/FilterInputWidget.ui
   ${SVWidgetsLib_SOURCE_DIR}/Widgets/UI_Files/FilterLibraryToolboxWidget.ui
   ${SVWidgetsLib_SOURCE_DIR}/Widgets/UI_Files/FilterListToolboxWidget.ui
   ${SVWidgetsLib_SOURCE_DIR}/Widgets/UI_Files/IssuesWidget.ui
   ${SVWidgetsLib_SOURCE_DIR}/Widgets/UI_Files/SVPipelineFilterWidget.ui
+  ${SVWidgetsLib_SOURCE_DIR}/Widgets/UI_Files/SVPipelineFilterOutlineWidget.ui
   ${SVWidgetsLib_SOURCE_DIR}/Widgets/UI_Files/PrebuiltsToolboxWidget.ui
   ${SVWidgetsLib_SOURCE_DIR}/Widgets/UI_Files/SIMPLViewToolbox.ui
   ${SVWidgetsLib_SOURCE_DIR}/Widgets/UI_Files/StandardOutputWidget.ui
+  ${SVWidgetsLib_SOURCE_DIR}/Widgets/UI_Files/DataBrowserWidget.ui
   )
 
 SET(SVWidgetsLib_Widgets_Util_HDRS

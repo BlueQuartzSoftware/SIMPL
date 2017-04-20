@@ -249,6 +249,11 @@ void WriteASCIIData::dataCheck()
     DataArrayPath path = paths.at(i);
     IDataArray::WeakPointer ptr = getDataContainerArray()->getPrereqIDataArrayFromPath<IDataArray, AbstractFilter>(this, path);
 
+    if(getErrorCondition() < 0)
+    {
+      return;
+    }
+
     if( ptr.lock()->getTypeAsString().compare("NeighborList<T>") == 0)
     {
       setErrorCondition(TemplateHelpers::Errors::UnsupportedType);

@@ -33,8 +33,8 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-#ifndef _ComparisonSetWidget_h_
-#define _ComparisonSetWidget_h_
+#ifndef _comparisonSetWidget_h_
+#define _comparisonSetWidget_h_
 
 #include <QtWidgets/QWidget>
 #include <QtGui/QDragEnterEvent>

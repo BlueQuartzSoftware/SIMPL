@@ -83,6 +83,7 @@ set(TEST_NAMES
   FilterParametersRWTest
   FilterPipelineTest
   FindDerivativesFilterTest
+  FloatSummationTest
   GenerateColorTableTest
   ImportAsciDataArrayTest
   MatrixMathTest

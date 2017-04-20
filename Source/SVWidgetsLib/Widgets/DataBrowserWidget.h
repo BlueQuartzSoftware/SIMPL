@@ -33,61 +33,54 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-#ifndef _iComparisonWidget_h_
-#define _iComparisonWidget_h_
+#ifndef _DataBrowserWidget_h_
+#define _DataBrowserWidget_h_
 
+#include <QtCore/QUuid>
 #include <QtWidgets/QWidget>
+#include <QtWidgets/QMainWindow>
 
-#include "SIMPLib/Common/AbstractComparison.h"
-#include "SIMPLib/DataContainers/AttributeMatrix.h"
+#include "SIMPLib/SIMPLib.h"
+#include "SIMPLib/Common/IObserver.h"
+#include "SIMPLib/Common/PipelineMessage.h"
 
 #include "SVWidgetsLib/SVWidgetsLib.h"
 
-/**
-* @brief The IComparisonWidget is an abstract class used by ComparisonContainerWidget
-* to reference both ComparisonValueWidget and ComparisonSetWidget.
-*/
-class SVWidgetsLib_EXPORT IComparisonWidget : public QWidget
+#include "ui_DataBrowserWidget.h"
+
+class PipelineFilterObject;
+class QStandardItem;
+
+
+
+class SVWidgetsLib_EXPORT DataBrowserWidget : public QWidget, public IObserver, private Ui::DataBrowserWidget
 {
-  Q_OBJECT
 
-public:
-  IComparisonWidget(QWidget* parent);
-  ~IComparisonWidget();
+    Q_OBJECT
+  public:
+    DataBrowserWidget(QWidget* parent = nullptr);
+    virtual ~DataBrowserWidget();
 
-  /**
-  * @brief Creates a new IComparisonWidget for a given comparison
-  * @param comparison Comparison used for creating the new widget
-  * @return
-  */
-  static IComparisonWidget* CreateWidget(AbstractComparison::Pointer comparison);
 
-  /**
-  * @brief Returns the comparison used by the widget as an AbstractComparison
-  * @return
-  */
-  virtual AbstractComparison::Pointer getComparison() = 0;
+  public slots:
+    void filterObjectActivated(PipelineFilterObject* object);
+    void handleFilterParameterChanged(PipelineFilterObject* obj);
 
-  /**
-  * @brief Returns the AttributeMatrix used by the widget
-  * @return
-  */
-  AttributeMatrix::Pointer getAttributeMatrix();
+    void dataBrowserTreeView_indexChanged(const QModelIndex& current, const QModelIndex& previous);
 
-  /**
-  * @brief Sets the AttributeMatrix used by the widget
-  * @param am
-  */
-  virtual void setAttributeMatrix(AttributeMatrix::Pointer am);
 
-signals:
-  /**
-  * @brief Specifies that the comparison used by the widget has changed
-  */
-  void comparisonChanged();
+  protected:
+    void setupGui();
 
-private:
-  AttributeMatrix::Pointer m_attributeMatrix;
+    QStandardItem* findChildByName(QStandardItem* rootItem, const QString &name, int column);
+    void removeNonexistingEntries(QStandardItem* rootItem, QList<QString> existing, int column);
+
+  private:
+
+    DataBrowserWidget(const DataBrowserWidget&); // Copy Constructor Not Implemented
+    void operator=(const DataBrowserWidget&); // Operator '=' Not Implemented
+
+
 };
 
 #endif

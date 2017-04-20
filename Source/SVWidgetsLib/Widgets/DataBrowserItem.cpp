@@ -32,311 +32,329 @@
 *    United States Prime Contract Navy N00173-07-C-2068
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
+#include "DataBrowserItem.h"
 
-#include "PipelineView.h"
-
-#include <iostream>
-
-#include <QtCore/QDir>
-#include <QtCore/QFileInfo>
-#include <QtCore/QJsonDocument>
-#include <QtCore/QJsonObject>
-#include <QtCore/QMimeData>
-#include <QtCore/QTemporaryFile>
-#include <QtCore/QUrl>
-
-#include <QtGui/QClipboard>
-#include <QtGui/QDrag>
-#include <QtGui/QDragEnterEvent>
-#include <QtGui/QDragLeaveEvent>
-#include <QtGui/QDragMoveEvent>
-#include <QtGui/QDropEvent>
-#include <QtGui/QMouseEvent>
-#include <QtGui/QPixmap>
-#include <QtWidgets/QHeaderView>
-#include <QtWidgets/QLabel>
-#include <QtWidgets/QMessageBox>
-#include <QtWidgets/QProgressDialog>
-#include <QtWidgets/QScrollArea>
-#include <QtWidgets/QScrollBar>
-#include <QtWidgets/QUndoCommand>
-#include <QtWidgets/QUndoStack>
-#include <QtWidgets/QVBoxLayout>
-
-#include "SIMPLib/Common/FilterFactory.hpp"
-#include "SIMPLib/Common/FilterManager.h"
-#include "SIMPLib/Common/IFilterFactory.hpp"
-#include "SIMPLib/Common/PipelineMessage.h"
-#include "SIMPLib/Common/SIMPLibSetGetMacros.h"
-#include "SIMPLib/CoreFilters/Breakpoint.h"
-#include "SIMPLib/FilterParameters/JsonFilterParametersReader.h"
-#include "SIMPLib/FilterParameters/JsonFilterParametersWriter.h"
-#include "SIMPLib/SIMPLib.h"
-
-#include "SVWidgetsLib/Core/FilterWidgetManager.h"
-#include "SVWidgetsLib/Core/PipelineViewPtrMimeData.h"
-#include "SVWidgetsLib/Core/SVWidgetsLibConstants.h"
-#include "SVWidgetsLib/FilterParameterWidgets/FilterParameterWidgetsDialogs.h"
-#include "SVWidgetsLib/QtSupport/QtSDroppableScrollArea.h"
-#include "SVWidgetsLib/Widgets/BreakpointFilterWidget.h"
-#include "SVWidgetsLib/Widgets/util/AddFilterCommand.h"
-#include "SVWidgetsLib/Widgets/util/MoveFilterCommand.h"
-#include "SVWidgetsLib/Widgets/util/RemoveFilterCommand.h"
+#include <QtCore/QStringList>
+#include <QtGui/QColor>
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-PipelineView::PipelineView(QWidget* parent)
+DataBrowserItem::DataBrowserItem(const QVector<QVariant>& data, ItemType itemType, DataBrowserItem* parent)
+: m_ItemData(data)
+, m_ParentItem(parent)
+, m_ItemHasErrors(false)
+, m_ItemTooltip("")
+, m_NeedsToBeExpanded(false)
+, m_Icon(QIcon())
+, m_ItemType(itemType)
 {
 }
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-PipelineView::~PipelineView()
+DataBrowserItem::~DataBrowserItem()
 {
+  qDeleteAll(m_ChildItems);
 }
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-int PipelineView::filterCount(QUuid startId)
+QString DataBrowserItem::TopLevelString()
 {
-  Q_UNUSED(startId)
-
-  // The subclass should reimplement this function
-  return -1;
+  return QString::fromLatin1("[Top Level]");
 }
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-PipelineFilterObject* PipelineView::filterObjectAt(QVariant value)
+DataBrowserItem* DataBrowserItem::child(int number)
 {
-  // The subclass should reimplement this function
-  return nullptr;
+  return m_ChildItems.value(number);
 }
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-bool PipelineView::containsFilterWidget(PipelineFilterObject* filterWidget)
+int DataBrowserItem::childCount() const
 {
-  Q_UNUSED(filterWidget)
-
-  // The subclass should reimplement this function
-  return false;
+  return m_ChildItems.count();
 }
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-QVariant PipelineView::valueOfFilterWidget(PipelineFilterObject* filterWidget)
+int DataBrowserItem::childNumber() const
 {
-  Q_UNUSED(filterWidget)
+  if(m_ParentItem)
+  {
+    return m_ParentItem->m_ChildItems.indexOf(const_cast<DataBrowserItem*>(this));
+  }
 
-  // The subclass should reimplement this function
-  return QVariant();
+  return 0;
 }
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void PipelineView::addFilterObject(PipelineFilterObject* filterObject, QVariant value)
+int DataBrowserItem::columnCount() const
 {
-  Q_UNUSED(filterObject)
-  Q_UNUSED(value)
-
-  // The subclass should reimplement this function
-  return;
+  return m_ItemData.count();
 }
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void PipelineView::removeFilterObject(PipelineFilterObject* filterWidget, bool deleteWidget)
+QVariant DataBrowserItem::data(int column) const
 {
-  Q_UNUSED(filterWidget)
-  Q_UNUSED(deleteWidget)
-
-  // The subclass should reimplement this function
-  return;
+  return m_ItemData.value(column);
 }
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void PipelineView::moveFilterWidget(PipelineFilterObject* fw, QVariant origin, QVariant destination)
+bool DataBrowserItem::insertChild(int position, DataBrowserItem* child)
 {
-  Q_UNUSED(fw)
-  Q_UNUSED(origin)
-  Q_UNUSED(destination)
-
-  // The subclass should reimplement this function
-  return;
+  m_ChildItems.insert(position, child);
+  return true;
 }
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-int PipelineView::openPipeline(const QString& filePath, QVariant value, const bool& setOpenedFilePath, const bool& changeTitle)
+bool DataBrowserItem::insertChildren(int position, int count, int columns)
 {
-  Q_UNUSED(filePath)
-  Q_UNUSED(value)
-  Q_UNUSED(setOpenedFilePath)
-  Q_UNUSED(changeTitle)
+  if(position < 0 || position > m_ChildItems.size())
+  {
+    return false;
+  }
 
-  // The subclass should reimplement this function
-  return -1;
+  for(int row = 0; row < count; ++row)
+  {
+    QVector<QVariant> data(columns);
+    DataBrowserItem* item = new DataBrowserItem(data, ItemType::Unknown, this);
+    insertChild(position, item);
+  }
+
+  return true;
 }
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void PipelineView::addSIMPLViewReaderFilter(const QString& filePath, QVariant value)
+bool DataBrowserItem::insertColumns(int position, int columns)
 {
-  Q_UNUSED(filePath)
-  Q_UNUSED(value)
+  if(position < 0 || position > m_ItemData.size())
+  {
+    return false;
+  }
 
-  // The subclass should reimplement this function
-  return;
+  for(int column = 0; column < columns; ++column)
+  {
+    m_ItemData.insert(position, QVariant());
+  }
+
+  foreach(DataBrowserItem* child, m_ChildItems)
+  {
+    child->insertColumns(position, columns);
+  }
+
+  return true;
 }
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void PipelineView::clearFilterWidgets()
+DataBrowserItem* DataBrowserItem::parent()
 {
-  // The subclass should reimplement this function
-  return;
+  return m_ParentItem;
 }
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void PipelineView::showFilterHelp(const QString& className)
+bool DataBrowserItem::removeChild(int position)
 {
-  Q_UNUSED(className)
+  m_ChildItems.removeAt(position);
+  return true;
 }
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-PipelineFilterObject* PipelineView::createFilterObjectFromFilter(AbstractFilter::Pointer filter)
+bool DataBrowserItem::removeChildren(int position, int count)
 {
-  Q_UNUSED(filter)
+  if(position < 0 || position + count > m_ChildItems.size())
+  {
+    return false;
+  }
 
-  // The subclass should reimplement this function
-  return nullptr;
+  for(int row = 0; row < count; ++row)
+  {
+    delete m_ChildItems.takeAt(position);
+  }
+
+  return true;
 }
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void PipelineView::setSelectedFilterObject(PipelineFilterObject* w, Qt::KeyboardModifiers modifiers)
+bool DataBrowserItem::removeColumns(int position, int columns)
 {
-  Q_UNUSED(w)
-  Q_UNUSED(modifiers)
+  if(position < 0 || position + columns > m_ItemData.size())
+  {
+    return false;
+  }
 
-  // The subclass should reimplement this function
-  return;
+  for(int column = 0; column < columns; ++column)
+  {
+    m_ItemData.remove(position);
+  }
+
+  foreach(DataBrowserItem* child, m_ChildItems)
+  {
+    child->removeColumns(position, columns);
+  }
+
+  return true;
 }
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void PipelineView::setDataBrowserWidget(DataBrowserWidget* w)
+bool DataBrowserItem::setData(int column, const QVariant& value)
 {
-  Q_UNUSED(w)
+  if(column < 0 || column >= m_ItemData.size())
+  {
+    return false;
+  }
 
-  // The subclass should reimplement this function
-  return;
+  m_ItemData[column] = value;
+  return true;
 }
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void PipelineView::recheckWindowTitleAndModification()
+QString DataBrowserItem::getItemTooltip()
 {
-  // The subclass should reimplement this function
-  return;
+  return m_ItemTooltip;
 }
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void PipelineView::reindexWidgetTitles()
+bool DataBrowserItem::setItemTooltip(const QString& value)
 {
-  // The subclass should reimplement this function
-  return;
+  m_ItemTooltip = value;
+  return true;
 }
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void PipelineView::populatePipelineView(QString jsonString, QVariant value)
+QIcon DataBrowserItem::getIcon()
 {
-  Q_UNUSED(jsonString)
-  Q_UNUSED(value)
-
-  // The subclass should reimplement this function
-  return;
+  return m_Icon;
 }
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void PipelineView::preflightPipeline(QUuid id)
+bool DataBrowserItem::setIcon(const QIcon& icon)
 {
-  // The subclass should reimplement this function
-  return;
+  m_Icon = icon;
+  return true;
 }
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-FilterPipeline::Pointer PipelineView::getFilterPipeline(QUuid startId)
+bool DataBrowserItem::needsToBeExpanded()
 {
-  Q_UNUSED(startId)
-
-  // The subclass should reimplement this function
-  return FilterPipeline::NullPointer();
+  return m_NeedsToBeExpanded;
 }
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-FilterPipeline::Pointer PipelineView::getCopyOfFilterPipeline()
+void DataBrowserItem::setNeedsToBeExpanded(bool value)
 {
-  // The subclass should reimplement this function
-  return FilterPipeline::NullPointer();
+  m_NeedsToBeExpanded = value;
 }
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void PipelineView::clearSelectedFilterObjects()
+void DataBrowserItem::setParent(DataBrowserItem* parent)
 {
-  // The subclass should reimplement this function
-  return;
+  m_ParentItem = parent;
 }
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void PipelineView::addUndoCommand(QUndoCommand* cmd)
+DataBrowserItem::ItemType DataBrowserItem::itemType()
 {
-  Q_UNUSED(cmd)
-
-  // The subclass should reimplement this function
-  return;
+  return m_ItemType;
 }
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-QList<PipelineFilterObject*> PipelineView::getSelectedFilterObjects()
+void DataBrowserItem::setItemType(DataBrowserItem::ItemType itemType)
 {
-  // The subclass should reimplement this function
-  return QList<PipelineFilterObject*>();
+  m_ItemType = itemType;
+}
+
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+QColor DataBrowserItem::backgroundColor()
+{
+  switch(m_ItemType)
+  {
+    case ItemType::DataContainerArray:
+      return QColor(0, 77, 245);
+    case ItemType::DataContainer:
+      return QColor(153, 97, 242);
+    case ItemType::AttributeMatrix:
+      return QColor(0, 142, 30);
+    case ItemType::AttributeArray:
+      return QColor(215, 104, 0);
+    case ItemType::RootItem:
+      return QColor(100, 100, 100);
+    case ItemType::Unknown:
+      return QColor(215, 0, 0);
+  }
+
+  return QColor(255, 255, 255);
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+QColor DataBrowserItem::foregroundColor()
+{
+  switch(m_ItemType)
+  {
+    case ItemType::DataContainerArray:
+      return QColor(255, 255, 255);
+    case ItemType::DataContainer:
+      return QColor(255, 255, 255);
+    case ItemType::AttributeMatrix:
+      return QColor(255, 255, 255);
+    case ItemType::AttributeArray:
+      return QColor(255, 255, 255);
+    case ItemType::RootItem:
+      return QColor(255, 255, 255);
+    case ItemType::Unknown:
+      return QColor(255, 255, 255);
+  }
+
+  return QColor(0,0,0);
 }

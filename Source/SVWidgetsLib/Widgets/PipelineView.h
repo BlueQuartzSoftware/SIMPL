@@ -60,7 +60,7 @@
 
 #include "SVWidgetsLib/SVWidgetsLib.h"
 #include "SVWidgetsLib/Widgets/SVPipelineFilterWidget.h"
-#include "SVWidgetsLib/Widgets/DropBoxWidget.h"
+#include "SVWidgetsLib/Widgets/SVPipelineFilterOutlineWidget.h"
 #include "SVWidgetsLib/Widgets/util/AddFilterCommand.h"
 #include "SVWidgetsLib/Widgets/util/MoveFilterCommand.h"
 #include "SVWidgetsLib/Widgets/util/RemoveFilterCommand.h"
@@ -72,6 +72,7 @@ class QLabel;
 class QEvent;
 class QUndoStack;
 class QUndoCommand;
+class DataBrowserWidget;
 
 /*
  *
@@ -179,6 +180,12 @@ class SVWidgetsLib_EXPORT PipelineView
     virtual void setSelectedFilterObject(PipelineFilterObject* w, Qt::KeyboardModifiers modifiers);
 
     /**
+     * @brief setDataBrowserWidget
+     * @param w
+     */
+    virtual void setDataBrowserWidget(DataBrowserWidget* w);
+
+    /**
      * @brief recheckWindowTitleAndModification
      */
     virtual void recheckWindowTitleAndModification();
@@ -214,6 +221,10 @@ class SVWidgetsLib_EXPORT PipelineView
     */
     virtual void addUndoCommand(QUndoCommand* cmd);
 
+    /**
+     * @brief showFilterHelp
+     * @param className
+     */
     void showFilterHelp(const QString& className);
 
     /**
