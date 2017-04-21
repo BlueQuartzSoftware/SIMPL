@@ -69,6 +69,18 @@ public:
   virtual AbstractComparison::Pointer getComparison() = 0;
 
   /**
+  * @brief Sets the array of names to use in this widget or any nested IComparisonWidgets
+  * @param names QStringList of all DataArray names available to use
+  */
+  virtual void setArrayNames(QStringList names) = 0;
+
+  /**
+  * @brief Returns a list of all DataArray names used in this widget or any nested IComparisonWidgets
+  * @return
+  */
+  virtual QStringList getArrayNames();
+
+  /**
   * @brief Returns the AttributeMatrix used by the widget
   * @return
   */
@@ -85,6 +97,9 @@ signals:
   * @brief Specifies that the comparison used by the widget has changed
   */
   void comparisonChanged();
+
+protected:
+  QStringList m_arrayNames;
 
 private:
   AttributeMatrix::Pointer m_attributeMatrix;

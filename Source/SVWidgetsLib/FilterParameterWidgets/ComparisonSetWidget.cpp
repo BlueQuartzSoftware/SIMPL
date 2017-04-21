@@ -155,6 +155,9 @@ void ComparisonSetWidget::setComparisonSet(ComparisonSet::Pointer comparisonSet)
 
       conditionalLayout->insertWidget(i, container);
       container->show();
+
+      connect(container, SIGNAL(comparisonChanged()),
+        this, SIGNAL(comparisonChanged()));
     }
 
     updateItems();
@@ -242,12 +245,13 @@ void ComparisonSetWidget::addComparisonWidget(AbstractComparison::Pointer compar
 
   ComparisonContainerWidget* comparisonWidget = new ComparisonContainerWidget(this, comparison);
   conditionalLayout->insertWidget(index, comparisonWidget);
-
-  comparisonWidget->getComparisonWidget()->setAttributeMatrix(getAttributeMatrix());
   comparisonWidget->setComparisonSetWidget(this);
 
   updateItems();
   update();
+
+  connect(comparisonWidget, SIGNAL(comparisonChanged()),
+    this, SIGNAL(comparisonChanged()));
 
   emit comparisonChanged();
 }
@@ -427,4 +431,22 @@ void ComparisonSetWidget::clearSet()
       i--;
     }
   }
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void ComparisonSetWidget::setArrayNames(QStringList names)
+{
+  blockSignals(true);
+
+  m_arrayNames = names;
+
+  QVector<IComparisonWidget*> comparisonWidgets = getComparisonWidgets();
+  for(int i = 0; i < comparisonWidgets.size(); i++)
+  {
+    comparisonWidgets[i]->setArrayNames(names);
+  }
+
+  blockSignals(false);
 }

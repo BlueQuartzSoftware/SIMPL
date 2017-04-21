@@ -107,6 +107,12 @@ public:
   AbstractComparison::Pointer getComparison();
 
   /**
+  * @brief Sets the array of names to use in any nested IComparisonWidgets
+  * @param names QStringList of all DataArray names available to use
+  */
+  void setArrayNames(QStringList names) override;
+
+  /**
   * @brief Sets the AttributeMatrix used for finding DataArrayNames
   * @param am
   */
