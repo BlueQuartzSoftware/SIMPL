@@ -77,6 +77,16 @@ void DataBrowserWidget::setupGui()
   dataBrowserTreeView->setModel(model);
   model->setColumnCount(1);
   model->setParent(dataBrowserTreeView); // Set the parent so it gets cleaned up
+
+  QString css(" QToolTip {\
+              border: 2px solid #434343;\
+              padding: 2px;\
+              border-radius: 3px;\
+              opacity: 255;\
+              background-color: #FFFCEA;\
+              color: #000000;\
+              }");
+  this->setStyleSheet(css);
 }
 
 // -----------------------------------------------------------------------------
@@ -161,12 +171,12 @@ void DataBrowserWidget::filterObjectActivated(PipelineFilterObject* object)
     if(!dcItem)
     {
       dcItem = new QStandardItem(dc->getName());
-      dcItem->setData(dc->getInfoString(SIMPL::HtmlFormat), Qt::UserRole + 1);
-//      dcItem->setBackground(QBrush(QColor(154, 136, 255)));
-      dcItem->setToolTip(dc->getInfoString(SIMPL::HtmlFormat));
       rootItem->appendRow(dcItem);
+      //      dcItem->setBackground(QBrush(QColor(154, 136, 255)));
       dataBrowserTreeView->expand(dcItem->index());
     }
+    dcItem->setData(dc->getInfoString(SIMPL::HtmlFormat), Qt::UserRole + 1);
+    dcItem->setToolTip(dc->getInfoString(SIMPL::HtmlFormat));
 
     if(path.size() > 0 && dc->getName().compare(path[0]) == 0)
     {
@@ -187,11 +197,11 @@ void DataBrowserWidget::filterObjectActivated(PipelineFilterObject* object)
       {
           amItem = new QStandardItem(am->getName());
 //          amItem->setBackground(QColor(128, 224, 138));
-          amItem->setData(am->getInfoString(SIMPL::HtmlFormat), Qt::UserRole + 1);
-          amItem->setToolTip(am->getInfoString(SIMPL::HtmlFormat));
           dcItem->appendRow(amItem);
           dataBrowserTreeView->expand(amItem->index());
       }
+      amItem->setData(am->getInfoString(SIMPL::HtmlFormat), Qt::UserRole + 1);
+      amItem->setToolTip(am->getInfoString(SIMPL::HtmlFormat));
 
       if(path.size() > 1 && am->getName().compare(path[1]) == 0)
       {
@@ -210,11 +220,12 @@ void DataBrowserWidget::filterObjectActivated(PipelineFilterObject* object)
         if(!aaItem)
         {
           aaItem = new QStandardItem(attrArrayName);
-          aaItem->setData(attrArray->getInfoString(SIMPL::HtmlFormat), Qt::UserRole + 1);
 //          aaItem->setBackground(QColor(255, 210, 173));
-          aaItem->setToolTip(attrArray->getInfoString(SIMPL::HtmlFormat));
           amItem->appendRow(aaItem);
         }
+        aaItem->setData(attrArray->getInfoString(SIMPL::HtmlFormat), Qt::UserRole + 1);
+        aaItem->setToolTip(attrArray->getInfoString(SIMPL::HtmlFormat));
+
         if(path.size() > 2 && attrArrayName.compare(path[2]) == 0)
         {
           QModelIndex idx = model->indexFromItem(aaItem);
