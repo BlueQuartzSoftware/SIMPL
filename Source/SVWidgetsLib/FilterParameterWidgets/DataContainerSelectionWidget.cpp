@@ -128,6 +128,10 @@ void DataContainerSelectionWidget::setupGui()
 
   QString dcName = getFilter()->property(PROPERTY_NAME_AS_CHAR).value<QString>();
   m_SelectedDataContainerPath->setText(dcName);
+
+
+  changeStyleSheet(Style::FS_STANDARD_STYLE);
+
 }
 
 // -----------------------------------------------------------------------------

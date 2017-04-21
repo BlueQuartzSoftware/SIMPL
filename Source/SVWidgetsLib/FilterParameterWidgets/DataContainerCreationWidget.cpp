@@ -96,6 +96,8 @@ void DataContainerCreationWidget::setupGui()
   connect(getFilter(), SIGNAL(updateFilterParameters(AbstractFilter*)), this, SLOT(filterNeedsInputParameters(AbstractFilter*)));
 
   connect(stringEdit, SIGNAL(valueChanged(const QString&)), this, SIGNAL(parametersChanged()));
+  changeStyleSheet(Style::FS_STANDARD_STYLE);
+
 }
 
 // -----------------------------------------------------------------------------

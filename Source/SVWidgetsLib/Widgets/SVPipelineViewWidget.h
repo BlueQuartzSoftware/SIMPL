@@ -247,7 +247,12 @@ class SVWidgetsLib_EXPORT SVPipelineViewWidget : public QFrame, public PipelineV
      * @brief setDataBrowserWidget
      * @param w
      */
-    virtual void setDataBrowserWidget(DataBrowserWidget* w);
+    virtual void setDataBrowserWidget(DataBrowserWidget* w) override;
+
+    /**
+     * @brief getDataBrowserWidget
+     * @return
+     */
     virtual DataBrowserWidget* getDataBrowserWidget();
 
   public slots:

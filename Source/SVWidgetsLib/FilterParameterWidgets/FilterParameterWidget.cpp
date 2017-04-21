@@ -53,6 +53,9 @@ static const float Max = 1.0;
 static const int Duration = 400;
 }
 
+// Include the MOC generated file for this class
+#include "moc_FilterParameterWidget.cpp"
+
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
@@ -67,9 +70,6 @@ FilterParameterWidget::FilterParameterWidget(QWidget* parent)
 {
   fadeIn = true;
 }
-
-// Include the MOC generated file for this class
-#include "moc_FilterParameterWidget.cpp"
 
 // -----------------------------------------------------------------------------
 //
@@ -170,6 +170,61 @@ QString FilterParameterWidget::wrapStringInHtml(const QString &message)
   ss << "<br/>";
   ss << "</body></html>";
   return html;
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void FilterParameterWidget::changeStyleSheet(Style style)
+{
+  QString styleSheet;
+  QTextStream ss(&styleSheet);
+
+  ss << "QFrame {";
+#if 0
+#if defined(Q_OS_WIN)
+  ss << "font: italic 9 pt \"" << QtSStyles::GetUIFont() << "\";";
+#elif defined(Q_OS_MAC)
+  ss << "font: italic 12 pt \"" << QtSStyles::GetUIFont() << "\";";
+#else
+  ss << "font: italic 10 pt \"" << QtSStyles::GetUIFont() << "\";";
+#endif
+#endif
+
+  if(style == Style::FS_STANDARD_STYLE)
+  {
+  }
+  else if(style == Style::FS_DRAGGING_STYLE)
+  {
+    ss << "border: 2px solid rgb(34, 120, 46);";
+    ss << "border-radius: 10px;";
+  }
+  else if(style == Style::FS_DOESNOTEXIST_STYLE)
+  {
+    ss << "color: rgb(200, 50, 50); font: bold;";
+    ss << "font: bold;";
+
+    //ss << "background-color: rgb(230, 150, 150);";
+  }
+  else if(style == Style::FS_WARNING_STYLE)
+  {
+    ss << "color: rgb(255, 140, 0); font: bold;";
+  }
+
+  ss << "}";
+
+  ss << "QLabel#label { border: 0px solid rgb(255, 120, 46); }";
+
+  ss << " QToolTip {\
+              border: 2px solid #434343;\
+              padding: 2px;\
+              border-radius: 3px;\
+              opacity: 255;\
+              background-color: #FFFCEA;\
+              color: #000000;\
+              }";
+
+  setStyleSheet(styleSheet);
 }
 
 // -----------------------------------------------------------------------------

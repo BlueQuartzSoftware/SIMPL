@@ -100,11 +100,12 @@ void BookmarksToolboxWidget::setupGui()
 {
   QString css(" QToolTip {\
               border: 2px solid #434343;\
-      padding: 2px;\
-  border-radius: 3px;\
-opacity: 255;\
-  background-color: #FFFFFF;\
-}");
+              padding: 2px;\
+              border-radius: 3px;\
+              opacity: 255;\
+              background-color: #FFFFFF;\
+              color: #000000;\
+              }");
   bookmarksTreeView->setStyleSheet(css);
 
   connect(bookmarksTreeView, SIGNAL(itemWasDropped(QModelIndex, QString&, QIcon, QString, int, bool, bool, bool)), this,
@@ -321,7 +322,7 @@ QDir BookmarksToolboxWidget::findPipelinesDirectory()
 #else
   // We are on Linux - I think
   QFileInfo fi(pipelinesDir.absolutePath() + QDir::separator() + dirName);
-  // qDebug() << fi.absolutePath();
+   qDebug() << fi.absolutePath();
   // Look for the "PrebuiltPipelines" directory in the current app directory
   if(fi.exists() == false)
   {

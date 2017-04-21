@@ -122,6 +122,8 @@ void AttributeMatrixSelectionWidget::setupGui()
 
   DataArrayPath defaultPath = getFilter()->property(PROPERTY_NAME_AS_CHAR).value<DataArrayPath>();
   m_SelectedAttributeMatrixPath->setText(defaultPath.serialize(Detail::Delimiter));
+
+  changeStyleSheet(Style::FS_STANDARD_STYLE);
 }
 
 // -----------------------------------------------------------------------------

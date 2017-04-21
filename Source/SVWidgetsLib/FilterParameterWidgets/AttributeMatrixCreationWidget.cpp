@@ -145,6 +145,9 @@ void AttributeMatrixCreationWidget::setupGui()
   m_SelectedDataContainerPath->setText(amPath.getDataContainerName());
   stringEdit->setText(amPath.getAttributeMatrixName(), true);
   m_SelectedDataContainerPath->blockSignals(false);
+
+  changeStyleSheet(Style::FS_STANDARD_STYLE);
+
 }
 
 // -----------------------------------------------------------------------------

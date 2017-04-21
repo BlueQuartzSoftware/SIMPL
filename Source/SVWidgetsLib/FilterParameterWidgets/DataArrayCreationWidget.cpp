@@ -143,6 +143,9 @@ void DataArrayCreationWidget::setupGui()
   DataArrayPath amPath(defaultPath.getDataContainerName(), defaultPath.getAttributeMatrixName(), "");
   m_SelectedAttributeMatrixPath->setText(amPath.serialize(Detail::Delimiter));
   stringEdit->setText(defaultPath.getDataArrayName(), true);
+
+  changeStyleSheet(Style::FS_STANDARD_STYLE);
+
 }
 
 // -----------------------------------------------------------------------------

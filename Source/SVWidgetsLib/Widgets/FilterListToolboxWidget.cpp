@@ -85,6 +85,7 @@ void FilterListToolboxWidget::setupGui()
               border-radius: 3px;\
               opacity: 255;\
               background-color: #FFFFFF;\
+              color: #000000;\
               }");
   filterList->setStyleSheet(css);
 

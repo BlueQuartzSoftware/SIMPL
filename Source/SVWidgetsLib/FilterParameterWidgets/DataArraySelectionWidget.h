@@ -69,15 +69,6 @@ class SVWidgetsLib_EXPORT DataArraySelectionWidget : public FilterParameterWidge
 
   public:
 
-    enum Styles
-    {
-      FS_STANDARD_STYLE,
-      FS_DRAGGING_STYLE,
-      FS_DOESNOTEXIST_STYLE,
-      FS_WARNING_STYLE
-    };
-
-
     /**
     * @brief Constructor
     * @param parameter The FilterParameter object that this widget represents
@@ -115,7 +106,6 @@ class SVWidgetsLib_EXPORT DataArraySelectionWidget : public FilterParameterWidge
     void dragEnterEvent(QDragEnterEvent* event);
     void dropEvent(QDropEvent* event);
     void dragLeaveEvent(QDragLeaveEvent* event);
-    void changeStyleSheet(int style);
 
 
   public slots:

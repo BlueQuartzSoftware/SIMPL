@@ -244,9 +244,11 @@ void SVPipelineFilterWidget::changeStyle(int i)
 #elif defined(Q_OS_WIN)
   fontStringStream << font.pointSize() - 3;
 #else
-  fontStringStream << font.pointSize();
+  fontStringStream << font.pointSize() - 1;
 #endif
-  fontStringStream <<  "pt \"" << font.family()  << "\";";
+
+  fontStringStream << "pt \"" << font.family()  << "\";";
+
 #if defined(Q_OS_WIN)
   if(font.bold()) {
     fontStringStream << "font-weight: bold;";
@@ -269,7 +271,9 @@ void SVPipelineFilterWidget::changeStyle(int i)
   //----------------------------------------------------
   QString filterIndexStyle;
   QTextStream filterIndexStyleStream(&filterIndexStyle);
-
+#if defined(Q_OS_LINUX)
+  fontStringStream << "font-weight: bold;";
+#endif
   filterIndexStyleStream << "QLabel\n{";
   filterIndexStyleStream << fontString;
   filterIndexStyleStream << "color: rgb(242, 242, 242);"; // Always have a white'ish font
@@ -352,18 +356,18 @@ void SVPipelineFilterWidget::changeStyle(int i)
 
   if(isSelected() == true)
   {
-    svWidgetStyleStream << "border: 2px solid " <<  QApplication::palette().highlight().color().name() << ";";
+    svWidgetStyleStream << "border: 1px solid " <<  QApplication::palette().highlight().color().name() << ";";
     svWidgetStyleStream << "margin: 0px;";
     widgetBackgroundColor = "background-color: " +  QApplication::palette().highlight().color().name() + ";";
   }
   else if(isSelected() == false && hasRightClickTarget() == true)
   {
     svWidgetStyleStream << "border-style: dotted;";
-    svWidgetStyleStream << "margin: 0px;";
+    svWidgetStyleStream << "margin: 1px;";
   }
   else
   {
-    svWidgetStyleStream << "margin: 2px;";
+    svWidgetStyleStream << "margin: 1px;";
   }
 
 

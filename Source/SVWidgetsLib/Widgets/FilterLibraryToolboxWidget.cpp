@@ -182,6 +182,7 @@ void FilterLibraryToolboxWidget::setupGui()
               border-radius: 3px;\
               opacity: 255;\
               background-color: #FFFFFF;\
+              color: #000000;\
               }");
   bookmarksTreeView->setStyleSheet(css);
 

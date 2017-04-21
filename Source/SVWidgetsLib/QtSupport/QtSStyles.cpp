@@ -73,8 +73,8 @@ QString QtSStyles::GetUIFont()
 #elif defined(Q_OS_WIN)
   return QString::fromUtf8("Arial");
 #else
-  QFont font("DejaVu Sans");
-  if(font.fromString("DejaVu Sans"))
+  QFont font("Arial");
+  if(font.fromString("Arial"))
   {
     return font.toString();
   }
@@ -233,8 +233,9 @@ QString QtSStyles::QToolSelectionButtonStyle(bool exists)
 #elif defined(Q_OS_WIN)
   font.setPointSize(10);
 #else
-  font.setPointSize(10);
-  in << "font-weight:bold;";
+  font.setPointSize(11);
+  in << "color; #000000;\n";
+  in << "font-weight: Medium;";
 #endif
 
   in << "font: " << font.weight() << " " << font.pointSize() << "pt \"" << font.family()  << "\";";
@@ -249,7 +250,7 @@ QString QtSStyles::QToolSelectionButtonStyle(bool exists)
     ss << " border: 1px solid " << ::kErrorColor << ";\n";
   }
   ss << " border-radius: 4px;\n";
-  ss << " background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,\nstop: 0 #DDDDDD, stop: 1 #FFFFFF);\n";
+  ss << " background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1, stop: 0 #DDDDDD, stop: 1 #FFFFFF);\n";
   ss << fontString << "\n";
   ss << " padding-left: 16px;\n";
   ss << " padding-right: 12px;\n";
@@ -273,6 +274,15 @@ QString QtSStyles::QToolSelectionButtonStyle(bool exists)
   ss << "QToolButton:flat {\n";
   ss << " border: none;\n";
   ss << "}\n";
+
+  ss << " QToolTip {\
+              border: 2px solid #434343;\
+              padding: 2px;\
+              border-radius: 3px;\
+              opacity: 255;\
+              background-color: #FFFCEA;\
+              color: #000000;\
+              }";
 //  ss << "QToolButton:hover {\n";
 //  if(exists)
 //  {

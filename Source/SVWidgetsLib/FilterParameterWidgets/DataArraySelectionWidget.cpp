@@ -137,6 +137,9 @@ void DataArraySelectionWidget::setupGui()
 
   DataArrayPath defaultPath = getFilter()->property(PROPERTY_NAME_AS_CHAR).value<DataArrayPath>();
   m_SelectedDataArrayPath->setText(defaultPath.serialize(Detail::Delimiter));
+
+  changeStyleSheet(Style::FS_STANDARD_STYLE);
+
 }
 
 // -----------------------------------------------------------------------------
@@ -316,6 +319,7 @@ void DataArraySelectionWidget::setSelectedPath(DataArrayPath daPath)
   {
     m_SelectedDataArrayPath->setToolTip(wrapStringInHtml("DataArrayPath is empty."));
     m_SelectedDataArrayPath->setStyleSheet(QtSStyles::QToolSelectionButtonStyle(false));
+    changeStyleSheet(Style::FS_DOESNOTEXIST_STYLE);
     return;
   }
 
@@ -325,6 +329,7 @@ void DataArraySelectionWidget::setSelectedPath(DataArrayPath daPath)
     m_SelectedDataArrayPath->setText(daPath.serialize(Detail::Delimiter));
     m_SelectedDataArrayPath->setStyleSheet(QtSStyles::QToolSelectionButtonStyle(false));
     m_SelectedDataArrayPath->setToolTip(wrapStringInHtml("DataContainerArray is not available to verify path."));
+    changeStyleSheet(Style::FS_DOESNOTEXIST_STYLE);
     return;
   }
 
@@ -336,11 +341,13 @@ void DataArraySelectionWidget::setSelectedPath(DataArrayPath daPath)
     m_SelectedDataArrayPath->setToolTip(html);
     m_SelectedDataArrayPath->setText(daPath.serialize(Detail::Delimiter));
     m_SelectedDataArrayPath->setStyleSheet(QtSStyles::QToolSelectionButtonStyle(true));
+    changeStyleSheet(Style::FS_STANDARD_STYLE);
   }
   else
   {
     m_SelectedDataArrayPath->setToolTip(wrapStringInHtml("DataArrayPath does not exist."));
     m_SelectedDataArrayPath->setStyleSheet(QtSStyles::QToolSelectionButtonStyle(false));
+    changeStyleSheet(Style::FS_DOESNOTEXIST_STYLE);
   }
 }
 
@@ -419,53 +426,10 @@ void DataArraySelectionWidget::filterNeedsInputParameters(AbstractFilter* filter
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void DataArraySelectionWidget::changeStyleSheet(int style)
-{
-  QString styleSheet;
-  QTextStream ss(&styleSheet);
-
-  ss << "QFrame {";
-#if 0
-#if defined(Q_OS_WIN)
-  ss << "font: italic 9 pt \"" << QtSStyles::GetUIFont() << "\";";
-#elif defined(Q_OS_MAC)
-  ss << "font: italic 12 pt \"" << QtSStyles::GetUIFont() << "\";";
-#else
-  ss << "font: italic 10 pt \"" << QtSStyles::GetUIFont() << "\";";
-#endif
-#endif
-
-  if(style == FS_STANDARD_STYLE)
-  {
-  }
-  else if(style == FS_DRAGGING_STYLE)
-  {
-    ss << "border: 2px solid rgb(34, 120, 46);";
-    ss << "border-radius: 10px;";
-  }
-  else if(style == FS_DOESNOTEXIST_STYLE)
-  {
-    ss << "color: rgb(200, 50, 50); font: bold;";
-  }
-  else if(style == FS_WARNING_STYLE)
-  {
-    ss << "color: rgb(255, 140, 0); font: bold;";
-  }
-
-  ss << "}";
-
-  ss << "QLabel#label { border: 0px solid rgb(255, 120, 46); }";
-
-  setStyleSheet(styleSheet);
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
 void DataArraySelectionWidget::dragEnterEvent(QDragEnterEvent* event)
 {
   qDebug() << "DataArraySelectionWidget::dragEnterEvent";
-  changeStyleSheet(FS_DRAGGING_STYLE);
+  changeStyleSheet(Style::FS_DRAGGING_STYLE);
   event->acceptProposedAction();
 
 }
@@ -476,7 +440,7 @@ void DataArraySelectionWidget::dragEnterEvent(QDragEnterEvent* event)
 void DataArraySelectionWidget::dragLeaveEvent(QDragLeaveEvent* event)
 {
   qDebug() << "DataArraySelectionWidget::dragLeaveEvent";
-  changeStyleSheet(FS_STANDARD_STYLE);
+  changeStyleSheet(Style::FS_STANDARD_STYLE);
 }
 
 // -----------------------------------------------------------------------------
@@ -491,6 +455,6 @@ void DataArraySelectionWidget::dropEvent(QDropEvent* event)
     QString name(dropData);
     qDebug() << name;
   }
-  changeStyleSheet(FS_STANDARD_STYLE);
+  changeStyleSheet(Style::FS_STANDARD_STYLE);
 
 }
