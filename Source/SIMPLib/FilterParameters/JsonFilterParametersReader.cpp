@@ -235,7 +235,7 @@ QString JsonFilterParametersReader::HtmlSummaryFromFile(QString filePath, IObser
   QString html;
   QTextStream ss(&html);
   ss << "<html><head></head>\n";
-  ss << "<body>\n";
+  ss << "<body>";
 
   // A table for the summary items
   ss << "<table cellpadding=\"2\" cellspacing=\"0\" border=\"0\">\n";
@@ -243,9 +243,10 @@ QString JsonFilterParametersReader::HtmlSummaryFromFile(QString filePath, IObser
   ss << "	<tr><th align=\"right\">Pipeline Name:</th><td>" << name << "</td></tr>\n";
   ss << "	<tr><th align=\"right\">Filter Count:</th><td>" << filterCount << "</td></tr>\n";
   ss << "	<tr><th align=\"right\">Version:</th><td>" << dVers << "</td></tr>\n";
+  ss << "	<tr><th align=\"right\">Location:</th><td>" << filePath << "</td></tr>\n";
   ss << "</tbody>\n";
   ss << "</table>\n";
-  ss << "<p></p>\n";
+  ss << "<p>\n";
 
   // Start the table of the Pipeline
   ss << "<table cellpadding=\"2\" cellspacing=\"0\" border=\"0\" width=\"300px\">\n";

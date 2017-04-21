@@ -656,6 +656,7 @@ QString AttributeMatrix::getInfoString(SIMPL::InfoStringFormat format)
       break;
     case AttributeMatrix::Type::Generic:
       typeString = "Generic";
+      break;
     default:
       typeString = "Unknown";
       break;
@@ -676,7 +677,6 @@ QString AttributeMatrix::getInfoString(SIMPL::InfoStringFormat format)
 
     ss << "<tr bgcolor=\"#FFFCEA\"><th align=\"right\">Attribute Array Count:</th><td>" << getNumAttributeArrays() << "</td></tr>";
     ss << "</tbody></table>\n";
-    ss << "<br/>";
     ss << "</body></html>";
   }
   else

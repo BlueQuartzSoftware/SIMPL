@@ -773,7 +773,6 @@ QString DataContainer::getInfoString(SIMPL::InfoStringFormat format)
     }
 
     ss << "</tbody></table>\n";
-    ss << "<br/>";
     ss << "</body></html>";
   }
   else

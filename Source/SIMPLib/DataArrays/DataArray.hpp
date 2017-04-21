@@ -1171,7 +1171,6 @@ class DataArray : public IDataArray
         numStr = usa.toString(static_cast<qlonglong>(m_Size * sizeof(T)));
         ss << "<tr bgcolor=\"#FFFCEA\"><th align=\"right\">Total Memory Required:</th><td>" << numStr << "</td></tr>";
         ss << "</tbody></table>\n";
-        ss << "<br/>";
         ss << "</body></html>";
       }
       else
