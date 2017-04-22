@@ -541,6 +541,7 @@ void BookmarksToolboxWidget::readSettings(QtSSettings* prefs)
   }
 
   bookmarksTreeView->setModel(model);
+  readPrebuiltPipelines();
 }
 
 // -----------------------------------------------------------------------------
