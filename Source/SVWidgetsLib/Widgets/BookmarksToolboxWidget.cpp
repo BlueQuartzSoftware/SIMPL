@@ -62,6 +62,8 @@
 // Include the MOC generated CPP file which has all the QMetaObject methods/data
 #include "moc_BookmarksToolboxWidget.cpp"
 
+
+#define PREBUILT_PIPELINES_DIR "PrebuiltPipelines"
 enum ErrorCodes
 {
   UNRECOGNIZED_EXT = -1
@@ -294,7 +296,7 @@ void BookmarksToolboxWidget::addPipelinesRecursively(QDir currentDir, QModelInde
 // -----------------------------------------------------------------------------
 QDir BookmarksToolboxWidget::findPipelinesDirectory()
 {
-  QString dirName("PrebuiltPipelines");
+  QString dirName(PREBUILT_PIPELINES_DIR);
 
   QString appPath = QCoreApplication::applicationDirPath();
   QDir pipelinesDir = QDir(appPath);
@@ -302,7 +304,7 @@ QDir BookmarksToolboxWidget::findPipelinesDirectory()
   QFileInfo fi(pipelinesDir.absolutePath() + QDir::separator() + dirName);
   if(fi.exists() == false)
   {
-    // The help file does not exist at the default location because we are probably running from visual studio.
+    // The PrebuiltPipelines file does not exist at the default location because we are probably running from visual studio.
     // Try up one more directory
     pipelinesDir.cdUp();
   }
@@ -310,20 +312,23 @@ QDir BookmarksToolboxWidget::findPipelinesDirectory()
   if(pipelinesDir.dirName() == "MacOS")
   {
     pipelinesDir.cdUp();
-
-    // Check if we are running from a .app installation where the Help dir is embeded in the app bundle.
-    QFileInfo fi(pipelinesDir.absolutePath() + "/PrebuiltPipeliines");
-    if(!fi.exists())
+    // Can we change directory into the "PrebuiltPipeliines" directory at this level.
+    if (pipelinesDir.cd(PREBUILT_PIPELINES_DIR) )
     {
-      pipelinesDir.cdUp();
-      pipelinesDir.cdUp();
+      return pipelinesDir;
+    }
+    pipelinesDir.cdUp();
+    pipelinesDir.cdUp();
+    if (pipelinesDir.cd(PREBUILT_PIPELINES_DIR) )
+    {
+      return pipelinesDir;
     }
   }
 #else
   // We are on Linux - I think
   QFileInfo fi(pipelinesDir.absolutePath() + QDir::separator() + dirName);
    qDebug() << fi.absolutePath();
-  // Look for the "PrebuiltPipelines" directory in the current app directory
+  // Look for the PREBUILT_PIPELINES_DIR directory in the current app directory
   if(fi.exists() == false)
   {
     // Try up one more directory
