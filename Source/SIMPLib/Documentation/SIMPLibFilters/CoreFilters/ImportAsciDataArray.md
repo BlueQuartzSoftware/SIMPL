@@ -1,4 +1,4 @@
-Import Asci DataArray {#importascidataarray}
+Import ASCII Attribute Array {#importascidataarray}
 =============
 
 ## Group (Subgroup) ##
