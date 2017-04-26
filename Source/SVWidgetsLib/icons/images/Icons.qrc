@@ -14,6 +14,9 @@
   <file>delete.png</file>
   <file>delete@2x.png</file>
 
+  <file>delete_plain.png</file>
+  <file>delete_plain@2x.png</file>
+
   <file>add.png</file>
   <file>add@2x.png</file>
 
@@ -28,6 +31,9 @@
 
   <file>check.png</file>
   <file>check@2x.png</file>
+
+  <file>check_plain.png</file>
+  <file>check_plain@2x.png</file>
 
   <file>caret-bottom.png</file>
   <file>caret-bottom@2x.png</file>
