@@ -173,7 +173,7 @@
      </property>
      <property name="icon">
       <iconset resource="../../icons/images/Icons.qrc">
-       <normaloff>:/delete@2x.png</normaloff>:/delete@2x.png</iconset>
+       <normaloff>:/delete.png</normaloff>:/delete.png</iconset>
      </property>
      <property name="iconSize">
       <size>
@@ -214,7 +214,7 @@
      </property>
      <property name="icon">
       <iconset resource="../../icons/images/Icons.qrc">
-       <normaloff>:/delete@2x.png</normaloff>:/delete@2x.png</iconset>
+       <normaloff>:/delete.png</normaloff>:/delete.png</iconset>
      </property>
      <property name="iconSize">
       <size>
