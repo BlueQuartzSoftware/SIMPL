@@ -166,20 +166,13 @@ class SVWidgetsLib_EXPORT SVPipelineFilterWidget : public QFrame, public Pipelin
     virtual void toWarningState() override;
 
   protected slots:
-    /**
-     * @brief on_deleteBtn_clicked
-     */
-    void on_deleteBtn_clicked();
 
+    /**
+     * @brief filterInputWidget_filterParametersChanged
+     */
     void filterInputWidget_filterParametersChanged();
 
   signals:
-
-    /**
-     * @brief filterWidgetRemoved
-     * @param widget
-     */
-    void filterWidgetRemoved(PipelineFilterObject* widget);
 
     /**
      * @brief dragStarted

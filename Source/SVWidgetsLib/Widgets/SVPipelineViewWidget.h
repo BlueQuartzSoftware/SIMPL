@@ -385,13 +385,7 @@ class SVWidgetsLib_EXPORT SVPipelineViewWidget : public QFrame, public PipelineV
      * @brief removeFilterWidget
      * @param filterWidget
      */
-    void removeFilterObject(PipelineFilterObject* filterObject, bool deleteWidget = true) override;
-
-    /**
-     * @brief slot_removeFilterObject
-     * @param filterObject
-     */
-    void slot_removeFilterObject(PipelineFilterObject* filterObject);
+    void removeFilterObject(PipelineFilterObject* filterObject, bool deleteWidget) override;
 
     /**
      * @brief updateCurrentUndoText
@@ -447,6 +441,18 @@ class SVWidgetsLib_EXPORT SVPipelineViewWidget : public QFrame, public PipelineV
      * @param value
      */
     virtual void addFilterObject(PipelineFilterObject* filterObject, QVariant value) override;
+
+    /**
+     * @brief removeFilterObject
+     * @param filterObject
+     */
+    void removeFilterObject(PipelineFilterObject* filterObject);
+
+    /**
+     * @brief removeFilterObjects
+     * @param filterObjects
+     */
+    void removeFilterObjects(QList<PipelineFilterObject*> filterObjects);
 
     QMenu* createPipelineFilterWidgetMenu(SVPipelineFilterWidget* filterWidget);
     void createPipelineViewWidgetMenu();

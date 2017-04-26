@@ -190,10 +190,28 @@ QMenu* SVPipelineViewWidget::createPipelineFilterWidgetMenu(SVPipelineFilterWidg
   // Creating Pipeline Filter Widget Menu
   SIMPLViewMenuItems* menuItems = SIMPLViewMenuItems::Instance();
 
+  QList<PipelineFilterObject*> selectedObjs = getSelectedFilterObjects();
+
   QMenu* contextMenu = new QMenu(this);
 
   contextMenu->addAction(menuItems->getActionCut());
   contextMenu->addAction(menuItems->getActionCopy());
+
+  contextMenu->addSeparator();
+
+  QAction* removeAction;
+  if (selectedObjs.contains(filterWidget) == false || selectedObjs.size() == 1)
+  {
+    removeAction = new QAction("Remove Filter", contextMenu);
+    connect(removeAction, &QAction::triggered, [=] { removeFilterObject(filterWidget); });
+  }
+  else
+  {
+    removeAction = new QAction(tr("Remove %1 Filters").arg(selectedObjs.size()), contextMenu);
+    connect(removeAction, &QAction::triggered, [=] { removeFilterObjects(selectedObjs); });
+  }
+
+  contextMenu->addAction(removeAction);
 
   contextMenu->addSeparator();
 
@@ -653,12 +671,6 @@ void SVPipelineViewWidget::addFilterObject(PipelineFilterObject* filterObject, Q
   /// Now setup all the connections between the various widgets
   // Clear any existing connections before recreating them
 
-  // When the filter is removed from this view
-  disconnect(filterWidget, SIGNAL(filterWidgetRemoved(PipelineFilterObject*)),
-             this, SLOT(slot_removeFilterObject(PipelineFilterObject*)));
-  connect(filterWidget, SIGNAL(filterWidgetRemoved(PipelineFilterObject*)),
-          this, SLOT(slot_removeFilterObject(PipelineFilterObject*)));
-
   // When the FilterWidget is selected
   disconnect(filterWidget, SIGNAL(filterWidgetPressed(PipelineFilterObject*, Qt::KeyboardModifiers)),
              this, SLOT(setSelectedFilterObject(PipelineFilterObject*, Qt::KeyboardModifiers)));
@@ -898,7 +910,29 @@ void SVPipelineViewWidget::preflightPipeline(QUuid id)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void SVPipelineViewWidget::slot_removeFilterObject(PipelineFilterObject* filterObject)
+void SVPipelineViewWidget::removeFilterObjects(QList<PipelineFilterObject*> filterObjects)
+{
+  if (filterObjects.size() <= 0) { return; }
+
+  RemoveFilterCommand* removeCmd = new RemoveFilterCommand(filterObjects, this, "Remove");
+  addUndoCommand(removeCmd);
+
+  if (filterObjects.size() > 1)
+  {
+    emit statusMessage(tr("Removed %1 filters").arg(filterObjects.size()));
+    emit stdOutMessage(tr("Removed %1 filters").arg(filterObjects.size()));
+  }
+  else
+  {
+    emit statusMessage(tr("Removed \"%1\" filter").arg(filterObjects[0]->getHumanLabel()));
+    emit stdOutMessage(tr("Removed \"%1\" filter").arg(filterObjects[0]->getHumanLabel()));
+  }
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void SVPipelineViewWidget::removeFilterObject(PipelineFilterObject* filterObject)
 {
   RemoveFilterCommand* removeCmd = new RemoveFilterCommand(filterObject, this, "Remove");
   addUndoCommand(removeCmd);
@@ -935,9 +969,6 @@ void SVPipelineViewWidget::removeFilterObject(PipelineFilterObject* filterObject
       else
       {
         w->setParent(nullptr);
-
-        // When the filter is removed from this view
-        disconnect(filterWidget, SIGNAL(filterWidgetRemoved(PipelineFilterObject*)), this, SLOT(slot_removeFilterObject(PipelineFilterObject*)));
 
         // When the FilterWidget is selected
         disconnect(filterWidget, SIGNAL(filterWidgetPressed(PipelineFilterObject*, Qt::KeyboardModifiers)), this, SLOT(setSelectedFilterObject(PipelineFilterObject*, Qt::KeyboardModifiers)));
@@ -2047,7 +2078,7 @@ QList<PipelineFilterObject*> SVPipelineViewWidget::getSelectedFilterObjects()
     else
     {
       SVPipelineFilterWidget* fw = dynamic_cast<SVPipelineFilterWidget*>(m_FilterWidgetLayout->itemAt(i)->widget());
-      if(fw != nullptr && (fw->isSelected() == true || fw->hasRightClickTarget() == true))
+      if(fw != nullptr && fw->isSelected() == true)
       {
         filterObjects.push_back(fw);
       }
