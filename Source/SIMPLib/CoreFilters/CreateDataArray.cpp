@@ -195,11 +195,11 @@ template <> void initializeArrayWithInts<bool>(IDataArray::Pointer outputArrayPt
     std::mt19937_64 generator(randomDevice()); // Standard mersenne_twister_engine seeded with rd()
     std::mt19937_64::result_type seed = static_cast<std::mt19937_64::result_type>(std::chrono::steady_clock::now().time_since_epoch().count());
     generator.seed(seed);
-    std::uniform_int_distribution<int8_t> distribution(0, 1);
+    std::uniform_int_distribution<int32_t> distribution(0, 1);
 
     for(size_t i = 0; i < count; i++)
     {
-      int8_t result = distribution(generator);
+      int8_t result = static_cast<int8_t>(distribution(generator));
       if(result == 0)
       {
         rawPointer[i] = false;
