@@ -438,6 +438,11 @@ void SVPipelineViewWidget::resetLayout()
 
     // and add the empty pipeline layout instead
     newEmptyPipelineViewLayout();
+
+    if(m_DataBrowserWidget)
+    {
+      m_DataBrowserWidget->filterObjectActivated(nullptr);
+    }
   }
 }
 
@@ -488,6 +493,11 @@ void SVPipelineViewWidget::clearFilterWidgets()
 
   RemoveFilterCommand* removeCmd = new RemoveFilterCommand(filterObjects, this, "Clear");
   addUndoCommand(removeCmd);
+
+  if(m_DataBrowserWidget)
+  {
+    m_DataBrowserWidget->filterObjectActivated(nullptr);
+  }
 }
 
 // -----------------------------------------------------------------------------
@@ -905,6 +915,11 @@ void SVPipelineViewWidget::preflightPipeline(QUuid id)
   }
   emit preflightPipelineComplete();
   emit preflightFinished(err);
+
+  if(m_DataBrowserWidget)
+  {
+    m_DataBrowserWidget->refreshData();
+  }
 }
 
 // -----------------------------------------------------------------------------
@@ -939,6 +954,11 @@ void SVPipelineViewWidget::removeFilterObject(PipelineFilterObject* filterObject
 
   emit statusMessage(tr("Removed \"%1\" filter").arg(filterObject->getHumanLabel()));
   emit stdOutMessage(tr("Removed \"%1\" filter").arg(filterObject->getHumanLabel()));
+
+  if(m_DataBrowserWidget)
+  {
+    m_DataBrowserWidget->handleFilterRemoved(filterObject);
+  }
 }
 
 // -----------------------------------------------------------------------------
@@ -1099,6 +1119,11 @@ void SVPipelineViewWidget::setSelectedFilterObject(PipelineFilterObject* w, Qt::
   else
   {
     emit filterInputWidgetNeedsCleared();
+
+    if(m_DataBrowserWidget)
+    {
+      m_DataBrowserWidget->filterObjectActivated(nullptr);
+    }
   }
 
   filterWidget->setFocus();
@@ -1123,6 +1148,11 @@ void SVPipelineViewWidget::clearSelectedFilterObjects()
         fw->setSelected(false);
       }
     }
+  }
+
+  if(m_DataBrowserWidget)
+  {
+    m_DataBrowserWidget->filterObjectActivated(nullptr);
   }
 }
 
