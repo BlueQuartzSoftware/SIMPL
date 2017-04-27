@@ -108,7 +108,7 @@ void DataBrowserWidget::setupGui()
 void DataBrowserWidget::refreshData()
 {
   // Sanity check our filter object
-  if((0 == m_filter.use_count()) || (false == m_filter.lock()))
+  if((0 == m_filter.use_count()) || !m_filter.lock())
   {
     QStandardItemModel* model = qobject_cast<QStandardItemModel*>(dataBrowserTreeView->model());
     QStandardItem* rootItem = model->invisibleRootItem();
