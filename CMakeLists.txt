@@ -263,19 +263,6 @@ CMP_AddQt5Support( "${SIMPL_Qt5_COMPONENTS}" "${USE_QtWebEngine}" "${SIMPLProj_B
 include(${CMP_SOURCE_DIR}/ExtLib/HDF5Support.cmake)
 
 # --------------------------------------------------------------------
-# Find Boost Headers/Libraries
-#set(Boost_FIND_REQUIRED FALSE)
-set(Boost_DEBUG FALSE)
-set(Boost_USE_MULTITHREADED TRUE)
-set(Boost_USE_STATIC_LIBS TRUE)
-set(Boost_ADDITIONAL_VERSIONS 1.57 1.58 1.59 1.60)
-set(Boost_FIND_COMPONENTS "")
-set(Boost_NO_BOOST_CMAKE 1)
-FIND_PACKAGE(Boost)
-INCLUDE_DIRECTORIES(${Boost_INCLUDE_DIRS})
-LINK_DIRECTORIES(${Boost_LIBRARY_DIRS})
-
-# --------------------------------------------------------------------
 # Should we use Intel Threading Building Blocks
 # --------------------------------------------------------------------
 set(SIMPLib_USE_PARALLEL_ALGORITHMS "")
