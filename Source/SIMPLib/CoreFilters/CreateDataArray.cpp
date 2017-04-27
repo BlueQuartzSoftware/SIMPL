@@ -37,11 +37,13 @@
 
 #include <QtCore/QDateTime>
 
-#include <boost/random/bernoulli_distribution.hpp>
-#include <boost/random/mersenne_twister.hpp>
-#include <boost/random/uniform_int.hpp>
-#include <boost/random/uniform_real.hpp>
-#include <boost/random/variate_generator.hpp>
+#include <random>
+
+//#include <boost/random/bernoulli_distribution.hpp>
+//#include <boost/random/mersenne_twister.hpp>
+//#include <boost/random/uniform_int.hpp>
+//#include <boost/random/uniform_real.hpp>
+//#include <boost/random/variate_generator.hpp>
 
 #include "SIMPLib/Common/Constants.h"
 #include "SIMPLib/Common/TemplateHelpers.hpp"
@@ -77,7 +79,7 @@ template <typename T> void initializeArrayWithInts(IDataArray::Pointer outputArr
     qint8 i8 = static_cast<qint8>(initializationValue.toInt());
     quint8 ui8 = static_cast<quint8>(initializationValue.toUInt());
     qint16 i16 = static_cast<qint16>(initializationValue.toShort());
-    quint16 ui16 = static_cast<qint16>(initializationValue.toUShort());
+    quint16 ui16 = static_cast<quint16>(initializationValue.toUShort());
     qint32 i32 = static_cast<qint32>(initializationValue.toInt());
     quint32 ui32 = static_cast<quint32>(initializationValue.toUInt());
     qint64 i64 = static_cast<qint64>(initializationValue.toLongLong());
@@ -143,20 +145,15 @@ template <typename T> void initializeArrayWithInts(IDataArray::Pointer outputArr
     T rangeMin = static_cast<T>(initializationRange.first);
     T rangeMax = static_cast<T>(initializationRange.second);
 
-    typedef boost::mt19937 RandomNumberGenerator;
-    typedef boost::uniform_int<T> IntDistribution;
-    typedef boost::variate_generator<RandomNumberGenerator&, IntDistribution> IntGenerator;
-
-    std::shared_ptr<IntDistribution> distribution = std::shared_ptr<IntDistribution>(new IntDistribution(rangeMin, rangeMax));
-    std::shared_ptr<RandomNumberGenerator> randomNumberGenerator = std::shared_ptr<RandomNumberGenerator>(new RandomNumberGenerator);
-    randomNumberGenerator->seed(static_cast<size_t>(QDateTime::currentMSecsSinceEpoch())); // seed with the current time
-    std::shared_ptr<IntGenerator> intGeneratorPtr = std::shared_ptr<IntGenerator>(new IntGenerator(*randomNumberGenerator, *distribution));
-    IntGenerator& intGenerator = *intGeneratorPtr;
+    std::random_device randomDevice;           // Will be used to obtain a seed for the random number engine
+    std::mt19937_64 generator(randomDevice()); // Standard mersenne_twister_engine seeded with rd()
+    std::mt19937_64::result_type seed = static_cast<std::mt19937_64::result_type>(std::chrono::steady_clock::now().time_since_epoch().count());
+    generator.seed(seed);
+    std::uniform_int_distribution<T> distribution(rangeMin, rangeMax);
 
     for(size_t i = 0; i < count; i++)
     {
-      T value = intGenerator();
-      // m_OutputArrayPtr.lock()->initializeTuple(i, &value);
+      T value = distribution(generator);
       rawPointer[i] = value;
     }
   }
@@ -194,27 +191,22 @@ template <> void initializeArrayWithInts<bool>(IDataArray::Pointer outputArrayPt
   }
   else
   {
-    typedef boost::mt19937 RandomNumberGenerator;
-    typedef boost::uniform_int<int8_t> IntDistribution;
-    typedef boost::variate_generator<RandomNumberGenerator&, IntDistribution> IntGenerator;
-
-    std::shared_ptr<IntDistribution> distribution = std::shared_ptr<IntDistribution>(new IntDistribution(0, 1));
-    std::shared_ptr<RandomNumberGenerator> randomNumberGenerator = std::shared_ptr<RandomNumberGenerator>(new RandomNumberGenerator);
-    randomNumberGenerator->seed(static_cast<size_t>(QDateTime::currentMSecsSinceEpoch())); // seed with the current time
-    std::shared_ptr<IntGenerator> intGeneratorPtr = std::shared_ptr<IntGenerator>(new IntGenerator(*randomNumberGenerator, *distribution));
-    IntGenerator& intGenerator = *intGeneratorPtr;
+    std::random_device randomDevice;           // Will be used to obtain a seed for the random number engine
+    std::mt19937_64 generator(randomDevice()); // Standard mersenne_twister_engine seeded with rd()
+    std::mt19937_64::result_type seed = static_cast<std::mt19937_64::result_type>(std::chrono::steady_clock::now().time_since_epoch().count());
+    generator.seed(seed);
+    std::uniform_int_distribution<int8_t> distribution(0, 1);
 
     for(size_t i = 0; i < count; i++)
     {
-      int8_t result = intGenerator();
+      int8_t result = distribution(generator);
       if(result == 0)
       {
-        rawPointer[i] = result;
+        rawPointer[i] = false;
       }
       else
       {
-        result = 1;
-        rawPointer[i] = result;
+        rawPointer[i] = true;
       }
     }
   }
@@ -247,20 +239,16 @@ template <typename T> void initializeArrayWithReals(IDataArray::Pointer outputAr
     T rangeMin = static_cast<T>(initializationRange.first);
     T rangeMax = static_cast<T>(initializationRange.second);
 
-    typedef boost::mt19937 RandomNumberGenerator;
-    typedef boost::uniform_real<T> RealDistribution;
-    typedef boost::variate_generator<RandomNumberGenerator&, RealDistribution> RealGenerator;
-
-    std::shared_ptr<RealDistribution> distribution = std::shared_ptr<RealDistribution>(new RealDistribution(rangeMin, rangeMax));
-    std::shared_ptr<RandomNumberGenerator> randomNumberGenerator = std::shared_ptr<RandomNumberGenerator>(new RandomNumberGenerator);
-    randomNumberGenerator->seed(static_cast<size_t>(QDateTime::currentMSecsSinceEpoch())); // seed with the current time
-    std::shared_ptr<RealGenerator> realGeneratorPtr = std::shared_ptr<RealGenerator>(new RealGenerator(*randomNumberGenerator, *distribution));
-    RealGenerator& realGenerator = *realGeneratorPtr;
+    std::random_device randomDevice;           // Will be used to obtain a seed for the random number engine
+    std::mt19937_64 generator(randomDevice()); // Standard mersenne_twister_engine seeded with rd()
+    std::mt19937_64::result_type seed = static_cast<std::mt19937_64::result_type>(std::chrono::steady_clock::now().time_since_epoch().count());
+    generator.seed(seed);
+    std::uniform_real_distribution<> distribution(rangeMin, rangeMax);
 
     size_t count = array->getSize();
     for(size_t i = 0; i < count; i++)
     {
-      T value = realGenerator();
+      T value = distribution(generator);
       rawPointer[i] = value;
     }
   }
