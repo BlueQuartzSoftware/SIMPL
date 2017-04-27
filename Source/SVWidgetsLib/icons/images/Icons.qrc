@@ -88,6 +88,10 @@
   <file>Groups/cubes@2x.png</file>
 
 <!-- These are low res icons -->
+
+  <file>Groups/BlankGroup_Icon.png</file>
+  <file>Groups/BlankGroup_Icon@2x.png</file>
+
   <file>Groups/Generic_Icon.png</file>
   <file>Groups/Processing_Icon.png</file>
   <file>Groups/Reconstruction_Icon.png</file>

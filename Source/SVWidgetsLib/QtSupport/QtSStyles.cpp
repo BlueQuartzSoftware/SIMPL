@@ -37,6 +37,8 @@
 
 #include <QtCore/QTextStream>
 
+#include <SIMPLib/Common/Constants.h>
+
 #include <QtWidgets/QApplication>
 #include <QtWidgets/QLineEdit>
 #include <QtWidgets/QPushButton>
@@ -296,4 +298,105 @@ QString QtSStyles::QToolSelectionButtonStyle(bool exists)
 //  ss << "}\n";
 
   return str;
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+QColor QtSStyles::ColorForFilterGroup(const QString &grpName)
+{
+  QColor color(Qt::black);
+
+  int saturation = 110;
+  int brightness = 190;
+  if(grpName.compare(SIMPL::FilterGroups::Unsupported) == 0)
+  {
+    color = QColor::fromHsv(0, saturation, brightness);
+  }
+  else if(grpName.compare(SIMPL::FilterGroups::GenericFilters) == 0)
+  {
+    color = QColor::fromHsv(11, saturation, brightness);
+  }
+  else if(grpName.compare(SIMPL::FilterGroups::TestFilters) == 0)
+  {
+    color = QColor::fromHsv(35, saturation, brightness);
+  }
+  else if(grpName.compare(SIMPL::FilterGroups::ReconstructionFilters) == 0)
+  {
+    color = QColor::fromHsv(52, saturation, brightness);
+  }
+  else if(grpName.compare(SIMPL::FilterGroups::SamplingFilters) == 0)
+  {
+    color = QColor::fromHsv(76, saturation, brightness);
+  }
+  else if(grpName.compare(SIMPL::FilterGroups::StatisticsFilters) == 0)
+  {
+    color = QColor::fromHsv(102, saturation, brightness);
+  }
+  else if(grpName.compare(SIMPL::FilterGroups::OrientationAnalysisFilters) == 0)
+  {
+    color = QColor::fromHsv(138, saturation, brightness);
+  }
+  else if(grpName.compare(SIMPL::FilterGroups::SyntheticBuildingFilters) == 0)
+  {
+    color = QColor::fromHsv(159, saturation, brightness);
+  }
+  else if(grpName.compare(SIMPL::FilterGroups::SurfaceMeshingFilters) == 0)
+  {
+    color = QColor::fromHsv(179, saturation, brightness);
+  }
+  else if(grpName.compare(SIMPL::FilterGroups::ProcessingFilters) == 0)
+  {
+    color = QColor::fromHsv(199, saturation, brightness);
+  }
+  else if(grpName.compare(SIMPL::FilterGroups::CoreFilters) == 0)
+  {
+    color = QColor::fromHsv(229, saturation, brightness);
+  }
+  else if(grpName.compare(SIMPL::FilterGroups::IOFilters) == 0)
+  {
+    color = QColor::fromHsv(262, saturation, brightness);
+  }
+  else if(grpName.compare(SIMPL::FilterGroups::Utilities) == 0)
+  {
+    color = QColor::fromHsv(293, saturation, brightness);
+  }
+  else /* if(grpName.compare(SIMPL::FilterGroups::) == 0) */
+  {
+    color = QColor::fromHsv(335, saturation, brightness);
+  }
+
+  return color;
+}
+
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+QIcon QtSStyles::IconForGroup(const QString &grpName)
+{
+  QColor color = ColorForFilterGroup(grpName);
+  QImage grpImage;
+
+  QIcon grpIcon(":/Groups/BlankGroup_Icon.png");
+  if(!grpIcon.isNull())
+  {
+    grpImage = grpIcon.pixmap(QSize(48, 48)).toImage();
+
+    QSize imageSize = grpImage.size();
+    for(int h = 0; h < imageSize.height(); h++)
+    {
+      for(int w = 0; w < imageSize.width(); w++)
+      {
+        QColor pixel = grpImage.pixelColor(w, h);
+        if( pixel.red() == 0 && pixel.green() == 0 && pixel.blue() == 0 && pixel.alpha() != 0)
+        {
+          pixel = color;
+          grpImage.setPixelColor(w, h, pixel);
+        }
+      }
+    }
+  }
+
+  return QIcon(QPixmap::fromImage(grpImage));
 }

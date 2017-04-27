@@ -100,6 +100,20 @@ class SVWidgetsLib_EXPORT QtSStyles : public QObject
      * @return
      */
     static QString QToolSelectionButtonStyle(bool exists);
+
+    /**
+     * @brief ColorForFilterGroup
+     * @param group
+     * @return
+     */
+    static QColor ColorForFilterGroup(const QString &grpName);
+
+    /**
+     * @brief IconForGroup
+     * @param grpName
+     * @return
+     */
+    static QIcon IconForGroup(const QString &grpName);
 };
 
 #endif /* _SIMPLViewStyles_H_ */
