@@ -65,6 +65,7 @@ class SVWidgetsLib_EXPORT PipelineFilterObject
     QString getFilterSubGroup();
     QString getFilterClassName();
     QString getCompiledLibraryName();
+    QColor  getGroupColor();
 
     virtual void setFilterTitle(const QString title);
     virtual void setFilterIndex(int i, int max);
@@ -109,6 +110,7 @@ class SVWidgetsLib_EXPORT PipelineFilterObject
         Warning = 2,
     };
     SIMPL_INSTANCE_PROPERTY(ErrorState, ErrorState)
+
 
     /**
      * @brief changeStyle
@@ -168,6 +170,7 @@ class SVWidgetsLib_EXPORT PipelineFilterObject
     bool                              m_IsFocused;
     bool                              m_HasPreflightErrors;
     bool                              m_HasPreflightWarnings;
+    QColor                            m_GroupColor;
 
     /**
     * @brief setupFilterInputWidget Creates and initializes the filter input widget.

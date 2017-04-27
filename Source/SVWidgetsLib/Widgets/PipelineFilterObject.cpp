@@ -101,11 +101,82 @@ PipelineFilterObject::~PipelineFilterObject()
 // -----------------------------------------------------------------------------
 void PipelineFilterObject::setupFilterInputWidget()
 {
+
+  QString grpName = m_Filter->getGroupName();
+
+  int increment = 360/13;
+  int saturation = 110;
+  int brightness = 190;
+  if(grpName.compare(SIMPL::FilterGroups::Unsupported) == 0)
+  {
+    m_GroupColor = QColor::fromHsv(0, saturation, brightness);
+  }
+  else if(grpName.compare(SIMPL::FilterGroups::GenericFilters) == 0)
+  {
+    m_GroupColor = QColor::fromHsv(11, saturation, brightness);
+  }
+  else if(grpName.compare(SIMPL::FilterGroups::TestFilters) == 0)
+  {
+    m_GroupColor = QColor::fromHsv(35, saturation, brightness);
+  }
+  else if(grpName.compare(SIMPL::FilterGroups::ReconstructionFilters) == 0)
+  {
+    m_GroupColor = QColor::fromHsv(52, saturation, brightness);
+  }
+  else if(grpName.compare(SIMPL::FilterGroups::SamplingFilters) == 0)
+  {
+    m_GroupColor = QColor::fromHsv(76, saturation, brightness);
+  }
+  else if(grpName.compare(SIMPL::FilterGroups::StatisticsFilters) == 0)
+  {
+    m_GroupColor = QColor::fromHsv(102, saturation, brightness);
+  }
+  else if(grpName.compare(SIMPL::FilterGroups::OrientationAnalysisFilters) == 0)
+  {
+    m_GroupColor = QColor::fromHsv(138, saturation, brightness);
+  }
+  else if(grpName.compare(SIMPL::FilterGroups::SyntheticBuildingFilters) == 0)
+  {
+    m_GroupColor = QColor::fromHsv(159, saturation, brightness);
+  }
+  else if(grpName.compare(SIMPL::FilterGroups::SurfaceMeshingFilters) == 0)
+  {
+    m_GroupColor = QColor::fromHsv(179, saturation, brightness);
+  }
+  else if(grpName.compare(SIMPL::FilterGroups::ProcessingFilters) == 0)
+  {
+    m_GroupColor = QColor::fromHsv(199, saturation, brightness);
+  }
+  else if(grpName.compare(SIMPL::FilterGroups::CoreFilters) == 0)
+  {
+    m_GroupColor = QColor::fromHsv(229, saturation, brightness);
+  }
+  else if(grpName.compare(SIMPL::FilterGroups::IOFilters) == 0)
+  {
+    m_GroupColor = QColor::fromHsv(262, saturation, brightness);
+  }
+  else if(grpName.compare(SIMPL::FilterGroups::Utilities) == 0)
+  {
+    m_GroupColor = QColor::fromHsv(293, saturation, brightness);
+  }
+  else /* if(grpName.compare(SIMPL::FilterGroups::) == 0) */
+  {
+    m_GroupColor = QColor::fromHsv(335, saturation, brightness);
+  }
+
   // Instantiate the filter input widget object
   m_FilterInputWidget = new FilterInputWidget(m_Filter->getNameOfClass(), this, nullptr);
 
   // Initialize the filter input widget with values
   m_FilterInputWidget->displayFilterParameters(this);
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+QColor PipelineFilterObject::getGroupColor()
+{
+  return m_GroupColor;
 }
 
 // -----------------------------------------------------------------------------
@@ -221,10 +292,10 @@ void PipelineFilterObject::setFilterTitle(const QString title)
 // -----------------------------------------------------------------------------
 void PipelineFilterObject::setFilterIndex(int i, int max)
 {
-Q_UNUSED(i)
+  Q_UNUSED(i)
 
-// This should be implemented in the subclasses
-return;
+  // This should be implemented in the subclasses
+  return;
 }
 
 // -----------------------------------------------------------------------------
@@ -266,8 +337,14 @@ void PipelineFilterObject::changeStyle(int i)
 // -----------------------------------------------------------------------------
 void PipelineFilterObject::setHasPreflightErrors(bool hasErrors)
 {
-  if(hasErrors) {setErrorState(ErrorState::Error); }
-  else { setErrorState(ErrorState::Ok); }
+  if(hasErrors)
+  {
+    setErrorState(ErrorState::Error);
+  }
+  else
+  {
+    setErrorState(ErrorState::Ok);
+  }
   m_HasPreflightErrors = hasErrors;
   changeStyle();
 }
@@ -277,8 +354,14 @@ void PipelineFilterObject::setHasPreflightErrors(bool hasErrors)
 // -----------------------------------------------------------------------------
 void PipelineFilterObject::setHasPreflightWarnings(bool hasWarnings)
 {
-  if(hasWarnings) {setErrorState(ErrorState::Warning); }
-  else { setErrorState(ErrorState::Ok); }
+  if(hasWarnings)
+  {
+    setErrorState(ErrorState::Warning);
+  }
+  else
+  {
+    setErrorState(ErrorState::Ok);
+  }
   m_HasPreflightWarnings = hasWarnings;
   changeStyle();
 }

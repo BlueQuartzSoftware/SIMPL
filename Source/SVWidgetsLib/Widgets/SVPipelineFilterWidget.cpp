@@ -238,6 +238,9 @@ void SVPipelineFilterWidget::changeStyle(int i)
   QString fontString;
   QTextStream fontStringStream(&fontString);
 
+  QIcon check(":/check_plain.png");
+  QPixmap pixmap = check.pixmap(QSize(24, 24));
+
   fontStringStream << "font: " << font.weight() << " ";
 #if defined(Q_OS_MAC)
   fontStringStream << font.pointSize() - 3;
@@ -289,11 +292,12 @@ void SVPipelineFilterWidget::changeStyle(int i)
   QString widgetBackgroundColor;
   QString labelColor;
   QString indexBackgroundColor;
+  QColor bgColor = getGroupColor();
 
   switch(wState)
   {
     case WidgetState::Ready:
-      widgetBackgroundColor = "background-color: rgb(130, 130, 130);";
+      widgetBackgroundColor = QString("background-color: %1;").arg(bgColor.name());
       labelColor = "color: rgb(190, 190, 190);";
       indexBackgroundColor = "background-color: rgb(48, 48, 48);";
       break;
@@ -303,9 +307,10 @@ void SVPipelineFilterWidget::changeStyle(int i)
       indexBackgroundColor = "background-color: rgb(6, 140, 190);";
       break;
     case WidgetState::Completed:
-      widgetBackgroundColor = "background-color: rgb(130, 130, 130);";
+      widgetBackgroundColor = QString("background-color: %1;").arg(bgColor.name());
       labelColor ="color: rgb(190, 190, 190);";
       indexBackgroundColor = "background-color: rgb(6, 118, 6);";
+      iconLabel->setPixmap(pixmap);
       break;
     default:
       widgetBackgroundColor = "background-color: rgb(255, 0, 0);"; // Something obnoxious
@@ -314,14 +319,16 @@ void SVPipelineFilterWidget::changeStyle(int i)
       break;
   }
 
+  QColor selectedColor = QColor::fromHsv(bgColor.hue(), 70, 150);
+
   switch(pState)
   {
     case PipelineState::Running:
-      widgetBackgroundColor = "background-color: rgb(130, 130, 130);";
+      widgetBackgroundColor = QString("background-color: %1;").arg(selectedColor.name());
       labelColor = "color: rgb(190, 190, 190);";
       break;
     case PipelineState::Stopped:
-      widgetBackgroundColor = "background-color: rgb(160, 160, 160);";
+      widgetBackgroundColor = QString("background-color: %1;").arg(bgColor.name());
       labelColor = "color: rgb(0, 0, 0);";
       indexBackgroundColor = "background-color: rgb(48, 48, 48);";
       break;
@@ -356,14 +363,17 @@ void SVPipelineFilterWidget::changeStyle(int i)
 
   if(isSelected() == true)
   {
-    svWidgetStyleStream << "border: 1px solid " <<  QApplication::palette().highlight().color().name() << ";";
+    svWidgetStyleStream << "border: 4px solid " <<  QApplication::palette().highlight().color().name() << ";";
     svWidgetStyleStream << "margin: 0px;";
-    widgetBackgroundColor = "background-color: " +  QApplication::palette().highlight().color().name() + ";";
+    //widgetBackgroundColor = "background-color: " + QApplication::palette().highlight().color().name() + ";";
+    QColor selectedColor = QColor::fromHsv(bgColor.hue(), bgColor.saturation(), 220);
+    indexBackgroundColor = "background-color:" + selectedColor.name() +  ";";
+
   }
   else if(isSelected() == false && hasRightClickTarget() == true)
   {
+    svWidgetStyleStream << "border: 4px solid " <<  QApplication::palette().highlight().color().name() << ";";
     svWidgetStyleStream << "border-style: dotted;";
-    svWidgetStyleStream << "border: 2px solid " <<  QApplication::palette().highlight().color().name() << ";";
   }
   else
   {
