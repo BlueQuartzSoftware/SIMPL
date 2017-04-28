@@ -14,6 +14,6 @@
 		"Custom": "#ffffff",
 		"Orientation Analysis": "#fff4b3",
 		"Unsupported": "#843434",
-		"Filter Group Not Found": "#000000"
+		"Filter Group Not Found": "#ff0000"
 	}
 }
