@@ -141,11 +141,9 @@ template <typename T> void initializeArrayWithInts(IDataArray::Pointer outputArr
     T rangeMin = static_cast<T>(initializationRange.first);
     T rangeMax = static_cast<T>(initializationRange.second);
 
-    std::random_device randomDevice;           // Will be used to obtain a seed for the random number engine
-    std::mt19937_64 generator(randomDevice()); // Standard mersenne_twister_engine seeded with rd()
     std::mt19937_64::result_type seed = static_cast<std::mt19937_64::result_type>(std::chrono::steady_clock::now().time_since_epoch().count());
-    generator.seed(seed);
-    std::uniform_int_distribution<> distribution(std::numeric_limits<T>::min() , std::numeric_limits<T>::max());
+    std::mt19937_64 generator(seed); // Standard mersenne_twister_engine seeded with milliseconds
+    std::uniform_int_distribution<> distribution(rangeMin , rangeMax);
 
     for(size_t i = 0; i < count; i++)
     {
@@ -187,10 +185,8 @@ template <> void initializeArrayWithInts<bool>(IDataArray::Pointer outputArrayPt
   }
   else
   {
-    std::random_device randomDevice;           // Will be used to obtain a seed for the random number engine
-    std::mt19937_64 generator(randomDevice()); // Standard mersenne_twister_engine seeded with rd()
     std::mt19937_64::result_type seed = static_cast<std::mt19937_64::result_type>(std::chrono::steady_clock::now().time_since_epoch().count());
-    generator.seed(seed);
+    std::mt19937_64 generator(seed); // Standard mersenne_twister_engine seeded with milliseconds
     std::uniform_int_distribution<int32_t> distribution(0, 1);
 
     for(size_t i = 0; i < count; i++)
@@ -235,10 +231,8 @@ template <typename T> void initializeArrayWithReals(IDataArray::Pointer outputAr
     T rangeMin = static_cast<T>(initializationRange.first);
     T rangeMax = static_cast<T>(initializationRange.second);
 
-    std::random_device randomDevice;           // Will be used to obtain a seed for the random number engine
-    std::mt19937_64 generator(randomDevice()); // Standard mersenne_twister_engine seeded with rd()
     std::mt19937_64::result_type seed = static_cast<std::mt19937_64::result_type>(std::chrono::steady_clock::now().time_since_epoch().count());
-    generator.seed(seed);
+    std::mt19937_64 generator(seed); // Standard mersenne_twister_engine seeded with milliseconds
     std::uniform_real_distribution<> distribution(rangeMin, rangeMax);
 
     size_t count = array->getSize();
