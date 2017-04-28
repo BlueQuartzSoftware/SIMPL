@@ -33,17 +33,16 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-#ifndef _SVPipelineFilterOutlineWidget_h_
-#define _SVPipelineFilterOutlineWidget_h_
+#ifndef _sVPipelineFilterOutlineWidget_h_
+#define _sVPipelineFilterOutlineWidget_h_
 
-#include <QtWidgets/QWidget>
+#include <QtWidgets/QFrame>
 
 #include "SVWidgetsLib/SVWidgetsLib.h"
 
 #include "ui_SVPipelineFilterOutlineWidget.h"
 
-
-class SVWidgetsLib_EXPORT SVPipelineFilterOutlineWidget : public QWidget, public Ui::SVPipelineFilterOutlineWidget
+class SVWidgetsLib_EXPORT SVPipelineFilterOutlineWidget : public QFrame, public Ui::SVPipelineFilterOutlineWidget
 {
     Q_OBJECT
 
@@ -58,12 +57,10 @@ class SVWidgetsLib_EXPORT SVPipelineFilterOutlineWidget : public QWidget, public
     void setFilterIndex(int i, int numFilters);
 
   private:
-
-    void updateWidgetFont();
+    void changeStyle(int i = -1);
 
     SVPipelineFilterOutlineWidget(const SVPipelineFilterOutlineWidget&); // Copy Constructor Not Implemented
     void operator=(const SVPipelineFilterOutlineWidget&); // Operator '=' Not Implemented
 };
 
-#endif /* _SVPipelineFilterOutlineWidget_H */
-
+#endif /* _sVPipelineFilterOutlineWidget_H */

@@ -233,7 +233,7 @@ void SVPipelineFilterWidget::setFilterIndex(int i, int numFilters)
 // -----------------------------------------------------------------------------
 void SVPipelineFilterWidget::changeStyle(int i)
 {
-
+  Q_UNUSED(i);
   QFont font = QtSStyles::GetHumanLabelFont();
   QString fontString;
   QTextStream fontStringStream(&fontString);
@@ -307,11 +307,11 @@ void SVPipelineFilterWidget::changeStyle(int i)
       labelColor ="color: rgb(190, 190, 190);";
       indexBackgroundColor = "background-color: rgb(6, 118, 6);";
       break;
-    default:
-      widgetBackgroundColor = "background-color: rgb(255, 0, 0);"; // Something obnoxious
-      labelColor ="color: rgb(0, 255, 0);"; // Something obnoxious
-      indexBackgroundColor = "background-color: rgb(0, 0, 255);"; // Something obnoxious
-      break;
+      //    default:
+      //      widgetBackgroundColor = "background-color: rgb(255, 0, 0);"; // Something obnoxious
+      //      labelColor ="color: rgb(0, 255, 0);"; // Something obnoxious
+      //      indexBackgroundColor = "background-color: rgb(0, 0, 255);"; // Something obnoxious
+      //      break;
   }
 
   switch(pState)
@@ -329,10 +329,10 @@ void SVPipelineFilterWidget::changeStyle(int i)
       widgetBackgroundColor = "background-color: rgb(160, 160, 160);";
       labelColor = "color: rgb(0, 0, 0);";
       break;
-    default:
-      widgetBackgroundColor = "background-color: rgb(255, 0, 0);"; // Something obnoxious
-      labelColor = "color: rgb(0, 255, 0);"; // Something obnoxious
-      break;
+      //    default:
+      //      widgetBackgroundColor = "background-color: rgb(255, 0, 0);"; // Something obnoxious
+      //      labelColor = "color: rgb(0, 255, 0);"; // Something obnoxious
+      //      break;
   }
 
   switch(eState)
@@ -346,11 +346,11 @@ void SVPipelineFilterWidget::changeStyle(int i)
     case ErrorState::Warning:
       indexBackgroundColor = "background-color: rgb(172, 168, 0);";
       break;
-    default:
-      widgetBackgroundColor = "background-color: rgb(0, 0, 225);"; // Something obnoxious
-      labelColor = "color: rgb(255, 0, 0);"; // Something obnoxious
-      indexBackgroundColor = "background-color: rgb(0, 255, 255);";
-      break;
+      //    default:
+      //      widgetBackgroundColor = "background-color: rgb(0, 0, 225);"; // Something obnoxious
+      //      labelColor = "color: rgb(255, 0, 0);"; // Something obnoxious
+      //      indexBackgroundColor = "background-color: rgb(0, 255, 255);";
+      //      break;
   }
 
 
