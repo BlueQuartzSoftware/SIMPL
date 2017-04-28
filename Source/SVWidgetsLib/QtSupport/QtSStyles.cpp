@@ -36,6 +36,10 @@
 #include "QtSStyles.h"
 
 #include <QtCore/QTextStream>
+#include <QtCore/QFile>
+#include <QtCore/QJsonDocument>
+#include <QtCore/QJsonObject>
+#include <QtCore/QJsonValue>
 
 #include <SIMPLib/Common/Constants.h>
 
@@ -305,65 +309,99 @@ QString QtSStyles::QToolSelectionButtonStyle(bool exists)
 // -----------------------------------------------------------------------------
 QColor QtSStyles::ColorForFilterGroup(const QString &grpName)
 {
-  QColor color(Qt::black);
+  QColor color("#6660ff");
 
-  int saturation = 110;
-  int brightness = 190;
-  if(grpName.compare(SIMPL::FilterGroups::Unsupported) == 0)
+  QString jsonString;
+  QFile jsonFile;
+  jsonFile.setFileName(":/QtSupportResources/FilterStyle/SVFilterColors.json");
+
+  if(jsonFile.exists())
   {
-    color = QColor::fromHsv(0, saturation, brightness);
+    jsonFile.open(QIODevice::ReadOnly | QIODevice::Text);
+    jsonString = jsonFile.readAll();
+    jsonFile.close();
+
+    QJsonDocument doc = QJsonDocument::fromJson(jsonString.toUtf8());
+    QJsonObject jsonObj = doc.object();
+    QJsonValue jsonValue = jsonObj.value("Filter Group Colors");
+
+    if(jsonValue.isObject())
+    {
+      QJsonValue jsonColor = jsonValue.toObject().value(grpName);
+      if(jsonColor.isString())
+      {
+        color.setNamedColor(jsonColor.toString());
+      }
+      else
+      {
+        jsonColor = jsonValue.toObject().value("Filter Group Not Found");
+        if(jsonColor.isString())
+        {
+          color.setNamedColor(jsonColor.toString());
+        }
+      }
+    }
   }
-  else if(grpName.compare(SIMPL::FilterGroups::GenericFilters) == 0)
+  else
   {
-    color = QColor::fromHsv(11, saturation, brightness);
-  }
-  else if(grpName.compare(SIMPL::FilterGroups::TestFilters) == 0)
-  {
-    color = QColor::fromHsv(35, saturation, brightness);
-  }
-  else if(grpName.compare(SIMPL::FilterGroups::ReconstructionFilters) == 0)
-  {
-    color = QColor::fromHsv(52, saturation, brightness);
-  }
-  else if(grpName.compare(SIMPL::FilterGroups::SamplingFilters) == 0)
-  {
-    color = QColor::fromHsv(76, saturation, brightness);
-  }
-  else if(grpName.compare(SIMPL::FilterGroups::StatisticsFilters) == 0)
-  {
-    color = QColor::fromHsv(102, saturation, brightness);
-  }
-  else if(grpName.compare(SIMPL::FilterGroups::OrientationAnalysisFilters) == 0)
-  {
-    color = QColor::fromHsv(138, saturation, brightness);
-  }
-  else if(grpName.compare(SIMPL::FilterGroups::SyntheticBuildingFilters) == 0)
-  {
-    color = QColor::fromHsv(159, saturation, brightness);
-  }
-  else if(grpName.compare(SIMPL::FilterGroups::SurfaceMeshingFilters) == 0)
-  {
-    color = QColor::fromHsv(179, saturation, brightness);
-  }
-  else if(grpName.compare(SIMPL::FilterGroups::ProcessingFilters) == 0)
-  {
-    color = QColor::fromHsv(199, saturation, brightness);
-  }
-  else if(grpName.compare(SIMPL::FilterGroups::CoreFilters) == 0)
-  {
-    color = QColor::fromHsv(229, saturation, brightness);
-  }
-  else if(grpName.compare(SIMPL::FilterGroups::IOFilters) == 0)
-  {
-    color = QColor::fromHsv(262, saturation, brightness);
-  }
-  else if(grpName.compare(SIMPL::FilterGroups::Utilities) == 0)
-  {
-    color = QColor::fromHsv(293, saturation, brightness);
-  }
-  else /* if(grpName.compare(SIMPL::FilterGroups::) == 0) */
-  {
-    color = QColor::fromHsv(335, saturation, brightness);
+    int saturation = 110;
+    int brightness = 190;
+    if(grpName.compare(SIMPL::FilterGroups::Unsupported) == 0)
+    {
+      color = QColor::fromHsv(0, saturation, brightness);
+    }
+    else if(grpName.compare(SIMPL::FilterGroups::GenericFilters) == 0)
+    {
+      color = QColor::fromHsv(11, saturation, brightness);
+    }
+    else if(grpName.compare(SIMPL::FilterGroups::TestFilters) == 0)
+    {
+      color = QColor::fromHsv(35, saturation, brightness);
+    }
+    else if(grpName.compare(SIMPL::FilterGroups::ReconstructionFilters) == 0)
+    {
+      color = QColor::fromHsv(52, saturation, brightness);
+    }
+    else if(grpName.compare(SIMPL::FilterGroups::SamplingFilters) == 0)
+    {
+      color = QColor::fromHsv(76, saturation, brightness);
+    }
+    else if(grpName.compare(SIMPL::FilterGroups::StatisticsFilters) == 0)
+    {
+      color = QColor::fromHsv(102, saturation, brightness);
+    }
+    else if(grpName.compare(SIMPL::FilterGroups::OrientationAnalysisFilters) == 0)
+    {
+      color = QColor::fromHsv(138, saturation, brightness);
+    }
+    else if(grpName.compare(SIMPL::FilterGroups::SyntheticBuildingFilters) == 0)
+    {
+      color = QColor::fromHsv(159, saturation, brightness);
+    }
+    else if(grpName.compare(SIMPL::FilterGroups::SurfaceMeshingFilters) == 0)
+    {
+      color = QColor::fromHsv(179, saturation, brightness);
+    }
+    else if(grpName.compare(SIMPL::FilterGroups::ProcessingFilters) == 0)
+    {
+      color = QColor::fromHsv(199, saturation, brightness);
+    }
+    else if(grpName.compare(SIMPL::FilterGroups::CoreFilters) == 0)
+    {
+      color = QColor::fromHsv(229, saturation, brightness);
+    }
+    else if(grpName.compare(SIMPL::FilterGroups::IOFilters) == 0)
+    {
+      color = QColor::fromHsv(262, saturation, brightness);
+    }
+    else if(grpName.compare(SIMPL::FilterGroups::Utilities) == 0)
+    {
+      color = QColor::fromHsv(293, saturation, brightness);
+    }
+    else /* if(grpName.compare(SIMPL::FilterGroups::) == 0) */
+    {
+      color = QColor::fromHsv(335, saturation, brightness);
+    }
   }
 
   return color;
