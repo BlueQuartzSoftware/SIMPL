@@ -86,49 +86,49 @@ template <typename T> void initializeArrayWithInts(IDataArray::Pointer outputArr
     case CreateDataArray::Int8Choice:
       for(size_t i = 0; i < count; i++)
       {
-        rawPointer[i] = i8;
+        rawPointer[i] = static_cast<T>(i8);
       }
       break;
     case CreateDataArray::UInt8Choice:
       for(size_t i = 0; i < count; i++)
       {
-        rawPointer[i] = ui8;
+        rawPointer[i] = static_cast<T>(ui8);
       }
       break;
     case CreateDataArray::Int16Choice:
       for(size_t i = 0; i < count; i++)
       {
-        rawPointer[i] = i16;
+        rawPointer[i] = static_cast<T>(i16);
       }
       break;
     case CreateDataArray::UInt16Choice:
       for(size_t i = 0; i < count; i++)
       {
-        rawPointer[i] = ui16;
+        rawPointer[i] = static_cast<T>(ui16);
       }
       break;
     case CreateDataArray::Int32Choice:
       for(size_t i = 0; i < count; i++)
       {
-        rawPointer[i] = i32;
+        rawPointer[i] = static_cast<T>(i32);
       }
       break;
     case CreateDataArray::UInt32Choice:
       for(size_t i = 0; i < count; i++)
       {
-        rawPointer[i] = ui32;
+        rawPointer[i] = static_cast<T>(ui32);
       }
       break;
     case CreateDataArray::Int64Choice:
       for(size_t i = 0; i < count; i++)
       {
-        rawPointer[i] = i64;
+        rawPointer[i] = static_cast<T>(i64);
       }
       break;
     case CreateDataArray::UInt64Choice:
       for(size_t i = 0; i < count; i++)
       {
-        rawPointer[i] = ui64;
+        rawPointer[i] = static_cast<T>(ui64);
       }
       break;
     default:
@@ -147,7 +147,7 @@ template <typename T> void initializeArrayWithInts(IDataArray::Pointer outputArr
 
     for(size_t i = 0; i < count; i++)
     {
-      T value = distribution(generator);
+      T value = static_cast<T>(distribution(generator));
       rawPointer[i] = value;
     }
   }
