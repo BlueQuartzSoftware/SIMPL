@@ -43,6 +43,7 @@
 #include "SIMPLib/SIMPLib.h"
 #include "SIMPLib/Common/IObserver.h"
 #include "SIMPLib/Common/PipelineMessage.h"
+#include "SIMPLib/Common/AbstractFilter.h"
 
 #include "SVWidgetsLib/SVWidgetsLib.h"
 
@@ -68,6 +69,9 @@ class SVWidgetsLib_EXPORT DataBrowserWidget : public QWidget, public IObserver, 
 
     void dataBrowserTreeView_indexChanged(const QModelIndex& current, const QModelIndex& previous);
 
+    void refreshData();
+    void handleFilterRemoved(PipelineFilterObject* object);
+
 
   protected:
     void setupGui();
@@ -76,6 +80,8 @@ class SVWidgetsLib_EXPORT DataBrowserWidget : public QWidget, public IObserver, 
     void removeNonexistingEntries(QStandardItem* rootItem, QList<QString> existing, int column);
 
   private:
+
+    AbstractFilter::WeakPointer m_filter;
 
     DataBrowserWidget(const DataBrowserWidget&); // Copy Constructor Not Implemented
     void operator=(const DataBrowserWidget&); // Operator '=' Not Implemented

@@ -105,20 +105,20 @@ void DataBrowserWidget::setupGui()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void DataBrowserWidget::filterObjectActivated(PipelineFilterObject* object)
+void DataBrowserWidget::refreshData()
 {
-  //qDebug() << "DataBrowser: filterObjectActivated";
-
-  AbstractFilter::Pointer filter = object->getFilter();
-
   // Sanity check our filter object
-  if(nullptr == filter)
+  if((0 == m_filter.use_count()) || !m_filter.lock())
   {
+    QStandardItemModel* model = qobject_cast<QStandardItemModel*>(dataBrowserTreeView->model());
+    QStandardItem* rootItem = model->invisibleRootItem();
+
+    removeNonexistingEntries(rootItem, QStringList(), 0);
     return;
   }
 
   // Get the DataContainerArray object
-  DataContainerArray::Pointer dca = filter->getDataContainerArray();
+  DataContainerArray::Pointer dca = m_filter.lock()->getDataContainerArray();
   if(dca.get() == nullptr)
   {
     return;
@@ -144,7 +144,7 @@ void DataBrowserWidget::filterObjectActivated(PipelineFilterObject* object)
   if(selectionModel)
   {
     connect(selectionModel, SIGNAL(currentChanged(const QModelIndex&, const QModelIndex&)),
-            this, SLOT(dataBrowserTreeView_indexChanged(const QModelIndex&, const QModelIndex&)));
+      this, SLOT(dataBrowserTreeView_indexChanged(const QModelIndex&, const QModelIndex&)));
   }
 
   // Sanity check model
@@ -195,10 +195,10 @@ void DataBrowserWidget::filterObjectActivated(PipelineFilterObject* object)
       QStandardItem* amItem = findChildByName(dcItem, am->getName(), 0);
       if(!amItem)
       {
-          amItem = new QStandardItem(am->getName());
-//          amItem->setBackground(QColor(128, 224, 138));
-          dcItem->appendRow(amItem);
-          dataBrowserTreeView->expand(amItem->index());
+        amItem = new QStandardItem(am->getName());
+        //          amItem->setBackground(QColor(128, 224, 138));
+        dcItem->appendRow(amItem);
+        dataBrowserTreeView->expand(amItem->index());
       }
       amItem->setData(am->getInfoString(SIMPL::HtmlFormat), Qt::UserRole + 1);
       amItem->setToolTip(am->getInfoString(SIMPL::HtmlFormat));
@@ -220,7 +220,7 @@ void DataBrowserWidget::filterObjectActivated(PipelineFilterObject* object)
         if(!aaItem)
         {
           aaItem = new QStandardItem(attrArrayName);
-//          aaItem->setBackground(QColor(255, 210, 173));
+          //          aaItem->setBackground(QColor(255, 210, 173));
           amItem->appendRow(aaItem);
         }
         aaItem->setData(attrArray->getInfoString(SIMPL::HtmlFormat), Qt::UserRole + 1);
@@ -237,7 +237,43 @@ void DataBrowserWidget::filterObjectActivated(PipelineFilterObject* object)
     removeNonexistingEntries(dcItem, dc->getAttributeMatrixNames(), 0);
   }
   removeNonexistingEntries(rootItem, dca->getDataContainerNames(), 0);
+}
 
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void DataBrowserWidget::filterObjectActivated(PipelineFilterObject* object)
+{
+  //qDebug() << "DataBrowser: filterObjectActivated";
+
+  if(nullptr == object)
+  {
+    m_filter.reset();
+  }
+  else
+  {
+    m_filter = object->getFilter();
+  }
+
+  refreshData();
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void DataBrowserWidget::handleFilterRemoved(PipelineFilterObject* object)
+{
+  if(nullptr == object)
+  {
+    return;
+  }
+
+  if(object->getFilter().get() == m_filter.lock().get())
+  {
+    m_filter.reset();
+  }
+
+  refreshData();
 }
 
 // -----------------------------------------------------------------------------
