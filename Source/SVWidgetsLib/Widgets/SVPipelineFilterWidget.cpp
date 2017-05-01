@@ -243,7 +243,7 @@ void SVPipelineFilterWidget::changeStyle(int i)
 
   fontStringStream << "font: " << font.weight() << " ";
 #if defined(Q_OS_MAC)
-  fontStringStream << font.pointSize() - 3;
+  fontStringStream << font.pointSize() - 4;
 #elif defined(Q_OS_WIN)
   fontStringStream << font.pointSize() - 3;
 #else
@@ -269,7 +269,7 @@ void SVPipelineFilterWidget::changeStyle(int i)
   QTextStream labelStyleStream(&labelStyle);
   labelStyleStream << "QLabel {";
   labelStyleStream << fontString;
-  labelStyleStream << "padding: 3 3 3 3px;";
+  labelStyleStream << "padding: 2 2 2 2px;";
 
   //----------------------------------------------------
   QString filterIndexStyle;
