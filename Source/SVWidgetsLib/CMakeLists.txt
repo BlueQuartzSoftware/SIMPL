@@ -127,8 +127,7 @@ include_directories(${PROJECT_CODE_DIR}
                     ${SVWidgetsLib_SOURCE_DIR}/FilterParameterWidgets
                     ${SVWidgetsLib_SOURCE_DIR}/QtSupport
                     ${SVWidgetsLib_SOURCE_DIR}/Widgets
-
-										${SVWidgetsLib_BINARY_DIR}/..
+                    ${SVWidgetsLib_BINARY_DIR}/..
                     ${SVWidgetsLib_BINARY_DIR}/Core
                     ${SVWidgetsLib_BINARY_DIR}/Dialogs
                     ${SVWidgetsLib_BINARY_DIR}/FilterParameterWidgets

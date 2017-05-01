@@ -273,7 +273,9 @@ if(SIMPL_USE_MULTITHREADED_ALGOS)
         include_directories(${TBB_INCLUDE_DIRS} )
         CMP_COPY_DEPENDENT_LIBRARIES("tbb;tbb_malloc")
         # Append the locations of the TBB libraries to our Library Search Paths
-        list(APPEND CMP_LIB_SEARCH_DIRS ${TBB_BINARY_DIR} ${TBB_LIBRARY_DIR} )
+        # TBB_LIB_SEARCH_PATH Comes from the FindTBB.cmake file and should work across all platforms
+        file(APPEND ${CMP_PLUGIN_SEARCHDIR_FILE} "${TBB_LIB_SEARCH_PATH};")
+
         # Create an install rule to copy the dependent shared library over to the installed location
         CMP_LIBRARIES_INSTALL_RULES("tbb;tbb_malloc" ".")
     else()
