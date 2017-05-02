@@ -44,7 +44,7 @@
 
 namespace Detail
 {
-enum NumType
+enum class NumType
 {
   Int8 = 0,
   UInt8,
@@ -77,7 +77,7 @@ void ConvertData(T* ptr, QVector<size_t> dims, DataContainer::Pointer m, int32_t
   int voxels = ptr->getNumberOfTuples();
   size_t size = ptr->getSize();
 
-  if(scalarType == Detail::Int8)
+  if(scalarType == static_cast<int>(Detail::NumType::Int8))
   {
     Int8ArrayType::Pointer p = Int8ArrayType::CreateArray(voxels, dims, name);
     m->getAttributeMatrix(attributeMatrixName)->addAttributeArray(p->getName(), p);
@@ -86,7 +86,7 @@ void ConvertData(T* ptr, QVector<size_t> dims, DataContainer::Pointer m, int32_t
       p->setValue(v, ptr->getValue(v));
     }
   }
-  else if(scalarType == Detail::UInt8)
+  else if(scalarType == static_cast<int>(Detail::NumType::UInt8))
   {
     UInt8ArrayType::Pointer p = UInt8ArrayType::CreateArray(voxels, dims, name);
     m->getAttributeMatrix(attributeMatrixName)->addAttributeArray(p->getName(), p);
@@ -95,7 +95,7 @@ void ConvertData(T* ptr, QVector<size_t> dims, DataContainer::Pointer m, int32_t
       p->setValue(v, ptr->getValue(v));
     }
   }
-  else if(scalarType == Detail::Int16)
+  else if(scalarType == static_cast<int>(Detail::NumType::Int16))
   {
     Int16ArrayType::Pointer p = Int16ArrayType::CreateArray(voxels, dims, name);
     m->getAttributeMatrix(attributeMatrixName)->addAttributeArray(p->getName(), p);
@@ -104,7 +104,7 @@ void ConvertData(T* ptr, QVector<size_t> dims, DataContainer::Pointer m, int32_t
       p->setValue(v, ptr->getValue(v));
     }
   }
-  else if(scalarType == Detail::UInt16)
+  else if(scalarType == static_cast<int>(Detail::NumType::UInt16))
   {
     UInt16ArrayType::Pointer p = UInt16ArrayType::CreateArray(voxels, dims, name);
     m->getAttributeMatrix(attributeMatrixName)->addAttributeArray(p->getName(), p);
@@ -113,7 +113,7 @@ void ConvertData(T* ptr, QVector<size_t> dims, DataContainer::Pointer m, int32_t
       p->setValue(v, ptr->getValue(v));
     }
   }
-  else if(scalarType == Detail::Int32)
+  else if(scalarType == static_cast<int>(Detail::NumType::Int32))
   {
     Int32ArrayType::Pointer p = Int32ArrayType::CreateArray(voxels, dims, name);
     m->getAttributeMatrix(attributeMatrixName)->addAttributeArray(p->getName(), p);
@@ -122,7 +122,7 @@ void ConvertData(T* ptr, QVector<size_t> dims, DataContainer::Pointer m, int32_t
       p->setValue(v, ptr->getValue(v));
     }
   }
-  else if(scalarType == Detail::UInt32)
+  else if(scalarType == static_cast<int>(Detail::NumType::UInt32))
   {
     UInt32ArrayType::Pointer p = UInt32ArrayType::CreateArray(voxels, dims, name);
     m->getAttributeMatrix(attributeMatrixName)->addAttributeArray(p->getName(), p);
@@ -131,7 +131,7 @@ void ConvertData(T* ptr, QVector<size_t> dims, DataContainer::Pointer m, int32_t
       p->setValue(v, ptr->getValue(v));
     }
   }
-  else if(scalarType == Detail::Int64)
+  else if(scalarType == static_cast<int>(Detail::NumType::Int64))
   {
     Int64ArrayType::Pointer p = Int64ArrayType::CreateArray(voxels, dims, name);
     m->getAttributeMatrix(attributeMatrixName)->addAttributeArray(p->getName(), p);
@@ -140,7 +140,7 @@ void ConvertData(T* ptr, QVector<size_t> dims, DataContainer::Pointer m, int32_t
       p->setValue(v, ptr->getValue(v));
     }
   }
-  else if(scalarType == Detail::UInt64)
+  else if(scalarType == static_cast<int>(Detail::NumType::UInt64))
   {
     UInt64ArrayType::Pointer p = UInt64ArrayType::CreateArray(voxels, dims, name);
     m->getAttributeMatrix(attributeMatrixName)->addAttributeArray(p->getName(), p);
@@ -149,7 +149,7 @@ void ConvertData(T* ptr, QVector<size_t> dims, DataContainer::Pointer m, int32_t
       p->setValue(v, ptr->getValue(v));
     }
   }
-  else if(scalarType == Detail::Float)
+  else if(scalarType == static_cast<int>(Detail::NumType::Float))
   {
     FloatArrayType::Pointer p = FloatArrayType::CreateArray(voxels, dims, name);
     m->getAttributeMatrix(attributeMatrixName)->addAttributeArray(p->getName(), p);
@@ -158,7 +158,7 @@ void ConvertData(T* ptr, QVector<size_t> dims, DataContainer::Pointer m, int32_t
       p->setValue(v, ptr->getValue(v));
     }
   }
-  else if(scalarType == Detail::Double)
+  else if(scalarType == static_cast<int>(Detail::NumType::Double))
   {
     DoubleArrayType::Pointer p = DoubleArrayType::CreateArray(voxels, dims, name);
     m->getAttributeMatrix(attributeMatrixName)->addAttributeArray(p->getName(), p);
@@ -297,43 +297,43 @@ void ConvertData::dataCheck()
 
     QVector<size_t> dims = p->getComponentDimensions();
     size_t voxels = cellAttrMat->getNumberOfTuples();
-    if(m_ScalarType == Detail::Int8)
+    if(m_ScalarType == static_cast<int>(Detail::NumType::Int8))
     {
       p = Int8ArrayType::CreateArray(voxels, dims, m_OutputArrayName, false);
     }
-    else if(m_ScalarType == Detail::UInt8)
+    else if(m_ScalarType == static_cast<int>(Detail::NumType::UInt8))
     {
       p = UInt8ArrayType::CreateArray(voxels, dims, m_OutputArrayName, false);
     }
-    else if(m_ScalarType == Detail::Int16)
+    else if(m_ScalarType == static_cast<int>(Detail::NumType::Int16))
     {
       p = Int16ArrayType::CreateArray(voxels, dims, m_OutputArrayName, false);
     }
-    else if(m_ScalarType == Detail::UInt16)
+    else if(m_ScalarType == static_cast<int>(Detail::NumType::UInt16))
     {
       p = UInt16ArrayType::CreateArray(voxels, dims, m_OutputArrayName, false);
     }
-    else if(m_ScalarType == Detail::Int32)
+    else if(m_ScalarType == static_cast<int>(Detail::NumType::Int32))
     {
       p = Int32ArrayType::CreateArray(voxels, dims, m_OutputArrayName, false);
     }
-    else if(m_ScalarType == Detail::UInt32)
+    else if(m_ScalarType == static_cast<int>(Detail::NumType::UInt32))
     {
       p = UInt32ArrayType::CreateArray(voxels, dims, m_OutputArrayName, false);
     }
-    else if(m_ScalarType == Detail::Int64)
+    else if(m_ScalarType == static_cast<int>(Detail::NumType::Int64))
     {
       p = Int64ArrayType::CreateArray(voxels, dims, m_OutputArrayName, false);
     }
-    else if(m_ScalarType == Detail::UInt64)
+    else if(m_ScalarType == static_cast<int>(Detail::NumType::UInt64))
     {
       p = UInt64ArrayType::CreateArray(voxels, dims, m_OutputArrayName, false);
     }
-    else if(m_ScalarType == Detail::Float)
+    else if(m_ScalarType == static_cast<int>(Detail::NumType::Float))
     {
       p = FloatArrayType::CreateArray(voxels, dims, m_OutputArrayName, false);
     }
-    else if(m_ScalarType == Detail::Double)
+    else if(m_ScalarType == static_cast<int>(Detail::NumType::Double))
     {
       p = DoubleArrayType::CreateArray(voxels, dims, m_OutputArrayName, false);
     }
