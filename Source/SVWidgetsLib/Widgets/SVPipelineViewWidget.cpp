@@ -215,6 +215,10 @@ QMenu* SVPipelineViewWidget::createPipelineFilterWidgetMenu(SVPipelineFilterWidg
     connect(removeAction, &QAction::triggered, [=] { removeFilterObjects(selectedObjs); });
   }
   removeAction->setShortcuts(shortcutList);
+  if (getPipelineIsRunning() == true)
+  {
+    removeAction->setDisabled(true);
+  }
 
   contextMenu->addAction(removeAction);
 
