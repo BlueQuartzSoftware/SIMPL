@@ -290,6 +290,11 @@ void SVPipelineFilterWidget::changeStyle(int i)
   QString labelColor;
   QString indexBackgroundColor;
 
+  if (getFilter()->getErrorCondition() < 0)
+  {
+    eState = ErrorState::Error;
+  }
+
   switch(wState)
   {
     case WidgetState::Ready:
