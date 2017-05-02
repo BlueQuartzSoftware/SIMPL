@@ -399,6 +399,14 @@ void SVPipelineFilterWidget::changeStyle(int i)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
+void SVPipelineFilterWidget::on_deleteBtn_clicked()
+{
+  emit filterWidgetRemoved(this);
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
 void SVPipelineFilterWidget::mousePressEvent(QMouseEvent* event)
 {
   if(event->button() == Qt::RightButton)
@@ -517,6 +525,7 @@ void SVPipelineFilterWidget::toRunningState()
 {
   PipelineFilterObject::toRunningState();
   getFilterInputWidget()->toRunningState();
+  deleteBtn->setDisabled(true);
   changeStyle(1);
 }
 
@@ -527,6 +536,7 @@ void SVPipelineFilterWidget::toStoppedState()
 {
   PipelineFilterObject::toStoppedState();
   getFilterInputWidget()->toIdleState();
+  deleteBtn->setEnabled(true);
   changeStyle(1);
 }
 

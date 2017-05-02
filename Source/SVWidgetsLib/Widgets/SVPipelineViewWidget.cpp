@@ -686,6 +686,12 @@ void SVPipelineViewWidget::addFilterObject(PipelineFilterObject* filterObject, Q
   /// Now setup all the connections between the various widgets
   // Clear any existing connections before recreating them
 
+  // When the filter is removed from this view
+  disconnect(filterWidget, SIGNAL(filterWidgetRemoved(PipelineFilterObject*)),
+             this, SLOT(removeFilterObject(PipelineFilterObject*)));
+  connect(filterWidget, SIGNAL(filterWidgetRemoved(PipelineFilterObject*)),
+          this, SLOT(removeFilterObject(PipelineFilterObject*)));
+
   // When the FilterWidget is selected
   disconnect(filterWidget, SIGNAL(filterWidgetPressed(PipelineFilterObject*, Qt::KeyboardModifiers)),
              this, SLOT(setSelectedFilterObject(PipelineFilterObject*, Qt::KeyboardModifiers)));
@@ -994,6 +1000,9 @@ void SVPipelineViewWidget::removeFilterObject(PipelineFilterObject* filterObject
       else
       {
         w->setParent(nullptr);
+
+        // When the filter is removed from this view
+        disconnect(filterWidget, SIGNAL(filterWidgetRemoved(PipelineFilterObject*)), this, SLOT(removeFilterObject(PipelineFilterObject*)));
 
         // When the FilterWidget is selected
         disconnect(filterWidget, SIGNAL(filterWidgetPressed(PipelineFilterObject*, Qt::KeyboardModifiers)), this, SLOT(setSelectedFilterObject(PipelineFilterObject*, Qt::KeyboardModifiers)));
