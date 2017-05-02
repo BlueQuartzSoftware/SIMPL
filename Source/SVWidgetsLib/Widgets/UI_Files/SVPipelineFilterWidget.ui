@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>274</width>
-    <height>40</height>
+    <width>271</width>
+    <height>36</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -125,28 +125,6 @@ color: rgb(255, 255, 255);
      </property>
      <property name="indent">
       <number>5</number>
-     </property>
-    </widget>
-   </item>
-   <item>
-    <widget class="QLabel" name="statusIcon">
-     <property name="minimumSize">
-      <size>
-       <width>24</width>
-       <height>24</height>
-      </size>
-     </property>
-     <property name="maximumSize">
-      <size>
-       <width>24</width>
-       <height>24</height>
-      </size>
-     </property>
-     <property name="text">
-      <string/>
-     </property>
-     <property name="alignment">
-      <set>Qt::AlignCenter</set>
      </property>
     </widget>
    </item>

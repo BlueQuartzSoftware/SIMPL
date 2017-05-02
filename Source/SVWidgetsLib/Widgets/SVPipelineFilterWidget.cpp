@@ -109,8 +109,6 @@ SVPipelineFilterWidget::~SVPipelineFilterWidget()
     delete m_Observer;
     m_Observer = nullptr;
   }
-
-  delete m_LoadingMovie;
 }
 
 // -----------------------------------------------------------------------------
@@ -140,9 +138,6 @@ void SVPipelineFilterWidget::initialize()
     connect(filter.get(), SIGNAL(filterInProgress()),
             this, SLOT(toExecutingState()));
   }
-
-  m_LoadingMovie = new QMovie(/*":/loading.gif"*/);
-  connect(m_LoadingMovie, &QMovie::frameChanged, [=] { statusIcon->setPixmap(m_LoadingMovie->currentPixmap()); });
 }
 
 // -----------------------------------------------------------------------------
@@ -295,8 +290,6 @@ void SVPipelineFilterWidget::changeStyle(int i)
   QString labelColor;
   QString indexBackgroundColor;
 
-  statusIcon->setPixmap(QPixmap());
-
   switch(wState)
   {
     case WidgetState::Ready:
@@ -313,7 +306,6 @@ void SVPipelineFilterWidget::changeStyle(int i)
       widgetBackgroundColor = "background-color: rgb(130, 130, 130);";
       labelColor ="color: rgb(190, 190, 190);";
       indexBackgroundColor = "background-color: rgb(6, 118, 6);";
-      statusIcon->setPixmap(QPixmap(":/check_plain.png"));
       break;
       //    default:
       //      widgetBackgroundColor = "background-color: rgb(255, 0, 0);"; // Something obnoxious
@@ -350,7 +342,6 @@ void SVPipelineFilterWidget::changeStyle(int i)
       break;
     case ErrorState::Error:
       indexBackgroundColor = "background-color: rgb(179, 2, 5);";
-      statusIcon->setPixmap(QPixmap(":/delete_plain.png"));
       break;
     case ErrorState::Warning:
       indexBackgroundColor = "background-color: rgb(172, 168, 0);";
@@ -506,7 +497,6 @@ void SVPipelineFilterWidget::toExecutingState()
 {
   PipelineFilterObject::toExecutingState();
   getFilterInputWidget()->toRunningState();
-  m_LoadingMovie->start();
   changeStyle(1);
 }
 
@@ -517,7 +507,6 @@ void SVPipelineFilterWidget::toCompletedState()
 {
   PipelineFilterObject::toCompletedState();
   getFilterInputWidget()->toRunningState();
-  m_LoadingMovie->stop();
   changeStyle(1);
 }
 
@@ -538,8 +527,6 @@ void SVPipelineFilterWidget::toStoppedState()
 {
   PipelineFilterObject::toStoppedState();
   getFilterInputWidget()->toIdleState();
-  m_LoadingMovie->stop();
-  statusIcon->setPixmap(QPixmap());
   changeStyle(1);
 }
 
