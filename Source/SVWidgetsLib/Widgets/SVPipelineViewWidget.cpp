@@ -200,16 +200,21 @@ QMenu* SVPipelineViewWidget::createPipelineFilterWidgetMenu(SVPipelineFilterWidg
   contextMenu->addSeparator();
 
   QAction* removeAction;
+  QList<QKeySequence> shortcutList;
+  shortcutList.push_back(QKeySequence(Qt::Key_Backspace));
+  shortcutList.push_back(QKeySequence(Qt::Key_Delete));
+
   if (selectedObjs.contains(filterWidget) == false || selectedObjs.size() == 1)
   {
-    removeAction = new QAction("Remove Filter", contextMenu);
+    removeAction = new QAction("Delete", contextMenu);
     connect(removeAction, &QAction::triggered, [=] { removeFilterObject(filterWidget); });
   }
   else
   {
-    removeAction = new QAction(tr("Remove %1 Filters").arg(selectedObjs.size()), contextMenu);
+    removeAction = new QAction(tr("Delete %1 Filters").arg(selectedObjs.size()), contextMenu);
     connect(removeAction, &QAction::triggered, [=] { removeFilterObjects(selectedObjs); });
   }
+  removeAction->setShortcuts(shortcutList);
 
   contextMenu->addAction(removeAction);
 
