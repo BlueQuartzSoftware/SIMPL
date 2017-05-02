@@ -52,22 +52,22 @@
 #include "SIMPLib/Geometry/ImageGeom.h"
 
 /**
- * @brief The UpdateVerticesImpl class implements a threaded algorithm that adjusts the
+ * @brief The SetOriginResolutionImageUpdateVerticesImpl class implements a threaded algorithm that adjusts the
  * positions of a set of nodes relative to a new origin
  */
-class UpdateVerticesImpl
+class SetOriginResolutionImageUpdateVerticesImpl
 {
   float* m_Nodes;
   float* m_Delta;
 
 public:
-  UpdateVerticesImpl(float* nodes, float* delta)
+  SetOriginResolutionImageUpdateVerticesImpl(float* nodes, float* delta)
   : m_Nodes(nodes)
   , m_Delta(delta)
   {
   }
 
-  virtual ~UpdateVerticesImpl()
+  virtual ~SetOriginResolutionImageUpdateVerticesImpl()
   {
   }
 
