@@ -323,7 +323,6 @@ void SVPipelineFilterWidget::changeStyle(int i)
     case PipelineState::Stopped:
       widgetBackgroundColor = "background-color: rgb(160, 160, 160);";
       labelColor = "color: rgb(0, 0, 0);";
-      indexBackgroundColor = "background-color: rgb(48, 48, 48);";
       break;
     case PipelineState::Paused:
       widgetBackgroundColor = "background-color: rgb(160, 160, 160);";

@@ -897,6 +897,8 @@ void SVPipelineViewWidget::preflightPipeline(QUuid id)
     if(fw)
     {
       fw->setHasPreflightErrors(false);
+      fw->setWidgetState(PipelineFilterObject::WidgetState::Ready);
+      fw->changeStyle();
     }
     filters.at(i)->setErrorCondition(0);
     filters.at(i)->setCancel(false);
