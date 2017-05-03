@@ -88,6 +88,7 @@ set(TEST_NAMES
   ImportAsciDataArrayTest
   MatrixMathTest
   QuaternionMathTest
+  RawBinaryReaderTest
   ReadASCIIDataTest
   RecursivePipelineTest
   RemoveComponentFromArrayTest
