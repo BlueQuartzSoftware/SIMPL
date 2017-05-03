@@ -207,7 +207,7 @@ public:
   // -----------------------------------------------------------------------------
   //
   // -----------------------------------------------------------------------------
-  RawBinaryReader::Pointer createRawBinaryReaderFilter(int scalarType, size_t N, int skipBytes)
+  RawBinaryReader::Pointer createRawBinaryReaderFilter(RawBinaryReader::NumType scalarType, size_t N, int skipBytes)
   {
     RawBinaryReader::Pointer filt = RawBinaryReader::New();
     filt->setInputFile(UnitTest::RawBinaryReaderTest::OutputFile);
