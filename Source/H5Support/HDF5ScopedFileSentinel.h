@@ -97,7 +97,15 @@ class H5Support_EXPORT HDF5ScopedObjectSentinel
     void* _oldHDF_error_client_data;
 };
 
+class H5Support_EXPORT H5GroupAutoCloser
+{
+public:
+  H5GroupAutoCloser(hid_t* groupId);
 
+  virtual ~H5GroupAutoCloser();
+private:
+  hid_t* gid = nullptr;
+};
 
 
 #endif /* _HDF5ScopedFileSentinel_H_ */

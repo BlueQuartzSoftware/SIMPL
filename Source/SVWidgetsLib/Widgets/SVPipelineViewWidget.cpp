@@ -893,13 +893,16 @@ void SVPipelineViewWidget::preflightPipeline(QUuid id)
   FilterPipeline::FilterContainerType filters = pipeline->getFilterContainer();
   for(int i = 0; i < filters.size(); i++)
   {
+    filters.at(i)->setErrorCondition(0);
+    filters.at(i)->setCancel(false);
+
     PipelineFilterObject* fw = filterObjectAt(i);
     if(fw)
     {
       fw->setHasPreflightErrors(false);
+      fw->setWidgetState(PipelineFilterObject::WidgetState::Ready);
+      fw->changeStyle();
     }
-    filters.at(i)->setErrorCondition(0);
-    filters.at(i)->setCancel(false);
   }
 
   QProgressDialog progress("Preflight Pipeline", "", 0, 1, this);

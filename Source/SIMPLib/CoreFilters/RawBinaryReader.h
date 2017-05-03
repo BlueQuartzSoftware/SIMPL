@@ -53,11 +53,26 @@ class SIMPLib_EXPORT RawBinaryReader : public AbstractFilter
 
     virtual ~RawBinaryReader();
 
+    enum class NumType
+    {
+      Int8 = 0,
+      UInt8,
+      Int16,
+      UInt16,
+      Int32,
+      UInt32,
+      Int64,
+      UInt64,
+      Float,
+      Double,
+      UnknownNumType
+    };
+
     SIMPL_FILTER_PARAMETER(DataArrayPath, CreatedAttributeArrayPath)
     Q_PROPERTY(DataArrayPath CreatedAttributeArrayPath READ getCreatedAttributeArrayPath WRITE setCreatedAttributeArrayPath)
 
-    SIMPL_FILTER_PARAMETER(int, ScalarType)
-    Q_PROPERTY(int ScalarType READ getScalarType WRITE setScalarType)
+    SIMPL_FILTER_PARAMETER(NumType, ScalarType)
+    Q_PROPERTY(NumType ScalarType READ getScalarType WRITE setScalarType)
 
     SIMPL_FILTER_PARAMETER(int, Endian)
     Q_PROPERTY(int Endian READ getEndian WRITE setEndian)
