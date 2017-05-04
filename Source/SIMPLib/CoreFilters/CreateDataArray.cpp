@@ -86,49 +86,49 @@ template <typename T> void initializeArrayWithInts(IDataArray::Pointer outputArr
     case CreateDataArray::Int8Choice:
       for(size_t i = 0; i < count; i++)
       {
-        rawPointer[i] = i8;
+        rawPointer[i] = static_cast<T>(i8);
       }
       break;
     case CreateDataArray::UInt8Choice:
       for(size_t i = 0; i < count; i++)
       {
-        rawPointer[i] = ui8;
+        rawPointer[i] = static_cast<T>(ui8);
       }
       break;
     case CreateDataArray::Int16Choice:
       for(size_t i = 0; i < count; i++)
       {
-        rawPointer[i] = i16;
+        rawPointer[i] = static_cast<T>(i16);
       }
       break;
     case CreateDataArray::UInt16Choice:
       for(size_t i = 0; i < count; i++)
       {
-        rawPointer[i] = ui16;
+        rawPointer[i] = static_cast<T>(ui16);
       }
       break;
     case CreateDataArray::Int32Choice:
       for(size_t i = 0; i < count; i++)
       {
-        rawPointer[i] = i32;
+        rawPointer[i] = static_cast<T>(i32);
       }
       break;
     case CreateDataArray::UInt32Choice:
       for(size_t i = 0; i < count; i++)
       {
-        rawPointer[i] = ui32;
+        rawPointer[i] = static_cast<T>(ui32);
       }
       break;
     case CreateDataArray::Int64Choice:
       for(size_t i = 0; i < count; i++)
       {
-        rawPointer[i] = i64;
+        rawPointer[i] = static_cast<T>(i64);
       }
       break;
     case CreateDataArray::UInt64Choice:
       for(size_t i = 0; i < count; i++)
       {
-        rawPointer[i] = ui64;
+        rawPointer[i] = static_cast<T>(ui64);
       }
       break;
     default:
@@ -141,15 +141,13 @@ template <typename T> void initializeArrayWithInts(IDataArray::Pointer outputArr
     T rangeMin = static_cast<T>(initializationRange.first);
     T rangeMax = static_cast<T>(initializationRange.second);
 
-    std::random_device randomDevice;           // Will be used to obtain a seed for the random number engine
-    std::mt19937_64 generator(randomDevice()); // Standard mersenne_twister_engine seeded with rd()
     std::mt19937_64::result_type seed = static_cast<std::mt19937_64::result_type>(std::chrono::steady_clock::now().time_since_epoch().count());
-    generator.seed(seed);
-    std::uniform_int_distribution<> distribution(std::numeric_limits<T>::min() , std::numeric_limits<T>::max());
+    std::mt19937_64 generator(seed); // Standard mersenne_twister_engine seeded with milliseconds
+    std::uniform_int_distribution<> distribution(rangeMin , rangeMax);
 
     for(size_t i = 0; i < count; i++)
     {
-      T value = distribution(generator);
+      T value = static_cast<T>(distribution(generator));
       rawPointer[i] = value;
     }
   }
@@ -187,10 +185,8 @@ template <> void initializeArrayWithInts<bool>(IDataArray::Pointer outputArrayPt
   }
   else
   {
-    std::random_device randomDevice;           // Will be used to obtain a seed for the random number engine
-    std::mt19937_64 generator(randomDevice()); // Standard mersenne_twister_engine seeded with rd()
     std::mt19937_64::result_type seed = static_cast<std::mt19937_64::result_type>(std::chrono::steady_clock::now().time_since_epoch().count());
-    generator.seed(seed);
+    std::mt19937_64 generator(seed); // Standard mersenne_twister_engine seeded with milliseconds
     std::uniform_int_distribution<int32_t> distribution(0, 1);
 
     for(size_t i = 0; i < count; i++)
@@ -235,10 +231,8 @@ template <typename T> void initializeArrayWithReals(IDataArray::Pointer outputAr
     T rangeMin = static_cast<T>(initializationRange.first);
     T rangeMax = static_cast<T>(initializationRange.second);
 
-    std::random_device randomDevice;           // Will be used to obtain a seed for the random number engine
-    std::mt19937_64 generator(randomDevice()); // Standard mersenne_twister_engine seeded with rd()
     std::mt19937_64::result_type seed = static_cast<std::mt19937_64::result_type>(std::chrono::steady_clock::now().time_since_epoch().count());
-    generator.seed(seed);
+    std::mt19937_64 generator(seed); // Standard mersenne_twister_engine seeded with milliseconds
     std::uniform_real_distribution<> distribution(rangeMin, rangeMax);
 
     size_t count = array->getSize();

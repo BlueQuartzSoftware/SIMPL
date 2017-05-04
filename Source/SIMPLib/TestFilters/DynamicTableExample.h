@@ -35,11 +35,10 @@
 #ifndef _dynamictableexample_h_
 #define _dynamictableexample_h_
 
-#include "SIMPLib/SIMPLib.h"
 #include "SIMPLib/Common/AbstractFilter.h"
 #include "SIMPLib/Common/SIMPLibSetGetMacros.h"
 #include "SIMPLib/FilterParameters/DynamicTableData.h"
-
+#include "SIMPLib/SIMPLib.h"
 
 /**
 * @class DynamicTableExample DynamicTableExample.h ExamplePlugin/Code/ExamplePluginFilters/DynamicTableExample.h
@@ -50,97 +49,91 @@
 */
 class SIMPLib_EXPORT DynamicTableExample : public AbstractFilter
 {
-    Q_OBJECT
-  public:
-    SIMPL_SHARED_POINTERS(DynamicTableExample)
-    SIMPL_STATIC_NEW_MACRO(DynamicTableExample)
-    SIMPL_TYPE_MACRO_SUPER(DynamicTableExample, AbstractFilter)
+  Q_OBJECT
+public:
+  SIMPL_SHARED_POINTERS(DynamicTableExample)
+  SIMPL_STATIC_NEW_MACRO(DynamicTableExample)
+  SIMPL_TYPE_MACRO_SUPER(DynamicTableExample, AbstractFilter)
 
-    virtual ~DynamicTableExample();
+  virtual ~DynamicTableExample();
 
-    /* Place your input parameters here. You can use some of the DREAM3D Macros if you want to */
-    SIMPL_FILTER_PARAMETER(DynamicTableData, DynamicData1)
-    Q_PROPERTY(DynamicTableData DynamicData1 READ getDynamicData1 WRITE setDynamicData1)
+  /* Place your input parameters here. You can use some of the DREAM3D Macros if you want to */
+  SIMPL_FILTER_PARAMETER(DynamicTableData, DynamicData1)
+  Q_PROPERTY(DynamicTableData DynamicData1 READ getDynamicData1 WRITE setDynamicData1)
 
-    SIMPL_FILTER_PARAMETER(DynamicTableData, DynamicData2)
-    Q_PROPERTY(DynamicTableData DynamicData2 READ getDynamicData2 WRITE setDynamicData2)
+  SIMPL_FILTER_PARAMETER(DynamicTableData, DynamicData2)
+  Q_PROPERTY(DynamicTableData DynamicData2 READ getDynamicData2 WRITE setDynamicData2)
 
-    SIMPL_FILTER_PARAMETER(DynamicTableData, DynamicData3)
-    Q_PROPERTY(DynamicTableData DynamicData3 READ getDynamicData3 WRITE setDynamicData3)
+  SIMPL_FILTER_PARAMETER(DynamicTableData, DynamicData3)
+  Q_PROPERTY(DynamicTableData DynamicData3 READ getDynamicData3 WRITE setDynamicData3)
 
-    SIMPL_FILTER_PARAMETER(DynamicTableData, DynamicData4)
-    Q_PROPERTY(DynamicTableData DynamicData4 READ getDynamicData4 WRITE setDynamicData4)
+  SIMPL_FILTER_PARAMETER(DynamicTableData, DynamicData4)
+  Q_PROPERTY(DynamicTableData DynamicData4 READ getDynamicData4 WRITE setDynamicData4)
 
-    SIMPL_FILTER_PARAMETER(DynamicTableData, DynamicData5)
-    Q_PROPERTY(DynamicTableData DynamicData5 READ getDynamicData5 WRITE setDynamicData5)
+  SIMPL_FILTER_PARAMETER(DynamicTableData, DynamicData5)
+  Q_PROPERTY(DynamicTableData DynamicData5 READ getDynamicData5 WRITE setDynamicData5)
 
+  virtual const QString getCompiledLibraryName();
+  virtual AbstractFilter::Pointer newFilterInstance(bool copyFilterParameters);
+  virtual const QString getGroupName();
 
-    virtual const QString getCompiledLibraryName();
-    virtual AbstractFilter::Pointer newFilterInstance(bool copyFilterParameters);
-    virtual const QString getGroupName();
+  /**
+  * @brief This returns a string that is displayed in the GUI. It should be readable
+  * and understandable by humans.
+  */
+  virtual const QString getHumanLabel();
 
-    /**
-    * @brief This returns a string that is displayed in the GUI. It should be readable
-    * and understandable by humans.
-    */
-    virtual const QString getHumanLabel();
+  /**
+  * @brief This returns a string that is displayed in the GUI and helps to sort the filters into
+  * a subgroup. It should be readable and understandable by humans.
+  */
+  virtual const QString getSubGroupName();
 
-    /**
-    * @brief This returns a string that is displayed in the GUI and helps to sort the filters into
-    * a subgroup. It should be readable and understandable by humans.
-    */
-    virtual const QString getSubGroupName();
+  /**
+  * @brief This method will instantiate all the end user settable options/parameters
+  * for this filter
+  */
+  virtual void setupFilterParameters();
 
-    /**
-    * @brief This method will instantiate all the end user settable options/parameters
-    * for this filter
-    */
-    virtual void setupFilterParameters();
+  /**
+  * @brief This method will read the options from a file
+  * @param reader The reader that is used to read the options from a file
+  */
+  virtual void readFilterParameters(AbstractFilterParametersReader* reader, int index);
 
-    /**
-    * @brief This method will read the options from a file
-    * @param reader The reader that is used to read the options from a file
-    */
-    virtual void readFilterParameters(AbstractFilterParametersReader* reader, int index);
+  /**
+  * @brief Reimplemented from @see AbstractFilter class
+  */
+  virtual void execute();
 
-    /**
-    * @brief Reimplemented from @see AbstractFilter class
-    */
-    virtual void execute();
+  /**
+  * @brief This function runs some sanity checks on the DataContainer and inputs
+  * in an attempt to ensure the filter can process the inputs.
+  */
+  virtual void preflight();
 
-    /**
-    * @brief This function runs some sanity checks on the DataContainer and inputs
-    * in an attempt to ensure the filter can process the inputs.
-    */
-    virtual void preflight();
+signals:
+  void updateFilterParameters(AbstractFilter* filter);
+  void parametersChanged();
+  void preflightAboutToExecute();
+  void preflightExecuted();
 
-  signals:
-    void updateFilterParameters(AbstractFilter* filter);
-    void parametersChanged();
-    void preflightAboutToExecute();
-    void preflightExecuted();
+protected:
+  DynamicTableExample();
 
-  protected:
-    DynamicTableExample();
+  /**
+   * @brief dataCheck Checks for the appropriate parameter values and availability of arrays
+   */
+  void dataCheck();
 
-    /**
-     * @brief dataCheck Checks for the appropriate parameter values and availability of arrays
-     */
-    void dataCheck();
+  /**
+   * @brief Initializes all the private instance variables.
+   */
+  void initialize();
 
-    /**
-     * @brief Initializes all the private instance variables.
-     */
-    void initialize();
-
-
-  private:
-
-    DynamicTableExample(const DynamicTableExample&); // Copy Constructor Not Implemented
-    void operator=(const DynamicTableExample&); // Operator '=' Not Implemented
+private:
+  DynamicTableExample(const DynamicTableExample&); // Copy Constructor Not Implemented
+  void operator=(const DynamicTableExample&);      // Operator '=' Not Implemented
 };
 
 #endif /* _DynamicTableExample_H_ */
-
-
-

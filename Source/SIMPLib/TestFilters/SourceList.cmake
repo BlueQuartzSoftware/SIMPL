@@ -53,6 +53,21 @@ set(_PublicFilters
   GenericExample
   DynamicTableExample
   MakeDataContainer
+  ErrorWarningFilter
+  FilterGroup01
+  FilterGroup02
+  FilterGroup03
+  FilterGroup04
+  FilterGroup05
+  FilterGroup06
+  FilterGroup07
+  FilterGroup08
+  FilterGroup09
+  FilterGroup10
+  FilterGroup11
+  FilterGroup12
+  FilterGroup13
+  FilterGroup14
 )
 
 

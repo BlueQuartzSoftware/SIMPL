@@ -236,7 +236,7 @@ AbstractFilter::Pointer MakeDataContainer::newFilterInstance(bool copyFilterPara
 // -----------------------------------------------------------------------------
 const QString MakeDataContainer::getCompiledLibraryName()
 {
-  return Test::TestBaseName;
+  return Core::CoreBaseName;
 }
 
 // -----------------------------------------------------------------------------
@@ -252,7 +252,7 @@ const QString MakeDataContainer::getGroupName()
 // -----------------------------------------------------------------------------
 const QString MakeDataContainer::getSubGroupName()
 {
-  return "Create Stuff";
+  return "Test";
 }
 
 // -----------------------------------------------------------------------------
