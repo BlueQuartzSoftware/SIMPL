@@ -94,11 +94,6 @@ public:
 
   virtual ~NumericTypeFilterParameter();
 
-#if 0
-  SIMPL_INSTANCE_PROPERTY(QString, PhaseTypeCountProperty)
-  SIMPL_INSTANCE_PROPERTY(QString, PhaseTypeArrayPathProperty)
-#endif
-
   /**
   * @brief getWidgetType Returns the type of widget that displays and controls
   * this FilterParameter subclass
