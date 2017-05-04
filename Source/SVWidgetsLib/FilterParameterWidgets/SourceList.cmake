@@ -36,6 +36,7 @@ set(SIMPLView_PARAMETER_WIDGETS
     NumericTypeWidget
     PreflightUpdatedValueWidget
     RangeWidget
+    ScalarTypeWidget
     SecondOrderPolynomialWidget
     SeparatorWidget
     StringWidget
