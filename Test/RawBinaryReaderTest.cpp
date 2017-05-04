@@ -82,20 +82,6 @@
 
 namespace Detail
 {
-enum NumType
-{
-  Int8 = 0,
-  UInt8,
-  Int16,
-  UInt16,
-  Int32,
-  UInt32,
-  Int64,
-  UInt64,
-  Float,
-  Double,
-  UnknownNumType
-};
 enum Endian
 {
   Little = 0,
@@ -207,7 +193,7 @@ public:
   // -----------------------------------------------------------------------------
   //
   // -----------------------------------------------------------------------------
-  RawBinaryReader::Pointer createRawBinaryReaderFilter(RawBinaryReader::NumType scalarType, size_t N, int skipBytes)
+  RawBinaryReader::Pointer createRawBinaryReaderFilter(SIMPL::NumericTypes::Type scalarType, size_t N, int skipBytes)
   {
     RawBinaryReader::Pointer filt = RawBinaryReader::New();
     filt->setInputFile(UnitTest::RawBinaryReaderTest::OutputFile);
@@ -236,7 +222,7 @@ public:
   //
   // -----------------------------------------------------------------------------
   // testCase1: This tests when the file size is equal to the allocated size, and checks to see if the data read is the same as the data written.
-  template <typename T, size_t N> int testCase1_Execute(const QString& name, int scalarType)
+  template <typename T, size_t N> int testCase1_Execute(const QString& name, SIMPL::NumericTypes::Type scalarType)
   {
     int err = 0;
     int dataArraySize = ARRAY_SIZE * N;
@@ -305,7 +291,7 @@ public:
   // -----------------------------------------------------------------------------
   //
   // -----------------------------------------------------------------------------
-  template <typename T> void testCase1_TestPrimitives(const QString& name, int scalarType)
+  template <typename T> void testCase1_TestPrimitives(const QString& name, SIMPL::NumericTypes::Type scalarType)
   {
     testCase1_Execute<T, 1>(name, scalarType);
     testCase1_Execute<T, 2>(name, scalarType);
@@ -326,23 +312,23 @@ public:
       return;
     }
 
-    testCase1_TestPrimitives<int8_t>("int8_t", Detail::Int8);
-    testCase1_TestPrimitives<uint8_t>("uint8_t", Detail::UInt8);
-    testCase1_TestPrimitives<int16_t>("int16_t", Detail::Int16);
-    testCase1_TestPrimitives<uint16_t>("uint16_t", Detail::UInt16);
-    testCase1_TestPrimitives<int32_t>("int32_t", Detail::Int32);
-    testCase1_TestPrimitives<uint32_t>("uint32_t", Detail::UInt32);
-    testCase1_TestPrimitives<int64_t>("int64_t", Detail::Int64);
-    testCase1_TestPrimitives<uint64_t>("uint64_t", Detail::UInt64);
-    testCase1_TestPrimitives<float>("float", Detail::Float);
-    testCase1_TestPrimitives<double>("double", Detail::Double);
+    testCase1_TestPrimitives<int8_t>("int8_t", SIMPL::NumericTypes::Type::Int8);
+    testCase1_TestPrimitives<uint8_t>("uint8_t", SIMPL::NumericTypes::Type::UInt8);
+    testCase1_TestPrimitives<int16_t>("int16_t", SIMPL::NumericTypes::Type::Int16);
+    testCase1_TestPrimitives<uint16_t>("uint16_t", SIMPL::NumericTypes::Type::UInt16);
+    testCase1_TestPrimitives<int32_t>("int32_t", SIMPL::NumericTypes::Type::Int32);
+    testCase1_TestPrimitives<uint32_t>("uint32_t", SIMPL::NumericTypes::Type::UInt32);
+    testCase1_TestPrimitives<int64_t>("int64_t", SIMPL::NumericTypes::Type::Int64);
+    testCase1_TestPrimitives<uint64_t>("uint64_t", SIMPL::NumericTypes::Type::UInt64);
+    testCase1_TestPrimitives<float>("float", SIMPL::NumericTypes::Type::Float);
+    testCase1_TestPrimitives<double>("double", SIMPL::NumericTypes::Type::Double);
   }
 
   // -----------------------------------------------------------------------------
   //
   // -----------------------------------------------------------------------------
   // testCase2: This tests when the file size is smaller than the allocated size. (Reading past the end of the file)
-  template <typename T, size_t N> void testCase2_Execute(const QString& name, int scalarType)
+  template <typename T, size_t N> void testCase2_Execute(const QString& name, SIMPL::NumericTypes::Type scalarType)
   {
     int err = 0;
     int dataArraySize = ARRAY_SIZE * N / 2; // We don't care what is written...we just need the data array size to be less than the file size
@@ -400,7 +386,7 @@ public:
   // -----------------------------------------------------------------------------
   //
   // -----------------------------------------------------------------------------
-  template <typename T> void testCase2_TestPrimitives(const QString& name, int scalarType)
+  template <typename T> void testCase2_TestPrimitives(const QString& name, SIMPL::NumericTypes::Type scalarType)
   {
     testCase2_Execute<T, 1>(name, scalarType);
     testCase2_Execute<T, 2>(name, scalarType);
@@ -421,23 +407,23 @@ public:
       return;
     }
 
-    testCase2_TestPrimitives<int8_t>("int8_t", Detail::Int8);
-    testCase2_TestPrimitives<uint8_t>("uint8_t", Detail::UInt8);
-    testCase2_TestPrimitives<int16_t>("int16_t", Detail::Int16);
-    testCase2_TestPrimitives<uint16_t>("uint16_t", Detail::UInt16);
-    testCase2_TestPrimitives<int32_t>("int32_t", Detail::Int32);
-    testCase2_TestPrimitives<uint32_t>("uint32_t", Detail::UInt32);
-    testCase2_TestPrimitives<int64_t>("int64_t", Detail::Int64);
-    testCase2_TestPrimitives<uint64_t>("uint64_t", Detail::UInt64);
-    testCase2_TestPrimitives<float>("float", Detail::Float);
-    testCase2_TestPrimitives<double>("double", Detail::Double);
+    testCase2_TestPrimitives<int8_t>("int8_t", SIMPL::NumericTypes::Type::Int8);
+    testCase2_TestPrimitives<uint8_t>("uint8_t", SIMPL::NumericTypes::Type::UInt8);
+    testCase2_TestPrimitives<int16_t>("int16_t", SIMPL::NumericTypes::Type::Int16);
+    testCase2_TestPrimitives<uint16_t>("uint16_t", SIMPL::NumericTypes::Type::UInt16);
+    testCase2_TestPrimitives<int32_t>("int32_t", SIMPL::NumericTypes::Type::Int32);
+    testCase2_TestPrimitives<uint32_t>("uint32_t", SIMPL::NumericTypes::Type::UInt32);
+    testCase2_TestPrimitives<int64_t>("int64_t", SIMPL::NumericTypes::Type::Int64);
+    testCase2_TestPrimitives<uint64_t>("uint64_t", SIMPL::NumericTypes::Type::UInt64);
+    testCase2_TestPrimitives<float>("float", SIMPL::NumericTypes::Type::Float);
+    testCase2_TestPrimitives<double>("double", SIMPL::NumericTypes::Type::Double);
   }
 
   // -----------------------------------------------------------------------------
   //
   // -----------------------------------------------------------------------------
   // testCase3: This tests when the file size is larger than the allocated size and there is junk at the end of the file.
-  template <typename T, size_t N> void testCase3_Execute(const QString& name, int scalarType)
+  template <typename T, size_t N> void testCase3_Execute(const QString& name, SIMPL::NumericTypes::Type scalarType)
   {
     int dataArraySize = ARRAY_SIZE * N;
     int junkArraySize = 10;
@@ -511,7 +497,7 @@ public:
   // -----------------------------------------------------------------------------
   //
   // -----------------------------------------------------------------------------
-  template <typename T> void testCase3_TestPrimitives(const QString& name, int scalarType)
+  template <typename T> void testCase3_TestPrimitives(const QString& name, SIMPL::NumericTypes::Type scalarType)
   {
     testCase3_Execute<T, 1>(name, scalarType);
     testCase3_Execute<T, 2>(name, scalarType);
@@ -532,23 +518,23 @@ public:
       return;
     }
 
-    testCase3_TestPrimitives<int8_t>("int8_t", Detail::Int8);
-    testCase3_TestPrimitives<uint8_t>("uint8_t", Detail::UInt8);
-    testCase3_TestPrimitives<int16_t>("int16_t", Detail::Int16);
-    testCase3_TestPrimitives<uint16_t>("uint16_t", Detail::UInt16);
-    testCase3_TestPrimitives<int32_t>("int32_t", Detail::Int32);
-    testCase3_TestPrimitives<uint32_t>("uint32_t", Detail::UInt32);
-    testCase3_TestPrimitives<int64_t>("int64_t", Detail::Int64);
-    testCase3_TestPrimitives<uint64_t>("uint64_t", Detail::UInt64);
-    testCase3_TestPrimitives<float>("float", Detail::Float);
-    testCase3_TestPrimitives<double>("double", Detail::Double);
+    testCase3_TestPrimitives<int8_t>("int8_t", SIMPL::NumericTypes::Type::Int8);
+    testCase3_TestPrimitives<uint8_t>("uint8_t", SIMPL::NumericTypes::Type::UInt8);
+    testCase3_TestPrimitives<int16_t>("int16_t", SIMPL::NumericTypes::Type::Int16);
+    testCase3_TestPrimitives<uint16_t>("uint16_t", SIMPL::NumericTypes::Type::UInt16);
+    testCase3_TestPrimitives<int32_t>("int32_t", SIMPL::NumericTypes::Type::Int32);
+    testCase3_TestPrimitives<uint32_t>("uint32_t", SIMPL::NumericTypes::Type::UInt32);
+    testCase3_TestPrimitives<int64_t>("int64_t", SIMPL::NumericTypes::Type::Int64);
+    testCase3_TestPrimitives<uint64_t>("uint64_t", SIMPL::NumericTypes::Type::UInt64);
+    testCase3_TestPrimitives<float>("float", SIMPL::NumericTypes::Type::Float);
+    testCase3_TestPrimitives<double>("double", SIMPL::NumericTypes::Type::Double);
   }
 
   // -----------------------------------------------------------------------------
   //
   // -----------------------------------------------------------------------------
   // testCase4: This tests when the file size is larger than the allocated size and there is junk at the beginning of the file.
-  template <typename T, size_t N> void testCase4_Execute(const QString& name, int scalarType)
+  template <typename T, size_t N> void testCase4_Execute(const QString& name, SIMPL::NumericTypes::Type scalarType)
   {
     int dataArraySize = ARRAY_SIZE * N;
     int junkArraySize = 5;
@@ -651,7 +637,7 @@ public:
   // -----------------------------------------------------------------------------
   //
   // -----------------------------------------------------------------------------
-  template <typename T> void testCase4_TestPrimitives(const QString& name, int scalarType)
+  template <typename T> void testCase4_TestPrimitives(const QString& name, SIMPL::NumericTypes::Type scalarType)
   {
     testCase4_Execute<T, 1>(name, scalarType);
     testCase4_Execute<T, 2>(name, scalarType);
@@ -672,23 +658,23 @@ public:
       return;
     }
 
-    testCase4_TestPrimitives<int8_t>("int8_t", Detail::Int8);
-    testCase4_TestPrimitives<uint8_t>("uint8_t", Detail::UInt8);
-    testCase4_TestPrimitives<int16_t>("int16_t", Detail::Int16);
-    testCase4_TestPrimitives<uint16_t>("uint16_t", Detail::UInt16);
-    testCase4_TestPrimitives<int32_t>("int32_t", Detail::Int32);
-    testCase4_TestPrimitives<uint32_t>("uint32_t", Detail::UInt32);
-    testCase4_TestPrimitives<int64_t>("int64_t", Detail::Int64);
-    testCase4_TestPrimitives<uint64_t>("uint64_t", Detail::UInt64);
-    testCase4_TestPrimitives<float>("float", Detail::Float);
-    testCase4_TestPrimitives<double>("double", Detail::Double);
+    testCase4_TestPrimitives<int8_t>("int8_t", SIMPL::NumericTypes::Type::Int8);
+    testCase4_TestPrimitives<uint8_t>("uint8_t", SIMPL::NumericTypes::Type::UInt8);
+    testCase4_TestPrimitives<int16_t>("int16_t", SIMPL::NumericTypes::Type::Int16);
+    testCase4_TestPrimitives<uint16_t>("uint16_t", SIMPL::NumericTypes::Type::UInt16);
+    testCase4_TestPrimitives<int32_t>("int32_t", SIMPL::NumericTypes::Type::Int32);
+    testCase4_TestPrimitives<uint32_t>("uint32_t", SIMPL::NumericTypes::Type::UInt32);
+    testCase4_TestPrimitives<int64_t>("int64_t", SIMPL::NumericTypes::Type::Int64);
+    testCase4_TestPrimitives<uint64_t>("uint64_t", SIMPL::NumericTypes::Type::UInt64);
+    testCase4_TestPrimitives<float>("float", SIMPL::NumericTypes::Type::Float);
+    testCase4_TestPrimitives<double>("double", SIMPL::NumericTypes::Type::Double);
   }
 
   // -----------------------------------------------------------------------------
   //
   // -----------------------------------------------------------------------------
   // testCase5: This tests when the file size is larger than the allocated size and there is junk both at the beginning and end of the file.
-  template <typename T, size_t N> void testCase5_Execute(const QString& name, int scalarType)
+  template <typename T, size_t N> void testCase5_Execute(const QString& name, SIMPL::NumericTypes::Type scalarType)
   {
     int dataArraySize = ARRAY_SIZE * N;
     int junkArraySize = 10;
@@ -762,7 +748,7 @@ public:
   // -----------------------------------------------------------------------------
   //
   // -----------------------------------------------------------------------------
-  template <typename T> void testCase5_TestPrimitives(const QString& name, int scalarType)
+  template <typename T> void testCase5_TestPrimitives(const QString& name, SIMPL::NumericTypes::Type scalarType)
   {
     testCase5_Execute<T, 1>(name, scalarType);
     testCase5_Execute<T, 2>(name, scalarType);
@@ -783,23 +769,23 @@ public:
       return;
     }
 
-    testCase5_TestPrimitives<int8_t>("int8_t", Detail::Int8);
-    testCase5_TestPrimitives<uint8_t>("uint8_t", Detail::UInt8);
-    testCase5_TestPrimitives<int16_t>("int16_t", Detail::Int16);
-    testCase5_TestPrimitives<uint16_t>("uint16_t", Detail::UInt16);
-    testCase5_TestPrimitives<int32_t>("int32_t", Detail::Int32);
-    testCase5_TestPrimitives<uint32_t>("uint32_t", Detail::UInt32);
-    testCase5_TestPrimitives<int64_t>("int64_t", Detail::Int64);
-    testCase5_TestPrimitives<uint64_t>("uint64_t", Detail::UInt64);
-    testCase5_TestPrimitives<float>("float", Detail::Float);
-    testCase5_TestPrimitives<double>("double", Detail::Double);
+    testCase5_TestPrimitives<int8_t>("int8_t", SIMPL::NumericTypes::Type::Int8);
+    testCase5_TestPrimitives<uint8_t>("uint8_t", SIMPL::NumericTypes::Type::UInt8);
+    testCase5_TestPrimitives<int16_t>("int16_t", SIMPL::NumericTypes::Type::Int16);
+    testCase5_TestPrimitives<uint16_t>("uint16_t", SIMPL::NumericTypes::Type::UInt16);
+    testCase5_TestPrimitives<int32_t>("int32_t", SIMPL::NumericTypes::Type::Int32);
+    testCase5_TestPrimitives<uint32_t>("uint32_t", SIMPL::NumericTypes::Type::UInt32);
+    testCase5_TestPrimitives<int64_t>("int64_t", SIMPL::NumericTypes::Type::Int64);
+    testCase5_TestPrimitives<uint64_t>("uint64_t", SIMPL::NumericTypes::Type::UInt64);
+    testCase5_TestPrimitives<float>("float", SIMPL::NumericTypes::Type::Float);
+    testCase5_TestPrimitives<double>("double", SIMPL::NumericTypes::Type::Double);
   }
 
   // -----------------------------------------------------------------------------
   //
   // -----------------------------------------------------------------------------
   // testCase6: This tests when skipHeaderBytes equals the file size
-  template <typename T, size_t N> void testCase6_Execute(const QString& name, int scalarType)
+  template <typename T, size_t N> void testCase6_Execute(const QString& name, SIMPL::NumericTypes::Type scalarType)
   {
     int dataArraySize = 0;
     int junkArraySize = ARRAY_SIZE * N;
@@ -861,7 +847,7 @@ public:
   // -----------------------------------------------------------------------------
   //
   // -----------------------------------------------------------------------------
-  template <typename T> void testCase6_TestPrimitives(const QString& name, int scalarType)
+  template <typename T> void testCase6_TestPrimitives(const QString& name, SIMPL::NumericTypes::Type scalarType)
   {
     testCase6_Execute<T, 1>(name, scalarType);
     testCase6_Execute<T, 2>(name, scalarType);
@@ -882,16 +868,16 @@ public:
       return;
     }
 
-    testCase6_TestPrimitives<int8_t>("int8_t", Detail::Int8);
-    testCase6_TestPrimitives<uint8_t>("uint8_t", Detail::UInt8);
-    testCase6_TestPrimitives<int16_t>("int16_t", Detail::Int16);
-    testCase6_TestPrimitives<uint16_t>("uint16_t", Detail::UInt16);
-    testCase6_TestPrimitives<int32_t>("int32_t", Detail::Int32);
-    testCase6_TestPrimitives<uint32_t>("uint32_t", Detail::UInt32);
-    testCase6_TestPrimitives<int64_t>("int64_t", Detail::Int64);
-    testCase6_TestPrimitives<uint64_t>("uint64_t", Detail::UInt64);
-    testCase6_TestPrimitives<float>("float", Detail::Float);
-    testCase6_TestPrimitives<double>("double", Detail::Double);
+    testCase6_TestPrimitives<int8_t>("int8_t", SIMPL::NumericTypes::Type::Int8);
+    testCase6_TestPrimitives<uint8_t>("uint8_t", SIMPL::NumericTypes::Type::UInt8);
+    testCase6_TestPrimitives<int16_t>("int16_t", SIMPL::NumericTypes::Type::Int16);
+    testCase6_TestPrimitives<uint16_t>("uint16_t", SIMPL::NumericTypes::Type::UInt16);
+    testCase6_TestPrimitives<int32_t>("int32_t", SIMPL::NumericTypes::Type::Int32);
+    testCase6_TestPrimitives<uint32_t>("uint32_t", SIMPL::NumericTypes::Type::UInt32);
+    testCase6_TestPrimitives<int64_t>("int64_t", SIMPL::NumericTypes::Type::Int64);
+    testCase6_TestPrimitives<uint64_t>("uint64_t", SIMPL::NumericTypes::Type::UInt64);
+    testCase6_TestPrimitives<float>("float", SIMPL::NumericTypes::Type::Float);
+    testCase6_TestPrimitives<double>("double", SIMPL::NumericTypes::Type::Double);
   }
 
   // -----------------------------------------------------------------------------
