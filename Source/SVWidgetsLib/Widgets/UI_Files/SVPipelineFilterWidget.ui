@@ -46,11 +46,11 @@
    <enum>Qt::CustomContextMenu</enum>
   </property>
   <property name="frameShape">
-   <enum>QFrame::Box</enum>
+   <enum>QFrame::NoFrame</enum>
   </property>
   <layout class="QHBoxLayout" name="horizontalLayout">
    <property name="spacing">
-    <number>4</number>
+    <number>0</number>
    </property>
    <property name="leftMargin">
     <number>0</number>
@@ -59,7 +59,7 @@
     <number>0</number>
    </property>
    <property name="rightMargin">
-    <number>4</number>
+    <number>0</number>
    </property>
    <property name="bottomMargin">
     <number>0</number>
@@ -121,6 +121,9 @@
        <width>24</width>
        <height>24</height>
       </size>
+     </property>
+     <property name="toolTip">
+      <string>Click to remove filter from pipeline.</string>
      </property>
      <property name="text">
       <string/>

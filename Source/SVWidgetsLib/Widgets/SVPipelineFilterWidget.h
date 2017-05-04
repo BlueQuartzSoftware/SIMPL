@@ -99,7 +99,7 @@ class SVWidgetsLib_EXPORT SVPipelineFilterWidget : public QFrame, public Pipelin
     /**
      * @brief changeStyle
      */
-    void changeStyle(int i = -1) override;
+    virtual void changeStyle() override;
 
     /**
      * @brief displayFilterParameterWidgetError

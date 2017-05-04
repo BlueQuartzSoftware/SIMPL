@@ -146,7 +146,7 @@ void SVPipelineFilterWidget::initialize()
 void SVPipelineFilterWidget::setSelected(bool s)
 {
   PipelineFilterObject::setSelected(s);
-  changeStyle(2);
+  changeStyle();
 }
 
 // -----------------------------------------------------------------------------
@@ -163,7 +163,7 @@ bool SVPipelineFilterWidget::hasRightClickTarget()
 void SVPipelineFilterWidget::setHasRightClickTarget(bool value)
 {
   m_HasRightClickTarget = value;
-  changeStyle(1);
+  changeStyle();
 }
 
 // -----------------------------------------------------------------------------
@@ -231,15 +231,11 @@ void SVPipelineFilterWidget::setFilterIndex(int i, int numFilters)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void SVPipelineFilterWidget::changeStyle(int i)
+void SVPipelineFilterWidget::changeStyle()
 {
-  Q_UNUSED(i);
   QFont font = QtSStyles::GetHumanLabelFont();
   QString fontString;
   QTextStream fontStringStream(&fontString);
-
-  QIcon check(":/check_plain.png");
-  QPixmap pixmap = check.pixmap(QSize(24, 24));
 
   fontStringStream << "font: " << font.weight() << " ";
 #if defined(Q_OS_MAC)
@@ -315,7 +311,6 @@ void SVPipelineFilterWidget::changeStyle(int i)
       widgetBackgroundColor = QString("background-color: %1;").arg(bgColor.name());
       labelColor ="color: rgb(190, 190, 190);";
       indexBackgroundColor = "background-color: rgb(6, 118, 6);";
-      iconLabel->setPixmap(pixmap);
       break;
       //    default:
       //      widgetBackgroundColor = "background-color: rgb(255, 0, 0);"; // Something obnoxious
@@ -509,7 +504,7 @@ void SVPipelineFilterWidget::toReadyState()
 {
   PipelineFilterObject::toReadyState();
   getFilterInputWidget()->toRunningState();
-  changeStyle(1);
+  changeStyle();
 }
 
 // -----------------------------------------------------------------------------
@@ -519,7 +514,7 @@ void SVPipelineFilterWidget::toExecutingState()
 {
   PipelineFilterObject::toExecutingState();
   getFilterInputWidget()->toRunningState();
-  changeStyle(1);
+  changeStyle();
 }
 
 // -----------------------------------------------------------------------------
@@ -529,7 +524,7 @@ void SVPipelineFilterWidget::toCompletedState()
 {
   PipelineFilterObject::toCompletedState();
   getFilterInputWidget()->toRunningState();
-  changeStyle(1);
+  changeStyle();
 }
 
 // -----------------------------------------------------------------------------
@@ -540,7 +535,7 @@ void SVPipelineFilterWidget::toRunningState()
   PipelineFilterObject::toRunningState();
   getFilterInputWidget()->toRunningState();
   deleteBtn->setDisabled(true);
-  changeStyle(1);
+  changeStyle();
 }
 
 // -----------------------------------------------------------------------------
@@ -551,7 +546,7 @@ void SVPipelineFilterWidget::toStoppedState()
   PipelineFilterObject::toStoppedState();
   getFilterInputWidget()->toIdleState();
   deleteBtn->setEnabled(true);
-  changeStyle(1);
+  changeStyle();
 }
 
 // -----------------------------------------------------------------------------
@@ -561,7 +556,7 @@ void SVPipelineFilterWidget::toPausedState()
 {
   PipelineFilterObject::toPausedState();
   getFilterInputWidget()->toIdleState();
-  changeStyle(1);
+  changeStyle();
 }
 
 
@@ -572,7 +567,7 @@ void SVPipelineFilterWidget::toOkState()
 {
   PipelineFilterObject::toOkState();
   qDebug() << getFilter()->getHumanLabel() << "\t toOkState";
-  changeStyle(1);
+  changeStyle();
 }
 
 // -----------------------------------------------------------------------------
@@ -582,7 +577,7 @@ void SVPipelineFilterWidget::toErrorState()
 {
   PipelineFilterObject::toErrorState();
   qDebug() << getFilter()->getHumanLabel() << "\t toErrorState";
-  changeStyle(1);
+  changeStyle();
 }
 
 // -----------------------------------------------------------------------------
@@ -592,7 +587,7 @@ void SVPipelineFilterWidget::toWarningState()
 {
   PipelineFilterObject::toWarningState();
   qDebug() << getFilter()->getHumanLabel() << "\t toWarningState";
-  changeStyle(1);
+  changeStyle();
 }
 
 

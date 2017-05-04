@@ -117,7 +117,7 @@ class SVWidgetsLib_EXPORT PipelineFilterObject
     /**
      * @brief changeStyle
      */
-    virtual void changeStyle(int i = -1);
+    virtual void changeStyle();
 
 
     /**

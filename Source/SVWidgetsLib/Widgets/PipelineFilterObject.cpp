@@ -279,7 +279,7 @@ void PipelineFilterObject::setHasFocus(bool hasFocus)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void PipelineFilterObject::changeStyle(int i)
+void PipelineFilterObject::changeStyle()
 {
   // This should be implemented in the subclasses
   return;
