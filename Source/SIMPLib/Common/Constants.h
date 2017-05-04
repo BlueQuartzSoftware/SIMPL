@@ -152,6 +152,24 @@ namespace SIMPL
       NumericTypes::Names::UInt32 + ", " + NumericTypes::Names::Int64 + ", " + NumericTypes::Names::UInt64 + ", " + NumericTypes::Names::Float + ", " + NumericTypes::Names::Double);
   }
 
+  namespace ScalarTypes
+  {
+    enum class Type : int
+    {
+      Int8 = 0,
+      UInt8,
+      Int16,
+      UInt16,
+      Int32,
+      UInt32,
+      Int64,
+      UInt64,
+      Float,
+      Double,
+      Bool
+    };
+  }
+
   namespace IO
   {
     const QString DAPSettingsHeader("Path");
@@ -979,6 +997,7 @@ namespace Test
 }
 
 Q_DECLARE_METATYPE(SIMPL::NumericTypes::Type)
+Q_DECLARE_METATYPE(SIMPL::ScalarTypes::Type)
 
 
 #if 0
