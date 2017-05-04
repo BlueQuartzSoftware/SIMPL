@@ -43,32 +43,6 @@
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-namespace Detail
-{
-class H5GroupAutoCloser
-{
-public:
-  H5GroupAutoCloser(hid_t* groupId)
-  : gid(groupId)
-  {
-  }
-
-  virtual ~H5GroupAutoCloser()
-  {
-    if(*gid > 0)
-    {
-      H5Gclose(*gid);
-    }
-  }
-
-private:
-  hid_t* gid;
-};
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
 DataContainerBundle::DataContainerBundle()
 : m_MetaDataAMName(SIMPL::StringConstants::MetaData)
 {
@@ -250,7 +224,7 @@ int DataContainerBundle::writeH5Data(hid_t groupId)
 
   hid_t bundleId = QH5Utilities::createGroup(groupId, getName());
   // This object will make sure the HDF5 Group id is closed when it goes out of scope.
-  Detail::H5GroupAutoCloser bundleIdClose(&bundleId);
+  H5GroupAutoCloser bundleIdClose(&bundleId);
 
   size_t count = static_cast<size_t>(m_DataContainers.size());
   QStringList dcNameList;

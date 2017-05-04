@@ -294,6 +294,11 @@ void SVPipelineFilterWidget::changeStyle(int i)
   QString indexBackgroundColor;
   QColor bgColor = getGroupColor();
 
+  if (getFilter()->getErrorCondition() < 0)
+  {
+    eState = ErrorState::Error;
+  }
+
   switch(wState)
   {
     case WidgetState::Ready:
@@ -330,7 +335,6 @@ void SVPipelineFilterWidget::changeStyle(int i)
     case PipelineState::Stopped:
       widgetBackgroundColor = QString("background-color: %1;").arg(bgColor.name());
       labelColor = "color: rgb(0, 0, 0);";
-      indexBackgroundColor = "background-color: rgb(48, 48, 48);";
       break;
     case PipelineState::Paused:
       widgetBackgroundColor = "background-color: rgb(160, 160, 160);";
@@ -404,6 +408,14 @@ void SVPipelineFilterWidget::changeStyle(int i)
   }
 #endif
 
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void SVPipelineFilterWidget::on_deleteBtn_clicked()
+{
+  emit filterWidgetRemoved(this);
 }
 
 // -----------------------------------------------------------------------------
@@ -527,6 +539,7 @@ void SVPipelineFilterWidget::toRunningState()
 {
   PipelineFilterObject::toRunningState();
   getFilterInputWidget()->toRunningState();
+  deleteBtn->setDisabled(true);
   changeStyle(1);
 }
 
@@ -537,6 +550,7 @@ void SVPipelineFilterWidget::toStoppedState()
 {
   PipelineFilterObject::toStoppedState();
   getFilterInputWidget()->toIdleState();
+  deleteBtn->setEnabled(true);
   changeStyle(1);
 }
 

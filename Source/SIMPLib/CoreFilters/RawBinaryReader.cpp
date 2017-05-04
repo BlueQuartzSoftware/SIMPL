@@ -56,23 +56,6 @@
 #define RBR_READ_EOF -1030
 #define RBR_NO_ERROR 0
 
-namespace Detail
-{
-enum NumType
-{
-  Int8 = 0,
-  UInt8,
-  Int16,
-  UInt16,
-  Int32,
-  UInt32,
-  Int64,
-  UInt64,
-  Float,
-  Double,
-  UnknownNumType
-};
-}
 
 #ifdef CMP_WORDS_BIGENDIAN
 #define SWAP_ARRAY(array)                                                                                                                                                                              \
@@ -316,52 +299,52 @@ void RawBinaryReader::dataCheck()
 
   size_t allocatedBytes = 0;
   QVector<size_t> cDims(1, m_NumberOfComponents);
-  if(m_ScalarType == Detail::Int8)
+  if(m_ScalarType == RawBinaryReader::Int8)
   {
     getDataContainerArray()->createNonPrereqArrayFromPath<Int8ArrayType, AbstractFilter, int8_t>(this, getCreatedAttributeArrayPath(), 0, cDims, "CreatedAttributeArrayPath");
     allocatedBytes = sizeof(int8_t) * m_NumberOfComponents * totalDim;
   }
-  else if(m_ScalarType == Detail::UInt8)
+  else if(m_ScalarType == RawBinaryReader::UInt8)
   {
     getDataContainerArray()->createNonPrereqArrayFromPath<UInt8ArrayType, AbstractFilter, uint8_t>(this, getCreatedAttributeArrayPath(), 0, cDims, "CreatedAttributeArrayPath");
     allocatedBytes = sizeof(uint8_t) * m_NumberOfComponents * totalDim;
   }
-  else if(m_ScalarType == Detail::Int16)
+  else if(m_ScalarType == RawBinaryReader::Int16)
   {
     getDataContainerArray()->createNonPrereqArrayFromPath<Int16ArrayType, AbstractFilter, int16_t>(this, getCreatedAttributeArrayPath(), 0, cDims, "CreatedAttributeArrayPath");
     allocatedBytes = sizeof(int16_t) * m_NumberOfComponents * totalDim;
   }
-  else if(m_ScalarType == Detail::UInt16)
+  else if(m_ScalarType == RawBinaryReader::UInt16)
   {
     getDataContainerArray()->createNonPrereqArrayFromPath<UInt16ArrayType, AbstractFilter, uint16_t>(this, getCreatedAttributeArrayPath(), 0, cDims, "CreatedAttributeArrayPath");
     allocatedBytes = sizeof(uint16_t) * m_NumberOfComponents * totalDim;
   }
-  else if(m_ScalarType == Detail::Int32)
+  else if(m_ScalarType == RawBinaryReader::Int32)
   {
     getDataContainerArray()->createNonPrereqArrayFromPath<Int32ArrayType, AbstractFilter, int32_t>(this, getCreatedAttributeArrayPath(), 0, cDims, "CreatedAttributeArrayPath");
     allocatedBytes = sizeof(int32_t) * m_NumberOfComponents * totalDim;
   }
-  else if(m_ScalarType == Detail::UInt32)
+  else if(m_ScalarType == RawBinaryReader::UInt32)
   {
     getDataContainerArray()->createNonPrereqArrayFromPath<UInt32ArrayType, AbstractFilter, uint32_t>(this, getCreatedAttributeArrayPath(), 0, cDims, "CreatedAttributeArrayPath");
     allocatedBytes = sizeof(uint32_t) * m_NumberOfComponents * totalDim;
   }
-  else if(m_ScalarType == Detail::Int64)
+  else if(m_ScalarType == RawBinaryReader::Int64)
   {
     getDataContainerArray()->createNonPrereqArrayFromPath<Int64ArrayType, AbstractFilter, int64_t>(this, getCreatedAttributeArrayPath(), 0, cDims, "CreatedAttributeArrayPath");
     allocatedBytes = sizeof(int64_t) * m_NumberOfComponents * totalDim;
   }
-  else if(m_ScalarType == Detail::UInt64)
+  else if(m_ScalarType == RawBinaryReader::UInt64)
   {
     getDataContainerArray()->createNonPrereqArrayFromPath<UInt64ArrayType, AbstractFilter, uint64_t>(this, getCreatedAttributeArrayPath(), 0, cDims, "CreatedAttributeArrayPath");
     allocatedBytes = sizeof(uint64_t) * m_NumberOfComponents * totalDim;
   }
-  else if(m_ScalarType == Detail::Float)
+  else if(m_ScalarType == RawBinaryReader::Float)
   {
     getDataContainerArray()->createNonPrereqArrayFromPath<FloatArrayType, AbstractFilter, float>(this, getCreatedAttributeArrayPath(), 0, cDims, "CreatedAttributeArrayPath");
     allocatedBytes = sizeof(float) * m_NumberOfComponents * totalDim;
   }
-  else if(m_ScalarType == Detail::Double)
+  else if(m_ScalarType == RawBinaryReader::Double)
   {
     getDataContainerArray()->createNonPrereqArrayFromPath<DoubleArrayType, AbstractFilter, double>(this, getCreatedAttributeArrayPath(), 0, cDims, "CreatedAttributeArrayPath");
     allocatedBytes = sizeof(double) * m_NumberOfComponents * totalDim;
@@ -420,7 +403,7 @@ void RawBinaryReader::execute()
   DataContainer::Pointer m = getDataContainerArray()->getDataContainer(getCreatedAttributeArrayPath().getDataContainerName());
 
   QVector<size_t> cDims(1, m_NumberOfComponents);
-  if(m_ScalarType == Detail::Int8)
+  if(m_ScalarType == RawBinaryReader::Int8)
   {
     Int8ArrayType::Pointer p = getDataContainerArray()->getPrereqIDataArrayFromPath<Int8ArrayType, AbstractFilter>(this, getCreatedAttributeArrayPath());
     err = readBinaryFile<int8_t>(p, m_InputFile, m_SkipHeaderBytes);
@@ -430,7 +413,7 @@ void RawBinaryReader::execute()
       m_Array = p;
     }
   }
-  else if(m_ScalarType == Detail::UInt8)
+  else if(m_ScalarType == RawBinaryReader::UInt8)
   {
     UInt8ArrayType::Pointer p = getDataContainerArray()->getPrereqIDataArrayFromPath<UInt8ArrayType, AbstractFilter>(this, getCreatedAttributeArrayPath());
     err = readBinaryFile<uint8_t>(p, m_InputFile, m_SkipHeaderBytes);
@@ -440,7 +423,7 @@ void RawBinaryReader::execute()
       m_Array = p;
     }
   }
-  else if(m_ScalarType == Detail::Int16)
+  else if(m_ScalarType == RawBinaryReader::Int16)
   {
     Int16ArrayType::Pointer p = getDataContainerArray()->getPrereqIDataArrayFromPath<Int16ArrayType, AbstractFilter>(this, getCreatedAttributeArrayPath());
     err = readBinaryFile<int16_t>(p, m_InputFile, m_SkipHeaderBytes);
@@ -450,7 +433,7 @@ void RawBinaryReader::execute()
       m_Array = p;
     }
   }
-  else if(m_ScalarType == Detail::UInt16)
+  else if(m_ScalarType == RawBinaryReader::UInt16)
   {
     UInt16ArrayType::Pointer p = getDataContainerArray()->getPrereqIDataArrayFromPath<UInt16ArrayType, AbstractFilter>(this, getCreatedAttributeArrayPath());
     err = readBinaryFile<uint16_t>(p, m_InputFile, m_SkipHeaderBytes);
@@ -460,7 +443,7 @@ void RawBinaryReader::execute()
       m_Array = p;
     }
   }
-  else if(m_ScalarType == Detail::Int32)
+  else if(m_ScalarType == RawBinaryReader::Int32)
   {
     Int32ArrayType::Pointer p = getDataContainerArray()->getPrereqIDataArrayFromPath<Int32ArrayType, AbstractFilter>(this, getCreatedAttributeArrayPath());
     err = readBinaryFile<int32_t>(p, m_InputFile, m_SkipHeaderBytes);
@@ -470,7 +453,7 @@ void RawBinaryReader::execute()
       m_Array = p;
     }
   }
-  else if(m_ScalarType == Detail::UInt32)
+  else if(m_ScalarType == RawBinaryReader::UInt32)
   {
     UInt32ArrayType::Pointer p = getDataContainerArray()->getPrereqIDataArrayFromPath<UInt32ArrayType, AbstractFilter>(this, getCreatedAttributeArrayPath());
     err = readBinaryFile<uint32_t>(p, m_InputFile, m_SkipHeaderBytes);
@@ -480,7 +463,7 @@ void RawBinaryReader::execute()
       m_Array = p;
     }
   }
-  else if(m_ScalarType == Detail::Int64)
+  else if(m_ScalarType == RawBinaryReader::Int64)
   {
     Int64ArrayType::Pointer p = getDataContainerArray()->getPrereqIDataArrayFromPath<Int64ArrayType, AbstractFilter>(this, getCreatedAttributeArrayPath());
     err = readBinaryFile<int64_t>(p, m_InputFile, m_SkipHeaderBytes);
@@ -490,7 +473,7 @@ void RawBinaryReader::execute()
       m_Array = p;
     }
   }
-  else if(m_ScalarType == Detail::UInt64)
+  else if(m_ScalarType == RawBinaryReader::UInt64)
   {
     UInt64ArrayType::Pointer p = getDataContainerArray()->getPrereqIDataArrayFromPath<UInt64ArrayType, AbstractFilter>(this, getCreatedAttributeArrayPath());
     err = readBinaryFile<uint64_t>(p, m_InputFile, m_SkipHeaderBytes);
@@ -500,7 +483,7 @@ void RawBinaryReader::execute()
       m_Array = p;
     }
   }
-  else if(m_ScalarType == Detail::Float)
+  else if(m_ScalarType == RawBinaryReader::Float)
   {
     FloatArrayType::Pointer p = getDataContainerArray()->getPrereqIDataArrayFromPath<FloatArrayType, AbstractFilter>(this, getCreatedAttributeArrayPath());
     err = readBinaryFile<float>(p, m_InputFile, m_SkipHeaderBytes);
@@ -510,7 +493,7 @@ void RawBinaryReader::execute()
       m_Array = p;
     }
   }
-  else if(m_ScalarType == Detail::Double)
+  else if(m_ScalarType == RawBinaryReader::Double)
   {
     DoubleArrayType::Pointer p = getDataContainerArray()->getPrereqIDataArrayFromPath<DoubleArrayType, AbstractFilter>(this, getCreatedAttributeArrayPath());
     err = readBinaryFile<double>(p, m_InputFile, m_SkipHeaderBytes);

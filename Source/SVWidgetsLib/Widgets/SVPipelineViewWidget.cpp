@@ -200,15 +200,24 @@ QMenu* SVPipelineViewWidget::createPipelineFilterWidgetMenu(SVPipelineFilterWidg
   contextMenu->addSeparator();
 
   QAction* removeAction;
+  QList<QKeySequence> shortcutList;
+  shortcutList.push_back(QKeySequence(Qt::Key_Backspace));
+  shortcutList.push_back(QKeySequence(Qt::Key_Delete));
+
   if (selectedObjs.contains(filterWidget) == false || selectedObjs.size() == 1)
   {
-    removeAction = new QAction("Remove Filter", contextMenu);
+    removeAction = new QAction("Delete", contextMenu);
     connect(removeAction, &QAction::triggered, [=] { removeFilterObject(filterWidget); });
   }
   else
   {
-    removeAction = new QAction(tr("Remove %1 Filters").arg(selectedObjs.size()), contextMenu);
+    removeAction = new QAction(tr("Delete %1 Filters").arg(selectedObjs.size()), contextMenu);
     connect(removeAction, &QAction::triggered, [=] { removeFilterObjects(selectedObjs); });
+  }
+  removeAction->setShortcuts(shortcutList);
+  if (getPipelineIsRunning() == true)
+  {
+    removeAction->setDisabled(true);
   }
 
   contextMenu->addAction(removeAction);
@@ -681,6 +690,12 @@ void SVPipelineViewWidget::addFilterObject(PipelineFilterObject* filterObject, Q
   /// Now setup all the connections between the various widgets
   // Clear any existing connections before recreating them
 
+  // When the filter is removed from this view
+  disconnect(filterWidget, SIGNAL(filterWidgetRemoved(PipelineFilterObject*)),
+             this, SLOT(removeFilterObject(PipelineFilterObject*)));
+  connect(filterWidget, SIGNAL(filterWidgetRemoved(PipelineFilterObject*)),
+          this, SLOT(removeFilterObject(PipelineFilterObject*)));
+
   // When the FilterWidget is selected
   disconnect(filterWidget, SIGNAL(filterWidgetPressed(PipelineFilterObject*, Qt::KeyboardModifiers)),
              this, SLOT(setSelectedFilterObject(PipelineFilterObject*, Qt::KeyboardModifiers)));
@@ -878,13 +893,16 @@ void SVPipelineViewWidget::preflightPipeline(QUuid id)
   FilterPipeline::FilterContainerType filters = pipeline->getFilterContainer();
   for(int i = 0; i < filters.size(); i++)
   {
+    filters.at(i)->setErrorCondition(0);
+    filters.at(i)->setCancel(false);
+
     PipelineFilterObject* fw = filterObjectAt(i);
     if(fw)
     {
       fw->setHasPreflightErrors(false);
+      fw->setWidgetState(PipelineFilterObject::WidgetState::Ready);
+      fw->changeStyle();
     }
-    filters.at(i)->setErrorCondition(0);
-    filters.at(i)->setCancel(false);
   }
 
   QProgressDialog progress("Preflight Pipeline", "", 0, 1, this);
@@ -989,6 +1007,9 @@ void SVPipelineViewWidget::removeFilterObject(PipelineFilterObject* filterObject
       else
       {
         w->setParent(nullptr);
+
+        // When the filter is removed from this view
+        disconnect(filterWidget, SIGNAL(filterWidgetRemoved(PipelineFilterObject*)), this, SLOT(removeFilterObject(PipelineFilterObject*)));
 
         // When the FilterWidget is selected
         disconnect(filterWidget, SIGNAL(filterWidgetPressed(PipelineFilterObject*, Qt::KeyboardModifiers)), this, SLOT(setSelectedFilterObject(PipelineFilterObject*, Qt::KeyboardModifiers)));

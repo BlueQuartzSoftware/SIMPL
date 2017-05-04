@@ -33,18 +33,16 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-
 #ifndef _thresholdexample_h_
 #define _thresholdexample_h_
 
 #include <QtCore/QString>
 
-#include "SIMPLib/SIMPLib.h"
 #include "SIMPLib/Common/AbstractFilter.h"
 #include "SIMPLib/Common/SIMPLibSetGetMacros.h"
 #include "SIMPLib/DataArrays/IDataArray.h"
 #include "SIMPLib/FilterParameters/AbstractFilterParametersReader.h"
-
+#include "SIMPLib/SIMPLib.h"
 
 /**
  * @class ThresholdExample ThresholdExample.h ExamplePlugin/Code/ExamplePluginFilters/ThresholdExample.h
@@ -55,96 +53,89 @@
  */
 class SIMPLib_EXPORT ThresholdExample : public AbstractFilter
 {
-    Q_OBJECT
-  public:
-    SIMPL_SHARED_POINTERS(ThresholdExample)
-    SIMPL_STATIC_NEW_MACRO(ThresholdExample)
-    SIMPL_TYPE_MACRO_SUPER(ThresholdExample, AbstractFilter)
+  Q_OBJECT
+public:
+  SIMPL_SHARED_POINTERS(ThresholdExample)
+  SIMPL_STATIC_NEW_MACRO(ThresholdExample)
+  SIMPL_TYPE_MACRO_SUPER(ThresholdExample, AbstractFilter)
 
-    virtual ~ThresholdExample();
-    SIMPL_INSTANCE_STRING_PROPERTY(DataContainerName)
-    SIMPL_INSTANCE_STRING_PROPERTY(CellAttributeMatrixName)
+  virtual ~ThresholdExample();
+  SIMPL_INSTANCE_STRING_PROPERTY(DataContainerName)
+  SIMPL_INSTANCE_STRING_PROPERTY(CellAttributeMatrixName)
 
-    /* Place your input parameters here. You can use some of the DREAM3D Macros if you want to */
+  /* Place your input parameters here. You can use some of the DREAM3D Macros if you want to */
 
-    // -----------------------------------------------------------------------------
-    /* Each Filter can ONLY have ONE of each of these types of widgets */
-    SIMPL_FILTER_PARAMETER(ComparisonInputs, CellComparisonInputs)
-    Q_PROPERTY(ComparisonInputs CellComparisonInputs READ getCellComparisonInputs WRITE setCellComparisonInputs)
+  // -----------------------------------------------------------------------------
+  /* Each Filter can ONLY have ONE of each of these types of widgets */
+  SIMPL_FILTER_PARAMETER(ComparisonInputs, CellComparisonInputs)
+  Q_PROPERTY(ComparisonInputs CellComparisonInputs READ getCellComparisonInputs WRITE setCellComparisonInputs)
 
+  /**
+  * @brief This returns the group that the filter belonds to. You can select
+  * a different group if you want. The string returned here will be displayed
+  * in the GUI for the filter
+  */
+  virtual const QString getCompiledLibraryName();
+  virtual AbstractFilter::Pointer newFilterInstance(bool copyFilterParameters);
+  virtual const QString getGroupName();
 
+  /**
+  * @brief This returns a string that is displayed in the GUI. It should be readable
+  * and understandable by humans.
+  */
+  virtual const QString getHumanLabel();
 
-    /**
-    * @brief This returns the group that the filter belonds to. You can select
-    * a different group if you want. The string returned here will be displayed
-    * in the GUI for the filter
-    */
-    virtual const QString getCompiledLibraryName();
-    virtual AbstractFilter::Pointer newFilterInstance(bool copyFilterParameters);
-    virtual const QString getGroupName();
+  /**
+  * @brief This returns a string that is displayed in the GUI and helps to sort the filters into
+  * a subgroup. It should be readable and understandable by humans.
+  */
+  virtual const QString getSubGroupName();
 
-    /**
-    * @brief This returns a string that is displayed in the GUI. It should be readable
-    * and understandable by humans.
-    */
-    virtual const QString getHumanLabel();
+  /**
+  * @brief This method will instantiate all the end user settable options/parameters
+  * for this filter
+  */
+  virtual void setupFilterParameters();
 
-    /**
-    * @brief This returns a string that is displayed in the GUI and helps to sort the filters into
-    * a subgroup. It should be readable and understandable by humans.
-    */
-    virtual const QString getSubGroupName();
+  /**
+  * @brief This method will read the options from a file
+  * @param reader The reader that is used to read the options from a file
+  */
+  virtual void readFilterParameters(AbstractFilterParametersReader* reader, int index);
 
-    /**
-    * @brief This method will instantiate all the end user settable options/parameters
-    * for this filter
-    */
-    virtual void setupFilterParameters();
+  /**
+   * @brief Reimplemented from @see AbstractFilter class
+   */
+  virtual void execute();
 
-    /**
-    * @brief This method will read the options from a file
-    * @param reader The reader that is used to read the options from a file
-    */
-    virtual void readFilterParameters(AbstractFilterParametersReader* reader, int index);
+  /**
+  * @brief This function runs some sanity checks on the DataContainer and inputs
+  * in an attempt to ensure the filter can process the inputs.
+  */
+  virtual void preflight();
 
-    /**
-     * @brief Reimplemented from @see AbstractFilter class
-     */
-    virtual void execute();
+signals:
+  void updateFilterParameters(AbstractFilter* filter);
+  void parametersChanged();
+  void preflightAboutToExecute();
+  void preflightExecuted();
 
-    /**
-    * @brief This function runs some sanity checks on the DataContainer and inputs
-    * in an attempt to ensure the filter can process the inputs.
-    */
-    virtual void preflight();
+protected:
+  ThresholdExample();
 
-  signals:
-    void updateFilterParameters(AbstractFilter* filter);
-    void parametersChanged();
-    void preflightAboutToExecute();
-    void preflightExecuted();
+  /**
+   * @brief dataCheck Checks for the appropriate parameter values and availability of arrays
+   */
+  virtual void dataCheck();
 
-  protected:
-    ThresholdExample();
+  /**
+   * @brief Initializes all the private instance variables.
+   */
+  void initialize();
 
-
-    /**
-     * @brief dataCheck Checks for the appropriate parameter values and availability of arrays
-     */
-    virtual void dataCheck();
-
-    /**
-     * @brief Initializes all the private instance variables.
-     */
-    void initialize();
-
-  private:
-
-    ThresholdExample(const ThresholdExample&); // Copy Constructor Not Implemented
-    void operator=(const ThresholdExample&); // Operator '=' Not Implemented
+private:
+  ThresholdExample(const ThresholdExample&); // Copy Constructor Not Implemented
+  void operator=(const ThresholdExample&);   // Operator '=' Not Implemented
 };
 
 #endif /* _ThresholdExample_H_ */
-
-
-

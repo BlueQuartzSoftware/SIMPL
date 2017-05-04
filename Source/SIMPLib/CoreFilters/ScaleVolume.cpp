@@ -56,20 +56,20 @@
  * @brief The CalculateCentroidsImpl class implements a threaded algorithm that scales the
  * positions of a set of nodes
  */
-class UpdateVerticesImpl
+class ScaleVolumeUpdateVerticesImpl
 {
   float* m_Nodes;
   float* m_Min;
   FloatVec3_t m_ScaleFactor;
 
 public:
-  UpdateVerticesImpl(float* nodes, float* min, FloatVec3_t scale)
+  ScaleVolumeUpdateVerticesImpl(float* nodes, float* min, FloatVec3_t scale)
   : m_Nodes(nodes)
   , m_Min(min)
   , m_ScaleFactor(scale)
   {
   }
-  virtual ~UpdateVerticesImpl()
+  virtual ~ScaleVolumeUpdateVerticesImpl()
   {
   }
 
@@ -254,12 +254,12 @@ void ScaleVolume::updateSurfaceMesh()
 #ifdef SIMPLib_USE_PARALLEL_ALGORITHMS
   if(doParallel == true)
   {
-    tbb::parallel_for(tbb::blocked_range<size_t>(0, count), UpdateVerticesImpl(nodes, min, m_ScaleFactor), tbb::auto_partitioner());
+    tbb::parallel_for(tbb::blocked_range<size_t>(0, count), ScaleVolumeUpdateVerticesImpl(nodes, min, m_ScaleFactor), tbb::auto_partitioner());
   }
   else
 #endif
   {
-    UpdateVerticesImpl serial(nodes, min, m_ScaleFactor);
+    ScaleVolumeUpdateVerticesImpl serial(nodes, min, m_ScaleFactor);
     serial.generate(0, count);
   }
 }
