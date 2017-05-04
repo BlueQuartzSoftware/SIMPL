@@ -45,12 +45,12 @@
 #include "SIMPLib/FilterParameters/AbstractFilterParametersReader.h"
 #include "SIMPLib/SIMPLibVersion.h"
 
-#include "SIMPLib/FilterParameters/ChoiceFilterParameter.h"
 #include "SIMPLib/FilterParameters/DataArrayCreationFilterParameter.h"
 #include "SIMPLib/FilterParameters/InputFileFilterParameter.h"
 #include "SIMPLib/FilterParameters/IntFilterParameter.h"
 #include "SIMPLib/FilterParameters/LinkedBooleanFilterParameter.h"
 #include "SIMPLib/FilterParameters/LinkedChoicesFilterParameter.h"
+#include "SIMPLib/FilterParameters/NumericTypeFilterParameter.h"
 #include "SIMPLib/FilterParameters/SeparatorFilterParameter.h"
 
 #define RBR_FILE_NOT_OPEN -1000
@@ -69,21 +69,6 @@
 
 namespace Detail
 {
-enum NumType
-{
-  Int8 = 0,
-  UInt8,
-  Int16,
-  UInt16,
-  Int32,
-  UInt32,
-  Int64,
-  UInt64,
-  Float,
-  Double,
-  UnknownNumType
-};
-
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
@@ -197,7 +182,7 @@ template <typename T, typename K> int32_t readAsciFile(typename DataArray<T>::Po
 ImportAsciDataArray::ImportAsciDataArray()
 : AbstractFilter()
 , m_CreatedAttributeArrayPath("")
-, m_ScalarType(0)
+, m_ScalarType(SIMPL::NumericTypes::Type::Int8)
 , m_NumberOfComponents(0)
 , m_SkipHeaderLines(0)
 , m_InputFile("")
@@ -221,28 +206,7 @@ void ImportAsciDataArray::setupFilterParameters()
   FilterParameterVector parameters;
 
   parameters.push_back(SIMPL_NEW_INPUT_FILE_FP("Input File", InputFile, FilterParameter::Parameter, ImportAsciDataArray, "*.*"));
-  {
-    ChoiceFilterParameter::Pointer parameter = ChoiceFilterParameter::New();
-    parameter->setHumanLabel("Scalar Type");
-    parameter->setPropertyName("ScalarType");
-    parameter->setSetterCallback(SIMPL_BIND_SETTER(ImportAsciDataArray, this, ScalarType));
-    parameter->setGetterCallback(SIMPL_BIND_GETTER(ImportAsciDataArray, this, ScalarType));
-
-    QVector<QString> choices;
-    choices.push_back("signed   int 8  bit");
-    choices.push_back("unsigned int 8  bit");
-    choices.push_back("signed   int 16 bit");
-    choices.push_back("unsigned int 16 bit");
-    choices.push_back("signed   int 32 bit");
-    choices.push_back("unsigned int 32 bit");
-    choices.push_back("signed   int 64 bit");
-    choices.push_back("unsigned int 64 bit");
-    choices.push_back("       Float 32 bit");
-    choices.push_back("      Double 64 bit");
-    parameter->setChoices(choices);
-    parameter->setCategory(FilterParameter::Parameter);
-    parameters.push_back(parameter);
-  }
+  parameters.push_back(SIMPL_NEW_NUMERICTYPE_FP("Scalar Type", ScalarType, FilterParameter::Parameter, ImportAsciDataArray));
   parameters.push_back(SIMPL_NEW_INTEGER_FP("Number of Components", NumberOfComponents, FilterParameter::Parameter, ImportAsciDataArray));
 
   parameters.push_back(SIMPL_NEW_INTEGER_FP("Skip Header Lines", SkipHeaderLines, FilterParameter::Parameter, ImportAsciDataArray));
@@ -321,43 +285,43 @@ void ImportAsciDataArray::dataCheck()
   }
 
   QVector<size_t> cDims(1, m_NumberOfComponents);
-  if(m_ScalarType == Detail::Int8)
+  if(m_ScalarType == SIMPL::NumericTypes::Type::Int8)
   {
     getDataContainerArray()->createNonPrereqArrayFromPath<Int8ArrayType, AbstractFilter, int8_t>(this, getCreatedAttributeArrayPath(), 0, cDims, "CreatedAttributeArrayPath");
   }
-  else if(m_ScalarType == Detail::UInt8)
+  else if(m_ScalarType == SIMPL::NumericTypes::Type::UInt8)
   {
     getDataContainerArray()->createNonPrereqArrayFromPath<UInt8ArrayType, AbstractFilter, uint8_t>(this, getCreatedAttributeArrayPath(), 0, cDims, "CreatedAttributeArrayPath");
   }
-  else if(m_ScalarType == Detail::Int16)
+  else if(m_ScalarType == SIMPL::NumericTypes::Type::Int16)
   {
     getDataContainerArray()->createNonPrereqArrayFromPath<Int16ArrayType, AbstractFilter, int16_t>(this, getCreatedAttributeArrayPath(), 0, cDims, "CreatedAttributeArrayPath");
   }
-  else if(m_ScalarType == Detail::UInt16)
+  else if(m_ScalarType == SIMPL::NumericTypes::Type::UInt16)
   {
     getDataContainerArray()->createNonPrereqArrayFromPath<UInt16ArrayType, AbstractFilter, uint16_t>(this, getCreatedAttributeArrayPath(), 0, cDims, "CreatedAttributeArrayPath");
   }
-  else if(m_ScalarType == Detail::Int32)
+  else if(m_ScalarType == SIMPL::NumericTypes::Type::Int32)
   {
     getDataContainerArray()->createNonPrereqArrayFromPath<Int32ArrayType, AbstractFilter, int32_t>(this, getCreatedAttributeArrayPath(), 0, cDims, "CreatedAttributeArrayPath");
   }
-  else if(m_ScalarType == Detail::UInt32)
+  else if(m_ScalarType == SIMPL::NumericTypes::Type::UInt32)
   {
     getDataContainerArray()->createNonPrereqArrayFromPath<UInt32ArrayType, AbstractFilter, uint32_t>(this, getCreatedAttributeArrayPath(), 0, cDims, "CreatedAttributeArrayPath");
   }
-  else if(m_ScalarType == Detail::Int64)
+  else if(m_ScalarType == SIMPL::NumericTypes::Type::Int64)
   {
     getDataContainerArray()->createNonPrereqArrayFromPath<Int64ArrayType, AbstractFilter, int64_t>(this, getCreatedAttributeArrayPath(), 0, cDims, "CreatedAttributeArrayPath");
   }
-  else if(m_ScalarType == Detail::UInt64)
+  else if(m_ScalarType == SIMPL::NumericTypes::Type::UInt64)
   {
     getDataContainerArray()->createNonPrereqArrayFromPath<UInt64ArrayType, AbstractFilter, uint64_t>(this, getCreatedAttributeArrayPath(), 0, cDims, "CreatedAttributeArrayPath");
   }
-  else if(m_ScalarType == Detail::Float)
+  else if(m_ScalarType == SIMPL::NumericTypes::Type::Float)
   {
     getDataContainerArray()->createNonPrereqArrayFromPath<FloatArrayType, AbstractFilter, float>(this, getCreatedAttributeArrayPath(), 0, cDims, "CreatedAttributeArrayPath");
   }
-  else if(m_ScalarType == Detail::Double)
+  else if(m_ScalarType == SIMPL::NumericTypes::Type::Double)
   {
     getDataContainerArray()->createNonPrereqArrayFromPath<DoubleArrayType, AbstractFilter, double>(this, getCreatedAttributeArrayPath(), 0, cDims, "CreatedAttributeArrayPath");
   }
@@ -394,7 +358,7 @@ void ImportAsciDataArray::execute()
   char delimiter = converSelectedDelimiter();
 
   QVector<size_t> cDims(1, m_NumberOfComponents);
-  if(m_ScalarType == Detail::Int8)
+  if(m_ScalarType == SIMPL::NumericTypes::Type::Int8)
   {
     Int8ArrayType::Pointer p = getDataContainerArray()->getPrereqIDataArrayFromPath<Int8ArrayType, AbstractFilter>(this, getCreatedAttributeArrayPath());
     err = readAsciFile<int8_t, int32_t>(p, m_InputFile, m_SkipHeaderLines, delimiter);
@@ -403,7 +367,7 @@ void ImportAsciDataArray::execute()
       m_Array = p;
     }
   }
-  else if(m_ScalarType == Detail::UInt8)
+  else if(m_ScalarType == SIMPL::NumericTypes::Type::UInt8)
   {
     UInt8ArrayType::Pointer p = getDataContainerArray()->getPrereqIDataArrayFromPath<UInt8ArrayType, AbstractFilter>(this, getCreatedAttributeArrayPath());
     err = readAsciFile<uint8_t, uint32_t>(p, m_InputFile, m_SkipHeaderLines, delimiter);
@@ -412,7 +376,7 @@ void ImportAsciDataArray::execute()
       m_Array = p;
     }
   }
-  else if(m_ScalarType == Detail::Int16)
+  else if(m_ScalarType == SIMPL::NumericTypes::Type::Int16)
   {
     Int16ArrayType::Pointer p = getDataContainerArray()->getPrereqIDataArrayFromPath<Int16ArrayType, AbstractFilter>(this, getCreatedAttributeArrayPath());
     err = readAsciFile<int16_t,int16_t>(p, m_InputFile, m_SkipHeaderLines, delimiter);
@@ -421,7 +385,7 @@ void ImportAsciDataArray::execute()
       m_Array = p;
     }
   }
-  else if(m_ScalarType == Detail::UInt16)
+  else if(m_ScalarType == SIMPL::NumericTypes::Type::UInt16)
   {
     UInt16ArrayType::Pointer p = getDataContainerArray()->getPrereqIDataArrayFromPath<UInt16ArrayType, AbstractFilter>(this, getCreatedAttributeArrayPath());
     err = readAsciFile<uint16_t,uint16_t>(p, m_InputFile, m_SkipHeaderLines, delimiter);
@@ -430,7 +394,7 @@ void ImportAsciDataArray::execute()
       m_Array = p;
     }
   }
-  else if(m_ScalarType == Detail::Int32)
+  else if(m_ScalarType == SIMPL::NumericTypes::Type::Int32)
   {
     Int32ArrayType::Pointer p = getDataContainerArray()->getPrereqIDataArrayFromPath<Int32ArrayType, AbstractFilter>(this, getCreatedAttributeArrayPath());
     err = readAsciFile<int32_t,int32_t>(p, m_InputFile, m_SkipHeaderLines, delimiter);
@@ -439,7 +403,7 @@ void ImportAsciDataArray::execute()
       m_Array = p;
     }
   }
-  else if(m_ScalarType == Detail::UInt32)
+  else if(m_ScalarType == SIMPL::NumericTypes::Type::UInt32)
   {
     UInt32ArrayType::Pointer p = getDataContainerArray()->getPrereqIDataArrayFromPath<UInt32ArrayType, AbstractFilter>(this, getCreatedAttributeArrayPath());
     err = readAsciFile<uint32_t,uint32_t>(p, m_InputFile, m_SkipHeaderLines, delimiter);
@@ -448,7 +412,7 @@ void ImportAsciDataArray::execute()
       m_Array = p;
     }
   }
-  else if(m_ScalarType == Detail::Int64)
+  else if(m_ScalarType == SIMPL::NumericTypes::Type::Int64)
   {
     Int64ArrayType::Pointer p = getDataContainerArray()->getPrereqIDataArrayFromPath<Int64ArrayType, AbstractFilter>(this, getCreatedAttributeArrayPath());
     err = readAsciFile<int64_t,int64_t>(p, m_InputFile, m_SkipHeaderLines, delimiter);
@@ -457,7 +421,7 @@ void ImportAsciDataArray::execute()
       m_Array = p;
     }
   }
-  else if(m_ScalarType == Detail::UInt64)
+  else if(m_ScalarType == SIMPL::NumericTypes::Type::UInt64)
   {
     UInt64ArrayType::Pointer p = getDataContainerArray()->getPrereqIDataArrayFromPath<UInt64ArrayType, AbstractFilter>(this, getCreatedAttributeArrayPath());
     err = readAsciFile<uint64_t,uint64_t>(p, m_InputFile, m_SkipHeaderLines, delimiter);
@@ -466,7 +430,7 @@ void ImportAsciDataArray::execute()
       m_Array = p;
     }
   }
-  else if(m_ScalarType == Detail::Float)
+  else if(m_ScalarType == SIMPL::NumericTypes::Type::Float)
   {
     FloatArrayType::Pointer p = getDataContainerArray()->getPrereqIDataArrayFromPath<FloatArrayType, AbstractFilter>(this, getCreatedAttributeArrayPath());
     err = readAsciFile<float,float>(p, m_InputFile, m_SkipHeaderLines, delimiter);
@@ -475,7 +439,7 @@ void ImportAsciDataArray::execute()
       m_Array = p;
     }
   }
-  else if(m_ScalarType == Detail::Double)
+  else if(m_ScalarType == SIMPL::NumericTypes::Type::Double)
   {
     DoubleArrayType::Pointer p = getDataContainerArray()->getPrereqIDataArrayFromPath<DoubleArrayType, AbstractFilter>(this, getCreatedAttributeArrayPath());
     err = readAsciFile<double,double>(p, m_InputFile, m_SkipHeaderLines, delimiter);
