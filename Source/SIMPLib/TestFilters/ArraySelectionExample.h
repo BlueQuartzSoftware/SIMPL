@@ -38,12 +38,11 @@
 
 #include <QtCore/QString>
 
-#include "SIMPLib/SIMPLib.h"
 #include "SIMPLib/Common/AbstractFilter.h"
 #include "SIMPLib/Common/SIMPLibSetGetMacros.h"
 #include "SIMPLib/DataArrays/IDataArray.h"
 #include "SIMPLib/DataContainers/DataContainerArrayProxy.h"
-
+#include "SIMPLib/SIMPLib.h"
 
 /**
  * @class ArraySelectionExample ArraySelectionExample.h ExamplePlugin/Code/ExamplePluginFilters/ArraySelectionExample.h
@@ -54,94 +53,88 @@
  */
 class SIMPLib_EXPORT ArraySelectionExample : public AbstractFilter
 {
-    Q_OBJECT
-  public:
-    SIMPL_SHARED_POINTERS(ArraySelectionExample)
-    SIMPL_STATIC_NEW_MACRO(ArraySelectionExample)
-    SIMPL_TYPE_MACRO_SUPER(ArraySelectionExample, AbstractFilter)
+  Q_OBJECT
+public:
+  SIMPL_SHARED_POINTERS(ArraySelectionExample)
+  SIMPL_STATIC_NEW_MACRO(ArraySelectionExample)
+  SIMPL_TYPE_MACRO_SUPER(ArraySelectionExample, AbstractFilter)
 
-    virtual ~ArraySelectionExample();
+  virtual ~ArraySelectionExample();
 
-    /* Place your input parameters here. You can use some of the DREAM3D Macros if you want to */
-    /* this class is sort of special in that we are going to directly use the DataContainerName and the AttributeMatrix name
-     * as input parameters
-     */
+  /* Place your input parameters here. You can use some of the DREAM3D Macros if you want to */
+  /* this class is sort of special in that we are going to directly use the DataContainerName and the AttributeMatrix name
+   * as input parameters
+   */
 
-    SIMPL_FILTER_PARAMETER(DataContainerArrayProxy, DataContainerArrayProxy)
-    Q_PROPERTY(DataContainerArrayProxy DataContainerArrayProxy READ getDataContainerArrayProxy WRITE setDataContainerArrayProxy)
+  SIMPL_FILTER_PARAMETER(DataContainerArrayProxy, DataContainerArrayProxy)
+  Q_PROPERTY(DataContainerArrayProxy DataContainerArrayProxy READ getDataContainerArrayProxy WRITE setDataContainerArrayProxy)
 
+  /**
+  * @brief This returns the group that the filter belonds to. You can select
+  * a different group if you want. The string returned here will be displayed
+  * in the GUI for the filter
+  */
+  virtual const QString getCompiledLibraryName();
+  virtual AbstractFilter::Pointer newFilterInstance(bool copyFilterParameters);
+  virtual const QString getGroupName();
 
-    /**
-    * @brief This returns the group that the filter belonds to. You can select
-    * a different group if you want. The string returned here will be displayed
-    * in the GUI for the filter
-    */
-    virtual const QString getCompiledLibraryName();
-    virtual AbstractFilter::Pointer newFilterInstance(bool copyFilterParameters);
-    virtual const QString getGroupName();
+  /**
+  * @brief This returns a string that is displayed in the GUI. It should be readable
+  * and understandable by humans.
+  */
+  virtual const QString getHumanLabel();
 
-    /**
-    * @brief This returns a string that is displayed in the GUI. It should be readable
-    * and understandable by humans.
-    */
-    virtual const QString getHumanLabel();
+  /**
+  * @brief This returns a string that is displayed in the GUI and helps to sort the filters into
+  * a subgroup. It should be readable and understandable by humans.
+  */
+  virtual const QString getSubGroupName();
 
-    /**
-    * @brief This returns a string that is displayed in the GUI and helps to sort the filters into
-    * a subgroup. It should be readable and understandable by humans.
-    */
-    virtual const QString getSubGroupName();
+  /**
+  * @brief This method will instantiate all the end user settable options/parameters
+  * for this filter
+  */
+  virtual void setupFilterParameters();
 
-    /**
-    * @brief This method will instantiate all the end user settable options/parameters
-    * for this filter
-    */
-    virtual void setupFilterParameters();
+  /**
+  * @brief This method will read the options from a file
+  * @param reader The reader that is used to read the options from a file
+  */
+  virtual void readFilterParameters(AbstractFilterParametersReader* reader, int index);
 
-    /**
-    * @brief This method will read the options from a file
-    * @param reader The reader that is used to read the options from a file
-    */
-    virtual void readFilterParameters(AbstractFilterParametersReader* reader, int index);
+  /**
+   * @brief Reimplemented from @see AbstractFilter class
+   */
+  virtual void execute();
 
-    /**
-     * @brief Reimplemented from @see AbstractFilter class
-     */
-    virtual void execute();
+  /**
+  * @brief This function runs some sanity checks on the DataContainer and inputs
+  * in an attempt to ensure the filter can process the inputs.
+  */
+  virtual void preflight();
 
-    /**
-    * @brief This function runs some sanity checks on the DataContainer and inputs
-    * in an attempt to ensure the filter can process the inputs.
-    */
-    virtual void preflight();
+signals:
+  void updateFilterParameters(AbstractFilter* filter);
+  void parametersChanged();
+  void preflightAboutToExecute();
+  void preflightExecuted();
 
-  signals:
-    void updateFilterParameters(AbstractFilter* filter);
-    void parametersChanged();
-    void preflightAboutToExecute();
-    void preflightExecuted();
+protected:
+  ArraySelectionExample();
 
-  protected:
-    ArraySelectionExample();
+  /**
+   * @brief dataCheck Checks for the appropriate parameter values and availability of arrays
+   */
+  void dataCheck();
 
-    /**
-     * @brief dataCheck Checks for the appropriate parameter values and availability of arrays
-     */
-    void dataCheck();
+  /**
+   * @brief Initializes all the private instance variables.
+   */
+  void initialize();
 
-    /**
-     * @brief Initializes all the private instance variables.
-     */
-    void initialize();
-
-
-  private:
-
-    ArraySelectionExample(const ArraySelectionExample&); // Copy Constructor Not Implemented
-    void operator=(const ArraySelectionExample&); // Operator '=' Not Implemented
+private:
+  ArraySelectionExample(const ArraySelectionExample&); // Copy Constructor Not Implemented
+  void operator=(const ArraySelectionExample&);        // Operator '=' Not Implemented
 };
 
 #endif /* _ArraySelectionExample_H_ */
-
-
-

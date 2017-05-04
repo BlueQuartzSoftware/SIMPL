@@ -29,47 +29,52 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-#include "ArraySelectionExample.h"
-#include "SIMPLib/DataContainers/DataContainerArrayProxy.h"
-#include "SIMPLib/FilterParameters/AbstractFilterParametersReader.h"
-#include "SIMPLib/FilterParameters/DataContainerArrayProxyFilterParameter.h"
+#include "ErrorWarningFilter.h"
+
+#include "SIMPLib/Common/Constants.h"
+#include "SIMPLib/FilterParameters/BooleanFilterParameter.h"
+#include "SIMPLib/SIMPLibVersion.h"
 
 // Include the MOC generated file for this class
-#include "moc_ArraySelectionExample.cpp"
+#include "moc_ErrorWarningFilter.cpp"
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-ArraySelectionExample::ArraySelectionExample()
+ErrorWarningFilter::ErrorWarningFilter()
 : AbstractFilter()
-//  m_SelectedArrayName(""),
-//  m_DataContainerName(SIMPL::Defaults::DataContainerName)
 {
+  initialize();
   setupFilterParameters();
 }
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-ArraySelectionExample::~ArraySelectionExample()
+ErrorWarningFilter::~ErrorWarningFilter()
 {
 }
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void ArraySelectionExample::setupFilterParameters()
+void ErrorWarningFilter::initialize()
 {
-  QVector<FilterParameter::Pointer> parameters;
-  DataContainerArrayProxy proxy;
-  /* To select arrays */
-  // parameters.push_back(DataContainerArrayProxyFilterParameter::New("Array to Select", "DataContainerArrayProxy", "", FilterParameter::Parameter, SIMPL_BIND_SETTER(ArraySelectionExample, this,
-  // DataContainerArrayProxy), SIMPL_BIND_GETTER(ArraySelectionExample, this, DataContainerArrayProxy), proxy, Qt::Checked));
-  // parameters.push_back(SIMPL_NEW_DCA_PROXY_FP("Array to Select", DataContainerArrayProxy, FilterParameter::Parameter, ArraySelectionExample, proxy, Qt::Checked));
+  setErrorCondition(0);
+  setCancel(false);
+}
 
-  parameters.push_back(DataContainerArrayProxyFilterParameter::New("Array to Select", "DataContainerArrayProxy", getDataContainerArrayProxy(), FilterParameter::Parameter,
-                                                                   SIMPL_BIND_SETTER(ArraySelectionExample, this, DataContainerArrayProxy),
-                                                                   SIMPL_BIND_GETTER(ArraySelectionExample, this, DataContainerArrayProxy), proxy, Qt::Checked));
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void ErrorWarningFilter::setupFilterParameters()
+{
+  FilterParameterVector parameters;
+
+  parameters.push_back(SIMPL_NEW_BOOL_FP("Preflight Warning", PreflightWarning, FilterParameter::Parameter, ErrorWarningFilter));
+  parameters.push_back(SIMPL_NEW_BOOL_FP("Preflight Error", PreflightError, FilterParameter::Parameter, ErrorWarningFilter));
+  parameters.push_back(SIMPL_NEW_BOOL_FP("Execute Warning", ExecuteWarning, FilterParameter::Parameter, ErrorWarningFilter));
+  parameters.push_back(SIMPL_NEW_BOOL_FP("Execute Error", ExecuteError, FilterParameter::Parameter, ErrorWarningFilter));
 
   setFilterParameters(parameters);
 }
@@ -77,79 +82,80 @@ void ArraySelectionExample::setupFilterParameters()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void ArraySelectionExample::readFilterParameters(AbstractFilterParametersReader* reader, int index)
+void ErrorWarningFilter::dataCheck()
 {
 
-  reader->openFilterGroup(this, index);
-  //  setDataContainerName( reader->readString("DataContainerName", getDataContainerName()) );
-  //  setAttributeMatrixName( reader->readString("AttributeMatrixName", getAttributeMatrixName()) );
-  //  setSelectedArrayName( reader->readString("SelectedArrayName", getSelectedArrayName()) );
-  reader->closeFilterGroup();
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-void ArraySelectionExample::initialize()
-{
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-void ArraySelectionExample::dataCheck()
-{
-  // std::cout << " ArraySelectionExample   Preflighting " << std::endl;
   setErrorCondition(0);
+  if(getPreflightWarning())
+  {
+    QString ss = QObject::tr("Intentional preflight warning generated");
+    setErrorCondition(0);
+    notifyWarningMessage(getHumanLabel(), ss, getErrorCondition());
+  }
+  if(getPreflightError())
+  {
+    QString ss = QObject::tr("Intentional preflight error generated");
+    setErrorCondition(-666000);
+    notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
+  }
 }
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void ArraySelectionExample::preflight()
+void ErrorWarningFilter::preflight()
 {
-  setInPreflight(true);
-  // Read up the structure from the file
-  m_DataContainerArrayProxy = DataContainerArrayProxy(getDataContainerArray().get());
-  // Annouce we are about to preflight
-  emit preflightAboutToExecute();
-  emit updateFilterParameters(this);
-  dataCheck();
-  emit preflightExecuted();
-  setInPreflight(false);
+  // These are the REQUIRED lines of CODE to make sure the filter behaves correctly
+  setInPreflight(true);              // Set the fact that we are preflighting.
+  emit preflightAboutToExecute();    // Emit this signal so that other widgets can do one file update
+  emit updateFilterParameters(this); // Emit this signal to have the widgets push their values down to the filter
+  dataCheck();                       // Run our DataCheck to make sure everthing is setup correctly
+  emit preflightExecuted();          // We are done preflighting this filter
+  setInPreflight(false);             // Inform the system this filter is NOT in preflight mode anymore.
 }
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void ArraySelectionExample::execute()
+void ErrorWarningFilter::execute()
 {
-  int err = 0;
-  setErrorCondition(err);
+  initialize();
   dataCheck();
   if(getErrorCondition() < 0)
   {
     return;
   }
 
-  /* Place all your code to execute your filter here. */
+  if(getCancel() == true)
+  {
+    return;
+  }
 
-  /* Let the GUI know we are done with this filter */
+  if(getExecuteWarning())
+  {
+    QString ss = QObject::tr("Intentional execute warning generated");
+    setErrorCondition(0);
+    notifyWarningMessage(getHumanLabel(), ss, getErrorCondition());
+  }
+  if(getExecuteError())
+  {
+    QString ss = QObject::tr("Intentional execute error generated");
+    setErrorCondition(-666001);
+    notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
+  }
+
   notifyStatusMessage(getHumanLabel(), "Complete");
 }
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-AbstractFilter::Pointer ArraySelectionExample::newFilterInstance(bool copyFilterParameters)
+AbstractFilter::Pointer ErrorWarningFilter::newFilterInstance(bool copyFilterParameters)
 {
-  /*
-  * DataContainerArrayProxy
-  */
-  ArraySelectionExample::Pointer filter = ArraySelectionExample::New();
+  ErrorWarningFilter::Pointer filter = ErrorWarningFilter::New();
   if(true == copyFilterParameters)
   {
-    filter->setDataContainerArrayProxy(getDataContainerArrayProxy());
+    copyFilterParameterInstanceVariables(filter.get());
   }
   return filter;
 }
@@ -157,7 +163,7 @@ AbstractFilter::Pointer ArraySelectionExample::newFilterInstance(bool copyFilter
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString ArraySelectionExample::getCompiledLibraryName()
+const QString ErrorWarningFilter::getCompiledLibraryName()
 {
   return Core::CoreBaseName;
 }
@@ -165,7 +171,26 @@ const QString ArraySelectionExample::getCompiledLibraryName()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString ArraySelectionExample::getGroupName()
+const QString ErrorWarningFilter::getBrandingString()
+{
+  return "SIMPLib Core Filter";
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+const QString ErrorWarningFilter::getFilterVersion()
+{
+  QString version;
+  QTextStream vStream(&version);
+  vStream << SIMPLib::Version::Major() << "." << SIMPLib::Version::Minor() << "." << SIMPLib::Version::Patch();
+  return version;
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+const QString ErrorWarningFilter::getGroupName()
 {
   return SIMPL::FilterGroups::TestFilters;
 }
@@ -173,7 +198,7 @@ const QString ArraySelectionExample::getGroupName()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString ArraySelectionExample::getSubGroupName()
+const QString ErrorWarningFilter::getSubGroupName()
 {
   return "Test";
 }
@@ -181,7 +206,7 @@ const QString ArraySelectionExample::getSubGroupName()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString ArraySelectionExample::getHumanLabel()
+const QString ErrorWarningFilter::getHumanLabel()
 {
-  return "DataContainerArrayProxy Example";
+  return "ErrorWarningFilter";
 }
