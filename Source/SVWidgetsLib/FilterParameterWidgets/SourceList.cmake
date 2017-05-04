@@ -33,6 +33,7 @@ set(SIMPLView_PARAMETER_WIDGETS
     IntWidget
     LinkedBooleanWidget
     MultiDataArraySelectionWidget
+    NumericTypeWidget
     PreflightUpdatedValueWidget
     RangeWidget
     SecondOrderPolynomialWidget
