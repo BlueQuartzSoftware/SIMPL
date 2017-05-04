@@ -117,6 +117,41 @@ namespace SIMPL
     const QString SupportedTypeList(TypeNames::Int8 + ", " + TypeNames::UInt8 + ", " + TypeNames::Int16 + ", " + TypeNames::UInt16 + ", " + TypeNames::Int32 + ", " + TypeNames::UInt32 + ", " + TypeNames::Int64 + ", " + TypeNames::UInt64 + ", " + TypeNames::Float + ", " + TypeNames::Double);
   }
 
+  namespace NumericTypes
+  {
+    namespace Names
+    {
+      const QString Int8("signed   int 8  bit");
+      const QString UInt8("unsigned int 8  bit");
+      const QString Int16("signed   int 16 bit");
+      const QString UInt16("unsigned int 16 bit");
+      const QString Int32("signed   int 32 bit");
+      const QString UInt32("unsigned int 32 bit");
+      const QString Int64("signed   int 64 bit");
+      const QString UInt64("unsigned int 64 bit");
+      const QString Float("       Float 32 bit");
+      const QString Double("      Double 64 bit");
+    }
+
+    enum class Type : int
+    {
+      Int8 = 0,
+      UInt8,
+      Int16,
+      UInt16,
+      Int32,
+      UInt32,
+      Int64,
+      UInt64,
+      Float,
+      Double,
+      UnknownNumType
+    };
+
+    const QString SupportedTypeList(NumericTypes::Names::Int8 + ", " + NumericTypes::Names::UInt8 + ", " + NumericTypes::Names::Int16 + ", " + NumericTypes::Names::UInt16 + ", " + NumericTypes::Names::Int32 + ", " + 
+      NumericTypes::Names::UInt32 + ", " + NumericTypes::Names::Int64 + ", " + NumericTypes::Names::UInt64 + ", " + NumericTypes::Names::Float + ", " + NumericTypes::Names::Double);
+  }
+
   namespace IO
   {
     const QString DAPSettingsHeader("Path");
@@ -942,6 +977,8 @@ namespace Test
   const QString TestPluginDisplayName("TestPlugin");
   const QString TestBaseName("TestPlugin");
 }
+
+Q_DECLARE_METATYPE(SIMPL::NumericTypes::Type)
 
 
 #if 0
