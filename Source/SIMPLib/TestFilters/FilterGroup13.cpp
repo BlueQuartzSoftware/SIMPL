@@ -168,7 +168,7 @@ const QString FilterGroup13::getFilterVersion()
 // -----------------------------------------------------------------------------
 const QString FilterGroup13::getGroupName()
 {
-  return SIMPL::FilterGroups::OrientationAnalysisFilters;
+  return SIMPL::FilterGroups::Unsupported;
 }
 
 // -----------------------------------------------------------------------------
@@ -184,5 +184,5 @@ const QString FilterGroup13::getSubGroupName()
 // -----------------------------------------------------------------------------
 const QString FilterGroup13::getHumanLabel()
 {
-  return "OrientationAnalysisFilters Test Filter";
+  return "Unsupported Test Filter";
 }

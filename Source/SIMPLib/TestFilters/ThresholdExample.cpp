@@ -227,7 +227,7 @@ const QString ThresholdExample::getCompiledLibraryName()
 // -----------------------------------------------------------------------------
 const QString ThresholdExample::getGroupName()
 {
-  return SIMPL::FilterGroups::TestFilters;
+  return SIMPL::FilterGroups::Generic;
 }
 
 // -----------------------------------------------------------------------------

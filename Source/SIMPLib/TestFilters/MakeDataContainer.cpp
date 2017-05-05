@@ -244,7 +244,7 @@ const QString MakeDataContainer::getCompiledLibraryName()
 // -----------------------------------------------------------------------------
 const QString MakeDataContainer::getGroupName()
 {
-  return SIMPL::FilterGroups::TestFilters;
+  return SIMPL::FilterGroups::Generic;
 }
 
 // -----------------------------------------------------------------------------

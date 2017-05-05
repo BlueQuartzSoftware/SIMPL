@@ -168,7 +168,7 @@ const QString FilterGroup02::getFilterVersion()
 // -----------------------------------------------------------------------------
 const QString FilterGroup02::getGroupName()
 {
-  return SIMPL::FilterGroups::GenericFilters;
+  return SIMPL::FilterGroups::Generic;
 }
 
 // -----------------------------------------------------------------------------

@@ -35,6 +35,8 @@
 
 #include "QtSStyles.h"
 
+#include <iostream>
+
 #include <QtCore/QTextStream>
 
 #include <QtWidgets/QApplication>
@@ -296,4 +298,132 @@ QString QtSStyles::QToolSelectionButtonStyle(bool exists)
 //  ss << "}\n";
 
   return str;
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+QColor QtSStyles::ColorForFilterGroup(const QString &grpName)
+{
+  QColor color("#6660ff");
+
+  QString jsonString;
+  QFile jsonFile;
+  jsonFile.setFileName(":/QtSupportResources/FilterStyle/SVFilterColors.json");
+
+  if(jsonFile.exists())
+  {
+    jsonFile.open(QIODevice::ReadOnly | QIODevice::Text);
+    jsonString = jsonFile.readAll();
+    jsonFile.close();
+
+    QJsonDocument doc = QJsonDocument::fromJson(jsonString.toUtf8());
+    QJsonObject jsonObj = doc.object();
+    QJsonValue jsonValue = jsonObj.value("Filter Group Colors");
+
+    if(jsonValue.isObject())
+    {
+      QJsonValue jsonColor = jsonValue.toObject().value(grpName);
+      if(jsonColor.isString())
+      {
+        color.setNamedColor(jsonColor.toString());
+      }
+      else
+      {
+        jsonColor = jsonValue.toObject().value("Filter Group Not Found");
+        if(jsonColor.isString())
+        {
+          color.setNamedColor(jsonColor.toString());
+        }
+      }
+    }
+  }
+  else
+  {
+    int saturation = 110;
+    int brightness = 190;
+    if(grpName.compare(SIMPL::FilterGroups::Unsupported) == 0)
+    {
+      color = QColor::fromHsv(0, saturation, brightness);
+    }
+    else if(grpName.compare(SIMPL::FilterGroups::Generic) == 0)
+    {
+      color = QColor::fromHsv(30, saturation, brightness);
+    }
+    else if(grpName.compare(SIMPL::FilterGroups::ReconstructionFilters) == 0)
+    {
+      color = QColor::fromHsv(54, saturation, brightness);
+    }
+    else if(grpName.compare(SIMPL::FilterGroups::SamplingFilters) == 0)
+    {
+      color = QColor::fromHsv(84, saturation, brightness);
+    }
+    else if(grpName.compare(SIMPL::FilterGroups::StatisticsFilters) == 0)
+    {
+      color = QColor::fromHsv(120, saturation, brightness);
+    }
+    else if(grpName.compare(SIMPL::FilterGroups::SyntheticBuildingFilters) == 0)
+    {
+      color = QColor::fromHsv(150, saturation, brightness);
+    }
+    else if(grpName.compare(SIMPL::FilterGroups::SurfaceMeshingFilters) == 0)
+    {
+      color = QColor::fromHsv(180, saturation, brightness);
+    }
+    else if(grpName.compare(SIMPL::FilterGroups::ProcessingFilters) == 0)
+    {
+      color = QColor::fromHsv(210, saturation, brightness);
+    }
+    else if(grpName.compare(SIMPL::FilterGroups::CoreFilters) == 0)
+    {
+      color = QColor::fromHsv(240, saturation, brightness);
+    }
+    else if(grpName.compare(SIMPL::FilterGroups::IOFilters) == 0)
+    {
+      color = QColor::fromHsv(270, saturation, brightness);
+    }
+    else if(grpName.compare(SIMPL::FilterGroups::Utilities) == 0)
+    {
+      color = QColor::fromHsv(300, saturation, brightness);
+    }
+    else
+    {
+      color = QColor::fromHsv(330, saturation, brightness);
+    }
+  }
+
+
+  return color;
+}
+
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+QIcon QtSStyles::IconForGroup(const QString &grpName)
+{
+  QColor color = ColorForFilterGroup(grpName);
+  QImage grpImage;
+
+  QIcon grpIcon(":/Groups/BlankGroup_Icon.png");
+  if(!grpIcon.isNull())
+  {
+    grpImage = grpIcon.pixmap(QSize(48, 48)).toImage();
+
+    QSize imageSize = grpImage.size();
+    for(int h = 0; h < imageSize.height(); h++)
+    {
+      for(int w = 0; w < imageSize.width(); w++)
+      {
+        QColor pixel = grpImage.pixelColor(w, h);
+        if( pixel.red() == 0 && pixel.green() == 0 && pixel.blue() == 0 && pixel.alpha() != 0)
+        {
+          pixel = color;
+          grpImage.setPixelColor(w, h, pixel);
+        }
+      }
+    }
+  }
+
+  return QIcon(QPixmap::fromImage(grpImage));
 }
