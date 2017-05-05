@@ -257,8 +257,8 @@ void SVPipelineFilterWidget::changeStyle()
   // Style the over all widget
   QString svWidgetStyle;
   QTextStream svWidgetStyleStream(&svWidgetStyle);
-  svWidgetStyleStream << "SVPipelineFilterWidget {\n";
-  svWidgetStyleStream << "border-radius: 3px;";
+  svWidgetStyleStream << "QFrame#frame {\n";
+  svWidgetStyleStream << "border-radius: 0 3 3 0px;";
   svWidgetStyleStream << "padding: 0 0 0 0px;";
 
   QString labelStyle;
@@ -276,7 +276,6 @@ void SVPipelineFilterWidget::changeStyle()
   filterIndexStyleStream << "QLabel\n{";
   filterIndexStyleStream << fontString;
   filterIndexStyleStream << "color: rgb(242, 242, 242);"; // Always have a white'ish font
-  filterIndexStyleStream << "padding: 3 3 3 3px;";
   filterIndexStyleStream << "border-top-left-radius: 3px;";
   filterIndexStyleStream << "border-bottom-left-radius: 3px;";
 
@@ -312,14 +311,9 @@ void SVPipelineFilterWidget::changeStyle()
       labelColor ="color: rgb(190, 190, 190);";
       indexBackgroundColor = "background-color: rgb(6, 118, 6);";
       break;
-      //    default:
-      //      widgetBackgroundColor = "background-color: rgb(255, 0, 0);"; // Something obnoxious
-      //      labelColor ="color: rgb(0, 255, 0);"; // Something obnoxious
-      //      indexBackgroundColor = "background-color: rgb(0, 0, 255);"; // Something obnoxious
-      //      break;
   }
 
-  QColor selectedColor = QColor::fromHsv(bgColor.hue(), 70, 150);
+  QColor selectedColor = QColor::fromHsv(bgColor.hue(), 100, 120);
 
   switch(pState)
   {
@@ -335,10 +329,6 @@ void SVPipelineFilterWidget::changeStyle()
       widgetBackgroundColor = "background-color: rgb(160, 160, 160);";
       labelColor = "color: rgb(0, 0, 0);";
       break;
-      //    default:
-      //      widgetBackgroundColor = "background-color: rgb(255, 0, 0);"; // Something obnoxious
-      //      labelColor = "color: rgb(0, 255, 0);"; // Something obnoxious
-      //      break;
   }
 
   switch(eState)
@@ -352,31 +342,33 @@ void SVPipelineFilterWidget::changeStyle()
     case ErrorState::Warning:
       indexBackgroundColor = "background-color: rgb(172, 168, 0);";
       break;
-      //    default:
-      //      widgetBackgroundColor = "background-color: rgb(0, 0, 225);"; // Something obnoxious
-      //      labelColor = "color: rgb(255, 0, 0);"; // Something obnoxious
-      //      indexBackgroundColor = "background-color: rgb(0, 255, 255);";
-      //      break;
   }
 
 
   if(isSelected() == true)
   {
-    svWidgetStyleStream << "border: 4px solid " <<  QApplication::palette().highlight().color().name() << ";";
-    svWidgetStyleStream << "margin: 0px;";
-    //widgetBackgroundColor = "background-color: " + QApplication::palette().highlight().color().name() + ";";
-    QColor selectedColor = QColor::fromHsv(bgColor.hue(), bgColor.saturation(), 220);
-    indexBackgroundColor = "background-color:" + selectedColor.name() +  ";";
+    QColor selectedColor = QColor::fromHsv(bgColor.hue(), 180, 150);
 
+    svWidgetStyleStream << "border-top: 3px solid " <<  selectedColor.name() << ";";
+    svWidgetStyleStream << "border-right: 3px solid " <<  selectedColor.name() << ";";
+    svWidgetStyleStream << "border-bottom: 3px solid " <<  selectedColor.name() << ";";
+    svWidgetStyleStream << "padding-left: 3px;";
+    filterIndexStyleStream << "border-top: 3px solid " <<  selectedColor.name() << ";";
+    filterIndexStyleStream << "border-left: 3px solid " <<  selectedColor.name() << ";";
+    filterIndexStyleStream << "border-bottom: 3px solid " <<  selectedColor.name() << ";";
+    filterIndexStyleStream << "padding-right: 3px;";
   }
   else if(isSelected() == false && hasRightClickTarget() == true)
   {
-    svWidgetStyleStream << "border: 4px solid " <<  QApplication::palette().highlight().color().name() << ";";
-    svWidgetStyleStream << "border-style: dotted;";
+    svWidgetStyleStream << "border-top: 3px solid " <<  selectedColor.name() << ";";
+    svWidgetStyleStream << "border-right: 3px solid " <<  selectedColor.name() << ";";
+    svWidgetStyleStream << "border-bottom: 3px solid " <<  selectedColor.name() << ";";
+    svWidgetStyleStream << "padding-left: 3px;";
   }
   else
   {
-    svWidgetStyleStream << "margin: 2px;";
+    svWidgetStyleStream << "padding: 3px;";
+    filterIndexStyleStream << "padding: 3px;";
   }
 
 
@@ -389,7 +381,7 @@ void SVPipelineFilterWidget::changeStyle()
   filterIndexStyleStream << "}\n";
 
   // Set the Style Sheet
-  setStyleSheet(svWidgetStyle + labelStyle);
+  frame->setStyleSheet(svWidgetStyle + labelStyle);
   filterIndex->setStyleSheet(filterIndexStyle);
 
 #if defined(Q_OS_WIN)

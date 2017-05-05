@@ -110,6 +110,10 @@ void PipelineFilterObject::setupFilterInputWidget()
   m_GroupIcon = QtSStyles::IconForGroup(grpName);
 
   // Instantiate the filter input widget object
+  if(m_FilterInputWidget)
+  {
+    m_FilterInputWidget->deleteLater();
+  }
   m_FilterInputWidget = new FilterInputWidget(m_Filter->getNameOfClass(), this, nullptr);
 
   // Initialize the filter input widget with values
@@ -138,6 +142,18 @@ QColor PipelineFilterObject::getGroupColor()
 AbstractFilter::Pointer PipelineFilterObject::getFilter()
 {
   return m_Filter;
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void PipelineFilterObject::setFilter(AbstractFilter::Pointer filter)
+{
+  m_Filter = filter;
+  if(m_Filter != AbstractFilter::NullPointer())
+  {
+    setupFilterInputWidget();
+  }
 }
 
 // -----------------------------------------------------------------------------

@@ -53,6 +53,7 @@ class SVWidgetsLib_EXPORT PipelineFilterObject
     PipelineFilterObject(AbstractFilter::Pointer filter, IObserver* observer = nullptr);
     virtual ~PipelineFilterObject();
 
+    void setFilter(AbstractFilter::Pointer filter);
     AbstractFilter::Pointer getFilter();
 
     bool isFocused();
