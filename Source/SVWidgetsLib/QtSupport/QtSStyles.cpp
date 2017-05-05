@@ -35,12 +35,11 @@
 
 #include "QtSStyles.h"
 
-#include <iostream>
 
-#include <QtCore/QTextStream>
-#include <QtCore/QFile>
 #include <QtCore/QJsonDocument>
 #include <QtCore/QJsonObject>
+#include <QtCore/QFile>
+#include <QtCore/QTextStream>
 #include <QtCore/QJsonValue>
 
 #include <SIMPLib/Common/Constants.h>
@@ -48,6 +47,9 @@
 #include <QtWidgets/QApplication>
 #include <QtWidgets/QLineEdit>
 #include <QtWidgets/QPushButton>
+
+#include "SIMPLib/Common/Constants.h"
+
 
 #include "moc_QtSStyles.cpp"
 

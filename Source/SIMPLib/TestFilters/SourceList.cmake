@@ -64,10 +64,8 @@ set(_PublicFilters
   FilterGroup08
   FilterGroup09
   FilterGroup10
-  FilterGroup11
   FilterGroup12
   FilterGroup13
-  FilterGroup14
 )
 
 
