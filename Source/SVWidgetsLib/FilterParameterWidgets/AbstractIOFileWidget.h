@@ -111,6 +111,9 @@ class SVWidgetsLib_EXPORT AbstractIOFileWidget : public FilterParameterWidget, p
     void setupMenuField();
 
   protected slots:
+    /**
+     * @brief showFileInFileSystem
+     */
     void showFileInFileSystem();
 
   signals:
@@ -119,11 +122,16 @@ class SVWidgetsLib_EXPORT AbstractIOFileWidget : public FilterParameterWidget, p
 
   private:
     static QString                                  m_OpenDialogLastFilePath;
-    bool                                            m_DidCausePreflight;
     QAction*                                        m_ShowFileAction = nullptr;
     QString                                         m_CurrentlyValidPath = "";
     QString                                         m_CurrentText = "";
+    bool                                            m_DidCausePreflight;
 
+    /**
+     * @brief hasValidFilePath
+     * @param filePath
+     * @return
+     */
     bool hasValidFilePath(const QString &filePath);
 
     AbstractIOFileWidget(const AbstractIOFileWidget&); // Copy Constructor Not Implemented
