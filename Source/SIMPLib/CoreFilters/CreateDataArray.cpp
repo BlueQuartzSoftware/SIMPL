@@ -44,11 +44,11 @@
 #include "SIMPLib/Common/Constants.h"
 #include "SIMPLib/Common/TemplateHelpers.hpp"
 #include "SIMPLib/FilterParameters/AbstractFilterParametersReader.h"
-#include "SIMPLib/FilterParameters/ChoiceFilterParameter.h"
 #include "SIMPLib/FilterParameters/DataArrayCreationFilterParameter.h"
 #include "SIMPLib/FilterParameters/FloatFilterParameter.h"
 #include "SIMPLib/FilterParameters/IntFilterParameter.h"
 #include "SIMPLib/FilterParameters/LinkedChoicesFilterParameter.h"
+#include "SIMPLib/FilterParameters/ScalarTypeFilterParameter.h"
 #include "SIMPLib/FilterParameters/StringFilterParameter.h"
 #include "SIMPLib/SIMPLibVersion.h"
 
@@ -62,7 +62,7 @@
 * unexpected results when passing anything other than an integer as a template parameter.
 * @param p The array that will be initialized
 */
-template <typename T> void initializeArrayWithInts(IDataArray::Pointer outputArrayPtr, int initializationType, FPRangePair initializationRange, const QString& initializationValue, int scalarType)
+template <typename T> void initializeArrayWithInts(IDataArray::Pointer outputArrayPtr, int initializationType, FPRangePair initializationRange, const QString& initializationValue, SIMPL::ScalarTypes::Type scalarType)
 {
 
   typename DataArray<T>::Pointer array = std::dynamic_pointer_cast<DataArray<T>>(outputArrayPtr);
@@ -83,49 +83,49 @@ template <typename T> void initializeArrayWithInts(IDataArray::Pointer outputArr
 
     switch(scalarType)
     {
-    case CreateDataArray::Int8Choice:
+    case SIMPL::ScalarTypes::Type::Int8:
       for(size_t i = 0; i < count; i++)
       {
         rawPointer[i] = static_cast<T>(i8);
       }
       break;
-    case CreateDataArray::UInt8Choice:
+    case SIMPL::ScalarTypes::Type::UInt8:
       for(size_t i = 0; i < count; i++)
       {
         rawPointer[i] = static_cast<T>(ui8);
       }
       break;
-    case CreateDataArray::Int16Choice:
+    case SIMPL::ScalarTypes::Type::Int16:
       for(size_t i = 0; i < count; i++)
       {
         rawPointer[i] = static_cast<T>(i16);
       }
       break;
-    case CreateDataArray::UInt16Choice:
+    case SIMPL::ScalarTypes::Type::UInt16:
       for(size_t i = 0; i < count; i++)
       {
         rawPointer[i] = static_cast<T>(ui16);
       }
       break;
-    case CreateDataArray::Int32Choice:
+    case SIMPL::ScalarTypes::Type::Int32:
       for(size_t i = 0; i < count; i++)
       {
         rawPointer[i] = static_cast<T>(i32);
       }
       break;
-    case CreateDataArray::UInt32Choice:
+    case SIMPL::ScalarTypes::Type::UInt32:
       for(size_t i = 0; i < count; i++)
       {
         rawPointer[i] = static_cast<T>(ui32);
       }
       break;
-    case CreateDataArray::Int64Choice:
+    case SIMPL::ScalarTypes::Type::Int64:
       for(size_t i = 0; i < count; i++)
       {
         rawPointer[i] = static_cast<T>(i64);
       }
       break;
-    case CreateDataArray::UInt64Choice:
+    case SIMPL::ScalarTypes::Type::UInt64:
       for(size_t i = 0; i < count; i++)
       {
         rawPointer[i] = static_cast<T>(ui64);
@@ -160,7 +160,7 @@ template <typename T> void initializeArrayWithInts(IDataArray::Pointer outputArr
 * unexpected results when passing anything other than an integer as a template parameter.
 * @param p The array that will be initialized
 */
-template <> void initializeArrayWithInts<bool>(IDataArray::Pointer outputArrayPtr, int initializationType, FPRangePair initializationRange, const QString& initializationValue, int scalarType)
+template <> void initializeArrayWithInts<bool>(IDataArray::Pointer outputArrayPtr, int initializationType, FPRangePair initializationRange, const QString& initializationValue, SIMPL::ScalarTypes::Type scalarType)
 {
   DataArray<bool>::Pointer array = std::dynamic_pointer_cast<DataArray<bool>>(outputArrayPtr);
   size_t count = array->getSize();
@@ -249,7 +249,7 @@ template <typename T> void initializeArrayWithReals(IDataArray::Pointer outputAr
 // -----------------------------------------------------------------------------
 CreateDataArray::CreateDataArray()
 : AbstractFilter()
-, m_ScalarType(0)
+, m_ScalarType(SIMPL::ScalarTypes::Type::Int8)
 , m_NumberOfComponents(0)
 , m_NewArray("", "", "")
 , m_InitializationType(Manual)
@@ -272,29 +272,7 @@ void CreateDataArray::setupFilterParameters()
 {
   FilterParameterVector parameters;
 
-  {
-    ChoiceFilterParameter::Pointer parameter = ChoiceFilterParameter::New();
-    parameter->setHumanLabel("Scalar Type");
-    parameter->setPropertyName("ScalarType");
-    parameter->setSetterCallback(SIMPL_BIND_SETTER(CreateDataArray, this, ScalarType));
-    parameter->setGetterCallback(SIMPL_BIND_GETTER(CreateDataArray, this, ScalarType));
-
-    QVector<QString> choices;
-    choices.push_back(Int8);
-    choices.push_back(UInt8);
-    choices.push_back(Int16);
-    choices.push_back(UInt16);
-    choices.push_back(Int32);
-    choices.push_back(UInt32);
-    choices.push_back(Int64);
-    choices.push_back(UInt64);
-    choices.push_back(Float);
-    choices.push_back(Double);
-    choices.push_back(Bool);
-    parameter->setChoices(choices);
-    parameter->setCategory(FilterParameter::Parameter);
-    parameters.push_back(parameter);
-  }
+  parameters.push_back(SIMPL_NEW_SCALARTYPE_FP("Scalar Type", ScalarType, FilterParameter::Parameter, CreateDataArray));
   parameters.push_back(SIMPL_NEW_INTEGER_FP("Number of Components", NumberOfComponents, FilterParameter::Parameter, CreateDataArray));
 
   {
@@ -334,7 +312,7 @@ void CreateDataArray::setupFilterParameters()
 void CreateDataArray::readFilterParameters(AbstractFilterParametersReader* reader, int index)
 {
   reader->openFilterGroup(this, index);
-  setScalarType(reader->readValue("ScalarType", getScalarType()));
+  setScalarType(static_cast<SIMPL::ScalarTypes::Type>(reader->readValue("ScalarType", static_cast<int>(getScalarType()))));
   setNumberOfComponents(reader->readValue("NumberOfComponents", getNumberOfComponents()));
   setNewArray(reader->readDataArrayPath("NewArray", getNewArray()));
   setInitializationValue(reader->readString("InitializationValue", getInitializationValue()));
@@ -394,51 +372,51 @@ void CreateDataArray::dataCheck()
     return;
   }
   // Create the data array and initialize it to a placeholder value
-  m_OutputArrayPtr = TemplateHelpers::CreateNonPrereqArrayFromTypeEnum()(this, getNewArray(), cDims, getScalarType(), 0);
+  m_OutputArrayPtr = TemplateHelpers::CreateNonPrereqArrayFromTypeEnum()(this, getNewArray(), cDims, static_cast<int>(getScalarType()), 0);
 
   QString dataArrayName = getNewArray().getDataArrayName();
 
-  if(m_ScalarType == Int8Choice)
+  if(m_ScalarType == SIMPL::ScalarTypes::Type::Int8)
   {
     checkInitialization<int8_t>(dataArrayName); // check the initialization for that data type
   }
-  else if(m_ScalarType == Int16Choice)
+  else if(m_ScalarType == SIMPL::ScalarTypes::Type::Int16)
   {
     checkInitialization<int16_t>(dataArrayName); // check the initialization for that data type
   }
-  else if(m_ScalarType == Int32Choice)
+  else if(m_ScalarType == SIMPL::ScalarTypes::Type::Int32)
   {
     checkInitialization<int32_t>(dataArrayName); // check the initialization for that data type
   }
-  else if(m_ScalarType == Int64Choice)
+  else if(m_ScalarType == SIMPL::ScalarTypes::Type::Int64)
   {
     checkInitialization<int64_t>(dataArrayName); // check the initialization for that data type
   }
-  else if(m_ScalarType == UInt8Choice)
+  else if(m_ScalarType == SIMPL::ScalarTypes::Type::UInt8)
   {
     checkInitialization<uint8_t>(dataArrayName); // check the initialization for that data type
   }
-  else if(m_ScalarType == UInt16Choice)
+  else if(m_ScalarType == SIMPL::ScalarTypes::Type::UInt16)
   {
     checkInitialization<uint16_t>(dataArrayName); // check the initialization for that data type
   }
-  else if(m_ScalarType == UInt32Choice)
+  else if(m_ScalarType == SIMPL::ScalarTypes::Type::UInt32)
   {
     checkInitialization<uint32_t>(dataArrayName); // check the initialization for that data type
   }
-  else if(m_ScalarType == UInt64Choice)
+  else if(m_ScalarType == SIMPL::ScalarTypes::Type::UInt64)
   {
     checkInitialization<uint64_t>(dataArrayName); // check the initialization for that data type
   }
-  else if(m_ScalarType == FloatChoice)
+  else if(m_ScalarType == SIMPL::ScalarTypes::Type::Float)
   {
     checkInitialization<float>(dataArrayName); // check the initialization for that data type
   }
-  else if(m_ScalarType == DoubleChoice)
+  else if(m_ScalarType == SIMPL::ScalarTypes::Type::Double)
   {
     checkInitialization<double>(dataArrayName); // check the initialization for that data type
   }
-  else if(m_ScalarType == BoolChoice)
+  else if(m_ScalarType == SIMPL::ScalarTypes::Type::Bool)
   {
     checkInitialization<bool>(dataArrayName); // check the initialization for that data type
   }
@@ -469,47 +447,47 @@ void CreateDataArray::execute()
     return;
   }
 
-  if(m_ScalarType == Int8Choice)
+  if(m_ScalarType == SIMPL::ScalarTypes::Type::Int8)
   {
     initializeArrayWithInts<int8_t>(m_OutputArrayPtr.lock(), m_InitializationType, m_InitializationRange, m_InitializationValue, m_ScalarType);
   }
-  else if(m_ScalarType == Int16Choice)
+  else if(m_ScalarType == SIMPL::ScalarTypes::Type::Int16)
   {
     initializeArrayWithInts<int16_t>(m_OutputArrayPtr.lock(), m_InitializationType, m_InitializationRange, m_InitializationValue, m_ScalarType);
   }
-  else if(m_ScalarType == Int32Choice)
+  else if(m_ScalarType == SIMPL::ScalarTypes::Type::Int32)
   {
     initializeArrayWithInts<int32_t>(m_OutputArrayPtr.lock(), m_InitializationType, m_InitializationRange, m_InitializationValue, m_ScalarType);
   }
-  else if(m_ScalarType == Int64Choice)
+  else if(m_ScalarType == SIMPL::ScalarTypes::Type::Int64)
   {
     initializeArrayWithInts<int64_t>(m_OutputArrayPtr.lock(), m_InitializationType, m_InitializationRange, m_InitializationValue, m_ScalarType);
   }
-  else if(m_ScalarType == UInt8Choice)
+  else if(m_ScalarType == SIMPL::ScalarTypes::Type::UInt8)
   {
     initializeArrayWithInts<uint8_t>(m_OutputArrayPtr.lock(), m_InitializationType, m_InitializationRange, m_InitializationValue, m_ScalarType);
   }
-  else if(m_ScalarType == UInt16Choice)
+  else if(m_ScalarType == SIMPL::ScalarTypes::Type::UInt16)
   {
     initializeArrayWithInts<uint16_t>(m_OutputArrayPtr.lock(), m_InitializationType, m_InitializationRange, m_InitializationValue, m_ScalarType);
   }
-  else if(m_ScalarType == UInt32Choice)
+  else if(m_ScalarType == SIMPL::ScalarTypes::Type::UInt32)
   {
     initializeArrayWithInts<uint32_t>(m_OutputArrayPtr.lock(), m_InitializationType, m_InitializationRange, m_InitializationValue, m_ScalarType);
   }
-  else if(m_ScalarType == UInt64Choice)
+  else if(m_ScalarType == SIMPL::ScalarTypes::Type::UInt64)
   {
     initializeArrayWithInts<uint64_t>(m_OutputArrayPtr.lock(), m_InitializationType, m_InitializationRange, m_InitializationValue, m_ScalarType);
   }
-  else if(m_ScalarType == FloatChoice)
+  else if(m_ScalarType == SIMPL::ScalarTypes::Type::Float)
   {
     initializeArrayWithReals<float>(m_OutputArrayPtr.lock(), m_InitializationType, m_InitializationRange, m_InitializationValue);
   }
-  else if(m_ScalarType == DoubleChoice)
+  else if(m_ScalarType == SIMPL::ScalarTypes::Type::Double)
   {
     initializeArrayWithReals<double>(m_OutputArrayPtr.lock(), m_InitializationType, m_InitializationRange, m_InitializationValue);
   }
-  else if(m_ScalarType == BoolChoice)
+  else if(m_ScalarType == SIMPL::ScalarTypes::Type::Bool)
   {
     initializeArrayWithInts<bool>(m_OutputArrayPtr.lock(), m_InitializationType, m_InitializationRange, m_InitializationValue, m_ScalarType);
   }

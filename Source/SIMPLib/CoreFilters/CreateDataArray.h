@@ -61,23 +61,8 @@ class SIMPLib_EXPORT CreateDataArray : public AbstractFilter
       RandomWithRange
     };
 
-    enum ScalarTypeChoices
-    {
-      Int8Choice = 0,
-      UInt8Choice,
-      Int16Choice,
-      UInt16Choice,
-      Int32Choice,
-      UInt32Choice,
-      Int64Choice,
-      UInt64Choice,
-      FloatChoice,
-      DoubleChoice,
-      BoolChoice
-    };
-
-    SIMPL_FILTER_PARAMETER(int, ScalarType)
-    Q_PROPERTY(int ScalarType READ getScalarType WRITE setScalarType)
+    SIMPL_FILTER_PARAMETER(SIMPL::ScalarTypes::Type, ScalarType)
+    Q_PROPERTY(SIMPL::ScalarTypes::Type ScalarType READ getScalarType WRITE setScalarType)
 
     SIMPL_FILTER_PARAMETER(int, NumberOfComponents)
     Q_PROPERTY(int NumberOfComponents READ getNumberOfComponents WRITE setNumberOfComponents)
@@ -216,9 +201,5 @@ class SIMPLib_EXPORT CreateDataArray : public AbstractFilter
     void operator=(const CreateDataArray&); // Operator '=' Not Implemented
 };
 
-
-
-
-Q_DECLARE_METATYPE(CreateDataArray::ScalarTypeChoices)
 
 #endif /* _CreateDataArray_H_ */

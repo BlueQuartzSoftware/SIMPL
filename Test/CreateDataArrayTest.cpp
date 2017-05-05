@@ -185,10 +185,10 @@ public:
   // -----------------------------------------------------------------------------
   //
   // -----------------------------------------------------------------------------
-  template <typename T> void TestScalarType(AbstractFilter::Pointer filter, CreateDataArray::ScalarTypeChoices scalarType)
+  template <typename T> void TestScalarType(AbstractFilter::Pointer filter, SIMPL::ScalarTypes::Type scalarType)
   {
 
-    QString dsName = QString("TestArray-%1").arg(scalarType);
+    QString dsName = QString("TestArray-%1").arg(static_cast<int>(scalarType));
     DataArrayPath path = DataArrayPath(SIMPL::Defaults::DataContainerName, SIMPL::Defaults::AttributeMatrixName, dsName);
 
     DataContainerArray::Pointer dca = CreateDataContainerArray();
@@ -285,14 +285,14 @@ public:
       AbstractFilter::Pointer filter = filterFactory->create();
       // DataArrayPath path1 = DataArrayPath(SIMPL::Defaults::DataContainerName, SIMPL::Defaults::AttributeMatrixName, "testArray");
 
-      TestScalarType<uint64_t>(filter, CreateDataArray::UInt64Choice);
-      TestScalarType<int8_t>(filter, CreateDataArray::Int8Choice);
-      TestScalarType<uint8_t>(filter, CreateDataArray::UInt8Choice);
-      TestScalarType<int16_t>(filter, CreateDataArray::Int16Choice);
-      TestScalarType<uint16_t>(filter, CreateDataArray::UInt16Choice);
-      TestScalarType<int32_t>(filter, CreateDataArray::Int32Choice);
-      TestScalarType<uint32_t>(filter, CreateDataArray::UInt32Choice);
-      TestScalarType<int64_t>(filter, CreateDataArray::Int64Choice);
+      TestScalarType<uint64_t>(filter, SIMPL::ScalarTypes::Type::UInt64);
+      TestScalarType<int8_t>(filter, SIMPL::ScalarTypes::Type::Int8);
+      TestScalarType<uint8_t>(filter, SIMPL::ScalarTypes::Type::UInt8);
+      TestScalarType<int16_t>(filter, SIMPL::ScalarTypes::Type::Int16);
+      TestScalarType<uint16_t>(filter, SIMPL::ScalarTypes::Type::UInt16);
+      TestScalarType<int32_t>(filter, SIMPL::ScalarTypes::Type::Int32);
+      TestScalarType<uint32_t>(filter, SIMPL::ScalarTypes::Type::UInt32);
+      TestScalarType<int64_t>(filter, SIMPL::ScalarTypes::Type::Int64);
 
 //    TestScalarType<float>(filter, 8);
 //    TestScalarType<double>(filter, path1, 9);

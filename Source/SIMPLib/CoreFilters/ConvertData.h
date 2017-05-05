@@ -54,23 +54,8 @@ class SIMPLib_EXPORT ConvertData : public AbstractFilter
 
     virtual ~ConvertData();
 
-    enum EnumType
-    {
-      Int8 = 0,
-      UInt8 = 1,
-      Int16 = 2,
-      UInt16 = 3,
-      Int32 = 4,
-      UInt32 = 5,
-      Int64 = 6,
-      UInt64 = 7,
-      Float = 8,
-      Double = 9,
-      UnknownNumType = 0
-    };
-
-    SIMPL_FILTER_PARAMETER(int, ScalarType)
-    Q_PROPERTY(int ScalarType READ getScalarType WRITE setScalarType)
+    SIMPL_FILTER_PARAMETER(SIMPL::NumericTypes::Type, ScalarType)
+    Q_PROPERTY(SIMPL::NumericTypes::Type ScalarType READ getScalarType WRITE setScalarType)
 
     SIMPL_FILTER_PARAMETER(QString, OutputArrayName)
     Q_PROPERTY(QString OutputArrayName READ getOutputArrayName WRITE setOutputArrayName)

@@ -111,7 +111,6 @@ void QMetaObjectUtilities::RegisterMetaTypes()
   qRegisterMetaType<PipelineMessage>("PipelineMessage");
   qRegisterMetaType<UInt32Vector_t>("UInt32Vector_t");
   qRegisterMetaType<FPRangePair>("FPRangePair");
-  qRegisterMetaType<CreateDataArray::ScalarTypeChoices>("ScalarTypeChoices");
   qRegisterMetaType<DynamicTableData>("DynamicTableData");
   qRegisterMetaTypeStreamOperators<IntVec3_t>("IntVec3_t");
   qRegisterMetaTypeStreamOperators<FloatVec3_t>("FloatVec3_t");
