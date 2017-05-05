@@ -19,9 +19,9 @@ class SIMPLib_EXPORT Filt0 : public AbstractFilter
 {
   Q_OBJECT
 public:
-  SIMPL_SHARED_POINTERS(Filt0);
-  SIMPL_STATIC_NEW_MACRO(Filt0);
-  SIMPL_TYPE_MACRO_SUPER(Filt0, AbstractFilter);
+  SIMPL_SHARED_POINTERS(Filt0)
+  SIMPL_STATIC_NEW_MACRO(Filt0)
+  SIMPL_TYPE_MACRO_SUPER(Filt0, AbstractFilter)
 
   virtual ~Filt0();
   SIMPL_INSTANCE_STRING_PROPERTY(DataContainerName)
@@ -37,7 +37,7 @@ public:
   */
   virtual const QString getGroupName()
   {
-    return SIMPL::FilterGroups::TestFilters;
+    return SIMPL::FilterGroups::Generic;
   }
 
   /**

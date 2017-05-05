@@ -167,7 +167,7 @@ const QString TESTCLASSNAME::getFilterVersion()
 // -----------------------------------------------------------------------------
 const QString TESTCLASSNAME::getGroupName()
 {
-  return SIMPL::FilterGroups::TestFilters;
+  return SIMPL::FilterGroups::Generic;
 }
 
 // -----------------------------------------------------------------------------

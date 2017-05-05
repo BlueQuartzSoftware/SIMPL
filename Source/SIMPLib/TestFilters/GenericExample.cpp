@@ -438,7 +438,7 @@ const QString GenericExample::getCompiledLibraryName()
 // -----------------------------------------------------------------------------
 const QString GenericExample::getGroupName()
 {
-  return SIMPL::FilterGroups::TestFilters;
+  return SIMPL::FilterGroups::Generic;
 }
 
 // -----------------------------------------------------------------------------

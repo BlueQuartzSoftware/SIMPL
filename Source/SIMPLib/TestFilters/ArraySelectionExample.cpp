@@ -167,7 +167,7 @@ const QString ArraySelectionExample::getCompiledLibraryName()
 // -----------------------------------------------------------------------------
 const QString ArraySelectionExample::getGroupName()
 {
-  return SIMPL::FilterGroups::TestFilters;
+  return SIMPL::FilterGroups::Generic;
 }
 
 // -----------------------------------------------------------------------------

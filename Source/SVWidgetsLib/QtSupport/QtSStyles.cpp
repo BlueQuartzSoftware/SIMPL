@@ -35,6 +35,8 @@
 
 #include "QtSStyles.h"
 
+#include <iostream>
+
 #include <QtCore/QTextStream>
 #include <QtCore/QFile>
 #include <QtCore/QJsonDocument>
@@ -350,59 +352,52 @@ QColor QtSStyles::ColorForFilterGroup(const QString &grpName)
     {
       color = QColor::fromHsv(0, saturation, brightness);
     }
-    else if(grpName.compare(SIMPL::FilterGroups::GenericFilters) == 0)
+    else if(grpName.compare(SIMPL::FilterGroups::Generic) == 0)
     {
-      color = QColor::fromHsv(11, saturation, brightness);
-    }
-    else if(grpName.compare(SIMPL::FilterGroups::TestFilters) == 0)
-    {
-      color = QColor::fromHsv(35, saturation, brightness);
+      color = QColor::fromHsv(30, saturation, brightness);
     }
     else if(grpName.compare(SIMPL::FilterGroups::ReconstructionFilters) == 0)
     {
-      color = QColor::fromHsv(52, saturation, brightness);
+      color = QColor::fromHsv(54, saturation, brightness);
     }
     else if(grpName.compare(SIMPL::FilterGroups::SamplingFilters) == 0)
     {
-      color = QColor::fromHsv(76, saturation, brightness);
+      color = QColor::fromHsv(84, saturation, brightness);
     }
     else if(grpName.compare(SIMPL::FilterGroups::StatisticsFilters) == 0)
     {
-      color = QColor::fromHsv(102, saturation, brightness);
-    }
-    else if(grpName.compare(SIMPL::FilterGroups::OrientationAnalysisFilters) == 0)
-    {
-      color = QColor::fromHsv(138, saturation, brightness);
+      color = QColor::fromHsv(120, saturation, brightness);
     }
     else if(grpName.compare(SIMPL::FilterGroups::SyntheticBuildingFilters) == 0)
     {
-      color = QColor::fromHsv(159, saturation, brightness);
+      color = QColor::fromHsv(150, saturation, brightness);
     }
     else if(grpName.compare(SIMPL::FilterGroups::SurfaceMeshingFilters) == 0)
     {
-      color = QColor::fromHsv(179, saturation, brightness);
+      color = QColor::fromHsv(180, saturation, brightness);
     }
     else if(grpName.compare(SIMPL::FilterGroups::ProcessingFilters) == 0)
     {
-      color = QColor::fromHsv(199, saturation, brightness);
+      color = QColor::fromHsv(210, saturation, brightness);
     }
     else if(grpName.compare(SIMPL::FilterGroups::CoreFilters) == 0)
     {
-      color = QColor::fromHsv(229, saturation, brightness);
+      color = QColor::fromHsv(240, saturation, brightness);
     }
     else if(grpName.compare(SIMPL::FilterGroups::IOFilters) == 0)
     {
-      color = QColor::fromHsv(262, saturation, brightness);
+      color = QColor::fromHsv(270, saturation, brightness);
     }
     else if(grpName.compare(SIMPL::FilterGroups::Utilities) == 0)
     {
-      color = QColor::fromHsv(293, saturation, brightness);
+      color = QColor::fromHsv(300, saturation, brightness);
     }
-    else /* if(grpName.compare(SIMPL::FilterGroups::) == 0) */
+    else
     {
-      color = QColor::fromHsv(335, saturation, brightness);
+      color = QColor::fromHsv(330, saturation, brightness);
     }
   }
+
 
   return color;
 }

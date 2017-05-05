@@ -192,7 +192,7 @@ const QString ErrorWarningFilter::getFilterVersion()
 // -----------------------------------------------------------------------------
 const QString ErrorWarningFilter::getGroupName()
 {
-  return SIMPL::FilterGroups::TestFilters;
+  return SIMPL::FilterGroups::Generic;
 }
 
 // -----------------------------------------------------------------------------

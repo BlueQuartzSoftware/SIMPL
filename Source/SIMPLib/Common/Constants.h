@@ -191,7 +191,7 @@ namespace SIMPL
   namespace FilterGroups
   {
     const QString CoreFilters("Core");
-    const QString GenericFilters("Generic");
+    const QString Generic("Generic");
     const QString IOFilters("IO");
     const QString ProcessingFilters("Processing");
     const QString ReconstructionFilters("Reconstruction");
@@ -200,9 +200,7 @@ namespace SIMPL
     const QString SyntheticBuildingFilters("Synthetic Building");
     const QString SurfaceMeshingFilters("Surface Meshing");
     const QString Utilities("Utilities");
-    const QString TestFilters("Test");
     const QString CustomFilters("Custom");
-    const QString OrientationAnalysisFilters("Orientation Analysis");
     const QString Unsupported("Unsupported");
   }
 

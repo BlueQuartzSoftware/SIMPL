@@ -222,7 +222,7 @@ const QString DynamicTableExample::getCompiledLibraryName()
 // -----------------------------------------------------------------------------
 const QString DynamicTableExample::getGroupName()
 {
-  return SIMPL::FilterGroups::TestFilters;
+  return SIMPL::FilterGroups::Generic;
 }
 
 // -----------------------------------------------------------------------------
