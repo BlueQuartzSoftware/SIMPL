@@ -114,7 +114,7 @@ class SVWidgetsLib_EXPORT QtSStyles : public QObject
      * @param grpName
      * @return
      */
-    QIcon IconForGroup(const QString &grpName);
+    static QIcon IconForGroup(const QString &grpName);
 };
 
 #endif /* _SIMPLViewStyles_H_ */

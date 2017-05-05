@@ -53,6 +53,7 @@ class SVWidgetsLib_EXPORT PipelineFilterObject
     PipelineFilterObject(AbstractFilter::Pointer filter, IObserver* observer = nullptr);
     virtual ~PipelineFilterObject();
 
+    void setFilter(AbstractFilter::Pointer filter);
     AbstractFilter::Pointer getFilter();
 
     bool isFocused();
@@ -65,6 +66,9 @@ class SVWidgetsLib_EXPORT PipelineFilterObject
     QString getFilterSubGroup();
     QString getFilterClassName();
     QString getCompiledLibraryName();
+    QColor getGroupColor();
+    QIcon getGroupIcon();
+
 
     virtual void setFilterTitle(const QString title);
     virtual void setFilterIndex(int i, int max);
@@ -110,10 +114,11 @@ class SVWidgetsLib_EXPORT PipelineFilterObject
     };
     SIMPL_INSTANCE_PROPERTY(ErrorState, ErrorState)
 
+
     /**
      * @brief changeStyle
      */
-    virtual void changeStyle(int i = -1);
+    virtual void changeStyle();
 
 
     /**
@@ -168,6 +173,8 @@ class SVWidgetsLib_EXPORT PipelineFilterObject
     bool                              m_IsFocused;
     bool                              m_HasPreflightErrors;
     bool                              m_HasPreflightWarnings;
+    QColor                            m_GroupColor;
+    QIcon                             m_GroupIcon;
 
     /**
     * @brief setupFilterInputWidget Creates and initializes the filter input widget.

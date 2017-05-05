@@ -41,6 +41,8 @@
 
 #include "SVWidgetsLib/Core/FilterWidgetManager.h"
 
+#include "QtSupport/QtSStyles.h"
+
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
@@ -101,7 +103,17 @@ PipelineFilterObject::~PipelineFilterObject()
 // -----------------------------------------------------------------------------
 void PipelineFilterObject::setupFilterInputWidget()
 {
+  QString grpName = m_Filter->getGroupName();
+
+  m_GroupColor = QtSStyles::ColorForFilterGroup(grpName);
+
+  m_GroupIcon = QtSStyles::IconForGroup(grpName);
+
   // Instantiate the filter input widget object
+  if(m_FilterInputWidget)
+  {
+    m_FilterInputWidget->deleteLater();
+  }
   m_FilterInputWidget = new FilterInputWidget(m_Filter->getNameOfClass(), this, nullptr);
 
   // Initialize the filter input widget with values
@@ -111,9 +123,37 @@ void PipelineFilterObject::setupFilterInputWidget()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
+QIcon PipelineFilterObject::getGroupIcon()
+{
+  return m_GroupIcon;
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+QColor PipelineFilterObject::getGroupColor()
+{
+  return m_GroupColor;
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
 AbstractFilter::Pointer PipelineFilterObject::getFilter()
 {
   return m_Filter;
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void PipelineFilterObject::setFilter(AbstractFilter::Pointer filter)
+{
+  m_Filter = filter;
+  if(m_Filter != AbstractFilter::NullPointer())
+  {
+    setupFilterInputWidget();
+  }
 }
 
 // -----------------------------------------------------------------------------
@@ -221,10 +261,10 @@ void PipelineFilterObject::setFilterTitle(const QString title)
 // -----------------------------------------------------------------------------
 void PipelineFilterObject::setFilterIndex(int i, int max)
 {
-Q_UNUSED(i)
+  Q_UNUSED(i)
 
-// This should be implemented in the subclasses
-return;
+  // This should be implemented in the subclasses
+  return;
 }
 
 // -----------------------------------------------------------------------------
@@ -255,7 +295,7 @@ void PipelineFilterObject::setHasFocus(bool hasFocus)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void PipelineFilterObject::changeStyle(int i)
+void PipelineFilterObject::changeStyle()
 {
   // This should be implemented in the subclasses
   return;
@@ -266,8 +306,14 @@ void PipelineFilterObject::changeStyle(int i)
 // -----------------------------------------------------------------------------
 void PipelineFilterObject::setHasPreflightErrors(bool hasErrors)
 {
-  if(hasErrors) {setErrorState(ErrorState::Error); }
-  else { setErrorState(ErrorState::Ok); }
+  if(hasErrors)
+  {
+    setErrorState(ErrorState::Error);
+  }
+  else
+  {
+    setErrorState(ErrorState::Ok);
+  }
   m_HasPreflightErrors = hasErrors;
   changeStyle();
 }
@@ -277,8 +323,14 @@ void PipelineFilterObject::setHasPreflightErrors(bool hasErrors)
 // -----------------------------------------------------------------------------
 void PipelineFilterObject::setHasPreflightWarnings(bool hasWarnings)
 {
-  if(hasWarnings) {setErrorState(ErrorState::Warning); }
-  else { setErrorState(ErrorState::Ok); }
+  if(hasWarnings)
+  {
+    setErrorState(ErrorState::Warning);
+  }
+  else
+  {
+    setErrorState(ErrorState::Ok);
+  }
   m_HasPreflightWarnings = hasWarnings;
   changeStyle();
 }

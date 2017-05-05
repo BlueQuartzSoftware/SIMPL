@@ -182,9 +182,9 @@ void FilterInputWidget::setupGui()
 {
   QFont humanLabelFont = QtSStyles::GetHumanLabelFont();
   QFont brandingFont = QtSStyles::GetBrandingLabelFont();
-  //QFont categoryFont = QtSStyles::GetCategoryFont();
 
   filterHumanLabel->setFont(humanLabelFont);
+  filterIndex->setFont(humanLabelFont);
 
   QString releaseType = QString::fromLatin1(SIMPLViewProj_RELEASE_TYPE);
   if(releaseType.compare("Official") == 0)
@@ -584,13 +584,49 @@ void FilterInputWidget::displayFilterParameters(PipelineFilterObject* w)
     m_VariablesWidget->setVisible(true);
   }
 
+  AbstractFilter::Pointer f = w->getFilter();
+  if(f.get())
+  {
+    m_BrandingLabel = f->getBrandingString() + "  [" + w->getCompiledLibraryName() + "/" + w->getFilterGroup() + "/" + w->getFilterClassName() + "]";
+    brandingLabel->setText(m_BrandingLabel);
+  }
   // Add a label at the top of the Inputs Tabs to show what filter we are working on
   filterHumanLabel->setText(w->getHumanLabel());
+  filterIndex->clear();
+#if 0
+  int index = -1;
+  if(f.get()) {
+    index = f->getPipelineIndex() + 1;
+  }
+  filterIndex->setText(QString::number(index));
 
-  AbstractFilter::Pointer filter = w->getFilter();
-  m_BrandingLabel = filter->getBrandingString() + "  [" + w->getCompiledLibraryName() + "/" + w->getFilterGroup() + "/" + w->getFilterClassName() + "]";
 
-  brandingLabel->setText(m_BrandingLabel);
+  QString filterGroup;
+  QTextStream groupStream(&filterGroup);
+  groupStream << "Group: " << w->getFilterGroup() << "\n";
+  groupStream << "Subgroup: " << w->getFilterSubGroup();
+  filterHumanLabel->setToolTip(filterGroup);
+
+  QColor bgColor =  w->getGroupColor();
+  QColor borderColor = QColor::fromHsv(bgColor.hue(), 100, 120);
+  QString style;
+  QTextStream styleStream(&style);
+  styleStream << "QFrame#" << labelFrame->objectName() << "{";
+  styleStream << "border: 1px solid;";
+  styleStream << "border-color: " << borderColor.name() << ";";
+  styleStream << "background-color: " << bgColor.name() << ";";
+  styleStream << "border-radius: 3 3 3 3px;";
+  styleStream << "}";
+
+  styleStream << "QLabel#" << filterIndex->objectName() << "{";
+  styleStream << "background-color: rgb(48, 48, 48);";
+  styleStream << "color: rgb(242, 242, 242);"; // Always have a white'ish font
+ // styleStream << "border-radius: 3px;";
+  styleStream << "padding: 1 5 1 5px;";
+  styleStream << "}";
+
+  labelFrame->setStyleSheet(style);
+#endif
 }
 
 // -----------------------------------------------------------------------------

@@ -69,6 +69,14 @@ set(SVWidgetsLib_QtSupport_SRCS
 
 cmp_IDE_SOURCE_PROPERTIES( "SVWidgetsLib" "${SVWidgetsLib_QtSupport_HDRS};${SVWidgetsLib_QtSupport_MOC_HDRS}" "${SVWidgetsLib_QtSupport_SRCS}" "0")
 
+# -- Add Qt resource file
+SET(SVWidgetsLib_QtSupport_RCS
+  ${SVWidgetsLib_SOURCE_DIR}/QtSupport/QtSupportResources.qrc
+)
+
+QT5_ADD_RESOURCES( SVWidgetsLib_QtSupport_Generated_RC_SRCS "${SVWidgetsLib_SOURCE_DIR}/QtSupport/QtSupportResources.qrc"  )
+
+
 # --------------------------------------------------------------------
 # and finally this will run moc:
 QT5_WRAP_CPP( SVWidgetsLib_QtSupport_Generated_MOC_SRCS ${SVWidgetsLib_QtSupport_MOC_HDRS} )
@@ -100,4 +108,5 @@ set(SVWidgets_QtSupport_Files
   ${SVWidgetsLib_QtSupport_Generated_MOC_SRCS}
   ${SVWidgetsLib_QtSupport_Generated_UI_HDRS}
   ${SVWidgetsLib_QtSupport_Generated_RC_SRCS}
+  ${SVWidgetsLib_QtSupport_RCS}
 )
