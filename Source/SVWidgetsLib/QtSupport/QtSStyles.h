@@ -37,6 +37,7 @@
 #define _simplviewstyles_h_
 
 #include <QtGui/QFont>
+#include <QtGui/QIcon>
 
 #include "SVWidgetsLib/SVWidgetsLib.h"
 
@@ -100,6 +101,20 @@ class SVWidgetsLib_EXPORT QtSStyles : public QObject
      * @return
      */
     static QString QToolSelectionButtonStyle(bool exists);
+
+    /**
+     * @brief QtSStyles::ColorForFilterGroup
+     * @param grpName
+     * @return
+     */
+    static QColor ColorForFilterGroup(const QString &grpName);
+
+    /**
+     * @brief QtSStyles::IconForGroup
+     * @param grpName
+     * @return
+     */
+    QIcon IconForGroup(const QString &grpName);
 };
 
 #endif /* _SIMPLViewStyles_H_ */
