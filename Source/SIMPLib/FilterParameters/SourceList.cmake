@@ -87,12 +87,14 @@ set(SIMPLib_${SUBDIR_NAME}_HDRS
   ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/LinkedBooleanFilterParameter.h
   ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/LinkedChoicesFilterParameter.h
   ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/MultiDataArraySelectionFilterParameter.h
+  ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/NumericTypeFilterParameter.h
   ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/OutputFileFilterParameter.h
   ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/OutputPathFilterParameter.h
   ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/PhaseTypeSelectionFilterParameter.h
   ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/PreflightUpdatedValueFilterParameter.h
   ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/RangeFilterParameter.h
   ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/ReadASCIIDataFilterParameter.h
+  ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/ScalarTypeFilterParameter.h
   ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/SecondOrderPolynomialFilterParameter.h
   ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/SeparatorFilterParameter.h
   ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/ShapeTypeSelectionFilterParameter.h
@@ -142,12 +144,14 @@ set(SIMPLib_${SUBDIR_NAME}_SRCS
   ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/LinkedBooleanFilterParameter.cpp
   ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/LinkedChoicesFilterParameter.cpp
   ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/MultiDataArraySelectionFilterParameter.cpp
+  ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/NumericTypeFilterParameter.cpp
   ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/OutputFileFilterParameter.cpp
   ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/OutputPathFilterParameter.cpp
   ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/PhaseTypeSelectionFilterParameter.cpp
   ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/PreflightUpdatedValueFilterParameter.cpp
   ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/RangeFilterParameter.cpp
   ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/ReadASCIIDataFilterParameter.cpp
+  ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/ScalarTypeFilterParameter.cpp
   ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/SecondOrderPolynomialFilterParameter.cpp
   ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/SeparatorFilterParameter.cpp
   ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/ShapeTypeSelectionFilterParameter.cpp

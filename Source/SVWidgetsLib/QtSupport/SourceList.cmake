@@ -34,6 +34,7 @@ set(SVWidgetsLib_QtSupport_MOC_HDRS
   ${SVWidgetsLib_SOURCE_DIR}/QtSupport/QtSStyles.h
   ${SVWidgetsLib_SOURCE_DIR}/QtSupport/QtSDisclosableGroupBox.h
   ${SVWidgetsLib_SOURCE_DIR}/QtSupport/QtSStringEdit.h
+  ${SVWidgetsLib_SOURCE_DIR}/QtSupport/QtSFileUtils.h
 )
 
 set(SVWidgetsLib_QtSupport_SRCS
@@ -63,6 +64,7 @@ set(SVWidgetsLib_QtSupport_SRCS
   ${SVWidgetsLib_SOURCE_DIR}/QtSupport/QtSSplitterHandle.cpp
   ${SVWidgetsLib_SOURCE_DIR}/QtSupport/QtSStyles.cpp
   ${SVWidgetsLib_SOURCE_DIR}/QtSupport/QtSStringEdit.cpp
+  ${SVWidgetsLib_SOURCE_DIR}/QtSupport/QtSFileUtils.cpp
 )
 
 cmp_IDE_SOURCE_PROPERTIES( "SVWidgetsLib" "${SVWidgetsLib_QtSupport_HDRS};${SVWidgetsLib_QtSupport_MOC_HDRS}" "${SVWidgetsLib_QtSupport_SRCS}" "0")

@@ -56,8 +56,8 @@ class SIMPLib_EXPORT ImportAsciDataArray : public AbstractFilter
     SIMPL_FILTER_PARAMETER(DataArrayPath, CreatedAttributeArrayPath)
     Q_PROPERTY(DataArrayPath CreatedAttributeArrayPath READ getCreatedAttributeArrayPath WRITE setCreatedAttributeArrayPath)
 
-    SIMPL_FILTER_PARAMETER(int, ScalarType)
-    Q_PROPERTY(int ScalarType READ getScalarType WRITE setScalarType)
+    SIMPL_FILTER_PARAMETER(SIMPL::NumericTypes::Type, ScalarType)
+    Q_PROPERTY(SIMPL::NumericTypes::Type ScalarType READ getScalarType WRITE setScalarType)
 
     SIMPL_FILTER_PARAMETER(int, NumberOfComponents)
     Q_PROPERTY(int NumberOfComponents READ getNumberOfComponents WRITE setNumberOfComponents)

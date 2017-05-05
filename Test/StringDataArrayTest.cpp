@@ -48,6 +48,9 @@
 
 #include "SIMPLTestFileLocations.h"
 
+#ifdef ARRAY_SIZE
+#undef ARRAY_SIZE
+#endif
 #define ARRAY_SIZE 10
 #define RESIZE_SMALLER 5
 #define RESIZE_LARGER 8

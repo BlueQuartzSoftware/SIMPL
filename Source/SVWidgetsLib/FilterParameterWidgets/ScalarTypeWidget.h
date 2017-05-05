@@ -33,37 +33,31 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-#ifndef _abstractiofilewidget_h_
-#define _abstractiofilewidget_h_
+#ifndef _ScalarTypeWidget_h_
+#define _ScalarTypeWidget_h_
+
 
 #include <QtCore/QObject>
 #include <QtCore/QPointer>
-
-#include <QtGui/QKeyEvent>
-
 #include <QtWidgets/QWidget>
 
 #include "SVWidgetsLib/QtSupport/QtSFaderWidget.h"
 
-
 #include "SIMPLib/Common/AbstractFilter.h"
-#include "SIMPLib/FilterParameters/OutputFileFilterParameter.h"
+#include "SIMPLib/FilterParameters/ScalarTypeFilterParameter.h"
 
 #include "SVWidgetsLib/SVWidgetsLib.h"
 #include "SVWidgetsLib/FilterParameterWidgets/FilterParameterWidget.h"
 
+#include "SVWidgetsLib/ui_ScalarTypeWidget.h"
 
-#include "SVWidgetsLib/ui_AbstractIOFileWidget.h"
-
-class QLineEdit;
-class OutputFileFilterParameter;
 
 /**
 * @brief
 * @author
 * @version
 */
-class SVWidgetsLib_EXPORT AbstractIOFileWidget : public FilterParameterWidget, protected Ui::AbstractIOFileWidget
+class SVWidgetsLib_EXPORT ScalarTypeWidget : public FilterParameterWidget, private Ui::ScalarTypeWidget
 {
     Q_OBJECT
 
@@ -74,71 +68,38 @@ class SVWidgetsLib_EXPORT AbstractIOFileWidget : public FilterParameterWidget, p
     * @param filter The instance of the filter that this parameter is a part of
     * @param parent The parent QWidget for this Widget
     */
-    AbstractIOFileWidget(FilterParameter* parameter, AbstractFilter* filter = nullptr, QWidget* parent = nullptr);
+    ScalarTypeWidget(FilterParameter* parameter, AbstractFilter* filter = nullptr, QWidget* parent = nullptr);
 
-    virtual ~AbstractIOFileWidget();
+    virtual ~ScalarTypeWidget();
 
     /**
     * @brief This method does additional GUI widget connections
     */
     void setupGui();
 
-    /**
-    * @brief
-    */
-    bool verifyPathExists(QString filePath, QLineEdit* lineEdit);
-
   public slots:
+    void widgetChanged(int index);
     void beforePreflight();
     void afterPreflight();
     void filterNeedsInputParameters(AbstractFilter* filter);
 
-    void on_m_LineEdit_fileDropped(const QString& text);
-    void on_m_LineEdit_editingFinished();
-    void on_m_LineEdit_textChanged(const QString& text);
-    void on_m_LineEdit_returnPressed();
-
-
-  protected:
-    static void setOpenDialogLastFilePath(QString val) { m_OpenDialogLastFilePath = val; }
-    static QString getOpenDialogLastFilePath() { return m_OpenDialogLastFilePath; }
-
-    virtual void keyPressEvent(QKeyEvent* event);
-
-    /**
-     * @brief setupMenuField
-     */
-    void setupMenuField();
-
-  protected slots:
-    /**
-     * @brief showFileInFileSystem
-     */
-    void showFileInFileSystem();
 
   signals:
     void errorSettingFilterParameter(const QString& msg);
     void parametersChanged();
 
   private:
-    static QString                                  m_OpenDialogLastFilePath;
-    QAction*                                        m_ShowFileAction = nullptr;
-    QString                                         m_CurrentlyValidPath = "";
-    QString                                         m_CurrentText = "";
-    bool                                            m_DidCausePreflight;
 
-    /**
-     * @brief hasValidFilePath
-     * @param filePath
-     * @return
-     */
-    bool hasValidFilePath(const QString &filePath);
+    bool m_DidCausePreflight;
 
-    AbstractIOFileWidget(const AbstractIOFileWidget&); // Copy Constructor Not Implemented
-    void operator=(const AbstractIOFileWidget&); // Operator '=' Not Implemented
+    ScalarTypeFilterParameter* m_FilterParameter;
+
+
+    ScalarTypeWidget(const ScalarTypeWidget&); // Copy Constructor Not Implemented
+    void operator=(const ScalarTypeWidget&); // Operator '=' Not Implemented
 
 };
 
-#endif /* _abstractiofilewidget_h_ */
+#endif /* _ScalarTypeWidget_H_ */
 
 
