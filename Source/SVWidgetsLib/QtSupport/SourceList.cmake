@@ -34,6 +34,7 @@ set(SVWidgetsLib_QtSupport_MOC_HDRS
   ${SVWidgetsLib_SOURCE_DIR}/QtSupport/QtSStyles.h
   ${SVWidgetsLib_SOURCE_DIR}/QtSupport/QtSDisclosableGroupBox.h
   ${SVWidgetsLib_SOURCE_DIR}/QtSupport/QtSStringEdit.h
+  ${SVWidgetsLib_SOURCE_DIR}/QtSupport/QtSFileUtils.h
 )
 
 set(SVWidgetsLib_QtSupport_SRCS
@@ -63,9 +64,18 @@ set(SVWidgetsLib_QtSupport_SRCS
   ${SVWidgetsLib_SOURCE_DIR}/QtSupport/QtSSplitterHandle.cpp
   ${SVWidgetsLib_SOURCE_DIR}/QtSupport/QtSStyles.cpp
   ${SVWidgetsLib_SOURCE_DIR}/QtSupport/QtSStringEdit.cpp
+  ${SVWidgetsLib_SOURCE_DIR}/QtSupport/QtSFileUtils.cpp
 )
 
 cmp_IDE_SOURCE_PROPERTIES( "SVWidgetsLib" "${SVWidgetsLib_QtSupport_HDRS};${SVWidgetsLib_QtSupport_MOC_HDRS}" "${SVWidgetsLib_QtSupport_SRCS}" "0")
+
+# -- Add Qt resource file
+SET(SVWidgetsLib_QtSupport_RCS
+  ${SVWidgetsLib_SOURCE_DIR}/QtSupport/QtSupportResources.qrc
+)
+
+QT5_ADD_RESOURCES( SVWidgetsLib_QtSupport_Generated_RC_SRCS "${SVWidgetsLib_SOURCE_DIR}/QtSupport/QtSupportResources.qrc"  )
+
 
 # --------------------------------------------------------------------
 # and finally this will run moc:
@@ -98,4 +108,5 @@ set(SVWidgets_QtSupport_Files
   ${SVWidgetsLib_QtSupport_Generated_MOC_SRCS}
   ${SVWidgetsLib_QtSupport_Generated_UI_HDRS}
   ${SVWidgetsLib_QtSupport_Generated_RC_SRCS}
+  ${SVWidgetsLib_QtSupport_RCS}
 )

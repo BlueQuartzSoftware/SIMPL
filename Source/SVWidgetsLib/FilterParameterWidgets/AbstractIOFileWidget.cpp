@@ -49,6 +49,7 @@
 
 #include "SVWidgetsLib/Core/SVWidgetsLibConstants.h"
 #include "SVWidgetsLib/QtSupport/QtSFileCompleter.h"
+#include "SVWidgetsLib/QtSupport/QtSFileUtils.h"
 
 #include "FilterParameterWidgetsDialogs.h"
 
@@ -195,24 +196,14 @@ void AbstractIOFileWidget::showFileInFileSystem()
   QString path;
   if (fi.isFile())
   {
-    path = fi.absolutePath();
+    path = fi.absoluteFilePath();
   }
   else
   {
-    path = fi.absoluteFilePath();
+    path = fi.absolutePath();
   }
 
-  QString s("file://");
-#if defined(Q_OS_WIN)
-  s = s + "/"; // Need the third slash on windows because file paths start with a drive letter
-#elif defined(Q_OS_MAC)
-
-#else
-  // We are on Linux - I think
-
-#endif
-  s = s + path;
-  QDesktopServices::openUrl(s);
+  QtSFileUtils::ShowPathInGui(this, path);
 }
 
 // -----------------------------------------------------------------------------
@@ -271,7 +262,7 @@ bool AbstractIOFileWidget::hasValidFilePath(const QString &filePath)
     A valid Windows path, absolute or relative, has to have at least one part. */
   if (pathParts[0].isEmpty() == false)
   {
-    pathBuildUp.append(pathParts[0] + QDir::separator());
+    pathBuildUp.append(pathParts[0]);
   }
   else
   {

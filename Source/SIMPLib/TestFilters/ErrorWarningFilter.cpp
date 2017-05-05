@@ -43,6 +43,10 @@
 // -----------------------------------------------------------------------------
 ErrorWarningFilter::ErrorWarningFilter()
 : AbstractFilter()
+, m_PreflightWarning(false)
+, m_PreflightError(false)
+, m_ExecuteWarning(false)
+, m_ExecuteError(false)
 {
   initialize();
   setupFilterParameters();
@@ -208,5 +212,5 @@ const QString ErrorWarningFilter::getSubGroupName()
 // -----------------------------------------------------------------------------
 const QString ErrorWarningFilter::getHumanLabel()
 {
-  return "ErrorWarningFilter";
+  return "Error Warning and Test Filter";
 }

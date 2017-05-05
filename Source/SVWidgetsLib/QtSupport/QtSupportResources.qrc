@@ -1,0 +1,5 @@
+<RCC>
+  <qresource>
+    <file>QtSupportResources/FilterStyle/SVFilterColors.json</file>
+  </qresource>
+</RCC>

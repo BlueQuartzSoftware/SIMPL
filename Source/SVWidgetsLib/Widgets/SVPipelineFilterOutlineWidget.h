@@ -42,22 +42,36 @@
 
 #include "ui_SVPipelineFilterOutlineWidget.h"
 
+class AbstractFilter;
+
+/**
+ * @brief The SVPipelineFilterOutlineWidget class
+ */
 class SVWidgetsLib_EXPORT SVPipelineFilterOutlineWidget : public QFrame, public Ui::SVPipelineFilterOutlineWidget
 {
     Q_OBJECT
 
   public:
-    SVPipelineFilterOutlineWidget(QWidget* parent = 0);
+    SVPipelineFilterOutlineWidget(AbstractFilter* filter, QWidget* parent = 0);
+
     virtual ~SVPipelineFilterOutlineWidget();
 
     void setupGui();
 
-    void setFilterName(QString name);
+    void setFilterTitle(QString name);
 
     void setFilterIndex(int i, int numFilters);
 
+    void setFilter(AbstractFilter* filter);
+
+    bool isSelected();
+
+    bool hasRightClickTarget();
+
   private:
-    void changeStyle(int i = -1);
+    void changeStyle();
+
+    AbstractFilter*   m_Filter = nullptr;
 
     SVPipelineFilterOutlineWidget(const SVPipelineFilterOutlineWidget&); // Copy Constructor Not Implemented
     void operator=(const SVPipelineFilterOutlineWidget&); // Operator '=' Not Implemented

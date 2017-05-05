@@ -33,88 +33,73 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-#ifndef _simplviewstyles_h_
-#define _simplviewstyles_h_
+#ifndef _ScalarTypeWidget_h_
+#define _ScalarTypeWidget_h_
 
-#include <QtGui/QFont>
-#include <QtGui/QIcon>
+
+#include <QtCore/QObject>
+#include <QtCore/QPointer>
+#include <QtWidgets/QWidget>
+
+#include "SVWidgetsLib/QtSupport/QtSFaderWidget.h"
+
+#include "SIMPLib/Common/AbstractFilter.h"
+#include "SIMPLib/FilterParameters/ScalarTypeFilterParameter.h"
 
 #include "SVWidgetsLib/SVWidgetsLib.h"
+#include "SVWidgetsLib/FilterParameterWidgets/FilterParameterWidget.h"
 
-class QLineEdit;
-class QPushButton;
+#include "SVWidgetsLib/ui_ScalarTypeWidget.h"
 
-class SVWidgetsLib_EXPORT QtSStyles : public QObject
+
+/**
+* @brief
+* @author
+* @version
+*/
+class SVWidgetsLib_EXPORT ScalarTypeWidget : public FilterParameterWidget, private Ui::ScalarTypeWidget
 {
     Q_OBJECT
+
   public:
-    QtSStyles();
-    virtual ~QtSStyles();
+    /**
+    * @brief Constructor
+    * @param parameter The FilterParameter object that this widget represents
+    * @param filter The instance of the filter that this parameter is a part of
+    * @param parent The parent QWidget for this Widget
+    */
+    ScalarTypeWidget(FilterParameter* parameter, AbstractFilter* filter = nullptr, QWidget* parent = nullptr);
 
-    static QString GetUIFont();
+    virtual ~ScalarTypeWidget();
 
     /**
-     * @brief GetHumanLabelFont
-     * @return
-     */
-    static QFont GetHumanLabelFont();
+    * @brief This method does additional GUI widget connections
+    */
+    void setupGui();
 
-    /**
-     * @brief GetBrandingLabelFont
-     * @return
-     */
-    static QFont GetBrandingLabelFont();
+  public slots:
+    void widgetChanged(int index);
+    void beforePreflight();
+    void afterPreflight();
+    void filterNeedsInputParameters(AbstractFilter* filter);
 
-    /**
-     * @brief GetCategoryFont
-     * @return
-     */
-    static QFont GetCategoryFont();
 
-    /**
-     * @brief GetTitleFont
-     * @return
-     */
-    static QFont GetTitleFont();
+  signals:
+    void errorSettingFilterParameter(const QString& msg);
+    void parametersChanged();
 
-    /**
-     * @brief LineEditErrorStyle
-     * @param lineEdit
-     */
-    static void LineEditErrorStyle(QLineEdit* lineEdit);
+  private:
 
-    /**
-     * @brief LineEditClearStyle
-     * @param lineEdit
-     */
-    static void LineEditClearStyle(QLineEdit* lineEdit);
+    bool m_DidCausePreflight;
 
-    /**
-     * @brief LineEditRedErrorStyle
-     * @param lineEdit
-     */
-    static void LineEditRedErrorStyle(QLineEdit* lineEdit);
+    ScalarTypeFilterParameter* m_FilterParameter;
 
-    /**
-     * @brief DAPSelectionButtonStyle
-     * @param exists
-     * @return
-     */
-    static QString QToolSelectionButtonStyle(bool exists);
 
-    /**
-     * @brief QtSStyles::ColorForFilterGroup
-     * @param grpName
-     * @return
-     */
-    static QColor ColorForFilterGroup(const QString &grpName);
+    ScalarTypeWidget(const ScalarTypeWidget&); // Copy Constructor Not Implemented
+    void operator=(const ScalarTypeWidget&); // Operator '=' Not Implemented
 
-    /**
-     * @brief QtSStyles::IconForGroup
-     * @param grpName
-     * @return
-     */
-    static QIcon IconForGroup(const QString &grpName);
 };
 
-#endif /* _SIMPLViewStyles_H_ */
+#endif /* _ScalarTypeWidget_H_ */
+
+

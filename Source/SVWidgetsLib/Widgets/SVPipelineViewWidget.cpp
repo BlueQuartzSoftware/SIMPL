@@ -137,7 +137,7 @@ void SVPipelineViewWidget::setupGui()
   m_UndoStack = QSharedPointer<QUndoStack>(new QUndoStack(this));
   m_UndoStack->setUndoLimit(10);
 
-  m_FilterOutlineWidget = new SVPipelineFilterOutlineWidget();
+  m_FilterOutlineWidget = new SVPipelineFilterOutlineWidget(nullptr);
   m_FilterOutlineWidget->setObjectName("m_DropBox");
 
   m_ActionUndo = m_UndoStack->createUndoAction(nullptr);
@@ -520,10 +520,14 @@ void SVPipelineViewWidget::reindexWidgetTitles()
     PipelineFilterObject* fw = filterObjectAt(i);
     if(fw)
     {
-      QString hl = fw->getFilter()->getHumanLabel();
+      AbstractFilter::Pointer filter = fw->getFilter();
+      if(filter)
+      {
+        QString hl = filter->getHumanLabel();
 
-      fw->setFilterTitle(hl);
-      fw->setFilterIndex(i+1, count);
+        fw->setFilterTitle(hl);
+        fw->setFilterIndex(i+1, count);
+      }
     }
   }
 }
@@ -678,7 +682,7 @@ void SVPipelineViewWidget::addFilterObject(PipelineFilterObject* filterObject, Q
     m_FilterWidgetLayout = new QVBoxLayout(this);
     m_FilterWidgetLayout->setObjectName(QString::fromUtf8("m_FilterWidgetLayout"));
     m_FilterWidgetLayout->setContentsMargins(2, 2, 2, 2);
-    m_FilterWidgetLayout->setSpacing(3);
+    m_FilterWidgetLayout->setSpacing(4);
     addSpacer = true;
   }
 
@@ -1569,13 +1573,16 @@ void SVPipelineViewWidget::dragMoveEvent(QDragMoveEvent* event)
           QList<PipelineFilterObject*> draggedObjects = origin->getDraggedFilterObjects();
           if (draggedObjects.size() > 1)
           {
+           // m_FilterOutlineWidget->setFilter(nullptr);
             m_FilterOutlineWidget->setFilterIndex(i + 1, count);
-            m_FilterOutlineWidget->setFilterName("Place " + QString::number(draggedObjects.size()) + " Filters Here");
+            m_FilterOutlineWidget->setFilterTitle("Place " + QString::number(draggedObjects.size()) + " Filters Here");
           }
           else if (draggedObjects.size() == 1)
           {
+            AbstractFilter::Pointer f = draggedObjects[0]->getFilter();
+            m_FilterOutlineWidget->setFilter(f.get());
             m_FilterOutlineWidget->setFilterIndex(i + 1, count);
-            m_FilterOutlineWidget->setFilterName(draggedObjects[0]->getHumanLabel());
+            m_FilterOutlineWidget->setFilterTitle(draggedObjects[0]->getHumanLabel());
           }
           else
           {
@@ -1592,8 +1599,9 @@ void SVPipelineViewWidget::dragMoveEvent(QDragMoveEvent* event)
         QList<PipelineFilterObject*> draggedObjects = origin->getDraggedFilterObjects();
         if (draggedObjects.size() == 1)
         {          
+          m_FilterOutlineWidget->setFilter(draggedObjects[0]->getFilter().get());
           m_FilterOutlineWidget->setFilterIndex(i + 1, count);
-          m_FilterOutlineWidget->setFilterName(draggedObjects[0]->getHumanLabel());
+          m_FilterOutlineWidget->setFilterTitle(draggedObjects[0]->getHumanLabel());
         }
 
         m_FilterWidgetLayout->insertWidget(i, m_FilterOutlineWidget);
@@ -1666,7 +1674,7 @@ void SVPipelineViewWidget::dragMoveEvent(QDragMoveEvent* event)
       }
 
       m_FilterOutlineWidget->setFilterIndex(i + 1, filterCount());
-      m_FilterOutlineWidget->setFilterName(humanName);
+      m_FilterOutlineWidget->setFilterTitle(humanName);
       m_FilterWidgetLayout->insertWidget(i, m_FilterOutlineWidget);
       m_FilterOutlineWidget->show();
       reindexWidgetTitles();
@@ -1674,7 +1682,7 @@ void SVPipelineViewWidget::dragMoveEvent(QDragMoveEvent* event)
       event->accept();
     }
     // If the dragged item is a pipeline file...
-    else if(ext == "dream3d" || ext == "json" || ext == "ini" || ext == "txt")
+    else if(ext == "dream3d" || ext == "json" )
     {
       if(nullptr == m_FilterOutlineWidget)
       {
@@ -1695,7 +1703,7 @@ void SVPipelineViewWidget::dragMoveEvent(QDragMoveEvent* event)
       }
 
       m_FilterOutlineWidget->setFilterIndex(i + 1, filterCount());
-      m_FilterOutlineWidget->setFilterName("Place '" + pipelineName + "' Here");
+      m_FilterOutlineWidget->setFilterTitle("Place '" + pipelineName + "' Here");
       m_FilterWidgetLayout->insertWidget(i, m_FilterOutlineWidget);
       m_FilterOutlineWidget->show();
       reindexWidgetTitles();
@@ -1805,7 +1813,7 @@ void SVPipelineViewWidget::dropEvent(QDropEvent* event)
         return;
       }
 
-      if(ext == "json" || ext == "ini" || ext == "txt")
+      if(ext == "json")
       {
         openPipeline(data, index, false, false);
 

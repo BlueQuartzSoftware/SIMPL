@@ -35,10 +35,14 @@
 
 #include "QtSStyles.h"
 
+
 #include <QtCore/QJsonDocument>
 #include <QtCore/QJsonObject>
 #include <QtCore/QFile>
 #include <QtCore/QTextStream>
+#include <QtCore/QJsonValue>
+
+#include <SIMPLib/Common/Constants.h>
 
 #include <QtWidgets/QApplication>
 #include <QtWidgets/QLineEdit>
@@ -148,11 +152,11 @@ QFont QtSStyles::GetCategoryFont()
   categoryFont.setFamily(GetUIFont());
 
 #if defined(Q_OS_MAC)
-  categoryFont.setPointSize(14);
+  categoryFont.setPointSize(11);
 #elif defined(Q_OS_WIN)
   categoryFont.setPointSize(10);
 #else
-  categoryFont.setPointSize(9);
+  categoryFont.setPointSize(10);
 #endif
 
   return categoryFont;

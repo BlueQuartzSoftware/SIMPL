@@ -33,88 +33,73 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-#ifndef _simplviewstyles_h_
-#define _simplviewstyles_h_
+#ifndef _NumericTypeWidget_h_
+#define _NumericTypeWidget_h_
 
-#include <QtGui/QFont>
-#include <QtGui/QIcon>
+
+#include <QtCore/QObject>
+#include <QtCore/QPointer>
+#include <QtWidgets/QWidget>
+
+#include "SVWidgetsLib/QtSupport/QtSFaderWidget.h"
+
+#include "SIMPLib/Common/AbstractFilter.h"
+#include "SIMPLib/FilterParameters/NumericTypeFilterParameter.h"
 
 #include "SVWidgetsLib/SVWidgetsLib.h"
+#include "SVWidgetsLib/FilterParameterWidgets/FilterParameterWidget.h"
 
-class QLineEdit;
-class QPushButton;
+#include "SVWidgetsLib/ui_NumericTypeWidget.h"
 
-class SVWidgetsLib_EXPORT QtSStyles : public QObject
+
+/**
+* @brief
+* @author
+* @version
+*/
+class SVWidgetsLib_EXPORT NumericTypeWidget : public FilterParameterWidget, private Ui::NumericTypeWidget
 {
     Q_OBJECT
+
   public:
-    QtSStyles();
-    virtual ~QtSStyles();
+    /**
+    * @brief Constructor
+    * @param parameter The FilterParameter object that this widget represents
+    * @param filter The instance of the filter that this parameter is a part of
+    * @param parent The parent QWidget for this Widget
+    */
+    NumericTypeWidget(FilterParameter* parameter, AbstractFilter* filter = nullptr, QWidget* parent = nullptr);
 
-    static QString GetUIFont();
+    virtual ~NumericTypeWidget();
 
     /**
-     * @brief GetHumanLabelFont
-     * @return
-     */
-    static QFont GetHumanLabelFont();
+    * @brief This method does additional GUI widget connections
+    */
+    void setupGui();
 
-    /**
-     * @brief GetBrandingLabelFont
-     * @return
-     */
-    static QFont GetBrandingLabelFont();
+  public slots:
+    void widgetChanged(int index);
+    void beforePreflight();
+    void afterPreflight();
+    void filterNeedsInputParameters(AbstractFilter* filter);
 
-    /**
-     * @brief GetCategoryFont
-     * @return
-     */
-    static QFont GetCategoryFont();
 
-    /**
-     * @brief GetTitleFont
-     * @return
-     */
-    static QFont GetTitleFont();
+  signals:
+    void errorSettingFilterParameter(const QString& msg);
+    void parametersChanged();
 
-    /**
-     * @brief LineEditErrorStyle
-     * @param lineEdit
-     */
-    static void LineEditErrorStyle(QLineEdit* lineEdit);
+  private:
 
-    /**
-     * @brief LineEditClearStyle
-     * @param lineEdit
-     */
-    static void LineEditClearStyle(QLineEdit* lineEdit);
+    bool m_DidCausePreflight;
 
-    /**
-     * @brief LineEditRedErrorStyle
-     * @param lineEdit
-     */
-    static void LineEditRedErrorStyle(QLineEdit* lineEdit);
+    NumericTypeFilterParameter* m_FilterParameter;
 
-    /**
-     * @brief DAPSelectionButtonStyle
-     * @param exists
-     * @return
-     */
-    static QString QToolSelectionButtonStyle(bool exists);
 
-    /**
-     * @brief QtSStyles::ColorForFilterGroup
-     * @param grpName
-     * @return
-     */
-    static QColor ColorForFilterGroup(const QString &grpName);
+    NumericTypeWidget(const NumericTypeWidget&); // Copy Constructor Not Implemented
+    void operator=(const NumericTypeWidget&); // Operator '=' Not Implemented
 
-    /**
-     * @brief QtSStyles::IconForGroup
-     * @param grpName
-     * @return
-     */
-    static QIcon IconForGroup(const QString &grpName);
 };
 
-#endif /* _SIMPLViewStyles_H_ */
+#endif /* _NumericTypeWidget_H_ */
+
+
