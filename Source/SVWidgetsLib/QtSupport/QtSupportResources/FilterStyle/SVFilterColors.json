@@ -1,0 +1,18 @@
+{
+	"Filter Group Colors": {
+		"Core": "#6C7ABD",
+		"Generic": "#BD7A6C",
+		"IO": "#896CBD",
+		"Processing": "#6CA3BD",
+		"Reconstruction": "#BDB26C",
+		"Sampling": "#A7BD6C",
+		"Statistics": "#84BD6C",
+		"Synthetic Building": "#6CBDA0",
+		"Surface Meshing": "#6CBDBB",
+		"Utilities": "#B36CBD",
+		"Test": "#BD9B6C",
+		"Orientation Analysis": "#6CBD84",
+		"Unsupported": "#BD6C6C",
+		"Filter Group Not Found": "#BD6C8D"
+	}
+}
