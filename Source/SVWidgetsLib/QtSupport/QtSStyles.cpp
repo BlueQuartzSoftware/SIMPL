@@ -152,11 +152,11 @@ QFont QtSStyles::GetCategoryFont()
   categoryFont.setFamily(GetUIFont());
 
 #if defined(Q_OS_MAC)
-  categoryFont.setPointSize(14);
+  categoryFont.setPointSize(11);
 #elif defined(Q_OS_WIN)
   categoryFont.setPointSize(10);
 #else
-  categoryFont.setPointSize(9);
+  categoryFont.setPointSize(10);
 #endif
 
   return categoryFont;

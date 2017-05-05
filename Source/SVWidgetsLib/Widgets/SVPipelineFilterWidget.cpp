@@ -67,11 +67,6 @@
 #include "SVWidgetsLib/Widgets/DataContainerArrayWidget.h"
 #include "SVWidgetsLib/Widgets/SVPipelineViewWidget.h"
 
-#define PADDING 5
-#define BORDER 2
-#define IMAGE_WIDTH 24
-#define IMAGE_HEIGHT 24
-
 // Include the MOC generated CPP file which has all the QMetaObject methods/data
 #include "moc_SVPipelineFilterWidget.cpp"
 
@@ -123,16 +118,18 @@ void SVPipelineFilterWidget::initialize()
 
   setupUi(this);
 
-  m_DeleteRect.setX(PADDING + BORDER);
-  m_DeleteRect.setY(PADDING + BORDER);
-  m_DeleteRect.setWidth(IMAGE_WIDTH);
-  m_DeleteRect.setHeight(IMAGE_HEIGHT);
-
   // Set the Name of the filter into the FilterWidget
   AbstractFilter::Pointer filter = getFilter();
   if(nullptr != filter.get())
   {
     filterName->setText(getFilter()->getHumanLabel());
+
+    QString filterGroup;
+    QTextStream groupStream(&filterGroup);
+    groupStream << "Group: " << filter->getGroupName() << "\n";
+    groupStream << "Subgroup: " << filter->getSubGroupName();
+    filterName->setToolTip(filterGroup);
+
     connect(filter.get(), SIGNAL(filterCompleted()),
             this, SLOT(toCompletedState()));
     connect(filter.get(), SIGNAL(filterInProgress()),
@@ -364,6 +361,10 @@ void SVPipelineFilterWidget::changeStyle()
     svWidgetStyleStream << "border-right: 3px solid " <<  selectedColor.name() << ";";
     svWidgetStyleStream << "border-bottom: 3px solid " <<  selectedColor.name() << ";";
     svWidgetStyleStream << "padding-left: 3px;";
+    filterIndexStyleStream << "border-top: 3px solid " <<  selectedColor.name() << ";";
+    filterIndexStyleStream << "border-left: 3px solid " <<  selectedColor.name() << ";";
+    filterIndexStyleStream << "border-bottom: 3px solid " <<  selectedColor.name() << ";";
+    filterIndexStyleStream << "padding-right: 3px;";
   }
   else
   {
@@ -416,7 +417,7 @@ void SVPipelineFilterWidget::mousePressEvent(QMouseEvent* event)
   }
   else if(event->button() == Qt::LeftButton)
   {
-    dragStartPosition = event->pos();
+    m_DragStartPosition = event->pos();
   }
 }
 
@@ -437,7 +438,7 @@ void SVPipelineFilterWidget::mouseMoveEvent(QMouseEvent* event)
   {
     return;
   }
-  if((event->pos() - dragStartPosition).manhattanLength() < QApplication::startDragDistance())
+  if((event->pos() - m_DragStartPosition).manhattanLength() < QApplication::startDragDistance())
   {
     return;
   }

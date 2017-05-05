@@ -267,8 +267,7 @@ class SVWidgetsLib_EXPORT SVPipelineFilterWidget : public QFrame, public Pipelin
     void focusOutEvent(QFocusEvent* event) override;
 
   private:
-    QRect                             m_DeleteRect;
-    QPoint                            dragStartPosition;
+    QPoint                            m_DragStartPosition;
     IObserver*                        m_Observer;
     bool                              m_HasRightClickTarget;
 
