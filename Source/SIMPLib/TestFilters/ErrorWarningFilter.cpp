@@ -208,5 +208,5 @@ const QString ErrorWarningFilter::getSubGroupName()
 // -----------------------------------------------------------------------------
 const QString ErrorWarningFilter::getHumanLabel()
 {
-  return "ErrorWarningFilter";
+  return "Error Warning and Test Filter";
 }
