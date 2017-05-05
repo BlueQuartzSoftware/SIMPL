@@ -50,6 +50,9 @@
       <property name="bottomMargin">
        <number>2</number>
       </property>
+      <property name="verticalSpacing">
+       <number>4</number>
+      </property>
       <item row="2" column="0">
        <widget class="QLabel" name="brandingLabel">
         <property name="text">
@@ -74,7 +77,7 @@
            <x>0</x>
            <y>0</y>
            <width>756</width>
-           <height>351</height>
+           <height>352</height>
           </rect>
          </property>
          <layout class="QVBoxLayout" name="scrollAreaVertSpacer">
@@ -119,10 +122,10 @@
          </size>
         </property>
         <property name="frameShape">
-         <enum>QFrame::StyledPanel</enum>
+         <enum>QFrame::NoFrame</enum>
         </property>
         <property name="frameShadow">
-         <enum>QFrame::Raised</enum>
+         <enum>QFrame::Plain</enum>
         </property>
         <layout class="QHBoxLayout" name="horizontalLayout_2">
          <property name="spacing">

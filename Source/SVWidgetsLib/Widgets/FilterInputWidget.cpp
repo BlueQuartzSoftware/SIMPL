@@ -593,12 +593,7 @@ void FilterInputWidget::displayFilterParameters(PipelineFilterObject* w)
   // Add a label at the top of the Inputs Tabs to show what filter we are working on
   filterHumanLabel->setText(w->getHumanLabel());
   filterIndex->clear();
-#if 0
-  int index = -1;
-  if(f.get()) {
-    index = f->getPipelineIndex() + 1;
-  }
-  filterIndex->setText(QString::number(index));
+  QString style;
 
 
   QString filterGroup;
@@ -609,14 +604,22 @@ void FilterInputWidget::displayFilterParameters(PipelineFilterObject* w)
 
   QColor bgColor =  w->getGroupColor();
   QColor borderColor = QColor::fromHsv(bgColor.hue(), 100, 120);
-  QString style;
+
   QTextStream styleStream(&style);
   styleStream << "QFrame#" << labelFrame->objectName() << "{";
-  styleStream << "border: 1px solid;";
-  styleStream << "border-color: " << borderColor.name() << ";";
-  styleStream << "background-color: " << bgColor.name() << ";";
-  styleStream << "border-radius: 3 3 3 3px;";
+  styleStream << "border-bottom: 0px solid;";
+  styleStream << "border-bottom-color: " << borderColor.name() << ";";
+ // styleStream << "background-color: " << bgColor.name() << ";";
+ // styleStream << "border-radius: 0 0 0 0px;";
   styleStream << "}";
+
+#if 0
+  int index = -1;
+  if(f.get()) {
+    index = f->getPipelineIndex() + 1;
+  }
+  filterIndex->setText(QString::number(index));
+
 
   styleStream << "QLabel#" << filterIndex->objectName() << "{";
   styleStream << "background-color: rgb(48, 48, 48);";
@@ -624,9 +627,9 @@ void FilterInputWidget::displayFilterParameters(PipelineFilterObject* w)
  // styleStream << "border-radius: 3px;";
   styleStream << "padding: 1 5 1 5px;";
   styleStream << "}";
+#endif
 
   labelFrame->setStyleSheet(style);
-#endif
 }
 
 // -----------------------------------------------------------------------------

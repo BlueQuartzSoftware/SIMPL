@@ -354,6 +354,7 @@ void SVPipelineFilterWidget::changeStyle()
     filterIndexStyleStream << "border-left: 3px solid " <<  selectedColor.name() << ";";
     filterIndexStyleStream << "border-bottom: 3px solid " <<  selectedColor.name() << ";";
     filterIndexStyleStream << "padding-right: 3px;";
+    labelColor = "color: rgb(235, 235, 235);";
   }
   else if(isSelected() == false && hasRightClickTarget() == true)
   {
@@ -365,6 +366,7 @@ void SVPipelineFilterWidget::changeStyle()
     filterIndexStyleStream << "border-left: 3px solid " <<  selectedColor.name() << ";";
     filterIndexStyleStream << "border-bottom: 3px solid " <<  selectedColor.name() << ";";
     filterIndexStyleStream << "padding-right: 3px;";
+    labelColor = "color: rgb(235, 235, 235);";
   }
   else
   {
@@ -388,11 +390,11 @@ void SVPipelineFilterWidget::changeStyle()
 #if defined(Q_OS_WIN)
   if (isSelected() == true)
   {
-    filterName->setStyleSheet("color: rgb(242, 242, 242);");
+//    filterName->setStyleSheet("color: rgb(242, 242, 242);");
   }
   else
   {
-    filterName->setStyleSheet("");
+//    filterName->setStyleSheet("");
   }
 #endif
 
