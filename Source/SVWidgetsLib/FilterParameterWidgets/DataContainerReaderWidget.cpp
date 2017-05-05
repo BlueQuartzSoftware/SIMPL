@@ -698,7 +698,7 @@ bool DataContainerReaderWidget::hasValidFilePath(const QString &filePath)
     A valid Windows path, absolute or relative, has to have at least one part. */
   if (pathParts[0].isEmpty() == false)
   {
-    pathBuildUp.append(pathParts[0] + QDir::separator());
+    pathBuildUp.append(pathParts[0]);
   }
   else
   {
