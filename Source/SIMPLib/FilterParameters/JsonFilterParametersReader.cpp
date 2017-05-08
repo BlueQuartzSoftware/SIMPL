@@ -112,7 +112,7 @@ FilterPipeline::Pointer JsonFilterParametersReader::readPipelineFromFile(QString
   {
     if(nullptr != obs)
     {
-      PipelineMessage pm(JsonFilterParametersReader::ClassName(), "File '" + fInfo.fileName() + "' could not be opened for reading.", -1, PipelineMessage::Error);
+      PipelineMessage pm(JsonFilterParametersReader::ClassName(), "File '" + fInfo.fileName() + "' could not be opened for reading.", -1, PipelineMessage::MessageType::Error);
       obs->processPipelineMessage(pm);
     }
     return FilterPipeline::NullPointer();
@@ -380,7 +380,7 @@ FilterPipeline::Pointer JsonFilterParametersReader::readPipeline(IObserver* obs)
           QString ss = QObject::tr("An implementation for filter '%1' could not be located. Possible reasons include a name change of the filter, plugin not loading or a simple spelling mistake? A "
                                    "blank filter has been inserted in its place.")
                            .arg(filterName);
-          PipelineMessage pm(filterName, ss, -66066, PipelineMessage::Error);
+          PipelineMessage pm(filterName, ss, -66066, PipelineMessage::MessageType::Error);
           pm.setPrefix("JsonFilterParametersReader::ReadPipelineFromFile()");
           obs->processPipelineMessage(pm);
         }
@@ -398,7 +398,7 @@ FilterPipeline::Pointer JsonFilterParametersReader::readPipeline(IObserver* obs)
       {
         QString gName = QString::number(i);
         QString ss = QObject::tr("A filter for index '%1' is missing in the file. Is the numbering of the filters correct in the pipeline file?").arg(gName);
-        PipelineMessage pm(filterName, ss, -66067, PipelineMessage::Error);
+        PipelineMessage pm(filterName, ss, -66067, PipelineMessage::MessageType::Error);
         pm.setPrefix("JsonFilterParametersReader::ReadPipelineFromFile()");
         obs->processPipelineMessage(pm);
       }
@@ -436,7 +436,7 @@ void JsonFilterParametersReader::readNameOfPipelineFromFile(QString filePath, QS
   {
     if(nullptr != obs)
     {
-      PipelineMessage pm(JsonFilterParametersReader::ClassName(), "File '" + fInfo.fileName() + "' could not be opened for reading.", -1, PipelineMessage::Error);
+      PipelineMessage pm(JsonFilterParametersReader::ClassName(), "File '" + fInfo.fileName() + "' could not be opened for reading.", -1, PipelineMessage::MessageType::Error);
       obs->processPipelineMessage(pm);
     }
     name = QString("ERROR: Could not open file specified.");

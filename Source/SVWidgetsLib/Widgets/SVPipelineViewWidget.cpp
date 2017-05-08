@@ -903,6 +903,7 @@ void SVPipelineViewWidget::preflightPipeline(QUuid id)
     PipelineFilterObject* fw = filterObjectAt(i);
     if(fw)
     {
+      fw->setHasPreflightWarnings(false);
       fw->setHasPreflightErrors(false);
       fw->setWidgetState(PipelineFilterObject::WidgetState::Ready);
       fw->changeStyle();
@@ -929,6 +930,10 @@ void SVPipelineViewWidget::preflightPipeline(QUuid id)
     if(fw)
     {
       AbstractFilter::Pointer filter = fw->getFilter();
+      if(filter->getWarningCondition() < 0)
+      {
+        fw->setHasPreflightWarnings(true);
+      }
       if(filter->getErrorCondition() < 0)
       {
         fw->setHasPreflightErrors(true);

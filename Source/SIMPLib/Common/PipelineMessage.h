@@ -51,44 +51,29 @@
 class SIMPLib_EXPORT PipelineMessage
 {
   public:
+    using EnumType = unsigned int;
 
-    enum MessageType {Error,
-                      Warning,
-                      StatusMessage,
-                      StandardOutputMessage,
-                      ProgressValue,
-                      StatusMessageAndProgressValue,
-                      UnknownMessageType
-                     };
+    enum class MessageType : EnumType
+    {
+      Error = 0,
+      Warning = 1,
+      StatusMessage = 2,
+      StandardOutputMessage = 3,
+      ProgressValue = 4,
+      StatusMessageAndProgressValue = 5,
+      UnknownMessageType = 6
+    };
 
     PipelineMessage();
 
     PipelineMessage(const PipelineMessage& rhs);
 
+    PipelineMessage(const QString& className, const char* msg, int code, MessageType msgType = MessageType::UnknownMessageType, int progress = -1);
 
-    PipelineMessage(const QString& className,
-                    const char* msg,
-                    int code,
-                    MessageType msgType = UnknownMessageType,
-                    int progress = -1) ;
+    PipelineMessage(const QString& className, const QString& msg, int code, MessageType msgType = MessageType::UnknownMessageType, int progress = -1);
+    PipelineMessage(const QString& className, const QString& humanLabel, const QString& msg, int code, MessageType msgType = MessageType::UnknownMessageType, int progress = -1);
 
-    PipelineMessage(const QString& className,
-                    const QString& msg,
-                    int code,
-                    MessageType msgType = UnknownMessageType,
-                    int progress = -1);
-    PipelineMessage(const QString& className,
-                    const QString& humanLabel,
-                    const QString& msg,
-                    int code,
-                    MessageType msgType = UnknownMessageType,
-                    int progress = -1);
-
-    PipelineMessage(const QString& humanLabel,
-                    int pipelineIndex,
-                    const QString& msg,
-                    MessageType msgType = UnknownMessageType);
-
+    PipelineMessage(const QString& humanLabel, int pipelineIndex, const QString& msg, MessageType msgType = MessageType::UnknownMessageType);
 
     static PipelineMessage CreateErrorMessage(const QString className, const QString humanLabel, const QString msg, int code);
 

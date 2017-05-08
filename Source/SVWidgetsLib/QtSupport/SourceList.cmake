@@ -6,6 +6,7 @@ set(SVWidgetsLib_QtSupport_HDRS
   ${SVWidgetsLib_SOURCE_DIR}/QtSupport/QtSApplicationFileInfo.h
   ${SVWidgetsLib_SOURCE_DIR}/QtSupport/QtSMacros.h
   ${SVWidgetsLib_SOURCE_DIR}/QtSupport/QtSHelpUrlGenerator.h
+  ${SVWidgetsLib_SOURCE_DIR}/QtSupport/QtSFileUtils.h
 )
 
 set(SVWidgetsLib_QtSupport_MOC_HDRS
@@ -34,7 +35,6 @@ set(SVWidgetsLib_QtSupport_MOC_HDRS
   ${SVWidgetsLib_SOURCE_DIR}/QtSupport/QtSStyles.h
   ${SVWidgetsLib_SOURCE_DIR}/QtSupport/QtSDisclosableGroupBox.h
   ${SVWidgetsLib_SOURCE_DIR}/QtSupport/QtSStringEdit.h
-  ${SVWidgetsLib_SOURCE_DIR}/QtSupport/QtSFileUtils.h
 )
 
 set(SVWidgetsLib_QtSupport_SRCS
