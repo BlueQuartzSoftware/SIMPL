@@ -46,6 +46,7 @@
 #include "SIMPLib/SIMPLib.h"
 #include "SIMPLib/Common/SIMPLibSetGetMacros.h"
 #include "SIMPLib/Common/Observable.h"
+#include "SIMPLib/DataContainers/DataArrayPath.h"
 #include "SIMPLib/DataContainers/AttributeMatrix.h"
 #include "SIMPLib/Geometry/IGeometry.h"
 #include "SIMPLib/DataContainers/DataContainerArrayProxy.h"
@@ -261,6 +262,26 @@ class SIMPLib_EXPORT DataContainer : public Observable
         return attributeMatrix;
       }
       return attributeMatrix;
+    }
+
+    /**
+     * @brief createNonPrereqAttributeMatrix This method will create a new AttributeMatrix with the given tuple dimensions
+     * and type. If the name is empty or an attribute matrix with the given name already exists the method will return
+     * a nullptr shared pointer. This is a convenience method that simply pulls the
+     * AttributeMatrix name from the DataArrayPath object.
+     * @param filter The object to report errors through
+     * @param path A DataArrayPath object that has the valid AttributeMatrix name
+     * @param tDims The Tuple Dimensions of the Attribute Matrix
+     * @param amType The Type of AttributeMatrix
+     * @return A Shared Pointer to the AttributeMatrix
+     */
+    template<class Filter>
+    AttributeMatrix::Pointer createNonPrereqAttributeMatrix(Filter* filter,
+                                                            const DataArrayPath path,
+                                                            QVector<size_t> tDims,
+                                                            AttributeMatrix::Type amType)
+    {
+        return createNonPrereqAttributeMatrix(filter, path.getAttributeMatrixName(), tDims, amType);
     }
 
     /**
