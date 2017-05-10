@@ -268,6 +268,192 @@ void DataSelectionWidget::setDataArrayPath(QString pathStr)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
+bool DataSelectionWidget::checkDataArrayPath(DataArrayPath path)
+{
+  if(nullptr == getFilter())
+  {
+    return false;
+  }
+
+  // Check DataContainer level
+  if(path.isEmpty() || path.getDataContainerName().isEmpty())
+  {
+    return false;
+  }
+
+  if(checkGeometryTypes(path) == false)
+  {
+    return false;
+  }
+
+  // Check AttributeMatrix level
+  if(m_containerType == ContainerType::AttributeMatrix || m_containerType == ContainerType::DataArray)
+  {
+    if(path.getAttributeMatrixName().isEmpty())
+    {
+      return false;
+    }
+
+    if(checkAttributeMatrixTypes(path) == false)
+    {
+      return false;
+    }
+
+    // Check DataArray level
+    if(m_containerType == ContainerType::DataArray)
+    {
+      if(path.getDataArrayName().isEmpty())
+      {
+        return false;
+      }
+
+      if(checkDataArrayTypes(path) == false)
+      {
+        return false;
+      }
+
+      if(checkComponentDimensions(path) == false)
+      {
+        return false;
+      }
+    }
+  }
+
+  return true;
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+bool DataSelectionWidget::checkDataArrayPath(QString pathStr)
+{
+  if(nullptr == getFilter())
+  {
+    return false;
+  }
+
+  DataArrayPath path = DataArrayPath::Deserialize(pathStr, Detail::Delimiter);
+
+  return checkDataArrayPath(path);
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+bool DataSelectionWidget::checkGeometryTypes(DataArrayPath path)
+{
+  if(m_geometryTypes.isEmpty())
+  {
+    return true;
+  }
+
+  if(nullptr == getFilter())
+  {
+    return false;
+  }
+
+  DataContainer::Pointer dc = getFilter()->getDataContainerArray()->getDataContainer(path);
+  if(nullptr == dc.get())
+  {
+    return false;
+  }
+
+  IGeometry::Pointer geom = dc->getGeometry();
+  if(nullptr == geom.get())
+  {
+    return false;
+  }
+
+  return m_geometryTypes.contains(geom->getGeometryType());
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+bool DataSelectionWidget::checkAttributeMatrixTypes(DataArrayPath path)
+{
+  if(m_containerType == ContainerType::DataContainer)
+  {
+    return true;
+  }
+
+  if(nullptr == getFilter())
+  {
+    return false;
+  }
+
+  AttributeMatrix::Pointer am = getFilter()->getDataContainerArray()->getAttributeMatrix(path);
+  if(nullptr == am.get())
+  {
+    return false;
+  }
+
+  return m_attributeMatrixTypes.contains(am->getType());
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+bool DataSelectionWidget::checkDataArrayTypes(DataArrayPath path)
+{
+  if(m_containerType != ContainerType::DataArray)
+  {
+    return true;
+  }
+
+  if(nullptr == getFilter())
+  {
+    return false;
+  }
+
+  AttributeMatrix::Pointer am = getFilter()->getDataContainerArray()->getAttributeMatrix(path);
+  if(nullptr == am.get())
+  {
+    return false;
+  }
+
+  IDataArray::Pointer da = am->getAttributeArray(path.getDataArrayName());
+  if(nullptr == da.get())
+  {
+    return false;
+  }
+
+  return m_dataArrayTypes.contains(da->getTypeAsString());
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+bool DataSelectionWidget::checkComponentDimensions(DataArrayPath path)
+{
+  if(m_containerType != ContainerType::DataArray)
+  {
+    return true;
+  }
+
+  if(nullptr == getFilter())
+  {
+    return false;
+  }
+
+  AttributeMatrix::Pointer am = getFilter()->getDataContainerArray()->getAttributeMatrix(path);
+  if(nullptr == am.get())
+  {
+    return false;
+  }
+
+  IDataArray::Pointer da = am->getAttributeArray(path.getDataArrayName());
+  if(nullptr == da.get())
+  {
+    return false;
+  }
+
+  return m_componentDimensions.contains(da->getComponentDimensions());
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
 DataSelectionWidget::ContainerType DataSelectionWidget::getContainerType()
 {
   return m_containerType;
@@ -350,7 +536,6 @@ QVector<QVector<size_t>> DataSelectionWidget::getComponentDimensions()
 // -----------------------------------------------------------------------------
 void DataSelectionWidget::createSelectionMenu()
 {
-
   // Now get the DataContainerArray from the Filter instance
   // We are going to use this to get all the current DataContainers
   DataContainerArray::Pointer dca = getFilter()->getDataContainerArray();

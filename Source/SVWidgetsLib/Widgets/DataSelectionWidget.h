@@ -100,11 +100,16 @@ signals:
 
 protected:
   void createSelectionMenu();
-  //void createAttributeMatrixSelectionMenu(DataContainer::Pointer dc);
-  //void createDataArraySelectionMenu(AttributeMatrix::Pointer am);
 
   void updateRequirementTooltip();
   void updateSelectionTooltip();
+
+  bool checkDataArrayPath(QString pathStr);
+  bool checkDataArrayPath(DataArrayPath path);
+  bool checkGeometryTypes(DataArrayPath path);
+  bool checkAttributeMatrixTypes(DataArrayPath path);
+  bool checkDataArrayTypes(DataArrayPath path);
+  bool checkComponentDimensions(DataArrayPath path);
 
   IGeometry::Types getGeometryTypes();
   QVector<AttributeMatrix::Type> getAttributeMatrixTypes();
