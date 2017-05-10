@@ -668,23 +668,10 @@ void DataSelectionWidget::createSelectionMenu()
 // -----------------------------------------------------------------------------
 void DataSelectionWidget::dragEnterEvent(QDragEnterEvent* event)
 {
-
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-void DataSelectionWidget::dragLeaveEvent(QDragLeaveEvent* event)
-{
-
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-void DataSelectionWidget::dragMoveEvent(QDragMoveEvent* event)
-{
-
+  if(event->mimeData()->hasText())
+  {
+    event->acceptProposedAction();
+  }
 }
 
 // -----------------------------------------------------------------------------
@@ -692,5 +679,13 @@ void DataSelectionWidget::dragMoveEvent(QDragMoveEvent* event)
 // -----------------------------------------------------------------------------
 void DataSelectionWidget::dropEvent(QDropEvent* event)
 {
-  event->mimeData()->type
+  if(event->mimeData()->hasText())
+  {
+    QString dataPath = event->mimeData()->text();
+
+    if(checkDataArrayPath(dataPath))
+    {
+      setDataArrayPath(dataPath);
+    }
+  }
 }
