@@ -49,6 +49,7 @@
 
 #include "SVWidgetsLib/Core/SVWidgetsLibConstants.h"
 #include "SVWidgetsLib/QtSupport/QtSFileCompleter.h"
+#include "SVWidgetsLib/QtSupport/QtSFileUtils.h"
 
 #include "FilterParameterWidgetsDialogs.h"
 
@@ -61,8 +62,6 @@
 AbstractIOFileWidget::AbstractIOFileWidget(FilterParameter* parameter, AbstractFilter* filter, QWidget* parent)
 : FilterParameterWidget(parameter, filter, parent)
 {
-  //m_OpenDialogLastFilePath = QDir::homePath();
-
   setupUi(this);
   setupGui();
   if(filter)
@@ -120,7 +119,20 @@ void AbstractIOFileWidget::setupGui()
     }
   }
 
+  m_CurrentText = m_LineEdit->text();
+}
 
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void AbstractIOFileWidget::keyPressEvent(QKeyEvent* event)
+{
+  if (event->key() == Qt::Key_Escape)
+  {
+    m_LineEdit->setText(m_CurrentText);
+    m_LineEdit->setStyleSheet("");
+    m_LineEdit->setToolTip("");
+  }
 }
 
 // -----------------------------------------------------------------------------
@@ -175,28 +187,18 @@ void AbstractIOFileWidget::setupMenuField()
 // -----------------------------------------------------------------------------
 void AbstractIOFileWidget::showFileInFileSystem()
 {
-  QFileInfo fi(m_LineEdit->text());
+  QFileInfo fi(m_CurrentlyValidPath);
   QString path;
   if (fi.isFile())
   {
-    path = fi.absolutePath();
+    path = fi.absoluteFilePath();
   }
   else
   {
-    path = fi.absoluteFilePath();
+    path = fi.absolutePath();
   }
 
-  QString s("file://");
-#if defined(Q_OS_WIN)
-  s = s + "/"; // Need the third slash on windows because file paths start with a drive letter
-#elif defined(Q_OS_MAC)
-
-#else
-  // We are on Linux - I think
-
-#endif
-  s = s + path;
-  QDesktopServices::openUrl(s);
+  QtSFileUtils::ShowPathInGui(this, path);
 }
 
 // -----------------------------------------------------------------------------
@@ -222,6 +224,7 @@ bool AbstractIOFileWidget::verifyPathExists(QString filePath, QLineEdit* lineEdi
 void AbstractIOFileWidget::on_m_LineEdit_editingFinished()
 {
   m_LineEdit->setStyleSheet(QString(""));
+  m_CurrentText = m_LineEdit->text();
   emit parametersChanged(); // This should force the preflight to run because we are emitting a signal
 }
 
@@ -236,11 +239,85 @@ void AbstractIOFileWidget::on_m_LineEdit_returnPressed()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
+bool AbstractIOFileWidget::hasValidFilePath(const QString &filePath)
+{
+  QStringList pathParts = filePath.split(QDir::separator());
+  if (pathParts.size() <= 0) { return false; }
+
+  QString pathBuildUp;
+  QFileInfo fi(filePath);
+
+  /* This block of code figures out, based on the current OS, how the built-up path should begin.
+   * For Mac and Linux, it should start with a separator for absolute paths or a path part for relative paths.
+   * For Windows, it should start with a path part for both absolute and relative paths.
+   * A "path part" is defined as a portion of string that is delimited by separators in a typical path. */
+  {
+#if defined(Q_OS_WIN)
+  /* If there is at least one part, then add it to the pathBuildUp variable.
+    A valid Windows path, absolute or relative, has to have at least one part. */
+  if (pathParts[0].isEmpty() == false)
+  {
+    pathBuildUp.append(pathParts[0]);
+  }
+  else
+  {
+    return false;
+  }
+#else
+  /* If the first part is empty and the filePath is absolute, then that means that
+   * we are starting with the root directory and need to add it to our pathBuildUp */
+  if (pathParts[0].isEmpty() && fi.isAbsolute())
+  {
+    pathBuildUp.append(QDir::separator());
+  }
+  /* If the first part is empty and the filePath is relative, then that means that
+   * we are starting with the first folder part and need to add that to our pathBuildUp */
+  else if (pathParts[0].isEmpty() == false && fi.isRelative())
+  {
+    pathBuildUp.append(pathParts[0] + QDir::separator());
+  }
+  else
+  {
+    return false;
+  }
+#endif
+  }
+
+  /* Now that we have started our built-up path, continue adding to the built-up path
+   * until either the built-up path is invalid, or until we have processed all remaining path parts. */
+  bool valid = false;
+
+  QFileInfo buildingFi(pathBuildUp);
+  size_t pathPartsIdx = 1; // We already processed the first path part above
+  while (buildingFi.exists() == true && pathPartsIdx <= pathParts.size())
+  {
+    valid = true;
+    m_CurrentlyValidPath = pathBuildUp; // Save the most current, valid built-up path
+
+    // If there's another path part to add, add it to the end of the built-up path
+    if (pathPartsIdx < pathParts.size())
+    {
+      /* If the built-up path doesn't already have a separator on the end, add one. */
+      if (pathBuildUp[pathBuildUp.size() - 1] != QDir::separator())
+      {
+        pathBuildUp.append(QDir::separator());
+      }
+
+      pathBuildUp.append(pathParts[pathPartsIdx]);  // Add the next path part to the built-up path
+      buildingFi.setFile(pathBuildUp);
+    }
+    pathPartsIdx++;
+  }
+
+  return valid;
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
 void AbstractIOFileWidget::on_m_LineEdit_textChanged(const QString& text)
 {
-  QFileInfo fi(m_LineEdit->text());
-
-  if (m_LineEdit->text().isEmpty() == false && fi.exists())
+  if (hasValidFilePath(text) == true)
   {
     m_ShowFileAction->setEnabled(true);
   }
@@ -249,8 +326,16 @@ void AbstractIOFileWidget::on_m_LineEdit_textChanged(const QString& text)
     m_ShowFileAction->setDisabled(true);
   }
 
-  m_LineEdit->setStyleSheet(QString::fromLatin1("QLineEdit { color: rgb(255, 0, 0); }"));
-  m_LineEdit->setToolTip("Press the 'Return' key to apply your changes");
+  if (text != m_CurrentText)
+  {
+    m_LineEdit->setStyleSheet(QString::fromLatin1("QLineEdit { color: rgb(255, 0, 0); }"));
+    m_LineEdit->setToolTip("Press the 'Return' key to apply your changes");
+  }
+  else
+  {
+    m_LineEdit->setStyleSheet("");
+    m_LineEdit->setToolTip("");
+  }
 }
 
 // -----------------------------------------------------------------------------

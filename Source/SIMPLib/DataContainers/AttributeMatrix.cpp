@@ -51,7 +51,6 @@
 #include "SIMPLib/HDF5/H5DataArrayReader.h"
 #include "SIMPLib/HDF5/VTKH5Constants.h"
 #include "SIMPLib/Math/SIMPLibMath.h"
-#include "SIMPLib/Utilities/SIMPLibRandom.h"
 #include "SIMPLib/DataContainers/AttributeMatrixProxy.h"
 #include "SIMPLib/DataContainers/DataContainerProxy.h"
 
@@ -288,6 +287,11 @@ void AttributeMatrix::setTupleDimensions(QVector<size_t> tupleDims)
 // -----------------------------------------------------------------------------
 size_t AttributeMatrix::getNumberOfTuples()
 {
+  if (m_TupleDims.size() == 0)
+  {
+    return 0;
+  }
+
   size_t numTuples = m_TupleDims[0];
   for(int i = 1; i < m_TupleDims.size(); i++)
   {
@@ -603,9 +607,9 @@ QString AttributeMatrix::getInfoString(SIMPL::InfoStringFormat format)
     ss << "<body>\n";
     ss << "<table cellpadding=\"4\" cellspacing=\"0\" border=\"0\">\n";
     ss << "<tbody>\n";
-    ss << "<tr bgcolor=\"#D3D8E0\"><th colspan=2>Attribute Matrix Info</th></tr>";
+    ss << "<tr bgcolor=\"#FFFCEA\"><th colspan=2>Attribute Matrix Info</th></tr>";
 
-    ss << "<tr bgcolor=\"#C3C8D0\"><th align=\"right\">Name:</th><td>" << getName() << "</td></tr>";
+    ss << "<tr bgcolor=\"#FFFCEA\"><th align=\"right\">Name:</th><td>" << getName() << "</td></tr>";
 
     QString typeString;
     switch(m_Type)
@@ -651,12 +655,13 @@ QString AttributeMatrix::getInfoString(SIMPL::InfoStringFormat format)
       break;
     case AttributeMatrix::Type::Generic:
       typeString = "Generic";
+      break;
     default:
       typeString = "Unknown";
       break;
     }
 
-    ss << "<tr bgcolor=\"#C3C8D0\"><th align=\"right\">Type:</th><td>" << typeString << "</td></tr>";
+    ss << "<tr bgcolor=\"#FFFCEA\"><th align=\"right\">Type:</th><td>" << typeString << "</td></tr>";
     QString tupleStr = "(";
     for(int i = 0; i < m_TupleDims.size(); i++)
     {
@@ -667,11 +672,10 @@ QString AttributeMatrix::getInfoString(SIMPL::InfoStringFormat format)
       }
     }
     tupleStr = tupleStr + ")";
-    ss << "<tr bgcolor=\"#C3C8D0\"><th align=\"right\">Tuple Dimensions:</th><td>" << tupleStr << "</td></tr>";
+    ss << "<tr bgcolor=\"#FFFCEA\"><th align=\"right\">Tuple Dimensions:</th><td>" << tupleStr << "</td></tr>";
 
-    ss << "<tr bgcolor=\"#C3C8D0\"><th align=\"right\">Attribute Array Count:</th><td>" << getNumAttributeArrays() << "</td></tr>";
+    ss << "<tr bgcolor=\"#FFFCEA\"><th align=\"right\">Attribute Array Count:</th><td>" << getNumAttributeArrays() << "</td></tr>";
     ss << "</tbody></table>\n";
-    ss << "<br/>";
     ss << "</body></html>";
   }
   else

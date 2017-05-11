@@ -114,6 +114,6 @@ void Observable::notifyProgressMessage(const QString& prefix, const QString& hum
   PipelineMessage pm = PipelineMessage::CreateStatusMessage(getNameOfClass(), humanLabel, str);
   pm.setPrefix(prefix);
   pm.setProgressValue(progress);
-  pm.setType(PipelineMessage::StatusMessageAndProgressValue);
+  pm.setType(PipelineMessage::MessageType::StatusMessageAndProgressValue);
   emit filterGeneratedMessage(pm);
 }

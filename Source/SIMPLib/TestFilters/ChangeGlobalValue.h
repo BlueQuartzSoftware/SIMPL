@@ -36,9 +36,9 @@
 #ifndef _changeglobalvalue_h_
 #define _changeglobalvalue_h_
 
-#include "SIMPLib/SIMPLib.h"
 #include "SIMPLib/Common/AbstractFilter.h"
 #include "SIMPLib/Common/SIMPLibSetGetMacros.h"
+#include "SIMPLib/SIMPLib.h"
 
 class SIMPLib_EXPORT ChangeGlobalValue : public AbstractFilter
 {
@@ -46,21 +46,21 @@ class SIMPLib_EXPORT ChangeGlobalValue : public AbstractFilter
 
 public:
   SIMPL_SHARED_POINTERS(ChangeGlobalValue)
-    SIMPL_STATIC_NEW_MACRO(ChangeGlobalValue)
-    SIMPL_TYPE_MACRO_SUPER(ChangeGlobalValue, AbstractFilter)
+  SIMPL_STATIC_NEW_MACRO(ChangeGlobalValue)
+  SIMPL_TYPE_MACRO_SUPER(ChangeGlobalValue, AbstractFilter)
 
-    virtual ~ChangeGlobalValue();
+  virtual ~ChangeGlobalValue();
 
   SIMPL_FILTER_PARAMETER(int, Value)
-    Q_PROPERTY(int Value READ getValue WRITE setValue)
+  Q_PROPERTY(int Value READ getValue WRITE setValue)
 
-    SIMPL_FILTER_PARAMETER(int*, GlobalValue)
-    Q_PROPERTY(int* GlobalValue READ getGlobalValue WRITE setGlobalValue)
+  SIMPL_FILTER_PARAMETER(int*, GlobalValue)
+  Q_PROPERTY(int* GlobalValue READ getGlobalValue WRITE setGlobalValue)
 
-    /**
-    * @brief newFilterInstance Reimplemented from @see AbstractFilter class
-    */
-    virtual AbstractFilter::Pointer newFilterInstance(bool copyFilterParameters);
+  /**
+  * @brief newFilterInstance Reimplemented from @see AbstractFilter class
+  */
+  virtual AbstractFilter::Pointer newFilterInstance(bool copyFilterParameters);
 
   /**
   * @brief execute Reimplemented from @see AbstractFilter class
@@ -76,9 +76,8 @@ protected:
   ChangeGlobalValue();
 
 private:
-
   ChangeGlobalValue(const ChangeGlobalValue&); // Copy Constructor Not Implemented
-  void operator=(const ChangeGlobalValue&); // Operator '=' Not Implemented
+  void operator=(const ChangeGlobalValue&);    // Operator '=' Not Implemented
 };
 
 #endif /* _changeglobalvalue_h_ */

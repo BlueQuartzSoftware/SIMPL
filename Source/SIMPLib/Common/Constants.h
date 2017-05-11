@@ -117,6 +117,59 @@ namespace SIMPL
     const QString SupportedTypeList(TypeNames::Int8 + ", " + TypeNames::UInt8 + ", " + TypeNames::Int16 + ", " + TypeNames::UInt16 + ", " + TypeNames::Int32 + ", " + TypeNames::UInt32 + ", " + TypeNames::Int64 + ", " + TypeNames::UInt64 + ", " + TypeNames::Float + ", " + TypeNames::Double);
   }
 
+  namespace NumericTypes
+  {
+    namespace Names
+    {
+      const QString Int8("signed   int 8  bit");
+      const QString UInt8("unsigned int 8  bit");
+      const QString Int16("signed   int 16 bit");
+      const QString UInt16("unsigned int 16 bit");
+      const QString Int32("signed   int 32 bit");
+      const QString UInt32("unsigned int 32 bit");
+      const QString Int64("signed   int 64 bit");
+      const QString UInt64("unsigned int 64 bit");
+      const QString Float("       Float 32 bit");
+      const QString Double("      Double 64 bit");
+    }
+
+    enum class Type : int
+    {
+      Int8 = 0,
+      UInt8,
+      Int16,
+      UInt16,
+      Int32,
+      UInt32,
+      Int64,
+      UInt64,
+      Float,
+      Double,
+      UnknownNumType
+    };
+
+    const QString SupportedTypeList(NumericTypes::Names::Int8 + ", " + NumericTypes::Names::UInt8 + ", " + NumericTypes::Names::Int16 + ", " + NumericTypes::Names::UInt16 + ", " + NumericTypes::Names::Int32 + ", " + 
+      NumericTypes::Names::UInt32 + ", " + NumericTypes::Names::Int64 + ", " + NumericTypes::Names::UInt64 + ", " + NumericTypes::Names::Float + ", " + NumericTypes::Names::Double);
+  }
+
+  namespace ScalarTypes
+  {
+    enum class Type : int
+    {
+      Int8 = 0,
+      UInt8,
+      Int16,
+      UInt16,
+      Int32,
+      UInt32,
+      Int64,
+      UInt64,
+      Float,
+      Double,
+      Bool
+    };
+  }
+
   namespace IO
   {
     const QString DAPSettingsHeader("Path");
@@ -190,20 +243,17 @@ namespace SIMPL
 
   namespace FilterGroups
   {
-    const QString GenericFilters("Generic");
-    const QString OrientationAnalysisFilters("Orientation Analysis");
+    const QString CoreFilters("Core");
+    const QString Generic("Generic");
     const QString IOFilters("IO");
     const QString ProcessingFilters("Processing");
     const QString ReconstructionFilters("Reconstruction");
     const QString SamplingFilters("Sampling");
-    const QString StatisticsFilters("Statistics");
-    const QString CustomFilters("Custom");
+    const QString StatisticsFilters("Statistics");    
     const QString SyntheticBuildingFilters("Synthetic Building");
     const QString SurfaceMeshingFilters("Surface Meshing");
-    const QString SolidMeshingFilters("Solid Meshing");
-    const QString TestFilters("Test");
-    const QString CoreFilters("Core");
     const QString Utilities("Utilities");
+    const QString CustomFilters("Custom");
     const QString Unsupported("Unsupported");
   }
 
@@ -888,6 +938,21 @@ namespace SIMPL
     const QString VoxelsFile("voxels_v5.txt");
   }
 
+  namespace Union
+  {
+    namespace Strings
+    {
+      const QString And("And");
+      const QString Or("Or");
+    }
+    enum Enumeration
+    {
+      Operator_And = 0,
+      Operator_Or,
+      Operator_Unknown
+    };
+  }
+
   namespace Comparison
   {
     namespace Strings
@@ -895,12 +960,14 @@ namespace SIMPL
       const QString LessThan("<");
       const QString GreaterThan(">");
       const QString Equal("=");
+      const QString NotEqual("!=");
     }
     enum Enumeration
     {
       Operator_LessThan = 0,
       Operator_GreaterThan,
       Operator_Equal,
+      Operator_NotEqual,
       Operator_Unknown
     };
 
@@ -926,6 +993,9 @@ namespace Test
   const QString TestPluginDisplayName("TestPlugin");
   const QString TestBaseName("TestPlugin");
 }
+
+Q_DECLARE_METATYPE(SIMPL::NumericTypes::Type)
+Q_DECLARE_METATYPE(SIMPL::ScalarTypes::Type)
 
 
 #if 0

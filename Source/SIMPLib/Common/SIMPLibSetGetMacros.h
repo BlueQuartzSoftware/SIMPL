@@ -409,8 +409,8 @@
   private:\
   bool m_##prpty;\
   public:\
-  SIMPL_SET_PROPERTY(bool, prpty)\
-  bool is##prpty() { return m_##prpty; }
+  virtual SIMPL_SET_PROPERTY(bool, prpty)\
+  virtual bool is##prpty() { return m_##prpty; }
 
 
 

@@ -59,7 +59,7 @@ class QStandardItemModel;
 class DataContainerReader;
 class QLabel;
 class QtSFSDropLabel;
-
+class QAction;
 
 /**
 * @brief
@@ -100,7 +100,7 @@ class SVWidgetsLib_EXPORT DataContainerReaderWidget : public FilterParameterWidg
      * @param lineEdit
      * @return
      */
-    bool verifyPathExists(QString filePath, QtSFSDropLabel* lineEdit);
+    bool verifyPathExists(QString filePath, QLineEdit *lineEdit);
 
     void setFilter(AbstractFilter* value);
     AbstractFilter* getFilter() const;
@@ -115,7 +115,11 @@ class SVWidgetsLib_EXPORT DataContainerReaderWidget : public FilterParameterWidg
     void itemActivated(const QModelIndex& index);
 
 
-    void on_filePath_fileDropped(const QString& text);
+    void on_m_LineEdit_fileDropped(const QString& text);
+    void on_m_LineEdit_editingFinished();
+    void on_m_LineEdit_textChanged(const QString& text);
+    void on_m_LineEdit_returnPressed();
+
     void on_selectBtn_clicked();
     void on_dcaProxyView_updatePreviewWidget(const QModelIndex& index);
 
@@ -132,16 +136,35 @@ class SVWidgetsLib_EXPORT DataContainerReaderWidget : public FilterParameterWidg
     static void setOpenDialogLastFilePath(QString val) { m_OpenDialogLastFilePath = val; }
     static QString getOpenDialogLastFilePath() { return m_OpenDialogLastFilePath; }
 
+    /**
+     * @brief setupMenuField
+     */
+    void setupMenuField();
+
+  protected slots:
+
+    /**
+     * @brief showFileInFileSystem
+     */
+    void showFileInFileSystem();
+
 
   private:
-    DataContainerReader*   m_Filter;
+    static QString                       m_OpenDialogLastFilePath;
+    DataContainerReader*                 m_Filter = nullptr;
+    QString                              m_CurrentlyValidPath = "";
+    QString                              m_CurrentText = "";
     DataContainerReaderFilterParameter*  m_FilterParameter;
-    DataContainerArrayProxy m_DcaProxy;
-    bool m_DidCausePreflight;
+    DataContainerArrayProxy              m_DcaProxy;
+    bool                                 m_DidCausePreflight;
+    QAction*                             m_ShowFileAction = nullptr;
 
-    static QString    m_OpenDialogLastFilePath;
-
-
+    /**
+     * @brief hasValidFilePath
+     * @param filePath
+     * @return
+     */
+    bool hasValidFilePath(const QString &filePath);
 
     DataContainerReaderWidget(const DataContainerReaderWidget&); // Copy Constructor Not Implemented
     void operator=(const DataContainerReaderWidget&); // Operator '=' Not Implemented
@@ -149,5 +172,3 @@ class SVWidgetsLib_EXPORT DataContainerReaderWidget : public FilterParameterWidg
 };
 
 #endif /* _DataContainerReaderWidget_H_ */
-
-

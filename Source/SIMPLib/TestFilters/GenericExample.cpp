@@ -430,7 +430,7 @@ AbstractFilter::Pointer GenericExample::newFilterInstance(bool copyFilterParamet
 // -----------------------------------------------------------------------------
 const QString GenericExample::getCompiledLibraryName()
 {
-  return Test::TestBaseName;
+  return Core::CoreBaseName;
 }
 
 // -----------------------------------------------------------------------------
@@ -438,7 +438,7 @@ const QString GenericExample::getCompiledLibraryName()
 // -----------------------------------------------------------------------------
 const QString GenericExample::getGroupName()
 {
-  return SIMPL::FilterGroups::TestFilters;
+  return SIMPL::FilterGroups::Generic;
 }
 
 // -----------------------------------------------------------------------------
@@ -446,7 +446,7 @@ const QString GenericExample::getGroupName()
 // -----------------------------------------------------------------------------
 const QString GenericExample::getSubGroupName()
 {
-  return "Misc";
+  return "Test";
 }
 
 // -----------------------------------------------------------------------------

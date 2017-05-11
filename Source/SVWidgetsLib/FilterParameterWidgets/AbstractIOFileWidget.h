@@ -38,8 +38,10 @@
 
 #include <QtCore/QObject>
 #include <QtCore/QPointer>
-#include <QtWidgets/QWidget>
 
+#include <QtGui/QKeyEvent>
+
+#include <QtWidgets/QWidget>
 
 #include "SVWidgetsLib/QtSupport/QtSFaderWidget.h"
 
@@ -100,6 +102,8 @@ class SVWidgetsLib_EXPORT AbstractIOFileWidget : public FilterParameterWidget, p
   protected:
     void setOpenDialogLastFilePath(QString val);
     QString getOpenDialogLastFilePath();
+    void keyPressEvent(QKeyEvent* event);
+
 
     /**
      * @brief setupMenuField
@@ -107,6 +111,9 @@ class SVWidgetsLib_EXPORT AbstractIOFileWidget : public FilterParameterWidget, p
     void setupMenuField();
 
   protected slots:
+    /**
+     * @brief showFileInFileSystem
+     */
     void showFileInFileSystem();
 
   signals:
@@ -114,9 +121,17 @@ class SVWidgetsLib_EXPORT AbstractIOFileWidget : public FilterParameterWidget, p
     void parametersChanged();
 
   private:
-    bool m_DidCausePreflight;
+    bool     m_DidCausePreflight = false;
     QAction* m_ShowFileAction = nullptr;
+    QString  m_CurrentlyValidPath = "";
+    QString  m_CurrentText = "";
 
+    /**
+     * @brief hasValidFilePath
+     * @param filePath
+     * @return
+     */
+    bool hasValidFilePath(const QString &filePath);
 
     AbstractIOFileWidget(const AbstractIOFileWidget&); // Copy Constructor Not Implemented
     void operator=(const AbstractIOFileWidget&); // Operator '=' Not Implemented

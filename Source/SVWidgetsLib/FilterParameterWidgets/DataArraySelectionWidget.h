@@ -68,6 +68,7 @@ class SVWidgetsLib_EXPORT DataArraySelectionWidget : public FilterParameterWidge
     Q_OBJECT
 
   public:
+
     /**
     * @brief Constructor
     * @param parameter The FilterParameter object that this widget represents
@@ -101,6 +102,11 @@ class SVWidgetsLib_EXPORT DataArraySelectionWidget : public FilterParameterWidge
     void initializeWidget(FilterParameter* parameter, AbstractFilter* filter);
 
     bool eventFilter(QObject* obj, QEvent* event);
+
+    void dragEnterEvent(QDragEnterEvent* event);
+    void dropEvent(QDropEvent* event);
+    void dragLeaveEvent(QDragLeaveEvent* event);
+
 
   public slots:
     void beforePreflight();

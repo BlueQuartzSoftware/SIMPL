@@ -122,7 +122,7 @@ void MultiDataArraySelectionWidget::setupGui()
   // Generate the text for the QLabel
   label->setText(getFilterParameter()->getHumanLabel());
 
-  m_SelectedAttributeMatrixPath->setStyleSheet(QtSStyles::DAPSelectionButtonStyle(true));
+  m_SelectedAttributeMatrixPath->setStyleSheet(QtSStyles::QToolSelectionButtonStyle(true));
 
   m_MenuMapper = new QSignalMapper(this);
   connect(m_MenuMapper, SIGNAL(mapped(QString)), this, SLOT(attributeMatrixSelected(QString)));
@@ -586,7 +586,7 @@ void MultiDataArraySelectionWidget::afterPreflight()
     if (nullptr != am.get()) {
       QString html = am->getInfoString(SIMPL::HtmlFormat);
       m_SelectedAttributeMatrixPath->setToolTip(html);
-      m_SelectedAttributeMatrixPath->setStyleSheet(QtSStyles::DAPSelectionButtonStyle(true));
+      m_SelectedAttributeMatrixPath->setStyleSheet(QtSStyles::QToolSelectionButtonStyle(true));
 
       QList<QString> arrayNames = am->getAttributeArrayNames();
 
@@ -607,6 +607,10 @@ void MultiDataArraySelectionWidget::afterPreflight()
           //item->setFlags(item->flags() & ~Qt::ItemIsEnabled);
           item->setBackgroundColor(QColor(235, 110, 110));
         }
+        else
+        {
+          item->setBackgroundColor(QColor(255, 255, 255));
+        }
       }
 
       for (int i=0; i<arrayNames.size(); i++)
@@ -620,7 +624,7 @@ void MultiDataArraySelectionWidget::afterPreflight()
   }
   else
   {
-    m_SelectedAttributeMatrixPath->setStyleSheet(QtSStyles::DAPSelectionButtonStyle(false));
+    m_SelectedAttributeMatrixPath->setStyleSheet(QtSStyles::QToolSelectionButtonStyle(false));
   }
 }
 

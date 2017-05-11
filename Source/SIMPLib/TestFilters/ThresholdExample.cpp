@@ -219,7 +219,7 @@ AbstractFilter::Pointer ThresholdExample::newFilterInstance(bool copyFilterParam
 // -----------------------------------------------------------------------------
 const QString ThresholdExample::getCompiledLibraryName()
 {
-  return Test::TestBaseName;
+  return Core::CoreBaseName;
 }
 
 // -----------------------------------------------------------------------------
@@ -227,7 +227,7 @@ const QString ThresholdExample::getCompiledLibraryName()
 // -----------------------------------------------------------------------------
 const QString ThresholdExample::getGroupName()
 {
-  return SIMPL::FilterGroups::TestFilters;
+  return SIMPL::FilterGroups::Generic;
 }
 
 // -----------------------------------------------------------------------------
@@ -235,7 +235,7 @@ const QString ThresholdExample::getGroupName()
 // -----------------------------------------------------------------------------
 const QString ThresholdExample::getSubGroupName()
 {
-  return "Misc";
+  return "Test";
 }
 
 // -----------------------------------------------------------------------------

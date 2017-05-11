@@ -42,6 +42,11 @@ if(NOT "${DREAM3D_SDK}" STREQUAL "")
   endif()
 endif()
 
+# Request C++11 standard, using new CMake variables.
+set(CMAKE_CXX_STANDARD 11)
+set(CMAKE_CXX_STANDARD_REQUIRED True)
+set(CMAKE_CXX_EXTENSIONS False)
+
 if(${CMAKE_MAJOR_VERSION} STREQUAL "3")
   # CMake 3.0 introduces VERSION variables for each Project.
   cmake_policy(SET CMP0048 NEW)
@@ -51,7 +56,7 @@ if(${CMAKE_MAJOR_VERSION} STREQUAL "3")
   cmake_policy(SET CMP0054 NEW)
 endif()
 
-cmake_minimum_required(VERSION 3.1.0)
+cmake_minimum_required(VERSION 3.6.0)
 
 #------------------------------------------------------------------------------
 # Create the Top level Project
@@ -258,19 +263,6 @@ CMP_AddQt5Support( "${SIMPL_Qt5_COMPONENTS}" "${USE_QtWebEngine}" "${SIMPLProj_B
 include(${CMP_SOURCE_DIR}/ExtLib/HDF5Support.cmake)
 
 # --------------------------------------------------------------------
-# Find Boost Headers/Libraries
-#set(Boost_FIND_REQUIRED FALSE)
-set(Boost_DEBUG FALSE)
-set(Boost_USE_MULTITHREADED TRUE)
-set(Boost_USE_STATIC_LIBS TRUE)
-set(Boost_ADDITIONAL_VERSIONS 1.57 1.58 1.59 1.60)
-set(Boost_FIND_COMPONENTS "")
-set(Boost_NO_BOOST_CMAKE 1)
-FIND_PACKAGE(Boost)
-INCLUDE_DIRECTORIES(${Boost_INCLUDE_DIRS})
-LINK_DIRECTORIES(${Boost_LIBRARY_DIRS})
-
-# --------------------------------------------------------------------
 # Should we use Intel Threading Building Blocks
 # --------------------------------------------------------------------
 set(SIMPLib_USE_PARALLEL_ALGORITHMS "")
@@ -281,7 +273,9 @@ if(SIMPL_USE_MULTITHREADED_ALGOS)
         include_directories(${TBB_INCLUDE_DIRS} )
         CMP_COPY_DEPENDENT_LIBRARIES("tbb;tbb_malloc")
         # Append the locations of the TBB libraries to our Library Search Paths
-        list(APPEND CMP_LIB_SEARCH_DIRS ${TBB_BINARY_DIR} ${TBB_LIBRARY_DIR} )
+        # TBB_LIB_SEARCH_PATH Comes from the FindTBB.cmake file and should work across all platforms
+        file(APPEND ${CMP_PLUGIN_SEARCHDIR_FILE} "${TBB_LIB_SEARCH_PATH};")
+
         # Create an install rule to copy the dependent shared library over to the installed location
         CMP_LIBRARIES_INSTALL_RULES("tbb;tbb_malloc" ".")
     else()
@@ -449,6 +443,16 @@ install(
   COMPONENT
     Devel
 )
+
+
+# --------------------------------------------------------------------
+# Build the SimpleITKExplicit Library.
+option(SIMPL_USE_ITK "Use ITK For Image Processing" ON)
+if(SIMPL_USE_ITK)
+  add_subdirectory( ${SIMPLProj_SOURCE_DIR}/Source/SimpleITKExplicit ${PROJECT_BINARY_DIR}/SimpleITKExplicit)
+  get_property(SimpleITKExplicit_LIB_NAME TARGET SimpleITKExplicit PROPERTY OUTPUT_NAME)
+endif()
+
 
 # -----------------------------------------------------------------------
 # Add in the Necessary HDF5 Support Sources into a library

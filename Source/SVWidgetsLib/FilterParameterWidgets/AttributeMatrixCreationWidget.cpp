@@ -115,14 +115,16 @@ void AttributeMatrixCreationWidget::setupGui()
     label->setText(getFilterParameter()->getHumanLabel());
 
     QString str = getFilter()->property(PROPERTY_NAME_AS_CHAR).toString();
-    attributeMatrixName->setText(str);
+    stringEdit->setText(str, true);
   }
   blockSignals(false);
 
-  // Do not allow the user to put a forward slash into the attributeMatrixName line edit
-  attributeMatrixName->setValidator(new QRegularExpressionValidator(QRegularExpression("[^/]*"), this));
+  stringEdit->hideButtons();
 
-  m_SelectedDataContainerPath->setStyleSheet(QtSStyles::DAPSelectionButtonStyle(true));
+  // Do not allow the user to put a forward slash into the attributeMatrixName line edit
+  stringEdit->setValidator(new QRegularExpressionValidator(QRegularExpression("[^/]*"), this));
+
+  m_SelectedDataContainerPath->setStyleSheet(QtSStyles::QToolSelectionButtonStyle(true));
 
   m_MenuMapper = new QSignalMapper(this);
   connect(m_MenuMapper, SIGNAL(mapped(QString)), this, SLOT(dataContainerSelected(QString)));
@@ -136,18 +138,16 @@ void AttributeMatrixCreationWidget::setupGui()
   // Catch when the filter wants its values updated
   connect(getFilter(), SIGNAL(updateFilterParameters(AbstractFilter*)), this, SLOT(filterNeedsInputParameters(AbstractFilter*)));
 
-  connect(attributeMatrixName, SIGNAL(textEdited(const QString&)), this, SLOT(widgetChanged(const QString&)));
+  connect(stringEdit, SIGNAL(valueChanged(const QString&)), this, SIGNAL(parametersChanged()));
 
-  attributeMatrixName->blockSignals(true);
   m_SelectedDataContainerPath->blockSignals(true);
   DataArrayPath amPath = getFilter()->property(PROPERTY_NAME_AS_CHAR).value<DataArrayPath>();
   m_SelectedDataContainerPath->setText(amPath.getDataContainerName());
-  attributeMatrixName->setText(amPath.getAttributeMatrixName());
-  // Now let the gui send signals like normal
-  attributeMatrixName->blockSignals(false);
+  stringEdit->setText(amPath.getAttributeMatrixName(), true);
   m_SelectedDataContainerPath->blockSignals(false);
 
-  hideButton();
+  changeStyleSheet(Style::FS_STANDARD_STYLE);
+
 }
 
 // -----------------------------------------------------------------------------
@@ -301,37 +301,6 @@ void AttributeMatrixCreationWidget::setSelectedPath(DataArrayPath dcPath)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void AttributeMatrixCreationWidget::on_attributeMatrixName_returnPressed()
-{
-  on_applyChangesBtn_clicked();
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-void AttributeMatrixCreationWidget::hideButton()
-{
-  attributeMatrixName->setToolTip("");
-  applyChangesBtn->setVisible(false);
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-void AttributeMatrixCreationWidget::widgetChanged(const QString& text)
-{
-  attributeMatrixName->setStyleSheet(QString::fromLatin1("color: rgb(255, 0, 0);"));
-  attributeMatrixName->setToolTip("Press the 'Return' key to apply your changes");
-  if(applyChangesBtn->isVisible() == false)
-  {
-    applyChangesBtn->setVisible(true);
-    fadeInWidget(applyChangesBtn);
-  }
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
 void AttributeMatrixCreationWidget::beforePreflight()
 {
   if(nullptr == getFilter())
@@ -361,12 +330,12 @@ void AttributeMatrixCreationWidget::afterPreflight()
     if (nullptr != dc.get()) {
       QString html = dc->getInfoString(SIMPL::HtmlFormat);
       m_SelectedDataContainerPath->setToolTip(html);
-      m_SelectedDataContainerPath->setStyleSheet(QtSStyles::DAPSelectionButtonStyle(true));
+      m_SelectedDataContainerPath->setStyleSheet(QtSStyles::QToolSelectionButtonStyle(true));
     }
   }
   else
   {
-    m_SelectedDataContainerPath->setStyleSheet(QtSStyles::DAPSelectionButtonStyle(false));
+    m_SelectedDataContainerPath->setStyleSheet(QtSStyles::QToolSelectionButtonStyle(false));
   }
 }
 
@@ -377,7 +346,7 @@ void AttributeMatrixCreationWidget::filterNeedsInputParameters(AbstractFilter* f
 {
   // Generate the path to the AttributeArray
   DataArrayPath selectedPath = DataArrayPath::Deserialize(m_SelectedDataContainerPath->text(), Detail::Delimiter);
-  selectedPath.setAttributeMatrixName(attributeMatrixName->text());
+  selectedPath.setAttributeMatrixName(stringEdit->getText());
   QVariant var;
   var.setValue(selectedPath);
   bool ok = false;
@@ -387,29 +356,4 @@ void AttributeMatrixCreationWidget::filterNeedsInputParameters(AbstractFilter* f
   {
     FilterParameterWidgetsDialogs::ShowCouldNotSetFilterParameter(getFilter(), getFilterParameter());
   }
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-void AttributeMatrixCreationWidget::on_applyChangesBtn_clicked()
-{
-  m_DidCausePreflight = true;
-
-  attributeMatrixName->setStyleSheet(QString(""));
-  emit parametersChanged();
-
-  QPointer<QtSFaderWidget> faderWidget = new QtSFaderWidget(applyChangesBtn);
-  setFaderWidget(faderWidget);
-
-  if(getFaderWidget())
-  {
-    faderWidget->close();
-  }
-  faderWidget = new QtSFaderWidget(applyChangesBtn);
-  faderWidget->setFadeOut();
-  connect(faderWidget, SIGNAL(animationComplete()), this, SLOT(hideButton()));
-  faderWidget->start();
-
-  m_DidCausePreflight = false;
 }

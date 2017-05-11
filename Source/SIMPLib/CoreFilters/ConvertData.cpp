@@ -37,28 +37,10 @@
 
 #include "SIMPLib/Common/Constants.h"
 #include "SIMPLib/FilterParameters/AbstractFilterParametersReader.h"
-#include "SIMPLib/FilterParameters/ChoiceFilterParameter.h"
+#include "SIMPLib/FilterParameters/NumericTypeFilterParameter.h"
 #include "SIMPLib/FilterParameters/DataArraySelectionFilterParameter.h"
 #include "SIMPLib/FilterParameters/StringFilterParameter.h"
 #include "SIMPLib/SIMPLibVersion.h"
-
-namespace Detail
-{
-enum NumType
-{
-  Int8 = 0,
-  UInt8,
-  Int16,
-  UInt16,
-  Int32,
-  UInt32,
-  Int64,
-  UInt64,
-  Float,
-  Double,
-  UnknownNumType
-};
-}
 
 namespace Detail
 {
@@ -72,12 +54,12 @@ template <typename T>
  * @param attributeMatrixName Name of target AttributeMatrix
  * @param name Name of converted array
  */
-void ConvertData(T* ptr, QVector<size_t> dims, DataContainer::Pointer m, int32_t scalarType, const QString attributeMatrixName, const QString& name)
+void ConvertData(T* ptr, QVector<size_t> dims, DataContainer::Pointer m, SIMPL::NumericTypes::Type scalarType, const QString attributeMatrixName, const QString& name)
 {
-  int voxels = ptr->getNumberOfTuples();
+  size_t voxels = ptr->getNumberOfTuples();
   size_t size = ptr->getSize();
 
-  if(scalarType == Detail::Int8)
+  if(scalarType == SIMPL::NumericTypes::Type::Int8)
   {
     Int8ArrayType::Pointer p = Int8ArrayType::CreateArray(voxels, dims, name);
     m->getAttributeMatrix(attributeMatrixName)->addAttributeArray(p->getName(), p);
@@ -86,7 +68,7 @@ void ConvertData(T* ptr, QVector<size_t> dims, DataContainer::Pointer m, int32_t
       p->setValue(v, ptr->getValue(v));
     }
   }
-  else if(scalarType == Detail::UInt8)
+  else if(scalarType == SIMPL::NumericTypes::Type::UInt8)
   {
     UInt8ArrayType::Pointer p = UInt8ArrayType::CreateArray(voxels, dims, name);
     m->getAttributeMatrix(attributeMatrixName)->addAttributeArray(p->getName(), p);
@@ -95,7 +77,7 @@ void ConvertData(T* ptr, QVector<size_t> dims, DataContainer::Pointer m, int32_t
       p->setValue(v, ptr->getValue(v));
     }
   }
-  else if(scalarType == Detail::Int16)
+  else if(scalarType == SIMPL::NumericTypes::Type::Int16)
   {
     Int16ArrayType::Pointer p = Int16ArrayType::CreateArray(voxels, dims, name);
     m->getAttributeMatrix(attributeMatrixName)->addAttributeArray(p->getName(), p);
@@ -104,7 +86,7 @@ void ConvertData(T* ptr, QVector<size_t> dims, DataContainer::Pointer m, int32_t
       p->setValue(v, ptr->getValue(v));
     }
   }
-  else if(scalarType == Detail::UInt16)
+  else if(scalarType == SIMPL::NumericTypes::Type::UInt16)
   {
     UInt16ArrayType::Pointer p = UInt16ArrayType::CreateArray(voxels, dims, name);
     m->getAttributeMatrix(attributeMatrixName)->addAttributeArray(p->getName(), p);
@@ -113,7 +95,7 @@ void ConvertData(T* ptr, QVector<size_t> dims, DataContainer::Pointer m, int32_t
       p->setValue(v, ptr->getValue(v));
     }
   }
-  else if(scalarType == Detail::Int32)
+  else if(scalarType == SIMPL::NumericTypes::Type::Int32)
   {
     Int32ArrayType::Pointer p = Int32ArrayType::CreateArray(voxels, dims, name);
     m->getAttributeMatrix(attributeMatrixName)->addAttributeArray(p->getName(), p);
@@ -122,7 +104,7 @@ void ConvertData(T* ptr, QVector<size_t> dims, DataContainer::Pointer m, int32_t
       p->setValue(v, ptr->getValue(v));
     }
   }
-  else if(scalarType == Detail::UInt32)
+  else if(scalarType == SIMPL::NumericTypes::Type::UInt32)
   {
     UInt32ArrayType::Pointer p = UInt32ArrayType::CreateArray(voxels, dims, name);
     m->getAttributeMatrix(attributeMatrixName)->addAttributeArray(p->getName(), p);
@@ -131,7 +113,7 @@ void ConvertData(T* ptr, QVector<size_t> dims, DataContainer::Pointer m, int32_t
       p->setValue(v, ptr->getValue(v));
     }
   }
-  else if(scalarType == Detail::Int64)
+  else if(scalarType == SIMPL::NumericTypes::Type::Int64)
   {
     Int64ArrayType::Pointer p = Int64ArrayType::CreateArray(voxels, dims, name);
     m->getAttributeMatrix(attributeMatrixName)->addAttributeArray(p->getName(), p);
@@ -140,7 +122,7 @@ void ConvertData(T* ptr, QVector<size_t> dims, DataContainer::Pointer m, int32_t
       p->setValue(v, ptr->getValue(v));
     }
   }
-  else if(scalarType == Detail::UInt64)
+  else if(scalarType == SIMPL::NumericTypes::Type::UInt64)
   {
     UInt64ArrayType::Pointer p = UInt64ArrayType::CreateArray(voxels, dims, name);
     m->getAttributeMatrix(attributeMatrixName)->addAttributeArray(p->getName(), p);
@@ -149,7 +131,7 @@ void ConvertData(T* ptr, QVector<size_t> dims, DataContainer::Pointer m, int32_t
       p->setValue(v, ptr->getValue(v));
     }
   }
-  else if(scalarType == Detail::Float)
+  else if(scalarType == SIMPL::NumericTypes::Type::Float)
   {
     FloatArrayType::Pointer p = FloatArrayType::CreateArray(voxels, dims, name);
     m->getAttributeMatrix(attributeMatrixName)->addAttributeArray(p->getName(), p);
@@ -158,7 +140,7 @@ void ConvertData(T* ptr, QVector<size_t> dims, DataContainer::Pointer m, int32_t
       p->setValue(v, ptr->getValue(v));
     }
   }
-  else if(scalarType == Detail::Double)
+  else if(scalarType == SIMPL::NumericTypes::Type::Double)
   {
     DoubleArrayType::Pointer p = DoubleArrayType::CreateArray(voxels, dims, name);
     m->getAttributeMatrix(attributeMatrixName)->addAttributeArray(p->getName(), p);
@@ -190,7 +172,7 @@ void ConvertData(T* ptr, QVector<size_t> dims, DataContainer::Pointer m, int32_t
 // -----------------------------------------------------------------------------
 ConvertData::ConvertData()
 : AbstractFilter()
-, m_ScalarType(0)
+, m_ScalarType(SIMPL::NumericTypes::Type::Int8)
 , m_OutputArrayName("")
 , m_SelectedCellArrayPath("", "", "")
 {
@@ -211,28 +193,7 @@ void ConvertData::setupFilterParameters()
 {
   FilterParameterVector parameters;
 
-  {
-    ChoiceFilterParameter::Pointer parameter = ChoiceFilterParameter::New();
-    parameter->setHumanLabel("Scalar Type");
-    parameter->setPropertyName("ScalarType");
-    parameter->setSetterCallback(SIMPL_BIND_SETTER(ConvertData, this, ScalarType));
-    parameter->setGetterCallback(SIMPL_BIND_GETTER(ConvertData, this, ScalarType));
-
-    QVector<QString> choices;
-    choices.push_back("signed   int 8  bit");
-    choices.push_back("unsigned int 8  bit");
-    choices.push_back("signed   int 16 bit");
-    choices.push_back("unsigned int 16 bit");
-    choices.push_back("signed   int 32 bit");
-    choices.push_back("unsigned int 32 bit");
-    choices.push_back("signed   int 64 bit");
-    choices.push_back("unsigned int 64 bit");
-    choices.push_back("       Float 32 bit");
-    choices.push_back("      Double 64 bit");
-    parameter->setChoices(choices);
-    parameter->setCategory(FilterParameter::Parameter);
-    parameters.push_back(parameter);
-  }
+  parameters.push_back(SIMPL_NEW_NUMERICTYPE_FP("Scalar Type", ScalarType, FilterParameter::Parameter, ConvertData));
 
   {
     DataArraySelectionFilterParameter::RequirementType req;
@@ -251,7 +212,7 @@ void ConvertData::readFilterParameters(AbstractFilterParametersReader* reader, i
 {
   reader->openFilterGroup(this, index);
   setSelectedCellArrayPath(reader->readDataArrayPath("SelectedCellArrayPath", getSelectedCellArrayPath()));
-  setScalarType(reader->readValue("ScalarType", getScalarType()));
+  setScalarType(static_cast<SIMPL::NumericTypes::Type>(reader->readValue("ScalarType", static_cast<int>(getScalarType()))));
   setOutputArrayName(reader->readString("OutputArrayName", getOutputArrayName()));
   reader->closeFilterGroup();
 }
@@ -297,43 +258,43 @@ void ConvertData::dataCheck()
 
     QVector<size_t> dims = p->getComponentDimensions();
     size_t voxels = cellAttrMat->getNumberOfTuples();
-    if(m_ScalarType == Detail::Int8)
+    if(m_ScalarType == SIMPL::NumericTypes::Type::Int8)
     {
       p = Int8ArrayType::CreateArray(voxels, dims, m_OutputArrayName, false);
     }
-    else if(m_ScalarType == Detail::UInt8)
+    else if(m_ScalarType == SIMPL::NumericTypes::Type::UInt8)
     {
       p = UInt8ArrayType::CreateArray(voxels, dims, m_OutputArrayName, false);
     }
-    else if(m_ScalarType == Detail::Int16)
+    else if(m_ScalarType == SIMPL::NumericTypes::Type::Int16)
     {
       p = Int16ArrayType::CreateArray(voxels, dims, m_OutputArrayName, false);
     }
-    else if(m_ScalarType == Detail::UInt16)
+    else if(m_ScalarType == SIMPL::NumericTypes::Type::UInt16)
     {
       p = UInt16ArrayType::CreateArray(voxels, dims, m_OutputArrayName, false);
     }
-    else if(m_ScalarType == Detail::Int32)
+    else if(m_ScalarType == SIMPL::NumericTypes::Type::Int32)
     {
       p = Int32ArrayType::CreateArray(voxels, dims, m_OutputArrayName, false);
     }
-    else if(m_ScalarType == Detail::UInt32)
+    else if(m_ScalarType == SIMPL::NumericTypes::Type::UInt32)
     {
       p = UInt32ArrayType::CreateArray(voxels, dims, m_OutputArrayName, false);
     }
-    else if(m_ScalarType == Detail::Int64)
+    else if(m_ScalarType == SIMPL::NumericTypes::Type::Int64)
     {
       p = Int64ArrayType::CreateArray(voxels, dims, m_OutputArrayName, false);
     }
-    else if(m_ScalarType == Detail::UInt64)
+    else if(m_ScalarType == SIMPL::NumericTypes::Type::UInt64)
     {
       p = UInt64ArrayType::CreateArray(voxels, dims, m_OutputArrayName, false);
     }
-    else if(m_ScalarType == Detail::Float)
+    else if(m_ScalarType == SIMPL::NumericTypes::Type::Float)
     {
       p = FloatArrayType::CreateArray(voxels, dims, m_OutputArrayName, false);
     }
-    else if(m_ScalarType == Detail::Double)
+    else if(m_ScalarType == SIMPL::NumericTypes::Type::Double)
     {
       p = DoubleArrayType::CreateArray(voxels, dims, m_OutputArrayName, false);
     }
@@ -367,8 +328,16 @@ void ConvertData::execute()
   }
 
   DataContainer::Pointer m = getDataContainerArray()->getDataContainer(m_SelectedCellArrayPath.getDataContainerName());
+  AttributeMatrix::Pointer am = m->getAttributeMatrix(m_SelectedCellArrayPath.getAttributeMatrixName());
 
-  IDataArray::Pointer iArray = m->getAttributeMatrix(m_SelectedCellArrayPath.getAttributeMatrixName())->getAttributeArray(m_SelectedCellArrayPath.getDataArrayName());
+  IDataArray::Pointer iArray = am->getAttributeArray(m_SelectedCellArrayPath.getDataArrayName());
+
+  if (nullptr == iArray.get())
+  {
+    setErrorCondition(-90002);
+    return;
+  }
+
   bool completed = false;
 
   CHECK_AND_CONVERT(UInt8ArrayType, m, m_ScalarType, iArray, m_SelectedCellArrayPath.getAttributeMatrixName(), m_OutputArrayName)

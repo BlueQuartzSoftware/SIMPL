@@ -37,6 +37,7 @@
 #define _simplviewstyles_h_
 
 #include <QtGui/QFont>
+#include <QtGui/QIcon>
 
 #include "SVWidgetsLib/SVWidgetsLib.h"
 
@@ -51,14 +52,69 @@ class SVWidgetsLib_EXPORT QtSStyles : public QObject
     virtual ~QtSStyles();
 
     static QString GetUIFont();
+
+    /**
+     * @brief GetHumanLabelFont
+     * @return
+     */
     static QFont GetHumanLabelFont();
+
+    /**
+     * @brief GetBrandingLabelFont
+     * @return
+     */
     static QFont GetBrandingLabelFont();
+
+    /**
+     * @brief GetCategoryFont
+     * @return
+     */
     static QFont GetCategoryFont();
+
+    /**
+     * @brief GetTitleFont
+     * @return
+     */
     static QFont GetTitleFont();
+
+    /**
+     * @brief LineEditErrorStyle
+     * @param lineEdit
+     */
     static void LineEditErrorStyle(QLineEdit* lineEdit);
+
+    /**
+     * @brief LineEditClearStyle
+     * @param lineEdit
+     */
     static void LineEditClearStyle(QLineEdit* lineEdit);
+
+    /**
+     * @brief LineEditRedErrorStyle
+     * @param lineEdit
+     */
     static void LineEditRedErrorStyle(QLineEdit* lineEdit);
-    static QString DAPSelectionButtonStyle(bool exists);
+
+    /**
+     * @brief DAPSelectionButtonStyle
+     * @param exists
+     * @return
+     */
+    static QString QToolSelectionButtonStyle(bool exists);
+
+    /**
+     * @brief QtSStyles::ColorForFilterGroup
+     * @param grpName
+     * @return
+     */
+    static QColor ColorForFilterGroup(const QString &grpName);
+
+    /**
+     * @brief QtSStyles::IconForGroup
+     * @param grpName
+     * @return
+     */
+    static QIcon IconForGroup(const QString &grpName);
 };
 
 #endif /* _SIMPLViewStyles_H_ */

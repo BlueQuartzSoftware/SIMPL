@@ -110,7 +110,9 @@ void InputFileWidget::selectInputFile()
   QFileInfo fi(file);
   setOpenDialogLastFilePath(fi.filePath());
   m_LineEdit->setText(file);
+  on_m_LineEdit_editingFinished();
+
   //  filterNeedsInputParameters(getFilter());
-  emit parametersChanged(); // This should force the preflight to run because we are emitting a signal
+  //emit parametersChanged(); // This should force the preflight to run because we are emitting a signal
 }
 

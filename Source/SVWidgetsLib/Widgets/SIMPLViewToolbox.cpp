@@ -116,10 +116,6 @@ void SIMPLViewToolbox::readSettings()
   // Read dock widget settings
   prefs->beginGroup("Bookmarks Widget");
   bookmarksWidget->readSettings(prefs.data());
-  if(prefs->value("PrebuiltsRead", QVariant(false)).toBool() == false)
-  {
-    bookmarksWidget->readPrebuiltPipelines();
-  }
   prefs->endGroup();
 
   prefs->beginGroup("Filter List Widget");

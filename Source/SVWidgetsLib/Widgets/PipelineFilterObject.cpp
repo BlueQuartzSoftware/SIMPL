@@ -41,11 +41,16 @@
 
 #include "SVWidgetsLib/Core/FilterWidgetManager.h"
 
+#include "QtSupport/QtSStyles.h"
+
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
 PipelineFilterObject::PipelineFilterObject()
-: m_Running(false)
+: m_Selected(false)
+, m_WidgetState(PipelineFilterObject::WidgetState::Ready)
+, m_PipelineState(PipelineFilterObject::PipelineState::Stopped)
+, m_ErrorState(PipelineFilterObject::ErrorState::Ok)
 , m_Filter(AbstractFilter::NullPointer())
 , m_FilterInputWidget(nullptr)
 , m_IsFocused(false)
@@ -58,7 +63,11 @@ PipelineFilterObject::PipelineFilterObject()
 //
 // -----------------------------------------------------------------------------
 PipelineFilterObject::PipelineFilterObject(AbstractFilter::Pointer filter, IObserver* observer)
-: m_Filter(filter)
+: m_Selected(false)
+, m_WidgetState(PipelineFilterObject::WidgetState::Ready)
+, m_PipelineState(PipelineFilterObject::PipelineState::Stopped)
+, m_ErrorState(PipelineFilterObject::ErrorState::Ok)
+, m_Filter(filter)
 , m_FilterInputWidget(nullptr)
 , m_IsFocused(false)
 , m_HasPreflightErrors(false)
@@ -94,7 +103,17 @@ PipelineFilterObject::~PipelineFilterObject()
 // -----------------------------------------------------------------------------
 void PipelineFilterObject::setupFilterInputWidget()
 {
+  QString grpName = m_Filter->getGroupName();
+
+  m_GroupColor = QtSStyles::ColorForFilterGroup(grpName);
+
+  m_GroupIcon = QtSStyles::IconForGroup(grpName);
+
   // Instantiate the filter input widget object
+  if(m_FilterInputWidget)
+  {
+    m_FilterInputWidget->deleteLater();
+  }
   m_FilterInputWidget = new FilterInputWidget(m_Filter->getNameOfClass(), this, nullptr);
 
   // Initialize the filter input widget with values
@@ -104,9 +123,37 @@ void PipelineFilterObject::setupFilterInputWidget()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
+QIcon PipelineFilterObject::getGroupIcon()
+{
+  return m_GroupIcon;
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+QColor PipelineFilterObject::getGroupColor()
+{
+  return m_GroupColor;
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
 AbstractFilter::Pointer PipelineFilterObject::getFilter()
 {
   return m_Filter;
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void PipelineFilterObject::setFilter(AbstractFilter::Pointer filter)
+{
+  m_Filter = filter;
+  if(m_Filter != AbstractFilter::NullPointer())
+  {
+    setupFilterInputWidget();
+  }
 }
 
 // -----------------------------------------------------------------------------
@@ -212,10 +259,10 @@ void PipelineFilterObject::setFilterTitle(const QString title)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void PipelineFilterObject::setFilterIndex(int index, int numFilters)
+void PipelineFilterObject::setFilterIndex(int i, int max)
 {
-  Q_UNUSED(index)
-  Q_UNUSED(numFilters)
+  Q_UNUSED(i)
+
   // This should be implemented in the subclasses
   return;
 }
@@ -259,6 +306,14 @@ void PipelineFilterObject::changeStyle()
 // -----------------------------------------------------------------------------
 void PipelineFilterObject::setHasPreflightErrors(bool hasErrors)
 {
+  if(hasErrors)
+  {
+    setErrorState(ErrorState::Error);
+  }
+  else
+  {
+    setErrorState(ErrorState::Ok);
+  }
   m_HasPreflightErrors = hasErrors;
   changeStyle();
 }
@@ -268,6 +323,14 @@ void PipelineFilterObject::setHasPreflightErrors(bool hasErrors)
 // -----------------------------------------------------------------------------
 void PipelineFilterObject::setHasPreflightWarnings(bool hasWarnings)
 {
+  if(hasWarnings)
+  {
+    setErrorState(ErrorState::Warning);
+  }
+  else
+  {
+    setErrorState(ErrorState::Ok);
+  }
   m_HasPreflightWarnings = hasWarnings;
   changeStyle();
 }
@@ -275,17 +338,74 @@ void PipelineFilterObject::setHasPreflightWarnings(bool hasWarnings)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void PipelineFilterObject::toRunningState()
+void PipelineFilterObject::toReadyState()
 {
   // This should be implemented in the subclasses
-  return;
+  setWidgetState(WidgetState::Ready);
 }
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void PipelineFilterObject::toIdleState()
+void PipelineFilterObject::toExecutingState()
 {
   // This should be implemented in the subclasses
-  return;
+  setWidgetState(WidgetState::Executing);
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void PipelineFilterObject::toCompletedState()
+{
+  // This should be implemented in the subclasses
+  setWidgetState(WidgetState::Completed);
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void PipelineFilterObject::toRunningState()
+{
+  setPipelineState(PipelineState::Running);
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void PipelineFilterObject::toStoppedState()
+{
+  setPipelineState(PipelineState::Stopped);
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void PipelineFilterObject::toPausedState()
+{
+  setPipelineState(PipelineState::Paused);
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void PipelineFilterObject::toOkState()
+{
+  setErrorState(ErrorState::Ok);
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void PipelineFilterObject::toErrorState()
+{
+  setErrorState(ErrorState::Error);
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void PipelineFilterObject::toWarningState()
+{
+  setErrorState(ErrorState::Warning);
 }

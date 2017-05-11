@@ -105,7 +105,7 @@ void AttributeMatrixSelectionWidget::setupGui()
 
   label->setText(getFilterParameter()->getHumanLabel());
 
-  m_SelectedAttributeMatrixPath->setStyleSheet(QtSStyles::DAPSelectionButtonStyle(false));
+  m_SelectedAttributeMatrixPath->setStyleSheet(QtSStyles::QToolSelectionButtonStyle(false));
 
   m_MenuMapper = new QSignalMapper(this);
   connect(m_MenuMapper, SIGNAL(mapped(QString)), this, SLOT(attributeMatrixSelected(QString)));
@@ -122,6 +122,8 @@ void AttributeMatrixSelectionWidget::setupGui()
 
   DataArrayPath defaultPath = getFilter()->property(PROPERTY_NAME_AS_CHAR).value<DataArrayPath>();
   m_SelectedAttributeMatrixPath->setText(defaultPath.serialize(Detail::Delimiter));
+
+  changeStyleSheet(Style::FS_STANDARD_STYLE);
 }
 
 // -----------------------------------------------------------------------------
@@ -200,6 +202,12 @@ void AttributeMatrixSelectionWidget::createSelectionMenu()
     {
       dcMenu->setDisabled(true);
     }
+    if(dc->getAttributeMatrixNames().size() == 0)
+    {
+      dcMenu->setDisabled(true);
+    }
+
+    bool validAmFound = false;
 
     // We found the proper Data Container, now populate the AttributeMatrix List
     DataContainer::AttributeMatrixMap_t attrMats = dc->getAttributeMatrices();
@@ -226,6 +234,16 @@ void AttributeMatrixSelectionWidget::createSelectionMenu()
       {
         action->setDisabled(true);
       }
+      else
+      {
+        validAmFound = true;
+      }
+    }
+
+    // Disable DataContainer menu if no valid AttributeMatrix was found
+    if(!validAmFound)
+    {
+      dcMenu->setDisabled(true);
     }
   }
 }
@@ -322,12 +340,12 @@ void AttributeMatrixSelectionWidget::afterPreflight()
     if (nullptr != am.get()) {
       QString html = am->getInfoString(SIMPL::HtmlFormat);
       m_SelectedAttributeMatrixPath->setToolTip(html);
-      m_SelectedAttributeMatrixPath->setStyleSheet(QtSStyles::DAPSelectionButtonStyle(true));
+      m_SelectedAttributeMatrixPath->setStyleSheet(QtSStyles::QToolSelectionButtonStyle(true));
     }
   }
   else
   {
-    m_SelectedAttributeMatrixPath->setStyleSheet(QtSStyles::DAPSelectionButtonStyle(false));
+    m_SelectedAttributeMatrixPath->setStyleSheet(QtSStyles::QToolSelectionButtonStyle(false));
   }
 }
 

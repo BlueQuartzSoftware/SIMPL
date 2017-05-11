@@ -1,5 +1,5 @@
-#ifndef _TestFileLocation_h_
-#define _TestFileLocation_h_
+#ifndef _testFileLocation_h_
+#define _testFileLocation_h_
 
 #include <QtCore/QString>
 
@@ -185,6 +185,12 @@ namespace UnitTest
 
     const QString CMakeLocation("@CMAKE_COMMAND@");
     const QString CMakeVersionString("@CMake_VersionString@");
+  }
+
+  namespace ReadASCIIDataTest
+  {
+   const QString TestFile1("@TEST_TEMP_DIR@/TestFile1.txt");
+   const QString TestFile2("@TEST_TEMP_DIR@/TestFile2.txt");
   }
 }
 

@@ -35,15 +35,11 @@
 #ifndef _makedatacontainer_h_
 #define _makedatacontainer_h_
 
-
 #include <QtCore/QString>
 
-
-#include "SIMPLib/SIMPLib.h"
 #include "SIMPLib/Common/AbstractFilter.h"
 #include "SIMPLib/Common/SIMPLibSetGetMacros.h"
-
-
+#include "SIMPLib/SIMPLib.h"
 
 /**
 * @class ReadOrientationData ReadOrientationData.h /FilterCategoryFilters/ReadOrientationData.h
@@ -54,108 +50,104 @@
 */
 class SIMPLib_EXPORT MakeDataContainer : public AbstractFilter
 {
-    Q_OBJECT
-  public:
-    SIMPL_SHARED_POINTERS(MakeDataContainer)
-    SIMPL_STATIC_NEW_MACRO(MakeDataContainer)
-    SIMPL_TYPE_MACRO_SUPER(MakeDataContainer, AbstractFilter)
+  Q_OBJECT
+public:
+  SIMPL_SHARED_POINTERS(MakeDataContainer)
+  SIMPL_STATIC_NEW_MACRO(MakeDataContainer)
+  SIMPL_TYPE_MACRO_SUPER(MakeDataContainer, AbstractFilter)
 
-    virtual ~MakeDataContainer();
-    SIMPL_INSTANCE_STRING_PROPERTY(DataContainerName)
-    SIMPL_INSTANCE_STRING_PROPERTY(CellEnsembleAttributeMatrixName)
-    SIMPL_INSTANCE_STRING_PROPERTY(CellAttributeMatrixName)
-    SIMPL_INSTANCE_STRING_PROPERTY(PhaseNameArrayName)
-    SIMPL_INSTANCE_STRING_PROPERTY(MaterialNameArrayName)
+  virtual ~MakeDataContainer();
+  SIMPL_INSTANCE_STRING_PROPERTY(DataContainerName)
+  SIMPL_INSTANCE_STRING_PROPERTY(CellEnsembleAttributeMatrixName)
+  SIMPL_INSTANCE_STRING_PROPERTY(CellAttributeMatrixName)
+  SIMPL_INSTANCE_STRING_PROPERTY(PhaseNameArrayName)
+  SIMPL_INSTANCE_STRING_PROPERTY(MaterialNameArrayName)
 
-    /**
-    * @brief This returns the group that the filter belonds to. You can select
-    * a different group if you want. The string returned here will be displayed
-    * in the GUI for the filter
-    */
-    SIMPL_FILTER_PARAMETER(QString, FeatureIdsArrayName)
-    Q_PROPERTY(QString FeatureIdsArrayName READ getFeatureIdsArrayName WRITE setFeatureIdsArrayName)
+  /**
+  * @brief This returns the group that the filter belonds to. You can select
+  * a different group if you want. The string returned here will be displayed
+  * in the GUI for the filter
+  */
+  SIMPL_FILTER_PARAMETER(QString, FeatureIdsArrayName)
+  Q_PROPERTY(QString FeatureIdsArrayName READ getFeatureIdsArrayName WRITE setFeatureIdsArrayName)
 
-    SIMPL_FILTER_PARAMETER(QString, CellEulerAnglesArrayName)
-    Q_PROPERTY(QString CellEulerAnglesArrayName READ getCellEulerAnglesArrayName WRITE setCellEulerAnglesArrayName)
+  SIMPL_FILTER_PARAMETER(QString, CellEulerAnglesArrayName)
+  Q_PROPERTY(QString CellEulerAnglesArrayName READ getCellEulerAnglesArrayName WRITE setCellEulerAnglesArrayName)
 
-    SIMPL_FILTER_PARAMETER(QString, CellPhasesArrayName)
-    Q_PROPERTY(QString CellPhasesArrayName READ getCellPhasesArrayName WRITE setCellPhasesArrayName)
+  SIMPL_FILTER_PARAMETER(QString, CellPhasesArrayName)
+  Q_PROPERTY(QString CellPhasesArrayName READ getCellPhasesArrayName WRITE setCellPhasesArrayName)
 
-    SIMPL_FILTER_PARAMETER(QString, CrystalStructuresArrayName)
-    Q_PROPERTY(QString CrystalStructuresArrayName READ getCrystalStructuresArrayName WRITE setCrystalStructuresArrayName)
+  SIMPL_FILTER_PARAMETER(QString, CrystalStructuresArrayName)
+  Q_PROPERTY(QString CrystalStructuresArrayName READ getCrystalStructuresArrayName WRITE setCrystalStructuresArrayName)
 
-    SIMPL_FILTER_PARAMETER(QString, LatticeConstantsArrayName)
-    Q_PROPERTY(QString LatticeConstantsArrayName READ getLatticeConstantsArrayName WRITE setLatticeConstantsArrayName)
+  SIMPL_FILTER_PARAMETER(QString, LatticeConstantsArrayName)
+  Q_PROPERTY(QString LatticeConstantsArrayName READ getLatticeConstantsArrayName WRITE setLatticeConstantsArrayName)
 
-    virtual const QString getCompiledLibraryName();
-    virtual AbstractFilter::Pointer newFilterInstance(bool copyFilterParameters);
-    virtual const QString getGroupName();
+  virtual const QString getCompiledLibraryName();
+  virtual AbstractFilter::Pointer newFilterInstance(bool copyFilterParameters);
+  virtual const QString getGroupName();
 
-    /**
-    * @brief This returns a string that is displayed in the GUI. It should be readable
-    * and understandable by humans.
-    */
-    virtual const QString getHumanLabel();
+  /**
+  * @brief This returns a string that is displayed in the GUI. It should be readable
+  * and understandable by humans.
+  */
+  virtual const QString getHumanLabel();
 
-    /**
-    * @brief This method will instantiate all the end user settable options/parameters
-    * for this filter
-    */
-    virtual void setupFilterParameters();    /**
-    * @brief This returns a string that is displayed in the GUI and helps to sort the filters into
-    * a subgroup. It should be readable and understandable by humans.
-    */
-    virtual const QString getSubGroupName();
+  /**
+  * @brief This method will instantiate all the end user settable options/parameters
+  * for this filter
+  */
+  virtual void setupFilterParameters(); /**
+*@brief This returns a string that is displayed in the GUI and helps to sort the filters into
+*a subgroup. It should be readable and understandable by humans.
+*/
+  virtual const QString getSubGroupName();
 
-    /**
-    * @brief This method will read the options from a file
-    * @param reader The reader that is used to read the options from a file
-    */
-    virtual void readFilterParameters(AbstractFilterParametersReader* reader, int index);
+  /**
+  * @brief This method will read the options from a file
+  * @param reader The reader that is used to read the options from a file
+  */
+  virtual void readFilterParameters(AbstractFilterParametersReader* reader, int index);
 
-    /**
-    * @brief Reimplemented from @see AbstractFilter class
-    */
-    virtual void execute();
+  /**
+  * @brief Reimplemented from @see AbstractFilter class
+  */
+  virtual void execute();
 
-    /**
-    * @brief This function runs some sanity checks on the DataContainer and inputs
-    * in an attempt to ensure the filter can process the inputs.
-    */
-    virtual void preflight();
+  /**
+  * @brief This function runs some sanity checks on the DataContainer and inputs
+  * in an attempt to ensure the filter can process the inputs.
+  */
+  virtual void preflight();
 
-  signals:
-    void updateFilterParameters(AbstractFilter* filter);
-    void parametersChanged();
-    void preflightAboutToExecute();
-    void preflightExecuted();
+signals:
+  void updateFilterParameters(AbstractFilter* filter);
+  void parametersChanged();
+  void preflightAboutToExecute();
+  void preflightExecuted();
 
-  protected:
-    MakeDataContainer();
+protected:
+  MakeDataContainer();
 
+  /**
+   * @brief dataCheck Checks for the appropriate parameter values and availability of arrays
+   */
+  void dataCheck();
 
-    /**
-     * @brief dataCheck Checks for the appropriate parameter values and availability of arrays
-     */
-    void dataCheck();
+  /**
+   * @brief Initializes all the private instance variables.
+   */
+  void initialize();
 
-    /**
-     * @brief Initializes all the private instance variables.
-     */
-    void initialize();
+private:
+  DEFINE_DATAARRAY_VARIABLE(int32_t, FeatureIds)
+  DEFINE_DATAARRAY_VARIABLE(int32_t, CellPhases)
+  DEFINE_DATAARRAY_VARIABLE(float, CellEulerAngles)
+  DEFINE_DATAARRAY_VARIABLE(uint32_t, CrystalStructures)
+  DEFINE_DATAARRAY_VARIABLE(float, LatticeConstants)
 
-
-  private:
-    DEFINE_DATAARRAY_VARIABLE(int32_t, FeatureIds)
-    DEFINE_DATAARRAY_VARIABLE(int32_t, CellPhases)
-    DEFINE_DATAARRAY_VARIABLE(float, CellEulerAngles)
-    DEFINE_DATAARRAY_VARIABLE(uint32_t, CrystalStructures)
-    DEFINE_DATAARRAY_VARIABLE(float, LatticeConstants)
-
-    MakeDataContainer(const MakeDataContainer&); // Copy Constructor Not Implemented
-    void operator=(const MakeDataContainer&); // Operator '=' Not Implemented
+  MakeDataContainer(const MakeDataContainer&); // Copy Constructor Not Implemented
+  void operator=(const MakeDataContainer&);    // Operator '=' Not Implemented
 };
 
 #endif /*    */
-
-

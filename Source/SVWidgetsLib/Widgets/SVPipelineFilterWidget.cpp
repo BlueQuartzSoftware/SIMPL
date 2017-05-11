@@ -67,11 +67,6 @@
 #include "SVWidgetsLib/Widgets/DataContainerArrayWidget.h"
 #include "SVWidgetsLib/Widgets/SVPipelineViewWidget.h"
 
-#define PADDING 5
-#define BORDER 2
-#define IMAGE_WIDTH 17
-#define IMAGE_HEIGHT 17
-
 // Include the MOC generated CPP file which has all the QMetaObject methods/data
 #include "moc_SVPipelineFilterWidget.cpp"
 
@@ -82,7 +77,6 @@ SVPipelineFilterWidget::SVPipelineFilterWidget(QWidget* parent)
 : QFrame(parent)
 , PipelineFilterObject(AbstractFilter::NullPointer())
 , m_Observer(nullptr)
-, m_Selected(false)
 , m_HasRightClickTarget(false)
 {
   initialize();
@@ -95,7 +89,6 @@ SVPipelineFilterWidget::SVPipelineFilterWidget(AbstractFilter::Pointer filter, I
 : QFrame(parent)
 , PipelineFilterObject(filter)
 , m_Observer(observer)
-, m_Selected(false)
 , m_HasRightClickTarget(false)
 {
   initialize();
@@ -125,21 +118,21 @@ void SVPipelineFilterWidget::initialize()
 
   setupUi(this);
 
-  m_DeleteRect.setX(PADDING + BORDER);
-  m_DeleteRect.setY(PADDING + BORDER);
-  m_DeleteRect.setWidth(IMAGE_WIDTH);
-  m_DeleteRect.setHeight(IMAGE_HEIGHT);
-
   // Set the Name of the filter into the FilterWidget
-  filterName->setText(getFilter()->getHumanLabel());
-}
+  AbstractFilter::Pointer filter = getFilter();
+  if(nullptr != filter.get())
+  {
+    filterName->setText(getFilter()->getHumanLabel());
 
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-bool SVPipelineFilterWidget::isSelected()
-{
-  return m_Selected;
+    QString filterGroup;
+    QTextStream groupStream(&filterGroup);
+    groupStream << "Group: " << filter->getGroupName() << "\n";
+    groupStream << "Subgroup: " << filter->getSubGroupName();
+    filterName->setToolTip(filterGroup);
+
+    connect(filter.get(), SIGNAL(filterCompleted()), this, SLOT(toCompletedState()));
+    connect(filter.get(), SIGNAL(filterInProgress()), this, SLOT(toExecutingState()));
+  }
 }
 
 // -----------------------------------------------------------------------------
@@ -147,7 +140,7 @@ bool SVPipelineFilterWidget::isSelected()
 // -----------------------------------------------------------------------------
 void SVPipelineFilterWidget::setSelected(bool s)
 {
-  m_Selected = s;
+  PipelineFilterObject::setSelected(s);
   changeStyle();
 }
 
@@ -190,7 +183,7 @@ void SVPipelineFilterWidget::displayFilterParameterWidgetError(const QString& ms
 {
   if(m_Observer)
   {
-    PipelineMessage pm("Filter Paramter Widget", msg, -1, PipelineMessage::Error);
+    PipelineMessage pm("Filter Paramter Widget", msg, -1, PipelineMessage::MessageType::Error);
     m_Observer->processPipelineMessage(pm);
   }
 }
@@ -208,7 +201,10 @@ void SVPipelineFilterWidget::setFilterTitle(const QString title)
 // -----------------------------------------------------------------------------
 void SVPipelineFilterWidget::setFilterIndex(int i, int numFilters)
 {
-  if (numFilters < 10) { numFilters = 11; }
+  if(numFilters < 10)
+  {
+    numFilters = 11;
+  }
   QString numStr = QString::number(i);
 
   if(numFilters > 9)
@@ -235,98 +231,174 @@ void SVPipelineFilterWidget::setFilterIndex(int i, int numFilters)
 // -----------------------------------------------------------------------------
 void SVPipelineFilterWidget::changeStyle()
 {
-  QString style;
-  QTextStream ss(&style);
+  QFont font = QtSStyles::GetHumanLabelFont();
+  QString fontString;
+  QTextStream fontStringStream(&fontString);
 
-  if(getHasPreflightWarnings())
+  fontStringStream << "font: " << font.weight() << " ";
+#if defined(Q_OS_MAC)
+  fontStringStream << font.pointSize() - 4;
+#elif defined(Q_OS_WIN)
+  fontStringStream << font.pointSize() - 3;
+#else
+  fontStringStream << font.pointSize() - 1;
+#endif
+
+  fontStringStream << "pt \"" << font.family() << "\";";
+
+#if defined(Q_OS_WIN)
+  if(font.bold())
   {
-    ss << "border: 2px rgb(172, 168, 0);";
+    fontStringStream << "font-weight: bold;";
   }
-  else if(isSelected() == true && isFocused() == true && getHasPreflightErrors())
+#endif
+
+  // Style the over all widget
+  QString svWidgetStyle;
+  QTextStream svWidgetStyleStream(&svWidgetStyle);
+  svWidgetStyleStream << "QFrame#frame {\n";
+  svWidgetStyleStream << "border-radius: 0 3 3 0px;";
+  svWidgetStyleStream << "padding: 0 0 0 0px;";
+
+  QString labelStyle;
+  QTextStream labelStyleStream(&labelStyle);
+  labelStyleStream << "QLabel {";
+  labelStyleStream << fontString;
+  labelStyleStream << "padding: 2 2 2 2px;";
+
+  //----------------------------------------------------
+  QString filterIndexStyle;
+  QTextStream filterIndexStyleStream(&filterIndexStyle);
+#if defined(Q_OS_LINUX)
+  fontStringStream << "font-weight: bold;";
+#endif
+  filterIndexStyleStream << "QLabel\n{";
+  filterIndexStyleStream << fontString;
+  filterIndexStyleStream << "color: rgb(242, 242, 242);"; // Always have a white'ish font
+  filterIndexStyleStream << "border-top-left-radius: 3px;";
+  filterIndexStyleStream << "border-bottom-left-radius: 3px;";
+
+  WidgetState wState = getWidgetState();
+  PipelineState pState = getPipelineState();
+  ErrorState eState = getErrorState();
+
+  QString widgetBackgroundColor;
+  QString labelColor;
+  QString indexBackgroundColor;
+  QColor bgColor = getGroupColor();
+
+  switch(wState)
   {
-    ss << "border-color: 2px solid rgb(179,2,5);";
-    ss << "border: 2px solid rgb(179,2,5);";
+  case WidgetState::Ready:
+    widgetBackgroundColor = QString("background-color: %1;").arg(bgColor.name());
+    labelColor = "color: rgb(190, 190, 190);";
+    indexBackgroundColor = "background-color: rgb(48, 48, 48);";
+    break;
+  case WidgetState::Executing:
+    widgetBackgroundColor = "background-color: rgb(130, 130, 130);";
+    labelColor = "color: rgb(190, 190, 190);";
+    indexBackgroundColor = "background-color: rgb(6, 140, 190);";
+    break;
+  case WidgetState::Completed:
+    widgetBackgroundColor = QString("background-color: %1;").arg(bgColor.name());
+    labelColor = "color: rgb(190, 190, 190);";
+    indexBackgroundColor = "background-color: rgb(6, 118, 6);";
+    break;
   }
-  else if(isSelected() == true && isFocused() == true)
+
+  QColor selectedColor = QColor::fromHsv(bgColor.hue(), 100, 120);
+
+  switch(pState)
   {
-    ss << "border: 2px solid MediumBlue;";
+  case PipelineState::Running:
+    widgetBackgroundColor = QString("background-color: %1;").arg(selectedColor.name());
+    labelColor = "color: rgb(190, 190, 190);";
+    break;
+  case PipelineState::Stopped:
+    widgetBackgroundColor = QString("background-color: %1;").arg(bgColor.name());
+    labelColor = "color: rgb(0, 0, 0);";
+    break;
+  case PipelineState::Paused:
+    widgetBackgroundColor = "background-color: rgb(160, 160, 160);";
+    labelColor = "color: rgb(0, 0, 0);";
+    break;
   }
-  else if(isSelected() == true && isFocused() == false)
+
+  switch(eState)
   {
-    ss << "border: 2px solid DarkSlateGray;";
+  case ErrorState::Ok:
+
+    break;
+  case ErrorState::Error:
+    indexBackgroundColor = "background-color: rgb(179, 2, 5);";
+    break;
+  case ErrorState::Warning:
+    indexBackgroundColor = "background-color: rgb(215, 197, 1);";
+    break;
+  }
+
+  if(isSelected() == true)
+  {
+    QColor selectedColor = QColor::fromHsv(bgColor.hue(), 180, 150);
+
+    svWidgetStyleStream << "border-top: 3px solid " << selectedColor.name() << ";";
+    svWidgetStyleStream << "border-right: 3px solid " << selectedColor.name() << ";";
+    svWidgetStyleStream << "border-bottom: 3px solid " << selectedColor.name() << ";";
+    svWidgetStyleStream << "padding-left: 3px;";
+    filterIndexStyleStream << "border-top: 3px solid " << selectedColor.name() << ";";
+    filterIndexStyleStream << "border-left: 3px solid " << selectedColor.name() << ";";
+    filterIndexStyleStream << "border-bottom: 3px solid " << selectedColor.name() << ";";
+    filterIndexStyleStream << "padding-right: 3px;";
+    labelColor = "color: rgb(235, 235, 235);";
+  }
+  else if(isSelected() == false && hasRightClickTarget() == true)
+  {
+    svWidgetStyleStream << "border-top: 3px solid " << selectedColor.name() << ";";
+    svWidgetStyleStream << "border-right: 3px solid " << selectedColor.name() << ";";
+    svWidgetStyleStream << "border-bottom: 3px solid " << selectedColor.name() << ";";
+    svWidgetStyleStream << "padding-left: 3px;";
+    filterIndexStyleStream << "border-top: 3px solid " << selectedColor.name() << ";";
+    filterIndexStyleStream << "border-left: 3px solid " << selectedColor.name() << ";";
+    filterIndexStyleStream << "border-bottom: 3px solid " << selectedColor.name() << ";";
+    filterIndexStyleStream << "padding-right: 3px;";
+    labelColor = "color: rgb(235, 235, 235);";
   }
   else
   {
-    ss << "border: 1px solid #515151;";
-    ss << "margin: 1px;";
+    svWidgetStyleStream << "padding: 3px;";
+    filterIndexStyleStream << "padding: 3px;";
   }
 
-  if(isSelected() == false && hasRightClickTarget() == true)
+  svWidgetStyleStream << widgetBackgroundColor;
+  labelStyleStream << labelColor;
+  filterIndexStyleStream << indexBackgroundColor;
+
+  svWidgetStyleStream << "}\n";
+  labelStyleStream << "}";
+  filterIndexStyleStream << "}\n";
+
+  // Set the Style Sheet
+  frame->setStyleSheet(svWidgetStyle + labelStyle);
+  filterIndex->setStyleSheet(filterIndexStyle);
+
+#if defined(Q_OS_WIN)
+  if(isSelected() == true)
   {
-    ss << "border-style: dotted;";
+    //    filterName->setStyleSheet("color: rgb(242, 242, 242);");
   }
-
-  setBorderColorStyle(style);
-  updateWidgetStyle();
+  else
+  {
+    //    filterName->setStyleSheet("");
+  }
+#endif
 }
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void SVPipelineFilterWidget::updateWidgetStyle()
+void SVPipelineFilterWidget::on_deleteBtn_clicked()
 {
-  QString style;
-  QTextStream ss(&style);
-
-  ss << "SVPipelineFilterWidget {\n";
-
-  if(getHasPreflightErrors() == true)
-  {
-     ss << "background-color: rgb(210, 210, 210);\ncolor: rgb(255, 255, 255);";
-#if defined(Q_OS_WIN)
-     filterIndex->setStyleSheet("QLabel\n{\nbackground-color: rgb(179, 2, 5);  \n color: rgb(237, 237, 237);\n	font: 9pt;\n	font-weight: bold;\n padding: 3 3 3 3px;\n}");
-#elif defined(Q_OS_MAC)
-     filterIndex->setStyleSheet("QLabel\n{\nbackground-color: rgb(179, 2, 5);  \n color: rgb(237, 237, 237);\n	font: 14pt;\n	font-weight: bold;\n padding: 3 3 3 3px;\n}");
-#else
-     filterIndex->setStyleSheet("QLabel\n{\nbackground-color: rgb(179, 2, 5);  \n color: rgb(237, 237, 237);\n	font: 100 9pt;\n	font-weight: bold;\n padding: 3 3 3 3px;\n}");
-#endif
-  }
-  else
-  {
-    ss << "background-color: rgb(210, 210, 210);\ncolor: rgb(255, 255, 255);";
-
-#if defined(Q_OS_WIN)
-    filterIndex->setStyleSheet("QLabel\n{\nbackground-color: rgb(128, 128, 128);\n	color: rgb(237, 237, 237);\n font: 9pt;\n font-weight: bold;\n padding: 3 3 3 3px;\n}");
-
-#elif defined(Q_OS_MAC)
-    filterIndex->setStyleSheet("QLabel\n{\nbackground-color: rgb(128, 128, 128);\n	color: rgb(237, 237, 237);\n font: 14pt;\n font-weight: bold;\n padding: 3 3 3 3px;\n}");
-#else
-    filterIndex->setStyleSheet("QLabel\n{\nbackground-color: rgb(179, 2, 5);  \n color: rgb(237, 237, 237);\n	font:100 9pt;\n	font-weight: bold;\n padding: 3 3 3 3px;\n}");
-#endif
-  }
-
-  //ss << "background-position: top ;\n background-repeat: repeat-x;";
-
-  ss << getBorderColorStyle();
-
-  ss << "border-radius: 3px;";
-  ss << "padding: 0 0 0 0px;";
-  ss << "}\n";
-
-  ss << "QLabel\n {\n";
-
-#if defined(Q_OS_WIN)
-  ss << "font: 9pt \"" << QtSStyles::GetUIFont() << "\";";
-#elif defined(Q_OS_MAC)
-  ss << "font: 100 14pt \"" << QtSStyles::GetUIFont() << "\";";
-#else
-  ss << "font: 100 9pt \"" << QtSStyles::GetUIFont() << "\";";
-  ss << "font-weight: bold;";
-#endif
-
-  ss << "}\n";
-
-  setStyleSheet(style);
+  emit filterWidgetRemoved(this);
 }
 
 // -----------------------------------------------------------------------------
@@ -340,7 +412,7 @@ void SVPipelineFilterWidget::mousePressEvent(QMouseEvent* event)
   }
   else if(event->button() == Qt::LeftButton)
   {
-    dragStartPosition = event->pos();
+    m_DragStartPosition = event->pos();
   }
 }
 
@@ -361,7 +433,7 @@ void SVPipelineFilterWidget::mouseMoveEvent(QMouseEvent* event)
   {
     return;
   }
-  if((event->pos() - dragStartPosition).manhattanLength() < QApplication::startDragDistance())
+  if((event->pos() - m_DragStartPosition).manhattanLength() < QApplication::startDragDistance())
   {
     return;
   }
@@ -396,17 +468,10 @@ void SVPipelineFilterWidget::getGuiParametersFromFilter(AbstractFilter* filt)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void SVPipelineFilterWidget::on_deleteBtn_clicked()
-{
-  emit filterWidgetRemoved(this);
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
 void SVPipelineFilterWidget::filterInputWidget_filterParametersChanged()
 {
   emit parametersChanged(QUuid());
+  emit parametersChanged1(this);
 }
 
 // -----------------------------------------------------------------------------
@@ -423,19 +488,98 @@ void SVPipelineFilterWidget::launchHelpForItem()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void SVPipelineFilterWidget::toRunningState()
+void SVPipelineFilterWidget::toReadyState()
 {
-  getFilterInputWidget()->toRunningState(); // getVariablesTabContentsWidget()->setDisabled(true);
-  deleteBtn->setDisabled(true);
+  PipelineFilterObject::toReadyState();
+  getFilterInputWidget()->toRunningState();
+  changeStyle();
 }
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void SVPipelineFilterWidget::toIdleState()
+void SVPipelineFilterWidget::toExecutingState()
 {
-  getFilterInputWidget()->toIdleState(); // getVariablesTabContentsWidget()->setEnabled(true);
+  PipelineFilterObject::toExecutingState();
+  getFilterInputWidget()->toRunningState();
+  changeStyle();
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void SVPipelineFilterWidget::toCompletedState()
+{
+  PipelineFilterObject::toCompletedState();
+  getFilterInputWidget()->toRunningState();
+  if(getFilter()->getWarningCondition() < 0)
+  {
+    setErrorState(ErrorState::Warning);
+  }
+  if(getFilter()->getErrorCondition() < 0)
+  {
+    setErrorState(ErrorState::Error);
+  }
+  changeStyle();
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void SVPipelineFilterWidget::toRunningState()
+{
+  PipelineFilterObject::toRunningState();
+  getFilterInputWidget()->toRunningState();
+  deleteBtn->setDisabled(true);
+  changeStyle();
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void SVPipelineFilterWidget::toStoppedState()
+{
+  PipelineFilterObject::toStoppedState();
+  getFilterInputWidget()->toIdleState();
   deleteBtn->setEnabled(true);
+  changeStyle();
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void SVPipelineFilterWidget::toPausedState()
+{
+  PipelineFilterObject::toPausedState();
+  getFilterInputWidget()->toIdleState();
+  changeStyle();
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void SVPipelineFilterWidget::toOkState()
+{
+  PipelineFilterObject::toOkState();
+  changeStyle();
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void SVPipelineFilterWidget::toErrorState()
+{
+  PipelineFilterObject::toErrorState();
+  changeStyle();
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void SVPipelineFilterWidget::toWarningState()
+{
+  PipelineFilterObject::toWarningState();
+  changeStyle();
 }
 
 // -----------------------------------------------------------------------------

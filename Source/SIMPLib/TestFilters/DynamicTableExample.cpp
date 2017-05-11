@@ -73,7 +73,10 @@ void DynamicTableExample::setupFilterParameters()
   // Table 2 - Fixed rows and columns, default data passed in
   {
     QStringList rHeaders, cHeaders;
-    rHeaders << "Passed RowName 1" << "Passed RowName 2" << "Passed RowName 3" << "Passed RowName 4";
+    rHeaders << "Passed RowName 1"
+             << "Passed RowName 2"
+             << "Passed RowName 3"
+             << "Passed RowName 4";
     cHeaders << "Passed ColName 1";
     std::vector<std::vector<double>> defaultTable(4, std::vector<double>(1, 3.87));
     m_DynamicData2.setColHeaders(cHeaders);
@@ -85,8 +88,14 @@ void DynamicTableExample::setupFilterParameters()
   // Table 3 - Dynamic rows and fixed columns, default data passed in
   {
     QStringList rHeaders, cHeaders;
-    rHeaders << "Passed RowName 1" << "Passed RowName 2" << "Passed RowName 3";
-    cHeaders << "Passed ColName 1" << "Passed ColName 2" << "Passed ColName 3" << "Passed ColName 4" << "Passed ColName 5";
+    rHeaders << "Passed RowName 1"
+             << "Passed RowName 2"
+             << "Passed RowName 3";
+    cHeaders << "Passed ColName 1"
+             << "Passed ColName 2"
+             << "Passed ColName 3"
+             << "Passed ColName 4"
+             << "Passed ColName 5";
     std::vector<std::vector<double>> defaultTable(3, std::vector<double>(5, 1.34));
     m_DynamicData3.setColHeaders(cHeaders);
     m_DynamicData3.setRowHeaders(rHeaders);
@@ -98,8 +107,10 @@ void DynamicTableExample::setupFilterParameters()
   // Table 4 - Fixed rows and dynamic columns, default data passed in
   {
     QStringList rHeaders, cHeaders;
-    rHeaders << "Passed RowName 1" << "Passed RowName 2";
-    cHeaders << "Passed ColName 1" << "Passed ColName 2";
+    rHeaders << "Passed RowName 1"
+             << "Passed RowName 2";
+    cHeaders << "Passed ColName 1"
+             << "Passed ColName 2";
     std::vector<std::vector<double>> defaultTable(2, std::vector<double>(2, 3));
     m_DynamicData4.setColHeaders(cHeaders);
     m_DynamicData4.setRowHeaders(rHeaders);
@@ -111,8 +122,10 @@ void DynamicTableExample::setupFilterParameters()
   // Table 5 - Dynamic rows and dynamic columns, default data passed in
   {
     QStringList rHeaders, cHeaders;
-    rHeaders << "Passed RowName 1" << "Passed RowName 2";
-    cHeaders << "Passed ColName 1" << "Passed ColName 2";
+    rHeaders << "Passed RowName 1"
+             << "Passed RowName 2";
+    cHeaders << "Passed ColName 1"
+             << "Passed ColName 2";
     std::vector<std::vector<double>> defaultTable(2, std::vector<double>(2, 3));
     m_DynamicData5.setColHeaders(cHeaders);
     m_DynamicData5.setRowHeaders(rHeaders);
@@ -201,7 +214,7 @@ AbstractFilter::Pointer DynamicTableExample::newFilterInstance(bool copyFilterPa
 // -----------------------------------------------------------------------------
 const QString DynamicTableExample::getCompiledLibraryName()
 {
-  return Test::TestBaseName;
+  return Core::CoreBaseName;
 }
 
 // -----------------------------------------------------------------------------
@@ -209,7 +222,7 @@ const QString DynamicTableExample::getCompiledLibraryName()
 // -----------------------------------------------------------------------------
 const QString DynamicTableExample::getGroupName()
 {
-  return SIMPL::FilterGroups::TestFilters;
+  return SIMPL::FilterGroups::Generic;
 }
 
 // -----------------------------------------------------------------------------
@@ -217,7 +230,7 @@ const QString DynamicTableExample::getGroupName()
 // -----------------------------------------------------------------------------
 const QString DynamicTableExample::getSubGroupName()
 {
-  return "Misc";
+  return "Test";
 }
 
 // -----------------------------------------------------------------------------

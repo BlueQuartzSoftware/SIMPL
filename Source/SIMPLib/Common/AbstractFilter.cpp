@@ -378,3 +378,67 @@ void AbstractFilter::printValues(std::ostream& out) const
 void AbstractFilter::cleanupFilter()
 {
 }
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void AbstractFilter::notifyErrorMessage(const QString& humanLabel, const QString& str, int code)
+{
+  PipelineMessage pm = PipelineMessage::CreateErrorMessage(getNameOfClass(), humanLabel, str, code);
+  pm.setPipelineIndex(getPipelineIndex());
+  emit filterGeneratedMessage(pm);
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void AbstractFilter::notifyStatusMessage(const QString& humanLabel, const QString& str)
+{
+  PipelineMessage pm = PipelineMessage::CreateStatusMessage(getNameOfClass(), humanLabel, str);
+  pm.setPipelineIndex(getPipelineIndex());
+  emit filterGeneratedMessage(pm);
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void AbstractFilter::notifyStatusMessage(const QString& prefix, const QString& humanLabel, const QString& str)
+{
+  PipelineMessage pm = PipelineMessage::CreateStatusMessage(getNameOfClass(), humanLabel, str);
+  pm.setPrefix(prefix);
+  pm.setPipelineIndex(getPipelineIndex());
+  emit filterGeneratedMessage(pm);
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void AbstractFilter::notifyStandardOutputMessage(const QString& humanLabel, int pipelineIndex, const QString& str)
+{
+  PipelineMessage pm = PipelineMessage::CreateStandardOutputMessage(humanLabel, pipelineIndex, str);
+  pm.setPipelineIndex(getPipelineIndex());
+  emit filterGeneratedMessage(pm);
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void AbstractFilter::notifyWarningMessage(const QString& humanLabel, const QString& str, int code)
+{
+  PipelineMessage pm = PipelineMessage::CreateWarningMessage(getNameOfClass(), humanLabel, str, code);
+  pm.setPipelineIndex(getPipelineIndex());
+  emit filterGeneratedMessage(pm);
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void AbstractFilter::notifyProgressMessage(const QString& prefix, const QString& humanLabel, const QString& str, int progress)
+{
+  PipelineMessage pm = PipelineMessage::CreateStatusMessage(getNameOfClass(), humanLabel, str);
+  pm.setPrefix(prefix);
+  pm.setProgressValue(progress);
+  pm.setType(PipelineMessage::MessageType::StatusMessageAndProgressValue);
+  pm.setPipelineIndex(getPipelineIndex());
+  emit filterGeneratedMessage(pm);
+}

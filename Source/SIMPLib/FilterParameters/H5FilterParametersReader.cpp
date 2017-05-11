@@ -148,7 +148,7 @@ FilterPipeline::Pointer H5FilterParametersReader::readPipelineFromFile(hid_t fid
     else if(nullptr != obs)
     {
       QString ss = QObject::tr("The input file contains an unrecognizable pipeline version number, and is therefore incompatible and cannot be read.");
-      PipelineMessage pm("", ss, -66066, PipelineMessage::Error);
+      PipelineMessage pm("", ss, -66066, PipelineMessage::MessageType::Error);
       pm.setPrefix("H5FilterParametersReader::ReadPipelineFromFile(...)");
       obs->processPipelineMessage(pm);
       return FilterPipeline::NullPointer();
@@ -257,7 +257,7 @@ QString H5FilterParametersReader::getJsonFromFile(QString filePath, IObserver* o
     else if(nullptr != obs)
     {
       QString ss = QObject::tr("The input file contains an unrecognizable pipeline version number, and is therefore incompatible and cannot be read.");
-      PipelineMessage pm("", ss, -66066, PipelineMessage::Error);
+      PipelineMessage pm("", ss, -66066, PipelineMessage::MessageType::Error);
       pm.setPrefix("H5FilterParametersReader::ReadPipelineFromFile(...)");
       obs->processPipelineMessage(pm);
       return QString();
@@ -999,6 +999,45 @@ ComparisonInputs H5FilterParametersReader::readComparisonInputs(const QString na
     values.addInput(v);
   }
   return values;
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+ComparisonInputsAdvanced H5FilterParametersReader::readComparisonInputsAdvanced(const QString name, ComparisonInputsAdvanced defValue)
+{
+    /*
+    int size = 0;
+    QString strData = "";
+    bool ok = false;
+    // See if the data set actually exists, if it does NOT just return what the user passed in as a default value
+    if(false == QH5Lite::datasetExists(m_CurrentGroupId, name))
+    {
+      return defValue;
+    }
+
+    herr_t err = QH5Lite::readStringDataset(m_CurrentGroupId, name, strData);
+    if(err < 0)
+    {
+      return defValue; // If the data set does not exist no point in going any further
+    }
+
+    // Now read the the attribute that says how many arrays are in the data set.
+    err = QH5Lite::readScalarAttribute(m_CurrentGroupId, name, "NumInputs", size);
+
+    QStringList strVector = strData.split('\n', QString::SkipEmptyParts);
+    qint32 strVecSize = strVector.size();
+    if(strVecSize != size)
+    {
+      // Something has gone wrong in the tokenization and the number of tokens does not match what
+      // was written to the HDF5 file.
+      return defValue;
+    }
+    */
+
+    ComparisonInputsAdvanced inputs;
+
+    return inputs;
 }
 
 // -----------------------------------------------------------------------------

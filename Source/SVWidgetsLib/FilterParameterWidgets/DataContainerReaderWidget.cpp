@@ -44,13 +44,18 @@
 
 #include <QtCore/QItemSelectionModel>
 #include <QtGui/QStandardItemModel>
+#include <QtGui/QDesktopServices>
+#include <QtGui/QPainter>
 #include <QtWidgets/QFileDialog>
 #include <QtWidgets/QLabel>
 #include <QtWidgets/QListWidget>
+#include <QtWidgets/QMenu>
 
 #include "SIMPLib/CoreFilters/DataContainerReader.h"
 
 #include "SVWidgetsLib/Core/SVWidgetsLibConstants.h"
+#include "SVWidgetsLib/QtSupport/QtSFileCompleter.h"
+#include "SVWidgetsLib/QtSupport/QtSFileUtils.h"
 
 #include "FilterParameterWidgetsDialogs.h"
 
@@ -333,6 +338,8 @@ void DataContainerReaderWidget::setupGui()
   //  void activated(const QModelIndex& index);
   connect(dcaProxyView, SIGNAL(clicked(const QModelIndex&)), this, SLOT(itemActivated(const QModelIndex)));
 
+  setupMenuField();
+
   if(getFilterParameter() != nullptr)
   {
     label->setText(getFilterParameter()->getHumanLabel());
@@ -342,9 +349,58 @@ void DataContainerReaderWidget::setupGui()
   {
     QString path = m_Filter->getInputFile();
 
-    filePath->setText(path);
-    on_filePath_fileDropped(path);
+    m_LineEdit->setText(path);
+    on_m_LineEdit_fileDropped(path);
   }
+
+
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void DataContainerReaderWidget::setupMenuField()
+{
+  QFileInfo fi(m_LineEdit->text());
+
+  QMenu* lineEditMenu = new QMenu(m_LineEdit);
+  m_LineEdit->setButtonMenu(QtSLineEdit::Left, lineEditMenu);
+  QLatin1String iconPath = QLatin1String(":/caret-bottom.png");
+
+  m_LineEdit->setButtonVisible(QtSLineEdit::Left, true);
+
+  QPixmap pixmap(8, 8);
+  pixmap.fill(Qt::transparent);
+  QPainter painter(&pixmap);
+  const QPixmap mag = QPixmap(iconPath);
+  painter.drawPixmap(0, (pixmap.height() - mag.height()) / 2, mag);
+  m_LineEdit->setButtonPixmap(QtSLineEdit::Left, pixmap);
+
+  {
+    m_ShowFileAction = new QAction(lineEditMenu);
+    m_ShowFileAction->setObjectName(QString::fromUtf8("showFileAction"));
+#if defined(Q_OS_WIN)
+  m_ShowFileAction->setText("Show in Windows Explorer");
+#elif defined(Q_OS_MAC)
+  m_ShowFileAction->setText("Show in Finder");
+#else
+  m_ShowFileAction->setText("Show in File System");
+#endif
+    lineEditMenu->addAction(m_ShowFileAction);
+    connect(m_ShowFileAction, SIGNAL(triggered()), this, SLOT(showFileInFileSystem()));
+  }
+
+
+  if (m_LineEdit->text().isEmpty() == false && fi.exists())
+  {
+    m_ShowFileAction->setEnabled(true);
+  }
+  else
+  {
+    m_ShowFileAction->setDisabled(true);
+  }
+
+
 }
 
 // -----------------------------------------------------------------------------
@@ -552,7 +608,7 @@ void DataContainerReaderWidget::beforePreflight()
 void DataContainerReaderWidget::filterNeedsInputParameters(AbstractFilter* filter)
 {
   // qDebug() << "DataContainerReaderWidget::filterNeedsInputParameters()";
-  m_Filter->setInputFile(filePath->text());
+  m_Filter->setInputFile(m_LineEdit->text());
   updateProxyFromModel(); // Will update m_DcaProxy with the latest selections from the Model
   m_Filter->setInputFileDataContainerArrayProxy(m_DcaProxy);
 }
@@ -570,17 +626,35 @@ void DataContainerReaderWidget::afterPreflight()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-bool DataContainerReaderWidget::verifyPathExists(QString filePath, QtSFSDropLabel* lineEdit)
+void DataContainerReaderWidget::showFileInFileSystem()
 {
-  QFileInfo fileinfo(filePath);
-  if(false == fileinfo.exists())
+  QFileInfo fi(m_CurrentlyValidPath);
+  QString path;
+  if (fi.isFile())
   {
-    // lineEdit->setStyleSheet("border: 1px solid red;");
-    lineEdit->changeStyleSheet(QtSFSDropLabel::FS_DOESNOTEXIST_STYLE);
+    path = fi.absoluteFilePath();
   }
   else
   {
-    lineEdit->changeStyleSheet(QtSFSDropLabel::FS_STANDARD_STYLE);
+    path = fi.absolutePath();
+  }
+
+  QtSFileUtils::ShowPathInGui(this, path);
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+bool DataContainerReaderWidget::verifyPathExists(QString m_LineEdit, QLineEdit* lineEdit)
+{
+  QFileInfo fileinfo(m_LineEdit);
+  if(false == fileinfo.exists())
+  {
+    lineEdit->setStyleSheet("QLineEdit { border: 1px solid red; }");
+  }
+  else
+  {
+    lineEdit->setStyleSheet("");
   }
   return fileinfo.exists();
 }
@@ -588,14 +662,133 @@ bool DataContainerReaderWidget::verifyPathExists(QString filePath, QtSFSDropLabe
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void DataContainerReaderWidget::on_filePath_fileDropped(const QString& text)
+void DataContainerReaderWidget::on_m_LineEdit_editingFinished()
+{
+  m_LineEdit->setStyleSheet(QString(""));
+  m_CurrentText = m_LineEdit->text();
+  emit parametersChanged(); // This should force the preflight to run because we are emitting a signal
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void DataContainerReaderWidget::on_m_LineEdit_returnPressed()
+{
+  on_m_LineEdit_editingFinished();
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+bool DataContainerReaderWidget::hasValidFilePath(const QString &filePath)
+{
+  QStringList pathParts = filePath.split(QDir::separator());
+  if (pathParts.size() <= 0) { return false; }
+
+  QString pathBuildUp;
+  QFileInfo fi(filePath);
+
+  /* This block of code figures out, based on the current OS, how the built-up path should begin.
+   * For Mac and Linux, it should start with a separator for absolute paths or a path part for relative paths.
+   * For Windows, it should start with a path part for both absolute and relative paths.
+   * A "path part" is defined as a portion of string that is delimited by separators in a typical path. */
+  {
+#if defined(Q_OS_WIN)
+  /* If there is at least one part, then add it to the pathBuildUp variable.
+    A valid Windows path, absolute or relative, has to have at least one part. */
+  if (pathParts[0].isEmpty() == false)
+  {
+    pathBuildUp.append(pathParts[0]);
+  }
+  else
+  {
+    return false;
+  }
+#else
+  /* If the first part is empty and the filePath is absolute, then that means that
+   * we are starting with the root directory and need to add it to our pathBuildUp */
+  if (pathParts[0].isEmpty() && fi.isAbsolute())
+  {
+    pathBuildUp.append(QDir::separator());
+  }
+  /* If the first part is empty and the filePath is relative, then that means that
+   * we are starting with the first folder part and need to add that to our pathBuildUp */
+  else if (pathParts[0].isEmpty() == false && fi.isRelative())
+  {
+    pathBuildUp.append(pathParts[0] + QDir::separator());
+  }
+  else
+  {
+    return false;
+  }
+#endif
+  }
+
+  /* Now that we have started our built-up path, continue adding to the built-up path
+   * until either the built-up path is invalid, or until we have processed all remaining path parts. */
+  bool valid = false;
+
+  QFileInfo buildingFi(pathBuildUp);
+  size_t pathPartsIdx = 1; // We already processed the first path part above
+  while (buildingFi.exists() == true && pathPartsIdx <= pathParts.size())
+  {
+    valid = true;
+    m_CurrentlyValidPath = pathBuildUp; // Save the most current, valid built-up path
+
+    // If there's another path part to add, add it to the end of the built-up path
+    if (pathPartsIdx < pathParts.size())
+    {
+      /* If the built-up path doesn't already have a separator on the end, add one. */
+      if (pathBuildUp[pathBuildUp.size() - 1] != QDir::separator())
+      {
+        pathBuildUp.append(QDir::separator());
+      }
+
+      pathBuildUp.append(pathParts[pathPartsIdx]);  // Add the next path part to the built-up path
+      buildingFi.setFile(pathBuildUp);
+    }
+    pathPartsIdx++;
+  }
+
+  return valid;
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void DataContainerReaderWidget::on_m_LineEdit_textChanged(const QString& text)
+{
+  if (hasValidFilePath(text) == true)
+  {
+    m_ShowFileAction->setEnabled(true);
+  }
+  else
+  {
+    m_ShowFileAction->setDisabled(true);
+  }
+
+  if (text != m_CurrentText)
+  {
+    m_LineEdit->setStyleSheet(QString::fromLatin1("QLineEdit { color: rgb(255, 0, 0); }"));
+    m_LineEdit->setToolTip("Press the 'Return' key to apply your changes");
+  }
+  else
+  {
+    m_LineEdit->setStyleSheet("");
+    m_LineEdit->setToolTip("");
+  }
+}
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void DataContainerReaderWidget::on_m_LineEdit_fileDropped(const QString& text)
 {
   DataContainerArrayProxy proxy;
 
   setOpenDialogLastFilePath(text);
   // Set/Remove the red outline if the file does exist
 
-  if(verifyPathExists(text, filePath) == true)
+  if(verifyPathExists(text, m_LineEdit) == true)
   {
     if(getFilter() != nullptr)
     {
@@ -646,11 +839,8 @@ void DataContainerReaderWidget::on_selectBtn_clicked()
   // Store the last used directory into the private instance variable
   QFileInfo fi(file);
   m_OpenDialogLastFilePath = fi.filePath();
-  filePath->setText(file);
-  on_filePath_fileDropped(file);
-
-  // filterNeedsInputParameters(getFilter());
-  // emit parametersChanged(); // This should force the preflight to run because we are emitting a signal
+  m_LineEdit->setText(file);
+  on_m_LineEdit_fileDropped(file);
 }
 
 // -----------------------------------------------------------------------------

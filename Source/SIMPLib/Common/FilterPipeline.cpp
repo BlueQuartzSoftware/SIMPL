@@ -80,7 +80,6 @@ bool FilterPipeline::getCancel()
 // -----------------------------------------------------------------------------
 void FilterPipeline::cancelPipeline()
 {
-  qDebug() << "FilterPipeline::cancelPipeline()";
   setCancel(true);
   emit pipelineCanceled();
 }
@@ -295,14 +294,7 @@ int FilterPipeline::preflightPipeline()
     (*filter)->preflight();
     disconnectFilterNotifications((*filter).get());
 
-    DataContainerArray::Pointer dcaCopy = DataContainerArray::New();
-    QList<DataContainer::Pointer> dcs = dca->getDataContainers();
-    for(int i = 0; i < dcs.size(); i++)
-    {
-      DataContainer::Pointer dcCopy = dcs[i]->deepCopy();
-      dcaCopy->addDataContainer(dcCopy);
-    }
-    (*filter)->setDataContainerArray(dcaCopy);
+    (*filter)->setDataContainerArray(dca->deepCopy());
     (*filter)->setCancel(false); // Reset the cancel flag
     preflightError |= (*filter)->getErrorCondition();
   }
@@ -330,51 +322,61 @@ void FilterPipeline::execute()
     connect(this, SIGNAL(pipelineGeneratedMessage(const PipelineMessage&)), m_MessageReceivers.at(i), SLOT(processPipelineMessage(const PipelineMessage&)));
   }
 
-  PipelineMessage progValue("", "", 0, PipelineMessage::ProgressValue, -1);
+  PipelineMessage progValue("", "", 0, PipelineMessage::MessageType::ProgressValue, -1);
   for(FilterContainerType::iterator filter = m_Pipeline.begin(); filter != m_Pipeline.end(); ++filter)
   {
+    AbstractFilter::Pointer filt = *filter;
     progress = progress + 1.0f;
-    progValue.setType(PipelineMessage::ProgressValue);
+    progValue.setType(PipelineMessage::MessageType::ProgressValue);
     progValue.setProgressValue(static_cast<int>(progress / (m_Pipeline.size() + 1) * 100.0f));
     emit pipelineGeneratedMessage(progValue);
 
-    QString ss = QObject::tr("[%1/%2] %3 ").arg(progress).arg(m_Pipeline.size()).arg((*filter)->getHumanLabel());
+    QString ss = QObject::tr("[%1/%2] %3 ").arg(progress).arg(m_Pipeline.size()).arg(filt->getHumanLabel());
 
-    progValue.setType(PipelineMessage::StatusMessage);
+    progValue.setType(PipelineMessage::MessageType::StatusMessage);
     progValue.setText(ss);
     emit pipelineGeneratedMessage(progValue);
 
-    (*filter)->setMessagePrefix(ss);
-    connectFilterNotifications((*filter).get());
-    (*filter)->setDataContainerArray(dca);
+    filt->setMessagePrefix(ss);
+    connectFilterNotifications(filt.get());
+    filt->setDataContainerArray(dca);
     setCurrentFilter(*filter);
-    (*filter)->execute();
+    emit filt->filterInProgress();
+    filt->execute();
     disconnectFilterNotifications((*filter).get());
-    (*filter)->setDataContainerArray(DataContainerArray::NullPointer());
-    err = (*filter)->getErrorCondition();
+    filt->setDataContainerArray(DataContainerArray::NullPointer());
+    err = filt->getErrorCondition();
     if(err < 0)
     {
       setErrorCondition(err);
-
-      progValue.setType(PipelineMessage::Error);
+      progValue.setFilterClassName(filt->getNameOfClass());
+      progValue.setFilterHumanLabel(filt->getHumanLabel());
+      progValue.setType(PipelineMessage::MessageType::Error);
       progValue.setProgressValue(100);
+      ss = QObject::tr("[%1/%2] %3 caused an error during execution.").arg(progress).arg(m_Pipeline.size()).arg(filt->getHumanLabel());
+      progValue.setText(ss);
+      progValue.setPipelineIndex((*filter)->getPipelineIndex());
+      progValue.setCode(filt->getErrorCondition());
       emit pipelineGeneratedMessage(progValue);
-
+      emit filt->filterCompleted();
       emit pipelineFinished();
+      disconnectSignalsSlots();
+
       return;
     }
     if(this->getCancel() == true)
     {
       break;
     }
-    ss = QObject::tr("%1 Filter Complete").arg((*filter)->getNameOfClass());
+    // ss = QObject::tr("%1 Filter Complete").arg(filt->getNameOfClass());
+    emit filt->filterCompleted();
   }
 
   emit pipelineFinished();
 
   disconnectSignalsSlots();
 
-  PipelineMessage completMessage("", "Pipeline Complete", 0, PipelineMessage::StatusMessage, -1);
+  PipelineMessage completMessage("", "Pipeline Complete", 0, PipelineMessage::MessageType::StatusMessage, -1);
   emit pipelineGeneratedMessage(completMessage);
 }
 

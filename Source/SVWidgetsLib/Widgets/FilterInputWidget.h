@@ -96,7 +96,6 @@ class SVWidgetsLib_EXPORT FilterInputWidget : public QWidget, private Ui::Filter
 
     QVBoxLayout*                      m_VariablesVerticalLayout = nullptr;
     QWidget*                          m_VariablesWidget = nullptr;
-    QWidget*                          m_CurrentStructureWidget = nullptr;
     QMap<QString, QWidget*>           m_PropertyToWidget;
 
     /**

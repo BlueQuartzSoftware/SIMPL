@@ -82,25 +82,24 @@ class SVWidgetsLib_EXPORT SVPipelineFilterWidget : public QFrame, public Pipelin
 
     SIMPL_INSTANCE_PROPERTY(QString, BorderColorStyle)
 
-    bool isSelected();
-    void setSelected(bool s);
-
     bool hasRightClickTarget();
     void setHasRightClickTarget(bool value);
 
     void setFilterTitle(const QString title) override;
-    virtual void setFilterIndex(int index, int numFilters);
+    void setFilterIndex(int i, int max) override;
 
     virtual void getGuiParametersFromFilter(AbstractFilter* filt);
 
     PipelineFilterObject* deepCopy() override;
+
+    void setSelected(bool s) override;
 
   public slots:
 
     /**
      * @brief changeStyle
      */
-    void changeStyle() override;
+    virtual void changeStyle() override;
 
     /**
      * @brief displayFilterParameterWidgetError
@@ -121,30 +120,64 @@ class SVWidgetsLib_EXPORT SVPipelineFilterWidget : public QFrame, public Pipelin
     void launchHelpForItem();
 
     /**
-    * @brief toRunningState
-    */
-    void toRunningState() override;
-
-    /**
     * @brief toIdleState
     */
-    void toIdleState() override;
+    virtual void toReadyState() override;
+
+    /**
+    * @brief toRunningState
+    */
+    virtual void toExecutingState() override;
+
+    /**
+     * @brief toCompletedState
+     */
+    virtual void toCompletedState() override;
+
+
+    /**
+     * @brief toActiveState
+     */
+    virtual void toRunningState() override;
+
+    /**
+     * @brief toInactiveState
+     */
+    virtual void toStoppedState() override;
+
+    /**
+     * @brief toSelectedState
+     */
+    virtual void toPausedState() override;
+
+    /**
+     * @brief toOkState
+     */
+    virtual void toOkState() override;
+
+    /**
+     * @brief toErrorState
+     */
+    virtual void toErrorState() override;
+
+    /**
+     * @brief toWarningState
+     */
+    virtual void toWarningState() override;
 
   protected slots:
+
     /**
      * @brief on_deleteBtn_clicked
      */
     void on_deleteBtn_clicked();
 
+    /**
+     * @brief filterInputWidget_filterParametersChanged
+     */
     void filterInputWidget_filterParametersChanged();
 
   signals:
-
-    /**
-     * @brief filterWidgetRemoved
-     * @param widget
-     */
-    void filterWidgetRemoved(PipelineFilterObject* widget);
 
     /**
      * @brief dragStarted
@@ -155,6 +188,12 @@ class SVWidgetsLib_EXPORT SVPipelineFilterWidget : public QFrame, public Pipelin
      * @brief parametersChanged
      */
     void parametersChanged(QUuid id);
+
+    /**
+     * @brief parametersChanged
+     * @param obj
+     */
+    void parametersChanged1(PipelineFilterObject* obj);
 
     /**
      * @brief filterWidgetPressed
@@ -175,6 +214,13 @@ class SVWidgetsLib_EXPORT SVPipelineFilterWidget : public QFrame, public Pipelin
     * @brief filterWidgetPasted
     */
     void filterWidgetPasted();
+
+    /**
+     * @brief filterWidgetRemoved
+     * @param widget
+     */
+    void filterWidgetRemoved(PipelineFilterObject* widget);
+
 
     /**
     * @brief focusInEventStarted
@@ -221,10 +267,8 @@ class SVWidgetsLib_EXPORT SVPipelineFilterWidget : public QFrame, public Pipelin
     void focusOutEvent(QFocusEvent* event) override;
 
   private:
-    QRect                             m_DeleteRect;
-    QPoint                            dragStartPosition;
+    QPoint                            m_DragStartPosition;
     IObserver*                        m_Observer;
-    bool                              m_Selected;
     bool                              m_HasRightClickTarget;
 
     /**
@@ -232,11 +276,6 @@ class SVWidgetsLib_EXPORT SVPipelineFilterWidget : public QFrame, public Pipelin
      * @param filter
      */
     void initialize();
-
-    /**
-      *@brief
-      */
-    void updateWidgetStyle();
 
     SVPipelineFilterWidget(const SVPipelineFilterWidget&); // Copy Constructor Not Implemented
     void operator=(const SVPipelineFilterWidget&); // Operator '=' Not Implemented

@@ -142,18 +142,12 @@ file(APPEND ${RegisterKnownFiltersFile} "\nvoid FilterManager::RegisterKnownFilt
 
 
 # Add in our Filter classes
-# set(PluginAutoMocSourceFile ${${PROJECT_NAME}_BINARY_DIR}/CoreFilters_automoc_cmake.cpp)
-# set_source_files_properties( ${PluginAutoMocSourceFile} PROPERTIES GENERATED TRUE)
 # Add the generated moc file to the project sources
-# set(Project_SRCS ${Project_SRCS} ${PluginAutoMocSourceFile} )
 include(${SIMPLib_SOURCE_DIR}/CoreFilters/SourceList.cmake)
 
 #-----------------------------------------------------
 # conditionally compile our example codes- These should be turned off for a release
-option(SIMPL_BUILD_TEST_FILTERS "Build the Test filters: These should be OFF when doing a release" ON)
-if(SIMPL_BUILD_TEST_FILTERS)
-    # set(PluginAutoMocSourceFile ${${PROJECT_NAME}_BINARY_DIR}/TestFilters_automoc_cmake.cpp)
-    # set_source_files_properties( ${PluginAutoMocSourceFile} PROPERTIES GENERATED TRUE)
+if(NOT "${SIMPLProj_RELEASE_TYPE}" STREQUAL "Release")
     # Add the generated moc file to the project sources
     set(Project_SRCS ${Project_SRCS} ${PluginAutoMocSourceFile} )
     include(${SIMPLib_SOURCE_DIR}/TestFilters/SourceList.cmake)
@@ -175,6 +169,7 @@ include_directories( ${HDF5_INCLUDE_DIR} )
 include_directories( ${PROJECT_CODE_DIR} )
 include_directories( ${SIMPLib_BINARY_DIR} )
 
+
 set(${PROJECT_NAME}_LINK_LIBS Qt5::Core Qt5::Network H5Support)
 if( "${SIMPL_USE_MULTITHREADED_ALGOS}" STREQUAL "ON")
   list(APPEND ${PROJECT_NAME}_LINK_LIBS ${TBB_LIBRARIES})
@@ -190,7 +185,7 @@ set(lib_install_dir "lib")
 
 if(APPLE)
   get_property(DREAM3D_PACKAGE_DEST_PREFIX GLOBAL PROPERTY DREAM3D_PACKAGE_DEST_PREFIX)
-  set(install_dir "${DREAM3D_PACKAGE_DEST_PREFIX}tools")
+  set(install_dir "${DREAM3D_PACKAGE_DEST_PREFIX}bin")
   set(lib_install_dir "${DREAM3D_PACKAGE_DEST_PREFIX}lib")
 elseif(WIN32)
   set(install_dir ".")
@@ -216,14 +211,14 @@ export(EXPORT SIMPLibTargets
   NAMESPACE SIMPL::
 )
 
-install(EXPORT SIMPLibTargets
-  FILE
-    SIMPLibTargets.cmake
-  NAMESPACE
-    SIMPL::
-  DESTINATION
-    ${ConfigPackageLocation}
-)
+# install(EXPORT SIMPLibTargets
+#   FILE
+#     SIMPLibTargets.cmake
+#   NAMESPACE
+#     SIMPL::
+#   DESTINATION
+#     ${ConfigPackageLocation}
+# )
 
 
 

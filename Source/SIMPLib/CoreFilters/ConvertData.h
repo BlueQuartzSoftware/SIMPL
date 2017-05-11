@@ -54,8 +54,8 @@ class SIMPLib_EXPORT ConvertData : public AbstractFilter
 
     virtual ~ConvertData();
 
-    SIMPL_FILTER_PARAMETER(int, ScalarType)
-    Q_PROPERTY(int ScalarType READ getScalarType WRITE setScalarType)
+    SIMPL_FILTER_PARAMETER(SIMPL::NumericTypes::Type, ScalarType)
+    Q_PROPERTY(SIMPL::NumericTypes::Type ScalarType READ getScalarType WRITE setScalarType)
 
     SIMPL_FILTER_PARAMETER(QString, OutputArrayName)
     Q_PROPERTY(QString OutputArrayName READ getOutputArrayName WRITE setOutputArrayName)

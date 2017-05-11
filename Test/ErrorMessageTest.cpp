@@ -77,10 +77,10 @@ public:
     f->notifyErrorMessage("Some Test", a1, eCode);
     f->notifyErrorMessage("Another Test", "A description", -10);
 
-    PipelineMessage pm("Joey's Test", "Testing Warning Message...", -23, PipelineMessage::Warning);
-    PipelineMessage pm1("Joey's Test", "Testing Error Message...", -23, PipelineMessage::Error);
-    PipelineMessage pm2("Joey's Test", "Testing Status Message...", -23, PipelineMessage::StatusMessage);
-    PipelineMessage pm3("Joey's Test", "Testing Status Message...", -23, PipelineMessage::ProgressValue, 23);
+    PipelineMessage pm("Joey's Test", "Testing Warning Message...", -23, PipelineMessage::MessageType::Warning);
+    PipelineMessage pm1("Joey's Test", "Testing Error Message...", -23, PipelineMessage::MessageType::Error);
+    PipelineMessage pm2("Joey's Test", "Testing Status Message...", -23, PipelineMessage::MessageType::StatusMessage);
+    PipelineMessage pm3("Joey's Test", "Testing Status Message...", -23, PipelineMessage::MessageType::ProgressValue, 23);
     f->broadcastPipelineMessage(pm);
     f->broadcastPipelineMessage(pm1);
     f->broadcastPipelineMessage(pm2);

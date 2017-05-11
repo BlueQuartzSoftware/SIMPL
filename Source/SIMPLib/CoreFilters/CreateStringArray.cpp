@@ -37,11 +37,11 @@
 
 #include <QtCore/QDateTime>
 
-#include <boost/random/bernoulli_distribution.hpp>
-#include <boost/random/mersenne_twister.hpp>
-#include <boost/random/uniform_int.hpp>
-#include <boost/random/uniform_real.hpp>
-#include <boost/random/variate_generator.hpp>
+//#include <boost/random/bernoulli_distribution.hpp>
+//#include <boost/random/mersenne_twister.hpp>
+//#include <boost/random/uniform_int.hpp>
+//#include <boost/random/uniform_real.hpp>
+//#include <boost/random/variate_generator.hpp>
 
 #include "SIMPLib/Common/Constants.h"
 #include "SIMPLib/Common/TemplateHelpers.hpp"
@@ -68,7 +68,6 @@
 void initializeArray(IDataArray::Pointer outputArrayPtr, const QString& initializationValue)
 {
   StringDataArray::Pointer array = std::dynamic_pointer_cast<StringDataArray>(outputArrayPtr);
-  size_t count = array->getSize();
   array->initializeWithValue(initializationValue);
 }
 

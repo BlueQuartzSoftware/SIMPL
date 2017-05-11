@@ -1,4 +1,4 @@
-ArraySelectionExample {#arrayselectionexample}
+DataContainerArrayProxy Example {#arrayselectionexample}
 =====
 
 ## Group (Subgroup) ##

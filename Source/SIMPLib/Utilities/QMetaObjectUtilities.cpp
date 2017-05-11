@@ -39,6 +39,7 @@
 #include <QtCore/QVector>
 
 #include "SIMPLib/Common/ComparisonInputs.h"
+#include "SIMPLib/Common/ComparisonInputsAdvanced.h"
 #include "SIMPLib/Common/PipelineMessage.h"
 #include "SIMPLib/CoreFilters/CreateDataArray.h"
 #include "SIMPLib/DataContainers/DataArrayPath.h"
@@ -103,13 +104,13 @@ void QMetaObjectUtilities::RegisterMetaTypes()
   qRegisterMetaType<AxisAngleInput_t>("AxisAngleInput_t");
   qRegisterMetaType<ComparisonInput_t>("ComparisonInput_t");
   qRegisterMetaType<ComparisonInputs>("ComparisonInputs");
+  qRegisterMetaType<ComparisonInputsAdvanced>("ComparisonInputsAdvanced");
   qRegisterMetaType<DataContainerArrayProxy>("DataContainerArrayProxy");
   qRegisterMetaType<IntVec3_t>("IntVec3_t");
   qRegisterMetaType<FloatVec3_t>("FloatVec3_t");
   qRegisterMetaType<PipelineMessage>("PipelineMessage");
   qRegisterMetaType<UInt32Vector_t>("UInt32Vector_t");
   qRegisterMetaType<FPRangePair>("FPRangePair");
-  qRegisterMetaType<CreateDataArray::ScalarTypeChoices>("ScalarTypeChoices");
   qRegisterMetaType<DynamicTableData>("DynamicTableData");
   qRegisterMetaTypeStreamOperators<IntVec3_t>("IntVec3_t");
   qRegisterMetaTypeStreamOperators<FloatVec3_t>("FloatVec3_t");

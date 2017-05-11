@@ -51,20 +51,24 @@ set_source_files_properties( ${SIMPLib_${SUBDIR_NAME}_Generated_MOC_SRCS} PROPER
 set(SIMPLib_Utilities_HDRS
   ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/ColorTable.h
   ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/ColorUtilities.h
+  ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/FloatSummation.h
   ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/TimeUtilities.h
   ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/SIMPLibEndian.h
   ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/SIMPLibRandom.h
   ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/FilePathGenerator.h
   ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/QMetaObjectUtilities.h
+  ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/StringOperations.h
   ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/UnitTestSupport.hpp
 )
 
 set(SIMPLib_Utilities_SRCS
   ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/ColorTable.cpp
   ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/ColorUtilities.cpp
+  ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/FloatSummation.cpp
   ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/SIMPLibRandom.cpp
   ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/FilePathGenerator.cpp
   ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/QMetaObjectUtilities.cpp
+  ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/StringOperations.cpp
   ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/TestObserver.cpp
 )
 

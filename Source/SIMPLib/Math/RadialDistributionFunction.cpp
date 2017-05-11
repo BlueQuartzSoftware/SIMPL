@@ -34,13 +34,15 @@
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
 #include "RadialDistributionFunction.h"
-#include "SIMPLib/StatsData/StatsData.h"
-#include "SIMPLib/Utilities/SIMPLibRandom.h"
 
 #include "math.h"
 
 #include <fstream>
 #include <iostream>
+
+#include "SIMPLib/StatsData/StatsData.h"
+#include "SIMPLib/Utilities/SIMPLibRandom.h"
+
 
 // -----------------------------------------------------------------------------
 //

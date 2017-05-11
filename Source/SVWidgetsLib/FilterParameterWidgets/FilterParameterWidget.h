@@ -41,7 +41,7 @@
 #include <QtCore/QObject>
 #include <QtCore/QPointer>
 
-#include <QtWidgets/QPushButton>
+#include <QtWidgets/QToolButton>
 #include <QtWidgets/QWidget>
 #include <QtWidgets/QFrame>
 
@@ -76,6 +76,16 @@ class SVWidgetsLib_EXPORT FilterParameterWidget : public QFrame
 
     virtual ~FilterParameterWidget();
 
+    using EnumType = unsigned int;
+
+    enum class Style : EnumType
+    {
+      FS_STANDARD_STYLE = 0,
+      FS_DRAGGING_STYLE = 1,
+      FS_DOESNOTEXIST_STYLE = 2,
+      FS_WARNING_STYLE = 3
+    };
+
     SIMPL_VIRTUAL_INSTANCE_PROPERTY(AbstractFilter*, Filter)
     SIMPL_VIRTUAL_INSTANCE_PROPERTY(FilterParameter*, FilterParameter)
     SIMPL_VIRTUAL_INSTANCE_PROPERTY(bool, WidgetIsExpanding)
@@ -90,6 +100,8 @@ class SVWidgetsLib_EXPORT FilterParameterWidget : public QFrame
 
     QString wrapStringInHtml(const QString& message);
 
+    virtual void changeStyleSheet(Style style);
+
   public slots:
 
     void setLinkedConditionalState(int state);
@@ -99,7 +111,7 @@ class SVWidgetsLib_EXPORT FilterParameterWidget : public QFrame
     void animationFinished();
 
   protected:
-    QPoint adjustedMenuPosition(QPushButton* pushButton);
+    QPoint adjustedMenuPosition(QToolButton *pushButton);
 
   protected slots:
     void showBorder();

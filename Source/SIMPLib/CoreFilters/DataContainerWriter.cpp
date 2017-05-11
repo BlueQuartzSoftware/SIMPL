@@ -52,28 +52,6 @@ extern Q_CORE_EXPORT int qt_ntfs_permission_lookup;
 #define APPEND_DATA_TRUE 1
 #define APPEND_DATA_FALSE 0
 
-namespace Detail
-{
-class H5GroupAutoCloser
-{
-public:
-  H5GroupAutoCloser(hid_t* groupId)
-  : gid(groupId)
-  {
-  }
-
-  virtual ~H5GroupAutoCloser()
-  {
-    if(*gid > 0)
-    {
-      H5Gclose(*gid);
-    }
-  }
-
-private:
-  hid_t* gid;
-};
-}
 
 // Include the MOC generated file for this class
 #include "moc_DataContainerWriter.cpp"
@@ -83,7 +61,7 @@ private:
 // -----------------------------------------------------------------------------
 DataContainerWriter::DataContainerWriter()
 : AbstractFilter()
-, m_OutputFile("")
+, m_OutputFile(QDir::toNativeSeparators(QDir::homePath() + "/Desktop/Untitled.dream3d"))
 , m_WritePipeline(true)
 , m_WriteXdmfFile(true)
 , m_AppendToExisting(false)
@@ -362,7 +340,7 @@ int DataContainerWriter::writeDataContainerBundles(hid_t fileId)
   }
   hid_t dcbGid = H5Gopen(m_FileId, SIMPL::StringConstants::DataContainerBundleGroupName.toLatin1().data(), H5P_DEFAULT);
 
-  Detail::H5GroupAutoCloser groupCloser(&dcbGid);
+  H5GroupAutoCloser groupCloser(&dcbGid);
 
   QMap<QString, IDataContainerBundle::Pointer>& bundles = getDataContainerArray()->getDataContainerBundles();
   QMapIterator<QString, IDataContainerBundle::Pointer> iter(bundles);

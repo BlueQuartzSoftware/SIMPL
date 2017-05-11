@@ -6,9 +6,12 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>714</width>
-    <height>31</height>
+    <width>604</width>
+    <height>33</height>
    </rect>
+  </property>
+  <property name="acceptDrops">
+   <bool>true</bool>
   </property>
   <layout class="QHBoxLayout" name="horizontalLayout">
    <property name="leftMargin">
@@ -37,41 +40,37 @@
     </widget>
    </item>
    <item>
-    <widget class="QPushButton" name="m_SelectedDataArrayPath">
+    <widget class="QToolButton" name="m_SelectedDataArrayPath">
      <property name="sizePolicy">
-      <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
+      <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
        <horstretch>0</horstretch>
        <verstretch>0</verstretch>
       </sizepolicy>
      </property>
-     <property name="maximumSize">
-      <size>
-       <width>16777215</width>
-       <height>16777215</height>
-      </size>
+     <property name="acceptDrops">
+      <bool>true</bool>
      </property>
-     <property name="font">
-      <font>
-       <pointsize>12</pointsize>
-      </font>
+     <property name="toolTip">
+      <string/>
      </property>
      <property name="styleSheet">
-      <string notr="true"/>
+      <string notr="true">QToolTip {
+              border: 2px solid #434343;
+              padding: 2px;
+              border-radius: 3px;
+              opacity: 255;
+              background-color: #FFFFFF;
+              color: #000000;
+              }</string>
      </property>
      <property name="text">
-      <string notr="true"/>
+      <string/>
      </property>
-     <property name="iconSize">
-      <size>
-       <width>2</width>
-       <height>2</height>
-      </size>
+     <property name="popupMode">
+      <enum>QToolButton::InstantPopup</enum>
      </property>
-     <property name="shortcut">
-      <string>Ctrl+S</string>
-     </property>
-     <property name="flat">
-      <bool>false</bool>
+     <property name="toolButtonStyle">
+      <enum>Qt::ToolButtonTextBesideIcon</enum>
      </property>
     </widget>
    </item>

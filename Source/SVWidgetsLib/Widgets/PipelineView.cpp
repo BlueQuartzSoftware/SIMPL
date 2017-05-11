@@ -245,6 +245,17 @@ void PipelineView::setSelectedFilterObject(PipelineFilterObject* w, Qt::Keyboard
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
+void PipelineView::setDataBrowserWidget(DataBrowserWidget* w)
+{
+  Q_UNUSED(w)
+
+  // The subclass should reimplement this function
+  return;
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
 void PipelineView::recheckWindowTitleAndModification()
 {
   // The subclass should reimplement this function

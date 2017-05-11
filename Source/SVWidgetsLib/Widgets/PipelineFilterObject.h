@@ -53,8 +53,7 @@ class SVWidgetsLib_EXPORT PipelineFilterObject
     PipelineFilterObject(AbstractFilter::Pointer filter, IObserver* observer = nullptr);
     virtual ~PipelineFilterObject();
 
-    SIMPL_BOOL_PROPERTY(Running)
-
+    void setFilter(AbstractFilter::Pointer filter);
     AbstractFilter::Pointer getFilter();
 
     bool isFocused();
@@ -67,9 +66,12 @@ class SVWidgetsLib_EXPORT PipelineFilterObject
     QString getFilterSubGroup();
     QString getFilterClassName();
     QString getCompiledLibraryName();
+    QColor getGroupColor();
+    QIcon getGroupIcon();
+
 
     virtual void setFilterTitle(const QString title);
-    virtual void setFilterIndex(int index, int numFilters);
+    virtual void setFilterIndex(int i, int max);
 
     FilterInputWidget* getFilterInputWidget();
 
@@ -77,26 +79,93 @@ class SVWidgetsLib_EXPORT PipelineFilterObject
 
     void setHasFocus(bool hasFocus);
 
+    SIMPL_BOOL_PROPERTY( Selected)
+
+
     QWidget* getBasicInputsWidget();
     QWidget* getCurrentStructureWidget();
 
     void setHasPreflightErrors(bool hasPreflightErrors);
     void setHasPreflightWarnings(bool hasPreflightWarnings);
 
+    using EnumType = unsigned int;
+
+    enum class WidgetState : EnumType
+    {
+      Ready = 0,      //!<
+      Executing = 1, //!<
+      Completed = 2, //!<
+    };
+    SIMPL_INSTANCE_PROPERTY(WidgetState, WidgetState)
+
+    enum class PipelineState : EnumType
+    {
+      Running = 0,
+      Stopped = 1,
+      Paused = 4,
+    };
+    SIMPL_INSTANCE_PROPERTY(PipelineState, PipelineState)
+
+    enum class ErrorState : EnumType
+    {
+        Ok = 0,
+        Error = 1,
+        Warning = 2,
+    };
+    SIMPL_INSTANCE_PROPERTY(ErrorState, ErrorState)
+
+
     /**
      * @brief changeStyle
      */
     virtual void changeStyle();
 
-    /**
-    * @brief toRunningState
-    */
-    virtual void toRunningState();
 
     /**
     * @brief toIdleState
     */
-    virtual void toIdleState();
+    virtual void toReadyState();
+
+    /**
+    * @brief toRunningState
+    */
+    virtual void toExecutingState();
+
+    /**
+     * @brief toCompletedState
+     */
+    virtual void toCompletedState();
+
+
+    /**
+     * @brief toActiveState
+     */
+    virtual void toRunningState();
+
+    /**
+     * @brief toInactiveState
+     */
+    virtual void toStoppedState();
+
+    /**
+     * @brief toSelectedState
+     */
+    virtual void toPausedState();
+
+    /**
+     * @brief toOkState
+     */
+    virtual void toOkState();
+
+    /**
+     * @brief toErrorState
+     */
+    virtual void toErrorState();
+
+    /**
+     * @brief toWarningState
+     */
+    virtual void toWarningState();
 
   private:
     AbstractFilter::Pointer           m_Filter;
@@ -104,6 +173,8 @@ class SVWidgetsLib_EXPORT PipelineFilterObject
     bool                              m_IsFocused;
     bool                              m_HasPreflightErrors;
     bool                              m_HasPreflightWarnings;
+    QColor                            m_GroupColor;
+    QIcon                             m_GroupIcon;
 
     /**
     * @brief setupFilterInputWidget Creates and initializes the filter input widget.

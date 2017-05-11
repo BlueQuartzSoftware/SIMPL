@@ -1,4 +1,4 @@
-DynamicTableExample {#dynamictableexample}
+Dynamic Table Example {#dynamictableexample}
 =====
 
 ## Group (Subgroup) ##

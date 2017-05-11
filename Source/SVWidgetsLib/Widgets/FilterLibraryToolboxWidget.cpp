@@ -44,6 +44,9 @@
 
 #include "FilterListToolboxWidget.h"
 
+#include "SVWidgetsLib/QtSupport/QtSStyles.h"
+
+
 // Include the MOC generated CPP file which has all the QMetaObject methods/data
 #include "moc_FilterLibraryToolboxWidget.cpp"
 
@@ -96,7 +99,7 @@ void FilterLibraryToolboxWidget::refreshFilterGroups()
 #if 1
   QTreeWidgetItem* library = new QTreeWidgetItem(bookmarksTreeView);
   library->setText(0, SIMPL::Settings::Library);
-  library->setIcon(0, QIcon(":/Groups/cubes.png"));
+  library->setIcon(0, QIcon(":/BlankGroup_Icon.png"));
   library->setData(0, Qt::UserRole, QVariant(LIBRARY_NODE_TYPE));
 #else
   QTreeWidgetItem* library = bookmarksTreeView->invisibleRootItem();
@@ -107,6 +110,8 @@ void FilterLibraryToolboxWidget::refreshFilterGroups()
   {
     //   qDebug() << *iter << "\n";
     QString groupName = *iter;
+
+#if 0
     QString iconName(":/Groups/");
     iconName.append(groupName);
     iconName.append("_Icon.png");
@@ -117,6 +122,9 @@ void FilterLibraryToolboxWidget::refreshFilterGroups()
       iconName = ":/Groups/Plugin_Icon.png"; // Switch to our generic icon for Plugins that do not provide their own
     }
     QIcon icon(iconName);
+#else
+    QIcon icon = QtSStyles::IconForGroup(groupName);
+#endif
     QTreeWidgetItem* filterGroup = new QTreeWidgetItem(library);
     filterGroup->setText(0, groupName);
     filterGroup->setIcon(0, icon);
@@ -127,7 +135,7 @@ void FilterLibraryToolboxWidget::refreshFilterGroups()
       QTreeWidgetItem* filterSubGroup = new QTreeWidgetItem(filterGroup);
       QString subGroupName = *iter2;
       filterSubGroup->setText(0, subGroupName);
-      filterSubGroup->setIcon(0, QIcon(":/folder_blue.png"));
+      filterSubGroup->setIcon(0, QIcon(":/BlankGroup_Icon.png"));
       filterSubGroup->setData(0, Qt::UserRole, QVariant(SUBGROUP_NODE_TYPE));
 
       // Now find all the filters that are in this Group/SubGroup
@@ -140,6 +148,8 @@ void FilterLibraryToolboxWidget::refreshFilterGroups()
         AbstractFilter::Pointer filter = factory->create();
         QTreeWidgetItem* filterTreeItem = new QTreeWidgetItem(filterSubGroup);
         filterTreeItem->setText(0, filter->getHumanLabel());
+
+#if 0
         if(groupName.compare(SIMPL::FilterGroups::Unsupported) == 0)
         {
           filterTreeItem->setIcon(0, QIcon(":/Groups/Unsupported_Icon.png"));
@@ -160,6 +170,9 @@ void FilterLibraryToolboxWidget::refreshFilterGroups()
           QIcon icon(iconName);
           filterTreeItem->setIcon(0, icon);
         }
+#else
+        filterTreeItem->setIcon(0, icon);
+#endif
         filterTreeItem->setData(0, Qt::UserRole, QVariant(FILTER_NODE_TYPE));
         filterTreeItem->setData(0, Qt::UserRole + 1, QVariant(filter->getNameOfClass()));
         filterTreeItem->setToolTip(0, filter->generateHtmlSummary());
@@ -182,6 +195,7 @@ void FilterLibraryToolboxWidget::setupGui()
               border-radius: 3px;\
               opacity: 255;\
               background-color: #FFFFFF;\
+              color: #000000;\
               }");
   bookmarksTreeView->setStyleSheet(css);
 

@@ -85,8 +85,6 @@ SIMPLViewMenuItems::~SIMPLViewMenuItems()
   delete m_ActionShowFilterLibrary;
   delete m_ActionShowFilterList;
   delete m_ActionShowBookmarks;
-  delete m_ActionShowStdOutput;
-  delete m_ActionShowIssues;
   delete m_ActionShowToolbox;
 
   // Bookmarks Menu
@@ -159,10 +157,6 @@ void SIMPLViewMenuItems::createActions()
   m_ActionShowFilterList->setCheckable(true);
   m_ActionShowBookmarks = new QAction("Show Bookmarks", this);
   m_ActionShowBookmarks->setCheckable(true);
-  m_ActionShowIssues = new QAction("Show Warnings/Errors", this);
-  m_ActionShowIssues->setCheckable(true);
-  m_ActionShowStdOutput = new QAction("Show Standard Output", this);
-  m_ActionShowStdOutput->setCheckable(true);
   m_ActionShowToolbox = new QAction("Show Toolbox", this);
   m_ActionShowToolbox->setCheckable(true);
   m_ActionAddBookmark = new QAction("Add Bookmark", this);

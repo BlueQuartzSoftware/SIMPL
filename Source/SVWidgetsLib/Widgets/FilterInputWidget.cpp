@@ -158,10 +158,6 @@ FilterInputWidget::~FilterInputWidget()
   {
     delete m_VariablesWidget;
   }
-  if(m_CurrentStructureWidget != nullptr)
-  {
-    delete m_CurrentStructureWidget;
-  }
 }
 
 // -----------------------------------------------------------------------------
@@ -186,9 +182,9 @@ void FilterInputWidget::setupGui()
 {
   QFont humanLabelFont = QtSStyles::GetHumanLabelFont();
   QFont brandingFont = QtSStyles::GetBrandingLabelFont();
-  QFont categoryFont = QtSStyles::GetCategoryFont();
 
   filterHumanLabel->setFont(humanLabelFont);
+  filterIndex->setFont(humanLabelFont);
 
   QString releaseType = QString::fromLatin1(SIMPLViewProj_RELEASE_TYPE);
   if(releaseType.compare("Official") == 0)
@@ -256,22 +252,22 @@ void FilterInputWidget::layoutWidgets(AbstractFilter::Pointer filter)
 
   QGroupBox* parametersGroupBox = new QGroupBox("Parameters", this);
   QVBoxLayout* pLayout = new QVBoxLayout(parametersGroupBox);
-  pLayout->setContentsMargins(0, 0, 0, 0);
+  pLayout->setContentsMargins(5, 5, 5, 5);
   parametersGroupBox->setStyleSheet(groupBoxStyle);
 
   QGroupBox* requiredGroupBox = new QGroupBox("Required Objects", this);
   QVBoxLayout* rLayout = new QVBoxLayout(requiredGroupBox);
-  rLayout->setContentsMargins(0, 0, 0, 0);
+  rLayout->setContentsMargins(5, 5, 5, 5);
   requiredGroupBox->setStyleSheet(groupBoxStyle);
 
   QGroupBox* createdGroupBox = new QGroupBox("Created Objects", this);
   QVBoxLayout* cLayout = new QVBoxLayout(createdGroupBox);
-  cLayout->setContentsMargins(0, 0, 0, 0);
+  cLayout->setContentsMargins(5, 5, 5, 5);
   createdGroupBox->setStyleSheet(groupBoxStyle);
 
   QGroupBox* noCategoryGroupBox = new QGroupBox("Uncategorized", this);
   QVBoxLayout* nLayout = new QVBoxLayout(noCategoryGroupBox);
-  nLayout->setContentsMargins(0, 0, 0, 0);
+  nLayout->setContentsMargins(5, 5, 5, 5);
   noCategoryGroupBox->setStyleSheet(groupBoxStyle);
 
   // Get the FilterWidgetManagere instance so we can instantiate new FilterParameterWidgets
@@ -383,12 +379,6 @@ void FilterInputWidget::layoutWidgets(AbstractFilter::Pointer filter)
   {
     delete noCategoryGroupBox;
   }
-
-  // Now layout the Current Structure widget
-  m_CurrentStructureWidget = new DataContainerArrayWidget(filter.get(), this);
-  QString curStructName = QString::fromUtf8("advancedInputsScrollWidget_CurrStructWidget");
-  m_CurrentStructureWidget->setObjectName(curStructName);
-  m_CurrentStructureWidget->setGeometry(QRect(0, 0, 250, 267));
 
   if(!addSpacer)
   {
@@ -567,16 +557,6 @@ void FilterInputWidget::clearInputWidgets()
       variablesGrid->removeWidget(w);
     }
   }
-  item = currentStructureGrid->itemAt(0);
-  if(item)
-  {
-    QWidget* w = item->widget();
-    if(w)
-    {
-      w->setVisible(false);
-      currentStructureGrid->removeWidget(w);
-    }
-  }
 
   filterHumanLabel->setText("No Filter Selected");
   brandingLabel->clear();
@@ -604,22 +584,52 @@ void FilterInputWidget::displayFilterParameters(PipelineFilterObject* w)
     m_VariablesWidget->setVisible(true);
   }
 
-  if(m_CurrentStructureWidget != nullptr)
+  AbstractFilter::Pointer f = w->getFilter();
+  if(f.get())
   {
-    currentStructureGrid->addWidget(m_CurrentStructureWidget);
-    m_CurrentStructureWidget->setVisible(true);
+    m_BrandingLabel = f->getBrandingString() + "  [" + w->getCompiledLibraryName() + "/" + w->getFilterGroup() + "/" + w->getFilterClassName() + "]";
+    brandingLabel->setText(m_BrandingLabel);
   }
-
-  // Set the current index to the basic tab by default
-  tabWidget->setCurrentIndex(BASIC_TAB);
-
   // Add a label at the top of the Inputs Tabs to show what filter we are working on
   filterHumanLabel->setText(w->getHumanLabel());
+  filterIndex->clear();
+  QString style;
 
-  AbstractFilter::Pointer filter = w->getFilter();
-  m_BrandingLabel = filter->getBrandingString() + "  [" + w->getCompiledLibraryName() + "/" + w->getFilterGroup() + "/" + w->getFilterClassName() + "]";
 
-  brandingLabel->setText(m_BrandingLabel);
+  QString filterGroup;
+  QTextStream groupStream(&filterGroup);
+  groupStream << "Group: " << w->getFilterGroup() << "\n";
+  groupStream << "Subgroup: " << w->getFilterSubGroup();
+  filterHumanLabel->setToolTip(filterGroup);
+
+  QColor bgColor =  w->getGroupColor();
+  QColor borderColor = QColor::fromHsv(bgColor.hue(), 100, 120);
+
+  QTextStream styleStream(&style);
+  styleStream << "QFrame#" << labelFrame->objectName() << "{";
+  styleStream << "border-bottom: 0px solid;";
+  styleStream << "border-bottom-color: " << borderColor.name() << ";";
+ // styleStream << "background-color: " << bgColor.name() << ";";
+ // styleStream << "border-radius: 0 0 0 0px;";
+  styleStream << "}";
+
+#if 0
+  int index = -1;
+  if(f.get()) {
+    index = f->getPipelineIndex() + 1;
+  }
+  filterIndex->setText(QString::number(index));
+
+
+  styleStream << "QLabel#" << filterIndex->objectName() << "{";
+  styleStream << "background-color: rgb(48, 48, 48);";
+  styleStream << "color: rgb(242, 242, 242);"; // Always have a white'ish font
+ // styleStream << "border-radius: 3px;";
+  styleStream << "padding: 1 5 1 5px;";
+  styleStream << "}";
+#endif
+
+  labelFrame->setStyleSheet(style);
 }
 
 // -----------------------------------------------------------------------------

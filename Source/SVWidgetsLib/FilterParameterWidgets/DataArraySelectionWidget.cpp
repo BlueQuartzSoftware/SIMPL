@@ -35,6 +35,7 @@
 
 #include "DataArraySelectionWidget.h"
 
+#include <QtCore/QMimeData>
 #include <QtCore/QList>
 #include <QtCore/QMetaProperty>
 #include <QtCore/QSignalMapper>
@@ -116,7 +117,7 @@ void DataArraySelectionWidget::setupGui()
     return;
   }
 
-  m_SelectedDataArrayPath->setStyleSheet(QtSStyles::DAPSelectionButtonStyle(false));
+  m_SelectedDataArrayPath->setStyleSheet(QtSStyles::QToolSelectionButtonStyle(false));
 
   // Generate the text for the QLabel
   label->setText(getFilterParameter()->getHumanLabel());
@@ -136,6 +137,9 @@ void DataArraySelectionWidget::setupGui()
 
   DataArrayPath defaultPath = getFilter()->property(PROPERTY_NAME_AS_CHAR).value<DataArrayPath>();
   m_SelectedDataArrayPath->setText(defaultPath.serialize(Detail::Delimiter));
+
+  changeStyleSheet(Style::FS_STANDARD_STYLE);
+
 }
 
 // -----------------------------------------------------------------------------
@@ -196,6 +200,12 @@ void DataArraySelectionWidget::createSelectionMenu()
     {
       dcMenu->setDisabled(true);
     }
+    if (dc->getAttributeMatrixNames().size() == 0)
+    {
+      dcMenu->setDisabled(true);
+    }
+
+    bool validAmFound = false;
 
     // We found the proper Data Container, now populate the AttributeMatrix List
     DataContainer::AttributeMatrixMap_t attrMats = dc->getAttributeMatrices();
@@ -213,6 +223,8 @@ void DataArraySelectionWidget::createSelectionMenu()
       {
         amMenu->setDisabled(true);
       }
+
+      bool validDaFound = false;
 
       // We found the selected AttributeMatrix, so loop over this attribute matrix arrays and populate the menus
       QList<QString> attrArrayNames = am->getAttributeArrayNames();
@@ -238,7 +250,27 @@ void DataArraySelectionWidget::createSelectionMenu()
         {
           action->setDisabled(true);
         }
+        else
+        {
+          validDaFound = true;
+        }
       }
+
+      // Disable AttributeMatrix menu if no valid DataArray found
+      if(validDaFound)
+      {
+        validAmFound = true;
+      }
+      if(!validAmFound)
+      {
+        amMenu->setDisabled(true);
+      }
+    }
+
+    // Disable DataContainer menu if no valid AttributeMatrixes found
+    if(!validAmFound)
+    {
+      dcMenu->setDisabled(true);
     }
   }
 }
@@ -285,8 +317,9 @@ void DataArraySelectionWidget::setSelectedPath(DataArrayPath daPath)
 {
   if(daPath.isEmpty())
   {
- //   m_SelectedDataArrayPath->setText("");
     m_SelectedDataArrayPath->setToolTip(wrapStringInHtml("DataArrayPath is empty."));
+    m_SelectedDataArrayPath->setStyleSheet(QtSStyles::QToolSelectionButtonStyle(false));
+    changeStyleSheet(Style::FS_DOESNOTEXIST_STYLE);
     return;
   }
 
@@ -294,8 +327,9 @@ void DataArraySelectionWidget::setSelectedPath(DataArrayPath daPath)
   if(nullptr == dca.get())
   {
     m_SelectedDataArrayPath->setText(daPath.serialize(Detail::Delimiter));
-    m_SelectedDataArrayPath->setStyleSheet(QtSStyles::DAPSelectionButtonStyle(false));
+    m_SelectedDataArrayPath->setStyleSheet(QtSStyles::QToolSelectionButtonStyle(false));
     m_SelectedDataArrayPath->setToolTip(wrapStringInHtml("DataContainerArray is not available to verify path."));
+    changeStyleSheet(Style::FS_DOESNOTEXIST_STYLE);
     return;
   }
 
@@ -306,12 +340,14 @@ void DataArraySelectionWidget::setSelectedPath(DataArrayPath daPath)
     QString html = attrArray->getInfoString(SIMPL::HtmlFormat);
     m_SelectedDataArrayPath->setToolTip(html);
     m_SelectedDataArrayPath->setText(daPath.serialize(Detail::Delimiter));
-    m_SelectedDataArrayPath->setStyleSheet(QtSStyles::DAPSelectionButtonStyle(true));
+    m_SelectedDataArrayPath->setStyleSheet(QtSStyles::QToolSelectionButtonStyle(true));
+    changeStyleSheet(Style::FS_STANDARD_STYLE);
   }
   else
   {
     m_SelectedDataArrayPath->setToolTip(wrapStringInHtml("DataArrayPath does not exist."));
-    m_SelectedDataArrayPath->setStyleSheet(QtSStyles::DAPSelectionButtonStyle(false));
+    m_SelectedDataArrayPath->setStyleSheet(QtSStyles::QToolSelectionButtonStyle(false));
+    changeStyleSheet(Style::FS_DOESNOTEXIST_STYLE);
   }
 }
 
@@ -385,4 +421,40 @@ void DataArraySelectionWidget::filterNeedsInputParameters(AbstractFilter* filter
   {
     FilterParameterWidgetsDialogs::ShowCouldNotSetFilterParameter(getFilter(), getFilterParameter());
   }
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void DataArraySelectionWidget::dragEnterEvent(QDragEnterEvent* event)
+{
+  qDebug() << "DataArraySelectionWidget::dragEnterEvent";
+  changeStyleSheet(Style::FS_DRAGGING_STYLE);
+  event->acceptProposedAction();
+
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void DataArraySelectionWidget::dragLeaveEvent(QDragLeaveEvent* event)
+{
+  qDebug() << "DataArraySelectionWidget::dragLeaveEvent";
+  changeStyleSheet(Style::FS_STANDARD_STYLE);
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void DataArraySelectionWidget::dropEvent(QDropEvent* event)
+{
+  qDebug() << "DataArraySelectionWidget::dropEvent";
+  if(event->mimeData()->hasText())
+  {
+    QByteArray dropData = event->mimeData()->data("text/plain");
+    QString name(dropData);
+    qDebug() << name;
+  }
+  changeStyleSheet(Style::FS_STANDARD_STYLE);
+
 }

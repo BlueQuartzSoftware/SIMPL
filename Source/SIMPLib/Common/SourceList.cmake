@@ -41,6 +41,7 @@ set(SIMPLib_${SUBDIR_NAME}_Moc_HDRS
   ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/AbstractDecisionFilter.h
   ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/AbstractFilter.h
   ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/ComparisonInputs.h
+  ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/ComparisonInputsAdvanced.h
   ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/DocRequestManager.h
   ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/FilterPipeline.h
   ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/Observer.h
@@ -54,7 +55,10 @@ set_source_files_properties( ${SIMPLib_${SUBDIR_NAME}_Generated_MOC_SRCS} PROPER
 set_source_files_properties( ${SIMPLib_${SUBDIR_NAME}_Generated_MOC_SRCS} PROPERTIES HEADER_FILE_ONLY TRUE)
 
 set(SIMPLib_${SUBDIR_NAME}_HDRS
+  ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/AbstractComparison.h
   ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/AppVersion.h
+  ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/ComparisonValue.h
+  ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/ComparisonSet.h
   ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/Constants.h
   ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/CreatedArrayHelpIndexEntry.h
   ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/FilterFactory.hpp
@@ -74,11 +78,15 @@ set(SIMPLib_${SUBDIR_NAME}_HDRS
 
 
 set(SIMPLib_${SUBDIR_NAME}_SRCS
+  ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/AbstractComparison.cpp
   ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/AbstractDecisionFilter.cpp
   ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/AbstractFilter.cpp
   ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/AppVersion.cpp
   ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/DocRequestManager.cpp
+  ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/ComparisonValue.cpp
+  ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/ComparisonSet.cpp
   ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/ComparisonInputs.cpp
+  ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/ComparisonInputsAdvanced.cpp
   ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/CreatedArrayHelpIndexEntry.cpp
   ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/FilterManager.cpp
   ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/FilterPipeline.cpp
