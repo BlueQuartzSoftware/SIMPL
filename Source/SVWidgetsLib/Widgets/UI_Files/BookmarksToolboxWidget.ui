@@ -75,7 +75,7 @@ padding-left: 5px;
       <enum>QAbstractItemView::DragDrop</enum>
      </property>
      <property name="alternatingRowColors">
-      <bool>false</bool>
+      <bool>true</bool>
      </property>
      <property name="selectionMode">
       <enum>QAbstractItemView::ExtendedSelection</enum>
