@@ -148,6 +148,7 @@ class SVWidgetsLib_EXPORT DataContainerReaderWidget : public FilterParameterWidg
      */
     void showFileInFileSystem();
 
+
   private:
     static QString                       m_OpenDialogLastFilePath;
     DataContainerReader*                 m_Filter = nullptr;

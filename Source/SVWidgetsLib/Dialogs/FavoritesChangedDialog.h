@@ -43,26 +43,39 @@
 //-- UIC generated Header
 #include <ui_FavoritesChangedDialog.h>
 
-
+/**
+ * @brief The FavoritesChangedDialog class
+ */
 class SVWidgetsLib_EXPORT FavoritesChangedDialog : public QDialog, private Ui::FavoritesChangedDialog
 {
     Q_OBJECT
 
   public:
+
     FavoritesChangedDialog(QWidget* parent = 0);
     virtual ~FavoritesChangedDialog();
 
   protected slots:
+
     void on_selectBtn_clicked();
     void on_exportBtn_clicked();
     void on_outputDir_textChanged(const QString& text);
 
   signals:
+
     void exportBtnPressed(QString directory);
+
+
+  protected:
+
+    void setNewDirectory(QString val);
+    QString getNewDirectory();
 
   private:
     QString m_OpenDialogLastFilePath;
 
+
+  private:
     FavoritesChangedDialog(const FavoritesChangedDialog&); // Copy Constructor Not Implemented
     void operator=(const FavoritesChangedDialog&); // Operator '=' Not Implemented
 };

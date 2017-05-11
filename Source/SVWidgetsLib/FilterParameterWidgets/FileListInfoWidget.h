@@ -116,8 +116,13 @@ class SVWidgetsLib_EXPORT FileListInfoWidget : public FilterParameterWidget, pri
     void orderingChanged(bool checked);
 
   protected:
+
+    void setInputDirectory(QString val);
+    QString getInputDirectory();
+
     static void setOpenDialogLastFilePath(QString val) { m_OpenDialogLastFilePath = val; }
     static QString getOpenDialogLastFilePath() { return m_OpenDialogLastFilePath; }
+
 
     /**
      * @brief checkIOFiles
@@ -167,12 +172,13 @@ class SVWidgetsLib_EXPORT FileListInfoWidget : public FilterParameterWidget, pri
 
   private:
     QList<QWidget*>             m_WidgetList;
-    QButtonGroup*               m_OrderingGroup;
+    QButtonGroup*               m_OrderingGroup = nullptr;
 
-    FileListInfoFilterParameter* m_FilterParameter;
+    FileListInfoFilterParameter* m_FilterParameter = nullptr;
 
-    static QString                m_OpenDialogLastFilePath;
-    bool m_DidCausePreflight;
+    static QString               m_OpenDialogLastFilePath;
+
+    bool                         m_DidCausePreflight;
 
 
     FileListInfoWidget(const FileListInfoWidget&); // Copy Constructor Not Implemented
