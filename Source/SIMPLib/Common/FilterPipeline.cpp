@@ -294,14 +294,7 @@ int FilterPipeline::preflightPipeline()
     (*filter)->preflight();
     disconnectFilterNotifications((*filter).get());
 
-    DataContainerArray::Pointer dcaCopy = DataContainerArray::New();
-    QList<DataContainer::Pointer> dcs = dca->getDataContainers();
-    for(int i = 0; i < dcs.size(); i++)
-    {
-      DataContainer::Pointer dcCopy = dcs[i]->deepCopy();
-      dcaCopy->addDataContainer(dcCopy);
-    }
-    (*filter)->setDataContainerArray(dcaCopy);
+    (*filter)->setDataContainerArray(dca->deepCopy());
     (*filter)->setCancel(false); // Reset the cancel flag
     preflightError |= (*filter)->getErrorCondition();
   }

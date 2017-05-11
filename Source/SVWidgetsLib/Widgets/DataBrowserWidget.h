@@ -33,17 +33,18 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-#ifndef _DataBrowserWidget_h_
-#define _DataBrowserWidget_h_
+#ifndef _dataBrowserWidget_h_
+#define _dataBrowserWidget_h_
 
 #include <QtCore/QUuid>
-#include <QtWidgets/QWidget>
 #include <QtWidgets/QMainWindow>
+#include <QtWidgets/QWidget>
 
 #include "SIMPLib/SIMPLib.h"
+#include "SIMPLib/Common/AbstractFilter.h"
 #include "SIMPLib/Common/IObserver.h"
 #include "SIMPLib/Common/PipelineMessage.h"
-#include "SIMPLib/Common/AbstractFilter.h"
+#include "SIMPLib/DataContainers/DataContainerArray.h"
 
 #include "SVWidgetsLib/SVWidgetsLib.h"
 
@@ -52,41 +53,45 @@
 class PipelineFilterObject;
 class QStandardItem;
 
-
-
-class SVWidgetsLib_EXPORT DataBrowserWidget : public QWidget, public IObserver, private Ui::DataBrowserWidget
+namespace Ui
 {
+class DataBrowserWidget;
+}
 
-    Q_OBJECT
-  public:
-    DataBrowserWidget(QWidget* parent = nullptr);
-    virtual ~DataBrowserWidget();
+class SVWidgetsLib_EXPORT DataBrowserWidget : public QWidget, public IObserver
+{
+  Q_OBJECT
+public:
+  DataBrowserWidget(QWidget* parent = nullptr);
+  virtual ~DataBrowserWidget();
 
+public slots:
 
-  public slots:
-    void filterObjectActivated(PipelineFilterObject* object);
-    void handleFilterParameterChanged(PipelineFilterObject* obj);
+  void updateDataContainerArray(DataContainerArray::Pointer dca);
 
-    void dataBrowserTreeView_indexChanged(const QModelIndex& current, const QModelIndex& previous);
+  void filterObjectActivated(PipelineFilterObject* object);
 
-    void refreshData();
-    void handleFilterRemoved(PipelineFilterObject* object);
+  void handleFilterParameterChanged(PipelineFilterObject* obj);
 
+  void dataBrowserTreeView_indexChanged(const QModelIndex& current, const QModelIndex& previous);
 
-  protected:
-    void setupGui();
+  void refreshData();
 
-    QStandardItem* findChildByName(QStandardItem* rootItem, const QString &name, int column);
-    void removeNonexistingEntries(QStandardItem* rootItem, QList<QString> existing, int column);
+  void handleFilterRemoved(PipelineFilterObject* object);
 
-  private:
+protected:
+  void setupGui();
 
-    AbstractFilter::WeakPointer m_filter;
+  QStandardItem* findChildByName(QStandardItem* rootItem, const QString& name, int column);
 
-    DataBrowserWidget(const DataBrowserWidget&); // Copy Constructor Not Implemented
-    void operator=(const DataBrowserWidget&); // Operator '=' Not Implemented
+  void removeNonexistingEntries(QStandardItem* rootItem, QList<QString> existing, int column);
 
+private:
+  DataContainerArray::Pointer  m_Dca = nullptr;
+  Ui::DataBrowserWidget*       m_Ui = nullptr;
 
+  DataBrowserWidget(const DataBrowserWidget&); // Copy Constructor Not Implemented
+  void operator=(const DataBrowserWidget&);    // Operator '=' Not Implemented
 };
 
-#endif
+#endif /* _dataBrowserWidget_h_   */

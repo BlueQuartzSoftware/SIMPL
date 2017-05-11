@@ -56,8 +56,10 @@
 // -----------------------------------------------------------------------------
 DataBrowserWidget::DataBrowserWidget(QWidget* parent)
 : QWidget(parent)
+, m_Ui(new Ui::DataBrowserWidget)
+
 {
-  setupUi(this);
+  m_Ui->setupUi(this);
   setupGui();
 }
 
@@ -74,9 +76,9 @@ DataBrowserWidget::~DataBrowserWidget()
 void DataBrowserWidget::setupGui()
 {
   QStandardItemModel* model = new QStandardItemModel();
-  dataBrowserTreeView->setModel(model);
+  m_Ui->dataBrowserTreeView->setModel(model);
   model->setColumnCount(1);
-  model->setParent(dataBrowserTreeView); // Set the parent so it gets cleaned up
+  model->setParent(m_Ui->dataBrowserTreeView); // Set the parent so it gets cleaned up
 
   QString css(" QToolTip {\
               border: 2px solid #434343;\
@@ -92,42 +94,30 @@ void DataBrowserWidget::setupGui()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-//void DataBrowserWidget::clearStandardItemModel()
-//{
-//  QAbstractItemModel* oldModel = dataBrowserTreeView->model();
-//  QStandardItemModel* model = new QStandardItemModel;
-//  model->setColumnCount(1);
-//  dataBrowserTreeView->setModel(model);
-//  model->setParent(dataBrowserTreeView); // Set the parent so it gets cleaned up
-//  delete oldModel;                // Clean up the old model now.
-//}
+void DataBrowserWidget::updateDataContainerArray(DataContainerArray::Pointer dca)
+{
+  m_Dca = dca->deepCopy();
+  refreshData();
+}
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
 void DataBrowserWidget::refreshData()
 {
-  // Sanity check our filter object
-  if((0 == m_filter.use_count()) || !m_filter.lock())
+  // Get the DataContainerArray object
+  if(m_Dca.get() == nullptr)
   {
-    QStandardItemModel* model = qobject_cast<QStandardItemModel*>(dataBrowserTreeView->model());
+    QStandardItemModel* model = qobject_cast<QStandardItemModel*>(m_Ui->dataBrowserTreeView->model());
     QStandardItem* rootItem = model->invisibleRootItem();
-
     removeNonexistingEntries(rootItem, QStringList(), 0);
     return;
   }
 
-  // Get the DataContainerArray object
-  DataContainerArray::Pointer dca = m_filter.lock()->getDataContainerArray();
-  if(dca.get() == nullptr)
-  {
-    return;
-  }
-
-  QStandardItemModel* model = qobject_cast<QStandardItemModel*>(dataBrowserTreeView->model());
+  QStandardItemModel* model = qobject_cast<QStandardItemModel*>(m_Ui->dataBrowserTreeView->model());
   QVector<QString> path;
   {
-    QModelIndex currIndex = dataBrowserTreeView->currentIndex();
+    QModelIndex currIndex = m_Ui->dataBrowserTreeView->currentIndex();
     QStandardItem* item = model->itemFromIndex(currIndex);
     // Get what is selected and save it
     while(nullptr != item)
@@ -138,9 +128,9 @@ void DataBrowserWidget::refreshData()
 
   }
 
-  model = qobject_cast<QStandardItemModel*>(dataBrowserTreeView->model());
+  model = qobject_cast<QStandardItemModel*>(m_Ui->dataBrowserTreeView->model());
 
-  QItemSelectionModel* selectionModel = dataBrowserTreeView->selectionModel();
+  QItemSelectionModel* selectionModel = m_Ui->dataBrowserTreeView->selectionModel();
   if(selectionModel)
   {
     connect(selectionModel, SIGNAL(currentChanged(const QModelIndex&, const QModelIndex&)),
@@ -155,7 +145,7 @@ void DataBrowserWidget::refreshData()
   }
 
   // Loop over the data containers
-  QList<DataContainer::Pointer> containers = dca->getDataContainers();
+  QList<DataContainer::Pointer> containers = m_Dca->getDataContainers();
 
 
   QStandardItem* rootItem = model->invisibleRootItem();
@@ -173,14 +163,14 @@ void DataBrowserWidget::refreshData()
       dcItem = new QStandardItem(dc->getName());
       rootItem->appendRow(dcItem);
       //      dcItem->setBackground(QBrush(QColor(154, 136, 255)));
-      dataBrowserTreeView->expand(dcItem->index());
+      m_Ui->dataBrowserTreeView->expand(dcItem->index());
     }
     dcItem->setData(dc->getInfoString(SIMPL::HtmlFormat), Qt::UserRole + 1);
     dcItem->setToolTip(dc->getInfoString(SIMPL::HtmlFormat));
 
     if(path.size() > 0 && dc->getName().compare(path[0]) == 0)
     {
-      dataBrowserTreeView->setCurrentIndex(model->indexFromItem(dcItem));
+      m_Ui->dataBrowserTreeView->setCurrentIndex(model->indexFromItem(dcItem));
     }
 
     // We found the proper Data Container, now populate the AttributeMatrix List
@@ -198,14 +188,14 @@ void DataBrowserWidget::refreshData()
         amItem = new QStandardItem(am->getName());
         //          amItem->setBackground(QColor(128, 224, 138));
         dcItem->appendRow(amItem);
-        dataBrowserTreeView->expand(amItem->index());
+        m_Ui->dataBrowserTreeView->expand(amItem->index());
       }
       amItem->setData(am->getInfoString(SIMPL::HtmlFormat), Qt::UserRole + 1);
       amItem->setToolTip(am->getInfoString(SIMPL::HtmlFormat));
 
       if(path.size() > 1 && am->getName().compare(path[1]) == 0)
       {
-        dataBrowserTreeView->setCurrentIndex(model->indexFromItem(amItem));
+        m_Ui->dataBrowserTreeView->setCurrentIndex(model->indexFromItem(amItem));
       }
 
       // We found the selected AttributeMatrix, so loop over this attribute matrix arrays and populate the list widget
@@ -229,14 +219,14 @@ void DataBrowserWidget::refreshData()
         if(path.size() > 2 && attrArrayName.compare(path[2]) == 0)
         {
           QModelIndex idx = model->indexFromItem(aaItem);
-          dataBrowserTreeView->setCurrentIndex(idx);
+          m_Ui->dataBrowserTreeView->setCurrentIndex(idx);
         }
       }
       removeNonexistingEntries(amItem, attrArrayNames, 0);
     }
     removeNonexistingEntries(dcItem, dc->getAttributeMatrixNames(), 0);
   }
-  removeNonexistingEntries(rootItem, dca->getDataContainerNames(), 0);
+  removeNonexistingEntries(rootItem, m_Dca->getDataContainerNames(), 0);
 }
 
 // -----------------------------------------------------------------------------
@@ -244,17 +234,19 @@ void DataBrowserWidget::refreshData()
 // -----------------------------------------------------------------------------
 void DataBrowserWidget::filterObjectActivated(PipelineFilterObject* object)
 {
-  //qDebug() << "DataBrowser: filterObjectActivated";
-
-  if(nullptr == object)
+  m_Dca = DataContainerArray::NullPointer();
+  if(object)
   {
-    m_filter.reset();
+    AbstractFilter::Pointer filter = object->getFilter();
+    if(filter.get())
+    {
+      DataContainerArray::Pointer dca = filter->getDataContainerArray();
+      if(dca.get())
+      {
+        m_Dca = dca->deepCopy();
+      }
+    }
   }
-  else
-  {
-    m_filter = object->getFilter();
-  }
-
   refreshData();
 }
 
@@ -263,16 +255,19 @@ void DataBrowserWidget::filterObjectActivated(PipelineFilterObject* object)
 // -----------------------------------------------------------------------------
 void DataBrowserWidget::handleFilterRemoved(PipelineFilterObject* object)
 {
-  if(nullptr == object)
+  m_Dca = DataContainerArray::NullPointer();
+  if(object)
   {
-    return;
+    AbstractFilter::Pointer filter = object->getFilter();
+    if(filter.get())
+    {
+      DataContainerArray::Pointer dca = filter->getDataContainerArray();
+      if(dca.get())
+      {
+        m_Dca = dca->deepCopy();
+      }
+    }
   }
-
-  if(object->getFilter().get() == m_filter.lock().get())
-  {
-    m_filter.reset();
-  }
-
   refreshData();
 }
 
@@ -281,7 +276,7 @@ void DataBrowserWidget::handleFilterRemoved(PipelineFilterObject* object)
 // -----------------------------------------------------------------------------
 void DataBrowserWidget::dataBrowserTreeView_indexChanged(const QModelIndex& current, const QModelIndex& previous)
 {
-//  QMap<int, QVariant> values = dataBrowserTreeView->model()->itemData(current);
+//  QMap<int, QVariant> values = m_Ui->dataBrowserTreeView->model()->itemData(current);
 //  QString infoString = values.value(Qt::UserRole + 1).toString();
 //  dataContainerInfoLabel->setText(infoString);
 }
