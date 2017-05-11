@@ -87,39 +87,9 @@
   <file>arrow_left_green.png</file>
   <file>arrow_left_green@2x.png</file>
 
-  <file>Groups/cubes.png</file>
-  <file>Groups/cubes@2x.png</file>
 
-<!-- These are low res icons -->
-
-  <file>Groups/BlankGroup_Icon.png</file>
-  <file>Groups/BlankGroup_Icon@2x.png</file>
-
-  <file>Groups/Generic_Icon.png</file>
-  <file>Groups/Processing_Icon.png</file>
-  <file>Groups/Reconstruction_Icon.png</file>
-  <file>Groups/Sampling_Icon.png</file>
-  <file>Groups/Core_Icon.png</file>
-  <file>Groups/Statistics_Icon.png</file>
-  <file>Groups/Surface Meshing_Icon.png</file>
-  <file>Groups/Synthetic Building_Icon.png</file>
-  <file>Groups/Plugin_Icon.png</file>
-  <file>Groups/IO_Icon.png</file>
-  <file>Groups/Orientation Analysis_Icon.png</file>
-  <file>Groups/Unsupported_Icon.png</file>
-
-  <file>Groups/Generic_Icon@2x.png</file>
-  <file>Groups/Processing_Icon@2x.png</file>
-  <file>Groups/Reconstruction_Icon@2x.png</file>
-  <file>Groups/Sampling_Icon@2x.png</file>
-  <file>Groups/Core_Icon@2x.png</file>
-  <file>Groups/Statistics_Icon@2x.png</file>
-  <file>Groups/Surface Meshing_Icon@2x.png</file>
-  <file>Groups/Synthetic Building_Icon@2x.png</file>
-  <file>Groups/Plugin_Icon@2x.png</file>
-  <file>Groups/IO_Icon@2x.png</file>
-  <file>Groups/Orientation Analysis_Icon@2x.png</file>
-  <file>Groups/Unsupported_Icon@2x.png</file>
+  <file>BlankGroup_Icon.png</file>
+  <file>BlankGroup_Icon@2x.png</file>
 
   <file>bullet_ball_blue.png</file>
   <file>bullet_ball_blue@2x.png</file>
@@ -150,9 +120,7 @@
 
   <file>fit_to_window.png</file>
   <file>fit_to_window@2x.png</file>
- 
-  <file>filter_gray.png</file>
-  <file>filter_gray@2x.png</file>
+
 
   <file>navigate_right.png</file>
   <file>navigate_right@2x.png</file>
