@@ -103,7 +103,7 @@ class SVWidgetsLib_EXPORT FileListInfoWidget : public FilterParameterWidget, pri
 
     void on_m_InputDirBtn_clicked();
     // slots to catch signals emittd by the various QLineEdit widgets
-    void on_m_InputDir_textChanged(const QString& text);
+    void on_m_LineEdit_textChanged(const QString& text);
 
 
     void on_m_FilePrefix_textChanged(const QString& string);
@@ -135,14 +135,6 @@ class SVWidgetsLib_EXPORT FileListInfoWidget : public FilterParameterWidget, pri
     void validateInputFile();
 
     /**
-     * @brief verifyPathExists
-     * @param outFilePath
-     * @param lineEdit
-     * @return
-     */
-    bool verifyPathExists(QString outFilePath, QLineEdit* lineEdit);
-
-    /**
      * @brief setWidgetListEnabled
      */
     void setWidgetListEnabled(bool v);
@@ -167,18 +159,32 @@ class SVWidgetsLib_EXPORT FileListInfoWidget : public FilterParameterWidget, pri
      * @param ref
      */
     void setOrdering(uint32_t ref);
+
+
     uint32_t getOrdering();
+
+    /**
+    * @brief
+    * @param event
+    */
+    void keyPressEvent(QKeyEvent* event);
+
+    /**
+     * @brief setupMenuField
+     */
+    void setupMenuField();
 
 
   private:
     QList<QWidget*>             m_WidgetList;
     QButtonGroup*               m_OrderingGroup = nullptr;
-
+    static QString               m_OpenDialogLastFilePath;
     FileListInfoFilterParameter* m_FilterParameter = nullptr;
 
-    static QString               m_OpenDialogLastFilePath;
-
-    bool                         m_DidCausePreflight;
+    QAction* m_ShowFileAction = nullptr;
+    QString  m_CurrentlyValidPath = "";
+    QString  m_CurrentText = "";
+    bool     m_DidCausePreflight = false;
 
 
     FileListInfoWidget(const FileListInfoWidget&); // Copy Constructor Not Implemented

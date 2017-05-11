@@ -39,8 +39,6 @@
 #include <QtCore/QObject>
 #include <QtCore/QPointer>
 
-#include <QtGui/QKeyEvent>
-
 #include <QtWidgets/QWidget>
 
 #include "SVWidgetsLib/QtSupport/QtSFaderWidget.h"
@@ -57,6 +55,7 @@
 
 class QLineEdit;
 class OutputFileFilterParameter;
+class QKeyEvent;
 
 /**
 * @brief
@@ -101,9 +100,14 @@ class SVWidgetsLib_EXPORT AbstractIOFileWidget : public FilterParameterWidget, p
 
   protected:
     void setOpenDialogLastFilePath(QString val);
-    QString getOpenDialogLastFilePath();
-    void keyPressEvent(QKeyEvent* event);
 
+    QString getOpenDialogLastFilePath();
+
+    /**
+    * @brief
+    * @param event
+    */
+    void keyPressEvent(QKeyEvent* event);
 
     /**
      * @brief setupMenuField
@@ -111,10 +115,7 @@ class SVWidgetsLib_EXPORT AbstractIOFileWidget : public FilterParameterWidget, p
     void setupMenuField();
 
   protected slots:
-    /**
-     * @brief showFileInFileSystem
-     */
-    void showFileInFileSystem();
+
 
   signals:
     void errorSettingFilterParameter(const QString& msg);
@@ -126,12 +127,7 @@ class SVWidgetsLib_EXPORT AbstractIOFileWidget : public FilterParameterWidget, p
     QString  m_CurrentlyValidPath = "";
     QString  m_CurrentText = "";
 
-    /**
-     * @brief hasValidFilePath
-     * @param filePath
-     * @return
-     */
-    bool hasValidFilePath(const QString &filePath);
+
 
     AbstractIOFileWidget(const AbstractIOFileWidget&); // Copy Constructor Not Implemented
     void operator=(const AbstractIOFileWidget&); // Operator '=' Not Implemented

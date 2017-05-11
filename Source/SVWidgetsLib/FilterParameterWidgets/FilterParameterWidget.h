@@ -63,6 +63,7 @@ class FilterParameter;
 class QPropertyAnimation;
 class QGraphicsOpacityEffect;
 class QTimer;
+class QLineEdit;
 
 /**
  * @brief The FilterParameterWidget class
@@ -110,8 +111,35 @@ class SVWidgetsLib_EXPORT FilterParameterWidget : public QFrame
     void fadeWidget(QWidget* widget, bool in);
     void animationFinished();
 
+    /**
+     * @brief showFileInFileSystem
+     */
+    virtual void showFileInFileSystem();
+
   protected:
+
+    /**
+     * @brief adjustedMenuPosition
+     * @param pushButton
+     * @return
+     */
     QPoint adjustedMenuPosition(QToolButton *pushButton);
+
+    /**
+     * @brief hasValidFilePath
+     * @param filePath
+     * @return
+     */
+    bool hasValidFilePath(const QString &filePath);
+
+    /**
+     * @brief verifyPathExists
+     * @param filePath
+     * @param lineEdit
+     * @return
+     */
+    bool verifyPathExists(QString filePath, QLineEdit* lineEdit);
+
 
   protected slots:
     void showBorder();
@@ -123,10 +151,11 @@ class SVWidgetsLib_EXPORT FilterParameterWidget : public QFrame
     float startValue;
     float endValue;
     bool fadeIn;
-    QTimer*                       m_Timer;
-    QPropertyAnimation* animation;
-    QGraphicsOpacityEffect* effect;
 
+    QTimer*                       m_Timer = nullptr;
+    QPropertyAnimation*           animation;
+    QGraphicsOpacityEffect*       effect;
+    QString                       m_CurrentlyValidPath;
 
     FilterParameterWidget(const FilterParameterWidget&); // Copy Constructor Not Implemented
     void operator=(const FilterParameterWidget&); // Operator '=' Not Implemented

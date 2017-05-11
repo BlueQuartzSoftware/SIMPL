@@ -38,14 +38,19 @@
 //-- Qt Includes
 #include <QtCore/QDir>
 #include <QtWidgets/QFileDialog>
+#include <QtGui/QPainter>
+#include <QtGui/QKeyEvent>
+#include <QtWidgets/QFileDialog>
+#include <QtWidgets/QMenu>
+
 
 #include "SIMPLib/Common/Constants.h"
 #include "SIMPLib/FilterParameters/FileListInfoFilterParameter.h"
 #include "SIMPLib/Utilities/FilePathGenerator.h"
 
-#include "SVWidgetsLib/QtSupport/QtSFileCompleter.h"
-
 #include "SVWidgetsLib/Core/SVWidgetsLibConstants.h"
+#include "SVWidgetsLib/QtSupport/QtSFileCompleter.h"
+#include "SVWidgetsLib/QtSupport/QtSFileUtils.h"
 
 #include "FilterParameterWidgetsDialogs.h"
 
@@ -76,6 +81,10 @@ FileListInfoWidget::FileListInfoWidget(FilterParameter* parameter, AbstractFilte
   }
   setupUi(this);
   setupGui();
+  if(m_LineEdit->text().isEmpty())
+  {
+    setInputDirectory(QDir::homePath());
+  }
 }
 
 // -----------------------------------------------------------------------------
@@ -112,10 +121,12 @@ void FileListInfoWidget::setupGui()
   connect(getFilter(), SIGNAL(updateFilterParameters(AbstractFilter*)), this, SLOT(filterNeedsInputParameters(AbstractFilter*)));
 
   QtSFileCompleter* com = new QtSFileCompleter(this, true);
-  m_InputDir->setCompleter(com);
-  QObject::connect(com, SIGNAL(activated(const QString&)), this, SLOT(on_m_InputDir_textChanged(const QString&)));
+  m_LineEdit->setCompleter(com);
+  QObject::connect(com, SIGNAL(activated(const QString&)), this, SLOT(on_m_LineEdit_textChanged(const QString&)));
 
-  m_WidgetList << m_InputDir << m_InputDirBtn;
+  setupMenuField();
+
+  m_WidgetList << m_LineEdit << m_InputDirBtn;
   m_WidgetList << m_FileExt << m_ErrorMessage << m_TotalDigits << m_FileSuffix;
   m_WidgetList << m_FilePrefix << m_TotalSlices << m_StartIndex << m_EndIndex;
 
@@ -130,6 +141,65 @@ void FileListInfoWidget::setupGui()
   validateInputFile();
   getGuiParametersFromFilter();
 }
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void FileListInfoWidget::keyPressEvent(QKeyEvent* event)
+{
+  if (event->key() == Qt::Key_Escape)
+  {
+    m_LineEdit->setText(m_CurrentText);
+    m_LineEdit->setStyleSheet("");
+    m_LineEdit->setToolTip("");
+  }
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void FileListInfoWidget::setupMenuField()
+{
+  QFileInfo fi(m_LineEdit->text());
+
+  QMenu* lineEditMenu = new QMenu(m_LineEdit);
+  m_LineEdit->setButtonMenu(QtSLineEdit::Left, lineEditMenu);
+  QLatin1String iconPath = QLatin1String(":/caret-bottom.png");
+
+  m_LineEdit->setButtonVisible(QtSLineEdit::Left, true);
+
+  QPixmap pixmap(8, 8);
+  pixmap.fill(Qt::transparent);
+  QPainter painter(&pixmap);
+  const QPixmap mag = QPixmap(iconPath);
+  painter.drawPixmap(0, (pixmap.height() - mag.height()) / 2, mag);
+  m_LineEdit->setButtonPixmap(QtSLineEdit::Left, pixmap);
+
+  {
+    m_ShowFileAction = new QAction(lineEditMenu);
+    m_ShowFileAction->setObjectName(QString::fromUtf8("showFileAction"));
+#if defined(Q_OS_WIN)
+  m_ShowFileAction->setText("Show in Windows Explorer");
+#elif defined(Q_OS_MAC)
+  m_ShowFileAction->setText("Show in Finder");
+#else
+  m_ShowFileAction->setText("Show in File System");
+#endif
+    lineEditMenu->addAction(m_ShowFileAction);
+    connect(m_ShowFileAction, SIGNAL(triggered()), this, SLOT(showFileInFileSystem()));
+  }
+
+
+  if (m_LineEdit->text().isEmpty() == false && fi.exists())
+  {
+    m_ShowFileAction->setEnabled(true);
+  }
+  else
+  {
+    m_ShowFileAction->setDisabled(true);
+  }
+
+
+}
 
 // -----------------------------------------------------------------------------
 //
@@ -140,7 +210,7 @@ void FileListInfoWidget::getGuiParametersFromFilter()
 
   FileListInfo_t data = getFilter()->property(PROPERTY_NAME_AS_CHAR).value<FileListInfo_t>();
 
-  m_InputDir->setText(data.InputPath);
+  m_LineEdit->setText(data.InputPath);
 
   m_StartIndex->setValue(data.StartIndex);
   m_EndIndex->setValue(data.EndIndex);
@@ -192,30 +262,13 @@ void FileListInfoWidget::validateInputFile()
   }
 }
 
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-bool FileListInfoWidget::verifyPathExists(QString outFilePath, QLineEdit* lineEdit)
-{
-  //  std::cout << "outFilePath: " << outFilePath << std::endl;
-  QFileInfo fileinfo(outFilePath);
-  if(false == fileinfo.exists())
-  {
-    lineEdit->setStyleSheet("border: 1px solid red;");
-  }
-  else
-  {
-    lineEdit->setStyleSheet("");
-  }
-  return fileinfo.exists();
-}
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
 void FileListInfoWidget::checkIOFiles()
 {
-  if(true == this->verifyPathExists(m_InputDir->text(), this->m_InputDir))
+  if(true == this->verifyPathExists(m_LineEdit->text(), this->m_LineEdit))
   {
     findMaxSliceAndPrefix();
   }
@@ -230,33 +283,36 @@ void FileListInfoWidget::on_m_InputDirBtn_clicked()
 
   if(!outputFile.isNull())
   {
-    m_InputDir->blockSignals(true);
-    m_InputDir->setText(QDir::toNativeSeparators(outputFile));
-    on_m_InputDir_textChanged(m_InputDir->text());
+    m_LineEdit->blockSignals(true);
+    m_LineEdit->setText(QDir::toNativeSeparators(outputFile));
+    on_m_LineEdit_textChanged(m_LineEdit->text());
     setOpenDialogLastFilePath(outputFile);
-    m_InputDir->blockSignals(false);
+    m_LineEdit->blockSignals(false);
   }
 }
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void FileListInfoWidget::on_m_InputDir_textChanged(const QString& text)
+void FileListInfoWidget::on_m_LineEdit_textChanged(const QString& text)
 {
-  if(verifyPathExists(m_InputDir->text(), m_InputDir))
+
+  if(verifyPathExists(m_LineEdit->text(), m_LineEdit))
   {
+    m_ShowFileAction->setEnabled(true);
     findMaxSliceAndPrefix();
-    QDir dir(m_InputDir->text());
+    QDir dir(m_LineEdit->text());
     QString dirname = dir.dirName();
     dir.cdUp();
 
     generateExampleInputFile();
-    m_InputDir->blockSignals(true);
-    m_InputDir->setText(QDir::toNativeSeparators(m_InputDir->text()));
-    m_InputDir->blockSignals(false);
+    m_LineEdit->blockSignals(true);
+    m_LineEdit->setText(QDir::toNativeSeparators(m_LineEdit->text()));
+    m_LineEdit->blockSignals(false);
   }
   else
   {
+    m_ShowFileAction->setEnabled(false);
     m_FileListView->clear();
   }
 }
@@ -369,7 +425,7 @@ void FileListInfoWidget::generateExampleInputFile()
   bool hasMissingFiles = false;
 
   // Now generate all the file names the user is asking for and populate the table
-  QVector<QString> fileList = FilePathGenerator::GenerateFileList(start, end, hasMissingFiles, m_OrderAscending->isChecked(), m_InputDir->text(), m_FilePrefix->text(), m_FileSuffix->text(),
+  QVector<QString> fileList = FilePathGenerator::GenerateFileList(start, end, hasMissingFiles, m_OrderAscending->isChecked(), m_LineEdit->text(), m_FilePrefix->text(), m_FileSuffix->text(),
                                                                   m_FileExt->text(), m_TotalDigits->value());
   m_FileListView->clear();
   QIcon greenDot = QIcon(QString(":/bullet_ball_green.png"));
@@ -407,11 +463,11 @@ void FileListInfoWidget::generateExampleInputFile()
 // -----------------------------------------------------------------------------
 void FileListInfoWidget::findMaxSliceAndPrefix()
 {
-  if(m_InputDir->text().length() == 0)
+  if(m_LineEdit->text().length() == 0)
   {
     return;
   }
-  QDir dir(m_InputDir->text());
+  QDir dir(m_LineEdit->text());
 
   // Final check to make sure we have a valid file extension
   if(m_FileExt->text().isEmpty() == true)
@@ -523,7 +579,7 @@ void FileListInfoWidget::filterNeedsInputParameters(AbstractFilter* filter)
   data.FileExtension = m_FileExt->text();
   data.FilePrefix = m_FilePrefix->text();
   data.FileSuffix = m_FileSuffix->text();
-  data.InputPath = m_InputDir->text();
+  data.InputPath = m_LineEdit->text();
   data.Ordering = getOrdering();
   data.PaddingDigits = m_TotalDigits->value();
   data.StartIndex = m_StartIndex->text().toLongLong(&ok);
@@ -559,7 +615,7 @@ void FileListInfoWidget::afterPreflight()
 // -----------------------------------------------------------------------------
 void FileListInfoWidget::setInputDirectory(QString val) 
 {
-  m_InputDir->setText(val);
+  m_LineEdit->setText(val);
 }
 
 // -----------------------------------------------------------------------------
@@ -567,5 +623,5 @@ void FileListInfoWidget::setInputDirectory(QString val)
 // -----------------------------------------------------------------------------
 QString FileListInfoWidget::getInputDirectory() 
 {
-  return m_InputDir->text();
+  return m_LineEdit->text();
 }
