@@ -246,7 +246,6 @@ QString JsonFilterParametersReader::HtmlSummaryFromFile(QString filePath, IObser
   ss << "	<tr><th align=\"right\">Location:</th><td>" << filePath << "</td></tr>\n";
   ss << "</tbody>\n";
   ss << "</table>\n";
-  ss << "<p>\n";
 
   // Start the table of the Pipeline
   ss << "<table cellpadding=\"2\" cellspacing=\"0\" border=\"0\" width=\"300px\">\n";

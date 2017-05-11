@@ -189,15 +189,15 @@ void FilterLibraryToolboxWidget::refreshFilterGroups()
 void FilterLibraryToolboxWidget::setupGui()
 {
   refreshFilterGroups();
-  QString css(" QToolTip {\
-              border: 2px solid #434343;\
-              padding: 2px;\
-              border-radius: 3px;\
-              opacity: 255;\
-              background-color: #FFFFFF;\
-              color: #000000;\
-              }");
-  bookmarksTreeView->setStyleSheet(css);
+//  QString css(" QToolTip {\
+//              border: 2px solid #434343;\
+//              padding: 2px;\
+//              border-radius: 3px;\
+//              opacity: 255;\
+//              background-color: #FFFFFF;\
+//              color: #000000;\
+//              }");
+//  bookmarksTreeView->setStyleSheet(css);
 
   bookmarksTreeView->setContextMenuPolicy(Qt::CustomContextMenu);
 
