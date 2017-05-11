@@ -65,6 +65,7 @@ ErrorWarningFilter::~ErrorWarningFilter()
 void ErrorWarningFilter::initialize()
 {
   setErrorCondition(0);
+  setWarningCondition(0);
   setCancel(false);
 }
 
@@ -88,12 +89,11 @@ void ErrorWarningFilter::setupFilterParameters()
 // -----------------------------------------------------------------------------
 void ErrorWarningFilter::dataCheck()
 {
-
-  setErrorCondition(0);
+  initialize();
   if(getPreflightWarning())
   {
     QString ss = QObject::tr("Intentional preflight warning generated");
-    setErrorCondition(0);
+    setWarningCondition(-1);
     notifyWarningMessage(getHumanLabel(), ss, getErrorCondition());
   }
   if(getPreflightError())
@@ -138,7 +138,7 @@ void ErrorWarningFilter::execute()
   if(getExecuteWarning())
   {
     QString ss = QObject::tr("Intentional execute warning generated");
-    setErrorCondition(0);
+    setWarningCondition(-1);
     notifyWarningMessage(getHumanLabel(), ss, getErrorCondition());
   }
   if(getExecuteError())

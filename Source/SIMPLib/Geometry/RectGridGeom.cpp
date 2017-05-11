@@ -1063,9 +1063,9 @@ QString RectGridGeom::getInfoString(SIMPL::InfoStringFormat format)
 
   if(format == SIMPL::HtmlFormat)
   {
-    ss << "<tr bgcolor=\"#D3D8E0\"><th colspan=2>RectGrid Geometry Info</th></tr>";
-    ss << "<tr bgcolor=\"#C3C8D0\"><th align=\"right\">Dimensions:</th><td>" << volDims[0] << " x " << volDims[1] << " x " << volDims[2] << "</td></tr>";
-    ss << "<tr bgcolor=\"#C3C8D0\"><th align=\"right\">Resolution:</th><td>"
+    ss << "<tr bgcolor=\"#FFFCEA\"><th colspan=2>RectGrid Geometry Info</th></tr>";
+    ss << "<tr bgcolor=\"#FFFCEA\"><th align=\"right\">Dimensions:</th><td>" << volDims[0] << " x " << volDims[1] << " x " << volDims[2] << "</td></tr>";
+    ss << "<tr bgcolor=\"#FFFCEA\"><th align=\"right\">Resolution:</th><td>"
        << "Variable"
        << "</td></tr>";
   }

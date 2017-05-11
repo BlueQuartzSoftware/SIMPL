@@ -103,7 +103,7 @@ void BookmarksToolboxWidget::setupGui()
   QString css(" QToolTip {\
               border: 2px solid #434343;\
               padding: 2px;\
-              border-radius: 3px;\
+              /* border-radius: 3px;*/\
               opacity: 255;\
               background-color: #FFFFFF;\
               color: #000000;\
@@ -113,7 +113,7 @@ void BookmarksToolboxWidget::setupGui()
   connect(bookmarksTreeView, SIGNAL(itemWasDropped(QModelIndex, QString&, QIcon, QString, int, bool, bool, bool)), this,
           SLOT(addTreeItem(QModelIndex, QString&, QIcon, QString, int, bool, bool, bool)));
 
-  bookmarksTreeView->header()->setSectionResizeMode(QHeaderView::ResizeToContents);
+  //bookmarksTreeView->header()->setSectionResizeMode(QHeaderView::ResizeToContents);
 }
 
 // -----------------------------------------------------------------------------
@@ -475,7 +475,7 @@ int BookmarksToolboxWidget::addTreeItem(QModelIndex parent, QString& favoriteTit
   {
     model->getFileSystemWatcher()->addPath(favoritePath);
   }
-
+  bookmarksTreeView->resizeColumnToContents(1);
   return 0;
 }
 

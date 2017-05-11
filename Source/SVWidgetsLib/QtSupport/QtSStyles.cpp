@@ -413,7 +413,7 @@ QIcon QtSStyles::IconForGroup(const QString &grpName)
   QColor color = ColorForFilterGroup(grpName);
   QImage grpImage;
 
-  QIcon grpIcon(":/Groups/BlankGroup_Icon.png");
+  QIcon grpIcon(":/BlankGroup_Icon.png");
   if(!grpIcon.isNull())
   {
     grpImage = grpIcon.pixmap(QSize(48, 48)).toImage();

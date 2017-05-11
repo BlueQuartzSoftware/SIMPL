@@ -56,7 +56,7 @@ template <typename T>
  */
 void ConvertData(T* ptr, QVector<size_t> dims, DataContainer::Pointer m, SIMPL::NumericTypes::Type scalarType, const QString attributeMatrixName, const QString& name)
 {
-  int voxels = ptr->getNumberOfTuples();
+  size_t voxels = ptr->getNumberOfTuples();
   size_t size = ptr->getSize();
 
   if(scalarType == SIMPL::NumericTypes::Type::Int8)

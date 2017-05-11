@@ -79,7 +79,7 @@ public:
 public slots:
   virtual void processPipelineMessage(const PipelineMessage& pm)
   {
-    if(pm.getType() == PipelineMessage::StandardOutputMessage)
+    if(pm.getType() == PipelineMessage::MessageType::StandardOutputMessage)
     {
       PipelineMessage msg = pm;
       QString str;

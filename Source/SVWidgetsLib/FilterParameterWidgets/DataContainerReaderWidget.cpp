@@ -841,9 +841,6 @@ void DataContainerReaderWidget::on_selectBtn_clicked()
   m_OpenDialogLastFilePath = fi.filePath();
   m_LineEdit->setText(file);
   on_m_LineEdit_fileDropped(file);
-
-  // filterNeedsInputParameters(getFilter());
-  // emit parametersChanged(); // This should force the preflight to run because we are emitting a signal
 }
 
 // -----------------------------------------------------------------------------

@@ -496,3 +496,48 @@ bool DataContainerArray::renameDataContainerBundle(const QString& oldName, const
   }
   return false;
 }
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+DataContainerArray::Pointer DataContainerArray::deepCopy()
+{
+  DataContainerArray::Pointer dcaCopy = DataContainerArray::New();
+  QList<DataContainer::Pointer> dcs = getDataContainers();
+  for(int i = 0; i < dcs.size(); i++)
+  {
+    DataContainer::Pointer dcCopy = dcs[i]->deepCopy();
+#if 0
+
+    // Deep copy geometry if applicable
+    if(nullptr != dcs[i]->getGeometry().get())
+    {
+      dcCopy->setGeometry(dcs[i]->getGeometry()->deepCopy());
+    }
+
+    // Add AttributeMatrix copies
+    QMap<QString, AttributeMatrix::Pointer> ams = dcs[i]->getAttributeMatrices();
+    for(QMap<QString, AttributeMatrix::Pointer>::Iterator iter = ams.begin(); iter != ams.end(); iter++)
+    {
+      QVector<size_t> dims = (*iter)->getTupleDimensions();
+      AttributeMatrix::Pointer amCopy = AttributeMatrix::New(dims, (*iter)->getName(), (*iter)->getType());
+
+      // Add DataArray copies without allocating memory
+      QList<QString> daNames = (*iter)->getAttributeArrayNames();
+      for(int i = 0; i < daNames.size(); i++)
+      {
+        // Copy and add DataArray to AttributeMatrix copy without allocating memory
+        IDataArray::Pointer daCopy = (*iter)->getAttributeArray(daNames[i])->deepCopy(true);
+        amCopy->addAttributeArray(daNames[i], daCopy);
+      }
+
+      // End add AttributeMatrix
+      dcCopy->addAttributeMatrix(amCopy->getName(), amCopy);
+    }
+#endif
+    // End add DataContainer
+    dcaCopy->addDataContainer(dcCopy);
+  }
+
+  return dcaCopy;
+}

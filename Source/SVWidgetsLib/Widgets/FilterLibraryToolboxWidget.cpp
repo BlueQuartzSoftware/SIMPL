@@ -99,7 +99,7 @@ void FilterLibraryToolboxWidget::refreshFilterGroups()
 #if 1
   QTreeWidgetItem* library = new QTreeWidgetItem(bookmarksTreeView);
   library->setText(0, SIMPL::Settings::Library);
-  library->setIcon(0, QIcon(":/Groups/BlankGroup_Icon.png"));
+  library->setIcon(0, QIcon(":/BlankGroup_Icon.png"));
   library->setData(0, Qt::UserRole, QVariant(LIBRARY_NODE_TYPE));
 #else
   QTreeWidgetItem* library = bookmarksTreeView->invisibleRootItem();
@@ -135,7 +135,7 @@ void FilterLibraryToolboxWidget::refreshFilterGroups()
       QTreeWidgetItem* filterSubGroup = new QTreeWidgetItem(filterGroup);
       QString subGroupName = *iter2;
       filterSubGroup->setText(0, subGroupName);
-      filterSubGroup->setIcon(0, QIcon(":/folder_blue.png"));
+      filterSubGroup->setIcon(0, QIcon(":/BlankGroup_Icon.png"));
       filterSubGroup->setData(0, Qt::UserRole, QVariant(SUBGROUP_NODE_TYPE));
 
       // Now find all the filters that are in this Group/SubGroup
@@ -189,15 +189,15 @@ void FilterLibraryToolboxWidget::refreshFilterGroups()
 void FilterLibraryToolboxWidget::setupGui()
 {
   refreshFilterGroups();
-  QString css(" QToolTip {\
-              border: 2px solid #434343;\
-              padding: 2px;\
-              border-radius: 3px;\
-              opacity: 255;\
-              background-color: #FFFFFF;\
-              color: #000000;\
-              }");
-  bookmarksTreeView->setStyleSheet(css);
+//  QString css(" QToolTip {\
+//              border: 2px solid #434343;\
+//              padding: 2px;\
+//              border-radius: 3px;\
+//              opacity: 255;\
+//              background-color: #FFFFFF;\
+//              color: #000000;\
+//              }");
+//  bookmarksTreeView->setStyleSheet(css);
 
   bookmarksTreeView->setContextMenuPolicy(Qt::CustomContextMenu);
 

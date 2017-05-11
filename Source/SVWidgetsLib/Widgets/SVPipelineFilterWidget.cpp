@@ -130,10 +130,8 @@ void SVPipelineFilterWidget::initialize()
     groupStream << "Subgroup: " << filter->getSubGroupName();
     filterName->setToolTip(filterGroup);
 
-    connect(filter.get(), SIGNAL(filterCompleted()),
-            this, SLOT(toCompletedState()));
-    connect(filter.get(), SIGNAL(filterInProgress()),
-            this, SLOT(toExecutingState()));
+    connect(filter.get(), SIGNAL(filterCompleted()), this, SLOT(toCompletedState()));
+    connect(filter.get(), SIGNAL(filterInProgress()), this, SLOT(toExecutingState()));
   }
 }
 
@@ -185,7 +183,7 @@ void SVPipelineFilterWidget::displayFilterParameterWidgetError(const QString& ms
 {
   if(m_Observer)
   {
-    PipelineMessage pm("Filter Paramter Widget", msg, -1, PipelineMessage::Error);
+    PipelineMessage pm("Filter Paramter Widget", msg, -1, PipelineMessage::MessageType::Error);
     m_Observer->processPipelineMessage(pm);
   }
 }
@@ -203,7 +201,10 @@ void SVPipelineFilterWidget::setFilterTitle(const QString title)
 // -----------------------------------------------------------------------------
 void SVPipelineFilterWidget::setFilterIndex(int i, int numFilters)
 {
-  if (numFilters < 10) { numFilters = 11; }
+  if(numFilters < 10)
+  {
+    numFilters = 11;
+  }
   QString numStr = QString::number(i);
 
   if(numFilters > 9)
@@ -243,10 +244,11 @@ void SVPipelineFilterWidget::changeStyle()
   fontStringStream << font.pointSize() - 1;
 #endif
 
-  fontStringStream << "pt \"" << font.family()  << "\";";
+  fontStringStream << "pt \"" << font.family() << "\";";
 
 #if defined(Q_OS_WIN)
-  if(font.bold()) {
+  if(font.bold())
+  {
     fontStringStream << "font-weight: bold;";
   }
 #endif
@@ -276,7 +278,6 @@ void SVPipelineFilterWidget::changeStyle()
   filterIndexStyleStream << "border-top-left-radius: 3px;";
   filterIndexStyleStream << "border-bottom-left-radius: 3px;";
 
-
   WidgetState wState = getWidgetState();
   PipelineState pState = getPipelineState();
   ErrorState eState = getErrorState();
@@ -286,85 +287,79 @@ void SVPipelineFilterWidget::changeStyle()
   QString indexBackgroundColor;
   QColor bgColor = getGroupColor();
 
-  if (getFilter()->getErrorCondition() < 0)
-  {
-    eState = ErrorState::Error;
-  }
-
   switch(wState)
   {
-    case WidgetState::Ready:
-      widgetBackgroundColor = QString("background-color: %1;").arg(bgColor.name());
-      labelColor = "color: rgb(190, 190, 190);";
-      indexBackgroundColor = "background-color: rgb(48, 48, 48);";
-      break;
-    case WidgetState::Executing:
-      widgetBackgroundColor = "background-color: rgb(130, 130, 130);";
-      labelColor ="color: rgb(190, 190, 190);";
-      indexBackgroundColor = "background-color: rgb(6, 140, 190);";
-      break;
-    case WidgetState::Completed:
-      widgetBackgroundColor = QString("background-color: %1;").arg(bgColor.name());
-      labelColor ="color: rgb(190, 190, 190);";
-      indexBackgroundColor = "background-color: rgb(6, 118, 6);";
-      break;
+  case WidgetState::Ready:
+    widgetBackgroundColor = QString("background-color: %1;").arg(bgColor.name());
+    labelColor = "color: rgb(190, 190, 190);";
+    indexBackgroundColor = "background-color: rgb(48, 48, 48);";
+    break;
+  case WidgetState::Executing:
+    widgetBackgroundColor = "background-color: rgb(130, 130, 130);";
+    labelColor = "color: rgb(190, 190, 190);";
+    indexBackgroundColor = "background-color: rgb(6, 140, 190);";
+    break;
+  case WidgetState::Completed:
+    widgetBackgroundColor = QString("background-color: %1;").arg(bgColor.name());
+    labelColor = "color: rgb(190, 190, 190);";
+    indexBackgroundColor = "background-color: rgb(6, 118, 6);";
+    break;
   }
 
   QColor selectedColor = QColor::fromHsv(bgColor.hue(), 100, 120);
 
   switch(pState)
   {
-    case PipelineState::Running:
-      widgetBackgroundColor = QString("background-color: %1;").arg(selectedColor.name());
-      labelColor = "color: rgb(190, 190, 190);";
-      break;
-    case PipelineState::Stopped:
-      widgetBackgroundColor = QString("background-color: %1;").arg(bgColor.name());
-      labelColor = "color: rgb(0, 0, 0);";
-      break;
-    case PipelineState::Paused:
-      widgetBackgroundColor = "background-color: rgb(160, 160, 160);";
-      labelColor = "color: rgb(0, 0, 0);";
-      break;
+  case PipelineState::Running:
+    widgetBackgroundColor = QString("background-color: %1;").arg(selectedColor.name());
+    labelColor = "color: rgb(190, 190, 190);";
+    break;
+  case PipelineState::Stopped:
+    widgetBackgroundColor = QString("background-color: %1;").arg(bgColor.name());
+    labelColor = "color: rgb(0, 0, 0);";
+    break;
+  case PipelineState::Paused:
+    widgetBackgroundColor = "background-color: rgb(160, 160, 160);";
+    labelColor = "color: rgb(0, 0, 0);";
+    break;
   }
 
   switch(eState)
   {
-    case ErrorState::Ok:
+  case ErrorState::Ok:
 
-      break;
-    case ErrorState::Error:
-      indexBackgroundColor = "background-color: rgb(179, 2, 5);";
-      break;
-    case ErrorState::Warning:
-      indexBackgroundColor = "background-color: rgb(172, 168, 0);";
-      break;
+    break;
+  case ErrorState::Error:
+    indexBackgroundColor = "background-color: rgb(179, 2, 5);";
+    break;
+  case ErrorState::Warning:
+    indexBackgroundColor = "background-color: rgb(215, 197, 1);";
+    break;
   }
-
 
   if(isSelected() == true)
   {
     QColor selectedColor = QColor::fromHsv(bgColor.hue(), 180, 150);
 
-    svWidgetStyleStream << "border-top: 3px solid " <<  selectedColor.name() << ";";
-    svWidgetStyleStream << "border-right: 3px solid " <<  selectedColor.name() << ";";
-    svWidgetStyleStream << "border-bottom: 3px solid " <<  selectedColor.name() << ";";
+    svWidgetStyleStream << "border-top: 3px solid " << selectedColor.name() << ";";
+    svWidgetStyleStream << "border-right: 3px solid " << selectedColor.name() << ";";
+    svWidgetStyleStream << "border-bottom: 3px solid " << selectedColor.name() << ";";
     svWidgetStyleStream << "padding-left: 3px;";
-    filterIndexStyleStream << "border-top: 3px solid " <<  selectedColor.name() << ";";
-    filterIndexStyleStream << "border-left: 3px solid " <<  selectedColor.name() << ";";
-    filterIndexStyleStream << "border-bottom: 3px solid " <<  selectedColor.name() << ";";
+    filterIndexStyleStream << "border-top: 3px solid " << selectedColor.name() << ";";
+    filterIndexStyleStream << "border-left: 3px solid " << selectedColor.name() << ";";
+    filterIndexStyleStream << "border-bottom: 3px solid " << selectedColor.name() << ";";
     filterIndexStyleStream << "padding-right: 3px;";
     labelColor = "color: rgb(235, 235, 235);";
   }
   else if(isSelected() == false && hasRightClickTarget() == true)
   {
-    svWidgetStyleStream << "border-top: 3px solid " <<  selectedColor.name() << ";";
-    svWidgetStyleStream << "border-right: 3px solid " <<  selectedColor.name() << ";";
-    svWidgetStyleStream << "border-bottom: 3px solid " <<  selectedColor.name() << ";";
+    svWidgetStyleStream << "border-top: 3px solid " << selectedColor.name() << ";";
+    svWidgetStyleStream << "border-right: 3px solid " << selectedColor.name() << ";";
+    svWidgetStyleStream << "border-bottom: 3px solid " << selectedColor.name() << ";";
     svWidgetStyleStream << "padding-left: 3px;";
-    filterIndexStyleStream << "border-top: 3px solid " <<  selectedColor.name() << ";";
-    filterIndexStyleStream << "border-left: 3px solid " <<  selectedColor.name() << ";";
-    filterIndexStyleStream << "border-bottom: 3px solid " <<  selectedColor.name() << ";";
+    filterIndexStyleStream << "border-top: 3px solid " << selectedColor.name() << ";";
+    filterIndexStyleStream << "border-left: 3px solid " << selectedColor.name() << ";";
+    filterIndexStyleStream << "border-bottom: 3px solid " << selectedColor.name() << ";";
     filterIndexStyleStream << "padding-right: 3px;";
     labelColor = "color: rgb(235, 235, 235);";
   }
@@ -373,7 +368,6 @@ void SVPipelineFilterWidget::changeStyle()
     svWidgetStyleStream << "padding: 3px;";
     filterIndexStyleStream << "padding: 3px;";
   }
-
 
   svWidgetStyleStream << widgetBackgroundColor;
   labelStyleStream << labelColor;
@@ -388,16 +382,15 @@ void SVPipelineFilterWidget::changeStyle()
   filterIndex->setStyleSheet(filterIndexStyle);
 
 #if defined(Q_OS_WIN)
-  if (isSelected() == true)
+  if(isSelected() == true)
   {
-//    filterName->setStyleSheet("color: rgb(242, 242, 242);");
+    //    filterName->setStyleSheet("color: rgb(242, 242, 242);");
   }
   else
   {
-//    filterName->setStyleSheet("");
+    //    filterName->setStyleSheet("");
   }
 #endif
-
 }
 
 // -----------------------------------------------------------------------------
@@ -519,6 +512,14 @@ void SVPipelineFilterWidget::toCompletedState()
 {
   PipelineFilterObject::toCompletedState();
   getFilterInputWidget()->toRunningState();
+  if(getFilter()->getWarningCondition() < 0)
+  {
+    setErrorState(ErrorState::Warning);
+  }
+  if(getFilter()->getErrorCondition() < 0)
+  {
+    setErrorState(ErrorState::Error);
+  }
   changeStyle();
 }
 
@@ -554,14 +555,12 @@ void SVPipelineFilterWidget::toPausedState()
   changeStyle();
 }
 
-
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
 void SVPipelineFilterWidget::toOkState()
 {
   PipelineFilterObject::toOkState();
-  qDebug() << getFilter()->getHumanLabel() << "\t toOkState";
   changeStyle();
 }
 
@@ -571,7 +570,6 @@ void SVPipelineFilterWidget::toOkState()
 void SVPipelineFilterWidget::toErrorState()
 {
   PipelineFilterObject::toErrorState();
-  qDebug() << getFilter()->getHumanLabel() << "\t toErrorState";
   changeStyle();
 }
 
@@ -581,10 +579,8 @@ void SVPipelineFilterWidget::toErrorState()
 void SVPipelineFilterWidget::toWarningState()
 {
   PipelineFilterObject::toWarningState();
-  qDebug() << getFilter()->getHumanLabel() << "\t toWarningState";
   changeStyle();
 }
-
 
 // -----------------------------------------------------------------------------
 //

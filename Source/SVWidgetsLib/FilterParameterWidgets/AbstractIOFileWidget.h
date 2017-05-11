@@ -39,8 +39,6 @@
 #include <QtCore/QObject>
 #include <QtCore/QPointer>
 
-#include <QtGui/QKeyEvent>
-
 #include <QtWidgets/QWidget>
 
 #include "SVWidgetsLib/QtSupport/QtSFaderWidget.h"
@@ -57,6 +55,7 @@
 
 class QLineEdit;
 class OutputFileFilterParameter;
+class QKeyEvent;
 
 /**
 * @brief
@@ -100,10 +99,15 @@ class SVWidgetsLib_EXPORT AbstractIOFileWidget : public FilterParameterWidget, p
 
 
   protected:
-    static void setOpenDialogLastFilePath(QString val) { m_OpenDialogLastFilePath = val; }
-    static QString getOpenDialogLastFilePath() { return m_OpenDialogLastFilePath; }
+    void setOpenDialogLastFilePath(QString val);
 
-    virtual void keyPressEvent(QKeyEvent* event);
+    QString getOpenDialogLastFilePath();
+
+    /**
+    * @brief
+    * @param event
+    */
+    void keyPressEvent(QKeyEvent* event);
 
     /**
      * @brief setupMenuField
@@ -111,28 +115,19 @@ class SVWidgetsLib_EXPORT AbstractIOFileWidget : public FilterParameterWidget, p
     void setupMenuField();
 
   protected slots:
-    /**
-     * @brief showFileInFileSystem
-     */
-    void showFileInFileSystem();
+
 
   signals:
     void errorSettingFilterParameter(const QString& msg);
     void parametersChanged();
 
   private:
-    static QString                                  m_OpenDialogLastFilePath;
-    QAction*                                        m_ShowFileAction = nullptr;
-    QString                                         m_CurrentlyValidPath = "";
-    QString                                         m_CurrentText = "";
-    bool                                            m_DidCausePreflight;
+    bool     m_DidCausePreflight = false;
+    QAction* m_ShowFileAction = nullptr;
+    QString  m_CurrentlyValidPath = "";
+    QString  m_CurrentText = "";
 
-    /**
-     * @brief hasValidFilePath
-     * @param filePath
-     * @return
-     */
-    bool hasValidFilePath(const QString &filePath);
+
 
     AbstractIOFileWidget(const AbstractIOFileWidget&); // Copy Constructor Not Implemented
     void operator=(const AbstractIOFileWidget&); // Operator '=' Not Implemented

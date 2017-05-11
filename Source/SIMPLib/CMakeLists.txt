@@ -142,18 +142,12 @@ file(APPEND ${RegisterKnownFiltersFile} "\nvoid FilterManager::RegisterKnownFilt
 
 
 # Add in our Filter classes
-# set(PluginAutoMocSourceFile ${${PROJECT_NAME}_BINARY_DIR}/CoreFilters_automoc_cmake.cpp)
-# set_source_files_properties( ${PluginAutoMocSourceFile} PROPERTIES GENERATED TRUE)
 # Add the generated moc file to the project sources
-# set(Project_SRCS ${Project_SRCS} ${PluginAutoMocSourceFile} )
 include(${SIMPLib_SOURCE_DIR}/CoreFilters/SourceList.cmake)
 
 #-----------------------------------------------------
 # conditionally compile our example codes- These should be turned off for a release
-option(SIMPL_BUILD_TEST_FILTERS "Build the Test filters: These should be OFF when doing a release" ON)
-if(SIMPL_BUILD_TEST_FILTERS)
-    # set(PluginAutoMocSourceFile ${${PROJECT_NAME}_BINARY_DIR}/TestFilters_automoc_cmake.cpp)
-    # set_source_files_properties( ${PluginAutoMocSourceFile} PROPERTIES GENERATED TRUE)
+if(NOT "${SIMPLProj_RELEASE_TYPE}" STREQUAL "Release")
     # Add the generated moc file to the project sources
     set(Project_SRCS ${Project_SRCS} ${PluginAutoMocSourceFile} )
     include(${SIMPLib_SOURCE_DIR}/TestFilters/SourceList.cmake)

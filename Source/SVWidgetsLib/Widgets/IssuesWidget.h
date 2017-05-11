@@ -33,9 +33,8 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-#ifndef _IssuesWidget_h_
-#define _IssuesWidget_h_
-
+#ifndef _issuesWidget_h_
+#define _issuesWidget_h_
 
 #include <QtWidgets/QWidget>
 #include <QtWidgets/QMainWindow>
@@ -46,14 +45,19 @@
 
 #include "SVWidgetsLib/SVWidgetsLib.h"
 
-#include "ui_IssuesWidget.h"
-
 class FilterListToolboxWidget;
 class QLabel;
 class QTableWidgetItem;
 class QtSSettings;
+namespace Ui
+{
+class IssuesWidget;
+}
 
-class SVWidgetsLib_EXPORT IssuesWidget : public QWidget, public IObserver, private Ui::IssuesWidget
+/**
+ * @brief The IssuesWidget class
+ */
+class SVWidgetsLib_EXPORT IssuesWidget : public QWidget, public IObserver
 {
 
     Q_OBJECT
@@ -62,6 +66,11 @@ class SVWidgetsLib_EXPORT IssuesWidget : public QWidget, public IObserver, priva
     virtual ~IssuesWidget();
 
     QLabel* createHyperlinkLabel(PipelineMessage msg);
+
+    static const int FilterIndex = 0;
+    static const int FilterName = 1;
+    static const int Description = 2;
+    static const int ErrorCode = 3;
 
   public slots:
     void processPipelineMessage(const PipelineMessage& msg);
@@ -76,6 +85,7 @@ class SVWidgetsLib_EXPORT IssuesWidget : public QWidget, public IObserver, priva
 
 
   private:
+    Ui::IssuesWidget* ui = nullptr;
     QVector<PipelineMessage> m_CachedMessages;
 
 
@@ -85,4 +95,4 @@ class SVWidgetsLib_EXPORT IssuesWidget : public QWidget, public IObserver, priva
 
 };
 
-#endif
+#endif /* _issuesWidget_h_ */

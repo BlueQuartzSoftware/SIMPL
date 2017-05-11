@@ -245,6 +245,62 @@ class SIMPLib_EXPORT AbstractFilter : public Observable
      */
     virtual bool doesPipelineContainFilterAfterThis(const QString& name);
 
+    // ------------------------------
+    // These methods are over ridden from the superclass in order to add the
+    // pipeline index to the PipelineMessage Object.
+    // ------------------------------
+
+    /**
+     * @brief notifyErrorMessage
+     * @param humanLabel
+     * @param ss
+     * @param code
+     */
+    void notifyErrorMessage(const QString& humanLabel, const QString& ss, int code) override;
+
+    /**
+     * @brief notifyWarningMessage
+     * @param humanLabel
+     * @param ss
+     * @param code
+     */
+    void notifyWarningMessage(const QString& humanLabel, const QString& ss, int code) override;
+
+    /**
+     * @brief notifyStatusMessage
+     * @param humanLabel
+     * @param ss
+     */
+    void notifyStatusMessage(const QString& humanLabel, const QString& ss) override;
+
+    /**
+     * @brief notifyStandardOutputMessage
+     * @param humanLabel
+     * @param pipelineIndex
+     * @param ss
+     */
+    void notifyStandardOutputMessage(const QString& humanLabel, int pipelineIndex, const QString& ss) override;
+
+    /**
+     * @brief notifyStatusMessage
+     * @param prefix
+     * @param humanLabel
+     * @param ss
+     */
+    void notifyStatusMessage(const QString& prefix, const QString& humanLabel, const QString& ss) override;
+
+    /**
+     * @brief notifyProgressMessage
+     * @param prefix
+     * @param humanLabel
+     * @param str
+     * @param progress
+     */
+    void notifyProgressMessage(const QString& prefix, const QString& humanLabel, const QString& str, int progress) override;
+
+    //---------------
+    // Other convenicen methods
+    // --------------
     /**
      * @brief printValues Optional method to print out values as the developer sees fit.
      * @param out

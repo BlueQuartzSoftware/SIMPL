@@ -35,33 +35,54 @@
 #include <QtCore/QString>
 #include <QtWidgets/QWidget>
 
-class QtSFileUtils
+#include "SVWidgetsLib/SVWidgetsLib.h"
+
+/**
+ * @brief The QtSFileUtils class
+ */
+class SVWidgetsLib_EXPORT QtSFileUtils
 {
   public:
     QtSFileUtils();
     virtual ~QtSFileUtils();
 
     /**
-     * @brief GenerateFileSystemPath
+     * @brief Generates a native file system path from the relative path given
      * @param pathEnding
      * @return
      */
     static QString GenerateFileSystemPath(QString pathEnding);
 
     /**
-     * @brief ShowPathInGui
-     * @param path
+     * @brief Reveals the path in the operating systems UI shell (Windows Explorer or macOS Finder)
+     * @param path The path to reveal
      */
     static void ShowPathInGui(QWidget* parent, const QString &path);
 
+    /**
+     * @brief GetPathSeperator
+     * @return Returns the separator character used in the PATH environment variable
+     */
     static QString GetPathSeperator();
 
+    /**
+     * @brief Finds an executable in the PATH
+     * @param exe The executable to find
+     * @return The absolute path to the executable or empty if it is not found
+     */
     static QString FindInPath(const QString &exe);
 
+    /**
+     * @brief Returns an environment variable
+     * @param evnVar
+     * @return
+     */
     static QStringList GetEnvVar(const QString &evnVar);
+
   protected:
 
   private:
+
 };
 
 #endif /* _qtSFileUtils_H_ */

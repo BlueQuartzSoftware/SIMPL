@@ -84,7 +84,6 @@ QString QtSFileUtils::GenerateFileSystemPath(QString pathEnding)
   QFileInfo fi(dir.absolutePath() + pathEnding);
   if(fi.exists() == false)
   {
-    // The help file does not exist at the default location because we are probably running from visual studio.
     // Try up one more directory
     dir.cdUp();
   }
@@ -168,7 +167,7 @@ void QtSFileUtils::ShowPathInGui(QWidget* parent, const QString &pathIn)
     QStringList scriptArgs;
     scriptArgs << QLatin1String("-e")
                << QString::fromLatin1("tell application \"Finder\" to reveal POSIX file \"%1\"")
-                  .arg(fileInfo.canonicalFilePath());
+                  .arg(fileInfo.absoluteFilePath());
     QProcess::execute(QLatin1String("/usr/bin/osascript"), scriptArgs);
     scriptArgs.clear();
     scriptArgs << QLatin1String("-e")

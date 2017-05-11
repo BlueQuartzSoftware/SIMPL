@@ -60,12 +60,11 @@ FavoritesChangedDialog::~FavoritesChangedDialog()
 // -----------------------------------------------------------------------------
 void FavoritesChangedDialog::on_selectBtn_clicked()
 {
-  QString outputFile = m_OpenDialogLastFilePath + QDir::separator();
-  outputFile = QFileDialog::getExistingDirectory(this, tr("Select Directory"), outputFile);
+  QString outputFile = QFileDialog::getExistingDirectory(this, tr("Select Directory"), getNewDirectory());
   if(!outputFile.isNull())
   {
     outputDir->setText(QDir::toNativeSeparators(outputFile));
-    m_OpenDialogLastFilePath = outputFile;
+    setNewDirectory(outputFile);
   }
 }
 
@@ -92,4 +91,25 @@ void FavoritesChangedDialog::on_outputDir_textChanged(const QString& text)
 void FavoritesChangedDialog::on_exportBtn_clicked()
 {
   emit exportBtnPressed(outputDir->text());
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void FavoritesChangedDialog::setNewDirectory(QString val) 
+{
+  outputDir->setText(val);
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+QString FavoritesChangedDialog::getNewDirectory() 
+{
+  if(outputDir->text().isEmpty())
+  {
+    return QDir::homePath();
+  }
+
+  return outputDir->text();
 }

@@ -113,7 +113,7 @@ PipelineMessage::PipelineMessage(const QString& humanLabel, int pipelineIndex, c
 // -----------------------------------------------------------------------------
 PipelineMessage PipelineMessage::CreateErrorMessage(const QString className, const QString humanLabel, const QString msg, int code)
 {
-  PipelineMessage em(className, humanLabel, msg, code, Error, -1);
+  PipelineMessage em(className, humanLabel, msg, code, MessageType::Error, -1);
   return em;
 }
 
@@ -122,7 +122,7 @@ PipelineMessage PipelineMessage::CreateErrorMessage(const QString className, con
 // -----------------------------------------------------------------------------
 PipelineMessage PipelineMessage::CreateStatusMessage(const QString className, const QString humanLabel, const QString msg)
 {
-  PipelineMessage em(className, humanLabel, msg, 0, StatusMessage, -1);
+  PipelineMessage em(className, humanLabel, msg, 0, MessageType::StatusMessage, -1);
   return em;
 }
 
@@ -131,7 +131,7 @@ PipelineMessage PipelineMessage::CreateStatusMessage(const QString className, co
 // -----------------------------------------------------------------------------
 PipelineMessage PipelineMessage::CreateWarningMessage(const QString className, const QString humanLabel, const QString msg, int code)
 {
-  PipelineMessage em(className, humanLabel, msg, code, Warning, -1);
+  PipelineMessage em(className, humanLabel, msg, code, MessageType::Warning, -1);
   return em;
 }
 
@@ -140,7 +140,7 @@ PipelineMessage PipelineMessage::CreateWarningMessage(const QString className, c
 // -----------------------------------------------------------------------------
 PipelineMessage PipelineMessage::CreateStandardOutputMessage(const QString humanLabel, int pipelineIndex, const QString msg)
 {
-  PipelineMessage em(humanLabel, pipelineIndex, msg, StandardOutputMessage);
+  PipelineMessage em(humanLabel, pipelineIndex, msg, MessageType::StandardOutputMessage);
   return em;
 }
 

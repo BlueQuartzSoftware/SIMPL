@@ -81,15 +81,15 @@ void FilterListToolboxWidget::setupGui()
 {
   setupSearchField();
 
-  QString css(" QToolTip {\
-              border: 2px solid #434343;\
-              padding: 2px;\
-              border-radius: 3px;\
-              opacity: 255;\
-              background-color: #FFFFFF;\
-              color: #000000;\
-              }");
-  filterList->setStyleSheet(css);
+//  QString css(" QToolTip {\
+//              border: 2px solid #434343;\
+//              padding: 2px;\
+//              border-radius: 3px;\
+//              opacity: 255;\
+//              background-color: #FFFFFF;\
+//              color: #000000;\
+//              }");
+  //filterList->setStyleSheet(css);
 
   filterList->setContextMenuPolicy(Qt::CustomContextMenu);
 

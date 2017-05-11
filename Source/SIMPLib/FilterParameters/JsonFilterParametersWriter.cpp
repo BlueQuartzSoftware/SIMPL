@@ -115,7 +115,7 @@ int JsonFilterParametersWriter::populateWriter(FilterPipeline::Pointer pipeline,
   {
     if(obs.size() > 0)
     {
-      PipelineMessage pm(JsonFilterParametersWriter::ClassName(), "FilterPipeline Object was nullptr for writing", -1, PipelineMessage::Error);
+      PipelineMessage pm(JsonFilterParametersWriter::ClassName(), "FilterPipeline Object was nullptr for writing", -1, PipelineMessage::MessageType::Error);
 
       for (int i = 0; i < obs.size(); i++)
       {

@@ -47,6 +47,8 @@
 
 #include "SVWidgetsLib/QtSupport/QtSHelpUrlGenerator.h"
 
+#include "ui_IssuesWidget.h"
+
 // Include the MOC generated CPP file which has all the QMetaObject methods/data
 #include "moc_IssuesWidget.cpp"
 
@@ -55,8 +57,9 @@
 // -----------------------------------------------------------------------------
 IssuesWidget::IssuesWidget(QWidget* parent)
 : QWidget(parent)
+, ui(new Ui::IssuesWidget)
 {
-  setupUi(this);
+  ui->setupUi(this);
   setupGui();
 }
 
@@ -72,11 +75,13 @@ IssuesWidget::~IssuesWidget()
 // -----------------------------------------------------------------------------
 void IssuesWidget::setupGui()
 {
-  errorTableWidget->horizontalHeader()->setSectionResizeMode(0, QHeaderView::ResizeToContents);
-  errorTableWidget->horizontalHeader()->setSectionResizeMode(1, QHeaderView::Stretch);
-  errorTableWidget->horizontalHeader()->setSectionResizeMode(2, QHeaderView::ResizeToContents);
-  errorTableWidget->verticalHeader()->setSectionResizeMode(QHeaderView::ResizeToContents);
-  errorTableWidget->setVisible(true);
+  ui->errorTableWidget->horizontalHeader()->setSectionResizeMode(FilterIndex, QHeaderView::ResizeToContents);
+  ui->errorTableWidget->horizontalHeader()->setSectionResizeMode(FilterName, QHeaderView::ResizeToContents);
+  ui->errorTableWidget->horizontalHeader()->setDefaultSectionSize(400);
+  //  ui->errorTableWidget->horizontalHeader()->setSectionResizeMode(Description, QHeaderView::Stretch);
+  ui->errorTableWidget->horizontalHeader()->setSectionResizeMode(ErrorCode, QHeaderView::ResizeToContents);
+  ui->errorTableWidget->verticalHeader()->setSectionResizeMode(QHeaderView::ResizeToContents);
+  ui->errorTableWidget->setVisible(true);
 }
 
 // -----------------------------------------------------------------------------
@@ -91,8 +96,8 @@ void IssuesWidget::on_errorTableWidget_itemClicked(QTableWidgetItem* item)
 // -----------------------------------------------------------------------------
 void IssuesWidget::clearIssues()
 {
-  errorTableWidget->clearContents();
-  errorTableWidget->setRowCount(0);
+  ui->errorTableWidget->clearContents();
+  ui->errorTableWidget->setRowCount(0);
   m_CachedMessages.clear();
 }
 
@@ -116,106 +121,94 @@ void IssuesWidget::displayCachedMessages()
     PipelineMessage msg = m_CachedMessages[i];
     switch(msg.getType())
     {
-    case PipelineMessage::Error:
+    case PipelineMessage::MessageType::Error:
       count++;
       break;
-    case PipelineMessage::Warning:
+    case PipelineMessage::MessageType::Warning:
       count++;
       break;
-    default:
+    case PipelineMessage::MessageType::StatusMessage:
+    case PipelineMessage::MessageType::StandardOutputMessage:
+    case PipelineMessage::MessageType::ProgressValue:
+    case PipelineMessage::MessageType::StatusMessageAndProgressValue:
+    case PipelineMessage::MessageType::UnknownMessageType:
       break;
     }
   }
 
   // Now create the correct number of table rows.
-  errorTableWidget->setRowCount(count);
+  ui->errorTableWidget->setRowCount(count);
   int row = 0;
+  bool updateRow = false;
+  QBrush msgBrush;
+  QColor msgColor;
+  QString msgDesc;
+  QString msgPrefix;
+  int msgCode = -1;
+  QTableWidgetItem* filterNameWidgetItem = nullptr;
+  QTableWidgetItem* descriptionWidgetItem = nullptr;
+  QTableWidgetItem* codeWidgetItem = nullptr;
+  QTableWidgetItem* indexWidgetItem = nullptr;
+  QLabel* hyperlinkLabel = nullptr;
+
   // Add in the content for the cells of the table.
   for(int j = 0; j < m_CachedMessages.size(); j++)
   {
     PipelineMessage msg = m_CachedMessages[j];
     // Create error hyperlink
-
-    QColor msgColor;
+    updateRow = false;
     switch(msg.getType())
     {
-    case PipelineMessage::Error:
-      // m_hasErrors = true;
-      msgColor.setRed(255);
-      msgColor.setGreen(191);
-      msgColor.setBlue(193);
+    case PipelineMessage::MessageType::Error:
+      msgColor = QColor(255, 191, 193);
+      updateRow = true;
+      break;
+    case PipelineMessage::MessageType::Warning:
+      msgColor = QColor(251, 254, 137);
+      updateRow = true;
+      break;
+    case PipelineMessage::MessageType::StatusMessage:
+    case PipelineMessage::MessageType::StandardOutputMessage:
+    case PipelineMessage::MessageType::ProgressValue:
+    case PipelineMessage::MessageType::StatusMessageAndProgressValue:
+    case PipelineMessage::MessageType::UnknownMessageType:
+      break;
+    }
+
+    if(updateRow)
+    {
+      msgBrush = QBrush(msgColor);
+
+      msgDesc = msg.getText();
+      msgCode = msg.getCode();
+      msgPrefix = msg.getPrefix();
+
+      filterNameWidgetItem = new QTableWidgetItem(msgPrefix);
+      filterNameWidgetItem->setTextAlignment(Qt::AlignCenter);
+      descriptionWidgetItem = new QTableWidgetItem(msgDesc);
+      codeWidgetItem = new QTableWidgetItem(QString::number(msgCode));
+      indexWidgetItem = new QTableWidgetItem(QString::number(msg.getPipelineIndex() + 1));
+
+      codeWidgetItem->setTextAlignment(Qt::AlignCenter);
+
+      filterNameWidgetItem->setBackground(msgBrush);
+      descriptionWidgetItem->setBackground(msgBrush);
+      codeWidgetItem->setBackground(msgBrush);
+
+      hyperlinkLabel = createHyperlinkLabel(msg);
+      if(hyperlinkLabel == nullptr)
       {
-        QBrush msgBrush(msgColor);
-
-        QString msgDesc = (msg.getText());
-        int msgCode = msg.getCode();
-
-        QString msgPrefix = (msg.getPrefix());
-        QTableWidgetItem* filterNameWidgetItem = new QTableWidgetItem(msgPrefix);
-        filterNameWidgetItem->setTextAlignment(Qt::AlignCenter);
-        QTableWidgetItem* descriptionWidgetItem = new QTableWidgetItem(msgDesc);
-        QTableWidgetItem* codeWidgetItem = new QTableWidgetItem(QString::number(msgCode));
-        codeWidgetItem->setTextAlignment(Qt::AlignCenter);
-
-        filterNameWidgetItem->setBackground(msgBrush);
-        descriptionWidgetItem->setBackground(msgBrush);
-        codeWidgetItem->setBackground(msgBrush);
-
-        QLabel* hyperlinkLabel = createHyperlinkLabel(msg);
-        if(hyperlinkLabel == nullptr)
-        {
-          errorTableWidget->setItem(row, 0, filterNameWidgetItem);
-        }
-        else
-        {
-          errorTableWidget->setCellWidget(row, 0, hyperlinkLabel);
-        }
-        errorTableWidget->setItem(row, 1, descriptionWidgetItem);
-        errorTableWidget->setItem(row, 2, codeWidgetItem);
+        ui->errorTableWidget->setItem(row, FilterName, filterNameWidgetItem);
       }
-      row++;
-      break;
-
-    case PipelineMessage::Warning:
-      //  m_hasWarnings = true;
-      msgColor.setRed(251);
-      msgColor.setGreen(254);
-      msgColor.setBlue(137);
-
+      else
       {
-        QBrush msgBrush(msgColor);
-
-        QString msgName = (msg.getPrefix());
-        QString msgDesc = (msg.getText());
-        int msgCode = msg.getCode();
-
-        QTableWidgetItem* filterNameWidgetItem = new QTableWidgetItem(msgName);
-        filterNameWidgetItem->setTextAlignment(Qt::AlignCenter);
-        QTableWidgetItem* descriptionWidgetItem = new QTableWidgetItem(msgDesc);
-        QTableWidgetItem* codeWidgetItem = new QTableWidgetItem(QString::number(msgCode));
-        codeWidgetItem->setTextAlignment(Qt::AlignCenter);
-
-        filterNameWidgetItem->setBackground(msgBrush);
-        descriptionWidgetItem->setBackground(msgBrush);
-        codeWidgetItem->setBackground(msgBrush);
-
-        QLabel* hyperlinkLabel = createHyperlinkLabel(msg);
-        if(hyperlinkLabel == nullptr)
-        {
-          errorTableWidget->setItem(row, 0, filterNameWidgetItem);
-        }
-        else
-        {
-          errorTableWidget->setCellWidget(row, 0, hyperlinkLabel);
-        }
-        errorTableWidget->setItem(row, 1, descriptionWidgetItem);
-        errorTableWidget->setItem(row, 2, codeWidgetItem);
+        ui->errorTableWidget->setCellWidget(row, FilterName, hyperlinkLabel);
       }
-      row++;
-      break;
+      ui->errorTableWidget->setItem(row, FilterIndex, indexWidgetItem);
+      ui->errorTableWidget->setItem(row, Description, descriptionWidgetItem);
+      ui->errorTableWidget->setItem(row, ErrorCode, codeWidgetItem);
 
-    default:
-      break;
+      row++;
     }
   }
 }
