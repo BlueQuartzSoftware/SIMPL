@@ -743,14 +743,17 @@ int TriangleGeom::readGeometryFromHDF5(hid_t parentId, bool preflight)
 // -----------------------------------------------------------------------------
 IGeometry::Pointer TriangleGeom::deepCopy()
 {
-  TriangleGeom::Pointer triCopy = TriangleGeom::CreateGeometry(getTriangles(), getVertices(), getName());
+  TriangleGeom::Pointer triCopy = TriangleGeom::CreateGeometry(std::static_pointer_cast<SharedTriList>(getTriangles()->deepCopy()), 
+                                                               std::static_pointer_cast<SharedVertexList>(getVertices()->deepCopy()),
+                                                               getName());
 
-  triCopy->setEdges(getEdges());
-  triCopy->setUnsharedEdges(getUnsharedEdges());
-  triCopy->setElementsContainingVert(getElementsContainingVert());
-  triCopy->setElementNeighbors(getElementNeighbors());
-  triCopy->setElementCentroids(getElementCentroids());
-  triCopy->setElementSizes(getElementSizes());
+  triCopy->setEdges(std::static_pointer_cast<SharedEdgeList>(getEdges()->deepCopy()));
+  triCopy->setUnsharedEdges(std::static_pointer_cast<SharedEdgeList>(getUnsharedEdges()->deepCopy()));
+  // No deepCopy() yet exists for DynamicListArray
+  //triCopy->setElementsContainingVert(std::static_pointer_cast<ElementDynamicList>(getElementsContainingVert()->deepCopy()));
+  //triCopy->setElementNeighbors(std::static_pointer_cast<ElementDynamicList>(getElementNeighbors()->deepCopy()));
+  triCopy->setElementCentroids(std::static_pointer_cast<DataArray<float>>(getElementCentroids()->deepCopy()));
+  triCopy->setElementSizes(std::static_pointer_cast<DataArray<float>>(getElementSizes()->deepCopy()));
   triCopy->setSpatialDimensionality(getSpatialDimensionality());
 
   return triCopy;

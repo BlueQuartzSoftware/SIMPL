@@ -1101,10 +1101,10 @@ IGeometry::Pointer RectGridGeom::deepCopy()
   size_t volDims[3] = { 0, 0, 0 };
   getDimensions(volDims);
   rectGridCopy->setDimensions(volDims);
-  rectGridCopy->setXBounds(getXBounds());
-  rectGridCopy->setYBounds(getYBounds());
-  rectGridCopy->setZBounds(getZBounds());
-  rectGridCopy->setElementSizes(getElementSizes());
+  rectGridCopy->setXBounds(std::static_pointer_cast<DataArray<float>>(getXBounds()->deepCopy()));
+  rectGridCopy->setYBounds(std::static_pointer_cast<DataArray<float>>(getYBounds()->deepCopy()));
+  rectGridCopy->setZBounds(std::static_pointer_cast<DataArray<float>>(getZBounds()->deepCopy()));
+  rectGridCopy->setElementSizes(std::static_pointer_cast<DataArray<float>>(getElementSizes()->deepCopy()));
   rectGridCopy->setSpatialDimensionality(getSpatialDimensionality());
 
   return rectGridCopy;
