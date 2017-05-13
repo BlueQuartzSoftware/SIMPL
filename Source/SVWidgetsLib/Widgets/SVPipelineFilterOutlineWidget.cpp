@@ -146,13 +146,13 @@ void SVPipelineFilterOutlineWidget::changeStyle()
   QString labelColor;
   QString indexBackgroundColor;
   QColor bgColor;
-  if(m_Filter)
+//  if(m_Filter)
+//  {
+//    bgColor = QtSStyles::ColorForFilterGroup(m_Filter->getGroupName());
+//  }
+//  else
   {
-    bgColor = QtSStyles::ColorForFilterGroup(m_Filter->getGroupName());
-  }
-  else
-  {
-    bgColor = QColor(130, 130, 130);
+    bgColor = QColor(150, 150, 150);
   }
 
   switch(wState)
