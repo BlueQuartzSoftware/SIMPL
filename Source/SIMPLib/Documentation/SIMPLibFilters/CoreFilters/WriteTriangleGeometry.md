@@ -40,7 +40,7 @@ This filter creates 2 files from the Vertices and Triangles from a Triangle Geom
 	4 5 7
 
 
-![Rendering of Nodes from above file example](WriteTriangleGeometry_Example.png)
+![Rendering of Nodes from above file example](Images/WriteTriangleGeometry_Example.png)
 
 ## Parameters ##
 

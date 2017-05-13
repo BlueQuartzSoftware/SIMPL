@@ -15,7 +15,7 @@ To have the components of the combined array contain the scalar values first, us
 
 -----
 
-![Combine Attribute Arrays: Scalar First](CombineAttributeArraysGUI_1.png)
+![Combine Attribute Arrays: Scalar First](Images/CombineAttributeArraysGUI_1.png)
 @image latex CombineAttributeArraysGUI_1.png "Combine Attribute Arrays: Scalar First" width=6in
 
 -----
@@ -28,7 +28,7 @@ To have the components of the combined array contain the vector values first, si
 
 -----
 
-![Combine Attribute Arrays: Vector First](CombineAttributeArraysGUI_2.png)
+![Combine Attribute Arrays: Vector First](Images/CombineAttributeArraysGUI_2.png)
 @image latex CombineAttributeArraysGUI_2.png "Combine Attribute Arrays: Vector First" width=6in
 
 -----
