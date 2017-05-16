@@ -44,6 +44,7 @@
 #include <QtCore/QMimeData>
 #include <QtCore/QTemporaryFile>
 #include <QtCore/QUrl>
+#include <QtCore/QSharedPointer>
 
 #include <QtGui/QClipboard>
 #include <QtGui/QDrag>
@@ -83,6 +84,7 @@
 #include "SVWidgetsLib/Widgets/util/MoveFilterCommand.h"
 #include "SVWidgetsLib/Widgets/util/RemoveFilterCommand.h"
 #include "SVWidgetsLib/Widgets/DataBrowserWidget.h"
+#include "SVWidgetsLib/Widgets/ProgressDialog.h"
 
 
 // Include the MOC generated CPP file which has all the QMetaObject methods/data
@@ -910,8 +912,13 @@ void SVPipelineViewWidget::preflightPipeline(QUuid id)
     }
   }
 
-  QProgressDialog progress("Preflight Pipeline", "", 0, 1, this);
-  progress.setWindowModality(Qt::WindowModal);
+  QSharedPointer<ProgressDialog> progressDialog(new ProgressDialog());
+  progressDialog->setWindowTitle("Pipeline Preflighting");
+  QString msg = QString("Please wait for %1 filters to preflight...").arg(pipeline->getFilterContainer().count());
+  progressDialog->setLabelText(msg);
+  progressDialog->show();
+  progressDialog->raise();
+  progressDialog->activateWindow();
 
   // Preflight the pipeline
   int err = pipeline->preflightPipeline();
@@ -919,7 +926,6 @@ void SVPipelineViewWidget::preflightPipeline(QUuid id)
   {
     // FIXME: Implement error handling.
   }
-  progress.setValue(1);
 
   int count = pipeline->getFilterContainer().size();
   // Now that the preflight has been executed loop through the filters and check their error condition and set the

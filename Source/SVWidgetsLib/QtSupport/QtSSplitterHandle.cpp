@@ -43,7 +43,7 @@
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void QtSSplitterHandle::paintEvent(QPaintEvent*)
+void QtSSplitterHandle::paintEvent(QPaintEvent* evt)
 {
   QPainter painter(this);
 

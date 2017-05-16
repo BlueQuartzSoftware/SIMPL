@@ -110,6 +110,8 @@ class SVWidgetsLib_EXPORT SIMPLViewMenuItems : public QObject
     SIMPL_INSTANCE_PROPERTY(QAction*, ActionRenameBookmark)
     SIMPL_INSTANCE_PROPERTY(QAction*, ActionRemoveBookmark)
     SIMPL_INSTANCE_PROPERTY(QAction*, ActionShowBookmarkInFileSystem)
+    SIMPL_INSTANCE_PROPERTY(QAction*, ActionOpenBookmark)
+    SIMPL_INSTANCE_PROPERTY(QAction*, ActionOpenExecuteBookmark)
 
     void createMenus();
     void createActions();

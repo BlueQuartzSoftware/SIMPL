@@ -168,6 +168,8 @@ void BookmarksTreeView::requestContextMenu(const QPoint& pos)
   QAction* actionRemoveBookmark = menuItems->getActionRemoveBookmark();
   QAction* actionLocateFile = menuItems->getActionLocateFile();
   QAction* actionShowBookmarkInFileSystem = menuItems->getActionShowBookmarkInFileSystem();
+  QAction* actionOpenBookmark = menuItems->getActionOpenBookmark();
+  QAction* actionExecuteBookmark = menuItems->getActionOpenExecuteBookmark();
 
   QModelIndexList indexList = toolbox->getBookmarksWidget()->getBookmarksTreeView()->selectionModel()->selectedRows(BookmarksItem::Name);
 
@@ -209,18 +211,17 @@ void BookmarksTreeView::requestContextMenu(const QPoint& pos)
       }
       else
       {
-        actionRenameBookmark->setText("Rename Bookmark");
-        menu.addAction(actionRenameBookmark);
-
+        menu.addAction(actionOpenBookmark);
+        menu.addAction(actionExecuteBookmark);
         {
           QAction* separator = new QAction(this);
           separator->setSeparator(true);
           menu.addAction(separator);
         }
-
+        actionRenameBookmark->setText("Rename Bookmark");
+        menu.addAction(actionRenameBookmark);
         actionRemoveBookmark->setText("Remove Bookmark");
         menu.addAction(actionRemoveBookmark);
-
         {
           QAction* separator = new QAction(this);
           separator->setSeparator(true);

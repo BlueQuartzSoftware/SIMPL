@@ -88,7 +88,7 @@ protected:
 
 private:
   DataContainerArray::Pointer  m_Dca = nullptr;
-  Ui::DataBrowserWidget*       m_Ui = nullptr;
+  QSharedPointer<Ui::DataBrowserWidget>       m_Ui;
 
   DataBrowserWidget(const DataBrowserWidget&); // Copy Constructor Not Implemented
   void operator=(const DataBrowserWidget&);    // Operator '=' Not Implemented
