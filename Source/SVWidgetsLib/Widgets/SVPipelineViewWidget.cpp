@@ -912,13 +912,13 @@ void SVPipelineViewWidget::preflightPipeline(QUuid id)
     }
   }
 
-  QSharedPointer<ProgressDialog> progressDialog(new ProgressDialog());
-  progressDialog->setWindowTitle("Pipeline Preflighting");
-  QString msg = QString("Please wait for %1 filters to preflight...").arg(pipeline->getFilterContainer().count());
-  progressDialog->setLabelText(msg);
-  progressDialog->show();
-  progressDialog->raise();
-  progressDialog->activateWindow();
+//  QSharedPointer<ProgressDialog> progressDialog(new ProgressDialog());
+//  progressDialog->setWindowTitle("Pipeline Preflighting");
+//  QString msg = QString("Please wait for %1 filters to preflight...").arg(pipeline->getFilterContainer().count());
+//  progressDialog->setLabelText(msg);
+//  progressDialog->show();
+//  progressDialog->raise();
+//  progressDialog->activateWindow();
 
   // Preflight the pipeline
   int err = pipeline->preflightPipeline();

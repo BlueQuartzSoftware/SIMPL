@@ -68,6 +68,5 @@ void ProgressDialog::setLabelText(const QString& text)
 // -----------------------------------------------------------------------------
 void ProgressDialog::processPipelineMessage(const PipelineMessage& msg)
 {
-  std::cout << __func__ << std::endl;
   m_Ui->label->setText(msg.getFilterHumanLabel());
 }
