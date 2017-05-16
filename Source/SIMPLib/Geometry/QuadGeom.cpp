@@ -623,7 +623,10 @@ int QuadGeom::writeXdmf(QTextStream& out, QString dcName, QString hdfFileName)
       << "\n";
   out << "  <Grid Name=\"" << dcName << "\" GridType=\"Uniform\">"
       << "\n";
-
+  if(getEnableTimeSeries())
+  {
+    out << "    <Time TimeType=\"Single\" Value=\"" << getTimeValue() << "\"/>\n";
+  }
   out << "    <Topology TopologyType=\"Quadrilateral\" NumberOfElements=\"" << getNumberOfQuads() << "\">"
       << "\n";
   out << "      <DataItem Format=\"HDF\" NumberType=\"Int\" Dimensions=\"" << getNumberOfQuads() << " 4\">"

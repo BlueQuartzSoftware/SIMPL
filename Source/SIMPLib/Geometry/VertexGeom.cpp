@@ -359,14 +359,25 @@ int VertexGeom::writeXdmf(QTextStream& out, QString dcName, QString hdfFileName)
       << "\n";
   out << "  <Grid Name=\"" << dcName << "\" GridType=\"Uniform\">"
       << "\n";
+  if(getEnableTimeSeries())
+  {
+    out << "    <Time TimeType=\"Single\" Value=\"" << getTimeValue() << "\"/>\n";
+  }
 
 #if 0
   DataArrayPath dap = getTemporalDataPath();
   if(dap.isValid())
   {
-    IDataArray::Pointer timeValues = getAttributeMatrix(dap.getAttributeMatrixName())->getAttributeArray(dap.getDataArrayName());
-    Int32ArrayType::Pointer timeValuePtr = std::dynamic_pointer_cast<Int32ArrayType>(timeValues);
-    out << "    <Time TimeType=\"Single\" Value=\"" << timeValuePtr->getValue(0) << "\"/>\n";
+    AttributeMatrix::Pointer am = getAttributeMatrix(dap.getAttributeMatrixName());
+    if(nullptr != am.get())
+    {
+      IDataArray::Pointer timeValues = am->getAttributeArray(dap.getDataArrayName());
+      Int32ArrayType::Pointer timeValuePtr = std::dynamic_pointer_cast<Int32ArrayType>(timeValues);
+      if(nullptr != timeValuePtr.get())
+      {
+        out << "    <Time TimeType=\"Single\" Value=\"" << timeValuePtr->getValue(0) << "\"/>\n";
+      }
+    }
   }
 #endif
 

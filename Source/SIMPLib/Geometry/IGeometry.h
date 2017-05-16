@@ -97,6 +97,10 @@ class SIMPLib_EXPORT IGeometry : public Observable
      */
     typedef QMap<QString, AttributeMatrix::Pointer> AttributeMatrixMap_t;
 
+
+    SIMPL_INSTANCE_PROPERTY(float, TimeValue)
+    SIMPL_INSTANCE_PROPERTY(bool, EnableTimeSeries)
+
 // -----------------------------------------------------------------------------
 // Connectivity
 // -----------------------------------------------------------------------------

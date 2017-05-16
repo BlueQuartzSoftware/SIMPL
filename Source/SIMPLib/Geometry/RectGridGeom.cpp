@@ -1026,6 +1026,10 @@ int RectGridGeom::writeXdmf(QTextStream& out, QString dcName, QString hdfFileNam
       << "\n";
   out << "  <Grid Name=\"" << dcName << "\" GridType=\"Uniform\">"
       << "\n";
+  if(getEnableTimeSeries())
+  {
+    out << "    <Time TimeType=\"Single\" Value=\"" << getTimeValue() << "\"/>\n";
+  }
   out << "    <Topology TopologyType=\"3DRectMesh\" Dimensions=\"" << volDims[2] + 1 << " " << volDims[1] + 1 << " " << volDims[0] + 1 << " \"></Topology>"
       << "\n";
   out << "    <Geometry Type=\"VxVyVz\">"

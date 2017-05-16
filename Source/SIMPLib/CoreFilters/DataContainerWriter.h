@@ -62,6 +62,9 @@ class SIMPLib_EXPORT DataContainerWriter : public AbstractFilter
     SIMPL_FILTER_PARAMETER(bool, WriteXdmfFile)
     Q_PROPERTY(bool WriteXdmfFile READ getWriteXdmfFile WRITE setWriteXdmfFile)
 
+    SIMPL_FILTER_PARAMETER(bool, WriteTimeSeries)
+    Q_PROPERTY(bool WriteTimeSeries READ getWriteTimeSeries WRITE setWriteTimeSeries)
+
     SIMPL_INSTANCE_PROPERTY(bool, AppendToExisting)
 
     /**

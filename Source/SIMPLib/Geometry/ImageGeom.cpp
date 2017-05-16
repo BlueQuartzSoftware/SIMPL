@@ -931,6 +931,10 @@ int ImageGeom::writeXdmf(QTextStream& out, QString dcName, QString hdfFileName)
       << "\n";
   out << "  <Grid Name=\"" << dcName << "\" GridType=\"Uniform\">"
       << "\n";
+  if(getEnableTimeSeries())
+  {
+    out << "    <Time TimeType=\"Single\" Value=\"" << getTimeValue() << "\"/>\n";
+  }
   out << "    <Topology TopologyType=\"3DCoRectMesh\" Dimensions=\"" << volDims[2] + 1 << " " << volDims[1] + 1 << " " << volDims[0] + 1 << " \"></Topology>"
       << "\n";
   out << "    <Geometry Type=\"ORIGIN_DXDYDZ\">"

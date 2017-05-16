@@ -64,6 +64,7 @@ DataContainerWriter::DataContainerWriter()
 , m_OutputFile(QDir::toNativeSeparators(QDir::homePath() + "/Desktop/Untitled.dream3d"))
 , m_WritePipeline(true)
 , m_WriteXdmfFile(true)
+, m_WriteTimeSeries(false)
 , m_AppendToExisting(false)
 , m_FileId(-1)
 {
@@ -87,6 +88,7 @@ void DataContainerWriter::setupFilterParameters()
 
   parameters.push_back(SIMPL_NEW_OUTPUT_FILE_FP("Output File", OutputFile, FilterParameter::Parameter, DataContainerWriter, "*.dream3d", ""));
   parameters.push_back(SIMPL_NEW_BOOL_FP("Write Xdmf File", WriteXdmfFile, FilterParameter::Parameter, DataContainerWriter));
+  parameters.push_back(SIMPL_NEW_BOOL_FP("Include Xdmf Time Markers", WriteTimeSeries, FilterParameter::Parameter, DataContainerWriter));
 
   setFilterParameters(parameters);
 }
@@ -291,8 +293,18 @@ void DataContainerWriter::execute()
     }
     if(m_WriteXdmfFile == true && geometry.get() != nullptr)
     {
-      QString hdfFileName = QH5Utilities::fileNameFromFileId(m_FileId);
 
+      if(getWriteTimeSeries())
+      {
+        dc->getGeometry()->setEnableTimeSeries(true);
+        dc->getGeometry()->setTimeValue(static_cast<float>(iter));
+      }
+#if 0
+      dc->getGeometry()->addAttributeMatrix(SIMPL::StringConstants::MetaData, dc->getAttributeMatrix(SIMPL::StringConstants::MetaData));
+      dc->getGeometry()->setTemporalDataPath(DataArrayPath(dc->getName(), SIMPL::StringConstants::MetaData, "Step #"));
+#endif
+
+      QString hdfFileName = QH5Utilities::fileNameFromFileId(m_FileId);
       err = dc->writeXdmf(xdmfOut, hdfFileName);
       if(err < 0)
       {
@@ -372,6 +384,11 @@ void DataContainerWriter::writeXdmfHeader(QTextStream& xdmf)
        << "\n";
   xdmf << " <Domain>"
        << "\n";
+  if(getWriteTimeSeries())
+  {
+    xdmf << "<Grid Name=\"CellTime\" GridType=\"Collection\" CollectionType=\"Temporal\">"
+         << "\n";
+  }
 }
 
 // -----------------------------------------------------------------------------
@@ -379,6 +396,10 @@ void DataContainerWriter::writeXdmfHeader(QTextStream& xdmf)
 // -----------------------------------------------------------------------------
 void DataContainerWriter::writeXdmfFooter(QTextStream& xdmf)
 {
+  if(getWriteTimeSeries())
+  {
+    xdmf << " </Grid>" << "\n";
+  }
   xdmf << " </Domain>"
        << "\n";
   xdmf << "</Xdmf>"

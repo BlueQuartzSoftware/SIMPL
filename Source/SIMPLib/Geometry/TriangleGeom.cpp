@@ -622,7 +622,10 @@ int TriangleGeom::writeXdmf(QTextStream& out, QString dcName, QString hdfFileNam
       << "\n";
   out << "  <Grid Name=\"" << dcName << "\" GridType=\"Uniform\">"
       << "\n";
-
+  if(getEnableTimeSeries())
+  {
+    out << "    <Time TimeType=\"Single\" Value=\"" << getTimeValue() << "\"/>\n";
+  }
   out << "    <Topology TopologyType=\"Triangle\" NumberOfElements=\"" << getNumberOfTris() << "\">"
       << "\n";
   out << "      <DataItem Format=\"HDF\" NumberType=\"Int\" Dimensions=\"" << getNumberOfTris() << " 3\">"
