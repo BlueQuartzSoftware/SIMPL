@@ -123,7 +123,10 @@ void ScalarTypeWidget::filterNeedsInputParameters(AbstractFilter* filter)
     errorLabel->hide();
   }
 
-  QVariant v(i);
+  SIMPL::ScalarTypes::Type type = static_cast<SIMPL::ScalarTypes::Type>(i);
+  QVariant v;
+  v.setValue(type);
+
   ok = filter->setProperty(PROPERTY_NAME_AS_CHAR, v);
   if(false == ok)
   {
