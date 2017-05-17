@@ -50,7 +50,7 @@ class SVWidgetsLib_EXPORT PipelineViewPtrMimeData : public QMimeData
     PipelineViewPtrMimeData();
     virtual ~PipelineViewPtrMimeData();
 
-    SIMPL_INSTANCE_PROPERTY(SVPipelineViewWidget*, PipelineViewPtr)
+    SIMPL_INSTANCE_PROPERTY(PipelineView*, PipelineViewPtr)
 
   private:
 
