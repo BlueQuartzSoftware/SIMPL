@@ -673,6 +673,11 @@ void SVPipelineViewWidget::addFilterObject(PipelineFilterObject* filterObject, Q
     {
       qDeleteAll(l->children());
       delete l;
+
+      if(l == m_FilterWidgetLayout)
+      {
+        m_FilterWidgetLayout = nullptr;
+      }
     }
 
     if(m_FilterWidgetLayout)
