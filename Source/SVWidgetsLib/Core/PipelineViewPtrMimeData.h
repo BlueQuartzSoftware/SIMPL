@@ -42,7 +42,7 @@
 
 #include "SIMPLib/Common/SIMPLibSetGetMacros.h"
 
-class PipelineViewPtrMimeData : public QMimeData
+class SVWidgetsLib_EXPORT PipelineViewPtrMimeData : public QMimeData
 {
     Q_OBJECT
 
