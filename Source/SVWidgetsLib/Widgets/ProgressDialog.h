@@ -37,6 +37,7 @@
 
 #include <QtWidgets/QDialog>
 
+#include "SVWidgetsLib/SVWidgetsLib.h"
 
 
 namespace Ui {
@@ -46,7 +47,7 @@ class ProgressDialog;
 /**
  * @brief The ProgressDialog class
  */
-class ProgressDialog : public QDialog
+class SVWidgetsLib_EXPORT ProgressDialog : public QDialog
 {
     Q_OBJECT
 
