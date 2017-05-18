@@ -549,19 +549,6 @@ class StringDataArray : public IDataArray
         ss << "<tr bgcolor=\"#FFFCEA\"><th align=\"right\">Name:</th><td>" << getName() << "</td></tr>";
         ss << "<tr bgcolor=\"#FFFCEA\"><th align=\"right\">Type:</th><td>" << getTypeAsString() << "</td></tr>";
         ss << "<tr bgcolor=\"#FFFCEA\"><th align=\"right\">Number of Tuples:</th><td>" << getNumberOfTuples() << "</td></tr>";
-
-        //        QString compDimStr = "(";
-        //        for(int i = 0; i < m_CompDims.size(); i++)
-        //        {
-        //          compDimStr = compDimStr + QString::number(m_CompDims[i]);
-        //          if(i < m_CompDims.size() - 1) {
-        //             compDimStr = compDimStr + QString(", ");
-        //          }
-        //        }
-        //        compDimStr = compDimStr + ")";
-        //        ss << "<tr bgcolor=\"#C3C8D0\"><th align=\"right\">Component Dimensions:</th><td>" << compDimStr << "</td></tr>";
-        //        ss << "<tr bgcolor=\"#C3C8D0\"><th align=\"right\">Total Elements:</th><td>" << m_Size << "</td></tr>";
-
         ss << "</tbody></table>\n";
         ss << "<br/>";
         ss << "</body></html>";
