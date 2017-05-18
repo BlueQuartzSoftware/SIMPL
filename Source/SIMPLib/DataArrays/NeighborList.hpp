@@ -753,12 +753,12 @@ class NeighborList : public IDataArray
         ss << "<body>\n";
         ss << "<table cellpadding=\"4\" cellspacing=\"0\" border=\"0\">\n";
         ss << "<tbody>\n";
-        ss << "<tr bgcolor=\"#D3D8E0\"><th colspan=2>Attribute Array Info</th></tr>";
+        ss << "<tr bgcolor=\"#FFFCEA\"><th colspan=2>Attribute Array Info</th></tr>";
 
-        ss << "<tr bgcolor=\"#C3C8D0\"><th align=\"right\">Name:</th><td>" << getName() << "</td></tr>";
+        ss << "<tr bgcolor=\"#E9E7D6\"><th align=\"right\">Name:</th><td>" << getName() << "</td></tr>";
 
-        ss << "<tr bgcolor=\"#C3C8D0\"><th align=\"right\">Type:</th><td>" << getTypeAsString() << "</td></tr>";
-        ss << "<tr bgcolor=\"#C3C8D0\"><th align=\"right\">Number of Tuples:</th><td>" << getNumberOfTuples() << "</td></tr>";
+        ss << "<tr bgcolor=\"#FFFCEA\"><th align=\"right\">Type:</th><td>" << getTypeAsString() << "</td></tr>";
+        ss << "<tr bgcolor=\"#FFFCEA\"><th align=\"right\">Number of Tuples:</th><td>" << getNumberOfTuples() << "</td></tr>";
 
 //        QString compDimStr = "(";
 //        for(int i = 0; i < m_CompDims.size(); i++)
@@ -770,7 +770,7 @@ class NeighborList : public IDataArray
 //        }
 //        compDimStr = compDimStr + ")";
 //        ss << "<tr bgcolor=\"#C3C8D0\"><th align=\"right\">Component Dimensions:</th><td>" << compDimStr << "</td></tr>";
-        ss << "<tr bgcolor=\"#C3C8D0\"><th align=\"right\">Number of Lists:</th><td>" << getNumberOfLists() << "</td></tr>";
+        ss << "<tr bgcolor=\"#FFFCEA\"><th align=\"right\">Number of Lists:</th><td>" << getNumberOfLists() << "</td></tr>";
 
         ss << "</tbody></table>\n";
         ss << "<br/>";
