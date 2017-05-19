@@ -35,8 +35,13 @@
 
 #include "LineCounterObject.h"
 
+#include <iostream>
+#include <istream>
+#include <fstream>
+
 #include <QtCore/QTextStream>
 #include <QtCore/QFile>
+#include <QtCore/QDebug>
 
 #include "SIMPLib/SIMPLibTypes.h"
 
@@ -72,10 +77,6 @@ LineCounterObject::~LineCounterObject()
 // -----------------------------------------------------------------------------
 void LineCounterObject::run()
 {
-  // Validate that the file is an ASCII file
-  int64_t bufferSize = 262144;
-  char* buffer;
-  int64_t result;
 
   // Obtain the file size
   if(m_FilePath.isEmpty())
@@ -87,69 +88,52 @@ void LineCounterObject::run()
   QFile qFile(m_FilePath);
   int64_t fileSize = qFile.size();
 
-  // Open the file
-  if(qFile.open(QIODevice::ReadOnly) == false)
+ // auto start = std::chrono::system_clock::now();
+
+  m_NumOfLines = 0;
+
+  FILE* fp = nullptr;
+  char* line = nullptr;
+  size_t len = 0;
+  ssize_t read = 0;
+
+  fp = fopen(m_FilePath.toStdString().c_str(), "r");
+  if(fp == NULL)
   {
     QString errorStr = "Error: Unable to open file \"" + m_FilePath + "\"";
-    fputs(errorStr.toStdString().c_str(), stderr);
+    qDebug() << errorStr;
+    m_NumOfLines = -1;
+    emit finished();
     return;
   }
 
-  int64_t actualSize;
-  if(fileSize <= bufferSize)
-  {
-    actualSize = fileSize;
-  }
-  else
-  {
-    actualSize = bufferSize;
-  }
-
-  // Allocate the buffer
-  buffer = (char*)malloc(sizeof(char) * actualSize);
-  if(buffer == nullptr)
-  {
-    QString errorStr = "Error: Unable to allocate memory to read in data from \"" + m_FilePath + "\"";
-    fputs(errorStr.toStdString().c_str(), stderr);
-    return;
-  }
-  m_NumOfLines = 1;
   int64_t currentByte = 0;
-  while(qFile.atEnd() == false)
+  int64_t progIncrement = fileSize / 1000;
+  int64_t currentThresh = progIncrement;
+
+  while((read = getline(&line, &len, fp)) != -1)
   {
-    // Copy the file contents into the buffer
-    result = qFile.read(buffer, actualSize);
+    currentByte += read;
+    m_NumOfLines++;
 
-    // Check the buffer for new lines and carriage returns
-    int64_t fiveThresh = fileSize / 20.0;
-    int64_t currentThresh = fiveThresh;
-    for(int i = 0; i < result; i++)
+    if(currentByte > currentThresh)
     {
-      currentByte++;
-      if(currentByte > currentThresh)
-      {
-        double progress = static_cast<double>(currentByte) / static_cast<double>(fileSize) * 100;
-        emit progressUpdateGenerated(progress);
-        currentThresh = currentThresh + fiveThresh;
-      }
-
-      char currentChar = buffer[i];
-
-      if(currentChar == '\n')
-      {
-        m_NumOfLines++;
-      }
-      else if(currentChar == '\r' && i + 1 < actualSize && buffer[i + 1] == '\n')
-      {
-        m_NumOfLines++;
-        i++;
-      }
+      double progress = static_cast<double>(currentByte) / static_cast<double>(fileSize) * 100;
+      emit progressUpdateGenerated(progress);
+      currentThresh = currentThresh + progIncrement;
     }
   }
 
-  // Close the file and free the memory from the buffer
-  qFile.close();
-  free(buffer);
+  fclose(fp);
+  if(line) {
+    free(line);
+  }
+
+//  std::cout << "Number of Lines: " << m_NumOfLines << std::endl;
+//  auto end = std::chrono::system_clock::now();
+
+//  std::chrono::duration<double> diff = end - start;
+//  std::cout << "Millis to Read: " << diff.count() << std::endl;
 
   emit finished();
 }

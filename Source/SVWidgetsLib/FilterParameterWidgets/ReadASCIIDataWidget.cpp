@@ -368,6 +368,10 @@ void ReadASCIIDataWidget::updateProgress(double percentage)
 // -----------------------------------------------------------------------------
 void ReadASCIIDataWidget::lineCountDidFinish()
 {
+  // This is needed to reset the DataContainer Array into a state that would
+  // represent it before this filter runs.
+  emit parametersChanged();
+
   loadingProgress->setText("0%");
   loadingProgress->hide();
 
