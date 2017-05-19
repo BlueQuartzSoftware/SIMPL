@@ -62,6 +62,14 @@ TupleTableWidget::~TupleTableWidget()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
+bool TupleTableWidget::didUseEdit()
+{
+  return m_UserEdited;
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
 void TupleTableWidget::setupGui()
 {
   // Set the item delegate so that we can only enter 'double' values into the table
@@ -97,9 +105,12 @@ QVector<size_t> TupleTableWidget::getData()
 // -----------------------------------------------------------------------------
 void TupleTableWidget::addTupleDimensions(QVector<size_t> tupleDims)
 {
-  for(int i = 0; i < tupleDims.size(); i++)
+  if(m_UserEdited == false)
   {
-    addColumn(tupleDims[i]);
+    for(int i = 0; i < tupleDims.size(); i++)
+    {
+      addColumn(tupleDims[i]);
+    }
   }
 }
 
@@ -108,7 +119,7 @@ void TupleTableWidget::addTupleDimensions(QVector<size_t> tupleDims)
 // -----------------------------------------------------------------------------
 void TupleTableWidget::clearTupleDimensions()
 {
-
+  m_UserEdited = false;
   while(tupleTable->columnCount() > 0)
   {
     tupleTable->removeColumn(0);
@@ -144,6 +155,7 @@ void TupleTableWidget::addColumn(int value)
 void TupleTableWidget::on_addTupleBtn_pressed()
 {
   addColumn(1);
+  m_UserEdited = true;
 
   emit tupleDimsChanged(getData());
 }
@@ -163,6 +175,7 @@ void TupleTableWidget::on_deleteTupleBtn_pressed()
   if(tupleTable->columnCount() == 0)
   {
     tupleTable->removeRow(0);
+    m_UserEdited = false;
   }
 
   emit tupleDimsChanged(getData());

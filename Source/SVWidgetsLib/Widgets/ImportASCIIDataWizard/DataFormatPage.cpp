@@ -110,8 +110,8 @@ void DataFormatPage::setupGui()
   dataTypeCB->addItems(dataTypes);
   dataTypeCB->setCurrentIndex(0);
 
-  int beginIndex = startRowSpin->value();
-  int numOfDataLines = m_NumLines - beginIndex + 1;
+  //int beginIndex = startRowSpin->value();
+  int numOfDataLines = m_NumLines;
   linesImportedLabel->setText(QString::number(numOfDataLines));
   linesInFileLabel->setText(QString::number(m_NumLines));
 //  amTuplesLabel->setText(QString::number(numOfDataLines));
@@ -319,7 +319,7 @@ void DataFormatPage::dcItemSelected(QString path)
   DataArrayPath dap = DataArrayPath::Deserialize(path, Detail::Delimiter);
   dap.setAttributeMatrixName(amName->text());
 
-  if (m_Dca->doesAttributeMatrixExist(dap) == true)
+  if (m_Dca->doesAttributeMatrixExist(dap) == true && createAMRadio->isChecked())
   {
     QString ss = "An AttributeMatrix at the path '" + dap.serialize("/") + "' already exists. Choose a different attribute matrix name.";
     amCreationError->setText(ss);
@@ -718,7 +718,14 @@ void DataFormatPage::on_startRowSpin_valueChanged(int value)
 
   // Update Tuple Dimensions
   linesInFileLabel->setText(QString::number(m_NumLines));
-  linesImportedLabel->setText(QString::number(m_NumLines - value + 1));
+
+  int numOfDataLines = m_NumLines - value + 1;
+  linesImportedLabel->setText(QString::number(numOfDataLines));
+  if(!tupleDimsTable->didUseEdit())
+  {
+    tupleDimsTable->clearTupleDimensions();
+    tupleDimsTable->addTupleDimensions(QVector<size_t>(1, numOfDataLines));
+  }
   checkTupleDimensions(getTupleTable()->getData());
 
   emit completeChanged();

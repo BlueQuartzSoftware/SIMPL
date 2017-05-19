@@ -73,6 +73,8 @@ class TupleTableWidget : public QWidget, private Ui::TupleTableWidget
     void addTupleDimensions(QVector<size_t> tupleDims);
     void clearTupleDimensions();
 
+    bool didUseEdit();
+
   public slots:
     void on_addTupleBtn_pressed();
     void on_deleteTupleBtn_pressed();
@@ -88,6 +90,8 @@ class TupleTableWidget : public QWidget, private Ui::TupleTableWidget
 
   private:
     void updateDynamicButtons();
+
+    bool m_UserEdited = false;
 
     TupleTableWidget(const TupleTableWidget&); // Copy Constructor Not Implemented
     void operator=(const TupleTableWidget&); // Operator '=' Not Implemented
