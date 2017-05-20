@@ -95,7 +95,7 @@ void LineCounterObject::run()
   FILE* fp = nullptr;
   char* line = nullptr;
   size_t len = 0;
-  ssize_t read = 0;
+  int64_t read = 0;
 
   fp = fopen(m_FilePath.toStdString().c_str(), "r");
   if(fp == NULL)
