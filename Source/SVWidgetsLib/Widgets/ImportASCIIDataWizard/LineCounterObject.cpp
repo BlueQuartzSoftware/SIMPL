@@ -35,18 +35,6 @@
 
 #include "LineCounterObject.h"
 
-#include <assert.h>
-#include <errno.h>
-#include <stdio.h>
-#include <stdlib.h>
-#include <sys/types.h>
-
-#include <fstream>
-#include <iostream>
-#include <istream>
-#include <string>
-
-#include <QtCore/QDebug>
 #include <QtCore/QFile>
 #include <QtCore/QTextStream>
 
@@ -84,6 +72,10 @@ LineCounterObject::~LineCounterObject()
 // -----------------------------------------------------------------------------
 void LineCounterObject::run()
 {
+  // Validate that the file is an ASCII file
+  int64_t bufferSize = 262144;
+  char* buffer;
+  int64_t result;
 
   // Obtain the file size
   if(m_FilePath.isEmpty())
@@ -95,48 +87,68 @@ void LineCounterObject::run()
   QFile qFile(m_FilePath);
   int64_t fileSize = qFile.size();
 
-  // auto start = std::chrono::system_clock::now();
-
-  m_NumOfLines = 0;
-
-  FILE* fp = nullptr;
-  std::vector<char> line;
-  size_t length = 0;
-  int64_t read = 0;
-
-  fp = fopen(m_FilePath.toStdString().c_str(), "r");
-  if(fp == NULL)
+  // Open the file
+  if(qFile.open(QIODevice::ReadOnly) == false)
   {
     QString errorStr = "Error: Unable to open file \"" + m_FilePath + "\"";
-    qDebug() << errorStr;
-    m_NumOfLines = -1;
-    emit finished();
+    fputs(errorStr.toStdString().c_str(), stderr);
     return;
   }
 
-  int64_t currentByte = 0;
-  int64_t progIncrement = fileSize / 1000;
-  int64_t currentThresh = progIncrement;
-
-  while((read = parseLine(line, length, fp, '\n')) != -1)
+  int64_t actualSize;
+  if(fileSize <= bufferSize)
   {
-    currentByte += read;
-    m_NumOfLines++;
+    actualSize = fileSize;
+  }
+  else
+  {
+    actualSize = bufferSize;
+  }
 
-    if(currentByte > currentThresh)
+  // Allocate the buffer
+  buffer = (char*)malloc(sizeof(char) * actualSize);
+  if(buffer == nullptr)
+  {
+    QString errorStr = "Error: Unable to allocate memory to read in data from \"" + m_FilePath + "\"";
+    fputs(errorStr.toStdString().c_str(), stderr);
+    return;
+  }
+  m_NumOfLines = 0;
+  int64_t currentByte = 0;
+  while(qFile.atEnd() == false)
+  {
+    // Copy the file contents into the buffer
+    result = qFile.read(buffer, actualSize);
+
+    // Check the buffer for new lines and carriage returns
+    int64_t fiveThresh = fileSize / 20.0;
+    int64_t currentThresh = fiveThresh;
+    for(int i = 0; i < result; i++)
     {
-      double progress = static_cast<double>(currentByte) / static_cast<double>(fileSize) * 100;
-      emit progressUpdateGenerated(progress);
-      currentThresh = currentThresh + progIncrement;
+      currentByte++;
+      if(currentByte > currentThresh)
+      {
+        double progress = static_cast<double>(currentByte) / static_cast<double>(fileSize) * 100;
+        emit progressUpdateGenerated(progress);
+        currentThresh = currentThresh + fiveThresh;
+      }
+
+      char currentChar = buffer[i];
+
+      if(currentChar == '\n')
+      {
+        m_NumOfLines++;
+      }
+      else if(qFile.atEnd() && currentByte == fileSize)
+      {
+        m_NumOfLines++;
+      }
     }
   }
 
-  fclose(fp);
-  //  std::cout << "Number of Lines: " << m_NumOfLines << std::endl;
-  //  auto end = std::chrono::system_clock::now();
-
-  //  std::chrono::duration<double> diff = end - start;
-  //  std::cout << "Millis to Read: " << diff.count() << std::endl;
+  // Close the file and free the memory from the buffer
+  qFile.close();
+  free(buffer);
 
   emit finished();
 }
@@ -147,97 +159,4 @@ void LineCounterObject::run()
 int LineCounterObject::getNumberOfLines()
 {
   return m_NumOfLines;
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-int LineCounterObject::parseLine(std::vector<char> &line, size_t &n, FILE* stream, char terminator)
-{
-  static const int k_MinChunk = 64;
-  int ncharsAvailable;
-  char* readPos;
-  int ret;
-
-  if(nullptr == stream)
-  {
-    errno = EINVAL;
-    return -1;
-  }
-
-  if(line.size() == 0)
-  {
-    n = k_MinChunk;
-    line.resize(n);
-  }
-
-  ncharsAvailable = n;
-  readPos = line.data();
-
-  for(;;)
-  {
-    int save_errno;
-    int c = getc(stream);
-
-    save_errno = errno;
-
-    /* We always want at least one char left in the buffer, since we
-   always (unless we get an error while reading the first char)
-   NUL-terminate the line buffer.  */
-
-    assert((line.data() + n) == (readPos + ncharsAvailable));
-    if(ncharsAvailable < 2)
-    {
-      if(n > k_MinChunk)
-      {
-        n *= 2;
-      }
-      else {
-        n += k_MinChunk;
-      }
-      ncharsAvailable = n + line.data() - readPos;
-      line.resize(n);
-      if(line.size())
-      {
-        errno = ENOMEM;
-        return -1;
-      }
-      readPos = n - ncharsAvailable + line.data();
-      assert((line.data() + n) == (readPos + ncharsAvailable));
-    }
-
-    if(ferror(stream))
-    {
-      /* Might like to return partial line, but there is no
-       place for us to store errno.  And we don't want to just
-       lose errno.  */
-      errno = save_errno;
-      return -1;
-    }
-
-    if(c == EOF)
-    {
-      /* Return partial line, if any.  */
-      if(readPos == line.data())
-      {
-        return -1;
-      } else {
-        break;
-      }
-    }
-
-    *readPos++ = c;
-    ncharsAvailable--;
-
-    if(c == terminator)
-    {
-      break;
-    }
-  }
-
-  /* Done - NUL terminate and return the number of chars read.  */
-  *readPos = '\0';
-
-  ret = readPos - (line.data());
-  return ret;
 }

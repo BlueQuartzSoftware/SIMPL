@@ -43,54 +43,58 @@
 
 class LineCounterObject : public QObject
 {
-    Q_OBJECT
+  Q_OBJECT
 
-  public:
+public:
+  /**
+ * @brief LineCounterObject
+ * @param filePath
+ * @param parent
+ */
+  LineCounterObject(const QString& filePath, QObject* parent = nullptr);
 
-    /**
-   * @brief LineCounterObject
-   * @param filePath
-   * @param parent
+  /**
+ * @brief LineCounterObject
+ * @param filePath
+ * @param numLines
+ * @param parent
+ */
+  LineCounterObject(const QString& filePath, int numLines, QObject* parent = nullptr);
+
+  virtual ~LineCounterObject();
+
+  /**
+   * @brief getNumberOfLines
+   * @return
    */
-    LineCounterObject(const QString &filePath, QObject *parent = nullptr);
+  int getNumberOfLines();
 
-    /**
-   * @brief LineCounterObject
-   * @param filePath
-   * @param numLines
-   * @param parent
+protected slots:
+
+  /**
+   * @brief run
    */
-    LineCounterObject(const QString &filePath, int numLines, QObject *parent = nullptr);
+  void run();
 
-    virtual ~LineCounterObject();
+signals:
 
+  /**
+   * @brief finished
+   */
+  void finished();
 
-    int getNumberOfLines();
+  /**
+   * @brief progressUpdateGenerated
+   * @param percentage
+   */
+  void progressUpdateGenerated(double percentage);
 
-  protected slots:
-    void run();
+private:
+  QString m_FilePath;
+  int m_NumOfLines;
 
-  signals:
-    void finished();
-    void progressUpdateGenerated(double percentage);
-
-  private:
-    QString                                               m_FilePath;
-    int                                                   m_NumOfLines;
-
-    /**
-     * @brief parseLine
-     * @param line buffer of char to read into
-     * @param n
-     * @param stream A FILE* pointer
-     * @param terminator How to chop the lines up
-     * @param offset
-     * @return Return the number of characters read (not including the null terminator), or -1 on error or EOF.
-     */
-    int parseLine(std::vector<char> &line, size_t &n, FILE* stream, char terminator);
-
-    LineCounterObject(const LineCounterObject&); // Copy Constructor Not Implemented
-    void operator=(const LineCounterObject&); // Operator '=' Not Implemented
+  LineCounterObject(const LineCounterObject&); // Copy Constructor Not Implemented
+  void operator=(const LineCounterObject&);    // Operator '=' Not Implemented
 };
 
 #endif /* _linecounterobject_h_ */
