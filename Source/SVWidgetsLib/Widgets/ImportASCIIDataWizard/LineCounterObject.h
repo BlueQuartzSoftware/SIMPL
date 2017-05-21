@@ -35,6 +35,10 @@
 #ifndef _linecounterobject_h_
 #define _linecounterobject_h_
 
+#include <stdio.h>
+
+#include <vector>
+
 #include <QtCore/QObject>
 
 class LineCounterObject : public QObject
@@ -72,8 +76,18 @@ class LineCounterObject : public QObject
 
   private:
     QString                                               m_FilePath;
-
     int                                                   m_NumOfLines;
+
+    /**
+     * @brief parseLine
+     * @param line buffer of char to read into
+     * @param n
+     * @param stream A FILE* pointer
+     * @param terminator How to chop the lines up
+     * @param offset
+     * @return Return the number of characters read (not including the null terminator), or -1 on error or EOF.
+     */
+    int parseLine(std::vector<char> &line, size_t &n, FILE* stream, char terminator);
 
     LineCounterObject(const LineCounterObject&); // Copy Constructor Not Implemented
     void operator=(const LineCounterObject&); // Operator '=' Not Implemented

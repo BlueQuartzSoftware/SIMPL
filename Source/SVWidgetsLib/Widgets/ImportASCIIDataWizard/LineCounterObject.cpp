@@ -35,13 +35,20 @@
 
 #include "LineCounterObject.h"
 
+#include <assert.h>
+#include <errno.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <sys/types.h>
+
+#include <fstream>
 #include <iostream>
 #include <istream>
-#include <fstream>
+#include <string>
 
-#include <QtCore/QTextStream>
-#include <QtCore/QFile>
 #include <QtCore/QDebug>
+#include <QtCore/QFile>
+#include <QtCore/QTextStream>
 
 #include "SIMPLib/SIMPLibTypes.h"
 
@@ -88,13 +95,13 @@ void LineCounterObject::run()
   QFile qFile(m_FilePath);
   int64_t fileSize = qFile.size();
 
- // auto start = std::chrono::system_clock::now();
+  // auto start = std::chrono::system_clock::now();
 
   m_NumOfLines = 0;
 
   FILE* fp = nullptr;
-  char* line = nullptr;
-  size_t len = 0;
+  std::vector<char> line;
+  size_t length = 0;
   int64_t read = 0;
 
   fp = fopen(m_FilePath.toStdString().c_str(), "r");
@@ -111,7 +118,7 @@ void LineCounterObject::run()
   int64_t progIncrement = fileSize / 1000;
   int64_t currentThresh = progIncrement;
 
-  while((read = getline(&line, &len, fp)) != -1)
+  while((read = parseLine(line, length, fp, '\n')) != -1)
   {
     currentByte += read;
     m_NumOfLines++;
@@ -125,15 +132,11 @@ void LineCounterObject::run()
   }
 
   fclose(fp);
-  if(line) {
-    free(line);
-  }
+  //  std::cout << "Number of Lines: " << m_NumOfLines << std::endl;
+  //  auto end = std::chrono::system_clock::now();
 
-//  std::cout << "Number of Lines: " << m_NumOfLines << std::endl;
-//  auto end = std::chrono::system_clock::now();
-
-//  std::chrono::duration<double> diff = end - start;
-//  std::cout << "Millis to Read: " << diff.count() << std::endl;
+  //  std::chrono::duration<double> diff = end - start;
+  //  std::cout << "Millis to Read: " << diff.count() << std::endl;
 
   emit finished();
 }
@@ -144,4 +147,97 @@ void LineCounterObject::run()
 int LineCounterObject::getNumberOfLines()
 {
   return m_NumOfLines;
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+int LineCounterObject::parseLine(std::vector<char> &line, size_t &n, FILE* stream, char terminator)
+{
+  static const int k_MinChunk = 64;
+  int ncharsAvailable;
+  char* readPos;
+  int ret;
+
+  if(nullptr == stream)
+  {
+    errno = EINVAL;
+    return -1;
+  }
+
+  if(line.size() == 0)
+  {
+    n = k_MinChunk;
+    line.resize(n);
+  }
+
+  ncharsAvailable = n;
+  readPos = line.data();
+
+  for(;;)
+  {
+    int save_errno;
+    int c = getc(stream);
+
+    save_errno = errno;
+
+    /* We always want at least one char left in the buffer, since we
+   always (unless we get an error while reading the first char)
+   NUL-terminate the line buffer.  */
+
+    assert((line.data() + n) == (readPos + ncharsAvailable));
+    if(ncharsAvailable < 2)
+    {
+      if(n > k_MinChunk)
+      {
+        n *= 2;
+      }
+      else {
+        n += k_MinChunk;
+      }
+      ncharsAvailable = n + line.data() - readPos;
+      line.resize(n);
+      if(line.size())
+      {
+        errno = ENOMEM;
+        return -1;
+      }
+      readPos = n - ncharsAvailable + line.data();
+      assert((line.data() + n) == (readPos + ncharsAvailable));
+    }
+
+    if(ferror(stream))
+    {
+      /* Might like to return partial line, but there is no
+       place for us to store errno.  And we don't want to just
+       lose errno.  */
+      errno = save_errno;
+      return -1;
+    }
+
+    if(c == EOF)
+    {
+      /* Return partial line, if any.  */
+      if(readPos == line.data())
+      {
+        return -1;
+      } else {
+        break;
+      }
+    }
+
+    *readPos++ = c;
+    ncharsAvailable--;
+
+    if(c == terminator)
+    {
+      break;
+    }
+  }
+
+  /* Done - NUL terminate and return the number of chars read.  */
+  *readPos = '\0';
+
+  ret = readPos - (line.data());
+  return ret;
 }
