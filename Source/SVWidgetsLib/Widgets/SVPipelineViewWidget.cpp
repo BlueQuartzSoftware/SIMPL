@@ -329,9 +329,9 @@ void SVPipelineViewWidget::newEmptyPipelineViewLayout()
     QTextStream ss(&text);
     ss << "<h2>Creating a Pipeline</h2>";
     ss << "<hr>";
-    ss << "File > Open <br />";
-    ss << "File > New <br />";
-    ss << "Drag and drop filters<br />";
+    ss << "File -> Open <br />";
+    ss << "File -> New <br />";
+    ss << "Drag and drop filters here<br />";
     ss << "Double click a Bookmark<br />";
     ss << "Double click a Prebuilt Pipeline<br />";
     m_EmptyPipelineLabel->setText(text);
