@@ -327,7 +327,7 @@ class SIMPLib_EXPORT IGeometry : public Observable
      * @brief deepCopy
      * @return
      */
-    virtual Pointer deepCopy() = 0;
+    virtual Pointer deepCopy(bool forceNoAllocate = false) = 0;
 
     /**
      * @brief initializeWithZeros

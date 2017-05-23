@@ -329,7 +329,7 @@ class SIMPLib_EXPORT EdgeGeom : public IGeometry
      * @brief deepCopy
      * @return
      */
-    virtual IGeometry::Pointer deepCopy();
+    virtual IGeometry::Pointer deepCopy(bool forceNoAllocate = false) override;
 
     /**
      * @brief addAttributeMatrix

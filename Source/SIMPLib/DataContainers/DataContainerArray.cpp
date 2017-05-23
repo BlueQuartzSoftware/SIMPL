@@ -247,7 +247,7 @@ void DataContainerArray::duplicateDataContainer(const QString& name, const QStri
     return;
   }
 
-  DataContainer::Pointer new_f = f->deepCopy();
+  DataContainer::Pointer new_f = f->deepCopy(false);
   new_f->setName(newName);
   addDataContainer(new_f);
 }
@@ -500,13 +500,13 @@ bool DataContainerArray::renameDataContainerBundle(const QString& oldName, const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-DataContainerArray::Pointer DataContainerArray::deepCopy()
+DataContainerArray::Pointer DataContainerArray::deepCopy(bool forceNoAllocate)
 {
   DataContainerArray::Pointer dcaCopy = DataContainerArray::New();
   QList<DataContainer::Pointer> dcs = getDataContainers();
   for(int i = 0; i < dcs.size(); i++)
   {
-    DataContainer::Pointer dcCopy = dcs[i]->deepCopy();
+    DataContainer::Pointer dcCopy = dcs[i]->deepCopy(forceNoAllocate);
 #if 0
 
     // Deep copy geometry if applicable

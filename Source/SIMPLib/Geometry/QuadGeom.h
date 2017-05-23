@@ -297,7 +297,7 @@ class SIMPLib_EXPORT QuadGeom : public IGeometry2D
      * @brief deepCopy
      * @return
      */
-    virtual IGeometry::Pointer deepCopy();
+    virtual IGeometry::Pointer deepCopy(bool forceNoAllocate = false) override;
 
     /**
      * @brief addAttributeMatrix

@@ -454,11 +454,13 @@ int VertexGeom::readGeometryFromHDF5(hid_t parentId, bool preflight)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-IGeometry::Pointer VertexGeom::deepCopy()
+IGeometry::Pointer VertexGeom::deepCopy(bool forceNoAllocate)
 {
-  VertexGeom::Pointer vertexCopy = VertexGeom::CreateGeometry(getVertices(), getName());
+  SharedVertexList::Pointer verts = std::dynamic_pointer_cast<SharedVertexList>((getVertices().get() == nullptr) ? nullptr : getVertices()->deepCopy(forceNoAllocate));
+  FloatArrayType::Pointer elementSizes = std::dynamic_pointer_cast<FloatArrayType>((getElementSizes().get() == nullptr) ? nullptr : getElementSizes()->deepCopy(forceNoAllocate));
 
-  vertexCopy->setElementSizes(getElementSizes());
+  VertexGeom::Pointer vertexCopy = VertexGeom::CreateGeometry(verts, getName());
+  vertexCopy->setElementSizes(elementSizes);
   vertexCopy->setSpatialDimensionality(getSpatialDimensionality());
 
   return vertexCopy;
