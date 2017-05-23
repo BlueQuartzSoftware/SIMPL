@@ -193,14 +193,14 @@ void AddFilterCommand::redo()
   jsonReader->setMaxFilterIndex(m_FilterCount);
   FilterPipeline::Pointer pipeline = jsonReader->readPipelineFromString(m_JsonString);
   FilterPipeline::FilterContainerType container = pipeline->getFilterContainer();
-
+  PipelineFilterObject* filterObject = nullptr;
   if(m_Value.canConvert<int>())
   {
     int index = m_Value.toInt();
 
     for(int i = 0; i < container.size(); i++)
     {
-      PipelineFilterObject* filterObject = m_Destination->createFilterObjectFromFilter(container[i]);
+      filterObject = m_Destination->createFilterObjectFromFilter(container[i]);
       m_Destination->addFilterObject(filterObject, index);
       index++;
     }
@@ -211,7 +211,7 @@ void AddFilterCommand::redo()
 
     for(int i = 0; i < container.size(); i++)
     {
-      PipelineFilterObject* filterObject = m_Destination->createFilterObjectFromFilter(container[i]);
+      filterObject = m_Destination->createFilterObjectFromFilter(container[i]);
       m_Destination->addFilterObject(filterObject, pointF);
       pointF.setX(pointF.x() + 50);
       pointF.setY(pointF.y() + 50);
@@ -221,6 +221,11 @@ void AddFilterCommand::redo()
   m_Destination->reindexWidgetTitles();
   m_Destination->recheckWindowTitleAndModification();
   m_Destination->preflightPipeline();
+  SVPipelineFilterWidget* filterWidget = dynamic_cast<SVPipelineFilterWidget*>(filterObject);
+  if(filterWidget)
+  {
+    emit filterWidget->filterWidgetPressed(filterObject, qApp->queryKeyboardModifiers());
+  }
 
   SIMPLViewMenuItems* menuItems = SIMPLViewMenuItems::Instance();
   menuItems->getActionClearPipeline()->setEnabled(true);
