@@ -710,8 +710,7 @@ class SIMPLib_EXPORT DataContainerArray : public QObject
      * @param dca
      * @return
      */
-    DataContainerArray::Pointer deepCopy();
-
+    DataContainerArray::Pointer deepCopy(bool forceNoAllocate);
 
   protected:
     DataContainerArray();

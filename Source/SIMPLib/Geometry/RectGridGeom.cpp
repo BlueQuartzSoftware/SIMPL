@@ -1098,20 +1098,25 @@ int RectGridGeom::readGeometryFromHDF5(hid_t parentId, bool preflight)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-IGeometry::Pointer RectGridGeom::deepCopy()
+IGeometry::Pointer RectGridGeom::deepCopy(bool forceNoAllocate)
 {
-  RectGridGeom::Pointer rectGridCopy = RectGridGeom::CreateGeometry(getName());
+  FloatArrayType::Pointer xBounds = std::dynamic_pointer_cast<FloatArrayType>((getXBounds().get() == nullptr) ? nullptr : getXBounds()->deepCopy(forceNoAllocate));
+  FloatArrayType::Pointer yBounds = std::dynamic_pointer_cast<FloatArrayType>((getYBounds().get() == nullptr) ? nullptr : getYBounds()->deepCopy(forceNoAllocate));
+  FloatArrayType::Pointer zBounds = std::dynamic_pointer_cast<FloatArrayType>((getZBounds().get() == nullptr) ? nullptr : getZBounds()->deepCopy(forceNoAllocate));
+  FloatArrayType::Pointer elementSizes = std::dynamic_pointer_cast<FloatArrayType>((getElementSizes().get() == nullptr) ? nullptr : getElementSizes()->deepCopy(forceNoAllocate));
+
+  RectGridGeom::Pointer copy = RectGridGeom::CreateGeometry(getName());
 
   size_t volDims[3] = { 0, 0, 0 };
   getDimensions(volDims);
-  rectGridCopy->setDimensions(volDims);
-  rectGridCopy->setXBounds(getXBounds());
-  rectGridCopy->setYBounds(getYBounds());
-  rectGridCopy->setZBounds(getZBounds());
-  rectGridCopy->setElementSizes(getElementSizes());
-  rectGridCopy->setSpatialDimensionality(getSpatialDimensionality());
+  copy->setDimensions(volDims);
+  copy->setXBounds(xBounds);
+  copy->setYBounds(yBounds);
+  copy->setZBounds(zBounds);
+  copy->setElementSizes(elementSizes);
+  copy->setSpatialDimensionality(getSpatialDimensionality());
 
-  return rectGridCopy;
+  return copy;
 }
 
 // -----------------------------------------------------------------------------

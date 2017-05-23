@@ -1002,7 +1002,7 @@ int ImageGeom::readGeometryFromHDF5(hid_t parentId, bool preflight)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-IGeometry::Pointer ImageGeom::deepCopy()
+IGeometry::Pointer ImageGeom::deepCopy(bool forceNoAllocate)
 {
   ImageGeom::Pointer imageCopy = ImageGeom::CreateGeometry(getName());
 
@@ -1015,7 +1015,8 @@ IGeometry::Pointer ImageGeom::deepCopy()
   imageCopy->setDimensions(volDims);
   imageCopy->setResolution(spacing);
   imageCopy->setOrigin(origin);
-  imageCopy->setElementSizes(getElementSizes());
+  FloatArrayType::Pointer elementSizes = std::dynamic_pointer_cast<FloatArrayType>((getElementSizes().get() == nullptr) ? nullptr : getElementSizes()->deepCopy(forceNoAllocate));
+  imageCopy->setElementSizes(elementSizes);
   imageCopy->setSpatialDimensionality(getSpatialDimensionality());
 
   return imageCopy;

@@ -105,10 +105,10 @@ public:
     AttributeMatrix::Pointer metaAm = AttributeMatrix::New(tupleDims, DataContainerBundle::GetMetaDataName(), AttributeMatrix::Type::MetaData);
     dc0->addAttributeMatrix(metaAm->getName(), metaAm);
 
-    DataContainer::Pointer dc1 = dc0->deepCopy();
+    DataContainer::Pointer dc1 = dc0->deepCopy(false);
     dc1->setName("DC 1");
 
-    DataContainer::Pointer dc2 = dc0->deepCopy();
+    DataContainer::Pointer dc2 = dc0->deepCopy(false);
     dc2->setName("DC 2");
     // remove an array so that we have something different
     dc2->getAttributeMatrix("CellAttributeMatrix")->removeAttributeArray("Uint8 Array");

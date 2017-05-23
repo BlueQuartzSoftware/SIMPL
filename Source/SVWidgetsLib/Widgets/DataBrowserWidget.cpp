@@ -96,7 +96,7 @@ void DataBrowserWidget::setupGui()
 // -----------------------------------------------------------------------------
 void DataBrowserWidget::updateDataContainerArray(DataContainerArray::Pointer dca)
 {
-  m_Dca = dca->deepCopy();
+  m_Dca = dca->deepCopy(true);
   refreshData();
 }
 
@@ -243,7 +243,7 @@ void DataBrowserWidget::filterObjectActivated(PipelineFilterObject* object)
       DataContainerArray::Pointer dca = filter->getDataContainerArray();
       if(dca.get())
       {
-        m_Dca = dca->deepCopy();
+        m_Dca = dca->deepCopy(true);
       }
     }
   }

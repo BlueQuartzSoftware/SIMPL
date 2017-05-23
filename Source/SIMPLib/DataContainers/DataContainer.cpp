@@ -398,20 +398,20 @@ int DataContainer::readAttributeMatricesFromHDF5(bool preflight, hid_t dcGid, co
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-DataContainer::Pointer DataContainer::deepCopy()
+DataContainer::Pointer DataContainer::deepCopy(bool forceNoAllocate)
 {
   DataContainer::Pointer dcCopy = DataContainer::New(getName());
   dcCopy->setName(getName());
 
   if(m_Geometry.get() != nullptr)
   {
-    IGeometry::Pointer geomCopy = m_Geometry->deepCopy();
+    IGeometry::Pointer geomCopy = m_Geometry->deepCopy(forceNoAllocate);
     dcCopy->setGeometry(geomCopy);
   }
 
   for(AttributeMatrixMap_t::iterator iter = getAttributeMatrices().begin(); iter != getAttributeMatrices().end(); ++iter)
   {
-    AttributeMatrix::Pointer attrMat = (*iter)->deepCopy();
+    AttributeMatrix::Pointer attrMat = (*iter)->deepCopy(forceNoAllocate);
     dcCopy->addAttributeMatrix(attrMat->getName(), attrMat);
   }
 

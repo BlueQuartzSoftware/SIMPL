@@ -746,19 +746,29 @@ int QuadGeom::readGeometryFromHDF5(hid_t parentId, bool preflight)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-IGeometry::Pointer QuadGeom::deepCopy()
+IGeometry::Pointer QuadGeom::deepCopy(bool forceNoAllocate)
 {
-  QuadGeom::Pointer quadCopy = QuadGeom::CreateGeometry(getQuads(), getVertices(), getName());
+  SharedQuadList::Pointer quads = std::dynamic_pointer_cast<SharedQuadList>((getQuads().get() == nullptr) ? nullptr : getQuads()->deepCopy(forceNoAllocate));
+  SharedVertexList::Pointer verts = std::dynamic_pointer_cast<SharedVertexList>((getVertices().get() == nullptr) ? nullptr : getVertices()->deepCopy(forceNoAllocate));
+  SharedEdgeList::Pointer edges = std::dynamic_pointer_cast<SharedEdgeList>((getEdges().get() == nullptr) ? nullptr : getEdges()->deepCopy(forceNoAllocate));
+  SharedEdgeList::Pointer unsharedEdges = std::dynamic_pointer_cast<SharedEdgeList>((getUnsharedEdges().get() == nullptr) ? nullptr : getUnsharedEdges()->deepCopy(forceNoAllocate));
+  ElementDynamicList::Pointer elementsContainingVert =
+      std::dynamic_pointer_cast<ElementDynamicList>((getElementsContainingVert().get() == nullptr) ? nullptr : getElementsContainingVert()->deepCopy(forceNoAllocate));
+  ElementDynamicList::Pointer elementNeighbors = std::dynamic_pointer_cast<ElementDynamicList>((getElementNeighbors().get() == nullptr) ? nullptr : getElementNeighbors()->deepCopy(forceNoAllocate));
+  FloatArrayType::Pointer elementCentroids = std::dynamic_pointer_cast<FloatArrayType>((getElementCentroids().get() == nullptr) ? nullptr : getElementCentroids()->deepCopy(forceNoAllocate));
+  FloatArrayType::Pointer elementSizes = std::dynamic_pointer_cast<FloatArrayType>((getElementSizes().get() == nullptr) ? nullptr : getElementSizes()->deepCopy(forceNoAllocate));
 
-  quadCopy->setEdges(getEdges());
-  quadCopy->setUnsharedEdges(getUnsharedEdges());
-  quadCopy->setElementsContainingVert(getElementsContainingVert());
-  quadCopy->setElementNeighbors(getElementNeighbors());
-  quadCopy->setElementCentroids(getElementCentroids());
-  quadCopy->setElementSizes(getElementSizes());
-  quadCopy->setSpatialDimensionality(getSpatialDimensionality());
+  QuadGeom::Pointer copy = QuadGeom::CreateGeometry(quads, verts, getName());
 
-  return quadCopy;
+  copy->setEdges(edges);
+  copy->setUnsharedEdges(unsharedEdges);
+  copy->setElementsContainingVert(elementsContainingVert);
+  copy->setElementNeighbors(elementNeighbors);
+  copy->setElementCentroids(elementCentroids);
+  copy->setElementSizes(elementSizes);
+  copy->setSpatialDimensionality(getSpatialDimensionality());
+
+  return copy;
 }
 
 // -----------------------------------------------------------------------------

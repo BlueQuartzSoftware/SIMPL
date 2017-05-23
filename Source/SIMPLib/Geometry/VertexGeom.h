@@ -266,7 +266,7 @@ class SIMPLib_EXPORT VertexGeom : public IGeometry
      * @brief deepCopy
      * @return
      */
-    virtual IGeometry::Pointer deepCopy();
+    virtual IGeometry::Pointer deepCopy(bool forceNoAllocate = false) override;
 
     /**
      * @brief addAttributeMatrix
