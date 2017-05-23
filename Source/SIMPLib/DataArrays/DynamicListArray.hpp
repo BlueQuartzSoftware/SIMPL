@@ -94,7 +94,7 @@ public:
    * @param forceNoAllocate
    * @return
    */
-  DynamicListArray::Pointer deepCopy(bool forceNoAllocate = false)
+  Pointer deepCopy(bool forceNoAllocate = false)
   {
     DynamicListArray::Pointer copy = DynamicListArray::New();
     std::vector<T> linkCounts(m_Size, 0);
