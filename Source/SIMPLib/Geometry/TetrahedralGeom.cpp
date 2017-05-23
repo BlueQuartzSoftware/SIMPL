@@ -852,16 +852,19 @@ int TetrahedralGeom::readGeometryFromHDF5(hid_t parentId, bool preflight)
 // -----------------------------------------------------------------------------
 IGeometry::Pointer TetrahedralGeom::deepCopy()
 {
-  TetrahedralGeom::Pointer tetCopy = TetrahedralGeom::CreateGeometry(getTetrahedra(), getVertices(), getName());
+  TetrahedralGeom::Pointer tetCopy = TetrahedralGeom::CreateGeometry(std::static_pointer_cast<SharedTetList>(getTetrahedra()->deepCopy()), 
+                                                                     std::static_pointer_cast<SharedVertexList>(getVertices()->deepCopy()),
+                                                                     getName());
 
-  tetCopy->setEdges(getEdges());
-  tetCopy->setUnsharedEdges(getUnsharedEdges());
-  tetCopy->setTriangles(getTriangles());
-  tetCopy->setUnsharedFaces(getUnsharedFaces());
-  tetCopy->setElementsContainingVert(getElementsContainingVert());
-  tetCopy->setElementNeighbors(getElementNeighbors());
-  tetCopy->setElementCentroids(getElementCentroids());
-  tetCopy->setElementSizes(getElementSizes());
+  tetCopy->setEdges(std::static_pointer_cast<SharedEdgeList>(getEdges()->deepCopy()));
+  tetCopy->setUnsharedEdges(std::static_pointer_cast<SharedEdgeList>(getUnsharedEdges()->deepCopy()));
+  tetCopy->setTriangles(std::static_pointer_cast<SharedTriList>(getTriangles()->deepCopy()));
+  tetCopy->setUnsharedFaces(std::static_pointer_cast<SharedTriList>(getUnsharedFaces()->deepCopy()));
+  // No deepCopy() yet exists for DynamicListArray
+  //tetCopy->setElementsContainingVert(std::static_pointer_cast<ElementDynamicList>(getElementsContainingVert()->deepCopy()));
+  //tetCopy->setElementNeighbors(std::static_pointer_cast<ElementDynamicList>(getElementNeighbors()->deepCopy()));
+  tetCopy->setElementCentroids(std::static_pointer_cast<DataArray<float>>(getElementCentroids()->deepCopy()));
+  tetCopy->setElementSizes(std::static_pointer_cast<DataArray<float>>(getElementSizes()->deepCopy()));
   tetCopy->setSpatialDimensionality(getSpatialDimensionality());
 
   return tetCopy;

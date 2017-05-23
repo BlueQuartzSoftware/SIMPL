@@ -1015,7 +1015,7 @@ IGeometry::Pointer ImageGeom::deepCopy()
   imageCopy->setDimensions(volDims);
   imageCopy->setResolution(spacing);
   imageCopy->setOrigin(origin);
-  imageCopy->setElementSizes(getElementSizes());
+  imageCopy->setElementSizes(std::static_pointer_cast<DataArray<float>>(getElementSizes()->deepCopy()));
   imageCopy->setSpatialDimensionality(getSpatialDimensionality());
 
   return imageCopy;

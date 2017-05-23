@@ -456,9 +456,10 @@ int VertexGeom::readGeometryFromHDF5(hid_t parentId, bool preflight)
 // -----------------------------------------------------------------------------
 IGeometry::Pointer VertexGeom::deepCopy()
 {
-  VertexGeom::Pointer vertexCopy = VertexGeom::CreateGeometry(getVertices(), getName());
+  VertexGeom::Pointer vertexCopy = VertexGeom::CreateGeometry(std::static_pointer_cast<SharedVertexList>(getVertices()->deepCopy()), 
+                                                              getName());
 
-  vertexCopy->setElementSizes(getElementSizes());
+  vertexCopy->setElementSizes(std::static_pointer_cast<DataArray<float>>(getElementSizes()->deepCopy()));
   vertexCopy->setSpatialDimensionality(getSpatialDimensionality());
 
   return vertexCopy;

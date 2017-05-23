@@ -748,14 +748,17 @@ int QuadGeom::readGeometryFromHDF5(hid_t parentId, bool preflight)
 // -----------------------------------------------------------------------------
 IGeometry::Pointer QuadGeom::deepCopy()
 {
-  QuadGeom::Pointer quadCopy = QuadGeom::CreateGeometry(getQuads(), getVertices(), getName());
+  QuadGeom::Pointer quadCopy = QuadGeom::CreateGeometry(std::static_pointer_cast<SharedQuadList>(getQuads()->deepCopy()), 
+                                                        std::static_pointer_cast<SharedVertexList>(getVertices()->deepCopy()),
+                                                        getName());
 
-  quadCopy->setEdges(getEdges());
-  quadCopy->setUnsharedEdges(getUnsharedEdges());
-  quadCopy->setElementsContainingVert(getElementsContainingVert());
-  quadCopy->setElementNeighbors(getElementNeighbors());
-  quadCopy->setElementCentroids(getElementCentroids());
-  quadCopy->setElementSizes(getElementSizes());
+  quadCopy->setEdges(std::static_pointer_cast<SharedEdgeList>(getEdges()->deepCopy()));
+  quadCopy->setUnsharedEdges(std::static_pointer_cast<SharedEdgeList>(getUnsharedEdges()->deepCopy()));
+  // No deepCopy() yet exists for DynamicListArray
+  //quadCopy->setElementsContainingVert(std::static_pointer_cast<ElementDynamicList>(getElementsContainingVert()->deepCopy()));
+  //quadCopy->setElementNeighbors(std::static_pointer_cast<ElementDynamicList>(getElementNeighbors()->deepCopy()));
+  quadCopy->setElementCentroids(std::static_pointer_cast<DataArray<float>>(getElementCentroids()->deepCopy()));
+  quadCopy->setElementSizes(std::static_pointer_cast<DataArray<float>>(getElementSizes()->deepCopy()));
   quadCopy->setSpatialDimensionality(getSpatialDimensionality());
 
   return quadCopy;

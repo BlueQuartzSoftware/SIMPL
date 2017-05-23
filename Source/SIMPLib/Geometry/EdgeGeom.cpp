@@ -652,12 +652,15 @@ int EdgeGeom::readGeometryFromHDF5(hid_t parentId, bool preflight)
 // -----------------------------------------------------------------------------
 IGeometry::Pointer EdgeGeom::deepCopy()
 {
-  EdgeGeom::Pointer edgeCopy = EdgeGeom::CreateGeometry(getEdges(), getVertices(), getName());
+  EdgeGeom::Pointer edgeCopy = EdgeGeom::CreateGeometry(std::static_pointer_cast<SharedEdgeList>(getEdges()->deepCopy()), 
+                                                        std::static_pointer_cast<SharedVertexList>(getVertices()->deepCopy()),
+                                                        getName());
 
-  edgeCopy->setElementsContainingVert(getElementsContainingVert());
-  edgeCopy->setElementNeighbors(getElementNeighbors());
-  edgeCopy->setElementCentroids(getElementCentroids());
-  edgeCopy->setElementSizes(getElementSizes());
+  // No deepCopy() yet exists for DynamicListArray
+  //edgeCopy->setElementsContainingVert(std::static_pointer_cast<ElementDynamicList>(getElementsContainingVert()->deepCopy()));
+  //edgeCopy->setElementNeighbors(std::static_pointer_cast<ElementDynamicList>(getElementNeighbors()->deepCopy()));
+  edgeCopy->setElementCentroids(std::static_pointer_cast<DataArray<float>>(getElementCentroids()->deepCopy()));
+  edgeCopy->setElementSizes(std::static_pointer_cast<DataArray<float>>(getElementSizes()->deepCopy()));
   edgeCopy->setSpatialDimensionality(getSpatialDimensionality());
 
   return edgeCopy;
