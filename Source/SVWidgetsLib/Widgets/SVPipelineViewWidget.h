@@ -440,6 +440,7 @@ class SVWidgetsLib_EXPORT SVPipelineViewWidget : public QFrame, public PipelineV
     bool                                              m_BlockPreflight = false;
     std::stack<bool>                                  m_BlockPreflightStack;
     DataBrowserWidget*                                m_DataBrowserWidget = nullptr;
+    bool m_LoadingJson = false;
 
     /**
      * @brief addFilterObject

@@ -529,6 +529,7 @@ void SVPipelineViewWidget::reindexWidgetTitles()
 
         fw->setFilterTitle(hl);
         fw->setFilterIndex(i+1, count);
+        filter->setPipelineIndex(i);
       }
     }
   }
@@ -741,10 +742,8 @@ void SVPipelineViewWidget::addFilterObject(PipelineFilterObject* filterObject, Q
 
   if(m_DataBrowserWidget)
   {
-
     connect(filterWidget, SIGNAL(parametersChanged1(PipelineFilterObject*)),
             m_DataBrowserWidget, SLOT(handleFilterParameterChanged(PipelineFilterObject*)));
-
   }
 
   filterWidget->installEventFilter(this);
@@ -755,11 +754,12 @@ void SVPipelineViewWidget::addFilterObject(PipelineFilterObject* filterObject, Q
     QSpacerItem* verticalSpacer = new QSpacerItem(20, 361, QSizePolicy::Minimum, QSizePolicy::Expanding);
     m_FilterWidgetLayout->insertSpacerItem(-1, verticalSpacer);
   }
-
-  // Finally, set this new filter widget as selected
-  setSelectedFilterObject(filterWidget, Qt::NoModifier);
-  filterWidget->setSelected(true);
-
+  if(!m_LoadingJson)
+  {
+    // Finally, set this new filter widget as selected
+    setSelectedFilterObject(filterWidget, Qt::NoModifier);
+    filterWidget->setSelected(true);
+  }
   // Get the filter to ignore Scroll Wheel Events
   filterWidget->installEventFilter(this);
 }
@@ -987,6 +987,18 @@ void SVPipelineViewWidget::removeFilterObjects(QList<PipelineFilterObject*> filt
 // -----------------------------------------------------------------------------
 void SVPipelineViewWidget::removeFilterObject(PipelineFilterObject* filterObject)
 {
+  int pipelineIndex = -1;
+  if(filterObject)
+  {
+    pipelineIndex = filterObject->getFilter()->getPipelineIndex();
+  }
+  SVPipelineFilterWidget* w = getFilterWidgetAtIndex(pipelineIndex);
+  bool wasSelected = false;
+  if(w)
+  {
+    wasSelected = w->isSelected();
+  }
+
   RemoveFilterCommand* removeCmd = new RemoveFilterCommand(filterObject, this, "Remove");
   addUndoCommand(removeCmd);
 
@@ -996,6 +1008,37 @@ void SVPipelineViewWidget::removeFilterObject(PipelineFilterObject* filterObject
   if(m_DataBrowserWidget)
   {
     m_DataBrowserWidget->handleFilterRemoved(filterObject);
+  }
+
+  // This block figures out which filter widget should be selected.
+
+  if(wasSelected) // If the deleted widget was selected, then select the next one down
+  {               //
+    int count = filterCount();
+    if(pipelineIndex >= count) // unless the index is at the end (or past) of the pipeline count
+    {
+      pipelineIndex = count - 1; // The just select the last filter object in the pipeline
+    }
+    w = getFilterWidgetAtIndex(pipelineIndex);
+    if(w)
+    {
+      w->setSelected(true);
+      // PipelineFilterObject pfObj(w->getFilter());
+      emit w->filterWidgetPressed(w, qApp->keyboardModifiers());
+    }
+  }
+  else
+  {
+    int count = filterCount();
+    for(auto i = 0; i < count; i++)
+    {
+      w = getFilterWidgetAtIndex(i);
+      if(w->isSelected())
+      {
+        // PipelineFilterObject pfObj(w->getFilter());
+        emit w->filterWidgetPressed(w, qApp->keyboardModifiers());
+      }
+    }
   }
 }
 
@@ -1012,11 +1055,20 @@ void SVPipelineViewWidget::removeFilterObject(PipelineFilterObject* filterObject
 
   if(filterWidget)
   {
+    int index = filterWidget->getFilter()->getPipelineIndex() - 1;
+
     QWidget* w = qobject_cast<QWidget*>(filterWidget);
     m_FilterWidgetLayout->removeWidget(w);
 
     if(w)
     {
+
+      SVPipelineFilterWidget* prevWidget = getFilterWidgetAtIndex(index);
+      if(prevWidget)
+      {
+        emit prevWidget->filterWidgetPressed(prevWidget, qApp->keyboardModifiers());
+      }
+
       filterWidget->getFilter()->setPreviousFilter(AbstractFilter::NullPointer());
       filterWidget->getFilter()->setNextFilter(AbstractFilter::NullPointer());
 
@@ -1145,7 +1197,6 @@ void SVPipelineViewWidget::setSelectedFilterObject(PipelineFilterObject* w, Qt::
   else
   {
     clearSelectedFilterObjects();
-
     m_ShiftStart = filterWidget;
     filterWidget->setSelected(true);
   }
@@ -1156,6 +1207,10 @@ void SVPipelineViewWidget::setSelectedFilterObject(PipelineFilterObject* w, Qt::
   {
     emit filterInputWidgetChanged(selectedObjects[0]->getFilterInputWidget());
     emit pipelineFilterObjectSelected(selectedObjects[0]);
+    //    if(m_DataBrowserWidget)
+    //    {
+    //      m_DataBrowserWidget->filterObjectActivated(selectedObjects[0]);
+    //    }
   }
   else
   {
@@ -1234,6 +1289,7 @@ void SVPipelineViewWidget::populatePipelineView(QString jsonString, QVariant val
   {
     index = filterCount();
   }
+  m_LoadingJson = true;
 
   AddFilterCommand* addCmd = new AddFilterCommand(jsonString, this, "Paste", index);
   addUndoCommand(addCmd);
@@ -1246,6 +1302,7 @@ void SVPipelineViewWidget::populatePipelineView(QString jsonString, QVariant val
       setSelectedFilterObject(fw, Qt::NoModifier);
     }
   }
+  m_LoadingJson = false;
 }
 
 // -----------------------------------------------------------------------------

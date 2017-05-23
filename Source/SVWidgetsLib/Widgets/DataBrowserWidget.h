@@ -66,24 +66,59 @@ public:
   virtual ~DataBrowserWidget();
 
 public slots:
-
+  /**
+   * @brief Updates the internal DataContainerArray copy from the input DataContainerArray
+   * @param dca
+   */
   void updateDataContainerArray(DataContainerArray::Pointer dca);
 
+  /**
+   * @brief Updates the DataBrowserWidget with the latest DataContainerArray from
+   * the PipelineFilterObject
+   * @param object
+   */
   void filterObjectActivated(PipelineFilterObject* object);
 
-  void handleFilterParameterChanged(PipelineFilterObject* obj);
+  /**
+   * @brief Updates the DataBrowserWidget with the latest DataContainerArray from
+   * the PipelineFilterObject
+   * @param object
+   */
+  void handleFilterParameterChanged(PipelineFilterObject* object);
 
-  void dataBrowserTreeView_indexChanged(const QModelIndex& current, const QModelIndex& previous);
-
+  /**
+   * @brief Forces a refresh of the TreeView from the internal copy of the DataContainerArray
+   */
   void refreshData();
 
+  /**
+   * @brief Slot to handle when a PipelineFilterObject is removed from a pipeline view.
+   * Currently this will clear the QTreeView.
+   * @param object
+   */
   void handleFilterRemoved(PipelineFilterObject* object);
 
 protected:
+  /**
+   * @brief Basic GUI customization code.
+   */
   void setupGui();
 
+  /**
+   * @brief findChildByName
+   * @param rootItem
+   * @param name
+   * @param column
+   * @return
+   */
   QStandardItem* findChildByName(QStandardItem* rootItem, const QString& name, int column);
 
+  /**
+   * @brief Syncs up the QTreeView with the heirarchy from the DataContainerArray
+   * @param rootItem RootItem to start the sync
+   * @param existing List of existing objects
+   * @param column Column to update
+   */
   void removeNonexistingEntries(QStandardItem* rootItem, QList<QString> existing, int column);
 
 private:
