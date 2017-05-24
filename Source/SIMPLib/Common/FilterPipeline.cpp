@@ -45,6 +45,7 @@ FilterPipeline::FilterPipeline()
 : QObject()
 , m_ErrorCondition(0)
 , m_Cancel(false)
+, m_PipelineName("")
 {
 }
 
@@ -53,6 +54,25 @@ FilterPipeline::FilterPipeline()
 // -----------------------------------------------------------------------------
 FilterPipeline::~FilterPipeline()
 {
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+QString FilterPipeline::getPipelineName()
+{
+  return m_PipelineName;
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void FilterPipeline::setPipelineName(QString newName)
+{
+  QString oldName = m_PipelineName;
+  m_PipelineName = newName;
+
+  emit pipelineNameChanged(oldName, newName);
 }
 
 // -----------------------------------------------------------------------------

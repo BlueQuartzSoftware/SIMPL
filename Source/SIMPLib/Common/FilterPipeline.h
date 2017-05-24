@@ -127,6 +127,8 @@ class SIMPLib_EXPORT FilterPipeline : public QObject
     void connectFilterNotifications(QObject* filter);
     void disconnectFilterNotifications(QObject* filter);
 
+    QString getPipelineName();
+
   public slots:
 
     /**
@@ -138,6 +140,8 @@ class SIMPLib_EXPORT FilterPipeline : public QObject
      * @brief cancelPipeline
      */
     virtual void cancelPipeline();
+
+    void setPipelineName(QString name);
 
   protected:
     FilterPipeline();
@@ -174,9 +178,17 @@ class SIMPLib_EXPORT FilterPipeline : public QObject
     */
     void pipelineWasEdited();
 
+    /**
+    * @brief This signal is emitted when the pipeline name changes
+    * @param oldName The FilterPipeline's previous name
+    * @param newName The FilterPipeline's current name
+    */
+    void pipelineNameChanged(QString oldName, QString newName);
+
   private:
-    bool m_Cancel;
-    FilterContainerType                     m_Pipeline;
+    bool                  m_Cancel;
+    FilterContainerType   m_Pipeline;
+    QString               m_PipelineName;
 
     QVector<QObject*> m_MessageReceivers;
 
