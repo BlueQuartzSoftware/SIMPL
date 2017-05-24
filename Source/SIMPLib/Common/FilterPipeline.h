@@ -169,6 +169,11 @@ class SIMPLib_EXPORT FilterPipeline : public QObject
     */
     void pipelineFinished();
 
+    /**
+    * @brief The signal is emitted when changes are applied to the FilterPipeline
+    */
+    void pipelineWasEdited();
+
   private:
     bool m_Cancel;
     FilterContainerType                     m_Pipeline;
