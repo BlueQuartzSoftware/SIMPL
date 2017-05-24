@@ -246,13 +246,6 @@ void SVPipelineFilterWidget::changeStyle()
 
   fontStringStream << "pt \"" << font.family() << "\";";
 
-#if defined(Q_OS_WIN)
-  if(font.bold())
-  {
-    fontStringStream << "font-weight: bold;";
-  }
-#endif
-
   // Style the over all widget
   QString svWidgetStyle;
   QTextStream svWidgetStyleStream(&svWidgetStyle);
@@ -269,7 +262,7 @@ void SVPipelineFilterWidget::changeStyle()
   //----------------------------------------------------
   QString filterIndexStyle;
   QTextStream filterIndexStyleStream(&filterIndexStyle);
-#if defined(Q_OS_LINUX)
+#if defined(Q_OS_LINUX) || defined(Q_OS_WIN)
   fontStringStream << "font-weight: bold;";
 #endif
   filterIndexStyleStream << "QLabel\n{";
@@ -380,17 +373,6 @@ void SVPipelineFilterWidget::changeStyle()
   // Set the Style Sheet
   frame->setStyleSheet(svWidgetStyle + labelStyle);
   filterIndex->setStyleSheet(filterIndexStyle);
-
-#if defined(Q_OS_WIN)
-  if(isSelected() == true)
-  {
-    //    filterName->setStyleSheet("color: rgb(242, 242, 242);");
-  }
-  else
-  {
-    //    filterName->setStyleSheet("");
-  }
-#endif
 }
 
 // -----------------------------------------------------------------------------
