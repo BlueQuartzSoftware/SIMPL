@@ -35,8 +35,8 @@
 
 #include "LineCounterObject.h"
 
-#include <QtCore/QTextStream>
 #include <QtCore/QFile>
+#include <QtCore/QTextStream>
 
 #include "SIMPLib/SIMPLibTypes.h"
 
@@ -113,7 +113,7 @@ void LineCounterObject::run()
     fputs(errorStr.toStdString().c_str(), stderr);
     return;
   }
-  m_NumOfLines = 1;
+  m_NumOfLines = 0;
   int64_t currentByte = 0;
   while(qFile.atEnd() == false)
   {
@@ -139,10 +139,9 @@ void LineCounterObject::run()
       {
         m_NumOfLines++;
       }
-      else if(currentChar == '\r' && i + 1 < actualSize && buffer[i + 1] == '\n')
+      else if(qFile.atEnd() && currentByte == fileSize)
       {
         m_NumOfLines++;
-        i++;
       }
     }
   }

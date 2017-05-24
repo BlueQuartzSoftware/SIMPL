@@ -322,7 +322,7 @@ int FilterPipeline::preflightPipeline()
     (*filter)->preflight();
     disconnectFilterNotifications((*filter).get());
 
-    (*filter)->setDataContainerArray(dca->deepCopy());
+    (*filter)->setDataContainerArray(dca->deepCopy(false));
     (*filter)->setCancel(false); // Reset the cancel flag
     preflightError |= (*filter)->getErrorCondition();
   }

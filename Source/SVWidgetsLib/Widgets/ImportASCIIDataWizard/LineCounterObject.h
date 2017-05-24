@@ -35,48 +35,66 @@
 #ifndef _linecounterobject_h_
 #define _linecounterobject_h_
 
+#include <stdio.h>
+
+#include <vector>
+
 #include <QtCore/QObject>
 
 class LineCounterObject : public QObject
 {
-    Q_OBJECT
+  Q_OBJECT
 
-  public:
+public:
+  /**
+ * @brief LineCounterObject
+ * @param filePath
+ * @param parent
+ */
+  LineCounterObject(const QString& filePath, QObject* parent = nullptr);
 
-    /**
-   * @brief LineCounterObject
-   * @param filePath
-   * @param parent
+  /**
+ * @brief LineCounterObject
+ * @param filePath
+ * @param numLines
+ * @param parent
+ */
+  LineCounterObject(const QString& filePath, int numLines, QObject* parent = nullptr);
+
+  virtual ~LineCounterObject();
+
+  /**
+   * @brief getNumberOfLines
+   * @return
    */
-    LineCounterObject(const QString &filePath, QObject *parent = nullptr);
+  int getNumberOfLines();
 
-    /**
-   * @brief LineCounterObject
-   * @param filePath
-   * @param numLines
-   * @param parent
+protected slots:
+
+  /**
+   * @brief run
    */
-    LineCounterObject(const QString &filePath, int numLines, QObject *parent = nullptr);
+  void run();
 
-    virtual ~LineCounterObject();
+signals:
 
+  /**
+   * @brief finished
+   */
+  void finished();
 
-    int getNumberOfLines();
+  /**
+   * @brief progressUpdateGenerated
+   * @param percentage
+   */
+  void progressUpdateGenerated(double percentage);
 
-  protected slots:
-    void run();
+private:
+  QString m_FilePath;
+  int m_NumOfLines;
 
-  signals:
-    void finished();
-    void progressUpdateGenerated(double percentage);
-
-  private:
-    QString                                               m_FilePath;
-
-    int                                                   m_NumOfLines;
-
-    LineCounterObject(const LineCounterObject&); // Copy Constructor Not Implemented
-    void operator=(const LineCounterObject&); // Operator '=' Not Implemented
+  LineCounterObject(const LineCounterObject&); // Copy Constructor Not Implemented
+  void operator=(const LineCounterObject&);    // Operator '=' Not Implemented
 };
 
 #endif /* _linecounterobject_h_ */

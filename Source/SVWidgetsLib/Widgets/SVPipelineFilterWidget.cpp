@@ -399,6 +399,7 @@ void SVPipelineFilterWidget::changeStyle()
 void SVPipelineFilterWidget::on_deleteBtn_clicked()
 {
   emit filterWidgetRemoved(this);
+  emit filterWidgetPressed(nullptr, qApp->queryKeyboardModifiers());
 }
 
 // -----------------------------------------------------------------------------

@@ -96,7 +96,7 @@ void DataBrowserWidget::setupGui()
 // -----------------------------------------------------------------------------
 void DataBrowserWidget::updateDataContainerArray(DataContainerArray::Pointer dca)
 {
-  m_Dca = dca->deepCopy();
+  m_Dca = dca->deepCopy(true);
   refreshData();
 }
 
@@ -130,12 +130,12 @@ void DataBrowserWidget::refreshData()
 
   model = qobject_cast<QStandardItemModel*>(m_Ui->dataBrowserTreeView->model());
 
-  QItemSelectionModel* selectionModel = m_Ui->dataBrowserTreeView->selectionModel();
-  if(selectionModel)
-  {
-    connect(selectionModel, SIGNAL(currentChanged(const QModelIndex&, const QModelIndex&)),
-      this, SLOT(dataBrowserTreeView_indexChanged(const QModelIndex&, const QModelIndex&)));
-  }
+  //  QItemSelectionModel* selectionModel = m_Ui->dataBrowserTreeView->selectionModel();
+  //  if(selectionModel)
+  //  {
+  //    connect(selectionModel, SIGNAL(currentChanged(const QModelIndex&, const QModelIndex&)),
+  //      this, SLOT(dataBrowserTreeView_indexChanged(const QModelIndex&, const QModelIndex&)));
+  //  }
 
   // Sanity check model
   if(!model)
@@ -146,12 +146,8 @@ void DataBrowserWidget::refreshData()
 
   // Loop over the data containers
   QList<DataContainer::Pointer> containers = m_Dca->getDataContainers();
-
-
   QStandardItem* rootItem = model->invisibleRootItem();
-
   QListIterator<DataContainer::Pointer> containerIter(containers);
-
 
   while(containerIter.hasNext())
   {
@@ -210,9 +206,13 @@ void DataBrowserWidget::refreshData()
         if(!aaItem)
         {
           aaItem = new QStandardItem(attrArrayName);
-          //          aaItem->setBackground(QColor(255, 210, 173));
+          // aaItem->setBackground(QColor(255, 210, 173));
           amItem->appendRow(aaItem);
         }
+        //        else
+        //        {
+        //          aaItem->setBackground(QColor(255, 255, 255));
+        //        }
         aaItem->setData(attrArray->getInfoString(SIMPL::HtmlFormat), Qt::UserRole + 1);
         aaItem->setToolTip(attrArray->getInfoString(SIMPL::HtmlFormat));
 
@@ -243,7 +243,7 @@ void DataBrowserWidget::filterObjectActivated(PipelineFilterObject* object)
       DataContainerArray::Pointer dca = filter->getDataContainerArray();
       if(dca.get())
       {
-        m_Dca = dca->deepCopy();
+        m_Dca = dca->deepCopy(true);
       }
     }
   }
@@ -255,40 +255,18 @@ void DataBrowserWidget::filterObjectActivated(PipelineFilterObject* object)
 // -----------------------------------------------------------------------------
 void DataBrowserWidget::handleFilterRemoved(PipelineFilterObject* object)
 {
+  Q_UNUSED(object);
   m_Dca = DataContainerArray::NullPointer();
-  if(object)
-  {
-    AbstractFilter::Pointer filter = object->getFilter();
-    if(filter.get())
-    {
-      DataContainerArray::Pointer dca = filter->getDataContainerArray();
-      if(dca.get())
-      {
-        m_Dca = dca->deepCopy();
-      }
-    }
-  }
   refreshData();
 }
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void DataBrowserWidget::dataBrowserTreeView_indexChanged(const QModelIndex& current, const QModelIndex& previous)
+void DataBrowserWidget::handleFilterParameterChanged(PipelineFilterObject* object)
 {
-//  QMap<int, QVariant> values = m_Ui->dataBrowserTreeView->model()->itemData(current);
-//  QString infoString = values.value(Qt::UserRole + 1).toString();
-//  dataContainerInfoLabel->setText(infoString);
+  filterObjectActivated(object);
 }
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-void DataBrowserWidget::handleFilterParameterChanged(PipelineFilterObject* obj)
-{
-  filterObjectActivated(obj);
-}
-
 
 // -----------------------------------------------------------------------------
 //
