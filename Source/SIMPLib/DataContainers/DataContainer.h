@@ -422,7 +422,7 @@ class SIMPLib_EXPORT DataContainer : public Observable
      * @brief creates copy of dataContainer
      * @return
      */
-    virtual DataContainer::Pointer deepCopy(bool forceNoAllocate);
+    virtual DataContainer::Pointer deepCopy(bool forceNoAllocate = false);
 
     /**
      * @brief writeMeshToHDF5
