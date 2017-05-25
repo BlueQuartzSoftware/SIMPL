@@ -59,7 +59,7 @@ FilterPipeline::~FilterPipeline()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-QString FilterPipeline::getPipelineName()
+QString FilterPipeline::getName()
 {
   return m_PipelineName;
 }
@@ -67,7 +67,7 @@ QString FilterPipeline::getPipelineName()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void FilterPipeline::setPipelineName(QString newName)
+void FilterPipeline::setName(QString newName)
 {
   QString oldName = m_PipelineName;
   m_PipelineName = newName;

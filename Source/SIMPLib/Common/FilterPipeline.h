@@ -127,7 +127,7 @@ class SIMPLib_EXPORT FilterPipeline : public QObject
     void connectFilterNotifications(QObject* filter);
     void disconnectFilterNotifications(QObject* filter);
 
-    QString getPipelineName();
+    QString getName();
 
   public slots:
 
@@ -141,7 +141,7 @@ class SIMPLib_EXPORT FilterPipeline : public QObject
      */
     virtual void cancelPipeline();
 
-    void setPipelineName(QString name);
+    void setName(QString name);
 
   protected:
     FilterPipeline();
