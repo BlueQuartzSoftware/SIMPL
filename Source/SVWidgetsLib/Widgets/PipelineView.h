@@ -81,7 +81,8 @@ class SVWidgetsLib_EXPORT PipelineView
 {
   public:
 
-    SIMPL_INSTANCE_PROPERTY(QList<PipelineFilterObject*>, DraggedFilterObjects)
+    typedef std::pair<int, PipelineFilterObject*> IndexedFilterObject;
+    SIMPL_INSTANCE_PROPERTY(QList<IndexedFilterObject>, DraggedFilterObjects)
 
     PipelineView(QWidget* parent = 0);
     virtual ~PipelineView();
@@ -157,6 +158,12 @@ class SVWidgetsLib_EXPORT PipelineView
     * @return
     */
     virtual QList<PipelineFilterObject*> getSelectedFilterObjects();
+
+    /**
+    * @brief getSelectedIndexedFilterObject
+    * @return
+    */
+    virtual QList<IndexedFilterObject> getSelectedIndexedFilterObjects();
 
     /**
      * @brief populatePipelineView

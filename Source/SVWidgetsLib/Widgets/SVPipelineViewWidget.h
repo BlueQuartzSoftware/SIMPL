@@ -143,6 +143,12 @@ class SVWidgetsLib_EXPORT SVPipelineViewWidget : public QFrame, public PipelineV
     QList<PipelineFilterObject*> getSelectedFilterObjects() override;
 
     /**
+    * @brief getSelectedIndexedFilterObject
+    * @return
+    */
+    QList<IndexedFilterObject> getSelectedIndexedFilterObjects() override;
+
+    /**
      * @brief recheckWindowTitleAndModification
      */
     void recheckWindowTitleAndModification() override;

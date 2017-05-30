@@ -48,13 +48,42 @@
 // -----------------------------------------------------------------------------
 MoveFilterCommand::MoveFilterCommand(PipelineFilterObject* filterWidget, QVariant origin, QVariant destination, PipelineView* pipelineView, QUndoCommand* parent)
 : QUndoCommand(parent)
-, m_PipelineView(pipelineView)
-, m_FilterWidget(filterWidget)
-, m_Origin(origin)
+, m_OriginView(pipelineView)
+, m_DestinationView(pipelineView)
 , m_Destination(destination)
 , m_FirstRun(true)
 {
-  setText(QObject::tr("\"Move '%1'\"").arg(m_FilterWidget->getFilter()->getHumanLabel()));
+  m_FilterWidgets.push_back(std::make_pair(origin.toInt(), filterWidget));
+
+  setText(QObject::tr("\"Move '%1'\"").arg(filterWidget->getFilter()->getHumanLabel()));
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+MoveFilterCommand::MoveFilterCommand(QList<std::pair<int, PipelineFilterObject*>> filterWidgets, QVariant destination, PipelineView* pipelineView, QUndoCommand* parent)
+: QUndoCommand(parent)
+, m_OriginView(pipelineView)
+, m_DestinationView(pipelineView)
+, m_FilterWidgets(filterWidgets)
+, m_Destination(destination)
+, m_FirstRun(true)
+{
+  setText(QObject::tr("\"Move '%1' Filters\"").arg(filterWidgets.size()));
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+MoveFilterCommand::MoveFilterCommand(QList<std::pair<int, PipelineFilterObject*>> filterWidgets, QVariant destination, PipelineView* originView, PipelineView* destinationView, QUndoCommand* parent)
+  : QUndoCommand(parent)
+  , m_OriginView(originView)
+  , m_DestinationView(destinationView)
+  , m_FilterWidgets(filterWidgets)
+  , m_Destination(destination)
+  , m_FirstRun(true)
+{
+  setText(QObject::tr("\"Move '%1' Filters\"").arg(filterWidgets.size()));
 }
 
 // -----------------------------------------------------------------------------
@@ -69,17 +98,47 @@ MoveFilterCommand::~MoveFilterCommand()
 // -----------------------------------------------------------------------------
 void MoveFilterCommand::undo()
 {
-  PipelineFilterObject* filterObject = m_PipelineView->filterObjectAt(m_Destination);
+  // If the destination is not valid, do not do anything
+  bool ok;
+  int destinationIndex = m_Destination.toInt(&ok);
+  if(ok == false)
+  {
+    return;
+  }
 
-  m_PipelineView->removeFilterObject(filterObject, false);
+  // Remove all moved items first to correct any potential ordering mistakes
+  for(int i = 0; i < m_FilterWidgets.size(); i++)
+  {
+    m_DestinationView->removeFilterObject(m_FilterWidgets[i].second, false);
+  }
 
-  m_PipelineView->addFilterObject(filterObject, m_Origin);
+  // After removing all moved items, items may now be reinserted at the correct index
+  for(int i = 0; i < m_FilterWidgets.size(); i++)
+  {
+    PipelineFilterObject* filterObject = m_FilterWidgets[i].second;
 
-  m_PipelineView->setSelectedFilterObject(filterObject, Qt::NoModifier);
+    m_OriginView->addFilterObject(filterObject, m_FilterWidgets[i].first);
+  }
 
-  m_PipelineView->reindexWidgetTitles();
-  m_PipelineView->recheckWindowTitleAndModification();
-  m_PipelineView->preflightPipeline();
+  // After adding all moved items, items may now be selected
+  for(int i = 0; i < m_FilterWidgets.size(); i++)
+  {
+    PipelineFilterObject* filterObject = m_FilterWidgets[i].second;
+
+    m_OriginView->setSelectedFilterObject(filterObject, Qt::ControlModifier);
+  }
+
+  m_OriginView->reindexWidgetTitles();
+  m_OriginView->recheckWindowTitleAndModification();
+  m_OriginView->preflightPipeline();
+
+  // index the destination view as well if it is not the same as the origin view
+  if(m_OriginView != m_DestinationView)
+  {
+    m_DestinationView->reindexWidgetTitles();
+    m_DestinationView->recheckWindowTitleAndModification();
+    m_DestinationView->preflightPipeline();
+  }
 }
 
 // -----------------------------------------------------------------------------
@@ -87,25 +146,55 @@ void MoveFilterCommand::undo()
 // -----------------------------------------------------------------------------
 void MoveFilterCommand::redo()
 {
+  // If the destination is not valid, do not do anything
+  bool ok;
+  int destinationIndex = m_Destination.toInt(&ok);
+  if(ok == false)
+  {
+    return;
+  }
+
+  // Check if this is the first occurance of the QUndoCommand, 
+  // If it is not, remove all moved items first
   if(m_FirstRun == true)
   {
-    m_PipelineView->addFilterObject(m_FilterWidget, m_Destination);
-
-    m_PipelineView->setSelectedFilterObject(m_FilterWidget, Qt::NoModifier);
-
     m_FirstRun = false;
   }
   else
   {
-    PipelineFilterObject* filterObject = m_PipelineView->filterObjectAt(m_Origin);
+    // Remove all moved items first to correct any potential ordering mistakes
+    for(int i = 0; i < m_FilterWidgets.size(); i++)
+    {
+      PipelineFilterObject* filterObject = m_FilterWidgets[i].second;
 
-    m_PipelineView->removeFilterObject(filterObject, false);
-    m_PipelineView->addFilterObject(filterObject, m_Destination);
+      m_OriginView->removeFilterObject(filterObject, false);
+    }
+  }
+    
+  // After removing all moved items, items may now be reinserted at the correct index
+  for(int i = 0; i < m_FilterWidgets.size(); i++)
+  {
+    PipelineFilterObject* filterObject = m_FilterWidgets[i].second;
 
-    m_PipelineView->setSelectedFilterObject(filterObject, Qt::NoModifier);
+    m_DestinationView->addFilterObject(filterObject, destinationIndex + i);
   }
 
-  m_PipelineView->reindexWidgetTitles();
-  m_PipelineView->recheckWindowTitleAndModification();
-  m_PipelineView->preflightPipeline();
+  // After adding all moved items, items may now be selected
+  for(int i = 0; i < m_FilterWidgets.size(); i++)
+  {
+    PipelineFilterObject* filterObject = m_FilterWidgets[i].second;
+    m_DestinationView->setSelectedFilterObject(filterObject, Qt::ControlModifier);
+  }
+
+  m_OriginView->reindexWidgetTitles();
+  m_OriginView->recheckWindowTitleAndModification();
+  m_OriginView->preflightPipeline();
+
+  // index the destination view as well if it is not the same as the origin view
+  if(m_OriginView != m_DestinationView)
+  {
+    m_DestinationView->reindexWidgetTitles();
+    m_DestinationView->recheckWindowTitleAndModification();
+    m_DestinationView->preflightPipeline();
+  }
 }
