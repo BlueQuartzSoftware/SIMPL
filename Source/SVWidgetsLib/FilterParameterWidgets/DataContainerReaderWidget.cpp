@@ -812,6 +812,10 @@ void DataContainerReaderWidget::on_m_LineEdit_fileDropped(const QString& text)
 
         m_Filter->setLastFileRead(text); // Update the cached file path in the filter
       }
+      else
+      {
+        proxy = m_Filter->getInputFileDataContainerArrayProxy();
+      }
 
       updateModelFromProxy(proxy);
     }
