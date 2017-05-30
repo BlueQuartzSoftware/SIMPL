@@ -590,7 +590,8 @@ QString EdgeGeom::getInfoString(SIMPL::InfoStringFormat format)
 
   if(format == SIMPL::HtmlFormat)
   {
-    ss << "<tr bgcolor=\"#FFFCEA\"><th colspan=2>Edge Geometry Info</th></tr>";
+    ss << "<tr bgcolor=\"#FFFCEA\"><th colspan=2>Geometry Info</th></tr>";
+    ss << "<tr bgcolor=\"#FFFCEA\"><th align=\"right\">Type</th><td>" << GeometryHelpers::Translation::TypeToString(getGeometryType()) << "</td></tr>";
     ss << "<tr bgcolor=\"#FFFCEA\"><th align=\"right\">Number of Edges</th><td>" << getNumberOfEdges() << "</td></tr>";
     ss << "<tr bgcolor=\"#FFFCEA\"><th align=\"right\">Number of Vertices</th><td>" << getNumberOfVertices() << "</td></tr>";
     ss << "</tbody></table>";
