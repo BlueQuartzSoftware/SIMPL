@@ -820,6 +820,7 @@ namespace SIMPL
     const QString UnitDimensionality("UnitDimensionality");
     const QString SpatialDimensionality("SpatialDimensionality");
 
+    const QString AnyGeometry("AnyGeometry");
     const QString UnknownGeometry("UnkownGeometry");
     const QString ImageGeometry("ImageGeometry");
     const QString RectGridGeometry("RectGridGeometry");
