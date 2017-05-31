@@ -46,16 +46,14 @@ and Naval Research Labs (NRL) Contract:
 + Dr. Adam Pilchak (V, C)
 + Dr. Michael Uchic (V)
 + Dr. Chris Woodward (V)
++ Dr. Sean P. Donegan (V, C)
 
 ### BlueQuartz Software ###
 
-+ Ms. Sally Connell (C)
-+ Dr. Dennis Dimiduk (V)
-+ Dr. Sean P. Donegan (V, C)
 + Mr. Michael A. Jackson (V, C)
-+ Mr. Joseph B. Kleingers (C)
-+ Dr. Megna Shah (V, C)
-
++ Mr. Joseph B. Kleingers (V, C)
++ Mr. Matthew Marine (V, C)
++ Dr. Dennis Dimiduk (V)
 
 ### Ohio State University/Johns Hopkins University ###
 
@@ -76,7 +74,6 @@ and Naval Research Labs (NRL) Contract:
 + Dr. Shlomo Ta'asan (C)
 + Dr. Joseph C. Tucker (V, C)
 
-
 ### Naval Research Laboratory (NRL) ###
 
 + Dr. Dave Rowenhorst (V, C)
@@ -89,4 +86,4 @@ and Naval Research Labs (NRL) Contract:
 + Dr. Adam Morawiec (V) (Institute of Metallurgy and Materials Science PAS, Krakow, Poland)
 + Mr. Matthew Priddy (C) (Georgia Tech University)
 + Mr. Jarrell Waggoner (C) (Univ. South Carolina)
-
++ Dr. Megna Shah (V, C)
