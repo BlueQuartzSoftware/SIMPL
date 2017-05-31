@@ -32,7 +32,7 @@
 *    United States Prime Contract Navy N00173-07-C-2068
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
-#include "DataBrowserItem.h"
+#include "DataStructureItem.h"
 
 #include <QtCore/QStringList>
 #include <QtGui/QColor>
@@ -40,7 +40,7 @@
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-DataBrowserItem::DataBrowserItem(const QVector<QVariant>& data, ItemType itemType, DataBrowserItem* parent)
+DataStructureItem::DataStructureItem(const QVector<QVariant>& data, ItemType itemType, DataStructureItem* parent)
 : m_ItemData(data)
 , m_ParentItem(parent)
 , m_ItemHasErrors(false)
@@ -54,7 +54,7 @@ DataBrowserItem::DataBrowserItem(const QVector<QVariant>& data, ItemType itemTyp
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-DataBrowserItem::~DataBrowserItem()
+DataStructureItem::~DataStructureItem()
 {
   qDeleteAll(m_ChildItems);
 }
@@ -62,7 +62,7 @@ DataBrowserItem::~DataBrowserItem()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-QString DataBrowserItem::TopLevelString()
+QString DataStructureItem::TopLevelString()
 {
   return QString::fromLatin1("[Top Level]");
 }
@@ -70,7 +70,7 @@ QString DataBrowserItem::TopLevelString()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-DataBrowserItem* DataBrowserItem::child(int number)
+DataStructureItem* DataStructureItem::child(int number)
 {
   return m_ChildItems.value(number);
 }
@@ -78,7 +78,7 @@ DataBrowserItem* DataBrowserItem::child(int number)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-int DataBrowserItem::childCount() const
+int DataStructureItem::childCount() const
 {
   return m_ChildItems.count();
 }
@@ -86,11 +86,11 @@ int DataBrowserItem::childCount() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-int DataBrowserItem::childNumber() const
+int DataStructureItem::childNumber() const
 {
   if(m_ParentItem)
   {
-    return m_ParentItem->m_ChildItems.indexOf(const_cast<DataBrowserItem*>(this));
+    return m_ParentItem->m_ChildItems.indexOf(const_cast<DataStructureItem*>(this));
   }
 
   return 0;
@@ -99,7 +99,7 @@ int DataBrowserItem::childNumber() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-int DataBrowserItem::columnCount() const
+int DataStructureItem::columnCount() const
 {
   return m_ItemData.count();
 }
@@ -107,7 +107,7 @@ int DataBrowserItem::columnCount() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-QVariant DataBrowserItem::data(int column) const
+QVariant DataStructureItem::data(int column) const
 {
   return m_ItemData.value(column);
 }
@@ -115,7 +115,7 @@ QVariant DataBrowserItem::data(int column) const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-bool DataBrowserItem::insertChild(int position, DataBrowserItem* child)
+bool DataStructureItem::insertChild(int position, DataStructureItem* child)
 {
   m_ChildItems.insert(position, child);
   return true;
@@ -124,7 +124,7 @@ bool DataBrowserItem::insertChild(int position, DataBrowserItem* child)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-bool DataBrowserItem::insertChildren(int position, int count, int columns)
+bool DataStructureItem::insertChildren(int position, int count, int columns)
 {
   if(position < 0 || position > m_ChildItems.size())
   {
@@ -134,7 +134,7 @@ bool DataBrowserItem::insertChildren(int position, int count, int columns)
   for(int row = 0; row < count; ++row)
   {
     QVector<QVariant> data(columns);
-    DataBrowserItem* item = new DataBrowserItem(data, ItemType::Unknown, this);
+    DataStructureItem* item = new DataStructureItem(data, ItemType::Unknown, this);
     insertChild(position, item);
   }
 
@@ -144,7 +144,7 @@ bool DataBrowserItem::insertChildren(int position, int count, int columns)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-bool DataBrowserItem::insertColumns(int position, int columns)
+bool DataStructureItem::insertColumns(int position, int columns)
 {
   if(position < 0 || position > m_ItemData.size())
   {
@@ -156,7 +156,7 @@ bool DataBrowserItem::insertColumns(int position, int columns)
     m_ItemData.insert(position, QVariant());
   }
 
-  foreach(DataBrowserItem* child, m_ChildItems)
+  foreach(DataStructureItem* child, m_ChildItems)
   {
     child->insertColumns(position, columns);
   }
@@ -167,7 +167,7 @@ bool DataBrowserItem::insertColumns(int position, int columns)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-DataBrowserItem* DataBrowserItem::parent()
+DataStructureItem* DataStructureItem::parent()
 {
   return m_ParentItem;
 }
@@ -175,7 +175,7 @@ DataBrowserItem* DataBrowserItem::parent()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-bool DataBrowserItem::removeChild(int position)
+bool DataStructureItem::removeChild(int position)
 {
   m_ChildItems.removeAt(position);
   return true;
@@ -184,7 +184,7 @@ bool DataBrowserItem::removeChild(int position)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-bool DataBrowserItem::removeChildren(int position, int count)
+bool DataStructureItem::removeChildren(int position, int count)
 {
   if(position < 0 || position + count > m_ChildItems.size())
   {
@@ -202,7 +202,7 @@ bool DataBrowserItem::removeChildren(int position, int count)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-bool DataBrowserItem::removeColumns(int position, int columns)
+bool DataStructureItem::removeColumns(int position, int columns)
 {
   if(position < 0 || position + columns > m_ItemData.size())
   {
@@ -214,7 +214,7 @@ bool DataBrowserItem::removeColumns(int position, int columns)
     m_ItemData.remove(position);
   }
 
-  foreach(DataBrowserItem* child, m_ChildItems)
+  foreach(DataStructureItem* child, m_ChildItems)
   {
     child->removeColumns(position, columns);
   }
@@ -225,7 +225,7 @@ bool DataBrowserItem::removeColumns(int position, int columns)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-bool DataBrowserItem::setData(int column, const QVariant& value)
+bool DataStructureItem::setData(int column, const QVariant& value)
 {
   if(column < 0 || column >= m_ItemData.size())
   {
@@ -239,7 +239,7 @@ bool DataBrowserItem::setData(int column, const QVariant& value)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-QString DataBrowserItem::getItemTooltip()
+QString DataStructureItem::getItemTooltip()
 {
   return m_ItemTooltip;
 }
@@ -247,7 +247,7 @@ QString DataBrowserItem::getItemTooltip()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-bool DataBrowserItem::setItemTooltip(const QString& value)
+bool DataStructureItem::setItemTooltip(const QString& value)
 {
   m_ItemTooltip = value;
   return true;
@@ -256,7 +256,7 @@ bool DataBrowserItem::setItemTooltip(const QString& value)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-QIcon DataBrowserItem::getIcon()
+QIcon DataStructureItem::getIcon()
 {
   return m_Icon;
 }
@@ -264,7 +264,7 @@ QIcon DataBrowserItem::getIcon()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-bool DataBrowserItem::setIcon(const QIcon& icon)
+bool DataStructureItem::setIcon(const QIcon& icon)
 {
   m_Icon = icon;
   return true;
@@ -273,7 +273,7 @@ bool DataBrowserItem::setIcon(const QIcon& icon)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-bool DataBrowserItem::needsToBeExpanded()
+bool DataStructureItem::needsToBeExpanded()
 {
   return m_NeedsToBeExpanded;
 }
@@ -281,7 +281,7 @@ bool DataBrowserItem::needsToBeExpanded()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void DataBrowserItem::setNeedsToBeExpanded(bool value)
+void DataStructureItem::setNeedsToBeExpanded(bool value)
 {
   m_NeedsToBeExpanded = value;
 }
@@ -289,7 +289,7 @@ void DataBrowserItem::setNeedsToBeExpanded(bool value)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void DataBrowserItem::setParent(DataBrowserItem* parent)
+void DataStructureItem::setParent(DataStructureItem* parent)
 {
   m_ParentItem = parent;
 }
@@ -297,7 +297,7 @@ void DataBrowserItem::setParent(DataBrowserItem* parent)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-DataBrowserItem::ItemType DataBrowserItem::itemType()
+DataStructureItem::ItemType DataStructureItem::itemType()
 {
   return m_ItemType;
 }
@@ -305,7 +305,7 @@ DataBrowserItem::ItemType DataBrowserItem::itemType()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void DataBrowserItem::setItemType(DataBrowserItem::ItemType itemType)
+void DataStructureItem::setItemType(DataStructureItem::ItemType itemType)
 {
   m_ItemType = itemType;
 }
@@ -314,7 +314,7 @@ void DataBrowserItem::setItemType(DataBrowserItem::ItemType itemType)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-QColor DataBrowserItem::backgroundColor()
+QColor DataStructureItem::backgroundColor()
 {
   switch(m_ItemType)
   {
@@ -338,7 +338,7 @@ QColor DataBrowserItem::backgroundColor()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-QColor DataBrowserItem::foregroundColor()
+QColor DataStructureItem::foregroundColor()
 {
   switch(m_ItemType)
   {

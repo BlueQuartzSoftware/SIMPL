@@ -33,7 +33,7 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-#include "DataBrowserWidget.h"
+#include "DataStructureWidget.h"
 
 
 #include <QtCore/QMetaProperty>
@@ -49,14 +49,14 @@
 
 
 // Include the MOC generated CPP file which has all the QMetaObject methods/data
-#include "moc_DataBrowserWidget.cpp"
+#include "moc_DataStructureWidget.cpp"
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-DataBrowserWidget::DataBrowserWidget(QWidget* parent)
+DataStructureWidget::DataStructureWidget(QWidget* parent)
 : QWidget(parent)
-, m_Ui(new Ui::DataBrowserWidget)
+, m_Ui(new Ui::DataStructureWidget)
 
 {
   m_Ui->setupUi(this);
@@ -66,14 +66,14 @@ DataBrowserWidget::DataBrowserWidget(QWidget* parent)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-DataBrowserWidget::~DataBrowserWidget()
+DataStructureWidget::~DataStructureWidget()
 {
 }
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void DataBrowserWidget::setupGui()
+void DataStructureWidget::setupGui()
 {
   QStandardItemModel* model = new QStandardItemModel();
   m_Ui->dataBrowserTreeView->setModel(model);
@@ -94,7 +94,7 @@ void DataBrowserWidget::setupGui()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void DataBrowserWidget::updateDataContainerArray(DataContainerArray::Pointer dca)
+void DataStructureWidget::updateDataContainerArray(DataContainerArray::Pointer dca)
 {
   m_Dca = dca->deepCopy(true);
   refreshData();
@@ -103,7 +103,7 @@ void DataBrowserWidget::updateDataContainerArray(DataContainerArray::Pointer dca
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void DataBrowserWidget::refreshData()
+void DataStructureWidget::refreshData()
 {
   // Get the DataContainerArray object
   if(m_Dca.get() == nullptr)
@@ -232,7 +232,7 @@ void DataBrowserWidget::refreshData()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void DataBrowserWidget::filterObjectActivated(PipelineFilterObject* object)
+void DataStructureWidget::filterObjectActivated(PipelineFilterObject* object)
 {
   m_Dca = DataContainerArray::NullPointer();
   if(object)
@@ -253,7 +253,7 @@ void DataBrowserWidget::filterObjectActivated(PipelineFilterObject* object)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void DataBrowserWidget::handleFilterRemoved(PipelineFilterObject* object)
+void DataStructureWidget::handleFilterRemoved(PipelineFilterObject* object)
 {
   Q_UNUSED(object);
   m_Dca = DataContainerArray::NullPointer();
@@ -263,7 +263,7 @@ void DataBrowserWidget::handleFilterRemoved(PipelineFilterObject* object)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void DataBrowserWidget::handleFilterParameterChanged(PipelineFilterObject* object)
+void DataStructureWidget::handleFilterParameterChanged(PipelineFilterObject* object)
 {
   filterObjectActivated(object);
 }
@@ -271,7 +271,7 @@ void DataBrowserWidget::handleFilterParameterChanged(PipelineFilterObject* objec
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-QStandardItem* DataBrowserWidget::findChildByName(QStandardItem* rootItem, const QString &name, int column)
+QStandardItem* DataStructureWidget::findChildByName(QStandardItem* rootItem, const QString &name, int column)
 {
   QStandardItem* item = nullptr;
   int rowCount = rootItem->rowCount();
@@ -290,7 +290,7 @@ QStandardItem* DataBrowserWidget::findChildByName(QStandardItem* rootItem, const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void DataBrowserWidget::removeNonexistingEntries(QStandardItem* rootItem, QList<QString> existing, int column)
+void DataStructureWidget::removeNonexistingEntries(QStandardItem* rootItem, QList<QString> existing, int column)
 {
   int rowCount = rootItem->rowCount();
   for (int row = rowCount-1; row >= 0; row--)

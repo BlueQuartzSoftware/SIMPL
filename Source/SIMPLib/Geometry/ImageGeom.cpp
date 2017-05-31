@@ -968,7 +968,8 @@ QString ImageGeom::getInfoString(SIMPL::InfoStringFormat format)
 
   if(format == SIMPL::HtmlFormat)
   {
-    ss << "<tr bgcolor=\"#FFFCEA\"><th colspan=2>Image Geometry Info</th></tr>";
+    ss << "<tr bgcolor=\"#FFFCEA\"><th colspan=2>Geometry Info</th></tr>";
+    ss << "<tr bgcolor=\"#FFFCEA\"><th align=\"right\">Type</th><td>" << GeometryHelpers::Translation::TypeToString(getGeometryType()) << "</td></tr>";
     ss << "<tr bgcolor=\"#FFFCEA\"><th align=\"right\">Dimensions:</th><td>" << volDims[0] << " x " << volDims[1] << " x " << volDims[2] << "</td></tr>";
     ss << "<tr bgcolor=\"#FFFCEA\"><th align=\"right\">Origin:</th><td>" << origin[0] << ", " << origin[1] << ", " << origin[2] << "</td></tr>";
     ss << "<tr bgcolor=\"#FFFCEA\"><th align=\"right\">Spacing/Resolution:</th><td>" << spacing[0] << ", " << spacing[1] << ", " << spacing[2] << "</td></tr>";
