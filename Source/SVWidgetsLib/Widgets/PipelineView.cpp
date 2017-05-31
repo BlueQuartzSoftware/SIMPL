@@ -245,7 +245,7 @@ void PipelineView::setSelectedFilterObject(PipelineFilterObject* w, Qt::Keyboard
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void PipelineView::setDataBrowserWidget(DataBrowserWidget* w)
+void PipelineView::setDataStructureWidget(DataStructureWidget* w)
 {
   Q_UNUSED(w)
 

@@ -7,10 +7,10 @@ set(SVWidgetsLib_Widgets_UIS "")
 # Add in the remaining sources that are actually widgets but are completely Custom and do NOT use private
 # inheritance through a .ui file
 set(SVWidgetsLib_Widgets_MOC_HDRS
-  ${SVWidgetsLib_SOURCE_DIR}/Widgets/DataBrowserItemDelegate.h
-  ${SVWidgetsLib_SOURCE_DIR}/Widgets/DataBrowserWidget.h
-  ${SVWidgetsLib_SOURCE_DIR}/Widgets/DataBrowserTreeView.h
-  ${SVWidgetsLib_SOURCE_DIR}/Widgets/DataBrowserModel.h
+  ${SVWidgetsLib_SOURCE_DIR}/Widgets/DataStructureItemDelegate.h
+  ${SVWidgetsLib_SOURCE_DIR}/Widgets/DataStructureWidget.h
+  ${SVWidgetsLib_SOURCE_DIR}/Widgets/DataStructureTreeView.h
+  ${SVWidgetsLib_SOURCE_DIR}/Widgets/DataStructureModel.h
 
 
   ${SVWidgetsLib_SOURCE_DIR}/Widgets/BookmarksItemDelegate.h
@@ -36,7 +36,7 @@ set(SVWidgetsLib_Widgets_MOC_HDRS
 )
 
 set(SVWidgetsLib_Widgets_HDRS
-  ${SVWidgetsLib_SOURCE_DIR}/Widgets/DataBrowserItem.h
+  ${SVWidgetsLib_SOURCE_DIR}/Widgets/DataStructureItem.h
 
   ${SVWidgetsLib_SOURCE_DIR}/Widgets/BookmarksItem.h
   ${SVWidgetsLib_SOURCE_DIR}/Widgets/PipelineView.h
@@ -44,11 +44,11 @@ set(SVWidgetsLib_Widgets_HDRS
 )
 
 set(SVWidgetsLib_Widgets_SRCS
-  ${SVWidgetsLib_SOURCE_DIR}/Widgets/DataBrowserItem.cpp
-  ${SVWidgetsLib_SOURCE_DIR}/Widgets/DataBrowserItemDelegate.cpp
-  ${SVWidgetsLib_SOURCE_DIR}/Widgets/DataBrowserWidget.cpp
-  ${SVWidgetsLib_SOURCE_DIR}/Widgets/DataBrowserTreeView.cpp
-  ${SVWidgetsLib_SOURCE_DIR}/Widgets/DataBrowserModel.cpp
+  ${SVWidgetsLib_SOURCE_DIR}/Widgets/DataStructureItem.cpp
+  ${SVWidgetsLib_SOURCE_DIR}/Widgets/DataStructureItemDelegate.cpp
+  ${SVWidgetsLib_SOURCE_DIR}/Widgets/DataStructureWidget.cpp
+  ${SVWidgetsLib_SOURCE_DIR}/Widgets/DataStructureTreeView.cpp
+  ${SVWidgetsLib_SOURCE_DIR}/Widgets/DataStructureModel.cpp
 
   ${SVWidgetsLib_SOURCE_DIR}/Widgets/BookmarksItem.cpp
   ${SVWidgetsLib_SOURCE_DIR}/Widgets/BookmarksItemDelegate.cpp
@@ -88,7 +88,7 @@ set(SVWidgetsLib_Widgets_UIS
   ${SVWidgetsLib_SOURCE_DIR}/Widgets/UI_Files/PrebuiltsToolboxWidget.ui
   ${SVWidgetsLib_SOURCE_DIR}/Widgets/UI_Files/SIMPLViewToolbox.ui
   ${SVWidgetsLib_SOURCE_DIR}/Widgets/UI_Files/StandardOutputWidget.ui
-  ${SVWidgetsLib_SOURCE_DIR}/Widgets/UI_Files/DataBrowserWidget.ui
+  ${SVWidgetsLib_SOURCE_DIR}/Widgets/UI_Files/DataStructureWidget.ui
   ${SVWidgetsLib_SOURCE_DIR}/Widgets/UI_Files/ProgressDialog.ui
   )
 

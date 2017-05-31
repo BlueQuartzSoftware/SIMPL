@@ -41,24 +41,24 @@
 #include "SIMPLib/FilterParameters/JsonFilterParametersReader.h"
 
 
-#include "SVWidgetsLib/Widgets/DataBrowserModel.h"
-#include "SVWidgetsLib/Widgets/DataBrowserTreeView.h"
+#include "SVWidgetsLib/Widgets/DataStructureModel.h"
+#include "SVWidgetsLib/Widgets/DataStructureTreeView.h"
 #include "SVWidgetsLib/Widgets/SIMPLViewToolbox.h"
 #include "SVWidgetsLib/QtSupport/QtSSettings.h"
 
 // Include the MOC generated CPP file which has all the QMetaObject methods/data
-#include "moc_DataBrowserModel.cpp"
+#include "moc_DataStructureModel.cpp"
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-DataBrowserModel::DataBrowserModel(QObject* parent)
+DataStructureModel::DataStructureModel(QObject* parent)
 : QStandardItemModel(parent)
 {
   QVector<QVariant> vector;
   vector.push_back("Name");
   vector.push_back("Type");
-  rootItem = new DataBrowserItem(vector, DataBrowserItem::ItemType::RootItem);
+  rootItem = new DataStructureItem(vector, DataStructureItem::ItemType::RootItem);
 
   connect(this, SIGNAL(dataChanged(const QModelIndex&, const QModelIndex&)),
           this, SLOT(updateModel(const QModelIndex&, const QModelIndex&)));
@@ -67,7 +67,7 @@ DataBrowserModel::DataBrowserModel(QObject* parent)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-DataBrowserModel::~DataBrowserModel()
+DataStructureModel::~DataStructureModel()
 {
   delete rootItem;
 }
@@ -75,16 +75,16 @@ DataBrowserModel::~DataBrowserModel()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-QModelIndex DataBrowserModel::index(int row, int column, const QModelIndex& parent) const
+QModelIndex DataStructureModel::index(int row, int column, const QModelIndex& parent) const
 {
   if(parent.isValid() && parent.column() != 0)
   {
     return QModelIndex();
   }
 
-  DataBrowserItem* parentItem = getItem(parent);
+  DataStructureItem* parentItem = getItem(parent);
 
-  DataBrowserItem* childItem = parentItem->child(row);
+  DataStructureItem* childItem = parentItem->child(row);
   if(childItem)
   {
     return createIndex(row, column, childItem);
@@ -98,15 +98,15 @@ QModelIndex DataBrowserModel::index(int row, int column, const QModelIndex& pare
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-QModelIndex DataBrowserModel::parent(const QModelIndex& index) const
+QModelIndex DataStructureModel::parent(const QModelIndex& index) const
 {
   if(!index.isValid())
   {
     return QModelIndex();
   }
 
-  DataBrowserItem* childItem = getItem(index);
-  DataBrowserItem* parentItem = childItem->parent();
+  DataStructureItem* childItem = getItem(index);
+  DataStructureItem* parentItem = childItem->parent();
 
   if(parentItem == rootItem)
   {
@@ -119,9 +119,9 @@ QModelIndex DataBrowserModel::parent(const QModelIndex& index) const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-int DataBrowserModel::rowCount(const QModelIndex& parent) const
+int DataStructureModel::rowCount(const QModelIndex& parent) const
 {
-  DataBrowserItem* parentItem = getItem(parent);
+  DataStructureItem* parentItem = getItem(parent);
 
   return parentItem->childCount();
 }
@@ -129,7 +129,7 @@ int DataBrowserModel::rowCount(const QModelIndex& parent) const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-int DataBrowserModel::columnCount(const QModelIndex& parent) const
+int DataStructureModel::columnCount(const QModelIndex& parent) const
 {
   return rootItem->columnCount();
 }
@@ -137,14 +137,14 @@ int DataBrowserModel::columnCount(const QModelIndex& parent) const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-QVariant DataBrowserModel::data(const QModelIndex& index, int role) const
+QVariant DataStructureModel::data(const QModelIndex& index, int role) const
 {
   if(!index.isValid())
   {
     return QVariant();
   }
 
-  DataBrowserItem* item = getItem(index);
+  DataStructureItem* item = getItem(index);
 
   if(role == Qt::DisplayRole)
   {
@@ -171,10 +171,10 @@ QVariant DataBrowserModel::data(const QModelIndex& index, int role) const
   }
   else if(role == Qt::DecorationRole)
   {
-    QModelIndex nameIndex = this->index(index.row(), DataBrowserItem::Name, index.parent());
+    QModelIndex nameIndex = this->index(index.row(), DataStructureItem::Name, index.parent());
     if(nameIndex == index)
     {
-      DataBrowserItem* item = getItem(index);
+      DataStructureItem* item = getItem(index);
       return item->getIcon();
     }
     else
@@ -189,7 +189,7 @@ QVariant DataBrowserModel::data(const QModelIndex& index, int role) const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-QVariant DataBrowserModel::headerData(int section, Qt::Orientation orientation, int role) const
+QVariant DataStructureModel::headerData(int section, Qt::Orientation orientation, int role) const
 {
   if(orientation == Qt::Horizontal && role == Qt::DisplayRole)
   {
@@ -202,9 +202,9 @@ QVariant DataBrowserModel::headerData(int section, Qt::Orientation orientation, 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-bool DataBrowserModel::setData(const QModelIndex& index, const QVariant& value, int role)
+bool DataStructureModel::setData(const QModelIndex& index, const QVariant& value, int role)
 {
-  DataBrowserItem* item = getItem(index);
+  DataStructureItem* item = getItem(index);
   bool result = false;
 
   if(role == Qt::UserRole)
@@ -235,7 +235,7 @@ bool DataBrowserModel::setData(const QModelIndex& index, const QVariant& value, 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-Qt::ItemFlags DataBrowserModel::flags(const QModelIndex& index) const
+Qt::ItemFlags DataStructureModel::flags(const QModelIndex& index) const
 {
   if(!index.isValid())
   {
@@ -244,9 +244,9 @@ Qt::ItemFlags DataBrowserModel::flags(const QModelIndex& index) const
 
   Qt::ItemFlags defaultFlags = QAbstractItemModel::flags(index);
 
-  DataBrowserItem* item = getItem(index);
-  QString name = item->data(DataBrowserItem::Name).toString();
-  if(item->data(DataBrowserItem::Path).toString().isEmpty())
+  DataStructureItem* item = getItem(index);
+  QString name = item->data(DataStructureItem::Name).toString();
+  if(item->data(DataStructureItem::Path).toString().isEmpty())
   {
     // This is a node
     return (defaultFlags | Qt::ItemIsEnabled | Qt::ItemIsSelectable | Qt::ItemIsEditable | Qt::ItemIsDragEnabled | Qt::ItemIsDropEnabled);
@@ -262,7 +262,7 @@ Qt::ItemFlags DataBrowserModel::flags(const QModelIndex& index) const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-DataBrowserItem* DataBrowserModel::getRootItem()
+DataStructureItem* DataStructureModel::getRootItem()
 {
   return rootItem;
 }
@@ -270,7 +270,7 @@ DataBrowserItem* DataBrowserModel::getRootItem()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void DataBrowserModel::syncDataModel(DataContainerArray::Pointer dca)
+void DataStructureModel::syncDataModel(DataContainerArray::Pointer dca)
 {
 
 }
@@ -279,9 +279,9 @@ void DataBrowserModel::syncDataModel(DataContainerArray::Pointer dca)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void DataBrowserModel::setNeedsToBeExpanded(const QModelIndex& index, bool value)
+void DataStructureModel::setNeedsToBeExpanded(const QModelIndex& index, bool value)
 {
-  DataBrowserItem* item = getItem(index);
+  DataStructureItem* item = getItem(index);
   item->setNeedsToBeExpanded(value);
 
 }
@@ -289,20 +289,20 @@ void DataBrowserModel::setNeedsToBeExpanded(const QModelIndex& index, bool value
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-bool DataBrowserModel::needsToBeExpanded(const QModelIndex& index)
+bool DataStructureModel::needsToBeExpanded(const QModelIndex& index)
 {
-  DataBrowserItem* item = getItem(index);
+  DataStructureItem* item = getItem(index);
   return item->needsToBeExpanded();
 }
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-DataBrowserItem* DataBrowserModel::getItem(const QModelIndex& index) const
+DataStructureItem* DataStructureModel::getItem(const QModelIndex& index) const
 {
   if(index.isValid())
   {
-    DataBrowserItem* item = static_cast<DataBrowserItem*>(index.internalPointer());
+    DataStructureItem* item = static_cast<DataStructureItem*>(index.internalPointer());
     if(item)
     {
       return item;
@@ -316,9 +316,9 @@ DataBrowserItem* DataBrowserModel::getItem(const QModelIndex& index) const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-bool DataBrowserModel::insertRows(int position, int rows, const QModelIndex& parent)
+bool DataStructureModel::insertRows(int position, int rows, const QModelIndex& parent)
 {
-  DataBrowserItem* parentItem = getItem(parent);
+  DataStructureItem* parentItem = getItem(parent);
   bool success;
 
   beginInsertRows(parent, position, position + rows - 1);
@@ -331,9 +331,9 @@ bool DataBrowserModel::insertRows(int position, int rows, const QModelIndex& par
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-bool DataBrowserModel::removeRows(int position, int rows, const QModelIndex& parent)
+bool DataStructureModel::removeRows(int position, int rows, const QModelIndex& parent)
 {
-  DataBrowserItem* parentItem = getItem(parent);
+  DataStructureItem* parentItem = getItem(parent);
   bool success = true;
 
   beginRemoveRows(parent, position, position + rows - 1);
@@ -346,17 +346,17 @@ bool DataBrowserModel::removeRows(int position, int rows, const QModelIndex& par
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-bool DataBrowserModel::moveRows(const QModelIndex& sourceParent, int sourceRow, int count, const QModelIndex& destinationParent, int destinationChild)
+bool DataStructureModel::moveRows(const QModelIndex& sourceParent, int sourceRow, int count, const QModelIndex& destinationParent, int destinationChild)
 {
   beginMoveRows(sourceParent, sourceRow, sourceRow + count - 1, destinationParent, destinationChild);
 
-  DataBrowserItem* srcParentItem = getItem(sourceParent);
-  DataBrowserItem* destParentItem = getItem(destinationParent);
+  DataStructureItem* srcParentItem = getItem(sourceParent);
+  DataStructureItem* destParentItem = getItem(destinationParent);
 
   for(int i = sourceRow; i < sourceRow + count; i++)
   {
-    QModelIndex srcIndex = index(i, DataBrowserItem::Name, sourceParent);
-    DataBrowserItem* srcItem = getItem(srcIndex);
+    QModelIndex srcIndex = index(i, DataStructureItem::Name, sourceParent);
+    DataStructureItem* srcItem = getItem(srcIndex);
 
     destParentItem->insertChild(destinationChild, srcItem);
     srcItem->setParent(destParentItem);
@@ -371,7 +371,7 @@ bool DataBrowserModel::moveRows(const QModelIndex& sourceParent, int sourceRow, 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-bool DataBrowserModel::isEmpty()
+bool DataStructureModel::isEmpty()
 {
   if(rowCount(QModelIndex()) <= 0)
   {
@@ -383,7 +383,7 @@ bool DataBrowserModel::isEmpty()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-QStringList DataBrowserModel::getFilePaths()
+QStringList DataStructureModel::getFilePaths()
 {
   return getFilePaths(rootItem);
 }
@@ -391,12 +391,12 @@ QStringList DataBrowserModel::getFilePaths()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-QStringList DataBrowserModel::getFilePaths(DataBrowserItem* item)
+QStringList DataStructureModel::getFilePaths(DataStructureItem* item)
 {
   QStringList list;
   if(item != rootItem && item->childCount() <= 0)
   {
-    QString filePath = item->data(DataBrowserItem::Path).toString();
+    QString filePath = item->data(DataStructureItem::Path).toString();
     if(filePath.isEmpty() == false)
     {
       list.append(filePath);
@@ -415,12 +415,12 @@ QStringList DataBrowserModel::getFilePaths(DataBrowserItem* item)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-QModelIndexList DataBrowserModel::findIndexByPath(QString filePath)
+QModelIndexList DataStructureModel::findIndexByPath(QString filePath)
 {
   QModelIndexList list;
   for(int i = 0; i < rootItem->childCount(); i++)
   {
-    QModelIndex child = index(i, DataBrowserItem::Path, QModelIndex());
+    QModelIndex child = index(i, DataStructureItem::Path, QModelIndex());
     if(rowCount(child) <= 0 && child.data().toString() == filePath)
     {
       list.append(child);
@@ -439,14 +439,14 @@ QModelIndexList DataBrowserModel::findIndexByPath(QString filePath)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-QModelIndexList DataBrowserModel::findIndexByPath(const QModelIndex& current, QString filePath)
+QModelIndexList DataStructureModel::findIndexByPath(const QModelIndex& current, QString filePath)
 {
-  QModelIndex actual = index(current.row(), DataBrowserItem::Name, current.parent());
+  QModelIndex actual = index(current.row(), DataStructureItem::Name, current.parent());
 
   QModelIndexList list;
   for(int i = 0; i < rowCount(actual); i++)
   {
-    QModelIndex pathIndex = index(i, DataBrowserItem::Path, actual);
+    QModelIndex pathIndex = index(i, DataStructureItem::Path, actual);
 
     if(rowCount(pathIndex) <= 0 && pathIndex.data().toString() == filePath)
     {
@@ -463,11 +463,11 @@ QModelIndexList DataBrowserModel::findIndexByPath(const QModelIndex& current, QS
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void DataBrowserModel::updateModel(const QModelIndex& topLeft, const QModelIndex& bottomRight)
+void DataStructureModel::updateModel(const QModelIndex& topLeft, const QModelIndex& bottomRight)
 {
   if(topLeft.isValid())
   {
-    QString path = index(topLeft.row(), DataBrowserItem::Path, topLeft.parent()).data().toString();
+    QString path = index(topLeft.row(), DataStructureItem::Path, topLeft.parent()).data().toString();
     QFileInfo fi(path);
     if(nullptr != m_Watcher && path.isEmpty() == false && fi.exists())
     {
@@ -476,7 +476,7 @@ void DataBrowserModel::updateModel(const QModelIndex& topLeft, const QModelIndex
   }
   else if(bottomRight.isValid())
   {
-    QString path = index(bottomRight.row(), DataBrowserItem::Path, bottomRight.parent()).data().toString();
+    QString path = index(bottomRight.row(), DataStructureItem::Path, bottomRight.parent()).data().toString();
     QFileInfo fi(path);
     if(nullptr != m_Watcher && path.isEmpty() == false && fi.exists())
     {
@@ -489,7 +489,7 @@ void DataBrowserModel::updateModel(const QModelIndex& topLeft, const QModelIndex
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void DataBrowserModel::updateRowState(const QString& path)
+void DataStructureModel::updateRowState(const QString& path)
 {
   QFileInfo fi(path);
   if(fi.exists() == false)
@@ -497,7 +497,7 @@ void DataBrowserModel::updateRowState(const QString& path)
     QModelIndexList indexList = findIndexByPath(path);
     for(int i = 0; i < indexList.size(); i++)
     {
-      QModelIndex nameIndex = index(indexList[i].row(), DataBrowserItem::Name, indexList[i].parent());
+      QModelIndex nameIndex = index(indexList[i].row(), DataStructureItem::Name, indexList[i].parent());
 
       // Set the itemHasError variable
       setData(nameIndex, true, Qt::UserRole);
@@ -508,15 +508,15 @@ void DataBrowserModel::updateRowState(const QString& path)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-QModelIndex DataBrowserModel::sibling(int row, int column, const QModelIndex& currentIndex) const
+QModelIndex DataStructureModel::sibling(int row, int column, const QModelIndex& currentIndex) const
 {
-  if(currentIndex.column() == DataBrowserItem::Name)
+  if(currentIndex.column() == DataStructureItem::Name)
   {
-    return index(currentIndex.row(), DataBrowserItem::Path, currentIndex.parent());
+    return index(currentIndex.row(), DataStructureItem::Path, currentIndex.parent());
   }
   else
   {
-    return index(currentIndex.row(), DataBrowserItem::Name, currentIndex.parent());
+    return index(currentIndex.row(), DataStructureItem::Name, currentIndex.parent());
   }
 }
 

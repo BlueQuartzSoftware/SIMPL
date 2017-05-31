@@ -48,14 +48,14 @@
 
 #include "SVWidgetsLib/SVWidgetsLib.h"
 
-#include "SVWidgetsLib/Widgets/DataBrowserModel.h"
+#include "SVWidgetsLib/Widgets/DataStructureModel.h"
 
 
 class PipelineBuilderWidget;
 class QAction;
 class QTreeWidgetItem;
 
-class SVWidgetsLib_EXPORT DataBrowserTreeView : public QTreeView
+class SVWidgetsLib_EXPORT DataStructureTreeView : public QTreeView
 {
     Q_OBJECT
 
@@ -68,15 +68,15 @@ class SVWidgetsLib_EXPORT DataBrowserTreeView : public QTreeView
     };
 
     /**
-    * @brief DataBrowserTreeView
+    * @brief DataStructureTreeView
     * @param parent
     */
-    DataBrowserTreeView(QWidget* parent = 0);
+    DataStructureTreeView(QWidget* parent = 0);
 
     /**
-    * @brief ~DataBrowserTreeView()
+    * @brief ~DataStructureTreeView()
     */
-    ~DataBrowserTreeView();
+    ~DataStructureTreeView();
 
     /**
     * @brief setModel
@@ -139,7 +139,7 @@ class SVWidgetsLib_EXPORT DataBrowserTreeView : public QTreeView
     QPersistentModelIndex                         m_ActiveIndexBeingDragged;
     QModelIndex                                   m_TopLevelItemPlaceholder;
 
-    DataBrowserModel*                             m_Model = nullptr;
+    DataStructureModel*                             m_Model = nullptr;
 
     /**
      * @brief performDrag
@@ -151,7 +151,7 @@ class SVWidgetsLib_EXPORT DataBrowserTreeView : public QTreeView
      * @param parent
      * @param model
      */
-    void expandChildren(const QModelIndex& parent, DataBrowserModel* model);
+    void expandChildren(const QModelIndex& parent, DataStructureModel* model);
 
 };
 

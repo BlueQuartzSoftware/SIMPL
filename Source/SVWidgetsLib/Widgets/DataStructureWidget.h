@@ -48,22 +48,22 @@
 
 #include "SVWidgetsLib/SVWidgetsLib.h"
 
-#include "ui_DataBrowserWidget.h"
+#include "ui_DataStructureWidget.h"
 
 class PipelineFilterObject;
 class QStandardItem;
 
 namespace Ui
 {
-class DataBrowserWidget;
+class DataStructureWidget;
 }
 
-class SVWidgetsLib_EXPORT DataBrowserWidget : public QWidget, public IObserver
+class SVWidgetsLib_EXPORT DataStructureWidget : public QWidget, public IObserver
 {
   Q_OBJECT
 public:
-  DataBrowserWidget(QWidget* parent = nullptr);
-  virtual ~DataBrowserWidget();
+  DataStructureWidget(QWidget* parent = nullptr);
+  virtual ~DataStructureWidget();
 
 public slots:
   /**
@@ -73,14 +73,14 @@ public slots:
   void updateDataContainerArray(DataContainerArray::Pointer dca);
 
   /**
-   * @brief Updates the DataBrowserWidget with the latest DataContainerArray from
+   * @brief Updates the DataStructureWidget with the latest DataContainerArray from
    * the PipelineFilterObject
    * @param object
    */
   void filterObjectActivated(PipelineFilterObject* object);
 
   /**
-   * @brief Updates the DataBrowserWidget with the latest DataContainerArray from
+   * @brief Updates the DataStructureWidget with the latest DataContainerArray from
    * the PipelineFilterObject
    * @param object
    */
@@ -123,10 +123,10 @@ protected:
 
 private:
   DataContainerArray::Pointer  m_Dca = nullptr;
-  QSharedPointer<Ui::DataBrowserWidget>       m_Ui;
+  QSharedPointer<Ui::DataStructureWidget>       m_Ui;
 
-  DataBrowserWidget(const DataBrowserWidget&); // Copy Constructor Not Implemented
-  void operator=(const DataBrowserWidget&);    // Operator '=' Not Implemented
+  DataStructureWidget(const DataStructureWidget&); // Copy Constructor Not Implemented
+  void operator=(const DataStructureWidget&);    // Operator '=' Not Implemented
 };
 
 #endif /* _dataBrowserWidget_h_   */
