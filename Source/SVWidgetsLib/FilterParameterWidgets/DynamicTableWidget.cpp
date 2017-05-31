@@ -249,7 +249,7 @@ void DynamicTableWidget::afterPreflight()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void DynamicTableWidget::on_addRowBtn_pressed()
+void DynamicTableWidget::on_addRowBtn_clicked()
 {
   int row = dynamicTable->rowCount();
 
@@ -286,7 +286,7 @@ void DynamicTableWidget::on_addRowBtn_pressed()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void DynamicTableWidget::on_addColBtn_pressed()
+void DynamicTableWidget::on_addColBtn_clicked()
 {
   int col = dynamicTable->columnCount();
 
@@ -323,7 +323,7 @@ void DynamicTableWidget::on_addColBtn_pressed()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void DynamicTableWidget::on_deleteRowBtn_pressed()
+void DynamicTableWidget::on_deleteRowBtn_clicked()
 {
   DynamicTableData data = getFilter()->property(PROPERTY_NAME_AS_CHAR).value<DynamicTableData>();
 
@@ -350,7 +350,7 @@ void DynamicTableWidget::on_deleteRowBtn_pressed()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void DynamicTableWidget::on_deleteColBtn_pressed()
+void DynamicTableWidget::on_deleteColBtn_clicked()
 {
   DynamicTableData data = getFilter()->property(PROPERTY_NAME_AS_CHAR).value<DynamicTableData>();
 

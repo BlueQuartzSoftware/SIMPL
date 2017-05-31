@@ -76,8 +76,8 @@ class TupleTableWidget : public QWidget, private Ui::TupleTableWidget
     bool didUseEdit();
 
   public slots:
-    void on_addTupleBtn_pressed();
-    void on_deleteTupleBtn_pressed();
+    void on_addTupleBtn_clicked();
+    void on_deleteTupleBtn_clicked();
 
   protected:
     void addColumn(int value);

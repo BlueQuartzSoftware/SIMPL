@@ -75,7 +75,7 @@ void StandardOutputWidget::setupGui()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void StandardOutputWidget::on_saveLogBtn_pressed()
+void StandardOutputWidget::on_saveLogBtn_clicked()
 {
   QString s = QString("Text Files (*.txt *.log);;All Files(*.*)");
   QString defaultName = m_LastPathOpened + QDir::separator() + "Untitled";
@@ -98,7 +98,7 @@ void StandardOutputWidget::on_saveLogBtn_pressed()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void StandardOutputWidget::on_clearLogBtn_pressed()
+void StandardOutputWidget::on_clearLogBtn_clicked()
 {
   int answer;
 

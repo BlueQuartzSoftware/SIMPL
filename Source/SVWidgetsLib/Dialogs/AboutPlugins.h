@@ -84,8 +84,8 @@ class SVWidgetsLib_EXPORT AboutPlugins : public QDialog, private Ui::AboutPlugin
   public slots:
     void on_closeBtn_clicked();
     void on_detailsBtn_clicked();
-    void on_addPluginBtn_pressed();
-    void on_removePluginBtn_pressed();
+    void on_addPluginBtn_clicked();
+    void on_removePluginBtn_clicked();
     void on_pluginsTable_currentItemChanged(QTableWidgetItem* current, QTableWidgetItem* previous);
     void displayDetailsWindow(QTableWidgetItem* item);
     void setLoadPreferencesFlag(int state);

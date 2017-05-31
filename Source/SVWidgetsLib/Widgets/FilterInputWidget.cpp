@@ -535,7 +535,7 @@ void FilterInputWidget::linkConditionalWidgets(QVector<FilterParameter::Pointer>
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void FilterInputWidget::on_filterHelpBtn_pressed()
+void FilterInputWidget::on_filterHelpBtn_clicked()
 {
   DocRequestManager* docRequester = DocRequestManager::Instance();
   docRequester->requestFilterDocs(m_FilterClassName);

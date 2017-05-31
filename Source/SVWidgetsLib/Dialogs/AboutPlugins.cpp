@@ -322,7 +322,7 @@ void AboutPlugins::setLoadPreferencesFlag(int state)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void AboutPlugins::on_addPluginBtn_pressed()
+void AboutPlugins::on_addPluginBtn_clicked()
 {
   QString pluginPath = QFileDialog::getOpenFileName(this, tr("Open Plugin File Path"), "", tr("Plugin Files (*.plugin)"));
   QFileInfo fileInfo(pluginPath);
@@ -380,7 +380,7 @@ void AboutPlugins::addPlugin(QString pluginPath)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void AboutPlugins::on_removePluginBtn_pressed()
+void AboutPlugins::on_removePluginBtn_clicked()
 {
   int currentRow = pluginsTable->currentRow();
   QTableWidgetItem* nameItem = pluginsTable->item(currentRow, NAME_INDEX);

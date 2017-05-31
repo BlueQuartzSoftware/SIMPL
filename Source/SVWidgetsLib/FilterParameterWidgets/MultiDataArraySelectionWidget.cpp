@@ -334,7 +334,7 @@ void MultiDataArraySelectionWidget::setSelectedPath(DataArrayPath amPath)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void MultiDataArraySelectionWidget::on_selectBtn_pressed()
+void MultiDataArraySelectionWidget::on_selectBtn_clicked()
 {
   QModelIndexList indexList = attributeArraysSelectWidget->selectionModel()->selectedRows();
   if (indexList.size() > 0)
@@ -360,7 +360,7 @@ void MultiDataArraySelectionWidget::on_selectBtn_pressed()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void MultiDataArraySelectionWidget::on_deselectBtn_pressed()
+void MultiDataArraySelectionWidget::on_deselectBtn_clicked()
 {
   QModelIndexList indexList = attributeArraysOrderWidget->selectionModel()->selectedRows();
   if (indexList.size() > 0)
@@ -386,7 +386,7 @@ void MultiDataArraySelectionWidget::on_deselectBtn_pressed()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void MultiDataArraySelectionWidget::on_upBtn_pressed()
+void MultiDataArraySelectionWidget::on_upBtn_clicked()
 { 
   int currentIndex = attributeArraysOrderWidget->currentRow();
 
@@ -405,7 +405,7 @@ void MultiDataArraySelectionWidget::on_upBtn_pressed()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void MultiDataArraySelectionWidget::on_downBtn_pressed()
+void MultiDataArraySelectionWidget::on_downBtn_clicked()
 {
   int currentIndex = attributeArraysOrderWidget->currentRow();
 
@@ -424,7 +424,7 @@ void MultiDataArraySelectionWidget::on_downBtn_pressed()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void MultiDataArraySelectionWidget::on_removeBtn_pressed()
+void MultiDataArraySelectionWidget::on_removeBtn_clicked()
 {
   QModelIndexList indexList = attributeArraysOrderWidget->selectionModel()->selectedRows();
   if (indexList.size() > 0)

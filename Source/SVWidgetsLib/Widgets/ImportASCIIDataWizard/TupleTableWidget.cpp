@@ -152,7 +152,7 @@ void TupleTableWidget::addColumn(int value)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void TupleTableWidget::on_addTupleBtn_pressed()
+void TupleTableWidget::on_addTupleBtn_clicked()
 {
   addColumn(1);
   m_UserEdited = true;
@@ -163,7 +163,7 @@ void TupleTableWidget::on_addTupleBtn_pressed()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void TupleTableWidget::on_deleteTupleBtn_pressed()
+void TupleTableWidget::on_deleteTupleBtn_clicked()
 {
   int currentColumn = tupleTable->currentColumn();
 

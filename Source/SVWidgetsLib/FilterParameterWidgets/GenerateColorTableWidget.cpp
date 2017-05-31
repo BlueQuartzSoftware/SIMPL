@@ -149,7 +149,7 @@ void GenerateColorTableWidget::setupGui()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void GenerateColorTableWidget::on_choosePresetBtn_pressed()
+void GenerateColorTableWidget::on_choosePresetBtn_clicked()
 {
   QJsonObject preset = m_PresetsDialog->currentPreset();
   int exitCode = m_PresetsDialog->exec();

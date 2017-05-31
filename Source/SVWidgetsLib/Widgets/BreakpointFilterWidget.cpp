@@ -81,7 +81,7 @@ void BreakpointFilterWidget::setupGui()
   m_ResumeBtn = new QPushButton("Resume");
   m_ResumeBtn->hide();
 
-  connect(m_ResumeBtn, SIGNAL(pressed()), this, SLOT(resumeBtnPressed()));
+  connect(m_ResumeBtn, SIGNAL(clicked()), this, SLOT(resumeBtnPressed()));
 
   getHorizontalLayout()->addWidget(m_ResumeBtn);
 }

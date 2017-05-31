@@ -66,14 +66,14 @@ class SVWidgetsLib_EXPORT StandardOutputWidget : public QWidget, public IObserve
 
   protected slots:
     /**
-     * @brief on_saveLogBtn_pressed
+     * @brief on_saveLogBtn_clicked
      */
-    void on_saveLogBtn_pressed();
+    void on_saveLogBtn_clicked();
 
     /**
-     * @brief on_clearLogBtn_pressed
+     * @brief on_clearLogBtn_clicked
      */
-    void on_clearLogBtn_pressed();
+    void on_clearLogBtn_clicked();
 
   private:
     QString             m_LastPathOpened = "";

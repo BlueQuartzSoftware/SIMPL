@@ -102,38 +102,38 @@ void CalculatorWidget::setupGui()
   connect(equation, SIGNAL(selectionChanged()), this, SLOT(updateSelection()));
 
   // Unary Operator Buttons
-  connect(absBtn, SIGNAL(pressed()), this, SLOT(printUnaryButtonName()));
-  connect(sinBtn, SIGNAL(pressed()), this, SLOT(printUnaryButtonName()));
-  connect(cosBtn, SIGNAL(pressed()), this, SLOT(printUnaryButtonName()));
-  connect(tanBtn, SIGNAL(pressed()), this, SLOT(printUnaryButtonName()));
-  connect(sqrtBtn, SIGNAL(pressed()), this, SLOT(printUnaryButtonName()));
-  connect(asinBtn, SIGNAL(pressed()), this, SLOT(printUnaryButtonName()));
-  connect(acosBtn, SIGNAL(pressed()), this, SLOT(printUnaryButtonName()));
-  connect(atanBtn, SIGNAL(pressed()), this, SLOT(printUnaryButtonName()));
-  connect(ceilBtn, SIGNAL(pressed()), this, SLOT(printUnaryButtonName()));
-  connect(floorBtn, SIGNAL(pressed()), this, SLOT(printUnaryButtonName()));
-  connect(log10Btn, SIGNAL(pressed()), this, SLOT(printUnaryButtonName()));
-  connect(lnBtn, SIGNAL(pressed()), this, SLOT(printUnaryButtonName()));
+  connect(absBtn, SIGNAL(clicked()), this, SLOT(printUnaryButtonName()));
+  connect(sinBtn, SIGNAL(clicked()), this, SLOT(printUnaryButtonName()));
+  connect(cosBtn, SIGNAL(clicked()), this, SLOT(printUnaryButtonName()));
+  connect(tanBtn, SIGNAL(clicked()), this, SLOT(printUnaryButtonName()));
+  connect(sqrtBtn, SIGNAL(clicked()), this, SLOT(printUnaryButtonName()));
+  connect(asinBtn, SIGNAL(clicked()), this, SLOT(printUnaryButtonName()));
+  connect(acosBtn, SIGNAL(clicked()), this, SLOT(printUnaryButtonName()));
+  connect(atanBtn, SIGNAL(clicked()), this, SLOT(printUnaryButtonName()));
+  connect(ceilBtn, SIGNAL(clicked()), this, SLOT(printUnaryButtonName()));
+  connect(floorBtn, SIGNAL(clicked()), this, SLOT(printUnaryButtonName()));
+  connect(log10Btn, SIGNAL(clicked()), this, SLOT(printUnaryButtonName()));
+  connect(lnBtn, SIGNAL(clicked()), this, SLOT(printUnaryButtonName()));
 
   // Other Buttons
-  connect(leftBraceBtn, SIGNAL(pressed()), this, SLOT(printButtonName()));
-  connect(rightBraceBtn, SIGNAL(pressed()), this, SLOT(printButtonName()));
-  connect(commaBtn, SIGNAL(pressed()), this, SLOT(printButtonName()));
-  connect(addBtn, SIGNAL(pressed()), this, SLOT(printButtonName()));
-  connect(subtractBtn, SIGNAL(pressed()), this, SLOT(printButtonName()));
-  connect(multiplyBtn, SIGNAL(pressed()), this, SLOT(printButtonName()));
-  connect(divideBtn, SIGNAL(pressed()), this, SLOT(printButtonName()));
-  connect(oneBtn, SIGNAL(pressed()), this, SLOT(printButtonName()));
-  connect(twoBtn, SIGNAL(pressed()), this, SLOT(printButtonName()));
-  connect(threeBtn, SIGNAL(pressed()), this, SLOT(printButtonName()));
-  connect(fourBtn, SIGNAL(pressed()), this, SLOT(printButtonName()));
-  connect(fiveBtn, SIGNAL(pressed()), this, SLOT(printButtonName()));
-  connect(sixBtn, SIGNAL(pressed()), this, SLOT(printButtonName()));
-  connect(sevenBtn, SIGNAL(pressed()), this, SLOT(printButtonName()));
-  connect(eightBtn, SIGNAL(pressed()), this, SLOT(printButtonName()));
-  connect(nineBtn, SIGNAL(pressed()), this, SLOT(printButtonName()));
-  connect(zeroBtn, SIGNAL(pressed()), this, SLOT(printButtonName()));
-  connect(decimalBtn, SIGNAL(pressed()), this, SLOT(printButtonName()));
+  connect(leftBraceBtn, SIGNAL(clicked()), this, SLOT(printButtonName()));
+  connect(rightBraceBtn, SIGNAL(clicked()), this, SLOT(printButtonName()));
+  connect(commaBtn, SIGNAL(clicked()), this, SLOT(printButtonName()));
+  connect(addBtn, SIGNAL(clicked()), this, SLOT(printButtonName()));
+  connect(subtractBtn, SIGNAL(clicked()), this, SLOT(printButtonName()));
+  connect(multiplyBtn, SIGNAL(clicked()), this, SLOT(printButtonName()));
+  connect(divideBtn, SIGNAL(clicked()), this, SLOT(printButtonName()));
+  connect(oneBtn, SIGNAL(clicked()), this, SLOT(printButtonName()));
+  connect(twoBtn, SIGNAL(clicked()), this, SLOT(printButtonName()));
+  connect(threeBtn, SIGNAL(clicked()), this, SLOT(printButtonName()));
+  connect(fourBtn, SIGNAL(clicked()), this, SLOT(printButtonName()));
+  connect(fiveBtn, SIGNAL(clicked()), this, SLOT(printButtonName()));
+  connect(sixBtn, SIGNAL(clicked()), this, SLOT(printButtonName()));
+  connect(sevenBtn, SIGNAL(clicked()), this, SLOT(printButtonName()));
+  connect(eightBtn, SIGNAL(clicked()), this, SLOT(printButtonName()));
+  connect(nineBtn, SIGNAL(clicked()), this, SLOT(printButtonName()));
+  connect(zeroBtn, SIGNAL(clicked()), this, SLOT(printButtonName()));
+  connect(decimalBtn, SIGNAL(clicked()), this, SLOT(printButtonName()));
 
   applyChangesBtn->setVisible(false);
 }
@@ -204,7 +204,7 @@ void CalculatorWidget::printStringToEquation(QString str)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void CalculatorWidget::on_clearBtn_pressed()
+void CalculatorWidget::on_clearBtn_clicked()
 {
   equation->clear();
 }
@@ -212,7 +212,7 @@ void CalculatorWidget::on_clearBtn_pressed()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void CalculatorWidget::on_backspaceBtn_pressed()
+void CalculatorWidget::on_backspaceBtn_clicked()
 {
   QString equationText = equation->text();
   equationText.chop(1);
@@ -232,7 +232,7 @@ void CalculatorWidget::on_radiansBtn_toggled(bool checked)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void CalculatorWidget::on_logBtn_pressed()
+void CalculatorWidget::on_logBtn_clicked()
 {
   printStringToEquation("log(");
 }
@@ -240,7 +240,7 @@ void CalculatorWidget::on_logBtn_pressed()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void CalculatorWidget::on_expBtn_pressed()
+void CalculatorWidget::on_expBtn_clicked()
 {
   printStringToEquation("exp(");
 }
@@ -248,7 +248,7 @@ void CalculatorWidget::on_expBtn_pressed()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void CalculatorWidget::on_powBtn_pressed()
+void CalculatorWidget::on_powBtn_clicked()
 {
   printStringToEquation("^");
 }
@@ -256,7 +256,7 @@ void CalculatorWidget::on_powBtn_pressed()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void CalculatorWidget::on_rootBtn_pressed()
+void CalculatorWidget::on_rootBtn_clicked()
 {
   printStringToEquation("root(");
 }
@@ -264,7 +264,7 @@ void CalculatorWidget::on_rootBtn_pressed()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void CalculatorWidget::on_scalarsBtn_pressed()
+void CalculatorWidget::on_scalarsBtn_clicked()
 {
   if(nullptr != m_VectorsMenu)
   {
@@ -301,7 +301,7 @@ void CalculatorWidget::on_scalarsBtn_pressed()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void CalculatorWidget::on_vectorsBtn_pressed()
+void CalculatorWidget::on_vectorsBtn_clicked()
 {
   if(nullptr != m_VectorsMenu)
   {
