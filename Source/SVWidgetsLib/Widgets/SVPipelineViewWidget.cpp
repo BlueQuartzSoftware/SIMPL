@@ -83,7 +83,7 @@
 #include "SVWidgetsLib/Widgets/util/AddFilterCommand.h"
 #include "SVWidgetsLib/Widgets/util/MoveFilterCommand.h"
 #include "SVWidgetsLib/Widgets/util/RemoveFilterCommand.h"
-#include "SVWidgetsLib/Widgets/DataBrowserWidget.h"
+#include "SVWidgetsLib/Widgets/DataStructureWidget.h"
 #include "SVWidgetsLib/Widgets/ProgressDialog.h"
 
 
@@ -450,9 +450,9 @@ void SVPipelineViewWidget::resetLayout()
     // and add the empty pipeline layout instead
     newEmptyPipelineViewLayout();
 
-    if(m_DataBrowserWidget)
+    if(m_DataStructureWidget)
     {
-      m_DataBrowserWidget->filterObjectActivated(nullptr);
+      m_DataStructureWidget->filterObjectActivated(nullptr);
     }
   }
 }
@@ -505,9 +505,9 @@ void SVPipelineViewWidget::clearFilterWidgets()
   RemoveFilterCommand* removeCmd = new RemoveFilterCommand(filterObjects, this, "Clear");
   addUndoCommand(removeCmd);
 
-  if(m_DataBrowserWidget)
+  if(m_DataStructureWidget)
   {
-    m_DataBrowserWidget->filterObjectActivated(nullptr);
+    m_DataStructureWidget->filterObjectActivated(nullptr);
   }
 }
 
@@ -740,10 +740,10 @@ void SVPipelineViewWidget::addFilterObject(PipelineFilterObject* filterObject, Q
   connect(filterWidget, SIGNAL(focusOutEventStarted(QFocusEvent*)),
           this, SLOT(on_focusOutEventStarted(QFocusEvent*)));
 
-  if(m_DataBrowserWidget)
+  if(m_DataStructureWidget)
   {
     connect(filterWidget, SIGNAL(parametersChanged1(PipelineFilterObject*)),
-            m_DataBrowserWidget, SLOT(handleFilterParameterChanged(PipelineFilterObject*)));
+            m_DataStructureWidget, SLOT(handleFilterParameterChanged(PipelineFilterObject*)));
   }
 
   filterWidget->installEventFilter(this);
@@ -954,9 +954,9 @@ void SVPipelineViewWidget::preflightPipeline(QUuid id)
   emit preflightPipelineComplete();
   emit preflightFinished(err);
 
-  if(m_DataBrowserWidget)
+  if(m_DataStructureWidget)
   {
-    m_DataBrowserWidget->refreshData();
+    m_DataStructureWidget->refreshData();
   }
 }
 
@@ -1005,9 +1005,9 @@ void SVPipelineViewWidget::removeFilterObject(PipelineFilterObject* filterObject
   emit statusMessage(tr("Removed \"%1\" filter").arg(filterObject->getHumanLabel()));
   emit stdOutMessage(tr("Removed \"%1\" filter").arg(filterObject->getHumanLabel()));
 
-  if(m_DataBrowserWidget)
+  if(m_DataStructureWidget)
   {
-    m_DataBrowserWidget->handleFilterRemoved(filterObject);
+    m_DataStructureWidget->handleFilterRemoved(filterObject);
   }
 
   // This block figures out which filter widget should be selected.
@@ -1207,18 +1207,18 @@ void SVPipelineViewWidget::setSelectedFilterObject(PipelineFilterObject* w, Qt::
   {
     emit filterInputWidgetChanged(selectedObjects[0]->getFilterInputWidget());
     emit pipelineFilterObjectSelected(selectedObjects[0]);
-    //    if(m_DataBrowserWidget)
+    //    if(m_DataStructureWidget)
     //    {
-    //      m_DataBrowserWidget->filterObjectActivated(selectedObjects[0]);
+    //      m_DataStructureWidget->filterObjectActivated(selectedObjects[0]);
     //    }
   }
   else
   {
     emit filterInputWidgetNeedsCleared();
 
-    if(m_DataBrowserWidget)
+    if(m_DataStructureWidget)
     {
-      m_DataBrowserWidget->filterObjectActivated(nullptr);
+      m_DataStructureWidget->filterObjectActivated(nullptr);
     }
   }
 
@@ -1246,9 +1246,9 @@ void SVPipelineViewWidget::clearSelectedFilterObjects()
     }
   }
 
-  if(m_DataBrowserWidget)
+  if(m_DataStructureWidget)
   {
-    m_DataBrowserWidget->filterObjectActivated(nullptr);
+    m_DataStructureWidget->filterObjectActivated(nullptr);
   }
 }
 
@@ -2275,19 +2275,19 @@ void SVPipelineViewWidget::handleFilterParameterChanged(QUuid id)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void SVPipelineViewWidget::setDataBrowserWidget(DataBrowserWidget* w)
+void SVPipelineViewWidget::setDataStructureWidget(DataStructureWidget* w)
 {
   if(nullptr == w)
   {
     disconnect(this, SIGNAL(pipelineFilterObjectSelected(PipelineFilterObject*)),
-               m_DataBrowserWidget, SLOT(filterObjectActivated(PipelineFilterObject*)));
-    m_DataBrowserWidget = w;
+               m_DataStructureWidget, SLOT(filterObjectActivated(PipelineFilterObject*)));
+    m_DataStructureWidget = w;
   }
   else
   {
-    m_DataBrowserWidget = w;
+    m_DataStructureWidget = w;
     connect(this, SIGNAL(pipelineFilterObjectSelected(PipelineFilterObject*)),
-            m_DataBrowserWidget, SLOT(filterObjectActivated(PipelineFilterObject*)));
+            m_DataStructureWidget, SLOT(filterObjectActivated(PipelineFilterObject*)));
   }
   return;
 }
@@ -2295,7 +2295,7 @@ void SVPipelineViewWidget::setDataBrowserWidget(DataBrowserWidget* w)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-DataBrowserWidget* SVPipelineViewWidget::getDataBrowserWidget()
+DataStructureWidget* SVPipelineViewWidget::getDataStructureWidget()
 {
-  return m_DataBrowserWidget;
+  return m_DataStructureWidget;
 }

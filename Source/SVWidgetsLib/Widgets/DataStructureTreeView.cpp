@@ -33,7 +33,7 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-#include "DataBrowserTreeView.h"
+#include "DataStructureTreeView.h"
 
 #include <iostream>
 
@@ -49,17 +49,17 @@
 #include <QtWidgets/QMessageBox>
 
 #include "SVWidgetsLib/Core/SVWidgetsLibConstants.h"
-#include "SVWidgetsLib/Widgets/DataBrowserItemDelegate.h"
+#include "SVWidgetsLib/Widgets/DataStructureItemDelegate.h"
 #include "SVWidgetsLib/Widgets/SIMPLViewMenuItems.h"
 #include "SVWidgetsLib/Widgets/SIMPLViewToolbox.h"
 
 // Include the MOC generated CPP file which has all the QMetaObject methods/data
-#include "moc_DataBrowserTreeView.cpp"
+#include "moc_DataStructureTreeView.cpp"
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-DataBrowserTreeView::DataBrowserTreeView(QWidget* parent)
+DataStructureTreeView::DataStructureTreeView(QWidget* parent)
 : QTreeView(parent)
 , m_ActiveIndexBeingDragged(QPersistentModelIndex())
 , m_TopLevelItemPlaceholder(QModelIndex())
@@ -71,10 +71,10 @@ DataBrowserTreeView::DataBrowserTreeView(QWidget* parent)
   connect(this, SIGNAL(collapsed(const QModelIndex&)), SLOT(collapseIndex(const QModelIndex&)));
   connect(this, SIGNAL(expanded(const QModelIndex&)), SLOT(expandIndex(const QModelIndex&)));
 
-  DataBrowserItemDelegate* dlg = new DataBrowserItemDelegate(this);
+  DataStructureItemDelegate* dlg = new DataStructureItemDelegate(this);
   setItemDelegate(dlg);
 
-  m_Model = new DataBrowserModel(this);
+  m_Model = new DataStructureModel(this);
   this->setModel(m_Model);
 
 }
@@ -82,7 +82,7 @@ DataBrowserTreeView::DataBrowserTreeView(QWidget* parent)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-DataBrowserTreeView::~DataBrowserTreeView()
+DataStructureTreeView::~DataStructureTreeView()
 {
   if (m_Model != nullptr)
   {
@@ -93,7 +93,7 @@ DataBrowserTreeView::~DataBrowserTreeView()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void DataBrowserTreeView::addActionList(QList<QAction*> actionList)
+void DataStructureTreeView::addActionList(QList<QAction*> actionList)
 {
   for(int i = 0; i < actionList.size(); i++)
   {
@@ -104,7 +104,7 @@ void DataBrowserTreeView::addActionList(QList<QAction*> actionList)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void DataBrowserTreeView::mousePressEvent(QMouseEvent* event)
+void DataStructureTreeView::mousePressEvent(QMouseEvent* event)
 {
   if(event->button() == Qt::LeftButton)
   {
@@ -127,13 +127,13 @@ void DataBrowserTreeView::mousePressEvent(QMouseEvent* event)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void DataBrowserTreeView::mouseMoveEvent(QMouseEvent* event)
+void DataStructureTreeView::mouseMoveEvent(QMouseEvent* event)
 {
 
 
   if(event->buttons() & Qt::LeftButton)
   {
-    QModelIndex index = m_Model->index(currentIndex().row(), DataBrowserItem::Name, currentIndex().parent());
+    QModelIndex index = m_Model->index(currentIndex().row(), DataStructureItem::Name, currentIndex().parent());
     bool itemHasErrors = m_Model->data(index, Qt::UserRole).value<bool>();
     int distance = (event->pos() - m_StartPos).manhattanLength();
     if(distance >= QApplication::startDragDistance() && itemHasErrors == false)
@@ -146,7 +146,7 @@ void DataBrowserTreeView::mouseMoveEvent(QMouseEvent* event)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void DataBrowserTreeView::requestContextMenu(const QPoint& pos)
+void DataStructureTreeView::requestContextMenu(const QPoint& pos)
 {
   activateWindow();
 
@@ -172,18 +172,18 @@ void DataBrowserTreeView::requestContextMenu(const QPoint& pos)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-QModelIndexList DataBrowserTreeView::filterOutDescendants(QModelIndexList indexList)
+QModelIndexList DataStructureTreeView::filterOutDescendants(QModelIndexList indexList)
 {
 
   for(int i = indexList.size() - 1; i >= 0; i--)
   {
     QPersistentModelIndex index = indexList[i];
-    QString name = m_Model->index(index.row(), DataBrowserItem::Name, index.parent()).data().toString();
+    QString name = m_Model->index(index.row(), DataStructureItem::Name, index.parent()).data().toString();
     // Walk up the tree from the index...if an ancestor is selected, remove the index
     while(index.isValid() == true)
     {
       QPersistentModelIndex parent = index.parent();
-      QString parentName = m_Model->index(parent.row(), DataBrowserItem::Name, parent.parent()).data().toString();
+      QString parentName = m_Model->index(parent.row(), DataStructureItem::Name, parent.parent()).data().toString();
       if(indexList.contains(index.parent()) == true)
       {
         indexList.removeAt(i);
@@ -200,7 +200,7 @@ QModelIndexList DataBrowserTreeView::filterOutDescendants(QModelIndexList indexL
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void DataBrowserTreeView::performDrag()
+void DataStructureTreeView::performDrag()
 {
   m_ActiveIndexBeingDragged = QPersistentModelIndex(currentIndex());
 
@@ -221,8 +221,8 @@ void DataBrowserTreeView::performDrag()
   for(int i = 0; i < m_IndexesBeingDragged.size(); i++)
   {
     QModelIndex draggedIndex = m_IndexesBeingDragged[i];
-    QString name = m_Model->index(draggedIndex.row(), DataBrowserItem::Name, draggedIndex.parent()).data(Qt::DisplayRole).toString();
-    QString path = m_Model->index(draggedIndex.row(), DataBrowserItem::Path, draggedIndex.parent()).data(Qt::DisplayRole).toString();
+    QString name = m_Model->index(draggedIndex.row(), DataStructureItem::Name, draggedIndex.parent()).data(Qt::DisplayRole).toString();
+    QString path = m_Model->index(draggedIndex.row(), DataStructureItem::Path, draggedIndex.parent()).data(Qt::DisplayRole).toString();
     if(path.isEmpty() == false)
     {
       obj[name] = path;
@@ -243,9 +243,9 @@ void DataBrowserTreeView::performDrag()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void DataBrowserTreeView::dragEnterEvent(QDragEnterEvent* event)
+void DataStructureTreeView::dragEnterEvent(QDragEnterEvent* event)
 {
-  DataBrowserTreeView* source = qobject_cast<DataBrowserTreeView*>(event->source());
+  DataStructureTreeView* source = qobject_cast<DataStructureTreeView*>(event->source());
   if(source && source != this)
   {
     event->setDropAction(Qt::MoveAction);
@@ -260,7 +260,7 @@ void DataBrowserTreeView::dragEnterEvent(QDragEnterEvent* event)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void DataBrowserTreeView::dragLeaveEvent(QDragLeaveEvent* event)
+void DataStructureTreeView::dragLeaveEvent(QDragLeaveEvent* event)
 {
 
 
@@ -283,7 +283,7 @@ void DataBrowserTreeView::dragLeaveEvent(QDragLeaveEvent* event)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void DataBrowserTreeView::dragMoveEvent(QDragMoveEvent* event)
+void DataStructureTreeView::dragMoveEvent(QDragMoveEvent* event)
 {
 
   int topLevelPHPos = m_Model->rowCount();
@@ -297,7 +297,7 @@ void DataBrowserTreeView::dragMoveEvent(QDragMoveEvent* event)
       blockSignals(true);
       m_Model->insertRow(topLevelPHPos, rootIndex());
       m_TopLevelItemPlaceholder = m_Model->index(topLevelPHPos, 0, rootIndex());
-      m_Model->setData(m_TopLevelItemPlaceholder, DataBrowserItem::TopLevelString(), Qt::DisplayRole);
+      m_Model->setData(m_TopLevelItemPlaceholder, DataStructureItem::TopLevelString(), Qt::DisplayRole);
       setCurrentIndex(m_TopLevelItemPlaceholder);
       blockSignals(false);
     }
@@ -322,7 +322,7 @@ void DataBrowserTreeView::dragMoveEvent(QDragMoveEvent* event)
     }
   }
 
-  DataBrowserTreeView* source = qobject_cast<DataBrowserTreeView*>(event->source());
+  DataStructureTreeView* source = qobject_cast<DataStructureTreeView*>(event->source());
   if(source && source != this)
   {
     event->setDropAction(Qt::MoveAction);
@@ -338,12 +338,12 @@ void DataBrowserTreeView::dragMoveEvent(QDragMoveEvent* event)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void DataBrowserTreeView::setModel(QAbstractItemModel* m_Model)
+void DataStructureTreeView::setModel(QAbstractItemModel* m_Model)
 {
   // Set the m_Model
   QTreeView::setModel(m_Model);
 
-  DataBrowserModel* bModel = qobject_cast<DataBrowserModel*>(m_Model);
+  DataStructureModel* bModel = qobject_cast<DataStructureModel*>(m_Model);
 
   // Expand indexes that have their expand member set to true
   expandChildren(QModelIndex(), bModel);
@@ -352,7 +352,7 @@ void DataBrowserTreeView::setModel(QAbstractItemModel* m_Model)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void DataBrowserTreeView::expandChildren(const QModelIndex& parent, DataBrowserModel* m_Model)
+void DataStructureTreeView::expandChildren(const QModelIndex& parent, DataStructureModel* m_Model)
 {
   for(int row = 0; row < m_Model->rowCount(parent); row++)
   {
@@ -370,7 +370,7 @@ void DataBrowserTreeView::expandChildren(const QModelIndex& parent, DataBrowserM
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void DataBrowserTreeView::collapseIndex(const QModelIndex& index)
+void DataStructureTreeView::collapseIndex(const QModelIndex& index)
 {
   if(index.isValid())
   {
@@ -386,7 +386,7 @@ void DataBrowserTreeView::collapseIndex(const QModelIndex& index)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void DataBrowserTreeView::expandIndex(const QModelIndex& index)
+void DataStructureTreeView::expandIndex(const QModelIndex& index)
 {
   QModelIndex sibling = m_Model->sibling(0, 0, index);
 
@@ -398,7 +398,7 @@ void DataBrowserTreeView::expandIndex(const QModelIndex& index)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void DataBrowserTreeView::currentChanged(const QModelIndex& current, const QModelIndex& previous)
+void DataStructureTreeView::currentChanged(const QModelIndex& current, const QModelIndex& previous)
 {
   emit currentIndexChanged(current, previous);
 }

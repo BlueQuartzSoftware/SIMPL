@@ -72,7 +72,7 @@ class QLabel;
 class QEvent;
 class QUndoStack;
 class QUndoCommand;
-class DataBrowserWidget;
+class DataStructureWidget;
 
 /*
  *
@@ -187,10 +187,10 @@ class SVWidgetsLib_EXPORT PipelineView
     virtual void setSelectedFilterObject(PipelineFilterObject* w, Qt::KeyboardModifiers modifiers);
 
     /**
-     * @brief setDataBrowserWidget
+     * @brief setDataStructureWidget
      * @param w
      */
-    virtual void setDataBrowserWidget(DataBrowserWidget* w);
+    virtual void setDataStructureWidget(DataStructureWidget* w);
 
     /**
      * @brief recheckWindowTitleAndModification

@@ -50,7 +50,7 @@
 
 
 
-class SVWidgetsLib_EXPORT DataBrowserItem
+class SVWidgetsLib_EXPORT DataStructureItem
 {
   public:
     enum ColumnData
@@ -72,14 +72,14 @@ class SVWidgetsLib_EXPORT DataBrowserItem
     };
 
     /**
-     * @brief DataBrowserItem
+     * @brief DataStructureItem
      * @param data
      * @param itemType
      * @param parent
      */
-    DataBrowserItem(const QVector<QVariant>& data, ItemType itemType, DataBrowserItem* parent = 0);
+    DataStructureItem(const QVector<QVariant>& data, ItemType itemType, DataStructureItem* parent = 0);
 
-    virtual ~DataBrowserItem();
+    virtual ~DataStructureItem();
 
     ItemType itemType();
     void setItemType(ItemType itemType);
@@ -87,8 +87,8 @@ class SVWidgetsLib_EXPORT DataBrowserItem
     QColor backgroundColor();
     QColor foregroundColor();
 
-    DataBrowserItem* child(int number);
-    DataBrowserItem* parent();
+    DataStructureItem* child(int number);
+    DataStructureItem* parent();
 
     int childCount() const;
     int columnCount() const;
@@ -105,7 +105,7 @@ class SVWidgetsLib_EXPORT DataBrowserItem
     bool needsToBeExpanded();
     void setNeedsToBeExpanded(bool value);
 
-    bool insertChild(int position, DataBrowserItem* child);
+    bool insertChild(int position, DataStructureItem* child);
     bool insertChildren(int position, int count, int columns);
     bool insertColumns(int position, int columns);
 
@@ -115,22 +115,22 @@ class SVWidgetsLib_EXPORT DataBrowserItem
 
     int childNumber() const;
 
-    void setParent(DataBrowserItem* parent);
+    void setParent(DataStructureItem* parent);
 
     static QString TopLevelString();
 
   private:
-    QList<DataBrowserItem*>               m_ChildItems;
+    QList<DataStructureItem*>               m_ChildItems;
     QVector<QVariant>                   m_ItemData;
-    DataBrowserItem*                      m_ParentItem;
+    DataStructureItem*                      m_ParentItem;
     bool                                m_ItemHasErrors;
     QString                             m_ItemTooltip;
     bool                                m_NeedsToBeExpanded;
     QIcon                               m_Icon;
     ItemType                            m_ItemType;
 
-    DataBrowserItem(const DataBrowserItem&);    // Copy Constructor Not Implemented
-    void operator=(const DataBrowserItem&);  // Operator '=' Not Implemented
+    DataStructureItem(const DataStructureItem&);    // Copy Constructor Not Implemented
+    void operator=(const DataStructureItem&);  // Operator '=' Not Implemented
 };
 
-#endif // DataBrowserItem_H
+#endif // DataStructureItem_H

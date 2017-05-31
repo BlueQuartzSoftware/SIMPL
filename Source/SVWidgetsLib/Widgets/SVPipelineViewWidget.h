@@ -70,7 +70,7 @@ class QEvent;
 class QMenu;
 class QAction;
 class PipelineFilterObject;
-class DataBrowserWidget;
+class DataStructureWidget;
 /*
  *
  */
@@ -250,16 +250,16 @@ class SVWidgetsLib_EXPORT SVPipelineViewWidget : public QFrame, public PipelineV
     void resetLayout();
 
     /**
-     * @brief setDataBrowserWidget
+     * @brief setDataStructureWidget
      * @param w
      */
-    virtual void setDataBrowserWidget(DataBrowserWidget* w) override;
+    virtual void setDataStructureWidget(DataStructureWidget* w) override;
 
     /**
-     * @brief getDataBrowserWidget
+     * @brief getDataStructureWidget
      * @return
      */
-    virtual DataBrowserWidget* getDataBrowserWidget();
+    virtual DataStructureWidget* getDataStructureWidget();
 
   public slots:
 
@@ -445,7 +445,7 @@ class SVWidgetsLib_EXPORT SVPipelineViewWidget : public QFrame, public PipelineV
     QString                                           m_PreviousRedoText = "";
     bool                                              m_BlockPreflight = false;
     std::stack<bool>                                  m_BlockPreflightStack;
-    DataBrowserWidget*                                m_DataBrowserWidget = nullptr;
+    DataStructureWidget*                                m_DataStructureWidget = nullptr;
     bool m_LoadingJson = false;
 
     /**
