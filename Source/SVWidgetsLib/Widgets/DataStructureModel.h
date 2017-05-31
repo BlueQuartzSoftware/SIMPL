@@ -47,21 +47,21 @@
 
 #include "SVWidgetsLib/SVWidgetsLib.h"
 #include "SVWidgetsLib/Widgets/FilterLibraryTreeWidget.h"
-#include "SVWidgetsLib/Widgets/DataBrowserItem.h"
+#include "SVWidgetsLib/Widgets/DataStructureItem.h"
 
 
 class QtSSettings;
-class DataBrowserItem;
+class DataStructureItem;
 
-class SVWidgetsLib_EXPORT DataBrowserModel : public QStandardItemModel
+class SVWidgetsLib_EXPORT DataStructureModel : public QStandardItemModel
 {
     Q_OBJECT
 
   public:
-    SIMPL_TYPE_MACRO(DataBrowserModel)
+    SIMPL_TYPE_MACRO(DataStructureModel)
 
-    DataBrowserModel(QObject* parent = 0);
-    ~DataBrowserModel();
+    DataStructureModel(QObject* parent = 0);
+    ~DataStructureModel();
 
     using EnumType = unsigned int;
 
@@ -104,7 +104,7 @@ the setData() and setHeaderData() functions, respectively.
 
 
     // Extra Convenince Methods
-    DataBrowserItem* getRootItem();
+    DataStructureItem* getRootItem();
     /**
      * @brief syncDataModel
      * @param dca
@@ -137,14 +137,14 @@ the setData() and setHeaderData() functions, respectively.
 //    void updateModel(const QModelIndex& topLeft, const QModelIndex& bottomRight);
 
   private:
-    DataBrowserItem*            rootItem;
+    DataStructureItem*            rootItem;
 
-    DataBrowserItem* getItem(const QModelIndex& index) const;
+    DataStructureItem* getItem(const QModelIndex& index) const;
 
     //    QModelIndexList findIndexByPath(const QModelIndex& index, QString filePath);
 
-    DataBrowserModel(const DataBrowserModel&);    // Copy Constructor Not Implemented
-    void operator=(const DataBrowserModel&);  // Operator '=' Not Implemented
+    DataStructureModel(const DataStructureModel&);    // Copy Constructor Not Implemented
+    void operator=(const DataStructureModel&);  // Operator '=' Not Implemented
 };
 
-#endif // DataBrowserModel_H
+#endif // DataStructureModel_H

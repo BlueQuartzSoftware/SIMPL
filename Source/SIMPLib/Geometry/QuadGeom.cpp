@@ -674,7 +674,8 @@ QString QuadGeom::getInfoString(SIMPL::InfoStringFormat format)
 
   if(format == SIMPL::HtmlFormat)
   {
-    ss << "<tr bgcolor=\"#FFFCEA\"><th colspan=2>Quad Geometry Info</th></tr>";
+    ss << "<tr bgcolor=\"#FFFCEA\"><th colspan=2>Geometry Info</th></tr>";
+    ss << "<tr bgcolor=\"#FFFCEA\"><th align=\"right\">Type</th><td>" << GeometryHelpers::Translation::TypeToString(getGeometryType()) << "</td></tr>";
     ss << "<tr bgcolor=\"#FFFCEA\"><th align=\"right\">Number of Quads</th><td>" << getNumberOfQuads() << "</td></tr>";
     ss << "<tr bgcolor=\"#FFFCEA\"><th align=\"right\">Number of Vertices</th><td>" << getNumberOfVertices() << "</td></tr>";
     ss << "</tbody></table>";

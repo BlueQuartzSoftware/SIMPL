@@ -40,16 +40,16 @@
 #include <QtGui/QIntValidator>
 #include <QtGui/QPainter>
 
-#include "SVWidgetsLib/Widgets/DataBrowserItem.h"
-#include "SVWidgetsLib/Widgets/DataBrowserItemDelegate.h"
-#include "SVWidgetsLib/Widgets/DataBrowserModel.h"
+#include "SVWidgetsLib/Widgets/DataStructureItem.h"
+#include "SVWidgetsLib/Widgets/DataStructureItemDelegate.h"
+#include "SVWidgetsLib/Widgets/DataStructureModel.h"
 
 // Include the MOC generated CPP file which has all the QMetaObject methods/data
-#include "moc_DataBrowserItemDelegate.cpp"
+#include "moc_DataStructureItemDelegate.cpp"
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-DataBrowserItemDelegate::DataBrowserItemDelegate(QObject* parent)
+DataStructureItemDelegate::DataStructureItemDelegate(QObject* parent)
 : QStyledItemDelegate(parent)
 {
 }
@@ -57,14 +57,14 @@ DataBrowserItemDelegate::DataBrowserItemDelegate(QObject* parent)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-DataBrowserItemDelegate::~DataBrowserItemDelegate()
+DataStructureItemDelegate::~DataStructureItemDelegate()
 {
 }
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-QWidget* DataBrowserItemDelegate::createEditor(QWidget* parent, const QStyleOptionViewItem& option, const QModelIndex& index) const
+QWidget* DataStructureItemDelegate::createEditor(QWidget* parent, const QStyleOptionViewItem& option, const QModelIndex& index) const
 {
   QLineEdit* editor = new QLineEdit(parent);
   return editor;
@@ -73,7 +73,7 @@ QWidget* DataBrowserItemDelegate::createEditor(QWidget* parent, const QStyleOpti
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void DataBrowserItemDelegate::setEditorData(QWidget* editor, const QModelIndex& index) const
+void DataStructureItemDelegate::setEditorData(QWidget* editor, const QModelIndex& index) const
 {
   QString value = index.model()->data(index, Qt::DisplayRole).toString();
   QLineEdit* line = static_cast<QLineEdit*>(editor);
@@ -83,16 +83,16 @@ void DataBrowserItemDelegate::setEditorData(QWidget* editor, const QModelIndex& 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void DataBrowserItemDelegate::setModelData(QWidget* editor, QAbstractItemModel* model, const QModelIndex& index) const
+void DataStructureItemDelegate::setModelData(QWidget* editor, QAbstractItemModel* model, const QModelIndex& index) const
 {
-  DataBrowserModel* bModel = qobject_cast<DataBrowserModel*>(model);
+  DataStructureModel* bModel = qobject_cast<DataStructureModel*>(model);
 
   QLineEdit* line = static_cast<QLineEdit*>(editor);
   QString value = line->text();
 
   if(value.isEmpty() == false)
   {
-    QModelIndex bIndex = bModel->index(index.row(), DataBrowserItem::Name, index.parent());
+    QModelIndex bIndex = bModel->index(index.row(), DataStructureItem::Name, index.parent());
     bModel->setData(bIndex, value, Qt::DisplayRole);
   }
 }
@@ -100,7 +100,7 @@ void DataBrowserItemDelegate::setModelData(QWidget* editor, QAbstractItemModel* 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void DataBrowserItemDelegate::updateEditorGeometry(QWidget* editor, const QStyleOptionViewItem& option, const QModelIndex& index) const
+void DataStructureItemDelegate::updateEditorGeometry(QWidget* editor, const QStyleOptionViewItem& option, const QModelIndex& index) const
 {
   editor->setGeometry(option.rect);
 }
@@ -108,7 +108,7 @@ void DataBrowserItemDelegate::updateEditorGeometry(QWidget* editor, const QStyle
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void DataBrowserItemDelegate::paint(QPainter* painter, const QStyleOptionViewItem& option, const QModelIndex& index) const
+void DataStructureItemDelegate::paint(QPainter* painter, const QStyleOptionViewItem& option, const QModelIndex& index) const
 {
   // Place any painting code here
 

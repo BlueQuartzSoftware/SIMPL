@@ -245,7 +245,7 @@ void PipelineView::setSelectedFilterObject(PipelineFilterObject* w, Qt::Keyboard
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void PipelineView::setDataBrowserWidget(DataBrowserWidget* w)
+void PipelineView::setDataStructureWidget(DataStructureWidget* w)
 {
   Q_UNUSED(w)
 
@@ -339,4 +339,13 @@ QList<PipelineFilterObject*> PipelineView::getSelectedFilterObjects()
 {
   // The subclass should reimplement this function
   return QList<PipelineFilterObject*>();
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+QList<PipelineView::IndexedFilterObject> PipelineView::getSelectedIndexedFilterObjects()
+{
+  // The subclass should reimplement this function
+  return QList<IndexedFilterObject>();
 }

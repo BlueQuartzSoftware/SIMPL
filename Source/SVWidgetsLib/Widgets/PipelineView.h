@@ -72,7 +72,7 @@ class QLabel;
 class QEvent;
 class QUndoStack;
 class QUndoCommand;
-class DataBrowserWidget;
+class DataStructureWidget;
 
 /*
  *
@@ -81,7 +81,8 @@ class SVWidgetsLib_EXPORT PipelineView
 {
   public:
 
-    SIMPL_INSTANCE_PROPERTY(QList<PipelineFilterObject*>, DraggedFilterObjects)
+    typedef std::pair<int, PipelineFilterObject*> IndexedFilterObject;
+    SIMPL_INSTANCE_PROPERTY(QList<IndexedFilterObject>, DraggedFilterObjects)
 
     PipelineView(QWidget* parent = 0);
     virtual ~PipelineView();
@@ -159,6 +160,12 @@ class SVWidgetsLib_EXPORT PipelineView
     virtual QList<PipelineFilterObject*> getSelectedFilterObjects();
 
     /**
+    * @brief getSelectedIndexedFilterObject
+    * @return
+    */
+    virtual QList<IndexedFilterObject> getSelectedIndexedFilterObjects();
+
+    /**
      * @brief populatePipelineView
      * @param jsonString
      */
@@ -180,10 +187,10 @@ class SVWidgetsLib_EXPORT PipelineView
     virtual void setSelectedFilterObject(PipelineFilterObject* w, Qt::KeyboardModifiers modifiers);
 
     /**
-     * @brief setDataBrowserWidget
+     * @brief setDataStructureWidget
      * @param w
      */
-    virtual void setDataBrowserWidget(DataBrowserWidget* w);
+    virtual void setDataStructureWidget(DataStructureWidget* w);
 
     /**
      * @brief recheckWindowTitleAndModification

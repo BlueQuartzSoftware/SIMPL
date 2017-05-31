@@ -147,7 +147,7 @@ include(${SIMPLib_SOURCE_DIR}/CoreFilters/SourceList.cmake)
 
 #-----------------------------------------------------
 # conditionally compile our example codes- These should be turned off for a release
-if(NOT "${SIMPLProj_RELEASE_TYPE}" STREQUAL "Release")
+if(NOT "${SIMPLProj_RELEASE_TYPE}" STREQUAL "Offical")
     # Add the generated moc file to the project sources
     set(Project_SRCS ${Project_SRCS} ${PluginAutoMocSourceFile} )
     include(${SIMPLib_SOURCE_DIR}/TestFilters/SourceList.cmake)

@@ -41,14 +41,14 @@
 #include <QStyledItemDelegate>
 
 
-class DataBrowserItemDelegate : public QStyledItemDelegate
+class DataStructureItemDelegate : public QStyledItemDelegate
 {
     Q_OBJECT
 
   public:
-    explicit DataBrowserItemDelegate(QObject* parent = 0);
+    explicit DataStructureItemDelegate(QObject* parent = 0);
 
-    virtual ~DataBrowserItemDelegate();
+    virtual ~DataStructureItemDelegate();
 
   protected:
     QWidget* createEditor(QWidget* parent, const QStyleOptionViewItem& option, const QModelIndex& index) const Q_DECL_OVERRIDE;
@@ -59,9 +59,9 @@ class DataBrowserItemDelegate : public QStyledItemDelegate
 
   private:
 
-    DataBrowserItemDelegate(const DataBrowserItemDelegate&); // Copy Constructor Not Implemented
-    void operator=(const DataBrowserItemDelegate&); // Operator '=' Not Implemented
+    DataStructureItemDelegate(const DataStructureItemDelegate&); // Copy Constructor Not Implemented
+    void operator=(const DataStructureItemDelegate&); // Operator '=' Not Implemented
 
 };
 
-#endif // _DataBrowserItemDelegate_H
+#endif // _DataStructureItemDelegate_H
