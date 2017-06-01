@@ -49,6 +49,8 @@ class SVWidgetsLib_EXPORT MoveFilterCommand : public QUndoCommand
 {
   public:
     MoveFilterCommand(PipelineFilterObject* filterWidget, QVariant origin, QVariant destination, PipelineView* pipelineView, QUndoCommand* parent = 0);
+    MoveFilterCommand(QList<std::pair<int, PipelineFilterObject*>> filterWidget, QVariant destination, PipelineView* pipelineView, QUndoCommand* parent = 0);
+    MoveFilterCommand(QList<std::pair<int, PipelineFilterObject*>> filterWidget, QVariant destination, PipelineView* originView, PipelineView* destinationView, QUndoCommand* parent = 0);
     virtual ~MoveFilterCommand();
 
     virtual void undo();
@@ -56,13 +58,13 @@ class SVWidgetsLib_EXPORT MoveFilterCommand : public QUndoCommand
     virtual void redo();
 
   private:
-    PipelineView*                           m_PipelineView;
-    PipelineFilterObject*                   m_FilterWidget;
-    QString                                 m_JsonString;
-    QVariant                                m_Origin;
-    QVariant                                m_Destination;
-    bool                                    m_WindowIsModified;
-    bool                                    m_FirstRun;
+    QList<std::pair<int, PipelineFilterObject*>>  m_FilterWidgets;
+    PipelineView*                                 m_OriginView;
+    PipelineView*                                 m_DestinationView;
+    QString                                       m_JsonString;
+    QVariant                                      m_Destination;
+    bool                                          m_WindowIsModified;
+    bool                                          m_FirstRun;
 
     MoveFilterCommand(const MoveFilterCommand&); // Copy Constructor Not Implemented
     void operator=(const MoveFilterCommand&); // Operator '=' Not Implemented
