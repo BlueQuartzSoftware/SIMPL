@@ -33,117 +33,73 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-#include "StandardOutputWidget.h"
-
-#include <iostream>
-
-#include <QtWidgets/QMessageBox>
-#include <QtWidgets/QCheckBox>
-#include <QtWidgets/QFileDialog>
-
-#include "SVWidgetsLib/QtSupport/QtSSettings.h"
-
-// Include the MOC generated CPP file which has all the QMetaObject methods/data
-#include "moc_StandardOutputWidget.cpp"
+#include "LinkedDataContainerSelectionFilterParameter.h"
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-StandardOutputWidget::StandardOutputWidget(QWidget* parent)
-: QWidget(parent)
-{
-  setupUi(this);
-  setupGui();
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-StandardOutputWidget::~StandardOutputWidget()
+LinkedDataContainerSelectionFilterParameter::LinkedDataContainerSelectionFilterParameter()
+: FilterParameter()
 {
 }
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void StandardOutputWidget::setupGui()
-{  
-  clearLogBtn->setDisabled(true);
-  saveLogBtn->setDisabled(true);
+LinkedDataContainerSelectionFilterParameter::~LinkedDataContainerSelectionFilterParameter()
+{
 }
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void StandardOutputWidget::on_saveLogBtn_clicked()
+LinkedDataContainerSelectionFilterParameter::Pointer LinkedDataContainerSelectionFilterParameter::New(const QString& humanLabel, const QString& propertyName, const QString& defaultValue, Category category,
+                                                                        SetterCallbackType setterCallback, GetterCallbackType getterCallback, const RequirementType req, QStringList linkedProperties,
+                                                                        int groupIndex)
 {
-  QString s = QString("Text Files (*.txt *.log);;All Files(*.*)");
-  QString defaultName = m_LastPathOpened + QDir::separator() + "Untitled";
-  QString filePath = QFileDialog::getSaveFileName(this, tr("Save File As"), defaultName, s);
-  if (true == filePath.isEmpty()) { return; }
+  LinkedDataContainerSelectionFilterParameter::Pointer ptr = LinkedDataContainerSelectionFilterParameter::New();
+  ptr->setHumanLabel(humanLabel);
+  ptr->setPropertyName(propertyName);
+  QVariant v;
+  v.setValue(defaultValue);
+  ptr->setDefaultValue(v);
+  ptr->setCategory(category);
+  ptr->setDefaultGeometryTypes(req.dcGeometryTypes);
+  ptr->setLinkedProperties(linkedProperties);
+  ptr->setGroupIndex(groupIndex);
+  ptr->setSetterCallback(setterCallback);
+  ptr->setGetterCallback(getterCallback);
 
-  filePath = QDir::toNativeSeparators(filePath);
+  return ptr;
+}
 
-  QFileInfo fi(filePath);
-  m_LastPathOpened = fi.path();
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+QString LinkedDataContainerSelectionFilterParameter::getWidgetType()
+{
+  return QString("LinkedDataContainerSelectionWidget");
+}
 
-  QFile file(filePath);
-  if (file.open(QFile::WriteOnly))
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void LinkedDataContainerSelectionFilterParameter::readJson(const QJsonObject& json)
+{
+  QJsonValue jsonValue = json[getPropertyName()];
+  if(!jsonValue.isUndefined() && m_SetterCallback)
   {
-    file.write(stdOutTextEdit->toPlainText().toStdString().c_str());
-    file.close();
+    m_SetterCallback(jsonValue.toString(""));
   }
 }
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void StandardOutputWidget::on_clearLogBtn_clicked()
+void LinkedDataContainerSelectionFilterParameter::writeJson(QJsonObject& json)
 {
-  int answer;
-
-  QSharedPointer<QtSSettings> prefs = QSharedPointer<QtSSettings>(new QtSSettings());
-  bool displayDialog = prefs->value("DisplayClearMessageBox", true).toBool();
-  if (displayDialog == true)
+  if(m_GetterCallback)
   {
-    QCheckBox* cb = new QCheckBox("Do not ask me this again");
-    QMessageBox msgBox;
-    msgBox.setWindowTitle("Clear Standard Output Log");
-    msgBox.setText("Are you sure that you want to clear the standard output log?");
-    msgBox.setIcon(QMessageBox::Icon::Warning);
-    msgBox.addButton(QMessageBox::No);
-    msgBox.addButton(QMessageBox::Yes);
-    msgBox.setDefaultButton(QMessageBox::No);
-    msgBox.setCheckBox(cb);
-
-    answer = msgBox.exec();
-
-    displayDialog = !cb->isChecked();
-    delete cb;
-
-    prefs->setValue("DisplayClearMessageBox", displayDialog);
+    json[getPropertyName()] = m_GetterCallback();
   }
-  else
-  {
-    answer = QMessageBox::Yes;
-  }
-
-  if (answer == QMessageBox::Yes)
-  {
-    stdOutTextEdit->clear();
-
-    clearLogBtn->setDisabled(true);
-    saveLogBtn->setDisabled(true);
-  }
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-void StandardOutputWidget::appendText(const QString &text)
-{
-  stdOutTextEdit->append(text);
-  stdOutTextEdit->ensureCursorVisible();
-  clearLogBtn->setEnabled(true);
-  saveLogBtn->setEnabled(true);
 }

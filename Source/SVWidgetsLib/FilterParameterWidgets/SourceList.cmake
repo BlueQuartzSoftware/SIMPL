@@ -53,6 +53,7 @@ set(SIMPLView_PARAMETER_WIDGETS_NO_UI
 set(SIMPLView_PARAMETER_WIDGETS_NO_CODEGEN
   AbstractIOFileWidget
   CalculatorWidget
+  LinkedDataContainerSelectionWidget
   PhaseTypeSelectionWidget
   ReadASCIIDataWidget
   ShapeTypeSelectionWidget

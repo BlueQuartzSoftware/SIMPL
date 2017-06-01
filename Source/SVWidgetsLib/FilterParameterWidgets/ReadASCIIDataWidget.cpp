@@ -193,7 +193,7 @@ void ReadASCIIDataWidget::on_editImportSettings_clicked()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void ReadASCIIDataWidget::on_importFileBtn_pressed()
+void ReadASCIIDataWidget::on_importFileBtn_clicked()
 {
   QStringList filterList;
   filterList.push_back("All Files(*.*)");
@@ -412,7 +412,7 @@ void ReadASCIIDataWidget::lineCountDidFinish()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void ReadASCIIDataWidget::on_resetWizardBtn_pressed()
+void ReadASCIIDataWidget::on_resetWizardBtn_clicked()
 {
   delete m_ImportWizard;
   m_ImportWizard = nullptr;

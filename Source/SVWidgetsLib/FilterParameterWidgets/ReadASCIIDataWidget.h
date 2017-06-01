@@ -77,8 +77,8 @@ class SVWidgetsLib_EXPORT ReadASCIIDataWidget : public FilterParameterWidget, pr
     void filterNeedsInputParameters(AbstractFilter* filter);
 
   protected slots:
-    void on_importFileBtn_pressed();
-    void on_resetWizardBtn_pressed();
+    void on_importFileBtn_clicked();
+    void on_resetWizardBtn_clicked();
     void on_editImportSettings_clicked();
 
     void lineCountDidFinish();

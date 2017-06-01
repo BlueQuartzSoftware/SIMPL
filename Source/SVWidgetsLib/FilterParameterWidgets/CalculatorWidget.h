@@ -98,15 +98,15 @@ class SVWidgetsLib_EXPORT CalculatorWidget : public FilterParameterWidget, priva
     void printActionName();
     void updateSelection();
 
-    void on_clearBtn_pressed();
-    void on_backspaceBtn_pressed();
+    void on_clearBtn_clicked();
+    void on_backspaceBtn_clicked();
     void on_radiansBtn_toggled(bool checked);
-    void on_powBtn_pressed();
-    void on_logBtn_pressed();
-    void on_expBtn_pressed();
-    void on_rootBtn_pressed();
-    void on_scalarsBtn_pressed();
-    void on_vectorsBtn_pressed();
+    void on_powBtn_clicked();
+    void on_logBtn_clicked();
+    void on_expBtn_clicked();
+    void on_rootBtn_clicked();
+    void on_scalarsBtn_clicked();
+    void on_vectorsBtn_clicked();
 
   signals:
     void errorSettingFilterParameter(const QString& msg);

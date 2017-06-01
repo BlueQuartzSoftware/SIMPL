@@ -122,11 +122,11 @@ class SVWidgetsLib_EXPORT MultiDataArraySelectionWidget : public FilterParameter
     void createSelectionMenu();
 
   protected slots:
-    void on_upBtn_pressed();
-    void on_downBtn_pressed();
-    void on_selectBtn_pressed();
-    void on_deselectBtn_pressed();
-    void on_removeBtn_pressed();
+    void on_upBtn_clicked();
+    void on_downBtn_clicked();
+    void on_selectBtn_clicked();
+    void on_deselectBtn_clicked();
+    void on_removeBtn_clicked();
 
     void on_attributeArraysSelectWidget_itemSelectionChanged();
     void on_attributeArraysOrderWidget_itemSelectionChanged();

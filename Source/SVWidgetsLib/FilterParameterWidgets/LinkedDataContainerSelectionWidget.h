@@ -32,36 +32,35 @@
 *    United States Prime Contract Navy N00173-07-C-2068
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
-#ifndef _dynamictablewidget_h_
-#define _dynamictablewidget_h_
 
+#ifndef _linkeddatacontainerselectionwidget_h_
+#define _linkeddatacontainerselectionwidget_h_
 
 #include <QtCore/QObject>
 #include <QtCore/QPointer>
 #include <QtWidgets/QWidget>
 
-#include "SVWidgetsLib/QtSupport/QtSFaderWidget.h"
-
 #include "SIMPLib/Common/AbstractFilter.h"
-#include "SIMPLib/FilterParameters/DynamicTableFilterParameter.h"
+#include "SIMPLib/DataContainers/DataContainerArrayProxy.h"
 
+#include "SVWidgetsLib/QtSupport/QtSFaderWidget.h"
 #include "SVWidgetsLib/SVWidgetsLib.h"
 #include "SVWidgetsLib/FilterParameterWidgets/FilterParameterWidget.h"
 
-#include "SVWidgetsLib/ui_DynamicTableWidget.h"
+#include "SIMPLib/FilterParameters/LinkedDataContainerSelectionFilterParameter.h"
 
-class DynamicTableFilterParameter;
-class DynamicTableItemDelegate;
+#include "ui_LinkedDataContainerSelectionWidget.h"
+
+class QSignalMapper;
 
 /**
 * @brief
 * @author
 * @version
 */
-class SVWidgetsLib_EXPORT DynamicTableWidget : public FilterParameterWidget, private Ui::DynamicTableWidget
+class SVWidgetsLib_EXPORT LinkedDataContainerSelectionWidget : public FilterParameterWidget, private Ui::LinkedDataContainerSelectionWidget
 {
     Q_OBJECT
-
   public:
     /**
     * @brief Constructor
@@ -69,9 +68,11 @@ class SVWidgetsLib_EXPORT DynamicTableWidget : public FilterParameterWidget, pri
     * @param filter The instance of the filter that this parameter is a part of
     * @param parent The parent QWidget for this Widget
     */
-    DynamicTableWidget(FilterParameter* parameter, AbstractFilter* filter = nullptr, QWidget* parent = nullptr);
+    LinkedDataContainerSelectionWidget(FilterParameter* parameter, AbstractFilter* filter = nullptr, QWidget* parent = nullptr);
 
-    virtual ~DynamicTableWidget();
+    LinkedDataContainerSelectionWidget(QWidget* parent = nullptr);
+
+    virtual ~LinkedDataContainerSelectionWidget();
 
     /**
     * @brief This method does additional GUI widget connections
@@ -79,48 +80,57 @@ class SVWidgetsLib_EXPORT DynamicTableWidget : public FilterParameterWidget, pri
     void setupGui();
 
     /**
-    * @brief initializeWidget
-    * @param parameter
-    * @param filter
-    */
+     * @brief checkStringValues
+     * @param current
+     * @param filt
+     * @return
+     */
+    QString checkStringValues(QString current, QString filtDcName);
+
+    /**
+     * @brief initializeWidget
+     * @param parameter
+     * @param filter
+     */
     void initializeWidget(FilterParameter* parameter, AbstractFilter* filter);
 
-
-    void setFilterParameter(FilterParameter* value);
-    FilterParameter* getFilterParameter() const;
-
-    std::vector<std::vector<double> > getData();
-
-
+    /**
+     * @brief eventFilter
+     * @param obj
+     * @param event
+     * @return
+     */
+    bool eventFilter(QObject* obj, QEvent* event);
 
   public slots:
-    void on_dynamicTable_cellChanged(int row, int col);
-    void on_addRowBtn_clicked();
-    void on_deleteRowBtn_clicked();
-    void on_addColBtn_clicked();
-    void on_deleteColBtn_clicked();
-    void filterNeedsInputParameters(AbstractFilter* filter); // When the filter is ready for us to update its input parameter(s) that we are responsible for
-    void beforePreflight(); // Called just before the "dataCheck()" is called
-    void afterPreflight(); // Called just after the dataCheck() is called.
+    void widgetChanged();
+    void beforePreflight();
+    void afterPreflight();
+    void filterNeedsInputParameters(AbstractFilter* filter);
+    void dataContainerSelected(QString path);
 
   signals:
     void errorSettingFilterParameter(const QString& msg);
     void parametersChanged();
+    void conditionalPropertyChanged(int);
+
+  protected:
+    /**
+     * @brief createSelectionMenu
+     */
+    void createSelectionMenu();
 
   private:
-
-    DynamicTableFilterParameter*  m_FilterParameter;
-    DynamicTableItemDelegate*     m_ItemDelegate = nullptr;
     bool m_DidCausePreflight;
+    LinkedDataContainerSelectionFilterParameter* m_FilterParameter;
+    QPointer<QSignalMapper> m_MenuMapper;
+    void setSelectedPath(QString path);
+    void setSelectedPath(DataArrayPath dcPath);
 
-    void populateTable();
-    void populateHeaders();
-    void renumberDynamicHeaders();
-    void updateDynamicButtons();
-
-    DynamicTableWidget(const DynamicTableWidget&); // Copy Constructor Not Implemented
-    void operator=(const DynamicTableWidget&); // Operator '=' Not Implemented
-
+    LinkedDataContainerSelectionWidget(const LinkedDataContainerSelectionWidget&); // Copy Constructor Not Implemented
+    void operator=(const LinkedDataContainerSelectionWidget&); // Operator '=' Not Implemented
 };
 
-#endif /* _DynamicTableWidget_H_ */
+#endif /* _linkeddatacontainerselectionwidget_h_ */
+
+

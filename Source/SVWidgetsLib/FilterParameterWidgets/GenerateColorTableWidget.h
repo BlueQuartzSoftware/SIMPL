@@ -99,7 +99,7 @@ class SVWidgetsLib_EXPORT GenerateColorTableWidget : public FilterParameterWidge
     void filterNeedsInputParameters(AbstractFilter* filter);
 
   protected slots:
-    void on_choosePresetBtn_pressed();
+    void on_choosePresetBtn_clicked();
 
     void presetSelected(const QJsonObject& preset, const QPixmap &pixmap);
 

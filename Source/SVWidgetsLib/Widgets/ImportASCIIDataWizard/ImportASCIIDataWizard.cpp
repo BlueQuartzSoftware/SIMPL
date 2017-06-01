@@ -60,7 +60,7 @@ ImportASCIIDataWizard::ImportASCIIDataWizard(const QString &inputFilePath, int n
 
   // This adds the refresh button that refreshes the preview table.  We may use this on a future release.
   // m_RefreshBtn = new QPushButton("Refresh", this);
-  // connect(m_RefreshBtn, SIGNAL(pressed()), this, SLOT(refreshModel()));
+  // connect(m_RefreshBtn, SIGNAL(clicked()), this, SLOT(refreshModel()));
   // setButton(QWizard::HelpButton, m_RefreshBtn);
 
   DelimitedPage* dPage = new DelimitedPage(inputFilePath, numLines, this);
@@ -112,7 +112,7 @@ ImportASCIIDataWizard::ImportASCIIDataWizard(ASCIIWizardData* wizardData, DataCo
 
   // This adds the refresh button that refreshes the preview table.  We may use this on a future release.
   // m_RefreshBtn = new QPushButton("Refresh", this);
-  // connect(m_RefreshBtn, SIGNAL(pressed()), this, SLOT(refreshModel()));
+  // connect(m_RefreshBtn, SIGNAL(clicked()), this, SLOT(refreshModel()));
   // setButton(QWizard::HelpButton, m_RefreshBtn);
   m_InputFilePath = wizardData->inputFilePath;
   m_NumLines = wizardData->numberOfLines;
