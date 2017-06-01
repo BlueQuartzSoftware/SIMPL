@@ -53,12 +53,14 @@
 #include "SIMPLib/FilterParameters/InputPathFilterParameter.h"
 #include "SIMPLib/FilterParameters/LinkedBooleanFilterParameter.h"
 #include "SIMPLib/FilterParameters/LinkedChoicesFilterParameter.h"
+#include "SIMPLib/FilterParameters/LinkedDataContainerSelectionFilterParameter.h"
 
 #include "SVWidgetsLib/QtSupport/QtSHelpUrlGenerator.h"
 #include "SVWidgetsLib/QtSupport/QtSStyles.h"
 
 #include "SVWidgetsLib/FilterParameterWidgets/ChoiceWidget.h"
 #include "SVWidgetsLib/FilterParameterWidgets/LinkedBooleanWidget.h"
+#include "SVWidgetsLib/FilterParameterWidgets/LinkedDataContainerSelectionWidget.h"
 
 #include "SVWidgetsLib/Core/FilterWidgetManager.h"
 #include "SVWidgetsLib/Core/SVWidgetsLibConstants.h"
@@ -525,6 +527,32 @@ void FilterInputWidget::linkConditionalWidgets(QVector<FilterParameter::Pointer>
           if(choiceWidget)
           {
             choiceWidget->widgetChanged(choiceWidget->getCurrentIndex(), false);
+          }
+        }
+      }
+    }
+
+    LinkedDataContainerSelectionFilterParameter::Pointer optionPtr3 = std::dynamic_pointer_cast<LinkedDataContainerSelectionFilterParameter>(filterParameter);
+
+    if(nullptr != optionPtr3.get())
+    {
+      QStringList linkedProps = optionPtr3->getLinkedProperties();
+
+      QStringListIterator iter = QStringListIterator(linkedProps);
+      QWidget* checkboxSource = m_PropertyToWidget[optionPtr3->getPropertyName()];
+      while(iter.hasNext())
+      {
+        QString propName = iter.next();
+        QWidget* w = m_PropertyToWidget[propName];
+        if(w)
+        {
+          // qDebug() << "Connecting: " << optionPtr2->getPropertyName() << " to " << propName;
+          connect(checkboxSource, SIGNAL(conditionalPropertyChanged(int)), w, SLOT(setLinkedComboBoxState(int)));
+
+          LinkedDataContainerSelectionWidget* linkedDataContainerSelectionWidget = qobject_cast<LinkedDataContainerSelectionWidget*>(checkboxSource);
+          if(linkedDataContainerSelectionWidget)
+          {
+            linkedDataContainerSelectionWidget->widgetChanged();
           }
         }
       }
