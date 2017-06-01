@@ -142,7 +142,7 @@ class SIMPLib_EXPORT FilterPipeline : public QObject
     * @brief Returns the FilterPipeline contents as a JSon string
     * @return
     */
-    virtual QJsonObject toJSon();
+    virtual QJsonObject toJson();
 
     /**
     * @brief Sets the contents of the FilterPipeline to match the given JSon value.

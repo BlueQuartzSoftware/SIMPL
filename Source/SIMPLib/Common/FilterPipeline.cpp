@@ -92,7 +92,7 @@ FilterPipeline::Pointer FilterPipeline::deepCopy()
   // that may no longer exist.
 
   // Convert to JSon
-  QJsonObject json = toJSon();
+  QJsonObject json = toJson();
 
   // Convert from JSon
   FilterPipeline::Pointer copy = FilterPipeline::New();
@@ -104,7 +104,7 @@ FilterPipeline::Pointer FilterPipeline::deepCopy()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-QJsonObject FilterPipeline::toJSon()
+QJsonObject FilterPipeline::toJson()
 {
   QJsonObject json;
 
@@ -194,6 +194,8 @@ void FilterPipeline::fromJson(const QJsonObject& json, IObserver* obs)
   QJsonObject builderObj = json[SIMPL::Settings::PipelineBuilderGroup].toObject();
   int filterCount = builderObj[SIMPL::Settings::NumFilters].toInt();
   int maxFilterIndex = filterCount - 1; // Zero based indexing
+  
+  setName(builderObj[SIMPL::Settings::PipelineName].toString());
 
   for(int i = 0; i < filterCount; ++i)
   {
