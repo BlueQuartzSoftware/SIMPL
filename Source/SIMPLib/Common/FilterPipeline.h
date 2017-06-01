@@ -136,18 +136,18 @@ class SIMPLib_EXPORT FilterPipeline : public QObject
     * @brief This method returns a deep copy of the FilterPipeline and all its filters
     * @return
     */
-    Pointer deepCopy();
+    virtual Pointer deepCopy();
 
     /**
     * @brief Returns the FilterPipeline contents as a JSon string
     * @return
     */
-    QJsonObject toJSon();
+    virtual QJsonObject toJSon();
 
     /**
     * @brief Sets the contents of the FilterPipeline to match the given JSon value.
     */
-    void fromJson(const QJsonObject& json, IObserver* obs = nullptr);
+    virtual void fromJson(const QJsonObject& json, IObserver* obs = nullptr);
 
     /**
     * @brief Static version of fromJson that creates a FilterPipeline::Pointer.
