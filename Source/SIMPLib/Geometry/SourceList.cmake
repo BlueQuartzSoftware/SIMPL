@@ -49,7 +49,7 @@ set(SIMPLib_${SUBDIR_NAME}_HDRS
   ${SIMPLib_SOURCE_DIR}/Geometry/TetrahedralGeom.h
   ${SIMPLib_SOURCE_DIR}/Geometry/MeshStructs.h
   ${SIMPLib_SOURCE_DIR}/Geometry/DerivativeHelpers.h
-  ${SIMPLib_SOURCE_DIR}/Geometry/GeometryHelpers.hpp
+  ${SIMPLib_SOURCE_DIR}/Geometry/GeometryHelpers.h
   ${SIMPLib_SOURCE_DIR}/Geometry/ShapeOps/ShapeOps.h
   ${SIMPLib_SOURCE_DIR}/Geometry/ShapeOps/CubeOctohedronOps.h
   ${SIMPLib_SOURCE_DIR}/Geometry/ShapeOps/CylinderAOps.h
@@ -60,6 +60,7 @@ set(SIMPLib_${SUBDIR_NAME}_HDRS
 )
 
 set(SIMPLib_${SUBDIR_NAME}_SRCS
+  ${SIMPLib_SOURCE_DIR}/Geometry/GeometryHelpers.cpp
   ${SIMPLib_SOURCE_DIR}/Geometry/IGeometry.cpp
   ${SIMPLib_SOURCE_DIR}/Geometry/IGeometryGrid.cpp
   ${SIMPLib_SOURCE_DIR}/Geometry/IGeometry2D.cpp
