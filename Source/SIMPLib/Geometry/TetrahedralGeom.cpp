@@ -54,7 +54,7 @@
 #endif
 
 #include "SIMPLib/Geometry/DerivativeHelpers.h"
-#include "SIMPLib/Geometry/GeometryHelpers.hpp"
+#include "SIMPLib/Geometry/GeometryHelpers.h"
 
 /**
  * @brief The FindTriangleDerivativesImpl class implements a threaded algorithm that computes the

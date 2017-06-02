@@ -53,7 +53,7 @@
 #endif
 
 #include "H5Support/H5Lite.h"
-#include "SIMPLib/Geometry/GeometryHelpers.hpp"
+#include "SIMPLib/Geometry/GeometryHelpers.h"
 #include "SIMPLib/HDF5/VTKH5Constants.h"
 
 /**

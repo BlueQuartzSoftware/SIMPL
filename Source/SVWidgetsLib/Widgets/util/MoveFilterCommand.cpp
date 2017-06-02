@@ -63,9 +63,9 @@ MoveFilterCommand::MoveFilterCommand(PipelineFilterObject* filterWidget, QVarian
 // -----------------------------------------------------------------------------
 MoveFilterCommand::MoveFilterCommand(QList<std::pair<int, PipelineFilterObject*>> filterWidgets, QVariant destination, PipelineView* pipelineView, QUndoCommand* parent)
 : QUndoCommand(parent)
+, m_FilterWidgets(filterWidgets)
 , m_OriginView(pipelineView)
 , m_DestinationView(pipelineView)
-, m_FilterWidgets(filterWidgets)
 , m_Destination(destination)
 , m_FirstRun(true)
 {
@@ -76,12 +76,12 @@ MoveFilterCommand::MoveFilterCommand(QList<std::pair<int, PipelineFilterObject*>
 //
 // -----------------------------------------------------------------------------
 MoveFilterCommand::MoveFilterCommand(QList<std::pair<int, PipelineFilterObject*>> filterWidgets, QVariant destination, PipelineView* originView, PipelineView* destinationView, QUndoCommand* parent)
-  : QUndoCommand(parent)
-  , m_OriginView(originView)
-  , m_DestinationView(destinationView)
-  , m_FilterWidgets(filterWidgets)
-  , m_Destination(destination)
-  , m_FirstRun(true)
+: QUndoCommand(parent)
+, m_FilterWidgets(filterWidgets)
+, m_OriginView(originView)
+, m_DestinationView(destinationView)
+, m_Destination(destination)
+, m_FirstRun(true)
 {
   setText(QObject::tr("\"Move '%1' Filters\"").arg(filterWidgets.size()));
 }
@@ -100,7 +100,7 @@ void MoveFilterCommand::undo()
 {
   // If the destination is not valid, do not do anything
   bool ok;
-  int destinationIndex = m_Destination.toInt(&ok);
+  m_Destination.toInt(&ok);
   if(ok == false)
   {
     return;
@@ -154,7 +154,7 @@ void MoveFilterCommand::redo()
     return;
   }
 
-  // Check if this is the first occurance of the QUndoCommand, 
+  // Check if this is the first occurance of the QUndoCommand,
   // If it is not, remove all moved items first
   if(m_FirstRun == true)
   {
@@ -170,7 +170,7 @@ void MoveFilterCommand::redo()
       m_OriginView->removeFilterObject(filterObject, false);
     }
   }
-    
+
   // After removing all moved items, items may now be reinserted at the correct index
   for(int i = 0; i < m_FilterWidgets.size(); i++)
   {
