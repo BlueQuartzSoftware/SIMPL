@@ -45,30 +45,65 @@
 class PipelineFilterObject;
 class PipelineView;
 
+/**
+ * @brief The MoveFilterCommand class
+ */
 class SVWidgetsLib_EXPORT MoveFilterCommand : public QUndoCommand
 {
-  public:
-    MoveFilterCommand(PipelineFilterObject* filterWidget, QVariant origin, QVariant destination, PipelineView* pipelineView, QUndoCommand* parent = 0);
-    MoveFilterCommand(QList<std::pair<int, PipelineFilterObject*>> filterWidget, QVariant destination, PipelineView* pipelineView, QUndoCommand* parent = 0);
-    MoveFilterCommand(QList<std::pair<int, PipelineFilterObject*>> filterWidget, QVariant destination, PipelineView* originView, PipelineView* destinationView, QUndoCommand* parent = 0);
-    virtual ~MoveFilterCommand();
+public:
 
-    virtual void undo();
+    /**
+   * @brief MoveFilterCommand
+   * @param filterWidget
+   * @param origin
+   * @param destination
+   * @param pipelineView
+   * @param parent
+   */
+  MoveFilterCommand(PipelineFilterObject* filterWidget, QVariant origin, QVariant destination, PipelineView* pipelineView, QUndoCommand* parent = 0);
 
-    virtual void redo();
+  /**
+   * @brief MoveFilterCommand
+   * @param filterWidget
+   * @param destination
+   * @param pipelineView
+   * @param parent
+   */
+  MoveFilterCommand(QList<std::pair<int, PipelineFilterObject*>> filterWidget, QVariant destination, PipelineView* pipelineView, QUndoCommand* parent = 0);
 
-  private:
-    QList<std::pair<int, PipelineFilterObject*>>  m_FilterWidgets;
-    PipelineView*                                 m_OriginView;
-    PipelineView*                                 m_DestinationView;
-    QString                                       m_JsonString;
-    QVariant                                      m_Destination;
-    bool                                          m_WindowIsModified;
-    bool                                          m_FirstRun;
+  /**
+   * @brief MoveFilterCommand
+   * @param filterWidget
+   * @param destination
+   * @param originView
+   * @param destinationView
+   * @param parent
+   */
+  MoveFilterCommand(QList<std::pair<int, PipelineFilterObject*>> filterWidget, QVariant destination, PipelineView* originView, PipelineView* destinationView, QUndoCommand* parent = 0);
 
-    MoveFilterCommand(const MoveFilterCommand&); // Copy Constructor Not Implemented
-    void operator=(const MoveFilterCommand&); // Operator '=' Not Implemented
+  virtual ~MoveFilterCommand();
+
+  /**
+   * @brief undo
+   */
+  virtual void undo();
+
+  /**
+   * @brief redo
+   */
+  virtual void redo();
+
+private:
+  QList<std::pair<int, PipelineFilterObject*>> m_FilterWidgets;
+  PipelineView* m_OriginView;
+  PipelineView* m_DestinationView;
+  QString m_JsonString;
+  QVariant m_Destination;
+  bool m_WindowIsModified;
+  bool m_FirstRun;
+
+  MoveFilterCommand(const MoveFilterCommand&); // Copy Constructor Not Implemented
+  void operator=(const MoveFilterCommand&);    // Operator '=' Not Implemented
 };
 
 #endif /* _movefiltercommand_h_ */
-
