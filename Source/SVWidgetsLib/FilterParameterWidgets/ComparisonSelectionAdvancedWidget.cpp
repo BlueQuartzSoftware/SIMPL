@@ -125,7 +125,7 @@ void ComparisonSelectionAdvancedWidget::setupGui()
 
   // Create the Comparison Set
   comparisonSetWidget->setComparisonSet(ComparisonSet::New());
-  connect(comparisonSetWidget, SIGNAL(comparisonChanged()), SIGNAL(parametersChanged()));
+  connect(comparisonSetWidget, SIGNAL(comparisonChanged()), this, SIGNAL(parametersChanged()));
 
   // Copy the data into the Comparison Set
   ComparisonInputsAdvanced comps = dynamic_cast<ComparisonSelectionAdvancedFilterParameter*>(getFilterParameter())->getGetterCallback()();
@@ -340,6 +340,11 @@ void ComparisonSelectionAdvancedWidget::afterPreflight()
       QString html = am->getInfoString(SIMPL::HtmlFormat);
       m_SelectedAttributeMatrixPath->setToolTip(html);
       m_SelectedAttributeMatrixPath->setStyleSheet(QtSStyles::QToolSelectionButtonStyle(true));
+
+      DataArrayPath path = DataArrayPath::Deserialize(m_SelectedAttributeMatrixPath->text(), Detail::Delimiter);
+      QStringList arrayNames = generateAttributeArrayList(path.getDataContainerName(), path.getAttributeMatrixName());
+      
+      comparisonSetWidget->setArrayNames(arrayNames);
 
       if (nullptr == comparisonSetWidget->getAttributeMatrix())
       {

@@ -73,6 +73,12 @@ public:
   AbstractComparison::Pointer getComparison();
 
   /**
+  * @brief Sets the array of names to use
+  * @param names QStringList of all DataArray names available to use
+  */
+  void setArrayNames(QStringList names) override;
+
+  /**
   * @brief Sets the AttributeMatrix used to specify DataArray names
   * @param am AttributeMatrix to use
   */

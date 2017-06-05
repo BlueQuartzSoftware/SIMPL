@@ -133,3 +133,23 @@ void ComparisonValueWidget::setupGui()
   connect(valueSpinBox, SIGNAL(valueChanged(double)),
     this, SLOT(comparisonValueChanged(double)));
 }
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void ComparisonValueWidget::setArrayNames(QStringList names)
+{
+  QString currentName = arrayNameComboBox->currentText();
+
+  arrayNameComboBox->clear();
+  arrayNameComboBox->addItems(names);
+
+  if(names.contains(currentName))
+  {
+    arrayNameComboBox->setCurrentText(currentName);
+  }
+  else
+  {
+    arrayNameComboBox->setCurrentIndex(-1);
+  }
+}
