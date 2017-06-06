@@ -108,11 +108,13 @@ QJsonObject FilterPipeline::toJson()
 {
   QJsonObject json;
 
-  int count = size();
+  FilterContainerType container = getFilterContainer();
+  int count = container.size();
   int offset = 0;
+
   for(qint32 i = 0; i < count; i++)
   {
-    AbstractFilter::Pointer filter = m_Pipeline.at(i);
+    AbstractFilter::Pointer filter = container.at(i);
     if(nullptr != filter.get())
     {
       DataContainerReader::Pointer reader = std::dynamic_pointer_cast<DataContainerReader>(filter);
