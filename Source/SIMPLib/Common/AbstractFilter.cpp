@@ -232,6 +232,21 @@ void AbstractFilter::postWriteFilterParameters(QJsonObject &obj, QJsonObject &ro
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
+QJsonObject AbstractFilter::toJson()
+{
+  QJsonObject json;
+
+  json[SIMPL::Settings::FilterName] = getNameOfClass();
+  json[SIMPL::Settings::HumanLabel] = getHumanLabel();
+
+  writeFilterParameters(json);
+
+  return json;
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
 bool AbstractFilter::getCancel()
 {
   return m_Cancel;

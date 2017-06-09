@@ -1590,7 +1590,7 @@ void SVPipelineViewWidget::dragMoveEvent(QDragMoveEvent* event)
   if(nullptr != dynamic_cast<const PipelineViewPtrMimeData*>(mimedata))
   {
     // The user is moving existing filter widgets, either within the same pipeline view or between pipeline views
-    SVPipelineViewWidget* origin = dynamic_cast<const PipelineViewPtrMimeData*>(mimedata)->getPipelineViewPtr();
+    SVPipelineViewWidget* origin = dynamic_cast<SVPipelineViewWidget*>(dynamic_cast<const PipelineViewPtrMimeData*>(mimedata)->getPipelineViewPtr());
 
     if(origin == this)
     {
@@ -1916,7 +1916,7 @@ void SVPipelineViewWidget::dropEvent(QDropEvent* event)
   }
   else if(nullptr != dynamic_cast<const PipelineViewPtrMimeData*>(mimedata))
   {
-    SVPipelineViewWidget* origin = dynamic_cast<const PipelineViewPtrMimeData*>(mimedata)->getPipelineViewPtr();
+    SVPipelineViewWidget* origin = dynamic_cast<SVPipelineViewWidget*>(dynamic_cast<const PipelineViewPtrMimeData*>(mimedata)->getPipelineViewPtr());
 
     // The drop box, if it exists, marks the index where the filter should be dropped
     int index;
