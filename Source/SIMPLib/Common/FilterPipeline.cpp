@@ -34,6 +34,13 @@
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
 #include "FilterPipeline.h"
+
+#include "SIMPLib/Common/FilterFactory.hpp"
+#include "SIMPLib/Common/FilterManager.h"
+#include "SIMPLib/CoreFilters/EmptyFilter.h"
+
+#include "SIMPLib/CoreFilters/DataContainerReader.h"
+
 #include "SIMPLib/DataContainers/DataContainerArray.h"
 
 #include "moc_FilterPipeline.cpp"
@@ -45,6 +52,7 @@ FilterPipeline::FilterPipeline()
 : QObject()
 , m_ErrorCondition(0)
 , m_Cancel(false)
+, m_PipelineName("")
 {
 }
 
@@ -53,6 +61,201 @@ FilterPipeline::FilterPipeline()
 // -----------------------------------------------------------------------------
 FilterPipeline::~FilterPipeline()
 {
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+QString FilterPipeline::getName()
+{
+  return m_PipelineName;
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void FilterPipeline::setName(QString newName)
+{
+  QString oldName = m_PipelineName;
+  m_PipelineName = newName;
+
+  emit pipelineNameChanged(oldName, newName);
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+FilterPipeline::Pointer FilterPipeline::deepCopy()
+{
+  // This is not the fastest way to perform a deep copy, but it does avoid 
+  // issues with newFilterInstance retaining bindings to the original filter
+  // that may no longer exist.
+
+  // Convert to JSon
+  QJsonObject json = toJson();
+
+  // Convert from JSon
+  FilterPipeline::Pointer copy = FilterPipeline::New();
+  copy->fromJson(json);
+
+  return copy;
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+QJsonObject FilterPipeline::toJson()
+{
+  QJsonObject json;
+
+  FilterContainerType container = getFilterContainer();
+  int count = container.size();
+  int offset = 0;
+
+  for(qint32 i = 0; i < count; i++)
+  {
+    AbstractFilter::Pointer filter = container.at(i);
+    if(nullptr != filter.get())
+    {
+      DataContainerReader::Pointer reader = std::dynamic_pointer_cast<DataContainerReader>(filter);
+      if(reader.get())
+      {
+        offset = reader->writeExistingPipelineToFile(json, i);
+      }
+
+      json.insert(QString::number(i + offset), filter->toJson());
+    }
+    else
+    {
+      AbstractFilter::Pointer badFilter = AbstractFilter::New();
+
+      QJsonObject badFilterJson = badFilter->toJson();
+      badFilterJson["Unknown Filter"] = "ERROR: Filter instance was nullptr within the FilterPipeline instance. Report this error to the DREAM3D Developers";
+      
+      json.insert(QString::number(i + offset), badFilterJson);
+    }
+  }
+
+  // Add meta data about the pipeline
+  {
+    QJsonObject meta;
+    meta[SIMPL::Settings::PipelineName] = m_PipelineName;
+    meta[SIMPL::Settings::Version] = SIMPL::PipelineVersionNumbers::CurrentVersion;
+
+    if(json.size() > 0)
+    {
+      meta[SIMPL::Settings::NumFilters] = count;
+    }
+    else
+    {
+      meta[SIMPL::Settings::NumFilters] = 0;
+    }
+
+    json[SIMPL::Settings::PipelineBuilderGroup] = meta;
+  }
+
+  return json;
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+FilterPipeline::Pointer FilterPipeline::FromJson(const QJsonObject& json, IObserver* obs)
+{
+  QJsonObject builderObj = json[SIMPL::Settings::PipelineBuilderGroup].toObject();
+  int filterCount = builderObj[SIMPL::Settings::NumFilters].toInt();
+
+  FilterPipeline::Pointer pipeline;
+  if(filterCount >= 0)
+  {
+    pipeline = FilterPipeline::New();
+  }
+  else
+  {
+    pipeline = FilterPipeline::NullPointer();
+  }
+
+  pipeline->fromJson(json, obs);
+
+  return pipeline;
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void FilterPipeline::fromJson(const QJsonObject& json, IObserver* obs)
+{
+  // Clear the pipeline first
+  clear();
+
+  // Store FilterManager
+  FilterManager* filtManager = FilterManager::Instance();
+  FilterFactory<EmptyFilter>::Pointer emptyFilterFactory = FilterFactory<EmptyFilter>::New();
+  filtManager->addFilterFactory("EmptyFilter", emptyFilterFactory);
+
+  QJsonObject builderObj = json[SIMPL::Settings::PipelineBuilderGroup].toObject();
+  int filterCount = builderObj[SIMPL::Settings::NumFilters].toInt();
+  int maxFilterIndex = filterCount - 1; // Zero based indexing
+  
+  setName(builderObj[SIMPL::Settings::PipelineName].toString());
+
+  for(int i = 0; i < filterCount; ++i)
+  {
+    QJsonObject currentFilterIndex = json[QString::number(i)].toObject();
+
+    QString filterName = currentFilterIndex[SIMPL::Settings::FilterName].toString();
+
+    if(filterName.isEmpty() == false)
+    {
+      IFilterFactory::Pointer factory = filtManager->getFactoryForFilter(filterName);
+      if(factory.get() != nullptr)
+      {
+        AbstractFilter::Pointer filter = factory->create();
+
+        if(nullptr != filter.get())
+        {
+          filter->readFilterParameters(currentFilterIndex);
+          this->pushBack(filter);
+        }
+      }
+      else // Could not find the filter because the specific name has not been registered. This could
+           // be due to a name change for the filter.
+      {
+        EmptyFilter::Pointer filter = EmptyFilter::New();
+        QString humanLabel = QString("UNKNOWN FILTER: ") + filterName;
+        filter->setHumanLabel(humanLabel);
+        filter->setOriginalFilterName(filterName);
+        this->pushBack(filter);
+
+        if(nullptr != obs)
+        {
+          QString ss = QObject::tr("An implementation for filter '%1' could not be located. Possible reasons include a name change of the filter, plugin not loading or a simple spelling mistake? A "
+            "blank filter has been inserted in its place.")
+            .arg(filterName);
+          PipelineMessage pm(filterName, ss, -66066, PipelineMessage::MessageType::Error);
+          pm.setPrefix("JsonFilterParametersReader::ReadPipelineFromFile()");
+          obs->processPipelineMessage(pm);
+        }
+      }
+    }
+    else
+    {
+      EmptyFilter::Pointer filter = EmptyFilter::New();
+      QString humanLabel = QString("MISSING FILTER: ") + filterName;
+      filter->setHumanLabel(humanLabel);
+      filter->setOriginalFilterName(filterName);
+      this->pushBack(filter);
+
+      if(nullptr != obs)
+      {
+        QString gName = QString::number(i);
+        QString ss = QObject::tr("A filter for index '%1' is missing in the file. Is the numbering of the filters correct in the pipeline file?").arg(gName);
+        PipelineMessage pm(filterName, ss, -66067, PipelineMessage::MessageType::Error);
+        pm.setPrefix("JsonFilterParametersReader::ReadPipelineFromFile()");
+        obs->processPipelineMessage(pm);
+      }
+    }
+  }
 }
 
 // -----------------------------------------------------------------------------
@@ -100,6 +303,7 @@ void FilterPipeline::pushFront(AbstractFilter::Pointer f)
 {
   m_Pipeline.push_front(f);
   updatePrevNextFilters();
+  emit pipelineWasEdited();
 }
 // -----------------------------------------------------------------------------
 //
@@ -108,6 +312,7 @@ void FilterPipeline::popFront()
 {
   m_Pipeline.pop_front();
   updatePrevNextFilters();
+  emit pipelineWasEdited();
 }
 // -----------------------------------------------------------------------------
 //
@@ -116,6 +321,7 @@ void FilterPipeline::pushBack(AbstractFilter::Pointer f)
 {
   m_Pipeline.push_back(f);
   updatePrevNextFilters();
+  emit pipelineWasEdited();
 }
 // -----------------------------------------------------------------------------
 //
@@ -124,6 +330,7 @@ void FilterPipeline::popBack()
 {
   m_Pipeline.pop_back();
   updatePrevNextFilters();
+  emit pipelineWasEdited();
 }
 // -----------------------------------------------------------------------------
 //
@@ -137,6 +344,7 @@ void FilterPipeline::insert(size_t index, AbstractFilter::Pointer f)
   }
   m_Pipeline.insert(it, f);
   updatePrevNextFilters();
+  emit pipelineWasEdited();
 }
 // -----------------------------------------------------------------------------
 //
@@ -150,6 +358,7 @@ void FilterPipeline::erase(size_t index)
   }
   m_Pipeline.erase(it);
   updatePrevNextFilters();
+  emit pipelineWasEdited();
 }
 // -----------------------------------------------------------------------------
 //
@@ -162,6 +371,7 @@ void FilterPipeline::clear()
     (*iter)->setNextFilter(AbstractFilter::NullPointer());
   }
   m_Pipeline.clear();
+  emit pipelineWasEdited();
 }
 // -----------------------------------------------------------------------------
 //
@@ -194,6 +404,7 @@ AbstractFilter::Pointer FilterPipeline::removeFirstFilterByName(const QString& n
     }
   }
   updatePrevNextFilters();
+  emit pipelineWasEdited();
 
   return f;
 }

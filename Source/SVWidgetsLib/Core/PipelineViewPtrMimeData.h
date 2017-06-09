@@ -42,7 +42,7 @@
 
 #include "SIMPLib/Common/SIMPLibSetGetMacros.h"
 
-class PipelineViewPtrMimeData : public QMimeData
+class SVWidgetsLib_EXPORT PipelineViewPtrMimeData : public QMimeData
 {
     Q_OBJECT
 
@@ -50,7 +50,7 @@ class PipelineViewPtrMimeData : public QMimeData
     PipelineViewPtrMimeData();
     virtual ~PipelineViewPtrMimeData();
 
-    SIMPL_INSTANCE_PROPERTY(SVPipelineViewWidget*, PipelineViewPtr)
+    SIMPL_INSTANCE_PROPERTY(PipelineView*, PipelineViewPtr)
 
   private:
 

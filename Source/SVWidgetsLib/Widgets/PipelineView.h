@@ -39,6 +39,7 @@
 
 #include <vector>
 
+#include <QtCore/QList>
 #include <QtCore/QTimer>
 #include <QtCore/QUuid>
 
@@ -119,6 +120,12 @@ class SVWidgetsLib_EXPORT PipelineView
      * @return
      */
     virtual PipelineFilterObject* filterObjectAt(QVariant value);
+
+    /**
+    * @brief getAllFilterObjects
+    * @return
+    */
+    virtual QList<PipelineFilterObject*> getAllFilterObjects();
 
     /**
     * @brief containsFilterWidget

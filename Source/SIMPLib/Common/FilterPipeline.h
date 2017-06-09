@@ -37,6 +37,7 @@
 #ifndef _filterpipeline_h_
 #define _filterpipeline_h_
 
+#include <QtCore/QJsonObject>
 #include <QtCore/QObject>
 #include <QtCore/QString>
 #include <QtCore/QList>
@@ -47,6 +48,8 @@
 #include "SIMPLib/Common/SIMPLibSetGetMacros.h"
 #include "SIMPLib/Common/Observer.h"
 #include "SIMPLib/Common/AbstractFilter.h"
+
+class IObserver;
 
 /**
  * @class FilterPipeline FilterPipeline.h DREAM3DLib/Common/FilterPipeline.h
@@ -127,6 +130,32 @@ class SIMPLib_EXPORT FilterPipeline : public QObject
     void connectFilterNotifications(QObject* filter);
     void disconnectFilterNotifications(QObject* filter);
 
+    QString getName();
+
+    /**
+    * @brief This method returns a deep copy of the FilterPipeline and all its filters
+    * @return
+    */
+    virtual Pointer deepCopy();
+
+    /**
+    * @brief Returns the FilterPipeline contents as a JSon string
+    * @return
+    */
+    virtual QJsonObject toJson();
+
+    /**
+    * @brief Sets the contents of the FilterPipeline to match the given JSon value.
+    */
+    virtual void fromJson(const QJsonObject& json, IObserver* obs = nullptr);
+
+    /**
+    * @brief Static version of fromJson that creates a FilterPipeline::Pointer.
+    * If the meta data says there are less than zero filters, it returns a FilterPipeline::NullPointer
+    * @return
+    */
+    static Pointer FromJson(const QJsonObject& json, IObserver* obs = nullptr);
+
   public slots:
 
     /**
@@ -138,6 +167,8 @@ class SIMPLib_EXPORT FilterPipeline : public QObject
      * @brief cancelPipeline
      */
     virtual void cancelPipeline();
+
+    void setName(QString name);
 
   protected:
     FilterPipeline();
@@ -169,9 +200,22 @@ class SIMPLib_EXPORT FilterPipeline : public QObject
     */
     void pipelineFinished();
 
+    /**
+    * @brief The signal is emitted when changes are applied to the FilterPipeline
+    */
+    void pipelineWasEdited();
+
+    /**
+    * @brief This signal is emitted when the pipeline name changes
+    * @param oldName The FilterPipeline's previous name
+    * @param newName The FilterPipeline's current name
+    */
+    void pipelineNameChanged(QString oldName, QString newName);
+
   private:
-    bool m_Cancel;
-    FilterContainerType                     m_Pipeline;
+    bool                  m_Cancel;
+    FilterContainerType   m_Pipeline;
+    QString               m_PipelineName;
 
     QVector<QObject*> m_MessageReceivers;
 

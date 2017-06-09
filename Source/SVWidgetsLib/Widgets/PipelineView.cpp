@@ -120,6 +120,25 @@ PipelineFilterObject* PipelineView::filterObjectAt(QVariant value)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
+QList<PipelineFilterObject*> PipelineView::getAllFilterObjects()
+{
+  QList<PipelineFilterObject*> filterObjects;
+
+  for(int i = 0; i < filterCount(); i++)
+  {
+    PipelineFilterObject* filterObject = filterObjectAt(i);
+    if(filterObject)
+    {
+      filterObjects.push_back(filterObject);
+    }
+  }
+
+  return filterObjects;
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
 bool PipelineView::containsFilterWidget(PipelineFilterObject* filterWidget)
 {
   Q_UNUSED(filterWidget)
