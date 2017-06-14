@@ -36,11 +36,11 @@ EulerAngles.txt (three components) with 1 tuple/line, space delimited:
 ### Delimiter ###
 Choice of delimiter is as follows:
 
-    , (comma)
-    ; (semicolon)
-      (space)
-    : (colon)
-    \t (tab)
+    0 = , (comma)
+    1 = ; (semicolon)
+    2 = (space)
+    3 = : (colon)
+    4 = \t (tab)
 
 ## Parameters ##
 | Name             | Type | Description |

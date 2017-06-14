@@ -185,7 +185,11 @@ public:
             QStringList list = line.split(',');
             for (int i=0; i<list.size(); i++)
             {
-              DREAM3D_REQUIRE_EQUAL(da->getComponent(currentLine, i), std::atoi(list[i].toStdString().c_str()))
+              bool ok = false;
+              int exemplar = list[i].toInt(&ok);
+              int generated = da->getComponent(currentLine, i);
+              DREAM3D_REQUIRE_EQUAL(ok, true)
+              DREAM3D_REQUIRE_EQUAL(exemplar, generated)
             }
             currentLine++;
           }
