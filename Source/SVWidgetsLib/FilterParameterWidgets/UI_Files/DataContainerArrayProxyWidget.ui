@@ -34,33 +34,41 @@
     </widget>
    </item>
    <item>
-    <widget class="QColumnView" name="dcaProxyView">
-     <property name="styleSheet">
-      <string notr="true"/>
-     </property>
-     <property name="autoScroll">
-      <bool>true</bool>
+    <widget class="QListWidget" name="dataContainerList">
+     <property name="sizePolicy">
+      <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
+       <horstretch>0</horstretch>
+       <verstretch>0</verstretch>
+      </sizepolicy>
      </property>
      <property name="editTriggers">
       <set>QAbstractItemView::NoEditTriggers</set>
      </property>
-     <property name="tabKeyNavigation">
-      <bool>false</bool>
+    </widget>
+   </item>
+   <item>
+    <widget class="QListWidget" name="attributeMatrixList">
+     <property name="sizePolicy">
+      <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
+       <horstretch>0</horstretch>
+       <verstretch>0</verstretch>
+      </sizepolicy>
      </property>
-     <property name="alternatingRowColors">
-      <bool>true</bool>
+     <property name="editTriggers">
+      <set>QAbstractItemView::NoEditTriggers</set>
      </property>
-     <property name="selectionMode">
-      <enum>QAbstractItemView::SingleSelection</enum>
+    </widget>
+   </item>
+   <item>
+    <widget class="QListWidget" name="dataArrayList">
+     <property name="sizePolicy">
+      <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
+       <horstretch>0</horstretch>
+       <verstretch>0</verstretch>
+      </sizepolicy>
      </property>
-     <property name="verticalScrollMode">
-      <enum>QAbstractItemView::ScrollPerPixel</enum>
-     </property>
-     <property name="horizontalScrollMode">
-      <enum>QAbstractItemView::ScrollPerPixel</enum>
-     </property>
-     <property name="resizeGripsVisible">
-      <bool>true</bool>
+     <property name="editTriggers">
+      <set>QAbstractItemView::NoEditTriggers</set>
      </property>
     </widget>
    </item>
