@@ -78,8 +78,16 @@ QtSStyles::~QtSStyles()
 QString QtSStyles::GetUIFont()
 {
 #if defined(Q_OS_MAC)
-  QFont font;
-  return font.defaultFamily();
+  QFont font("Arial");
+  if(font.fromString("Arial"))
+  {
+    return font.toString();
+  }
+  else
+  {
+    QFont font;
+    return font.defaultFamily();
+  }
 #elif defined(Q_OS_WIN)
   return QString::fromUtf8("Arial");
 #else
