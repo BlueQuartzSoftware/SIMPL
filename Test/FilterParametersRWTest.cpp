@@ -41,6 +41,7 @@
 #include "SIMPLib/Common/FilterFactory.hpp"
 #include "SIMPLib/Common/FilterManager.h"
 #include "SIMPLib/Common/FilterPipeline.h"
+#include "SIMPLib/Common/PhaseType.h"
 #include "SIMPLib/Common/SIMPLibSetGetMacros.h"
 #include "SIMPLib/DataArrays/DataArray.hpp"
 #include "SIMPLib/DataContainers/DataArrayPath.h"
@@ -213,6 +214,16 @@ public:
     }
 
     {
+      m_PhaseTypeVector_1.push_back(PhaseType::Type::Primary);
+      m_PhaseTypeVector_1.push_back(PhaseType::Type::Precipitate);
+      m_PhaseTypeVector_1.push_back(PhaseType::Type::Transformation);
+      m_PhaseTypeVector_1.push_back(PhaseType::Type::Matrix);
+      m_PhaseTypeVector_1.push_back(PhaseType::Type::Boundary);
+      m_PhaseTypeVector_1.push_back(PhaseType::Type::Unknown);
+      m_PhaseTypeVector_1.push_back(PhaseType::Type::Any);
+    }
+
+    {
       m_Pair1.first = 3.3;
       m_Pair1.second = 5.23;
     }
@@ -305,6 +316,11 @@ public:
   Q_PROPERTY(ShapeType::Types ShapeTypeVector_1 READ getShapeTypeVector_1 WRITE setShapeTypeVector_1)
   SIMPL_INSTANCE_PROPERTY(ShapeType::Types, ShapeTypeVector_2)
   Q_PROPERTY(ShapeType::Types ShapeTypeVector_2 READ getShapeTypeVector_2 WRITE setShapeTypeVector_2)
+
+  SIMPL_INSTANCE_PROPERTY(PhaseType::Types, PhaseTypeVector_1)
+  Q_PROPERTY(PhaseType::Types::Types PhaseTypeVector_1 READ getPhaseTypeVector_1 WRITE setPhaseTypeVector_1)
+  SIMPL_INSTANCE_PROPERTY(PhaseType::Types, PhaseTypeVector_2)
+  Q_PROPERTY(PhaseType::Types PhaseTypeVector_2 READ getPhaseTypeVector_2 WRITE setPhaseTypeVector_2)
 
   SIMPL_INSTANCE_PROPERTY(UInt32Vector_t, UInt32Vector_1)
   Q_PROPERTY(UInt32Vector_t UInt32Vector_1 READ getUInt32Vector_1 WRITE setUInt32Vector_1)
@@ -762,21 +778,21 @@ public:
 
     {
       PhaseTypeSelectionFilterParameter::Pointer fp =
-          PhaseTypeSelectionFilterParameter::New("Test", "ShapeTypeVector_2", DataArrayPath(), FilterParameter::Parameter, SIMPL_BIND_SETTER(FilterParametersRWTest, this, UInt32Vector_2),
-                                                 SIMPL_BIND_GETTER(FilterParametersRWTest, this, UInt32Vector_1), "", "", "", QStringList());
+          PhaseTypeSelectionFilterParameter::New("Test", "PhaseTypeVector_2", DataArrayPath(), FilterParameter::Parameter, SIMPL_BIND_SETTER(FilterParametersRWTest, this, PhaseTypeVector_2),
+                                                 SIMPL_BIND_GETTER(FilterParametersRWTest, this, PhaseTypeVector_1), "", "", "", QStringList());
 
       QJsonObject obj;
       fp->writeJson(obj);
       fp->readJson(obj);
 
-      DREAM3D_REQUIRE_EQUAL(m_ShapeTypeVector_1.size(), m_ShapeTypeVector_2.size())
+      DREAM3D_REQUIRE_EQUAL(m_PhaseTypeVector_1.size(), m_PhaseTypeVector_2.size())
 
-      for(int i = 0; i < m_ShapeTypeVector_1.size(); i++)
+      for(int i = 0; i < m_PhaseTypeVector_1.size(); i++)
       {
-        DREAM3D_REQUIRE_EQUAL(m_UInt32Vector_1.d[i], m_UInt32Vector_2.d[i])
+        DREAM3D_REQUIRE_EQUAL(static_cast<PhaseType::EnumType>(m_PhaseTypeVector_1[i]), static_cast<PhaseType::EnumType>(m_PhaseTypeVector_2[i]))
       }
 
-      m_UInt32Vector_2 = UInt32Vector_t();
+      //      m_PhaseTypeVector_2 = PhaseTypeVector_t(); // Does this line do anything?
     }
 
     {

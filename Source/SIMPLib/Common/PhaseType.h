@@ -162,4 +162,7 @@ private:
   void operator=(const PhaseType&); // Not Implemented
 };
 
+Q_DECLARE_METATYPE(PhaseType::Type)
+Q_DECLARE_METATYPE(PhaseType::Types)
+
 #endif //_PhaseType_h_

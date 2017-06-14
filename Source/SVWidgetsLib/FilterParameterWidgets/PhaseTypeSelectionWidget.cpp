@@ -412,27 +412,18 @@ void PhaseTypeSelectionWidget::afterPreflight()
 void PhaseTypeSelectionWidget::filterNeedsInputParameters(AbstractFilter* filter)
 {
   int count = phaseListWidget->count();
-  //  {
-  //    std::cout << "PhaseTypeSelectionWidget::filterNeedsInputParameters Count = " << count << std::endl;
-  //  }
-
   QVariant var;
 
-  // QVector<uint32_t> phaseTypes(count, PhaseType::Type::Unknown);
-  QVector<PhaseType::EnumType> phaseTypes(count + 1, static_cast<PhaseType::EnumType>(PhaseType::Type::Unknown));
+  PhaseType::Types phaseTypes(count + 1, PhaseType::Type::Unknown);
   bool ok = false;
-  phaseTypes[0] = static_cast<PhaseType::EnumType>(PhaseType::Type::Unknown);
+  phaseTypes[0] = PhaseType::Type::Unknown;
   for(int i = 0; i < count; ++i)
   {
     QComboBox* cb = qobject_cast<QComboBox*>(phaseListWidget->itemWidget(phaseListWidget->item(i)));
-    PhaseType::EnumType sType = static_cast<PhaseType::EnumType>(cb->itemData(cb->currentIndex(), Qt::UserRole).toUInt(&ok));
-    // phaseTypes[i+1] = sType;
-    phaseTypes[i + 1] = sType;
+    phaseTypes[i + 1] = static_cast<PhaseType::Type>(cb->itemData(cb->currentIndex(), Qt::UserRole).toUInt(&ok));
   }
 
-  UInt32Vector_t data;
-  data.d = phaseTypes;
-  var.setValue(data);
+  var.setValue(phaseTypes);
   ok = false;
 
   // Set the value into the Filter

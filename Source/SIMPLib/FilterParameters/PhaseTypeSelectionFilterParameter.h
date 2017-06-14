@@ -38,6 +38,7 @@
 
 #include <QtCore/QJsonObject>
 
+#include "SIMPLib/Common/PhaseType.h"
 #include "SIMPLib/DataContainers/AttributeMatrix.h"
 #include "SIMPLib/DataContainers/DataArrayPath.h"
 #include "SIMPLib/FilterParameters/FilterParameter.h"
@@ -65,8 +66,8 @@ public:
   SIMPL_STATIC_NEW_MACRO(PhaseTypeSelectionFilterParameter)
   SIMPL_TYPE_MACRO_SUPER(PhaseTypeSelectionFilterParameter, FilterParameter)
 
-  typedef std::function<void(UInt32Vector_t)> SetterCallbackType;
-  typedef std::function<UInt32Vector_t(void)> GetterCallbackType;
+  typedef std::function<void(PhaseType::Types)> SetterCallbackType;
+  typedef std::function<PhaseType::Types(void)> GetterCallbackType;
 
   /**
   * @brief New This function instantiates an instance of the PhaseTypeSelectionFilterParameter. Although this function is available to be used,
