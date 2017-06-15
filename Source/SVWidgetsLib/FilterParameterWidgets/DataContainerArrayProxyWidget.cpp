@@ -175,7 +175,10 @@ void DataContainerArrayProxyWidget::updateProxyChecked(QListWidgetItem* item, bo
 
   if(item->text() == "Select All")
   {
-    checkAllItems(widget, item->checkState());
+    if(item->checkState() != Qt::PartiallyChecked)
+    {
+      checkAllItems(widget, item->checkState());
+    }
   }
   else
   {
@@ -437,9 +440,6 @@ void DataContainerArrayProxyWidget::checkAllItems(QListWidget* listWidget, Qt::C
     listItems[i]->setCheckState(state);
 
     updateProxyChecked(item, false);
-
-    //Qt::CheckState state = shouldStrikeOutItem(item) ? Qt::Checked : Qt::Unchecked;
-    //toggleStrikeOutFont(item, state);
   }
 }
 
