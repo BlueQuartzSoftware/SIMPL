@@ -111,9 +111,6 @@ class SIMPLib_EXPORT FilterParameter
 
 typedef QVector<FilterParameter::Pointer> FilterParameterVector;
 
-typedef struct { QVector<unsigned int> d; } UInt32Vector_t;
-Q_DECLARE_METATYPE(UInt32Vector_t)
-
 // -----------------------------------------------------------------------------
 // This section of Macros allows each FilterParameter subclass to create a macro
 // or set of macros that can lessen the amout of code that needs to be written
