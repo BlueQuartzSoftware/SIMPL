@@ -86,10 +86,10 @@ QString QtSStyles::GetUIFont()
     QFont font;
     return font.toString();
   }
-#if defined(Q_OS_MAC)
-#elif defined(Q_OS_WIN)
-  //return QString::fromUtf8("Arial");
-#else
+//#if defined(Q_OS_MAC)
+//#elif defined(Q_OS_WIN)
+//  //return QString::fromUtf8("Arial");
+//#else
 //  QFont font("Arial");
 //  if(font.fromString("Arial"))
 //  {
@@ -100,9 +100,7 @@ QString QtSStyles::GetUIFont()
 //    QFont font;
 //    return font.defaultFamily();
 //  }
-#endif
-
-
+//#endif
 }
 
 // -----------------------------------------------------------------------------
