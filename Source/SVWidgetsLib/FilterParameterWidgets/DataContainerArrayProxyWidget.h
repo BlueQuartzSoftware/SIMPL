@@ -124,6 +124,10 @@ class SVWidgetsLib_EXPORT DataContainerArrayProxyWidget : public FilterParameter
     QList<QListWidgetItem*> getChildItems(QListWidgetItem* item, QList<QListWidgetItem*> otherItems);
 
     bool shouldStrikeOutItem(QListWidgetItem* item);
+    Qt::CheckState allSelectedState(QListWidget* listWidget);
+    QList<QListWidgetItem*> getAllItems(QListWidget* listWidget);
+
+    void checkAllItems(QListWidget* listWidget, Qt::CheckState state);
 
   private:
 
