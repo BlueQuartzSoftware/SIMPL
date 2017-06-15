@@ -37,7 +37,6 @@
 
 #include <assert.h>
 
-#include <QtCore/QItemSelectionModel>
 #include <QtCore/QMetaProperty>
 
 #include <QtGui/QBrush>
@@ -169,7 +168,7 @@ void DataContainerArrayProxyWidget::itemSelected(QListWidgetItem* item)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void DataContainerArrayProxyWidget::updateProxyChecked(QListWidgetItem* item)
+void DataContainerArrayProxyWidget::updateProxyChecked(QListWidgetItem* item, bool updateAll)
 {
   QString name = item->text();
   QListWidget* widget = item->listWidget();
@@ -197,7 +196,10 @@ void DataContainerArrayProxyWidget::updateProxyChecked(QListWidgetItem* item)
   Qt::CheckState state = shouldStrikeOutItem(item) ? Qt::Checked : Qt::Unchecked;
   toggleStrikeOutFont(item, state);
 
-  allSelectedState(widget);
+  if(updateAll)
+  {
+    updateSelectAllState(widget);
+  }
 }
 
 // -----------------------------------------------------------------------------
@@ -407,13 +409,13 @@ AttributeMatrixProxy& DataContainerArrayProxyWidget::getAttributeMatrixProxy()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-QList<QListWidgetItem*> DataContainerArrayProxyWidget::getAllItems(QListWidget* listWidget)
+QList<QListWidgetItem*> DataContainerArrayProxyWidget::getAllItems(QListWidget* listWidget, bool ignoreSelectAll)
 {
   QList<QListWidgetItem*> listItems;
 
   for(int i = 0; listWidget->item(i) != nullptr; i++)
   {
-    if(listWidget->item(i)->text() != "Select All")
+    if((false == ignoreSelectAll) || (listWidget->item(i)->text() != "Select All"))
     {
       listItems.append(listWidget->item(i));
     }
@@ -431,14 +433,20 @@ void DataContainerArrayProxyWidget::checkAllItems(QListWidget* listWidget, Qt::C
 
   for(int i = 0; i < listItems.size(); i++)
   {
+    QListWidgetItem* item = listItems[i];
     listItems[i]->setCheckState(state);
+
+    updateProxyChecked(item, false);
+
+    //Qt::CheckState state = shouldStrikeOutItem(item) ? Qt::Checked : Qt::Unchecked;
+    //toggleStrikeOutFont(item, state);
   }
 }
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-Qt::CheckState DataContainerArrayProxyWidget::allSelectedState(QListWidget* listWidget)
+Qt::CheckState DataContainerArrayProxyWidget::updateSelectAllState(QListWidget* listWidget)
 {
   QList<QListWidgetItem*> listItems = getAllItems(listWidget);
   QListWidgetItem* selectAll = nullptr;
@@ -474,6 +482,9 @@ Qt::CheckState DataContainerArrayProxyWidget::allSelectedState(QListWidget* list
   if(selectAll)
   {
     selectAll->setCheckState(state);
+
+    Qt::CheckState state = shouldStrikeOutItem(selectAll) ? Qt::Checked : Qt::Unchecked;
+    toggleStrikeOutFont(selectAll, state);
   }
 
   return state;
@@ -497,7 +508,7 @@ void DataContainerArrayProxyWidget::applyDataContainerArrayProxy(DataContainerAr
   // Add Select All button
   QListWidgetItem* selectAll = new QListWidgetItem("Select All");
   listWidget->insertItem(0, selectAll);
-  selectAll->setCheckState(allSelectedState(listWidget));
+  selectAll->setCheckState(updateSelectAllState(listWidget));
 
   m_DcaProxy = proxy;
   applyDataContainerProxy();
@@ -527,7 +538,7 @@ void DataContainerArrayProxyWidget::applyDataContainerProxy()
     // Add Select All button
     QListWidgetItem* selectAll = new QListWidgetItem("Select All");
     listWidget->insertItem(0, selectAll);
-    selectAll->setCheckState(allSelectedState(listWidget));
+    selectAll->setCheckState(updateSelectAllState(listWidget));
   }
 
   applyAttributeMatrixProxy();
@@ -558,80 +569,8 @@ void DataContainerArrayProxyWidget::applyAttributeMatrixProxy()
     // Add Select All button
     QListWidgetItem* selectAll = new QListWidgetItem("Select All");
     listWidget->insertItem(0, selectAll);
-    selectAll->setCheckState(allSelectedState(listWidget));
+    selectAll->setCheckState(updateSelectAllState(listWidget));
   }
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-QList<QStandardItem*> findChildItems(QStandardItem* parent, QString text)
-{
-  QList<QStandardItem*> list;
-  if(parent->hasChildren() == false)
-  {
-    return list;
-  } // No children, nothing to find
-  int childCount = parent->rowCount();
-
-  for(int i = 0; i < childCount; i++)
-  {
-    QStandardItem* item = parent->child(i);
-    if(text.compare(item->text()) == 0)
-    {
-      list.push_back(item);
-    }
-  }
-  return list;
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-void removeNonExistantChildren(QStandardItem* parent, QStringList possibleNames)
-{
-  int childCount = parent->rowCount();
-
-  // iterate from back to front as we may pop values out of the model which would screw up the index
-  for(int i = childCount - 1; i >= 0; i--)
-  {
-    QStandardItem* item = parent->child(i);
-    QStringList list = possibleNames.filter(item->text());
-    if(list.size() == 0) // the name is in the model but NOT in the proxy so we need to remove it
-    {
-      // qDebug() << "!! Removing " << item->text();
-      parent->removeRow(i);
-    }
-  }
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-template <typename T> QStandardItem* getColumnItem(QStandardItem* parent, QString name, T& proxy)
-{
-  QStandardItem* item = nullptr;
-  QList<QStandardItem*> items = findChildItems(parent, name);
-  if(items.count() == 0)
-  {
-    // Create a new item because we did not find this item already
-    item = new QStandardItem(proxy.name);
-    item->setCheckState((proxy.flag == 2 ? Qt::Checked : Qt::Unchecked));
-    item->setCheckable(true);
-    parent->appendRow(item);
-  }
-  else if(items.count() > 1)
-  {
-    item = nullptr;
-  }
-  else
-  {
-    item = items.at(0);
-    item->setCheckState((proxy.flag == 2 ? Qt::Checked : Qt::Unchecked));
-    item->setCheckable(true);
-  }
-
-  return item;
 }
 
 // -----------------------------------------------------------------------------

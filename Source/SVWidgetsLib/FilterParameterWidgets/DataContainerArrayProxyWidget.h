@@ -39,7 +39,6 @@
 
 #include <QtCore/QObject>
 #include <QtCore/QPointer>
-#include <QtGui/QStandardItemModel>
 #include <QtWidgets/QWidget>
 
 #include "SVWidgetsLib/QtSupport/QtSFaderWidget.h"
@@ -120,12 +119,12 @@ class SVWidgetsLib_EXPORT DataContainerArrayProxyWidget : public FilterParameter
     //void updateWidgetFromProxy(DataContainerArrayProxy& proxy);
     void updateProxyFromProxy(DataContainerArrayProxy& current, DataContainerArrayProxy& incoming);
 
-    void updateProxyChecked(QListWidgetItem* item);
+    void updateProxyChecked(QListWidgetItem* item, bool updateSelectAll = true);
     QList<QListWidgetItem*> getChildItems(QListWidgetItem* item, QList<QListWidgetItem*> otherItems);
 
     bool shouldStrikeOutItem(QListWidgetItem* item);
-    Qt::CheckState allSelectedState(QListWidget* listWidget);
-    QList<QListWidgetItem*> getAllItems(QListWidget* listWidget);
+    Qt::CheckState updateSelectAllState(QListWidget* listWidget);
+    QList<QListWidgetItem*> getAllItems(QListWidget* listWidget, bool ignoreSelectAll = true);
 
     void checkAllItems(QListWidget* listWidget, Qt::CheckState state);
 
