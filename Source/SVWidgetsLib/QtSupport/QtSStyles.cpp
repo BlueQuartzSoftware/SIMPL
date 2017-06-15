@@ -35,14 +35,12 @@
 
 #include "QtSStyles.h"
 
-
+#include <QtCore/QDebug>
 #include <QtCore/QJsonDocument>
 #include <QtCore/QJsonObject>
 #include <QtCore/QFile>
 #include <QtCore/QTextStream>
 #include <QtCore/QJsonValue>
-
-#include <SIMPLib/Common/Constants.h>
 
 #include <QtWidgets/QApplication>
 #include <QtWidgets/QLineEdit>
@@ -77,31 +75,34 @@ QtSStyles::~QtSStyles()
 // -----------------------------------------------------------------------------
 QString QtSStyles::GetUIFont()
 {
+  QFont font("FiraSans");
+
+  if(font.fromString("FiraSans"))
+  {
+    return font.toString();
+  }
+  else
+  {
+    QFont font;
+    return font.toString();
+  }
 #if defined(Q_OS_MAC)
-  QFont font("Arial");
-  if(font.fromString("Arial"))
-  {
-    return font.toString();
-  }
-  else
-  {
-    QFont font;
-    return font.defaultFamily();
-  }
 #elif defined(Q_OS_WIN)
-  return QString::fromUtf8("Arial");
+  //return QString::fromUtf8("Arial");
 #else
-  QFont font("Arial");
-  if(font.fromString("Arial"))
-  {
-    return font.toString();
-  }
-  else
-  {
-    QFont font;
-    return font.defaultFamily();
-  }
+//  QFont font("Arial");
+//  if(font.fromString("Arial"))
+//  {
+//    return font.toString();
+//  }
+//  else
+//  {
+//    QFont font;
+//    return font.defaultFamily();
+//  }
 #endif
+
+
 }
 
 // -----------------------------------------------------------------------------
@@ -109,7 +110,7 @@ QString QtSStyles::GetUIFont()
 // -----------------------------------------------------------------------------
 QFont QtSStyles::GetHumanLabelFont()
 {
-  QFont humanLabelFont;
+  QFont humanLabelFont(GetUIFont());
   humanLabelFont.setBold(true);
   humanLabelFont.setItalic(false);
   humanLabelFont.setWeight(QFont::Bold);
@@ -131,7 +132,7 @@ QFont QtSStyles::GetHumanLabelFont()
 // -----------------------------------------------------------------------------
 QFont QtSStyles::GetBrandingLabelFont()
 {
-  QFont brandingFont;
+  QFont brandingFont(GetUIFont());
   brandingFont.setBold(true);
   brandingFont.setItalic(true);
   brandingFont.setWeight(QFont::Bold);
@@ -153,7 +154,7 @@ QFont QtSStyles::GetBrandingLabelFont()
 // -----------------------------------------------------------------------------
 QFont QtSStyles::GetCategoryFont()
 {
-  QFont categoryFont;
+  QFont categoryFont(GetUIFont());
   categoryFont.setBold(true);
   categoryFont.setWeight(QFont::Bold);
   categoryFont.setStyleStrategy(QFont::PreferAntialias);
@@ -175,7 +176,7 @@ QFont QtSStyles::GetCategoryFont()
 // -----------------------------------------------------------------------------
 QFont QtSStyles::GetTitleFont()
 {
-  QFont categoryFont;
+  QFont categoryFont(GetUIFont());
   categoryFont.setBold(true);
   categoryFont.setWeight(QFont::Bold);
   categoryFont.setStyleStrategy(QFont::PreferAntialias);

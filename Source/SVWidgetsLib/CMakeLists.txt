@@ -72,7 +72,7 @@ cmp_IDE_GENERATED_PROPERTIES("Generated" "${${PROJECT_NAME}_Generated_HDRS}" "${
 
 
 # -- Run MOC and UIC on the necessary files
-QT5_ADD_RESOURCES( SVWidgetsLib_Generated_RC_SRCS "${SVWidgetsLib_SOURCE_DIR}/icons/images/Icons.qrc"  )
+QT5_ADD_RESOURCES( SVWidgetsLib_Generated_RC_SRCS "${SVWidgetsLib_SOURCE_DIR}/icons/images/Icons.qrc" "${SVWidgetsLib_SOURCE_DIR}/fonts/fonts.qrc")
 
 
 add_definitions(-DQT_CORE_LIB)
