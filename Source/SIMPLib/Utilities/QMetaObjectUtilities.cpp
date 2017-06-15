@@ -79,6 +79,18 @@ QDataStream& operator<<(QDataStream& out, const DataArrayPath& v)
   out << v.getDataContainerName() << "|" << v.getAttributeMatrixName() << "|" << v.getDataArrayName();
   return out;
 }
+
+QDataStream& operator<<(QDataStream& out, const PhaseType::Type& v)
+{
+  out << v;
+  return out;
+}
+QDataStream& operator>>(QDataStream& in, PhaseType::Type& v)
+{
+  in >> v;
+  return in;
+}
+
 // QDataStream& operator>>( QDataStream& in, DataArrayPath& v) { in >> v.getDataContainerName() >> "|" >> v.getAttributeMatrixName() >> "|" >> v.getDataArrayName(); return in;}
 
 // -----------------------------------------------------------------------------
@@ -112,6 +124,8 @@ void QMetaObjectUtilities::RegisterMetaTypes()
   qRegisterMetaType<UInt32Vector_t>("UInt32Vector_t");
   qRegisterMetaType<FPRangePair>("FPRangePair");
   qRegisterMetaType<DynamicTableData>("DynamicTableData");
+  qRegisterMetaType<PhaseType::Types>("PhaseType::Types");
   qRegisterMetaTypeStreamOperators<IntVec3_t>("IntVec3_t");
   qRegisterMetaTypeStreamOperators<FloatVec3_t>("FloatVec3_t");
+  qRegisterMetaTypeStreamOperators<PhaseType::Types>("PhaseType::Types");
 }

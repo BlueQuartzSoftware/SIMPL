@@ -96,3 +96,11 @@ AttributeMatrix::Pointer IComparisonWidget::getAttributeMatrix()
 {
   return m_attributeMatrix;
 }
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+QStringList IComparisonWidget::getArrayNames()
+{
+  return m_arrayNames;
+}
