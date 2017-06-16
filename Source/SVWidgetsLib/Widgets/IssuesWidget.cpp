@@ -99,7 +99,6 @@ void IssuesWidget::clearIssues()
   ui->errorTableWidget->clearContents();
   ui->errorTableWidget->setRowCount(0);
   m_CachedMessages.clear();
-  emit tableHasErrors(false);
 }
 
 // -----------------------------------------------------------------------------
@@ -141,10 +140,6 @@ void IssuesWidget::displayCachedMessages()
   if(errCount > 0)
   {
     emit tableHasErrors(true);
-  }
-  else
-  {
-    emit tableHasErrors(false);
   }
 
   // Now create the correct number of table rows.
