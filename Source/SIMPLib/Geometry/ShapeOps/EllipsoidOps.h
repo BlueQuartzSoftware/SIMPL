@@ -52,9 +52,8 @@ class SIMPLib_EXPORT EllipsoidOps : public ShapeOps
 
     virtual ~EllipsoidOps();
 
-    virtual float radcur1(QMap<ArgName, float> args);
-    virtual float inside(float axis1comp, float axis2comp, float axis3comp);
-    virtual void init() {  }
+    virtual float radcur1(QMap<ArgName, float> args) override;
+    virtual float inside(float axis1comp, float axis2comp, float axis3comp) override;
 
   protected:
     EllipsoidOps();
