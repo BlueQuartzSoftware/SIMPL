@@ -71,6 +71,7 @@ set(_PublicFilters
   LinkFeatureMapToElementArray
   MaskCountDecision
   MoveData
+  MoveMultiData
   PostSlackMessage
   RawBinaryReader
   ReadASCIIData
