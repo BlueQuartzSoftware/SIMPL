@@ -227,7 +227,7 @@ void BookmarksToolboxWidget::readPrebuiltPipelines()
 
   // Add top-level folder and then load up all the pipelines into the folder
   QString dirName = "Prebuilt Pipelines";
-  addTreeItem(QModelIndex(), dirName, QIcon(":/folder_blue.png"), QString(), 0, true, false, false);
+  addTreeItem(QModelIndex(), dirName, QIcon(":/folder_blue.png"), pPath, 0, true, false, false);
   QModelIndex index = model->index(0, BookmarksItem::Name, QModelIndex());
   addPipelinesRecursively(pipelinesDir, index, iconFileName, allowEditing, fileExtension, itemType);
 }
@@ -255,7 +255,7 @@ void BookmarksToolboxWidget::addPipelinesRecursively(QDir currentDir, QModelInde
       // qDebug() << fi.absoluteFilePath();
       int row = model->rowCount(parent);
       QString baseName = fi.baseName();
-      addTreeItem(parent, baseName, QIcon(":/folder_blue.png"), QString(), row, true, false, false);
+      addTreeItem(parent, baseName, QIcon(":/folder_blue.png"), fi.absoluteFilePath(), row, true, false, false);
       nextIndex = model->index(row, BookmarksItem::Name, parent);
       addPipelinesRecursively(QDir(fi.absoluteFilePath()), nextIndex, iconFileName, allowEditing, filters, itemType); // Recursive call
     }
@@ -363,9 +363,14 @@ void BookmarksToolboxWidget::on_bookmarksTreeView_doubleClicked(const QModelInde
   {
     return; // The user double clicked a folder, so don't do anything
   }
+
+  QFileInfo finfo(pipelinePath);
+  if(finfo.isDir())
+  {
+    return;
+  }
   else
   {
-    bool itemHasErrors = model->data(pathIndex, Qt::UserRole).value<bool>();
     QString path = pathIndex.data().toString();
     QFileInfo fi(path);
     if(fi.exists() == false)
@@ -380,6 +385,7 @@ void BookmarksToolboxWidget::on_bookmarksTreeView_doubleClicked(const QModelInde
     }
     else
     {
+      bool itemHasErrors = model->data(pathIndex, Qt::UserRole).value<bool>();
       if(itemHasErrors == true)
       {
         // Set the itemHasError variable, and have the watcher monitor the file again
