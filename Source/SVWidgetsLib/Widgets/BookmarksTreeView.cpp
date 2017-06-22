@@ -673,8 +673,11 @@ QJsonObject BookmarksTreeView::toJsonObject()
     QModelIndex childIndex = model->index(i, BookmarksItem::Name, QModelIndex());
     QString name = childIndex.data().toString();
 
-    QJsonObject childObj = wrapModel(childIndex);
-    treeObj[name] = childObj;
+    if(name.compare("Prebuilt Pipelines") != 0)
+    {
+      QJsonObject childObj = wrapModel(childIndex);
+      treeObj[name] = childObj;
+    }
   }
 
   return treeObj;
@@ -724,6 +727,10 @@ BookmarksModel* BookmarksTreeView::FromJsonObject(QJsonObject treeObject)
   keys.sort(Qt::CaseInsensitive);
   for(int i = 0; i < keys.size(); i++)
   {
+    if(keys[i].compare("Prebuilt Pipelines") == 0)
+    {
+      continue;
+    }
     QJsonValue val = treeObject.value(keys[i]);
     if(val.isObject())
     {
