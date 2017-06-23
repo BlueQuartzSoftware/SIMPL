@@ -266,39 +266,6 @@ void DataContainerArrayProxyWidget::updateProxyChecked(QListWidgetItem* item, bo
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-bool DataContainerArrayProxyWidget::shouldStrikeOutItem(QCheckBox* item)
-{
-  bool dcChecked = false;
-  bool amChecked = false;
-
-  if(false == m_DcName.isEmpty())
-  {
-    dcChecked = (getDataContainerProxy().flag == Qt::Checked);
-  }
-  if(false == m_AmName.isEmpty())
-  {
-    amChecked = (getAttributeMatrixProxy().flag == Qt::Checked);
-  }
-
-  if(item == selectAllDataContainer)
-  {
-    return item->checkState() == Qt::Checked;
-  }
-  else if(item == selectAllAttributeMatrix)
-  {
-    return dcChecked || item->checkState() == Qt::Checked;
-  }
-  else if(item == selectAllDataArray)
-  {
-    return dcChecked || amChecked || item->checkState() == Qt::Checked;
-  }
-
-  return false;
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
 bool DataContainerArrayProxyWidget::shouldStrikeOutItem(QListWidgetItem* item)
 {
   bool dcChecked = false;
@@ -376,29 +343,6 @@ void DataContainerArrayProxyWidget::toggleStrikeOutFont(QListWidgetItem* item, Q
   {
     font.setStrikeOut(false);
     item->setBackground(defaultBrush);
-  }
-
-  item->setFont(font);
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-void DataContainerArrayProxyWidget::toggleStrikeOutFont(QCheckBox* item, Qt::CheckState state)
-{
-  QFont font = item->font();
-
-  QColor errorColor(255, 191, 193);
-
-  QColor defaultColor(Qt::white);
-
-  if(state == Qt::Checked)
-  {
-    font.setStrikeOut(true);
-  }
-  else if(item->checkState() == false)
-  {
-    font.setStrikeOut(false);
   }
 
   item->setFont(font);
@@ -604,9 +548,6 @@ Qt::CheckState DataContainerArrayProxyWidget::updateSelectAllState(QListWidget* 
   if(selectAll)
   {
     selectAll->setCheckState(state);
-
-    Qt::CheckState state = shouldStrikeOutItem(selectAll) ? Qt::Checked : Qt::Unchecked;
-    toggleStrikeOutFont(selectAll, state);
   }
 
   return state;
