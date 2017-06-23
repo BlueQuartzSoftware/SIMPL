@@ -570,20 +570,15 @@ void MultiDataArraySelectionWidget::beforePreflight()
   }
 
   createSelectionMenu();
-}
 
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-void MultiDataArraySelectionWidget::afterPreflight()
-{
+  // Previously in afterPreflight()
   DataContainerArray::Pointer dca = getFilter()->getDataContainerArray();
-  if (NULL == dca.get()) { return; }
+  if(NULL == dca.get()) { return; }
 
-  if (dca->doesAttributeMatrixExist(DataArrayPath::Deserialize(m_SelectedAttributeMatrixPath->text(), Detail::Delimiter)))
+  if(dca->doesAttributeMatrixExist(DataArrayPath::Deserialize(m_SelectedAttributeMatrixPath->text(), Detail::Delimiter)))
   {
     AttributeMatrix::Pointer am = dca->getAttributeMatrix(DataArrayPath::Deserialize(m_SelectedAttributeMatrixPath->text(), Detail::Delimiter));
-    if (nullptr != am.get()) {
+    if(nullptr != am.get()) {
       QString html = am->getInfoString(SIMPL::HtmlFormat);
       m_SelectedAttributeMatrixPath->setToolTip(html);
       m_SelectedAttributeMatrixPath->setStyleSheet(QtSStyles::QToolSelectionButtonStyle(true));
@@ -591,18 +586,18 @@ void MultiDataArraySelectionWidget::afterPreflight()
       QList<QString> arrayNames = am->getAttributeArrayNames();
 
       QList<QString> selectListNames;
-      for (int i=0; i<attributeArraysSelectWidget->count(); i++)
+      for(int i = 0; i<attributeArraysSelectWidget->count(); i++)
       {
         selectListNames.append(attributeArraysSelectWidget->item(i)->text());
       }
 
       QList<QString> orderListNames;
-      for (int i=0; i<attributeArraysOrderWidget->count(); i++)
+      for(int i = 0; i<attributeArraysOrderWidget->count(); i++)
       {
         QListWidgetItem* item = attributeArraysOrderWidget->item(i);
         QString name = item->text();
         orderListNames.append(name);
-        if (arrayNames.contains(name) == false)
+        if(arrayNames.contains(name) == false)
         {
           //item->setFlags(item->flags() & ~Qt::ItemIsEnabled);
           item->setBackgroundColor(QColor(235, 110, 110));
@@ -613,9 +608,9 @@ void MultiDataArraySelectionWidget::afterPreflight()
         }
       }
 
-      for (int i=0; i<arrayNames.size(); i++)
+      for(int i = 0; i<arrayNames.size(); i++)
       {
-        if (selectListNames.contains(arrayNames[i]) == false && orderListNames.contains(arrayNames[i]) == false)
+        if(selectListNames.contains(arrayNames[i]) == false && orderListNames.contains(arrayNames[i]) == false)
         {
           attributeArraysSelectWidget->addItem(arrayNames[i]);
         }
@@ -626,6 +621,14 @@ void MultiDataArraySelectionWidget::afterPreflight()
   {
     m_SelectedAttributeMatrixPath->setStyleSheet(QtSStyles::QToolSelectionButtonStyle(false));
   }
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void MultiDataArraySelectionWidget::afterPreflight()
+{
+  
 }
 
 // -----------------------------------------------------------------------------

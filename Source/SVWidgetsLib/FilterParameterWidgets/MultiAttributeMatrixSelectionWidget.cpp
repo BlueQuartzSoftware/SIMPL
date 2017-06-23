@@ -554,20 +554,15 @@ void MultiAttributeMatrixSelectionWidget::beforePreflight()
   }
 
   createSelectionMenu();
-}
 
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-void MultiAttributeMatrixSelectionWidget::afterPreflight()
-{
+  // Previously in afterPreflight()
   DataContainerArray::Pointer dca = getFilter()->getDataContainerArray();
-  if (NULL == dca.get()) { return; }
+  if(NULL == dca.get()) { return; }
 
-  if (dca->doesDataContainerExist(DataArrayPath::Deserialize(m_SelectedDataContainerPath->text(), Detail::Delimiter).getDataContainerName()))
+  if(dca->doesDataContainerExist(DataArrayPath::Deserialize(m_SelectedDataContainerPath->text(), Detail::Delimiter).getDataContainerName()))
   {
     DataContainer::Pointer dc = dca->getDataContainer(DataArrayPath::Deserialize(m_SelectedDataContainerPath->text(), Detail::Delimiter));
-    if (nullptr != dc.get()) {
+    if(nullptr != dc.get()) {
       QString html = dc->getInfoString(SIMPL::HtmlFormat);
       m_SelectedDataContainerPath->setToolTip(html);
       m_SelectedDataContainerPath->setStyleSheet(QtSStyles::QToolSelectionButtonStyle(true));
@@ -575,18 +570,18 @@ void MultiAttributeMatrixSelectionWidget::afterPreflight()
       QList<QString> matrixNames = dc->getAttributeMatrixNames();
 
       QList<QString> selectListNames;
-      for (int i=0; i<attributeMatricesSelectWidget->count(); i++)
+      for(int i = 0; i<attributeMatricesSelectWidget->count(); i++)
       {
         selectListNames.append(attributeMatricesSelectWidget->item(i)->text());
       }
 
       QList<QString> orderListNames;
-      for (int i=0; i<attributeMatricesOrderWidget->count(); i++)
+      for(int i = 0; i<attributeMatricesOrderWidget->count(); i++)
       {
         QListWidgetItem* item = attributeMatricesOrderWidget->item(i);
         QString name = item->text();
         orderListNames.append(name);
-        if (matrixNames.contains(name) == false)
+        if(matrixNames.contains(name) == false)
         {
           //item->setFlags(item->flags() & ~Qt::ItemIsEnabled);
           item->setBackgroundColor(QColor(235, 110, 110));
@@ -597,9 +592,9 @@ void MultiAttributeMatrixSelectionWidget::afterPreflight()
         }
       }
 
-      for (int i=0; i<matrixNames.size(); i++)
+      for(int i = 0; i<matrixNames.size(); i++)
       {
-        if (selectListNames.contains(matrixNames[i]) == false && orderListNames.contains(matrixNames[i]) == false)
+        if(selectListNames.contains(matrixNames[i]) == false && orderListNames.contains(matrixNames[i]) == false)
         {
           attributeMatricesSelectWidget->addItem(matrixNames[i]);
         }
@@ -610,6 +605,14 @@ void MultiAttributeMatrixSelectionWidget::afterPreflight()
   {
     m_SelectedDataContainerPath->setStyleSheet(QtSStyles::QToolSelectionButtonStyle(false));
   }
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void MultiAttributeMatrixSelectionWidget::afterPreflight()
+{
+  
 }
 
 // -----------------------------------------------------------------------------
