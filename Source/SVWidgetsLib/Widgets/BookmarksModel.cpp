@@ -125,16 +125,14 @@ QFileSystemWatcher* BookmarksModel::getFileSystemWatcher()
 void BookmarksModel::updateRowState(const QString& path)
 {
   QFileInfo fi(path);
-  if(fi.exists() == false)
-  {
-    QModelIndexList indexList = findIndexByPath(path);
-    for(int i = 0; i < indexList.size(); i++)
-    {
-      QModelIndex nameIndex = index(indexList[i].row(), BookmarksItem::Name, indexList[i].parent());
 
-      // Set the itemHasError variable
-      setData(nameIndex, true, Qt::UserRole);
-    }
+  QModelIndexList indexList = findIndexByPath(path);
+  for(int i = 0; i < indexList.size(); i++)
+  {
+    QModelIndex nameIndex = index(indexList[i].row(), BookmarksItem::Name, indexList[i].parent());
+
+    // Set the itemHasError variable
+    setData(nameIndex, !fi.exists(), Qt::UserRole);
   }
 }
 
@@ -219,6 +217,10 @@ QVariant BookmarksModel::data(const QModelIndex& index, int role) const
       {
         QString html = JsonFilterParametersReader::HtmlSummaryFromFile(path, nullptr);
         return html;
+      }
+      else
+      {
+        return path;
       }
     }
   }

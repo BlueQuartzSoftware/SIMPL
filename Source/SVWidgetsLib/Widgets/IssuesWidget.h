@@ -80,7 +80,14 @@ class SVWidgetsLib_EXPORT IssuesWidget : public QWidget, public IObserver
 
     void showFilterHelp(const QString &url);
 
+  signals:
+    void tableHasErrors(bool b);
+    void showTable(bool b);
+
   protected:
+    /**
+     * @brief setupGui
+     */
     void setupGui();
 
 

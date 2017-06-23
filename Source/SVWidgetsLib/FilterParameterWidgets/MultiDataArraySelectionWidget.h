@@ -128,8 +128,11 @@ class SVWidgetsLib_EXPORT MultiDataArraySelectionWidget : public FilterParameter
     void on_deselectBtn_clicked();
     void on_removeBtn_clicked();
 
-    void on_attributeArraysSelectWidget_itemSelectionChanged();
-    void on_attributeArraysOrderWidget_itemSelectionChanged();
+    void on_availableArraysListWidget_itemSelectionChanged();
+    void on_selectedArraysListWidget_itemSelectionChanged();
+
+    void on_availableArraysListWidget_itemDoubleClicked(QListWidgetItem* item);
+    void on_selectedArraysListWidget_itemDoubleClicked(QListWidgetItem* item);
 
   signals:
     void errorSettingFilterParameter(const QString& msg);

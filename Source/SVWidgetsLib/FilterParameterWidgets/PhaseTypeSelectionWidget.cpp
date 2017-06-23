@@ -100,9 +100,6 @@ void PhaseTypeSelectionWidget::setupGui()
   label->setText(m_FilterParameter->getHumanLabel());
 
   // Get the default path from the Filter instance to cache
-  // UInt32Vector_t data = getFilter()->property(PROPERTY_NAME_AS_CHAR).value<DataArrayPath>();
-  // data.d =
-
   m_SelectedAttributeMatrixPath->setStyleSheet(QtSStyles::QToolSelectionButtonStyle(true));
 
   m_MenuMapper = new QSignalMapper(this);
@@ -301,8 +298,7 @@ void PhaseTypeSelectionWidget::updatePhaseComboBoxes()
   int phaseCount = getFilter()->property(countProp.toLatin1().constData()).toInt(&ok);
   QString phaseDataProp = m_FilterParameter->getPhaseTypeDataProperty();
 
-  UInt32Vector_t vectorWrapper = getFilter()->property(phaseDataProp.toLatin1().constData()).value<UInt32Vector_t>();
-  QVector<quint32> dataFromFilter = vectorWrapper.d;
+  PhaseType::Types dataFromFilter = getFilter()->property(phaseDataProp.toLatin1().constData()).value<PhaseType::Types>();
   if(phaseCount < 0 && dataFromFilter.size() < 10) // there was an issue getting the phase Count from the Filter.
   {
     phaseCount = dataFromFilter.size(); // So lets just use the count from the actual phase data
@@ -331,7 +327,7 @@ void PhaseTypeSelectionWidget::updatePhaseComboBoxes()
 
     if(i < dataFromFilter.size())
     {
-      cb->setCurrentIndex(dataFromFilter[i]);
+      cb->setCurrentIndex(static_cast<int>(dataFromFilter[i]));
     }
     connect(cb, SIGNAL(currentIndexChanged(int)), this, SLOT(phaseTypeComboBoxChanged(int)));
   }

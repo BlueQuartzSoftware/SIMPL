@@ -322,10 +322,10 @@ public:
   SIMPL_INSTANCE_PROPERTY(PhaseType::Types, PhaseTypeVector_2)
   Q_PROPERTY(PhaseType::Types PhaseTypeVector_2 READ getPhaseTypeVector_2 WRITE setPhaseTypeVector_2)
 
-  SIMPL_INSTANCE_PROPERTY(UInt32Vector_t, UInt32Vector_1)
-  Q_PROPERTY(UInt32Vector_t UInt32Vector_1 READ getUInt32Vector_1 WRITE setUInt32Vector_1)
-  SIMPL_INSTANCE_PROPERTY(UInt32Vector_t, UInt32Vector_2)
-  Q_PROPERTY(UInt32Vector_t UInt32Vector_2 READ getUInt32Vector_2 WRITE setUInt32Vector_2)
+//  SIMPL_INSTANCE_PROPERTY(UInt32Vector_t, UInt32Vector_1)
+//  Q_PROPERTY(UInt32Vector_t UInt32Vector_1 READ getUInt32Vector_1 WRITE setUInt32Vector_1)
+//  SIMPL_INSTANCE_PROPERTY(UInt32Vector_t, UInt32Vector_2)
+//  Q_PROPERTY(UInt32Vector_t UInt32Vector_2 READ getUInt32Vector_2 WRITE setUInt32Vector_2)
 
 
   typedef QPair<double, double> DoublesPair;
