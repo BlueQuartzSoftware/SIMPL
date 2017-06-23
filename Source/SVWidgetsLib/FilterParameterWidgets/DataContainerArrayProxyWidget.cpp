@@ -151,6 +151,7 @@ void DataContainerArrayProxyWidget::selectAllDataContainersClicked(bool checked)
 
   dataContainerList->blockSignals(true);
   checkAllItems(dataContainerList, selectAllDataContainer->checkState());
+  applyDataContainerArrayProxy(m_DcaProxy);
   dataContainerList->blockSignals(false);
 
   emit parametersChanged();
@@ -168,6 +169,7 @@ void DataContainerArrayProxyWidget::selectAllAttributeMatricesClicked(bool check
 
   attributeMatrixList->blockSignals(true);
   checkAllItems(attributeMatrixList, selectAllAttributeMatrix->checkState());
+  applyDataContainerProxy();
   attributeMatrixList->blockSignals(false);
 
   emit parametersChanged();
@@ -185,6 +187,7 @@ void DataContainerArrayProxyWidget::selectAllDataArraysClicked(bool checked)
 
   dataArrayList->blockSignals(true);
   checkAllItems(dataArrayList, selectAllDataArray->checkState());
+  applyAttributeMatrixProxy();
   dataArrayList->blockSignals(false);
 
   emit parametersChanged();
