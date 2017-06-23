@@ -120,6 +120,13 @@ void DataContainerArrayProxyWidget::setupGui()
   connect(attributeMatrixList, SIGNAL(itemClicked(QListWidgetItem*)), this, SLOT(itemSelected(QListWidgetItem*)));
   connect(dataArrayList, SIGNAL(itemClicked(QListWidgetItem*)), this, SLOT(itemSelected(QListWidgetItem*)));
 
+  connect(selectAllDataContainer, SIGNAL(clicked(bool)),
+    this, SLOT(selectAllDataContainersClicked(bool)));
+  connect(selectAllAttributeMatrix, SIGNAL(clicked(bool)),
+    this, SLOT(selectAllAttributeMatricesClicked(bool)));
+  connect(selectAllDataArray, SIGNAL(clicked(bool)),
+    this, SLOT(selectAllDataArraysClicked(bool)));
+
   if(getFilterParameter() != nullptr)
   {
     label->setText(getFilterParameter()->getHumanLabel());
@@ -131,6 +138,57 @@ void DataContainerArrayProxyWidget::setupGui()
     m_DcaProxy = getFilter()->property(PROPERTY_NAME_AS_CHAR).value<DataContainerArrayProxy>();
     // m_DcaProxy.print("DataContainerArrayProxyWidget::setupGui()");
   }
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void DataContainerArrayProxyWidget::selectAllDataContainersClicked(bool checked)
+{
+  selectAllDataContainer->setTristate(false);
+
+  m_DidCausePreflight = true;
+
+  dataContainerList->blockSignals(true);
+  checkAllItems(dataContainerList, selectAllDataContainer->checkState());
+  dataContainerList->blockSignals(false);
+
+  emit parametersChanged();
+  m_DidCausePreflight = false;
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void DataContainerArrayProxyWidget::selectAllAttributeMatricesClicked(bool checked)
+{
+  selectAllAttributeMatrix->setTristate(false);
+
+  m_DidCausePreflight = true;
+
+  attributeMatrixList->blockSignals(true);
+  checkAllItems(attributeMatrixList, selectAllAttributeMatrix->checkState());
+  attributeMatrixList->blockSignals(false);
+
+  emit parametersChanged();
+  m_DidCausePreflight = false;
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void DataContainerArrayProxyWidget::selectAllDataArraysClicked(bool checked)
+{
+  selectAllDataArray->setTristate(false);
+
+  m_DidCausePreflight = true;
+
+  dataArrayList->blockSignals(true);
+  checkAllItems(dataArrayList, selectAllDataArray->checkState());
+  dataArrayList->blockSignals(false);
+
+  emit parametersChanged();
+  m_DidCausePreflight = false;
 }
 
 // -----------------------------------------------------------------------------
@@ -208,6 +266,39 @@ void DataContainerArrayProxyWidget::updateProxyChecked(QListWidgetItem* item, bo
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
+bool DataContainerArrayProxyWidget::shouldStrikeOutItem(QCheckBox* item)
+{
+  bool dcChecked = false;
+  bool amChecked = false;
+
+  if(false == m_DcName.isEmpty())
+  {
+    dcChecked = (getDataContainerProxy().flag == Qt::Checked);
+  }
+  if(false == m_AmName.isEmpty())
+  {
+    amChecked = (getAttributeMatrixProxy().flag == Qt::Checked);
+  }
+
+  if(item == selectAllDataContainer)
+  {
+    return item->checkState() == Qt::Checked;
+  }
+  else if(item == selectAllAttributeMatrix)
+  {
+    return dcChecked || item->checkState() == Qt::Checked;
+  }
+  else if(item == selectAllDataArray)
+  {
+    return dcChecked || amChecked || item->checkState() == Qt::Checked;
+  }
+
+  return false;
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
 bool DataContainerArrayProxyWidget::shouldStrikeOutItem(QListWidgetItem* item)
 {
   bool dcChecked = false;
@@ -226,11 +317,11 @@ bool DataContainerArrayProxyWidget::shouldStrikeOutItem(QListWidgetItem* item)
   {
     return item->checkState() == Qt::Checked;
   }
-  if(item->listWidget() == attributeMatrixList)
+  else if(item->listWidget() == attributeMatrixList)
   {
     return dcChecked || item->checkState() == Qt::Checked;
   }
-  if(item->listWidget() == dataArrayList)
+  else if(item->listWidget() == dataArrayList)
   {
     return dcChecked || amChecked || item->checkState() == Qt::Checked;
   }
@@ -285,6 +376,29 @@ void DataContainerArrayProxyWidget::toggleStrikeOutFont(QListWidgetItem* item, Q
   {
     font.setStrikeOut(false);
     item->setBackground(defaultBrush);
+  }
+
+  item->setFont(font);
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void DataContainerArrayProxyWidget::toggleStrikeOutFont(QCheckBox* item, Qt::CheckState state)
+{
+  QFont font = item->font();
+
+  QColor errorColor(255, 191, 193);
+
+  QColor defaultColor(Qt::white);
+
+  if(state == Qt::Checked)
+  {
+    font.setStrikeOut(true);
+  }
+  else if(item->checkState() == false)
+  {
+    font.setStrikeOut(false);
   }
 
   item->setFont(font);
@@ -449,12 +563,6 @@ void DataContainerArrayProxyWidget::checkAllItems(QListWidget* listWidget, Qt::C
 Qt::CheckState DataContainerArrayProxyWidget::updateSelectAllState(QListWidget* listWidget)
 {
   QList<QListWidgetItem*> listItems = getAllItems(listWidget);
-  QListWidgetItem* selectAll = nullptr;
-  if(listWidget->item(0)->text() == "Select All")
-  {
-    selectAll = listWidget->item(0);
-    listItems.removeAll(selectAll);
-  }
 
   int numChecked = 0;
   for(int i = 0; i < listItems.size(); i++)
@@ -477,6 +585,20 @@ Qt::CheckState DataContainerArrayProxyWidget::updateSelectAllState(QListWidget* 
   else
   {
     state = Qt::CheckState::PartiallyChecked;
+  }
+
+  QCheckBox* selectAll = nullptr;
+  if(listWidget == dataContainerList)
+  {
+    selectAll = selectAllDataContainer;
+  }
+  else if(listWidget == attributeMatrixList)
+  {
+    selectAll = selectAllAttributeMatrix;
+  }
+  else if(listWidget == dataArrayList)
+  {
+    selectAll = selectAllDataArray;
   }
 
   if(selectAll)
@@ -505,11 +627,6 @@ void DataContainerArrayProxyWidget::applyDataContainerArrayProxy(DataContainerAr
     item->setCheckState(static_cast<Qt::CheckState>(iter.value().flag));
   }
 
-  // Add Select All button
-  QListWidgetItem* selectAll = new QListWidgetItem("Select All");
-  listWidget->insertItem(0, selectAll);
-  selectAll->setCheckState(updateSelectAllState(listWidget));
-
   m_DcaProxy = proxy;
   applyDataContainerProxy();
 }
@@ -534,11 +651,6 @@ void DataContainerArrayProxyWidget::applyDataContainerProxy()
       
       toggleStrikeOutFont(item, static_cast<Qt::CheckState>(proxy.flag));
     }
-
-    // Add Select All button
-    QListWidgetItem* selectAll = new QListWidgetItem("Select All");
-    listWidget->insertItem(0, selectAll);
-    selectAll->setCheckState(updateSelectAllState(listWidget));
   }
 
   applyAttributeMatrixProxy();
@@ -565,11 +677,6 @@ void DataContainerArrayProxyWidget::applyAttributeMatrixProxy()
       Qt::CheckState checkState = static_cast<Qt::CheckState>(proxy.flag);
       toggleStrikeOutFont(item, checkState);
     }
-
-    // Add Select All button
-    QListWidgetItem* selectAll = new QListWidgetItem("Select All");
-    listWidget->insertItem(0, selectAll);
-    selectAll->setCheckState(updateSelectAllState(listWidget));
   }
 }
 

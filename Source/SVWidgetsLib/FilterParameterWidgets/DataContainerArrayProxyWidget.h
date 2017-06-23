@@ -122,11 +122,17 @@ class SVWidgetsLib_EXPORT DataContainerArrayProxyWidget : public FilterParameter
     void updateProxyChecked(QListWidgetItem* item, bool updateSelectAll = true);
     QList<QListWidgetItem*> getChildItems(QListWidgetItem* item, QList<QListWidgetItem*> otherItems);
 
+    bool shouldStrikeOutItem(QCheckBox* item);
     bool shouldStrikeOutItem(QListWidgetItem* item);
     Qt::CheckState updateSelectAllState(QListWidget* listWidget);
     QList<QListWidgetItem*> getAllItems(QListWidget* listWidget, bool ignoreSelectAll = true);
 
     void checkAllItems(QListWidget* listWidget, Qt::CheckState state);
+
+  protected slots:
+    void selectAllDataContainersClicked(bool checked);
+    void selectAllAttributeMatricesClicked(bool checked);
+    void selectAllDataArraysClicked(bool checked);
 
   private:
 
@@ -137,6 +143,7 @@ class SVWidgetsLib_EXPORT DataContainerArrayProxyWidget : public FilterParameter
     bool m_DidCausePreflight;
 
     void toggleStrikeOutFont(QListWidgetItem* item, Qt::CheckState state);
+    void toggleStrikeOutFont(QCheckBox* item, Qt::CheckState state);
 
     DataContainerArrayProxyWidget(const DataContainerArrayProxyWidget&); // Copy Constructor Not Implemented
     void operator=(const DataContainerArrayProxyWidget&); // Operator '=' Not Implemented
