@@ -791,11 +791,13 @@ QString AttributeMatrix::getInfoString(SIMPL::InfoStringFormat format)
       break;
     }
 
+    QLocale usa(QLocale::English, QLocale::UnitedStates);
     ss << "<tr bgcolor=\"#FFFCEA\"><th align=\"right\">Type:</th><td>" << typeString << "</td></tr>";
     QString tupleStr = "(";
     for(int i = 0; i < m_TupleDims.size(); i++)
     {
-      tupleStr = tupleStr + QString::number(m_TupleDims[i]);
+      QString numStr = usa.toString(static_cast<qlonglong>(m_TupleDims[i]));
+      tupleStr = tupleStr + numStr;
       if(i < m_TupleDims.size() - 1)
       {
         tupleStr = tupleStr + QString(", ");
