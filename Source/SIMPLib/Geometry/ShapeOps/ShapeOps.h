@@ -37,7 +37,10 @@
 #ifndef _shapeops_h_
 #define _shapeops_h_
 
-#include <map>
+#include <vector>
+
+#include <QtCore/QMap>
+#include <QtCore/QVector>
 
 #include "SIMPLib/SIMPLib.h"
 #include "SIMPLib/Common/SIMPLibSetGetMacros.h"
@@ -82,7 +85,7 @@ class SIMPLib_EXPORT ShapeOps
 
     virtual float inside(float axis1comp, float axis2comp, float axis3comp);
 
-    virtual void init() {}
+    virtual void init();
 
   protected:
     ShapeOps();

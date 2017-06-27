@@ -82,6 +82,7 @@ class SVWidgetsLib_EXPORT IssuesWidget : public QWidget, public IObserver
 
   signals:
     void tableHasErrors(bool b);
+    void showTable(bool b);
 
   protected:
     /**

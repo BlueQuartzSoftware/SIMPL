@@ -52,10 +52,10 @@ class SIMPLib_EXPORT SuperEllipsoidOps : public ShapeOps
 
     virtual ~SuperEllipsoidOps();
 
-    virtual float radcur1(QMap<ArgName, float> args);
+    virtual float radcur1(QMap<ArgName, float> args) override;
 
-    virtual float inside(float axis1comp, float axis2comp, float axis3comp);
-    virtual void init() { Nvalue = 0.0f; }
+    virtual float inside(float axis1comp, float axis2comp, float axis3comp) override;
+    virtual void init() override;
 
   protected:
     SuperEllipsoidOps();

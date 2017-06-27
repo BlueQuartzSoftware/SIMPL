@@ -37,7 +37,6 @@
 
 #include <assert.h>
 
-#include <QtCore/QItemSelectionModel>
 #include <QtCore/QMetaProperty>
 
 #include <QtGui/QBrush>
@@ -111,15 +110,22 @@ void DataContainerArrayProxyWidget::setupGui()
 
   connect(getFilter(), SIGNAL(updateFilterParameters(AbstractFilter*)), this, SLOT(filterNeedsInputParameters(AbstractFilter*)));
 
-  // Put in a QStandardItemModel
-  QAbstractItemModel* oldModel = dcaProxyView->model();
-  QStandardItemModel* model = new QStandardItemModel;
-  dcaProxyView->setModel(model);
-  delete oldModel;
-
   // setStyleSheet("QColumnView { text-decoration-color: red; }");
 
-  connect(model, SIGNAL(itemChanged(QStandardItem*)), this, SLOT(itemActivated(QStandardItem*)));
+  connect(dataContainerList, SIGNAL(itemChanged(QListWidgetItem*)), this, SLOT(itemChanged(QListWidgetItem*)));
+  connect(attributeMatrixList, SIGNAL(itemChanged(QListWidgetItem*)), this, SLOT(itemChanged(QListWidgetItem*)));
+  connect(dataArrayList, SIGNAL(itemChanged(QListWidgetItem*)), this, SLOT(itemChanged(QListWidgetItem*)));
+
+  connect(dataContainerList, SIGNAL(itemClicked(QListWidgetItem*)), this, SLOT(itemSelected(QListWidgetItem*)));
+  connect(attributeMatrixList, SIGNAL(itemClicked(QListWidgetItem*)), this, SLOT(itemSelected(QListWidgetItem*)));
+  connect(dataArrayList, SIGNAL(itemClicked(QListWidgetItem*)), this, SLOT(itemSelected(QListWidgetItem*)));
+
+  connect(selectAllDataContainer, SIGNAL(clicked(bool)),
+    this, SLOT(selectAllDataContainersClicked(bool)));
+  connect(selectAllAttributeMatrix, SIGNAL(clicked(bool)),
+    this, SLOT(selectAllAttributeMatricesClicked(bool)));
+  connect(selectAllDataArray, SIGNAL(clicked(bool)),
+    this, SLOT(selectAllDataArraysClicked(bool)));
 
   if(getFilterParameter() != nullptr)
   {
@@ -137,14 +143,16 @@ void DataContainerArrayProxyWidget::setupGui()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void DataContainerArrayProxyWidget::itemActivated(QStandardItem* item)
+void DataContainerArrayProxyWidget::selectAllDataContainersClicked(bool checked)
 {
-  m_DidCausePreflight = true;
-  updateProxyFromModel();
+  selectAllDataContainer->setTristate(false);
 
-  dcaProxyView->model()->blockSignals(true);
-  toggleStrikeOutFont(item, item->checkState());
-  dcaProxyView->model()->blockSignals(false);
+  m_DidCausePreflight = true;
+
+  dataContainerList->blockSignals(true);
+  checkAllItems(dataContainerList, selectAllDataContainer->checkState());
+  applyDataContainerArrayProxy(m_DcaProxy);
+  dataContainerList->blockSignals(false);
 
   emit parametersChanged();
   m_DidCausePreflight = false;
@@ -153,7 +161,173 @@ void DataContainerArrayProxyWidget::itemActivated(QStandardItem* item)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void DataContainerArrayProxyWidget::toggleStrikeOutFont(QStandardItem* item, Qt::CheckState state)
+void DataContainerArrayProxyWidget::selectAllAttributeMatricesClicked(bool checked)
+{
+  selectAllAttributeMatrix->setTristate(false);
+
+  m_DidCausePreflight = true;
+
+  attributeMatrixList->blockSignals(true);
+  checkAllItems(attributeMatrixList, selectAllAttributeMatrix->checkState());
+  applyDataContainerProxy();
+  attributeMatrixList->blockSignals(false);
+
+  emit parametersChanged();
+  m_DidCausePreflight = false;
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void DataContainerArrayProxyWidget::selectAllDataArraysClicked(bool checked)
+{
+  selectAllDataArray->setTristate(false);
+
+  m_DidCausePreflight = true;
+
+  dataArrayList->blockSignals(true);
+  checkAllItems(dataArrayList, selectAllDataArray->checkState());
+  applyAttributeMatrixProxy();
+  dataArrayList->blockSignals(false);
+
+  emit parametersChanged();
+  m_DidCausePreflight = false;
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void DataContainerArrayProxyWidget::itemChanged(QListWidgetItem* item)
+{
+  m_DidCausePreflight = true;
+
+  item->listWidget()->blockSignals(true);
+  updateProxyChecked(item);
+  item->listWidget()->blockSignals(false);
+
+  emit parametersChanged();
+  m_DidCausePreflight = false;
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void DataContainerArrayProxyWidget::itemSelected(QListWidgetItem* item)
+{
+  QString name = item->text();
+
+  if(item->listWidget() == dataContainerList)
+  {
+    selectDataContainer(name);
+  }
+  else if(item->listWidget() == attributeMatrixList)
+  {
+    selectAttributeMatrix(name);
+  }
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void DataContainerArrayProxyWidget::updateProxyChecked(QListWidgetItem* item, bool updateAll)
+{
+  QString name = item->text();
+  QListWidget* widget = item->listWidget();
+
+  if(item->text() == "Select All")
+  {
+    if(item->checkState() != Qt::PartiallyChecked)
+    {
+      checkAllItems(widget, item->checkState());
+    }
+  }
+  else
+  {
+    if(dataContainerList == widget)
+    {
+      m_DcaProxy.dataContainers.find(name).value().flag = item->checkState();
+    }
+    else if(attributeMatrixList == widget)
+    {
+      getDataContainerProxy().attributeMatricies.find(name).value().flag = item->checkState();
+    }
+    else if(dataArrayList == widget)
+    {
+      getAttributeMatrixProxy().dataArrays.find(name).value().flag = item->checkState();
+    }
+  }
+
+  Qt::CheckState state = shouldStrikeOutItem(item) ? Qt::Checked : Qt::Unchecked;
+  toggleStrikeOutFont(item, state);
+
+  if(updateAll)
+  {
+    updateSelectAllState(widget);
+  }
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+bool DataContainerArrayProxyWidget::shouldStrikeOutItem(QListWidgetItem* item)
+{
+  bool dcChecked = false;
+  bool amChecked = false;
+
+  if(false == m_DcName.isEmpty())
+  {
+    dcChecked = (getDataContainerProxy().flag == Qt::Checked);
+  }
+  if(false == m_AmName.isEmpty())
+  {
+    amChecked = (getAttributeMatrixProxy().flag == Qt::Checked);
+  }
+
+  if(item->listWidget() == dataContainerList)
+  {
+    return item->checkState() == Qt::Checked;
+  }
+  else if(item->listWidget() == attributeMatrixList)
+  {
+    return dcChecked || item->checkState() == Qt::Checked;
+  }
+  else if(item->listWidget() == dataArrayList)
+  {
+    return dcChecked || amChecked || item->checkState() == Qt::Checked;
+  }
+
+  return false;
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+QList<QListWidgetItem*> DataContainerArrayProxyWidget::getChildItems(QListWidgetItem* item, QList<QListWidgetItem*> otherItems)
+{
+  QListWidget* listWidget = item->listWidget();
+
+  if(listWidget == dataContainerList)
+  {
+    for(int i = 0; attributeMatrixList->item(i) != nullptr; i++)
+    {
+      otherItems.append(getChildItems(attributeMatrixList->item(i), otherItems));
+    }
+  }
+  else if(listWidget == attributeMatrixList)
+  {
+    for(int i = 0; dataArrayList->item(i) != nullptr; i++)
+    {
+      otherItems.append(getChildItems(dataArrayList->item(i), otherItems));
+    }
+  }
+
+  return otherItems;
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void DataContainerArrayProxyWidget::toggleStrikeOutFont(QListWidgetItem* item, Qt::CheckState state)
 {
   QFont font = item->font();
 
@@ -163,23 +337,15 @@ void DataContainerArrayProxyWidget::toggleStrikeOutFont(QStandardItem* item, Qt:
   QColor defaultColor(Qt::white);
   QBrush defaultBrush(defaultColor);
 
-  if(state == Qt::Checked || (nullptr != item->parent() && item->parent()->font().strikeOut() == true))
+  if(state == Qt::Checked)
   {
-    font.setStrikeOut(true);
     item->setBackground(errorBrush);
   }
   else if(item->checkState() == false)
   {
-    font.setStrikeOut(false);
     item->setBackground(defaultBrush);
   }
-
   item->setFont(font);
-
-  for(int i = 0; i < item->rowCount(); i++)
-  {
-    toggleStrikeOutFont(item->child(i), state);
-  }
 }
 
 // -----------------------------------------------------------------------------
@@ -213,210 +379,246 @@ void DataContainerArrayProxyWidget::filterNeedsInputParameters(AbstractFilter* f
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-QList<QStandardItem*> findChildItems(QStandardItem* parent, QString text)
+QString DataContainerArrayProxyWidget::getDataContainerName()
 {
-  QList<QStandardItem*> list;
-  if(parent->hasChildren() == false)
-  {
-    return list;
-  } // No children, nothing to find
-  int childCount = parent->rowCount();
+  QList<QListWidgetItem*> selectedItems = dataContainerList->selectedItems();
 
-  for(int i = 0; i < childCount; i++)
+  if(selectedItems.size() != 1)
   {
-    QStandardItem* item = parent->child(i);
-    if(text.compare(item->text()) == 0)
-    {
-      list.push_back(item);
-    }
+    return "";
   }
-  return list;
+
+  if(selectedItems[0]->text() != "Select All")
+  {
+    return selectedItems[0]->text();
+  }
+
+  return "";
 }
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void removeNonExistantChildren(QStandardItem* parent, QStringList possibleNames)
+QString DataContainerArrayProxyWidget::getAttrMatrixName()
 {
-  int childCount = parent->rowCount();
+  QList<QListWidgetItem*> selectedItems = attributeMatrixList->selectedItems();
 
-  // iterate from back to front as we may pop values out of the model which would screw up the index
-  for(int i = childCount - 1; i >= 0; i--)
+  if(selectedItems.size() != 1)
   {
-    QStandardItem* item = parent->child(i);
-    QStringList list = possibleNames.filter(item->text());
-    if(list.size() == 0) // the name is in the model but NOT in the proxy so we need to remove it
-    {
-      // qDebug() << "!! Removing " << item->text();
-      parent->removeRow(i);
-    }
+    return "";
   }
+
+  if(selectedItems[0]->text() != "Select All")
+  {
+    return selectedItems[0]->text();
+  }
+
+  return "";
 }
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-template <typename T> QStandardItem* getColumnItem(QStandardItem* parent, QString name, T& proxy)
+void DataContainerArrayProxyWidget::selectDataContainer(QString name)
 {
-  QStandardItem* item = nullptr;
-  QList<QStandardItem*> items = findChildItems(parent, name);
-  if(items.count() == 0)
+  if(m_DcaProxy.contains(name))
   {
-    // Create a new item because we did not find this item already
-    item = new QStandardItem(proxy.name);
-    item->setCheckState((proxy.flag == 2 ? Qt::Checked : Qt::Unchecked));
-    item->setCheckable(true);
-    parent->appendRow(item);
-  }
-  else if(items.count() > 1)
-  {
-    item = nullptr;
+    m_DcName = name;
   }
   else
   {
-    item = items.at(0);
-    item->setCheckState((proxy.flag == 2 ? Qt::Checked : Qt::Unchecked));
-    item->setCheckable(true);
+    m_DcName = "";
   }
+  m_AmName = "";
 
-  return item;
+  applyDataContainerProxy();
 }
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-template <typename T> QStandardItem* updateProxyItem(QStandardItem* parent, QString name, T& proxy)
+void DataContainerArrayProxyWidget::selectAttributeMatrix(QString name)
 {
-  QStandardItem* item = nullptr;
-  if(nullptr == parent)
+  if(getDataContainerProxy().attributeMatricies.contains(name))
   {
-    return item;
+    m_AmName = name;
   }
-  QList<QStandardItem*> items = findChildItems(parent, name);
-  if(items.count() == 1)
+  else
   {
-    item = items.at(0);
-    //   qDebug() << parent->text() << " | " << item->text() << " ::"  << proxy.flag << " (Going to Change to) " << item->checkState();
-    proxy.flag = item->checkState();
+    m_AmName = "";
   }
 
-  return item;
+  applyAttributeMatrixProxy();
 }
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void DataContainerArrayProxyWidget::updateModelFromProxy(DataContainerArrayProxy& proxy)
+DataContainerProxy& DataContainerArrayProxyWidget::getDataContainerProxy()
 {
-  QStandardItemModel* model = qobject_cast<QStandardItemModel*>(dcaProxyView->model());
-  if(!model)
-  {
-    Q_ASSERT_X(model, "Model was not a QStandardItemModel in QColumnView", "");
-    return;
-  }
-  QStandardItem* rootItem = model->invisibleRootItem();
+  return m_DcaProxy.dataContainers.find(m_DcName).value();
+}
 
-  // Loop over the data containers until we find the proper data container
-  QList<DataContainerProxy> containers = proxy.dataContainers.values();
-  QListIterator<DataContainerProxy> containerIter(containers);
-  QStringList dcList;
-  while(containerIter.hasNext())
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+AttributeMatrixProxy& DataContainerArrayProxyWidget::getAttributeMatrixProxy()
+{
+  return getDataContainerProxy().attributeMatricies.find(m_AmName).value();
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+QList<QListWidgetItem*> DataContainerArrayProxyWidget::getAllItems(QListWidget* listWidget, bool ignoreSelectAll)
+{
+  QList<QListWidgetItem*> listItems;
+
+  for(int i = 0; listWidget->item(i) != nullptr; i++)
   {
-    DataContainerProxy dcProxy = containerIter.next();
-    dcList.push_back(dcProxy.name);
-    QStandardItem* dcItem = getColumnItem<DataContainerProxy>(rootItem, dcProxy.name, dcProxy);
-    assert(dcItem != nullptr);
-    //    qDebug() << "**  " << dcProxy.name;
-    // We found the proper Data Container, now populate the AttributeMatrix List
-    QMap<QString, AttributeMatrixProxy>& attrMats = dcProxy.attributeMatricies;
-    QMutableMapIterator<QString, AttributeMatrixProxy> attrMatsIter(attrMats);
-    while(attrMatsIter.hasNext())
+    if((false == ignoreSelectAll) || (listWidget->item(i)->text() != "Select All"))
     {
-      attrMatsIter.next();
-      QString amName = attrMatsIter.key();
-      AttributeMatrixProxy& attrProxy = attrMatsIter.value();
-      QStandardItem* amItem = getColumnItem<AttributeMatrixProxy>(dcItem, amName, attrProxy);
-      assert(amItem != nullptr);
-
-      //   qDebug() << "@@@ " << amName;
-      // We found the selected AttributeMatrix, so loop over this attribute matrix arrays and populate the list widget
-      QMap<QString, DataArrayProxy>& dataArrays = attrProxy.dataArrays;
-      QMutableMapIterator<QString, DataArrayProxy> dataArraysIter(dataArrays);
-      while(dataArraysIter.hasNext())
-      {
-        dataArraysIter.next();
-        DataArrayProxy& daProxy = dataArraysIter.value();
-        QString daName = dataArraysIter.key();
-        //    qDebug() << "#### " << daName;
-        QStandardItem* daItem = getColumnItem<DataArrayProxy>(amItem, daName, daProxy);
-        if(nullptr == daItem)
-        {
-          Q_ASSERT_X(daItem != nullptr, "daItem was nullptr. This can not happen", "");
-        }
-      }
-
-      // Now remove those items that are still in the model but NOT the proxy. This can happen if a filter upstream
-      // renames something
-      removeNonExistantChildren(amItem, dataArrays.keys());
-    }
-    // Now remove any nonexistant AttributeMatrix objects
-    removeNonExistantChildren(dcItem, attrMats.keys());
-  }
-  // Remove any Data Containers from the model
-  removeNonExistantChildren(rootItem, dcList);
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-void DataContainerArrayProxyWidget::updateProxyFromModel()
-{
-  // This will only work for a single selection
-  DataContainerArrayProxy& proxy = m_DcaProxy;
-
-  QStandardItemModel* model = qobject_cast<QStandardItemModel*>(dcaProxyView->model());
-  if(!model)
-  {
-    Q_ASSERT_X(model, "Model was not a QStandardItemModel in QColumnView", "");
-    return;
-  }
-  //
-  QStandardItem* rootItem = model->invisibleRootItem();
-  // Loop over the data containers until we find the proper data container
-  QMap<QString, DataContainerProxy>& containers = proxy.dataContainers;
-  // QMutableListIterator<DataContainerProxy> containerIter(containers);
-  //  QStringList dcList;
-  for(QMap<QString, DataContainerProxy>::iterator containerIter = containers.begin(); containerIter != containers.end(); ++containerIter)
-  {
-    DataContainerProxy& dcProxy = containerIter.value();
-    //  dcList.push_back(dcProxy.name);
-    QStandardItem* dcItem = updateProxyItem<DataContainerProxy>(rootItem, dcProxy.name, dcProxy);
-
-    //    qDebug() << "**  " << dcProxy.name;
-    // We found the proper Data Container, now populate the AttributeMatrix List
-    QMap<QString, AttributeMatrixProxy>& attrMats = dcProxy.attributeMatricies;
-    for(QMap<QString, AttributeMatrixProxy>::iterator attrMatsIter = attrMats.begin(); attrMatsIter != attrMats.end(); ++attrMatsIter)
-    {
-      QString amName = attrMatsIter.key();
-      AttributeMatrixProxy& attrProxy = attrMatsIter.value();
-      QStandardItem* amItem = updateProxyItem<AttributeMatrixProxy>(dcItem, amName, attrProxy);
-
-      //   qDebug() << "@@@ " << amName;
-      // We found the selected AttributeMatrix, so loop over this attribute matrix arrays and populate the list widget
-      AttributeMatrixProxy& amProxy = attrMatsIter.value();
-      QMap<QString, DataArrayProxy>& dataArrays = amProxy.dataArrays;
-      for(QMap<QString, DataArrayProxy>::iterator dataArraysIter = dataArrays.begin(); dataArraysIter != dataArrays.end(); ++dataArraysIter)
-      {
-        DataArrayProxy& daProxy = dataArraysIter.value();
-        QString daName = dataArraysIter.key();
-        //    qDebug() << "#### " << daName;
-        QStandardItem* daItem = updateProxyItem<DataArrayProxy>(amItem, daName, daProxy);
-        Q_UNUSED(daItem)
-      }
+      listItems.append(listWidget->item(i));
     }
   }
 
-  //  m_DcaProxy.print("updateProxy AFTER Updating");
+  return listItems;
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void DataContainerArrayProxyWidget::checkAllItems(QListWidget* listWidget, Qt::CheckState state)
+{
+  QList<QListWidgetItem*> listItems = getAllItems(listWidget);
+
+  for(int i = 0; i < listItems.size(); i++)
+  {
+    QListWidgetItem* item = listItems[i];
+    listItems[i]->setCheckState(state);
+
+    updateProxyChecked(item, false);
+  }
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+Qt::CheckState DataContainerArrayProxyWidget::updateSelectAllState(QListWidget* listWidget)
+{
+  QList<QListWidgetItem*> listItems = getAllItems(listWidget);
+
+  int numChecked = 0;
+  for(int i = 0; i < listItems.size(); i++)
+  {
+    if(listItems[i]->checkState() == Qt::Checked)
+    {
+      numChecked++;
+    }
+  }
+
+  Qt::CheckState state;
+  if(numChecked == listItems.size())
+  {
+    state = Qt::CheckState::Checked;
+  }
+  else if(numChecked == 0)
+  {
+    state = Qt::CheckState::Unchecked;
+  }
+  else
+  {
+    state = Qt::CheckState::PartiallyChecked;
+  }
+
+  QCheckBox* selectAll = nullptr;
+  if(listWidget == dataContainerList)
+  {
+    selectAll = selectAllDataContainer;
+  }
+  else if(listWidget == attributeMatrixList)
+  {
+    selectAll = selectAllAttributeMatrix;
+  }
+  else if(listWidget == dataArrayList)
+  {
+    selectAll = selectAllDataArray;
+  }
+
+  if(selectAll)
+  {
+    selectAll->setCheckState(state);
+  }
+
+  return state;
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void DataContainerArrayProxyWidget::applyDataContainerArrayProxy(DataContainerArrayProxy proxy)
+{
+  QListWidget* listWidget = dataContainerList;
+  listWidget->clear();
+
+  for(auto iter = proxy.dataContainers.begin(); iter != proxy.dataContainers.end(); iter++)
+  {
+    QListWidgetItem* item = new QListWidgetItem(iter.key(), listWidget);
+    item->setFlags(item->flags() | Qt::ItemIsUserCheckable);
+    item->setCheckState(static_cast<Qt::CheckState>(iter.value().flag));
+  }
+
+  m_DcaProxy = proxy;
+  applyDataContainerProxy();
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void DataContainerArrayProxyWidget::applyDataContainerProxy()
+{
+  QListWidget* listWidget = attributeMatrixList;
+  listWidget->clear();
+
+  if(false == m_DcName.isEmpty())
+  {
+    DataContainerProxy proxy = getDataContainerProxy();
+    for(auto iter = proxy.attributeMatricies.begin();
+      iter != proxy.attributeMatricies.end(); iter++)
+    {
+      QListWidgetItem* item = new QListWidgetItem(iter.key(), listWidget);
+      item->setFlags(item->flags() | Qt::ItemIsUserCheckable);
+      item->setCheckState(static_cast<Qt::CheckState>(iter.value().flag));
+      
+      toggleStrikeOutFont(item, static_cast<Qt::CheckState>(proxy.flag));
+    }
+  }
+
+  applyAttributeMatrixProxy();
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void DataContainerArrayProxyWidget::applyAttributeMatrixProxy()
+{
+  QListWidget* listWidget = dataArrayList;
+  listWidget->clear();
+
+  if(false == m_AmName.isEmpty())
+  {
+    AttributeMatrixProxy proxy = getAttributeMatrixProxy();
+    for(auto iter = proxy.dataArrays.begin();
+      iter != proxy.dataArrays.end(); iter++)
+    {
+      QListWidgetItem* item = new QListWidgetItem(iter.key(), listWidget);
+      item->setFlags(item->flags() | Qt::ItemIsUserCheckable);
+      item->setCheckState(static_cast<Qt::CheckState>(iter.value().flag));
+
+      Qt::CheckState checkState = static_cast<Qt::CheckState>(proxy.flag);
+      toggleStrikeOutFont(item, checkState);
+    }
+  }
 }
 
 // -----------------------------------------------------------------------------
@@ -569,8 +771,11 @@ void DataContainerArrayProxyWidget::beforePreflight()
 
     m_DcaProxy = incomingProxy;
     // Now that the proxy was updated with our selections, make the updated incoming proxy into our cache
-    // Now update the Model
-    updateModelFromProxy(m_DcaProxy);
+    // Now update the Widget
+    // ... and don't cause three more preflights from "changing" each of the QListWidgets
+    blockSignals(true);
+    applyDataContainerArrayProxy(m_DcaProxy);
+    blockSignals(false);
   }
 }
 

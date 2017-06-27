@@ -95,7 +95,6 @@ MultiDataArraySelectionWidget::~MultiDataArraySelectionWidget()
 // -----------------------------------------------------------------------------
 void MultiDataArraySelectionWidget::initializeWidget(FilterParameter* parameter, AbstractFilter* filter)
 {
-  // qDebug() << getFilter()->getHumanLabel() << "  " << getFilterParameter()->getHumanLabel() << " MultiDataArraySelectionWidget::initializeWidget";
   setFilter(filter);
   setFilterParameter(parameter);
   setupGui();
@@ -116,8 +115,8 @@ void MultiDataArraySelectionWidget::setupGui()
     return;
   }
 
-  attributeArraysOrderWidget->installEventFilter(this);
-  attributeArraysSelectWidget->installEventFilter(this);
+  selectedArraysListWidget->installEventFilter(this);
+  availableArraysListWidget->installEventFilter(this);
 
   // Generate the text for the QLabel
   label->setText(getFilterParameter()->getHumanLabel());
@@ -143,9 +142,9 @@ void MultiDataArraySelectionWidget::setupGui()
   for (int i=0; i<selectedPaths.size(); i++)
   {
     DataArrayPath selectedPath = selectedPaths[i];
-    attributeArraysOrderWidget->addItem(selectedPath.getDataArrayName());
+    QListWidgetItem* item = new QListWidgetItem(QIcon(":/bullet_ball_green.png"), selectedPath.getDataArrayName());
+    selectedArraysListWidget->addItem(item);
   }
-
   selectBtn->setDisabled(true);
   deselectBtn->setDisabled(true);
   removeBtn->hide();
@@ -156,7 +155,6 @@ void MultiDataArraySelectionWidget::setupGui()
 // -----------------------------------------------------------------------------
 QString MultiDataArraySelectionWidget::checkStringValues(QString curDcName, QString filtDcName)
 {
-  ////qDebug() << "    checkStringValues(...)" << curDcName << "  " << filtDcName;
   if(curDcName.isEmpty() == true && filtDcName.isEmpty() == false)
   {
     return filtDcName;
@@ -269,13 +267,13 @@ bool MultiDataArraySelectionWidget::eventFilter(QObject* obj, QEvent* event)
     m_SelectedAttributeMatrixPath->menu()->move(pos);
     return true;
   }
-  else if ( event->type() == QEvent::FocusIn && obj == attributeArraysOrderWidget )
+  else if(event->type() == QEvent::FocusIn && obj == selectedArraysListWidget)
   {
-    on_attributeArraysOrderWidget_itemSelectionChanged();
+    on_selectedArraysListWidget_itemSelectionChanged();
   }
-  else if ( event->type() == QEvent::FocusIn && obj == attributeArraysSelectWidget )
+  else if(event->type() == QEvent::FocusIn && obj == availableArraysListWidget)
   {
-    on_attributeArraysSelectWidget_itemSelectionChanged();
+    on_availableArraysListWidget_itemSelectionChanged();
   }
   return false;
 }
@@ -313,8 +311,8 @@ void MultiDataArraySelectionWidget::setSelectedPath(DataArrayPath amPath)
 
   m_SelectedAttributeMatrixPath->setText("");
   m_SelectedAttributeMatrixPath->setToolTip("");
-  attributeArraysSelectWidget->clear();
-  attributeArraysOrderWidget->clear();
+  availableArraysListWidget->clear();
+  selectedArraysListWidget->clear();
 
   DataContainerArray::Pointer dca = getFilter()->getDataContainerArray();
   if(nullptr == dca.get())
@@ -334,20 +332,36 @@ void MultiDataArraySelectionWidget::setSelectedPath(DataArrayPath amPath)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
+void MultiDataArraySelectionWidget::on_availableArraysListWidget_itemDoubleClicked(QListWidgetItem* item)
+{
+  on_selectBtn_clicked();
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void MultiDataArraySelectionWidget::on_selectedArraysListWidget_itemDoubleClicked(QListWidgetItem* item)
+{
+  on_deselectBtn_clicked();
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
 void MultiDataArraySelectionWidget::on_selectBtn_clicked()
 {
-  QModelIndexList indexList = attributeArraysSelectWidget->selectionModel()->selectedRows();
+  QModelIndexList indexList = availableArraysListWidget->selectionModel()->selectedRows();
   if (indexList.size() > 0)
   {
     int offset = 0;
     for (int i=0; i<indexList.size(); i++)
     {
       int row = indexList[i].row() - offset;
-      QListWidgetItem* item = attributeArraysSelectWidget->takeItem(row);
+      QListWidgetItem* item = availableArraysListWidget->takeItem(row);
       offset++;
       if (item)
       {
-        attributeArraysOrderWidget->addItem(item);
+        selectedArraysListWidget->addItem(item);
       }
     }
 
@@ -362,39 +376,31 @@ void MultiDataArraySelectionWidget::on_selectBtn_clicked()
 // -----------------------------------------------------------------------------
 void MultiDataArraySelectionWidget::on_deselectBtn_clicked()
 {
-  QModelIndexList indexList = attributeArraysOrderWidget->selectionModel()->selectedRows();
-  if (indexList.size() > 0)
+  // QModelIndexList indexList = selectedArraysListWidget->selectionModel()->selectedRows();
+  QList<QListWidgetItem*> items = selectedArraysListWidget->selectedItems();
+  foreach(QListWidgetItem* item, items)
   {
-    int offset = 0;
-    for (int i=0; i<indexList.size(); i++)
-    {
-      int row = indexList[i].row() - offset;
-      QListWidgetItem* item = attributeArraysOrderWidget->takeItem(row);
-      offset++;
-      if (item)
-      {
-        attributeArraysSelectWidget->addItem(item);
-      }
-    }
-
-    m_DidCausePreflight = true;
-    emit parametersChanged();
-    m_DidCausePreflight = false;
+    int row = selectedArraysListWidget->row(item);
+    selectedArraysListWidget->takeItem(row);
+    availableArraysListWidget->addItem(item);
   }
+  m_DidCausePreflight = true;
+  emit parametersChanged();
+  m_DidCausePreflight = false;
 }
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
 void MultiDataArraySelectionWidget::on_upBtn_clicked()
-{ 
-  int currentIndex = attributeArraysOrderWidget->currentRow();
+{
+  int currentIndex = selectedArraysListWidget->currentRow();
 
   if(currentIndex > 0)
   {
-    QListWidgetItem* item = attributeArraysOrderWidget->takeItem(currentIndex);
-    attributeArraysOrderWidget->insertItem(currentIndex - 1, item);
-    attributeArraysOrderWidget->setCurrentRow(currentIndex - 1);
+    QListWidgetItem* item = selectedArraysListWidget->takeItem(currentIndex);
+    selectedArraysListWidget->insertItem(currentIndex - 1, item);
+    selectedArraysListWidget->setCurrentRow(currentIndex - 1);
 
     m_DidCausePreflight = true;
     emit parametersChanged();
@@ -407,13 +413,13 @@ void MultiDataArraySelectionWidget::on_upBtn_clicked()
 // -----------------------------------------------------------------------------
 void MultiDataArraySelectionWidget::on_downBtn_clicked()
 {
-  int currentIndex = attributeArraysOrderWidget->currentRow();
+  int currentIndex = selectedArraysListWidget->currentRow();
 
-  if(currentIndex < attributeArraysOrderWidget->count() - 1)
+  if(currentIndex < selectedArraysListWidget->count() - 1)
   {
-    QListWidgetItem* item = attributeArraysOrderWidget->takeItem(currentIndex);
-    attributeArraysOrderWidget->insertItem(currentIndex + 1, item);
-    attributeArraysOrderWidget->setCurrentRow(currentIndex + 1);
+    QListWidgetItem* item = selectedArraysListWidget->takeItem(currentIndex);
+    selectedArraysListWidget->insertItem(currentIndex + 1, item);
+    selectedArraysListWidget->setCurrentRow(currentIndex + 1);
 
     m_DidCausePreflight = true;
     emit parametersChanged();
@@ -426,15 +432,15 @@ void MultiDataArraySelectionWidget::on_downBtn_clicked()
 // -----------------------------------------------------------------------------
 void MultiDataArraySelectionWidget::on_removeBtn_clicked()
 {
-  QModelIndexList indexList = attributeArraysOrderWidget->selectionModel()->selectedRows();
+  QModelIndexList indexList = selectedArraysListWidget->selectionModel()->selectedRows();
   if (indexList.size() > 0)
   {
     int offset = 0;
     for (int i=0; i<indexList.size(); i++)
     {
       int row = indexList[i].row() - offset;
-      QListWidgetItem* item = attributeArraysOrderWidget->item(row);
-      attributeArraysOrderWidget->removeItemWidget(item);
+      QListWidgetItem* item = selectedArraysListWidget->item(row);
+      selectedArraysListWidget->removeItemWidget(item);
       delete item;
       offset++;
     }
@@ -472,11 +478,11 @@ void MultiDataArraySelectionWidget::removeNonexistantPaths(QVector<DataArrayPath
     if(!valid)
     {
       const QString& pathName = paths[i].getDataArrayName();
-      QList<QListWidgetItem*> invalidDataArrayWidgets = attributeArraysOrderWidget->findItems(pathName, Qt::MatchExactly);
+      QList<QListWidgetItem*> invalidDataArrayWidgets = selectedArraysListWidget->findItems(pathName, Qt::MatchExactly);
       for(int j = 0; j < invalidDataArrayWidgets.size(); j++)
       {
         invalidDataArrayWidgets[j]->setCheckState(Qt::Unchecked);
-        attributeArraysOrderWidget->removeItemWidget(invalidDataArrayWidgets[j]);
+        selectedArraysListWidget->removeItemWidget(invalidDataArrayWidgets[j]);
       }
 
       paths.removeAt(i);
@@ -503,8 +509,8 @@ void MultiDataArraySelectionWidget::selectionChanged()
   deselectBtn->setDisabled(true);
   removeBtn->hide();
 
-  int selectSize = attributeArraysSelectWidget->selectionModel()->selectedRows().size();
-  int orderSize = attributeArraysOrderWidget->selectionModel()->selectedRows().size();
+  int selectSize = availableArraysListWidget->selectionModel()->selectedRows().size();
+  int orderSize = selectedArraysListWidget->selectionModel()->selectedRows().size();
 
   if (selectSize > 0)
   {
@@ -524,8 +530,8 @@ void MultiDataArraySelectionWidget::selectionChanged()
     bool allErrorRows = true;
     for (int i=0; i<orderSize; i++)
     {
-      int row = attributeArraysOrderWidget->selectionModel()->selectedRows()[i].row();
-      if (attributeArraysOrderWidget->item(row)->backgroundColor() != QColor(235, 110, 110))
+      int row = selectedArraysListWidget->selectionModel()->selectedRows()[i].row();
+      if(selectedArraysListWidget->item(row)->backgroundColor() != QColor(235, 110, 110))
       {
         allErrorRows = false;
       }
@@ -541,7 +547,7 @@ void MultiDataArraySelectionWidget::selectionChanged()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void MultiDataArraySelectionWidget::on_attributeArraysSelectWidget_itemSelectionChanged()
+void MultiDataArraySelectionWidget::on_availableArraysListWidget_itemSelectionChanged()
 {
   selectionChanged();
 }
@@ -549,7 +555,7 @@ void MultiDataArraySelectionWidget::on_attributeArraysSelectWidget_itemSelection
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void MultiDataArraySelectionWidget::on_attributeArraysOrderWidget_itemSelectionChanged()
+void MultiDataArraySelectionWidget::on_selectedArraysListWidget_itemSelectionChanged()
 {
   selectionChanged();
 }
@@ -586,25 +592,27 @@ void MultiDataArraySelectionWidget::beforePreflight()
       QList<QString> arrayNames = am->getAttributeArrayNames();
 
       QList<QString> selectListNames;
-      for(int i = 0; i<attributeArraysSelectWidget->count(); i++)
+      for(int i = 0; i < availableArraysListWidget->count(); i++)
       {
-        selectListNames.append(attributeArraysSelectWidget->item(i)->text());
+        selectListNames.append(availableArraysListWidget->item(i)->text());
       }
 
       QList<QString> orderListNames;
-      for(int i = 0; i<attributeArraysOrderWidget->count(); i++)
+      for(int i = 0; i < selectedArraysListWidget->count(); i++)
       {
-        QListWidgetItem* item = attributeArraysOrderWidget->item(i);
+        QListWidgetItem* item = selectedArraysListWidget->item(i);
         QString name = item->text();
         orderListNames.append(name);
         if(arrayNames.contains(name) == false)
         {
           //item->setFlags(item->flags() & ~Qt::ItemIsEnabled);
-          item->setBackgroundColor(QColor(235, 110, 110));
+          // item->setBackgroundColor(QColor(235, 110, 110));
+          item->setIcon(QIcon(":/bullet_ball_red.png"));
         }
         else
         {
-          item->setBackgroundColor(QColor(255, 255, 255));
+          // item->setBackgroundColor(QColor(255, 255, 255));
+          item->setIcon(QIcon(":/bullet_ball_green.png"));
         }
       }
 
@@ -612,7 +620,8 @@ void MultiDataArraySelectionWidget::beforePreflight()
       {
         if(selectListNames.contains(arrayNames[i]) == false && orderListNames.contains(arrayNames[i]) == false)
         {
-          attributeArraysSelectWidget->addItem(arrayNames[i]);
+          QListWidgetItem* item = new QListWidgetItem(QIcon(":/bullet_ball_green.png"), arrayNames[i]);
+          availableArraysListWidget->addItem(item);
         }
       }
     }
@@ -639,10 +648,10 @@ void MultiDataArraySelectionWidget::filterNeedsInputParameters(AbstractFilter* f
   DataArrayPath amPath = DataArrayPath::Deserialize(m_SelectedAttributeMatrixPath->text(), Detail::Delimiter);
 
   QVector<DataArrayPath> selectedPaths;
-  for(int i = 0; i < attributeArraysOrderWidget->count(); i++)
+  for(int i = 0; i < selectedArraysListWidget->count(); i++)
   {
     DataArrayPath path = amPath;
-    path.setDataArrayName(attributeArraysOrderWidget->item(i)->text());
+    path.setDataArrayName(selectedArraysListWidget->item(i)->text());
     selectedPaths.push_back(path);
   }
 

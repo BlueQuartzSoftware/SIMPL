@@ -882,6 +882,32 @@ class DataArray : public IDataArray
     }
 
     /**
+     * @brief setTuple
+     * @param tupleIndex
+     * @param data
+     */
+    void setTuple(size_t tupleIndex, T* data)
+    {
+#ifndef NDEBUG
+      if (m_Size > 0) { Q_ASSERT(tupleIndex * m_NumComponents+ m_NumComponents  < m_Size);}
+#endif
+      std::memcpy(getTuplePointer(tupleIndex), data, m_NumComponents * sizeof(T));
+    }
+
+    /**
+     * @brief setTuple
+     * @param tupleIndex
+     * @param data
+     */
+    void setTuple(size_t tupleIndex, const std::vector<T> &data)
+    {
+#ifndef NDEBUG
+      if (m_Size > 0) { Q_ASSERT(tupleIndex * m_NumComponents + m_NumComponents < m_Size);}
+#endif
+      std::memcpy(getTuplePointer(tupleIndex), data.data(), m_NumComponents * sizeof(T));
+    }
+
+    /**
      * @brief Splats the same value c across all values in the Tuple
      * @param i The index of the Tuple
      * @param c The value to splat across all components in the tuple
