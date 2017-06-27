@@ -674,7 +674,9 @@ class StructArray : public IDataArray
         ss << "<tr bgcolor=\"#FFFCEA\"><th colspan=2>Attribute Array Info</th></tr>";
         ss << "<tr bgcolor=\"#E9E7D6\"><th align=\"right\">Name:</th><td>" << getName() << "</td></tr>";
         ss << "<tr bgcolor=\"#FFFCEA\"><th align=\"right\">Type:</th><td>" << getTypeAsString() << "</td></tr>";
-        ss << "<tr bgcolor=\"#FFFCEA\"><th align=\"right\">Number of Tuples:</th><td>" << getNumberOfTuples() << "</td></tr>";
+        QLocale usa(QLocale::English, QLocale::UnitedStates);
+        QString numStr = usa.toString(static_cast<qlonglong>(getNumberOfTuples()));
+        ss << "<tr bgcolor=\"#FFFCEA\"><th align=\"right\">Number of Tuples:</th><td>" << numStr << "</td></tr>";
         ss << "</tbody></table>\n";
         ss << "<br/>";
         ss << "</body></html>";
