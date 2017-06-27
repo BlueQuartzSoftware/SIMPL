@@ -38,6 +38,7 @@
 
 // STL Includes
 #include <vector>
+#include <cstring>
 
 #include "SIMPLib/SIMPLib.h"
 #include "SIMPLib/Common/SIMPLibSetGetMacros.h"
@@ -318,7 +319,7 @@ class DataArray : public IDataArray
       Pointer p = CreateArray(vec.size(), name, allocate);
       if (nullptr != p.get())
       {
-        ::memcpy(p->getPointer(0), vec.data(), vec.size() * sizeof(T));
+        std::memcpy(p->getPointer(0), vec.data(), vec.size() * sizeof(T));
       }
       return p;
     }
@@ -336,7 +337,7 @@ class DataArray : public IDataArray
       Pointer p = CreateArray(vec.size(), cDims, name, allocate);
       if (nullptr != p.get())
       {
-        ::memcpy(p->getPointer(0), &(vec.front()), vec.size() * sizeof(T));
+        std::memcpy(p->getPointer(0), &(vec.front()), vec.size() * sizeof(T));
       }
       return p;
     }
@@ -353,7 +354,7 @@ class DataArray : public IDataArray
       Pointer p = CreateArray(size, name, allocate);
       if (nullptr != p.get())
       {
-        ::memcpy(p->getPointer(0), data, size * sizeof(T));
+        std::memcpy(p->getPointer(0), data, size * sizeof(T));
       }
       return p;
     }
@@ -413,7 +414,7 @@ class DataArray : public IDataArray
 
       size_t elementStart = destTupleOffset*getNumberOfComponents();
       size_t totalBytes = sourceArray->getSize() * sizeof(T);
-      ::memcpy(m_Array + elementStart, source->getPointer(0), totalBytes);
+      std::memcpy(m_Array + elementStart, source->getPointer(0), totalBytes);
       return true;
     }
 
@@ -426,7 +427,7 @@ class DataArray : public IDataArray
       if(m_IsAllocated == true && dest->isAllocated() && m_Array && dest->getPointer(0))
       {
         size_t totalBytes = m_Size * sizeof(T);
-        ::memcpy(dest->getPointer(0), m_Array, totalBytes);
+        std::memcpy(dest->getPointer(0), m_Array, totalBytes);
         return true;
       }
       return false;
@@ -676,7 +677,7 @@ class DataArray : public IDataArray
       if(k == idxs.size()) // Only front elements are being dropped
       {
         T* currentSrc = m_Array + (j * m_NumComponents);
-        ::memcpy(currentDest, currentSrc, (getNumberOfTuples() - idxs.size()) * m_NumComponents * sizeof(T));
+        std::memcpy(currentDest, currentSrc, (getNumberOfTuples() - idxs.size()) * m_NumComponents * sizeof(T));
         _deallocate(); // We are done copying - delete the current m_Array
         m_Size = newSize;
         m_Array = newArray;
@@ -714,7 +715,7 @@ class DataArray : public IDataArray
         currentDest = newArray + destIdx[i];
         T* currentSrc = m_Array + srcIdx[i];
         size_t bytes = copyElements[i] * sizeof(T);
-        ::memcpy(currentDest, currentSrc, bytes);
+        std::memcpy(currentDest, currentSrc, bytes);
       }
 
       // We are done copying - delete the current m_Array
@@ -746,7 +747,7 @@ class DataArray : public IDataArray
       T* src = m_Array + (currentPos * m_NumComponents);
       T* dest = m_Array + (newPos * m_NumComponents);
       size_t bytes = sizeof(T) * m_NumComponents;
-      ::memcpy(dest, src, bytes);
+      std::memcpy(dest, src, bytes);
       return 0;
     }
 
@@ -1076,7 +1077,7 @@ class DataArray : public IDataArray
         T* src = getPointer(0);
         void* dest = daCopy->getVoidPointer(0);
         size_t totalBytes = (getNumberOfTuples() * getNumberOfComponents() * sizeof(T));
-        ::memcpy(dest, src, totalBytes);
+        std::memcpy(dest, src, totalBytes);
       }
       return daCopy;
     }
@@ -1416,7 +1417,7 @@ class DataArray : public IDataArray
         }
 
         // Copy the data from the old array.
-        memcpy(newArray, m_Array, (newSize < m_Size ? newSize : m_Size) * sizeof(T));
+        std::memcpy(newArray, m_Array, (newSize < m_Size ? newSize : m_Size) * sizeof(T));
       }
       else if (!dontUseRealloc)
       {
@@ -1440,7 +1441,7 @@ class DataArray : public IDataArray
         // Copy the data from the old array.
         if (m_Array != nullptr)
         {
-          memcpy(newArray, m_Array, (newSize < m_Size ? newSize : m_Size) * sizeof(T));
+          std::memcpy(newArray, m_Array, (newSize < m_Size ? newSize : m_Size) * sizeof(T));
         }
         // Free the old array
         _deallocate();
