@@ -39,7 +39,6 @@
 
 #include <QtCore/QObject>
 #include <QtCore/QPointer>
-#include <QtGui/QStandardItemModel>
 #include <QtWidgets/QWidget>
 
 #include "SVWidgetsLib/QtSupport/QtSFaderWidget.h"
@@ -53,8 +52,6 @@
 
 
 #include "SVWidgetsLib/ui_DataContainerArrayProxyWidget.h"
-
-class QStandardItemModel;
 
 
 /**
@@ -97,7 +94,8 @@ class SVWidgetsLib_EXPORT DataContainerArrayProxyWidget : public FilterParameter
     void beforePreflight();
     void afterPreflight();
     void filterNeedsInputParameters(AbstractFilter* filter);
-    void itemActivated(QStandardItem* item);
+    void itemChanged(QListWidgetItem* item);
+    void itemSelected(QListWidgetItem* item);
 
 
   signals:
@@ -105,18 +103,45 @@ class SVWidgetsLib_EXPORT DataContainerArrayProxyWidget : public FilterParameter
     void parametersChanged();
 
   protected:
-    void updateProxyFromModel();
+    QString getDataContainerName();
+    QString getAttrMatrixName();
+    
+    void selectDataContainer(QString name);
+    void selectAttributeMatrix(QString name);
 
-    void updateModelFromProxy(DataContainerArrayProxy& proxy);
+    DataContainerProxy& getDataContainerProxy();
+    AttributeMatrixProxy& getAttributeMatrixProxy();
+
+    void applyDataContainerArrayProxy(DataContainerArrayProxy proxy);
+    void applyDataContainerProxy();
+    void applyAttributeMatrixProxy();
+
+    //void updateWidgetFromProxy(DataContainerArrayProxy& proxy);
     void updateProxyFromProxy(DataContainerArrayProxy& current, DataContainerArrayProxy& incoming);
+
+    void updateProxyChecked(QListWidgetItem* item, bool updateSelectAll = true);
+    QList<QListWidgetItem*> getChildItems(QListWidgetItem* item, QList<QListWidgetItem*> otherItems);
+
+    bool shouldStrikeOutItem(QListWidgetItem* item);
+    Qt::CheckState updateSelectAllState(QListWidget* listWidget);
+    QList<QListWidgetItem*> getAllItems(QListWidget* listWidget, bool ignoreSelectAll = true);
+
+    void checkAllItems(QListWidget* listWidget, Qt::CheckState state);
+
+  protected slots:
+    void selectAllDataContainersClicked(bool checked);
+    void selectAllAttributeMatricesClicked(bool checked);
+    void selectAllDataArraysClicked(bool checked);
 
   private:
 
     DataContainerArrayProxyFilterParameter*  m_FilterParameter;
     DataContainerArrayProxy m_DcaProxy;
+    QString m_DcName;
+    QString m_AmName;
     bool m_DidCausePreflight;
 
-    void toggleStrikeOutFont(QStandardItem* item, Qt::CheckState state);
+    void toggleStrikeOutFont(QListWidgetItem* item, Qt::CheckState state);
 
     DataContainerArrayProxyWidget(const DataContainerArrayProxyWidget&); // Copy Constructor Not Implemented
     void operator=(const DataContainerArrayProxyWidget&); // Operator '=' Not Implemented
