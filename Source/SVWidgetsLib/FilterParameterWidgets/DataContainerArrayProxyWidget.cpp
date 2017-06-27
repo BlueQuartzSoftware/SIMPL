@@ -339,15 +339,12 @@ void DataContainerArrayProxyWidget::toggleStrikeOutFont(QListWidgetItem* item, Q
 
   if(state == Qt::Checked)
   {
-    font.setStrikeOut(true);
     item->setBackground(errorBrush);
   }
   else if(item->checkState() == false)
   {
-    font.setStrikeOut(false);
     item->setBackground(defaultBrush);
   }
-
   item->setFont(font);
 }
 
