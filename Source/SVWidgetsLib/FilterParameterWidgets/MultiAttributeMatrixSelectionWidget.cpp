@@ -32,7 +32,7 @@
 *    United States Prime Contract Navy N00173-07-C-2068
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
-#include "MultiDataArraySelectionWidget.h"
+#include "MultiAttributeMatrixSelectionWidget.h"
 
 #include <QtCore/QList>
 #include <QtCore/QMetaProperty>
@@ -48,7 +48,7 @@
 #include "SIMPLib/Common/AbstractFilter.h"
 #include "SIMPLib/DataContainers/DataArrayPath.h"
 #include "SIMPLib/FilterParameters/FilterParameter.h"
-#include "SIMPLib/FilterParameters/MultiDataArraySelectionFilterParameter.h"
+#include "SIMPLib/FilterParameters/MultiAttributeMatrixSelectionFilterParameter.h"
 #include "SVWidgetsLib/Core/SVWidgetsLibConstants.h"
 #include "SVWidgetsLib/QtSupport/QtSStyles.h"
 
@@ -56,17 +56,17 @@
 #include "FilterParameterWidgetsDialogs.h"
 
 // Include the MOC generated file for this class
-#include "moc_MultiDataArraySelectionWidget.cpp"
+#include "moc_MultiAttributeMatrixSelectionWidget.cpp"
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-MultiDataArraySelectionWidget::MultiDataArraySelectionWidget(FilterParameter* parameter, AbstractFilter* filter, QWidget* parent)
+MultiAttributeMatrixSelectionWidget::MultiAttributeMatrixSelectionWidget(FilterParameter* parameter, AbstractFilter* filter, QWidget* parent)
 : FilterParameterWidget(parameter, filter, parent)
 , m_DidCausePreflight(false)
 {
-  m_FilterParameter = dynamic_cast<MultiDataArraySelectionFilterParameter*>(parameter);
-  Q_ASSERT_X(m_FilterParameter != nullptr, "NULL Pointer", "MultiDataArraySelectionWidget can ONLY be used with a MultiDataArraySelectionFilterParameter object");
+  m_FilterParameter = dynamic_cast<MultiAttributeMatrixSelectionFilterParameter*>(parameter);
+  Q_ASSERT_X(m_FilterParameter != nullptr, "NULL Pointer", "MultiAttributeMatrixSelectionWidget can ONLY be used with a MultiAttributeMatrixSelectionFilterParameter object");
 
   setupUi(this);
   setupGui();
@@ -75,7 +75,7 @@ MultiDataArraySelectionWidget::MultiDataArraySelectionWidget(FilterParameter* pa
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-MultiDataArraySelectionWidget::MultiDataArraySelectionWidget(QWidget* parent)
+MultiAttributeMatrixSelectionWidget::MultiAttributeMatrixSelectionWidget(QWidget* parent)
 : FilterParameterWidget(nullptr, nullptr, parent)
 , m_DidCausePreflight(false)
 {
@@ -86,15 +86,16 @@ MultiDataArraySelectionWidget::MultiDataArraySelectionWidget(QWidget* parent)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-MultiDataArraySelectionWidget::~MultiDataArraySelectionWidget()
+MultiAttributeMatrixSelectionWidget::~MultiAttributeMatrixSelectionWidget()
 {
 }
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void MultiDataArraySelectionWidget::initializeWidget(FilterParameter* parameter, AbstractFilter* filter)
+void MultiAttributeMatrixSelectionWidget::initializeWidget(FilterParameter* parameter, AbstractFilter* filter)
 {
+  // qDebug() << getFilter()->getHumanLabel() << "  " << getFilterParameter()->getHumanLabel() << " MultiAttributeMatrixSelectionWidget::initializeWidget";
   setFilter(filter);
   setFilterParameter(parameter);
   setupGui();
@@ -103,7 +104,7 @@ void MultiDataArraySelectionWidget::initializeWidget(FilterParameter* parameter,
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void MultiDataArraySelectionWidget::setupGui()
+void MultiAttributeMatrixSelectionWidget::setupGui()
 {
   // Sanity Check the filter and the filter parameter
   if(getFilter() == nullptr)
@@ -115,16 +116,16 @@ void MultiDataArraySelectionWidget::setupGui()
     return;
   }
 
-  selectedArraysListWidget->installEventFilter(this);
-  availableArraysListWidget->installEventFilter(this);
+  attributeMatricesOrderWidget->installEventFilter(this);
+  attributeMatricesSelectWidget->installEventFilter(this);
 
   // Generate the text for the QLabel
   label->setText(getFilterParameter()->getHumanLabel());
 
-  m_SelectedAttributeMatrixPath->setStyleSheet(QtSStyles::QToolSelectionButtonStyle(true));
+  m_SelectedDataContainerPath->setStyleSheet(QtSStyles::QToolSelectionButtonStyle(true));
 
   m_MenuMapper = new QSignalMapper(this);
-  connect(m_MenuMapper, SIGNAL(mapped(QString)), this, SLOT(attributeMatrixSelected(QString)));
+  connect(m_MenuMapper, SIGNAL(mapped(QString)), this, SLOT(dataContainerSelected(QString)));
 
   // Lastly, hook up the filter's signals and slots to our own signals and slots
   // Catch when the filter is about to execute the preflight
@@ -138,13 +139,13 @@ void MultiDataArraySelectionWidget::setupGui()
 
   QVector<DataArrayPath> selectedPaths = getFilter()->property(PROPERTY_NAME_AS_CHAR).value<QVector<DataArrayPath>>();
   DataArrayPath amPath = DataArrayPath::GetAttributeMatrixPath(selectedPaths);
-  m_SelectedAttributeMatrixPath->setText(amPath.serialize(Detail::Delimiter));
+  m_SelectedDataContainerPath->setText(amPath.serialize(Detail::Delimiter));
   for (int i=0; i<selectedPaths.size(); i++)
   {
     DataArrayPath selectedPath = selectedPaths[i];
-    QListWidgetItem* item = new QListWidgetItem(QIcon(":/bullet_ball_green.png"), selectedPath.getDataArrayName());
-    selectedArraysListWidget->addItem(item);
+    attributeMatricesOrderWidget->addItem(selectedPath.getDataArrayName());
   }
+
   selectBtn->setDisabled(true);
   deselectBtn->setDisabled(true);
   removeBtn->hide();
@@ -153,8 +154,9 @@ void MultiDataArraySelectionWidget::setupGui()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-QString MultiDataArraySelectionWidget::checkStringValues(QString curDcName, QString filtDcName)
+QString MultiAttributeMatrixSelectionWidget::checkStringValues(QString curDcName, QString filtDcName)
 {
+  ////qDebug() << "    checkStringValues(...)" << curDcName << "  " << filtDcName;
   if(curDcName.isEmpty() == true && filtDcName.isEmpty() == false)
   {
     return filtDcName;
@@ -174,7 +176,7 @@ QString MultiDataArraySelectionWidget::checkStringValues(QString curDcName, QStr
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void MultiDataArraySelectionWidget::createSelectionMenu()
+void MultiAttributeMatrixSelectionWidget::createSelectionMenu()
 {
   // Now get the DataContainerArray from the Filter instance
   // We are going to use this to get all the current DataContainers
@@ -185,11 +187,11 @@ void MultiDataArraySelectionWidget::createSelectionMenu()
   }
 
   // Get the menu and clear it out
-  QMenu* menu = m_SelectedAttributeMatrixPath->menu();
+  QMenu* menu = m_SelectedDataContainerPath->menu();
   if(!menu)
   {
     menu = new QMenu();
-    m_SelectedAttributeMatrixPath->setMenu(menu);
+    m_SelectedDataContainerPath->setMenu(menu);
     menu->installEventFilter(this);
   }
   if(menu)
@@ -200,7 +202,6 @@ void MultiDataArraySelectionWidget::createSelectionMenu()
   // Get the DataContainerArray object
   // Loop over the data containers until we find the proper data container
   QList<DataContainer::Pointer> containers = dca->getDataContainers();
-  QVector<AttributeMatrix::Type> amTypes = m_FilterParameter->getDefaultAttributeMatrixTypes();
   IGeometry::Types geomTypes = m_FilterParameter->getDefaultGeometryTypes();
 
   QListIterator<DataContainer::Pointer> containerIter(containers);
@@ -219,39 +220,20 @@ void MultiDataArraySelectionWidget::createSelectionMenu()
       geomType = geom->getGeometryType();
     }
 
-    QMenu* dcMenu = new QMenu(dc->getName());
-    dcMenu->setDisabled(false);
-    menu->addMenu(dcMenu);
+    QAction* dcAction = new QAction(dc->getName(), menu);
+    dcAction->setDisabled(false);
+    
+    DataArrayPath dcPath(dc->getName(), "", "");
+    QString path = dcPath.serialize(Detail::Delimiter);
+    dcAction->setData(path);
+
+    connect(dcAction, SIGNAL(triggered(bool)), m_MenuMapper, SLOT(map()));
+    m_MenuMapper->setMapping(dcAction, path);
+    menu->addAction(dcAction);
+
     if(geomTypes.isEmpty() == false && geomTypes.contains(geomType) == false)
     {
-      dcMenu->setDisabled(true);
-    }
-
-    // We found the proper Data Container, now populate the AttributeMatrix List
-    DataContainer::AttributeMatrixMap_t attrMats = dc->getAttributeMatrices();
-    QMapIterator<QString, AttributeMatrix::Pointer> attrMatsIter(attrMats);
-    while(attrMatsIter.hasNext())
-    {
-      attrMatsIter.next();
-      QString amName = attrMatsIter.key();
-      AttributeMatrix::Pointer am = attrMatsIter.value();
-
-      QAction* action = new QAction(amName, dcMenu);
-      DataArrayPath daPath(dc->getName(), amName, "");
-      QString path = daPath.serialize(Detail::Delimiter);
-      action->setData(path);
-
-      connect(action, SIGNAL(triggered(bool)), m_MenuMapper, SLOT(map()));
-      m_MenuMapper->setMapping(action, path);
-      dcMenu->addAction(action);
-
-      bool amIsNotNull = (nullptr != am.get()) ? true : false;
-      bool amValidType = (amTypes.isEmpty() == false && amTypes.contains(am->getType()) == false) ? true : false;
-
-      if(amIsNotNull && amValidType)
-      {
-        action->setDisabled(true);
-      }
+      dcAction->setDisabled(true);
     }
   }
 }
@@ -259,21 +241,21 @@ void MultiDataArraySelectionWidget::createSelectionMenu()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-bool MultiDataArraySelectionWidget::eventFilter(QObject* obj, QEvent* event)
+bool MultiAttributeMatrixSelectionWidget::eventFilter(QObject* obj, QEvent* event)
 {
-  if(event->type() == QEvent::Show && obj == m_SelectedAttributeMatrixPath->menu())
+  if(event->type() == QEvent::Show && obj == m_SelectedDataContainerPath->menu())
   {
-    QPoint pos = adjustedMenuPosition(m_SelectedAttributeMatrixPath);
-    m_SelectedAttributeMatrixPath->menu()->move(pos);
+    QPoint pos = adjustedMenuPosition(m_SelectedDataContainerPath);
+    m_SelectedDataContainerPath->menu()->move(pos);
     return true;
   }
-  else if(event->type() == QEvent::FocusIn && obj == selectedArraysListWidget)
+  else if ( event->type() == QEvent::FocusIn && obj == attributeMatricesOrderWidget )
   {
-    on_selectedArraysListWidget_itemSelectionChanged();
+    on_attributeMatricesOrderWidget_itemSelectionChanged();
   }
-  else if(event->type() == QEvent::FocusIn && obj == availableArraysListWidget)
+  else if ( event->type() == QEvent::FocusIn && obj == attributeMatricesSelectWidget )
   {
-    on_availableArraysListWidget_itemSelectionChanged();
+    on_attributeMatricesSelectWidget_itemSelectionChanged();
   }
   return false;
 }
@@ -281,7 +263,7 @@ bool MultiDataArraySelectionWidget::eventFilter(QObject* obj, QEvent* event)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void MultiDataArraySelectionWidget::attributeMatrixSelected(QString path)
+void MultiAttributeMatrixSelectionWidget::dataContainerSelected(QString path)
 {
   setSelectedPath(path);
 
@@ -293,26 +275,26 @@ void MultiDataArraySelectionWidget::attributeMatrixSelected(QString path)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void MultiDataArraySelectionWidget::setSelectedPath(QString path)
+void MultiAttributeMatrixSelectionWidget::setSelectedPath(QString path)
 {
-  DataArrayPath amPath = DataArrayPath::Deserialize(path, Detail::Delimiter);
-  setSelectedPath(amPath);
+  DataArrayPath dcPath = DataArrayPath::Deserialize(path, Detail::Delimiter);
+  setSelectedPath(dcPath);
 }
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void MultiDataArraySelectionWidget::setSelectedPath(DataArrayPath amPath)
+void MultiAttributeMatrixSelectionWidget::setSelectedPath(DataArrayPath dcPath)
 {
-  if(amPath.isEmpty())
+  if(dcPath.isEmpty())
   {
     return;
   }
 
-  m_SelectedAttributeMatrixPath->setText("");
-  m_SelectedAttributeMatrixPath->setToolTip("");
-  availableArraysListWidget->clear();
-  selectedArraysListWidget->clear();
+  m_SelectedDataContainerPath->setText("");
+  m_SelectedDataContainerPath->setToolTip("");
+  attributeMatricesSelectWidget->clear();
+  attributeMatricesOrderWidget->clear();
 
   DataContainerArray::Pointer dca = getFilter()->getDataContainerArray();
   if(nullptr == dca.get())
@@ -320,48 +302,32 @@ void MultiDataArraySelectionWidget::setSelectedPath(DataArrayPath amPath)
     return;
   }
 
-  if(dca->doesAttributeMatrixExist(amPath))
+  if(dca->doesDataContainerExist(dcPath.getDataContainerName()))
   {
-    AttributeMatrix::Pointer attrMat = dca->getAttributeMatrix(amPath);
-    QString html = attrMat->getInfoString(SIMPL::HtmlFormat);
-    m_SelectedAttributeMatrixPath->setToolTip(html);
-    m_SelectedAttributeMatrixPath->setText(amPath.serialize(Detail::Delimiter));
+    DataContainer::Pointer dataCon = dca->getDataContainer(dcPath);
+    QString html = dataCon->getInfoString(SIMPL::HtmlFormat);
+    m_SelectedDataContainerPath->setToolTip(html);
+    m_SelectedDataContainerPath->setText(dcPath.serialize(Detail::Delimiter));
   }
 }
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void MultiDataArraySelectionWidget::on_availableArraysListWidget_itemDoubleClicked(QListWidgetItem* item)
+void MultiAttributeMatrixSelectionWidget::on_selectBtn_clicked()
 {
-  on_selectBtn_clicked();
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-void MultiDataArraySelectionWidget::on_selectedArraysListWidget_itemDoubleClicked(QListWidgetItem* item)
-{
-  on_deselectBtn_clicked();
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-void MultiDataArraySelectionWidget::on_selectBtn_clicked()
-{
-  QModelIndexList indexList = availableArraysListWidget->selectionModel()->selectedRows();
+  QModelIndexList indexList = attributeMatricesSelectWidget->selectionModel()->selectedRows();
   if (indexList.size() > 0)
   {
     int offset = 0;
     for (int i=0; i<indexList.size(); i++)
     {
       int row = indexList[i].row() - offset;
-      QListWidgetItem* item = availableArraysListWidget->takeItem(row);
+      QListWidgetItem* item = attributeMatricesSelectWidget->takeItem(row);
       offset++;
       if (item)
       {
-        selectedArraysListWidget->addItem(item);
+        attributeMatricesOrderWidget->addItem(item);
       }
     }
 
@@ -374,73 +340,81 @@ void MultiDataArraySelectionWidget::on_selectBtn_clicked()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void MultiDataArraySelectionWidget::on_deselectBtn_clicked()
+void MultiAttributeMatrixSelectionWidget::on_deselectBtn_clicked()
 {
-  // QModelIndexList indexList = selectedArraysListWidget->selectionModel()->selectedRows();
-  QList<QListWidgetItem*> items = selectedArraysListWidget->selectedItems();
-  foreach(QListWidgetItem* item, items)
-  {
-    int row = selectedArraysListWidget->row(item);
-    selectedArraysListWidget->takeItem(row);
-    availableArraysListWidget->addItem(item);
-  }
-  m_DidCausePreflight = true;
-  emit parametersChanged();
-  m_DidCausePreflight = false;
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-void MultiDataArraySelectionWidget::on_upBtn_clicked()
-{
-  int currentIndex = selectedArraysListWidget->currentRow();
-
-  if(currentIndex > 0)
-  {
-    QListWidgetItem* item = selectedArraysListWidget->takeItem(currentIndex);
-    selectedArraysListWidget->insertItem(currentIndex - 1, item);
-    selectedArraysListWidget->setCurrentRow(currentIndex - 1);
-
-    m_DidCausePreflight = true;
-    emit parametersChanged();
-    m_DidCausePreflight = false;
-  }
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-void MultiDataArraySelectionWidget::on_downBtn_clicked()
-{
-  int currentIndex = selectedArraysListWidget->currentRow();
-
-  if(currentIndex < selectedArraysListWidget->count() - 1)
-  {
-    QListWidgetItem* item = selectedArraysListWidget->takeItem(currentIndex);
-    selectedArraysListWidget->insertItem(currentIndex + 1, item);
-    selectedArraysListWidget->setCurrentRow(currentIndex + 1);
-
-    m_DidCausePreflight = true;
-    emit parametersChanged();
-    m_DidCausePreflight = false;
-  }
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-void MultiDataArraySelectionWidget::on_removeBtn_clicked()
-{
-  QModelIndexList indexList = selectedArraysListWidget->selectionModel()->selectedRows();
+  QModelIndexList indexList = attributeMatricesOrderWidget->selectionModel()->selectedRows();
   if (indexList.size() > 0)
   {
     int offset = 0;
     for (int i=0; i<indexList.size(); i++)
     {
       int row = indexList[i].row() - offset;
-      QListWidgetItem* item = selectedArraysListWidget->item(row);
-      selectedArraysListWidget->removeItemWidget(item);
+      QListWidgetItem* item = attributeMatricesOrderWidget->takeItem(row);
+      offset++;
+      if (item)
+      {
+        attributeMatricesSelectWidget->addItem(item);
+      }
+    }
+
+    m_DidCausePreflight = true;
+    emit parametersChanged();
+    m_DidCausePreflight = false;
+  }
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void MultiAttributeMatrixSelectionWidget::on_upBtn_clicked()
+{ 
+  int currentIndex = attributeMatricesOrderWidget->currentRow();
+
+  if(currentIndex > 0)
+  {
+    QListWidgetItem* item = attributeMatricesOrderWidget->takeItem(currentIndex);
+    attributeMatricesOrderWidget->insertItem(currentIndex - 1, item);
+    attributeMatricesOrderWidget->setCurrentRow(currentIndex - 1);
+
+    m_DidCausePreflight = true;
+    emit parametersChanged();
+    m_DidCausePreflight = false;
+  }
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void MultiAttributeMatrixSelectionWidget::on_downBtn_clicked()
+{
+  int currentIndex = attributeMatricesOrderWidget->currentRow();
+
+  if(currentIndex < attributeMatricesOrderWidget->count() - 1)
+  {
+    QListWidgetItem* item = attributeMatricesOrderWidget->takeItem(currentIndex);
+    attributeMatricesOrderWidget->insertItem(currentIndex + 1, item);
+    attributeMatricesOrderWidget->setCurrentRow(currentIndex + 1);
+
+    m_DidCausePreflight = true;
+    emit parametersChanged();
+    m_DidCausePreflight = false;
+  }
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void MultiAttributeMatrixSelectionWidget::on_removeBtn_clicked()
+{
+  QModelIndexList indexList = attributeMatricesOrderWidget->selectionModel()->selectedRows();
+  if (indexList.size() > 0)
+  {
+    int offset = 0;
+    for (int i=0; i<indexList.size(); i++)
+    {
+      int row = indexList[i].row() - offset;
+      QListWidgetItem* item = attributeMatricesOrderWidget->item(row);
+      attributeMatricesOrderWidget->removeItemWidget(item);
       delete item;
       offset++;
     }
@@ -454,7 +428,7 @@ void MultiDataArraySelectionWidget::on_removeBtn_clicked()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void MultiDataArraySelectionWidget::removeNonexistantPaths(QVector<DataArrayPath>& paths)
+void MultiAttributeMatrixSelectionWidget::removeNonexistantPaths(QVector<DataArrayPath>& paths)
 {
   AbstractFilter* filter = getFilter();
   if(nullptr == filter)
@@ -463,7 +437,11 @@ void MultiDataArraySelectionWidget::removeNonexistantPaths(QVector<DataArrayPath
   }
 
   bool reloadPath = false;
-  DataArrayPath amPath = DataArrayPath::GetAttributeMatrixPath(paths);
+  DataArrayPath dcPath;
+  if(paths.size() > 0)
+  {
+    dcPath = DataArrayPath(paths[0].getDataContainerName(), "", "");
+  }
 
   for(int i = 0; i < paths.size(); i++)
   {
@@ -478,11 +456,11 @@ void MultiDataArraySelectionWidget::removeNonexistantPaths(QVector<DataArrayPath
     if(!valid)
     {
       const QString& pathName = paths[i].getDataArrayName();
-      QList<QListWidgetItem*> invalidDataArrayWidgets = selectedArraysListWidget->findItems(pathName, Qt::MatchExactly);
+      QList<QListWidgetItem*> invalidDataArrayWidgets = attributeMatricesOrderWidget->findItems(pathName, Qt::MatchExactly);
       for(int j = 0; j < invalidDataArrayWidgets.size(); j++)
       {
         invalidDataArrayWidgets[j]->setCheckState(Qt::Unchecked);
-        selectedArraysListWidget->removeItemWidget(invalidDataArrayWidgets[j]);
+        attributeMatricesOrderWidget->removeItemWidget(invalidDataArrayWidgets[j]);
       }
 
       paths.removeAt(i);
@@ -492,16 +470,16 @@ void MultiDataArraySelectionWidget::removeNonexistantPaths(QVector<DataArrayPath
     }
   }
 
-  if(reloadPath && !amPath.isEmpty())
+  if(reloadPath && !dcPath.isEmpty())
   {
-    setSelectedPath(amPath.serialize(Detail::Delimiter));
+    setSelectedPath(dcPath.serialize(Detail::Delimiter));
   }
 }
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void MultiDataArraySelectionWidget::selectionChanged()
+void MultiAttributeMatrixSelectionWidget::selectionChanged()
 {
   upBtn->setDisabled(true);
   downBtn->setDisabled(true);
@@ -509,8 +487,8 @@ void MultiDataArraySelectionWidget::selectionChanged()
   deselectBtn->setDisabled(true);
   removeBtn->hide();
 
-  int selectSize = availableArraysListWidget->selectionModel()->selectedRows().size();
-  int orderSize = selectedArraysListWidget->selectionModel()->selectedRows().size();
+  int selectSize = attributeMatricesSelectWidget->selectionModel()->selectedRows().size();
+  int orderSize = attributeMatricesOrderWidget->selectionModel()->selectedRows().size();
 
   if (selectSize > 0)
   {
@@ -530,8 +508,8 @@ void MultiDataArraySelectionWidget::selectionChanged()
     bool allErrorRows = true;
     for (int i=0; i<orderSize; i++)
     {
-      int row = selectedArraysListWidget->selectionModel()->selectedRows()[i].row();
-      if(selectedArraysListWidget->item(row)->backgroundColor() != QColor(235, 110, 110))
+      int row = attributeMatricesOrderWidget->selectionModel()->selectedRows()[i].row();
+      if (attributeMatricesOrderWidget->item(row)->backgroundColor() != QColor(235, 110, 110))
       {
         allErrorRows = false;
       }
@@ -547,7 +525,7 @@ void MultiDataArraySelectionWidget::selectionChanged()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void MultiDataArraySelectionWidget::on_availableArraysListWidget_itemSelectionChanged()
+void MultiAttributeMatrixSelectionWidget::on_attributeMatricesSelectWidget_itemSelectionChanged()
 {
   selectionChanged();
 }
@@ -555,7 +533,7 @@ void MultiDataArraySelectionWidget::on_availableArraysListWidget_itemSelectionCh
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void MultiDataArraySelectionWidget::on_selectedArraysListWidget_itemSelectionChanged()
+void MultiAttributeMatrixSelectionWidget::on_attributeMatricesOrderWidget_itemSelectionChanged()
 {
   selectionChanged();
 }
@@ -563,7 +541,7 @@ void MultiDataArraySelectionWidget::on_selectedArraysListWidget_itemSelectionCha
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void MultiDataArraySelectionWidget::beforePreflight()
+void MultiAttributeMatrixSelectionWidget::beforePreflight()
 {
   if(nullptr == getFilter())
   {
@@ -571,7 +549,7 @@ void MultiDataArraySelectionWidget::beforePreflight()
   }
   if(m_DidCausePreflight == true)
   {
-    // std::cout << "***  MultiDataArraySelectionWidget already caused a preflight, just returning" << std::endl;
+    // std::cout << "***  MultiAttributeMatrixSelectionWidget already caused a preflight, just returning" << std::endl;
     return;
   }
 
@@ -581,61 +559,58 @@ void MultiDataArraySelectionWidget::beforePreflight()
   DataContainerArray::Pointer dca = getFilter()->getDataContainerArray();
   if(NULL == dca.get()) { return; }
 
-  if(dca->doesAttributeMatrixExist(DataArrayPath::Deserialize(m_SelectedAttributeMatrixPath->text(), Detail::Delimiter)))
+  if(dca->doesDataContainerExist(DataArrayPath::Deserialize(m_SelectedDataContainerPath->text(), Detail::Delimiter).getDataContainerName()))
   {
-    AttributeMatrix::Pointer am = dca->getAttributeMatrix(DataArrayPath::Deserialize(m_SelectedAttributeMatrixPath->text(), Detail::Delimiter));
-    if(nullptr != am.get()) {
-      QString html = am->getInfoString(SIMPL::HtmlFormat);
-      m_SelectedAttributeMatrixPath->setToolTip(html);
-      m_SelectedAttributeMatrixPath->setStyleSheet(QtSStyles::QToolSelectionButtonStyle(true));
+    DataContainer::Pointer dc = dca->getDataContainer(DataArrayPath::Deserialize(m_SelectedDataContainerPath->text(), Detail::Delimiter));
+    if(nullptr != dc.get()) {
+      QString html = dc->getInfoString(SIMPL::HtmlFormat);
+      m_SelectedDataContainerPath->setToolTip(html);
+      m_SelectedDataContainerPath->setStyleSheet(QtSStyles::QToolSelectionButtonStyle(true));
 
-      QList<QString> arrayNames = am->getAttributeArrayNames();
+      QList<QString> matrixNames = dc->getAttributeMatrixNames();
 
       QList<QString> selectListNames;
-      for(int i = 0; i < availableArraysListWidget->count(); i++)
+      for(int i = 0; i<attributeMatricesSelectWidget->count(); i++)
       {
-        selectListNames.append(availableArraysListWidget->item(i)->text());
+        selectListNames.append(attributeMatricesSelectWidget->item(i)->text());
       }
 
       QList<QString> orderListNames;
-      for(int i = 0; i < selectedArraysListWidget->count(); i++)
+      for(int i = 0; i<attributeMatricesOrderWidget->count(); i++)
       {
-        QListWidgetItem* item = selectedArraysListWidget->item(i);
+        QListWidgetItem* item = attributeMatricesOrderWidget->item(i);
         QString name = item->text();
         orderListNames.append(name);
-        if(arrayNames.contains(name) == false)
+        if(matrixNames.contains(name) == false)
         {
           //item->setFlags(item->flags() & ~Qt::ItemIsEnabled);
-          // item->setBackgroundColor(QColor(235, 110, 110));
-          item->setIcon(QIcon(":/bullet_ball_red.png"));
+          item->setBackgroundColor(QColor(235, 110, 110));
         }
         else
         {
-          // item->setBackgroundColor(QColor(255, 255, 255));
-          item->setIcon(QIcon(":/bullet_ball_green.png"));
+          item->setBackgroundColor(QColor(255, 255, 255));
         }
       }
 
-      for(int i = 0; i<arrayNames.size(); i++)
+      for(int i = 0; i<matrixNames.size(); i++)
       {
-        if(selectListNames.contains(arrayNames[i]) == false && orderListNames.contains(arrayNames[i]) == false)
+        if(selectListNames.contains(matrixNames[i]) == false && orderListNames.contains(matrixNames[i]) == false)
         {
-          QListWidgetItem* item = new QListWidgetItem(QIcon(":/bullet_ball_green.png"), arrayNames[i]);
-          availableArraysListWidget->addItem(item);
+          attributeMatricesSelectWidget->addItem(matrixNames[i]);
         }
       }
     }
   }
   else
   {
-    m_SelectedAttributeMatrixPath->setStyleSheet(QtSStyles::QToolSelectionButtonStyle(false));
+    m_SelectedDataContainerPath->setStyleSheet(QtSStyles::QToolSelectionButtonStyle(false));
   }
 }
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void MultiDataArraySelectionWidget::afterPreflight()
+void MultiAttributeMatrixSelectionWidget::afterPreflight()
 {
   
 }
@@ -643,15 +618,15 @@ void MultiDataArraySelectionWidget::afterPreflight()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void MultiDataArraySelectionWidget::filterNeedsInputParameters(AbstractFilter* filter)
+void MultiAttributeMatrixSelectionWidget::filterNeedsInputParameters(AbstractFilter* filter)
 {
-  DataArrayPath amPath = DataArrayPath::Deserialize(m_SelectedAttributeMatrixPath->text(), Detail::Delimiter);
+  DataArrayPath amPath = DataArrayPath::Deserialize(m_SelectedDataContainerPath->text(), Detail::Delimiter);
 
   QVector<DataArrayPath> selectedPaths;
-  for(int i = 0; i < selectedArraysListWidget->count(); i++)
+  for(int i = 0; i < attributeMatricesOrderWidget->count(); i++)
   {
     DataArrayPath path = amPath;
-    path.setDataArrayName(selectedArraysListWidget->item(i)->text());
+    path.setAttributeMatrixName(attributeMatricesOrderWidget->item(i)->text());
     selectedPaths.push_back(path);
   }
 
