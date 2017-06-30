@@ -82,7 +82,7 @@ QDataStream& operator<<(QDataStream& out, const DataArrayPath& v)
 
 QDataStream& operator<<(QDataStream& out, const PhaseType::Type& v)
 {
-  out << v;
+  out << static_cast<PhaseType::EnumType>(v);
   return out;
 }
 QDataStream& operator>>(QDataStream& in, PhaseType::Type& v)
