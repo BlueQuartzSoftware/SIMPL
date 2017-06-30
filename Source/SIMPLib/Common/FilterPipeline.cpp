@@ -195,7 +195,7 @@ void FilterPipeline::fromJson(const QJsonObject& json, IObserver* obs)
 
   QJsonObject builderObj = json[SIMPL::Settings::PipelineBuilderGroup].toObject();
   int filterCount = builderObj[SIMPL::Settings::NumFilters].toInt();
-  int maxFilterIndex = filterCount - 1; // Zero based indexing
+//  int maxFilterIndex = filterCount - 1; // Zero based indexing
   
   setName(builderObj[SIMPL::Settings::PipelineName].toString());
 
