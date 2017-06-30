@@ -35,6 +35,8 @@
 
 #include "QMetaObjectUtilities.h"
 
+#include <cassert>
+
 #include <QtCore/QDataStream>
 #include <QtCore/QVector>
 
@@ -82,12 +84,17 @@ QDataStream& operator<<(QDataStream& out, const DataArrayPath& v)
 
 QDataStream& operator<<(QDataStream& out, const PhaseType::Type& v)
 {
-  out << static_cast<PhaseType::EnumType>(v);
+  assert(false);
+  PhaseType::EnumType temp = static_cast<PhaseType::EnumType>(v);
+  out << temp;
   return out;
 }
 QDataStream& operator>>(QDataStream& in, PhaseType::Type& v)
 {
-  in >> v;
+  assert(false);
+  PhaseType::EnumType temp;
+  in >> temp;
+  v = static_cast<PhaseType::Type>(temp);
   return in;
 }
 

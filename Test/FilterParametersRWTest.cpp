@@ -906,6 +906,56 @@ public:
     return EXIT_SUCCESS;
   }
 
+#if 0
+  // -----------------------------------------------------------------------------
+  //
+  // -----------------------------------------------------------------------------
+  void TestRWPhaseType(PhaseType::Type type)
+  {
+    QByteArray data;
+    QDataStream is(&data, QIODevice::ReadOnly);
+    QDataStream os(&data, QIODevice::WriteOnly);
+
+    is << type;
+
+    PhaseType::Type read;
+    os >> read;
+
+    Q_ASSERT(type == read);
+  }
+
+  // -----------------------------------------------------------------------------
+  //
+  // -----------------------------------------------------------------------------
+  int TestPhaseTypeDataStream()
+  {
+    PhaseType::Type type;
+
+    type = PhaseType::Type::Any;
+    TestRWPhaseType(type);
+
+    type = PhaseType::Type::Boundary;
+    TestRWPhaseType(type);
+
+    type = PhaseType::Type::Matrix;
+    TestRWPhaseType(type);
+
+    type = PhaseType::Type::Precipitate;
+    TestRWPhaseType(type);
+
+    type = PhaseType::Type::Primary;
+    TestRWPhaseType(type);
+
+    type = PhaseType::Type::Transformation;
+    TestRWPhaseType(type);
+
+    type = PhaseType::Type::Unknown;
+    TestRWPhaseType(type);
+
+    return EXIT_SUCCESS;
+  }
+#endif
+
   // -----------------------------------------------------------------------------
   //
   // -----------------------------------------------------------------------------

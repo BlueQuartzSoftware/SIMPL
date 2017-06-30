@@ -43,9 +43,6 @@
 
 
 
-
-
-
 class SIMPLib_EXPORT QMetaObjectUtilities
 {
   public:
