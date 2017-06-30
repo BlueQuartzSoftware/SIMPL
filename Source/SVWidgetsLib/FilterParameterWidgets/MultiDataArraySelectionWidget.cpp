@@ -569,13 +569,10 @@ void MultiDataArraySelectionWidget::beforePreflight()
   {
     return;
   }
-  if(m_DidCausePreflight == true)
+  if(m_DidCausePreflight == false)
   {
-    // std::cout << "***  MultiDataArraySelectionWidget already caused a preflight, just returning" << std::endl;
-    return;
+    createSelectionMenu();
   }
-
-  createSelectionMenu();
 
   // Previously in afterPreflight()
   DataContainerArray::Pointer dca = getFilter()->getDataContainerArray();
