@@ -41,19 +41,6 @@
 #include "SIMPLib/FilterParameters/FilterParameter.h"
 #include "SIMPLib/FilterParameters/ChoiceFilterParameter.h"
 
-// FP: Documentation incomplete because there isn't currently a way to instantiate this filter parameter
-//     in one line.
-/**
- * @brief SIMPL_NEW_LINKED_CHOICES_FP This macro is a short-form way of instantiating an instance of
- * LinkedChoicesFilterParameter. There are 6 required parameters and 1 optional parameter
- * that are always passed to this macro in the following order: HumanLabel, PropertyName, Category,
- * FilterName (class name), Choices, LinkedProperties, GroupIndex (optional).
- */
-#define SIMPL_NEW_LINKED_CHOICES_FP(...) \
-  SIMPL_EXPAND(_FP_GET_OVERRIDE(__VA_ARGS__, \
-  SIMPL_NEW_FP_9, SIMPL_NEW_FP_8, SIMPL_NEW_FP_7, SIMPL_NEW_FP_6, SIMPL_NEW_FP_5, SIMPL_NEW_FP_4)\
-  (LinkedChoicesFilterParameter, __VA_ARGS__))
-
 /**
  * @brief The LinkedChoicesFilterParameter class is used by filters to instantiate an LinkedChoicesWidget.  By instantiating an instance of
  * this class in a filter's setupFilterParameters() method, a LinkedChoicesWidget will appear in the filter's "filter input" section in the DREAM3D GUI.
