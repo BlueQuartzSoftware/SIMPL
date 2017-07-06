@@ -400,7 +400,7 @@ class NeighborList : public IDataArray
 
     // This line must be here, because we are overloading the copyData pure virtual function in IDataArray.
     // This is required so that other classes can call this version of copyData from the subclasses.
-    using IDataArray::copyData;
+    using IDataArray::copyFromArray;
 
     /**
      * @brief copyData This method copies the number of tuples specified by the
@@ -421,7 +421,7 @@ class NeighborList : public IDataArray
      * @param sourceArray
      * @return
      */
-    bool copyData(size_t destTupleOffset, IDataArray::Pointer sourceArray, size_t srcTupleOffset, size_t totalSrcTuples)
+    bool copyFromArray(size_t destTupleOffset, IDataArray::Pointer sourceArray, size_t srcTupleOffset, size_t totalSrcTuples)
     {
       if(!m_IsAllocated) { return false; }
       if(destTupleOffset >= m_Array.size() ) { return false; }

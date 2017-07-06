@@ -173,7 +173,7 @@ class SIMPLib_EXPORT IDataArray
      * @param sourceArray
      * @return
      */
-    bool copyData(size_t destTupleOffset, IDataArray::Pointer sourceArray);
+    bool copyFromArray(size_t destTupleOffset, IDataArray::Pointer sourceArray);
 
     /**
      * @brief copyData This method copies the number of tuples specified by the
@@ -194,7 +194,7 @@ class SIMPLib_EXPORT IDataArray
      * @param sourceArray
      * @return
      */
-    virtual bool copyData(size_t destTupleOffset, IDataArray::Pointer sourceArray, size_t srcTupleOffset, size_t totalSrcTuples) = 0;
+    virtual bool copyFromArray(size_t destTupleOffset, IDataArray::Pointer sourceArray, size_t srcTupleOffset, size_t totalSrcTuples) = 0;
 
     /**
      * @brief Splats the same value c across all values in the Tuple

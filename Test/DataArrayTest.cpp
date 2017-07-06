@@ -1003,12 +1003,12 @@ public:
     }
     // We should FAIL this test as we are going to be off the end of the array
     size_t copyOffset = numTuples;
-    bool didCopy = src->copyData(copyOffset, copy);
+    bool didCopy = src->copyFromArray(copyOffset, copy);
     DREAM3D_REQUIRE_EQUAL(didCopy, false);
 
     // Resize the DataArray to accomondate the true amount of data that we want (20 Tuples)
     src->resize(numTuples * 2);
-    didCopy = src->copyData(numTuples, copy);
+    didCopy = src->copyFromArray(numTuples, copy);
     DREAM3D_REQUIRE_EQUAL(didCopy, true);
 
     copy = std::dynamic_pointer_cast<DataArray<T>>(src->deepCopy());

@@ -349,7 +349,7 @@ int StatsDataArray::copyTuple(size_t currentPos, size_t newPos)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-bool StatsDataArray::copyData(size_t destTupleOffset, IDataArray::Pointer sourceArray, size_t srcTupleOffset, size_t totalSrcTuples)
+bool StatsDataArray::copyFromArray(size_t destTupleOffset, IDataArray::Pointer sourceArray, size_t srcTupleOffset, size_t totalSrcTuples)
 {
   if(!m_IsAllocated)
   {
