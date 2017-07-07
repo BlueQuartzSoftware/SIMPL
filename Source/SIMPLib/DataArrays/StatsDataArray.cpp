@@ -349,7 +349,7 @@ int StatsDataArray::copyTuple(size_t currentPos, size_t newPos)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-bool StatsDataArray::copyData(size_t destTupleOffset, IDataArray::Pointer sourceArray)
+bool StatsDataArray::copyFromArray(size_t destTupleOffset, IDataArray::Pointer sourceArray, size_t srcTupleOffset, size_t totalSrcTuples)
 {
   if(!m_IsAllocated)
   {
@@ -374,14 +374,17 @@ bool StatsDataArray::copyData(size_t destTupleOffset, IDataArray::Pointer source
     return false;
   }
 
-  if(sourceArray->getNumberOfTuples() * sourceArray->getNumberOfComponents() + destTupleOffset * getNumberOfComponents() > m_StatsDataArray.size())
+  if(srcTupleOffset + totalSrcTuples > sourceArray->getNumberOfTuples())
   {
     return false;
   }
 
-  size_t sourceNTuples = source->getNumberOfTuples();
+  if(totalSrcTuples * sourceArray->getNumberOfComponents() + destTupleOffset * getNumberOfComponents() > m_StatsDataArray.size())
+  {
+    return false;
+  }
 
-  for(size_t i = 0; i < sourceNTuples; i++)
+  for(size_t i = srcTupleOffset; i < srcTupleOffset + totalSrcTuples; i++)
   {
     m_StatsDataArray[destTupleOffset + i] = (*source)[i];
   }

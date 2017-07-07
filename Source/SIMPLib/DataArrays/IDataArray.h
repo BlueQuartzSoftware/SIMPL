@@ -173,8 +173,28 @@ class SIMPLib_EXPORT IDataArray
      * @param sourceArray
      * @return
      */
-    virtual bool copyData(size_t destTupleOffset, IDataArray::Pointer sourceArray) = 0;
+    bool copyFromArray(size_t destTupleOffset, IDataArray::Pointer sourceArray);
 
+    /**
+     * @brief copyData This method copies the number of tuples specified by the
+     * totalSrcTuples value starting from the source tuple offset value in <b>sourceArray</b>
+     * into the current array starting at the target destination tuple offset value.
+     *
+     * For example if the DataArray has 10 tuples, the source DataArray has 10 tuples,
+     *  the destTupleOffset = 5, the srcTupleOffset = 5, and the totalSrcTuples = 3,
+     *  then tuples 5, 6, and 7 will be copied from the source into tuples 5, 6, and 7
+     * of the destination array. In psuedo code it would be the following:
+     * @code
+     *  destArray[5] = sourceArray[5];
+     *  destArray[6] = sourceArray[6];
+     *  destArray[7] = sourceArray[7];
+     *  .....
+     * @endcode
+     * @param destTupleOffset
+     * @param sourceArray
+     * @return
+     */
+    virtual bool copyFromArray(size_t destTupleOffset, IDataArray::Pointer sourceArray, size_t srcTupleOffset, size_t totalSrcTuples) = 0;
 
     /**
      * @brief Splats the same value c across all values in the Tuple

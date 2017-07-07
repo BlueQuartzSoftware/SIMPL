@@ -286,7 +286,7 @@ public:
     StringDataArray::Pointer copy = initializeStringDataArray();
 
     nodes->resize(ARRAY_SIZE * 2);
-    bool didCopy = nodes->copyData(ARRAY_SIZE, copy);
+    bool didCopy = nodes->copyFromArray(ARRAY_SIZE, copy);
     DREAM3D_REQUIRE_EQUAL(didCopy, true)
     DREAM3D_REQUIRE_EQUAL(nodes->getNumberOfTuples(), ARRAY_SIZE * 2);
 

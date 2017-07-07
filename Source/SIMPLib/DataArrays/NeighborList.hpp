@@ -398,36 +398,74 @@ class NeighborList : public IDataArray
       return 0;
     }
 
+    // This line must be here, because we are overloading the copyData pure virtual function in IDataArray.
+    // This is required so that other classes can call this version of copyData from the subclasses.
+    using IDataArray::copyFromArray;
+
     /**
-     * @brief copyData This method copies all data from the <b>sourceArray</b> into
-     * the current array starting at the target destination tuple offset value.
+     * @brief copyData This method copies the number of tuples specified by the
+     * totalSrcTuples value starting from the source tuple offset value in <b>sourceArray</b>
+     * into the current array starting at the target destination tuple offset value.
      *
-     * For example if the DataArray has 10 tuples and the destTupleOffset = 5 then
-     * then source data will be copied into the destination array starting at
-     * destination tuple 5. In psuedo code it would be the following:
+     * For example if the DataArray has 10 tuples, the source DataArray has 10 tuples,
+     *  the destTupleOffset = 5, the srcTupleOffset = 5, and the totalSrcTuples = 3,
+     *  then tuples 5, 6, and 7 will be copied from the source into tuples 5, 6, and 7
+     * of the destination array. In psuedo code it would be the following:
      * @code
-     *  destArray[5] = sourceArray[0];
-     *  destArray[6] = sourceArray[1];
+     *  destArray[5] = sourceArray[5];
+     *  destArray[6] = sourceArray[6];
+     *  destArray[7] = sourceArray[7];
      *  .....
      * @endcode
      * @param destTupleOffset
      * @param sourceArray
      * @return
      */
-  virtual bool copyData(size_t destTupleOffset, IDataArray::Pointer sourceArray)
+    bool copyFromArray(size_t destTupleOffset, IDataArray::Pointer sourceArray, size_t srcTupleOffset, size_t totalSrcTuples)
     {
       if(!m_IsAllocated) { return false; }
       if(destTupleOffset >= m_Array.size() ) { return false; }
       if(!sourceArray->isAllocated()) { return false; }
       Self* source = dynamic_cast<Self*>(sourceArray.get());
 
-      size_t sourceNTuples = source->getNumberOfTuples();
+      if(sourceArray->getNumberOfComponents() != getNumberOfComponents())
+      {
+        return false;
+      }
 
-      for(size_t i = 0; i < sourceNTuples; i++)
+      if(srcTupleOffset + totalSrcTuples > sourceArray->getNumberOfTuples())
+      {
+        return false;
+      }
+
+      if(totalSrcTuples * sourceArray->getNumberOfComponents() + destTupleOffset * getNumberOfComponents() > m_Array.size())
+      {
+        return false;
+      }
+
+      for(size_t i = srcTupleOffset; i < srcTupleOffset + totalSrcTuples; i++)
       {
         m_Array[destTupleOffset + i] = source->getList(i);
       }
       return true;
+
+      //      if(!m_IsAllocated) { return false; }
+      //      if(nullptr == m_Array) { return false; }
+      //      if(destTupleOffset > m_MaxId) { return false; }
+      //      if(!sourceArray->isAllocated()) { return false; }
+      //      Self* source = dynamic_cast<Self*>(sourceArray.get());
+      //      if(nullptr == source->getPointer(0)) { return false; }
+
+      //      if(sourceArray->getNumberOfComponents() != getNumberOfComponents()) { return false; }
+
+      //      if (srcTupleOffset + totalSrcTuples > sourceArray->getNumberOfTuples()) { return false; }
+
+      //      if( totalSrcTuples*sourceArray->getNumberOfComponents() + destTupleOffset*getNumberOfComponents() > m_Size) { return false; }
+
+      //      size_t elementStart = destTupleOffset*getNumberOfComponents();
+      //      size_t totalBytes = (totalSrcTuples*sourceArray->getNumberOfComponents()) * sizeof(T);
+      //      std::memcpy(m_Array + elementStart, source->getPointer(srcTupleOffset * sourceArray->getNumberOfComponents()), totalBytes);
+      //      return true;
     }
 
 
