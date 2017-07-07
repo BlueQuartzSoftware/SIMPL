@@ -1022,6 +1022,57 @@ public:
         DREAM3D_REQUIRE_EQUAL(cpy, val)
       }
     }
+
+    // Create the array again to test copying in the middle of the array
+    src = DataArray<T>::CreateArray(numTuples, cDims, name, true);
+    typename DataArray<T>::Pointer dest = DataArray<T>::CreateArray(numTuples, cDims, name, true);
+
+    for(size_t i = 0; i < numTuples; i++)
+    {
+      for(size_t j = 0; j < cDims[0]; j++)
+      {
+        src->setComponent(i, j, static_cast<T>(i + j));
+        dest->setComponent(i, j, static_cast<T>(i + j));
+      }
+    }
+
+    typename DataArray<T>::Pointer destCopy = std::dynamic_pointer_cast<DataArray<T>>(dest->deepCopy());
+
+    didCopy = dest->copyFromArray(3, src, 5, 5);
+    DREAM3D_REQUIRE_EQUAL(didCopy, true);
+
+    // Check first 3 values
+    for(size_t i = 0; i <= 2; i++)
+    {
+      for(size_t j = 0; j < cDims[0]; j++)
+      {
+        T destVal = dest->getComponent(i, j);
+        T destCopyVal = destCopy->getComponent(i, j);
+        DREAM3D_REQUIRE_EQUAL(destVal, destCopyVal)
+      }
+    }
+
+    // Check next 5 values
+    for(size_t i = 3; i <= 7; i++)
+    {
+      for(size_t j = 0; j < cDims[0]; j++)
+      {
+        T destVal = dest->getComponent(i, j);
+        T srcVal = src->getComponent(i + 2, j);
+        DREAM3D_REQUIRE_EQUAL(destVal, srcVal)
+      }
+    }
+
+    // Check last 2 values
+    for(size_t i = 8; i <= 9; i++)
+    {
+      for(size_t j = 0; j < cDims[0]; j++)
+      {
+        T destVal = dest->getComponent(i, j);
+        T destCopyVal = destCopy->getComponent(i, j);
+        DREAM3D_REQUIRE_EQUAL(destVal, destCopyVal)
+      }
+    }
   }
 
   // -----------------------------------------------------------------------------
