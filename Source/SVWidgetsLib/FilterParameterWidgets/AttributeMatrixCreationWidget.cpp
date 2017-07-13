@@ -231,7 +231,7 @@ void AttributeMatrixCreationWidget::createSelectionMenu()
     connect(dcAction, SIGNAL(triggered(bool)), m_MenuMapper, SLOT(map()));
     m_MenuMapper->setMapping(dcAction, path);
 
-    if(geomTypes.isEmpty() == false && geomTypes.contains(geomType) == false)
+    if(!geomTypes.isEmpty() && !geomTypes.contains(geomType) && !geomTypes.contains(IGeometry::Type::Any))
     {
       dcAction->setDisabled(true);
     }

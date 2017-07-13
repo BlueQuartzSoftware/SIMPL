@@ -601,7 +601,7 @@ void ComparisonSelectionWidget::createSelectionMenu()
     QMenu* dcMenu = new QMenu(dc->getName());
     dcMenu->setDisabled(false);
     menu->addMenu(dcMenu);
-    if(geomTypes.isEmpty() == false && geomTypes.contains(geomType) == false)
+    if(!geomTypes.isEmpty() && !geomTypes.contains(geomType) && !geomTypes.contains(IGeometry::Type::Any))
     {
       dcMenu->setDisabled(true);
     }

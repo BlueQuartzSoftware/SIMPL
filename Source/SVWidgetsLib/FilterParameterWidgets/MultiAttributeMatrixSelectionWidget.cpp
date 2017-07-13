@@ -231,7 +231,7 @@ void MultiAttributeMatrixSelectionWidget::createSelectionMenu()
     m_MenuMapper->setMapping(dcAction, path);
     menu->addAction(dcAction);
 
-    if(geomTypes.isEmpty() == false && geomTypes.contains(geomType) == false)
+    if(!geomTypes.isEmpty() && !geomTypes.contains(geomType) && !geomTypes.contains(IGeometry::Type::Any))
     {
       dcAction->setDisabled(true);
     }

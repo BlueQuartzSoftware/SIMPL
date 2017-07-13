@@ -479,7 +479,7 @@ void DataFormatPage::createAMSelectionMenu()
     QMenu* dcMenu = btnMenu->addMenu(dc->getName()); // BtnMenu owns the new QMenu
     dcMenu->setDisabled(false);
 
-    if(geomTypes.isEmpty() == false && geomTypes.contains(geomType) == false)
+    if(!geomTypes.isEmpty() && !geomTypes.contains(geomType) && !geomTypes.contains(IGeometry::Type::Any))
     {
       dcMenu->setDisabled(true);
     }
@@ -573,7 +573,7 @@ void DataFormatPage::createDCSelectionMenu()
     connect(dcAction, SIGNAL(triggered(bool)), m_DCMenuMapper, SLOT(map()));
     m_DCMenuMapper->setMapping(dcAction, path);
 
-    if(geomTypes.isEmpty() == false && geomTypes.contains(geomType) == false)
+    if(!geomTypes.isEmpty() && !geomTypes.contains(geomType) && !geomTypes.contains(IGeometry::Type::Any))
     {
       dcAction->setDisabled(true);
     }
