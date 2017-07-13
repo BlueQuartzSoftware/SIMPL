@@ -54,7 +54,7 @@ QString generateIndexString(int index, int maxIndex)
 {
   QString numStr = QString::number(index);
 
-  if(maxIndex > 10)
+  if(maxIndex >= 10)
   {
     int mag = 0;
     int max = maxIndex;
@@ -273,7 +273,7 @@ QString JsonFilterParametersReader::HtmlSummaryFromFile(QString filePath, IObser
       color = even;
     }
 
-    QString indexString = generateIndexString(i, filterCount);
+    QString indexString = generateIndexString(i, filterCount - 1);
     QJsonValueRef filtRef = m_Root[indexString];
 
     if(filtRef.isUndefined())
