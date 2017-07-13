@@ -160,4 +160,9 @@ void BoundaryStatsData::readJson(const QJsonObject& json)
   {
     setName(fValue.toString("Boudary"));
   }
+  if(getName().compare(SIMPL::StringConstants::StatsData) == 0)
+  {
+    setName("Boundary");
+  }
+
 }

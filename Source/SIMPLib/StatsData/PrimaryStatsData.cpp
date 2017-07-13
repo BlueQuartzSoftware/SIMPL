@@ -270,6 +270,11 @@ void PrimaryStatsData::readJson(const QJsonObject& json)
   {
     setName(jsonValue.toString("Primary"));
   }
+  if(getName().compare(SIMPL::StringConstants::StatsData) == 0)
+  {
+    setName("Primary");
+  }
+
   // Read the Phase Fraction
   jsonValue = json[SIMPL::StringConstants::PhaseFraction];
   if(!jsonValue.isUndefined() && jsonValue.isDouble())

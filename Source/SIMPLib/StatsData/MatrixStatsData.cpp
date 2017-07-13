@@ -140,4 +140,9 @@ void MatrixStatsData::readJson(const QJsonObject& json)
   {
     setName(fValue.toString("Matrix"));
   }
+  if(getName().compare(SIMPL::StringConstants::StatsData) == 0)
+  {
+    setName("Matrix");
+  }
+
 }

@@ -283,6 +283,10 @@ void PrecipitateStatsData::readJson(const QJsonObject& json)
   {
     setName(jsonValue.toString("Precipitate"));
   }
+  if(getName().compare(SIMPL::StringConstants::StatsData) == 0)
+  {
+    setName("Precipitate");
+  }
 
   // Read the Phase Fraction
   jsonValue = json[SIMPL::StringConstants::PhaseFraction];

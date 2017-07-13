@@ -272,6 +272,11 @@ void TransformationStatsData::readJson(const QJsonObject& json)
   {
     setName(jsonValue.toString("Transformation"));
   }
+  if(getName().compare(SIMPL::StringConstants::StatsData) == 0)
+  {
+    setName("Transformation");
+  }
+
   // Read the Phase Fraction
   jsonValue = json[SIMPL::StringConstants::PhaseFraction];
   if(!jsonValue.isUndefined() && jsonValue.isDouble())
