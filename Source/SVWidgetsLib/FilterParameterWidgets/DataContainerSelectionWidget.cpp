@@ -212,7 +212,7 @@ void DataContainerSelectionWidget::createSelectionMenu()
     m_MenuMapper->setMapping(action, path);
     menu->addAction(action);
 
-    if(geomTypes.isEmpty() == false && geomTypes.contains(geomType) == false)
+    if(!geomTypes.isEmpty() && !geomTypes.contains(geomType) && !geomTypes.contains(IGeometry::Type::Any))
     {
       action->setDisabled(true);
     }

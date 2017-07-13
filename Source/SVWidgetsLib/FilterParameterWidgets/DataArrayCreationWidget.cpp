@@ -222,7 +222,7 @@ void DataArrayCreationWidget::createSelectionMenu()
     QMenu* dcMenu = btnMenu->addMenu(dc->getName()); // BtnMenu owns the new QMenu
     dcMenu->setDisabled(false);
 
-    if(geomTypes.isEmpty() == false && geomTypes.contains(geomType) == false)
+    if(!geomTypes.isEmpty() && !geomTypes.contains(geomType) && !geomTypes.contains(IGeometry::Type::Any))
     {
       dcMenu->setDisabled(true);
     }
