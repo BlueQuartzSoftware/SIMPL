@@ -34,6 +34,8 @@
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 #include "SIMPLViewToolbox.h"
 
+#include <QtWidgets/QShortcut>
+
 // Include the MOC generated CPP file which has all the QMetaObject methods/data
 #include "moc_SIMPLViewToolbox.cpp"
 
@@ -76,6 +78,9 @@ SIMPLViewToolbox* SIMPLViewToolbox::Instance(QWidget* parent, Qt::WindowFlags fl
 void SIMPLViewToolbox::setupGui()
 {
   setWindowFlags(windowFlags() & ~Qt::WindowContextHelpButtonHint);
+
+  // Shortcut to close the window
+  new QShortcut(QKeySequence(QKeySequence::Close), this, SLOT(close()));
 }
 
 // -----------------------------------------------------------------------------
