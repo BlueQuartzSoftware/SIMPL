@@ -290,10 +290,12 @@ void FilterPipeline::cancelPipeline()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void FilterPipeline::run()
+DataContainerArray::Pointer FilterPipeline::run()
 {
-  execute();
+  DataContainerArray::Pointer dca = execute();
   pipelineFinished();
+
+  return dca;
 }
 
 // -----------------------------------------------------------------------------
@@ -516,7 +518,7 @@ int FilterPipeline::preflightPipeline()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void FilterPipeline::execute()
+DataContainerArray::Pointer FilterPipeline::execute()
 {
   int err = 0;
 
@@ -573,7 +575,7 @@ void FilterPipeline::execute()
       emit pipelineFinished();
       disconnectSignalsSlots();
 
-      return;
+      return dca;
     }
     if(this->getCancel() == true)
     {
@@ -589,6 +591,8 @@ void FilterPipeline::execute()
 
   PipelineMessage completMessage("", "Pipeline Complete", 0, PipelineMessage::MessageType::StatusMessage, -1);
   emit pipelineGeneratedMessage(completMessage);
+
+  return dca;
 }
 
 // -----------------------------------------------------------------------------
