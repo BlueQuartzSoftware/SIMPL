@@ -589,8 +589,8 @@ DataContainerArray::Pointer FilterPipeline::execute()
 
   disconnectSignalsSlots();
 
-  PipelineMessage completMessage("", "Pipeline Complete", 0, PipelineMessage::MessageType::StatusMessage, -1);
-  emit pipelineGeneratedMessage(completMessage);
+  PipelineMessage completeMessage("", "Pipeline Complete", 0, PipelineMessage::MessageType::StatusMessage, -1);
+  emit pipelineGeneratedMessage(completeMessage);
 
   return dca;
 }
