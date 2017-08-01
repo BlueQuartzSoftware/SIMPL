@@ -132,7 +132,7 @@ void SIMPLibPluginLoader::LoadPluginFilters(FilterManager* filterManager)
   // Now try moving up a directory which is what should happen when running from a
   // proper distribution of DREAM3D
   aPluginDir.cdUp();
-  if(aPluginDir.cd("plugins"))
+  if(aPluginDir.cd("Plugins"))
   {
     thePath = aPluginDir.absolutePath();
     m_PluginDirs << thePath;
