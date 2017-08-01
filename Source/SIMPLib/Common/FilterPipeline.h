@@ -87,7 +87,7 @@ class SIMPLib_EXPORT FilterPipeline : public QObject
      * @brief A pure virtual function that gets called from the "run()" method. Subclasses
      * are expected to create a concrete implementation of this method.
      */
-    virtual void execute();
+    virtual DataContainerArray::Pointer execute();
 
     /**
      * @brief This will preflight the pipeline and report any errors that would occur during
@@ -161,7 +161,7 @@ class SIMPLib_EXPORT FilterPipeline : public QObject
     /**
      * @brief This method is called to start the pipeline for a plugin
      */
-    virtual void run();
+    virtual DataContainerArray::Pointer run();
 
     /**
      * @brief cancelPipeline
