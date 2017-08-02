@@ -131,8 +131,9 @@ void DataContainerWriter::dataCheck()
   QDir parentPath(fi.path());
   if(parentPath.exists() == false)
   {
+    setWarningCondition(-10001);
     ss = QObject::tr("The directory path for the output file does not exist. The application will attempt to create this path during execution of the filter");
-    notifyWarningMessage(getHumanLabel(), ss, -1);
+    notifyWarningMessage(getHumanLabel(), ss, getWarningCondition());
   }
   if(fi.suffix().compare("") == 0)
   {
@@ -140,7 +141,7 @@ void DataContainerWriter::dataCheck()
   }
   if(fi.baseName().compare("") == 0)
   {
-    setErrorCondition(-10001);
+    setErrorCondition(-10002);
     ss = QObject::tr("The output file must have its actual filename set");
     notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
   }
@@ -156,7 +157,7 @@ void DataContainerWriter::dataCheck()
 
   if(dirInfo.isWritable() == false && parentPath.exists() == true)
   {
-    setErrorCondition(-10002);
+    setErrorCondition(-10003);
     ss = QObject::tr("The user does not have the proper permissions to write to the output file");
     notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
   }

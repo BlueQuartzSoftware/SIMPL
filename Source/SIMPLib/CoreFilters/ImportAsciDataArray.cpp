@@ -461,12 +461,13 @@ void ImportAsciDataArray::execute()
   }
   else if(err == RBR_FILE_TOO_BIG)
   {
-    notifyWarningMessage(getHumanLabel(), "The file size is larger than the allocated size", RBR_FILE_TOO_BIG);
+    setWarningCondition(RBR_FILE_TOO_BIG);
+    notifyWarningMessage(getHumanLabel(), "The file size is larger than the allocated size", getWarningCondition());
   }
   else if(err == RBR_READ_ERROR)
   {
-    setErrorCondition(RBR_READ_ERROR);
-    notifyWarningMessage(getHumanLabel(), "General read error while importing ASCI file.", RBR_READ_ERROR);
+    setWarningCondition(RBR_READ_ERROR);
+    notifyWarningMessage(getHumanLabel(), "General read error while importing ASCI file.", getWarningCondition());
   }
   else if(err == RBR_READ_EOF)
   {

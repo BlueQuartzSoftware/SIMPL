@@ -175,8 +175,9 @@ void MoveMultiData::dataCheck()
       // Source and Destination match
       if(amSrcDataContainer->getName() == amDestDataContainer->getName())
       {
+        setWarningCondition(-11018);
         QString ss = QObject::tr("The source and destination Data Container are the same.  Is this what you meant to do?");
-        notifyWarningMessage(getHumanLabel(), ss, getErrorCondition());
+        notifyWarningMessage(getHumanLabel(), ss, getWarningCondition());
         return;
       }
 
@@ -213,8 +214,9 @@ void MoveMultiData::dataCheck()
       // Source and Destination match
       else if(daSrcPaths[i].hasSameAttributeMatrix(amDestPath))
       {
+        setWarningCondition(-11020);
         QString ss = QObject::tr("The source and destination Attribute Matrix are the same.  Is this what you meant to do?");
-        notifyWarningMessage(getHumanLabel(), ss, getErrorCondition());
+        notifyWarningMessage(getHumanLabel(), ss, getWarningCondition());
         return;
       }
 
@@ -225,7 +227,7 @@ void MoveMultiData::dataCheck()
   }
   else
   {
-    setErrorCondition(-11020);
+    setErrorCondition(-11021);
     QString ss = QObject::tr("Neither an Attribute Matrix nor an Attribute Array was selected to be moved");
     notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
     return;

@@ -350,7 +350,8 @@ void RawBinaryReader::dataCheck()
                              " SIMPLView will read only the first part of the file into the array")
                      .arg(fileSize)
                      .arg(allocatedBytes);
-    notifyWarningMessage(getHumanLabel(), ss, RBR_FILE_TOO_BIG);
+    setWarningCondition(RBR_FILE_TOO_BIG);
+    notifyWarningMessage(getHumanLabel(), ss, getWarningCondition());
   }
 }
 
@@ -496,7 +497,8 @@ void RawBinaryReader::execute()
   }
   else if(err == RBR_FILE_TOO_BIG)
   {
-    notifyWarningMessage(getHumanLabel(), "The file size is larger than the allocated size", RBR_FILE_TOO_BIG);
+    setWarningCondition(RBR_FILE_TOO_BIG);
+    notifyWarningMessage(getHumanLabel(), "The file size is larger than the allocated size", getWarningCondition());
   }
   else if(err == RBR_READ_EOF)
   {

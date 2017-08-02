@@ -255,8 +255,8 @@ void ExecuteProcess::processHasErroredOut(QProcess::ProcessError error)
   if(getCancel())
   {
     QString ss = QObject::tr("The process was killed by the user.");
-    // setErrorCondition(-4025);
-    notifyWarningMessage(getHumanLabel(), ss, getErrorCondition());
+    setWarningCondition(-4004);
+    notifyWarningMessage(getHumanLabel(), ss, getWarningCondition());
   }
   else if(error == QProcess::FailedToStart)
   {

@@ -147,7 +147,8 @@ void RequiredZThickness::dataCheck()
     ss << "  Required Z Voxels: " << m_NumZVoxels << "\n";
     ss << "  Current Z Voxels: " << dims[2];
 
-    notifyWarningMessage(getHumanLabel(), str, getErrorCondition());
+    setWarningCondition(-7788);
+    notifyWarningMessage(getHumanLabel(), str, getWarningCondition());
   }
 }
 

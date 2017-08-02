@@ -129,7 +129,7 @@ void FeatureDataCSVWriter::dataCheck()
   if(getFeatureDataFile().isEmpty() == true)
   {
     QString ss = QObject::tr("The output file must be set");
-    setErrorCondition(-1);
+    setErrorCondition(-1000);
     notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
   }
 
@@ -137,8 +137,9 @@ void FeatureDataCSVWriter::dataCheck()
   QDir parentPath(fi.path());
   if(parentPath.exists() == false)
   {
+    setWarningCondition(-1001);
     QString ss = QObject::tr("The directory path for the output file does not exist. DREAM.3D will attempt to create this path during execution of the filter");
-    notifyWarningMessage(getHumanLabel(), ss, -1);
+    notifyWarningMessage(getHumanLabel(), ss, getWarningCondition());
   }
   if(fi.suffix().compare("") == 0)
   {

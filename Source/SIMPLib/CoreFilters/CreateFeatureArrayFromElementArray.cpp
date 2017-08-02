@@ -211,8 +211,9 @@ template <typename T> IDataArray::Pointer copyCellData(AbstractFilter* filter, I
       if(currentDataPtr[j] != cSourcePtr[j] && !warningThrown)
       {
         // The values are inconsistent with the first values for this feature id, so throw a warning
+        filter->setWarningCondition(-1000);
         QString ss = QObject::tr("Elements from Feature %1 do not all have the same value. The last value copied into Feature %1 will be used").arg(featureIdx);
-        filter->notifyWarningMessage(filter->getHumanLabel(), ss, filter->getErrorCondition());
+        filter->notifyWarningMessage(filter->getHumanLabel(), ss, filter->getWarningCondition());
         warningThrown = true;
       }
     }

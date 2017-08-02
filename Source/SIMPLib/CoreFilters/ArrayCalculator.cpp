@@ -818,7 +818,7 @@ void ArrayCalculator::checkForAmbiguousArrayName(QString strItem, QString warnin
 
       setWarningCondition(AMBIGUOUS_NAME_WARNING);
       warningMsg.append("\nTo treat this item as an array name, please add double quotes around the item (i.e. \"" + strItem + "\").");
-      notifyWarningMessage(getHumanLabel(), warningMsg, getErrorCondition());
+      notifyWarningMessage(getHumanLabel(), warningMsg, getWarningCondition());
     }
   }
 }
