@@ -94,7 +94,7 @@ void ErrorWarningFilter::dataCheck()
   {
     QString ss = QObject::tr("Intentional preflight warning generated");
     setWarningCondition(-1);
-    notifyWarningMessage(getHumanLabel(), ss, getErrorCondition());
+    notifyWarningMessage(getHumanLabel(), ss, getWarningCondition());
   }
   if(getPreflightError())
   {
