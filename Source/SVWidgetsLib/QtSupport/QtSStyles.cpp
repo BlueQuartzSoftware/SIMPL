@@ -75,9 +75,16 @@ QtSStyles::~QtSStyles()
 // -----------------------------------------------------------------------------
 QString QtSStyles::GetUIFont()
 {
-  QFont font("FiraSans");
+#if defined(Q_OS_MAC)
+  QString fontString("FiraSans");
+#elif defined(Q_OS_WIN)
+  QString fontString("FiraSans");
+#else
+  QString fontString("Arial");
+#endif
 
-  if(font.fromString("FiraSans"))
+  QFont font(fontString);
+  if(font.fromString(fontString))
   {
     return font.toString();
   }
@@ -86,21 +93,6 @@ QString QtSStyles::GetUIFont()
     QFont font;
     return font.toString();
   }
-//#if defined(Q_OS_MAC)
-//#elif defined(Q_OS_WIN)
-//  //return QString::fromUtf8("Arial");
-//#else
-//  QFont font("Arial");
-//  if(font.fromString("Arial"))
-//  {
-//    return font.toString();
-//  }
-//  else
-//  {
-//    QFont font;
-//    return font.defaultFamily();
-//  }
-//#endif
 }
 
 // -----------------------------------------------------------------------------
