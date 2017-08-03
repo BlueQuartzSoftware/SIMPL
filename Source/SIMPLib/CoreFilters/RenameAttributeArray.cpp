@@ -139,7 +139,7 @@ void RenameAttributeArray::dataCheck()
   case SUCCESS:
   {
     setErrorCondition(0);
-  setWarningCondition(0);
+    setWarningCondition(0);
     return;
   }
   }
