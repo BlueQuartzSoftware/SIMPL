@@ -382,6 +382,7 @@ void GenericExample::dataCheck()
 {
   DataArrayPath tempPath;
   setErrorCondition(0);
+  setWarningCondition(0);
 }
 
 // -----------------------------------------------------------------------------

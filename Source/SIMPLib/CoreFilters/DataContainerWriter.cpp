@@ -118,6 +118,7 @@ void DataContainerWriter::initialize()
 void DataContainerWriter::dataCheck()
 {
   setErrorCondition(0);
+  setWarningCondition(0);
   QString ss;
 
   if(m_OutputFile.isEmpty() == true)
@@ -189,6 +190,7 @@ void DataContainerWriter::preflight()
 void DataContainerWriter::execute()
 {
   setErrorCondition(0);
+  setWarningCondition(0);
   dataCheck();
   if(getErrorCondition() < 0)
   {

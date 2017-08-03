@@ -230,6 +230,7 @@ void ConvertData::initialize()
 void ConvertData::dataCheck()
 {
   setErrorCondition(0);
+  setWarningCondition(0);
 
   DataContainer::Pointer m = getDataContainerArray()->getPrereqDataContainer<AbstractFilter>(this, getSelectedCellArrayPath().getDataContainerName(), false);
 
@@ -321,6 +322,7 @@ void ConvertData::preflight()
 void ConvertData::execute()
 {
   setErrorCondition(0);
+  setWarningCondition(0);
   dataCheck();
   if(getErrorCondition() < 0)
   {

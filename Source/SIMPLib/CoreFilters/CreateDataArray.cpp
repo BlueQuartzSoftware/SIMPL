@@ -334,6 +334,7 @@ void CreateDataArray::initialize()
 void CreateDataArray::dataCheck()
 {
   setErrorCondition(0);
+  setWarningCondition(0);
 
   if(getErrorCondition() < 0)
   {
@@ -441,6 +442,7 @@ void CreateDataArray::preflight()
 void CreateDataArray::execute()
 {
   setErrorCondition(0);
+  setWarningCondition(0);
   dataCheck();
   if(getErrorCondition() < 0)
   {

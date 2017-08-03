@@ -235,6 +235,7 @@ GenerateColorTable::~GenerateColorTable()
 void GenerateColorTable::initialize()
 {
   setErrorCondition(0);
+  setWarningCondition(0);
   setCancel(false);
 }
 
@@ -270,6 +271,7 @@ void GenerateColorTable::setupFilterParameters()
 void GenerateColorTable::dataCheck()
 {
   setErrorCondition(0);
+  setWarningCondition(0);
 
   getDataContainerArray()->getPrereqIDataArrayFromPath<IDataArray, AbstractFilter>(this, getSelectedDataArrayPath());
 

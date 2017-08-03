@@ -153,6 +153,7 @@ void MoveMultiData::initialize()
 void MoveMultiData::dataCheck()
 {
   setErrorCondition(0);
+  setWarningCondition(0);
   QVector<DataArrayPath> amSrcPaths = getAttributeMatrixSources();
   DataArrayPath amDestPath = getAttributeMatrixDestination();
   QVector<DataArrayPath> daSrcPaths = getDataArraySources();
@@ -253,6 +254,7 @@ void MoveMultiData::preflight()
 void MoveMultiData::execute()
 {
   setErrorCondition(0);
+  setWarningCondition(0);
   // Simply running the preflight will do what we need it to.
   dataCheck();
   if(getErrorCondition() < 0)

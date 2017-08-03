@@ -79,6 +79,7 @@ PostSlackMessage::~PostSlackMessage()
 void PostSlackMessage::initialize()
 {
   setErrorCondition(0);
+  setWarningCondition(0);
   setCancel(false);
 }
 
@@ -103,6 +104,7 @@ void PostSlackMessage::setupFilterParameters()
 void PostSlackMessage::dataCheck()
 {
   setErrorCondition(0);
+  setWarningCondition(0);
 }
 
 // -----------------------------------------------------------------------------

@@ -113,6 +113,7 @@ void WriteTriangleGeometry::initialize()
 void WriteTriangleGeometry::dataCheck()
 {
   setErrorCondition(0);
+  setWarningCondition(0);
 
   if(true == m_OutputNodesFile.isEmpty())
   {

@@ -123,6 +123,7 @@ void FeatureDataCSVWriter::initialize()
 void FeatureDataCSVWriter::dataCheck()
 {
   setErrorCondition(0);
+  setWarningCondition(0);
 
   getDataContainerArray()->getPrereqAttributeMatrixFromPath<AbstractFilter>(this, getCellFeatureAttributeMatrixPath(), -301);
 
@@ -185,6 +186,7 @@ void FeatureDataCSVWriter::preflight()
 void FeatureDataCSVWriter::execute()
 {
   setErrorCondition(0);
+  setWarningCondition(0);
   dataCheck();
   if(getErrorCondition() < 0)
   {

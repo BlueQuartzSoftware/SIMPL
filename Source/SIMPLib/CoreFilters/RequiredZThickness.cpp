@@ -106,6 +106,7 @@ void RequiredZThickness::initialize()
 void RequiredZThickness::dataCheck()
 {
   setErrorCondition(0);
+  setWarningCondition(0);
   if(getErrorCondition() < 0)
   {
     return;
@@ -171,6 +172,7 @@ void RequiredZThickness::preflight()
 void RequiredZThickness::execute()
 {
   setErrorCondition(0);
+  setWarningCondition(0);
   dataCheck();
   if(getErrorCondition() < 0)
   {

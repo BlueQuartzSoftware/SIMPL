@@ -101,6 +101,7 @@ void ExecuteProcess::initialize()
 void ExecuteProcess::dataCheck()
 {
   setErrorCondition(0);
+  setWarningCondition(0);
 
   QStringList arguments = splitArgumentsString(m_Arguments);
   if(arguments.size() <= 0)
@@ -143,6 +144,7 @@ void ExecuteProcess::preflight()
 void ExecuteProcess::execute()
 {
   setErrorCondition(0);
+  setWarningCondition(0);
   dataCheck();
   if(getErrorCondition() < 0)
   {

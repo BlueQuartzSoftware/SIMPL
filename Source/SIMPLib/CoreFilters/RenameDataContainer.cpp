@@ -103,6 +103,7 @@ void RenameDataContainer::initialize()
 void RenameDataContainer::dataCheck()
 {
   setErrorCondition(0);
+  setWarningCondition(0);
 
   if(getNewDataContainerName().isEmpty() == true)
   {
@@ -146,6 +147,7 @@ void RenameDataContainer::preflight()
 void RenameDataContainer::execute()
 {
   setErrorCondition(0);
+  setWarningCondition(0);
   dataCheck(); // calling the dataCheck will rename the array, so nothing is required here
   if(getErrorCondition() < 0)
   {

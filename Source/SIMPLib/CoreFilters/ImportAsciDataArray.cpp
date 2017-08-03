@@ -249,6 +249,7 @@ void ImportAsciDataArray::initialize()
 void ImportAsciDataArray::dataCheck()
 {
   setErrorCondition(0);
+  setWarningCondition(0);
 
   QFileInfo fi(getInputFile());
   if(getInputFile().isEmpty() == true)

@@ -93,6 +93,7 @@ void CreateDataContainer::initialize()
 void CreateDataContainer::dataCheck()
 {
   setErrorCondition(0);
+  setWarningCondition(0);
 
   getDataContainerArray()->createNonPrereqDataContainer<AbstractFilter>(this, getCreatedDataContainer());
 }
@@ -117,6 +118,7 @@ void CreateDataContainer::preflight()
 void CreateDataContainer::execute()
 {
   setErrorCondition(0);
+  setWarningCondition(0);
   dataCheck();
   if(getErrorCondition() < 0)
   {
