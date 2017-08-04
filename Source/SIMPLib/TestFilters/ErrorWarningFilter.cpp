@@ -47,6 +47,7 @@ ErrorWarningFilter::ErrorWarningFilter()
 , m_PreflightError(false)
 , m_ExecuteWarning(false)
 , m_ExecuteError(false)
+, m_PropertyError(false)
 {
   initialize();
   setupFilterParameters();
@@ -80,6 +81,7 @@ void ErrorWarningFilter::setupFilterParameters()
   parameters.push_back(SIMPL_NEW_BOOL_FP("Preflight Error", PreflightError, FilterParameter::Parameter, ErrorWarningFilter));
   parameters.push_back(SIMPL_NEW_BOOL_FP("Execute Warning", ExecuteWarning, FilterParameter::Parameter, ErrorWarningFilter));
   parameters.push_back(SIMPL_NEW_BOOL_FP("Execute Error", ExecuteError, FilterParameter::Parameter, ErrorWarningFilter));
+  parameters.push_back(SIMPL_NEW_BOOL_FP("Property Error", PropertyError, FilterParameter::Parameter, ErrorWarningFilter));
 
   setFilterParameters(parameters);
 }
@@ -101,6 +103,10 @@ void ErrorWarningFilter::dataCheck()
     QString ss = QObject::tr("Intentional preflight error generated");
     setErrorCondition(-666000);
     notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
+  }
+  if(getPropertyError())
+  {
+    notifyMissingProperty(getFilterParameters()[4].get());
   }
 }
 

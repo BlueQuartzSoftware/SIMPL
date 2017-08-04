@@ -62,6 +62,9 @@ public:
   SIMPL_FILTER_PARAMETER(bool, ExecuteError)
   Q_PROPERTY(bool ExecuteError READ getExecuteError WRITE setExecuteError)
 
+  SIMPL_FILTER_PARAMETER(bool, PropertyError)
+  Q_PROPERTY(bool PropertyError READ getPropertyError WRITE setPropertyError)
+
   /**
    * @brief getCompiledLibraryName Reimplemented from @see AbstractFilter class
    */

@@ -304,6 +304,12 @@ class SIMPLib_EXPORT AbstractFilter : public Observable
      */
     void notifyProgressMessage(const QString& prefix, const QString& humanLabel, const QString& str, int progress) override;
 
+    /**
+     * @brief notifyMissingProperty
+     * @param filterParameter
+    */
+    void notifyMissingProperty(FilterParameter* filterParameter);
+
     //---------------
     // Other convenicen methods
     // --------------
