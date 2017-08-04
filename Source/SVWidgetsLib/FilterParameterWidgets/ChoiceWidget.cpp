@@ -145,7 +145,7 @@ void ChoiceWidget::filterNeedsInputParameters(AbstractFilter* filter)
 
   if(false == ok)
   {
-    FilterParameterWidgetsDialogs::ShowCouldNotSetFilterParameter(getFilter(), getFilterParameter());
+    getFilter()->notifyMissingProperty(getFilterParameter());
   }
 }
 

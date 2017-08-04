@@ -457,3 +457,18 @@ void AbstractFilter::notifyProgressMessage(const QString& prefix, const QString&
   pm.setPipelineIndex(getPipelineIndex());
   emit filterGeneratedMessage(pm);
 }
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void AbstractFilter::notifyMissingProperty(FilterParameter* filterParameter)
+{
+  QString ss =
+    QString("Error occurred transferring the Filter Parameter '%1' in Filter '%2' to the filter instance. The pipeline may run but the underlying filter will NOT be using the values from the GUI."
+      " Please report this issue to the developers of this filter.")
+    .arg(filterParameter->getPropertyName())
+    .arg(getHumanLabel());
+
+  setWarningCondition(-1);
+  notifyWarningMessage(getHumanLabel(), ss, getWarningCondition());
+}

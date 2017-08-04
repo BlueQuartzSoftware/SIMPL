@@ -173,7 +173,7 @@ void FloatVec2Widget::filterNeedsInputParameters(AbstractFilter* filter)
   ok = filter->setProperty(PROPERTY_NAME_AS_CHAR, v);
   if(false == ok)
   {
-    FilterParameterWidgetsDialogs::ShowCouldNotSetFilterParameter(getFilter(), getFilterParameter());
+    getFilter()->notifyMissingProperty(getFilterParameter());
   }
 }
 
