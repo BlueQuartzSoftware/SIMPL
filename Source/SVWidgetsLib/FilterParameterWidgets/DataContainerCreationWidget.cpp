@@ -122,6 +122,6 @@ void DataContainerCreationWidget::filterNeedsInputParameters(AbstractFilter* fil
   bool ok = filter->setProperty(PROPERTY_NAME_AS_CHAR, stringEdit->getText());
   if(false == ok)
   {
-    FilterParameterWidgetsDialogs::ShowCouldNotSetFilterParameter(getFilter(), getFilterParameter());
+    getFilter()->notifyMissingProperty(getFilterParameter());
   }
 }

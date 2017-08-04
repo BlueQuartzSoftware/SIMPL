@@ -426,7 +426,7 @@ void PhaseTypeSelectionWidget::filterNeedsInputParameters(AbstractFilter* filter
   ok = filter->setProperty(m_FilterParameter->getPhaseTypeDataProperty().toLatin1().constData(), var);
   if(false == ok)
   {
-    FilterParameterWidgetsDialogs::ShowCouldNotSetFilterParameter(getFilter(), getFilterParameter());
+    getFilter()->notifyMissingProperty(getFilterParameter());
   }
 
   DataArrayPath path = DataArrayPath::Deserialize(m_SelectedAttributeMatrixPath->text(), Detail::Delimiter);
@@ -437,6 +437,6 @@ void PhaseTypeSelectionWidget::filterNeedsInputParameters(AbstractFilter* filter
   ok = filter->setProperty(m_FilterParameter->getAttributeMatrixPathProperty().toLatin1().constData(), var);
   if(false == ok)
   {
-    FilterParameterWidgetsDialogs::ShowCouldNotSetFilterParameter(getFilter(), getFilterParameter());
+    getFilter()->notifyMissingProperty(getFilterParameter());
   }
 }
