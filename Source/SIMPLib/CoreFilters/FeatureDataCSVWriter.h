@@ -66,6 +66,9 @@ class FeatureDataCSVWriter : public AbstractFilter
     SIMPL_FILTER_PARAMETER(int, DelimiterChoice)
     Q_PROPERTY(int DelimiterChoice READ getDelimiterChoice WRITE setDelimiterChoice)
 
+    SIMPL_FILTER_PARAMETER(bool, WriteNumFeaturesLine)
+    Q_PROPERTY(bool WriteNumFeaturesLine READ getWriteNumFeaturesLine WRITE setWriteNumFeaturesLine)
+
     SIMPL_INSTANCE_PROPERTY(char, Delimiter)
 
     /**

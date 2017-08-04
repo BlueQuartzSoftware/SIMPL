@@ -59,6 +59,7 @@ FeatureDataCSVWriter::FeatureDataCSVWriter()
 , m_FeatureDataFile("")
 , m_WriteNeighborListData(false)
 , m_DelimiterChoice(0)
+, m_WriteNumFeaturesLine(true)
 , m_Delimiter(',')
 {
   setupFilterParameters();
@@ -78,6 +79,7 @@ void FeatureDataCSVWriter::setupFilterParameters()
   FilterParameterVector parameters;
   parameters.push_back(SIMPL_NEW_OUTPUT_FILE_FP("Output File", FeatureDataFile, FilterParameter::Parameter, FeatureDataCSVWriter, "*.csv", "Comma Separated Data"));
   parameters.push_back(SIMPL_NEW_BOOL_FP("Write Neighbor Data", WriteNeighborListData, FilterParameter::Parameter, FeatureDataCSVWriter));
+  parameters.push_back(SIMPL_NEW_BOOL_FP("Write Number of Features Line", WriteNumFeaturesLine, FilterParameter::Parameter, FeatureDataCSVWriter));
 
   {
     QVector<QString> choices;
@@ -216,7 +218,10 @@ void FeatureDataCSVWriter::execute()
   AttributeMatrix::Pointer cellFeatureAttrMat = getDataContainerArray()->getAttributeMatrix(getCellFeatureAttributeMatrixPath());
 
   // Write the total number of features
-  outFile << cellFeatureAttrMat->getNumberOfTuples() - 1 << "\n";
+  if(getWriteNumFeaturesLine())
+  {
+    outFile << cellFeatureAttrMat->getNumberOfTuples() - 1 << "\n";
+  }
   // Get all the names of the arrays from the Data Container
   QList<QString> headers = cellFeatureAttrMat->getAttributeArrayNames();
 
