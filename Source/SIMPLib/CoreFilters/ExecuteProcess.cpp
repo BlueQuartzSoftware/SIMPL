@@ -101,6 +101,7 @@ void ExecuteProcess::initialize()
 void ExecuteProcess::dataCheck()
 {
   setErrorCondition(0);
+  setWarningCondition(0);
 
   QStringList arguments = splitArgumentsString(m_Arguments);
   if(arguments.size() <= 0)
@@ -143,6 +144,7 @@ void ExecuteProcess::preflight()
 void ExecuteProcess::execute()
 {
   setErrorCondition(0);
+  setWarningCondition(0);
   dataCheck();
   if(getErrorCondition() < 0)
   {
@@ -255,8 +257,8 @@ void ExecuteProcess::processHasErroredOut(QProcess::ProcessError error)
   if(getCancel())
   {
     QString ss = QObject::tr("The process was killed by the user.");
-    // setErrorCondition(-4025);
-    notifyWarningMessage(getHumanLabel(), ss, getErrorCondition());
+    setWarningCondition(-4004);
+    notifyWarningMessage(getHumanLabel(), ss, getWarningCondition());
   }
   else if(error == QProcess::FailedToStart)
   {

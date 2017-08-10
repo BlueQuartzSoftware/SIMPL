@@ -118,6 +118,7 @@ void CopyFeatureArrayToElementArray::initialize()
 void CopyFeatureArrayToElementArray::dataCheck()
 {
   setErrorCondition(0);
+  setWarningCondition(0);
 
   if(getCreatedArrayName().isEmpty() == true)
   {
@@ -205,6 +206,7 @@ template <typename T> IDataArray::Pointer copyData(IDataArray::Pointer inputData
 void CopyFeatureArrayToElementArray::execute()
 {
   setErrorCondition(0);
+  setWarningCondition(0);
   dataCheck();
   if(getErrorCondition() < 0)
   {

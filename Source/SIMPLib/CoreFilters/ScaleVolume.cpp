@@ -176,6 +176,7 @@ void ScaleVolume::initialize()
 void ScaleVolume::dataCheck()
 {
   setErrorCondition(0);
+  setWarningCondition(0);
 
   if(m_ApplyToVoxelVolume == true)
   {
@@ -207,6 +208,7 @@ void ScaleVolume::preflight()
 void ScaleVolume::updateSurfaceMesh()
 {
   setErrorCondition(0);
+  setWarningCondition(0);
 
 #ifdef SIMPLib_USE_PARALLEL_ALGORITHMS
   tbb::task_scheduler_init init;
@@ -270,6 +272,7 @@ void ScaleVolume::updateSurfaceMesh()
 void ScaleVolume::execute()
 {
   setErrorCondition(0);
+  setWarningCondition(0);
   dataCheck();
   if(getErrorCondition() < 0)
   {

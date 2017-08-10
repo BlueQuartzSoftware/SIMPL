@@ -163,6 +163,7 @@ void ConditionalSetValue::initialize()
 void ConditionalSetValue::dataCheck()
 {
   setErrorCondition(0);
+  setWarningCondition(0);
 
   QVector<DataArrayPath> dataArrayPaths;
 
@@ -275,6 +276,7 @@ void ConditionalSetValue::preflight()
 void ConditionalSetValue::execute()
 {
   setErrorCondition(0);
+  setWarningCondition(0);
   dataCheck();
   if(getErrorCondition() < 0)
   {

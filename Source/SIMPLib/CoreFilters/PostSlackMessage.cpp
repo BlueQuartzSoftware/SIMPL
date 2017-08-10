@@ -79,6 +79,7 @@ PostSlackMessage::~PostSlackMessage()
 void PostSlackMessage::initialize()
 {
   setErrorCondition(0);
+  setWarningCondition(0);
   setCancel(false);
 }
 
@@ -103,6 +104,7 @@ void PostSlackMessage::setupFilterParameters()
 void PostSlackMessage::dataCheck()
 {
   setErrorCondition(0);
+  setWarningCondition(0);
 }
 
 // -----------------------------------------------------------------------------
@@ -171,8 +173,9 @@ void PostSlackMessage::execute()
     }
     else
     {
+      setWarningCondition(-76001);
       QString ss = QObject::tr("Slack returned the following error code: %1").arg(getErrorCondition());
-      notifyWarningMessage(getHumanLabel(), ss, getErrorCondition());
+      notifyWarningMessage(getHumanLabel(), ss, getWarningCondition());
     }
   }
 

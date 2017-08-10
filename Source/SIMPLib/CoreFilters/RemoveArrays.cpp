@@ -105,6 +105,7 @@ void RemoveArrays::initialize()
 void RemoveArrays::dataCheck()
 {
   setErrorCondition(0);
+  setWarningCondition(0);
 
   markSelectionsForDeletion(getDataContainerArray().get(), Qt::Checked);
 
@@ -190,9 +191,9 @@ void RemoveArrays::removeSelectionsFromDataContainerArray(DataContainerArray* dc
         IDataArray::Pointer daItem = amItem->getAttributeArray(daName);
         if(daItem.get() == nullptr)
         {
-          setErrorCondition(0);
+          setWarningCondition(-11009);
           QString ss = QObject::tr("%1/%2/%3 was not found. This could be due to another filter removing the array.").arg(dcProxy.name).arg(amName).arg(daName);
-          notifyWarningMessage(getHumanLabel(), ss, getErrorCondition());
+          notifyWarningMessage(getHumanLabel(), ss, getWarningCondition());
           continue;
         }
         DataArrayProxy daProxy = dataArraysIter.value();
@@ -213,6 +214,7 @@ void RemoveArrays::removeSelectionsFromDataContainerArray(DataContainerArray* dc
 void RemoveArrays::execute()
 {
   setErrorCondition(0);
+  setWarningCondition(0);
   // Simply running the preflight will do what we need it to.
   dataCheck();
   if(getErrorCondition() < 0)
