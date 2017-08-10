@@ -42,6 +42,7 @@
 
 #include "SIMPLib/Common/ComparisonInputs.h"
 #include "SIMPLib/Common/ComparisonInputsAdvanced.h"
+#include "SIMPLib/Common/EnsembleInfo.h"
 #include "SIMPLib/Common/PipelineMessage.h"
 #include "SIMPLib/CoreFilters/CreateDataArray.h"
 #include "SIMPLib/DataContainers/DataArrayPath.h"
@@ -98,6 +99,22 @@ QDataStream& operator>>(QDataStream& in, PhaseType::Type& v)
   return in;
 }
 
+QDataStream& operator << (QDataStream& out, const EnsembleInfo& v)
+{
+  assert(false);
+  EnsembleInfo temp = static_cast<EnsembleInfo>(v);
+  out << temp;
+  return out;
+}
+QDataStream& operator >> (QDataStream& in, EnsembleInfo& v)
+{
+  assert(false);
+  EnsembleInfo temp;
+  in >> temp;
+  v = static_cast<EnsembleInfo>(temp);
+  return in;
+}
+
 // QDataStream& operator>>( QDataStream& in, DataArrayPath& v) { in >> v.getDataContainerName() >> "|" >> v.getAttributeMatrixName() >> "|" >> v.getDataArrayName(); return in;}
 
 // -----------------------------------------------------------------------------
@@ -134,4 +151,5 @@ void QMetaObjectUtilities::RegisterMetaTypes()
   qRegisterMetaTypeStreamOperators<IntVec3_t>("IntVec3_t");
   qRegisterMetaTypeStreamOperators<FloatVec3_t>("FloatVec3_t");
   qRegisterMetaTypeStreamOperators<PhaseType::Types>("PhaseType::Types");
+  qRegisterMetaTypeStreamOperators<EnsembleInfo>("EnsembleInfo");
 }

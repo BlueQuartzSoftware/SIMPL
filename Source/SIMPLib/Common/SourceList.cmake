@@ -43,6 +43,7 @@ set(SIMPLib_${SUBDIR_NAME}_Moc_HDRS
   ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/ComparisonInputs.h
   ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/ComparisonInputsAdvanced.h
   ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/DocRequestManager.h
+  ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/EnsembleInfo.h
   ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/FilterPipeline.h
   ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/Observer.h
   ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/Observable.h
@@ -88,6 +89,7 @@ set(SIMPLib_${SUBDIR_NAME}_SRCS
   ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/ComparisonInputs.cpp
   ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/ComparisonInputsAdvanced.cpp
   ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/CreatedArrayHelpIndexEntry.cpp
+  ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/EnsembleInfo.cpp
   ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/FilterManager.cpp
   ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/FilterPipeline.cpp
   ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/IDataArrayFilter.cpp
