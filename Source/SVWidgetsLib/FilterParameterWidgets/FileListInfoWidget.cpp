@@ -47,6 +47,7 @@
 #include "SIMPLib/Common/Constants.h"
 #include "SIMPLib/FilterParameters/FileListInfoFilterParameter.h"
 #include "SIMPLib/Utilities/FilePathGenerator.h"
+#include "SIMPLib/Utilities/StringOperations.h"
 
 #include "SVWidgetsLib/Core/SVWidgetsLibConstants.h"
 #include "SVWidgetsLib/QtSupport/QtSFileCompleter.h"
@@ -296,6 +297,7 @@ void FileListInfoWidget::on_m_InputDirBtn_clicked()
 // -----------------------------------------------------------------------------
 void FileListInfoWidget::on_m_LineEdit_textChanged(const QString& text)
 {
+  Q_UNUSED(text)
 
   if(verifyPathExists(m_LineEdit->text(), m_LineEdit))
   {
@@ -353,6 +355,7 @@ void FileListInfoWidget::setOrdering(uint32_t ref)
 // -----------------------------------------------------------------------------
 void FileListInfoWidget::orderingChanged(bool checked)
 {
+  Q_UNUSED(checked)
   generateExampleInputFile();
   emit parametersChanged();
 }
@@ -362,6 +365,7 @@ void FileListInfoWidget::orderingChanged(bool checked)
 // -----------------------------------------------------------------------------
 void FileListInfoWidget::on_m_EndIndex_valueChanged(int value)
 {
+  Q_UNUSED(value)
   generateExampleInputFile();
   emit parametersChanged();
 }
@@ -371,6 +375,7 @@ void FileListInfoWidget::on_m_EndIndex_valueChanged(int value)
 // -----------------------------------------------------------------------------
 void FileListInfoWidget::on_m_StartIndex_valueChanged(int value)
 {
+  Q_UNUSED(value)
   generateExampleInputFile();
   emit parametersChanged();
 }
@@ -380,6 +385,7 @@ void FileListInfoWidget::on_m_StartIndex_valueChanged(int value)
 // -----------------------------------------------------------------------------
 void FileListInfoWidget::on_m_TotalDigits_valueChanged(int value)
 {
+  Q_UNUSED(value)
   generateExampleInputFile();
   emit parametersChanged();
 }
@@ -389,6 +395,7 @@ void FileListInfoWidget::on_m_TotalDigits_valueChanged(int value)
 // -----------------------------------------------------------------------------
 void FileListInfoWidget::on_m_FileExt_textChanged(const QString& string)
 {
+  Q_UNUSED(string)
   generateExampleInputFile();
   emit parametersChanged();
 }
@@ -398,6 +405,7 @@ void FileListInfoWidget::on_m_FileExt_textChanged(const QString& string)
 // -----------------------------------------------------------------------------
 void FileListInfoWidget::on_m_FileSuffix_textChanged(const QString& string)
 {
+  Q_UNUSED(string)
   generateExampleInputFile();
   emit parametersChanged();
 }
@@ -407,6 +415,7 @@ void FileListInfoWidget::on_m_FileSuffix_textChanged(const QString& string)
 // -----------------------------------------------------------------------------
 void FileListInfoWidget::on_m_FilePrefix_textChanged(const QString& string)
 {
+  Q_UNUSED(string)
   generateExampleInputFile();
   emit parametersChanged();
 }
@@ -416,8 +425,8 @@ void FileListInfoWidget::on_m_FilePrefix_textChanged(const QString& string)
 // -----------------------------------------------------------------------------
 void FileListInfoWidget::generateExampleInputFile()
 {
-
-  QString filename = QString("%1%2%3.%4").arg(m_FilePrefix->text()).arg(m_StartIndex->text(), m_TotalDigits->value(), '0').arg(m_FileSuffix->text()).arg(m_FileExt->text());
+  QString indexString = StringOperations::GeneratePaddedString(m_StartIndex->value(), m_TotalDigits->value(), '0');
+  QString filename = QString("%1%2%3.%4").arg(m_FilePrefix->text()).arg(indexString).arg(m_FileSuffix->text()).arg(m_FileExt->text());
   m_GeneratedFileNameExample->setText(filename);
 
   int start = m_StartIndex->value();
@@ -559,6 +568,7 @@ void FileListInfoWidget::findMaxSliceAndPrefix()
 // -----------------------------------------------------------------------------
 void FileListInfoWidget::widgetChanged(const QString& text)
 {
+  Q_UNUSED(text)
   emit parametersChanged();
 }
 
@@ -575,14 +585,14 @@ void FileListInfoWidget::filterNeedsInputParameters(AbstractFilter* filter)
   bool ok = false;
 
   FileListInfo_t data;
-  data.EndIndex = m_EndIndex->text().toLongLong(&ok);
+  data.EndIndex = m_EndIndex->value();
   data.FileExtension = m_FileExt->text();
   data.FilePrefix = m_FilePrefix->text();
   data.FileSuffix = m_FileSuffix->text();
   data.InputPath = m_LineEdit->text();
   data.Ordering = getOrdering();
   data.PaddingDigits = m_TotalDigits->value();
-  data.StartIndex = m_StartIndex->text().toLongLong(&ok);
+  data.StartIndex = m_StartIndex->value();
 
   QVariant v;
   v.setValue(data);
