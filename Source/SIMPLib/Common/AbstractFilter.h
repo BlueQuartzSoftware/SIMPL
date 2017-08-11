@@ -72,6 +72,7 @@ class SIMPLib_EXPORT AbstractFilter : public Observable
     Q_PROPERTY(QString FilterVersion READ getFilterVersion CONSTANT)
     Q_PROPERTY(QString CompiledLibraryName READ getCompiledLibraryName CONSTANT)
     Q_PROPERTY(int Cancel READ getCancel WRITE setCancel)
+    Q_PROPERTY(bool Enabled READ getEnabled WRITE setEnabled)
 
   public:
     SIMPL_SHARED_POINTERS(AbstractFilter)
@@ -311,7 +312,7 @@ class SIMPLib_EXPORT AbstractFilter : public Observable
     void notifyMissingProperty(FilterParameter* filterParameter);
 
     //---------------
-    // Other convenicen methods
+    // Other convenience methods
     // --------------
     /**
      * @brief printValues Optional method to print out values as the developer sees fit.
@@ -330,6 +331,8 @@ class SIMPLib_EXPORT AbstractFilter : public Observable
      * @param filter
      */
     virtual void copyFilterParameterInstanceVariables(AbstractFilter* filter);
+
+    SIMPL_INSTANCE_PROPERTY(bool, Enabled)
 
   signals:
     /**

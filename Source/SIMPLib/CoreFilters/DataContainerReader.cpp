@@ -488,6 +488,7 @@ int DataContainerReader::writeExistingPipelineToFile(QJsonObject& rootJson, int 
     {
       json[SIMPL::Settings::FilterName] = filter->getNameOfClass();
       json[SIMPL::Settings::HumanLabel] = filter->getHumanLabel();
+      json[SIMPL::Settings::FilterEnabled] = filter->getEnabled();
 
       filter->writeFilterParameters(json);
     }

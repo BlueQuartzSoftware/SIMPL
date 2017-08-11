@@ -52,6 +52,7 @@ AbstractFilter::AbstractFilter()
 , m_WarningCondition(0)
 , m_InPreflight(false)
 , m_Cancel(false)
+, m_Enabled(true)
 {
   m_DataContainerArray = DataContainerArray::New();
   setupFilterParameters();
@@ -238,6 +239,7 @@ QJsonObject AbstractFilter::toJson()
 
   json[SIMPL::Settings::FilterName] = getNameOfClass();
   json[SIMPL::Settings::HumanLabel] = getHumanLabel();
+  json[SIMPL::Settings::FilterEnabled] = getEnabled();
 
   writeFilterParameters(json);
 

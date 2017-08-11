@@ -76,6 +76,11 @@ PipelineFilterObject::PipelineFilterObject(AbstractFilter::Pointer filter, IObse
   if(filter != AbstractFilter::NullPointer())
   {
     setupFilterInputWidget();
+
+    if(false == filter->getEnabled())
+    {
+      toDisabledState();
+    }
   }
 }
 
@@ -338,6 +343,29 @@ void PipelineFilterObject::setHasPreflightWarnings(bool hasWarnings)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
+void PipelineFilterObject::setIsEnabled(bool enabled)
+{
+  // Return if no changes to Enabled
+  if(enabled == m_Filter->getEnabled())
+  {
+    return;
+  }
+
+  if(enabled)
+  {
+    toReadyState();
+  }
+  else
+  {
+    toDisabledState();
+  }
+  m_Filter->setEnabled(enabled);
+  changeStyle();
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
 void PipelineFilterObject::toReadyState()
 {
   // This should be implemented in the subclasses
@@ -360,6 +388,15 @@ void PipelineFilterObject::toCompletedState()
 {
   // This should be implemented in the subclasses
   setWidgetState(WidgetState::Completed);
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void PipelineFilterObject::toDisabledState()
+{
+  // This should be implemented in the subclasses
+  setWidgetState(WidgetState::Disabled);
 }
 
 // -----------------------------------------------------------------------------

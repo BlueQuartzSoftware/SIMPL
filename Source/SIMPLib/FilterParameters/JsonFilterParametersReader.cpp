@@ -351,6 +351,7 @@ FilterPipeline::Pointer JsonFilterParametersReader::readPipeline(IObserver* obs)
     openFilterGroup(nullptr, i);
 
     QString filterName = m_CurrentFilterIndex[SIMPL::Settings::FilterName].toString();
+    bool filterEnabled = m_CurrentFilterIndex[SIMPL::Settings::FilterEnabled].toBool(true);
 
     if(filterName.isEmpty() == false)
     {
@@ -361,6 +362,7 @@ FilterPipeline::Pointer JsonFilterParametersReader::readPipeline(IObserver* obs)
 
         if(nullptr != filter.get())
         {
+          filter->setEnabled(filterEnabled);
           filter->readFilterParameters(m_CurrentFilterIndex);
           pipeline->pushBack(filter);
         }
@@ -372,6 +374,7 @@ FilterPipeline::Pointer JsonFilterParametersReader::readPipeline(IObserver* obs)
         QString humanLabel = QString("UNKNOWN FILTER: ") + filterName;
         filter->setHumanLabel(humanLabel);
         filter->setOriginalFilterName(filterName);
+        filter->setEnabled(filterEnabled);
         pipeline->pushBack(filter);
 
         if(nullptr != obs)

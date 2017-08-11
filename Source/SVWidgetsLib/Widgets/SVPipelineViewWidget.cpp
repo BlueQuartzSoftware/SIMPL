@@ -201,6 +201,33 @@ QMenu* SVPipelineViewWidget::createPipelineFilterWidgetMenu(SVPipelineFilterWidg
 
   contextMenu->addSeparator();
 
+  QAction* enableFilterAction = new QAction("Enabled", contextMenu);
+  enableFilterAction->setCheckable(true);
+  bool widgetEnabled;
+  if(selectedObjs.contains(filterWidget) == false || selectedObjs.size() == 1)
+  {
+    widgetEnabled = filterWidget->getFilter()->getEnabled();
+    enableFilterAction->setChecked(widgetEnabled);
+
+    connect(enableFilterAction, &QAction::toggled, [=] { setFilterEnabled(filterWidget, enableFilterAction->isChecked()); });
+  }
+  else
+  {
+    int count = selectedObjs.size();
+    widgetEnabled = true;
+    for(int i = 0; i < count && widgetEnabled; i++)
+    {
+      widgetEnabled = selectedObjs[i]->getFilter()->getEnabled();
+    }
+    enableFilterAction->setChecked(widgetEnabled);
+
+    connect(enableFilterAction, &QAction::toggled, [=] { setFiltersEnabled(selectedObjs, enableFilterAction->isChecked()); });
+  }
+  
+  contextMenu->addAction(enableFilterAction);
+
+  contextMenu->addSeparator();
+
   QAction* removeAction;
   QList<QKeySequence> shortcutList;
   shortcutList.push_back(QKeySequence(Qt::Key_Backspace));
@@ -912,7 +939,10 @@ void SVPipelineViewWidget::preflightPipeline(QUuid id)
     {
       fw->setHasPreflightWarnings(false);
       fw->setHasPreflightErrors(false);
-      fw->setWidgetState(PipelineFilterObject::WidgetState::Ready);
+      if(PipelineFilterObject::WidgetState::Disabled != fw->getWidgetState())
+      {
+        fw->setWidgetState(PipelineFilterObject::WidgetState::Ready);
+      }
       fw->changeStyle();
     }
   }
@@ -1123,6 +1153,31 @@ void SVPipelineViewWidget::removeFilterObject(PipelineFilterObject* filterObject
 
     resetLayout();
   }
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void SVPipelineViewWidget::setFilterEnabled(SVPipelineFilterWidget* widget, bool enabled)
+{
+  widget->setIsEnabled(enabled);
+  preflightPipeline();
+
+  emit filterEnabledStateChanged();
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void SVPipelineViewWidget::setFiltersEnabled(QList<PipelineFilterObject*> widgets, bool enabled)
+{
+  int count = widgets.size();
+  for(int i = 0; i < count; i++)
+  {
+    widgets[i]->setIsEnabled(enabled);
+  }
+  preflightPipeline();
+  emit filterEnabledStateChanged();
 }
 
 // -----------------------------------------------------------------------------

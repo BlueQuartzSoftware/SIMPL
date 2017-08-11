@@ -204,6 +204,7 @@ void FilterPipeline::fromJson(const QJsonObject& json, IObserver* obs)
     QJsonObject currentFilterIndex = json[QString::number(i)].toObject();
 
     QString filterName = currentFilterIndex[SIMPL::Settings::FilterName].toString();
+    bool filterEnabled = currentFilterIndex[SIMPL::Settings::FilterEnabled].toBool(true);
 
     if(filterName.isEmpty() == false)
     {
@@ -214,6 +215,7 @@ void FilterPipeline::fromJson(const QJsonObject& json, IObserver* obs)
 
         if(nullptr != filter.get())
         {
+          filter->setEnabled(filterEnabled);
           filter->readFilterParameters(currentFilterIndex);
           this->pushBack(filter);
         }
@@ -225,6 +227,7 @@ void FilterPipeline::fromJson(const QJsonObject& json, IObserver* obs)
         QString humanLabel = QString("UNKNOWN FILTER: ") + filterName;
         filter->setHumanLabel(humanLabel);
         filter->setOriginalFilterName(filterName);
+        filter->setEnabled(filterEnabled);
         this->pushBack(filter);
 
         if(nullptr != obs)
@@ -501,15 +504,20 @@ int FilterPipeline::preflightPipeline()
   // Start looping through each filter in the Pipeline and preflight everything
   for(FilterContainerType::iterator filter = m_Pipeline.begin(); filter != m_Pipeline.end(); ++filter)
   {
-    (*filter)->setDataContainerArray(dca);
-    setCurrentFilter(*filter);
-    connectFilterNotifications((*filter).get());
-    (*filter)->preflight();
-    disconnectFilterNotifications((*filter).get());
+    // Do not preflight disabled filters
+    if((*filter)->getEnabled())
+    {
+      (*filter)->setDataContainerArray(dca);
+      setCurrentFilter(*filter);
+      connectFilterNotifications((*filter).get());
+      (*filter)->preflight();
+      disconnectFilterNotifications((*filter).get());
+
+      (*filter)->setCancel(false); // Reset the cancel flag
+      preflightError |= (*filter)->getErrorCondition();
+    }
 
     (*filter)->setDataContainerArray(dca->deepCopy(false));
-    (*filter)->setCancel(false); // Reset the cancel flag
-    preflightError |= (*filter)->getErrorCondition();
   }
   setCurrentFilter(AbstractFilter::NullPointer());
   return preflightError;
@@ -550,39 +558,47 @@ DataContainerArray::Pointer FilterPipeline::execute()
     progValue.setText(ss);
     emit pipelineGeneratedMessage(progValue);
 
-    filt->setMessagePrefix(ss);
-    connectFilterNotifications(filt.get());
-    filt->setDataContainerArray(dca);
-    setCurrentFilter(*filter);
-    emit filt->filterInProgress();
-    filt->execute();
-    disconnectFilterNotifications((*filter).get());
-    filt->setDataContainerArray(DataContainerArray::NullPointer());
-    err = filt->getErrorCondition();
-    if(err < 0)
+    // Do not execute disabled filters
+    if(filt->getEnabled())
     {
-      setErrorCondition(err);
-      progValue.setFilterClassName(filt->getNameOfClass());
-      progValue.setFilterHumanLabel(filt->getHumanLabel());
-      progValue.setType(PipelineMessage::MessageType::Error);
-      progValue.setProgressValue(100);
-      ss = QObject::tr("[%1/%2] %3 caused an error during execution.").arg(progress).arg(m_Pipeline.size()).arg(filt->getHumanLabel());
-      progValue.setText(ss);
-      progValue.setPipelineIndex((*filter)->getPipelineIndex());
-      progValue.setCode(filt->getErrorCondition());
-      emit pipelineGeneratedMessage(progValue);
-      emit filt->filterCompleted();
-      emit pipelineFinished();
-      disconnectSignalsSlots();
+      filt->setMessagePrefix(ss);
+      connectFilterNotifications(filt.get());
+      filt->setDataContainerArray(dca);
+      setCurrentFilter(*filter);
+      emit filt->filterInProgress();
+      filt->execute();
+      disconnectFilterNotifications((*filter).get());
+      filt->setDataContainerArray(DataContainerArray::NullPointer());
+      err = filt->getErrorCondition();
+      if(err < 0)
+      {
+        setErrorCondition(err);
+        progValue.setFilterClassName(filt->getNameOfClass());
+        progValue.setFilterHumanLabel(filt->getHumanLabel());
+        progValue.setType(PipelineMessage::MessageType::Error);
+        progValue.setProgressValue(100);
+        ss = QObject::tr("[%1/%2] %3 caused an error during execution.").arg(progress).arg(m_Pipeline.size()).arg(filt->getHumanLabel());
+        progValue.setText(ss);
+        progValue.setPipelineIndex((*filter)->getPipelineIndex());
+        progValue.setCode(filt->getErrorCondition());
+        emit pipelineGeneratedMessage(progValue);
+        emit filt->filterCompleted();
+        emit pipelineFinished();
+        disconnectSignalsSlots();
 
-      return dca;
+        return dca;
+      }
     }
     if(this->getCancel() == true)
     {
       break;
     }
     // ss = QObject::tr("%1 Filter Complete").arg(filt->getNameOfClass());
-    emit filt->filterCompleted();
+    // Do not mark as completed if the filter is disabled
+    if(filt->getEnabled())
+    {
+      emit filt->filterCompleted();
+    }
   }
 
   emit pipelineFinished();
