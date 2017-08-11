@@ -32,12 +32,15 @@
 
 #include "StringOperations.h"
 
+#include <sstream>
+
+#include <QtCore/QTextStream>
+
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
 StringOperations::StringOperations()
 {
-
 }
 
 // -----------------------------------------------------------------------------
@@ -45,7 +48,6 @@ StringOperations::StringOperations()
 // -----------------------------------------------------------------------------
 StringOperations::~StringOperations()
 {
-
 }
 
 // -----------------------------------------------------------------------------
@@ -111,4 +113,42 @@ QList<QStringList> StringOperations::TokenizeStrings(QStringList lines, QList<ch
   }
 
   return tokenizedLines;
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+QString StringOperations::GenerateIndexString(int index, int maxIndex)
+{
+  QString numStr = QString::number(index, 10);
+
+  if(maxIndex >= 10)
+  {
+    int mag = 0;
+    int max = maxIndex;
+    while(max > 0)
+    {
+      mag++;
+      max = max / 10;
+    }
+    numStr = "";             // Clear the string
+    QTextStream ss(&numStr); // Create a QTextStream to set up the padding
+    ss.setFieldWidth(mag);
+    ss.setPadChar('0');
+    ss << index;
+  }
+  return numStr;
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+QString StringOperations::GeneratePaddedString(int value, int totalDigits, char padChar)
+{
+  QString numStr;          // = QString::number(value, 10);
+  QTextStream ss(&numStr); // Create a QTextStream to set up the padding
+  ss.setFieldWidth(totalDigits);
+  ss.setPadChar(padChar);
+  ss << value;
+  return numStr;
 }

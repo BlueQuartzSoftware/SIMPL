@@ -247,6 +247,10 @@ QJsonObject& JsonFilterParametersWriter::getCurrentGroupObject()
 // -----------------------------------------------------------------------------
 int JsonFilterParametersWriter::openFilterGroup(AbstractFilter* filter, int index)
 {
+  // We use the generateIndexString from this class and NOT the one from StringOperations
+  // because this one is a slight variation on the one in StringOperations and works correctly
+  // for SIMPL and DREAM3D. Don't change this code unless you test with Pipelines that are
+  // 9, 10 and 11 filters long to make sure you can write them out and read them in again.
   m_CurrentIndex = index;
   QString numStr = generateIndexString(m_CurrentIndex);
 
@@ -272,6 +276,10 @@ int JsonFilterParametersWriter::openFilterGroup(AbstractFilter* filter, int inde
 // -----------------------------------------------------------------------------
 int JsonFilterParametersWriter::closeFilterGroup()
 {
+  // We use the generateIndexString from this class and NOT the one from StringOperations
+  // because this one is a slight variation on the one in StringOperations and works correctly
+  // for SIMPL and DREAM3D. Don't change this code unless you test with Pipelines that are
+  // 9, 10 and 11 filters long to make sure you can write them out and read them in again.
   QString numStr = generateIndexString(m_CurrentIndex);
   m_Root[numStr] = m_CurrentFilterIndex;
   return 0;
