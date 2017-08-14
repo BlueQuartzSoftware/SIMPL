@@ -61,7 +61,7 @@ class SIMPLib_EXPORT ICalculatorArray : public CalculatorItem
     virtual void setValue(int i, double value) = 0;
     virtual ValueType getType() = 0;
 
-    virtual DoubleArrayType::Pointer reduceToOneComponent(int c) = 0;
+    virtual DoubleArrayType::Pointer reduceToOneComponent(int c, bool allocate = true) = 0;
 
   protected:
     ICalculatorArray();

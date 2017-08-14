@@ -728,7 +728,7 @@ bool ArrayCalculator::parseIndexOperator(QString token, QVector<CalculatorItem::
 
   parsedInfix.pop_back();
 
-  DoubleArrayType::Pointer reducedArray = calcArray->reduceToOneComponent(index);
+  DoubleArrayType::Pointer reducedArray = calcArray->reduceToOneComponent(index, !getInPreflight());
   CalculatorItem::Pointer itemPtr;
 
   CREATE_CALCULATOR_ARRAY(itemPtr, reducedArray)

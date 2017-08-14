@@ -85,16 +85,19 @@ class SIMPLib_EXPORT CalculatorArray : public ICalculatorArray
       return m_Type;
     }
 
-    DoubleArrayType::Pointer reduceToOneComponent(int c)
+    DoubleArrayType::Pointer reduceToOneComponent(int c, bool allocate = true)
     {
       if(c >= 0 && c <= m_Array->getNumberOfComponents())
       {
         if(m_Array->getNumberOfComponents() > 1)
         {
-          DoubleArrayType::Pointer newArray = DoubleArrayType::CreateArray(m_Array->getNumberOfTuples(), QVector<size_t>(1, 1), m_Array->getName());
-          for(int i = 0; i < m_Array->getNumberOfTuples(); i++)
+          DoubleArrayType::Pointer newArray = DoubleArrayType::CreateArray(m_Array->getNumberOfTuples(), QVector<size_t>(1, 1), m_Array->getName(), allocate);
+          if(allocate)
           {
-            newArray->setComponent(i, 0, m_Array->getComponent(i, c));
+            for(int i = 0; i < m_Array->getNumberOfTuples(); i++)
+            {
+              newArray->setComponent(i, 0, m_Array->getComponent(i, c));
+            }
           }
 
           return newArray;
