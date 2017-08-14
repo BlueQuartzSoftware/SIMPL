@@ -60,6 +60,7 @@ FilterGroup05::~FilterGroup05()
 void FilterGroup05::initialize()
 {
   setErrorCondition(0);
+  setWarningCondition(0);
   setCancel(false);
 }
 
@@ -79,6 +80,7 @@ void FilterGroup05::setupFilterParameters()
 void FilterGroup05::dataCheck()
 {
   setErrorCondition(0);
+  setWarningCondition(0);
 }
 
 // -----------------------------------------------------------------------------

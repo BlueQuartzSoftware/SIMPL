@@ -125,6 +125,7 @@ void CreateAttributeMatrix::initialize()
 void CreateAttributeMatrix::dataCheck()
 {
   setErrorCondition(0);
+  setWarningCondition(0);
 
   DataContainer::Pointer m = getDataContainerArray()->getPrereqDataContainer<AbstractFilter>(this, getCreatedAttributeMatrix().getDataContainerName());
   if(getErrorCondition() < 0)
@@ -178,6 +179,7 @@ void CreateAttributeMatrix::preflight()
 void CreateAttributeMatrix::execute()
 {
   setErrorCondition(0);
+  setWarningCondition(0);
   dataCheck();
   if(getErrorCondition() < 0)
   {

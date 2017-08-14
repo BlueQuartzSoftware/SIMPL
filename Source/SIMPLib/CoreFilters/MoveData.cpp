@@ -151,6 +151,7 @@ void MoveData::initialize()
 void MoveData::dataCheck()
 {
   setErrorCondition(0);
+  setWarningCondition(0);
   DataArrayPath amSrcPath = getAttributeMatrixSource();
   DataArrayPath amDestPath = getAttributeMatrixDestination();
   DataArrayPath daSrcPath = getDataArraySource();
@@ -168,8 +169,9 @@ void MoveData::dataCheck()
 
     if(amSrcDataContainer->getName() == amDestDataContainer->getName())
     {
+      setWarningCondition(-11018);
       QString ss = QObject::tr("The source and destination Data Container are the same.  Is this what you meant to do?");
-      notifyWarningMessage(getHumanLabel(), ss, getErrorCondition());
+      notifyWarningMessage(getHumanLabel(), ss, getWarningCondition());
       return;
     }
 
@@ -198,8 +200,9 @@ void MoveData::dataCheck()
     }
     else if(amSrcPath == amDestPath)
     {
+      setWarningCondition(-11020);
       QString ss = QObject::tr("The source and destination Attribute Matrix are the same.  Is this what you meant to do?");
-      notifyWarningMessage(getHumanLabel(), ss, getErrorCondition());
+      notifyWarningMessage(getHumanLabel(), ss, getWarningCondition());
       return;
     }
 
@@ -208,7 +211,7 @@ void MoveData::dataCheck()
   }
   else
   {
-    setErrorCondition(-11020);
+    setErrorCondition(-11021);
     QString ss = QObject::tr("Neither an Attribute Matrix nor an Attribute Array was selected to be moved");
     notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
     return;
@@ -234,6 +237,7 @@ void MoveData::preflight()
 void MoveData::execute()
 {
   setErrorCondition(0);
+  setWarningCondition(0);
   // Simply running the preflight will do what we need it to.
   dataCheck();
   if(getErrorCondition() < 0)

@@ -106,6 +106,7 @@ void RequiredZThickness::initialize()
 void RequiredZThickness::dataCheck()
 {
   setErrorCondition(0);
+  setWarningCondition(0);
   if(getErrorCondition() < 0)
   {
     return;
@@ -147,7 +148,8 @@ void RequiredZThickness::dataCheck()
     ss << "  Required Z Voxels: " << m_NumZVoxels << "\n";
     ss << "  Current Z Voxels: " << dims[2];
 
-    notifyWarningMessage(getHumanLabel(), str, getErrorCondition());
+    setWarningCondition(-7788);
+    notifyWarningMessage(getHumanLabel(), str, getWarningCondition());
   }
 }
 
@@ -170,6 +172,7 @@ void RequiredZThickness::preflight()
 void RequiredZThickness::execute()
 {
   setErrorCondition(0);
+  setWarningCondition(0);
   dataCheck();
   if(getErrorCondition() < 0)
   {

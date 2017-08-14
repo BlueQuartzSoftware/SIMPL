@@ -243,6 +243,7 @@ void ArrayCalculator::dataCheck()
 {
   setErrorCondition(0);
   setWarningCondition(0);
+  setWarningCondition(0);
 
   getDataContainerArray()->getPrereqAttributeMatrixFromPath<AbstractFilter>(this, m_SelectedAttributeMatrix, -301);
   if(getErrorCondition() < 0)
@@ -396,6 +397,7 @@ void ArrayCalculator::preflight()
 void ArrayCalculator::execute()
 {
   setErrorCondition(0);
+  setWarningCondition(0);
   setWarningCondition(0);
   dataCheck();
   if(getErrorCondition() < 0)
@@ -818,7 +820,7 @@ void ArrayCalculator::checkForAmbiguousArrayName(QString strItem, QString warnin
 
       setWarningCondition(AMBIGUOUS_NAME_WARNING);
       warningMsg.append("\nTo treat this item as an array name, please add double quotes around the item (i.e. \"" + strItem + "\").");
-      notifyWarningMessage(getHumanLabel(), warningMsg, getErrorCondition());
+      notifyWarningMessage(getHumanLabel(), warningMsg, getWarningCondition());
     }
   }
 }

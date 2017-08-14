@@ -251,6 +251,7 @@ void DataContainerReader::execute()
 void DataContainerReader::readData(bool preflight, DataContainerArrayProxy& proxy, DataContainerArray::Pointer dca)
 {
   setErrorCondition(0);
+  setWarningCondition(0);
   QString ss;
   int32_t err = 0;
   QString m_FileVersion;

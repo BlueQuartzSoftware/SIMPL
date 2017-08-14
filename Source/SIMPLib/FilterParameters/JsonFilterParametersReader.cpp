@@ -45,33 +45,7 @@
 #include "SIMPLib/Common/FilterFactory.hpp"
 #include "SIMPLib/Common/FilterManager.h"
 #include "SIMPLib/CoreFilters/EmptyFilter.h"
-
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-QString generateIndexString(int index, int maxIndex)
-{
-  QString numStr = QString::number(index);
-
-  if(maxIndex >= 10)
-  {
-    int mag = 0;
-    int max = maxIndex;
-    while(max > 0)
-    {
-      mag++;
-      max = max / 10;
-    }
-    numStr = "";             // Clear the string
-    QTextStream ss(&numStr); // Create a QTextStream to set up the padding
-    ss.setFieldWidth(mag);
-    ss.setPadChar('0');
-    ss << index;
-  }
-  return numStr;
-}
-
+#include "SIMPLib/Utilities/StringOperations.h"
 
 // -----------------------------------------------------------------------------
 //
@@ -273,7 +247,7 @@ QString JsonFilterParametersReader::HtmlSummaryFromFile(QString filePath, IObser
       color = even;
     }
 
-    QString indexString = generateIndexString(i, filterCount - 1);
+    QString indexString = StringOperations::GenerateIndexString(i, filterCount - 1);
     QJsonValueRef filtRef = m_Root[indexString];
 
     if(filtRef.isUndefined())
@@ -539,7 +513,7 @@ int JsonFilterParametersReader::openFilterGroup(AbstractFilter* unused, int inde
   }
   if(m_CurrentFilterIndex.isEmpty())
   {
-    numStr = generateIndexString(index, m_MaxFilterIndex);
+    numStr = StringOperations::GenerateIndexString(index, m_MaxFilterIndex);
     m_CurrentFilterIndex = m_Root[numStr].toObject();
     if(m_CurrentFilterIndex.isEmpty())
     {

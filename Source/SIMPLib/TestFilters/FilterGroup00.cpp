@@ -59,6 +59,7 @@ TESTCLASSNAME::~TESTCLASSNAME()
 void TESTCLASSNAME::initialize()
 {
   setErrorCondition(0);
+  setWarningCondition(0);
   setCancel(false);
 }
 
@@ -78,6 +79,7 @@ void TESTCLASSNAME::setupFilterParameters()
 void TESTCLASSNAME::dataCheck()
 {
   setErrorCondition(0);
+  setWarningCondition(0);
 }
 
 // -----------------------------------------------------------------------------

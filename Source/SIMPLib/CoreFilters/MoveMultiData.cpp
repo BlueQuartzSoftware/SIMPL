@@ -153,6 +153,7 @@ void MoveMultiData::initialize()
 void MoveMultiData::dataCheck()
 {
   setErrorCondition(0);
+  setWarningCondition(0);
   QVector<DataArrayPath> amSrcPaths = getAttributeMatrixSources();
   DataArrayPath amDestPath = getAttributeMatrixDestination();
   QVector<DataArrayPath> daSrcPaths = getDataArraySources();
@@ -175,8 +176,9 @@ void MoveMultiData::dataCheck()
       // Source and Destination match
       if(amSrcDataContainer->getName() == amDestDataContainer->getName())
       {
+        setWarningCondition(-11018);
         QString ss = QObject::tr("The source and destination Data Container are the same.  Is this what you meant to do?");
-        notifyWarningMessage(getHumanLabel(), ss, getErrorCondition());
+        notifyWarningMessage(getHumanLabel(), ss, getWarningCondition());
         return;
       }
 
@@ -213,8 +215,9 @@ void MoveMultiData::dataCheck()
       // Source and Destination match
       else if(daSrcPaths[i].hasSameAttributeMatrix(amDestPath))
       {
+        setWarningCondition(-11020);
         QString ss = QObject::tr("The source and destination Attribute Matrix are the same.  Is this what you meant to do?");
-        notifyWarningMessage(getHumanLabel(), ss, getErrorCondition());
+        notifyWarningMessage(getHumanLabel(), ss, getWarningCondition());
         return;
       }
 
@@ -225,7 +228,7 @@ void MoveMultiData::dataCheck()
   }
   else
   {
-    setErrorCondition(-11020);
+    setErrorCondition(-11021);
     QString ss = QObject::tr("Neither an Attribute Matrix nor an Attribute Array was selected to be moved");
     notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
     return;
@@ -251,6 +254,7 @@ void MoveMultiData::preflight()
 void MoveMultiData::execute()
 {
   setErrorCondition(0);
+  setWarningCondition(0);
   // Simply running the preflight will do what we need it to.
   dataCheck();
   if(getErrorCondition() < 0)

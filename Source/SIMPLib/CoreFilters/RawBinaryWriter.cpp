@@ -78,6 +78,7 @@ void RawBinaryWriter::initialize()
 void RawBinaryWriter::dataCheck()
 {
   setErrorCondition(0);
+  setWarningCondition(0);
 
   /* Example code for preflighting looking for a valid string for the output file
    * but not necessarily the fact that the file exists: Example code to make sure
@@ -175,6 +176,7 @@ void RawBinaryWriter::execute()
     return;
   }
   setErrorCondition(0);
+  setWarningCondition(0);
 
   /* Place all your code to execute your filter here. */
 

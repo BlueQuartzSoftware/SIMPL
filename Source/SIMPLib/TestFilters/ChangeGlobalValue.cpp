@@ -82,4 +82,5 @@ void ChangeGlobalValue::execute()
 void ChangeGlobalValue::preflight()
 {
   setErrorCondition(0);
+  setWarningCondition(0);
 }

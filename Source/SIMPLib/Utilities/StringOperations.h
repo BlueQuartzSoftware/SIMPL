@@ -58,6 +58,23 @@ class SIMPLib_EXPORT StringOperations
     */
     static QStringList TokenizeString(QString string, QList<char> delimiters, bool consecutiveDelimiters);
 
+    /**
+     * @brief This function will createa string with the proper amount of padding for the maximum value.
+     * @param index
+     * @param maxIndex
+     * @return
+     */
+    static QString GenerateIndexString(int index, int maxIndex);
+
+    /**
+     * @brief This function will generate a string with the prescribed number of padding digits
+     * @param value The integer value
+     * @param totalDigits The total number of digits to appear in the string
+     * @param padChar The character to use for the padding.
+     * @return
+     */
+    static QString GeneratePaddedString(int value, int totalDigits, char padChar);
+
   private:
     StringOperations(const StringOperations&); // Copy Constructor Not Implemented
     void operator=(const StringOperations&); // Operator '=' Not Implemented

@@ -233,6 +233,7 @@ void ReadASCIIData::initialize()
 void ReadASCIIData::dataCheck()
 {
   setErrorCondition(0);
+  setWarningCondition(0);
   m_ASCIIArrayMap.clear();
 
   ASCIIWizardData wizardData = getWizardData();
@@ -407,6 +408,7 @@ void ReadASCIIData::preflight()
 void ReadASCIIData::execute()
 {
   setErrorCondition(0);
+  setWarningCondition(0);
   initialize();
   dataCheck();
   if(getErrorCondition() < 0)

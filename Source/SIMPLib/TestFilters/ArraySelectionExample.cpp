@@ -101,6 +101,7 @@ void ArraySelectionExample::dataCheck()
 {
   // std::cout << " ArraySelectionExample   Preflighting " << std::endl;
   setErrorCondition(0);
+  setWarningCondition(0);
 }
 
 // -----------------------------------------------------------------------------

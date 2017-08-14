@@ -89,6 +89,7 @@ void AbstractDecisionFilter::initialize()
 void AbstractDecisionFilter::dataCheck()
 {
   setErrorCondition(0);
+  setWarningCondition(0);
 }
 
 // -----------------------------------------------------------------------------
@@ -110,6 +111,7 @@ void AbstractDecisionFilter::preflight()
 void AbstractDecisionFilter::execute()
 {
   setErrorCondition(0);
+  setWarningCondition(0);
   dataCheck();
   if(getErrorCondition() < 0)
   {

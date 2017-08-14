@@ -75,6 +75,7 @@ void Filt0::initialize()
 void Filt0::dataCheck()
 {
   setErrorCondition(0);
+  setWarningCondition(0);
 }
 
 // -----------------------------------------------------------------------------
@@ -103,6 +104,7 @@ void Filt0::execute()
     return;
   }
   setErrorCondition(0);
+  setWarningCondition(0);
 
   /* Place all your code to execute your filter here. */
 
@@ -175,6 +177,7 @@ void Filt1::initialize()
 void Filt1::dataCheck()
 {
   setErrorCondition(0);
+  setWarningCondition(0);
 }
 
 // -----------------------------------------------------------------------------
@@ -202,6 +205,7 @@ void Filt1::execute()
     return;
   }
   setErrorCondition(0);
+  setWarningCondition(0);
 
   /* Place all your code to execute your filter here. */
 

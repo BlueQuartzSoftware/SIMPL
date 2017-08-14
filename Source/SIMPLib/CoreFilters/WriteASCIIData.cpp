@@ -209,6 +209,7 @@ void WriteASCIIData::dataCheck()
   m_SelectedWeakPtrVector.clear();
 
   setErrorCondition(0);
+  setWarningCondition(0);
 
   if(m_SelectedDataArrayPaths.isEmpty() == true)
   {
@@ -296,6 +297,7 @@ void WriteASCIIData::preflight()
 void WriteASCIIData::execute()
 {
   setErrorCondition(0);
+  setWarningCondition(0);
   initialize();
   dataCheck();
   if(getErrorCondition() < 0)
