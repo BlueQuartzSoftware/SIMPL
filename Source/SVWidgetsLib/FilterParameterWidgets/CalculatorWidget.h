@@ -107,6 +107,7 @@ class SVWidgetsLib_EXPORT CalculatorWidget : public FilterParameterWidget, priva
     void on_rootBtn_clicked();
     void on_scalarsBtn_clicked();
     void on_vectorsBtn_clicked();
+    void on_piBtn_clicked();
 
   signals:
     void errorSettingFilterParameter(const QString& msg);
