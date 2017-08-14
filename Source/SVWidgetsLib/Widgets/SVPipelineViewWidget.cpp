@@ -247,23 +247,24 @@ QMenu* SVPipelineViewWidget::createPipelineFilterWidgetMenu(SVPipelineFilterWidg
     widgetEnabled = selectedObjs[i]->getFilter()->getEnabled();
   }
 
-  disconnect(m_ActionEnableFilter, &QAction::toggled, 0, 0);
   if(selectedObjs.contains(filterWidget) == false)
   {
+    // Only toggle the target filter widget if it is not in the selected objects
+    QList<PipelineFilterObject*> toggledObjects = QList<PipelineFilterObject*>();
+    toggledObjects.push_back(filterWidget);
+
     QAction* actionEnableFilter = new QAction("Enable", this);
     actionEnableFilter->setCheckable(true);
 
-    widgetEnabled = widgetEnabled && filterWidget->getFilter()->getEnabled();
+    widgetEnabled = filterWidget->getFilter()->getEnabled();
     actionEnableFilter->setChecked(widgetEnabled);
-
-    QList<PipelineFilterObject*> toggledObjects = selectedObjs;
-    toggledObjects.push_back(filterWidget);
 
     connect(actionEnableFilter, &QAction::toggled, [=] { setFiltersEnabled(toggledObjects, actionEnableFilter->isChecked()); });
     contextMenu->addAction(actionEnableFilter);
   }
   else
   {
+    disconnect(m_ActionEnableFilter, &QAction::toggled, 0, 0);
     m_ActionEnableFilter->setChecked(widgetEnabled);
 
     connect(m_ActionEnableFilter, &QAction::toggled, [=] { setSelectedFiltersEnabled(m_ActionEnableFilter->isChecked()); });
