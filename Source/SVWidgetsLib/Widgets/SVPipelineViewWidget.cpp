@@ -135,6 +135,11 @@ void SVPipelineViewWidget::setupGui()
   newEmptyPipelineViewLayout();
   connect(&m_autoScrollTimer, SIGNAL(timeout()), this, SLOT(doAutoScroll()));
 
+  m_ActionEnableFilter = new QAction("Enable", this);
+  m_ActionEnableFilter->setCheckable(true);
+  m_ActionEnableFilter->setChecked(true);
+  m_ActionEnableFilter->setEnabled(false);
+
   // connect(this, SIGNAL(deleteKeyPressed(PipelineView*)), dream3dApp, SLOT(on_pipelineViewWidget_deleteKeyPressed(PipelineView*)));
   m_UndoStack = QSharedPointer<QUndoStack>(new QUndoStack(this));
   m_UndoStack->setUndoLimit(10);
@@ -187,6 +192,40 @@ PipelineFilterObject* SVPipelineViewWidget::createFilterObjectFromFilter(Abstrac
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
+QAction* SVPipelineViewWidget::getActionEnableFilter()
+{
+  return m_ActionEnableFilter;
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void SVPipelineViewWidget::updateActionEnableFilter()
+{
+  QList<PipelineFilterObject*> selectedObjs = getSelectedFilterObjects();
+
+  // Set Enabled / Disabled
+  disconnect(m_ActionEnableFilter, &QAction::toggled, 0, 0);
+  m_ActionEnableFilter->setEnabled(selectedObjs.size());
+
+  // Set checked state
+  int count = selectedObjs.size();
+  bool widgetEnabled = true;
+  for(int i = 0; i < count && widgetEnabled; i++)
+  {
+    widgetEnabled = selectedObjs[i]->getFilter()->getEnabled();
+  }
+
+  // Lambda connections don't allow Qt::UniqueConnection
+  // Also, this needs to be disconnected before changing the checked state
+  m_ActionEnableFilter->setChecked(widgetEnabled);
+
+  connect(m_ActionEnableFilter, &QAction::toggled, [=] { setSelectedFiltersEnabled(m_ActionEnableFilter->isChecked()); });
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
 QMenu* SVPipelineViewWidget::createPipelineFilterWidgetMenu(SVPipelineFilterWidget* filterWidget)
 {
   // Creating Pipeline Filter Widget Menu
@@ -201,30 +240,35 @@ QMenu* SVPipelineViewWidget::createPipelineFilterWidgetMenu(SVPipelineFilterWidg
 
   contextMenu->addSeparator();
 
-  QAction* enableFilterAction = new QAction("Enabled", contextMenu);
-  enableFilterAction->setCheckable(true);
-  bool widgetEnabled;
-  if(selectedObjs.contains(filterWidget) == false || selectedObjs.size() == 1)
+  int count = selectedObjs.size();
+  bool widgetEnabled = true;
+  for(int i = 0; i < count && widgetEnabled; i++)
   {
-    widgetEnabled = filterWidget->getFilter()->getEnabled();
-    enableFilterAction->setChecked(widgetEnabled);
+    widgetEnabled = selectedObjs[i]->getFilter()->getEnabled();
+  }
 
-    connect(enableFilterAction, &QAction::toggled, [=] { setFilterEnabled(filterWidget, enableFilterAction->isChecked()); });
+  disconnect(m_ActionEnableFilter, &QAction::toggled, 0, 0);
+  if(selectedObjs.contains(filterWidget) == false)
+  {
+    QAction* actionEnableFilter = new QAction("Enable", this);
+    actionEnableFilter->setCheckable(true);
+
+    widgetEnabled = widgetEnabled && filterWidget->getFilter()->getEnabled();
+    actionEnableFilter->setChecked(widgetEnabled);
+
+    QList<PipelineFilterObject*> toggledObjects = selectedObjs;
+    toggledObjects.push_back(filterWidget);
+
+    connect(actionEnableFilter, &QAction::toggled, [=] { setFiltersEnabled(toggledObjects, actionEnableFilter->isChecked()); });
+    contextMenu->addAction(actionEnableFilter);
   }
   else
   {
-    int count = selectedObjs.size();
-    widgetEnabled = true;
-    for(int i = 0; i < count && widgetEnabled; i++)
-    {
-      widgetEnabled = selectedObjs[i]->getFilter()->getEnabled();
-    }
-    enableFilterAction->setChecked(widgetEnabled);
+    m_ActionEnableFilter->setChecked(widgetEnabled);
 
-    connect(enableFilterAction, &QAction::toggled, [=] { setFiltersEnabled(selectedObjs, enableFilterAction->isChecked()); });
+    connect(m_ActionEnableFilter, &QAction::toggled, [=] { setSelectedFiltersEnabled(m_ActionEnableFilter->isChecked()); });
+    contextMenu->addAction(m_ActionEnableFilter);
   }
-  
-  contextMenu->addAction(enableFilterAction);
 
   contextMenu->addSeparator();
 
@@ -1158,17 +1202,6 @@ void SVPipelineViewWidget::removeFilterObject(PipelineFilterObject* filterObject
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void SVPipelineViewWidget::setFilterEnabled(SVPipelineFilterWidget* widget, bool enabled)
-{
-  widget->setIsEnabled(enabled);
-  preflightPipeline();
-
-  emit filterEnabledStateChanged();
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
 void SVPipelineViewWidget::setFiltersEnabled(QList<PipelineFilterObject*> widgets, bool enabled)
 {
   int count = widgets.size();
@@ -1176,8 +1209,18 @@ void SVPipelineViewWidget::setFiltersEnabled(QList<PipelineFilterObject*> widget
   {
     widgets[i]->setIsEnabled(enabled);
   }
+
   preflightPipeline();
   emit filterEnabledStateChanged();
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void SVPipelineViewWidget::setSelectedFiltersEnabled(bool enabled)
+{
+  QList<PipelineFilterObject*> selectedObjs = getSelectedFilterObjects();
+  setFiltersEnabled(selectedObjs, enabled);
 }
 
 // -----------------------------------------------------------------------------
@@ -1278,6 +1321,8 @@ void SVPipelineViewWidget::setSelectedFilterObject(PipelineFilterObject* w, Qt::
   }
 
   filterWidget->setFocus();
+
+  updateActionEnableFilter();
 }
 
 // -----------------------------------------------------------------------------

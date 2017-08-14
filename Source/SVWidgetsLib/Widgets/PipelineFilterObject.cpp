@@ -361,6 +361,11 @@ void PipelineFilterObject::setIsEnabled(bool enabled)
   }
   m_Filter->setEnabled(enabled);
   changeStyle();
+
+  if(enabled)
+  {
+    toStoppedState();
+  }
 }
 
 // -----------------------------------------------------------------------------
