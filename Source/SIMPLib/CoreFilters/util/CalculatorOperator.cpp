@@ -69,24 +69,6 @@ bool CalculatorOperator::hasHigherPrecedence(const CalculatorOperator::Pointer o
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void CalculatorOperator::calculate(AbstractFilter* filter, DataArrayPath calculatedArrayPath, QStack<ICalculatorArray::Pointer>& executionStack)
-{
-  // This should never be executed
-  return;
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-bool CalculatorOperator::checkValidity(QVector<CalculatorItem::Pointer> infixVector, int currentIndex)
-{
-  // This should never be executed
-  return false;
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
 CalculatorOperator::Precedence CalculatorOperator::getPrecedence()
 {
   return m_Precedence;
@@ -143,18 +125,4 @@ double CalculatorOperator::root(double base, double root)
   }
 
   return pow(base, 1 / root);
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-DoubleArrayType::Pointer CalculatorOperator::createNewArray(AbstractFilter* filter, DataArrayPath calculatedPath, ICalculatorArray::Pointer dataArray)
-{
-  int err = 0;
-  DataArrayPath calculatedAMPath(calculatedPath.getDataContainerName(), calculatedPath.getAttributeMatrixName(), "");
-  AttributeMatrix::Pointer calculatedAM = filter->getDataContainerArray()->getPrereqAttributeMatrixFromPath<AbstractFilter>(filter, calculatedAMPath, err);
-
-  DoubleArrayType::Pointer newArray = DoubleArrayType::CreateArray(calculatedAM->getNumberOfTuples(), dataArray->getArray()->getComponentDimensions(), calculatedPath.getDataArrayName());
-
-  return newArray;
 }

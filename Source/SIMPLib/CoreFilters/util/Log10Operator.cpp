@@ -48,6 +48,7 @@ Log10Operator::Log10Operator()
 : UnaryOperator()
 {
   setNumberOfArguments(1);
+  setInfixToken("log10");
 }
 
 // -----------------------------------------------------------------------------

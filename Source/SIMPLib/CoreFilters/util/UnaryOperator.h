@@ -52,7 +52,7 @@ class SIMPLib_EXPORT UnaryOperator : public CalculatorOperator
 
     virtual void calculate(AbstractFilter* filter, DataArrayPath calculatedArrayPath, QStack<ICalculatorArray::Pointer> &executionStack);
 
-    bool checkValidity(QVector<CalculatorItem::Pointer> infixVector, int currentIndex) final;
+    virtual CalculatorItem::ErrorCode checkValidity(QVector<CalculatorItem::Pointer> infixVector, int currentIndex, QString& msg) final;
 
     int getNumberOfArguments();
 
@@ -68,107 +68,95 @@ class SIMPLib_EXPORT UnaryOperator : public CalculatorOperator
     void operator=(const UnaryOperator&); // Operator '=' Not Implemented
 };
 
-#define CREATE_NEW_ARRAY_STANDARD_UNARY(filter, calculatedArrayPath, executionStack, func)\
-    ArrayCalculator* calculatorFilter = dynamic_cast<ArrayCalculator*>(filter);\
-    \
-    if (executionStack.size() >= 1 && nullptr != executionStack.top() && nullptr != calculatorFilter)\
-    {\
-      ICalculatorArray::Pointer arrayPtr = executionStack.pop();\
-      \
-      DoubleArrayType::Pointer newArray = createNewArray(filter, calculatedArrayPath, arrayPtr);\
-      \
-      int numComps = newArray->getNumberOfComponents();\
-      for (int i = 0; i < newArray->getNumberOfTuples(); i++)\
-      {\
-        for (int c = 0; c < newArray->getNumberOfComponents(); c++)\
-        {\
-          int index = numComps * i + c;\
-          double num = arrayPtr->getValue(index);\
-          newArray->setValue(index, func(num));\
-        }\
-      }\
-      \
-      executionStack.push(CalculatorArray<double>::New(newArray, arrayPtr->getType(), true));\
-      return;\
-    }\
-    \
-    QString ss = QObject::tr("The chosen infix equation is not a valid equation.");\
-    filter->setErrorCondition(ArrayCalculator::INVALID_EQUATION);\
-    filter->notifyErrorMessage(filter->getHumanLabel(), ss, filter->getErrorCondition());\
-    return;\
+#define CREATE_NEW_ARRAY_STANDARD_UNARY(filter, calculatedArrayPath, executionStack, func)                                                                                                             \
+  ArrayCalculator* calculatorFilter = dynamic_cast<ArrayCalculator*>(filter);                                                                                                                          \
+                                                                                                                                                                                                       \
+  if(executionStack.size() >= 1 && nullptr != executionStack.top() && nullptr != calculatorFilter)                                                                                                     \
+  {                                                                                                                                                                                                    \
+    ICalculatorArray::Pointer arrayPtr = executionStack.pop();                                                                                                                                         \
+                                                                                                                                                                                                       \
+    DoubleArrayType::Pointer newArray =                                                                                                                                                                \
+        DoubleArrayType::CreateArray(arrayPtr->getArray()->getNumberOfTuples(), arrayPtr->getArray()->getComponentDimensions(), calculatedArrayPath.getDataArrayName());                               \
+                                                                                                                                                                                                       \
+    int numComps = newArray->getNumberOfComponents();                                                                                                                                                  \
+    for(int i = 0; i < newArray->getNumberOfTuples(); i++)                                                                                                                                             \
+    {                                                                                                                                                                                                  \
+      for(int c = 0; c < newArray->getNumberOfComponents(); c++)                                                                                                                                       \
+      {                                                                                                                                                                                                \
+        int index = numComps * i + c;                                                                                                                                                                  \
+        double num = arrayPtr->getValue(index);                                                                                                                                                        \
+        newArray->setValue(index, func(num));                                                                                                                                                          \
+      }                                                                                                                                                                                                \
+    }                                                                                                                                                                                                  \
+                                                                                                                                                                                                       \
+    executionStack.push(CalculatorArray<double>::New(newArray, arrayPtr->getType(), true));                                                                                                            \
+    return;                                                                                                                                                                                            \
+  }
 
-#define CREATE_NEW_ARRAY_TRIG(filter, calculatedArrayPath, executionStack, func)\
-    ArrayCalculator* calculatorFilter = dynamic_cast<ArrayCalculator*>(filter);\
-    \
-    if (executionStack.size() >= 1 && nullptr != executionStack.top() && nullptr != calculatorFilter)\
-    {\
-      ICalculatorArray::Pointer arrayPtr = executionStack.pop();\
-      \
-      DoubleArrayType::Pointer newArray = createNewArray(filter, calculatedArrayPath, arrayPtr);\
-      \
-      int numComps = newArray->getNumberOfComponents();\
-      for (int i = 0; i < newArray->getNumberOfTuples(); i++)\
-      {\
-        for (int c = 0; c < newArray->getNumberOfComponents(); c++)\
-        {\
-          int index = numComps * i + c;\
-          double num = arrayPtr->getValue(index);\
-          \
-          if (calculatorFilter->getUnits() == ArrayCalculator::Degrees)\
-          {\
-            newArray->setValue(index, func(toRadians(num)));\
-          }\
-          else\
-          {\
-            newArray->setValue(index, func(num));\
-          }\
-        }\
-      }\
-      \
-      executionStack.push(CalculatorArray<double>::New(newArray, arrayPtr->getType(), true));\
-      return;\
-    }\
-    \
-    QString ss = QObject::tr("The chosen infix equation is not a valid equation.");\
-    filter->setErrorCondition(ArrayCalculator::INVALID_EQUATION);\
-    filter->notifyErrorMessage(filter->getHumanLabel(), ss, filter->getErrorCondition());\
-    return;\
+#define CREATE_NEW_ARRAY_TRIG(filter, calculatedArrayPath, executionStack, func)                                                                                                                       \
+  ArrayCalculator* calculatorFilter = dynamic_cast<ArrayCalculator*>(filter);                                                                                                                          \
+                                                                                                                                                                                                       \
+  if(executionStack.size() >= 1 && nullptr != executionStack.top() && nullptr != calculatorFilter)                                                                                                     \
+  {                                                                                                                                                                                                    \
+    ICalculatorArray::Pointer arrayPtr = executionStack.pop();                                                                                                                                         \
+                                                                                                                                                                                                       \
+    DoubleArrayType::Pointer newArray =                                                                                                                                                                \
+        DoubleArrayType::CreateArray(arrayPtr->getArray()->getNumberOfTuples(), arrayPtr->getArray()->getComponentDimensions(), calculatedArrayPath.getDataArrayName());                               \
+                                                                                                                                                                                                       \
+    int numComps = newArray->getNumberOfComponents();                                                                                                                                                  \
+    for(int i = 0; i < newArray->getNumberOfTuples(); i++)                                                                                                                                             \
+    {                                                                                                                                                                                                  \
+      for(int c = 0; c < newArray->getNumberOfComponents(); c++)                                                                                                                                       \
+      {                                                                                                                                                                                                \
+        int index = numComps * i + c;                                                                                                                                                                  \
+        double num = arrayPtr->getValue(index);                                                                                                                                                        \
+                                                                                                                                                                                                       \
+        if(calculatorFilter->getUnits() == ArrayCalculator::Degrees)                                                                                                                                   \
+        {                                                                                                                                                                                              \
+          newArray->setValue(index, func(toRadians(num)));                                                                                                                                             \
+        }                                                                                                                                                                                              \
+        else                                                                                                                                                                                           \
+        {                                                                                                                                                                                              \
+          newArray->setValue(index, func(num));                                                                                                                                                        \
+        }                                                                                                                                                                                              \
+      }                                                                                                                                                                                                \
+    }                                                                                                                                                                                                  \
+                                                                                                                                                                                                       \
+    executionStack.push(CalculatorArray<double>::New(newArray, arrayPtr->getType(), true));                                                                                                            \
+    return;                                                                                                                                                                                            \
+  }
 
-#define CREATE_NEW_ARRAY_ARCTRIG(filter, calculatedArrayPath, executionStack, func)\
-    ArrayCalculator* calculatorFilter = dynamic_cast<ArrayCalculator*>(filter);\
-    \
-    if (executionStack.size() >= 1 && nullptr != executionStack.top() && nullptr != calculatorFilter)\
-    {\
-      ICalculatorArray::Pointer arrayPtr = executionStack.pop();\
-      \
-      DoubleArrayType::Pointer newArray = createNewArray(filter, calculatedArrayPath, arrayPtr);\
-      \
-      int numComps = newArray->getNumberOfComponents();\
-      for (int i = 0; i < newArray->getNumberOfTuples(); i++)\
-      {\
-        for (int c = 0; c < newArray->getNumberOfComponents(); c++)\
-        {\
-          int index = numComps * i + c;\
-          double num = arrayPtr->getValue(index);\
-          \
-          if (calculatorFilter->getUnits() == ArrayCalculator::Degrees)\
-          {\
-            newArray->setValue(index, toDegrees(func(num)));\
-          }\
-          else\
-          {\
-            newArray->setValue(index, func(num));\
-          }\
-        }\
-      }\
-      \
-      executionStack.push(CalculatorArray<double>::New(newArray, arrayPtr->getType(), true));\
-      return;\
-    }\
-    \
-    QString ss = QObject::tr("The chosen infix equation is not a valid equation.");\
-    filter->setErrorCondition(ArrayCalculator::INVALID_EQUATION);\
-    filter->notifyErrorMessage(filter->getHumanLabel(), ss, filter->getErrorCondition());\
-    return;\
+#define CREATE_NEW_ARRAY_ARCTRIG(filter, calculatedArrayPath, executionStack, func)                                                                                                                    \
+  ArrayCalculator* calculatorFilter = dynamic_cast<ArrayCalculator*>(filter);                                                                                                                          \
+                                                                                                                                                                                                       \
+  if(executionStack.size() >= 1 && nullptr != executionStack.top() && nullptr != calculatorFilter)                                                                                                     \
+  {                                                                                                                                                                                                    \
+    ICalculatorArray::Pointer arrayPtr = executionStack.pop();                                                                                                                                         \
+                                                                                                                                                                                                       \
+    DoubleArrayType::Pointer newArray =                                                                                                                                                                \
+        DoubleArrayType::CreateArray(arrayPtr->getArray()->getNumberOfTuples(), arrayPtr->getArray()->getComponentDimensions(), calculatedArrayPath.getDataArrayName());                               \
+                                                                                                                                                                                                       \
+    int numComps = newArray->getNumberOfComponents();                                                                                                                                                  \
+    for(int i = 0; i < newArray->getNumberOfTuples(); i++)                                                                                                                                             \
+    {                                                                                                                                                                                                  \
+      for(int c = 0; c < newArray->getNumberOfComponents(); c++)                                                                                                                                       \
+      {                                                                                                                                                                                                \
+        int index = numComps * i + c;                                                                                                                                                                  \
+        double num = arrayPtr->getValue(index);                                                                                                                                                        \
+                                                                                                                                                                                                       \
+        if(calculatorFilter->getUnits() == ArrayCalculator::Degrees)                                                                                                                                   \
+        {                                                                                                                                                                                              \
+          newArray->setValue(index, toDegrees(func(num)));                                                                                                                                             \
+        }                                                                                                                                                                                              \
+        else                                                                                                                                                                                           \
+        {                                                                                                                                                                                              \
+          newArray->setValue(index, func(num));                                                                                                                                                        \
+        }                                                                                                                                                                                              \
+      }                                                                                                                                                                                                \
+    }                                                                                                                                                                                                  \
+                                                                                                                                                                                                       \
+    executionStack.push(CalculatorArray<double>::New(newArray, arrayPtr->getType(), true));                                                                                                            \
+    return;                                                                                                                                                                                            \
+  }
 
 #endif /* _UnaryOperator_H_ */

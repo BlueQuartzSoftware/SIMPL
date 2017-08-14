@@ -35,12 +35,15 @@
 
 #include "LeftParenthesisItem.h"
 
+#include "CoreFilters/util/RightParenthesisItem.h"
+
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
 LeftParenthesisItem::LeftParenthesisItem()
 : CalculatorItem()
 {
+  setInfixToken("(");
 }
 
 // -----------------------------------------------------------------------------
@@ -48,4 +51,34 @@ LeftParenthesisItem::LeftParenthesisItem()
 // -----------------------------------------------------------------------------
 LeftParenthesisItem::~LeftParenthesisItem()
 {
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+CalculatorItem::ErrorCode LeftParenthesisItem::checkValidity(QVector<CalculatorItem::Pointer> infixVector, int currentIndex, QString& errMsg)
+{
+  // Check for a closing parenthesis, ignoring any other internal sets of parentheses
+  int leftParenthesisCount = 0;
+  for(int i = currentIndex + 1; i < infixVector.size(); i++)
+  {
+    CalculatorItem::Pointer item = infixVector[i];
+    if(std::dynamic_pointer_cast<LeftParenthesisItem>(item) != LeftParenthesisItem::NullPointer())
+    {
+      leftParenthesisCount++;
+    }
+    else if(std::dynamic_pointer_cast<RightParenthesisItem>(item) != RightParenthesisItem::NullPointer())
+    {
+      if(leftParenthesisCount > 0)
+      {
+        leftParenthesisCount--;
+      }
+      else
+      {
+        return LeftParenthesisItem::ErrorCode::SUCCESS;
+      }
+    }
+  }
+
+  return LeftParenthesisItem::ErrorCode::MISMATCHED_PARENTHESES;
 }

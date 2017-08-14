@@ -48,6 +48,7 @@ CosOperator::CosOperator()
 : UnaryOperator()
 {
   setNumberOfArguments(1);
+  setInfixToken("cos");
 }
 
 // -----------------------------------------------------------------------------

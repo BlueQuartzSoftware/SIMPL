@@ -57,11 +57,6 @@ class SIMPLib_EXPORT CalculatorOperator : public CalculatorItem
 
     SIMPL_SHARED_POINTERS(CalculatorOperator)
 
-    static Pointer New()
-    {
-      return Pointer(new CalculatorOperator());
-    }
-
     static double toDegrees(double radians);
     static double toRadians(double degrees);
 
@@ -69,9 +64,7 @@ class SIMPLib_EXPORT CalculatorOperator : public CalculatorItem
 
     bool hasHigherPrecedence(CalculatorOperator::Pointer other);
 
-    virtual void calculate(AbstractFilter* filter, DataArrayPath calculatedArrayPath, QStack<ICalculatorArray::Pointer> &executionStack);
-
-    virtual bool checkValidity(QVector<CalculatorItem::Pointer> infixVector, int currentIndex);
+    virtual void calculate(AbstractFilter* filter, DataArrayPath calculatedArrayPath, QStack<ICalculatorArray::Pointer>& executionStack) = 0;
 
     OperatorType getOperatorType();
 
@@ -95,8 +88,6 @@ class SIMPLib_EXPORT CalculatorOperator : public CalculatorItem
 
     void setOperatorType(OperatorType type);
 
-    DoubleArrayType::Pointer createNewArray(AbstractFilter* filter, DataArrayPath calculatedPath, ICalculatorArray::Pointer dataArray);
-
   private:
     Precedence                                      m_Precedence;
     OperatorType                                    m_OperatorType;
@@ -105,50 +96,45 @@ class SIMPLib_EXPORT CalculatorOperator : public CalculatorItem
     void operator=(const CalculatorOperator&); // Operator '=' Not Implemented
 };
 
-#define CREATE_NEW_ARRAY_TWO_ARGUMENTS(filter, calculatedArrayPath, executionStack, func)\
-    ArrayCalculator* calculatorFilter = dynamic_cast<ArrayCalculator*>(filter);\
-    \
-    if (executionStack.size() >= 1 && nullptr != executionStack.top() && nullptr != calculatorFilter)\
-    {\
-      ICalculatorArray::Pointer array1 = executionStack.pop();\
-      ICalculatorArray::Pointer array2 = executionStack.pop();\
-      \
-      DoubleArrayType::Pointer newArray;\
-      if (array1->getType() == ICalculatorArray::Array)\
-      {\
-        newArray = createNewArray(filter, calculatedArrayPath, array1);\
-      }\
-      else\
-      {\
-        newArray = createNewArray(filter, calculatedArrayPath, array2);\
-      }\
-      \
-      int numComps = newArray->getNumberOfComponents();\
-      for (int i = 0; i < static_cast<int>(newArray->getNumberOfTuples()); i++)\
-      {\
-        for (int c = 0; c < newArray->getNumberOfComponents(); c++)\
-        {\
-          int index = numComps * i + c;\
-          double num1 = array1->getValue(index);\
-          double num2 = array2->getValue(index);\
-          newArray->setValue(index, func(num2, num1));\
-        }\
-      }\
-      \
-      if (array1->getType() == ICalculatorArray::Array || array2->getType() == ICalculatorArray::Array)\
-      {\
-        executionStack.push(CalculatorArray<double>::New(newArray, ICalculatorArray::Array, true));\
-      }\
-      else\
-      {\
-        executionStack.push(CalculatorArray<double>::New(newArray, ICalculatorArray::Number, true));\
-      }\
-      return;\
-    }\
-    \
-    QString ss = QObject::tr("The chosen infix equation is not a valid equation.");\
-    filter->setErrorCondition(ArrayCalculator::INVALID_EQUATION);\
-    filter->notifyErrorMessage(filter->getHumanLabel(), ss, filter->getErrorCondition());\
-    return;\
+#define CREATE_NEW_ARRAY_TWO_ARGUMENTS(filter, calculatedArrayPath, executionStack, func)                                                                                                              \
+  ArrayCalculator* calculatorFilter = dynamic_cast<ArrayCalculator*>(filter);                                                                                                                          \
+                                                                                                                                                                                                       \
+  if(executionStack.size() >= 2 && nullptr != executionStack.top() && nullptr != calculatorFilter)                                                                                                     \
+  {                                                                                                                                                                                                    \
+    ICalculatorArray::Pointer array1 = executionStack.pop();                                                                                                                                           \
+    ICalculatorArray::Pointer array2 = executionStack.pop();                                                                                                                                           \
+                                                                                                                                                                                                       \
+    DoubleArrayType::Pointer newArray;                                                                                                                                                                 \
+    if(array1->getType() == ICalculatorArray::Array)                                                                                                                                                   \
+    {                                                                                                                                                                                                  \
+      newArray = DoubleArrayType::CreateArray(array1->getArray()->getNumberOfTuples(), array1->getArray()->getComponentDimensions(), calculatedArrayPath.getDataArrayName());                          \
+    }                                                                                                                                                                                                  \
+    else                                                                                                                                                                                               \
+    {                                                                                                                                                                                                  \
+      newArray = DoubleArrayType::CreateArray(array2->getArray()->getNumberOfTuples(), array2->getArray()->getComponentDimensions(), calculatedArrayPath.getDataArrayName());                          \
+    }                                                                                                                                                                                                  \
+                                                                                                                                                                                                       \
+    int numComps = newArray->getNumberOfComponents();                                                                                                                                                  \
+    for(int i = 0; i < static_cast<int>(newArray->getNumberOfTuples()); i++)                                                                                                                           \
+    {                                                                                                                                                                                                  \
+      for(int c = 0; c < newArray->getNumberOfComponents(); c++)                                                                                                                                       \
+      {                                                                                                                                                                                                \
+        int index = numComps * i + c;                                                                                                                                                                  \
+        double num1 = array1->getValue(index);                                                                                                                                                         \
+        double num2 = array2->getValue(index);                                                                                                                                                         \
+        newArray->setValue(index, func(num2, num1));                                                                                                                                                   \
+      }                                                                                                                                                                                                \
+    }                                                                                                                                                                                                  \
+                                                                                                                                                                                                       \
+    if(array1->getType() == ICalculatorArray::Array || array2->getType() == ICalculatorArray::Array)                                                                                                   \
+    {                                                                                                                                                                                                  \
+      executionStack.push(CalculatorArray<double>::New(newArray, ICalculatorArray::Array, true));                                                                                                      \
+    }                                                                                                                                                                                                  \
+    else                                                                                                                                                                                               \
+    {                                                                                                                                                                                                  \
+      executionStack.push(CalculatorArray<double>::New(newArray, ICalculatorArray::Number, true));                                                                                                     \
+    }                                                                                                                                                                                                  \
+    return;                                                                                                                                                                                            \
+  }
 
 #endif /* _CalculatorOperator_H_ */
