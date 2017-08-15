@@ -243,7 +243,6 @@ void ArrayCalculator::dataCheck()
 {
   setErrorCondition(0);
   setWarningCondition(0);
-  setWarningCondition(0);
 
   getDataContainerArray()->getPrereqAttributeMatrixFromPath<AbstractFilter>(this, m_SelectedAttributeMatrix, -301);
   if(getErrorCondition() < 0)
@@ -397,7 +396,6 @@ void ArrayCalculator::preflight()
 void ArrayCalculator::execute()
 {
   setErrorCondition(0);
-  setWarningCondition(0);
   setWarningCondition(0);
   dataCheck();
   if(getErrorCondition() < 0)
