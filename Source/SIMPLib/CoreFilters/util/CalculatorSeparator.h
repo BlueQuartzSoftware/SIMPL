@@ -45,11 +45,6 @@ class SIMPLib_EXPORT CalculatorSeparator : public CalculatorItem
   public:
     SIMPL_SHARED_POINTERS(CalculatorSeparator)
 
-    static Pointer New()
-    {
-      return Pointer(new CalculatorSeparator());
-    }
-
     virtual ~CalculatorSeparator();
 
   protected:

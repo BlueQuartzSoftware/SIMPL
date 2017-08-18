@@ -48,6 +48,7 @@ LogOperator::LogOperator()
 : UnaryOperator()
 {
   setNumberOfArguments(2);
+  setInfixToken("log");
 }
 
 // -----------------------------------------------------------------------------

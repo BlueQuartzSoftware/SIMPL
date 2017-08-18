@@ -52,7 +52,7 @@ class SIMPLib_EXPORT BinaryOperator : public CalculatorOperator
 
     virtual void calculate(AbstractFilter* filter, DataArrayPath calculatedArrayPath, QStack<ICalculatorArray::Pointer> &executionStack);
 
-    bool checkValidity(QVector<CalculatorItem::Pointer> infixVector, int currentIndex) final;
+    virtual CalculatorItem::ErrorCode checkValidity(QVector<CalculatorItem::Pointer> infixVector, int currentIndex, QString& msg) final;
 
   protected:
     BinaryOperator();
@@ -63,50 +63,45 @@ class SIMPLib_EXPORT BinaryOperator : public CalculatorOperator
     void operator=(const BinaryOperator&); // Operator '=' Not Implemented
 };
 
-#define CREATE_NEW_ARRAY_STANDARD_BINARY(filter, calculatedArrayPath, executionStack, op)\
-    ArrayCalculator* calculatorFilter = dynamic_cast<ArrayCalculator*>(filter);\
-    \
-    if (executionStack.size() >= 1 && nullptr != executionStack.top() && nullptr != calculatorFilter)\
-    {\
-      ICalculatorArray::Pointer array1 = executionStack.pop();\
-      ICalculatorArray::Pointer array2 = executionStack.pop();\
-      \
-      DoubleArrayType::Pointer newArray;\
-      if (array1->getType() == ICalculatorArray::Array)\
-      {\
-        newArray = createNewArray(filter, calculatedArrayPath, array1);\
-      }\
-      else\
-      {\
-        newArray = createNewArray(filter, calculatedArrayPath, array2);\
-      }\
-      \
-      int numComps = newArray->getNumberOfComponents();\
-      for (int i = 0; i < newArray->getNumberOfTuples(); i++)\
-      {\
-        for (int c = 0; c < newArray->getNumberOfComponents(); c++)\
-        {\
-          int index = numComps * i + c;\
-          double num1 = array1->getValue(index);\
-          double num2 = array2->getValue(index);\
-          newArray->setValue(index, num2 op num1);\
-        }\
-      }\
-      \
-      if (array1->getType() == ICalculatorArray::Array || array2->getType() == ICalculatorArray::Array)\
-      {\
-        executionStack.push(CalculatorArray<double>::New(newArray, ICalculatorArray::Array, true));\
-      }\
-      else\
-      {\
-        executionStack.push(CalculatorArray<double>::New(newArray, ICalculatorArray::Number, true));\
-      }\
-      return;\
-    }\
-    \
-    QString ss = QObject::tr("The chosen infix equation is not a valid equation.");\
-    filter->setErrorCondition(ArrayCalculator::INVALID_EQUATION);\
-    filter->notifyErrorMessage(filter->getHumanLabel(), ss, filter->getErrorCondition());\
-    return;\
+#define CREATE_NEW_ARRAY_STANDARD_BINARY(filter, calculatedArrayPath, executionStack, op)                                                                                                              \
+  ArrayCalculator* calculatorFilter = dynamic_cast<ArrayCalculator*>(filter);                                                                                                                          \
+                                                                                                                                                                                                       \
+  if(executionStack.size() >= 2 && nullptr != executionStack.top() && nullptr != calculatorFilter)                                                                                                     \
+  {                                                                                                                                                                                                    \
+    ICalculatorArray::Pointer array1 = executionStack.pop();                                                                                                                                           \
+    ICalculatorArray::Pointer array2 = executionStack.pop();                                                                                                                                           \
+                                                                                                                                                                                                       \
+    DoubleArrayType::Pointer newArray;                                                                                                                                                                 \
+    if(array1->getType() == ICalculatorArray::Array)                                                                                                                                                   \
+    {                                                                                                                                                                                                  \
+      newArray = DoubleArrayType::CreateArray(array1->getArray()->getNumberOfTuples(), array1->getArray()->getComponentDimensions(), calculatedArrayPath.getDataArrayName());                          \
+    }                                                                                                                                                                                                  \
+    else                                                                                                                                                                                               \
+    {                                                                                                                                                                                                  \
+      newArray = DoubleArrayType::CreateArray(array2->getArray()->getNumberOfTuples(), array2->getArray()->getComponentDimensions(), calculatedArrayPath.getDataArrayName());                          \
+    }                                                                                                                                                                                                  \
+                                                                                                                                                                                                       \
+    int numComps = newArray->getNumberOfComponents();                                                                                                                                                  \
+    for(int i = 0; i < newArray->getNumberOfTuples(); i++)                                                                                                                                             \
+    {                                                                                                                                                                                                  \
+      for(int c = 0; c < newArray->getNumberOfComponents(); c++)                                                                                                                                       \
+      {                                                                                                                                                                                                \
+        int index = numComps * i + c;                                                                                                                                                                  \
+        double num1 = array1->getValue(index);                                                                                                                                                         \
+        double num2 = array2->getValue(index);                                                                                                                                                         \
+        newArray->setValue(index, num2 op num1);                                                                                                                                                       \
+      }                                                                                                                                                                                                \
+    }                                                                                                                                                                                                  \
+                                                                                                                                                                                                       \
+    if(array1->getType() == ICalculatorArray::Array || array2->getType() == ICalculatorArray::Array)                                                                                                   \
+    {                                                                                                                                                                                                  \
+      executionStack.push(CalculatorArray<double>::New(newArray, ICalculatorArray::Array, true));                                                                                                      \
+    }                                                                                                                                                                                                  \
+    else                                                                                                                                                                                               \
+    {                                                                                                                                                                                                  \
+      executionStack.push(CalculatorArray<double>::New(newArray, ICalculatorArray::Number, true));                                                                                                     \
+    }                                                                                                                                                                                                  \
+    return;                                                                                                                                                                                            \
+  }
 
 #endif /* _BinaryOperator_H_ */

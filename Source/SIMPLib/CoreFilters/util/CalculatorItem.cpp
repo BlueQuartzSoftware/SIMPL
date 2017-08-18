@@ -48,3 +48,19 @@ CalculatorItem::CalculatorItem()
 CalculatorItem::~CalculatorItem()
 {
 }
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+QString CalculatorItem::getInfixToken()
+{
+  return m_InfixToken;
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void CalculatorItem::setInfixToken(const QString& token)
+{
+  m_InfixToken = token;
+}

@@ -49,30 +49,3 @@ ICalculatorArray::ICalculatorArray()
 ICalculatorArray::~ICalculatorArray()
 {
 }
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-IDataArray::Pointer ICalculatorArray::getArray()
-{
-  // This should never be called
-  return IDataArray::NullPointer();
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-double ICalculatorArray::getValue(int i)
-{
-  // This should never be called
-  return 0.0;
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-ICalculatorArray::ValueType ICalculatorArray::getType()
-{
-  // This should never be called
-  return ICalculatorArray::Array;
-}

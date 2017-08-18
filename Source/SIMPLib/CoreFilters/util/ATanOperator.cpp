@@ -48,6 +48,7 @@ ATanOperator::ATanOperator()
 : UnaryOperator()
 {
   setNumberOfArguments(1);
+  setInfixToken("atan");
 }
 
 // -----------------------------------------------------------------------------

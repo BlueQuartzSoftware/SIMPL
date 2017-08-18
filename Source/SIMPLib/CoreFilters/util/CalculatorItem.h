@@ -46,17 +46,60 @@ class SIMPLib_EXPORT CalculatorItem
   public:
     SIMPL_SHARED_POINTERS(CalculatorItem)
 
-    static Pointer New()
-    {
-      return Pointer(new CalculatorItem());
-    }
-
     virtual ~CalculatorItem();
+
+    using EnumType = int;
+
+    enum class ErrorCode : EnumType
+    {
+      SUCCESS = 0,
+      INVALID_EQUATION = -4009,
+      INVALID_COMPONENT = -4010,
+      EMPTY_EQUATION = -4011,
+      EMPTY_CAL_ARRAY = -4012,
+      EMPTY_SEL_MATRIX = -4013,
+      LOST_ATTR_MATRIX = -4014,
+      INCORRECT_TUPLE_COUNT = -4015,
+      INCONSISTENT_TUPLES = -4016,
+      UNRECOGNIZED_ITEM = -4017,
+      MISMATCHED_PARENTHESES = -4018,
+      UNEXPECTED_OUTPUT = -4019,
+      COMPONENT_OUT_OF_RANGE = -4020,
+      INVALID_ARRAY_NAME = -4022,
+      INCONSISTENT_INDEXING = -4023,
+      INCONSISTENT_COMP_DIMS = -4024,
+      ATTRARRAY_ZEROTUPLES_WARNING = -4025,
+      ORPHANED_COMPONENT = -4026,
+      OPERATOR_NO_LEFT_VALUE = -4027,
+      OPERATOR_NO_RIGHT_VALUE = -4028,
+      OPERATOR_NO_OPENING_PAREN = -4029,
+      OPERATOR_NO_CLOSING_PAREN = -4030,
+      NO_NUMERIC_ARGUMENTS = -4031,
+      MISSING_ARGUMENTS = -4032,
+      NOT_ENOUGH_ARGUMENTS = -4033,
+      TOO_MANY_ARGUMENTS = -4034,
+      INVALID_SYMBOL = -4035,
+      NO_PRECEDING_UNARY_OPERATOR = -4036
+    };
+
+    enum class WarningCode : EnumType
+    {
+      NONE = 0,
+      NUMERIC_VALUE_WARNING = -5010,
+      AMBIGUOUS_NAME_WARNING = -5011
+    };
+
+    QString getInfixToken();
+
+    virtual CalculatorItem::ErrorCode checkValidity(QVector<CalculatorItem::Pointer> infixVector, int currentIndex, QString& msg) = 0;
 
   protected:
     CalculatorItem();
 
+    void setInfixToken(const QString& token);
+
   private:
+    QString m_InfixToken = "";
 
     CalculatorItem(const CalculatorItem&); // Copy Constructor Not Implemented
     void operator=(const CalculatorItem&); // Operator '=' Not Implemented

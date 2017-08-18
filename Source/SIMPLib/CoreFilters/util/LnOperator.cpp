@@ -48,6 +48,7 @@ LnOperator::LnOperator()
 : UnaryOperator()
 {
   setNumberOfArguments(1);
+  setInfixToken("ln");
 }
 
 // -----------------------------------------------------------------------------
