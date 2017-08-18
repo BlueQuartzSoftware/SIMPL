@@ -68,7 +68,7 @@ void NegativeOperator::calculate(AbstractFilter* filter, DataArrayPath calculate
   {
     ICalculatorArray::Pointer arrayPtr = executionStack.pop();
 
-    DoubleArrayType::Pointer newArray = createNewArray(filter, calculatedArrayPath, arrayPtr);
+    DoubleArrayType::Pointer newArray = DoubleArrayType::CreateArray(arrayPtr->getArray()->getNumberOfTuples(), arrayPtr->getArray()->getComponentDimensions(), calculatedArrayPath.getDataArrayName());
 
     int numComps = newArray->getNumberOfComponents();
     for(int i = 0; i < newArray->getNumberOfTuples(); i++)
@@ -84,28 +84,28 @@ void NegativeOperator::calculate(AbstractFilter* filter, DataArrayPath calculate
     executionStack.push(CalculatorArray<double>::New(newArray, arrayPtr->getType(), true));
     return;
   }
-
-  QString ss = QObject::tr("The chosen infix equation is not a valid equation.");
-  filter->setErrorCondition(ArrayCalculator::INVALID_EQUATION);
-  filter->notifyErrorMessage(filter->getHumanLabel(), ss, filter->getErrorCondition());
-  return;
 }
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-bool NegativeOperator::checkValidity(QVector<CalculatorItem::Pointer> infixVector, int currentIndex)
+CalculatorItem::ErrorCode NegativeOperator::checkValidity(QVector<CalculatorItem::Pointer> infixVector, int currentIndex, QString& errMsg)
 {
-  if(currentIndex - 1 < 0 || (currentIndex - 1 >= 0 && (nullptr != std::dynamic_pointer_cast<BinaryOperator>(infixVector[currentIndex - 1]) ||
-                                                        nullptr != std::dynamic_pointer_cast<LeftParenthesisItem>(infixVector[currentIndex - 1]))))
+  if(currentIndex - 1 >= 0 && (std::dynamic_pointer_cast<BinaryOperator>(infixVector[currentIndex - 1]) == BinaryOperator::NullPointer() &&
+                               std::dynamic_pointer_cast<LeftParenthesisItem>(infixVector[currentIndex - 1]) == LeftParenthesisItem::NullPointer()))
   {
-    if(currentIndex + 1 < infixVector.size() &&
-       (nullptr != std::dynamic_pointer_cast<ICalculatorArray>(infixVector[currentIndex + 1]) || nullptr != std::dynamic_pointer_cast<LeftParenthesisItem>(infixVector[currentIndex + 1]) ||
-        nullptr != std::dynamic_pointer_cast<UnaryOperator>(infixVector[currentIndex + 1])))
-    {
-      return true;
-    }
+    // The symbol to the left of the negative sign is not a binary operator or left parenthesis
+    errMsg = QObject::tr("The negative operator '%1' does not have a valid 'left' value.").arg(getInfixToken());
+    return NegativeOperator::ErrorCode::OPERATOR_NO_LEFT_VALUE;
+  }
+  else if(currentIndex + 1 >= infixVector.size() || (currentIndex + 1 < infixVector.size() && (nullptr == std::dynamic_pointer_cast<ICalculatorArray>(infixVector[currentIndex + 1]) &&
+                                                                                               nullptr == std::dynamic_pointer_cast<LeftParenthesisItem>(infixVector[currentIndex + 1]) &&
+                                                                                               nullptr == std::dynamic_pointer_cast<UnaryOperator>(infixVector[currentIndex + 1]))))
+  {
+    // The symbol to the right of the negative sign is not an array, left parenthesis, or unary operator
+    errMsg = QObject::tr("The negative operator '%1' does not have a valid 'right' value.").arg(getInfixToken());
+    return NegativeOperator::ErrorCode::OPERATOR_NO_RIGHT_VALUE;
   }
 
-  return false;
+  return NegativeOperator::ErrorCode::SUCCESS;
 }

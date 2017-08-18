@@ -48,6 +48,7 @@ FloorOperator::FloorOperator()
 : UnaryOperator()
 {
   setNumberOfArguments(1);
+  setInfixToken("floor");
 }
 
 // -----------------------------------------------------------------------------

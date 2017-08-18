@@ -54,16 +54,14 @@ class SIMPLib_EXPORT ICalculatorArray : public CalculatorItem
 
     SIMPL_SHARED_POINTERS(ICalculatorArray)
 
-    static Pointer New()
-    {
-      return Pointer(new ICalculatorArray());
-    }
-
     virtual ~ICalculatorArray();
 
-    virtual IDataArray::Pointer getArray();
-    virtual double getValue(int i);
-    virtual ValueType getType();
+    virtual IDataArray::Pointer getArray() = 0;
+    virtual double getValue(int i) = 0;
+    virtual void setValue(int i, double value) = 0;
+    virtual ValueType getType() = 0;
+
+    virtual DoubleArrayType::Pointer reduceToOneComponent(int c, bool allocate = true) = 0;
 
   protected:
     ICalculatorArray();

@@ -54,26 +54,6 @@ class SIMPLib_EXPORT ArrayCalculator : public AbstractFilter
     Q_OBJECT
 
   public:
-    enum ErrorAndWarningCodes
-    {
-      EMPTY_EQUATION = -4010,
-      EMPTY_CAL_ARRAY = -4011,
-      EMPTY_SEL_MATRIX = -4012,
-      LOST_ATTR_MATRIX = -4013,
-      INVALID_EQUATION = -4014,
-      NUMERIC_VALUE_WARNING = -4015,
-      INCORRECT_TUPLE_COUNT = -4016,
-      INCONSISTENT_TUPLES = -4017,
-      UNRECOGNIZED_ITEM = -4018,
-      MISMATCHED_PARENTHESES = -4019,
-      UNEXPECTED_OUTPUT = -4020,
-      COMPONENT_OUT_OF_RANGE = -4021,
-      AMBIGUOUS_NAME_WARNING = -4022,
-      INVALID_ARRAY_NAME = -4023,
-      INCONSISTENT_INDEXING = -4024,
-      INCONSISTENT_COMP_DIMS = -4025
-    };
-
     enum AngleUnits
     {
       Degrees,
@@ -211,10 +191,58 @@ class SIMPLib_EXPORT ArrayCalculator : public AbstractFilter
     QMap<QString, CalculatorItem::Pointer>                      m_SymbolMap;
     QStack<ICalculatorArray::Pointer>                           m_ExecutionStack;
 
-    QVector<CalculatorItem::Pointer> parseInfixEquation(QString equation);
+    void createSymbolMap();
+
+    QVector<CalculatorItem::Pointer> parseInfixEquation();
     QVector<CalculatorItem::Pointer> toRPN(QVector<CalculatorItem::Pointer> infixEquation);
 
     void checkForAmbiguousArrayName(QString itemStr, QString warningMsg);
+
+    /**
+     * @brief getRegularExpressionMatches
+     * @return
+     */
+    QVector<QString> getRegularExpressionMatches();
+
+    /**
+     * @brief parseNumberArray
+     * @param token
+     * @param parsedInfix
+     */
+    void parseNumericValue(QString token, QVector<CalculatorItem::Pointer>& parsedInfix, double number);
+
+    /**
+     * @brief parseMinusSign
+     * @param strItem
+     * @param parsedInfix
+     * @param loopIdx
+     */
+    void parseMinusSign(QString strItem, QVector<CalculatorItem::Pointer>& parsedInfix, int loopIdx);
+
+    /**
+     * @brief parseIndexOperator
+     * @param token
+     * @param parsedInfix
+     * @param number
+     */
+    bool parseIndexOperator(QString token, QVector<CalculatorItem::Pointer>& parsedInfix);
+
+    /**
+     * @brief parseCommaOperator
+     * @param token
+     * @param parsedInfix
+     * @return
+     */
+    bool parseCommaOperator(QString token, QVector<CalculatorItem::Pointer>& parsedInfix);
+
+    /**
+     * @brief parseArray
+     * @param token
+     * @param parsedInfix
+     * @param selectedAM
+     * @return
+     */
+    bool parseArray(QString token, QVector<CalculatorItem::Pointer>& parsedInfix, AttributeMatrix::Pointer selectedAM);
 
     ArrayCalculator(const ArrayCalculator&); // Copy Constructor Not Implemented
     void operator=(const ArrayCalculator&); // Operator '=' Not Implemented

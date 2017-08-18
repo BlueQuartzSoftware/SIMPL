@@ -57,7 +57,7 @@ class SIMPLib_EXPORT NegativeOperator : public CalculatorOperator
 
     virtual void calculate(AbstractFilter* filter, DataArrayPath calculatedArrayPath, QStack<ICalculatorArray::Pointer> &executionStack);
 
-    bool checkValidity(QVector<CalculatorItem::Pointer> infixVector, int currentIndex) final;
+    CalculatorItem::ErrorCode checkValidity(QVector<CalculatorItem::Pointer> infixVector, int currentIndex, QString& errMsg) final;
 
   protected:
     NegativeOperator();
