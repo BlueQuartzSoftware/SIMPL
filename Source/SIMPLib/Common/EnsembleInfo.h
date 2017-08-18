@@ -79,6 +79,11 @@ class SIMPLib_EXPORT EnsembleInfo : public QObject
       UnknownCrystalStructure = 999
     };
 
+    static QString CrystalStructureToStr(CrystalStructure structure);
+    static CrystalStructure CrystalStructureFromStr(QString structure);
+
+    static QStringList CrystalStructureStrings();
+
     EnsembleInfo();
     EnsembleInfo(const EnsembleInfo& rhs);
 

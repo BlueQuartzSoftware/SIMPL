@@ -37,6 +37,61 @@
 
 #include "moc_EnsembleInfo.cpp"
 
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+QStringList EnsembleInfo::CrystalStructureStrings()
+{
+  QStringList choices;
+  // The choices here are IN ORDER of the enumerations from the EBSDLib. DO NOT CHANGE THE ORDER.
+  choices.push_back("Hexagonal-High 6/mmm");
+  choices.push_back("Cubic-High m-3m");
+  choices.push_back("Hexagonal-Low 6/m");
+  choices.push_back("Cubic-Low m-3 (Tetrahedral)");
+  choices.push_back("Triclinic -1");
+  choices.push_back("Monoclinic 2/m");
+  choices.push_back("Orthorhombic mmm");
+  choices.push_back("Tetragonal-Low 4/m");
+  choices.push_back("Tetragonal-High 4/mmm");
+  choices.push_back("Trigonal-Low -3");
+  choices.push_back("Trigonal-High -3m");
+
+  return choices;
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+QString EnsembleInfo::CrystalStructureToStr(CrystalStructure structure)
+{
+  int structInt = static_cast<int>(structure);
+  QStringList strList = CrystalStructureStrings();
+
+  if(structInt < strList.size())
+  {
+    return strList[structInt];
+  }
+
+  return "Unknown Crystal Structure";
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+EnsembleInfo::CrystalStructure EnsembleInfo::CrystalStructureFromStr(QString structure)
+{
+  QStringList strList = CrystalStructureStrings();
+  int index = strList.indexOf(structure);
+
+  if(index < 0)
+  {
+    return CrystalStructure::UnknownCrystalStructure;
+  }
+
+  return static_cast<CrystalStructure>(index);
+}
+
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
