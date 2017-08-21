@@ -36,10 +36,10 @@
 #ifndef _ensembleinfo_h_
 #define _ensembleinfo_h_
 
-#include <QtCore/QObject>
-#include <QtCore/QMetaType>
-#include <QtCore/QVector>
 #include <QtCore/QJsonObject>
+#include <QtCore/QMetaType>
+#include <QtCore/QObject>
+#include <QtCore/QVector>
 
 #include "SIMPLib/SIMPLib.h"
 
@@ -57,75 +57,67 @@
  */
 class SIMPLib_EXPORT EnsembleInfo : public QObject
 {
-    Q_OBJECT
+  Q_OBJECT
 
-  public:
+public:
+  using CrystalStructureType = uint32_t;
 
-    using CrystalStructureType = uint32_t;
+  enum class CrystalStructure : CrystalStructureType
+  {
+    Hexagonal_High = 0,
+    Cubic_High,
+    Hexagonal_Low,
+    Cubic_Low,
+    Triclinic,
+    Monoclinic,
+    OrthoRhombic,
+    Tetragonal_Low,
+    Tetragonal_High,
+    Trigonal_Low,
+    Trigonal_High,
+    UnknownCrystalStructure = 999
+  };
 
-    enum class CrystalStructure : CrystalStructureType
-    {
-      Hexagonal_High = 0,
-      Cubic_High,
-      Hexagonal_Low,
-      Cubic_Low,
-      Triclinic,
-      Monoclinic,
-      OrthoRhombic,
-      Tetragonal_Low,
-      Tetragonal_High,
-      Trigonal_Low,
-      Trigonal_High,
-      UnknownCrystalStructure = 999
-    };
+  static QString CrystalStructureToStr(CrystalStructure structure);
+  static CrystalStructure CrystalStructureFromStr(QString structure);
 
-    static QString CrystalStructureToStr(CrystalStructure structure);
-    static CrystalStructure CrystalStructureFromStr(QString structure);
+  static QStringList CrystalStructureStrings();
 
-    static QStringList CrystalStructureStrings();
+  EnsembleInfo();
+  EnsembleInfo(const EnsembleInfo& rhs);
 
-    EnsembleInfo();
-    EnsembleInfo(const EnsembleInfo& rhs);
+  virtual ~EnsembleInfo();
 
-    virtual ~EnsembleInfo();
+  int size();
 
-    int size();
+  void addValues(const CrystalStructure crystalStructure, const PhaseType::Type phaseType, const QString phaseName);
 
-    void addValues(const CrystalStructure crystalStructure,
-                    const PhaseType::Type phaseType,
-                    const QString phaseName);
+  void getValues(int index, CrystalStructure& structure, PhaseType::Type& phaseType, QString& phaseName);
 
-    void getValues(int index, CrystalStructure& structure, 
-                   PhaseType::Type& phaseType, 
-                   QString& phaseName);
+  CrystalStructure getCrystalStructure(int index);
+  PhaseType::Type getPhaseType(int index);
+  QString getPhaseName(int index);
 
-    CrystalStructure getCrystalStructure(int index);
-    PhaseType::Type getPhaseType(int index);
-    QString getPhaseName(int index);
+  void setCrystalStructure(int index, CrystalStructure structure);
+  void setPhaseType(int index, PhaseType::Type phaseType);
+  void setPhaseName(int index, QString phaseName);
 
-    void setCrystalStructure(int index, CrystalStructure structure);
-    void setPhaseType(int index, PhaseType::Type phaseType);
-    void setPhaseName(int index, QString phaseName);
-    
-    DataArray<CrystalStructureType>::Pointer getCrystalStructureArray();
-    DataArray<PhaseType::EnumType>::Pointer getPhaseTypeArray();
-    StringDataArray::Pointer getPhaseNameArray();
+  DataArray<CrystalStructureType>::Pointer getCrystalStructureArray();
+  DataArray<PhaseType::EnumType>::Pointer getPhaseTypeArray();
+  StringDataArray::Pointer getPhaseNameArray();
 
-    void operator=(const EnsembleInfo&);
+  void operator=(const EnsembleInfo&);
 
-    void remove(int index);
+  void remove(int index);
 
-    void clear();
+  void clear();
 
-  private:
-    DataArray<CrystalStructureType>::Pointer m_CrystalStructures;
-    DataArray<PhaseType::EnumType>::Pointer m_PhaseTypes;
-    StringDataArray::Pointer m_PhaseNames;
+private:
+  DataArray<CrystalStructureType>::Pointer m_CrystalStructures;
+  DataArray<PhaseType::EnumType>::Pointer m_PhaseTypes;
+  StringDataArray::Pointer m_PhaseNames;
 };
 
-
 Q_DECLARE_METATYPE(EnsembleInfo)
-
-
 
 #endif /* _EnsembleInfo_H_ */

@@ -37,7 +37,6 @@
 
 #include "moc_EnsembleInfo.cpp"
 
-
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
@@ -96,7 +95,7 @@ EnsembleInfo::CrystalStructure EnsembleInfo::CrystalStructureFromStr(QString str
 //
 // -----------------------------------------------------------------------------
 EnsembleInfo::EnsembleInfo()
-  : QObject(nullptr)
+: QObject(nullptr)
 {
   m_CrystalStructures = DataArray<CrystalStructureType>::CreateArray(0, "_INTERNAL_");
   m_PhaseTypes = DataArray<PhaseType::EnumType>::CreateArray(0, "_INTERNAL_");
@@ -107,14 +106,11 @@ EnsembleInfo::EnsembleInfo()
 //
 // -----------------------------------------------------------------------------
 EnsembleInfo::EnsembleInfo(const EnsembleInfo& rhs)
-  : QObject(nullptr)
+: QObject(nullptr)
 {
-  m_CrystalStructures = std::static_pointer_cast<DataArray<CrystalStructureType>>(
-    rhs.m_CrystalStructures->deepCopy());
-  m_PhaseTypes = std::static_pointer_cast<DataArray<PhaseType::EnumType>>(
-    rhs.m_PhaseTypes->deepCopy());
-  m_PhaseNames = std::static_pointer_cast<StringDataArray>(
-    rhs.m_PhaseNames->deepCopy());
+  m_CrystalStructures = std::static_pointer_cast<DataArray<CrystalStructureType>>(rhs.m_CrystalStructures->deepCopy());
+  m_PhaseTypes = std::static_pointer_cast<DataArray<PhaseType::EnumType>>(rhs.m_PhaseTypes->deepCopy());
+  m_PhaseNames = std::static_pointer_cast<StringDataArray>(rhs.m_PhaseNames->deepCopy());
 }
 
 // -----------------------------------------------------------------------------
@@ -262,10 +258,7 @@ void EnsembleInfo::operator=(const EnsembleInfo& rhs)
   IDataArray::Pointer phaseTypes = rhs.m_PhaseTypes->deepCopy();
   IDataArray::Pointer phaseNames = rhs.m_PhaseNames->deepCopy();
 
-  m_CrystalStructures = std::dynamic_pointer_cast<DataArray<CrystalStructureType>>(
-    crystalStructures);
-  m_PhaseTypes = std::dynamic_pointer_cast<DataArray<PhaseType::EnumType>>(
-    phaseTypes);
-  m_PhaseNames = std::dynamic_pointer_cast<StringDataArray>(
-    phaseNames);
+  m_CrystalStructures = std::dynamic_pointer_cast<DataArray<CrystalStructureType>>(crystalStructures);
+  m_PhaseTypes = std::dynamic_pointer_cast<DataArray<PhaseType::EnumType>>(phaseTypes);
+  m_PhaseNames = std::dynamic_pointer_cast<StringDataArray>(phaseNames);
 }
