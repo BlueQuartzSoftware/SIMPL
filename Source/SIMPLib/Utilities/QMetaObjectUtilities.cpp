@@ -99,14 +99,14 @@ QDataStream& operator>>(QDataStream& in, PhaseType::Type& v)
   return in;
 }
 
-QDataStream& operator << (QDataStream& out, const EnsembleInfo& v)
+QDataStream& operator<<(QDataStream& out, const EnsembleInfo& v)
 {
   assert(false);
   EnsembleInfo temp = static_cast<EnsembleInfo>(v);
   out << temp;
   return out;
 }
-QDataStream& operator >> (QDataStream& in, EnsembleInfo& v)
+QDataStream& operator>>(QDataStream& in, EnsembleInfo& v)
 {
   assert(false);
   EnsembleInfo temp;
