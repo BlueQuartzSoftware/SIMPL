@@ -527,7 +527,7 @@ bool H5Utilities::probeForAttribute(hid_t loc_id, const std::string& obj_name, c
   H5SUPPORT_MUTEX_LOCK()
 
   herr_t err = 0;
-  int32_t rank;
+  hid_t rank;
   HDF_ERROR_HANDLER_OFF
   err = H5Lite::getAttributeNDims(loc_id, obj_name, attr_name, rank);
   HDF_ERROR_HANDLER_ON
