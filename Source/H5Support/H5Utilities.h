@@ -67,7 +67,7 @@ namespace H5Support_NAMESPACE
       * @param trim set to False to trim the path
       * @return  The path to the object relative to the objId
       */
-      static H5Support_EXPORT std::string getObjectPath(hid_t objId, bool trim = false);
+      static H5Support_EXPORT std::string getObjectPath(hid_t loc_id, bool trim = false);
 
       /**
       * @brief Returns the hdf object type
@@ -116,7 +116,7 @@ namespace H5Support_NAMESPACE
       * @param objName The name of the object to check
       * @return True if the given hdf5 object id is a group
       */
-      static H5Support_EXPORT bool isGroup(hid_t objId, const std::string& objName);
+      static H5Support_EXPORT bool isGroup(hid_t nodeId, const std::string& objName);
 
 
       /**
@@ -125,14 +125,14 @@ namespace H5Support_NAMESPACE
       * @param objectPath The path of the object to open
       * @return The hdf5 id of the opened object. Negative value is error.
       */
-      static H5Support_EXPORT hid_t openHDF5Object(hid_t locId, const std::string& objectPath);
+      static H5Support_EXPORT hid_t openHDF5Object(hid_t loc_id, const std::string& objName);
 
       /**
       * @brief Closes the object id
       * @param locId The object id to close
       * @return Negative value is error.
       */
-      static H5Support_EXPORT herr_t closeHDF5Object(hid_t locId);
+      static H5Support_EXPORT herr_t closeHDF5Object(hid_t obj_id);
 
 
       static H5Support_EXPORT std::string HDFClassTypeAsStr(hid_t class_type);
@@ -141,7 +141,7 @@ namespace H5Support_NAMESPACE
       * @brief prints the class type of the given class
       * @param classT The Class Type to print
       */
-      static H5Support_EXPORT void printHDFClassType(H5T_class_t classT);
+      static H5Support_EXPORT void printHDFClassType(H5T_class_t class_type);
 
       // -------------- HDF Group Methods ----------------------------
       /**
@@ -207,7 +207,7 @@ namespace H5Support_NAMESPACE
       * @param names Variable to hold the list of attribute names
       * @return Negate value is error
       */
-      static H5Support_EXPORT herr_t getAllAttributeNames(hid_t objId, std::list<std::string>& names);
+      static H5Support_EXPORT herr_t getAllAttributeNames(hid_t obj_id, std::list<std::string>& results);
 
       /**
       * @brief Returns a list of all the attribute names
@@ -216,7 +216,7 @@ namespace H5Support_NAMESPACE
       * @param names Variable to hold the list of attribute names
       * @return Negative value is error
       */
-      static H5Support_EXPORT herr_t getAllAttributeNames(hid_t objId, const std::string& obj_name,
+      static H5Support_EXPORT herr_t getAllAttributeNames(hid_t loc_id, const std::string& obj_name,
                                                           std::list<std::string>& names);
 
 

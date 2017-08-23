@@ -35,8 +35,8 @@
 
 #include <H5Support/QH5Lite.h>
 
-#include <string.h>
 #include <string>
+#include <string.h>
 
 #if defined(H5Support_NAMESPACE)
 using namespace H5Support_NAMESPACE;
@@ -46,15 +46,13 @@ using namespace H5Support_NAMESPACE;
 //  Protected Constructor
 // -----------------------------------------------------------------------------
 QH5Lite::QH5Lite()
-{
-}
+= default;
 
 // -----------------------------------------------------------------------------
 //  Protected Destructor
 // -----------------------------------------------------------------------------
 QH5Lite::~QH5Lite()
-{
-}
+= default;
 
 // -----------------------------------------------------------------------------
 //
@@ -146,13 +144,13 @@ herr_t QH5Lite::writeVectorOfStringsDataset(hid_t loc_id, const QString& dsetNam
         hsize_t count_[] = {1};
         H5Sselect_hyperslab(memspace, H5S_SELECT_SET, offset_, nullptr, count_, nullptr);
         hsize_t m_pos = 0;
-        for(qint32 i = 0; i < data.size(); i++)
+        for(const auto & i : data)
         {
           // Select the file position, 1 record at position 'pos'
           hsize_t count[] = {1};
           hsize_t offset[] = {m_pos++};
           H5Sselect_hyperslab(sid, H5S_SELECT_SET, offset, nullptr, count, nullptr);
-          std::string v = data[i].toStdString(); // MUST be a C String, i.e., null terminated
+          std::string v = i.toStdString(); // MUST be a C String, i.e., null terminated
           const char* s = v.c_str();
           err = H5Dwrite(did, datatype, memspace, sid, H5P_DEFAULT, s);
           if(err < 0)

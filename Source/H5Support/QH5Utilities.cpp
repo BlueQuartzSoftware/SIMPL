@@ -39,9 +39,9 @@
 #include <QtCore/QtDebug>
 
 #define CheckValidLocId(locId)                                                                                                                                                                         \
-  if(locId < 0)                                                                                                                                                                                        \
+  if((locId) < 0)                                                                                                                                                                                        \
   {                                                                                                                                                                                                    \
-    qDebug() << "Invalid HDF Location ID: " << locId;                                                                                                                                                  \
+    qDebug() << "Invalid HDF Location ID: " << (locId);                                                                                                                                                  \
     return -1;                                                                                                                                                                                         \
   }
 
@@ -138,9 +138,9 @@ herr_t QH5Utilities::getGroupObjects(hid_t loc_id, int32_t typeFilter, QList<QSt
   herr_t err = H5Utilities::getGroupObjects(loc_id, typeFilter, sNames);
 
   names.clear();
-  for(std::list<std::string>::iterator name = sNames.begin(); name != sNames.end(); ++name)
+  for(auto & sName : sNames)
   {
-    names.push_back(QString::fromStdString(*name));
+    names.push_back(QString::fromStdString(sName));
   }
 
   return err;
@@ -195,9 +195,9 @@ herr_t QH5Utilities::getAllAttributeNames(hid_t obj_id, QList<QString>& names)
   names.clear();
   std::list<std::string> sResults;
   herr_t err = H5Utilities::getAllAttributeNames(obj_id, sResults);
-  for(std::list<std::string>::iterator iter = sResults.begin(); iter != sResults.end(); ++iter)
+  for(auto & sResult : sResults)
   {
-    names.push_back(QString::fromStdString(*iter));
+    names.push_back(QString::fromStdString(sResult));
   }
   return err;
 }
@@ -210,9 +210,9 @@ herr_t QH5Utilities::getAllAttributeNames(hid_t loc_id, const QString& obj_name,
   names.clear();
   std::list<std::string> sResults;
   herr_t err = H5Utilities::getAllAttributeNames(loc_id, obj_name.toStdString(), sResults);
-  for(std::list<std::string>::iterator iter = sResults.begin(); iter != sResults.end(); ++iter)
+  for(auto & sResult : sResults)
   {
-    names.push_back(QString::fromStdString(*iter));
+    names.push_back(QString::fromStdString(sResult));
   }
   return err;
 }

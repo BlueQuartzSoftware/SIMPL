@@ -42,7 +42,7 @@ HDF5ScopedFileSentinel::HDF5ScopedFileSentinel(hid_t* fileId, bool turnOffErrors
 : m_FileId(fileId)
 , m_TurnOffErrors(turnOffErrors)
 {
-  if(m_TurnOffErrors == true)
+  if(m_TurnOffErrors)
   {
     H5Eget_auto(H5E_DEFAULT, &_oldHDF_error_func, &_oldHDF_error_client_data);
     H5Eset_auto(H5E_DEFAULT, nullptr, nullptr);
@@ -54,13 +54,12 @@ HDF5ScopedFileSentinel::HDF5ScopedFileSentinel(hid_t* fileId, bool turnOffErrors
 // -----------------------------------------------------------------------------
 HDF5ScopedFileSentinel::~HDF5ScopedFileSentinel()
 {
-  if(m_TurnOffErrors == true)
+  if(m_TurnOffErrors)
   {
     H5Eset_auto(H5E_DEFAULT, _oldHDF_error_func, _oldHDF_error_client_data);
   }
-  for(std::vector<hid_t*>::size_type i = 0; i < m_Groups.size(); ++i)
+  for(auto temp : m_Groups)
   {
-    hid_t* temp = m_Groups[i];
     if(*temp > 0)
     {
       H5Gclose(*temp);
@@ -106,7 +105,7 @@ HDF5ScopedGroupSentinel::HDF5ScopedGroupSentinel(hid_t* gid, bool turnOffErrors)
 : m_TurnOffErrors(turnOffErrors)
 {
   m_Groups.push_back(gid);
-  if(m_TurnOffErrors == true)
+  if(m_TurnOffErrors)
   {
     H5Eget_auto(H5E_DEFAULT, &_oldHDF_error_func, &_oldHDF_error_client_data);
     H5Eset_auto(H5E_DEFAULT, nullptr, nullptr);
@@ -118,13 +117,12 @@ HDF5ScopedGroupSentinel::HDF5ScopedGroupSentinel(hid_t* gid, bool turnOffErrors)
 // -----------------------------------------------------------------------------
 HDF5ScopedGroupSentinel::~HDF5ScopedGroupSentinel()
 {
-  if(m_TurnOffErrors == true)
+  if(m_TurnOffErrors)
   {
     H5Eset_auto(H5E_DEFAULT, _oldHDF_error_func, _oldHDF_error_client_data);
   }
-  for(std::vector<hid_t*>::size_type i = 0; i < m_Groups.size(); ++i)
+  for(auto temp : m_Groups)
   {
-    hid_t* temp = m_Groups[i];
     if(*temp > 0)
     {
       H5Gclose(*temp);
@@ -148,7 +146,7 @@ HDF5ScopedObjectSentinel::HDF5ScopedObjectSentinel(hid_t* gid, bool turnOffError
 : m_TurnOffErrors(turnOffErrors)
 {
   m_Groups.push_back(gid);
-  if(m_TurnOffErrors == true)
+  if(m_TurnOffErrors)
   {
     H5Eget_auto(H5E_DEFAULT, &_oldHDF_error_func, &_oldHDF_error_client_data);
     H5Eset_auto(H5E_DEFAULT, nullptr, nullptr);
@@ -160,13 +158,12 @@ HDF5ScopedObjectSentinel::HDF5ScopedObjectSentinel(hid_t* gid, bool turnOffError
 // -----------------------------------------------------------------------------
 HDF5ScopedObjectSentinel::~HDF5ScopedObjectSentinel()
 {
-  if(m_TurnOffErrors == true)
+  if(m_TurnOffErrors)
   {
     H5Eset_auto(H5E_DEFAULT, _oldHDF_error_func, _oldHDF_error_client_data);
   }
-  for(std::vector<hid_t*>::size_type i = 0; i < m_Groups.size(); ++i)
+  for(auto temp : m_Groups)
   {
-    hid_t* temp = m_Groups[i];
     if(*temp > 0)
     {
       H5Utilities::closeHDF5Object(*temp);
