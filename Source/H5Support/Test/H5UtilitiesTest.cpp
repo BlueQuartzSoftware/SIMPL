@@ -326,7 +326,7 @@ public:
     int32_t err = QH5Utilities::objectNameAtIndex(file_id, 0, objName);
     DREAM3D_REQUIRE(objName.compare("Pointer2DArrayDataset<H5T_NATIVE_INT32>") == 0);
 
-    hid_t objType = -1;
+    int32_t objType = -1;
     err = QH5Utilities::getObjectType(file_id, "Pointer2DArrayDataset<H5T_NATIVE_INT32>", &objType);
     DREAM3D_REQUIRE(objType == H5O_TYPE_DATASET);
     DREAM3D_REQUIRE(err >= 0);
