@@ -270,7 +270,7 @@ namespace H5Support_NAMESPACE
        * @param name The dataset to search for
        * @return Standard HDF5 Error condition. Negative=DataSet
        */
-      static H5Support_EXPORT bool datasetExists( hid_t loc_id, const std::string& name );
+      static H5Support_EXPORT bool datasetExists( hid_t loc_id, const std::string& dsetName );
 
       /**
        * @brief Creates a Dataset with the given name at the location defined by loc_id
@@ -1633,8 +1633,8 @@ namespace H5Support_NAMESPACE
       static H5Support_EXPORT herr_t getDatasetInfo( hid_t loc_id,
                                                      const std::string& dsetName,
                                                      std::vector<hsize_t>& dims,
-                                                     H5T_class_t& type_class,
-                                                     size_t& type_size );
+                                                     H5T_class_t& classType,
+                                                     size_t& sizeType );
 
       /**
        * @brief Returns the information about an attribute.
@@ -1652,11 +1652,11 @@ namespace H5Support_NAMESPACE
        */
       static H5Support_EXPORT herr_t getAttributeInfo(hid_t loc_id,
                                                       const std::string& objName,
-                                                      const std::string& attr_name,
+                                                      const std::string& attrName,
                                                       std::vector<hsize_t>& dims,
                                                       H5T_class_t& type_class,
                                                       size_t& type_size,
-                                                      hid_t& attr_type);
+                                                      hid_t& tid);
 
 
 

@@ -72,6 +72,8 @@ set(_PublicFilters
   MaskCountDecision
   MoveData
   MoveMultiData
+  MultiThresholdObjects
+  MultiThresholdObjects2
   PostSlackMessage
   RawBinaryReader
   ReadASCIIData

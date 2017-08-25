@@ -75,7 +75,7 @@ class QH5Utilities
     * @param trim set to False to trim the path
     * @return  The path to the object relative to the objId
     */
-    static H5Support_EXPORT QString getObjectPath(hid_t objId, bool trim = false);
+    static H5Support_EXPORT QString getObjectPath(hid_t loc_id, bool trim = false);
 
     /**
     * @brief Returns the hdf object type
@@ -124,7 +124,7 @@ class QH5Utilities
     * @param objName The name of the object to check
     * @return True if the given hdf5 object id is a group
     */
-    static H5Support_EXPORT bool isGroup(hid_t objId, const QString& objName);
+    static H5Support_EXPORT bool isGroup(hid_t nodeId, const QString& objName);
 
 
     /**
@@ -133,14 +133,14 @@ class QH5Utilities
     * @param objectPath The path of the object to open
     * @return The hdf5 id of the opened object. Negative value is error.
     */
-    static H5Support_EXPORT hid_t openHDF5Object(hid_t locId, const QString& objectPath);
+    static H5Support_EXPORT hid_t openHDF5Object(hid_t loc_id, const QString& objName);
 
     /**
     * @brief Closes the object id
     * @param locId The object id to close
     * @return Negative value is error.
     */
-    static H5Support_EXPORT herr_t closeHDF5Object(hid_t locId);
+    static H5Support_EXPORT herr_t closeHDF5Object(hid_t obj_id);
 
 
     static H5Support_EXPORT QString HDFClassTypeAsStr(hid_t class_type);
@@ -149,7 +149,7 @@ class QH5Utilities
     * @brief prints the class type of the given class
     * @param classT The Class Type to print
     */
-    static H5Support_EXPORT void printHDFClassType(H5T_class_t classT);
+    static H5Support_EXPORT void printHDFClassType(H5T_class_t class_type);
 
     // -------------- HDF Group Methods ----------------------------
     /**
@@ -215,7 +215,7 @@ class QH5Utilities
     * @param names Variable to hold the list of attribute names
     * @return Negate value is error
     */
-    static H5Support_EXPORT herr_t getAllAttributeNames(hid_t objId, QList<QString>& names);
+    static H5Support_EXPORT herr_t getAllAttributeNames(hid_t obj_id, QList<QString>& names);
 
     /**
     * @brief Returns a list of all the attribute names
@@ -224,7 +224,7 @@ class QH5Utilities
     * @param names Variable to hold the list of attribute names
     * @return Negative value is error
     */
-    static H5Support_EXPORT herr_t getAllAttributeNames(hid_t objId, const QString& obj_name,
+    static H5Support_EXPORT herr_t getAllAttributeNames(hid_t loc_id, const QString& obj_name,
                                                         QList<QString>& names);
 
 
