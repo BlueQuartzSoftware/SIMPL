@@ -111,6 +111,8 @@ class SIMPLib_EXPORT FilterPipeline : public QObject
 
     virtual FilterContainerType& getFilterContainer();
 
+    virtual DataContainerArray::Pointer getDataContainerArray();
+
     /**
      * @brief
      */
@@ -218,6 +220,8 @@ class SIMPLib_EXPORT FilterPipeline : public QObject
     QString               m_PipelineName;
 
     QVector<QObject*> m_MessageReceivers;
+
+    DataContainerArray::Pointer m_Dca;
 
     void connectSignalsSlots();
     void disconnectSignalsSlots();
