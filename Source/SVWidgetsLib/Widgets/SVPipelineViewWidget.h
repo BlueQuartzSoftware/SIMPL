@@ -261,6 +261,8 @@ class SVWidgetsLib_EXPORT SVPipelineViewWidget : public QFrame, public PipelineV
      */
     virtual DataStructureWidget* getDataStructureWidget();
 
+    virtual QAction* getActionEnableFilter();
+
   public slots:
 
     /**
@@ -354,6 +356,8 @@ class SVWidgetsLib_EXPORT SVPipelineViewWidget : public QFrame, public PipelineV
 
     void filterWidgetsDropped(int insertIndex, Qt::KeyboardModifiers modifiers);
 
+    void filterEnabledStateChanged();
+
     void deleteKeyPressed(SVPipelineViewWidget* viewWidget);
 
     void contextMenuRequested(SVPipelineViewWidget* widget, const QPoint &pos);
@@ -375,6 +379,11 @@ class SVWidgetsLib_EXPORT SVPipelineViewWidget : public QFrame, public PipelineV
     void keyPressEvent(QKeyEvent *event) override;
     void focusInEvent(QFocusEvent* event) override;
     void focusOutEvent(QFocusEvent* event) override;
+
+    void setFiltersEnabled(QList<PipelineFilterObject*> widgets, bool enabled);
+    void setSelectedFiltersEnabled(bool enabled);
+
+    void updateActionEnableFilter();
 
   protected slots:
     void startDrag(QMouseEvent* event, SVPipelineFilterWidget *fw);
@@ -445,8 +454,9 @@ class SVWidgetsLib_EXPORT SVPipelineViewWidget : public QFrame, public PipelineV
     QString                                           m_PreviousRedoText = "";
     bool                                              m_BlockPreflight = false;
     std::stack<bool>                                  m_BlockPreflightStack;
-    DataStructureWidget*                                m_DataStructureWidget = nullptr;
-    bool m_LoadingJson = false;
+    DataStructureWidget*                              m_DataStructureWidget = nullptr;
+    bool                                              m_LoadingJson = false;
+    QAction*                                          m_ActionEnableFilter = nullptr;
 
     /**
      * @brief addFilterObject

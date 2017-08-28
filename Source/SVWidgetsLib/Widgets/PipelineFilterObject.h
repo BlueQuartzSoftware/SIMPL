@@ -88,6 +88,8 @@ class SVWidgetsLib_EXPORT PipelineFilterObject
     void setHasPreflightErrors(bool hasPreflightErrors);
     void setHasPreflightWarnings(bool hasPreflightWarnings);
 
+    void setIsEnabled(bool enabled);
+
     using EnumType = unsigned int;
 
     enum class WidgetState : EnumType
@@ -95,6 +97,7 @@ class SVWidgetsLib_EXPORT PipelineFilterObject
       Ready = 0,      //!<
       Executing = 1, //!<
       Completed = 2, //!<
+      Disabled = 3
     };
     SIMPL_INSTANCE_PROPERTY(WidgetState, WidgetState)
 
@@ -135,6 +138,11 @@ class SVWidgetsLib_EXPORT PipelineFilterObject
      * @brief toCompletedState
      */
     virtual void toCompletedState();
+
+    /**
+    * @brief toDisabledState
+    */
+    virtual void toDisabledState();
 
 
     /**

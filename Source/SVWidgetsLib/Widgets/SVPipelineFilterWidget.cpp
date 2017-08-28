@@ -130,6 +130,11 @@ void SVPipelineFilterWidget::initialize()
     groupStream << "Subgroup: " << filter->getSubGroupName();
     filterName->setToolTip(filterGroup);
 
+    if(false == filter->getEnabled())
+    {
+      toDisabledState();
+    }
+
     connect(filter.get(), SIGNAL(filterCompleted()), this, SLOT(toCompletedState()));
     connect(filter.get(), SIGNAL(filterInProgress()), this, SLOT(toExecutingState()));
   }
@@ -279,6 +284,7 @@ void SVPipelineFilterWidget::changeStyle()
   QString labelColor;
   QString indexBackgroundColor;
   QColor bgColor = getGroupColor();
+  QColor disabledBgColor = QColor(124, 124, 124);
 
   switch(wState)
   {
@@ -297,24 +303,34 @@ void SVPipelineFilterWidget::changeStyle()
     labelColor = "color: rgb(190, 190, 190);";
     indexBackgroundColor = "background-color: rgb(6, 118, 6);";
     break;
+  case WidgetState::Disabled:
+    bgColor = disabledBgColor;
+    widgetBackgroundColor = QString("background-color: %1;").arg(disabledBgColor.name());
+    labelColor = "color: rgb(190, 190, 190);";
+    indexBackgroundColor = "background-color: rgb(96, 96, 96);";
+    break;
   }
 
   QColor selectedColor = QColor::fromHsv(bgColor.hue(), 100, 120);
 
-  switch(pState)
+  // Do not change the background color if the widget is disabled.
+  if(wState != WidgetState::Disabled)
   {
-  case PipelineState::Running:
-    widgetBackgroundColor = QString("background-color: %1;").arg(selectedColor.name());
-    labelColor = "color: rgb(190, 190, 190);";
-    break;
-  case PipelineState::Stopped:
-    widgetBackgroundColor = QString("background-color: %1;").arg(bgColor.name());
-    labelColor = "color: rgb(0, 0, 0);";
-    break;
-  case PipelineState::Paused:
-    widgetBackgroundColor = "background-color: rgb(160, 160, 160);";
-    labelColor = "color: rgb(0, 0, 0);";
-    break;
+    switch(pState)
+    {
+    case PipelineState::Running:
+      widgetBackgroundColor = QString("background-color: %1;").arg(selectedColor.name());
+      labelColor = "color: rgb(190, 190, 190);";
+      break;
+    case PipelineState::Stopped:
+      widgetBackgroundColor = QString("background-color: %1;").arg(bgColor.name());
+      labelColor = "color: rgb(0, 0, 0);";
+      break;
+    case PipelineState::Paused:
+      widgetBackgroundColor = "background-color: rgb(160, 160, 160);";
+      labelColor = "color: rgb(0, 0, 0);";
+      break;
+    }
   }
 
   switch(eState)
