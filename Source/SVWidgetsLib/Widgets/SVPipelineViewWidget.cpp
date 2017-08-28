@@ -125,6 +125,11 @@ SVPipelineViewWidget::~SVPipelineViewWidget()
   {
     delete m_FilterOutlineWidget;
   }
+  // Delete action if it exists
+  if(m_ActionEnableFilter)
+  {
+    delete m_ActionEnableFilter;
+  }
 }
 
 // -----------------------------------------------------------------------------
@@ -134,6 +139,12 @@ void SVPipelineViewWidget::setupGui()
 {
   newEmptyPipelineViewLayout();
   connect(&m_autoScrollTimer, SIGNAL(timeout()), this, SLOT(doAutoScroll()));
+
+  // Delete action if it exists
+  if(m_ActionEnableFilter)
+  {
+    delete m_ActionEnableFilter;
+  }
 
   m_ActionEnableFilter = new QAction("Enable", this);
   m_ActionEnableFilter->setCheckable(true);
