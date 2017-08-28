@@ -51,8 +51,10 @@ AbstractFilter::AbstractFilter()
 , m_ErrorCondition(0)
 , m_WarningCondition(0)
 , m_InPreflight(false)
-, m_Cancel(false)
+, m_PipelineIndex(0)
 , m_Enabled(true)
+, m_Cancel(false)
+
 {
   m_DataContainerArray = DataContainerArray::New();
   setupFilterParameters();
