@@ -58,6 +58,11 @@ class SIMPLib_EXPORT CalculatorArray : public ICalculatorArray
 
     IDataArray::Pointer getArray() { return m_Array; }
 
+    void setValue(int i, double val)
+    {
+      m_Array->setValue(i, val);
+    }
+
     double getValue(int i)
     {
       if (m_Array->getNumberOfTuples() > 1)
@@ -78,6 +83,36 @@ class SIMPLib_EXPORT CalculatorArray : public ICalculatorArray
     ICalculatorArray::ValueType getType()
     {
       return m_Type;
+    }
+
+    DoubleArrayType::Pointer reduceToOneComponent(int c, bool allocate = true)
+    {
+      if(c >= 0 && c <= m_Array->getNumberOfComponents())
+      {
+        if(m_Array->getNumberOfComponents() > 1)
+        {
+          DoubleArrayType::Pointer newArray = DoubleArrayType::CreateArray(m_Array->getNumberOfTuples(), QVector<size_t>(1, 1), m_Array->getName(), allocate);
+          if(allocate)
+          {
+            for(int i = 0; i < m_Array->getNumberOfTuples(); i++)
+            {
+              newArray->setComponent(i, 0, m_Array->getComponent(i, c));
+            }
+          }
+
+          return newArray;
+        }
+      }
+
+      return DoubleArrayType::NullPointer();
+    }
+
+    CalculatorItem::ErrorCode checkValidity(QVector<CalculatorItem::Pointer> infixVector, int currentIndex, QString& msg)
+    {
+      Q_UNUSED(infixVector)
+      Q_UNUSED(currentIndex)
+
+      return CalculatorItem::ErrorCode::SUCCESS;
     }
 
   protected:

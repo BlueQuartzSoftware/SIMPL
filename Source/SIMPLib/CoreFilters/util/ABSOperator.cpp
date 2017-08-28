@@ -48,6 +48,7 @@ ABSOperator::ABSOperator()
 : UnaryOperator()
 {
   setNumberOfArguments(1);
+  setInfixToken("abs");
 }
 
 // -----------------------------------------------------------------------------

@@ -35,12 +35,15 @@
 
 #include "RightParenthesisItem.h"
 
+#include "CoreFilters/util/LeftParenthesisItem.h"
+
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
 RightParenthesisItem::RightParenthesisItem()
 : CalculatorItem()
 {
+  setInfixToken(")");
 }
 
 // -----------------------------------------------------------------------------
@@ -48,4 +51,34 @@ RightParenthesisItem::RightParenthesisItem()
 // -----------------------------------------------------------------------------
 RightParenthesisItem::~RightParenthesisItem()
 {
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+CalculatorItem::ErrorCode RightParenthesisItem::checkValidity(QVector<CalculatorItem::Pointer> infixVector, int currentIndex, QString& errMsg)
+{
+  // Check for an opening parenthesis, ignoring any other internal sets of parentheses
+  int rightParenthesisCount = 0;
+  for(int i = currentIndex - 1; i >= 0; i--)
+  {
+    CalculatorItem::Pointer item = infixVector[i];
+    if(std::dynamic_pointer_cast<RightParenthesisItem>(item) != RightParenthesisItem::NullPointer())
+    {
+      rightParenthesisCount++;
+    }
+    else if(std::dynamic_pointer_cast<LeftParenthesisItem>(item) != LeftParenthesisItem::NullPointer())
+    {
+      if(rightParenthesisCount > 0)
+      {
+        rightParenthesisCount--;
+      }
+      else
+      {
+        return RightParenthesisItem::ErrorCode::SUCCESS;
+      }
+    }
+  }
+
+  return RightParenthesisItem::ErrorCode::MISMATCHED_PARENTHESES;
 }

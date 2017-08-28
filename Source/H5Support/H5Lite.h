@@ -270,7 +270,7 @@ namespace H5Support_NAMESPACE
        * @param name The dataset to search for
        * @return Standard HDF5 Error condition. Negative=DataSet
        */
-      static H5Support_EXPORT bool datasetExists( hid_t loc_id, const std::string& name );
+      static H5Support_EXPORT bool datasetExists( hid_t loc_id, const std::string& dsetName );
 
       /**
        * @brief Creates a Dataset with the given name at the location defined by loc_id
@@ -1599,7 +1599,7 @@ namespace H5Support_NAMESPACE
        * @param attrName The name of the attribute
        * @param rank (out) Number of dimensions is store into this variable
        */
-      static H5Support_EXPORT hid_t getAttributeNDims(hid_t loc_id, const std::string& objName, const std::string& attrName, hid_t& rank);
+      static H5Support_EXPORT herr_t getAttributeNDims(hid_t loc_id, const std::string& objName, const std::string& attrName, hid_t& rank);
 
       /**
        * @brief Returns the number of dimensions for a given dataset
@@ -1607,7 +1607,7 @@ namespace H5Support_NAMESPACE
        * @param objName The name of the dataset
        * @param rank (out) Number of dimensions is store into this variable
        */
-      static H5Support_EXPORT hid_t getDatasetNDims(hid_t loc_id, const std::string& objName, hid_t& rank);
+      static H5Support_EXPORT herr_t getDatasetNDims(hid_t loc_id, const std::string& objName, hid_t& rank);
 
       /**
        * @brief Returns the H5T value for a given dataset.
@@ -1633,8 +1633,8 @@ namespace H5Support_NAMESPACE
       static H5Support_EXPORT herr_t getDatasetInfo( hid_t loc_id,
                                                      const std::string& dsetName,
                                                      std::vector<hsize_t>& dims,
-                                                     H5T_class_t& type_class,
-                                                     size_t& type_size );
+                                                     H5T_class_t& classType,
+                                                     size_t& sizeType );
 
       /**
        * @brief Returns the information about an attribute.
@@ -1652,11 +1652,11 @@ namespace H5Support_NAMESPACE
        */
       static H5Support_EXPORT herr_t getAttributeInfo(hid_t loc_id,
                                                       const std::string& objName,
-                                                      const std::string& attr_name,
+                                                      const std::string& attrName,
                                                       std::vector<hsize_t>& dims,
                                                       H5T_class_t& type_class,
                                                       size_t& type_size,
-                                                      hid_t& attr_type);
+                                                      hid_t& tid);
 
 
 

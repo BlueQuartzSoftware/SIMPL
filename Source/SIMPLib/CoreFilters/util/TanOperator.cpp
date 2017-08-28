@@ -48,6 +48,7 @@ TanOperator::TanOperator()
 : UnaryOperator()
 {
   setNumberOfArguments(1);
+  setInfixToken("tan");
 }
 
 // -----------------------------------------------------------------------------

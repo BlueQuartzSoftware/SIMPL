@@ -48,6 +48,7 @@ AdditionOperator::AdditionOperator()
 : BinaryOperator()
 {
   setPrecedence(A_Precedence);
+  setInfixToken("+");
 }
 
 // -----------------------------------------------------------------------------

@@ -36,15 +36,15 @@
 #include <H5Support/H5Utilities.h>
 
 // C Includes
-#include <string.h>
+#include <cstring>
 
 // C++ Includes
 #include <iostream>
 
 #define CheckValidLocId(locId)                                                                                                                                                                         \
-  if(locId < 0)                                                                                                                                                                                        \
+  if((locId) < 0)                                                                                                                                                                                        \
   {                                                                                                                                                                                                    \
-    std::cout << "Invalid HDF Location ID: " << locId << std::endl;                                                                                                                                    \
+    std::cout << "Invalid HDF Location ID: " << (locId) << std::endl;                                                                                                                                    \
     return -1;                                                                                                                                                                                         \
   }
 
@@ -137,7 +137,7 @@ herr_t H5Utilities::closeFile(hid_t& fileId)
 // -----------------------------------------------------------------------------
 //  Returns the full path to the object referred to by the
 // -----------------------------------------------------------------------------
-std::string H5Utilities::getObjectPath(hid_t loc_id, bool trim)
+std::string H5Utilities::getObjectPath(hid_t loc_id, bool  /*trim*/)
 {
   H5SUPPORT_MUTEX_LOCK()
 
@@ -165,7 +165,7 @@ herr_t H5Utilities::getObjectType(hid_t objId, const std::string& objName, int32
   H5SUPPORT_MUTEX_LOCK()
 
   herr_t err = 1;
-  H5O_info_t obj_info;
+  H5O_info_t obj_info{};
 
   err = H5Oget_info_by_name(objId, objName.c_str(), &obj_info, H5P_DEFAULT);
   if(err < 0)
@@ -316,7 +316,7 @@ herr_t H5Utilities::getGroupObjects(hid_t loc_id, int32_t typeFilter, std::list<
 
   herr_t err = 0;
   hsize_t numObjs = 0;
-  H5G_info_t group_info;
+  H5G_info_t group_info{};
   err = H5Gget_info(loc_id, &group_info);
   if(err < 0)
   {
@@ -347,12 +347,12 @@ herr_t H5Utilities::getGroupObjects(hid_t loc_id, int32_t typeFilter, std::list<
     }
     else
     {
-      H5O_info_t object_info;
+      H5O_info_t object_info{};
       err = H5Oget_info_by_name(loc_id, &(name.front()), &object_info, H5P_DEFAULT);
       if(err >= 0)
       {
         type = object_info.type;
-        if(((type == H5O_TYPE_GROUP) && (H5Support_GROUP & typeFilter)) || ((type == H5O_TYPE_DATASET) && (H5Support_DATASET & typeFilter)))
+        if(((type == H5O_TYPE_GROUP) && ((H5Support_GROUP & typeFilter) != 0)) || ((type == H5O_TYPE_DATASET) && ((H5Support_DATASET & typeFilter) != 0)))
         {
           std::string objName(&(name.front()));
           names.push_back(objName);
@@ -373,7 +373,7 @@ hid_t H5Utilities::createGroup(hid_t loc_id, const std::string& group)
 
   hid_t grp_id = -1;
   herr_t err = -1;
-  H5O_info_t obj_info;
+  H5O_info_t obj_info{};
   HDF_ERROR_HANDLER_OFF
 
   err = H5Oget_info_by_name(loc_id, group.c_str(), &obj_info, H5P_DEFAULT);
@@ -401,7 +401,7 @@ int32_t H5Utilities::createGroupsForDataset(const std::string& datasetPath, hid_
 
   // Generate the internal HDF dataset path and create all the groups necessary to write the dataset
   std::string::size_type pos = 0;
-  pos = datasetPath.find_last_of("/");
+  pos = datasetPath.find_last_of('/');
   // std::string parentPath;
   if(pos != 0 && pos != std::string::npos)
   {
@@ -431,7 +431,7 @@ int32_t H5Utilities::createGroupsFromPath(const std::string& pathToCheck, hid_t 
     return -1;
   }
   // remove any front slash
-  std::string::size_type pos = path.find_first_of("/", 0);
+  std::string::size_type pos = path.find_first_of('/', 0);
   if(0 == pos)
   {
     path = path.substr(1, path.size());
@@ -454,18 +454,18 @@ int32_t H5Utilities::createGroupsFromPath(const std::string& pathToCheck, hid_t 
   }
 
   // Remove any trailing slash
-  pos = path.find_last_of("/");
+  pos = path.find_last_of('/');
   if(pos == (path.size() - 1)) // slash was in the last position
   {
     path = path.substr(0, pos);
   }
 
-  if(path.size() == 0)
+  if(path.empty())
   {
     return -1; // The path that was passed in was only a slash..
   }
 
-  pos = path.find_first_of("/", 0);
+  pos = path.find_first_of('/', 0);
   if(pos == std::string::npos) // Only one element in the path
   {
     gid = H5Utilities::createGroup(parent, path);
@@ -489,7 +489,7 @@ int32_t H5Utilities::createGroupsFromPath(const std::string& pathToCheck, hid_t 
       return gid;
     }
     err = H5Gclose(gid);
-    pos = path.find_first_of("/", pos + 1);
+    pos = path.find_first_of('/', pos + 1);
     if(pos == std::string::npos)
     {
       first += "/" + second;
@@ -527,15 +527,11 @@ bool H5Utilities::probeForAttribute(hid_t loc_id, const std::string& obj_name, c
   H5SUPPORT_MUTEX_LOCK()
 
   herr_t err = 0;
-  int32_t rank;
+  hid_t rank;
   HDF_ERROR_HANDLER_OFF
   err = H5Lite::getAttributeNDims(loc_id, obj_name, attr_name, rank);
   HDF_ERROR_HANDLER_ON
-  if(err < 0)
-  {
-    return false;
-  }
-  return true;
+  return err >= 0;
 }
 
 //--------------------------------------------------------------------//
@@ -554,7 +550,7 @@ herr_t H5Utilities::getAllAttributeNames(hid_t obj_id, std::list<std::string>& r
   hsize_t num_attrs;
   hid_t attr_id;
   size_t name_size;
-  H5O_info_t object_info;
+  H5O_info_t object_info{};
   err = H5Oget_info(obj_id, &object_info);
   num_attrs = object_info.num_attrs;
 
@@ -564,7 +560,7 @@ herr_t H5Utilities::getAllAttributeNames(hid_t obj_id, std::list<std::string>& r
     name_size = 1 + H5Aget_name(attr_id, 0, nullptr);
     std::vector<char> attr_name(name_size * sizeof(char), 0);
     H5Aget_name(attr_id, name_size, &(attr_name.front()));
-    results.push_back(std::string(&(attr_name.front())));
+    results.emplace_back(&(attr_name.front()));
     err = H5Aclose(attr_id);
   }
 
@@ -758,7 +754,7 @@ herr_t H5Utilities::objectNameAtIndex(hid_t fileId, int32_t idx, std::string& na
 
   ssize_t err = -1;
   // call H5Gget_objname_by_idx with name as nullptr to get its length
-  ssize_t name_len = H5Lget_name_by_idx(fileId, ".", H5_INDEX_NAME, H5_ITER_NATIVE, (hsize_t)idx, nullptr, 0, H5P_DEFAULT);
+  ssize_t name_len = H5Lget_name_by_idx(fileId, ".", H5_INDEX_NAME, H5_ITER_NATIVE, static_cast<hsize_t>(idx), nullptr, 0, H5P_DEFAULT);
   if(name_len < 0)
   {
     name.clear();
@@ -766,7 +762,7 @@ herr_t H5Utilities::objectNameAtIndex(hid_t fileId, int32_t idx, std::string& na
   }
 
   std::vector<char> buf(name_len + 1, 0);
-  err = H5Lget_name_by_idx(fileId, ".", H5_INDEX_NAME, H5_ITER_NATIVE, (hsize_t)idx, &(buf.front()), name_len + 1, H5P_DEFAULT);
+  err = H5Lget_name_by_idx(fileId, ".", H5_INDEX_NAME, H5_ITER_NATIVE, static_cast<hsize_t>(idx), &(buf.front()), name_len + 1, H5P_DEFAULT);
   if(err < 0)
   {
     std::cout << "Error Trying to get the dataset name for index " << idx << std::endl;
@@ -788,7 +784,7 @@ bool H5Utilities::isGroup(hid_t nodeId, const std::string& objName)
 
   bool isGroup = true;
   herr_t err = -1;
-  H5O_info_t statbuf;
+  H5O_info_t statbuf{};
   err = H5Oget_info_by_name(nodeId, objName.c_str(), &statbuf, H5P_DEFAULT);
   if(err < 0)
   {

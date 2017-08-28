@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>569</width>
-    <height>221</height>
+    <height>252</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -363,6 +363,13 @@
       <widget class="QPushButton" name="expBtn">
        <property name="text">
         <string>e^y</string>
+       </property>
+      </widget>
+     </item>
+     <item row="6" column="4">
+      <widget class="QPushButton" name="piBtn">
+       <property name="text">
+        <string>pi</string>
        </property>
       </widget>
      </item>

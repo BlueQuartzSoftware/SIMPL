@@ -62,8 +62,8 @@ class H5Support_EXPORT HDF5ScopedFileSentinel
     bool m_TurnOffErrors;
     std::vector<hid_t*> m_Groups;
 
-    herr_t (*_oldHDF_error_func)(hid_t, void*);
-    void* _oldHDF_error_client_data;
+    herr_t (*_oldHDF_error_func)(hid_t, void*){};
+    void* _oldHDF_error_client_data{};
 };
 
 class H5Support_EXPORT HDF5ScopedGroupSentinel
@@ -77,8 +77,8 @@ class H5Support_EXPORT HDF5ScopedGroupSentinel
     bool m_TurnOffErrors;
     std::vector<hid_t*> m_Groups;
 
-    herr_t (*_oldHDF_error_func)(hid_t, void*);
-    void* _oldHDF_error_client_data;
+    herr_t (*_oldHDF_error_func)(hid_t, void*){};
+    void* _oldHDF_error_client_data{};
 };
 
 
@@ -93,8 +93,8 @@ class H5Support_EXPORT HDF5ScopedObjectSentinel
     bool m_TurnOffErrors;
     std::vector<hid_t*> m_Groups;
 
-    herr_t (*_oldHDF_error_func)(hid_t, void*);
-    void* _oldHDF_error_client_data;
+    herr_t (*_oldHDF_error_func)(hid_t, void*){};
+    void* _oldHDF_error_client_data{};
 };
 
 class H5Support_EXPORT H5GroupAutoCloser

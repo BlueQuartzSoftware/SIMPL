@@ -48,6 +48,7 @@ ExpOperator::ExpOperator()
 : UnaryOperator()
 {
   setNumberOfArguments(1);
+  setInfixToken("exp");
 }
 
 // -----------------------------------------------------------------------------

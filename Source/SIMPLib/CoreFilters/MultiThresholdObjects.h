@@ -1,5 +1,5 @@
 /* ============================================================================
-* Copyright (c) 2009-2015 BlueQuartz Software, LLC
+* Copyright (c) 2009-2016 BlueQuartz Software, LLC
 *
 * Redistribution and use in source and binary forms, with or without modification,
 * are permitted provided that the following conditions are met:
@@ -34,51 +34,33 @@
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
 
-#ifndef _arraycalculator_h_
-#define _arraycalculator_h_
-
-#include <QtCore/QStack>
-#include <QtCore/QQueue>
+#ifndef _multithresholdobjects_h_
+#define _multithresholdobjects_h_
 
 #include "SIMPLib/SIMPLib.h"
-#include "SIMPLib/Common/SIMPLibSetGetMacros.h"
 #include "SIMPLib/Common/AbstractFilter.h"
+#include "SIMPLib/Common/SIMPLibSetGetMacros.h"
+#include "SIMPLib/Common/ComparisonInputs.h"
 
-#include "util/ICalculatorArray.h"
 
 /**
- * @brief The ArrayCalculator class. See [Filter documentation](@ref createdatacontainer) for details.
+ * @brief The MultiThresholdObjects class. See [Filter documentation](@ref multithresholdobjects) for details.
  */
-class SIMPLib_EXPORT ArrayCalculator : public AbstractFilter
+class MultiThresholdObjects : public AbstractFilter
 {
     Q_OBJECT
-
   public:
-    enum AngleUnits
-    {
-      Degrees,
-      Radians
-    };
+    SIMPL_SHARED_POINTERS(MultiThresholdObjects)
+    SIMPL_STATIC_NEW_MACRO(MultiThresholdObjects)
+    SIMPL_TYPE_MACRO_SUPER(MultiThresholdObjects, AbstractFilter)
 
-    Q_ENUMS(AngleUnits)
+    virtual ~MultiThresholdObjects();
 
-    SIMPL_SHARED_POINTERS(ArrayCalculator)
-    SIMPL_STATIC_NEW_MACRO(ArrayCalculator)
-    SIMPL_TYPE_MACRO_SUPER(ArrayCalculator, AbstractFilter)
+    SIMPL_FILTER_PARAMETER(QString, DestinationArrayName)
+    Q_PROPERTY(QString DestinationArrayName READ getDestinationArrayName WRITE setDestinationArrayName)
 
-    SIMPL_FILTER_PARAMETER(DataArrayPath, SelectedAttributeMatrix)
-    Q_PROPERTY(DataArrayPath SelectedAttributeMatrix READ getSelectedAttributeMatrix WRITE setSelectedAttributeMatrix)
-
-    SIMPL_FILTER_PARAMETER(QString, InfixEquation)
-    Q_PROPERTY(QString InfixEquation READ getInfixEquation WRITE setInfixEquation)
-
-    SIMPL_FILTER_PARAMETER(DataArrayPath, CalculatedArray)
-    Q_PROPERTY(DataArrayPath CalculatedArray READ getCalculatedArray WRITE setCalculatedArray)
-
-    SIMPL_FILTER_PARAMETER(AngleUnits, Units)
-    Q_PROPERTY(AngleUnits Units READ getUnits WRITE setUnits)
-
-    virtual ~ArrayCalculator();
+    SIMPL_FILTER_PARAMETER(ComparisonInputs, SelectedThresholds)
+    Q_PROPERTY(ComparisonInputs SelectedThresholds READ getSelectedThresholds WRITE setSelectedThresholds)
 
     /**
      * @brief getCompiledLibraryName Reimplemented from @see AbstractFilter class
@@ -89,7 +71,7 @@ class SIMPLib_EXPORT ArrayCalculator : public AbstractFilter
      * @brief getBrandingString Returns the branding string for the filter, which is a tag
      * used to denote the filter's association with specific plugins
      * @return Branding string
-     */
+    */
     virtual const QString getBrandingString();
 
     /**
@@ -130,18 +112,6 @@ class SIMPLib_EXPORT ArrayCalculator : public AbstractFilter
     virtual void readFilterParameters(AbstractFilterParametersReader* reader, int index);
 
     /**
-    * @brief readFilterParametersFromJson Reads the filter parameters from a file
-    * @param reader Reader that is used to read the parameters from a file
-    */
-    virtual void readFilterParameters(QJsonObject &obj);
-
-    /**
-    * @brief writeFilterParametersToJson Writes the filter parameters to a file
-    * @param root The root json object
-    */
-    virtual void writeFilterParameters(QJsonObject &obj);
-
-    /**
      * @brief execute Reimplemented from @see AbstractFilter class
      */
     virtual void execute();
@@ -175,7 +145,7 @@ class SIMPLib_EXPORT ArrayCalculator : public AbstractFilter
     void preflightExecuted();
 
   protected:
-    ArrayCalculator();
+    MultiThresholdObjects();
     /**
      * @brief dataCheck Checks for the appropriate parameter values and availability of arrays
      */
@@ -188,64 +158,10 @@ class SIMPLib_EXPORT ArrayCalculator : public AbstractFilter
 
 
   private:
-    QMap<QString, CalculatorItem::Pointer>                      m_SymbolMap;
-    QStack<ICalculatorArray::Pointer>                           m_ExecutionStack;
+    DEFINE_DATAARRAY_VARIABLE(bool, Destination)
 
-    void createSymbolMap();
-
-    QVector<CalculatorItem::Pointer> parseInfixEquation();
-    QVector<CalculatorItem::Pointer> toRPN(QVector<CalculatorItem::Pointer> infixEquation);
-
-    void checkForAmbiguousArrayName(QString itemStr, QString warningMsg);
-
-    /**
-     * @brief getRegularExpressionMatches
-     * @return
-     */
-    QVector<QString> getRegularExpressionMatches();
-
-    /**
-     * @brief parseNumberArray
-     * @param token
-     * @param parsedInfix
-     */
-    void parseNumericValue(QString token, QVector<CalculatorItem::Pointer>& parsedInfix, double number);
-
-    /**
-     * @brief parseMinusSign
-     * @param strItem
-     * @param parsedInfix
-     * @param loopIdx
-     */
-    void parseMinusSign(QString strItem, QVector<CalculatorItem::Pointer>& parsedInfix, int loopIdx);
-
-    /**
-     * @brief parseIndexOperator
-     * @param token
-     * @param parsedInfix
-     * @param number
-     */
-    bool parseIndexOperator(QString token, QVector<CalculatorItem::Pointer>& parsedInfix);
-
-    /**
-     * @brief parseCommaOperator
-     * @param token
-     * @param parsedInfix
-     * @return
-     */
-    bool parseCommaOperator(QString token, QVector<CalculatorItem::Pointer>& parsedInfix);
-
-    /**
-     * @brief parseArray
-     * @param token
-     * @param parsedInfix
-     * @param selectedAM
-     * @return
-     */
-    bool parseArray(QString token, QVector<CalculatorItem::Pointer>& parsedInfix, AttributeMatrix::Pointer selectedAM);
-
-    ArrayCalculator(const ArrayCalculator&); // Copy Constructor Not Implemented
-    void operator=(const ArrayCalculator&); // Operator '=' Not Implemented
+    MultiThresholdObjects(const MultiThresholdObjects&); // Copy Constructor Not Implemented
+    void operator=(const MultiThresholdObjects&); // Operator '=' Not Implemented
 };
 
-#endif /* _ArrayCalculator_H_ */
+#endif /* _MultiThresholdObjects_H_ */

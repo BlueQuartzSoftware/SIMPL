@@ -35,8 +35,9 @@
 
 #include "BinaryOperator.h"
 
-#include "LeftParenthesisItem.h"
-#include "RightParenthesisItem.h"
+#include "CoreFilters/ArrayCalculator.h"
+#include "CoreFilters/util/LeftParenthesisItem.h"
+#include "CoreFilters/util/RightParenthesisItem.h"
 
 // -----------------------------------------------------------------------------
 //
@@ -66,26 +67,28 @@ void BinaryOperator::calculate(AbstractFilter* filter, DataArrayPath calculatedA
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-bool BinaryOperator::checkValidity(QVector<CalculatorItem::Pointer> infixVector, int currentIndex)
+CalculatorItem::ErrorCode BinaryOperator::checkValidity(QVector<CalculatorItem::Pointer> infixVector, int currentIndex, QString& errMsg)
 {
-  /* We need to check that the infix vector has a big enough size to fit all parts
-  of the subtraction expression */
-  if(currentIndex - 1 < 0 || currentIndex + 1 > infixVector.size() - 1)
-  {
-    return false;
-  }
-
   int leftValue = currentIndex - 1;
   int rightValue = currentIndex + 1;
 
-  if((nullptr != std::dynamic_pointer_cast<CalculatorOperator>(infixVector[leftValue]) && std::dynamic_pointer_cast<CalculatorOperator>(infixVector[leftValue])->getOperatorType() == Binary) ||
+  // Check that there is a valid value to the left of the operator
+  if(leftValue < 0 ||
+     (nullptr != std::dynamic_pointer_cast<CalculatorOperator>(infixVector[leftValue]) && std::dynamic_pointer_cast<CalculatorOperator>(infixVector[leftValue])->getOperatorType() == Binary) ||
+     nullptr != std::dynamic_pointer_cast<LeftParenthesisItem>(infixVector[leftValue]))
+  {
+    errMsg = QObject::tr("The operator '%1' does not have a valid 'left' value.").arg(getInfixToken());
+    return CalculatorItem::ErrorCode::OPERATOR_NO_LEFT_VALUE;
+  }
+
+  // Check that there is a valid value to the right of the operator
+  if(rightValue > infixVector.size() - 1 ||
      (nullptr != std::dynamic_pointer_cast<CalculatorOperator>(infixVector[rightValue]) && std::dynamic_pointer_cast<CalculatorOperator>(infixVector[rightValue])->getOperatorType() == Binary) ||
-     nullptr != std::dynamic_pointer_cast<LeftParenthesisItem>(infixVector[leftValue]) || nullptr != std::dynamic_pointer_cast<RightParenthesisItem>(infixVector[rightValue]))
+     nullptr != std::dynamic_pointer_cast<RightParenthesisItem>(infixVector[rightValue]))
   {
-    return false;
+    errMsg = QObject::tr("The operator '%1' does not have a valid 'right' value.").arg(getInfixToken());
+    return CalculatorItem::ErrorCode::OPERATOR_NO_RIGHT_VALUE;
   }
-  else
-  {
-    return true;
-  }
+
+  return CalculatorItem::ErrorCode::SUCCESS;
 }

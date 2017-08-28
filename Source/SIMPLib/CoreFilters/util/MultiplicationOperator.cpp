@@ -48,6 +48,7 @@ MultiplicationOperator::MultiplicationOperator()
 : BinaryOperator()
 {
   setPrecedence(B_Precedence);
+  setInfixToken("*");
 }
 
 // -----------------------------------------------------------------------------

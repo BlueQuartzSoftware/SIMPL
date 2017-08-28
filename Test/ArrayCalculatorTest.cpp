@@ -177,8 +177,8 @@ public:
   // -----------------------------------------------------------------------------
   //
   // -----------------------------------------------------------------------------
-  void runTest(QString equation, DataArrayPath targetArrayPath, int expectedErrorCondition, int expectedWarningCondition, int* expectedNumberOfTuples = nullptr, double* expectedValue = nullptr,
-               ArrayCalculator::AngleUnits units = ArrayCalculator::Radians)
+  void runTest(QString equation, DataArrayPath targetArrayPath, CalculatorItem::ErrorCode expectedErrorCondition, CalculatorItem::WarningCode expectedWarningCondition,
+               int* expectedNumberOfTuples = nullptr, double* expectedValue = nullptr, ArrayCalculator::AngleUnits units = ArrayCalculator::Radians)
   {
     bool propWasSet = false;
 
@@ -189,8 +189,8 @@ public:
     propWasSet = filter->setProperty("Units", units);
     DREAM3D_REQUIRE_EQUAL(propWasSet, true);
     filter->execute();
-    DREAM3D_REQUIRE_EQUAL(filter->getErrorCondition(), expectedErrorCondition);
-    DREAM3D_REQUIRE_EQUAL(filter->getWarningCondition(), expectedWarningCondition);
+    DREAM3D_REQUIRE_EQUAL(filter->getErrorCondition(), static_cast<int>(expectedErrorCondition));
+    DREAM3D_REQUIRE_EQUAL(filter->getWarningCondition(), static_cast<int>(expectedWarningCondition));
 
     DoubleArrayType::Pointer arrayPtr = filter->getDataContainerArray()->getPrereqIDataArrayFromPath<DoubleArrayType, AbstractFilter>(filter.get(), targetArrayPath);
 
@@ -236,7 +236,7 @@ public:
       propWasSet = filter->setProperty("InfixEquation", "MultiComponent Array1 + MultiComponent Array2");
       DREAM3D_REQUIRE_EQUAL(propWasSet, true);
       filter->execute();
-      DREAM3D_REQUIRE_EQUAL(filter->getErrorCondition(), 0);
+      DREAM3D_REQUIRE_EQUAL(filter->getErrorCondition(), static_cast<int>(CalculatorItem::ErrorCode::SUCCESS));
       DoubleArrayType::Pointer arrayPtr = filter->getDataContainerArray()->getPrereqIDataArrayFromPath<DoubleArrayType, AbstractFilter>(filter.get(), arrayPath);
       DREAM3D_REQUIRE(arrayPtr->getNumberOfTuples() == mcArray1->getNumberOfTuples());
       DREAM3D_REQUIRE(arrayPtr->getNumberOfComponents() == mcArray1->getNumberOfComponents());
@@ -262,7 +262,7 @@ public:
       propWasSet = filter->setProperty("InfixEquation", "MultiComponent Array1[1] + MultiComponent Array2[0]");
       DREAM3D_REQUIRE_EQUAL(propWasSet, true);
       filter->execute();
-      DREAM3D_REQUIRE_EQUAL(filter->getErrorCondition(), 0);
+      DREAM3D_REQUIRE_EQUAL(filter->getErrorCondition(), static_cast<int>(CalculatorItem::ErrorCode::SUCCESS));
       DoubleArrayType::Pointer arrayPtr = filter->getDataContainerArray()->getPrereqIDataArrayFromPath<DoubleArrayType, AbstractFilter>(filter.get(), arrayPath);
       DREAM3D_REQUIRE(arrayPtr->getNumberOfTuples() == mcArray1->getNumberOfTuples());
       DREAM3D_REQUIRE(arrayPtr->getNumberOfComponents() == 1);
@@ -287,7 +287,7 @@ public:
       propWasSet = filter->setProperty("InfixEquation", "\"4\" + 2");
       DREAM3D_REQUIRE_EQUAL(propWasSet, true);
       filter->execute();
-      DREAM3D_REQUIRE_EQUAL(filter->getErrorCondition(), 0);
+      DREAM3D_REQUIRE_EQUAL(filter->getErrorCondition(), static_cast<int>(CalculatorItem::ErrorCode::SUCCESS));
       DoubleArrayType::Pointer arrayPtr = filter->getDataContainerArray()->getPrereqIDataArrayFromPath<DoubleArrayType, AbstractFilter>(filter.get(), arrayPath);
       DREAM3D_REQUIRE(arrayPtr->getNumberOfTuples() == nArray->getNumberOfTuples());
       DREAM3D_REQUIRE(arrayPtr->getNumberOfComponents() == nArray->getNumberOfComponents());
@@ -313,7 +313,7 @@ public:
       propWasSet = filter->setProperty("InfixEquation", "\"4\" + \"*\"");
       DREAM3D_REQUIRE_EQUAL(propWasSet, true);
       filter->execute();
-      DREAM3D_REQUIRE_EQUAL(filter->getErrorCondition(), 0);
+      DREAM3D_REQUIRE_EQUAL(filter->getErrorCondition(), static_cast<int>(CalculatorItem::ErrorCode::SUCCESS));
       DoubleArrayType::Pointer arrayPtr = filter->getDataContainerArray()->getPrereqIDataArrayFromPath<DoubleArrayType, AbstractFilter>(filter.get(), arrayPath);
       DREAM3D_REQUIRE(arrayPtr->getNumberOfTuples() == nArray->getNumberOfTuples());
       DREAM3D_REQUIRE(arrayPtr->getNumberOfComponents() == nArray->getNumberOfComponents());
@@ -339,7 +339,7 @@ public:
       propWasSet = filter->setProperty("InfixEquation", "\"4\"[0] + \"*\"[1]");
       DREAM3D_REQUIRE_EQUAL(propWasSet, true);
       filter->execute();
-      DREAM3D_REQUIRE_EQUAL(filter->getErrorCondition(), 0);
+      DREAM3D_REQUIRE_EQUAL(filter->getErrorCondition(), static_cast<int>(CalculatorItem::ErrorCode::SUCCESS));
       DoubleArrayType::Pointer arrayPtr = filter->getDataContainerArray()->getPrereqIDataArrayFromPath<DoubleArrayType, AbstractFilter>(filter.get(), arrayPath);
       DREAM3D_REQUIRE(arrayPtr->getNumberOfTuples() == nArray->getNumberOfTuples());
       DREAM3D_REQUIRE(arrayPtr->getNumberOfComponents() == 1);
@@ -364,7 +364,7 @@ public:
       propWasSet = filter->setProperty("InfixEquation", "\"4\" + \"*\"[1]");
       DREAM3D_REQUIRE_EQUAL(propWasSet, true);
       filter->execute();
-      DREAM3D_REQUIRE_EQUAL(filter->getErrorCondition(), ArrayCalculator::INCONSISTENT_INDEXING);
+      DREAM3D_REQUIRE_EQUAL(filter->getErrorCondition(), static_cast<int>(CalculatorItem::ErrorCode::INCONSISTENT_COMP_DIMS));
     }
 
     // Out of bounds error
@@ -380,7 +380,7 @@ public:
       propWasSet = filter->setProperty("InfixEquation", "\"4\"[0] + \"*\"[3]");
       DREAM3D_REQUIRE_EQUAL(propWasSet, true);
       filter->execute();
-      DREAM3D_REQUIRE_EQUAL(filter->getErrorCondition(), ArrayCalculator::COMPONENT_OUT_OF_RANGE);
+      DREAM3D_REQUIRE_EQUAL(filter->getErrorCondition(), static_cast<int>(CalculatorItem::ErrorCode::COMPONENT_OUT_OF_RANGE));
     }
   }
 
@@ -397,52 +397,52 @@ public:
 
     // Empty Tests
     {
-      runTest("", numericArrayPath, ArrayCalculator::EMPTY_EQUATION, 0);
-      runTest("          ", numericArrayPath, ArrayCalculator::EMPTY_EQUATION, 0);
+      runTest("", numericArrayPath, CalculatorItem::ErrorCode::EMPTY_EQUATION, CalculatorItem::WarningCode::NONE);
+      runTest("          ", numericArrayPath, CalculatorItem::ErrorCode::EMPTY_EQUATION, CalculatorItem::WarningCode::NONE);
     }
 
     // Single Value Tests
     {
       int numTuple = 1;
       double value = -3;
-      runTest("-3", numericArrayPath, 0, ArrayCalculator::NUMERIC_VALUE_WARNING, &numTuple, &value);
+      runTest("-3", numericArrayPath, CalculatorItem::ErrorCode::SUCCESS, CalculatorItem::WarningCode::NUMERIC_VALUE_WARNING, &numTuple, &value);
 
       numTuple = 1;
       value = 14;
-      runTest("14", numericArrayPath, 0, ArrayCalculator::NUMERIC_VALUE_WARNING, &numTuple, &value);
+      runTest("14", numericArrayPath, CalculatorItem::ErrorCode::SUCCESS, CalculatorItem::WarningCode::NUMERIC_VALUE_WARNING, &numTuple, &value);
 
       numTuple = 1;
       value = 0.345;
-      runTest(".345", numericArrayPath, 0, ArrayCalculator::NUMERIC_VALUE_WARNING, &numTuple, &value);
+      runTest(".345", numericArrayPath, CalculatorItem::ErrorCode::SUCCESS, CalculatorItem::WarningCode::NUMERIC_VALUE_WARNING, &numTuple, &value);
     }
 
     // Mismatched Parentheses Tests
     {
       int numTuple = 1;
       double value = 12;
-      runTest("(3*4)", numericArrayPath, 0, ArrayCalculator::NUMERIC_VALUE_WARNING, &numTuple, &value);
-      runTest("(3*4", numericArrayPath, ArrayCalculator::MISMATCHED_PARENTHESES, ArrayCalculator::NUMERIC_VALUE_WARNING);
-      runTest("3*4)", numericArrayPath, ArrayCalculator::MISMATCHED_PARENTHESES, ArrayCalculator::NUMERIC_VALUE_WARNING);
+      runTest("(3*4)", numericArrayPath, CalculatorItem::ErrorCode::SUCCESS, CalculatorItem::WarningCode::NUMERIC_VALUE_WARNING, &numTuple, &value);
+      runTest("(3*4", numericArrayPath, CalculatorItem::ErrorCode::MISMATCHED_PARENTHESES, CalculatorItem::WarningCode::NONE);
+      runTest("3*4)", numericArrayPath, CalculatorItem::ErrorCode::MISMATCHED_PARENTHESES, CalculatorItem::WarningCode::NONE);
     }
 
     // Nested Unary Operator Test
     {
       int numTuple = 1;
       double value = sin(pow(fabs(cos(fabs(static_cast<double>(3)) / 4) + 7), 2));
-      runTest("sin( abs( cos( abs(3)/4) + 7)^2)", numericArrayPath, 0, ArrayCalculator::NUMERIC_VALUE_WARNING, &numTuple, &value);
+      runTest("sin( abs( cos( abs(3)/4) + 7)^2)", numericArrayPath, CalculatorItem::ErrorCode::SUCCESS, CalculatorItem::WarningCode::NUMERIC_VALUE_WARNING, &numTuple, &value);
     }
 
     // Single Array Tests (Force "Incorrect Tuple Count" Error)
     {
-      runTest("-InputArray1", numericArrayPath, ArrayCalculator::INCORRECT_TUPLE_COUNT, 0);
-      runTest("InputArray2", numericArrayPath, ArrayCalculator::INCORRECT_TUPLE_COUNT, 0);
+      runTest("-InputArray1", numericArrayPath, CalculatorItem::ErrorCode::INCORRECT_TUPLE_COUNT, CalculatorItem::WarningCode::NONE);
+      runTest("InputArray2", numericArrayPath, CalculatorItem::ErrorCode::INCORRECT_TUPLE_COUNT, CalculatorItem::WarningCode::NONE);
     }
 
     // Unrecognized Item Tests
     {
-      runTest("-foo", numericArrayPath, ArrayCalculator::UNRECOGNIZED_ITEM, 0);
-      runTest("InputArray3", numericArrayPath, ArrayCalculator::UNRECOGNIZED_ITEM, 0);
-      runTest("sin(InputArray 2)", numericArrayPath, ArrayCalculator::UNRECOGNIZED_ITEM, 0);
+      runTest("-foo", numericArrayPath, CalculatorItem::ErrorCode::UNRECOGNIZED_ITEM, CalculatorItem::WarningCode::NONE);
+      runTest("InputArray3", numericArrayPath, CalculatorItem::ErrorCode::UNRECOGNIZED_ITEM, CalculatorItem::WarningCode::NONE);
+      runTest("sin(InputArray 2)", numericArrayPath, CalculatorItem::ErrorCode::UNRECOGNIZED_ITEM, CalculatorItem::WarningCode::NONE);
     }
 
     // Single Array Tests
@@ -455,7 +455,7 @@ public:
       propWasSet = filter->setProperty("InfixEquation", "-InputArray1");
       DREAM3D_REQUIRE_EQUAL(propWasSet, true);
       filter->execute();
-      DREAM3D_REQUIRE_EQUAL(filter->getErrorCondition(), 0);
+      DREAM3D_REQUIRE_EQUAL(filter->getErrorCondition(), static_cast<int>(CalculatorItem::ErrorCode::SUCCESS));
       DoubleArrayType::Pointer arrayPtr = filter->getDataContainerArray()->getPrereqIDataArrayFromPath<DoubleArrayType, AbstractFilter>(filter.get(), arrayPath);
       DREAM3D_REQUIRE(arrayPtr->getNumberOfTuples() == inputArray1->getNumberOfTuples());
       for(int i = 0; i < arrayPtr->getNumberOfTuples(); i++)
@@ -472,7 +472,7 @@ public:
       propWasSet = filter->setProperty("InfixEquation", "InputArray2");
       DREAM3D_REQUIRE_EQUAL(propWasSet, true);
       filter->execute();
-      DREAM3D_REQUIRE_EQUAL(filter->getErrorCondition(), 0);
+      DREAM3D_REQUIRE_EQUAL(filter->getErrorCondition(), static_cast<int>(CalculatorItem::ErrorCode::SUCCESS));
       DoubleArrayType::Pointer arrayPtr = filter->getDataContainerArray()->getPrereqIDataArrayFromPath<DoubleArrayType, AbstractFilter>(filter.get(), arrayPath);
       DREAM3D_REQUIRE(arrayPtr->getNumberOfTuples() == inputArray2->getNumberOfTuples());
       for(int i = 0; i < arrayPtr->getNumberOfTuples(); i++)
@@ -494,8 +494,8 @@ public:
       propWasSet = filter->setProperty("InfixEquation", "Spaced Array + InputArray1");
       DREAM3D_REQUIRE_EQUAL(propWasSet, true);
       filter->execute();
-      DREAM3D_REQUIRE_EQUAL(filter->getErrorCondition(), 0);
-      DREAM3D_REQUIRE_EQUAL(filter->getWarningCondition(), 0);
+      DREAM3D_REQUIRE_EQUAL(filter->getErrorCondition(), static_cast<int>(CalculatorItem::ErrorCode::SUCCESS));
+      DREAM3D_REQUIRE_EQUAL(filter->getWarningCondition(), static_cast<int>(CalculatorItem::WarningCode::NONE));
       DoubleArrayType::Pointer arrayPtr = filter->getDataContainerArray()->getPrereqIDataArrayFromPath<DoubleArrayType, AbstractFilter>(filter.get(), arrayPath);
       DREAM3D_REQUIRE(arrayPtr->getNumberOfTuples() == spacedArray->getNumberOfTuples());
       for(int i = 0; i < arrayPtr->getNumberOfTuples(); i++)
@@ -515,8 +515,8 @@ public:
       propWasSet = filter->setProperty("InfixEquation", "sqrt((InputArray1^2)+(InputArray2^2))");
       DREAM3D_REQUIRE_EQUAL(propWasSet, true);
       filter->execute();
-      DREAM3D_REQUIRE_EQUAL(filter->getErrorCondition(), 0);
-      DREAM3D_REQUIRE_EQUAL(filter->getWarningCondition(), 0);
+      DREAM3D_REQUIRE_EQUAL(filter->getErrorCondition(), static_cast<int>(CalculatorItem::ErrorCode::SUCCESS));
+      DREAM3D_REQUIRE_EQUAL(filter->getWarningCondition(), static_cast<int>(CalculatorItem::WarningCode::NONE));
       DoubleArrayType::Pointer arrayPtr = filter->getDataContainerArray()->getPrereqIDataArrayFromPath<DoubleArrayType, AbstractFilter>(filter.get(), arrayPath);
       DREAM3D_REQUIRE(arrayPtr->getNumberOfTuples() == inputArray2->getNumberOfTuples());
       for(int i = 0; i < arrayPtr->getNumberOfTuples(); i++)
@@ -531,390 +531,396 @@ public:
 
     // Addition Operator
     {
-      runTest("+", numericArrayPath, ArrayCalculator::INVALID_EQUATION, 0);
-      runTest("3 +", numericArrayPath, ArrayCalculator::INVALID_EQUATION, 0);
-      runTest("+ 12.5", numericArrayPath, ArrayCalculator::INVALID_EQUATION, 0);
+      runTest("+", numericArrayPath, CalculatorItem::ErrorCode::OPERATOR_NO_LEFT_VALUE, CalculatorItem::WarningCode::NONE);
+      runTest("3 +", numericArrayPath, CalculatorItem::ErrorCode::OPERATOR_NO_RIGHT_VALUE, CalculatorItem::WarningCode::NONE);
+      runTest("+ 12.5", numericArrayPath, CalculatorItem::ErrorCode::OPERATOR_NO_LEFT_VALUE, CalculatorItem::WarningCode::NONE);
 
       int numTuple = 1;
       double value = 18;
-      runTest("12 + 6", numericArrayPath, 0, ArrayCalculator::NUMERIC_VALUE_WARNING, &numTuple, &value);
+      runTest("12 + 6", numericArrayPath, CalculatorItem::ErrorCode::SUCCESS, CalculatorItem::WarningCode::NUMERIC_VALUE_WARNING, &numTuple, &value);
 
       value = -6;
-      runTest("-12 + 6", numericArrayPath, 0, ArrayCalculator::NUMERIC_VALUE_WARNING, &numTuple, &value);
-      runTest("6 + -12", numericArrayPath, 0, ArrayCalculator::NUMERIC_VALUE_WARNING, &numTuple, &value);
+      runTest("-12 + 6", numericArrayPath, CalculatorItem::ErrorCode::SUCCESS, CalculatorItem::WarningCode::NUMERIC_VALUE_WARNING, &numTuple, &value);
+      runTest("6 + -12", numericArrayPath, CalculatorItem::ErrorCode::SUCCESS, CalculatorItem::WarningCode::NUMERIC_VALUE_WARNING, &numTuple, &value);
     }
 
     // Subtraction Operator
     {
-      runTest("-", numericArrayPath, ArrayCalculator::INVALID_EQUATION, 0);
-      runTest("-89.2 -", numericArrayPath, ArrayCalculator::INVALID_EQUATION, 0);
+      runTest("-89.2 -", numericArrayPath, CalculatorItem::ErrorCode::OPERATOR_NO_RIGHT_VALUE, CalculatorItem::WarningCode::NONE);
 
       int numTuple = 1;
-      double value = -9;
-      runTest("- 9", numericArrayPath, 0, ArrayCalculator::NUMERIC_VALUE_WARNING, &numTuple, &value);
-
-      value = 43;
-      runTest("97 - 54", numericArrayPath, 0, ArrayCalculator::NUMERIC_VALUE_WARNING, &numTuple, &value);
+      double value = 43;
+      runTest("97 - 54", numericArrayPath, CalculatorItem::ErrorCode::SUCCESS, CalculatorItem::WarningCode::NUMERIC_VALUE_WARNING, &numTuple, &value);
 
       value = -34;
-      runTest("-32 - 2", numericArrayPath, 0, ArrayCalculator::NUMERIC_VALUE_WARNING, &numTuple, &value);
+      runTest("-32 - 2", numericArrayPath, CalculatorItem::ErrorCode::SUCCESS, CalculatorItem::WarningCode::NUMERIC_VALUE_WARNING, &numTuple, &value);
 
       value = 19;
-      runTest("7 - -12", numericArrayPath, 0, ArrayCalculator::NUMERIC_VALUE_WARNING, &numTuple, &value);
+      runTest("7 - -12", numericArrayPath, CalculatorItem::ErrorCode::SUCCESS, CalculatorItem::WarningCode::NUMERIC_VALUE_WARNING, &numTuple, &value);
     }
 
     // Multiplication Operator
     {
-      runTest("*", numericArrayPath, ArrayCalculator::INVALID_EQUATION, 0);
-      runTest("3 *", numericArrayPath, ArrayCalculator::INVALID_EQUATION, 0);
-      runTest("* 12.5", numericArrayPath, ArrayCalculator::INVALID_EQUATION, 0);
+      runTest("*", numericArrayPath, CalculatorItem::ErrorCode::OPERATOR_NO_LEFT_VALUE, CalculatorItem::WarningCode::NONE);
+      runTest("3 *", numericArrayPath, CalculatorItem::ErrorCode::OPERATOR_NO_RIGHT_VALUE, CalculatorItem::WarningCode::NONE);
+      runTest("* 12.5", numericArrayPath, CalculatorItem::ErrorCode::OPERATOR_NO_LEFT_VALUE, CalculatorItem::WarningCode::NONE);
 
       int numTuple = 1;
       double value = 72;
-      runTest("12 * 6", numericArrayPath, 0, ArrayCalculator::NUMERIC_VALUE_WARNING, &numTuple, &value);
+      runTest("12 * 6", numericArrayPath, CalculatorItem::ErrorCode::SUCCESS, CalculatorItem::WarningCode::NUMERIC_VALUE_WARNING, &numTuple, &value);
 
       value = -72;
-      runTest("-12 * 6", numericArrayPath, 0, ArrayCalculator::NUMERIC_VALUE_WARNING, &numTuple, &value);
-      runTest("6 * -12", numericArrayPath, 0, ArrayCalculator::NUMERIC_VALUE_WARNING, &numTuple, &value);
+      runTest("-12 * 6", numericArrayPath, CalculatorItem::ErrorCode::SUCCESS, CalculatorItem::WarningCode::NUMERIC_VALUE_WARNING, &numTuple, &value);
+      runTest("6 * -12", numericArrayPath, CalculatorItem::ErrorCode::SUCCESS, CalculatorItem::WarningCode::NUMERIC_VALUE_WARNING, &numTuple, &value);
     }
 
     // Division Operator
     {
-      runTest("/", numericArrayPath, ArrayCalculator::INVALID_EQUATION, 0);
-      runTest("3 /", numericArrayPath, ArrayCalculator::INVALID_EQUATION, 0);
-      runTest("/ 12.5", numericArrayPath, ArrayCalculator::INVALID_EQUATION, 0);
+      runTest("/", numericArrayPath, CalculatorItem::ErrorCode::OPERATOR_NO_LEFT_VALUE, CalculatorItem::WarningCode::NONE);
+      runTest("3 /", numericArrayPath, CalculatorItem::ErrorCode::OPERATOR_NO_RIGHT_VALUE, CalculatorItem::WarningCode::NONE);
+      runTest("/ 12.5", numericArrayPath, CalculatorItem::ErrorCode::OPERATOR_NO_LEFT_VALUE, CalculatorItem::WarningCode::NONE);
 
       int numTuple = 1;
       double value = 2;
-      runTest("12 / 6", numericArrayPath, 0, ArrayCalculator::NUMERIC_VALUE_WARNING, &numTuple, &value);
+      runTest("12 / 6", numericArrayPath, CalculatorItem::ErrorCode::SUCCESS, CalculatorItem::WarningCode::NUMERIC_VALUE_WARNING, &numTuple, &value);
 
       value = -2;
-      runTest("-12 / 6", numericArrayPath, 0, ArrayCalculator::NUMERIC_VALUE_WARNING, &numTuple, &value);
+      runTest("-12 / 6", numericArrayPath, CalculatorItem::ErrorCode::SUCCESS, CalculatorItem::WarningCode::NUMERIC_VALUE_WARNING, &numTuple, &value);
 
       value = -0.5;
-      runTest("6 / -12", numericArrayPath, 0, ArrayCalculator::NUMERIC_VALUE_WARNING, &numTuple, &value);
+      runTest("6 / -12", numericArrayPath, CalculatorItem::ErrorCode::SUCCESS, CalculatorItem::WarningCode::NUMERIC_VALUE_WARNING, &numTuple, &value);
     }
 
     // Pow Operator
     {
-      runTest("^", numericArrayPath, ArrayCalculator::INVALID_EQUATION, 0);
-      runTest("3 ^", numericArrayPath, ArrayCalculator::INVALID_EQUATION, 0);
-      runTest("^ 12.5", numericArrayPath, ArrayCalculator::INVALID_EQUATION, 0);
+      runTest("^", numericArrayPath, CalculatorItem::ErrorCode::OPERATOR_NO_LEFT_VALUE, CalculatorItem::WarningCode::NONE);
+      runTest("3 ^", numericArrayPath, CalculatorItem::ErrorCode::OPERATOR_NO_RIGHT_VALUE, CalculatorItem::WarningCode::NONE);
+      runTest("^ 12.5", numericArrayPath, CalculatorItem::ErrorCode::OPERATOR_NO_LEFT_VALUE, CalculatorItem::WarningCode::NONE);
 
       int numTuple = 1;
       double value = 125;
-      runTest("5 ^ 3", numericArrayPath, 0, ArrayCalculator::NUMERIC_VALUE_WARNING, &numTuple, &value);
+      runTest("5 ^ 3", numericArrayPath, CalculatorItem::ErrorCode::SUCCESS, CalculatorItem::WarningCode::NUMERIC_VALUE_WARNING, &numTuple, &value);
 
       value = -8;
-      runTest("-2 ^ 3", numericArrayPath, 0, ArrayCalculator::NUMERIC_VALUE_WARNING, &numTuple, &value);
+      runTest("-2 ^ 3", numericArrayPath, CalculatorItem::ErrorCode::SUCCESS, CalculatorItem::WarningCode::NUMERIC_VALUE_WARNING, &numTuple, &value);
 
       value = 0.25;
-      runTest("2 ^ -2", numericArrayPath, 0, ArrayCalculator::NUMERIC_VALUE_WARNING, &numTuple, &value);
+      runTest("2 ^ -2", numericArrayPath, CalculatorItem::ErrorCode::SUCCESS, CalculatorItem::WarningCode::NUMERIC_VALUE_WARNING, &numTuple, &value);
     }
 
     // Abs Operator
     {
-      runTest("abs", numericArrayPath, ArrayCalculator::INVALID_EQUATION, 0);
-      runTest("abs(", numericArrayPath, ArrayCalculator::INVALID_EQUATION, 0);
-      runTest("abs)", numericArrayPath, ArrayCalculator::INVALID_EQUATION, 0);
-      runTest("abs()", numericArrayPath, ArrayCalculator::INVALID_EQUATION, 0);
+      runTest("abs", numericArrayPath, CalculatorItem::ErrorCode::OPERATOR_NO_OPENING_PAREN, CalculatorItem::WarningCode::NONE);
+      runTest("abs(", numericArrayPath, CalculatorItem::ErrorCode::OPERATOR_NO_CLOSING_PAREN, CalculatorItem::WarningCode::NONE);
+      runTest("abs)", numericArrayPath, CalculatorItem::ErrorCode::OPERATOR_NO_OPENING_PAREN, CalculatorItem::WarningCode::NONE);
+      runTest("abs()", numericArrayPath, CalculatorItem::ErrorCode::NO_NUMERIC_ARGUMENTS, CalculatorItem::WarningCode::NONE);
 
       int numTuple = 1;
       double value = 2;
-      runTest("abs(2)", numericArrayPath, 0, ArrayCalculator::NUMERIC_VALUE_WARNING, &numTuple, &value);
+      runTest("abs(2)", numericArrayPath, CalculatorItem::ErrorCode::SUCCESS, CalculatorItem::WarningCode::NUMERIC_VALUE_WARNING, &numTuple, &value);
 
       value = 4.3;
-      runTest("abs(-4.3)", numericArrayPath, 0, ArrayCalculator::NUMERIC_VALUE_WARNING, &numTuple, &value);
+      runTest("abs(-4.3)", numericArrayPath, CalculatorItem::ErrorCode::SUCCESS, CalculatorItem::WarningCode::NUMERIC_VALUE_WARNING, &numTuple, &value);
 
       value = 6.7;
-      runTest("abs(abs(6.7))", numericArrayPath, 0, ArrayCalculator::NUMERIC_VALUE_WARNING, &numTuple, &value);
+      runTest("abs(abs(6.7))", numericArrayPath, CalculatorItem::ErrorCode::SUCCESS, CalculatorItem::WarningCode::NUMERIC_VALUE_WARNING, &numTuple, &value);
     }
 
     // Sin Operator
     {
-      runTest("sin", numericArrayPath, ArrayCalculator::INVALID_EQUATION, 0);
-      runTest("sin(", numericArrayPath, ArrayCalculator::INVALID_EQUATION, 0);
-      runTest("sin)", numericArrayPath, ArrayCalculator::INVALID_EQUATION, 0);
-      runTest("sin()", numericArrayPath, ArrayCalculator::INVALID_EQUATION, 0);
+      runTest("sin", numericArrayPath, CalculatorItem::ErrorCode::OPERATOR_NO_OPENING_PAREN, CalculatorItem::WarningCode::NONE);
+      runTest("sin(", numericArrayPath, CalculatorItem::ErrorCode::OPERATOR_NO_CLOSING_PAREN, CalculatorItem::WarningCode::NONE);
+      runTest("sin)", numericArrayPath, CalculatorItem::ErrorCode::OPERATOR_NO_OPENING_PAREN, CalculatorItem::WarningCode::NONE);
+      runTest("sin()", numericArrayPath, CalculatorItem::ErrorCode::NO_NUMERIC_ARGUMENTS, CalculatorItem::WarningCode::NONE);
 
       int numTuple = 1;
       double value = 1;
-      runTest("sin(90)", numericArrayPath, 0, ArrayCalculator::NUMERIC_VALUE_WARNING, &numTuple, &value, ArrayCalculator::Degrees);
+      runTest("sin(90)", numericArrayPath, CalculatorItem::ErrorCode::SUCCESS, CalculatorItem::WarningCode::NUMERIC_VALUE_WARNING, &numTuple, &value, ArrayCalculator::Degrees);
 
       value = 0;
-      runTest("sin(-180)", numericArrayPath, 0, ArrayCalculator::NUMERIC_VALUE_WARNING, &numTuple, &value, ArrayCalculator::Degrees);
+      runTest("sin(-180)", numericArrayPath, CalculatorItem::ErrorCode::SUCCESS, CalculatorItem::WarningCode::NUMERIC_VALUE_WARNING, &numTuple, &value, ArrayCalculator::Degrees);
 
       value = 0.5;
-      runTest("sin(" + QString::number(M_PI) + "/6)", numericArrayPath, 0, ArrayCalculator::NUMERIC_VALUE_WARNING, &numTuple, &value, ArrayCalculator::Radians);
+      runTest("sin(" + QString::number(M_PI) + "/6)", numericArrayPath, CalculatorItem::ErrorCode::SUCCESS, CalculatorItem::WarningCode::NUMERIC_VALUE_WARNING, &numTuple, &value,
+              ArrayCalculator::Radians);
 
       value = 1;
-      runTest("sin(" + QString::number(M_PI) + "/2)", numericArrayPath, 0, ArrayCalculator::NUMERIC_VALUE_WARNING, &numTuple, &value, ArrayCalculator::Radians);
+      runTest("sin(" + QString::number(M_PI) + "/2)", numericArrayPath, CalculatorItem::ErrorCode::SUCCESS, CalculatorItem::WarningCode::NUMERIC_VALUE_WARNING, &numTuple, &value,
+              ArrayCalculator::Radians);
     }
 
     // Cos Operator
     {
-      runTest("cos", numericArrayPath, ArrayCalculator::INVALID_EQUATION, 0);
-      runTest("cos(", numericArrayPath, ArrayCalculator::INVALID_EQUATION, 0);
-      runTest("cos)", numericArrayPath, ArrayCalculator::INVALID_EQUATION, 0);
-      runTest("cos()", numericArrayPath, ArrayCalculator::INVALID_EQUATION, 0);
+      runTest("cos", numericArrayPath, CalculatorItem::ErrorCode::OPERATOR_NO_OPENING_PAREN, CalculatorItem::WarningCode::NONE);
+      runTest("cos(", numericArrayPath, CalculatorItem::ErrorCode::OPERATOR_NO_CLOSING_PAREN, CalculatorItem::WarningCode::NONE);
+      runTest("cos)", numericArrayPath, CalculatorItem::ErrorCode::OPERATOR_NO_OPENING_PAREN, CalculatorItem::WarningCode::NONE);
+      runTest("cos()", numericArrayPath, CalculatorItem::ErrorCode::NO_NUMERIC_ARGUMENTS, CalculatorItem::WarningCode::NONE);
 
       int numTuple = 1;
       double value = 0;
-      runTest("cos(90)", numericArrayPath, 0, ArrayCalculator::NUMERIC_VALUE_WARNING, &numTuple, &value, ArrayCalculator::Degrees);
+      runTest("cos(90)", numericArrayPath, CalculatorItem::ErrorCode::SUCCESS, CalculatorItem::WarningCode::NUMERIC_VALUE_WARNING, &numTuple, &value, ArrayCalculator::Degrees);
 
       value = -1;
-      runTest("cos(-180)", numericArrayPath, 0, ArrayCalculator::NUMERIC_VALUE_WARNING, &numTuple, &value, ArrayCalculator::Degrees);
+      runTest("cos(-180)", numericArrayPath, CalculatorItem::ErrorCode::SUCCESS, CalculatorItem::WarningCode::NUMERIC_VALUE_WARNING, &numTuple, &value, ArrayCalculator::Degrees);
 
       value = 0.5;
-      runTest("cos(" + QString::number(M_PI) + "/3)", numericArrayPath, 0, ArrayCalculator::NUMERIC_VALUE_WARNING, &numTuple, &value, ArrayCalculator::Radians);
+      runTest("cos(" + QString::number(M_PI) + "/3)", numericArrayPath, CalculatorItem::ErrorCode::SUCCESS, CalculatorItem::WarningCode::NUMERIC_VALUE_WARNING, &numTuple, &value,
+              ArrayCalculator::Radians);
 
       value = -0.5;
-      runTest("cos(2*" + QString::number(M_PI) + "/3)", numericArrayPath, 0, ArrayCalculator::NUMERIC_VALUE_WARNING, &numTuple, &value, ArrayCalculator::Radians);
+      runTest("cos(2*" + QString::number(M_PI) + "/3)", numericArrayPath, CalculatorItem::ErrorCode::SUCCESS, CalculatorItem::WarningCode::NUMERIC_VALUE_WARNING, &numTuple, &value,
+              ArrayCalculator::Radians);
     }
 
     // Tan Operator
     {
-      runTest("tan", numericArrayPath, ArrayCalculator::INVALID_EQUATION, 0);
-      runTest("tan(", numericArrayPath, ArrayCalculator::INVALID_EQUATION, 0);
-      runTest("tan)", numericArrayPath, ArrayCalculator::INVALID_EQUATION, 0);
-      runTest("tan()", numericArrayPath, ArrayCalculator::INVALID_EQUATION, 0);
+      runTest("tan", numericArrayPath, CalculatorItem::ErrorCode::OPERATOR_NO_OPENING_PAREN, CalculatorItem::WarningCode::NONE);
+      runTest("tan(", numericArrayPath, CalculatorItem::ErrorCode::OPERATOR_NO_CLOSING_PAREN, CalculatorItem::WarningCode::NONE);
+      runTest("tan)", numericArrayPath, CalculatorItem::ErrorCode::OPERATOR_NO_OPENING_PAREN, CalculatorItem::WarningCode::NONE);
+      runTest("tan()", numericArrayPath, CalculatorItem::ErrorCode::NO_NUMERIC_ARGUMENTS, CalculatorItem::WarningCode::NONE);
 
       int numTuple = 1;
       double value = 1;
-      runTest("tan(45)", numericArrayPath, 0, ArrayCalculator::NUMERIC_VALUE_WARNING, &numTuple, &value, ArrayCalculator::Degrees);
+      runTest("tan(45)", numericArrayPath, CalculatorItem::ErrorCode::SUCCESS, CalculatorItem::WarningCode::NUMERIC_VALUE_WARNING, &numTuple, &value, ArrayCalculator::Degrees);
 
       value = sqrt(3);
-      runTest("tan(60)", numericArrayPath, 0, ArrayCalculator::NUMERIC_VALUE_WARNING, &numTuple, &value, ArrayCalculator::Degrees);
+      runTest("tan(60)", numericArrayPath, CalculatorItem::ErrorCode::SUCCESS, CalculatorItem::WarningCode::NUMERIC_VALUE_WARNING, &numTuple, &value, ArrayCalculator::Degrees);
 
       value = 1;
-      runTest("tan(" + QString::number(M_PI) + "/4)", numericArrayPath, 0, ArrayCalculator::NUMERIC_VALUE_WARNING, &numTuple, &value, ArrayCalculator::Radians);
+      runTest("tan(" + QString::number(M_PI) + "/4)", numericArrayPath, CalculatorItem::ErrorCode::SUCCESS, CalculatorItem::WarningCode::NUMERIC_VALUE_WARNING, &numTuple, &value,
+              ArrayCalculator::Radians);
 
       value = -sqrt(static_cast<double>(1) / static_cast<double>(3));
-      runTest("tan(5*" + QString::number(M_PI) + "/6)", numericArrayPath, 0, ArrayCalculator::NUMERIC_VALUE_WARNING, &numTuple, &value, ArrayCalculator::Radians);
+      runTest("tan(5*" + QString::number(M_PI) + "/6)", numericArrayPath, CalculatorItem::ErrorCode::SUCCESS, CalculatorItem::WarningCode::NUMERIC_VALUE_WARNING, &numTuple, &value,
+              ArrayCalculator::Radians);
     }
 
     // ASin Operator
     {
-      runTest("asin", numericArrayPath, ArrayCalculator::INVALID_EQUATION, 0);
-      runTest("asin(", numericArrayPath, ArrayCalculator::INVALID_EQUATION, 0);
-      runTest("asin)", numericArrayPath, ArrayCalculator::INVALID_EQUATION, 0);
-      runTest("asin()", numericArrayPath, ArrayCalculator::INVALID_EQUATION, 0);
+      runTest("asin", numericArrayPath, CalculatorItem::ErrorCode::OPERATOR_NO_OPENING_PAREN, CalculatorItem::WarningCode::NONE);
+      runTest("asin(", numericArrayPath, CalculatorItem::ErrorCode::OPERATOR_NO_CLOSING_PAREN, CalculatorItem::WarningCode::NONE);
+      runTest("asin)", numericArrayPath, CalculatorItem::ErrorCode::OPERATOR_NO_OPENING_PAREN, CalculatorItem::WarningCode::NONE);
+      runTest("asin()", numericArrayPath, CalculatorItem::ErrorCode::NO_NUMERIC_ARGUMENTS, CalculatorItem::WarningCode::NONE);
 
       int numTuple = 1;
       double value = 30;
-      runTest("asin(0.5)", numericArrayPath, 0, ArrayCalculator::NUMERIC_VALUE_WARNING, &numTuple, &value, ArrayCalculator::Degrees);
+      runTest("asin(0.5)", numericArrayPath, CalculatorItem::ErrorCode::SUCCESS, CalculatorItem::WarningCode::NUMERIC_VALUE_WARNING, &numTuple, &value, ArrayCalculator::Degrees);
 
       value = 45;
-      runTest("asin(sqrt(2)/2)", numericArrayPath, 0, ArrayCalculator::NUMERIC_VALUE_WARNING, &numTuple, &value, ArrayCalculator::Degrees);
+      runTest("asin(sqrt(2)/2)", numericArrayPath, CalculatorItem::ErrorCode::SUCCESS, CalculatorItem::WarningCode::NUMERIC_VALUE_WARNING, &numTuple, &value, ArrayCalculator::Degrees);
 
       value = M_PI / 3;
-      runTest("asin(sqrt(3)/2)", numericArrayPath, 0, ArrayCalculator::NUMERIC_VALUE_WARNING, &numTuple, &value, ArrayCalculator::Radians);
+      runTest("asin(sqrt(3)/2)", numericArrayPath, CalculatorItem::ErrorCode::SUCCESS, CalculatorItem::WarningCode::NUMERIC_VALUE_WARNING, &numTuple, &value, ArrayCalculator::Radians);
 
       value = M_PI / 2;
-      runTest("asin(1)", numericArrayPath, 0, ArrayCalculator::NUMERIC_VALUE_WARNING, &numTuple, &value, ArrayCalculator::Radians);
+      runTest("asin(1)", numericArrayPath, CalculatorItem::ErrorCode::SUCCESS, CalculatorItem::WarningCode::NUMERIC_VALUE_WARNING, &numTuple, &value, ArrayCalculator::Radians);
     }
 
     // ACos Operator
     {
-      runTest("acos", numericArrayPath, ArrayCalculator::INVALID_EQUATION, 0);
-      runTest("acos(", numericArrayPath, ArrayCalculator::INVALID_EQUATION, 0);
-      runTest("acos)", numericArrayPath, ArrayCalculator::INVALID_EQUATION, 0);
-      runTest("acos()", numericArrayPath, ArrayCalculator::INVALID_EQUATION, 0);
+      runTest("acos", numericArrayPath, CalculatorItem::ErrorCode::OPERATOR_NO_OPENING_PAREN, CalculatorItem::WarningCode::NONE);
+      runTest("acos(", numericArrayPath, CalculatorItem::ErrorCode::OPERATOR_NO_CLOSING_PAREN, CalculatorItem::WarningCode::NONE);
+      runTest("acos)", numericArrayPath, CalculatorItem::ErrorCode::OPERATOR_NO_OPENING_PAREN, CalculatorItem::WarningCode::NONE);
+      runTest("acos()", numericArrayPath, CalculatorItem::ErrorCode::NO_NUMERIC_ARGUMENTS, CalculatorItem::WarningCode::NONE);
 
       int numTuple = 1;
       double value = 60;
-      runTest("acos(0.5)", numericArrayPath, 0, ArrayCalculator::NUMERIC_VALUE_WARNING, &numTuple, &value, ArrayCalculator::Degrees);
+      runTest("acos(0.5)", numericArrayPath, CalculatorItem::ErrorCode::SUCCESS, CalculatorItem::WarningCode::NUMERIC_VALUE_WARNING, &numTuple, &value, ArrayCalculator::Degrees);
 
       value = 45;
-      runTest("acos(sqrt(2)/2)", numericArrayPath, 0, ArrayCalculator::NUMERIC_VALUE_WARNING, &numTuple, &value, ArrayCalculator::Degrees);
+      runTest("acos(sqrt(2)/2)", numericArrayPath, CalculatorItem::ErrorCode::SUCCESS, CalculatorItem::WarningCode::NUMERIC_VALUE_WARNING, &numTuple, &value, ArrayCalculator::Degrees);
 
       value = M_PI / 6;
-      runTest("acos(sqrt(3)/2)", numericArrayPath, 0, ArrayCalculator::NUMERIC_VALUE_WARNING, &numTuple, &value, ArrayCalculator::Radians);
+      runTest("acos(sqrt(3)/2)", numericArrayPath, CalculatorItem::ErrorCode::SUCCESS, CalculatorItem::WarningCode::NUMERIC_VALUE_WARNING, &numTuple, &value, ArrayCalculator::Radians);
 
       value = 0;
-      runTest("acos(1)", numericArrayPath, 0, ArrayCalculator::NUMERIC_VALUE_WARNING, &numTuple, &value, ArrayCalculator::Radians);
+      runTest("acos(1)", numericArrayPath, CalculatorItem::ErrorCode::SUCCESS, CalculatorItem::WarningCode::NUMERIC_VALUE_WARNING, &numTuple, &value, ArrayCalculator::Radians);
     }
 
     // ATan Operator
     {
-      runTest("atan", numericArrayPath, ArrayCalculator::INVALID_EQUATION, 0);
-      runTest("atan(", numericArrayPath, ArrayCalculator::INVALID_EQUATION, 0);
-      runTest("atan)", numericArrayPath, ArrayCalculator::INVALID_EQUATION, 0);
-      runTest("atan()", numericArrayPath, ArrayCalculator::INVALID_EQUATION, 0);
+      runTest("atan", numericArrayPath, CalculatorItem::ErrorCode::OPERATOR_NO_OPENING_PAREN, CalculatorItem::WarningCode::NONE);
+      runTest("atan(", numericArrayPath, CalculatorItem::ErrorCode::OPERATOR_NO_CLOSING_PAREN, CalculatorItem::WarningCode::NONE);
+      runTest("atan)", numericArrayPath, CalculatorItem::ErrorCode::OPERATOR_NO_OPENING_PAREN, CalculatorItem::WarningCode::NONE);
+      runTest("atan()", numericArrayPath, CalculatorItem::ErrorCode::NO_NUMERIC_ARGUMENTS, CalculatorItem::WarningCode::NONE);
 
       int numTuple = 1;
       double value = -45;
-      runTest("atan(-1)", numericArrayPath, 0, ArrayCalculator::NUMERIC_VALUE_WARNING, &numTuple, &value, ArrayCalculator::Degrees);
+      runTest("atan(-1)", numericArrayPath, CalculatorItem::ErrorCode::SUCCESS, CalculatorItem::WarningCode::NUMERIC_VALUE_WARNING, &numTuple, &value, ArrayCalculator::Degrees);
 
       value = -60;
-      runTest("atan(-sqrt(3))", numericArrayPath, 0, ArrayCalculator::NUMERIC_VALUE_WARNING, &numTuple, &value, ArrayCalculator::Degrees);
+      runTest("atan(-sqrt(3))", numericArrayPath, CalculatorItem::ErrorCode::SUCCESS, CalculatorItem::WarningCode::NUMERIC_VALUE_WARNING, &numTuple, &value, ArrayCalculator::Degrees);
 
       value = M_PI / 6;
-      runTest("atan(1/sqrt(3))", numericArrayPath, 0, ArrayCalculator::NUMERIC_VALUE_WARNING, &numTuple, &value, ArrayCalculator::Radians);
+      runTest("atan(1/sqrt(3))", numericArrayPath, CalculatorItem::ErrorCode::SUCCESS, CalculatorItem::WarningCode::NUMERIC_VALUE_WARNING, &numTuple, &value, ArrayCalculator::Radians);
 
       value = M_PI / 3;
-      runTest("atan(sqrt(3))", numericArrayPath, 0, ArrayCalculator::NUMERIC_VALUE_WARNING, &numTuple, &value, ArrayCalculator::Radians);
+      runTest("atan(sqrt(3))", numericArrayPath, CalculatorItem::ErrorCode::SUCCESS, CalculatorItem::WarningCode::NUMERIC_VALUE_WARNING, &numTuple, &value, ArrayCalculator::Radians);
     }
 
     // Sqrt Operator
     {
-      runTest("sqrt", numericArrayPath, ArrayCalculator::INVALID_EQUATION, 0);
-      runTest("sqrt(", numericArrayPath, ArrayCalculator::INVALID_EQUATION, 0);
-      runTest("sqrt)", numericArrayPath, ArrayCalculator::INVALID_EQUATION, 0);
-      runTest("sqrt()", numericArrayPath, ArrayCalculator::INVALID_EQUATION, 0);
-      runTest("sqrt(1, 3)", numericArrayPath, ArrayCalculator::INVALID_EQUATION, 0);
+      runTest("sqrt", numericArrayPath, CalculatorItem::ErrorCode::OPERATOR_NO_OPENING_PAREN, CalculatorItem::WarningCode::NONE);
+      runTest("sqrt(", numericArrayPath, CalculatorItem::ErrorCode::OPERATOR_NO_CLOSING_PAREN, CalculatorItem::WarningCode::NONE);
+      runTest("sqrt)", numericArrayPath, CalculatorItem::ErrorCode::OPERATOR_NO_OPENING_PAREN, CalculatorItem::WarningCode::NONE);
+      runTest("sqrt()", numericArrayPath, CalculatorItem::ErrorCode::NO_NUMERIC_ARGUMENTS, CalculatorItem::WarningCode::NONE);
+      runTest("sqrt(1, 3)", numericArrayPath, CalculatorItem::ErrorCode::TOO_MANY_ARGUMENTS, CalculatorItem::WarningCode::NONE);
 
       int numTuple = 1;
       double value = 3;
-      runTest("sqrt(9)", numericArrayPath, 0, ArrayCalculator::NUMERIC_VALUE_WARNING, &numTuple, &value);
+      runTest("sqrt(9)", numericArrayPath, CalculatorItem::ErrorCode::SUCCESS, CalculatorItem::WarningCode::NUMERIC_VALUE_WARNING, &numTuple, &value);
 
       value = 4;
-      runTest("sqrt(4*4)", numericArrayPath, 0, ArrayCalculator::NUMERIC_VALUE_WARNING, &numTuple, &value);
+      runTest("sqrt(4*4)", numericArrayPath, CalculatorItem::ErrorCode::SUCCESS, CalculatorItem::WarningCode::NUMERIC_VALUE_WARNING, &numTuple, &value);
 
       value = 3;
-      runTest("sqrt(3^2)", numericArrayPath, 0, ArrayCalculator::NUMERIC_VALUE_WARNING, &numTuple, &value);
+      runTest("sqrt(3^2)", numericArrayPath, CalculatorItem::ErrorCode::SUCCESS, CalculatorItem::WarningCode::NUMERIC_VALUE_WARNING, &numTuple, &value);
     }
 
     // Root Operator
     {
-      runTest("root", numericArrayPath, ArrayCalculator::INVALID_EQUATION, 0);
-      runTest("root(", numericArrayPath, ArrayCalculator::INVALID_EQUATION, 0);
-      runTest("root)", numericArrayPath, ArrayCalculator::INVALID_EQUATION, 0);
-      runTest("root()", numericArrayPath, ArrayCalculator::INVALID_EQUATION, 0);
-      runTest("root(1)", numericArrayPath, ArrayCalculator::INVALID_EQUATION, 0);
-      runTest("root(,)", numericArrayPath, ArrayCalculator::INVALID_EQUATION, 0);
+      runTest("root", numericArrayPath, CalculatorItem::ErrorCode::OPERATOR_NO_OPENING_PAREN, CalculatorItem::WarningCode::NONE);
+      runTest("root(", numericArrayPath, CalculatorItem::ErrorCode::OPERATOR_NO_CLOSING_PAREN, CalculatorItem::WarningCode::NONE);
+      runTest("root)", numericArrayPath, CalculatorItem::ErrorCode::OPERATOR_NO_OPENING_PAREN, CalculatorItem::WarningCode::NONE);
+      runTest("root()", numericArrayPath, CalculatorItem::ErrorCode::NOT_ENOUGH_ARGUMENTS, CalculatorItem::WarningCode::NONE);
+      runTest("root(1)", numericArrayPath, CalculatorItem::ErrorCode::NOT_ENOUGH_ARGUMENTS, CalculatorItem::WarningCode::NONE);
+      runTest("root(,)", numericArrayPath, CalculatorItem::ErrorCode::NO_NUMERIC_ARGUMENTS, CalculatorItem::WarningCode::NONE);
 
       int numTuple = 1;
       double value = 3;
-      runTest("root(9, 2)", numericArrayPath, 0, ArrayCalculator::NUMERIC_VALUE_WARNING, &numTuple, &value);
+      runTest("root(9, 2)", numericArrayPath, CalculatorItem::ErrorCode::SUCCESS, CalculatorItem::WarningCode::NUMERIC_VALUE_WARNING, &numTuple, &value);
 
       value = 4;
-      runTest("root(4*4, 2)", numericArrayPath, 0, ArrayCalculator::NUMERIC_VALUE_WARNING, &numTuple, &value);
+      runTest("root(4*4, 2)", numericArrayPath, CalculatorItem::ErrorCode::SUCCESS, CalculatorItem::WarningCode::NUMERIC_VALUE_WARNING, &numTuple, &value);
 
       value = 4;
-      runTest("root(4*4+0, 1*2+0)", numericArrayPath, 0, ArrayCalculator::NUMERIC_VALUE_WARNING, &numTuple, &value);
+      runTest("root(4*4+0, 1*2+0)", numericArrayPath, CalculatorItem::ErrorCode::SUCCESS, CalculatorItem::WarningCode::NUMERIC_VALUE_WARNING, &numTuple, &value);
 
       value = 4;
-      runTest("root(64, 3)", numericArrayPath, 0, ArrayCalculator::NUMERIC_VALUE_WARNING, &numTuple, &value);
+      runTest("root(64, 3)", numericArrayPath, CalculatorItem::ErrorCode::SUCCESS, CalculatorItem::WarningCode::NUMERIC_VALUE_WARNING, &numTuple, &value);
     }
 
     // Log10 Operator
     {
-      runTest("log10", numericArrayPath, ArrayCalculator::INVALID_EQUATION, 0);
-      runTest("log10(", numericArrayPath, ArrayCalculator::INVALID_EQUATION, 0);
-      runTest("log10)", numericArrayPath, ArrayCalculator::INVALID_EQUATION, 0);
-      runTest("log10()", numericArrayPath, ArrayCalculator::INVALID_EQUATION, 0);
-      runTest("log10(1, 3)", numericArrayPath, ArrayCalculator::INVALID_EQUATION, 0);
-      runTest("log10(,)", numericArrayPath, ArrayCalculator::INVALID_EQUATION, 0);
+      runTest("log10", numericArrayPath, CalculatorItem::ErrorCode::OPERATOR_NO_OPENING_PAREN, CalculatorItem::WarningCode::NONE);
+      runTest("log10(", numericArrayPath, CalculatorItem::ErrorCode::OPERATOR_NO_CLOSING_PAREN, CalculatorItem::WarningCode::NONE);
+      runTest("log10)", numericArrayPath, CalculatorItem::ErrorCode::OPERATOR_NO_OPENING_PAREN, CalculatorItem::WarningCode::NONE);
+      runTest("log10()", numericArrayPath, CalculatorItem::ErrorCode::NO_NUMERIC_ARGUMENTS, CalculatorItem::WarningCode::NONE);
+      runTest("log10(1, 3)", numericArrayPath, CalculatorItem::ErrorCode::TOO_MANY_ARGUMENTS, CalculatorItem::WarningCode::NONE);
+      runTest("log10(,)", numericArrayPath, CalculatorItem::ErrorCode::TOO_MANY_ARGUMENTS, CalculatorItem::WarningCode::NONE);
 
       int numTuple = 1;
       double value = log10(10);
-      runTest("log10(10)", numericArrayPath, 0, ArrayCalculator::NUMERIC_VALUE_WARNING, &numTuple, &value);
+      runTest("log10(10)", numericArrayPath, CalculatorItem::ErrorCode::SUCCESS, CalculatorItem::WarningCode::NUMERIC_VALUE_WARNING, &numTuple, &value);
 
       value = log10(40);
-      runTest("log10(40)", numericArrayPath, 0, ArrayCalculator::NUMERIC_VALUE_WARNING, &numTuple, &value);
+      runTest("log10(40)", numericArrayPath, CalculatorItem::ErrorCode::SUCCESS, CalculatorItem::WarningCode::NUMERIC_VALUE_WARNING, &numTuple, &value);
     }
 
     // Log Operator
     {
-      runTest("log", numericArrayPath, ArrayCalculator::INVALID_EQUATION, 0);
-      runTest("log(", numericArrayPath, ArrayCalculator::INVALID_EQUATION, 0);
-      runTest("log)", numericArrayPath, ArrayCalculator::INVALID_EQUATION, 0);
-      runTest("log()", numericArrayPath, ArrayCalculator::INVALID_EQUATION, 0);
-      runTest("log(1)", numericArrayPath, ArrayCalculator::INVALID_EQUATION, 0);
-      runTest("log(,)", numericArrayPath, ArrayCalculator::INVALID_EQUATION, 0);
+      runTest("log", numericArrayPath, CalculatorItem::ErrorCode::OPERATOR_NO_OPENING_PAREN, CalculatorItem::WarningCode::NONE);
+      runTest("log(", numericArrayPath, CalculatorItem::ErrorCode::OPERATOR_NO_CLOSING_PAREN, CalculatorItem::WarningCode::NONE);
+      runTest("log)", numericArrayPath, CalculatorItem::ErrorCode::OPERATOR_NO_OPENING_PAREN, CalculatorItem::WarningCode::NONE);
+      runTest("log()", numericArrayPath, CalculatorItem::ErrorCode::NOT_ENOUGH_ARGUMENTS, CalculatorItem::WarningCode::NONE);
+      runTest("log(1)", numericArrayPath, CalculatorItem::ErrorCode::NOT_ENOUGH_ARGUMENTS, CalculatorItem::WarningCode::NONE);
+      runTest("log(,)", numericArrayPath, CalculatorItem::ErrorCode::NO_NUMERIC_ARGUMENTS, CalculatorItem::WarningCode::NONE);
 
       int numTuple = 1;
       double value = log(5) / log(2);
-      runTest("log(2, 5)", numericArrayPath, 0, ArrayCalculator::NUMERIC_VALUE_WARNING, &numTuple, &value);
+      runTest("log(2, 5)", numericArrayPath, CalculatorItem::ErrorCode::SUCCESS, CalculatorItem::WarningCode::NUMERIC_VALUE_WARNING, &numTuple, &value);
 
       value = 2;
-      runTest("log(10, 100)", numericArrayPath, 0, ArrayCalculator::NUMERIC_VALUE_WARNING, &numTuple, &value);
+      runTest("log(10, 100)", numericArrayPath, CalculatorItem::ErrorCode::SUCCESS, CalculatorItem::WarningCode::NUMERIC_VALUE_WARNING, &numTuple, &value);
     }
 
     // Exp Operator
     {
-      runTest("exp", numericArrayPath, ArrayCalculator::INVALID_EQUATION, 0);
-      runTest("exp(", numericArrayPath, ArrayCalculator::INVALID_EQUATION, 0);
-      runTest("exp)", numericArrayPath, ArrayCalculator::INVALID_EQUATION, 0);
-      runTest("exp()", numericArrayPath, ArrayCalculator::INVALID_EQUATION, 0);
-      runTest("exp(1, 5)", numericArrayPath, ArrayCalculator::INVALID_EQUATION, 0);
-      runTest("exp(,)", numericArrayPath, ArrayCalculator::INVALID_EQUATION, 0);
+      runTest("exp", numericArrayPath, CalculatorItem::ErrorCode::OPERATOR_NO_OPENING_PAREN, CalculatorItem::WarningCode::NONE);
+      runTest("exp(", numericArrayPath, CalculatorItem::ErrorCode::OPERATOR_NO_CLOSING_PAREN, CalculatorItem::WarningCode::NONE);
+      runTest("exp)", numericArrayPath, CalculatorItem::ErrorCode::OPERATOR_NO_OPENING_PAREN, CalculatorItem::WarningCode::NONE);
+      runTest("exp()", numericArrayPath, CalculatorItem::ErrorCode::NO_NUMERIC_ARGUMENTS, CalculatorItem::WarningCode::NONE);
+      runTest("exp(1, 5)", numericArrayPath, CalculatorItem::ErrorCode::TOO_MANY_ARGUMENTS, CalculatorItem::WarningCode::NONE);
+      runTest("exp(,)", numericArrayPath, CalculatorItem::ErrorCode::TOO_MANY_ARGUMENTS, CalculatorItem::WarningCode::NONE);
 
       int numTuple = 1;
       double value = M_E;
-      runTest("exp(1)", numericArrayPath, 0, ArrayCalculator::NUMERIC_VALUE_WARNING, &numTuple, &value);
+      runTest("exp(1)", numericArrayPath, CalculatorItem::ErrorCode::SUCCESS, CalculatorItem::WarningCode::NUMERIC_VALUE_WARNING, &numTuple, &value);
 
       value = 1;
-      runTest("exp(0)", numericArrayPath, 0, ArrayCalculator::NUMERIC_VALUE_WARNING, &numTuple, &value);
+      runTest("exp(0)", numericArrayPath, CalculatorItem::ErrorCode::SUCCESS, CalculatorItem::WarningCode::NUMERIC_VALUE_WARNING, &numTuple, &value);
     }
 
     // Ln Operator
     {
-      runTest("ln", numericArrayPath, ArrayCalculator::INVALID_EQUATION, 0);
-      runTest("ln(", numericArrayPath, ArrayCalculator::INVALID_EQUATION, 0);
-      runTest("ln)", numericArrayPath, ArrayCalculator::INVALID_EQUATION, 0);
-      runTest("ln()", numericArrayPath, ArrayCalculator::INVALID_EQUATION, 0);
-      runTest("ln(1, 5)", numericArrayPath, ArrayCalculator::INVALID_EQUATION, 0);
-      runTest("ln(,)", numericArrayPath, ArrayCalculator::INVALID_EQUATION, 0);
+      runTest("ln", numericArrayPath, CalculatorItem::ErrorCode::OPERATOR_NO_OPENING_PAREN, CalculatorItem::WarningCode::NONE);
+      runTest("ln(", numericArrayPath, CalculatorItem::ErrorCode::OPERATOR_NO_CLOSING_PAREN, CalculatorItem::WarningCode::NONE);
+      runTest("ln)", numericArrayPath, CalculatorItem::ErrorCode::OPERATOR_NO_OPENING_PAREN, CalculatorItem::WarningCode::NONE);
+      runTest("ln()", numericArrayPath, CalculatorItem::ErrorCode::NO_NUMERIC_ARGUMENTS, CalculatorItem::WarningCode::NONE);
+      runTest("ln(1, 5)", numericArrayPath, CalculatorItem::ErrorCode::TOO_MANY_ARGUMENTS, CalculatorItem::WarningCode::NONE);
+      runTest("ln(,)", numericArrayPath, CalculatorItem::ErrorCode::TOO_MANY_ARGUMENTS, CalculatorItem::WarningCode::NONE);
 
       int numTuple = 1;
       double value = log(1);
-      runTest("ln(1)", numericArrayPath, 0, ArrayCalculator::NUMERIC_VALUE_WARNING, &numTuple, &value);
+      runTest("ln(1)", numericArrayPath, CalculatorItem::ErrorCode::SUCCESS, CalculatorItem::WarningCode::NUMERIC_VALUE_WARNING, &numTuple, &value);
 
       value = log(7);
-      runTest("ln(7)", numericArrayPath, 0, ArrayCalculator::NUMERIC_VALUE_WARNING, &numTuple, &value);
+      runTest("ln(7)", numericArrayPath, CalculatorItem::ErrorCode::SUCCESS, CalculatorItem::WarningCode::NUMERIC_VALUE_WARNING, &numTuple, &value);
     }
 
     // Floor Operator
     {
-      runTest("floor", numericArrayPath, ArrayCalculator::INVALID_EQUATION, 0);
-      runTest("floor(", numericArrayPath, ArrayCalculator::INVALID_EQUATION, 0);
-      runTest("floor)", numericArrayPath, ArrayCalculator::INVALID_EQUATION, 0);
-      runTest("floor()", numericArrayPath, ArrayCalculator::INVALID_EQUATION, 0);
-      runTest("floor(1, 5)", numericArrayPath, ArrayCalculator::INVALID_EQUATION, 0);
-      runTest("floor(,)", numericArrayPath, ArrayCalculator::INVALID_EQUATION, 0);
+      runTest("floor", numericArrayPath, CalculatorItem::ErrorCode::OPERATOR_NO_OPENING_PAREN, CalculatorItem::WarningCode::NONE);
+      runTest("floor(", numericArrayPath, CalculatorItem::ErrorCode::OPERATOR_NO_CLOSING_PAREN, CalculatorItem::WarningCode::NONE);
+      runTest("floor)", numericArrayPath, CalculatorItem::ErrorCode::OPERATOR_NO_OPENING_PAREN, CalculatorItem::WarningCode::NONE);
+      runTest("floor()", numericArrayPath, CalculatorItem::ErrorCode::NO_NUMERIC_ARGUMENTS, CalculatorItem::WarningCode::NONE);
+      runTest("floor(1, 5)", numericArrayPath, CalculatorItem::ErrorCode::TOO_MANY_ARGUMENTS, CalculatorItem::WarningCode::NONE);
+      runTest("floor(,)", numericArrayPath, CalculatorItem::ErrorCode::TOO_MANY_ARGUMENTS, CalculatorItem::WarningCode::NONE);
 
       int numTuple = 1;
       double value = 12;
-      runTest("floor(12.4564)", numericArrayPath, 0, ArrayCalculator::NUMERIC_VALUE_WARNING, &numTuple, &value);
+      runTest("floor(12.4564)", numericArrayPath, CalculatorItem::ErrorCode::SUCCESS, CalculatorItem::WarningCode::NUMERIC_VALUE_WARNING, &numTuple, &value);
 
       value = -83;
-      runTest("floor(-82.789367)", numericArrayPath, 0, ArrayCalculator::NUMERIC_VALUE_WARNING, &numTuple, &value);
+      runTest("floor(-82.789367)", numericArrayPath, CalculatorItem::ErrorCode::SUCCESS, CalculatorItem::WarningCode::NUMERIC_VALUE_WARNING, &numTuple, &value);
     }
 
     // Ceil Operator
     {
-      runTest("ceil", numericArrayPath, ArrayCalculator::INVALID_EQUATION, 0);
-      runTest("ceil(", numericArrayPath, ArrayCalculator::INVALID_EQUATION, 0);
-      runTest("ceil)", numericArrayPath, ArrayCalculator::INVALID_EQUATION, 0);
-      runTest("ceil()", numericArrayPath, ArrayCalculator::INVALID_EQUATION, 0);
-      runTest("ceil(1, 5)", numericArrayPath, ArrayCalculator::INVALID_EQUATION, 0);
-      runTest("ceil(,)", numericArrayPath, ArrayCalculator::INVALID_EQUATION, 0);
+      runTest("ceil", numericArrayPath, CalculatorItem::ErrorCode::OPERATOR_NO_OPENING_PAREN, CalculatorItem::WarningCode::NONE);
+      runTest("ceil(", numericArrayPath, CalculatorItem::ErrorCode::OPERATOR_NO_CLOSING_PAREN, CalculatorItem::WarningCode::NONE);
+      runTest("ceil)", numericArrayPath, CalculatorItem::ErrorCode::OPERATOR_NO_OPENING_PAREN, CalculatorItem::WarningCode::NONE);
+      runTest("ceil()", numericArrayPath, CalculatorItem::ErrorCode::NO_NUMERIC_ARGUMENTS, CalculatorItem::WarningCode::NONE);
+      runTest("ceil(1, 5)", numericArrayPath, CalculatorItem::ErrorCode::TOO_MANY_ARGUMENTS, CalculatorItem::WarningCode::NONE);
+      runTest("ceil(,)", numericArrayPath, CalculatorItem::ErrorCode::TOO_MANY_ARGUMENTS, CalculatorItem::WarningCode::NONE);
 
       int numTuple = 1;
       double value = 1;
-      runTest("ceil(.4564)", numericArrayPath, 0, ArrayCalculator::NUMERIC_VALUE_WARNING, &numTuple, &value);
+      runTest("ceil(.4564)", numericArrayPath, CalculatorItem::ErrorCode::SUCCESS, CalculatorItem::WarningCode::NUMERIC_VALUE_WARNING, &numTuple, &value);
 
       value = -82;
-      runTest("ceil(-82.789367)", numericArrayPath, 0, ArrayCalculator::NUMERIC_VALUE_WARNING, &numTuple, &value);
+      runTest("ceil(-82.789367)", numericArrayPath, CalculatorItem::ErrorCode::SUCCESS, CalculatorItem::WarningCode::NUMERIC_VALUE_WARNING, &numTuple, &value);
     }
 
     // Negative Operator
     {
-      runTest("-", numericArrayPath, ArrayCalculator::INVALID_EQUATION, 0);
-      runTest("-(", numericArrayPath, ArrayCalculator::INVALID_EQUATION, 0);
-      runTest("-)", numericArrayPath, ArrayCalculator::INVALID_EQUATION, 0);
-      runTest("-()", numericArrayPath, ArrayCalculator::INVALID_EQUATION, 0);
-      runTest("-(1, 5)", numericArrayPath, ArrayCalculator::INVALID_EQUATION, 0);
-      runTest("-(,)", numericArrayPath, ArrayCalculator::INVALID_EQUATION, 0);
+      runTest("-", numericArrayPath, CalculatorItem::ErrorCode::OPERATOR_NO_RIGHT_VALUE, CalculatorItem::WarningCode::NONE);
+
+      runTest("-(", numericArrayPath, CalculatorItem::ErrorCode::MISMATCHED_PARENTHESES, CalculatorItem::WarningCode::NONE);
+      runTest("-)", numericArrayPath, CalculatorItem::ErrorCode::OPERATOR_NO_RIGHT_VALUE, CalculatorItem::WarningCode::NONE);
+      runTest("-()", numericArrayPath, CalculatorItem::ErrorCode::NO_NUMERIC_ARGUMENTS, CalculatorItem::WarningCode::NONE);
+      runTest("-(1, 5)", numericArrayPath, CalculatorItem::ErrorCode::NO_PRECEDING_UNARY_OPERATOR, CalculatorItem::WarningCode::NONE);
+      runTest("-(,)", numericArrayPath, CalculatorItem::ErrorCode::NO_PRECEDING_UNARY_OPERATOR, CalculatorItem::WarningCode::NONE);
 
       int numTuple = 1;
-      double value = -0.4564;
-      runTest("-(.4564)", numericArrayPath, 0, ArrayCalculator::NUMERIC_VALUE_WARNING, &numTuple, &value);
+      double value = -9;
+      runTest("- 9", numericArrayPath, CalculatorItem::ErrorCode::SUCCESS, CalculatorItem::WarningCode::NUMERIC_VALUE_WARNING, &numTuple, &value);
+
+      value = -0.4564;
+      runTest("-(.4564)", numericArrayPath, CalculatorItem::ErrorCode::SUCCESS, CalculatorItem::WarningCode::NUMERIC_VALUE_WARNING, &numTuple, &value);
 
       value = 1;
-      runTest("-(3-4)", numericArrayPath, 0, ArrayCalculator::NUMERIC_VALUE_WARNING, &numTuple, &value);
+      runTest("-(3-4)", numericArrayPath, CalculatorItem::ErrorCode::SUCCESS, CalculatorItem::WarningCode::NUMERIC_VALUE_WARNING, &numTuple, &value);
     }
   }
 

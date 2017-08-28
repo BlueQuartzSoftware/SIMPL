@@ -35,12 +35,16 @@
 
 #include "CommaSeparator.h"
 
+#include "CoreFilters/util/ICalculatorArray.h"
+#include "CoreFilters/util/UnaryOperator.h"
+
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
 CommaSeparator::CommaSeparator()
 : CalculatorSeparator()
 {
+  setInfixToken(",");
 }
 
 // -----------------------------------------------------------------------------
@@ -48,4 +52,30 @@ CommaSeparator::CommaSeparator()
 // -----------------------------------------------------------------------------
 CommaSeparator::~CommaSeparator()
 {
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+CalculatorItem::ErrorCode CommaSeparator::checkValidity(QVector<CalculatorItem::Pointer> infixVector, int currentIndex, QString& errMsg)
+{
+  // Make sure that this comma has a valid 2-argument unary operator before it
+  bool foundUnaryOperator = false;
+  for(int i = currentIndex - 1; i >= 0; i--)
+  {
+    CalculatorItem::Pointer item = infixVector[i];
+    UnaryOperator::Pointer unary = std::dynamic_pointer_cast<UnaryOperator>(item);
+    if(unary != UnaryOperator::NullPointer() && unary->getNumberOfArguments() == 2)
+    {
+      foundUnaryOperator = true;
+    }
+  }
+
+  if(foundUnaryOperator == false)
+  {
+    errMsg = QObject::tr("A comma in the expression does not have a corresponding operator preceding it.");
+    return CalculatorItem::ErrorCode::NO_PRECEDING_UNARY_OPERATOR;
+  }
+
+  return CalculatorItem::ErrorCode::SUCCESS;
 }

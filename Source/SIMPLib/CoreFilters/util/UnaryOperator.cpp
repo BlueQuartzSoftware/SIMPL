@@ -35,11 +35,12 @@
 
 #include "UnaryOperator.h"
 
-#include "BinaryOperator.h"
-#include "CommaSeparator.h"
-#include "LeftParenthesisItem.h"
-#include "NegativeOperator.h"
-#include "RightParenthesisItem.h"
+#include "CoreFilters/ArrayCalculator.h"
+#include "CoreFilters/util/BinaryOperator.h"
+#include "CoreFilters/util/CommaSeparator.h"
+#include "CoreFilters/util/LeftParenthesisItem.h"
+#include "CoreFilters/util/NegativeOperator.h"
+#include "CoreFilters/util/RightParenthesisItem.h"
 
 // -----------------------------------------------------------------------------
 //
@@ -71,17 +72,24 @@ void UnaryOperator::calculate(AbstractFilter* filter, DataArrayPath calculatedAr
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-bool UnaryOperator::checkValidity(QVector<CalculatorItem::Pointer> infixVector, int currentIndex)
+CalculatorItem::ErrorCode UnaryOperator::checkValidity(QVector<CalculatorItem::Pointer> infixVector, int currentIndex, QString& errMsg)
 {
-  if(m_NumOfArguments == -1)
+  if(currentIndex - 1 >= 0)
   {
-    return false;
-  }
-
-  if(currentIndex - 1 >= 0 && nullptr == std::dynamic_pointer_cast<BinaryOperator>(infixVector[currentIndex - 1]) &&
-     nullptr == std::dynamic_pointer_cast<LeftParenthesisItem>(infixVector[currentIndex - 1]) && nullptr == std::dynamic_pointer_cast<NegativeOperator>(infixVector[currentIndex - 1]))
-  {
-    return false;
+    // If the left value isn't a binary operator
+    if(nullptr == std::dynamic_pointer_cast<BinaryOperator>(infixVector[currentIndex - 1]))
+    {
+      // If the left value isn't a left parenthesis
+      if(nullptr == std::dynamic_pointer_cast<LeftParenthesisItem>(infixVector[currentIndex - 1]))
+      {
+        // If the left value isn't a negative operator
+        if(nullptr == std::dynamic_pointer_cast<NegativeOperator>(infixVector[currentIndex - 1]))
+        {
+          errMsg = QObject::tr("The operator '%1' does not have a valid 'left' value.").arg(getInfixToken());
+          return CalculatorItem::ErrorCode::OPERATOR_NO_LEFT_VALUE;
+        }
+      }
+    }
   }
 
   int index = currentIndex + 1;
@@ -96,15 +104,19 @@ bool UnaryOperator::checkValidity(QVector<CalculatorItem::Pointer> infixVector, 
     {
       if(nullptr != std::dynamic_pointer_cast<RightParenthesisItem>(infixVector[index]))
       {
-        // We found the matching right parenthesis, so return true
-        if(commaCount < m_NumOfArguments - 1 || (index + 1 < infixVector.size() && nullptr == std::dynamic_pointer_cast<BinaryOperator>(infixVector[index + 1]) &&
-                                                 nullptr == std::dynamic_pointer_cast<RightParenthesisItem>(infixVector[index + 1])) ||
-           hasArray == false)
+        // We found the matching right parenthesis
+        if(commaCount < m_NumOfArguments - 1)
         {
-          return false;
+          errMsg = QObject::tr("The operator '%1' needs %2 arguments.  %3 arguments were found.").arg(getInfixToken()).arg(m_NumOfArguments).arg(commaCount + 1);
+          return CalculatorItem::ErrorCode::NOT_ENOUGH_ARGUMENTS;
+        }
+        else if(hasArray == false)
+        {
+          errMsg = QObject::tr("The operator '%1' does not have any arguments that simplify down to a number.").arg(getInfixToken());
+          return CalculatorItem::ErrorCode::NO_NUMERIC_ARGUMENTS;
         }
 
-        return true;
+        return CalculatorItem::ErrorCode::SUCCESS;
       }
       else if(nullptr != std::dynamic_pointer_cast<LeftParenthesisItem>(infixVector[index]))
       {
@@ -138,7 +150,8 @@ bool UnaryOperator::checkValidity(QVector<CalculatorItem::Pointer> infixVector, 
         if(commaCount > m_NumOfArguments - 1)
         {
           // We found too many commas (meaning that there are too many arguments), so return false
-          return false;
+          errMsg = QObject::tr("The operator '%1' needs %2 arguments.  %3 arguments were found.").arg(getInfixToken()).arg(m_NumOfArguments).arg(commaCount + 1);
+          return CalculatorItem::ErrorCode::TOO_MANY_ARGUMENTS;
         }
       }
       else if(nullptr != std::dynamic_pointer_cast<ICalculatorArray>(infixVector[index]))
@@ -147,8 +160,14 @@ bool UnaryOperator::checkValidity(QVector<CalculatorItem::Pointer> infixVector, 
       }
     }
   }
+  else
+  {
+    errMsg = QObject::tr("The operator '%1' does not have an opening parenthesis.").arg(getInfixToken());
+    return CalculatorItem::ErrorCode::OPERATOR_NO_OPENING_PAREN;
+  }
 
-  return false;
+  errMsg = QObject::tr("The operator '%1' does not have a closing parenthesis.").arg(getInfixToken());
+  return CalculatorItem::ErrorCode::OPERATOR_NO_CLOSING_PAREN;
 }
 
 // -----------------------------------------------------------------------------

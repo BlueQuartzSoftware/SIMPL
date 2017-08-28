@@ -48,6 +48,7 @@ SqrtOperator::SqrtOperator()
 : UnaryOperator()
 {
   setNumberOfArguments(1);
+  setInfixToken("sqrt");
 }
 
 // -----------------------------------------------------------------------------

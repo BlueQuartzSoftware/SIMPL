@@ -918,7 +918,7 @@ namespace H5Support_NAMESPACE
        * @param objName The name of the dataset
        * @param rank (out) Number of dimensions is store into this variable
        */
-      static H5Support_EXPORT hid_t getDatasetNDims(hid_t loc_id, const QString& objName, hid_t& rank);
+      static H5Support_EXPORT hid_t getDatasetNDims(hid_t loc_id, const QString& dsetName, hid_t& rank);
 
       /**
        * @brief Returns the H5T value for a given dataset.
@@ -944,8 +944,8 @@ namespace H5Support_NAMESPACE
       static H5Support_EXPORT herr_t getDatasetInfo( hid_t loc_id,
                                                      const QString& dsetName,
                                                      QVector<hsize_t>& dims,
-                                                     H5T_class_t& type_class,
-                                                     size_t& type_size );
+                                                     H5T_class_t& classType,
+                                                     size_t& sizeType );
 
       /**
        * @brief Returns the information about an attribute.
@@ -963,11 +963,11 @@ namespace H5Support_NAMESPACE
        */
       static H5Support_EXPORT herr_t getAttributeInfo(hid_t loc_id,
                                                       const QString& objName,
-                                                      const QString& attr_name,
+                                                      const QString& attrName,
                                                       QVector<hsize_t>& dims,
                                                       H5T_class_t& type_class,
                                                       size_t& type_size,
-                                                      hid_t& attr_type);
+                                                      hid_t& tid);
 
 
 // -----------------------------------------------------------------------------

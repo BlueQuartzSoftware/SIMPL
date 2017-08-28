@@ -72,6 +72,8 @@ set(_PublicFilters
   MaskCountDecision
   MoveData
   MoveMultiData
+  MultiThresholdObjects
+  MultiThresholdObjects2
   PostSlackMessage
   RawBinaryReader
   ReadASCIIData
@@ -145,9 +147,6 @@ ADD_SIMPL_SUPPORT_SOURCE(${SIMPLib_SOURCE_DIR} ${_filterGroupName}/util UnaryOpe
 
 ADD_SIMPL_SUPPORT_HEADER(${SIMPLib_SOURCE_DIR} ${_filterGroupName}/util BinaryOperator.h)
 ADD_SIMPL_SUPPORT_SOURCE(${SIMPLib_SOURCE_DIR} ${_filterGroupName}/util BinaryOperator.cpp)
-
-ADD_SIMPL_SUPPORT_HEADER(${SIMPLib_SOURCE_DIR} ${_filterGroupName}/util IndexOperator.h)
-ADD_SIMPL_SUPPORT_SOURCE(${SIMPLib_SOURCE_DIR} ${_filterGroupName}/util IndexOperator.cpp)
 
 ADD_SIMPL_SUPPORT_HEADER(${SIMPLib_SOURCE_DIR} ${_filterGroupName}/util ABSOperator.h)
 ADD_SIMPL_SUPPORT_SOURCE(${SIMPLib_SOURCE_DIR} ${_filterGroupName}/util ABSOperator.cpp)
