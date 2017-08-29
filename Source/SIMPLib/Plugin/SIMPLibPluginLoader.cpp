@@ -69,24 +69,19 @@ SIMPLibPluginLoader::~SIMPLibPluginLoader()
 // -----------------------------------------------------------------------------
 void SIMPLibPluginLoader::LoadPluginFilters(FilterManager* filterManager)
 {
-  // THIS IS A VERY IMPORTANT LINE: It will register all the known filters in the dream3d library. This
-  // will NOT however get filters from plugins. We are going to have to figure out how to compile filters
-  // into their own plugin and load the plugins from a command line.
-  filterManager->RegisterKnownFilters(filterManager);
-
-  QStringList m_PluginDirs;
-  m_PluginDirs << qApp->applicationDirPath();
+  QStringList pluginDirs;
+  pluginDirs << qApp->applicationDirPath();
 
   QDir aPluginDir = QDir(qApp->applicationDirPath());
-  qDebug() << "Loading DREAM3D Plugins....";
+  qDebug() << "Loading SIMPLib Plugins....";
   // qDebug() << "aPluginDir: " << aPluginDir.absolutePath() << "\n";
   QString thePath;
 
 #if defined(Q_OS_WIN)
-  if(aPluginDir.cd("plugins"))
+  if(aPluginDir.cd("Plugins"))
   {
     thePath = aPluginDir.absolutePath();
-    m_PluginDirs << thePath;
+    pluginDirs << thePath;
   }
 #elif defined(Q_OS_MAC)
   // Look to see if we are inside an .app package or inside the 'tools' directory
@@ -95,7 +90,7 @@ void SIMPLibPluginLoader::LoadPluginFilters(FilterManager* filterManager)
     aPluginDir.cdUp();
     thePath = aPluginDir.absolutePath() + "/Plugins";
     qDebug() << "  Adding Path " << thePath;
-    m_PluginDirs << thePath;
+    pluginDirs << thePath;
     aPluginDir.cdUp();
     aPluginDir.cdUp();
     // We need this because Apple (in their infinite wisdom) changed how the current working directory is set in OS X 10.9 and above. Thanks Apple.
@@ -104,44 +99,71 @@ void SIMPLibPluginLoader::LoadPluginFilters(FilterManager* filterManager)
   if(aPluginDir.dirName() == "bin")
   {
     aPluginDir.cdUp();
-    // thePath = aPluginDir.absolutePath() + "/Plugins";
-    // qDebug() << "  Adding Path " << thePath;
-    // m_PluginDirs << thePath;
     // We need this because Apple (in their infinite wisdom) changed how the current working directory is set in OS X 10.9 and above. Thanks Apple.
     chdir(aPluginDir.absolutePath().toLatin1().constData());
   }
   // aPluginDir.cd("Plugins");
   thePath = aPluginDir.absolutePath() + "/Plugins";
   qDebug() << "  Adding Path " << thePath;
-  m_PluginDirs << thePath;
+  pluginDirs << thePath;
 
 // This is here for Xcode compatibility
 #ifdef CMAKE_INTDIR
   aPluginDir.cdUp();
   thePath = aPluginDir.absolutePath() + "/Plugins/" + CMAKE_INTDIR;
-  m_PluginDirs << thePath;
+  pluginDirs << thePath;
 #endif
 #else
   // We are on Linux - I think
-  // Try the current location of where the application was launched from
+  // Try the current location of where the application was launched from which is
+  // typically the case when debugging from a build tree
   if(aPluginDir.cd("Plugins"))
   {
     thePath = aPluginDir.absolutePath();
-    m_PluginDirs << thePath;
+    pluginDirs << thePath;
+    aPluginDir.cdUp(); // Move back up a directory level
   }
-  // Now try moving up a directory which is what should happen when running from a
-  // proper distribution of DREAM3D
-  aPluginDir.cdUp();
-  if(aPluginDir.cd("Plugins"))
+
+  if(thePath.isEmpty())
   {
-    thePath = aPluginDir.absolutePath();
-    m_PluginDirs << thePath;
+    // Now try moving up a directory which is what should happen when running from a
+    // proper distribution of DREAM3D
+    aPluginDir.cdUp();
+    if(aPluginDir.cd("Plugins"))
+    {
+      thePath = aPluginDir.absolutePath();
+      pluginDirs << thePath;
+      aPluginDir.cdUp(); // Move back up a directory level
+      int no_error = chdir(aPluginDir.absolutePath().toLatin1().constData());
+      if(no_error < 0)
+      {
+        qDebug() << "Could not set the working directory.";
+      }
+    }
   }
 #endif
 
+  QByteArray pluginEnvPath = qgetenv("SIMPL_PLUGIN_PATH");
+  qDebug() << "SIMPL_PLUGIN_PATH:" << pluginEnvPath;
+
+  char sep = ';';
+#if defined(Q_OS_WIN)
+  sep = ':';
+#endif
+  QList<QByteArray> envPaths = pluginEnvPath.split(sep);
+  foreach(QByteArray envPath, envPaths)
+  {
+    if(envPath.size() > 0)
+    {
+      pluginDirs << QString::fromLatin1(envPath);
+    }
+  }
+
+  int dupes = pluginDirs.removeDuplicates();
+  qDebug() << "Removed " << dupes << " duplicate Plugin Paths";
   QStringList pluginFilePaths;
 
-  foreach(QString pluginDirString, m_PluginDirs)
+  foreach(QString pluginDirString, pluginDirs)
   {
     qDebug() << "Plugin Directory being Searched: " << pluginDirString;
     aPluginDir = QDir(pluginDirString);
@@ -161,6 +183,11 @@ void SIMPLibPluginLoader::LoadPluginFilters(FilterManager* filterManager)
       }
     }
   }
+
+  // THIS IS A VERY IMPORTANT LINE: It will register all the known filters in the dream3d library. This
+  // will NOT however get filters from plugins. We are going to have to figure out how to compile filters
+  // into their own plugin and load the plugins from a command line.
+  filterManager->RegisterKnownFilters(filterManager);
 
   PluginManager* pluginManager = PluginManager::Instance();
   QStringList pluginFileNames;
@@ -193,7 +220,9 @@ void SIMPLibPluginLoader::LoadPluginFilters(FilterManager* filterManager)
     {
       QString message("The plugin did not load with the following error\n");
       message.append(loader.errorString());
-      qDebug() << "The plugin did not load with the following error\n   " << loader.errorString() << "\n";
+      message.append("\n\n");
+      message.append("Possible causes include missing libraries that plugin depends on.");
+      qDebug() << message;
     }
   }
 }
