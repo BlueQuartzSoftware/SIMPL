@@ -56,7 +56,7 @@ class DelimitedPage : public AbstractWizardPage, private Ui::DelimitedPage
     * @param filter The instance of the filter that this parameter is a part of
     * @param parent The parent QWidget for this Widget
     */
-    DelimitedPage(const QString &inputFilePath, int numLines, QWidget* parent = nullptr);
+    DelimitedPage(QSharedPointer<ASCIIDataModel> model, const QString& inputFilePath, int numLines, QWidget* parent = nullptr);
 
     virtual ~DelimitedPage();
 
@@ -82,8 +82,9 @@ class DelimitedPage : public AbstractWizardPage, private Ui::DelimitedPage
     void checkBox_Toggled(int state);
 
   private:
-    int         m_NumLines = -1;
-    bool        m_EditSettings = false;
+    QSharedPointer<ASCIIDataModel> m_ASCIIDataModel;
+    int m_NumLines = -1;
+    bool m_EditSettings = false;
 
     DelimitedPage(const DelimitedPage&); // Copy Constructor Not Implemented
     void operator=(const DelimitedPage&); // Operator '=' Not Implemented

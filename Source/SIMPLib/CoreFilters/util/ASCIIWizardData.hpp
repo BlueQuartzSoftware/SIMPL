@@ -84,19 +84,19 @@ public:
 
   void debug()
   {
-      qDebug() << "inputFilePath: " << inputFilePath;
-      qDebug() << "dataHeaders: " << dataHeaders;
-      qDebug() << "beginIndex: " << beginIndex;
-      qDebug() << "numberOfLines: " << numberOfLines;
-      qDebug() << "dataTypes:" << dataTypes;
-      qDebug() << "delimiters: " << delimiters;
-      qDebug() << "consecutiveDelimiters: " << consecutiveDelimiters;
-      qDebug() << "tupleDims:" << tupleDims;
-      qDebug() << "automaticAM:" << automaticAM;
-      qDebug() << "headerLine:" << headerLine;
-      qDebug() << "headerIsCustom:" << headerIsCustom;
-      qDebug() << "headerUsesDefaults:" << headerUsesDefaults;
-
+    qDebug() << "==== ASCIIWizardData Debug ====";
+    qDebug() << "inputFilePath: " << inputFilePath;
+    qDebug() << "dataHeaders: " << dataHeaders;
+    qDebug() << "beginIndex: " << beginIndex;
+    qDebug() << "numberOfLines: " << numberOfLines;
+    qDebug() << "dataTypes:" << dataTypes;
+    qDebug() << "delimiters: " << delimiters;
+    qDebug() << "consecutiveDelimiters: " << consecutiveDelimiters;
+    qDebug() << "tupleDims:" << tupleDims;
+    qDebug() << "automaticAM:" << automaticAM;
+    qDebug() << "headerLine:" << headerLine;
+    qDebug() << "headerIsCustom:" << headerIsCustom;
+    qDebug() << "headerUsesDefaults:" << headerUsesDefaults;
   }
 };
 

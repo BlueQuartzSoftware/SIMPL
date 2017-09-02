@@ -62,19 +62,6 @@ ASCIIDataModel::~ASCIIDataModel()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-ASCIIDataModel* ASCIIDataModel::Instance()
-{
-  if(self == nullptr)
-  {
-    self = new ASCIIDataModel();
-  }
-
-  return self;
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
 int ASCIIDataModel::columnCount(const QModelIndex& parent) const
 {
   return m_HorizontalHeaders.size();

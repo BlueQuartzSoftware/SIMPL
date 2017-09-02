@@ -42,12 +42,14 @@
 
 #include "ui_EditHeadersDialog.h"
 
+class ASCIIDataModel;
+
 class EditHeadersDialog : public QDialog, private Ui::EditHeadersDialog
 {
   Q_OBJECT
 
 public:
-  EditHeadersDialog(QWidget* parent = nullptr);
+  EditHeadersDialog(QSharedPointer<ASCIIDataModel> model, QWidget* parent = nullptr);
 
   virtual ~EditHeadersDialog();
 
@@ -66,7 +68,7 @@ protected slots:
 private:
   QDialogButtonBox*                                         m_ButtonBox;
   QVector<QString>                                          m_Headers;
-
+  QSharedPointer<ASCIIDataModel> m_ASCIIDataModel;
   EditHeadersDialog(const EditHeadersDialog&); // Copy Constructor Not Implemented
   void operator=(const EditHeadersDialog&); // Operator '=' Not Implemented
 };

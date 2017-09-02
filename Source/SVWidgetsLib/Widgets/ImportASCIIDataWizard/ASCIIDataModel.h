@@ -48,10 +48,9 @@ class ASCIIDataModel : public QAbstractTableModel
 
 public:
   SIMPL_TYPE_MACRO(ASCIIDataModel)
+  ASCIIDataModel(QObject* parent = 0);
 
-    ~ASCIIDataModel();
-
-  static ASCIIDataModel* Instance();
+  ~ASCIIDataModel();
 
   void clear();
   void clearContents();
@@ -87,7 +86,6 @@ public:
   void setOriginalString(const int row, const QString& value);
 
 protected:
-  ASCIIDataModel(QObject* parent = 0);
 
 private:
   static ASCIIDataModel*                            self;
