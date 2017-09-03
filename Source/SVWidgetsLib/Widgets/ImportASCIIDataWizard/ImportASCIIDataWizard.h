@@ -109,21 +109,21 @@ class ImportASCIIDataWizard : public QWizard
     * @param inputFilePath The path to the file to load
     * @param beginLine The line to begin loading at in the file
     */
-    static void LoadOriginalLines(QStringList lines);
+    static void LoadOriginalLines(QStringList lines, ASCIIDataModel* model);
 
     /**
     * @brief Static function that will insert the tokenized lines into the preview table.
     * @param tokenizedLines List of tokenized lines
     * @param firstRowHeaderIndex The name of the first row's header (an index, such as '2' or '5')
     */
-    static void InsertTokenizedLines(QList<QStringList> tokenizedLines, int firstRowHeaderIndex);
+    static void InsertTokenizedLines(QList<QStringList> tokenizedLines, int firstRowHeaderIndex, ASCIIDataModel* model);
 
     /**
     * @brief Static function that inserts the full strings stored in each row item into one column in the preview table.
     * @param lines List of lines
     * @param firstRowHeaderIndex The name of the first row's header (an index, such as '2' or '5')
     */
-    static void InsertLines(QStringList lines, int firstRowHeaderIndex);
+    static void InsertLines(QStringList lines, int firstRowHeaderIndex, ASCIIDataModel* model);
 
     QList<char> getDelimiters();
     bool getConsecutiveDelimiters();
@@ -151,6 +151,7 @@ class ImportASCIIDataWizard : public QWizard
     DataContainerArray::Pointer                         m_Dca = DataContainerArray::NullPointer();
 
     QPushButton*                                        m_RefreshBtn = nullptr;
+    QSharedPointer<ASCIIDataModel> m_ASCIIDataModel;
 
     ImportASCIIDataWizard(const ImportASCIIDataWizard&); // Copy Constructor Not Implemented
     void operator=(const ImportASCIIDataWizard&); // Operator '=' Not Implemented

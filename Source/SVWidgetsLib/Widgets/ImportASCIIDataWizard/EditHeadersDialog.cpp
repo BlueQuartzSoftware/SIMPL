@@ -43,8 +43,9 @@
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-EditHeadersDialog::EditHeadersDialog(QWidget* parent)
+EditHeadersDialog::EditHeadersDialog(QSharedPointer<ASCIIDataModel> model, QWidget* parent)
 : QDialog(parent)
+, m_ASCIIDataModel(model)
 {
   setupUi(this);
 
@@ -65,12 +66,10 @@ void EditHeadersDialog::setupGui()
 {
   setWindowFlags(windowFlags() & ~Qt::WindowContextHelpButtonHint);
 
-  ASCIIDataModel* model = ASCIIDataModel::Instance();
-
   // Ensure the headers storage vector is the correct size
-  m_Headers.resize(model->columnCount());
+  m_Headers.resize(m_ASCIIDataModel->columnCount());
 
-  for(int i = 0; i < model->columnCount(); i++)
+  for(int i = 0; i < m_ASCIIDataModel->columnCount(); i++)
   {
     QLabel* label = new QLabel(this);
     QString columnName = "Column " + QString::number(i + 1) + ":";
@@ -84,7 +83,7 @@ void EditHeadersDialog::setupGui()
   m_ButtonBox = new QDialogButtonBox(this);
   m_ButtonBox->setOrientation(Qt::Horizontal);
   m_ButtonBox->setStandardButtons(QDialogButtonBox::Cancel | QDialogButtonBox::Ok);
-  gridLayout->addWidget(m_ButtonBox, model->columnCount(), 0, 1, 2);
+  gridLayout->addWidget(m_ButtonBox, m_ASCIIDataModel->columnCount(), 0, 1, 2);
 
   connect(m_ButtonBox, SIGNAL(accepted()), this, SLOT(m_ButtonBox_accepted()));
   connect(m_ButtonBox, SIGNAL(rejected()), this, SLOT(m_ButtonBox_rejected()));
@@ -95,9 +94,7 @@ void EditHeadersDialog::setupGui()
 // -----------------------------------------------------------------------------
 void EditHeadersDialog::m_ButtonBox_accepted()
 {
-  ASCIIDataModel* model = ASCIIDataModel::Instance();
-
-  for(int i = 0; i < model->columnCount(); i++)
+  for(int i = 0; i < m_ASCIIDataModel->columnCount(); i++)
   {
     QLayoutItem* item = gridLayout->itemAtPosition(i, 1);
     if(nullptr != item)

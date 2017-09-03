@@ -47,11 +47,12 @@
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-ImportASCIIDataWizard::ImportASCIIDataWizard(const QString &inputFilePath, int numLines, DataContainerArray::Pointer dca, QWidget* parent) :
-  QWizard(parent),
-  m_InputFilePath(inputFilePath),
-  m_NumLines(numLines),
-  m_Dca(dca)
+ImportASCIIDataWizard::ImportASCIIDataWizard(const QString& inputFilePath, int numLines, DataContainerArray::Pointer dca, QWidget* parent)
+: QWizard(parent)
+, m_InputFilePath(inputFilePath)
+, m_NumLines(numLines)
+, m_Dca(dca)
+, m_ASCIIDataModel(new ASCIIDataModel())
 {
   setWindowTitle("ASCII Data Import Wizard");
   setOptions(QWizard::NoBackButtonOnStartPage /*| QWizard::HaveHelpButton */);
@@ -63,10 +64,10 @@ ImportASCIIDataWizard::ImportASCIIDataWizard(const QString &inputFilePath, int n
   // connect(m_RefreshBtn, SIGNAL(clicked()), this, SLOT(refreshModel()));
   // setButton(QWizard::HelpButton, m_RefreshBtn);
 
-  DelimitedPage* dPage = new DelimitedPage(inputFilePath, numLines, this);
+  DelimitedPage* dPage = new DelimitedPage(m_ASCIIDataModel, inputFilePath, numLines, this);
   setPage(Delimited, dPage);
 
-  DataFormatPage* dfPage = new DataFormatPage(inputFilePath, numLines, dca, this);
+  DataFormatPage* dfPage = new DataFormatPage(m_ASCIIDataModel, inputFilePath, numLines, dca, this);
   setPage(DataFormat, dfPage);
 
 #ifndef Q_OS_MAC
@@ -99,11 +100,12 @@ void ImportASCIIDataWizard::setEditSettings(bool value)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-ImportASCIIDataWizard::ImportASCIIDataWizard(ASCIIWizardData* wizardData, DataContainerArray::Pointer dca, QWidget* parent) :
-  QWizard(parent)
+ImportASCIIDataWizard::ImportASCIIDataWizard(ASCIIWizardData* wizardData, DataContainerArray::Pointer dca, QWidget* parent)
+: QWizard(parent)
 , m_InputFilePath("")
 , m_NumLines(-1)
 , m_Dca(dca)
+, m_ASCIIDataModel(new ASCIIDataModel())
 {
   setWindowTitle("ASCII Data Import Wizard");
   setOptions(QWizard::NoBackButtonOnStartPage /*| QWizard::HaveHelpButton */);
@@ -117,11 +119,11 @@ ImportASCIIDataWizard::ImportASCIIDataWizard(ASCIIWizardData* wizardData, DataCo
   m_InputFilePath = wizardData->inputFilePath;
   m_NumLines = wizardData->numberOfLines;
 
-  DelimitedPage* dPage = new DelimitedPage(m_InputFilePath, m_NumLines, this);
+  DelimitedPage* dPage = new DelimitedPage(m_ASCIIDataModel, m_InputFilePath, m_NumLines, this);
   setPage(Delimited, dPage);
   dPage->setEditSettings(m_EditSettings);
 
-  DataFormatPage* dfPage = new DataFormatPage(m_InputFilePath, m_NumLines, dca, this);
+  DataFormatPage* dfPage = new DataFormatPage(m_ASCIIDataModel, m_InputFilePath, m_NumLines, dca, this);
   setPage(DataFormat, dfPage);
   dPage->setEditSettings(m_EditSettings);
   dfPage->getTupleTable()->clearTupleDimensions();
@@ -175,21 +177,20 @@ ImportASCIIDataWizard::ImportASCIIDataWizard(ASCIIWizardData* wizardData, DataCo
 
   QStringList dataHeaders = wizardData->dataHeaders;
 
-  ASCIIDataModel* model = ASCIIDataModel::Instance();
-  if(model->columnCount() < dataHeaders.size())
+  if(m_ASCIIDataModel->columnCount() < dataHeaders.size())
   {
-    model->clearContents();
-    model->insertColumns(0, dataHeaders.size());
+    m_ASCIIDataModel->clearContents();
+    m_ASCIIDataModel->insertColumns(0, dataHeaders.size());
   }
   for(int col = 0; col < dataHeaders.size(); col++)
   {
-    model->setHeaderData(col, Qt::Horizontal, dataHeaders.at(col), Qt::DisplayRole);
+    m_ASCIIDataModel->setHeaderData(col, Qt::Horizontal, dataHeaders.at(col), Qt::DisplayRole);
   }
 
   QStringList dataTypes = wizardData->dataTypes;
   for(int i = 0; i < dataTypes.size(); i++)
   {
-    model->setColumnDataType(i, dataTypes.at(i));
+    m_ASCIIDataModel->setColumnDataType(i, dataTypes.at(i));
   }
 
   dfPage->setAutomaticAttrMatrixName(wizardData->selectedPath);
@@ -299,9 +300,8 @@ QStringList ImportASCIIDataWizard::ReadLines(const QString& inputFilePath, int b
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void ImportASCIIDataWizard::InsertTokenizedLines(QList<QStringList> tokenizedLines, int firstRowHeaderIndex)
+void ImportASCIIDataWizard::InsertTokenizedLines(QList<QStringList> tokenizedLines, int firstRowHeaderIndex, ASCIIDataModel* model)
 {
-  ASCIIDataModel* model = ASCIIDataModel::Instance();
   model->clearContents();
 
   int vHeaderIndex = firstRowHeaderIndex;
@@ -330,9 +330,8 @@ void ImportASCIIDataWizard::InsertTokenizedLines(QList<QStringList> tokenizedLin
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void ImportASCIIDataWizard::InsertLines(QStringList lines, int firstRowHeaderIndex)
+void ImportASCIIDataWizard::InsertLines(QStringList lines, int firstRowHeaderIndex, ASCIIDataModel* model)
 {
-  ASCIIDataModel* model = ASCIIDataModel::Instance();
 
   model->insertColumn(0);
   for(int row = 0; row < lines.size(); row++)
@@ -346,9 +345,8 @@ void ImportASCIIDataWizard::InsertLines(QStringList lines, int firstRowHeaderInd
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void ImportASCIIDataWizard::LoadOriginalLines(QStringList lines)
+void ImportASCIIDataWizard::LoadOriginalLines(QStringList lines, ASCIIDataModel* model)
 {
-  ASCIIDataModel* model = ASCIIDataModel::Instance();
 
   if(model->rowCount() > 0)
   {
@@ -410,11 +408,10 @@ bool ImportASCIIDataWizard::getConsecutiveDelimiters()
 QStringList ImportASCIIDataWizard::getHeaders()
 {
   QStringList headers;
-  ASCIIDataModel* model = ASCIIDataModel::Instance();
 
-  for(int i = 0; i < model->columnCount(); i++)
+  for(int i = 0; i < m_ASCIIDataModel->columnCount(); i++)
   {
-    QString header = model->headerData(i, Qt::Horizontal, Qt::DisplayRole).toString();
+    QString header = m_ASCIIDataModel->headerData(i, Qt::Horizontal, Qt::DisplayRole).toString();
     headers.push_back(header);
   }
 
@@ -427,11 +424,10 @@ QStringList ImportASCIIDataWizard::getHeaders()
 QStringList ImportASCIIDataWizard::getDataTypes()
 {
   QStringList dataTypes;
-  ASCIIDataModel* model = ASCIIDataModel::Instance();
 
-  for(int i = 0; i < model->columnCount(); i++)
+  for(int i = 0; i < m_ASCIIDataModel->columnCount(); i++)
   {
-    QString dataType = model->columnDataType(i);
+    QString dataType = m_ASCIIDataModel->columnDataType(i);
     dataTypes.push_back(dataType);
   }
 

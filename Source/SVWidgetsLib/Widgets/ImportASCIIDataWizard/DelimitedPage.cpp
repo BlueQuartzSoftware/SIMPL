@@ -43,8 +43,9 @@
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-DelimitedPage::DelimitedPage(const QString& inputFilePath, int numLines, QWidget* parent)
+DelimitedPage::DelimitedPage(QSharedPointer<ASCIIDataModel> model, const QString& inputFilePath, int numLines, QWidget* parent)
 : AbstractWizardPage(inputFilePath, parent)
+, m_ASCIIDataModel(model)
 , m_NumLines(numLines)
 {
   setupUi(this);
@@ -72,11 +73,9 @@ void DelimitedPage::setEditSettings(bool value)
 // -----------------------------------------------------------------------------
 void DelimitedPage::setupGui()
 {
-  ASCIIDataModel* model = ASCIIDataModel::Instance();
-
   refreshModel();
 
-  dataView->setModel(model);
+  dataView->setModel(m_ASCIIDataModel.data());
   // dataView->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
 
   registerField("tabAsDelimiter", tabCheckBox);
@@ -103,17 +102,16 @@ void DelimitedPage::checkBox_Toggled(int state)
   bool spaceAsDelimiter = spaceCheckBox->isChecked();
   bool consecutiveDelimiters = consecutiveDCheckBox->isChecked();
 
-  ASCIIDataModel* model = ASCIIDataModel::Instance();
-  QStringList lines = model->originalStrings();
+  QStringList lines = m_ASCIIDataModel->originalStrings();
 
-  model->clear();
+  m_ASCIIDataModel->clear();
 
-  ImportASCIIDataWizard::LoadOriginalLines(lines);
+  ImportASCIIDataWizard::LoadOriginalLines(lines, m_ASCIIDataModel.data());
 
   QList<char> delimiters = ImportASCIIDataWizard::ConvertToDelimiters(tabAsDelimiter, semicolonAsDelimiter, commaAsDelimiter, spaceAsDelimiter);
 
   QList<QStringList> tokenizedLines = StringOperations::TokenizeStrings(lines, delimiters, consecutiveDelimiters);
-  ImportASCIIDataWizard::InsertTokenizedLines(tokenizedLines, 1);
+  ImportASCIIDataWizard::InsertTokenizedLines(tokenizedLines, 1, m_ASCIIDataModel.data());
 }
 
 // -----------------------------------------------------------------------------
@@ -121,8 +119,7 @@ void DelimitedPage::checkBox_Toggled(int state)
 // -----------------------------------------------------------------------------
 void DelimitedPage::refreshModel()
 {
-  ASCIIDataModel* model = ASCIIDataModel::Instance();
-  model->clear();
+  m_ASCIIDataModel->clear();
 
   bool tabAsDelimiter = tabCheckBox->isChecked();
   bool semicolonAsDelimiter = semicolonCheckBox->isChecked();
@@ -132,39 +129,38 @@ void DelimitedPage::refreshModel()
 
   QStringList lines = ImportASCIIDataWizard::ReadLines(m_InputFilePath, 1, ImportASCIIDataWizard::TotalPreviewLines);
 
-  ImportASCIIDataWizard::LoadOriginalLines(lines);
+  ImportASCIIDataWizard::LoadOriginalLines(lines, m_ASCIIDataModel.data());
 
   QList<char> delimiters = ImportASCIIDataWizard::ConvertToDelimiters(tabAsDelimiter, semicolonAsDelimiter, commaAsDelimiter, spaceAsDelimiter);
 
   QList<QStringList> tokenizedLines = StringOperations::TokenizeStrings(lines, delimiters, consecutiveDelimiters);
-  ImportASCIIDataWizard::InsertTokenizedLines(tokenizedLines, 1);
+  ImportASCIIDataWizard::InsertTokenizedLines(tokenizedLines, 1, m_ASCIIDataModel.data());
 }
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void DelimitedPage::showEvent(QShowEvent* event)
+void DelimitedPage::showEvent(QShowEvent*)
 {
-  ASCIIDataModel* model = ASCIIDataModel::Instance();
   if( !m_EditSettings)
   {
-    model->clearContents();
+    m_ASCIIDataModel->clearContents();
 
-    if(model->columnCount() > 0)
+    if(m_ASCIIDataModel->columnCount() > 0)
     {
-      model->removeColumns(0, model->columnCount());
+      m_ASCIIDataModel->removeColumns(0, m_ASCIIDataModel->columnCount());
     }
 
     // This is the first screen, so everything automatically goes into one column for now
-    model->insertColumn(0);
+    m_ASCIIDataModel->insertColumn(0);
 
-    for(int row = 0; row < model->rowCount(); row++)
+    for(int row = 0; row < m_ASCIIDataModel->rowCount(); row++)
     {
-      QString line = model->originalString(row);
+      QString line = m_ASCIIDataModel->originalString(row);
 
-      QModelIndex index = model->index(row, 0);
+      QModelIndex index = m_ASCIIDataModel->index(row, 0);
 
-      model->setData(index, line, Qt::DisplayRole);
+      m_ASCIIDataModel->setData(index, line, Qt::DisplayRole);
     }
   }
 }
