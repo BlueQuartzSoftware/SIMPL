@@ -146,13 +146,68 @@
         </property>
         <property name="icon">
          <iconset resource="../../icons/images/Icons.qrc">
-          <normaloff>:/circle-x.png</normaloff>:/circle-x.png</iconset>
+          <normaloff>:/trash.png</normaloff>:/trash.png</iconset>
         </property>
         <property name="iconSize">
          <size>
-          <width>16</width>
-          <height>16</height>
+          <width>24</width>
+          <height>24</height>
          </size>
+        </property>
+        <property name="flat">
+         <bool>true</bool>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QPushButton" name="disableBtn">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
+        <property name="maximumSize">
+         <size>
+          <width>24</width>
+          <height>24</height>
+         </size>
+        </property>
+        <property name="toolTip">
+         <string>Click to disable filter.</string>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">QPushButton:pressed 
+{
+/* background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1, stop: 0 #dadbde, stop: 1 #f6f7fa); */
+border: 0px inset black;
+}
+
+QPushButton:checked 
+{
+ /* background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1, stop: 0 #dadbde, stop: 1 #f6f7fa); */
+ 	border: 0px inset black;
+	image: url(:/ban_red.png);
+}</string>
+        </property>
+        <property name="text">
+         <string/>
+        </property>
+        <property name="icon">
+         <iconset resource="../../icons/images/Icons.qrc">
+          <normaloff>:/ban.png</normaloff>:/ban.png</iconset>
+        </property>
+        <property name="iconSize">
+         <size>
+          <width>24</width>
+          <height>24</height>
+         </size>
+        </property>
+        <property name="checkable">
+         <bool>true</bool>
+        </property>
+        <property name="checked">
+         <bool>false</bool>
         </property>
         <property name="flat">
          <bool>true</bool>
@@ -165,9 +220,6 @@
   </layout>
  </widget>
  <resources>
-  <include location="../../icons/images/Icons.qrc"/>
-  <include location="../../icons/images/Icons.qrc"/>
-  <include location="../../icons/images/Icons.qrc"/>
   <include location="../../icons/images/Icons.qrc"/>
  </resources>
  <connections/>

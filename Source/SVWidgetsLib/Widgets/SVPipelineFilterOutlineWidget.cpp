@@ -172,6 +172,8 @@ void SVPipelineFilterOutlineWidget::changeStyle()
       labelColor ="color: rgb(190, 190, 190);";
       indexBackgroundColor = "background-color: rgb(6, 118, 6);";
       break;
+    case SVPipelineFilterWidget::WidgetState::Disabled:
+      break;
   }
 
   QColor selectedColor = QColor::fromHsv(bgColor.hue(), 100, 120);
