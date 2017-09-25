@@ -51,6 +51,8 @@
 
 #include "moc_QtSStyles.cpp"
 
+static QMap<QString, QImage> s_NameToImage;
+
 namespace  {
 const QString kNormalColor("#8f8f91");
 const QString kErrorColor("#BC0000");
@@ -409,8 +411,14 @@ QColor QtSStyles::ColorForFilterGroup(const QString &grpName)
 // -----------------------------------------------------------------------------
 QIcon QtSStyles::IconForGroup(const QString &grpName)
 {
+  
   QColor color = ColorForFilterGroup(grpName);
   QImage grpImage;
+  
+  if(s_NameToImage.contains(grpName))
+  {
+    return QIcon(QPixmap::fromImage(s_NameToImage[grpName]));
+  }
 
   QIcon grpIcon(":/BlankGroup_Icon.png");
   if(!grpIcon.isNull())
@@ -423,14 +431,36 @@ QIcon QtSStyles::IconForGroup(const QString &grpName)
       for(int w = 0; w < imageSize.width(); w++)
       {
         QColor pixel = grpImage.pixelColor(w, h);
-        if( pixel.red() == 0 && pixel.green() == 0 && pixel.blue() == 0 && pixel.alpha() != 0)
+        if(pixel.red() == 228 && pixel.green() == 228 && pixel.blue() == 228 && pixel.alpha() != 0)
         {
           pixel = color;
+          pixel.setRedF((pixel.redF() * 1.50 > 1.0) ? 1.0 : pixel.redF() * 1.50);
+          pixel.setGreenF((pixel.greenF() * 1.50 > 1.0) ? 1.0 : pixel.greenF() * 1.50);
+          pixel.setBlueF((pixel.blueF() * 1.50 > 1.0) ? 1.0 : pixel.blueF() * 1.50);
+          grpImage.setPixelColor(w, h, pixel);
+        }
+
+        if(pixel.red() == 150 && pixel.green() == 150 && pixel.blue() == 150 && pixel.alpha() != 0)
+        {
+          pixel = color;
+          //          pixel.setRedF(pixel.redF() * 1.50);
+          //          pixel.setGreenF(pixel.greenF() * 1.50);
+          //          pixel.setBlueF(pixel.blueF() * 1.50);
+          grpImage.setPixelColor(w, h, pixel);
+        }
+
+        if(pixel.red() == 53 && pixel.green() == 53 && pixel.blue() == 53 && pixel.alpha() != 0)
+        {
+          pixel = color;
+          pixel.setRedF(pixel.redF() * .50);
+          pixel.setGreenF(pixel.greenF() * .50);
+          pixel.setBlueF(pixel.blueF() * .50);
           grpImage.setPixelColor(w, h, pixel);
         }
       }
     }
   }
+  s_NameToImage[grpName] = grpImage;
 
   return QIcon(QPixmap::fromImage(grpImage));
 }

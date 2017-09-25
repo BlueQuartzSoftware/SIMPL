@@ -173,6 +173,11 @@ class SVWidgetsLib_EXPORT SVPipelineFilterWidget : public QFrame, public Pipelin
     void on_deleteBtn_clicked();
 
     /**
+     * @brief on_disableBtn_clicked
+     */
+    void on_disableBtn_clicked();
+
+    /**
      * @brief filterInputWidget_filterParametersChanged
      */
     void filterInputWidget_filterParametersChanged();
@@ -252,6 +257,18 @@ class SVWidgetsLib_EXPORT SVPipelineFilterWidget : public QFrame, public Pipelin
     virtual void mouseMoveEvent( QMouseEvent* event ) override;
 
     /**
+     * @brief enterEvent
+     * @param event
+     */
+    virtual void enterEvent(QEvent* event) override;
+
+    /**
+     * @brief leaveEvent
+     * @param event
+     */
+    virtual void leaveEvent(QEvent* event) override;
+
+    /**
     * @brief getHorizontalLayout
     */
     QHBoxLayout* getHorizontalLayout();
@@ -268,8 +285,9 @@ class SVWidgetsLib_EXPORT SVPipelineFilterWidget : public QFrame, public Pipelin
 
   private:
     QPoint                            m_DragStartPosition;
-    IObserver*                        m_Observer;
-    bool                              m_HasRightClickTarget;
+    IObserver* m_Observer = nullptr;
+    bool m_HasRightClickTarget = false;
+    bool m_HoverState = false;
 
     /**
      * @brief initialize Calls all the necessary initialization code for the widget

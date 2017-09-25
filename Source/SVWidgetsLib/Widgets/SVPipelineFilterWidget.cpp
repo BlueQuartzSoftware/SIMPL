@@ -118,6 +118,9 @@ void SVPipelineFilterWidget::initialize()
 
   setupUi(this);
 
+  deleteBtn->setVisible(false);
+  disableBtn->setVisible(false);
+
   // Set the Name of the filter into the FilterWidget
   AbstractFilter::Pointer filter = getFilter();
   if(nullptr != filter.get())
@@ -286,6 +289,14 @@ void SVPipelineFilterWidget::changeStyle()
   QColor bgColor = getGroupColor();
   QColor disabledBgColor = QColor(124, 124, 124);
 
+  QColor hoveredColor = getGroupColor();
+  hoveredColor.setRedF((hoveredColor.redF() * 1.10 > 1.0) ? 1.0 : hoveredColor.redF() * 1.10);
+  hoveredColor.setGreenF((hoveredColor.greenF() * 1.10 > 1.0) ? 1.0 : hoveredColor.greenF() * 1.10);
+  hoveredColor.setBlueF((hoveredColor.blueF() * 1.10 > 1.0) ? 1.0 : hoveredColor.blueF() * 1.10);
+  if(m_HoverState)
+  {
+    bgColor = hoveredColor;
+  }
   switch(wState)
   {
   case WidgetState::Ready:
@@ -403,6 +414,14 @@ void SVPipelineFilterWidget::on_deleteBtn_clicked()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
+void SVPipelineFilterWidget::on_disableBtn_clicked()
+{
+  setIsEnabled(!disableBtn->isChecked());
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
 void SVPipelineFilterWidget::mousePressEvent(QMouseEvent* event)
 {
   if(event->button() == Qt::RightButton)
@@ -438,6 +457,28 @@ void SVPipelineFilterWidget::mouseMoveEvent(QMouseEvent* event)
   }
 
   emit dragStarted(event, this);
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void SVPipelineFilterWidget::enterEvent(QEvent* event)
+{
+  m_HoverState = true;
+  disableBtn->setVisible(true);
+  deleteBtn->setVisible(true);
+  changeStyle();
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void SVPipelineFilterWidget::leaveEvent(QEvent* event)
+{
+  m_HoverState = false;
+  disableBtn->setVisible(disableBtn->isChecked());
+  deleteBtn->setVisible(false);
+  changeStyle();
 }
 
 // -----------------------------------------------------------------------------

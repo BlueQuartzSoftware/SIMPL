@@ -36,6 +36,9 @@
 #ifndef _simplviewstyles_h_
 #define _simplviewstyles_h_
 
+#include <QtCore/QSet>
+#include <QtCore/QString>
+
 #include <QtGui/QFont>
 #include <QtGui/QIcon>
 

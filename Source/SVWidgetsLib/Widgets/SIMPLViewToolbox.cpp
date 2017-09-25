@@ -91,9 +91,7 @@ void SIMPLViewToolbox::readSettings()
   QSharedPointer<QtSSettings> prefs = QSharedPointer<QtSSettings>(new QtSSettings());
 
   prefs->beginGroup("ToolboxSettings");
-
-  setVisible(prefs->value(objectName(), true).toBool());
-
+  bool showWindow = prefs->value(objectName(), true).toBool();
   bool showBookmarksValue = prefs->value(bookmarksWidget->objectName(), true).toBool();
   m_ActionShowBookmarks->setChecked(showBookmarksValue);
   if(showBookmarksValue == false)
@@ -132,6 +130,9 @@ void SIMPLViewToolbox::readSettings()
   prefs->endGroup();
 
   prefs->endGroup();
+
+  // Set the window visible last.
+  setVisible(showWindow);
 }
 
 // -----------------------------------------------------------------------------
