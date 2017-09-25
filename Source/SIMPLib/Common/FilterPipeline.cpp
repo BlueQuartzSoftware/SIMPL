@@ -53,6 +53,7 @@ FilterPipeline::FilterPipeline()
 , m_ErrorCondition(0)
 , m_Cancel(false)
 , m_PipelineName("")
+, m_Dca(nullptr)
 {
 }
 
@@ -295,10 +296,11 @@ void FilterPipeline::cancelPipeline()
 // -----------------------------------------------------------------------------
 DataContainerArray::Pointer FilterPipeline::run()
 {
-  DataContainerArray::Pointer dca = execute();
+  m_Dca = execute();
+  
   pipelineFinished();
 
-  return dca;
+  return m_Dca;
 }
 
 // -----------------------------------------------------------------------------
@@ -532,7 +534,7 @@ DataContainerArray::Pointer FilterPipeline::execute()
 
   connectSignalsSlots();
 
-  DataContainerArray::Pointer dca = DataContainerArray::New();
+  m_Dca = DataContainerArray::New();
 
   // Start looping through the Pipeline
   float progress = 0.0f;
@@ -563,7 +565,7 @@ DataContainerArray::Pointer FilterPipeline::execute()
     {
       filt->setMessagePrefix(ss);
       connectFilterNotifications(filt.get());
-      filt->setDataContainerArray(dca);
+      filt->setDataContainerArray(m_Dca);
       setCurrentFilter(*filter);
       emit filt->filterInProgress();
       filt->execute();
@@ -586,7 +588,7 @@ DataContainerArray::Pointer FilterPipeline::execute()
         emit pipelineFinished();
         disconnectSignalsSlots();
 
-        return dca;
+        return m_Dca;
       }
     }
     if(this->getCancel() == true)
@@ -608,7 +610,7 @@ DataContainerArray::Pointer FilterPipeline::execute()
   PipelineMessage completeMessage("", "Pipeline Complete", 0, PipelineMessage::MessageType::StatusMessage, -1);
   emit pipelineGeneratedMessage(completeMessage);
 
-  return dca;
+  return m_Dca;
 }
 
 // -----------------------------------------------------------------------------
@@ -646,4 +648,12 @@ void FilterPipeline::disconnectSignalsSlots()
     AbstractFilter::Pointer filter = m_Pipeline[i];
     disconnect(this, SIGNAL(pipelineFinished()), filter.get(), SLOT(cleanupFilter()));
   }
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+DataContainerArray::Pointer FilterPipeline::getDataContainerArray()
+{
+  return m_Dca;
 }
