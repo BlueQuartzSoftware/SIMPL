@@ -104,6 +104,9 @@ padding-left: 5px;
      <property name="headerHidden">
       <bool>false</bool>
      </property>
+     <attribute name="headerDefaultSectionSize">
+      <number>150</number>
+     </attribute>
      <attribute name="headerStretchLastSection">
       <bool>false</bool>
      </attribute>
