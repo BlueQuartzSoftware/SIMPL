@@ -51,6 +51,8 @@
 
 #include "moc_QtSStyles.cpp"
 
+static QMap<QString, QImage> s_NameToImage;
+
 namespace  {
 const QString kNormalColor("#8f8f91");
 const QString kErrorColor("#BC0000");
@@ -409,9 +411,14 @@ QColor QtSStyles::ColorForFilterGroup(const QString &grpName)
 // -----------------------------------------------------------------------------
 QIcon QtSStyles::IconForGroup(const QString &grpName)
 {
-
+  
   QColor color = ColorForFilterGroup(grpName);
   QImage grpImage;
+  
+  if(s_NameToImage.contains(grpName))
+  {
+    return QIcon(QPixmap::fromImage(s_NameToImage[grpName]));
+  }
 
   QIcon grpIcon(":/BlankGroup_Icon.png");
   if(!grpIcon.isNull())
@@ -453,6 +460,7 @@ QIcon QtSStyles::IconForGroup(const QString &grpName)
       }
     }
   }
+  s_NameToImage[grpName] = grpImage;
 
   return QIcon(QPixmap::fromImage(grpImage));
 }
