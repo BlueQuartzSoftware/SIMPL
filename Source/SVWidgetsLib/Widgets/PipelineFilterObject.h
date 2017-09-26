@@ -88,7 +88,7 @@ class SVWidgetsLib_EXPORT PipelineFilterObject
     void setHasPreflightErrors(bool hasPreflightErrors);
     void setHasPreflightWarnings(bool hasPreflightWarnings);
 
-    void setIsEnabled(bool enabled);
+    virtual void setIsEnabled(bool enabled);
 
     using EnumType = unsigned int;
 

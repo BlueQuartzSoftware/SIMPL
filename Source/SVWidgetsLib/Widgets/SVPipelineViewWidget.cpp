@@ -1481,6 +1481,15 @@ void SVPipelineViewWidget::toIdleState()
 {
   setPipelineIsRunning(false);
   setAcceptDrops(true);
+  qint32 count = filterCount();
+  for(qint32 i = 0; i < count; ++i)
+  {
+    PipelineFilterObject* fw = filterObjectAt(i);
+    if(fw)
+    {
+      fw->toReadyState();
+    }
+  }
 }
 
 // -----------------------------------------------------------------------------

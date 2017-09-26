@@ -137,6 +137,11 @@
   <file>loop_square.png</file>
   <file>loop_square@2x.png</file>
 
+  <file>toggle_off.png</file>
+  <file>toggle_off@2x.png</file>
+
+  <file>toggle_on.png</file>
+  <file>toggle_on@2x.png</file>
  </qresource>
  </RCC>
 

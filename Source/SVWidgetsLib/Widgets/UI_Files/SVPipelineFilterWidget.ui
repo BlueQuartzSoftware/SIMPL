@@ -57,22 +57,6 @@
     <number>0</number>
    </property>
    <item>
-    <widget class="QLabel" name="filterIndex">
-     <property name="font">
-      <font>
-       <family>Arial</family>
-       <pointsize>13</pointsize>
-       <weight>50</weight>
-       <italic>false</italic>
-       <bold>false</bold>
-      </font>
-     </property>
-     <property name="text">
-      <string>01</string>
-     </property>
-    </widget>
-   </item>
-   <item>
     <widget class="QFrame" name="frame">
      <property name="frameShape">
       <enum>QFrame::NoFrame</enum>
@@ -91,36 +75,74 @@
        <number>0</number>
       </property>
       <property name="rightMargin">
-       <number>0</number>
+       <number>4</number>
       </property>
       <property name="bottomMargin">
        <number>0</number>
       </property>
       <item>
-       <widget class="QLabel" name="filterName">
+       <spacer name="horizontalSpacer">
+        <property name="orientation">
+         <enum>Qt::Horizontal</enum>
+        </property>
+        <property name="sizeHint" stdset="0">
+         <size>
+          <width>40</width>
+          <height>20</height>
+         </size>
+        </property>
+       </spacer>
+      </item>
+      <item>
+       <widget class="QPushButton" name="disableBtn">
         <property name="sizePolicy">
-         <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
+         <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
           <horstretch>0</horstretch>
           <verstretch>0</verstretch>
          </sizepolicy>
         </property>
-        <property name="font">
-         <font>
-          <family>Arial</family>
-          <weight>50</weight>
-          <italic>false</italic>
-          <bold>false</bold>
-          <stylestrategy>PreferAntialias</stylestrategy>
-         </font>
+        <property name="maximumSize">
+         <size>
+          <width>18</width>
+          <height>24</height>
+         </size>
         </property>
-        <property name="lineWidth">
-         <number>0</number>
+        <property name="toolTip">
+         <string>Click to disable filter.</string>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">QPushButton:pressed 
+{
+border: 0px inset black;
+}
+
+QPushButton:checked 
+{
+ 	border: 0px inset black;
+}</string>
         </property>
         <property name="text">
-         <string>Filter Name</string>
+         <string/>
         </property>
-        <property name="indent">
-         <number>5</number>
+        <property name="icon">
+         <iconset resource="../../icons/images/Icons.qrc">
+          <normaloff>:/toggle_off.png</normaloff>
+          <normalon>:/toggle_on.png</normalon>:/toggle_off.png</iconset>
+        </property>
+        <property name="iconSize">
+         <size>
+          <width>18</width>
+          <height>24</height>
+         </size>
+        </property>
+        <property name="checkable">
+         <bool>true</bool>
+        </property>
+        <property name="checked">
+         <bool>true</bool>
+        </property>
+        <property name="flat">
+         <bool>true</bool>
         </property>
        </widget>
       </item>
@@ -134,8 +156,8 @@
         </property>
         <property name="maximumSize">
          <size>
-          <width>24</width>
-          <height>24</height>
+          <width>20</width>
+          <height>20</height>
          </size>
         </property>
         <property name="toolTip">
@@ -146,68 +168,13 @@
         </property>
         <property name="icon">
          <iconset resource="../../icons/images/Icons.qrc">
-          <normaloff>:/trash.png</normaloff>:/trash.png</iconset>
+          <normaloff>:/circle-x.png</normaloff>:/circle-x.png</iconset>
         </property>
         <property name="iconSize">
          <size>
-          <width>24</width>
-          <height>24</height>
+          <width>20</width>
+          <height>20</height>
          </size>
-        </property>
-        <property name="flat">
-         <bool>true</bool>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="QPushButton" name="disableBtn">
-        <property name="sizePolicy">
-         <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-          <horstretch>0</horstretch>
-          <verstretch>0</verstretch>
-         </sizepolicy>
-        </property>
-        <property name="maximumSize">
-         <size>
-          <width>24</width>
-          <height>24</height>
-         </size>
-        </property>
-        <property name="toolTip">
-         <string>Click to disable filter.</string>
-        </property>
-        <property name="styleSheet">
-         <string notr="true">QPushButton:pressed 
-{
-/* background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1, stop: 0 #dadbde, stop: 1 #f6f7fa); */
-border: 0px inset black;
-}
-
-QPushButton:checked 
-{
- /* background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1, stop: 0 #dadbde, stop: 1 #f6f7fa); */
- 	border: 0px inset black;
-	image: url(:/ban_red.png);
-}</string>
-        </property>
-        <property name="text">
-         <string/>
-        </property>
-        <property name="icon">
-         <iconset resource="../../icons/images/Icons.qrc">
-          <normaloff>:/ban.png</normaloff>:/ban.png</iconset>
-        </property>
-        <property name="iconSize">
-         <size>
-          <width>24</width>
-          <height>24</height>
-         </size>
-        </property>
-        <property name="checkable">
-         <bool>true</bool>
-        </property>
-        <property name="checked">
-         <bool>false</bool>
         </property>
         <property name="flat">
          <bool>true</bool>

@@ -517,9 +517,8 @@ int FilterPipeline::preflightPipeline()
 
       (*filter)->setCancel(false); // Reset the cancel flag
       preflightError |= (*filter)->getErrorCondition();
+      (*filter)->setDataContainerArray(dca->deepCopy(false));
     }
-
-    (*filter)->setDataContainerArray(dca->deepCopy(false));
   }
   setCurrentFilter(AbstractFilter::NullPointer());
   return preflightError;
