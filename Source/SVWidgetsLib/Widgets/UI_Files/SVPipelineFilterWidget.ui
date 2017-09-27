@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>278</width>
-    <height>30</height>
+    <height>36</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -19,13 +19,13 @@
   <property name="minimumSize">
    <size>
     <width>50</width>
-    <height>30</height>
+    <height>36</height>
    </size>
   </property>
   <property name="maximumSize">
    <size>
     <width>16777215</width>
-    <height>30</height>
+    <height>36</height>
    </size>
   </property>
   <property name="mouseTracking">
@@ -66,7 +66,7 @@
      </property>
      <layout class="QHBoxLayout" name="horizontalLayout_2">
       <property name="spacing">
-       <number>0</number>
+       <number>2</number>
       </property>
       <property name="leftMargin">
        <number>0</number>
@@ -103,7 +103,7 @@
         </property>
         <property name="maximumSize">
          <size>
-          <width>18</width>
+          <width>24</width>
           <height>24</height>
          </size>
         </property>
@@ -111,27 +111,31 @@
          <string>Click to disable filter.</string>
         </property>
         <property name="styleSheet">
-         <string notr="true">QPushButton:pressed 
+         <string notr="true">QPushButton#disableBtn:pressed 
 {
-border: 0px inset black;
+	border: 0px inset black;
 }
 
-QPushButton:checked 
+QPushButton#disableBtn:checked 
 {
  	border: 0px inset black;
-}</string>
+}
+
+QPushButton#disableBtn:hover {
+ 	image: url(:/ban_hover.png); 
+ }</string>
         </property>
         <property name="text">
          <string/>
         </property>
         <property name="icon">
          <iconset resource="../../icons/images/Icons.qrc">
-          <normaloff>:/toggle_off.png</normaloff>
-          <normalon>:/toggle_on.png</normalon>:/toggle_off.png</iconset>
+          <normaloff>:/ban_red.png</normaloff>
+          <normalon>:/ban.png</normalon>:/ban_red.png</iconset>
         </property>
         <property name="iconSize">
          <size>
-          <width>18</width>
+          <width>24</width>
           <height>24</height>
          </size>
         </property>
@@ -156,25 +160,49 @@ QPushButton:checked
         </property>
         <property name="maximumSize">
          <size>
-          <width>20</width>
-          <height>20</height>
+          <width>24</width>
+          <height>24</height>
          </size>
         </property>
         <property name="toolTip">
-         <string>Click to remove filter from pipeline.</string>
+         <string>Click to remove filter from pipeline</string>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">QPushButton#deleteBtn:pressed 
+{
+	border: 0px inset black;
+}
+
+QPushButton#deleteBtn:checked 
+{
+ 	border: 0px inset black;
+}
+
+QPushButton#deleteBtn:hover {
+ 	image: url(:/trash_hover.png); 
+ }</string>
         </property>
         <property name="text">
          <string/>
         </property>
         <property name="icon">
          <iconset resource="../../icons/images/Icons.qrc">
-          <normaloff>:/circle-x.png</normaloff>:/circle-x.png</iconset>
+          <normaloff>:/trash.png</normaloff>
+          <normalon>:/trash_hover.png</normalon>
+          <activeon>:/trash_hover.png</activeon>
+          <selectedon>:/trash_hover.png</selectedon>:/trash.png</iconset>
         </property>
         <property name="iconSize">
          <size>
-          <width>20</width>
-          <height>20</height>
+          <width>24</width>
+          <height>24</height>
          </size>
+        </property>
+        <property name="checkable">
+         <bool>true</bool>
+        </property>
+        <property name="checked">
+         <bool>true</bool>
         </property>
         <property name="flat">
          <bool>true</bool>
