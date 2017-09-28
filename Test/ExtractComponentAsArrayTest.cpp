@@ -147,7 +147,7 @@ public:
     DataArray<int>::Pointer copiedArray = std::dynamic_pointer_cast<DataArray<int>>(am->getAttributeArray(newArrayName));
     DREAM3D_REQUIRE(nullptr != copiedArray.get());
 
-    for (int i = 0; i < da->getNumberOfTuples(); i++)
+    for (size_t i = 0; i < da->getNumberOfTuples(); i++)
     {
       DREAM3D_REQUIRE_EQUAL(da->getComponent(i, component), copiedArray->getComponent(i, 0));
     }

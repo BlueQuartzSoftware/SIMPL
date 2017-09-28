@@ -163,7 +163,7 @@ void RemoveComponentFromArray::dataCheck()
   if(m_CompNumber >= m_InArrayPtr.lock()->getNumberOfComponents())
   {
     setErrorCondition(-11004);
-    QString ss = QObject::tr("Component to extract (%1) is larger than the number of components (%2) for array selected: '%1'")
+    QString ss = QObject::tr("Error removing component from DataArray '%3', Component to remove (%1) is greater than or equal to the number of components (%2) for array selected.")
                      .arg(m_CompNumber)
                      .arg(m_InArrayPtr.lock()->getNumberOfComponents())
                      .arg(getSelectedArrayPath().getDataArrayName());

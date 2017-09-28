@@ -46,7 +46,7 @@
 #include <sstream>
 
 
-#define NUM_COLS 70
+#define NUM_COLS 120
 
 #include <QtCore/QString>
 #include <QtCore/QTextStream>

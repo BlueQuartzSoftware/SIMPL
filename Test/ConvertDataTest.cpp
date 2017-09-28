@@ -134,11 +134,8 @@ public:
     case ConvertDataTestConsts::DataType::Double:
       da = DataArray<double>::CreateArray(2, cdims, "DataArray");
       break;
-    default:
-      da = nullptr;
-      break;
     }
-    
+    da->initializeWithZeros();
     am->addAttributeArray("DataArray", da);
 
     return dca;
@@ -211,16 +208,19 @@ public:
 
     DREAM3D_REQUIRE_EQUAL(originalDataArray->getNumberOfComponents(), convertedDataArray->getNumberOfComponents());
 
-    int componentDims = originalDataArray->getNumberOfTuples() / originalDataArray->getNumberOfComponents();
+    int componentDims = static_cast<int>(originalDataArray->getNumberOfTuples()) / originalDataArray->getNumberOfComponents();
 
-    for (int i = 0; i < originalDataArray->getNumberOfTuples(); i++)
+    for (size_t i = 0; i < originalDataArray->getNumberOfTuples(); i++)
     {
       for (int j = 0; j < componentDims; j++)
       {
         T value1 = originalDataArray->getComponent(i, j);
         U value2 = convertedDataArray->getComponent(i, j);
-
-        DREAM3D_REQUIRE(static_cast<U>(value1) == value2);
+        if(static_cast<U>(value1) != value2)
+        {
+          std::cout << "orig: " << value1 << "  converted: " << value2 << std::endl;
+        }
+        DREAM3D_REQUIRE_EQUAL(static_cast<U>(value1), value2);
       }
     }
   }
