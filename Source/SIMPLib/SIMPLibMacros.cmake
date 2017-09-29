@@ -1,6 +1,48 @@
 
 
 #-------------------------------------------------------------------------------
+# SIMPL_ADD_UNIT_TEST
+# 
+macro(SIMPL_ADD_UNIT_TEST TEST_NAMES UNIT_TEST_SOURCE_DIR)
+  foreach(name ${TEST_NAMES})
+    set( ${SIMPL_UNIT_TEST}_TEST_SRCS
+      ${${SIMPL_UNIT_TEST}_TEST_SRCS}
+      "${UNIT_TEST_SOURCE_DIR}/${name}.cpp"
+      )
+
+    string(CONCAT
+      SIMPLib_UnitTest_Includes
+      ${SIMPLib_UnitTest_Includes}
+      "#include \"${UNIT_TEST_SOURCE_DIR}/${name}.cpp\"\n"
+      )
+
+    string(CONCAT
+      SIMPLib_UnitTest_MainFunctors
+      ${SIMPLib_UnitTest_MainFunctors}
+     "  ${name}()()|\n")
+  endforeach()
+endmacro()
+
+#-------------------------------------------------------------------------------
+# SIMPL_ADD_UNIT_TEST_MOC_FILE
+# 
+macro(SIMPL_ADD_UNIT_TEST_MOC_FILE SOURCE_FILE UNIT_TEST_SOURCE_DIR)
+
+
+  QT5_WRAP_CPP( simpl_unit_test_moc ${UNIT_TEST_SOURCE_DIR}/${SOURCE_FILE}.cpp)
+  set_source_files_properties( ${simpl_unit_test_moc} PROPERTIES GENERATED TRUE)
+  set_source_files_properties( ${simpl_unit_test_moc} PROPERTIES HEADER_FILE_ONLY TRUE)
+  
+  message(STATUS "${UNIT_TEST_SOURCE_DIR}/${SOURCE_FILE}.cpp")
+  message(STATUS "simpl_unit_test_moc ${simpl_unit_test_moc}")
+
+  set( ${SIMPL_UNIT_TEST}_TEST_SRCS
+      ${${SIMPL_UNIT_TEST}_TEST_SRCS}
+      "${simpl_unit_test_moc}"
+      )
+endmacro()
+
+#-------------------------------------------------------------------------------
 # Function START_FILTER_GROUP
 # @param ALL_FILTERS_HEADERFILE
 # @param REGISTER_KNOWN_FILTERS_FILE

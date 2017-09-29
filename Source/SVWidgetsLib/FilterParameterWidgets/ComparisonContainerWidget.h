@@ -39,7 +39,7 @@
 #include <QtWidgets/QFrame>
 #include <QtGui/QMouseEvent>
 
-#include "SIMPLib/Common/AbstractComparison.h"
+#include "SIMPLib/Filtering/AbstractComparison.h"
 
 #include "SVWidgetsLib/SVWidgetsLib.h"
 #include "SVWidgetsLib/FilterParameterWidgets/IComparisonWidget.h"

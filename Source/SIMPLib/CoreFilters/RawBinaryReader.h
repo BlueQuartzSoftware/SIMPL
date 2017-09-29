@@ -36,9 +36,9 @@
 #ifndef _rawbinaryreader_h_
 #define _rawbinaryreader_h_
 
-#include "SIMPLib/SIMPLib.h"
-#include "SIMPLib/Common/AbstractFilter.h"
 #include "SIMPLib/Common/SIMPLibSetGetMacros.h"
+#include "SIMPLib/Filtering/AbstractFilter.h"
+#include "SIMPLib/SIMPLib.h"
 
 /**
  * @brief The RawBinaryReader class. See [Filter documentation](@ref rawbinaryreader) for details.

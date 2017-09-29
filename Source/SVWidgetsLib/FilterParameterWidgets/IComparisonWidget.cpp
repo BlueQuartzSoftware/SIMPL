@@ -35,8 +35,8 @@
 
 #include "IComparisonWidget.h"
 
-#include "SIMPLib/Common/ComparisonSet.h"
-#include "SIMPLib/Common/ComparisonValue.h"
+#include "SIMPLib/Filtering/ComparisonSet.h"
+#include "SIMPLib/Filtering/ComparisonValue.h"
 
 #include "SVWidgetsLib/FilterParameterWidgets/ComparisonSetWidget.h"
 #include "SVWidgetsLib/FilterParameterWidgets/ComparisonValueWidget.h"

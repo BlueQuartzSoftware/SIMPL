@@ -39,8 +39,7 @@
 #include <QtWidgets/QMainWindow>
 
 #include "SIMPLib/Common/DocRequestManager.h"
-#include "SIMPLib/Common/FilterFactory.hpp"
-#include "SIMPLib/Common/IFilterFactory.hpp"
+#include "SIMPLib/Filtering/FilterFactory.hpp"
 
 #include "FilterListToolboxWidget.h"
 

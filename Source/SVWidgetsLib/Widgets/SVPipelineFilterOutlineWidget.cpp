@@ -41,8 +41,7 @@
 
 #include <QtWidgets/QMessageBox>
 
-#include "SIMPLib/Common/AbstractFilter.h"
-
+#include "SIMPLib/Filtering/AbstractFilter.h"
 
 #include "SVWidgetsLib/QtSupport/QtSStyles.h"
 #include "SVWidgetsLib/Widgets/SVPipelineFilterWidget.h"

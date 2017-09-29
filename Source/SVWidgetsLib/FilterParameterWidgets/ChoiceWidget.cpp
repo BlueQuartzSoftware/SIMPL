@@ -37,8 +37,8 @@
 
 #include <QtCore/QMetaProperty>
 
-#include "SIMPLib/Common/AbstractFilter.h"
 #include "SIMPLib/FilterParameters/LinkedChoicesFilterParameter.h"
+#include "SIMPLib/Filtering/AbstractFilter.h"
 
 #include "FilterParameterWidgetsDialogs.h"
 

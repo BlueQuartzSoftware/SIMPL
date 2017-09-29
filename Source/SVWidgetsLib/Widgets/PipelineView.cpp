@@ -63,14 +63,13 @@
 #include <QtWidgets/QUndoStack>
 #include <QtWidgets/QVBoxLayout>
 
-#include "SIMPLib/Common/FilterFactory.hpp"
-#include "SIMPLib/Common/FilterManager.h"
-#include "SIMPLib/Common/IFilterFactory.hpp"
 #include "SIMPLib/Common/PipelineMessage.h"
 #include "SIMPLib/Common/SIMPLibSetGetMacros.h"
 #include "SIMPLib/CoreFilters/Breakpoint.h"
 #include "SIMPLib/FilterParameters/JsonFilterParametersReader.h"
 #include "SIMPLib/FilterParameters/JsonFilterParametersWriter.h"
+#include "SIMPLib/Filtering/FilterFactory.hpp"
+#include "SIMPLib/Filtering/FilterManager.h"
 #include "SIMPLib/SIMPLib.h"
 
 #include "SVWidgetsLib/Core/FilterWidgetManager.h"

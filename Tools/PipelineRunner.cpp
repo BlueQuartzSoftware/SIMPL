@@ -52,16 +52,16 @@
 
 // DREAM3DLib includes
 #include "SIMPLib/Common/Constants.h"
-#include "SIMPLib/Common/FilterFactory.hpp"
-#include "SIMPLib/Common/FilterManager.h"
-#include "SIMPLib/Common/FilterPipeline.h"
 #include "SIMPLib/FilterParameters/H5FilterParametersReader.h"
 #include "SIMPLib/FilterParameters/JsonFilterParametersReader.h"
+#include "SIMPLib/Filtering/FilterFactory.hpp"
+#include "SIMPLib/Filtering/FilterManager.h"
+#include "SIMPLib/Filtering/FilterPipeline.h"
+#include "SIMPLib/Filtering/QMetaObjectUtilities.h"
 #include "SIMPLib/Plugin/ISIMPLibPlugin.h"
 #include "SIMPLib/Plugin/SIMPLibPluginLoader.h"
 #include "SIMPLib/SIMPLib.h"
 #include "SIMPLib/SIMPLibVersion.h"
-#include "SIMPLib/Utilities/QMetaObjectUtilities.h"
 
 // -----------------------------------------------------------------------------
 //

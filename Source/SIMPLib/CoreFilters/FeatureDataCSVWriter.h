@@ -37,9 +37,9 @@
 #ifndef _featuredatacsvwriter_h_
 #define _featuredatacsvwriter_h_
 
-#include "SIMPLib/SIMPLib.h"
-#include "SIMPLib/Common/AbstractFilter.h"
 #include "SIMPLib/Common/SIMPLibSetGetMacros.h"
+#include "SIMPLib/Filtering/AbstractFilter.h"
+#include "SIMPLib/SIMPLib.h"
 
 /**
  * @brief The FeatureDataCSVWriter class. See [Filter documentation](@ref featuredatacsvwriter) for details.

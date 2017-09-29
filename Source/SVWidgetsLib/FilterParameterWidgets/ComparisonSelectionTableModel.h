@@ -42,7 +42,7 @@
 #include <QtCore/QVariant>
 #include <QtCore/QStringList>
 
-#include "SIMPLib/Common/ComparisonInputs.h"
+#include "SIMPLib/Filtering/ComparisonInputs.h"
 
 #include "SVWidgetsLib/SVWidgetsLib.h"
 

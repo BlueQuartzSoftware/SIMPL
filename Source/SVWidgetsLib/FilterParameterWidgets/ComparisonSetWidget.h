@@ -43,8 +43,8 @@
 
 #include <vector>
 
-#include "SIMPLib/Common/ComparisonSet.h"
 #include "SIMPLib/DataContainers/AttributeMatrix.h"
+#include "SIMPLib/Filtering/ComparisonSet.h"
 
 #include "SVWidgetsLib/FilterParameterWidgets/IComparisonWidget.h"
 

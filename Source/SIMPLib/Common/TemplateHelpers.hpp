@@ -39,9 +39,9 @@
 #include <memory>
 
 #include "SIMPLib/Common/Constants.h"
-#include "SIMPLib/DataArrays/IDataArray.h"
 #include "SIMPLib/DataArrays/DataArray.hpp"
-#include "SIMPLib/Common/AbstractFilter.h"
+#include "SIMPLib/DataArrays/IDataArray.h"
+#include "SIMPLib/Filtering/AbstractFilter.h"
 
 /*
 * @brief This file contains a namespace and some C++ Functors that help to reduce the amout of code that filters

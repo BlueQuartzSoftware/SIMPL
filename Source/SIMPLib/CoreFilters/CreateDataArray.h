@@ -37,10 +37,10 @@
 #ifndef _createdataarray_h_
 #define _createdataarray_h_
 
-#include "SIMPLib/SIMPLib.h"
-#include "SIMPLib/Common/AbstractFilter.h"
 #include "SIMPLib/Common/SIMPLibSetGetMacros.h"
 #include "SIMPLib/FilterParameters/RangeFilterParameter.h"
+#include "SIMPLib/Filtering/AbstractFilter.h"
+#include "SIMPLib/SIMPLib.h"
 
 /**
  * @brief The CreateDataArray class. See [Filter documentation](@ref createdataarray) for details.

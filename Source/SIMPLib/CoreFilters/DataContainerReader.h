@@ -39,11 +39,11 @@
 
 #include <QtCore/QDateTime>
 
-#include "SIMPLib/SIMPLib.h"
-#include "SIMPLib/Common/AbstractFilter.h"
 #include "SIMPLib/Common/SIMPLibSetGetMacros.h"
-#include "SIMPLib/Common/FilterPipeline.h"
 #include "SIMPLib/DataContainers/DataContainerArrayProxy.h"
+#include "SIMPLib/Filtering/AbstractFilter.h"
+#include "SIMPLib/Filtering/FilterPipeline.h"
+#include "SIMPLib/SIMPLib.h"
 
 /**
  * @brief The DataContainerReader class. See [Filter documentation](@ref datacontainerreader) for details.

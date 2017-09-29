@@ -44,9 +44,8 @@
 
 #include "SVWidgetsLib/QtSupport/QtSFaderWidget.h"
 
-
-#include "SIMPLib/Common/AbstractFilter.h"
 #include "SIMPLib/FilterParameters/BooleanFilterParameter.h"
+#include "SIMPLib/Filtering/AbstractFilter.h"
 
 #include "SVWidgetsLib/SVWidgetsLib.h"
 #include "SVWidgetsLib/FilterParameterWidgets/FilterParameterWidget.h"

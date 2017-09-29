@@ -38,7 +38,7 @@
 
 #include <QtWidgets/QWidget>
 
-#include "SIMPLib/Common/ComparisonValue.h"
+#include "SIMPLib/Filtering/ComparisonValue.h"
 
 #include "SVWidgetsLib/FilterParameterWidgets/IComparisonWidget.h"
 

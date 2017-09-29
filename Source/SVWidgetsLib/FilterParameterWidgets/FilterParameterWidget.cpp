@@ -45,8 +45,8 @@
 #include <QtWidgets/QMenu>
 #include <QtWidgets/QLineEdit>
 
-#include "SIMPLib/Common/AbstractFilter.h"
 #include "SIMPLib/FilterParameters/FilterParameter.h"
+#include "SIMPLib/Filtering/AbstractFilter.h"
 
 #include "SVWidgetsLib/Core/SVWidgetsLibConstants.h"
 #include "SVWidgetsLib/QtSupport/QtSFileUtils.h"

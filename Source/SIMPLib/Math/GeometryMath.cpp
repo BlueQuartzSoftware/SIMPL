@@ -35,11 +35,14 @@
 
 #include "GeometryMath.h"
 
+#include <chrono>
+#include <random>
+
 #include "SIMPLib/Geometry/TriangleGeom.h"
 #include "SIMPLib/Geometry/VertexGeom.h"
 #include "SIMPLib/Math/MatrixMath.h"
 #include "SIMPLib/Math/SIMPLibMath.h"
-#include "SIMPLib/Utilities/SIMPLibRandom.h"
+//#include "SIMPLib/Math/SIMPLibRandom.h"
 
 // -----------------------------------------------------------------------------
 //
@@ -282,13 +285,17 @@ void GeometryMath::GenerateRandomRay(float length, float ray[3])
 {
   float w, t;
 
-  SIMPL_RANDOMNG_NEW();
+  std::random_device randomDevice;           // Will be used to obtain a seed for the random number engine
+  std::mt19937_64 generator(randomDevice()); // Standard mersenne_twister_engine seeded with rd()
+  std::mt19937_64::result_type seed = static_cast<std::mt19937_64::result_type>(std::chrono::steady_clock::now().time_since_epoch().count());
+  generator.seed(seed);
+  std::uniform_real_distribution<> distribution(0.0, 1.0);
 
-  ray[2] = (2.0 * rg.genrand_real1()) - 1.0;
-  t = (SIMPLib::Constants::k_2Pi * rg.genrand_real1());
-  w = sqrt(1.0 - (ray[2] * ray[2]));
-  ray[0] = w * cos(t);
-  ray[1] = w * sin(t);
+  ray[2] = (2.0f * distribution(generator)) - 1.0f;
+  t = (SIMPLib::Constants::k_2Pi * distribution(generator));
+  w = sqrtf(1.0f - (ray[2] * ray[2]));
+  ray[0] = w * cosf(t);
+  ray[1] = w * sinf(t);
   ray[0] *= length;
   ray[1] *= length;
   ray[2] *= length;

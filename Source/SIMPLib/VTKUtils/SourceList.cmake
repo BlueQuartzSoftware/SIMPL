@@ -81,3 +81,11 @@ if( ${PROJECT_INSTALL_HEADERS} EQUAL 1 )
             DESTINATION include/SIMPLib/${SUBDIR_NAME}
             COMPONENT Headers   )
 endif()
+
+
+#-------------------------------------------------------------------------------
+# Add the unit testing sources
+if(SIMPL_BUILD_TESTING)
+  include(${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/Testing/Cxx/SourceList.cmake)
+endif()
+

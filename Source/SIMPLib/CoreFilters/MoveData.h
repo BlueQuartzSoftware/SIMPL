@@ -37,9 +37,9 @@
 #ifndef _movedata_h_
 #define _movedata_h_
 
-#include "SIMPLib/SIMPLib.h"
-#include "SIMPLib/Common/AbstractFilter.h"
 #include "SIMPLib/Common/SIMPLibSetGetMacros.h"
+#include "SIMPLib/Filtering/AbstractFilter.h"
+#include "SIMPLib/SIMPLib.h"
 
 /**
  * @brief The MoveData class. See [Filter documentation](@ref movedata) for details.

@@ -40,8 +40,8 @@
 #include <QtCore/QPointer>
 #include <QtWidgets/QWidget>
 
-#include "SIMPLib/Common/AbstractFilter.h"
 #include "SIMPLib/DataContainers/DataContainerArrayProxy.h"
+#include "SIMPLib/Filtering/AbstractFilter.h"
 
 #include "SVWidgetsLib/QtSupport/QtSFaderWidget.h"
 #include "SVWidgetsLib/SVWidgetsLib.h"

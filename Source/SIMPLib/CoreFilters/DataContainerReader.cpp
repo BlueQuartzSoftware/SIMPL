@@ -38,12 +38,12 @@
 #include <QtCore/QFileInfo>
 
 #include "SIMPLib/Common/Constants.h"
-#include "SIMPLib/Common/FilterManager.h"
 #include "SIMPLib/DataContainers/DataContainerBundle.h"
 #include "SIMPLib/FilterParameters/AbstractFilterParametersReader.h"
 #include "SIMPLib/FilterParameters/BooleanFilterParameter.h"
 #include "SIMPLib/FilterParameters/DataContainerReaderFilterParameter.h"
 #include "SIMPLib/FilterParameters/H5FilterParametersReader.h"
+#include "SIMPLib/Filtering/FilterManager.h"
 #include "SIMPLib/SIMPLibVersion.h"
 
 // Include the MOC generated file for this class

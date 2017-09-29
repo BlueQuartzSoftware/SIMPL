@@ -49,12 +49,11 @@
 #include <QtWidgets/QStatusBar>
 #include <QtGui/QPainter>
 
-
 #include "SIMPLib/Common/PipelineMessage.h"
-#include "SIMPLib/Common/FilterPipeline.h"
+#include "SIMPLib/CoreFilters/DataContainerReader.h"
 #include "SIMPLib/FilterParameters/H5FilterParametersReader.h"
 #include "SIMPLib/FilterParameters/H5FilterParametersWriter.h"
-#include "SIMPLib/CoreFilters/DataContainerReader.h"
+#include "SIMPLib/Filtering/FilterPipeline.h"
 
 #include "SVWidgetsLib/SVWidgetsLib.h"
 #include "SVWidgetsLib/Widgets/PipelineView.h"

@@ -42,8 +42,7 @@
 
 #include "SVWidgetsLib/QtSupport/QtSFaderWidget.h"
 
-
-#include "SIMPLib/Common/AbstractFilter.h"
+#include "SIMPLib/Filtering/AbstractFilter.h"
 
 #include "SVWidgetsLib/SVWidgetsLib.h"
 

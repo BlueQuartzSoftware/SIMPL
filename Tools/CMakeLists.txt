@@ -110,20 +110,22 @@ function(COMPILE_TOOL)
 
 endfunction()
 
-# Create a Command line tool for the PipelineRunner
-COMPILE_TOOL(
-    TARGET PipelineRunner
-    SOURCES ${SIMPLTools_SOURCE_DIR}/PipelineRunner.cpp
-    DEBUG_EXTENSION ${EXE_DEBUG_EXTENSION}
-    VERSION_MAJOR ${SIMPL_VER_MAJOR}
-    VERSION_MINOR ${SIMPL_VER_MINOR}
-    VERSION_PATCH ${SIMPL_VER_PATCH}
-    BINARY_DIR    ${${PROJECT_NAME}_BINARY_DIR}
-    COMPONENT     Tools
-    INSTALL_DEST  "${install_dir}"
-    LINK_LIBRARIES SIMPLib
-)
 
+# Create a Command line tool for the PipelineRunner
+if(SIMPL_Group_PLUGIN AND SIMPL_Group_BASE AND SIMPL_Group_FILTERS)
+  COMPILE_TOOL(
+      TARGET PipelineRunner
+      SOURCES ${SIMPLTools_SOURCE_DIR}/PipelineRunner.cpp
+      DEBUG_EXTENSION ${EXE_DEBUG_EXTENSION}
+      VERSION_MAJOR ${SIMPL_VER_MAJOR}
+      VERSION_MINOR ${SIMPL_VER_MINOR}
+      VERSION_PATCH ${SIMPL_VER_PATCH}
+      BINARY_DIR    ${${PROJECT_NAME}_BINARY_DIR}
+      COMPONENT     Tools
+      INSTALL_DEST  "${install_dir}"
+      LINK_LIBRARIES SIMPLib
+  )
+endif()
 
 if (FALSE)
 

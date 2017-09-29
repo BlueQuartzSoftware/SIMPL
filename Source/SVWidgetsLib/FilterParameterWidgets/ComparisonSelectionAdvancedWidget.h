@@ -44,15 +44,15 @@
 
 #include "SVWidgetsLib/QtSupport/QtSFaderWidget.h"
 
-#include "SIMPLib/Common/AbstractFilter.h"
-#include "SIMPLib/FilterParameters/ComparisonSelectionAdvancedFilterParameter.h"
 #include "SIMPLib/DataContainers/DataContainerArrayProxy.h"
+#include "SIMPLib/FilterParameters/ComparisonSelectionAdvancedFilterParameter.h"
+#include "SIMPLib/Filtering/AbstractFilter.h"
 
 #include "SVWidgetsLib/SVWidgetsLib.h"
 #include "SVWidgetsLib/FilterParameterWidgets/FilterParameterWidget.h"
 
-#include "SIMPLib/Common/AbstractComparison.h"
-#include "SIMPLib/Common/ComparisonInputsAdvanced.h"
+#include "SIMPLib/Filtering/AbstractComparison.h"
+#include "SIMPLib/Filtering/ComparisonInputsAdvanced.h"
 
 #include "ui_ComparisonSelectionAdvancedWidget.h"
 

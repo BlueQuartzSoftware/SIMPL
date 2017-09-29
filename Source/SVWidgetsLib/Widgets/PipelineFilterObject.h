@@ -39,7 +39,7 @@
 #include <QtWidgets/QWidget>
 #include <QtWidgets/QVBoxLayout>
 
-#include "SIMPLib/Common/AbstractFilter.h"
+#include "SIMPLib/Filtering/AbstractFilter.h"
 
 #include "SVWidgetsLib/SVWidgetsLib.h"
 #include "SVWidgetsLib/Widgets/FilterInputWidget.h"

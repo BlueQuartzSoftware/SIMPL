@@ -13,7 +13,7 @@ set(PLUGIN_NAME "H5Support")
 set(${PLUGIN_NAME}Test_SOURCE_DIR ${${PLUGIN_NAME}_SOURCE_DIR}/Test)
 set(${PLUGIN_NAME}Test_BINARY_DIR ${${PLUGIN_NAME}_BINARY_DIR}/Test)
 
-include(${SIMPLProj_SOURCE_DIR}/Test/SIMPLTestFunctions.cmake)
+include(${SIMPLProj_SOURCE_DIR}/Source/SIMPLib/Testing/SIMPLTestFunctions.cmake)
 
 include_directories(${${PLUGIN_NAME}_SOURCE_DIR}/Test)
 include_directories(${${PLUGIN_NAME}_BINARY_DIR}/Test)
@@ -24,7 +24,7 @@ set(TEST_TEMP_DIR ${${PLUGIN_NAME}Test_BINARY_DIR}/Test/Temp)
 file(MAKE_DIRECTORY ${TEST_TEMP_DIR})
 
 configure_file(${${PLUGIN_NAME}_SOURCE_DIR}/Test/TestFileLocations.h.in
-               ${${PLUGIN_NAME}_BINARY_DIR}/Test/${PLUGIN_NAME}TestFileLocations.h @ONLY IMMEDIATE)
+          ${${PLUGIN_NAME}_BINARY_DIR}/Test/${PLUGIN_NAME}TestFileLocations.h @ONLY IMMEDIATE)
 
 
 include_directories(${${PLUGIN_NAME}Test_BINARY_DIR})
@@ -58,8 +58,8 @@ endforeach()
 
 STRING(REPLACE "|" ";" TestMainFunctors ${TestMainFunctors}   )
 
-configure_file(${SIMPLProj_SOURCE_DIR}/Test/TestMain.cpp.in
-               ${${PLUGIN_NAME}Test_BINARY_DIR}/${PLUGIN_NAME}UnitTest.cpp @ONLY)
+configure_file(${${PLUGIN_NAME}_SOURCE_DIR}/Test/TestMain.cpp.in
+          ${${PLUGIN_NAME}Test_BINARY_DIR}/${PLUGIN_NAME}UnitTest.cpp @ONLY)
 
 
 # Set the source files properties on each source file.

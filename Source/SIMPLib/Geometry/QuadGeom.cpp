@@ -53,7 +53,9 @@
 #include <tbb/task_scheduler_init.h>
 #endif
 
+#if defined SIMPLib_USE_EIGEN
 #include "SIMPLib/Geometry/DerivativeHelpers.h"
+#endif
 #include "SIMPLib/Geometry/GeometryHelpers.h"
 
 /**

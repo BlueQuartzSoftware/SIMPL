@@ -50,7 +50,7 @@ standard C++ library."
 #include "H5SupportTestFileLocations.h"
 
 // THIS IS REALLY DANGEROUS AS IT COULD SETUP A CIRCULAR REFERENCE WITH LIBRARY DEPENDECIES.
-#include "SIMPLib/Utilities/UnitTestSupport.hpp"
+#include "SIMPLib/Common/UnitTestSupport.hpp"
 
 #define DIM 6
 #define DIM0 4

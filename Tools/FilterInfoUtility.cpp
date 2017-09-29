@@ -38,16 +38,16 @@
 #include <QtCore/QJsonObject>
 #include <QtCore/QtDebug>
 
-#include "SIMPLib/Common/AbstractFilter.h"
-#include "SIMPLib/Common/FilterFactory.hpp"
-#include "SIMPLib/Common/FilterManager.h"
 #include "SIMPLib/Common/Observer.h"
 #include "SIMPLib/FilterParameters/JsonFilterParametersWriter.h"
+#include "SIMPLib/Filtering/AbstractFilter.h"
+#include "SIMPLib/Filtering/FilterFactory.hpp"
+#include "SIMPLib/Filtering/FilterManager.h"
+#include "SIMPLib/Filtering/QMetaObjectUtilities.h"
 #include "SIMPLib/Plugin/ISIMPLibPlugin.h"
 #include "SIMPLib/Plugin/PluginManager.h"
 #include "SIMPLib/Plugin/SIMPLibPluginLoader.h"
 #include "SIMPLib/SIMPLib.h"
-#include "SIMPLib/Utilities/QMetaObjectUtilities.h"
 
 // -----------------------------------------------------------------------------
 //  Use unit test framework

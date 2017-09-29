@@ -36,9 +36,9 @@
 #ifndef _importascidataarray_h_
 #define _importascidataarray_h_
 
-#include "SIMPLib/SIMPLib.h"
-#include "SIMPLib/Common/AbstractFilter.h"
 #include "SIMPLib/Common/SIMPLibSetGetMacros.h"
+#include "SIMPLib/Filtering/AbstractFilter.h"
+#include "SIMPLib/SIMPLib.h"
 
 /**
  * @brief The ImportAsciDataArray class. See [Filter documentation](@ref ImportAsciDataArray) for details.

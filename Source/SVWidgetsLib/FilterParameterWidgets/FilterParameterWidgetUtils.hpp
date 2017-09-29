@@ -8,13 +8,11 @@
 #include <QtWidgets/QListWidgetItem>
 #include <QtGui/QStandardItemModel>
 
-#include "SIMPLib/Common/AbstractFilter.h"
 #include "SIMPLib/DataContainers/DataContainerArray.h"
 #include "SIMPLib/DataContainers/DataContainerArrayProxy.h"
 #include "SIMPLib/DataContainers/DataContainerProxy.h"
 #include "SIMPLib/FilterParameters/FilterParameter.h"
-
-
+#include "SIMPLib/Filtering/AbstractFilter.h"
 
 /**
  * @brief The FilterParameterWidgetUtils class implements some common methods that

@@ -44,8 +44,8 @@
 
 #include <QtGui/QKeyEvent>
 
+#include "SIMPLib/Filtering/FilterManager.h"
 #include "SVWidgetsLib/SVWidgetsLib.h"
-#include "SIMPLib/Common/FilterManager.h"
 
 #include "SVWidgetsLib/QtSupport/QtSSettings.h"
 

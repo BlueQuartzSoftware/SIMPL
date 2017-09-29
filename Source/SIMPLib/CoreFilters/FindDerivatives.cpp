@@ -44,8 +44,8 @@
 #include "SIMPLib/Geometry/QuadGeom.h"
 #include "SIMPLib/Geometry/TetrahedralGeom.h"
 #include "SIMPLib/Geometry/TriangleGeom.h"
+#include "SIMPLib/Math/SIMPLibRandom.h"
 #include "SIMPLib/SIMPLibVersion.h"
-#include "SIMPLib/Utilities/SIMPLibRandom.h"
 
 // Include the MOC generated file for this class
 #include "moc_FindDerivatives.cpp"

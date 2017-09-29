@@ -1,37 +1,3 @@
-# ============================================================================
-# Copyright (c) 2009-2015 BlueQuartz Software, LLC
-#
-# Redistribution and use in source and binary forms, with or without modification,
-# are permitted provided that the following conditions are met:
-#
-# Redistributions of source code must retain the above copyright notice, this
-# list of conditions and the following disclaimer.
-#
-# Redistributions in binary form must reproduce the above copyright notice, this
-# list of conditions and the following disclaimer in the documentation and/or
-# other materials provided with the distribution.
-#
-# Neither the name of BlueQuartz Software, the US Air Force, nor the names of its
-# contributors may be used to endorse or promote products derived from this software
-# without specific prior written permission.
-#
-# THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
-# AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
-# IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
-# DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE
-# FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
-# DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
-# SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
-# CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
-# OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE
-# USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-#
-# The code contained herein was partially funded by the followig contracts:
-#    United States Air Force Prime Contract FA8650-07-D-5800
-#    United States Air Force Prime Contract FA8650-10-D-5210
-#    United States Prime Contract Navy N00173-07-C-2068
-#
-# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
 if(NOT "${DREAM3D_SDK}" STREQUAL "")
   include("${DREAM3D_SDK}/DREAM3D_SDK.cmake")
@@ -107,21 +73,7 @@ if("${CMP_SOURCE_DIR}" STREQUAL "")
 endif()
 
 if(NOT EXISTS "${CMP_SOURCE_DIR}")
-  if(Git_FOUND)
-    message(STATUS "CMP_SOURCE_DIR does not exist at ${CMP_SOURCE_DIR}. Attempting to clone it from Github....")
-    execute_process(COMMAND ${GIT_EXECUTABLE} clone -b develop git://github.com/bluequartzsoftware/CMP.git ${SIMPL_PARENT}/CMP
-                    OUTPUT_VARIABLE CLONE_OUTPUT
-                    RESULT_VARIABLE did_run
-                    ERROR_VARIABLE git_error
-                    WORKING_DIRECTORY ${SIMPL_PARENT} )
-  endif()
-  # One last check. If it does not exist at this point then we simply Abort CMake
-  if(NOT EXISTS "${CMP_SOURCE_DIR}")
-    message(FATAL_ERROR "CMP_SOURCE_DIR does not exist. We attempted to clone it from the GitHub repo but that also seemed\
-      to fail. SIMPLView can not proceed without the CMP directory. Please ask a SIMPL developer for more\
-      information about this error. Can you access http://github.com/bluequartzsoftware/CMP.git? is\
-      a firewall blocking the 'git' protocol? ")
-  endif()
+  message(FATAL_ERROR "CMP_SOURCE_DIR does not exist at '${CMP_SOURCE_DIR}'")
 endif()
 
 
@@ -206,20 +158,13 @@ if(UNIX AND NOT APPLE)
     set(DREAM3D_LINUX_SYSTEM ${CMAKE_SYSTEM_NAME} CACHE STRING "The Name of the linux distrubution for packaging")
 endif()
 
-
-
-#------------------------------------------------------------------------------
-# Find the Git Package for Versioning. It should be ok if Git is NOT found
-Find_package(Git)
-
+# ------------------
+# Generate a Revision String
 cmpRevisionString( GENERATED_HEADER_FILE_PATH "SIMPLFileNotUsed.h"
                         GENERATED_SOURCE_FILE_PATH "SIMPLFileNotUsed.cpp"
                         NAMESPACE "SIMPLProj"
                         PROJECT_NAME "${PROJECT_NAME}"
                         EXPORT_MACRO "SIMPLProj_EXPORT")
-
-# --------------------------------------------------------------------
-# TODO: Do we need a SIMPL_DATA_DIR?
 
 # --------------------------------------------------------------------
 # Override CMake's built in module directory by prepending cmp's module
@@ -231,29 +176,82 @@ OPTION (BUILD_SHARED_LIBS "Build Shared Libraries" ON)
 set(LIB_TYPE STATIC)
 if(BUILD_SHARED_LIBS)
   #message(FATAL_ERROR "Due to issues exporting symbols with MSVC DREAM3D does NOT currently support intermediate shared libraries. Please turn OFF BUILD_SHARED_LIBS")
-    set(LIB_TYPE SHARED)
-    list(APPEND CMP_LIB_SEARCH_DIRS  ${CMAKE_RUNTIME_OUTPUT_DIRECTORY} )
-    if(MSVC)
-        list(APPEND CMP_LIB_SEARCH_DIRS ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/Debug
-                                        ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/Release )
-    endif()
+  set(LIB_TYPE SHARED)
+  list(APPEND CMP_LIB_SEARCH_DIRS  ${CMAKE_RUNTIME_OUTPUT_DIRECTORY} )
+  if(MSVC)
+    list(APPEND CMP_LIB_SEARCH_DIRS ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/Debug
+                          ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/Release )
+  endif()
 
 else()
   message(FATAL_ERROR "BUILD_SHARED_LIBS Must be set to ON in order to build properly.")
 endif(BUILD_SHARED_LIBS)
 
-option(SIMPL_BUILD_WIDGETS "Build the QtWidgets that are needed for GUI Applications" OFF)
+
+
+#-------------------------------------------------------------------------------
+# SIMPL_ENABLE_GROUP
+# 
+function(SIMPL_ENABLE_GROUP)
+  set(options)
+  set(oneValueArgs GROUP_NAME DESC ENABLE)
+  set(multiValueArgs DEPENDENCIES)
+
+  cmake_parse_arguments(P "${options}" "${oneValueArgs}" "${multiValueArgs}" ${ARGN} )
+
+  option(SIMPL_Group_${P_GROUP_NAME} "${P_DESC}" ${P_ENABLE})
+
+  if(SIMPL_Group_${P_GROUP_NAME})
+    foreach(group ${P_DEPENDENCIES})
+      set(SIMPL_Group_${group} ON CACHE BOOL "" FORCE)
+    endforeach()
+  endif()
+endfunction()
 
 # --------------------------------------------------------------------
-# Find and Use the Qt5 Libraries
-include(${CMP_SOURCE_DIR}/ExtLib/Qt5Support.cmake)
-set(SIMPL_Qt5_COMPONENTS Core Network)
-if( SIMPL_BUILD_WIDGETS)
-  set(SIMPL_Qt5_COMPONENTS Core Widgets Network Gui Concurrent Svg Xml OpenGL PrintSupport)
-endif()
-set(USE_QtWebEngine FALSE)
-CMP_AddQt5Support( "${SIMPL_Qt5_COMPONENTS}" "${USE_QtWebEngine}" "${SIMPLProj_BINARY_DIR}" "SIMPL")
+# Turn on SIMPLib Groups to compile
 
+SIMPL_ENABLE_GROUP(GROUP_NAME BASE
+            ENABLE ON
+            DESC "Compile SIMPL Base functionality")
+SIMPL_ENABLE_GROUP(GROUP_NAME FILTERS
+            ENABLE ON
+            DESC "Compile SIMPL Filtering functionality"
+            DEPENDENCIES BASE)
+SIMPL_ENABLE_GROUP(GROUP_NAME PLUGIN
+            ENABLE ON
+            DESC "Compile SIMPL Plugin functionality"
+            DEPENDENCIES BASE FILTERS)
+SIMPL_ENABLE_GROUP(GROUP_NAME WIDGETS
+            ENABLE ON
+            DESC "Compile SIMPL Qt Widgets functionality"
+            DEPENDENCIES BASE FILTERS PLUGIN)
+
+OPTION(SIMPL_BUILD_TESTING "Compile the test programs" ON)
+
+if(0)
+  option(SIMPL_Group_BASE "Compile the base functionality" ON)
+
+
+  option(SIMPL_Group_FILTERS "Compile the Filtering functionality" OFF)
+  if(SIMPL_Group_FILTERS AND NOT SIMPL_Group_BASE)
+    message(STATUS "SIMPL_Group_FILTERS is ON, SIMPL_Group_BASE is being Enabled")
+    set(SIMPL_Group_BASE ON)
+  endif()
+
+  option(SIMPL_Group_PLUGIN "Compile the Plugin functionality that allows the loading of SIMPL Plugins" OFF)
+  if(SIMPL_Group_PLUGIN AND NOT SIMPL_Group_FILTERS)
+    message(STATUS "SIMPL_Group_PLUGIN is ON, SIMPL_Group_FILTERS is being Enabled")
+    set(SIMPL_Group_FILTERS ON)
+  endif()
+
+  option(SIMPL_Group_WIDGETS "Build the QtWidgets that are needed for GUI Applications" OFF)
+  if(SIMPL_Group_PLUGIN AND NOT SIMPL_Group_BASE)
+    message(STATUS "SIMPL_Group_PLUGIN is ON, SIMPL_Group_BASE is being Enabled")
+    set(SIMPL_Group_BASE ON)
+  endif()
+
+endif()
 
 # --------------------------------------------------------------------
 # Find HDF5 Headers/Libraries
@@ -266,27 +264,26 @@ include(${CMP_SOURCE_DIR}/ExtLib/HDF5Support.cmake)
 # Should we use Intel Threading Building Blocks
 # --------------------------------------------------------------------
 set(SIMPLib_USE_PARALLEL_ALGORITHMS "")
-option(SIMPL_USE_MULTITHREADED_ALGOS "Use MultiThreaded Algorithms" ON)
+option(SIMPL_USE_MULTITHREADED_ALGOS "Use MultiThreaded Algorithms" OFF)
 if(SIMPL_USE_MULTITHREADED_ALGOS)
-    find_package(TBB)
-    if(TBB_FOUND)
-        include_directories(${TBB_INCLUDE_DIRS} )
-        CMP_COPY_DEPENDENT_LIBRARIES("tbb;tbb_malloc")
-        # Append the locations of the TBB libraries to our Library Search Paths
-        # TBB_LIB_SEARCH_PATH Comes from the FindTBB.cmake file and should work across all platforms
-        file(APPEND ${CMP_PLUGIN_SEARCHDIR_FILE} "${TBB_LIB_SEARCH_PATH};")
+  find_package(TBB)
+  if(TBB_FOUND)
+      include_directories(${TBB_INCLUDE_DIRS} )
+      CMP_COPY_DEPENDENT_LIBRARIES("tbb;tbb_malloc")
+      # Append the locations of the TBB libraries to our Library Search Paths
+      # TBB_LIB_SEARCH_PATH Comes from the FindTBB.cmake file and should work across all platforms
+      file(APPEND ${CMP_PLUGIN_SEARCHDIR_FILE} "${TBB_LIB_SEARCH_PATH};")
 
-        # Create an install rule to copy the dependent shared library over to the installed location
-        CMP_LIBRARIES_INSTALL_RULES("tbb;tbb_malloc" ".")
-    else()
-        message(FATAL_ERROR "The Intel Threading Building Blocks library is needed to enable the multithreaded algorithms. Please make sure it is installed properly")
-    endif()
-    set(SIMPLib_USE_PARALLEL_ALGORITHMS "1")
+      # Create an install rule to copy the dependent shared library over to the installed location
+      CMP_LIBRARIES_INSTALL_RULES("tbb;tbb_malloc" ".")
+  else()
+      message(FATAL_ERROR "The Intel Threading Building Blocks library is needed to enable the multithreaded algorithms. Please make sure it is installed properly")
+  endif()
+  set(SIMPLib_USE_PARALLEL_ALGORITHMS "1")
 endif()
 
 # --------------------------------------------------------------------
-# SIMPL needs the Eigen library for Least Squares fit and Eigen
-# value/vector calculations.
+# SIMPL needs the Eigen library for Least Squares fit and Eigen value/vector calculations.
 set(SIMPLib_USE_EIGEN "")
 Find_Package(Eigen REQUIRED)
 if(EIGEN_FOUND)
@@ -297,6 +294,15 @@ else()
   message(WARNING "The Eigen Library is required for some algorithms to execute. These algorithms will be disabled.")
 endif()
 
+# --------------------------------------------------------------------
+# Find and Use the Qt5 Libraries
+include(${CMP_SOURCE_DIR}/ExtLib/Qt5Support.cmake)
+set(SIMPL_Qt5_COMPONENTS Core Network)
+if( SIMPL_Group_WIDGETS)
+  set(SIMPL_Qt5_COMPONENTS Core Widgets Network Gui Concurrent Svg Xml OpenGL PrintSupport)
+endif()
+set(USE_QtWebEngine FALSE)
+CMP_AddQt5Support( "${SIMPL_Qt5_COMPONENTS}" "${USE_QtWebEngine}" "${SIMPLProj_BINARY_DIR}" "SIMPL")
 
 # --------------------------------------------------------------------
 # Find the Doxygen package
@@ -408,7 +414,6 @@ endif()
 file(WRITE ${SIMPLProj_BINARY_DIR}/DREAM3DDocGroupList "")
 
 # ------- Enable the CTest testing. Use make test to run all tests ---------------
-OPTION(SIMPL_BUILD_TESTING "Compile the test programs" ON)
 if(SIMPL_BUILD_TESTING)
     #ENABLE_TESTING()
     include( CTest )
@@ -467,7 +472,7 @@ if("${FilterWidgetsLib_BINARY_DIR}" STREQUAL "")
 endif()
 
 # -----------------------------------------------------------------------
-# -- Add in the DREAM3D Sources into a library
+# -- Add in the SIMPL Sources into a library
 add_subdirectory( ${SIMPLProj_SOURCE_DIR}/Source/SIMPLib/ ${PROJECT_BINARY_DIR}/SIMPLib)
 
 
@@ -479,7 +484,7 @@ add_subdirectory(${SIMPLProj_SOURCE_DIR}/Tools ${PROJECT_BINARY_DIR}/Tools)
 # Build the SVWidgetsLib Library which holds all the GUI Specific Widgets such
 # as the Filter Parameter Widgets and various building block widgets for the GUI applications.
 # The plugins are also going to depend on these being built
-if(SIMPL_BUILD_WIDGETS)
+if(SIMPL_Group_WIDGETS)
   add_subdirectory( ${SIMPLProj_SOURCE_DIR}/Source/SVWidgetsLib ${PROJECT_BINARY_DIR}/SVWidgetsLib)
 endif()
 
@@ -528,9 +533,5 @@ endif()
 # This should be the last line in this file:
 include(${PROJECT_RESOURCES_DIR}/CPack/PackageProject.cmake)
 
-# ------- Enable the CTest testing. Use make test to run all tests ---------------
-if(SIMPL_BUILD_TESTING)
-    include(${SIMPLProj_SOURCE_DIR}/Test/CMakeLists.txt)
-endif()
 
 

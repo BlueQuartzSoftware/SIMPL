@@ -23,7 +23,7 @@
 #include "H5Support/QH5Lite.h"
 #include "H5Support/QH5Utilities.h"
 #include "SIMPLib/Common/SIMPLibSetGetMacros.h"
-#include "SIMPLib/Utilities/UnitTestSupport.hpp"
+#include "SIMPLib/Common/UnitTestSupport.hpp"
 
 #include "H5SupportTestFileLocations.h"
 

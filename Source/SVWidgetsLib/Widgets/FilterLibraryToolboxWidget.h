@@ -42,7 +42,7 @@
 
 #include <QtCore/QSignalMapper>
 
-#include "SIMPLib/Common/FilterManager.h"
+#include "SIMPLib/Filtering/FilterManager.h"
 
 #include "SVWidgetsLib/SVWidgetsLib.h"
 

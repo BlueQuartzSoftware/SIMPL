@@ -36,11 +36,11 @@
 #include "MultiThresholdObjects2.h"
 
 #include "SIMPLib/Common/Constants.h"
-#include "SIMPLib/Common/ThresholdFilterHelper.h"
 #include "SIMPLib/FilterParameters/AbstractFilterParametersReader.h"
 #include "SIMPLib/FilterParameters/ComparisonSelectionAdvancedFilterParameter.h"
 #include "SIMPLib/FilterParameters/SeparatorFilterParameter.h"
 #include "SIMPLib/FilterParameters/StringFilterParameter.h"
+#include "SIMPLib/Filtering/ThresholdFilterHelper.h"
 #include "SIMPLib/SIMPLibVersion.h"
 
 // Include the MOC generated file for this class

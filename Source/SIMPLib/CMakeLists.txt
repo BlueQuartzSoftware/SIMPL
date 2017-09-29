@@ -1,37 +1,3 @@
-# ============================================================================
-# Copyright (c) 2009-2015 BlueQuartz Software, LLC
-#
-# Redistribution and use in source and binary forms, with or without modification,
-# are permitted provided that the following conditions are met:
-#
-# Redistributions of source code must retain the above copyright notice, this
-# list of conditions and the following disclaimer.
-#
-# Redistributions in binary form must reproduce the above copyright notice, this
-# list of conditions and the following disclaimer in the documentation and/or
-# other materials provided with the distribution.
-#
-# Neither the name of BlueQuartz Software, the US Air Force, nor the names of its
-# contributors may be used to endorse or promote products derived from this software
-# without specific prior written permission.
-#
-# THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
-# AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
-# IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
-# DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE
-# FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
-# DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
-# SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
-# CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
-# OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE
-# USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-#
-# The code contained herein was partially funded by the followig contracts:
-#    United States Air Force Prime Contract FA8650-07-D-5800
-#    United States Air Force Prime Contract FA8650-10-D-5210
-#    United States Prime Contract Navy N00173-07-C-2068
-#
-# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
 # set project's name
 PROJECT( SIMPLib VERSION ${SIMPLProj_VERSION_MAJOR}.${SIMPLProj_VERSION_MINOR})
@@ -95,6 +61,11 @@ set(Project_SRCS
 
 #----- Bring in our CMake file with the macros
 include(${SIMPLib_SOURCE_DIR}/SIMPLibMacros.cmake)
+set(SIMPLib_UnitTest_Includes "")
+set(SIMPLib_UnitTest_MainFunctors "")
+
+#------------------------------------------------------------------------------
+# Reset the Unit Test code fragment to an empty string
 
 
 #-------------------------------------------------------------------------------
@@ -109,18 +80,26 @@ macro(D3DCompileDir DirName)
     set(Project_SRCS ${Project_SRCS} ${SIMPLib_${DirName}_SRCS} ${SIMPLib_${DirName}_HDRS} ${SIMPLib_${SUBDIR_NAME}_Generated_MOC_SRCS})
 endMacro()
 
-# Add in our NON-Filter classes
-D3DCompileDir(Common)
-D3DCompileDir(DataArrays)
-D3DCompileDir(DataContainers)
-D3DCompileDir(Geometry)
-D3DCompileDir(FilterParameters)
-D3DCompileDir(HDF5)
-D3DCompileDir(Math)
-D3DCompileDir(Plugin)
-D3DCompileDir(StatsData)
-D3DCompileDir(Utilities)
-D3DCompileDir(VTKUtils)
+if(SIMPL_Group_BASE)
+  D3DCompileDir(Common)
+  D3DCompileDir(DataArrays)
+  D3DCompileDir(DataContainers)
+  D3DCompileDir(Geometry)
+  D3DCompileDir(HDF5)
+  D3DCompileDir(Math)
+  D3DCompileDir(StatsData)
+  D3DCompileDir(Utilities)
+endif()
+
+if(SIMPL_Group_FILTERS)
+  D3DCompileDir(Filtering)
+  D3DCompileDir(FilterParameters)
+  D3DCompileDir(VTKUtils)
+endif()
+
+if(SIMPL_Group_PLUGIN)
+  D3DCompileDir(Plugin)
+endif()
 
 
 #-------
@@ -143,14 +122,15 @@ file(APPEND ${RegisterKnownFiltersFile} "\nvoid FilterManager::RegisterKnownFilt
 
 # Add in our Filter classes
 # Add the generated moc file to the project sources
-include(${SIMPLib_SOURCE_DIR}/CoreFilters/SourceList.cmake)
-
-#-----------------------------------------------------
-# conditionally compile our example codes- These should be turned off for a release
-if(NOT "${SIMPLProj_RELEASE_TYPE}" STREQUAL "Offical")
-    # Add the generated moc file to the project sources
-    set(Project_SRCS ${Project_SRCS} ${PluginAutoMocSourceFile} )
-    include(${SIMPLib_SOURCE_DIR}/TestFilters/SourceList.cmake)
+if(SIMPL_Group_FILTERS)
+  include(${SIMPLib_SOURCE_DIR}/CoreFilters/SourceList.cmake)
+  #-----------------------------------------------------
+  # conditionally compile our example codes- These should be turned off for a release
+  if(NOT "${SIMPLProj_RELEASE_TYPE}" STREQUAL "Offical")
+      # Add the generated moc file to the project sources
+      set(Project_SRCS ${Project_SRCS} ${PluginAutoMocSourceFile} )
+      include(${SIMPLib_SOURCE_DIR}/TestFilters/SourceList.cmake)
+  endif()
 endif()
 
 #-----------------------------------------------------
@@ -220,6 +200,12 @@ export(EXPORT SIMPLibTargets
 #     ${ConfigPackageLocation}
 # )
 
+
+
+# ------- Enable the CTest testing. Use make test to run all tests ---------------
+if(SIMPL_BUILD_TESTING)
+    include(${SIMPLib_SOURCE_DIR}/Testing/CMakeLists.txt)
+endif()
 
 
 
