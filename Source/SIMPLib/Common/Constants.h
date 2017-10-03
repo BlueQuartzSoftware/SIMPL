@@ -280,7 +280,6 @@ namespace SIMPL
     const QString RotationTransformationFilters("Rotating/Transforming");
     const QString ResolutionFilters("Resolution");
     const QString MorphologicalFilters("Morphological");
-    const QString CrystallographicFilters("Crystallographic");
     const QString PackingFilters("Packing");
     const QString CrystallographyFilters("Crystallography");
     const QString GenerationFilters("Generation");
