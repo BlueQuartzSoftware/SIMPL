@@ -9,9 +9,9 @@
 #include "SIMPLib/Common/Constants.h"
 #include "SIMPLib/FilterParameters/AttributeMatrixSelectionFilterParameter.h"
 
-#include "IO/IOConstants.h"
-#include "IO/IOVersion.h"
-#include "IO/FilterParameters/ReadHDF5FileFilterParameter.h"
+#include "SIMPLib/FilterParameters/ReadHDF5FileFilterParameter.h"
+
+#include "SIMPLib/SIMPLibVersion.h"
 
 // Include the MOC generated file for this class
 #include "moc_ReadHDF5File.cpp"
@@ -187,14 +187,14 @@ AbstractFilter::Pointer ReadHDF5File::newFilterInstance(bool copyFilterParameter
 //
 // -----------------------------------------------------------------------------
 const QString ReadHDF5File::getCompiledLibraryName()
-{ return IOConstants::IOBaseName; }
+{ return Core::CoreBaseName; }
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
 const QString ReadHDF5File::getBrandingString()
 {
-  return "IO";
+  return "SIMPLib Core Filter";
 }
 
 // -----------------------------------------------------------------------------
@@ -204,7 +204,7 @@ const QString ReadHDF5File::getFilterVersion()
 {
   QString version;
   QTextStream vStream(&version);
-  vStream <<  IO::Version::Major() << "." << IO::Version::Minor() << "." << IO::Version::Patch();
+  vStream <<  SIMPLib::Version::Major() << "." << SIMPLib::Version::Minor() << "." << SIMPLib::Version::Patch();
   return version;
 }
 
@@ -212,7 +212,7 @@ const QString ReadHDF5File::getFilterVersion()
 //
 // -----------------------------------------------------------------------------
 const QString ReadHDF5File::getGroupName()
-{ return SIMPL::FilterGroups::IOFilters; }
+{ return SIMPL::FilterGroups::CoreFilters; }
 
 // -----------------------------------------------------------------------------
 //

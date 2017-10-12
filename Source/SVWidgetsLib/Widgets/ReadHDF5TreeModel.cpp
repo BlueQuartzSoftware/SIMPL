@@ -42,6 +42,9 @@
 #include "ReadHDF5TreeModel.h"
 #include "ReadHDF5TreeModelItem.h"
 
+// Include the MOC generated CPP file which has all the QMetaObject methods/data
+#include "moc_ReadHDF5TreeModel.cpp"
+
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------

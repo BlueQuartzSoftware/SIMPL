@@ -59,12 +59,16 @@
 #include "H5Support/H5Lite.h"
 #include "H5Support/H5Utilities.h"
 
-#include "IO/FilterParameterWidgets/ReadHDF5TreeModel.h"
-#include "IO/FilterParameterWidgets/ReadHDF5TreeModelItem.h"
-#include "IO/FilterParameters/ReadHDF5FileFilterParameter.h"
-#include "IO/IOFilters/ReadHDF5File.h"
+#include "SIMPLib/FilterParameters/ReadHDF5FileFilterParameter.h"
+#include "SIMPLib/CoreFilters/ReadHDF5File.h"
+
+#include "SVWidgetsLib/Widgets/ReadHDF5TreeModel.h"
+#include "SVWidgetsLib/Widgets/ReadHDF5TreeModelItem.h"
 
 #include "SVWidgetsLib/FilterParameterWidgets/FilterParameterWidgetsDialogs.h"
+
+// Include the MOC generated CPP file which has all the QMetaObject methods/data
+#include "moc_ReadHDF5FileWidget.cpp"
 
 // Initialize private static member variable
 QString ReadHDF5FileWidget::m_OpenDialogLastDirectory = "";

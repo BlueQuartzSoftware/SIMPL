@@ -40,10 +40,11 @@
 #include <QtCore/QVariant>
 #include <QtGui/QIcon>
 
-
 #include <hdf5.h>
 
-class ReadHDF5TreeModelItem
+#include "SVWidgetsLib/SVWidgetsLib.h"
+
+class SVWidgetsLib_EXPORT ReadHDF5TreeModelItem
 {
 public:
   ReadHDF5TreeModelItem(hid_t fileId, const QString &data, ReadHDF5TreeModelItem *parent = 0);

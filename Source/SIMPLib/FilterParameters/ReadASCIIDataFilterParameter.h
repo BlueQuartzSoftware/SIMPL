@@ -40,7 +40,7 @@
 
 class ASCIIWizardData;
 
-class ReadASCIIDataFilterParameter : public FilterParameter
+class SIMPLib_EXPORT ReadASCIIDataFilterParameter : public FilterParameter
 {
 public:
   SIMPL_SHARED_POINTERS(ReadASCIIDataFilterParameter)

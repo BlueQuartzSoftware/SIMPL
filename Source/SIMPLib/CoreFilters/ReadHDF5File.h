@@ -12,7 +12,7 @@
 /**
  * @brief The ReadHDF5File class. See [Filter documentation](@ref readhdf5file) for details.
  */
-class ReadHDF5File : public AbstractFilter
+class SIMPLib_EXPORT ReadHDF5File : public AbstractFilter
 {
   Q_OBJECT
 

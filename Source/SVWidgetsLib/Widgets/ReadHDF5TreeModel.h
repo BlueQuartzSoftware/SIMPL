@@ -43,9 +43,11 @@
 
 #include <hdf5.h>
 
+#include "SVWidgetsLib/SVWidgetsLib.h"
+
 class ReadHDF5TreeModelItem;
 
-class ReadHDF5TreeModel : public QAbstractItemModel
+class SVWidgetsLib_EXPORT ReadHDF5TreeModel : public QAbstractItemModel
 {
   Q_OBJECT
 

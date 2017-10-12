@@ -40,7 +40,7 @@
 
 class ReadHDF5File;
 
-class ReadHDF5FileFilterParameter : public FilterParameter
+class SIMPLib_EXPORT ReadHDF5FileFilterParameter : public FilterParameter
 {
 public:
   SIMPL_SHARED_POINTERS(ReadHDF5FileFilterParameter)

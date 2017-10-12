@@ -43,6 +43,8 @@
 
 #include "hdf5.h"
 
+#include "SVWidgetsLib/SVWidgetsLib.h"
+
 //-- UIC generated Header
 #include <ui_ReadHDF5FileWidget.h>
 
@@ -61,7 +63,7 @@ class ReadHDF5File;
  * @version $Revision: 1.7 $
  * @class ReadHDF5FileWidget ReadHDF5FileWidget.h ReadHDF5FileWidget.h
  */
-class ReadHDF5FileWidget : public FilterParameterWidget, private Ui::ReadHDF5FileWidget
+class SVWidgetsLib_EXPORT ReadHDF5FileWidget : public FilterParameterWidget, private Ui::ReadHDF5FileWidget
 {
   Q_OBJECT
 

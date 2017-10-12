@@ -35,7 +35,7 @@
 
 #include "ReadHDF5FileFilterParameter.h"
 
-#include "IO/IOFilters/ReadHDF5File.h"
+#include "SIMPLib/CoreFilters/ReadHDF5File.h"
 
 // -----------------------------------------------------------------------------
 //
