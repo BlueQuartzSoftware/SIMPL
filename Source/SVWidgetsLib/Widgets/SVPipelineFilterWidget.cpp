@@ -417,6 +417,7 @@ void SVPipelineFilterWidget::on_deleteBtn_clicked()
 void SVPipelineFilterWidget::on_disableBtn_clicked()
 {
   setIsEnabled(!disableBtn->isChecked());
+  emit parametersChanged(QUuid());
 }
 
 // -----------------------------------------------------------------------------
@@ -532,6 +533,7 @@ void SVPipelineFilterWidget::toReadyState()
 {
   PipelineFilterObject::toReadyState();
   getFilterInputWidget()->toRunningState();
+  disableBtn->setChecked(false);
   changeStyle();
 }
 
@@ -560,6 +562,16 @@ void SVPipelineFilterWidget::toCompletedState()
   {
     setErrorState(ErrorState::Error);
   }
+  changeStyle();
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void SVPipelineFilterWidget::toDisabledState()
+{
+  PipelineFilterObject::toDisabledState();
+  disableBtn->setChecked(true);
   changeStyle();
 }
 
