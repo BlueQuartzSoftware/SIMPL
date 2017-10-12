@@ -134,6 +134,10 @@ class SVWidgetsLib_EXPORT SVPipelineFilterWidget : public QFrame, public Pipelin
      */
     virtual void toCompletedState() override;
 
+    /**
+     * @brief toDisabledState
+     */
+    virtual void toDisabledState() override;
 
     /**
      * @brief toActiveState
