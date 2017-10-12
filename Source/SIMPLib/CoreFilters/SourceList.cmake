@@ -77,6 +77,7 @@ set(_PublicFilters
   PostSlackMessage
   RawBinaryReader
   ReadASCIIData
+  ReadHDF5File
   RemoveArrays
   RemoveComponentFromArray
   RenameAttributeArray
