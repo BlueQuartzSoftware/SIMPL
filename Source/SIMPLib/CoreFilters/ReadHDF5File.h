@@ -24,7 +24,16 @@ class SIMPLib_EXPORT ReadHDF5File : public AbstractFilter
     virtual ~ReadHDF5File();
 
     SIMPL_INSTANCE_PROPERTY(QString, HDF5FilePath)
-    SIMPL_INSTANCE_PROPERTY(QList<QString>, SelectedHDF5Paths)
+    Q_PROPERTY(QString HDF5FilePath READ getHDF5FilePath WRITE setHDF5FilePath)
+
+    SIMPL_INSTANCE_PROPERTY(QString, DatasetPath)
+    Q_PROPERTY(QString DatasetPath READ getDatasetPath WRITE setDatasetPath)
+
+    QString getHDF5Dimensions();
+    Q_PROPERTY(QString HDF5Dimensions READ getHDF5Dimensions)
+
+    SIMPL_INSTANCE_PROPERTY(QString, ComponentDimensions)
+    Q_PROPERTY(QString ComponentDimensions READ getComponentDimensions WRITE setComponentDimensions)
 
     SIMPL_INSTANCE_PROPERTY(DataArrayPath, SelectedAttributeMatrix)
     Q_PROPERTY(DataArrayPath SelectedAttributeMatrix READ getSelectedAttributeMatrix WRITE setSelectedAttributeMatrix)
@@ -120,6 +129,25 @@ class SIMPLib_EXPORT ReadHDF5File : public AbstractFilter
     void initialize();
 
   private:
+    QString m_HDF5Dimensions = "";
+
+    IDataArray::Pointer readIDataArray(hid_t gid, const QString& name, QVector<size_t> tDims, QVector<size_t> cDims, bool metaDataOnly);
+
+    /**
+     * @brief createComponentDimensions
+     * @return
+     */
+    QVector<size_t> createComponentDimensions();
+
+    /**
+     * @brief calculateTupleDimensions
+     * @param cDims
+     * @param dsetDims
+     * @param amTupleCount
+     * @return
+     */
+    QVector<size_t> calculateTupleDimensions(QVector<size_t> cDims, QVector<hsize_t> dsetDims, size_t amTupleCount);
+
     ReadHDF5File(const ReadHDF5File&); // Copy Constructor Not Implemented
     void operator=(const ReadHDF5File&); // Operator '=' Not Implemented
 };
