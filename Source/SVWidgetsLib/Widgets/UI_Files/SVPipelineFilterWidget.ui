@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>278</width>
-    <height>30</height>
+    <height>36</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -19,13 +19,13 @@
   <property name="minimumSize">
    <size>
     <width>50</width>
-    <height>30</height>
+    <height>36</height>
    </size>
   </property>
   <property name="maximumSize">
    <size>
     <width>16777215</width>
-    <height>30</height>
+    <height>36</height>
    </size>
   </property>
   <property name="mouseTracking">
@@ -57,22 +57,6 @@
     <number>0</number>
    </property>
    <item>
-    <widget class="QLabel" name="filterIndex">
-     <property name="font">
-      <font>
-       <family>Arial</family>
-       <pointsize>13</pointsize>
-       <weight>50</weight>
-       <italic>false</italic>
-       <bold>false</bold>
-      </font>
-     </property>
-     <property name="text">
-      <string>01</string>
-     </property>
-    </widget>
-   </item>
-   <item>
     <widget class="QFrame" name="frame">
      <property name="frameShape">
       <enum>QFrame::NoFrame</enum>
@@ -82,7 +66,7 @@
      </property>
      <layout class="QHBoxLayout" name="horizontalLayout_2">
       <property name="spacing">
-       <number>0</number>
+       <number>2</number>
       </property>
       <property name="leftMargin">
        <number>0</number>
@@ -91,73 +75,23 @@
        <number>0</number>
       </property>
       <property name="rightMargin">
-       <number>0</number>
+       <number>4</number>
       </property>
       <property name="bottomMargin">
        <number>0</number>
       </property>
       <item>
-       <widget class="QLabel" name="filterName">
-        <property name="sizePolicy">
-         <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
-          <horstretch>0</horstretch>
-          <verstretch>0</verstretch>
-         </sizepolicy>
+       <spacer name="horizontalSpacer">
+        <property name="orientation">
+         <enum>Qt::Horizontal</enum>
         </property>
-        <property name="font">
-         <font>
-          <family>Arial</family>
-          <weight>50</weight>
-          <italic>false</italic>
-          <bold>false</bold>
-          <stylestrategy>PreferAntialias</stylestrategy>
-         </font>
-        </property>
-        <property name="lineWidth">
-         <number>0</number>
-        </property>
-        <property name="text">
-         <string>Filter Name</string>
-        </property>
-        <property name="indent">
-         <number>5</number>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="QPushButton" name="deleteBtn">
-        <property name="sizePolicy">
-         <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-          <horstretch>0</horstretch>
-          <verstretch>0</verstretch>
-         </sizepolicy>
-        </property>
-        <property name="maximumSize">
+        <property name="sizeHint" stdset="0">
          <size>
-          <width>24</width>
-          <height>24</height>
+          <width>40</width>
+          <height>20</height>
          </size>
         </property>
-        <property name="toolTip">
-         <string>Click to remove filter from pipeline.</string>
-        </property>
-        <property name="text">
-         <string/>
-        </property>
-        <property name="icon">
-         <iconset resource="../../icons/images/Icons.qrc">
-          <normaloff>:/trash.png</normaloff>:/trash.png</iconset>
-        </property>
-        <property name="iconSize">
-         <size>
-          <width>24</width>
-          <height>24</height>
-         </size>
-        </property>
-        <property name="flat">
-         <bool>true</bool>
-        </property>
-       </widget>
+       </spacer>
       </item>
       <item>
        <widget class="QPushButton" name="disableBtn">
@@ -177,25 +111,27 @@
          <string>Click to disable filter.</string>
         </property>
         <property name="styleSheet">
-         <string notr="true">QPushButton:pressed 
+         <string notr="true">QPushButton#disableBtn:pressed 
 {
-/* background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1, stop: 0 #dadbde, stop: 1 #f6f7fa); */
-border: 0px inset black;
+	border: 0px inset black;
 }
 
-QPushButton:checked 
+QPushButton#disableBtn:checked 
 {
- /* background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1, stop: 0 #dadbde, stop: 1 #f6f7fa); */
  	border: 0px inset black;
-	image: url(:/ban_red.png);
-}</string>
+}
+
+QPushButton#disableBtn:hover {
+ 	image: url(:/ban_hover.png); 
+ }</string>
         </property>
         <property name="text">
          <string/>
         </property>
         <property name="icon">
          <iconset resource="../../icons/images/Icons.qrc">
-          <normaloff>:/ban.png</normaloff>:/ban.png</iconset>
+          <normaloff>:/ban.png</normaloff>
+          <normalon>:/ban_red.png</normalon>:/ban.png</iconset>
         </property>
         <property name="iconSize">
          <size>
@@ -208,6 +144,65 @@ QPushButton:checked
         </property>
         <property name="checked">
          <bool>false</bool>
+        </property>
+        <property name="flat">
+         <bool>true</bool>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QPushButton" name="deleteBtn">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
+        <property name="maximumSize">
+         <size>
+          <width>24</width>
+          <height>24</height>
+         </size>
+        </property>
+        <property name="toolTip">
+         <string>Click to remove filter from pipeline</string>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">QPushButton#deleteBtn:pressed 
+{
+	border: 0px inset black;
+}
+
+QPushButton#deleteBtn:checked 
+{
+ 	border: 0px inset black;
+}
+
+QPushButton#deleteBtn:hover {
+ 	image: url(:/trash_hover.png); 
+ }</string>
+        </property>
+        <property name="text">
+         <string/>
+        </property>
+        <property name="icon">
+         <iconset resource="../../icons/images/Icons.qrc">
+          <normaloff>:/trash.png</normaloff>
+          <normalon>:/trash_hover.png</normalon>
+          <activeon>:/trash_hover.png</activeon>
+          <selectedon>:/trash_hover.png</selectedon>:/trash.png</iconset>
+        </property>
+        <property name="iconSize">
+         <size>
+          <width>24</width>
+          <height>24</height>
+         </size>
+        </property>
+        <property name="checkable">
+         <bool>true</bool>
+        </property>
+        <property name="checked">
+         <bool>true</bool>
         </property>
         <property name="flat">
          <bool>true</bool>

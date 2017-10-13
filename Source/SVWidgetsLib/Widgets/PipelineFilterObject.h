@@ -79,8 +79,8 @@ class SVWidgetsLib_EXPORT PipelineFilterObject
 
     void setHasFocus(bool hasFocus);
 
-    SIMPL_BOOL_PROPERTY( Selected)
-
+    SIMPL_BOOL_PROPERTY(Selected)
+    SIMPL_BOOL_PROPERTY(FilterEnabled)
 
     QWidget* getBasicInputsWidget();
     QWidget* getCurrentStructureWidget();
@@ -88,7 +88,7 @@ class SVWidgetsLib_EXPORT PipelineFilterObject
     void setHasPreflightErrors(bool hasPreflightErrors);
     void setHasPreflightWarnings(bool hasPreflightWarnings);
 
-    void setIsEnabled(bool enabled);
+    virtual void setIsEnabled(bool enabled);
 
     using EnumType = unsigned int;
 

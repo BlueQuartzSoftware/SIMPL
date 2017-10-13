@@ -10,6 +10,8 @@
 
   <file>trash.png</file>
   <file>trash@2x.png</file>
+  <file>trash_hover.png</file>
+  <file>trash_hover@2x.png</file>
 
   <file>delete.png</file>
   <file>delete@2x.png</file>
@@ -52,7 +54,8 @@
 
   <file>ban.png</file>
   <file>ban@2x.png</file>
-
+  <file>ban_hover.png</file>
+  <file>ban_hover@2x.png</file>
   <file>ban_red.png</file>
   <file>ban_red@2x.png</file>
 
@@ -137,6 +140,11 @@
   <file>loop_square.png</file>
   <file>loop_square@2x.png</file>
 
+  <file>toggle_off.png</file>
+  <file>toggle_off@2x.png</file>
+
+  <file>toggle_on.png</file>
+  <file>toggle_on@2x.png</file>
  </qresource>
  </RCC>
 
