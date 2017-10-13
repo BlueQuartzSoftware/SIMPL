@@ -84,6 +84,7 @@ void ReadHDF5FileFilterParameter::readJson(const QJsonObject& json)
   if (json.contains("HDF5FilePath") && json["HDF5FilePath"].isString())
   {
     m_Filter->setHDF5FilePath(json["HDF5FilePath"].toString());
+    m_Filter->setDatasetPath(json["DatasetPath"].toString());
   }
 }
 
@@ -93,4 +94,5 @@ void ReadHDF5FileFilterParameter::readJson(const QJsonObject& json)
 void ReadHDF5FileFilterParameter::writeJson(QJsonObject& json)
 {
   json["HDF5FilePath"] = m_Filter->getHDF5FilePath();
+  json["DatasetPath"] = m_Filter->getDatasetPath();
 }

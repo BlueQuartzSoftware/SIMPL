@@ -57,6 +57,7 @@ set(SIMPLView_PARAMETER_WIDGETS_NO_CODEGEN
   LinkedDataContainerSelectionWidget
   PhaseTypeSelectionWidget
   ReadASCIIDataWidget
+  ReadHDF5FileWidget
   ShapeTypeSelectionWidget
   UnknownWidget
 )

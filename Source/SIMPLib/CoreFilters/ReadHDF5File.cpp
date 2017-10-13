@@ -8,8 +8,7 @@
 
 #include "SIMPLib/Common/Constants.h"
 #include "SIMPLib/FilterParameters/AttributeMatrixSelectionFilterParameter.h"
-#include "SIMPLib/FilterParameters/InputFileFilterParameter.h"
-#include "SIMPLib/FilterParameters/PreflightUpdatedValueFilterParameter.h"
+#include "SIMPLib/FilterParameters/ReadHDF5FileFilterParameter.h"
 #include "SIMPLib/FilterParameters/StringFilterParameter.h"
 
 #include "SIMPLib/SIMPLibVersion.h"
@@ -73,13 +72,20 @@ void ReadHDF5File::setupFilterParameters()
 {
   FilterParameterVector parameters;
 
-  parameters.push_back(SIMPL_NEW_INPUT_FILE_FP("HDF5 File", HDF5FilePath, FilterParameter::Parameter, ReadHDF5File));
-  parameters.push_back(SIMPL_NEW_STRING_FP("Dataset Path", DatasetPath, FilterParameter::Parameter, ReadHDF5File));
+  ReadHDF5FileFilterParameter::Pointer parameter = ReadHDF5FileFilterParameter::New();
+  parameter->setHumanLabel("Select HDF5 File");
+  parameter->setCategory(FilterParameter::Parameter);
+  parameter->setFilter(this);
+  parameters.push_back(parameter);
 
-  PreflightUpdatedValueFilterParameter::Pointer param =
-      SIMPL_NEW_PREFLIGHTUPDATEDVALUE_FP("HDF5 Dimensions", HDF5Dimensions, FilterParameter::Parameter, ReadHDF5File);
-  param->setReadOnly(true);
-  parameters.push_back(param);
+
+//  parameters.push_back(SIMPL_NEW_INPUT_FILE_FP("HDF5 File", HDF5FilePath, FilterParameter::Parameter, ReadHDF5File));
+//  parameters.push_back(SIMPL_NEW_STRING_FP("Dataset Path", DatasetPath, FilterParameter::Parameter, ReadHDF5File));
+
+//  PreflightUpdatedValueFilterParameter::Pointer param =
+//      SIMPL_NEW_PREFLIGHTUPDATEDVALUE_FP("HDF5 Dimensions", HDF5Dimensions, FilterParameter::Parameter, ReadHDF5File);
+//  param->setReadOnly(true);
+//  parameters.push_back(param);
 
   parameters.push_back(SIMPL_NEW_STRING_FP("Component Dimensions", ComponentDimensions, FilterParameter::Parameter, ReadHDF5File));
 
@@ -186,7 +192,8 @@ void ReadHDF5File::dataCheck()
 
   am->addAttributeArray(dPtr->getName(), dPtr);
 
-  QH5Utilities::closeFile(parentId);
+  QH5Utilities::closeHDF5Object(parentId);
+  QH5Utilities::closeFile(fileId);
 }
 
 // -----------------------------------------------------------------------------
