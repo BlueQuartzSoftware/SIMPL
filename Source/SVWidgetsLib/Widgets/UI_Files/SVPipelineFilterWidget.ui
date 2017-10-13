@@ -130,8 +130,8 @@ QPushButton#disableBtn:hover {
         </property>
         <property name="icon">
          <iconset resource="../../icons/images/Icons.qrc">
-          <normaloff>:/ban_red.png</normaloff>
-          <normalon>:/ban.png</normalon>:/ban_red.png</iconset>
+          <normaloff>:/ban.png</normaloff>
+          <normalon>:/ban_red.png</normalon>:/ban.png</iconset>
         </property>
         <property name="iconSize">
          <size>
@@ -143,7 +143,7 @@ QPushButton#disableBtn:hover {
          <bool>true</bool>
         </property>
         <property name="checked">
-         <bool>true</bool>
+         <bool>false</bool>
         </property>
         <property name="flat">
          <bool>true</bool>

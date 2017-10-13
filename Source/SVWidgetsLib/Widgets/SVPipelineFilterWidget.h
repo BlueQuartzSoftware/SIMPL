@@ -155,6 +155,10 @@ class SVWidgetsLib_EXPORT SVPipelineFilterWidget : public QFrame, public Pipelin
      */
     virtual void toCompletedState() override;
 
+    /**
+     * @brief toDisabledState
+     */
+    virtual void toDisabledState() override;
 
     /**
      * @brief toActiveState
@@ -192,6 +196,11 @@ class SVWidgetsLib_EXPORT SVPipelineFilterWidget : public QFrame, public Pipelin
      * @brief on_deleteBtn_clicked
      */
     void on_deleteBtn_clicked();
+
+    /**
+     * @brief on_disableBtn_clicked
+     */
+    void on_disableBtn_clicked(bool state = false);
 
     /**
      * @brief filterInputWidget_filterParametersChanged

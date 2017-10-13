@@ -1487,7 +1487,14 @@ void SVPipelineViewWidget::toIdleState()
     PipelineFilterObject* fw = filterObjectAt(i);
     if(fw)
     {
-      fw->toReadyState();
+      if(fw->isFilterEnabled())
+      {
+        fw->toReadyState();
+      }
+      else
+      {
+        fw->toDisabledState();
+      }
     }
   }
 }

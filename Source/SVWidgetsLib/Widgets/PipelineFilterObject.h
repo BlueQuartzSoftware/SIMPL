@@ -79,8 +79,8 @@ class SVWidgetsLib_EXPORT PipelineFilterObject
 
     void setHasFocus(bool hasFocus);
 
-    SIMPL_BOOL_PROPERTY( Selected)
-
+    SIMPL_BOOL_PROPERTY(Selected)
+    SIMPL_BOOL_PROPERTY(FilterEnabled)
 
     QWidget* getBasicInputsWidget();
     QWidget* getCurrentStructureWidget();

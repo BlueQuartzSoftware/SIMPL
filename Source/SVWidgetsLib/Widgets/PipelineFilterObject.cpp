@@ -345,6 +345,7 @@ void PipelineFilterObject::setHasPreflightWarnings(bool hasWarnings)
 // -----------------------------------------------------------------------------
 void PipelineFilterObject::setIsEnabled(bool enabled)
 {
+  setFilterEnabled(enabled);
   // Return if no changes to Enabled
   if(enabled == m_Filter->getEnabled())
   {
@@ -375,6 +376,7 @@ void PipelineFilterObject::toReadyState()
 {
   // This should be implemented in the subclasses
   setWidgetState(WidgetState::Ready);
+  setFilterEnabled(true);
 }
 
 // -----------------------------------------------------------------------------
@@ -402,6 +404,7 @@ void PipelineFilterObject::toDisabledState()
 {
   // This should be implemented in the subclasses
   setWidgetState(WidgetState::Disabled);
+  setFilterEnabled(false);
 }
 
 // -----------------------------------------------------------------------------

@@ -123,7 +123,7 @@ void SVPipelineFilterWidget::initialize()
 
   deleteBtn->setVisible(false);
   disableBtn->setVisible(false);
-  connect(disableBtn, SIGNAL(toggled(bool)), this, SLOT(setIsEnabled(bool)));
+  // connect(disableBtn, SIGNAL(clicked(bool)), this, SLOT(setIsEnabled(bool)));
 
   // Set the Name of the filter into the FilterWidget
   AbstractFilter::Pointer filter = getFilter();
@@ -160,13 +160,20 @@ void SVPipelineFilterWidget::setSelected(bool s)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
+void SVPipelineFilterWidget::on_disableBtn_clicked(bool checked)
+{
+  Q_UNUSED(checked)
+  setIsEnabled(!disableBtn->isChecked());
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
 void SVPipelineFilterWidget::setIsEnabled(bool enabled)
 {
+  setFilterEnabled(enabled);
   if(getPipelineState() == PipelineState::Stopped)
   {
-    disableBtn->blockSignals(true);
-    disableBtn->setChecked(enabled);
-    disableBtn->blockSignals(false);
     QUuid uuid;
     PipelineFilterObject::setIsEnabled(enabled);
     emit parametersChanged(uuid);
@@ -599,7 +606,8 @@ void SVPipelineFilterWidget::launchHelpForItem()
 void SVPipelineFilterWidget::toReadyState()
 {
   PipelineFilterObject::toReadyState();
-  getFilterInputWidget()->toRunningState();
+  getFilterInputWidget()->toIdleState();
+  disableBtn->setChecked(false);
   update();
 }
 
@@ -628,6 +636,17 @@ void SVPipelineFilterWidget::toCompletedState()
   {
     setErrorState(ErrorState::Error);
   }
+  update();
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void SVPipelineFilterWidget::toDisabledState()
+{
+  PipelineFilterObject::toDisabledState();
+  getFilterInputWidget()->toIdleState();
+  disableBtn->setChecked(true);
   update();
 }
 
