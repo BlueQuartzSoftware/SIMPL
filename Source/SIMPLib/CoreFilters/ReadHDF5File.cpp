@@ -359,6 +359,7 @@ IDataArray::Pointer ReadHDF5File::readIDataArray(hid_t gid, const QString& name,
   size_t attr_size;
   QString res;
 
+  QVector<hsize_t> dims; // Reusable for the loop
   IDataArray::Pointer ptr = IDataArray::NullPointer();
   // qDebug() << "Reading Attribute " << *iter ;
   typeId = QH5Lite::getDatasetType(gid, name);
@@ -366,30 +367,13 @@ IDataArray::Pointer ReadHDF5File::readIDataArray(hid_t gid, const QString& name,
   {
     return ptr;
   }
-
-  QString classType;
-  //int version = 0;
-
-  //    err = ReadRequiredAttributes(gid, name, classType, version, tDims, cDims);
-  //    if(err < 0)
-  //    {
-  //      return ptr;
-  //    }
-
-  // Check to see if we are reading a bool array and if so read it and return
-  if(classType.compare("DataArray<bool>") == 0)
+  // Get the HDF5 DataSet information. the dimensions will be the combined Tuple Dims and the Data Array Componenet dimes
+  err = QH5Lite::getDatasetInfo(gid, name, dims, attr_type, attr_size);
+  if(err < 0)
   {
-    if(metaDataOnly == false)
-    {
-      ptr = Detail::readH5Dataset<bool>(gid, name, tDims, cDims);
-    }
-    else
-    {
-      ptr = DataArray<bool>::CreateArray(tDims, cDims, name, false);
-    }
-    err = H5Tclose(typeId);
-    return ptr; // <== Note early return here.
+    qDebug() << "Error in getAttributeInfo method in readUserMetaData.";
   }
+
   switch(attr_type)
   {
     case H5T_STRING:
