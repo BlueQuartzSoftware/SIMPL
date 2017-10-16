@@ -133,6 +133,8 @@ void ImportHDF5DatasetWidget::setupGui()
   // Catch when the filter wants its values updated
   connect(getFilter(), SIGNAL(updateFilterParameters(AbstractFilter*)), this, SLOT(filterNeedsInputParameters(AbstractFilter*)));
 
+  connect (dsetPathLE, &QLineEdit::textChanged, [=] { emit parametersChanged(); });
+
   // When a dataset in the treeview is double-clicked, write its path to the dataset path line edit
   connect(hdfTreeView, &QTreeView::doubleClicked, [=] (const QModelIndex &index) {
     ImportHDF5TreeModel* treeModel = dynamic_cast<ImportHDF5TreeModel*>(hdfTreeView->model());
@@ -141,7 +143,6 @@ void ImportHDF5DatasetWidget::setupGui()
       if (treeModel->hasChildren(index) == false)
       {
         dsetPathLE->setText(treeModel->hdfPathForIndex(index));
-        emit parametersChanged();
       }
     }
   });
