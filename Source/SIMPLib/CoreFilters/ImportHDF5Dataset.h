@@ -10,18 +10,18 @@
 #include "SIMPLib/Common/SIMPLibSetGetMacros.h"
 
 /**
- * @brief The ImportHDF5File class. See [Filter documentation](@ref readhdf5file) for details.
+ * @brief The ImportHDF5Dataset class. See [Filter documentation](@ref readhdf5file) for details.
  */
-class SIMPLib_EXPORT ImportHDF5File : public AbstractFilter
+class SIMPLib_EXPORT ImportHDF5Dataset : public AbstractFilter
 {
   Q_OBJECT
 
   public:
-    SIMPL_SHARED_POINTERS(ImportHDF5File)
-    SIMPL_STATIC_NEW_MACRO(ImportHDF5File)
-    SIMPL_TYPE_MACRO_SUPER(ImportHDF5File, AbstractFilter)
+    SIMPL_SHARED_POINTERS(ImportHDF5Dataset)
+    SIMPL_STATIC_NEW_MACRO(ImportHDF5Dataset)
+    SIMPL_TYPE_MACRO_SUPER(ImportHDF5Dataset, AbstractFilter)
 
-    virtual ~ImportHDF5File();
+    virtual ~ImportHDF5Dataset();
 
     SIMPL_INSTANCE_PROPERTY(QString, HDF5FilePath)
     Q_PROPERTY(QString HDF5FilePath READ getHDF5FilePath WRITE setHDF5FilePath)
@@ -116,7 +116,7 @@ class SIMPLib_EXPORT ImportHDF5File : public AbstractFilter
     void preflightExecuted();
 
   protected:
-    ImportHDF5File();
+    ImportHDF5Dataset();
 
     /**
     * @brief dataCheck Checks for the appropriate parameter values and availability of arrays
@@ -139,8 +139,8 @@ class SIMPLib_EXPORT ImportHDF5File : public AbstractFilter
      */
     QVector<size_t> createComponentDimensions();
 
-    ImportHDF5File(const ImportHDF5File&); // Copy Constructor Not Implemented
-    void operator=(const ImportHDF5File&); // Operator '=' Not Implemented
+    ImportHDF5Dataset(const ImportHDF5Dataset&); // Copy Constructor Not Implemented
+    void operator=(const ImportHDF5Dataset&); // Operator '=' Not Implemented
 };
 
-#endif /* _ImportHDF5File_H_ */
+#endif /* _ImportHDF5Dataset_H_ */

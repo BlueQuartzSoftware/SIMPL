@@ -38,24 +38,24 @@
 
 #include "SIMPLib/FilterParameters/FilterParameter.h"
 
-class ImportHDF5File;
+class ImportHDF5Dataset;
 
-class SIMPLib_EXPORT ImportHDF5FileFilterParameter : public FilterParameter
+class SIMPLib_EXPORT ImportHDF5DatasetFilterParameter : public FilterParameter
 {
 public:
-  SIMPL_SHARED_POINTERS(ImportHDF5FileFilterParameter)
-    SIMPL_STATIC_NEW_MACRO(ImportHDF5FileFilterParameter)
-    SIMPL_TYPE_MACRO(ImportHDF5FileFilterParameter)
+  SIMPL_SHARED_POINTERS(ImportHDF5DatasetFilterParameter)
+    SIMPL_STATIC_NEW_MACRO(ImportHDF5DatasetFilterParameter)
+    SIMPL_TYPE_MACRO(ImportHDF5DatasetFilterParameter)
 
   static Pointer New(const QString& humanLabel, const QString& propertyName,
                      const QVariant& defaultValue, Category category,
-                     ImportHDF5File* filter, int groupIndex = -1);
+                     ImportHDF5Dataset* filter, int groupIndex = -1);
 
-  virtual ~ImportHDF5FileFilterParameter();
+  virtual ~ImportHDF5DatasetFilterParameter();
 
   QString getWidgetType();
 
-  SIMPL_INSTANCE_PROPERTY(ImportHDF5File*, Filter)
+  SIMPL_INSTANCE_PROPERTY(ImportHDF5Dataset*, Filter)
 
   /**
    * @brief readJson Reads this filter parameter's corresponding property out of a QJsonObject.
@@ -70,11 +70,11 @@ public:
   void writeJson(QJsonObject &json);
 
 protected:
-  ImportHDF5FileFilterParameter();
+  ImportHDF5DatasetFilterParameter();
 
 private:
-  ImportHDF5FileFilterParameter(const ImportHDF5FileFilterParameter&); // Copy Constructor Not Implemented
-  void operator=(const ImportHDF5FileFilterParameter&); // Operator '=' Not Implemented
+  ImportHDF5DatasetFilterParameter(const ImportHDF5DatasetFilterParameter&); // Copy Constructor Not Implemented
+  void operator=(const ImportHDF5DatasetFilterParameter&); // Operator '=' Not Implemented
 };
 
 #endif /* _readhdf5filefilterparameter_h_ */

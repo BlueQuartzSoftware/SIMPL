@@ -68,7 +68,7 @@ set(_PublicFilters
   FindDerivatives
   GenerateColorTable
   ImportAsciDataArray
-  ImportHDF5File
+  ImportHDF5Dataset
   LinkFeatureMapToElementArray
   MaskCountDecision
   MoveData

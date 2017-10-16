@@ -33,7 +33,7 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-#include "ImportHDF5FileWidget.h"
+#include "ImportHDF5DatasetWidget.h"
 
 #include <QtCore/QFileInfo>
 #include <QtCore/QDir>
@@ -59,8 +59,8 @@
 #include "H5Support/H5Lite.h"
 #include "H5Support/H5Utilities.h"
 
-#include "SIMPLib/FilterParameters/ImportHDF5FileFilterParameter.h"
-#include "SIMPLib/CoreFilters/ImportHDF5File.h"
+#include "SIMPLib/FilterParameters/ImportHDF5DatasetFilterParameter.h"
+#include "SIMPLib/CoreFilters/ImportHDF5Dataset.h"
 
 #include "SVWidgetsLib/Widgets/ImportHDF5TreeModel.h"
 #include "SVWidgetsLib/Widgets/ImportHDF5TreeModelItem.h"
@@ -68,25 +68,25 @@
 #include "SVWidgetsLib/FilterParameterWidgets/FilterParameterWidgetsDialogs.h"
 
 // Include the MOC generated CPP file which has all the QMetaObject methods/data
-#include "moc_ImportHDF5FileWidget.cpp"
+#include "moc_ImportHDF5DatasetWidget.cpp"
 
 // Initialize private static member variable
-QString ImportHDF5FileWidget::m_OpenDialogLastDirectory = "";
+QString ImportHDF5DatasetWidget::m_OpenDialogLastDirectory = "";
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-ImportHDF5FileWidget::ImportHDF5FileWidget(FilterParameter* parameter, AbstractFilter* filter, QWidget* parent) :
+ImportHDF5DatasetWidget::ImportHDF5DatasetWidget(FilterParameter* parameter, AbstractFilter* filter, QWidget* parent) :
   FilterParameterWidget(parameter, filter, parent),
   m_CurrentOpenFile(""),
   m_CurrentHDFDataPath(""),
   m_FileId(-1)
 {
-  m_FilterParameter = dynamic_cast<ImportHDF5FileFilterParameter*>(parameter);
-  Q_ASSERT_X(m_FilterParameter != nullptr, "NULL Pointer", "ImportHDF5FileWidget can ONLY be used with an ImportHDF5FileFilterParameter object");
+  m_FilterParameter = dynamic_cast<ImportHDF5DatasetFilterParameter*>(parameter);
+  Q_ASSERT_X(m_FilterParameter != nullptr, "NULL Pointer", "ImportHDF5DatasetWidget can ONLY be used with an ImportHDF5DatasetFilterParameter object");
 
-  m_Filter = dynamic_cast<ImportHDF5File*>(filter);
-  Q_ASSERT_X(m_Filter != nullptr, "NULL Pointer", "ImportHDF5FileWidget can ONLY be used with an ImportHDF5File filter");
+  m_Filter = dynamic_cast<ImportHDF5Dataset*>(filter);
+  Q_ASSERT_X(m_Filter != nullptr, "NULL Pointer", "ImportHDF5DatasetWidget can ONLY be used with an ImportHDF5Dataset filter");
 
   setupUi(this);
   setupGui();
@@ -111,7 +111,7 @@ ImportHDF5FileWidget::ImportHDF5FileWidget(FilterParameter* parameter, AbstractF
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-ImportHDF5FileWidget::~ImportHDF5FileWidget()
+ImportHDF5DatasetWidget::~ImportHDF5DatasetWidget()
 {
   if (m_FileId > 0)
   {
@@ -122,7 +122,7 @@ ImportHDF5FileWidget::~ImportHDF5FileWidget()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void ImportHDF5FileWidget::setupGui()
+void ImportHDF5DatasetWidget::setupGui()
 {
   // Catch when the filter is about to execute the preflight
   connect(getFilter(), SIGNAL(preflightAboutToExecute()), this, SLOT(beforePreflight()));
@@ -188,7 +188,7 @@ void ImportHDF5FileWidget::setupGui()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-bool ImportHDF5FileWidget::verifyPathExists(QString filePath, QtSFSDropLabel* lineEdit)
+bool ImportHDF5DatasetWidget::verifyPathExists(QString filePath, QtSFSDropLabel* lineEdit)
 {
   QFileInfo fileinfo(filePath);
   if(false == fileinfo.exists())
@@ -205,7 +205,7 @@ bool ImportHDF5FileWidget::verifyPathExists(QString filePath, QtSFSDropLabel* li
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void ImportHDF5FileWidget::on_value_fileDropped(const QString& text)
+void ImportHDF5DatasetWidget::on_value_fileDropped(const QString& text)
 {
   m_OpenDialogLastDirectory = text;
 
@@ -219,7 +219,7 @@ void ImportHDF5FileWidget::on_value_fileDropped(const QString& text)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void ImportHDF5FileWidget::on_selectBtn_clicked()
+void ImportHDF5DatasetWidget::on_selectBtn_clicked()
 {
   QString s = QString("HDF5 Files (*.hdf5 *.h5);;All Files(*.*)");
   QString file = QFileDialog::getOpenFileName(this, tr("Select HDF5 File"), m_OpenDialogLastDirectory, s);
@@ -241,7 +241,7 @@ void ImportHDF5FileWidget::on_selectBtn_clicked()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void ImportHDF5FileWidget::dragEnterEvent(QDragEnterEvent* e)
+void ImportHDF5DatasetWidget::dragEnterEvent(QDragEnterEvent* e)
 {
   const QMimeData* dat = e->mimeData();
   QList<QUrl> urls = dat->urls();
@@ -263,7 +263,7 @@ void ImportHDF5FileWidget::dragEnterEvent(QDragEnterEvent* e)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void ImportHDF5FileWidget::dropEvent(QDropEvent* e)
+void ImportHDF5DatasetWidget::dropEvent(QDropEvent* e)
 {
   const QMimeData* dat = e->mimeData();
   QList<QUrl> urls = dat->urls();
@@ -285,7 +285,7 @@ void ImportHDF5FileWidget::dropEvent(QDropEvent* e)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void ImportHDF5FileWidget::openHDF5File(QString &hdfFile)
+void ImportHDF5DatasetWidget::openHDF5File(QString &hdfFile)
 {
   if ( true == hdfFile.isNull() ) { return; }
 
@@ -295,7 +295,7 @@ void ImportHDF5FileWidget::openHDF5File(QString &hdfFile)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void ImportHDF5FileWidget::initWithFile(QString hdf5File)
+void ImportHDF5DatasetWidget::initWithFile(QString hdf5File)
 {
   // Delete the old model
   QAbstractItemModel* oldModel = hdfTreeView->model();
@@ -340,7 +340,7 @@ void ImportHDF5FileWidget::initWithFile(QString hdf5File)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void ImportHDF5FileWidget::_updateViewFromHDFPath(std::string dataPath)
+void ImportHDF5DatasetWidget::_updateViewFromHDFPath(std::string dataPath)
 {
   m_CurrentHDFDataPath = dataPath;
   QString message("Current Dataset:");
@@ -350,7 +350,7 @@ void ImportHDF5FileWidget::_updateViewFromHDFPath(std::string dataPath)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void ImportHDF5FileWidget::hdfTreeView_currentChanged(const QModelIndex & current, const QModelIndex & previous)
+void ImportHDF5DatasetWidget::hdfTreeView_currentChanged(const QModelIndex & current, const QModelIndex & previous)
 {
   //Check to make sure we have a data file opened
   if (m_FileId < 0)
@@ -370,7 +370,7 @@ void ImportHDF5FileWidget::hdfTreeView_currentChanged(const QModelIndex & curren
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-herr_t ImportHDF5FileWidget::updateGeneralTable(const QString &path)
+herr_t ImportHDF5DatasetWidget::updateGeneralTable(const QString &path)
 {
   std::string datasetPath = path.toStdString();
   std::string objName = H5Utilities::extractObjectName(datasetPath);
@@ -516,7 +516,7 @@ herr_t ImportHDF5FileWidget::updateGeneralTable(const QString &path)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void ImportHDF5FileWidget::addRow(QTableWidget* table, int row, const QString &key, const QString &value)
+void ImportHDF5DatasetWidget::addRow(QTableWidget* table, int row, const QString &key, const QString &value)
 {
 
   QTableWidgetItem* keyItem  = new QTableWidgetItem( key );
@@ -528,7 +528,7 @@ void ImportHDF5FileWidget::addRow(QTableWidget* table, int row, const QString &k
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-herr_t ImportHDF5FileWidget::updateAttributeTable(const QString &path)
+herr_t ImportHDF5DatasetWidget::updateAttributeTable(const QString &path)
 {
   QString objName = QH5Utilities::extractObjectName(path);
 
@@ -627,7 +627,7 @@ herr_t ImportHDF5FileWidget::updateAttributeTable(const QString &path)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void ImportHDF5FileWidget::filterNeedsInputParameters(AbstractFilter* filter)
+void ImportHDF5DatasetWidget::filterNeedsInputParameters(AbstractFilter* filter)
 {
   Q_UNUSED(filter)
 
@@ -638,7 +638,7 @@ void ImportHDF5FileWidget::filterNeedsInputParameters(AbstractFilter* filter)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void ImportHDF5FileWidget::beforePreflight()
+void ImportHDF5DatasetWidget::beforePreflight()
 {
 
 }
@@ -646,7 +646,7 @@ void ImportHDF5FileWidget::beforePreflight()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void ImportHDF5FileWidget::afterPreflight()
+void ImportHDF5DatasetWidget::afterPreflight()
 {
 
 }

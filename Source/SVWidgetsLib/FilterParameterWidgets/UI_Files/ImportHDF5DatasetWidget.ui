@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>ImportHDF5FileWidget</class>
- <widget class="QWidget" name="ImportHDF5FileWidget">
+ <class>ImportHDF5DatasetWidget</class>
+ <widget class="QWidget" name="ImportHDF5DatasetWidget">
   <property name="geometry">
    <rect>
     <x>0</x>

@@ -2,19 +2,19 @@
  * Your License or Copyright can go here
  */
 
-#include "ImportHDF5File.h"
+#include "ImportHDF5Dataset.h"
 
 #include <QtCore/QFileInfo>
 
 #include "SIMPLib/Common/Constants.h"
 #include "SIMPLib/FilterParameters/AttributeMatrixSelectionFilterParameter.h"
-#include "SIMPLib/FilterParameters/ImportHDF5FileFilterParameter.h"
+#include "SIMPLib/FilterParameters/ImportHDF5DatasetFilterParameter.h"
 #include "SIMPLib/FilterParameters/StringFilterParameter.h"
 
 #include "SIMPLib/SIMPLibVersion.h"
 
 // Include the MOC generated file for this class
-#include "moc_ImportHDF5File.cpp"
+#include "moc_ImportHDF5Dataset.cpp"
 
 namespace Detail
 {
@@ -42,7 +42,7 @@ namespace Detail
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-ImportHDF5File::ImportHDF5File() :
+ImportHDF5Dataset::ImportHDF5Dataset() :
   AbstractFilter()
 {
   initialize();
@@ -52,14 +52,14 @@ ImportHDF5File::ImportHDF5File() :
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-ImportHDF5File::~ImportHDF5File()
+ImportHDF5Dataset::~ImportHDF5Dataset()
 {
 }
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void ImportHDF5File::initialize()
+void ImportHDF5Dataset::initialize()
 {
   setErrorCondition(0);
   setCancel(false);
@@ -68,30 +68,30 @@ void ImportHDF5File::initialize()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void ImportHDF5File::setupFilterParameters()
+void ImportHDF5Dataset::setupFilterParameters()
 {
   FilterParameterVector parameters;
 
-  ImportHDF5FileFilterParameter::Pointer parameter = ImportHDF5FileFilterParameter::New();
+  ImportHDF5DatasetFilterParameter::Pointer parameter = ImportHDF5DatasetFilterParameter::New();
   parameter->setHumanLabel("Select HDF5 File");
   parameter->setCategory(FilterParameter::Parameter);
   parameter->setFilter(this);
   parameters.push_back(parameter);
 
 
-//  parameters.push_back(SIMPL_NEW_INPUT_FILE_FP("HDF5 File", HDF5FilePath, FilterParameter::Parameter, ImportHDF5File));
-//  parameters.push_back(SIMPL_NEW_STRING_FP("Dataset Path", DatasetPath, FilterParameter::Parameter, ImportHDF5File));
+//  parameters.push_back(SIMPL_NEW_INPUT_FILE_FP("HDF5 File", HDF5FilePath, FilterParameter::Parameter, ImportHDF5Dataset));
+//  parameters.push_back(SIMPL_NEW_STRING_FP("Dataset Path", DatasetPath, FilterParameter::Parameter, ImportHDF5Dataset));
 
 //  PreflightUpdatedValueFilterParameter::Pointer param =
-//      SIMPL_NEW_PREFLIGHTUPDATEDVALUE_FP("HDF5 Dimensions", HDF5Dimensions, FilterParameter::Parameter, ImportHDF5File);
+//      SIMPL_NEW_PREFLIGHTUPDATEDVALUE_FP("HDF5 Dimensions", HDF5Dimensions, FilterParameter::Parameter, ImportHDF5Dataset);
 //  param->setReadOnly(true);
 //  parameters.push_back(param);
 
-  parameters.push_back(SIMPL_NEW_STRING_FP("Component Dimensions", ComponentDimensions, FilterParameter::Parameter, ImportHDF5File));
+  parameters.push_back(SIMPL_NEW_STRING_FP("Component Dimensions", ComponentDimensions, FilterParameter::Parameter, ImportHDF5Dataset));
 
   {
     AttributeMatrixSelectionFilterParameter::RequirementType req;
-    parameters.push_back(SIMPL_NEW_AM_SELECTION_FP("Attribute Matrix", SelectedAttributeMatrix, FilterParameter::RequiredArray, ImportHDF5File, req));
+    parameters.push_back(SIMPL_NEW_AM_SELECTION_FP("Attribute Matrix", SelectedAttributeMatrix, FilterParameter::RequiredArray, ImportHDF5Dataset, req));
   }
 
   setFilterParameters(parameters);
@@ -100,7 +100,7 @@ void ImportHDF5File::setupFilterParameters()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void ImportHDF5File::dataCheck()
+void ImportHDF5Dataset::dataCheck()
 {
   setErrorCondition(0);
   
@@ -237,7 +237,7 @@ void ImportHDF5File::dataCheck()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void ImportHDF5File::preflight()
+void ImportHDF5Dataset::preflight()
 {
   // These are the REQUIRED lines of CODE to make sure the filter behaves correctly
   setInPreflight(true); // Set the fact that we are preflighting.
@@ -251,7 +251,7 @@ void ImportHDF5File::preflight()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void ImportHDF5File::execute()
+void ImportHDF5Dataset::execute()
 {
   initialize();
   dataCheck();
@@ -263,7 +263,7 @@ void ImportHDF5File::execute()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-QVector<size_t> ImportHDF5File::createComponentDimensions()
+QVector<size_t> ImportHDF5Dataset::createComponentDimensions()
 {
   QVector<size_t> cDims;
   QStringList dimsStrVec = m_ComponentDimensions.split(',', QString::SkipEmptyParts);
@@ -288,7 +288,7 @@ QVector<size_t> ImportHDF5File::createComponentDimensions()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-IDataArray::Pointer ImportHDF5File::readIDataArray(hid_t gid, const QString& name, size_t numOfTuples, QVector<size_t> cDims, bool metaDataOnly)
+IDataArray::Pointer ImportHDF5Dataset::readIDataArray(hid_t gid, const QString& name, size_t numOfTuples, QVector<size_t> cDims, bool metaDataOnly)
 {
   herr_t err = -1;
   // herr_t retErr = 1;
@@ -463,7 +463,7 @@ IDataArray::Pointer ImportHDF5File::readIDataArray(hid_t gid, const QString& nam
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-QString ImportHDF5File::getHDF5Dimensions()
+QString ImportHDF5Dataset::getHDF5Dimensions()
 {
   return m_HDF5Dimensions;
 }
@@ -471,9 +471,9 @@ QString ImportHDF5File::getHDF5Dimensions()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-AbstractFilter::Pointer ImportHDF5File::newFilterInstance(bool copyFilterParameters)
+AbstractFilter::Pointer ImportHDF5Dataset::newFilterInstance(bool copyFilterParameters)
 {
-  ImportHDF5File::Pointer filter = ImportHDF5File::New();
+  ImportHDF5Dataset::Pointer filter = ImportHDF5Dataset::New();
   if(true == copyFilterParameters)
   {
     copyFilterParameterInstanceVariables(filter.get());
@@ -484,13 +484,13 @@ AbstractFilter::Pointer ImportHDF5File::newFilterInstance(bool copyFilterParamet
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString ImportHDF5File::getCompiledLibraryName()
+const QString ImportHDF5Dataset::getCompiledLibraryName()
 { return Core::CoreBaseName; }
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString ImportHDF5File::getBrandingString()
+const QString ImportHDF5Dataset::getBrandingString()
 {
   return "SIMPLib Core Filter";
 }
@@ -498,7 +498,7 @@ const QString ImportHDF5File::getBrandingString()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString ImportHDF5File::getFilterVersion()
+const QString ImportHDF5Dataset::getFilterVersion()
 {
   QString version;
   QTextStream vStream(&version);
@@ -509,18 +509,18 @@ const QString ImportHDF5File::getFilterVersion()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString ImportHDF5File::getGroupName()
+const QString ImportHDF5Dataset::getGroupName()
 { return SIMPL::FilterGroups::CoreFilters; }
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString ImportHDF5File::getSubGroupName()
+const QString ImportHDF5Dataset::getSubGroupName()
 { return SIMPL::FilterSubGroups::InputFilters; }
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString ImportHDF5File::getHumanLabel()
-{ return "Import HDF5 File"; }
+const QString ImportHDF5Dataset::getHumanLabel()
+{ return "Import HDF5 Dataset"; }
 

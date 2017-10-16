@@ -33,14 +33,14 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-#include "ImportHDF5FileFilterParameter.h"
+#include "ImportHDF5DatasetFilterParameter.h"
 
-#include "SIMPLib/CoreFilters/ImportHDF5File.h"
+#include "SIMPLib/CoreFilters/ImportHDF5Dataset.h"
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-ImportHDF5FileFilterParameter::ImportHDF5FileFilterParameter()
+ImportHDF5DatasetFilterParameter::ImportHDF5DatasetFilterParameter()
 : FilterParameter()
 {
 }
@@ -48,16 +48,16 @@ ImportHDF5FileFilterParameter::ImportHDF5FileFilterParameter()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-ImportHDF5FileFilterParameter::~ImportHDF5FileFilterParameter()
+ImportHDF5DatasetFilterParameter::~ImportHDF5DatasetFilterParameter()
 {
 }
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-ImportHDF5FileFilterParameter::Pointer ImportHDF5FileFilterParameter::New(const QString& humanLabel, const QString& propertyName, const QVariant& defaultValue, Category category, ImportHDF5File* filter, int groupIndex)
+ImportHDF5DatasetFilterParameter::Pointer ImportHDF5DatasetFilterParameter::New(const QString& humanLabel, const QString& propertyName, const QVariant& defaultValue, Category category, ImportHDF5Dataset* filter, int groupIndex)
 {
-  ImportHDF5FileFilterParameter::Pointer ptr = ImportHDF5FileFilterParameter::New();
+  ImportHDF5DatasetFilterParameter::Pointer ptr = ImportHDF5DatasetFilterParameter::New();
   ptr->setHumanLabel(humanLabel);
   ptr->setPropertyName(propertyName);
   ptr->setDefaultValue(defaultValue);
@@ -71,15 +71,15 @@ ImportHDF5FileFilterParameter::Pointer ImportHDF5FileFilterParameter::New(const 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-QString ImportHDF5FileFilterParameter::getWidgetType()
+QString ImportHDF5DatasetFilterParameter::getWidgetType()
 {
-  return QString("ImportHDF5FileWidget");
+  return QString("ImportHDF5DatasetWidget");
 }
 
 // -----------------------------------------------------------------------------
 // THIS IS A SPECIAL CASE AND IS NOT STANDARD.  DO NOT COPY THIS CODE.
 // -----------------------------------------------------------------------------
-void ImportHDF5FileFilterParameter::readJson(const QJsonObject& json)
+void ImportHDF5DatasetFilterParameter::readJson(const QJsonObject& json)
 {
   if (json.contains("HDF5FilePath") && json["HDF5FilePath"].isString())
   {
@@ -91,7 +91,7 @@ void ImportHDF5FileFilterParameter::readJson(const QJsonObject& json)
 // -----------------------------------------------------------------------------
 // THIS IS A SPECIAL CASE AND IS NOT STANDARD.  DO NOT COPY THIS CODE.
 // -----------------------------------------------------------------------------
-void ImportHDF5FileFilterParameter::writeJson(QJsonObject& json)
+void ImportHDF5DatasetFilterParameter::writeJson(QJsonObject& json)
 {
   json["HDF5FilePath"] = m_Filter->getHDF5FilePath();
   json["DatasetPath"] = m_Filter->getDatasetPath();

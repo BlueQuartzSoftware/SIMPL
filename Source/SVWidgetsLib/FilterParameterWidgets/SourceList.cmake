@@ -54,7 +54,7 @@ set(SIMPLView_PARAMETER_WIDGETS_NO_UI
 set(SIMPLView_PARAMETER_WIDGETS_NO_CODEGEN
   AbstractIOFileWidget
   CalculatorWidget
-  ImportHDF5FileWidget
+  ImportHDF5DatasetWidget
   LinkedDataContainerSelectionWidget
   PhaseTypeSelectionWidget
   ReadASCIIDataWidget
