@@ -168,6 +168,9 @@ void ImportHDF5DatasetWidget::setupGui()
 
   if (m_Filter != nullptr)
   {
+    QString dsetPath = m_Filter->getDatasetPath();
+    dsetPathLE->setText(dsetPath);
+
     QString hdf5FilePath = m_Filter->getHDF5FilePath();
     if (hdf5FilePath.isEmpty() == false)
     {
@@ -176,8 +179,30 @@ void ImportHDF5DatasetWidget::setupGui()
       initWithFile(hdf5FilePath);
     }
 
-    QString dsetPath = m_Filter->getDatasetPath();
-    dsetPathLE->setText(dsetPath);
+    // Automatically expand HDF groups in the viewer
+    QStringList dsetTokens = dsetPath.split("/", QString::SkipEmptyParts);\
+    ImportHDF5TreeModel* treeModel = dynamic_cast<ImportHDF5TreeModel*>(hdfTreeView->model());
+    QModelIndex parentIdx = treeModel->index(0, 0);
+    hdfTreeView->expand(parentIdx);
+    while (dsetTokens.size() > 0)
+    {
+      QString dsetToken = dsetTokens.front();
+      dsetTokens.pop_front();
+      QModelIndexList idxList = treeModel->match(treeModel->index(0, 0, parentIdx), Qt::DisplayRole, dsetToken);
+      if (idxList.size() > 0)
+      {
+        QModelIndex foundIdx = idxList[0];
+        hdfTreeView->expand(foundIdx);
+        parentIdx = foundIdx;
+      }
+      else
+      {
+        dsetTokens.clear();
+      }
+    }
+
+    // Select the dataset
+    hdfTreeView->setCurrentIndex(parentIdx);
   }
 
   if (m_FilterParameter != nullptr)
