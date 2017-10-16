@@ -46,14 +46,14 @@
 #include "SVWidgetsLib/SVWidgetsLib.h"
 
 //-- UIC generated Header
-#include <ui_ReadHDF5FileWidget.h>
+#include <ui_ImportHDF5FileWidget.h>
 
 #define READ_HDF5_EXTRA_FEATURES 1
 
 class IH5DataWindow;
 class QDockWidget;
-class ReadHDF5FileFilterParameter;
-class ReadHDF5File;
+class ImportHDF5FileFilterParameter;
+class ImportHDF5File;
 
 /* Uses the 'Private Inheritance' method from the *.ui file */
 /**
@@ -61,14 +61,14 @@ class ReadHDF5File;
  * @author Mike Jackson
  * @date June 2008
  * @version $Revision: 1.7 $
- * @class ReadHDF5FileWidget ReadHDF5FileWidget.h ReadHDF5FileWidget.h
+ * @class ImportHDF5FileWidget ImportHDF5FileWidget.h ImportHDF5FileWidget.h
  */
-class SVWidgetsLib_EXPORT ReadHDF5FileWidget : public FilterParameterWidget, private Ui::ReadHDF5FileWidget
+class SVWidgetsLib_EXPORT ImportHDF5FileWidget : public FilterParameterWidget, private Ui::ImportHDF5FileWidget
 {
   Q_OBJECT
 
 public:
-  ReadHDF5FileWidget(FilterParameter* parameter, AbstractFilter* filter = nullptr, QWidget* parent = nullptr);
+  ImportHDF5FileWidget(FilterParameter* parameter, AbstractFilter* filter = nullptr, QWidget* parent = nullptr);
 
   /**
    * @brief openHDF5File
@@ -148,8 +148,8 @@ private:
   std::string                                       m_CurrentHDFDataPath;  //Stores the currently viewed HDF data path
   hid_t                                             m_FileId;
 
-  ReadHDF5FileFilterParameter*                     m_FilterParameter;
-  ReadHDF5File*                                    m_Filter;
+  ImportHDF5FileFilterParameter*                     m_FilterParameter;
+  ImportHDF5File*                                    m_Filter;
 
   /**
    * @brief Updates the QGraphicsView based on the current Data Dimension and Data record values
@@ -161,9 +161,9 @@ private:
   herr_t updateGeneralTable(const QString &path);
   void addRow(QTableWidget* table, int row, const QString &key, const QString &value);
 
-  ~ReadHDF5FileWidget();
-  ReadHDF5FileWidget(const ReadHDF5FileWidget&);   //Copy Constructor Not Implemented
-  void operator=(const ReadHDF5FileWidget&); //Copy Assignment Not Implemented
+  ~ImportHDF5FileWidget();
+  ImportHDF5FileWidget(const ImportHDF5FileWidget&);   //Copy Constructor Not Implemented
+  void operator=(const ImportHDF5FileWidget&); //Copy Assignment Not Implemented
 };
 
 #endif /* _readhdf5filewidget_h_ */

@@ -10,18 +10,18 @@
 #include "SIMPLib/Common/SIMPLibSetGetMacros.h"
 
 /**
- * @brief The ReadHDF5File class. See [Filter documentation](@ref readhdf5file) for details.
+ * @brief The ImportHDF5File class. See [Filter documentation](@ref readhdf5file) for details.
  */
-class SIMPLib_EXPORT ReadHDF5File : public AbstractFilter
+class SIMPLib_EXPORT ImportHDF5File : public AbstractFilter
 {
   Q_OBJECT
 
   public:
-    SIMPL_SHARED_POINTERS(ReadHDF5File)
-    SIMPL_STATIC_NEW_MACRO(ReadHDF5File)
-    SIMPL_TYPE_MACRO_SUPER(ReadHDF5File, AbstractFilter)
+    SIMPL_SHARED_POINTERS(ImportHDF5File)
+    SIMPL_STATIC_NEW_MACRO(ImportHDF5File)
+    SIMPL_TYPE_MACRO_SUPER(ImportHDF5File, AbstractFilter)
 
-    virtual ~ReadHDF5File();
+    virtual ~ImportHDF5File();
 
     SIMPL_INSTANCE_PROPERTY(QString, HDF5FilePath)
     Q_PROPERTY(QString HDF5FilePath READ getHDF5FilePath WRITE setHDF5FilePath)
@@ -116,7 +116,7 @@ class SIMPLib_EXPORT ReadHDF5File : public AbstractFilter
     void preflightExecuted();
 
   protected:
-    ReadHDF5File();
+    ImportHDF5File();
 
     /**
     * @brief dataCheck Checks for the appropriate parameter values and availability of arrays
@@ -131,7 +131,7 @@ class SIMPLib_EXPORT ReadHDF5File : public AbstractFilter
   private:
     QString m_HDF5Dimensions = "";
 
-    IDataArray::Pointer readIDataArray(hid_t gid, const QString& name, QVector<size_t> tDims, QVector<size_t> cDims, bool metaDataOnly);
+    IDataArray::Pointer readIDataArray(hid_t gid, const QString& name, size_t numOfTuples, QVector<size_t> cDims, bool metaDataOnly);
 
     /**
      * @brief createComponentDimensions
@@ -139,17 +139,8 @@ class SIMPLib_EXPORT ReadHDF5File : public AbstractFilter
      */
     QVector<size_t> createComponentDimensions();
 
-    /**
-     * @brief calculateTupleDimensions
-     * @param cDims
-     * @param dsetDims
-     * @param amTupleCount
-     * @return
-     */
-    QVector<size_t> calculateTupleDimensions(QVector<size_t> cDims, QVector<hsize_t> dsetDims, size_t amTupleCount);
-
-    ReadHDF5File(const ReadHDF5File&); // Copy Constructor Not Implemented
-    void operator=(const ReadHDF5File&); // Operator '=' Not Implemented
+    ImportHDF5File(const ImportHDF5File&); // Copy Constructor Not Implemented
+    void operator=(const ImportHDF5File&); // Operator '=' Not Implemented
 };
 
-#endif /* _ReadHDF5File_H_ */
+#endif /* _ImportHDF5File_H_ */

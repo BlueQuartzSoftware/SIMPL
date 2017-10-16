@@ -45,15 +45,15 @@
 
 #include "SVWidgetsLib/SVWidgetsLib.h"
 
-class ReadHDF5TreeModelItem;
+class ImportHDF5TreeModelItem;
 
-class SVWidgetsLib_EXPORT ReadHDF5TreeModel : public QAbstractItemModel
+class SVWidgetsLib_EXPORT ImportHDF5TreeModel : public QAbstractItemModel
 {
   Q_OBJECT
 
 public:
-  ReadHDF5TreeModel(hid_t fileId, QObject *parent = 0);
-  ~ReadHDF5TreeModel();
+  ImportHDF5TreeModel(hid_t fileId, QObject *parent = 0);
+  ~ImportHDF5TreeModel();
 
   /**
    * @brief data
@@ -142,7 +142,7 @@ signals:
   void modelChanged();
 
 private:
-  ReadHDF5TreeModelItem*                    m_RootItem;
+  ImportHDF5TreeModelItem*                    m_RootItem;
   hid_t                                     m_FileId;
   QFileIconProvider                         m_IconProvider;
   QList<QString>                            m_SelectedHDF5Paths;

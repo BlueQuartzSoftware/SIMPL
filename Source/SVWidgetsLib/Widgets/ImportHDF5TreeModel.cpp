@@ -39,25 +39,25 @@
 
 #include "H5Support/H5Utilities.h"
 
-#include "ReadHDF5TreeModel.h"
-#include "ReadHDF5TreeModelItem.h"
+#include "ImportHDF5TreeModel.h"
+#include "ImportHDF5TreeModelItem.h"
 
 // Include the MOC generated CPP file which has all the QMetaObject methods/data
-#include "moc_ReadHDF5TreeModel.cpp"
+#include "moc_ImportHDF5TreeModel.cpp"
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-ReadHDF5TreeModel::ReadHDF5TreeModel(hid_t fileId, QObject *parent) :
+ImportHDF5TreeModel::ImportHDF5TreeModel(hid_t fileId, QObject *parent) :
   QAbstractItemModel(parent), m_FileId(fileId)
 {
-  m_RootItem = new ReadHDF5TreeModelItem(m_FileId, "HEADER");
+  m_RootItem = new ImportHDF5TreeModelItem(m_FileId, "HEADER");
 }
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-ReadHDF5TreeModel::~ReadHDF5TreeModel()
+ImportHDF5TreeModel::~ImportHDF5TreeModel()
 {
   delete m_RootItem;
 }
@@ -65,10 +65,10 @@ ReadHDF5TreeModel::~ReadHDF5TreeModel()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-int ReadHDF5TreeModel::columnCount(const QModelIndex &parent) const
+int ImportHDF5TreeModel::columnCount(const QModelIndex &parent) const
 {
   if (parent.isValid())
-    return static_cast<ReadHDF5TreeModelItem*>(parent.internalPointer())->columnCount();
+    return static_cast<ImportHDF5TreeModelItem*>(parent.internalPointer())->columnCount();
   else
     return m_RootItem->columnCount();
 }
@@ -76,12 +76,12 @@ int ReadHDF5TreeModel::columnCount(const QModelIndex &parent) const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-QVariant ReadHDF5TreeModel::data(const QModelIndex &index, int role) const
+QVariant ImportHDF5TreeModel::data(const QModelIndex &index, int role) const
 {
   if (!index.isValid())
     return QVariant();
 
-  ReadHDF5TreeModelItem *item = static_cast<ReadHDF5TreeModelItem*>(index.internalPointer());
+  ImportHDF5TreeModelItem *item = static_cast<ImportHDF5TreeModelItem*>(index.internalPointer());
 
   if (role == Qt::DecorationRole)
   {
@@ -102,14 +102,14 @@ QVariant ReadHDF5TreeModel::data(const QModelIndex &index, int role) const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-bool ReadHDF5TreeModel::setData(const QModelIndex &index, const QVariant &value, int role)
+bool ImportHDF5TreeModel::setData(const QModelIndex &index, const QVariant &value, int role)
 {
   if (index.column() != 0)
   {
     return false;
   }
 
-//  ReadHDF5TreeModelItem *item = static_cast<ReadHDF5TreeModelItem*>(index.internalPointer());
+//  ImportHDF5TreeModelItem *item = static_cast<ImportHDF5TreeModelItem*>(index.internalPointer());
 
 //  if (role == Qt::CheckStateRole)
 //  {
@@ -134,12 +134,12 @@ bool ReadHDF5TreeModel::setData(const QModelIndex &index, const QVariant &value,
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-Qt::ItemFlags ReadHDF5TreeModel::flags(const QModelIndex &index) const
+Qt::ItemFlags ImportHDF5TreeModel::flags(const QModelIndex &index) const
 {
   if (!index.isValid())
     return 0;
 
-  ReadHDF5TreeModelItem *item = static_cast<ReadHDF5TreeModelItem*>(index.internalPointer());
+  ImportHDF5TreeModelItem *item = static_cast<ImportHDF5TreeModelItem*>(index.internalPointer());
 
   Qt::ItemFlags flags = Qt::ItemIsEnabled | Qt::ItemIsSelectable;
 
@@ -161,7 +161,7 @@ Qt::ItemFlags ReadHDF5TreeModel::flags(const QModelIndex &index) const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-QVariant ReadHDF5TreeModel::headerData(int section, Qt::Orientation orientation, int role) const
+QVariant ImportHDF5TreeModel::headerData(int section, Qt::Orientation orientation, int role) const
 {
   if (orientation == Qt::Horizontal && role == Qt::DisplayRole)
   {
@@ -174,19 +174,19 @@ QVariant ReadHDF5TreeModel::headerData(int section, Qt::Orientation orientation,
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-QModelIndex ReadHDF5TreeModel::index(int row, int column, const QModelIndex &parent) const
+QModelIndex ImportHDF5TreeModel::index(int row, int column, const QModelIndex &parent) const
 {
   if (!hasIndex(row, column, parent))
     return QModelIndex();
 
-  ReadHDF5TreeModelItem *parentItem;
+  ImportHDF5TreeModelItem *parentItem;
 
   if (!parent.isValid())
     parentItem = m_RootItem;
   else
-    parentItem = static_cast<ReadHDF5TreeModelItem*>(parent.internalPointer());
+    parentItem = static_cast<ImportHDF5TreeModelItem*>(parent.internalPointer());
 
-  ReadHDF5TreeModelItem *childItem = parentItem->child(row);
+  ImportHDF5TreeModelItem *childItem = parentItem->child(row);
   if (childItem)
     return createIndex(row, column, childItem);
   else
@@ -196,13 +196,13 @@ QModelIndex ReadHDF5TreeModel::index(int row, int column, const QModelIndex &par
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-QModelIndex ReadHDF5TreeModel::parent(const QModelIndex &index) const
+QModelIndex ImportHDF5TreeModel::parent(const QModelIndex &index) const
 {
   if (!index.isValid())
     return QModelIndex();
 
-  ReadHDF5TreeModelItem *childItem = static_cast<ReadHDF5TreeModelItem*>(index.internalPointer());
-  ReadHDF5TreeModelItem *parentItem = childItem->parent();
+  ImportHDF5TreeModelItem *childItem = static_cast<ImportHDF5TreeModelItem*>(index.internalPointer());
+  ImportHDF5TreeModelItem *parentItem = childItem->parent();
 
   if (parentItem == m_RootItem)
     return QModelIndex();
@@ -213,16 +213,16 @@ QModelIndex ReadHDF5TreeModel::parent(const QModelIndex &index) const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-bool ReadHDF5TreeModel::hasChildren(const QModelIndex &parent) const
+bool ImportHDF5TreeModel::hasChildren(const QModelIndex &parent) const
 {
   if (parent.column() > 0)
     return false;
 
-  ReadHDF5TreeModelItem *parentItem;
+  ImportHDF5TreeModelItem *parentItem;
   if (!parent.isValid())
     parentItem = m_RootItem;
   else
-    parentItem = static_cast<ReadHDF5TreeModelItem*>(parent.internalPointer());
+    parentItem = static_cast<ImportHDF5TreeModelItem*>(parent.internalPointer());
 
   return parentItem->isGroup();
 }
@@ -230,16 +230,16 @@ bool ReadHDF5TreeModel::hasChildren(const QModelIndex &parent) const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-int ReadHDF5TreeModel::rowCount(const QModelIndex &parent) const
+int ImportHDF5TreeModel::rowCount(const QModelIndex &parent) const
 {
-  ReadHDF5TreeModelItem *parentItem;
+  ImportHDF5TreeModelItem *parentItem;
   if (parent.column() > 0)
     return 0;
 
   if (!parent.isValid())
     parentItem = m_RootItem;
   else
-    parentItem = static_cast<ReadHDF5TreeModelItem*>(parent.internalPointer());
+    parentItem = static_cast<ImportHDF5TreeModelItem*>(parent.internalPointer());
 
   return parentItem->childCount();
 }
@@ -247,14 +247,14 @@ int ReadHDF5TreeModel::rowCount(const QModelIndex &parent) const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void ReadHDF5TreeModel::setupModelData()
+void ImportHDF5TreeModel::setupModelData()
 {
   if (m_FileId < 0)
   {
     return;
   }
 
-  m_RootItem->appendChild(new ReadHDF5TreeModelItem(m_FileId, QString("/"), m_RootItem));
+  m_RootItem->appendChild(new ImportHDF5TreeModelItem(m_FileId, QString("/"), m_RootItem));
 
 #if 0
   std::list<std::string> itemList;
@@ -268,25 +268,25 @@ void ReadHDF5TreeModel::setupModelData()
 
   for (std::list<std::string>::iterator iter = itemList.begin(); iter != itemList.end(); ++iter )
   {
-    rootItem->appendChild(new ReadHDF5TreeModelItem(_fileId, QString( (*iter).c_str() ), rootItem) );
+    rootItem->appendChild(new ImportHDF5TreeModelItem(_fileId, QString( (*iter).c_str() ), rootItem) );
   }
 #endif
-  //parents.last()->appendChild(new ReadHDF5TreeModelItem(columnData, parents.last()));
+  //parents.last()->appendChild(new ImportHDF5TreeModelItem(columnData, parents.last()));
 }
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-QString ReadHDF5TreeModel::hdfPathForIndex(const QModelIndex &index)
+QString ImportHDF5TreeModel::hdfPathForIndex(const QModelIndex &index)
 {
-  ReadHDF5TreeModelItem* item = static_cast<ReadHDF5TreeModelItem*>(index.internalPointer());
+  ImportHDF5TreeModelItem* item = static_cast<ImportHDF5TreeModelItem*>(index.internalPointer());
   return item->generateHDFPath();
 }
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-QList<QString> ReadHDF5TreeModel::getSelectedHDF5Paths()
+QList<QString> ImportHDF5TreeModel::getSelectedHDF5Paths()
 {
   return m_SelectedHDF5Paths;
 }

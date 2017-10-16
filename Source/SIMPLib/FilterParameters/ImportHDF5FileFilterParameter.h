@@ -33,66 +33,48 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-#ifndef _readhdf5treemodelitem_h_
-#define _readhdf5treemodelitem_h_
+#ifndef _readhdf5filefilterparameter_h_
+#define _readhdf5filefilterparameter_h_
 
-#include <QtCore/QList>
-#include <QtCore/QVariant>
-#include <QtGui/QIcon>
+#include "SIMPLib/FilterParameters/FilterParameter.h"
 
-#include <hdf5.h>
+class ImportHDF5File;
 
-#include "SVWidgetsLib/SVWidgetsLib.h"
-
-class SVWidgetsLib_EXPORT ReadHDF5TreeModelItem
+class SIMPLib_EXPORT ImportHDF5FileFilterParameter : public FilterParameter
 {
 public:
-  ReadHDF5TreeModelItem(hid_t fileId, const QString &data, ReadHDF5TreeModelItem *parent = 0);
-  ~ReadHDF5TreeModelItem();
+  SIMPL_SHARED_POINTERS(ImportHDF5FileFilterParameter)
+    SIMPL_STATIC_NEW_MACRO(ImportHDF5FileFilterParameter)
+    SIMPL_TYPE_MACRO(ImportHDF5FileFilterParameter)
 
-  void appendChild(ReadHDF5TreeModelItem *child);
+  static Pointer New(const QString& humanLabel, const QString& propertyName,
+                     const QVariant& defaultValue, Category category,
+                     ImportHDF5File* filter, int groupIndex = -1);
 
-  ReadHDF5TreeModelItem *child(int row);
-  int childCount() ;
-  int columnCount() ;
-  QVariant data(int column) ;
-  int row() ;
-  ReadHDF5TreeModelItem *parent();
+  virtual ~ImportHDF5FileFilterParameter();
 
-  QString generateHDFPath();
+  QString getWidgetType();
 
-  bool isGroup();
-  bool isImage();
-  bool isTable();
-  bool isString();
-  Qt::CheckState getCheckState();
+  SIMPL_INSTANCE_PROPERTY(ImportHDF5File*, Filter)
 
-  void setCheckState(Qt::CheckState checkState);
+  /**
+   * @brief readJson Reads this filter parameter's corresponding property out of a QJsonObject.
+   * @param json The QJsonObject that the filter parameter reads from.
+   */
+  void readJson(const QJsonObject &json);
 
-  int numAttributes();
-  int numDimensions();
-
-  QIcon icon();
+  /**
+   * @brief writeJson Writes this filter parameter's corresponding property to a QJsonObject.
+   * @param json The QJsonObject that the filter parameter writes to.
+   */
+  void writeJson(QJsonObject &json);
 
 protected:
-  void initializeChildItems();
-  void initializeChildCount();
+  ImportHDF5FileFilterParameter();
 
 private:
-  QList<ReadHDF5TreeModelItem*>               m_ChildItems;
-  int                                         m_ChildItemsInitialized = 0;
-  int                                         m_ChildCount = -1;
-  QVariant                                    m_ItemData;
-  ReadHDF5TreeModelItem*                      m_ParentItem;
-  hid_t                                       m_FileId;
-  int                                         m_NumAttrs = -1;
-  int                                         m_NumDims = -1;
-  bool                                        m_IsGroup = false;
-  bool                                        m_IsImage = false;
-  bool                                        m_IsTable = false;
-  bool                                        m_IsString = false;
-  std::string                                 m_DataType = "";
-  Qt::CheckState                              m_CheckState = Qt::Unchecked;
+  ImportHDF5FileFilterParameter(const ImportHDF5FileFilterParameter&); // Copy Constructor Not Implemented
+  void operator=(const ImportHDF5FileFilterParameter&); // Operator '=' Not Implemented
 };
 
-#endif /* _readhdf5treemodelitem_h_ */
+#endif /* _readhdf5filefilterparameter_h_ */

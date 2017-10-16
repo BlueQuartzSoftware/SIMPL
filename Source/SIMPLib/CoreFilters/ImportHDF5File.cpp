@@ -2,31 +2,31 @@
  * Your License or Copyright can go here
  */
 
-#include "ReadHDF5File.h"
+#include "ImportHDF5File.h"
 
 #include <QtCore/QFileInfo>
 
 #include "SIMPLib/Common/Constants.h"
 #include "SIMPLib/FilterParameters/AttributeMatrixSelectionFilterParameter.h"
-#include "SIMPLib/FilterParameters/ReadHDF5FileFilterParameter.h"
+#include "SIMPLib/FilterParameters/ImportHDF5FileFilterParameter.h"
 #include "SIMPLib/FilterParameters/StringFilterParameter.h"
 
 #include "SIMPLib/SIMPLibVersion.h"
 
 // Include the MOC generated file for this class
-#include "moc_ReadHDF5File.cpp"
+#include "moc_ImportHDF5File.cpp"
 
 namespace Detail
 {
   // -----------------------------------------------------------------------------
   //
   // -----------------------------------------------------------------------------
-  template <typename T> IDataArray::Pointer readH5Dataset(hid_t locId, const QString& datasetPath, const QVector<size_t>& tDims, const QVector<size_t>& cDims)
+  template <typename T> IDataArray::Pointer readH5Dataset(hid_t locId, const QString& datasetPath, const size_t &numOfTuples, const QVector<size_t>& cDims)
   {
     herr_t err = -1;
     IDataArray::Pointer ptr;
 
-    ptr = DataArray<T>::CreateArray(tDims, cDims, datasetPath);
+    ptr = DataArray<T>::CreateArray(numOfTuples, cDims, datasetPath);
 
     T* data = (T*)(ptr->getVoidPointer(0));
     err = QH5Lite::readPointerDataset(locId, datasetPath, data);
@@ -42,7 +42,7 @@ namespace Detail
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-ReadHDF5File::ReadHDF5File() :
+ImportHDF5File::ImportHDF5File() :
   AbstractFilter()
 {
   initialize();
@@ -52,14 +52,14 @@ ReadHDF5File::ReadHDF5File() :
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-ReadHDF5File::~ReadHDF5File()
+ImportHDF5File::~ImportHDF5File()
 {
 }
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void ReadHDF5File::initialize()
+void ImportHDF5File::initialize()
 {
   setErrorCondition(0);
   setCancel(false);
@@ -68,30 +68,30 @@ void ReadHDF5File::initialize()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void ReadHDF5File::setupFilterParameters()
+void ImportHDF5File::setupFilterParameters()
 {
   FilterParameterVector parameters;
 
-  ReadHDF5FileFilterParameter::Pointer parameter = ReadHDF5FileFilterParameter::New();
+  ImportHDF5FileFilterParameter::Pointer parameter = ImportHDF5FileFilterParameter::New();
   parameter->setHumanLabel("Select HDF5 File");
   parameter->setCategory(FilterParameter::Parameter);
   parameter->setFilter(this);
   parameters.push_back(parameter);
 
 
-//  parameters.push_back(SIMPL_NEW_INPUT_FILE_FP("HDF5 File", HDF5FilePath, FilterParameter::Parameter, ReadHDF5File));
-//  parameters.push_back(SIMPL_NEW_STRING_FP("Dataset Path", DatasetPath, FilterParameter::Parameter, ReadHDF5File));
+//  parameters.push_back(SIMPL_NEW_INPUT_FILE_FP("HDF5 File", HDF5FilePath, FilterParameter::Parameter, ImportHDF5File));
+//  parameters.push_back(SIMPL_NEW_STRING_FP("Dataset Path", DatasetPath, FilterParameter::Parameter, ImportHDF5File));
 
 //  PreflightUpdatedValueFilterParameter::Pointer param =
-//      SIMPL_NEW_PREFLIGHTUPDATEDVALUE_FP("HDF5 Dimensions", HDF5Dimensions, FilterParameter::Parameter, ReadHDF5File);
+//      SIMPL_NEW_PREFLIGHTUPDATEDVALUE_FP("HDF5 Dimensions", HDF5Dimensions, FilterParameter::Parameter, ImportHDF5File);
 //  param->setReadOnly(true);
 //  parameters.push_back(param);
 
-  parameters.push_back(SIMPL_NEW_STRING_FP("Component Dimensions", ComponentDimensions, FilterParameter::Parameter, ReadHDF5File));
+  parameters.push_back(SIMPL_NEW_STRING_FP("Component Dimensions", ComponentDimensions, FilterParameter::Parameter, ImportHDF5File));
 
   {
     AttributeMatrixSelectionFilterParameter::RequirementType req;
-    parameters.push_back(SIMPL_NEW_AM_SELECTION_FP("Attribute Matrix", SelectedAttributeMatrix, FilterParameter::RequiredArray, ReadHDF5File, req));
+    parameters.push_back(SIMPL_NEW_AM_SELECTION_FP("Attribute Matrix", SelectedAttributeMatrix, FilterParameter::RequiredArray, ImportHDF5File, req));
   }
 
   setFilterParameters(parameters);
@@ -100,7 +100,7 @@ void ReadHDF5File::setupFilterParameters()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void ReadHDF5File::dataCheck()
+void ImportHDF5File::dataCheck()
 {
   setErrorCondition(0);
   
@@ -169,27 +169,65 @@ void ReadHDF5File::dataCheck()
   }
 
   QVector<size_t> cDims = createComponentDimensions();
-  if (getErrorCondition() < 0)
+  if (cDims.isEmpty())
   {
-    return;
-  }
-
-  QVector<size_t> tDims = calculateTupleDimensions(cDims, dims, am->getNumberOfTuples());
-  if (getErrorCondition() < 0)
-  {
-    return;
-  }
-
-  IDataArray::Pointer dPtr = readIDataArray(parentId, objectName, tDims, cDims, getInPreflight());
-
-  if (dPtr->getNumberOfTuples() != am->getNumberOfTuples())
-  {
-    QString ss = tr("The number of tuples of dataset with path '%1' does not equal the number of tuples of the selected attribute matrix '%2'").arg(m_DatasetPath).arg(m_SelectedAttributeMatrix.getAttributeMatrixName());
-    setErrorCondition(-20004);
+    QString ss = tr("Component Dimensions are not in the right format. Use comma-separated values (ex: 4x2 would be '4, 2').").arg(m_DatasetPath);
+    setErrorCondition(-20005);
     notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
     return;
   }
 
+  // Calculate the product of the dataset dimensions and the product of the component dimensions.
+  // Since we're already looping over both of these sets of dimensions, let's also create our error message
+  // in case the equation does not work and we have to bail.
+  QString ss = "";
+  QTextStream stream(&ss);
+
+  stream << tr("HDF5 File Path: %1\n").arg(m_HDF5FilePath);
+  stream << tr("HDF5 Dataset Path: %1\n").arg(m_DatasetPath);
+
+  size_t cDimsProduct = 1;
+  stream << tr("Component Dimensions: (");
+  for (int i = 0; i < cDims.size(); i++)
+  {
+    stream << cDims[i];
+    cDimsProduct = cDimsProduct * cDims[i];
+    if (i != cDims.size() - 1)
+    {
+      stream << ", ";
+    }
+  }
+  stream << ")\n";
+
+  size_t dsetDimsProduct = 1;
+  stream << tr("HDF5 Dataset Dimensions: (");
+  for (int i = 0; i < dims.size(); i++)
+  {
+    stream << dims[i];
+    dsetDimsProduct = dsetDimsProduct * dims[i];
+    if (i != dims.size() - 1)
+    {
+      stream << ", ";
+    }
+  }
+  stream << ")\n";
+
+  stream << tr("Attribute Matrix Path: %1/%2\n").arg(m_SelectedAttributeMatrix.getDataContainerName()).arg(m_SelectedAttributeMatrix.getAttributeMatrixName());
+  stream << tr("Attribute Matrix Tuple Count: %1\n\n").arg(am->getNumberOfTuples());
+
+  if (dsetDimsProduct / cDimsProduct != am->getNumberOfTuples())
+  {
+    stream << tr("This dataset cannot be read because this equation is not satisfied:\n"
+                 "(Product of dataset dimensions) / (Product of component dimensions) = (Attribute Matrix Tuple Count)\n"
+                 "%1 / %2 = %3\n%4 = %5").arg(QString::number(dsetDimsProduct)).arg(QString::number(cDimsProduct))
+              .arg(QString::number(am->getNumberOfTuples())).arg(QString::number(dsetDimsProduct / cDimsProduct)).arg(QString::number(am->getNumberOfTuples()));
+
+    setErrorCondition(-20006);
+    notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
+    return;
+  }
+
+  IDataArray::Pointer dPtr = readIDataArray(parentId, objectName, am->getNumberOfTuples(), cDims, getInPreflight());
   am->addAttributeArray(dPtr->getName(), dPtr);
 
   QH5Utilities::closeHDF5Object(parentId);
@@ -199,7 +237,7 @@ void ReadHDF5File::dataCheck()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void ReadHDF5File::preflight()
+void ImportHDF5File::preflight()
 {
   // These are the REQUIRED lines of CODE to make sure the filter behaves correctly
   setInPreflight(true); // Set the fact that we are preflighting.
@@ -213,7 +251,7 @@ void ReadHDF5File::preflight()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void ReadHDF5File::execute()
+void ImportHDF5File::execute()
 {
   initialize();
   dataCheck();
@@ -225,111 +263,7 @@ void ReadHDF5File::execute()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-QVector<size_t> ReadHDF5File::calculateTupleDimensions(QVector<size_t> cDims, QVector<hsize_t> dsetDims, size_t amTupleCount)
-{
-  QVector<size_t> tDims;
-  QVector<size_t> tempCDims = cDims;
-
-  // Check if the component dimension values exist in the dataset dimensions, and that the leftover
-  // dataset dimension values still multiply together to match the attribute matrix count
-  {
-    for (int i = 0; i < dsetDims.size(); i++)
-    {
-      if (tempCDims.contains(dsetDims[i]))
-      {
-        tempCDims.removeOne(dsetDims[i]);
-      }
-      else
-      {
-        tDims.push_back(dsetDims[i]);
-      }
-    }
-
-    size_t product = 1;
-    for (int i = 0; i < tDims.size(); i++)
-    {
-      product = product * tDims[i];
-    }
-
-    if (product == amTupleCount)
-    {
-      return tDims;
-    }
-  }
-
-  // Check if the product of the component dimensions exists in the dataset dimensions, and that the
-  // leftover dataset dimension values still multiply together to match the attribute matrix count
-  tDims.clear();
-  tempCDims = cDims;
-  {
-    size_t product = 1;
-    for (int i = 0; i < tempCDims.size(); i++)
-    {
-      product = product * tempCDims[i];
-    }
-    tempCDims.resize(1);
-    tempCDims[0] = product;
-
-    for (int i = 0; i < dsetDims.size(); i++)
-    {
-      if (tempCDims.contains(dsetDims[i]))
-      {
-        tempCDims.removeOne(dsetDims[i]);
-      }
-      else
-      {
-        tDims.push_back(dsetDims[i]);
-      }
-    }
-
-    product = 1;
-    for (int i = 0; i < tDims.size(); i++)
-    {
-      product = product * tDims[i];
-    }
-
-    if (product == amTupleCount)
-    {
-      return tDims;
-    }
-  }
-
-  // Check if the product of the component dimensions added with the attribute matrix tuple count equals
-  // the product of the dataset dimension values.
-  tDims.clear();
-  tempCDims = cDims;
-  {
-    size_t cDimsProduct = 1;
-    for (int i = 0; i < tempCDims.size(); i++)
-    {
-      cDimsProduct = cDimsProduct * tempCDims[i];
-    }
-
-    size_t totalValues = cDimsProduct + amTupleCount;
-    size_t dsetDimsProduct = 1;
-    for (int i = 0; i < dsetDims.size(); i++)
-    {
-      dsetDimsProduct = dsetDimsProduct * dsetDims[i];
-    }
-
-    if (totalValues == dsetDimsProduct)
-    {
-      tDims.push_back(amTupleCount);
-      return tDims;
-    }
-  }
-
-  // None of the component dimensions match the dataset dimensions in any of these ways, so throw an error and bail
-  QString ss = tr("The specified component dimensions do not exist in the dataset dimensions.  Please specify valid component dimensions.");
-  setErrorCondition(-20006);
-  notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
-  return QVector<size_t>();
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-QVector<size_t> ReadHDF5File::createComponentDimensions()
+QVector<size_t> ImportHDF5File::createComponentDimensions()
 {
   QVector<size_t> cDims;
   QStringList dimsStrVec = m_ComponentDimensions.split(',', QString::SkipEmptyParts);
@@ -342,9 +276,6 @@ QVector<size_t> ReadHDF5File::createComponentDimensions()
     int val = dimsStr.toInt(&ok);
     if (ok == false)
     {
-      QString ss = tr("Component Dimensions are not in the right format. Use comma-separated values (ex: 4x2 would be '4, 2').").arg(m_DatasetPath);
-      setErrorCondition(-20005);
-      notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
       return QVector<size_t>();
     }
 
@@ -357,7 +288,7 @@ QVector<size_t> ReadHDF5File::createComponentDimensions()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-IDataArray::Pointer ReadHDF5File::readIDataArray(hid_t gid, const QString& name, QVector<size_t> tDims, QVector<size_t> cDims, bool metaDataOnly)
+IDataArray::Pointer ImportHDF5File::readIDataArray(hid_t gid, const QString& name, size_t numOfTuples, QVector<size_t> cDims, bool metaDataOnly)
 {
   herr_t err = -1;
   // herr_t retErr = 1;
@@ -399,88 +330,88 @@ IDataArray::Pointer ReadHDF5File::readIDataArray(hid_t gid, const QString& name,
       {
         if(metaDataOnly == false)
         {
-          ptr = Detail::readH5Dataset<uint8_t>(gid, name, tDims, cDims);
+          ptr = Detail::readH5Dataset<uint8_t>(gid, name, numOfTuples, cDims);
         }
         else
         {
-          ptr = DataArray<uint8_t>::CreateArray(tDims, cDims, name, false);
+          ptr = DataArray<uint8_t>::CreateArray(numOfTuples, cDims, name, false);
         }
       }
       else if(H5Tequal(typeId, H5T_STD_U16BE) || H5Tequal(typeId, H5T_STD_U16LE))
       {
         if(metaDataOnly == false)
         {
-          ptr = Detail::readH5Dataset<uint16_t>(gid, name, tDims, cDims);
+          ptr = Detail::readH5Dataset<uint16_t>(gid, name, numOfTuples, cDims);
         }
         else
         {
-          ptr = DataArray<uint16_t>::CreateArray(tDims, cDims, name, false);
+          ptr = DataArray<uint16_t>::CreateArray(numOfTuples, cDims, name, false);
         }
       }
       else if(H5Tequal(typeId, H5T_STD_U32BE) || H5Tequal(typeId, H5T_STD_U32LE))
       {
         if(metaDataOnly == false)
         {
-          ptr = Detail::readH5Dataset<uint32_t>(gid, name, tDims, cDims);
+          ptr = Detail::readH5Dataset<uint32_t>(gid, name, numOfTuples, cDims);
         }
         else
         {
-          ptr = DataArray<uint32_t>::CreateArray(tDims, cDims, name, false);
+          ptr = DataArray<uint32_t>::CreateArray(numOfTuples, cDims, name, false);
         }
       }
       else if(H5Tequal(typeId, H5T_STD_U64BE) || H5Tequal(typeId, H5T_STD_U64LE))
       {
         if(metaDataOnly == false)
         {
-          ptr = Detail::readH5Dataset<uint64_t>(gid, name, tDims, cDims);
+          ptr = Detail::readH5Dataset<uint64_t>(gid, name, numOfTuples, cDims);
         }
         else
         {
-          ptr = DataArray<uint64_t>::CreateArray(tDims, cDims, name, false);
+          ptr = DataArray<uint64_t>::CreateArray(numOfTuples, cDims, name, false);
         }
       }
       else if(H5Tequal(typeId, H5T_STD_I8BE) || H5Tequal(typeId, H5T_STD_I8LE))
       {
         if(metaDataOnly == false)
         {
-          ptr = Detail::readH5Dataset<int8_t>(gid, name, tDims, cDims);
+          ptr = Detail::readH5Dataset<int8_t>(gid, name, numOfTuples, cDims);
         }
         else
         {
-          ptr = DataArray<int8_t>::CreateArray(tDims, cDims, name, false);
+          ptr = DataArray<int8_t>::CreateArray(numOfTuples, cDims, name, false);
         }
       }
       else if(H5Tequal(typeId, H5T_STD_I16BE) || H5Tequal(typeId, H5T_STD_I16LE))
       {
         if(metaDataOnly == false)
         {
-          ptr = Detail::readH5Dataset<int16_t>(gid, name, tDims, cDims);
+          ptr = Detail::readH5Dataset<int16_t>(gid, name, numOfTuples, cDims);
         }
         else
         {
-          ptr = DataArray<int16_t>::CreateArray(tDims, cDims, name, false);
+          ptr = DataArray<int16_t>::CreateArray(numOfTuples, cDims, name, false);
         }
       }
       else if(H5Tequal(typeId, H5T_STD_I32BE) || H5Tequal(typeId, H5T_STD_I32LE))
       {
         if(metaDataOnly == false)
         {
-          ptr = Detail::readH5Dataset<int32_t>(gid, name, tDims, cDims);
+          ptr = Detail::readH5Dataset<int32_t>(gid, name, numOfTuples, cDims);
         }
         else
         {
-          ptr = DataArray<int32_t>::CreateArray(tDims, cDims, name, false);
+          ptr = DataArray<int32_t>::CreateArray(numOfTuples, cDims, name, false);
         }
       }
       else if(H5Tequal(typeId, H5T_STD_I64BE) || H5Tequal(typeId, H5T_STD_I64LE))
       {
         if(metaDataOnly == false)
         {
-          ptr = Detail::readH5Dataset<int64_t>(gid, name, tDims, cDims);
+          ptr = Detail::readH5Dataset<int64_t>(gid, name, numOfTuples, cDims);
         }
         else
         {
-          ptr = DataArray<int64_t>::CreateArray(tDims, cDims, name, false);
+          ptr = DataArray<int64_t>::CreateArray(numOfTuples, cDims, name, false);
         }
       }
       else
@@ -494,22 +425,22 @@ IDataArray::Pointer ReadHDF5File::readIDataArray(hid_t gid, const QString& name,
       {
         if(metaDataOnly == false)
         {
-          ptr = Detail::readH5Dataset<float>(gid, name, tDims, cDims);
+          ptr = Detail::readH5Dataset<float>(gid, name, numOfTuples, cDims);
         }
         else
         {
-          ptr = DataArray<float>::CreateArray(tDims, cDims, name, false);
+          ptr = DataArray<float>::CreateArray(numOfTuples, cDims, name, false);
         }
       }
       else if(attr_size == 8)
       {
         if(metaDataOnly == false)
         {
-          ptr = Detail::readH5Dataset<double>(gid, name, tDims, cDims);
+          ptr = Detail::readH5Dataset<double>(gid, name, numOfTuples, cDims);
         }
         else
         {
-          ptr = DataArray<double>::CreateArray(tDims, cDims, name, false);
+          ptr = DataArray<double>::CreateArray(numOfTuples, cDims, name, false);
         }
       }
       else
@@ -532,7 +463,7 @@ IDataArray::Pointer ReadHDF5File::readIDataArray(hid_t gid, const QString& name,
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-QString ReadHDF5File::getHDF5Dimensions()
+QString ImportHDF5File::getHDF5Dimensions()
 {
   return m_HDF5Dimensions;
 }
@@ -540,9 +471,9 @@ QString ReadHDF5File::getHDF5Dimensions()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-AbstractFilter::Pointer ReadHDF5File::newFilterInstance(bool copyFilterParameters)
+AbstractFilter::Pointer ImportHDF5File::newFilterInstance(bool copyFilterParameters)
 {
-  ReadHDF5File::Pointer filter = ReadHDF5File::New();
+  ImportHDF5File::Pointer filter = ImportHDF5File::New();
   if(true == copyFilterParameters)
   {
     copyFilterParameterInstanceVariables(filter.get());
@@ -553,13 +484,13 @@ AbstractFilter::Pointer ReadHDF5File::newFilterInstance(bool copyFilterParameter
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString ReadHDF5File::getCompiledLibraryName()
+const QString ImportHDF5File::getCompiledLibraryName()
 { return Core::CoreBaseName; }
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString ReadHDF5File::getBrandingString()
+const QString ImportHDF5File::getBrandingString()
 {
   return "SIMPLib Core Filter";
 }
@@ -567,7 +498,7 @@ const QString ReadHDF5File::getBrandingString()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString ReadHDF5File::getFilterVersion()
+const QString ImportHDF5File::getFilterVersion()
 {
   QString version;
   QTextStream vStream(&version);
@@ -578,18 +509,18 @@ const QString ReadHDF5File::getFilterVersion()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString ReadHDF5File::getGroupName()
+const QString ImportHDF5File::getGroupName()
 { return SIMPL::FilterGroups::CoreFilters; }
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString ReadHDF5File::getSubGroupName()
+const QString ImportHDF5File::getSubGroupName()
 { return SIMPL::FilterSubGroups::InputFilters; }
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString ReadHDF5File::getHumanLabel()
-{ return "Read HDF5 File"; }
+const QString ImportHDF5File::getHumanLabel()
+{ return "Import HDF5 File"; }
 
