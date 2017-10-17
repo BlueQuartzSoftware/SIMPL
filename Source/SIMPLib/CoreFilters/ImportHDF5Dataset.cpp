@@ -78,14 +78,6 @@ void ImportHDF5Dataset::setupFilterParameters()
   parameter->setFilter(this);
   parameters.push_back(parameter);
 
-  //  parameters.push_back(SIMPL_NEW_INPUT_FILE_FP("HDF5 File", HDF5FilePath, FilterParameter::Parameter, ImportHDF5Dataset));
-  //  parameters.push_back(SIMPL_NEW_STRING_FP("Dataset Path", DatasetPath, FilterParameter::Parameter, ImportHDF5Dataset));
-
-  //  PreflightUpdatedValueFilterParameter::Pointer param =
-  //      SIMPL_NEW_PREFLIGHTUPDATEDVALUE_FP("HDF5 Dimensions", HDF5Dimensions, FilterParameter::Parameter, ImportHDF5Dataset);
-  //  param->setReadOnly(true);
-  //  parameters.push_back(param);
-
   parameters.push_back(SIMPL_NEW_STRING_FP("Component Dimensions", ComponentDimensions, FilterParameter::Parameter, ImportHDF5Dataset));
 
   {
