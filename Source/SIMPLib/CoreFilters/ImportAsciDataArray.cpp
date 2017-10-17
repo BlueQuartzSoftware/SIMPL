@@ -326,6 +326,10 @@ void ImportAsciDataArray::dataCheck()
   {
     getDataContainerArray()->createNonPrereqArrayFromPath<DoubleArrayType, AbstractFilter, double>(this, getCreatedAttributeArrayPath(), 0, cDims, "CreatedAttributeArrayPath");
   }
+  else if(m_ScalarType == SIMPL::NumericTypes::Type::Bool)
+  {
+    getDataContainerArray()->createNonPrereqArrayFromPath<BoolArrayType, AbstractFilter, bool>(this, getCreatedAttributeArrayPath(), 0, cDims, "CreatedAttributeArrayPath");
+  }
 }
 
 // -----------------------------------------------------------------------------
@@ -444,6 +448,15 @@ void ImportAsciDataArray::execute()
   {
     DoubleArrayType::Pointer p = getDataContainerArray()->getPrereqIDataArrayFromPath<DoubleArrayType, AbstractFilter>(this, getCreatedAttributeArrayPath());
     err = readAsciFile<double,double>(p, m_InputFile, m_SkipHeaderLines, delimiter);
+    if(err >= 0)
+    {
+      m_Array = p;
+    }
+  }
+  else if(m_ScalarType == SIMPL::NumericTypes::Type::Bool)
+  {
+    BoolArrayType::Pointer p = getDataContainerArray()->getPrereqIDataArrayFromPath<BoolArrayType, AbstractFilter>(this, getCreatedAttributeArrayPath());
+    err = readAsciFile<bool, bool>(p, m_InputFile, m_SkipHeaderLines, delimiter);
     if(err >= 0)
     {
       m_Array = p;
