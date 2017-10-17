@@ -35,12 +35,26 @@
 
 #include "ConvertData.h"
 
+#include <iostream>
+
 #include "SIMPLib/Common/Constants.h"
 #include "SIMPLib/FilterParameters/AbstractFilterParametersReader.h"
 #include "SIMPLib/FilterParameters/NumericTypeFilterParameter.h"
 #include "SIMPLib/FilterParameters/DataArraySelectionFilterParameter.h"
 #include "SIMPLib/FilterParameters/StringFilterParameter.h"
 #include "SIMPLib/SIMPLibVersion.h"
+
+#define CHECK_AND_CONVERT(Type, DataContainer, ScalarType, Array, AttributeMatrixName, OutputName)                                                                                                     \
+  if(false == completed)                                                                                                                                                                               \
+  {                                                                                                                                                                                                    \
+    Type::Pointer Type##Ptr = std::dynamic_pointer_cast<Type>(Array);                                                                                                                                  \
+    if(nullptr != Type##Ptr)                                                                                                                                                                           \
+    {                                                                                                                                                                                                  \
+      QVector<size_t> dims = Array->getComponentDimensions();                                                                                                                                          \
+      Detail::ConvertData<Type>(this, Type##Ptr.get(), dims, DataContainer, ScalarType, AttributeMatrixName, OutputName);                                                                              \
+      completed = true;                                                                                                                                                                                \
+    }                                                                                                                                                                                                  \
+  }
 
 namespace Detail
 {
@@ -54,7 +68,7 @@ template <typename T>
  * @param attributeMatrixName Name of target AttributeMatrix
  * @param name Name of converted array
  */
-void ConvertData(T* ptr, QVector<size_t> dims, DataContainer::Pointer m, SIMPL::NumericTypes::Type scalarType, const QString attributeMatrixName, const QString& name)
+void ConvertData(AbstractFilter* filter, T* ptr, QVector<size_t> dims, DataContainer::Pointer m, SIMPL::NumericTypes::Type scalarType, const QString attributeMatrixName, const QString& name)
 {
   size_t voxels = ptr->getNumberOfTuples();
   size_t size = ptr->getSize();
@@ -65,7 +79,7 @@ void ConvertData(T* ptr, QVector<size_t> dims, DataContainer::Pointer m, SIMPL::
     m->getAttributeMatrix(attributeMatrixName)->addAttributeArray(p->getName(), p);
     for(size_t v = 0; v < size; ++v)
     {
-      p->setValue(v, ptr->getValue(v));
+      p->setValue(v, static_cast<int8_t>(ptr->getValue(v)));
     }
   }
   else if(scalarType == SIMPL::NumericTypes::Type::UInt8)
@@ -74,7 +88,7 @@ void ConvertData(T* ptr, QVector<size_t> dims, DataContainer::Pointer m, SIMPL::
     m->getAttributeMatrix(attributeMatrixName)->addAttributeArray(p->getName(), p);
     for(size_t v = 0; v < size; ++v)
     {
-      p->setValue(v, ptr->getValue(v));
+      p->setValue(v, static_cast<uint8_t>(ptr->getValue(v)));
     }
   }
   else if(scalarType == SIMPL::NumericTypes::Type::Int16)
@@ -83,7 +97,7 @@ void ConvertData(T* ptr, QVector<size_t> dims, DataContainer::Pointer m, SIMPL::
     m->getAttributeMatrix(attributeMatrixName)->addAttributeArray(p->getName(), p);
     for(size_t v = 0; v < size; ++v)
     {
-      p->setValue(v, ptr->getValue(v));
+      p->setValue(v, static_cast<int16_t>(ptr->getValue(v)));
     }
   }
   else if(scalarType == SIMPL::NumericTypes::Type::UInt16)
@@ -92,7 +106,7 @@ void ConvertData(T* ptr, QVector<size_t> dims, DataContainer::Pointer m, SIMPL::
     m->getAttributeMatrix(attributeMatrixName)->addAttributeArray(p->getName(), p);
     for(size_t v = 0; v < size; ++v)
     {
-      p->setValue(v, ptr->getValue(v));
+      p->setValue(v, static_cast<uint16_t>(ptr->getValue(v)));
     }
   }
   else if(scalarType == SIMPL::NumericTypes::Type::Int32)
@@ -101,7 +115,7 @@ void ConvertData(T* ptr, QVector<size_t> dims, DataContainer::Pointer m, SIMPL::
     m->getAttributeMatrix(attributeMatrixName)->addAttributeArray(p->getName(), p);
     for(size_t v = 0; v < size; ++v)
     {
-      p->setValue(v, ptr->getValue(v));
+      p->setValue(v, static_cast<int32_t>(ptr->getValue(v)));
     }
   }
   else if(scalarType == SIMPL::NumericTypes::Type::UInt32)
@@ -110,7 +124,7 @@ void ConvertData(T* ptr, QVector<size_t> dims, DataContainer::Pointer m, SIMPL::
     m->getAttributeMatrix(attributeMatrixName)->addAttributeArray(p->getName(), p);
     for(size_t v = 0; v < size; ++v)
     {
-      p->setValue(v, ptr->getValue(v));
+      p->setValue(v, static_cast<uint32_t>(ptr->getValue(v)));
     }
   }
   else if(scalarType == SIMPL::NumericTypes::Type::Int64)
@@ -119,7 +133,7 @@ void ConvertData(T* ptr, QVector<size_t> dims, DataContainer::Pointer m, SIMPL::
     m->getAttributeMatrix(attributeMatrixName)->addAttributeArray(p->getName(), p);
     for(size_t v = 0; v < size; ++v)
     {
-      p->setValue(v, ptr->getValue(v));
+      p->setValue(v, static_cast<int64_t>(ptr->getValue(v)));
     }
   }
   else if(scalarType == SIMPL::NumericTypes::Type::UInt64)
@@ -128,7 +142,7 @@ void ConvertData(T* ptr, QVector<size_t> dims, DataContainer::Pointer m, SIMPL::
     m->getAttributeMatrix(attributeMatrixName)->addAttributeArray(p->getName(), p);
     for(size_t v = 0; v < size; ++v)
     {
-      p->setValue(v, ptr->getValue(v));
+      p->setValue(v, static_cast<uint64_t>(ptr->getValue(v)));
     }
   }
   else if(scalarType == SIMPL::NumericTypes::Type::Float)
@@ -137,7 +151,7 @@ void ConvertData(T* ptr, QVector<size_t> dims, DataContainer::Pointer m, SIMPL::
     m->getAttributeMatrix(attributeMatrixName)->addAttributeArray(p->getName(), p);
     for(size_t v = 0; v < size; ++v)
     {
-      p->setValue(v, ptr->getValue(v));
+      p->setValue(v, static_cast<float>(ptr->getValue(v)));
     }
   }
   else if(scalarType == SIMPL::NumericTypes::Type::Double)
@@ -146,23 +160,27 @@ void ConvertData(T* ptr, QVector<size_t> dims, DataContainer::Pointer m, SIMPL::
     m->getAttributeMatrix(attributeMatrixName)->addAttributeArray(p->getName(), p);
     for(size_t v = 0; v < size; ++v)
     {
-      p->setValue(v, ptr->getValue(v));
+      p->setValue(v, static_cast<double>(ptr->getValue(v)));
     }
+  }
+  else if(scalarType == SIMPL::NumericTypes::Type::Bool)
+  {
+    BoolArrayType::Pointer p = BoolArrayType::CreateArray(voxels, dims, name);
+    m->getAttributeMatrix(attributeMatrixName)->addAttributeArray(p->getName(), p);
+    for(size_t v = 0; v < size; ++v)
+    {
+      p->setValue(v, static_cast<bool>(ptr->getValue(v)));
+    }
+  }
+  else
+  {
+    filter->setErrorCondition(-399);
+    QString ss =
+        QString("Error Converting DataArray '%1/%2' from type %3 to type %4").arg(attributeMatrixName).arg(ptr->getName()).arg(static_cast<int>(ptr->getType())).arg(static_cast<int>(scalarType));
+    filter->notifyErrorMessage(filter->getHumanLabel(), ss, filter->getErrorCondition());
   }
 }
 } // End Namespace Detail
-
-#define CHECK_AND_CONVERT(Type, DataContainer, ScalarType, Array, AttributeMatrixName, OutputName)                                                                                                     \
-  if(false == completed)                                                                                                                                                                               \
-  {                                                                                                                                                                                                    \
-    Type* Type##Ptr = Type::SafePointerDownCast(Array.get());                                                                                                                                          \
-    if(nullptr != Type##Ptr)                                                                                                                                                                           \
-    {                                                                                                                                                                                                  \
-      QVector<size_t> dims = Array->getComponentDimensions();                                                                                                                                          \
-      Detail::ConvertData<Type>(Type##Ptr, dims, DataContainer, ScalarType, AttributeMatrixName, OutputName);                                                                                          \
-      completed = true;                                                                                                                                                                                \
-    }                                                                                                                                                                                                  \
-  }
 
 // Include the MOC generated file for this class
 #include "moc_ConvertData.cpp"
@@ -299,6 +317,10 @@ void ConvertData::dataCheck()
     {
       p = DoubleArrayType::CreateArray(voxels, dims, m_OutputArrayName, false);
     }
+    else if(m_ScalarType == SIMPL::NumericTypes::Type::Bool)
+    {
+      p = BoolArrayType::CreateArray(voxels, dims, m_OutputArrayName, false);
+    }
     cellAttrMat->addAttributeArray(p->getName(), p);
   }
 }
@@ -341,9 +363,9 @@ void ConvertData::execute()
   }
 
   bool completed = false;
+  CHECK_AND_CONVERT(Int8ArrayType, m, m_ScalarType, iArray, m_SelectedCellArrayPath.getAttributeMatrixName(), m_OutputArrayName)
 
   CHECK_AND_CONVERT(UInt8ArrayType, m, m_ScalarType, iArray, m_SelectedCellArrayPath.getAttributeMatrixName(), m_OutputArrayName)
-  CHECK_AND_CONVERT(Int8ArrayType, m, m_ScalarType, iArray, m_SelectedCellArrayPath.getAttributeMatrixName(), m_OutputArrayName)
   CHECK_AND_CONVERT(UInt16ArrayType, m, m_ScalarType, iArray, m_SelectedCellArrayPath.getAttributeMatrixName(), m_OutputArrayName)
   CHECK_AND_CONVERT(Int16ArrayType, m, m_ScalarType, iArray, m_SelectedCellArrayPath.getAttributeMatrixName(), m_OutputArrayName)
   CHECK_AND_CONVERT(UInt32ArrayType, m, m_ScalarType, iArray, m_SelectedCellArrayPath.getAttributeMatrixName(), m_OutputArrayName)
@@ -410,7 +432,7 @@ const QString ConvertData::getGroupName()
 // -----------------------------------------------------------------------------
 const QString ConvertData::getSubGroupName()
 {
-  return SIMPL::FilterSubGroups::MemoryManagementFilters;
+  return SIMPL::FilterSubGroups::ConversionFilters;
 }
 
 // -----------------------------------------------------------------------------
@@ -418,5 +440,5 @@ const QString ConvertData::getSubGroupName()
 // -----------------------------------------------------------------------------
 const QString ConvertData::getHumanLabel()
 {
-  return "Convert Attribute Data Type";
+  return "Convert AttributeArray Data Type";
 }

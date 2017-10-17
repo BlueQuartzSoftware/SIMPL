@@ -85,22 +85,6 @@ class DataArray : public IDataArray
 
     typedef QVector<Pointer>   ContainterType;
 
-    enum NumType
-    {
-      Int8 = 0,
-      UInt8,
-      Int16,
-      UInt16,
-      Int32,
-      UInt32,
-      Int64,
-      UInt64,
-      Float,
-      Double,
-      Bool,
-      UnknownNumType
-    };
-
     /**
      * @brief GetTypeName Returns a string representation of the type of data that is stored by this class. This
      * can be a primitive like char, float, int or the name of a class.
@@ -136,27 +120,60 @@ class DataArray : public IDataArray
      * @return
      */
 
-    NumType getType()
+    SIMPL::NumericTypes::Type getType()
     {
       T value = static_cast<T>(0x00);
-      if (typeid(value) == typeid(int8_t)) { return Int8;}
-      if (typeid(value) == typeid(uint8_t)) { return UInt8;}
+      if(typeid(value) == typeid(int8_t))
+      {
+        return SIMPL::NumericTypes::Type::Int8;
+      }
+      if(typeid(value) == typeid(uint8_t))
+      {
+        return SIMPL::NumericTypes::Type::UInt8;
+      }
 
-      if (typeid(value) == typeid(int16_t)) { return Int16;}
-      if (typeid(value) == typeid(uint16_t)) { return UInt16;}
+      if(typeid(value) == typeid(int16_t))
+      {
+        return SIMPL::NumericTypes::Type::Int16;
+      }
+      if(typeid(value) == typeid(uint16_t))
+      {
+        return SIMPL::NumericTypes::Type::UInt16;
+      }
 
-      if (typeid(value) == typeid(int32_t)) { return Int32;}
-      if (typeid(value) == typeid(uint32_t)) { return UInt32;}
+      if(typeid(value) == typeid(int32_t))
+      {
+        return SIMPL::NumericTypes::Type::Int32;
+      }
+      if(typeid(value) == typeid(uint32_t))
+      {
+        return SIMPL::NumericTypes::Type::UInt32;
+      }
 
-      if (typeid(value) == typeid(int64_t)) { return Int64;}
-      if (typeid(value) == typeid(uint64_t)) { return UInt64;}
+      if(typeid(value) == typeid(int64_t))
+      {
+        return SIMPL::NumericTypes::Type::Int64;
+      }
+      if(typeid(value) == typeid(uint64_t))
+      {
+        return SIMPL::NumericTypes::Type::UInt64;
+      }
 
-      if (typeid(value) == typeid(float)) { return Float;}
-      if (typeid(value) == typeid(double)) { return Double;}
+      if(typeid(value) == typeid(float))
+      {
+        return SIMPL::NumericTypes::Type::Float;
+      }
+      if(typeid(value) == typeid(double))
+      {
+        return SIMPL::NumericTypes::Type::Double;
+      }
 
-      if (typeid(value) == typeid(bool)) { return Bool;}
+      if(typeid(value) == typeid(bool))
+      {
+        return SIMPL::NumericTypes::Type::Bool;
+      }
 
-      return UnknownNumType;
+      return SIMPL::NumericTypes::Type::UnknownNumType;
     }
 
     /**

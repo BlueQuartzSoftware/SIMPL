@@ -100,6 +100,11 @@
        <string>Double 64 bit</string>
       </property>
      </item>
+     <item>
+      <property name="text">
+       <string>Bool</string>
+      </property>
+     </item>
     </widget>
    </item>
    <item>
