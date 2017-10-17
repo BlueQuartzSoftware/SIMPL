@@ -54,23 +54,6 @@
 
 #include "SIMPLTestFileLocations.h"
 
-namespace ConvertDataTestConsts
-{
-  enum class DataType : int
-  {
-    Int8 = 0,
-    UInt8,
-    Int16,
-    UInt16,
-    Int32,
-    UInt32,
-    Int64,
-    UInt64,
-    Float,
-    Double
-  };
-}
-
 class ConvertDataTest
 {
 public:
@@ -84,7 +67,7 @@ public:
   // -----------------------------------------------------------------------------
   //
   // -----------------------------------------------------------------------------
-  DataContainerArray::Pointer createDataContainerArray(ConvertDataTestConsts::DataType dataType)
+  DataContainerArray::Pointer createDataContainerArray(SIMPL::NumericTypes::Type dataType)
   {
     DataContainerArray::Pointer dca = DataContainerArray::New();
 
@@ -104,35 +87,40 @@ public:
     
     switch (dataType)
     {
-    case ConvertDataTestConsts::DataType::Int8:
+    case SIMPL::NumericTypes::Type::Int8:
       da = DataArray<int8_t>::CreateArray(2, cdims, "DataArray");
       break;
-    case ConvertDataTestConsts::DataType::UInt8:
+    case SIMPL::NumericTypes::Type::UInt8:
       da = DataArray<uint8_t>::CreateArray(2, cdims, "DataArray");
       break;
-    case ConvertDataTestConsts::DataType::Int16:
+    case SIMPL::NumericTypes::Type::Int16:
       da = DataArray<int16_t>::CreateArray(2, cdims, "DataArray");
       break;
-    case ConvertDataTestConsts::DataType::UInt16:
+    case SIMPL::NumericTypes::Type::UInt16:
       da = DataArray<uint16_t>::CreateArray(2, cdims, "DataArray");
       break;
-    case ConvertDataTestConsts::DataType::Int32:
+    case SIMPL::NumericTypes::Type::Int32:
       da = DataArray<int32_t>::CreateArray(2, cdims, "DataArray");
       break;
-    case ConvertDataTestConsts::DataType::UInt32:
+    case SIMPL::NumericTypes::Type::UInt32:
       da = DataArray<uint32_t>::CreateArray(2, cdims, "DataArray");
       break;
-    case ConvertDataTestConsts::DataType::Int64:
+    case SIMPL::NumericTypes::Type::Int64:
       da = DataArray<int64_t>::CreateArray(2, cdims, "DataArray");
       break;
-    case ConvertDataTestConsts::DataType::UInt64:
+    case SIMPL::NumericTypes::Type::UInt64:
       da = DataArray<uint64_t>::CreateArray(2, cdims, "DataArray");
       break;
-    case ConvertDataTestConsts::DataType::Float:
+    case SIMPL::NumericTypes::Type::Float:
       da = DataArray<float>::CreateArray(2, cdims, "DataArray");
       break;
-    case ConvertDataTestConsts::DataType::Double:
+    case SIMPL::NumericTypes::Type::Double:
       da = DataArray<double>::CreateArray(2, cdims, "DataArray");
+      break;
+    case SIMPL::NumericTypes::Type::Bool:
+      da = DataArray<bool>::CreateArray(2, cdims, "DataArray");
+      break;
+    case SIMPL::NumericTypes::Type::UnknownNumType:
       break;
     }
     da->initializeWithZeros();
@@ -166,7 +154,7 @@ public:
   // -----------------------------------------------------------------------------
   //
   // -----------------------------------------------------------------------------
-  void setValues(ConvertData::Pointer filter, QString dataArray, ConvertDataTestConsts::DataType type, QString outputArrayName)
+  void setValues(ConvertData::Pointer filter, QString dataArray, SIMPL::NumericTypes::Type type, QString outputArrayName)
   {
     if (nullptr == filter.get())
     {
@@ -228,8 +216,8 @@ public:
   // -----------------------------------------------------------------------------
   //
   // -----------------------------------------------------------------------------
-  template<typename T, typename U>
-  void TestConversion(ConvertData::Pointer filter, QString arrayName, ConvertDataTestConsts::DataType newType, QString newArrayName, int errorCode = 0, bool checkArray = true)
+  template <typename T, typename U>
+  void TestConversion(ConvertData::Pointer filter, QString arrayName, SIMPL::NumericTypes::Type newType, QString newArrayName, int errorCode = 0, bool checkArray = true)
   {
     setValues(filter, arrayName, newType, newArrayName);
     filter->execute();
@@ -258,18 +246,19 @@ public:
   // -----------------------------------------------------------------------------
   void TestInt8Signed()
   {
-    ConvertDataTestConsts::DataType baseType = ConvertDataTestConsts::DataType::Int8;
+    SIMPL::NumericTypes::Type baseType = SIMPL::NumericTypes::Type::Int8;
 
     ConvertData::Pointer filter = createFilter();
     filter->setDataContainerArray(createDataContainerArray(baseType));
 
-    TestConversion<int8_t, int8_t>(filter, "DataArray", ConvertDataTestConsts::DataType::Int8, "NewArrayChar", 0);
-    TestConversion<int8_t, int16_t>(filter, "DataArray", ConvertDataTestConsts::DataType::Int16, "NewArrayShort", 0);
-    TestConversion<int8_t, int32_t>(filter, "DataArray", ConvertDataTestConsts::DataType::Int32, "NewArrayInt", 0);
-    TestConversion<int8_t, int64_t>(filter, "DataArray", ConvertDataTestConsts::DataType::Int64, "NewArrayLong", 0);
+    TestConversion<int8_t, int8_t>(filter, "DataArray", SIMPL::NumericTypes::Type::Int8, "NewArrayChar", 0);
+    TestConversion<int8_t, int16_t>(filter, "DataArray", SIMPL::NumericTypes::Type::Int16, "NewArrayShort", 0);
+    TestConversion<int8_t, int32_t>(filter, "DataArray", SIMPL::NumericTypes::Type::Int32, "NewArrayInt", 0);
+    TestConversion<int8_t, int64_t>(filter, "DataArray", SIMPL::NumericTypes::Type::Int64, "NewArrayLong", 0);
 
-    TestConversion<int8_t, float>(filter, "DataArray", ConvertDataTestConsts::DataType::Float, "NewArrayFloat", 0);
-    TestConversion<int8_t, double>(filter, "DataArray", ConvertDataTestConsts::DataType::Double, "NewArrayDouble", 0);
+    TestConversion<int8_t, float>(filter, "DataArray", SIMPL::NumericTypes::Type::Float, "NewArrayFloat", 0);
+    TestConversion<int8_t, double>(filter, "DataArray", SIMPL::NumericTypes::Type::Double, "NewArrayDouble", 0);
+    TestConversion<int8_t, bool>(filter, "DataArray", SIMPL::NumericTypes::Type::Bool, "NewArrayBool", 0);
   }
 
   // -----------------------------------------------------------------------------
@@ -277,15 +266,16 @@ public:
   // -----------------------------------------------------------------------------
   void TestInt8Unsigned()
   {
-    ConvertDataTestConsts::DataType baseType = ConvertDataTestConsts::DataType::Int8;
+    SIMPL::NumericTypes::Type baseType = SIMPL::NumericTypes::Type::Int8;
 
     ConvertData::Pointer filter = createFilter();
     filter->setDataContainerArray(createDataContainerArray(baseType));
 
-    TestConversion<int8_t, uint8_t>(filter, "DataArray", ConvertDataTestConsts::DataType::UInt8, "NewArrayUChar", 0);
-    TestConversion<int8_t, uint16_t>(filter, "DataArray", ConvertDataTestConsts::DataType::UInt16, "NewArrayUShort", 0);
-    TestConversion<int8_t, uint32_t>(filter, "DataArray", ConvertDataTestConsts::DataType::UInt32, "NewArrayUInt", 0);
-    TestConversion<int8_t, uint64_t>(filter, "DataArray", ConvertDataTestConsts::DataType::UInt64, "NewArrayULong", 0);
+    TestConversion<int8_t, uint8_t>(filter, "DataArray", SIMPL::NumericTypes::Type::UInt8, "NewArrayUChar", 0);
+    TestConversion<int8_t, uint16_t>(filter, "DataArray", SIMPL::NumericTypes::Type::UInt16, "NewArrayUShort", 0);
+    TestConversion<int8_t, uint32_t>(filter, "DataArray", SIMPL::NumericTypes::Type::UInt32, "NewArrayUInt", 0);
+    TestConversion<int8_t, uint64_t>(filter, "DataArray", SIMPL::NumericTypes::Type::UInt64, "NewArrayULong", 0);
+    TestConversion<int8_t, bool>(filter, "DataArray", SIMPL::NumericTypes::Type::Bool, "NewArrayBool", 0);
   }
 
   // -----------------------------------------------------------------------------
@@ -293,18 +283,19 @@ public:
   // -----------------------------------------------------------------------------
   void TestUInt8Signed()
   {
-    ConvertDataTestConsts::DataType baseType = ConvertDataTestConsts::DataType::UInt8;
+    SIMPL::NumericTypes::Type baseType = SIMPL::NumericTypes::Type::UInt8;
 
     ConvertData::Pointer filter = createFilter();
     filter->setDataContainerArray(createDataContainerArray(baseType));
 
-    TestConversion<uint8_t, int8_t>(filter, "DataArray", ConvertDataTestConsts::DataType::Int8, "NewArrayChar", 0);
-    TestConversion<uint8_t, int16_t>(filter, "DataArray", ConvertDataTestConsts::DataType::Int16, "NewArrayShort", 0);
-    TestConversion<uint8_t, int32_t>(filter, "DataArray", ConvertDataTestConsts::DataType::Int32, "NewArrayInt", 0);
-    TestConversion<uint8_t, int64_t>(filter, "DataArray", ConvertDataTestConsts::DataType::Int64, "NewArrayLong", 0);
+    TestConversion<uint8_t, int8_t>(filter, "DataArray", SIMPL::NumericTypes::Type::Int8, "NewArrayChar", 0);
+    TestConversion<uint8_t, int16_t>(filter, "DataArray", SIMPL::NumericTypes::Type::Int16, "NewArrayShort", 0);
+    TestConversion<uint8_t, int32_t>(filter, "DataArray", SIMPL::NumericTypes::Type::Int32, "NewArrayInt", 0);
+    TestConversion<uint8_t, int64_t>(filter, "DataArray", SIMPL::NumericTypes::Type::Int64, "NewArrayLong", 0);
 
-    TestConversion<uint8_t, float>(filter, "DataArray", ConvertDataTestConsts::DataType::Float, "NewArrayFloat", 0);
-    TestConversion<uint8_t, double>(filter, "DataArray", ConvertDataTestConsts::DataType::Double, "NewArrayDouble", 0);
+    TestConversion<uint8_t, float>(filter, "DataArray", SIMPL::NumericTypes::Type::Float, "NewArrayFloat", 0);
+    TestConversion<uint8_t, double>(filter, "DataArray", SIMPL::NumericTypes::Type::Double, "NewArrayDouble", 0);
+    TestConversion<uint8_t, bool>(filter, "DataArray", SIMPL::NumericTypes::Type::Bool, "NewArrayBool", 0);
   }
 
   // -----------------------------------------------------------------------------
@@ -312,15 +303,16 @@ public:
   // -----------------------------------------------------------------------------
   void TestUInt8Unsigned()
   {
-    ConvertDataTestConsts::DataType baseType = ConvertDataTestConsts::DataType::UInt8;
+    SIMPL::NumericTypes::Type baseType = SIMPL::NumericTypes::Type::UInt8;
 
     ConvertData::Pointer filter = createFilter();
     filter->setDataContainerArray(createDataContainerArray(baseType));
 
-    TestConversion<uint8_t, uint8_t>(filter, "DataArray", ConvertDataTestConsts::DataType::UInt8, "NewArrayUChar", 0);
-    TestConversion<uint8_t, uint16_t>(filter, "DataArray", ConvertDataTestConsts::DataType::UInt16, "NewArrayUShort", 0);
-    TestConversion<uint8_t, uint32_t>(filter, "DataArray", ConvertDataTestConsts::DataType::UInt32, "NewArrayUInt", 0);
-    TestConversion<uint8_t, uint64_t>(filter, "DataArray", ConvertDataTestConsts::DataType::UInt64, "NewArrayULong", 0);
+    TestConversion<uint8_t, uint8_t>(filter, "DataArray", SIMPL::NumericTypes::Type::UInt8, "NewArrayUChar", 0);
+    TestConversion<uint8_t, uint16_t>(filter, "DataArray", SIMPL::NumericTypes::Type::UInt16, "NewArrayUShort", 0);
+    TestConversion<uint8_t, uint32_t>(filter, "DataArray", SIMPL::NumericTypes::Type::UInt32, "NewArrayUInt", 0);
+    TestConversion<uint8_t, uint64_t>(filter, "DataArray", SIMPL::NumericTypes::Type::UInt64, "NewArrayULong", 0);
+    TestConversion<uint8_t, bool>(filter, "DataArray", SIMPL::NumericTypes::Type::Bool, "NewArrayBool", 0);
   }
 
   // -----------------------------------------------------------------------------
@@ -328,18 +320,19 @@ public:
   // -----------------------------------------------------------------------------
   void TestInt16Signed()
   {
-    ConvertDataTestConsts::DataType baseType = ConvertDataTestConsts::DataType::Int16;
+    SIMPL::NumericTypes::Type baseType = SIMPL::NumericTypes::Type::Int16;
 
     ConvertData::Pointer filter = createFilter();
     filter->setDataContainerArray(createDataContainerArray(baseType));
 
-    TestConversion<int16_t, int8_t>(filter, "DataArray", ConvertDataTestConsts::DataType::Int8, "NewArrayChar", 0);
-    TestConversion<int16_t, int16_t>(filter, "DataArray", ConvertDataTestConsts::DataType::Int16, "NewArrayShort", 0);
-    TestConversion<int16_t, int32_t>(filter, "DataArray", ConvertDataTestConsts::DataType::Int32, "NewArrayInt", 0);
-    TestConversion<int16_t, int64_t>(filter, "DataArray", ConvertDataTestConsts::DataType::Int64, "NewArrayLong", 0);
+    TestConversion<int16_t, int8_t>(filter, "DataArray", SIMPL::NumericTypes::Type::Int8, "NewArrayChar", 0);
+    TestConversion<int16_t, int16_t>(filter, "DataArray", SIMPL::NumericTypes::Type::Int16, "NewArrayShort", 0);
+    TestConversion<int16_t, int32_t>(filter, "DataArray", SIMPL::NumericTypes::Type::Int32, "NewArrayInt", 0);
+    TestConversion<int16_t, int64_t>(filter, "DataArray", SIMPL::NumericTypes::Type::Int64, "NewArrayLong", 0);
 
-    TestConversion<int16_t, float>(filter, "DataArray", ConvertDataTestConsts::DataType::Float, "NewArrayFloat", 0);
-    TestConversion<int16_t, double>(filter, "DataArray", ConvertDataTestConsts::DataType::Double, "NewArrayDouble", 0);
+    TestConversion<int16_t, float>(filter, "DataArray", SIMPL::NumericTypes::Type::Float, "NewArrayFloat", 0);
+    TestConversion<int16_t, double>(filter, "DataArray", SIMPL::NumericTypes::Type::Double, "NewArrayDouble", 0);
+    TestConversion<int16_t, bool>(filter, "DataArray", SIMPL::NumericTypes::Type::Bool, "NewArrayBool", 0);
   }
 
   // -----------------------------------------------------------------------------
@@ -347,15 +340,16 @@ public:
   // -----------------------------------------------------------------------------
   void TestInt16Unsigned()
   {
-    ConvertDataTestConsts::DataType baseType = ConvertDataTestConsts::DataType::Int16;
+    SIMPL::NumericTypes::Type baseType = SIMPL::NumericTypes::Type::Int16;
 
     ConvertData::Pointer filter = createFilter();
     filter->setDataContainerArray(createDataContainerArray(baseType));
 
-    TestConversion<int16_t, uint8_t>(filter, "DataArray", ConvertDataTestConsts::DataType::UInt8, "NewArrayUChar", 0);
-    TestConversion<int16_t, uint16_t>(filter, "DataArray", ConvertDataTestConsts::DataType::UInt16, "NewArrayUShort", 0);
-    TestConversion<int16_t, uint32_t>(filter, "DataArray", ConvertDataTestConsts::DataType::UInt32, "NewArrayUInt", 0);
-    TestConversion<int16_t, uint64_t>(filter, "DataArray", ConvertDataTestConsts::DataType::UInt64, "NewArrayULong", 0);
+    TestConversion<int16_t, uint8_t>(filter, "DataArray", SIMPL::NumericTypes::Type::UInt8, "NewArrayUChar", 0);
+    TestConversion<int16_t, uint16_t>(filter, "DataArray", SIMPL::NumericTypes::Type::UInt16, "NewArrayUShort", 0);
+    TestConversion<int16_t, uint32_t>(filter, "DataArray", SIMPL::NumericTypes::Type::UInt32, "NewArrayUInt", 0);
+    TestConversion<int16_t, uint64_t>(filter, "DataArray", SIMPL::NumericTypes::Type::UInt64, "NewArrayULong", 0);
+    TestConversion<int16_t, bool>(filter, "DataArray", SIMPL::NumericTypes::Type::Bool, "NewArrayBool", 0);
   }
 
   // -----------------------------------------------------------------------------
@@ -363,18 +357,19 @@ public:
   // -----------------------------------------------------------------------------
   void TestUInt16Signed()
   {
-    ConvertDataTestConsts::DataType baseType = ConvertDataTestConsts::DataType::UInt16;
+    SIMPL::NumericTypes::Type baseType = SIMPL::NumericTypes::Type::UInt16;
 
     ConvertData::Pointer filter = createFilter();
     filter->setDataContainerArray(createDataContainerArray(baseType));
 
-    TestConversion<uint16_t, int8_t>(filter, "DataArray", ConvertDataTestConsts::DataType::Int8, "NewArrayChar", 0);
-    TestConversion<uint16_t, int16_t>(filter, "DataArray", ConvertDataTestConsts::DataType::Int16, "NewArrayShort", 0);
-    TestConversion<uint16_t, int32_t>(filter, "DataArray", ConvertDataTestConsts::DataType::Int32, "NewArrayInt", 0);
-    TestConversion<uint16_t, int64_t>(filter, "DataArray", ConvertDataTestConsts::DataType::Int64, "NewArrayLong", 0);
+    TestConversion<uint16_t, int8_t>(filter, "DataArray", SIMPL::NumericTypes::Type::Int8, "NewArrayChar", 0);
+    TestConversion<uint16_t, int16_t>(filter, "DataArray", SIMPL::NumericTypes::Type::Int16, "NewArrayShort", 0);
+    TestConversion<uint16_t, int32_t>(filter, "DataArray", SIMPL::NumericTypes::Type::Int32, "NewArrayInt", 0);
+    TestConversion<uint16_t, int64_t>(filter, "DataArray", SIMPL::NumericTypes::Type::Int64, "NewArrayLong", 0);
 
-    TestConversion<uint16_t, float>(filter, "DataArray", ConvertDataTestConsts::DataType::Float, "NewArrayFloat", 0);
-    TestConversion<uint16_t, double>(filter, "DataArray", ConvertDataTestConsts::DataType::Double, "NewArrayDouble", 0);
+    TestConversion<uint16_t, float>(filter, "DataArray", SIMPL::NumericTypes::Type::Float, "NewArrayFloat", 0);
+    TestConversion<uint16_t, double>(filter, "DataArray", SIMPL::NumericTypes::Type::Double, "NewArrayDouble", 0);
+    TestConversion<uint16_t, bool>(filter, "DataArray", SIMPL::NumericTypes::Type::Bool, "NewArrayBool", 0);
   }
 
   // -----------------------------------------------------------------------------
@@ -382,15 +377,16 @@ public:
   // -----------------------------------------------------------------------------
   void TestUInt16Unsigned()
   {
-    ConvertDataTestConsts::DataType baseType = ConvertDataTestConsts::DataType::UInt16;
+    SIMPL::NumericTypes::Type baseType = SIMPL::NumericTypes::Type::UInt16;
 
     ConvertData::Pointer filter = createFilter();
     filter->setDataContainerArray(createDataContainerArray(baseType));
 
-    TestConversion<uint16_t, uint8_t>(filter, "DataArray", ConvertDataTestConsts::DataType::UInt8, "NewArrayUChar", 0);
-    TestConversion<uint16_t, uint16_t>(filter, "DataArray", ConvertDataTestConsts::DataType::UInt16, "NewArrayUShort", 0);
-    TestConversion<uint16_t, uint32_t>(filter, "DataArray", ConvertDataTestConsts::DataType::UInt32, "NewArrayUInt", 0);
-    TestConversion<uint16_t, uint64_t>(filter, "DataArray", ConvertDataTestConsts::DataType::UInt64, "NewArrayULong", 0);
+    TestConversion<uint16_t, uint8_t>(filter, "DataArray", SIMPL::NumericTypes::Type::UInt8, "NewArrayUChar", 0);
+    TestConversion<uint16_t, uint16_t>(filter, "DataArray", SIMPL::NumericTypes::Type::UInt16, "NewArrayUShort", 0);
+    TestConversion<uint16_t, uint32_t>(filter, "DataArray", SIMPL::NumericTypes::Type::UInt32, "NewArrayUInt", 0);
+    TestConversion<uint16_t, uint64_t>(filter, "DataArray", SIMPL::NumericTypes::Type::UInt64, "NewArrayULong", 0);
+    TestConversion<uint16_t, bool>(filter, "DataArray", SIMPL::NumericTypes::Type::Bool, "NewArrayBool", 0);
   }
 
   // -----------------------------------------------------------------------------
@@ -398,18 +394,19 @@ public:
   // -----------------------------------------------------------------------------
   void TestInt32Signed()
   {
-    ConvertDataTestConsts::DataType baseType = ConvertDataTestConsts::DataType::Int32;
+    SIMPL::NumericTypes::Type baseType = SIMPL::NumericTypes::Type::Int32;
 
     ConvertData::Pointer filter = createFilter();
     filter->setDataContainerArray(createDataContainerArray(baseType));
 
-    TestConversion<int32_t, int8_t>(filter, "DataArray", ConvertDataTestConsts::DataType::Int8, "NewArrayChar", 0);
-    TestConversion<int32_t, int16_t>(filter, "DataArray", ConvertDataTestConsts::DataType::Int16, "NewArrayShort", 0);
-    TestConversion<int32_t, int32_t>(filter, "DataArray", ConvertDataTestConsts::DataType::Int32, "NewArrayInt", 0);
-    TestConversion<int32_t, int64_t>(filter, "DataArray", ConvertDataTestConsts::DataType::Int64, "NewArrayLong", 0);
+    TestConversion<int32_t, int8_t>(filter, "DataArray", SIMPL::NumericTypes::Type::Int8, "NewArrayChar", 0);
+    TestConversion<int32_t, int16_t>(filter, "DataArray", SIMPL::NumericTypes::Type::Int16, "NewArrayShort", 0);
+    TestConversion<int32_t, int32_t>(filter, "DataArray", SIMPL::NumericTypes::Type::Int32, "NewArrayInt", 0);
+    TestConversion<int32_t, int64_t>(filter, "DataArray", SIMPL::NumericTypes::Type::Int64, "NewArrayLong", 0);
 
-    TestConversion<int32_t, float>(filter, "DataArray", ConvertDataTestConsts::DataType::Float, "NewArrayFloat", 0);
-    TestConversion<int32_t, double>(filter, "DataArray", ConvertDataTestConsts::DataType::Double, "NewArrayDouble", 0);
+    TestConversion<int32_t, float>(filter, "DataArray", SIMPL::NumericTypes::Type::Float, "NewArrayFloat", 0);
+    TestConversion<int32_t, double>(filter, "DataArray", SIMPL::NumericTypes::Type::Double, "NewArrayDouble", 0);
+    TestConversion<int32_t, bool>(filter, "DataArray", SIMPL::NumericTypes::Type::Bool, "NewArrayBool", 0);
   }
 
   // -----------------------------------------------------------------------------
@@ -417,15 +414,16 @@ public:
   // -----------------------------------------------------------------------------
   void TestInt32Unsigned()
   {
-    ConvertDataTestConsts::DataType baseType = ConvertDataTestConsts::DataType::Int32;
+    SIMPL::NumericTypes::Type baseType = SIMPL::NumericTypes::Type::Int32;
 
     ConvertData::Pointer filter = createFilter();
     filter->setDataContainerArray(createDataContainerArray(baseType));
 
-    TestConversion<int32_t, uint8_t>(filter, "DataArray", ConvertDataTestConsts::DataType::UInt8, "NewArrayUChar", 0);
-    TestConversion<int32_t, uint16_t>(filter, "DataArray", ConvertDataTestConsts::DataType::UInt16, "NewArrayUShort", 0);
-    TestConversion<int32_t, uint32_t>(filter, "DataArray", ConvertDataTestConsts::DataType::UInt32, "NewArrayUInt", 0);
-    TestConversion<int32_t, uint64_t>(filter, "DataArray", ConvertDataTestConsts::DataType::UInt64, "NewArrayULong", 0);
+    TestConversion<int32_t, uint8_t>(filter, "DataArray", SIMPL::NumericTypes::Type::UInt8, "NewArrayUChar", 0);
+    TestConversion<int32_t, uint16_t>(filter, "DataArray", SIMPL::NumericTypes::Type::UInt16, "NewArrayUShort", 0);
+    TestConversion<int32_t, uint32_t>(filter, "DataArray", SIMPL::NumericTypes::Type::UInt32, "NewArrayUInt", 0);
+    TestConversion<int32_t, uint64_t>(filter, "DataArray", SIMPL::NumericTypes::Type::UInt64, "NewArrayULong", 0);
+    TestConversion<int32_t, bool>(filter, "DataArray", SIMPL::NumericTypes::Type::Bool, "NewArrayBool", 0);
   }
 
   // -----------------------------------------------------------------------------
@@ -433,18 +431,19 @@ public:
   // -----------------------------------------------------------------------------
   void TestUInt32Signed()
   {
-    ConvertDataTestConsts::DataType baseType = ConvertDataTestConsts::DataType::UInt32;
+    SIMPL::NumericTypes::Type baseType = SIMPL::NumericTypes::Type::UInt32;
 
     ConvertData::Pointer filter = createFilter();
     filter->setDataContainerArray(createDataContainerArray(baseType));
 
-    TestConversion<uint32_t, int8_t>(filter, "DataArray", ConvertDataTestConsts::DataType::Int8, "NewArrayChar", 0);
-    TestConversion<uint32_t, int16_t>(filter, "DataArray", ConvertDataTestConsts::DataType::Int16, "NewArrayShort", 0);
-    TestConversion<uint32_t, int32_t>(filter, "DataArray", ConvertDataTestConsts::DataType::Int32, "NewArrayInt", 0);
-    TestConversion<uint32_t, int64_t>(filter, "DataArray", ConvertDataTestConsts::DataType::Int64, "NewArrayLong", 0);
+    TestConversion<uint32_t, int8_t>(filter, "DataArray", SIMPL::NumericTypes::Type::Int8, "NewArrayChar", 0);
+    TestConversion<uint32_t, int16_t>(filter, "DataArray", SIMPL::NumericTypes::Type::Int16, "NewArrayShort", 0);
+    TestConversion<uint32_t, int32_t>(filter, "DataArray", SIMPL::NumericTypes::Type::Int32, "NewArrayInt", 0);
+    TestConversion<uint32_t, int64_t>(filter, "DataArray", SIMPL::NumericTypes::Type::Int64, "NewArrayLong", 0);
 
-    TestConversion<uint32_t, float>(filter, "DataArray", ConvertDataTestConsts::DataType::Float, "NewArrayFloat", 0);
-    TestConversion<uint32_t, double>(filter, "DataArray", ConvertDataTestConsts::DataType::Double, "NewArrayDouble", 0);
+    TestConversion<uint32_t, float>(filter, "DataArray", SIMPL::NumericTypes::Type::Float, "NewArrayFloat", 0);
+    TestConversion<uint32_t, double>(filter, "DataArray", SIMPL::NumericTypes::Type::Double, "NewArrayDouble", 0);
+    TestConversion<uint32_t, bool>(filter, "DataArray", SIMPL::NumericTypes::Type::Bool, "NewArrayBool", 0);
   }
 
   // -----------------------------------------------------------------------------
@@ -452,15 +451,16 @@ public:
   // -----------------------------------------------------------------------------
   void TestUInt32Unsigned()
   {
-    ConvertDataTestConsts::DataType baseType = ConvertDataTestConsts::DataType::UInt32;
+    SIMPL::NumericTypes::Type baseType = SIMPL::NumericTypes::Type::UInt32;
 
     ConvertData::Pointer filter = createFilter();
     filter->setDataContainerArray(createDataContainerArray(baseType));
 
-    TestConversion<uint32_t, uint8_t>(filter, "DataArray", ConvertDataTestConsts::DataType::UInt8, "NewArrayUChar", 0);
-    TestConversion<uint32_t, uint16_t>(filter, "DataArray", ConvertDataTestConsts::DataType::UInt16, "NewArrayUShort", 0);
-    TestConversion<uint32_t, uint32_t>(filter, "DataArray", ConvertDataTestConsts::DataType::UInt32, "NewArrayUInt", 0);
-    TestConversion<uint32_t, uint64_t>(filter, "DataArray", ConvertDataTestConsts::DataType::UInt64, "NewArrayULong", 0);
+    TestConversion<uint32_t, uint8_t>(filter, "DataArray", SIMPL::NumericTypes::Type::UInt8, "NewArrayUChar", 0);
+    TestConversion<uint32_t, uint16_t>(filter, "DataArray", SIMPL::NumericTypes::Type::UInt16, "NewArrayUShort", 0);
+    TestConversion<uint32_t, uint32_t>(filter, "DataArray", SIMPL::NumericTypes::Type::UInt32, "NewArrayUInt", 0);
+    TestConversion<uint32_t, uint64_t>(filter, "DataArray", SIMPL::NumericTypes::Type::UInt64, "NewArrayULong", 0);
+    TestConversion<uint32_t, bool>(filter, "DataArray", SIMPL::NumericTypes::Type::Bool, "NewArrayBool", 0);
   }
 
   // -----------------------------------------------------------------------------
@@ -468,18 +468,19 @@ public:
   // -----------------------------------------------------------------------------
   void TestInt64Signed()
   {
-    ConvertDataTestConsts::DataType baseType = ConvertDataTestConsts::DataType::Int64;
+    SIMPL::NumericTypes::Type baseType = SIMPL::NumericTypes::Type::Int64;
 
     ConvertData::Pointer filter = createFilter();
     filter->setDataContainerArray(createDataContainerArray(baseType));
 
-    TestConversion<int64_t, int8_t>(filter, "DataArray", ConvertDataTestConsts::DataType::Int8, "NewArrayChar", 0);
-    TestConversion<int64_t, int16_t>(filter, "DataArray", ConvertDataTestConsts::DataType::Int16, "NewArrayShort", 0);
-    TestConversion<int64_t, int32_t>(filter, "DataArray", ConvertDataTestConsts::DataType::Int32, "NewArrayInt", 0);
-    TestConversion<int64_t, int64_t>(filter, "DataArray", ConvertDataTestConsts::DataType::Int64, "NewArrayLong", 0);
+    TestConversion<int64_t, int8_t>(filter, "DataArray", SIMPL::NumericTypes::Type::Int8, "NewArrayChar", 0);
+    TestConversion<int64_t, int16_t>(filter, "DataArray", SIMPL::NumericTypes::Type::Int16, "NewArrayShort", 0);
+    TestConversion<int64_t, int32_t>(filter, "DataArray", SIMPL::NumericTypes::Type::Int32, "NewArrayInt", 0);
+    TestConversion<int64_t, int64_t>(filter, "DataArray", SIMPL::NumericTypes::Type::Int64, "NewArrayLong", 0);
 
-    TestConversion<int64_t, float>(filter, "DataArray", ConvertDataTestConsts::DataType::Float, "NewArrayFloat", 0);
-    TestConversion<int64_t, double>(filter, "DataArray", ConvertDataTestConsts::DataType::Double, "NewArrayDouble", 0);
+    TestConversion<int64_t, float>(filter, "DataArray", SIMPL::NumericTypes::Type::Float, "NewArrayFloat", 0);
+    TestConversion<int64_t, double>(filter, "DataArray", SIMPL::NumericTypes::Type::Double, "NewArrayDouble", 0);
+    TestConversion<int64_t, bool>(filter, "DataArray", SIMPL::NumericTypes::Type::Bool, "NewArrayBool", 0);
   }
 
   // -----------------------------------------------------------------------------
@@ -487,15 +488,16 @@ public:
   // -----------------------------------------------------------------------------
   void TestInt64Unsigned()
   {
-    ConvertDataTestConsts::DataType baseType = ConvertDataTestConsts::DataType::Int64;
+    SIMPL::NumericTypes::Type baseType = SIMPL::NumericTypes::Type::Int64;
 
     ConvertData::Pointer filter = createFilter();
     filter->setDataContainerArray(createDataContainerArray(baseType));
 
-    TestConversion<int64_t, uint8_t>(filter, "DataArray", ConvertDataTestConsts::DataType::UInt8, "NewArrayUChar", 0);
-    TestConversion<int64_t, uint16_t>(filter, "DataArray", ConvertDataTestConsts::DataType::UInt16, "NewArrayUShort", 0);
-    TestConversion<int64_t, uint32_t>(filter, "DataArray", ConvertDataTestConsts::DataType::UInt32, "NewArrayUInt", 0);
-    TestConversion<int64_t, uint64_t>(filter, "DataArray", ConvertDataTestConsts::DataType::UInt64, "NewArrayULong", 0);
+    TestConversion<int64_t, uint8_t>(filter, "DataArray", SIMPL::NumericTypes::Type::UInt8, "NewArrayUChar", 0);
+    TestConversion<int64_t, uint16_t>(filter, "DataArray", SIMPL::NumericTypes::Type::UInt16, "NewArrayUShort", 0);
+    TestConversion<int64_t, uint32_t>(filter, "DataArray", SIMPL::NumericTypes::Type::UInt32, "NewArrayUInt", 0);
+    TestConversion<int64_t, uint64_t>(filter, "DataArray", SIMPL::NumericTypes::Type::UInt64, "NewArrayULong", 0);
+    TestConversion<int64_t, bool>(filter, "DataArray", SIMPL::NumericTypes::Type::Bool, "NewArrayBool", 0);
   }
 
   // -----------------------------------------------------------------------------
@@ -503,18 +505,19 @@ public:
   // -----------------------------------------------------------------------------
   void TestUInt64Signed()
   {
-    ConvertDataTestConsts::DataType baseType = ConvertDataTestConsts::DataType::UInt64;
+    SIMPL::NumericTypes::Type baseType = SIMPL::NumericTypes::Type::UInt64;
 
     ConvertData::Pointer filter = createFilter();
     filter->setDataContainerArray(createDataContainerArray(baseType));
 
-    TestConversion<uint64_t, int8_t>(filter, "DataArray", ConvertDataTestConsts::DataType::Int8, "NewArrayChar", 0);
-    TestConversion<uint64_t, int16_t>(filter, "DataArray", ConvertDataTestConsts::DataType::Int16, "NewArrayShort", 0);
-    TestConversion<uint64_t, int32_t>(filter, "DataArray", ConvertDataTestConsts::DataType::Int32, "NewArrayInt", 0);
-    TestConversion<uint64_t, int64_t>(filter, "DataArray", ConvertDataTestConsts::DataType::Int64, "NewArrayLong", 0);
+    TestConversion<uint64_t, int8_t>(filter, "DataArray", SIMPL::NumericTypes::Type::Int8, "NewArrayChar", 0);
+    TestConversion<uint64_t, int16_t>(filter, "DataArray", SIMPL::NumericTypes::Type::Int16, "NewArrayShort", 0);
+    TestConversion<uint64_t, int32_t>(filter, "DataArray", SIMPL::NumericTypes::Type::Int32, "NewArrayInt", 0);
+    TestConversion<uint64_t, int64_t>(filter, "DataArray", SIMPL::NumericTypes::Type::Int64, "NewArrayLong", 0);
 
-    TestConversion<uint64_t, float>(filter, "DataArray", ConvertDataTestConsts::DataType::Float, "NewArrayFloat", 0);
-    TestConversion<uint64_t, double>(filter, "DataArray", ConvertDataTestConsts::DataType::Double, "NewArrayDouble", 0);
+    TestConversion<uint64_t, float>(filter, "DataArray", SIMPL::NumericTypes::Type::Float, "NewArrayFloat", 0);
+    TestConversion<uint64_t, double>(filter, "DataArray", SIMPL::NumericTypes::Type::Double, "NewArrayDouble", 0);
+    TestConversion<uint64_t, bool>(filter, "DataArray", SIMPL::NumericTypes::Type::Bool, "NewArrayBool", 0);
   }
 
   // -----------------------------------------------------------------------------
@@ -522,15 +525,16 @@ public:
   // -----------------------------------------------------------------------------
   void TestUInt64Unsigned()
   {
-    ConvertDataTestConsts::DataType baseType = ConvertDataTestConsts::DataType::UInt64;
+    SIMPL::NumericTypes::Type baseType = SIMPL::NumericTypes::Type::UInt64;
 
     ConvertData::Pointer filter = createFilter();
     filter->setDataContainerArray(createDataContainerArray(baseType));
 
-    TestConversion<uint64_t, uint8_t>(filter, "DataArray", ConvertDataTestConsts::DataType::UInt8, "NewArrayUChar", 0);
-    TestConversion<uint64_t, uint16_t>(filter, "DataArray", ConvertDataTestConsts::DataType::UInt16, "NewArrayUShort", 0);
-    TestConversion<uint64_t, uint32_t>(filter, "DataArray", ConvertDataTestConsts::DataType::UInt32, "NewArrayUInt", 0);
-    TestConversion<uint64_t, uint64_t>(filter, "DataArray", ConvertDataTestConsts::DataType::UInt64, "NewArrayULong", 0);
+    TestConversion<uint64_t, uint8_t>(filter, "DataArray", SIMPL::NumericTypes::Type::UInt8, "NewArrayUChar", 0);
+    TestConversion<uint64_t, uint16_t>(filter, "DataArray", SIMPL::NumericTypes::Type::UInt16, "NewArrayUShort", 0);
+    TestConversion<uint64_t, uint32_t>(filter, "DataArray", SIMPL::NumericTypes::Type::UInt32, "NewArrayUInt", 0);
+    TestConversion<uint64_t, uint64_t>(filter, "DataArray", SIMPL::NumericTypes::Type::UInt64, "NewArrayULong", 0);
+    TestConversion<uint64_t, bool>(filter, "DataArray", SIMPL::NumericTypes::Type::Bool, "NewArrayBool", 0);
   }
 
   // -----------------------------------------------------------------------------
@@ -538,18 +542,19 @@ public:
   // -----------------------------------------------------------------------------
   void TestFloat()
   {
-    ConvertDataTestConsts::DataType baseType = ConvertDataTestConsts::DataType::Float;
+    SIMPL::NumericTypes::Type baseType = SIMPL::NumericTypes::Type::Float;
 
     ConvertData::Pointer filter = createFilter();
     filter->setDataContainerArray(createDataContainerArray(baseType));
 
-    TestConversion<float, int8_t>(filter, "DataArray", ConvertDataTestConsts::DataType::Int8, "NewArrayChar", 0);
-    TestConversion<float, int16_t>(filter, "DataArray", ConvertDataTestConsts::DataType::Int16, "NewArrayShort", 0);
-    TestConversion<float, int32_t>(filter, "DataArray", ConvertDataTestConsts::DataType::Int32, "NewArrayInt", 0);
-    TestConversion<float, int64_t>(filter, "DataArray", ConvertDataTestConsts::DataType::Int64, "NewArrayLong", 0);
+    TestConversion<float, int8_t>(filter, "DataArray", SIMPL::NumericTypes::Type::Int8, "NewArrayChar", 0);
+    TestConversion<float, int16_t>(filter, "DataArray", SIMPL::NumericTypes::Type::Int16, "NewArrayShort", 0);
+    TestConversion<float, int32_t>(filter, "DataArray", SIMPL::NumericTypes::Type::Int32, "NewArrayInt", 0);
+    TestConversion<float, int64_t>(filter, "DataArray", SIMPL::NumericTypes::Type::Int64, "NewArrayLong", 0);
 
-    TestConversion<float, float>(filter, "DataArray", ConvertDataTestConsts::DataType::Float, "NewArrayFloat", 0);
-    TestConversion<float, double>(filter, "DataArray", ConvertDataTestConsts::DataType::Double, "NewArrayDouble", 0);
+    TestConversion<float, float>(filter, "DataArray", SIMPL::NumericTypes::Type::Float, "NewArrayFloat", 0);
+    TestConversion<float, double>(filter, "DataArray", SIMPL::NumericTypes::Type::Double, "NewArrayDouble", 0);
+    TestConversion<float, bool>(filter, "DataArray", SIMPL::NumericTypes::Type::Bool, "NewArrayBool", 0);
   }
 
   // -----------------------------------------------------------------------------
@@ -557,18 +562,19 @@ public:
   // -----------------------------------------------------------------------------
   void TestDouble()
   {
-    ConvertDataTestConsts::DataType baseType = ConvertDataTestConsts::DataType::Double;
+    SIMPL::NumericTypes::Type baseType = SIMPL::NumericTypes::Type::Double;
 
     ConvertData::Pointer filter = createFilter();
     filter->setDataContainerArray(createDataContainerArray(baseType));
 
-    TestConversion<double, int8_t>(filter, "DataArray", ConvertDataTestConsts::DataType::Int8, "NewArrayChar", 0);
-    TestConversion<double, int16_t>(filter, "DataArray", ConvertDataTestConsts::DataType::Int16, "NewArrayShort", 0);
-    TestConversion<double, int32_t>(filter, "DataArray", ConvertDataTestConsts::DataType::Int32, "NewArrayInt", 0);
-    TestConversion<double, int64_t>(filter, "DataArray", ConvertDataTestConsts::DataType::Int64, "NewArrayLong", 0);
+    TestConversion<double, int8_t>(filter, "DataArray", SIMPL::NumericTypes::Type::Int8, "NewArrayChar", 0);
+    TestConversion<double, int16_t>(filter, "DataArray", SIMPL::NumericTypes::Type::Int16, "NewArrayShort", 0);
+    TestConversion<double, int32_t>(filter, "DataArray", SIMPL::NumericTypes::Type::Int32, "NewArrayInt", 0);
+    TestConversion<double, int64_t>(filter, "DataArray", SIMPL::NumericTypes::Type::Int64, "NewArrayLong", 0);
 
-    TestConversion<double, float>(filter, "DataArray", ConvertDataTestConsts::DataType::Float, "NewArrayFloat", 0);
-    TestConversion<double, double>(filter, "DataArray", ConvertDataTestConsts::DataType::Double, "NewArrayDouble", 0);
+    TestConversion<double, float>(filter, "DataArray", SIMPL::NumericTypes::Type::Float, "NewArrayFloat", 0);
+    TestConversion<double, double>(filter, "DataArray", SIMPL::NumericTypes::Type::Double, "NewArrayDouble", 0);
+    TestConversion<double, bool>(filter, "DataArray", SIMPL::NumericTypes::Type::Bool, "NewArrayBool", 0);
   }
 
   // -----------------------------------------------------------------------------
@@ -576,14 +582,14 @@ public:
   // -----------------------------------------------------------------------------
   void TestInvalidDataArray()
   {
-    ConvertDataTestConsts::DataType baseType = ConvertDataTestConsts::DataType::Int8;
+    SIMPL::NumericTypes::Type baseType = SIMPL::NumericTypes::Type::Int8;
 
     ConvertData::Pointer filter = createFilter();
     filter->setDataContainerArray(createDataContainerArray(baseType));
 
     QString newArrayName = "NewArray";
 
-    setValues(filter, "Array1", ConvertDataTestConsts::DataType::Int8, newArrayName);
+    setValues(filter, "Array1", SIMPL::NumericTypes::Type::Int8, newArrayName);
     filter->execute();
     DREAM3D_REQUIRE_EQUAL(filter->getErrorCondition(), -90002);
   }
@@ -593,14 +599,14 @@ public:
   // -----------------------------------------------------------------------------
   void TestOverwriteArray()
   {
-    ConvertDataTestConsts::DataType baseType = ConvertDataTestConsts::DataType::Int8;
+    SIMPL::NumericTypes::Type baseType = SIMPL::NumericTypes::Type::Int8;
 
     ConvertData::Pointer filter = createFilter();
     filter->setDataContainerArray(createDataContainerArray(baseType));
 
     QString newArrayName = "DataArray";
 
-    setValues(filter, "DataArray", ConvertDataTestConsts::DataType::Int8, newArrayName);
+    setValues(filter, "DataArray", SIMPL::NumericTypes::Type::Int8, newArrayName);
     filter->execute();
     DREAM3D_REQUIRE_EQUAL(filter->getErrorCondition(), 0);
   }
