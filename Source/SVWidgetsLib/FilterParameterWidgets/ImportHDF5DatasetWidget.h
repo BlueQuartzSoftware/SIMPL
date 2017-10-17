@@ -36,8 +36,8 @@
 #ifndef _readhdf5filewidget_h_
 #define _readhdf5filewidget_h_
 
-#include <QtWidgets/QWidget>
 #include <QtWidgets/QMainWindow>
+#include <QtWidgets/QWidget>
 
 #include "SVWidgetsLib/FilterParameterWidgets/FilterParameterWidget.h"
 
@@ -74,13 +74,16 @@ public:
    * @brief openHDF5File
    * @param hdf5File
    */
-  void openHDF5File(QString &hdf5File);
+  void openHDF5File(QString& hdf5File);
 
   /**
    * @brief getCurrentFile
    * @return
    */
-  QString getCurrentFile() { return m_CurrentOpenFile; }
+  QString getCurrentFile()
+  {
+    return m_CurrentOpenFile;
+  }
 
   /**
    * @brief verifyPathExists
@@ -139,17 +142,16 @@ private slots:
    * @param current The currently selected Index
    * @param previous The previously selected Index
    */
-  void hdfTreeView_currentChanged ( const QModelIndex & current, const QModelIndex & previous );
+  void hdfTreeView_currentChanged(const QModelIndex& current, const QModelIndex& previous);
 
 private:
+  static QString m_OpenDialogLastDirectory; // Stores the last directory the user visited
+  QString m_CurrentOpenFile;                // Stores the currently open HDF5 File
+  std::string m_CurrentHDFDataPath;         // Stores the currently viewed HDF data path
+  hid_t m_FileId;
 
-  static QString                                    m_OpenDialogLastDirectory; //Stores the last directory the user visited
-  QString                                           m_CurrentOpenFile;    //Stores the currently open HDF5 File
-  std::string                                       m_CurrentHDFDataPath;  //Stores the currently viewed HDF data path
-  hid_t                                             m_FileId;
-
-  ImportHDF5DatasetFilterParameter*                     m_FilterParameter;
-  ImportHDF5Dataset*                                    m_Filter;
+  ImportHDF5DatasetFilterParameter* m_FilterParameter;
+  ImportHDF5Dataset* m_Filter;
 
   /**
    * @brief Updates the QGraphicsView based on the current Data Dimension and Data record values
@@ -157,14 +159,13 @@ private:
    */
   void _updateViewFromHDFPath(std::string path);
 
-  herr_t updateAttributeTable(const QString &datasetPath);
-  herr_t updateGeneralTable(const QString &path);
-  void addRow(QTableWidget* table, int row, const QString &key, const QString &value);
+  herr_t updateAttributeTable(const QString& datasetPath);
+  herr_t updateGeneralTable(const QString& path);
+  void addRow(QTableWidget* table, int row, const QString& key, const QString& value);
 
   ~ImportHDF5DatasetWidget();
-  ImportHDF5DatasetWidget(const ImportHDF5DatasetWidget&);   //Copy Constructor Not Implemented
-  void operator=(const ImportHDF5DatasetWidget&); //Copy Assignment Not Implemented
+  ImportHDF5DatasetWidget(const ImportHDF5DatasetWidget&); // Copy Constructor Not Implemented
+  void operator=(const ImportHDF5DatasetWidget&);          // Copy Assignment Not Implemented
 };
 
 #endif /* _readhdf5filewidget_h_ */
-
