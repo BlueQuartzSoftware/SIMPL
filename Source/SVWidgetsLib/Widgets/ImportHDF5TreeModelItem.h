@@ -47,17 +47,17 @@
 class SVWidgetsLib_EXPORT ImportHDF5TreeModelItem
 {
 public:
-  ImportHDF5TreeModelItem(hid_t fileId, const QString &data, ImportHDF5TreeModelItem *parent = 0);
+  ImportHDF5TreeModelItem(hid_t fileId, const QString& data, ImportHDF5TreeModelItem* parent = 0);
   ~ImportHDF5TreeModelItem();
 
-  void appendChild(ImportHDF5TreeModelItem *child);
+  void appendChild(ImportHDF5TreeModelItem* child);
 
-  ImportHDF5TreeModelItem *child(int row);
-  int childCount() ;
-  int columnCount() ;
-  QVariant data(int column) ;
-  int row() ;
-  ImportHDF5TreeModelItem *parent();
+  ImportHDF5TreeModelItem* child(int row);
+  int childCount();
+  int columnCount();
+  QVariant data(int column);
+  int row();
+  ImportHDF5TreeModelItem* parent();
 
   QString generateHDFPath();
 
@@ -79,20 +79,20 @@ protected:
   void initializeChildCount();
 
 private:
-  QList<ImportHDF5TreeModelItem*>               m_ChildItems;
-  int                                         m_ChildItemsInitialized = 0;
-  int                                         m_ChildCount = -1;
-  QVariant                                    m_ItemData;
-  ImportHDF5TreeModelItem*                      m_ParentItem;
-  hid_t                                       m_FileId;
-  int                                         m_NumAttrs = -1;
-  int                                         m_NumDims = -1;
-  bool                                        m_IsGroup = false;
-  bool                                        m_IsImage = false;
-  bool                                        m_IsTable = false;
-  bool                                        m_IsString = false;
-  std::string                                 m_DataType = "";
-  Qt::CheckState                              m_CheckState = Qt::Unchecked;
+  QList<ImportHDF5TreeModelItem*> m_ChildItems;
+  int m_ChildItemsInitialized = 0;
+  int m_ChildCount = -1;
+  QVariant m_ItemData;
+  ImportHDF5TreeModelItem* m_ParentItem;
+  hid_t m_FileId;
+  int m_NumAttrs = -1;
+  int m_NumDims = -1;
+  bool m_IsGroup = false;
+  bool m_IsImage = false;
+  bool m_IsTable = false;
+  bool m_IsString = false;
+  std::string m_DataType = "";
+  Qt::CheckState m_CheckState = Qt::Unchecked;
 };
 
 #endif /* _readhdf5treemodelitem_h_ */

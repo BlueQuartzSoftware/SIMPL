@@ -55,7 +55,8 @@ ImportHDF5DatasetFilterParameter::~ImportHDF5DatasetFilterParameter()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-ImportHDF5DatasetFilterParameter::Pointer ImportHDF5DatasetFilterParameter::New(const QString& humanLabel, const QString& propertyName, const QVariant& defaultValue, Category category, ImportHDF5Dataset* filter, int groupIndex)
+ImportHDF5DatasetFilterParameter::Pointer ImportHDF5DatasetFilterParameter::New(const QString& humanLabel, const QString& propertyName, const QVariant& defaultValue, Category category,
+                                                                                ImportHDF5Dataset* filter, int groupIndex)
 {
   ImportHDF5DatasetFilterParameter::Pointer ptr = ImportHDF5DatasetFilterParameter::New();
   ptr->setHumanLabel(humanLabel);
@@ -81,7 +82,7 @@ QString ImportHDF5DatasetFilterParameter::getWidgetType()
 // -----------------------------------------------------------------------------
 void ImportHDF5DatasetFilterParameter::readJson(const QJsonObject& json)
 {
-  if (json.contains("HDF5FilePath") && json["HDF5FilePath"].isString())
+  if(json.contains("HDF5FilePath") && json["HDF5FilePath"].isString())
   {
     m_Filter->setHDF5FilePath(json["HDF5FilePath"].toString());
     m_Filter->setDatasetPath(json["DatasetPath"].toString());
