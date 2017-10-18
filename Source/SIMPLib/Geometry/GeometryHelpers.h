@@ -413,11 +413,6 @@ public:
             }
           }
 
-          if(vCount >= numVertsPerElem) // No way 2 elements can share all vertices. Something is VERY wrong at this point
-          {
-            return -1;
-          }
-
           // So if our vertex match count is numSharedVerts and we have not visited the element in question then add this element index
           // into the list of vertex indices as neighbors for the source element.
           if(vCount == numSharedVerts)
