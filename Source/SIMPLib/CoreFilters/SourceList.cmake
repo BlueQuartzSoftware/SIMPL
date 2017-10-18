@@ -54,8 +54,8 @@ set(_PublicFilters
   ConvertData
   CopyFeatureArrayToElementArray
   CreateAttributeMatrix
-  CreateDataContainer
   CreateDataArray
+  CreateDataContainer
   CreateFeatureArrayFromElementArray
   CreateImageGeometry
   CreateStringArray
@@ -68,6 +68,7 @@ set(_PublicFilters
   FindDerivatives
   GenerateColorTable
   ImportAsciDataArray
+  ImportHDF5Dataset
   LinkFeatureMapToElementArray
   MaskCountDecision
   MoveData
