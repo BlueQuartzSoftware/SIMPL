@@ -270,6 +270,15 @@ void ImportHDF5DatasetWidget::on_selectBtn_clicked()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
+void ImportHDF5DatasetWidget::on_showLocationBtn_clicked()
+{
+  hasValidFilePath(value->text());
+  showFileInFileSystem();
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
 void ImportHDF5DatasetWidget::dragEnterEvent(QDragEnterEvent* e)
 {
   const QMimeData* dat = e->mimeData();

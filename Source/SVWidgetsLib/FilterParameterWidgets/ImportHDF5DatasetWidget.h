@@ -105,6 +105,11 @@ public slots:
    * @brief on_selectBtn_clicked
    */
   void on_selectBtn_clicked();
+  
+  /**
+   * @brief on_showLocationBtn_clicked
+   */
+  void on_showLocationBtn_clicked();
 
 protected:
   /**
