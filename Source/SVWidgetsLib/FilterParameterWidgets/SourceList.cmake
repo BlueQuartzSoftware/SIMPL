@@ -10,8 +10,8 @@ set(SIMPLView_PARAMETER_WIDGETS
     AxisAngleWidget
     BooleanWidget
     ChoiceWidget
-    ComparisonSelectionWidget
     ComparisonSelectionAdvancedWidget
+    ComparisonSelectionWidget
     ConstrainedDoubleWidget
     ConstrainedIntWidget
     DataArrayCreationWidget
@@ -24,9 +24,9 @@ set(SIMPLView_PARAMETER_WIDGETS
     DynamicChoiceWidget
     DynamicTableWidget
     FileListInfoWidget
-    FloatWidget
     FloatVec2Widget
     FloatVec3Widget
+    FloatWidget
     FourthOrderPolynomialWidget
     GenerateColorTableWidget
     IntVec3Widget
@@ -46,14 +46,15 @@ set(SIMPLView_PARAMETER_WIDGETS
 
 set(SIMPLView_PARAMETER_WIDGETS_NO_UI
   InputFileWidget
-  OutputFileWidget
   InputPathWidget
+  OutputFileWidget
   OutputPathWidget
 )
 
 set(SIMPLView_PARAMETER_WIDGETS_NO_CODEGEN
   AbstractIOFileWidget
   CalculatorWidget
+  ImportHDF5DatasetWidget
   LinkedDataContainerSelectionWidget
   PhaseTypeSelectionWidget
   ReadASCIIDataWidget
