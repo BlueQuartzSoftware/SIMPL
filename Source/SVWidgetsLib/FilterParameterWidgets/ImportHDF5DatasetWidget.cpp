@@ -366,7 +366,7 @@ bool ImportHDF5DatasetWidget::initWithFile(QString hdf5File)
   ImportHDF5TreeModel* treeModel = new ImportHDF5TreeModel(m_FileId, hdfTreeView);
   connect(treeModel, SIGNAL(modelChanged()), this, SIGNAL(parametersChanged()));
   hdfTreeView->setModel(treeModel);
-#if defined(Q_WS_MAC)
+#if defined(Q_OS_MAC)
   hdfTreeView->setAttribute(Qt::WA_MacShowFocusRect, false);
 #endif
 
