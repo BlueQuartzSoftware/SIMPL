@@ -312,6 +312,15 @@ class SVWidgetsLib_EXPORT SVPipelineFilterWidget : public QFrame, public Pipelin
     * @brief focusOutEvent
     */
     void focusOutEvent(QFocusEvent* event) override;
+    
+    /**
+     * @brief eventFilter
+     * @param watched
+     * @param event
+     * @return 
+     */
+    virtual bool eventFilter(QObject* watched, QEvent* event) Q_DECL_OVERRIDE;
+    
 
   private:
     QPoint                            m_DragStartPosition;

@@ -145,6 +145,10 @@ void SVPipelineFilterWidget::initialize()
     connect(filter.get(), SIGNAL(filterCompleted()), this, SLOT(toCompletedState()));
     connect(filter.get(), SIGNAL(filterInProgress()), this, SLOT(toExecutingState()));
   }
+  
+  deleteBtn->installEventFilter(this);
+  disableBtn->installEventFilter(this);
+
 }
 
 // -----------------------------------------------------------------------------
@@ -163,6 +167,15 @@ void SVPipelineFilterWidget::setSelected(bool s)
 void SVPipelineFilterWidget::on_disableBtn_clicked(bool checked)
 {
   Q_UNUSED(checked)
+  if(disableBtn->isChecked())
+  {
+    disableBtn->setIcon(QIcon(":/ban_red.png"));
+  }
+  else
+  {
+    disableBtn->setIcon(QIcon(":/ban.png"));
+  }
+  
   setIsEnabled(!disableBtn->isChecked());
 }
 
@@ -489,6 +502,62 @@ void SVPipelineFilterWidget::on_deleteBtn_clicked()
     emit filterWidgetPressed(nullptr, qApp->queryKeyboardModifiers());
     update();
   }
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+bool SVPipelineFilterWidget::eventFilter(QObject* watched, QEvent* event)
+{
+  QPushButton* button = qobject_cast<QPushButton*>(watched);
+  if (deleteBtn == button) 
+  {
+
+    if (event->type() == QEvent::Enter) {
+      // The push button is hovered by mouse
+      deleteBtn->setIcon(QIcon(":/trash_hover.png"));
+      return true;
+    }
+    
+    if (event->type() == QEvent::Leave) {
+      // The push button is not hovered by mouse
+      deleteBtn->setIcon(QIcon(":/trash.png"));
+      return true;
+    }
+  }
+  
+  if (disableBtn == button) 
+  {
+    if(disableBtn->isChecked())
+    {
+      if (event->type() == QEvent::Enter) {
+        // The push button is hovered by mouse
+        disableBtn->setIcon(QIcon(":/ban_red.png"));
+        return true;
+      }
+      if (event->type() == QEvent::Leave) {
+        // The push button is not hovered by mouse
+        disableBtn->setIcon(QIcon(":/ban_red.png"));
+        return true;
+      }
+    }
+    else
+    {
+      if (event->type() == QEvent::Enter) {
+        // The push button is hovered by mouse
+        disableBtn->setIcon(QIcon(":/ban_hover.png"));
+        return true;
+      }
+      if (event->type() == QEvent::Leave) {
+        // The push button is not hovered by mouse
+        disableBtn->setIcon(QIcon(":/ban.png"));
+        return true;
+      }
+    }
+  }
+  
+  
+  return false;
 }
 
 // -----------------------------------------------------------------------------

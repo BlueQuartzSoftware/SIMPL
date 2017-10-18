@@ -120,10 +120,7 @@ QPushButton#disableBtn:checked
 {
  	border: 0px inset black;
 }
-
-QPushButton#disableBtn:hover {
- 	image: url(:/ban_hover.png); 
- }</string>
+</string>
         </property>
         <property name="text">
          <string/>
@@ -131,7 +128,9 @@ QPushButton#disableBtn:hover {
         <property name="icon">
          <iconset resource="../../icons/images/Icons.qrc">
           <normaloff>:/ban.png</normaloff>
-          <normalon>:/ban_red.png</normalon>:/ban.png</iconset>
+          <normalon>:/ban_red.png</normalon>
+          <activeon>:/ban_red.png</activeon>
+          <selectedon>:/ban_red.png</selectedon>:/ban.png</iconset>
         </property>
         <property name="iconSize">
          <size>
@@ -177,20 +176,14 @@ QPushButton#deleteBtn:checked
 {
  	border: 0px inset black;
 }
-
-QPushButton#deleteBtn:hover {
- 	image: url(:/trash_hover.png); 
- }</string>
+</string>
         </property>
         <property name="text">
          <string/>
         </property>
         <property name="icon">
          <iconset resource="../../icons/images/Icons.qrc">
-          <normaloff>:/trash.png</normaloff>
-          <normalon>:/trash_hover.png</normalon>
-          <activeon>:/trash_hover.png</activeon>
-          <selectedon>:/trash_hover.png</selectedon>:/trash.png</iconset>
+          <normaloff>:/trash.png</normaloff>:/trash.png</iconset>
         </property>
         <property name="iconSize">
          <size>
