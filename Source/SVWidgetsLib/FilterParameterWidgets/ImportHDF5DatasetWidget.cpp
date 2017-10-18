@@ -176,33 +176,38 @@ void ImportHDF5DatasetWidget::setupGui()
     {
       value->setText(hdf5FilePath);
       value->show();
-      initWithFile(hdf5FilePath);
-    }
 
-    // Automatically expand HDF groups in the viewer
-    QStringList dsetTokens = dsetPath.split("/", QString::SkipEmptyParts);
-    ImportHDF5TreeModel* treeModel = dynamic_cast<ImportHDF5TreeModel*>(hdfTreeView->model());
-    QModelIndex parentIdx = treeModel->index(0, 0);
-    hdfTreeView->expand(parentIdx);
-    while(dsetTokens.size() > 0)
-    {
-      QString dsetToken = dsetTokens.front();
-      dsetTokens.pop_front();
-      QModelIndexList idxList = treeModel->match(treeModel->index(0, 0, parentIdx), Qt::DisplayRole, dsetToken);
-      if(idxList.size() > 0)
+      if (initWithFile(hdf5FilePath) == true)
       {
-        QModelIndex foundIdx = idxList[0];
-        hdfTreeView->expand(foundIdx);
-        parentIdx = foundIdx;
-      }
-      else
-      {
-        dsetTokens.clear();
+        // Automatically expand HDF groups in the viewer
+        ImportHDF5TreeModel* treeModel = dynamic_cast<ImportHDF5TreeModel*>(hdfTreeView->model());
+        if (treeModel != nullptr)
+        {
+          QStringList dsetTokens = dsetPath.split("/", QString::SkipEmptyParts);
+          QModelIndex parentIdx = treeModel->index(0, 0);
+          hdfTreeView->expand(parentIdx);
+          while(dsetTokens.size() > 0)
+          {
+            QString dsetToken = dsetTokens.front();
+            dsetTokens.pop_front();
+            QModelIndexList idxList = treeModel->match(treeModel->index(0, 0, parentIdx), Qt::DisplayRole, dsetToken);
+            if(idxList.size() > 0)
+            {
+              QModelIndex foundIdx = idxList[0];
+              hdfTreeView->expand(foundIdx);
+              parentIdx = foundIdx;
+            }
+            else
+            {
+              dsetTokens.clear();
+            }
+          }
+
+          // Select the dataset
+          hdfTreeView->setCurrentIndex(parentIdx);
+        }
       }
     }
-
-    // Select the dataset
-    hdfTreeView->setCurrentIndex(parentIdx);
   }
 
   if(m_FilterParameter != nullptr)
@@ -327,7 +332,7 @@ void ImportHDF5DatasetWidget::openHDF5File(QString& hdfFile)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void ImportHDF5DatasetWidget::initWithFile(QString hdf5File)
+bool ImportHDF5DatasetWidget::initWithFile(QString hdf5File)
 {
   // Delete the old model
   QAbstractItemModel* oldModel = hdfTreeView->model();
@@ -347,7 +352,7 @@ void ImportHDF5DatasetWidget::initWithFile(QString hdf5File)
   if(m_FileId < 0)
   {
     std::cout << "Error Reading HDF5 file: " << hdf5File.toStdString() << std::endl;
-    return;
+    return false;
   }
 
   // Set the Window Title to the file name
@@ -365,6 +370,7 @@ void ImportHDF5DatasetWidget::initWithFile(QString hdf5File)
   connect(hdfTreeView->selectionModel(), SIGNAL(currentChanged(QModelIndex, QModelIndex)), this, SLOT(hdfTreeView_currentChanged(QModelIndex, QModelIndex)));
 
   attributesTable->horizontalHeader()->setStretchLastSection(true); // Stretch the last column to fit to the viewport
+  return true;
 }
 
 // -----------------------------------------------------------------------------

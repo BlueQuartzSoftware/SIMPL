@@ -130,7 +130,7 @@ protected:
    * with values from the passed in hdf5 file
    * @param hdf5File
    */
-  void initWithFile(QString hdf5File);
+  bool initWithFile(QString hdf5File);
 
 signals:
   void errorSettingFilterParameter(const QString& msg);
