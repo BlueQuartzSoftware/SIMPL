@@ -161,7 +161,6 @@ void ImportHDF5DatasetWidget::setupGui()
 #endif
 
   value->setFont(inputFileFont);
-  value->hide();
 
   if(m_Filter != nullptr)
   {
@@ -172,7 +171,6 @@ void ImportHDF5DatasetWidget::setupGui()
     if(hdf5FilePath.isEmpty() == false)
     {
       value->setText(hdf5FilePath);
-      value->show();
 
       if(initWithFile(hdf5FilePath) == true)
       {
