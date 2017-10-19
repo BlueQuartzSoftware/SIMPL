@@ -35,7 +35,11 @@ target_link_libraries ( SimpleITKExplicit ${ITK_LIBRARIES} ${SCIFIO_LIBRARIES})
 sitk_install_exported_target( SimpleITKExplicit )
 
 LibraryProperties( SimpleITKExplicit  ${EXE_DEBUG_EXTENSION} )
-
+if(APPLE)
+      SET_TARGET_PROPERTIES( SimpleITKExplicit
+                PROPERTIES
+                INSTALL_RPATH @executable_path/../lib)
+endif()
 
 set(install_dir "bin")
 set(lib_install_dir "lib")
