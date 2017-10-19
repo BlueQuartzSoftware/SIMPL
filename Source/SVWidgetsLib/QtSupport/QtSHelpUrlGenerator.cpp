@@ -72,8 +72,13 @@ QUrl QtSHelpUrlGenerator::generateHTMLUrl(QString htmlName)
   {
     helpDir.cdUp();
     // Check if we are running from a .app installation where the Help dir is embeded in the app bundle.
-    QFileInfo fi(helpDir.absolutePath() + "/Help");
-    if(!fi.exists())
+    QFileInfo fi(helpDir.absolutePath() + "/Resources/Help");
+    
+    if(fi.exists())
+    {
+     helpDir.cd("Resources");
+    }
+    else
     {
       helpDir.cdUp();
       helpDir.cdUp();
