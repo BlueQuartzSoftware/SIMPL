@@ -27,6 +27,7 @@ set(SVWidgetsLib_Widgets_MOC_HDRS
   ${SVWidgetsLib_SOURCE_DIR}/Widgets/IssuesWidget.h
   ${SVWidgetsLib_SOURCE_DIR}/Widgets/StandardOutputWidget.h
   ${SVWidgetsLib_SOURCE_DIR}/Widgets/FilterInputWidget.h
+  ${SVWidgetsLib_SOURCE_DIR}/Widgets/ImportHDF5TreeModel.h
   ${SVWidgetsLib_SOURCE_DIR}/Widgets/SVPipelineFilterWidget.h
   ${SVWidgetsLib_SOURCE_DIR}/Widgets/SVPipelineFilterOutlineWidget.h
   ${SVWidgetsLib_SOURCE_DIR}/Widgets/SVPipelineViewWidget.h
@@ -36,11 +37,11 @@ set(SVWidgetsLib_Widgets_MOC_HDRS
 )
 
 set(SVWidgetsLib_Widgets_HDRS
-  ${SVWidgetsLib_SOURCE_DIR}/Widgets/DataStructureItem.h
-
   ${SVWidgetsLib_SOURCE_DIR}/Widgets/BookmarksItem.h
-  ${SVWidgetsLib_SOURCE_DIR}/Widgets/PipelineView.h
+  ${SVWidgetsLib_SOURCE_DIR}/Widgets/DataStructureItem.h
+  ${SVWidgetsLib_SOURCE_DIR}/Widgets/ImportHDF5TreeModelItem.h
   ${SVWidgetsLib_SOURCE_DIR}/Widgets/PipelineFilterObject.h
+  ${SVWidgetsLib_SOURCE_DIR}/Widgets/PipelineView.h
 )
 
 set(SVWidgetsLib_Widgets_SRCS
@@ -65,6 +66,8 @@ set(SVWidgetsLib_Widgets_SRCS
   ${SVWidgetsLib_SOURCE_DIR}/Widgets/IssuesWidget.cpp
   ${SVWidgetsLib_SOURCE_DIR}/Widgets/StandardOutputWidget.cpp
   ${SVWidgetsLib_SOURCE_DIR}/Widgets/FilterInputWidget.cpp
+  ${SVWidgetsLib_SOURCE_DIR}/Widgets/ImportHDF5TreeModel.cpp
+  ${SVWidgetsLib_SOURCE_DIR}/Widgets/ImportHDF5TreeModelItem.cpp
   ${SVWidgetsLib_SOURCE_DIR}/Widgets/SVPipelineFilterWidget.cpp
   ${SVWidgetsLib_SOURCE_DIR}/Widgets/SVPipelineFilterOutlineWidget.cpp
   ${SVWidgetsLib_SOURCE_DIR}/Widgets/SVPipelineViewWidget.cpp

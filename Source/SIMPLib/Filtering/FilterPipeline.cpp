@@ -517,9 +517,8 @@ int FilterPipeline::preflightPipeline()
 
       (*filter)->setCancel(false); // Reset the cancel flag
       preflightError |= (*filter)->getErrorCondition();
+      (*filter)->setDataContainerArray(dca->deepCopy(false));
     }
-
-    (*filter)->setDataContainerArray(dca->deepCopy(false));
   }
   setCurrentFilter(AbstractFilter::NullPointer());
   return preflightError;
@@ -559,6 +558,7 @@ DataContainerArray::Pointer FilterPipeline::execute()
     progValue.setType(PipelineMessage::MessageType::StatusMessage);
     progValue.setText(ss);
     emit pipelineGeneratedMessage(progValue);
+    emit filt->filterInProgress();
 
     // Do not execute disabled filters
     if(filt->getEnabled())
@@ -567,7 +567,6 @@ DataContainerArray::Pointer FilterPipeline::execute()
       connectFilterNotifications(filt.get());
       filt->setDataContainerArray(m_Dca);
       setCurrentFilter(*filter);
-      emit filt->filterInProgress();
       filt->execute();
       disconnectFilterNotifications((*filter).get());
       filt->setDataContainerArray(DataContainerArray::NullPointer());
@@ -591,16 +590,14 @@ DataContainerArray::Pointer FilterPipeline::execute()
         return m_Dca;
       }
     }
+
     if(this->getCancel() == true)
     {
       break;
     }
-    // ss = QObject::tr("%1 Filter Complete").arg(filt->getNameOfClass());
-    // Do not mark as completed if the filter is disabled
-    if(filt->getEnabled())
-    {
-      emit filt->filterCompleted();
-    }
+
+    // Emit that the filter is completed for those objects that care, even the disabled ones.
+    emit filt->filterCompleted();
   }
 
   emit pipelineFinished();

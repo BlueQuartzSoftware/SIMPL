@@ -313,7 +313,8 @@ QDir BookmarksToolboxWidget::findPipelinesDirectory()
   {
     pipelinesDir.cdUp();
     // Can we change directory into the "PrebuiltPipeliines" directory at this level.
-    if (pipelinesDir.cd(PREBUILT_PIPELINES_DIR) )
+    QString pbpDir = QString("Resources/%1").arg(PREBUILT_PIPELINES_DIR);
+    if (pipelinesDir.cd(pbpDir))
     {
       return pipelinesDir;
     }

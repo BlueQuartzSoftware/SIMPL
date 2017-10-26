@@ -55,7 +55,7 @@ public:
   // -----------------------------------------------------------------------------
   //
   // -----------------------------------------------------------------------------
-  int RunTest(char sep, int delimiter)
+  template <typename T> int RunTest(char sep, int delimiter, int scalarType)
   {
     writeFile(sep);
 
@@ -85,7 +85,7 @@ public:
     QVariant value;
 
     DataArrayPath createdAttributeArrayPath("ImageDataContainer", "AttributeMatrix", "ImportedData");
-    int scalarType = 0; // int8
+    // int scalarType = 0; // int8
     int numberOfComponents = 1;
     int skipHeaderLines = 0;
     QString inputFile = QString::fromStdString(getOutputFile());
@@ -128,14 +128,14 @@ public:
 
     DREAM3D_REQUIRED(filter->getErrorCondition(), >=, 0);
 
-    Int8ArrayType::Pointer dataPtr = attrMat->getAttributeArrayAs<Int8ArrayType>("ImportedData");
-    int8_t* ptr = dataPtr->getPointer(0);
+    typename DataArray<T>::Pointer dataPtr = attrMat->getAttributeArrayAs<DataArray<T>>("ImportedData");
+    T* ptr = dataPtr->getPointer(0);
     size_t index = 0;
     for(size_t y = 0; y < m_YDim; y++)
     {
       for(size_t x = 0; x < m_XDim; x++)
       {
-        int8_t value = index;
+        T value = static_cast<T>(index);
         DREAM3D_REQUIRED(value, ==, ptr[index])
         index++;
       }
@@ -144,25 +144,75 @@ public:
     return EXIT_SUCCESS;
   }
 
-  int Comma()
+  void Comma()
   {
-    return RunTest(',', 0);
+    RunTest<int8_t>(',', 0, 0);
+    RunTest<uint8_t>(',', 0, 1);
+    RunTest<int16_t>(',', 0, 2);
+    RunTest<uint16_t>(',', 0, 3);
+    RunTest<int32_t>(',', 0, 4);
+    RunTest<uint32_t>(',', 0, 5);
+    RunTest<int64_t>(',', 0, 6);
+    RunTest<uint64_t>(',', 0, 7);
+    RunTest<float>(',', 0, 8);
+    RunTest<double>(',', 0, 9);
+    RunTest<bool>(',', 0, 10);
   }
-  int Semicolon()
+  void Semicolon()
   {
-    return RunTest(';', 1);
+    RunTest<int8_t>(';', 1, 0);
+    RunTest<uint8_t>(';', 1, 1);
+    RunTest<int16_t>(';', 1, 2);
+    RunTest<uint16_t>(';', 1, 3);
+    RunTest<int32_t>(';', 1, 4);
+    RunTest<uint32_t>(';', 1, 5);
+    RunTest<int64_t>(';', 1, 6);
+    RunTest<uint64_t>(';', 1, 7);
+    RunTest<float>(';', 1, 8);
+    RunTest<double>(';', 1, 9);
+    RunTest<bool>(';', 1, 10);
   }
-  int Space()
+  void Space()
   {
-    return RunTest(' ', 2);
+    RunTest<int8_t>(' ', 2, 0);
+    RunTest<uint8_t>(' ', 2, 1);
+    RunTest<int16_t>(' ', 2, 2);
+    RunTest<uint16_t>(' ', 2, 3);
+    RunTest<int32_t>(' ', 2, 4);
+    RunTest<uint32_t>(' ', 2, 5);
+    RunTest<int64_t>(' ', 2, 6);
+    RunTest<uint64_t>(' ', 2, 7);
+    RunTest<float>(' ', 2, 8);
+    RunTest<double>(' ', 2, 9);
+    RunTest<bool>(' ', 2, 10);
   }
-  int Colon()
+  void Colon()
   {
-    return RunTest(':', 3);
+    RunTest<int8_t>(':', 3, 0);
+    RunTest<uint8_t>(':', 3, 1);
+    RunTest<int16_t>(':', 3, 2);
+    RunTest<uint16_t>(':', 3, 3);
+    RunTest<int32_t>(':', 3, 4);
+    RunTest<uint32_t>(':', 3, 5);
+    RunTest<int64_t>(':', 3, 6);
+    RunTest<uint64_t>(':', 3, 7);
+    RunTest<float>(':', 3, 8);
+    RunTest<double>(':', 3, 9);
+    RunTest<bool>(':', 3, 10);
   }
-  int Tab()
+  void Tab()
   {
-    return RunTest('\t', 4);
+    RunTest<int8_t>('\t', 4, 0);
+    RunTest<uint8_t>('\t', 4, 1);
+    RunTest<int16_t>('\t', 4, 2);
+    RunTest<uint16_t>('\t', 4, 3);
+    RunTest<int32_t>('\t', 4, 4);
+    RunTest<uint32_t>('\t', 4, 5);
+    RunTest<int64_t>('\t', 4, 6);
+    RunTest<uint64_t>('\t', 4, 7);
+    RunTest<float>('\t', 4, 8);
+    RunTest<double>('\t', 4, 9);
+    RunTest<bool>('\t', 4, 10);
   }
 
   // -----------------------------------------------------------------------------

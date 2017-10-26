@@ -1,5 +1,5 @@
 /* ============================================================================
- * Copyright (c) 2017 BlueQuartz Softwae, LLC
+ * Copyright (c) 2017 BlueQuartz Software, LLC
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without modification,
@@ -411,11 +411,6 @@ public:
                 vCount++;
               }
             }
-          }
-
-          if(vCount >= numVertsPerElem) // No way 2 elements can share all vertices. Something is VERY wrong at this point
-          {
-            return -1;
           }
 
           // So if our vertex match count is numSharedVerts and we have not visited the element in question then add this element index

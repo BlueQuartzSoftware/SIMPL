@@ -36,8 +36,9 @@
 #ifndef _svpipelinefilterwidget_h_
 #define _svpipelinefilterwidget_h_
 
-#include <QtCore/QStringList>
 #include <QtCore/QSettings>
+#include <QtCore/QStringList>
+#include <QtCore/QTimer>
 #include <QtCore/QUrl>
 
 #include <QtWidgets/QFrame>
@@ -89,11 +90,31 @@ class SVWidgetsLib_EXPORT SVPipelineFilterWidget : public QFrame, public Pipelin
 
     virtual void getGuiParametersFromFilter(AbstractFilter* filt);
 
+    /**
+     * @brief deepCopy
+     * @return
+     */
     PipelineFilterObject* deepCopy() override;
 
+    /**
+     * @brief setSelected
+     * @param s
+     */
     void setSelected(bool s) override;
 
+    /**
+     * @brief paintEvent
+     * @param event
+     */
+    void paintEvent(QPaintEvent* event) override;
+
   public slots:
+
+    /**
+     * @brief setIsEnabled
+     * @param enabled
+     */
+    void setIsEnabled(bool enabled) override;
 
     /**
      * @brief changeStyle
@@ -133,6 +154,10 @@ class SVWidgetsLib_EXPORT SVPipelineFilterWidget : public QFrame, public Pipelin
      */
     virtual void toCompletedState() override;
 
+    /**
+     * @brief toDisabledState
+     */
+    virtual void toDisabledState() override;
 
     /**
      * @brief toActiveState
@@ -174,12 +199,17 @@ class SVWidgetsLib_EXPORT SVPipelineFilterWidget : public QFrame, public Pipelin
     /**
      * @brief on_disableBtn_clicked
      */
-    void on_disableBtn_clicked();
+    void on_disableBtn_clicked(bool state = false);
 
     /**
      * @brief filterInputWidget_filterParametersChanged
      */
     void filterInputWidget_filterParametersChanged();
+
+    /**
+     * @brief updateBorderThickness
+     */
+    void updateBorderThickness();
 
   signals:
 
@@ -281,12 +311,35 @@ class SVWidgetsLib_EXPORT SVPipelineFilterWidget : public QFrame, public Pipelin
     * @brief focusOutEvent
     */
     void focusOutEvent(QFocusEvent* event) override;
+    
+    /**
+     * @brief eventFilter
+     * @param watched
+     * @param event
+     * @return 
+     */
+    virtual bool eventFilter(QObject* watched, QEvent* event) Q_DECL_OVERRIDE;
+    
 
   private:
     QPoint                            m_DragStartPosition;
     IObserver* m_Observer = nullptr;
     bool m_HasRightClickTarget = false;
     bool m_HoverState = false;
+    int m_MaxFilterCount = 0;
+
+    int m_TopFontMargin = 12;
+    int m_IndexBoxWidth = 35;
+    int m_TextMargin = 6;
+    int m_ButtonSize = 40;
+    qreal m_SelectionBorderWidth = 4.0;
+
+    QString m_PaddedIndex;
+    QString m_FilterHumanLabel;
+
+    QTimer m_AnimationTimer;
+    qreal m_BorderThickness = 0.0;
+    qreal m_BorderIncrement = 1.0;
 
     /**
      * @brief initialize Calls all the necessary initialization code for the widget
