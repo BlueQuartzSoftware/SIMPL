@@ -326,13 +326,15 @@ endif()
 # Set a Global Prefix where everthing is going to get intalled. For OS X we are
 # going to try to install everything into the .app package
 # -----------------------------------------------------------------------
-set_property(GLOBAL PROPERTY DREAM3D_PACKAGE_DEST_PREFIX ".")
-if(APPLE)
-  if(CMAKE_BUILD_TYPE STREQUAL "Debug")
-    set_property(GLOBAL PROPERTY DREAM3D_PACKAGE_DEST_PREFIX "${SIMPLView_APPLICATION_NAME}${EXE_DEBUG_EXTENSION}.app/Contents/")
-  else()
-    set_property(GLOBAL PROPERTY DREAM3D_PACKAGE_DEST_PREFIX "${SIMPLView_APPLICATION_NAME}.app/Contents/")
-  endif()
+# set_property(GLOBAL PROPERTY DREAM3D_PACKAGE_DEST_PREFIX ".")
+get_property(DREAM3D_PACKAGE_DEST_PREFIX GLOBAL PROPERTY DREAM3D_PACKAGE_DEST_PREFIX)
+if("${DREAM3D_PACKAGE_DEST_PREFIX}" STREQUAL "")
+  set_property(GLOBAL PROPERTY DREAM3D_PACKAGE_DEST_PREFIX "")
+  get_property(DREAM3D_PACKAGE_DEST_PREFIX GLOBAL PROPERTY DREAM3D_PACKAGE_DEST_PREFIX)
+  set(APPLE_RESOURCES_DIR "share/SIMPL")
+else ()
+    set(APPLE_RESOURCES_DIR "${DREAM3D_PACKAGE_DEST_PREFIX}/Resources")
+
 endif()
 get_property(DREAM3D_PACKAGE_DEST_PREFIX GLOBAL PROPERTY DREAM3D_PACKAGE_DEST_PREFIX)
 
@@ -352,7 +354,7 @@ configure_file(${PROJECT_RESOURCES_DIR}/SIMPL/SIMPLLicense.txt
 # Generate install rules for the text files
 if(APPLE)
   install(FILES ${PROJECT_BINARY_DIR}/SIMPL/SIMPLLicense.txt
-          DESTINATION "${DREAM3D_PACKAGE_DEST_PREFIX}/Resources"
+          DESTINATION "${APPLE_RESOURCES_DIR}"
           COMPONENT Applications)
 else()
   install(FILES ${PROJECT_BINARY_DIR}/SIMPL/SIMPLLicense.txt

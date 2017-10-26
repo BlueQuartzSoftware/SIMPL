@@ -211,14 +211,14 @@ export(EXPORT SIMPLibTargets
   NAMESPACE SIMPL::
 )
 
-# install(EXPORT SIMPLibTargets
-#   FILE
-#     SIMPLibTargets.cmake
-#   NAMESPACE
-#     SIMPL::
-#   DESTINATION
-#     ${ConfigPackageLocation}
-# )
+install(EXPORT SIMPLibTargets
+  FILE
+    SIMPLibTargets.cmake
+  NAMESPACE
+    SIMPL::
+  DESTINATION
+    ${ConfigPackageLocation}
+)
 
 
 
