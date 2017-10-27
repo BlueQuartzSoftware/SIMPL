@@ -3,7 +3,7 @@ set(SIMPLTest_SOURCE_DIR ${SIMPLib_SOURCE_DIR}/Testing)
 set(SIMPLTest_BINARY_DIR ${SIMPLib_BINARY_DIR}/Testing)
 
 #------------------------------------------------------------------------------
-# Include this file from the SIMPL Project
+# Include this file from the CMP Project
 include(${CMP_SOURCE_DIR}/cmpCMakeMacros.cmake)
 
 set(TEST_TEMP_DIR ${SIMPLTest_BINARY_DIR}/Temp)
