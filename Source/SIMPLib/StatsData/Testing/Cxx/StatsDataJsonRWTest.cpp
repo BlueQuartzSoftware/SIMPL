@@ -39,7 +39,6 @@
 #include <QtCore/QJsonDocument>
 
 #include "SIMPLib/Common/Constants.h"
-#include "SIMPLib/Common/UnitTestSupport.hpp"
 #include "SIMPLib/Math/SIMPLibMath.h"
 #include "SIMPLib/SIMPLib.h"
 #include "SIMPLib/StatsData/BoundaryStatsData.h"
@@ -48,7 +47,8 @@
 #include "SIMPLib/StatsData/PrimaryStatsData.h"
 #include "SIMPLib/StatsData/TransformationStatsData.h"
 
-#include "SIMPLTestFileLocations.h"
+#include "SIMPLib/Testing/SIMPLTestFileLocations.h"
+#include "SIMPLib/Testing/UnitTestSupport.hpp"
 
 class StatsDataJsonRWTest
 {

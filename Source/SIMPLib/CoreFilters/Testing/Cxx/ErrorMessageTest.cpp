@@ -36,11 +36,11 @@
 #include <string>
 
 #include "SIMPLib/Common/PipelineMessage.h"
-#include "SIMPLib/Common/UnitTestSupport.hpp"
+
 #include "SIMPLib/Filtering/AbstractFilter.h"
 #include "SIMPLib/SIMPLib.h"
-
-#include "SIMPLTestFileLocations.h"
+#include "SIMPLib/Testing/SIMPLTestFileLocations.h"
+#include "SIMPLib/Testing/UnitTestSupport.hpp"
 
 class ErrorMessageTest
 {

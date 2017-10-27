@@ -44,9 +44,8 @@
 #include "SIMPLib/FilterParameters/LinkedBooleanFilterParameter.h"
 #include "SIMPLib/Geometry/ImageGeom.h"
 
-#include "SIMPLib/Common/UnitTestSupport.hpp"
-
-#include "SIMPLTestFileLocations.h"
+#include "SIMPLib/Testing/SIMPLTestFileLocations.h"
+#include "SIMPLib/Testing/UnitTestSupport.hpp"
 
 #include <QVector>
 

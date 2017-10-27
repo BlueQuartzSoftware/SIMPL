@@ -37,7 +37,7 @@
 #include <QtCore/QDir>
 
 #include "SIMPLib/Common/SIMPLibSetGetMacros.h"
-#include "SIMPLib/Common/UnitTestSupport.hpp"
+
 #include "SIMPLib/DataArrays/DataArray.hpp"
 #include "SIMPLib/DataContainers/DataContainer.h"
 #include "SIMPLib/Filtering/FilterFactory.hpp"
@@ -47,8 +47,8 @@
 #include "SIMPLib/Plugin/ISIMPLibPlugin.h"
 #include "SIMPLib/Plugin/SIMPLibPluginLoader.h"
 #include "SIMPLib/SIMPLib.h"
-
-#include "SIMPLTestFileLocations.h"
+#include "SIMPLib/Testing/SIMPLTestFileLocations.h"
+#include "SIMPLib/Testing/UnitTestSupport.hpp"
 
 size_t numTuples = 5;
 size_t numComps = 4;

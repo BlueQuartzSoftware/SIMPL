@@ -39,10 +39,12 @@
 #include <Eigen/Dense>
 #include <Eigen/Eigen>
 
-#include "SIMPLib/Common/UnitTestSupport.hpp"
 #include "SIMPLib/Math/MatrixMath.h"
 #include "SIMPLib/Math/QuaternionMath.hpp"
 #include "SIMPLib/SIMPLib.h"
+
+#include "SIMPLib/Testing/SIMPLTestFileLocations.h"
+#include "SIMPLib/Testing/UnitTestSupport.hpp"
 
 #define DREAM3D_PASSIVE 1.0
 #define DREAM3D_ACTIVE -1.0

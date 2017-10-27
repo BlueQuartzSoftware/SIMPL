@@ -45,9 +45,8 @@
 #include "SIMPLib/DataContainers/DataContainerBundle.h"
 #include "SIMPLib/SIMPLib.h"
 
-#include "SIMPLib/Common/UnitTestSupport.hpp"
-
 #include "SIMPLib/Testing/SIMPLTestFileLocations.h"
+#include "SIMPLib/Testing/UnitTestSupport.hpp"
 
 class DataContainerBundleTest
 {

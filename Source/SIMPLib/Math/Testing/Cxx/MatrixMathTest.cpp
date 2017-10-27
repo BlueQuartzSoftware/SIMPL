@@ -4,10 +4,10 @@
 #include <cmath>
 #include <iostream>
 
-#include "SIMPLib/Common/UnitTestSupport.hpp"
 #include "SIMPLib/Math/MatrixMath.h"
 
-#include "SIMPLTestFileLocations.h"
+#include "SIMPLib/Testing/SIMPLTestFileLocations.h"
+#include "SIMPLib/Testing/UnitTestSupport.hpp"
 
 class MatrixMathTest
 {

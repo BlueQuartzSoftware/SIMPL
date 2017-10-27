@@ -52,9 +52,8 @@
 #include "SIMPLib/Geometry/MeshStructs.h"
 #include "SIMPLib/SIMPLib.h"
 
-#include "SIMPLib/Common/UnitTestSupport.hpp"
-
-#include "SIMPLTestFileLocations.h"
+#include "SIMPLib/Testing/SIMPLTestFileLocations.h"
+#include "SIMPLib/Testing/UnitTestSupport.hpp"
 
 /**
  * @brief The WriteASCIIDataTest class

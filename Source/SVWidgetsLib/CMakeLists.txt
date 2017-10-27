@@ -3,10 +3,7 @@ project(SVWidgetsLib VERSION 2.0)
 
 set(SVWidgetsLib_BUILT_AS_DYNAMIC_LIB 0)
 if(BUILD_SHARED_LIBS)
-    set(SVWidgetsLib_BUILT_AS_DYNAMIC_LIB 1)
-    if(WIN32)
-        ADD_DEFINITIONS("-DSVWidgetsLib_BUILT_AS_DYNAMIC_LIB")
-    endif(WIN32)
+  set(SVWidgetsLib_BUILT_AS_DYNAMIC_LIB 1)
 endif(BUILD_SHARED_LIBS)
 
 set(GENERATE_GIT_VERSION 1)
@@ -74,8 +71,6 @@ cmp_IDE_GENERATED_PROPERTIES("Generated" "${${PROJECT_NAME}_Generated_HDRS}" "${
 # -- Run MOC and UIC on the necessary files
 QT5_ADD_RESOURCES( SVWidgetsLib_Generated_RC_SRCS "${SVWidgetsLib_SOURCE_DIR}/icons/images/Icons.qrc" "${SVWidgetsLib_SOURCE_DIR}/fonts/fonts.qrc")
 
-
-add_definitions(-DQT_CORE_LIB)
 include(${SVWidgetsLib_SOURCE_DIR}/Core/SourceList.cmake)
 include(${SVWidgetsLib_SOURCE_DIR}/Dialogs/SourceList.cmake)
 include(${SVWidgetsLib_SOURCE_DIR}/FilterParameterWidgets/SourceList.cmake)
@@ -118,26 +113,6 @@ set(Project_SRCS
   ${SVWidgetsLib_Widgets_Generated_UI_HDRS}
 )
 
-# --------------------------------------------------------------------
-# Set some Include directories
-include_directories(${PROJECT_CODE_DIR}
-                    ${SVWidgetsLib_SOURCE_DIR}/..
-                    ${SVWidgetsLib_SOURCE_DIR}/Core
-                    ${SVWidgetsLib_SOURCE_DIR}/Dialogs
-                    ${SVWidgetsLib_SOURCE_DIR}/FilterParameterWidgets
-                    ${SVWidgetsLib_SOURCE_DIR}/QtSupport
-                    ${SVWidgetsLib_SOURCE_DIR}/Widgets
-                    ${SVWidgetsLib_BINARY_DIR}/..
-                    ${SVWidgetsLib_BINARY_DIR}/Core
-                    ${SVWidgetsLib_BINARY_DIR}/Dialogs
-                    ${SVWidgetsLib_BINARY_DIR}/FilterParameterWidgets
-                    ${SVWidgetsLib_BINARY_DIR}/QtSupport
-                    ${SVWidgetsLib_BINARY_DIR}/Widgets
-                    
-                    ${SIMPLProj_SOURCE_DIR}/Source
-                    ${SIMPLProj_BINARY_DIR}
-  )
-
 if(UNIX AND NOT APPLE)
     set_source_files_properties(${Project_SRCS} PROPERTIES COMPILE_FLAGS -fPIC)
 endif()
@@ -152,10 +127,30 @@ set(SVWidgetsLib_LINK_LIBRARIES
 )
 
 add_library(SVWidgetsLib ${LIB_TYPE} ${Project_SRCS})
-target_link_libraries(SVWidgetsLib ${SVWidgetsLib_LINK_LIBRARIES} )
+target_include_directories(SVWidgetsLib
+                            PUBLIC
+                              ${SIMPLProj_SOURCE_DIR}/Source
+                              ${SIMPLProj_BINARY_DIR}
+                              ${SVWidgetsLib_SOURCE_DIR}/Core
+                              ${SVWidgetsLib_SOURCE_DIR}/Dialogs
+                              ${SVWidgetsLib_SOURCE_DIR}/FilterParameterWidgets
+                              ${SVWidgetsLib_SOURCE_DIR}/QtSupport
+                              ${SVWidgetsLib_SOURCE_DIR}/Widgets
+                              ${SVWidgetsLib_SOURCE_DIR}/Widgets/ImportASCIIDataWizard
+                              ${SVWidgetsLib_BINARY_DIR}/Core
+                              ${SVWidgetsLib_BINARY_DIR}/Dialogs
+                              ${SVWidgetsLib_BINARY_DIR}/FilterParameterWidgets
+                              ${SVWidgetsLib_BINARY_DIR}/QtSupport
+                              ${SVWidgetsLib_BINARY_DIR}/Widgets
+                              ${SVWidgetsLib_BINARY_DIR}/Widgets/ImportASCIIDataWizard
+)
+if(WIN32 AND BUILD_SHARED_LIBS)
+		target_compile_definitions(SVWidgetsLib PRIVATE "-DSVWidgetsLib_BUILT_AS_DYNAMIC_LIB")
+endif()
+target_compile_definitions(SVWidgetsLib PRIVATE -DQT_CORE_LIB)
+
 LibraryProperties( SVWidgetsLib ${EXE_DEBUG_EXTENSION})
-
-
+target_link_libraries(SVWidgetsLib ${SVWidgetsLib_LINK_LIBRARIES} )
 
 set(install_dir "tools")
 set(lib_install_dir "lib")

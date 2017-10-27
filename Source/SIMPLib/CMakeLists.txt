@@ -3,13 +3,6 @@
 PROJECT( SIMPLib VERSION ${SIMPLProj_VERSION_MAJOR}.${SIMPLProj_VERSION_MINOR})
 
 
-set(SIMPLib_BUILT_AS_DYNAMIC_LIB)
-if(BUILD_SHARED_LIBS)
-    set(SIMPLib_BUILT_AS_DYNAMIC_LIB 1)
-    if(WIN32)
-        ADD_DEFINITIONS("-DSIMPLib_BUILT_AS_DYNAMIC_LIB")
-    endif(WIN32)
-endif(BUILD_SHARED_LIBS)
 
 
 set(PROJECT_PREFIX "SIMPLib" CACHE STRING "The Prefix to be used for Preprocessor definitions")
@@ -24,28 +17,34 @@ else()
   set(PROJECT_INSTALL_HEADERS "${CMP_PROJECT_INSTALL_HEADERS}")
 endif()
 
+set(SIMPLib_BUILT_AS_DYNAMIC_LIB)
+if(BUILD_SHARED_LIBS)
+    set(SIMPLib_BUILT_AS_DYNAMIC_LIB 1)
+endif(BUILD_SHARED_LIBS)
+
 #-------------------------------------------------------------------------------
 # Include the cmp project to perform all the basic configuration tests for the
 # project.
 #-------------------------------------------------------------------------------
-set(CMP_HEADER_DIR ${SIMPLib_BINARY_DIR})
-set(CMP_CONFIGURATION_FILE_NAME "SIMPLibConfiguration.h")
-set(CMP_TYPES_FILE_NAME "SIMPLibTypes.h")
-set(CMP_VERSION_HEADER_FILE_NAME "SIMPLibVersion.h")
-set(CMP_VERSION_SOURCE_FILE_NAME "SIMPLibVersion.cpp")
-set(CMP_TOP_HEADER_FILE "SIMPLib.h")
+set(CMP_HEADER_DIR ${${PROJECT_NAME}_BINARY_DIR})
+set(CMP_CONFIGURATION_FILE_NAME "${PROJECT_NAME}Configuration.h")
+set(CMP_TYPES_FILE_NAME "${PROJECT_NAME}Types.h")
+set(CMP_VERSION_HEADER_FILE_NAME "${PROJECT_NAME}Version.h")
+set(CMP_VERSION_SOURCE_FILE_NAME "${PROJECT_NAME}Version.cpp")
+set(CMP_TOP_HEADER_FILE "${PROJECT_NAME}.h")
 set(CMP_PROJECT_NAMESPACE "${PROJECT_NAME}")
 set(CMP_PROJECT_NAME "${PROJECT_NAME}")
 set(CMP_ENABLE_PLUGINS "0")
 set(CMP_LIB_SEARCH_DIRS "")
 set(CMP_GENERATE_VERSION_STRING 1)
 
-set(SIMPLib_FILTER_DOC_DIR ${SIMPLib_SOURCE_DIR}/Documentation/SIMPLibFilters)
+set(SIMPLib_FILTER_DOC_DIR ${SIMPLib_SOURCE_DIR}/Documentation/${PROJECT_NAME}Filters)
 
 include(${CMP_SOURCE_DIR}/cmpProject.cmake)
 
+#-- Configure Target Specific configuration file
 cmpConfigureFileWithMD5Check(CONFIGURED_TEMPLATE_PATH ${SIMPLib_SOURCE_DIR}/SIMPLibConfiguration.h.in
-                            GENERATED_FILE_PATH ${SIMPLProj_BINARY_DIR}/SIMPLib/${CMP_TOP_HEADER_FILE})
+                             GENERATED_FILE_PATH ${SIMPLib_BINARY_DIR}/${CMP_TOP_HEADER_FILE})
 
 cmp_IDE_GENERATED_PROPERTIES("Generated"
                              "${CMP_HEADER_DIR}/${CMP_TOP_HEADER_FILE};${CMP_HEADER_DIR}/${CMP_TYPES_FILE_NAME};${CMP_HEADER_DIR}/${CMP_CONFIGURATION_FILE_NAME};${CMP_HEADER_DIR}/${CMP_VERSION_HEADER_FILE_NAME}"
@@ -80,27 +79,29 @@ macro(D3DCompileDir DirName)
     set(Project_SRCS ${Project_SRCS} ${SIMPLib_${DirName}_SRCS} ${SIMPLib_${DirName}_HDRS} ${SIMPLib_${SUBDIR_NAME}_Generated_MOC_SRCS})
 endMacro()
 
+#------------------------------------------------------------------------------
+# Set up the directories that are used for each Group
+set(SIMPL_Group_BASE_MODULES Common DataArrays DataContainers Geometry HDF5 Math StatsData Utilities)
+set(SIMPL_Group_FILTERS_MODULES Filtering FilterParameters VTKUtils)
+set(SIMPL_Group_PLUGIN_MODULES Plugin)
+
 if(SIMPL_Group_BASE)
-  D3DCompileDir(Common)
-  D3DCompileDir(DataArrays)
-  D3DCompileDir(DataContainers)
-  D3DCompileDir(Geometry)
-  D3DCompileDir(HDF5)
-  D3DCompileDir(Math)
-  D3DCompileDir(StatsData)
-  D3DCompileDir(Utilities)
+  foreach(SIMPLIB_SUB_DIR ${SIMPL_Group_BASE_MODULES})
+    D3DCompileDir(${SIMPLIB_SUB_DIR})
+  endforeach()
 endif()
 
 if(SIMPL_Group_FILTERS)
-  D3DCompileDir(Filtering)
-  D3DCompileDir(FilterParameters)
-  D3DCompileDir(VTKUtils)
+  foreach(SIMPLIB_SUB_DIR ${SIMPL_Group_FILTERS_MODULES})
+    D3DCompileDir(${SIMPLIB_SUB_DIR})
+  endforeach()
 endif()
 
 if(SIMPL_Group_PLUGIN)
-  D3DCompileDir(Plugin)
+  foreach(SIMPLIB_SUB_DIR ${SIMPL_Group_PLUGIN_MODULES})
+    D3DCompileDir(${SIMPLIB_SUB_DIR})
+  endforeach()
 endif()
-
 
 #-------
 # Start writing this header file
@@ -144,10 +145,6 @@ cmpReplaceFileIfDifferent(OLD_FILE_PATH  ${SIMPLib_BINARY_DIR}/SIMPLibFilters.h
 cmpReplaceFileIfDifferent(OLD_FILE_PATH  ${SIMPLib_BINARY_DIR}/RegisterKnownFilters.cpp
                           NEW_FILE_PATH  ${RegisterKnownFiltersFile} )
 
-#--------------------------
-include_directories( ${HDF5_INCLUDE_DIR} )
-include_directories( ${PROJECT_CODE_DIR} )
-include_directories( ${SIMPLib_BINARY_DIR} )
 
 
 set(${PROJECT_NAME}_LINK_LIBS Qt5::Core Qt5::Network H5Support)
@@ -157,9 +154,57 @@ endif()
 
 #-- Add a library for the SIMPLib Code
 add_library(${PROJECT_NAME} ${LIB_TYPE} ${Project_SRCS} )
-target_link_libraries(${PROJECT_NAME} ${${PROJECT_NAME}_LINK_LIBS})
-LibraryProperties( ${PROJECT_NAME} ${EXE_DEBUG_EXTENSION} )
 
+#-- Add Target specific definitions
+if(BUILD_SHARED_LIBS)
+    if(WIN32)
+      target_add_definitions("-DSIMPLib_BUILT_AS_DYNAMIC_LIB")
+    endif(WIN32)
+endif(BUILD_SHARED_LIBS)
+
+#-- Configure Target Specific Include Directories
+get_filename_component(TARGET_BINARY_DIR_PARENT ${${PROJECT_NAME}_BINARY_DIR} PATH)
+get_filename_component(TARGET_SOURCE_DIR_PARENT ${${PROJECT_NAME}_SOURCE_DIR} PATH)
+
+target_include_directories(${PROJECT_NAME} PUBLIC ${TARGET_BINARY_DIR_PARENT})
+target_include_directories(${PROJECT_NAME} PUBLIC ${TARGET_SOURCE_DIR_PARENT})
+target_include_directories(${PROJECT_NAME} PUBLIC ${TBB_INCLUDE_DIRS})
+target_include_directories(${PROJECT_NAME} PUBLIC ${EIGEN_INCLUDE_DIRS} )
+CMP_MODULE_INCLUDE_DIRS (TARGET ${PROJECT_NAME} LIBVARS HDF5 Qt5Core Qt5Network)
+
+if(SIMPL_Group_BASE)
+  foreach(SIMPLIB_SUB_DIR ${SIMPL_Group_BASE_MODULES})
+    target_include_directories(${PROJECT_NAME} PUBLIC ${${PROJECT_NAME}_BINARY_DIR}/${SIMPLIB_SUB_DIR})
+  endforeach()
+endif()
+
+if(SIMPL_Group_FILTERS)
+  foreach(SIMPLIB_SUB_DIR ${SIMPL_Group_FILTERS_MODULES})
+    target_include_directories(${PROJECT_NAME} PUBLIC ${${PROJECT_NAME}_BINARY_DIR}/${SIMPLIB_SUB_DIR})
+  endforeach()
+endif()
+
+if(SIMPL_Group_PLUGIN)
+  foreach(SIMPLIB_SUB_DIR ${SIMPL_Group_PLUGIN_MODULES})
+    target_include_directories(${PROJECT_NAME} PUBLIC ${${PROJECT_NAME}_BINARY_DIR}/${SIMPLIB_SUB_DIR})
+  endforeach()
+endif()
+
+if(SIMPL_Group_FILTERS)
+  target_include_directories(${PROJECT_NAME} PUBLIC ${${PROJECT_NAME}_BINARY_DIR}/CoreFilters)
+  #-----------------------------------------------------
+  # conditionally compile our example codes- These should be turned off for a release
+  if(NOT "${SIMPLProj_RELEASE_TYPE}" STREQUAL "Offical")
+    target_include_directories(${PROJECT_NAME} PUBLIC ${${PROJECT_NAME}_BINARY_DIR}/TestFilters)
+  endif()
+endif()
+
+#-- Configure Link Libraries for the Target
+LibraryProperties( ${PROJECT_NAME} ${EXE_DEBUG_EXTENSION} )
+#-- Link the Target to its dependent libraries
+target_link_libraries(${PROJECT_NAME} ${${PROJECT_NAME}_LINK_LIBS})
+
+#-- Configure Target Installation Rules
 set(install_dir "tools")
 set(lib_install_dir "lib")
 
@@ -186,9 +231,9 @@ INSTALL(TARGETS ${PROJECT_NAME}
 # Allow the generation and installation of a CMake configuration file
 # which makes using SIMPL from another project easier.
 # --------------------------------------------------------------------
-export(EXPORT SIMPLibTargets
-  FILE "${CMAKE_CURRENT_BINARY_DIR}/SIMPL/SIMPLibTargets.cmake"
-  NAMESPACE SIMPL::
+export(EXPORT ${PROJECT_NAME}Targets
+  FILE "${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME}/${PROJECT_NAME}Targets.cmake"
+  NAMESPACE ${PROJECT_NAME}::
 )
 
 # install(EXPORT SIMPLibTargets

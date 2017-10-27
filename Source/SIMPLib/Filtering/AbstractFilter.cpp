@@ -36,7 +36,6 @@
 #include "AbstractFilter.h"
 
 #include "SIMPLib/Common/PipelineMessage.h"
-#include "SIMPLib/Common/UnitTestSupport.hpp"
 #include "SIMPLib/Filtering/FilterManager.h"
 #include "SIMPLib/Filtering/IFilterFactory.hpp"
 #include "SIMPLib/Plugin/PluginManager.h"

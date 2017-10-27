@@ -37,7 +37,6 @@
 
 #include "SIMPLib/Common/Constants.h"
 #include "SIMPLib/Common/TemplateHelpers.hpp"
-#include "SIMPLib/Common/UnitTestSupport.hpp"
 #include "SIMPLib/FilterParameters/DynamicTableData.h"
 #include "SIMPLib/Filtering/FilterFactory.hpp"
 #include "SIMPLib/Filtering/FilterManager.h"
@@ -52,7 +51,8 @@
 #include "SIMPLib/CoreFilters/ArrayCalculator.h"
 #include "SIMPLib/CoreFilters/CreateDataArray.h"
 
-#include "SIMPLTestFileLocations.h"
+#include "SIMPLib/Testing/SIMPLTestFileLocations.h"
+#include "SIMPLib/Testing/UnitTestSupport.hpp"
 
 #include "SIMPLib/CoreFilters/util/CalculatorOperator.h"
 

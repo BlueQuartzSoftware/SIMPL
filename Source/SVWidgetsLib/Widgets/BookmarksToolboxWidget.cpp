@@ -482,7 +482,7 @@ int BookmarksToolboxWidget::addTreeItem(QModelIndex parent, QString& favoriteTit
   {
     model->getFileSystemWatcher()->addPath(favoritePath);
   }
-  bookmarksTreeView->resizeColumnToContents(1);
+  // bookmarksTreeView->resizeColumnToContents(1);
   return 0;
 }
 

@@ -55,9 +55,8 @@
 #include "SIMPLib/TestFilters/ThresholdExample.h"
 #endif
 
-#include "SIMPLib/Common/UnitTestSupport.hpp"
-
-#include "SIMPLTestFileLocations.h"
+#include "SIMPLib/Testing/SIMPLTestFileLocations.h"
+#include "SIMPLib/Testing/UnitTestSupport.hpp"
 
 class FilterPipelineTest
 {

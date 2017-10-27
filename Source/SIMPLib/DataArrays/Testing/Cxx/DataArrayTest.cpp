@@ -51,9 +51,8 @@
 #include "SIMPLib/Math/SIMPLibMath.h"
 #include "SIMPLib/SIMPLib.h"
 
-#include "SIMPLib/Common/UnitTestSupport.hpp"
-
 #include "SIMPLib/Testing/SIMPLTestFileLocations.h"
+#include "SIMPLib/Testing/UnitTestSupport.hpp"
 
 #define NUM_ELEMENTS 10
 #define NUM_COMPONENTS 2

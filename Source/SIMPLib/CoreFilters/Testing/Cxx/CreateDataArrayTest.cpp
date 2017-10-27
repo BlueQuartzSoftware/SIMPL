@@ -37,7 +37,6 @@
 #include <QtCore/QDir>
 
 #include "SIMPLib/Common/SIMPLibSetGetMacros.h"
-#include "SIMPLib/Common/UnitTestSupport.hpp"
 #include "SIMPLib/CoreFilters/CreateDataArray.h"
 #include "SIMPLib/DataArrays/DataArray.hpp"
 #include "SIMPLib/DataContainers/DataContainer.h"
@@ -49,7 +48,8 @@
 #include "SIMPLib/Plugin/SIMPLibPluginLoader.h"
 #include "SIMPLib/SIMPLib.h"
 
-#include "SIMPLTestFileLocations.h"
+#include "SIMPLib/Testing/SIMPLTestFileLocations.h"
+#include "SIMPLib/Testing/UnitTestSupport.hpp"
 
 class CreateDataArrayTest
 {

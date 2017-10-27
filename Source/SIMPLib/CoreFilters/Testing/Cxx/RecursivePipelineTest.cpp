@@ -38,14 +38,13 @@
 #include <QtCore/QFile>
 #include <QtCore/QObject>
 
-#include "SIMPLib/Common/UnitTestSupport.hpp"
 #include "SIMPLib/CoreFilters/DataContainerReader.h"
 #include "SIMPLib/CoreFilters/DataContainerWriter.h"
 #include "SIMPLib/CoreFilters/RemoveArrays.h"
 #include "SIMPLib/FilterParameters/H5FilterParametersReader.h"
 #include "SIMPLib/Filtering/FilterPipeline.h"
-
-#include "SIMPLTestFileLocations.h"
+#include "SIMPLib/Testing/SIMPLTestFileLocations.h"
+#include "SIMPLib/Testing/UnitTestSupport.hpp"
 
 class RecursivePipelineTest
 {

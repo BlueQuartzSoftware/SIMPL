@@ -40,7 +40,6 @@
 #include <stdint.h>
 
 #include "SIMPLib/Common/SIMPLibSetGetMacros.h"
-#include "SIMPLib/Common/UnitTestSupport.hpp"
 #include "SIMPLib/DataArrays/DataArray.hpp"
 #include "SIMPLib/Filtering/FilterFactory.hpp"
 #include "SIMPLib/Filtering/FilterManager.h"
@@ -52,8 +51,8 @@
 
 #include "SIMPLib/CoreFilters/ConvertData.h"
 
-#include "SIMPLTestFileLocations.h"
-
+#include "SIMPLib/Testing/SIMPLTestFileLocations.h"
+#include "SIMPLib/Testing/UnitTestSupport.hpp"
 
 class ConvertDataTest
 {

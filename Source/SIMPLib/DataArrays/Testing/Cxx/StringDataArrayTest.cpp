@@ -39,12 +39,12 @@
 #include <string>
 
 #include "SIMPLib/Common/Constants.h"
-#include "SIMPLib/Common/UnitTestSupport.hpp"
 #include "SIMPLib/DataArrays/StringDataArray.hpp"
 #include "SIMPLib/Geometry/MeshStructs.h"
 #include "SIMPLib/SIMPLib.h"
 
-#include "SIMPLTestFileLocations.h"
+#include "SIMPLib/Testing/SIMPLTestFileLocations.h"
+#include "SIMPLib/Testing/UnitTestSupport.hpp"
 
 /**
 Funtions to test:

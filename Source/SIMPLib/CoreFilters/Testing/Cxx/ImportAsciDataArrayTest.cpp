@@ -5,15 +5,15 @@
 #include <iostream>
 
 #include "SIMPLib/Common/Observer.h"
-#include "SIMPLib/Common/UnitTestSupport.hpp"
+
 #include "SIMPLib/DataContainers/AttributeMatrix.h"
 #include "SIMPLib/DataContainers/DataContainer.h"
 #include "SIMPLib/DataContainers/DataContainerArray.h"
 #include "SIMPLib/Filtering/FilterFactory.hpp"
 #include "SIMPLib/Filtering/FilterManager.h"
 #include "SIMPLib/Geometry/ImageGeom.h"
-
-#include "SIMPLTestFileLocations.h"
+#include "SIMPLib/Testing/SIMPLTestFileLocations.h"
+#include "SIMPLib/Testing/UnitTestSupport.hpp"
 
 class ImportAsciDataArrayTest
 {

@@ -41,7 +41,7 @@
 #include <QtCore/QtDebug>
 
 #include "SIMPLib/Common/Constants.h"
-#include "SIMPLib/Common/UnitTestSupport.hpp"
+
 #include "SIMPLib/Filtering/FilterFactory.hpp"
 #include "SIMPLib/Filtering/FilterManager.h"
 #include "SIMPLib/Filtering/FilterPipeline.h"
@@ -57,6 +57,8 @@
 #include "SIMPLib/Plugin/SIMPLibPluginLoader.h"
 #include "SIMPLib/SIMPLib.h"
 #include "SIMPLib/SIMPLibVersion.h"
+#include "SIMPLib/Testing/SIMPLTestFileLocations.h"
+#include "SIMPLib/Testing/UnitTestSupport.hpp"
 
 #define FDTEST_CREATE_DATA_CONTAINER(name, geom, dca)                                                                                                                                                  \
   DataContainer::Pointer _##geom##Container = DataContainer::New();                                                                                                                                    \

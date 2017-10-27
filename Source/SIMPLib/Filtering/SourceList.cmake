@@ -56,9 +56,6 @@ set(SIMPLib_${SUBDIR_NAME}_SRCS
   ${SIMPLib_${SUBDIR_NAME}_Generated_MOC_SRCS}
 )
 
-# -- Add the binary directory for this subdirectory to the include path which is where the moc files are generated
-include_directories( ${SIMPLib_BINARY_DIR}/${SUBDIR_NAME})
-
 if(MSVC)
   set_source_files_properties(${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/FilterManager.cpp PROPERTIES COMPILE_FLAGS /bigobj)
   set_source_files_properties(${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/FilterManager.h PROPERTIES COMPILE_FLAGS /bigobj)

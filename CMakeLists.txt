@@ -268,7 +268,6 @@ option(SIMPL_USE_MULTITHREADED_ALGOS "Use MultiThreaded Algorithms" OFF)
 if(SIMPL_USE_MULTITHREADED_ALGOS)
   find_package(TBB)
   if(TBB_FOUND)
-      include_directories(${TBB_INCLUDE_DIRS} )
       CMP_COPY_DEPENDENT_LIBRARIES("tbb;tbb_malloc")
       # Append the locations of the TBB libraries to our Library Search Paths
       # TBB_LIB_SEARCH_PATH Comes from the FindTBB.cmake file and should work across all platforms
@@ -288,7 +287,6 @@ set(SIMPLib_USE_EIGEN "")
 Find_Package(Eigen REQUIRED)
 if(EIGEN_FOUND)
   message(STATUS "Found Eigen Library")
-  include_directories( ${EIGEN_INCLUDE_DIRS} )
   set(SIMPLib_USE_EIGEN "1")
 else()
   message(WARNING "The Eigen Library is required for some algorithms to execute. These algorithms will be disabled.")
@@ -366,50 +364,6 @@ else()
           COMPONENT Applications)
 endif()
 
-# Include some directories for the compiler
-include_directories(${PROJECT_BINARY_DIR})
-
-# --------------------------------------------------------------------
-# Add in some compiler definitions
-# --------------------------------------------------------------------
-if( CMAKE_BUILD_TYPE MATCHES Debug )
-  ADD_DEFINITIONS(-DDEBUG)
-ENDif( CMAKE_BUILD_TYPE MATCHES Debug )
-
-if(NOT MSVC)
- # ADD_DEFINITIONS(-Wall)
-endif()
-
-# On linux we need to set this because some of the libraries are Static
-# and some are shared.
-if( CMAKE_SYSTEM_PROCESSOR STREQUAL "x86_64" AND NOT MSVC )
-  ADD_DEFINITIONS(-fPIC)
-ENDif()
-
-# --------------------------------------------------------------------
-# If was are using GCC, make the compiler messages on a single line
-if(CMAKE_COMPILER_IS_GNUCC)
-  SET(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -fmessage-length=0")
-ENDif(CMAKE_COMPILER_IS_GNUCC)
-if(CMAKE_COMPILER_IS_GNUCXX)
-  SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fmessage-length=0")
-ENDif(CMAKE_COMPILER_IS_GNUCXX)
-
-if(MSVC)
- add_definitions(-D_CRT_SECURE_NO_WARNINGS)
- add_definitions(-D_SCL_SECURE_NO_WARNINGS)
- set(SIMPLib_DISABLE_MSVC_WARNINGS "")
- option(SIMPL_DISABLE_MSVC_WARNINGS "Disable some MSVC Compiler warnings" OFF)
- if(SIMPL_DISABLE_MSVC_WARNINGS)
-    set(SIMPLib_DISABLE_MSVC_WARNINGS "1")
- endif()
-endif()
-
-
-
-include_directories(${SIMPLProj_SOURCE_DIR}/Source)
-include_directories(${PROJECT_BINARY_DIR})
-
 # -----------------------------------------------------------------------
 # Setup a Global property that is used to gather Documentation Information
 # into a single known location
@@ -478,9 +432,8 @@ if("${FilterWidgetsLib_BINARY_DIR}" STREQUAL "")
 endif()
 
 # -----------------------------------------------------------------------
-# -- Add in the SIMPL Sources into a library
-add_subdirectory( ${SIMPLProj_SOURCE_DIR}/Source/SIMPLib/ ${PROJECT_BINARY_DIR}/SIMPLib)
-
+# -- Add in the DREAM3D Sources into a library
+add_subdirectory( ${SIMPLProj_SOURCE_DIR}/Source/SIMPLib ${PROJECT_BINARY_DIR}/SIMPLib)
 
 # add the Command line utilities
 # Figure out here if we are going to build the command line tools

@@ -40,7 +40,6 @@
 
 #include "SIMPLib/Common/PhaseType.h"
 #include "SIMPLib/Common/SIMPLibSetGetMacros.h"
-#include "SIMPLib/Common/UnitTestSupport.hpp"
 #include "SIMPLib/DataArrays/DataArray.hpp"
 #include "SIMPLib/DataContainers/DataArrayPath.h"
 #include "SIMPLib/DataContainers/DataContainerArrayProxy.h"
@@ -91,7 +90,8 @@
 #include "SIMPLib/Plugin/SIMPLibPluginLoader.h"
 #include "SIMPLib/SIMPLib.h"
 
-#include "SIMPLTestFileLocations.h"
+#include "SIMPLib/Testing/SIMPLTestFileLocations.h"
+#include "SIMPLib/Testing/UnitTestSupport.hpp"
 
 class FilterParametersRWTest
 {

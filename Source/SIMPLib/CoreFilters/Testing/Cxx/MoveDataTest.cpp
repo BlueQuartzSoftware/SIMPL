@@ -41,7 +41,6 @@
 
 #include <QtCore/QObject>
 
-#include "SIMPLib/Common/UnitTestSupport.hpp"
 #include "SIMPLib/CoreFilters/CopyAttributeArray.h"
 #include "SIMPLib/CoreFilters/CopyAttributeMatrix.h"
 #include "SIMPLib/CoreFilters/CopyDataContainer.h"
@@ -50,6 +49,8 @@
 #include "SIMPLib/CoreFilters/RenameAttributeArray.h"
 #include "SIMPLib/CoreFilters/RenameAttributeMatrix.h"
 #include "SIMPLib/CoreFilters/RenameDataContainer.h"
+#include "SIMPLib/Testing/SIMPLTestFileLocations.h"
+#include "SIMPLib/Testing/UnitTestSupport.hpp"
 
 #include "DREAM3DTestFileLocations.h"
 

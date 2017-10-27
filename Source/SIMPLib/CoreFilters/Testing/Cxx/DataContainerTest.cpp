@@ -61,9 +61,8 @@
 #include "SIMPLib/Filtering/AbstractFilter.h"
 #include "SIMPLib/Filtering/QMetaObjectUtilities.h"
 
-#include "SIMPLib/Common/UnitTestSupport.hpp"
-
-#include "SIMPLTestFileLocations.h"
+#include "SIMPLib/Testing/SIMPLTestFileLocations.h"
+#include "SIMPLib/Testing/UnitTestSupport.hpp"
 
 #define helper(a, b) a##b
 

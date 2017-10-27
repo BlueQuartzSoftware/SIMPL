@@ -46,10 +46,6 @@ set(SIMPLib_${SUBDIR_NAME}_SRCS
   ${SIMPLib_${SUBDIR_NAME}_Generated_MOC_SRCS}
 )
 
-# -- Add the binary directory for this subdirectory to the include path which is where the moc files are generated
-include_directories( ${SIMPLib_BINARY_DIR}/${SUBDIR_NAME})
-
-
 if( ${PROJECT_INSTALL_HEADERS} EQUAL 1 )
     INSTALL (FILES ${SIMPLib_${SUBDIR_NAME}_HDRS}
                    ${SIMPLib_${SUBDIR_NAME}_Moc_HDRS}

@@ -190,9 +190,6 @@ ADD_SIMPL_SUPPORT_SOURCE(${SIMPLib_SOURCE_DIR} ${_filterGroupName}/util FloorOpe
 ADD_SIMPL_SUPPORT_HEADER(${SIMPLib_SOURCE_DIR} ${_filterGroupName}/util CeilOperator.h)
 ADD_SIMPL_SUPPORT_SOURCE(${SIMPLib_SOURCE_DIR} ${_filterGroupName}/util CeilOperator.cpp)
 
-# -- Add the binary directory for this subdirectory to the include path which is where the moc files are generated
-include_directories( ${SIMPLib_BINARY_DIR}/${_filterGroupName})
-
 # -- Run MOC and UIC on the necessary files
 QT5_ADD_RESOURCES( SIMPLib_CoreFilters_Generated_RCS_SRCS "${SIMPLib_SOURCE_DIR}/CoreFilters/CoreResources.qrc"  )
 set(Project_SRCS ${Project_SRCS} ${SIMPLib_CoreFilters_Generated_RCS_SRCS})

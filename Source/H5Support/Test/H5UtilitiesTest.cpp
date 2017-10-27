@@ -43,14 +43,12 @@ standard C++ library."
 #include <QtCore/QFile>
 #include <QtCore/QtDebug>
 
-#include "SIMPLib/Common/SIMPLibSetGetMacros.h"
-
 #include "H5Support/QH5Lite.h"
 #include "H5Support/QH5Utilities.h"
 #include "H5SupportTestFileLocations.h"
 
 // THIS IS REALLY DANGEROUS AS IT COULD SETUP A CIRCULAR REFERENCE WITH LIBRARY DEPENDECIES.
-#include "SIMPLib/Common/UnitTestSupport.hpp"
+#include "UnitTestSupport.hpp"
 
 #define DIM 6
 #define DIM0 4
@@ -70,7 +68,6 @@ public:
   virtual ~H5UtilitiesTest()
   {
   }
-  SIMPL_TYPE_MACRO(H5UtilitiesTest)
 
   int32_t AttrSize = 0;
 

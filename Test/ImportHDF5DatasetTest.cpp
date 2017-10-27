@@ -9,15 +9,15 @@
 #include "H5Support/QH5Lite.h"
 #include "H5Support/QH5Utilities.h"
 
-#include "SIMPLib/Common/FilterFactory.hpp"
-#include "SIMPLib/Common/FilterManager.h"
 #include "SIMPLib/Common/Observer.h"
 #include "SIMPLib/DataArrays/DataArray.hpp"
 #include "SIMPLib/DataContainers/AttributeMatrix.h"
 #include "SIMPLib/DataContainers/DataContainer.h"
 #include "SIMPLib/DataContainers/DataContainerArray.h"
+#include "SIMPLib/Filtering/FilterFactory.hpp"
+#include "SIMPLib/Filtering/FilterManager.h"
 #include "SIMPLib/Geometry/ImageGeom.h"
-#include "SIMPLib/Utilities/UnitTestSupport.hpp"
+#include "UnitTestSupport.hpp"
 
 #include "SIMPLTestFileLocations.h"
 

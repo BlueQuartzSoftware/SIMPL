@@ -41,7 +41,6 @@
 
 #include "H5Support/QH5Utilities.h"
 
-#include "SIMPLib/Common/UnitTestSupport.hpp"
 #include "SIMPLib/FilterParameters/H5FilterParametersReader.h"
 #include "SIMPLib/FilterParameters/QFilterParametersReader.h"
 #include "SIMPLib/FilterParameters/QFilterParametersWriter.h"
@@ -56,6 +55,7 @@
 #include "SIMPLib/TestFilters/GenericExample.h"
 #include "SIMPLib/TestFilters/TestFilters.h"
 #include "SIMPLib/TestFilters/ThresholdExample.h"
+#include "UnitTestSupport.hpp"
 
 #include "GenerateFeatureIds.h"
 #include "TestFileLocations.h"
