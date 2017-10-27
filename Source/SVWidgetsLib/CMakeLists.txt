@@ -127,6 +127,7 @@ set(SVWidgetsLib_LINK_LIBRARIES
 )
 
 add_library(SVWidgetsLib ${LIB_TYPE} ${Project_SRCS})
+CMP_AddDefinitions(TARGET SVWidgetsLib)
 target_include_directories(SVWidgetsLib
                             PUBLIC
                               ${SIMPLProj_SOURCE_DIR}/Source

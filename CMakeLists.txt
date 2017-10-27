@@ -97,6 +97,7 @@ set(PROJECT_CODE_DIR ${PROJECT_SOURCE_DIR}/Source)
 set(PROJECT_RESOURCES_DIR ${SIMPLProj_SOURCE_DIR}/Resources)
 set(EXE_DEBUG_EXTENSION "_debug")
 set(PROJECT_INSTALL_EXECUTABLES "1")
+
 # -----------------------------------------------------------------------
 # The project generally does NOT want to install headers. See if another
 # project has over ridden that property
@@ -187,7 +188,12 @@ else()
   message(FATAL_ERROR "BUILD_SHARED_LIBS Must be set to ON in order to build properly.")
 endif(BUILD_SHARED_LIBS)
 
-
+if(MSVC)
+  option(SIMPL_DISABLE_MSVC_WARNINGS "Disable some MSVC Compiler warnings" ON)
+  if(SIMPL_DISABLE_MSVC_WARNINGS)
+    set(SIMPLib_DISABLE_MSVC_WARNINGS "1")
+  endif()
+endif()
 
 #-------------------------------------------------------------------------------
 # SIMPL_ENABLE_GROUP

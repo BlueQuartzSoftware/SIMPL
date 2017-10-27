@@ -154,13 +154,12 @@ endif()
 
 #-- Add a library for the SIMPLib Code
 add_library(${PROJECT_NAME} ${LIB_TYPE} ${Project_SRCS} )
+CMP_AddDefinitions(TARGET ${PROJECT_NAME})
 
 #-- Add Target specific definitions
-if(BUILD_SHARED_LIBS)
-    if(WIN32)
+if(WIN32 AND BUILD_SHARED_LIBS)
       target_compile_definitions(${PROJECT_NAME} PUBLIC "-DSIMPLib_BUILT_AS_DYNAMIC_LIB")
-    endif(WIN32)
-endif(BUILD_SHARED_LIBS)
+endif()
 
 #-- Configure Target Specific Include Directories
 get_filename_component(TARGET_BINARY_DIR_PARENT ${${PROJECT_NAME}_BINARY_DIR} PATH)
