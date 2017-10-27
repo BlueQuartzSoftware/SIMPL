@@ -34,6 +34,7 @@
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
 set(_filterGroupName TestFilters)
+set(SUBDIR_NAME ${_filterGroupName})
 set(${_filterGroupName}_FILTERS_HDRS "")
 
 #--------
@@ -99,11 +100,13 @@ foreach(f ${_PrivateFilters} )
                         ${SIMPLib_FILTER_DOC_DIR}/${_filterGroupName}/${f}.md FALSE)
 endforeach()
 
-# -- Add the binary directory for this subdirectory to the include path which is where the moc files are generated
-include_directories( ${SIMPLib_BINARY_DIR}/${_filterGroupName})
-
-
 #---------------------
 # This macro must come last after we are done adding all the filters and support files.
 SIMPL_END_FILTER_GROUP(${FilterWidgetsLib_BINARY_DIR} "${_filterGroupName}" "TestFilters")
 
+
+#-------------------------------------------------------------------------------
+# Add the unit testing sources
+if(SIMPL_BUILD_TESTING)
+  include(${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/Testing/Cxx/SourceList.cmake)
+endif()

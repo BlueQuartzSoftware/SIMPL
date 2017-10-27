@@ -44,9 +44,8 @@
 #include <QtWidgets/QFrame>
 #include <QtWidgets/QMenu>
 
-
-#include "SIMPLib/Common/AbstractFilter.h"
 #include "SIMPLib/FilterParameters/FilterParameter.h"
+#include "SIMPLib/Filtering/AbstractFilter.h"
 
 #include "SVWidgetsLib/SVWidgetsLib.h"
 #include "SVWidgetsLib/Widgets/FilterInputWidget.h"

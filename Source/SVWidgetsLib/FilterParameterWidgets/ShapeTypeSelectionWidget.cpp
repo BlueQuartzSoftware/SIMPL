@@ -42,10 +42,10 @@
 #include <QtWidgets/QLabel>
 
 #include "SIMPLib/Common/ShapeType.h"
-#include "SIMPLib/DataContainers/DataArrayPath.h"
 #include "SIMPLib/DataArrays/StringDataArray.hpp"
+#include "SIMPLib/DataContainers/DataArrayPath.h"
 #include "SIMPLib/FilterParameters/ShapeTypeSelectionFilterParameter.h"
-#include "SIMPLib/Utilities/QMetaObjectUtilities.h"
+#include "SIMPLib/Filtering/QMetaObjectUtilities.h"
 #include "SVWidgetsLib/Core/SVWidgetsLibConstants.h"
 
 #include "FilterParameterWidgetsDialogs.h"

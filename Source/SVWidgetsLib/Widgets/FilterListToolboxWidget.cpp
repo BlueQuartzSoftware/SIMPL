@@ -42,10 +42,8 @@
 #include <QtWidgets/QTreeWidgetItem>
 
 #include "SIMPLib/Common/DocRequestManager.h"
-#include "SIMPLib/Common/FilterFactory.hpp"
-#include "SIMPLib/Common/FilterManager.h"
-#include "SIMPLib/Common/IFilterFactory.hpp"
-
+#include "SIMPLib/Filtering/FilterFactory.hpp"
+#include "SIMPLib/Filtering/FilterManager.h"
 #include "SVWidgetsLib/QtSupport/QtSStyles.h"
 
 // Include the MOC generated CPP file which has all the QMetaObject methods/data

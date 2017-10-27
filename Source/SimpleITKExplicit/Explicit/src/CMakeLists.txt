@@ -36,9 +36,9 @@ sitk_install_exported_target( SimpleITKExplicit )
 
 LibraryProperties( SimpleITKExplicit  ${EXE_DEBUG_EXTENSION} )
 if(APPLE)
-      SET_TARGET_PROPERTIES( SimpleITKExplicit
-                PROPERTIES
-                INSTALL_RPATH @executable_path/../lib)
+  set_target_properties( SimpleITKExplicit
+                        PROPERTIES
+                        INSTALL_RPATH @executable_path/../lib)
 endif()
 
 set(install_dir "bin")

@@ -38,9 +38,9 @@
 
 #include <QtCore/QJsonObject>
 
-#include "SIMPLib/Common/ComparisonInputsAdvanced.h"
 #include "SIMPLib/DataContainers/AttributeMatrix.h"
 #include "SIMPLib/FilterParameters/FilterParameter.h"
+#include "SIMPLib/Filtering/ComparisonInputsAdvanced.h"
 #include "SIMPLib/Geometry/IGeometry.h"
 
 /**

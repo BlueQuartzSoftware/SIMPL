@@ -37,12 +37,10 @@
 #ifndef _createattributematrix_h_
 #define _createattributematrix_h_
 
-#include "SIMPLib/SIMPLib.h"
 #include "SIMPLib/Common/SIMPLibSetGetMacros.h"
-#include "SIMPLib/Common/AbstractFilter.h"
 #include "SIMPLib/FilterParameters/DynamicTableData.h"
-
-
+#include "SIMPLib/Filtering/AbstractFilter.h"
+#include "SIMPLib/SIMPLib.h"
 
 /**
  * @brief The CreateAttributeMatrix class. See [Filter documentation](@ref createattributematrix) for details.

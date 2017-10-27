@@ -41,11 +41,11 @@
 
 #include "SVWidgetsLib/FilterParameterWidgets/FilterParameterWidgetsDialogs.h"
 
-#include "SIMPLib/Common/AbstractFilter.h"
-#include "SIMPLib/FilterParameters/ReadASCIIDataFilterParameter.h"
-#include "SIMPLib/CoreFilters/util/ASCIIWizardData.hpp"
 #include "SIMPLib/CoreFilters/ReadASCIIData.h"
+#include "SIMPLib/CoreFilters/util/ASCIIWizardData.hpp"
 #include "SIMPLib/CoreFilters/util/AbstractDataParser.hpp"
+#include "SIMPLib/FilterParameters/ReadASCIIDataFilterParameter.h"
+#include "SIMPLib/Filtering/AbstractFilter.h"
 
 #include "Widgets/ImportASCIIDataWizard/DataFormatPage.h"
 #include "Widgets/ImportASCIIDataWizard/ImportASCIIDataWizard.h"

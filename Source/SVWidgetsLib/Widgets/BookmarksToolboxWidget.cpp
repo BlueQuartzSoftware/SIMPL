@@ -50,9 +50,9 @@
 #include <QtWidgets/QMessageBox>
 #include <QtWidgets/QTreeWidgetItem>
 
-#include "SIMPLib/Common/FilterFactory.hpp"
-#include "SIMPLib/Common/FilterManager.h"
 #include "SIMPLib/FilterParameters/JsonFilterParametersReader.h"
+#include "SIMPLib/Filtering/FilterFactory.hpp"
+#include "SIMPLib/Filtering/FilterManager.h"
 
 #include "SVWidgetsLib/QtSupport/QtSBookmarkMissingDialog.h"
 
@@ -482,7 +482,7 @@ int BookmarksToolboxWidget::addTreeItem(QModelIndex parent, QString& favoriteTit
   {
     model->getFileSystemWatcher()->addPath(favoritePath);
   }
-  bookmarksTreeView->resizeColumnToContents(1);
+  // bookmarksTreeView->resizeColumnToContents(1);
   return 0;
 }
 

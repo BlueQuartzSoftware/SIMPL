@@ -37,11 +37,10 @@
 #ifndef _multithresholdobjects_h_
 #define _multithresholdobjects_h_
 
-#include "SIMPLib/SIMPLib.h"
-#include "SIMPLib/Common/AbstractFilter.h"
 #include "SIMPLib/Common/SIMPLibSetGetMacros.h"
-#include "SIMPLib/Common/ComparisonInputs.h"
-
+#include "SIMPLib/Filtering/AbstractFilter.h"
+#include "SIMPLib/Filtering/ComparisonInputs.h"
+#include "SIMPLib/SIMPLib.h"
 
 /**
  * @brief The MultiThresholdObjects class. See [Filter documentation](@ref multithresholdobjects) for details.

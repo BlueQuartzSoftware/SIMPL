@@ -40,13 +40,13 @@
 
 #include <QtCore/QString>
 
-#include "SIMPLib/SIMPLib.h"
 #include "SIMPLib/Common/SIMPLibSetGetMacros.h"
-#include "SIMPLib/Common/AbstractFilter.h"
-#include "SIMPLib/Common/FilterPipeline.h"
-#include "SIMPLib/FilterParameters/AbstractFilterParametersReader.h"
-#include "SIMPLib/DataContainers/DataContainerArrayProxy.h"
 #include "SIMPLib/DataContainers/AttributeMatrix.h"
+#include "SIMPLib/DataContainers/DataContainerArrayProxy.h"
+#include "SIMPLib/FilterParameters/AbstractFilterParametersReader.h"
+#include "SIMPLib/Filtering/AbstractFilter.h"
+#include "SIMPLib/Filtering/FilterPipeline.h"
+#include "SIMPLib/SIMPLib.h"
 
 /*
  *

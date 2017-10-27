@@ -40,11 +40,11 @@
 #include <QtWidgets/QMainWindow>
 #include <QtWidgets/QWidget>
 
-#include "SIMPLib/SIMPLib.h"
-#include "SIMPLib/Common/AbstractFilter.h"
 #include "SIMPLib/Common/IObserver.h"
 #include "SIMPLib/Common/PipelineMessage.h"
 #include "SIMPLib/DataContainers/DataContainerArray.h"
+#include "SIMPLib/Filtering/AbstractFilter.h"
+#include "SIMPLib/SIMPLib.h"
 
 #include "SVWidgetsLib/SVWidgetsLib.h"
 

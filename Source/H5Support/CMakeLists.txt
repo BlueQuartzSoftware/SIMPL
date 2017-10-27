@@ -36,14 +36,6 @@
 # set project's name
 PROJECT( H5Support VERSION ${SIMPLProj_VERSION_MAJOR}.${SIMPLProj_VERSION_MINOR})
 
-set(H5Support_BUILT_AS_DYNAMIC_LIB)
-if(BUILD_SHARED_LIBS)
-    set(H5Support_BUILT_AS_DYNAMIC_LIB 1)
-    if(WIN32)
-        ADD_DEFINITIONS("-DH5Support_BUILT_AS_DYNAMIC_LIB")
-    endif(WIN32)
-endif(BUILD_SHARED_LIBS)
-
 set(PROJECT_CODE_DIR ${PROJECT_SOURCE_DIR}/Source)
 if(NOT PROJECT_RESOURCES_DIR)
   set(PROJECT_RESOURCES_DIR ${H5Support_SOURCE_DIR}/Resources)
@@ -63,20 +55,28 @@ if("${CMP_PROJECT_INSTALL_HEADERS}" STREQUAL "")
 else()
   set(H5Support_INSTALL_FILES "${CMP_PROJECT_INSTALL_HEADERS}")
 endif()
+
+set(H5Support_BUILT_AS_DYNAMIC_LIB)
+if(BUILD_SHARED_LIBS)
+    set(H5Support_BUILT_AS_DYNAMIC_LIB 1)
+endif(BUILD_SHARED_LIBS)
+
 #-------------------------------------------------------------------------------
 # Include the cmp project to perform all the basic configuration tests for the
 # project.
 #-------------------------------------------------------------------------------
-set(CMP_HEADER_DIR ${H5Support_BINARY_DIR})
-set(CMP_CONFIGURATION_FILE_NAME "H5SupportConfiguration.h")
-set(CMP_TYPES_FILE_NAME "H5SupportTypes.h")
-set(CMP_VERSION_HEADER_FILE_NAME "H5SupportVersion.h")
-set(CMP_VERSION_SOURCE_FILE_NAME "H5SupportVersion.cpp")
-set(CMP_TOP_HEADER_FILE "H5Support.h")
-set(CMP_PROJECT_NAMESPACE "H5Support")
-set(CMP_PROJECT_NAME "H5Support")
+set(CMP_HEADER_DIR ${${PROJECT_NAME}_BINARY_DIR})
+set(CMP_CONFIGURATION_FILE_NAME "${PROJECT_NAME}Configuration.h")
+set(CMP_TYPES_FILE_NAME "${PROJECT_NAME}Types.h")
+set(CMP_VERSION_HEADER_FILE_NAME "${PROJECT_NAME}Version.h")
+set(CMP_VERSION_SOURCE_FILE_NAME "${PROJECT_NAME}Version.cpp")
+set(CMP_TOP_HEADER_FILE "${PROJECT_NAME}.h")
+set(CMP_PROJECT_NAMESPACE "${PROJECT_NAME}")
+set(CMP_PROJECT_NAME "${PROJECT_NAME}")
 set(CMP_ENABLE_PLUGINS "0")
 set(CMP_LIB_SEARCH_DIRS "")
+set(CMP_GENERATE_VERSION_STRING 1)
+
 INCLUDE (${CMP_SOURCE_DIR}/cmpProject.cmake)
 
 #-------------------------------------------------------------------------------
@@ -116,31 +116,31 @@ if(H5Support_USE_QT)
   )
 endif()
 
+
+#---------------------------------
+# Now configure the main header file.
+configure_file(${H5Support_SOURCE_DIR}/H5SupportConfiguration.h.in
+               ${H5Support_BINARY_DIR}/${CMP_TOP_HEADER_FILE})
+
 cmp_IDE_SOURCE_PROPERTIES( "H5Support" "${H5Support_HDRS}" "${H5Support_SRCS}" ${PROJECT_INSTALL_HEADERS})
 
 # --------------------------------------------------------------------
 # Generate a Header file with Compile Version variables
 # --------------------------------------------------------------------
-set(VERSION_GEN_NAME "H5Support")
-set(VERSION_GEN_NAMESPACE "H5Support")
-set(PROJECT_PREFIX "H5Support")
-set(VERSION_GEN_COMPLETE  "1.0.0")
-set(VERSION_GEN_VER_MAJOR "1")
-set(VERSION_GEN_VER_MINOR "0")
-set(VERSION_GEN_VER_PATCH "0")
-set(VERSION_GEN_HEADER_FILE_NAME "H5SupportVersion.h")
+# set(VERSION_GEN_NAME "H5Support")
+# set(VERSION_GEN_NAMESPACE "H5Support")
+# set(PROJECT_PREFIX "H5Support")
+# set(VERSION_GEN_COMPLETE  "1.0.0")
+# set(VERSION_GEN_VER_MAJOR "1")
+# set(VERSION_GEN_VER_MINOR "0")
+# set(VERSION_GEN_VER_PATCH "0")
+# set(VERSION_GEN_HEADER_FILE_NAME "H5SupportVersion.h")
 
-configure_file(${CMP_CONFIGURED_FILES_SOURCE_DIR}/cmpVersion.h.in
-               ${H5Support_BINARY_DIR}/H5SupportVersion.h  )
-configure_file(${CMP_CONFIGURED_FILES_SOURCE_DIR}/cmpVersion.cpp.in
-               ${H5Support_BINARY_DIR}/H5SupportVersion.cpp  )
+# configure_file(${CMP_CONFIGURED_FILES_SOURCE_DIR}/cmpVersion.h.in
+#                ${H5Support_BINARY_DIR}/${PROJECT_NAME}/H5SupportVersion.h  )
+# configure_file(${CMP_CONFIGURED_FILES_SOURCE_DIR}/cmpVersion.cpp.in
+#                ${H5Support_BINARY_DIR}/${PROJECT_NAME}/H5SupportVersion.cpp  )
 
-configure_file(${H5Support_SOURCE_DIR}/H5SupportConfiguration.h.in
-               ${H5Support_BINARY_DIR}/${CMP_TOP_HEADER_FILE})
-
-include_directories(${H5Support_SOURCE_DIR}/..)
-include_directories(${H5Support_SOURCE_DIR})
-include_directories(${H5Support_BINARY_DIR})
 
 set(PROJECT_SRCS
     ${H5Support_SRCS}
@@ -149,10 +149,27 @@ set(PROJECT_SRCS
 )
 
 add_library(${PROJECT_NAME} ${LIB_TYPE} ${PROJECT_SRCS})
+CMP_AddDefinitions(TARGET ${PROJECT_NAME})
+LibraryProperties( ${PROJECT_NAME}  ${EXE_DEBUG_EXTENSION} )
+CMP_MODULE_INCLUDE_DIRS (TARGET ${PROJECT_NAME} LIBVARS HDF5 Qt5Core)
+
+get_filename_component(TARGET_BINARY_DIR_PARENT ${H5Support_BINARY_DIR} PATH)
+get_filename_component(TARGET_SOURCE_DIR_PARENT ${H5Support_SOURCE_DIR} PATH)
+
+
+TARGET_INCLUDE_DIRECTORIES( ${PROJECT_NAME} PUBLIC
+                              $<INSTALL_INTERFACE:${INCLUDE_INSTALL_DIR}>
+                              $<BUILD_INTERFACE:${TARGET_SOURCE_DIR_PARENT}>
+                              $<BUILD_INTERFACE:${TARGET_BINARY_DIR_PARENT}>
+                              )
+
+if(BUILD_SHARED_LIBS)
+    if(WIN32)
+        target_compile_definitions(${PROJECT_NAME} PUBLIC "-DH5Support_BUILT_AS_DYNAMIC_LIB")
+    endif(WIN32)
+endif(BUILD_SHARED_LIBS)
 target_link_libraries(${PROJECT_NAME} ${HDF5_C_TARGET_NAME} Qt5::Core )
 
-
-LibraryProperties( ${PROJECT_NAME}  ${EXE_DEBUG_EXTENSION} )
 
 set(install_dir "bin")
 set(lib_install_dir "lib")
@@ -168,7 +185,7 @@ endif()
 
 
 INSTALL(TARGETS ${PROJECT_NAME}
-    EXPORT SIMPLibH5SupportTargets
+    EXPORT H5SupportTargets
     COMPONENT Applications
     RUNTIME DESTINATION ${install_dir}
     LIBRARY DESTINATION ${lib_install_dir}
@@ -186,16 +203,16 @@ endif()
 # Allow the generation and installation of a CMake configuration file
 # which makes using SIMPL from another project easier.
 # --------------------------------------------------------------------
-export(EXPORT SIMPLibH5SupportTargets
-  FILE "${CMAKE_CURRENT_BINARY_DIR}/SIMPL/${PROJECT_NAME}Targets.cmake"
-  NAMESPACE SIMPL::
+export(EXPORT H5SupportTargets
+  FILE "${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME}/${PROJECT_NAME}Targets.cmake"
+  NAMESPACE H5Support::
 )
 
-install(EXPORT SIMPLibH5SupportTargets
+install(EXPORT H5SupportTargets
   FILE
-    SIMPLibH5SupportTargets.cmake
+    ${PROJECT_NAME}Targets.cmake
   NAMESPACE
-    SIMPL::
+    ${PROJECT_NAME}::
   DESTINATION
     ${ConfigPackageLocation}
 )

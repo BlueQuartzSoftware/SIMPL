@@ -37,9 +37,9 @@
 #ifndef _createdatacontainer_h_
 #define _createdatacontainer_h_
 
-#include "SIMPLib/SIMPLib.h"
 #include "SIMPLib/Common/SIMPLibSetGetMacros.h"
-#include "SIMPLib/Common/AbstractFilter.h"
+#include "SIMPLib/Filtering/AbstractFilter.h"
+#include "SIMPLib/SIMPLib.h"
 
 /**
  * @brief The CreateDataContainer class. See [Filter documentation](@ref createdatacontainer) for details.

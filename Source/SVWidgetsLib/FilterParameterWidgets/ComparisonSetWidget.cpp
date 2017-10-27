@@ -5,8 +5,8 @@
 
 #include "SVWidgetsLib/FilterParameterWidgets/ComparisonContainerWidget.h"
 
-#include "SIMPLib/Common/ComparisonValue.h"
 #include "SIMPLib/Common/Constants.h"
+#include "SIMPLib/Filtering/ComparisonValue.h"
 
 #include "moc_ComparisonSetWidget.cpp"
 

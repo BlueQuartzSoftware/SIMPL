@@ -89,10 +89,6 @@ function(COMPILE_TOOL)
     set(multiValueArgs SOURCES LINK_LIBRARIES)
     cmake_parse_arguments(D3DTOOL "${options}" "${oneValueArgs}" "${multiValueArgs}" ${ARGN} )
 
-    if( ${D3DTOOL_DEFINITION} )
-        add_definitions(-D${DEFINITION})
-    endif()
-
     BuildToolBundle(
         TARGET ${D3DTOOL_TARGET}
         SOURCES ${D3DTOOL_SOURCES}
@@ -108,22 +104,27 @@ function(COMPILE_TOOL)
         SOLUTION_FOLDER "Applications"
     )
 
+    if( ${D3DTOOL_DEFINITION} )
+        target_compile_definitions(${D3DTOOL_TARGET} PRIVATE -D${D3DTOOL_DEFINITION})
+    endif()
 endfunction()
 
-# Create a Command line tool for the PipelineRunner
-COMPILE_TOOL(
-    TARGET PipelineRunner
-    SOURCES ${SIMPLTools_SOURCE_DIR}/PipelineRunner.cpp
-    DEBUG_EXTENSION ${EXE_DEBUG_EXTENSION}
-    VERSION_MAJOR ${SIMPL_VER_MAJOR}
-    VERSION_MINOR ${SIMPL_VER_MINOR}
-    VERSION_PATCH ${SIMPL_VER_PATCH}
-    BINARY_DIR    ${${PROJECT_NAME}_BINARY_DIR}
-    COMPONENT     Tools
-    INSTALL_DEST  "${install_dir}"
-    LINK_LIBRARIES SIMPLib
-)
 
+# Create a Command line tool for the PipelineRunner
+if(SIMPL_Group_PLUGIN AND SIMPL_Group_BASE AND SIMPL_Group_FILTERS)
+  COMPILE_TOOL(
+      TARGET PipelineRunner
+      SOURCES ${SIMPLTools_SOURCE_DIR}/PipelineRunner.cpp
+      DEBUG_EXTENSION ${EXE_DEBUG_EXTENSION}
+      VERSION_MAJOR ${SIMPL_VER_MAJOR}
+      VERSION_MINOR ${SIMPL_VER_MINOR}
+      VERSION_PATCH ${SIMPL_VER_PATCH}
+      BINARY_DIR    ${${PROJECT_NAME}_BINARY_DIR}
+      COMPONENT     Tools
+      INSTALL_DEST  "${install_dir}"
+      LINK_LIBRARIES SIMPLib
+  )
+endif()
 
 if (FALSE)
 

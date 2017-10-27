@@ -37,9 +37,9 @@
 #ifndef _emptyfilter_h_
 #define _emptyfilter_h_
 
-#include "SIMPLib/SIMPLib.h"
-#include "SIMPLib/Common/AbstractFilter.h"
 #include "SIMPLib/Common/SIMPLibSetGetMacros.h"
+#include "SIMPLib/Filtering/AbstractFilter.h"
+#include "SIMPLib/SIMPLib.h"
 
 /**
  * @brief The EmptyFilter class serves as an empty, non-functional filter

@@ -37,11 +37,11 @@
 #ifndef _requiredzthickness_h_
 #define _requiredzthickness_h_
 
-#include "SIMPLib/SIMPLib.h"
-#include "SIMPLib/Common/AbstractFilter.h"
 #include "SIMPLib/Common/SIMPLibSetGetMacros.h"
+#include "SIMPLib/Filtering/AbstractFilter.h"
+#include "SIMPLib/SIMPLib.h"
 
-#include "SIMPLib/Common/AbstractDecisionFilter.h"
+#include "SIMPLib/Filtering/AbstractDecisionFilter.h"
 
 /**
  * @brief The RequiredZThickness class. See [Filter documentation](@ref requiredzthickness) for details.

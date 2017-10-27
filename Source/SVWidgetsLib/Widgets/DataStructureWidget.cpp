@@ -41,8 +41,7 @@
 #include <QtGui/QStandardItemModel>
 #include <QtWidgets/QHeaderView>
 
-
-#include "SIMPLib/Common/AbstractFilter.h"
+#include "SIMPLib/Filtering/AbstractFilter.h"
 
 #include "SVWidgetsLib/QtSupport/QtSSettings.h"
 #include "SVWidgetsLib/Widgets/PipelineFilterObject.h"

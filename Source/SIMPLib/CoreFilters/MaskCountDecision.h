@@ -37,11 +37,11 @@
 #ifndef _maskcountdecision_h_
 #define _maskcountdecision_h_
 
-#include "SIMPLib/SIMPLib.h"
-#include "SIMPLib/Common/AbstractFilter.h"
 #include "SIMPLib/Common/SIMPLibSetGetMacros.h"
+#include "SIMPLib/Filtering/AbstractFilter.h"
+#include "SIMPLib/SIMPLib.h"
 
-#include "SIMPLib/Common/AbstractDecisionFilter.h"
+#include "SIMPLib/Filtering/AbstractDecisionFilter.h"
 
 /**
  * @brief The MaskCountDecision class. See [Filter documentation](@ref MaskCountDecision) for details.

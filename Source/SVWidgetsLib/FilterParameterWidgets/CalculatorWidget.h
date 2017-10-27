@@ -45,9 +45,9 @@
 
 #include "SVWidgetsLib/QtSupport/QtSFaderWidget.h"
 
-#include "SIMPLib/Common/AbstractFilter.h"
 #include "SIMPLib/CoreFilters/ArrayCalculator.h"
 #include "SIMPLib/FilterParameters/CalculatorFilterParameter.h"
+#include "SIMPLib/Filtering/AbstractFilter.h"
 
 #include "SVWidgetsLib/SVWidgetsLib.h"
 #include "SVWidgetsLib/FilterParameterWidgets/FilterParameterWidget.h"

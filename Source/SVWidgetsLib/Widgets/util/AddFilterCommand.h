@@ -43,7 +43,7 @@
 #include <QtWidgets/QUndoCommand>
 
 #include "SVWidgetsLib/SVWidgetsLib.h"
-#include <SIMPLib/Common/AbstractFilter.h>
+#include <SIMPLib/Filtering/AbstractFilter.h>
 
 class PipelineFilterObject;
 class PipelineView;

@@ -20,6 +20,18 @@
 /* define to 1 if we are using the Eigen Library*/
 #cmakedefine SIMPLib_USE_EIGEN @EIGEN_FOUND@
 
+/* define to 1 if we are using the SIMPL_Group_BASE*/
+#cmakedefine SIMPL_Group_BASE @SIMPL_Group_BASE@
+
+/* define to 1 if we are using the SIMPL_Group_FILTERS*/
+#cmakedefine SIMPL_Group_FILTERS @SIMPL_Group_FILTERS@
+
+/* define to 1 if we are using the SIMPL_Group_PLUGIN*/
+#cmakedefine SIMPL_Group_PLUGIN @SIMPL_Group_PLUGIN@
+
+/* define to 1 if we are using the SIMPL_Group_WIDGETS*/
+#cmakedefine SIMPL_Group_WIDGETS @SIMPL_Group_WIDGETS@
+
 /* define to 1 if we are building the Test Filters */
 #cmakedefine SIMPLib_BUILD_TEST_FILTERS
 

@@ -45,10 +45,10 @@
 #include <QtWidgets/QMenu>
 #include <QtWidgets/QStyledItemDelegate>
 
-#include "SIMPLib/Common/AbstractFilter.h"
 #include "SIMPLib/DataContainers/DataArrayPath.h"
 #include "SIMPLib/FilterParameters/FilterParameter.h"
 #include "SIMPLib/FilterParameters/MultiDataArraySelectionFilterParameter.h"
+#include "SIMPLib/Filtering/AbstractFilter.h"
 #include "SVWidgetsLib/Core/SVWidgetsLibConstants.h"
 #include "SVWidgetsLib/QtSupport/QtSStyles.h"
 

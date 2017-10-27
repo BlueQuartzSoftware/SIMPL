@@ -1,0 +1,66 @@
+
+set(SIMPLTest_SOURCE_DIR ${SIMPLib_SOURCE_DIR}/Testing)
+set(SIMPLTest_BINARY_DIR ${SIMPLib_BINARY_DIR}/Testing)
+
+#------------------------------------------------------------------------------
+# Include this file from the SIMPL Project
+include(${CMP_SOURCE_DIR}/cmpCMakeMacros.cmake)
+
+set(TEST_TEMP_DIR ${SIMPLTest_BINARY_DIR}/Temp)
+set(TEST_IMAGEASCII_DIR ${SIMPLTest_BINARY_DIR}/ImageASCII)
+set(TESTFILES_SRC_DIR ${SIMPLTest_SOURCE_DIR}/TestFiles)
+
+# Make sure the directory is created during CMake time
+file(MAKE_DIRECTORY ${TEST_TEMP_DIR})
+
+
+get_target_property(QtQMake_location Qt5::qmake LOCATION)
+execute_process(COMMAND "${QtQMake_location}" -query QMAKE_VERSION OUTPUT_VARIABLE QMAKE_VERSION OUTPUT_STRIP_TRAILING_WHITESPACE)
+
+
+configure_file(${SIMPLTest_SOURCE_DIR}/TestFileLocations.h.in
+          ${SIMPLTest_BINARY_DIR}/SIMPLTestFileLocations.h @ONLY IMMEDIATE)
+
+configure_file(${SIMPLProj_SOURCE_DIR}/Resources/UnitTestSupport.hpp
+          ${SIMPLTest_BINARY_DIR}/UnitTestSupport.hpp COPYONLY IMMEDIATE)
+
+# QT5_WRAP_CPP( _moc_filter_source  ${SIMPLTest_SOURCE_DIR}/PipelinePauseTest.cpp)
+# set_source_files_properties( ${_moc_filter_source} PROPERTIES GENERATED TRUE)
+# set_source_files_properties( ${_moc_filter_source} PROPERTIES HEADER_FILE_ONLY TRUE)
+
+STRING(REPLACE "|" ";" SIMPLib_UnitTest_MainFunctors "${SIMPLib_UnitTest_MainFunctors}")
+
+configure_file(${SIMPLTest_SOURCE_DIR}/TestMain.cpp.in
+          ${SIMPLTest_BINARY_DIR}/SIMPLUnitTest.cpp @ONLY)
+
+
+
+# Set the source files properties on each source file.
+foreach(f ${${SIMPL_UNIT_TEST}_TEST_SRCS})
+  set_source_files_properties( ${f} PROPERTIES HEADER_FILE_ONLY TRUE)
+endforeach()
+
+AddSIMPLUnitTest(TESTNAME SIMPLUnitTest
+  SOURCES ${SIMPLTest_BINARY_DIR}/SIMPLUnitTest.cpp ${${SIMPL_UNIT_TEST}_TEST_SRCS}
+  FOLDER "SIMPLibProj/Test"
+  LINK_LIBRARIES Qt5::Core H5Support SIMPLib
+  INCLUDE_DIRS 
+			${${PLUGIN_NAME}Test_SOURCE_DIR}
+			${${PLUGIN_NAME}Test_BINARY_DIR}
+  )
+
+# AddSIMPLUnitTest(TESTNAME PipelinePauseTest
+#   SOURCES ${SIMPLTest_SOURCE_DIR}/PipelinePauseTest.cpp ${_moc_filter_source}
+#   FOLDER "SIMPLibProj/Test"
+#   LINK_LIBRARIES Qt5::Core H5Support SIMPLib)
+
+if(MSVC)
+  set_source_files_properties( ${SIMPLTest_BINARY_DIR}/SIMPLUnitTest.cpp PROPERTIES COMPILE_FLAGS /bigobj)
+endif()
+
+#-------------------------------------------------------------------------------
+#- This copies all the Test files into the Build directory
+add_custom_target(SIMPLFileCopy ALL
+            COMMAND ${CMAKE_COMMAND} -E copy_directory ${TESTFILES_SRC_DIR} ${TEST_TEMP_DIR}
+            COMMENT "Copying ${PROJECT_NAME} Test Files to Build directory...")
+set_target_properties(SIMPLFileCopy PROPERTIES FOLDER ZZ_COPY_FILES)

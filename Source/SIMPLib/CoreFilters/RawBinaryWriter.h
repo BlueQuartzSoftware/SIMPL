@@ -5,11 +5,9 @@
 #ifndef _rawbinarywriter_h_
 #define _rawbinarywriter_h_
 
-
-#include "SIMPLib/SIMPLib.h"
 #include "SIMPLib/Common/SIMPLibSetGetMacros.h"
-#include "SIMPLib/Common/AbstractFilter.h"
-
+#include "SIMPLib/Filtering/AbstractFilter.h"
+#include "SIMPLib/SIMPLib.h"
 
 /**
  * @class RawBinaryWriter RawBinaryWriter.h IO/IOFilters/RawBinaryWriter.h

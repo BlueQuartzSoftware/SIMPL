@@ -44,11 +44,11 @@
 #include <QtGui/QShowEvent>
 
 #include "SIMPLib/Common/SIMPLibSetGetMacros.h"
-#include "SIMPLib/Common/AbstractFilter.h"
-#include "SIMPLib/FilterParameters/FilterParameter.h"
 #include "SIMPLib/DataContainers/DataArrayPath.h"
 #include "SIMPLib/DataContainers/DataContainerArrayProxy.h"
 #include "SIMPLib/FilterParameters/DataArraySelectionFilterParameter.h"
+#include "SIMPLib/FilterParameters/FilterParameter.h"
+#include "SIMPLib/Filtering/AbstractFilter.h"
 
 #include "SVWidgetsLib/SVWidgetsLib.h"
 #include "SVWidgetsLib/FilterParameterWidgets/FilterParameterWidget.h"

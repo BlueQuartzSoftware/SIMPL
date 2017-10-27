@@ -33,10 +33,10 @@
 #
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
+message(FATAL_ERROR "")
+
 set(SIMPLTest_SOURCE_DIR ${SIMPLProj_SOURCE_DIR}/Test)
 set(SIMPLTest_BINARY_DIR ${SIMPLProj_BINARY_DIR}/Test)
-
-include_directories(${SIMPLTest_SOURCE_DIR})
 
 #------------------------------------------------------------------------------
 # Include this file from the SIMPL Project
@@ -57,7 +57,8 @@ execute_process(COMMAND "${QtQMake_location}" -query QMAKE_VERSION OUTPUT_VARIAB
 configure_file(${SIMPLTest_SOURCE_DIR}/TestFileLocations.h.in
                ${SIMPLTest_BINARY_DIR}/SIMPLTestFileLocations.h @ONLY IMMEDIATE)
 
-include_directories(${SIMPLTest_BINARY_DIR})
+configure_file(${SIMPLProj_SOURCE_DIR}/Resources/UnitTestSupport.hpp
+          ${SIMPLTest_BINARY_DIR}/UnitTestSupport.hpp COPYONLY IMMEDIATE)
 
 #------------------------------------------------------------------------------
 # List all the source files here. They will NOT be compiled but instead
@@ -127,7 +128,7 @@ foreach(name  ${TEST_NAMES})
   string(CONCAT
     FilterTestIncludes
     ${FilterTestIncludes}
-    "#include \"${name}.cpp\"\n"
+    "#include \"${SIMPLTest_SOURCE_DIR}/${name}.cpp\"\n"
     )
 
   string(CONCAT
@@ -150,6 +151,8 @@ add_custom_target(ImageASCIICopy ALL
             COMMENT "Copying Test Images into Binary Directory")
 set_target_properties(ImageASCIICopy PROPERTIES FOLDER ZZ_COPY_FILES)
 
+get_target_property(H5Support_INCLUDE_DIRS H5Support INCLUDE_DIRECTORIES )
+#message(STATUS "H5Support_INCLUDE_DIRS: ${H5Support_INCLUDE_DIRS}")
 
 # Set the source files properties on each source file.
 foreach(f ${${PLUGIN_NAME}_TEST_SRCS})
@@ -159,12 +162,16 @@ endforeach()
 AddSIMPLUnitTest(TESTNAME SIMPLUnitTest
   SOURCES ${SIMPLTest_BINARY_DIR}/SIMPLUnitTest.cpp ${${PLUGIN_NAME}_TEST_SRCS} ${execute_process_moc}
   FOLDER "SIMPLibProj/Test"
-  LINK_LIBRARIES Qt5::Core H5Support SIMPLib)
+  LINK_LIBRARIES Qt5::Core H5Support SIMPLib
+  INCLUDE_DIRS ${SIMPLTest_BINARY_DIR} ${SIMPLProj_SOURCE_DIR}/Source ${H5Support_INCLUDE_DIRS}
+  )
 
 AddSIMPLUnitTest(TESTNAME PipelinePauseTest
   SOURCES ${SIMPLTest_SOURCE_DIR}/PipelinePauseTest.cpp ${_moc_filter_source}
   FOLDER "SIMPLibProj/Test"
-  LINK_LIBRARIES Qt5::Core H5Support SIMPLib)
+  LINK_LIBRARIES Qt5::Core H5Support SIMPLib
+  INCLUDE_DIRS ${SIMPLTest_BINARY_DIR} ${SIMPLProj_SOURCE_DIR}/Source  ${H5Support_INCLUDE_DIRS}
+  )
 
 if(MSVC)
   set_source_files_properties( ${SIMPLTest_BINARY_DIR}/SIMPLUnitTest.cpp PROPERTIES COMPILE_FLAGS /bigobj)

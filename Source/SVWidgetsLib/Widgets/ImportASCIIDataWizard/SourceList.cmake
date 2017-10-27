@@ -46,8 +46,6 @@ set(SVWidgetsLib_Widgets_HDRS ${SVWidgetsLib_Widgets_HDRS}
       ${SVWidgetsLib_Widgets_MOC_HDRS}
   )
 
-include_directories( ${SVWidgetsLib_SOURCE_DIR}/Widgets/ImportASCIIDataWizard )
-
 # Organize the Source files for things like Visual Studio and Xcode
 cmp_IDE_SOURCE_PROPERTIES( "Widgets/ImportASCIIDataWizard" "${SVWidgetsLib_Widgets_HDRS}" "${SVWidgetsLib_Widgets_SRCS}" "0")
 

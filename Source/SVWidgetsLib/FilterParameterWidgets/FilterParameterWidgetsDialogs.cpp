@@ -39,8 +39,8 @@
 #include <QtCore/QString>
 #include <QtWidgets/QMessageBox>
 
-#include "SIMPLib/Common/AbstractFilter.h"
 #include "SIMPLib/FilterParameters/FilterParameter.h"
+#include "SIMPLib/Filtering/AbstractFilter.h"
 
 // -----------------------------------------------------------------------------
 //

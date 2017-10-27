@@ -22,8 +22,9 @@
 #include "H5Support/H5Utilities.h"
 #include "H5Support/QH5Lite.h"
 #include "H5Support/QH5Utilities.h"
-#include "SIMPLib/Common/SIMPLibSetGetMacros.h"
-#include "SIMPLib/Utilities/UnitTestSupport.hpp"
+
+// THIS IS REALLY DANGEROUS AS IT COULD SETUP A CIRCULAR REFERENCE WITH LIBRARY DEPENDECIES.
+#include "UnitTestSupport.hpp"
 
 #include "H5SupportTestFileLocations.h"
 
@@ -97,7 +98,6 @@ public:
   virtual ~H5LiteTest()
   {
   }
-  SIMPL_TYPE_MACRO(H5LiteTest)
 
   // -----------------------------------------------------------------------------
   //

@@ -10,8 +10,7 @@
 #include <QtGui/QStandardItemModel>
 #include <QtCore/QItemSelectionModel>
 
-
-#include "SIMPLib/Common/AbstractFilter.h"
+#include "SIMPLib/Filtering/AbstractFilter.h"
 
 #include "SVWidgetsLib/SVWidgetsLib.h"
 

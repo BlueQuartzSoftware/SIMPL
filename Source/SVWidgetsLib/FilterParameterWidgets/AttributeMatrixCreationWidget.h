@@ -44,9 +44,9 @@
 
 #include "SVWidgetsLib/QtSupport/QtSFaderWidget.h"
 
-#include "SIMPLib/Common/AbstractFilter.h"
-#include "SIMPLib/FilterParameters/AttributeMatrixCreationFilterParameter.h"
 #include "SIMPLib/DataContainers/DataContainerArrayProxy.h"
+#include "SIMPLib/FilterParameters/AttributeMatrixCreationFilterParameter.h"
+#include "SIMPLib/Filtering/AbstractFilter.h"
 
 #include "SVWidgetsLib/SVWidgetsLib.h"
 #include "SVWidgetsLib/FilterParameterWidgets/FilterParameterWidget.h"

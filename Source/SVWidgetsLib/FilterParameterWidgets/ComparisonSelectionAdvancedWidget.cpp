@@ -43,7 +43,7 @@
 #include "FilterParameterWidgetUtils.hpp"
 #include "FilterParameterWidgetsDialogs.h"
 
-#include "SIMPLib/Common/ComparisonValue.h"
+#include "SIMPLib/Filtering/ComparisonValue.h"
 
 // Include the MOC generated file for this class
 #include "moc_ComparisonSelectionAdvancedWidget.cpp"

@@ -38,8 +38,6 @@
 
 #include <QtCore/QString>
 
-#include "SIMPLib/Common/AbstractFilter.h"
-#include "SIMPLib/Common/ComparisonInputs.h"
 #include "SIMPLib/Common/SIMPLibSetGetMacros.h"
 #include "SIMPLib/Common/ShapeType.h"
 #include "SIMPLib/DataArrays/IDataArray.h"
@@ -50,6 +48,8 @@
 #include "SIMPLib/FilterParameters/IntVec3FilterParameter.h"
 #include "SIMPLib/FilterParameters/SecondOrderPolynomialFilterParameter.h"
 #include "SIMPLib/FilterParameters/ThirdOrderPolynomialFilterParameter.h"
+#include "SIMPLib/Filtering/AbstractFilter.h"
+#include "SIMPLib/Filtering/ComparisonInputs.h"
 #include "SIMPLib/SIMPLib.h"
 
 /**

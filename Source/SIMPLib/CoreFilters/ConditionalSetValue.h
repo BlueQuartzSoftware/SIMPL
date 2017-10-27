@@ -37,9 +37,9 @@
 #ifndef _conditionalsetvalue_h_
 #define _conditionalsetvalue_h_
 
-#include "SIMPLib/SIMPLib.h"
-#include "SIMPLib/Common/AbstractFilter.h"
 #include "SIMPLib/Common/SIMPLibSetGetMacros.h"
+#include "SIMPLib/Filtering/AbstractFilter.h"
+#include "SIMPLib/SIMPLib.h"
 
 /**
  * @brief The ConditionalSetValue class. See [Filter documentation](@ref conditionalsetvalue) for details.

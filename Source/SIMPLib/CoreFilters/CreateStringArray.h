@@ -37,9 +37,9 @@
 #ifndef _CreateStringArray_h_
 #define _CreateStringArray_h_
 
-#include "SIMPLib/SIMPLib.h"
-#include "SIMPLib/Common/AbstractFilter.h"
 #include "SIMPLib/Common/SIMPLibSetGetMacros.h"
+#include "SIMPLib/Filtering/AbstractFilter.h"
+#include "SIMPLib/SIMPLib.h"
 
 /**
  * @brief The CreateStringArray class. See [Filter documentation](@ref CreateStringArray) for details.

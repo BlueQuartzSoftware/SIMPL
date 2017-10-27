@@ -44,11 +44,10 @@
 
 #include <QtCore/QString>
 
-#include "SIMPLib/SIMPLib.h"
 #include "SIMPLib/Common/SIMPLibSetGetMacros.h"
-#include "SIMPLib/Common/IDataArrayFilter.h"
 #include "SIMPLib/DataArrays/IDataArray.h"
-
+#include "SIMPLib/DataArrays/IDataArrayFilter.h"
+#include "SIMPLib/SIMPLib.h"
 
 template<typename T>
 class StructArray : public IDataArray

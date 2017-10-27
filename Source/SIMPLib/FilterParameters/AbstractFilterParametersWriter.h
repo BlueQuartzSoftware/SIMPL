@@ -41,20 +41,20 @@
 
 #include <QtCore/QString>
 
-#include "SIMPLib/SIMPLib.h"
 #include "SIMPLib/Common/SIMPLibSetGetMacros.h"
-#include "SIMPLib/Common/ComparisonInputs.h"
-#include "SIMPLib/Common/FilterPipeline.h"
-#include "SIMPLib/FilterParameters/IntVec3FilterParameter.h"
-#include "SIMPLib/FilterParameters/FloatVec3FilterParameter.h"
-#include "SIMPLib/FilterParameters/SecondOrderPolynomialFilterParameter.h"
-#include "SIMPLib/FilterParameters/ThirdOrderPolynomialFilterParameter.h"
-#include "SIMPLib/FilterParameters/FourthOrderPolynomialFilterParameter.h"
-#include "SIMPLib/FilterParameters/FileListInfoFilterParameter.h"
+#include "SIMPLib/DataContainers/DataArrayPath.h"
+#include "SIMPLib/DataContainers/DataContainerArrayProxy.h"
 #include "SIMPLib/FilterParameters/AxisAngleFilterParameter.h"
 #include "SIMPLib/FilterParameters/DynamicTableData.h"
-#include "SIMPLib/DataContainers/DataContainerArrayProxy.h"
-#include "SIMPLib/DataContainers/DataArrayPath.h"
+#include "SIMPLib/FilterParameters/FileListInfoFilterParameter.h"
+#include "SIMPLib/FilterParameters/FloatVec3FilterParameter.h"
+#include "SIMPLib/FilterParameters/FourthOrderPolynomialFilterParameter.h"
+#include "SIMPLib/FilterParameters/IntVec3FilterParameter.h"
+#include "SIMPLib/FilterParameters/SecondOrderPolynomialFilterParameter.h"
+#include "SIMPLib/FilterParameters/ThirdOrderPolynomialFilterParameter.h"
+#include "SIMPLib/Filtering/ComparisonInputs.h"
+#include "SIMPLib/Filtering/FilterPipeline.h"
+#include "SIMPLib/SIMPLib.h"
 
 class AbstractFilter;
 

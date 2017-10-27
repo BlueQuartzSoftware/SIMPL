@@ -135,9 +135,10 @@ bool ImportHDF5TreeModel::setData(const QModelIndex& index, const QVariant& valu
 Qt::ItemFlags ImportHDF5TreeModel::flags(const QModelIndex& index) const
 {
   if(!index.isValid())
+  {
     return 0;
-
-  ImportHDF5TreeModelItem* item = static_cast<ImportHDF5TreeModelItem*>(index.internalPointer());
+  }
+  // ImportHDF5TreeModelItem* item = static_cast<ImportHDF5TreeModelItem*>(index.internalPointer());
 
   Qt::ItemFlags flags = Qt::ItemIsEnabled | Qt::ItemIsSelectable;
 

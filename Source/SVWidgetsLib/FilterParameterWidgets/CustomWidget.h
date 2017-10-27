@@ -42,8 +42,7 @@
 #include <QtCore/QObject>
 #include <QtWidgets/QWidget>
 
-
-#include "SIMPLib/Common/AbstractFilter.h"
+#include "SIMPLib/Filtering/AbstractFilter.h"
 
 #include "FilterWidgetsLib/QFilterParameterWidget.h"
 #include "FilterWidgetsLib/FilterWidgetsLib.h"

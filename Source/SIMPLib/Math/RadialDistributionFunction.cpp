@@ -40,9 +40,8 @@
 #include <fstream>
 #include <iostream>
 
+#include "SIMPLib/Math/SIMPLibRandom.h"
 #include "SIMPLib/StatsData/StatsData.h"
-#include "SIMPLib/Utilities/SIMPLibRandom.h"
-
 
 // -----------------------------------------------------------------------------
 //

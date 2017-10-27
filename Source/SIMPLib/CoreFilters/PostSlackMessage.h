@@ -35,11 +35,9 @@
 
 #include <QtCore/QWaitCondition>
 
-
-#include "SIMPLib/SIMPLib.h"
-#include "SIMPLib/Common/AbstractFilter.h"
 #include "SIMPLib/Common/SIMPLibSetGetMacros.h"
-
+#include "SIMPLib/Filtering/AbstractFilter.h"
+#include "SIMPLib/SIMPLib.h"
 
 class QNetworkAccessManager;
 class QNetworkReply;

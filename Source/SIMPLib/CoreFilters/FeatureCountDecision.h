@@ -37,11 +37,11 @@
 #ifndef _featurecountdecision_h_
 #define _featurecountdecision_h_
 
-#include "SIMPLib/SIMPLib.h"
-#include "SIMPLib/Common/AbstractFilter.h"
 #include "SIMPLib/Common/SIMPLibSetGetMacros.h"
+#include "SIMPLib/Filtering/AbstractFilter.h"
+#include "SIMPLib/SIMPLib.h"
 
-#include "SIMPLib/Common/AbstractDecisionFilter.h"
+#include "SIMPLib/Filtering/AbstractDecisionFilter.h"
 
 /**
  * @brief The FeatureCountDecision class. See [Filter documentation](@ref featurecountdecision) for details.

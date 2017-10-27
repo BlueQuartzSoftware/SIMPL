@@ -38,8 +38,8 @@
 
 #include <QtWidgets/QWidget>
 
-#include "SIMPLib/Common/AbstractComparison.h"
 #include "SIMPLib/DataContainers/AttributeMatrix.h"
+#include "SIMPLib/Filtering/AbstractComparison.h"
 
 #include "SVWidgetsLib/SVWidgetsLib.h"
 

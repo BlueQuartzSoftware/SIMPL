@@ -39,21 +39,16 @@
 #include <QtCore/QMimeData>
 #include <QtCore/QResource>
 #include <QtCore/QTimer>
-
 #include <QtGui/QMouseEvent>
 #include <QtGui/QPainter>
 #include <QtWidgets/QLabel>
 #include <QtWidgets/QVBoxLayout>
-
 #include <QtWidgets/QFileDialog>
 #include <QtWidgets/QGroupBox>
 
 #include "SVWidgetsLib/QtSupport/QtSStyles.h"
 
 #include "SIMPLib/Common/DocRequestManager.h"
-#include "SIMPLib/Common/FilterFactory.hpp"
-#include "SIMPLib/Common/FilterManager.h"
-#include "SIMPLib/Common/IFilterFactory.hpp"
 #include "SIMPLib/Common/IObserver.h"
 #include "SIMPLib/FilterParameters/DataContainerReaderFilterParameter.h"
 #include "SIMPLib/FilterParameters/InputFileFilterParameter.h"
@@ -61,7 +56,6 @@
 #include "SIMPLib/FilterParameters/LinkedBooleanFilterParameter.h"
 #include "SIMPLib/FilterParameters/LinkedChoicesFilterParameter.h"
 
-#include "SVWidgetsLib/Core/FilterWidgetManager.h"
 #include "SVWidgetsLib/FilterParameterWidgets/ChoiceWidget.h"
 #include "SVWidgetsLib/FilterParameterWidgets/LinkedBooleanWidget.h"
 #include "SVWidgetsLib/Widgets/DataContainerArrayWidget.h"

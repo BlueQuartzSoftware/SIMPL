@@ -45,8 +45,8 @@
 #include "H5Support/QH5Lite.h"
 #include "H5Support/QH5Utilities.h"
 
-#include "SIMPLib/Common/FilterFactory.hpp"
-#include "SIMPLib/Common/FilterManager.h"
+#include "SIMPLib/Filtering/FilterFactory.hpp"
+#include "SIMPLib/Filtering/FilterManager.h"
 
 #include "SIMPLib/Common/Constants.h"
 #include "SIMPLib/FilterParameters/H5FilterParametersConstants.h"

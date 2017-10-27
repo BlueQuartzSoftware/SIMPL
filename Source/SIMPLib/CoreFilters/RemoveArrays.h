@@ -37,10 +37,10 @@
 #ifndef _removearrays_h_
 #define _removearrays_h_
 
-#include "SIMPLib/SIMPLib.h"
-#include "SIMPLib/Common/AbstractFilter.h"
 #include "SIMPLib/Common/SIMPLibSetGetMacros.h"
 #include "SIMPLib/DataContainers/DataContainerArrayProxy.h"
+#include "SIMPLib/Filtering/AbstractFilter.h"
+#include "SIMPLib/SIMPLib.h"
 
 /**
  * @brief The RemoveArrays class. See [Filter documentation](@ref removearrays) for details.

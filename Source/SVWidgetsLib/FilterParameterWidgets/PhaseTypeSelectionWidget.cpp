@@ -46,7 +46,7 @@
 #include "SIMPLib/Common/PhaseType.h"
 #include "SIMPLib/DataContainers/DataArrayPath.h"
 #include "SIMPLib/FilterParameters/PhaseTypeSelectionFilterParameter.h"
-#include "SIMPLib/Utilities/QMetaObjectUtilities.h"
+#include "SIMPLib/Filtering/QMetaObjectUtilities.h"
 #include "SVWidgetsLib/Core/SVWidgetsLibConstants.h"
 #include "SVWidgetsLib/QtSupport/QtSStyles.h"
 

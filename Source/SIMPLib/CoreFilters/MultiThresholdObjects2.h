@@ -37,12 +37,12 @@
 #ifndef _multithresholdobjects2_h_
 #define _multithresholdobjects2_h_
 
-#include "SIMPLib/SIMPLib.h"
-#include "SIMPLib/Common/AbstractFilter.h"
 #include "SIMPLib/Common/SIMPLibSetGetMacros.h"
-#include "SIMPLib/Common/ComparisonInputsAdvanced.h"
-#include "SIMPLib/Common/ComparisonSet.h"
-#include "SIMPLib/Common/ComparisonValue.h"
+#include "SIMPLib/Filtering/AbstractFilter.h"
+#include "SIMPLib/Filtering/ComparisonInputsAdvanced.h"
+#include "SIMPLib/Filtering/ComparisonSet.h"
+#include "SIMPLib/Filtering/ComparisonValue.h"
+#include "SIMPLib/SIMPLib.h"
 
 /**
  * @brief The MultiThresholdObjects2 class. See [Filter documentation](@ref multithresholdobjects2) for details.
