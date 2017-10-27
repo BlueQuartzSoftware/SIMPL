@@ -145,7 +145,7 @@ target_include_directories(SVWidgetsLib
                               ${SVWidgetsLib_BINARY_DIR}/Widgets/ImportASCIIDataWizard
 )
 if(WIN32 AND BUILD_SHARED_LIBS)
-		target_compile_definitions(SVWidgetsLib PRIVATE "-DSVWidgetsLib_BUILT_AS_DYNAMIC_LIB")
+		target_compile_definitions(SVWidgetsLib PUBLIC "-DSVWidgetsLib_BUILT_AS_DYNAMIC_LIB")
 endif()
 target_compile_definitions(SVWidgetsLib PRIVATE -DQT_CORE_LIB)
 

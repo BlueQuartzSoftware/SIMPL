@@ -158,7 +158,7 @@ add_library(${PROJECT_NAME} ${LIB_TYPE} ${Project_SRCS} )
 #-- Add Target specific definitions
 if(BUILD_SHARED_LIBS)
     if(WIN32)
-      target_add_definitions("-DSIMPLib_BUILT_AS_DYNAMIC_LIB")
+      target_compile_definitions(${PROJECT_NAME} PUBLIC "-DSIMPLib_BUILT_AS_DYNAMIC_LIB")
     endif(WIN32)
 endif(BUILD_SHARED_LIBS)
 
