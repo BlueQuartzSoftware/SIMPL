@@ -67,6 +67,7 @@ endif(BUILD_SHARED_LIBS)
 #-------------------------------------------------------------------------------
 set(CMP_HEADER_DIR ${${PROJECT_NAME}_BINARY_DIR})
 set(CMP_CONFIGURATION_FILE_NAME "${PROJECT_NAME}Configuration.h")
+set(CMP_EXPORT_FILE_NAME "${PROJECT_NAME}DLLExport.h")
 set(CMP_TYPES_FILE_NAME "${PROJECT_NAME}Types.h")
 set(CMP_VERSION_HEADER_FILE_NAME "${PROJECT_NAME}Version.h")
 set(CMP_VERSION_SOURCE_FILE_NAME "${PROJECT_NAME}Version.cpp")
@@ -101,6 +102,7 @@ set(H5Support_HDRS
     ${H5Support_SOURCE_DIR}/H5Utilities.h
     ${H5Support_SOURCE_DIR}/HDF5ScopedFileSentinel.h
     ${H5Support_SOURCE_DIR}/H5Macros.h
+    ${H5Support_SOURCE_DIR}/H5SupportDLLExport.h
 )
 
 if(H5Support_USE_QT)
@@ -215,6 +217,15 @@ install(EXPORT H5SupportTargets
     ${PROJECT_NAME}::
   DESTINATION
     ${ConfigPackageLocation}
+)
+
+install(FILES 
+    ${CMP_HEADER_DIR}/${CMP_TOP_HEADER_FILE}
+    ${CMP_HEADER_DIR}/${CMP_TYPES_FILE_NAME}
+    ${CMP_HEADER_DIR}/${CMP_CONFIGURATION_FILE_NAME}
+    ${CMP_HEADER_DIR}/${CMP_VERSION_HEADER_FILE_NAME}
+  DESTINATION
+    include/${PROJECT_NAME}
 )
 
 
