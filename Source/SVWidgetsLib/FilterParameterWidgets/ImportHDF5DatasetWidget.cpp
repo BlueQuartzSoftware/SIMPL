@@ -82,8 +82,8 @@ ImportHDF5DatasetWidget::ImportHDF5DatasetWidget(FilterParameter* parameter, Abs
   m_FilterParameter = dynamic_cast<ImportHDF5DatasetFilterParameter*>(parameter);
   Q_ASSERT_X(m_FilterParameter != nullptr, "NULL Pointer", "ImportHDF5DatasetWidget can ONLY be used with an ImportHDF5DatasetFilterParameter object");
 
-  m_Filter = dynamic_cast<ImportHDF5Dataset*>(filter);
-  Q_ASSERT_X(m_Filter != nullptr, "NULL Pointer", "ImportHDF5DatasetWidget can ONLY be used with an ImportHDF5Dataset filter");
+  //  m_Filter = dynamic_cast<ImportHDF5Dataset*>(filter);
+  //  Q_ASSERT_X(m_Filter != nullptr, "NULL Pointer", "ImportHDF5DatasetWidget can ONLY be used with an ImportHDF5Dataset filter");
 
   setupUi(this);
   setupGui();
@@ -161,13 +161,17 @@ void ImportHDF5DatasetWidget::setupGui()
 #endif
 
   value->setFont(inputFileFont);
-
-  if(m_Filter != nullptr)
+  AbstractFilter* filter = getFilter();
+  if(filter != nullptr)
   {
-    QString dsetPath = m_Filter->getDatasetPath();
+    ImportHDF5DatasetFilterParameter::GetterCallbackType callback = m_FilterParameter->getFilePathGetterCallback();
+    QString hdf5FilePath = callback();
+
+    callback = m_FilterParameter->getDataSetGetterCallback();
+    QString dsetPath = callback();
+
     dsetPathLE->setText(dsetPath);
 
-    QString hdf5FilePath = m_Filter->getHDF5FilePath();
     if(hdf5FilePath.isEmpty() == false)
     {
       value->setText(hdf5FilePath);
@@ -666,8 +670,11 @@ void ImportHDF5DatasetWidget::filterNeedsInputParameters(AbstractFilter* filter)
 {
   Q_UNUSED(filter)
 
-  m_Filter->setHDF5FilePath(value->text());
-  m_Filter->setDatasetPath(dsetPathLE->text());
+  ImportHDF5DatasetFilterParameter::SetterCallbackType callback = m_FilterParameter->getFilePathSetterCallback();
+  callback(value->text());
+
+  callback = m_FilterParameter->getDataSetSetterCallback();
+  callback(dsetPathLE->text());
 }
 
 // -----------------------------------------------------------------------------
