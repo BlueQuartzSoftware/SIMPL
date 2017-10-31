@@ -5,9 +5,12 @@
 #include <iostream>
 
 #include <QtCore/QFileInfo>
+#include <QtCore/QFile>
+#include <QtCore/QDir>
 
 #include "H5Support/QH5Lite.h"
 #include "H5Support/QH5Utilities.h"
+#include "H5Support/HDF5ScopedFileSentinel.h"
 
 #include "SIMPLib/Common/Observer.h"
 #include "SIMPLib/DataArrays/DataArray.hpp"
@@ -191,11 +194,15 @@ public:
       }
     }
 
+
+
     hid_t file_id = QH5Utilities::createFile(m_FilePath);
     DREAM3D_REQUIRE(file_id > 0);
+    HDF5ScopedFileSentinel sentinel(&file_id, false);
 
     // Create the Pointer group
     hid_t ptrId = QH5Utilities::createGroup(file_id, "Pointer");
+    sentinel.addGroupId(&ptrId);
     DREAM3D_REQUIRED(ptrId, >, 0);
 
     DREAM3D_REQUIRE(writePointer1DArrayDataset<int8_t>(ptrId) >= 0);
@@ -449,12 +456,23 @@ public:
   // -----------------------------------------------------------------------------
   //
   // -----------------------------------------------------------------------------
-  int RunImportHDF5DatasetTest()
+  void RemoveTestFiles()
+  {
+#if REMOVE_TEST_FILES
+ bool success = QFile::remove(m_FilePath);
+ DREAM3D_REQUIRE_EQUAL(success, true);
+#endif
+  }
+
+  // -----------------------------------------------------------------------------
+  //
+  // -----------------------------------------------------------------------------
+  void RunImportHDF5DatasetTest()
   {
     writeHDF5File();
 
     //  // ******************* Test Reading Data *************************************
-    AbstractFilter::Pointer filter = createFilter();
+
 
     // Create tuple and component dimensions for all tests
     QVector<QVector<size_t>> tDimsVector;
@@ -518,6 +536,7 @@ public:
         }
 
         DataContainerArray::Pointer dca = createDataContainerArray(tDims);
+        AbstractFilter::Pointer filter = createFilter();
         filter->setDataContainerArray(dca);
 
         // Run 1D Array Tests
@@ -574,12 +593,14 @@ public:
       }
     }
 
-    if(QFile::remove(m_FilePath) == false)
+    QFileInfo fi(m_FilePath);
+    if(fi.exists())
     {
-      DREAM3D_REQUIRE_EQUAL(0, 1);
+      if(QFile::remove(m_FilePath) == false)
+      {
+        DREAM3D_REQUIRE_EQUAL(0, 1);
+      }
     }
-
-    return EXIT_SUCCESS;
   }
 
   // -----------------------------------------------------------------------------
@@ -590,7 +611,17 @@ public:
     std::cout << "#### ImportHDF5DatasetTest Starting ####" << std::endl;
 
     int err = EXIT_SUCCESS;
-    DREAM3D_REGISTER_TEST(RunImportHDF5DatasetTest())
+
+//#if !REMOVE_TEST_FILES
+//    DREAM3D_REGISTER_TEST(RemoveTestFiles())
+//#endif
+
+  DREAM3D_REGISTER_TEST(RunImportHDF5DatasetTest())
+
+//#if REMOVE_TEST_FILES
+//    DREAM3D_REGISTER_TEST(RemoveTestFiles())
+//#endif
+
   }
 
 private:

@@ -170,6 +170,7 @@ void ImportHDF5Dataset::dataCheck()
     std::cout << "Error Reading HDF5 file: " << m_HDF5FilePath.toStdString() << std::endl;
     return;
   }
+  HDF5ScopedFileSentinel sentinel(&fileId, true);
 
   QString parentPath = QH5Utilities::getParentPath(m_DatasetPath);
   hid_t parentId;
@@ -180,6 +181,7 @@ void ImportHDF5Dataset::dataCheck()
   else
   {
     parentId = QH5Utilities::openHDF5Object(fileId, parentPath);
+    sentinel.addGroupId(&parentId);
   }
 
   // Read dataset into DREAM.3D structure
@@ -271,8 +273,7 @@ void ImportHDF5Dataset::dataCheck()
   IDataArray::Pointer dPtr = readIDataArray(parentId, objectName, am->getNumberOfTuples(), cDims, getInPreflight());
   am->addAttributeArray(dPtr->getName(), dPtr);
 
-  QH5Utilities::closeHDF5Object(parentId);
-  QH5Utilities::closeFile(fileId);
+  // The sentinel will close the HDF5 File and any groups that were open.
 }
 
 // -----------------------------------------------------------------------------
