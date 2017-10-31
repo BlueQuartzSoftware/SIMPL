@@ -153,7 +153,6 @@ private:
   hid_t m_FileId;
 
   ImportHDF5DatasetFilterParameter* m_FilterParameter;
-  ImportHDF5Dataset* m_Filter;
 
   /**
    * @brief Updates the QGraphicsView based on the current Data Dimension and Data record values

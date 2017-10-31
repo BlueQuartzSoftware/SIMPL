@@ -100,10 +100,14 @@ void ImportHDF5Dataset::setupFilterParameters()
 {
   FilterParameterVector parameters;
 
-  ImportHDF5DatasetFilterParameter::Pointer parameter = ImportHDF5DatasetFilterParameter::New();
-  parameter->setHumanLabel("Select HDF5 File");
-  parameter->setCategory(FilterParameter::Parameter);
-  parameter->setFilter(this);
+  ImportHDF5DatasetFilterParameter::Pointer parameter =
+      ImportHDF5DatasetFilterParameter::New(QString("Select HDF5 File"), // Human Label
+                                            QString("ImportHDF5File"),   // Property Name
+                                            QString(""),                 // File Path Default Value
+                                            QString(""),                 // Dataset Default value
+                                            FilterParameter::Parameter,  // Category
+                                            SIMPL_BIND_SETTER(ImportHDF5Dataset, this, HDF5FilePath), SIMPL_BIND_GETTER(ImportHDF5Dataset, this, HDF5FilePath),
+                                            SIMPL_BIND_SETTER(ImportHDF5Dataset, this, DatasetPath), SIMPL_BIND_GETTER(ImportHDF5Dataset, this, DatasetPath), -1);
   parameters.push_back(parameter);
 
   parameters.push_back(SIMPL_NEW_STRING_FP("Component Dimensions", ComponentDimensions, FilterParameter::Parameter, ImportHDF5Dataset));
@@ -521,7 +525,11 @@ AbstractFilter::Pointer ImportHDF5Dataset::newFilterInstance(bool copyFilterPara
   ImportHDF5Dataset::Pointer filter = ImportHDF5Dataset::New();
   if(true == copyFilterParameters)
   {
-    copyFilterParameterInstanceVariables(filter.get());
+    filter->setFilterParameters(getFilterParameters());
+    filter->setHDF5FilePath(getHDF5FilePath());
+    filter->setDatasetPath(getDatasetPath());
+    filter->setComponentDimensions(getComponentDimensions());
+    filter->setSelectedAttributeMatrix(getSelectedAttributeMatrix());
   }
   return filter;
 }
