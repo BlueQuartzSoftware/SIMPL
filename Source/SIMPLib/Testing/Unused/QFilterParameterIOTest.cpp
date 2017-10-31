@@ -292,7 +292,7 @@ void TestReadQSettingsBasedFile()
   readPipeline(paramsReader, pipeline);
 
   AbstractFilter::Pointer filter = pipeline->getFilterContainer().at(0);
-  ReadH5Ebsd* readH5Ebsd = ReadH5Ebsd::SafePointerDownCast(filter.get());
+  ReadH5Ebsd::Pointer readH5Ebsd = std::dynamic_pointer_cast<ReadH5Ebsd>(filter);
   DREAM3D_REQUIRE(readH5Ebsd != nullptr);
   readH5Ebsd->setInputFile(UnitTest::QFilterParameterIOTest::SmallIn100_H5EBSD_FILE);
 

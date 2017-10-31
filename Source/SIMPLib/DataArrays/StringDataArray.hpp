@@ -599,7 +599,7 @@ class StringDataArray : public IDataArray
       {
         return -1;
       }
-      StringDataArray* srcPtr = StringDataArray::SafePointerDownCast(p.get());
+      StringDataArray::Pointer srcPtr = std::dynamic_pointer_cast<StringDataArray>(p);
       size_t count = srcPtr->getNumberOfTuples();
       for (size_t i = 0; i < count; ++i)
       {
