@@ -537,8 +537,8 @@ class SIMPLib_EXPORT AttributeMatrix : public Observable
         return false;
       }
       // Make sure we can downcast to the proper type
-      ArrayType* array = ArrayType::SafePointerDownCast(targetDestArray.get());
-      if (nullptr == array)
+      typename ArrayType::Pointer array = std::dynamic_pointer_cast<ArrayType>(targetDestArray);
+      if (nullptr == array.get())
       {
         typename ArrayType::Pointer dat = ArrayType::CreateArray(1, "JUNK-INTERNAL-USE-ONLY");
         QString ss = QObject::tr(" - The filter requested an array named '%1' with type '%2' from the filter '%3'.\n"

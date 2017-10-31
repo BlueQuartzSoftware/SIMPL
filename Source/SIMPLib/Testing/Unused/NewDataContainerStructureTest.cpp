@@ -164,7 +164,7 @@ void BuildNewDream3dFile()
 
   StatsDataArray& statsDataArray = *m_StatsDataArray;
 
-  PrimaryStatsData* pp = PrimaryStatsData::SafePointerDownCast(statsDataArray[1].get());
+  PrimaryStatsData::Pointer pp = std::dynamic_pointer_cast<PrimaryStatsData>(statsDataArray[1]);
   pp->setPhaseFraction(1);
   VectorOfFloatArray sizedist = statsDataArray[1]->CreateCorrelatedDistributionArrays(SIMPL::DistributionType::LogNormal, 1);
   sizedist[0]->setValue(0, 1);

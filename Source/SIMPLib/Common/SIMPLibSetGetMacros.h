@@ -36,6 +36,7 @@
 #define _simplibsetgetmacros_h_
 
 #include <string.h>
+
 #include <sstream>
 #include <stdexcept>
 
@@ -48,9 +49,7 @@
 #if defined(QT_CORE_LIB)
 #include <QtCore/QString>
 #include <QtCore/QtDebug>
-//-- Qt includes
 #include <QtCore/QSharedPointer>
-//#define RAW_PTR  data
 #endif
 
 //-- C++11 Includes
@@ -85,31 +84,6 @@
   }
 
 
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-#define SIMPL_BENCHMARKS 0
-
-#if SIMPL_BENCHMARKS
-
-
-#define DEFINE_CLOCK unsigned long long int millis;
-
-#define START_CLOCK millis = QDateTime::currentMSecsSinceEpoch();
-
-#define END_CLOCK(message)\
-  qDebug() << message << " Finish Time(ms): " << (QDateTime::currentMSecsSinceEpoch() - millis) ;
-
-
-#else
-#define DEFINE_CLOCK
-#define START_CLOCK
-#define END_CLOCK
-#endif
-
-
-
 #define SHARED_IS_NULL(ptr)\
   (  (ptr).get() == nullptr )
 
@@ -126,7 +100,7 @@
 
 #ifndef _simplibsetgetmacros_h_
 #define _simplibsetgetmacros_h_
- * @brief Creates some basic typedefs that can be used throughout the code to
+ /* @brief Creates some basic typedefs that can be used throughout the code to
  * reference the class.
  */
 #define QT_SHARED_POINTERS(thisClass)\
@@ -206,17 +180,7 @@
     } \
     return 0; \
   } \
-  virtual int IsA(const char *type) \
-  { \
-    return this->thisClass::IsTypeOf(type); \
-  } \
-  template <class Source, class Target>\
-  inline Target SafeObjectDownCast(Source x) { \
-    if( dynamic_cast<Target>(x) != x ) { \
-      return nullptr;\
-    }\
-    return static_cast<Target>(x);\
-  }
+
 
 
 #define SIMPL_TYPE_MACRO_SUPER(thisClass,superclass) \
@@ -231,20 +195,6 @@
     } \
     return superclass::IsTypeOf(type); \
   } \
-  virtual int IsA(const char *type) \
-  { \
-    return this->thisClass::IsTypeOf(type); \
-  } \
-  template <class Source, class Target>\
-  static Target SafeObjectDownCast(Source x) { \
-    if( dynamic_cast<Target>(x) != x ) { \
-      return nullptr;\
-    }\
-    return static_cast<Target>(x);\
-  }\
-  static thisClass* SafePointerDownCast(superclass* s) {\
-    return SafeObjectDownCast<superclass*, thisClass*>(s);\
-  }
 
 #define SIMPL_TYPE_MACRO_SUPER_OVERRIDE(thisClass,superclass) \
   public: \
@@ -258,20 +208,7 @@
     } \
     return superclass::IsTypeOf(type); \
   } \
-  virtual int IsA(const char *type)  \
-  { \
-    return this->thisClass::IsTypeOf(type); \
-  } \
-  template <class Source, class Target>\
-  static Target SafeObjectDownCast(Source x) { \
-    if( dynamic_cast<Target>(x) != x ) { \
-      return nullptr;\
-    }\
-    return static_cast<Target>(x);\
-  }\
-  static thisClass* SafePointerDownCast(superclass* s) {\
-    return SafeObjectDownCast<superclass*, thisClass*>(s);\
-  }
+
 
 
 
@@ -511,7 +448,7 @@
 #define SIMPL_DECLARE_ARRAY(Type, ptr, prpty )\
   private:\
   DataArray<Type>::Pointer m_##prpty;\
-  Type* ptr;\
+  Type* ptr = nullptr;\
   public:\
   SIMPL_SET_PROPERTY(DataArray<Type>::Pointer, prpty)\
   SIMPL_GET_PROPERTY(DataArray<Type>::Pointer, prpty)
@@ -577,7 +514,7 @@
 #define DEFINE_DATAARRAY_VARIABLE(type, name)\
   private:\
   DataArray<type>::WeakPointer m_##name##Ptr;\
-  type* m_##name;
+  type* m_##name = nullptr;
 
 #define DEFINE_STRINGARRAY_VARIABLE(name)\
   private:\
@@ -587,13 +524,13 @@
   SIMPL_INSTANCE_STRING_PROPERTY(name##ArrayName);\
   private:\
   type::WeakPointer m_##name##Ptr;\
-  type* m_##name;
+  type* m_##name = nullptr;
 
 //used in place of 'DEFINE_DATAARRAY_VARIABLE' in filter header
 #define DEFINE_IDATAARRAY_VARIABLE(varName)\
   private:\
   IDataArray::WeakPointer m_##varName##Ptr;\
-  void* m_##varName;
+  void* m_##varName = nullptr;
 
 #define SIMPL_COPY_INSTANCEVAR(name)\
   filter->set##name(get##name());

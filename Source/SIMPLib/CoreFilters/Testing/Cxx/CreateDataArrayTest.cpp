@@ -316,7 +316,7 @@ public:
         DREAM3D_REQUIRE_EQUAL(err, NO_ERROR);
 
         IDataArray::Pointer boolArray = m->getAttributeMatrix(path.getAttributeMatrixName())->getAttributeArray(path.getDataArrayName());
-        DataArray<bool>* inputArrayBool = DataArray<bool>::SafePointerDownCast(boolArray.get());
+        DataArray<bool>::Pointer inputArrayBool = std::dynamic_pointer_cast<DataArray<bool>>(boolArray);
         bool* inputArrayPtrBool = inputArrayBool->getPointer(0); // pointer to the bool array created from the filter
         if (*inputArrayPtrBool != 1) // check the initialization value from the bool array
         {

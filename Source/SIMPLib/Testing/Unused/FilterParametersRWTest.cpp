@@ -1089,63 +1089,63 @@ void ExistingPipelineCheck(QString fileName)
   FilterPipeline::FilterContainerType::iterator iter = container.begin();
 
   absFilter = *iter;
-  Filt0* f0_1 = Filt0::SafePointerDownCast(absFilter.get());
+  Filt0::Pointer f0_1 = std::dynamic_pointer_cast<Filt0>(absFilter);
   DREAM3D_REQUIRED(f0_1->getFilt0_Float(), ==, 15.1f)
   DREAM3D_REQUIRED(f0_1->getFilt0_Integer(), ==, 14)
   iter++;
 
   absFilter = *iter;
-  Filt1* f1_1 = Filt1::SafePointerDownCast(absFilter.get());
+  Filt1::Pointer f1_1 = std::dynamic_pointer_cast<Filt1>(absFilter);
   DREAM3D_REQUIRED(f1_1->getFilt1_Float(), ==, 4.3f)
   DREAM3D_REQUIRED(f1_1->getFilt1_Integer(), ==, 6)
   iter++;
 
   absFilter = *iter;
-  Filt0* f0_2 = Filt0::SafePointerDownCast(absFilter.get());
+  Filt0::Pointer f0_2 = std::dynamic_pointer_cast<Filt0>(absFilter);
   DREAM3D_REQUIRED(f0_2->getFilt0_Float(), ==, 13.1f)
   DREAM3D_REQUIRED(f0_2->getFilt0_Integer(), ==, 12)
   iter++;
 
   absFilter = *iter;
-  Filt1* f1_2 = Filt1::SafePointerDownCast(absFilter.get());
+  Filt1::Pointer f1_2 = std::dynamic_pointer_cast<Filt1>(absFilter);
   DREAM3D_REQUIRED(f1_2->getFilt1_Float(), ==, 2.3f)
   DREAM3D_REQUIRED(f1_2->getFilt1_Integer(), ==, 4)
   iter++;
 
   absFilter = *iter;
-  DataContainerWriter* w1 = DataContainerWriter::SafePointerDownCast(absFilter.get());
+  DataContainerWriter::Pointer w1 = std::dynamic_pointer_cast<DataContainerWriter>(absFilter);
   DREAM3D_REQUIRED(w1->getNameOfClass(), ==, "DataContainerWriter")
   iter++;
 
   absFilter = *iter;
-  DataContainerReader* r1 = DataContainerReader::SafePointerDownCast(absFilter.get());
+  DataContainerReader::Pointer r1 = std::dynamic_pointer_cast<DataContainerReader>(absFilter);
   DREAM3D_REQUIRED(r1->getNameOfClass(), ==, "DataContainerReader")
   iter++;
 
   absFilter = *iter;
-  Filt0* f0_3 = Filt0::SafePointerDownCast(absFilter.get());
+  Filt0::Pointer f0_3 = std::dynamic_pointer_cast<Filt0>(absFilter);
   DREAM3D_REQUIRED(f0_3->getFilt0_Float(), ==, 14.1f)
   DREAM3D_REQUIRED(f0_3->getFilt0_Integer(), ==, 13)
   iter++;
 
   absFilter = *iter;
-  Filt1* f1_3 = Filt1::SafePointerDownCast(absFilter.get());
+  Filt1::Pointer f1_3 = std::dynamic_pointer_cast<Filt1>(absFilter);
   DREAM3D_REQUIRED(f1_3->getFilt1_Float(), ==, 3.3f)
   DREAM3D_REQUIRED(f1_3->getFilt1_Integer(), ==, 5)
   iter++;
 
   absFilter = *iter;
-  DataContainerWriter* w2 = DataContainerWriter::SafePointerDownCast(absFilter.get());
+  DataContainerWriter::Pointer w2 = std::dynamic_pointer_cast<DataContainerWriter>(absFilter);
   DREAM3D_REQUIRED(w2->getNameOfClass(), ==, "DataContainerWriter")
   iter++;
 
   absFilter = *iter;
-  DataContainerReader* r2 = DataContainerReader::SafePointerDownCast(absFilter.get());
+  DataContainerReader::Pointer r2 = std::dynamic_pointer_cast<DataContainerReader>(absFilter);
   DREAM3D_REQUIRED(r2->getNameOfClass(), ==, "DataContainerReader")
   iter++;
 
   absFilter = *iter;
-  DataContainerWriter* w3 = DataContainerWriter::SafePointerDownCast(absFilter.get());
+  DataContainerWriter::Pointer w3 = std::dynamic_pointer_cast<DataContainerWriter>(absFilter);
   DREAM3D_REQUIRED(w3->getNameOfClass(), ==, "DataContainerWriter")
 }
 
