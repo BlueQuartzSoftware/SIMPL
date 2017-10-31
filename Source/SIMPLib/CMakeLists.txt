@@ -37,6 +37,7 @@ set(CMP_PROJECT_NAME "${PROJECT_NAME}")
 set(CMP_ENABLE_PLUGINS "0")
 set(CMP_LIB_SEARCH_DIRS "")
 set(CMP_GENERATE_VERSION_STRING 1)
+set(PROJECT_INSTALL_HEADERS 0)
 
 set(SIMPLib_FILTER_DOC_DIR ${SIMPLib_SOURCE_DIR}/Documentation/${PROJECT_NAME}Filters)
 
@@ -77,6 +78,9 @@ macro(D3DCompileDir DirName)
         set_source_files_properties( ${f} PROPERTIES HEADER_FILE_ONLY TRUE)
     endforeach()
     set(Project_SRCS ${Project_SRCS} ${SIMPLib_${DirName}_SRCS} ${SIMPLib_${DirName}_HDRS} ${SIMPLib_${SUBDIR_NAME}_Generated_MOC_SRCS})
+    install(DIRECTORY ${SIMPLib_SOURCE_DIR}/${DirName} 
+      DESTINATION include/${PROJECT_NAME}
+        FILES_MATCHING PATTERN "*.h")
 endMacro()
 
 #------------------------------------------------------------------------------
@@ -251,6 +255,15 @@ install(EXPORT SIMPLibTargets
     SIMPL::
   DESTINATION
     ${ConfigPackageLocation}
+)
+
+install(FILES 
+    ${CMP_HEADER_DIR}/${CMP_TOP_HEADER_FILE}
+    ${CMP_HEADER_DIR}/${CMP_TYPES_FILE_NAME}
+    ${CMP_HEADER_DIR}/${CMP_CONFIGURATION_FILE_NAME}
+    ${CMP_HEADER_DIR}/${CMP_VERSION_HEADER_FILE_NAME}
+  DESTINATION
+    include/${PROJECT_NAME}
 )
 
 
