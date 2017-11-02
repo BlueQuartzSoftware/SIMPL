@@ -39,6 +39,7 @@
 #include <fstream>
 
 #include <QtCore/QFileInfo>
+#include <QtCore/QDateTime>
 
 #include "SIMPLib/Common/Constants.h"
 #include "SIMPLib/Common/ScopedFileMonitor.hpp"
@@ -52,6 +53,8 @@
 #include "SIMPLib/FilterParameters/LinkedChoicesFilterParameter.h"
 #include "SIMPLib/FilterParameters/NumericTypeFilterParameter.h"
 #include "SIMPLib/FilterParameters/SeparatorFilterParameter.h"
+#include "SIMPLib/FilterParameters/PreflightUpdatedValueFilterParameter.h"
+
 
 #define RBR_FILE_NOT_OPEN -1000
 #define RBR_FILE_TOO_SMALL -1010
@@ -65,7 +68,6 @@
 
 // Include the MOC generated file for this class
 #include "moc_ImportAsciDataArray.cpp"
-
 
 namespace Detail
 {
@@ -110,6 +112,30 @@ class DelimiterType : public std::ctype<char>
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
+int check_error_bits(std::ifstream* f)
+{
+  int stop = RBR_NO_ERROR;
+  if(f->eof())
+  {
+    //std::perror("stream eofbit. error state");
+    stop = RBR_READ_EOF;
+  }
+  else if(f->fail())
+  {
+    //std::perror("stream failbit (or badbit). error state");
+    stop = RBR_READ_ERROR;
+  }
+  else if(f->bad())
+  {
+    //std::perror("stream badbit. error state");
+    stop = RBR_READ_ERROR;
+  }
+  return stop;
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
 template <typename T, typename K> int32_t readAsciFile(typename DataArray<T>::Pointer data,
                                            const QString& filename,
                                            int32_t skipHeaderLines,
@@ -138,6 +164,7 @@ template <typename T, typename K> int32_t readAsciFile(typename DataArray<T>::Po
   // thing we are going to do it over write those bytes with the real data that we are after.
   for(int i = 0; i < skipHeaderLines; i++)
   {
+    buf.fill(0x00); // Splat Null Chars across the line
     err = Detail::readLine(in, buffer, kBufferSize); // Read Line 1 - VTK Version Info
     if(err < 0)
     {
@@ -146,34 +173,66 @@ template <typename T, typename K> int32_t readAsciFile(typename DataArray<T>::Po
   }
 
   size_t numTuples = data->getNumberOfTuples();
-  size_t scalarNumComp = data->getNumberOfComponents();
+  int scalarNumComp = data->getNumberOfComponents();
 
   if(binary)
   {
-//    int32_t err = vtkReadBinaryData<T>(in, data->getPointer(0), numTuples, scalarNumComp);
-//    if(err < 0)
-//    {
-//      std::cout << "Error Reading Binary Data '" << scalarName.toStdString() << "' " << attrMat->getName().toStdString() << " numTuples = " << numTuples << std::endl;
-//      return err;
-//    }
-//    if(BIGENDIAN == 0)
-//    {
-//      data->byteSwapElements();
-//    }
+
   }
   else
   {
     K value = static_cast<T>(0.0);
-    size_t totalSize = numTuples * scalarNumComp;
+    size_t totalSize = numTuples * static_cast<size_t>(scalarNumComp);
+    int err = RBR_NO_ERROR;
     for(size_t i = 0; i < totalSize; ++i)
     {
       in >> value;
       data->setValue(i, static_cast<T>(value) );
+      err = check_error_bits(&in);
+      if(err == RBR_READ_EOF && i < totalSize - 1)
+      {
+        return err;
+      }
+      else if(err == RBR_READ_ERROR || err == RBR_READ_ERROR)
+      {
+        return err;
+      }
     }
   }
 
   return RBR_NO_ERROR;
 }
+
+
+
+/* ############## Start Private Implementation ############################### */
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+class ImportAsciDataArrayPrivate
+{
+  Q_DISABLE_COPY(ImportAsciDataArrayPrivate)
+  Q_DECLARE_PUBLIC(ImportAsciDataArray)
+  ImportAsciDataArray* const q_ptr;
+  ImportAsciDataArrayPrivate(ImportAsciDataArray* ptr);
+  QString m_FirstLine;
+  QString m_InputFile_Cache;
+  QDateTime m_LastRead;
+  int m_HeaderLines;
+};
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+ImportAsciDataArrayPrivate::ImportAsciDataArrayPrivate(ImportAsciDataArray* ptr)
+: q_ptr(ptr)
+, m_FirstLine()
+, m_InputFile_Cache("")
+, m_LastRead()
+, m_HeaderLines(-1)
+{
+}
+/* ############## End Private Implementation ############################### */
 
 
 // -----------------------------------------------------------------------------
@@ -187,6 +246,8 @@ ImportAsciDataArray::ImportAsciDataArray()
 , m_SkipHeaderLines(0)
 , m_InputFile("")
 , m_Delimiter(0)
+, d_ptr(new ImportAsciDataArrayPrivate(this))
+
 {
   setupFilterParameters();
 }
@@ -197,6 +258,82 @@ ImportAsciDataArray::ImportAsciDataArray()
 ImportAsciDataArray::~ImportAsciDataArray()
 {
 }
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+SIMPL_PIMPL_PROPERTY_DEF(ImportAsciDataArray, QString, FirstLine)
+SIMPL_PIMPL_PROPERTY_DEF(ImportAsciDataArray, QString, InputFile_Cache)
+SIMPL_PIMPL_PROPERTY_DEF(ImportAsciDataArray, QDateTime, LastRead)
+SIMPL_PIMPL_PROPERTY_DEF(ImportAsciDataArray, int, HeaderLines)
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void ImportAsciDataArray::readHeaderPortion()
+{
+  int32_t err = 0;
+  QString filename = getInputFile();
+  
+  QFileInfo fi(getInputFile());
+  
+  QDateTime lastModified(fi.lastModified());
+  if(getInputFile() == getInputFile_Cache() 
+      && getLastRead().isValid() 
+      && lastModified.msecsTo(getLastRead()) >= 0
+      && getSkipHeaderLines() == getHeaderLines() )
+  {
+    // We are reading from the cache, so set the FileWasRead flag to false
+  }
+  else
+  {
+    // We are reading from the file
+    
+    std::ifstream in(filename.toLatin1().constData(), std::ios_base::in | std::ios_base::binary);
+    if(!in.is_open())
+    {
+      setErrorCondition(RBR_FILE_NOT_OPEN);
+      QString errorMessage = QString("Error opening input file '%1'").arg(filename);
+      notifyErrorMessage(getHumanLabel(), errorMessage, getErrorCondition());
+      return;
+    }
+    
+    in.imbue(std::locale(std::locale(), new Detail::DelimiterType(getDelimiter())));
+    
+    QByteArray buf(kBufferSize, '\0');
+    char* buffer = buf.data();
+    
+    int skipHeaderLines = getSkipHeaderLines();
+    for(int i = 0; i < skipHeaderLines; i++)
+    {
+      buf.fill(0x00); // Splat Null Chars across the line
+      err = Detail::readLine(in, buffer, kBufferSize); 
+      if(err < 0)
+      {
+        QString errorMessage = QString("Error reading the input file at line %1 of the file").arg(i);
+        notifyErrorMessage(getHumanLabel(), errorMessage, getErrorCondition());
+        setErrorCondition(RBR_READ_ERROR);
+        return;
+      }
+    }
+    
+    err = Detail::readLine(in, buffer, kBufferSize);
+    if(err < 0)
+    {
+      setErrorCondition(err);
+      notifyErrorMessage(getHumanLabel(), "Error reading the first line of data from the input file", getErrorCondition());
+    }
+    
+    setFirstLine(buf);
+    
+    
+    // Set the file path and time stamp into the cache
+    setLastRead(QDateTime::currentDateTime());
+    setInputFile_Cache(getInputFile());
+  }
+  
+}
+
 
 // -----------------------------------------------------------------------------
 //
@@ -233,6 +370,13 @@ void ImportAsciDataArray::setupFilterParameters()
     DataArrayCreationFilterParameter::RequirementType req;
     parameters.push_back(SIMPL_NEW_DA_CREATION_FP("Output Attribute Array", CreatedAttributeArrayPath, FilterParameter::CreatedArray, ImportAsciDataArray, req));
   }
+  
+  PreflightUpdatedValueFilterParameter::Pointer param =
+      SIMPL_NEW_PREFLIGHTUPDATEDVALUE_FP("First Line of Data:", FirstLine, FilterParameter::Parameter, ImportAsciDataArray);
+  param->setReadOnly(true);
+  parameters.push_back(param);
+
+
   setFilterParameters(parameters);
 }
 
@@ -330,6 +474,11 @@ void ImportAsciDataArray::dataCheck()
   {
     getDataContainerArray()->createNonPrereqArrayFromPath<BoolArrayType, AbstractFilter, bool>(this, getCreatedAttributeArrayPath(), 0, cDims, "CreatedAttributeArrayPath");
   }
+  
+  
+  readHeaderPortion();
+  
+  
 }
 
 // -----------------------------------------------------------------------------
@@ -505,6 +654,7 @@ char ImportAsciDataArray::converSelectedDelimiter()
   if (getDelimiter() ==  ImportAsciDataArray::Tab) return '\t';
   return ' ';
 }
+
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
