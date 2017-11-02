@@ -36,9 +36,14 @@
 #ifndef _importascidataarray_h_
 #define _importascidataarray_h_
 
+#include <QtCore/QScopedPointer>
+
 #include "SIMPLib/Common/SIMPLibSetGetMacros.h"
 #include "SIMPLib/Filtering/AbstractFilter.h"
 #include "SIMPLib/SIMPLib.h"
+
+// our PIMPL private class for caching
+class ImportAsciDataArrayPrivate;
 
 /**
  * @brief The ImportAsciDataArray class. See [Filter documentation](@ref ImportAsciDataArray) for details.
@@ -46,6 +51,8 @@
 class SIMPLib_EXPORT ImportAsciDataArray : public AbstractFilter
 {
     Q_OBJECT
+    Q_DECLARE_PRIVATE(ImportAsciDataArray)
+
   public:
     SIMPL_SHARED_POINTERS(ImportAsciDataArray)
     SIMPL_STATIC_NEW_MACRO(ImportAsciDataArray)
@@ -70,7 +77,15 @@ class SIMPLib_EXPORT ImportAsciDataArray : public AbstractFilter
 
     SIMPL_FILTER_PARAMETER(int, Delimiter)
     Q_PROPERTY(int Delimiter READ getDelimiter WRITE setDelimiter)
-
+    
+    
+    Q_PROPERTY(QString FirstLine READ getFirstLine)
+    
+    SIMPL_PIMPL_PROPERTY_DECL(QString, FirstLine)
+    SIMPL_PIMPL_PROPERTY_DECL(QString, InputFile_Cache)
+    SIMPL_PIMPL_PROPERTY_DECL(QDateTime, LastRead)
+    SIMPL_PIMPL_PROPERTY_DECL(int, HeaderLines)
+    
     enum DelimeterType
     {
       Comma = 0,
@@ -175,10 +190,19 @@ class SIMPLib_EXPORT ImportAsciDataArray : public AbstractFilter
      * @return
      */
     char converSelectedDelimiter();
+    
+    /**
+     * @brief readHeaderPortion
+     * @return 
+     */
+    void readHeaderPortion();
 
   private:
-    IDataArray::Pointer m_Array;
+    QScopedPointer<ImportAsciDataArrayPrivate> const d_ptr;
 
+    IDataArray::Pointer m_Array;
+       
+    
     ImportAsciDataArray(const ImportAsciDataArray&); // Copy Constructor Not Implemented
     void operator=(const ImportAsciDataArray&); // Operator '=' Not Implemented
 };
