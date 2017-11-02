@@ -68,12 +68,9 @@ class SIMPLib_EXPORT CreateImageGeometry : public AbstractFilter
     SIMPL_FILTER_PARAMETER(FloatVec3_t, Resolution)
     Q_PROPERTY(FloatVec3_t Resolution READ getResolution WRITE setResolution)
 
-//    SIMPL_FILTER_PARAMETER(bool, CreateAttributeMatrix)
-//    Q_PROPERTY(bool CreateAttributeMatrix READ getCreateAttributeMatrix WRITE setCreateAttributeMatrix)
-
-//    SIMPL_FILTER_PARAMETER(QString, AttributeMatrixName)
-//    Q_PROPERTY(QString AttributeMatrixName READ getAttributeMatrixName WRITE setAttributeMatrixName)
-
+    QString getBoxDimensions();
+    Q_PROPERTY(QString BoxDimensions READ getBoxDimensions)
+  
     /**
      * @brief getCompiledLibraryName Reimplemented from @see AbstractFilter class
      */
