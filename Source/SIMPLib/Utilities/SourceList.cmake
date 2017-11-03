@@ -4,6 +4,7 @@ set(SUBDIR_NAME Utilities)
 # --------------------------------------------------------------------
 # Any Class that inherits from QObject, either directly or through the hierarchy needs to have its header listed here
 set(SIMPLib_${SUBDIR_NAME}_Moc_HDRS
+  ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/SIMPLH5DataReader.h
   ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/TestObserver.h
 )
 
@@ -28,7 +29,8 @@ set(SIMPLib_Utilities_SRCS
   ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/ColorTable.cpp
   ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/ColorUtilities.cpp
   ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/FilePathGenerator.cpp
-  ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/FloatSummation.cpp  
+  ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/FloatSummation.cpp 
+  ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/SIMPLH5DataReader.cpp
   ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/StringOperations.cpp
   ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/TestObserver.cpp
 )
