@@ -44,6 +44,7 @@
 #include "SIMPLib/FilterParameters/DataContainerReaderFilterParameter.h"
 #include "SIMPLib/FilterParameters/H5FilterParametersReader.h"
 #include "SIMPLib/Filtering/FilterManager.h"
+#include "SIMPLib/Utilities/SIMPLH5DataReader.h"
 #include "SIMPLib/SIMPLibVersion.h"
 
 // Include the MOC generated file for this class
@@ -62,6 +63,12 @@ DataContainerReader::DataContainerReader()
 {
   m_PipelineFromFile = FilterPipeline::New();
 
+  m_DataReader = new SIMPLH5DataReader();
+  connect(m_DataReader, &SIMPLH5DataReader::errorGenerated, [=] (const QString &msg, const int &code) {
+    setErrorCondition(code);
+    notifyErrorMessage(getHumanLabel(), msg, getErrorCondition());
+  });
+
   setupFilterParameters();
 }
 
@@ -70,6 +77,7 @@ DataContainerReader::DataContainerReader()
 // -----------------------------------------------------------------------------
 DataContainerReader::~DataContainerReader()
 {
+  delete m_DataReader;
 }
 
 // -----------------------------------------------------------------------------
@@ -144,12 +152,20 @@ void DataContainerReader::initialize()
 //
 // -----------------------------------------------------------------------------
 void DataContainerReader::dataCheck()
-{
+{  
+  if (m_DataReader->openFile(getInputFile()) == false)
+  {
+    return;
+  }
+
   // Sync the file proxy and cached proxy if the time stamps are different
   QFileInfo fi(getInputFile());
   if(getInputFile() == getLastFileRead() && getLastRead() < fi.lastModified())
   {
-    syncProxies();
+    if (syncProxies() == false)
+    {
+      return;
+    }
   }
 
   QString ss;
@@ -178,7 +194,7 @@ void DataContainerReader::dataCheck()
   DataContainerArray::Pointer tempDCA = DataContainerArray::New();
 
   // Read either the structure or all the data depending on the preflight status
-  readData(getInPreflight(), m_InputFileDataContainerArrayProxy, tempDCA);
+  readData(m_InputFileDataContainerArrayProxy, tempDCA);
 
   QList<DataContainer::Pointer>& tempContainers = tempDCA->getDataContainers();
   QListIterator<DataContainer::Pointer> iter(tempContainers);
@@ -210,6 +226,8 @@ void DataContainerReader::dataCheck()
   }
   QMap<QString, IDataContainerBundle::Pointer> bundles = tempDCA->getDataContainerBundles();
   dca->setDataContainerBundles(bundles);
+
+  m_DataReader->closeFile();
 }
 
 // -----------------------------------------------------------------------------
@@ -248,82 +266,29 @@ void DataContainerReader::execute()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void DataContainerReader::readData(bool preflight, DataContainerArrayProxy& proxy, DataContainerArray::Pointer dca)
+void DataContainerReader::readData(DataContainerArrayProxy& proxy, DataContainerArray::Pointer dca)
 {
   setErrorCondition(0);
   setWarningCondition(0);
-  QString ss;
-  int32_t err = 0;
-  QString m_FileVersion;
-  float fVersion = 0.0f;
-  bool check = false;
 
-  //  qDebug() << "DataContainerReader::readData() " << m_InputFile;
+  bool result = m_DataReader->readDREAM3DData(getInPreflight(), proxy, dca);
+  if (result == false)
+  {
+    return;
+  }
 
-  // Read the Meta Data and Array names from the file
-  hid_t fileId = QH5Utilities::openFile(m_InputFile, true); // Open the file Read Only
+  hid_t fileId = QH5Utilities::openFile(getInputFile(), true); // Open the file Read Only
   if(fileId < 0)
   {
-    ss = QObject::tr("Error opening input file '%1'").arg(m_InputFile);
     setErrorCondition(-150);
+    QString ss = QObject::tr("Error opening input file '%1'").arg(getInputFile());
     notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
     return;
-  }
-  // This will make sure if we return early from this method that the HDF5 File is properly closed.
-  HDF5ScopedFileSentinel scopedFileSentinel(&fileId, true);
-
-  // Check to see if version of .dream3d file is prior to new data container names
-  err = QH5Lite::readStringAttribute(fileId, "/", SIMPL::HDF5::FileVersionName, m_FileVersion);
-  fVersion = m_FileVersion.toFloat(&check);
-  if(fVersion < 5.0 || err < 0)
-  {
-    QH5Utilities::closeFile(fileId);
-    fileId = QH5Utilities::openFile(m_InputFile, false); // Re-Open the file as Read/Write
-    err = H5Lmove(fileId, "VoxelDataContainer", fileId, SIMPL::Defaults::DataContainerName.toLatin1().data(), H5P_DEFAULT, H5P_DEFAULT);
-    err = H5Lmove(fileId, "SurfaceMeshDataContainer", fileId, SIMPL::Defaults::DataContainerName.toLatin1().data(), H5P_DEFAULT, H5P_DEFAULT);
-    err = QH5Lite::writeStringAttribute(fileId, "/", SIMPL::HDF5::FileVersionName, "5.0");
-    QH5Utilities::closeFile(fileId);
-    fileId = QH5Utilities::openFile(m_InputFile, true); // Re-Open the file as Read Only
-  }
-  if(fVersion < 7.0)
-  {
-    ss = QObject::tr("File unable to be read - file structure older than 7.0");
-    setErrorCondition(-250);
-    notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
-    return;
-  }
-  hid_t dcaGid = H5Gopen(fileId, SIMPL::StringConstants::DataContainerGroupName.toLatin1().data(), 0);
-  if(dcaGid < 0)
-  {
-    setErrorCondition(-1923123);
-    QString ss = QObject::tr("Error attempting to open the HDF5 Group '%1'").arg(SIMPL::StringConstants::DataContainerGroupName);
-    notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
-    return;
-  }
-
-  scopedFileSentinel.addGroupId(&dcaGid);
-
-  err = dca->readDataContainersFromHDF5(preflight, dcaGid, proxy, this);
-  if(err < 0)
-  {
-    setErrorCondition(err);
-    QString ss = QObject::tr("Error trying to read the DataContainers from the file '%1'").arg(getInputFile());
-    notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
-  }
-  err = H5Gclose(dcaGid);
-  dcaGid = -1;
-
-  err = readDataContainerBundles(fileId, dca);
-  if(err < 0)
-  {
-    setErrorCondition(err);
-    QString ss = QObject::tr("Error trying to read the DataContainerBundles from the file '%1'").arg(getInputFile());
-    notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
   }
 
   if(!getInPreflight())
   {
-    err = readExistingPipelineFromFile(fileId);
+    int32_t err = readExistingPipelineFromFile(fileId);
     if(err < 0)
     {
       setErrorCondition(err);
@@ -331,6 +296,8 @@ void DataContainerReader::readData(bool preflight, DataContainerArrayProxy& prox
       notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
     }
   }
+
+  QH5Utilities::closeFile(fileId);
 }
 
 // -----------------------------------------------------------------------------
@@ -505,96 +472,17 @@ int DataContainerReader::writeExistingPipelineToFile(QJsonObject& rootJson, int 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-int DataContainerReader::readDataContainerBundles(hid_t fileId, DataContainerArray::Pointer dca)
-{
-  herr_t err = 0;
-  hid_t dcbGroupId = H5Gopen(fileId, SIMPL::StringConstants::DataContainerBundleGroupName.toLatin1().constData(), H5P_DEFAULT);
-  if(dcbGroupId < 0)
-  {
-    // NO Bundles are available to read so just return.
-
-    //    QString ss = QObject::tr("Error opening HDF5 Group '%1' ").arg(SIMPL::StringConstants::DataContainerBundleGroupName);
-    //    setErrorCondition(-75);
-    //    notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
-    return 0;
-  }
-
-  HDF5ScopedGroupSentinel sentinel(&dcbGroupId, false);
-
-  QList<QString> groupNames;
-  err = QH5Utilities::getGroupObjects(dcbGroupId, H5Utilities::H5Support_GROUP, groupNames);
-  if(err < 0)
-  {
-    QString ss = QObject::tr("Error getting group objects from HDF5 group '%1' ").arg(SIMPL::StringConstants::DataContainerBundleGroupName);
-    setErrorCondition(-76);
-    notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
-    return err;
-  }
-
-  char sep = 0x1E;
-  QListIterator<QString> iter(groupNames);
-  while(iter.hasNext())
-  {
-    QString bundleName = iter.next();
-    DataContainerBundle::Pointer bundle = DataContainerBundle::New(bundleName);
-
-    hid_t bundleId = H5Gopen(dcbGroupId, bundleName.toLatin1().constData(), H5P_DEFAULT);
-    sentinel.addGroupId(&bundleId); // Make sure this group gets closed
-
-    // Read in the Data Container Names
-    QString dcNames;
-    err = QH5Lite::readStringDataset(bundleId, SIMPL::StringConstants::DataContainerNames, dcNames);
-    if(err < 0)
-    {
-      QString ss = QObject::tr("Error reading DataContainer group names from HDF5 group '%1' ").arg(bundleName);
-      setErrorCondition(-75);
-      notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
-      return err;
-    }
-    QStringList dcNameList = dcNames.split(QString(sep));
-
-    QStringListIterator nameIter(dcNameList);
-    while(nameIter.hasNext())
-    {
-      QString dcName = nameIter.next();
-      DataContainer::Pointer dc = dca->getDataContainer(dcName);
-      if(nullptr == dc.get())
-      {
-        qDebug() << "Data Container '" << dcName << "' was nullptr"
-                 << " " << __FILE__ << "(" << __LINE__ << ")";
-      }
-      bundle->addDataContainer(dc);
-    }
-
-    QString metaArrays;
-    err = QH5Lite::readStringDataset(bundleId, SIMPL::StringConstants::MetaDataArrays, metaArrays);
-    if(err < 0)
-    {
-      QString ss = QObject::tr("Error reading DataContainerBundle meta data arrays from HDF5 group '%1' ").arg(bundleName);
-      setErrorCondition(-76);
-      notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
-      return err;
-    }
-    QStringList metaNameList = metaArrays.split(QString(sep));
-    bundle->setMetaDataArrays(metaNameList);
-
-    dca->addDataContainerBundle(bundle);
-  }
-
-  H5Gclose(dcbGroupId);
-  dcbGroupId = -1;
-  return err;
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-void DataContainerReader::syncProxies()
+bool DataContainerReader::syncProxies()
 {
   // If there is something in the cached proxy...
   if(m_InputFileDataContainerArrayProxy.dataContainers.size() > 0)
   {
-    DataContainerArrayProxy fileProxy = readDataContainerArrayStructure(getInputFile());
+    DataContainerArrayProxy fileProxy;
+    if (m_DataReader->readDataContainerArrayStructure(fileProxy) == false)
+    {
+      return false;
+    }
+
     DataContainerArrayProxy cacheProxy = getInputFileDataContainerArrayProxy();
 
     // Mesh proxies together into one proxy
@@ -603,9 +491,16 @@ void DataContainerReader::syncProxies()
   }
   else
   {
-    DataContainerArrayProxy fileProxy = readDataContainerArrayStructure(getInputFile());
+    DataContainerArrayProxy fileProxy;
+    if (m_DataReader->readDataContainerArrayStructure(fileProxy) == false)
+    {
+      return false;
+    }
+
     setInputFileDataContainerArrayProxy(fileProxy);
   }
+
+  return true;
 }
 
 // -----------------------------------------------------------------------------

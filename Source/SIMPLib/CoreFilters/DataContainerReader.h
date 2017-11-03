@@ -45,6 +45,8 @@
 #include "SIMPLib/Filtering/FilterPipeline.h"
 #include "SIMPLib/SIMPLib.h"
 
+class SIMPLH5DataReader;
+
 /**
  * @brief The DataContainerReader class. See [Filter documentation](@ref datacontainerreader) for details.
  */
@@ -175,16 +177,10 @@ class SIMPLib_EXPORT DataContainerReader : public AbstractFilter
     DataContainerArrayProxy readDataContainerArrayStructure(const QString& path);
 
     /**
-     * @brief readDataContainerBundles Reads the DataContainerBundles from the HDF5 based .dream3d file
-     * @return Integer error value
-     */
-    int readDataContainerBundles(hid_t fileId, DataContainerArray::Pointer dca);
-
-    /**
     * @brief syncProxies Combines the file and cached proxies if they are out-of-sync
     * @return
     */
-    void syncProxies();
+    bool syncProxies();
 
   signals:
     /**
@@ -228,7 +224,7 @@ class SIMPLib_EXPORT DataContainerReader : public AbstractFilter
      * @param proxy DataContainerArrayProxy reference
      * @param dca DataContainerArray instance pointer
      */
-    void readData(bool preflight, DataContainerArrayProxy& proxy, DataContainerArray::Pointer dca);
+    void readData(DataContainerArrayProxy& proxy, DataContainerArray::Pointer dca);
 
   protected slots:
     /**
@@ -237,7 +233,8 @@ class SIMPLib_EXPORT DataContainerReader : public AbstractFilter
     void cleanupFilter();
 
   private:
-    FilterPipeline::Pointer m_PipelineFromFile;
+    FilterPipeline::Pointer                     m_PipelineFromFile;
+    SIMPLH5DataReader*                          m_DataReader;
 
     DataContainerReader(const DataContainerReader&); // Copy Constructor Not Implemented
     void operator=(const DataContainerReader&); // Operator '=' Not Implemented
