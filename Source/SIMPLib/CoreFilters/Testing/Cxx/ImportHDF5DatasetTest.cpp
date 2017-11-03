@@ -415,7 +415,7 @@ public:
     cDimsStr.prepend('(');
     cDimsStr.append(')');
 
-    std::cout << QObject::tr("Starting %1 Test: %2, tDims = %3, cDims = %4").arg(typeStr).arg(dsetPath).arg(tDimsStr).arg(cDimsStr).toStdString() << std::endl;
+    // std::cout << QObject::tr("Starting %1 Test: %2, tDims = %3, cDims = %4").arg(typeStr).arg(dsetPath).arg(tDimsStr).arg(cDimsStr).toStdString() << std::endl;
 
     filter->execute();
     DREAM3D_REQUIRE_EQUAL(filter->getErrorCondition(), errCode);
@@ -450,7 +450,7 @@ public:
       }
     }
 
-    std::cout << "Test Complete!" << std::endl << std::endl;
+    // std::cout << "Test Complete!" << std::endl << std::endl;
   }
 
   // -----------------------------------------------------------------------------

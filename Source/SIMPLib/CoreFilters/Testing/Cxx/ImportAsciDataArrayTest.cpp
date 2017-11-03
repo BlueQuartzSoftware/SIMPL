@@ -135,9 +135,18 @@ public:
     {
       for(size_t x = 0; x < m_XDim; x++)
       {
-        T value = static_cast<T>(index);
-        DREAM3D_REQUIRED(value, ==, ptr[index])
-        index++;
+        if(scalarType != 10) // Numeric Types
+        {
+          T value = static_cast<T>(index);
+          DREAM3D_REQUIRE_EQUAL(value, ptr[index])
+          index++;
+        }
+        else // Bool type
+        {
+          bool value = (index != 0);
+          DREAM3D_REQUIRE_EQUAL(value, ptr[index])
+          index++;
+        }
       }
     }
 

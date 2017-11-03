@@ -227,7 +227,7 @@ public:
     int dataArraySize = k_ArraySize * N;
     int junkArraySize = 0;
     int skipHeaderBytes = 0;
-    qDebug() << "Testing case 1: " << name << " with num comps " << N;
+    //// qDebug() << "Testing case 1: " << name << " with num comps " << N;
 
     // Allocate an array, and get the dataArray from that array
     typename DataArray<T>::Pointer array = DataArray<T>::CreateArray(dataArraySize, "_Temp_"); // This makes sure our allocated array is deleted when we leave
@@ -307,7 +307,7 @@ public:
     QDir dir(UnitTest::RawBinaryReaderTest::TestDir);
     if(!dir.mkpath("."))
     {
-      qDebug() << "Error creating parent path '" << UnitTest::RawBinaryReaderTest::TestDir << "'";
+      // qDebug() << "Error creating parent path '" << UnitTest::RawBinaryReaderTest::TestDir << "'";
       return;
     }
 
@@ -333,7 +333,7 @@ public:
     int dataArraySize = k_ArraySize * N / 2; // We don't care what is written...we just need the data array size to be less than the file size
     int junkArraySize = 0;
     int skipHeaderBytes = junkArraySize * sizeof(T);
-    qDebug() << "Testing case 2: " << name << " with num comps " << N;
+    // qDebug() << "Testing case 2: " << name << " with num comps " << N;
 
     // Allocate an array, and get the dataArray from that array
     typename DataArray<T>::Pointer array = DataArray<T>::CreateArray(dataArraySize, "_Temp_"); // This makes sure our allocated array is deleted when we leave
@@ -402,7 +402,7 @@ public:
     QDir dir(UnitTest::RawBinaryReaderTest::TestDir);
     if(!dir.mkpath("."))
     {
-      qDebug() << "Error creating parent path '" << UnitTest::RawBinaryReaderTest::TestDir << "'";
+      // qDebug() << "Error creating parent path '" << UnitTest::RawBinaryReaderTest::TestDir << "'";
       return;
     }
 
@@ -428,7 +428,7 @@ public:
     int junkArraySize = 10;
     int skipHeaderBytes = 0;
     int err = 0;
-    qDebug() << "Testing case 3: " << name << " with num comps " << N;
+    // qDebug() << "Testing case 3: " << name << " with num comps " << N;
 
     // Allocate an array, and get the dataArray from that array
     typename DataArray<T>::Pointer array = DataArray<T>::CreateArray(dataArraySize, "_Temp__"); // This makes sure our allocated array is deleted when we leave
@@ -513,7 +513,7 @@ public:
     QDir dir(UnitTest::RawBinaryReaderTest::TestDir);
     if(!dir.mkpath("."))
     {
-      qDebug() << "Error creating parent path '" << UnitTest::RawBinaryReaderTest::TestDir << "'";
+      // qDebug() << "Error creating parent path '" << UnitTest::RawBinaryReaderTest::TestDir << "'";
       return;
     }
 
@@ -539,7 +539,7 @@ public:
     int junkArraySize = 5;
     int skipHeaderBytes = junkArraySize * sizeof(T);
     int err = 0;
-    qDebug() << "Testing case 4: " << name << " with num comps " << N;
+    // qDebug() << "Testing case 4: " << name << " with num comps " << N;
 
     // Allocate an array, and get the dataArray from that array
     typename DataArray<T>::Pointer array = DataArray<T>::CreateArray(dataArraySize, "_Temp_"); // This makes sure our allocated array is deleted when we leave
@@ -653,7 +653,7 @@ public:
     QDir dir(UnitTest::RawBinaryReaderTest::TestDir);
     if(!dir.mkpath("."))
     {
-      qDebug() << "Error creating parent path '" << UnitTest::RawBinaryReaderTest::TestDir << "'";
+      // qDebug() << "Error creating parent path '" << UnitTest::RawBinaryReaderTest::TestDir << "'";
       return;
     }
 
@@ -679,7 +679,7 @@ public:
     int junkArraySize = 10;
     int skipHeaderBytes = junkArraySize * sizeof(T);
     int err = 0;
-    qDebug() << "Testing case 5: " << name << " with num comps " << N;
+    // qDebug() << "Testing case 5: " << name << " with num comps " << N;
 
     // Allocate an array, and get the dataArray from that array
     typename DataArray<T>::Pointer array = DataArray<T>::CreateArray(dataArraySize, "_Temp_"); // This makes sure our allocated array is deleted when we leave
@@ -764,7 +764,7 @@ public:
     QDir dir(UnitTest::RawBinaryReaderTest::TestDir);
     if(!dir.mkpath("."))
     {
-      qDebug() << "Error creating parent path '" << UnitTest::RawBinaryReaderTest::TestDir << "'";
+      // qDebug() << "Error creating parent path '" << UnitTest::RawBinaryReaderTest::TestDir << "'";
       return;
     }
 
@@ -790,7 +790,7 @@ public:
     int junkArraySize = k_ArraySize * N;
     int skipHeaderBytes = junkArraySize * sizeof(T);
     int err = 0;
-    qDebug() << "Testing case 6: " << name << " with num comps " << N;
+    // qDebug() << "Testing case 6: " << name << " with num comps " << N;
 
     // Allocate an array, and get the dataArray from that array
     typename DataArray<T>::Pointer array = DataArray<T>::CreateArray(dataArraySize, "_Temp_"); // This makes sure our allocated array is deleted when we leave
@@ -863,7 +863,7 @@ public:
     QDir dir(UnitTest::RawBinaryReaderTest::TestDir);
     if(!dir.mkpath("."))
     {
-      qDebug() << "Error creating parent path '" << UnitTest::RawBinaryReaderTest::TestDir << "'";
+      // qDebug() << "Error creating parent path '" << UnitTest::RawBinaryReaderTest::TestDir << "'";
       return;
     }
 
