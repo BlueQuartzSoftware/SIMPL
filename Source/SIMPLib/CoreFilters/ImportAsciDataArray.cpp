@@ -136,14 +136,10 @@ int check_error_bits(std::ifstream* f)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-template <typename T, typename K> int32_t readAsciFile(typename DataArray<T>::Pointer data,
-                                           const QString& filename,
-                                           int32_t skipHeaderLines,
-                                           char delimiter)
+template <typename T, typename K> int32_t readAsciFile(typename DataArray<T>::Pointer data, const QString& filename, int32_t skipHeaderLines, char delimiter, bool inputIsBool = false)
 {
   int32_t err = 0;
   QFileInfo fi(filename);
-  bool binary = false;
   if(err < 0)
   {
     return RBR_FILE_TOO_SMALL;
@@ -175,15 +171,38 @@ template <typename T, typename K> int32_t readAsciFile(typename DataArray<T>::Po
   size_t numTuples = data->getNumberOfTuples();
   int scalarNumComp = data->getNumberOfComponents();
 
-  if(binary)
+  size_t totalSize = numTuples * static_cast<size_t>(scalarNumComp);
+  err = RBR_NO_ERROR;
+  if(inputIsBool)
   {
+    double value = 0.0;
+    int64_t* si64Ptr = reinterpret_cast<int64_t*>(&value);
 
+    for(size_t i = 0; i < totalSize; ++i)
+    {
+      in >> value;
+      if(*si64Ptr == 0)
+      {
+        data->setValue(i, false);
+      }
+      else
+      {
+        data->setValue(i, true);
+      }
+      err = check_error_bits(&in);
+      if(err == RBR_READ_EOF && i < totalSize - 1)
+      {
+        return err;
+      }
+      else if(err == RBR_READ_ERROR || err == RBR_READ_ERROR)
+      {
+        return err;
+      }
+    }
   }
   else
   {
     K value = static_cast<T>(0.0);
-    size_t totalSize = numTuples * static_cast<size_t>(scalarNumComp);
-    int err = RBR_NO_ERROR;
     for(size_t i = 0; i < totalSize; ++i)
     {
       in >> value;
@@ -199,7 +218,6 @@ template <typename T, typename K> int32_t readAsciFile(typename DataArray<T>::Po
       }
     }
   }
-
   return RBR_NO_ERROR;
 }
 
@@ -605,7 +623,7 @@ void ImportAsciDataArray::execute()
   else if(m_ScalarType == SIMPL::NumericTypes::Type::Bool)
   {
     BoolArrayType::Pointer p = getDataContainerArray()->getPrereqIDataArrayFromPath<BoolArrayType, AbstractFilter>(this, getCreatedAttributeArrayPath());
-    err = readAsciFile<bool, bool>(p, m_InputFile, m_SkipHeaderLines, delimiter);
+    err = readAsciFile<bool, bool>(p, m_InputFile, m_SkipHeaderLines, delimiter, true);
     if(err >= 0)
     {
       m_Array = p;
@@ -629,8 +647,8 @@ void ImportAsciDataArray::execute()
   }
   else if(err == RBR_READ_ERROR)
   {
-    setWarningCondition(RBR_READ_ERROR);
-    notifyWarningMessage(getHumanLabel(), "General read error while importing ASCI file.", getWarningCondition());
+    setErrorCondition(RBR_READ_ERROR);
+    notifyErrorMessage(getHumanLabel(), "General read error while importing ASCI file.", getErrorCondition());
   }
   else if(err == RBR_READ_EOF)
   {
