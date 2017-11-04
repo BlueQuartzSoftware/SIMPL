@@ -581,6 +581,7 @@ void FileListInfoWidget::filterNeedsInputParameters(AbstractFilter* filter)
   {
     QString ss = QObject::tr("Error Setting FileListStack Gui values to Filter instance. Filter instance was nullptr.").arg(getFilterParameter()->getPropertyName());
     emit errorSettingFilterParameter(ss);
+    return;
   }
   bool ok = false;
 
