@@ -35,11 +35,15 @@
 
 #include <QtCore/QStringList>
 
-#include "DataContainers/DataContainerArray.h"
+#include <hdf5.h>
+
+#include "SIMPLib/Common/Observable.h"
 
 #include "SIMPLib/SIMPLib.h"
 
 class IObserver;
+class DataContainerArrayProxy;
+class DataContainerArray;
 
 /**
  * @brief The SIMPLH5DataReader class
@@ -80,7 +84,7 @@ class SIMPLib_EXPORT SIMPLH5DataReader : public Observable
      * @param dca
      * @return
      */
-    bool readDREAM3DData(bool preflight, DataContainerArrayProxy proxy, DataContainerArray::Pointer dca);
+    bool readDREAM3DData(bool preflight, DataContainerArrayProxy proxy, DataContainerArray* dca);
 
     /**
      * @brief readPipelineJson
@@ -111,7 +115,7 @@ class SIMPLib_EXPORT SIMPLH5DataReader : public Observable
      * @param dca
      * @return
      */
-    bool readDataContainerBundles(hid_t fileId, DataContainerArray::Pointer dca);
+    bool readDataContainerBundles(hid_t fileId, DataContainerArray* dca);
 
     SIMPLH5DataReader(const SIMPLH5DataReader&); // Copy Constructor Not Implemented
     void operator=(const SIMPLH5DataReader&); // Operator '=' Not Implemented

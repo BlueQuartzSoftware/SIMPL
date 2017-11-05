@@ -38,6 +38,7 @@
 
 #include "SIMPLib/Common/IObserver.h"
 #include "SIMPLib/DataContainers/DataContainerBundle.h"
+#include "SIMPLib/DataContainers/DataContainerArray.h"
 
 #include "H5Support/QH5Utilities.h"
 
@@ -106,7 +107,7 @@ bool SIMPLH5DataReader::closeFile()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-bool SIMPLH5DataReader::readDREAM3DData(bool preflight, DataContainerArrayProxy proxy, DataContainerArray::Pointer dca)
+bool SIMPLH5DataReader::readDREAM3DData(bool preflight, DataContainerArrayProxy proxy, DataContainerArray* dca)
 {
   QString ss;
   int32_t err = 0;
@@ -258,7 +259,7 @@ bool SIMPLH5DataReader::readPipelineJson(QString &json)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-bool SIMPLH5DataReader::readDataContainerBundles(hid_t fileId, DataContainerArray::Pointer dca)
+bool SIMPLH5DataReader::readDataContainerBundles(hid_t fileId, DataContainerArray *dca)
 {
   herr_t err = 0;
   hid_t dcbGroupId = H5Gopen(fileId, SIMPL::StringConstants::DataContainerBundleGroupName.toLatin1().constData(), H5P_DEFAULT);

@@ -271,7 +271,7 @@ void DataContainerReader::readData(DataContainerArrayProxy& proxy, DataContainer
   setErrorCondition(0);
   setWarningCondition(0);
 
-  bool result = m_DataReader->readDREAM3DData(getInPreflight(), proxy, dca);
+  bool result = m_DataReader->readDREAM3DData(getInPreflight(), proxy, dca.get());
   if (result == false)
   {
     return;
