@@ -376,10 +376,10 @@ class SIMPLib_EXPORT IGeometry : public Observable
     QString m_MessagePrefix;
     QString m_MessageTitle;
     QString m_MessageLabel;
-    Type m_GeometryType;
-    unsigned int m_XdmfGridType;
-    unsigned int m_UnitDimensionality;
-    unsigned int m_SpatialDimensionality;
+    Type m_GeometryType = Type::Unknown;
+    unsigned int m_XdmfGridType = SIMPL::XdmfGridType::UnknownGrid;
+    unsigned int m_UnitDimensionality = 0;
+    unsigned int m_SpatialDimensionality = 0;
 
     AttributeMatrixMap_t m_AttributeMatrices;
 
