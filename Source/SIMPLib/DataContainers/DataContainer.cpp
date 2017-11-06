@@ -521,6 +521,7 @@ int DataContainer::writeXdmf(QTextStream& out, QString hdfFileName)
       default:
         break;
       }
+      break;
     case IGeometry::Type::Edge:
       switch(amType)
       {
@@ -534,6 +535,7 @@ int DataContainer::writeXdmf(QTextStream& out, QString hdfFileName)
       default:
         break;
       }
+      break;
     case IGeometry::Type::Triangle:
       switch(amType)
       {
@@ -553,6 +555,7 @@ int DataContainer::writeXdmf(QTextStream& out, QString hdfFileName)
       default:
         break;
       }
+      break;
     case IGeometry::Type::Quad:
       switch(amType)
       {
@@ -572,6 +575,7 @@ int DataContainer::writeXdmf(QTextStream& out, QString hdfFileName)
       default:
         break;
       }
+      break;
     case IGeometry::Type::Tetrahedral:
       switch(amType)
       {
@@ -591,6 +595,7 @@ int DataContainer::writeXdmf(QTextStream& out, QString hdfFileName)
       default:
         break;
       }
+      break;
     case IGeometry::Type::Image:
       switch(amType)
       {
@@ -610,12 +615,31 @@ int DataContainer::writeXdmf(QTextStream& out, QString hdfFileName)
       default:
         break;
       }
+      break;
+    case IGeometry::Type::RectGrid:
+      switch(amType)
+      {
+      // FIXME: There are more AttributeMatrix Types that should be implemented
+      case AttributeMatrix::Type::Vertex:
+        xdmfCenter = SIMPL::XdmfCenterType::Node;
+        break;
+      case AttributeMatrix::Type::Edge:
+        xdmfCenter = SIMPL::XdmfCenterType::Cell;
+        break;
+      case AttributeMatrix::Type::Face:
+        xdmfCenter = SIMPL::XdmfCenterType::Cell;
+        break;
+      case AttributeMatrix::Type::Cell:
+        xdmfCenter = SIMPL::XdmfCenterType::Cell;
+        break;
+      default:
+        break;
+      }
+      break;
     case IGeometry::Type::Unknown:
       break;
     case IGeometry::Type::Any:
       break;
-      default:
-        break;
     }
 
     if(xdmfCenter.isEmpty() == false)
