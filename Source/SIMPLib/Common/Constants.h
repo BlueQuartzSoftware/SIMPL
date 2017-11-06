@@ -863,6 +863,7 @@ namespace SIMPL
   {
     const unsigned int PolyData = 0;
     const unsigned int RectilinearGrid = 1;
+    const unsigned int UnknownGrid = 0xFFFFFFFF;
   }
 
   namespace XdmfCenterType

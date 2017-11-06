@@ -400,6 +400,7 @@ private:
 //
 // -----------------------------------------------------------------------------
 RectGridGeom::RectGridGeom()
+: IGeometryGrid()
 {
   m_GeometryTypeName = SIMPL::Geometry::RectGridGeometry;
   m_GeometryType = IGeometry::Type::RectGrid;
