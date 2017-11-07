@@ -443,6 +443,7 @@ int DataContainerReader::readExistingPipelineFromFile(hid_t fileId)
 int DataContainerReader::writeExistingPipelineToFile(QJsonObject& rootJson, int index)
 {
   FilterPipeline::FilterContainerType container = m_PipelineFromFile->getFilterContainer();
+  int offset = 0;
 
   for(FilterPipeline::FilterContainerType::iterator iter = container.begin(); iter != container.end(); ++iter)
   {
@@ -465,8 +466,9 @@ int DataContainerReader::writeExistingPipelineToFile(QJsonObject& rootJson, int 
     }
 
     rootJson[numStr] = json;
+    offset++;
   }
-  return index;
+  return offset;
 }
 
 // -----------------------------------------------------------------------------
