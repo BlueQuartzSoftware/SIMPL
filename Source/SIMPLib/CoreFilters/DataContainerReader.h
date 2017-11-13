@@ -43,6 +43,7 @@
 #include "SIMPLib/DataContainers/DataContainerArrayProxy.h"
 #include "SIMPLib/Filtering/AbstractFilter.h"
 #include "SIMPLib/Filtering/FilterPipeline.h"
+#include "SIMPLib/Utilities/SIMPLH5DataReader.h"
 #include "SIMPLib/SIMPLib.h"
 
 class SIMPLH5DataReader;
@@ -217,14 +218,12 @@ class SIMPLib_EXPORT DataContainerReader : public AbstractFilter
      */
     void initialize();
 
-
     /**
-     * @brief readData Reads the actual data from the HDF5 based .dream3d file
-     * @param preflight Boolean check for preflight status
-     * @param proxy DataContainerArrayProxy reference
-     * @param dca DataContainerArray instance pointer
+     * @brief readData
+     * @param proxy
+     * @return
      */
-    void readData(DataContainerArrayProxy& proxy, DataContainerArray::Pointer dca);
+    DataContainerArray::Pointer readData(DataContainerArrayProxy& proxy);
 
   protected slots:
     /**
@@ -234,7 +233,6 @@ class SIMPLib_EXPORT DataContainerReader : public AbstractFilter
 
   private:
     FilterPipeline::Pointer                     m_PipelineFromFile;
-    SIMPLH5DataReader*                          m_DataReader;
 
     DataContainerReader(const DataContainerReader&); // Copy Constructor Not Implemented
     void operator=(const DataContainerReader&); // Operator '=' Not Implemented

@@ -55,6 +55,7 @@ class DataContainerArray;
 class SIMPLib_EXPORT DataContainerArrayProxy
 {
   public:
+
     /**
      * @brief DataContainerArrayProxy
      */

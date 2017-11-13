@@ -85,7 +85,7 @@ DataContainer::Pointer DataContainer::createNewDataContainer(const QString& name
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void DataContainer::ReadDataContainerStructure(hid_t dcArrayGroupId, DataContainerArrayProxy& proxy, QString h5InternalPath)
+void DataContainer::ReadDataContainerStructure(hid_t dcArrayGroupId, DataContainerArrayProxy& proxy, SIMPLH5DataReaderRequirements req, QString h5InternalPath)
 {
   QList<QString> dataContainers;
   QH5Utilities::getGroupObjects(dcArrayGroupId, H5Utilities::H5Support_GROUP, dataContainers);
@@ -101,13 +101,25 @@ void DataContainer::ReadDataContainerStructure(hid_t dcArrayGroupId, DataContain
       continue;
     }
     HDF5ScopedGroupSentinel sentinel(&containerGid, false);
+
     DataContainerProxy dcProxy(dataContainerName);
     dcProxy.name = dataContainerName;
-    dcProxy.flag = Qt::Checked;
+    dcProxy.flag = Qt::Unchecked;
+
+    int32_t geometryType;
+    herr_t err = QH5Lite::readScalarAttribute(containerGid, SIMPL::Geometry::Geometry, SIMPL::Geometry::GeometryType, geometryType);
+    if (err >= 0)
+    {
+      IGeometry::Types geomTypes = req.getDCGeometryTypes();
+      if (geomTypes.size() <= 0 || geomTypes.contains(static_cast<IGeometry::Type>(geometryType)))
+      {
+        dcProxy.flag = Qt::Checked;
+      }
+    }
 
     QString h5Path = h5InternalPath + "/" + dataContainerName;
     // Read the Attribute Matricies for this Data Container
-    AttributeMatrix::ReadAttributeMatrixStructure(containerGid, &dcProxy, h5Path);
+    AttributeMatrix::ReadAttributeMatrixStructure(containerGid, &dcProxy, req, h5Path);
 
     // Insert the DataContainerProxy proxy into the DataContainerArrayProxy
     proxy.dataContainers.insert(dcProxy.name, dcProxy);

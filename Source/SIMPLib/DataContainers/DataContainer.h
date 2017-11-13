@@ -50,6 +50,7 @@
 #include "SIMPLib/DataContainers/AttributeMatrix.h"
 #include "SIMPLib/Geometry/IGeometry.h"
 #include "SIMPLib/DataContainers/DataContainerArrayProxy.h"
+#include "SIMPLib/Utilities/SIMPLH5DataReaderRequirements.h"
 
 class DataArrayPath;
 class DataContainerArrayProxy;
@@ -110,7 +111,7 @@ class SIMPLib_EXPORT DataContainer : public Observable
      * @param proxy
      * @param h5InternalPath
      */
-    static void ReadDataContainerStructure(hid_t dcArrayGroupId, DataContainerArrayProxy& proxy, QString h5InternalPath);
+    static void ReadDataContainerStructure(hid_t dcArrayGroupId, DataContainerArrayProxy& proxy, SIMPLH5DataReaderRequirements req, QString h5InternalPath);
 
     /**
     * @brief Sets the name of the data container

@@ -92,108 +92,108 @@ class SIMPLib_EXPORT ImageGeom : public IGeometryGrid
     /**
      * @brief initializeWithZeros
      */
-    virtual void initializeWithZeros();
+    virtual void initializeWithZeros() override;
 
     /**
      * @brief getNumberOfElements
      * @return
      */
-    virtual size_t getNumberOfElements();
+    virtual size_t getNumberOfElements() override;
 
     /**
      * @brief findElementSizes
      * @return
      */
-    virtual int findElementSizes();
+    virtual int findElementSizes() override;
 
     /**
      * @brief getElementSizes
      * @return
      */
-    virtual FloatArrayType::Pointer getElementSizes();
+    virtual FloatArrayType::Pointer getElementSizes() override;
 
     /**
      * @brief deleteElementSizes
      */
-    virtual void deleteElementSizes();
+    virtual void deleteElementSizes() override;
 
     /**
      * @brief findElementsContainingVert
      * @return
      */
-    virtual int findElementsContainingVert();
+    virtual int findElementsContainingVert() override;
 
     /**
      * @brief getElementsContainingVert
      * @return
      */
-    virtual ElementDynamicList::Pointer getElementsContainingVert();
+    virtual ElementDynamicList::Pointer getElementsContainingVert() override;
 
     /**
      * @brief deleteElementsContainingVert
      */
-    virtual void deleteElementsContainingVert();
+    virtual void deleteElementsContainingVert() override;
 
     /**
      * @brief findElementNeighbors
      * @return
      */
-    virtual int findElementNeighbors();
+    virtual int findElementNeighbors() override;
 
     /**
      * @brief getElementNeighbors
      * @return
      */
-    virtual ElementDynamicList::Pointer getElementNeighbors();
+    virtual ElementDynamicList::Pointer getElementNeighbors() override;
 
     /**
      * @brief deleteElementNeighbors
      */
-    virtual void deleteElementNeighbors();
+    virtual void deleteElementNeighbors() override;
 
     /**
      * @brief findElementCentroids
      * @return
      */
-    virtual int findElementCentroids();
+    virtual int findElementCentroids() override;
 
     /**
      * @brief getElementCentroids
      * @return
      */
-    virtual FloatArrayType::Pointer getElementCentroids();
+    virtual FloatArrayType::Pointer getElementCentroids() override;
 
     /**
      * @brief deleteElementCentroids
      */
-    virtual void deleteElementCentroids();
+    virtual void deleteElementCentroids() override;
 
     /**
      * @brief getParametricCenter
      * @param pCoords
      */
-    virtual void getParametricCenter(double pCoords[3]);
+    virtual void getParametricCenter(double pCoords[3]) override;
 
     /**
      * @brief getShapeFunctions
      * @param pCoords
      * @param shape
      */
-    virtual void getShapeFunctions(double pCoords[3], double* shape);
+    virtual void getShapeFunctions(double pCoords[3], double* shape) override;
 
     /**
      * @brief findDerivatives
      * @param field
      * @param derivatives
      */
-    virtual void findDerivatives(DoubleArrayType::Pointer field, DoubleArrayType::Pointer derivatives, Observable* observable = nullptr);
+    virtual void findDerivatives(DoubleArrayType::Pointer field, DoubleArrayType::Pointer derivatives, Observable* observable = nullptr) override;
 
     /**
      * @brief getInfoString
      * @return Returns a formatted string that contains general infomation about
      * the instance of the object.
      */
-    virtual QString getInfoString(SIMPL::InfoStringFormat format);
+    virtual QString getInfoString(SIMPL::InfoStringFormat format) override;
 
     /**
      * @brief writeGeometryToHDF5
@@ -201,7 +201,7 @@ class SIMPLib_EXPORT ImageGeom : public IGeometryGrid
      * @param writeXdmf
      * @return
      */
-    virtual int writeGeometryToHDF5(hid_t parentId, bool writeXdmf);
+    virtual int writeGeometryToHDF5(hid_t parentId, bool writeXdmf) override;
 
     /**
      * @brief writeXdmf
@@ -210,7 +210,7 @@ class SIMPLib_EXPORT ImageGeom : public IGeometryGrid
      * @param hdfFileName
      * @return
      */
-    virtual int writeXdmf(QTextStream& out, QString dcName, QString hdfFileName);
+    virtual int writeXdmf(QTextStream& out, QString dcName, QString hdfFileName) override;
 
     /**
      * @brief readGeometryFromHDF5
@@ -218,7 +218,7 @@ class SIMPLib_EXPORT ImageGeom : public IGeometryGrid
      * @param preflight
      * @return
      */
-    virtual int readGeometryFromHDF5(hid_t parentId, bool preflight);
+    virtual int readGeometryFromHDF5(hid_t parentId, bool preflight) override;
 
     /**
      * @brief deepCopy
@@ -229,38 +229,38 @@ class SIMPLib_EXPORT ImageGeom : public IGeometryGrid
     /**
      * @brief addAttributeMatrix
      */
-    virtual void addAttributeMatrix(const QString& name, AttributeMatrix::Pointer data);
+    virtual void addAttributeMatrix(const QString& name, AttributeMatrix::Pointer data) override;
 
 // -----------------------------------------------------------------------------
 // Inherited from IGeometryGrid
 // -----------------------------------------------------------------------------
 
-    virtual void setDimensions(size_t dims[3]) { std::copy(dims, dims + 3, m_Dimensions); }
-    virtual void setDimensions(size_t xDim, size_t yDim, size_t zDim) { m_Dimensions[0] = xDim;
+    virtual void setDimensions(size_t dims[3]) override { std::copy(dims, dims + 3, m_Dimensions); }
+    virtual void setDimensions(size_t xDim, size_t yDim, size_t zDim) override { m_Dimensions[0] = xDim;
                                                                         m_Dimensions[1] = yDim;
                                                                         m_Dimensions[2] = zDim; }
-    virtual void getDimensions(size_t dims[3]) { std::copy(m_Dimensions, m_Dimensions + 3, dims); }
-    virtual void getDimensions(size_t& xDim, size_t& yDim, size_t& zDim) { xDim = m_Dimensions[0];
+    virtual void getDimensions(size_t dims[3]) override { std::copy(m_Dimensions, m_Dimensions + 3, dims); }
+    virtual void getDimensions(size_t& xDim, size_t& yDim, size_t& zDim) override { xDim = m_Dimensions[0];
                                                                            yDim = m_Dimensions[1];
                                                                            zDim = m_Dimensions[2]; }
 
-    virtual size_t getXPoints() { return m_Dimensions[0]; }
-    virtual size_t getYPoints() { return m_Dimensions[1]; }
-    virtual size_t getZPoints() { return m_Dimensions[2]; }
+    virtual size_t getXPoints() override { return m_Dimensions[0]; }
+    virtual size_t getYPoints() override { return m_Dimensions[1]; }
+    virtual size_t getZPoints() override { return m_Dimensions[2]; }
 
-    virtual void getPlaneCoords(size_t idx[3], float coords[3]);
-    virtual void getPlaneCoords(size_t x, size_t y, size_t z, float coords[3]);
-    virtual void getPlaneCoords(size_t idx, float coords[3]);
-    virtual void getPlaneCoords(size_t idx[3], double coords[3]);
-    virtual void getPlaneCoords(size_t x, size_t y, size_t z, double coords[3]);
-    virtual void getPlaneCoords(size_t idx, double coords[3]);
+    virtual void getPlaneCoords(size_t idx[3], float coords[3]) override;
+    virtual void getPlaneCoords(size_t x, size_t y, size_t z, float coords[3]) override;
+    virtual void getPlaneCoords(size_t idx, float coords[3]) override;
+    virtual void getPlaneCoords(size_t idx[3], double coords[3]) override;
+    virtual void getPlaneCoords(size_t x, size_t y, size_t z, double coords[3]) override;
+    virtual void getPlaneCoords(size_t idx, double coords[3]) override;
 
-    virtual void getCoords(size_t idx[3], float coords[3]);
-    virtual void getCoords(size_t x, size_t y, size_t z, float coords[3]);
-    virtual void getCoords(size_t idx, float coords[3]);
-    virtual void getCoords(size_t idx[3], double coords[3]);
-    virtual void getCoords(size_t x, size_t y, size_t z, double coords[3]);
-    virtual void getCoords(size_t idx, double coords[3]);
+    virtual void getCoords(size_t idx[3], float coords[3]) override;
+    virtual void getCoords(size_t x, size_t y, size_t z, float coords[3]) override;
+    virtual void getCoords(size_t idx, float coords[3]) override;
+    virtual void getCoords(size_t idx[3], double coords[3]) override;
+    virtual void getCoords(size_t x, size_t y, size_t z, double coords[3]) override;
+    virtual void getCoords(size_t idx, double coords[3]) override;
 
   protected:
 
@@ -283,25 +283,25 @@ class SIMPLib_EXPORT ImageGeom : public IGeometryGrid
      * @brief setElementsContaingVert
      * @param elementsContaingVert
      */
-    virtual void setElementsContainingVert(ElementDynamicList::Pointer elementsContainingVert);
+    virtual void setElementsContainingVert(ElementDynamicList::Pointer elementsContainingVert) override;
 
     /**
      * @brief setElementNeighbors
      * @param elementNeighbors
      */
-    virtual void setElementNeighbors(ElementDynamicList::Pointer elementsNeighbors);
+    virtual void setElementNeighbors(ElementDynamicList::Pointer elementsNeighbors) override;
 
     /**
      * @brief setElementCentroids
      * @param elementCentroids
      */
-    virtual void setElementCentroids(FloatArrayType::Pointer elementCentroids);
+    virtual void setElementCentroids(FloatArrayType::Pointer elementCentroids) override;
 
     /**
      * @brief setElementSizes
      * @param elementSizes
      */
-    virtual void setElementSizes(FloatArrayType::Pointer elementSizes);
+    virtual void setElementSizes(FloatArrayType::Pointer elementSizes) override;
 
   private:
     size_t m_Dimensions[3];
