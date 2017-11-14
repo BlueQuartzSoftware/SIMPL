@@ -294,7 +294,7 @@ template <typename T> void copyData(IDataArray::Pointer fromData, IDataArray::Po
   typename DataArray<T>::Pointer fData = std::dynamic_pointer_cast<DataArray<T>>(fromData);
   typename DataArray<T>::Pointer tData = std::dynamic_pointer_cast<DataArray<T>>(toData);
 
-  // only wanting to grab data from tuple 1 to numTuples of the fromData array,s ince the zeroth slot is a placeholder the first AM should already have
+  // only wanting to grab data from tuple 1 to numTuples of the fromData array,since the zeroth slot is a placeholder the first AM should already have
   T* src = fData->getPointer(1 * fromData->getNumberOfComponents());
   T* dest = tData->getPointer(location * toData->getNumberOfComponents());
   size_t bytes = sizeof(T) * (fromData->getNumberOfTuples() - 1) * fromData->getNumberOfComponents();
@@ -324,7 +324,7 @@ void CombineAttributeMatrices::execute()
   size_t totalTuples2 = m_SecondIndexPtr.lock()->getNumberOfTuples();
   for(size_t i = 0; i < totalTuples1; i++)
   {
-    if(m_FirstIndex > 0)
+    if(m_FirstIndex[i] > 0)
     {
       m_NewIndex[i] = m_FirstIndex[i];
     }
@@ -333,7 +333,9 @@ void CombineAttributeMatrices::execute()
   {
     // subtract 1 from the index plus numTuples because the second index should be shifted to account for the zeroth tuple (all AMs above element start at tuple 1)
     if(m_SecondIndex[i] > 0 && m_NewIndex[i] == 0)
+    {
       m_NewIndex[i] = m_SecondIndex[i] + firstAttrMatNumTuples - 1;
+    }
     else if(m_SecondIndex[i] > 0 && m_NewIndex[i] != 0)
     {
       QString ss = QObject::tr("When copying the indices, the indices of the two attribute matrices overlapped.  The index of the first attribute matrix was kept.");
