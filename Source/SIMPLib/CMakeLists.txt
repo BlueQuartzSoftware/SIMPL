@@ -3,19 +3,16 @@
 PROJECT( SIMPLib VERSION ${SIMPLProj_VERSION_MAJOR}.${SIMPLProj_VERSION_MINOR})
 
 
-
-
 set(PROJECT_PREFIX "SIMPLib" CACHE STRING "The Prefix to be used for Preprocessor definitions")
 # -----------------------------------------------------------------------
 # The project generally does NOT want to install headers. See if another
 # project has over ridden that property
 get_property(CMP_PROJECT_INSTALL_HEADERS GLOBAL PROPERTY CMP_PROJECT_INSTALL_HEADERS)
 if("${CMP_PROJECT_INSTALL_HEADERS}" STREQUAL "")
-  set_property(GLOBAL PROPERTY CMP_PROJECT_INSTALL_HEADERS "1")
-  set(PROJECT_INSTALL_HEADERS "1")
-else()
-  set(PROJECT_INSTALL_HEADERS "${CMP_PROJECT_INSTALL_HEADERS}")
+  set_property(GLOBAL PROPERTY CMP_PROJECT_INSTALL_HEADERS "0")
+  get_property(CMP_PROJECT_INSTALL_HEADERS GLOBAL PROPERTY CMP_PROJECT_INSTALL_HEADERS)
 endif()
+set(PROJECT_INSTALL_HEADERS "${CMP_PROJECT_INSTALL_HEADERS}")
 
 set(SIMPLib_BUILT_AS_DYNAMIC_LIB)
 if(BUILD_SHARED_LIBS)
@@ -78,9 +75,11 @@ macro(D3DCompileDir DirName)
         set_source_files_properties( ${f} PROPERTIES HEADER_FILE_ONLY TRUE)
     endforeach()
     set(Project_SRCS ${Project_SRCS} ${SIMPLib_${DirName}_SRCS} ${SIMPLib_${DirName}_HDRS} ${SIMPLib_${SUBDIR_NAME}_Generated_MOC_SRCS})
-    install(DIRECTORY ${SIMPLib_SOURCE_DIR}/${DirName} 
-      DESTINATION include/${PROJECT_NAME}
-        FILES_MATCHING PATTERN "*.h")
+    if(PROJECT_INSTALL_HEADERS)
+      install(DIRECTORY ${SIMPLib_SOURCE_DIR}/${DirName} 
+              DESTINATION include/${PROJECT_NAME}
+              FILES_MATCHING PATTERN "*.h")
+    endif()
 endMacro()
 
 #------------------------------------------------------------------------------
@@ -248,27 +247,29 @@ export(EXPORT ${PROJECT_NAME}Targets
   NAMESPACE ${PROJECT_NAME}::
 )
 
-install(EXPORT SIMPLibTargets
-  FILE
-    SIMPLibTargets.cmake
-  NAMESPACE
-    SIMPL::
-  DESTINATION
-    ${ConfigPackageLocation}
-)
+if(PROJECT_INSTALL_HEADERS)
+  install(EXPORT SIMPLibTargets
+    FILE
+      SIMPLibTargets.cmake
+    NAMESPACE
+      SIMPL::
+    DESTINATION
+      ${ConfigPackageLocation}
+  )
 
-install(FILES 
-    ${CMP_HEADER_DIR}/${CMP_TOP_HEADER_FILE}
-    ${CMP_HEADER_DIR}/${CMP_TYPES_FILE_NAME}
-    ${CMP_HEADER_DIR}/${CMP_CONFIGURATION_FILE_NAME}
-    ${CMP_HEADER_DIR}/${CMP_VERSION_HEADER_FILE_NAME}
-  DESTINATION
-    include/${PROJECT_NAME}
-)
+  install(FILES 
+      ${CMP_HEADER_DIR}/${CMP_TOP_HEADER_FILE}
+      ${CMP_HEADER_DIR}/${CMP_TYPES_FILE_NAME}
+      ${CMP_HEADER_DIR}/${CMP_CONFIGURATION_FILE_NAME}
+      ${CMP_HEADER_DIR}/${CMP_VERSION_HEADER_FILE_NAME}
+    DESTINATION
+      include/${PROJECT_NAME}
+  )
+
+endif()
 
 
-
-# ------- Enable the CTest testing. Use make test to run all tests ---------------
+# ------- Enable the CTest testing. ---------------
 if(SIMPL_BUILD_TESTING)
     include(${SIMPLib_SOURCE_DIR}/Testing/CMakeLists.txt)
 endif()
