@@ -62,5 +62,3 @@ set(SIMPLib_${SUBDIR_NAME}_SRCS
 )
 
 
-if(MSVC)
-endif()

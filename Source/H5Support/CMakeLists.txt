@@ -52,9 +52,9 @@ set(H5Support_INSTALL_FILES 0)
 get_property(CMP_PROJECT_INSTALL_HEADERS GLOBAL PROPERTY CMP_PROJECT_INSTALL_HEADERS)
 if("${CMP_PROJECT_INSTALL_HEADERS}" STREQUAL "")
   set_property(GLOBAL PROPERTY CMP_PROJECT_INSTALL_HEADERS "0")
-else()
-  set(H5Support_INSTALL_FILES "${CMP_PROJECT_INSTALL_HEADERS}")
+  get_property(CMP_PROJECT_INSTALL_HEADERS GLOBAL PROPERTY CMP_PROJECT_INSTALL_HEADERS)
 endif()
+set(H5Support_INSTALL_FILES "${CMP_PROJECT_INSTALL_HEADERS}")
 
 set(H5Support_BUILT_AS_DYNAMIC_LIB)
 if(BUILD_SHARED_LIBS)
@@ -166,9 +166,9 @@ TARGET_INCLUDE_DIRECTORIES( ${PROJECT_NAME} PUBLIC
                               )
 
 if(BUILD_SHARED_LIBS)
-    if(WIN32)
-        target_compile_definitions(${PROJECT_NAME} PUBLIC "-DH5Support_BUILT_AS_DYNAMIC_LIB")
-    endif(WIN32)
+  if(WIN32)
+    target_compile_definitions(${PROJECT_NAME} PUBLIC "-DH5Support_BUILT_AS_DYNAMIC_LIB")
+  endif(WIN32)
 endif(BUILD_SHARED_LIBS)
 target_link_libraries(${PROJECT_NAME} ${HDF5_C_TARGET_NAME} Qt5::Core )
 
@@ -196,11 +196,6 @@ INSTALL(TARGETS ${PROJECT_NAME}
 )
 
 
-# ------- Enable the CTest testing. ---------------
-if(SIMPL_BUILD_TESTING)
-    include(${H5Support_SOURCE_DIR}/Test/CMakeLists.txt)
-endif()
-
 # --------------------------------------------------------------------
 # Allow the generation and installation of a CMake configuration file
 # which makes using SIMPL from another project easier.
@@ -210,24 +205,31 @@ export(EXPORT H5SupportTargets
   NAMESPACE H5Support::
 )
 
-install(EXPORT H5SupportTargets
-  FILE
-    ${PROJECT_NAME}Targets.cmake
-  NAMESPACE
-    ${PROJECT_NAME}::
-  DESTINATION
-    ${ConfigPackageLocation}
-)
+if (H5Support_INSTALL_FILES)
+  install(EXPORT H5SupportTargets
+    FILE
+      ${PROJECT_NAME}Targets.cmake
+    NAMESPACE
+      ${PROJECT_NAME}::
+    DESTINATION
+      ${ConfigPackageLocation}
+  )
 
-install(FILES 
-    ${CMP_HEADER_DIR}/${CMP_TOP_HEADER_FILE}
-    ${CMP_HEADER_DIR}/${CMP_TYPES_FILE_NAME}
-    ${CMP_HEADER_DIR}/${CMP_CONFIGURATION_FILE_NAME}
-    ${CMP_HEADER_DIR}/${CMP_VERSION_HEADER_FILE_NAME}
-  DESTINATION
-    include/${PROJECT_NAME}
-)
+  install(FILES 
+      ${CMP_HEADER_DIR}/${CMP_TOP_HEADER_FILE}
+      ${CMP_HEADER_DIR}/${CMP_TYPES_FILE_NAME}
+      ${CMP_HEADER_DIR}/${CMP_CONFIGURATION_FILE_NAME}
+      ${CMP_HEADER_DIR}/${CMP_VERSION_HEADER_FILE_NAME}
+    DESTINATION
+      include/${PROJECT_NAME}
+  )
+
+endif()
 
 
+# ------- Enable the CTest testing. ---------------
+if(SIMPL_BUILD_TESTING)
+    include(${H5Support_SOURCE_DIR}/Test/CMakeLists.txt)
+endif()
 
 
