@@ -81,6 +81,9 @@ macro(D3DCompileDir DirName)
     install(DIRECTORY ${SIMPLib_SOURCE_DIR}/${DirName} 
       DESTINATION include/${PROJECT_NAME}
         FILES_MATCHING PATTERN "*.h")
+    install(DIRECTORY ${SIMPLib_SOURCE_DIR}/${DirName} 
+      DESTINATION include/${PROJECT_NAME}
+        FILES_MATCHING PATTERN "*.hpp")
 endMacro()
 
 #------------------------------------------------------------------------------
