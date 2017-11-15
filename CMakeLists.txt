@@ -104,9 +104,7 @@ set(PROJECT_INSTALL_EXECUTABLES "1")
 get_property(CMP_PROJECT_INSTALL_HEADERS GLOBAL PROPERTY CMP_PROJECT_INSTALL_HEADERS)
 if("${CMP_PROJECT_INSTALL_HEADERS}" STREQUAL "")
   set_property(GLOBAL PROPERTY CMP_PROJECT_INSTALL_HEADERS "1")
-  set(PROJECT_INSTALL_HEADERS "1")
-else()
-  set(PROJECT_INSTALL_HEADERS "${CMP_PROJECT_INSTALL_HEADERS}")
+  get_property(CMP_PROJECT_INSTALL_HEADERS GLOBAL PROPERTY CMP_PROJECT_INSTALL_HEADERS)
 endif()
 
 # -----------------------------------------------------------------------
@@ -133,14 +131,6 @@ if("${SIMPLibSearchDirs}" STREQUAL "")
   set_property(GLOBAL PROPERTY SIMPLibSearchDirs "${SIMPLProj_BINARY_DIR}/LibSearchDirs.txt")
   get_property(SIMPLibSearchDirs GLOBAL PROPERTY SIMPLibSearchDirs)
   file(WRITE "${SIMPLProj_BINARY_DIR}/LibSearchDirs.txt" "")
-endif()
-
-# -----------------------------------------------------------------------
-# The project generally wants to install headers. See if another
-# project has over ridden that property
-get_property(CMP_PROJECT_INSTALL_HEADERS GLOBAL PROPERTY CMP_PROJECT_INSTALL_HEADERS)
-if("${CMP_PROJECT_INSTALL_HEADERS}" STREQUAL "")
-  set_property(GLOBAL PROPERTY CMP_PROJECT_INSTALL_HEADERS "1")
 endif()
 
 
