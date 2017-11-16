@@ -58,7 +58,10 @@ SIMPLH5DataReader::SIMPLH5DataReader(IObserver* obs) :
 // -----------------------------------------------------------------------------
 SIMPLH5DataReader::~SIMPLH5DataReader()
 {
-
+  if (m_FileId >= 0)
+  {
+    closeFile();
+  }
 }
 
 // -----------------------------------------------------------------------------
@@ -107,13 +110,19 @@ bool SIMPLH5DataReader::closeFile()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-bool SIMPLH5DataReader::readDREAM3DData(bool preflight, DataContainerArrayProxy proxy, DataContainerArray* dca)
+DataContainerArray::Pointer SIMPLH5DataReader::readSIMPLDataUsingProxy(DataContainerArrayProxy proxy, bool preflight)
 {
+  if (m_FileId < 0)
+  {
+    return DataContainerArray::NullPointer();
+  }
+
   QString ss;
   int32_t err = 0;
   QString m_FileVersion;
   float fVersion = 0.0f;
   bool check = false;
+  DataContainerArray::Pointer dca = DataContainerArray::New();
 
   // Check to see if version of .dream3d file is prior to new data container names
   err = QH5Lite::readStringAttribute(m_FileId, "/", SIMPL::HDF5::FileVersionName, m_FileVersion);
@@ -132,20 +141,20 @@ bool SIMPLH5DataReader::readDREAM3DData(bool preflight, DataContainerArrayProxy 
   {
     QString ss = QObject::tr("File data unable to be read - file version could not be read");
     emit errorGenerated(ss, -250);
-    return false;
+    return DataContainerArray::NullPointer();
   }
   if(fVersion < 7.0)
   {
     ss = QObject::tr("File unable to be read - file structure older than 7.0");
     emit errorGenerated(ss, -251);
-    return false;
+    return DataContainerArray::NullPointer();
   }
   hid_t dcaGid = H5Gopen(m_FileId, SIMPL::StringConstants::DataContainerGroupName.toLatin1().data(), 0);
   if(dcaGid < 0)
   {
     QString ss = QObject::tr("Error attempting to open the HDF5 Group '%1'").arg(SIMPL::StringConstants::DataContainerGroupName);
     emit errorGenerated(ss, -1923123);
-    return false;
+    return DataContainerArray::NullPointer();
   }
 
   err = dca->readDataContainersFromHDF5(preflight, dcaGid, proxy, this);
@@ -153,7 +162,7 @@ bool SIMPLH5DataReader::readDREAM3DData(bool preflight, DataContainerArrayProxy 
   {
     QString ss = QObject::tr("Error trying to read the DataContainers from the file '%1'").arg(m_CurrentFilePath);
     emit errorGenerated(ss, err);
-    return false;
+    return DataContainerArray::NullPointer();
   }
 
   err = H5Gclose(dcaGid);
@@ -164,25 +173,33 @@ bool SIMPLH5DataReader::readDREAM3DData(bool preflight, DataContainerArrayProxy 
   {
     QString ss = QObject::tr("Error trying to read the DataContainerBundles from the file '%1'").arg(m_CurrentFilePath);
     emit errorGenerated(ss, err);
-    return false;
+    return DataContainerArray::NullPointer();
   }
 
-  return true;
+  return dca;
 }
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-bool SIMPLH5DataReader::readDataContainerArrayStructure(DataContainerArrayProxy &proxy)
-{  
+DataContainerArrayProxy SIMPLH5DataReader::readDataContainerArrayStructure(SIMPLH5DataReaderRequirements req, int &err)
+{
+  DataContainerArrayProxy proxy;
+
+  if (m_FileId < 0)
+  {
+    return DataContainerArrayProxy();
+  }
+
   // Check the DREAM3D File Version to make sure we are reading the proper version
   QString d3dVersion;
-  herr_t err = QH5Lite::readStringAttribute(m_FileId, "/", SIMPL::HDF5::DREAM3DVersion, d3dVersion);
+  err = QH5Lite::readStringAttribute(m_FileId, "/", SIMPL::HDF5::DREAM3DVersion, d3dVersion);
   if(err < 0)
   {
     QString ss = QObject::tr("HDF5 Attribute '%1' was not found on the HDF5 root node and this is required").arg(SIMPL::HDF5::DREAM3DVersion);
-    emit errorGenerated(ss, -72);
-    return false;
+    err = -72;
+    emit errorGenerated(ss, err);
+    return DataContainerArrayProxy();
   }
 
   QString fileVersion;
@@ -191,8 +208,9 @@ bool SIMPLH5DataReader::readDataContainerArrayStructure(DataContainerArrayProxy 
   {
     // std::cout << "Attribute '" << SIMPL::HDF5::FileVersionName.toStdString() << " was not found" << std::endl;
     QString ss = QObject::tr("HDF5 Attribute '%1' was not found on the HDF5 root node and this is required").arg(SIMPL::HDF5::FileVersionName);
-    emit errorGenerated(ss, -73);
-    return false;
+    err = -73;
+    emit errorGenerated(ss, err);
+    return DataContainerArrayProxy();
   }
   //  else {
   //    std::cout << SIMPL::HDF5::FileVersionName.toStdString() << ":" << fileVersion.toStdString() << std::endl;
@@ -202,17 +220,18 @@ bool SIMPLH5DataReader::readDataContainerArrayStructure(DataContainerArrayProxy 
   if(dcArrayGroupId < 0)
   {
     QString ss = QObject::tr("Error opening HDF5 Group '%1'").arg(SIMPL::StringConstants::DataContainerGroupName);
-    emit errorGenerated(ss, -74);
-    return false;
+    err = -74;
+    emit errorGenerated(ss, err);
+    return DataContainerArrayProxy();
   }
 
   QString h5InternalPath = QString("/") + SIMPL::StringConstants::DataContainerGroupName;
 
   // Read the entire structure of the file into the proxy
-  DataContainer::ReadDataContainerStructure(dcArrayGroupId, proxy, h5InternalPath);
+  DataContainer::ReadDataContainerStructure(dcArrayGroupId, proxy, req, h5InternalPath);
 
   QH5Utilities::closeHDF5Object(dcArrayGroupId);
-  return true;
+  return proxy;
 }
 
 // -----------------------------------------------------------------------------
@@ -259,7 +278,7 @@ bool SIMPLH5DataReader::readPipelineJson(QString &json)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-bool SIMPLH5DataReader::readDataContainerBundles(hid_t fileId, DataContainerArray *dca)
+bool SIMPLH5DataReader::readDataContainerBundles(hid_t fileId, DataContainerArray::Pointer dca)
 {
   herr_t err = 0;
   hid_t dcbGroupId = H5Gopen(fileId, SIMPL::StringConstants::DataContainerBundleGroupName.toLatin1().constData(), H5P_DEFAULT);
@@ -334,6 +353,47 @@ bool SIMPLH5DataReader::readDataContainerBundles(hid_t fileId, DataContainerArra
   dcbGroupId = -1;
   return true;
 }
+
+//// -----------------------------------------------------------------------------
+////
+//// -----------------------------------------------------------------------------
+//QList<DataArrayPath> SIMPLH5DataReader::getDataArrayPaths(SIMPLH5DataReader::RequirementType req)
+//{
+//  QList<DataArrayPath> daPaths;
+
+
+//  return daPaths;
+//}
+
+//// -----------------------------------------------------------------------------
+////
+//// -----------------------------------------------------------------------------
+//SIMPLH5DataReader::RequirementType SIMPLH5DataReader::CreateRequirement(const QString& primitiveType,
+//                                                                        size_t allowedCompDim,
+//                                                                        AttributeMatrix::Type attributeMatrixType,
+//                                                                        IGeometry::Type geometryType)
+//{
+//  typedef QVector<size_t> QVectorOfSizeType;
+//  SIMPLH5DataReader::RequirementType req;
+//  if(primitiveType.compare(SIMPL::Defaults::AnyPrimitive) != 0)
+//  {
+//    req.daTypes = QVector<QString>(1, primitiveType);
+//  }
+//  if(SIMPL::Defaults::AnyComponentSize != allowedCompDim)
+//  {
+//    req.componentDimensions = QVector<QVectorOfSizeType>(1, QVectorOfSizeType(1, allowedCompDim));
+//  }
+//  if(AttributeMatrix::Type::Any != attributeMatrixType)
+//  {
+//    QVector<AttributeMatrix::Type> amTypes(1, attributeMatrixType);
+//    req.amTypes = amTypes;
+//  }
+//  if(IGeometry::Type::Any != geometryType)
+//  {
+//    req.dcGeometryTypes = IGeometry::Types(1, geometryType);
+//  }
+//  return req;
+//}
 
 // -----------------------------------------------------------------------------
 //

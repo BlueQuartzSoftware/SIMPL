@@ -47,7 +47,7 @@
 
 
 #include "SIMPLib/Common/Constants.h"
-
+#include "SIMPLib/Utilities/SIMPLH5DataReaderRequirements.h"
 
 
 class DataArrayProxy
@@ -142,7 +142,7 @@ class DataArrayProxy
      * @param dataArrays
      * @param h5InternalPath
      */
-    static void ReadDataArrayStructure(hid_t attrMatGid, QMap<QString, DataArrayProxy>& dataArrays, QString h5InternalPath)
+    static void ReadDataArrayStructure(hid_t attrMatGid, QMap<QString, DataArrayProxy>& dataArrays, SIMPLH5DataReaderRequirements req, QString h5InternalPath)
     {
 
       QList<QString> dataArrayNames;
@@ -152,7 +152,7 @@ class DataArrayProxy
         if(__SHOW_DEBUG_MSG__)
         { std::cout << "        DataArray: " << dataArrayName.toStdString()  << std::endl; }
 
-        DataArrayProxy proxy(h5InternalPath, dataArrayName, SIMPL::Checked);
+        DataArrayProxy proxy(h5InternalPath, dataArrayName, SIMPL::Unchecked);
 
         herr_t err = QH5Lite::readVectorAttribute(attrMatGid, dataArrayName, SIMPL::HDF5::TupleDimensions, proxy.tupleDims);
         if(err < 0) { std::cout << "Error Reading the Tuple Dimensions for DataArray " << dataArrayName.toStdString() << std::endl; }
@@ -160,11 +160,24 @@ class DataArrayProxy
         err = QH5Lite::readVectorAttribute(attrMatGid, dataArrayName, SIMPL::HDF5::ComponentDimensions, proxy.compDims);
         if(err < 0) { std::cout << "Error Reading the Component Dimensions for DataArray " << dataArrayName.toStdString() << std::endl; }
 
+        QVector<QVector<size_t> > cDims = req.getComponentDimensions();
+        bool cDimsResult = false;
+        if (cDims.size() <= 0 || cDims.contains(proxy.compDims))
+        {
+          cDimsResult = true;
+        }
+
         err = QH5Lite::readScalarAttribute(attrMatGid, dataArrayName, SIMPL::HDF5::DataArrayVersion, proxy.version);
         if(err < 0) { std::cout << "Error Reading the Version for DataArray " << dataArrayName.toStdString() << std::endl; }
 
         err = QH5Lite::readStringAttribute(attrMatGid, dataArrayName, SIMPL::HDF5::ObjectType, proxy.objectType);
         if(err < 0) { std::cout << "Error Reading the Object Type for DataArray " << dataArrayName.toStdString() << std::endl; }
+
+        QVector<QString> daTypes = req.getDATypes();
+        if ((daTypes.size() <= 0 || daTypes.contains(proxy.objectType)) && cDimsResult == true)
+        {
+          proxy.flag = Qt::Checked;
+        }
 
         dataArrays.insert(dataArrayName, proxy);
       }

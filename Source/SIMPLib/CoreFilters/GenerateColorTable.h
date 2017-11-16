@@ -6,6 +6,7 @@
 #define _generatecolortable_h_
 
 #include <QtCore/QJsonObject>
+#include <QtCore/QJsonArray>
 
 #include "SIMPLib/Common/SIMPLibSetGetMacros.h"
 #include "SIMPLib/Filtering/AbstractFilter.h"

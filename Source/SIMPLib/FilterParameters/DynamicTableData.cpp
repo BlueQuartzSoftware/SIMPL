@@ -35,6 +35,8 @@
 
 #include "DynamicTableData.h"
 
+#include <QtCore/QJsonArray>
+
 #include "moc_DynamicTableData.cpp"
 
 // -----------------------------------------------------------------------------

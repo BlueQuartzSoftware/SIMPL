@@ -77,6 +77,7 @@ set(CMP_PROJECT_NAME "${PROJECT_NAME}")
 set(CMP_ENABLE_PLUGINS "0")
 set(CMP_LIB_SEARCH_DIRS "")
 set(CMP_GENERATE_VERSION_STRING 1)
+set(PROJECT_INSTALL_HEADERS "${CMP_PROJECT_INSTALL_HEADERS}")
 
 INCLUDE (${CMP_SOURCE_DIR}/cmpProject.cmake)
 
@@ -124,7 +125,7 @@ endif()
 configure_file(${H5Support_SOURCE_DIR}/H5SupportConfiguration.h.in
                ${H5Support_BINARY_DIR}/${CMP_TOP_HEADER_FILE})
 
-cmp_IDE_SOURCE_PROPERTIES( "H5Support" "${H5Support_HDRS}" "${H5Support_SRCS}" ${PROJECT_INSTALL_HEADERS})
+cmp_IDE_SOURCE_PROPERTIES( "" "${H5Support_HDRS}" "${H5Support_SRCS}" ${PROJECT_INSTALL_HEADERS})
 
 # --------------------------------------------------------------------
 # Generate a Header file with Compile Version variables

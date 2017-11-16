@@ -53,7 +53,7 @@
 #include "SIMPLib/Math/SIMPLibMath.h"
 #include "SIMPLib/DataContainers/AttributeMatrixProxy.h"
 #include "SIMPLib/DataContainers/DataContainerProxy.h"
-
+#include "SIMPLib/Utilities/SIMPLH5DataReaderRequirements.h"
 
 // -----------------------------------------------------------------------------
 //
@@ -231,7 +231,7 @@ QVector<QString> AttributeMatrix::GetTypesAsStrings()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void AttributeMatrix::ReadAttributeMatrixStructure(hid_t containerId, DataContainerProxy* dcProxy, QString h5InternalPath)
+void AttributeMatrix::ReadAttributeMatrixStructure(hid_t containerId, DataContainerProxy* dcProxy, SIMPLH5DataReaderRequirements req, QString h5InternalPath)
 {
   QList<QString> attributeMatrixNames;
   QH5Utilities::getGroupObjects(containerId, H5Utilities::H5Support_GROUP, attributeMatrixNames);
@@ -252,20 +252,29 @@ void AttributeMatrix::ReadAttributeMatrixStructure(hid_t containerId, DataContai
 
       AttributeMatrixProxy amProxy(attributeMatrixName);
       amProxy.name = attributeMatrixName;
-      amProxy.flag = Qt::Checked;
+      amProxy.flag = Qt::Unchecked;
+
       AttributeMatrix::EnumType amTypeTmp = static_cast<AttributeMatrix::EnumType>(AttributeMatrix::Type::Unknown);
       herr_t err = QH5Lite::readScalarAttribute(containerId, attributeMatrixName, SIMPL::StringConstants::AttributeMatrixType, amTypeTmp);
-      if(err < 0)
+      if(err >= 0)
+      {
+        AttributeMatrix::Types amTypes = req.getAMTypes();
+        if (amTypes.size() <= 0 || amTypes.contains(static_cast<AttributeMatrix::Type>(amTypeTmp)))
+        {
+          amProxy.flag = Qt::Checked;
+        }
+        amProxy.amType = static_cast<AttributeMatrix::Type>(amTypeTmp);
+      }
+      else
       {
         std::cout << "Error Reading the AttributeMatrix Type for AttributeMatrix " << attributeMatrixName.toStdString() << std::endl;
       }
-      amProxy.amType = static_cast<AttributeMatrix::Type>(amTypeTmp);
 
       QString h5Path = h5InternalPath + "/" + attributeMatrixName;
 
       // Read in the names of the Data Arrays that make up the AttributeMatrix
       QMap<QString, DataArrayProxy>& daProxies = amProxy.dataArrays;
-      DataArrayProxy::ReadDataArrayStructure(attrMatGid, daProxies, h5Path);
+      DataArrayProxy::ReadDataArrayStructure(attrMatGid, daProxies, req, h5Path);
 
       // Insert the AttributeMatrixProxy proxy into the dataContainer proxy
       dcProxy->attributeMatricies.insert(attributeMatrixName, amProxy);

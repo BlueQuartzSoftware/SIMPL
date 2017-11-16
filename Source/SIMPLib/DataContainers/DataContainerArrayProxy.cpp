@@ -155,34 +155,29 @@ QStringList DataContainerArrayProxy::flattenHeirarchy(Qt::CheckState dcFlag, Qt:
   while(dcIter.hasNext()) // DataContainerLevel
   {
     const DataContainerProxy& dcProxy = dcIter.next();
-    if(dcProxy.flag != dcFlag)
+    if(dcFlag == Qt::Checked && dcProxy.flag == Qt::Checked)
     {
-      continue; // Skip to the next DataContainer if we are not reading this one.
-    }
-    QMapIterator<QString, AttributeMatrixProxy> amIter(dcProxy.attributeMatricies);
-    while(amIter.hasNext()) // AttributeMatrixLevel
-    {
-      amIter.next();
-
-      const AttributeMatrixProxy& amProxy = amIter.value();
-      if(amProxy.flag != amFlag)
+      QMapIterator<QString, AttributeMatrixProxy> amIter(dcProxy.attributeMatricies);
+      while(amIter.hasNext()) // AttributeMatrixLevel
       {
-        continue; // Skip to the next AttributeMatrix if not reading this one
-      }
+        amIter.next();
 
-      QMapIterator<QString, DataArrayProxy> dIter(amProxy.dataArrays);
-      while(dIter.hasNext()) // DataArray Level
-      {
-        dIter.next();
-
-        const DataArrayProxy& daProxy = dIter.value();
-        if(daProxy.flag != daFlag)
+        const AttributeMatrixProxy& amProxy = amIter.value();
+        if(amFlag == Qt::Checked && amProxy.flag == Qt::Checked)
         {
-          continue; // Skip to the next DataArray if not reading this one
-        }
+          QMapIterator<QString, DataArrayProxy> dIter(amProxy.dataArrays);
+          while(dIter.hasNext()) // DataArray Level
+          {
+            dIter.next();
 
-        QString path = QString("%1|%2|%3").arg(dcProxy.name).arg(amProxy.name).arg(daProxy.name);
-        strList << path;
+            const DataArrayProxy& daProxy = dIter.value();
+            if(daFlag == Qt::Checked && daProxy.flag == Qt::Checked)
+            {
+              QString path = QString("%1|%2|%3").arg(dcProxy.name).arg(amProxy.name).arg(daProxy.name);
+              strList << path;
+            }
+          }
+        }
       }
     }
   }

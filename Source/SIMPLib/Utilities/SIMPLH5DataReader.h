@@ -38,12 +38,14 @@
 #include <hdf5.h>
 
 #include "SIMPLib/Common/Observable.h"
+#include "SIMPLib/DataContainers/DataArrayPath.h"
+#include "SIMPLib/DataContainers/DataContainerArray.h"
+#include "SIMPLib/Utilities/SIMPLH5DataReaderRequirements.h"
 
 #include "SIMPLib/SIMPLib.h"
 
 class IObserver;
 class DataContainerArrayProxy;
-class DataContainerArray;
 
 /**
  * @brief The SIMPLH5DataReader class
@@ -53,6 +55,9 @@ class SIMPLib_EXPORT SIMPLH5DataReader : public Observable
     Q_OBJECT
 
   public:
+    SIMPL_SHARED_POINTERS(SIMPLH5DataReader)
+    SIMPL_STATIC_NEW_MACRO(SIMPLH5DataReader)
+
     SIMPLH5DataReader(IObserver* obs = nullptr);
     virtual ~SIMPLH5DataReader();
 
@@ -71,20 +76,18 @@ class SIMPLib_EXPORT SIMPLH5DataReader : public Observable
 
     /**
      * @brief readDataContainerArrayStructure
-     * @param proxy
+     * @param err
      * @return
      */
-    bool readDataContainerArrayStructure(DataContainerArrayProxy &proxy);
+    DataContainerArrayProxy readDataContainerArrayStructure(SIMPLH5DataReaderRequirements req, int &err);
 
     /**
-     * @brief readDREAM3DData
-     * @param dream3dFilePath
-     * @param preflight
+     * @brief readSIMPLDataUsingProxy
      * @param proxy
-     * @param dca
+     * @param preflight
      * @return
      */
-    bool readDREAM3DData(bool preflight, DataContainerArrayProxy proxy, DataContainerArray* dca);
+    DataContainerArray::Pointer readSIMPLDataUsingProxy(DataContainerArrayProxy proxy, bool preflight);
 
     /**
      * @brief readPipelineJson
@@ -115,7 +118,7 @@ class SIMPLib_EXPORT SIMPLH5DataReader : public Observable
      * @param dca
      * @return
      */
-    bool readDataContainerBundles(hid_t fileId, DataContainerArray* dca);
+    bool readDataContainerBundles(hid_t fileId, DataContainerArray::Pointer dca);
 
     SIMPLH5DataReader(const SIMPLH5DataReader&); // Copy Constructor Not Implemented
     void operator=(const SIMPLH5DataReader&); // Operator '=' Not Implemented

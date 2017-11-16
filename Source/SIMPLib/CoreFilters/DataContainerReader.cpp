@@ -37,8 +37,12 @@
 
 #include <QtCore/QFileInfo>
 
+#include "H5Support/QH5Utilities.h"
+#include "H5Support/HDF5ScopedFileSentinel.h"
+
 #include "SIMPLib/Common/Constants.h"
 #include "SIMPLib/DataContainers/DataContainerBundle.h"
+#include "SIMPLib/DataContainers/DataContainer.h"
 #include "SIMPLib/FilterParameters/AbstractFilterParametersReader.h"
 #include "SIMPLib/FilterParameters/BooleanFilterParameter.h"
 #include "SIMPLib/FilterParameters/DataContainerReaderFilterParameter.h"
@@ -63,12 +67,6 @@ DataContainerReader::DataContainerReader()
 {
   m_PipelineFromFile = FilterPipeline::New();
 
-  m_DataReader = new SIMPLH5DataReader();
-  connect(m_DataReader, &SIMPLH5DataReader::errorGenerated, [=] (const QString &msg, const int &code) {
-    setErrorCondition(code);
-    notifyErrorMessage(getHumanLabel(), msg, getErrorCondition());
-  });
-
   setupFilterParameters();
 }
 
@@ -77,7 +75,7 @@ DataContainerReader::DataContainerReader()
 // -----------------------------------------------------------------------------
 DataContainerReader::~DataContainerReader()
 {
-  delete m_DataReader;
+
 }
 
 // -----------------------------------------------------------------------------
@@ -152,12 +150,7 @@ void DataContainerReader::initialize()
 //
 // -----------------------------------------------------------------------------
 void DataContainerReader::dataCheck()
-{  
-  if (m_DataReader->openFile(getInputFile()) == false)
-  {
-    return;
-  }
-
+{
   // Sync the file proxy and cached proxy if the time stamps are different
   QFileInfo fi(getInputFile());
   if(getInputFile() == getLastFileRead() && getLastRead() < fi.lastModified())
@@ -190,11 +183,8 @@ void DataContainerReader::dataCheck()
 
   DataContainerArray::Pointer dca = getDataContainerArray();
 
-  // Create a new DataContainerArray to read the file data into
-  DataContainerArray::Pointer tempDCA = DataContainerArray::New();
-
   // Read either the structure or all the data depending on the preflight status
-  readData(m_InputFileDataContainerArrayProxy, tempDCA);
+  DataContainerArray::Pointer tempDCA = readData(m_InputFileDataContainerArrayProxy);
 
   QList<DataContainer::Pointer>& tempContainers = tempDCA->getDataContainers();
   QListIterator<DataContainer::Pointer> iter(tempContainers);
@@ -226,8 +216,6 @@ void DataContainerReader::dataCheck()
   }
   QMap<QString, IDataContainerBundle::Pointer> bundles = tempDCA->getDataContainerBundles();
   dca->setDataContainerBundles(bundles);
-
-  m_DataReader->closeFile();
 }
 
 // -----------------------------------------------------------------------------
@@ -266,15 +254,26 @@ void DataContainerReader::execute()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void DataContainerReader::readData(DataContainerArrayProxy& proxy, DataContainerArray::Pointer dca)
+DataContainerArray::Pointer DataContainerReader::readData(DataContainerArrayProxy& proxy)
 {
   setErrorCondition(0);
   setWarningCondition(0);
 
-  bool result = m_DataReader->readDREAM3DData(getInPreflight(), proxy, dca.get());
-  if (result == false)
+  SIMPLH5DataReader::Pointer simplReader = SIMPLH5DataReader::New();
+  connect(simplReader.get(), &SIMPLH5DataReader::errorGenerated, [=] (const QString &msg, const int &code) {
+    setErrorCondition(code);
+    notifyErrorMessage(getHumanLabel(), msg, getErrorCondition());
+  });
+
+  if (simplReader->openFile(getInputFile()) == false)
   {
-    return;
+    return DataContainerArray::NullPointer();
+  }
+
+  DataContainerArray::Pointer dca = simplReader->readSIMPLDataUsingProxy(proxy, getInPreflight());
+  if (dca == DataContainerArray::NullPointer())
+  {
+    return DataContainerArray::NullPointer();
   }
 
   hid_t fileId = QH5Utilities::openFile(getInputFile(), true); // Open the file Read Only
@@ -283,8 +282,9 @@ void DataContainerReader::readData(DataContainerArrayProxy& proxy, DataContainer
     setErrorCondition(-150);
     QString ss = QObject::tr("Error opening input file '%1'").arg(getInputFile());
     notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
-    return;
+    return DataContainerArray::NullPointer();
   }
+  HDF5ScopedFileSentinel sentinel(&fileId, true);
 
   if(!getInPreflight())
   {
@@ -294,10 +294,11 @@ void DataContainerReader::readData(DataContainerArrayProxy& proxy, DataContainer
       setErrorCondition(err);
       QString ss = QObject::tr("Error trying to read the existing pipeline from the file '%1'").arg(getInputFile());
       notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
+      return DataContainerArray::NullPointer();
     }
   }
 
-  QH5Utilities::closeFile(fileId);
+  return dca;
 }
 
 // -----------------------------------------------------------------------------
@@ -305,76 +306,19 @@ void DataContainerReader::readData(DataContainerArrayProxy& proxy, DataContainer
 // -----------------------------------------------------------------------------
 DataContainerArrayProxy DataContainerReader::readDataContainerArrayStructure(const QString& path)
 {
-  DataContainerArrayProxy proxy;
-  QFileInfo fi(path);
-  if(path.isEmpty() == true)
+  SIMPLH5DataReader::Pointer h5Reader = SIMPLH5DataReader::New();
+  if (h5Reader->openFile(path) == false)
   {
-    QString ss = QObject::tr("SIMPLView File Path is empty");
-    setErrorCondition(-70);
-    notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
-    return proxy;
-  }
-  else if(fi.exists() == false)
-  {
-    QString ss = QObject::tr("The input file %1 does not exist").arg(path);
-    setErrorCondition(-388);
-    notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
-    return proxy;
+    return DataContainerArrayProxy();
   }
 
-  herr_t err = 0;
-  hid_t fileId = QH5Utilities::openFile(path, true);
-  if(fileId < 0)
+  int err = 0;
+  SIMPLH5DataReaderRequirements req(SIMPL::Defaults::AnyPrimitive, SIMPL::Defaults::AnyComponentSize, AttributeMatrix::Type::Any, IGeometry::Type::Any);
+  DataContainerArrayProxy proxy = h5Reader->readDataContainerArrayStructure(req, err);
+  if (err < 0)
   {
-    QString ss = QObject::tr("Error opening SIMPLView file location at %1").arg(path);
-    setErrorCondition(-71);
-    notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
-    return proxy;
+    return DataContainerArrayProxy();
   }
-  HDF5ScopedFileSentinel sentinel(&fileId, false); // Make sure the file gets closed automatically if we return early
-
-  // Check the DREAM3D File Version to make sure we are reading the proper version
-  QString d3dVersion;
-  err = QH5Lite::readStringAttribute(fileId, "/", SIMPL::HDF5::DREAM3DVersion, d3dVersion);
-  if(err < 0)
-  {
-    QString ss = QObject::tr("HDF5 Attribute '%1' was not found on the HDF5 root node and this is required").arg(SIMPL::HDF5::DREAM3DVersion);
-    setErrorCondition(-72);
-    notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
-    return proxy;
-  }
-  //  else {
-  //    std::cout << SIMPL::HDF5::DREAM3DVersion.toStdString() << ":" << d3dVersion.toStdString() << std::endl;
-  //  }
-
-  QString fileVersion;
-  err = QH5Lite::readStringAttribute(fileId, "/", SIMPL::HDF5::FileVersionName, fileVersion);
-  if(err < 0)
-  {
-    // std::cout << "Attribute '" << SIMPL::HDF5::FileVersionName.toStdString() << " was not found" << std::endl;
-    QString ss = QObject::tr("HDF5 Attribute '%1' was not found on the HDF5 root node and this is required").arg(SIMPL::HDF5::FileVersionName);
-    setErrorCondition(-73);
-    notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
-    return proxy;
-  }
-  //  else {
-  //    std::cout << SIMPL::HDF5::FileVersionName.toStdString() << ":" << fileVersion.toStdString() << std::endl;
-  //  }
-
-  hid_t dcArrayGroupId = H5Gopen(fileId, SIMPL::StringConstants::DataContainerGroupName.toLatin1().constData(), H5P_DEFAULT);
-  if(dcArrayGroupId < 0)
-  {
-    QString ss = QObject::tr("Error opening HDF5 Group '%1'").arg(SIMPL::StringConstants::DataContainerGroupName);
-    setErrorCondition(-74);
-    notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
-    return proxy;
-  }
-  sentinel.addGroupId(&dcArrayGroupId);
-
-  QString h5InternalPath = QString("/") + SIMPL::StringConstants::DataContainerGroupName;
-
-  // Read the entire structure of the file into the proxy
-  DataContainer::ReadDataContainerStructure(dcArrayGroupId, proxy, h5InternalPath);
 
   return proxy;
 }
@@ -476,11 +420,26 @@ int DataContainerReader::writeExistingPipelineToFile(QJsonObject& rootJson, int 
 // -----------------------------------------------------------------------------
 bool DataContainerReader::syncProxies()
 {
+//  SIMPLH5DataReaderRequirements req(SIMPL::Defaults::AnyPrimitive, SIMPL::Defaults::AnyComponentSize, AttributeMatrix::Type::Any, IGeometry::Type::Any);
+  SIMPLH5DataReaderRequirements req(SIMPL::Defaults::AnyPrimitive, 1, AttributeMatrix::Type::Any, IGeometry::Type::Image);
+
+  SIMPLH5DataReader::Pointer simplReader = SIMPLH5DataReader::New();
+  connect(simplReader.get(), &SIMPLH5DataReader::errorGenerated, [=] (const QString &msg, const int &code) {
+    setErrorCondition(code);
+    notifyErrorMessage(getHumanLabel(), msg, getErrorCondition());
+  });
+
+  if (simplReader->openFile(getInputFile()) == false)
+  {
+    return false;
+  }
+
   // If there is something in the cached proxy...
   if(m_InputFileDataContainerArrayProxy.dataContainers.size() > 0)
   {
-    DataContainerArrayProxy fileProxy;
-    if (m_DataReader->readDataContainerArrayStructure(fileProxy) == false)
+    int err = 0;
+    DataContainerArrayProxy fileProxy = simplReader->readDataContainerArrayStructure(req, err);
+    if (err < 0)
     {
       return false;
     }
@@ -493,8 +452,9 @@ bool DataContainerReader::syncProxies()
   }
   else
   {
-    DataContainerArrayProxy fileProxy;
-    if (m_DataReader->readDataContainerArrayStructure(fileProxy) == false)
+    int err = 0;
+    DataContainerArrayProxy fileProxy = simplReader->readDataContainerArrayStructure(req, err);
+    if (err < 0)
     {
       return false;
     }

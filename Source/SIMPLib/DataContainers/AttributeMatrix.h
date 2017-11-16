@@ -62,7 +62,7 @@
 
 class AttributeMatrixProxy;
 class DataContainerProxy;
-
+class SIMPLH5DataReaderRequirements;
 
 enum RenameErrorCodes
 {
@@ -185,7 +185,7 @@ class SIMPLib_EXPORT AttributeMatrix : public Observable
      * @param dataContainer
      * @param h5InternalPath
      */
-    static void ReadAttributeMatrixStructure(hid_t containerId, DataContainerProxy* dcProxy, QString h5InternalPath);
+    static void ReadAttributeMatrixStructure(hid_t containerId, DataContainerProxy* dcProxy, SIMPLH5DataReaderRequirements req, QString h5InternalPath);
 
     /**
      * @brief setType

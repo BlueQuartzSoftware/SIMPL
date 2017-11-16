@@ -35,6 +35,9 @@
 
 #include "DataContainerBundle.h"
 
+#include "H5Support/QH5Utilities.h"
+#include "H5Support/HDF5ScopedFileSentinel.h"
+
 #include "SIMPLib/DataArrays/StringDataArray.hpp"
 #include "SIMPLib/DataContainers/DataArrayPath.h"
 
@@ -221,7 +224,6 @@ QVector<DataArrayPath> DataContainerBundle::findCommonDataArrayPaths(bool filter
 // -----------------------------------------------------------------------------
 int DataContainerBundle::writeH5Data(hid_t groupId)
 {
-
   hid_t bundleId = QH5Utilities::createGroup(groupId, getName());
   // This object will make sure the HDF5 Group id is closed when it goes out of scope.
   H5GroupAutoCloser bundleIdClose(&bundleId);
