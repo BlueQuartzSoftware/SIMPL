@@ -125,7 +125,7 @@ endif()
 configure_file(${H5Support_SOURCE_DIR}/H5SupportConfiguration.h.in
                ${H5Support_BINARY_DIR}/${CMP_TOP_HEADER_FILE})
 
-cmp_IDE_SOURCE_PROPERTIES( "H5Support" "${H5Support_HDRS}" "${H5Support_SRCS}" ${PROJECT_INSTALL_HEADERS})
+cmp_IDE_SOURCE_PROPERTIES( "" "${H5Support_HDRS}" "${H5Support_SRCS}" ${PROJECT_INSTALL_HEADERS})
 
 # --------------------------------------------------------------------
 # Generate a Header file with Compile Version variables

@@ -84,12 +84,12 @@ set(SIMPLib_${SUBDIR_NAME}_SRCS
   ${SIMPLib_${SUBDIR_NAME}_Generated_MOC_SRCS}
 )
 
-if( ${PROJECT_INSTALL_HEADERS} EQUAL 1 )
-    INSTALL (FILES ${SIMPLib_${SUBDIR_NAME}_HDRS}
-                   ${SIMPLib_${SUBDIR_NAME}_Moc_HDRS}
-            DESTINATION include/SIMPLib/${SUBDIR_NAME}
-            COMPONENT Headers   )
-endif()
+# if( ${PROJECT_INSTALL_HEADERS} EQUAL 1 )
+#     INSTALL (FILES ${SIMPLib_${SUBDIR_NAME}_HDRS}
+#                    ${SIMPLib_${SUBDIR_NAME}_Moc_HDRS}
+#             DESTINATION include/SIMPLib/${SUBDIR_NAME}
+#             COMPONENT Headers   )
+# endif()
 
 
 #-------------------------------------------------------------------------------

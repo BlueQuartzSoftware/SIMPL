@@ -75,14 +75,14 @@ macro(D3DCompileDir DirName)
         set_source_files_properties( ${f} PROPERTIES HEADER_FILE_ONLY TRUE)
     endforeach()
     set(Project_SRCS ${Project_SRCS} ${SIMPLib_${DirName}_SRCS} ${SIMPLib_${DirName}_HDRS} ${SIMPLib_${SUBDIR_NAME}_Generated_MOC_SRCS})
-  if(PROJECT_INSTALL_HEADERS)
-    install(DIRECTORY ${SIMPLib_SOURCE_DIR}/${DirName} 
-      DESTINATION include/${PROJECT_NAME}
-        FILES_MATCHING PATTERN "*.h")
-    install(DIRECTORY ${SIMPLib_SOURCE_DIR}/${DirName} 
-      DESTINATION include/${PROJECT_NAME}
-        FILES_MATCHING PATTERN "*.hpp")
-  endif()
+  # if(PROJECT_INSTALL_HEADERS)
+  #   install(DIRECTORY ${SIMPLib_SOURCE_DIR}/${DirName} 
+  #     DESTINATION include/${PROJECT_NAME}
+  #       FILES_MATCHING PATTERN "*.h")
+  #   install(DIRECTORY ${SIMPLib_SOURCE_DIR}/${DirName} 
+  #     DESTINATION include/${PROJECT_NAME}
+  #       FILES_MATCHING PATTERN "*.hpp")
+  # endif()
 endMacro()
 
 #------------------------------------------------------------------------------
