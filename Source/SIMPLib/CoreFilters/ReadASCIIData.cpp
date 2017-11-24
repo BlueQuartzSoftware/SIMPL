@@ -7,10 +7,10 @@
 #include <QtCore/QFileInfo>
 
 #include "SIMPLib/Common/Constants.h"
-#include "SIMPLib/Utilities/StringOperations.h"
 #include "SIMPLib/DataArrays/StringDataArray.hpp"
 #include "SIMPLib/FilterParameters/AbstractFilterParametersReader.h"
 #include "SIMPLib/FilterParameters/AttributeMatrixSelectionFilterParameter.h"
+#include "SIMPLib/Utilities/StringOperations.h"
 
 #include "SIMPLib/FilterParameters/ReadASCIIDataFilterParameter.h"
 
@@ -173,8 +173,8 @@ void ReadASCIIData::writeFilterParameters(QJsonObject& obj)
   obj[prefix + "NumberOfLines"] = m_WizardData.numberOfLines;
   obj[prefix + "AutomaticAM"] = m_WizardData.automaticAM;
 
-  obj[prefix + "HeaderLine"] =   m_WizardData.headerLine;
-  obj[prefix + "HeaderIsCustom"] =  m_WizardData.headerIsCustom;
+  obj[prefix + "HeaderLine"] = m_WizardData.headerLine;
+  obj[prefix + "HeaderIsCustom"] = m_WizardData.headerIsCustom;
   obj[prefix + "HeaderUseDefaults"] = m_WizardData.headerUsesDefaults;
   obj[prefix + "AttributeMatrixType"] = m_WizardData.attrMatType;
 
@@ -268,7 +268,7 @@ void ReadASCIIData::dataCheck()
     notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
   }
 
-  if (automaticAM == false)
+  if(automaticAM == false)
   {
     AttributeMatrix::Pointer am = getDataContainerArray()->getAttributeMatrix(selectedPath);
     if(nullptr == am.get())
@@ -279,15 +279,14 @@ void ReadASCIIData::dataCheck()
       return;
     }
 
-
     QStringList amArrays = am->getAttributeArrayNames();
-    for (int i = 0; i < amArrays.size(); i++)
+    for(int i = 0; i < amArrays.size(); i++)
     {
       QString amArrayName = amArrays[i];
-      for (int j = 0; j < headers.size(); j++)
+      for(int j = 0; j < headers.size(); j++)
       {
         QString headerName = headers[j];
-        if (amArrayName == headerName)
+        if(amArrayName == headerName)
         {
           QString ss = "The header name \"" + headerName + "\" matches an array name that already exists in the selected attribute matrix.";
           setErrorCondition(DUPLICATE_NAMES);
@@ -301,18 +300,18 @@ void ReadASCIIData::dataCheck()
   {
     AttributeMatrix::Pointer am = getDataContainerArray()->getAttributeMatrix(selectedPath);
 
-//    if (am->getTupleDimensions() != tDims)
-//    {
-//      QString ss = "The attribute matrix '" + selectedPath.getAttributeMatrixName() + "' does not have the same tuple dimensions as the data in the file '" + fi.fileName() + "'.";
-//      QTextStream out(&ss);
-//      out << selectedPath.getAttributeMatrixName() << " tuple dims: " << am->getTupleDimensions().at(0) << "\n";
-//      out << fi.fileName() << "tuple dims: " << tDims[0] << "\n";
-//      setErrorCondition(INCONSISTENT_TUPLES);
-//      notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
-//      return;
-//    }
+    //    if (am->getTupleDimensions() != tDims)
+    //    {
+    //      QString ss = "The attribute matrix '" + selectedPath.getAttributeMatrixName() + "' does not have the same tuple dimensions as the data in the file '" + fi.fileName() + "'.";
+    //      QTextStream out(&ss);
+    //      out << selectedPath.getAttributeMatrixName() << " tuple dims: " << am->getTupleDimensions().at(0) << "\n";
+    //      out << fi.fileName() << "tuple dims: " << tDims[0] << "\n";
+    //      setErrorCondition(INCONSISTENT_TUPLES);
+    //      notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
+    //      return;
+    //    }
 
-    if (am != nullptr)
+    if(am != nullptr)
     {
       // Attribute Matrix already exists, so you need to pick a different attribute matrix name
     }
@@ -336,7 +335,7 @@ void ReadASCIIData::dataCheck()
     DataArrayPath arrayPath = selectedPath;
     arrayPath.setDataArrayName(name);
 
-    if (dataType == SIMPL::TypeNames::Double)
+    if(dataType == SIMPL::TypeNames::Double)
     {
       DoubleArrayType::Pointer ptr = getDataContainerArray()->createNonPrereqArrayFromPath<DoubleArrayType, AbstractFilter>(this, arrayPath, 0, cDims);
       m_ASCIIArrayMap.insert(i, ptr);
@@ -507,7 +506,7 @@ void ReadASCIIData::execute()
       UInt64ParserType::Pointer parser = UInt64ParserType::New(data, name, i);
       dataParsers.push_back(parser);
     }
-    else if (dataType == SIMPL::TypeNames::String)
+    else if(dataType == SIMPL::TypeNames::String)
     {
       StringDataArray::Pointer data = std::dynamic_pointer_cast<StringDataArray>(m_ASCIIArrayMap.value(i));
       StringParserType::Pointer parser = StringParserType::New(data, name, i);
