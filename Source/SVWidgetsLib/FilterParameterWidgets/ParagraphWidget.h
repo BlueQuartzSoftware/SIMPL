@@ -36,22 +36,20 @@
 #ifndef _ParagraphWidget_h_
 #define _ParagraphWidget_h_
 
-
 #include <QtCore/QObject>
 #include <QtCore/QPointer>
-#include <QtWidgets/QWidget>
 #include <QtGui/QKeyEvent>
+#include <QtWidgets/QWidget>
 
 #include "SVWidgetsLib/QtSupport/QtSFaderWidget.h"
 
 #include "SIMPLib/FilterParameters/ParagraphFilterParameter.h"
 #include "SIMPLib/Filtering/AbstractFilter.h"
 
-#include "SVWidgetsLib/SVWidgetsLib.h"
 #include "SVWidgetsLib/FilterParameterWidgets/FilterParameterWidget.h"
+#include "SVWidgetsLib/SVWidgetsLib.h"
 
 #include "SVWidgetsLib/ui_ParagraphWidget.h"
-
 
 /**
 * @brief This widget is for Filter Parameters that are of a string type.
@@ -60,43 +58,40 @@
 */
 class SVWidgetsLib_EXPORT ParagraphWidget : public FilterParameterWidget, private Ui::ParagraphWidget
 {
-    Q_OBJECT
+  Q_OBJECT
 
-  public:
-    /**
-    * @brief Constructor
-    * @param parameter The FilterParameter object that this widget represents
-    * @param filter The instance of the filter that this parameter is a part of
-    * @param parent The parent QWidget for this Widget
-    */
-    ParagraphWidget(FilterParameter* parameter, AbstractFilter* filter = nullptr, QWidget* parent = nullptr);
+public:
+  /**
+  * @brief Constructor
+  * @param parameter The FilterParameter object that this widget represents
+  * @param filter The instance of the filter that this parameter is a part of
+  * @param parent The parent QWidget for this Widget
+  */
+  ParagraphWidget(FilterParameter* parameter, AbstractFilter* filter = nullptr, QWidget* parent = nullptr);
 
-    virtual ~ParagraphWidget();
+  virtual ~ParagraphWidget();
 
-    /**
-    * @brief This method does additional GUI widget connections
-    */
-    void setupGui();
+  /**
+  * @brief This method does additional GUI widget connections
+  */
+  void setupGui();
 
-  public slots:
-    void beforePreflight();
-    void afterPreflight();
-    void filterNeedsInputParameters(AbstractFilter* filter);
+public slots:
+  void beforePreflight();
+  void afterPreflight();
+  void filterNeedsInputParameters(AbstractFilter* filter);
 
-  signals:
-    void errorSettingFilterParameter(const QString& msg);
-    void parametersChanged();
+signals:
+  void errorSettingFilterParameter(const QString& msg);
+  void parametersChanged();
 
-  private:
-    bool m_DidCausePreflight;
+private:
+  bool m_DidCausePreflight;
 
-    ParagraphFilterParameter* m_FilterParameter;
+  ParagraphFilterParameter* m_FilterParameter;
 
-    ParagraphWidget(const ParagraphWidget&); // Copy Constructor Not Implemented
-    void operator=(const ParagraphWidget&); // Operator '=' Not Implemented
-
+  ParagraphWidget(const ParagraphWidget&); // Copy Constructor Not Implemented
+  void operator=(const ParagraphWidget&);  // Operator '=' Not Implemented
 };
 
 #endif /* _ParagraphWidget_H_ */
-
-

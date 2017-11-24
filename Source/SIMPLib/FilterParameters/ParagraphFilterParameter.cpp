@@ -53,8 +53,8 @@ ParagraphFilterParameter::~ParagraphFilterParameter()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-ParagraphFilterParameter::Pointer ParagraphFilterParameter::New(const QString& humanLabel, const QString& propertyName, const QString& defaultValue, Category category, SetterCallbackType setterCallback,
-                                                          GetterCallbackType getterCallback, int groupIndex)
+ParagraphFilterParameter::Pointer ParagraphFilterParameter::New(const QString& humanLabel, const QString& propertyName, const QString& defaultValue, Category category,
+                                                                SetterCallbackType setterCallback, GetterCallbackType getterCallback, int groupIndex)
 {
 
   ParagraphFilterParameter::Pointer ptr = ParagraphFilterParameter::New();

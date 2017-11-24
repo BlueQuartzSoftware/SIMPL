@@ -76,7 +76,6 @@ void PipelineSummary::setupFilterParameters()
 // -----------------------------------------------------------------------------
 void PipelineSummary::initialize()
 {
-
 }
 
 // -----------------------------------------------------------------------------
@@ -86,7 +85,6 @@ void PipelineSummary::dataCheck()
 {
   setErrorCondition(0);
   setWarningCondition(0);
-
 }
 
 // -----------------------------------------------------------------------------
