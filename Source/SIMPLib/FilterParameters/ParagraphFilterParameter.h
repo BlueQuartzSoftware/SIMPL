@@ -52,10 +52,8 @@
  * Example 1 (instantiated within a filter called [GenericExample](@ref genericexample), without optional GroupIndex parameter):
  * SIMPL_NEW_PARAGRAPH_FP("STL Output Prefix", StlFilePrefix, FilterParameter::Parameter, GenericExample);
  */
-#define SIMPL_NEW_PARAGRAPH_FP(...) \
-  SIMPL_EXPAND(_FP_GET_OVERRIDE(__VA_ARGS__, \
-  SIMPL_NEW_FP_9, SIMPL_NEW_FP_8, SIMPL_NEW_FP_7, SIMPL_NEW_FP_6, SIMPL_NEW_FP_5, SIMPL_NEW_FP_4)\
-  (ParagraphFilterParameter, __VA_ARGS__))
+#define SIMPL_NEW_PARAGRAPH_FP(...)                                                                                                                                                                    \
+  SIMPL_EXPAND(_FP_GET_OVERRIDE(__VA_ARGS__, SIMPL_NEW_FP_9, SIMPL_NEW_FP_8, SIMPL_NEW_FP_7, SIMPL_NEW_FP_6, SIMPL_NEW_FP_5, SIMPL_NEW_FP_4)(ParagraphFilterParameter, __VA_ARGS__))
 
 /**
  * @brief The ParagraphFilterParameter class is used by filters to instantiate an StringWidget.  By instantiating an instance of
@@ -63,81 +61,78 @@
  */
 class SIMPLib_EXPORT ParagraphFilterParameter : public FilterParameter
 {
-  public:
-    SIMPL_SHARED_POINTERS(ParagraphFilterParameter)
-    SIMPL_STATIC_NEW_MACRO(ParagraphFilterParameter)
-    SIMPL_TYPE_MACRO(ParagraphFilterParameter)
+public:
+  SIMPL_SHARED_POINTERS(ParagraphFilterParameter)
+  SIMPL_STATIC_NEW_MACRO(ParagraphFilterParameter)
+  SIMPL_TYPE_MACRO(ParagraphFilterParameter)
 
-    typedef std::function<void(QString)> SetterCallbackType;
-    typedef std::function<QString(void)> GetterCallbackType;
+  typedef std::function<void(QString)> SetterCallbackType;
+  typedef std::function<QString(void)> GetterCallbackType;
 
-    /**
-     * @brief New This function instantiates an instance of the ParagraphFilterParameter. Although this function is available to be used,
-     * the preferable way to instantiate an instance of this class is to use the SIMPL_NEW_STRING_FP(...) macro at the top of this file.
+  /**
+   * @brief New This function instantiates an instance of the ParagraphFilterParameter. Although this function is available to be used,
+   * the preferable way to instantiate an instance of this class is to use the SIMPL_NEW_STRING_FP(...) macro at the top of this file.
 
-     * @param humanLabel The name that the users of DREAM.3D see for this filter parameter
-     * @param propertyName The internal property name for this filter parameter.
-     * @param defaultValue The value that this filter parameter will be initialized to by default.
-     * @param category The category for the filter parameter in the DREAM.3D user interface.  There
-     * are three categories: Parameter, Required Arrays, and Created Arrays.
-     * @param setterCallback The method in the AbstractFilter subclass that <i>sets</i> the value of the property
-    * that this FilterParameter subclass represents.
-     * @param getterCallback The method in the AbstractFilter subclass that <i>gets</i> the value of the property
-    * that this FilterParameter subclass represents.
-     * @param groupIndex Integer that specifies the group that this filter parameter will be placed in.
-     * @return
-     */
-    static Pointer New(const QString& humanLabel, const QString& propertyName,
-                       const QString& defaultValue, Category category, SetterCallbackType setterCallback,
-                       GetterCallbackType getterCallback, int groupIndex = -1);
-
-    virtual ~ParagraphFilterParameter();
-
-    /**
-   * @brief getWidgetType Returns the type of widget that displays and controls
-   * this FilterParameter subclass
+   * @param humanLabel The name that the users of DREAM.3D see for this filter parameter
+   * @param propertyName The internal property name for this filter parameter.
+   * @param defaultValue The value that this filter parameter will be initialized to by default.
+   * @param category The category for the filter parameter in the DREAM.3D user interface.  There
+   * are three categories: Parameter, Required Arrays, and Created Arrays.
+   * @param setterCallback The method in the AbstractFilter subclass that <i>sets</i> the value of the property
+  * that this FilterParameter subclass represents.
+   * @param getterCallback The method in the AbstractFilter subclass that <i>gets</i> the value of the property
+  * that this FilterParameter subclass represents.
+   * @param groupIndex Integer that specifies the group that this filter parameter will be placed in.
    * @return
    */
-    QString getWidgetType();
+  static Pointer New(const QString& humanLabel, const QString& propertyName, const QString& defaultValue, Category category, SetterCallbackType setterCallback, GetterCallbackType getterCallback,
+                     int groupIndex = -1);
 
-    /**
-     * @brief readJson Reads this filter parameter's corresponding property out of a QJsonObject.
-     * @param json The QJsonObject that the filter parameter reads from.
-     */
-    void readJson(const QJsonObject &json);
+  virtual ~ParagraphFilterParameter();
 
-    /**
-     * @brief writeJson Writes this filter parameter's corresponding property to a QJsonObject.
-     * @param json The QJsonObject that the filter parameter writes to.
-     */
-    void writeJson(QJsonObject &json);
+  /**
+ * @brief getWidgetType Returns the type of widget that displays and controls
+ * this FilterParameter subclass
+ * @return
+ */
+  QString getWidgetType();
 
-    /**
-    * @param SetterCallback The method in the AbstractFilter subclass that <i>sets</i> the value of the property
-    * that this FilterParameter subclass represents.
-    * from the filter parameter.
-    */
-    SIMPL_INSTANCE_PROPERTY(SetterCallbackType, SetterCallback)
+  /**
+   * @brief readJson Reads this filter parameter's corresponding property out of a QJsonObject.
+   * @param json The QJsonObject that the filter parameter reads from.
+   */
+  void readJson(const QJsonObject& json);
 
-    /**
-    * @param GetterCallback The method in the AbstractFilter subclass that <i>gets</i> the value of the property
-    * that this FilterParameter subclass represents.
-    * @return The GetterCallback
-    */
-    SIMPL_INSTANCE_PROPERTY(GetterCallbackType, GetterCallback)
+  /**
+   * @brief writeJson Writes this filter parameter's corresponding property to a QJsonObject.
+   * @param json The QJsonObject that the filter parameter writes to.
+   */
+  void writeJson(QJsonObject& json);
 
+  /**
+  * @param SetterCallback The method in the AbstractFilter subclass that <i>sets</i> the value of the property
+  * that this FilterParameter subclass represents.
+  * from the filter parameter.
+  */
+  SIMPL_INSTANCE_PROPERTY(SetterCallbackType, SetterCallback)
 
-    protected:
-      /**
-       * @brief ParagraphFilterParameter The default constructor.  It is protected because this
-       * filter parameter should only be instantiated using its New(...) function or short-form macro.
-       */
-      ParagraphFilterParameter();
+  /**
+  * @param GetterCallback The method in the AbstractFilter subclass that <i>gets</i> the value of the property
+  * that this FilterParameter subclass represents.
+  * @return The GetterCallback
+  */
+  SIMPL_INSTANCE_PROPERTY(GetterCallbackType, GetterCallback)
 
-  private:
-    ParagraphFilterParameter(const ParagraphFilterParameter&); // Copy Constructor Not Implemented
-    void operator=(const ParagraphFilterParameter&); // Operator '=' Not Implemented
+protected:
+  /**
+   * @brief ParagraphFilterParameter The default constructor.  It is protected because this
+   * filter parameter should only be instantiated using its New(...) function or short-form macro.
+   */
+  ParagraphFilterParameter();
+
+private:
+  ParagraphFilterParameter(const ParagraphFilterParameter&); // Copy Constructor Not Implemented
+  void operator=(const ParagraphFilterParameter&);           // Operator '=' Not Implemented
 };
-
 
 #endif /* _paragraphfilterparameter_h_ */
