@@ -417,5 +417,19 @@ public:
   }
 };
 
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+class StringFunctor : public ParserFunctor
+{
+public:
+  virtual ~StringFunctor() {}
+
+  QString operator() (const QString &token, ErrorObject &obj)
+  {
+    return token;
+  }
+};
+
 #endif /* PARSERFUNCTORS_HPP_ */
 

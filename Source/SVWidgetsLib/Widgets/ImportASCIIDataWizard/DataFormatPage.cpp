@@ -107,6 +107,7 @@ void DataFormatPage::setupGui()
   dataTypes.push_back(SIMPL::TypeNames::UInt16);
   dataTypes.push_back(SIMPL::TypeNames::UInt32);
   dataTypes.push_back(SIMPL::TypeNames::UInt64);
+  dataTypes.push_back(SIMPL::TypeNames::String);
   dataTypeCB->addItems(dataTypes);
   dataTypeCB->setCurrentIndex(0);
 

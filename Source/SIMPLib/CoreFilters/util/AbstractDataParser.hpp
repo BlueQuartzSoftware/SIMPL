@@ -35,6 +35,7 @@
 #include "SIMPLib/SIMPLib.h"
 #include "SIMPLib/Common/SIMPLibSetGetMacros.h"
 #include "SIMPLib/DataArrays/DataArray.hpp"
+#include "SIMPLib/DataArrays/StringDataArray.hpp"
 
 #include "SIMPLib/CoreFilters/util/ParserFunctors.hpp"
 
@@ -65,16 +66,16 @@ class AbstractDataParser
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-template <typename T, class F>
+template <typename ArrayType, class F>
 class Parser : public AbstractDataParser
 {
 public:
-  typedef Parser<T, F> SelfType;
+  typedef Parser<ArrayType, F> SelfType;
 
   SIMPL_SHARED_POINTERS(SelfType)
   SIMPL_TYPE_MACRO(SelfType)
 
-  static Pointer New(typename DataArray<T>::Pointer ptr, const QString& name, int colIndex)
+  static Pointer New(typename ArrayType::Pointer ptr, const QString& name, int colIndex)
   {
     Pointer sharedPtr(new Parser(ptr, name, colIndex));
     return sharedPtr;
@@ -86,7 +87,7 @@ public:
 
   static IDataArray::Pointer InitializeNewDataArray(size_t numTuples, const QString &name, bool allocate)
   {
-    typename DataArray<T>::Pointer array = DataArray<T>::CreateArray(numTuples, name, allocate);
+    typename ArrayType::Pointer array = ArrayType::CreateArray(numTuples, name, allocate);
     if (allocate) { array->initializeWithZeros(); }
     return array;
   }
@@ -94,18 +95,19 @@ public:
   void setDataArray(IDataArray::Pointer value)
   {
     AbstractDataParser::setDataArray(value);
-    m_Ptr = std::dynamic_pointer_cast<DataArray<T> >(value);
+    m_Ptr = std::dynamic_pointer_cast<ArrayType >(value);
   }
 
   virtual ParserFunctor::ErrorObject parse(const QString& token, size_t index)
   {
     ParserFunctor::ErrorObject obj;
-    (*m_Ptr)[index] = F()(token, obj);
+    obj.ok = true;
+    (*m_Ptr).setValue(index, F()(token, obj));
     return obj;
   }
 
 protected:
-  Parser(typename DataArray<T>::Pointer ptr, const QString& name, int index)
+  Parser(typename ArrayType::Pointer ptr, const QString& name, int index)
   {
     setColumnName(name);
     setColumnIndex(index);
@@ -114,26 +116,28 @@ protected:
   }
 
 private:
-  typename DataArray<T>::Pointer m_Ptr;
+  typename ArrayType::Pointer m_Ptr;
 
   Parser(const Parser&); // Copy Constructor Not Implemented
   void operator=(const Parser&); // Operator '=' Not Implemented
 };
 
-typedef Parser<int8_t, Int8Functor>  Int8ParserType;
-typedef Parser<uint8_t, UInt8Functor>  UInt8ParserType;
+typedef Parser<Int8ArrayType, Int8Functor>  Int8ParserType;
+typedef Parser<UInt8ArrayType, UInt8Functor>  UInt8ParserType;
 
-typedef Parser<int16_t, Int16Functor>  Int16ParserType;
-typedef Parser<uint16_t, UInt16Functor>  UInt16ParserType;
+typedef Parser<Int16ArrayType, Int16Functor>  Int16ParserType;
+typedef Parser<UInt16ArrayType, UInt16Functor>  UInt16ParserType;
 
-typedef Parser<int32_t, Int32Functor>  Int32ParserType;
-typedef Parser<uint32_t, UInt32Functor>  UInt32ParserType;
+typedef Parser<Int32ArrayType, Int32Functor>  Int32ParserType;
+typedef Parser<UInt32ArrayType, UInt32Functor>  UInt32ParserType;
 
-typedef Parser<int64_t, Int64Functor>  Int64ParserType;
-typedef Parser<uint64_t, UInt64Functor>  UInt64ParserType;
+typedef Parser<Int64ArrayType, Int64Functor>  Int64ParserType;
+typedef Parser<UInt64ArrayType, UInt64Functor>  UInt64ParserType;
 
-typedef Parser<float, FloatFunctor>  FloatParserType;
-typedef Parser<double, DoubleFunctor>  DoubleParserType;
+typedef Parser<FloatArrayType, FloatFunctor>  FloatParserType;
+typedef Parser<DoubleArrayType, DoubleFunctor>  DoubleParserType;
+
+typedef Parser<StringDataArray, StringFunctor>  StringParserType;
 
 #endif /* DATAPARSER_HPP_ */
 

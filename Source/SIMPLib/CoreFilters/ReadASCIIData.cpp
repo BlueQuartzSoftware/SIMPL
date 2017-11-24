@@ -8,6 +8,7 @@
 
 #include "SIMPLib/Common/Constants.h"
 #include "SIMPLib/Utilities/StringOperations.h"
+#include "SIMPLib/DataArrays/StringDataArray.hpp"
 #include "SIMPLib/FilterParameters/AbstractFilterParametersReader.h"
 #include "SIMPLib/FilterParameters/AttributeMatrixSelectionFilterParameter.h"
 
@@ -385,6 +386,18 @@ void ReadASCIIData::dataCheck()
       UInt64ArrayType::Pointer ptr = getDataContainerArray()->createNonPrereqArrayFromPath<UInt64ArrayType, AbstractFilter>(this, arrayPath, 0, cDims);
       m_ASCIIArrayMap.insert(i, ptr);
     }
+    else if(dataType == SIMPL::TypeNames::String)
+    {
+      StringDataArray::Pointer ptr = getDataContainerArray()->createNonPrereqArrayFromPath<StringDataArray, AbstractFilter, QString>(this, arrayPath, "", cDims);
+      m_ASCIIArrayMap.insert(i, ptr);
+    }
+    else
+    {
+      QString ss = "The data type that was chosen for column number " + QString::number(i + 1) + " is not a valid data array type.";
+      setErrorCondition(INVALID_ARRAY_TYPE);
+      notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
+      return;
+    }
   }
 }
 
@@ -492,6 +505,12 @@ void ReadASCIIData::execute()
     {
       UInt64ArrayType::Pointer data = std::dynamic_pointer_cast<UInt64ArrayType>(m_ASCIIArrayMap.value(i));
       UInt64ParserType::Pointer parser = UInt64ParserType::New(data, name, i);
+      dataParsers.push_back(parser);
+    }
+    else if (dataType == SIMPL::TypeNames::String)
+    {
+      StringDataArray::Pointer data = std::dynamic_pointer_cast<StringDataArray>(m_ASCIIArrayMap.value(i));
+      StringParserType::Pointer parser = StringParserType::New(data, name, i);
       dataParsers.push_back(parser);
     }
   }

@@ -92,6 +92,7 @@ namespace SIMPL
     const QString UInt32("uint32_t");
     const QString Int64("int64_t");
     const QString UInt64("uint64_t");
+    const QString String("string");
     const QString StatsDataArray("StatsDataArray");
     const QString NeighborList("NeighborList<T>");
     const QString StringArray("StringDataArray");
