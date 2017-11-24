@@ -35,6 +35,7 @@ set(SIMPLView_PARAMETER_WIDGETS
     MultiAttributeMatrixSelectionWidget
     MultiDataArraySelectionWidget
     NumericTypeWidget
+    ParagraphWidget
     PreflightUpdatedValueWidget
     RangeWidget
     ScalarTypeWidget

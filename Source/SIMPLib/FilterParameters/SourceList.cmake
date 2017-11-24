@@ -59,6 +59,7 @@ set(SIMPLib_${SUBDIR_NAME}_HDRS
   ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/NumericTypeFilterParameter.h
   ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/OutputFileFilterParameter.h
   ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/OutputPathFilterParameter.h
+  ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/ParagraphFilterParameter.h
   ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/PhaseTypeSelectionFilterParameter.h
   ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/PreflightUpdatedValueFilterParameter.h
   ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/RangeFilterParameter.h
@@ -119,6 +120,7 @@ set(SIMPLib_${SUBDIR_NAME}_SRCS
   ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/NumericTypeFilterParameter.cpp
   ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/OutputFileFilterParameter.cpp
   ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/OutputPathFilterParameter.cpp
+  ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/ParagraphFilterParameter.cpp
   ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/PhaseTypeSelectionFilterParameter.cpp
   ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/PreflightUpdatedValueFilterParameter.cpp
   ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/RangeFilterParameter.cpp
