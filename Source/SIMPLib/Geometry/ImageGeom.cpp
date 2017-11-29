@@ -857,7 +857,13 @@ void ImageGeom::findDerivatives(DoubleArrayType::Pointer field, DoubleArrayType:
 #endif
 
 #ifdef SIMPLib_USE_PARALLEL_ALGORITHMS
+
   size_t grain = dims[2] == 1 ? 1 : dims[2] / init.default_num_threads();
+
+  if(grain == 0) // This can happen if dims[2] > number of processors
+  {
+    grain = 1;
+  }
 
   if(doParallel == true)
   {

@@ -946,7 +946,10 @@ void RectGridGeom::findDerivatives(DoubleArrayType::Pointer field, DoubleArrayTy
 
 #ifdef SIMPLib_USE_PARALLEL_ALGORITHMS
   size_t grain = dims[2] == 1 ? 1 : dims[2] / init.default_num_threads();
-
+  if(grain == 0)
+  {
+    grain = 1;
+  }
   if(doParallel == true)
   {
     tbb::parallel_for(tbb::blocked_range3d<size_t, size_t, size_t>(0, dims[2], grain, 0, dims[1], dims[1], 0, dims[0], dims[0]),
