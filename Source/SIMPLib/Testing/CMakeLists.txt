@@ -7,7 +7,6 @@ set(SIMPLTest_BINARY_DIR ${SIMPLib_BINARY_DIR}/Testing)
 include(${CMP_SOURCE_DIR}/cmpCMakeMacros.cmake)
 
 set(TEST_TEMP_DIR ${SIMPLTest_BINARY_DIR}/Temp)
-set(TEST_IMAGEASCII_DIR ${SIMPLTest_BINARY_DIR}/ImageASCII)
 set(TESTFILES_SRC_DIR ${SIMPLTest_SOURCE_DIR}/TestFiles)
 
 # Make sure the directory is created during CMake time

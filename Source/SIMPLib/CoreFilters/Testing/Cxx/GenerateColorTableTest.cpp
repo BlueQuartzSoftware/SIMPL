@@ -73,15 +73,15 @@ public:
   // -----------------------------------------------------------------------------
   int TestFilterAvailability()
   {
-    // Now instantiate the ReadAngData Filter from the FilterManager
+    // Now instantiate the ImportAsciDataArray Filter from the FilterManager
     {
-      QString filtName = "ReadAngData";
+      QString filtName = "ImportAsciDataArray";
       FilterManager* fm = FilterManager::Instance();
       IFilterFactory::Pointer filterFactory = fm->getFactoryForFilter(filtName);
       if(nullptr == filterFactory.get())
       {
         std::stringstream ss;
-        ss << "The GenerateColorTableTest Requires the use of the " << filtName.toStdString() << " filter which is found in the OrientationAnalysis plugin.";
+        ss << "The GenerateColorTableTest Requires the use of the " << filtName.toStdString() << " filter which is found in CoreFilters.";
         DREAM3D_TEST_THROW_EXCEPTION(ss.str())
       }
     }
@@ -210,10 +210,14 @@ public:
     ReadPresets();
 
     DataContainerArray::Pointer dca = DataContainerArray::New();
+    DataContainer::Pointer dc = DataContainer::New(SIMPL::Defaults::ImageDataContainerName);
+    AttributeMatrix::Pointer am = AttributeMatrix::New(QVector<size_t>(1, 37989), SIMPL::Defaults::CellAttributeMatrixName, AttributeMatrix::Type::Generic);
+    dc->addAttributeMatrix(SIMPL::Defaults::CellAttributeMatrixName, am);
+    dca->addDataContainer(dc);
 
     // Read Image File
     {
-      QString filtName = "ReadAngData";
+      QString filtName = "ImportAsciDataArray";
       FilterManager* fm = FilterManager::Instance();
       IFilterFactory::Pointer factory = fm->getFactoryForFilter(filtName);
       DREAM3D_REQUIRE(factory.get() != nullptr);
@@ -226,6 +230,18 @@ public:
 
       var.setValue(UnitTest::GenerateColorTableTest::ImageFilePath);
       propWasSet = filter->setProperty("InputFile", var);
+      DREAM3D_REQUIRE_EQUAL(propWasSet, true);
+
+      var.setValue(SIMPL::NumericTypes::Type::Float);
+      propWasSet = filter->setProperty("ScalarType", var);
+      DREAM3D_REQUIRE_EQUAL(propWasSet, true);
+
+      var.setValue(1);
+      propWasSet = filter->setProperty("NumberOfComponents", var);
+      DREAM3D_REQUIRE_EQUAL(propWasSet, true);
+
+      var.setValue(DataArrayPath(SIMPL::Defaults::ImageDataContainerName, SIMPL::Defaults::CellAttributeMatrixName, SIMPL::CellData::ConfidenceIndex));
+      propWasSet = filter->setProperty("CreatedAttributeArrayPath", var);
       DREAM3D_REQUIRE_EQUAL(propWasSet, true);
 
       filter->setDataContainerArray(dca);

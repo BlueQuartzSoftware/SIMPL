@@ -56,23 +56,23 @@ namespace UnitTest
 
   namespace GenerateColorTableTest
   {
-    const QString ImageFilePath("@CMAKE_LIBRARY_OUTPUT_DIRECTORY@/Data/SmallIN100/Slice_1.ang");
-    const QString ASCIIImagesDir("@TEST_IMAGEASCII_DIR@");
-    const QString BlackBlueWhiteFile("@TEST_IMAGEASCII_DIR@/BlackBlueWhite.txt");
-    const QString BlackBodyRadiationFile("@TEST_IMAGEASCII_DIR@/BlackBodyRadiation.txt");
-    const QString BlackOrangeWhiteFile("@TEST_IMAGEASCII_DIR@/BlackOrangeWhite.txt");
-    const QString BlueToYellowFile("@TEST_IMAGEASCII_DIR@/BlueToYellow.txt");
-    const QString ColdAndHotFile("@TEST_IMAGEASCII_DIR@/ColdAndHot.txt");
-    const QString GrayscaleFile("@TEST_IMAGEASCII_DIR@/Grayscale.txt");
-    const QString HazeFile("@TEST_IMAGEASCII_DIR@/Haze.txt");
-    const QString HsvFile("@TEST_IMAGEASCII_DIR@/Hsv.txt");
-    const QString JetFile("@TEST_IMAGEASCII_DIR@/Jet.txt");
-    const QString RainbowFile("@TEST_IMAGEASCII_DIR@/Rainbow.txt");
-    const QString RainbowBlendedBlackFile("@TEST_IMAGEASCII_DIR@/RainbowBlendedBlack.txt");
-    const QString RainbowBlendedGreyFile("@TEST_IMAGEASCII_DIR@/RainbowBlendedGrey.txt");
-    const QString RainbowBlendedWhiteFile("@TEST_IMAGEASCII_DIR@/RainbowBlendedWhite.txt");
-    const QString RainbowDesaturatedFile("@TEST_IMAGEASCII_DIR@/RainbowDesaturated.txt");
-    const QString XRayFile("@TEST_IMAGEASCII_DIR@/XRay.txt");
+    const QString ImageFilePath("@TEST_TESTFILES_DIR@/GenerateColorTable/ColorTableTestFile.txt");
+    const QString TestFilesDir("@TEST_TESTFILES_DIR@");
+    const QString BlackBlueWhiteFile("@TEST_TESTFILES_DIR@/GenerateColorTable/BlackBlueWhite.txt");
+    const QString BlackBodyRadiationFile("@TEST_TESTFILES_DIR@/GenerateColorTable/BlackBodyRadiation.txt");
+    const QString BlackOrangeWhiteFile("@TEST_TESTFILES_DIR@/GenerateColorTable/BlackOrangeWhite.txt");
+    const QString BlueToYellowFile("@TEST_TESTFILES_DIR@/GenerateColorTable/BlueToYellow.txt");
+    const QString ColdAndHotFile("@TEST_TESTFILES_DIR@/GenerateColorTable/ColdAndHot.txt");
+    const QString GrayscaleFile("@TEST_TESTFILES_DIR@/GenerateColorTable/Grayscale.txt");
+    const QString HazeFile("@TEST_TESTFILES_DIR@/GenerateColorTable/Haze.txt");
+    const QString HsvFile("@TEST_TESTFILES_DIR@/GenerateColorTable/Hsv.txt");
+    const QString JetFile("@TEST_TESTFILES_DIR@/GenerateColorTable/Jet.txt");
+    const QString RainbowFile("@TEST_TESTFILES_DIR@/GenerateColorTable/Rainbow.txt");
+    const QString RainbowBlendedBlackFile("@TEST_TESTFILES_DIR@/GenerateColorTable/RainbowBlendedBlack.txt");
+    const QString RainbowBlendedGreyFile("@TEST_TESTFILES_DIR@/GenerateColorTable/RainbowBlendedGrey.txt");
+    const QString RainbowBlendedWhiteFile("@TEST_TESTFILES_DIR@/GenerateColorTable/RainbowBlendedWhite.txt");
+    const QString RainbowDesaturatedFile("@TEST_TESTFILES_DIR@/GenerateColorTable/RainbowDesaturated.txt");
+    const QString XRayFile("@TEST_TESTFILES_DIR@/GenerateColorTable/XRay.txt");
   }
 
   namespace VtkGrainIdIOTest
