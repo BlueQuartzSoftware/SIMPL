@@ -31,15 +31,15 @@
 #ifndef _ParserFunctors_hpp_
 #define _ParserFunctors_hpp_
 
-#include <QtCore/QString>
 #include <QtCore/QByteArray>
+#include <QtCore/QString>
 
 #include "SIMPLib/SIMPLib.h"
 
 namespace ParserErrorMessages
 {
-  const QString ValueOutOfRange = "Value is out of range for the specified data type.";
-  const QString CouldNotConvert = "Value could not be converted to the specified data type.";
+const QString ValueOutOfRange = "Value is out of range for the specified data type.";
+const QString CouldNotConvert = "Value could not be converted to the specified data type.";
 }
 
 // -----------------------------------------------------------------------------
@@ -48,7 +48,9 @@ namespace ParserErrorMessages
 class ParserFunctor
 {
 public:
-  virtual ~ParserFunctor() {}
+  virtual ~ParserFunctor()
+  {
+  }
 
   struct ErrorObject
   {
@@ -62,39 +64,41 @@ public:
 // -----------------------------------------------------------------------------
 class Int8Functor : public ParserFunctor
 {
-  public:
-    virtual ~Int8Functor() {}
+public:
+  virtual ~Int8Functor()
+  {
+  }
 
-    int8_t operator() (const QString &token, ErrorObject &obj)
+  int8_t operator()(const QString& token, ErrorObject& obj)
+  {
+    int16_t value = token.toInt(&obj.ok, 0);
+    if(!obj.ok)
     {
-      int16_t value = token.toInt(&obj.ok, 0);
-      if (!obj.ok)
+      // Try double
+      double dValue = token.toDouble(&obj.ok);
+      if(obj.ok)
       {
-        // Try double
-        double dValue = token.toDouble(&obj.ok);
-        if (obj.ok)
-        {
-          // If it converts to a double, cast it to the correct type
-          value = static_cast<int8_t>(dValue);
-        }
-        else
-        {
-          obj.errorMessage = ParserErrorMessages::CouldNotConvert;
-        }
-      }
-      else if(value > std::numeric_limits<int8_t>().max() || value < std::numeric_limits<int8_t>().min())
-      {
-          // This value is out of range, so return a conversion error
-          obj.ok = false;
-          obj.errorMessage = ParserErrorMessages::ValueOutOfRange;
+        // If it converts to a double, cast it to the correct type
+        value = static_cast<int8_t>(dValue);
       }
       else
       {
-        int8_t realValue = static_cast<int8_t>(value);
-        return realValue;
+        obj.errorMessage = ParserErrorMessages::CouldNotConvert;
       }
-      return value;
     }
+    else if(value > std::numeric_limits<int8_t>().max() || value < std::numeric_limits<int8_t>().min())
+    {
+      // This value is out of range, so return a conversion error
+      obj.ok = false;
+      obj.errorMessage = ParserErrorMessages::ValueOutOfRange;
+    }
+    else
+    {
+      int8_t realValue = static_cast<int8_t>(value);
+      return realValue;
+    }
+    return value;
+  }
 };
 
 // -----------------------------------------------------------------------------
@@ -103,14 +107,16 @@ class Int8Functor : public ParserFunctor
 class UInt8Functor : public ParserFunctor
 {
 public:
-  virtual ~UInt8Functor() {}
+  virtual ~UInt8Functor()
+  {
+  }
 
-  uint8_t operator() (const QString &token, ErrorObject &obj)
+  uint8_t operator()(const QString& token, ErrorObject& obj)
   {
     uint16_t value = token.toUInt(&obj.ok);
-    if (!obj.ok)
+    if(!obj.ok)
     {
-      if (token.isEmpty() == false && token[0] == '-')
+      if(token.isEmpty() == false && token[0] == '-')
       {
         // This is a negative value, so fail
         obj.errorMessage = ParserErrorMessages::ValueOutOfRange;
@@ -119,7 +125,7 @@ public:
       {
         // Try double
         double dValue = token.toDouble(&obj.ok);
-        if (obj.ok)
+        if(obj.ok)
         {
           // If it converts to a double, cast it to the correct type
           value = static_cast<uint8_t>(dValue);
@@ -130,7 +136,7 @@ public:
         }
       }
     }
-    else if (value > std::numeric_limits<uint8_t>().max())
+    else if(value > std::numeric_limits<uint8_t>().max())
     {
       obj.ok = false;
       obj.errorMessage = ParserErrorMessages::ValueOutOfRange;
@@ -145,16 +151,18 @@ public:
 class Int16Functor : public ParserFunctor
 {
 public:
-  virtual ~Int16Functor() {}
+  virtual ~Int16Functor()
+  {
+  }
 
-  int16_t operator() (const QString &token, ErrorObject &obj)
+  int16_t operator()(const QString& token, ErrorObject& obj)
   {
     int32_t value = token.toInt(&obj.ok);
-    if (!obj.ok)
+    if(!obj.ok)
     {
       // Try double
       double dValue = token.toDouble(&obj.ok);
-      if (obj.ok)
+      if(obj.ok)
       {
         // If it converts to a double, cast it to the correct type
         value = static_cast<int16_t>(dValue);
@@ -164,7 +172,7 @@ public:
         obj.errorMessage = ParserErrorMessages::CouldNotConvert;
       }
     }
-    else if (value > std::numeric_limits<int16_t>().max() || value < std::numeric_limits<int16_t>().min())
+    else if(value > std::numeric_limits<int16_t>().max() || value < std::numeric_limits<int16_t>().min())
     {
       // This value is out of range, so return a conversion error
       obj.ok = false;
@@ -185,14 +193,16 @@ public:
 class UInt16Functor : public ParserFunctor
 {
 public:
-  virtual ~UInt16Functor() {}
+  virtual ~UInt16Functor()
+  {
+  }
 
-  uint16_t operator() (const QString &token, ErrorObject &obj)
+  uint16_t operator()(const QString& token, ErrorObject& obj)
   {
     uint32_t value = token.toUInt(&obj.ok);
-    if (!obj.ok)
+    if(!obj.ok)
     {
-      if (token.isEmpty() == false && token[0] == '-')
+      if(token.isEmpty() == false && token[0] == '-')
       {
         // This is a negative value, so fail
         obj.errorMessage = ParserErrorMessages::ValueOutOfRange;
@@ -201,7 +211,7 @@ public:
       {
         // Try double
         double dValue = token.toDouble(&obj.ok);
-        if (obj.ok)
+        if(obj.ok)
         {
           // If it converts to a double, cast it to the correct type
           value = static_cast<uint16_t>(dValue);
@@ -212,7 +222,7 @@ public:
         }
       }
     }
-    else if (value > std::numeric_limits<uint16_t>().max())
+    else if(value > std::numeric_limits<uint16_t>().max())
     {
       // This value is out of range, so return a conversion error
       obj.ok = false;
@@ -233,16 +243,18 @@ public:
 class Int32Functor : public ParserFunctor
 {
 public:
-  virtual ~Int32Functor() {}
+  virtual ~Int32Functor()
+  {
+  }
 
-  int32_t operator()(const QString &token, ErrorObject &obj)
+  int32_t operator()(const QString& token, ErrorObject& obj)
   {
     int64_t value = token.toLongLong(&obj.ok);
-    if (!obj.ok)
+    if(!obj.ok)
     {
       // Try double
       double dValue = token.toDouble(&obj.ok);
-      if (obj.ok)
+      if(obj.ok)
       {
         // If it converts to a double, cast it to the correct type
         value = static_cast<int32_t>(dValue);
@@ -252,7 +264,7 @@ public:
         obj.errorMessage = ParserErrorMessages::CouldNotConvert;
       }
     }
-    else if (value > std::numeric_limits<int32_t>().max() || value < std::numeric_limits<int32_t>().min())
+    else if(value > std::numeric_limits<int32_t>().max() || value < std::numeric_limits<int32_t>().min())
     {
       // This value is out of range, so return a conversion error
       obj.ok = false;
@@ -273,14 +285,16 @@ public:
 class UInt32Functor : public ParserFunctor
 {
 public:
-  virtual ~UInt32Functor() {}
+  virtual ~UInt32Functor()
+  {
+  }
 
-  uint32_t operator() (const QString &token, ErrorObject &obj)
+  uint32_t operator()(const QString& token, ErrorObject& obj)
   {
     uint64_t value = token.toULongLong(&obj.ok);
-    if (!obj.ok)
+    if(!obj.ok)
     {
-      if (token.isEmpty() == false && token[0] == '-')
+      if(token.isEmpty() == false && token[0] == '-')
       {
         // This is a negative value, so fail
         obj.errorMessage = ParserErrorMessages::ValueOutOfRange;
@@ -289,7 +303,7 @@ public:
       {
         // Try double
         double dValue = token.toDouble(&obj.ok);
-        if (obj.ok)
+        if(obj.ok)
         {
           // If it converts to a double, cast it to the correct type
           value = static_cast<uint32_t>(dValue);
@@ -300,7 +314,7 @@ public:
         }
       }
     }
-    else if (value > std::numeric_limits<uint32_t>().max())
+    else if(value > std::numeric_limits<uint32_t>().max())
     {
       // This value is out of range, so return a conversion error
       obj.ok = false;
@@ -321,17 +335,19 @@ public:
 class Int64Functor : public ParserFunctor
 {
 public:
-  virtual ~Int64Functor() {}
+  virtual ~Int64Functor()
+  {
+  }
 
-  int64_t operator() (const QString &token, ErrorObject &obj)
+  int64_t operator()(const QString& token, ErrorObject& obj)
   {
     int64_t value = token.toLongLong(&obj.ok);
-    if (!obj.ok)
+    if(!obj.ok)
     {
-      if (token.contains('.'))
+      if(token.contains('.'))
       {
         double doubleValue = token.toDouble(&obj.ok);
-        if (!obj.ok)
+        if(!obj.ok)
         {
           obj.errorMessage = ParserErrorMessages::CouldNotConvert;
         }
@@ -355,17 +371,19 @@ public:
 class UInt64Functor : public ParserFunctor
 {
 public:
-  virtual ~UInt64Functor() {}
+  virtual ~UInt64Functor()
+  {
+  }
 
-  uint64_t operator() (const QString &token, ErrorObject &obj)
+  uint64_t operator()(const QString& token, ErrorObject& obj)
   {
     uint64_t value = token.toULongLong(&obj.ok);
-    if (!obj.ok)
+    if(!obj.ok)
     {
-      if (token.contains('.'))
+      if(token.contains('.'))
       {
         double doubleValue = token.toDouble(&obj.ok);
-        if (!obj.ok)
+        if(!obj.ok)
         {
           obj.errorMessage = ParserErrorMessages::CouldNotConvert;
         }
@@ -374,7 +392,7 @@ public:
           value = static_cast<uint64_t>(doubleValue);
         }
       }
-      else if (token.isEmpty() == false && token[0] == '-')
+      else if(token.isEmpty() == false && token[0] == '-')
       {
         obj.errorMessage = ParserErrorMessages::ValueOutOfRange;
       }
@@ -393,9 +411,11 @@ public:
 class FloatFunctor : public ParserFunctor
 {
 public:
-  virtual ~FloatFunctor() {}
+  virtual ~FloatFunctor()
+  {
+  }
 
-  float operator() (const QString &token, ErrorObject &obj)
+  float operator()(const QString& token, ErrorObject& obj)
   {
     float value = token.toFloat(&obj.ok);
     return value;
@@ -408,14 +428,31 @@ public:
 class DoubleFunctor : public ParserFunctor
 {
 public:
-  virtual ~DoubleFunctor() {}
+  virtual ~DoubleFunctor()
+  {
+  }
 
-  double operator() (const QString &token, ErrorObject &obj)
+  double operator()(const QString& token, ErrorObject& obj)
   {
     double value = token.toDouble(&obj.ok);
     return value;
   }
 };
 
-#endif /* PARSERFUNCTORS_HPP_ */
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+class StringFunctor : public ParserFunctor
+{
+public:
+  virtual ~StringFunctor()
+  {
+  }
 
+  QString operator()(const QString& token, ErrorObject& obj)
+  {
+    return token;
+  }
+};
+
+#endif /* PARSERFUNCTORS_HPP_ */
