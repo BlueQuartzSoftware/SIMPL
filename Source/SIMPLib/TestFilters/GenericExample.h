@@ -50,6 +50,7 @@
 #include "SIMPLib/FilterParameters/ThirdOrderPolynomialFilterParameter.h"
 #include "SIMPLib/Filtering/AbstractFilter.h"
 #include "SIMPLib/Filtering/ComparisonInputs.h"
+#include "SIMPLib/DataContainers/DataContainerArrayProxy.h"
 #include "SIMPLib/SIMPLib.h"
 
 /**

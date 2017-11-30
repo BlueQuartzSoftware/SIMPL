@@ -38,8 +38,11 @@
 #include "SIMPLib/FilterParameters/AttributeMatrixSelectionFilterParameter.h"
 #include "SIMPLib/FilterParameters/ImportHDF5DatasetFilterParameter.h"
 #include "SIMPLib/FilterParameters/StringFilterParameter.h"
-
 #include "SIMPLib/SIMPLibVersion.h"
+
+#include "H5Support/H5Utilities.h"
+#include "H5Support/QH5Utilities.h"
+#include "H5Support/HDF5ScopedFileSentinel.h"
 
 // Include the MOC generated file for this class
 #include "moc_ImportHDF5Dataset.cpp"

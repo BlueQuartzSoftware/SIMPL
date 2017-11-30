@@ -45,11 +45,12 @@
 
 #include "SIMPLib/SIMPLib.h"
 #include "SIMPLib/Common/SIMPLibSetGetMacros.h"
-#include "SIMPLib/DataContainers/DataContainer.h"
 #include "SIMPLib/DataContainers/IDataContainerBundle.h"
 #include "SIMPLib/DataContainers/DataArrayPath.h"
 
 
+class DataContainer;
+using DataContainerShPtr = std::shared_ptr<DataContainer>;
 
 /**
  * @class DataContainerArray DataContainerArray.h DREAM3DLib/Common/DataContainerArray.h
@@ -74,27 +75,27 @@ class SIMPLib_EXPORT DataContainerArray : public QObject
     /**
      * @brief
      */
-    virtual void addDataContainer(DataContainer::Pointer f);
+    virtual void addDataContainer(DataContainerShPtr f);
 
     /**
      * @brief getDataContainer
      * @param path Uses the DataContainerName from the DataArrayPath to return a data container
      * @return
      */
-    virtual DataContainer::Pointer getDataContainer(const DataArrayPath& path);
+    virtual DataContainerShPtr getDataContainer(const DataArrayPath& path);
 
     /**
      * @brief getDataContainer
      * @param name
      * @return
      */
-    virtual DataContainer::Pointer getDataContainer(const QString& name);
+    virtual DataContainerShPtr getDataContainer(const QString& name);
 
     /**
      * @brief getDataContainers
      * @return
      */
-    QList<DataContainer::Pointer>& getDataContainers();
+    QList<DataContainerShPtr>& getDataContainers();
 
     /**
      * @brief Returns if a DataContainer with the give name is in the array
@@ -120,7 +121,7 @@ class SIMPLib_EXPORT DataContainerArray : public QObject
     /**
      * @brief
      */
-    virtual DataContainer::Pointer removeDataContainer(const QString& name);
+    virtual DataContainerShPtr removeDataContainer(const QString& name);
 
     /**
      * @brief renameDataContainer
@@ -179,7 +180,7 @@ class SIMPLib_EXPORT DataContainerArray : public QObject
      */
     virtual int readDataContainersFromHDF5(bool preflight,
                                            hid_t dcaGid,
-                                           DataContainerArrayProxy& dcaProxy,
+                                           const DataContainerArrayProxy& dcaProxy,
                                            Observable* obs = nullptr);
 
 
@@ -242,9 +243,9 @@ class SIMPLib_EXPORT DataContainerArray : public QObject
      * @return
      */
     template<typename Filter>
-    DataContainer::Pointer getPrereqDataContainer(Filter* filter, const QString& name, bool createIfNotExists = false)
+    DataContainerShPtr getPrereqDataContainer(Filter* filter, const QString& name, bool createIfNotExists = false)
     {
-      DataContainer::Pointer dc = getDataContainer(name);
+      DataContainerShPtr dc = getDataContainer(name);
       if(nullptr == dc.get() && createIfNotExists == false)
       {
         if (filter)
@@ -257,7 +258,7 @@ class SIMPLib_EXPORT DataContainerArray : public QObject
       }
       else if(nullptr != dc && createIfNotExists == true)
       {
-        DataContainer::Pointer dataContainer = DataContainer::New(name); // Create a new Data Container
+        DataContainerShPtr dataContainer = DataContainer::New(name); // Create a new Data Container
         addDataContainer(dataContainer); // Put the new DataContainer into the array
         return dataContainer; // Return the wrapped pointer
       }
@@ -272,7 +273,7 @@ class SIMPLib_EXPORT DataContainerArray : public QObject
      * dataContainerName is empty in which case a Null DataContainer will be returned.
      */
     template<typename Filter>
-    DataContainer::Pointer createNonPrereqDataContainer(Filter* filter, const QString& dataContainerName)
+    DataContainerShPtr createNonPrereqDataContainer(Filter* filter, const QString& dataContainerName)
     {
       if(dataContainerName.isEmpty())
       {
@@ -306,7 +307,7 @@ class SIMPLib_EXPORT DataContainerArray : public QObject
           return DataContainer::NullPointer();
         }
       }
-      DataContainer::Pointer dataContainer = DataContainer::New(dataContainerName);
+      DataContainerShPtr dataContainer = DataContainer::New(dataContainerName);
       addDataContainer(dataContainer);
       return dataContainer;
     }
@@ -323,7 +324,7 @@ class SIMPLib_EXPORT DataContainerArray : public QObject
     typename GeometryType::Pointer getPrereqGeometryFromDataContainer(Filter* filter, const QString& dcName)
     {
       typename GeometryType::Pointer geom = GeometryType::NullPointer();
-      DataContainer::Pointer dc = getPrereqDataContainer<Filter>(filter, dcName, false);
+      DataContainerShPtr dc = getPrereqDataContainer<Filter>(filter, dcName, false);
       if(nullptr == dc) { return geom; }
 
       return dc->getPrereqGeometry<GeometryType>(filter);
@@ -343,7 +344,7 @@ class SIMPLib_EXPORT DataContainerArray : public QObject
     {
       // First try to get the Parent DataContainer. If an error occurs the error message will have been set
       // so just return a nullptr shared pointer
-      DataContainer::Pointer dc = getPrereqDataContainer<Filter>(filter, path.getDataContainerName(), false);
+      DataContainerShPtr dc = getPrereqDataContainer<Filter>(filter, path.getDataContainerName(), false);
       if(nullptr == dc) { return AttributeMatrix::NullPointer(); }
 
       // Now just return what ever the DataContainer gives us. if the AttributeMatrix was not available then an
@@ -392,7 +393,7 @@ class SIMPLib_EXPORT DataContainerArray : public QObject
       QString daName = path.getDataArrayName();
 
 
-      DataContainer::Pointer dc = getDataContainer(dcName);
+      DataContainerShPtr dc = getDataContainer(dcName);
       if(nullptr == dc.get())
       {
         if(filter)
@@ -460,7 +461,7 @@ class SIMPLib_EXPORT DataContainerArray : public QObject
       QString daName = path.getDataArrayName();
 
 
-      DataContainer::Pointer dc = getDataContainer(dcName);
+      DataContainerShPtr dc = getDataContainer(dcName);
       if(nullptr == dc.get())
       {
         if(filter)
@@ -563,7 +564,7 @@ class SIMPLib_EXPORT DataContainerArray : public QObject
         return dataArray;
       }
 
-      DataContainer::Pointer dc = getDataContainer(path.getDataContainerName());
+      DataContainerShPtr dc = getDataContainer(path.getDataContainerName());
       if(nullptr == dc.get())
       {
         if(filter)
@@ -716,7 +717,7 @@ class SIMPLib_EXPORT DataContainerArray : public QObject
     DataContainerArray();
 
   private:
-    QList<DataContainer::Pointer>  m_Array;
+    QList<DataContainerShPtr>  m_Array;
     QMap<QString, IDataContainerBundle::Pointer> m_DataContainerBundles;
 
 

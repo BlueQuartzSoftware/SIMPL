@@ -58,11 +58,11 @@
 #include "SIMPLib/Common/Constants.h"
 #include "SIMPLib/Common/Observable.h"
 #include "SIMPLib/DataArrays/IDataArray.h"
-#include "SIMPLib/DataArrays/DataArray.hpp"
 
 class AttributeMatrixProxy;
 class DataContainerProxy;
 class SIMPLH5DataReaderRequirements;
+template<class T> class DataArray;
 
 enum RenameErrorCodes
 {
@@ -185,7 +185,7 @@ class SIMPLib_EXPORT AttributeMatrix : public Observable
      * @param dataContainer
      * @param h5InternalPath
      */
-    static void ReadAttributeMatrixStructure(hid_t containerId, DataContainerProxy* dcProxy, SIMPLH5DataReaderRequirements req, QString h5InternalPath);
+    static void ReadAttributeMatrixStructure(hid_t containerId, DataContainerProxy* dcProxy, SIMPLH5DataReaderRequirements* req, const QString& h5InternalPath);
 
     /**
      * @brief setType
@@ -559,7 +559,7 @@ class SIMPLib_EXPORT AttributeMatrix : public Observable
       (only valid for feature or ensemble type matrices)
     * @param size The new size of the array
     */
-    bool removeInactiveObjects(QVector<bool> activeObjects, Int32ArrayType::Pointer Ids);
+    bool removeInactiveObjects(const QVector<bool> &activeObjects, DataArray<int32_t>* featureIds);
 
     /**
      * @brief Sets the Tuple Dimensions for the Attribute Matrix

@@ -55,6 +55,7 @@
 
 #include "H5Support/H5Lite.h"
 #include "H5Support/H5Utilities.h"
+#include "H5Support/QH5Utilities.h"
 
 #include "SIMPLib/CoreFilters/ImportHDF5Dataset.h"
 #include "SIMPLib/FilterParameters/ImportHDF5DatasetFilterParameter.h"

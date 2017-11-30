@@ -48,6 +48,7 @@
 
 // DREAM3D Includes
 #include "SIMPLib/DataArrays/StatsDataArray.h"
+#include "SIMPLib/DataArrays/DataArray.hpp"
 #include "SIMPLib/HDF5/H5DataArrayReader.h"
 #include "SIMPLib/HDF5/VTKH5Constants.h"
 #include "SIMPLib/Math/SIMPLibMath.h"
@@ -231,7 +232,7 @@ QVector<QString> AttributeMatrix::GetTypesAsStrings()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void AttributeMatrix::ReadAttributeMatrixStructure(hid_t containerId, DataContainerProxy* dcProxy, SIMPLH5DataReaderRequirements req, QString h5InternalPath)
+void AttributeMatrix::ReadAttributeMatrixStructure(hid_t containerId, DataContainerProxy* dcProxy, SIMPLH5DataReaderRequirements* req, const QString &h5InternalPath)
 {
   QList<QString> attributeMatrixNames;
   QH5Utilities::getGroupObjects(containerId, H5Utilities::H5Support_GROUP, attributeMatrixNames);
@@ -258,7 +259,7 @@ void AttributeMatrix::ReadAttributeMatrixStructure(hid_t containerId, DataContai
       herr_t err = QH5Lite::readScalarAttribute(containerId, attributeMatrixName, SIMPL::StringConstants::AttributeMatrixType, amTypeTmp);
       if(err >= 0)
       {
-        AttributeMatrix::Types amTypes = req.getAMTypes();
+        AttributeMatrix::Types amTypes = req->getAMTypes();
         if (amTypes.size() <= 0 || amTypes.contains(static_cast<AttributeMatrix::Type>(amTypeTmp)))
         {
           amProxy.flag = Qt::Checked;
@@ -442,7 +443,7 @@ size_t AttributeMatrix::getNumberOfTuples()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-bool AttributeMatrix::removeInactiveObjects(QVector<bool> activeObjects, Int32ArrayType::Pointer Ids)
+bool AttributeMatrix::removeInactiveObjects(const QVector<bool> &activeObjects, DataArray<int32_t> *featureIds)
 {
   bool acceptableMatrix = false;
   // Only valid for feature or ensemble type matrices
@@ -456,24 +457,24 @@ bool AttributeMatrix::removeInactiveObjects(QVector<bool> activeObjects, Int32Ar
   if(static_cast<size_t>(activeObjects.size()) == totalTuples && acceptableMatrix == true)
   {
     size_t goodcount = 1;
-    QVector<size_t> NewNames(totalTuples, 0);
-    QVector<size_t> RemoveList;
+    QVector<size_t> newNames(totalTuples, 0);
+    QVector<size_t> removeList;
 
     for(qint32 i = 1; i < activeObjects.size(); i++)
     {
       if(activeObjects[i] == false)
       {
-        RemoveList.push_back(i);
-        NewNames[i] = 0;
+        removeList.push_back(i);
+        newNames[i] = 0;
       }
       else
       {
-        NewNames[i] = goodcount;
+        newNames[i] = goodcount;
         goodcount++;
       }
     }
 
-    if(RemoveList.size() > 0)
+    if(removeList.size() > 0)
     {
       QList<QString> headers = getAttributeArrayNames();
       for(QList<QString>::iterator iter = headers.begin(); iter != headers.end(); ++iter)
@@ -486,20 +487,20 @@ bool AttributeMatrix::removeInactiveObjects(QVector<bool> activeObjects, Int32Ar
         }
         else
         {
-          p->eraseTuples(RemoveList);
+          p->eraseTuples(removeList);
         }
       }
-      QVector<size_t> tDims(1, (totalTuples - RemoveList.size()));
+      QVector<size_t> tDims(1, (totalTuples - removeList.size()));
       setTupleDimensions(tDims);
 
       // Loop over all the points and correct all the feature names
-      size_t totalPoints = Ids->getNumberOfTuples();
-      int32_t* id = Ids->getPointer(0);
+      size_t totalPoints = featureIds->getNumberOfTuples();
+      int32_t* featureIdPtr = featureIds->getPointer(0);
       for(size_t i = 0; i < totalPoints; i++)
       {
-        if(id[i] >= 0 && id[i] < NewNames.size())
+        if(featureIdPtr[i] >= 0 && featureIdPtr[i] < newNames.size())
         {
-          id[i] = static_cast<int32_t>(NewNames[id[i]]);
+          featureIdPtr[i] = static_cast<int32_t>(newNames[featureIdPtr[i]]);
         }
       }
     }

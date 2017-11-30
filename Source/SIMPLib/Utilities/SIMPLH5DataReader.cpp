@@ -39,8 +39,10 @@
 #include "SIMPLib/Common/IObserver.h"
 #include "SIMPLib/DataContainers/DataContainerBundle.h"
 #include "SIMPLib/DataContainers/DataContainerArray.h"
+#include "SIMPLib/Utilities/SIMPLH5DataReaderRequirements.h"
 
 #include "H5Support/QH5Utilities.h"
+#include "H5Support/HDF5ScopedFileSentinel.h"
 
 #include "moc_SIMPLH5DataReader.cpp"
 
@@ -110,7 +112,7 @@ bool SIMPLH5DataReader::closeFile()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-DataContainerArray::Pointer SIMPLH5DataReader::readSIMPLDataUsingProxy(DataContainerArrayProxy proxy, bool preflight)
+DataContainerArray::Pointer SIMPLH5DataReader::readSIMPLDataUsingProxy(const DataContainerArrayProxy &proxy, bool preflight)
 {
   if (m_FileId < 0)
   {
@@ -182,7 +184,7 @@ DataContainerArray::Pointer SIMPLH5DataReader::readSIMPLDataUsingProxy(DataConta
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-DataContainerArrayProxy SIMPLH5DataReader::readDataContainerArrayStructure(SIMPLH5DataReaderRequirements req, int &err)
+DataContainerArrayProxy SIMPLH5DataReader::readDataContainerArrayStructure(SIMPLH5DataReaderRequirements* req, int &err)
 {
   DataContainerArrayProxy proxy;
 

@@ -40,7 +40,8 @@
 #include "SIMPLib/DataContainers/DataArrayPath.h"
 #include "SIMPLib/DataContainers/DataContainerArrayProxy.h"
 #include "SIMPLib/DataContainers/DataContainerProxy.h"
-
+#include "SIMPLib/DataContainers/AttributeMatrix.h"
+#include "SIMPLib/Utilities/SIMPLH5DataReaderRequirements.h"
 #include "SIMPLib/Geometry/EdgeGeom.h"
 #include "SIMPLib/Geometry/ImageGeom.h"
 #include "SIMPLib/Geometry/QuadGeom.h"
@@ -48,6 +49,10 @@
 #include "SIMPLib/Geometry/TetrahedralGeom.h"
 #include "SIMPLib/Geometry/TriangleGeom.h"
 #include "SIMPLib/Geometry/VertexGeom.h"
+
+#include "H5Support/QH5Utilities.h"
+#include "H5Support/HDF5ScopedFileSentinel.h"
+
 
 // -----------------------------------------------------------------------------
 //
@@ -85,7 +90,7 @@ DataContainer::Pointer DataContainer::createNewDataContainer(const QString& name
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void DataContainer::ReadDataContainerStructure(hid_t dcArrayGroupId, DataContainerArrayProxy& proxy, SIMPLH5DataReaderRequirements req, QString h5InternalPath)
+void DataContainer::ReadDataContainerStructure(hid_t dcArrayGroupId, DataContainerArrayProxy& proxy, SIMPLH5DataReaderRequirements *req, const QString &h5InternalPath)
 {
   QList<QString> dataContainers;
   QH5Utilities::getGroupObjects(dcArrayGroupId, H5Utilities::H5Support_GROUP, dataContainers);
@@ -110,7 +115,7 @@ void DataContainer::ReadDataContainerStructure(hid_t dcArrayGroupId, DataContain
     herr_t err = QH5Lite::readScalarAttribute(containerGid, SIMPL::Geometry::Geometry, SIMPL::Geometry::GeometryType, geometryType);
     if (err >= 0)
     {
-      IGeometry::Types geomTypes = req.getDCGeometryTypes();
+      IGeometry::Types geomTypes = req->getDCGeometryTypes();
       if (geomTypes.size() <= 0 || geomTypes.contains(static_cast<IGeometry::Type>(geometryType)))
       {
         dcProxy.flag = Qt::Checked;

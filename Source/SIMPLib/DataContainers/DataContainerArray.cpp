@@ -289,7 +289,9 @@ void DataContainerArray::printDataContainerNames(QTextStream& out)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-int DataContainerArray::readDataContainersFromHDF5(bool preflight, hid_t dcaGid, DataContainerArrayProxy& dcaProxy, Observable* obs)
+int DataContainerArray::readDataContainersFromHDF5(bool preflight, hid_t dcaGid, 
+                                                   const DataContainerArrayProxy &dcaProxy, 
+                                                   Observable* obs)
 {
   int err = 0;
   QList<DataContainerProxy> dcsToRead = dcaProxy.dataContainers.values();

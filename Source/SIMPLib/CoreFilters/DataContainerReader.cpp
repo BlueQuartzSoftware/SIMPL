@@ -50,6 +50,7 @@
 #include "SIMPLib/Filtering/FilterManager.h"
 #include "SIMPLib/Utilities/SIMPLH5DataReader.h"
 #include "SIMPLib/SIMPLibVersion.h"
+#include "SIMPLib/Utilities/SIMPLH5DataReaderRequirements.h"
 
 // Include the MOC generated file for this class
 #include "moc_DataContainerReader.cpp"
@@ -314,7 +315,7 @@ DataContainerArrayProxy DataContainerReader::readDataContainerArrayStructure(con
 
   int err = 0;
   SIMPLH5DataReaderRequirements req(SIMPL::Defaults::AnyPrimitive, SIMPL::Defaults::AnyComponentSize, AttributeMatrix::Type::Any, IGeometry::Type::Any);
-  DataContainerArrayProxy proxy = h5Reader->readDataContainerArrayStructure(req, err);
+  DataContainerArrayProxy proxy = h5Reader->readDataContainerArrayStructure(&req, err);
   if (err < 0)
   {
     return DataContainerArrayProxy();
@@ -438,7 +439,7 @@ bool DataContainerReader::syncProxies()
   if(m_InputFileDataContainerArrayProxy.dataContainers.size() > 0)
   {
     int err = 0;
-    DataContainerArrayProxy fileProxy = simplReader->readDataContainerArrayStructure(req, err);
+    DataContainerArrayProxy fileProxy = simplReader->readDataContainerArrayStructure(&req, err);
     if (err < 0)
     {
       return false;
@@ -453,7 +454,7 @@ bool DataContainerReader::syncProxies()
   else
   {
     int err = 0;
-    DataContainerArrayProxy fileProxy = simplReader->readDataContainerArrayStructure(req, err);
+    DataContainerArrayProxy fileProxy = simplReader->readDataContainerArrayStructure(&req, err);
     if (err < 0)
     {
       return false;

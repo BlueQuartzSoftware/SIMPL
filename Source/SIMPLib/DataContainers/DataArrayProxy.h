@@ -36,226 +36,92 @@
 #ifndef _dataarrayproxy_h_
 #define _dataarrayproxy_h_
 
-#include <QtCore/QMetaType>
-#include <QtCore/QString>
 #include <QtCore/QJsonArray>
 #include <QtCore/QJsonObject>
+#include <QtCore/QMetaType>
+#include <QtCore/QString>
+#include <QtCore/QVector>
 
-#include "H5Support/QH5Utilities.h"
-#include "H5Support/QH5Lite.h"
-#include "H5Support/HDF5ScopedFileSentinel.h"
-
+#include <hdf5.h>
 
 #include "SIMPLib/Common/Constants.h"
-#include "SIMPLib/Utilities/SIMPLH5DataReaderRequirements.h"
 
+class SIMPLH5DataReaderRequirements;
 
+/**
+ * @brief The DataArrayProxy class
+ */
 class DataArrayProxy
 {
 
-  public:
-    /**
-     * @brief DataArrayProxy
-     */
-    DataArrayProxy() :
-      flag(SIMPL::Unchecked),
-      version(0),
-      path(""),
-      name(""),
-      objectType("")
-    {}
+public:
+  /**
+   * @brief DataArrayProxy
+   */
+  DataArrayProxy();
 
-    /**
-     * @brief DataArrayProxy
-     * @param da_path
-     * @param da_name
-     * @param da_flag
-     * @param da_objectType
-     * @param da_version
-     */
-    DataArrayProxy(QString da_path, QString da_name, uint8_t da_flag = SIMPL::Checked, QString da_objectType = "NOT_DEFINED", int da_version = 0) :
-      flag(da_flag),
-      version(da_version),
-      path(da_path),
-      name(da_name),
-      objectType(da_objectType)
-    {}
+  /**
+   * @brief DataArrayProxy
+   * @param da_path
+   * @param da_name
+   * @param da_flag
+   * @param da_objectType
+   * @param da_version
+   */
+  DataArrayProxy(QString da_path, QString da_name, uint8_t da_flag = SIMPL::Checked, QString da_objectType = "NOT_DEFINED", int da_version = 0);
 
-    /**
-    * @brief Copy Constructor
-    */
-    DataArrayProxy(const DataArrayProxy& rhs)
-    {
-      flag = rhs.flag;
-      version = rhs.version;
-      path = rhs.path;
-      name = rhs.name;
-      objectType = rhs.objectType;
-      tupleDims = rhs.tupleDims;
-      compDims = rhs.compDims;
-    }
+  /**
+  * @brief Copy Constructor
+  */
+  DataArrayProxy(const DataArrayProxy& rhs);
 
-    /**
-    * @brief Writes the contents of the proxy to the json object 'json'
-    * @param json
-    * @return
-    */
-    void writeJson(QJsonObject& json)
-    {
-      json["Flag"] = static_cast<double>(flag);
-      json["Version"] = static_cast<double>(version);
-      json["Path"] = path;
-      json["Name"] = name;
-      json["Object Type"] = objectType;
-      json["Tuple Dimensions"] = writeVector(tupleDims);
-      json["Component Dimensions"] = writeVector(compDims);
-    }
+  /**
+  * @brief Writes the contents of the proxy to the json object 'json'
+  * @param json
+  * @return
+  */
+  void writeJson(QJsonObject& json);
 
-    /**
-    * @brief Reads the contents of the the json object 'json' into the proxy
-    * @param json
-    * @return
-    */
-    bool readJson(const QJsonObject& json)
-    {
-      if (json["Flag"].isDouble() && json["Version"].isDouble() && json["Path"].isString() && json["Name"].isString()
-          && json["Object Type"].isString() && json["Tuple Dimensions"].isArray() && json["Component Dimensions"].isArray())
-      {
-        if (json["Flag"].toDouble() >= std::numeric_limits<uint8_t>().min() && json["Flag"].toDouble() <= std::numeric_limits<uint8_t>().max())
-        {
-          flag = static_cast<uint8_t>(json["Flag"].toDouble());
-        }
-        version = json["Version"].toInt();
-        path = json["Path"].toString();
-        name = json["Name"].toString();
-        objectType = json["Object Type"].toString();
-        tupleDims = readVector(json["Tuple Dimensions"].toArray());
-        compDims = readVector(json["Component Dimensions"].toArray());
-        return true;
-      }
-      return false;
-    }
+  /**
+  * @brief Reads the contents of the the json object 'json' into the proxy
+  * @param json
+  * @return
+  */
+  bool readJson(const QJsonObject& json);
 
-    /**
-     * @brief ReadDataArrayStructure
-     * @param attrMatGid
-     * @param dataArrays
-     * @param h5InternalPath
-     */
-    static void ReadDataArrayStructure(hid_t attrMatGid, QMap<QString, DataArrayProxy>& dataArrays, SIMPLH5DataReaderRequirements req, QString h5InternalPath)
-    {
+  /**
+   * @brief ReadDataArrayStructure
+   * @param attrMatGid
+   * @param dataArrays
+   * @param h5InternalPath
+   */
+  static void ReadDataArrayStructure(hid_t attrMatGid, QMap<QString, DataArrayProxy>& dataArrays, SIMPLH5DataReaderRequirements* req, QString h5InternalPath);
 
-      QList<QString> dataArrayNames;
-      QH5Utilities::getGroupObjects(attrMatGid, H5Utilities::H5Support_DATASET | H5Utilities::H5Support_GROUP, dataArrayNames);
-      foreach(QString dataArrayName, dataArrayNames)
-      {
-        if(__SHOW_DEBUG_MSG__)
-        { std::cout << "        DataArray: " << dataArrayName.toStdString()  << std::endl; }
+  /**
+  * @brief operator = method
+  */
+  void operator=(const DataArrayProxy& rhs);
 
-        DataArrayProxy proxy(h5InternalPath, dataArrayName, SIMPL::Unchecked);
+  /**
+  * @brief operator == method
+  */
+  bool operator==(const DataArrayProxy& rhs) const;
 
-        herr_t err = QH5Lite::readVectorAttribute(attrMatGid, dataArrayName, SIMPL::HDF5::TupleDimensions, proxy.tupleDims);
-        if(err < 0) { std::cout << "Error Reading the Tuple Dimensions for DataArray " << dataArrayName.toStdString() << std::endl; }
+  //----- Our variables, publicly available
+  uint8_t flag;
+  int version;
+  QString path;
+  QString name;
+  QString objectType;
+  QVector<size_t> tupleDims;
+  QVector<size_t> compDims;
 
-        err = QH5Lite::readVectorAttribute(attrMatGid, dataArrayName, SIMPL::HDF5::ComponentDimensions, proxy.compDims);
-        if(err < 0) { std::cout << "Error Reading the Component Dimensions for DataArray " << dataArrayName.toStdString() << std::endl; }
+private:
+  QJsonArray writeVector(QVector<size_t> vector);
 
-        QVector<QVector<size_t> > cDims = req.getComponentDimensions();
-        bool cDimsResult = false;
-        if (cDims.size() <= 0 || cDims.contains(proxy.compDims))
-        {
-          cDimsResult = true;
-        }
-
-        err = QH5Lite::readScalarAttribute(attrMatGid, dataArrayName, SIMPL::HDF5::DataArrayVersion, proxy.version);
-        if(err < 0) { std::cout << "Error Reading the Version for DataArray " << dataArrayName.toStdString() << std::endl; }
-
-        err = QH5Lite::readStringAttribute(attrMatGid, dataArrayName, SIMPL::HDF5::ObjectType, proxy.objectType);
-        if(err < 0) { std::cout << "Error Reading the Object Type for DataArray " << dataArrayName.toStdString() << std::endl; }
-
-        QVector<QString> daTypes = req.getDATypes();
-        if ((daTypes.size() <= 0 || daTypes.contains(proxy.objectType)) && cDimsResult == true)
-        {
-          proxy.flag = Qt::Checked;
-        }
-
-        dataArrays.insert(dataArrayName, proxy);
-      }
-    }
-
-
-
-
-    /**
-    * @brief operator = method
-    */
-    void operator=(const DataArrayProxy& rhs)
-    {
-      flag = rhs.flag;
-      version = rhs.version;
-      path = rhs.path;
-      name = rhs.name;
-      objectType = rhs.objectType;
-      tupleDims = rhs.tupleDims;
-      compDims = rhs.compDims;
-    }
-
-    /**
-    * @brief operator == method
-    */
-    bool operator==(const DataArrayProxy& rhs) const
-    {
-      if (flag == rhs.flag && version == rhs.version && path == rhs.path && name == rhs.name
-          && objectType == rhs.objectType && tupleDims == rhs.tupleDims && compDims == rhs.compDims)
-      {
-        return true;
-      }
-
-      return false;
-    }
-
-    //----- Our variables, publicly available
-    uint8_t flag;
-    int version;
-    QString path;
-    QString name;
-    QString objectType;
-    QVector<size_t> tupleDims;
-    QVector<size_t> compDims;
-
-  private:
-
-
-    QJsonArray writeVector(QVector<size_t> vector)
-    {
-      QJsonArray jsonArray;
-      foreach(size_t num, vector)
-      {
-        jsonArray.push_back(static_cast<double>(num));
-      }
-
-      return jsonArray;
-    }
-
-    QVector<size_t> readVector(QJsonArray jsonArray)
-    {
-      QVector<size_t> vector;
-      foreach(QJsonValue val, jsonArray)
-      {
-        if (val.isDouble())
-        {
-          if (val.toDouble() >= std::numeric_limits<size_t>().min() && val.toDouble() <= std::numeric_limits<size_t>().max())
-          {
-            vector.push_back(static_cast<size_t>(val.toDouble()));
-          }
-        }
-      }
-      return vector;
-    }
-
+  QVector<size_t> readVector(QJsonArray jsonArray);
 };
 
 Q_DECLARE_METATYPE(DataArrayProxy)
 
 #endif /* _DataArrayProxy_H_ */
-

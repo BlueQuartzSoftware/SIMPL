@@ -47,15 +47,16 @@
 #include "SIMPLib/Common/SIMPLibSetGetMacros.h"
 #include "SIMPLib/Common/Observable.h"
 #include "SIMPLib/DataContainers/DataArrayPath.h"
-#include "SIMPLib/DataContainers/AttributeMatrix.h"
 #include "SIMPLib/Geometry/IGeometry.h"
-#include "SIMPLib/DataContainers/DataContainerArrayProxy.h"
-#include "SIMPLib/Utilities/SIMPLH5DataReaderRequirements.h"
 
+class QTextStream;
 class DataArrayPath;
 class DataContainerArrayProxy;
 class DataContainerProxy;
-class QTextStream;
+class AttributeMatrix;
+class SIMPLH5DataReaderRequirements;
+
+using AttributeMatrixShPtr = std::shared_ptr<AttributeMatrix>;
 
 /**
  * @brief The DataContainer class
@@ -86,7 +87,7 @@ class SIMPLib_EXPORT DataContainer : public Observable
     /**
      * @brief AttributeMatrixMap_t
      */
-    typedef QMap<QString, AttributeMatrix::Pointer> AttributeMatrixMap_t;
+    typedef QMap<QString, AttributeMatrixShPtr> AttributeMatrixMap_t;
 
     /**
      * @brief Creates a new shared pointer instance of this class
@@ -111,7 +112,7 @@ class SIMPLib_EXPORT DataContainer : public Observable
      * @param proxy
      * @param h5InternalPath
      */
-    static void ReadDataContainerStructure(hid_t dcArrayGroupId, DataContainerArrayProxy& proxy, SIMPLH5DataReaderRequirements req, QString h5InternalPath);
+    static void ReadDataContainerStructure(hid_t dcArrayGroupId, DataContainerArrayProxy& proxy, SIMPLH5DataReaderRequirements* req, const QString &h5InternalPath);
 
     /**
     * @brief Sets the name of the data container
@@ -145,21 +146,21 @@ class SIMPLib_EXPORT DataContainer : public Observable
     * @param name The name that the array will be known by
     * @param data The IDataArray::Pointer that will hold the data
     */
-    virtual void addAttributeMatrix(const QString& name, AttributeMatrix::Pointer matrix);
+    virtual void addAttributeMatrix(const QString& name, AttributeMatrixShPtr matrix);
 
     /**
      * @brief Returns the array for a given named array or the equivelant to a
      * null pointer if the name does not exist.
      * @param name The name of the data array
      */
-    virtual AttributeMatrix::Pointer getAttributeMatrix(const QString& name);
+    virtual AttributeMatrixShPtr getAttributeMatrix(const QString& name);
 
     /**
     * @brief Returns the array for a given named array or the equivelant to a
     * null pointer if the name does not exist.
     * @param name The Name of the AttributeMatrix will be extracted from the DataArratPath object
     */
-    virtual AttributeMatrix::Pointer getAttributeMatrix(const DataArrayPath& path);
+    virtual AttributeMatrixShPtr getAttributeMatrix(const DataArrayPath& path);
 
     /**
      * @brief getAttributeMatrices
@@ -179,7 +180,7 @@ class SIMPLib_EXPORT DataContainer : public Observable
     * @param name The name of the array
     * @return
     */
-    virtual AttributeMatrix::Pointer removeAttributeMatrix(const QString& name);
+    virtual AttributeMatrixShPtr removeAttributeMatrix(const QString& name);
 
     /**
     * @brief Renames a cell data array from the Data Container
@@ -221,12 +222,12 @@ class SIMPLib_EXPORT DataContainer : public Observable
      * @return Shared Pointer to an AttributeMatrix object.
      */
     template<class Filter>
-    AttributeMatrix::Pointer getPrereqAttributeMatrix(Filter* filter,
+    AttributeMatrixShPtr getPrereqAttributeMatrix(Filter* filter,
                                                       QString attributeMatrixName,
                                                       int err)
     {
       QString ss;
-      typename AttributeMatrix::Pointer attributeMatrix = AttributeMatrix::NullPointer();
+      AttributeMatrixShPtr attributeMatrix(nullptr);
       //Make sure the name is not empty for teh AttributeMatrix and the AttributeArray Name. This would be detected below
       // in the call to get either one BUT the reason for the failure would not be evident so we make these explicit checks
       // here and send back nice error messages to ther user/programmer.
@@ -277,7 +278,7 @@ class SIMPLib_EXPORT DataContainer : public Observable
      * @return A Shared Pointer to the AttributeMatrix
      */
     template<class Filter>
-    AttributeMatrix::Pointer createNonPrereqAttributeMatrix(Filter* filter,
+    AttributeMatrixShPtr createNonPrereqAttributeMatrix(Filter* filter,
                                                             const DataArrayPath path,
                                                             QVector<size_t> tDims,
                                                             AttributeMatrix::Type amType)
@@ -296,12 +297,12 @@ class SIMPLib_EXPORT DataContainer : public Observable
      * @return A Shared Pointer to the AttributeMatrix
      */
     template<class Filter>
-    AttributeMatrix::Pointer createNonPrereqAttributeMatrix(Filter* filter,
+    AttributeMatrixShPtr createNonPrereqAttributeMatrix(Filter* filter,
                                                             const QString& attributeMatrixName,
                                                             QVector<size_t> tDims,
                                                             AttributeMatrix::Type amType)
     {
-      typename AttributeMatrix::Pointer attributeMatrix = AttributeMatrix::NullPointer();
+      AttributeMatrixShPtr attributeMatrix(nullptr);
 
       QString ss;
       if (attributeMatrixName.isEmpty() == true)
@@ -405,7 +406,7 @@ class SIMPLib_EXPORT DataContainer : public Observable
      * @param attrType The Type of AttributeMatrix to create
      * @return
      */
-    virtual AttributeMatrix::Pointer createAndAddAttributeMatrix(QVector<size_t> tDims, const QString& attrMatName, AttributeMatrix::Type attrType);
+    virtual AttributeMatrixShPtr createAndAddAttributeMatrix(QVector<size_t> tDims, const QString& attrMatName, AttributeMatrix::Type attrType);
 
     /**
     * @brief Writes all the Attribute Matrices to HDF5 file

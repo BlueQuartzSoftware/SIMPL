@@ -37,15 +37,16 @@
 
 #include <hdf5.h>
 
+#include "SIMPLib/SIMPLib.h"
 #include "SIMPLib/Common/Observable.h"
 #include "SIMPLib/DataContainers/DataArrayPath.h"
 #include "SIMPLib/DataContainers/DataContainerArray.h"
-#include "SIMPLib/Utilities/SIMPLH5DataReaderRequirements.h"
+#include "SIMPLib/DataContainers/DataContainerArrayProxy.h"
 
-#include "SIMPLib/SIMPLib.h"
 
 class IObserver;
 class DataContainerArrayProxy;
+class SIMPLH5DataReaderRequirements;
 
 /**
  * @brief The SIMPLH5DataReader class
@@ -79,7 +80,7 @@ class SIMPLib_EXPORT SIMPLH5DataReader : public Observable
      * @param err
      * @return
      */
-    DataContainerArrayProxy readDataContainerArrayStructure(SIMPLH5DataReaderRequirements req, int &err);
+    DataContainerArrayProxy readDataContainerArrayStructure(SIMPLH5DataReaderRequirements *req, int &err);
 
     /**
      * @brief readSIMPLDataUsingProxy
@@ -87,7 +88,7 @@ class SIMPLib_EXPORT SIMPLH5DataReader : public Observable
      * @param preflight
      * @return
      */
-    DataContainerArray::Pointer readSIMPLDataUsingProxy(DataContainerArrayProxy proxy, bool preflight);
+    DataContainerArray::Pointer readSIMPLDataUsingProxy(const DataContainerArrayProxy &proxy, bool preflight);
 
     /**
      * @brief readPipelineJson

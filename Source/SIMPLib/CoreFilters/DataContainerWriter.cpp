@@ -37,6 +37,10 @@
 
 #include <QtCore/QDir>
 
+#include "H5Support/H5Utilities.h"
+#include "H5Support/QH5Utilities.h"
+#include "H5Support/HDF5ScopedFileSentinel.h"
+
 #include "SIMPLib/Common/Constants.h"
 #include "SIMPLib/FilterParameters/AbstractFilterParametersReader.h"
 #include "SIMPLib/FilterParameters/BooleanFilterParameter.h"
@@ -44,6 +48,7 @@
 #include "SIMPLib/FilterParameters/OutputFileFilterParameter.h"
 #include "SIMPLib/SIMPLibVersion.h"
 #include "SIMPLib/SIMPLibVersion.h"
+
 
 #ifdef _WIN32
 extern Q_CORE_EXPORT int qt_ntfs_permission_lookup;
