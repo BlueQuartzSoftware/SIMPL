@@ -60,9 +60,9 @@ class SIMPLib_EXPORT EnsembleInfo : public QObject
   Q_OBJECT
 
 public:
-  using CrystalStructureType = uint32_t;
+  using EnumType = uint32_t;
 
-  enum class CrystalStructure : CrystalStructureType
+  enum class CrystalStructure : EnumType
   {
     Hexagonal_High = 0,
     Cubic_High,
@@ -88,34 +88,34 @@ public:
 
   virtual ~EnsembleInfo();
 
-  int size();
+  size_t size() const;
 
   void addValues(const CrystalStructure crystalStructure, const PhaseType::Type phaseType, const QString phaseName);
 
-  void getValues(int index, CrystalStructure& structure, PhaseType::Type& phaseType, QString& phaseName);
+  void getValues(size_t index, CrystalStructure& structure, PhaseType::Type& phaseType, QString& phaseName);
 
-  CrystalStructure getCrystalStructure(int index);
-  PhaseType::Type getPhaseType(int index);
-  QString getPhaseName(int index);
+  CrystalStructure getCrystalStructure(size_t index) const;
+  PhaseType::Type getPhaseType(size_t index) const;
+  QString getPhaseName(size_t index) const;
 
-  void setCrystalStructure(int index, CrystalStructure structure);
-  void setPhaseType(int index, PhaseType::Type phaseType);
-  void setPhaseName(int index, QString phaseName);
+  void setCrystalStructure(size_t index, CrystalStructure structure);
+  void setPhaseType(size_t index, PhaseType::Type phaseType);
+  void setPhaseName(size_t index, QString phaseName);
 
-  DataArray<CrystalStructureType>::Pointer getCrystalStructureArray();
-  DataArray<PhaseType::EnumType>::Pointer getPhaseTypeArray();
-  StringDataArray::Pointer getPhaseNameArray();
+  std::vector<CrystalStructure> getCrystalStructureArray();
+  std::vector<PhaseType::Type> getPhaseTypeArray();
+  std::vector<QString> getPhaseNameArray();
 
   void operator=(const EnsembleInfo&);
 
-  void remove(int index);
+  void remove(size_t index);
 
   void clear();
 
 private:
-  DataArray<CrystalStructureType>::Pointer m_CrystalStructures;
-  DataArray<PhaseType::EnumType>::Pointer m_PhaseTypes;
-  StringDataArray::Pointer m_PhaseNames;
+  std::vector<CrystalStructure> m_CrystalStructures;
+  std::vector<PhaseType::Type> m_PhaseTypes;
+  std::vector<QString> m_PhaseNames;
 };
 
 Q_DECLARE_METATYPE(EnsembleInfo)

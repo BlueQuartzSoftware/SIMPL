@@ -51,7 +51,7 @@ class SIMPLH5DataReaderRequirements;
 /**
  * @brief The DataArrayProxy class
  */
-class DataArrayProxy
+class SIMPLib_EXPORT DataArrayProxy
 {
 
 public:

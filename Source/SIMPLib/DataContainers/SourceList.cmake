@@ -67,6 +67,7 @@ set(SIMPLib_${SUBDIR_NAME}_SRCS
   ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/DataContainer.cpp
   ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/DataContainerArray.cpp
   ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/DataContainerArrayProxy.cpp
+  ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/DataContainerProxy.cpp
   ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/DataContainerBundle.cpp
   ${SIMPLib_SOURCE_DIR}/${SUBDIR_NAME}/IDataContainerBundle.cpp
 )

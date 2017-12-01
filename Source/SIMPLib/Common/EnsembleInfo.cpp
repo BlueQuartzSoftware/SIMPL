@@ -97,9 +97,6 @@ EnsembleInfo::CrystalStructure EnsembleInfo::CrystalStructureFromStr(QString str
 EnsembleInfo::EnsembleInfo()
 : QObject(nullptr)
 {
-  m_CrystalStructures = DataArray<CrystalStructureType>::CreateArray(0, "_INTERNAL_");
-  m_PhaseTypes = DataArray<PhaseType::EnumType>::CreateArray(0, "_INTERNAL_");
-  m_PhaseNames = StringDataArray::CreateArray(0, "_INTERNAL_");
 }
 
 // -----------------------------------------------------------------------------
@@ -108,9 +105,9 @@ EnsembleInfo::EnsembleInfo()
 EnsembleInfo::EnsembleInfo(const EnsembleInfo& rhs)
 : QObject(nullptr)
 {
-  m_CrystalStructures = std::static_pointer_cast<DataArray<CrystalStructureType>>(rhs.m_CrystalStructures->deepCopy());
-  m_PhaseTypes = std::static_pointer_cast<DataArray<PhaseType::EnumType>>(rhs.m_PhaseTypes->deepCopy());
-  m_PhaseNames = std::static_pointer_cast<StringDataArray>(rhs.m_PhaseNames->deepCopy());
+  m_CrystalStructures = rhs.m_CrystalStructures;
+  m_PhaseTypes = rhs.m_PhaseTypes;
+  m_PhaseNames = rhs.m_PhaseNames;
 }
 
 // -----------------------------------------------------------------------------
@@ -123,9 +120,9 @@ EnsembleInfo::~EnsembleInfo()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-int EnsembleInfo::size()
+size_t EnsembleInfo::size() const
 {
-  return m_PhaseNames->getNumberOfTuples();
+  return m_PhaseNames.size();
 }
 
 // -----------------------------------------------------------------------------
@@ -135,84 +132,83 @@ void EnsembleInfo::addValues(const CrystalStructure crystalStructure, const Phas
 {
   size_t currentSize = size();
 
-  m_CrystalStructures->resize(currentSize + 1);
-  m_PhaseTypes->resize(currentSize + 1);
-  m_PhaseNames->resize(currentSize + 1);
+  m_CrystalStructures.resize(currentSize + 1);
+  m_PhaseTypes.resize(currentSize + 1);
+  m_PhaseNames.resize(currentSize + 1);
 
-  m_CrystalStructures->setValue(currentSize, static_cast<uint32_t>(crystalStructure));
-  m_PhaseTypes->setValue(currentSize, static_cast<PhaseType::EnumType>(phaseType));
-  m_PhaseNames->setValue(currentSize, phaseName);
+  m_CrystalStructures[currentSize] = crystalStructure;
+  m_PhaseTypes[currentSize] = phaseType;
+  m_PhaseNames[currentSize] = phaseName;
 }
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void EnsembleInfo::getValues(int index, CrystalStructure& structure, PhaseType::Type& phaseType, QString& phaseName)
+void EnsembleInfo::getValues(size_t index, CrystalStructure& structure, PhaseType::Type& phaseType, QString& phaseName)
 {
-  structure = static_cast<CrystalStructure>(m_CrystalStructures->getValue(index));
-  phaseType = static_cast<PhaseType::Type>(m_PhaseTypes->getValue(index));
-  phaseName = m_PhaseNames->getValue(index);
+  structure = m_CrystalStructures[index];
+  phaseType = m_PhaseTypes[index];
+  phaseName = m_PhaseNames[index];
 }
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-EnsembleInfo::CrystalStructure EnsembleInfo::getCrystalStructure(int index)
+EnsembleInfo::CrystalStructure EnsembleInfo::getCrystalStructure(size_t index) const
 {
-  return static_cast<CrystalStructure>(m_CrystalStructures->getValue(index));
+  return m_CrystalStructures[index];
 }
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-PhaseType::Type EnsembleInfo::getPhaseType(int index)
+PhaseType::Type EnsembleInfo::getPhaseType(size_t index) const
 {
-  return static_cast<PhaseType::Type>(m_PhaseTypes->getValue(index));
+  return m_PhaseTypes[index];
 }
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-QString EnsembleInfo::getPhaseName(int index)
+QString EnsembleInfo::getPhaseName(size_t index) const
 {
-  return m_PhaseNames->getValue(index);
+  return m_PhaseNames[index];
 }
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void EnsembleInfo::setCrystalStructure(int index, EnsembleInfo::CrystalStructure structure)
+void EnsembleInfo::setCrystalStructure(size_t index, EnsembleInfo::CrystalStructure structure)
 {
-  m_CrystalStructures->setValue(index, static_cast<CrystalStructureType>(structure));
+  m_CrystalStructures[index] = structure;
 }
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void EnsembleInfo::setPhaseType(int index, PhaseType::Type phaseType)
+void EnsembleInfo::setPhaseType(size_t index, PhaseType::Type phaseType)
 {
-  m_PhaseTypes->setValue(index, static_cast<PhaseType::EnumType>(phaseType));
+  m_PhaseTypes[index] = phaseType;
 }
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void EnsembleInfo::setPhaseName(int index, QString phaseName)
+void EnsembleInfo::setPhaseName(size_t index, QString phaseName)
 {
-  m_PhaseNames->setValue(index, phaseName);
+  m_PhaseNames[index] = phaseName;
 }
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void EnsembleInfo::remove(int index)
+void EnsembleInfo::remove(size_t index)
 {
   QVector<size_t> indexVec;
   indexVec.push_back(index);
-
-  m_CrystalStructures->eraseTuples(indexVec);
-  m_PhaseTypes->eraseTuples(indexVec);
-  m_PhaseNames->eraseTuples(indexVec);
+  m_CrystalStructures.erase(m_CrystalStructures.begin() + index);
+  m_PhaseTypes.erase(m_PhaseTypes.begin() + index);
+  m_PhaseNames.erase(m_PhaseNames.begin() + index);
 }
 
 // -----------------------------------------------------------------------------
@@ -220,15 +216,15 @@ void EnsembleInfo::remove(int index)
 // -----------------------------------------------------------------------------
 void EnsembleInfo::clear()
 {
-  m_CrystalStructures->clear();
-  m_PhaseTypes->clear();
-  m_PhaseNames->resize(0);
+  m_CrystalStructures.clear();
+  m_PhaseTypes.clear();
+  m_PhaseNames.clear();
 }
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-DataArray<EnsembleInfo::CrystalStructureType>::Pointer EnsembleInfo::getCrystalStructureArray()
+std::vector<EnsembleInfo::CrystalStructure> EnsembleInfo::getCrystalStructureArray()
 {
   return m_CrystalStructures;
 }
@@ -236,7 +232,7 @@ DataArray<EnsembleInfo::CrystalStructureType>::Pointer EnsembleInfo::getCrystalS
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-DataArray<PhaseType::EnumType>::Pointer EnsembleInfo::getPhaseTypeArray()
+std::vector<PhaseType::Type> EnsembleInfo::getPhaseTypeArray()
 {
   return m_PhaseTypes;
 }
@@ -244,7 +240,7 @@ DataArray<PhaseType::EnumType>::Pointer EnsembleInfo::getPhaseTypeArray()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-StringDataArray::Pointer EnsembleInfo::getPhaseNameArray()
+std::vector<QString> EnsembleInfo::getPhaseNameArray()
 {
   return m_PhaseNames;
 }
@@ -254,11 +250,7 @@ StringDataArray::Pointer EnsembleInfo::getPhaseNameArray()
 // -----------------------------------------------------------------------------
 void EnsembleInfo::operator=(const EnsembleInfo& rhs)
 {
-  IDataArray::Pointer crystalStructures = rhs.m_CrystalStructures->deepCopy();
-  IDataArray::Pointer phaseTypes = rhs.m_PhaseTypes->deepCopy();
-  IDataArray::Pointer phaseNames = rhs.m_PhaseNames->deepCopy();
-
-  m_CrystalStructures = std::dynamic_pointer_cast<DataArray<CrystalStructureType>>(crystalStructures);
-  m_PhaseTypes = std::dynamic_pointer_cast<DataArray<PhaseType::EnumType>>(phaseTypes);
-  m_PhaseNames = std::dynamic_pointer_cast<StringDataArray>(phaseNames);
+  m_CrystalStructures = rhs.m_CrystalStructures;
+  m_PhaseTypes = rhs.m_PhaseTypes;
+  m_PhaseNames = rhs.m_PhaseNames;
 }

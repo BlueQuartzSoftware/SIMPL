@@ -101,17 +101,30 @@ QDataStream& operator>>(QDataStream& in, PhaseType::Type& v)
 
 QDataStream& operator<<(QDataStream& out, const EnsembleInfo& v)
 {
-  assert(false);
-  EnsembleInfo temp = static_cast<EnsembleInfo>(v);
-  out << temp;
+  int size = v.size();
+  out << size;
+  for(int i = 0; i < size; i++)
+  {
+    uint32_t xtal = static_cast<uint32_t>(v.getCrystalStructure(i));
+    uint32_t phase = static_cast<uint32_t>(v.getPhaseType(i));
+    QString phaseName = v.getPhaseName(i);
+    out << xtal << phase << phaseName;
+  }
   return out;
 }
+
 QDataStream& operator>>(QDataStream& in, EnsembleInfo& v)
 {
-  assert(false);
-  EnsembleInfo temp;
-  in >> temp;
-  v = static_cast<EnsembleInfo>(temp);
+  int size = 0;
+  in >> size;
+  for(int i = 0; i < size; i++)
+  {
+    uint32_t xtal = 0;
+    uint32_t phase = 0;
+    QString phaseName;
+    in >> xtal >> phase >> phaseName;
+    v.addValues(static_cast<EnsembleInfo::CrystalStructure>(xtal), static_cast<PhaseType::Type>(phase), phaseName);
+  }
   return in;
 }
 
