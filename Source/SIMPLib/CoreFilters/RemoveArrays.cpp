@@ -40,9 +40,6 @@
 #include "SIMPLib/FilterParameters/DataContainerArrayProxyFilterParameter.h"
 #include "SIMPLib/SIMPLibVersion.h"
 
-// Include the MOC generated file for this class
-#include "moc_RemoveArrays.cpp"
-
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
@@ -55,9 +52,7 @@ RemoveArrays::RemoveArrays()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-RemoveArrays::~RemoveArrays()
-{
-}
+RemoveArrays::~RemoveArrays() = default;
 
 // -----------------------------------------------------------------------------
 //

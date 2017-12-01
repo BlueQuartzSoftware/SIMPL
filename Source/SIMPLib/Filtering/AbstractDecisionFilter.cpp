@@ -37,9 +37,6 @@
 
 #include "SIMPLib/FilterParameters/AbstractFilterParametersReader.h"
 
-// Include the MOC generated file for this class
-#include "moc_AbstractDecisionFilter.cpp"
-
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
@@ -52,9 +49,7 @@ AbstractDecisionFilter::AbstractDecisionFilter()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-AbstractDecisionFilter::~AbstractDecisionFilter()
-{
-}
+AbstractDecisionFilter::~AbstractDecisionFilter() = default;
 
 // -----------------------------------------------------------------------------
 //

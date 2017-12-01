@@ -42,9 +42,6 @@
 #include "SIMPLib/FilterParameters/DynamicTableFilterParameter.h"
 #include "SIMPLib/SIMPLibVersion.h"
 
-// Include the MOC generated file for this class
-#include "moc_CreateAttributeMatrix.cpp"
-
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
@@ -60,9 +57,7 @@ CreateAttributeMatrix::CreateAttributeMatrix()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-CreateAttributeMatrix::~CreateAttributeMatrix()
-{
-}
+CreateAttributeMatrix::~CreateAttributeMatrix() = default;
 
 // -----------------------------------------------------------------------------
 //

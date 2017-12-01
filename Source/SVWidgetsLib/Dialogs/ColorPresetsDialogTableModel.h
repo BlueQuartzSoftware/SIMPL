@@ -76,8 +76,8 @@ private:
   // 'mutable' allows us to avoid having to pregenerate all the pixmaps.
   mutable QList<QPixmap> Pixmaps;
 
-  ColorPresetsDialogTableModel(const ColorPresetsDialogTableModel&); // Copy Constructor Not Implemented
-  void operator=(const ColorPresetsDialogTableModel&); // Operator '=' Not Implemented
+  ColorPresetsDialogTableModel(const ColorPresetsDialogTableModel&) = delete; // Copy Constructor Not Implemented
+  void operator=(const ColorPresetsDialogTableModel&) = delete;               // Operator '=' Not Implemented
 };
 
 #endif /* _colorpresetsdialogtablemodel_h */

@@ -220,8 +220,8 @@ private:
   void connectSignalsSlots();
   void disconnectSignalsSlots();
 
-  FilterPipeline(const FilterPipeline&); // Copy Constructor Not Implemented
-  void operator=(const FilterPipeline&); // Operator '=' Not Implemented
+  FilterPipeline(const FilterPipeline&) = delete; // Copy Constructor Not Implemented
+  void operator=(const FilterPipeline&) = delete; // Operator '=' Not Implemented
 };
 
 #endif /* FILTERPIPELINE_H_ */

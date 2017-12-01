@@ -46,9 +46,7 @@ RangeFilterParameter::RangeFilterParameter()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-RangeFilterParameter::~RangeFilterParameter()
-{
-}
+RangeFilterParameter::~RangeFilterParameter() = default;
 
 // -----------------------------------------------------------------------------
 //

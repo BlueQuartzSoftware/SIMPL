@@ -35,9 +35,6 @@
 #include "SIMPLib/FilterParameters/BooleanFilterParameter.h"
 #include "SIMPLib/SIMPLibVersion.h"
 
-// Include the MOC generated file for this class
-#include "moc_ErrorWarningFilter.cpp"
-
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
@@ -56,9 +53,7 @@ ErrorWarningFilter::ErrorWarningFilter()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-ErrorWarningFilter::~ErrorWarningFilter()
-{
-}
+ErrorWarningFilter::~ErrorWarningFilter() = default;
 
 // -----------------------------------------------------------------------------
 //

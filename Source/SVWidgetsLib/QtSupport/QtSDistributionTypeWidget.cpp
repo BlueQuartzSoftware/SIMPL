@@ -36,7 +36,6 @@
 #include "QtSDistributionTypeWidget.h"
 
 #include "SIMPLib/Common/Constants.h"
-#include "moc_QtSDistributionTypeWidget.cpp"
 
 // -----------------------------------------------------------------------------
 //
@@ -52,9 +51,7 @@ QtSDistributionTypeWidget::QtSDistributionTypeWidget(QString distributionName, Q
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-QtSDistributionTypeWidget::~QtSDistributionTypeWidget()
-{
-}
+QtSDistributionTypeWidget::~QtSDistributionTypeWidget() = default;
 
 // -----------------------------------------------------------------------------
 //

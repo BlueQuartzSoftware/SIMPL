@@ -169,8 +169,8 @@ protected:
   SecondOrderPolynomialFilterParameter();
 
 private:
-  SecondOrderPolynomialFilterParameter(const SecondOrderPolynomialFilterParameter&); // Copy Constructor Not Implemented
-  void operator=(const SecondOrderPolynomialFilterParameter&); // Operator '=' Not Implemented
+  SecondOrderPolynomialFilterParameter(const SecondOrderPolynomialFilterParameter&) = delete; // Copy Constructor Not Implemented
+  void operator=(const SecondOrderPolynomialFilterParameter&) = delete;                       // Operator '=' Not Implemented
 };
 
 #endif /* _SecondOrderPolynomialFilterParameter_H_ */

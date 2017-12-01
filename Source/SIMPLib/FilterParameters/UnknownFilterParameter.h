@@ -82,8 +82,8 @@ protected:
   UnknownFilterParameter();
 
 private:
-  UnknownFilterParameter(const UnknownFilterParameter&); // Copy Constructor Not Implemented
-  void operator=(const UnknownFilterParameter&); // Operator '=' Not Implemented
+  UnknownFilterParameter(const UnknownFilterParameter&) = delete; // Copy Constructor Not Implemented
+  void operator=(const UnknownFilterParameter&) = delete;         // Operator '=' Not Implemented
 };
 
 #endif /* _UnknownFilterParameter_H_ */

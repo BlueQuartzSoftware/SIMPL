@@ -93,7 +93,7 @@ private:
   QString m_FilePath;
   int m_NumOfLines;
 
-  LineCounterObject(const LineCounterObject&); // Copy Constructor Not Implemented
+  LineCounterObject(const LineCounterObject&) = delete; // Copy Constructor Not Implemented
   void operator=(const LineCounterObject&);    // Operator '=' Not Implemented
 };
 

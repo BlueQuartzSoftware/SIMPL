@@ -40,9 +40,6 @@
 #include "SIMPLib/FilterParameters/DataContainerCreationFilterParameter.h"
 #include "SIMPLib/SIMPLibVersion.h"
 
-// Include the MOC generated file for this class
-#include "moc_CreateDataContainer.cpp"
-
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
@@ -56,9 +53,7 @@ CreateDataContainer::CreateDataContainer()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-CreateDataContainer::~CreateDataContainer()
-{
-}
+CreateDataContainer::~CreateDataContainer() = default;
 
 // -----------------------------------------------------------------------------
 //

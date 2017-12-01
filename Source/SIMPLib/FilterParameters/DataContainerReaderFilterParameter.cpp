@@ -49,9 +49,7 @@ DataContainerReaderFilterParameter::DataContainerReaderFilterParameter()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-DataContainerReaderFilterParameter::~DataContainerReaderFilterParameter()
-{
-}
+DataContainerReaderFilterParameter::~DataContainerReaderFilterParameter() = default;
 
 // -----------------------------------------------------------------------------
 //

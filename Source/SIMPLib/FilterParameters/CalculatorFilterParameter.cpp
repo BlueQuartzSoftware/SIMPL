@@ -46,9 +46,7 @@ CalculatorFilterParameter::CalculatorFilterParameter()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-CalculatorFilterParameter::~CalculatorFilterParameter()
-{
-}
+CalculatorFilterParameter::~CalculatorFilterParameter() = default;
 
 // -----------------------------------------------------------------------------
 //

@@ -178,8 +178,8 @@ class SIMPLib_EXPORT ExecuteProcess : public AbstractFilter
      */
     QStringList splitArgumentsString(QString arguments);
 
-    ExecuteProcess(const ExecuteProcess&); // Copy Constructor Not Implemented
-    void operator=(const ExecuteProcess&); // Operator '=' Not Implemented
+    ExecuteProcess(const ExecuteProcess&) = delete; // Copy Constructor Not Implemented
+    void operator=(const ExecuteProcess&) = delete; // Operator '=' Not Implemented
 };
 
 #endif /* _ExecuteProcess_H_ */

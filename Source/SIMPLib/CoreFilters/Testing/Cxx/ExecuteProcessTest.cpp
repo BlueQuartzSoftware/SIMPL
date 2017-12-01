@@ -99,7 +99,7 @@ private:
   void operator=(const ExecuteProcessObserver&);         // Operator '=' Not Implemented
 };
 
-#include "SIMPLib/CoreFilters/Testing/Cxx/moc_ExecuteProcessTest.cpp"
+#include "ExecuteProcessTest.moc"
 
 class ExecuteProcessTest
 {

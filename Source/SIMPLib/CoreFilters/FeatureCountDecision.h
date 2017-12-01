@@ -129,8 +129,8 @@ class SIMPLib_EXPORT FeatureCountDecision : public AbstractDecisionFilter
   private:
     DEFINE_DATAARRAY_VARIABLE(int32_t, FeatureIds)
 
-    FeatureCountDecision(const FeatureCountDecision&); // Copy Constructor Not Implemented
-    void operator=(const FeatureCountDecision&); // Operator '=' Not Implemented
+    FeatureCountDecision(const FeatureCountDecision&) = delete; // Copy Constructor Not Implemented
+    void operator=(const FeatureCountDecision&) = delete;       // Operator '=' Not Implemented
 };
 
 #endif /* _FeatureCountDecision_H_ */

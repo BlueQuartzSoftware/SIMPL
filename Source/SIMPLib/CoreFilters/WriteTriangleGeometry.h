@@ -169,10 +169,8 @@ class WriteTriangleGeometry : public AbstractFilter
 
 
   private:
-
-
-    WriteTriangleGeometry(const WriteTriangleGeometry&); // Copy Constructor Not Implemented
-    void operator=(const WriteTriangleGeometry&); // Operator '=' Not Implemented
+    WriteTriangleGeometry(const WriteTriangleGeometry&) = delete; // Copy Constructor Not Implemented
+    void operator=(const WriteTriangleGeometry&) = delete;        // Operator '=' Not Implemented
 };
 
 #endif /* _WriteTriangleGeometry_H_ */

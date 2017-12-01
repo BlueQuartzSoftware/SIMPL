@@ -69,8 +69,8 @@ class SIMPLib_EXPORT PluginProxy
     QString m_FilePath;
     bool m_Enabled;
 
-    PluginProxy(const PluginProxy&); // Copy Constructor Not Implemented
-    void operator=(const PluginProxy&); // Operator '=' Not Implemented
+    PluginProxy(const PluginProxy&) = delete;    // Copy Constructor Not Implemented
+    void operator=(const PluginProxy&) = delete; // Operator '=' Not Implemented
 };
 
 #endif /* _PluginProxy_H_ */

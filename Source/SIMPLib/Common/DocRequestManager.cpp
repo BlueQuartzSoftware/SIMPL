@@ -31,8 +31,6 @@
  * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 #include "DocRequestManager.h"
 
-#include "moc_DocRequestManager.cpp"
-
 DocRequestManager* DocRequestManager::self = nullptr;
 
 // -----------------------------------------------------------------------------
@@ -45,9 +43,7 @@ DocRequestManager::DocRequestManager()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-DocRequestManager::~DocRequestManager()
-{
-}
+DocRequestManager::~DocRequestManager() = default;
 
 // -----------------------------------------------------------------------------
 //

@@ -35,17 +35,13 @@
 
 #include "QtSStringEdit.h"
 
-#include "moc_QtSStringEdit.cpp"
-
 QtSStringEdit::QtSStringEdit(QWidget* parent) : QWidget(parent)
 {
   setupUi(this);
   setupGui();
 }
 
-QtSStringEdit::~QtSStringEdit()
-{
-}
+QtSStringEdit::~QtSStringEdit() = default;
 
 // -----------------------------------------------------------------------------
 //

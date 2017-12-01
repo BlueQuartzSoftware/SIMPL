@@ -41,9 +41,6 @@
 #include "SIMPLib/FilterParameters/StringFilterParameter.h"
 #include "SIMPLib/SIMPLibVersion.h"
 
-// Include the MOC generated file for this class
-#include "moc_RenameDataContainer.cpp"
-
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
@@ -58,9 +55,7 @@ RenameDataContainer::RenameDataContainer()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-RenameDataContainer::~RenameDataContainer()
-{
-}
+RenameDataContainer::~RenameDataContainer() = default;
 
 // -----------------------------------------------------------------------------
 //

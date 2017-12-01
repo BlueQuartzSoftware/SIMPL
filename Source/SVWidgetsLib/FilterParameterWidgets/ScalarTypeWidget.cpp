@@ -43,9 +43,6 @@
 
 #include "FilterParameterWidgetsDialogs.h"
 
-// Include the MOC generated file for this class
-#include "moc_ScalarTypeWidget.cpp"
-
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
@@ -62,9 +59,7 @@ ScalarTypeWidget::ScalarTypeWidget(FilterParameter* parameter, AbstractFilter* f
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-ScalarTypeWidget::~ScalarTypeWidget()
-{
-}
+ScalarTypeWidget::~ScalarTypeWidget() = default;
 
 // -----------------------------------------------------------------------------
 //

@@ -125,7 +125,7 @@ private:
   DataContainerArray::Pointer  m_Dca = nullptr;
   QSharedPointer<Ui::DataStructureWidget>       m_Ui;
 
-  DataStructureWidget(const DataStructureWidget&); // Copy Constructor Not Implemented
+  DataStructureWidget(const DataStructureWidget&) = delete; // Copy Constructor Not Implemented
   void operator=(const DataStructureWidget&);    // Operator '=' Not Implemented
 };
 

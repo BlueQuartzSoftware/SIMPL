@@ -44,9 +44,6 @@
 
 #include "SVWidgetsLib/Core/SVWidgetsLibConstants.h"
 
-// Include the MOC generated file for this class
-#include "moc_ChoiceWidget.cpp"
-
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
@@ -63,9 +60,7 @@ ChoiceWidget::ChoiceWidget(FilterParameter* parameter, AbstractFilter* filter, Q
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-ChoiceWidget::~ChoiceWidget()
-{
-}
+ChoiceWidget::~ChoiceWidget() = default;
 
 // -----------------------------------------------------------------------------
 //

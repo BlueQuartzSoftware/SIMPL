@@ -172,8 +172,8 @@ class SIMPLib_EXPORT RawBinaryReader : public AbstractFilter
   private:
     IDataArray::Pointer m_Array;
 
-    RawBinaryReader(const RawBinaryReader&); // Copy Constructor Not Implemented
-    void operator=(const RawBinaryReader&); // Operator '=' Not Implemented
+    RawBinaryReader(const RawBinaryReader&) = delete; // Copy Constructor Not Implemented
+    void operator=(const RawBinaryReader&) = delete;  // Operator '=' Not Implemented
 };
 
 #endif /* _RawBinaryReader_H_ */

@@ -201,8 +201,8 @@ class SVWidgetsLib_EXPORT BookmarksToolboxWidget : public QWidget, private Ui::B
     */
     QList<QString> deserializeTreePath(QString treePath);
 
-    BookmarksToolboxWidget(const BookmarksToolboxWidget&); // Copy Constructor Not Implemented
-    void operator=(const BookmarksToolboxWidget&); // Operator '=' Not Implemented
+    BookmarksToolboxWidget(const BookmarksToolboxWidget&) = delete; // Copy Constructor Not Implemented
+    void operator=(const BookmarksToolboxWidget&) = delete;         // Operator '=' Not Implemented
 };
 
 #endif

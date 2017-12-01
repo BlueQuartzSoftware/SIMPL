@@ -51,9 +51,7 @@ MultiDataArraySelectionFilterParameter::MultiDataArraySelectionFilterParameter()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-MultiDataArraySelectionFilterParameter::~MultiDataArraySelectionFilterParameter()
-{
-}
+MultiDataArraySelectionFilterParameter::~MultiDataArraySelectionFilterParameter() = default;
 
 // -----------------------------------------------------------------------------
 //

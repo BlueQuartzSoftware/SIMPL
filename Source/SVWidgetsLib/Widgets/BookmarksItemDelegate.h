@@ -58,10 +58,8 @@ class BookmarksItemDelegate : public QStyledItemDelegate
     void paint(QPainter* painter, const QStyleOptionViewItem& option, const QModelIndex& index) const Q_DECL_OVERRIDE;
 
   private:
-
-    BookmarksItemDelegate(const BookmarksItemDelegate&); // Copy Constructor Not Implemented
-    void operator=(const BookmarksItemDelegate&); // Operator '=' Not Implemented
-
+    BookmarksItemDelegate(const BookmarksItemDelegate&) = delete; // Copy Constructor Not Implemented
+    void operator=(const BookmarksItemDelegate&) = delete;        // Operator '=' Not Implemented
 };
 
 #endif // _BookmarksItemDelegate_H

@@ -63,9 +63,8 @@ class SIMPLib_EXPORT Log10Operator : public UnaryOperator
     Log10Operator();
 
   private:
-
-    Log10Operator(const Log10Operator&); // Copy Constructor Not Implemented
-    void operator=(const Log10Operator&); // Operator '=' Not Implemented
+    Log10Operator(const Log10Operator&) = delete;  // Copy Constructor Not Implemented
+    void operator=(const Log10Operator&) = delete; // Operator '=' Not Implemented
 };
 
 #endif /* _Log10Operator_H_ */

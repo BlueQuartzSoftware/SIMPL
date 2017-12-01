@@ -141,8 +141,8 @@ protected:
   InputFileFilterParameter();
 
 private:
-  InputFileFilterParameter(const InputFileFilterParameter&); // Copy Constructor Not Implemented
-  void operator=(const InputFileFilterParameter&); // Operator '=' Not Implemented
+  InputFileFilterParameter(const InputFileFilterParameter&) = delete; // Copy Constructor Not Implemented
+  void operator=(const InputFileFilterParameter&) = delete;           // Operator '=' Not Implemented
 };
 
 #endif /* _InputFileFilterParameter_H_ */

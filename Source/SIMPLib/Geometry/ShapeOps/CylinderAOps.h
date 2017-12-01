@@ -61,9 +61,8 @@ class SIMPLib_EXPORT CylinderAOps : public ShapeOps
   protected:
     CylinderAOps();
   private:
-    CylinderAOps(const CylinderAOps&); // Copy Constructor Not Implemented
-    void operator=(const CylinderAOps&); // Operator '=' Not Implemented
-
+    CylinderAOps(const CylinderAOps&) = delete;   // Copy Constructor Not Implemented
+    void operator=(const CylinderAOps&) = delete; // Operator '=' Not Implemented
 };
 
 #endif /* CYLINDERAOPS_H_ */

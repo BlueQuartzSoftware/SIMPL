@@ -47,7 +47,6 @@
 #include "SVWidgetsLib/Widgets/SIMPLViewToolbox.h"
 
 // Include the MOC generated CPP file which has all the QMetaObject methods/data
-#include "moc_SIMPLViewMenuItems.cpp"
 
 SIMPLViewMenuItems* SIMPLViewMenuItems::self = nullptr;
 

@@ -134,8 +134,8 @@ class SIMPLib_EXPORT JsonFilterParametersWriter : public AbstractFilterParameter
      */
     QString generateIndexString(int currentIndex);
 
-    JsonFilterParametersWriter(const JsonFilterParametersWriter&); // Copy Constructor Not Implemented
-    void operator=(const JsonFilterParametersWriter&); // Operator '=' Not Implemented
+    JsonFilterParametersWriter(const JsonFilterParametersWriter&) = delete; // Copy Constructor Not Implemented
+    void operator=(const JsonFilterParametersWriter&) = delete;             // Operator '=' Not Implemented
 };
 
 #endif /* JsonFilterParametersWriter_H_ */

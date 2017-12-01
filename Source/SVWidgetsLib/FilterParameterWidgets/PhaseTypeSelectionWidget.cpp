@@ -52,9 +52,6 @@
 
 #include "FilterParameterWidgetsDialogs.h"
 
-// Include the MOC generated file for this class
-#include "moc_PhaseTypeSelectionWidget.cpp"
-
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
@@ -83,9 +80,7 @@ PhaseTypeSelectionWidget::PhaseTypeSelectionWidget(QWidget* parent)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-PhaseTypeSelectionWidget::~PhaseTypeSelectionWidget()
-{
-}
+PhaseTypeSelectionWidget::~PhaseTypeSelectionWidget() = default;
 
 // -----------------------------------------------------------------------------
 //

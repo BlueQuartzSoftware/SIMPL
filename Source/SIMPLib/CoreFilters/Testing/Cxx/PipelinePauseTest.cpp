@@ -185,8 +185,6 @@ private:
   void operator=(const PipelinePauseTest&);    // Operator '=' Not Implemented
 };
 
-#include "moc_PipelinePauseTest.cpp"
-
 Q_DECLARE_METATYPE(int*);
 
 // -----------------------------------------------------------------------------

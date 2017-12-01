@@ -89,9 +89,8 @@ class SIMPLib_EXPORT RdfData
     RdfData();
 
   private:
-    RdfData(const RdfData&); // Copy Constructor Not Implemented
-    void operator=(const RdfData&); // Operator '=' Not Implemented
-
+    RdfData(const RdfData&) = delete;        // Copy Constructor Not Implemented
+    void operator=(const RdfData&) = delete; // Operator '=' Not Implemented
 };
 
 
@@ -118,8 +117,8 @@ class SIMPLib_EXPORT RadialDistributionFunction
     RadialDistributionFunction();
 
   private:
-    RadialDistributionFunction(const RadialDistributionFunction&); // Copy Constructor Not Implemented
-    void operator=(const RadialDistributionFunction&); // Operator '=' Not Implemented
+    RadialDistributionFunction(const RadialDistributionFunction&) = delete; // Copy Constructor Not Implemented
+    void operator=(const RadialDistributionFunction&) = delete;             // Operator '=' Not Implemented
 };
 
 

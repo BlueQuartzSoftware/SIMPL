@@ -93,15 +93,10 @@ class SVWidgetsLib_EXPORT IntVec3Widget : public FilterParameterWidget, private 
     void parametersChanged();
 
   private:
-
-    bool m_DidCausePreflight;
-
     IntVec3FilterParameter* m_FilterParameter;
 
-
-    IntVec3Widget(const IntVec3Widget&); // Copy Constructor Not Implemented
-    void operator=(const IntVec3Widget&); // Operator '=' Not Implemented
-
+    IntVec3Widget(const IntVec3Widget&) = delete;  // Copy Constructor Not Implemented
+    void operator=(const IntVec3Widget&) = delete; // Operator '=' Not Implemented
 };
 
 #endif /* _IntVec3Widget_H_ */

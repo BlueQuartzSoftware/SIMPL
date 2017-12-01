@@ -56,9 +56,8 @@ class SVWidgetsLib_EXPORT QtSSplitter : public QSplitter
     QSplitterHandle* createHandle();
 
   private:
-
-    QtSSplitter(const QtSSplitter&); // Copy Constructor Not Implemented
-    void operator=(const QtSSplitter&); // Operator '=' Not Implemented
+    QtSSplitter(const QtSSplitter&) = delete;    // Copy Constructor Not Implemented
+    void operator=(const QtSSplitter&) = delete; // Operator '=' Not Implemented
 };
 
 #endif /* _SIMPLViewSplitter_H */

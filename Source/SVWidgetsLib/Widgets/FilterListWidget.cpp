@@ -45,7 +45,6 @@
 #include "SVWidgetsLib/Core/SVWidgetsLibConstants.h"
 
 // Include the MOC generated CPP file which has all the QMetaObject methods/data
-#include "moc_FilterListWidget.cpp"
 
 // -----------------------------------------------------------------------------
 //
@@ -65,9 +64,7 @@ FilterListWidget::FilterListWidget(QWidget* parent)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-FilterListWidget::~FilterListWidget()
-{
-}
+FilterListWidget::~FilterListWidget() = default;
 
 // -----------------------------------------------------------------------------
 //

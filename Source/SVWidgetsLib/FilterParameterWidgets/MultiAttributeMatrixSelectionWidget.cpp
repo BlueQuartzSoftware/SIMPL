@@ -55,9 +55,6 @@
 #include "FilterParameterWidgetUtils.hpp"
 #include "FilterParameterWidgetsDialogs.h"
 
-// Include the MOC generated file for this class
-#include "moc_MultiAttributeMatrixSelectionWidget.cpp"
-
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
@@ -86,9 +83,7 @@ MultiAttributeMatrixSelectionWidget::MultiAttributeMatrixSelectionWidget(QWidget
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-MultiAttributeMatrixSelectionWidget::~MultiAttributeMatrixSelectionWidget()
-{
-}
+MultiAttributeMatrixSelectionWidget::~MultiAttributeMatrixSelectionWidget() = default;
 
 // -----------------------------------------------------------------------------
 //

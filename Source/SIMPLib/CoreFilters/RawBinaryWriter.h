@@ -140,8 +140,8 @@ class RawBinaryWriter : public AbstractFilter
      * and  DEFINE_DATAARRAY_VARIABLE() which are defined in DREAM3DGetSetMacros.h
      */
 
-    RawBinaryWriter(const RawBinaryWriter&); // Copy Constructor Not Implemented
-    void operator=(const RawBinaryWriter&); // Operator '=' Not Implemented
+    RawBinaryWriter(const RawBinaryWriter&) = delete; // Copy Constructor Not Implemented
+    void operator=(const RawBinaryWriter&) = delete;  // Operator '=' Not Implemented
 };
 
 #endif /* _RawBinaryWriter_H_ */

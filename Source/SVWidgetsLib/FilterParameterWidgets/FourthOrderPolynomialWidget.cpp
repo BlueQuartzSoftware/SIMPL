@@ -45,9 +45,6 @@
 
 #include "FilterParameterWidgetsDialogs.h"
 
-// Include the MOC generated file for this class
-#include "moc_FourthOrderPolynomialWidget.cpp"
-
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
@@ -64,9 +61,7 @@ FourthOrderPolynomialWidget::FourthOrderPolynomialWidget(FilterParameter* parame
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-FourthOrderPolynomialWidget::~FourthOrderPolynomialWidget()
-{
-}
+FourthOrderPolynomialWidget::~FourthOrderPolynomialWidget() = default;
 
 // -----------------------------------------------------------------------------
 //

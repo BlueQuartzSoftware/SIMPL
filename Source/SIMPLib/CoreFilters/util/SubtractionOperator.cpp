@@ -54,9 +54,7 @@ SubtractionOperator::SubtractionOperator()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-SubtractionOperator::~SubtractionOperator()
-{
-}
+SubtractionOperator::~SubtractionOperator() = default;
 
 // -----------------------------------------------------------------------------
 //

@@ -56,9 +56,7 @@ DelimitedPage::DelimitedPage(QSharedPointer<ASCIIDataModel> model, const QString
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-DelimitedPage::~DelimitedPage()
-{
-}
+DelimitedPage::~DelimitedPage() = default;
 
 // -----------------------------------------------------------------------------
 //

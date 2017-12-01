@@ -57,9 +57,6 @@
 #include "FilterParameterWidgetUtils.hpp"
 #include "FilterParameterWidgetsDialogs.h"
 
-// Include the MOC generated file for this class
-#include "moc_DataArraySelectionWidget.cpp"
-
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
@@ -88,9 +85,7 @@ DataArraySelectionWidget::DataArraySelectionWidget(QWidget* parent)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-DataArraySelectionWidget::~DataArraySelectionWidget()
-{
-}
+DataArraySelectionWidget::~DataArraySelectionWidget() = default;
 
 // -----------------------------------------------------------------------------
 //

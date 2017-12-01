@@ -43,9 +43,6 @@
 
 #include "FilterParameterWidgetsDialogs.h"
 
-// Include the MOC generated file for this class
-#include "moc_DataContainerCreationWidget.cpp"
-
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
@@ -62,9 +59,7 @@ DataContainerCreationWidget::DataContainerCreationWidget(FilterParameter* parame
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-DataContainerCreationWidget::~DataContainerCreationWidget()
-{
-}
+DataContainerCreationWidget::~DataContainerCreationWidget() = default;
 
 // -----------------------------------------------------------------------------
 //

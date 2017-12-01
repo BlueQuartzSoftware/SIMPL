@@ -44,8 +44,6 @@
 #include "SIMPLib/FilterParameters/SeparatorFilterParameter.h"
 #include "SIMPLib/Geometry/ImageGeom.h"
 
-#include "moc_FeatureCountDecision.cpp"
-
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
@@ -61,9 +59,7 @@ FeatureCountDecision::FeatureCountDecision()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-FeatureCountDecision::~FeatureCountDecision()
-{
-}
+FeatureCountDecision::~FeatureCountDecision() = default;
 
 // -----------------------------------------------------------------------------
 //

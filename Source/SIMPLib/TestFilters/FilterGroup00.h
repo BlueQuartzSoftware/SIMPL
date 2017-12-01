@@ -142,7 +142,7 @@ protected:
 
 private:
   TESTCLASSNAME(const TESTCLASSNAME&);  // Copy Constructor Not Implemented
-  void operator=(const TESTCLASSNAME&); // Operator '=' Not Implemented
+  void operator=(const TESTCLASSNAME&) = delete; // Operator '=' Not Implemented
 };
 
 #endif /* _TESTCLASSNAME_H_ */

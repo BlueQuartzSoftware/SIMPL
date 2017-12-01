@@ -140,9 +140,7 @@ QMetaObjectUtilities::QMetaObjectUtilities()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-QMetaObjectUtilities::~QMetaObjectUtilities()
-{
-}
+QMetaObjectUtilities::~QMetaObjectUtilities() = default;
 
 // -----------------------------------------------------------------------------
 //

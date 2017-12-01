@@ -44,9 +44,6 @@
 #include "SIMPLib/FilterParameters/PreflightUpdatedValueFilterParameter.h"
 #include "SIMPLib/Geometry/ImageGeom.h"
 
-// Include the MOC generated file for this class
-#include "moc_CreateImageGeometry.cpp"
-
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
@@ -72,9 +69,7 @@ CreateImageGeometry::CreateImageGeometry()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-CreateImageGeometry::~CreateImageGeometry()
-{
-}
+CreateImageGeometry::~CreateImageGeometry() = default;
 
 // -----------------------------------------------------------------------------
 //

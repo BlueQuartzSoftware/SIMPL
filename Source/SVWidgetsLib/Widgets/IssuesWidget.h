@@ -95,11 +95,8 @@ class SVWidgetsLib_EXPORT IssuesWidget : public QWidget, public IObserver
     Ui::IssuesWidget* ui = nullptr;
     QVector<PipelineMessage> m_CachedMessages;
 
-
-    IssuesWidget(const IssuesWidget&); // Copy Constructor Not Implemented
-    void operator=(const IssuesWidget&); // Operator '=' Not Implemented
-
-
+    IssuesWidget(const IssuesWidget&) = delete;   // Copy Constructor Not Implemented
+    void operator=(const IssuesWidget&) = delete; // Operator '=' Not Implemented
 };
 
 #endif /* _issuesWidget_h_ */

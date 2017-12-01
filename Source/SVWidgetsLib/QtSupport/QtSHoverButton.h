@@ -52,9 +52,8 @@ class SVWidgetsLib_EXPORT QtSHoverButton : public QPushButton
     bool event(QEvent* event);
 
   private:
-
-    QtSHoverButton(const QtSHoverButton&); // Copy Constructor Not Implemented
-    void operator=(const QtSHoverButton&); // Operator '=' Not Implemented
+    QtSHoverButton(const QtSHoverButton&) = delete; // Copy Constructor Not Implemented
+    void operator=(const QtSHoverButton&) = delete; // Operator '=' Not Implemented
 };
 
 #endif // HoverButton_H

@@ -49,9 +49,7 @@ AttributeMatrixSelectionFilterParameter::AttributeMatrixSelectionFilterParameter
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-AttributeMatrixSelectionFilterParameter::~AttributeMatrixSelectionFilterParameter()
-{
-}
+AttributeMatrixSelectionFilterParameter::~AttributeMatrixSelectionFilterParameter() = default;
 
 // -----------------------------------------------------------------------------
 //

@@ -41,9 +41,6 @@
 #include "SIMPLib/FilterParameters/AbstractFilterParametersReader.h"
 #include "SIMPLib/SIMPLibVersion.h"
 
-// Include the MOC generated file for this class
-#include "moc_Breakpoint.cpp"
-
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
@@ -56,9 +53,7 @@ Breakpoint::Breakpoint()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-Breakpoint::~Breakpoint()
-{
-}
+Breakpoint::~Breakpoint() = default;
 
 // -----------------------------------------------------------------------------
 //

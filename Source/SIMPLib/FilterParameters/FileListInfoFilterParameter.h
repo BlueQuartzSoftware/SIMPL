@@ -182,8 +182,8 @@ class SIMPLib_EXPORT FileListInfoFilterParameter : public FilterParameter
     FileListInfoFilterParameter();
 
   private:
-    FileListInfoFilterParameter(const FileListInfoFilterParameter&); // Copy Constructor Not Implemented
-    void operator=(const FileListInfoFilterParameter&); // Operator '=' Not Implemented
+    FileListInfoFilterParameter(const FileListInfoFilterParameter&) = delete; // Copy Constructor Not Implemented
+    void operator=(const FileListInfoFilterParameter&) = delete;              // Operator '=' Not Implemented
 };
 
 #endif /* _FileListInfoFilterParameter_H_ */

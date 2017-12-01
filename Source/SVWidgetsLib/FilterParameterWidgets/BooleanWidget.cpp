@@ -41,9 +41,6 @@
 
 #include "FilterParameterWidgetsDialogs.h"
 
-// Include the MOC generated file for this class
-#include "moc_BooleanWidget.cpp"
-
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
@@ -60,9 +57,7 @@ BooleanWidget::BooleanWidget(FilterParameter* parameter, AbstractFilter* filter,
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-BooleanWidget::~BooleanWidget()
-{
-}
+BooleanWidget::~BooleanWidget() = default;
 
 // -----------------------------------------------------------------------------
 //

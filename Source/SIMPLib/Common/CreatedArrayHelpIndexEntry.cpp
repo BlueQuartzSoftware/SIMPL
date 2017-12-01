@@ -46,6 +46,4 @@ CreatedArrayHelpIndexEntry::CreatedArrayHelpIndexEntry()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-CreatedArrayHelpIndexEntry::~CreatedArrayHelpIndexEntry()
-{
-}
+CreatedArrayHelpIndexEntry::~CreatedArrayHelpIndexEntry() = default;

@@ -115,8 +115,8 @@ class SIMPLib_EXPORT SIMPLibPlugin : public QObject
     QString             m_Location;
     QString             m_Status;
 
-    SIMPLibPlugin(const SIMPLibPlugin&); // Copy Constructor Not Implemented
-    void operator=(const SIMPLibPlugin&); // Operator '=' Not Implemented
+    SIMPLibPlugin(const SIMPLibPlugin&) = delete;  // Copy Constructor Not Implemented
+    void operator=(const SIMPLibPlugin&) = delete; // Operator '=' Not Implemented
 };
 
 #endif /* _SIMPLibPlugin_H_ */

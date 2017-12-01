@@ -18,9 +18,6 @@
 #include "SIMPLib/Utilities/ColorTable.h"
 #include "SIMPLib/SIMPLibVersion.h"
 
-// Include the MOC generated file for this class
-#include "moc_GenerateColorTable.cpp"
-
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
@@ -225,9 +222,7 @@ GenerateColorTable::GenerateColorTable() :
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-GenerateColorTable::~GenerateColorTable()
-{
-}
+GenerateColorTable::~GenerateColorTable() = default;
 
 // -----------------------------------------------------------------------------
 //

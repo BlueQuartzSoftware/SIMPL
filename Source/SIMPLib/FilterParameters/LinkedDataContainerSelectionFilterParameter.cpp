@@ -46,9 +46,7 @@ LinkedDataContainerSelectionFilterParameter::LinkedDataContainerSelectionFilterP
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-LinkedDataContainerSelectionFilterParameter::~LinkedDataContainerSelectionFilterParameter()
-{
-}
+LinkedDataContainerSelectionFilterParameter::~LinkedDataContainerSelectionFilterParameter() = default;
 
 // -----------------------------------------------------------------------------
 //

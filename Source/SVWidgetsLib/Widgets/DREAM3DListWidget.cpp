@@ -44,7 +44,6 @@
 #include <QtGui/QDropEvent>
 
 // Include the MOC generated CPP file which has all the QMetaObject methods/data
-#include "moc_DREAM3DListWidget.cpp"
 
 // -----------------------------------------------------------------------------
 //
@@ -57,9 +56,7 @@ DREAM3DListWidget::DREAM3DListWidget(QWidget* parent)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-DREAM3DListWidget::~DREAM3DListWidget()
-{
-}
+DREAM3DListWidget::~DREAM3DListWidget() = default;
 
 // -----------------------------------------------------------------------------
 //

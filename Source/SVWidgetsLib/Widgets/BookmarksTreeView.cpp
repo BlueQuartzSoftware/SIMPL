@@ -54,7 +54,6 @@
 #include "SVWidgetsLib/Widgets/SIMPLViewToolbox.h"
 
 // Include the MOC generated CPP file which has all the QMetaObject methods/data
-#include "moc_BookmarksTreeView.cpp"
 
 // -----------------------------------------------------------------------------
 //
@@ -78,9 +77,7 @@ BookmarksTreeView::BookmarksTreeView(QWidget* parent)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-BookmarksTreeView::~BookmarksTreeView()
-{
-}
+BookmarksTreeView::~BookmarksTreeView() = default;
 
 // -----------------------------------------------------------------------------
 //

@@ -65,9 +65,7 @@ H5FilterParametersReader::H5FilterParametersReader()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-H5FilterParametersReader::~H5FilterParametersReader()
-{
-}
+H5FilterParametersReader::~H5FilterParametersReader() = default;
 
 // -----------------------------------------------------------------------------
 //

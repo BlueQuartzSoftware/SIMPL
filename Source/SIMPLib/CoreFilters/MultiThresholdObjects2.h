@@ -203,8 +203,8 @@ class MultiThresholdObjects2 : public AbstractFilter
   private:
     DEFINE_DATAARRAY_VARIABLE(bool, Destination)
 
-    MultiThresholdObjects2(const MultiThresholdObjects2&); // Copy Constructor Not Implemented
-    void operator=(const MultiThresholdObjects2&); // Operator '=' Not Implemented
+    MultiThresholdObjects2(const MultiThresholdObjects2&) = delete; // Copy Constructor Not Implemented
+    void operator=(const MultiThresholdObjects2&) = delete;         // Operator '=' Not Implemented
 };
 
 #endif /* _MultiThresholdObjects_H_ */

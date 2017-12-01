@@ -33,7 +33,7 @@ cmp_IDE_SOURCE_PROPERTIES( "SVWidgetsLib" "${SVWidgetsLib_Dialogs_HDRS};${SVWidg
 
 # --------------------------------------------------------------------
 # and finally this will run moc:
-QT5_WRAP_CPP( SVWidgetsLib_Dialogs_Generated_MOC_SRCS ${SVWidgetsLib_Dialogs_MOC_HDRS} )
+# QT5_WRAP_CPP( SVWidgetsLib_Dialogs_Generated_MOC_SRCS ${SVWidgetsLib_Dialogs_MOC_HDRS} )
 set_source_files_properties( ${SVWidgetsLib_Dialogs_Generated_MOC_SRCS} PROPERTIES GENERATED TRUE)
 set_source_files_properties( ${SVWidgetsLib_Dialogs_Generated_MOC_SRCS} PROPERTIES HEADER_FILE_ONLY TRUE)
 

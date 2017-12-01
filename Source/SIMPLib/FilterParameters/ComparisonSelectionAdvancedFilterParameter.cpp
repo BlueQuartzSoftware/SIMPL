@@ -48,9 +48,7 @@ ComparisonSelectionAdvancedFilterParameter::ComparisonSelectionAdvancedFilterPar
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-ComparisonSelectionAdvancedFilterParameter::~ComparisonSelectionAdvancedFilterParameter()
-{
-}
+ComparisonSelectionAdvancedFilterParameter::~ComparisonSelectionAdvancedFilterParameter() = default;
 
 // -----------------------------------------------------------------------------
 //

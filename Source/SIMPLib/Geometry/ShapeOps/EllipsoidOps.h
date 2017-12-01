@@ -58,9 +58,8 @@ class SIMPLib_EXPORT EllipsoidOps : public ShapeOps
   protected:
     EllipsoidOps();
   private:
-    EllipsoidOps(const EllipsoidOps&); // Copy Constructor Not Implemented
-    void operator=(const EllipsoidOps&); // Operator '=' Not Implemented
-
+    EllipsoidOps(const EllipsoidOps&) = delete;   // Copy Constructor Not Implemented
+    void operator=(const EllipsoidOps&) = delete; // Operator '=' Not Implemented
 };
 
 #endif /* ELLIPSOIDOPS_H_ */

@@ -38,8 +38,6 @@
 #include "SIMPLib/Filtering/ComparisonSet.h"
 #include "SIMPLib/Filtering/ComparisonValue.h"
 
-#include "moc_ComparisonInputsAdvanced.cpp"
-
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
@@ -75,9 +73,7 @@ ComparisonInputsAdvanced::ComparisonInputsAdvanced(const ComparisonInputsAdvance
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-ComparisonInputsAdvanced::~ComparisonInputsAdvanced()
-{
-}
+ComparisonInputsAdvanced::~ComparisonInputsAdvanced() = default;
 
 // -----------------------------------------------------------------------------
 //

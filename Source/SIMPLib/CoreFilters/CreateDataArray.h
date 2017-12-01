@@ -175,8 +175,7 @@ class SIMPLib_EXPORT CreateDataArray : public AbstractFilter
 
 
   private:
-    DEFINE_IDATAARRAY_VARIABLE(OutputArray)
-
+    DEFINE_IDATAARRAY_WEAKPTR(OutputArray)
 
     /**
     * @brief checkInitialization Checks that the chosen initialization value/range is inside
@@ -197,8 +196,8 @@ class SIMPLib_EXPORT CreateDataArray : public AbstractFilter
     const QString Double = "      Double 64 bit";
     const QString Bool = "bool";
 
-    CreateDataArray(const CreateDataArray&); // Copy Constructor Not Implemented
-    void operator=(const CreateDataArray&); // Operator '=' Not Implemented
+    CreateDataArray(const CreateDataArray&) = delete; // Copy Constructor Not Implemented
+    void operator=(const CreateDataArray&) = delete;  // Operator '=' Not Implemented
 };
 
 

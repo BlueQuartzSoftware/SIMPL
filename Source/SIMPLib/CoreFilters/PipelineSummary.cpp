@@ -38,9 +38,6 @@
 #include "SIMPLib/FilterParameters/ParagraphFilterParameter.h"
 #include "SIMPLib/SIMPLibVersion.h"
 
-// Include the MOC generated file for this class
-#include "moc_PipelineSummary.cpp"
-
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
@@ -53,9 +50,7 @@ PipelineSummary::PipelineSummary()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-PipelineSummary::~PipelineSummary()
-{
-}
+PipelineSummary::~PipelineSummary() = default;
 
 // -----------------------------------------------------------------------------
 //

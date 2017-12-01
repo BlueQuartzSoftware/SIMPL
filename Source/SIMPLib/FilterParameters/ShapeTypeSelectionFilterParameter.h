@@ -138,7 +138,7 @@ protected:
   ShapeTypeSelectionFilterParameter();
 
 private:
-  ShapeTypeSelectionFilterParameter(const ShapeTypeSelectionFilterParameter&); // Copy Constructor Not Implemented
+  ShapeTypeSelectionFilterParameter(const ShapeTypeSelectionFilterParameter&) = delete; // Copy Constructor Not Implemented
   void operator=(const ShapeTypeSelectionFilterParameter&);                    // Operator '=' Not Implemented
 };
 

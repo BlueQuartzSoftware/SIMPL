@@ -89,17 +89,10 @@ class SVWidgetsLib_EXPORT ThirdOrderPolynomialWidget : public FilterParameterWid
     void parametersChanged();
 
   private:
-
-    bool m_DidCausePreflight;
-
     ThirdOrderPolynomialFilterParameter* m_FilterParameter;
 
-    //helper functions for complex inter dependancies
-    // void vbar(QLineEdit* obj);
-
-    ThirdOrderPolynomialWidget(const ThirdOrderPolynomialWidget&); // Copy Constructor Not Implemented
-    void operator=(const ThirdOrderPolynomialWidget&); // Operator '=' Not Implemented
-
+    ThirdOrderPolynomialWidget(const ThirdOrderPolynomialWidget&) = delete; // Copy Constructor Not Implemented
+    void operator=(const ThirdOrderPolynomialWidget&) = delete;             // Operator '=' Not Implemented
 };
 
 #endif /* _ThirdOrderPolynomialWidget_H_ */

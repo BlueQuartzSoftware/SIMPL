@@ -121,16 +121,12 @@ class SVWidgetsLib_EXPORT AbstractIOFileWidget : public FilterParameterWidget, p
     void parametersChanged();
 
   private:
-    bool     m_DidCausePreflight = false;
     QAction* m_ShowFileAction = nullptr;
     QString  m_CurrentlyValidPath = "";
     QString  m_CurrentText = "";
 
-
-
-    AbstractIOFileWidget(const AbstractIOFileWidget&); // Copy Constructor Not Implemented
-    void operator=(const AbstractIOFileWidget&); // Operator '=' Not Implemented
-
+    AbstractIOFileWidget(const AbstractIOFileWidget&) = delete; // Copy Constructor Not Implemented
+    void operator=(const AbstractIOFileWidget&) = delete;       // Operator '=' Not Implemented
 };
 
 #endif /* _abstractiofilewidget_h_ */

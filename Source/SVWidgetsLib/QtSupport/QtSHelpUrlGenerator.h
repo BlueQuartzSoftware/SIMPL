@@ -73,9 +73,8 @@ class SVWidgetsLib_EXPORT QtSHelpUrlGenerator
     static void generateAndOpenHTMLUrl(QString helpName, QWidget* parent);
 
   private:
-
-    QtSHelpUrlGenerator(const QtSHelpUrlGenerator&); // Copy Constructor Not Implemented
-    void operator=(const QtSHelpUrlGenerator&); // Operator '=' Not Implemented
+    QtSHelpUrlGenerator(const QtSHelpUrlGenerator&) = delete; // Copy Constructor Not Implemented
+    void operator=(const QtSHelpUrlGenerator&) = delete;      // Operator '=' Not Implemented
 };
 
 #endif /* _SIMPLViewHelpUrlGenerator_H */

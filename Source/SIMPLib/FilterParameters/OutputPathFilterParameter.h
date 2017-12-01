@@ -143,8 +143,8 @@ protected:
   OutputPathFilterParameter();
 
 private:
-  OutputPathFilterParameter(const OutputPathFilterParameter&); // Copy Constructor Not Implemented
-  void operator=(const OutputPathFilterParameter&); // Operator '=' Not Implemented
+  OutputPathFilterParameter(const OutputPathFilterParameter&) = delete; // Copy Constructor Not Implemented
+  void operator=(const OutputPathFilterParameter&) = delete;            // Operator '=' Not Implemented
 };
 
 #endif /* _OutputPathFilterParameter_H_ */

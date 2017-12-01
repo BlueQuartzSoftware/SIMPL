@@ -144,8 +144,8 @@ class SIMPLib_EXPORT LinkedDataContainerSelectionFilterParameter : public Filter
     LinkedDataContainerSelectionFilterParameter();
 
   private:
-    LinkedDataContainerSelectionFilterParameter(const LinkedDataContainerSelectionFilterParameter&); // Copy Constructor Not Implemented
-    void operator=(const LinkedDataContainerSelectionFilterParameter&); // Operator '=' Not Implemented
+    LinkedDataContainerSelectionFilterParameter(const LinkedDataContainerSelectionFilterParameter&) = delete; // Copy Constructor Not Implemented
+    void operator=(const LinkedDataContainerSelectionFilterParameter&) = delete;                              // Operator '=' Not Implemented
 };
 
 #endif /* _linkeddatacontainerselectionfilterparameter_h_ */

@@ -41,9 +41,6 @@
 
 #include "FilterParameterWidgetsDialogs.h"
 
-// Include the MOC generated file for this class
-#include "moc_PreflightUpdatedValueWidget.cpp"
-
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
@@ -60,9 +57,7 @@ PreflightUpdatedValueWidget::PreflightUpdatedValueWidget(FilterParameter* parame
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-PreflightUpdatedValueWidget::~PreflightUpdatedValueWidget()
-{
-}
+PreflightUpdatedValueWidget::~PreflightUpdatedValueWidget() = default;
 
 // -----------------------------------------------------------------------------
 //

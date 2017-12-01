@@ -40,9 +40,6 @@
 
 #include <QtWidgets/QFileDialog>
 
-// Include the MOC generated file for this class
-#include "moc_OutputFileWidget.cpp"
-
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
@@ -75,9 +72,7 @@ OutputFileWidget::OutputFileWidget(FilterParameter* parameter, AbstractFilter* f
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-OutputFileWidget::~OutputFileWidget()
-{
-}
+OutputFileWidget::~OutputFileWidget() = default;
 
 // -----------------------------------------------------------------------------
 //

@@ -37,7 +37,6 @@
 #include <QtWidgets/QShortcut>
 
 // Include the MOC generated CPP file which has all the QMetaObject methods/data
-#include "moc_SIMPLViewToolbox.cpp"
 
 SIMPLViewToolbox* SIMPLViewToolbox::self = nullptr;
 
@@ -55,9 +54,7 @@ SIMPLViewToolbox::SIMPLViewToolbox(QWidget* parent, Qt::WindowFlags flags)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-SIMPLViewToolbox::~SIMPLViewToolbox()
-{
-}
+SIMPLViewToolbox::~SIMPLViewToolbox() = default;
 
 // -----------------------------------------------------------------------------
 //

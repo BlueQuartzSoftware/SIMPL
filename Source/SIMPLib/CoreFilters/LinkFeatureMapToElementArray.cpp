@@ -43,9 +43,6 @@
 #include "SIMPLib/FilterParameters/SeparatorFilterParameter.h"
 #include "SIMPLib/FilterParameters/StringFilterParameter.h"
 
-// Include the MOC generated file for this class
-#include "moc_LinkFeatureMapToElementArray.cpp"
-
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
@@ -63,9 +60,7 @@ LinkFeatureMapToElementArray::LinkFeatureMapToElementArray()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-LinkFeatureMapToElementArray::~LinkFeatureMapToElementArray()
-{
-}
+LinkFeatureMapToElementArray::~LinkFeatureMapToElementArray() = default;
 
 // -----------------------------------------------------------------------------
 //

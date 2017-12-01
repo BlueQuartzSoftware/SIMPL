@@ -47,7 +47,6 @@
 
 
 // Include the MOC generated CPP file which has all the QMetaObject methods/data
-#include "moc_FilterLibraryToolboxWidget.cpp"
 
 #define LIBRARY_NODE_TYPE 0
 #define PLUGIN_NODE_TYPE 1
@@ -69,9 +68,7 @@ FilterLibraryToolboxWidget::FilterLibraryToolboxWidget(QWidget* parent)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-FilterLibraryToolboxWidget::~FilterLibraryToolboxWidget()
-{
-}
+FilterLibraryToolboxWidget::~FilterLibraryToolboxWidget() = default;
 
 // -----------------------------------------------------------------------------
 //

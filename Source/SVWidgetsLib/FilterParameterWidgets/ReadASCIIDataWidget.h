@@ -100,8 +100,8 @@ class SVWidgetsLib_EXPORT ReadASCIIDataWidget : public FilterParameterWidget, pr
     QThread*                                          m_WorkerThread;
     LineCounterObject*                                m_LineCounter;
 
-    ReadASCIIDataWidget(const ReadASCIIDataWidget&); // Copy Constructor Not Implemented
-    void operator=(const ReadASCIIDataWidget&); // Operator '=' Not Implemented
+    ReadASCIIDataWidget(const ReadASCIIDataWidget&) = delete; // Copy Constructor Not Implemented
+    void operator=(const ReadASCIIDataWidget&) = delete;      // Operator '=' Not Implemented
 };
 
 #endif /* ImportASCIIDataWidget_H_ */

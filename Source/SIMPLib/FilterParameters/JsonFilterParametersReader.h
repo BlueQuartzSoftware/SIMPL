@@ -167,8 +167,8 @@ class SIMPLib_EXPORT JsonFilterParametersReader : public AbstractFilterParameter
 
     FilterPipeline::Pointer readPipeline(IObserver* obs);
 
-    JsonFilterParametersReader(const JsonFilterParametersReader&); // Copy Constructor Not Implemented
-    void operator=(const JsonFilterParametersReader&); // Operator '=' Not Implemented
+    JsonFilterParametersReader(const JsonFilterParametersReader&) = delete; // Copy Constructor Not Implemented
+    void operator=(const JsonFilterParametersReader&) = delete;             // Operator '=' Not Implemented
 };
 
 #endif /* _QFilterParametersReader_H_ */

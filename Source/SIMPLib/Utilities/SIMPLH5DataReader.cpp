@@ -44,13 +44,10 @@
 #include "H5Support/QH5Utilities.h"
 #include "H5Support/HDF5ScopedFileSentinel.h"
 
-#include "moc_SIMPLH5DataReader.cpp"
-
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-SIMPLH5DataReader::SIMPLH5DataReader(IObserver* obs) :
-  m_Observer(obs)
+SIMPLH5DataReader::SIMPLH5DataReader()
 {
 
 }

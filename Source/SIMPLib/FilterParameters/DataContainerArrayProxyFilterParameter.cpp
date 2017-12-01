@@ -47,9 +47,7 @@ DataContainerArrayProxyFilterParameter::DataContainerArrayProxyFilterParameter()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-DataContainerArrayProxyFilterParameter::~DataContainerArrayProxyFilterParameter()
-{
-}
+DataContainerArrayProxyFilterParameter::~DataContainerArrayProxyFilterParameter() = default;
 
 // -----------------------------------------------------------------------------
 //

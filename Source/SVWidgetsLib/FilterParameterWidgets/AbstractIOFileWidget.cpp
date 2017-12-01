@@ -54,9 +54,6 @@
 
 #include "FilterParameterWidgetsDialogs.h"
 
-// Include the MOC generated file for this class
-#include "moc_AbstractIOFileWidget.cpp"
-
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
@@ -85,9 +82,7 @@ AbstractIOFileWidget::AbstractIOFileWidget(FilterParameter* parameter, AbstractF
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-AbstractIOFileWidget::~AbstractIOFileWidget()
-{
-}
+AbstractIOFileWidget::~AbstractIOFileWidget() = default;
 
 // -----------------------------------------------------------------------------
 //

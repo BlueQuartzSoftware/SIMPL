@@ -51,8 +51,6 @@
 #include "Widgets/ImportASCIIDataWizard/ImportASCIIDataWizard.h"
 #include "Widgets/ImportASCIIDataWizard/LineCounterObject.h"
 
-#include "moc_ReadASCIIDataWidget.cpp"
-
 // Initialize private static member variable
 QString ReadASCIIDataWidget::m_OpenDialogLastDirectory = "";
 

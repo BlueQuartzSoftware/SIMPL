@@ -37,9 +37,6 @@
 #include "SIMPLib/FilterParameters/AbstractFilterParametersReader.h"
 #include "SIMPLib/FilterParameters/DynamicTableFilterParameter.h"
 
-// Include the MOC generated file for this class
-#include "moc_DynamicTableExample.cpp"
-
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
@@ -52,9 +49,7 @@ DynamicTableExample::DynamicTableExample()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-DynamicTableExample::~DynamicTableExample()
-{
-}
+DynamicTableExample::~DynamicTableExample() = default;
 
 // -----------------------------------------------------------------------------
 //

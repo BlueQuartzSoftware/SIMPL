@@ -60,8 +60,6 @@
 #include "SVWidgetsLib/Widgets/FilterListToolboxWidget.h"
 
 // Include the MOC generated CPP file which has all the QMetaObject methods/data
-#include "moc_BookmarksToolboxWidget.cpp"
-
 
 #define PREBUILT_PIPELINES_DIR "PrebuiltPipelines"
 enum ErrorCodes
@@ -83,9 +81,7 @@ BookmarksToolboxWidget::BookmarksToolboxWidget(QWidget* parent)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-BookmarksToolboxWidget::~BookmarksToolboxWidget()
-{
-}
+BookmarksToolboxWidget::~BookmarksToolboxWidget() = default;
 
 // -----------------------------------------------------------------------------
 //

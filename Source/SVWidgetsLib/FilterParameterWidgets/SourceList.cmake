@@ -212,7 +212,7 @@ cmp_IDE_GENERATED_PROPERTIES("SVWidgetsLib/FilterParameterWidgets/UI_Files" "${S
 
 # --------------------------------------------------------------------
 # and finally this will run moc:
-QT5_WRAP_CPP( SVWidgetsLib_ParameterWidgets_Generated_MOC_SRCS ${SVWidgetsLib_FilterParameterWidgets_MOC_HDRS} )
+# QT5_WRAP_CPP( SVWidgetsLib_ParameterWidgets_Generated_MOC_SRCS ${SVWidgetsLib_FilterParameterWidgets_MOC_HDRS} )
 set_source_files_properties( ${SVWidgetsLib_ParameterWidgets_Generated_MOC_SRCS} PROPERTIES GENERATED TRUE)
 set_source_files_properties( ${SVWidgetsLib_ParameterWidgets_Generated_MOC_SRCS} PROPERTIES HEADER_FILE_ONLY TRUE)
 

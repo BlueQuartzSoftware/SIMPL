@@ -45,9 +45,6 @@
 #include "FilterParameterWidgetUtils.hpp"
 #include "FilterParameterWidgetsDialogs.h"
 
-// Include the MOC generated file for this class
-#include "moc_ComparisonSelectionWidget.cpp"
-
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
@@ -67,9 +64,7 @@ ComparisonSelectionWidget::ComparisonSelectionWidget(FilterParameter* parameter,
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-ComparisonSelectionWidget::~ComparisonSelectionWidget()
-{
-}
+ComparisonSelectionWidget::~ComparisonSelectionWidget() = default;
 
 // -----------------------------------------------------------------------------
 //

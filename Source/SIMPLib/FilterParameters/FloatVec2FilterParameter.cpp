@@ -44,9 +44,7 @@ FloatVec2FilterParameter::FloatVec2FilterParameter()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-FloatVec2FilterParameter::~FloatVec2FilterParameter()
-{
-}
+FloatVec2FilterParameter::~FloatVec2FilterParameter() = default;
 
 // -----------------------------------------------------------------------------
 //

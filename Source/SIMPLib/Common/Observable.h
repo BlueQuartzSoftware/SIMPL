@@ -96,9 +96,8 @@ class SIMPLib_EXPORT Observable : public QObject
     void filterGeneratedMessage(const PipelineMessage& msg);
 
   private:
-
-    Observable(const Observable&); // Copy Constructor Not Implemented
-    void operator=(const Observable&); // Operator '=' Not Implemented
+    Observable(const Observable&) = delete;     // Copy Constructor Not Implemented
+    void operator=(const Observable&) = delete; // Operator '=' Not Implemented
 };
 
 #endif /* OBSERVABLE_H_ */

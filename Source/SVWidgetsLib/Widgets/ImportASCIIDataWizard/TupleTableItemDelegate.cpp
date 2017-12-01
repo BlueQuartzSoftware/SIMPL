@@ -48,9 +48,7 @@ TupleTableItemDelegate::TupleTableItemDelegate(QObject* parent)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-TupleTableItemDelegate::~TupleTableItemDelegate()
-{
-}
+TupleTableItemDelegate::~TupleTableItemDelegate() = default;
 
 // -----------------------------------------------------------------------------
 //

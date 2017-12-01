@@ -21,9 +21,6 @@
 
 #include <QtGui/QPainter>
 
-#include "moc_QRoundProgressBar.cpp"
-
-
 QRoundProgressBar::QRoundProgressBar(QWidget *parent) :
     QWidget(parent),
     m_min(0), m_max(100),

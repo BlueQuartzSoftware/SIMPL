@@ -144,7 +144,7 @@ protected:
   void initialize();
 
 private:
-  AbstractDecisionFilter(const AbstractDecisionFilter&); // Copy Constructor Not Implemented
+  AbstractDecisionFilter(const AbstractDecisionFilter&) = delete; // Copy Constructor Not Implemented
   void operator=(const AbstractDecisionFilter&);         // Operator '=' Not Implemented
 };
 

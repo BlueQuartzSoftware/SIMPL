@@ -45,9 +45,6 @@
 #include "SIMPLib/FilterParameters/StringFilterParameter.h"
 #include "SIMPLib/SIMPLibVersion.h"
 
-// Include the MOC generated file for this class
-#include "moc_RemoveComponentFromArray.cpp"
-
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
@@ -57,10 +54,6 @@ RemoveComponentFromArray::RemoveComponentFromArray()
 , m_CompNumber(0)
 , m_SaveRemovedComponent(false)
 , m_NewArrayArrayName("")
-, m_ReducedArrayArrayName("")
-, m_InArray(nullptr)
-, m_NewArray(nullptr)
-, m_ReducedArray(nullptr)
 {
   setupFilterParameters();
 }
@@ -68,9 +61,7 @@ RemoveComponentFromArray::RemoveComponentFromArray()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-RemoveComponentFromArray::~RemoveComponentFromArray()
-{
-}
+RemoveComponentFromArray::~RemoveComponentFromArray() = default;
 
 // -----------------------------------------------------------------------------
 //

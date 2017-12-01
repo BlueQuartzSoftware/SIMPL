@@ -244,8 +244,8 @@ class SIMPLib_EXPORT ArrayCalculator : public AbstractFilter
      */
     bool parseArray(QString token, QVector<CalculatorItem::Pointer>& parsedInfix, AttributeMatrix::Pointer selectedAM);
 
-    ArrayCalculator(const ArrayCalculator&); // Copy Constructor Not Implemented
-    void operator=(const ArrayCalculator&); // Operator '=' Not Implemented
+    ArrayCalculator(const ArrayCalculator&) = delete; // Copy Constructor Not Implemented
+    void operator=(const ArrayCalculator&) = delete;  // Operator '=' Not Implemented
 };
 
 #endif /* _ArrayCalculator_H_ */

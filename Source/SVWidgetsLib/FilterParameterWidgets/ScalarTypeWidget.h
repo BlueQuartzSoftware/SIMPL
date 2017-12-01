@@ -89,15 +89,10 @@ class SVWidgetsLib_EXPORT ScalarTypeWidget : public FilterParameterWidget, priva
     void parametersChanged();
 
   private:
-
-    bool m_DidCausePreflight;
-
     ScalarTypeFilterParameter* m_FilterParameter;
 
-
-    ScalarTypeWidget(const ScalarTypeWidget&); // Copy Constructor Not Implemented
-    void operator=(const ScalarTypeWidget&); // Operator '=' Not Implemented
-
+    ScalarTypeWidget(const ScalarTypeWidget&) = delete; // Copy Constructor Not Implemented
+    void operator=(const ScalarTypeWidget&) = delete;   // Operator '=' Not Implemented
 };
 
 #endif /* _ScalarTypeWidget_H_ */

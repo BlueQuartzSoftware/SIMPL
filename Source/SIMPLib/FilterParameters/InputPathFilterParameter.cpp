@@ -46,9 +46,7 @@ InputPathFilterParameter::InputPathFilterParameter()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-InputPathFilterParameter::~InputPathFilterParameter()
-{
-}
+InputPathFilterParameter::~InputPathFilterParameter() = default;
 
 // -----------------------------------------------------------------------------
 //

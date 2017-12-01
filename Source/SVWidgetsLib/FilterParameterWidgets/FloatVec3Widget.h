@@ -90,15 +90,10 @@ class SVWidgetsLib_EXPORT FloatVec3Widget : public FilterParameterWidget, privat
     void parametersChanged();
 
   private:
-
-    bool m_DidCausePreflight;
-
     FloatVec3FilterParameter* m_FilterParameter;
 
-
-    FloatVec3Widget(const FloatVec3Widget&); // Copy Constructor Not Implemented
-    void operator=(const FloatVec3Widget&); // Operator '=' Not Implemented
-
+    FloatVec3Widget(const FloatVec3Widget&) = delete; // Copy Constructor Not Implemented
+    void operator=(const FloatVec3Widget&) = delete;  // Operator '=' Not Implemented
 };
 
 #endif /* _FloatVec3Widget_H_ */

@@ -58,10 +58,8 @@ class TupleTableItemDelegate : public QStyledItemDelegate
     void updateEditorGeometry(QWidget* editor, const QStyleOptionViewItem& option, const QModelIndex& index) const;
 
   private:
-
-    TupleTableItemDelegate(const TupleTableItemDelegate&); // Copy Constructor Not Implemented
-    void operator=(const TupleTableItemDelegate&); // Operator '=' Not Implemented
-
+    TupleTableItemDelegate(const TupleTableItemDelegate&) = delete; // Copy Constructor Not Implemented
+    void operator=(const TupleTableItemDelegate&) = delete;         // Operator '=' Not Implemented
 };
 
 #endif // _TupleTableItemDelegate_H

@@ -52,9 +52,7 @@ FilterParameterWidgetsDialogs::FilterParameterWidgetsDialogs()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-FilterParameterWidgetsDialogs::~FilterParameterWidgetsDialogs()
-{
-}
+FilterParameterWidgetsDialogs::~FilterParameterWidgetsDialogs() = default;
 
 // -----------------------------------------------------------------------------
 //

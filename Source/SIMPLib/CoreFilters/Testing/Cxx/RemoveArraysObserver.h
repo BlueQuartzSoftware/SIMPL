@@ -35,7 +35,7 @@ public slots:
   }
 
 private:
-  RemoveArraysObserver(const RemoveArraysObserver&); // Copy Constructor Not Implemented
+  RemoveArraysObserver(const RemoveArraysObserver&) = delete; // Copy Constructor Not Implemented
   void operator=(const RemoveArraysObserver&);       // Operator '=' Not Implemented
 };
 

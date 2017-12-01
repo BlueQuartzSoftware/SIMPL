@@ -124,9 +124,8 @@ class SVWidgetsLib_EXPORT AttributeMatrixSelectionWidget : public FilterParamete
 
     void setSelectedPath(DataArrayPath amPath);
 
-    AttributeMatrixSelectionWidget(const AttributeMatrixSelectionWidget&); // Copy Constructor Not Implemented
-    void operator=(const AttributeMatrixSelectionWidget&); // Operator '=' Not Implemented
-
+    AttributeMatrixSelectionWidget(const AttributeMatrixSelectionWidget&) = delete; // Copy Constructor Not Implemented
+    void operator=(const AttributeMatrixSelectionWidget&) = delete;                 // Operator '=' Not Implemented
 };
 
 #endif /* _AttributeMatrixSelectionWidget_H_ */

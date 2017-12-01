@@ -189,8 +189,8 @@ class SVWidgetsLib_EXPORT PipelineFilterObject
     */
     void setupFilterInputWidget();
 
-    PipelineFilterObject(const PipelineFilterObject&); // Copy Constructor Not Implemented
-    void operator=(const PipelineFilterObject&); // Operator '=' Not Implemented
+    PipelineFilterObject(const PipelineFilterObject&) = delete; // Copy Constructor Not Implemented
+    void operator=(const PipelineFilterObject&) = delete;       // Operator '=' Not Implemented
 };
 
 #endif /* _pipelinefilterobject_h_ */

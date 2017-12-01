@@ -48,9 +48,7 @@ InputFileFilterParameter::InputFileFilterParameter()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-InputFileFilterParameter::~InputFileFilterParameter()
-{
-}
+InputFileFilterParameter::~InputFileFilterParameter() = default;
 
 // -----------------------------------------------------------------------------
 //

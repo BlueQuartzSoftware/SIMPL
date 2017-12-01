@@ -58,9 +58,8 @@ class SIMPLib_EXPORT BinaryOperator : public CalculatorOperator
     BinaryOperator();
 
   private:
-
-    BinaryOperator(const BinaryOperator&); // Copy Constructor Not Implemented
-    void operator=(const BinaryOperator&); // Operator '=' Not Implemented
+    BinaryOperator(const BinaryOperator&) = delete; // Copy Constructor Not Implemented
+    void operator=(const BinaryOperator&) = delete; // Operator '=' Not Implemented
 };
 
 #define CREATE_NEW_ARRAY_STANDARD_BINARY(filter, calculatedArrayPath, executionStack, op)                                                                                                              \

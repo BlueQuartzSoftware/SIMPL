@@ -53,9 +53,7 @@ TransformationStatsData::TransformationStatsData()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-TransformationStatsData::~TransformationStatsData()
-{
-}
+TransformationStatsData::~TransformationStatsData() = default;
 
 // -----------------------------------------------------------------------------
 //

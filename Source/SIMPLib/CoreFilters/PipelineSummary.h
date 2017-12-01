@@ -145,7 +145,7 @@ protected:
   void initialize();
 
 private:
-  PipelineSummary(const PipelineSummary&); // Copy Constructor Not Implemented
+  PipelineSummary(const PipelineSummary&) = delete; // Copy Constructor Not Implemented
   void operator=(const PipelineSummary&);  // Operator '=' Not Implemented
 };
 

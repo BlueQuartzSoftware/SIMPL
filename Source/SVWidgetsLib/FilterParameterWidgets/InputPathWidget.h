@@ -78,9 +78,8 @@ class SVWidgetsLib_EXPORT InputPathWidget : public AbstractIOFileWidget
   private:
     InputPathFilterParameter*  m_FilterParameter;
 
-    InputPathWidget(const InputPathWidget&); // Copy Constructor Not Implemented
-    void operator=(const InputPathWidget&); // Operator '=' Not Implemented
-
+    InputPathWidget(const InputPathWidget&) = delete; // Copy Constructor Not Implemented
+    void operator=(const InputPathWidget&) = delete;  // Operator '=' Not Implemented
 };
 
 #endif /* _InputPathWidget_H_ */

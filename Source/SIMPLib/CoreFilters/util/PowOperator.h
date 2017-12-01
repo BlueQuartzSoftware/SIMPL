@@ -63,9 +63,8 @@ class SIMPLib_EXPORT PowOperator : public BinaryOperator
     PowOperator();
 
   private:
-
-    PowOperator(const PowOperator&); // Copy Constructor Not Implemented
-    void operator=(const PowOperator&); // Operator '=' Not Implemented
+    PowOperator(const PowOperator&) = delete;    // Copy Constructor Not Implemented
+    void operator=(const PowOperator&) = delete; // Operator '=' Not Implemented
 };
 
 #endif /* _PowOperator_H_ */

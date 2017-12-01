@@ -141,8 +141,8 @@ class SIMPLib_EXPORT ChoiceFilterParameter : public FilterParameter
     ChoiceFilterParameter();
 
   private:
-    ChoiceFilterParameter(const ChoiceFilterParameter&); // Copy Constructor Not Implemented
-    void operator=(const ChoiceFilterParameter&); // Operator '=' Not Implemented
+    ChoiceFilterParameter(const ChoiceFilterParameter&) = delete; // Copy Constructor Not Implemented
+    void operator=(const ChoiceFilterParameter&) = delete;        // Operator '=' Not Implemented
 };
 
 #endif /* _ChoiceFilterParameter_H_ */

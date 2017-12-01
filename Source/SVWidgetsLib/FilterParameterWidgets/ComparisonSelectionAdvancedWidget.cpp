@@ -45,9 +45,6 @@
 
 #include "SIMPLib/Filtering/ComparisonValue.h"
 
-// Include the MOC generated file for this class
-#include "moc_ComparisonSelectionAdvancedWidget.cpp"
-
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
@@ -67,9 +64,7 @@ ComparisonSelectionAdvancedWidget::ComparisonSelectionAdvancedWidget(FilterParam
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-ComparisonSelectionAdvancedWidget::~ComparisonSelectionAdvancedWidget()
-{
-}
+ComparisonSelectionAdvancedWidget::~ComparisonSelectionAdvancedWidget() = default;
 
 // -----------------------------------------------------------------------------
 //

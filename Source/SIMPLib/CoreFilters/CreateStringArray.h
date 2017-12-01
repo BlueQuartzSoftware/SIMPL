@@ -160,10 +160,10 @@ class SIMPLib_EXPORT CreateStringArray : public AbstractFilter
 
 
   private:
-    DEFINE_IDATAARRAY_VARIABLE(OutputArray)
+    IDataArray::WeakPointer m_OutputArrayPtr;
 
-    CreateStringArray(const CreateStringArray&); // Copy Constructor Not Implemented
-    void operator=(const CreateStringArray&); // Operator '=' Not Implemented
+    CreateStringArray(const CreateStringArray&) = delete; // Copy Constructor Not Implemented
+    void operator=(const CreateStringArray&) = delete;    // Operator '=' Not Implemented
 };
 
 #endif /* _CreateStringArray_H_ */

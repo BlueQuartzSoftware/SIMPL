@@ -160,8 +160,8 @@ protected:
   FloatVec3FilterParameter();
 
 private:
-  FloatVec3FilterParameter(const FloatVec3FilterParameter&); // Copy Constructor Not Implemented
-  void operator=(const FloatVec3FilterParameter&); // Operator '=' Not Implemented
+  FloatVec3FilterParameter(const FloatVec3FilterParameter&) = delete; // Copy Constructor Not Implemented
+  void operator=(const FloatVec3FilterParameter&) = delete;           // Operator '=' Not Implemented
 };
 
 #endif /* _FloatVec3FilterParameter_H_ */

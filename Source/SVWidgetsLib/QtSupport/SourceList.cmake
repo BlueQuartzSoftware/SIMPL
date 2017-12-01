@@ -79,7 +79,7 @@ QT5_ADD_RESOURCES( SVWidgetsLib_QtSupport_Generated_RC_SRCS "${SVWidgetsLib_SOUR
 
 # --------------------------------------------------------------------
 # and finally this will run moc:
-QT5_WRAP_CPP( SVWidgetsLib_QtSupport_Generated_MOC_SRCS ${SVWidgetsLib_QtSupport_MOC_HDRS} )
+# QT5_WRAP_CPP( SVWidgetsLib_QtSupport_Generated_MOC_SRCS ${SVWidgetsLib_QtSupport_MOC_HDRS} )
 set_source_files_properties( ${SVWidgetsLib_QtSupport_Generated_MOC_SRCS} PROPERTIES GENERATED TRUE)
 set_source_files_properties( ${SVWidgetsLib_QtSupport_Generated_MOC_SRCS} PROPERTIES HEADER_FILE_ONLY TRUE)
 

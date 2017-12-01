@@ -108,11 +108,11 @@ set(TEST_NAMES
 )
 
 
-QT5_WRAP_CPP( _moc_filter_source  ${SIMPLTest_SOURCE_DIR}/PipelinePauseTest.cpp)
+# QT5_WRAP_CPP( _moc_filter_source  ${SIMPLTest_SOURCE_DIR}/PipelinePauseTest.cpp)
 set_source_files_properties( ${_moc_filter_source} PROPERTIES GENERATED TRUE)
 set_source_files_properties( ${_moc_filter_source} PROPERTIES HEADER_FILE_ONLY TRUE)
 
-QT5_WRAP_CPP( execute_process_moc  ${SIMPLTest_SOURCE_DIR}/ExecuteProcessTest.cpp)
+# QT5_WRAP_CPP( execute_process_moc  ${SIMPLTest_SOURCE_DIR}/ExecuteProcessTest.cpp)
 set_source_files_properties( ${execute_process_moc} PROPERTIES GENERATED TRUE)
 set_source_files_properties( ${execute_process_moc} PROPERTIES HEADER_FILE_ONLY TRUE)
 

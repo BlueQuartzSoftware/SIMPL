@@ -46,9 +46,7 @@ AxisAngleFilterParameter::AxisAngleFilterParameter()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-AxisAngleFilterParameter::~AxisAngleFilterParameter()
-{
-}
+AxisAngleFilterParameter::~AxisAngleFilterParameter() = default;
 
 // -----------------------------------------------------------------------------
 //

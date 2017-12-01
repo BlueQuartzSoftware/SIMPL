@@ -234,8 +234,8 @@ class SIMPLib_EXPORT DataContainerReader : public AbstractFilter
   private:
     FilterPipeline::Pointer                     m_PipelineFromFile;
 
-    DataContainerReader(const DataContainerReader&); // Copy Constructor Not Implemented
-    void operator=(const DataContainerReader&); // Operator '=' Not Implemented
+    DataContainerReader(const DataContainerReader&) = delete; // Copy Constructor Not Implemented
+    void operator=(const DataContainerReader&) = delete;      // Operator '=' Not Implemented
 };
 
 #endif /* _DataContainerReader_H_ */

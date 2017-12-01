@@ -51,9 +51,6 @@
 #include "SVWidgetsLib/FilterParameterWidgets/FilterParameterWidgetUtils.hpp"
 #include "SVWidgetsLib/FilterParameterWidgets/FilterParameterWidgetsDialogs.h"
 
-// Include the MOC generated file for this class
-#include "moc_LinkedDataContainerSelectionWidget.cpp"
-
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
@@ -82,9 +79,7 @@ LinkedDataContainerSelectionWidget::LinkedDataContainerSelectionWidget(QWidget* 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-LinkedDataContainerSelectionWidget::~LinkedDataContainerSelectionWidget()
-{
-}
+LinkedDataContainerSelectionWidget::~LinkedDataContainerSelectionWidget() = default;
 
 // -----------------------------------------------------------------------------
 //

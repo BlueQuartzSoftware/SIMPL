@@ -141,8 +141,8 @@ protected:
   RangeFilterParameter();
 
 private:
-  RangeFilterParameter(const RangeFilterParameter&); // Copy Constructor Not Implemented
-  void operator=(const RangeFilterParameter&); // Operator '=' Not Implemented
+  RangeFilterParameter(const RangeFilterParameter&) = delete; // Copy Constructor Not Implemented
+  void operator=(const RangeFilterParameter&) = delete;       // Operator '=' Not Implemented
 };
 
 #endif /* _RangeFilterParameter_H_ */

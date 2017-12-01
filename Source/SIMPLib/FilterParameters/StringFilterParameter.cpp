@@ -46,9 +46,7 @@ StringFilterParameter::StringFilterParameter()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-StringFilterParameter::~StringFilterParameter()
-{
-}
+StringFilterParameter::~StringFilterParameter() = default;
 
 // -----------------------------------------------------------------------------
 //

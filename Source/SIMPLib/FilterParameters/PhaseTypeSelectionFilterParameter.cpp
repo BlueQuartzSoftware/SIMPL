@@ -47,9 +47,7 @@ PhaseTypeSelectionFilterParameter::PhaseTypeSelectionFilterParameter()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-PhaseTypeSelectionFilterParameter::~PhaseTypeSelectionFilterParameter()
-{
-}
+PhaseTypeSelectionFilterParameter::~PhaseTypeSelectionFilterParameter() = default;
 
 // -----------------------------------------------------------------------------
 //

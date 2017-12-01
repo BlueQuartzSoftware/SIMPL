@@ -289,8 +289,8 @@ class DataFormatPage : public AbstractWizardPage, private Ui::DataFormatPage
     bool validateHeaders(QVector<QString> headers);
     bool validateTupleDimensions(QVector<size_t> tupleDims);
 
-    DataFormatPage(const DataFormatPage&); // Copy Constructor Not Implemented
-    void operator=(const DataFormatPage&); // Operator '=' Not Implemented
+    DataFormatPage(const DataFormatPage&) = delete; // Copy Constructor Not Implemented
+    void operator=(const DataFormatPage&) = delete; // Operator '=' Not Implemented
 };
 
 #endif /* DataFormatPage_H_ */

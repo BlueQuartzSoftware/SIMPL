@@ -45,9 +45,6 @@
 
 #include "FilterParameterWidgetsDialogs.h"
 
-// Include the MOC generated file for this class
-#include "moc_CalculatorWidget.cpp"
-
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
@@ -71,9 +68,7 @@ CalculatorWidget::CalculatorWidget(FilterParameter* parameter, AbstractFilter* f
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-CalculatorWidget::~CalculatorWidget()
-{
-}
+CalculatorWidget::~CalculatorWidget() = default;
 
 // -----------------------------------------------------------------------------
 //

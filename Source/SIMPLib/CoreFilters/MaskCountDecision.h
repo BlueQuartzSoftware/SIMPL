@@ -129,8 +129,8 @@ class SIMPLib_EXPORT MaskCountDecision : public AbstractDecisionFilter
   private:
     DEFINE_DATAARRAY_VARIABLE(bool, Mask)
 
-    MaskCountDecision(const MaskCountDecision&); // Copy Constructor Not Implemented
-    void operator=(const MaskCountDecision&); // Operator '=' Not Implemented
+    MaskCountDecision(const MaskCountDecision&) = delete; // Copy Constructor Not Implemented
+    void operator=(const MaskCountDecision&) = delete;    // Operator '=' Not Implemented
 };
 
 #endif /* _MaskCountDecision_H_ */

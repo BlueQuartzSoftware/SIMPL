@@ -43,9 +43,6 @@
 #include "SIMPLib/Filtering/ThresholdFilterHelper.h"
 #include "SIMPLib/SIMPLibVersion.h"
 
-// Include the MOC generated file for this class
-#include "moc_MultiThresholdObjects2.cpp"
-
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
@@ -61,9 +58,7 @@ MultiThresholdObjects2::MultiThresholdObjects2()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-MultiThresholdObjects2::~MultiThresholdObjects2()
-{
-}
+MultiThresholdObjects2::~MultiThresholdObjects2() = default;
 
 // -----------------------------------------------------------------------------
 //

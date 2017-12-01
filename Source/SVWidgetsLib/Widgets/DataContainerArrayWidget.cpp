@@ -39,7 +39,6 @@
 #include "SVWidgetsLib/Core/SVWidgetsLibConstants.h"
 
 // Include the MOC generated CPP file which has all the QMetaObject methods/data
-#include "moc_DataContainerArrayWidget.cpp"
 
 // -----------------------------------------------------------------------------
 //
@@ -66,9 +65,7 @@ DataContainerArrayWidget::DataContainerArrayWidget(AbstractFilter* filter, QWidg
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-DataContainerArrayWidget::~DataContainerArrayWidget()
-{
-}
+DataContainerArrayWidget::~DataContainerArrayWidget() = default;
 
 // -----------------------------------------------------------------------------
 //

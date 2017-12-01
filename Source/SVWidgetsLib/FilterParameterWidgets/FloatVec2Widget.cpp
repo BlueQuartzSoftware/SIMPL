@@ -45,9 +45,6 @@
 
 #include "FilterParameterWidgetsDialogs.h"
 
-// Include the MOC generated file for this class
-#include "moc_FloatVec2Widget.cpp"
-
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
@@ -64,9 +61,7 @@ FloatVec2Widget::FloatVec2Widget(FilterParameter* parameter, AbstractFilter* fil
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-FloatVec2Widget::~FloatVec2Widget()
-{
-}
+FloatVec2Widget::~FloatVec2Widget() = default;
 
 // -----------------------------------------------------------------------------
 //

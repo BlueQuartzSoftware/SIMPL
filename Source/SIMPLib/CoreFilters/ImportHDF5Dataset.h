@@ -167,7 +167,7 @@ private:
    */
   QVector<size_t> createComponentDimensions();
 
-  ImportHDF5Dataset(const ImportHDF5Dataset&); // Copy Constructor Not Implemented
+  ImportHDF5Dataset(const ImportHDF5Dataset&) = delete; // Copy Constructor Not Implemented
   void operator=(const ImportHDF5Dataset&);    // Operator '=' Not Implemented
 };
 

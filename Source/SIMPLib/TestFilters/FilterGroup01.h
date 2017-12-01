@@ -142,7 +142,7 @@ protected:
 
 private:
   FilterGroup01(const FilterGroup01&);  // Copy Constructor Not Implemented
-  void operator=(const FilterGroup01&); // Operator '=' Not Implemented
+  void operator=(const FilterGroup01&) = delete; // Operator '=' Not Implemented
 };
 
 #endif /* _FilterGroup01_H_ */

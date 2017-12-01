@@ -41,9 +41,6 @@
 
 #include "FilterParameterWidgetsDialogs.h"
 
-// Include the MOC generated file for this class
-#include "moc_ParagraphWidget.cpp"
-
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
@@ -60,9 +57,7 @@ ParagraphWidget::ParagraphWidget(FilterParameter* parameter, AbstractFilter* fil
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-ParagraphWidget::~ParagraphWidget()
-{
-}
+ParagraphWidget::~ParagraphWidget() = default;
 
 // -----------------------------------------------------------------------------
 //

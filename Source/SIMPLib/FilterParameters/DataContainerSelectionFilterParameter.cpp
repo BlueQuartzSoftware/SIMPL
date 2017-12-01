@@ -46,9 +46,7 @@ DataContainerSelectionFilterParameter::DataContainerSelectionFilterParameter()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-DataContainerSelectionFilterParameter::~DataContainerSelectionFilterParameter()
-{
-}
+DataContainerSelectionFilterParameter::~DataContainerSelectionFilterParameter() = default;
 
 // -----------------------------------------------------------------------------
 //

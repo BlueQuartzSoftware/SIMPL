@@ -38,9 +38,6 @@
 
 #include "SVWidgetsLib/Core/SVWidgetsLibConstants.h"
 
-// Include the MOC generated file for this class
-#include "moc_UnknownWidget.cpp"
-
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
@@ -57,9 +54,7 @@ UnknownWidget::UnknownWidget(FilterParameter* parameter, AbstractFilter* filter,
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-UnknownWidget::~UnknownWidget()
-{
-}
+UnknownWidget::~UnknownWidget() = default;
 
 // -----------------------------------------------------------------------------
 //

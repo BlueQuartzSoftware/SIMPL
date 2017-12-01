@@ -59,9 +59,6 @@
 // Initialize private static member variable
 QString FileListInfoWidget::m_OpenDialogLastFilePath = "";
 
-// Include the MOC generated file for this class
-#include "moc_FileListInfoWidget.cpp"
-
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
@@ -91,9 +88,7 @@ FileListInfoWidget::FileListInfoWidget(FilterParameter* parameter, AbstractFilte
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-FileListInfoWidget::~FileListInfoWidget()
-{
-}
+FileListInfoWidget::~FileListInfoWidget() = default;
 
 // -----------------------------------------------------------------------------
 //

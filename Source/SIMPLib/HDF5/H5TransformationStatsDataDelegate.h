@@ -116,8 +116,8 @@ class SIMPLib_EXPORT H5TransformationStatsDataDelegate : public H5StatsDataDeleg
     VectorOfFloatArray createLogNormalDistributionArrays();
 
   private:
-    H5TransformationStatsDataDelegate(const H5TransformationStatsDataDelegate&); // Copy Constructor Not Implemented
-    void operator=(const H5TransformationStatsDataDelegate&); // Operator '=' Not Implemented
+    H5TransformationStatsDataDelegate(const H5TransformationStatsDataDelegate&) = delete; // Copy Constructor Not Implemented
+    void operator=(const H5TransformationStatsDataDelegate&) = delete;                    // Operator '=' Not Implemented
 };
 
 #endif /* _H5TransformationStatsData_DELEGATE_H_ */

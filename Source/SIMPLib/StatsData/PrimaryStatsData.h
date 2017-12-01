@@ -202,8 +202,8 @@ class SIMPLib_EXPORT PrimaryStatsData : public StatsData
     PrimaryStatsData();
 
   private:
-    PrimaryStatsData(const PrimaryStatsData&); // Copy Constructor Not Implemented
-    void operator=(const PrimaryStatsData&); // Operator '=' Not Implemented
+    PrimaryStatsData(const PrimaryStatsData&) = delete; // Copy Constructor Not Implemented
+    void operator=(const PrimaryStatsData&) = delete;   // Operator '=' Not Implemented
 };
 
 #endif /* _PrimaryStatsDataTUPLE_H_ */

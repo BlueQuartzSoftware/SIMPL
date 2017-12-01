@@ -67,9 +67,6 @@
 #include "SIMPLib/FilterParameters/ShapeTypeSelectionFilterParameter.h"
 #include "SIMPLib/FilterParameters/StringFilterParameter.h"
 
-// Include the MOC generated file for this class
-#include "moc_GenericExample.cpp"
-
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
@@ -120,9 +117,7 @@ GenericExample::GenericExample()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-GenericExample::~GenericExample()
-{
-}
+GenericExample::~GenericExample() = default;
 
 // -----------------------------------------------------------------------------
 //

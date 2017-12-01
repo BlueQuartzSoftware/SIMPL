@@ -47,9 +47,6 @@
 #include "SIMPLib/FilterParameters/SeparatorFilterParameter.h"
 #include "SIMPLib/SIMPLibVersion.h"
 
-// Include the MOC generated file for this class
-#include "moc_FeatureDataCSVWriter.cpp"
-
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
@@ -68,9 +65,7 @@ FeatureDataCSVWriter::FeatureDataCSVWriter()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-FeatureDataCSVWriter::~FeatureDataCSVWriter()
-{
-}
+FeatureDataCSVWriter::~FeatureDataCSVWriter() = default;
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------

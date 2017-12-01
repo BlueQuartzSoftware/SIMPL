@@ -212,9 +212,7 @@ ImportASCIIDataWizard::ImportASCIIDataWizard(ASCIIWizardData* wizardData, DataCo
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-ImportASCIIDataWizard::~ImportASCIIDataWizard()
-{
-}
+ImportASCIIDataWizard::~ImportASCIIDataWizard() = default;
 
 // -----------------------------------------------------------------------------
 //

@@ -241,9 +241,6 @@ void transferDataArrayFlags(const QString dc_name, const QString am_name, const 
 
 } /* end namespace Detail */
 
-// Include the MOC generated file for this class
-#include "moc_DataContainerReaderWidget.cpp"
-
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
@@ -281,9 +278,7 @@ DataContainerReaderWidget::DataContainerReaderWidget(QWidget* parent)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-DataContainerReaderWidget::~DataContainerReaderWidget()
-{
-}
+DataContainerReaderWidget::~DataContainerReaderWidget() = default;
 
 // -----------------------------------------------------------------------------
 //

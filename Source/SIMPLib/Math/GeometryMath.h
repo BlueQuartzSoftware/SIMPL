@@ -357,8 +357,8 @@ class SIMPLib_EXPORT GeometryMath
     GeometryMath();
 
   private:
-    GeometryMath(const GeometryMath&); // Copy Constructor Not Implemented
-    void operator=(const GeometryMath&); // Operator '=' Not Implemented
+    GeometryMath(const GeometryMath&) = delete;   // Copy Constructor Not Implemented
+    void operator=(const GeometryMath&) = delete; // Operator '=' Not Implemented
 };
 
 #endif /* _GeometryMath_H_ */

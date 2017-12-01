@@ -67,10 +67,7 @@ AttributeMatrixProxy::AttributeMatrixProxy(const AttributeMatrixProxy& amp)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-AttributeMatrixProxy::~AttributeMatrixProxy()
-{
-}
-
+AttributeMatrixProxy::~AttributeMatrixProxy() = default;
 
 // -----------------------------------------------------------------------------
 //

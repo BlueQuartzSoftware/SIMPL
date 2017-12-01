@@ -89,15 +89,10 @@ class SVWidgetsLib_EXPORT NumericTypeWidget : public FilterParameterWidget, priv
     void parametersChanged();
 
   private:
-
-    bool m_DidCausePreflight;
-
     NumericTypeFilterParameter* m_FilterParameter;
 
-
-    NumericTypeWidget(const NumericTypeWidget&); // Copy Constructor Not Implemented
-    void operator=(const NumericTypeWidget&); // Operator '=' Not Implemented
-
+    NumericTypeWidget(const NumericTypeWidget&) = delete; // Copy Constructor Not Implemented
+    void operator=(const NumericTypeWidget&) = delete;    // Operator '=' Not Implemented
 };
 
 #endif /* _NumericTypeWidget_H_ */

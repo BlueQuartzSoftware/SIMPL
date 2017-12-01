@@ -36,7 +36,6 @@
 #include "BreakpointFilterWidget.h"
 
 // Include the MOC generated CPP file which has all the QMetaObject methods/data
-#include "moc_BreakpointFilterWidget.cpp"
 
 // -----------------------------------------------------------------------------
 //
@@ -69,9 +68,7 @@ BreakpointFilterWidget::BreakpointFilterWidget(AbstractFilter::Pointer filter, I
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-BreakpointFilterWidget::~BreakpointFilterWidget()
-{
-}
+BreakpointFilterWidget::~BreakpointFilterWidget() = default;
 
 // -----------------------------------------------------------------------------
 //

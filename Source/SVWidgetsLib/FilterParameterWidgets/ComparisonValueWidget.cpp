@@ -2,8 +2,6 @@
 
 #include "SIMPLib/DataContainers/DataArrayPath.h"
 
-#include "moc_ComparisonValueWidget.cpp"
-
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
@@ -19,9 +17,7 @@ ComparisonValueWidget::ComparisonValueWidget(QWidget* parent, ComparisonValue::P
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-ComparisonValueWidget::~ComparisonValueWidget()
-{
-}
+ComparisonValueWidget::~ComparisonValueWidget() = default;
 
 // -----------------------------------------------------------------------------
 //

@@ -66,7 +66,6 @@
 #include "SVWidgetsLib/FilterParameterWidgets/FilterParameterWidgetsDialogs.h"
 
 // Include the MOC generated CPP file which has all the QMetaObject methods/data
-#include "moc_ImportHDF5DatasetWidget.cpp"
 
 // Initialize private static member variable
 QString ImportHDF5DatasetWidget::m_OpenDialogLastDirectory = "";

@@ -57,10 +57,6 @@ extern Q_CORE_EXPORT int qt_ntfs_permission_lookup;
 #define APPEND_DATA_TRUE 1
 #define APPEND_DATA_FALSE 0
 
-
-// Include the MOC generated file for this class
-#include "moc_DataContainerWriter.cpp"
-
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------

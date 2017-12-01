@@ -73,7 +73,6 @@
 #endif
 
 // Include the MOC generated CPP file which has all the QMetaObject methods/data
-#include "moc_FilterInputWidget.cpp"
 
 // Initialize private static member variable
 QString FilterInputWidget::m_OpenDialogLastFilePath = "";

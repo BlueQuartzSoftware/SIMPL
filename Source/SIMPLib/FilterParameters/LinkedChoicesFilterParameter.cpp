@@ -46,9 +46,7 @@ LinkedChoicesFilterParameter::LinkedChoicesFilterParameter()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-LinkedChoicesFilterParameter::~LinkedChoicesFilterParameter()
-{
-}
+LinkedChoicesFilterParameter::~LinkedChoicesFilterParameter() = default;
 
 // -----------------------------------------------------------------------------
 //

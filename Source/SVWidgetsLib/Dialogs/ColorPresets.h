@@ -115,8 +115,8 @@ private:
   class vtkInternals;
   vtkInternals* Internals;
 
-  ColorPresets(const ColorPresets&); // Copy Constructor Not Implemented
-  void operator=(const ColorPresets&); // Operator '=' Not Implemented
+  ColorPresets(const ColorPresets&) = delete;   // Copy Constructor Not Implemented
+  void operator=(const ColorPresets&) = delete; // Operator '=' Not Implemented
 };
 
 #endif

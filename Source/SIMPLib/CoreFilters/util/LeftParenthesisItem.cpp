@@ -49,9 +49,7 @@ LeftParenthesisItem::LeftParenthesisItem()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-LeftParenthesisItem::~LeftParenthesisItem()
-{
-}
+LeftParenthesisItem::~LeftParenthesisItem() = default;
 
 // -----------------------------------------------------------------------------
 //

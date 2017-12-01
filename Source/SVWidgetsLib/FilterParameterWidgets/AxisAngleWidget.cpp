@@ -44,9 +44,6 @@
 
 #include "FilterParameterWidgetsDialogs.h"
 
-// Include the MOC generated file for this class
-#include "moc_AxisAngleWidget.cpp"
-
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
@@ -63,9 +60,7 @@ AxisAngleWidget::AxisAngleWidget(FilterParameter* parameter, AbstractFilter* fil
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-AxisAngleWidget::~AxisAngleWidget()
-{
-}
+AxisAngleWidget::~AxisAngleWidget() = default;
 
 // -----------------------------------------------------------------------------
 //

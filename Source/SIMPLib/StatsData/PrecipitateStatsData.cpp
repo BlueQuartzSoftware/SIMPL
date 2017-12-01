@@ -53,9 +53,7 @@ PrecipitateStatsData::PrecipitateStatsData()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-PrecipitateStatsData::~PrecipitateStatsData()
-{
-}
+PrecipitateStatsData::~PrecipitateStatsData() = default;
 
 // -----------------------------------------------------------------------------
 //

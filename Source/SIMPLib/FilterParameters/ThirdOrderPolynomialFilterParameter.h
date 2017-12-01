@@ -178,8 +178,8 @@ protected:
   ThirdOrderPolynomialFilterParameter();
 
 private:
-  ThirdOrderPolynomialFilterParameter(const ThirdOrderPolynomialFilterParameter&); // Copy Constructor Not Implemented
-  void operator=(const ThirdOrderPolynomialFilterParameter&); // Operator '=' Not Implemented
+  ThirdOrderPolynomialFilterParameter(const ThirdOrderPolynomialFilterParameter&) = delete; // Copy Constructor Not Implemented
+  void operator=(const ThirdOrderPolynomialFilterParameter&) = delete;                      // Operator '=' Not Implemented
 };
 
 #endif /* _ThirdOrderPolynomialFilterParameter_H_ */

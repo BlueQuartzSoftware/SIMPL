@@ -41,6 +41,6 @@ SIMPL_ADD_UNIT_TEST_MOC_FILE(ExecuteProcessTest "${SIMPLib_SOURCE_DIR}/${SUBDIR_
 set(SIMPLTest_SOURCE_DIR ${SIMPLib_SOURCE_DIR}/Testing)
 set(SIMPLTest_BINARY_DIR ${SIMPLib_BINARY_DIR}/Testing)
 
-# QT5_WRAP_CPP( execute_process_moc  ${SIMPLTest_SOURCE_DIR}/ExecuteProcessTest.cpp)
+# # QT5_WRAP_CPP( execute_process_moc  ${SIMPLTest_SOURCE_DIR}/ExecuteProcessTest.cpp)
 # set_source_files_properties( ${execute_process_moc} PROPERTIES GENERATED TRUE)
 # set_source_files_properties( ${execute_process_moc} PROPERTIES HEADER_FILE_ONLY TRUE)

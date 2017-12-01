@@ -203,8 +203,8 @@ class SIMPLib_EXPORT DataContainerWriter : public AbstractFilter
   private:
     hid_t m_FileId;
 
-    DataContainerWriter(const DataContainerWriter&); // Copy Constructor Not Implemented
-    void operator=(const DataContainerWriter&); // Operator '=' Not Implemented
+    DataContainerWriter(const DataContainerWriter&) = delete; // Copy Constructor Not Implemented
+    void operator=(const DataContainerWriter&) = delete;      // Operator '=' Not Implemented
 };
 
 #endif /* _DataContainerWriter_H_ */

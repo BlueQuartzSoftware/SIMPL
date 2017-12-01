@@ -81,8 +81,8 @@ class SIMPLib_EXPORT H5BoundaryStatsDataDelegate : public H5StatsDataDelegate
     int readParentPhase(BoundaryStatsData* data, hid_t groupId);
 
   private:
-    H5BoundaryStatsDataDelegate(const H5BoundaryStatsDataDelegate&); // Copy Constructor Not Implemented
-    void operator=(const H5BoundaryStatsDataDelegate&); // Operator '=' Not Implemented
+    H5BoundaryStatsDataDelegate(const H5BoundaryStatsDataDelegate&) = delete; // Copy Constructor Not Implemented
+    void operator=(const H5BoundaryStatsDataDelegate&) = delete;              // Operator '=' Not Implemented
 };
 
 #endif /* _H5STATSDATA_DELEGATE_H_ */

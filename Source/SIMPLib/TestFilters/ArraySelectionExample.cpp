@@ -34,9 +34,6 @@
 #include "SIMPLib/FilterParameters/AbstractFilterParametersReader.h"
 #include "SIMPLib/FilterParameters/DataContainerArrayProxyFilterParameter.h"
 
-// Include the MOC generated file for this class
-#include "moc_ArraySelectionExample.cpp"
-
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
@@ -51,9 +48,7 @@ ArraySelectionExample::ArraySelectionExample()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-ArraySelectionExample::~ArraySelectionExample()
-{
-}
+ArraySelectionExample::~ArraySelectionExample() = default;
 
 // -----------------------------------------------------------------------------
 //

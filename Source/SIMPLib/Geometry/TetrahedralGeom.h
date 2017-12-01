@@ -578,8 +578,8 @@ class SIMPLib_EXPORT TetrahedralGeom : public IGeometry3D
 
     friend class FindTetDerivativesImpl;
 
-    TetrahedralGeom(const TetrahedralGeom&); // Copy Constructor Not Implemented
-    void operator=(const TetrahedralGeom&); // Operator '=' Not Implemented
+    TetrahedralGeom(const TetrahedralGeom&) = delete; // Copy Constructor Not Implemented
+    void operator=(const TetrahedralGeom&) = delete;  // Operator '=' Not Implemented
 };
 
 

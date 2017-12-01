@@ -73,9 +73,6 @@
 #include "util/SubtractionOperator.h"
 #include "util/TanOperator.h"
 
-// Include the MOC generated file for this class
-#include "moc_ArrayCalculator.cpp"
-
 #define CREATE_CALCULATOR_ARRAY(itemPtr, iDataArrayPtr)                                                                                                                                                \
   if(TemplateHelpers::CanDynamicCast<FloatArrayType>()(iDataArrayPtr))                                                                                                                                 \
   {                                                                                                                                                                                                    \
@@ -151,9 +148,7 @@ ArrayCalculator::ArrayCalculator()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-ArrayCalculator::~ArrayCalculator()
-{
-}
+ArrayCalculator::~ArrayCalculator() = default;
 
 // -----------------------------------------------------------------------------
 //

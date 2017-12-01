@@ -44,9 +44,7 @@ SIMPLibMath::SIMPLibMath()
 {
 }
 
-SIMPLibMath::~SIMPLibMath()
-{
-}
+SIMPLibMath::~SIMPLibMath() = default;
 
 float SIMPLibMath::Gamma(float x)
 {

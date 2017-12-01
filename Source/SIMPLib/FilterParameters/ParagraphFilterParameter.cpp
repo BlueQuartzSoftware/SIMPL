@@ -44,9 +44,7 @@ ParagraphFilterParameter::ParagraphFilterParameter()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-ParagraphFilterParameter::~ParagraphFilterParameter()
-{
-}
+ParagraphFilterParameter::~ParagraphFilterParameter() = default;
 
 // -----------------------------------------------------------------------------
 //

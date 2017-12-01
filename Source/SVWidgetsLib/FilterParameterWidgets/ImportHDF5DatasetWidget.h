@@ -165,7 +165,7 @@ private:
   void addRow(QTableWidget* table, int row, const QString& key, const QString& value);
 
   ~ImportHDF5DatasetWidget();
-  ImportHDF5DatasetWidget(const ImportHDF5DatasetWidget&); // Copy Constructor Not Implemented
+  ImportHDF5DatasetWidget(const ImportHDF5DatasetWidget&) = delete; // Copy Constructor Not Implemented
   void operator=(const ImportHDF5DatasetWidget&);          // Copy Assignment Not Implemented
 };
 

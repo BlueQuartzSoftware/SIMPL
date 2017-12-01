@@ -189,8 +189,8 @@ class SIMPLib_EXPORT WriteASCIIData : public AbstractFilter
 
     QVector<IDataArray::WeakPointer> m_SelectedWeakPtrVector;
 
-    WriteASCIIData(const WriteASCIIData&); // Copy Constructor Not Implemented
-    void operator=(const WriteASCIIData&); // Operator '=' Not Implemented
+    WriteASCIIData(const WriteASCIIData&) = delete; // Copy Constructor Not Implemented
+    void operator=(const WriteASCIIData&) = delete; // Operator '=' Not Implemented
 };
 
 #endif /* _writeasciidata_h_ */

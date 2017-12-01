@@ -91,14 +91,10 @@ class SVWidgetsLib_EXPORT DataContainerCreationWidget : public FilterParameterWi
     void parametersChanged();
 
   private:
-
-    bool m_DidCausePreflight;
-
     DataContainerCreationFilterParameter*                 m_FilterParameter;
 
-    DataContainerCreationWidget(const DataContainerCreationWidget&); // Copy Constructor Not Implemented
-    void operator=(const DataContainerCreationWidget&); // Operator '=' Not Implemented
-
+    DataContainerCreationWidget(const DataContainerCreationWidget&) = delete; // Copy Constructor Not Implemented
+    void operator=(const DataContainerCreationWidget&) = delete;              // Operator '=' Not Implemented
 };
 
 #endif /* _DataContainerCreationWidget_H_ */

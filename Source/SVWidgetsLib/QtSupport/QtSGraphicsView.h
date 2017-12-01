@@ -168,7 +168,6 @@ class SVWidgetsLib_EXPORT QtSGraphicsView : public QGraphicsView
     float          m_ZoomFactors[10];
 
     EmMpm_Constants::ImageDisplayType           m_ImageDisplayType;
-    bool           m_ShowOverlayImage;
     QPainter::CompositionMode m_composition_mode;
     float          m_OverlayTransparency;
 
@@ -177,8 +176,8 @@ class SVWidgetsLib_EXPORT QtSGraphicsView : public QGraphicsView
     QVector<QRgb> m_CustomColorTable;
     QVector<QRgb> m_OriginalColorTable;
 
-    QtSGraphicsView(const QtSGraphicsView&); // Copy Constructor Not Implemented
-    void operator=(const QtSGraphicsView&); // Operator '=' Not Implemented
+    QtSGraphicsView(const QtSGraphicsView&) = delete; // Copy Constructor Not Implemented
+    void operator=(const QtSGraphicsView&) = delete;  // Operator '=' Not Implemented
 };
 
 #endif /* _EMMPM_GRAPHICS_VIEW_H_ */

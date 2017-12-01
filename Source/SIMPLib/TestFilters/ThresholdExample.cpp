@@ -37,9 +37,6 @@
 
 #include "SIMPLib/FilterParameters/ComparisonSelectionFilterParameter.h"
 
-// Include the MOC generated file for this class
-#include "moc_ThresholdExample.cpp"
-
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
@@ -54,9 +51,7 @@ ThresholdExample::ThresholdExample()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-ThresholdExample::~ThresholdExample()
-{
-}
+ThresholdExample::~ThresholdExample() = default;
 
 // -----------------------------------------------------------------------------
 //

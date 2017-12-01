@@ -48,9 +48,7 @@ ThresholdFilterHelper::ThresholdFilterHelper(SIMPL::Comparison::Enumeration comp
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-ThresholdFilterHelper::~ThresholdFilterHelper()
-{
-}
+ThresholdFilterHelper::~ThresholdFilterHelper() = default;
 
 // -----------------------------------------------------------------------------
 //

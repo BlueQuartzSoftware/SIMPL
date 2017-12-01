@@ -102,7 +102,7 @@ private:
   bool m_WindowIsModified;
   bool m_FirstRun;
 
-  MoveFilterCommand(const MoveFilterCommand&); // Copy Constructor Not Implemented
+  MoveFilterCommand(const MoveFilterCommand&) = delete; // Copy Constructor Not Implemented
   void operator=(const MoveFilterCommand&);    // Operator '=' Not Implemented
 };
 

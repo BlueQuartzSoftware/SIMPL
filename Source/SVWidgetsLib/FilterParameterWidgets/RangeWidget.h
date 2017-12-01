@@ -93,14 +93,10 @@ class SVWidgetsLib_EXPORT RangeWidget : public FilterParameterWidget, private Ui
     void parametersChanged();
 
   private:
-
-    bool m_DidCausePreflight;
-
     RangeFilterParameter* m_FilterParameter;
 
-    RangeWidget(const RangeWidget&); // Copy Constructor Not Implemented
-    void operator=(const RangeWidget&); // Operator '=' Not Implemented
-
+    RangeWidget(const RangeWidget&) = delete;    // Copy Constructor Not Implemented
+    void operator=(const RangeWidget&) = delete; // Operator '=' Not Implemented
 };
 
 #endif /* _RangeWidget_H_ */

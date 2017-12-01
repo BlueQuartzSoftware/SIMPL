@@ -83,8 +83,8 @@ class SIMPLib_EXPORT FilePathGenerator
     FilePathGenerator();
 
   private:
-    FilePathGenerator(const FilePathGenerator&); // Copy Constructor Not Implemented
-    void operator=(const FilePathGenerator&); // Operator '=' Not Implemented
+    FilePathGenerator(const FilePathGenerator&) = delete; // Copy Constructor Not Implemented
+    void operator=(const FilePathGenerator&) = delete;    // Operator '=' Not Implemented
 };
 
 #endif /* _FilePathGenerator_H_ */

@@ -182,9 +182,6 @@ void ConvertData(AbstractFilter* filter, T* ptr, QVector<size_t> dims, DataConta
 }
 } // End Namespace Detail
 
-// Include the MOC generated file for this class
-#include "moc_ConvertData.cpp"
-
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
@@ -200,9 +197,7 @@ ConvertData::ConvertData()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-ConvertData::~ConvertData()
-{
-}
+ConvertData::~ConvertData() = default;
 
 // -----------------------------------------------------------------------------
 //

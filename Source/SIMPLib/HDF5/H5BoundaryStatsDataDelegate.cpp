@@ -48,9 +48,7 @@ H5BoundaryStatsDataDelegate::H5BoundaryStatsDataDelegate()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-H5BoundaryStatsDataDelegate::~H5BoundaryStatsDataDelegate()
-{
-}
+H5BoundaryStatsDataDelegate::~H5BoundaryStatsDataDelegate() = default;
 
 // -----------------------------------------------------------------------------
 //

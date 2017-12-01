@@ -42,8 +42,6 @@
 #include "SIMPLib/FilterParameters/DataArraySelectionFilterParameter.h"
 #include "SIMPLib/FilterParameters/IntFilterParameter.h"
 
-#include "moc_MaskCountDecision.cpp"
-
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
@@ -59,9 +57,7 @@ MaskCountDecision::MaskCountDecision()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-MaskCountDecision::~MaskCountDecision()
-{
-}
+MaskCountDecision::~MaskCountDecision() = default;
 
 // -----------------------------------------------------------------------------
 //

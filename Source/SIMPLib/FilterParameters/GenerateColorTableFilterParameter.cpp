@@ -47,9 +47,7 @@ GenerateColorTableFilterParameter::GenerateColorTableFilterParameter()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-GenerateColorTableFilterParameter::~GenerateColorTableFilterParameter()
-{
-}
+GenerateColorTableFilterParameter::~GenerateColorTableFilterParameter() = default;
 
 // -----------------------------------------------------------------------------
 //

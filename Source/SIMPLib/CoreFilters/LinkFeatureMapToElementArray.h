@@ -167,8 +167,8 @@ class SIMPLib_EXPORT LinkFeatureMapToElementArray : public AbstractFilter
     DEFINE_DATAARRAY_VARIABLE(int32_t, SelectedCellData)
     DEFINE_DATAARRAY_VARIABLE(bool, Active)
 
-    LinkFeatureMapToElementArray(const LinkFeatureMapToElementArray&); // Copy Constructor Not Implemented
-    void operator=(const LinkFeatureMapToElementArray&); // Operator '=' Not Implemented
+    LinkFeatureMapToElementArray(const LinkFeatureMapToElementArray&) = delete; // Copy Constructor Not Implemented
+    void operator=(const LinkFeatureMapToElementArray&) = delete;               // Operator '=' Not Implemented
 };
 
 #endif /* _LinkFeatureMapToElementArray_H_ */

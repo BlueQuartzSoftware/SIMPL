@@ -55,9 +55,8 @@ public:
   CombineAttributeArraysTemplatePrivate()
   {
   }
-  virtual ~CombineAttributeArraysTemplatePrivate()
-  {
-  }
+
+  virtual ~CombineAttributeArraysTemplatePrivate() = default;
 
   // -----------------------------------------------------------------------------
   //
@@ -169,9 +168,6 @@ private:
   void operator=(const CombineAttributeArraysTemplatePrivate&);                        // Operator '=' Not Implemented
 };
 
-// Include the MOC generated file for this class
-#include "moc_CombineAttributeArrays.cpp"
-
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
@@ -180,7 +176,6 @@ CombineAttributeArrays::CombineAttributeArrays()
 , m_SelectedDataArrayPaths(QVector<DataArrayPath>())
 , m_StackedDataArrayName(SIMPL::GeneralData::CombinedData)
 , m_NormalizeData(false)
-, m_StackedData(nullptr)
 {
   setupFilterParameters();
 }
@@ -188,9 +183,7 @@ CombineAttributeArrays::CombineAttributeArrays()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-CombineAttributeArrays::~CombineAttributeArrays()
-{
-}
+CombineAttributeArrays::~CombineAttributeArrays() = default;
 
 // -----------------------------------------------------------------------------
 //

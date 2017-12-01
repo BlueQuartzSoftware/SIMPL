@@ -50,9 +50,7 @@ AbstractWizardPage::AbstractWizardPage(const QString& inputFilePath, QWidget* pa
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-AbstractWizardPage::~AbstractWizardPage()
-{
-}
+AbstractWizardPage::~AbstractWizardPage() = default;
 
 // -----------------------------------------------------------------------------
 //

@@ -165,13 +165,13 @@ class SIMPLib_EXPORT FindDerivatives : public AbstractFilter
 
 
   private:
-    DEFINE_IDATAARRAY_VARIABLE(InArray)
+    DEFINE_IDATAARRAY_WEAKPTR(InArray)
     DEFINE_DATAARRAY_VARIABLE(double, DerivativesArray)
 
     bool m_Interpolate;
 
-    FindDerivatives(const FindDerivatives&); // Copy Constructor Not Implemented
-    void operator=(const FindDerivatives&); // Operator '=' Not Implemented
+    FindDerivatives(const FindDerivatives&) = delete; // Copy Constructor Not Implemented
+    void operator=(const FindDerivatives&) = delete;  // Operator '=' Not Implemented
 };
 
 #endif /* _FindDerivatives_H_ */

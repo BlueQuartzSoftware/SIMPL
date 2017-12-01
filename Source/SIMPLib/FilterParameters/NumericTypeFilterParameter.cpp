@@ -47,9 +47,7 @@ NumericTypeFilterParameter::NumericTypeFilterParameter()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-NumericTypeFilterParameter::~NumericTypeFilterParameter()
-{
-}
+NumericTypeFilterParameter::~NumericTypeFilterParameter() = default;
 
 // -----------------------------------------------------------------------------
 //

@@ -149,8 +149,8 @@ class ReadASCIIData : public AbstractFilter
   private:
     QMap<int, IDataArray::Pointer>        m_ASCIIArrayMap;
 
-    ReadASCIIData(const ReadASCIIData&); // Copy Constructor Not Implemented
-    void operator=(const ReadASCIIData&); // Operator '=' Not Implemented
+    ReadASCIIData(const ReadASCIIData&) = delete;  // Copy Constructor Not Implemented
+    void operator=(const ReadASCIIData&) = delete; // Operator '=' Not Implemented
 };
 
 #endif /* _readasciidata_h_ */

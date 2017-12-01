@@ -47,9 +47,6 @@
 #include "SIMPLib/Math/SIMPLibRandom.h"
 #include "SIMPLib/SIMPLibVersion.h"
 
-// Include the MOC generated file for this class
-#include "moc_FindDerivatives.cpp"
-
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
@@ -65,9 +62,7 @@ FindDerivatives::FindDerivatives()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-FindDerivatives::~FindDerivatives()
-{
-}
+FindDerivatives::~FindDerivatives() = default;
 
 // -----------------------------------------------------------------------------
 //

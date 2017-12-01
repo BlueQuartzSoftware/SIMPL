@@ -105,9 +105,7 @@ DataContainerArrayProxy::DataContainerArrayProxy(DataContainerArray* dca)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-DataContainerArrayProxy::~DataContainerArrayProxy()
-{
-}
+DataContainerArrayProxy::~DataContainerArrayProxy() = default;
 
 // -----------------------------------------------------------------------------
 //

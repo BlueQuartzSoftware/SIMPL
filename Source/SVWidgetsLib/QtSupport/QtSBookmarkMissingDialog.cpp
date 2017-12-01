@@ -37,8 +37,6 @@
 
 #include <QtWidgets/QFileDialog>
 
-#include "moc_QtSBookmarkMissingDialog.cpp"
-
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
@@ -52,9 +50,7 @@ QtSBookmarkMissingDialog::QtSBookmarkMissingDialog(QWidget* parent, Qt::WindowFl
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-QtSBookmarkMissingDialog::~QtSBookmarkMissingDialog()
-{
-}
+QtSBookmarkMissingDialog::~QtSBookmarkMissingDialog() = default;
 
 // -----------------------------------------------------------------------------
 //

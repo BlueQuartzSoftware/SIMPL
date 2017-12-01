@@ -51,7 +51,6 @@
 #include "SVWidgetsLib/Dialogs/UpdateCheckData.h"
 
 // Include the MOC generated CPP file which has all the QMetaObject methods/data
-#include "moc_UpdateCheckDialog.cpp"
 
 namespace Detail
 {
@@ -67,7 +66,6 @@ UpdateCheckDialog::UpdateCheckDialog(UpdateCheck::SIMPLVersionData_t versionData
 : QDialog(parent)
 , m_WhenToCheck(UpdateCheckMonthly)
 , m_UpdateCheck(nullptr)
-, m_UpdateCheckThread(nullptr)
 , m_DialogState(DefaultDialog)
 , m_VersionData(versionData)
 {

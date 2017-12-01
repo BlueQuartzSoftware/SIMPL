@@ -42,9 +42,6 @@
 #include "SIMPLib/FilterParameters/DoubleFilterParameter.h"
 #include "SIMPLib/SIMPLibVersion.h"
 
-// Include the MOC generated file for this class
-#include "moc_ConditionalSetValue.cpp"
-
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
@@ -53,7 +50,7 @@ ConditionalSetValue::ConditionalSetValue()
 , m_SelectedArrayPath("", "", "")
 , m_ConditionalArrayPath("", "", "")
 , m_ReplaceValue(0.0)
-, m_Array(nullptr)
+//, m_Array(nullptr)
 , m_ConditionalArray(nullptr)
 {
   setupFilterParameters();
@@ -62,9 +59,7 @@ ConditionalSetValue::ConditionalSetValue()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-ConditionalSetValue::~ConditionalSetValue()
-{
-}
+ConditionalSetValue::~ConditionalSetValue() = default;
 
 // -----------------------------------------------------------------------------
 //

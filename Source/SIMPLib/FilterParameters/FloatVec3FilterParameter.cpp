@@ -46,9 +46,7 @@ FloatVec3FilterParameter::FloatVec3FilterParameter()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-FloatVec3FilterParameter::~FloatVec3FilterParameter()
-{
-}
+FloatVec3FilterParameter::~FloatVec3FilterParameter() = default;
 
 // -----------------------------------------------------------------------------
 //

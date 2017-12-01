@@ -127,9 +127,8 @@ class SVWidgetsLib_EXPORT CalculatorWidget : public FilterParameterWidget, priva
 
     void printStringToEquation(QString str);
 
-    CalculatorWidget(const CalculatorWidget&); // Copy Constructor Not Implemented
-    void operator=(const CalculatorWidget&); // Operator '=' Not Implemented
-
+    CalculatorWidget(const CalculatorWidget&) = delete; // Copy Constructor Not Implemented
+    void operator=(const CalculatorWidget&) = delete;   // Operator '=' Not Implemented
 };
 
 #endif /* _CalculatorWidget_H_ */

@@ -182,8 +182,8 @@ class SIMPLib_EXPORT MultiDataArraySelectionFilterParameter : public FilterParam
     MultiDataArraySelectionFilterParameter();
 
   private:
-    MultiDataArraySelectionFilterParameter(const MultiDataArraySelectionFilterParameter&); // Copy Constructor Not Implemented
-    void operator=(const MultiDataArraySelectionFilterParameter&); // Operator '=' Not Implemented
+    MultiDataArraySelectionFilterParameter(const MultiDataArraySelectionFilterParameter&) = delete; // Copy Constructor Not Implemented
+    void operator=(const MultiDataArraySelectionFilterParameter&) = delete;                         // Operator '=' Not Implemented
 };
 
 #endif /* _MultiDataArraySelectionFilterParameter_H_ */

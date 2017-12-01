@@ -42,9 +42,7 @@ FloatFilterParameter::FloatFilterParameter()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-FloatFilterParameter::~FloatFilterParameter()
-{
-}
+FloatFilterParameter::~FloatFilterParameter() = default;
 
 // -----------------------------------------------------------------------------
 //

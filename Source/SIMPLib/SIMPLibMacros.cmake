@@ -28,7 +28,7 @@ endmacro()
 # 
 macro(SIMPL_ADD_UNIT_TEST_MOC_FILE SOURCE_FILE UNIT_TEST_SOURCE_DIR)
 
-  QT5_WRAP_CPP( simpl_unit_test_moc ${UNIT_TEST_SOURCE_DIR}/${SOURCE_FILE}.cpp)
+  # QT5_WRAP_CPP( simpl_unit_test_moc ${UNIT_TEST_SOURCE_DIR}/${SOURCE_FILE}.cpp)
   set_source_files_properties( ${simpl_unit_test_moc} PROPERTIES GENERATED TRUE)
   set_source_files_properties( ${simpl_unit_test_moc} PROPERTIES HEADER_FILE_ONLY TRUE)
 
@@ -80,7 +80,7 @@ endmacro()
 #-------------------------------------------------------------------------------
 # Macro ADD_SIMPL_SUPPORT_MOC_HEADER
 macro(ADD_SIMPL_SUPPORT_MOC_HEADER SourceDir filterGroup headerFileName)
-  QT5_WRAP_CPP( _moc_filter_source  ${SourceDir}/${filterGroup}/${headerFileName})
+  # QT5_WRAP_CPP( _moc_filter_source  ${SourceDir}/${filterGroup}/${headerFileName})
   set_source_files_properties( ${_moc_filter_source} PROPERTIES GENERATED TRUE)
   set_source_files_properties( ${_moc_filter_source} PROPERTIES HEADER_FILE_ONLY TRUE)
 
@@ -125,7 +125,7 @@ endmacro()
 # @param publicFilter  Boolean TRUE or FALSE
 macro(ADD_SIMPL_FILTER FilterLib WidgetLib filterGroup filterName filterDocPath publicFilter)
 
-  QT5_WRAP_CPP( _moc_filter_source  ${${FilterLib}_SOURCE_DIR}/${filterGroup}/${filterName}.h)
+  # QT5_WRAP_CPP( _moc_filter_source  ${${FilterLib}_SOURCE_DIR}/${filterGroup}/${filterName}.h)
   set_source_files_properties( ${_moc_filter_source} PROPERTIES GENERATED TRUE)
   set_source_files_properties( ${_moc_filter_source} PROPERTIES HEADER_FILE_ONLY TRUE)
 

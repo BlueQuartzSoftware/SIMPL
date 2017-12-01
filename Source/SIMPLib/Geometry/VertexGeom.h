@@ -305,8 +305,8 @@ class SIMPLib_EXPORT VertexGeom : public IGeometry
     SharedVertexList::Pointer m_VertexList;
     FloatArrayType::Pointer m_VertexSizes;
 
-    VertexGeom(const VertexGeom&); // Copy Constructor Not Implemented
-    void operator=(const VertexGeom&); // Operator '=' Not Implemented
+    VertexGeom(const VertexGeom&) = delete;     // Copy Constructor Not Implemented
+    void operator=(const VertexGeom&) = delete; // Operator '=' Not Implemented
 };
 
 

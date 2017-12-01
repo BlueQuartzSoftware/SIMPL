@@ -47,9 +47,7 @@ DynamicTableFilterParameter::DynamicTableFilterParameter()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-DynamicTableFilterParameter::~DynamicTableFilterParameter()
-{
-}
+DynamicTableFilterParameter::~DynamicTableFilterParameter() = default;
 
 // -----------------------------------------------------------------------------
 //

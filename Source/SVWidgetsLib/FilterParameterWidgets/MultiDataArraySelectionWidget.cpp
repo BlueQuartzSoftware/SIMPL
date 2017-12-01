@@ -55,9 +55,6 @@
 #include "FilterParameterWidgetUtils.hpp"
 #include "FilterParameterWidgetsDialogs.h"
 
-// Include the MOC generated file for this class
-#include "moc_MultiDataArraySelectionWidget.cpp"
-
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
@@ -86,9 +83,7 @@ MultiDataArraySelectionWidget::MultiDataArraySelectionWidget(QWidget* parent)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-MultiDataArraySelectionWidget::~MultiDataArraySelectionWidget()
-{
-}
+MultiDataArraySelectionWidget::~MultiDataArraySelectionWidget() = default;
 
 // -----------------------------------------------------------------------------
 //

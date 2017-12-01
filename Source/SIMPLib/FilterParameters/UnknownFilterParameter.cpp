@@ -46,9 +46,7 @@ UnknownFilterParameter::UnknownFilterParameter()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-UnknownFilterParameter::~UnknownFilterParameter()
-{
-}
+UnknownFilterParameter::~UnknownFilterParameter() = default;
 
 // -----------------------------------------------------------------------------
 //

@@ -45,9 +45,6 @@
 
 #include "FilterParameterWidgetsDialogs.h"
 
-// Include the MOC generated file for this class
-#include "moc_SecondOrderPolynomialWidget.cpp"
-
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
@@ -64,9 +61,7 @@ SecondOrderPolynomialWidget::SecondOrderPolynomialWidget(FilterParameter* parame
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-SecondOrderPolynomialWidget::~SecondOrderPolynomialWidget()
-{
-}
+SecondOrderPolynomialWidget::~SecondOrderPolynomialWidget() = default;
 
 // -----------------------------------------------------------------------------
 //

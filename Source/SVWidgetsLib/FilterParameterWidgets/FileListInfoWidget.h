@@ -179,16 +179,14 @@ class SVWidgetsLib_EXPORT FileListInfoWidget : public FilterParameterWidget, pri
     QList<QWidget*>             m_WidgetList;
     QButtonGroup*               m_OrderingGroup = nullptr;
     static QString               m_OpenDialogLastFilePath;
-    FileListInfoFilterParameter* m_FilterParameter = nullptr;
 
     QAction* m_ShowFileAction = nullptr;
     QString  m_CurrentlyValidPath = "";
     QString  m_CurrentText = "";
     bool     m_DidCausePreflight = false;
 
-
-    FileListInfoWidget(const FileListInfoWidget&); // Copy Constructor Not Implemented
-    void operator=(const FileListInfoWidget&); // Operator '=' Not Implemented
+    FileListInfoWidget(const FileListInfoWidget&) = delete; // Copy Constructor Not Implemented
+    void operator=(const FileListInfoWidget&) = delete;     // Operator '=' Not Implemented
 };
 
 #endif /* EbsdImportWIDGET_H_ */

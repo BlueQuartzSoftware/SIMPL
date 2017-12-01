@@ -125,7 +125,7 @@ private:
   double comparisonValue;
   BoolArrayType* m_Output;
 
-  ThresholdFilterHelper(const ThresholdFilterHelper&); // Copy Constructor Not Implemented
+  ThresholdFilterHelper(const ThresholdFilterHelper&) = delete; // Copy Constructor Not Implemented
   void operator=(const ThresholdFilterHelper&);        // Operator '=' Not Implemented
 };
 

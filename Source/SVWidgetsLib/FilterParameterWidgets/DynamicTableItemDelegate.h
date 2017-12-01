@@ -58,10 +58,8 @@ class DynamicTableItemDelegate : public QStyledItemDelegate
     void updateEditorGeometry(QWidget* editor, const QStyleOptionViewItem& option, const QModelIndex& index) const;
 
   private:
-
-    DynamicTableItemDelegate(const DynamicTableItemDelegate&); // Copy Constructor Not Implemented
-    void operator=(const DynamicTableItemDelegate&); // Operator '=' Not Implemented
-
+    DynamicTableItemDelegate(const DynamicTableItemDelegate&) = delete; // Copy Constructor Not Implemented
+    void operator=(const DynamicTableItemDelegate&) = delete;           // Operator '=' Not Implemented
 };
 
 #endif // _DynamicTableItemDelegate_H

@@ -106,8 +106,8 @@ class SVWidgetsLib_EXPORT FilterWidgetManager
 
     static FilterWidgetManager* self;
 
-    FilterWidgetManager(const FilterWidgetManager&); // Copy Constructor Not Implemented
-    void operator=(const FilterWidgetManager&); // Operator '=' Not Implemented
+    FilterWidgetManager(const FilterWidgetManager&) = delete; // Copy Constructor Not Implemented
+    void operator=(const FilterWidgetManager&) = delete;      // Operator '=' Not Implemented
 };
 
 #endif /* PipelineFilterWidgetMANAGER_H_ */

@@ -76,7 +76,7 @@ protected:
   ChangeGlobalValue();
 
 private:
-  ChangeGlobalValue(const ChangeGlobalValue&); // Copy Constructor Not Implemented
+  ChangeGlobalValue(const ChangeGlobalValue&) = delete; // Copy Constructor Not Implemented
   void operator=(const ChangeGlobalValue&);    // Operator '=' Not Implemented
 };
 

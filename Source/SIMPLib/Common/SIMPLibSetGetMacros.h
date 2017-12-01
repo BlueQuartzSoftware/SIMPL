@@ -516,6 +516,10 @@
   DataArray<type>::WeakPointer m_##name##Ptr;\
   type* m_##name = nullptr;
 
+#define DEFINE_DATAARRAY_WEAKPTR(type, name)                                                                                                                                                           \
+private:                                                                                                                                                                                               \
+  DataArray<type>::WeakPointer m_##name##Ptr;
+
 #define DEFINE_STRINGARRAY_VARIABLE(name)\
   private:\
   StringDataArray::WeakPointer m_##name##Ptr;
@@ -531,6 +535,10 @@
   private:\
   IDataArray::WeakPointer m_##varName##Ptr;\
   void* m_##varName = nullptr;
+
+#define DEFINE_IDATAARRAY_WEAKPTR(varName)                                                                                                                                                             \
+private:                                                                                                                                                                                               \
+  IDataArray::WeakPointer m_##varName##Ptr;
 
 #define SIMPL_COPY_INSTANCEVAR(name)\
   filter->set##name(get##name());

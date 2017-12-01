@@ -76,8 +76,8 @@ class SIMPLib_EXPORT IGeometryGrid : public IGeometry
     virtual void getCoords(size_t idx, double coords[3]) = 0;
 
   private:
-    IGeometryGrid(const IGeometryGrid&); // Copy Constructor Not Implemented
-    void operator=(const IGeometryGrid&); // Operator '=' Not Implemented
+    IGeometryGrid(const IGeometryGrid&) = delete;  // Copy Constructor Not Implemented
+    void operator=(const IGeometryGrid&) = delete; // Operator '=' Not Implemented
 };
 
 #endif /* _igeometrygrid_h_ */

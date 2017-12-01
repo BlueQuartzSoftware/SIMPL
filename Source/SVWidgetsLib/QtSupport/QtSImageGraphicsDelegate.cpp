@@ -49,8 +49,6 @@
 #include <QtWidgets/QMainWindow>
 #include <QtWidgets/QTableWidget>
 
-#include "moc_QtSImageGraphicsDelegate.cpp"
-
 #define ZOOM_INDEX_MAX 9
 #define ZOOM_INDEX_MIN 0
 
@@ -86,9 +84,7 @@ QtSImageGraphicsDelegate::QtSImageGraphicsDelegate(QObject* parent)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-QtSImageGraphicsDelegate::~QtSImageGraphicsDelegate()
-{
-}
+QtSImageGraphicsDelegate::~QtSImageGraphicsDelegate() = default;
 
 // -----------------------------------------------------------------------------
 //

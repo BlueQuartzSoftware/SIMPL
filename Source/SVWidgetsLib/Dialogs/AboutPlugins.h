@@ -95,8 +95,8 @@ class SVWidgetsLib_EXPORT AboutPlugins : public QDialog, private Ui::AboutPlugin
     bool m_loadPreferencesDidChange;
     QAction* m_CloseAction = nullptr;
 
-    AboutPlugins(const AboutPlugins&); // Copy Constructor Not Implemented
-    void operator=(const AboutPlugins&); // Operator '=' Not Implemented
+    AboutPlugins(const AboutPlugins&) = delete;   // Copy Constructor Not Implemented
+    void operator=(const AboutPlugins&) = delete; // Operator '=' Not Implemented
 };
 
 #endif // ABOUTPLUGINS_H

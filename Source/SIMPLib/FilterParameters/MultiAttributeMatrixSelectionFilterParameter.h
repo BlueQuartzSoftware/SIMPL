@@ -182,8 +182,8 @@ class SIMPLib_EXPORT MultiAttributeMatrixSelectionFilterParameter : public Filte
     MultiAttributeMatrixSelectionFilterParameter();
 
   private:
-    MultiAttributeMatrixSelectionFilterParameter(const MultiAttributeMatrixSelectionFilterParameter&); // Copy Constructor Not Implemented
-    void operator=(const MultiAttributeMatrixSelectionFilterParameter&); // Operator '=' Not Implemented
+    MultiAttributeMatrixSelectionFilterParameter(const MultiAttributeMatrixSelectionFilterParameter&) = delete; // Copy Constructor Not Implemented
+    void operator=(const MultiAttributeMatrixSelectionFilterParameter&) = delete;                               // Operator '=' Not Implemented
 };
 
 #endif /* _MultiAttributeMatrixSelectionFilterParameter_H_ */

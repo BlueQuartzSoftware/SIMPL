@@ -263,9 +263,8 @@ class SVWidgetsLib_EXPORT PipelineView
     virtual void removeFilterObject(PipelineFilterObject* filterWidget, bool deleteWidget = true);
 
   private:
-
-    PipelineView(const PipelineView&); // Copy Constructor Not Implemented
-    void operator=(const PipelineView&); // Operator '=' Not Implemented
+    PipelineView(const PipelineView&) = delete;   // Copy Constructor Not Implemented
+    void operator=(const PipelineView&) = delete; // Operator '=' Not Implemented
 };
 
 #endif /* _PipelineView_H */

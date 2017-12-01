@@ -133,7 +133,7 @@ protected:
   void initialize();
 
 private:
-  ArraySelectionExample(const ArraySelectionExample&); // Copy Constructor Not Implemented
+  ArraySelectionExample(const ArraySelectionExample&) = delete; // Copy Constructor Not Implemented
   void operator=(const ArraySelectionExample&);        // Operator '=' Not Implemented
 };
 

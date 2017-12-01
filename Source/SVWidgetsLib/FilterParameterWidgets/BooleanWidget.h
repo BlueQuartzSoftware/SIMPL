@@ -92,14 +92,10 @@ class SVWidgetsLib_EXPORT BooleanWidget : public FilterParameterWidget, private 
     void parametersChanged();
 
   private:
-
-    bool m_DidCausePreflight;
-
     BooleanFilterParameter* m_FilterParameter;
 
-    BooleanWidget(const BooleanWidget&); // Copy Constructor Not Implemented
-    void operator=(const BooleanWidget&); // Operator '=' Not Implemented
-
+    BooleanWidget(const BooleanWidget&) = delete;  // Copy Constructor Not Implemented
+    void operator=(const BooleanWidget&) = delete; // Operator '=' Not Implemented
 };
 
 #endif /* _BooleanWidget_H_ */

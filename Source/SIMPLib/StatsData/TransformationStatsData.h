@@ -202,8 +202,8 @@ class SIMPLib_EXPORT TransformationStatsData : public StatsData
     TransformationStatsData();
 
   private:
-    TransformationStatsData(const TransformationStatsData&); // Copy Constructor Not Implemented
-    void operator=(const TransformationStatsData&); // Operator '=' Not Implemented
+    TransformationStatsData(const TransformationStatsData&) = delete; // Copy Constructor Not Implemented
+    void operator=(const TransformationStatsData&) = delete;          // Operator '=' Not Implemented
 };
 
 #endif /* _TransformationStatsDataTUPLE_H_ */

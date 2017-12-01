@@ -462,9 +462,8 @@ class SIMPLib_EXPORT DataContainer : public Observable
     IGeometry::Pointer m_Geometry;
     QString m_Name;
 
-    DataContainer(const DataContainer&); // Copy Constructor Not Implemented
-    void operator=(const DataContainer&); // Operator '=' Not Implemented
-
+    DataContainer(const DataContainer&) = delete;  // Copy Constructor Not Implemented
+    void operator=(const DataContainer&) = delete; // Operator '=' Not Implemented
 };
 
 #endif /* _DataContainer_H_ */

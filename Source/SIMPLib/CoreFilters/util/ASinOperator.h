@@ -63,9 +63,8 @@ class SIMPLib_EXPORT ASinOperator : public UnaryOperator
     ASinOperator();
 
   private:
-
-    ASinOperator(const ASinOperator&); // Copy Constructor Not Implemented
-    void operator=(const ASinOperator&); // Operator '=' Not Implemented
+    ASinOperator(const ASinOperator&) = delete;   // Copy Constructor Not Implemented
+    void operator=(const ASinOperator&) = delete; // Operator '=' Not Implemented
 };
 
 #endif /* _ASinOperator_H_ */

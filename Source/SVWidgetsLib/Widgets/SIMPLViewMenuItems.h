@@ -116,8 +116,8 @@ class SVWidgetsLib_EXPORT SIMPLViewMenuItems : public QObject
     void createMenus();
     void createActions();
 
-    SIMPLViewMenuItems(const SIMPLViewMenuItems&); // Copy Constructor Not Implemented
-    void operator=(const SIMPLViewMenuItems&); // Operator '=' Not Implemented
+    SIMPLViewMenuItems(const SIMPLViewMenuItems&) = delete; // Copy Constructor Not Implemented
+    void operator=(const SIMPLViewMenuItems&) = delete;     // Operator '=' Not Implemented
 };
 
 #endif /* SIMPLViewMenuItems_H_ */

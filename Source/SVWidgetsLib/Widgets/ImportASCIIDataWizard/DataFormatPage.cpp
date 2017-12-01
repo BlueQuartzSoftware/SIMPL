@@ -73,9 +73,7 @@ DataFormatPage::DataFormatPage(QSharedPointer<ASCIIDataModel> model, const QStri
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-DataFormatPage::~DataFormatPage()
-{
-}
+DataFormatPage::~DataFormatPage() = default;
 
 // -----------------------------------------------------------------------------
 //

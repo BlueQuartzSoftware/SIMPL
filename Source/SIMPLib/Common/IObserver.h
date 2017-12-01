@@ -51,8 +51,8 @@ class SIMPLib_EXPORT IObserver
     virtual void processPipelineMessage(const PipelineMessage& pm);
 
   private:
-    IObserver(const IObserver&); // Copy Constructor Not Implemented
-    void operator=(const IObserver&); // Operator '=' Not Implemented
+    IObserver(const IObserver&) = delete;      // Copy Constructor Not Implemented
+    void operator=(const IObserver&) = delete; // Operator '=' Not Implemented
 };
 
 #endif /* _IObserver_H_ */

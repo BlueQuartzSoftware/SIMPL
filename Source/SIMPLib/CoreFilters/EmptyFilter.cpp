@@ -40,9 +40,6 @@
 #include "SIMPLib/FilterParameters/UnknownFilterParameter.h"
 #include "SIMPLib/SIMPLibVersion.h"
 
-// Include the MOC generated file for this class
-#include "moc_EmptyFilter.cpp"
-
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
@@ -56,9 +53,7 @@ EmptyFilter::EmptyFilter()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-EmptyFilter::~EmptyFilter()
-{
-}
+EmptyFilter::~EmptyFilter() = default;
 
 // -----------------------------------------------------------------------------
 //

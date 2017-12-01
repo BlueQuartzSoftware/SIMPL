@@ -166,8 +166,8 @@ class SIMPLib_EXPORT RemoveArrays : public AbstractFilter
     */
     void markSelectionsForDeletion(DataContainerArray* dca, Qt::CheckState state);
 
-    RemoveArrays(const RemoveArrays&); // Copy Constructor Not Implemented
-    void operator=(const RemoveArrays&); // Operator '=' Not Implemented
+    RemoveArrays(const RemoveArrays&) = delete;   // Copy Constructor Not Implemented
+    void operator=(const RemoveArrays&) = delete; // Operator '=' Not Implemented
 };
 
 #endif /* _RemoveArrays_H_ */

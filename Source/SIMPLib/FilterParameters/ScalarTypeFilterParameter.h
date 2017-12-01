@@ -135,7 +135,7 @@ protected:
   ScalarTypeFilterParameter();
 
 private:
-  ScalarTypeFilterParameter(const ScalarTypeFilterParameter&); // Copy Constructor Not Implemented
+  ScalarTypeFilterParameter(const ScalarTypeFilterParameter&) = delete; // Copy Constructor Not Implemented
   void operator=(const ScalarTypeFilterParameter&);                    // Operator '=' Not Implemented
 };
 

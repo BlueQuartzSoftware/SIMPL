@@ -56,9 +56,7 @@ H5DataArrayReader::H5DataArrayReader()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-H5DataArrayReader::~H5DataArrayReader()
-{
-}
+H5DataArrayReader::~H5DataArrayReader() = default;
 
 namespace Detail
 {

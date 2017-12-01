@@ -40,8 +40,6 @@
 #include <QtCore/QFile>
 #include <QtCore/QTextStream>
 
-#include "moc_QtSApplicationAboutBoxDialog.cpp"
-
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
@@ -55,9 +53,7 @@ QtSApplicationAboutBoxDialog::QtSApplicationAboutBoxDialog(QStringList files, QW
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-QtSApplicationAboutBoxDialog::~QtSApplicationAboutBoxDialog()
-{
-}
+QtSApplicationAboutBoxDialog::~QtSApplicationAboutBoxDialog() = default;
 
 // -----------------------------------------------------------------------------
 //

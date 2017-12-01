@@ -57,9 +57,7 @@ TupleSelectionPage::TupleSelectionPage(const QString& inputFilePath, QWidget* pa
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-TupleSelectionPage::~TupleSelectionPage()
-{
-}
+TupleSelectionPage::~TupleSelectionPage() = default;
 
 // -----------------------------------------------------------------------------
 //

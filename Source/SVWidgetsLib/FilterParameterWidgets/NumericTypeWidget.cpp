@@ -43,9 +43,6 @@
 
 #include "FilterParameterWidgetsDialogs.h"
 
-// Include the MOC generated file for this class
-#include "moc_NumericTypeWidget.cpp"
-
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
@@ -62,9 +59,7 @@ NumericTypeWidget::NumericTypeWidget(FilterParameter* parameter, AbstractFilter*
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-NumericTypeWidget::~NumericTypeWidget()
-{
-}
+NumericTypeWidget::~NumericTypeWidget() = default;
 
 // -----------------------------------------------------------------------------
 //

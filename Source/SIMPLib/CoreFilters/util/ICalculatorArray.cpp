@@ -46,6 +46,4 @@ ICalculatorArray::ICalculatorArray()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-ICalculatorArray::~ICalculatorArray()
-{
-}
+ICalculatorArray::~ICalculatorArray() = default;

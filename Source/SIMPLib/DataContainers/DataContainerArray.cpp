@@ -37,8 +37,6 @@
 #include "SIMPLib/DataContainers/DataContainerArrayProxy.h"
 #include "SIMPLib/DataContainers/DataContainerProxy.h"
 
-#include "moc_DataContainerArray.cpp"
-
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
@@ -50,9 +48,7 @@ DataContainerArray::DataContainerArray()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-DataContainerArray::~DataContainerArray()
-{
-}
+DataContainerArray::~DataContainerArray() = default;
 
 // -----------------------------------------------------------------------------
 //

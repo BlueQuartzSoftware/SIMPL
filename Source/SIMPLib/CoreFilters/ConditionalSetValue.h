@@ -160,11 +160,11 @@ class SIMPLib_EXPORT ConditionalSetValue : public AbstractFilter
 
 
   private:
-    DEFINE_IDATAARRAY_VARIABLE(Array)
+    IDataArray::WeakPointer m_ArrayPtr;
     DEFINE_DATAARRAY_VARIABLE(bool, ConditionalArray)
 
-    ConditionalSetValue(const ConditionalSetValue&); // Copy Constructor Not Implemented
-    void operator=(const ConditionalSetValue&); // Operator '=' Not Implemented
+    ConditionalSetValue(const ConditionalSetValue&) = delete; // Copy Constructor Not Implemented
+    void operator=(const ConditionalSetValue&) = delete;      // Operator '=' Not Implemented
 };
 
 #endif /* _ConditionalSetValue_H_ */

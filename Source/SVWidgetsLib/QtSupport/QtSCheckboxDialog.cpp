@@ -39,7 +39,6 @@
 #include <QtWidgets/QDialogButtonBox>
 #include <QtWidgets/QVBoxLayout>
 
-#include "moc_QtSCheckboxDialog.cpp"
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
@@ -53,9 +52,7 @@ QtSCheckboxDialog::QtSCheckboxDialog(QVector<QString> list, QWidget* parent)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-QtSCheckboxDialog::~QtSCheckboxDialog()
-{
-}
+QtSCheckboxDialog::~QtSCheckboxDialog() = default;
 
 // -----------------------------------------------------------------------------
 //

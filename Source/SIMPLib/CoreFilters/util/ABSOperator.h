@@ -63,9 +63,8 @@ class SIMPLib_EXPORT ABSOperator : public UnaryOperator
     ABSOperator();
 
   private:
-
-    ABSOperator(const ABSOperator&); // Copy Constructor Not Implemented
-    void operator=(const ABSOperator&); // Operator '=' Not Implemented
+    ABSOperator(const ABSOperator&) = delete;    // Copy Constructor Not Implemented
+    void operator=(const ABSOperator&) = delete; // Operator '=' Not Implemented
 };
 
 #endif /* _ABSOperator_H_ */

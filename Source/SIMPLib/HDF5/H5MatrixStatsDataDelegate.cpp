@@ -48,9 +48,7 @@ H5MatrixStatsDataDelegate::H5MatrixStatsDataDelegate()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-H5MatrixStatsDataDelegate::~H5MatrixStatsDataDelegate()
-{
-}
+H5MatrixStatsDataDelegate::~H5MatrixStatsDataDelegate() = default;
 
 // -----------------------------------------------------------------------------
 //

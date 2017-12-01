@@ -154,8 +154,8 @@ class SIMPLib_EXPORT CreateDataContainer : public AbstractFilter
 
 
   private:
-    CreateDataContainer(const CreateDataContainer&); // Copy Constructor Not Implemented
-    void operator=(const CreateDataContainer&); // Operator '=' Not Implemented
+    CreateDataContainer(const CreateDataContainer&) = delete; // Copy Constructor Not Implemented
+    void operator=(const CreateDataContainer&) = delete;      // Operator '=' Not Implemented
 };
 
 #endif /* _CreateDataContainer_H_ */

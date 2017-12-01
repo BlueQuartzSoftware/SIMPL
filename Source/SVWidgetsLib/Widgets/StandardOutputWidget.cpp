@@ -44,7 +44,6 @@
 #include "SVWidgetsLib/QtSupport/QtSSettings.h"
 
 // Include the MOC generated CPP file which has all the QMetaObject methods/data
-#include "moc_StandardOutputWidget.cpp"
 
 // -----------------------------------------------------------------------------
 //
@@ -59,9 +58,7 @@ StandardOutputWidget::StandardOutputWidget(QWidget* parent)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-StandardOutputWidget::~StandardOutputWidget()
-{
-}
+StandardOutputWidget::~StandardOutputWidget() = default;
 
 // -----------------------------------------------------------------------------
 //

@@ -50,8 +50,6 @@
 #include <QtWidgets/QFileDialog>
 #include <QtWidgets/QPushButton>
 
-#include "moc_QtSDisclosableGroupBox.cpp"
-
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
@@ -64,9 +62,7 @@ QtSDisclosableGroupBox::QtSDisclosableGroupBox(QWidget* parent)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-QtSDisclosableGroupBox::~QtSDisclosableGroupBox()
-{
-}
+QtSDisclosableGroupBox::~QtSDisclosableGroupBox() = default;
 
 // -----------------------------------------------------------------------------
 //

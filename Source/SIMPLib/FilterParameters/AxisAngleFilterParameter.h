@@ -137,8 +137,8 @@ class SIMPLib_EXPORT AxisAngleFilterParameter : public FilterParameter
     AxisAngleFilterParameter();
 
   private:
-    AxisAngleFilterParameter(const AxisAngleFilterParameter&); // Copy Constructor Not Implemented
-    void operator=(const AxisAngleFilterParameter&); // Operator '=' Not Implemented
+    AxisAngleFilterParameter(const AxisAngleFilterParameter&) = delete; // Copy Constructor Not Implemented
+    void operator=(const AxisAngleFilterParameter&) = delete;           // Operator '=' Not Implemented
 };
 
 #endif /* _AxisAngleFilterParameter_H_ */

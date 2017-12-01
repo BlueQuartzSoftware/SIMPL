@@ -156,7 +156,7 @@ protected:
   void initialize();
 
 private:
-  ErrorWarningFilter(const ErrorWarningFilter&); // Copy Constructor Not Implemented
+  ErrorWarningFilter(const ErrorWarningFilter&) = delete; // Copy Constructor Not Implemented
   void operator=(const ErrorWarningFilter&);     // Operator '=' Not Implemented
 };
 

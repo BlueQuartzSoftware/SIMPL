@@ -720,9 +720,8 @@ class SIMPLib_EXPORT DataContainerArray : public QObject
     QList<DataContainerShPtr>  m_Array;
     QMap<QString, IDataContainerBundle::Pointer> m_DataContainerBundles;
 
-
-    DataContainerArray(const DataContainerArray&); // Copy Constructor Not Implemented
-    void operator=(const DataContainerArray&); // Operator '=' Not Implemented
+    DataContainerArray(const DataContainerArray&) = delete; // Copy Constructor Not Implemented
+    void operator=(const DataContainerArray&) = delete;     // Operator '=' Not Implemented
 };
 
 #endif /* DATACONTAINERARRAY_H_ */

@@ -43,9 +43,6 @@
 
 #include "SVWidgetsLib/Core/SVWidgetsLibConstants.h"
 
-// Include the MOC generated file for this class
-#include "moc_DynamicChoiceWidget.cpp"
-
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
@@ -62,9 +59,7 @@ DynamicChoiceWidget::DynamicChoiceWidget(FilterParameter* parameter, AbstractFil
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-DynamicChoiceWidget::~DynamicChoiceWidget()
-{
-}
+DynamicChoiceWidget::~DynamicChoiceWidget() = default;
 
 // -----------------------------------------------------------------------------
 //

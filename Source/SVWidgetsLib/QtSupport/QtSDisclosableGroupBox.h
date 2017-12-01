@@ -84,9 +84,8 @@ public slots:
 protected:
 
 private:
-
-  QtSDisclosableGroupBox(const QtSDisclosableGroupBox&); // Copy Constructor Not Implemented
-  void operator=(const QtSDisclosableGroupBox&); // Operator '=' Not Implemented
+  QtSDisclosableGroupBox(const QtSDisclosableGroupBox&) = delete; // Copy Constructor Not Implemented
+  void operator=(const QtSDisclosableGroupBox&) = delete;         // Operator '=' Not Implemented
 };
 
 #endif /* _qtsdisclosablegroupbox_H_ */

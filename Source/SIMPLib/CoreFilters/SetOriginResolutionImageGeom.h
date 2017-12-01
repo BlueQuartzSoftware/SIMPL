@@ -177,8 +177,8 @@ class SIMPLib_EXPORT SetOriginResolutionImageGeom : public AbstractFilter
     void updateSurfaceMesh();
 
   private:
-    SetOriginResolutionImageGeom(const SetOriginResolutionImageGeom&); // Copy Constructor Not Implemented
-    void operator=(const SetOriginResolutionImageGeom&); // Operator '=' Not Implemented
+    SetOriginResolutionImageGeom(const SetOriginResolutionImageGeom&) = delete; // Copy Constructor Not Implemented
+    void operator=(const SetOriginResolutionImageGeom&) = delete;               // Operator '=' Not Implemented
 };
 
 #endif /* _SetOriginResolutionImageGeom_H_ */

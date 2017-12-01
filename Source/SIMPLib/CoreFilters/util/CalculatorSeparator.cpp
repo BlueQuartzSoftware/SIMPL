@@ -46,6 +46,4 @@ CalculatorSeparator::CalculatorSeparator()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-CalculatorSeparator::~CalculatorSeparator()
-{
-}
+CalculatorSeparator::~CalculatorSeparator() = default;

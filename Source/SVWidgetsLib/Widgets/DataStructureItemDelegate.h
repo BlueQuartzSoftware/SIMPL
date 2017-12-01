@@ -58,10 +58,8 @@ class DataStructureItemDelegate : public QStyledItemDelegate
     void paint(QPainter* painter, const QStyleOptionViewItem& option, const QModelIndex& index) const Q_DECL_OVERRIDE;
 
   private:
-
-    DataStructureItemDelegate(const DataStructureItemDelegate&); // Copy Constructor Not Implemented
-    void operator=(const DataStructureItemDelegate&); // Operator '=' Not Implemented
-
+    DataStructureItemDelegate(const DataStructureItemDelegate&) = delete; // Copy Constructor Not Implemented
+    void operator=(const DataStructureItemDelegate&) = delete;            // Operator '=' Not Implemented
 };
 
 #endif // _DataStructureItemDelegate_H

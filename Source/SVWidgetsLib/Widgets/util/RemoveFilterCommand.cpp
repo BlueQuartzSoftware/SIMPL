@@ -98,9 +98,7 @@ RemoveFilterCommand::RemoveFilterCommand(QList<PipelineFilterObject*> filterObje
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-RemoveFilterCommand::~RemoveFilterCommand()
-{
-}
+RemoveFilterCommand::~RemoveFilterCommand() = default;
 
 // -----------------------------------------------------------------------------
 //

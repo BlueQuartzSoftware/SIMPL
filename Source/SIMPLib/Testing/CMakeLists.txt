@@ -23,7 +23,7 @@ configure_file(${SIMPLTest_SOURCE_DIR}/TestFileLocations.h.in
 configure_file(${SIMPLProj_SOURCE_DIR}/Resources/UnitTestSupport.hpp
           ${SIMPLTest_BINARY_DIR}/UnitTestSupport.hpp COPYONLY IMMEDIATE)
 
-# QT5_WRAP_CPP( _moc_filter_source  ${SIMPLTest_SOURCE_DIR}/PipelinePauseTest.cpp)
+# # QT5_WRAP_CPP( _moc_filter_source  ${SIMPLTest_SOURCE_DIR}/PipelinePauseTest.cpp)
 # set_source_files_properties( ${_moc_filter_source} PROPERTIES GENERATED TRUE)
 # set_source_files_properties( ${_moc_filter_source} PROPERTIES HEADER_FILE_ONLY TRUE)
 

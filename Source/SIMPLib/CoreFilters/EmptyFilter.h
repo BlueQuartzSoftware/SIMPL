@@ -161,8 +161,8 @@ class SIMPLib_EXPORT EmptyFilter : public AbstractFilter
   private:
     QString m_HumanLabel;
 
-    EmptyFilter(const EmptyFilter&); // Copy Constructor Not Implemented
-    void operator=(const EmptyFilter&); // Operator '=' Not Implemented
+    EmptyFilter(const EmptyFilter&) = delete;    // Copy Constructor Not Implemented
+    void operator=(const EmptyFilter&) = delete; // Operator '=' Not Implemented
 };
 
 #endif /* _EmptyFilter_H_ */

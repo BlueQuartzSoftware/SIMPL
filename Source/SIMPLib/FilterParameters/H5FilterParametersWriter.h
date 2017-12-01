@@ -140,8 +140,8 @@ class SIMPLib_EXPORT H5FilterParametersWriter : public AbstractFilterParametersW
   private:
     hid_t                                 m_CurrentGroupId;
 
-    H5FilterParametersWriter(const H5FilterParametersWriter&); // Copy Constructor Not Implemented
-    void operator=(const H5FilterParametersWriter&); // Operator '=' Not Implemented
+    H5FilterParametersWriter(const H5FilterParametersWriter&) = delete; // Copy Constructor Not Implemented
+    void operator=(const H5FilterParametersWriter&) = delete;           // Operator '=' Not Implemented
 };
 
 #endif /* _H5FilterParametersWRITER_H_ */

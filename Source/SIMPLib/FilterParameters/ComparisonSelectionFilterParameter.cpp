@@ -48,9 +48,7 @@ ComparisonSelectionFilterParameter::ComparisonSelectionFilterParameter()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-ComparisonSelectionFilterParameter::~ComparisonSelectionFilterParameter()
-{
-}
+ComparisonSelectionFilterParameter::~ComparisonSelectionFilterParameter() = default;
 
 // -----------------------------------------------------------------------------
 //

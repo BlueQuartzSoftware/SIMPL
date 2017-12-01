@@ -147,9 +147,7 @@ PipelineMessage PipelineMessage::CreateStandardOutputMessage(const QString human
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-PipelineMessage::~PipelineMessage()
-{
-}
+PipelineMessage::~PipelineMessage() = default;
 
 // -----------------------------------------------------------------------------
 //

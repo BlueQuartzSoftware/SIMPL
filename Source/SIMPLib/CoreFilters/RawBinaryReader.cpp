@@ -155,9 +155,6 @@ template <typename T> int32_t readBinaryFile(typename DataArray<T>::Pointer p, c
   return RBR_NO_ERROR;
 }
 
-// Include the MOC generated file for this class
-#include "moc_RawBinaryReader.cpp"
-
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
@@ -177,9 +174,7 @@ RawBinaryReader::RawBinaryReader()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-RawBinaryReader::~RawBinaryReader()
-{
-}
+RawBinaryReader::~RawBinaryReader() = default;
 
 // -----------------------------------------------------------------------------
 //

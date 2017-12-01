@@ -35,7 +35,6 @@
 
 #include "FavoritesChangedDialog.h"
 
-#include "moc_FavoritesChangedDialog.cpp"
 #include <QtWidgets/QFileDialog>
 
 // -----------------------------------------------------------------------------
@@ -51,9 +50,7 @@ FavoritesChangedDialog::FavoritesChangedDialog(QWidget* parent)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-FavoritesChangedDialog::~FavoritesChangedDialog()
-{
-}
+FavoritesChangedDialog::~FavoritesChangedDialog() = default;
 
 // -----------------------------------------------------------------------------
 //

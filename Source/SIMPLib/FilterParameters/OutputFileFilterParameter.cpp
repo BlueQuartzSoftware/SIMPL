@@ -46,9 +46,7 @@ OutputFileFilterParameter::OutputFileFilterParameter()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-OutputFileFilterParameter::~OutputFileFilterParameter()
-{
-}
+OutputFileFilterParameter::~OutputFileFilterParameter() = default;
 
 // -----------------------------------------------------------------------------
 //

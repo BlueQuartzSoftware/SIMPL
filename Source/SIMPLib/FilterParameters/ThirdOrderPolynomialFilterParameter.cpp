@@ -46,9 +46,7 @@ ThirdOrderPolynomialFilterParameter::ThirdOrderPolynomialFilterParameter()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-ThirdOrderPolynomialFilterParameter::~ThirdOrderPolynomialFilterParameter()
-{
-}
+ThirdOrderPolynomialFilterParameter::~ThirdOrderPolynomialFilterParameter() = default;
 
 // -----------------------------------------------------------------------------
 //

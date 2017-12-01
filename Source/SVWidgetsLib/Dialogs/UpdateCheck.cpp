@@ -60,8 +60,6 @@
 #include "SVWidgetsLib/SVWidgetsLib.h"
 #include "SVWidgetsLib/SVWidgetsLibVersion.h"
 
-#include "moc_UpdateCheck.cpp"
-
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
@@ -75,9 +73,7 @@ UpdateCheck::UpdateCheck(SIMPLVersionData_t versionData, QObject* parent)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-UpdateCheck::~UpdateCheck()
-{
-}
+UpdateCheck::~UpdateCheck() = default;
 
 // -----------------------------------------------------------------------------
 //

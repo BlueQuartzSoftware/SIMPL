@@ -63,9 +63,8 @@ class SIMPLib_EXPORT AdditionOperator : public BinaryOperator
     AdditionOperator();
 
   private:
-
-    AdditionOperator(const AdditionOperator&); // Copy Constructor Not Implemented
-    void operator=(const AdditionOperator&); // Operator '=' Not Implemented
+    AdditionOperator(const AdditionOperator&) = delete; // Copy Constructor Not Implemented
+    void operator=(const AdditionOperator&) = delete;   // Operator '=' Not Implemented
 };
 
 #endif /* _AdditionOperator_H_ */

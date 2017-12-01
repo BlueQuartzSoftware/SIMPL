@@ -63,9 +63,7 @@ LineCounterObject::LineCounterObject(const QString& filePath, int numLines, QObj
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-LineCounterObject::~LineCounterObject()
-{
-}
+LineCounterObject::~LineCounterObject() = default;
 
 // -----------------------------------------------------------------------------
 //

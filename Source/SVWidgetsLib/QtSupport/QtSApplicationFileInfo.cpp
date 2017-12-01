@@ -48,9 +48,7 @@ QtSApplicationFileInfo::QtSApplicationFileInfo()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-QtSApplicationFileInfo::~QtSApplicationFileInfo()
-{
-}
+QtSApplicationFileInfo::~QtSApplicationFileInfo() = default;
 
 // -----------------------------------------------------------------------------
 //

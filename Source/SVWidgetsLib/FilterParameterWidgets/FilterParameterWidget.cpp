@@ -58,9 +58,6 @@ static const float Max = 1.0;
 static const int Duration = 400;
 }
 
-// Include the MOC generated file for this class
-#include "moc_FilterParameterWidget.cpp"
-
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
@@ -94,9 +91,7 @@ FilterParameterWidget::FilterParameterWidget(FilterParameter* parameter, Abstrac
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-FilterParameterWidget::~FilterParameterWidget()
-{
-}
+FilterParameterWidget::~FilterParameterWidget() = default;
 
 // -----------------------------------------------------------------------------
 //

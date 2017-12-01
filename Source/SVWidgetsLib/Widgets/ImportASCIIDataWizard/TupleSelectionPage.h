@@ -76,9 +76,8 @@ class TupleSelectionPage : public AbstractWizardPage, private Ui::TupleSelection
     virtual int nextId() const;
 
   private:
-
-    TupleSelectionPage(const TupleSelectionPage&); // Copy Constructor Not Implemented
-    void operator=(const TupleSelectionPage&); // Operator '=' Not Implemented
+    TupleSelectionPage(const TupleSelectionPage&) = delete; // Copy Constructor Not Implemented
+    void operator=(const TupleSelectionPage&) = delete;     // Operator '=' Not Implemented
 };
 
 #endif /* TupleSelectionPage_H_ */

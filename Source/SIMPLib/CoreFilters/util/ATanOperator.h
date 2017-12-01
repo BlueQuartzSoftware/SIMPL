@@ -63,9 +63,8 @@ class SIMPLib_EXPORT ATanOperator : public UnaryOperator
     ATanOperator();
 
   private:
-
-    ATanOperator(const ATanOperator&); // Copy Constructor Not Implemented
-    void operator=(const ATanOperator&); // Operator '=' Not Implemented
+    ATanOperator(const ATanOperator&) = delete;   // Copy Constructor Not Implemented
+    void operator=(const ATanOperator&) = delete; // Operator '=' Not Implemented
 };
 
 #endif /* _ATanOperator_H_ */

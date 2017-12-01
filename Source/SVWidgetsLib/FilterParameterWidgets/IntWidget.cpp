@@ -43,9 +43,6 @@
 
 #include "FilterParameterWidgetsDialogs.h"
 
-// Include the MOC generated file for this class
-#include "moc_IntWidget.cpp"
-
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
@@ -62,9 +59,7 @@ IntWidget::IntWidget(FilterParameter* parameter, AbstractFilter* filter, QWidget
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-IntWidget::~IntWidget()
-{
-}
+IntWidget::~IntWidget() = default;
 
 // -----------------------------------------------------------------------------
 //

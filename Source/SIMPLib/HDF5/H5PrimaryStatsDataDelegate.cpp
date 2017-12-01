@@ -48,9 +48,7 @@ H5PrimaryStatsDataDelegate::H5PrimaryStatsDataDelegate()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-H5PrimaryStatsDataDelegate::~H5PrimaryStatsDataDelegate()
-{
-}
+H5PrimaryStatsDataDelegate::~H5PrimaryStatsDataDelegate() = default;
 
 // -----------------------------------------------------------------------------
 //

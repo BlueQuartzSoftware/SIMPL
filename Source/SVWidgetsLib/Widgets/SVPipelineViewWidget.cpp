@@ -87,7 +87,6 @@
 
 
 // Include the MOC generated CPP file which has all the QMetaObject methods/data
-#include "moc_SVPipelineViewWidget.cpp"
 
 // -----------------------------------------------------------------------------
 //
@@ -97,7 +96,6 @@ SVPipelineViewWidget::SVPipelineViewWidget(QWidget* parent)
 , PipelineView(parent)
 , m_PipelineIsRunning(false)
 , m_FilterOrigPos(-1)
-, m_DropIndex(-1)
 , m_AutoScroll(true)
 , m_AutoScrollMargin(10)
 , m_autoScrollCount(0)

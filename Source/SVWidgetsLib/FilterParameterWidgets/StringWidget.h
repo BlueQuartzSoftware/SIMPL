@@ -89,14 +89,10 @@ class SVWidgetsLib_EXPORT StringWidget : public FilterParameterWidget, private U
     void parametersChanged();
 
   private:
-
-    bool m_DidCausePreflight;
-
     StringFilterParameter* m_FilterParameter;
 
-    StringWidget(const StringWidget&); // Copy Constructor Not Implemented
-    void operator=(const StringWidget&); // Operator '=' Not Implemented
-
+    StringWidget(const StringWidget&) = delete;   // Copy Constructor Not Implemented
+    void operator=(const StringWidget&) = delete; // Operator '=' Not Implemented
 };
 
 #endif /* _StringWidget_H_ */

@@ -134,7 +134,7 @@ protected:
   void initialize();
 
 private:
-  ThresholdExample(const ThresholdExample&); // Copy Constructor Not Implemented
+  ThresholdExample(const ThresholdExample&) = delete; // Copy Constructor Not Implemented
   void operator=(const ThresholdExample&);   // Operator '=' Not Implemented
 };
 

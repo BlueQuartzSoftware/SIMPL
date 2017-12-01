@@ -59,9 +59,7 @@ H5FilterParametersWriter::H5FilterParametersWriter()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-H5FilterParametersWriter::~H5FilterParametersWriter()
-{
-}
+H5FilterParametersWriter::~H5FilterParametersWriter() = default;
 
 // -----------------------------------------------------------------------------
 //

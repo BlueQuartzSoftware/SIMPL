@@ -74,8 +74,8 @@ public:
   static double Kahan(std::initializer_list<double> values);
 
 private:
-  FloatSummation(const FloatSummation&); // Copy Constructor Not Implemented
-  void operator=(const FloatSummation&); // Operator '=' Not Implemented
+  FloatSummation(const FloatSummation&) = delete; // Copy Constructor Not Implemented
+  void operator=(const FloatSummation&) = delete; // Operator '=' Not Implemented
 };
 
 #endif

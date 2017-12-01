@@ -46,9 +46,7 @@ SeparatorFilterParameter::SeparatorFilterParameter()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-SeparatorFilterParameter::~SeparatorFilterParameter()
-{
-}
+SeparatorFilterParameter::~SeparatorFilterParameter() = default;
 
 // -----------------------------------------------------------------------------
 //

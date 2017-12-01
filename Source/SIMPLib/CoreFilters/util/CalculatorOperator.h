@@ -92,8 +92,8 @@ class SIMPLib_EXPORT CalculatorOperator : public CalculatorItem
     Precedence                                      m_Precedence;
     OperatorType                                    m_OperatorType;
 
-    CalculatorOperator(const CalculatorOperator&); // Copy Constructor Not Implemented
-    void operator=(const CalculatorOperator&); // Operator '=' Not Implemented
+    CalculatorOperator(const CalculatorOperator&) = delete; // Copy Constructor Not Implemented
+    void operator=(const CalculatorOperator&) = delete;     // Operator '=' Not Implemented
 };
 
 #define CREATE_NEW_ARRAY_TWO_ARGUMENTS(filter, calculatedArrayPath, executionStack, func)                                                                                                              \

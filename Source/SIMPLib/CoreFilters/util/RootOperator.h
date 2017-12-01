@@ -63,9 +63,8 @@ class SIMPLib_EXPORT RootOperator : public UnaryOperator
     RootOperator();
 
   private:
-
-    RootOperator(const RootOperator&); // Copy Constructor Not Implemented
-    void operator=(const RootOperator&); // Operator '=' Not Implemented
+    RootOperator(const RootOperator&) = delete;   // Copy Constructor Not Implemented
+    void operator=(const RootOperator&) = delete; // Operator '=' Not Implemented
 };
 
 #endif /* _RootOperator_H_ */

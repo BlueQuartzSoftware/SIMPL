@@ -159,12 +159,12 @@ class SIMPLib_EXPORT CombineAttributeArrays : public AbstractFilter
 
 
   private:
-    DEFINE_IDATAARRAY_VARIABLE(StackedData)
+    DEFINE_IDATAARRAY_WEAKPTR(StackedData)
 
     QVector<IDataArray::WeakPointer> m_SelectedWeakPtrVector;
 
-    CombineAttributeArrays(const CombineAttributeArrays&); // Copy Constructor Not Implemented
-    void operator=(const CombineAttributeArrays&); // Operator '=' Not Implemented
+    CombineAttributeArrays(const CombineAttributeArrays&) = delete; // Copy Constructor Not Implemented
+    void operator=(const CombineAttributeArrays&) = delete;         // Operator '=' Not Implemented
 };
 
 #endif /* _CombineAttributeArrays_H_ */

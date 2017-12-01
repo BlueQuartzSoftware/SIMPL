@@ -98,15 +98,10 @@ class SVWidgetsLib_EXPORT LinkedBooleanWidget : public FilterParameterWidget, pr
     void conditionalPropertyChanged(int state);
 
   private:
-
-    bool m_DidCausePreflight;
-
     LinkedBooleanFilterParameter* m_FilterParameter;
 
-
-    LinkedBooleanWidget(const LinkedBooleanWidget&); // Copy Constructor Not Implemented
-    void operator=(const LinkedBooleanWidget&); // Operator '=' Not Implemented
-
+    LinkedBooleanWidget(const LinkedBooleanWidget&) = delete; // Copy Constructor Not Implemented
+    void operator=(const LinkedBooleanWidget&) = delete;      // Operator '=' Not Implemented
 };
 
 #endif /* _LinkedBooleanWidget_H_ */

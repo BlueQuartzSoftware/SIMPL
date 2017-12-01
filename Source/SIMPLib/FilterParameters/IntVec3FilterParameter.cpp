@@ -46,9 +46,7 @@ IntVec3FilterParameter::IntVec3FilterParameter()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-IntVec3FilterParameter::~IntVec3FilterParameter()
-{
-}
+IntVec3FilterParameter::~IntVec3FilterParameter() = default;
 
 // -----------------------------------------------------------------------------
 //

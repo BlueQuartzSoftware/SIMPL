@@ -45,9 +45,6 @@
 
 #include "FilterParameterWidgetsDialogs.h"
 
-// Include the MOC generated file for this class
-#include "moc_ThirdOrderPolynomialWidget.cpp"
-
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
@@ -64,9 +61,7 @@ ThirdOrderPolynomialWidget::ThirdOrderPolynomialWidget(FilterParameter* paramete
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-ThirdOrderPolynomialWidget::~ThirdOrderPolynomialWidget()
-{
-}
+ThirdOrderPolynomialWidget::~ThirdOrderPolynomialWidget() = default;
 
 // -----------------------------------------------------------------------------
 //

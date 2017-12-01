@@ -64,8 +64,8 @@ class SIMPLib_EXPORT CubeOctohedronOps : public ShapeOps
   private:
     float Gvalue;
 
-    CubeOctohedronOps(const CubeOctohedronOps&); // Copy Constructor Not Implemented
-    void operator=(const CubeOctohedronOps&); // Operator '=' Not Implemented
+    CubeOctohedronOps(const CubeOctohedronOps&) = delete; // Copy Constructor Not Implemented
+    void operator=(const CubeOctohedronOps&) = delete;    // Operator '=' Not Implemented
 };
 
 

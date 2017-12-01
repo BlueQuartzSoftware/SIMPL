@@ -91,8 +91,8 @@ class SIMPLib_EXPORT ShapeOps
     ShapeOps();
 
   private:
-    ShapeOps(const ShapeOps&); // Copy Constructor Not Implemented
-    void operator=(const ShapeOps&); // Operator '=' Not Implemented
+    ShapeOps(const ShapeOps&) = delete;       // Copy Constructor Not Implemented
+    void operator=(const ShapeOps&) = delete; // Operator '=' Not Implemented
 };
 
 #endif /* SHAPEOPS_H_ */

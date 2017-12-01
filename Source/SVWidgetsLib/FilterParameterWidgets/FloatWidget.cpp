@@ -43,9 +43,6 @@
 
 #include "FilterParameterWidgetsDialogs.h"
 
-// Include the MOC generated file for this class
-#include "moc_FloatWidget.cpp"
-
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
@@ -62,9 +59,7 @@ FloatWidget::FloatWidget(FilterParameter* parameter, AbstractFilter* filter, QWi
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-FloatWidget::~FloatWidget()
-{
-}
+FloatWidget::~FloatWidget() = default;
 
 // -----------------------------------------------------------------------------
 //

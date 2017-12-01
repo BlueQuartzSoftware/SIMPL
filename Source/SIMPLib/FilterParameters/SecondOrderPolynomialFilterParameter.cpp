@@ -46,9 +46,7 @@ SecondOrderPolynomialFilterParameter::SecondOrderPolynomialFilterParameter()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-SecondOrderPolynomialFilterParameter::~SecondOrderPolynomialFilterParameter()
-{
-}
+SecondOrderPolynomialFilterParameter::~SecondOrderPolynomialFilterParameter() = default;
 
 // -----------------------------------------------------------------------------
 //

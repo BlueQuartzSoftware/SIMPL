@@ -148,9 +148,8 @@ private:
 
   void setSelectedPath(DataArrayPath dcPath);
 
-  AttributeMatrixCreationWidget(const AttributeMatrixCreationWidget&); // Copy Constructor Not Implemented
-  void operator=(const AttributeMatrixCreationWidget&); // Operator '=' Not Implemented
-
+  AttributeMatrixCreationWidget(const AttributeMatrixCreationWidget&) = delete; // Copy Constructor Not Implemented
+  void operator=(const AttributeMatrixCreationWidget&) = delete;                // Operator '=' Not Implemented
 };
 
 #endif /* _AttributeMatrixCreationWidget_H_ */

@@ -36,7 +36,6 @@
 #include "PipelineViewPtrMimeData.h"
 
 // Include the MOC generated CPP file which has all the QMetaObject methods/data
-#include "moc_PipelineViewPtrMimeData.cpp"
 
 // -----------------------------------------------------------------------------
 //
@@ -49,6 +48,4 @@ PipelineViewPtrMimeData::PipelineViewPtrMimeData()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-PipelineViewPtrMimeData::~PipelineViewPtrMimeData()
-{
-}
+PipelineViewPtrMimeData::~PipelineViewPtrMimeData() = default;

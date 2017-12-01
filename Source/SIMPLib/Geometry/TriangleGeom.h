@@ -478,8 +478,8 @@ class SIMPLib_EXPORT TriangleGeom : public IGeometry2D
 
     friend class FindTriangleDerivativesImpl;
 
-    TriangleGeom(const TriangleGeom&); // Copy Constructor Not Implemented
-    void operator=(const TriangleGeom&); // Operator '=' Not Implemented
+    TriangleGeom(const TriangleGeom&) = delete;   // Copy Constructor Not Implemented
+    void operator=(const TriangleGeom&) = delete; // Operator '=' Not Implemented
 };
 
 

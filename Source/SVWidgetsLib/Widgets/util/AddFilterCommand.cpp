@@ -141,9 +141,7 @@ AddFilterCommand::AddFilterCommand(QString jsonString, PipelineView* destination
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-AddFilterCommand::~AddFilterCommand()
-{
-}
+AddFilterCommand::~AddFilterCommand() = default;
 
 // -----------------------------------------------------------------------------
 //

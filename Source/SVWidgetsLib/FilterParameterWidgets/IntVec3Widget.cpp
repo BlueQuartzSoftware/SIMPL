@@ -43,9 +43,6 @@
 
 #include "FilterParameterWidgetsDialogs.h"
 
-// Include the MOC generated file for this class
-#include "moc_IntVec3Widget.cpp"
-
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
@@ -62,9 +59,7 @@ IntVec3Widget::IntVec3Widget(FilterParameter* parameter, AbstractFilter* filter,
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-IntVec3Widget::~IntVec3Widget()
-{
-}
+IntVec3Widget::~IntVec3Widget() = default;
 
 // -----------------------------------------------------------------------------
 //

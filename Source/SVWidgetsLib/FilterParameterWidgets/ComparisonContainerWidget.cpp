@@ -41,8 +41,6 @@
 #include "SVWidgetsLib/FilterParameterWidgets/ComparisonSetWidget.h"
 #include "SVWidgetsLib/FilterParameterWidgets/ComparisonValueWidget.h"
 
-#include "moc_ComparisonContainerWidget.cpp"
-
 // Border stylesheet requires QFrame
 ComparisonContainerWidget* ComparisonContainerWidget::SelectedItem = nullptr;
 QString ComparisonContainerWidget::BorderStyleSheet = "ComparisonContainerWidget { border-style: outset; border-width: 2px; border-radius: 5px; border-color: blue; }";
@@ -64,9 +62,7 @@ ComparisonContainerWidget::ComparisonContainerWidget(QWidget* parent, AbstractCo
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-ComparisonContainerWidget::~ComparisonContainerWidget()
-{
-}
+ComparisonContainerWidget::~ComparisonContainerWidget() = default;
 
 // -----------------------------------------------------------------------------
 //

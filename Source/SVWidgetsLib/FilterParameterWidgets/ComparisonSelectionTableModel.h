@@ -177,9 +177,8 @@ class SVWidgetsLib_EXPORT ComparisonSelectionTableModel : public QAbstractTableM
     QVector<float>     m_FeatureValues;
     QVector<QString> m_FeatureOperators;
 
-
-    ComparisonSelectionTableModel(const ComparisonSelectionTableModel&); // Copy Constructor Not Implemented
-    void operator=(const ComparisonSelectionTableModel&); // Operator '=' Not Implemented
+    ComparisonSelectionTableModel(const ComparisonSelectionTableModel&) = delete; // Copy Constructor Not Implemented
+    void operator=(const ComparisonSelectionTableModel&) = delete;                // Operator '=' Not Implemented
 };
 
 #endif /* QUALITYMETRICTABLEMODEL_H_ */

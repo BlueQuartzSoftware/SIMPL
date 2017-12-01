@@ -54,9 +54,7 @@ MultiplicationOperator::MultiplicationOperator()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-MultiplicationOperator::~MultiplicationOperator()
-{
-}
+MultiplicationOperator::~MultiplicationOperator() = default;
 
 // -----------------------------------------------------------------------------
 //

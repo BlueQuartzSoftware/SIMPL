@@ -63,9 +63,8 @@ class SIMPLib_EXPORT NegativeOperator : public CalculatorOperator
     NegativeOperator();
 
   private:
-
-    NegativeOperator(const NegativeOperator&); // Copy Constructor Not Implemented
-    void operator=(const NegativeOperator&); // Operator '=' Not Implemented
+    NegativeOperator(const NegativeOperator&) = delete; // Copy Constructor Not Implemented
+    void operator=(const NegativeOperator&) = delete;   // Operator '=' Not Implemented
 };
 
 #endif /* _NegativeOperator_H_ */

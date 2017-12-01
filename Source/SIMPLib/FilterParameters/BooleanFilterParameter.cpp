@@ -46,9 +46,7 @@ BooleanFilterParameter::BooleanFilterParameter()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-BooleanFilterParameter::~BooleanFilterParameter()
-{
-}
+BooleanFilterParameter::~BooleanFilterParameter() = default;
 
 // -----------------------------------------------------------------------------
 //

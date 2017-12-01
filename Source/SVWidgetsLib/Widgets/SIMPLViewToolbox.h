@@ -101,8 +101,8 @@ class SVWidgetsLib_EXPORT SIMPLViewToolbox : public QMainWindow, private Ui::SIM
   private:
     static SIMPLViewToolbox*                              self;
 
-    SIMPLViewToolbox(const SIMPLViewToolbox&); // Copy Constructor Not Implemented
-    void operator=(const SIMPLViewToolbox&); // Operator '=' Not Implemented
+    SIMPLViewToolbox(const SIMPLViewToolbox&) = delete; // Copy Constructor Not Implemented
+    void operator=(const SIMPLViewToolbox&) = delete;   // Operator '=' Not Implemented
 };
 
 #endif // SIMPLViewToolbox_H

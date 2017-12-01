@@ -116,7 +116,7 @@ cmp_IDE_GENERATED_PROPERTIES("SVWidgetsLib/Widgets/UI_Files" "${SVWidgetsLib_Wid
 
 # --------------------------------------------------------------------
 # and finally this will run moc:
-QT5_WRAP_CPP( SVWidgetsLib_Widgets_Generated_MOC_SRCS ${SVWidgetsLib_Widgets_MOC_HDRS} )
+# QT5_WRAP_CPP( SVWidgetsLib_Widgets_Generated_MOC_SRCS ${SVWidgetsLib_Widgets_MOC_HDRS} )
 set_source_files_properties( ${SVWidgetsLib_Widgets_Generated_MOC_SRCS} PROPERTIES GENERATED TRUE)
 set_source_files_properties( ${SVWidgetsLib_Widgets_Generated_MOC_SRCS} PROPERTIES HEADER_FILE_ONLY TRUE)
 

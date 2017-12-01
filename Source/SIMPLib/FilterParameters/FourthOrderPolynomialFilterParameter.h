@@ -189,8 +189,8 @@ protected:
   FourthOrderPolynomialFilterParameter();
 
 private:
-  FourthOrderPolynomialFilterParameter(const FourthOrderPolynomialFilterParameter&); // Copy Constructor Not Implemented
-  void operator=(const FourthOrderPolynomialFilterParameter&); // Operator '=' Not Implemented
+  FourthOrderPolynomialFilterParameter(const FourthOrderPolynomialFilterParameter&) = delete; // Copy Constructor Not Implemented
+  void operator=(const FourthOrderPolynomialFilterParameter&) = delete;                       // Operator '=' Not Implemented
 };
 
 #endif /* _FourthOrderPolynomialFilterParameter_H_ */

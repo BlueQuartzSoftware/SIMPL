@@ -48,8 +48,6 @@
 #include <QtWidgets/QMenu>
 #include <QtWidgets/QStyle>
 
-#include "moc_QtSLineEdit.cpp"
-
 /**
  * @brief execMenuAtWidget
  * @param menu
@@ -206,9 +204,7 @@ void QtSLineEdit::checkButtons(const QString& text)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-QtSLineEdit::~QtSLineEdit()
-{
-}
+QtSLineEdit::~QtSLineEdit() = default;
 
 // -----------------------------------------------------------------------------
 //

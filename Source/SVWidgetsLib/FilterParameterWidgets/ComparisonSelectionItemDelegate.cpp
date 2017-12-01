@@ -48,7 +48,6 @@
 #include "SVWidgetsLib/FilterParameterWidgets/ComparisonSelectionTableModel.h"
 
 // Include the MOC generated CPP file which has all the QMetaObject methods/data
-#include "moc_ComparisonSelectionItemDelegate.cpp"
 
 // -----------------------------------------------------------------------------
 //
@@ -63,9 +62,7 @@ ComparisonSelectionItemDelegate::ComparisonSelectionItemDelegate(QStringList pos
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-ComparisonSelectionItemDelegate::~ComparisonSelectionItemDelegate()
-{
-}
+ComparisonSelectionItemDelegate::~ComparisonSelectionItemDelegate() = default;
 
 // -----------------------------------------------------------------------------
 //

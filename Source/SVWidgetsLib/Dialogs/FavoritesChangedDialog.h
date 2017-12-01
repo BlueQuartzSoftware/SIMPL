@@ -76,8 +76,8 @@ class SVWidgetsLib_EXPORT FavoritesChangedDialog : public QDialog, private Ui::F
 
 
   private:
-    FavoritesChangedDialog(const FavoritesChangedDialog&); // Copy Constructor Not Implemented
-    void operator=(const FavoritesChangedDialog&); // Operator '=' Not Implemented
+    FavoritesChangedDialog(const FavoritesChangedDialog&) = delete; // Copy Constructor Not Implemented
+    void operator=(const FavoritesChangedDialog&) = delete;         // Operator '=' Not Implemented
 };
 
 #endif /* FavoritesChangedDialog_H_ */

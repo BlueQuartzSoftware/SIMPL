@@ -205,8 +205,8 @@ class SIMPLib_EXPORT PrecipitateStatsData : public StatsData
     PrecipitateStatsData();
 
   private:
-    PrecipitateStatsData(const PrecipitateStatsData&); // Copy Constructor Not Implemented
-    void operator=(const PrecipitateStatsData&); // Operator '=' Not Implemented
+    PrecipitateStatsData(const PrecipitateStatsData&) = delete; // Copy Constructor Not Implemented
+    void operator=(const PrecipitateStatsData&) = delete;       // Operator '=' Not Implemented
 };
 
 #endif /* _PrecipitateStatsDataTUPLE_H_ */

@@ -35,7 +35,6 @@
 #include "PluginDetails.h"
 
 // Include the MOC generated CPP file which has all the QMetaObject methods/data
-#include "moc_PluginDetails.cpp"
 
 // -----------------------------------------------------------------------------
 //
@@ -52,9 +51,7 @@ PluginDetails::PluginDetails(QString pluginName, QWidget* parent)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-PluginDetails::~PluginDetails()
-{
-}
+PluginDetails::~PluginDetails() = default;
 
 // -----------------------------------------------------------------------------
 //

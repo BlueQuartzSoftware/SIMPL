@@ -46,9 +46,7 @@ DynamicChoiceFilterParameter::DynamicChoiceFilterParameter()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-DynamicChoiceFilterParameter::~DynamicChoiceFilterParameter()
-{
-}
+DynamicChoiceFilterParameter::~DynamicChoiceFilterParameter() = default;
 
 // -----------------------------------------------------------------------------
 //

@@ -134,8 +134,8 @@ protected:
   BooleanFilterParameter();
 
 private:
-  BooleanFilterParameter(const BooleanFilterParameter&); // Copy Constructor Not Implemented
-  void operator=(const BooleanFilterParameter&); // Operator '=' Not Implemented
+  BooleanFilterParameter(const BooleanFilterParameter&) = delete; // Copy Constructor Not Implemented
+  void operator=(const BooleanFilterParameter&) = delete;         // Operator '=' Not Implemented
 };
 
 #endif /* _BooleanFilterParameter_H_ */

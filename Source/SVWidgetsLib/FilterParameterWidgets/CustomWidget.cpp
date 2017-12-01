@@ -39,9 +39,6 @@
 
 #include "FilterWidgetsLib/Widgets/moc_CustomWidget.cxx"
 
-// Include the MOC generated file for this class
-#include "moc_CustomWidget.cpp"
-
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
@@ -55,9 +52,7 @@ CustomWidget::CustomWidget(FilterParameter* parameter, AbstractFilter* filter, Q
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-CustomWidget::~CustomWidget()
-{
-}
+CustomWidget::~CustomWidget() = default;
 
 // -----------------------------------------------------------------------------
 //

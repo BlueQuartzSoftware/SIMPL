@@ -161,8 +161,8 @@ class SIMPLib_EXPORT CreateAttributeMatrix : public AbstractFilter
 
 
   private:
-    CreateAttributeMatrix(const CreateAttributeMatrix&); // Copy Constructor Not Implemented
-    void operator=(const CreateAttributeMatrix&); // Operator '=' Not Implemented
+    CreateAttributeMatrix(const CreateAttributeMatrix&) = delete; // Copy Constructor Not Implemented
+    void operator=(const CreateAttributeMatrix&) = delete;        // Operator '=' Not Implemented
 };
 
 #endif /* _CreateAttributeMatrix_H_ */

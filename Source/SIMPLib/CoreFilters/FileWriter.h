@@ -97,8 +97,8 @@ class SIMPLib_EXPORT FileWriter : public AbstractFilter
     virtual int32_t writeFile();
 
   private:
-    FileWriter(const FileWriter&); // Copy Constructor Not Implemented
-    void operator=(const FileWriter&); // Operator '=' Not Implemented
+    FileWriter(const FileWriter&) = delete;     // Copy Constructor Not Implemented
+    void operator=(const FileWriter&) = delete; // Operator '=' Not Implemented
 };
 
 #endif /* FileWriter_H_ */

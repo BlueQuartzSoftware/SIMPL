@@ -43,9 +43,6 @@
 #include "SIMPLib/Geometry/ImageGeom.h"
 #include "SIMPLib/Geometry/VertexGeom.h"
 
-// Include the MOC generated file for this class
-#include "moc_MakeDataContainer.cpp"
-
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
@@ -74,9 +71,7 @@ MakeDataContainer::MakeDataContainer()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-MakeDataContainer::~MakeDataContainer()
-{
-}
+MakeDataContainer::~MakeDataContainer() = default;
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------

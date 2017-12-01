@@ -46,9 +46,7 @@ DataContainerCreationFilterParameter::DataContainerCreationFilterParameter()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-DataContainerCreationFilterParameter::~DataContainerCreationFilterParameter()
-{
-}
+DataContainerCreationFilterParameter::~DataContainerCreationFilterParameter() = default;
 
 // -----------------------------------------------------------------------------
 //

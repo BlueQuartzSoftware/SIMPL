@@ -43,9 +43,6 @@
 
 #include "FilterParameterWidgetsDialogs.h"
 
-// Include the MOC generated file for this class
-#include "moc_StringWidget.cpp"
-
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
@@ -62,9 +59,7 @@ StringWidget::StringWidget(FilterParameter* parameter, AbstractFilter* filter, Q
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-StringWidget::~StringWidget()
-{
-}
+StringWidget::~StringWidget() = default;
 
 // -----------------------------------------------------------------------------
 //

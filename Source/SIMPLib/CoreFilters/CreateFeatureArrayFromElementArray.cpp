@@ -45,9 +45,6 @@
 #include "SIMPLib/FilterParameters/SeparatorFilterParameter.h"
 #include "SIMPLib/FilterParameters/StringFilterParameter.h"
 
-// Include the MOC generated file for this class
-#include "moc_CreateFeatureArrayFromElementArray.cpp"
-
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
@@ -58,7 +55,6 @@ CreateFeatureArrayFromElementArray::CreateFeatureArrayFromElementArray()
 , m_CreatedArrayName("")
 , m_FeatureIdsArrayPath("", "", "")
 , m_FeatureIds(nullptr)
-, m_InArray(nullptr)
 {
   setupFilterParameters();
 }
@@ -66,9 +62,7 @@ CreateFeatureArrayFromElementArray::CreateFeatureArrayFromElementArray()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-CreateFeatureArrayFromElementArray::~CreateFeatureArrayFromElementArray()
-{
-}
+CreateFeatureArrayFromElementArray::~CreateFeatureArrayFromElementArray() = default;
 
 // -----------------------------------------------------------------------------
 //

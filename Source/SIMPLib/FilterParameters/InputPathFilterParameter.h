@@ -141,8 +141,8 @@ protected:
   InputPathFilterParameter();
 
 private:
-  InputPathFilterParameter(const InputPathFilterParameter&); // Copy Constructor Not Implemented
-  void operator=(const InputPathFilterParameter&); // Operator '=' Not Implemented
+  InputPathFilterParameter(const InputPathFilterParameter&) = delete; // Copy Constructor Not Implemented
+  void operator=(const InputPathFilterParameter&) = delete;           // Operator '=' Not Implemented
 };
 
 #endif /* _InputPathFilterParameter_H_ */

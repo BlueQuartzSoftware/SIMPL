@@ -313,8 +313,8 @@ class SIMPLib_EXPORT MatrixMath
     MatrixMath();
 
   private:
-    MatrixMath(const MatrixMath&); // Copy Constructor Not Implemented
-    void operator=(const MatrixMath&); // Operator '=' Not Implemented
+    MatrixMath(const MatrixMath&) = delete;     // Copy Constructor Not Implemented
+    void operator=(const MatrixMath&) = delete; // Operator '=' Not Implemented
 };
 
 #endif /* _MatrixMath_H_ */

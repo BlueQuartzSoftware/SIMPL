@@ -158,8 +158,8 @@ protected:
   FloatVec2FilterParameter();
 
 private:
-  FloatVec2FilterParameter(const FloatVec2FilterParameter&); // Copy Constructor Not Implemented
-  void operator=(const FloatVec2FilterParameter&); // Operator '=' Not Implemented
+  FloatVec2FilterParameter(const FloatVec2FilterParameter&) = delete; // Copy Constructor Not Implemented
+  void operator=(const FloatVec2FilterParameter&) = delete;           // Operator '=' Not Implemented
 };
 
 #endif /* _floatvec3filterparameter_h_ */

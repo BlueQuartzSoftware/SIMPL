@@ -90,15 +90,10 @@ class SVWidgetsLib_EXPORT ConstrainedIntWidget : public FilterParameterWidget, p
     void parametersChanged();
 
   private:
-
-    bool m_DidCausePreflight;
-
     ConstrainedIntFilterParameter* m_FilterParameter;
 
-
-    ConstrainedIntWidget(const ConstrainedIntWidget&); // Copy Constructor Not Implemented
-    void operator=(const ConstrainedIntWidget&); // Operator '=' Not Implemented
-
+    ConstrainedIntWidget(const ConstrainedIntWidget&) = delete; // Copy Constructor Not Implemented
+    void operator=(const ConstrainedIntWidget&) = delete;       // Operator '=' Not Implemented
 };
 
 #endif /* _constrainedintwidget_h_ */

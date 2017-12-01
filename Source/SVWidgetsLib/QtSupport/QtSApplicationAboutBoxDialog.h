@@ -95,10 +95,8 @@ class SVWidgetsLib_EXPORT QtSApplicationAboutBoxDialog: public QDialog, private 
   private:
     QStringList m_licenseFiles;
 
-    QtSApplicationAboutBoxDialog(const QtSApplicationAboutBoxDialog&); // Copy Constructor Not Implemented
-    void operator=(const QtSApplicationAboutBoxDialog&); // Operator '=' Not Implemented
-
-
+    QtSApplicationAboutBoxDialog(const QtSApplicationAboutBoxDialog&) = delete; // Copy Constructor Not Implemented
+    void operator=(const QtSApplicationAboutBoxDialog&) = delete;               // Operator '=' Not Implemented
 };
 
 #endif /* R3DApplicationAboutBoxDialog_H_ */

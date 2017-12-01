@@ -135,7 +135,7 @@ protected:
   NumericTypeFilterParameter();
 
 private:
-  NumericTypeFilterParameter(const NumericTypeFilterParameter&); // Copy Constructor Not Implemented
+  NumericTypeFilterParameter(const NumericTypeFilterParameter&) = delete; // Copy Constructor Not Implemented
   void operator=(const NumericTypeFilterParameter&);                    // Operator '=' Not Implemented
 };
 

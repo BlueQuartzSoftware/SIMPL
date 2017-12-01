@@ -69,9 +69,7 @@ JsonFilterParametersWriter::JsonFilterParametersWriter(QString& fileName, QStrin
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-JsonFilterParametersWriter::~JsonFilterParametersWriter()
-{
-}
+JsonFilterParametersWriter::~JsonFilterParametersWriter() = default;
 
 // -----------------------------------------------------------------------------
 //

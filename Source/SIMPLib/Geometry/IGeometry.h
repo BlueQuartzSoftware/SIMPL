@@ -418,9 +418,8 @@ class SIMPLib_EXPORT IGeometry : public Observable
     virtual void setElementSizes(FloatArrayType::Pointer elementSizes) = 0;
 
   private:
-
-    IGeometry(const IGeometry&); // Copy Constructor Not Implemented
-    void operator=(const IGeometry&); // Operator '=' Not Implemented
+    IGeometry(const IGeometry&) = delete;      // Copy Constructor Not Implemented
+    void operator=(const IGeometry&) = delete; // Operator '=' Not Implemented
 };
 
 #endif /* _IGeometry_H_ */

@@ -44,8 +44,6 @@
 
 #include "SVWidgetsLib/Dialogs/ColorPresetsDialogTableModel.h"
 
-#include "moc_ColorPresetsDialog.cpp"
-
 #include "ui_ColorPresetsDialog.h"
 
 class ColorPresetsDialog::pqInternals
@@ -92,9 +90,7 @@ ColorPresetsDialog::ColorPresetsDialog(QWidget* parentObject) :
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-ColorPresetsDialog::~ColorPresetsDialog()
-{
-}
+ColorPresetsDialog::~ColorPresetsDialog() = default;
 
 // -----------------------------------------------------------------------------
 //

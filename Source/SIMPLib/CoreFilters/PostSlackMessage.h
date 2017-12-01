@@ -163,8 +163,8 @@ class PostSlackMessage : public AbstractFilter
     QMutex                                  m_Mutex;
     QNetworkAccessManager* m_NetworkManager;
 
-    PostSlackMessage(const PostSlackMessage&); // Copy Constructor Not Implemented
-    void operator=(const PostSlackMessage&); // Operator '=' Not Implemented
+    PostSlackMessage(const PostSlackMessage&) = delete; // Copy Constructor Not Implemented
+    void operator=(const PostSlackMessage&) = delete;   // Operator '=' Not Implemented
 };
 
 #endif /* _PostSlackMessage_H_ */

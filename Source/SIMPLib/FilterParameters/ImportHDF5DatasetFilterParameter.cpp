@@ -48,9 +48,7 @@ ImportHDF5DatasetFilterParameter::ImportHDF5DatasetFilterParameter()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-ImportHDF5DatasetFilterParameter::~ImportHDF5DatasetFilterParameter()
-{
-}
+ImportHDF5DatasetFilterParameter::~ImportHDF5DatasetFilterParameter() = default;
 
 // -----------------------------------------------------------------------------
 //

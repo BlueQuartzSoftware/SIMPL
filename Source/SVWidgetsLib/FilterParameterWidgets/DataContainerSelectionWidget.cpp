@@ -51,9 +51,6 @@
 #include "FilterParameterWidgetUtils.hpp"
 #include "FilterParameterWidgetsDialogs.h"
 
-// Include the MOC generated file for this class
-#include "moc_DataContainerSelectionWidget.cpp"
-
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
@@ -82,9 +79,7 @@ DataContainerSelectionWidget::DataContainerSelectionWidget(QWidget* parent)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-DataContainerSelectionWidget::~DataContainerSelectionWidget()
-{
-}
+DataContainerSelectionWidget::~DataContainerSelectionWidget() = default;
 
 // -----------------------------------------------------------------------------
 //

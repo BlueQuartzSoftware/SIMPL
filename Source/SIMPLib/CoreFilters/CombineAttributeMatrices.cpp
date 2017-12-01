@@ -44,9 +44,6 @@
 #include "SIMPLib/FilterParameters/SeparatorFilterParameter.h"
 #include "SIMPLib/FilterParameters/StringFilterParameter.h"
 
-// Include the MOC generated file for this class
-#include "moc_CombineAttributeMatrices.cpp"
-
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
@@ -68,9 +65,7 @@ CombineAttributeMatrices::CombineAttributeMatrices()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-CombineAttributeMatrices::~CombineAttributeMatrices()
-{
-}
+CombineAttributeMatrices::~CombineAttributeMatrices() = default;
 
 // -----------------------------------------------------------------------------
 //

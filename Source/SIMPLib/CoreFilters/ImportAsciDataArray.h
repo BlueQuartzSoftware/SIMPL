@@ -201,10 +201,9 @@ class SIMPLib_EXPORT ImportAsciDataArray : public AbstractFilter
     QScopedPointer<ImportAsciDataArrayPrivate> const d_ptr;
 
     IDataArray::Pointer m_Array;
-       
-    
-    ImportAsciDataArray(const ImportAsciDataArray&); // Copy Constructor Not Implemented
-    void operator=(const ImportAsciDataArray&); // Operator '=' Not Implemented
+
+    ImportAsciDataArray(const ImportAsciDataArray&) = delete; // Copy Constructor Not Implemented
+    void operator=(const ImportAsciDataArray&) = delete;      // Operator '=' Not Implemented
 };
 
 #endif /* _importascidataarray_h_ */

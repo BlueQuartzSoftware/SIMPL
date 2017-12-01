@@ -51,9 +51,7 @@ MultiAttributeMatrixSelectionFilterParameter::MultiAttributeMatrixSelectionFilte
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-MultiAttributeMatrixSelectionFilterParameter::~MultiAttributeMatrixSelectionFilterParameter()
-{
-}
+MultiAttributeMatrixSelectionFilterParameter::~MultiAttributeMatrixSelectionFilterParameter() = default;
 
 // -----------------------------------------------------------------------------
 //

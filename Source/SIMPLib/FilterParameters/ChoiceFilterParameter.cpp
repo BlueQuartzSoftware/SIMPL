@@ -47,9 +47,7 @@ ChoiceFilterParameter::ChoiceFilterParameter()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-ChoiceFilterParameter::~ChoiceFilterParameter()
-{
-}
+ChoiceFilterParameter::~ChoiceFilterParameter() = default;
 
 // -----------------------------------------------------------------------------
 //

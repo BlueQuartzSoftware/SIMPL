@@ -44,7 +44,6 @@
 #include "SVWidgetsLib/QtSupport/QtSSettings.h"
 
 // Include the MOC generated CPP file which has all the QMetaObject methods/data
-#include "moc_BookmarksModel.cpp"
 
 BookmarksModel* BookmarksModel::self = nullptr;
 

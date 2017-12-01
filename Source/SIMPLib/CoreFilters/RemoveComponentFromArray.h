@@ -165,12 +165,12 @@ class SIMPLib_EXPORT RemoveComponentFromArray : public AbstractFilter
 
 
   private:
-    DEFINE_IDATAARRAY_VARIABLE(InArray)
-    DEFINE_IDATAARRAY_VARIABLE(NewArray)
-    DEFINE_IDATAARRAY_VARIABLE(ReducedArray)
+    DEFINE_IDATAARRAY_WEAKPTR(InArray)
+    DEFINE_IDATAARRAY_WEAKPTR(NewArray)
+    DEFINE_IDATAARRAY_WEAKPTR(ReducedArray)
 
-    RemoveComponentFromArray(const RemoveComponentFromArray&); // Copy Constructor Not Implemented
-    void operator=(const RemoveComponentFromArray&); // Operator '=' Not Implemented
+    RemoveComponentFromArray(const RemoveComponentFromArray&) = delete; // Copy Constructor Not Implemented
+    void operator=(const RemoveComponentFromArray&) = delete;           // Operator '=' Not Implemented
 };
 
 #endif /* RemoveComponentFromArray_H_ */

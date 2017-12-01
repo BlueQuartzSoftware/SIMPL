@@ -43,9 +43,6 @@
 
 #include "FilterParameterWidgetsDialogs.h"
 
-// Include the MOC generated file for this class
-#include "moc_DoubleWidget.cpp"
-
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
@@ -62,9 +59,7 @@ DoubleWidget::DoubleWidget(FilterParameter* parameter, AbstractFilter* filter, Q
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-DoubleWidget::~DoubleWidget()
-{
-}
+DoubleWidget::~DoubleWidget() = default;
 
 // -----------------------------------------------------------------------------
 //

@@ -160,10 +160,10 @@ class SIMPLib_EXPORT ReplaceValueInArray : public AbstractFilter
 
 
   private:
-    DEFINE_IDATAARRAY_VARIABLE(Array)
+    DEFINE_IDATAARRAY_WEAKPTR(Array)
 
-    ReplaceValueInArray(const ReplaceValueInArray&); // Copy Constructor Not Implemented
-    void operator=(const ReplaceValueInArray&); // Operator '=' Not Implemented
+    ReplaceValueInArray(const ReplaceValueInArray&) = delete; // Copy Constructor Not Implemented
+    void operator=(const ReplaceValueInArray&) = delete;      // Operator '=' Not Implemented
 };
 
 #endif /* _ReplaceValueInArray_H_ */

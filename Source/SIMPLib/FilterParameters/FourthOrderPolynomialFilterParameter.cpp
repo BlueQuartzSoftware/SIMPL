@@ -46,9 +46,7 @@ FourthOrderPolynomialFilterParameter::FourthOrderPolynomialFilterParameter()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-FourthOrderPolynomialFilterParameter::~FourthOrderPolynomialFilterParameter()
-{
-}
+FourthOrderPolynomialFilterParameter::~FourthOrderPolynomialFilterParameter() = default;
 
 // -----------------------------------------------------------------------------
 //

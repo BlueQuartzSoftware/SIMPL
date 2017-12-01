@@ -171,8 +171,8 @@ class SIMPLib_EXPORT ScaleVolume : public AbstractFilter
     void updateSurfaceMesh();
 
   private:
-    ScaleVolume(const ScaleVolume&); // Copy Constructor Not Implemented
-    void operator=(const ScaleVolume&); // Operator '=' Not Implemented
+    ScaleVolume(const ScaleVolume&) = delete;    // Copy Constructor Not Implemented
+    void operator=(const ScaleVolume&) = delete; // Operator '=' Not Implemented
 };
 
 #endif /* _ScaleVolume_H_ */

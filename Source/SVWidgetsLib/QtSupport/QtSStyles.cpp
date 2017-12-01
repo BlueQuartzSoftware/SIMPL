@@ -48,9 +48,6 @@
 
 #include "SIMPLib/Common/Constants.h"
 
-
-#include "moc_QtSStyles.cpp"
-
 static QMap<QString, QImage> s_NameToImage;
 
 namespace  {
@@ -68,9 +65,7 @@ QtSStyles::QtSStyles()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-QtSStyles::~QtSStyles()
-{
-}
+QtSStyles::~QtSStyles() = default;
 
 // -----------------------------------------------------------------------------
 //

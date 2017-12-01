@@ -135,8 +135,8 @@ protected:
   DataContainerCreationFilterParameter();
 
 private:
-  DataContainerCreationFilterParameter(const DataContainerCreationFilterParameter&); // Copy Constructor Not Implemented
-  void operator=(const DataContainerCreationFilterParameter&); // Operator '=' Not Implemented
+  DataContainerCreationFilterParameter(const DataContainerCreationFilterParameter&) = delete; // Copy Constructor Not Implemented
+  void operator=(const DataContainerCreationFilterParameter&) = delete;                       // Operator '=' Not Implemented
 };
 
 #endif /* _DataContainerCreationFilterParameter_H_ */

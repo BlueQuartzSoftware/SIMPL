@@ -69,8 +69,8 @@ class SIMPLib_EXPORT Observer : public QObject, public IObserver
     virtual void processPipelineMessage(const PipelineMessage& pm);
 
   private:
-    Observer(const Observer&); // Copy Constructor Not Implemented
-    void operator=(const Observer&); // Operator '=' Not Implemented
+    Observer(const Observer&) = delete;       // Copy Constructor Not Implemented
+    void operator=(const Observer&) = delete; // Operator '=' Not Implemented
 };
 
 #endif /* OBSERVER_H_ */

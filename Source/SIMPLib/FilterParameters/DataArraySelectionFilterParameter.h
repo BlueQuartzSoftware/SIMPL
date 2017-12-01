@@ -200,8 +200,8 @@ class SIMPLib_EXPORT DataArraySelectionFilterParameter : public FilterParameter
     DataArraySelectionFilterParameter();
 
   private:
-    DataArraySelectionFilterParameter(const DataArraySelectionFilterParameter&); // Copy Constructor Not Implemented
-    void operator=(const DataArraySelectionFilterParameter&); // Operator '=' Not Implemented
+    DataArraySelectionFilterParameter(const DataArraySelectionFilterParameter&) = delete; // Copy Constructor Not Implemented
+    void operator=(const DataArraySelectionFilterParameter&) = delete;                    // Operator '=' Not Implemented
 };
 
 

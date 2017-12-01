@@ -67,9 +67,8 @@ class SVWidgetsLib_EXPORT QtSCheckboxDialog : public QDialog
     QVector<QString>    m_List;
     QMap<QString, QCheckBox*>   m_WidgetMap;
 
-    QtSCheckboxDialog(const QtSCheckboxDialog&); // Copy Constructor Not Implemented
-    void operator=(const QtSCheckboxDialog&); // Operator '=' Not Implemented
-
+    QtSCheckboxDialog(const QtSCheckboxDialog&) = delete; // Copy Constructor Not Implemented
+    void operator=(const QtSCheckboxDialog&) = delete;    // Operator '=' Not Implemented
 };
 
 #endif /* QCHECKBOXDIALOG_H_ */

@@ -46,9 +46,7 @@ OutputPathFilterParameter::OutputPathFilterParameter()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-OutputPathFilterParameter::~OutputPathFilterParameter()
-{
-}
+OutputPathFilterParameter::~OutputPathFilterParameter() = default;
 
 // -----------------------------------------------------------------------------
 //

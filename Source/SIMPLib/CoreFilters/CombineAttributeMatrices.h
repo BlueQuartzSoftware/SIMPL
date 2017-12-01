@@ -177,9 +177,8 @@ class SIMPLib_EXPORT CombineAttributeMatrices : public AbstractFilter
     DEFINE_DATAARRAY_VARIABLE(int32_t, SecondIndex)
     DEFINE_DATAARRAY_VARIABLE(int32_t, NewIndex)
 
-
-    CombineAttributeMatrices(const CombineAttributeMatrices&); // Copy Constructor Not Implemented
-    void operator=(const CombineAttributeMatrices&); // Operator '=' Not Implemented
+    CombineAttributeMatrices(const CombineAttributeMatrices&) = delete; // Copy Constructor Not Implemented
+    void operator=(const CombineAttributeMatrices&) = delete;           // Operator '=' Not Implemented
 };
 
 #endif /* _CombineAttributeMatrices_H_ */

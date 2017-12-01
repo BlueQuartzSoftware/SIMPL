@@ -364,8 +364,8 @@ protected slots:
 private:
   bool m_Cancel;
 
-  AbstractFilter(const AbstractFilter&); // Copy Constructor Not Implemented
-  void operator=(const AbstractFilter&); // Operator '=' Not Implemented
+  AbstractFilter(const AbstractFilter&) = delete; // Copy Constructor Not Implemented
+  void operator=(const AbstractFilter&) = delete; // Operator '=' Not Implemented
 };
 
 #endif /* _AbstractFilter_H_  */

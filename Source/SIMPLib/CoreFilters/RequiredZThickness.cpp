@@ -44,7 +44,6 @@
 #include "SIMPLib/FilterParameters/SeparatorFilterParameter.h"
 #include "SIMPLib/Geometry/ImageGeom.h"
 
-#include "moc_RequiredZThickness.cpp"
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
@@ -60,9 +59,7 @@ RequiredZThickness::RequiredZThickness()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-RequiredZThickness::~RequiredZThickness()
-{
-}
+RequiredZThickness::~RequiredZThickness() = default;
 
 // -----------------------------------------------------------------------------
 //

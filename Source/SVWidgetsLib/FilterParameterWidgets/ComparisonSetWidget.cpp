@@ -8,8 +8,6 @@
 #include "SIMPLib/Common/Constants.h"
 #include "SIMPLib/Filtering/ComparisonValue.h"
 
-#include "moc_ComparisonSetWidget.cpp"
-
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
@@ -26,9 +24,7 @@ ComparisonSetWidget::ComparisonSetWidget(QWidget* parent, ComparisonSet::Pointer
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-ComparisonSetWidget::~ComparisonSetWidget()
-{
-}
+ComparisonSetWidget::~ComparisonSetWidget() = default;
 
 // -----------------------------------------------------------------------------
 //

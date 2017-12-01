@@ -45,9 +45,7 @@ PreflightUpdatedValueFilterParameter::PreflightUpdatedValueFilterParameter()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-PreflightUpdatedValueFilterParameter::~PreflightUpdatedValueFilterParameter()
-{
-}
+PreflightUpdatedValueFilterParameter::~PreflightUpdatedValueFilterParameter() = default;
 
 // -----------------------------------------------------------------------------
 //

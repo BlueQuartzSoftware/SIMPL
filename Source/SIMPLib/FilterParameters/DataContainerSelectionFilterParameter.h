@@ -148,8 +148,8 @@ class SIMPLib_EXPORT DataContainerSelectionFilterParameter : public FilterParame
     DataContainerSelectionFilterParameter();
 
   private:
-    DataContainerSelectionFilterParameter(const DataContainerSelectionFilterParameter&); // Copy Constructor Not Implemented
-    void operator=(const DataContainerSelectionFilterParameter&); // Operator '=' Not Implemented
+    DataContainerSelectionFilterParameter(const DataContainerSelectionFilterParameter&) = delete; // Copy Constructor Not Implemented
+    void operator=(const DataContainerSelectionFilterParameter&) = delete;                        // Operator '=' Not Implemented
 };
 
 #endif /* _DataContainerSelectionFilterParameter_H_ */

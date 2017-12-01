@@ -41,9 +41,6 @@
 
 #include "SIMPLib/FilterParameters/InputFileFilterParameter.h"
 
-// Include the MOC generated file for this class
-#include "moc_InputFileWidget.cpp"
-
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
@@ -75,9 +72,7 @@ InputFileWidget::InputFileWidget(FilterParameter* parameter, AbstractFilter* fil
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-InputFileWidget::~InputFileWidget()
-{
-}
+InputFileWidget::~InputFileWidget() = default;
 
 // -----------------------------------------------------------------------------
 //

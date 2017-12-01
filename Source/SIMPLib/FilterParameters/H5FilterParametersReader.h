@@ -162,8 +162,8 @@ class SIMPLib_EXPORT H5FilterParametersReader : public AbstractFilterParametersR
     int                 m_Version = -1;
     int                 m_CurrentIndex = -1;
 
-    H5FilterParametersReader(const H5FilterParametersReader&); // Copy Constructor Not Implemented
-    void operator=(const H5FilterParametersReader&); // Operator '=' Not Implemented
+    H5FilterParametersReader(const H5FilterParametersReader&) = delete; // Copy Constructor Not Implemented
+    void operator=(const H5FilterParametersReader&) = delete;           // Operator '=' Not Implemented
 };
 
 #endif /* _H5FilterParametersREADER_H_ */

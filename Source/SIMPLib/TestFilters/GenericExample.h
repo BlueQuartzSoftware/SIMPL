@@ -263,8 +263,8 @@ protected:
   void initialize();
 
 private:
-  GenericExample(const GenericExample&); // Copy Constructor Not Implemented
-  void operator=(const GenericExample&); // Operator '=' Not Implemented
+  GenericExample(const GenericExample&) = delete; // Copy Constructor Not Implemented
+  void operator=(const GenericExample&) = delete; // Operator '=' Not Implemented
 };
 
 #endif /* _GenericExample_H_ */

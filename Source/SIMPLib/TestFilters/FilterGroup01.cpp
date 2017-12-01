@@ -33,8 +33,6 @@
 
 #include "SIMPLib/Common/Constants.h"
 #include "SIMPLib/SIMPLibVersion.h"
-// Include the MOC generated file for this class
-#include "moc_FilterGroup01.cpp"
 
 // -----------------------------------------------------------------------------
 //
@@ -49,9 +47,7 @@ FilterGroup01::FilterGroup01()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-FilterGroup01::~FilterGroup01()
-{
-}
+FilterGroup01::~FilterGroup01() = default;
 
 // -----------------------------------------------------------------------------
 //

@@ -153,8 +153,8 @@ class ImportASCIIDataWizard : public QWizard
     QPushButton*                                        m_RefreshBtn = nullptr;
     QSharedPointer<ASCIIDataModel> m_ASCIIDataModel;
 
-    ImportASCIIDataWizard(const ImportASCIIDataWizard&); // Copy Constructor Not Implemented
-    void operator=(const ImportASCIIDataWizard&); // Operator '=' Not Implemented
+    ImportASCIIDataWizard(const ImportASCIIDataWizard&) = delete; // Copy Constructor Not Implemented
+    void operator=(const ImportASCIIDataWizard&) = delete;        // Operator '=' Not Implemented
 };
 
 #endif /* ImportASCIIDataWizard_H_ */

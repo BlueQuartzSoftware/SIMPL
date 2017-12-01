@@ -46,9 +46,7 @@ DoubleFilterParameter::DoubleFilterParameter()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-DoubleFilterParameter::~DoubleFilterParameter()
-{
-}
+DoubleFilterParameter::~DoubleFilterParameter() = default;
 
 // -----------------------------------------------------------------------------
 //

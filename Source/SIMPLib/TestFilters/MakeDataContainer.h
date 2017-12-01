@@ -146,7 +146,7 @@ private:
   DEFINE_DATAARRAY_VARIABLE(uint32_t, CrystalStructures)
   DEFINE_DATAARRAY_VARIABLE(float, LatticeConstants)
 
-  MakeDataContainer(const MakeDataContainer&); // Copy Constructor Not Implemented
+  MakeDataContainer(const MakeDataContainer&) = delete; // Copy Constructor Not Implemented
   void operator=(const MakeDataContainer&);    // Operator '=' Not Implemented
 };
 

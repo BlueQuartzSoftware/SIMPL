@@ -178,8 +178,8 @@ class SIMPLib_EXPORT Breakpoint : public AbstractFilter
     QWaitCondition                          m_WaitCondition;
     QMutex                                  m_Mutex;
 
-    Breakpoint(const Breakpoint&); // Copy Constructor Not Implemented
-    void operator=(const Breakpoint&); // Operator '=' Not Implemented
+    Breakpoint(const Breakpoint&) = delete;     // Copy Constructor Not Implemented
+    void operator=(const Breakpoint&) = delete; // Operator '=' Not Implemented
 };
 
 #endif /* _Breakpoint_H_ */

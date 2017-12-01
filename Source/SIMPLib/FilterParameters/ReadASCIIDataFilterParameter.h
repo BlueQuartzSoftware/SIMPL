@@ -59,8 +59,8 @@ protected:
   ReadASCIIDataFilterParameter();
 
 private:
-  ReadASCIIDataFilterParameter(const ReadASCIIDataFilterParameter&); // Copy Constructor Not Implemented
-  void operator=(const ReadASCIIDataFilterParameter&); // Operator '=' Not Implemented
+  ReadASCIIDataFilterParameter(const ReadASCIIDataFilterParameter&) = delete; // Copy Constructor Not Implemented
+  void operator=(const ReadASCIIDataFilterParameter&) = delete;               // Operator '=' Not Implemented
 };
 
 #endif /* _ImportVectorImageStackFilterParameter_H_ */

@@ -90,14 +90,10 @@ class SVWidgetsLib_EXPORT DoubleWidget : public FilterParameterWidget, private U
     void parametersChanged();
 
   private:
-
-    bool m_DidCausePreflight;
-
     DoubleFilterParameter* m_FilterParameter;
 
-    DoubleWidget(const DoubleWidget&); // Copy Constructor Not Implemented
-    void operator=(const DoubleWidget&); // Operator '=' Not Implemented
-
+    DoubleWidget(const DoubleWidget&) = delete;   // Copy Constructor Not Implemented
+    void operator=(const DoubleWidget&) = delete; // Operator '=' Not Implemented
 };
 
 #endif /* _DoubleWidget_H_ */

@@ -142,15 +142,13 @@ class SVWidgetsLib_EXPORT UpdateCheckDialog : public QDialog, private Ui::Update
     QString           m_UpdatePreferencesPath;
     QString           m_UpdateWebSite;
     UpdateCheck*        m_UpdateCheck;
-    QThread*          m_UpdateCheckThread;
     DialogState         m_DialogState;
     UpdateCheck::SIMPLVersionData_t m_VersionData;
 
     QAction*            m_CloseAction = nullptr;
 
-    UpdateCheckDialog(const UpdateCheckDialog&); // Copy Constructor Not Implemented
-    void operator=(const UpdateCheckDialog&); // Operator '=' Not Implemented
-
+    UpdateCheckDialog(const UpdateCheckDialog&) = delete; // Copy Constructor Not Implemented
+    void operator=(const UpdateCheckDialog&) = delete;    // Operator '=' Not Implemented
 };
 
 

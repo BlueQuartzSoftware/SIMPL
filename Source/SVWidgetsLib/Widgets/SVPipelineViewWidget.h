@@ -434,7 +434,6 @@ class SVWidgetsLib_EXPORT SVPipelineViewWidget : public QFrame, public PipelineV
     QVBoxLayout*                                      m_FilterWidgetLayout = nullptr;
     int                                               m_FilterOrigPos;
     SVPipelineFilterOutlineWidget*                    m_FilterOutlineWidget = nullptr;
-    int                                               m_DropIndex;
     QLabel*                                           m_EmptyPipelineLabel = nullptr;
     QList<QObject*>                                   m_PipelineMessageObservers;
     QScrollArea*                                      m_ScrollArea = nullptr;
@@ -442,7 +441,6 @@ class SVWidgetsLib_EXPORT SVPipelineViewWidget : public QFrame, public PipelineV
     bool                                              m_AutoScroll;
     int                                               m_AutoScrollMargin;
     int                                               m_autoScrollCount;
-    QWidget*                                          m_InputParametersWidget = nullptr;
     QMenu*                                            m_ContextMenu = nullptr;
     QSharedPointer<QUndoStack>                        m_UndoStack;
     QAction*                                          m_ActionUndo = nullptr;
@@ -473,8 +471,8 @@ class SVWidgetsLib_EXPORT SVPipelineViewWidget : public QFrame, public PipelineV
     QMenu* createPipelineFilterWidgetMenu(SVPipelineFilterWidget* filterWidget);
     void createPipelineViewWidgetMenu();
 
-    SVPipelineViewWidget(const SVPipelineViewWidget&); // Copy Constructor Not Implemented
-    void operator=(const SVPipelineViewWidget&); // Operator '=' Not Implemented
+    SVPipelineViewWidget(const SVPipelineViewWidget&) = delete; // Copy Constructor Not Implemented
+    void operator=(const SVPipelineViewWidget&) = delete;       // Operator '=' Not Implemented
 };
 
 #endif /* _svpipelineviewwidget_H */

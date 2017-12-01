@@ -155,8 +155,8 @@ class SIMPLib_EXPORT MatrixStatsData : public StatsData
     MatrixStatsData();
 
   private:
-    MatrixStatsData(const MatrixStatsData&); // Copy Constructor Not Implemented
-    void operator=(const MatrixStatsData&); // Operator '=' Not Implemented
+    MatrixStatsData(const MatrixStatsData&) = delete; // Copy Constructor Not Implemented
+    void operator=(const MatrixStatsData&) = delete;  // Operator '=' Not Implemented
 };
 
 #endif /* _MatrixStatsDataTUPLE_H_ */

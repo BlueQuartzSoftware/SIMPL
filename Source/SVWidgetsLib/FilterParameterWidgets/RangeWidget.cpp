@@ -43,9 +43,6 @@
 
 #include "FilterParameterWidgetsDialogs.h"
 
-// Include the MOC generated file for this class
-#include "moc_RangeWidget.cpp"
-
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
@@ -62,9 +59,7 @@ RangeWidget::RangeWidget(FilterParameter* parameter, AbstractFilter* filter, QWi
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-RangeWidget::~RangeWidget()
-{
-}
+RangeWidget::~RangeWidget() = default;
 
 // -----------------------------------------------------------------------------
 //

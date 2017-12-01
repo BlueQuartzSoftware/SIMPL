@@ -43,9 +43,6 @@
 
 #include "FilterParameterWidgetsDialogs.h"
 
-// Include the MOC generated file for this class
-#include "moc_SeparatorWidget.cpp"
-
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
@@ -62,9 +59,7 @@ SeparatorWidget::SeparatorWidget(FilterParameter* parameter, AbstractFilter* fil
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-SeparatorWidget::~SeparatorWidget()
-{
-}
+SeparatorWidget::~SeparatorWidget() = default;
 
 // -----------------------------------------------------------------------------
 //

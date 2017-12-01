@@ -55,9 +55,7 @@ EditHeadersDialog::EditHeadersDialog(QSharedPointer<ASCIIDataModel> model, QWidg
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-EditHeadersDialog::~EditHeadersDialog()
-{
-}
+EditHeadersDialog::~EditHeadersDialog() = default;
 
 // -----------------------------------------------------------------------------
 //

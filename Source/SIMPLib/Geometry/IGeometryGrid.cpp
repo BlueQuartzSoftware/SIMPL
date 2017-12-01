@@ -46,6 +46,4 @@ IGeometryGrid::IGeometryGrid()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-IGeometryGrid::~IGeometryGrid()
-{
-}
+IGeometryGrid::~IGeometryGrid() = default;

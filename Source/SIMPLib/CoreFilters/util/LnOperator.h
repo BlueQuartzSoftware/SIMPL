@@ -63,9 +63,8 @@ class SIMPLib_EXPORT LnOperator : public UnaryOperator
     LnOperator();
 
   private:
-
-    LnOperator(const LnOperator&); // Copy Constructor Not Implemented
-    void operator=(const LnOperator&); // Operator '=' Not Implemented
+    LnOperator(const LnOperator&) = delete;     // Copy Constructor Not Implemented
+    void operator=(const LnOperator&) = delete; // Operator '=' Not Implemented
 };
 
 #endif /* _LnOperator_H_ */

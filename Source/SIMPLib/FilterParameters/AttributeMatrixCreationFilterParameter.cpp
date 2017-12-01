@@ -46,9 +46,7 @@ AttributeMatrixCreationFilterParameter::AttributeMatrixCreationFilterParameter()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-AttributeMatrixCreationFilterParameter::~AttributeMatrixCreationFilterParameter()
-{
-}
+AttributeMatrixCreationFilterParameter::~AttributeMatrixCreationFilterParameter() = default;
 
 // -----------------------------------------------------------------------------
 //

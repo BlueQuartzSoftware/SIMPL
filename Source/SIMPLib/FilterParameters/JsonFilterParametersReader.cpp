@@ -59,9 +59,7 @@ JsonFilterParametersReader::JsonFilterParametersReader()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-JsonFilterParametersReader::~JsonFilterParametersReader()
-{
-}
+JsonFilterParametersReader::~JsonFilterParametersReader() = default;
 
 // -----------------------------------------------------------------------------
 //

@@ -65,8 +65,8 @@ class SVWidgetsLib_EXPORT QtSDistributionTypeWidget : public QWidget, private Ui
 
 
   private:
-    QtSDistributionTypeWidget(const QtSDistributionTypeWidget&); // Copy Constructor Not Implemented
-    void operator=(const QtSDistributionTypeWidget&); // Operator '=' Not Implemented
+    QtSDistributionTypeWidget(const QtSDistributionTypeWidget&) = delete; // Copy Constructor Not Implemented
+    void operator=(const QtSDistributionTypeWidget&) = delete;            // Operator '=' Not Implemented
 };
 
 

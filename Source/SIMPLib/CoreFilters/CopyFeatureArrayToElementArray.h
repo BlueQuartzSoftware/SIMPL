@@ -160,10 +160,10 @@ class SIMPLib_EXPORT CopyFeatureArrayToElementArray : public AbstractFilter
 
   private:
     DEFINE_DATAARRAY_VARIABLE(int32_t, FeatureIds)
-    DEFINE_IDATAARRAY_VARIABLE(InArray)
+    DEFINE_IDATAARRAY_WEAKPTR(InArray)
 
-    CopyFeatureArrayToElementArray(const CopyFeatureArrayToElementArray&); // Copy Constructor Not Implemented
-    void operator=(const CopyFeatureArrayToElementArray&); // Operator '=' Not Implemented
+    CopyFeatureArrayToElementArray(const CopyFeatureArrayToElementArray&) = delete; // Copy Constructor Not Implemented
+    void operator=(const CopyFeatureArrayToElementArray&) = delete;                 // Operator '=' Not Implemented
 };
 
 #endif /* _CopyFeatureArrayToElementArray_H_ */

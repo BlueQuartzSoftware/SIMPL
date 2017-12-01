@@ -41,8 +41,6 @@
 #include "SVWidgetsLib/FilterParameterWidgets/ComparisonSetWidget.h"
 #include "SVWidgetsLib/FilterParameterWidgets/ComparisonValueWidget.h"
 
-#include "moc_IComparisonWidget.cpp"
-
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------

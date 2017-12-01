@@ -63,9 +63,8 @@ class SIMPLib_EXPORT ACosOperator : public UnaryOperator
     ACosOperator();
 
   private:
-
-    ACosOperator(const ACosOperator&); // Copy Constructor Not Implemented
-    void operator=(const ACosOperator&); // Operator '=' Not Implemented
+    ACosOperator(const ACosOperator&) = delete;   // Copy Constructor Not Implemented
+    void operator=(const ACosOperator&) = delete; // Operator '=' Not Implemented
 };
 
 #endif /* _ACosOperator_H_ */

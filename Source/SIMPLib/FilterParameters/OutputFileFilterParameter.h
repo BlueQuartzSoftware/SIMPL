@@ -143,8 +143,8 @@ class SIMPLib_EXPORT OutputFileFilterParameter : public FilterParameter
       OutputFileFilterParameter();
 
   private:
-    OutputFileFilterParameter(const OutputFileFilterParameter&); // Copy Constructor Not Implemented
-    void operator=(const OutputFileFilterParameter&); // Operator '=' Not Implemented
+    OutputFileFilterParameter(const OutputFileFilterParameter&) = delete; // Copy Constructor Not Implemented
+    void operator=(const OutputFileFilterParameter&) = delete;            // Operator '=' Not Implemented
 };
 
 #endif /* _OutputFileFilterParameter_H_ */

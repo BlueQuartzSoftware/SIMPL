@@ -102,7 +102,7 @@ protected:
 
 private:
   Filt0(const Filt0&);          // Copy Constructor Not Implemented
-  void operator=(const Filt0&); // Operator '=' Not Implemented
+  void operator=(const Filt0&) = delete; // Operator '=' Not Implemented
 };
 
 // -----------------------------------------------------------------------------
@@ -194,7 +194,7 @@ protected:
 
 private:
   Filt1(const Filt1&);          // Copy Constructor Not Implemented
-  void operator=(const Filt1&); // Operator '=' Not Implemented
+  void operator=(const Filt1&) = delete; // Operator '=' Not Implemented
 };
 
 #endif /* _Filt0_H_ */

@@ -327,11 +327,8 @@ class SVWidgetsLib_EXPORT SVPipelineFilterWidget : public QFrame, public Pipelin
     bool m_HasRightClickTarget = false;
     bool m_HoverState = false;
     int m_MaxFilterCount = 0;
-
-    int m_TopFontMargin = 12;
     int m_IndexBoxWidth = 35;
     int m_TextMargin = 6;
-    int m_ButtonSize = 40;
     qreal m_SelectionBorderWidth = 4.0;
 
     QString m_PaddedIndex;
@@ -347,8 +344,8 @@ class SVWidgetsLib_EXPORT SVPipelineFilterWidget : public QFrame, public Pipelin
      */
     void initialize();
 
-    SVPipelineFilterWidget(const SVPipelineFilterWidget&); // Copy Constructor Not Implemented
-    void operator=(const SVPipelineFilterWidget&); // Operator '=' Not Implemented
+    SVPipelineFilterWidget(const SVPipelineFilterWidget&) = delete; // Copy Constructor Not Implemented
+    void operator=(const SVPipelineFilterWidget&) = delete;         // Operator '=' Not Implemented
 };
 
 #endif /* _svpipelinefilterwidget_h_ */

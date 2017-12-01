@@ -135,8 +135,8 @@ protected:
   CalculatorFilterParameter();
 
 private:
-  CalculatorFilterParameter(const CalculatorFilterParameter&); // Copy Constructor Not Implemented
-  void operator=(const CalculatorFilterParameter&); // Operator '=' Not Implemented
+  CalculatorFilterParameter(const CalculatorFilterParameter&) = delete; // Copy Constructor Not Implemented
+  void operator=(const CalculatorFilterParameter&) = delete;            // Operator '=' Not Implemented
 };
 
 #endif /* _CalculatorFilterParameter_H_ */

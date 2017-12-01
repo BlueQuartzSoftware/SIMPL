@@ -60,9 +60,7 @@ SIMPLibPluginLoader::SIMPLibPluginLoader()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-SIMPLibPluginLoader::~SIMPLibPluginLoader()
-{
-}
+SIMPLibPluginLoader::~SIMPLibPluginLoader() = default;
 
 // -----------------------------------------------------------------------------
 //

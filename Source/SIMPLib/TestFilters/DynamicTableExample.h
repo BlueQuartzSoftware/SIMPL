@@ -132,7 +132,7 @@ protected:
   void initialize();
 
 private:
-  DynamicTableExample(const DynamicTableExample&); // Copy Constructor Not Implemented
+  DynamicTableExample(const DynamicTableExample&) = delete; // Copy Constructor Not Implemented
   void operator=(const DynamicTableExample&);      // Operator '=' Not Implemented
 };
 

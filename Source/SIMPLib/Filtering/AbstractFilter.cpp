@@ -40,7 +40,6 @@
 #include "SIMPLib/Filtering/IFilterFactory.hpp"
 #include "SIMPLib/Plugin/PluginManager.h"
 
-#include "moc_AbstractFilter.cpp"
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------

@@ -52,7 +52,7 @@ public:
   int execute(IDataArray* input, IDataArray* output);
 
 private:
-  IDataArrayFilter(const IDataArrayFilter&); // Copy Constructor Not Implemented
+  IDataArrayFilter(const IDataArrayFilter&) = delete; // Copy Constructor Not Implemented
   void operator=(const IDataArrayFilter&);   // Operator '=' Not Implemented
 };
 

@@ -95,15 +95,10 @@ class SVWidgetsLib_EXPORT ChoiceWidget : public FilterParameterWidget, private U
     void conditionalPropertyChanged(int);
 
   private:
-
-    bool m_DidCausePreflight;
-
     ChoiceFilterParameter* m_FilterParameter;
 
-
-    ChoiceWidget(const ChoiceWidget&); // Copy Constructor Not Implemented
-    void operator=(const ChoiceWidget&); // Operator '=' Not Implemented
-
+    ChoiceWidget(const ChoiceWidget&) = delete;   // Copy Constructor Not Implemented
+    void operator=(const ChoiceWidget&) = delete; // Operator '=' Not Implemented
 };
 
 #endif /* _ChoiceWidget_H_ */

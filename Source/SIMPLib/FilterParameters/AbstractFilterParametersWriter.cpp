@@ -45,9 +45,7 @@ AbstractFilterParametersWriter::AbstractFilterParametersWriter()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-AbstractFilterParametersWriter::~AbstractFilterParametersWriter()
-{
-}
+AbstractFilterParametersWriter::~AbstractFilterParametersWriter() = default;
 
 // -----------------------------------------------------------------------------
 //

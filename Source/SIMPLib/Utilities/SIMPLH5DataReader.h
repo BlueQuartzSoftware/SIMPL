@@ -59,7 +59,7 @@ class SIMPLib_EXPORT SIMPLH5DataReader : public Observable
     SIMPL_SHARED_POINTERS(SIMPLH5DataReader)
     SIMPL_STATIC_NEW_MACRO(SIMPLH5DataReader)
 
-    SIMPLH5DataReader(IObserver* obs = nullptr);
+    SIMPLH5DataReader();
     virtual ~SIMPLH5DataReader();
 
     /**
@@ -109,7 +109,6 @@ class SIMPLib_EXPORT SIMPLH5DataReader : public Observable
     void errorGenerated(const QString &msg, const int &code);
 
   private:
-    IObserver*                        m_Observer = nullptr;
     QString                           m_CurrentFilePath = "";
     hid_t                             m_FileId = -1;
 
@@ -121,8 +120,8 @@ class SIMPLib_EXPORT SIMPLH5DataReader : public Observable
      */
     bool readDataContainerBundles(hid_t fileId, DataContainerArray::Pointer dca);
 
-    SIMPLH5DataReader(const SIMPLH5DataReader&); // Copy Constructor Not Implemented
-    void operator=(const SIMPLH5DataReader&); // Operator '=' Not Implemented
+    SIMPLH5DataReader(const SIMPLH5DataReader&) = delete; // Copy Constructor Not Implemented
+    void operator=(const SIMPLH5DataReader&) = delete;    // Operator '=' Not Implemented
 };
 
 

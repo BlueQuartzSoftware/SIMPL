@@ -48,8 +48,6 @@
 #include <QtWidgets/QGraphicsPolygonItem>
 #include <QtWidgets/QWidget>
 
-#include "moc_QtSGraphicsView.cpp"
-
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------

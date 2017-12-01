@@ -52,7 +52,7 @@ cmp_IDE_SOURCE_PROPERTIES( "Widgets/ImportASCIIDataWizard" "${SVWidgetsLib_Widge
 # Organize the Source files for things like Visual Studio and Xcode
 cmp_IDE_GENERATED_PROPERTIES("Widgets/ImportASCIIDataWizard/UI_Files" "${SVWidgetsLib_Widgets_UIS}" "")
 
-QT5_WRAP_CPP( SVWidgetsLib_Widgets_Generated_MOC_SRCS ${SVWidgetsLib_Widgets_MOC_HDRS} )
+# QT5_WRAP_CPP( SVWidgetsLib_Widgets_Generated_MOC_SRCS ${SVWidgetsLib_Widgets_MOC_HDRS} )
 
 # --------------------------------------------------------------------
 # We are using CMake's AuotMoc feature so we do not need to wrap our .cpp files with a specific call to 'moc'

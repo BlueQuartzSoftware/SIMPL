@@ -105,9 +105,7 @@ SIMPLibRandom::SIMPLibRandom()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-SIMPLibRandom::~SIMPLibRandom()
-{
-}
+SIMPLibRandom::~SIMPLibRandom() = default;
 
 /* initializes mt[N] with a seed */
 void SIMPLibRandom::init_genrand(unsigned long s)

@@ -89,17 +89,10 @@ class SVWidgetsLib_EXPORT FourthOrderPolynomialWidget : public FilterParameterWi
     void parametersChanged();
 
   private:
-
-    bool m_DidCausePreflight;
-
     FourthOrderPolynomialFilterParameter* m_FilterParameter;
 
-    //helper functions for complex inter dependancies
-    // void vbar(QLineEdit* obj);
-
-    FourthOrderPolynomialWidget(const FourthOrderPolynomialWidget&); // Copy Constructor Not Implemented
-    void operator=(const FourthOrderPolynomialWidget&); // Operator '=' Not Implemented
-
+    FourthOrderPolynomialWidget(const FourthOrderPolynomialWidget&) = delete; // Copy Constructor Not Implemented
+    void operator=(const FourthOrderPolynomialWidget&) = delete;              // Operator '=' Not Implemented
 };
 
 #endif /* _FourthOrderPolynomialWidget_H_ */

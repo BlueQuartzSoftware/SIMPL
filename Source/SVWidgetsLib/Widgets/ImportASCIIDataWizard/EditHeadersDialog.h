@@ -69,8 +69,8 @@ private:
   QDialogButtonBox*                                         m_ButtonBox;
   QVector<QString>                                          m_Headers;
   QSharedPointer<ASCIIDataModel> m_ASCIIDataModel;
-  EditHeadersDialog(const EditHeadersDialog&); // Copy Constructor Not Implemented
-  void operator=(const EditHeadersDialog&); // Operator '=' Not Implemented
+  EditHeadersDialog(const EditHeadersDialog&) = delete; // Copy Constructor Not Implemented
+  void operator=(const EditHeadersDialog&) = delete;    // Operator '=' Not Implemented
 };
 
 #endif /* EditHeadersDialog_H_ */

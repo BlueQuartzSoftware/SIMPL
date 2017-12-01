@@ -65,10 +65,6 @@
 
 #define kBufferSize 1024
 
-
-// Include the MOC generated file for this class
-#include "moc_ImportAsciDataArray.cpp"
-
 namespace Detail
 {
 // -----------------------------------------------------------------------------
@@ -273,9 +269,7 @@ ImportAsciDataArray::ImportAsciDataArray()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-ImportAsciDataArray::~ImportAsciDataArray()
-{
-}
+ImportAsciDataArray::~ImportAsciDataArray() = default;
 
 // -----------------------------------------------------------------------------
 //

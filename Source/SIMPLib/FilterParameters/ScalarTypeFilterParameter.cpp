@@ -47,9 +47,7 @@ ScalarTypeFilterParameter::ScalarTypeFilterParameter()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-ScalarTypeFilterParameter::~ScalarTypeFilterParameter()
-{
-}
+ScalarTypeFilterParameter::~ScalarTypeFilterParameter() = default;
 
 // -----------------------------------------------------------------------------
 //

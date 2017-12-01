@@ -45,9 +45,7 @@ AbstractFilterParametersReader::AbstractFilterParametersReader()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-AbstractFilterParametersReader::~AbstractFilterParametersReader()
-{
-}
+AbstractFilterParametersReader::~AbstractFilterParametersReader() = default;
 
 // -----------------------------------------------------------------------------
 //

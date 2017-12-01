@@ -145,7 +145,7 @@ protected:
   PhaseTypeSelectionFilterParameter();
 
 private:
-  PhaseTypeSelectionFilterParameter(const PhaseTypeSelectionFilterParameter&); // Copy Constructor Not Implemented
+  PhaseTypeSelectionFilterParameter(const PhaseTypeSelectionFilterParameter&) = delete; // Copy Constructor Not Implemented
   void operator=(const PhaseTypeSelectionFilterParameter&);                    // Operator '=' Not Implemented
 };
 

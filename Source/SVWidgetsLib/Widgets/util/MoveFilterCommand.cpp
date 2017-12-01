@@ -89,9 +89,7 @@ MoveFilterCommand::MoveFilterCommand(QList<std::pair<int, PipelineFilterObject*>
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-MoveFilterCommand::~MoveFilterCommand()
-{
-}
+MoveFilterCommand::~MoveFilterCommand() = default;
 
 // -----------------------------------------------------------------------------
 //
