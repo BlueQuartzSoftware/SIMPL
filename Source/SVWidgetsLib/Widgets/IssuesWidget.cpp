@@ -113,6 +113,7 @@ void IssuesWidget::displayCachedMessages()
 {
   // Figure out how many error and warning messages that we have. We ignore the rest
   int count = 0;
+  int warnCount = 0;
   int errCount = 0;
   for(int i = 0; i < m_CachedMessages.size(); i++)
   {
@@ -125,6 +126,7 @@ void IssuesWidget::displayCachedMessages()
       break;
     case PipelineMessage::MessageType::Warning:
       count++;
+      warnCount++;
       break;
     case PipelineMessage::MessageType::StatusMessage:
     case PipelineMessage::MessageType::StandardOutputMessage:
@@ -134,15 +136,8 @@ void IssuesWidget::displayCachedMessages()
       break;
     }
   }
-  if(errCount > 0)
-  {
-    emit tableHasErrors(true, errCount);
-    emit showTable(true);
-  }
-  else
-  {
-    emit tableHasErrors(false, 0);
-  }
+
+  emit tableHasErrors(false, errCount, warnCount);
 
   // Now create the correct number of table rows.
   ui->errorTableWidget->setRowCount(count);
