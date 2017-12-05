@@ -29,6 +29,7 @@ set(SVWidgetsLib_Widgets_MOC_HDRS
   ${SVWidgetsLib_SOURCE_DIR}/Widgets/FilterInputWidget.h
   ${SVWidgetsLib_SOURCE_DIR}/Widgets/ImportHDF5TreeModel.h
   ${SVWidgetsLib_SOURCE_DIR}/Widgets/PipelineTreeItemDelegate.h
+  ${SVWidgetsLib_SOURCE_DIR}/Widgets/PipelineTreeController.h
   ${SVWidgetsLib_SOURCE_DIR}/Widgets/PipelineTreeModel.h
   ${SVWidgetsLib_SOURCE_DIR}/Widgets/PipelineTreeView.h
   ${SVWidgetsLib_SOURCE_DIR}/Widgets/SVPipelineFilterWidget.h
@@ -76,6 +77,7 @@ set(SVWidgetsLib_Widgets_SRCS
   ${SVWidgetsLib_SOURCE_DIR}/Widgets/SVPipelineFilterOutlineWidget.cpp
   ${SVWidgetsLib_SOURCE_DIR}/Widgets/SVPipelineViewWidget.cpp
   ${SVWidgetsLib_SOURCE_DIR}/Widgets/PipelineFilterObject.cpp
+  ${SVWidgetsLib_SOURCE_DIR}/Widgets/PipelineTreeController.cpp
   ${SVWidgetsLib_SOURCE_DIR}/Widgets/PipelineTreeItemDelegate.cpp
   ${SVWidgetsLib_SOURCE_DIR}/Widgets/PipelineTreeModel.cpp
   ${SVWidgetsLib_SOURCE_DIR}/Widgets/PipelineTreeView.cpp

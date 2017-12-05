@@ -1,5 +1,5 @@
 /* ============================================================================
-* Copyright (c) 2009-2016 BlueQuartz Software, LLC
+* Copyright (c) 2017 BlueQuartz Software, LLC
 *
 * Redistribution and use in source and binary forms, with or without modification,
 * are permitted provided that the following conditions are met:
@@ -11,7 +11,7 @@
 * list of conditions and the following disclaimer in the documentation and/or
 * other materials provided with the distribution.
 *
-* Neither the name of BlueQuartz Software, the US Air Force, nor the names of its
+* Neither the name of BlueQuartz Software nor the names of its
 * contributors may be used to endorse or promote products derived from this software
 * without specific prior written permission.
 *
@@ -26,10 +26,6 @@
 * OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE
 * USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 *
-* The code contained herein was partially funded by the followig contracts:
-*    United States Air Force Prime Contract FA8650-07-D-5800
-*    United States Air Force Prime Contract FA8650-10-D-5210
-*    United States Prime Contract Navy N00173-07-C-2068
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
@@ -57,8 +53,6 @@ PipelineTreeModel::PipelineTreeModel(QObject* parent)
   vector.push_back("Name");
   vector.push_back("Path");
   rootItem = new PipelineTreeItem(vector);
-
-  m_Watcher = new QFileSystemWatcher(this);
 
   connect(this, SIGNAL(dataChanged(const QModelIndex&, const QModelIndex&)), this, SLOT(updateModel(const QModelIndex&, const QModelIndex&)));
 }
@@ -105,39 +99,6 @@ PipelineTreeModel* PipelineTreeModel::NewInstance(QtSSettings* prefs)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void PipelineTreeModel::setFileSystemWatcher(QFileSystemWatcher* watcher)
-{
-  m_Watcher = watcher;
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-QFileSystemWatcher* PipelineTreeModel::getFileSystemWatcher()
-{
-  return m_Watcher;
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-void PipelineTreeModel::updateRowState(const QString& path)
-{
-  QFileInfo fi(path);
-
-  QModelIndexList indexList = findIndexByPath(path);
-  for(int i = 0; i < indexList.size(); i++)
-  {
-    QModelIndex nameIndex = index(indexList[i].row(), PipelineTreeItem::Name, indexList[i].parent());
-
-    // Set the itemHasError variable
-    setData(nameIndex, !fi.exists(), Qt::UserRole);
-  }
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
 int PipelineTreeModel::columnCount(const QModelIndex& parent) const
 {
   return rootItem->columnCount();
@@ -150,7 +111,7 @@ QModelIndex PipelineTreeModel::sibling(int row, int column, const QModelIndex& c
 {
   if(currentIndex.column() == PipelineTreeItem::Name)
   {
-    return index(currentIndex.row(), PipelineTreeItem::Path, currentIndex.parent());
+    return index(currentIndex.row(), PipelineTreeItem::FilterEnabledBtn, currentIndex.parent());
   }
   else
   {
@@ -174,54 +135,14 @@ QVariant PipelineTreeModel::data(const QModelIndex& index, int role) const
   {
     return item->data(index.column());
   }
-  else if(role == Qt::UserRole)
-  {
-    return item->getItemHasErrors();
-  }
-  else if(role == Qt::BackgroundRole)
-  {
-    if(item->getItemHasErrors() == true)
-    {
-      return QColor(235, 110, 110);
-    }
-    else
-    {
-      return QVariant();
-    }
-  }
   else if(role == Qt::ForegroundRole)
   {
-    if(item->getItemHasErrors() == true)
-    {
-      return QColor(240, 240, 240);
-    }
-    else
-    {
-      return QColor(Qt::black);
-    }
+    QColor fgColor = getForegroundColor(index);
+    return fgColor;
   }
   else if(role == Qt::ToolTipRole)
   {
-    QString path = item->data(1).toString();
-    QFileInfo info(path);
-    if(info.exists() == false)
-    {
-      QString tooltip = "'" + this->index(index.row(), PipelineTreeItem::Path, index.parent()).data().toString() +
-                        "' was not found on the file system.\nYou can either locate the file or delete the entry from the table.";
-      return tooltip;
-    }
-    else
-    {
-      if(info.suffix().compare("json") == 0)
-      {
-        QString html = JsonFilterParametersReader::HtmlSummaryFromFile(path, nullptr);
-        return html;
-      }
-      else
-      {
-        return path;
-      }
-    }
+    return QString();
   }
   else if(role == Qt::DecorationRole)
   {
@@ -243,6 +164,63 @@ QVariant PipelineTreeModel::data(const QModelIndex& index, int role) const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
+AbstractFilter::Pointer PipelineTreeModel::filter(const QModelIndex &index)
+{
+  if(!index.isValid())
+  {
+    return AbstractFilter::NullPointer();
+  }
+
+  PipelineTreeItem* item = getItem(index);
+  if (item == nullptr)
+  {
+    return AbstractFilter::NullPointer();
+  }
+
+  return item->getFilter();
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+bool PipelineTreeModel::filterEnabled(const QModelIndex &index)
+{
+  if(!index.isValid())
+  {
+    return false;
+  }
+
+  PipelineTreeItem* item = getItem(index);
+  if (item == nullptr)
+  {
+    return false;
+  }
+
+  return item->getFilterEnabled();
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void PipelineTreeModel::setFilterEnabled(const QModelIndex &index, bool enabled)
+{
+  if(!index.isValid())
+  {
+    return;
+  }
+
+  PipelineTreeItem* item = getItem(index);
+  if (item == nullptr)
+  {
+    return;
+  }
+
+  item->setFilterEnabled(enabled);
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
 Qt::ItemFlags PipelineTreeModel::flags(const QModelIndex& index) const
 {
   if(!index.isValid())
@@ -253,8 +231,7 @@ Qt::ItemFlags PipelineTreeModel::flags(const QModelIndex& index) const
   Qt::ItemFlags defaultFlags = QAbstractItemModel::flags(index);
 
   PipelineTreeItem* item = getItem(index);
-  QString name = item->data(PipelineTreeItem::Name).toString();
-  if(item->data(PipelineTreeItem::Path).toString().isEmpty())
+  if(item->childCount() > 0)
   {
     // This is a node
     return (defaultFlags | Qt::ItemIsEnabled | Qt::ItemIsSelectable | Qt::ItemIsEditable | Qt::ItemIsDragEnabled | Qt::ItemIsDropEnabled);
@@ -410,31 +387,77 @@ int PipelineTreeModel::rowCount(const QModelIndex& parent) const
 bool PipelineTreeModel::setData(const QModelIndex& index, const QVariant& value, int role)
 {
   PipelineTreeItem* item = getItem(index);
-  bool result = false;
 
-  if(role == Qt::UserRole)
+  if(role == Qt::DecorationRole)
   {
-    result = item->setItemHasErrors(value.value<bool>());
-  }
-  else if(role == Qt::DecorationRole)
-  {
-    result = item->setIcon(value.value<QIcon>());
+    item->setIcon(value.value<QIcon>());
   }
   else if(role == Qt::ToolTipRole)
   {
-    result = item->setItemTooltip(value.toString());
+    item->setItemTooltip(value.toString());
   }
   else
   {
-    result = item->setData(index.column(), value);
+    item->setData(index.column(), value);
   }
 
-  if(result)
-  {
-    emit dataChanged(index, index);
-  }
+  emit dataChanged(index, index);
 
-  return result;
+  return true;
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+PipelineTreeItem::WidgetState PipelineTreeModel::widgetState(const QModelIndex &index)
+{
+  PipelineTreeItem* item = getItem(index);
+  return item->getWidgetState();
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void PipelineTreeModel::setWidgetState(const QModelIndex &index, PipelineTreeItem::WidgetState state)
+{
+  PipelineTreeItem* item = getItem(index);
+  item->setWidgetState(state);
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+PipelineTreeItem::ErrorState PipelineTreeModel::errorState(const QModelIndex &index)
+{
+  PipelineTreeItem* item = getItem(index);
+  return item->getErrorState();
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void PipelineTreeModel::setErrorState(const QModelIndex &index, PipelineTreeItem::ErrorState state)
+{
+  PipelineTreeItem* item = getItem(index);
+  item->setErrorState(state);
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+PipelineTreeItem::PipelineState PipelineTreeModel::pipelineState(const QModelIndex &index)
+{
+  PipelineTreeItem* item = getItem(index);
+  return item->getPipelineState();
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void PipelineTreeModel::setPipelineState(const QModelIndex &index, PipelineTreeItem::PipelineState state)
+{
+  PipelineTreeItem* item = getItem(index);
+  item->setPipelineState(state);
 }
 
 // -----------------------------------------------------------------------------
@@ -443,7 +466,7 @@ bool PipelineTreeModel::setData(const QModelIndex& index, const QVariant& value,
 void PipelineTreeModel::setNeedsToBeExpanded(const QModelIndex& index, bool value)
 {
   PipelineTreeItem* item = getItem(index);
-  item->setNeedsToBeExpanded(value);
+  item->setExpanded(value);
 }
 
 // -----------------------------------------------------------------------------
@@ -452,7 +475,7 @@ void PipelineTreeModel::setNeedsToBeExpanded(const QModelIndex& index, bool valu
 bool PipelineTreeModel::needsToBeExpanded(const QModelIndex& index)
 {
   PipelineTreeItem* item = getItem(index);
-  return item->needsToBeExpanded();
+  return item->getExpanded();
 }
 
 // -----------------------------------------------------------------------------
@@ -478,152 +501,66 @@ bool PipelineTreeModel::isEmpty()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void PipelineTreeModel::addFileToTree(QString& path, QModelIndex& specifiedParent)
+QColor PipelineTreeModel::getForegroundColor(const QModelIndex &index) const
 {
-  path = QDir::toNativeSeparators(path);
-
-  QFileInfo fi(path);
-
-  int rowPos = self->rowCount(specifiedParent);
-  self->insertRow(rowPos, specifiedParent);
-  QModelIndex newNameIndex = self->index(rowPos, PipelineTreeItem::Name, specifiedParent);
-
-  if(fi.isFile())
+  if (index.isValid() == false)
   {
-    QString name = fi.baseName();
-    self->setData(newNameIndex, name, Qt::DisplayRole);
-  }
-  else
-  {
-    QDir dir(path);
-    self->setData(newNameIndex, dir.dirName(), Qt::DisplayRole);
+    return QColor();
   }
 
-  if(fi.isFile())
-  {
-    QModelIndex newPathIndex = self->index(rowPos, PipelineTreeItem::Path, specifiedParent);
-    self->setData(newPathIndex, path, Qt::DisplayRole);
-    self->setData(newNameIndex, QIcon(":/bookmark.png"), Qt::DecorationRole);
-  }
-  else
-  {
-    self->setData(newNameIndex, QIcon(":/folder_blue.png"), Qt::DecorationRole);
+  PipelineTreeItem* item = getItem(index);
 
-    QStringList filters;
-    filters << "*.dream3d"
-            << "*.ini"
-            << "*.txt"
-            << "*.json";
-    QDirIterator iter(path, filters, QDir::AllDirs | QDir::Files | QDir::NoDotAndDotDot);
-    while(iter.hasNext())
+  PipelineTreeItem::WidgetState wState = item->getWidgetState();
+  PipelineTreeItem::PipelineState pState = item->getPipelineState();
+  PipelineTreeItem::ErrorState eState = item->getErrorState();
+
+  QColor fgColor;
+
+  switch(wState)
+  {
+  case PipelineTreeItem::WidgetState::Ready:
+    fgColor = QColor();
+    break;
+  case PipelineTreeItem::WidgetState::Executing:
+    fgColor = QColor(6, 140, 190);
+    break;
+  case PipelineTreeItem::WidgetState::Completed:
+    fgColor = QColor(6, 118, 6);
+    break;
+  case PipelineTreeItem::WidgetState::Disabled:
+    fgColor = QColor(96, 96, 96);
+    break;
+  }
+
+  // Do not change the background color if the widget is disabled.
+  if(wState != PipelineTreeItem::WidgetState::Disabled)
+  {
+    switch(pState)
     {
-      QString nextPath = iter.next();
-      addFileToTree(nextPath, newNameIndex);
-    }
-  }
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-QStringList PipelineTreeModel::getFilePaths()
-{
-  return getFilePaths(rootItem);
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-QStringList PipelineTreeModel::getFilePaths(PipelineTreeItem* item)
-{
-  QStringList list;
-  if(item != rootItem && item->childCount() <= 0)
-  {
-    QString filePath = item->data(PipelineTreeItem::Path).toString();
-    if(filePath.isEmpty() == false)
-    {
-      list.append(filePath);
-    }
-    return list;
-  }
-
-  for(int i = 0; i < item->childCount(); i++)
-  {
-    list.append(getFilePaths(item->child(i)));
-  }
-
-  return list;
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-QModelIndexList PipelineTreeModel::findIndexByPath(QString filePath)
-{
-  QModelIndexList list;
-  for(int i = 0; i < rootItem->childCount(); i++)
-  {
-    QModelIndex child = index(i, PipelineTreeItem::Path, QModelIndex());
-    if(rowCount(child) <= 0 && child.data().toString() == filePath)
-    {
-      list.append(child);
-    }
-
-    for(int j = 0; j < rowCount(child); j++)
-    {
-      QModelIndexList subList = findIndexByPath(child, filePath);
-      list.append(subList);
+    case PipelineTreeItem::PipelineState::Running:
+      fgColor = QColor(190, 190, 190);
+      break;
+    case PipelineTreeItem::PipelineState::Stopped:
+      fgColor = QColor(0, 0, 0);
+      break;
+    case PipelineTreeItem::PipelineState::Paused:
+      fgColor = QColor(0, 0, 0);
+      break;
     }
   }
 
-  return list;
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-QModelIndexList PipelineTreeModel::findIndexByPath(const QModelIndex& current, QString filePath)
-{
-  QModelIndex actual = index(current.row(), PipelineTreeItem::Name, current.parent());
-
-  QModelIndexList list;
-  for(int i = 0; i < rowCount(actual); i++)
+  switch(eState)
   {
-    QModelIndex pathIndex = index(i, PipelineTreeItem::Path, actual);
+  case PipelineTreeItem::ErrorState::Ok:
 
-    if(rowCount(pathIndex) <= 0 && pathIndex.data().toString() == filePath)
-    {
-      list.append(pathIndex);
-    }
-
-    QModelIndexList subList = findIndexByPath(pathIndex, filePath);
-    list.append(subList);
+    break;
+  case PipelineTreeItem::ErrorState::Error:
+    fgColor = QColor(179, 2, 5);
+    break;
+  case PipelineTreeItem::ErrorState::Warning:
+    fgColor = QColor(215, 197, 1);
+    break;
   }
 
-  return list;
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-void PipelineTreeModel::updateModel(const QModelIndex& topLeft, const QModelIndex& bottomRight)
-{
-  if(topLeft.isValid())
-  {
-    QString path = index(topLeft.row(), PipelineTreeItem::Path, topLeft.parent()).data().toString();
-    QFileInfo fi(path);
-    if(nullptr != m_Watcher && path.isEmpty() == false && fi.exists())
-    {
-      m_Watcher->addPath(path);
-    }
-  }
-  else if(bottomRight.isValid())
-  {
-    QString path = index(bottomRight.row(), PipelineTreeItem::Path, bottomRight.parent()).data().toString();
-    QFileInfo fi(path);
-    if(nullptr != m_Watcher && path.isEmpty() == false && fi.exists())
-    {
-      m_Watcher->addPath(path);
-    }
-  }
+  return fgColor;
 }

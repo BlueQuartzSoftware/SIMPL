@@ -1,5 +1,5 @@
 /* ============================================================================
-* Copyright (c) 2009-2016 BlueQuartz Software, LLC
+* Copyright (c) 2017 BlueQuartz Software, LLC
 *
 * Redistribution and use in source and binary forms, with or without modification,
 * are permitted provided that the following conditions are met:
@@ -11,7 +11,7 @@
 * list of conditions and the following disclaimer in the documentation and/or
 * other materials provided with the distribution.
 *
-* Neither the name of BlueQuartz Software, the US Air Force, nor the names of its
+* Neither the name of BlueQuartz Software nor the names of its
 * contributors may be used to endorse or promote products derived from this software
 * without specific prior written permission.
 *
@@ -26,10 +26,6 @@
 * OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE
 * USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 *
-* The code contained herein was partially funded by the followig contracts:
-*    United States Air Force Prime Contract FA8650-07-D-5800
-*    United States Air Force Prime Contract FA8650-10-D-5210
-*    United States Prime Contract Navy N00173-07-C-2068
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
@@ -39,14 +35,15 @@
 #include <QtCore/QAbstractItemModel>
 #include <QtCore/QModelIndex>
 #include <QtCore/QVariant>
-#include <QtCore/QFileSystemWatcher>
 
 #include "SIMPLib/Common/SIMPLibSetGetMacros.h"
+#include "SIMPLib/Filtering/AbstractFilter.h"
+
+#include "SVWidgetsLib/Widgets/PipelineTreeItem.h"
 
 #include "SVWidgetsLib/SVWidgetsLib.h"
 
 class QtSSettings;
-class PipelineTreeItem;
 
 class SVWidgetsLib_EXPORT PipelineTreeModel : public QAbstractItemModel
 {
@@ -63,6 +60,11 @@ class SVWidgetsLib_EXPORT PipelineTreeModel : public QAbstractItemModel
 
     QVariant data(const QModelIndex& index, int role) const Q_DECL_OVERRIDE;
     QVariant headerData(int section, Qt::Orientation orientation, int role = Qt::DisplayRole) const Q_DECL_OVERRIDE;
+
+    AbstractFilter::Pointer filter(const QModelIndex &index);
+
+    bool filterEnabled(const QModelIndex &index);
+    void setFilterEnabled(const QModelIndex &index, bool enabled);
 
     virtual QModelIndex sibling(int row, int column, const QModelIndex& idx) const Q_DECL_OVERRIDE;
 
@@ -83,38 +85,31 @@ class SVWidgetsLib_EXPORT PipelineTreeModel : public QAbstractItemModel
 
     bool setData(const QModelIndex& index, const QVariant& value, int role) Q_DECL_OVERRIDE;
 
+    PipelineTreeItem::WidgetState widgetState(const QModelIndex &index);
+    void setWidgetState(const QModelIndex &index, PipelineTreeItem::WidgetState state);
+
+    PipelineTreeItem::ErrorState errorState(const QModelIndex &index);
+    void setErrorState(const QModelIndex &index, PipelineTreeItem::ErrorState state);
+
+    PipelineTreeItem::PipelineState pipelineState(const QModelIndex &index);
+    void setPipelineState(const QModelIndex &index, PipelineTreeItem::PipelineState state);
+
     bool needsToBeExpanded(const QModelIndex& index);
     void setNeedsToBeExpanded(const QModelIndex& index, bool value);
 
     PipelineTreeItem* getRootItem();
 
-    void addFileToTree(QString& path, QModelIndex& specifiedParent);
-
-    QStringList getFilePaths();
-
-    QModelIndexList findIndexByPath(QString filePath);
-
-    void setFileSystemWatcher(QFileSystemWatcher* watcher);
-    QFileSystemWatcher* getFileSystemWatcher();
-
   protected:
     PipelineTreeModel(QObject* parent = 0);
 
-  protected slots:
-    void updateRowState(const QString& path);
-    void updateModel(const QModelIndex& topLeft, const QModelIndex& bottomRight);
-
   private:
     PipelineTreeItem*            rootItem;
-    QFileSystemWatcher*       m_Watcher;
 
     static PipelineTreeModel* self;
 
     PipelineTreeItem* getItem(const QModelIndex& index) const;
 
-    QStringList getFilePaths(PipelineTreeItem* item);
-
-    QModelIndexList findIndexByPath(const QModelIndex& index, QString filePath);
+    QColor getForegroundColor(const QModelIndex &index) const;
 
     PipelineTreeModel(const PipelineTreeModel&);    // Copy Constructor Not Implemented
     void operator=(const PipelineTreeModel&);  // Operator '=' Not Implemented

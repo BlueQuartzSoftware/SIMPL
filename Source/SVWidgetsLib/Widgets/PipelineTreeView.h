@@ -1,5 +1,5 @@
 /* ============================================================================
-* Copyright (c) 2009-2016 BlueQuartz Software, LLC
+* Copyright (c) 2017 BlueQuartz Software, LLC
 *
 * Redistribution and use in source and binary forms, with or without modification,
 * are permitted provided that the following conditions are met:
@@ -11,7 +11,7 @@
 * list of conditions and the following disclaimer in the documentation and/or
 * other materials provided with the distribution.
 *
-* Neither the name of BlueQuartz Software, the US Air Force, nor the names of its
+* Neither the name of BlueQuartz Software nor the names of its
 * contributors may be used to endorse or promote products derived from this software
 * without specific prior written permission.
 *
@@ -26,10 +26,6 @@
 * OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE
 * USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 *
-* The code contained herein was partially funded by the followig contracts:
-*    United States Air Force Prime Contract FA8650-07-D-5800
-*    United States Air Force Prime Contract FA8650-10-D-5210
-*    United States Prime Contract Navy N00173-07-C-2068
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
@@ -46,11 +42,13 @@
 #include <QtWidgets/QTreeWidget>
 #include <QtWidgets/QTreeWidgetItem>
 
+#include "SIMPLib/Filtering/FilterPipeline.h"
+
 #include "SVWidgetsLib/SVWidgetsLib.h"
 
 #include "SVWidgetsLib/Widgets/PipelineTreeModel.h"
 
-
+class PipelineTreeController;
 class PipelineBuilderWidget;
 class QAction;
 class QTreeWidgetItem;
@@ -62,10 +60,12 @@ class SVWidgetsLib_EXPORT PipelineTreeView : public QTreeView
   public:
     enum ItemType
     {
-      Node_Item_Type = 1,
-      Leaf_Item_Type = 2,
+      Pipeline_Item_Type = 1,
+      Filter_Item_Type = 2,
       Unknown_Item_Type = 3
     };
+
+    SIMPL_INSTANCE_PROPERTY(bool, PipelineIsRunning)
 
     /**
     * @brief PipelineTreeView
@@ -106,50 +106,39 @@ class SVWidgetsLib_EXPORT PipelineTreeView : public QTreeView
     void expandIndex(const QModelIndex& index);
 
   protected:
-    void mouseMoveEvent(QMouseEvent* event) Q_DECL_OVERRIDE;
-    void dragEnterEvent(QDragEnterEvent* event) Q_DECL_OVERRIDE;
-    void dragLeaveEvent(QDragLeaveEvent* event) Q_DECL_OVERRIDE;
-    void dragMoveEvent(QDragMoveEvent* event) Q_DECL_OVERRIDE;
-    void dropEvent(QDropEvent* event) Q_DECL_OVERRIDE;
-
     void currentChanged(const QModelIndex& current, const QModelIndex& previous) Q_DECL_OVERRIDE;
+
+    void setFiltersEnabled(QModelIndexList indices, bool enabled);
+    void setSelectedFiltersEnabled(bool enabled);
+
+    void updateActionEnableFilter();
 
     /**
     * @brief Adds the actions in the actionList parameter to the right-click menu
     */
     void addActionList(QList<QAction*> actionList);
 
-  protected slots:
-    void on_actionLocateFile_triggered();
-
   signals:
     void itemWasDropped(QModelIndex parent, QString& title, QIcon icon, QString path, int index, bool allowEditing, bool editState, bool isExpanding);
     void currentIndexChanged(const QModelIndex& current, const QModelIndex& previous);
     void folderChangedState(const QModelIndex& index, bool expand);
     void contextMenuRequested(const QPoint& pos);
+    void filterEnabledStateChanged();
+
+    void needsPreflight(const QModelIndex &pipelineIndex);
 
   private slots:
-
-    /**
-    * @brief mousePressEvent
-    * @param event
-    */
-    void mousePressEvent(QMouseEvent* event) Q_DECL_OVERRIDE;
 
     void requestContextMenu(const QPoint &pos);
 
   private:
-    void performDrag();
     void expandChildren(const QModelIndex& parent, PipelineTreeModel* model);
     QJsonObject wrapModel(QModelIndex index);
     static void UnwrapModel(QString objectName, QJsonObject object, PipelineTreeModel* model, QModelIndex parentIndex);
 
     QPoint                                        m_StartPos;
     QMenu                                         m_Menu;
-    QList<QAction*>                               m_NodeActions;
-    QList<QAction*>                               m_LeafActions;
-    QList<QAction*>                               m_LeafErrorActions;
-    QList<QAction*>                               m_DefaultActions;
+    QAction*                                      m_ActionEnableFilter;
     QList<QPersistentModelIndex>                  m_IndexesBeingDragged;
     QPersistentModelIndex                         m_ActiveIndexBeingDragged;
     QModelIndex                                   m_TopLevelItemPlaceholder;

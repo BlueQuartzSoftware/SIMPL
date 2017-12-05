@@ -1,5 +1,5 @@
 /* ============================================================================
-* Copyright (c) 2009-2016 BlueQuartz Software, LLC
+* Copyright (c) 2017 BlueQuartz Software, LLC
 *
 * Redistribution and use in source and binary forms, with or without modification,
 * are permitted provided that the following conditions are met:
@@ -11,7 +11,7 @@
 * list of conditions and the following disclaimer in the documentation and/or
 * other materials provided with the distribution.
 *
-* Neither the name of BlueQuartz Software, the US Air Force, nor the names of its
+* Neither the name of BlueQuartz Software nor the names of its
 * contributors may be used to endorse or promote products derived from this software
 * without specific prior written permission.
 *
@@ -26,10 +26,6 @@
 * OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE
 * USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 *
-* The code contained herein was partially funded by the followig contracts:
-*    United States Air Force Prime Contract FA8650-07-D-5800
-*    United States Air Force Prime Contract FA8650-10-D-5210
-*    United States Prime Contract Navy N00173-07-C-2068
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
@@ -47,6 +43,9 @@
 #include <QtWidgets/QApplication>
 #include <QtWidgets/QFileDialog>
 #include <QtWidgets/QMessageBox>
+
+#include "SIMPLib/Common/DocRequestManager.h"
+#include "SIMPLib/Filtering/AbstractFilter.h"
 
 #include "SVWidgetsLib/Core/SVWidgetsLibConstants.h"
 #include "SVWidgetsLib/Widgets/PipelineTreeItemDelegate.h"
@@ -73,12 +72,24 @@ PipelineTreeView::PipelineTreeView(QWidget* parent)
 
   PipelineTreeItemDelegate* dlg = new PipelineTreeItemDelegate(this);
   setItemDelegate(dlg);
+
+  m_ActionEnableFilter = new QAction("Enable", this);
+  m_ActionEnableFilter->setCheckable(true);
+  m_ActionEnableFilter->setChecked(true);
+  m_ActionEnableFilter->setEnabled(false);
 }
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-PipelineTreeView::~PipelineTreeView() = default;
+PipelineTreeView::~PipelineTreeView()
+{
+  // Delete action if it exists
+  if(m_ActionEnableFilter)
+  {
+    delete m_ActionEnableFilter;
+  }
+}
 
 // -----------------------------------------------------------------------------
 //
@@ -88,48 +99,6 @@ void PipelineTreeView::addActionList(QList<QAction*> actionList)
   for(int i = 0; i < actionList.size(); i++)
   {
     m_Menu.addAction(actionList[i]);
-  }
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-void PipelineTreeView::mousePressEvent(QMouseEvent* event)
-{
-  if(event->button() == Qt::LeftButton)
-  {
-    m_StartPos = event->pos();
-  }
-
-  QModelIndex index = indexAt(event->pos());
-
-  if(index.isValid() == false)
-  {
-    // Deselect the current item
-    clearSelection();
-    clearFocus();
-    setCurrentIndex(QModelIndex());
-  }
-
-  QTreeView::mousePressEvent(event);
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-void PipelineTreeView::mouseMoveEvent(QMouseEvent* event)
-{
-  PipelineTreeModel* model = PipelineTreeModel::Instance();
-
-  if(event->buttons() & Qt::LeftButton)
-  {
-    QModelIndex index = model->index(currentIndex().row(), PipelineTreeItem::Name, currentIndex().parent());
-    bool itemHasErrors = model->data(index, Qt::UserRole).value<bool>();
-    int distance = (event->pos() - m_StartPos).manhattanLength();
-    if(distance >= QApplication::startDragDistance() && itemHasErrors == false)
-    {
-      performDrag();
-    }
   }
 }
 
@@ -159,148 +128,151 @@ void PipelineTreeView::requestContextMenu(const QPoint& pos)
 
   PipelineTreeModel* model = PipelineTreeModel::Instance();
 
-  QAction* actionAddBookmark = menuItems->getActionAddBookmark();
-  QAction* actionNewFolder = menuItems->getActionNewFolder();
-  QAction* actionRenameBookmark = menuItems->getActionRenameBookmark();
-  QAction* actionRemoveBookmark = menuItems->getActionRemoveBookmark();
-  QAction* actionLocateFile = menuItems->getActionLocateFile();
-  QAction* actionShowBookmarkInFileSystem = menuItems->getActionShowBookmarkInFileSystem();
-  QAction* actionOpenBookmark = menuItems->getActionOpenBookmark();
-  QAction* actionExecuteBookmark = menuItems->getActionOpenExecuteBookmark();
-
   QModelIndexList indexList = selectionModel()->selectedRows(PipelineTreeItem::Name);
 
   QMenu menu;
   if(index.isValid() == false)
   {
-    menu.addAction(actionAddBookmark);
-    {
-      QAction* separator = new QAction(this);
-      separator->setSeparator(true);
-      menu.addAction(separator);
-    }
-    menu.addAction(actionNewFolder);
+    menu.addAction(menuItems->getActionPaste());
+    menu.addSeparator();
+    menu.addAction(menuItems->getActionClearPipeline());
   }
   else
   {
-    QModelIndex actualIndex = model->index(index.row(), PipelineTreeItem::Path, index.parent());
-    QString path = actualIndex.data().toString();
-    if(indexList.size() > 1)
+    menu.addAction(menuItems->getActionCut());
+    menu.addAction(menuItems->getActionCopy());
+    menu.addSeparator();
+
+    int count = indexList.size();
+    bool widgetEnabled = true;
+
+    for(int i = 0; i < count && widgetEnabled; i++)
     {
-      actionRemoveBookmark->setText("Remove Items");
-      menu.addAction(actionRemoveBookmark);
-    }
-    else if(path.isEmpty() == false)
-    {
-      bool itemHasErrors = model->data(actualIndex, Qt::UserRole).value<bool>();
-      if(itemHasErrors == true)
+      AbstractFilter::Pointer filter = model->filter(indexList[i]);
+      if (filter != nullptr)
       {
-        menu.addAction(actionLocateFile);
-
-        {
-          QAction* separator = new QAction(this);
-          separator->setSeparator(true);
-          menu.addAction(separator);
-        }
-
-        actionRemoveBookmark->setText("Remove Bookmark");
-        menu.addAction(actionRemoveBookmark);
-      }
-      else
-      {
-        menu.addAction(actionOpenBookmark);
-        menu.addAction(actionExecuteBookmark);
-        {
-          QAction* separator = new QAction(this);
-          separator->setSeparator(true);
-          menu.addAction(separator);
-        }
-        actionRenameBookmark->setText("Rename Bookmark");
-        menu.addAction(actionRenameBookmark);
-        actionRemoveBookmark->setText("Remove Bookmark");
-        menu.addAction(actionRemoveBookmark);
-        {
-          QAction* separator = new QAction(this);
-          separator->setSeparator(true);
-          menu.addAction(separator);
-        }
-
-        menu.addAction(actionShowBookmarkInFileSystem);
+        widgetEnabled = filter->getEnabled();
       }
     }
-    else if(path.isEmpty())
+
+    if(indexList.contains(index) == false)
     {
-      menu.addAction(actionAddBookmark);
+      // Only toggle the target filter widget if it is not in the selected objects
+      QModelIndexList toggledIndices = QModelIndexList();
+      toggledIndices.push_back(index);
 
-      actionRenameBookmark->setText("Rename Folder");
-      menu.addAction(actionRenameBookmark);
-
+      AbstractFilter::Pointer filter = model->filter(index);
+      if (filter != nullptr)
       {
-        QAction* separator = new QAction(this);
-        separator->setSeparator(true);
-        menu.addAction(separator);
+        widgetEnabled = filter->getEnabled();
       }
+      m_ActionEnableFilter->setChecked(widgetEnabled);
 
-      actionRemoveBookmark->setText("Remove Folder");
-      menu.addAction(actionRemoveBookmark);
+      disconnect(m_ActionEnableFilter, &QAction::toggled, 0, 0);
 
-      {
-        QAction* separator = new QAction(this);
-        separator->setSeparator(true);
-        menu.addAction(separator);
-      }
-
-      menu.addAction(actionNewFolder);
+      connect(m_ActionEnableFilter, &QAction::toggled, [=] { setFiltersEnabled(toggledIndices, m_ActionEnableFilter->isChecked()); });
+      menu.addAction(m_ActionEnableFilter);
     }
+    else
+    {
+      disconnect(m_ActionEnableFilter, &QAction::toggled, 0, 0);
+      m_ActionEnableFilter->setChecked(widgetEnabled);
+
+      connect(m_ActionEnableFilter, &QAction::toggled, [=] { setSelectedFiltersEnabled(m_ActionEnableFilter->isChecked()); });
+      menu.addAction(m_ActionEnableFilter);
+    }
+
+    menu.addSeparator();
+
+    QAction* removeAction;
+    QList<QKeySequence> shortcutList;
+    shortcutList.push_back(QKeySequence(Qt::Key_Backspace));
+    shortcutList.push_back(QKeySequence(Qt::Key_Delete));
+
+    if (indexList.contains(index) == false || indexList.size() == 1)
+    {
+      removeAction = new QAction("Delete", &menu);
+      connect(removeAction, &QAction::triggered, [=] { model->removeRow(index.row()); });
+    }
+    else
+    {
+      removeAction = new QAction(tr("Delete %1 Filters").arg(indexList.size()), &menu);
+      connect(removeAction, &QAction::triggered, [=] {
+        QList<QPersistentModelIndex> persistentList;
+        for(int i = 0; i < indexList.size(); i++)
+        {
+          persistentList.push_back(indexList[i]);
+        }
+
+        for(int i = 0; i < persistentList.size(); i++)
+        {
+          model->removeRow(persistentList[i].row(), persistentList[i].parent());
+        }
+      });
+    }
+    removeAction->setShortcuts(shortcutList);
+    if (getPipelineIsRunning() == true)
+    {
+      removeAction->setDisabled(true);
+    }
+
+    menu.addAction(removeAction);
+
+    menu.addSeparator();
+
+    QAction* actionLaunchHelp = new QAction("Filter Help", this);
+    connect(actionLaunchHelp, &QAction::triggered, [=] {
+      AbstractFilter::Pointer filter = model->filter(index);
+      if (filter != nullptr)
+      {
+        // Launch the help for this filter
+        QString className = filter->getNameOfClass();
+
+        DocRequestManager* docRequester = DocRequestManager::Instance();
+        docRequester->requestFilterDocs(className);
+      }
+    });
+
+    menu.addAction(actionLaunchHelp);
+
+    menu.exec(mapped);
   }
-
-  menu.exec(mapped);
 }
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void PipelineTreeView::on_actionLocateFile_triggered()
+void PipelineTreeView::setFiltersEnabled(QModelIndexList indices, bool enabled)
 {
   PipelineTreeModel* model = PipelineTreeModel::Instance();
 
-  QModelIndex current = currentIndex();
-
-  QModelIndex nameIndex = model->index(current.row(), PipelineTreeItem::Name, current.parent());
-  QModelIndex pathIndex = model->index(current.row(), PipelineTreeItem::Path, current.parent());
-
-  QFileInfo fi(pathIndex.data().toString());
-  QString restrictions;
-  if(fi.completeSuffix() == "json")
+  int count = indices.size();
+  QModelIndexList pipelineIndices;
+  for(int i = 0; i < count; i++)
   {
-    restrictions = "Json File (*.json)";
-  }
-  else if(fi.completeSuffix() == "dream3d")
-  {
-    restrictions = "Dream3d File(*.dream3d)";
-  }
-  else if(fi.completeSuffix() == "txt")
-  {
-    restrictions = "Text File (*.txt)";
-  }
-  else
-  {
-    restrictions = "Ini File (*.ini)";
+    QModelIndex index = indices[i];
+    model->setFilterEnabled(index, enabled);
+    if (pipelineIndices.contains(index.parent()) == false)
+    {
+      pipelineIndices.push_back(index.parent());
+    }
   }
 
-  QString filePath = QFileDialog::getOpenFileName(this, tr("Locate Pipeline File"), pathIndex.data().toString(), tr(restrictions.toStdString().c_str()));
-  if(true == filePath.isEmpty())
+  for (int i = 0; i < pipelineIndices.size(); i++)
   {
-    return;
+    emit needsPreflight(pipelineIndices[i]);
   }
 
-  filePath = QDir::toNativeSeparators(filePath);
+  emit filterEnabledStateChanged();
+}
 
-  // Set the new path into the item
-  model->setData(pathIndex, filePath, Qt::DisplayRole);
-
-  // Change item back to default look and functionality
-  model->setData(nameIndex, false, Qt::UserRole);
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void PipelineTreeView::setSelectedFiltersEnabled(bool enabled)
+{
+  QModelIndexList selectedIndices = selectionModel()->selectedRows(PipelineTreeItem::Name);
+  setFiltersEnabled(selectedIndices, enabled);
 }
 
 // -----------------------------------------------------------------------------
@@ -329,262 +301,6 @@ QModelIndexList PipelineTreeView::filterOutDescendants(QModelIndexList indexList
   }
 
   return indexList;
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-void PipelineTreeView::performDrag()
-{
-  m_ActiveIndexBeingDragged = QPersistentModelIndex(currentIndex());
-
-  m_IndexesBeingDragged.clear();
-
-  QModelIndexList list = selectionModel()->selectedRows();
-
-  // We need to filter out all indexes that already have parents/ancestors selected
-  list = filterOutDescendants(list);
-
-  for(int i = 0; i < list.size(); i++)
-  {
-    m_IndexesBeingDragged.push_back(list[i]);
-  }
-
-  PipelineTreeModel* model = PipelineTreeModel::Instance();
-  QJsonObject obj;
-  for(int i = 0; i < m_IndexesBeingDragged.size(); i++)
-  {
-    QModelIndex draggedIndex = m_IndexesBeingDragged[i];
-    QString name = model->index(draggedIndex.row(), PipelineTreeItem::Name, draggedIndex.parent()).data(Qt::DisplayRole).toString();
-    QString path = model->index(draggedIndex.row(), PipelineTreeItem::Path, draggedIndex.parent()).data(Qt::DisplayRole).toString();
-    if(path.isEmpty() == false)
-    {
-      obj[name] = path;
-    }
-  }
-
-  QJsonDocument doc(obj);
-  QByteArray jsonArray = doc.toJson();
-
-  QMimeData* mimeData = new QMimeData;
-  mimeData->setData(SIMPLView::DragAndDrop::BookmarkItem, jsonArray);
-
-  QDrag* drag = new QDrag(this);
-  drag->setMimeData(mimeData);
-  drag->exec(Qt::CopyAction);
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-void PipelineTreeView::dragEnterEvent(QDragEnterEvent* event)
-{
-  PipelineTreeView* source = qobject_cast<PipelineTreeView*>(event->source());
-  if(source && source != this)
-  {
-    event->setDropAction(Qt::MoveAction);
-    event->accept();
-  }
-  else
-  {
-    event->acceptProposedAction();
-  }
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-void PipelineTreeView::dragLeaveEvent(QDragLeaveEvent* event)
-{
-  PipelineTreeModel* model = PipelineTreeModel::Instance();
-
-  if(m_TopLevelItemPlaceholder.isValid())
-  {
-    model->removeRow(model->rowCount() - 1, rootIndex());
-    m_TopLevelItemPlaceholder = QModelIndex();
-  }
-
-  clearSelection();
-
-  setCurrentIndex(m_ActiveIndexBeingDragged);
-
-  for(int i = 0; i < m_IndexesBeingDragged.size(); i++)
-  {
-    selectionModel()->select(m_IndexesBeingDragged[i], QItemSelectionModel::Select);
-  }
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-void PipelineTreeView::dragMoveEvent(QDragMoveEvent* event)
-{
-  PipelineTreeModel* model = PipelineTreeModel::Instance();
-  int topLevelPHPos = model->rowCount();
-
-  QModelIndex index = indexAt(event->pos());
-  if(index.isValid() == false || index.row() == m_TopLevelItemPlaceholder.row())
-  {
-    if(m_TopLevelItemPlaceholder.isValid() == false)
-    {
-      clearSelection();
-      blockSignals(true);
-      model->insertRow(topLevelPHPos, rootIndex());
-      m_TopLevelItemPlaceholder = model->index(topLevelPHPos, 0, rootIndex());
-      model->setData(m_TopLevelItemPlaceholder, PipelineTreeItem::TopLevelString(), Qt::DisplayRole);
-      setCurrentIndex(m_TopLevelItemPlaceholder);
-      blockSignals(false);
-    }
-  }
-  else if(index.isValid() && index.row() != m_TopLevelItemPlaceholder.row())
-  {
-    if(m_TopLevelItemPlaceholder.isValid())
-    {
-      model->removeRow(topLevelPHPos - 1, rootIndex());
-      m_TopLevelItemPlaceholder = QModelIndex();
-    }
-    clearSelection();
-
-    if(model->flags(index).testFlag(Qt::ItemIsDropEnabled) == true)
-    {
-      setCurrentIndex(index);
-    }
-    else
-    {
-      // Set the current index back to the index being dragged, but don't highlight it
-      selectionModel()->setCurrentIndex(m_ActiveIndexBeingDragged, QItemSelectionModel::NoUpdate);
-    }
-  }
-
-  PipelineTreeView* source = qobject_cast<PipelineTreeView*>(event->source());
-  if(source && source != this)
-  {
-    event->setDropAction(Qt::MoveAction);
-    event->accept();
-  }
-  else
-  {
-    event->acceptProposedAction();
-  }
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-void PipelineTreeView::dropEvent(QDropEvent* event)
-{
-  PipelineTreeModel* model = PipelineTreeModel::Instance();
-
-  const QMimeData* mimedata = event->mimeData();
-  if(mimedata->hasFormat(SIMPLView::DragAndDrop::BookmarkItem))
-  {
-    QPersistentModelIndex newParent = model->index(currentIndex().row(), PipelineTreeItem::Name, currentIndex().parent());
-
-    // Don't count the destination item in the list of dragged items (if it happens to be in there)
-    if(m_IndexesBeingDragged.contains(newParent) == true)
-    {
-      m_IndexesBeingDragged.removeAt(m_IndexesBeingDragged.indexOf(newParent));
-    }
-
-    if(model->flags(newParent).testFlag(Qt::ItemIsDropEnabled) == true)
-    {
-      if(m_TopLevelItemPlaceholder.isValid())
-      {
-        // If the parent is the placeholder, change the parent to the root.
-        if(m_TopLevelItemPlaceholder == newParent)
-        {
-          newParent = QModelIndex();
-        }
-
-        model->removeRow(model->rowCount() - 1, rootIndex());
-        m_TopLevelItemPlaceholder = QModelIndex();
-      }
-
-      /* Check to make sure that all selected indexes can be moved before moving them.
-           This is where we check for cases where a selected index is trying to be moved
-           into the child of that selected index, which, according to a common tree
-           structure and implementation, should not be allowed */
-
-      if(newParent != QModelIndex())
-      {
-        QModelIndex testIndex = newParent.parent();
-        while(testIndex.isValid() == true)
-        {
-          for(int i = m_IndexesBeingDragged.size() - 1; i >= 0; i--)
-          {
-            if(testIndex == m_IndexesBeingDragged[i])
-            {
-              QMessageBox::critical(this, "Bookmarks Error", "Cannot move bookmarks.\nThe destination folder \"" + newParent.data(PipelineTreeItem::Name).toString() +
-                                                                 "\" is a subfolder of the source folder \"" + m_IndexesBeingDragged[i].data(PipelineTreeItem::Name).toString() + "\".",
-                                    QMessageBox::Ok, QMessageBox::Ok);
-              return;
-            }
-          }
-          testIndex = testIndex.parent();
-        }
-      }
-
-      int insertRow = model->rowCount(newParent);
-      for(int i = m_IndexesBeingDragged.size() - 1; i >= 0; i--)
-      {
-        QPersistentModelIndex index = m_IndexesBeingDragged[i];
-        QModelIndex oldParent = index.parent();
-
-        if(index.isValid())
-        {
-          model->moveRow(oldParent, index.row(), newParent, insertRow);
-        }
-      }
-
-      expand(newParent);
-      model->sort(PipelineTreeItem::Name, Qt::AscendingOrder);
-      event->accept();
-      return;
-    }
-  }
-  else if(mimedata->hasUrls() || mimedata->hasText())
-  {
-    QByteArray dropData = mimedata->data("text/plain");
-    QString data(dropData);
-
-    QList<QString> paths;
-    if(mimedata->hasUrls())
-    {
-      QList<QUrl> urls = mimedata->urls();
-      for(int i = 0; i < urls.size(); i++)
-      {
-        paths.push_back(urls[i].toLocalFile());
-      }
-    }
-    else
-    {
-      paths.push_back(data);
-    }
-
-    QModelIndex parentIndex = currentIndex();
-    if(m_TopLevelItemPlaceholder.isValid())
-    {
-      if(parentIndex == m_TopLevelItemPlaceholder)
-      {
-        parentIndex = rootIndex();
-      }
-
-      model->removeRow(model->rowCount() - 1, rootIndex());
-      m_TopLevelItemPlaceholder = QModelIndex();
-    }
-
-    for(int i = 0; i < paths.size(); i++)
-    {
-      model->addFileToTree(paths[i], parentIndex);
-      expand(parentIndex);
-    }
-
-    model->sort(PipelineTreeItem::Name, Qt::AscendingOrder);
-    event->accept();
-    return;
-  }
-
-  event->ignore();
 }
 
 // -----------------------------------------------------------------------------
@@ -690,7 +406,6 @@ QJsonObject PipelineTreeView::wrapModel(QModelIndex currentIndex)
   QJsonObject obj;
 
   QString name = model->index(currentIndex.row(), PipelineTreeItem::Name, currentIndex.parent()).data().toString();
-  QString path = model->index(currentIndex.row(), PipelineTreeItem::Path, currentIndex.parent()).data().toString();
 
   for(int i = 0; i < model->rowCount(currentIndex); i++)
   {
@@ -704,10 +419,6 @@ QJsonObject PipelineTreeView::wrapModel(QModelIndex currentIndex)
   if(model->flags(currentIndex).testFlag(Qt::ItemIsDropEnabled) == true)
   {
     obj.insert("Expanded", isExpanded(currentIndex));
-  }
-  else
-  {
-    obj.insert("Path", path);
   }
 
   return obj;
@@ -735,13 +446,6 @@ PipelineTreeModel *PipelineTreeView::FromJsonObject(QJsonObject treeObject)
     }
   }
 
-  QStringList paths = model->getFilePaths();
-  if(!paths.isEmpty())
-  {
-    model->getFileSystemWatcher()->addPaths(paths);
-  }
-  connect(model->getFileSystemWatcher(), SIGNAL(fileChanged(const QString&)), model, SLOT(updateRowState(const QString&)));
-
   return model;
 }
 
@@ -753,7 +457,6 @@ void PipelineTreeView::UnwrapModel(QString objectName, QJsonObject object, Pipel
   int row = model->rowCount(parentIndex);
   model->insertRow(row, parentIndex);
   QModelIndex nameIndex = model->index(row, PipelineTreeItem::Name, parentIndex);
-  QModelIndex pathIndex = model->index(row, PipelineTreeItem::Path, parentIndex);
 
   QString path = object["Path"].toString();
   bool expanded = object["Expanded"].toBool();
@@ -776,9 +479,7 @@ void PipelineTreeView::UnwrapModel(QString objectName, QJsonObject object, Pipel
   path = QDir::toNativeSeparators(path);
 
   model->setData(nameIndex, objectName, Qt::DisplayRole);
-  model->setData(pathIndex, path, Qt::DisplayRole);
   model->setNeedsToBeExpanded(nameIndex, expanded);
-  model->setNeedsToBeExpanded(pathIndex, expanded);
 
   QStringList keys = object.keys();
   keys.sort(Qt::CaseInsensitive);
@@ -790,4 +491,36 @@ void PipelineTreeView::UnwrapModel(QString objectName, QJsonObject object, Pipel
       PipelineTreeView::UnwrapModel(keys[i], val.toObject(), model, nameIndex);
     }
   }
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void PipelineTreeView::updateActionEnableFilter()
+{
+  PipelineTreeModel* model = PipelineTreeModel::Instance();
+
+  QModelIndexList indices = selectionModel()->selectedRows(PipelineTreeItem::Name);
+
+  // Set Enabled / Disabled
+  disconnect(m_ActionEnableFilter, &QAction::toggled, 0, 0);
+  m_ActionEnableFilter->setEnabled(indices.size());
+
+  // Set checked state
+  int count = indices.size();
+  bool widgetEnabled = true;
+  for(int i = 0; i < count && widgetEnabled; i++)
+  {
+    AbstractFilter::Pointer filter = model->filter(indices[i]);
+    if (filter != nullptr)
+    {
+      widgetEnabled = filter->getEnabled();
+    }
+  }
+
+  // Lambda connections don't allow Qt::UniqueConnection
+  // Also, this needs to be disconnected before changing the checked state
+  m_ActionEnableFilter->setChecked(widgetEnabled);
+
+  connect(m_ActionEnableFilter, &QAction::toggled, [=] { setSelectedFiltersEnabled(m_ActionEnableFilter->isChecked()); });
 }

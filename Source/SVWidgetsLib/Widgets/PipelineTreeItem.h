@@ -1,5 +1,5 @@
 /* ============================================================================
-* Copyright (c) 2009-2016 BlueQuartz Software, LLC
+* Copyright (c) 2017 BlueQuartz Software, LLC
 *
 * Redistribution and use in source and binary forms, with or without modification,
 * are permitted provided that the following conditions are met:
@@ -11,7 +11,7 @@
 * list of conditions and the following disclaimer in the documentation and/or
 * other materials provided with the distribution.
 *
-* Neither the name of BlueQuartz Software, the US Air Force, nor the names of its
+* Neither the name of BlueQuartz Software nor the names of its
 * contributors may be used to endorse or promote products derived from this software
 * without specific prior written permission.
 *
@@ -26,10 +26,6 @@
 * OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE
 * USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 *
-* The code contained herein was partially funded by the followig contracts:
-*    United States Air Force Prime Contract FA8650-07-D-5800
-*    United States Air Force Prime Contract FA8650-10-D-5210
-*    United States Prime Contract Navy N00173-07-C-2068
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
@@ -42,6 +38,9 @@
 
 #include <QtGui/QIcon>
 
+#include "SIMPLib/Common/SIMPLibSetGetMacros.h"
+#include "SIMPLib/Filtering/AbstractFilter.h"
+
 #include "SVWidgetsLib/SVWidgetsLib.h"
 
 class SVWidgetsLib_EXPORT PipelineTreeItem
@@ -50,11 +49,44 @@ class SVWidgetsLib_EXPORT PipelineTreeItem
     PipelineTreeItem(const QVector<QVariant>& data, PipelineTreeItem* parent = 0);
     virtual ~PipelineTreeItem();
 
-    enum ColumnData
+    SIMPL_INSTANCE_PROPERTY(AbstractFilter::Pointer, Filter)
+    SIMPL_INSTANCE_PROPERTY(bool, FilterEnabled)
+    SIMPL_INSTANCE_PROPERTY(QIcon, Icon)
+    SIMPL_INSTANCE_PROPERTY(bool, Expanded)
+    SIMPL_INSTANCE_PROPERTY(QString, ItemTooltip)
+
+    enum TreeItemData
     {
       Name,
-      Path
+      FilterEnabledBtn
     };
+
+    using EnumType = unsigned int;
+
+    enum class WidgetState : EnumType
+    {
+      Ready = 0,      //!<
+      Executing = 1, //!<
+      Completed = 2, //!<
+      Disabled = 3
+    };
+    SIMPL_INSTANCE_PROPERTY(WidgetState, WidgetState)
+
+    enum class PipelineState : EnumType
+    {
+      Running = 0,
+      Stopped = 1,
+      Paused = 4,
+    };
+    SIMPL_INSTANCE_PROPERTY(PipelineState, PipelineState)
+
+    enum class ErrorState : EnumType
+    {
+        Ok = 0,
+        Error = 1,
+        Warning = 2,
+    };
+    SIMPL_INSTANCE_PROPERTY(ErrorState, ErrorState)
 
     PipelineTreeItem* child(int number);
     PipelineTreeItem* parent();
@@ -64,18 +96,6 @@ class SVWidgetsLib_EXPORT PipelineTreeItem
 
     QVariant data(int column) const;
     bool setData(int column, const QVariant& value);
-
-    bool getItemHasErrors();
-    bool setItemHasErrors(const bool& value);
-
-    QString getItemTooltip();
-    bool setItemTooltip(const QString& value);
-
-    QIcon getIcon();
-    bool setIcon(const QIcon& icon);
-
-    bool needsToBeExpanded();
-    void setNeedsToBeExpanded(bool value);
 
     bool insertChild(int position, PipelineTreeItem* child);
     bool insertChildren(int position, int count, int columns);
@@ -92,13 +112,9 @@ class SVWidgetsLib_EXPORT PipelineTreeItem
     static QString TopLevelString();
 
   private:
-    QList<PipelineTreeItem*>               m_ChildItems;
-    QVector<QVariant>                   m_ItemData;
-    PipelineTreeItem*                      m_ParentItem;
-    bool                                m_ItemHasErrors;
-    QString                             m_ItemTooltip;
-    bool                                m_NeedsToBeExpanded;
-    QIcon                               m_Icon;
+    QList<PipelineTreeItem*>                m_ChildItems;
+    QVector<QVariant>                       m_ItemData;
+    PipelineTreeItem*                       m_ParentItem;
 
     PipelineTreeItem(const PipelineTreeItem&);    // Copy Constructor Not Implemented
     void operator=(const PipelineTreeItem&);  // Operator '=' Not Implemented

@@ -1,5 +1,5 @@
 /* ============================================================================
-* Copyright (c) 2009-2016 BlueQuartz Software, LLC
+* Copyright (c) 2017 BlueQuartz Software, LLC
 *
 * Redistribution and use in source and binary forms, with or without modification,
 * are permitted provided that the following conditions are met:
@@ -11,7 +11,7 @@
 * list of conditions and the following disclaimer in the documentation and/or
 * other materials provided with the distribution.
 *
-* Neither the name of BlueQuartz Software, the US Air Force, nor the names of its
+* Neither the name of BlueQuartz Software nor the names of its
 * contributors may be used to endorse or promote products derived from this software
 * without specific prior written permission.
 *
@@ -26,10 +26,6 @@
 * OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE
 * USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 *
-* The code contained herein was partially funded by the followig contracts:
-*    United States Air Force Prime Contract FA8650-07-D-5800
-*    United States Air Force Prime Contract FA8650-10-D-5210
-*    United States Prime Contract Navy N00173-07-C-2068
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
@@ -43,10 +39,10 @@
 // -----------------------------------------------------------------------------
 PipelineTreeItem::PipelineTreeItem(const QVector<QVariant>& data, PipelineTreeItem* parent)
 : m_ItemData(data)
+, m_Filter(nullptr)
 , m_ParentItem(parent)
-, m_ItemHasErrors(false)
 , m_ItemTooltip("")
-, m_NeedsToBeExpanded(false)
+, m_Expanded(false)
 , m_Icon(QIcon())
 {
 }
@@ -234,73 +230,6 @@ bool PipelineTreeItem::setData(int column, const QVariant& value)
 
   m_ItemData[column] = value;
   return true;
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-bool PipelineTreeItem::getItemHasErrors()
-{
-  return m_ItemHasErrors;
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-bool PipelineTreeItem::setItemHasErrors(const bool& value)
-{
-  m_ItemHasErrors = value;
-  return true;
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-QString PipelineTreeItem::getItemTooltip()
-{
-  return m_ItemTooltip;
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-bool PipelineTreeItem::setItemTooltip(const QString& value)
-{
-  m_ItemTooltip = value;
-  return true;
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-QIcon PipelineTreeItem::getIcon()
-{
-  return m_Icon;
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-bool PipelineTreeItem::setIcon(const QIcon& icon)
-{
-  m_Icon = icon;
-  return true;
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-bool PipelineTreeItem::needsToBeExpanded()
-{
-  return m_NeedsToBeExpanded;
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-void PipelineTreeItem::setNeedsToBeExpanded(bool value)
-{
-  m_NeedsToBeExpanded = value;
 }
 
 // -----------------------------------------------------------------------------

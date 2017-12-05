@@ -29,32 +29,58 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-#ifndef _pipelinetreeitemdelegate_h_
-#define _pipelinetreeitemdelegate_h_
+#ifndef _PipelineTreeController_h_
+#define _PipelineTreeController_h_
 
-#include <QtCore/QModelIndex>
+#include <QtCore/QObject>
+#include <QtCore/QStack>
 
-#include <QStyledItemDelegate>
+#include "SIMPLib/Common/SIMPLibSetGetMacros.h"
+#include "SIMPLib/Filtering/FilterPipeline.h"
 
-class PipelineTreeItemDelegate : public QStyledItemDelegate
+#include "SVWidgetsLib/SVWidgetsLib.h"
+
+class SVWidgetsLib_EXPORT PipelineTreeController : public QObject
 {
     Q_OBJECT
 
   public:
-    explicit PipelineTreeItemDelegate(QObject* parent = 0);
+    SIMPL_TYPE_MACRO(PipelineTreeController)
 
-    virtual ~PipelineTreeItemDelegate();
+    PipelineTreeController(QObject* parent = 0);
+    ~PipelineTreeController();
 
-  protected:
-    QWidget* createEditor(QWidget* parent, const QStyleOptionViewItem& option, const QModelIndex& index) const Q_DECL_OVERRIDE;
-    void setEditorData(QWidget* editor, const QModelIndex& index) const Q_DECL_OVERRIDE;
-    void setModelData(QWidget* editor, QAbstractItemModel* model, const QModelIndex& index) const Q_DECL_OVERRIDE;
-    void updateEditorGeometry(QWidget* editor, const QStyleOptionViewItem& option, const QModelIndex& index) const Q_DECL_OVERRIDE;
-    void paint(QPainter* painter, const QStyleOptionViewItem& option, const QModelIndex& index) const Q_DECL_OVERRIDE;
+    /**
+     * @brief getFilterPipeline
+     * @param pipelineIndex
+     * @return
+     */
+    FilterPipeline::Pointer getFilterPipeline(const QModelIndex &pipelineIndex);
+
+  public slots:
+    /**
+     * @brief preflightPipeline
+     * @param pipelineIndex
+     */
+    void preflightPipeline(const QModelIndex &pipelineIndex);
+
+    /**
+     * @brief Should be block this class from either emitting a preflight signal or otherwise running a preflight.
+     * @param b
+     */
+    void blockPreflightSignals(bool b);
+
+  signals:
+    void pipelineIssuesCleared();
+    void preflightFinished(int err);
 
   private:
-    PipelineTreeItemDelegate(const PipelineTreeItemDelegate&) = delete; // Copy Constructor Not Implemented
-    void operator=(const PipelineTreeItemDelegate&) = delete;        // Operator '=' Not Implemented
+    bool                                              m_BlockPreflight = false;
+    QStack<bool>                                      m_BlockPreflightStack;
+    QList<QObject*>                                   m_PipelineMessageObservers;
+
+    PipelineTreeController(const PipelineTreeController&);    // Copy Constructor Not Implemented
+    void operator=(const PipelineTreeController&);  // Operator '=' Not Implemented
 };
 
-#endif // _pipelinetreeitemdelegate_h_
+#endif // _PipelineTreeController_h_
