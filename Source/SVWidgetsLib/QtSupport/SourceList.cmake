@@ -86,14 +86,17 @@ set_source_files_properties( ${SVWidgetsLib_QtSupport_Generated_MOC_SRCS} PROPER
 
 
 # --------------------------------------------------------------------
-# Continue on with our Qt4 section
+# Wrap UI files so they are AUTO UIC'ed
 QT5_WRAP_UI( SVWidgetsLib_QtSupport_Generated_UI_HDRS   
-${SVWidgetsLib_SOURCE_DIR}/QtSupport/UI_Files/QtSApplicationAboutBoxDialog.ui
-${SVWidgetsLib_SOURCE_DIR}/QtSupport/UI_Files/QtSBookmarkMissingDialog.ui
-${SVWidgetsLib_SOURCE_DIR}/QtSupport/UI_Files/QtSDistributionTypeWidget.ui
-${SVWidgetsLib_SOURCE_DIR}/QtSupport/UI_Files/QtSFileDragMessageBox.ui
-${SVWidgetsLib_SOURCE_DIR}/QtSupport/UI_Files/QtSStringEdit.ui
+  ${SVWidgetsLib_SOURCE_DIR}/QtSupport/UI_Files/QtSApplicationAboutBoxDialog.ui
+  ${SVWidgetsLib_SOURCE_DIR}/QtSupport/UI_Files/QtSBookmarkMissingDialog.ui
+  ${SVWidgetsLib_SOURCE_DIR}/QtSupport/UI_Files/QtSDistributionTypeWidget.ui
+  ${SVWidgetsLib_SOURCE_DIR}/QtSupport/UI_Files/QtSFileDragMessageBox.ui
+  ${SVWidgetsLib_SOURCE_DIR}/QtSupport/UI_Files/QtSStringEdit.ui
 )
+foreach(h ${SVWidgetsLib_QtSupport_Generated_UI_HDRS} ${SVWidgetsLib_QtSupport_Generated_RC_SRCS})
+  set_property(SOURCE ${h} PROPERTY SKIP_AUTOMOC ON)
+endforeach()
 
 # --------------------------------------------------------------------
 #-- Put the Qt generated files into their own group for IDEs

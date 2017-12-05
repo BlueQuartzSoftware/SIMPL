@@ -29,11 +29,6 @@ set_source_files_properties( ${SVWidgetsLib_Core_Generated_MOC_SRCS} PROPERTIES 
 set_source_files_properties( ${SVWidgetsLib_Core_Generated_MOC_SRCS} PROPERTIES HEADER_FILE_ONLY TRUE)
 
 
-
-# --------------------------------------------------------------------
-# Continue on with our Qt4 section
-QT5_WRAP_UI( SVWidgetsLib_Core_Generated_UI_HDRS   )
-
 # --------------------------------------------------------------------
 #-- Put the Qt generated files into their own group for IDEs
 cmp_IDE_SOURCE_PROPERTIES( "Generated/Qt_Moc" "" "${SVWidgetsLib_Core_Generated_MOC_SRCS}" "0")

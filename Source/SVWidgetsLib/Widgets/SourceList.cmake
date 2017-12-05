@@ -124,8 +124,11 @@ set_source_files_properties( ${SVWidgetsLib_Widgets_Generated_MOC_SRCS} PROPERTI
 # QT5_ADD_RESOURCES( SVWidgetsLib_Generated_RC_SRCS "${SIMPLViewProj_SOURCE_DIR}/Documentation/Filters/Generated_FilterDocs.qrc"  )
 
 # --------------------------------------------------------------------
-# Continue on with our Qt4 section
+# Wrap UI files so they are AUTO UIC'ed
 QT5_WRAP_UI( SVWidgetsLib_Widgets_Generated_UI_HDRS ${SVWidgetsLib_Widgets_UIS} )
+foreach(h ${SVWidgetsLib_Widgets_Generated_UI_HDRS})
+  set_property(SOURCE ${h} PROPERTY SKIP_AUTOMOC ON)
+endforeach()
 
 # --------------------------------------------------------------------
 #-- Put the Qt generated files into their own group for IDEs
