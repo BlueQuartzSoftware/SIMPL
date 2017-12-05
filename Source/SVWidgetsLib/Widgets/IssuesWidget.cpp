@@ -136,12 +136,12 @@ void IssuesWidget::displayCachedMessages()
   }
   if(errCount > 0)
   {
-    emit tableHasErrors(true);
+    emit tableHasErrors(true, errCount);
     emit showTable(true);
   }
   else
   {
-    emit tableHasErrors(false);
+    emit tableHasErrors(false, 0);
   }
 
   // Now create the correct number of table rows.

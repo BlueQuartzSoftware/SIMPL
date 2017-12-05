@@ -81,7 +81,7 @@ class SVWidgetsLib_EXPORT IssuesWidget : public QWidget, public IObserver
     void showFilterHelp(const QString &url);
 
   signals:
-    void tableHasErrors(bool b);
+    void tableHasErrors(bool b, int count);
     void showTable(bool b);
 
   protected:
