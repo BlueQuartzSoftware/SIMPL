@@ -130,7 +130,7 @@ QFileInfo getFilterParameterPath(AbstractFilter* filter, FilterParameter* parame
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-FilterInputWidget::FilterInputWidget(QString filterClassName, PipelineFilterObject* filterObj, QWidget* parent)
+FilterInputWidget::FilterInputWidget(QString filterClassName, PipelineFilterObject *filterObj, QWidget* parent)
 : QWidget(parent)
 , m_FilterClassName(filterClassName)
 , m_AdvFadedOut(false)
@@ -144,6 +144,25 @@ FilterInputWidget::FilterInputWidget(QString filterClassName, PipelineFilterObje
   }
 
   layoutWidgets(filterObj->getFilter());
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+FilterInputWidget::FilterInputWidget(AbstractFilter::Pointer filter, QWidget* parent)
+: QWidget(parent)
+, m_FilterClassName(filter->getNameOfClass())
+, m_AdvFadedOut(false)
+{
+  setupUi(this);
+  setupGui();
+
+  if(m_OpenDialogLastFilePath.isEmpty())
+  {
+    m_OpenDialogLastFilePath = QDir::homePath();
+  }
+
+  layoutWidgets(filter);
 }
 
 // -----------------------------------------------------------------------------
@@ -601,7 +620,7 @@ void FilterInputWidget::removeWidgetInputs(SVPipelineFilterWidget* w)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void FilterInputWidget::displayFilterParameters(PipelineFilterObject* w)
+void FilterInputWidget::displayFilterParameters(AbstractFilter::Pointer filter)
 {
   clearInputWidgets();
 
@@ -611,31 +630,30 @@ void FilterInputWidget::displayFilterParameters(PipelineFilterObject* w)
     m_VariablesWidget->setVisible(true);
   }
 
-  AbstractFilter::Pointer f = w->getFilter();
-  if(f.get())
+  if(filter.get())
   {
-    m_BrandingLabel = f->getBrandingString() + "  [" + w->getCompiledLibraryName() + "/" + w->getFilterGroup() + "/" + w->getFilterClassName() + "]";
+    m_BrandingLabel = filter->getBrandingString() + "  [" + filter->getCompiledLibraryName() + "/" + filter->getGroupName() + "/" + filter->getNameOfClass() + "]";
     brandingLabel->setText(m_BrandingLabel);
   }
   // Add a label at the top of the Inputs Tabs to show what filter we are working on
-  filterHumanLabel->setText(w->getHumanLabel());
+  filterHumanLabel->setText(filter->getHumanLabel());
   filterIndex->clear();
   QString style;
 
 
   QString filterGroup;
   QTextStream groupStream(&filterGroup);
-  groupStream << "Group: " << w->getFilterGroup() << "\n";
-  groupStream << "Subgroup: " << w->getFilterSubGroup();
+  groupStream << "Group: " << filter->getGroupName() << "\n";
+  groupStream << "Subgroup: " << filter->getSubGroupName();
   filterHumanLabel->setToolTip(filterGroup);
 
-  QColor bgColor =  w->getGroupColor();
-  QColor borderColor = QColor::fromHsv(bgColor.hue(), 100, 120);
+//  QColor bgColor =  w->getGroupColor();
+//  QColor borderColor = QColor::fromHsv(bgColor.hue(), 100, 120);
 
   QTextStream styleStream(&style);
   styleStream << "QFrame#" << labelFrame->objectName() << "{";
   styleStream << "border-bottom: 0px solid;";
-  styleStream << "border-bottom-color: " << borderColor.name() << ";";
+//  styleStream << "border-bottom-color: " << borderColor.name() << ";";
  // styleStream << "background-color: " << bgColor.name() << ";";
  // styleStream << "border-radius: 0 0 0 0px;";
   styleStream << "}";

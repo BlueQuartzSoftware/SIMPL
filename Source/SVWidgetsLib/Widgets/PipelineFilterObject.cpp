@@ -122,7 +122,7 @@ void PipelineFilterObject::setupFilterInputWidget()
   m_FilterInputWidget = new FilterInputWidget(m_Filter->getNameOfClass(), this, nullptr);
 
   // Initialize the filter input widget with values
-  m_FilterInputWidget->displayFilterParameters(this);
+  m_FilterInputWidget->displayFilterParameters(m_Filter);
 }
 
 // -----------------------------------------------------------------------------

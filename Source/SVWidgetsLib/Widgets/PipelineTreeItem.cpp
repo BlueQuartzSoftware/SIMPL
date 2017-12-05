@@ -34,17 +34,23 @@
 #include <QtCore/QStringList>
 #include <QtGui/QColor>
 
+#include "SVWidgetsLib/Widgets/FilterInputWidget.h"
+
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
 PipelineTreeItem::PipelineTreeItem(const QVector<QVariant>& data, PipelineTreeItem* parent)
-: m_ItemData(data)
-, m_Filter(nullptr)
-, m_ParentItem(parent)
-, m_ItemTooltip("")
-, m_Expanded(false)
+: m_FilterInputWidget(nullptr)
 , m_Icon(QIcon())
+, m_Expanded(false)
+, m_ItemTooltip("")
+, m_WidgetState(PipelineTreeItem::WidgetState::Ready)
+, m_PipelineState(PipelineTreeItem::PipelineState::Stopped)
+, m_ErrorState(PipelineTreeItem::ErrorState::Ok)
+, m_ItemData(data)
+, m_ParentItem(parent)
 {
+
 }
 
 // -----------------------------------------------------------------------------
@@ -106,6 +112,24 @@ int PipelineTreeItem::columnCount() const
 QVariant PipelineTreeItem::data(int column) const
 {
   return m_ItemData.value(column);
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+AbstractFilter::Pointer PipelineTreeItem::getFilter()
+{
+  return m_Filter;
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void PipelineTreeItem::setFilter(AbstractFilter::Pointer filter)
+{
+  m_Filter = filter;
+
+  setupFilterInputWidget();
 }
 
 // -----------------------------------------------------------------------------
@@ -238,4 +262,20 @@ bool PipelineTreeItem::setData(int column, const QVariant& value)
 void PipelineTreeItem::setParent(PipelineTreeItem* parent)
 {
   m_ParentItem = parent;
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void PipelineTreeItem::setupFilterInputWidget()
+{
+  // Instantiate the filter input widget object
+  if(m_FilterInputWidget)
+  {
+    m_FilterInputWidget->deleteLater();
+  }
+
+  m_FilterInputWidget = new FilterInputWidget(m_Filter, nullptr);
+
+  m_FilterInputWidget->displayFilterParameters(m_Filter);
 }

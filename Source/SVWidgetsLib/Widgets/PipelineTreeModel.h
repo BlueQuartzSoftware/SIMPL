@@ -62,6 +62,9 @@ class SVWidgetsLib_EXPORT PipelineTreeModel : public QAbstractItemModel
     QVariant headerData(int section, Qt::Orientation orientation, int role = Qt::DisplayRole) const Q_DECL_OVERRIDE;
 
     AbstractFilter::Pointer filter(const QModelIndex &index);
+    void setFilter(const QModelIndex &index, AbstractFilter::Pointer filter);
+
+    FilterInputWidget* filterInputWidget(const QModelIndex &index);
 
     bool filterEnabled(const QModelIndex &index);
     void setFilterEnabled(const QModelIndex &index, bool enabled);

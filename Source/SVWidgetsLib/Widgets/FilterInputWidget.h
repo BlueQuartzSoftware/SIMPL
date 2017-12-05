@@ -60,6 +60,7 @@ class SVWidgetsLib_EXPORT FilterInputWidget : public QWidget, private Ui::Filter
 
   public:
     FilterInputWidget(QString filterClassName, PipelineFilterObject *filterObj, QWidget* parent = nullptr);
+    FilterInputWidget(AbstractFilter::Pointer filter, QWidget* parent = nullptr);
     virtual ~FilterInputWidget();
 
     virtual void setupGui();
@@ -75,7 +76,7 @@ class SVWidgetsLib_EXPORT FilterInputWidget : public QWidget, private Ui::Filter
     void on_filterHelpBtn_clicked();
 
     void clearInputWidgets();
-    void displayFilterParameters(PipelineFilterObject* w);
+    void displayFilterParameters(AbstractFilter::Pointer filter);
     void removeWidgetInputs(SVPipelineFilterWidget* w);
 
   signals:

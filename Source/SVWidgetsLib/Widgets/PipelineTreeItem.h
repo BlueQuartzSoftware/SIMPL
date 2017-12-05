@@ -43,13 +43,15 @@
 
 #include "SVWidgetsLib/SVWidgetsLib.h"
 
+class FilterInputWidget;
+
 class SVWidgetsLib_EXPORT PipelineTreeItem
 {
   public:
     PipelineTreeItem(const QVector<QVariant>& data, PipelineTreeItem* parent = 0);
     virtual ~PipelineTreeItem();
 
-    SIMPL_INSTANCE_PROPERTY(AbstractFilter::Pointer, Filter)
+    SIMPL_INSTANCE_PROPERTY(FilterInputWidget*, FilterInputWidget)
     SIMPL_INSTANCE_PROPERTY(bool, FilterEnabled)
     SIMPL_INSTANCE_PROPERTY(QIcon, Icon)
     SIMPL_INSTANCE_PROPERTY(bool, Expanded)
@@ -97,6 +99,9 @@ class SVWidgetsLib_EXPORT PipelineTreeItem
     QVariant data(int column) const;
     bool setData(int column, const QVariant& value);
 
+    AbstractFilter::Pointer getFilter();
+    void setFilter(AbstractFilter::Pointer filter);
+
     bool insertChild(int position, PipelineTreeItem* child);
     bool insertChildren(int position, int count, int columns);
     bool insertColumns(int position, int columns);
@@ -114,7 +119,10 @@ class SVWidgetsLib_EXPORT PipelineTreeItem
   private:
     QList<PipelineTreeItem*>                m_ChildItems;
     QVector<QVariant>                       m_ItemData;
+    AbstractFilter::Pointer                 m_Filter = nullptr;
     PipelineTreeItem*                       m_ParentItem;
+
+    void setupFilterInputWidget();
 
     PipelineTreeItem(const PipelineTreeItem&);    // Copy Constructor Not Implemented
     void operator=(const PipelineTreeItem&);  // Operator '=' Not Implemented

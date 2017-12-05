@@ -183,6 +183,25 @@ AbstractFilter::Pointer PipelineTreeModel::filter(const QModelIndex &index)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
+void PipelineTreeModel::setFilter(const QModelIndex &index, AbstractFilter::Pointer filter)
+{
+  if(!index.isValid())
+  {
+    return;
+  }
+
+  PipelineTreeItem* item = getItem(index);
+  if (item == nullptr)
+  {
+    return;
+  }
+
+  item->setFilter(filter);
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
 bool PipelineTreeModel::filterEnabled(const QModelIndex &index)
 {
   if(!index.isValid())
@@ -476,6 +495,15 @@ bool PipelineTreeModel::needsToBeExpanded(const QModelIndex& index)
 {
   PipelineTreeItem* item = getItem(index);
   return item->getExpanded();
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+FilterInputWidget* PipelineTreeModel::filterInputWidget(const QModelIndex &index)
+{
+  PipelineTreeItem* item = getItem(index);
+  return item->getFilterInputWidget();
 }
 
 // -----------------------------------------------------------------------------
