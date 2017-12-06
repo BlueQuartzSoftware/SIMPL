@@ -59,7 +59,8 @@ class StatusBarWidget : public QFrame, private Ui::StatusBarWidget
       Issues = 0,
       Console = 1,
       DataStructure = 2,
-      Toolbox = 3
+      Toolbox = 3,
+      Pipeline = 4
     };
 
 
@@ -105,6 +106,12 @@ class StatusBarWidget : public QFrame, private Ui::StatusBarWidget
      */
     void toolboxVisibilityChanged(bool b);
 
+    /**
+     * @brief pipelineVisibilityChanged
+     * @param b
+     */
+    void pipelineVisibilityChanged(bool b);
+    
     /**
      * @brief issuesTableHasErrors
      * @param b
