@@ -4,7 +4,9 @@
 #include <QtCore/QObject>
 #include <QtWidgets/QToolButton>
 
-class StatusBarButton : public QToolButton
+#include "SVWidgetsLib/SVWidgetsLib.h"
+
+class SVWidgetsLib_EXPORT StatusBarButton : public QToolButton
 {
     Q_OBJECT
   public:

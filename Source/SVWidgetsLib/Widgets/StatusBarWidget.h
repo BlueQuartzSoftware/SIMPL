@@ -42,7 +42,7 @@
 
 class QDockWidget;
 
-class StatusBarWidget : public QFrame, private Ui::StatusBarWidget
+class SVWidgetsLib_EXPORT StatusBarWidget : public QFrame, private Ui::StatusBarWidget
 {
 
     Q_OBJECT
