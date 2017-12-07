@@ -109,134 +109,300 @@ void PipelineTreeView::requestContextMenu(const QPoint& pos)
 {
   activateWindow();
 
-  SIMPLViewMenuItems* menuItems = SIMPLViewMenuItems::Instance();
-
   QModelIndex index = indexAt(pos);
 
+  PipelineTreeModel* model = PipelineTreeModel::Instance();
+
   QPoint mapped;
-  if(index.isValid())
+  if(model->itemType(index) == PipelineTreeItem::ItemType::Filter)
   {
-    // Note: We must map the point to global from the viewport to
-    // account for the header.
     mapped = viewport()->mapToGlobal(pos);
+
+    requestFilterContextMenu(mapped, index);
+  }
+  else if (model->itemType(index) == PipelineTreeItem::ItemType::Pipeline)
+  {
+    mapped = viewport()->mapToGlobal(pos);
+
+    requestPipelineContextMenu(mapped, index);
   }
   else
   {
-    index = QModelIndex();
     mapped = mapToGlobal(pos);
+    requestDefaultContextMenu(mapped);
   }
+}
 
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void PipelineTreeView::requestFilterContextMenu(const QPoint &pos, const QModelIndex &index)
+{
+  SIMPLViewMenuItems* menuItems = SIMPLViewMenuItems::Instance();
   PipelineTreeModel* model = PipelineTreeModel::Instance();
 
   QModelIndexList indexList = selectionModel()->selectedRows(PipelineTreeItem::Name);
 
   QMenu menu;
-  if(index.isValid() == false)
+
+  menu.addAction(menuItems->getActionCut());
+  menu.addAction(menuItems->getActionCopy());
+  menu.addSeparator();
+
+  int count = indexList.size();
+  bool widgetEnabled = true;
+
+  for(int i = 0; i < count && widgetEnabled; i++)
   {
-    menu.addAction(menuItems->getActionPaste());
-    menu.addSeparator();
-    menu.addAction(menuItems->getActionClearPipeline());
+    AbstractFilter::Pointer filter = model->filter(indexList[i]);
+    if (filter != nullptr)
+    {
+      widgetEnabled = filter->getEnabled();
+    }
+  }
+
+  if(indexList.contains(index) == false)
+  {
+    // Only toggle the target filter widget if it is not in the selected objects
+    QModelIndexList toggledIndices = QModelIndexList();
+    toggledIndices.push_back(index);
+
+    AbstractFilter::Pointer filter = model->filter(index);
+    if (filter != nullptr)
+    {
+      widgetEnabled = filter->getEnabled();
+    }
+
+    disconnect(m_ActionEnableFilter, &QAction::toggled, 0, 0);
+    connect(m_ActionEnableFilter, &QAction::toggled, [=] { setFiltersEnabled(toggledIndices, m_ActionEnableFilter->isChecked()); });
   }
   else
   {
-    menu.addAction(menuItems->getActionCut());
-    menu.addAction(menuItems->getActionCopy());
-    menu.addSeparator();
+    disconnect(m_ActionEnableFilter, &QAction::toggled, 0, 0);
+    connect(m_ActionEnableFilter, &QAction::toggled, [=] { setSelectedFiltersEnabled(m_ActionEnableFilter->isChecked()); });
+  }
 
-    int count = indexList.size();
-    bool widgetEnabled = true;
+  m_ActionEnableFilter->setChecked(widgetEnabled);
+  m_ActionEnableFilter->setEnabled(true);
+  m_ActionEnableFilter->setDisabled(getPipelineIsRunning());
+  menu.addAction(m_ActionEnableFilter);
 
-    for(int i = 0; i < count && widgetEnabled; i++)
-    {
-      AbstractFilter::Pointer filter = model->filter(indexList[i]);
-      if (filter != nullptr)
+  menu.addSeparator();
+
+  QAction* removeAction;
+  QList<QKeySequence> shortcutList;
+  shortcutList.push_back(QKeySequence(Qt::Key_Backspace));
+  shortcutList.push_back(QKeySequence(Qt::Key_Delete));
+
+  if (indexList.contains(index) == false || indexList.size() == 1)
+  {
+    removeAction = new QAction("Delete Filter", &menu);
+    connect(removeAction, &QAction::triggered, [=] { model->removeRow(index.row()); });
+  }
+  else
+  {
+    removeAction = new QAction(tr("Delete %1 Filters").arg(indexList.size()), &menu);
+    connect(removeAction, &QAction::triggered, [=] {
+      QList<QPersistentModelIndex> persistentList;
+      for(int i = 0; i < indexList.size(); i++)
       {
-        widgetEnabled = filter->getEnabled();
+        persistentList.push_back(indexList[i]);
       }
-    }
 
-    if(indexList.contains(index) == false)
-    {
-      // Only toggle the target filter widget if it is not in the selected objects
-      QModelIndexList toggledIndices = QModelIndexList();
-      toggledIndices.push_back(index);
-
-      AbstractFilter::Pointer filter = model->filter(index);
-      if (filter != nullptr)
+      for(int i = 0; i < persistentList.size(); i++)
       {
-        widgetEnabled = filter->getEnabled();
-      }
-      m_ActionEnableFilter->setChecked(widgetEnabled);
-
-      disconnect(m_ActionEnableFilter, &QAction::toggled, 0, 0);
-
-      connect(m_ActionEnableFilter, &QAction::toggled, [=] { setFiltersEnabled(toggledIndices, m_ActionEnableFilter->isChecked()); });
-      menu.addAction(m_ActionEnableFilter);
-    }
-    else
-    {
-      disconnect(m_ActionEnableFilter, &QAction::toggled, 0, 0);
-      m_ActionEnableFilter->setChecked(widgetEnabled);
-
-      connect(m_ActionEnableFilter, &QAction::toggled, [=] { setSelectedFiltersEnabled(m_ActionEnableFilter->isChecked()); });
-      menu.addAction(m_ActionEnableFilter);
-    }
-
-    menu.addSeparator();
-
-    QAction* removeAction;
-    QList<QKeySequence> shortcutList;
-    shortcutList.push_back(QKeySequence(Qt::Key_Backspace));
-    shortcutList.push_back(QKeySequence(Qt::Key_Delete));
-
-    if (indexList.contains(index) == false || indexList.size() == 1)
-    {
-      removeAction = new QAction("Delete", &menu);
-      connect(removeAction, &QAction::triggered, [=] { model->removeRow(index.row()); });
-    }
-    else
-    {
-      removeAction = new QAction(tr("Delete %1 Filters").arg(indexList.size()), &menu);
-      connect(removeAction, &QAction::triggered, [=] {
-        QList<QPersistentModelIndex> persistentList;
-        for(int i = 0; i < indexList.size(); i++)
-        {
-          persistentList.push_back(indexList[i]);
-        }
-
-        for(int i = 0; i < persistentList.size(); i++)
-        {
-          model->removeRow(persistentList[i].row(), persistentList[i].parent());
-        }
-      });
-    }
-    removeAction->setShortcuts(shortcutList);
-    if (getPipelineIsRunning() == true)
-    {
-      removeAction->setDisabled(true);
-    }
-
-    menu.addAction(removeAction);
-
-    menu.addSeparator();
-
-    QAction* actionLaunchHelp = new QAction("Filter Help", this);
-    connect(actionLaunchHelp, &QAction::triggered, [=] {
-      AbstractFilter::Pointer filter = model->filter(index);
-      if (filter != nullptr)
-      {
-        // Launch the help for this filter
-        QString className = filter->getNameOfClass();
-
-        DocRequestManager* docRequester = DocRequestManager::Instance();
-        docRequester->requestFilterDocs(className);
+        model->removeRow(persistentList[i].row(), persistentList[i].parent());
       }
     });
-
-    menu.addAction(actionLaunchHelp);
-
-    menu.exec(mapped);
   }
+  removeAction->setShortcuts(shortcutList);
+  if (getPipelineIsRunning() == true)
+  {
+    removeAction->setDisabled(true);
+  }
+
+  menu.addAction(removeAction);
+
+  menu.addSeparator();
+
+  QAction* actionLaunchHelp = new QAction("Filter Help", this);
+  connect(actionLaunchHelp, &QAction::triggered, [=] {
+    AbstractFilter::Pointer filter = model->filter(index);
+    if (filter != nullptr)
+    {
+      // Launch the help for this filter
+      QString className = filter->getNameOfClass();
+
+      DocRequestManager* docRequester = DocRequestManager::Instance();
+      docRequester->requestFilterDocs(className);
+    }
+  });
+
+  menu.addAction(actionLaunchHelp);
+
+  menu.exec(pos);
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void PipelineTreeView::requestPipelineContextMenu(const QPoint &pos, const QModelIndex &index)
+{
+  SIMPLViewMenuItems* menuItems = SIMPLViewMenuItems::Instance();
+  PipelineTreeModel* model = PipelineTreeModel::Instance();
+
+  QModelIndexList indexList = selectionModel()->selectedRows(PipelineTreeItem::Name);
+  if (indexList.size() <= 0)
+  {
+    return;
+  }
+
+  // Build up the contextual menu
+  QMenu menu;
+  menu.addAction(menuItems->getActionCut());
+  menu.addAction(menuItems->getActionCopy());
+  menu.addSeparator();
+
+  // Check to see if all the selected items are pipeline items
+  bool allPipelines = true;
+  for (int i = 0; i < indexList.size(); i++)
+  {
+    if (model->itemType(indexList[i]) != PipelineTreeItem::ItemType::Pipeline)
+    {
+      allPipelines = false;
+    }
+  }
+
+  if (indexList.contains(index) == false || indexList.size() == 1 || allPipelines == false)
+  {
+    requestSinglePipelineContextMenu(menu, index);
+  }
+  else
+  {
+    requestMultiplePipelineContextMenu(menu, indexList);
+  }
+
+  menu.exec(pos);
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void PipelineTreeView::requestSinglePipelineContextMenu(QMenu &menu, const QModelIndex &pipelineIdx)
+{
+  PipelineTreeModel* model = PipelineTreeModel::Instance();
+
+  if (model->isActivePipeline(pipelineIdx) == false)
+  {
+    QAction* activePipelineAction = new QAction(tr("Set '%1' as Active Pipeline").arg(model->data(pipelineIdx, Qt::DisplayRole).toString()));
+    connect(activePipelineAction, &QAction::triggered, [=] { emit activePipelineChanged(pipelineIdx); });
+    menu.addAction(activePipelineAction);
+  }
+
+  menu.addSeparator();
+
+  QAction* removeAction = new QAction("Delete Pipeline", &menu);
+  connect(removeAction, &QAction::triggered, [=] {
+    if (model->isActivePipeline(pipelineIdx))
+    {
+      // We are trying to delete the active pipeline, so find another pipeline to set as the active pipeline
+      QModelIndex nextActivePipeline = findNewActivePipeline(pipelineIdx);
+      emit activePipelineChanged(nextActivePipeline);
+    }
+    model->removeRow(pipelineIdx.row());
+  });
+
+  QList<QKeySequence> shortcutList;
+  shortcutList.push_back(QKeySequence(Qt::Key_Backspace));
+  shortcutList.push_back(QKeySequence(Qt::Key_Delete));
+  removeAction->setShortcuts(shortcutList);
+
+  if (getPipelineIsRunning() == true)
+  {
+    removeAction->setDisabled(true);
+  }
+
+  menu.addAction(removeAction);
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void PipelineTreeView::requestMultiplePipelineContextMenu(QMenu &menu, QModelIndexList pipelineIndices)
+{
+  PipelineTreeModel* model = PipelineTreeModel::Instance();
+
+  QAction* removeAction = new QAction(tr("Delete %1 Pipelines").arg(pipelineIndices.size()), &menu);
+  connect(removeAction, &QAction::triggered, [=] {
+    QList<QPersistentModelIndex> persistentList;
+    for(int i = 0; i < pipelineIndices.size(); i++)
+    {
+      persistentList.push_back(pipelineIndices[i]);
+    }
+
+    for(int i = 0; i < persistentList.size(); i++)
+    {
+      if (model->isActivePipeline(persistentList[i]))
+      {
+        // We are trying to delete the active pipeline, so find another pipeline to set as the active pipeline
+        QModelIndex nextActivePipeline = findNewActivePipeline(persistentList[i]);
+        emit activePipelineChanged(nextActivePipeline);
+      }
+
+      model->removeRow(persistentList[i].row(), persistentList[i].parent());
+    }
+  });
+
+  QList<QKeySequence> shortcutList;
+  shortcutList.push_back(QKeySequence(Qt::Key_Backspace));
+  shortcutList.push_back(QKeySequence(Qt::Key_Delete));
+  removeAction->setShortcuts(shortcutList);
+
+  if (getPipelineIsRunning() == true)
+  {
+    removeAction->setDisabled(true);
+  }
+
+  menu.addAction(removeAction);
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+QModelIndex PipelineTreeView::findNewActivePipeline(const QModelIndex &oldActivePipeline)
+{
+  PipelineTreeModel* model = PipelineTreeModel::Instance();
+
+  int row = oldActivePipeline.row();
+  if (row == model->rowCount(oldActivePipeline.parent()) - 1)
+  {
+    // This is the last pipeline, so set the previous pipeline as the active pipeline
+    row--;
+  }
+  else
+  {
+    // Set the next pipeline as the active pipeline
+    row++;
+  }
+  QModelIndex nextActivePipeline = model->index(row, PipelineTreeItem::Name, oldActivePipeline.parent());
+  return nextActivePipeline;
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void PipelineTreeView::requestDefaultContextMenu(const QPoint &pos)
+{
+  SIMPLViewMenuItems* menuItems = SIMPLViewMenuItems::Instance();
+
+  QMenu menu;
+  menu.addAction(menuItems->getActionNewPipeline());
+  menu.addSeparator();
+  menu.addAction(menuItems->getActionPaste());
+  menu.addSeparator();
+  menu.addAction(menuItems->getActionClearPipeline());
+
+  menu.exec(pos);
 }
 
 // -----------------------------------------------------------------------------

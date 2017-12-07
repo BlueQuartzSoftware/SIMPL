@@ -34,6 +34,7 @@
 
 #include <QtCore/QObject>
 #include <QtCore/QStack>
+#include <QtCore/QPersistentModelIndex>
 
 #include "SIMPLib/Common/SIMPLibSetGetMacros.h"
 #include "SIMPLib/Filtering/FilterPipeline.h"
@@ -57,12 +58,37 @@ class SVWidgetsLib_EXPORT PipelineTreeController : public QObject
      */
     FilterPipeline::Pointer getFilterPipeline(const QModelIndex &pipelineIndex);
 
+    /**
+     * @brief addPipelineMessageObserver
+     * @param pipelineMessageObserver
+     */
+    void addPipelineMessageObserver(QObject* pipelineMessageObserver);
+
+    /**
+     * @brief addFilter
+     * @param filter
+     */
+    void addFilter(AbstractFilter::Pointer filter);
+
+    /**
+     * @brief addPipeline
+     * @param pipelineName
+     * @param setAsActive
+     */
+    void addPipeline(const QString &pipelineName, bool setAsActive = false);
+
   public slots:
     /**
      * @brief preflightPipeline
      * @param pipelineIndex
      */
     void preflightPipeline(const QModelIndex &pipelineIndex);
+
+    /**
+     * @brief updateActivePipeline
+     * @param pipelineIdx
+     */
+    void updateActivePipeline(const QModelIndex &pipelineIdx);
 
     /**
      * @brief Should be block this class from either emitting a preflight signal or otherwise running a preflight.
@@ -78,6 +104,8 @@ class SVWidgetsLib_EXPORT PipelineTreeController : public QObject
     bool                                              m_BlockPreflight = false;
     QStack<bool>                                      m_BlockPreflightStack;
     QList<QObject*>                                   m_PipelineMessageObservers;
+
+    QPersistentModelIndex                             m_ActivePipelineIndex;
 
     PipelineTreeController(const PipelineTreeController&);    // Copy Constructor Not Implemented
     void operator=(const PipelineTreeController&);  // Operator '=' Not Implemented

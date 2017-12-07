@@ -52,7 +52,7 @@ PipelineTreeModel::PipelineTreeModel(QObject* parent)
   QVector<QVariant> vector;
   vector.push_back("Name");
   vector.push_back("Path");
-  rootItem = new PipelineTreeItem(vector);
+  m_RootItem = new PipelineTreeItem(vector);
 
   connect(this, SIGNAL(dataChanged(const QModelIndex&, const QModelIndex&)), this, SLOT(updateModel(const QModelIndex&, const QModelIndex&)));
 }
@@ -62,7 +62,7 @@ PipelineTreeModel::PipelineTreeModel(QObject* parent)
 // -----------------------------------------------------------------------------
 PipelineTreeModel::~PipelineTreeModel()
 {
-  delete rootItem;
+  delete m_RootItem;
 }
 
 // -----------------------------------------------------------------------------
@@ -101,7 +101,7 @@ PipelineTreeModel* PipelineTreeModel::NewInstance(QtSSettings* prefs)
 // -----------------------------------------------------------------------------
 int PipelineTreeModel::columnCount(const QModelIndex& parent) const
 {
-  return rootItem->columnCount();
+  return m_RootItem->columnCount();
 }
 
 // -----------------------------------------------------------------------------
@@ -134,6 +134,19 @@ QVariant PipelineTreeModel::data(const QModelIndex& index, int role) const
   if(role == Qt::DisplayRole)
   {
     return item->data(index.column());
+  }
+  else if (role == Qt::FontRole)
+  {
+    if (item->isActivePipeline())
+    {
+      QFont font;
+      font.setBold(true);
+      return font;
+    }
+    else
+    {
+      return QVariant();
+    }
   }
   else if(role == Qt::ForegroundRole)
   {
@@ -240,6 +253,32 @@ void PipelineTreeModel::setFilterEnabled(const QModelIndex &index, bool enabled)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
+bool PipelineTreeModel::isActivePipeline(const QModelIndex &index)
+{
+  PipelineTreeItem* item = getItem(index);
+  return item->isActivePipeline();
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void PipelineTreeModel::setActivePipeline(const QModelIndex &index, bool value)
+{
+  PipelineTreeItem* item = getItem(index);
+  item->setActivePipeline(value);
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void PipelineTreeModel::clearActivePipeline()
+{
+
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
 Qt::ItemFlags PipelineTreeModel::flags(const QModelIndex& index) const
 {
   if(!index.isValid())
@@ -275,7 +314,7 @@ PipelineTreeItem* PipelineTreeModel::getItem(const QModelIndex& index) const
       return item;
     }
   }
-  return rootItem;
+  return m_RootItem;
 }
 
 // -----------------------------------------------------------------------------
@@ -285,7 +324,7 @@ QVariant PipelineTreeModel::headerData(int section, Qt::Orientation orientation,
 {
   if(orientation == Qt::Horizontal && role == Qt::DisplayRole)
   {
-    return rootItem->data(section);
+    return m_RootItem->data(section);
   }
 
   return QVariant();
@@ -323,7 +362,7 @@ bool PipelineTreeModel::insertRows(int position, int rows, const QModelIndex& pa
   bool success;
 
   beginInsertRows(parent, position, position + rows - 1);
-  success = parentItem->insertChildren(position, rows, rootItem->columnCount());
+  success = parentItem->insertChildren(position, rows, m_RootItem->columnCount());
   endInsertRows();
 
   return success;
@@ -382,7 +421,7 @@ QModelIndex PipelineTreeModel::parent(const QModelIndex& index) const
   PipelineTreeItem* childItem = getItem(index);
   PipelineTreeItem* parentItem = childItem->parent();
 
-  if(parentItem == rootItem)
+  if(parentItem == m_RootItem)
   {
     return QModelIndex();
   }
@@ -482,6 +521,24 @@ void PipelineTreeModel::setPipelineState(const QModelIndex &index, PipelineTreeI
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
+PipelineTreeItem::ItemType PipelineTreeModel::itemType(const QModelIndex &index)
+{
+  PipelineTreeItem* item = getItem(index);
+  return item->getItemType();
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void PipelineTreeModel::setItemType(const QModelIndex &index, PipelineTreeItem::ItemType type)
+{
+  PipelineTreeItem* item = getItem(index);
+  item->setItemType(type);
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
 void PipelineTreeModel::setNeedsToBeExpanded(const QModelIndex& index, bool value)
 {
   PipelineTreeItem* item = getItem(index);
@@ -511,7 +568,7 @@ FilterInputWidget* PipelineTreeModel::filterInputWidget(const QModelIndex &index
 // -----------------------------------------------------------------------------
 PipelineTreeItem* PipelineTreeModel::getRootItem()
 {
-  return rootItem;
+  return m_RootItem;
 }
 
 // -----------------------------------------------------------------------------

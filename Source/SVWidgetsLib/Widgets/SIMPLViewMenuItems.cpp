@@ -92,6 +92,7 @@ SIMPLViewMenuItems::~SIMPLViewMenuItems()
   delete m_ActionLocateFile;
 
   // Pipeline Menu
+  delete m_ActionNewPipeline;
   delete m_ActionClearPipeline;
 
   // Help Menu
@@ -139,6 +140,7 @@ void SIMPLViewMenuItems::createActions()
 {
   m_ActionRenameBookmark = new QAction("Rename Pipeline", this);
   m_ActionRemoveBookmark = new QAction("Remove Bookmark", this);
+  m_ActionNewPipeline = new QAction("New Pipeline", this);
   m_ActionClearPipeline = new QAction("Clear Pipeline", this);
   m_ActionShowBookmarkInFileSystem = new QAction(this);
   m_ActionExit = new QAction("Exit " + QApplication::applicationName(), this);
@@ -184,6 +186,7 @@ void SIMPLViewMenuItems::createActions()
   m_ActionClearPipeline->setShortcut(QKeySequence(Qt::CTRL + Qt::Key_Backspace));
   m_ActionOpen->setShortcut(QKeySequence(Qt::CTRL + Qt::Key_O));
   m_ActionNew->setShortcut(QKeySequence(Qt::CTRL + Qt::Key_N));
+  m_ActionNewPipeline->setShortcut(QKeySequence(Qt::CTRL + Qt::SHIFT + Qt::Key_N));
   m_ActionExit->setShortcut(QKeySequence(Qt::CTRL + Qt::Key_Q));
   m_ActionShowSIMPLViewHelp->setShortcut(QKeySequence(Qt::CTRL + Qt::Key_H));
   m_ActionCheckForUpdates->setShortcut(QKeySequence(Qt::CTRL + Qt::Key_U));

@@ -41,12 +41,14 @@
 // -----------------------------------------------------------------------------
 PipelineTreeItem::PipelineTreeItem(const QVector<QVariant>& data, PipelineTreeItem* parent)
 : m_FilterInputWidget(nullptr)
+, m_ActivePipeline(false)
 , m_Icon(QIcon())
 , m_Expanded(false)
 , m_ItemTooltip("")
 , m_WidgetState(PipelineTreeItem::WidgetState::Ready)
 , m_PipelineState(PipelineTreeItem::PipelineState::Stopped)
 , m_ErrorState(PipelineTreeItem::ErrorState::Ok)
+, m_ItemType(PipelineTreeItem::ItemType::Unknown)
 , m_ItemData(data)
 , m_ParentItem(parent)
 {

@@ -96,6 +96,7 @@ class SVWidgetsLib_EXPORT SIMPLViewMenuItems : public QObject
     SIMPL_INSTANCE_PROPERTY(QAction*, ActionLocateFile)
 
     // Pipeline Menu
+    SIMPL_INSTANCE_PROPERTY(QAction*, ActionNewPipeline)
     SIMPL_INSTANCE_PROPERTY(QAction*, ActionClearPipeline)
 
     // Help Menu

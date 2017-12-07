@@ -53,6 +53,7 @@ class SVWidgetsLib_EXPORT PipelineTreeItem
 
     SIMPL_INSTANCE_PROPERTY(FilterInputWidget*, FilterInputWidget)
     SIMPL_INSTANCE_PROPERTY(bool, FilterEnabled)
+    SIMPL_BOOL_PROPERTY(ActivePipeline)
     SIMPL_INSTANCE_PROPERTY(QIcon, Icon)
     SIMPL_INSTANCE_PROPERTY(bool, Expanded)
     SIMPL_INSTANCE_PROPERTY(QString, ItemTooltip)
@@ -89,6 +90,14 @@ class SVWidgetsLib_EXPORT PipelineTreeItem
         Warning = 2,
     };
     SIMPL_INSTANCE_PROPERTY(ErrorState, ErrorState)
+
+    enum class ItemType : EnumType
+    {
+      Pipeline,
+      Filter,
+      Unknown
+    };
+    SIMPL_INSTANCE_PROPERTY(ItemType, ItemType)
 
     PipelineTreeItem* child(int number);
     PipelineTreeItem* parent();

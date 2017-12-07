@@ -97,6 +97,13 @@ class SVWidgetsLib_EXPORT PipelineTreeModel : public QAbstractItemModel
     PipelineTreeItem::PipelineState pipelineState(const QModelIndex &index);
     void setPipelineState(const QModelIndex &index, PipelineTreeItem::PipelineState state);
 
+    PipelineTreeItem::ItemType itemType(const QModelIndex &index);
+    void setItemType(const QModelIndex &index, PipelineTreeItem::ItemType type);
+
+    bool isActivePipeline(const QModelIndex &index);
+    void setActivePipeline(const QModelIndex &index, bool value);
+    void clearActivePipeline();
+
     bool needsToBeExpanded(const QModelIndex& index);
     void setNeedsToBeExpanded(const QModelIndex& index, bool value);
 
@@ -106,7 +113,7 @@ class SVWidgetsLib_EXPORT PipelineTreeModel : public QAbstractItemModel
     PipelineTreeModel(QObject* parent = 0);
 
   private:
-    PipelineTreeItem*            rootItem;
+    PipelineTreeItem*                       m_RootItem;
 
     static PipelineTreeModel* self;
 

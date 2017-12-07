@@ -126,22 +126,63 @@ class SVWidgetsLib_EXPORT PipelineTreeView : public QTreeView
     void filterEnabledStateChanged();
 
     void needsPreflight(const QModelIndex &pipelineIndex);
+    void activePipelineChanged(const QModelIndex &pipelineIdx);
 
   private slots:
-
     void requestContextMenu(const QPoint &pos);
 
   private:
-    void expandChildren(const QModelIndex& parent, PipelineTreeModel* model);
-    QJsonObject wrapModel(QModelIndex index);
-    static void UnwrapModel(QString objectName, QJsonObject object, PipelineTreeModel* model, QModelIndex parentIndex);
-
     QPoint                                        m_StartPos;
     QMenu                                         m_Menu;
     QAction*                                      m_ActionEnableFilter;
     QList<QPersistentModelIndex>                  m_IndexesBeingDragged;
     QPersistentModelIndex                         m_ActiveIndexBeingDragged;
     QModelIndex                                   m_TopLevelItemPlaceholder;
+
+    void expandChildren(const QModelIndex& parent, PipelineTreeModel* model);
+    QJsonObject wrapModel(QModelIndex index);
+    static void UnwrapModel(QString objectName, QJsonObject object, PipelineTreeModel* model, QModelIndex parentIndex);
+
+    /**
+     * @brief requestSinglePipelineContextMenu
+     * @param menu
+     * @param pipelineIdx
+     */
+    void requestSinglePipelineContextMenu(QMenu &menu, const QModelIndex &pipelineIdx);
+
+    /**
+     * @brief requestMultiplePipelineContextMenu
+     * @param menu
+     * @param pipelineIndices
+     */
+    void requestMultiplePipelineContextMenu(QMenu &menu, QModelIndexList pipelineIndices);
+
+    /**
+     * @brief findNewActivePipeline
+     * @param oldActivePipeline
+     * @return
+     */
+    QModelIndex findNewActivePipeline(const QModelIndex &oldActivePipeline);
+
+    /**
+     * @brief requestFilterContextMenu
+     * @param pos
+     * @param index
+     */
+    void requestFilterContextMenu(const QPoint &pos, const QModelIndex &index);
+
+    /**
+     * @brief requestPipelineContextMenu
+     * @param pos
+     * @param index
+     */
+    void requestPipelineContextMenu(const QPoint &pos, const QModelIndex &index);
+
+    /**
+     * @brief requestDefaultContextMenu
+     * @param pos
+     */
+    void requestDefaultContextMenu(const QPoint &pos);
 };
 
 #endif /* _PipelineTreeView_H_ */

@@ -57,7 +57,7 @@ PipelineTreeController::~PipelineTreeController()
 // -----------------------------------------------------------------------------
 void PipelineTreeController::preflightPipeline(const QModelIndex &pipelineIndex)
 {
-  if(m_BlockPreflight)
+  if(m_BlockPreflight || pipelineIndex.isValid() == false)
   {
     return;
   }
@@ -158,6 +158,64 @@ FilterPipeline::Pointer PipelineTreeController::getFilterPipeline(const QModelIn
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
+void PipelineTreeController::addFilter(AbstractFilter::Pointer filter)
+{
+  PipelineTreeModel* model = PipelineTreeModel::Instance();
+  if (m_ActivePipelineIndex.isValid() == false)
+  {
+    addPipeline("Untitled Pipeline", true);
+  }
+
+  int row = model->rowCount(m_ActivePipelineIndex);
+  model->insertRow(row, m_ActivePipelineIndex);
+  QModelIndex filterIndex = model->index(row, PipelineTreeItem::Name, m_ActivePipelineIndex);
+  model->setData(filterIndex, filter->getHumanLabel(), Qt::DisplayRole);
+  model->setItemType(filterIndex, PipelineTreeItem::ItemType::Filter);
+  model->setFilter(filterIndex, filter);
+
+  preflightPipeline(m_ActivePipelineIndex);
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void PipelineTreeController::addPipeline(const QString &pipelineName, bool setAsActive)
+{
+  PipelineTreeModel* model = PipelineTreeModel::Instance();
+
+  int row = model->rowCount();
+  model->insertRow(row);
+  QModelIndex pipelineIndex = model->index(row, PipelineTreeItem::Name);
+  model->setData(pipelineIndex, pipelineName, Qt::DisplayRole);
+  model->setItemType(pipelineIndex, PipelineTreeItem::ItemType::Pipeline);
+
+  if (setAsActive == true)
+  {
+    updateActivePipeline(pipelineIndex);
+  }
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void PipelineTreeController::updateActivePipeline(const QModelIndex &pipelineIdx)
+{
+  PipelineTreeModel* model = PipelineTreeModel::Instance();
+
+  model->setActivePipeline(m_ActivePipelineIndex, false);
+  model->setActivePipeline(pipelineIdx, true);
+
+  m_ActivePipelineIndex = pipelineIdx;
+
+  if (m_ActivePipelineIndex.isValid() == true)
+  {
+    preflightPipeline(m_ActivePipelineIndex);
+  }
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
 void PipelineTreeController::blockPreflightSignals(bool b)
 {
   if(b)
@@ -170,6 +228,14 @@ void PipelineTreeController::blockPreflightSignals(bool b)
   }
 
   m_BlockPreflight = (m_BlockPreflightStack.size() > 0) ? true : false;
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void PipelineTreeController::addPipelineMessageObserver(QObject* pipelineMessageObserver)
+{
+  m_PipelineMessageObservers.push_back(pipelineMessageObserver);
 }
 
 
