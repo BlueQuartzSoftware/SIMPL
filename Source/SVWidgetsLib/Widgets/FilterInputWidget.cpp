@@ -534,8 +534,13 @@ void FilterInputWidget::linkConditionalWidgets(QVector<FilterParameter::Pointer>
       QWidget* checkboxSource = m_PropertyToWidget[optionPtr2->getPropertyName()];
       while(iter.hasNext())
       {
+        QWidget* w = nullptr;
         QString propName = iter.next();
-        QWidget* w = m_PropertyToWidget[propName];
+        if(m_PropertyToWidget.contains(propName))
+        {
+          w = m_PropertyToWidget[propName];
+        }
+         
         if(w)
         {
           // qDebug() << "Connecting: " << optionPtr2->getPropertyName() << " to " << propName;
@@ -560,8 +565,12 @@ void FilterInputWidget::linkConditionalWidgets(QVector<FilterParameter::Pointer>
       QWidget* checkboxSource = m_PropertyToWidget[optionPtr3->getPropertyName()];
       while(iter.hasNext())
       {
+        QWidget* w = nullptr;
         QString propName = iter.next();
-        QWidget* w = m_PropertyToWidget[propName];
+        if(m_PropertyToWidget.contains(propName))
+        {
+          w = m_PropertyToWidget[propName];
+        }
         if(w)
         {
           // qDebug() << "Connecting: " << optionPtr2->getPropertyName() << " to " << propName;

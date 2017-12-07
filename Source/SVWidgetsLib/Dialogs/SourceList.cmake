@@ -40,7 +40,7 @@ set_source_files_properties( ${SVWidgetsLib_Dialogs_Generated_MOC_SRCS} PROPERTI
 
 
 # --------------------------------------------------------------------
-# Continue on with our Qt4 section
+# Wrap UI files so they are AUTO UIC'ed
 QT5_WRAP_UI( SVWidgetsLib_Dialogs_Generated_UI_HDRS   
   ${SVWidgetsLib_SOURCE_DIR}/Dialogs/UI_Files/AboutPlugins.ui
   ${SVWidgetsLib_SOURCE_DIR}/Dialogs/UI_Files/ColorPresetsDialog.ui
@@ -48,6 +48,9 @@ QT5_WRAP_UI( SVWidgetsLib_Dialogs_Generated_UI_HDRS
   ${SVWidgetsLib_SOURCE_DIR}/Dialogs/UI_Files/FavoritesChangedDialog.ui
 	${SVWidgetsLib_SOURCE_DIR}/Dialogs/UI_Files/UpdateCheckDialog.ui
 )
+foreach(h ${SVWidgetsLib_Dialogs_Generated_UI_HDRS})
+  set_property(SOURCE ${h} PROPERTY SKIP_AUTOMOC ON)
+endforeach()
 
 # --------------------------------------------------------------------
 #-- Put the Qt generated files into their own group for IDEs

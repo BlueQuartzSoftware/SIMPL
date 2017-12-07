@@ -37,6 +37,8 @@ set(SVWidgetsLib_Widgets_MOC_HDRS
   ${SVWidgetsLib_SOURCE_DIR}/Widgets/SVPipelineViewWidget.h
   ${SVWidgetsLib_SOURCE_DIR}/Widgets/SIMPLViewToolbox.h
   ${SVWidgetsLib_SOURCE_DIR}/Widgets/SIMPLViewMenuItems.h
+  ${SVWidgetsLib_SOURCE_DIR}/Widgets/StatusBarWidget.h
+  ${SVWidgetsLib_SOURCE_DIR}/Widgets/StatusBarButton.h
   ${SVWidgetsLib_SOURCE_DIR}/Widgets/ProgressDialog.h
 )
 
@@ -85,6 +87,8 @@ set(SVWidgetsLib_Widgets_SRCS
   ${SVWidgetsLib_SOURCE_DIR}/Widgets/PipelineView.cpp
   ${SVWidgetsLib_SOURCE_DIR}/Widgets/SIMPLViewToolbox.cpp
   ${SVWidgetsLib_SOURCE_DIR}/Widgets/SIMPLViewMenuItems.cpp
+  ${SVWidgetsLib_SOURCE_DIR}/Widgets/StatusBarWidget.cpp
+  ${SVWidgetsLib_SOURCE_DIR}/Widgets/StatusBarButton.cpp
   ${SVWidgetsLib_SOURCE_DIR}/Widgets/ProgressDialog.cpp
   )
 
@@ -103,6 +107,7 @@ set(SVWidgetsLib_Widgets_UIS
   ${SVWidgetsLib_SOURCE_DIR}/Widgets/UI_Files/StandardOutputWidget.ui
   ${SVWidgetsLib_SOURCE_DIR}/Widgets/UI_Files/DataStructureWidget.ui
   ${SVWidgetsLib_SOURCE_DIR}/Widgets/UI_Files/ProgressDialog.ui
+  ${SVWidgetsLib_SOURCE_DIR}/Widgets/UI_Files/StatusBarWidget.ui
   )
 
 SET(SVWidgetsLib_Widgets_Util_HDRS
@@ -134,8 +139,11 @@ set_source_files_properties( ${SVWidgetsLib_Widgets_Generated_MOC_SRCS} PROPERTI
 # QT5_ADD_RESOURCES( SVWidgetsLib_Generated_RC_SRCS "${SIMPLViewProj_SOURCE_DIR}/Documentation/Filters/Generated_FilterDocs.qrc"  )
 
 # --------------------------------------------------------------------
-# Continue on with our Qt4 section
+# Wrap UI files so they are AUTO UIC'ed
 QT5_WRAP_UI( SVWidgetsLib_Widgets_Generated_UI_HDRS ${SVWidgetsLib_Widgets_UIS} )
+foreach(h ${SVWidgetsLib_Widgets_Generated_UI_HDRS})
+  set_property(SOURCE ${h} PROPERTY SKIP_AUTOMOC ON)
+endforeach()
 
 # --------------------------------------------------------------------
 #-- Put the Qt generated files into their own group for IDEs

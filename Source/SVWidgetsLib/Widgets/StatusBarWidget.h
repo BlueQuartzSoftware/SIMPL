@@ -33,70 +33,94 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-#ifndef _issuesWidget_h_
-#define _issuesWidget_h_
+#ifndef _statusBarWidget_h_
+#define _statusBarWidget_h_
 
-#include <QtWidgets/QWidget>
-#include <QtWidgets/QMainWindow>
+#include <QtWidgets/QFrame>
 
-#include "SIMPLib/SIMPLib.h"
-#include "SIMPLib/Common/IObserver.h"
-#include "SIMPLib/Common/PipelineMessage.h"
+#include "ui_StatusBarWidget.h"
 
-#include "SVWidgetsLib/SVWidgetsLib.h"
+class QDockWidget;
 
-class FilterListToolboxWidget;
-class QLabel;
-class QTableWidgetItem;
-class QtSSettings;
-namespace Ui
-{
-class IssuesWidget;
-}
-
-/**
- * @brief The IssuesWidget class
- */
-class SVWidgetsLib_EXPORT IssuesWidget : public QWidget, public IObserver
+class SVWidgetsLib_EXPORT StatusBarWidget : public QFrame, private Ui::StatusBarWidget
 {
 
     Q_OBJECT
+
   public:
-    IssuesWidget(QWidget* parent = nullptr);
-    virtual ~IssuesWidget();
+    StatusBarWidget(QWidget* parent = 0);
+    virtual ~StatusBarWidget();
 
-    QLabel* createHyperlinkLabel(PipelineMessage msg);
 
-    static const int FilterIndex = 0;
-    static const int FilterName = 1;
-    static const int Description = 2;
-    static const int ErrorCode = 3;
+    using EnumType = unsigned int;
+
+    enum class Button : EnumType
+    {
+      Issues = 0,
+      Console = 1,
+      DataStructure = 2,
+      Toolbox = 3
+    };
+
+
+    /**
+     * @brief setButtonAction
+     * @param action
+     * @param btn
+     */
+    void setButtonAction(QDockWidget *dock, Button btn);
+
+    /**
+     * @brief updateStyle
+     */
+    void updateStyle();
+
+    /**
+     * @brief generateStyleSheet
+     * @param error
+     * @return
+     */
+    QString generateStyleSheet(bool error);
 
   public slots:
-    void processPipelineMessage(const PipelineMessage& msg);
-    void clearIssues();
-    void on_errorTableWidget_itemClicked( QTableWidgetItem* item );
-    void displayCachedMessages();
+    /**
+     * @brief issuesVisibilityChanged
+     * @param b
+     */
+    void issuesVisibilityChanged(bool b);
+    /**
+     * @brief consolVisibilityChanged
+     * @param b
+     */
+    void consolVisibilityChanged(bool b);
+    /**
+     * @brief dataBrowserVisibilityChanged
+     * @param b
+     */
+    void dataBrowserVisibilityChanged(bool b);
 
-    void showFilterHelp(const QString &url);
+    /**
+     * @brief toolboxVisibilityChanged
+     * @param b
+     */
+    void toolboxVisibilityChanged(bool b);
 
-  signals:
-    void tableHasErrors(bool b, int errCount, int warnCount);
-    void showTable(bool b);
+    /**
+     * @brief issuesTableHasErrors
+     * @param b
+     */
+    void issuesTableHasErrors(bool b, int errCount, int warnCount);
 
   protected:
+
     /**
      * @brief setupGui
      */
     void setupGui();
 
-
   private:
-    Ui::IssuesWidget* ui = nullptr;
-    QVector<PipelineMessage> m_CachedMessages;
-
-    IssuesWidget(const IssuesWidget&) = delete;   // Copy Constructor Not Implemented
-    void operator=(const IssuesWidget&) = delete; // Operator '=' Not Implemented
+    StatusBarWidget(const StatusBarWidget&) = delete; // Copy Constructor Not Implemented
+    void operator=(const StatusBarWidget&) = delete;  // Operator '=' Not Implemented
 };
 
-#endif /* _issuesWidget_h_ */
+#endif /* _statusBarWidget_H_ */
