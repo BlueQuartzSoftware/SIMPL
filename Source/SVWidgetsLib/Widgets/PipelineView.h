@@ -214,11 +214,6 @@ class SVWidgetsLib_EXPORT PipelineView
     virtual void reindexWidgetTitles();
 
     /**
-    * @brief addUndoCommand
-    */
-    virtual void addUndoCommand(QUndoCommand* cmd);
-
-    /**
      * @brief showFilterHelp
      * @param className
      */

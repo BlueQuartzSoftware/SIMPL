@@ -300,11 +300,6 @@ class SVWidgetsLib_EXPORT SVPipelineViewWidget : public QFrame, public PipelineV
     void clearFilterWidgets(bool addToUndoStack = true);
 
     /**
-    * @brief addUndoCommand
-    */
-    void addUndoCommand(QUndoCommand* cmd) override;
-
-    /**
      * @brief reindexWidgetTitles
      */
     void reindexWidgetTitles() override;
@@ -324,26 +319,22 @@ class SVWidgetsLib_EXPORT SVPipelineViewWidget : public QFrame, public PipelineV
     */
     void toIdleState();
 
-    /**
-     * @brief getActionRedo
-     */
-    QAction* getActionRedo();
-
-    /**
-     * @brief getActionUndo
-     */
-    QAction* getActionUndo();
-
   signals:
+    void undoCommandCreated(QUndoCommand* cmd);
+    void undoRequested();
+    void pipelineDropped(const QString &filePath, PipelineTreeModel* model, const QModelIndex &parentIndex, int insertionIndex);
+    void pipelineIssuesCleared();
+    void preflightFinished(int err);
+
+
+
     void addPlaceHolderFilter(QPoint p);
     void removePlaceHolderFilter();
     void preflightHasMessage(PipelineMessage msg);
 
     void pipelineHasErrorsSignal();
     void pipelineHasNoErrors();
-    void pipelineIssuesCleared();
     void pipelineTitleUpdated(QString name);
-    void pipelineDropped(const QString &filePath, PipelineTreeModel* model, const QModelIndex &parentIndex, int insertionIndex);
     void windowNeedsRecheck();
 
     void pipelineFilterObjectSelected(PipelineFilterObject* object);
@@ -351,8 +342,6 @@ class SVWidgetsLib_EXPORT SVPipelineViewWidget : public QFrame, public PipelineV
     void filterInputWidgetNeedsCleared();
 
     void filterInputWidgetEdited();
-    void preflightPipelineComplete();
-    void preflightFinished(int err);
 
     void filterWidgetsDropped(int insertIndex, Qt::KeyboardModifiers modifiers);
 
@@ -409,28 +398,6 @@ class SVWidgetsLib_EXPORT SVPipelineViewWidget : public QFrame, public PipelineV
      */
     void removeFilterObject(PipelineFilterObject* filterObject);
 
-    /**
-     * @brief updateCurrentUndoText
-     * @param text
-     */
-    void updateCurrentUndoText(const QString &text);
-
-    /**
-     * @brief updateCurrentRedoText
-     * @param text
-     */
-    void updateCurrentRedoText(const QString &text);
-
-    /**
-     * @brief actionUndo_triggered
-     */
-    void actionUndo_triggered();
-
-    /**
-     * @brief actionRedo_triggered
-     */
-    void actionRedo_triggered();
-
   private:
     SVPipelineFilterWidget*                           m_ShiftStart = nullptr;
     PipelineTreeModel*                                m_PipelineModel = nullptr;
@@ -445,13 +412,6 @@ class SVWidgetsLib_EXPORT SVPipelineViewWidget : public QFrame, public PipelineV
     int                                               m_AutoScrollMargin;
     int                                               m_autoScrollCount;
     QMenu*                                            m_ContextMenu = nullptr;
-    QSharedPointer<QUndoStack>                        m_UndoStack;
-    QAction*                                          m_ActionUndo = nullptr;
-    QAction*                                          m_ActionRedo = nullptr;
-    QString                                           m_CurrentUndoText = "";
-    QString                                           m_CurrentRedoText = "";
-    QString                                           m_PreviousUndoText = "";
-    QString                                           m_PreviousRedoText = "";
     bool                                              m_BlockPreflight = false;
     std::stack<bool>                                  m_BlockPreflightStack;
     DataStructureWidget*                              m_DataStructureWidget = nullptr;

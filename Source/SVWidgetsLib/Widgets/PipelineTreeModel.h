@@ -36,6 +36,8 @@
 #include <QtCore/QModelIndex>
 #include <QtCore/QVariant>
 
+#include <QtWidgets/QAction>
+
 #include "SIMPLib/Common/SIMPLibSetGetMacros.h"
 #include "SIMPLib/Filtering/AbstractFilter.h"
 
@@ -57,6 +59,8 @@ class SVWidgetsLib_EXPORT PipelineTreeModel : public QAbstractItemModel
     ~PipelineTreeModel();
 
     SIMPL_INSTANCE_PROPERTY(int, MaxNumberOfPipelines)
+    SIMPL_INSTANCE_PROPERTY(QAction*, ActionUndo)
+    SIMPL_INSTANCE_PROPERTY(QAction*, ActionRedo)
 
     QVariant data(const QModelIndex& index, int role) const Q_DECL_OVERRIDE;
 //    QVariant headerData(int section, Qt::Orientation orientation, int role = Qt::DisplayRole) const Q_DECL_OVERRIDE;

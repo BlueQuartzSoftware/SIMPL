@@ -45,9 +45,10 @@
 PipelineTreeModel::PipelineTreeModel(QObject* parent)
 : QAbstractItemModel(parent)
 , m_MaxNumberOfPipelines(std::numeric_limits<int>::max())
+, m_ActionUndo(nullptr)
+, m_ActionRedo(nullptr)
 {
   QVector<QVariant> vector;
-  vector.push_back("");
   vector.push_back("");
   m_RootItem = new PipelineTreeItem(vector);
 }

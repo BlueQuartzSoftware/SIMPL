@@ -305,17 +305,6 @@ void PipelineView::clearSelectedFilterObjects()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void PipelineView::addUndoCommand(QUndoCommand* cmd)
-{
-  Q_UNUSED(cmd)
-
-  // The subclass should reimplement this function
-  return;
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
 QList<PipelineFilterObject*> PipelineView::getSelectedFilterObjects()
 {
   // The subclass should reimplement this function

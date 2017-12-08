@@ -36,6 +36,8 @@
 #include <QtCore/QStack>
 #include <QtCore/QPersistentModelIndex>
 
+#include <QtWidgets/QUndoStack>
+
 #include "SIMPLib/Common/SIMPLibSetGetMacros.h"
 #include "SIMPLib/Filtering/FilterPipeline.h"
 
@@ -52,6 +54,11 @@ class SVWidgetsLib_EXPORT PipelineTreeController : public QObject
 
     PipelineTreeController(QObject* parent = 0);
     ~PipelineTreeController();
+
+    /**
+     * @brief setupUndoStack
+     */
+    void setupUndoStack();
 
     /**
      * @brief getFilterPipeline
@@ -99,6 +106,12 @@ class SVWidgetsLib_EXPORT PipelineTreeController : public QObject
      */
     QJsonObject toJsonObject(PipelineTreeModel *model);
 
+    /**
+     * @brief getActivePipelineIndex
+     * @return
+     */
+    QModelIndex getActivePipelineIndex();
+
   public slots:
 
     /**
@@ -130,9 +143,28 @@ class SVWidgetsLib_EXPORT PipelineTreeController : public QObject
      */
     void blockPreflightSignals(bool b);
 
+    /**
+     * @brief addUndoCommand
+     * @param cmd
+     */
+    void addUndoCommand(QUndoCommand* cmd);
+
+    /**
+     * @brief undo
+     */
+    void undo();
+
+    /**
+     * @brief redo
+     */
+    void redo();
+
   signals:
     void statusMessageGenerated(const QString &msg);
     void standardOutputMessageGenerated(const QString &msg);
+
+    void undoActionGenerated(QAction* actionUndo);
+    void redoActionGenerated(QAction* actionRedo);
 
     void pipelineIssuesCleared();
 
@@ -144,6 +176,12 @@ class SVWidgetsLib_EXPORT PipelineTreeController : public QObject
     bool                                              m_BlockPreflight = false;
     QStack<bool>                                      m_BlockPreflightStack;
     QList<QObject*>                                   m_PipelineMessageObservers;
+
+    QSharedPointer<QUndoStack>                        m_UndoStack;
+    QString                                           m_CurrentUndoText = "";
+    QString                                           m_CurrentRedoText = "";
+    QString                                           m_PreviousUndoText = "";
+    QString                                           m_PreviousRedoText = "";
 
     QPersistentModelIndex                             m_ActivePipelineIndex;
 

@@ -50,6 +50,7 @@
 // -----------------------------------------------------------------------------
 PipelineTreeController::PipelineTreeController(QObject* parent)
 : QObject(parent)
+, m_UndoStack(new QUndoStack(this))
 {
 
 }
@@ -60,6 +61,65 @@ PipelineTreeController::PipelineTreeController(QObject* parent)
 PipelineTreeController::~PipelineTreeController()
 {
 
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void PipelineTreeController::setupUndoStack()
+{
+  m_UndoStack->setUndoLimit(10);
+  QAction* actionUndo = m_UndoStack->createUndoAction(nullptr);
+  QAction* actionRedo = m_UndoStack->createRedoAction(nullptr);
+  actionUndo->setShortcut(QKeySequence(Qt::CTRL + Qt::Key_Z));
+  actionRedo->setShortcut(QKeySequence(Qt::CTRL + Qt::SHIFT + Qt::Key_Z));
+
+  connect(m_UndoStack.data(), &QUndoStack::undoTextChanged, [=] (const QString &text) {
+    m_PreviousUndoText = m_CurrentUndoText;
+    m_CurrentUndoText = text;
+  });
+  connect(m_UndoStack.data(), &QUndoStack::redoTextChanged, [=] (const QString &text) {
+    m_PreviousRedoText = m_CurrentRedoText;
+    m_CurrentRedoText = text;
+  });
+
+  connect(actionUndo, &QAction::triggered, [=] {
+    emit standardOutputMessageGenerated("Undo " + m_PreviousUndoText);
+    //  QString text = m_ActionUndo->text();
+    //  emit standardOutputMessageGenerated(text);
+  });
+  connect(actionRedo, &QAction::triggered, [=] {
+    emit standardOutputMessageGenerated("Redo " + m_PreviousRedoText);
+    //  QString text = m_ActionRedo->text();
+    //  emit standardOutputMessageGenerated(text);
+  });
+
+  emit undoActionGenerated(actionUndo);
+  emit redoActionGenerated(actionRedo);
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void PipelineTreeController::addUndoCommand(QUndoCommand* cmd)
+{
+  m_UndoStack->push(cmd);
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void PipelineTreeController::undo()
+{
+  m_UndoStack->undo();
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void PipelineTreeController::redo()
+{
+  m_UndoStack->redo();
 }
 
 // -----------------------------------------------------------------------------
@@ -462,6 +522,14 @@ void PipelineTreeController::unwrapModel(QString objectName, QJsonObject object,
       unwrapModel(keys[i], val.toObject(), model, nameIndex);
     }
   }
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+QModelIndex PipelineTreeController::getActivePipelineIndex()
+{
+  return m_ActivePipelineIndex;
 }
 
 

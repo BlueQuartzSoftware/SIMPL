@@ -100,7 +100,6 @@ SVPipelineViewWidget::SVPipelineViewWidget(QWidget* parent)
 , m_AutoScroll(true)
 , m_AutoScrollMargin(10)
 , m_autoScrollCount(0)
-, m_UndoStack(new QUndoStack(this))
 , m_BlockPreflight(false)
 {
   setupGui();
@@ -111,10 +110,6 @@ SVPipelineViewWidget::SVPipelineViewWidget(QWidget* parent)
 // -----------------------------------------------------------------------------
 SVPipelineViewWidget::~SVPipelineViewWidget()
 {
-  // These disconnections are needed so that the slots are not called when the undo stack is deconstructed.  Calling the slots during deconstruction causes a crash.
-  disconnect(m_UndoStack.data(), SIGNAL(undoTextChanged(const QString &)), this, SLOT(updateCurrentUndoText(const QString &)));
-  disconnect(m_UndoStack.data(), SIGNAL(redoTextChanged(const QString &)), this, SLOT(updateCurrentRedoText(const QString &)));
-
   if(m_ContextMenu)
   {
     delete m_ContextMenu;
@@ -150,22 +145,9 @@ void SVPipelineViewWidget::setupGui()
   m_ActionEnableFilter->setEnabled(false);
 
   // connect(this, SIGNAL(deleteKeyPressed(PipelineView*)), dream3dApp, SLOT(on_pipelineViewWidget_deleteKeyPressed(PipelineView*)));
-  m_UndoStack = QSharedPointer<QUndoStack>(new QUndoStack(this));
-  m_UndoStack->setUndoLimit(10);
 
   m_FilterOutlineWidget = new SVPipelineFilterOutlineWidget(nullptr);
   m_FilterOutlineWidget->setObjectName("m_DropBox");
-
-  m_ActionUndo = m_UndoStack->createUndoAction(nullptr);
-  m_ActionRedo = m_UndoStack->createRedoAction(nullptr);
-  m_ActionUndo->setShortcut(QKeySequence(Qt::CTRL + Qt::Key_Z));
-  m_ActionRedo->setShortcut(QKeySequence(Qt::CTRL + Qt::SHIFT + Qt::Key_Z));
-
-  connect(m_UndoStack.data(), SIGNAL(undoTextChanged(const QString &)), this, SLOT(updateCurrentUndoText(const QString &)));
-  connect(m_UndoStack.data(), SIGNAL(redoTextChanged(const QString &)), this, SLOT(updateCurrentRedoText(const QString &)));
-
-  connect(m_ActionUndo, SIGNAL(triggered()), this, SLOT(actionUndo_triggered()));
-  connect(m_ActionRedo, SIGNAL(triggered()), this, SLOT(actionRedo_triggered()));
 
   m_autoScrollTimer.setParent(this);
 
@@ -327,44 +309,6 @@ void SVPipelineViewWidget::createPipelineViewWidgetMenu()
   m_ContextMenu->addAction(menuItems->getActionPaste());
   m_ContextMenu->addSeparator();
   m_ContextMenu->addAction(menuItems->getActionClearPipeline());
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-void SVPipelineViewWidget::updateCurrentUndoText(const QString &text)
-{
-  m_PreviousUndoText = m_CurrentUndoText;
-  m_CurrentUndoText = text;
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-void SVPipelineViewWidget::updateCurrentRedoText(const QString &text)
-{
-  m_PreviousRedoText = m_CurrentRedoText;
-  m_CurrentRedoText = text;
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-void SVPipelineViewWidget::actionUndo_triggered()
-{
-  emit stdOutMessage("Undo " + m_PreviousUndoText);
-//  QString text = m_ActionUndo->text();
-//  emit stdOutMessage(text);
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-void SVPipelineViewWidget::actionRedo_triggered()
-{
-  emit stdOutMessage("Redo " + m_PreviousRedoText);
-//  QString text = m_ActionRedo->text();
-//  emit stdOutMessage(text);
 }
 
 // -----------------------------------------------------------------------------
@@ -586,7 +530,7 @@ void SVPipelineViewWidget::clearFilterWidgets(bool addToUndoStack)
   if (addToUndoStack == true)
   {
     RemoveFilterCommand* removeCmd = new RemoveFilterCommand(filterObjects, this, "Clear");
-    addUndoCommand(removeCmd);
+    emit undoCommandCreated(removeCmd);
   }
   else
   {
@@ -999,7 +943,6 @@ void SVPipelineViewWidget::preflightPipeline(QUuid id)
       }
     }
   }
-  emit preflightPipelineComplete();
   emit preflightFinished(err);
 
   if(m_DataStructureWidget)
@@ -1016,7 +959,7 @@ void SVPipelineViewWidget::removeFilterObjects(QList<PipelineFilterObject*> filt
   if (filterObjects.size() <= 0) { return; }
 
   RemoveFilterCommand* removeCmd = new RemoveFilterCommand(filterObjects, this, "Remove");
-  addUndoCommand(removeCmd);
+  emit undoCommandCreated(removeCmd);
 
   if (filterObjects.size() > 1)
   {
@@ -1048,7 +991,7 @@ void SVPipelineViewWidget::removeFilterObject(PipelineFilterObject* filterObject
   }
 
   RemoveFilterCommand* removeCmd = new RemoveFilterCommand(filterObject, this, "Remove");
-  addUndoCommand(removeCmd);
+  emit undoCommandCreated(removeCmd);
 
   emit statusMessage(tr("Removed \"%1\" filter").arg(filterObject->getHumanLabel()));
   emit stdOutMessage(tr("Removed \"%1\" filter").arg(filterObject->getHumanLabel()));
@@ -1200,14 +1143,6 @@ void SVPipelineViewWidget::setSelectedFiltersEnabled(bool enabled)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void SVPipelineViewWidget::addUndoCommand(QUndoCommand* cmd)
-{
-  m_UndoStack->push(cmd);
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
 void SVPipelineViewWidget::setSelectedFilterObject(PipelineFilterObject* w, Qt::KeyboardModifiers modifiers)
 {
   SVPipelineFilterWidget* filterWidget = dynamic_cast<SVPipelineFilterWidget*>(w);
@@ -1336,7 +1271,7 @@ void SVPipelineViewWidget::addSIMPLViewReaderFilter(const QString& filePath, QVa
 
   AddFilterCommand* addCmd = new AddFilterCommand(reader, this, "Add", value);
   addCmd->setText(QObject::tr("\"%1 '%2' Filter\"").arg("Add").arg(reader->getHumanLabel()));
-  addUndoCommand(addCmd);
+  emit undoCommandCreated(addCmd);
 
   emit statusMessage(tr("Added \"%1\" filter").arg(reader->getHumanLabel()));
   emit stdOutMessage(tr("Added \"%1\" filter").arg(reader->getHumanLabel()));
@@ -1367,7 +1302,7 @@ void SVPipelineViewWidget::addFiltersFromIndices(QModelIndexList filterIndices)
   int startIndex = filterIndices[0].row();
 
   AddFilterCommand* addCmd = new AddFilterCommand(filters, this, "Paste", startIndex);
-  addUndoCommand(addCmd);
+  emit undoCommandCreated(addCmd);
 
 //  if(filterCount() > 0)
 //  {
@@ -1930,7 +1865,7 @@ void SVPipelineViewWidget::dropEvent(QDropEvent* event)
 
       AbstractFilter::Pointer filter = wf->create();
       AddFilterCommand* addCmd = new AddFilterCommand(filter, this, "Add", index);
-      addUndoCommand(addCmd);
+      emit undoCommandCreated(addCmd);
 
       emit statusMessage(tr("Added \"%1\" filter").arg(filter->getHumanLabel()));
       emit stdOutMessage(tr("Added \"%1\" filter").arg(filter->getHumanLabel()));
@@ -2026,7 +1961,7 @@ void SVPipelineViewWidget::dropEvent(QDropEvent* event)
       }
 
       AddFilterCommand* addCmd = new AddFilterCommand(filters, this, "Paste", index);
-      addUndoCommand(addCmd);
+      emit undoCommandCreated(addCmd);
 
       for (int i = 0; i < filters.size(); i++)
       {
@@ -2037,7 +1972,7 @@ void SVPipelineViewWidget::dropEvent(QDropEvent* event)
       if(qApp->queryKeyboardModifiers() != Qt::AltModifier)
       {
         RemoveFilterCommand* removeCmd = new RemoveFilterCommand(filterObjects, origin, "Cut");
-        origin->addUndoCommand(removeCmd);
+        emit undoCommandCreated(removeCmd);
 
         for (int i = 0; i < filters.size(); i++)
         {
@@ -2052,12 +1987,12 @@ void SVPipelineViewWidget::dropEvent(QDropEvent* event)
     else
     {
       MoveFilterCommand* cmd = new MoveFilterCommand(draggedFilterObjects, index, this);
-      addUndoCommand(cmd);
+      emit undoCommandCreated(cmd);
 
       // Do not allow move with index equal to the number of filters.  It will add below the spacer and cause errors
       if (index == filterCount())
       {
-        m_UndoStack->undo();
+        emit undoRequested();
 
         m_FilterOutlineWidget->hide();
         m_FilterWidgetLayout->removeWidget(m_FilterOutlineWidget);
@@ -2312,22 +2247,6 @@ QList<PipelineView::IndexedFilterObject> SVPipelineViewWidget::getSelectedIndexe
     }
   }
   return indexedFilterObjects;
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-QAction* SVPipelineViewWidget::getActionRedo()
-{
-  return m_ActionRedo;
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-QAction* SVPipelineViewWidget::getActionUndo()
-{
-  return m_ActionUndo;
 }
 
 // -----------------------------------------------------------------------------
