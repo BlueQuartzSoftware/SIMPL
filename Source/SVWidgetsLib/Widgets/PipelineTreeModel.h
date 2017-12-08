@@ -52,14 +52,14 @@ class SVWidgetsLib_EXPORT PipelineTreeModel : public QAbstractItemModel
   public:
     SIMPL_TYPE_MACRO(PipelineTreeModel)
 
+    PipelineTreeModel(QObject* parent = 0);
+
     ~PipelineTreeModel();
 
-    static PipelineTreeModel* Instance();
-
-    static PipelineTreeModel* NewInstance(QtSSettings* prefs);
+    SIMPL_INSTANCE_PROPERTY(int, MaxNumberOfPipelines)
 
     QVariant data(const QModelIndex& index, int role) const Q_DECL_OVERRIDE;
-    QVariant headerData(int section, Qt::Orientation orientation, int role = Qt::DisplayRole) const Q_DECL_OVERRIDE;
+//    QVariant headerData(int section, Qt::Orientation orientation, int role = Qt::DisplayRole) const Q_DECL_OVERRIDE;
 
     AbstractFilter::Pointer filter(const QModelIndex &index);
     void setFilter(const QModelIndex &index, AbstractFilter::Pointer filter);
@@ -100,6 +100,9 @@ class SVWidgetsLib_EXPORT PipelineTreeModel : public QAbstractItemModel
     PipelineTreeItem::ItemType itemType(const QModelIndex &index);
     void setItemType(const QModelIndex &index, PipelineTreeItem::ItemType type);
 
+    bool pipelineSaved(const QModelIndex &index);
+    void setPipelineSaved(const QModelIndex &index, bool saved);
+
     bool isActivePipeline(const QModelIndex &index);
     void setActivePipeline(const QModelIndex &index, bool value);
     void clearActivePipeline();
@@ -109,13 +112,8 @@ class SVWidgetsLib_EXPORT PipelineTreeModel : public QAbstractItemModel
 
     PipelineTreeItem* getRootItem();
 
-  protected:
-    PipelineTreeModel(QObject* parent = 0);
-
   private:
     PipelineTreeItem*                       m_RootItem;
-
-    static PipelineTreeModel* self;
 
     PipelineTreeItem* getItem(const QModelIndex& index) const;
 

@@ -195,34 +195,11 @@ void PipelineView::moveFilterWidget(PipelineFilterObject* fw, QVariant origin, Q
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-int PipelineView::openPipeline(const QString& filePath, QVariant value, const bool& setOpenedFilePath, const bool& changeTitle)
-{
-  Q_UNUSED(filePath)
-  Q_UNUSED(value)
-  Q_UNUSED(setOpenedFilePath)
-  Q_UNUSED(changeTitle)
-
-  // The subclass should reimplement this function
-  return -1;
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
 void PipelineView::addSIMPLViewReaderFilter(const QString& filePath, QVariant value)
 {
   Q_UNUSED(filePath)
   Q_UNUSED(value)
 
-  // The subclass should reimplement this function
-  return;
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-void PipelineView::clearFilterWidgets()
-{
   // The subclass should reimplement this function
   return;
 }
@@ -283,18 +260,6 @@ void PipelineView::recheckWindowTitleAndModification()
 // -----------------------------------------------------------------------------
 void PipelineView::reindexWidgetTitles()
 {
-  // The subclass should reimplement this function
-  return;
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-void PipelineView::populatePipelineView(QString jsonString, QVariant value)
-{
-  Q_UNUSED(jsonString)
-  Q_UNUSED(value)
-
   // The subclass should reimplement this function
   return;
 }

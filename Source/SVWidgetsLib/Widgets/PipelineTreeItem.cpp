@@ -42,6 +42,7 @@
 PipelineTreeItem::PipelineTreeItem(const QVector<QVariant>& data, PipelineTreeItem* parent)
 : m_FilterInputWidget(nullptr)
 , m_ActivePipeline(false)
+, m_PipelineSaved(true)
 , m_Icon(QIcon())
 , m_Expanded(false)
 , m_ItemTooltip("")

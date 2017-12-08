@@ -389,7 +389,7 @@ void BookmarksToolboxWidget::on_bookmarksTreeView_doubleClicked(const QModelInde
         model->setData(nameIndex, false, Qt::UserRole);
         model->getFileSystemWatcher()->addPath(path);
       }
-      emit pipelineFileActivated(pipelinePath, true, true);
+      emit pipelineFileActivated(pipelinePath);
     }
   }
 }

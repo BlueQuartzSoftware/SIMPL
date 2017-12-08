@@ -79,17 +79,6 @@ class SVWidgetsLib_EXPORT PipelineTreeView : public QTreeView
     ~PipelineTreeView();
 
     /**
-    * @brief fromJsonObject
-    * @param modelObject
-    */
-    static PipelineTreeModel* FromJsonObject(QJsonObject modelObject);
-
-    /**
-    * @brief toJsonObject
-    */
-    QJsonObject toJsonObject();
-
-    /**
     * @brief setModel
     * @param model
     */
@@ -100,6 +89,12 @@ class SVWidgetsLib_EXPORT PipelineTreeView : public QTreeView
     * @param indexList
     */
     QModelIndexList filterOutDescendants(QModelIndexList indexList);
+
+    /**
+     * @brief getPipelineTreeModel Gets the PipelineTreeModel instance that is currently set into this view
+     * @return
+     */
+    PipelineTreeModel* getPipelineTreeModel();
 
   public slots:
     void collapseIndex(const QModelIndex& index);
@@ -125,8 +120,8 @@ class SVWidgetsLib_EXPORT PipelineTreeView : public QTreeView
     void contextMenuRequested(const QPoint& pos);
     void filterEnabledStateChanged();
 
-    void needsPreflight(const QModelIndex &pipelineIndex);
-    void activePipelineChanged(const QModelIndex &pipelineIdx);
+    void needsPreflight(const QModelIndex &pipelineIndex, PipelineTreeModel* model);
+    void activePipelineChanged(const QModelIndex &pipelineIdx, PipelineTreeModel* model);
 
   private slots:
     void requestContextMenu(const QPoint &pos);
@@ -140,8 +135,6 @@ class SVWidgetsLib_EXPORT PipelineTreeView : public QTreeView
     QModelIndex                                   m_TopLevelItemPlaceholder;
 
     void expandChildren(const QModelIndex& parent, PipelineTreeModel* model);
-    QJsonObject wrapModel(QModelIndex index);
-    static void UnwrapModel(QString objectName, QJsonObject object, PipelineTreeModel* model, QModelIndex parentIndex);
 
     /**
      * @brief requestSinglePipelineContextMenu

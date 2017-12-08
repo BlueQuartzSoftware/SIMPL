@@ -39,22 +39,17 @@
 #include "SVWidgetsLib/Widgets/PipelineTreeView.h"
 #include "SVWidgetsLib/QtSupport/QtSSettings.h"
 
-// Include the MOC generated CPP file which has all the QMetaObject methods/data
-
-PipelineTreeModel* PipelineTreeModel::self = nullptr;
-
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
 PipelineTreeModel::PipelineTreeModel(QObject* parent)
 : QAbstractItemModel(parent)
+, m_MaxNumberOfPipelines(std::numeric_limits<int>::max())
 {
   QVector<QVariant> vector;
-  vector.push_back("Name");
-  vector.push_back("Path");
+  vector.push_back("");
+  vector.push_back("");
   m_RootItem = new PipelineTreeItem(vector);
-
-  connect(this, SIGNAL(dataChanged(const QModelIndex&, const QModelIndex&)), this, SLOT(updateModel(const QModelIndex&, const QModelIndex&)));
 }
 
 // -----------------------------------------------------------------------------
@@ -65,36 +60,23 @@ PipelineTreeModel::~PipelineTreeModel()
   delete m_RootItem;
 }
 
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-PipelineTreeModel* PipelineTreeModel::Instance()
-{
-  if(self == nullptr)
-  {
-    self = new PipelineTreeModel();
-  }
+//// -----------------------------------------------------------------------------
+////
+//// -----------------------------------------------------------------------------
+//PipelineTreeModel* PipelineTreeModel::NewInstance(QtSSettings* prefs)
+//{
+//  // Erase the old content
+//  if(self)
+//  {
+//    delete self;
+//    self = nullptr;
+//  }
 
-  return self;
-}
+//  QJsonObject modelObj = prefs->value("Bookmarks Model", QJsonObject());
+//  self = PipelineTreeView::FromJsonObject(modelObj);
 
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-PipelineTreeModel* PipelineTreeModel::NewInstance(QtSSettings* prefs)
-{
-  // Erase the old content
-  if(self)
-  {
-    delete self;
-    self = nullptr;
-  }
-
-  QJsonObject modelObj = prefs->value("Bookmarks Model", QJsonObject());
-  self = PipelineTreeView::FromJsonObject(modelObj);
-
-  return self;
-}
+//  return self;
+//}
 
 // -----------------------------------------------------------------------------
 //
@@ -317,18 +299,18 @@ PipelineTreeItem* PipelineTreeModel::getItem(const QModelIndex& index) const
   return m_RootItem;
 }
 
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-QVariant PipelineTreeModel::headerData(int section, Qt::Orientation orientation, int role) const
-{
-  if(orientation == Qt::Horizontal && role == Qt::DisplayRole)
-  {
-    return m_RootItem->data(section);
-  }
+//// -----------------------------------------------------------------------------
+////
+//// -----------------------------------------------------------------------------
+//QVariant PipelineTreeModel::headerData(int section, Qt::Orientation orientation, int role) const
+//{
+//  if(orientation == Qt::Horizontal && role == Qt::DisplayRole)
+//  {
+//    return m_RootItem->data(section);
+//  }
 
-  return QVariant();
-}
+//  return QVariant();
+//}
 
 // -----------------------------------------------------------------------------
 //
@@ -534,6 +516,24 @@ void PipelineTreeModel::setItemType(const QModelIndex &index, PipelineTreeItem::
 {
   PipelineTreeItem* item = getItem(index);
   item->setItemType(type);
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+bool PipelineTreeModel::pipelineSaved(const QModelIndex &index)
+{
+  PipelineTreeItem* item = getItem(index);
+  return item->isPipelineSaved();
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void PipelineTreeModel::setPipelineSaved(const QModelIndex &index, bool saved)
+{
+  PipelineTreeItem* item = getItem(index);
+  item->setPipelineSaved(saved);
 }
 
 // -----------------------------------------------------------------------------

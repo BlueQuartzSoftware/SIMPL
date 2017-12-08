@@ -78,6 +78,7 @@
 #include "SVWidgetsLib/Core/SVWidgetsLibConstants.h"
 #include "SVWidgetsLib/FilterParameterWidgets/FilterParameterWidgetsDialogs.h"
 #include "SVWidgetsLib/Widgets/BreakpointFilterWidget.h"
+#include "SVWidgetsLib/Widgets/PipelineTreeModel.h"
 #include "SVWidgetsLib/Widgets/SIMPLViewMenuItems.h"
 #include "SVWidgetsLib/Widgets/util/AddFilterCommand.h"
 #include "SVWidgetsLib/Widgets/util/MoveFilterCommand.h"
@@ -540,7 +541,7 @@ void SVPipelineViewWidget::resetLayout()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void SVPipelineViewWidget::clearFilterWidgets()
+void SVPipelineViewWidget::clearFilterWidgets(bool addToUndoStack)
 {
   int numFilters = filterCount();
 
@@ -582,8 +583,15 @@ void SVPipelineViewWidget::clearFilterWidgets()
 #endif
   }
 
-  RemoveFilterCommand* removeCmd = new RemoveFilterCommand(filterObjects, this, "Clear");
-  addUndoCommand(removeCmd);
+  if (addToUndoStack == true)
+  {
+    RemoveFilterCommand* removeCmd = new RemoveFilterCommand(filterObjects, this, "Clear");
+    addUndoCommand(removeCmd);
+  }
+  else
+  {
+    removeFilterObjects(filterObjects);
+  }
 
   if(m_DataStructureWidget)
   {
@@ -673,49 +681,6 @@ FilterPipeline::Pointer SVPipelineViewWidget::getCopyOfFilterPipeline()
   }
 
   return pipeline;
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-int SVPipelineViewWidget::openPipeline(const QString& filePath, QVariant value, const bool& setOpenedFilePath, const bool& changeTitle)
-{
-  QFileInfo fi(filePath);
-  if(fi.exists() == false)
-  {
-    QMessageBox::warning(this, QString::fromLatin1("Pipeline Read Error"), QString::fromLatin1("There was an error opening the specified pipeline file. The pipeline file does not exist."));
-    return -1;
-  }
-
-  // Clear the pipeline Issues table first so we can collect all the error messages
-  emit pipelineIssuesCleared();
-
-  QString ext = fi.suffix();
-  QString name = fi.fileName();
-  QString baseName = fi.baseName();
-
-  // Read the pipeline from the file
-  QString jsonString = getJsonFromFile(filePath);
-
-  // Check that a valid extension was read...
-  if(jsonString.isEmpty())
-  {
-    emit statusMessage(tr("The pipeline was not read correctly from file '%1'. '%2' is an unsupported file extension.").arg(name).arg(ext));
-    emit stdOutMessage(tr("The pipeline was not read correctly from file '%1'. '%2' is an unsupported file extension.").arg(name).arg(ext));
-    return -1;
-  }
-
-  // Notify user of successful read
-  emit statusMessage(tr("Opened \"%1\" Pipeline").arg(baseName));
-  emit stdOutMessage(tr("Opened \"%1\" Pipeline").arg(baseName));
-
-  // Populate the pipeline view
-  populatePipelineView(jsonString, value);
-
-  QString file = filePath;
-  emit pipelineOpened(file, setOpenedFilePath, changeTitle);
-
-  return 0;
 }
 
 // -----------------------------------------------------------------------------
@@ -1380,37 +1345,38 @@ void SVPipelineViewWidget::addSIMPLViewReaderFilter(const QString& filePath, QVa
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void SVPipelineViewWidget::populatePipelineView(QString jsonString, QVariant value)
+void SVPipelineViewWidget::addFiltersFromIndices(QModelIndexList filterIndices)
 {
-  if(jsonString.isEmpty())
+  if (filterIndices.size() <= 0)
   {
-    clearFilterWidgets();
     return;
   }
 
-  bool ok;
-  int index = value.toInt(&ok);
-  if(ok == false)
-  {
-    return;
-  }
-  if(index < 0 || index > filterCount())
-  {
-    index = filterCount();
-  }
   m_LoadingJson = true;
 
-  AddFilterCommand* addCmd = new AddFilterCommand(jsonString, this, "Paste", index);
+  PipelineTreeModel* model = getPipelineTreeModel();
+
+  QList<AbstractFilter::Pointer> filters;
+  for (int i = 0; i < filterIndices.size(); i++)
+  {
+    QModelIndex filterIndex = filterIndices[i];
+    AbstractFilter::Pointer filter = model->filter(filterIndex);
+    filters.push_back(filter);
+  }
+
+  int startIndex = filterIndices[0].row();
+
+  AddFilterCommand* addCmd = new AddFilterCommand(filters, this, "Paste", startIndex);
   addUndoCommand(addCmd);
 
-  if(filterCount() > 0)
-  {
-    SVPipelineFilterWidget* fw = dynamic_cast<SVPipelineFilterWidget*>(m_FilterWidgetLayout->itemAt(0)->widget());
-    if(fw)
-    {
-      setSelectedFilterObject(fw, Qt::NoModifier);
-    }
-  }
+//  if(filterCount() > 0)
+//  {
+//    SVPipelineFilterWidget* fw = dynamic_cast<SVPipelineFilterWidget*>(m_FilterWidgetLayout->itemAt(0)->widget());
+//    if(fw)
+//    {
+//      setSelectedFilterObject(fw, Qt::NoModifier);
+//    }
+//  }
   m_LoadingJson = false;
 }
 
@@ -1521,29 +1487,6 @@ FilterPipeline::Pointer SVPipelineViewWidget::readPipelineFromFile(const QString
   }
 
   return pipeline;
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-QString SVPipelineViewWidget::getJsonFromFile(const QString& filePath)
-{
-  QFileInfo fi(filePath);
-  QString ext = fi.suffix();
-
-  QString jsonString = "";
-  if(ext == "dream3d")
-  {
-    H5FilterParametersReader::Pointer dream3dReader = H5FilterParametersReader::New();
-    jsonString = dream3dReader->getJsonFromFile(filePath);
-  }
-  else if(ext == "json")
-  {
-    JsonFilterParametersReader::Pointer jsonReader = JsonFilterParametersReader::New();
-    jsonString = jsonReader->getJsonFromFile(filePath);
-  }
-
-  return jsonString;
 }
 
 // -----------------------------------------------------------------------------
@@ -2007,11 +1950,18 @@ void SVPipelineViewWidget::dropEvent(QDropEvent* event)
         return;
       }
 
+      PipelineTreeModel* model = getPipelineTreeModel();
+      QModelIndex parentIndex;
+      if (model->rowCount() > 0)
+      {
+        parentIndex = model->index(0, PipelineTreeItem::Name);
+      }
+
       if(ext == "json")
       {
-        openPipeline(data, index, false, false);
+        emit pipelineDropped(data, model, parentIndex, index);
 
-        emit windowNeedsRecheck();
+//        emit windowNeedsRecheck();
       }
       else if(ext == "dream3d")
       {
@@ -2023,7 +1973,7 @@ void SVPipelineViewWidget::dropEvent(QDropEvent* event)
         {
           if(msgBox->isExtractPipelineBtnChecked() == true)
           {
-            openPipeline(data, index, false, false);
+            emit pipelineDropped(data, getPipelineTreeModel(), parentIndex, index);
           }
           else
           {
@@ -2423,4 +2373,20 @@ void SVPipelineViewWidget::setDataStructureWidget(DataStructureWidget* w)
 DataStructureWidget* SVPipelineViewWidget::getDataStructureWidget()
 {
   return m_DataStructureWidget;
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void SVPipelineViewWidget::setModel(PipelineTreeModel* model)
+{
+  m_PipelineModel = model;
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+PipelineTreeModel* SVPipelineViewWidget::getPipelineTreeModel()
+{
+  return m_PipelineModel;
 }

@@ -172,12 +172,6 @@ class SVWidgetsLib_EXPORT PipelineView
     virtual QList<IndexedFilterObject> getSelectedIndexedFilterObjects();
 
     /**
-     * @brief populatePipelineView
-     * @param jsonString
-     */
-    virtual void populatePipelineView(QString jsonString, QVariant value);
-
-    /**
      * @brief moveFilterWidget
      * @param fw
      * @param origin
@@ -209,20 +203,10 @@ class SVWidgetsLib_EXPORT PipelineView
     virtual void preflightPipeline(QUuid id = QUuid());
 
     /**
-    * @brief Open pipeline to a file
-    */
-    virtual int openPipeline(const QString& filePath, QVariant value, const bool& setOpenedFilePath, const bool& changeTitle);
-
-    /**
      * @brief addSIMPLViewReaderFilter
      * @param filePath
      */
     virtual void addSIMPLViewReaderFilter(const QString& filePath, QVariant value);
-
-    /**
-    * @brief clearWidgets
-    */
-    virtual void clearFilterWidgets();
 
     /**
      * @brief reindexWidgetTitles

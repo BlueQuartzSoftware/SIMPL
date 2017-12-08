@@ -111,7 +111,7 @@ void PipelineTreeView::requestContextMenu(const QPoint& pos)
 
   QModelIndex index = indexAt(pos);
 
-  PipelineTreeModel* model = PipelineTreeModel::Instance();
+  PipelineTreeModel* model = getPipelineTreeModel();
 
   QPoint mapped;
   if(model->itemType(index) == PipelineTreeItem::ItemType::Filter)
@@ -139,7 +139,7 @@ void PipelineTreeView::requestContextMenu(const QPoint& pos)
 void PipelineTreeView::requestFilterContextMenu(const QPoint &pos, const QModelIndex &index)
 {
   SIMPLViewMenuItems* menuItems = SIMPLViewMenuItems::Instance();
-  PipelineTreeModel* model = PipelineTreeModel::Instance();
+  PipelineTreeModel* model = getPipelineTreeModel();
 
   QModelIndexList indexList = selectionModel()->selectedRows(PipelineTreeItem::Name);
 
@@ -249,7 +249,7 @@ void PipelineTreeView::requestFilterContextMenu(const QPoint &pos, const QModelI
 void PipelineTreeView::requestPipelineContextMenu(const QPoint &pos, const QModelIndex &index)
 {
   SIMPLViewMenuItems* menuItems = SIMPLViewMenuItems::Instance();
-  PipelineTreeModel* model = PipelineTreeModel::Instance();
+  PipelineTreeModel* model = getPipelineTreeModel();
 
   QModelIndexList indexList = selectionModel()->selectedRows(PipelineTreeItem::Name);
   if (indexList.size() <= 0)
@@ -290,12 +290,12 @@ void PipelineTreeView::requestPipelineContextMenu(const QPoint &pos, const QMode
 // -----------------------------------------------------------------------------
 void PipelineTreeView::requestSinglePipelineContextMenu(QMenu &menu, const QModelIndex &pipelineIdx)
 {
-  PipelineTreeModel* model = PipelineTreeModel::Instance();
+  PipelineTreeModel* model = getPipelineTreeModel();
 
   if (model->isActivePipeline(pipelineIdx) == false)
   {
     QAction* activePipelineAction = new QAction(tr("Set '%1' as Active Pipeline").arg(model->data(pipelineIdx, Qt::DisplayRole).toString()));
-    connect(activePipelineAction, &QAction::triggered, [=] { emit activePipelineChanged(pipelineIdx); });
+    connect(activePipelineAction, &QAction::triggered, [=] { emit activePipelineChanged(pipelineIdx, getPipelineTreeModel()); });
     menu.addAction(activePipelineAction);
   }
 
@@ -307,7 +307,7 @@ void PipelineTreeView::requestSinglePipelineContextMenu(QMenu &menu, const QMode
     {
       // We are trying to delete the active pipeline, so find another pipeline to set as the active pipeline
       QModelIndex nextActivePipeline = findNewActivePipeline(pipelineIdx);
-      emit activePipelineChanged(nextActivePipeline);
+      emit activePipelineChanged(nextActivePipeline, getPipelineTreeModel());
     }
     model->removeRow(pipelineIdx.row());
   });
@@ -330,7 +330,7 @@ void PipelineTreeView::requestSinglePipelineContextMenu(QMenu &menu, const QMode
 // -----------------------------------------------------------------------------
 void PipelineTreeView::requestMultiplePipelineContextMenu(QMenu &menu, QModelIndexList pipelineIndices)
 {
-  PipelineTreeModel* model = PipelineTreeModel::Instance();
+  PipelineTreeModel* model = getPipelineTreeModel();
 
   QAction* removeAction = new QAction(tr("Delete %1 Pipelines").arg(pipelineIndices.size()), &menu);
   connect(removeAction, &QAction::triggered, [=] {
@@ -346,7 +346,7 @@ void PipelineTreeView::requestMultiplePipelineContextMenu(QMenu &menu, QModelInd
       {
         // We are trying to delete the active pipeline, so find another pipeline to set as the active pipeline
         QModelIndex nextActivePipeline = findNewActivePipeline(persistentList[i]);
-        emit activePipelineChanged(nextActivePipeline);
+        emit activePipelineChanged(nextActivePipeline, getPipelineTreeModel());
       }
 
       model->removeRow(persistentList[i].row(), persistentList[i].parent());
@@ -371,7 +371,7 @@ void PipelineTreeView::requestMultiplePipelineContextMenu(QMenu &menu, QModelInd
 // -----------------------------------------------------------------------------
 QModelIndex PipelineTreeView::findNewActivePipeline(const QModelIndex &oldActivePipeline)
 {
-  PipelineTreeModel* model = PipelineTreeModel::Instance();
+  PipelineTreeModel* model = getPipelineTreeModel();
 
   int row = oldActivePipeline.row();
   if (row == model->rowCount(oldActivePipeline.parent()) - 1)
@@ -410,7 +410,7 @@ void PipelineTreeView::requestDefaultContextMenu(const QPoint &pos)
 // -----------------------------------------------------------------------------
 void PipelineTreeView::setFiltersEnabled(QModelIndexList indices, bool enabled)
 {
-  PipelineTreeModel* model = PipelineTreeModel::Instance();
+  PipelineTreeModel* model = getPipelineTreeModel();
 
   int count = indices.size();
   QModelIndexList pipelineIndices;
@@ -426,7 +426,7 @@ void PipelineTreeView::setFiltersEnabled(QModelIndexList indices, bool enabled)
 
   for (int i = 0; i < pipelineIndices.size(); i++)
   {
-    emit needsPreflight(pipelineIndices[i]);
+    emit needsPreflight(pipelineIndices[i], getPipelineTreeModel());
   }
 
   emit filterEnabledStateChanged();
@@ -446,7 +446,7 @@ void PipelineTreeView::setSelectedFiltersEnabled(bool enabled)
 // -----------------------------------------------------------------------------
 QModelIndexList PipelineTreeView::filterOutDescendants(QModelIndexList indexList)
 {
-  PipelineTreeModel* model = PipelineTreeModel::Instance();
+  PipelineTreeModel* model = getPipelineTreeModel();
 
   for(int i = indexList.size() - 1; i >= 0; i--)
   {
@@ -508,7 +508,7 @@ void PipelineTreeView::collapseIndex(const QModelIndex& index)
 {
   if(index.isValid())
   {
-    PipelineTreeModel* model = PipelineTreeModel::Instance();
+    PipelineTreeModel* model = getPipelineTreeModel();
     QModelIndex sibling = model->sibling(0, 0, index);
 
     QTreeView::collapse(index);
@@ -522,7 +522,7 @@ void PipelineTreeView::collapseIndex(const QModelIndex& index)
 // -----------------------------------------------------------------------------
 void PipelineTreeView::expandIndex(const QModelIndex& index)
 {
-  PipelineTreeModel* model = PipelineTreeModel::Instance();
+  PipelineTreeModel* model = getPipelineTreeModel();
   QModelIndex sibling = model->sibling(0, 0, index);
 
   QTreeView::expand(index);
@@ -541,130 +541,9 @@ void PipelineTreeView::currentChanged(const QModelIndex& current, const QModelIn
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-QJsonObject PipelineTreeView::toJsonObject()
-{
-  PipelineTreeModel* model = PipelineTreeModel::Instance();
-  PipelineTreeItem* rootItem = model->getRootItem();
-
-  QJsonObject treeObj;
-  for(int i = 0; i < rootItem->childCount(); i++)
-  {
-    QModelIndex childIndex = model->index(i, PipelineTreeItem::Name, QModelIndex());
-    QString name = childIndex.data().toString();
-
-    if(name.compare("Prebuilt Pipelines") != 0)
-    {
-      QJsonObject childObj = wrapModel(childIndex);
-      treeObj[name] = childObj;
-    }
-  }
-
-  return treeObj;
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-QJsonObject PipelineTreeView::wrapModel(QModelIndex currentIndex)
-{
-  PipelineTreeModel* model = PipelineTreeModel::Instance();
-
-  QJsonObject obj;
-
-  QString name = model->index(currentIndex.row(), PipelineTreeItem::Name, currentIndex.parent()).data().toString();
-
-  for(int i = 0; i < model->rowCount(currentIndex); i++)
-  {
-    QModelIndex childIndex = model->index(i, PipelineTreeItem::Name, currentIndex);
-    QString childName = childIndex.data().toString();
-
-    QJsonObject childObj = wrapModel(childIndex);
-    obj[childName] = childObj;
-  }
-
-  if(model->flags(currentIndex).testFlag(Qt::ItemIsDropEnabled) == true)
-  {
-    obj.insert("Expanded", isExpanded(currentIndex));
-  }
-
-  return obj;
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-PipelineTreeModel *PipelineTreeView::FromJsonObject(QJsonObject treeObject)
-{
-  PipelineTreeModel* model = PipelineTreeModel::Instance();
-
-  QStringList keys = treeObject.keys();
-  keys.sort(Qt::CaseInsensitive);
-  for(int i = 0; i < keys.size(); i++)
-  {
-    if(keys[i].compare("Prebuilt Pipelines") == 0)
-    {
-      continue;
-    }
-    QJsonValue val = treeObject.value(keys[i]);
-    if(val.isObject())
-    {
-      PipelineTreeView::UnwrapModel(keys[i], val.toObject(), model, QModelIndex());
-    }
-  }
-
-  return model;
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-void PipelineTreeView::UnwrapModel(QString objectName, QJsonObject object, PipelineTreeModel* model, QModelIndex parentIndex)
-{
-  int row = model->rowCount(parentIndex);
-  model->insertRow(row, parentIndex);
-  QModelIndex nameIndex = model->index(row, PipelineTreeItem::Name, parentIndex);
-
-  QString path = object["Path"].toString();
-  bool expanded = object["Expanded"].toBool();
-
-  QFileInfo fi(path);
-  if(path.isEmpty() == false)
-  {
-    model->setData(nameIndex, QIcon(":/bookmark.png"), Qt::DecorationRole);
-    if(fi.exists() == false)
-    {
-      // Set the itemHasError variable
-      model->setData(nameIndex, true, Qt::UserRole);
-    }
-  }
-  else
-  {
-    model->setData(nameIndex, QIcon(":/folder_blue.png"), Qt::DecorationRole);
-  }
-
-  path = QDir::toNativeSeparators(path);
-
-  model->setData(nameIndex, objectName, Qt::DisplayRole);
-  model->setNeedsToBeExpanded(nameIndex, expanded);
-
-  QStringList keys = object.keys();
-  keys.sort(Qt::CaseInsensitive);
-  for(int i = 0; i < keys.size(); i++)
-  {
-    QJsonValue val = object.value(keys[i]);
-    if(val.isObject())
-    {
-      PipelineTreeView::UnwrapModel(keys[i], val.toObject(), model, nameIndex);
-    }
-  }
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
 void PipelineTreeView::updateActionEnableFilter()
 {
-  PipelineTreeModel* model = PipelineTreeModel::Instance();
+  PipelineTreeModel* model = getPipelineTreeModel();
 
   QModelIndexList indices = selectionModel()->selectedRows(PipelineTreeItem::Name);
 
@@ -689,4 +568,12 @@ void PipelineTreeView::updateActionEnableFilter()
   m_ActionEnableFilter->setChecked(widgetEnabled);
 
   connect(m_ActionEnableFilter, &QAction::toggled, [=] { setSelectedFiltersEnabled(m_ActionEnableFilter->isChecked()); });
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+PipelineTreeModel* PipelineTreeView::getPipelineTreeModel()
+{
+  return dynamic_cast<PipelineTreeModel*>(model());
 }

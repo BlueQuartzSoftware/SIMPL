@@ -70,6 +70,8 @@ class QMenu;
 class QAction;
 class PipelineFilterObject;
 class DataStructureWidget;
+class PipelineTreeModel;
+
 /*
  *
  */
@@ -130,12 +132,6 @@ class SVWidgetsLib_EXPORT SVPipelineViewWidget : public QFrame, public PipelineV
     void clearSelectedFilterObjects() override;
 
     /**
-     * @brief populatePipelineView
-     * @param jsonString
-     */
-    void populatePipelineView(QString jsonString, QVariant value) override;
-
-    /**
     * @brief getSelectedFilterWidgets
     * @return
     */
@@ -171,13 +167,6 @@ class SVWidgetsLib_EXPORT SVPipelineViewWidget : public QFrame, public PipelineV
      * @return FilterPipeline::Pointer
      */
     FilterPipeline::Pointer readPipelineFromFile(const QString& filePath);
-
-    /**
-     * @brief getJsonFromFile
-     * @param filePath
-     * @return QString
-     */
-    QString getJsonFromFile(const QString& filePath);
 
     /**
     * @brief Write pipeline to a file
@@ -262,7 +251,24 @@ class SVWidgetsLib_EXPORT SVPipelineViewWidget : public QFrame, public PipelineV
 
     virtual QAction* getActionEnableFilter();
 
+    /**
+     * @brief setModel
+     * @param model
+     */
+    void setModel(PipelineTreeModel* model);
+
+    /**
+     * @brief getPipelineTreeModel
+     * @return
+     */
+    PipelineTreeModel* getPipelineTreeModel();
+
   public slots:
+    /**
+     * @brief addFiltersFromIndices
+     * @param filterIndices
+     */
+    void addFiltersFromIndices(QModelIndexList filterIndices);
 
     /**
      * @brief Should be block this class from either emitting a preflight signal or otherwise running a preflight.
@@ -283,11 +289,6 @@ class SVWidgetsLib_EXPORT SVPipelineViewWidget : public QFrame, public PipelineV
     void preflightPipeline(QUuid id = QUuid()) override;
 
     /**
-    * @brief Open pipeline to a file
-    */
-    int openPipeline(const QString& filePath, QVariant value, const bool& setOpenedFilePath, const bool& changeTitle) override;
-
-    /**
      * @brief addSIMPLViewReaderFilter
      * @param filePath
      */
@@ -296,7 +297,7 @@ class SVWidgetsLib_EXPORT SVPipelineViewWidget : public QFrame, public PipelineV
     /**
     * @brief clearWidgets
     */
-    void clearFilterWidgets() override;
+    void clearFilterWidgets(bool addToUndoStack = true);
 
     /**
     * @brief addUndoCommand
@@ -338,11 +339,11 @@ class SVWidgetsLib_EXPORT SVPipelineViewWidget : public QFrame, public PipelineV
     void removePlaceHolderFilter();
     void preflightHasMessage(PipelineMessage msg);
 
-    void pipelineOpened(QString& file, const bool& setOpenedFilePath, const bool& changeTitle);
     void pipelineHasErrorsSignal();
     void pipelineHasNoErrors();
     void pipelineIssuesCleared();
     void pipelineTitleUpdated(QString name);
+    void pipelineDropped(const QString &filePath, PipelineTreeModel* model, const QModelIndex &parentIndex, int insertionIndex);
     void windowNeedsRecheck();
 
     void pipelineFilterObjectSelected(PipelineFilterObject* object);
@@ -395,6 +396,7 @@ class SVWidgetsLib_EXPORT SVPipelineViewWidget : public QFrame, public PipelineV
     void requestContextMenu(const QPoint& pos);
 
   private slots:
+
     /**
      * @brief removeFilterWidget
      * @param filterWidget
@@ -431,6 +433,7 @@ class SVWidgetsLib_EXPORT SVPipelineViewWidget : public QFrame, public PipelineV
 
   private:
     SVPipelineFilterWidget*                           m_ShiftStart = nullptr;
+    PipelineTreeModel*                                m_PipelineModel = nullptr;
     QVBoxLayout*                                      m_FilterWidgetLayout = nullptr;
     int                                               m_FilterOrigPos;
     SVPipelineFilterOutlineWidget*                    m_FilterOutlineWidget = nullptr;
