@@ -310,14 +310,19 @@ class SVWidgetsLib_EXPORT SVPipelineViewWidget : public QFrame, public PipelineV
     void doAutoScroll();
 
     /**
-    * @brief toRunningState
-    */
+     * @brief toReadyState
+     */
+    void toReadyState();
+
+    /**
+     * @brief toRunningState
+     */
     void toRunningState();
 
     /**
-    * @brief toIdleState
-    */
-    void toIdleState();
+     * @brief toStoppedState
+     */
+    void toStoppedState();
 
   signals:
     void undoCommandCreated(QUndoCommand* cmd);

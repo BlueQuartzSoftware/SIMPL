@@ -1366,25 +1366,52 @@ bool SVPipelineViewWidget::containsFilterWidget(PipelineFilterObject* filterWidg
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void SVPipelineViewWidget::toRunningState()
+void SVPipelineViewWidget::toReadyState()
 {
-  setPipelineIsRunning(true);
-  setAcceptDrops(false);
+  for(int i = 0; i < m_FilterWidgetLayout->count(); i++)
+  {
+    SVPipelineFilterWidget* fw = dynamic_cast<SVPipelineFilterWidget*>(m_FilterWidgetLayout->itemAt(i)->widget());
+    if (fw != nullptr)
+    {
+      fw->toReadyState();
+    }
+  }
 }
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void SVPipelineViewWidget::toIdleState()
-{
-  setPipelineIsRunning(false);
-  setAcceptDrops(true);
+void SVPipelineViewWidget::toRunningState()
+{  
+  setPipelineIsRunning(true);
+  setAcceptDrops(false);
+
   qint32 count = filterCount();
   for(qint32 i = 0; i < count; ++i)
   {
     PipelineFilterObject* fw = filterObjectAt(i);
     if(fw)
     {
+      fw->toRunningState();
+    }
+  }
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void SVPipelineViewWidget::toStoppedState()
+{
+  setPipelineIsRunning(false);
+  setAcceptDrops(true);
+
+  qint32 count = filterCount();
+  for(qint32 i = 0; i < count; ++i)
+  {
+    PipelineFilterObject* fw = filterObjectAt(i);
+    if(fw)
+    {
+      fw->toStoppedState();
       if(fw->isFilterEnabled())
       {
         fw->toReadyState();

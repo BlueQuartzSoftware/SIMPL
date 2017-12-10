@@ -35,6 +35,7 @@
 #include <QtCore/QObject>
 #include <QtCore/QStack>
 #include <QtCore/QPersistentModelIndex>
+#include <QtCore/QSignalMapper>
 
 #include <QtWidgets/QUndoStack>
 
@@ -131,6 +132,25 @@ class SVWidgetsLib_EXPORT PipelineTreeController : public QObject
     void preflightPipeline(const QModelIndex &pipelineIndex, PipelineTreeModel* model);
 
     /**
+     * @brief runPipeline
+     * @param pipelineIndex
+     * @param model
+     */
+    void runPipeline(const QModelIndex &pipelineIndex, PipelineTreeModel *model);
+
+    /**
+     * @brief cancelPipeline
+     * @param pipelineIndex
+     */
+    void cancelPipeline(const QModelIndex &pipelineIndex);
+
+    /**
+     * @brief finishPipeline
+     * @param pipelineIndex
+     */
+    void finishPipeline(const QModelIndex &pipelineIndex);
+
+    /**
      * @brief updateActivePipeline
      * @param pipelineIdx
      * @param model
@@ -159,6 +179,13 @@ class SVWidgetsLib_EXPORT PipelineTreeController : public QObject
      */
     void redo();
 
+  protected slots:
+    /**
+     * @brief processPipelineMessage
+     * @param msg
+     */
+    void processPipelineMessage(const PipelineMessage& msg);
+
   signals:
     void statusMessageGenerated(const QString &msg);
     void standardOutputMessageGenerated(const QString &msg);
@@ -166,13 +193,29 @@ class SVWidgetsLib_EXPORT PipelineTreeController : public QObject
     void undoActionGenerated(QAction* actionUndo);
     void redoActionGenerated(QAction* actionRedo);
 
-    void pipelineIssuesCleared();
+    void clearIssuesTriggered();
+    void displayIssuesTriggered();
+
+    void writeSIMPLViewSettingsTriggered();
+
+    void pipelineEnteringReadyState(const QModelIndex &pipelineIndex);
+    void pipelineEnteringRunningState(const QModelIndex &pipelineIndex);
+    void pipelineEnteringStoppedState(const QModelIndex &pipelineIndex);
+
+    void pipelineMessageGenerated(const PipelineMessage& msg);
 
     void filtersAddedToModel(QModelIndexList filterIndices);
 
     void preflightFinished(int err);
 
+    void pipelineCanceled();
+    void pipelineFinished();
+
   private:
+    QThread*                                          m_WorkerThread = nullptr;
+    FilterPipeline::Pointer                           m_PipelineInFlight;
+    QVector<DataContainerArray::Pointer>              m_PreflightDataContainerArrays;
+    QSignalMapper*                                    m_PipelineSignalMapper;
     bool                                              m_BlockPreflight = false;
     QStack<bool>                                      m_BlockPreflightStack;
     QList<QObject*>                                   m_PipelineMessageObservers;

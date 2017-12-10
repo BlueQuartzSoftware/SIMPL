@@ -28,6 +28,7 @@ set(SVWidgetsLib_Widgets_MOC_HDRS
   ${SVWidgetsLib_SOURCE_DIR}/Widgets/StandardOutputWidget.h
   ${SVWidgetsLib_SOURCE_DIR}/Widgets/FilterInputWidget.h
   ${SVWidgetsLib_SOURCE_DIR}/Widgets/ImportHDF5TreeModel.h
+  ${SVWidgetsLib_SOURCE_DIR}/Widgets/PipelineListWidget.h
   ${SVWidgetsLib_SOURCE_DIR}/Widgets/PipelineTreeItemDelegate.h
   ${SVWidgetsLib_SOURCE_DIR}/Widgets/PipelineTreeController.h
   ${SVWidgetsLib_SOURCE_DIR}/Widgets/PipelineTreeModel.h
@@ -79,6 +80,7 @@ set(SVWidgetsLib_Widgets_SRCS
   ${SVWidgetsLib_SOURCE_DIR}/Widgets/SVPipelineFilterOutlineWidget.cpp
   ${SVWidgetsLib_SOURCE_DIR}/Widgets/SVPipelineViewWidget.cpp
   ${SVWidgetsLib_SOURCE_DIR}/Widgets/PipelineFilterObject.cpp
+  ${SVWidgetsLib_SOURCE_DIR}/Widgets/PipelineListWidget.cpp
   ${SVWidgetsLib_SOURCE_DIR}/Widgets/PipelineTreeController.cpp
   ${SVWidgetsLib_SOURCE_DIR}/Widgets/PipelineTreeItemDelegate.cpp
   ${SVWidgetsLib_SOURCE_DIR}/Widgets/PipelineTreeModel.cpp
@@ -102,6 +104,7 @@ set(SVWidgetsLib_Widgets_UIS
   ${SVWidgetsLib_SOURCE_DIR}/Widgets/UI_Files/IssuesWidget.ui
   ${SVWidgetsLib_SOURCE_DIR}/Widgets/UI_Files/SVPipelineFilterWidget.ui
   ${SVWidgetsLib_SOURCE_DIR}/Widgets/UI_Files/SVPipelineFilterOutlineWidget.ui
+  ${SVWidgetsLib_SOURCE_DIR}/Widgets/UI_Files/PipelineListWidget.ui
   ${SVWidgetsLib_SOURCE_DIR}/Widgets/UI_Files/PrebuiltsToolboxWidget.ui
   ${SVWidgetsLib_SOURCE_DIR}/Widgets/UI_Files/SIMPLViewToolbox.ui
   ${SVWidgetsLib_SOURCE_DIR}/Widgets/UI_Files/StandardOutputWidget.ui

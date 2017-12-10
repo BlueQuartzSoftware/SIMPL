@@ -34,6 +34,7 @@
 #include <QtCore/QFileInfo>
 #include <QtCore/QDir>
 #include <QtCore/QJsonDocument>
+#include <QtCore/QThread>
 
 #include <QtWidgets/QMessageBox>
 
@@ -50,6 +51,7 @@
 // -----------------------------------------------------------------------------
 PipelineTreeController::PipelineTreeController(QObject* parent)
 : QObject(parent)
+, m_PipelineSignalMapper(new QSignalMapper(this))
 , m_UndoStack(new QUndoStack(this))
 {
 
@@ -60,7 +62,14 @@ PipelineTreeController::PipelineTreeController(QObject* parent)
 // -----------------------------------------------------------------------------
 PipelineTreeController::~PipelineTreeController()
 {
+  // These need to be disconnected to avoid a crash when closing the program
+  disconnect(m_UndoStack.data(), &QUndoStack::undoTextChanged, 0, 0);
+  disconnect(m_UndoStack.data(), &QUndoStack::redoTextChanged, 0, 0);
 
+  if(m_WorkerThread)
+  {
+    delete m_WorkerThread;
+  }
 }
 
 // -----------------------------------------------------------------------------
@@ -132,7 +141,7 @@ void PipelineTreeController::preflightPipeline(const QModelIndex &pipelineIndex,
     return;
   }
 
-  emit pipelineIssuesCleared();
+  emit clearIssuesTriggered();
   // Create a Pipeline Object and fill it with the filters from this View
   FilterPipeline::Pointer pipeline = getFilterPipeline(pipelineIndex, model);
 
@@ -188,6 +197,144 @@ void PipelineTreeController::preflightPipeline(const QModelIndex &pipelineIndex,
     }
   }
   emit preflightFinished(err);
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void PipelineTreeController::runPipeline(const QModelIndex &pipelineIndex, PipelineTreeModel* model)
+{
+  if(m_WorkerThread != nullptr)
+  {
+    m_WorkerThread->wait(); // Wait until the thread is complete
+    if(m_WorkerThread->isFinished() == true)
+    {
+      delete m_WorkerThread;
+      m_WorkerThread = nullptr;
+    }
+  }
+  m_WorkerThread = new QThread(); // Create a new Thread Resource
+
+  connect(m_PipelineSignalMapper, SIGNAL(mapped(const QModelIndex &)), m_WorkerThread, SIGNAL(finished(const QModelIndex &)));
+
+  // Clear out the Issues Table
+  if (pipelineIndex == m_ActivePipelineIndex)
+  {
+    emit clearIssuesTriggered();
+  }
+
+  // Create a FilterPipeline Object
+//  m_PipelineInFlight = getCopyOfFilterPipeline();
+  m_PipelineInFlight = getFilterPipeline(pipelineIndex, model);
+
+  emit standardOutputMessageGenerated("<b>Preflight Pipeline.....</b>");
+  // Give the pipeline one last chance to preflight and get all the latest values from the GUI
+  int err = m_PipelineInFlight->preflightPipeline();
+  if(err < 0)
+  {
+    m_PipelineInFlight = FilterPipeline::NullPointer();
+    emit displayIssuesTriggered();
+    return;
+  }
+  emit standardOutputMessageGenerated("    Preflight Results: 0 Errors");
+
+  // Save each of the DataContainerArrays from each of the filters for when the pipeline is complete
+  m_PreflightDataContainerArrays.clear();
+  FilterPipeline::FilterContainerType filters = m_PipelineInFlight->getFilterContainer();
+  for(FilterPipeline::FilterContainerType::size_type i = 0; i < filters.size(); i++)
+  {
+    m_PreflightDataContainerArrays.push_back(filters[i]->getDataContainerArray()->deepCopy(true));
+  }
+
+  // Save the preferences file NOW in case something happens
+  emit writeSIMPLViewSettingsTriggered();
+
+  emit pipelineEnteringReadyState(pipelineIndex);
+
+//  // Connect signals and slots between SIMPLView_UI and SIMPLViewApplication
+//  connect(this, SIGNAL(pipelineStarted()), dream3dApp, SLOT(toPipelineRunningState()));
+//  connect(this, SIGNAL(pipelineCanceled()), dream3dApp, SLOT(toPipelineIdleState()));
+//  connect(this, SIGNAL(pipelineFinished()), dream3dApp, SLOT(toPipelineIdleState()));
+
+//  // Block FilterListToolboxWidget signals, so that we can't add filters to the view while running the pipeline
+//  getFilterListToolboxWidget()->blockSignals(true);
+
+//  // Block FilterLibraryToolboxWidget signals, so that we can't add filters to the view while running the pipeline
+//  getFilterLibraryToolboxWidget()->blockSignals(true);
+
+  // Move the FilterPipeline object into the thread that we just created.
+  m_PipelineInFlight->moveToThread(m_WorkerThread);
+
+  // Allow the GUI to receive messages - We are only interested in the progress messages
+  m_PipelineInFlight->addMessageReceiver(this);
+
+  /* Connect the signal 'started()' from the QThread to the 'run' slot of the
+   * PipelineBuilder object. Since the PipelineBuilder object has been moved to another
+   * thread of execution and the actual QThread lives in *this* thread then the
+   * type of connection will be a Queued connection.
+   */
+  // When the thread starts its event loop, start the PipelineBuilder going
+  connect(m_WorkerThread, SIGNAL(started()), m_PipelineInFlight.get(), SLOT(run()));
+
+  // When the PipelineBuilder ends then tell the QThread to stop its event loop
+  connect(m_PipelineInFlight.get(), SIGNAL(pipelineFinished()), m_WorkerThread, SLOT(quit()));
+
+  // When the QThread finishes, tell this object that it has finished.
+  connect(m_WorkerThread, SIGNAL(finished()), this, SLOT(finishPipeline()));
+
+  emit pipelineEnteringRunningState(pipelineIndex);
+  m_WorkerThread->start();
+  standardOutputMessageGenerated("");
+  standardOutputMessageGenerated("<b>*************** PIPELINE STARTED ***************</b>");
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void PipelineTreeController::cancelPipeline(const QModelIndex &pipelineIndex)
+{
+  m_PipelineInFlight->cancelPipeline();
+  emit displayIssuesTriggered();
+  emit pipelineEnteringStoppedState(pipelineIndex);
+  emit pipelineCanceled();
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void PipelineTreeController::finishPipeline(const QModelIndex &pipelineIndex)
+{
+  if(m_PipelineInFlight->getCancel() == true)
+  {
+    standardOutputMessageGenerated("<b>*************** PIPELINE CANCELED ***************</b>");
+  }
+  else
+  {
+    standardOutputMessageGenerated("<b>*************** PIPELINE FINISHED ***************</b>");
+  }
+  standardOutputMessageGenerated("");
+
+  // Put back the DataContainerArray for each filter at the conclusion of running
+  // the pipeline. this keeps the data browser current and up to date.
+  FilterPipeline::FilterContainerType filters = m_PipelineInFlight->getFilterContainer();
+  for(FilterPipeline::FilterContainerType::size_type i = 0; i < filters.size(); i++)
+  {
+    filters[i]->setDataContainerArray(m_PreflightDataContainerArrays[i]);
+  }
+
+  m_PipelineInFlight = FilterPipeline::NullPointer(); // This _should_ remove all the filters and deallocate them
+
+  emit displayIssuesTriggered();
+  emit pipelineEnteringStoppedState(pipelineIndex);
+  emit pipelineFinished();
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void PipelineTreeController::processPipelineMessage(const PipelineMessage& msg)
+{
+  emit pipelineMessageGenerated(msg);
 }
 
 // -----------------------------------------------------------------------------
@@ -370,7 +517,7 @@ FilterPipeline::Pointer PipelineTreeController::getPipelineFromFile(const QStrin
 // -----------------------------------------------------------------------------
 void PipelineTreeController::updateActivePipeline(const QModelIndex &pipelineIdx, PipelineTreeModel* model)
 {
-  emit pipelineIssuesCleared();
+  emit clearIssuesTriggered();
 
   model->setActivePipeline(m_ActivePipelineIndex, false);
   model->setActivePipeline(pipelineIdx, true);
