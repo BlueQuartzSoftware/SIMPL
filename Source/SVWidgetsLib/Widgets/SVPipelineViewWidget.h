@@ -70,7 +70,7 @@ class QMenu;
 class QAction;
 class PipelineFilterObject;
 class DataStructureWidget;
-class PipelineTreeModel;
+class PipelineModel;
 
 /*
  *
@@ -255,13 +255,13 @@ class SVWidgetsLib_EXPORT SVPipelineViewWidget : public QFrame, public PipelineV
      * @brief setModel
      * @param model
      */
-    void setModel(PipelineTreeModel* model);
+    void setModel(PipelineModel* model);
 
     /**
      * @brief getPipelineTreeModel
      * @return
      */
-    PipelineTreeModel* getPipelineTreeModel();
+    PipelineModel* getPipelineTreeModel();
 
   public slots:
     /**
@@ -327,7 +327,7 @@ class SVWidgetsLib_EXPORT SVPipelineViewWidget : public QFrame, public PipelineV
   signals:
     void undoCommandCreated(QUndoCommand* cmd);
     void undoRequested();
-    void pipelineDropped(const QString &filePath, PipelineTreeModel* model, const QModelIndex &parentIndex, int insertionIndex);
+    void pipelineDropped(const QString &filePath, PipelineModel* model, const QModelIndex &parentIndex, int insertionIndex);
     void pipelineIssuesCleared();
     void preflightFinished(int err);
 
@@ -405,7 +405,7 @@ class SVWidgetsLib_EXPORT SVPipelineViewWidget : public QFrame, public PipelineV
 
   private:
     SVPipelineFilterWidget*                           m_ShiftStart = nullptr;
-    PipelineTreeModel*                                m_PipelineModel = nullptr;
+    PipelineModel*                                m_PipelineModel = nullptr;
     QVBoxLayout*                                      m_FilterWidgetLayout = nullptr;
     int                                               m_FilterOrigPos;
     SVPipelineFilterOutlineWidget*                    m_FilterOutlineWidget = nullptr;

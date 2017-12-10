@@ -46,9 +46,9 @@
 
 #include "SVWidgetsLib/SVWidgetsLib.h"
 
-#include "SVWidgetsLib/Widgets/PipelineTreeModel.h"
+#include "SVWidgetsLib/Widgets/PipelineModel.h"
 
-class PipelineTreeController;
+class SIMPLController;
 class PipelineBuilderWidget;
 class QAction;
 class QTreeWidgetItem;
@@ -91,10 +91,10 @@ class SVWidgetsLib_EXPORT PipelineTreeView : public QTreeView
     QModelIndexList filterOutDescendants(QModelIndexList indexList);
 
     /**
-     * @brief getPipelineTreeModel Gets the PipelineTreeModel instance that is currently set into this view
+     * @brief getPipelineTreeModel Gets the PipelineModel instance that is currently set into this view
      * @return
      */
-    PipelineTreeModel* getPipelineTreeModel();
+    PipelineModel* getPipelineTreeModel();
 
   public slots:
     void collapseIndex(const QModelIndex& index);
@@ -120,8 +120,8 @@ class SVWidgetsLib_EXPORT PipelineTreeView : public QTreeView
     void contextMenuRequested(const QPoint& pos);
     void filterEnabledStateChanged();
 
-    void needsPreflight(const QModelIndex &pipelineIndex, PipelineTreeModel* model);
-    void activePipelineChanged(const QModelIndex &pipelineIdx, PipelineTreeModel* model);
+    void needsPreflight(const QModelIndex &pipelineIndex, PipelineModel* model);
+    void activePipelineChanged(const QModelIndex &pipelineIdx, PipelineModel* model);
 
   private slots:
     void requestContextMenu(const QPoint &pos);
@@ -134,7 +134,7 @@ class SVWidgetsLib_EXPORT PipelineTreeView : public QTreeView
     QPersistentModelIndex                         m_ActiveIndexBeingDragged;
     QModelIndex                                   m_TopLevelItemPlaceholder;
 
-    void expandChildren(const QModelIndex& parent, PipelineTreeModel* model);
+    void expandChildren(const QModelIndex& parent, PipelineModel* model);
 
     /**
      * @brief requestSinglePipelineContextMenu

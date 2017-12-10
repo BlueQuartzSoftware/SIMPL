@@ -29,8 +29,8 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-#ifndef _PipelineTreeController_h_
-#define _PipelineTreeController_h_
+#ifndef _simplcontroller_h_
+#define _simplcontroller_h_
 
 #include <QtCore/QObject>
 #include <QtCore/QStack>
@@ -44,17 +44,17 @@
 
 #include "SVWidgetsLib/SVWidgetsLib.h"
 
-class PipelineTreeModel;
+class PipelineModel;
 
-class SVWidgetsLib_EXPORT PipelineTreeController : public QObject
+class SVWidgetsLib_EXPORT SIMPLController : public QObject
 {
     Q_OBJECT
 
   public:
-    SIMPL_TYPE_MACRO(PipelineTreeController)
+    SIMPL_TYPE_MACRO(SIMPLController)
 
-    PipelineTreeController(QObject* parent = 0);
-    ~PipelineTreeController();
+    SIMPLController(QObject* parent = 0);
+    ~SIMPLController();
 
     /**
      * @brief setupUndoStack
@@ -67,7 +67,7 @@ class SVWidgetsLib_EXPORT PipelineTreeController : public QObject
      * @param model
      * @return
      */
-    FilterPipeline::Pointer getFilterPipeline(const QModelIndex &pipelineIndex, PipelineTreeModel *model);
+    FilterPipeline::Pointer getFilterPipeline(const QModelIndex &pipelineIndex, PipelineModel *model);
 
     /**
      * @brief addPipelineMessageObserver
@@ -81,7 +81,7 @@ class SVWidgetsLib_EXPORT PipelineTreeController : public QObject
      * @param model
      * @param parentIndex
      */
-    void addFilterToModel(AbstractFilter::Pointer filter, PipelineTreeModel* model, const QModelIndex &parentIndex = QModelIndex(), int insertionIndex = -1);
+    void addFilterToModel(AbstractFilter::Pointer filter, PipelineModel* model, const QModelIndex &parentIndex = QModelIndex(), int insertionIndex = -1);
 
     /**
      * @brief addPipelineToModel
@@ -90,7 +90,7 @@ class SVWidgetsLib_EXPORT PipelineTreeController : public QObject
      * @param model
      * @param setAsActive
      */
-    void addPipelineToModel(const QString &pipelineName, FilterPipeline::Pointer pipeline, PipelineTreeModel *model, bool setAsActive = false, QModelIndex parentIndex = QModelIndex(), int insertionIndex = -1);
+    void addPipelineToModel(const QString &pipelineName, FilterPipeline::Pointer pipeline, PipelineModel *model, bool setAsActive = false, QModelIndex parentIndex = QModelIndex(), int insertionIndex = -1);
 
     /**
      * @brief fromJsonObject
@@ -98,14 +98,14 @@ class SVWidgetsLib_EXPORT PipelineTreeController : public QObject
      * @param model
      * @return
      */
-    PipelineTreeModel* fromJsonObject(QJsonObject modelObject, PipelineTreeModel* model);
+    PipelineModel* fromJsonObject(QJsonObject modelObject, PipelineModel* model);
 
     /**
      * @brief toJsonObject
      * @param model
      * @return
      */
-    QJsonObject toJsonObject(PipelineTreeModel *model);
+    QJsonObject toJsonObject(PipelineModel *model);
 
     /**
      * @brief getActivePipelineIndex
@@ -123,20 +123,20 @@ class SVWidgetsLib_EXPORT PipelineTreeController : public QObject
      * @param insertionIndex
      * @return
      */
-    int addPipelineToModelFromFile(const QString& filePath, PipelineTreeModel* model, const QModelIndex &parentIndex = QModelIndex(), int insertionIndex = -1);
+    int addPipelineToModelFromFile(const QString& filePath, PipelineModel* model, const QModelIndex &parentIndex = QModelIndex(), int insertionIndex = -1);
 
     /**
      * @brief preflightPipeline
      * @param pipelineIndex
      */
-    void preflightPipeline(const QModelIndex &pipelineIndex, PipelineTreeModel* model);
+    void preflightPipeline(const QModelIndex &pipelineIndex, PipelineModel* model);
 
     /**
      * @brief runPipeline
      * @param pipelineIndex
      * @param model
      */
-    void runPipeline(const QModelIndex &pipelineIndex, PipelineTreeModel *model);
+    void runPipeline(const QModelIndex &pipelineIndex, PipelineModel *model);
 
     /**
      * @brief cancelPipeline
@@ -155,7 +155,7 @@ class SVWidgetsLib_EXPORT PipelineTreeController : public QObject
      * @param pipelineIdx
      * @param model
      */
-    void updateActivePipeline(const QModelIndex &pipelineIdx, PipelineTreeModel *model);
+    void updateActivePipeline(const QModelIndex &pipelineIdx, PipelineModel *model);
 
     /**
      * @brief Should be block this class from either emitting a preflight signal or otherwise running a preflight.
@@ -240,7 +240,7 @@ class SVWidgetsLib_EXPORT PipelineTreeController : public QObject
      * @param index
      * @return
      */
-    QJsonObject wrapModel(QModelIndex index, PipelineTreeModel* model);
+    QJsonObject wrapModel(QModelIndex index, PipelineModel* model);
 
     /**
      * @brief unwrapModel
@@ -249,10 +249,10 @@ class SVWidgetsLib_EXPORT PipelineTreeController : public QObject
      * @param model
      * @param parentIndex
      */
-    void unwrapModel(QString objectName, QJsonObject object, PipelineTreeModel* model, QModelIndex parentIndex);
+    void unwrapModel(QString objectName, QJsonObject object, PipelineModel* model, QModelIndex parentIndex);
 
-    PipelineTreeController(const PipelineTreeController&);    // Copy Constructor Not Implemented
-    void operator=(const PipelineTreeController&);  // Operator '=' Not Implemented
+    SIMPLController(const SIMPLController&);    // Copy Constructor Not Implemented
+    void operator=(const SIMPLController&);  // Operator '=' Not Implemented
 };
 
-#endif // _PipelineTreeController_h_
+#endif // _simplcontroller_h_

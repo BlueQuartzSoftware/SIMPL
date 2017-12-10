@@ -41,22 +41,22 @@
 #include "SIMPLib/Common/SIMPLibSetGetMacros.h"
 #include "SIMPLib/Filtering/AbstractFilter.h"
 
-#include "SVWidgetsLib/Widgets/PipelineTreeItem.h"
+#include "SVWidgetsLib/Widgets/PipelineItem.h"
 
 #include "SVWidgetsLib/SVWidgetsLib.h"
 
 class QtSSettings;
 
-class SVWidgetsLib_EXPORT PipelineTreeModel : public QAbstractItemModel
+class SVWidgetsLib_EXPORT PipelineModel : public QAbstractItemModel
 {
     Q_OBJECT
 
   public:
-    SIMPL_TYPE_MACRO(PipelineTreeModel)
+    SIMPL_TYPE_MACRO(PipelineModel)
 
-    PipelineTreeModel(QObject* parent = 0);
+    PipelineModel(QObject* parent = 0);
 
-    ~PipelineTreeModel();
+    ~PipelineModel();
 
     SIMPL_INSTANCE_PROPERTY(int, MaxNumberOfPipelines)
     SIMPL_INSTANCE_PROPERTY(QAction*, ActionUndo)
@@ -92,17 +92,17 @@ class SVWidgetsLib_EXPORT PipelineTreeModel : public QAbstractItemModel
 
     bool setData(const QModelIndex& index, const QVariant& value, int role) Q_DECL_OVERRIDE;
 
-    PipelineTreeItem::WidgetState widgetState(const QModelIndex &index);
-    void setWidgetState(const QModelIndex &index, PipelineTreeItem::WidgetState state);
+    PipelineItem::WidgetState widgetState(const QModelIndex &index);
+    void setWidgetState(const QModelIndex &index, PipelineItem::WidgetState state);
 
-    PipelineTreeItem::ErrorState errorState(const QModelIndex &index);
-    void setErrorState(const QModelIndex &index, PipelineTreeItem::ErrorState state);
+    PipelineItem::ErrorState errorState(const QModelIndex &index);
+    void setErrorState(const QModelIndex &index, PipelineItem::ErrorState state);
 
-    PipelineTreeItem::PipelineState pipelineState(const QModelIndex &index);
-    void setPipelineState(const QModelIndex &index, PipelineTreeItem::PipelineState state);
+    PipelineItem::PipelineState pipelineState(const QModelIndex &index);
+    void setPipelineState(const QModelIndex &index, PipelineItem::PipelineState state);
 
-    PipelineTreeItem::ItemType itemType(const QModelIndex &index);
-    void setItemType(const QModelIndex &index, PipelineTreeItem::ItemType type);
+    PipelineItem::ItemType itemType(const QModelIndex &index);
+    void setItemType(const QModelIndex &index, PipelineItem::ItemType type);
 
     bool pipelineSaved(const QModelIndex &index);
     void setPipelineSaved(const QModelIndex &index, bool saved);
@@ -114,17 +114,17 @@ class SVWidgetsLib_EXPORT PipelineTreeModel : public QAbstractItemModel
     bool needsToBeExpanded(const QModelIndex& index);
     void setNeedsToBeExpanded(const QModelIndex& index, bool value);
 
-    PipelineTreeItem* getRootItem();
+    PipelineItem* getRootItem();
 
   private:
-    PipelineTreeItem*                       m_RootItem;
+    PipelineItem*                       m_RootItem;
 
-    PipelineTreeItem* getItem(const QModelIndex& index) const;
+    PipelineItem* getItem(const QModelIndex& index) const;
 
     QColor getForegroundColor(const QModelIndex &index) const;
 
-    PipelineTreeModel(const PipelineTreeModel&);    // Copy Constructor Not Implemented
-    void operator=(const PipelineTreeModel&);  // Operator '=' Not Implemented
+    PipelineModel(const PipelineModel&);    // Copy Constructor Not Implemented
+    void operator=(const PipelineModel&);  // Operator '=' Not Implemented
 };
 
 #endif // _pipelinetreemodel_h_

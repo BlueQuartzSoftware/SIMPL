@@ -29,7 +29,7 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-#include "PipelineTreeController.h"
+#include "SIMPLController.h"
 
 #include <QtCore/QFileInfo>
 #include <QtCore/QDir>
@@ -42,14 +42,14 @@
 #include "SIMPLib/FilterParameters/JsonFilterParametersReader.h"
 
 #include "SVWidgetsLib/Widgets/BreakpointFilterWidget.h"
-#include "SVWidgetsLib/Widgets/PipelineTreeModel.h"
-#include "SVWidgetsLib/Widgets/PipelineTreeItem.h"
+#include "SVWidgetsLib/Widgets/PipelineModel.h"
+#include "SVWidgetsLib/Widgets/PipelineItem.h"
 #include "SVWidgetsLib/QtSupport/QtSRecentFileList.h"
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-PipelineTreeController::PipelineTreeController(QObject* parent)
+SIMPLController::SIMPLController(QObject* parent)
 : QObject(parent)
 , m_PipelineSignalMapper(new QSignalMapper(this))
 , m_UndoStack(new QUndoStack(this))
@@ -60,7 +60,7 @@ PipelineTreeController::PipelineTreeController(QObject* parent)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-PipelineTreeController::~PipelineTreeController()
+SIMPLController::~SIMPLController()
 {
   // These need to be disconnected to avoid a crash when closing the program
   disconnect(m_UndoStack.data(), &QUndoStack::undoTextChanged, 0, 0);
@@ -75,7 +75,7 @@ PipelineTreeController::~PipelineTreeController()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void PipelineTreeController::setupUndoStack()
+void SIMPLController::setupUndoStack()
 {
   m_UndoStack->setUndoLimit(10);
   QAction* actionUndo = m_UndoStack->createUndoAction(nullptr);
@@ -110,7 +110,7 @@ void PipelineTreeController::setupUndoStack()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void PipelineTreeController::addUndoCommand(QUndoCommand* cmd)
+void SIMPLController::addUndoCommand(QUndoCommand* cmd)
 {
   m_UndoStack->push(cmd);
 }
@@ -118,7 +118,7 @@ void PipelineTreeController::addUndoCommand(QUndoCommand* cmd)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void PipelineTreeController::undo()
+void SIMPLController::undo()
 {
   m_UndoStack->undo();
 }
@@ -126,7 +126,7 @@ void PipelineTreeController::undo()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void PipelineTreeController::redo()
+void SIMPLController::redo()
 {
   m_UndoStack->redo();
 }
@@ -134,7 +134,7 @@ void PipelineTreeController::redo()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void PipelineTreeController::preflightPipeline(const QModelIndex &pipelineIndex, PipelineTreeModel* model)
+void SIMPLController::preflightPipeline(const QModelIndex &pipelineIndex, PipelineModel* model)
 {
   if(m_BlockPreflight || pipelineIndex.isValid() == false)
   {
@@ -151,13 +151,13 @@ void PipelineTreeController::preflightPipeline(const QModelIndex &pipelineIndex,
     filters.at(i)->setErrorCondition(0);
     filters.at(i)->setCancel(false);
 
-    QModelIndex childIndex = model->index(i, PipelineTreeItem::Name, pipelineIndex);
+    QModelIndex childIndex = model->index(i, PipelineItem::Name, pipelineIndex);
     if(childIndex.isValid())
     {
-      model->setErrorState(childIndex, PipelineTreeItem::ErrorState::Ok);
-      if(PipelineTreeItem::WidgetState::Disabled != model->widgetState(childIndex))
+      model->setErrorState(childIndex, PipelineItem::ErrorState::Ok);
+      if(PipelineItem::WidgetState::Disabled != model->widgetState(childIndex))
       {
-        model->setWidgetState(childIndex, PipelineTreeItem::WidgetState::Ready);
+        model->setWidgetState(childIndex, PipelineItem::WidgetState::Ready);
       }
     }
   }
@@ -182,17 +182,17 @@ void PipelineTreeController::preflightPipeline(const QModelIndex &pipelineIndex,
   // outline on the filter widget if there were errors or warnings
   for(qint32 i = 0; i < count; ++i)
   {
-    QModelIndex childIndex = model->index(i, PipelineTreeItem::Name, pipelineIndex);
+    QModelIndex childIndex = model->index(i, PipelineItem::Name, pipelineIndex);
     if(childIndex.isValid())
     {
       AbstractFilter::Pointer filter = model->filter(childIndex);
       if(filter->getWarningCondition() < 0)
       {
-        model->setErrorState(childIndex, PipelineTreeItem::ErrorState::Warning);
+        model->setErrorState(childIndex, PipelineItem::ErrorState::Warning);
       }
       if(filter->getErrorCondition() < 0)
       {
-        model->setErrorState(childIndex, PipelineTreeItem::ErrorState::Error);
+        model->setErrorState(childIndex, PipelineItem::ErrorState::Error);
       }
     }
   }
@@ -202,7 +202,7 @@ void PipelineTreeController::preflightPipeline(const QModelIndex &pipelineIndex,
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void PipelineTreeController::runPipeline(const QModelIndex &pipelineIndex, PipelineTreeModel* model)
+void SIMPLController::runPipeline(const QModelIndex &pipelineIndex, PipelineModel* model)
 {
   if(m_WorkerThread != nullptr)
   {
@@ -291,7 +291,7 @@ void PipelineTreeController::runPipeline(const QModelIndex &pipelineIndex, Pipel
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void PipelineTreeController::cancelPipeline(const QModelIndex &pipelineIndex)
+void SIMPLController::cancelPipeline(const QModelIndex &pipelineIndex)
 {
   m_PipelineInFlight->cancelPipeline();
   emit displayIssuesTriggered();
@@ -302,7 +302,7 @@ void PipelineTreeController::cancelPipeline(const QModelIndex &pipelineIndex)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void PipelineTreeController::finishPipeline(const QModelIndex &pipelineIndex)
+void SIMPLController::finishPipeline(const QModelIndex &pipelineIndex)
 {
   if(m_PipelineInFlight->getCancel() == true)
   {
@@ -332,7 +332,7 @@ void PipelineTreeController::finishPipeline(const QModelIndex &pipelineIndex)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void PipelineTreeController::processPipelineMessage(const PipelineMessage& msg)
+void SIMPLController::processPipelineMessage(const PipelineMessage& msg)
 {
   emit pipelineMessageGenerated(msg);
 }
@@ -340,7 +340,7 @@ void PipelineTreeController::processPipelineMessage(const PipelineMessage& msg)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-FilterPipeline::Pointer PipelineTreeController::getFilterPipeline(const QModelIndex &pipelineIndex, PipelineTreeModel* model)
+FilterPipeline::Pointer SIMPLController::getFilterPipeline(const QModelIndex &pipelineIndex, PipelineModel* model)
 {
   // Create a Pipeline Object and fill it with the filters from this View
   FilterPipeline::Pointer pipeline = FilterPipeline::New();
@@ -348,7 +348,7 @@ FilterPipeline::Pointer PipelineTreeController::getFilterPipeline(const QModelIn
   qint32 count = model->rowCount(pipelineIndex);
   for(qint32 i = 0; i < count; ++i)
   {
-    QModelIndex childIndex = model->index(i, PipelineTreeItem::Name, pipelineIndex);
+    QModelIndex childIndex = model->index(i, PipelineItem::Name, pipelineIndex);
     if(childIndex.isValid())
     {
       AbstractFilter::Pointer filter = model->filter(childIndex);
@@ -371,7 +371,7 @@ FilterPipeline::Pointer PipelineTreeController::getFilterPipeline(const QModelIn
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void PipelineTreeController::addFilterToModel(AbstractFilter::Pointer filter, PipelineTreeModel* model, const QModelIndex &parentIndex, int insertionIndex)
+void SIMPLController::addFilterToModel(AbstractFilter::Pointer filter, PipelineModel* model, const QModelIndex &parentIndex, int insertionIndex)
 {
   QModelIndex pipelineIndex = parentIndex;
   if (pipelineIndex.isValid() == false)
@@ -386,9 +386,9 @@ void PipelineTreeController::addFilterToModel(AbstractFilter::Pointer filter, Pi
   }
 
   model->insertRow(insertionIndex, pipelineIndex);
-  QModelIndex filterIndex = model->index(insertionIndex, PipelineTreeItem::Name, pipelineIndex);
+  QModelIndex filterIndex = model->index(insertionIndex, PipelineItem::Name, pipelineIndex);
   model->setData(filterIndex, filter->getHumanLabel(), Qt::DisplayRole);
-  model->setItemType(filterIndex, PipelineTreeItem::ItemType::Filter);
+  model->setItemType(filterIndex, PipelineItem::ItemType::Filter);
   model->setFilter(filterIndex, filter);
 
   if (m_ActivePipelineIndex.isValid() == false)
@@ -406,7 +406,7 @@ void PipelineTreeController::addFilterToModel(AbstractFilter::Pointer filter, Pi
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void PipelineTreeController::addPipelineToModel(const QString &pipelineName, FilterPipeline::Pointer pipeline, PipelineTreeModel* model, bool setAsActive, QModelIndex parentIndex, int insertionIndex)
+void SIMPLController::addPipelineToModel(const QString &pipelineName, FilterPipeline::Pointer pipeline, PipelineModel* model, bool setAsActive, QModelIndex parentIndex, int insertionIndex)
 {
   if (parentIndex == QModelIndex())
   {
@@ -418,9 +418,9 @@ void PipelineTreeController::addPipelineToModel(const QString &pipelineName, Fil
 
     int row = model->rowCount();
     model->insertRow(row);
-    QModelIndex pipelineIndex = model->index(row, PipelineTreeItem::Name);
+    QModelIndex pipelineIndex = model->index(row, PipelineItem::Name);
     model->setData(pipelineIndex, pipelineName, Qt::DisplayRole);
-    model->setItemType(pipelineIndex, PipelineTreeItem::ItemType::Pipeline);
+    model->setItemType(pipelineIndex, PipelineItem::ItemType::Pipeline);
     parentIndex = pipelineIndex;
   }
 
@@ -438,7 +438,7 @@ void PipelineTreeController::addPipelineToModel(const QString &pipelineName, Fil
     addFilterToModel(filter, model, parentIndex, insertionIndex);
     blockSignals(false);
 
-    QModelIndex filterIndex = model->index(insertionIndex, PipelineTreeItem::Name, parentIndex);
+    QModelIndex filterIndex = model->index(insertionIndex, PipelineItem::Name, parentIndex);
     list.push_back(filterIndex);
 
     insertionIndex++;
@@ -455,7 +455,7 @@ void PipelineTreeController::addPipelineToModel(const QString &pipelineName, Fil
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-int PipelineTreeController::addPipelineToModelFromFile(const QString& filePath, PipelineTreeModel* model, const QModelIndex &parentIndex, int insertionIndex)
+int SIMPLController::addPipelineToModelFromFile(const QString& filePath, PipelineModel* model, const QModelIndex &parentIndex, int insertionIndex)
 {
   QFileInfo fi(filePath);
   if(fi.exists() == false)
@@ -492,7 +492,7 @@ int PipelineTreeController::addPipelineToModelFromFile(const QString& filePath, 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-FilterPipeline::Pointer PipelineTreeController::getPipelineFromFile(const QString& filePath)
+FilterPipeline::Pointer SIMPLController::getPipelineFromFile(const QString& filePath)
 {
   QFileInfo fi(filePath);
   QString ext = fi.suffix();
@@ -515,7 +515,7 @@ FilterPipeline::Pointer PipelineTreeController::getPipelineFromFile(const QStrin
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void PipelineTreeController::updateActivePipeline(const QModelIndex &pipelineIdx, PipelineTreeModel* model)
+void SIMPLController::updateActivePipeline(const QModelIndex &pipelineIdx, PipelineModel* model)
 {
   emit clearIssuesTriggered();
 
@@ -533,7 +533,7 @@ void PipelineTreeController::updateActivePipeline(const QModelIndex &pipelineIdx
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void PipelineTreeController::blockPreflightSignals(bool b)
+void SIMPLController::blockPreflightSignals(bool b)
 {
   if(b)
   {
@@ -550,7 +550,7 @@ void PipelineTreeController::blockPreflightSignals(bool b)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void PipelineTreeController::addPipelineMessageObserver(QObject* pipelineMessageObserver)
+void SIMPLController::addPipelineMessageObserver(QObject* pipelineMessageObserver)
 {
   m_PipelineMessageObservers.push_back(pipelineMessageObserver);
 }
@@ -558,14 +558,14 @@ void PipelineTreeController::addPipelineMessageObserver(QObject* pipelineMessage
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-QJsonObject PipelineTreeController::toJsonObject(PipelineTreeModel* model)
+QJsonObject SIMPLController::toJsonObject(PipelineModel* model)
 {
-  PipelineTreeItem* rootItem = model->getRootItem();
+  PipelineItem* rootItem = model->getRootItem();
 
   QJsonObject treeObj;
   for(int i = 0; i < rootItem->childCount(); i++)
   {
-    QModelIndex childIndex = model->index(i, PipelineTreeItem::Name, QModelIndex());
+    QModelIndex childIndex = model->index(i, PipelineItem::Name, QModelIndex());
     QString name = childIndex.data().toString();
 
     if(name.compare("Prebuilt Pipelines") != 0)
@@ -581,15 +581,15 @@ QJsonObject PipelineTreeController::toJsonObject(PipelineTreeModel* model)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-QJsonObject PipelineTreeController::wrapModel(QModelIndex currentIndex, PipelineTreeModel* model)
+QJsonObject SIMPLController::wrapModel(QModelIndex currentIndex, PipelineModel* model)
 {
   QJsonObject obj;
 
-  QString name = model->index(currentIndex.row(), PipelineTreeItem::Name, currentIndex.parent()).data().toString();
+  QString name = model->index(currentIndex.row(), PipelineItem::Name, currentIndex.parent()).data().toString();
 
   for(int i = 0; i < model->rowCount(currentIndex); i++)
   {
-    QModelIndex childIndex = model->index(i, PipelineTreeItem::Name, currentIndex);
+    QModelIndex childIndex = model->index(i, PipelineItem::Name, currentIndex);
     QString childName = childIndex.data().toString();
 
     QJsonObject childObj = wrapModel(childIndex, model);
@@ -607,7 +607,7 @@ QJsonObject PipelineTreeController::wrapModel(QModelIndex currentIndex, Pipeline
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-PipelineTreeModel* PipelineTreeController::fromJsonObject(QJsonObject treeObject, PipelineTreeModel* model)
+PipelineModel* SIMPLController::fromJsonObject(QJsonObject treeObject, PipelineModel* model)
 {
   QStringList keys = treeObject.keys();
   keys.sort(Qt::CaseInsensitive);
@@ -630,11 +630,11 @@ PipelineTreeModel* PipelineTreeController::fromJsonObject(QJsonObject treeObject
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void PipelineTreeController::unwrapModel(QString objectName, QJsonObject object, PipelineTreeModel* model, QModelIndex parentIndex)
+void SIMPLController::unwrapModel(QString objectName, QJsonObject object, PipelineModel* model, QModelIndex parentIndex)
 {
   int row = model->rowCount(parentIndex);
   model->insertRow(row, parentIndex);
-  QModelIndex nameIndex = model->index(row, PipelineTreeItem::Name, parentIndex);
+  QModelIndex nameIndex = model->index(row, PipelineItem::Name, parentIndex);
 
   QString path = object["Path"].toString();
   bool expanded = object["Expanded"].toBool();
@@ -674,7 +674,7 @@ void PipelineTreeController::unwrapModel(QString objectName, QJsonObject object,
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-QModelIndex PipelineTreeController::getActivePipelineIndex()
+QModelIndex SIMPLController::getActivePipelineIndex()
 {
   return m_ActivePipelineIndex;
 }

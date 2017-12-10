@@ -29,7 +29,7 @@
 
 #include "PipelineListWidget.h"
 
-#include "SVWidgetsLib/Widgets/PipelineTreeModel.h"
+#include "SVWidgetsLib/Widgets/PipelineModel.h"
 #include "SVWidgetsLib/QtSupport/QtSStyles.h"
 
 // -----------------------------------------------------------------------------
@@ -65,10 +65,10 @@ void PipelineListWidget::setupGui()
 // -----------------------------------------------------------------------------
 void PipelineListWidget::on_startPipelineBtn_clicked()
 {
-  PipelineTreeModel* model = pipelineViewWidget->getPipelineTreeModel();
+  PipelineModel* model = pipelineViewWidget->getPipelineTreeModel();
   if(startPipelineBtn->text().compare("Cancel Pipeline") == 0)
   {
-    QModelIndex pipelineIndex = model->index(0, PipelineTreeItem::Name);
+    QModelIndex pipelineIndex = model->index(0, PipelineItem::Name);
     emit pipelineCanceled(pipelineIndex);
 
     startPipelineBtn->setText("Canceling...");
@@ -88,7 +88,7 @@ void PipelineListWidget::on_startPipelineBtn_clicked()
 
   if (model->rowCount() == 1)
   {
-    QModelIndex pipelineIndex = model->index(0, PipelineTreeItem::Name);
+    QModelIndex pipelineIndex = model->index(0, PipelineItem::Name);
     emit pipelineStarted(pipelineIndex, model);
     startPipelineBtn->setText("Cancel Pipeline");
     startPipelineBtn->setIcon(QIcon(":/media_stop_white.png"));

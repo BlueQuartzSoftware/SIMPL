@@ -78,7 +78,7 @@
 #include "SVWidgetsLib/Core/SVWidgetsLibConstants.h"
 #include "SVWidgetsLib/FilterParameterWidgets/FilterParameterWidgetsDialogs.h"
 #include "SVWidgetsLib/Widgets/BreakpointFilterWidget.h"
-#include "SVWidgetsLib/Widgets/PipelineTreeModel.h"
+#include "SVWidgetsLib/Widgets/PipelineModel.h"
 #include "SVWidgetsLib/Widgets/SIMPLViewMenuItems.h"
 #include "SVWidgetsLib/Widgets/util/AddFilterCommand.h"
 #include "SVWidgetsLib/Widgets/util/MoveFilterCommand.h"
@@ -1289,7 +1289,7 @@ void SVPipelineViewWidget::addFiltersFromIndices(QModelIndexList filterIndices)
 
   m_LoadingJson = true;
 
-  PipelineTreeModel* model = getPipelineTreeModel();
+  PipelineModel* model = getPipelineTreeModel();
 
   QList<AbstractFilter::Pointer> filters;
   for (int i = 0; i < filterIndices.size(); i++)
@@ -1912,11 +1912,11 @@ void SVPipelineViewWidget::dropEvent(QDropEvent* event)
         return;
       }
 
-      PipelineTreeModel* model = getPipelineTreeModel();
+      PipelineModel* model = getPipelineTreeModel();
       QModelIndex parentIndex;
       if (model->rowCount() > 0)
       {
-        parentIndex = model->index(0, PipelineTreeItem::Name);
+        parentIndex = model->index(0, PipelineItem::Name);
       }
 
       if(ext == "json")
@@ -2324,7 +2324,7 @@ DataStructureWidget* SVPipelineViewWidget::getDataStructureWidget()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void SVPipelineViewWidget::setModel(PipelineTreeModel* model)
+void SVPipelineViewWidget::setModel(PipelineModel* model)
 {
   m_PipelineModel = model;
 }
@@ -2332,7 +2332,7 @@ void SVPipelineViewWidget::setModel(PipelineTreeModel* model)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-PipelineTreeModel* SVPipelineViewWidget::getPipelineTreeModel()
+PipelineModel* SVPipelineViewWidget::getPipelineTreeModel()
 {
   return m_PipelineModel;
 }

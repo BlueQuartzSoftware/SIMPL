@@ -29,20 +29,20 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-#include "PipelineTreeModel.h"
+#include "PipelineModel.h"
 
 #include <QtWidgets>
 
 #include "SIMPLib/FilterParameters/JsonFilterParametersReader.h"
 
-#include "SVWidgetsLib/Widgets/PipelineTreeItem.h"
+#include "SVWidgetsLib/Widgets/PipelineItem.h"
 #include "SVWidgetsLib/Widgets/PipelineTreeView.h"
 #include "SVWidgetsLib/QtSupport/QtSSettings.h"
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-PipelineTreeModel::PipelineTreeModel(QObject* parent)
+PipelineModel::PipelineModel(QObject* parent)
 : QAbstractItemModel(parent)
 , m_MaxNumberOfPipelines(std::numeric_limits<int>::max())
 , m_ActionUndo(nullptr)
@@ -50,13 +50,13 @@ PipelineTreeModel::PipelineTreeModel(QObject* parent)
 {
   QVector<QVariant> vector;
   vector.push_back("");
-  m_RootItem = new PipelineTreeItem(vector);
+  m_RootItem = new PipelineItem(vector);
 }
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-PipelineTreeModel::~PipelineTreeModel()
+PipelineModel::~PipelineModel()
 {
   delete m_RootItem;
 }
@@ -64,7 +64,7 @@ PipelineTreeModel::~PipelineTreeModel()
 //// -----------------------------------------------------------------------------
 ////
 //// -----------------------------------------------------------------------------
-//PipelineTreeModel* PipelineTreeModel::NewInstance(QtSSettings* prefs)
+//PipelineModel* PipelineModel::NewInstance(QtSSettings* prefs)
 //{
 //  // Erase the old content
 //  if(self)
@@ -82,7 +82,7 @@ PipelineTreeModel::~PipelineTreeModel()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-int PipelineTreeModel::columnCount(const QModelIndex& parent) const
+int PipelineModel::columnCount(const QModelIndex& parent) const
 {
   return m_RootItem->columnCount();
 }
@@ -90,29 +90,29 @@ int PipelineTreeModel::columnCount(const QModelIndex& parent) const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-QModelIndex PipelineTreeModel::sibling(int row, int column, const QModelIndex& currentIndex) const
+QModelIndex PipelineModel::sibling(int row, int column, const QModelIndex& currentIndex) const
 {
-  if(currentIndex.column() == PipelineTreeItem::Name)
+  if(currentIndex.column() == PipelineItem::Name)
   {
-    return index(currentIndex.row(), PipelineTreeItem::FilterEnabledBtn, currentIndex.parent());
+    return index(currentIndex.row(), PipelineItem::FilterEnabledBtn, currentIndex.parent());
   }
   else
   {
-    return index(currentIndex.row(), PipelineTreeItem::Name, currentIndex.parent());
+    return index(currentIndex.row(), PipelineItem::Name, currentIndex.parent());
   }
 }
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-QVariant PipelineTreeModel::data(const QModelIndex& index, int role) const
+QVariant PipelineModel::data(const QModelIndex& index, int role) const
 {
   if(!index.isValid())
   {
     return QVariant();
   }
 
-  PipelineTreeItem* item = getItem(index);
+  PipelineItem* item = getItem(index);
 
   if(role == Qt::DisplayRole)
   {
@@ -142,10 +142,10 @@ QVariant PipelineTreeModel::data(const QModelIndex& index, int role) const
   }
   else if(role == Qt::DecorationRole)
   {
-    QModelIndex nameIndex = this->index(index.row(), PipelineTreeItem::Name, index.parent());
+    QModelIndex nameIndex = this->index(index.row(), PipelineItem::Name, index.parent());
     if(nameIndex == index)
     {
-      PipelineTreeItem* item = getItem(index);
+      PipelineItem* item = getItem(index);
       return item->getIcon();
     }
     else
@@ -160,14 +160,14 @@ QVariant PipelineTreeModel::data(const QModelIndex& index, int role) const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-AbstractFilter::Pointer PipelineTreeModel::filter(const QModelIndex &index)
+AbstractFilter::Pointer PipelineModel::filter(const QModelIndex &index)
 {
   if(!index.isValid())
   {
     return AbstractFilter::NullPointer();
   }
 
-  PipelineTreeItem* item = getItem(index);
+  PipelineItem* item = getItem(index);
   if (item == nullptr)
   {
     return AbstractFilter::NullPointer();
@@ -179,14 +179,14 @@ AbstractFilter::Pointer PipelineTreeModel::filter(const QModelIndex &index)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void PipelineTreeModel::setFilter(const QModelIndex &index, AbstractFilter::Pointer filter)
+void PipelineModel::setFilter(const QModelIndex &index, AbstractFilter::Pointer filter)
 {
   if(!index.isValid())
   {
     return;
   }
 
-  PipelineTreeItem* item = getItem(index);
+  PipelineItem* item = getItem(index);
   if (item == nullptr)
   {
     return;
@@ -198,14 +198,14 @@ void PipelineTreeModel::setFilter(const QModelIndex &index, AbstractFilter::Poin
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-bool PipelineTreeModel::filterEnabled(const QModelIndex &index)
+bool PipelineModel::filterEnabled(const QModelIndex &index)
 {
   if(!index.isValid())
   {
     return false;
   }
 
-  PipelineTreeItem* item = getItem(index);
+  PipelineItem* item = getItem(index);
   if (item == nullptr)
   {
     return false;
@@ -217,14 +217,14 @@ bool PipelineTreeModel::filterEnabled(const QModelIndex &index)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void PipelineTreeModel::setFilterEnabled(const QModelIndex &index, bool enabled)
+void PipelineModel::setFilterEnabled(const QModelIndex &index, bool enabled)
 {
   if(!index.isValid())
   {
     return;
   }
 
-  PipelineTreeItem* item = getItem(index);
+  PipelineItem* item = getItem(index);
   if (item == nullptr)
   {
     return;
@@ -236,25 +236,25 @@ void PipelineTreeModel::setFilterEnabled(const QModelIndex &index, bool enabled)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-bool PipelineTreeModel::isActivePipeline(const QModelIndex &index)
+bool PipelineModel::isActivePipeline(const QModelIndex &index)
 {
-  PipelineTreeItem* item = getItem(index);
+  PipelineItem* item = getItem(index);
   return item->isActivePipeline();
 }
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void PipelineTreeModel::setActivePipeline(const QModelIndex &index, bool value)
+void PipelineModel::setActivePipeline(const QModelIndex &index, bool value)
 {
-  PipelineTreeItem* item = getItem(index);
+  PipelineItem* item = getItem(index);
   item->setActivePipeline(value);
 }
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void PipelineTreeModel::clearActivePipeline()
+void PipelineModel::clearActivePipeline()
 {
 
 }
@@ -262,7 +262,7 @@ void PipelineTreeModel::clearActivePipeline()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-Qt::ItemFlags PipelineTreeModel::flags(const QModelIndex& index) const
+Qt::ItemFlags PipelineModel::flags(const QModelIndex& index) const
 {
   if(!index.isValid())
   {
@@ -271,7 +271,7 @@ Qt::ItemFlags PipelineTreeModel::flags(const QModelIndex& index) const
 
   Qt::ItemFlags defaultFlags = QAbstractItemModel::flags(index);
 
-  PipelineTreeItem* item = getItem(index);
+  PipelineItem* item = getItem(index);
   if(item->childCount() > 0)
   {
     // This is a node
@@ -287,11 +287,11 @@ Qt::ItemFlags PipelineTreeModel::flags(const QModelIndex& index) const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-PipelineTreeItem* PipelineTreeModel::getItem(const QModelIndex& index) const
+PipelineItem* PipelineModel::getItem(const QModelIndex& index) const
 {
   if(index.isValid())
   {
-    PipelineTreeItem* item = static_cast<PipelineTreeItem*>(index.internalPointer());
+    PipelineItem* item = static_cast<PipelineItem*>(index.internalPointer());
     if(item)
     {
       return item;
@@ -303,7 +303,7 @@ PipelineTreeItem* PipelineTreeModel::getItem(const QModelIndex& index) const
 //// -----------------------------------------------------------------------------
 ////
 //// -----------------------------------------------------------------------------
-//QVariant PipelineTreeModel::headerData(int section, Qt::Orientation orientation, int role) const
+//QVariant PipelineModel::headerData(int section, Qt::Orientation orientation, int role) const
 //{
 //  if(orientation == Qt::Horizontal && role == Qt::DisplayRole)
 //  {
@@ -316,16 +316,16 @@ PipelineTreeItem* PipelineTreeModel::getItem(const QModelIndex& index) const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-QModelIndex PipelineTreeModel::index(int row, int column, const QModelIndex& parent) const
+QModelIndex PipelineModel::index(int row, int column, const QModelIndex& parent) const
 {
   if(parent.isValid() && parent.column() != 0)
   {
     return QModelIndex();
   }
 
-  PipelineTreeItem* parentItem = getItem(parent);
+  PipelineItem* parentItem = getItem(parent);
 
-  PipelineTreeItem* childItem = parentItem->child(row);
+  PipelineItem* childItem = parentItem->child(row);
   if(childItem)
   {
     return createIndex(row, column, childItem);
@@ -339,9 +339,9 @@ QModelIndex PipelineTreeModel::index(int row, int column, const QModelIndex& par
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-bool PipelineTreeModel::insertRows(int position, int rows, const QModelIndex& parent)
+bool PipelineModel::insertRows(int position, int rows, const QModelIndex& parent)
 {
-  PipelineTreeItem* parentItem = getItem(parent);
+  PipelineItem* parentItem = getItem(parent);
   bool success;
 
   beginInsertRows(parent, position, position + rows - 1);
@@ -354,9 +354,9 @@ bool PipelineTreeModel::insertRows(int position, int rows, const QModelIndex& pa
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-bool PipelineTreeModel::removeRows(int position, int rows, const QModelIndex& parent)
+bool PipelineModel::removeRows(int position, int rows, const QModelIndex& parent)
 {
-  PipelineTreeItem* parentItem = getItem(parent);
+  PipelineItem* parentItem = getItem(parent);
   bool success = true;
 
   beginRemoveRows(parent, position, position + rows - 1);
@@ -369,17 +369,17 @@ bool PipelineTreeModel::removeRows(int position, int rows, const QModelIndex& pa
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-bool PipelineTreeModel::moveRows(const QModelIndex& sourceParent, int sourceRow, int count, const QModelIndex& destinationParent, int destinationChild)
+bool PipelineModel::moveRows(const QModelIndex& sourceParent, int sourceRow, int count, const QModelIndex& destinationParent, int destinationChild)
 {
   beginMoveRows(sourceParent, sourceRow, sourceRow + count - 1, destinationParent, destinationChild);
 
-  PipelineTreeItem* srcParentItem = getItem(sourceParent);
-  PipelineTreeItem* destParentItem = getItem(destinationParent);
+  PipelineItem* srcParentItem = getItem(sourceParent);
+  PipelineItem* destParentItem = getItem(destinationParent);
 
   for(int i = sourceRow; i < sourceRow + count; i++)
   {
-    QModelIndex srcIndex = index(i, PipelineTreeItem::Name, sourceParent);
-    PipelineTreeItem* srcItem = getItem(srcIndex);
+    QModelIndex srcIndex = index(i, PipelineItem::Name, sourceParent);
+    PipelineItem* srcItem = getItem(srcIndex);
 
     destParentItem->insertChild(destinationChild, srcItem);
     srcItem->setParent(destParentItem);
@@ -394,15 +394,15 @@ bool PipelineTreeModel::moveRows(const QModelIndex& sourceParent, int sourceRow,
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-QModelIndex PipelineTreeModel::parent(const QModelIndex& index) const
+QModelIndex PipelineModel::parent(const QModelIndex& index) const
 {
   if(!index.isValid())
   {
     return QModelIndex();
   }
 
-  PipelineTreeItem* childItem = getItem(index);
-  PipelineTreeItem* parentItem = childItem->parent();
+  PipelineItem* childItem = getItem(index);
+  PipelineItem* parentItem = childItem->parent();
 
   if(parentItem == m_RootItem)
   {
@@ -415,9 +415,9 @@ QModelIndex PipelineTreeModel::parent(const QModelIndex& index) const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-int PipelineTreeModel::rowCount(const QModelIndex& parent) const
+int PipelineModel::rowCount(const QModelIndex& parent) const
 {
-  PipelineTreeItem* parentItem = getItem(parent);
+  PipelineItem* parentItem = getItem(parent);
 
   return parentItem->childCount();
 }
@@ -425,9 +425,9 @@ int PipelineTreeModel::rowCount(const QModelIndex& parent) const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-bool PipelineTreeModel::setData(const QModelIndex& index, const QVariant& value, int role)
+bool PipelineModel::setData(const QModelIndex& index, const QVariant& value, int role)
 {
-  PipelineTreeItem* item = getItem(index);
+  PipelineItem* item = getItem(index);
 
   if(role == Qt::DecorationRole)
   {
@@ -450,124 +450,124 @@ bool PipelineTreeModel::setData(const QModelIndex& index, const QVariant& value,
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-PipelineTreeItem::WidgetState PipelineTreeModel::widgetState(const QModelIndex &index)
+PipelineItem::WidgetState PipelineModel::widgetState(const QModelIndex &index)
 {
-  PipelineTreeItem* item = getItem(index);
+  PipelineItem* item = getItem(index);
   return item->getWidgetState();
 }
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void PipelineTreeModel::setWidgetState(const QModelIndex &index, PipelineTreeItem::WidgetState state)
+void PipelineModel::setWidgetState(const QModelIndex &index, PipelineItem::WidgetState state)
 {
-  PipelineTreeItem* item = getItem(index);
+  PipelineItem* item = getItem(index);
   item->setWidgetState(state);
 }
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-PipelineTreeItem::ErrorState PipelineTreeModel::errorState(const QModelIndex &index)
+PipelineItem::ErrorState PipelineModel::errorState(const QModelIndex &index)
 {
-  PipelineTreeItem* item = getItem(index);
+  PipelineItem* item = getItem(index);
   return item->getErrorState();
 }
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void PipelineTreeModel::setErrorState(const QModelIndex &index, PipelineTreeItem::ErrorState state)
+void PipelineModel::setErrorState(const QModelIndex &index, PipelineItem::ErrorState state)
 {
-  PipelineTreeItem* item = getItem(index);
+  PipelineItem* item = getItem(index);
   item->setErrorState(state);
 }
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-PipelineTreeItem::PipelineState PipelineTreeModel::pipelineState(const QModelIndex &index)
+PipelineItem::PipelineState PipelineModel::pipelineState(const QModelIndex &index)
 {
-  PipelineTreeItem* item = getItem(index);
+  PipelineItem* item = getItem(index);
   return item->getPipelineState();
 }
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void PipelineTreeModel::setPipelineState(const QModelIndex &index, PipelineTreeItem::PipelineState state)
+void PipelineModel::setPipelineState(const QModelIndex &index, PipelineItem::PipelineState state)
 {
-  PipelineTreeItem* item = getItem(index);
+  PipelineItem* item = getItem(index);
   item->setPipelineState(state);
 }
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-PipelineTreeItem::ItemType PipelineTreeModel::itemType(const QModelIndex &index)
+PipelineItem::ItemType PipelineModel::itemType(const QModelIndex &index)
 {
-  PipelineTreeItem* item = getItem(index);
+  PipelineItem* item = getItem(index);
   return item->getItemType();
 }
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void PipelineTreeModel::setItemType(const QModelIndex &index, PipelineTreeItem::ItemType type)
+void PipelineModel::setItemType(const QModelIndex &index, PipelineItem::ItemType type)
 {
-  PipelineTreeItem* item = getItem(index);
+  PipelineItem* item = getItem(index);
   item->setItemType(type);
 }
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-bool PipelineTreeModel::pipelineSaved(const QModelIndex &index)
+bool PipelineModel::pipelineSaved(const QModelIndex &index)
 {
-  PipelineTreeItem* item = getItem(index);
+  PipelineItem* item = getItem(index);
   return item->isPipelineSaved();
 }
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void PipelineTreeModel::setPipelineSaved(const QModelIndex &index, bool saved)
+void PipelineModel::setPipelineSaved(const QModelIndex &index, bool saved)
 {
-  PipelineTreeItem* item = getItem(index);
+  PipelineItem* item = getItem(index);
   item->setPipelineSaved(saved);
 }
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void PipelineTreeModel::setNeedsToBeExpanded(const QModelIndex& index, bool value)
+void PipelineModel::setNeedsToBeExpanded(const QModelIndex& index, bool value)
 {
-  PipelineTreeItem* item = getItem(index);
+  PipelineItem* item = getItem(index);
   item->setExpanded(value);
 }
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-bool PipelineTreeModel::needsToBeExpanded(const QModelIndex& index)
+bool PipelineModel::needsToBeExpanded(const QModelIndex& index)
 {
-  PipelineTreeItem* item = getItem(index);
+  PipelineItem* item = getItem(index);
   return item->getExpanded();
 }
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-FilterInputWidget* PipelineTreeModel::filterInputWidget(const QModelIndex &index)
+FilterInputWidget* PipelineModel::filterInputWidget(const QModelIndex &index)
 {
-  PipelineTreeItem* item = getItem(index);
+  PipelineItem* item = getItem(index);
   return item->getFilterInputWidget();
 }
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-PipelineTreeItem* PipelineTreeModel::getRootItem()
+PipelineItem* PipelineModel::getRootItem()
 {
   return m_RootItem;
 }
@@ -575,7 +575,7 @@ PipelineTreeItem* PipelineTreeModel::getRootItem()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-bool PipelineTreeModel::isEmpty()
+bool PipelineModel::isEmpty()
 {
   if(rowCount(QModelIndex()) <= 0)
   {
@@ -587,49 +587,49 @@ bool PipelineTreeModel::isEmpty()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-QColor PipelineTreeModel::getForegroundColor(const QModelIndex &index) const
+QColor PipelineModel::getForegroundColor(const QModelIndex &index) const
 {
   if (index.isValid() == false)
   {
     return QColor();
   }
 
-  PipelineTreeItem* item = getItem(index);
+  PipelineItem* item = getItem(index);
 
-  PipelineTreeItem::WidgetState wState = item->getWidgetState();
-  PipelineTreeItem::PipelineState pState = item->getPipelineState();
-  PipelineTreeItem::ErrorState eState = item->getErrorState();
+  PipelineItem::WidgetState wState = item->getWidgetState();
+  PipelineItem::PipelineState pState = item->getPipelineState();
+  PipelineItem::ErrorState eState = item->getErrorState();
 
   QColor fgColor;
 
   switch(wState)
   {
-  case PipelineTreeItem::WidgetState::Ready:
+  case PipelineItem::WidgetState::Ready:
     fgColor = QColor();
     break;
-  case PipelineTreeItem::WidgetState::Executing:
+  case PipelineItem::WidgetState::Executing:
     fgColor = QColor(6, 140, 190);
     break;
-  case PipelineTreeItem::WidgetState::Completed:
+  case PipelineItem::WidgetState::Completed:
     fgColor = QColor(6, 118, 6);
     break;
-  case PipelineTreeItem::WidgetState::Disabled:
+  case PipelineItem::WidgetState::Disabled:
     fgColor = QColor(96, 96, 96);
     break;
   }
 
   // Do not change the background color if the widget is disabled.
-  if(wState != PipelineTreeItem::WidgetState::Disabled)
+  if(wState != PipelineItem::WidgetState::Disabled)
   {
     switch(pState)
     {
-    case PipelineTreeItem::PipelineState::Running:
+    case PipelineItem::PipelineState::Running:
       fgColor = QColor(190, 190, 190);
       break;
-    case PipelineTreeItem::PipelineState::Stopped:
+    case PipelineItem::PipelineState::Stopped:
       fgColor = QColor(0, 0, 0);
       break;
-    case PipelineTreeItem::PipelineState::Paused:
+    case PipelineItem::PipelineState::Paused:
       fgColor = QColor(0, 0, 0);
       break;
     }
@@ -637,13 +637,13 @@ QColor PipelineTreeModel::getForegroundColor(const QModelIndex &index) const
 
   switch(eState)
   {
-  case PipelineTreeItem::ErrorState::Ok:
+  case PipelineItem::ErrorState::Ok:
 
     break;
-  case PipelineTreeItem::ErrorState::Error:
+  case PipelineItem::ErrorState::Error:
     fgColor = QColor(179, 2, 5);
     break;
-  case PipelineTreeItem::ErrorState::Warning:
+  case PipelineItem::ErrorState::Warning:
     fgColor = QColor(215, 197, 1);
     break;
   }

@@ -36,9 +36,9 @@
 #include <QtGui/QIntValidator>
 #include <QtGui/QPainter>
 
-#include "SVWidgetsLib/Widgets/PipelineTreeItem.h"
+#include "SVWidgetsLib/Widgets/PipelineItem.h"
 #include "SVWidgetsLib/Widgets/PipelineTreeItemDelegate.h"
-#include "SVWidgetsLib/Widgets/PipelineTreeModel.h"
+#include "SVWidgetsLib/Widgets/PipelineModel.h"
 
 // Include the MOC generated CPP file which has all the QMetaObject methods/data
 
@@ -79,14 +79,14 @@ void PipelineTreeItemDelegate::setEditorData(QWidget* editor, const QModelIndex&
 // -----------------------------------------------------------------------------
 void PipelineTreeItemDelegate::setModelData(QWidget* editor, QAbstractItemModel* model, const QModelIndex& index) const
 {
-  PipelineTreeModel* bModel = qobject_cast<PipelineTreeModel*>(model);
+  PipelineModel* bModel = qobject_cast<PipelineModel*>(model);
 
   QLineEdit* line = static_cast<QLineEdit*>(editor);
   QString value = line->text();
 
   if(value.isEmpty() == false)
   {
-    QModelIndex bIndex = bModel->index(index.row(), PipelineTreeItem::Name, index.parent());
+    QModelIndex bIndex = bModel->index(index.row(), PipelineItem::Name, index.parent());
     bModel->setData(bIndex, value, Qt::DisplayRole);
   }
 }

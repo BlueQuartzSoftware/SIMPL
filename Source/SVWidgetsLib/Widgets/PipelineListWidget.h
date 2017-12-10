@@ -80,7 +80,7 @@ class SVWidgetsLib_EXPORT PipelineListWidget : public QFrame, private Ui::Pipeli
     void setupGui();
 
   signals:
-    void pipelineStarted(const QModelIndex &pipelineIndex, PipelineTreeModel* model);
+    void pipelineStarted(const QModelIndex &pipelineIndex, PipelineModel* model);
     void pipelineCanceled(const QModelIndex &pipelineIndex);
 
   private:

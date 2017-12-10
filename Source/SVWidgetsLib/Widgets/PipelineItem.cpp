@@ -29,7 +29,7 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-#include "PipelineTreeItem.h"
+#include "PipelineItem.h"
 
 #include <QtCore/QStringList>
 #include <QtGui/QColor>
@@ -39,17 +39,17 @@
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-PipelineTreeItem::PipelineTreeItem(const QVector<QVariant>& data, PipelineTreeItem* parent)
+PipelineItem::PipelineItem(const QVector<QVariant>& data, PipelineItem* parent)
 : m_FilterInputWidget(nullptr)
 , m_ActivePipeline(false)
 , m_PipelineSaved(true)
 , m_Icon(QIcon())
 , m_Expanded(false)
 , m_ItemTooltip("")
-, m_WidgetState(PipelineTreeItem::WidgetState::Ready)
-, m_PipelineState(PipelineTreeItem::PipelineState::Stopped)
-, m_ErrorState(PipelineTreeItem::ErrorState::Ok)
-, m_ItemType(PipelineTreeItem::ItemType::Unknown)
+, m_WidgetState(PipelineItem::WidgetState::Ready)
+, m_PipelineState(PipelineItem::PipelineState::Stopped)
+, m_ErrorState(PipelineItem::ErrorState::Ok)
+, m_ItemType(PipelineItem::ItemType::Unknown)
 , m_ItemData(data)
 , m_ParentItem(parent)
 {
@@ -59,7 +59,7 @@ PipelineTreeItem::PipelineTreeItem(const QVector<QVariant>& data, PipelineTreeIt
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-PipelineTreeItem::~PipelineTreeItem()
+PipelineItem::~PipelineItem()
 {
   qDeleteAll(m_ChildItems);
 }
@@ -67,7 +67,7 @@ PipelineTreeItem::~PipelineTreeItem()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-QString PipelineTreeItem::TopLevelString()
+QString PipelineItem::TopLevelString()
 {
   return QString::fromLatin1("[Top Level]");
 }
@@ -75,7 +75,7 @@ QString PipelineTreeItem::TopLevelString()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-PipelineTreeItem* PipelineTreeItem::child(int number)
+PipelineItem* PipelineItem::child(int number)
 {
   return m_ChildItems.value(number);
 }
@@ -83,7 +83,7 @@ PipelineTreeItem* PipelineTreeItem::child(int number)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-int PipelineTreeItem::childCount() const
+int PipelineItem::childCount() const
 {
   return m_ChildItems.count();
 }
@@ -91,11 +91,11 @@ int PipelineTreeItem::childCount() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-int PipelineTreeItem::childNumber() const
+int PipelineItem::childNumber() const
 {
   if(m_ParentItem)
   {
-    return m_ParentItem->m_ChildItems.indexOf(const_cast<PipelineTreeItem*>(this));
+    return m_ParentItem->m_ChildItems.indexOf(const_cast<PipelineItem*>(this));
   }
 
   return 0;
@@ -104,7 +104,7 @@ int PipelineTreeItem::childNumber() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-int PipelineTreeItem::columnCount() const
+int PipelineItem::columnCount() const
 {
   return m_ItemData.count();
 }
@@ -112,7 +112,7 @@ int PipelineTreeItem::columnCount() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-QVariant PipelineTreeItem::data(int column) const
+QVariant PipelineItem::data(int column) const
 {
   return m_ItemData.value(column);
 }
@@ -120,7 +120,7 @@ QVariant PipelineTreeItem::data(int column) const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-AbstractFilter::Pointer PipelineTreeItem::getFilter()
+AbstractFilter::Pointer PipelineItem::getFilter()
 {
   return m_Filter;
 }
@@ -128,7 +128,7 @@ AbstractFilter::Pointer PipelineTreeItem::getFilter()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void PipelineTreeItem::setFilter(AbstractFilter::Pointer filter)
+void PipelineItem::setFilter(AbstractFilter::Pointer filter)
 {
   m_Filter = filter;
 
@@ -138,7 +138,7 @@ void PipelineTreeItem::setFilter(AbstractFilter::Pointer filter)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-bool PipelineTreeItem::insertChild(int position, PipelineTreeItem* child)
+bool PipelineItem::insertChild(int position, PipelineItem* child)
 {
   m_ChildItems.insert(position, child);
   return true;
@@ -147,7 +147,7 @@ bool PipelineTreeItem::insertChild(int position, PipelineTreeItem* child)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-bool PipelineTreeItem::insertChildren(int position, int count, int columns)
+bool PipelineItem::insertChildren(int position, int count, int columns)
 {
   if(position < 0 || position > m_ChildItems.size())
   {
@@ -157,7 +157,7 @@ bool PipelineTreeItem::insertChildren(int position, int count, int columns)
   for(int row = 0; row < count; ++row)
   {
     QVector<QVariant> data(columns);
-    PipelineTreeItem* item = new PipelineTreeItem(data, this);
+    PipelineItem* item = new PipelineItem(data, this);
     insertChild(position, item);
   }
 
@@ -167,7 +167,7 @@ bool PipelineTreeItem::insertChildren(int position, int count, int columns)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-bool PipelineTreeItem::insertColumns(int position, int columns)
+bool PipelineItem::insertColumns(int position, int columns)
 {
   if(position < 0 || position > m_ItemData.size())
   {
@@ -179,7 +179,7 @@ bool PipelineTreeItem::insertColumns(int position, int columns)
     m_ItemData.insert(position, QVariant());
   }
 
-  foreach(PipelineTreeItem* child, m_ChildItems)
+  foreach(PipelineItem* child, m_ChildItems)
   {
     child->insertColumns(position, columns);
   }
@@ -190,7 +190,7 @@ bool PipelineTreeItem::insertColumns(int position, int columns)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-PipelineTreeItem* PipelineTreeItem::parent()
+PipelineItem* PipelineItem::parent()
 {
   return m_ParentItem;
 }
@@ -198,7 +198,7 @@ PipelineTreeItem* PipelineTreeItem::parent()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-bool PipelineTreeItem::removeChild(int position)
+bool PipelineItem::removeChild(int position)
 {
   m_ChildItems.removeAt(position);
   return true;
@@ -207,7 +207,7 @@ bool PipelineTreeItem::removeChild(int position)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-bool PipelineTreeItem::removeChildren(int position, int count)
+bool PipelineItem::removeChildren(int position, int count)
 {
   if(position < 0 || position + count > m_ChildItems.size())
   {
@@ -225,7 +225,7 @@ bool PipelineTreeItem::removeChildren(int position, int count)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-bool PipelineTreeItem::removeColumns(int position, int columns)
+bool PipelineItem::removeColumns(int position, int columns)
 {
   if(position < 0 || position + columns > m_ItemData.size())
   {
@@ -237,7 +237,7 @@ bool PipelineTreeItem::removeColumns(int position, int columns)
     m_ItemData.remove(position);
   }
 
-  foreach(PipelineTreeItem* child, m_ChildItems)
+  foreach(PipelineItem* child, m_ChildItems)
   {
     child->removeColumns(position, columns);
   }
@@ -248,7 +248,7 @@ bool PipelineTreeItem::removeColumns(int position, int columns)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-bool PipelineTreeItem::setData(int column, const QVariant& value)
+bool PipelineItem::setData(int column, const QVariant& value)
 {
   if(column < 0 || column >= m_ItemData.size())
   {
@@ -262,7 +262,7 @@ bool PipelineTreeItem::setData(int column, const QVariant& value)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void PipelineTreeItem::setParent(PipelineTreeItem* parent)
+void PipelineItem::setParent(PipelineItem* parent)
 {
   m_ParentItem = parent;
 }
@@ -270,7 +270,7 @@ void PipelineTreeItem::setParent(PipelineTreeItem* parent)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void PipelineTreeItem::setupFilterInputWidget()
+void PipelineItem::setupFilterInputWidget()
 {
   // Instantiate the filter input widget object
   if(m_FilterInputWidget)

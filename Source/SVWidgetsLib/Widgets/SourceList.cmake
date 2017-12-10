@@ -30,8 +30,8 @@ set(SVWidgetsLib_Widgets_MOC_HDRS
   ${SVWidgetsLib_SOURCE_DIR}/Widgets/ImportHDF5TreeModel.h
   ${SVWidgetsLib_SOURCE_DIR}/Widgets/PipelineListWidget.h
   ${SVWidgetsLib_SOURCE_DIR}/Widgets/PipelineTreeItemDelegate.h
-  ${SVWidgetsLib_SOURCE_DIR}/Widgets/PipelineTreeController.h
-  ${SVWidgetsLib_SOURCE_DIR}/Widgets/PipelineTreeModel.h
+  ${SVWidgetsLib_SOURCE_DIR}/Widgets/SIMPLController.h
+  ${SVWidgetsLib_SOURCE_DIR}/Widgets/PipelineModel.h
   ${SVWidgetsLib_SOURCE_DIR}/Widgets/PipelineTreeView.h
   ${SVWidgetsLib_SOURCE_DIR}/Widgets/SVPipelineFilterWidget.h
   ${SVWidgetsLib_SOURCE_DIR}/Widgets/SVPipelineFilterOutlineWidget.h
@@ -48,7 +48,7 @@ set(SVWidgetsLib_Widgets_HDRS
   ${SVWidgetsLib_SOURCE_DIR}/Widgets/DataStructureItem.h
   ${SVWidgetsLib_SOURCE_DIR}/Widgets/ImportHDF5TreeModelItem.h
   ${SVWidgetsLib_SOURCE_DIR}/Widgets/PipelineFilterObject.h
-  ${SVWidgetsLib_SOURCE_DIR}/Widgets/PipelineTreeItem.h
+  ${SVWidgetsLib_SOURCE_DIR}/Widgets/PipelineItem.h
   ${SVWidgetsLib_SOURCE_DIR}/Widgets/PipelineView.h
 )
 
@@ -81,11 +81,11 @@ set(SVWidgetsLib_Widgets_SRCS
   ${SVWidgetsLib_SOURCE_DIR}/Widgets/SVPipelineViewWidget.cpp
   ${SVWidgetsLib_SOURCE_DIR}/Widgets/PipelineFilterObject.cpp
   ${SVWidgetsLib_SOURCE_DIR}/Widgets/PipelineListWidget.cpp
-  ${SVWidgetsLib_SOURCE_DIR}/Widgets/PipelineTreeController.cpp
+  ${SVWidgetsLib_SOURCE_DIR}/Widgets/SIMPLController.cpp
   ${SVWidgetsLib_SOURCE_DIR}/Widgets/PipelineTreeItemDelegate.cpp
-  ${SVWidgetsLib_SOURCE_DIR}/Widgets/PipelineTreeModel.cpp
+  ${SVWidgetsLib_SOURCE_DIR}/Widgets/PipelineModel.cpp
   ${SVWidgetsLib_SOURCE_DIR}/Widgets/PipelineTreeView.cpp
-  ${SVWidgetsLib_SOURCE_DIR}/Widgets/PipelineTreeItem.cpp
+  ${SVWidgetsLib_SOURCE_DIR}/Widgets/PipelineItem.cpp
   ${SVWidgetsLib_SOURCE_DIR}/Widgets/PipelineView.cpp
   ${SVWidgetsLib_SOURCE_DIR}/Widgets/SIMPLViewToolbox.cpp
   ${SVWidgetsLib_SOURCE_DIR}/Widgets/SIMPLViewMenuItems.cpp

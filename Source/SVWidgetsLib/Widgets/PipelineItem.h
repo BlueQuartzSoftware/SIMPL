@@ -45,11 +45,11 @@
 
 class FilterInputWidget;
 
-class SVWidgetsLib_EXPORT PipelineTreeItem
+class SVWidgetsLib_EXPORT PipelineItem
 {
   public:
-    PipelineTreeItem(const QVector<QVariant>& data, PipelineTreeItem* parent = 0);
-    virtual ~PipelineTreeItem();
+    PipelineItem(const QVector<QVariant>& data, PipelineItem* parent = 0);
+    virtual ~PipelineItem();
 
     SIMPL_INSTANCE_PROPERTY(FilterInputWidget*, FilterInputWidget)
     SIMPL_INSTANCE_PROPERTY(bool, FilterEnabled)
@@ -100,8 +100,8 @@ class SVWidgetsLib_EXPORT PipelineTreeItem
     };
     SIMPL_INSTANCE_PROPERTY(ItemType, ItemType)
 
-    PipelineTreeItem* child(int number);
-    PipelineTreeItem* parent();
+    PipelineItem* child(int number);
+    PipelineItem* parent();
 
     int childCount() const;
     int columnCount() const;
@@ -112,7 +112,7 @@ class SVWidgetsLib_EXPORT PipelineTreeItem
     AbstractFilter::Pointer getFilter();
     void setFilter(AbstractFilter::Pointer filter);
 
-    bool insertChild(int position, PipelineTreeItem* child);
+    bool insertChild(int position, PipelineItem* child);
     bool insertChildren(int position, int count, int columns);
     bool insertColumns(int position, int columns);
 
@@ -122,20 +122,20 @@ class SVWidgetsLib_EXPORT PipelineTreeItem
 
     int childNumber() const;
 
-    void setParent(PipelineTreeItem* parent);
+    void setParent(PipelineItem* parent);
 
     static QString TopLevelString();
 
   private:
-    QList<PipelineTreeItem*>                m_ChildItems;
+    QList<PipelineItem*>                m_ChildItems;
     QVector<QVariant>                       m_ItemData;
     AbstractFilter::Pointer                 m_Filter = nullptr;
-    PipelineTreeItem*                       m_ParentItem;
+    PipelineItem*                       m_ParentItem;
 
     void setupFilterInputWidget();
 
-    PipelineTreeItem(const PipelineTreeItem&);    // Copy Constructor Not Implemented
-    void operator=(const PipelineTreeItem&);  // Operator '=' Not Implemented
+    PipelineItem(const PipelineItem&);    // Copy Constructor Not Implemented
+    void operator=(const PipelineItem&);  // Operator '=' Not Implemented
 };
 
 #endif // _pipelinetreeitem_h_
