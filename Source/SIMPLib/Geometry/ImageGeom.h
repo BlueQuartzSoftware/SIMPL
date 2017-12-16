@@ -235,18 +235,14 @@ class SIMPLib_EXPORT ImageGeom : public IGeometryGrid
 // Inherited from IGeometryGrid
 // -----------------------------------------------------------------------------
 
-    virtual void setDimensions(size_t dims[3]) override { std::copy(dims, dims + 3, m_Dimensions); }
-    virtual void setDimensions(size_t xDim, size_t yDim, size_t zDim) override { m_Dimensions[0] = xDim;
-                                                                        m_Dimensions[1] = yDim;
-                                                                        m_Dimensions[2] = zDim; }
-    virtual void getDimensions(size_t dims[3]) override { std::copy(m_Dimensions, m_Dimensions + 3, dims); }
-    virtual void getDimensions(size_t& xDim, size_t& yDim, size_t& zDim) override { xDim = m_Dimensions[0];
-                                                                           yDim = m_Dimensions[1];
-                                                                           zDim = m_Dimensions[2]; }
+    virtual void setDimensions(size_t dims[3]) override;
+    virtual void setDimensions(size_t xDim, size_t yDim, size_t zDim) override;
+    virtual void getDimensions(size_t dims[3]) override;
+    virtual void getDimensions(size_t& xDim, size_t& yDim, size_t& zDim) override;
 
-    virtual size_t getXPoints() override { return m_Dimensions[0]; }
-    virtual size_t getYPoints() override { return m_Dimensions[1]; }
-    virtual size_t getZPoints() override { return m_Dimensions[2]; }
+    virtual size_t getXPoints() override;
+    virtual size_t getYPoints() override;
+    virtual size_t getZPoints() override;
 
     virtual void getPlaneCoords(size_t idx[3], float coords[3]) override;
     virtual void getPlaneCoords(size_t x, size_t y, size_t z, float coords[3]) override;
