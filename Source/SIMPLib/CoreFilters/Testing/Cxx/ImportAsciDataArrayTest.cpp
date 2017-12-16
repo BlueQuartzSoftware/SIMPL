@@ -144,7 +144,8 @@ public:
         else // Bool type
         {
           bool value = (index != 0);
-          DREAM3D_REQUIRE_EQUAL(value, ptr[index])
+		  //DREAM3D_REQUIRE_EQUAL(value, (ptr[index]))
+          DREAM3D_REQUIRE_EQUAL(value, static_cast<bool>(ptr[index]))
           index++;
         }
       }
