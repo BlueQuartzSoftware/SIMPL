@@ -62,10 +62,10 @@ StatusBarWidget::~StatusBarWidget() = default;
 // -----------------------------------------------------------------------------
 void StatusBarWidget::setupGui()
 {
-  QString style = generateStyleSheet(false);
-  consoleBtn->setStyleSheet(style);
-  issuesBtn->setStyleSheet(style);
-  dataBrowserBtn->setStyleSheet(style);
+//  QString style = generateStyleSheet(false);
+//  consoleBtn->setStyleSheet(style);
+//  issuesBtn->setStyleSheet(style);
+//  dataBrowserBtn->setStyleSheet(style);
 }
 
 // -----------------------------------------------------------------------------
@@ -200,6 +200,16 @@ void StatusBarWidget::toolboxVisibilityChanged(bool b)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
+void StatusBarWidget::pipelineVisibilityChanged(bool b)
+{
+  pipelineBtn->blockSignals(true);
+  pipelineBtn->setChecked(b);
+  pipelineBtn->blockSignals(false);
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
 void StatusBarWidget::setButtonAction(QDockWidget* dock, Button btn)
 {
   switch(btn)
@@ -220,16 +230,18 @@ void StatusBarWidget::setButtonAction(QDockWidget* dock, Button btn)
 //      connect(toolboxBtn, SIGNAL(toggled(bool)), dock, SLOT(setVisible(bool)));
 //      connect(dock, SIGNAL(visibilityChanged(bool)), this, SLOT(dataBrowserVisibilityChanged(bool)));
       break;
+    case Button::Pipeline:
+      connect(pipelineBtn, SIGNAL(toggled(bool)), dock, SLOT(setVisible(bool)));
+      connect(dock, SIGNAL(visibilityChanged(bool)), this, SLOT(pipelineVisibilityChanged(bool)));
+      break;
   }
 }
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void StatusBarWidget::issuesTableHasErrors(bool b, int errCount, int warnCount)
+void StatusBarWidget::issuesTableHasErrors(bool /* b */, int errCount, int warnCount)
 {
-  //  QString style = generateStyleSheet(b);
-  //  issuesBtn->setStyleSheet(style);
   issuesBtn->setErrorBadgeCount(errCount);
   issuesBtn->setWarningBadgeCount(warnCount);
 }
