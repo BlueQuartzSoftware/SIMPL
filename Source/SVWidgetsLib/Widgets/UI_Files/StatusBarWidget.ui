@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>695</width>
+    <width>468</width>
     <height>36</height>
    </rect>
   </property>
@@ -32,11 +32,7 @@
    <string>Frame</string>
   </property>
   <property name="styleSheet">
-   <string notr="true">QFrame#StatusBarWidget
-{
-
-}
-</string>
+   <string notr="true"/>
   </property>
   <property name="frameShape">
    <enum>QFrame::NoFrame</enum>
@@ -61,32 +57,16 @@
     <number>0</number>
    </property>
    <item>
-    <spacer name="horizontalSpacer">
-     <property name="orientation">
-      <enum>Qt::Horizontal</enum>
-     </property>
-     <property name="sizeType">
-      <enum>QSizePolicy::Expanding</enum>
-     </property>
-     <property name="sizeHint" stdset="0">
-      <size>
-       <width>0</width>
-       <height>20</height>
-      </size>
-     </property>
-    </spacer>
-   </item>
-   <item>
     <widget class="StatusBarButton" name="pipelineBtn">
      <property name="sizePolicy">
-      <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+      <sizepolicy hsizetype="Fixed" vsizetype="Preferred">
        <horstretch>0</horstretch>
        <verstretch>0</verstretch>
       </sizepolicy>
      </property>
      <property name="minimumSize">
       <size>
-       <width>0</width>
+       <width>65</width>
        <height>24</height>
       </size>
      </property>
@@ -106,55 +86,7 @@
       </font>
      </property>
      <property name="styleSheet">
-      <string notr="true">QPushButton
-{
-	font: 75 11pt &quot;FiraSans&quot;;
-	font-weight: bold;
-  	background-color: rgb(200, 200, 200);
-	color: rgb(50, 50, 50);
-	border: 1px solid rgb(120, 120, 120);
-	border-radius: 3px;
- 	padding: 1 8 1 8px;
-	margin: 2 2 2 2px;
-}
-
-QPushButton:hover
-{
-	font: 75 11pt &quot;FiraSans&quot;;
-	font-weight: bold;
-  	background-color: rgb(200, 200, 200);
-	color: rgb(50, 50, 50);
-	border: 2px solid rgb(120, 120, 120);
-	border-radius: 3px;
- 	padding: 1 8 1 8px;
-	margin: 1 1 1 1px;
-}
-
-QPushButton:checked
-{
-	font: 75 11pt &quot;FiraSans&quot;;
-	font-weight: bold;
-  	background-color: rgb(120, 120, 120);
-	color: rgb(240, 240, 240);
-	border: 1px solid rgb(200, 200, 200);
-	border-radius: 3px;
- 	padding: 1 8 1 8px;
-	margin: 2 2 2 2px;
-}
-
-QPushButton:checked:hover
-{
-	font: 75 11pt &quot;FiraSans&quot;;
-	font-weight: bold;
-  	background-color: rgb(120, 120, 120);
-	color: rgb(240, 240, 240);
-	border: 2px solid rgb(200, 200, 200);
-	border-radius: 3px;
- 	padding: 1 8 1 8px;
-	margin: 1 1 1 1px;
-}
-
-/* Comment */</string>
+      <string notr="true"/>
      </property>
      <property name="text">
       <string>Pipeline</string>
@@ -174,7 +106,7 @@ QPushButton:checked:hover
      </property>
      <property name="minimumSize">
       <size>
-       <width>0</width>
+       <width>110</width>
        <height>24</height>
       </size>
      </property>
@@ -192,57 +124,6 @@ QPushButton:checked:hover
        <italic>false</italic>
        <bold>true</bold>
       </font>
-     </property>
-     <property name="styleSheet">
-      <string notr="true">QPushButton
-{
-	font: 75 11pt &quot;FiraSans&quot;;
-	font-weight: bold;
-  	background-color: rgb(200, 200, 200);
-	color: rgb(50, 50, 50);
-	border: 1px solid rgb(120, 120, 120);
-	border-radius: 3px;
- 	padding: 1 8 1 8px;
-	margin: 2 2 2 2px;
-}
-
-QPushButton:hover
-{
-	font: 75 11pt &quot;FiraSans&quot;;
-	font-weight: bold;
-  	background-color: rgb(200, 200, 200);
-	color: rgb(50, 50, 50);
-	border: 2px solid rgb(120, 120, 120);
-	border-radius: 3px;
- 	padding: 1 8 1 8px;
-	margin: 1 1 1 1px;
-}
-
-QPushButton:checked
-{
-	font: 75 11pt &quot;FiraSans&quot;;
-	font-weight: bold;
-  	background-color: rgb(120, 120, 120);
-	color: rgb(240, 240, 240);
-	border: 1px solid rgb(200, 200, 200);
-	border-radius: 3px;
- 	padding: 1 8 1 8px;
-	margin: 2 2 2 2px;
-}
-
-QPushButton:checked:hover
-{
-	font: 75 11pt &quot;FiraSans&quot;;
-	font-weight: bold;
-  	background-color: rgb(120, 120, 120);
-	color: rgb(240, 240, 240);
-	border: 2px solid rgb(200, 200, 200);
-	border-radius: 3px;
- 	padding: 1 8 1 8px;
-	margin: 1 1 1 1px;
-}
-
-/* Comment */</string>
      </property>
      <property name="text">
       <string>Pipeline Issues</string>
@@ -250,22 +131,19 @@ QPushButton:checked:hover
      <property name="checkable">
       <bool>true</bool>
      </property>
-     <property name="flat">
-      <bool>true</bool>
-     </property>
     </widget>
    </item>
    <item>
     <widget class="StatusBarButton" name="consoleBtn">
      <property name="sizePolicy">
-      <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+      <sizepolicy hsizetype="Fixed" vsizetype="Preferred">
        <horstretch>0</horstretch>
        <verstretch>0</verstretch>
       </sizepolicy>
      </property>
      <property name="minimumSize">
       <size>
-       <width>0</width>
+       <width>110</width>
        <height>24</height>
       </size>
      </property>
@@ -283,57 +161,6 @@ QPushButton:checked:hover
        <italic>false</italic>
        <bold>true</bold>
       </font>
-     </property>
-     <property name="styleSheet">
-      <string notr="true">QPushButton
-{
-	font: 75 11pt &quot;FiraSans&quot;;
-	font-weight: bold;
-  	background-color: rgb(200, 200, 200);
-	color: rgb(50, 50, 50);
-	border: 1px solid rgb(120, 120, 120);
-	border-radius: 3px;
- 	padding: 1 8 1 8px;
-	margin: 2 2 2 2px;
-}
-
-QPushButton:hover
-{
-	font: 75 11pt &quot;FiraSans&quot;;
-	font-weight: bold;
-  	background-color: rgb(200, 200, 200);
-	color: rgb(50, 50, 50);
-	border: 2px solid rgb(120, 120, 120);
-	border-radius: 3px;
- 	padding: 1 8 1 8px;
-	margin: 1 1 1 1px;
-}
-
-QPushButton:checked
-{
-	font: 75 11pt &quot;FiraSans&quot;;
-	font-weight: bold;
-  	background-color: rgb(120, 120, 120);
-	color: rgb(240, 240, 240);
-	border: 1px solid rgb(200, 200, 200);
-	border-radius: 3px;
- 	padding: 1 8 1 8px;
-	margin: 2 2 2 2px;
-}
-
-QPushButton:checked:hover
-{
-	font: 75 11pt &quot;FiraSans&quot;;
-	font-weight: bold;
-  	background-color: rgb(120, 120, 120);
-	color: rgb(240, 240, 240);
-	border: 2px solid rgb(200, 200, 200);
-	border-radius: 3px;
- 	padding: 1 8 1 8px;
-	margin: 1 1 1 1px;
-}
-
-/* Comment */</string>
      </property>
      <property name="text">
       <string>Pipeline Output</string>
@@ -346,14 +173,14 @@ QPushButton:checked:hover
    <item>
     <widget class="StatusBarButton" name="dataBrowserBtn">
      <property name="sizePolicy">
-      <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+      <sizepolicy hsizetype="Fixed" vsizetype="Preferred">
        <horstretch>0</horstretch>
        <verstretch>0</verstretch>
       </sizepolicy>
      </property>
      <property name="minimumSize">
       <size>
-       <width>0</width>
+       <width>107</width>
        <height>24</height>
       </size>
      </property>
@@ -373,55 +200,7 @@ QPushButton:checked:hover
       </font>
      </property>
      <property name="styleSheet">
-      <string notr="true">QPushButton
-{
-	font: 75 11pt &quot;FiraSans&quot;;
-	font-weight: bold;
-  	background-color: rgb(200, 200, 200);
-	color: rgb(50, 50, 50);
-	border: 1px solid rgb(120, 120, 120);
-	border-radius: 3px;
- 	padding: 1 8 1 8px;
-	margin: 2 2 2 2px;
-}
-
-QPushButton:hover
-{
-	font: 75 11pt &quot;FiraSans&quot;;
-	font-weight: bold;
-  	background-color: rgb(200, 200, 200);
-	color: rgb(50, 50, 50);
-	border: 2px solid rgb(120, 120, 120);
-	border-radius: 3px;
- 	padding: 1 8 1 8px;
-	margin: 1 1 1 1px;
-}
-
-QPushButton:checked
-{
-	font: 75 11pt &quot;FiraSans&quot;;
-	font-weight: bold;
-  	background-color: rgb(120, 120, 120);
-	color: rgb(240, 240, 240);
-	border: 1px solid rgb(200, 200, 200);
-	border-radius: 3px;
- 	padding: 1 8 1 8px;
-	margin: 2 2 2 2px;
-}
-
-QPushButton:checked:hover
-{
-	font: 75 11pt &quot;FiraSans&quot;;
-	font-weight: bold;
-  	background-color: rgb(120, 120, 120);
-	color: rgb(240, 240, 240);
-	border: 2px solid rgb(200, 200, 200);
-	border-radius: 3px;
- 	padding: 1 8 1 8px;
-	margin: 1 1 1 1px;
-}
-
-/* Comment */</string>
+      <string notr="true"/>
      </property>
      <property name="text">
       <string>Data Structure</string>
