@@ -57,7 +57,8 @@ function(SIMPL_START_FILTER_GROUP)
 
   set_property(GLOBAL APPEND_STRING PROPERTY ${P_FILTER_GROUP}_ALL_FILTERS_HEADER "\n/* ------ ${P_FILTER_GROUP} --------- */\n")
   set_property(GLOBAL APPEND_STRING PROPERTY ${P_FILTER_GROUP}_REGISTER_KNOWN_FILTERS "\n    /* ------ ${P_FILTER_GROUP} --------- */\n")
-
+  STRING(REPLACE "Filters" "" P_FILTER_GROUP ${P_FILTER_GROUP})
+  # message(STATUS "P_FILTER_GROUP: ${P_FILTER_GROUP}")
   set_property(GLOBAL APPEND PROPERTY DREAM3DDoc_GROUPS ${P_FILTER_GROUP})
 endfunction()
 
@@ -157,7 +158,6 @@ macro(ADD_SIMPL_FILTER FilterLib WidgetLib filterGroup filterName filterDocPath 
       endif()
 
       get_property(DREAM3DDocRoot GLOBAL PROPERTY DREAM3DDocRoot)
-      #file(APPEND ${DREAM3DDocRoot}/DREAM3DDoc_${filterGroup} "${filterDocPath}\n")
       set_property(GLOBAL APPEND PROPERTY DREAM3DDoc_${filterGroup} ${filterDocPath})
 
   endif()

@@ -1,7 +1,18 @@
 set(_filterGroupName CoreFilters)
 set(SUBDIR_NAME ${_filterGroupName})
 set(${_filterGroupName}_FILTERS_HDRS "")
+set(PLUGIN_NAME Core)
+get_filename_component(${PLUGIN_NAME}_SOURCE_DIR "${CMAKE_CURRENT_LIST_DIR}" ABSOLUTE)
+set(${PLUGIN_NAME}_SOURCE_DIR ${${PLUGIN_NAME}_SOURCE_DIR} CACHE STRING "")
 
+add_custom_target(${PLUGIN_NAME}_DOC_FOLDER_COPY ALL
+  COMMAND ${CMAKE_COMMAND} -E copy_directory "${SIMPLib_SOURCE_DIR}/Documentation/SIMPLibFilters/${PLUGIN_NAME}Filters/"
+  "${DREAM3DDocRoot}/ReferenceManual/Plugins/${PLUGIN_NAME}/"
+  COMMENT "${PLUGIN_NAME}: Copying Documentation to build directory")
+set_target_properties(${PLUGIN_NAME}_DOC_FOLDER_COPY PROPERTIES FOLDER ZZ_COPY_FILES)
+
+#--------
+# This macro must come first before we start adding any filters
 SIMPL_START_FILTER_GROUP(
   ALL_FILTERS_HEADERFILE ${AllFiltersHeaderFile}
   REGISTER_KNOWN_FILTERS_FILE ${RegisterKnownFiltersFile}
