@@ -999,7 +999,7 @@ namespace Test
 {
   const QString TestPluginFile("TestPlugin");
   const QString TestPluginDisplayName("TestPlugin");
-  const QString TestBaseName("TestPlugin");
+  const QString TestBaseName("Test");
 }
 
 Q_DECLARE_METATYPE(SIMPL::NumericTypes::Type)
@@ -1011,14 +1011,14 @@ namespace Generic
 {
   const QString GenericPluginFile("GenericPlugin");
   const QString GenericPluginDisplayName("GenericPlugin");
-  const QString GenericBaseName("GenericPlugin");
+  const QString GenericBaseName("Generic");
 }
 
 namespace IO
 {
   const QString IOPluginFile("IOPlugin");
   const QString IOPluginDisplayName("IOPlugin");
-  const QString IOBaseName("IOPlugin");
+  const QString IOBaseName("IO");
 }
 #endif
 
