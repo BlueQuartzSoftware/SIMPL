@@ -54,6 +54,7 @@
 #include "SIMPLib/FilterParameters/LinkedBooleanFilterParameter.h"
 #include "SIMPLib/FilterParameters/LinkedChoicesFilterParameter.h"
 #include "SIMPLib/FilterParameters/LinkedDataContainerSelectionFilterParameter.h"
+#include "SIMPLib/Plugin/ISIMPLibPlugin.h"
 
 #include "SVWidgetsLib/QtSupport/QtSHelpUrlGenerator.h"
 #include "SVWidgetsLib/QtSupport/QtSStyles.h"
@@ -623,7 +624,8 @@ void FilterInputWidget::displayFilterParameters(PipelineFilterObject* w)
   AbstractFilter::Pointer f = w->getFilter();
   if(f.get())
   {
-    m_BrandingLabel = f->getBrandingString() + "  [" + w->getCompiledLibraryName() + "/" + w->getFilterGroup() + "/" + w->getFilterClassName() + "]";
+    ISIMPLibPlugin* plug = f->getPluginInstance();
+    m_BrandingLabel = QString("Plugin: %1 (%2) Filter Name: %3").arg(plug->getPluginName()).arg(plug->getVersion()).arg(w->getFilterClassName());
     brandingLabel->setText(m_BrandingLabel);
   }
   // Add a label at the top of the Inputs Tabs to show what filter we are working on
