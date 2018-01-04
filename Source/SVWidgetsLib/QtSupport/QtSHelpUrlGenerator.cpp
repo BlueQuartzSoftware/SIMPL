@@ -123,6 +123,7 @@ QUrl QtSHelpUrlGenerator::generateHTMLUrl(QString htmlName)
     // The help file does not exist at the default location because we are probably running from Visual Studio or Xcode
     // Try up one more directory
     helpDir.cdUp();
+	helpFilePath = QString("%1/Help/%2%3/%4.html").arg(helpDir.absolutePath()).arg(QCoreApplication::instance()->applicationName()).arg(pluginName).arg(htmlName);
   }
 
   s = s + helpFilePath;
