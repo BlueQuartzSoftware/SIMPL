@@ -5,6 +5,7 @@ set(SIMPLTest_BINARY_DIR ${SIMPLib_BINARY_DIR}/Testing)
 #------------------------------------------------------------------------------
 # Include this file from the CMP Project
 include(${CMP_SOURCE_DIR}/cmpCMakeMacros.cmake)
+include(${SIMPLProj_SOURCE_DIR}/Source/SIMPLib/SIMPLibMacros.cmake)
 
 set(TEST_TEMP_DIR ${SIMPLTest_BINARY_DIR}/Temp)
 set(TESTFILES_SRC_DIR ${SIMPLTest_SOURCE_DIR}/TestFiles)
@@ -27,7 +28,9 @@ configure_file(${SIMPLProj_SOURCE_DIR}/Resources/UnitTestSupport.hpp
 # set_source_files_properties( ${_moc_filter_source} PROPERTIES GENERATED TRUE)
 # set_source_files_properties( ${_moc_filter_source} PROPERTIES HEADER_FILE_ONLY TRUE)
 
-STRING(REPLACE "|" ";" SIMPLib_UnitTest_MainFunctors "${SIMPLib_UnitTest_MainFunctors}")
+STRING(REPLACE "|" ";" TestMainFunctors "${SIMPLib_UnitTest_MainFunctors}")
+set(FilterTestIncludes  "${SIMPLib_UnitTest_Includes}")
+
 
 configure_file(${SIMPLTest_SOURCE_DIR}/TestMain.cpp.in
           ${SIMPLTest_BINARY_DIR}/SIMPLUnitTest.cpp @ONLY)

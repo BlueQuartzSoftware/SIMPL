@@ -1,3 +1,85 @@
+#-------------------------------------------------------------------------------
+# Add Unit Test for Plugins and Filters
+# 
+function(SIMPL_GenerateUnitTestFile)
+  set(options)
+  set(oneValueArgs PLUGIN_NAME TEST_DATA_DIR)
+  set(multiValueArgs SOURCES LINK_LIBRARIES INCLUDE_DIRS EXTRA_SOURCES)
+  cmake_parse_arguments(P "${options}" "${oneValueArgs}" "${multiValueArgs}" ${ARGN} )
+
+
+
+  set(TEST_TEMP_DIR ${${P_PLUGIN_NAME}_BINARY_DIR}/Test/Temp)
+  # Make sure the directory is created during CMake time
+  file(MAKE_DIRECTORY ${TEST_TEMP_DIR})
+  set(${P_PLUGIN_NAME}_TEST_DATA_DIR ${P_TEST_DATA_DIR})
+
+
+  configure_file(${${P_PLUGIN_NAME}Test_SOURCE_DIR}/TestFileLocations.h.in
+                 ${${P_PLUGIN_NAME}Test_BINARY_DIR}/${P_PLUGIN_NAME}TestFileLocations.h @ONLY IMMEDIATE)
+
+  configure_file(${SIMPLProj_SOURCE_DIR}/Resources/UnitTestSupport.hpp
+                 ${${P_PLUGIN_NAME}Test_BINARY_DIR}/UnitTestSupport.hpp COPYONLY IMMEDIATE)
+
+
+
+
+  set( ${P_PLUGIN_NAME}_TEST_SRCS )
+  set(FilterTestIncludes "")
+  set(TestMainFunctors "")
+
+  foreach(name  ${TEST_NAMES})
+    set( ${P_PLUGIN_NAME}_TEST_SRCS
+      ${${P_PLUGIN_NAME}_TEST_SRCS}
+      "${${P_PLUGIN_NAME}_SOURCE_DIR}/Test/${name}.cpp"
+      )
+    string(CONCAT
+      FilterTestIncludes
+      ${FilterTestIncludes}
+      "#include \"${${P_PLUGIN_NAME}_SOURCE_DIR}/Test/${name}.cpp\"\n"
+      )
+
+    string(CONCAT
+      TestMainFunctors
+     ${TestMainFunctors}
+     "  ${name}()()|\n")
+  endforeach()
+
+  if(NOT "${TestMainFunctors}" STREQUAL "")
+    STRING(REPLACE "|" ";" TestMainFunctors ${TestMainFunctors}   )
+  endif()
+
+  configure_file(${SIMPLProj_SOURCE_DIR}/Source/SIMPLib/Testing/TestMain.cpp.in
+                 ${${P_PLUGIN_NAME}Test_BINARY_DIR}/${P_PLUGIN_NAME}UnitTest.cpp @ONLY)
+
+
+  # Set the source files properties on each source file.
+  foreach(f ${${P_PLUGIN_NAME}_TEST_SRCS})
+    set_source_files_properties( ${f} PROPERTIES HEADER_FILE_ONLY TRUE)
+  endforeach()
+
+
+  AddSIMPLUnitTest(TESTNAME ${P_PLUGIN_NAME}UnitTest
+    SOURCES 
+      ${${P_PLUGIN_NAME}Test_BINARY_DIR}/${P_PLUGIN_NAME}UnitTest.cpp 
+      ${${P_PLUGIN_NAME}_TEST_SRCS}
+      ${P_EXTRA_SOURCES}
+    FOLDER "${P_PLUGIN_NAME}Plugin/Test"
+    LINK_LIBRARIES ${P_LINK_LIBRARIES}
+    INCLUDE_DIRS ${P_INCLUDE_DIRS}
+    )
+
+
+
+  if(MSVC)
+    set_source_files_properties(${${P_PLUGIN_NAME}Test_BINARY_DIR}/${P_PLUGIN_NAME}UnitTest.cpp PROPERTIES COMPILE_FLAGS /bigobj)
+  endif()
+
+
+
+endfunction()
+
+
 
 
 #-------------------------------------------------------------------------------

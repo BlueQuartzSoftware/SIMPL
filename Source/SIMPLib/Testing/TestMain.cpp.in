@@ -23,7 +23,7 @@ generated file. Edit the original file
 
 #include "UnitTestSupport.hpp"
 
-@SIMPLib_UnitTest_Includes@
+@FilterTestIncludes@
 
 
 // -----------------------------------------------------------------------------
@@ -52,7 +52,7 @@ int main(int argc, char** argv)
   * Start the testing section
   */
 
-  @SIMPLib_UnitTest_MainFunctors@
+@TestMainFunctors@
 
   /* 
   * End the testing section
