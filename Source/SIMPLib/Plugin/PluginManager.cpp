@@ -35,6 +35,8 @@
 
 #include "PluginManager.h"
 
+#include "SIMPLib/Filtering/CorePlugin.h"
+
 PluginManager* PluginManager::self = nullptr;
 
 // -----------------------------------------------------------------------------
@@ -65,6 +67,8 @@ PluginManager* PluginManager::Instance()
   {
     //  qDebug() << "PluginManager::Instance self was nullptr" << "\n";
     self = new PluginManager();
+    CorePlugin* corePlug = new CorePlugin;
+    self->addPlugin(corePlug);
   }
   return self;
 }

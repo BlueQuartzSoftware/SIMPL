@@ -30,6 +30,10 @@
 /* Defines the type of Release that is being built */
 #define SIMPLViewProj_RELEASE_TYPE "@SIMPLViewProj_RELEASE_TYPE@"
 
+#cmakedefine SIMPL_DOXYGEN_DOCUMENTATION
+
+#cmakedefine SIMPL_DISCOUNT_DOCUMENTATION
+
 #if (_MSC_VER >= 1)
 
   #pragma warning (error: 4715) /* Not all control points return a value */

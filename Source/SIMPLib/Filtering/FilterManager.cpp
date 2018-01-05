@@ -36,6 +36,7 @@
 #include "FilterManager.h"
 
 #include "SIMPLib/Filtering/FilterFactory.hpp"
+#include "SIMPLib/Filtering/CorePlugin.h"
 
 FilterManager* FilterManager::self = nullptr;
 
@@ -61,6 +62,9 @@ FilterManager* FilterManager::Instance()
   if(self == nullptr)
   {
     self = new FilterManager();
+    // Always register the Core Filters
+    CorePlugin cp;
+    cp.registerFilters(self);
   }
   return self;
 }
@@ -76,6 +80,14 @@ void FilterManager::RegisterFilterFactory(const QString& name, IFilterFactory::P
     FilterManager* idManager = FilterManager::Instance();
     idManager->addFilterFactory(name, factory);
   }
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void FilterManager::RegisterKnownFilters(FilterManager* fm)
+{
+
 }
 
 // -----------------------------------------------------------------------------
@@ -215,7 +227,3 @@ IFilterFactory::Pointer FilterManager::getFactoryForFilterHumanName(const QStrin
   return Factory;
 }
 
-/* This next line includes a file that is generated at CMake time and includes all the filter headers
- * and code to register a factory instance for each filter.
- */
-#include "SIMPLib/RegisterKnownFilters.cpp"
