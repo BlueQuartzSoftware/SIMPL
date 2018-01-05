@@ -36,6 +36,8 @@
 #ifndef _floatvec3filterparameter_h_
 #define _floatvec3filterparameter_h_
 
+#include <cmath>
+
 #include <QtCore/QJsonObject>
 
 #include "SIMPLib/FilterParameters/FilterParameter.h"
@@ -60,6 +62,14 @@ typedef struct {
       return true;
     }
     return false;
+  }
+  
+  void normalize() 
+  {
+    float denom = std::sqrtf(x*x + y*y + z*z);
+    x = x / denom;
+    y = y / denom;
+    z = z / denom;
   }
 } FloatVec3_t;
 
