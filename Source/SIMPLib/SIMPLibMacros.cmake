@@ -58,7 +58,7 @@ function(SIMPL_START_FILTER_GROUP)
   set_property(GLOBAL APPEND_STRING PROPERTY ${P_FILTER_GROUP}_ALL_FILTERS_HEADER "\n/* ------ ${P_FILTER_GROUP} --------- */\n")
   set_property(GLOBAL APPEND_STRING PROPERTY ${P_FILTER_GROUP}_REGISTER_KNOWN_FILTERS "\n    /* ------ ${P_FILTER_GROUP} --------- */\n")
   STRING(REPLACE "Filters" "" P_FILTER_GROUP ${P_FILTER_GROUP})
-  # message(STATUS "P_FILTER_GROUP: ${P_FILTER_GROUP}")
+  
   set_property(GLOBAL APPEND PROPERTY DREAM3DDoc_GROUPS ${P_FILTER_GROUP})
 endfunction()
 
@@ -159,7 +159,6 @@ macro(ADD_SIMPL_FILTER FilterLib WidgetLib filterGroup filterName filterDocPath 
 
       get_property(DREAM3DDocRoot GLOBAL PROPERTY DREAM3DDocRoot)
       set_property(GLOBAL APPEND PROPERTY DREAM3DDoc_${filterGroup} ${filterDocPath})
-
   endif()
 endmacro()
 
@@ -167,12 +166,12 @@ endmacro()
 # Macro ADD_FILTER_LIST
 macro(ADD_FILTER_LIST)
 
-        file(APPEND ${RegisterKnownFiltersFile} "\tQList<QString> pluginList;\n\n")
+  file(APPEND ${RegisterKnownFiltersFile} "    QList<QString> pluginList;\n\n")
 
-    foreach(f ${_PublicFilters} )
-        file(APPEND ${RegisterKnownFiltersFile} "\tpluginList.append(\"${f}\");\n")
-    endforeach()
+  foreach(f ${_PublicFilters} )
+    file(APPEND ${RegisterKnownFiltersFile} "    pluginList.append(\"${f}\");\n")
+  endforeach()
 
-    file(APPEND ${RegisterKnownFiltersFile} "\n\treturn pluginList;")
+  file(APPEND ${RegisterKnownFiltersFile} "\n    return pluginList;")
 
 endmacro()

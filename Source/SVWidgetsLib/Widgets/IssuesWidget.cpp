@@ -49,6 +49,10 @@
 
 #include "ui_IssuesWidget.h"
 
+#if defined(SIMPL_DISCOUNT_DOCUMENTATION) && defined(SIMPL_DOXYGEN_DOCUMENTATION)
+#error Both SIMPL_DISCOUNT_DOCUMENTATION and SIMPL_DOXYGEN_DOCUMENTATION are both defined and this can not happen.
+#endif
+
 // Include the MOC generated CPP file which has all the QMetaObject methods/data
 
 // -----------------------------------------------------------------------------
@@ -238,8 +242,15 @@ QLabel* IssuesWidget::createHyperlinkLabel(PipelineMessage msg)
 
     return new QLabel("Unknown Filter Class");
   }
+#ifdef SIMPL_DOXYGEN_DOCUMENTATION
+  QString adjustedClassName = filterClassName.toLower();
+#endif
 
-  QUrl filterURL = QtSHelpUrlGenerator::generateHTMLUrl(filterClassName.toLower());
+#ifdef SIMPL_DISCOUNT_DOCUMENTATION
+  QString adjustedClassName = filterClassName;
+#endif
+
+  QUrl filterURL = QtSHelpUrlGenerator::generateHTMLUrl(adjustedClassName);
   QString filterHTMLText("<a href=\"");
   filterHTMLText.append(filterURL.toString()).append("\">").append(filterHumanLabel).append("</a>");
 

@@ -65,13 +65,13 @@ SIMPLibPluginLoader::~SIMPLibPluginLoader() = default;
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void SIMPLibPluginLoader::LoadPluginFilters(FilterManager* filterManager)
+void SIMPLibPluginLoader::LoadPluginFilters(FilterManager* filterManager, bool quiet)
 {
   QStringList pluginDirs;
   pluginDirs << qApp->applicationDirPath();
 
   QDir aPluginDir = QDir(qApp->applicationDirPath());
-  qDebug() << "Loading SIMPLib Plugins....";
+  if(!quiet) qDebug() << "Loading SIMPLib Plugins....";
   // qDebug() << "aPluginDir: " << aPluginDir.absolutePath() << "\n";
   QString thePath;
 
@@ -87,7 +87,7 @@ void SIMPLibPluginLoader::LoadPluginFilters(FilterManager* filterManager)
   {
     aPluginDir.cdUp();
     thePath = aPluginDir.absolutePath() + "/Plugins";
-    qDebug() << "  Adding Path " << thePath;
+    if(!quiet) qDebug() << "  Adding Path " << thePath;
     pluginDirs << thePath;
     aPluginDir.cdUp();
     aPluginDir.cdUp();
@@ -102,7 +102,7 @@ void SIMPLibPluginLoader::LoadPluginFilters(FilterManager* filterManager)
   }
   // aPluginDir.cd("Plugins");
   thePath = aPluginDir.absolutePath() + "/Plugins";
-  qDebug() << "  Adding Path " << thePath;
+  if(!quiet) qDebug() << "  Adding Path " << thePath;
   pluginDirs << thePath;
 
 // This is here for Xcode compatibility
@@ -135,14 +135,14 @@ void SIMPLibPluginLoader::LoadPluginFilters(FilterManager* filterManager)
       int no_error = chdir(aPluginDir.absolutePath().toLatin1().constData());
       if(no_error < 0)
       {
-        qDebug() << "Could not set the working directory.";
+        if(!quiet) qDebug() << "Could not set the working directory.";
       }
     }
   }
 #endif
 
   QByteArray pluginEnvPath = qgetenv("SIMPL_PLUGIN_PATH");
-  qDebug() << "SIMPL_PLUGIN_PATH:" << pluginEnvPath;
+  if(!quiet) if(!quiet) qDebug() << "SIMPL_PLUGIN_PATH:" << pluginEnvPath;
 
   char sep = ';';
 #if defined(Q_OS_WIN)
@@ -158,12 +158,12 @@ void SIMPLibPluginLoader::LoadPluginFilters(FilterManager* filterManager)
   }
 
   int dupes = pluginDirs.removeDuplicates();
-  qDebug() << "Removed " << dupes << " duplicate Plugin Paths";
+  if(!quiet) qDebug() << "Removed " << dupes << " duplicate Plugin Paths";
   QStringList pluginFilePaths;
 
   foreach(QString pluginDirString, pluginDirs)
   {
-    qDebug() << "Plugin Directory being Searched: " << pluginDirString;
+    if(!quiet) qDebug() << "Plugin Directory being Searched: " << pluginDirString;
     aPluginDir = QDir(pluginDirString);
     foreach(QString fileName, aPluginDir.entryList(QDir::Files))
     {
@@ -182,9 +182,6 @@ void SIMPLibPluginLoader::LoadPluginFilters(FilterManager* filterManager)
     }
   }
 
-  // THIS IS A VERY IMPORTANT LINE: It will register all the known filters in the dream3d library. This
-  // will NOT however get filters from plugins. We are going to have to figure out how to compile filters
-  // into their own plugin and load the plugins from a command line.
   filterManager->RegisterKnownFilters(filterManager);
 
   PluginManager* pluginManager = PluginManager::Instance();
@@ -195,12 +192,12 @@ void SIMPLibPluginLoader::LoadPluginFilters(FilterManager* filterManager)
   // file system and add each to the toolbar and menu
   foreach(QString path, pluginFilePaths)
   {
-    qDebug() << "Plugin Being Loaded:" << path;
+    if(!quiet) qDebug() << "Plugin Being Loaded:" << path;
     QPluginLoader loader(path);
     QFileInfo fi(path);
     QString fileName = fi.fileName();
     QObject* plugin = loader.instance();
-    qDebug() << "    Pointer: " << plugin << "\n";
+    if(!quiet) qDebug() << "    Pointer: " << plugin << "\n";
     if(plugin && pluginFileNames.contains(fileName, Qt::CaseSensitive) == false)
     {
       ISIMPLibPlugin* ipPlugin = qobject_cast<ISIMPLibPlugin*>(plugin);
@@ -216,11 +213,14 @@ void SIMPLibPluginLoader::LoadPluginFilters(FilterManager* filterManager)
     }
     else
     {
-      QString message("The plugin did not load with the following error\n");
-      message.append(loader.errorString());
-      message.append("\n\n");
-      message.append("Possible causes include missing libraries that plugin depends on.");
-      qDebug() << message;
+      if(!quiet) 
+      {
+        QString message("The plugin did not load with the following error\n");
+        message.append(loader.errorString());
+        message.append("\n\n");
+        message.append("Possible causes include missing libraries that plugin depends on.");
+        qDebug() << message;
+      }
     }
   }
 }

@@ -299,19 +299,6 @@ set(USE_QtWebEngine FALSE)
 CMP_AddQt5Support( "${SIMPL_Qt5_COMPONENTS}" "${USE_QtWebEngine}" "${SIMPLProj_BINARY_DIR}" "SIMPL")
 
 # --------------------------------------------------------------------
-# Find the Doxygen package
-FIND_PACKAGE(Doxygen)
-if(DOXYGEN_FOUND)
-  get_property(Doxygen_STATUS_PRINTED GLOBAL PROPERTY Doxygen_STATUS_PRINTED)
-  if(NOT Doxygen_STATUS_PRINTED)
-    message(STATUS "Doxygen Found at ${DOXYGEN_EXECUTABLE}")
-    set_property(GLOBAL PROPERTY Doxygen_STATUS_PRINTED TRUE)
-  endif()
-else()
-  message(FATAL_ERROR "Doxygen is needed to build the documentation. Please install it correctly")
-endif()
-
-# --------------------------------------------------------------------
 # Should we use enable NTFS file checking on Windows
 # --------------------------------------------------------------------
 if(WIN32)
@@ -417,6 +404,29 @@ if(SIMPL_USE_ITK)
 endif()
 
 
+#-------------------------------------------------------------------------------
+# Should we build the documentation using DOxygen or Discount
+option(SIMPL_BUILD_DOCUMENTATION "Build the DREAM3D documentation" ON)
+if(SIMPL_BUILD_DOCUMENTATION)
+
+  option(SIMPL_DOXYGEN_DOCUMENTATION "Use DOxygen to generate the Documentation" ON)
+  if(SIMPL_DOXYGEN_DOCUMENTATION)
+    # --------------------------------------------------------------------
+    # Find the Doxygen package
+    FIND_PACKAGE(Doxygen)
+    if(DOXYGEN_FOUND)
+      get_property(Doxygen_STATUS_PRINTED GLOBAL PROPERTY Doxygen_STATUS_PRINTED)
+      if(NOT Doxygen_STATUS_PRINTED)
+        #message(STATUS "Doxygen Found at ${DOXYGEN_EXECUTABLE}")
+        set_property(GLOBAL PROPERTY Doxygen_STATUS_PRINTED TRUE)
+      endif()
+    else()
+      message(FATAL_ERROR "Doxygen is needed to build the documentation. Please install it correctly")
+    endif()
+  endif()
+
+endif()
+
 # -----------------------------------------------------------------------
 # Add in the Necessary HDF5 Support Sources into a library
 # -----------------------------------------------------------------------
@@ -444,48 +454,6 @@ add_subdirectory(${SIMPLProj_SOURCE_DIR}/Tools ${PROJECT_BINARY_DIR}/Tools)
 if(SIMPL_Group_WIDGETS)
   add_subdirectory( ${SIMPLProj_SOURCE_DIR}/Source/SVWidgetsLib ${PROJECT_BINARY_DIR}/SVWidgetsLib)
 endif()
-
-
-if(0)
-#-------------------------------------------------------------------------------
-# Should we build the documentation using DOxygen
-option(SIMPLView_BUILD_DOCUMENTATION "Build the DREAM3D documentation" ON)
-if(SIMPLView_BUILD_DOCUMENTATION)
-  set(DOCUMENTATION_RESOURCES_DIR ${PROJECT_RESOURCES_DIR}/DocConfigFiles)
-
-  set(DOX_GENERATE_RTF "NO")
-  option(SIMPLView_GENERATE_RTF "Generate RTF Documentation" OFF)
-  if(SIMPLView_GENERATE_RTF STREQUAL "ON")
-    set(DOX_GENERATE_RTF "YES")
-  endif()
-
-  # By default we generate the Documentation in HTML format
-  set(DOX_GENERATE_HTML "NO")
-  option(SIMPLView_GENERATE_HTML "Generate HTML Documentation" ON)
-  if(SIMPLView_GENERATE_HTML STREQUAL "ON")
-    set(DOX_GENERATE_HTML "YES")
-  endif()
-
-  #most windows machines do NOT have LATEX built in so default this to OFF
-  set(DOX_GENERATE_LATEX "NO")
-  option(SIMPLView_GENERATE_LATEX "Generate PDF Documentation" OFF)
-  if(SIMPLView_GENERATE_LATEX STREQUAL "ON")
-    set(DOX_GENERATE_LATEX "YES")
-    # Check for existence of LaTex executable files
-    INCLUDE( ${DOCUMENTATION_RESOURCES_DIR}/CMake/UseLATEX.cmake)
-    if(APPLE)
-      option(AUTO_OPEN_PDF "Automatically open generated PDF files with default PDF reading application" ON)
-    endif()
-  endif()
-
-
-  # Now add each subdirectory that holds our documentation files
-  add_subdirectory(${PROJECT_SOURCE_DIR}/Documentation/ReferenceManual ${PROJECT_BINARY_DIR}/Documentation/ReferenceManual)
-  add_subdirectory(${PROJECT_SOURCE_DIR}/Documentation/APIDocs ${PROJECT_BINARY_DIR}/Documentation/APIDocs)
-endif()
-
-endif()
-
 
 # This should be the last line in this file:
 include(${PROJECT_RESOURCES_DIR}/CPack/PackageProject.cmake)

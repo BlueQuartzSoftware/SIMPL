@@ -103,7 +103,6 @@ int main(int argc, char* argv[])
   FilterManager* fm = FilterManager::Instance();
   SIMPLibPluginLoader::LoadPluginFilters(fm);
 
-  // Send progress messages from PipelineBuilder to this object for display
   QMetaObjectUtilities::RegisterMetaTypes();
 
   int err = 0;

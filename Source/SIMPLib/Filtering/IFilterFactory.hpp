@@ -57,22 +57,41 @@ public:
   /** @brief This function should NEVER get called. The subclass should ALWAYS implement
    * this method so we are going to crash the program.
    */
-  virtual AbstractFilter::Pointer create()
+  virtual AbstractFilter::Pointer create() const
   {
     Q_ASSERT(false);
     return AbstractFilter::NullPointer();
   }
-  virtual QString getFilterGroup()
+
+  virtual QString getFilterClassName() const
   {
     Q_ASSERT(false);
     return "";
   }
-  virtual QString getFilterSubGroup()
+  
+  virtual QString getFilterGroup() const
   {
     Q_ASSERT(false);
     return "";
   }
-  virtual QString getFilterHumanLabel()
+  virtual QString getFilterSubGroup() const
+  {
+    Q_ASSERT(false);
+    return "";
+  }
+  virtual QString getFilterHumanLabel() const
+  {
+    Q_ASSERT(false);
+    return "";
+  }
+
+  virtual QString getBrandingString() const
+  {
+    Q_ASSERT(false);
+    return "";
+  }
+
+  virtual QString getCompiledLibraryName() const
   {
     Q_ASSERT(false);
     return "";

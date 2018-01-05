@@ -998,7 +998,7 @@ namespace Core
 namespace Test
 {
   const QString TestPluginFile("TestPlugin");
-  const QString TestPluginDisplayName("TestPlugin");
+  const QString TestPluginDisplayName("Test Plugin");
   const QString TestBaseName("Test");
 }
 
@@ -1010,14 +1010,14 @@ Q_DECLARE_METATYPE(SIMPL::ScalarTypes::Type)
 namespace Generic
 {
   const QString GenericPluginFile("GenericPlugin");
-  const QString GenericPluginDisplayName("GenericPlugin");
+  const QString GenericPluginDisplayName("Generic Plugin");
   const QString GenericBaseName("Generic");
 }
 
 namespace IO
 {
   const QString IOPluginFile("IOPlugin");
-  const QString IOPluginDisplayName("IOPlugin");
+  const QString IOPluginDisplayName("IO Plugin");
   const QString IOBaseName("IO");
 }
 #endif
