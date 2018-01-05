@@ -5,14 +5,15 @@ function(SIMPL_GenerateUnitTestFile)
   set(options)
   set(oneValueArgs PLUGIN_NAME TEST_DATA_DIR)
   set(multiValueArgs SOURCES LINK_LIBRARIES INCLUDE_DIRS EXTRA_SOURCES)
-  cmake_parse_arguments(P "${options}" "${oneValueArgs}" "${multiValueArgs}" ${ARGN} )
+  cmake_parse_arguments(P "${options}" "${oneValueArgs}" "${multiValueArgs}" ${ARGN})
 
 
 
   set(TEST_TEMP_DIR ${${P_PLUGIN_NAME}_BINARY_DIR}/Test/Temp)
   # Make sure the directory is created during CMake time
   file(MAKE_DIRECTORY ${TEST_TEMP_DIR})
-  set(${P_PLUGIN_NAME}_TEST_DATA_DIR ${P_TEST_DATA_DIR})
+  
+  set(TESTFILES_SOURCE_DIR "${${P_PLUGIN_NAME}_SOURCE_DIR}/Test/TestFiles")
 
 
   configure_file(${${P_PLUGIN_NAME}Test_SOURCE_DIR}/TestFileLocations.h.in
@@ -20,8 +21,6 @@ function(SIMPL_GenerateUnitTestFile)
 
   configure_file(${SIMPLProj_SOURCE_DIR}/Resources/UnitTestSupport.hpp
                  ${${P_PLUGIN_NAME}Test_BINARY_DIR}/UnitTestSupport.hpp COPYONLY IMMEDIATE)
-
-
 
 
   set( ${P_PLUGIN_NAME}_TEST_SRCS )
