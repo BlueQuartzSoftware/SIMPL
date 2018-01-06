@@ -66,7 +66,7 @@ typedef struct {
   
   void normalize() 
   {
-    float denom = std::sqrtf(x*x + y*y + z*z);
+    float denom = std::sqrt(x*x + y*y + z*z);
     x = x / denom;
     y = y / denom;
     z = z / denom;
