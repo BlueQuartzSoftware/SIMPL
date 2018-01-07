@@ -20,6 +20,8 @@ set(TEST_${SUBDIR_NAME}_NAMES
   GenerateColorTableTest
   ImportAsciDataArrayTest
   ImportHDF5DatasetTest
+  MultiThresholdObjectsTest
+  MultiThresholdObjects2Test
   RawBinaryReaderTest
   ReadASCIIDataTest
   RecursivePipelineTest
