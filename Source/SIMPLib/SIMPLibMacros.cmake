@@ -7,8 +7,6 @@ function(SIMPL_GenerateUnitTestFile)
   set(multiValueArgs SOURCES LINK_LIBRARIES INCLUDE_DIRS EXTRA_SOURCES)
   cmake_parse_arguments(P "${options}" "${oneValueArgs}" "${multiValueArgs}" ${ARGN})
 
-
-
   set(TEST_TEMP_DIR ${${P_PLUGIN_NAME}_BINARY_DIR}/Test/Temp)
   # Make sure the directory is created during CMake time
   file(MAKE_DIRECTORY ${TEST_TEMP_DIR})
@@ -68,11 +66,35 @@ function(SIMPL_GenerateUnitTestFile)
     INCLUDE_DIRS ${P_INCLUDE_DIRS}
     )
 
-
-
   if(MSVC)
     set_source_files_properties(${${P_PLUGIN_NAME}Test_BINARY_DIR}/${P_PLUGIN_NAME}UnitTest.cpp PROPERTIES COMPILE_FLAGS /bigobj)
   endif()
+
+  set(AllFilters ${_PublicFilters} ${_PrivateFilters})
+  list(LENGTH AllFilters totalFilters)
+  list(LENGTH P_SOURCES totalTests)
+  set(numTests "0")
+
+  file(APPEND ${UnitTestAnalysisFile} "\n## ${P_PLUGIN_NAME} ##\n\n")
+  file(APPEND ${UnitTestAnalysisFile} "| Filter Name | Unit Test |\n")
+  file(APPEND ${UnitTestAnalysisFile} "| ----------- | --------- |\n")
+  foreach(ut ${AllFilters})
+    list(FIND P_SOURCES ${ut}Test TestFound)
+    set(MDTestFound "TRUE")
+    if(TestFound STREQUAL "-1")
+      set(MDTestFound "**FALSE**")
+    else()
+      list(REMOVE_ITEM P_SOURCES ${ut}Test)
+      math(EXPR numTests "${numTests} + 1")
+    endif()
+    file(APPEND ${UnitTestAnalysisFile} "| ${ut} | ${MDTestFound} |\n")
+  endforeach()
+  file(APPEND ${UnitTestAnalysisFile} "| TotalFilters: ${totalFilters} | Num Tested: ${numTests} |\n")
+
+  file(APPEND ${UnitTestAnalysisFile} "\n### Non-Matching Unit Test Names ###\n")
+  foreach(ut ${P_SOURCES})
+    file(APPEND ${UnitTestAnalysisFile} "+ ${ut}\n")
+  endforeach()
 
 
 
