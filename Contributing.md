@@ -1,7 +1,9 @@
 ## Contributing to DREAM.3D ##
+
 The DREAM.3D project embraces community contributions, and desires to keep the process of contributing changes as easy as possible.  There are a few guidelines contributors should follow; adhering to these guidelines will make the contribution process faster and easier.
 
 ## How to Contribute ##
+
 The DREAM.3D project utilizes the [fork and pull](https://help.github.com/articles/using-pull-requests/) model for development.  There are a few initial steps to follow to prepare for this model of contribution:
 
 + Sign up for a [GitHub account](https://github.com/signup/free)
@@ -32,4 +34,3 @@ The DREAM.3D project utilizes the [fork and pull](https://help.github.com/articl
 
 ## Submission of Curated Plugins ##
 
-If you have a **Plugin** you would like to see distributed with the DREAM.3D binary, but do not want it merged into the main DREAM.3D repository, you can request to have that **Plugin** become _curated_. The DREAM.3D development team will then store that **Plugin's** source at our parent [GitHub page](https://github.com/dream3d/). This allows developers to maintain control over their source code while still having their work distributed with the main DREAM.3D application to the public. The DREAM.3D development team will not provide any public support or contributions to a curated **Plugin** unless tasked to do so by the **Plugin** maintainers.  Curated **Plugins** must adhere certain standards with regards to documentation, content, and unit testing.  For more information on curated **Plugins**, please contact the DREAM.3D development team.

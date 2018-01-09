@@ -2,9 +2,11 @@ Combine Attribute Arrays {#combineattributearrays}
 =============
 
 ## Group (Subgroup) ##
+
 Core (Memory/Management)
 
 ## Description ##
+
 This **Filter** will "stack" any number of user-chosen **Attribute Arrays** into a single attribute array. The arrays must all share the same primitive type and number of tuples, but may have differing component dimensions. The resulting combined array will have a total number of components equal to the sum of the number of components for each stacked array. The order in which the components are placed in the combined array is the same as the ordering chosen by the user when selecting the arrays. For example, consider two arrays, one that is a 3-vector and one that is a scalar. The values in memory appear as follows:
 
 _Vector_: tuple 1 - { v1 v2 v3 } ; tuple 2 - { v1 v2 v3 } ; tuple 3 - { v1 v2 v3 } ...
@@ -41,19 +43,23 @@ The user may also select to normalize the resulting combined array. The normaliz
 
 
 ## Parameters ##
+
 | Name             | Type | Description |
 |------------------|------|-------------|
 | Standardize Data | bool | Whether to standardize the combine data on the interval [0, 1] |
 
 ## Required Geometry ##
+
 Not Applicable
 
 ## Required Objects ##
+
 | Kind | Default Name | Type | Component Dimensions | Description |
 |------|--------------|-------------|---------|----------------|
 | Any **Attribute Array** | None | Any | Any | **Attribute Arrays** to combine |
 
 ## Created Objects ##
+
 | Kind | Default Name | Type | Component Dimensions | Description |
 |------|--------------|-------------|---------|----------------|
 | Any **Attribute Array** | CombinedData | Any | Any | Combined **Attribute Array** name |

@@ -2,13 +2,16 @@ Write Feature Data as CSV File {#featuredatacsvwriter}
 =============
 
 ## Group (Subgroup) ##
+
 IO (Output)
 
 ## Description ##
+
 This **Filter** writes the data associated with each **Feature** to a file name specified by the user in *CSV* format. Every array in the **Feature** map is written as a column of data in the *CSV* file.  The user can choose to also write the neighbor data. Neighbor data are data arrays that are associated with the neighbors of a **Feature**, such as: list of neighbors, list of misorientations, list of shared surface areas, etc. These blocks of info are written after the scalar data arrays.  Since the number of neighbors is variable for each **Feature**, the data is written as follows (for each **Feature**): Id, number of neighbors, value1, value2,...valueN.
 
 
 ### Example Output ###
+
 The *CSV* file:     
 	 
 	2352														
@@ -43,6 +46,7 @@ The *CSV* file with Write Neighbor Data checked:
 | Write Neighbor Data | bool | Whether to write the **Feature** neighbor data |
 
 ## Required Geometry ##
+
 Not Applicable
 
 ## Required Objects ##
@@ -52,6 +56,7 @@ Not Applicable
 | **Attribute Matrix** | None | Feature | N/A | **Feature Attribute Matrix** that holds the data write |
 
 ## Created Objects ##
+
 None
 
 ## License & Copyright ##

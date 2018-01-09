@@ -2,10 +2,12 @@ Create Data Array {#createdataarray}
 =============
 
 ## Group (Subgroup) ##
+
 Core (Generation)
 
 
 ## Description ##
+
 This **Filter** creates an **Attribute Array** of any primitive type with any number of components along a _single component dimension_. For example, a scalar as (1) or a 3-vector as (3), but _not_ a matrix as (3, 3). The array is initialized to a user define value. The primitive type of the array to create is set using an integer constant. Code listing 1 shows the values:
 
 ### Primitive Type Enumeration ###
@@ -43,6 +45,7 @@ The number of components should be at least 1. Examples of _Number of Components
 must have a user entry or the default value _0_ will be used.
 
 ## Parameters ##
+
 | Name             | Type | Description |
 |------------------|------|-------------|
 | Scalar Type | Enumeration | Primitive data type for created array |
@@ -50,12 +53,15 @@ must have a user entry or the default value _0_ will be used.
 | Initialization Value | float | Initialization value for array |
 
 ## Required Geometry ##
+
 Not Applicable
 
 ## Required Objects ##
+
 None
 
 ## Created Objects ##
+
 | Kind | Default Name | Type | Component Dimensions | Description |
 |------|--------------|-------------|---------|----------------|
 | Any **Attribute Array** | None | Any | Any | Created **Attribute Array** location and name |

@@ -2,6 +2,7 @@ Convert Attribute Data Type {#convertdata}
 =============
 
 ## Group (Subgroup) ##
+
 Core (Misc)
 
 
@@ -26,11 +27,13 @@ Down casting can have undefined behavior depending on the primitive types involv
 When converting data from signed values to unsigned values or vice-versa, there can also be undefined behavior. For example, if the user were to convert a signed 4 byte integer array to an unsigned 4 byte integer array and the input array has negative values, then the conversion rules are undefined and may differ from operating system to operating system.
 
 ## Parameters ##
+
 | Name             | Type | Description |
 |------------------|------|--------------|
 | Scalar Type      | Enumeration | Convert to this data type |
 
 ## Required Geometry ##
+
 Not Applicable
 
 ## Required Objects ##

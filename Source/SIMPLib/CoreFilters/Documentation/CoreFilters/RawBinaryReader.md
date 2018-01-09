@@ -2,6 +2,7 @@ Raw Binary Reader {#rawbinaryreader}
 =============
 
 ## Group (Subgroup) ##
+
 IO (Input)
 
 ## Description ##

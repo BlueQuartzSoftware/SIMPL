@@ -2,12 +2,15 @@ Replace Value in Array {#replacevalueinarray}
 =============
 
 ## Group (Subgroup) ##
+
 Core (Misc)
 
 ## Description ##
+
 This **Filter** replaces a user specified value in a user specified **Attribute Array** with a second user specified value. For example, if the user entered a *Remove Value* of *2.0* and a *Replace Value* of *5.5*, then every occurence of 2.0 in the selected **Attribute Array** would be changed to 5.5. Below are the ranges for the values that can be entered for the different primitive types of arrays (for user reference). The selected **Attribute Array** must be a scalar array.
     
 ### Primitive Data Types ##
+
 | Type             | Size |        Range       |
 |------------------|------|--------------------|
 | Signed Integer | 8 bit |0 to 255|
@@ -23,20 +26,24 @@ This **Filter** replaces a user specified value in a user specified **Attribute 
 | Boolean | 8 bit |0 = false and any other value will be forced to 1 = true|
 
 ## Parameters ##
+
 | Name             | Type | Description |
 |------------------|------|-------------|
 | Value to Replace | double | Value to be removed from array |
 | New Value | double | Value to replace the removed values in the array |
 
 ## Required Geometry ##
+
 Not Applicable
 
 ## Required Objects ##
+
 | Kind | Default Name | Type | Component Dimensions | Description |
 |------|--------------|-------------|---------|----------------|
 | Any **Attribute Array** | None | Any | (1) | Path to **Attribute Array** that will have values replaced |
 
 ## Created Objects ##
+
 None
 
 

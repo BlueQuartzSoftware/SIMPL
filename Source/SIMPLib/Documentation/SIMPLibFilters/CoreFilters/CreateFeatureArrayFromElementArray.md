@@ -10,9 +10,11 @@ Core (Memory/Management)
 This **Filter** copies all the associated **Element** data of a selected **Element Attribute Array** to the **Feature** to which the **Elements** belong. The value stored for each **Feature** will be the value of the _last element copied_. 
 
 ## Parameters ##
+
 None
 
 ## Required Geometry ##
+
 Not Applicable
 
 

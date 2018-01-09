@@ -2,13 +2,16 @@ Dynamic Table Example {#dynamictableexample}
 =====
 
 ## Group (Subgroup) ##
+
 ExamplePlugin (ExamplePlugin)
 
 
 ## Description ##
+
 This filter shows an example usage of the DynamicTable Filter Parameter Widget.
 
 ## Parameters ##
+
 | Name             | Type |
 |------------------|------|
 | Feature Array Name | String |

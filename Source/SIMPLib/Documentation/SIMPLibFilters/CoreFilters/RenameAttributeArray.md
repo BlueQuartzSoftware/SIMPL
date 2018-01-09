@@ -2,17 +2,21 @@ Rename Attribute Array {#renameattributearray}
 =============
 
 ## Group (Subgroup) ##
+
 Core (Memory/Management)
 
 ## Description ##
+
 This **Filter** renames a user chosen **Attribute Array**.
 
 ## Parameters ##
+
 | Name | Type | Description |
 |------|------| ----------- |
 | New Attribute Array Name | String | New name for the selected **Attribute Array** |
 
 ## Required Geometry ##
+
 Not Applicable
 
 ## Required Objects ##
@@ -23,6 +27,7 @@ Not Applicable
 
 
 ## Created Objects ##
+
 None
 
 ## License & Copyright ##
