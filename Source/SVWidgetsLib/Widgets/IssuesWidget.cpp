@@ -141,7 +141,7 @@ void IssuesWidget::displayCachedMessages()
     }
   }
 
-  emit tableHasErrors(false, errCount, warnCount);
+  emit tableHasErrors(errCount > 0, errCount, warnCount);
 
   // Now create the correct number of table rows.
   ui->errorTableWidget->setRowCount(count);
