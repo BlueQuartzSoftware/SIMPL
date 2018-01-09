@@ -303,15 +303,18 @@ FilterPipeline::Pointer JsonFilterParametersReader::readPipeline(IObserver* obs)
   {
     return FilterPipeline::NullPointer();
   }
-
+  
   QJsonObject builderObj = m_Root[SIMPL::Settings::PipelineBuilderGroup].toObject();
   int filterCount = builderObj[SIMPL::Settings::NumFilters].toInt();
   m_MaxFilterIndex = filterCount - 1; // Zero based indexing
-
+  
   FilterPipeline::Pointer pipeline;
+  
   if(filterCount >= 0)
   {
     pipeline = FilterPipeline::New();
+    QString pipelineName = builderObj[SIMPL::Settings::PipelineName].toString("Empty Pipeline Name");
+    pipeline->setName(pipelineName);
   }
   else
   {
