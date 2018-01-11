@@ -75,7 +75,7 @@ public:
 
     // Now instantiate the RemoveArrays Filter from the FilterManager
     QString filtName = "RemoveArrays";
-    IFilterFactory::Pointer filterFactory = fm->getFactoryForFilter(filtName);
+    IFilterFactory::Pointer filterFactory = fm->getFactoryFromClassName(filtName);
     if(nullptr == filterFactory.get())
     {
       std::stringstream ss;
@@ -85,7 +85,7 @@ public:
 
     // Now instantiate the DataContainerReader Filter from the FilterManager
     filtName = "DataContainerReader";
-    filterFactory = fm->getFactoryForFilter(filtName);
+    filterFactory = fm->getFactoryFromClassName(filtName);
     if(nullptr == filterFactory.get())
     {
       std::stringstream ss;
@@ -95,7 +95,7 @@ public:
 
     // Now instantiate the DataContainerWriter Filter from the FilterManager
     filtName = "DataContainerWriter";
-    filterFactory = fm->getFactoryForFilter(filtName);
+    filterFactory = fm->getFactoryFromClassName(filtName);
     if(nullptr == filterFactory.get())
     {
       std::stringstream ss;

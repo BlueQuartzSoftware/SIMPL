@@ -96,7 +96,7 @@ public:
 
     FilterManager* fm = FilterManager::Instance();
 
-    IFilterFactory::Pointer ff = fm->getFactoryForFilter(QString("RemoveArrays"));
+    IFilterFactory::Pointer ff = fm->getFactoryFromClassName(QString("RemoveArrays"));
 
     AbstractFilter::Pointer filter = ff->create();
 

@@ -39,6 +39,7 @@
 #include <QtCore/QObject>
 #include <QtCore/QString>
 #include <QtCore/QVector>
+#include <QtCore/QUuid>
 
 #include "SIMPLib/Common/Observable.h"
 #include "SIMPLib/Common/SIMPLibSetGetMacros.h"
@@ -76,7 +77,7 @@ class SIMPLib_EXPORT AbstractFilter : public Observable
 public:
   SIMPL_SHARED_POINTERS(AbstractFilter)
   SIMPL_STATIC_NEW_MACRO(AbstractFilter)
-  SIMPL_TYPE_MACRO_SUPER(AbstractFilter, Observable)
+  SIMPL_TYPE_MACRO_SUPER_OVERRIDE(AbstractFilter, Observable)
 
   virtual ~AbstractFilter();
 
@@ -218,6 +219,12 @@ public:
   SIMPL_INSTANCE_PROPERTY(int, WarningCondition)
 
   SIMPL_INSTANCE_PROPERTY(bool, InPreflight)
+  
+  /**
+   * @brief getUuid
+   * @return 
+   */
+  QUuid getUuid();
 
   // ------------------------------
   // These functions allow interogating the position the filter is in the pipeline and the previous and next filters
@@ -363,6 +370,7 @@ protected slots:
 
 private:
   bool m_Cancel;
+  QUuid m_Uuid;
 
   AbstractFilter(const AbstractFilter&) = delete; // Copy Constructor Not Implemented
   void operator=(const AbstractFilter&) = delete; // Operator '=' Not Implemented

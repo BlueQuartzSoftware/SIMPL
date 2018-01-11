@@ -88,6 +88,11 @@ public:
   {
     return m_CompiledLibraryName;
   }
+  
+  QUuid getUuid() const
+  {
+    return m_Uuid;
+  }
 
 protected:
   FilterFactory()
@@ -99,6 +104,7 @@ protected:
     m_HumanName = w->getHumanLabel();
     m_BrandingString = w->getBrandingString();
     m_CompiledLibraryName = w->getCompiledLibraryName();
+    m_Uuid = w->getUuid();
   }
 
 private:
@@ -108,6 +114,7 @@ private:
   QString m_HumanName;
   QString m_BrandingString;
   QString m_CompiledLibraryName;
+  QUuid m_Uuid;
 
   FilterFactory(const FilterFactory&);  // Copy Constructor Not Implemented
   void operator=(const FilterFactory&); // Operator '=' Not Implemented

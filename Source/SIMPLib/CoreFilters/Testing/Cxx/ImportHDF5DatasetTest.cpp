@@ -263,7 +263,7 @@ public:
   {
     FilterManager* fm = FilterManager::Instance();
 
-    IFilterFactory::Pointer ff = fm->getFactoryForFilter(QString("ImportHDF5Dataset"));
+    IFilterFactory::Pointer ff = fm->getFactoryFromClassName(QString("ImportHDF5Dataset"));
 
     AbstractFilter::Pointer filter = ff->create();
 

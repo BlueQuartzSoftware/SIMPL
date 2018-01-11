@@ -77,7 +77,7 @@ public:
 
     FilterManager* fm = FilterManager::Instance();
 
-    IFilterFactory::Pointer ff = fm->getFactoryForFilter(QString("ImportAsciDataArray"));
+    IFilterFactory::Pointer ff = fm->getFactoryFromClassName(QString("ImportAsciDataArray"));
 
     AbstractFilter::Pointer filter = ff->create();
 

@@ -1850,7 +1850,7 @@ void SVPipelineViewWidget::dragMoveEvent(QDragMoveEvent* event)
     {
       return;
     }
-    IFilterFactory::Pointer wf = fm->getFactoryForFilter(data);
+    IFilterFactory::Pointer wf = fm->getFactoryFromClassName(data);
 
     // If the dragged item is a filter item...
     if(nullptr != wf)
@@ -1963,7 +1963,7 @@ void SVPipelineViewWidget::dropEvent(QDropEvent* event)
     {
       return;
     }
-    IFilterFactory::Pointer wf = fm->getFactoryForFilter(data);
+    IFilterFactory::Pointer wf = fm->getFactoryFromClassName(data);
 
     // If the dragged item is a filter item...
     if(nullptr != wf)

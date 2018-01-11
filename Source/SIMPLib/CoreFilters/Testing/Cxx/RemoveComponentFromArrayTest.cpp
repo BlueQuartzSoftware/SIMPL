@@ -77,7 +77,7 @@ public:
     // Now instantiate the CreateDataArray Filter from the FilterManager
     QString filtName = "CreateDataArray";
     FilterManager* fm = FilterManager::Instance();
-    IFilterFactory::Pointer filterFactory = fm->getFactoryForFilter(filtName);
+    IFilterFactory::Pointer filterFactory = fm->getFactoryFromClassName(filtName);
     if(nullptr == filterFactory.get())
     {
       std::stringstream ss;
@@ -87,7 +87,7 @@ public:
 
     // Now instantiate the CreateDataContainer Filter from the FilterManager
     filtName = "CreateDataContainer";
-    filterFactory = fm->getFactoryForFilter(filtName);
+    filterFactory = fm->getFactoryFromClassName(filtName);
     if(nullptr == filterFactory.get())
     {
       std::stringstream ss;
@@ -98,7 +98,7 @@ public:
     // Now instantiate the CreateDataContainer Filter from the FilterManager
     filtName = "CreateAttributeMatrix";
     fm = FilterManager::Instance();
-    filterFactory = fm->getFactoryForFilter(filtName);
+    filterFactory = fm->getFactoryFromClassName(filtName);
     if(nullptr == filterFactory.get())
     {
       std::stringstream ss;
@@ -126,7 +126,7 @@ public:
     FilterManager* fm = FilterManager::Instance();
 
     QString filtName = "CreateDataContainer";
-    IFilterFactory::Pointer filterFactory = fm->getFactoryForFilter(filtName);
+    IFilterFactory::Pointer filterFactory = fm->getFactoryFromClassName(filtName);
     if(nullptr != filterFactory.get())
     {
       // If we get this far, the Factory is good so creating the filter should not fail unless something has
@@ -146,7 +146,7 @@ public:
     }
 
     filtName = "CreateAttributeMatrix";
-    filterFactory = fm->getFactoryForFilter(filtName);
+    filterFactory = fm->getFactoryFromClassName(filtName);
     if(nullptr != filterFactory.get())
     {
       // If we get this far, the Factory is good so creating the filter should not fail unless something has
@@ -300,7 +300,7 @@ public:
     // Now instantiate the CreateDataArray Filter from the FilterManager
     QString filtName = "RemoveComponentFromArray";
     FilterManager* fm = FilterManager::Instance();
-    IFilterFactory::Pointer filterFactory = fm->getFactoryForFilter(filtName);
+    IFilterFactory::Pointer filterFactory = fm->getFactoryFromClassName(filtName);
     if(nullptr != filterFactory.get())
     {
       // If we get this far, the Factory is good so creating the filter should not fail unless something has
@@ -420,7 +420,7 @@ public:
     // Now instantiate the CreateDataArray Filter from the FilterManager
     QString filtName = "CreateDataArray";
     FilterManager* fm = FilterManager::Instance();
-    IFilterFactory::Pointer filterFactory = fm->getFactoryForFilter(filtName);
+    IFilterFactory::Pointer filterFactory = fm->getFactoryFromClassName(filtName);
     if(nullptr != filterFactory.get())
     {
       // If we get this far, the Factory is good so creating the filter should not fail unless something has

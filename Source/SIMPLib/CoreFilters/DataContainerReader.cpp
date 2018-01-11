@@ -361,7 +361,7 @@ int DataContainerReader::readExistingPipelineFromFile(hid_t fileId)
     }
     // Instantiate a new filter using the FilterFactory based on the value of the className attribute
     FilterManager* fm = FilterManager::Instance();
-    IFilterFactory::Pointer ff = fm->getFactoryForFilter(classNameStr);
+    IFilterFactory::Pointer ff = fm->getFactoryFromClassName(classNameStr);
     if(nullptr != ff.get())
     {
       AbstractFilter::Pointer filter = ff->create();

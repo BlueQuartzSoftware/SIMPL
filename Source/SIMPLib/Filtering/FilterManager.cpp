@@ -85,7 +85,7 @@ void FilterManager::RegisterFilterFactory(const QString& name, IFilterFactory::P
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void FilterManager::RegisterKnownFilters(FilterManager* fm)
+void FilterManager::RegisterKnownFilters(FilterManager* /* fm */)
 {
 
 }
@@ -151,6 +151,7 @@ void FilterManager::addFilterFactory(const QString& name, IFilterFactory::Pointe
 {
   // std::cout << this << " - Registering Filter: " << name.toStdString() << std::endl;
   m_Factories[name] = factory;
+  m_UuidFactories[factory->getUuid()] = factory;
 }
 
 // -----------------------------------------------------------------------------
@@ -199,7 +200,7 @@ QSet<QString> FilterManager::getSubGroupNames(const QString& groupName)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-IFilterFactory::Pointer FilterManager::getFactoryForFilter(const QString& filterName)
+IFilterFactory::Pointer FilterManager::getFactoryFromClassName(const QString& filterName) const
 {
   if(m_Factories.contains(filterName))
   {
@@ -208,10 +209,23 @@ IFilterFactory::Pointer FilterManager::getFactoryForFilter(const QString& filter
   return IFilterFactory::NullPointer();
 }
 
+
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-IFilterFactory::Pointer FilterManager::getFactoryForFilterHumanName(const QString& humanName)
+IFilterFactory::Pointer FilterManager::getFactoryFromUuid(const QUuid& uuid) const
+{
+  if(m_UuidFactories.contains(uuid))
+  {
+    return m_UuidFactories[uuid];
+  }
+  return IFilterFactory::NullPointer();
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+IFilterFactory::Pointer FilterManager::getFactoryFromHumanName(const QString& humanName)
 {
   IFilterFactory::Pointer Factory;
 

@@ -109,7 +109,7 @@ QUrl QtSHelpUrlGenerator::generateHTMLUrl(QString htmlName)
 #ifdef SIMPL_DISCOUNT_DOCUMENTATION
   FilterManager* fm = FilterManager::Instance();
 
-  IFilterFactory::Pointer factory = fm->getFactoryForFilter(htmlName);
+  IFilterFactory::Pointer factory = fm->getFactoryFromClassName(htmlName);
   QString pluginName;
   if(factory.get())
   {

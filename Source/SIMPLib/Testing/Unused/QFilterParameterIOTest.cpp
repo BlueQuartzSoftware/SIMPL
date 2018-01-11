@@ -148,7 +148,7 @@ void readPipeline(QFilterParametersReader::Pointer paramsReader, FilterPipeline:
     prefs->endGroup();
     //  qDebug() << filterName;
 
-    IFilterFactory::Pointer factory = filtManager->getFactoryForFilter(filterName);
+    IFilterFactory::Pointer factory = filtManager->getFactoryFromClassName(filterName);
     DREAM3D_REQUIRE(nullptr != factory) // We should know about all the filters
     AbstractFilter::Pointer filter = factory->create();
 

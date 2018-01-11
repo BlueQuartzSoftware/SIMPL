@@ -170,7 +170,7 @@ FilterPipeline::Pointer H5FilterParametersReader::readPipelineFromFile(hid_t fid
       err = QH5Lite::readStringAttribute(pipelineGroupId, iStr, "ClassName", classNameStr);
 
       // Instantiate a new filter using the FilterFactory based on the value of the className attribute
-      IFilterFactory::Pointer ff = filterManager->getFactoryForFilter(classNameStr);
+      IFilterFactory::Pointer ff = filterManager->getFactoryFromClassName(classNameStr);
       if(nullptr != ff)
       {
         AbstractFilter::Pointer filter = ff->create();
@@ -280,7 +280,7 @@ QString H5FilterParametersReader::getJsonFromFile(QString filePath, IObserver* o
       err = QH5Lite::readStringAttribute(pipelineGroupId, iStr, "ClassName", classNameStr);
 
       // Instantiate a new filter using the FilterFactory based on the value of the className attribute
-      IFilterFactory::Pointer ff = filterManager->getFactoryForFilter(classNameStr);
+      IFilterFactory::Pointer ff = filterManager->getFactoryFromClassName(classNameStr);
       if(nullptr != ff)
       {
         AbstractFilter::Pointer filter = ff->create();

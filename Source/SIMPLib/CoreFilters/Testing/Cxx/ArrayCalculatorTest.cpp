@@ -148,7 +148,7 @@ public:
   {
     QString filtName = "ArrayCalculator";
     FilterManager* fm = FilterManager::Instance();
-    IFilterFactory::Pointer factory = fm->getFactoryForFilter(filtName);
+    IFilterFactory::Pointer factory = fm->getFactoryFromClassName(filtName);
     DREAM3D_REQUIRE(factory.get() != nullptr);
 
     AbstractFilter::Pointer filter = factory->create();

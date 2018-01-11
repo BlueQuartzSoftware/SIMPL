@@ -86,7 +86,7 @@ AbstractFilter::Pointer AbstractFilter::CreateFilterFromClassName(const QString&
   {
     return AbstractFilter::NullPointer();
   }
-  IFilterFactory::Pointer wf = fm->getFactoryForFilter(className);
+  IFilterFactory::Pointer wf = fm->getFactoryFromClassName(className);
   if(NULL == wf.get())
   {
     return AbstractFilter::NullPointer();
@@ -239,6 +239,7 @@ QJsonObject AbstractFilter::toJson()
   json[SIMPL::Settings::FilterName] = getNameOfClass();
   json[SIMPL::Settings::HumanLabel] = getHumanLabel();
   json[SIMPL::Settings::FilterEnabled] = getEnabled();
+  json[SIMPL::Settings::FilterUuid] = getUuid().toString();
 
   writeFilterParameters(json);
 
@@ -355,6 +356,34 @@ const QString AbstractFilter::getFilterVersion()
 {
   return QString("0.0.0");
 }
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+QUuid AbstractFilter::getUuid()
+{
+  if(m_Uuid.isNull())
+  {
+    uint l = 100;
+    ushort w1 = 200;
+    ushort w2 = 300;
+    
+    QString libName = getCompiledLibraryName();
+    uchar b[8] = { 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 };
+    int32_t i = 0;
+    while(i < 8 && i < libName.size())
+    {
+      b[i] = static_cast<uint8_t>(libName.at(i).toLatin1());
+      i++;
+    }
+    QUuid uuid = QUuid(l, w1, w2, b[0], b[1], b[2], b[3], b[4], b[5], b[6], b[7]);
+    QString nameSpace = QString("%1 %2").arg(getNameOfClass()).arg(getHumanLabel());
+    QUuid p1 = QUuid::createUuidV5(uuid, nameSpace);
+    m_Uuid = p1;
+  }
+  return m_Uuid;
+}
+
 
 // -----------------------------------------------------------------------------
 //

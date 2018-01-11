@@ -135,7 +135,7 @@ public:
     // Now instantiate the ConvertData Filter from the FilterManager
     QString filtName = "ConvertData";
     FilterManager* fm = FilterManager::Instance();
-    IFilterFactory::Pointer filterFactory = fm->getFactoryForFilter(filtName);
+    IFilterFactory::Pointer filterFactory = fm->getFactoryFromClassName(filtName);
     if(nullptr == filterFactory.get())
     {
       std::stringstream ss;

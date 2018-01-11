@@ -974,7 +974,7 @@ FilterPipeline::Pointer readPipelineFromHDF5File(hid_t fileId)
 
     // Instantiate a new filter using the FilterFactory based on the value of the className attribute
     FilterManager::Pointer fm = FilterManager::Instance();
-    IFilterFactory::Pointer ff = fm->getFactoryForFilter(classNameStr);
+    IFilterFactory::Pointer ff = fm->getFactoryFromClassName(classNameStr);
     AbstractFilter::Pointer filter = ff->create();
 
     // Read the parameters
@@ -995,7 +995,7 @@ void FilterManagerTest()
 {
   FilterManager::Pointer fm = FilterManager::Instance();
 
-  IFilterFactory::Pointer ff = fm->getFactoryForFilter(DataContainerReader::ClassName());
+  IFilterFactory::Pointer ff = fm->getFactoryFromClassName(DataContainerReader::ClassName());
   DREAM3D_REQUIRE_NE(ff.get(), nullptr)
   AbstractFilter::Pointer reader = ff->create();
   DREAM3D_REQUIRE_NE(reader.get(), nullptr)

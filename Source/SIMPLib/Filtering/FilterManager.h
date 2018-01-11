@@ -39,6 +39,7 @@
 #include <QtCore/QMap>
 #include <QtCore/QMapIterator>
 #include <QtCore/QString>
+#include <QtCore/QUuid>
 
 #include "SIMPLib/Common/SIMPLibSetGetMacros.h"
 #include "SIMPLib/Filtering/IFilterFactory.hpp"
@@ -59,6 +60,9 @@ public:
   typedef QMap<QString, IFilterFactory::Pointer> Collection;
   typedef QMapIterator<QString, IFilterFactory::Pointer> CollectionIterator;
 
+  typedef QMap<QUuid, IFilterFactory::Pointer> UuidCollection;
+  typedef QMapIterator<QUuid, IFilterFactory::Pointer> UuidCollectionIterator;
+  
   /**
    * @brief Static instance to retrieve the global instance of this class
    * @return
@@ -126,24 +130,33 @@ public:
   QSet<QString> getSubGroupNames(const QString& groupName);
 
   /**
-   * @brief getFactoryForFilter Returns a FilterFactory for a given filter
+   * @brief getFactoryFromClassName Returns a FilterFactory for a given filter
    * @param filterName
    * @return
    */
-  IFilterFactory::Pointer getFactoryForFilter(const QString& filterName);
+  IFilterFactory::Pointer getFactoryFromClassName(const QString& filterName) const; 
 
   /**
-   * @brief getFactoryForFilterHumanName For a given human label, the FilterFactory is given
+   * @brief getFactoryFromClassName Returns a FilterFactory for a given filter
+   * @param filterName
+   * @return
+   */
+  IFilterFactory::Pointer getFactoryFromUuid(const QUuid& uuid) const;
+  
+  /**
+   * @brief getFactoryFromClassNameHumanName For a given human label, the FilterFactory is given
    * @param humanName
    * @return
    */
-  IFilterFactory::Pointer getFactoryForFilterHumanName(const QString& humanName);
+  IFilterFactory::Pointer getFactoryFromHumanName(const QString& humanName);
 
 protected:
   FilterManager();
 
 private:
   Collection m_Factories;
+  UuidCollection m_UuidFactories;
+  
   static FilterManager* self;
 
   FilterManager(const FilterManager&);  // Copy Constructor Not Implemented

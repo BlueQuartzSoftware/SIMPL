@@ -70,7 +70,7 @@ public:
     // Now instantiate the MultiThresholdObjects2Test Filter from the FilterManager
     QString filtName = "MultiThresholdObjects2";
     FilterManager* fm = FilterManager::Instance();
-    IFilterFactory::Pointer filterFactory = fm->getFactoryForFilter(filtName);
+    IFilterFactory::Pointer filterFactory = fm->getFactoryFromClassName(filtName);
     if(nullptr == filterFactory.get())
     {
       std::stringstream ss;
@@ -121,7 +121,7 @@ public:
     // Now instantiate the MultiThresholdObjects2Test Filter from the FilterManager
     QString filtName = "MultiThresholdObjects2";
     FilterManager* fm = FilterManager::Instance();
-    IFilterFactory::Pointer filterFactory = fm->getFactoryForFilter(filtName);
+    IFilterFactory::Pointer filterFactory = fm->getFactoryFromClassName(filtName);
     if(nullptr != filterFactory.get())
     {
       // If we get this far, the Factory is good so creating the filter should not fail unless something has

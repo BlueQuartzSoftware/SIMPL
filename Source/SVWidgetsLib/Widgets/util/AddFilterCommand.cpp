@@ -36,6 +36,9 @@
 #include "AddFilterCommand.h"
 
 #include <QtCore/QObject>
+#include <QtCore/QJsonArray>
+#include <QtCore/QJsonDocument>
+#include <QtCore/QJsonParseError>
 
 #include "SIMPLib/CoreFilters/Breakpoint.h"
 #include "SIMPLib/FilterParameters/JsonFilterParametersReader.h"
@@ -127,15 +130,23 @@ AddFilterCommand::AddFilterCommand(QString jsonString, PipelineView* destination
     }
   }
 
-  JsonFilterParametersReader::Pointer jsonReader = JsonFilterParametersReader::New();
-  FilterPipeline::Pointer pipeline = jsonReader->readPipelineFromString(jsonString);
-  FilterPipeline::FilterContainerType container = pipeline->getFilterContainer();
-
-  m_FilterCount = container.size();
-
-  setText(QObject::tr("\"%1 %2 Filters\"").arg(actionText).arg(m_FilterCount));
-
-  m_JsonString = jsonString;
+  QJsonParseError parseError;
+  QByteArray byteArray = QByteArray::fromStdString(jsonString.toStdString());
+  QJsonDocument doc = QJsonDocument::fromJson(byteArray, &parseError);
+  if(parseError.error == QJsonParseError::NoError)
+  {
+    QJsonObject rootObject = doc.object();
+    
+    FilterPipeline::Pointer pipeline = FilterPipeline::FromJson(rootObject);
+    
+    FilterPipeline::FilterContainerType container = pipeline->getFilterContainer();
+    
+    m_FilterCount = container.size();
+    
+    setText(QObject::tr("\"%1 %2 Filters\"").arg(actionText).arg(m_FilterCount));
+    
+    m_JsonString = jsonString;
+  }
 }
 
 // -----------------------------------------------------------------------------
@@ -187,10 +198,19 @@ void AddFilterCommand::undo()
 // -----------------------------------------------------------------------------
 void AddFilterCommand::redo()
 {
-  JsonFilterParametersReader::Pointer jsonReader = JsonFilterParametersReader::New();
-  jsonReader->setMaxFilterIndex(m_FilterCount);
-  FilterPipeline::Pointer pipeline = jsonReader->readPipelineFromString(m_JsonString);
+  QJsonParseError parseError;
+  QByteArray byteArray = QByteArray::fromStdString(m_JsonString.toStdString());
+  QJsonDocument doc = QJsonDocument::fromJson(byteArray, &parseError);
+  if(parseError.error != QJsonParseError::NoError)
+  {
+    return;
+  }
+  QJsonObject rootObject = doc.object();
+  
+  FilterPipeline::Pointer pipeline = FilterPipeline::FromJson(rootObject);
+  
   FilterPipeline::FilterContainerType container = pipeline->getFilterContainer();
+  
   PipelineFilterObject* filterObject = nullptr;
   if(m_Value.canConvert<int>())
   {

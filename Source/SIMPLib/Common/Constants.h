@@ -515,6 +515,7 @@ namespace SIMPL
     const QString NumFilters("Number_Filters");
     const QString PipelineName("Name");
     const QString FilterName("Filter_Name");
+    const QString FilterUuid("Filter_Uuid");
     const QString FilterVersion("FilterVersion");
     const QString HumanLabel("Filter_Human_Label");
     const QString FilterEnabled("Filter_Enabled");

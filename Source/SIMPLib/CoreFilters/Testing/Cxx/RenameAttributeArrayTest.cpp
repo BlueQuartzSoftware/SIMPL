@@ -69,7 +69,7 @@ public:
     // Now instantiate the RenameAttributeArray Filter from the FilterManager
     QString filtName = "RenameAttributeArray";
     FilterManager* fm = FilterManager::Instance();
-    IFilterFactory::Pointer filterFactory = fm->getFactoryForFilter(filtName);
+    IFilterFactory::Pointer filterFactory = fm->getFactoryFromClassName(filtName);
     if(nullptr == filterFactory.get())
     {
       std::stringstream ss;

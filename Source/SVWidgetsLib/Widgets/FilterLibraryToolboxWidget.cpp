@@ -252,7 +252,7 @@ void FilterLibraryToolboxWidget::launchHelpForItem(QString humanLabel)
   {
     return;
   }
-  IFilterFactory::Pointer factory = fm->getFactoryForFilterHumanName(humanLabel);
+  IFilterFactory::Pointer factory = fm->getFactoryFromHumanName(humanLabel);
   if(nullptr == factory.get())
   {
     return;
