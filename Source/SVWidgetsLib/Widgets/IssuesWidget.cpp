@@ -53,8 +53,6 @@
 #error Both SIMPL_DISCOUNT_DOCUMENTATION and SIMPL_DOXYGEN_DOCUMENTATION are both defined and this can not happen.
 #endif
 
-// Include the MOC generated CPP file which has all the QMetaObject methods/data
-
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------

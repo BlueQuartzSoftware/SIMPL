@@ -337,8 +337,12 @@ FilterPipeline::Pointer JsonFilterParametersReader::readPipeline(IObserver* obs)
     // If the UUID was not available, then try the filter class name
     if(nullptr == factory.get())
     {
-      filterName = m_CurrentFilterIndex[SIMPL::Settings::FilterName].toString("JSON Key 'Filter_Name' missing.");
-      factory = filtManager->getFactoryFromClassName(filterName);
+      QJsonValue jsValue = m_CurrentFilterIndex[SIMPL::Settings::FilterName];
+      if(jsValue.isString())
+      {
+        filterName = jsValue.toString("JSON Key 'Filter_Name' missing.");
+        factory = filtManager->getFactoryFromClassName(filterName);
+      }
     }
     
     if(nullptr != factory.get())
