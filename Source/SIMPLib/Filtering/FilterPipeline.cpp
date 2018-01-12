@@ -196,42 +196,59 @@ void FilterPipeline::fromJson(const QJsonObject& json, IObserver* obs)
 
   for(int i = 0; i < filterCount; ++i)
   {
-    QString numStr = StringOperations::GenerateIndexString(i, filterCount);
-
-    QJsonObject currentFilterIndex = json[numStr].toObject();
-    IFilterFactory::Pointer factory = IFilterFactory::NullPointer();
+    bool errorLoadingFilter = true;
+    QJsonObject currentFilterIndex;
     QString filterName;
-    bool filterEnabled = currentFilterIndex[SIMPL::Settings::FilterEnabled].toBool(true);
-    // First try the UUID for the filter and see what we get.
-    QUuid uuid = QUuid(currentFilterIndex[SIMPL::Settings::FilterUuid].toString(""));
-    if(!uuid.isNull())
+    bool filterEnabled = false;
+    QString numStr = QString::number(i);
+    if(json.find(numStr) != json.end())
     {
-      factory = filtManager->getFactoryFromUuid(uuid);
+      currentFilterIndex = json[numStr].toObject();
+      errorLoadingFilter = false;
     }
-    // If the UUID was not available, then try the filter class name
-    if(nullptr == factory.get())
+    if(currentFilterIndex.isEmpty())
     {
-      QJsonValue jsValue = currentFilterIndex[SIMPL::Settings::FilterName];
-      if(jsValue.isString())
+      numStr = StringOperations::GenerateIndexString(i, filterCount);
+      currentFilterIndex = json[numStr].toObject();
+    }
+
+    if(!currentFilterIndex.isEmpty())
+    {
+      IFilterFactory::Pointer factory = IFilterFactory::NullPointer();
+      filterEnabled = currentFilterIndex[SIMPL::Settings::FilterEnabled].toBool(true);
+      // First try the UUID for the filter and see what we get.
+      QUuid uuid = QUuid(currentFilterIndex[SIMPL::Settings::FilterUuid].toString(""));
+      if(!uuid.isNull())
       {
-        filterName = jsValue.toString("JSON Key 'Filter_Name' missing.");
-        factory = filtManager->getFactoryFromClassName(filterName);
+        factory = filtManager->getFactoryFromUuid(uuid);
+      }
+      // If the UUID was not available, then try the filter class name
+      if(nullptr == factory.get())
+      {
+        QJsonValue jsValue = currentFilterIndex[SIMPL::Settings::FilterName];
+        if(jsValue.isString())
+        {
+          filterName = jsValue.toString("JSON Key 'Filter_Name' missing.");
+          factory = filtManager->getFactoryFromClassName(filterName);
+          errorLoadingFilter = true;
+        }
+      }
+
+      if(nullptr != factory.get())
+      {
+        AbstractFilter::Pointer filter = factory->create();
+        errorLoadingFilter = true; // Make this an error until we get through the next logic statement
+        if(nullptr != filter.get())
+        {
+          errorLoadingFilter = false;
+          filter->setEnabled(filterEnabled);
+          filter->readFilterParameters(currentFilterIndex);
+          this->pushBack(filter);
+        }
       }
     }
-    
-    if(nullptr != factory.get())
-    {
-      AbstractFilter::Pointer filter = factory->create();
-      
-      if(nullptr != filter.get())
-      {
-        filter->setEnabled(filterEnabled);
-        filter->readFilterParameters(currentFilterIndex);
-        this->pushBack(filter);
-      }
-    }
-    else // Could not find the filter because the specific name has not been registered. This could
-      // be due to a name change for the filter.
+
+    if(errorLoadingFilter)
     {
       EmptyFilter::Pointer filter = EmptyFilter::New();
       QString humanLabel = QString("UNKNOWN FILTER: ") + filterName;
@@ -243,9 +260,9 @@ void FilterPipeline::fromJson(const QJsonObject& json, IObserver* obs)
       if(nullptr != obs)
       {
         QString ss = QObject::tr("An attempt to instantiate a filter from the pipeline file resulted in an error.\
-                                  Possible reasons include a name change of the filter, plugin not loading or a simple spelling mistake? A \
-                                 blank filter has been inserted in its place. Possible error message is: %1")
-                                  .arg(filterName);
+                                 Possible reasons include a name change of the filter, plugin not loading or a simple spelling mistake? A \
+                                                                                                                                        blank filter has been inserted in its place. Possible error message is: %1")
+                         .arg(filterName);
         PipelineMessage pm(filterName, ss, -66066, PipelineMessage::MessageType::Error);
         pm.setPrefix("JsonFilterParametersReader::ReadPipelineFromFile()");
         obs->processPipelineMessage(pm);
