@@ -40,8 +40,8 @@
 #include "SIMPLib/Filtering/FilterManager.h"
 
 #include "SIMPLib/CoreFilters/DataContainerReader.h"
-
 #include "SIMPLib/DataContainers/DataContainerArray.h"
+#include "SIMPLib/Utilities/StringOperations.h"
 
 // -----------------------------------------------------------------------------
 //
@@ -196,7 +196,9 @@ void FilterPipeline::fromJson(const QJsonObject& json, IObserver* obs)
 
   for(int i = 0; i < filterCount; ++i)
   {
-    QJsonObject currentFilterIndex = json[QString::number(i)].toObject();
+    QString numStr = StringOperations::GenerateIndexString(i, filterCount);
+
+    QJsonObject currentFilterIndex = json[numStr].toObject();
     IFilterFactory::Pointer factory = IFilterFactory::NullPointer();
     QString filterName;
     bool filterEnabled = currentFilterIndex[SIMPL::Settings::FilterEnabled].toBool(true);
@@ -209,8 +211,12 @@ void FilterPipeline::fromJson(const QJsonObject& json, IObserver* obs)
     // If the UUID was not available, then try the filter class name
     if(nullptr == factory.get())
     {
-      filterName = currentFilterIndex[SIMPL::Settings::FilterName].toString("JSON Key 'Filter_Name' missing.");
-      factory = filtManager->getFactoryFromClassName(filterName);
+      QJsonValue jsValue = currentFilterIndex[SIMPL::Settings::FilterName];
+      if(jsValue.isString())
+      {
+        filterName = jsValue.toString("JSON Key 'Filter_Name' missing.");
+        factory = filtManager->getFactoryFromClassName(filterName);
+      }
     }
     
     if(nullptr != factory.get())
