@@ -92,7 +92,7 @@ class SVWidgetsLib_EXPORT IssuesWidget : public QWidget, public IObserver
 
 
   private:
-    Ui::IssuesWidget* ui = nullptr;
+    QSharedPointer<Ui::IssuesWidget> ui = nullptr;
     QVector<PipelineMessage> m_CachedMessages;
 
     IssuesWidget(const IssuesWidget&) = delete;   // Copy Constructor Not Implemented
