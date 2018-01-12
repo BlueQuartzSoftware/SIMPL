@@ -625,7 +625,14 @@ void FilterInputWidget::displayFilterParameters(PipelineFilterObject* w)
   if(f.get())
   {
     ISIMPLibPlugin* plug = f->getPluginInstance();
-    m_BrandingLabel = QString("Plugin: %1 (%2) Filter Name: %3").arg(plug->getPluginName()).arg(plug->getVersion()).arg(w->getFilterClassName());
+    if(plug)
+    {
+      m_BrandingLabel = QString("Plugin: %1 (%2) Filter Name: %3").arg(plug->getPluginName()).arg(plug->getVersion()).arg(w->getFilterClassName());
+    }
+    else
+    {
+      m_BrandingLabel = QString("Plugin: Unknown Plugin. Filter Name: %1").arg(w->getFilterClassName());
+    }
     brandingLabel->setText(m_BrandingLabel);
   }
   // Add a label at the top of the Inputs Tabs to show what filter we are working on

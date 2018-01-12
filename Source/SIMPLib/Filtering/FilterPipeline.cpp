@@ -166,14 +166,12 @@ FilterPipeline::Pointer FilterPipeline::FromJson(const QJsonObject& json, IObser
   if(filterCount >= 0)
   {
     pipeline = FilterPipeline::New();
+    pipeline->fromJson(json, obs);
   }
   else
   {
     pipeline = FilterPipeline::NullPointer();
   }
-
-  pipeline->fromJson(json, obs);
-
   return pipeline;
 }
 
