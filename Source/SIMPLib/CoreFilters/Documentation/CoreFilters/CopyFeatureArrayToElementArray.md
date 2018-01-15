@@ -34,7 +34,9 @@ Not Applicable
 
 ## Example Pipelines ##
 
-
++ (04) SmallIN100 Field Threshold
++ (03) SmallIN100 Transfer Field Data
++ (09) Image Segmentation
 
 ## License & Copyright ##
 

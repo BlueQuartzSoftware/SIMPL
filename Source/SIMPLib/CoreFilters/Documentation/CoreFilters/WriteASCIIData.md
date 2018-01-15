@@ -71,7 +71,8 @@ None
 
 ## Example Pipelines ##
 
-
++ Image Histogram
++ Confidence Index Histogram
 
 ## License & Copyright ##
 

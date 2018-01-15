@@ -35,7 +35,20 @@ None
 
 ## Example Pipelines ##
 
-
++ (01) SmallIN100 Morphological Statistics
++ (04) SmallIN100 Presegmentation Processing
++ (04) SmallIN100 Field Threshold
++ (07) SmallIN100 Final Processing
++ (03) SmallIN100 Transfer Field Data
++ (05) SmallIN100 Segmentation
++ (06) SmallIN100 Postsegmentation Processing
++ (05) SmallIN100 Crystallographic Statistics
++ (02) SmallIN100 Export Statistics
++ (01) SmallIN100 Quick Mesh
++ (03) SmallIN100 Mesh Statistics
++ (04) SmallIN100 GBCD
++ (06) SmallIN100 Synthetic
++ (02) SmallIN100 Smooth Mesh
 
 ## License & Copyright ##
 

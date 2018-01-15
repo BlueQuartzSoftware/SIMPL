@@ -34,7 +34,17 @@ Not Applicable
 
 ## Example Pipelines ##
 
-
++ (10) SmallIN100 Full Reconstruction
++ (04) SmallIN100 Field Threshold
++ INL Export
++ Export Small IN100 ODF Data (StatsGenerator)
++ TxCopper_Exposed
++ TxCopper_Unexposed
++ 04_Steiner Compact
++ Edax IPF Colors
++ (03) SmallIN100 Alignment
++ Confidence Index Histogram
++ (09) Image Segmentation
 
 ## License & Copyright ##
 

@@ -48,7 +48,7 @@ None
 
 ## Example Pipelines ##
 
-
++ Confidence Index Histogram
 
 ## License & Copyright ##
 

@@ -29,7 +29,13 @@ None
 
 ## Example Pipelines ##
 
-
++ CreateVertexGeometry
++ (04) SmallIN100 Presegmentation Processing
++ CreateTriangleGeometry
++ CreateEdgeGeometry
++ CreateQuadGeometry
++ MassifPipeline
++ InsertTransformationPhase
 
 ## License & Copyright ##
 

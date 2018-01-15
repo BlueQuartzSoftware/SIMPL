@@ -32,7 +32,7 @@ None
 
 ## Example Pipelines ##
 
-
++ MassifPipeline
 
 ## License & Copyright ##
 

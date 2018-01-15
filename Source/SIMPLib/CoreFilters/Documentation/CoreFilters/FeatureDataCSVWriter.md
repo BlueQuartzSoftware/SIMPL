@@ -61,7 +61,8 @@ None
 
 ## Example Pipelines ##
 
-
++ InsertTransformationPhase
++ (02) SmallIN100 Export Statistics
 
 ## License & Copyright ##
 
