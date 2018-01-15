@@ -101,7 +101,13 @@ public:
    * @return Subgroup name
    */
   virtual const QString getSubGroupName();
-
+  
+  /**
+   * @brief getUuid
+   * @return 
+   */
+  virtual QUuid getUuid();
+  
   /**
    * @brief getHumanLabel Returns the human label for the filter, which determines its
    * primary labeling inthe GUI
@@ -219,12 +225,7 @@ public:
   SIMPL_INSTANCE_PROPERTY(int, WarningCondition)
 
   SIMPL_INSTANCE_PROPERTY(bool, InPreflight)
-  
-  /**
-   * @brief getUuid
-   * @return 
-   */
-  QUuid getUuid();
+
 
   // ------------------------------
   // These functions allow interogating the position the filter is in the pipeline and the previous and next filters
