@@ -36,6 +36,10 @@ Image
 
 None
 
+## Example Pipelines ##
+
+
+
 ## License & Copyright ##
 
 Please see the description file distributed with this **Plugin**

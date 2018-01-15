@@ -33,6 +33,10 @@ Not Applicable
 | **Attribute Matrix** | None | **Feature**  | N/A | **Feature Attribute Matrix** in which to place the copied data |
 | Feature **Attribute Array** | None | Any  | Any | Copied **Attribute Array** name |
 
+## Example Pipelines ##
+
+
+
 ## License & Copyright ##
 
 Please see the description file distributed with this **Plugin**

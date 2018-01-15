@@ -156,6 +156,10 @@ Not Applicable
 |------|--------------|-------------|---------|----------------|
 | Any **Attribute Array** | Output | double | varies | Output of mathematical expression |
 
+## Example Pipelines ##
+
+
+
 ## License & Copyright ##
 
 Please see the description file distributed with this **Plugin**

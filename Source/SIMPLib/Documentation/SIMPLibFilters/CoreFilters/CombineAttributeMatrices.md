@@ -38,6 +38,10 @@ Not Applicable
 | **Attribute Matrix**  | None | **Feature or Ensemble** | N/A | Combined **Feature or Ensemble Attribute Matrix** |
 | **Attribute Arrays**  | None | varies | varies | Set of unique **Attribute Arrays** from the two **Attribute Matrices** being combined. |
 
+## Example Pipelines ##
+
+
+
 ## License & Copyright ##
 
 Please see the description file distributed with this **Plugin**

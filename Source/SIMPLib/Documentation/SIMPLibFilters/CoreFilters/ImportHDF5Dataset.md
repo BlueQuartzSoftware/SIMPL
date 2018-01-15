@@ -65,6 +65,10 @@ Not Applicable
 |------|--------------|------|----------------------|-------------|
 | **Attribute Array** | Name of dataset from HDF5 file | Type from HDF5 file | Input as a filter parameter | The created Attribute Array |
 
+## Example Pipelines ##
+
+
+
 ## License & Copyright ##
 
 Please see the description file distributed with this **Plugin**
