@@ -67,10 +67,27 @@ CorePlugin::~CorePlugin() = default;
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-QString CorePlugin::getPluginName()
+QString CorePlugin::getPluginFileName()
 {
-  return (CoreConstants::CorePluginDisplayName);
+  return CoreConstants::CorePluginFile;
 }
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+QString CorePlugin::getPluginDisplayName()
+{
+  return CoreConstants::CorePluginDisplayName;
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+QString CorePlugin::getPluginBaseName()
+{
+  return CoreConstants::CoreBaseName;
+}
+
 
 // -----------------------------------------------------------------------------
 //

@@ -73,7 +73,7 @@ void PluginDetails::loadPluginDetails()
   ISIMPLibPlugin* plugin = manager->findPlugin(m_PluginName);
 
   // Add plugin details to PluginDetails dialog box
-  nameLabel->setText(plugin->getPluginName());
+  nameLabel->setText(plugin->getPluginBaseName());
 
   if(plugin->getDidLoad() == true)
   {

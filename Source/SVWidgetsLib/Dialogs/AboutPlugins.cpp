@@ -185,7 +185,7 @@ void AboutPlugins::addPluginToTable(ISIMPLibPlugin* plugin, int row)
   QColor defaultColor(Qt::white);
 
   // Add name of plugin to the row
-  QTableWidgetItem* nameItem = new QTableWidgetItem(plugin->getPluginName());
+  QTableWidgetItem* nameItem = new QTableWidgetItem(plugin->getPluginBaseName());
   nameItem->setBackgroundColor(defaultColor);
   pluginsTable->setItem(row, NAME_INDEX, nameItem);
 
@@ -196,7 +196,7 @@ void AboutPlugins::addPluginToTable(ISIMPLibPlugin* plugin, int row)
 
   // Add check box that is centered in the cell
   QCheckBox* checkBox = new QCheckBox(nullptr);
-  readCheckState(checkBox, plugin->getPluginName());
+  readCheckState(checkBox, plugin->getPluginBaseName());
 
   connect(checkBox, SIGNAL(stateChanged(int)), this, SLOT(togglePluginState(int)));
   connect(checkBox, SIGNAL(stateChanged(int)), this, SLOT(setLoadPreferencesFlag(int)));
@@ -354,7 +354,7 @@ void AboutPlugins::addPlugin(QString pluginPath)
     ISIMPLibPlugin* ipPlugin = qobject_cast<ISIMPLibPlugin*>(plugin);
     if(ipPlugin)
     {
-      QString pluginName = ipPlugin->getPluginName();
+      QString pluginName = ipPlugin->getPluginBaseName();
 
       ipPlugin->registerFilterWidgets(fwm);
       ipPlugin->registerFilters(fm);

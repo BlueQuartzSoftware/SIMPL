@@ -627,7 +627,7 @@ void FilterInputWidget::displayFilterParameters(PipelineFilterObject* w)
     ISIMPLibPlugin* plug = f->getPluginInstance();
     if(plug)
     {
-      m_BrandingLabel = QString("Plugin: %1 (%2) Filter Name: %3").arg(plug->getPluginName()).arg(plug->getVersion()).arg(w->getFilterClassName());
+      m_BrandingLabel = QString("Plugin: %1 (%2) Filter Name: %3").arg(plug->getPluginDisplayName()).arg(plug->getVersion()).arg(w->getFilterClassName());
     }
     else
     {
