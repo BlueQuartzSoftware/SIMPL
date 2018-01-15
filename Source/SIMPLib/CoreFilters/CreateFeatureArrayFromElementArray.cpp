@@ -384,6 +384,14 @@ const QString CreateFeatureArrayFromElementArray::getGroupName()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
+const QUuid CreateFeatureArrayFromElementArray::getUuid()
+{
+  return QUuid("{94438019-21bb-5b61-a7c3-66974b9a34dc}");
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
 const QString CreateFeatureArrayFromElementArray::getSubGroupName()
 {
   return SIMPL::FilterSubGroups::MemoryManagementFilters;

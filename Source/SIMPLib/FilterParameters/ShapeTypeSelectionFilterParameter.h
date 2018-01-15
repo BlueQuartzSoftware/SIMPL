@@ -66,7 +66,7 @@ class SIMPLib_EXPORT ShapeTypeSelectionFilterParameter : public FilterParameter
 public:
   SIMPL_SHARED_POINTERS(ShapeTypeSelectionFilterParameter)
   SIMPL_STATIC_NEW_MACRO(ShapeTypeSelectionFilterParameter)
-  SIMPL_TYPE_MACRO_SUPER(ShapeTypeSelectionFilterParameter, FilterParameter)
+   SIMPL_TYPE_MACRO_SUPER_OVERRIDE(ShapeTypeSelectionFilterParameter, FilterParameter)
 
   typedef std::function<void(ShapeType::Types)> SetterCallbackType;
   typedef std::function<ShapeType::Types(void)> GetterCallbackType;

@@ -159,6 +159,14 @@ const QString PipelineSummary::getGroupName()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
+const QUuid PipelineSummary::getUuid()
+{
+  return QUuid("{8cc2198b-6a9d-5bf4-b8c0-b0878bb57f10}");
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
 const QString PipelineSummary::getSubGroupName()
 {
   return SIMPL::FilterSubGroups::MiscFilters;

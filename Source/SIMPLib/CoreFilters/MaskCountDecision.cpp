@@ -235,6 +235,14 @@ const QString MaskCountDecision::getGroupName()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
+const QUuid MaskCountDecision::getUuid()
+{
+  return QUuid("{34a19028-c50b-5dea-af0e-e06c798d3686}");
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
 const QString MaskCountDecision::getSubGroupName()
 {
   return SIMPL::FilterSubGroups::MiscFilters;

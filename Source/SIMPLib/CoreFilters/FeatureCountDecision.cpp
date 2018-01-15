@@ -221,6 +221,14 @@ const QString FeatureCountDecision::getGroupName()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
+const QUuid FeatureCountDecision::getUuid()
+{
+  return QUuid("{64d1df13-17a2-56a2-90a5-4dfda442b144}");
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
 const QString FeatureCountDecision::getSubGroupName()
 {
   return SIMPL::FilterSubGroups::MiscFilters;

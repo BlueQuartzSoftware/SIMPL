@@ -311,6 +311,14 @@ const QString MoveMultiData::getGroupName()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
+const QUuid MoveMultiData::getUuid()
+{
+  return QUuid("{e3702900-a6c1-59e1-9180-b57557a7b193}");
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
 const QString MoveMultiData::getSubGroupName()
 {
   return SIMPL::FilterSubGroups::MemoryManagementFilters;

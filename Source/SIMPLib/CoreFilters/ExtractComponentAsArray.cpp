@@ -262,6 +262,14 @@ const QString ExtractComponentAsArray::getGroupName()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
+const QUuid ExtractComponentAsArray::getUuid()
+{
+  return QUuid("{79d59b85-01e8-5c4a-a6e1-3fd3e2ceffb4}");
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
 const QString ExtractComponentAsArray::getSubGroupName()
 {
   return SIMPL::FilterSubGroups::MemoryManagementFilters;

@@ -570,6 +570,14 @@ const QString ImportHDF5Dataset::getGroupName()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
+const QUuid ImportHDF5Dataset::getUuid()
+{
+  return QUuid("{9e98c3b0-5707-5a3b-b8b5-23ef83b02896}");
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
 const QString ImportHDF5Dataset::getSubGroupName()
 {
   return SIMPL::FilterSubGroups::InputFilters;

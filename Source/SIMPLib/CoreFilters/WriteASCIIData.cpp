@@ -486,6 +486,14 @@ const QString WriteASCIIData::getGroupName()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
+const QUuid WriteASCIIData::getUuid()
+{
+  return QUuid("{5fbf9204-2c6c-597b-856a-f4612adbac38}");
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
 const QString WriteASCIIData::getSubGroupName()
 {
   return SIMPL::FilterSubGroups::OutputFilters;

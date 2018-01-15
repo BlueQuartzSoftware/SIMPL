@@ -206,6 +206,14 @@ const QString RenameAttributeMatrix::getGroupName()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
+const QUuid RenameAttributeMatrix::getUuid()
+{
+  return QUuid("{ee29e6d6-1f59-551b-9350-a696523261d5}");
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
 const QString RenameAttributeMatrix::getSubGroupName()
 {
   return SIMPL::FilterSubGroups::MemoryManagementFilters;

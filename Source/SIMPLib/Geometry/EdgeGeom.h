@@ -48,7 +48,7 @@ class SIMPLib_EXPORT EdgeGeom : public IGeometry
 
     SIMPL_SHARED_POINTERS(EdgeGeom)
     SIMPL_STATIC_NEW_MACRO(EdgeGeom)
-    SIMPL_TYPE_MACRO_SUPER(EdgeGeom, Observable)
+     SIMPL_TYPE_MACRO_SUPER_OVERRIDE(EdgeGeom, Observable)
 
     virtual ~EdgeGeom();
 

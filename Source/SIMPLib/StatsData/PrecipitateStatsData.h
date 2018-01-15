@@ -87,7 +87,7 @@ class SIMPLib_EXPORT PrecipitateStatsData : public StatsData
   public:
     SIMPL_SHARED_POINTERS(PrecipitateStatsData)
     SIMPL_STATIC_NEW_MACRO(PrecipitateStatsData)
-    SIMPL_TYPE_MACRO_SUPER(PrecipitateStatsData, StatsData)
+     SIMPL_TYPE_MACRO_SUPER_OVERRIDE(PrecipitateStatsData, StatsData)
 
     virtual ~PrecipitateStatsData();
 

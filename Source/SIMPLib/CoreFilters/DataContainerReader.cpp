@@ -522,6 +522,14 @@ const QString DataContainerReader::getGroupName()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
+const QUuid DataContainerReader::getUuid()
+{
+  return QUuid("{043cbde5-3878-5718-958f-ae75714df0df}");
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
 const QString DataContainerReader::getSubGroupName()
 {
   return SIMPL::FilterSubGroups::InputFilters;

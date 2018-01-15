@@ -85,7 +85,7 @@ class SIMPLib_EXPORT TransformationStatsData : public StatsData
   public:
     SIMPL_SHARED_POINTERS(TransformationStatsData)
     SIMPL_STATIC_NEW_MACRO(TransformationStatsData)
-    SIMPL_TYPE_MACRO_SUPER(TransformationStatsData, StatsData)
+     SIMPL_TYPE_MACRO_SUPER_OVERRIDE(TransformationStatsData, StatsData)
 
     virtual ~TransformationStatsData();
 

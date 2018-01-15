@@ -48,7 +48,7 @@ class SIMPLib_EXPORT TriangleGeom : public IGeometry2D
 
     SIMPL_SHARED_POINTERS(TriangleGeom)
     SIMPL_STATIC_NEW_MACRO(TriangleGeom)
-    SIMPL_TYPE_MACRO_SUPER(TriangleGeom, Observable)
+     SIMPL_TYPE_MACRO_SUPER_OVERRIDE(TriangleGeom, Observable)
 
     virtual ~TriangleGeom();
 

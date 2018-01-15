@@ -66,7 +66,7 @@ class SIMPLib_EXPORT LinkedBooleanFilterParameter : public FilterParameter
   public:
     SIMPL_SHARED_POINTERS(LinkedBooleanFilterParameter)
     SIMPL_STATIC_NEW_MACRO(LinkedBooleanFilterParameter)
-    SIMPL_TYPE_MACRO_SUPER(LinkedBooleanFilterParameter, FilterParameter)
+     SIMPL_TYPE_MACRO_SUPER_OVERRIDE(LinkedBooleanFilterParameter, FilterParameter)
 
     typedef std::function<void(bool)> SetterCallbackType;
     typedef std::function<bool(void)> GetterCallbackType;

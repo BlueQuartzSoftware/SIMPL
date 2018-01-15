@@ -47,7 +47,7 @@ class SIMPLib_EXPORT TestObserver : public QObject, public IObserver
 
   public:
     TestObserver();
-    SIMPL_TYPE_MACRO_SUPER(TestObserver, IObserver)
+     SIMPL_TYPE_MACRO_SUPER_OVERRIDE(TestObserver, IObserver)
     virtual ~TestObserver();
 
  public slots:

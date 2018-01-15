@@ -977,6 +977,14 @@ const QString ArrayCalculator::getGroupName()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
+const QUuid ArrayCalculator::getUuid()
+{
+  return QUuid("{7ff0ebb3-7b0d-5ff7-b9d8-5147031aca10}");
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
 const QString ArrayCalculator::getSubGroupName()
 {
   return SIMPL::FilterSubGroups::GenerationFilters;

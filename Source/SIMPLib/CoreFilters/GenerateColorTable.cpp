@@ -412,6 +412,14 @@ const QString GenerateColorTable::getGroupName()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
+const QUuid GenerateColorTable::getUuid()
+{
+  return QUuid("{0d0a6535-6565-51c5-a3fc-fbc00008606d}");
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
 const QString GenerateColorTable::getSubGroupName()
 { return SIMPL::FilterSubGroups::ImageFilters; }
 

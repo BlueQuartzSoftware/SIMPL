@@ -718,6 +718,14 @@ const QString ImportAsciDataArray::getGroupName()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
+const QUuid ImportAsciDataArray::getUuid()
+{
+  return QUuid("{a7007472-29e5-5d0a-89a6-1aed11b603f8}");
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
 const QString ImportAsciDataArray::getSubGroupName()
 {
   return SIMPL::FilterSubGroups::InputFilters;

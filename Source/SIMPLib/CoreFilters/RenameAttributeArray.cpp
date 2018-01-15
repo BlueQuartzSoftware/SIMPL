@@ -219,6 +219,14 @@ const QString RenameAttributeArray::getGroupName()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
+const QUuid RenameAttributeArray::getUuid()
+{
+  return QUuid("{53a5f731-2858-5e3e-bd43-8f2cf45d90ec}");
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
 const QString RenameAttributeArray::getSubGroupName()
 {
   return SIMPL::FilterSubGroups::MemoryManagementFilters;

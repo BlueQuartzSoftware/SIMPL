@@ -101,12 +101,12 @@ public:
    * @return Subgroup name
    */
   virtual const QString getSubGroupName();
-  
+
   /**
-   * @brief getUuid
-   * @return 
+   * @brief getUuid Return the unique identifier for this filter.
+   * @return A QUuid object.
    */
-  virtual QUuid getUuid();
+  virtual const QUuid getUuid();
   
   /**
    * @brief getHumanLabel Returns the human label for the filter, which determines its

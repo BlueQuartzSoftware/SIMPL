@@ -597,6 +597,14 @@ const QString CreateDataArray::getGroupName()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
+const QUuid CreateDataArray::getUuid()
+{
+  return QUuid("{77f392fb-c1eb-57da-a1b1-e7acf9239fb8}");
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
 const QString CreateDataArray::getSubGroupName()
 {
   return SIMPL::FilterSubGroups::GenerationFilters;

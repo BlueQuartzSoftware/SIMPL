@@ -47,7 +47,7 @@ class SIMPLib_EXPORT ImageGeom : public IGeometryGrid
   public:
     SIMPL_SHARED_POINTERS(ImageGeom)
     SIMPL_STATIC_NEW_MACRO(ImageGeom)
-    SIMPL_TYPE_MACRO_SUPER(ImageGeom, Observable)
+     SIMPL_TYPE_MACRO_SUPER_OVERRIDE(ImageGeom, Observable)
 
     virtual ~ImageGeom();
 

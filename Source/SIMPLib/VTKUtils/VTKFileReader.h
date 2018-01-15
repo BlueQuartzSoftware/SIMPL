@@ -89,7 +89,7 @@ class SIMPLib_EXPORT VTKFileReader : public FileReader
     Q_OBJECT
   public:
     SIMPL_SHARED_POINTERS(VTKFileReader)
-    SIMPL_TYPE_MACRO_SUPER(VTKFileReader, FileReader)
+     SIMPL_TYPE_MACRO_SUPER_OVERRIDE(VTKFileReader, FileReader)
     SIMPL_STATIC_NEW_MACRO(VTKFileReader)
 
     virtual ~VTKFileReader();

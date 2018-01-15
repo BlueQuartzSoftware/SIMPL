@@ -49,14 +49,14 @@ class SIMPLib_EXPORT FileWriter : public AbstractFilter
   public:
     SIMPL_SHARED_POINTERS(FileWriter)
     SIMPL_STATIC_NEW_MACRO(FileWriter)
-    SIMPL_TYPE_MACRO_SUPER(FileWriter, AbstractFilter)
+     SIMPL_TYPE_MACRO_SUPER_OVERRIDE(FileWriter, AbstractFilter)
 
     virtual ~FileWriter();
 
     SIMPL_FILTER_PARAMETER(QString, OutputFile)
     Q_PROPERTY(QString OutputFile READ getOutputFile WRITE setOutputFile)
 
-    virtual void execute();
+    virtual void execute() override;
 
   signals:
     /**

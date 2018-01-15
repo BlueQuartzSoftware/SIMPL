@@ -233,6 +233,14 @@ const QString PostSlackMessage::getGroupName()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
+const QUuid PostSlackMessage::getUuid()
+{
+  return QUuid("{0ca83462-8564-54ea-9f4e-e5141974f30b}");
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
 const QString PostSlackMessage::getSubGroupName()
 {
   return SIMPL::FilterSubGroups::MiscFilters;

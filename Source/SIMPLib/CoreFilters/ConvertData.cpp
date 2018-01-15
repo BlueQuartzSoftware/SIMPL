@@ -425,6 +425,14 @@ const QString ConvertData::getGroupName()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
+const QUuid ConvertData::getUuid()
+{
+  return QUuid("{f4ba5fa4-bb5c-5dd1-9429-0dd86d0ecb37}");
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
 const QString ConvertData::getSubGroupName()
 {
   return SIMPL::FilterSubGroups::ConversionFilters;

@@ -202,6 +202,14 @@ const QString RenameDataContainer::getGroupName()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
+const QUuid RenameDataContainer::getUuid()
+{
+  return QUuid("{d53c808f-004d-5fac-b125-0fffc8cc78d6}");
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
 const QString RenameDataContainer::getSubGroupName()
 {
   return SIMPL::FilterSubGroups::MemoryManagementFilters;

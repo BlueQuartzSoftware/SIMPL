@@ -360,7 +360,7 @@ const QString AbstractFilter::getFilterVersion()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-QUuid AbstractFilter::getUuid()
+const QUuid AbstractFilter::getUuid()
 {
   if(m_Uuid.isNull())
   {

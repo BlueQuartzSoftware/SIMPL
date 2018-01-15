@@ -68,7 +68,7 @@ class SIMPLib_EXPORT DataContainerArrayProxyFilterParameter : public FilterParam
   public:
     SIMPL_SHARED_POINTERS(DataContainerArrayProxyFilterParameter)
     SIMPL_STATIC_NEW_MACRO(DataContainerArrayProxyFilterParameter)
-    SIMPL_TYPE_MACRO_SUPER(DataContainerArrayProxyFilterParameter, FilterParameter)
+     SIMPL_TYPE_MACRO_SUPER_OVERRIDE(DataContainerArrayProxyFilterParameter, FilterParameter)
 
     typedef std::function<void(DataContainerArrayProxy)> SetterCallbackType;
     typedef std::function<DataContainerArrayProxy(void)> GetterCallbackType;

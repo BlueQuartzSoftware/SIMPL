@@ -66,7 +66,7 @@ class SIMPLib_EXPORT ScalarTypeFilterParameter : public FilterParameter
 public:
   SIMPL_SHARED_POINTERS(ScalarTypeFilterParameter)
   SIMPL_STATIC_NEW_MACRO(ScalarTypeFilterParameter)
-  SIMPL_TYPE_MACRO_SUPER(ScalarTypeFilterParameter, FilterParameter)
+   SIMPL_TYPE_MACRO_SUPER_OVERRIDE(ScalarTypeFilterParameter, FilterParameter)
 
   typedef std::function<void(SIMPL::ScalarTypes::Type)> SetterCallbackType;
   typedef std::function<SIMPL::ScalarTypes::Type(void)> GetterCallbackType;

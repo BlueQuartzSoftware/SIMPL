@@ -56,7 +56,7 @@ class SIMPLib_EXPORT H5FilterParametersReader : public AbstractFilterParametersR
   public:
     SIMPL_SHARED_POINTERS(H5FilterParametersReader)
     SIMPL_STATIC_NEW_MACRO(H5FilterParametersReader)
-    SIMPL_TYPE_MACRO_SUPER(H5FilterParametersReader, AbstractFilterParametersReader)
+     SIMPL_TYPE_MACRO_SUPER_OVERRIDE(H5FilterParametersReader, AbstractFilterParametersReader)
 
 
     virtual ~H5FilterParametersReader();

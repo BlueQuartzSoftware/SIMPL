@@ -51,7 +51,7 @@ class SIMPLib_EXPORT VertexGeom : public IGeometry
 
     SIMPL_SHARED_POINTERS(VertexGeom)
     SIMPL_STATIC_NEW_MACRO(VertexGeom)
-    SIMPL_TYPE_MACRO_SUPER(VertexGeom, Observable)
+     SIMPL_TYPE_MACRO_SUPER_OVERRIDE(VertexGeom, Observable)
 
     virtual ~VertexGeom();
 

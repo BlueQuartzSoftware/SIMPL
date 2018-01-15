@@ -47,7 +47,7 @@ class SIMPLib_EXPORT IGeometry2D : public IGeometry
 {
   public:
     SIMPL_SHARED_POINTERS(IGeometry2D)
-    SIMPL_TYPE_MACRO_SUPER(IGeometry2D, Observable)
+     SIMPL_TYPE_MACRO_SUPER_OVERRIDE(IGeometry2D, Observable)
 
     IGeometry2D();
     virtual ~IGeometry2D();

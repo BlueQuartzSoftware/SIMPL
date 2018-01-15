@@ -529,6 +529,14 @@ const QString DataContainerWriter::getGroupName()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
+const QUuid DataContainerWriter::getUuid()
+{
+  return QUuid("{3fcd4c43-9d75-5b86-aad4-4441bc914f37}");
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
 const QString DataContainerWriter::getSubGroupName()
 {
   return SIMPL::FilterSubGroups::OutputFilters;

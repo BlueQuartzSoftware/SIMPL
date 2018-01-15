@@ -271,6 +271,14 @@ const QString RemoveArrays::getGroupName()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
+const QUuid RemoveArrays::getUuid()
+{
+  return QUuid("{7b1c8f46-90dd-584a-b3ba-34e16958a7d0}");
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
 const QString RemoveArrays::getSubGroupName()
 {
   return SIMPL::FilterSubGroups::MemoryManagementFilters;

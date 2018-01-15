@@ -86,7 +86,7 @@ class SIMPLib_EXPORT BoundaryStatsData : public StatsData
   public:
     SIMPL_SHARED_POINTERS(BoundaryStatsData)
     SIMPL_STATIC_NEW_MACRO(BoundaryStatsData)
-    SIMPL_TYPE_MACRO_SUPER(BoundaryStatsData, StatsData)
+     SIMPL_TYPE_MACRO_SUPER_OVERRIDE(BoundaryStatsData, StatsData)
 
     virtual ~BoundaryStatsData();
 

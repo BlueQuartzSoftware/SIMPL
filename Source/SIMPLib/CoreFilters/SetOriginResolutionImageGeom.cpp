@@ -263,6 +263,14 @@ const QString SetOriginResolutionImageGeom::getGroupName()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
+const QUuid SetOriginResolutionImageGeom::getUuid()
+{
+  return QUuid("{6d3a3852-6251-5d2e-b749-6257fd0d8951}");
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
 const QString SetOriginResolutionImageGeom::getSubGroupName()
 {
   return SIMPL::FilterSubGroups::SpatialFilters;

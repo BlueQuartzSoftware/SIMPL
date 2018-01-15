@@ -63,7 +63,7 @@ class SIMPLib_EXPORT LinkedDataContainerSelectionFilterParameter : public Filter
   public:
     SIMPL_SHARED_POINTERS(LinkedDataContainerSelectionFilterParameter)
     SIMPL_STATIC_NEW_MACRO(LinkedDataContainerSelectionFilterParameter)
-    SIMPL_TYPE_MACRO_SUPER(LinkedDataContainerSelectionFilterParameter, FilterParameter)
+     SIMPL_TYPE_MACRO_SUPER_OVERRIDE(LinkedDataContainerSelectionFilterParameter, FilterParameter)
 
     typedef std::function<void(QString)> SetterCallbackType;
     typedef std::function<QString(void)> GetterCallbackType;

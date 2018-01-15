@@ -248,6 +248,14 @@ const QString CreateAttributeMatrix::getHumanLabel()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
+const QUuid CreateAttributeMatrix::getUuid()
+{
+  return QUuid("{93375ef0-7367-5372-addc-baa019b1b341}");
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
 const QString CreateAttributeMatrix::getSubGroupName()
 {
   return SIMPL::FilterSubGroups::GenerationFilters;

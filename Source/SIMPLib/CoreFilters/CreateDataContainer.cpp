@@ -195,6 +195,14 @@ const QString CreateDataContainer::getHumanLabel()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
+const QUuid CreateDataContainer::getUuid()
+{
+  return QUuid("{816fbe6b-7c38-581b-b149-3f839fb65b93}");
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
 const QString CreateDataContainer::getSubGroupName()
 {
   return SIMPL::FilterSubGroups::GenerationFilters;

@@ -66,7 +66,7 @@ class SIMPLib_EXPORT PreflightUpdatedValueFilterParameter : public FilterParamet
   public:
     SIMPL_SHARED_POINTERS(PreflightUpdatedValueFilterParameter)
     SIMPL_STATIC_NEW_MACRO(PreflightUpdatedValueFilterParameter)
-    SIMPL_TYPE_MACRO_SUPER(PreflightUpdatedValueFilterParameter, FilterParameter)
+     SIMPL_TYPE_MACRO_SUPER_OVERRIDE(PreflightUpdatedValueFilterParameter, FilterParameter)
 
     typedef std::function<void(QString)> SetterCallbackType;
     typedef std::function<QString(void)> GetterCallbackType;

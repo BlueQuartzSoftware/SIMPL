@@ -335,6 +335,14 @@ const QString ConditionalSetValue::getGroupName()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
+const QUuid ConditionalSetValue::getUuid()
+{
+  return QUuid("{47cafe63-83cc-5826-9521-4fb5bea684ef}");
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
 const QString ConditionalSetValue::getSubGroupName()
 {
   return SIMPL::FilterSubGroups::MemoryManagementFilters;

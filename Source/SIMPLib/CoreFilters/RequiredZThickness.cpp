@@ -236,6 +236,14 @@ const QString RequiredZThickness::getGroupName()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
+const QUuid RequiredZThickness::getUuid()
+{
+  return QUuid("{1fe19578-6856-55f2-adc8-2236fac22c25}");
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
 const QString RequiredZThickness::getSubGroupName()
 {
   return SIMPL::FilterSubGroups::MiscFilters;

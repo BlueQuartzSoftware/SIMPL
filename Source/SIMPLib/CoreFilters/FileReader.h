@@ -51,7 +51,7 @@ class SIMPLib_EXPORT FileReader : public AbstractFilter
   public:
     SIMPL_SHARED_POINTERS(FileReader)
     SIMPL_STATIC_NEW_MACRO(FileReader)
-    SIMPL_TYPE_MACRO_SUPER(FileReader, AbstractFilter)
+     SIMPL_TYPE_MACRO_SUPER_OVERRIDE(FileReader, AbstractFilter)
 
     virtual ~FileReader();
 
@@ -59,7 +59,7 @@ class SIMPLib_EXPORT FileReader : public AbstractFilter
      * error checkes after each one. Subclasses should just implement the readHeader
      * and readFile methods unless special setups are needed.
      */
-    virtual void execute();
+    virtual void execute() override;
 
   signals:
     /**

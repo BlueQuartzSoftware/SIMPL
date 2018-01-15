@@ -376,6 +376,14 @@ const QString FeatureDataCSVWriter::getGroupName()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
+const QUuid FeatureDataCSVWriter::getUuid()
+{
+  return QUuid("{737b8d5a-8622-50f9-9a8a-bfdb57608891}");
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
 const QString FeatureDataCSVWriter::getSubGroupName()
 {
   return SIMPL::FilterSubGroups::OutputFilters;

@@ -47,7 +47,7 @@ class SIMPLib_EXPORT ChangeGlobalValue : public AbstractFilter
 public:
   SIMPL_SHARED_POINTERS(ChangeGlobalValue)
   SIMPL_STATIC_NEW_MACRO(ChangeGlobalValue)
-  SIMPL_TYPE_MACRO_SUPER(ChangeGlobalValue, AbstractFilter)
+   SIMPL_TYPE_MACRO_SUPER_OVERRIDE(ChangeGlobalValue, AbstractFilter)
 
   virtual ~ChangeGlobalValue();
 
@@ -60,17 +60,17 @@ public:
   /**
   * @brief newFilterInstance Reimplemented from @see AbstractFilter class
   */
-  virtual AbstractFilter::Pointer newFilterInstance(bool copyFilterParameters);
+  virtual AbstractFilter::Pointer newFilterInstance(bool copyFilterParameters) override;
 
   /**
   * @brief execute Reimplemented from @see AbstractFilter class
   */
-  virtual void execute();
+  virtual void execute() override;
 
   /**
   * @brief preflight Reimplemented from @see AbstractFilter class
   */
-  virtual void preflight();
+  virtual void preflight() override;
 
 protected:
   ChangeGlobalValue();

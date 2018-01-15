@@ -50,7 +50,7 @@ class SIMPLib_EXPORT ComparisonValue : public AbstractComparison
 public:
   SIMPL_SHARED_POINTERS(ComparisonValue)
   SIMPL_STATIC_NEW_MACRO(ComparisonValue)
-  SIMPL_TYPE_MACRO_SUPER(ComparisonValue, AbstractComparison)
+   SIMPL_TYPE_MACRO_SUPER_OVERRIDE(ComparisonValue, AbstractComparison)
 
   ~ComparisonValue();
 

@@ -69,7 +69,7 @@ class SIMPLib_EXPORT ComparisonSelectionAdvancedFilterParameter : public FilterP
   public:
     SIMPL_SHARED_POINTERS(ComparisonSelectionAdvancedFilterParameter)
     SIMPL_STATIC_NEW_MACRO(ComparisonSelectionAdvancedFilterParameter)
-    SIMPL_TYPE_MACRO_SUPER(ComparisonSelectionAdvancedFilterParameter, FilterParameter)
+     SIMPL_TYPE_MACRO_SUPER_OVERRIDE(ComparisonSelectionAdvancedFilterParameter, FilterParameter)
 
     typedef std::function<void(ComparisonInputsAdvanced)> SetterCallbackType;
     typedef std::function<ComparisonInputsAdvanced(void)> GetterCallbackType;

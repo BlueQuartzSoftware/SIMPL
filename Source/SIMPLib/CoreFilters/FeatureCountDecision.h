@@ -52,7 +52,7 @@ class SIMPLib_EXPORT FeatureCountDecision : public AbstractDecisionFilter
   public:
     SIMPL_SHARED_POINTERS(FeatureCountDecision)
     SIMPL_STATIC_NEW_MACRO(FeatureCountDecision)
-    SIMPL_TYPE_MACRO_SUPER(FeatureCountDecision, AbstractDecisionFilter)
+     SIMPL_TYPE_MACRO_SUPER_OVERRIDE(FeatureCountDecision, AbstractDecisionFilter)
 
     virtual ~FeatureCountDecision();
 
@@ -71,32 +71,38 @@ class SIMPLib_EXPORT FeatureCountDecision : public AbstractDecisionFilter
     /**
      * @brief getCompiledLibraryName Reimplemented from @see AbstractFilter class
      */
-    virtual const QString getCompiledLibraryName();
+    virtual const QString getCompiledLibraryName() override;
 
     /**
      * @brief newFilterInstance Reimplemented from @see AbstractFilter class
      */
-    virtual AbstractFilter::Pointer newFilterInstance(bool copyFilterParameters);
+    virtual AbstractFilter::Pointer newFilterInstance(bool copyFilterParameters) override;
 
     /**
      * @brief getGroupName Reimplemented from @see AbstractFilter class
      */
-    virtual const QString getGroupName();
+    virtual const QString getGroupName() override;
 
     /**
      * @brief getSubGroupName Reimplemented from @see AbstractFilter class
      */
-    virtual const QString getSubGroupName();
+    virtual const QString getSubGroupName() override;
+
+    /**
+     * @brief getUuid Return the unique identifier for this filter.
+     * @return A QUuid object.
+     */
+    virtual const QUuid getUuid() override;
 
     /**
      * @brief getHumanLabel Reimplemented from @see AbstractFilter class
      */
-    virtual const QString getHumanLabel();
+    virtual const QString getHumanLabel() override;
 
     /**
      * @brief setupFilterParameters Reimplemented from @see AbstractFilter class
      */
-    virtual void setupFilterParameters();
+    virtual void setupFilterParameters() override;
 
     /**
      * @brief readFilterParameters Reimplemented from @see AbstractFilter class
@@ -106,12 +112,12 @@ class SIMPLib_EXPORT FeatureCountDecision : public AbstractDecisionFilter
     /**
      * @brief execute Reimplemented from @see AbstractFilter class
      */
-    virtual void execute();
+    virtual void execute() override;
 
     /**
     * @brief preflight Reimplemented from @see AbstractFilter class
     */
-    virtual void preflight();
+    virtual void preflight() override;
 
   protected:
     FeatureCountDecision();

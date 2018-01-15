@@ -258,6 +258,14 @@ const QString LinkFeatureMapToElementArray::getGroupName()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
+const QUuid LinkFeatureMapToElementArray::getUuid()
+{
+  return QUuid("{0e1c45f6-ed7a-5279-8a5c-a2d5cc6bfead}");
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
 const QString LinkFeatureMapToElementArray::getSubGroupName()
 {
   return SIMPL::FilterSubGroups::MemoryManagementFilters;

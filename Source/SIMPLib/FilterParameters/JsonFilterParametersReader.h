@@ -55,7 +55,7 @@ class SIMPLib_EXPORT JsonFilterParametersReader : public AbstractFilterParameter
   public:
     SIMPL_SHARED_POINTERS(JsonFilterParametersReader)
     SIMPL_STATIC_NEW_MACRO(JsonFilterParametersReader)
-    SIMPL_TYPE_MACRO_SUPER(JsonFilterParametersReader, AbstractFilterParametersReader)
+     SIMPL_TYPE_MACRO_SUPER_OVERRIDE(JsonFilterParametersReader, AbstractFilterParametersReader)
 
     virtual ~JsonFilterParametersReader();
 

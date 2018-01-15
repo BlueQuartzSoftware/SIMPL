@@ -68,7 +68,7 @@ class SIMPLib_EXPORT DynamicTableFilterParameter : public FilterParameter
   public:
     SIMPL_SHARED_POINTERS(DynamicTableFilterParameter)
     SIMPL_STATIC_NEW_MACRO(DynamicTableFilterParameter)
-    SIMPL_TYPE_MACRO_SUPER(DynamicTableFilterParameter, FilterParameter)
+     SIMPL_TYPE_MACRO_SUPER_OVERRIDE(DynamicTableFilterParameter, FilterParameter)
 
     typedef std::function<void(DynamicTableData)> SetterCallbackType;
     typedef std::function<DynamicTableData(void)> GetterCallbackType;

@@ -411,6 +411,14 @@ const QString CombineAttributeMatrices::getGroupName()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
+const QUuid CombineAttributeMatrices::getUuid()
+{
+  return QUuid("{334034e9-405f-51a3-9c3c-8d9c955835d9}");
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
 const QString CombineAttributeMatrices::getSubGroupName()
 {
   return SIMPL::FilterSubGroups::MemoryManagementFilters;

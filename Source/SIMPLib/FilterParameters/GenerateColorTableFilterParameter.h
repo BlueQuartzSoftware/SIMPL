@@ -51,7 +51,7 @@ class SIMPLib_EXPORT GenerateColorTableFilterParameter : public FilterParameter
   public:
     SIMPL_SHARED_POINTERS(GenerateColorTableFilterParameter)
     SIMPL_STATIC_NEW_MACRO(GenerateColorTableFilterParameter)
-    SIMPL_TYPE_MACRO_SUPER(GenerateColorTableFilterParameter, FilterParameter)
+     SIMPL_TYPE_MACRO_SUPER_OVERRIDE(GenerateColorTableFilterParameter, FilterParameter)
 
     /**
      * @brief New This function instantiates an instance of the DataContainerCreationFilterParameter.

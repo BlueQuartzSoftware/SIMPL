@@ -48,7 +48,7 @@ class SIMPLib_EXPORT QuadGeom : public IGeometry2D
 
     SIMPL_SHARED_POINTERS(QuadGeom)
     SIMPL_STATIC_NEW_MACRO(QuadGeom)
-    SIMPL_TYPE_MACRO_SUPER(QuadGeom, Observable)
+     SIMPL_TYPE_MACRO_SUPER_OVERRIDE(QuadGeom, Observable)
 
     virtual ~QuadGeom();
 

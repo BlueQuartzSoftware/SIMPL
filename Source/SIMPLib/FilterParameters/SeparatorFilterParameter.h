@@ -47,7 +47,7 @@ class SIMPLib_EXPORT SeparatorFilterParameter : public FilterParameter
   public:
     SIMPL_SHARED_POINTERS(SeparatorFilterParameter)
     SIMPL_STATIC_NEW_MACRO(SeparatorFilterParameter)
-    SIMPL_TYPE_MACRO_SUPER(SeparatorFilterParameter, FilterParameter)
+     SIMPL_TYPE_MACRO_SUPER_OVERRIDE(SeparatorFilterParameter, FilterParameter)
 
     /**
      * @brief New This function instantiates an instance of the SeparatorFilterParameter.

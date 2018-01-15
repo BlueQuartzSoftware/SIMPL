@@ -21,7 +21,7 @@ class SIMPLib_EXPORT Filt0 : public AbstractFilter
 public:
   SIMPL_SHARED_POINTERS(Filt0)
   SIMPL_STATIC_NEW_MACRO(Filt0)
-  SIMPL_TYPE_MACRO_SUPER(Filt0, AbstractFilter)
+   SIMPL_TYPE_MACRO_SUPER_OVERRIDE(Filt0, AbstractFilter)
 
   virtual ~Filt0();
   SIMPL_INSTANCE_STRING_PROPERTY(DataContainerName)
@@ -62,7 +62,7 @@ public:
   * @brief This method will instantiate all the end user settable options/parameters
   * for this filter
   */
-  virtual void setupFilterParameters();
+  virtual void setupFilterParameters() override;
 
   /**
   * @brief This method will read the options from a file
@@ -73,13 +73,13 @@ public:
   /**
    * @brief Reimplemented from @see AbstractFilter class
    */
-  virtual void execute();
+  virtual void execute() override;
 
   /**
   * @brief This function runs some sanity checks on the DataContainer and inputs
   * in an attempt to ensure the filter can process the inputs.
   */
-  virtual void preflight();
+  virtual void preflight() override;
 
 signals:
   void updateFilterParameters(AbstractFilter* filter);
@@ -114,7 +114,7 @@ class SIMPLib_EXPORT Filt1 : public AbstractFilter
 public:
   SIMPL_SHARED_POINTERS(Filt1)
   SIMPL_STATIC_NEW_MACRO(Filt1)
-  SIMPL_TYPE_MACRO_SUPER(Filt1, AbstractFilter)
+   SIMPL_TYPE_MACRO_SUPER_OVERRIDE(Filt1, AbstractFilter)
 
   virtual ~Filt1();
   SIMPL_INSTANCE_STRING_PROPERTY(DataContainerName)
@@ -154,7 +154,7 @@ public:
   * @brief This method will instantiate all the end user settable options/parameters
   * for this filter
   */
-  virtual void setupFilterParameters();
+  virtual void setupFilterParameters() override;
 
   /**
   * @brief This method will read the options from a file
@@ -165,13 +165,13 @@ public:
   /**
    * @brief Reimplemented from @see AbstractFilter class
    */
-  virtual void execute();
+  virtual void execute() override;
 
   /**
   * @brief This function runs some sanity checks on the DataContainer and inputs
   * in an attempt to ensure the filter can process the inputs.
   */
-  virtual void preflight();
+  virtual void preflight() override;
 
 signals:
   void updateFilterParameters(AbstractFilter* filter);

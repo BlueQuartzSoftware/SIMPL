@@ -51,7 +51,7 @@ class SIMPLib_EXPORT DataContainerReaderFilterParameter : public FilterParameter
   public:
     SIMPL_SHARED_POINTERS(DataContainerReaderFilterParameter)
     SIMPL_STATIC_NEW_MACRO(DataContainerReaderFilterParameter)
-    SIMPL_TYPE_MACRO_SUPER(DataContainerReaderFilterParameter, FilterParameter)
+     SIMPL_TYPE_MACRO_SUPER_OVERRIDE(DataContainerReaderFilterParameter, FilterParameter)
 
     /**
      * @brief New This function instantiates an instance of the DataContainerCreationFilterParameter.

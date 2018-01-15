@@ -47,7 +47,7 @@ class SIMPLib_EXPORT IGeometryGrid : public IGeometry
 {
   public:
     SIMPL_SHARED_POINTERS(IGeometryGrid)
-    SIMPL_TYPE_MACRO_SUPER(IGeometryGrid, Observable)
+     SIMPL_TYPE_MACRO_SUPER_OVERRIDE(IGeometryGrid, Observable)
 
     IGeometryGrid();
     virtual ~IGeometryGrid();

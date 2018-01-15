@@ -49,7 +49,7 @@ class SIMPLib_EXPORT DataContainerBundle : public IDataContainerBundle
     Q_OBJECT
   public:
     SIMPL_SHARED_POINTERS (DataContainerBundle)
-    SIMPL_TYPE_MACRO_SUPER(DataContainerBundle, IDataContainerBundle)
+     SIMPL_TYPE_MACRO_SUPER_OVERRIDE(DataContainerBundle, IDataContainerBundle)
 
     virtual ~DataContainerBundle();
 

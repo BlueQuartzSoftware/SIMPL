@@ -66,7 +66,7 @@ class SIMPLib_EXPORT DataContainer : public Observable
   public:
     SIMPL_SHARED_POINTERS(DataContainer)
     SIMPL_STATIC_NEW_MACRO(DataContainer)
-    SIMPL_TYPE_MACRO_SUPER(DataContainer, Observable)
+     SIMPL_TYPE_MACRO_SUPER_OVERRIDE(DataContainer, Observable)
 
     virtual ~DataContainer();
 

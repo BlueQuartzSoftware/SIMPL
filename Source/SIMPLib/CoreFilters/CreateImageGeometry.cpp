@@ -244,6 +244,14 @@ const QString CreateImageGeometry::getGroupName()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
+const QUuid CreateImageGeometry::getUuid()
+{
+  return QUuid("{f2132744-3abb-5d66-9cd9-c9a233b5c4aa}");
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
 const QString CreateImageGeometry::getSubGroupName()
 {
   return SIMPL::FilterSubGroups::GenerationFilters;

@@ -317,6 +317,14 @@ const QString WriteTriangleGeometry::getGroupName()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
+const QUuid WriteTriangleGeometry::getUuid()
+{
+  return QUuid("{5e523ec1-49ac-541e-a4ba-6fa725798b91}");
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
 const QString WriteTriangleGeometry::getSubGroupName()
 {
   return SIMPL::FilterSubGroups::OutputFilters;

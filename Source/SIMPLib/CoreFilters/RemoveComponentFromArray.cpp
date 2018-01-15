@@ -340,6 +340,14 @@ const QString RemoveComponentFromArray::getGroupName()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
+const QUuid RemoveComponentFromArray::getUuid()
+{
+  return QUuid("{1b4b9941-62e4-52f2-9918-15d48147ab88}");
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
 const QString RemoveComponentFromArray::getSubGroupName()
 {
   return SIMPL::FilterSubGroups::MemoryManagementFilters;

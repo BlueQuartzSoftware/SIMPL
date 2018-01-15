@@ -489,6 +489,14 @@ const QString MultiThresholdObjects2::getGroupName()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
+const QUuid MultiThresholdObjects2::getUuid()
+{
+  return QUuid("{686d5393-2b02-5c86-b887-dd81a8ae80f2}");
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
 const QString MultiThresholdObjects2::getSubGroupName()
 {
   return SIMPL::FilterSubGroups::ThresholdFilters;

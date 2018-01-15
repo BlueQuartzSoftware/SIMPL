@@ -113,7 +113,7 @@ class SIMPLib_EXPORT FileListInfoFilterParameter : public FilterParameter
   public:
     SIMPL_SHARED_POINTERS(FileListInfoFilterParameter)
     SIMPL_STATIC_NEW_MACRO(FileListInfoFilterParameter)
-    SIMPL_TYPE_MACRO_SUPER(FileListInfoFilterParameter, FilterParameter)
+     SIMPL_TYPE_MACRO_SUPER_OVERRIDE(FileListInfoFilterParameter, FilterParameter)
 
     typedef std::function<void(FileListInfo_t)> SetterCallbackType;
     typedef std::function<FileListInfo_t(void)> GetterCallbackType;

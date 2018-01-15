@@ -55,7 +55,7 @@ class SIMPLib_EXPORT H5FilterParametersWriter : public AbstractFilterParametersW
   public:
     SIMPL_SHARED_POINTERS(H5FilterParametersWriter)
     SIMPL_STATIC_NEW_MACRO(H5FilterParametersWriter)
-    SIMPL_TYPE_MACRO_SUPER(H5FilterParametersWriter, AbstractFilterParametersWriter)
+     SIMPL_TYPE_MACRO_SUPER_OVERRIDE(H5FilterParametersWriter, AbstractFilterParametersWriter)
 
     /**
      * @brief WritePipelineToFile This function will write a pipeline to an HDF5 based

@@ -421,6 +421,14 @@ const QString FindDerivatives::getGroupName()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
+const QUuid FindDerivatives::getUuid()
+{
+  return QUuid("{8ec1fc8e-6484-5412-a898-8079986c0a26}");
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
 const QString FindDerivatives::getSubGroupName()
 {
   return SIMPL::FilterSubGroups::GeometryFilters;

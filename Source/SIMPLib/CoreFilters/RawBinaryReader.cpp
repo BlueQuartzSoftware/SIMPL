@@ -557,6 +557,14 @@ const QString RawBinaryReader::getGroupName()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
+const QUuid RawBinaryReader::getUuid()
+{
+  return QUuid("{0791f556-3d73-5b1e-b275-db3f7bb6850d}");
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
 const QString RawBinaryReader::getSubGroupName()
 {
   return SIMPL::FilterSubGroups::InputFilters;
