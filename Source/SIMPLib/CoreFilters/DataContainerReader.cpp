@@ -418,8 +418,7 @@ int DataContainerReader::writeExistingPipelineToFile(QJsonObject& rootJson, int 
 // -----------------------------------------------------------------------------
 bool DataContainerReader::syncProxies()
 {
-//  SIMPLH5DataReaderRequirements req(SIMPL::Defaults::AnyPrimitive, SIMPL::Defaults::AnyComponentSize, AttributeMatrix::Type::Any, IGeometry::Type::Any);
-  SIMPLH5DataReaderRequirements req(SIMPL::Defaults::AnyPrimitive, 1, AttributeMatrix::Type::Any, IGeometry::Type::Image);
+  SIMPLH5DataReaderRequirements req(SIMPL::Defaults::AnyPrimitive, SIMPL::Defaults::AnyComponentSize, AttributeMatrix::Type::Any, IGeometry::Type::Any);
 
   SIMPLH5DataReader::Pointer simplReader = SIMPLH5DataReader::New();
   connect(simplReader.get(), &SIMPLH5DataReader::errorGenerated, [=] (const QString &msg, const int &code) {
