@@ -146,10 +146,28 @@ class SIMPLib_EXPORT ISIMPLibPlugin
     virtual ~ISIMPLibPlugin() {}
 
     /**
-     * @brief Returns the name of the plugin
+     * @brief Returns the name of the plugin that appears on the file system. 
+     * 
+     * Note that if the build is a debug build there will be a _Plugin postfix
+     * to the filename.
      */
-    virtual QString getPluginName() = 0;
-
+    virtual QString getPluginFileName() = 0;
+    
+    /**
+     * @brief getPluginDisplayName The name that should be used for human facing
+     * labels and display strings
+     * @return 
+     */
+    virtual QString getPluginDisplayName() = 0;
+    
+    /**
+     * @brief getPluginBaseName The Name of the plugin.
+     * 
+     * This typically will NOT have the Plugin suffix.
+     * @return 
+     */
+    virtual QString getPluginBaseName() = 0;
+    
     /**
      * @brief Returns the version of the plugin
      */
