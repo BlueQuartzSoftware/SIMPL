@@ -126,6 +126,21 @@ if(SIMPL_Group_PLUGIN AND SIMPL_Group_BASE AND SIMPL_Group_FILTERS)
   )
 endif()
 
+
+AddSIMPLUnitTest(TESTNAME FilterParameterCallbackExample
+                  SOURCES 
+                    ${SIMPLTools_SOURCE_DIR}/FilterParameterCallbackExample.cpp
+                  FOLDER 
+                    "DREAM3D UnitTests"
+                  LINK_LIBRARIES 
+                    Qt5::Core H5Support SIMPLib  
+                  INCLUDE_DIRS
+                    ${SIMPLTools_BINARY_DIR}
+                    ${SIMPLProj_SOURCE_DIR}/Source
+                    ${SIMPLProj_BINARY_DIR}
+                   )
+
+
 if (FALSE)
 
   COMPILE_TOOL(
