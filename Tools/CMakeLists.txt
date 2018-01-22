@@ -130,6 +130,12 @@ endif()
 AddSIMPLUnitTest(TESTNAME FilterParameterCallbackExample
                   SOURCES 
                     ${SIMPLTools_SOURCE_DIR}/FilterParameterCallbackExample.cpp
+                    ${SIMPLTools_SOURCE_DIR}/FilterCallback/FilterParameter.h
+                    ${SIMPLTools_SOURCE_DIR}/FilterCallback/FilterParameter.cpp
+                    ${SIMPLTools_SOURCE_DIR}/FilterCallback/FilterWidget.h
+                    ${SIMPLTools_SOURCE_DIR}/FilterCallback/FilterWidget.cpp
+                    ${SIMPLTools_SOURCE_DIR}/FilterCallback/IFilter.h
+                    ${SIMPLTools_SOURCE_DIR}/FilterCallback/IFilter.cpp
                   FOLDER 
                     "DREAM3D UnitTests"
                   LINK_LIBRARIES 
