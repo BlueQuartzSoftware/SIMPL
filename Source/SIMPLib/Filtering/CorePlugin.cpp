@@ -41,7 +41,7 @@
 #include "SIMPLib/Filtering/CoreConstants.h"
 #include "SIMPLib/Common/Constants.h"
 
-// Include the MOC generated CPP file which has all the QMetaObject methods/data
+
 
 // -----------------------------------------------------------------------------
 //

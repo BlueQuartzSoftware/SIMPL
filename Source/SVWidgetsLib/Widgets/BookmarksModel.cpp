@@ -43,7 +43,7 @@
 #include "SVWidgetsLib/Widgets/SIMPLViewToolbox.h"
 #include "SVWidgetsLib/QtSupport/QtSSettings.h"
 
-// Include the MOC generated CPP file which has all the QMetaObject methods/data
+
 
 BookmarksModel* BookmarksModel::self = nullptr;
 

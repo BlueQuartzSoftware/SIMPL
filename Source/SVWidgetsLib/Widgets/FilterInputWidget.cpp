@@ -73,7 +73,7 @@
 #define QGroupBox ctkCollapsibleGroupBox
 #endif
 
-// Include the MOC generated CPP file which has all the QMetaObject methods/data
+
 
 // Initialize private static member variable
 QString FilterInputWidget::m_OpenDialogLastFilePath = "";

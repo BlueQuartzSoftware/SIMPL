@@ -46,7 +46,7 @@
 #include "SVWidgetsLib/QtSupport/QtSStyles.h"
 
 
-// Include the MOC generated CPP file which has all the QMetaObject methods/data
+
 
 #define LIBRARY_NODE_TYPE 0
 #define PLUGIN_NODE_TYPE 1
