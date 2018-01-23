@@ -141,11 +141,14 @@ void DataArrayProxy::ReadDataArrayStructure(hid_t attrMatGid, QMap<QString, Data
       std::cout << "Error Reading the Component Dimensions for DataArray " << dataArrayName.toStdString() << std::endl;
     }
 
-    QVector<QVector<size_t>> cDims = req->getComponentDimensions();
     bool cDimsResult = false;
-    if(cDims.size() <= 0 || cDims.contains(proxy.compDims))
+    if (req != nullptr)
     {
-      cDimsResult = true;
+      QVector<QVector<size_t>> cDims = req->getComponentDimensions();
+      if(cDims.size() <= 0 || cDims.contains(proxy.compDims))
+      {
+        cDimsResult = true;
+      }
     }
 
     err = QH5Lite::readScalarAttribute(attrMatGid, dataArrayName, SIMPL::HDF5::DataArrayVersion, proxy.version);
@@ -160,10 +163,13 @@ void DataArrayProxy::ReadDataArrayStructure(hid_t attrMatGid, QMap<QString, Data
       std::cout << "Error Reading the Object Type for DataArray " << dataArrayName.toStdString() << std::endl;
     }
 
-    QVector<QString> daTypes = req->getDATypes();
-    if((daTypes.size() <= 0 || daTypes.contains(proxy.objectType)) && cDimsResult == true)
+    if (req != nullptr)
     {
-      proxy.flag = Qt::Checked;
+      QVector<QString> daTypes = req->getDATypes();
+      if((daTypes.size() <= 0 || daTypes.contains(proxy.objectType)) && cDimsResult == true)
+      {
+        proxy.flag = Qt::Checked;
+      }
     }
 
     dataArrays.insert(dataArrayName, proxy);

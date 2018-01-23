@@ -259,10 +259,13 @@ void AttributeMatrix::ReadAttributeMatrixStructure(hid_t containerId, DataContai
       herr_t err = QH5Lite::readScalarAttribute(containerId, attributeMatrixName, SIMPL::StringConstants::AttributeMatrixType, amTypeTmp);
       if(err >= 0)
       {
-        AttributeMatrix::Types amTypes = req->getAMTypes();
-        if (amTypes.size() <= 0 || amTypes.contains(static_cast<AttributeMatrix::Type>(amTypeTmp)))
+        if (req != nullptr)
         {
-          amProxy.flag = Qt::Checked;
+          AttributeMatrix::Types amTypes = req->getAMTypes();
+          if (amTypes.size() <= 0 || amTypes.contains(static_cast<AttributeMatrix::Type>(amTypeTmp)))
+          {
+            amProxy.flag = Qt::Checked;
+          }
         }
         amProxy.amType = static_cast<AttributeMatrix::Type>(amTypeTmp);
       }

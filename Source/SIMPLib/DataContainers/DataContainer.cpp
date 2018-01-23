@@ -113,10 +113,13 @@ void DataContainer::ReadDataContainerStructure(hid_t dcArrayGroupId, DataContain
     herr_t err = QH5Lite::readScalarAttribute(containerGid, SIMPL::Geometry::Geometry, SIMPL::Geometry::GeometryType, geometryType);
     if (err >= 0)
     {
-      IGeometry::Types geomTypes = req->getDCGeometryTypes();
-      if (geomTypes.size() <= 0 || geomTypes.contains(static_cast<IGeometry::Type>(geometryType)))
+      if (req != nullptr)
       {
-        dcProxy.flag = Qt::Checked;
+        IGeometry::Types geomTypes = req->getDCGeometryTypes();
+        if (geomTypes.size() <= 0 || geomTypes.contains(static_cast<IGeometry::Type>(geometryType)))
+        {
+          dcProxy.flag = Qt::Checked;
+        }
       }
     }
 
