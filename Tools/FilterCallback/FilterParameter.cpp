@@ -24,7 +24,7 @@ IFilterParameter::~IFilterParameter() = default;
 
 
 
-Int32Parameter::Pointer Int32Parameter::Int32Parameter::New(const std::string& humanLabel,
+Int32Parameter::Pointer Int32Parameter::New(const std::string& humanLabel,
                                                             const std::string& propertyName,
                                                             const int& defaultValue,
                                                             Category category,
