@@ -111,7 +111,7 @@ void PipelineSummary::execute()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-AbstractFilter::Pointer PipelineSummary::newFilterInstance(bool copyFilterParameters)
+AbstractFilter::Pointer PipelineSummary::newFilterInstance(bool copyFilterParameters) const
 {
   PipelineSummary::Pointer filter = PipelineSummary::New();
   if(true == copyFilterParameters)
@@ -124,7 +124,7 @@ AbstractFilter::Pointer PipelineSummary::newFilterInstance(bool copyFilterParame
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString PipelineSummary::getCompiledLibraryName()
+const QString PipelineSummary::getCompiledLibraryName() const
 {
   return Core::CoreBaseName;
 }
@@ -132,7 +132,7 @@ const QString PipelineSummary::getCompiledLibraryName()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString PipelineSummary::getBrandingString()
+const QString PipelineSummary::getBrandingString() const
 {
   return "SIMPLib Core Filter";
 }
@@ -140,7 +140,7 @@ const QString PipelineSummary::getBrandingString()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString PipelineSummary::getFilterVersion()
+const QString PipelineSummary::getFilterVersion() const
 {
   QString version;
   QTextStream vStream(&version);
@@ -151,7 +151,7 @@ const QString PipelineSummary::getFilterVersion()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString PipelineSummary::getGroupName()
+const QString PipelineSummary::getGroupName() const
 {
   return SIMPL::FilterGroups::CoreFilters;
 }
@@ -167,7 +167,7 @@ const QUuid PipelineSummary::getUuid()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString PipelineSummary::getSubGroupName()
+const QString PipelineSummary::getSubGroupName() const
 {
   return SIMPL::FilterSubGroups::MiscFilters;
 }
@@ -175,7 +175,7 @@ const QString PipelineSummary::getSubGroupName()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString PipelineSummary::getHumanLabel()
+const QString PipelineSummary::getHumanLabel() const
 {
   return "Pipeline Summary";
 }

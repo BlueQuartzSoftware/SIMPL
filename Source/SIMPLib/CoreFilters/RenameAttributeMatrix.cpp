@@ -158,7 +158,7 @@ void RenameAttributeMatrix::execute()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-AbstractFilter::Pointer RenameAttributeMatrix::newFilterInstance(bool copyFilterParameters)
+AbstractFilter::Pointer RenameAttributeMatrix::newFilterInstance(bool copyFilterParameters) const
 {
   RenameAttributeMatrix::Pointer filter = RenameAttributeMatrix::New();
   if(true == copyFilterParameters)
@@ -171,7 +171,7 @@ AbstractFilter::Pointer RenameAttributeMatrix::newFilterInstance(bool copyFilter
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString RenameAttributeMatrix::getCompiledLibraryName()
+const QString RenameAttributeMatrix::getCompiledLibraryName() const
 {
   return Core::CoreBaseName;
 }
@@ -179,7 +179,7 @@ const QString RenameAttributeMatrix::getCompiledLibraryName()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString RenameAttributeMatrix::getBrandingString()
+const QString RenameAttributeMatrix::getBrandingString() const
 {
   return "SIMPLib Core Filter";
 }
@@ -187,7 +187,7 @@ const QString RenameAttributeMatrix::getBrandingString()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString RenameAttributeMatrix::getFilterVersion()
+const QString RenameAttributeMatrix::getFilterVersion() const
 {
   QString version;
   QTextStream vStream(&version);
@@ -198,7 +198,7 @@ const QString RenameAttributeMatrix::getFilterVersion()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString RenameAttributeMatrix::getGroupName()
+const QString RenameAttributeMatrix::getGroupName() const
 {
   return SIMPL::FilterGroups::CoreFilters;
 }
@@ -214,7 +214,7 @@ const QUuid RenameAttributeMatrix::getUuid()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString RenameAttributeMatrix::getSubGroupName()
+const QString RenameAttributeMatrix::getSubGroupName() const
 {
   return SIMPL::FilterSubGroups::MemoryManagementFilters;
 }
@@ -222,7 +222,7 @@ const QString RenameAttributeMatrix::getSubGroupName()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString RenameAttributeMatrix::getHumanLabel()
+const QString RenameAttributeMatrix::getHumanLabel() const
 {
   return "Rename Attribute Matrix";
 }

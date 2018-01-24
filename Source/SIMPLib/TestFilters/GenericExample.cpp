@@ -423,7 +423,7 @@ void GenericExample::execute()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-AbstractFilter::Pointer GenericExample::newFilterInstance(bool copyFilterParameters)
+AbstractFilter::Pointer GenericExample::newFilterInstance(bool copyFilterParameters) const
 {
   GenericExample::Pointer filter = GenericExample::New();
   if(true == copyFilterParameters)
@@ -436,7 +436,7 @@ AbstractFilter::Pointer GenericExample::newFilterInstance(bool copyFilterParamet
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString GenericExample::getCompiledLibraryName()
+const QString GenericExample::getCompiledLibraryName() const
 {
   return Core::CoreBaseName;
 }
@@ -444,7 +444,7 @@ const QString GenericExample::getCompiledLibraryName()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString GenericExample::getGroupName()
+const QString GenericExample::getGroupName() const
 {
   return SIMPL::FilterGroups::Generic;
 }
@@ -460,7 +460,7 @@ const QUuid GenericExample::getUuid()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString GenericExample::getSubGroupName()
+const QString GenericExample::getSubGroupName() const
 {
   return "Test";
 }
@@ -468,7 +468,7 @@ const QString GenericExample::getSubGroupName()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString GenericExample::getHumanLabel()
+const QString GenericExample::getHumanLabel() const
 {
   return "Generic Example";
 }

@@ -465,7 +465,7 @@ bool DataContainerReader::syncProxies()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-AbstractFilter::Pointer DataContainerReader::newFilterInstance(bool copyFilterParameters)
+AbstractFilter::Pointer DataContainerReader::newFilterInstance(bool copyFilterParameters) const
 {
   DataContainerReader::Pointer filter = DataContainerReader::New();
   if(true == copyFilterParameters)
@@ -486,7 +486,7 @@ AbstractFilter::Pointer DataContainerReader::newFilterInstance(bool copyFilterPa
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString DataContainerReader::getCompiledLibraryName()
+const QString DataContainerReader::getCompiledLibraryName() const
 {
   return Core::CoreBaseName;
 }
@@ -494,7 +494,7 @@ const QString DataContainerReader::getCompiledLibraryName()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString DataContainerReader::getBrandingString()
+const QString DataContainerReader::getBrandingString() const
 {
   return "SIMPLib Core Filter";
 }
@@ -502,7 +502,7 @@ const QString DataContainerReader::getBrandingString()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString DataContainerReader::getFilterVersion()
+const QString DataContainerReader::getFilterVersion() const
 {
   QString version;
   QTextStream vStream(&version);
@@ -513,7 +513,7 @@ const QString DataContainerReader::getFilterVersion()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString DataContainerReader::getGroupName()
+const QString DataContainerReader::getGroupName() const
 {
   return SIMPL::FilterGroups::IOFilters;
 }
@@ -529,7 +529,7 @@ const QUuid DataContainerReader::getUuid()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString DataContainerReader::getSubGroupName()
+const QString DataContainerReader::getSubGroupName() const
 {
   return SIMPL::FilterSubGroups::InputFilters;
 }
@@ -537,7 +537,7 @@ const QString DataContainerReader::getSubGroupName()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString DataContainerReader::getHumanLabel()
+const QString DataContainerReader::getHumanLabel() const
 {
   return "Read DREAM.3D Data File";
 }

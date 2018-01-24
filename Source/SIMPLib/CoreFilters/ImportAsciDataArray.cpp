@@ -670,7 +670,7 @@ char ImportAsciDataArray::converSelectedDelimiter()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-AbstractFilter::Pointer ImportAsciDataArray::newFilterInstance(bool copyFilterParameters)
+AbstractFilter::Pointer ImportAsciDataArray::newFilterInstance(bool copyFilterParameters) const
 {
   ImportAsciDataArray::Pointer filter = ImportAsciDataArray::New();
   if(true == copyFilterParameters)
@@ -683,7 +683,7 @@ AbstractFilter::Pointer ImportAsciDataArray::newFilterInstance(bool copyFilterPa
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString ImportAsciDataArray::getCompiledLibraryName()
+const QString ImportAsciDataArray::getCompiledLibraryName() const
 {
   return Core::CoreBaseName;
 }
@@ -691,7 +691,7 @@ const QString ImportAsciDataArray::getCompiledLibraryName()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString ImportAsciDataArray::getBrandingString()
+const QString ImportAsciDataArray::getBrandingString() const
 {
   return "SIMPLib Core Filter";
 }
@@ -699,7 +699,7 @@ const QString ImportAsciDataArray::getBrandingString()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString ImportAsciDataArray::getFilterVersion()
+const QString ImportAsciDataArray::getFilterVersion() const
 {
   QString version;
   QTextStream vStream(&version);
@@ -710,7 +710,7 @@ const QString ImportAsciDataArray::getFilterVersion()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString ImportAsciDataArray::getGroupName()
+const QString ImportAsciDataArray::getGroupName() const
 {
   return SIMPL::FilterGroups::CoreFilters;
 }
@@ -726,7 +726,7 @@ const QUuid ImportAsciDataArray::getUuid()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString ImportAsciDataArray::getSubGroupName()
+const QString ImportAsciDataArray::getSubGroupName() const
 {
   return SIMPL::FilterSubGroups::InputFilters;
 }
@@ -734,7 +734,7 @@ const QString ImportAsciDataArray::getSubGroupName()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString ImportAsciDataArray::getHumanLabel()
+const QString ImportAsciDataArray::getHumanLabel() const
 {
   return "Import ASCII Attribute Array";
 }

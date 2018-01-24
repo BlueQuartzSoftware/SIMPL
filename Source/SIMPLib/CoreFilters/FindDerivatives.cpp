@@ -373,7 +373,7 @@ void FindDerivatives::execute()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-AbstractFilter::Pointer FindDerivatives::newFilterInstance(bool copyFilterParameters)
+AbstractFilter::Pointer FindDerivatives::newFilterInstance(bool copyFilterParameters) const
 {
   FindDerivatives::Pointer filter = FindDerivatives::New();
   if(true == copyFilterParameters)
@@ -386,7 +386,7 @@ AbstractFilter::Pointer FindDerivatives::newFilterInstance(bool copyFilterParame
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString FindDerivatives::getCompiledLibraryName()
+const QString FindDerivatives::getCompiledLibraryName() const
 {
   return Core::CoreBaseName;
 }
@@ -394,7 +394,7 @@ const QString FindDerivatives::getCompiledLibraryName()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString FindDerivatives::getBrandingString()
+const QString FindDerivatives::getBrandingString() const
 {
   return "SIMPLib Core Filter";
 }
@@ -402,7 +402,7 @@ const QString FindDerivatives::getBrandingString()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString FindDerivatives::getFilterVersion()
+const QString FindDerivatives::getFilterVersion() const
 {
   QString version;
   QTextStream vStream(&version);
@@ -413,7 +413,7 @@ const QString FindDerivatives::getFilterVersion()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString FindDerivatives::getGroupName()
+const QString FindDerivatives::getGroupName() const
 {
   return SIMPL::FilterGroups::CoreFilters;
 }
@@ -429,7 +429,7 @@ const QUuid FindDerivatives::getUuid()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString FindDerivatives::getSubGroupName()
+const QString FindDerivatives::getSubGroupName() const
 {
   return SIMPL::FilterSubGroups::GeometryFilters;
 }
@@ -437,7 +437,7 @@ const QString FindDerivatives::getSubGroupName()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString FindDerivatives::getHumanLabel()
+const QString FindDerivatives::getHumanLabel() const
 {
   return "Find Derivatives";
 }

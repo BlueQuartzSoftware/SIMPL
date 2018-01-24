@@ -137,7 +137,7 @@ void ArraySelectionExample::execute()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-AbstractFilter::Pointer ArraySelectionExample::newFilterInstance(bool copyFilterParameters)
+AbstractFilter::Pointer ArraySelectionExample::newFilterInstance(bool copyFilterParameters) const
 {
   /*
   * DataContainerArrayProxy
@@ -153,7 +153,7 @@ AbstractFilter::Pointer ArraySelectionExample::newFilterInstance(bool copyFilter
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString ArraySelectionExample::getCompiledLibraryName()
+const QString ArraySelectionExample::getCompiledLibraryName() const
 {
   return Core::CoreBaseName;
 }
@@ -161,7 +161,7 @@ const QString ArraySelectionExample::getCompiledLibraryName()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString ArraySelectionExample::getGroupName()
+const QString ArraySelectionExample::getGroupName() const
 {
   return SIMPL::FilterGroups::Generic;
 }
@@ -177,7 +177,7 @@ const QUuid ArraySelectionExample::getUuid()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString ArraySelectionExample::getSubGroupName()
+const QString ArraySelectionExample::getSubGroupName() const
 {
   return "Test";
 }
@@ -185,7 +185,7 @@ const QString ArraySelectionExample::getSubGroupName()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString ArraySelectionExample::getHumanLabel()
+const QString ArraySelectionExample::getHumanLabel() const
 {
   return "DataContainerArrayProxy Example";
 }

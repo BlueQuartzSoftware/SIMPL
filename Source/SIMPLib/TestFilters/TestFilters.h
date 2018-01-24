@@ -35,7 +35,7 @@ public:
   * a different group if you want. The string returned here will be displayed
   * in the GUI for the filter
   */
-  virtual const QString getGroupName()
+  virtual const QString getGroupName() const override
   {
     return SIMPL::FilterGroups::Generic;
   }
@@ -44,7 +44,7 @@ public:
   * @brief This returns a string that is displayed in the GUI. It should be readable
   * and understandable by humans.
   */
-  virtual const QString getHumanLabel()
+  virtual const QString getHumanLabel() const override
   {
     return "Filt0";
   }
@@ -53,7 +53,7 @@ public:
   * @brief This returns a string that is displayed in the GUI and helps to sort the filters into
   * a subgroup. It should be readable and understandable by humans.
   */
-  virtual const QString getSubGroupName()
+  virtual const QString getSubGroupName() const override
   {
     return "Misc";
   }
@@ -127,7 +127,7 @@ public:
   * a different group if you want. The string returned here will be displayed
   * in the GUI for the filter
   */
-  virtual const QString getGroupName()
+  virtual const QString getGroupName() const override
   {
     return "TestFilters";
   }
@@ -136,7 +136,7 @@ public:
   * @brief This returns a string that is displayed in the GUI. It should be readable
   * and understandable by humans.
   */
-  virtual const QString getHumanLabel()
+  virtual const QString getHumanLabel() const override
   {
     return "Filt1";
   }
@@ -145,7 +145,7 @@ public:
   * @brief This returns a string that is displayed in the GUI and helps to sort the filters into
   * a subgroup. It should be readable and understandable by humans.
   */
-  virtual const QString getSubGroupName()
+  virtual const QString getSubGroupName() const override
   {
     return "Test";
   }

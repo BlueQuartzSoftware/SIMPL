@@ -48,8 +48,8 @@ AbstractFilter::AbstractFilter()
 , m_ErrorCondition(0)
 , m_WarningCondition(0)
 , m_InPreflight(false)
-, m_PipelineIndex(0)
 , m_Enabled(true)
+, m_PipelineIndex(0)
 , m_Cancel(false)
 
 {
@@ -268,7 +268,7 @@ ISIMPLibPlugin* AbstractFilter::getPluginInstance()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-AbstractFilter::Pointer AbstractFilter::newFilterInstance(bool copyFilterParameters)
+AbstractFilter::Pointer AbstractFilter::newFilterInstance(bool copyFilterParameters) const
 {
   return NullPointer();
 }
@@ -276,7 +276,7 @@ AbstractFilter::Pointer AbstractFilter::newFilterInstance(bool copyFilterParamet
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void AbstractFilter::copyFilterParameterInstanceVariables(AbstractFilter* filter)
+void AbstractFilter::copyFilterParameterInstanceVariables(AbstractFilter* filter) const
 {
   filter->setFilterParameters(getFilterParameters());
 
@@ -312,7 +312,7 @@ void AbstractFilter::copyFilterParameterInstanceVariables(AbstractFilter* filter
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString AbstractFilter::getGroupName()
+const QString AbstractFilter::getGroupName() const
 {
   return "YOUR CLASS SHOULD IMPLEMENT THIS";
 }
@@ -320,7 +320,7 @@ const QString AbstractFilter::getGroupName()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString AbstractFilter::getSubGroupName()
+const QString AbstractFilter::getSubGroupName() const
 {
   return "YOUR CLASS SHOULD IMPLEMENT THIS";
 }
@@ -328,7 +328,7 @@ const QString AbstractFilter::getSubGroupName()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString AbstractFilter::getHumanLabel()
+const QString AbstractFilter::getHumanLabel() const
 {
   return "YOUR CLASS SHOULD IMPLEMENT THIS";
 }
@@ -336,7 +336,7 @@ const QString AbstractFilter::getHumanLabel()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString AbstractFilter::getBrandingString()
+const QString AbstractFilter::getBrandingString() const
 {
   return "";
 }
@@ -344,7 +344,7 @@ const QString AbstractFilter::getBrandingString()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString AbstractFilter::getCompiledLibraryName()
+const QString AbstractFilter::getCompiledLibraryName() const
 {
   return "";
 }
@@ -352,7 +352,7 @@ const QString AbstractFilter::getCompiledLibraryName()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString AbstractFilter::getFilterVersion()
+const QString AbstractFilter::getFilterVersion() const
 {
   return QString("0.0.0");
 }
@@ -388,7 +388,7 @@ const QUuid AbstractFilter::getUuid()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString AbstractFilter::generateHtmlSummary()
+const QString AbstractFilter::generateHtmlSummary() const
 {
   QString html;
   QTextStream ss(&html);

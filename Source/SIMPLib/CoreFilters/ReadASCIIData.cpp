@@ -588,7 +588,7 @@ void ReadASCIIData::execute()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-AbstractFilter::Pointer ReadASCIIData::newFilterInstance(bool copyFilterParameters)
+AbstractFilter::Pointer ReadASCIIData::newFilterInstance(bool copyFilterParameters) const
 {
   ReadASCIIData::Pointer filter = ReadASCIIData::New();
   if(true == copyFilterParameters)
@@ -602,7 +602,7 @@ AbstractFilter::Pointer ReadASCIIData::newFilterInstance(bool copyFilterParamete
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString ReadASCIIData::getCompiledLibraryName()
+const QString ReadASCIIData::getCompiledLibraryName() const
 {
   return Core::CoreBaseName;
 }
@@ -610,7 +610,7 @@ const QString ReadASCIIData::getCompiledLibraryName()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString ReadASCIIData::getBrandingString()
+const QString ReadASCIIData::getBrandingString() const
 {
   return "SIMPLib Core Filter";
 }
@@ -618,7 +618,7 @@ const QString ReadASCIIData::getBrandingString()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString ReadASCIIData::getFilterVersion()
+const QString ReadASCIIData::getFilterVersion() const
 {
   QString version;
   QTextStream vStream(&version);
@@ -629,7 +629,7 @@ const QString ReadASCIIData::getFilterVersion()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString ReadASCIIData::getGroupName()
+const QString ReadASCIIData::getGroupName() const
 {
   return SIMPL::FilterGroups::CoreFilters;
 }
@@ -645,7 +645,7 @@ const QUuid ReadASCIIData::getUuid()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString ReadASCIIData::getSubGroupName()
+const QString ReadASCIIData::getSubGroupName() const
 {
   return SIMPL::FilterSubGroups::InputFilters;
 }
@@ -653,7 +653,7 @@ const QString ReadASCIIData::getSubGroupName()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString ReadASCIIData::getHumanLabel()
+const QString ReadASCIIData::getHumanLabel() const
 {
   return "Import ASCII Data";
 }

@@ -298,7 +298,7 @@ void ScaleVolume::execute()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-AbstractFilter::Pointer ScaleVolume::newFilterInstance(bool copyFilterParameters)
+AbstractFilter::Pointer ScaleVolume::newFilterInstance(bool copyFilterParameters) const
 {
   ScaleVolume::Pointer filter = ScaleVolume::New();
   if(true == copyFilterParameters)
@@ -311,7 +311,7 @@ AbstractFilter::Pointer ScaleVolume::newFilterInstance(bool copyFilterParameters
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString ScaleVolume::getCompiledLibraryName()
+const QString ScaleVolume::getCompiledLibraryName() const
 {
   return Core::CoreBaseName;
 }
@@ -319,7 +319,7 @@ const QString ScaleVolume::getCompiledLibraryName()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString ScaleVolume::getBrandingString()
+const QString ScaleVolume::getBrandingString() const
 {
   return "SIMPLib Core Filter";
 }
@@ -327,7 +327,7 @@ const QString ScaleVolume::getBrandingString()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString ScaleVolume::getFilterVersion()
+const QString ScaleVolume::getFilterVersion() const
 {
   QString version;
   QTextStream vStream(&version);
@@ -338,7 +338,7 @@ const QString ScaleVolume::getFilterVersion()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString ScaleVolume::getGroupName()
+const QString ScaleVolume::getGroupName() const
 {
   return SIMPL::FilterGroups::CoreFilters;
 }
@@ -354,7 +354,7 @@ const QUuid ScaleVolume::getUuid()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString ScaleVolume::getSubGroupName()
+const QString ScaleVolume::getSubGroupName() const
 {
   return SIMPL::FilterSubGroups::SpatialFilters;
 }
@@ -362,7 +362,7 @@ const QString ScaleVolume::getSubGroupName()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString ScaleVolume::getHumanLabel()
+const QString ScaleVolume::getHumanLabel() const
 {
   return "Change Scaling of Volume";
 }

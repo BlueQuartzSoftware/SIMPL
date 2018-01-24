@@ -333,7 +333,7 @@ void ExecuteProcess::sendStandardOutput()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-AbstractFilter::Pointer ExecuteProcess::newFilterInstance(bool copyFilterParameters)
+AbstractFilter::Pointer ExecuteProcess::newFilterInstance(bool copyFilterParameters) const
 {
   ExecuteProcess::Pointer filter = ExecuteProcess::New();
   if(true == copyFilterParameters)
@@ -346,7 +346,7 @@ AbstractFilter::Pointer ExecuteProcess::newFilterInstance(bool copyFilterParamet
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString ExecuteProcess::getCompiledLibraryName()
+const QString ExecuteProcess::getCompiledLibraryName() const
 {
   return Core::CoreBaseName;
 }
@@ -354,7 +354,7 @@ const QString ExecuteProcess::getCompiledLibraryName()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString ExecuteProcess::getBrandingString()
+const QString ExecuteProcess::getBrandingString() const
 {
   return "SIMPLib Core Filter";
 }
@@ -362,7 +362,7 @@ const QString ExecuteProcess::getBrandingString()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString ExecuteProcess::getFilterVersion()
+const QString ExecuteProcess::getFilterVersion() const
 {
   QString version;
   QTextStream vStream(&version);
@@ -373,7 +373,7 @@ const QString ExecuteProcess::getFilterVersion()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString ExecuteProcess::getGroupName()
+const QString ExecuteProcess::getGroupName() const
 {
   return SIMPL::FilterGroups::CoreFilters;
 }
@@ -389,7 +389,7 @@ const QUuid ExecuteProcess::getUuid()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString ExecuteProcess::getSubGroupName()
+const QString ExecuteProcess::getSubGroupName() const
 {
   return SIMPL::FilterSubGroups::MiscFilters;
 }
@@ -397,7 +397,7 @@ const QString ExecuteProcess::getSubGroupName()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString ExecuteProcess::getHumanLabel()
+const QString ExecuteProcess::getHumanLabel() const
 {
   return "Execute Process";
 }

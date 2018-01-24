@@ -263,7 +263,7 @@ void MoveMultiData::execute()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-AbstractFilter::Pointer MoveMultiData::newFilterInstance(bool copyFilterParameters)
+AbstractFilter::Pointer MoveMultiData::newFilterInstance(bool copyFilterParameters) const
 {
   MoveMultiData::Pointer filter = MoveMultiData::New();
   if(true == copyFilterParameters)
@@ -276,7 +276,7 @@ AbstractFilter::Pointer MoveMultiData::newFilterInstance(bool copyFilterParamete
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString MoveMultiData::getCompiledLibraryName()
+const QString MoveMultiData::getCompiledLibraryName() const
 {
   return Core::CoreBaseName;
 }
@@ -284,7 +284,7 @@ const QString MoveMultiData::getCompiledLibraryName()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString MoveMultiData::getBrandingString()
+const QString MoveMultiData::getBrandingString() const
 {
   return "SIMPLib Core Filter";
 }
@@ -292,7 +292,7 @@ const QString MoveMultiData::getBrandingString()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString MoveMultiData::getFilterVersion()
+const QString MoveMultiData::getFilterVersion() const
 {
   QString version;
   QTextStream vStream(&version);
@@ -303,7 +303,7 @@ const QString MoveMultiData::getFilterVersion()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString MoveMultiData::getGroupName()
+const QString MoveMultiData::getGroupName() const
 {
   return SIMPL::FilterGroups::CoreFilters;
 }
@@ -319,7 +319,7 @@ const QUuid MoveMultiData::getUuid()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString MoveMultiData::getSubGroupName()
+const QString MoveMultiData::getSubGroupName() const
 {
   return SIMPL::FilterSubGroups::MemoryManagementFilters;
 }
@@ -327,7 +327,7 @@ const QString MoveMultiData::getSubGroupName()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString MoveMultiData::getHumanLabel()
+const QString MoveMultiData::getHumanLabel() const
 {
   return "Move Multi Data";
 }

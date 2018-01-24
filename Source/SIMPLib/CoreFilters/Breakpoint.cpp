@@ -141,7 +141,7 @@ void Breakpoint::resumePipeline()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-AbstractFilter::Pointer Breakpoint::newFilterInstance(bool copyFilterParameters)
+AbstractFilter::Pointer Breakpoint::newFilterInstance(bool copyFilterParameters) const
 {
   Breakpoint::Pointer filter = Breakpoint::New();
   if(true == copyFilterParameters)
@@ -154,7 +154,7 @@ AbstractFilter::Pointer Breakpoint::newFilterInstance(bool copyFilterParameters)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString Breakpoint::getCompiledLibraryName()
+const QString Breakpoint::getCompiledLibraryName() const
 {
   return Core::CoreBaseName;
 }
@@ -162,7 +162,7 @@ const QString Breakpoint::getCompiledLibraryName()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString Breakpoint::getBrandingString()
+const QString Breakpoint::getBrandingString() const
 {
   return "SIMPLib Core Filter";
 }
@@ -170,7 +170,7 @@ const QString Breakpoint::getBrandingString()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString Breakpoint::getFilterVersion()
+const QString Breakpoint::getFilterVersion() const
 {
   QString version;
   QTextStream vStream(&version);
@@ -181,7 +181,7 @@ const QString Breakpoint::getFilterVersion()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString Breakpoint::getGroupName()
+const QString Breakpoint::getGroupName() const
 {
   return SIMPL::FilterGroups::CoreFilters;
 }
@@ -197,7 +197,7 @@ const QUuid Breakpoint::getUuid()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString Breakpoint::getSubGroupName()
+const QString Breakpoint::getSubGroupName() const
 {
   return SIMPL::FilterSubGroups::MiscFilters;
 }
@@ -205,7 +205,7 @@ const QString Breakpoint::getSubGroupName()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString Breakpoint::getHumanLabel()
+const QString Breakpoint::getHumanLabel() const
 {
   return "Breakpoint";
 }

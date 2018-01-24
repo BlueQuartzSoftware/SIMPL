@@ -169,48 +169,58 @@
 
 /** Macro used to add standard methods to all classes, mainly type
  * information. */
-#define SIMPL_TYPE_MACRO(thisClass) \
-  public: \
-  virtual const QString getNameOfClass() {return QString(#thisClass);}\
-  static int IsTypeOf(const char *type) \
-  { \
-    if ( !strcmp(#thisClass,type) ) \
-    { \
-      return 1; \
-    } \
-    return 0; \
-  } \
+#define SIMPL_TYPE_MACRO(thisClass)                                                                                                                                                                    \
+public:                                                                                                                                                                                                \
+  virtual const QString getNameOfClass() const                                                                                                                                                         \
+  {                                                                                                                                                                                                    \
+    return QString(#thisClass);                                                                                                                                                                        \
+  }                                                                                                                                                                                                    \
+  static int IsTypeOf(const char* type)                                                                                                                                                                \
+  {                                                                                                                                                                                                    \
+    if(!strcmp(#thisClass, type))                                                                                                                                                                      \
+    {                                                                                                                                                                                                  \
+      return 1;                                                                                                                                                                                        \
+    }                                                                                                                                                                                                  \
+    return 0;                                                                                                                                                                                          \
+  }
 
+#define SIMPL_TYPE_MACRO_SUPER(thisClass, superclass)                                                                                                                                                  \
+public:                                                                                                                                                                                                \
+  virtual const QString getNameOfClass() const                                                                                                                                                         \
+  {                                                                                                                                                                                                    \
+    return QString(#thisClass);                                                                                                                                                                        \
+  }                                                                                                                                                                                                    \
+  static QString ClassName()                                                                                                                                                                           \
+  {                                                                                                                                                                                                    \
+    return QString(#thisClass);                                                                                                                                                                        \
+  }                                                                                                                                                                                                    \
+  static int IsTypeOf(const char* type)                                                                                                                                                                \
+  {                                                                                                                                                                                                    \
+    if(!strcmp(#thisClass, type))                                                                                                                                                                      \
+    {                                                                                                                                                                                                  \
+      return 1;                                                                                                                                                                                        \
+    }                                                                                                                                                                                                  \
+    return superclass::IsTypeOf(type);                                                                                                                                                                 \
+  }
 
-
-#define SIMPL_TYPE_MACRO_SUPER(thisClass,superclass) \
-  public: \
-  virtual const QString getNameOfClass() {return QString(#thisClass);}\
-  static QString ClassName() {return QString(#thisClass);}\
-  static int IsTypeOf(const char *type) \
-  { \
-    if ( !strcmp(#thisClass,type) ) \
-    { \
-      return 1; \
-    } \
-    return superclass::IsTypeOf(type); \
-  } \
-
-#define SIMPL_TYPE_MACRO_SUPER_OVERRIDE(thisClass,superclass) \
-  public: \
-  virtual const QString getNameOfClass() override {return QString(#thisClass);}\
-  static QString ClassName() {return QString(#thisClass);}\
-  static int IsTypeOf(const char *type) \
-  { \
-    if ( !strcmp(#thisClass,type) ) \
-    { \
-      return 1; \
-    } \
-    return superclass::IsTypeOf(type); \
-  } \
-
-
-
+#define SIMPL_TYPE_MACRO_SUPER_OVERRIDE(thisClass, superclass)                                                                                                                                         \
+public:                                                                                                                                                                                                \
+  virtual const QString getNameOfClass() const override                                                                                                                                                \
+  {                                                                                                                                                                                                    \
+    return QString(#thisClass);                                                                                                                                                                        \
+  }                                                                                                                                                                                                    \
+  static QString ClassName()                                                                                                                                                                           \
+  {                                                                                                                                                                                                    \
+    return QString(#thisClass);                                                                                                                                                                        \
+  }                                                                                                                                                                                                    \
+  static int IsTypeOf(const char* type)                                                                                                                                                                \
+  {                                                                                                                                                                                                    \
+    if(!strcmp(#thisClass, type))                                                                                                                                                                      \
+    {                                                                                                                                                                                                  \
+      return 1;                                                                                                                                                                                        \
+    }                                                                                                                                                                                                  \
+    return superclass::IsTypeOf(type);                                                                                                                                                                 \
+  }
 
 #define SIMPL_CLASS_VERSION(vers)\
   virtual int getClassVersion() { return vers; }

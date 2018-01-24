@@ -324,7 +324,7 @@ void FeatureDataCSVWriter::execute()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-AbstractFilter::Pointer FeatureDataCSVWriter::newFilterInstance(bool copyFilterParameters)
+AbstractFilter::Pointer FeatureDataCSVWriter::newFilterInstance(bool copyFilterParameters) const
 {
   /*
   * FeatureDataFile
@@ -341,7 +341,7 @@ AbstractFilter::Pointer FeatureDataCSVWriter::newFilterInstance(bool copyFilterP
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString FeatureDataCSVWriter::getCompiledLibraryName()
+const QString FeatureDataCSVWriter::getCompiledLibraryName() const
 {
   return Core::CoreBaseName;
 }
@@ -349,7 +349,7 @@ const QString FeatureDataCSVWriter::getCompiledLibraryName()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString FeatureDataCSVWriter::getBrandingString()
+const QString FeatureDataCSVWriter::getBrandingString() const
 {
   return "SIMPLib Core Filter";
 }
@@ -357,7 +357,7 @@ const QString FeatureDataCSVWriter::getBrandingString()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString FeatureDataCSVWriter::getFilterVersion()
+const QString FeatureDataCSVWriter::getFilterVersion() const
 {
   QString version;
   QTextStream vStream(&version);
@@ -368,7 +368,7 @@ const QString FeatureDataCSVWriter::getFilterVersion()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString FeatureDataCSVWriter::getGroupName()
+const QString FeatureDataCSVWriter::getGroupName() const
 {
   return SIMPL::FilterGroups::CoreFilters;
 }
@@ -384,7 +384,7 @@ const QUuid FeatureDataCSVWriter::getUuid()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString FeatureDataCSVWriter::getSubGroupName()
+const QString FeatureDataCSVWriter::getSubGroupName() const
 {
   return SIMPL::FilterSubGroups::OutputFilters;
 }
@@ -392,7 +392,7 @@ const QString FeatureDataCSVWriter::getSubGroupName()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString FeatureDataCSVWriter::getHumanLabel()
+const QString FeatureDataCSVWriter::getHumanLabel() const
 {
   return "Export Feature Data as CSV File";
 }

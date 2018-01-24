@@ -481,7 +481,7 @@ herr_t DataContainerWriter::closeFile()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-AbstractFilter::Pointer DataContainerWriter::newFilterInstance(bool copyFilterParameters)
+AbstractFilter::Pointer DataContainerWriter::newFilterInstance(bool copyFilterParameters) const
 {
   DataContainerWriter::Pointer filter = DataContainerWriter::New();
   if(true == copyFilterParameters)
@@ -494,7 +494,7 @@ AbstractFilter::Pointer DataContainerWriter::newFilterInstance(bool copyFilterPa
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString DataContainerWriter::getCompiledLibraryName()
+const QString DataContainerWriter::getCompiledLibraryName() const
 {
   return Core::CoreBaseName;
 }
@@ -502,7 +502,7 @@ const QString DataContainerWriter::getCompiledLibraryName()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString DataContainerWriter::getBrandingString()
+const QString DataContainerWriter::getBrandingString() const
 {
   return "SIMPLib Core Filter";
 }
@@ -510,7 +510,7 @@ const QString DataContainerWriter::getBrandingString()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString DataContainerWriter::getFilterVersion()
+const QString DataContainerWriter::getFilterVersion() const
 {
   QString version;
   QTextStream vStream(&version);
@@ -521,7 +521,7 @@ const QString DataContainerWriter::getFilterVersion()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString DataContainerWriter::getGroupName()
+const QString DataContainerWriter::getGroupName() const
 {
   return SIMPL::FilterGroups::IOFilters;
 }
@@ -537,7 +537,7 @@ const QUuid DataContainerWriter::getUuid()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString DataContainerWriter::getSubGroupName()
+const QString DataContainerWriter::getSubGroupName() const
 {
   return SIMPL::FilterSubGroups::OutputFilters;
 }
@@ -545,7 +545,7 @@ const QString DataContainerWriter::getSubGroupName()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString DataContainerWriter::getHumanLabel()
+const QString DataContainerWriter::getHumanLabel() const
 {
   return "Write DREAM.3D Data File";
 }

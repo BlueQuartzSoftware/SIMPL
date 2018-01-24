@@ -269,7 +269,7 @@ void WriteTriangleGeometry::execute()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-AbstractFilter::Pointer WriteTriangleGeometry::newFilterInstance(bool copyFilterParameters)
+AbstractFilter::Pointer WriteTriangleGeometry::newFilterInstance(bool copyFilterParameters) const
 {
   WriteTriangleGeometry::Pointer filter = WriteTriangleGeometry::New();
   if(true == copyFilterParameters)
@@ -282,7 +282,7 @@ AbstractFilter::Pointer WriteTriangleGeometry::newFilterInstance(bool copyFilter
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString WriteTriangleGeometry::getCompiledLibraryName()
+const QString WriteTriangleGeometry::getCompiledLibraryName() const
 {
   return Core::CoreBaseName;
 }
@@ -290,7 +290,7 @@ const QString WriteTriangleGeometry::getCompiledLibraryName()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString WriteTriangleGeometry::getBrandingString()
+const QString WriteTriangleGeometry::getBrandingString() const
 {
   return "SIMPLib Core Filter";
 }
@@ -298,7 +298,7 @@ const QString WriteTriangleGeometry::getBrandingString()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString WriteTriangleGeometry::getFilterVersion()
+const QString WriteTriangleGeometry::getFilterVersion() const
 {
   QString version;
   QTextStream vStream(&version);
@@ -309,7 +309,7 @@ const QString WriteTriangleGeometry::getFilterVersion()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString WriteTriangleGeometry::getGroupName()
+const QString WriteTriangleGeometry::getGroupName() const
 {
   return SIMPL::FilterGroups::CoreFilters;
 }
@@ -325,7 +325,7 @@ const QUuid WriteTriangleGeometry::getUuid()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString WriteTriangleGeometry::getSubGroupName()
+const QString WriteTriangleGeometry::getSubGroupName() const
 {
   return SIMPL::FilterSubGroups::OutputFilters;
 }
@@ -333,7 +333,7 @@ const QString WriteTriangleGeometry::getSubGroupName()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString WriteTriangleGeometry::getHumanLabel()
+const QString WriteTriangleGeometry::getHumanLabel() const
 {
   return "Export Triangle Geometry";
 }

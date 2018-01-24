@@ -207,7 +207,7 @@ void RequiredZThickness::execute()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-AbstractFilter::Pointer RequiredZThickness::newFilterInstance(bool copyFilterParameters)
+AbstractFilter::Pointer RequiredZThickness::newFilterInstance(bool copyFilterParameters) const
 {
   RequiredZThickness::Pointer filter = RequiredZThickness::New();
   if(true == copyFilterParameters)
@@ -220,7 +220,7 @@ AbstractFilter::Pointer RequiredZThickness::newFilterInstance(bool copyFilterPar
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString RequiredZThickness::getCompiledLibraryName()
+const QString RequiredZThickness::getCompiledLibraryName() const
 {
   return Core::CoreBaseName;
 }
@@ -228,7 +228,7 @@ const QString RequiredZThickness::getCompiledLibraryName()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString RequiredZThickness::getGroupName()
+const QString RequiredZThickness::getGroupName() const
 {
   return SIMPL::FilterGroups::CoreFilters;
 }
@@ -244,7 +244,7 @@ const QUuid RequiredZThickness::getUuid()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString RequiredZThickness::getSubGroupName()
+const QString RequiredZThickness::getSubGroupName() const
 {
   return SIMPL::FilterSubGroups::MiscFilters;
 }
@@ -252,7 +252,7 @@ const QString RequiredZThickness::getSubGroupName()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString RequiredZThickness::getHumanLabel()
+const QString RequiredZThickness::getHumanLabel() const
 {
   return "Required Z Dimension (Image Geometry)";
 }

@@ -287,7 +287,7 @@ void ConditionalSetValue::execute()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-AbstractFilter::Pointer ConditionalSetValue::newFilterInstance(bool copyFilterParameters)
+AbstractFilter::Pointer ConditionalSetValue::newFilterInstance(bool copyFilterParameters) const
 {
   ConditionalSetValue::Pointer filter = ConditionalSetValue::New();
   if(true == copyFilterParameters)
@@ -300,7 +300,7 @@ AbstractFilter::Pointer ConditionalSetValue::newFilterInstance(bool copyFilterPa
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString ConditionalSetValue::getCompiledLibraryName()
+const QString ConditionalSetValue::getCompiledLibraryName() const
 {
   return Core::CoreBaseName;
 }
@@ -308,7 +308,7 @@ const QString ConditionalSetValue::getCompiledLibraryName()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString ConditionalSetValue::getBrandingString()
+const QString ConditionalSetValue::getBrandingString() const
 {
   return "SIMPLib Core Filter";
 }
@@ -316,7 +316,7 @@ const QString ConditionalSetValue::getBrandingString()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString ConditionalSetValue::getFilterVersion()
+const QString ConditionalSetValue::getFilterVersion() const
 {
   QString version;
   QTextStream vStream(&version);
@@ -327,7 +327,7 @@ const QString ConditionalSetValue::getFilterVersion()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString ConditionalSetValue::getGroupName()
+const QString ConditionalSetValue::getGroupName() const
 {
   return SIMPL::FilterGroups::CoreFilters;
 }
@@ -343,7 +343,7 @@ const QUuid ConditionalSetValue::getUuid()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString ConditionalSetValue::getSubGroupName()
+const QString ConditionalSetValue::getSubGroupName() const
 {
   return SIMPL::FilterSubGroups::MemoryManagementFilters;
 }
@@ -351,7 +351,7 @@ const QString ConditionalSetValue::getSubGroupName()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString ConditionalSetValue::getHumanLabel()
+const QString ConditionalSetValue::getHumanLabel() const
 {
   return "Replace Value in Array (Conditional)";
 }

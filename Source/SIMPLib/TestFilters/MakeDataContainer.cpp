@@ -217,7 +217,7 @@ void MakeDataContainer::execute()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-AbstractFilter::Pointer MakeDataContainer::newFilterInstance(bool copyFilterParameters)
+AbstractFilter::Pointer MakeDataContainer::newFilterInstance(bool copyFilterParameters) const
 {
   MakeDataContainer::Pointer filter = MakeDataContainer::New();
   if(true == copyFilterParameters)
@@ -230,7 +230,7 @@ AbstractFilter::Pointer MakeDataContainer::newFilterInstance(bool copyFilterPara
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString MakeDataContainer::getCompiledLibraryName()
+const QString MakeDataContainer::getCompiledLibraryName() const
 {
   return Core::CoreBaseName;
 }
@@ -238,7 +238,7 @@ const QString MakeDataContainer::getCompiledLibraryName()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString MakeDataContainer::getGroupName()
+const QString MakeDataContainer::getGroupName() const
 {
   return SIMPL::FilterGroups::Generic;
 }
@@ -254,7 +254,7 @@ const QUuid MakeDataContainer::getUuid()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString MakeDataContainer::getSubGroupName()
+const QString MakeDataContainer::getSubGroupName() const
 {
   return "Test";
 }
@@ -262,7 +262,7 @@ const QString MakeDataContainer::getSubGroupName()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString MakeDataContainer::getHumanLabel()
+const QString MakeDataContainer::getHumanLabel() const
 {
   return "Make DataContainer";
 }

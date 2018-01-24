@@ -292,7 +292,7 @@ void RemoveComponentFromArray::execute()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-AbstractFilter::Pointer RemoveComponentFromArray::newFilterInstance(bool copyFilterParameters)
+AbstractFilter::Pointer RemoveComponentFromArray::newFilterInstance(bool copyFilterParameters) const
 {
   RemoveComponentFromArray::Pointer filter = RemoveComponentFromArray::New();
   if(true == copyFilterParameters)
@@ -305,7 +305,7 @@ AbstractFilter::Pointer RemoveComponentFromArray::newFilterInstance(bool copyFil
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString RemoveComponentFromArray::getCompiledLibraryName()
+const QString RemoveComponentFromArray::getCompiledLibraryName() const
 {
   return Core::CoreBaseName;
 }
@@ -313,7 +313,7 @@ const QString RemoveComponentFromArray::getCompiledLibraryName()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString RemoveComponentFromArray::getBrandingString()
+const QString RemoveComponentFromArray::getBrandingString() const
 {
   return "SIMPLib Core Filter";
 }
@@ -321,7 +321,7 @@ const QString RemoveComponentFromArray::getBrandingString()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString RemoveComponentFromArray::getFilterVersion()
+const QString RemoveComponentFromArray::getFilterVersion() const
 {
   QString version;
   QTextStream vStream(&version);
@@ -332,7 +332,7 @@ const QString RemoveComponentFromArray::getFilterVersion()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString RemoveComponentFromArray::getGroupName()
+const QString RemoveComponentFromArray::getGroupName() const
 {
   return SIMPL::FilterGroups::CoreFilters;
 }
@@ -348,7 +348,7 @@ const QUuid RemoveComponentFromArray::getUuid()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString RemoveComponentFromArray::getSubGroupName()
+const QString RemoveComponentFromArray::getSubGroupName() const
 {
   return SIMPL::FilterSubGroups::MemoryManagementFilters;
 }
@@ -356,7 +356,7 @@ const QString RemoveComponentFromArray::getSubGroupName()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString RemoveComponentFromArray::getHumanLabel()
+const QString RemoveComponentFromArray::getHumanLabel() const
 {
   return "Remove Component From Array";
 }

@@ -139,7 +139,7 @@ void CreateDataContainer::execute()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-AbstractFilter::Pointer CreateDataContainer::newFilterInstance(bool copyFilterParameters)
+AbstractFilter::Pointer CreateDataContainer::newFilterInstance(bool copyFilterParameters) const
 {
   CreateDataContainer::Pointer filter = CreateDataContainer::New();
   if(true == copyFilterParameters)
@@ -152,7 +152,7 @@ AbstractFilter::Pointer CreateDataContainer::newFilterInstance(bool copyFilterPa
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString CreateDataContainer::getCompiledLibraryName()
+const QString CreateDataContainer::getCompiledLibraryName() const
 {
   return Core::CoreBaseName;
 }
@@ -160,7 +160,7 @@ const QString CreateDataContainer::getCompiledLibraryName()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString CreateDataContainer::getBrandingString()
+const QString CreateDataContainer::getBrandingString() const
 {
   return "SIMPLib Core Filter";
 }
@@ -168,7 +168,7 @@ const QString CreateDataContainer::getBrandingString()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString CreateDataContainer::getFilterVersion()
+const QString CreateDataContainer::getFilterVersion() const
 {
   QString version;
   QTextStream vStream(&version);
@@ -179,7 +179,7 @@ const QString CreateDataContainer::getFilterVersion()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString CreateDataContainer::getGroupName()
+const QString CreateDataContainer::getGroupName() const
 {
   return SIMPL::FilterGroups::CoreFilters;
 }
@@ -187,7 +187,7 @@ const QString CreateDataContainer::getGroupName()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString CreateDataContainer::getHumanLabel()
+const QString CreateDataContainer::getHumanLabel() const
 {
   return "Create Data Container";
 }
@@ -203,7 +203,7 @@ const QUuid CreateDataContainer::getUuid()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString CreateDataContainer::getSubGroupName()
+const QString CreateDataContainer::getSubGroupName() const
 {
   return SIMPL::FilterSubGroups::GenerationFilters;
 }

@@ -127,7 +127,7 @@ void RawBinaryWriter::preflight()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString RawBinaryWriter::getCompiledLibraryName()
+const QString RawBinaryWriter::getCompiledLibraryName() const
 {
   return Core::CoreBaseName;
 }
@@ -135,7 +135,7 @@ const QString RawBinaryWriter::getCompiledLibraryName()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString RawBinaryWriter::getGroupName()
+const QString RawBinaryWriter::getGroupName() const
 {
   return "IO";
 }
@@ -143,7 +143,7 @@ const QString RawBinaryWriter::getGroupName()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString RawBinaryWriter::getHumanLabel()
+const QString RawBinaryWriter::getHumanLabel() const
 {
   return "RawBinaryWriter";
 }
@@ -159,7 +159,7 @@ const QUuid RawBinaryWriter::getUuid()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString RawBinaryWriter::getSubGroupName()
+const QString RawBinaryWriter::getSubGroupName() const
 {
   return "Misc";
 }
@@ -199,7 +199,7 @@ void RawBinaryWriter::execute()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-AbstractFilter::Pointer RawBinaryWriter::newFilterInstance(bool copyFilterParameters)
+AbstractFilter::Pointer RawBinaryWriter::newFilterInstance(bool copyFilterParameters) const
 {
   /*
   * write code to optionally copy the filter parameters from the current filter into the new instance

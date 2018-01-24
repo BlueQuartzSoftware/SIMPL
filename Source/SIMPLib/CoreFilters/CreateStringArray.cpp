@@ -207,7 +207,7 @@ void CreateStringArray::execute()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-AbstractFilter::Pointer CreateStringArray::newFilterInstance(bool copyFilterParameters)
+AbstractFilter::Pointer CreateStringArray::newFilterInstance(bool copyFilterParameters) const
 {
   CreateStringArray::Pointer filter = CreateStringArray::New();
   if(true == copyFilterParameters)
@@ -220,7 +220,7 @@ AbstractFilter::Pointer CreateStringArray::newFilterInstance(bool copyFilterPara
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString CreateStringArray::getCompiledLibraryName()
+const QString CreateStringArray::getCompiledLibraryName() const
 {
   return Core::CoreBaseName;
 }
@@ -228,7 +228,7 @@ const QString CreateStringArray::getCompiledLibraryName()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString CreateStringArray::getBrandingString()
+const QString CreateStringArray::getBrandingString() const
 {
   return "SIMPLib Core Filter";
 }
@@ -236,7 +236,7 @@ const QString CreateStringArray::getBrandingString()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString CreateStringArray::getFilterVersion()
+const QString CreateStringArray::getFilterVersion() const
 {
   QString version;
   QTextStream vStream(&version);
@@ -247,7 +247,7 @@ const QString CreateStringArray::getFilterVersion()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString CreateStringArray::getGroupName()
+const QString CreateStringArray::getGroupName() const
 {
   return SIMPL::FilterGroups::CoreFilters;
 }
@@ -263,7 +263,7 @@ const QUuid CreateStringArray::getUuid()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString CreateStringArray::getSubGroupName()
+const QString CreateStringArray::getSubGroupName() const
 {
   return SIMPL::FilterSubGroups::GenerationFilters;
 }
@@ -271,7 +271,7 @@ const QString CreateStringArray::getSubGroupName()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString CreateStringArray::getHumanLabel()
+const QString CreateStringArray::getHumanLabel() const
 {
   return "Create String Array";
 }

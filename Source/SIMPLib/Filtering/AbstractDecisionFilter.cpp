@@ -124,7 +124,7 @@ void AbstractDecisionFilter::extractProperties(const QJsonDocument& jsonDoc)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-AbstractFilter::Pointer AbstractDecisionFilter::newFilterInstance(bool copyFilterParameters)
+AbstractFilter::Pointer AbstractDecisionFilter::newFilterInstance(bool copyFilterParameters) const
 {
   AbstractDecisionFilter::Pointer filter = AbstractDecisionFilter::New();
   if(true == copyFilterParameters)
@@ -137,7 +137,7 @@ AbstractFilter::Pointer AbstractDecisionFilter::newFilterInstance(bool copyFilte
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString AbstractDecisionFilter::getCompiledLibraryName()
+const QString AbstractDecisionFilter::getCompiledLibraryName() const
 {
   return "";
 }
@@ -145,7 +145,7 @@ const QString AbstractDecisionFilter::getCompiledLibraryName()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString AbstractDecisionFilter::getGroupName()
+const QString AbstractDecisionFilter::getGroupName() const
 {
   return "";
 }
@@ -161,7 +161,7 @@ const QUuid AbstractDecisionFilter::getUuid()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString AbstractDecisionFilter::getSubGroupName()
+const QString AbstractDecisionFilter::getSubGroupName() const
 {
   return "";
 }
@@ -169,7 +169,7 @@ const QString AbstractDecisionFilter::getSubGroupName()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString AbstractDecisionFilter::getHumanLabel()
+const QString AbstractDecisionFilter::getHumanLabel() const
 {
   return "";
 }

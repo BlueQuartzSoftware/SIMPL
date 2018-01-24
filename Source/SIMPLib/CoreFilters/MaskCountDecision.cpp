@@ -206,7 +206,7 @@ void MaskCountDecision::extractProperties(const QJsonDocument& jsonDoc)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-AbstractFilter::Pointer MaskCountDecision::newFilterInstance(bool copyFilterParameters)
+AbstractFilter::Pointer MaskCountDecision::newFilterInstance(bool copyFilterParameters) const
 {
   MaskCountDecision::Pointer filter = MaskCountDecision::New();
   if(true == copyFilterParameters)
@@ -219,7 +219,7 @@ AbstractFilter::Pointer MaskCountDecision::newFilterInstance(bool copyFilterPara
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString MaskCountDecision::getCompiledLibraryName()
+const QString MaskCountDecision::getCompiledLibraryName() const
 {
   return Core::CoreBaseName;
 }
@@ -227,7 +227,7 @@ const QString MaskCountDecision::getCompiledLibraryName()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString MaskCountDecision::getGroupName()
+const QString MaskCountDecision::getGroupName() const
 {
   return SIMPL::FilterGroups::CoreFilters;
 }
@@ -243,7 +243,7 @@ const QUuid MaskCountDecision::getUuid()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString MaskCountDecision::getSubGroupName()
+const QString MaskCountDecision::getSubGroupName() const
 {
   return SIMPL::FilterSubGroups::MiscFilters;
 }
@@ -251,7 +251,7 @@ const QString MaskCountDecision::getSubGroupName()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString MaskCountDecision::getHumanLabel()
+const QString MaskCountDecision::getHumanLabel() const
 {
   return "Mask Count Decision";
 }

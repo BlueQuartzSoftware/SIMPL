@@ -129,7 +129,7 @@ void EmptyFilter::execute()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-AbstractFilter::Pointer EmptyFilter::newFilterInstance(bool copyFilterParameters)
+AbstractFilter::Pointer EmptyFilter::newFilterInstance(bool copyFilterParameters) const
 {
   EmptyFilter::Pointer filter = EmptyFilter::New();
   if(true == copyFilterParameters)
@@ -142,7 +142,7 @@ AbstractFilter::Pointer EmptyFilter::newFilterInstance(bool copyFilterParameters
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString EmptyFilter::getCompiledLibraryName()
+const QString EmptyFilter::getCompiledLibraryName() const
 {
   return Core::CoreBaseName;
 }
@@ -150,7 +150,7 @@ const QString EmptyFilter::getCompiledLibraryName()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString EmptyFilter::getBrandingString()
+const QString EmptyFilter::getBrandingString() const
 {
   return "SIMPLib Core Filter";
 }
@@ -158,7 +158,7 @@ const QString EmptyFilter::getBrandingString()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString EmptyFilter::getFilterVersion()
+const QString EmptyFilter::getFilterVersion() const
 {
   QString version;
   QTextStream vStream(&version);
@@ -169,7 +169,7 @@ const QString EmptyFilter::getFilterVersion()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString EmptyFilter::getGroupName()
+const QString EmptyFilter::getGroupName() const
 {
   return SIMPL::FilterGroups::CoreFilters;
 }
@@ -185,7 +185,7 @@ const QUuid EmptyFilter::getUuid()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString EmptyFilter::getSubGroupName()
+const QString EmptyFilter::getSubGroupName() const
 {
   return SIMPL::FilterSubGroups::MiscFilters;
 }
@@ -193,7 +193,7 @@ const QString EmptyFilter::getSubGroupName()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString EmptyFilter::getHumanLabel()
+const QString EmptyFilter::getHumanLabel() const
 {
   if(m_HumanLabel.isEmpty())
   {

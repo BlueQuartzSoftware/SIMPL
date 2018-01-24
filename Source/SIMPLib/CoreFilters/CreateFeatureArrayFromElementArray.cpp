@@ -336,7 +336,7 @@ void CreateFeatureArrayFromElementArray::execute()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-AbstractFilter::Pointer CreateFeatureArrayFromElementArray::newFilterInstance(bool copyFilterParameters)
+AbstractFilter::Pointer CreateFeatureArrayFromElementArray::newFilterInstance(bool copyFilterParameters) const
 {
   CreateFeatureArrayFromElementArray::Pointer filter = CreateFeatureArrayFromElementArray::New();
   if(true == copyFilterParameters)
@@ -349,7 +349,7 @@ AbstractFilter::Pointer CreateFeatureArrayFromElementArray::newFilterInstance(bo
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString CreateFeatureArrayFromElementArray::getCompiledLibraryName()
+const QString CreateFeatureArrayFromElementArray::getCompiledLibraryName() const
 {
   return Core::CoreBaseName;
 }
@@ -357,7 +357,7 @@ const QString CreateFeatureArrayFromElementArray::getCompiledLibraryName()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString CreateFeatureArrayFromElementArray::getBrandingString()
+const QString CreateFeatureArrayFromElementArray::getBrandingString() const
 {
   return "SIMPLib Core Filter";
 }
@@ -365,7 +365,7 @@ const QString CreateFeatureArrayFromElementArray::getBrandingString()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString CreateFeatureArrayFromElementArray::getFilterVersion()
+const QString CreateFeatureArrayFromElementArray::getFilterVersion() const
 {
   QString version;
   QTextStream vStream(&version);
@@ -376,7 +376,7 @@ const QString CreateFeatureArrayFromElementArray::getFilterVersion()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString CreateFeatureArrayFromElementArray::getGroupName()
+const QString CreateFeatureArrayFromElementArray::getGroupName() const
 {
   return SIMPL::FilterGroups::CoreFilters;
 }
@@ -392,7 +392,7 @@ const QUuid CreateFeatureArrayFromElementArray::getUuid()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString CreateFeatureArrayFromElementArray::getSubGroupName()
+const QString CreateFeatureArrayFromElementArray::getSubGroupName() const
 {
   return SIMPL::FilterSubGroups::MemoryManagementFilters;
 }
@@ -400,7 +400,7 @@ const QString CreateFeatureArrayFromElementArray::getSubGroupName()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString CreateFeatureArrayFromElementArray::getHumanLabel()
+const QString CreateFeatureArrayFromElementArray::getHumanLabel() const
 {
   return "Create Feature Array from Element Array";
 }

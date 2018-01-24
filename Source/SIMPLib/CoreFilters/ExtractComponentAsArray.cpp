@@ -214,7 +214,7 @@ void ExtractComponentAsArray::execute()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-AbstractFilter::Pointer ExtractComponentAsArray::newFilterInstance(bool copyFilterParameters)
+AbstractFilter::Pointer ExtractComponentAsArray::newFilterInstance(bool copyFilterParameters) const
 {
   ExtractComponentAsArray::Pointer filter = ExtractComponentAsArray::New();
   if(true == copyFilterParameters)
@@ -227,7 +227,7 @@ AbstractFilter::Pointer ExtractComponentAsArray::newFilterInstance(bool copyFilt
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString ExtractComponentAsArray::getCompiledLibraryName()
+const QString ExtractComponentAsArray::getCompiledLibraryName() const
 {
   return Core::CoreBaseName;
 }
@@ -235,7 +235,7 @@ const QString ExtractComponentAsArray::getCompiledLibraryName()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString ExtractComponentAsArray::getBrandingString()
+const QString ExtractComponentAsArray::getBrandingString() const
 {
   return "SIMPLib Core Filter";
 }
@@ -243,7 +243,7 @@ const QString ExtractComponentAsArray::getBrandingString()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString ExtractComponentAsArray::getFilterVersion()
+const QString ExtractComponentAsArray::getFilterVersion() const
 {
   QString version;
   QTextStream vStream(&version);
@@ -254,7 +254,7 @@ const QString ExtractComponentAsArray::getFilterVersion()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString ExtractComponentAsArray::getGroupName()
+const QString ExtractComponentAsArray::getGroupName() const
 {
   return SIMPL::FilterGroups::CoreFilters;
 }
@@ -270,7 +270,7 @@ const QUuid ExtractComponentAsArray::getUuid()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString ExtractComponentAsArray::getSubGroupName()
+const QString ExtractComponentAsArray::getSubGroupName() const
 {
   return SIMPL::FilterSubGroups::MemoryManagementFilters;
 }
@@ -278,7 +278,7 @@ const QString ExtractComponentAsArray::getSubGroupName()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString ExtractComponentAsArray::getHumanLabel()
+const QString ExtractComponentAsArray::getHumanLabel() const
 {
   return "Extract Component as Attribute Array";
 }

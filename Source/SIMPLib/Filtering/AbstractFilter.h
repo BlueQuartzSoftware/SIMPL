@@ -93,14 +93,14 @@ public:
    * top level sorting in the GUI
    * @return Group name
    */
-  virtual const QString getGroupName();
+  virtual const QString getGroupName() const;
 
   /**
    * @brief getSubGroupName Returns the subgroup name for the filter, which determines its
    * second level sorting in the GUI
    * @return Subgroup name
    */
-  virtual const QString getSubGroupName();
+  virtual const QString getSubGroupName() const;
 
   /**
    * @brief getUuid Return the unique identifier for this filter.
@@ -113,14 +113,14 @@ public:
    * primary labeling inthe GUI
    * @return Human lable
    */
-  virtual const QString getHumanLabel();
+  virtual const QString getHumanLabel() const;
 
   /**
    * @brief getBrandingString Returns the branding string for the filter, which is a tag
    * used to denote the filter's association with a specific plugin
    * @return Branding string
    */
-  virtual const QString getBrandingString();
+  virtual const QString getBrandingString() const;
 
   /**
    * @brief getCompiledLibraryName Returns the library name for the filter, which is the
@@ -128,13 +128,13 @@ public:
    * plugin
    * @return Compiled library name
    */
-  virtual const QString getCompiledLibraryName();
+  virtual const QString getCompiledLibraryName() const;
 
   /**
    * @brief generateHtmlSummary Generates a brief HTML summary of the filter
    * @return HTML summary
    */
-  virtual const QString generateHtmlSummary();
+  virtual const QString generateHtmlSummary() const;
 
   /**
    * @brief setupFilterParameters Instantiates the filter parameters that are allowed
@@ -202,7 +202,7 @@ public:
    * @param copyFilterParameters Whether to copy current filter parameters to the new instance
    * @return Shared pointer to the new filter instance
    */
-  virtual Pointer newFilterInstance(bool copyFilterParameters);
+  virtual Pointer newFilterInstance(bool copyFilterParameters) const;
 
   // ------------------------------
   // Standard methods for this class the are commonly used by subclasses.
@@ -212,7 +212,7 @@ public:
    * value is an empty string.
    * @return
    */
-  virtual const QString getFilterVersion();
+  virtual const QString getFilterVersion() const;
 
   SIMPL_INSTANCE_PROPERTY(DataContainerArray::Pointer, DataContainerArray)
 
@@ -226,6 +226,7 @@ public:
 
   SIMPL_INSTANCE_PROPERTY(bool, InPreflight)
 
+  SIMPL_INSTANCE_PROPERTY(bool, Enabled)
 
   // ------------------------------
   // These functions allow interogating the position the filter is in the pipeline and the previous and next filters
@@ -337,9 +338,7 @@ public:
    * @brief copyFilterParameterInstanceVariables
    * @param filter
    */
-  virtual void copyFilterParameterInstanceVariables(AbstractFilter* filter);
-
-  SIMPL_INSTANCE_PROPERTY(bool, Enabled)
+  virtual void copyFilterParameterInstanceVariables(AbstractFilter* filter) const;
 
 signals:
   /**

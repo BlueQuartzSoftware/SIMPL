@@ -55,7 +55,7 @@ ChangeGlobalValue::~ChangeGlobalValue() = default;
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-AbstractFilter::Pointer ChangeGlobalValue::newFilterInstance(bool copyFilterParameters)
+AbstractFilter::Pointer ChangeGlobalValue::newFilterInstance(bool copyFilterParameters) const
 {
   ChangeGlobalValue::Pointer filter = ChangeGlobalValue::New();
   filter->setValue(m_Value);

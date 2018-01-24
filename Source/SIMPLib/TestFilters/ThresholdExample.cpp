@@ -192,7 +192,7 @@ void ThresholdExample::execute()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-AbstractFilter::Pointer ThresholdExample::newFilterInstance(bool copyFilterParameters)
+AbstractFilter::Pointer ThresholdExample::newFilterInstance(bool copyFilterParameters) const
 {
   /*
   * CellComparisonInputs
@@ -213,7 +213,7 @@ AbstractFilter::Pointer ThresholdExample::newFilterInstance(bool copyFilterParam
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString ThresholdExample::getCompiledLibraryName()
+const QString ThresholdExample::getCompiledLibraryName() const
 {
   return Core::CoreBaseName;
 }
@@ -221,7 +221,7 @@ const QString ThresholdExample::getCompiledLibraryName()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString ThresholdExample::getGroupName()
+const QString ThresholdExample::getGroupName() const
 {
   return SIMPL::FilterGroups::Generic;
 }
@@ -237,7 +237,7 @@ const QUuid ThresholdExample::getUuid()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString ThresholdExample::getSubGroupName()
+const QString ThresholdExample::getSubGroupName() const
 {
   return "Test";
 }
@@ -245,7 +245,7 @@ const QString ThresholdExample::getSubGroupName()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString ThresholdExample::getHumanLabel()
+const QString ThresholdExample::getHumanLabel() const
 {
   return "Threshold Example";
 }

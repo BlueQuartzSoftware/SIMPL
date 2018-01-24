@@ -63,22 +63,22 @@ public:
   /**
    * @brief getCompiledLibraryName Reimplemented from @see AbstractFilter class
    */
-  virtual const QString getCompiledLibraryName() override;
+  virtual const QString getCompiledLibraryName() const override;
 
   /**
    * @brief newFilterInstance Reimplemented from @see AbstractFilter class
    */
-  virtual AbstractFilter::Pointer newFilterInstance(bool copyFilterParameters) override;
+  virtual AbstractFilter::Pointer newFilterInstance(bool copyFilterParameters) const override;
 
   /**
    * @brief getGroupName Reimplemented from @see AbstractFilter class
    */
-  virtual const QString getGroupName() override;
+  virtual const QString getGroupName() const override;
 
   /**
    * @brief getSubGroupName Reimplemented from @see AbstractFilter class
    */
-  virtual const QString getSubGroupName() override;
+  virtual const QString getSubGroupName() const override;
 
   /**
    * @brief getUuid Return the unique identifier for this filter.
@@ -89,7 +89,7 @@ public:
   /**
    * @brief getHumanLabel Reimplemented from @see AbstractFilter class
    */
-  virtual const QString getHumanLabel() override;
+  virtual const QString getHumanLabel() const override;
 
   /**
    * @brief setupFilterParameters Reimplemented from @see AbstractFilter class
@@ -99,7 +99,7 @@ public:
   /**
    * @brief readFilterParameters Reimplemented from @see AbstractFilter class
    */
-  virtual void readFilterParameters(AbstractFilterParametersReader* reader, int index);
+  virtual void readFilterParameters(AbstractFilterParametersReader* reader, int index) override;
 
   /**
    * @brief execute Reimplemented from @see AbstractFilter class

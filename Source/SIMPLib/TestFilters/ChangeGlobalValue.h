@@ -60,7 +60,7 @@ public:
   /**
   * @brief newFilterInstance Reimplemented from @see AbstractFilter class
   */
-  virtual AbstractFilter::Pointer newFilterInstance(bool copyFilterParameters) override;
+  virtual AbstractFilter::Pointer newFilterInstance(bool copyFilterParameters) const override;
 
   /**
   * @brief execute Reimplemented from @see AbstractFilter class

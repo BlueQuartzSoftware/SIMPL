@@ -44,26 +44,26 @@ class RawBinaryWriter : public AbstractFilter
      * @brief getCompiledLibraryName Returns the name of the Library that this filter is a part of
      * @return
      */
-    virtual const QString getCompiledLibraryName() override;
+    virtual const QString getCompiledLibraryName() const override;
 
     /**
     * @brief This returns a string that is displayed in the GUI. It should be readable
     * and understandable by humans.
     */
-    virtual const QString getHumanLabel() override;
+    virtual const QString getHumanLabel() const override;
 
     /**
     * @brief This returns the group that the filter belonds to. You can select
     * a different group if you want. The string returned here will be displayed
     * in the GUI for the filter
     */
-    virtual const QString getGroupName() override;
+    virtual const QString getGroupName() const override;
 
     /**
     * @brief This returns a string that is displayed in the GUI and helps to sort the filters into
     * a subgroup. It should be readable and understandable by humans.
     */
-    virtual const QString getSubGroupName() override;
+    virtual const QString getSubGroupName() const override;
 
     /**
      * @brief getUuid Return the unique identifier for this filter.
@@ -101,7 +101,7 @@ class RawBinaryWriter : public AbstractFilter
      * @param copyFilterParameters
      * @return
      */
-    virtual AbstractFilter::Pointer newFilterInstance(bool copyFilterParameters) override;
+    virtual AbstractFilter::Pointer newFilterInstance(bool copyFilterParameters) const override;
 
   signals:
     /**

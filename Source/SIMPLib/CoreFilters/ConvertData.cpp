@@ -377,7 +377,7 @@ void ConvertData::execute()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-AbstractFilter::Pointer ConvertData::newFilterInstance(bool copyFilterParameters)
+AbstractFilter::Pointer ConvertData::newFilterInstance(bool copyFilterParameters) const
 {
   ConvertData::Pointer filter = ConvertData::New();
   if(true == copyFilterParameters)
@@ -390,7 +390,7 @@ AbstractFilter::Pointer ConvertData::newFilterInstance(bool copyFilterParameters
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString ConvertData::getCompiledLibraryName()
+const QString ConvertData::getCompiledLibraryName() const
 {
   return Core::CoreBaseName;
 }
@@ -398,7 +398,7 @@ const QString ConvertData::getCompiledLibraryName()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString ConvertData::getBrandingString()
+const QString ConvertData::getBrandingString() const
 {
   return "SIMPLib Core Filter";
 }
@@ -406,7 +406,7 @@ const QString ConvertData::getBrandingString()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString ConvertData::getFilterVersion()
+const QString ConvertData::getFilterVersion() const
 {
   QString version;
   QTextStream vStream(&version);
@@ -417,7 +417,7 @@ const QString ConvertData::getFilterVersion()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString ConvertData::getGroupName()
+const QString ConvertData::getGroupName() const
 {
   return SIMPL::FilterGroups::CoreFilters;
 }
@@ -433,7 +433,7 @@ const QUuid ConvertData::getUuid()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString ConvertData::getSubGroupName()
+const QString ConvertData::getSubGroupName() const
 {
   return SIMPL::FilterSubGroups::ConversionFilters;
 }
@@ -441,7 +441,7 @@ const QString ConvertData::getSubGroupName()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString ConvertData::getHumanLabel()
+const QString ConvertData::getHumanLabel() const
 {
   return "Convert AttributeArray Data Type";
 }

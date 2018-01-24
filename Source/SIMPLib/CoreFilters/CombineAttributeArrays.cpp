@@ -326,7 +326,7 @@ void CombineAttributeArrays::execute()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-AbstractFilter::Pointer CombineAttributeArrays::newFilterInstance(bool copyFilterParameters)
+AbstractFilter::Pointer CombineAttributeArrays::newFilterInstance(bool copyFilterParameters) const
 {
   CombineAttributeArrays::Pointer filter = CombineAttributeArrays::New();
   if(true == copyFilterParameters)
@@ -339,7 +339,7 @@ AbstractFilter::Pointer CombineAttributeArrays::newFilterInstance(bool copyFilte
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString CombineAttributeArrays::getCompiledLibraryName()
+const QString CombineAttributeArrays::getCompiledLibraryName() const
 {
   return Core::CoreBaseName;
 }
@@ -347,7 +347,7 @@ const QString CombineAttributeArrays::getCompiledLibraryName()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString CombineAttributeArrays::getBrandingString()
+const QString CombineAttributeArrays::getBrandingString() const
 {
   return "SIMPLib Core Filter";
 }
@@ -355,7 +355,7 @@ const QString CombineAttributeArrays::getBrandingString()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString CombineAttributeArrays::getFilterVersion()
+const QString CombineAttributeArrays::getFilterVersion() const
 {
   QString version;
   QTextStream vStream(&version);
@@ -366,7 +366,7 @@ const QString CombineAttributeArrays::getFilterVersion()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString CombineAttributeArrays::getGroupName()
+const QString CombineAttributeArrays::getGroupName() const
 {
   return SIMPL::FilterGroups::CoreFilters;
 }
@@ -382,7 +382,7 @@ const QUuid CombineAttributeArrays::getUuid()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString CombineAttributeArrays::getSubGroupName()
+const QString CombineAttributeArrays::getSubGroupName() const
 {
   return SIMPL::FilterSubGroups::MemoryManagementFilters;
 }
@@ -390,7 +390,7 @@ const QString CombineAttributeArrays::getSubGroupName()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString CombineAttributeArrays::getHumanLabel()
+const QString CombineAttributeArrays::getHumanLabel() const
 {
   return "Combine Attribute Arrays";
 }

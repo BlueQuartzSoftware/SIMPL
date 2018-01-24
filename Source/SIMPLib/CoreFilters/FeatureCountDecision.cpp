@@ -192,7 +192,7 @@ void FeatureCountDecision::extractProperties(const QJsonDocument& jsonDoc)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-AbstractFilter::Pointer FeatureCountDecision::newFilterInstance(bool copyFilterParameters)
+AbstractFilter::Pointer FeatureCountDecision::newFilterInstance(bool copyFilterParameters) const
 {
   FeatureCountDecision::Pointer filter = FeatureCountDecision::New();
   if(true == copyFilterParameters)
@@ -205,7 +205,7 @@ AbstractFilter::Pointer FeatureCountDecision::newFilterInstance(bool copyFilterP
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString FeatureCountDecision::getCompiledLibraryName()
+const QString FeatureCountDecision::getCompiledLibraryName() const
 {
   return Core::CoreBaseName;
 }
@@ -213,7 +213,7 @@ const QString FeatureCountDecision::getCompiledLibraryName()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString FeatureCountDecision::getGroupName()
+const QString FeatureCountDecision::getGroupName() const
 {
   return SIMPL::FilterGroups::CoreFilters;
 }
@@ -229,7 +229,7 @@ const QUuid FeatureCountDecision::getUuid()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString FeatureCountDecision::getSubGroupName()
+const QString FeatureCountDecision::getSubGroupName() const
 {
   return SIMPL::FilterSubGroups::MiscFilters;
 }
@@ -237,7 +237,7 @@ const QString FeatureCountDecision::getSubGroupName()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString FeatureCountDecision::getHumanLabel()
+const QString FeatureCountDecision::getHumanLabel() const
 {
   return "Feature Count Decision";
 }

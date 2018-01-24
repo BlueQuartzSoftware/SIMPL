@@ -549,7 +549,7 @@ template <typename T> void CreateDataArray::checkInitialization(QString dataArra
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-AbstractFilter::Pointer CreateDataArray::newFilterInstance(bool copyFilterParameters)
+AbstractFilter::Pointer CreateDataArray::newFilterInstance(bool copyFilterParameters) const
 {
   CreateDataArray::Pointer filter = CreateDataArray::New();
   if(true == copyFilterParameters)
@@ -562,7 +562,7 @@ AbstractFilter::Pointer CreateDataArray::newFilterInstance(bool copyFilterParame
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString CreateDataArray::getCompiledLibraryName()
+const QString CreateDataArray::getCompiledLibraryName() const
 {
   return Core::CoreBaseName;
 }
@@ -570,7 +570,7 @@ const QString CreateDataArray::getCompiledLibraryName()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString CreateDataArray::getBrandingString()
+const QString CreateDataArray::getBrandingString() const
 {
   return "SIMPLib Core Filter";
 }
@@ -578,7 +578,7 @@ const QString CreateDataArray::getBrandingString()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString CreateDataArray::getFilterVersion()
+const QString CreateDataArray::getFilterVersion() const
 {
   QString version;
   QTextStream vStream(&version);
@@ -589,7 +589,7 @@ const QString CreateDataArray::getFilterVersion()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString CreateDataArray::getGroupName()
+const QString CreateDataArray::getGroupName() const
 {
   return SIMPL::FilterGroups::CoreFilters;
 }
@@ -605,7 +605,7 @@ const QUuid CreateDataArray::getUuid()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString CreateDataArray::getSubGroupName()
+const QString CreateDataArray::getSubGroupName() const
 {
   return SIMPL::FilterSubGroups::GenerationFilters;
 }
@@ -613,7 +613,7 @@ const QString CreateDataArray::getSubGroupName()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString CreateDataArray::getHumanLabel()
+const QString CreateDataArray::getHumanLabel() const
 {
   return "Create Data Array";
 }
