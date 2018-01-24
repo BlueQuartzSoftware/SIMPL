@@ -327,6 +327,131 @@ public:                                                                         
   SIMPL_GET_PROPERTY(type, prpty)
 
 
+/* *****************************************************************************'
+ * PyBind11 Macros that we can use to explicitly define which setters & getters
+ * will be exposed to the Python library
+ */
+/* This macro declares a class that needs to be wrapped in Python */
+#define PYB11_SIMPL_EXPORT_CLASS
+#define PYB11_PROPERTY(...)
+#define PYB11_METHOD(...)
+
+#define PYB11_EXPORT_PROPERTY_RW(Type, Property)
+
+#define SIMPL_SET_PROPERTY_DECL(type, prpty)\
+  void set##prpty(type value);
+
+#define SIMPL_GET_PROPERTY_DECL(type, prpty)\
+  type get##prpty() const;
+
+
+#define PYB11_INSTANCE_PROPERTY_4(type, prpty, VIRTUAL, CONST)\
+  private:\
+  type   m_##prpty;\
+  public:\
+  VIRTUAL SIMPL_SET_PROPERTY(type, prpty)\
+  VIRTUAL SIMPL_GET_PROPERTY(type, prpty)
+  
+#define PYB11_INSTANCE_PROPERTY_3(type, prpty, VIRTUAL)\
+  private:\
+  type   m_##prpty;\
+  public:\
+  VIRTUAL SIMPL_SET_PROPERTY(type, prpty)\
+  VIRTUAL SIMPL_GET_PROPERTY(type, prpty)
+
+#define PYB11_INSTANCE_PROPERTY_2(type, prpty)\
+  private:\
+  type   m_##prpty;\
+  public:\
+  SIMPL_SET_PROPERTY(type, prpty)\
+  SIMPL_GET_PROPERTY(type, prpty)
+
+
+#define PYB11_SIMPL_GET_PROP_DECL_5(type, prpty)\
+  const type get##prpty();
+  
+  
+  
+#define PYB11_SIMPL_GET_PROPERTY_4(type, prpty, VIRTUAL, METHOD_CONST)\
+  VIRTUAL type get##prpty() METHOD_CONST;
+
+#define PYB11_SIMPL_GET_PROPERTY_3(type, prpty, VIRTUAL)\
+  VIRTUAL type get##prpty();
+  
+#define PYB11_SIMPL_GET_PROPERTY_2(type, prpty)\
+  type get##prpty();
+  
+  
+
+#define PYB11_SIMPL_SET_PROPERTY_4(type, prpty, VIRTUAL, UNUSED)\
+  VIRTUAL void set##prpty(type value);
+
+#define PYB11_SIMPL_SET_PROPERTY_3(type, prpty, VIRTUAL)\
+  VIRTUAL void set##prpty(type value);
+  
+#define PYB11_SIMPL_SET_PROPERTY_2(type, prpty)\
+  void set##prpty(type value);
+
+
+/**
+ * @brief This macro is needed for Visual Studio due to differences of VAR_ARGS when
+ * passed to another macro that results in a new macro that needs expansion.
+ */
+#define PYB11_SIMPL_EXPAND( x ) x
+
+// -----------------------------------------------------------------------------
+// Define a macro that uses the "paired, sliding arg list"
+// technique to select the appropriate override.
+#define PYB11_GET_OVERRIDE_5(A, B, C, D, E, NAME, ...) NAME 
+
+#define PYB11_GET_OVERRIDE_4(A, B, C, D, NAME, ...) NAME 
+ 
+ 
+/**
+* @brief Use this to both declare and define an instance variable that external
+* sources can use to both set and get the property
+* @param type The native type of the variable: int, string, SharedPointer, etc.
+* @param prpty The name of the Property starting with a Capital letter and using CamelCase
+* @param virtual Should the method be marked as virtual (OPTIONAL)
+*/
+#define PYB11_SIMPL_INSTANCE_PROPERTY(...) \
+  PYB11_SIMPL_EXPAND(PYB11_GET_OVERRIDE_4(__VA_ARGS__, \
+  PYB11_INSTANCE_PROPERTY_4, PYB11_INSTANCE_PROPERTY_3, PYB11_INSTANCE_PROPERTY_2)\
+  (__VA_ARGS__))
+  
+/**
+* @brief Use this to declare an instance method to get a property
+* @param type The native type of the variable: int, string, SharedPointer, etc.
+* @param prpty The name of the Property starting with a Capital letter and using CamelCase
+* @param virtual Should the method be marked as virtual (OPTIONAL)
+* @param METHOD_CONST Should the method be marked as const (OPTIONAL)
+* @param RETURN_CONST Should the return a const variable (OPTIONAL)
+*/
+#define PYB11_SIMPL_GET_PROPERTY_DECL(...) \
+  PYB11_SIMPL_EXPAND(PYB11_GET_OVERRIDE_5(__VA_ARGS__, \
+  PYB11_SIMPL_GET_PROPERTY_5, PYB11_SIMPL_GET_PROPERTY_4, PYB11_SIMPL_GET_PROPERTY_3, PYB11_SIMPL_GET_PROPERTY_2)\
+  (__VA_ARGS__))
+  
+/**
+* @brief Use this to declare an instance method to get a property
+* @param type The native type of the variable: int, string, SharedPointer, etc.
+* @param prpty The name of the Property starting with a Capital letter and using CamelCase
+* @param virtual Should the method be marked as virtual (OPTIONAL)
+* @param CONST Should the method be marked as const (OPTIONAL)
+*/
+#define PYB11_SIMPL_SET_PROPERTY_DECL(...) \
+  PYB11_SIMPL_EXPAND(PYB11_GET_OVERRIDE_4(__VA_ARGS__, \
+  PYB11_SIMPL_SET_PROPERTY_4, PYB11_SIMPL_SET_PROPERTY_3, PYB11_SIMPL_SET_PROPERTY_2)\
+  (__VA_ARGS__))
+  
+
+
+/* ***************************************************************************/
+
+ 
+ 
+ 
+ 
 
 #define SIMPL_PIMPL_PROPERTY_DECL(type, prpty)\
   public:\

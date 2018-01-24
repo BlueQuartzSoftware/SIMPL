@@ -401,6 +401,7 @@ endif()
 # -- Add in the SIMPL Sources into a library
 add_subdirectory( ${SIMPLProj_SOURCE_DIR}/Source/SIMPLib ${PROJECT_BINARY_DIR}/SIMPLib)
 
+# --------------------------------------------------------------------
 # add the Command line utilities
 # Figure out here if we are going to build the command line tools
 add_subdirectory(${SIMPLProj_SOURCE_DIR}/Tools ${PROJECT_BINARY_DIR}/Tools)
@@ -413,8 +414,14 @@ if(SIMPL_Group_WIDGETS)
   add_subdirectory( ${SIMPLProj_SOURCE_DIR}/Source/SVWidgetsLib ${PROJECT_BINARY_DIR}/SVWidgetsLib)
 endif()
 
+# --------------------------------------------------------------------
 # This should be the last line in this file:
 include(${PROJECT_RESOURCES_DIR}/CPack/PackageProject.cmake)
 
+
+# --------------------------------------------------------------------
+# add the PyBind11 Python Wrapping
+# Figure out here if we are going to build the command line tools
+add_subdirectory(${SIMPLProj_SOURCE_DIR}/PyBind11 ${PROJECT_BINARY_DIR}/PyBind11)
 
 

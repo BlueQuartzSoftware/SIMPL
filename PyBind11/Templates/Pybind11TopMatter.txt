@@ -1,0 +1,15 @@
+#ifndef pybind_@CLASS_NAME@_H_
+#define pybind_@CLASS_NAME@_H_
+
+
+#include <pybind11/pybind11.h>
+
+#include "@HEADER_PATH@"
+
+namespace py = pybind11;
+
+#ifndef PySharedPtrClass_TEMPLATE
+#define PySharedPtrClass_TEMPLATE
+template <typename T>
+using PySharedPtrClass = py::class_<T, std::shared_ptr<T> >;
+#endif

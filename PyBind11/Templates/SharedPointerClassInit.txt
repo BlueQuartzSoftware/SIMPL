@@ -1,0 +1,5 @@
+
+PySharedPtrClass<@CLASS_NAME@> pybind11_init_SIMPLib_@CLASS_NAME@(py::module &m)
+{
+  PySharedPtrClass<@CLASS_NAME@> instance(m, "@CLASS_NAME@");
+  instance
