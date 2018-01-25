@@ -146,9 +146,6 @@ AddSIMPLUnitTest(TESTNAME FilterParameterCallbackExample
                     ${SIMPLProj_BINARY_DIR}
                    )
 
-
-if (FALSE)
-
   COMPILE_TOOL(
       TARGET FilterInfoUtility
       SOURCES ${SIMPLTools_SOURCE_DIR}/FilterInfoUtility.cpp
@@ -161,6 +158,9 @@ if (FALSE)
       INSTALL_DEST  "}${install_dir}"
       LINK_LIBRARIES SIMPLib
   )
+if (FALSE)
+
+
 
   COMPILE_TOOL(
       TARGET VSCodeIncludes

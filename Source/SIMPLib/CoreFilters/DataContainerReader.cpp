@@ -175,10 +175,12 @@ void DataContainerReader::dataCheck()
 
   if(getErrorCondition())
   {
-    // something has gone wrong and errors were logged alread so just return
+    // something has gone wrong and errors were logged already so just return
     return;
   }
+  
 
+  
   DataContainerArray::Pointer dca = getDataContainerArray();
 
   // Read either the structure or all the data depending on the preflight status

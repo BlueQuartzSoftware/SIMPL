@@ -296,11 +296,6 @@ public:                                                                         
       SIMPL_SET_PROPERTY_DEF(class, type, prpty)\
       SIMPL_GET_PROPERTY_DEF(class, type, prpty)
 
-#define SIMPL_VIRTUAL_INSTANCE_PROPERTY_DEF(class, type, prpty)\
-      SIMPL_SET_PROPERTY_DEF(class, type, prpty)\
-      SIMPL_GET_PROPERTY_DEF(class, type, prpty)
-
-
 /**
 * @brief
 */
@@ -332,7 +327,8 @@ public:                                                                         
  * will be exposed to the Python library
  */
 /* This macro declares a class that needs to be wrapped in Python */
-#define PYB11_SIMPL_EXPORT_CLASS
+#define PYB11_CREATE_BINDINGS(...)
+#define PYB11_SIMPL_EXPORT_OFF(...)
 #define PYB11_PROPERTY(...)
 #define PYB11_METHOD(...)
 
@@ -497,6 +493,8 @@ public:                                                                         
   public:\
   SIMPL_SET_PROPERTY(type, prpty)\
   SIMPL_GET_PROPERTY(type, prpty)
+  
+  
 
 #define SIMPL_SET_2DVECTOR_PROPERTY(type, prpty, varname)\
   void set##prpty(type value[2]) {\

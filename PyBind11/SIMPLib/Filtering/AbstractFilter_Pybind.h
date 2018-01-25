@@ -1,19 +1,37 @@
 #ifndef pybind_AbstractFilter_H_
 #define pybind_AbstractFilter_H_
 
+/**
+* @brief This header file is genererate from a program. Make changes with caution.
+* 
+* This header file wraps the SIMPL class AbstractFilter located at
+* SIMPLib/Filtering/AbstractFilter.h. 
+* The Python bindings are created using Pybind11.
+*/
 
 #include <pybind11/pybind11.h>
 
-#include "SIMPLib/Filtering/AbstractFilter.h"
-
 namespace py = pybind11;
 
+#include "SIMPLib/Filtering/AbstractFilter.h"
+
+
+/**
+* @brief This defines a C++11 alias so loading the file by itself into an IDE
+* will allow the proper code completion for a wrapped std::shared_ptr<> class.
+*/
 #ifndef PySharedPtrClass_TEMPLATE
 #define PySharedPtrClass_TEMPLATE
 template <typename T>
 using PySharedPtrClass = py::class_<T, std::shared_ptr<T> >;
 #endif
 
+/**
+* @brief
+* @param m The Python module
+* @return A std::shared_ptr<T> wrapped insance of the wrapped class properly 
+* initialized.
+*/
 PySharedPtrClass<AbstractFilter> pybind11_init_SIMPLib_AbstractFilter(py::module &m)
 {
   PySharedPtrClass<AbstractFilter> instance(m, "AbstractFilter");

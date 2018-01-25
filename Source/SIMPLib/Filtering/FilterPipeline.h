@@ -61,13 +61,14 @@ class IObserver;
 class SIMPLib_EXPORT FilterPipeline : public QObject
 {
   Q_OBJECT
-  PYB11_SIMPL_EXPORT_CLASS
+  
+  PYB11_CREATE_BINDINGS(FilterPipeline)
   PYB11_PROPERTY(int ErrorCondition READ getErrorCondition WRITE setErrorCondition)
   PYB11_PROPERTY(AbstractFilter CurrentFilter READ getCurrentFilter WRITE setCurrentFilter)
   PYB11_PROPERTY(bool Cancel READ getCancel WRITE setCancel)
   PYB11_PROPERTY(QString Name READ getName WRITE setName)
   
-  PYB11_METHOD(DataContainerArray::Pointer execute )
+  PYB11_METHOD(DataContainerArray::Pointer run)
   PYB11_METHOD(void preflightPipeline)
   PYB11_METHOD(void pushFront ARGS AbstractFilter)
   PYB11_METHOD(void pushBack ARGS AbstractFilter)

@@ -75,7 +75,7 @@ class SIMPLib_EXPORT AbstractFilter : public Observable
   Q_PROPERTY(bool Enabled READ getEnabled WRITE setEnabled)
   
   // This line MUST be first when exposing a class and properties to Python
-  PYB11_SIMPL_EXPORT_CLASS
+  PYB11_CREATE_BINDINGS(AbstractFilter)
   PYB11_PROPERTY(QString GroupName READ getGroupName)
   PYB11_PROPERTY(QString SubGroupName READ getSubGroupName)
   PYB11_PROPERTY(QString HumanLabel READ getHumanLabel)

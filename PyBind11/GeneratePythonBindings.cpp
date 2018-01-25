@@ -27,7 +27,7 @@
 #define OVERWRITE_SOURCE_FILE 1
 
 /* These are for the macros that appear in the header files */
-#define PYB11_SIMPL_EXPORT_CLASS "PYB11_SIMPL_EXPORT_CLASS"
+#define PYB11_CREATE_BINDINGS "PYB11_CREATE_BINDINGS"
 #define SIMPL_STATIC_NEW_MACRO "SIMPL_STATIC_NEW_MACRO"
 #define SIMPL_SHARED_POINTERS "SIMPL_SHARED_POINTERS"
 #define PYB11_PROPERTY "PYB11_PROPERTY"
@@ -36,11 +36,13 @@
 /* These are for replacements in the template files */
 #define CLASS_NAME "@CLASS_NAME@"
 #define HEADER_PATH "@HEADER_PATH@"
+#define SUPERCLASS_NAME "@SUPERCLASS_NAME@"
 
 namespace  {
   static const QString kRead("READ");
   static const QString kWrite("WRITE");
   static const QString kArgs("ARGS");
+  static const QString kSuperClass("SUPERCLASS");
 }
 
 class PyBind11Generator
@@ -77,6 +79,14 @@ class PyBind11Generator
       if(didReplace == true)
       {
         QFileInfo fi2(filename);
+        QString parentPath = fi2.path();
+        QDir dir;
+        if(!dir.mkpath(parentPath))
+        {
+          QString ss = QObject::tr("Error creating parent path '%1'").arg(parentPath);
+          qDebug() << ss;
+          return;
+        }
 #if OVERWRITE_SOURCE_FILE
         QFile hOut(filename);
 #else
@@ -163,7 +173,7 @@ class PyBind11Generator
       
       bool needsWrapping = false;
       
-      QString searchString =  "PYB11_SIMPL_EXPORT_CLASS";
+      QString searchString =  "PYB11_CREATE_BINDINGS";
       
       std::stringstream header;
       std::stringstream constructors;
@@ -175,13 +185,22 @@ class PyBind11Generator
       QStringList list = contents.split(QRegExp("\\n"));
       QStringListIterator sourceLines(list);
       
+      bool hasSuperClass = false;
+      QString superClassName;
+      bool constructorsCreated = false;
+      bool isSharedPointerClass = false;
       while (sourceLines.hasNext())
       {
         QString line = sourceLines.next();
-        if(line.contains(PYB11_SIMPL_EXPORT_CLASS) )
+        if(line.contains(PYB11_CREATE_BINDINGS) )
         {
           needsWrapping = true;
-          // Read the Template File
+          line = line.trimmed();
+          QStringList tokens = line.split("(");
+          tokens = tokens[1].replace(")", "").trimmed().split(" ");
+          baseName = tokens[0];
+          
+          // Create the Top part of the file from a template file
           QFile source(SIMPL::PyBind11::GetSIMPLPyBind11_TemplatesDir() + "/Pybind11TopMatter.txt");
           source.open(QFile::ReadOnly);
           QString headerTemplate = source.readAll();
@@ -189,29 +208,42 @@ class PyBind11Generator
           headerTemplate = headerTemplate.replace(CLASS_NAME, baseName);
           QString headerPath = QString("%1/%2.h").arg(subPath).arg(baseName);
           headerTemplate = headerTemplate.replace(HEADER_PATH, headerPath);
-          
           header << headerTemplate.toStdString();
+          
+          if(tokens.size() > 1 && tokens[1] == ::kSuperClass)
+          {
+            hasSuperClass = true;
+            superClassName = tokens[2];
+          }
+         
         }
-        
-        else if(needsWrapping && line.contains(SIMPL_SHARED_POINTERS) )
+        else if(needsWrapping && line.contains(SIMPL_SHARED_POINTERS) ) // The class that needs wrapping is a Shared_Pointer type of class.
         {
-          // Read the Template File
-          QFile source(SIMPL::PyBind11::GetSIMPLPyBind11_TemplatesDir() + "/SharedPointerClassInit.txt");
+          QFile source;
+          if(hasSuperClass && !superClassName.isEmpty())
+          {
+            source.setFileName(SIMPL::PyBind11::GetSIMPLPyBind11_TemplatesDir() + "/DerivedSharedPointerClassInit.txt");
+          }   
+          else
+          {
+            source.setFileName(SIMPL::PyBind11::GetSIMPLPyBind11_TemplatesDir() + "/SharedPointerClassInit.txt");
+          }
           source.open(QFile::ReadOnly);
           QString headerTemplate = source.readAll();
           source.close();
           headerTemplate = headerTemplate.replace(CLASS_NAME, baseName);
           QString headerPath = QString("%1/%2.h").arg(subPath).arg(baseName);
           headerTemplate = headerTemplate.replace(HEADER_PATH, headerPath);
+          headerTemplate = headerTemplate.replace(SUPERCLASS_NAME, superClassName);
           
           header << headerTemplate.toStdString();
+          isSharedPointerClass = true;
         }
-        
-        // The class that needs wrapping is a Shared_Pointer type of class.
         else if(needsWrapping && line.contains(SIMPL_STATIC_NEW_MACRO) )
         {
           constructors << TAB << ".def(py::init([](){ return " << baseName.toStdString() << "::New();}))" << NEWLINE_SIMPL;
           constructors << TAB << ".def_static(\"New\", &" << baseName.toStdString() << "::New)" << NEWLINE_SIMPL;
+          constructorsCreated = true;
         }
         else if(needsWrapping && line.contains(PYB11_PROPERTY) )
         {
@@ -258,11 +290,31 @@ class PyBind11Generator
             properties << TAB << ".def(\"" << methodName << "\", &" << baseName.toStdString() << "::" << methodName;
             for(int32_t i = 3; i < tokens.size(); i++)
             {
-              properties << ", py::arg(\""<< tokens[i].toStdString() << "\"))";
+              properties <<", \n" << TAB << TAB << TAB << TAB << "py::arg(\""<< tokens[i].toStdString() << "\")";
             }
-            properties << NEWLINE_SIMPL;
+            properties << NEWLINE_SIMPL << TAB << TAB << TAB << ")" << NEWLINE_SIMPL;
           }
         }
+      }
+      
+      if(!isSharedPointerClass)
+      {
+        QFile source;
+        source.setFileName(SIMPL::PyBind11::GetSIMPLPyBind11_TemplatesDir() + "/SimpleClassInit.txt");
+        source.open(QFile::ReadOnly);
+        QString headerTemplate = source.readAll();
+        source.close();
+        headerTemplate = headerTemplate.replace(CLASS_NAME, baseName);
+        QString headerPath = QString("%1/%2.h").arg(subPath).arg(baseName);
+        headerTemplate = headerTemplate.replace(HEADER_PATH, headerPath);
+        headerTemplate = headerTemplate.replace(SUPERCLASS_NAME, superClassName);
+        
+        header << headerTemplate.toStdString();
+      }
+      if(!constructorsCreated)
+      {
+          constructors << TAB << ".def(py::init<" << baseName.toStdString() << ">())" << NEWLINE_SIMPL;
+          constructors << TAB << ".def(py::init<" << baseName.toStdString() << " const &>())" << NEWLINE_SIMPL;
       }
       
       if(needsWrapping)

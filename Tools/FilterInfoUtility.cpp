@@ -49,6 +49,12 @@
 #include "SIMPLib/Plugin/SIMPLibPluginLoader.h"
 #include "SIMPLib/SIMPLib.h"
 
+#include "SIMPLib/Filtering/FilterPipeline.h"
+#include "SIMPLib/Utilities/SIMPLH5DataReaderRequirements.h"
+#include "SIMPLib/Utilities/SIMPLH5DataReader.h"
+#include "SIMPLib/CoreFilters/DataContainerReader.h"
+#include "SIMPLib/CoreFilters/DataContainerWriter.h"
+
 // -----------------------------------------------------------------------------
 //  Use unit test framework
 // -----------------------------------------------------------------------------
@@ -61,6 +67,30 @@ int main(int argc, char** argv)
   QCoreApplication::setOrganizationDomain("bluequartz.net");
   QCoreApplication::setApplicationName("PreflightTest");
 
+  QString filePath("/Users/mjackson/Workspace/DREAM3D-Build/Debug/Bin/Data/Output/SmallIN100Mesh_GBCD.dream3d");
+  SIMPLH5DataReader::Pointer h5SimplReader = SIMPLH5DataReader::New();
+  h5SimplReader->openFile(filePath);
+  SIMPLH5DataReaderRequirements readerRequirements;
+  int err = 0;
+  DataContainerArrayProxy proxy = h5SimplReader->readDataContainerArrayStructure(&readerRequirements, err);
+
+  DataContainerReader::Pointer reader = DataContainerReader::New();
+  reader->setInputFile(filePath);
+  reader->setOverwriteExistingDataContainers(true);
+  reader->setInputFileDataContainerArrayProxy(proxy);
+  
+  DataContainerWriter::Pointer writer = DataContainerWriter::New();
+  writer->setOutputFile("/tmp/cpp_CubicSingleEquiaxed.dream3d");
+  writer->setWriteXdmfFile(true);
+  
+  FilterPipeline::Pointer pipeline = FilterPipeline::New();
+  pipeline->pushBack(reader);
+  pipeline->pushBack(writer);
+  
+  DataContainerArray::Pointer dca = pipeline->run();
+  err = pipeline->getErrorCondition();
+
+ 
   // Load all the plugins and
   // Register all the filters including trying to load those from Plugins
   FilterManager* fm = FilterManager::Instance();
@@ -71,6 +101,7 @@ int main(int argc, char** argv)
   fm->RegisterKnownFilters(fm);
 
   QMetaObjectUtilities::RegisterMetaTypes();
+
 
   QJsonObject rootObj;
 
@@ -96,7 +127,7 @@ int main(int argc, char** argv)
     }
     // jobj["Filters"] = jArray;
 
-    rootObj[plugin->getPluginName()] = jobj;
+    rootObj[plugin->getPluginBaseName()] = jobj;
   }
 
   QFile out(argv[1]);

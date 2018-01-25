@@ -1,19 +1,37 @@
 #ifndef pybind_FilterPipeline_H_
 #define pybind_FilterPipeline_H_
 
+/**
+* @brief This header file is genererate from a program. Make changes with caution.
+* 
+* This header file wraps the SIMPL class FilterPipeline located at
+* SIMPLib/Filtering/FilterPipeline.h. 
+* The Python bindings are created using Pybind11.
+*/
 
 #include <pybind11/pybind11.h>
 
-#include "SIMPLib/Filtering/FilterPipeline.h"
-
 namespace py = pybind11;
 
+#include "SIMPLib/Filtering/FilterPipeline.h"
+
+
+/**
+* @brief This defines a C++11 alias so loading the file by itself into an IDE
+* will allow the proper code completion for a wrapped std::shared_ptr<> class.
+*/
 #ifndef PySharedPtrClass_TEMPLATE
 #define PySharedPtrClass_TEMPLATE
 template <typename T>
 using PySharedPtrClass = py::class_<T, std::shared_ptr<T> >;
 #endif
 
+/**
+* @brief
+* @param m The Python module
+* @return A std::shared_ptr<T> wrapped insance of the wrapped class properly 
+* initialized.
+*/
 PySharedPtrClass<FilterPipeline> pybind11_init_SIMPLib_FilterPipeline(py::module &m)
 {
   PySharedPtrClass<FilterPipeline> instance(m, "FilterPipeline");
@@ -32,14 +50,18 @@ PySharedPtrClass<FilterPipeline> pybind11_init_SIMPLib_FilterPipeline(py::module
   /* Property accessors for Name */
   .def("getName", &FilterPipeline::getName)
   .def("setName", &FilterPipeline::setName, py::arg("Name"))
-  /* Class instance method execute */
-  .def("execute", &FilterPipeline::execute)
+  /* Class instance method run */
+  .def("run", &FilterPipeline::run)
   /* Class instance method preflightPipeline */
   .def("preflightPipeline", &FilterPipeline::preflightPipeline)
   /* Class instance method pushFront */
-  .def("pushFront", &FilterPipeline::pushFront, py::arg("AbstractFilter"))
+  .def("pushFront", &FilterPipeline::pushFront, 
+        py::arg("AbstractFilter")
+      )
   /* Class instance method pushBack */
-  .def("pushBack", &FilterPipeline::pushBack, py::arg("AbstractFilter"))
+  .def("pushBack", &FilterPipeline::pushBack, 
+        py::arg("AbstractFilter")
+      )
   /* Class instance method popFront */
   .def("popFront", &FilterPipeline::popFront)
   /* Class instance method popBack */

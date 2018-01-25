@@ -92,7 +92,11 @@ template <typename T> using PySharedPtrClass = py::class_<T, std::shared_ptr<T>>
 
 #include "SIMPLib/Filtering/AbstractFilter_Pybind.h"
 #include "SIMPLib/Filtering/FilterPipeline_Pybind.h"
+#include "SIMPLib/DataContainers/DataContainerArray_Pybind.h"
+#include "SIMPLib/DataContainers/DataContainerArrayProxy_Pybind.h"
 
+#include "SIMPLib/CoreFilters/DataContainerReader_Pybind.h"
+#include "SIMPLib/CoreFilters/DataContainerWriter_Pybind.h"
 
 /**
  * @brief PYBIND11_MODULE This section declares our python module, its name and
@@ -106,4 +110,11 @@ PYBIND11_MODULE(SIMPLPy, m)
 
   PySharedPtrClass<AbstractFilter> SIMPL_AbstractFilter= pybind11_init_SIMPLib_AbstractFilter(simpl);
   PySharedPtrClass<FilterPipeline> SIMPL_FilterPipeline = pybind11_init_SIMPLib_FilterPipeline(simpl);
+  PySharedPtrClass<DataContainerArray> SIMPL_DataContainerArray = pybind11_init_SIMPLib_DataContainerArray(simpl);
+  PySharedPtrClass<DataContainerReader> SIMPL_DataContainerReader = pybind11_init_SIMPLib_DataContainerReader(simpl, SIMPL_AbstractFilter);
+  PySharedPtrClass<DataContainerReader> SIMPL_DataContainerWriter = pybind11_init_SIMPLib_DataContainerWriter(simpl, SIMPL_AbstractFilter);
+  PySharedPtrClass<DataContainerArrayProxy> SIMPL_DataContainerArrayProxy = pybind11_init_SIMPLib_DataContainerArrayProxy(simpl);
+
+
+
 }

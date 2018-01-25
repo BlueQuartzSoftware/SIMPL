@@ -64,7 +64,8 @@ using DataContainerShPtr = std::shared_ptr<DataContainer>;
 class SIMPLib_EXPORT DataContainerArray : public QObject
 {
     Q_OBJECT
-
+    PYB11_CREATE_BINDINGS(DataContainerArray)
+    
   public:
     SIMPL_SHARED_POINTERS(DataContainerArray)
     SIMPL_STATIC_NEW_MACRO(DataContainerArray)
