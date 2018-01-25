@@ -116,7 +116,10 @@ int H5PrimaryStatsDataDelegate::readPrimaryStatsData(PrimaryStatsData* data, hid
   err = readBoundaryArea(data, groupId);
 
   err = readStatsDataName(data, groupId);
-
+  if(err < 0)
+  {
+    data->setName(PhaseType::PrimaryStr());
+  }
   // Read the PhaseFraction
   err = readPhaseFraction(data, groupId);
 

@@ -74,7 +74,7 @@ int H5StatsDataDelegate::writeStatsData(StatsData* data, hid_t groupId)
 int H5StatsDataDelegate::readStatsDataName(StatsData* data, hid_t groupId)
 {
   QString name;
-  int err = QH5Lite::readStringDataset(groupId, SIMPL::StringConstants::ParentPhase, name);
+  int err = QH5Lite::readStringDataset(groupId, SIMPL::StringConstants::Name, name);
   data->setName(name);
   return err;
 }
