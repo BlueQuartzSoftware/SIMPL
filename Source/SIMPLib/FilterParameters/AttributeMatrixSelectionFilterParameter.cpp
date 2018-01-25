@@ -78,7 +78,7 @@ AttributeMatrixSelectionFilterParameter::Pointer AttributeMatrixSelectionFilterP
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-QString AttributeMatrixSelectionFilterParameter::getWidgetType()
+QString AttributeMatrixSelectionFilterParameter::getWidgetType() const
 {
   return QString("AttributeMatrixSelectionWidget");
 }

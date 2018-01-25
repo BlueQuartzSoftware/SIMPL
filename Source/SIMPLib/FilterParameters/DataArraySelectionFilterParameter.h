@@ -70,7 +70,7 @@ class SIMPLib_EXPORT DataArraySelectionFilterParameter : public FilterParameter
   public:
     SIMPL_SHARED_POINTERS(DataArraySelectionFilterParameter)
     SIMPL_STATIC_NEW_MACRO(DataArraySelectionFilterParameter)
-    SIMPL_TYPE_MACRO(DataArraySelectionFilterParameter)
+    SIMPL_TYPE_MACRO_SUPER_OVERRIDE(DataArraySelectionFilterParameter, FilterParameter)
 
     typedef std::function<void(DataArrayPath)> SetterCallbackType;
     typedef std::function<DataArrayPath(void)> GetterCallbackType;
@@ -140,19 +140,19 @@ class SIMPLib_EXPORT DataArraySelectionFilterParameter : public FilterParameter
     * this FilterParameter subclass
     * @return
     */
-    QString getWidgetType();
+    QString getWidgetType() const override;
 
     /**
      * @brief readJson Reads this filter parameter's corresponding property out of a QJsonObject.
      * @param json The QJsonObject that the filter parameter reads from.
      */
-    void readJson(const QJsonObject &json);
+    void readJson(const QJsonObject& json) override;
 
     /**
      * @brief writeJson Writes this filter parameter's corresponding property to a QJsonObject.
      * @param json The QJsonObject that the filter parameter writes to.
      */
-    void writeJson(QJsonObject &json);
+    void writeJson(QJsonObject& json) override;
 
     /**
     * @param DefaultGeometryTypes Default geometry types required for Data Container selections

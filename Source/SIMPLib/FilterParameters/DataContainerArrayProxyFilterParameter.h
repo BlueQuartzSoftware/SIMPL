@@ -68,7 +68,7 @@ class SIMPLib_EXPORT DataContainerArrayProxyFilterParameter : public FilterParam
   public:
     SIMPL_SHARED_POINTERS(DataContainerArrayProxyFilterParameter)
     SIMPL_STATIC_NEW_MACRO(DataContainerArrayProxyFilterParameter)
-     SIMPL_TYPE_MACRO_SUPER_OVERRIDE(DataContainerArrayProxyFilterParameter, FilterParameter)
+    SIMPL_TYPE_MACRO_SUPER_OVERRIDE(DataContainerArrayProxyFilterParameter, FilterParameter)
 
     typedef std::function<void(DataContainerArrayProxy)> SetterCallbackType;
     typedef std::function<DataContainerArrayProxy(void)> GetterCallbackType;
@@ -106,19 +106,19 @@ class SIMPLib_EXPORT DataContainerArrayProxyFilterParameter : public FilterParam
      * this FilterParameter subclass
      * @return
      */
-    QString getWidgetType();
+    QString getWidgetType() const override;
 
     /**
      * @brief readJson Reads this filter parameter's corresponding property out of a QJsonObject.
      * @param json The QJsonObject that the filter parameter reads from.
      */
-    void readJson(const QJsonObject &json);
+    void readJson(const QJsonObject& json) override;
 
     /**
      * @brief writeJson Writes this filter parameter's corresponding property to a QJsonObject.
      * @param json The QJsonObject that the filter parameter writes to.
      */
-    void writeJson(QJsonObject &json);
+    void writeJson(QJsonObject& json) override;
 
     /**
     * @param SetterCallback The method in the AbstractFilter subclass that <i>sets</i> the value of the property

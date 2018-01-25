@@ -66,8 +66,7 @@ class SIMPLib_EXPORT SeparatorFilterParameter : public FilterParameter
      * this FilterParameter subclass
      * @return
      */
-    QString getWidgetType();
-
+    QString getWidgetType() const override;
 
   protected:
     /**

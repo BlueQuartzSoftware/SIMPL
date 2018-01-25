@@ -56,6 +56,10 @@
 
 #define __SHOW_DEBUG_MSG__ false
 
+#ifdef __clang__
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Winconsistent-missing-override"
+#endif
 
 #if (_MSC_VER >= 1)
 

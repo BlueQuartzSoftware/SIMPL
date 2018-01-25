@@ -70,7 +70,7 @@ IntFilterParameter::Pointer IntFilterParameter::New(const QString& humanLabel, c
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-QString IntFilterParameter::getWidgetType()
+QString IntFilterParameter::getWidgetType() const
 {
   return QString("IntWidget");
 }

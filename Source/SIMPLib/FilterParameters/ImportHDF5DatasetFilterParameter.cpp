@@ -79,7 +79,7 @@ ImportHDF5DatasetFilterParameter::Pointer ImportHDF5DatasetFilterParameter::New(
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-QString ImportHDF5DatasetFilterParameter::getWidgetType()
+QString ImportHDF5DatasetFilterParameter::getWidgetType() const
 {
   return QString("ImportHDF5DatasetWidget");
 }

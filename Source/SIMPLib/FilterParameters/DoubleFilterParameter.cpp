@@ -93,7 +93,7 @@ DoubleFilterParameter::Pointer DoubleFilterParameter::New(const QString& humanLa
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-QString DoubleFilterParameter::getWidgetType()
+QString DoubleFilterParameter::getWidgetType() const
 {
   return QString("DoubleWidget");
 }

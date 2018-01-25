@@ -72,7 +72,7 @@ NumericTypeFilterParameter::Pointer NumericTypeFilterParameter::New(const QStrin
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-QString NumericTypeFilterParameter::getWidgetType()
+QString NumericTypeFilterParameter::getWidgetType() const
 {
   return QString("NumericTypeWidget");
 }

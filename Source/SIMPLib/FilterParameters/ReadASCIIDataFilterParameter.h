@@ -45,22 +45,20 @@ class SIMPLib_EXPORT ReadASCIIDataFilterParameter : public FilterParameter
 public:
   SIMPL_SHARED_POINTERS(ReadASCIIDataFilterParameter)
     SIMPL_STATIC_NEW_MACRO(ReadASCIIDataFilterParameter)
-    SIMPL_TYPE_MACRO(ReadASCIIDataFilterParameter)
+    SIMPL_TYPE_MACRO_SUPER_OVERRIDE(ReadASCIIDataFilterParameter, FilterParameter)
 
-  static Pointer New(const QString& humanLabel, const QString& propertyName,
-                     const QVariant& defaultValue, Category category,
-                     int groupIndex = -1);
+    static Pointer New(const QString& humanLabel, const QString& propertyName, const QVariant& defaultValue, Category category, int groupIndex = -1);
 
-  virtual ~ReadASCIIDataFilterParameter();
+    virtual ~ReadASCIIDataFilterParameter();
 
-  QString getWidgetType();
+    QString getWidgetType() const override;
 
-protected:
-  ReadASCIIDataFilterParameter();
+  protected:
+    ReadASCIIDataFilterParameter();
 
-private:
-  ReadASCIIDataFilterParameter(const ReadASCIIDataFilterParameter&) = delete; // Copy Constructor Not Implemented
-  void operator=(const ReadASCIIDataFilterParameter&) = delete;               // Operator '=' Not Implemented
+  private:
+    ReadASCIIDataFilterParameter(const ReadASCIIDataFilterParameter&) = delete; // Copy Constructor Not Implemented
+    void operator=(const ReadASCIIDataFilterParameter&) = delete;               // Operator '=' Not Implemented
 };
 
 #endif /* _ImportVectorImageStackFilterParameter_H_ */

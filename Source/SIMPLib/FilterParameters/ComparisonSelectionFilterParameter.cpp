@@ -76,7 +76,7 @@ ComparisonSelectionFilterParameter::Pointer ComparisonSelectionFilterParameter::
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-QString ComparisonSelectionFilterParameter::getWidgetType()
+QString ComparisonSelectionFilterParameter::getWidgetType() const
 {
   return QString("ComparisonSelectionWidget");
 }

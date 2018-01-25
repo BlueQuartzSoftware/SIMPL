@@ -89,7 +89,7 @@ DynamicTableFilterParameter::Pointer DynamicTableFilterParameter::New(const QStr
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-QString DynamicTableFilterParameter::getWidgetType()
+QString DynamicTableFilterParameter::getWidgetType() const
 {
   return QString("DynamicTableWidget");
 }

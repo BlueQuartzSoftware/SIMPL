@@ -66,27 +66,27 @@ class SIMPLib_EXPORT BooleanFilterParameter : public FilterParameter
 public:
   SIMPL_SHARED_POINTERS(BooleanFilterParameter)
     SIMPL_STATIC_NEW_MACRO(BooleanFilterParameter)
-    SIMPL_TYPE_MACRO(BooleanFilterParameter)
+    SIMPL_TYPE_MACRO_SUPER_OVERRIDE(BooleanFilterParameter, FilterParameter)
 
-  typedef std::function<void(bool)> SetterCallbackType;
-  typedef std::function<bool(void)> GetterCallbackType;
+    typedef std::function<void(bool)> SetterCallbackType;
+    typedef std::function<bool(void)> GetterCallbackType;
 
-  /**
-   * @brief New This function instantiates an instance of the BooleanFilterParameter. Although this function is available to be used,
-   * the preferable way to instantiate an instance of this class is to use the SIMPL_NEW_BOOL_FP(...) macro at the top of this file.
+    /**
+     * @brief New This function instantiates an instance of the BooleanFilterParameter. Although this function is available to be used,
+     * the preferable way to instantiate an instance of this class is to use the SIMPL_NEW_BOOL_FP(...) macro at the top of this file.
 
-   * @param humanLabel The name that the users of DREAM.3D see for this filter parameter
-   * @param propertyName The internal property name for this filter parameter.
-   * @param defaultValue The value that this filter parameter will be initialized to by default.
-   * @param category The category for the filter parameter in the DREAM.3D user interface.  There
-   * are three categories: Parameter, Required Arrays, and Created Arrays.
-   * @param setterCallback The method in the AbstractFilter subclass that <i>sets</i> the value of the property
-  * that this FilterParameter subclass represents.
-   * @param getterCallback The method in the AbstractFilter subclass that <i>gets</i> the value of the property
-  * that this FilterParameter subclass represents.
-   * @param groupIndex Integer that specifies the group that this filter parameter will be placed in.
-   * @return
-   */
+     * @param humanLabel The name that the users of DREAM.3D see for this filter parameter
+     * @param propertyName The internal property name for this filter parameter.
+     * @param defaultValue The value that this filter parameter will be initialized to by default.
+     * @param category The category for the filter parameter in the DREAM.3D user interface.  There
+     * are three categories: Parameter, Required Arrays, and Created Arrays.
+     * @param setterCallback The method in the AbstractFilter subclass that <i>sets</i> the value of the property
+    * that this FilterParameter subclass represents.
+     * @param getterCallback The method in the AbstractFilter subclass that <i>gets</i> the value of the property
+    * that this FilterParameter subclass represents.
+     * @param groupIndex Integer that specifies the group that this filter parameter will be placed in.
+     * @return
+     */
     static Pointer New(const QString& humanLabel, const QString& propertyName,
     const bool& defaultValue, Category category, SetterCallbackType setterCallback,
     GetterCallbackType getterCallback, int groupIndex = -1);
@@ -98,19 +98,19 @@ public:
      * this FilterParameter subclass
      * @return
      */
-    QString getWidgetType();
+    QString getWidgetType() const override;
 
     /**
      * @brief readJson Reads this filter parameter's corresponding property out of a QJsonObject.
      * @param json The QJsonObject that the filter parameter reads from.
      */
-    void readJson(const QJsonObject &json);
+    void readJson(const QJsonObject& json) override;
 
     /**
      * @brief writeJson Writes this filter parameter's corresponding property to a QJsonObject.
      * @param json The QJsonObject that the filter parameter writes to.
      */
-    void writeJson(QJsonObject &json);
+    void writeJson(QJsonObject& json) override;
 
     /**
     * @param SetterCallback The method in the AbstractFilter subclass that <i>sets</i> the value of the property

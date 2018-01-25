@@ -58,7 +58,7 @@ class SIMPLib_EXPORT JsonFilterParametersWriter : public AbstractFilterParameter
   public:
     SIMPL_SHARED_POINTERS(JsonFilterParametersWriter)
     SIMPL_STATIC_NEW_MACRO(JsonFilterParametersWriter)
-     SIMPL_TYPE_MACRO_SUPER_OVERRIDE(JsonFilterParametersWriter, AbstractFilterParametersWriter)
+    SIMPL_TYPE_MACRO_SUPER_OVERRIDE(JsonFilterParametersWriter, AbstractFilterParametersWriter)
 
     SIMPL_INSTANCE_PROPERTY(QString, FileName)
     SIMPL_INSTANCE_PROPERTY(QString, PipelineName)

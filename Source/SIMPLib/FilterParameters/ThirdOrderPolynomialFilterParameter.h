@@ -107,8 +107,8 @@ class SIMPLib_EXPORT ThirdOrderPolynomialFilterParameter : public FilterParamete
 {
 public:
   SIMPL_SHARED_POINTERS(ThirdOrderPolynomialFilterParameter)
-    SIMPL_STATIC_NEW_MACRO(ThirdOrderPolynomialFilterParameter)
-    SIMPL_TYPE_MACRO(ThirdOrderPolynomialFilterParameter)
+  SIMPL_STATIC_NEW_MACRO(ThirdOrderPolynomialFilterParameter)
+  SIMPL_TYPE_MACRO_SUPER_OVERRIDE(ThirdOrderPolynomialFilterParameter, FilterParameter)
 
   typedef std::function<void(Float3rdOrderPoly_t)> SetterCallbackType;
   typedef std::function<Float3rdOrderPoly_t(void)> GetterCallbackType;
@@ -141,36 +141,35 @@ public:
    * this FilterParameter subclass
    * @return
    */
-  QString getWidgetType();
+    QString getWidgetType() const override;
 
-  /**
-   * @brief readJson Reads this filter parameter's corresponding property out of a QJsonObject.
-   * @param json The QJsonObject that the filter parameter reads from.
-   */
-  void readJson(const QJsonObject &json);
+    /**
+     * @brief readJson Reads this filter parameter's corresponding property out of a QJsonObject.
+     * @param json The QJsonObject that the filter parameter reads from.
+     */
+    void readJson(const QJsonObject& json) override;
 
-  /**
-   * @brief writeJson Writes this filter parameter's corresponding property to a QJsonObject.
-   * @param json The QJsonObject that the filter parameter writes to.
-   */
-  void writeJson(QJsonObject &json);
+    /**
+     * @brief writeJson Writes this filter parameter's corresponding property to a QJsonObject.
+     * @param json The QJsonObject that the filter parameter writes to.
+     */
+    void writeJson(QJsonObject& json) override;
 
-  /**
-  * @param SetterCallback The method in the AbstractFilter subclass that <i>sets</i> the value of the property
-  * that this FilterParameter subclass represents.
-  * @return The SetterCallback
-  */
-  SIMPL_INSTANCE_PROPERTY(SetterCallbackType, SetterCallback)
+    /**
+    * @param SetterCallback The method in the AbstractFilter subclass that <i>sets</i> the value of the property
+    * that this FilterParameter subclass represents.
+    * @return The SetterCallback
+    */
+    SIMPL_INSTANCE_PROPERTY(SetterCallbackType, SetterCallback)
 
-  /**
-  * @param GetterCallback The method in the AbstractFilter subclass that <i>gets</i> the value of the property
-  * that this FilterParameter subclass represents.
-  * @return The GetterCallback
-  */
-  SIMPL_INSTANCE_PROPERTY(GetterCallbackType, GetterCallback)
+    /**
+    * @param GetterCallback The method in the AbstractFilter subclass that <i>gets</i> the value of the property
+    * that this FilterParameter subclass represents.
+    * @return The GetterCallback
+    */
+    SIMPL_INSTANCE_PROPERTY(GetterCallbackType, GetterCallback)
 
-
-protected:
+  protected:
     /**
      * @brief ThirdOrderPolynomialFilterParameter The default constructor.  It is protected because this
      * filter parameter should only be instantiated using its New(...) function or short-form macro.

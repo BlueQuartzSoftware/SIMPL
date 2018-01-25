@@ -106,19 +106,19 @@ public:
   * this FilterParameter subclass
   * @return
   */
-  QString getWidgetType();
+  QString getWidgetType() const override;
 
   /**
   * @brief readJson Reads this filter parameter's corresponding property out of a QJsonObject.
   * @param json The QJsonObject that the filter parameter reads from.
   */
-  void readJson(const QJsonObject& json);
+  void readJson(const QJsonObject& json) override;
 
   /**
   * @brief writeJson Writes this filter parameter's corresponding property to a QJsonObject.
   * @param json The QJsonObject that the filter parameter writes to.
   */
-  void writeJson(QJsonObject& json);
+  void writeJson(QJsonObject& json) override;
 
   SIMPL_INSTANCE_PROPERTY(IGeometry::Types, DefaultGeometryTypes)
   SIMPL_INSTANCE_PROPERTY(AttributeMatrix::Types, DefaultAttributeMatrixTypes)

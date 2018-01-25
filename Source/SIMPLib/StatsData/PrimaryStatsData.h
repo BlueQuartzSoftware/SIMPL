@@ -190,13 +190,13 @@ class SIMPLib_EXPORT PrimaryStatsData : public StatsData
      * @brief writeJson
      * @param json
      */
-    virtual void writeJson(QJsonObject &json);
+    virtual void writeJson(QJsonObject& json) override;
 
     /**
      * @brief readJson
      * @param json
      */
-    virtual void readJson(const QJsonObject &json);
+    virtual void readJson(const QJsonObject& json) override;
 
   protected:
     PrimaryStatsData();

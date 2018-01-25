@@ -71,7 +71,7 @@ FileListInfoFilterParameter::Pointer FileListInfoFilterParameter::New(const QStr
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-QString FileListInfoFilterParameter::getWidgetType()
+QString FileListInfoFilterParameter::getWidgetType() const
 {
   return QString("FileListInfoWidget");
 }

@@ -70,8 +70,6 @@ class SIMPLib_EXPORT FilterParameter
       Uncategorized = 3
     };
 
-
-
     virtual ~FilterParameter();
 
     SIMPL_INSTANCE_STRING_PROPERTY(HumanLabel)
@@ -82,7 +80,7 @@ class SIMPLib_EXPORT FilterParameter
      * to implement this function.
      * @return
      */
-    virtual QString getWidgetType()  = 0;
+    virtual QString getWidgetType() const = 0;
 
     SIMPL_VIRTUAL_INSTANCE_PROPERTY(QVariant, DefaultValue)
     SIMPL_INSTANCE_PROPERTY(Category, Category)

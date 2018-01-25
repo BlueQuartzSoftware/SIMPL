@@ -56,7 +56,8 @@ class SIMPLib_EXPORT ConstrainedFilterParameter : public FilterParameter
      * this FilterParameter subclass
      * @return
      */
-    QString getWidgetType();
+    QString getWidgetType() const override;
+
   protected:
     ConstrainedFilterParameter() {}
 

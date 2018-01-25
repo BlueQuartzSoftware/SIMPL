@@ -73,7 +73,7 @@ ChoiceFilterParameter::Pointer ChoiceFilterParameter::New(const QString& humanLa
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-QString ChoiceFilterParameter::getWidgetType()
+QString ChoiceFilterParameter::getWidgetType() const
 {
   return QString("ChoiceWidget");
 }

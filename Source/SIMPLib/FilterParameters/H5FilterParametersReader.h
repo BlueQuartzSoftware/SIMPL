@@ -75,8 +75,8 @@ class SIMPLib_EXPORT H5FilterParametersReader : public AbstractFilterParametersR
 
     hid_t getCurrentGroupId() const;
 
-    virtual int openFilterGroup(AbstractFilter* filter, int index);
-    virtual int closeFilterGroup();
+    virtual int openFilterGroup(AbstractFilter* filter, int index) override;
+    virtual int closeFilterGroup() override;
 
     /**
      * @brief ReadPipelineFromFile
@@ -101,56 +101,54 @@ class SIMPLib_EXPORT H5FilterParametersReader : public AbstractFilterParametersR
      */
     QString getJsonFromFile(QString filePath, IObserver *obs = nullptr);
 
-    virtual QString readString(const QString name, QString value);
-    virtual QVector<QString> readStrings(const QString name, QVector<QString> value);
-    virtual QStringList readStringList(const QString name, QStringList value);
+    virtual QString readString(const QString name, QString value) override;
+    virtual QVector<QString> readStrings(const QString name, QVector<QString> value) override;
+    virtual QStringList readStringList(const QString name, QStringList value) override;
 
-    virtual int8_t readValue(const QString name, int8_t value);
-    virtual int16_t readValue(const QString name, int16_t value);
-    virtual int32_t readValue(const QString name, int32_t value);
-    virtual int64_t readValue(const QString name, int64_t value);
-    virtual uint8_t readValue(const QString name, uint8_t value);
-    virtual uint16_t readValue(const QString name, uint16_t value);
-    virtual uint32_t readValue(const QString name, uint32_t value);
-    virtual uint64_t readValue(const QString name, uint64_t value);
-    virtual float readValue(const QString name, float value);
-    virtual double readValue(const QString name, double value);
-    virtual bool readValue(const QString name, bool value);
-    virtual AttributeMatrix::Type readValue(const QString name, AttributeMatrix::Type value);
+    virtual int8_t readValue(const QString name, int8_t value) override;
+    virtual int16_t readValue(const QString name, int16_t value) override;
+    virtual int32_t readValue(const QString name, int32_t value) override;
+    virtual int64_t readValue(const QString name, int64_t value) override;
+    virtual uint8_t readValue(const QString name, uint8_t value) override;
+    virtual uint16_t readValue(const QString name, uint16_t value) override;
+    virtual uint32_t readValue(const QString name, uint32_t value) override;
+    virtual uint64_t readValue(const QString name, uint64_t value) override;
+    virtual float readValue(const QString name, float value) override;
+    virtual double readValue(const QString name, double value) override;
+    virtual bool readValue(const QString name, bool value) override;
+    virtual AttributeMatrix::Type readValue(const QString name, AttributeMatrix::Type value) override;
 
-    virtual QVector<int8_t> readArray(const QString name, QVector<int8_t> value);
-    virtual QVector<int16_t> readArray(const QString name, QVector<int16_t> value);
-    virtual QVector<int32_t> readArray(const QString name, QVector<int32_t> value);
-    virtual QVector<int64_t> readArray(const QString name, QVector<int64_t> value);
-    virtual QVector<uint8_t> readArray(const QString name, QVector<uint8_t> value);
-    virtual QVector<uint16_t> readArray(const QString name, QVector<uint16_t> value);
-    virtual QVector<uint32_t> readArray(const QString name, QVector<uint32_t> value);
-    virtual QVector<uint64_t> readArray(const QString name, QVector<uint64_t> value);
-    virtual QVector<float> readArray(const QString name, QVector<float> value);
-    virtual QVector<double> readArray(const QString name, QVector<double> value);
+    virtual QVector<int8_t> readArray(const QString name, QVector<int8_t> value) override;
+    virtual QVector<int16_t> readArray(const QString name, QVector<int16_t> value) override;
+    virtual QVector<int32_t> readArray(const QString name, QVector<int32_t> value) override;
+    virtual QVector<int64_t> readArray(const QString name, QVector<int64_t> value) override;
+    virtual QVector<uint8_t> readArray(const QString name, QVector<uint8_t> value) override;
+    virtual QVector<uint16_t> readArray(const QString name, QVector<uint16_t> value) override;
+    virtual QVector<uint32_t> readArray(const QString name, QVector<uint32_t> value) override;
+    virtual QVector<uint64_t> readArray(const QString name, QVector<uint64_t> value) override;
+    virtual QVector<float> readArray(const QString name, QVector<float> value) override;
+    virtual QVector<double> readArray(const QString name, QVector<double> value) override;
 
+    virtual IntVec3_t readIntVec3(const QString name, IntVec3_t v) override;
+    virtual FloatVec3_t readFloatVec3(const QString name, FloatVec3_t v) override;
 
-    virtual IntVec3_t readIntVec3(const QString name, IntVec3_t v);
-    virtual FloatVec3_t readFloatVec3(const QString name, FloatVec3_t v);
+    virtual Float2ndOrderPoly_t readFloat2ndOrderPoly(const QString name, Float2ndOrderPoly_t v) override;
+    virtual Float3rdOrderPoly_t readFloat3rdOrderPoly(const QString name, Float3rdOrderPoly_t v) override;
+    virtual Float4thOrderPoly_t readFloat4thOrderPoly(const QString name, Float4thOrderPoly_t v) override;
+    virtual FileListInfo_t readFileListInfo(const QString name, FileListInfo_t v) override;
+    virtual ComparisonInput_t readComparisonInput(const QString name, ComparisonInput_t v, int vectorPos) override;
+    virtual ComparisonInputs readComparisonInputs(const QString name, ComparisonInputs v) override;
+    virtual ComparisonInputsAdvanced readComparisonInputsAdvanced(const QString name, ComparisonInputsAdvanced v) override;
+    virtual AxisAngleInput_t readAxisAngle(const QString name, AxisAngleInput_t v, int vectorPos) override;
+    virtual QVector<AxisAngleInput_t> readAxisAngles(const QString name, QVector<AxisAngleInput_t> defValue) override;
+    virtual QSet<QString> readArraySelections(const QString name, QSet<QString> v) override;
 
-    virtual Float2ndOrderPoly_t readFloat2ndOrderPoly(const QString name, Float2ndOrderPoly_t v);
-    virtual Float3rdOrderPoly_t readFloat3rdOrderPoly(const QString name, Float3rdOrderPoly_t v);
-    virtual Float4thOrderPoly_t readFloat4thOrderPoly(const QString name, Float4thOrderPoly_t v);
-    virtual FileListInfo_t readFileListInfo(const QString name, FileListInfo_t v);
-    virtual ComparisonInput_t readComparisonInput(const QString name, ComparisonInput_t v, int vectorPos);
-    virtual ComparisonInputs readComparisonInputs(const QString name, ComparisonInputs v);
-    virtual ComparisonInputsAdvanced readComparisonInputsAdvanced(const QString name, ComparisonInputsAdvanced v);
-    virtual AxisAngleInput_t readAxisAngle(const QString name, AxisAngleInput_t v, int vectorPos);
-    virtual QVector<AxisAngleInput_t> readAxisAngles(const QString name, QVector<AxisAngleInput_t> defValue);
-    virtual QSet<QString> readArraySelections(const QString name, QSet<QString> v);
+    virtual DataContainerArrayProxy readDataContainerArrayProxy(const QString& name, DataContainerArrayProxy v) override;
+    virtual DataArrayPath readDataArrayPath(const QString& name, DataArrayPath v) override;
+    virtual QVector<DataArrayPath> readDataArrayPathVector(const QString& name, QVector<DataArrayPath> def) override;
+    virtual DynamicTableData readDynamicTableData(const QString& name, DynamicTableData def) override;
 
-    virtual DataContainerArrayProxy readDataContainerArrayProxy(const QString& name, DataContainerArrayProxy v);
-    virtual DataArrayPath readDataArrayPath(const QString& name, DataArrayPath v);
-    virtual QVector<DataArrayPath> readDataArrayPathVector(const QString& name, QVector<DataArrayPath> def);
-    virtual DynamicTableData readDynamicTableData(const QString& name, DynamicTableData def);
-
-    virtual QPair<double, double> readPairOfDoubles(const QString& name, QPair<double, double> v);
-
+    virtual QPair<double, double> readPairOfDoubles(const QString& name, QPair<double, double> v) override;
 
   protected:
     H5FilterParametersReader();

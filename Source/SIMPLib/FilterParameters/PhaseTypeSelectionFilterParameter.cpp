@@ -76,7 +76,7 @@ PhaseTypeSelectionFilterParameter::Pointer PhaseTypeSelectionFilterParameter::Ne
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-QString PhaseTypeSelectionFilterParameter::getWidgetType()
+QString PhaseTypeSelectionFilterParameter::getWidgetType() const
 {
   return QString("PhaseTypeSelectionWidget");
 }

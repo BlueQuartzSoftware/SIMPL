@@ -75,8 +75,7 @@ class SIMPLib_EXPORT DataContainerBundle : public IDataContainerBundle
     /**
     * @brief The name of this DataContainerBundle
     */
-    SIMPL_INSTANCE_STRING_PROPERTY(Name)
-
+    SIMPL_INSTANCE_STRING_PROPERTY_OVERRIDE(Name)
 
     /*
      * @brief This is the list of array names that reside inside the "Meta Data" attribute matrix that are the
@@ -101,44 +100,44 @@ class SIMPLib_EXPORT DataContainerBundle : public IDataContainerBundle
      * @brief addDataContainer Adds a Data Container to the bundle
      * @param dc
      */
-    void addDataContainer(DataContainer::Pointer dc);
+    void addDataContainer(DataContainer::Pointer dc) override;
 
     /**
      * @brief removeDataContainer Removes a Data Container from the bundle by pointer
      * @param dc
      */
-    void removeDataContainer(DataContainer::Pointer dc);
+    void removeDataContainer(DataContainer::Pointer dc) override;
 
     /**
      * @brief Removes a DataContainer by name from the bundle
      * @param name
      */
-    void removeDataContainer(const QString& name);
+    void removeDataContainer(const QString& name) override;
 
     /**
      * @brief Removes a Data Container by index
      * @param i
      */
-    void removeDataContainer(qint32 i);
+    void removeDataContainer(qint32 i) override;
 
     /**
      * @brief Returns the DataContainer at a given index
      * @param index
      * @return
      */
-    DataContainer::Pointer getDataContainer(qint32 index);
+    DataContainer::Pointer getDataContainer(qint32 index) override;
 
     /**
      * @brief Returns the number of DataContainers held in the bundle
      * @return
      */
-    qint32 count();
+    qint32 count() override;
 
     /**
      * @brief Removes all references to the DataContainers stored in the class. Count will = 0
      * after this operation
      */
-    void clear();
+    void clear() override;
 
     /**
      * @brief This function returns all the Data Arrays Path objects that all the
@@ -151,14 +150,14 @@ class SIMPLib_EXPORT DataContainerBundle : public IDataContainerBundle
      * @param file_id The hdf5 file id or other group id where the bundle is going to be serialized to.
      * @return
      */
-    int writeH5Data(hid_t groupId);
+    int writeH5Data(hid_t groupId) override;
 
     /**
      * @brief readH5Data Reads this bundle from an HDF5 file
      * @param groupId
      * @return
      */
-    int readH5Data(hid_t groupId);
+    int readH5Data(hid_t groupId) override;
 
   protected:
     DataContainerBundle();

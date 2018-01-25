@@ -72,7 +72,7 @@ OutputFileFilterParameter::Pointer OutputFileFilterParameter::New(const QString&
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-QString OutputFileFilterParameter::getWidgetType()
+QString OutputFileFilterParameter::getWidgetType() const
 {
   return QString("OutputFileWidget");
 }

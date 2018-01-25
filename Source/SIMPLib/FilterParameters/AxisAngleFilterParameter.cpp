@@ -71,7 +71,7 @@ AxisAngleFilterParameter::Pointer AxisAngleFilterParameter::New(const QString& h
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-QString AxisAngleFilterParameter::getWidgetType()
+QString AxisAngleFilterParameter::getWidgetType() const
 {
   return QString("AxisAngleWidget");
 }

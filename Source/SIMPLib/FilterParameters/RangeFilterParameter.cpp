@@ -70,7 +70,7 @@ RangeFilterParameter::Pointer RangeFilterParameter::New(const QString& humanLabe
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-QString RangeFilterParameter::getWidgetType()
+QString RangeFilterParameter::getWidgetType() const
 {
   return QString("RangeWidget");
 }

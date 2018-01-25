@@ -70,7 +70,7 @@ CalculatorFilterParameter::Pointer CalculatorFilterParameter::New(const QString&
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-QString CalculatorFilterParameter::getWidgetType()
+QString CalculatorFilterParameter::getWidgetType() const
 {
   return QString("CalculatorWidget");
 }

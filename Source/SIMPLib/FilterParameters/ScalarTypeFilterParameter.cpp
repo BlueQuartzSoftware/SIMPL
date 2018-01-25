@@ -72,7 +72,7 @@ ScalarTypeFilterParameter::Pointer ScalarTypeFilterParameter::New(const QString&
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-QString ScalarTypeFilterParameter::getWidgetType()
+QString ScalarTypeFilterParameter::getWidgetType() const
 {
   return QString("ScalarTypeWidget");
 }

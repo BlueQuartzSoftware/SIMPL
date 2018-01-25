@@ -66,29 +66,29 @@ class SIMPLib_EXPORT OutputPathFilterParameter : public FilterParameter
 public:
   SIMPL_SHARED_POINTERS(OutputPathFilterParameter)
     SIMPL_STATIC_NEW_MACRO(OutputPathFilterParameter)
-    SIMPL_TYPE_MACRO(OutputPathFilterParameter)
+    SIMPL_TYPE_MACRO_SUPER_OVERRIDE(OutputPathFilterParameter, FilterParameter)
 
-  typedef std::function<void(QString)> SetterCallbackType;
-  typedef std::function<QString(void)> GetterCallbackType;
+    typedef std::function<void(QString)> SetterCallbackType;
+    typedef std::function<QString(void)> GetterCallbackType;
 
-  /**
-   * @brief New This function instantiates an instance of the OutputPathFilterParameter. Although this function is available to be used,
-   * the preferable way to instantiate an instance of this class is to use the SIMPL_NEW_OUTPUT_PATH_FP(...) macro at the top of this file.
+    /**
+     * @brief New This function instantiates an instance of the OutputPathFilterParameter. Although this function is available to be used,
+     * the preferable way to instantiate an instance of this class is to use the SIMPL_NEW_OUTPUT_PATH_FP(...) macro at the top of this file.
 
-   * @param humanLabel The name that the users of DREAM.3D see for this filter parameter
-   * @param propertyName The internal property name for this filter parameter.
-   * @param defaultValue The value that this filter parameter will be initialized to by default.
-   * @param category The category for the filter parameter in the DREAM.3D user interface.  There
-   * are three categories: Parameter, Required Arrays, and Created Arrays.
-   * @param setterCallback The method in the AbstractFilter subclass that <i>sets</i> the value of the property
-  * that this FilterParameter subclass represents.
-   * @param getterCallback The method in the AbstractFilter subclass that <i>gets</i> the value of the property
-  * that this FilterParameter subclass represents.
-  * @param fileExtension The possible file extensions that this OutputPathWidget accepts.
-  * @param fileType The possible file types that this OutputPathWidget accepts.
-   * @param groupIndex Integer that specifies the group that this filter parameter will be placed in.
-   * @return
-   */
+     * @param humanLabel The name that the users of DREAM.3D see for this filter parameter
+     * @param propertyName The internal property name for this filter parameter.
+     * @param defaultValue The value that this filter parameter will be initialized to by default.
+     * @param category The category for the filter parameter in the DREAM.3D user interface.  There
+     * are three categories: Parameter, Required Arrays, and Created Arrays.
+     * @param setterCallback The method in the AbstractFilter subclass that <i>sets</i> the value of the property
+    * that this FilterParameter subclass represents.
+     * @param getterCallback The method in the AbstractFilter subclass that <i>gets</i> the value of the property
+    * that this FilterParameter subclass represents.
+    * @param fileExtension The possible file extensions that this OutputPathWidget accepts.
+    * @param fileType The possible file types that this OutputPathWidget accepts.
+     * @param groupIndex Integer that specifies the group that this filter parameter will be placed in.
+     * @return
+     */
     static Pointer New(const QString& humanLabel, const QString& propertyName,
     const QString& defaultValue, Category category,
     SetterCallbackType setterCallback, GetterCallbackType getterCallback,
@@ -106,36 +106,35 @@ public:
      * this FilterParameter subclass
      * @return
      */
-    QString getWidgetType();
+      QString getWidgetType() const override;
 
-    /**
-     * @brief readJson Reads this filter parameter's corresponding property out of a QJsonObject.
-     * @param json The QJsonObject that the filter parameter reads from.
-     */
-    void readJson(const QJsonObject &json);
+      /**
+       * @brief readJson Reads this filter parameter's corresponding property out of a QJsonObject.
+       * @param json The QJsonObject that the filter parameter reads from.
+       */
+      void readJson(const QJsonObject& json) override;
 
-    /**
-     * @brief writeJson Writes this filter parameter's corresponding property to a QJsonObject.
-     * @param json The QJsonObject that the filter parameter writes to.
-     */
-    void writeJson(QJsonObject &json);
+      /**
+       * @brief writeJson Writes this filter parameter's corresponding property to a QJsonObject.
+       * @param json The QJsonObject that the filter parameter writes to.
+       */
+      void writeJson(QJsonObject& json) override;
 
-    /**
-    * @param SetterCallback The method in the AbstractFilter subclass that <i>sets</i> the value of the property
-    * that this FilterParameter subclass represents.
-    * from the filter parameter.
-    */
-    SIMPL_INSTANCE_PROPERTY(SetterCallbackType, SetterCallback)
+      /**
+      * @param SetterCallback The method in the AbstractFilter subclass that <i>sets</i> the value of the property
+      * that this FilterParameter subclass represents.
+      * from the filter parameter.
+      */
+      SIMPL_INSTANCE_PROPERTY(SetterCallbackType, SetterCallback)
 
-    /**
-    * @param GetterCallback The method in the AbstractFilter subclass that <i>gets</i> the value of the property
-    * that this FilterParameter subclass represents.
-    * @return The GetterCallback
-    */
-    SIMPL_INSTANCE_PROPERTY(GetterCallbackType, GetterCallback)
+      /**
+      * @param GetterCallback The method in the AbstractFilter subclass that <i>gets</i> the value of the property
+      * that this FilterParameter subclass represents.
+      * @return The GetterCallback
+      */
+      SIMPL_INSTANCE_PROPERTY(GetterCallbackType, GetterCallback)
 
-
-protected:
+    protected:
       /**
        * @brief OutputPathFilterParameter The default constructor.  It is protected because this
        * filter parameter should only be instantiated using its New(...) function or short-form macro.

@@ -73,7 +73,7 @@ AttributeMatrixCreationFilterParameter::Pointer AttributeMatrixCreationFilterPar
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-QString AttributeMatrixCreationFilterParameter::getWidgetType()
+QString AttributeMatrixCreationFilterParameter::getWidgetType() const
 {
   return QString("AttributeMatrixCreationWidget");
 }

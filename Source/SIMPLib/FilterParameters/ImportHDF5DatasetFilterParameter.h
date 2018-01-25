@@ -55,7 +55,7 @@ public:
 
   SIMPL_VIRTUAL_INSTANCE_PROPERTY(QVariant, DataSetDefaultValue)
 
-  QString getWidgetType();
+  QString getWidgetType() const override;
 
   /**
  * @brief readJson Reads this filter parameter's corresponding property out of a QJsonObject.

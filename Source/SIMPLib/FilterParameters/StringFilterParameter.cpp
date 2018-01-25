@@ -70,7 +70,7 @@ StringFilterParameter::Pointer StringFilterParameter::New(const QString& humanLa
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-QString StringFilterParameter::getWidgetType()
+QString StringFilterParameter::getWidgetType() const
 {
   return QString("StringWidget");
 }

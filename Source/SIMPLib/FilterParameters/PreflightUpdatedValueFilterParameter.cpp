@@ -67,7 +67,7 @@ PreflightUpdatedValueFilterParameter::Pointer PreflightUpdatedValueFilterParamet
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-QString PreflightUpdatedValueFilterParameter::getWidgetType()
+QString PreflightUpdatedValueFilterParameter::getWidgetType() const
 {
   return QString("PreflightUpdatedValueWidget");
 }

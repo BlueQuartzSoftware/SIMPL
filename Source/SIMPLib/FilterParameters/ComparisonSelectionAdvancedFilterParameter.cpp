@@ -76,7 +76,7 @@ ComparisonSelectionAdvancedFilterParameter::Pointer ComparisonSelectionAdvancedF
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-QString ComparisonSelectionAdvancedFilterParameter::getWidgetType()
+QString ComparisonSelectionAdvancedFilterParameter::getWidgetType() const
 {
   return QString("ComparisonSelectionAdvancedWidget");
 }

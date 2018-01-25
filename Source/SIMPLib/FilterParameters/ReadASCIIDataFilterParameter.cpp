@@ -68,7 +68,7 @@ ReadASCIIDataFilterParameter::Pointer ReadASCIIDataFilterParameter::New(const QS
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-QString ReadASCIIDataFilterParameter::getWidgetType()
+QString ReadASCIIDataFilterParameter::getWidgetType() const
 {
   return QString("ReadASCIIDataWidget");
 }

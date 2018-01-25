@@ -434,6 +434,24 @@ public:                                                                         
   QString get##prpty() const { return varname; }
 
 /**
+* @brief Creates a "setter" method to set the property.
+*/
+#define SIMPL_SET_STRING_PROPERTY_OVERRIDE(prpty, varname)                                                                                                                                             \
+  void set##prpty(const QString& value) override                                                                                                                                                       \
+  {                                                                                                                                                                                                    \
+    this->varname = value;                                                                                                                                                                             \
+  }
+
+/**
+* @brief Creates a "getter" method to retrieve the value of the property.
+*/
+#define SIMPL_GET_STRING_PROPERTY_OVERRIDE(prpty, varname)                                                                                                                                             \
+  QString get##prpty() const override                                                                                                                                                                  \
+  {                                                                                                                                                                                                    \
+    return varname;                                                                                                                                                                                    \
+  }
+
+/**
  * @brief Creates setters and getters in the form of 'setXXX()' and 'getXXX()' methods
  */
 #define SIMPL_INSTANCE_STRING_PROPERTY(prpty)\
@@ -443,6 +461,16 @@ public:                                                                         
   SIMPL_SET_STRING_PROPERTY(prpty,  m_##prpty)\
   SIMPL_GET_STRING_PROPERTY(prpty,  m_##prpty)
 
+/**
+* @brief
+*/
+#define SIMPL_INSTANCE_STRING_PROPERTY_OVERRIDE(prpty)                                                                                                                                                 \
+private:                                                                                                                                                                                               \
+  QString m_##prpty;                                                                                                                                                                                   \
+                                                                                                                                                                                                       \
+public:                                                                                                                                                                                                \
+  SIMPL_SET_STRING_PROPERTY_OVERRIDE(prpty, m_##prpty)                                                                                                                                                 \
+  SIMPL_GET_STRING_PROPERTY_OVERRIDE(prpty, m_##prpty)
 
 #define SIMPL_VIRTUAL_INSTANCE_STRING_PROPERTY(prpty)\
   private:\

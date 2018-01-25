@@ -67,7 +67,7 @@ class SIMPLib_EXPORT DoubleFilterParameter : public FilterParameter
   public:
     SIMPL_SHARED_POINTERS(DoubleFilterParameter)
     SIMPL_STATIC_NEW_MACRO(DoubleFilterParameter)
-    SIMPL_TYPE_MACRO(DoubleFilterParameter)
+    SIMPL_TYPE_MACRO_SUPER_OVERRIDE(DoubleFilterParameter, FilterParameter)
 
     typedef std::function<void(double)> SetterCallbackType;
     typedef std::function<double(void)> GetterCallbackType;
@@ -119,19 +119,19 @@ class SIMPLib_EXPORT DoubleFilterParameter : public FilterParameter
    * this FilterParameter subclass
    * @return
    */
-    QString getWidgetType();
+    QString getWidgetType() const override;
 
     /**
      * @brief readJson Reads this filter parameter's corresponding property out of a QJsonObject.
      * @param json The QJsonObject that the filter parameter reads from.
      */
-    void readJson(const QJsonObject &json);
+    void readJson(const QJsonObject& json) override;
 
     /**
      * @brief writeJson Writes this filter parameter's corresponding property to a QJsonObject.
      * @param json The QJsonObject that the filter parameter writes to.
      */
-    void writeJson(QJsonObject &json);
+    void writeJson(QJsonObject& json) override;
 
     /**
     * @param SetterCallback The method in the AbstractFilter subclass that <i>sets</i> the value of the property

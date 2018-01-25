@@ -65,7 +65,7 @@ UnknownFilterParameter::Pointer UnknownFilterParameter::New(const QString& human
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-QString UnknownFilterParameter::getWidgetType()
+QString UnknownFilterParameter::getWidgetType() const
 {
   return QString("UnknownWidget");
 }

@@ -72,7 +72,7 @@ SecondOrderPolynomialFilterParameter::Pointer SecondOrderPolynomialFilterParamet
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-QString SecondOrderPolynomialFilterParameter::getWidgetType()
+QString SecondOrderPolynomialFilterParameter::getWidgetType() const
 {
   return QString("SecondOrderPolynomialWidget");
 }

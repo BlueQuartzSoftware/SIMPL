@@ -82,7 +82,7 @@ MultiAttributeMatrixSelectionFilterParameter::Pointer MultiAttributeMatrixSelect
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-QString MultiAttributeMatrixSelectionFilterParameter::getWidgetType()
+QString MultiAttributeMatrixSelectionFilterParameter::getWidgetType() const
 {
   return QString("MultiAttributeMatrixSelectionWidget");
 }

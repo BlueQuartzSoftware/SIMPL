@@ -70,7 +70,7 @@ BooleanFilterParameter::Pointer BooleanFilterParameter::New(const QString& human
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-QString BooleanFilterParameter::getWidgetType()
+QString BooleanFilterParameter::getWidgetType() const
 {
   return QString("BooleanWidget");
 }
