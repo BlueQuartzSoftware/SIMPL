@@ -1,0 +1,26 @@
+#pragma once
+
+#include <hdf5.h>
+
+/**
+* @brief This class is meant to disable the normal HDF5 error handlers until the
+* instance goes out of scope the original error handlers will be put back in
+* place
+*/
+class H5ScopedErrorHandler
+{
+
+  public:
+  
+    H5ScopedErrorHandler();
+    
+    ~H5ScopedErrorHandler();
+    
+  private:
+    herr_t (*_oldHDF_error_func)(hid_t, void *);
+    void *_oldHDF_error_client_data;
+    
+    
+    H5ScopedErrorHandler(const H5ScopedErrorHandler&) = delete; // Copy Constructor Not Implemented
+    void operator=(const H5ScopedErrorHandler&) = delete; // Operator '=' Not Implemented
+};
