@@ -43,6 +43,12 @@
 #include "H5Support/H5Support.h"
 #include "H5Support/H5SupportDLLExport.h"
 
+#if defined (H5Support_NAMESPACE)
+namespace H5Support_NAMESPACE
+{
+#endif
+
+
 /**
  * @brief The HDF5FileSentinel class ensures the HDF5 file that is currently open
  * is closed when the variable goes out of Scope
@@ -106,6 +112,12 @@ public:
 private:
   hid_t* gid = nullptr;
 };
+
+
+#if defined (H5Support_NAMESPACE)
+}
+#endif
+
 
 
 #endif /* _HDF5ScopedFileSentinel_H_ */
