@@ -45,6 +45,7 @@
 #include "SIMPLib/SIMPLib.h"
 #include "SIMPLib/Common/Constants.h"
 #include "SIMPLib/DataContainers/AttributeMatrixProxy.h"
+#include "SIMPLib/Geometry/IGeometry.h"
 
 
 /**
@@ -64,7 +65,7 @@ class SIMPLib_EXPORT DataContainerProxy
      * @param read_dc
      * @param dc_type
      */
-    DataContainerProxy(QString dc_name, uint8_t read_dc = Qt::Checked);
+    DataContainerProxy(QString dc_name, uint8_t read_dc = Qt::Checked, IGeometry::Type dc_type = IGeometry::Type::Unknown);
 
     /**
     * @brief Copy Constructor

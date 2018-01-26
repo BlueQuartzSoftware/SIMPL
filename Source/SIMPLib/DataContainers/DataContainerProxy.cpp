@@ -47,10 +47,10 @@ DataContainerProxy::DataContainerProxy() :
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-DataContainerProxy::DataContainerProxy(QString dc_name, uint8_t read_dc) :
+DataContainerProxy::DataContainerProxy(QString dc_name, uint8_t read_dc, IGeometry::Type dc_type) :
   flag(read_dc),
   name(dc_name),
-  dcType(0)
+  dcType(static_cast<unsigned int>(dc_type))
 {}
 
 // -----------------------------------------------------------------------------

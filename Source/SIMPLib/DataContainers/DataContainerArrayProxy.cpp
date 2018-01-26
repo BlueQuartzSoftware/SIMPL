@@ -43,6 +43,7 @@
 #include "SIMPLib/DataContainers/DataContainer.h"
 #include "SIMPLib/DataContainers/DataContainerArray.h"
 #include "SIMPLib/DataContainers/DataContainerProxy.h"
+#include "SIMPLib/Utilities/SIMPLH5DataReaderRequirements.h"
 
 // -----------------------------------------------------------------------------
 //
@@ -74,7 +75,17 @@ DataContainerArrayProxy::DataContainerArrayProxy(DataContainerArray* dca)
   for(int i = 0; i < containers.size(); i++) // Loop on each Data Container
   {
     DataContainer::Pointer container = containers.at(i);
-    DataContainerProxy dcProxy(container->getName(), Qt::Checked); // Create a new DataContainerProxy
+    IGeometry::Pointer geo = container->getGeometry();
+    IGeometry::Type dcType;
+    if (geo != IGeometry::NullPointer())
+    {
+      dcType = geo->getGeometryType();
+    }
+    else
+    {
+      dcType = IGeometry::Type::Unknown;
+    }
+    DataContainerProxy dcProxy(container->getName(), Qt::Checked, dcType); // Create a new DataContainerProxy
 
     // Now loop over each AttributeMatrix in the data container that was selected
     DataContainer::AttributeMatrixMap_t attrMats = container->getAttributeMatrices();
@@ -94,6 +105,9 @@ DataContainerArrayProxy::DataContainerArrayProxy(DataContainerArray* dca)
         QString daPath = container->getName() + "/" + amName + "/";
         IDataArray::Pointer attrArray = attrMat->getAttributeArray(aaName);
         DataArrayProxy daProxy(daPath, aaName, Qt::Checked, attrArray->getTypeAsString(), attrArray->getClassVersion());
+        daProxy.compDims = attrArray->getComponentDimensions();
+        daProxy.tupleDims = attrMat->getTupleDimensions();
+
         amProxy.dataArrays.insert(aaName, daProxy);
       }
       dcProxy.attributeMatricies.insert(amName, amProxy); // Add the new AttributeMatrix to the DataContainerProxy
