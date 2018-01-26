@@ -42,7 +42,7 @@
 #include "SIMPLib/Utilities/SIMPLH5DataReaderRequirements.h"
 
 #include "H5Support/QH5Utilities.h"
-#include "H5Support/HDF5ScopedFileSentinel.h"
+#include "H5Support/H5ScopedSentinel.h"
 
 // -----------------------------------------------------------------------------
 //
@@ -289,7 +289,7 @@ bool SIMPLH5DataReader::readDataContainerBundles(hid_t fileId, DataContainerArra
     return false;
   }
 
-  HDF5ScopedGroupSentinel sentinel(&dcbGroupId, false);
+  H5ScopedGroupSentinel sentinel(&dcbGroupId, false);
 
   QList<QString> groupNames;
   err = QH5Utilities::getGroupObjects(dcbGroupId, H5Utilities::H5Support_GROUP, groupNames);

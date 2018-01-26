@@ -38,7 +38,7 @@
 #include <QtCore/QFileInfo>
 
 #include "H5Support/QH5Utilities.h"
-#include "H5Support/HDF5ScopedFileSentinel.h"
+#include "H5Support/H5ScopedSentinel.h"
 
 #include "SIMPLib/Common/Constants.h"
 #include "SIMPLib/DataContainers/DataContainerBundle.h"
@@ -282,7 +282,7 @@ DataContainerArray::Pointer DataContainerReader::readData(DataContainerArrayProx
     notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
     return DataContainerArray::NullPointer();
   }
-  HDF5ScopedFileSentinel sentinel(&fileId, true);
+  H5ScopedFileSentinel sentinel(&fileId, true);
 
   if(!getInPreflight())
   {

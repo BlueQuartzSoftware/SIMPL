@@ -42,7 +42,7 @@
 
 #include "H5Support/H5Utilities.h"
 #include "H5Support/QH5Utilities.h"
-#include "H5Support/HDF5ScopedFileSentinel.h"
+#include "H5Support/H5ScopedSentinel.h"
 
 namespace Detail
 {
@@ -172,7 +172,7 @@ void ImportHDF5Dataset::dataCheck()
     std::cout << "Error Reading HDF5 file: " << m_HDF5FilePath.toStdString() << std::endl;
     return;
   }
-  HDF5ScopedFileSentinel sentinel(&fileId, true);
+  H5ScopedFileSentinel sentinel(&fileId, true);
 
   QString parentPath = QH5Utilities::getParentPath(m_DatasetPath);
   hid_t parentId;

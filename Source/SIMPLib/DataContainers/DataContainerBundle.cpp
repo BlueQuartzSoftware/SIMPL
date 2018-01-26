@@ -36,7 +36,7 @@
 #include "DataContainerBundle.h"
 
 #include "H5Support/QH5Utilities.h"
-#include "H5Support/HDF5ScopedFileSentinel.h"
+#include "H5Support/H5ScopedSentinel.h"
 
 #include "SIMPLib/DataArrays/StringDataArray.hpp"
 #include "SIMPLib/DataContainers/DataArrayPath.h"

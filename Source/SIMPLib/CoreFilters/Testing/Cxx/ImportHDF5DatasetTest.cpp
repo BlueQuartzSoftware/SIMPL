@@ -10,7 +10,7 @@
 
 #include "H5Support/QH5Lite.h"
 #include "H5Support/QH5Utilities.h"
-#include "H5Support/HDF5ScopedFileSentinel.h"
+#include "H5Support/H5ScopedSentinel.h"
 
 #include "SIMPLib/Common/Observer.h"
 #include "SIMPLib/DataArrays/DataArray.hpp"
@@ -198,7 +198,7 @@ public:
 
     hid_t file_id = QH5Utilities::createFile(m_FilePath);
     DREAM3D_REQUIRE(file_id > 0);
-    HDF5ScopedFileSentinel sentinel(&file_id, false);
+    H5ScopedFileSentinel sentinel(&file_id, false);
 
     // Create the Pointer group
     hid_t ptrId = QH5Utilities::createGroup(file_id, "Pointer");

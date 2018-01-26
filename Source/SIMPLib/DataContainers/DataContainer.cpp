@@ -51,7 +51,7 @@
 #include "SIMPLib/Geometry/VertexGeom.h"
 
 #include "H5Support/QH5Utilities.h"
-#include "H5Support/HDF5ScopedFileSentinel.h"
+#include "H5Support/H5ScopedSentinel.h"
 
 
 // -----------------------------------------------------------------------------
@@ -103,7 +103,7 @@ void DataContainer::ReadDataContainerStructure(hid_t dcArrayGroupId, DataContain
     {
       continue;
     }
-    HDF5ScopedGroupSentinel sentinel(&containerGid, false);
+    H5ScopedGroupSentinel sentinel(&containerGid, false);
 
     DataContainerProxy dcProxy(dataContainerName);
     dcProxy.name = dataContainerName;
@@ -330,7 +330,7 @@ int DataContainer::writeAttributeMatricesToHDF5(hid_t parentId)
       return err;
     }
     attributeMatrixId = H5Gopen(parentId, iter.key().toLatin1().data(), H5P_DEFAULT);
-    HDF5ScopedGroupSentinel gSentinel(&attributeMatrixId, false);
+    H5ScopedGroupSentinel gSentinel(&attributeMatrixId, false);
 
     AttributeMatrix::EnumType attrMatType = static_cast<AttributeMatrix::EnumType>(attrMat->getType());
     err = QH5Lite::writeScalarAttribute(parentId, iter.key(), SIMPL::StringConstants::AttributeMatrixType, attrMatType);
@@ -453,7 +453,7 @@ int DataContainer::writeMeshToHDF5(hid_t dcGid, bool writeXdmf)
   {
     return -1;
   }
-  HDF5ScopedGroupSentinel gSentinel(&geometryId, false);
+  H5ScopedGroupSentinel gSentinel(&geometryId, false);
 
   if(nullptr == m_Geometry.get())
   {
@@ -702,7 +702,7 @@ int DataContainer::readMeshDataFromHDF5(hid_t dcGid, bool preflight)
   {
     return -1;
   }
-  HDF5ScopedGroupSentinel gSentinel(&geometryId, false);
+  H5ScopedGroupSentinel gSentinel(&geometryId, false);
 
   IGeometry::Pointer geomPtr = IGeometry::NullPointer();
 

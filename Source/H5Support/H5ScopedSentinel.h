@@ -33,15 +33,14 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-#ifndef _hdf5scopedfilesentinel_h_
-#define _hdf5scopedfilesentinel_h_
+#ifndef _h5ScopedFileSentinel_h_
+#define _h5ScopedFileSentinel_h_
 
 
 #include "H5Support/H5Utilities.h"
 #include "H5Support/H5Lite.h"
 
 #include "H5Support/H5Support.h"
-#include "H5Support/H5SupportDLLExport.h"
 
 #if defined (H5Support_NAMESPACE)
 namespace H5Support_NAMESPACE
@@ -53,11 +52,11 @@ namespace H5Support_NAMESPACE
  * @brief The HDF5FileSentinel class ensures the HDF5 file that is currently open
  * is closed when the variable goes out of Scope
  */
-class H5Support_EXPORT HDF5ScopedFileSentinel
+class H5Support_EXPORT H5ScopedFileSentinel
 {
   public:
-    HDF5ScopedFileSentinel(hid_t* fileId, bool turnOffErrors);
-    virtual ~HDF5ScopedFileSentinel();
+    H5ScopedFileSentinel(hid_t* fileId, bool turnOffErrors);
+    virtual ~H5ScopedFileSentinel();
 
     void setFileId(hid_t* fileId);
     hid_t* getFileId();
@@ -72,11 +71,11 @@ class H5Support_EXPORT HDF5ScopedFileSentinel
     void* _oldHDF_error_client_data{};
 };
 
-class H5Support_EXPORT HDF5ScopedGroupSentinel
+class H5Support_EXPORT H5ScopedGroupSentinel
 {
   public:
-    HDF5ScopedGroupSentinel(hid_t* gid, bool turnOffErrors);
-    virtual ~HDF5ScopedGroupSentinel();
+    H5ScopedGroupSentinel(hid_t* gid, bool turnOffErrors);
+    virtual ~H5ScopedGroupSentinel();
     void addGroupId(hid_t* gid);
 
   private:
@@ -88,11 +87,11 @@ class H5Support_EXPORT HDF5ScopedGroupSentinel
 };
 
 
-class H5Support_EXPORT HDF5ScopedObjectSentinel
+class H5Support_EXPORT H5ScopedObjectSentinel
 {
   public:
-    HDF5ScopedObjectSentinel(hid_t* gid, bool turnOffErrors);
-    virtual ~HDF5ScopedObjectSentinel();
+    H5ScopedObjectSentinel(hid_t* gid, bool turnOffErrors);
+    virtual ~H5ScopedObjectSentinel();
     void addGroupId(hid_t* gid);
 
   private:
@@ -120,5 +119,5 @@ private:
 
 
 
-#endif /* _HDF5ScopedFileSentinel_H_ */
+#endif /* _h5ScopedFileSentinel_h_ */
 

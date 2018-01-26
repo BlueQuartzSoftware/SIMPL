@@ -39,7 +39,7 @@
 
 #include "H5Support/H5Utilities.h"
 #include "H5Support/QH5Utilities.h"
-#include "H5Support/HDF5ScopedFileSentinel.h"
+#include "H5Support/H5ScopedSentinel.h"
 
 #include "SIMPLib/Common/Constants.h"
 #include "SIMPLib/FilterParameters/AbstractFilterParametersReader.h"
@@ -224,7 +224,7 @@ void DataContainerWriter::execute()
   // qDebug() << "DREAM3D File: " << m_OutputFile;
 
   // This will make sure if we return early from this method that the HDF5 File is properly closed.
-  HDF5ScopedFileSentinel scopedFileSentinel(&m_FileId, true);
+  H5ScopedFileSentinel scopedFileSentinel(&m_FileId, true);
 
   // Write our File Version string to the Root "/" group
   QH5Lite::writeStringAttribute(m_FileId, "/", SIMPL::HDF5::FileVersionName, SIMPL::HDF5::FileVersion);
@@ -279,7 +279,7 @@ void DataContainerWriter::execute()
     }
 
     hid_t dcGid = H5Gopen(dcaGid, dcNames[iter].toLatin1().data(), H5P_DEFAULT);
-    HDF5ScopedGroupSentinel groupSentinel(&dcGid, false);
+    H5ScopedGroupSentinel groupSentinel(&dcGid, false);
     // QString ss = QObject::tr("%1 |--> Writing %2 DataContainer ").arg(getMessagePrefix()).arg(dcNames[iter]);
 
     // Have the DataContainer write all of its Attribute Matrices and its Mesh

@@ -42,7 +42,7 @@
 #include <iostream>
 
 // HDF5 Includes
-#include "H5Support/HDF5ScopedFileSentinel.h"
+#include "H5Support/H5ScopedSentinel.h"
 #include "H5Support/QH5Lite.h"
 #include "H5Support/QH5Utilities.h"
 
@@ -249,7 +249,7 @@ void AttributeMatrix::ReadAttributeMatrixStructure(hid_t containerId, DataContai
       {
         continue;
       }
-      HDF5ScopedGroupSentinel sentinel(&attrMatGid, true);
+      H5ScopedGroupSentinel sentinel(&attrMatGid, true);
 
       AttributeMatrixProxy amProxy(attributeMatrixName);
       amProxy.name = attributeMatrixName;
