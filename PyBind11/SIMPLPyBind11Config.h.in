@@ -10,6 +10,7 @@ namespace SIMPL
 {
   namespace PyBind11
   {
+  #if 0
 
       /**
       * @brief Returns the path to the SIMPL Source directory
@@ -34,6 +35,7 @@ namespace SIMPL
       {
         return QString("@SIMPLPyBind11_BINARY_DIR_NORM@");
       }
+   #endif
       
       /**
        * @brief GetSIMPLPyBind11_TemplatesDir

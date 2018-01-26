@@ -16,7 +16,7 @@ using PySharedPtrClass = py::class_<T, std::shared_ptr<T> >;
 * @return A std::shared_ptr<T> wrapped insance of the wrapped class properly 
 * initialized.
 */
-PySharedPtrClass<@CLASS_NAME@> pybind11_init_SIMPLib_@CLASS_NAME@(py::module &m)
+PySharedPtrClass<@CLASS_NAME@> pybind11_init_@LIB_NAME@_@CLASS_NAME@(py::module &m)
 {
   PySharedPtrClass<@CLASS_NAME@> instance(m, "@CLASS_NAME@");
   instance

@@ -21,6 +21,8 @@
 
 
 #include "SIMPLPyBind11Config.h"
+
+
 #define NEWLINE_SIMPL '\n'
 #define TAB "  "
 
@@ -37,6 +39,7 @@
 #define CLASS_NAME "@CLASS_NAME@"
 #define HEADER_PATH "@HEADER_PATH@"
 #define SUPERCLASS_NAME "@SUPERCLASS_NAME@"
+#define LIB_NAME "@LIB_NAME@"
 
 namespace  {
   static const QString kRead("READ");
@@ -49,8 +52,9 @@ class PyBind11Generator
 {
     
   public:
-    PyBind11Generator(const QDir &topLevelDir) :
+    PyBind11Generator(const QDir &topLevelDir, const QString &libName) :
       m_TopLevelDir(topLevelDir)
+      , m_LibName (libName)
     {
       m_SourceDir = m_TopLevelDir;
       m_SourceDir.cdUp(); 
@@ -168,7 +172,7 @@ class PyBind11Generator
       subPath = subPath.replace(m_SourceDir.absolutePath(), ""); // Remove the system dependent file path
       subPath = subPath.remove(0,1); //Remove the front / character
       
-      QString genHeaderPath = QString("%1/%2/%3_Pybind.h").arg(SIMPL::PyBind11::GetSIMPLPyBind11_SourceDir()).arg(subPath).arg(fi.baseName());
+      QString genHeaderPath = QString("%1/PyBind11/%2/%3_Pybind.h").arg(m_TopLevelDir.absolutePath()).arg(subPath).arg(fi.baseName());
       
       
       bool needsWrapping = false;
@@ -208,6 +212,7 @@ class PyBind11Generator
           headerTemplate = headerTemplate.replace(CLASS_NAME, baseName);
           QString headerPath = QString("%1/%2.h").arg(subPath).arg(baseName);
           headerTemplate = headerTemplate.replace(HEADER_PATH, headerPath);
+          headerTemplate = headerTemplate.replace(LIB_NAME, m_LibName);
           header << headerTemplate.toStdString();
           
           if(tokens.size() > 1 && tokens[1] == ::kSuperClass)
@@ -235,7 +240,8 @@ class PyBind11Generator
           QString headerPath = QString("%1/%2.h").arg(subPath).arg(baseName);
           headerTemplate = headerTemplate.replace(HEADER_PATH, headerPath);
           headerTemplate = headerTemplate.replace(SUPERCLASS_NAME, superClassName);
-          
+          headerTemplate = headerTemplate.replace(LIB_NAME, m_LibName);
+
           header << headerTemplate.toStdString();
           isSharedPointerClass = true;
         }
@@ -308,7 +314,8 @@ class PyBind11Generator
         QString headerPath = QString("%1/%2.h").arg(subPath).arg(baseName);
         headerTemplate = headerTemplate.replace(HEADER_PATH, headerPath);
         headerTemplate = headerTemplate.replace(SUPERCLASS_NAME, superClassName);
-        
+        headerTemplate = headerTemplate.replace(LIB_NAME, m_LibName);
+
         header << headerTemplate.toStdString();
       }
       if(!constructorsCreated)
@@ -335,6 +342,7 @@ class PyBind11Generator
     
     QDir m_TopLevelDir;
     QDir m_SourceDir;
+    QString m_LibName;
     
     PyBind11Generator(const PyBind11Generator&) = delete; // Copy Constructor Not Implemented
     void operator=(const PyBind11Generator&) = delete; // Operator '=' Not Implemented
@@ -351,13 +359,19 @@ int main(int argc, char* argv[])
   QCoreApplication app(argc, argv);
   QCoreApplication::setOrganizationName("BlueQuartz Software");
   QCoreApplication::setOrganizationDomain("bluequartz.net");
-  QCoreApplication::setApplicationName("GeneratePythonBindins");
+  QCoreApplication::setApplicationName("GeneratePythonBindings");
   
-  
-  
-  //ReplaceGrepSearchesRecursively(QDir(D3DTools::GetDREAM3DProjDir() + "/ExternalProjects/SIMPL/Source/SIMPLib"));
-  
-  PyBind11Generator bindingsGenerator (QDir(SIMPL::PyBind11::GetSIMPLProj_SourceDir() + "/Source/SIMPLib"));
+  if(argc != 3)
+  {
+    std::cout << "GeneratePythonBindings needs 2 arguments:" << std::endl;
+    std::cout << "   [1] Path to the source directory to recursively search" << std::endl;
+    std::cout << "   [2] Name of the Library/Plugin" << std::endl;
+    return EXIT_FAILURE;
+  }
+  //QString dirPath = ;
+    QString libName = QString::fromLatin1(argv[2]);
+  PyBind11Generator bindingsGenerator (QDir(QString::fromLatin1(argv[1])), libName);
+
   bindingsGenerator.execute();
   
   return EXIT_SUCCESS;

@@ -33,6 +33,12 @@ configure_file( ${SIMPLPyBind11_SOURCE_DIR}/SIMPLPyBind11Config.h.in
 add_executable(GeneratePythonBindings GeneratePythonBindings.cpp)
 target_link_libraries(GeneratePythonBindings Qt5::Core)
 
+add_custom_target(CreatePythonBindings ALL
+      COMMAND GeneratePythonBindings "${SIMPLProj_SOURCE_DIR_NORM}" "SIMPLib"
+      DEPENDS ${COPY_LIBRARY_TARGETS} GeneratePythonBindings
+      COMMENT "Creating Python Bindings for SIMPL"
+    )
+
 
 # --------------------------------------------------------------------------
 # Find the Pybind11 installation
@@ -49,10 +55,11 @@ target_include_directories(SIMPLPy PUBLIC
 target_link_libraries(SIMPLPy LINK_PUBLIC SIMPLib LINK_PRIVATE pybind11::module)
 target_compile_features(SIMPLPy PRIVATE cxx_local_type_template_args)
 set_target_properties(SIMPLPy PROPERTIES PREFIX "${PYTHON_MODULE_PREFIX}"
-                                         SUFFIX "${PYTHON_MODULE_EXTENSION}")
-                                         
-configure_file("${SIMPLPyBind11_SOURCE_DIR}/Testing/Python/TestBindings.py"
-                "${CMAKE_LIBRARY_OUTPUT_DIRECTORY}/TestBindings.py" COPYONLY)
+                                         SUFFIX "${PYTHON_MODULE_EXTENSION}"
+                                         LIBRARY_OUTPUT_DIRECTORY ${CMAKE_LIBRARY_OUTPUT_DIRECTORY}/python
+                                         )
+add_dependencies(SIMPLPy CreatePythonBindings)                                         
+
                                          
 install (TARGETS SIMPLPy DESTINATION ${CMAKE_INSTALL_PREFIX}/lib/python${PYTHON_VERSION_MAJOR}.${PYTHON_VERSION_MINOR}/site-packages)
 
