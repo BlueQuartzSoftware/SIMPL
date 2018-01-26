@@ -2,6 +2,8 @@
 
 #include <hdf5.h>
 
+#include "H5Support/H5Support.h"
+
 #if defined (H5Support_NAMESPACE)
 namespace H5Support_NAMESPACE
 {
