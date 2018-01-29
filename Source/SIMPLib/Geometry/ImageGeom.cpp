@@ -1118,3 +1118,56 @@ int ImageGeom::gatherMetaData(hid_t parentId, size_t volDims[3], float spacing[3
 
   return err;
 }
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+ImageGeom::ErrorType ImageGeom::computeCellIndex(float coords[3], size_t index[3])
+{
+  ImageGeom::ErrorType err = ImageGeom::ErrorType::NoError;
+  for(size_t i = 0; i < 3; i++)
+  {
+    if(coords[i] < m_Origin[i])
+    {
+      return static_cast<ImageGeom::ErrorType>(i * 2);
+    }
+    if(coords[i] > (m_Origin[i] + m_Dimensions[i] * m_Resolution[i]))
+    {
+      return static_cast<ImageGeom::ErrorType>(i * 2 + 1);
+    }
+    index[i] = static_cast<size_t>((coords[i] - m_Origin[i]) / m_Resolution[i]);
+    if(index[i] > m_Dimensions[i])
+    {
+      return static_cast<ImageGeom::ErrorType>(i * 2 + 1);
+    }
+  }
+  return err;
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+ImageGeom::ErrorType ImageGeom::computeCellIndex(float coords[3], size_t& index)
+{
+  ImageGeom::ErrorType err = ImageGeom::ErrorType::NoError;
+  size_t cell[3] = {0, 0, 0};
+  for(size_t i = 0; i < 3; i++)
+  {
+    if(coords[i] < m_Origin[i])
+    {
+      return static_cast<ImageGeom::ErrorType>(i * 2);
+    }
+    cell[i] = static_cast<size_t>((coords[i] - m_Origin[i]) / m_Resolution[i]);
+    if(cell[i] > m_Dimensions[i])
+    {
+      return static_cast<ImageGeom::ErrorType>(i * 2 + 1);
+    }
+  }
+
+  index = (m_Dimensions[0] * m_Dimensions[1] * cell[2]) + (m_Dimensions[0] * cell[1]) + cell[0];
+  if(index > getNumberOfElements())
+  {
+    err = ImageGeom::ErrorType::IndexOutOfBounds;
+  }
+  return err;
+}
