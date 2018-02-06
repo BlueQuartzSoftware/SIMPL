@@ -90,13 +90,13 @@ public:
 template <typename T> using PySharedPtrClass = py::class_<T, std::shared_ptr<T>>;
 #endif
 
-#include "SIMPLib/Filtering/AbstractFilter_Pybind.h"
-#include "SIMPLib/Filtering/FilterPipeline_Pybind.h"
-#include "SIMPLib/DataContainers/DataContainerArray_Pybind.h"
-#include "SIMPLib/DataContainers/DataContainerArrayProxy_Pybind.h"
+#include "SIMPLib/Filtering/pybind11/AbstractFilter_PY11.h"
+#include "SIMPLib/Filtering/pybind11/FilterPipeline_PY11.h"
+#include "SIMPLib/DataContainers/pybind11/DataContainerArray_PY11.h"
+#include "SIMPLib/DataContainers/pybind11/DataContainerArrayProxy_PY11.h"
 
-#include "SIMPLib/CoreFilters/DataContainerReader_Pybind.h"
-#include "SIMPLib/CoreFilters/DataContainerWriter_Pybind.h"
+#include "SIMPLib/CoreFilters/pybind11/DataContainerReader_PY11.h"
+#include "SIMPLib/CoreFilters/pybind11/DataContainerWriter_PY11.h"
 
 /**
  * @brief PYBIND11_MODULE This section declares our python module, its name and

@@ -20,5 +20,3 @@ PySharedPtrClass<@CLASS_NAME@> pybind11_init_@LIB_NAME@_@CLASS_NAME@(py::module 
 {
   PySharedPtrClass<@CLASS_NAME@> instance(m, "@CLASS_NAME@");
   instance
-//    .def(py::init<@CLASS_NAME@>())
-//    .def(py::init<@CLASS_NAME@ const &>())

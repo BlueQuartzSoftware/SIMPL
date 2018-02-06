@@ -1,90 +1,131 @@
 
 #include <stdint.h>
+
 #include <iostream>
 #include <sstream>
-
-
+#include <map>
+#include <vector>
 
 #include <QtCore/QCoreApplication>
 #include <QtCore/QDebug>
 #include <QtCore/QDir>
 #include <QtCore/QFile>
-#include <QtCore/QMetaProperty>
-#include <QtCore/QString>
-#include <QtCore/QTextStream>
-#include <QtCore/QUuid>
 #include <QtCore/QJsonArray>
 #include <QtCore/QJsonDocument>
 #include <QtCore/QJsonObject>
 #include <QtCore/QJsonValue>
+#include <QtCore/QMetaProperty>
 #include <QtCore/QSet>
+#include <QtCore/QString>
+#include <QtCore/QTextStream>
+#include <QtCore/QUuid>
 
+#include "SIMPLib/Common/SIMPLibSetGetMacros.h"
 
 #include "SIMPLPyBind11Config.h"
-
 
 #define NEWLINE_SIMPL '\n'
 #define TAB "  "
 
 #define OVERWRITE_SOURCE_FILE 1
 
-/* These are for the macros that appear in the header files */
-#define PYB11_CREATE_BINDINGS "PYB11_CREATE_BINDINGS"
-#define SIMPL_STATIC_NEW_MACRO "SIMPL_STATIC_NEW_MACRO"
-#define SIMPL_SHARED_POINTERS "SIMPL_SHARED_POINTERS"
-#define PYB11_PROPERTY "PYB11_PROPERTY"
-#define PYB11_METHOD "PYB11_METHOD"
+
 
 /* These are for replacements in the template files */
 #define CLASS_NAME "@CLASS_NAME@"
 #define HEADER_PATH "@HEADER_PATH@"
 #define SUPERCLASS_NAME "@SUPERCLASS_NAME@"
 #define LIB_NAME "@LIB_NAME@"
+#define MODULE_INIT_CODE "@MODULE_INIT_CODE@"
 
-namespace  {
+namespace
+{
   static const QString kRead("READ");
   static const QString kWrite("WRITE");
   static const QString kArgs("ARGS");
   static const QString kSuperClass("SUPERCLASS");
+  
+  /* These are for the macros that appear in the header files */
+  static const QString kPYB11_CREATE_BINDINGS("PYB11_CREATE_BINDINGS");
+  static const QString kSIMPL_STATIC_NEW_MACRO("SIMPL_STATIC_NEW_MACRO");
+  static const QString kSIMPL_SHARED_POINTERS("SIMPL_SHARED_POINTERS");
+  static const QString kPYB11_PROPERTY("PYB11_PROPERTY");
+  static const QString kPYB11_METHOD("PYB11_METHOD");
+  
+  static int32_t s_SeedInt = 0;
 }
 
-class PyBind11Generator
+
+
+#include <boost/config.hpp>
+#include <boost/graph/adjacency_list.hpp>
+#include <boost/graph/topological_sort.hpp>
+#include <boost/graph/graphviz.hpp>
+#include <boost/graph/adjacency_list.hpp>
+#include <boost/property_map/property_map.hpp>
+
+
+/* *****************************************************************************
+ * 
+ * 
+ ******************************************************************************/
+class PythonBindingsModule
 {
-    
   public:
-    PyBind11Generator(const QDir &topLevelDir, const QString &libName) :
-      m_TopLevelDir(topLevelDir)
-      , m_LibName (libName)
-    {
-      m_SourceDir = m_TopLevelDir;
-      m_SourceDir.cdUp(); 
-    }
+    PythonBindingsModule() {}
+    ~PythonBindingsModule() {}
     
-    ~PyBind11Generator() = default;
+    SIMPL_INSTANCE_PROPERTY(QString, LibName)
+    
+    SIMPL_INSTANCE_PROPERTY(QVector<QString>, Headers)
+    void addHeader(const QString &header)
+    {
+      m_Headers.push_back(header);
+    }
+    void clearHeaders() { m_Headers.clear(); }
+    
+    
+    SIMPL_INSTANCE_PROPERTY(QVector<QString>, InitCodes)
+    void addInitCode(const QString &initCode)
+    {
+      m_InitCodes.push_back(initCode);
+    }
+    void clearInitCodes() { m_InitCodes.clear(); }
     
     /**
- * @brief quote
- * @param str
- * @return 
- */
-    QString quote(const QString& str)
+     * @brief addDependency
+     * @param superClassName
+     * @param className
+     */
+    void addDependency(QString superClassName, QString className)
     {
-      return QString("\"%1\"").arg(str);
+      
+      if(m_name_value_map.find(superClassName) == m_name_value_map.end())
+      {
+        m_name_value_map[superClassName] =  ::s_SeedInt++;
+      }
+      if(m_name_value_map.find(className) == m_name_value_map.end())
+      {
+        m_name_value_map[className] =  ::s_SeedInt++;
+      }     
+      Edge e(m_name_value_map[superClassName], m_name_value_map[className]);
+      m_used_by.push_back(e);
     }
     
     /**
- * @brief writeOutput
- * @param didReplace
- * @param outLines
- * @param filename
- */
-    void writeOutput(bool didReplace, const std::string &outLines, QString filename)
+     * @brief writeOutput
+     * @param didReplace
+     * @param outLines
+     * @param filename
+     */
+    void writeOutput(bool didReplace, const QString& outLines, QString filename)
     {
       if(didReplace == true)
       {
         QFileInfo fi2(filename);
         QString parentPath = fi2.path();
         QDir dir;
+        // std::cout << "Creating Path: " << parentPath.toStdString() << std::endl;
         if(!dir.mkpath(parentPath))
         {
           QString ss = QObject::tr("Error creating parent path '%1'").arg(parentPath);
@@ -99,31 +140,470 @@ class PyBind11Generator
 #endif
         hOut.open(QFile::WriteOnly);
         QTextStream stream(&hOut);
-        stream << QString::fromStdString(outLines);
+        stream << outLines;
         hOut.close();
         
-        qDebug() << "Saved File " << fi2.absoluteFilePath();
+        qDebug() << "Pybind11 Module Generated for: " << fi2.absoluteFilePath();
+      }
+    }
+    
+    
+    void generateModuleFile(const QString &outputPath)
+    {
+      //      QFileInfo fi(outputPath);
+      //      QString subPath = fi.absolutePath();
+      //      subPath = subPath.replace(m_SourceDir.absolutePath(), ""); // Remove the system dependent file path
+      //      subPath = subPath.remove(0,1); //Remove the front / character
+      
+      // Create the Top part of the file from a template file
+      QFile source(SIMPL::PyBind11::GetSIMPLPyBind11_TemplatesDir() + "/ModuleCode_Template.cpp");
+      source.open(QFile::ReadOnly);
+      QString headerTemplate = source.readAll();
+      source.close();
+      
+      QString code;
+      QTextStream out(&code);
+      out << "/* These are all the pybind11 headers for each for each of the exported classes */\n";
+      for(auto header : m_Headers)
+      {
+        out << "#include \"" << header << "\"\n";
+      }
+      out << "\n";
+      
+      headerTemplate = headerTemplate.replace(HEADER_PATH, code);
+      headerTemplate = headerTemplate.replace(LIB_NAME, m_LibName);
+      
+      code.clear();
+      out << "/* These are all the pybind11 instantiations for each of the exported classes */\n";
+      for(auto initCode : m_InitCodes)
+      {
+        out << "  " << initCode << "\n";
+      }
+      out << "\n";
+      headerTemplate = headerTemplate.replace(MODULE_INIT_CODE, code);
+      
+      
+      writeOutput(true, headerTemplate, outputPath);
+      // Construct a graph with the vertices container as a vector
+      typedef boost::adjacency_list<boost::vecS, boost::vecS, boost::bidirectionalS> Graph;
+      Graph g(m_used_by.size()); 
+      
+      for(auto e : m_used_by)
+      {
+        boost::add_edge(e.first, e.second, g);
+      }
+      
+      
+      typedef boost::property_map<Graph, boost::vertex_name_t>::type Name_map_t;
+      Name_map_t name = boost::get(boost::vertex_name, g); 
+
+      
+      for(auto n : m_name_value_map)
+      {
+        boost::put(name, n.second, n.first.toStdString());
+      }
+      
+     // who_owes_who(edges(g).first, edges(g).second, g);
+      
+      // represent graph in DOT format and send to cout
+      boost::write_graphviz(std::cout, g);
+      
+    }
+ 
+    using Edge = std::pair<uint32_t, uint32_t>;
+    
+    using NameProp = boost::property<boost::vertex boost::name_t, std::string>;
+    using Graph = boost::adjacency_list<boost::vecS, boost::vecS, boost::bidirectionalS,NameProp>;
+    using Vertex = boost::graph_traits<Graph>::vertex_descriptor;
+    
+  private:
+    std::vector<Edge> m_used_by;
+    std::map<QString, int32_t> m_name_value_map;
+    
+};
+
+
+/* *****************************************************************************
+ * 
+ * 
+ ******************************************************************************/
+class PythonBindingClass : public QObject
+{
+    
+  public:
+    PythonBindingClass(PythonBindingsModule* moduleCode)
+      : QObject(nullptr)
+      , m_NeedsWrapping(false) 
+      , m_HasSuperClass(false)
+      , m_IsSharedPointer(false)
+      , m_HasStaticNewMacro(false)
+      , m_Module(moduleCode)
+    {}
+    ~PythonBindingClass() {}
+    
+    
+    SIMPL_INSTANCE_PROPERTY(QString, ClassName)
+    SIMPL_INSTANCE_PROPERTY(QString, SuperClass)
+    SIMPL_INSTANCE_PROPERTY(QDir, TopLevelDir)
+    SIMPL_INSTANCE_PROPERTY(QDir, SourceDir)
+    SIMPL_INSTANCE_PROPERTY(QString, CharsToStrip)
+    SIMPL_INSTANCE_PROPERTY(QString, LibName)
+    SIMPL_INSTANCE_PROPERTY(QString, SourceFile)
+    SIMPL_INSTANCE_PROPERTY(bool, NeedsWrapping)
+    SIMPL_INSTANCE_PROPERTY(bool, HasSuperClass)
+    SIMPL_INSTANCE_PROPERTY(bool, IsSharedPointer)
+    SIMPL_INSTANCE_PROPERTY(bool, HasStaticNewMacro)
+    
+    SIMPL_INSTANCE_PROPERTY(QVector<QString>, Properties)
+    void addProperty(const QString &property)
+    {
+      m_Properties.push_back(property);
+    }
+    void clearProperties() { m_Properties.clear(); }
+    
+    SIMPL_INSTANCE_PROPERTY(QVector<QString>, Methods)
+    void addMethod(const QString &method)
+    {
+      m_Methods.push_back(method);
+    }
+    void clearMethods() { m_Methods.clear(); }
+    
+    
+    void writeBindingFile(const QString &outputFilePath)
+    { 
+      if(getNeedsWrapping())
+      {
+        QString output;
+        QTextStream out(&output);
+        out << generateTopMatterCode();
+        out << generateSharedPointerInitCode();
+        out << generateStaticNewCode();
+        out << generateConstructorsCodes();
+        out << generatePropertiesCode();
+        out << generateMethodCode();
+        out << generateFooterCode();
+        
+        writeOutput(getNeedsWrapping(), output, outputFilePath);
+        
+        
+        QString initCode;
+        QTextStream init(&initCode);
+        
+        init << "PySharedPtrClass<" << getClassName() << "> ";
+        init << getLibName() << "_" << getClassName() << " = ";
+        if(getHasSuperClass())
+        {
+          init << "pybind11_init_" << getLibName() << "_" << getClassName() << "(mod, " << getLibName() << "_" << getSuperClass() << ");";
+        }
+        else
+        {
+          init << "pybind11_init_" << getLibName() << "_" << getClassName() << "(mod);";
+        }
+        
+        m_Module->addInitCode(initCode);
       }
     }
     
     /**
-     * @brief execute
-     */
-    void execute()
+    *@brief quote
+    *@param str
+    *@return
+    */
+    QString quote(const QString& str)
     {
-      recursiveSearch(m_TopLevelDir);
+      return QString("\"%1\"").arg(str);
     }
     
     /**
-     * @brief recursiveSearch
-     * @param currentDir
-     */  
+    *@brief writeOutput
+    *@param didReplace
+    *@param outLines
+    *@param filename
+    */
+    void writeOutput(bool didReplace, const QString& outLines, QString filename)
+    {
+      if(didReplace == true)
+      {
+        QFileInfo fi2(filename);
+        QString parentPath = fi2.path();
+        QDir dir;
+        // std::cout << "Creating Path: " << parentPath.toStdString() << std::endl;
+        if(!dir.mkpath(parentPath))
+        {
+          QString ss = QObject::tr("Error creating parent path '%1'").arg(parentPath);
+          qDebug() << ss;
+          return;
+        }
+#if OVERWRITE_SOURCE_FILE
+        QFile hOut(filename);
+#else
+        QString tmpPath = "/tmp/" + fi2.fileName();
+        QFile hOut(tmpPath);
+#endif
+        hOut.open(QFile::WriteOnly);
+        QTextStream stream(&hOut);
+        stream << outLines;
+        hOut.close();
+        
+        qDebug() << "Pybind11 Generated for: " << fi2.absoluteFilePath();
+      }
+    }
+    
+    
+  protected:
+    PythonBindingClass() = delete;
+    
+    QString generateTopMatterCode()
+    {
+      QFileInfo fi(m_SourceFile);
+      QString subPath = fi.absolutePath();
+      subPath = subPath.replace(m_SourceDir.absolutePath(), ""); // Remove the system dependent file path
+      subPath = subPath.remove(0,1); //Remove the front / character
+      
+      // Create the Top part of the file from a template file
+      QFile source(SIMPL::PyBind11::GetSIMPLPyBind11_TemplatesDir() + "/Pybind11TopMatter.txt");
+      source.open(QFile::ReadOnly);
+      QString headerTemplate = source.readAll();
+      source.close();
+      headerTemplate = headerTemplate.replace(CLASS_NAME, getClassName());
+      QString headerPath = QString("%1/%2.h").arg(subPath).arg(getClassName());
+      if(!m_CharsToStrip.isEmpty())
+      {
+        headerPath = headerPath.replace(m_CharsToStrip, "");
+      }
+      
+      headerTemplate = headerTemplate.replace(HEADER_PATH, headerPath);
+      headerTemplate = headerTemplate.replace(LIB_NAME, m_LibName);
+      return headerTemplate;
+    }
+    
+    QString generateSharedPointerInitCode()
+    {
+      if(!getIsSharedPointer())
+      {
+        return QString("");
+      }
+      QFile source;
+      
+      if(getHasSuperClass() && !getSuperClass().isEmpty())
+      {
+        source.setFileName(SIMPL::PyBind11::GetSIMPLPyBind11_TemplatesDir() + "/DerivedSharedPointerClassInit.txt");
+      }
+      else
+      {
+        source.setFileName(SIMPL::PyBind11::GetSIMPLPyBind11_TemplatesDir() + "/SharedPointerClassInit.txt");
+      }
+      source.open(QFile::ReadOnly);
+      QString headerTemplate = source.readAll();
+      source.close();
+      
+      QFileInfo fi(m_SourceFile);
+      QString subPath = fi.absolutePath();
+      subPath = subPath.replace(m_SourceDir.absolutePath(), ""); // Remove the system dependent file path
+      subPath = subPath.remove(0,1); //Remove the front / character
+      
+      headerTemplate = headerTemplate.replace(CLASS_NAME, getClassName());
+      QString headerPath = QString("%1/%2.h").arg(subPath).arg(getClassName());
+      headerTemplate = headerTemplate.replace(HEADER_PATH, headerPath);
+      headerTemplate = headerTemplate.replace(SUPERCLASS_NAME, getSuperClass());
+      headerTemplate = headerTemplate.replace(LIB_NAME, m_LibName);
+      
+      QString pybind11HeaderPath = QString("%1/pybind11/%2_PY11.h").arg(subPath).arg(getClassName());
+      if(!m_CharsToStrip.isEmpty())
+      {
+        pybind11HeaderPath = pybind11HeaderPath.replace(m_CharsToStrip, "");
+      }
+      
+      m_Module->addHeader(pybind11HeaderPath);
+      m_Module->addDependency(getSuperClass(), getClassName());
+      
+      return headerTemplate;
+    }
+    
+    QString generateStaticNewCode()
+    {
+      if(!getIsSharedPointer())
+      {
+        return QString("");
+      }
+      QString code;
+      QTextStream constructors(&code);
+      constructors << TAB << ".def(py::init([](){ return " << getClassName() << "::New();}))" << NEWLINE_SIMPL;
+      constructors << TAB << ".def_static(\"New\", &" << getClassName() << "::New)" << NEWLINE_SIMPL;      
+      return code;
+    }
+    
+    QString generateConstructorsCodes()
+    {
+      if(getIsSharedPointer())
+      {
+        return QString("");
+      }
+      
+      QString code;
+      QTextStream constructors(&code);
+      
+      QFile source;
+      source.setFileName(SIMPL::PyBind11::GetSIMPLPyBind11_TemplatesDir() + "/SimpleClassInit.txt");
+      source.open(QFile::ReadOnly);
+      QString headerTemplate = source.readAll();
+      source.close();
+      headerTemplate = headerTemplate.replace(CLASS_NAME, getClassName());
+      
+      QFileInfo fi(m_SourceFile);
+      QString subPath = fi.absolutePath();
+      subPath = subPath.replace(m_SourceDir.absolutePath(), ""); // Remove the system dependent file path
+      subPath = subPath.remove(0,1); //Remove the front / character
+      
+      QString headerPath = QString("%1/%2.h").arg(subPath).arg(getClassName());
+      headerTemplate = headerTemplate.replace(HEADER_PATH, headerPath);
+      headerTemplate = headerTemplate.replace(SUPERCLASS_NAME, getSuperClass());
+      headerTemplate = headerTemplate.replace(LIB_NAME, m_LibName);
+      
+      constructors << headerTemplate;
+      
+      constructors << TAB << ".def(py::init<" << getClassName() << ">())" << NEWLINE_SIMPL;
+      constructors << TAB << ".def(py::init<" << getClassName() << " const &>())" << NEWLINE_SIMPL;
+      return code;
+    }
+    
+    QString generatePropertiesCode()
+    {
+      QString code;
+      QTextStream out(&code);
+      for(auto line : m_Properties)
+      {
+        QStringList tokens = line.split("(");
+        tokens = tokens[1].replace(")", "").trimmed().split(" ");
+        QString pyType = tokens[0];
+        QString varName = tokens[1];
+        out << TAB << "/* Property accessors for " << varName << " */" << NEWLINE_SIMPL;
+        if(tokens.size() > 3 && tokens[2] == ::kRead)
+        {
+          out << TAB << ".def(\"get" << varName << "\", &" << getClassName() << "::get" << varName << ")" << NEWLINE_SIMPL;
+        }
+        else if(tokens.size() > 3 && tokens[2] == ::kWrite)
+        {
+          out << TAB << ".def(\"set" << varName << "\", &" << getClassName() << "::set" << varName << ", py::arg(\"" << varName << "\"))" << NEWLINE_SIMPL;
+        }
+        
+        if(tokens.size() > 5 && tokens[4] == ::kRead)
+        {
+          out << TAB << ".def(\"get" << varName << "\", &" << getClassName() << "::get" << varName << ")" << NEWLINE_SIMPL;
+        }
+        else if(tokens.size() > 5 && tokens[4] == ::kWrite)
+        {
+          out << TAB << ".def(\"set" << varName << "\", &" << getClassName() << "::set" << varName << ", py::arg(\"" << varName << "\"))" << NEWLINE_SIMPL;
+        }
+      }
+      return code;
+    }
+    
+    QString generateMethodCode()
+    {
+      QString code;
+      QTextStream out(&code);
+      for(auto line : m_Methods)
+      {
+        QStringList tokens = line.split("(");
+        tokens = tokens[1].replace(")", "").trimmed().split(" ");
+        QString returnType = tokens[0];
+        QString methodName = tokens[1];
+        out << TAB << "/* Class instance method " << methodName << " */" << NEWLINE_SIMPL;
+        
+        if(tokens.size() == 2)
+        {
+          out << TAB << ".def(\"" << methodName << "\", &" << getClassName() << "::" << methodName << ")" << NEWLINE_SIMPL;
+        }
+        else if(tokens.size() > 3 && tokens[2] == ::kArgs)
+        {
+          out << TAB << ".def(\"" << methodName << "\", &" << getClassName() << "::" << methodName;
+          for(int32_t i = 3; i < tokens.size(); i++)
+          {
+            out << ", \n" << TAB << TAB << TAB << TAB << "py::arg(\"" << tokens[i] << "\")";
+          }
+          out << NEWLINE_SIMPL << TAB << TAB << TAB << ")" << NEWLINE_SIMPL;
+        }
+      }
+      return code;
+    }
+    
+    
+    QString generateFooterCode()
+    {
+      QString code;
+      QTextStream out(&code);
+      out << TAB << ";" << NEWLINE_SIMPL;
+      out << TAB << "return instance;" << NEWLINE_SIMPL;
+      out << "}" << NEWLINE_SIMPL;
+      out << "\n\n";
+      out << "#endif /* pybind_" << getClassName() << "_H_  */" << NEWLINE_SIMPL;
+      return code;
+    }
+    
+  private:
+    
+    PythonBindingsModule* m_Module = nullptr;
+    PythonBindingClass(const PythonBindingClass&) = delete; // Copy Constructor Not Implemented
+    void operator=(const PythonBindingClass&) = delete; // Operator '=' Not Implemented   
+};
+
+/* *****************************************************************************
+ * 
+ * 
+ ******************************************************************************/
+class PyBind11Generator
+{
+    
+  public:
+    /**
+   * @brief PyBind11Generator
+   * @param topLevelDir
+   * @param charsToStrip
+   * @param libName
+   */
+    PyBind11Generator(const QDir& topLevelDir, const QString& charsToStrip, const QString& libName)
+      : m_TopLevelDir(topLevelDir)
+      , m_CharsToStrip(charsToStrip)
+      , m_LibName(libName)
+    {
+      m_SourceDir = m_TopLevelDir;
+      m_SourceDir.cdUp();
+      
+      
+      m_ModuleCode.setLibName(m_LibName);
+    }
+    
+    ~PyBind11Generator() = default;
+    
+    
+    /**
+   * @brief execute
+   */
+    void execute()
+    {
+      recursiveSearch(m_TopLevelDir);
+      
+      // QFileInfo fi(m_TopLevelDir);
+      QString genHeaderPath;
+      QTextStream ss(&genHeaderPath);
+      ss << m_TopLevelDir.absolutePath() << "/" << "pybind11" << "/"  << m_LibName << "_Pybindings.cxx";
+      
+      m_ModuleCode.generateModuleFile(genHeaderPath);
+    }
+    
+    /**
+   * @brief recursiveSearch
+   * @param currentDir
+   */
     void recursiveSearch(QDir currentDir)
     {
       QStringList filters;
       filters.append("*.h");
       
-      if(currentDir.dirName().compare("zRel") == 0 || currentDir.dirName().compare("Build") == 0)
+      if(currentDir.dirName().compare("zRel") == 0 
+         || currentDir.dirName().compare("Build") == 0
+         || currentDir.dirName().compare("pybind11") == 0)
       {
         return;
       }
@@ -143,19 +623,18 @@ class PyBind11Generator
         QString headerFilePath = itemInfo.absoluteFilePath();
         generatePybind11Header(headerFilePath);
       }
-      
     }
     
     /**
-     * @brief generatePybind11Header
-     * @param hFile
-     */
-    void generatePybind11Header(const QString &hFile)
+   * @brief generatePybind11Header
+   * @param hFile
+   */
+    void generatePybind11Header(const QString& hFile)
     {
       QString contents;
       QFileInfo fi(hFile);
       
-      if (fi.baseName().compare("SIMPLibSetGetMacros") == 0)
+      if(fi.baseName().compare("SIMPLibSetGetMacros") == 0)
       {
         return;
       }
@@ -170,182 +649,81 @@ class PyBind11Generator
       
       QString subPath = fi.absolutePath();
       subPath = subPath.replace(m_SourceDir.absolutePath(), ""); // Remove the system dependent file path
-      subPath = subPath.remove(0,1); //Remove the front / character
+      if(!m_CharsToStrip.isEmpty())
+      {
+        subPath = subPath.replace(m_CharsToStrip, ""); // Remove the system dependent file path
+      }
+      subPath = subPath.remove(0, 1);  
       
-      QString genHeaderPath = QString("%1/PyBind11/%2/%3_Pybind.h").arg(m_TopLevelDir.absolutePath()).arg(subPath).arg(fi.baseName());
-      
-      
-      bool needsWrapping = false;
-      
-      QString searchString =  "PYB11_CREATE_BINDINGS";
-      
-      std::stringstream header;
-      std::stringstream constructors;
-      std::stringstream properties;
-      std::stringstream footer;
+      QString genHeaderPath;
+      QTextStream ss(&genHeaderPath);
+      ss << fi.absolutePath() << "/" << "pybind11" << "/"  << fi.baseName() << "_PY11.h";
       
       QString baseName = fi.baseName();
       
       QStringList list = contents.split(QRegExp("\\n"));
       QStringListIterator sourceLines(list);
       
-      bool hasSuperClass = false;
-      QString superClassName;
-      bool constructorsCreated = false;
-      bool isSharedPointerClass = false;
-      while (sourceLines.hasNext())
+      
+      PythonBindingClass bindingClass(&m_ModuleCode);
+      bindingClass.setClassName(baseName);
+      bindingClass.setLibName(m_LibName);
+      bindingClass.setCharsToStrip(m_CharsToStrip);
+      bindingClass.setTopLevelDir(m_TopLevelDir);
+      bindingClass.setSourceDir(m_SourceDir);
+      bindingClass.setSourceFile(hFile);
+      
+      while(sourceLines.hasNext())
       {
         QString line = sourceLines.next();
-        if(line.contains(PYB11_CREATE_BINDINGS) )
+        if(line.contains(kPYB11_CREATE_BINDINGS))
         {
-          needsWrapping = true;
+          bindingClass.setNeedsWrapping(true);
           line = line.trimmed();
           QStringList tokens = line.split("(");
           tokens = tokens[1].replace(")", "").trimmed().split(" ");
           baseName = tokens[0];
           
-          // Create the Top part of the file from a template file
-          QFile source(SIMPL::PyBind11::GetSIMPLPyBind11_TemplatesDir() + "/Pybind11TopMatter.txt");
-          source.open(QFile::ReadOnly);
-          QString headerTemplate = source.readAll();
-          source.close();
-          headerTemplate = headerTemplate.replace(CLASS_NAME, baseName);
-          QString headerPath = QString("%1/%2.h").arg(subPath).arg(baseName);
-          headerTemplate = headerTemplate.replace(HEADER_PATH, headerPath);
-          headerTemplate = headerTemplate.replace(LIB_NAME, m_LibName);
-          header << headerTemplate.toStdString();
-          
+          bindingClass.setClassName(baseName);
           if(tokens.size() > 1 && tokens[1] == ::kSuperClass)
           {
-            hasSuperClass = true;
-            superClassName = tokens[2];
+            bindingClass.setHasSuperClass(true);
+            bindingClass.setSuperClass(tokens[2]);
           }
-         
         }
-        else if(needsWrapping && line.contains(SIMPL_SHARED_POINTERS) ) // The class that needs wrapping is a Shared_Pointer type of class.
+        else if(bindingClass.getNeedsWrapping() && line.contains(::kSIMPL_SHARED_POINTERS)) // The class that needs wrapping is a Shared_Pointer type of class.
         {
-          QFile source;
-          if(hasSuperClass && !superClassName.isEmpty())
-          {
-            source.setFileName(SIMPL::PyBind11::GetSIMPLPyBind11_TemplatesDir() + "/DerivedSharedPointerClassInit.txt");
-          }   
-          else
-          {
-            source.setFileName(SIMPL::PyBind11::GetSIMPLPyBind11_TemplatesDir() + "/SharedPointerClassInit.txt");
-          }
-          source.open(QFile::ReadOnly);
-          QString headerTemplate = source.readAll();
-          source.close();
-          headerTemplate = headerTemplate.replace(CLASS_NAME, baseName);
-          QString headerPath = QString("%1/%2.h").arg(subPath).arg(baseName);
-          headerTemplate = headerTemplate.replace(HEADER_PATH, headerPath);
-          headerTemplate = headerTemplate.replace(SUPERCLASS_NAME, superClassName);
-          headerTemplate = headerTemplate.replace(LIB_NAME, m_LibName);
-
-          header << headerTemplate.toStdString();
-          isSharedPointerClass = true;
+          bindingClass.setIsSharedPointer(true);
         }
-        else if(needsWrapping && line.contains(SIMPL_STATIC_NEW_MACRO) )
+        else if(bindingClass.getNeedsWrapping() && line.contains(::kSIMPL_STATIC_NEW_MACRO))
         {
-          constructors << TAB << ".def(py::init([](){ return " << baseName.toStdString() << "::New();}))" << NEWLINE_SIMPL;
-          constructors << TAB << ".def_static(\"New\", &" << baseName.toStdString() << "::New)" << NEWLINE_SIMPL;
-          constructorsCreated = true;
+          bindingClass.setHasStaticNewMacro(true);
         }
-        else if(needsWrapping && line.contains(PYB11_PROPERTY) )
+        else if(bindingClass.getNeedsWrapping() && line.contains(::kPYB11_PROPERTY))
         {
           line = line.trimmed();
-          QStringList tokens = line.split("(");
-          tokens = tokens[1].replace(")", "").trimmed().split(" ");
-          std::string pyType = tokens[0].toStdString();
-          std::string varName = tokens[1].toStdString();
-          properties << TAB << "/* Property accessors for " << varName << " */" << NEWLINE_SIMPL;
-          if(tokens.size() > 3 && tokens[2] == ::kRead)
-          { 
-            properties << TAB << ".def(\"get" << varName << "\", &" << baseName.toStdString() << "::get" << varName << ")" << NEWLINE_SIMPL;
-          }
-          else if(tokens.size() > 3 && tokens[2] == ::kWrite)
-          {
-            properties << TAB << ".def(\"set" << varName << "\", &" << baseName.toStdString() << "::set" << varName << ", py::arg(\""<< varName << "\"))" << NEWLINE_SIMPL;
-          }
-          
-          if(tokens.size() > 5 && tokens[4] == ::kRead)
-          {
-            properties << TAB << ".def(\"get" << varName << "\", &" << baseName.toStdString() << "::get" << varName << ")" << NEWLINE_SIMPL;
-          }
-          else if(tokens.size() > 5 && tokens[4] == ::kWrite)
-          {
-            properties << TAB << ".def(\"set" << varName << "\", &" << baseName.toStdString() << "::set" << varName << ", py::arg(\""<< varName << "\"))" << NEWLINE_SIMPL;
-          } 
+          bindingClass.addProperty(line);
         }
-        else if(needsWrapping && line.contains(PYB11_METHOD) )
+        else if(bindingClass.getNeedsWrapping() && line.contains(::kPYB11_METHOD))
         {
           line = line.trimmed();
-          QStringList tokens = line.split("(");
-          tokens = tokens[1].replace(")", "").trimmed().split(" ");
-          std::string returnType = tokens[0].toStdString();
-          std::string methodName = tokens[1].toStdString();
-          properties << TAB << "/* Class instance method " << methodName << " */" << NEWLINE_SIMPL;
-          
-          if(tokens.size() == 2)
-          {
-            properties << TAB << ".def(\"" << methodName << "\", &" << baseName.toStdString() << "::" << methodName << ")" << NEWLINE_SIMPL;
-            
-          }
-          else if(tokens.size() > 3 && tokens[2] == ::kArgs)
-          {
-            properties << TAB << ".def(\"" << methodName << "\", &" << baseName.toStdString() << "::" << methodName;
-            for(int32_t i = 3; i < tokens.size(); i++)
-            {
-              properties <<", \n" << TAB << TAB << TAB << TAB << "py::arg(\""<< tokens[i].toStdString() << "\")";
-            }
-            properties << NEWLINE_SIMPL << TAB << TAB << TAB << ")" << NEWLINE_SIMPL;
-          }
+          bindingClass.addMethod(line);
         }
       }
       
-      if(!isSharedPointerClass)
-      {
-        QFile source;
-        source.setFileName(SIMPL::PyBind11::GetSIMPLPyBind11_TemplatesDir() + "/SimpleClassInit.txt");
-        source.open(QFile::ReadOnly);
-        QString headerTemplate = source.readAll();
-        source.close();
-        headerTemplate = headerTemplate.replace(CLASS_NAME, baseName);
-        QString headerPath = QString("%1/%2.h").arg(subPath).arg(baseName);
-        headerTemplate = headerTemplate.replace(HEADER_PATH, headerPath);
-        headerTemplate = headerTemplate.replace(SUPERCLASS_NAME, superClassName);
-        headerTemplate = headerTemplate.replace(LIB_NAME, m_LibName);
-
-        header << headerTemplate.toStdString();
-      }
-      if(!constructorsCreated)
-      {
-          constructors << TAB << ".def(py::init<" << baseName.toStdString() << ">())" << NEWLINE_SIMPL;
-          constructors << TAB << ".def(py::init<" << baseName.toStdString() << " const &>())" << NEWLINE_SIMPL;
-      }
-      
-      if(needsWrapping)
-      {
-        footer << TAB << ";" << NEWLINE_SIMPL;
-        footer << TAB << "return instance;" << NEWLINE_SIMPL;
-        footer << "}" << NEWLINE_SIMPL;
-        footer << "\n\n";
-        footer << "#endif /* pybind_" << fi.baseName().toStdString() << "_H_  */" << NEWLINE_SIMPL;
-      }
-      
-      std::string output = header.str() + constructors.str() + properties.str() + footer.str();
-      
-      writeOutput(needsWrapping, output, genHeaderPath);
+      bindingClass.writeBindingFile(genHeaderPath);
     }
     
   private:
-    
     QDir m_TopLevelDir;
     QDir m_SourceDir;
+    QString m_CharsToStrip;
     QString m_LibName;
+    PythonBindingsModule m_ModuleCode;
+    
     
     PyBind11Generator(const PyBind11Generator&) = delete; // Copy Constructor Not Implemented
-    void operator=(const PyBind11Generator&) = delete; // Operator '=' Not Implemented
+    void operator=(const PyBind11Generator&) = delete;    // Operator '=' Not Implemented
 };
 
 // -----------------------------------------------------------------------------
@@ -361,19 +739,30 @@ int main(int argc, char* argv[])
   QCoreApplication::setOrganizationDomain("bluequartz.net");
   QCoreApplication::setApplicationName("GeneratePythonBindings");
   
-  if(argc != 3)
+  if(argc != 4)
   {
     std::cout << "GeneratePythonBindings needs 2 arguments:" << std::endl;
     std::cout << "   [1] Path to the source directory to recursively search" << std::endl;
-    std::cout << "   [2] Name of the Library/Plugin" << std::endl;
+    std::cout << "   [2] Characters to strip from the path. '-' means do not strip anything" << std::endl;
+    std::cout << "   [3] Name of the Library/Plugin" << std::endl;
     return EXIT_FAILURE;
   }
-  //QString dirPath = ;
-    QString libName = QString::fromLatin1(argv[2]);
-  PyBind11Generator bindingsGenerator (QDir(QString::fromLatin1(argv[1])), libName);
-
+  
+  std::cout << "Source Directory: " << argv[1] << std::endl;
+  std::cout << "Characters to strip: " << argv[2] << std::endl;
+  std::cout << "Name of the Library: " << argv[3] << std::endl;
+  
+  
+  QString charsToStrip = QString::fromLatin1(argv[2]);
+  if(charsToStrip == "-")
+  {
+    charsToStrip = "";
+  }
+  QString libName = QString::fromLatin1(argv[3]);
+  
+  PyBind11Generator bindingsGenerator(QDir(QString::fromLatin1(argv[1])), charsToStrip, libName);
+  
   bindingsGenerator.execute();
   
   return EXIT_SUCCESS;
-  
 }
