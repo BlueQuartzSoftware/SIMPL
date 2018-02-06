@@ -184,38 +184,12 @@ class PythonBindingsModule
       
       
       writeOutput(true, headerTemplate, outputPath);
-      // Construct a graph with the vertices container as a vector
-      typedef boost::adjacency_list<boost::vecS, boost::vecS, boost::bidirectionalS> Graph;
-      Graph g(m_used_by.size()); 
-      
-      for(auto e : m_used_by)
-      {
-        boost::add_edge(e.first, e.second, g);
-      }
-      
-      
-      typedef boost::property_map<Graph, boost::vertex_name_t>::type Name_map_t;
-      Name_map_t name = boost::get(boost::vertex_name, g); 
-
-      
-      for(auto n : m_name_value_map)
-      {
-        boost::put(name, n.second, n.first.toStdString());
-      }
-      
-     // who_owes_who(edges(g).first, edges(g).second, g);
-      
-      // represent graph in DOT format and send to cout
-      boost::write_graphviz(std::cout, g);
       
     }
  
     using Edge = std::pair<uint32_t, uint32_t>;
     
-    using NameProp = boost::property<boost::vertex boost::name_t, std::string>;
-    using Graph = boost::adjacency_list<boost::vecS, boost::vecS, boost::bidirectionalS,NameProp>;
-    using Vertex = boost::graph_traits<Graph>::vertex_descriptor;
-    
+   
   private:
     std::vector<Edge> m_used_by;
     std::map<QString, int32_t> m_name_value_map;
