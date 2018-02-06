@@ -30,9 +30,14 @@
 /* Defines the type of Release that is being built */
 #define SIMPLViewProj_RELEASE_TYPE "@SIMPLViewProj_RELEASE_TYPE@"
 
-#cmakedefine SIMPL_DOXYGEN_DOCUMENTATION
+/* Defined if SIMPL uses DOXYGEN for creating HTML documentation */
+/* #cmakedefine SIMPL_DOXYGEN_DOCUMENTATION */
 
+/* Defined if SIMPL uses discount (md->html library) for creating HTML documentation */
 #cmakedefine SIMPL_DISCOUNT_DOCUMENTATION
+
+/* Defined if SIMPL uses mkdocs (python utility) for creating HTML documentation */
+#cmakedefine SIMPL_MKDOCS_DOCUMENTATION
 
 #if (_MSC_VER >= 1)
 

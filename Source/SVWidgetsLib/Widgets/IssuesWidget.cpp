@@ -41,6 +41,7 @@
 #include <QtWidgets/QMainWindow>
 #include <QtWidgets/QTableWidgetItem>
 
+#include "SVWidgetsLib/SVWidgetsLib.h"
 #include "SVWidgetsLib/QtSupport/QtSSettings.h"
 
 #include "SIMPLib/Common/DocRequestManager.h"
@@ -49,9 +50,11 @@
 
 #include "ui_IssuesWidget.h"
 
-#if defined(SIMPL_DISCOUNT_DOCUMENTATION) && defined(SIMPL_DOXYGEN_DOCUMENTATION)
-#error Both SIMPL_DISCOUNT_DOCUMENTATION and SIMPL_DOXYGEN_DOCUMENTATION are both defined and this can not happen.
+
+#if defined(SIMPL_MKDOCS_DOCUMENTATION)
+#define SIMPL_DISCOUNT_DOCUMENTATION
 #endif
+
 
 // -----------------------------------------------------------------------------
 //
@@ -240,12 +243,15 @@ QLabel* IssuesWidget::createHyperlinkLabel(PipelineMessage msg)
 
     return new QLabel("Unknown Filter Class");
   }
+  
+  QString adjustedClassName;
+
 #ifdef SIMPL_DOXYGEN_DOCUMENTATION
-  QString adjustedClassName = filterClassName.toLower();
+  adjustedClassName = filterClassName.toLower();
 #endif
 
 #ifdef SIMPL_DISCOUNT_DOCUMENTATION
-  QString adjustedClassName = filterClassName;
+  adjustedClassName = filterClassName;
 #endif
 
   QUrl filterURL = QtSHelpUrlGenerator::generateHTMLUrl(adjustedClassName);
