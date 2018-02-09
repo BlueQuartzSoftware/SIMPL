@@ -234,7 +234,7 @@ void DataContainerWriter::execute()
   if(m_WriteXdmfFile == true)
   {
     QFileInfo ofFi(m_OutputFile);
-    QString name = ofFi.baseName();
+    QString name = ofFi.completeBaseName();
     if(parentPath.isEmpty() == true)
     {
       name = name + ".xdmf";
