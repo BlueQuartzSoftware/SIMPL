@@ -661,6 +661,7 @@ void DataContainerReaderWidget::on_m_LineEdit_editingFinished()
 {
   m_LineEdit->setStyleSheet(QString(""));
   m_CurrentText = m_LineEdit->text();
+  on_m_LineEdit_fileDropped(m_CurrentText);
   emit parametersChanged(); // This should force the preflight to run because we are emitting a signal
 }
 
