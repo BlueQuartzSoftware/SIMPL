@@ -52,7 +52,7 @@ set(_PublicFilters
   MoveMultiData
   MultiThresholdObjects
   MultiThresholdObjects2
-  PipelineSummary
+  PipelineAnnotation
   PostSlackMessage
   RawBinaryReader
   ReadASCIIData
