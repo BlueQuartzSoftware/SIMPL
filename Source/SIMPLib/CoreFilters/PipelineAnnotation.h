@@ -31,29 +31,29 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-#ifndef _pipelinesummary_h_
-#define _pipelinesummary_h_
+#ifndef _pipelineAnnotation_h_
+#define _pipelineAnnotation_h_
 
 #include "SIMPLib/Common/SIMPLibSetGetMacros.h"
 #include "SIMPLib/Filtering/AbstractFilter.h"
 #include "SIMPLib/SIMPLib.h"
 
 /**
- * @brief The PipelineSummary class. See [Filter documentation](@ref PipelineSummary) for details.
+ * @brief The PipelineAnnotation class. See [Filter documentation](@ref PipelineAnnotation) for details.
  */
-class SIMPLib_EXPORT PipelineSummary : public AbstractFilter
+class SIMPLib_EXPORT PipelineAnnotation : public AbstractFilter
 {
   Q_OBJECT
 
 public:
-  SIMPL_SHARED_POINTERS(PipelineSummary)
-  SIMPL_STATIC_NEW_MACRO(PipelineSummary)
-   SIMPL_TYPE_MACRO_SUPER_OVERRIDE(PipelineSummary, AbstractFilter)
+  SIMPL_SHARED_POINTERS(PipelineAnnotation)
+  SIMPL_STATIC_NEW_MACRO(PipelineAnnotation)
+   SIMPL_TYPE_MACRO_SUPER_OVERRIDE(PipelineAnnotation, AbstractFilter)
 
   SIMPL_FILTER_PARAMETER(QString, Summary)
   Q_PROPERTY(QString Summary READ getSummary WRITE setSummary)
 
-  virtual ~PipelineSummary();
+  virtual ~PipelineAnnotation();
 
   /**
    * @brief getCompiledLibraryName Reimplemented from @see AbstractFilter class
@@ -139,7 +139,7 @@ signals:
   void preflightExecuted();
 
 protected:
-  PipelineSummary();
+  PipelineAnnotation();
   /**
    * @brief dataCheck Checks for the appropriate parameter values and availability of arrays
    */
@@ -151,8 +151,8 @@ protected:
   void initialize();
 
 private:
-  PipelineSummary(const PipelineSummary&) = delete; // Copy Constructor Not Implemented
-  void operator=(const PipelineSummary&);  // Operator '=' Not Implemented
+  PipelineAnnotation(const PipelineAnnotation&) = delete; // Copy Constructor Not Implemented
+  void operator=(const PipelineAnnotation&);  // Operator '=' Not Implemented
 };
 
-#endif /* _pipelinesummary_h_ */
+#endif /* _pipelineAnnotation_h_ */

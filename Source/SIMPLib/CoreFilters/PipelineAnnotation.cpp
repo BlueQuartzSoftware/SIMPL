@@ -31,7 +31,7 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-#include "PipelineSummary.h"
+#include "PipelineAnnotation.h"
 
 #include "SIMPLib/Common/Constants.h"
 #include "SIMPLib/FilterParameters/AbstractFilterParametersReader.h"
@@ -41,7 +41,7 @@
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-PipelineSummary::PipelineSummary()
+PipelineAnnotation::PipelineAnnotation()
 : AbstractFilter()
 {
   setupFilterParameters();
@@ -50,16 +50,16 @@ PipelineSummary::PipelineSummary()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-PipelineSummary::~PipelineSummary() = default;
+PipelineAnnotation::~PipelineAnnotation() = default;
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void PipelineSummary::setupFilterParameters()
+void PipelineAnnotation::setupFilterParameters()
 {
   FilterParameterVector parameters;
 
-  parameters.push_back(SIMPL_NEW_PARAGRAPH_FP("", Summary, FilterParameter::Parameter, PipelineSummary));
+  parameters.push_back(SIMPL_NEW_PARAGRAPH_FP("", Summary, FilterParameter::Parameter, PipelineAnnotation));
 
   setFilterParameters(parameters);
 }
@@ -67,14 +67,14 @@ void PipelineSummary::setupFilterParameters()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void PipelineSummary::initialize()
+void PipelineAnnotation::initialize()
 {
 }
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void PipelineSummary::dataCheck()
+void PipelineAnnotation::dataCheck()
 {
   setErrorCondition(0);
   setWarningCondition(0);
@@ -83,7 +83,7 @@ void PipelineSummary::dataCheck()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void PipelineSummary::preflight()
+void PipelineAnnotation::preflight()
 {
   // These are the REQUIRED lines of CODE to make sure the filter behaves correctly
   setInPreflight(true);              // Set the fact that we are preflighting.
@@ -97,7 +97,7 @@ void PipelineSummary::preflight()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void PipelineSummary::execute()
+void PipelineAnnotation::execute()
 {
   setErrorCondition(0);
   setWarningCondition(0);
@@ -111,9 +111,9 @@ void PipelineSummary::execute()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-AbstractFilter::Pointer PipelineSummary::newFilterInstance(bool copyFilterParameters) const
+AbstractFilter::Pointer PipelineAnnotation::newFilterInstance(bool copyFilterParameters) const
 {
-  PipelineSummary::Pointer filter = PipelineSummary::New();
+  PipelineAnnotation::Pointer filter = PipelineAnnotation::New();
   if(true == copyFilterParameters)
   {
     copyFilterParameterInstanceVariables(filter.get());
@@ -124,7 +124,7 @@ AbstractFilter::Pointer PipelineSummary::newFilterInstance(bool copyFilterParame
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString PipelineSummary::getCompiledLibraryName() const
+const QString PipelineAnnotation::getCompiledLibraryName() const
 {
   return Core::CoreBaseName;
 }
@@ -132,7 +132,7 @@ const QString PipelineSummary::getCompiledLibraryName() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString PipelineSummary::getBrandingString() const
+const QString PipelineAnnotation::getBrandingString() const
 {
   return "SIMPLib Core Filter";
 }
@@ -140,7 +140,7 @@ const QString PipelineSummary::getBrandingString() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString PipelineSummary::getFilterVersion() const
+const QString PipelineAnnotation::getFilterVersion() const
 {
   QString version;
   QTextStream vStream(&version);
@@ -151,7 +151,7 @@ const QString PipelineSummary::getFilterVersion() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString PipelineSummary::getGroupName() const
+const QString PipelineAnnotation::getGroupName() const
 {
   return SIMPL::FilterGroups::CoreFilters;
 }
@@ -159,7 +159,7 @@ const QString PipelineSummary::getGroupName() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QUuid PipelineSummary::getUuid()
+const QUuid PipelineAnnotation::getUuid()
 {
   return QUuid("{8cc2198b-6a9d-5bf4-b8c0-b0878bb57f10}");
 }
@@ -167,7 +167,7 @@ const QUuid PipelineSummary::getUuid()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString PipelineSummary::getSubGroupName() const
+const QString PipelineAnnotation::getSubGroupName() const
 {
   return SIMPL::FilterSubGroups::MiscFilters;
 }
@@ -175,7 +175,7 @@ const QString PipelineSummary::getSubGroupName() const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString PipelineSummary::getHumanLabel() const
+const QString PipelineAnnotation::getHumanLabel() const
 {
-  return "Pipeline Summary";
+  return "Pipeline Annotation";
 }
