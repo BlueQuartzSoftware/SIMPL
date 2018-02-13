@@ -1,4 +1,4 @@
-Read DREAM.3D Data File {#datacontainerreader}
+Read DREAM.3D Data File 
 =============
 
 ## Group (Subgroup) ##

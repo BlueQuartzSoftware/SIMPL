@@ -1,4 +1,4 @@
-Write DREAM.3D Data File {#datacontainerwriter}
+Write DREAM.3D Data File 
 =============
 
 ## Group (Subgroup) ##

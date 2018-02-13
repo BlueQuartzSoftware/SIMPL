@@ -1,4 +1,4 @@
-Delete Data {#removearrays}
+Delete Data 
 =============
 
 ## Group (Subgroup) ##

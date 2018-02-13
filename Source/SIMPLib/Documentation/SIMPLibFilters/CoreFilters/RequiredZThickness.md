@@ -1,4 +1,4 @@
-RequiredZThickness {#requiredzthickness}
+RequiredZThickness 
 =====
 
 ## Group (Subgroup) ##

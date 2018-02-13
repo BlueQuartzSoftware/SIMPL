@@ -225,30 +225,6 @@ SIMPL_ENABLE_GROUP(GROUP_NAME WIDGETS
 
 OPTION(SIMPL_BUILD_TESTING "Compile the test programs" ON)
 
-if(0)
-  option(SIMPL_Group_BASE "Compile the base functionality" ON)
-
-
-  option(SIMPL_Group_FILTERS "Compile the Filtering functionality" OFF)
-  if(SIMPL_Group_FILTERS AND NOT SIMPL_Group_BASE)
-    message(STATUS "SIMPL_Group_FILTERS is ON, SIMPL_Group_BASE is being Enabled")
-    set(SIMPL_Group_BASE ON)
-  endif()
-
-  option(SIMPL_Group_PLUGIN "Compile the Plugin functionality that allows the loading of SIMPL Plugins" OFF)
-  if(SIMPL_Group_PLUGIN AND NOT SIMPL_Group_FILTERS)
-    message(STATUS "SIMPL_Group_PLUGIN is ON, SIMPL_Group_FILTERS is being Enabled")
-    set(SIMPL_Group_FILTERS ON)
-  endif()
-
-  option(SIMPL_Group_WIDGETS "Build the QtWidgets that are needed for GUI Applications" OFF)
-  if(SIMPL_Group_PLUGIN AND NOT SIMPL_Group_BASE)
-    message(STATUS "SIMPL_Group_PLUGIN is ON, SIMPL_Group_BASE is being Enabled")
-    set(SIMPL_Group_BASE ON)
-  endif()
-
-endif()
-
 # --------------------------------------------------------------------
 # Find HDF5 Headers/Libraries
 # HDF5 now comes with everything that is needed for CMake to load
@@ -259,7 +235,7 @@ include(${CMP_SOURCE_DIR}/ExtLib/HDF5Support.cmake)
 # --------------------------------------------------------------------
 # Should we use Intel Threading Building Blocks
 # --------------------------------------------------------------------
-set(SIMPLib_USE_PARALLEL_ALGORITHMS "")
+set(SIMPL_USE_PARALLEL_ALGORITHMS "")
 option(SIMPL_USE_MULTITHREADED_ALGOS "Use MultiThreaded Algorithms" OFF)
 if(SIMPL_USE_MULTITHREADED_ALGOS)
   find_package(TBB)
@@ -274,16 +250,16 @@ if(SIMPL_USE_MULTITHREADED_ALGOS)
   else()
       message(FATAL_ERROR "The Intel Threading Building Blocks library is needed to enable the multithreaded algorithms. Please make sure it is installed properly")
   endif()
-  set(SIMPLib_USE_PARALLEL_ALGORITHMS "1")
+  set(SIMPL_USE_PARALLEL_ALGORITHMS "1")
 endif()
 
 # --------------------------------------------------------------------
 # SIMPL needs the Eigen library for Least Squares fit and Eigen value/vector calculations.
-set(SIMPLib_USE_EIGEN "")
+set(SIMPL_USE_EIGEN "")
 Find_Package(Eigen REQUIRED)
 if(EIGEN_FOUND)
   message(STATUS "Found Eigen Library")
-  set(SIMPLib_USE_EIGEN "1")
+  set(SIMPL_USE_EIGEN "1")
 else()
   message(WARNING "The Eigen Library is required for some algorithms to execute. These algorithms will be disabled.")
 endif()
@@ -302,10 +278,10 @@ CMP_AddQt5Support( "${SIMPL_Qt5_COMPONENTS}" "${USE_QtWebEngine}" "${SIMPLProj_B
 # Should we use enable NTFS file checking on Windows
 # --------------------------------------------------------------------
 if(WIN32)
-  set(SIMPLib_NTFS_FILE_CHECK "")
+  set(SIMPL_NTFS_FILE_CHECK "")
   option(SIMPL_ENABLE_NTFS_FILE_CHECKING "Enable NTFS File Permissions Checking" ON)
   if(SIMPL_ENABLE_NTFS_FILE_CHECKING)
-      set(SIMPLib_NTFS_FILE_CHECK "1")
+      set(SIMPL_NTFS_FILE_CHECK "1")
   endif()
 endif()
 
@@ -403,34 +379,16 @@ if(SIMPL_USE_ITK)
   get_property(SimpleITKExplicit_LIB_NAME TARGET SimpleITKExplicit PROPERTY OUTPUT_NAME)
 endif()
 
-
-#-------------------------------------------------------------------------------
-# Should we build the documentation using DOxygen or Discount
-option(SIMPL_BUILD_DOCUMENTATION "Build the DREAM3D documentation" ON)
-if(SIMPL_BUILD_DOCUMENTATION)
-
-  option(SIMPL_DOXYGEN_DOCUMENTATION "Use DOxygen to generate the Documentation" ON)
-  if(SIMPL_DOXYGEN_DOCUMENTATION)
-    # --------------------------------------------------------------------
-    # Find the Doxygen package
-    FIND_PACKAGE(Doxygen)
-    if(DOXYGEN_FOUND)
-      get_property(Doxygen_STATUS_PRINTED GLOBAL PROPERTY Doxygen_STATUS_PRINTED)
-      if(NOT Doxygen_STATUS_PRINTED)
-        #message(STATUS "Doxygen Found at ${DOXYGEN_EXECUTABLE}")
-        set_property(GLOBAL PROPERTY Doxygen_STATUS_PRINTED TRUE)
-      endif()
-    else()
-      message(FATAL_ERROR "Doxygen is needed to build the documentation. Please install it correctly")
-    endif()
-  endif()
-
-endif()
-
 # -----------------------------------------------------------------------
 # Add in the Necessary HDF5 Support Sources into a library
 # -----------------------------------------------------------------------
 add_subdirectory( ${SIMPLProj_SOURCE_DIR}/Source/H5Support ${PROJECT_BINARY_DIR}/H5Support)
+
+# -----------------------------------------------------------------------
+# Add in the support to host the documentation over a thin-http server
+# -----------------------------------------------------------------------
+add_subdirectory(${SIMPLProj_SOURCE_DIR}/3rdParty/QtWebApp )
+
 
 # -----------------------------------------------------------------------
 # This needs to be set here as we are going to look for files in this directory
@@ -440,7 +398,7 @@ if("${FilterWidgetsLib_BINARY_DIR}" STREQUAL "")
 endif()
 
 # -----------------------------------------------------------------------
-# -- Add in the DREAM3D Sources into a library
+# -- Add in the SIMPL Sources into a library
 add_subdirectory( ${SIMPLProj_SOURCE_DIR}/Source/SIMPLib ${PROJECT_BINARY_DIR}/SIMPLib)
 
 # add the Command line utilities

@@ -46,14 +46,14 @@
 
 #include "SIMPLib/Geometry/QuadGeom.h"
 
-#ifdef SIMPLib_USE_PARALLEL_ALGORITHMS
+#ifdef SIMPL_USE_PARALLEL_ALGORITHMS
 #include <tbb/blocked_range.h>
 #include <tbb/parallel_for.h>
 #include <tbb/partitioner.h>
 #include <tbb/task_scheduler_init.h>
 #endif
 
-#if defined SIMPLib_USE_EIGEN
+#if defined SIMPL_USE_EIGEN
 #include "SIMPLib/Geometry/DerivativeHelpers.h"
 #endif
 #include "SIMPLib/Geometry/GeometryHelpers.h"
@@ -112,7 +112,7 @@ public:
     }
   }
 
-#ifdef SIMPLib_USE_PARALLEL_ALGORITHMS
+#ifdef SIMPL_USE_PARALLEL_ALGORITHMS
   void operator()(const tbb::blocked_range<int64_t>& r) const
   {
     compute(r.begin(), r.end());
@@ -510,12 +510,12 @@ void QuadGeom::findDerivatives(DoubleArrayType::Pointer field, DoubleArrayType::
     connect(this, SIGNAL(filterGeneratedMessage(const PipelineMessage&)), observable, SLOT(broadcastPipelineMessage(const PipelineMessage&)));
   }
 
-#ifdef SIMPLib_USE_PARALLEL_ALGORITHMS
+#ifdef SIMPL_USE_PARALLEL_ALGORITHMS
   tbb::task_scheduler_init init;
   bool doParallel = true;
 #endif
 
-#ifdef SIMPLib_USE_PARALLEL_ALGORITHMS
+#ifdef SIMPL_USE_PARALLEL_ALGORITHMS
   if(doParallel == true)
   {
     tbb::parallel_for(tbb::blocked_range<int64_t>(0, numQuads), FindQuadDerivativesImpl(this, field, derivatives), tbb::auto_partitioner());

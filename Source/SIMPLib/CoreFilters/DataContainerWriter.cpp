@@ -150,9 +150,9 @@ void DataContainerWriter::dataCheck()
 
 #ifdef _WIN32
   // Turn file permission checking on, if requested
-  #ifdef SIMPLib_NTFS_FILE_CHECK
-  //qt_ntfs_permission_lookup++;
-  #endif
+#ifdef SIMPL_NTFS_FILE_CHECK
+// qt_ntfs_permission_lookup++;
+#endif
 #endif
 
   QFileInfo dirInfo(fi.path());
@@ -166,9 +166,9 @@ void DataContainerWriter::dataCheck()
 
 #ifdef _WIN32
   // Turn file permission checking off, if requested
-  #ifdef SIMPLib_NTFS_FILE_CHECK
-  //qt_ntfs_permission_lookup--;
-  #endif
+#ifdef SIMPL_NTFS_FILE_CHECK
+// qt_ntfs_permission_lookup--;
+#endif
 #endif
 }
 

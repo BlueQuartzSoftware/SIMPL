@@ -1,4 +1,4 @@
-Mask Count Decision {#maskcountdecision}
+Mask Count Decision 
 =============
 
 ## Group (Subgroup) ##

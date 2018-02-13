@@ -36,7 +36,7 @@
 #ifndef _hoverbutton_h_
 #define _hoverbutton_h_
 
-#include <QPushButton>
+#include <QtWidgets/QPushButton>
 
 #include "SVWidgetsLib/SVWidgetsLib.h"
 

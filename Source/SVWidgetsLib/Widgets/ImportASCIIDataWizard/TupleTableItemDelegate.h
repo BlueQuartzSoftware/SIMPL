@@ -38,7 +38,7 @@
 
 #include <QtCore/QModelIndex>
 
-#include <QStyledItemDelegate>
+#include <QtWidgets/QStyledItemDelegate>
 
 #include "SIMPLib/Common/Constants.h"
 

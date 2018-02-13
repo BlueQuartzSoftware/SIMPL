@@ -1,4 +1,4 @@
-GenerateColorTable {#generatecolortable}
+GenerateColorTable 
 =============
 
 ## Group (Subgroup) ##

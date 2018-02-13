@@ -1,4 +1,4 @@
-Extract Component as Attribute Array {#extractcomponentasarray}
+Extract Component as Attribute Array 
 =============
 
 ## Group (Subgroup) ##

@@ -41,12 +41,20 @@
 #include <QtWidgets/QMainWindow>
 #include <QtWidgets/QTableWidgetItem>
 
+#include "SIMPLib/Common/DocRequestManager.h"
+
 #include "SVWidgetsLib/SVWidgetsLib.h"
 #include "SVWidgetsLib/QtSupport/QtSSettings.h"
 
-#include "SIMPLib/Common/DocRequestManager.h"
+#ifdef SIMPL_USE_MKDOCS
+#define URL_GENERATOR QtSDocServer
+#include "SVWidgetsLib/QtSupport/QtSDocServer.h"
+#endif
 
+#ifdef SIMPL_USE_DISCOUNT
+#define URL_GENERATOR QtSHelpUrlGenerator
 #include "SVWidgetsLib/QtSupport/QtSHelpUrlGenerator.h"
+#endif
 
 #include "ui_IssuesWidget.h"
 
@@ -238,18 +246,8 @@ QLabel* IssuesWidget::createHyperlinkLabel(PipelineMessage msg)
 
     return new QLabel("Unknown Filter Class");
   }
-  
-  QString adjustedClassName;
 
-#ifdef SIMPL_MKDOCS_DOCUMENTATION
-  adjustedClassName = filterClassName;
-#endif
-
-#ifdef SIMPL_DISCOUNT_DOCUMENTATION
-  adjustedClassName = filterClassName;
-#endif
-
-  QUrl filterURL = QtSHelpUrlGenerator::generateHTMLUrl(adjustedClassName);
+  QUrl filterURL = URL_GENERATOR::GenerateHTMLUrl(filterClassName);
   QString filterHTMLText("<a href=\"");
   filterHTMLText.append(filterURL.toString()).append("\">").append(filterHumanLabel).append("</a>");
 

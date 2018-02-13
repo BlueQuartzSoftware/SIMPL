@@ -1,4 +1,4 @@
-Replace Value in Array (Conditional) {#conditionalsetvalue}
+Replace Value in Array (Conditional) 
 =============
 
 ## Group (Subgroup) ##
@@ -19,7 +19,7 @@ This **Filter** replaces values in a user specified **Attribute Array** with a u
 | Unsigned Integer | 16 bit |0 to 65,535|
 | Signed Integer | 32 bit |-2,147,483,648 to 2,147,483,647|
 | Unsigned Integer | 32 bit |0 to 4,294,967,295|
-| Signed Integer | 64 bit |–9,223,372,036,854,775,808 to 9,223,372,036,854,775,807|
+| Signed Integer | 64 bit |   9,223,372,036,854,775,808 to 9,223,372,036,854,775,807|
 | Unsigned Integer | 64 bit |0 to 18,446,744,073,709,551,615|
 | Float | 32 bit | -3.4e+38 to -1.1e-38, 0.0, 1.1e-38 to 3.4e+38 (7 digits)|
 | Double | 64 bit | -1.7e+308 to -2.2e-308, 0.0, 2.2e-308 to 1.7e+308 (15 digits)|

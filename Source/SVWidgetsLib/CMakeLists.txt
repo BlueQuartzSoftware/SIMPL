@@ -49,6 +49,25 @@ mark_as_advanced(SVWidgetsLib_ENABLE_HDF5)
 
 include(${CMP_SOURCE_DIR}/cmpProject.cmake)
 
+option(SIMPL_USE_QtWebEngine "Use QWebEngine to display Help. OFF=Use default web browser" ON)
+set_property(GLOBAL PROPERTY SIMPL_USE_QtWebEngine "${SIMPL_USE_QtWebEngine}")
+
+# --------------------------------------------------------------------
+# Find and Use the Qt5 Libraries
+include(${CMP_SOURCE_DIR}/ExtLib/Qt5Support.cmake)
+set(SVWidgetsLib_Qt5_Components Core Widgets Network Gui Concurrent Svg Xml OpenGL PrintSupport )
+CMP_AddQt5Support( "${SVWidgetsLib_Qt5_Components}"
+                    "${SIMPL_USE_QtWebEngine}"
+                    "${SIMPLProj_BINARY_DIR}"
+                    "SVWidgetsLib")
+
+option(SIMPL_USE_MKDOCS "Use mkdocs (python) to generate the Documentation" ON)
+set_property(GLOBAL PROPERTY SIMPL_USE_MKDOCS "${SIMPL_USE_MKDOCS}")
+
+option(SIMPL_USE_DISCOUNT "Use Discount to generate the Documentation" OFF)
+set_property(GLOBAL PROPERTY SIMPL_USE_DISCOUNT "${SIMPL_USE_DISCOUNT}")
+
+
 configure_file(${SVWidgetsLib_SOURCE_DIR}/Core/SVWidgetsLibConfiguration.h.in
                ${SVWidgetsLib_BINARY_DIR}/${CMP_TOP_HEADER_FILE})
 
@@ -123,11 +142,12 @@ endif()
 # Add in all the dependent link libraries
 set(SVWidgetsLib_LINK_LIBRARIES
   SIMPLib
-  Qt5::Gui
-  Qt5::Widgets
-  Qt5::Network
   ${SVWidgetsLib_Extra_Link_Libraries}
 )
+
+foreach(qt5module ${SVWidgetsLib_Qt5_Components})
+  set(SVWidgetsLib_LINK_LIBRARIES ${SVWidgetsLib_LINK_LIBRARIES} Qt5::${qt5module})
+endforeach()
 
 add_library(SVWidgetsLib ${LIB_TYPE} ${Project_SRCS})
 CMP_AddDefinitions(TARGET SVWidgetsLib)
@@ -147,6 +167,7 @@ target_include_directories(SVWidgetsLib
                               ${SVWidgetsLib_BINARY_DIR}/QtSupport
                               ${SVWidgetsLib_BINARY_DIR}/Widgets
                               ${SVWidgetsLib_BINARY_DIR}/Widgets/ImportASCIIDataWizard
+                              ${SIMPLProj_SOURCE_DIR}/3rdParty
 )
 if(WIN32 AND BUILD_SHARED_LIBS)
 		target_compile_definitions(SVWidgetsLib PUBLIC "-DSVWidgetsLib_BUILT_AS_DYNAMIC_LIB")
@@ -154,7 +175,7 @@ endif()
 target_compile_definitions(SVWidgetsLib PRIVATE -DQT_CORE_LIB)
 
 LibraryProperties( SVWidgetsLib ${EXE_DEBUG_EXTENSION})
-target_link_libraries(SVWidgetsLib ${SVWidgetsLib_LINK_LIBRARIES} )
+target_link_libraries(SVWidgetsLib ${SVWidgetsLib_LINK_LIBRARIES} QtWebAppLib)
 
 set(install_dir "tools")
 set(lib_install_dir "lib")

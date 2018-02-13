@@ -1,4 +1,4 @@
-Post Slack Message {#postslackmessage}
+Post Slack Message 
 =============
 
 ## Group (Subgroup) ##

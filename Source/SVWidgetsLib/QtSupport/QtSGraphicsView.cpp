@@ -40,9 +40,9 @@
 #include <QtCore/QUrl>
 #include <QtCore/QtDebug>
 
-#include <QDragEnterEvent>
-#include <QDragLeaveEvent>
-#include <QDropEvent>
+#include <QtGui/QDragEnterEvent>
+#include <QtGui/QDragLeaveEvent>
+#include <QtGui/QDropEvent>
 #include <QtGui/QImageReader>
 #include <QtGui/QPixmap>
 #include <QtWidgets/QGraphicsPolygonItem>
