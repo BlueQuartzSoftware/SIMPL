@@ -245,6 +245,7 @@ QLabel* IssuesWidget::createHyperlinkLabel(PipelineMessage msg)
     return new QLabel("Unknown Filter Class");
   }
 
+
   QUrl filterURL = URL_GENERATOR::GenerateHTMLUrl(filterClassName);
   QString filterHTMLText("<a href=\"");
   filterHTMLText.append(filterURL.toString()).append("\">").append(filterHumanLabel).append("</a>");

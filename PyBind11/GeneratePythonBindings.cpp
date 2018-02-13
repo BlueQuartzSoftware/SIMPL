@@ -40,30 +40,19 @@
 
 namespace
 {
-  static const QString kRead("READ");
-  static const QString kWrite("WRITE");
-  static const QString kArgs("ARGS");
-  static const QString kSuperClass("SUPERCLASS");
-  
-  /* These are for the macros that appear in the header files */
-  static const QString kPYB11_CREATE_BINDINGS("PYB11_CREATE_BINDINGS");
-  static const QString kSIMPL_STATIC_NEW_MACRO("SIMPL_STATIC_NEW_MACRO");
-  static const QString kSIMPL_SHARED_POINTERS("SIMPL_SHARED_POINTERS");
-  static const QString kPYB11_PROPERTY("PYB11_PROPERTY");
-  static const QString kPYB11_METHOD("PYB11_METHOD");
-  
-  static int32_t s_SeedInt = 0;
+static const QString kRead("READ");
+static const QString kWrite("WRITE");
+static const QString kArgs("ARGS");
+static const QString kSuperClass("SUPERCLASS");
+
+/* These are for the macros that appear in the header files */
+static const QString kPYB11_CREATE_BINDINGS("PYB11_CREATE_BINDINGS");
+static const QString kSIMPL_STATIC_NEW_MACRO("SIMPL_STATIC_NEW_MACRO");
+static const QString kSIMPL_SHARED_POINTERS("SIMPL_SHARED_POINTERS");
+static const QString kPYB11_PROPERTY("PYB11_PROPERTY");
+static const QString kPYB11_METHOD("PYB11_METHOD");
+
 }
-
-
-
-#include <boost/config.hpp>
-#include <boost/graph/adjacency_list.hpp>
-#include <boost/graph/topological_sort.hpp>
-#include <boost/graph/graphviz.hpp>
-#include <boost/graph/adjacency_list.hpp>
-#include <boost/property_map/property_map.hpp>
-
 
 /* *****************************************************************************
  * 
@@ -77,18 +66,20 @@ class PythonBindingsModule
     
     SIMPL_INSTANCE_PROPERTY(QString, LibName)
     
-    SIMPL_INSTANCE_PROPERTY(QVector<QString>, Headers)
-    void addHeader(const QString &header)
+    using MapperType = QMap<QString, QString>;
+    
+    SIMPL_INSTANCE_PROPERTY(MapperType, Headers)
+    void addHeader(const QString &className, const QString &header)
     {
-      m_Headers.push_back(header);
+      m_Headers[className] = header;
     }
     void clearHeaders() { m_Headers.clear(); }
     
     
-    SIMPL_INSTANCE_PROPERTY(QVector<QString>, InitCodes)
-    void addInitCode(const QString &initCode)
+    SIMPL_INSTANCE_PROPERTY(MapperType, InitCodes)
+    void addInitCode(const QString &className, const QString &initCode)
     {
-      m_InitCodes.push_back(initCode);
+      m_InitCodes[className] = initCode;
     }
     void clearInitCodes() { m_InitCodes.clear(); }
     
@@ -99,17 +90,63 @@ class PythonBindingsModule
      */
     void addDependency(QString superClassName, QString className)
     {
+      //qDebug() << "SuperClassName: " << superClassName << "  ClassName: " << className;
+      bool superClassAdded = false;
+      bool classNameAdded = false;
       
-      if(m_name_value_map.find(superClassName) == m_name_value_map.end())
+      for(auto object : m_ClassVector)
       {
-        m_name_value_map[superClassName] =  ::s_SeedInt++;
+        if(object->objectName() == superClassName)
+        {
+          QObject* child = new QObject(object);
+          child->setObjectName(className);
+          superClassAdded = true;
+          classNameAdded = true;
+          break;
+        }
+        // First try to find the superclass
+        if(!superClassName.isEmpty())
+        {
+          QObject* superchild = object->findChild<QObject*>(superClassName);
+          if(superchild)
+          {
+            QObject* child = new QObject(superchild);
+            child->setObjectName(className);
+            superClassAdded = true;
+            classNameAdded = true;
+            break;
+          }
+        }
+        else // The className is alread registered as a superclass or top level class.
+        {
+          if(className == object->objectName())
+          {
+            superClassAdded = true;
+            classNameAdded = true;
+            break;
+          }
+        }
       }
-      if(m_name_value_map.find(className) == m_name_value_map.end())
+      
+      if(!superClassAdded && !superClassName.isEmpty())
       {
-        m_name_value_map[className] =  ::s_SeedInt++;
-      }     
-      Edge e(m_name_value_map[superClassName], m_name_value_map[className]);
-      m_used_by.push_back(e);
+        QObject* object = new QObject(nullptr);
+        object->setObjectName(superClassName);
+        m_ClassVector.push_back(object);
+        
+        QObject* obj = new QObject(object);
+        obj->setObjectName(className);
+        superClassAdded = true;
+        classNameAdded = true;
+      }
+      
+      if(!classNameAdded)
+      {
+        QObject* obj = new QObject(nullptr);
+        obj->setObjectName(className);
+        m_ClassVector.push_back(obj);
+      }
+      
     }
     
     /**
@@ -147,14 +184,8 @@ class PythonBindingsModule
       }
     }
     
-    
     void generateModuleFile(const QString &outputPath)
     {
-      //      QFileInfo fi(outputPath);
-      //      QString subPath = fi.absolutePath();
-      //      subPath = subPath.replace(m_SourceDir.absolutePath(), ""); // Remove the system dependent file path
-      //      subPath = subPath.remove(0,1); //Remove the front / character
-      
       // Create the Top part of the file from a template file
       QFile source(SIMPL::PyBind11::GetSIMPLPyBind11_TemplatesDir() + "/ModuleCode_Template.cpp");
       source.open(QFile::ReadOnly);
@@ -164,35 +195,77 @@ class PythonBindingsModule
       QString code;
       QTextStream out(&code);
       out << "/* These are all the pybind11 headers for each for each of the exported classes */\n";
-      for(auto header : m_Headers)
+      
+      for(auto object : m_ClassVector)
       {
-        out << "#include \"" << header << "\"\n";
+        dumpRecursiveIncludeList(0, object, out);
       }
-      out << "\n";
       
       headerTemplate = headerTemplate.replace(HEADER_PATH, code);
       headerTemplate = headerTemplate.replace(LIB_NAME, m_LibName);
       
       code.clear();
       out << "/* These are all the pybind11 instantiations for each of the exported classes */\n";
-      for(auto initCode : m_InitCodes)
+      for(auto object : m_ClassVector)
       {
-        out << "  " << initCode << "\n";
+        out << "\n";
+        dumpRecursiveInitCode(0, object, out);
       }
       out << "\n";
       headerTemplate = headerTemplate.replace(MODULE_INIT_CODE, code);
       
-      
-      writeOutput(true, headerTemplate, outputPath);
-      
+      writeOutput(true, headerTemplate, outputPath);      
     }
- 
-    using Edge = std::pair<uint32_t, uint32_t>;
     
-   
+  protected:
+    
+    void dumpRecursiveIncludeList(int level, const QObject *object, QTextStream &out)
+    {
+      if (object) {
+        QByteArray buf;
+        buf.fill(' ', level / 2 * 8);
+        if (level % 2)
+          buf += "    ";
+        QString name = object->objectName();
+        QString flags = QLatin1String("");
+        QString header = m_Headers[object->objectName()];
+        if(header.isEmpty())
+        {
+          qDebug() << "Header was empty: " << object->objectName();
+        }
+        out << "#include \"" << header << "\"\n";
+        
+        QObjectList children = object->children();
+        if (!children.isEmpty()) {
+          for (int i = 0; i < children.size(); ++i)
+            dumpRecursiveIncludeList(level+1, children.at(i), out);
+        }
+      }
+    }  
+    
+    void dumpRecursiveInitCode(int level, const QObject *object, QTextStream &out)
+    {
+      if (object) {
+        QByteArray buf;
+        buf.fill(' ', level / 2 * 8);
+        if (level % 2)
+          buf += "    ";
+        QString name = object->objectName();
+        QString flags = QLatin1String("");
+        QString initCode = m_InitCodes[object->objectName()];
+        
+        out << "  " << initCode << "\n";
+        QObjectList children = object->children();
+        if (!children.isEmpty()) {
+          out << "\n";
+          for (int i = 0; i < children.size(); ++i)
+            dumpRecursiveInitCode(level+1, children.at(i), out);
+        }
+      }
+    } 
+    
   private:
-    std::vector<Edge> m_used_by;
-    std::map<QString, int32_t> m_name_value_map;
+    std::vector<QObject*> m_ClassVector;
     
 };
 
@@ -274,7 +347,7 @@ class PythonBindingClass : public QObject
           init << "pybind11_init_" << getLibName() << "_" << getClassName() << "(mod);";
         }
         
-        m_Module->addInitCode(initCode);
+        m_Module->addInitCode(getClassName(), initCode);
       }
     }
     
@@ -388,7 +461,7 @@ class PythonBindingClass : public QObject
         pybind11HeaderPath = pybind11HeaderPath.replace(m_CharsToStrip, "");
       }
       
-      m_Module->addHeader(pybind11HeaderPath);
+      m_Module->addHeader(getClassName(), pybind11HeaderPath);
       m_Module->addDependency(getSuperClass(), getClassName());
       
       return headerTemplate;
@@ -438,6 +511,16 @@ class PythonBindingClass : public QObject
       
       constructors << TAB << ".def(py::init<" << getClassName() << ">())" << NEWLINE_SIMPL;
       constructors << TAB << ".def(py::init<" << getClassName() << " const &>())" << NEWLINE_SIMPL;
+      
+      QString pybind11HeaderPath = QString("%1/pybind11/%2_PY11.h").arg(subPath).arg(getClassName());
+      if(!m_CharsToStrip.isEmpty())
+      {
+        pybind11HeaderPath = pybind11HeaderPath.replace(m_CharsToStrip, "");
+      }
+      m_Module->addHeader(getClassName(), pybind11HeaderPath);
+      m_Module->addDependency(getSuperClass(), getClassName());
+
+
       return code;
     }
     
@@ -712,7 +795,7 @@ int main(int argc, char* argv[])
   QCoreApplication::setOrganizationName("BlueQuartz Software");
   QCoreApplication::setOrganizationDomain("bluequartz.net");
   QCoreApplication::setApplicationName("GeneratePythonBindings");
-  
+
   if(argc != 4)
   {
     std::cout << "GeneratePythonBindings needs 2 arguments:" << std::endl;

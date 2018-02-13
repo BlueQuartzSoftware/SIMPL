@@ -48,6 +48,7 @@
 class SIMPLib_EXPORT CreateAttributeMatrix : public AbstractFilter
 {
     Q_OBJECT
+    PYB11_CREATE_BINDINGS(CreateAttributeMatrix SUPERCLASS AbstractFilter)
 
   public:
     SIMPL_SHARED_POINTERS(CreateAttributeMatrix)

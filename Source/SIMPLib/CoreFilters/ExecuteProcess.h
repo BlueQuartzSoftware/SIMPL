@@ -53,6 +53,7 @@ class QProcess;
 class SIMPLib_EXPORT ExecuteProcess : public AbstractFilter
 {
   Q_OBJECT
+    PYB11_CREATE_BINDINGS(ExecuteProcess SUPERCLASS AbstractFilter)
 
   public:
     SIMPL_SHARED_POINTERS(ExecuteProcess)

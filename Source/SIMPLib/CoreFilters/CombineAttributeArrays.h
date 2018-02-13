@@ -46,6 +46,7 @@
 class SIMPLib_EXPORT CombineAttributeArrays : public AbstractFilter
 {
   Q_OBJECT
+    PYB11_CREATE_BINDINGS(CombineAttributeArrays SUPERCLASS AbstractFilter)
 
   public:
     SIMPL_SHARED_POINTERS(CombineAttributeArrays)

@@ -47,6 +47,8 @@
 class SIMPLib_EXPORT CombineAttributeMatrices : public AbstractFilter
 {
     Q_OBJECT
+        PYB11_CREATE_BINDINGS(CombineAttributeMatrices SUPERCLASS AbstractFilter)
+
   public:
     SIMPL_SHARED_POINTERS(CombineAttributeMatrices)
     SIMPL_STATIC_NEW_MACRO(CombineAttributeMatrices)

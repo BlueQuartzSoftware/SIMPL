@@ -47,6 +47,8 @@
 class SIMPLib_EXPORT EmptyFilter : public AbstractFilter
 {
     Q_OBJECT
+    PYB11_CREATE_BINDINGS(EmptyFilter SUPERCLASS AbstractFilter)
+
   public:
     SIMPL_SHARED_POINTERS(EmptyFilter)
     SIMPL_STATIC_NEW_MACRO(EmptyFilter)

@@ -47,6 +47,8 @@
 class SIMPLib_EXPORT ConditionalSetValue : public AbstractFilter
 {
     Q_OBJECT
+    PYB11_CREATE_BINDINGS(ConditionalSetValue SUPERCLASS AbstractFilter)
+
   public:
 
     SIMPL_SHARED_POINTERS(ConditionalSetValue)

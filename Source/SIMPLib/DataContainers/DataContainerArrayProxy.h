@@ -56,7 +56,7 @@ class SIMPLib_EXPORT DataContainerArrayProxy
 {
   
   PYB11_CREATE_BINDINGS(DataContainerArrayProxy)
-    
+
   public:
 
     /**

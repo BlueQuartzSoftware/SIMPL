@@ -98,7 +98,7 @@ template <typename T> using PySharedPtrClass = py::class_<T, std::shared_ptr<T>>
  *
  * We should figure out how to auto generate this section if possible.
  */
-PYBIND11_MODULE(SIMPLPy, m)
+PYBIND11_MODULE(@LIB_NAME@Py, m)
 {
   py::module mod = m.def_submodule("@LIB_NAME@Py", "Python wrapping for @LIB_NAME@");
 

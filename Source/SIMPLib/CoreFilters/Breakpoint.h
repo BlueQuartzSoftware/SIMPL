@@ -48,6 +48,7 @@
 class SIMPLib_EXPORT Breakpoint : public AbstractFilter
 {
   Q_OBJECT
+    PYB11_CREATE_BINDINGS(Breakpoint SUPERCLASS AbstractFilter)
 
   public:
     SIMPL_SHARED_POINTERS(Breakpoint)

@@ -52,7 +52,9 @@
 class SIMPLib_EXPORT ArrayCalculator : public AbstractFilter
 {
     Q_OBJECT
-
+    PYB11_CREATE_BINDINGS(ArrayCalculator SUPERCLASS AbstractFilter)
+    
+    
   public:
     enum AngleUnits
     {

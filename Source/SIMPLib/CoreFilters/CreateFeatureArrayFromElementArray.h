@@ -47,6 +47,8 @@
 class SIMPLib_EXPORT CreateFeatureArrayFromElementArray : public AbstractFilter
 {
     Q_OBJECT
+    PYB11_CREATE_BINDINGS(CreateFeatureArrayFromElementArray SUPERCLASS AbstractFilter)
+
   public:
     SIMPL_SHARED_POINTERS(CreateFeatureArrayFromElementArray)
     SIMPL_STATIC_NEW_MACRO(CreateFeatureArrayFromElementArray)

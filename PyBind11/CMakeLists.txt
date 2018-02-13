@@ -46,32 +46,34 @@ add_custom_target(SIMPLCreatePythonBindings ALL
       COMMENT "Creating Python Bindings for SIMPL"
     )
 
+
 # --------------------------------------------------------------------------
 # Find the Pybind11 installation
 set(PYBIND11_PYTHON_VERSION "3.6")
 find_package(PyBind11)
-if(0)
-# --------------------------------------------------------------------------
-# Now compile the Python module
-pybind11_add_module(SIMPLPy ${SIMPLProj_SOURCE_DIR}/pybind11/SIMPLib_Pybindings.cxx)
-set_source_files_properties(${SIMPLProj_SOURCE_DIR}/pybind11/SIMPLib_Pybindings.cxx
-                            PROPERTIES GENERATED TRUE
-                                       SKIP_AUTOMOC ON)
-set_target_properties(SIMPLPy PROPERTIES LINKER_LANGUAGE CXX)
-target_include_directories(SIMPLPy PUBLIC
-  #$<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}>
-  $<BUILD_INTERFACE:${SIMPLib_SOURCE_DIR}
-  )
-target_link_libraries(SIMPLPy LINK_PUBLIC SIMPLib LINK_PRIVATE pybind11::module)
-target_compile_features(SIMPLPy PRIVATE cxx_local_type_template_args)
-set_target_properties(SIMPLPy PROPERTIES PREFIX "${PYTHON_MODULE_PREFIX}"
-                                         SUFFIX "${PYTHON_MODULE_EXTENSION}"
-                                         LIBRARY_OUTPUT_DIRECTORY ${CMAKE_LIBRARY_OUTPUT_DIRECTORY}/python
-                                         )
-add_dependencies(SIMPLPy SIMPLCreatePythonBindings)                                         
 
-                                         
-install (TARGETS SIMPLPy 
-          DESTINATION ${CMAKE_INSTALL_PREFIX}/lib/python${PYTHON_VERSION_MAJOR}.${PYTHON_VERSION_MINOR}/site-packages)
+if(1)
+  # --------------------------------------------------------------------------
+  # Now compile the Python module
+  pybind11_add_module(SIMPLibPy ${SIMPLProj_SOURCE_DIR}/Source/SIMPLib/pybind11/SIMPLib_Pybindings.cxx)
+  set_source_files_properties(${SIMPLProj_SOURCE_DIR}/Source/SIMPLib/pybind11/SIMPLib_Pybindings.cxx
+                              PROPERTIES GENERATED TRUE
+                                         SKIP_AUTOMOC ON)
+  set_target_properties(SIMPLibPy PROPERTIES LINKER_LANGUAGE CXX)
+  target_include_directories(SIMPLibPy PUBLIC
+    #$<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}>
+    $<BUILD_INTERFACE:${SIMPLib_SOURCE_DIR}
+    )
+  target_link_libraries(SIMPLibPy LINK_PUBLIC SIMPLib LINK_PRIVATE pybind11::module)
+  target_compile_features(SIMPLibPy PRIVATE cxx_local_type_template_args)
+  set_target_properties(SIMPLibPy PROPERTIES PREFIX "${PYTHON_MODULE_PREFIX}"
+                                           SUFFIX "${PYTHON_MODULE_EXTENSION}"
+                                           LIBRARY_OUTPUT_DIRECTORY ${CMAKE_LIBRARY_OUTPUT_DIRECTORY}/python
+                                           )
+  add_dependencies(SIMPLibPy SIMPLCreatePythonBindings)                                         
+  
+                                           
+  install (TARGETS SIMPLibPy 
+            DESTINATION ${CMAKE_INSTALL_PREFIX}/lib/python${PYTHON_VERSION_MAJOR}.${PYTHON_VERSION_MINOR}/site-packages)
 
 endif()

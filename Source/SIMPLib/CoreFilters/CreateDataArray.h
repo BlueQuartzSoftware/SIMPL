@@ -48,6 +48,8 @@
 class SIMPLib_EXPORT CreateDataArray : public AbstractFilter
 {
     Q_OBJECT
+    PYB11_CREATE_BINDINGS(CreateDataArray SUPERCLASS AbstractFilter)
+
   public:
     SIMPL_SHARED_POINTERS(CreateDataArray)
     SIMPL_STATIC_NEW_MACRO(CreateDataArray)

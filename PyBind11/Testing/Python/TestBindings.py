@@ -2,9 +2,9 @@
 
 import time
 
-from SIMPLPy import *
+from SIMPLibPy import *
 
-filter = SIMPLPy.AbstractFilter.New()
+filter = SIMPLibPy.AbstractFilter.New()
 
 groupName = filter.getGroupName()
 print("groupName: %s " % groupName)
@@ -37,15 +37,15 @@ print("ErrorCondition: %s " % e)
 
 #-------------------------------------
 err = 0
-#proxyRequirements = SIMPLPy.SIMPLH5DataReaderRequirements()
-#simplH5Reader = SIMPLPy.SIMPLH5DataReader()
+#proxyRequirements = SIMPLibPy.SIMPLH5DataReaderRequirements()
+#simplH5Reader = SIMPLibPy.SIMPLH5DataReader()
 #simplH5Reader.openFile("/Users/Shared/DREAM3D_SDK/DREAM3D_Data/Data/CubicSingleEquiaxed.dream3d")
 #dataContainerProxy = simplH5Reader.readDataContainerArrayStructure(proxyRequirements, err)
 #simplH5Reader.closeFile()
 
 
-inputPath = "/Users/mjackson/Workspace/DREAM3D-Build/Debug/Bin/Data/Output/SmallIN100Mesh_GBCD.dream3d"
-reader = SIMPLPy.DataContainerReader.New()
+inputPath = "/Users/mjackson/DREAM3D-Dev/DREAM3D-Build/Debug/Bin/Data/Output/SmallIN100.dream3d"
+reader = SIMPLibPy.DataContainerReader.New()
 reader.setInputFile(inputPath)
 reader.setOverwriteExistingDataContainers(True)
 # This must be called to generate a default DataContainerArrayProxy object from the file structure
@@ -60,7 +60,7 @@ print("filterVersion: %s " % reader.getFilterVersion())
 print("compiledLibraryName: %s " % reader.getCompiledLibraryName())
 
 
-writer = SIMPLPy.DataContainerWriter.New()
+writer = SIMPLibPy.DataContainerWriter.New()
 writer.setOutputFile("/tmp/SmallIN100Mesh_GBCD.dream3d")
 print("humanLabel: %s " % writer.getHumanLabel())
 print("groupName: %s " % writer.getGroupName())
@@ -70,7 +70,7 @@ print("compiledLibraryName: %s " % writer.getCompiledLibraryName())
 
 
 
-pipeline = SIMPLPy.FilterPipeline.New()
+pipeline = SIMPLibPy.FilterPipeline.New()
 pipeline.setName("New Pipeline")
 print("Pipeline Name: %s " % pipeline.getName())
 
@@ -90,10 +90,10 @@ pipeline.popFront()
 filterCount = pipeline.size()
 print("Filter Count: %d" % filterCount)
 
-pipeline = SIMPLPy.FilterPipeline.New()
+pipeline = SIMPLibPy.FilterPipeline.New()
 print("Pipeline to Null")
-reader = SIMPLPy.AbstractFilter.New();
-writer = SIMPLPy.AbstractFilter.New();
+reader = SIMPLibPy.AbstractFilter.New();
+writer = SIMPLibPy.AbstractFilter.New();
 print("Filter to null")
 
 
