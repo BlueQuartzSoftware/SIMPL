@@ -51,11 +51,6 @@
 #include "ui_IssuesWidget.h"
 
 
-#if defined(SIMPL_MKDOCS_DOCUMENTATION)
-#define SIMPL_DISCOUNT_DOCUMENTATION
-#endif
-
-
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
@@ -246,8 +241,8 @@ QLabel* IssuesWidget::createHyperlinkLabel(PipelineMessage msg)
   
   QString adjustedClassName;
 
-#ifdef SIMPL_DOXYGEN_DOCUMENTATION
-  adjustedClassName = filterClassName.toLower();
+#ifdef SIMPL_MKDOCS_DOCUMENTATION
+  adjustedClassName = filterClassName;
 #endif
 
 #ifdef SIMPL_DISCOUNT_DOCUMENTATION
