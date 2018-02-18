@@ -47,7 +47,7 @@
 /**
  * @brief The SVUserManualDialog class
  */
-class SVUserManualDialog : public QDialog, public Ui::SVUserManualDialog
+class SVWidgetsLib_EXPORT SVUserManualDialog : public QDialog, public Ui::SVUserManualDialog
 {
   Q_OBJECT
 
