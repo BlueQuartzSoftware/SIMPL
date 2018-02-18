@@ -116,6 +116,18 @@ QString QtSDocServer::GetHelpRootDir()
       helpDir.cdUp();
     }
   }
+#elif defined(Q_OS_WIN)
+  // This is where the help _should_ be for either a deployed app or when NOT using VS IDE to run/build
+  helpDir = QDir(appPath + "/Help/" + QApplication::applicationName());
+  if (!helpDir.exists())
+  {
+    // Try one level up as we may be running from a Visual Studio Instance
+    helpDir = QDir(appPath);
+    helpDir.cdUp();
+    helpDir.cd("Help");
+    helpDir.cd(QApplication::applicationName());
+  }
+
 #endif
   return helpDir.absolutePath();
 }
