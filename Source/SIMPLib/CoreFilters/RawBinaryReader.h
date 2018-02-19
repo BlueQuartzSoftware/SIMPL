@@ -46,6 +46,8 @@
 class SIMPLib_EXPORT RawBinaryReader : public AbstractFilter
 {
     Q_OBJECT
+    PYB11_CREATE_BINDINGS(RawBinaryReader SUPERCLASS AbstractFilter)
+
   public:
     SIMPL_SHARED_POINTERS(RawBinaryReader)
     SIMPL_STATIC_NEW_MACRO(RawBinaryReader)

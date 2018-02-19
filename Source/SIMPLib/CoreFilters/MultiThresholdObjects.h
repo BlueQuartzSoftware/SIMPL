@@ -45,9 +45,11 @@
 /**
  * @brief The MultiThresholdObjects class. See [Filter documentation](@ref multithresholdobjects) for details.
  */
-class MultiThresholdObjects : public AbstractFilter
+class SIMPLib_EXPORT MultiThresholdObjects : public AbstractFilter
 {
     Q_OBJECT
+    PYB11_CREATE_BINDINGS(MultiThresholdObjects SUPERCLASS AbstractFilter)
+
   public:
     SIMPL_SHARED_POINTERS(MultiThresholdObjects)
     SIMPL_STATIC_NEW_MACRO(MultiThresholdObjects)

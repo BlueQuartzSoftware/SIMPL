@@ -14,10 +14,11 @@
 /**
  * @brief The ReadASCIIData class. See [Filter documentation](@ref ReadASCIIData) for details.
  */
-class ReadASCIIData : public AbstractFilter
+class SIMPLib_EXPORT ReadASCIIData : public AbstractFilter
 {
   Q_OBJECT
-
+  PYB11_CREATE_BINDINGS(ReadASCIIData SUPERCLASS AbstractFilter)
+  
   public:
     SIMPL_SHARED_POINTERS(ReadASCIIData)
     SIMPL_STATIC_NEW_MACRO(ReadASCIIData)

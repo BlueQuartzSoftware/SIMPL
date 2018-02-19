@@ -48,6 +48,8 @@
 class SIMPLib_EXPORT RemoveArrays : public AbstractFilter
 {
     Q_OBJECT
+    PYB11_CREATE_BINDINGS(RemoveArrays SUPERCLASS AbstractFilter)
+
   public:
     SIMPL_SHARED_POINTERS(RemoveArrays)
     SIMPL_STATIC_NEW_MACRO(RemoveArrays)

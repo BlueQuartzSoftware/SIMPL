@@ -47,6 +47,8 @@
 class SIMPLib_EXPORT LinkFeatureMapToElementArray : public AbstractFilter
 {
     Q_OBJECT
+    PYB11_CREATE_BINDINGS(LinkFeatureMapToElementArray SUPERCLASS AbstractFilter)
+
   public:
     SIMPL_SHARED_POINTERS(LinkFeatureMapToElementArray)
     SIMPL_STATIC_NEW_MACRO(LinkFeatureMapToElementArray)

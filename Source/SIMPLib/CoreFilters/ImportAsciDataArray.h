@@ -52,6 +52,7 @@ class SIMPLib_EXPORT ImportAsciDataArray : public AbstractFilter
 {
     Q_OBJECT
     Q_DECLARE_PRIVATE(ImportAsciDataArray)
+    PYB11_CREATE_BINDINGS(ImportAsciDataArray SUPERCLASS AbstractFilter)
 
   public:
     SIMPL_SHARED_POINTERS(ImportAsciDataArray)

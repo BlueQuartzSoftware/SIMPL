@@ -44,6 +44,7 @@
 class SIMPLib_EXPORT PipelineAnnotation : public AbstractFilter
 {
   Q_OBJECT
+  PYB11_CREATE_BINDINGS(PipelineAnnotation SUPERCLASS AbstractFilter)
 
 public:
   SIMPL_SHARED_POINTERS(PipelineAnnotation)

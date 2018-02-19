@@ -49,6 +49,8 @@
 class SIMPLib_EXPORT RequiredZThickness : public AbstractDecisionFilter
 {
     Q_OBJECT
+    PYB11_CREATE_BINDINGS(RequiredZThickness SUPERCLASS AbstractFilter)
+
   public:
     SIMPL_SHARED_POINTERS(RequiredZThickness)
     SIMPL_STATIC_NEW_MACRO(RequiredZThickness)

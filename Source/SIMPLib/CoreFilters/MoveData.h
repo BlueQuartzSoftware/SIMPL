@@ -47,6 +47,8 @@
 class SIMPLib_EXPORT MoveData : public AbstractFilter
 {
     Q_OBJECT
+    PYB11_CREATE_BINDINGS(MoveData SUPERCLASS AbstractFilter)
+
   public:
     SIMPL_SHARED_POINTERS(MoveData)
     SIMPL_STATIC_NEW_MACRO(MoveData)

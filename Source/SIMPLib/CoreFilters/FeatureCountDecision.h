@@ -49,6 +49,8 @@
 class SIMPLib_EXPORT FeatureCountDecision : public AbstractDecisionFilter
 {
     Q_OBJECT
+    PYB11_CREATE_BINDINGS(FeatureCountDecision SUPERCLASS AbstractFilter)
+
   public:
     SIMPL_SHARED_POINTERS(FeatureCountDecision)
     SIMPL_STATIC_NEW_MACRO(FeatureCountDecision)

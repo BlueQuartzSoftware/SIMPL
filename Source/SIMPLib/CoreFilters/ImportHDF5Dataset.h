@@ -43,6 +43,7 @@
 class SIMPLib_EXPORT ImportHDF5Dataset : public AbstractFilter
 {
   Q_OBJECT
+  PYB11_CREATE_BINDINGS(ImportHDF5Dataset SUPERCLASS AbstractFilter)
 
 public:
   SIMPL_SHARED_POINTERS(ImportHDF5Dataset)

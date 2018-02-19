@@ -53,9 +53,11 @@
  * @date
  * @version 1.0
  */
-class WriteTriangleGeometry : public AbstractFilter
+class SIMPLib_EXPORT WriteTriangleGeometry : public AbstractFilter
 {
     Q_OBJECT
+    PYB11_CREATE_BINDINGS(WriteTriangleGeometry SUPERCLASS AbstractFilter)
+
   public:
     SIMPL_SHARED_POINTERS(WriteTriangleGeometry)
     SIMPL_STATIC_NEW_MACRO(WriteTriangleGeometry)

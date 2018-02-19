@@ -28,14 +28,15 @@ ConvertPathToHeaderCompatible(${SIMPLPyBind11_BINARY_DIR_NORM})
 configure_file( ${SIMPLPyBind11_SOURCE_DIR}/SIMPLPyBind11Config.h.in
                 ${SIMPLPyBind11_BINARY_DIR}/SIMPLPyBind11Config.h)
 
-find_package(Boost)
+#find_package(Boost)
 # --------------------------------------------------------------------------
 # Add an executable that will generate our python bindings
 add_executable(GeneratePythonBindings GeneratePythonBindings.cpp)
 target_include_directories(GeneratePythonBindings 
                           PRIVATE
                             ${SIMPLProj_SOURCE_DIR}/Source
-                            ${Boost_INCLUDE_DIRS})
+                           # ${Boost_INCLUDE_DIRS}
+                            )
 
 target_link_libraries(GeneratePythonBindings Qt5::Core)
 

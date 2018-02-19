@@ -23,3 +23,19 @@ so I turned off the PyBind Testing
 
 We should be setup to do something now.
 
+## Windows Example ##
+
+I downloaded Python 3.6 x64 from python.org and installed into 
+
+    C:/Applications/Python/Python36_64
+
+I would *not* suggest adding python to the system path for all users. This could potentially mess up other Python installations
+
+    cmake -G Ninja -DCMAKE_INSTALL_PREFIX=C:/DREAM3D_SDK/pybind11 -DPYTHON_EXECUTABLE=C:/Applications/Python/Python36_64/python.exe -DPYBIND11_TEST=OFF ../
+
+    ninja install
+
+Don't forget to update the DREAM3D_SDK.cmake file or DREAM3D_SDK_Extra.cmake file with the following:
+
+    set(PyBind11_DIR "C:/DREAM3D_SDK/pybind11/share/cmake/pybind11")
+

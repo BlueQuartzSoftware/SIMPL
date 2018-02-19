@@ -104,14 +104,4 @@ PYBIND11_MODULE(@LIB_NAME@Py, m)
 
   @MODULE_INIT_CODE@
 
-/*
-  PySharedPtrClass<AbstractFilter> SIMPL_AbstractFilter= pybind11_init_SIMPLib_AbstractFilter(simpl);
-  PySharedPtrClass<FilterPipeline> SIMPL_FilterPipeline = pybind11_init_SIMPLib_FilterPipeline(simpl);
-  PySharedPtrClass<DataContainerArray> SIMPL_DataContainerArray = pybind11_init_SIMPLib_DataContainerArray(simpl);
-  PySharedPtrClass<DataContainerReader> SIMPL_DataContainerReader = pybind11_init_SIMPLib_DataContainerReader(simpl, SIMPL_AbstractFilter);
-  PySharedPtrClass<DataContainerReader> SIMPL_DataContainerWriter = pybind11_init_SIMPLib_DataContainerWriter(simpl, SIMPL_AbstractFilter);
-  PySharedPtrClass<DataContainerArrayProxy> SIMPL_DataContainerArrayProxy = pybind11_init_SIMPLib_DataContainerArrayProxy(simpl);
-*/
-
-
 }

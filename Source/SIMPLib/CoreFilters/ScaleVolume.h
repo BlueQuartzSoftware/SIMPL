@@ -48,6 +48,8 @@
 class SIMPLib_EXPORT ScaleVolume : public AbstractFilter
 {
     Q_OBJECT
+    PYB11_CREATE_BINDINGS(ScaleVolume SUPERCLASS AbstractFilter)
+
   public:
     SIMPL_SHARED_POINTERS(ScaleVolume)
     SIMPL_STATIC_NEW_MACRO(ScaleVolume)

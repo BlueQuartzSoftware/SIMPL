@@ -18,11 +18,12 @@
 class SIMPLib_EXPORT GenerateColorTable : public AbstractFilter
 {
   Q_OBJECT
+  PYB11_CREATE_BINDINGS(GenerateColorTable SUPERCLASS AbstractFilter)
 
   public:
     SIMPL_SHARED_POINTERS(GenerateColorTable)
     SIMPL_STATIC_NEW_MACRO(GenerateColorTable)
-     SIMPL_TYPE_MACRO_SUPER_OVERRIDE(GenerateColorTable, AbstractFilter)
+    SIMPL_TYPE_MACRO_SUPER_OVERRIDE(GenerateColorTable, AbstractFilter)
 
     virtual ~GenerateColorTable();
 

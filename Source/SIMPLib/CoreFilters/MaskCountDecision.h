@@ -49,6 +49,8 @@
 class SIMPLib_EXPORT MaskCountDecision : public AbstractDecisionFilter
 {
     Q_OBJECT
+    PYB11_CREATE_BINDINGS(MaskCountDecision SUPERCLASS AbstractFilter)
+
   public:
     SIMPL_SHARED_POINTERS(MaskCountDecision)
     SIMPL_STATIC_NEW_MACRO(MaskCountDecision)

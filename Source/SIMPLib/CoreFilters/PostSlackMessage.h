@@ -45,27 +45,28 @@ class QNetworkReply;
 /**
  * @brief The PostSlackMessage class. See [Filter documentation](@ref postslackmessage) for details.
  */
-class PostSlackMessage : public AbstractFilter
+class SIMPLib_EXPORT PostSlackMessage : public AbstractFilter
 {
   Q_OBJECT
+  PYB11_CREATE_BINDINGS(PostSlackMessage SUPERCLASS AbstractFilter)
 
   public:
     SIMPL_SHARED_POINTERS(PostSlackMessage)
     SIMPL_STATIC_NEW_MACRO(PostSlackMessage)
-     SIMPL_TYPE_MACRO_SUPER_OVERRIDE(PostSlackMessage, AbstractFilter)
+    SIMPL_TYPE_MACRO_SUPER_OVERRIDE(PostSlackMessage, AbstractFilter)
 
     virtual ~PostSlackMessage();
 
-    SIMPL_INSTANCE_STRING_PROPERTY(SlackUser)
+    SIMPL_FILTER_PARAMETER(QString, SlackUser)
     Q_PROPERTY(QString SlackUser READ getSlackUser WRITE setSlackUser)
 
-    SIMPL_INSTANCE_STRING_PROPERTY(SlackUrl)
+    SIMPL_FILTER_PARAMETER(QString, SlackUrl)
     Q_PROPERTY(QString SlackUrl READ getSlackUrl WRITE setSlackUrl)
 
-    SIMPL_INSTANCE_STRING_PROPERTY(SlackMessage)
+    SIMPL_FILTER_PARAMETER(QString, SlackMessage)
     Q_PROPERTY(QString SlackMessage READ getSlackMessage WRITE setSlackMessage)
 
-    SIMPL_INSTANCE_PROPERTY(bool, WarningsAsError)
+    SIMPL_FILTER_PARAMETER(bool, WarningsAsError)
     Q_PROPERTY(bool WarningsAsError READ getWarningsAsError WRITE setWarningsAsError)
 
     /**

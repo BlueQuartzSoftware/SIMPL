@@ -47,6 +47,8 @@
 class SIMPLib_EXPORT RemoveComponentFromArray : public AbstractFilter
 {
     Q_OBJECT
+    PYB11_CREATE_BINDINGS(RemoveComponentFromArray SUPERCLASS AbstractFilter)
+
   public:
     SIMPL_SHARED_POINTERS(RemoveComponentFromArray)
     SIMPL_STATIC_NEW_MACRO(RemoveComponentFromArray)

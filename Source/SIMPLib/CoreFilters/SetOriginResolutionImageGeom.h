@@ -48,6 +48,8 @@
 class SIMPLib_EXPORT SetOriginResolutionImageGeom : public AbstractFilter
 {
     Q_OBJECT
+    PYB11_CREATE_BINDINGS(SetOriginResolutionImageGeom SUPERCLASS AbstractFilter)
+
   public:
     SIMPL_SHARED_POINTERS(SetOriginResolutionImageGeom)
     SIMPL_STATIC_NEW_MACRO(SetOriginResolutionImageGeom)

@@ -44,13 +44,15 @@
 /**
  * @brief The FeatureDataCSVWriter class. See [Filter documentation](@ref featuredatacsvwriter) for details.
  */
-class FeatureDataCSVWriter : public AbstractFilter
+class  SIMPLib_EXPORT FeatureDataCSVWriter : public AbstractFilter
 {
     Q_OBJECT
+    PYB11_CREATE_BINDINGS(FeatureDataCSVWriter SUPERCLASS AbstractFilter)
+    
   public:
     SIMPL_SHARED_POINTERS(FeatureDataCSVWriter)
     SIMPL_STATIC_NEW_MACRO(FeatureDataCSVWriter)
-     SIMPL_TYPE_MACRO_SUPER_OVERRIDE(FeatureDataCSVWriter, AbstractFilter)
+    SIMPL_TYPE_MACRO_SUPER_OVERRIDE(FeatureDataCSVWriter, AbstractFilter)
 
     virtual ~FeatureDataCSVWriter();
 

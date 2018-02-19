@@ -47,6 +47,8 @@
 class SIMPLib_EXPORT WriteASCIIData : public AbstractFilter
 {
     Q_OBJECT
+    PYB11_CREATE_BINDINGS(WriteASCIIData SUPERCLASS AbstractFilter)
+
   public:
     SIMPL_SHARED_POINTERS(WriteASCIIData)
     SIMPL_STATIC_NEW_MACRO(WriteASCIIData)

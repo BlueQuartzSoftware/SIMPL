@@ -51,6 +51,7 @@
 class SIMPLib_EXPORT FindDerivatives : public AbstractFilter
 {
   Q_OBJECT
+  PYB11_CREATE_BINDINGS(FindDerivatives SUPERCLASS AbstractFilter)
 
   public:
     SIMPL_SHARED_POINTERS(FindDerivatives)

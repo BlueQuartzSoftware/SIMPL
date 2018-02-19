@@ -47,6 +47,8 @@
 class SIMPLib_EXPORT ReplaceValueInArray : public AbstractFilter
 {
     Q_OBJECT
+    PYB11_CREATE_BINDINGS(ReplaceValueInArray SUPERCLASS AbstractFilter)
+
   public:
 
     SIMPL_SHARED_POINTERS(ReplaceValueInArray)

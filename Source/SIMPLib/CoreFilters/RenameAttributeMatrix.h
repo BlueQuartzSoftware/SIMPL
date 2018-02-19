@@ -47,6 +47,8 @@
 class SIMPLib_EXPORT RenameAttributeMatrix : public AbstractFilter
 {
     Q_OBJECT
+    PYB11_CREATE_BINDINGS(RenameAttributeMatrix SUPERCLASS AbstractFilter)
+
   public:
     SIMPL_SHARED_POINTERS(RenameAttributeMatrix)
     SIMPL_STATIC_NEW_MACRO(RenameAttributeMatrix)

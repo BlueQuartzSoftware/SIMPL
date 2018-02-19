@@ -48,6 +48,7 @@
 class SIMPLib_EXPORT FileReader : public AbstractFilter
 {
     Q_OBJECT
+    
   public:
     SIMPL_SHARED_POINTERS(FileReader)
     SIMPL_STATIC_NEW_MACRO(FileReader)
