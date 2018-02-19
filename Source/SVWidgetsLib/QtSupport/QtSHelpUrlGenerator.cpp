@@ -102,7 +102,11 @@ QUrl QtSHelpUrlGenerator::GenerateHTMLUrl(QString htmlName)
       pluginName = "/Filters/" + factory->getCompiledLibraryName();
     }
 
-    QString helpFilePath = QString("/%2%3Filters/%4/index.html").arg(helpDir.absolutePath()).arg(QCoreApplication::instance()->applicationName()).arg(pluginName).arg(htmlName);
+    QString helpFilePath = QString("/%2%3Filters/%4/index.html")
+            .arg(helpDir.absolutePath())
+            .arg(QCoreApplication::instance()->applicationName())
+            .arg(pluginName)
+            .arg(htmlName);
     QFileInfo fi(helpFilePath);
     if(fi.exists() == false)
     {

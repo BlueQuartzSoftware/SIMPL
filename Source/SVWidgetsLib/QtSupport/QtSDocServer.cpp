@@ -127,7 +127,17 @@ QString QtSDocServer::GetHelpRootDir()
     helpDir.cd("Help");
     helpDir.cd(QApplication::applicationName());
   }
-
+#else
+  // This is where the help _should_ be for either a deployed app or when NOT using VS IDE to run/build
+  helpDir = QDir(appPath + "/Help/" + QApplication::applicationName());
+  if (!helpDir.exists())
+  {
+    // Try one level up as we may be running from a Visual Studio Instance
+    helpDir = QDir(appPath);
+    helpDir.cdUp();
+    helpDir.cd("Help");
+    helpDir.cd(QApplication::applicationName());
+  }
 #endif
   return helpDir.absolutePath();
 }
@@ -194,10 +204,6 @@ QUrl QtSDocServer::GenerateHTMLUrl(QString className)
 {
 
   QString s = QString("http://%1:%2").arg(QtSDocServer::GetIPAddress()).arg(QtSDocServer::GetPort());
-
-//#if defined(Q_OS_WIN)
-//  s = s + "/"; // Need the third slash on windows because file paths start with a drive letter
-//#endif
 
 #ifdef SIMPL_USE_MKDOCS
   {
