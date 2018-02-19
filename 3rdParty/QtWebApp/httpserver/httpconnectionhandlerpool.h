@@ -88,6 +88,11 @@ private slots:
 
   /** Received from the clean-up timer.  */
   void cleanup();
+
+private:
+  /** Should we print out all sorts of diagnostics */
+  bool verbose = false;
+
 };
 
 #endif // HTTPCONNECTIONHANDLERPOOL_H
