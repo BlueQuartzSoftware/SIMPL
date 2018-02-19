@@ -49,9 +49,7 @@
 #ifdef SIMPL_USE_MKDOCS
 #define URL_GENERATOR QtSDocServer
 #include "SVWidgetsLib/QtSupport/QtSDocServer.h"
-#endif
-
-#ifdef SIMPL_USE_DISCOUNT
+#else
 #define URL_GENERATOR QtSHelpUrlGenerator
 #include "SVWidgetsLib/QtSupport/QtSHelpUrlGenerator.h"
 #endif
