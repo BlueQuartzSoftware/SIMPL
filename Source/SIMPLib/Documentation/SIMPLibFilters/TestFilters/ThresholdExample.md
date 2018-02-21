@@ -1,4 +1,4 @@
-Threshold Example {#thresholdexample}
+Threshold Example 
 =====
 
 ## Group (Subgroup) ##

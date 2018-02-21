@@ -47,7 +47,7 @@
 #include "SIMPLib/Plugin/ISIMPLibPlugin.h"
 #include "SIMPLib/SIMPLib.h"
 
-#ifdef SIMPLib_BUILD_TEST_FILTERS
+#ifdef SIMPL_BUILD_TEST_FILTERS
 #include "SIMPLib/TestFilters/ArraySelectionExample.h"
 #include "SIMPLib/TestFilters/GenericExample.h"
 #include "SIMPLib/TestFilters/MakeDataContainer.h"
@@ -108,7 +108,7 @@ public:
   void TestPipelinePushPop()
   {
 
-#ifdef SIMPLib_BUILD_TEST_FILTERS
+#ifdef SIMPL_BUILD_TEST_FILTERS
 
     // Create our Pipeline object
     FilterPipeline::Pointer pipeline = FilterPipeline::New();

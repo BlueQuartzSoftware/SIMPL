@@ -1,4 +1,4 @@
-Combine Feature/Ensemble Attribute Matrices {#combineattributematrices}
+Combine Feature/Ensemble Attribute Matrices 
 =============
 
 ## Group (Subgroup) ##

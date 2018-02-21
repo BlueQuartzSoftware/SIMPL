@@ -18,6 +18,7 @@ set(SVWidgetsLib_QtSupport_MOC_HDRS
   ${SVWidgetsLib_SOURCE_DIR}/QtSupport/QtSDisclosableGroupBox.h
   ${SVWidgetsLib_SOURCE_DIR}/QtSupport/QtSDistributionTypeWidget.h
   ${SVWidgetsLib_SOURCE_DIR}/QtSupport/QtSDroppableScrollArea.h
+  ${SVWidgetsLib_SOURCE_DIR}/QtSupport/QtSDocServer.h
   ${SVWidgetsLib_SOURCE_DIR}/QtSupport/QtSFSDropLabel.h
   ${SVWidgetsLib_SOURCE_DIR}/QtSupport/QtSFSDropLineEdit.h
   ${SVWidgetsLib_SOURCE_DIR}/QtSupport/QtSFaderWidget.h
@@ -35,6 +36,8 @@ set(SVWidgetsLib_QtSupport_MOC_HDRS
   ${SVWidgetsLib_SOURCE_DIR}/QtSupport/QtSStyles.h
   ${SVWidgetsLib_SOURCE_DIR}/QtSupport/QtSDisclosableGroupBox.h
   ${SVWidgetsLib_SOURCE_DIR}/QtSupport/QtSStringEdit.h
+  
+  ${SVWidgetsLib_SOURCE_DIR}/QtSupport/httpserver/QtSStaticFileController.h
 )
 
 set(SVWidgetsLib_QtSupport_SRCS
@@ -47,6 +50,7 @@ set(SVWidgetsLib_QtSupport_SRCS
   ${SVWidgetsLib_SOURCE_DIR}/QtSupport/QtSDisclosableGroupBox.cpp
   ${SVWidgetsLib_SOURCE_DIR}/QtSupport/QtSDistributionTypeWidget.cpp
   ${SVWidgetsLib_SOURCE_DIR}/QtSupport/QtSDroppableScrollArea.cpp
+  ${SVWidgetsLib_SOURCE_DIR}/QtSupport/QtSDocServer.cpp  
   ${SVWidgetsLib_SOURCE_DIR}/QtSupport/QtSFSDropLabel.cpp
   ${SVWidgetsLib_SOURCE_DIR}/QtSupport/QtSFSDropLineEdit.cpp
   ${SVWidgetsLib_SOURCE_DIR}/QtSupport/QtSFaderWidget.cpp
@@ -65,6 +69,8 @@ set(SVWidgetsLib_QtSupport_SRCS
   ${SVWidgetsLib_SOURCE_DIR}/QtSupport/QtSStyles.cpp
   ${SVWidgetsLib_SOURCE_DIR}/QtSupport/QtSStringEdit.cpp
   ${SVWidgetsLib_SOURCE_DIR}/QtSupport/QtSFileUtils.cpp
+
+  ${SVWidgetsLib_SOURCE_DIR}/QtSupport/httpserver/QtSStaticFileController.cpp
 )
 
 cmp_IDE_SOURCE_PROPERTIES( "SVWidgetsLib" "${SVWidgetsLib_QtSupport_HDRS};${SVWidgetsLib_QtSupport_MOC_HDRS}" "${SVWidgetsLib_QtSupport_SRCS}" "0")
@@ -80,8 +86,8 @@ QT5_ADD_RESOURCES( SVWidgetsLib_QtSupport_Generated_RC_SRCS "${SVWidgetsLib_SOUR
 # --------------------------------------------------------------------
 # and finally this will run moc:
 # QT5_WRAP_CPP( SVWidgetsLib_QtSupport_Generated_MOC_SRCS ${SVWidgetsLib_QtSupport_MOC_HDRS} )
-set_source_files_properties( ${SVWidgetsLib_QtSupport_Generated_MOC_SRCS} PROPERTIES GENERATED TRUE)
-set_source_files_properties( ${SVWidgetsLib_QtSupport_Generated_MOC_SRCS} PROPERTIES HEADER_FILE_ONLY TRUE)
+# set_source_files_properties( ${SVWidgetsLib_QtSupport_Generated_MOC_SRCS} PROPERTIES GENERATED TRUE)
+# set_source_files_properties( ${SVWidgetsLib_QtSupport_Generated_MOC_SRCS} PROPERTIES HEADER_FILE_ONLY TRUE)
 
 
 

@@ -1,4 +1,4 @@
-Rename Attribute Array {#renameattributearray}
+Rename Attribute Array 
 =============
 
 ## Group (Subgroup) ##

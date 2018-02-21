@@ -1,4 +1,4 @@
-Feature Count Decision {#featurecountdecision}
+Feature Count Decision 
 =============
 
 ## Group (Subgroup) ##

@@ -47,7 +47,7 @@ set(SIMPLib_${SUBDIR_NAME}_SRCS
   ${SIMPLib_SOURCE_DIR}/Geometry/VertexGeom.cpp
 )
 
-if(SIMPLib_USE_EIGEN)
+if(SIMPL_USE_EIGEN)
   set(SIMPLib_${SUBDIR_NAME}_HDRS
     ${SIMPLib_${SUBDIR_NAME}_HDRS}
     ${SIMPLib_SOURCE_DIR}/Geometry/DerivativeHelpers.h

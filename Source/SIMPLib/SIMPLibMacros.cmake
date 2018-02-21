@@ -185,12 +185,13 @@ endmacro()
 # Macro ADD_SIMPL_SUPPORT_MOC_HEADER
 macro(ADD_SIMPL_SUPPORT_MOC_HEADER SourceDir filterGroup headerFileName)
   # QT5_WRAP_CPP( _moc_filter_source  ${SourceDir}/${filterGroup}/${headerFileName})
-  set_source_files_properties( ${_moc_filter_source} PROPERTIES GENERATED TRUE)
-  set_source_files_properties( ${_moc_filter_source} PROPERTIES HEADER_FILE_ONLY TRUE)
+  # set_source_files_properties( ${_moc_filter_source} PROPERTIES GENERATED TRUE)
+  # set_source_files_properties( ${_moc_filter_source} PROPERTIES HEADER_FILE_ONLY TRUE)
 
   set(Project_SRCS ${Project_SRCS}
                     ${SourceDir}/${filterGroup}/${headerFileName}
-                    ${_moc_filter_source})
+  #                  ${_moc_filter_source}
+  )
   cmp_IDE_SOURCE_PROPERTIES( "${filterGroup}" "${SourceDir}/${filterGroup}/${headerFileName}" "" "0")
 endmacro()
 

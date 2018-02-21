@@ -35,7 +35,7 @@
 
 #include "ScaleVolume.h"
 
-#ifdef SIMPLib_USE_PARALLEL_ALGORITHMS
+#ifdef SIMPL_USE_PARALLEL_ALGORITHMS
 #include <tbb/blocked_range.h>
 #include <tbb/parallel_for.h>
 #include <tbb/partitioner.h>
@@ -83,7 +83,7 @@ public:
     }
   }
 
-#ifdef SIMPLib_USE_PARALLEL_ALGORITHMS
+#ifdef SIMPL_USE_PARALLEL_ALGORITHMS
   void operator()(const tbb::blocked_range<size_t>& r) const
   {
     generate(r.begin(), r.end());
@@ -205,7 +205,7 @@ void ScaleVolume::updateSurfaceMesh()
   setErrorCondition(0);
   setWarningCondition(0);
 
-#ifdef SIMPLib_USE_PARALLEL_ALGORITHMS
+#ifdef SIMPL_USE_PARALLEL_ALGORITHMS
   tbb::task_scheduler_init init;
   bool doParallel = true;
 #endif
@@ -248,7 +248,7 @@ void ScaleVolume::updateSurfaceMesh()
     }
   }
 
-#ifdef SIMPLib_USE_PARALLEL_ALGORITHMS
+#ifdef SIMPL_USE_PARALLEL_ALGORITHMS
   if(doParallel == true)
   {
     tbb::parallel_for(tbb::blocked_range<size_t>(0, count), ScaleVolumeUpdateVerticesImpl(nodes, min, m_ScaleFactor), tbb::auto_partitioner());

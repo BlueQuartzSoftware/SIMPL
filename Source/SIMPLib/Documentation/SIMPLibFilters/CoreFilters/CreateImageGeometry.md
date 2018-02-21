@@ -1,4 +1,4 @@
-Create Geometry (Image)  {#createimagegeometry}
+Create Geometry (Image)  
 =============
 
 ## Group (Subgroup) ##

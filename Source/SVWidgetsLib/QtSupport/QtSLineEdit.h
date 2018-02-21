@@ -32,10 +32,8 @@
 #ifndef _searchlineedit_h_
 #define _searchlineedit_h_
 
-
-
-#include <QLineEdit>
-#include <QAbstractButton>
+#include <QtWidgets/QAbstractButton>
+#include <QtWidgets/QLineEdit>
 
 #include "SIMPLib/Common/SIMPLibSetGetMacros.h"
 #include "SVWidgetsLib/SVWidgetsLib.h"

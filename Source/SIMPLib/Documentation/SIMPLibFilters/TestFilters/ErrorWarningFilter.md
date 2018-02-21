@@ -1,4 +1,4 @@
-ErrorWarningFilter {#errorwarningfilter}
+ErrorWarningFilter 
 =============
 
 ## Group (Subgroup) ##

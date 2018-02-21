@@ -1,4 +1,4 @@
-Create String Array {#createstringarray}
+Create String Array 
 =============
 
 ## Group (Subgroup) ##

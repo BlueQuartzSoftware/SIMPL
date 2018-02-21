@@ -1,4 +1,4 @@
-Threshold Objects {#multithresholdobjects}
+Threshold Objects 
 =============
 
 ## Group (Subgroup) ##

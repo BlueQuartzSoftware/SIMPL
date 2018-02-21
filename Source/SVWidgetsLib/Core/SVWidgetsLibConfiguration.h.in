@@ -3,8 +3,8 @@
 */
 
 
-#ifndef _SIMPLViewWidgetsLib_H_
-#define _SIMPLViewWidgetsLib_H_
+#ifndef _sv_WidgetsLib_H_
+#define _sv_WidgetsLib_H_
 
 
 /* Define to 1 if EbsdLibCommon was built as a dynamic library */
@@ -30,9 +30,14 @@
 /* Defines the type of Release that is being built */
 #define SIMPLViewProj_RELEASE_TYPE "@SIMPLViewProj_RELEASE_TYPE@"
 
-#cmakedefine SIMPL_DOXYGEN_DOCUMENTATION
+/* Defined if SIMPL uses discount (md->html library) for creating HTML documentation */
+#cmakedefine SIMPL_USE_DISCOUNT
 
-#cmakedefine SIMPL_DISCOUNT_DOCUMENTATION
+/* Defined if SIMPL uses mkdocs (python utility) for creating HTML documentation */
+#cmakedefine SIMPL_USE_MKDOCS
+
+/* Defined if SIMPL QtWebEngine to display help docs or if the local web browser is used instead */
+#cmakedefine SIMPL_USE_QtWebEngine
 
 #if (_MSC_VER >= 1)
 
@@ -46,4 +51,4 @@
 
 #endif
 
-#endif
+#endif /* _sv_WidgetsLib_H_ */

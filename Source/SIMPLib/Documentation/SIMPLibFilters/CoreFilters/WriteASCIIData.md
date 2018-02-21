@@ -1,4 +1,4 @@
-Export ASCII Data {#writeasciidata}
+Export ASCII Data 
 =============
 
 ## Group (Subgroup) ##
@@ -18,7 +18,7 @@ Phases.txt (one component) with 3 tuples/line, comma delimited:
 	1,1,1
 	1,1,1  
 	1,1,1
-	….. 
+	   .. 
 
 EulerAngles.txt (three components) with 3 tuples/line, comma delimited:     
 
@@ -26,7 +26,7 @@ EulerAngles.txt (three components) with 3 tuples/line, comma delimited:
 	0.785398,0,0.785398,0.785398,0,0.785398,0.785398,0,0.785398
 	0.785398,0,0.785398,0.785398,0,0.785398,0.785398,0,0.785398  
 	0.785398,0,0.785398,0.785398,0,0.785398,0.785398,0,0.785398
-	….. 
+	   .. 
 
 EulerAngles.txt (three components) with 1 tuple/line, space delimited:     
 
@@ -34,7 +34,7 @@ EulerAngles.txt (three components) with 1 tuple/line, space delimited:
 	0.785398 0 0.785398
 	0.785398 0 0.785398  
 	0.785398 0 0.785398
-	….. 
+	   .. 
 
 ### Delimiter ###
 

@@ -37,7 +37,7 @@
 #ifndef _bookmarkstreeview_h_
 #define _bookmarkstreeview_h_
 
-#include <QApplication>
+#include <QtWidgets/QApplication>
 
 #include <QtCore/QJsonObject>
 

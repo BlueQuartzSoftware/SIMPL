@@ -33,10 +33,10 @@
 #ifndef _importhdf5treemodel_h_
 #define _importhdf5treemodel_h_
 
-#include <QAbstractItemModel>
-#include <QFileIconProvider>
-#include <QModelIndex>
-#include <QVariant>
+#include <QtCore/QAbstractItemModel>
+#include <QtCore/QModelIndex>
+#include <QtCore/QVariant>
+#include <QtWidgets/QFileIconProvider>
 
 #include <hdf5.h>
 

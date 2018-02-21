@@ -1,4 +1,4 @@
-Set Origin & Resolution (Image)  {#setoriginresolutionimagegeom}
+Set Origin & Resolution (Image)  
 =============
 
 ## Group (Subgroup) ##
