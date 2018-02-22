@@ -56,7 +56,6 @@
 #include "SIMPLib/FilterParameters/LinkedDataContainerSelectionFilterParameter.h"
 #include "SIMPLib/Plugin/ISIMPLibPlugin.h"
 
-#include "SVWidgetsLib/QtSupport/QtSHelpUrlGenerator.h"
 #include "SVWidgetsLib/QtSupport/QtSStyles.h"
 
 #include "SVWidgetsLib/FilterParameterWidgets/ChoiceWidget.h"

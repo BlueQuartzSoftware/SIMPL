@@ -1,4 +1,4 @@
-Create Element Array from Feature Array {#copyfeaturearraytoelementarray}
+Create Element Array from Feature Array 
 =============
 
 ## Group (Subgroup) ##

@@ -38,8 +38,7 @@
 
 #include <QtCore/QModelIndex>
 
-#include <QStyledItemDelegate>
-
+#include <QtWidgets/QStyledItemDelegate>
 
 class DataStructureItemDelegate : public QStyledItemDelegate
 {

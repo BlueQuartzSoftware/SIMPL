@@ -1,4 +1,4 @@
-Pipeline Annotation {#pipelineannotation}
+Pipeline Annotation 
 =============
 
 ## Group (Subgroup) ##

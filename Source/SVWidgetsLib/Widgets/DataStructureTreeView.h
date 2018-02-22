@@ -37,7 +37,7 @@
 #ifndef _dataBrowserTreeView_h_
 #define _dataBrowserTreeView_h_
 
-#include <QApplication>
+#include <QtWidgets/QApplication>
 
 #include <QtCore/QJsonObject>
 

@@ -32,8 +32,6 @@
 *    United States Prime Contract Navy N00173-07-C-2068
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
-
-
 #ifndef _simplviewhelpurlgenerator_h_
 #define _simplviewhelpurlgenerator_h_
 
@@ -56,20 +54,20 @@ class SVWidgetsLib_EXPORT QtSHelpUrlGenerator
     virtual ~QtSHelpUrlGenerator();
 
     /**
-       * @brief Generates a help URL from the given lowercase name.
-       */
-    static QUrl generateHTMLUrl(QString helpName);
+    * @brief Generates a help URL from the given lowercase name.
+    */
+    static QUrl GenerateHTMLUrl(QString helpName);
 
     /**
-       * @brief Opens the URL specified in a web browser.  The variable "parent" is needed
-     * to pop-up a dialog box if the opening process fails.
-       */
+    * @brief Opens the URL specified in a web browser.  The variable "parent" is needed
+    * to pop-up a dialog box if the opening process fails.
+    */
     static void openHTMLUrl(QUrl URL, QWidget* parent);
 
     /**
-       * @brief This function both generates a URL and opens it in a browser.  It is simply
-     * a combination of the two previous functions, for convenience.
-       */
+    * @brief This function both generates a URL and opens it in a browser.  It is simply
+    * a combination of the two previous functions, for convenience.
+    */
     static void generateAndOpenHTMLUrl(QString helpName, QWidget* parent);
 
   private:

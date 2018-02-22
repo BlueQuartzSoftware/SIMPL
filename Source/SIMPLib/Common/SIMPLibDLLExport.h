@@ -73,6 +73,9 @@ building the MXADatModel DLL on windows.
 /* If SIMPLib_EXPORT was never defined, define it here */
 #ifndef SIMPLib_EXPORT
 #define SIMPLib_EXPORT
+#endif
+
+#ifndef EXPIMP_TEMPLATE
 #define EXPIMP_TEMPLATE
 #endif
 

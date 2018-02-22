@@ -38,7 +38,7 @@
 #include "SIMPLib/Common/Observer.h"
 #include "SIMPLib/SIMPLib.h"
 
-#ifdef SIMPLib_BUILD_TEST_FILTERS
+#ifdef SIMPL_BUILD_TEST_FILTERS
 #include "SIMPLib/TestFilters/ArraySelectionExample.h"
 #include "SIMPLib/TestFilters/GenericExample.h"
 #include "SIMPLib/TestFilters/MakeDataContainer.h"

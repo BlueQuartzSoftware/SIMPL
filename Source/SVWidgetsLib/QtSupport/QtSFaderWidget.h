@@ -24,7 +24,7 @@
 #ifndef _faderwidget_h_
 #define _faderwidget_h_
 
-#include <QWidget>
+#include <QtWidgets/QWidget>
 
 #include "SVWidgetsLib/SVWidgetsLib.h"
 

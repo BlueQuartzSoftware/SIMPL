@@ -37,7 +37,7 @@
 #ifndef _colorcombopicker_h_
 #define _colorcombopicker_h_
 
-#include <QComboBox>
+#include <QtWidgets/QComboBox>
 
 #include "SVWidgetsLib/SVWidgetsLib.h"
 

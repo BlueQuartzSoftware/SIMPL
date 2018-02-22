@@ -1,4 +1,4 @@
-Attribute Array Calculator {#arraycalculator}
+Attribute Array Calculator 
 =============
 
 ## Group (Subgroup) ##

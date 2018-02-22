@@ -33,10 +33,10 @@
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-#include <QtWidgets>
-
 #include "SIMPLib/FilterParameters/JsonFilterParametersReader.h"
 
+#include <QtCore/QDir>
+#include <QtCore/QDirIterator>
 
 #include "SVWidgetsLib/Widgets/BookmarksModel.h"
 #include "SVWidgetsLib/Widgets/BookmarksTreeView.h"

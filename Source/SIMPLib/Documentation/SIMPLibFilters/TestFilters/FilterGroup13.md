@@ -1,4 +1,4 @@
-FilterGroup13 {#filtergroup13}
+FilterGroup13 
 =============
 
 ## Group (Subgroup) ##

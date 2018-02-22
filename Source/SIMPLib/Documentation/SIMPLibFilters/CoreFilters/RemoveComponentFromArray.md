@@ -1,4 +1,4 @@
-Remove Component From Array {#removecomponentfromarray}
+Remove Component From Array 
 =============
 
 ## Group (Subgroup) ##

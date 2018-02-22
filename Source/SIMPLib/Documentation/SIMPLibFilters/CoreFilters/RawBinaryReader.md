@@ -1,4 +1,4 @@
-Raw Binary Reader {#rawbinaryreader}
+Raw Binary Reader 
 =============
 
 ## Group (Subgroup) ##
