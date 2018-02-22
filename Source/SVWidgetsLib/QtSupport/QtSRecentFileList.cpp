@@ -91,7 +91,7 @@ void QtSRecentFileList::addFile(const QString& file, AddType type)
 {
   if(QFile::exists(file) == true)
   {
-    if (recentFiles.contains(file))
+    if(recentFiles.contains(file))
     {
       // Remove the file from wherever it is in the list
       removeFile(file);

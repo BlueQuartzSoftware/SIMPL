@@ -147,8 +147,8 @@ class SVWidgetsLib_EXPORT QtSRecentFileList: public QObject
   private:
     ~QtSRecentFileList();
 
-    QStringList   recentFiles;
-    int           m_MaxListSize = 0;
+    QStringList recentFiles;
+    int m_MaxListSize = 0;
 
     QFileSystemWatcher* m_Watcher;
     // QList<QAction*> actions;
