@@ -68,13 +68,13 @@ class SVWidgetsLib_EXPORT QtSRecentFileList: public QObject
     Q_OBJECT
 
   public:
-    QtSRecentFileList(QObject* parent = 0);
+    QtSRecentFileList(int maxListSize = 7, QObject* parent = nullptr);
 
     /**
      * @brief Returns the singleton instance of this class.
      * @return Instance of this class
      */
-    static QtSRecentFileList* instance();
+    static QtSRecentFileList* instance(int maxListSize = 7, QObject* parent = nullptr);
 
     /**
      * @brief Stripps the path from a file argument given as a full path.
@@ -148,6 +148,7 @@ class SVWidgetsLib_EXPORT QtSRecentFileList: public QObject
     ~QtSRecentFileList();
 
     QStringList recentFiles;
+    int m_MaxListSize = 0;
 
     QFileSystemWatcher* m_Watcher;
     // QList<QAction*> actions;
