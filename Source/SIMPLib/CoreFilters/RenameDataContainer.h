@@ -48,6 +48,8 @@ class SIMPLib_EXPORT RenameDataContainer : public AbstractFilter
 {
     Q_OBJECT
     PYB11_CREATE_BINDINGS(RenameDataContainer SUPERCLASS AbstractFilter)
+    PYB11_PROPERTY(QString SelectedDataContainerName READ getSelectedDataContainerName WRITE setSelectedDataContainerName)
+    PYB11_PROPERTY(QString NewDataContainerName READ getNewDataContainerName WRITE setNewDataContainerName)
 
   public:
     SIMPL_SHARED_POINTERS(RenameDataContainer)

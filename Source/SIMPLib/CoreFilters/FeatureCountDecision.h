@@ -50,6 +50,8 @@ class SIMPLib_EXPORT FeatureCountDecision : public AbstractDecisionFilter
 {
     Q_OBJECT
     PYB11_CREATE_BINDINGS(FeatureCountDecision SUPERCLASS AbstractFilter)
+    PYB11_PROPERTY(DataArrayPath FeatureIdsArrayPath READ getFeatureIdsArrayPath WRITE setFeatureIdsArrayPath)
+    PYB11_PROPERTY(int MaxGrains READ getMaxGrains WRITE setMaxGrains)
 
   public:
     SIMPL_SHARED_POINTERS(FeatureCountDecision)

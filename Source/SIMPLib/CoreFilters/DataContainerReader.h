@@ -62,7 +62,12 @@ class SIMPLib_EXPORT DataContainerReader : public AbstractFilter
     PYB11_PROPERTY(QString LastFileRead READ getLastFileRead WRITE setLastFileRead)
     PYB11_PROPERTY(QDateTime LastRead READ getLastRead WRITE setLastRead)
     PYB11_PROPERTY(DataContainerArrayProxy InputFileDataContainerArrayProxy READ getInputFileDataContainerArrayProxy WRITE setInputFileDataContainerArrayProxy)
-    
+    PYB11_PROPERTY(QString InputFile READ getInputFile WRITE setInputFile)
+    PYB11_PROPERTY(bool OverwriteExistingDataContainers READ getOverwriteExistingDataContainers WRITE setOverwriteExistingDataContainers)
+    PYB11_PROPERTY(QString LastFileRead READ getLastFileRead WRITE setLastFileRead)
+    PYB11_PROPERTY(QDateTime LastRead READ getLastRead WRITE setLastRead)
+    PYB11_PROPERTY(DataContainerArrayProxy InputFileDataContainerArrayProxy READ getInputFileDataContainerArrayProxy WRITE setInputFileDataContainerArrayProxy)
+
     PYB11_METHOD(DataContainerArrayProxy readDataContainerArrayStructure ARGS path)
   
   public:

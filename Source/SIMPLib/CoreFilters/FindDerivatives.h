@@ -52,133 +52,134 @@ class SIMPLib_EXPORT FindDerivatives : public AbstractFilter
 {
   Q_OBJECT
   PYB11_CREATE_BINDINGS(FindDerivatives SUPERCLASS AbstractFilter)
+  PYB11_PROPERTY(DataArrayPath SelectedArrayPath READ getSelectedArrayPath WRITE setSelectedArrayPath)
+  PYB11_PROPERTY(DataArrayPath DerivativesArrayPath READ getDerivativesArrayPath WRITE setDerivativesArrayPath)
 
-  public:
-    SIMPL_SHARED_POINTERS(FindDerivatives)
-    SIMPL_STATIC_NEW_MACRO(FindDerivatives)
-     SIMPL_TYPE_MACRO_SUPER_OVERRIDE(FindDerivatives, AbstractFilter)
+public:
+  SIMPL_SHARED_POINTERS(FindDerivatives)
+  SIMPL_STATIC_NEW_MACRO(FindDerivatives)
+  SIMPL_TYPE_MACRO_SUPER_OVERRIDE(FindDerivatives, AbstractFilter)
 
-    virtual ~FindDerivatives();
+  virtual ~FindDerivatives();
 
-    SIMPL_FILTER_PARAMETER(DataArrayPath, SelectedArrayPath)
-    Q_PROPERTY(DataArrayPath SelectedArrayPath READ getSelectedArrayPath WRITE setSelectedArrayPath)
+  SIMPL_FILTER_PARAMETER(DataArrayPath, SelectedArrayPath)
+  Q_PROPERTY(DataArrayPath SelectedArrayPath READ getSelectedArrayPath WRITE setSelectedArrayPath)
 
-    SIMPL_FILTER_PARAMETER(DataArrayPath, DerivativesArrayPath)
-    Q_PROPERTY(DataArrayPath DerivativesArrayPath READ getDerivativesArrayPath WRITE setDerivativesArrayPath)
+  SIMPL_FILTER_PARAMETER(DataArrayPath, DerivativesArrayPath)
+  Q_PROPERTY(DataArrayPath DerivativesArrayPath READ getDerivativesArrayPath WRITE setDerivativesArrayPath)
 
-    /**
-     * @brief getCompiledLibraryName Reimplemented from @see AbstractFilter class
-     */
-    virtual const QString getCompiledLibraryName() const override;
+  /**
+   * @brief getCompiledLibraryName Reimplemented from @see AbstractFilter class
+   */
+  virtual const QString getCompiledLibraryName() const override;
 
-    /**
-     * @brief getBrandingString Returns the branding string for the filter, which is a tag
-     * used to denote the filter's association with specific plugins
-     * @return Branding string
-    */
-    virtual const QString getBrandingString() const override;
+  /**
+   * @brief getBrandingString Returns the branding string for the filter, which is a tag
+   * used to denote the filter's association with specific plugins
+   * @return Branding string
+  */
+  virtual const QString getBrandingString() const override;
 
-    /**
-     * @brief getFilterVersion Returns a version string for this filter. Default
-     * value is an empty string.
-     * @return
-     */
-    virtual const QString getFilterVersion() const override;
+  /**
+   * @brief getFilterVersion Returns a version string for this filter. Default
+   * value is an empty string.
+   * @return
+   */
+  virtual const QString getFilterVersion() const override;
 
-    /**
-     * @brief newFilterInstance Reimplemented from @see AbstractFilter class
-     */
-    virtual AbstractFilter::Pointer newFilterInstance(bool copyFilterParameters) const override;
+  /**
+   * @brief newFilterInstance Reimplemented from @see AbstractFilter class
+   */
+  virtual AbstractFilter::Pointer newFilterInstance(bool copyFilterParameters) const override;
 
-    /**
-     * @brief getGroupName Reimplemented from @see AbstractFilter class
-     */
-    virtual const QString getGroupName() const override;
+  /**
+   * @brief getGroupName Reimplemented from @see AbstractFilter class
+   */
+  virtual const QString getGroupName() const override;
 
-    /**
-     * @brief getSubGroupName Reimplemented from @see AbstractFilter class
-     */
-    virtual const QString getSubGroupName() const override;
+  /**
+   * @brief getSubGroupName Reimplemented from @see AbstractFilter class
+   */
+  virtual const QString getSubGroupName() const override;
 
-    /**
-     * @brief getUuid Return the unique identifier for this filter.
-     * @return A QUuid object.
-     */
-    virtual const QUuid getUuid() override;
+  /**
+   * @brief getUuid Return the unique identifier for this filter.
+   * @return A QUuid object.
+   */
+  virtual const QUuid getUuid() override;
 
-    /**
-     * @brief getHumanLabel Reimplemented from @see AbstractFilter class
-     */
-    virtual const QString getHumanLabel() const override;
+  /**
+   * @brief getHumanLabel Reimplemented from @see AbstractFilter class
+   */
+  virtual const QString getHumanLabel() const override;
 
-    /**
-     * @brief setupFilterParameters Reimplemented from @see AbstractFilter class
-     */
-    virtual void setupFilterParameters() override;
+  /**
+   * @brief setupFilterParameters Reimplemented from @see AbstractFilter class
+   */
+  virtual void setupFilterParameters() override;
 
-    /**
-    * @brief This method will read the options from a file
-    * @param reader The reader that is used to read the options from a file
-    * @param index The index to read the information from
-    */
-    virtual void readFilterParameters(AbstractFilterParametersReader* reader, int index) override;
+  /**
+  * @brief This method will read the options from a file
+  * @param reader The reader that is used to read the options from a file
+  * @param index The index to read the information from
+  */
+  virtual void readFilterParameters(AbstractFilterParametersReader* reader, int index) override;
 
-    /**
-     * @brief Reimplemented from @see AbstractFilter class
-     */
-    virtual void execute() override;
+  /**
+   * @brief Reimplemented from @see AbstractFilter class
+   */
+  virtual void execute() override;
 
-    /**
-    * @brief This function runs some sanity checks on the DataContainer and inputs
-    * in an attempt to ensure the filter can process the inputs.
-    */
-    virtual void preflight() override;
+  /**
+  * @brief This function runs some sanity checks on the DataContainer and inputs
+  * in an attempt to ensure the filter can process the inputs.
+  */
+  virtual void preflight() override;
 
-  signals:
-    /**
-     * @brief updateFilterParameters This is emitted when the filter requests all the latest Filter Parameters need to be
-     * pushed from a user facing control such as the FilterParameter Widget
-     * @param filter The filter to push the values into
-     */
-    void updateFilterParameters(AbstractFilter* filter);
+signals:
+  /**
+   * @brief updateFilterParameters This is emitted when the filter requests all the latest Filter Parameters need to be
+   * pushed from a user facing control such as the FilterParameter Widget
+   * @param filter The filter to push the values into
+   */
+  void updateFilterParameters(AbstractFilter* filter);
 
-    /**
-     * @brief parametersChanged This signal can be emitted when any of the filter parameters are changed internally.
-     */
-    void parametersChanged();
+  /**
+   * @brief parametersChanged This signal can be emitted when any of the filter parameters are changed internally.
+   */
+  void parametersChanged();
 
-    /**
-     * @brief preflightAboutToExecute Emitted just before the dataCheck() is called. This can change if needed.
-     */
-    void preflightAboutToExecute();
+  /**
+   * @brief preflightAboutToExecute Emitted just before the dataCheck() is called. This can change if needed.
+   */
+  void preflightAboutToExecute();
 
-    /**
-     * @brief preflightExecuted Emitted just after the dataCheck() is called. Typically. This can change if needed.
-     */
-    void preflightExecuted();
+  /**
+   * @brief preflightExecuted Emitted just after the dataCheck() is called. Typically. This can change if needed.
+   */
+  void preflightExecuted();
 
-  protected:
-    FindDerivatives();
+protected:
+  FindDerivatives();
 
-    /**
-     * @brief dataCheck Checks for the appropriate parameter values and availability of arrays
-     */
-    void dataCheck();
+  /**
+   * @brief dataCheck Checks for the appropriate parameter values and availability of arrays
+   */
+  void dataCheck();
 
-    /**
-     * @brief Initializes all the private instance variables.
-     */
-    void initialize();
+  /**
+   * @brief Initializes all the private instance variables.
+   */
+  void initialize();
 
+private:
+  DEFINE_IDATAARRAY_WEAKPTR(InArray)
+  DEFINE_DATAARRAY_VARIABLE(double, DerivativesArray)
 
-  private:
-    DEFINE_IDATAARRAY_WEAKPTR(InArray)
-    DEFINE_DATAARRAY_VARIABLE(double, DerivativesArray)
+  bool m_Interpolate;
 
-    bool m_Interpolate;
-
-    FindDerivatives(const FindDerivatives&) = delete; // Copy Constructor Not Implemented
-    void operator=(const FindDerivatives&) = delete;  // Operator '=' Not Implemented
+  FindDerivatives(const FindDerivatives&) = delete; // Copy Constructor Not Implemented
+  void operator=(const FindDerivatives&) = delete;  // Operator '=' Not Implemented
 };
 
 #endif /* _FindDerivatives_H_ */

@@ -473,6 +473,10 @@ class PythonBindingClass : public QObject
       {
         return QString("");
       }
+      if(!getHasStaticNewMacro())
+      {
+        return QString("");
+      }
       QString code;
       QTextStream constructors(&code);
       constructors << TAB << ".def(py::init([](){ return " << getClassName() << "::New();}))" << NEWLINE_SIMPL;

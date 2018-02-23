@@ -64,6 +64,7 @@ using DataContainerShPtr = std::shared_ptr<DataContainer>;
 class SIMPLib_EXPORT DataContainerArray : public QObject
 {
     Q_OBJECT
+    // This line MUST be first when exposing a class and properties to Python
     PYB11_CREATE_BINDINGS(DataContainerArray)
     
   public:
@@ -350,7 +351,7 @@ class SIMPLib_EXPORT DataContainerArray : public QObject
 
       // Now just return what ever the DataContainer gives us. if the AttributeMatrix was not available then an
       // error message and code will have been set into the "filter" object if that object was non-null itself.
-      return dc->getPrereqAttributeMatrix<Filter>(filter, path.getAttributeMatrixName(), err);
+      return dc->getPrereqAttributeMatrix(filter, path.getAttributeMatrixName(), err);
     }
 
     /**

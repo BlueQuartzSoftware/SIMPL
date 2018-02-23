@@ -48,6 +48,9 @@ class SIMPLib_EXPORT ConditionalSetValue : public AbstractFilter
 {
     Q_OBJECT
     PYB11_CREATE_BINDINGS(ConditionalSetValue SUPERCLASS AbstractFilter)
+    PYB11_PROPERTY(DataArrayPath SelectedArrayPath READ getSelectedArrayPath WRITE setSelectedArrayPath)
+    PYB11_PROPERTY(DataArrayPath ConditionalArrayPath READ getConditionalArrayPath WRITE setConditionalArrayPath)
+    PYB11_PROPERTY(double ReplaceValue READ getReplaceValue WRITE setReplaceValue)
 
   public:
 

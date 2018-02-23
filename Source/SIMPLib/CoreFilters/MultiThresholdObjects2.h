@@ -51,6 +51,8 @@ class  SIMPLib_EXPORT MultiThresholdObjects2 : public AbstractFilter
 {
     Q_OBJECT
     PYB11_CREATE_BINDINGS(MultiThresholdObjects2 SUPERCLASS AbstractFilter)
+    PYB11_PROPERTY(QString DestinationArrayName READ getDestinationArrayName WRITE setDestinationArrayName)
+    PYB11_PROPERTY(ComparisonInputsAdvanced SelectedThresholds READ getSelectedThresholds WRITE setSelectedThresholds)
 
   public:
     SIMPL_SHARED_POINTERS(MultiThresholdObjects2)

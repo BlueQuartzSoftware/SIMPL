@@ -54,6 +54,10 @@
 class SIMPLib_EXPORT ArraySelectionExample : public AbstractFilter
 {
   Q_OBJECT
+  PYB11_CREATE_BINDINGS(ArraySelectionExample SUPERCLASS AbstractFilter)
+
+  PYB11_PROPERTY(DataContainerArrayProxy DataContainerArrayProxy READ getDataContainerArrayProxy WRITE setDataContainerArrayProxy)
+
 public:
   SIMPL_SHARED_POINTERS(ArraySelectionExample)
   SIMPL_STATIC_NEW_MACRO(ArraySelectionExample)

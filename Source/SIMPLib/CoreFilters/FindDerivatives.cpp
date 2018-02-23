@@ -214,7 +214,7 @@ void FindDerivatives::dataCheck()
   }
 
   AttributeMatrix::Pointer inAttrMat = getDataContainerArray()->getPrereqAttributeMatrixFromPath<AbstractFilter>(this, m_SelectedArrayPath, -301);
-  AttributeMatrix::Pointer destAttrMat = m->getPrereqAttributeMatrix<AbstractFilter>(this, getDerivativesArrayPath().getAttributeMatrixName(), -301);
+  AttributeMatrix::Pointer destAttrMat = m->getPrereqAttributeMatrix(this, getDerivativesArrayPath().getAttributeMatrixName(), -301);
 
   if(getErrorCondition() < 0)
   {

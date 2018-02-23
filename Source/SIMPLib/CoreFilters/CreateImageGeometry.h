@@ -50,6 +50,10 @@ class SIMPLib_EXPORT CreateImageGeometry : public AbstractFilter
 {
     Q_OBJECT
     PYB11_CREATE_BINDINGS(CreateImageGeometry SUPERCLASS AbstractFilter)
+    PYB11_PROPERTY(QString SelectedDataContainer READ getSelectedDataContainer WRITE setSelectedDataContainer)
+    PYB11_PROPERTY(IntVec3_t Dimensions READ getDimensions WRITE setDimensions)
+    PYB11_PROPERTY(FloatVec3_t Origin READ getOrigin WRITE setOrigin)
+    PYB11_PROPERTY(FloatVec3_t Resolution READ getResolution WRITE setResolution)
 
   public:
     SIMPL_SHARED_POINTERS(CreateImageGeometry)

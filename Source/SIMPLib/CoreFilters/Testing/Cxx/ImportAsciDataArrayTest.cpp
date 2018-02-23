@@ -61,8 +61,7 @@ public:
 
     DataContainerArray::Pointer dca = DataContainerArray::New();
 
-    DataContainer::Pointer dc = DataContainer::New();
-    dc->setName("ImageDataContainer");
+    DataContainer::Pointer dc = DataContainer::New("ImageDataContainer");
 
     ImageGeom::Pointer imageGeom = ImageGeom::New();
     imageGeom->setDimensions(m_XDim, m_YDim, m_ZDim);

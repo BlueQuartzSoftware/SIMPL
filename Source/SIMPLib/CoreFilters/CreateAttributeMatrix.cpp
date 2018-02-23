@@ -146,8 +146,7 @@ void CreateAttributeMatrix::dataCheck()
     tDims[i] = static_cast<size_t>(cols[i]);
   }
 
-
-  m->createNonPrereqAttributeMatrix<AbstractFilter>(this, getCreatedAttributeMatrix().getAttributeMatrixName(), tDims, static_cast<AttributeMatrix::Type>(getAttributeMatrixType()));
+  m->createNonPrereqAttributeMatrix(this, getCreatedAttributeMatrix().getAttributeMatrixName(), tDims, static_cast<AttributeMatrix::Type>(getAttributeMatrixType()));
   if(getErrorCondition() < 0)
   {
     return;

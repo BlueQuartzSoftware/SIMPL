@@ -48,7 +48,12 @@ class  SIMPLib_EXPORT FeatureDataCSVWriter : public AbstractFilter
 {
     Q_OBJECT
     PYB11_CREATE_BINDINGS(FeatureDataCSVWriter SUPERCLASS AbstractFilter)
-    
+    PYB11_PROPERTY(DataArrayPath CellFeatureAttributeMatrixPath READ getCellFeatureAttributeMatrixPath WRITE setCellFeatureAttributeMatrixPath)
+    PYB11_PROPERTY(QString FeatureDataFile READ getFeatureDataFile WRITE setFeatureDataFile)
+    PYB11_PROPERTY(bool WriteNeighborListData READ getWriteNeighborListData WRITE setWriteNeighborListData)
+    PYB11_PROPERTY(int DelimiterChoice READ getDelimiterChoice WRITE setDelimiterChoice)
+    PYB11_PROPERTY(bool WriteNumFeaturesLine READ getWriteNumFeaturesLine WRITE setWriteNumFeaturesLine)
+
   public:
     SIMPL_SHARED_POINTERS(FeatureDataCSVWriter)
     SIMPL_STATIC_NEW_MACRO(FeatureDataCSVWriter)

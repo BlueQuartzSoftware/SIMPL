@@ -70,8 +70,7 @@ public:
     attributeMatrixSize.push_back(3);
     AttributeMatrix::Pointer am = AttributeMatrix::New(attributeMatrixSize, "Attribute Matrix", AttributeMatrix::Type::Any);
 
-    DataContainer::Pointer dc = DataContainer::New();
-    dc->setName("Data Container");
+    DataContainer::Pointer dc = DataContainer::New("Data Container");
     dc->addAttributeMatrix("Attribute Matrix", am);
 
     DataContainerArray::Pointer dca = DataContainerArray::New();

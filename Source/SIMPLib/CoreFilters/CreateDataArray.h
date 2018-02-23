@@ -49,6 +49,12 @@ class SIMPLib_EXPORT CreateDataArray : public AbstractFilter
 {
     Q_OBJECT
     PYB11_CREATE_BINDINGS(CreateDataArray SUPERCLASS AbstractFilter)
+    PYB11_PROPERTY(SIMPL::ScalarTypes::Type ScalarType READ getScalarType WRITE setScalarType)
+    PYB11_PROPERTY(int NumberOfComponents READ getNumberOfComponents WRITE setNumberOfComponents)
+    PYB11_PROPERTY(DataArrayPath NewArray READ getNewArray WRITE setNewArray)
+    PYB11_PROPERTY(int InitializationType READ getInitializationType WRITE setInitializationType)
+    PYB11_PROPERTY(QString InitializationValue READ getInitializationValue WRITE setInitializationValue)
+    PYB11_PROPERTY(FPRangePair InitializationRange READ getInitializationRange WRITE setInitializationRange)
 
   public:
     SIMPL_SHARED_POINTERS(CreateDataArray)

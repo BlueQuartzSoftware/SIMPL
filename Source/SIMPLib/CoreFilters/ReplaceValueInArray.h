@@ -48,6 +48,9 @@ class SIMPLib_EXPORT ReplaceValueInArray : public AbstractFilter
 {
     Q_OBJECT
     PYB11_CREATE_BINDINGS(ReplaceValueInArray SUPERCLASS AbstractFilter)
+    PYB11_PROPERTY(DataArrayPath SelectedArray READ getSelectedArray WRITE setSelectedArray)
+    PYB11_PROPERTY(double RemoveValue READ getRemoveValue WRITE setRemoveValue)
+    PYB11_PROPERTY(double ReplaceValue READ getReplaceValue WRITE setReplaceValue)
 
   public:
 

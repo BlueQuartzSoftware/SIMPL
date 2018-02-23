@@ -96,7 +96,6 @@ template <typename T> using PySharedPtrClass = py::class_<T, std::shared_ptr<T>>
  * @brief PYBIND11_MODULE This section declares our python module, its name and
  * what classes are available within the module.
  *
- * We should figure out how to auto generate this section if possible.
  */
 PYBIND11_MODULE(@LIB_NAME@Py, m)
 {

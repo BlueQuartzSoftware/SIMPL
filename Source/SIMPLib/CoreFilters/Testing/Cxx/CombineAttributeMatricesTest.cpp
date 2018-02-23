@@ -223,10 +223,8 @@ public:
     DataContainerArray::Pointer dca = DataContainerArray::New();
 
     // make two data containers to check AMs are from same DC
-    DataContainer::Pointer m = DataContainer::New();
-    m->setName("CombineAttributeMatricesTest");
-    DataContainer::Pointer m2 = DataContainer::New();
-    m2->setName("CombineAttributeMatricesTest2");
+    DataContainer::Pointer m = DataContainer::New("CombineAttributeMatricesTest");
+    DataContainer::Pointer m2 = DataContainer::New("CombineAttributeMatricesTest2");
 
     // Create Attribute Matrices with different tDims to test validation of tuple compatibility
     QVector<size_t> tDims(3, 0);

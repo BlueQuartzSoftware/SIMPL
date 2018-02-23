@@ -51,10 +51,17 @@
 class SIMPLib_EXPORT MakeDataContainer : public AbstractFilter
 {
   Q_OBJECT
+  PYB11_CREATE_BINDINGS(MakeDataContainer SUPERCLASS AbstractFilter)
+  PYB11_PROPERTY(QString FeatureIdsArrayName READ getFeatureIdsArrayName WRITE setFeatureIdsArrayName)
+  PYB11_PROPERTY(QString CellEulerAnglesArrayName READ getCellEulerAnglesArrayName WRITE setCellEulerAnglesArrayName)
+  PYB11_PROPERTY(QString CellPhasesArrayName READ getCellPhasesArrayName WRITE setCellPhasesArrayName)
+  PYB11_PROPERTY(QString CrystalStructuresArrayName READ getCrystalStructuresArrayName WRITE setCrystalStructuresArrayName)
+  PYB11_PROPERTY(QString LatticeConstantsArrayName READ getLatticeConstantsArrayName WRITE setLatticeConstantsArrayName)
+
 public:
   SIMPL_SHARED_POINTERS(MakeDataContainer)
   SIMPL_STATIC_NEW_MACRO(MakeDataContainer)
-   SIMPL_TYPE_MACRO_SUPER_OVERRIDE(MakeDataContainer, AbstractFilter)
+  SIMPL_TYPE_MACRO_SUPER_OVERRIDE(MakeDataContainer, AbstractFilter)
 
   virtual ~MakeDataContainer();
   SIMPL_INSTANCE_STRING_PROPERTY(DataContainerName)

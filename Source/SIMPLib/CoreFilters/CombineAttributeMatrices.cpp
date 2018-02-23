@@ -201,7 +201,7 @@ void CombineAttributeMatrices::dataCheck()
   // All Feature or Ensemble AMs should start from 1 and the zeroth tuple can be combined in the two AMs
   size_t totalTuples = firstAttrMat->getNumberOfTuples() + secondAttrMat->getNumberOfTuples() - 1;
   QVector<size_t> tDims(1, totalTuples);
-  m->createNonPrereqAttributeMatrix<AbstractFilter>(this, getCombinedAttributeMatrixName(), tDims, firstAttrMat->getType());
+  m->createNonPrereqAttributeMatrix(this, getCombinedAttributeMatrixName(), tDims, firstAttrMat->getType());
   if(getErrorCondition() < 0)
   {
     return;

@@ -50,6 +50,8 @@ class SIMPLib_EXPORT MaskCountDecision : public AbstractDecisionFilter
 {
     Q_OBJECT
     PYB11_CREATE_BINDINGS(MaskCountDecision SUPERCLASS AbstractFilter)
+    PYB11_PROPERTY(DataArrayPath MaskArrayPath READ getMaskArrayPath WRITE setMaskArrayPath)
+    PYB11_PROPERTY(int NumberOfTrues READ getNumberOfTrues WRITE setNumberOfTrues)
 
   public:
     SIMPL_SHARED_POINTERS(MaskCountDecision)

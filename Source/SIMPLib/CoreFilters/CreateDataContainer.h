@@ -48,6 +48,7 @@ class SIMPLib_EXPORT CreateDataContainer : public AbstractFilter
 {
     Q_OBJECT
     PYB11_CREATE_BINDINGS(CreateDataContainer SUPERCLASS AbstractFilter)
+    PYB11_PROPERTY(QString CreatedDataContainer READ getCreatedDataContainer WRITE setCreatedDataContainer)
 
   public:
     SIMPL_SHARED_POINTERS(CreateDataContainer)

@@ -1,3 +1,4 @@
+
 /* ============================================================================
 * Copyright (c) 2009-2016 BlueQuartz Software, LLC
 *
@@ -43,7 +44,9 @@
 class SIMPLib_EXPORT ChangeGlobalValue : public AbstractFilter
 {
   Q_OBJECT
-
+  PYB11_CREATE_BINDINGS(ChangeGlobalValue SUPERCLASS AbstractFilter)
+  PYB11_PROPERTY(int Value READ getValue WRITE setValue)
+  PYB11_PROPERTY(int* GlobalValue READ getGlobalValue WRITE setGlobalValue)
 public:
   SIMPL_SHARED_POINTERS(ChangeGlobalValue)
   SIMPL_STATIC_NEW_MACRO(ChangeGlobalValue)

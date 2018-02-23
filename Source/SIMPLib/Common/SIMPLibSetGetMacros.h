@@ -329,6 +329,7 @@ public:                                                                         
 /* This macro declares a class that needs to be wrapped in Python */
 #define PYB11_CREATE_BINDINGS(...)
 #define PYB11_NO_BINDINGS(...)
+#define PYB11_STATIC_NEW(...)
 #define PYB11_PROPERTY(...)
 #define PYB11_METHOD(...)
 

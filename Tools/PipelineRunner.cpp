@@ -43,12 +43,15 @@
 // Qt Includes
 #include <QtCore/QCommandLineOption>
 #include <QtCore/QCommandLineParser>
+
 #include <QtCore/QCoreApplication>
 #include <QtCore/QDir>
 #include <QtCore/QFile>
 #include <QtCore/QSettings>
 #include <QtCore/QString>
 #include <QtCore/QtDebug>
+
+#include <QtGui/QGuiApplication>
 
 // DREAM3DLib includes
 #include "SIMPLib/Common/Constants.h"
@@ -70,11 +73,11 @@ int main(int argc, char* argv[])
 {
 
   // Instantiate the QCoreApplication that we need to get the current path and load plugins.
-  QCoreApplication* app = new QCoreApplication(argc, argv);
-  QCoreApplication::setOrganizationName("BlueQuartz Software");
-  QCoreApplication::setOrganizationDomain("bluequartz.net");
-  QCoreApplication::setApplicationName("PipelineRunner");
-  QCoreApplication::setApplicationVersion(SIMPLib::Version::Major() + "." + SIMPLib::Version::Minor() + "." + SIMPLib::Version::Patch());
+  QGuiApplication* app = new QGuiApplication(argc, argv);
+  app->setOrganizationName("BlueQuartz Software");
+  app->setOrganizationDomain("bluequartz.net");
+  app->setApplicationName("PipelineRunner");
+  app->setApplicationVersion(SIMPLib::Version::Major() + "." + SIMPLib::Version::Minor() + "." + SIMPLib::Version::Patch());
 
   QCommandLineParser parser;
   QString str;

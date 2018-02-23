@@ -82,101 +82,108 @@ enum RenameErrorCodes
  */
 class SIMPLib_EXPORT AttributeMatrix : public Observable
 {
-  public:
-    SIMPL_SHARED_POINTERS(AttributeMatrix)
-    //   SIMPL_STATIC_NEW_MACRO(AttributeMatrix)
-     SIMPL_TYPE_MACRO_SUPER_OVERRIDE(AttributeMatrix, Observable)
+  // This line MUST be first when exposing a class and properties to Python
+  PYB11_CREATE_BINDINGS(AttributeMatrix)
 
-    virtual ~AttributeMatrix();
+  PYB11_METHOD(QString getName)
+  PYB11_METHOD(bool doesAttributeArrayExist ARGS QString)
+  PYB11_METHOD(IDataArray removeAttributeArray ARGS QString)
+  PYB11_METHOD(int renameAttributeArray ARGS QString QString bool)
 
-    using EnumType = unsigned int;
+public:
+  SIMPL_SHARED_POINTERS(AttributeMatrix)
+  SIMPL_TYPE_MACRO_SUPER_OVERRIDE(AttributeMatrix, Observable)
 
-    /**
-    * @brief The Type is an enum that describes the type of data that the AttributeMatrix holds
-    */
-    enum class Type : EnumType
-    {
-      Vertex = 0, //!<
-      Edge = 1, //!<
-      Face = 2, //!<
-      Cell = 3, //!<
-      VertexFeature = 4, //!<
-      EdgeFeature = 5, //!<
-      FaceFeature = 6, //!<
-      CellFeature = 7, //!<
-      VertexEnsemble = 8, //!<
-      EdgeEnsemble = 9, //!<
-      FaceEnsemble = 10, //!<
-      CellEnsemble = 11, //!<
-      MetaData = 12, //!<
-      Generic = 13, //!<
-      Unknown = 999, //!<
-      Any = 4294967295U
-    };
+  virtual ~AttributeMatrix();
 
-    using Types = QVector<Type>;
+  using EnumType = unsigned int;
 
-    /**
-     * @brief TypeToString Returns a String representation of the AttributeMatrix Type
-     * @param t The type to convert
-     * @return
-     */
-    static QString TypeToString(Type t);
+  /**
+  * @brief The Type is an enum that describes the type of data that the AttributeMatrix holds
+  */
+  enum class Type : EnumType
+  {
+    Vertex = 0,         //!<
+    Edge = 1,           //!<
+    Face = 2,           //!<
+    Cell = 3,           //!<
+    VertexFeature = 4,  //!<
+    EdgeFeature = 5,    //!<
+    FaceFeature = 6,    //!<
+    CellFeature = 7,    //!<
+    VertexEnsemble = 8, //!<
+    EdgeEnsemble = 9,   //!<
+    FaceEnsemble = 10,  //!<
+    CellEnsemble = 11,  //!<
+    MetaData = 12,      //!<
+    Generic = 13,       //!<
+    Unknown = 999,      //!<
+    Any = 4294967295U
+  };
 
-    /**
-     * @brief StringToType Returns the proper enumeration value for a given string or
-     * Unknown if a string type was not know to AttributeMatrix
-     * @param str The string to convert
-     * @return
-     */
-    static Type StringToType(const QString &str);
+  using Types = QVector<Type>;
 
-    /**
-     * @brief GetTypesAsStrings
-     * @return
-     */
-    static QVector<QString> GetTypesAsStrings();
+  /**
+   * @brief TypeToString Returns a String representation of the AttributeMatrix Type
+   * @param t The type to convert
+   * @return
+   */
+  static QString TypeToString(Type t);
 
-    /**
-     * @brief The Category enum describes the general category of data in the AttributeMatrix
-     */
-    enum class Category : EnumType //C++11 scoped enum
-    {
-      Element = 0,
-      Feature = 1,
-      Ensemble = 2,
-      Any = 3,
-      Unknown = 999, //!<
-    };
+  /**
+   * @brief StringToType Returns the proper enumeration value for a given string or
+   * Unknown if a string type was not know to AttributeMatrix
+   * @param str The string to convert
+   * @return
+   */
+  static Type StringToType(const QString& str);
 
-    using Categories = QVector<Category>;
+  /**
+   * @brief GetTypesAsStrings
+   * @return
+   */
+  static QVector<QString> GetTypesAsStrings();
 
-    /**
-     * @brief New Creates an AttributeMatrix with the give name
-     * @param tupleDims The dimensions of the Attribute matrix given in the order fastest moving to slowest moving (XYZ)
-     * @param name The name of the AttributeMatrix. Each AttributeMatrix should have a unique name.
-     * @param attrType The type of AttributeMatrix, one of
-     * @li const unsigned int Vertex = 0, //!<
-     * @li const unsigned int Edge = 1, //!<
-     * @li const unsigned int Face = 2, //!<
-     * @li const unsigned int Cell = 3, //!<
-     * @li const unsigned int VertexFeature = 4, //!<
-     * @li const unsigned int EdgeFeature = 5, //!<
-     * @li const unsigned int FaceFeature = 6, //!<
-     * @li const unsigned int CellFeature = 7, //!<
-     * @li const unsigned int VertexEnsemble = 8, //!<
-     * @li const unsigned int EdgeEnsemble = 9, //!<
-     * @li const unsigned int FaceEnsemble = 10, //!<
-     * @li const unsigned int CellEnsemble = 11, //!<
-     * @li const unsigned int Unknown = 999, //!<
-     *
-     * @see SIMPLib/Common/Constants.h file.
-     * @return
-     */
-    static Pointer New(QVector<size_t> tupleDims, const QString& name, AttributeMatrix::Type attrType)
-    {
-      Pointer sharedPtr(new AttributeMatrix(tupleDims, name, attrType));
-      return sharedPtr;
+  /**
+   * @brief The Category enum describes the general category of data in the AttributeMatrix
+   */
+  enum class Category : EnumType // C++11 scoped enum
+  {
+    Element = 0,
+    Feature = 1,
+    Ensemble = 2,
+    Any = 3,
+    Unknown = 999, //!<
+  };
+
+  using Categories = QVector<Category>;
+
+  /**
+   * @brief New Creates an AttributeMatrix with the give name
+   * @param tupleDims The dimensions of the Attribute matrix given in the order fastest moving to slowest moving (XYZ)
+   * @param name The name of the AttributeMatrix. Each AttributeMatrix should have a unique name.
+   * @param attrType The type of AttributeMatrix, one of
+   * @li const unsigned int Vertex = 0, //!<
+   * @li const unsigned int Edge = 1, //!<
+   * @li const unsigned int Face = 2, //!<
+   * @li const unsigned int Cell = 3, //!<
+   * @li const unsigned int VertexFeature = 4, //!<
+   * @li const unsigned int EdgeFeature = 5, //!<
+   * @li const unsigned int FaceFeature = 6, //!<
+   * @li const unsigned int CellFeature = 7, //!<
+   * @li const unsigned int VertexEnsemble = 8, //!<
+   * @li const unsigned int EdgeEnsemble = 9, //!<
+   * @li const unsigned int FaceEnsemble = 10, //!<
+   * @li const unsigned int CellEnsemble = 11, //!<
+   * @li const unsigned int Unknown = 999, //!<
+   *
+   * @see SIMPLib/Common/Constants.h file.
+   * @return
+   */
+  static Pointer New(QVector<size_t> tupleDims, const QString& name, AttributeMatrix::Type attrType)
+  {
+    Pointer sharedPtr(new AttributeMatrix(tupleDims, name, attrType));
+    return sharedPtr;
     }
 
     /**

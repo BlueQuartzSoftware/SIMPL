@@ -49,6 +49,7 @@ class SIMPLib_EXPORT RemoveArrays : public AbstractFilter
 {
     Q_OBJECT
     PYB11_CREATE_BINDINGS(RemoveArrays SUPERCLASS AbstractFilter)
+    PYB11_PROPERTY(DataContainerArrayProxy DataArraysToRemove READ getDataArraysToRemove WRITE setDataArraysToRemove)
 
   public:
     SIMPL_SHARED_POINTERS(RemoveArrays)

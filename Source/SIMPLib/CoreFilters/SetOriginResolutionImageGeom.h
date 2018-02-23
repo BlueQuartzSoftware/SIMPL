@@ -49,6 +49,11 @@ class SIMPLib_EXPORT SetOriginResolutionImageGeom : public AbstractFilter
 {
     Q_OBJECT
     PYB11_CREATE_BINDINGS(SetOriginResolutionImageGeom SUPERCLASS AbstractFilter)
+    PYB11_PROPERTY(QString DataContainerName READ getDataContainerName WRITE setDataContainerName)
+    PYB11_PROPERTY(bool ChangeOrigin READ getChangeOrigin WRITE setChangeOrigin)
+    PYB11_PROPERTY(FloatVec3_t Origin READ getOrigin WRITE setOrigin)
+    PYB11_PROPERTY(bool ChangeResolution READ getChangeResolution WRITE setChangeResolution)
+    PYB11_PROPERTY(FloatVec3_t Resolution READ getResolution WRITE setResolution)
 
   public:
     SIMPL_SHARED_POINTERS(SetOriginResolutionImageGeom)
@@ -59,12 +64,6 @@ class SIMPLib_EXPORT SetOriginResolutionImageGeom : public AbstractFilter
 
     SIMPL_FILTER_PARAMETER(QString, DataContainerName)
     Q_PROPERTY(QString DataContainerName READ getDataContainerName WRITE setDataContainerName)
-
-//    SIMPL_FILTER_PARAMETER(QString, SurfaceDataContainerName)
-//    Q_PROPERTY(QString SurfaceDataContainerName READ getSurfaceDataContainerName WRITE setSurfaceDataContainerName)
-
-//    SIMPL_FILTER_PARAMETER(bool, ApplyToVoxelVolume)
-//    Q_PROPERTY(bool ApplyToVoxelVolume READ getApplyToVoxelVolume WRITE setApplyToVoxelVolume)
 
     SIMPL_FILTER_PARAMETER(bool, ChangeOrigin)
     Q_PROPERTY(bool ChangeOrigin READ getChangeOrigin WRITE setChangeOrigin)

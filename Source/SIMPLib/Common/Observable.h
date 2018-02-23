@@ -55,12 +55,19 @@
 class SIMPLib_EXPORT Observable : public QObject
 {
     Q_OBJECT
+    PYB11_CREATE_BINDINGS(Observable)
 
   public:
+    SIMPL_TYPE_MACRO(Observable)
+
     Observable();
+
+    Observable(const Observable& rhs);
+
     virtual ~Observable();
 
-    SIMPL_TYPE_MACRO(Observable)
+    void operator=(const Observable&);
+
     // ------------------------------
     // These are convenience methods that construct a @see PipelineMessage object and then 'emit' that object
     // ------------------------------
@@ -96,8 +103,6 @@ class SIMPLib_EXPORT Observable : public QObject
     void filterGeneratedMessage(const PipelineMessage& msg);
 
   private:
-    Observable(const Observable&) = delete;     // Copy Constructor Not Implemented
-    void operator=(const Observable&) = delete; // Operator '=' Not Implemented
 };
 
 #endif /* OBSERVABLE_H_ */

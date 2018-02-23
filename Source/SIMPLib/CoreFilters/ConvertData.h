@@ -48,6 +48,9 @@ class SIMPLib_EXPORT ConvertData : public AbstractFilter
 {
     Q_OBJECT
     PYB11_CREATE_BINDINGS(ConvertData SUPERCLASS AbstractFilter)
+    PYB11_PROPERTY(SIMPL::NumericTypes::Type ScalarType READ getScalarType WRITE setScalarType)
+    PYB11_PROPERTY(QString OutputArrayName READ getOutputArrayName WRITE setOutputArrayName)
+    PYB11_PROPERTY(DataArrayPath SelectedCellArrayPath READ getSelectedCellArrayPath WRITE setSelectedCellArrayPath)
 
   public:
     SIMPL_SHARED_POINTERS(ConvertData)

@@ -46,6 +46,8 @@
 class SIMPLib_EXPORT FileWriter : public AbstractFilter
 {
     Q_OBJECT
+    PYB11_CREATE_BINDINGS(FileWriter SUPERCLASS AbstractFilter)
+
   public:
     SIMPL_SHARED_POINTERS(FileWriter)
     SIMPL_STATIC_NEW_MACRO(FileWriter)

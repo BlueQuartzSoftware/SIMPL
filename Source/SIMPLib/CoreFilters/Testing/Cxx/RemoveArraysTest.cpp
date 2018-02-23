@@ -87,8 +87,8 @@ public:
     AttributeMatrix::Pointer am = AttributeMatrix::New(sizeList, "AttributeMatrix", AttributeMatrix::Type::Any);
     am->addAttributeArray("DataArray", da);
 
-    DataContainer::Pointer dc = DataContainer::New();
-    dc->setName("DataContainer");
+    DataContainer::Pointer dc = DataContainer::New("DataContainer");
+
     dc->addAttributeMatrix("AttributeMatrix", am);
 
     DataContainerArray::Pointer dca = DataContainerArray::New();

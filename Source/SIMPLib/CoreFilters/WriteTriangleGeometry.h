@@ -57,6 +57,9 @@ class SIMPLib_EXPORT WriteTriangleGeometry : public AbstractFilter
 {
     Q_OBJECT
     PYB11_CREATE_BINDINGS(WriteTriangleGeometry SUPERCLASS AbstractFilter)
+    PYB11_PROPERTY(QString DataContainerSelection READ getDataContainerSelection WRITE setDataContainerSelection)
+    PYB11_PROPERTY(QString OutputNodesFile READ getOutputNodesFile WRITE setOutputNodesFile)
+    PYB11_PROPERTY(QString OutputTrianglesFile READ getOutputTrianglesFile WRITE setOutputTrianglesFile)
 
   public:
     SIMPL_SHARED_POINTERS(WriteTriangleGeometry)

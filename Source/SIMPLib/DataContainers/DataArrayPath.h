@@ -52,6 +52,7 @@
 class SIMPLib_EXPORT DataArrayPath : public QObject
 {
     Q_OBJECT
+    PYB11_CREATE_BINDINGS(DataArrayPath)
 
   public:
     DataArrayPath();

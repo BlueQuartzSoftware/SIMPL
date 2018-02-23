@@ -54,6 +54,9 @@
 class SIMPLib_EXPORT ThresholdExample : public AbstractFilter
 {
   Q_OBJECT
+  PYB11_CREATE_BINDINGS(ThresholdExample SUPERCLASS AbstractFilter)
+  PYB11_PROPERTY(ComparisonInputs CellComparisonInputs READ getCellComparisonInputs WRITE setCellComparisonInputs)
+
 public:
   SIMPL_SHARED_POINTERS(ThresholdExample)
   SIMPL_STATIC_NEW_MACRO(ThresholdExample)

@@ -48,7 +48,10 @@ class SIMPLib_EXPORT CreateStringArray : public AbstractFilter
 {
     Q_OBJECT
     PYB11_CREATE_BINDINGS(CreateStringArray SUPERCLASS AbstractFilter)
-    
+    PYB11_PROPERTY(int NumberOfComponents READ getNumberOfComponents WRITE setNumberOfComponents)
+    PYB11_PROPERTY(DataArrayPath NewArray READ getNewArray WRITE setNewArray)
+    PYB11_PROPERTY(QString InitializationValue READ getInitializationValue WRITE setInitializationValue)
+
   public:
     SIMPL_SHARED_POINTERS(CreateStringArray)
     SIMPL_STATIC_NEW_MACRO(CreateStringArray)

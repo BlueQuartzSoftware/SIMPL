@@ -13,7 +13,7 @@ using PySharedPtrClass = py::class_<T, std::shared_ptr<T> >;
 * @brief
 * @param m The Python module
 * @param parent The parent class of the wrapped class
-* @return A std::shared_ptr<T> wrapped insance of the wrapped class properly 
+* @return A std::shared_ptr<T> wrapped instance of the wrapped class properly 
 * initialized.
 */
 PySharedPtrClass<@CLASS_NAME@> pybind11_init_@LIB_NAME@_@CLASS_NAME@(py::module &m, PySharedPtrClass<@SUPERCLASS_NAME@>& parent)
