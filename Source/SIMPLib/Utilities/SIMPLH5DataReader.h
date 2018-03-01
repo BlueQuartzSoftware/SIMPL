@@ -106,7 +106,7 @@ class SIMPLib_EXPORT SIMPLH5DataReader : public Observable
     void notifyErrorMessage(const QString& humanLabel, const QString& str, int code);
 
   signals:
-    void errorGenerated(const QString &msg, const int &code);
+    void errorGenerated(const QString &title, const QString &msg, const int &code);
 
   private:
     QString                           m_CurrentFilePath = "";
