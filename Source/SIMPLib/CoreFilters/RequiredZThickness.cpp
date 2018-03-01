@@ -109,7 +109,7 @@ void RequiredZThickness::dataCheck()
     return;
   }
 
-  DataContainer::Pointer dataContainer = getDataContainerArray()->getPrereqDataContainer<AbstractFilter>(this, getDataContainerSelection());
+  DataContainer::Pointer dataContainer = getDataContainerArray()->getPrereqDataContainer(this, getDataContainerSelection());
   if(getErrorCondition() < 0)
   {
     return;
@@ -176,7 +176,7 @@ void RequiredZThickness::execute()
     return;
   }
 
-  DataContainer::Pointer dataContainer = getDataContainerArray()->getPrereqDataContainer<AbstractFilter>(this, getDataContainerSelection());
+  DataContainer::Pointer dataContainer = getDataContainerArray()->getPrereqDataContainer(this, getDataContainerSelection());
   if(getErrorCondition() < 0)
   {
     return;

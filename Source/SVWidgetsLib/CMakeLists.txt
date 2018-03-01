@@ -167,7 +167,7 @@ target_include_directories(SVWidgetsLib
                               ${SVWidgetsLib_BINARY_DIR}/QtSupport
                               ${SVWidgetsLib_BINARY_DIR}/Widgets
                               ${SVWidgetsLib_BINARY_DIR}/Widgets/ImportASCIIDataWizard
-                              ${SIMPLProj_SOURCE_DIR}/3rdParty
+                              ${SIMPLProj_SOURCE_DIR}/ThirdParty
 )
 if(WIN32 AND BUILD_SHARED_LIBS)
 		target_compile_definitions(SVWidgetsLib PUBLIC "-DSVWidgetsLib_BUILT_AS_DYNAMIC_LIB")

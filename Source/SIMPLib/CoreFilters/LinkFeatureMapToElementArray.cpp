@@ -122,7 +122,7 @@ void LinkFeatureMapToElementArray::dataCheck()
   setWarningCondition(0);
   DataArrayPath tempPath;
 
-  DataContainer::Pointer m = getDataContainerArray()->getPrereqDataContainer<AbstractFilter>(this, getSelectedCellArrayPath().getDataContainerName(), false);
+  DataContainer::Pointer m = getDataContainerArray()->getPrereqDataContainer(this, getSelectedCellArrayPath().getDataContainerName(), false);
   if(getErrorCondition() < 0 || nullptr == m.get())
   {
     return;

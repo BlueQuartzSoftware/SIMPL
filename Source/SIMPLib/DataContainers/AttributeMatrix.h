@@ -43,6 +43,7 @@
 
 //-- C++ includes
 #include <memory>
+#include <vector>
 
 #include <hdf5.h>
 
@@ -84,11 +85,16 @@ class SIMPLib_EXPORT AttributeMatrix : public Observable
 {
   // This line MUST be first when exposing a class and properties to Python
   PYB11_CREATE_BINDINGS(AttributeMatrix)
+  PYB11_STATIC_CREATION(Create ARGS std::vector<size_t> QString AttributeMatrix::Type)
+  
+  PYB11_ENUMERATION(Type)
+  PYB11_ENUMERATION(Category)
+ 
+  PYB11_PROPERTY(QString Name READ getName WRITE setName)
 
-  PYB11_METHOD(QString getName)
-  PYB11_METHOD(bool doesAttributeArrayExist ARGS QString)
-  PYB11_METHOD(IDataArray removeAttributeArray ARGS QString)
-  PYB11_METHOD(int renameAttributeArray ARGS QString QString bool)
+  PYB11_METHOD(bool doesAttributeArrayExist ARGS Name)
+  PYB11_METHOD(IDataArray removeAttributeArray ARGS Name)
+  PYB11_METHOD(int renameAttributeArray ARGS OldName NewName OverWrite)
 
 public:
   SIMPL_SHARED_POINTERS(AttributeMatrix)
@@ -163,28 +169,26 @@ public:
    * @param tupleDims The dimensions of the Attribute matrix given in the order fastest moving to slowest moving (XYZ)
    * @param name The name of the AttributeMatrix. Each AttributeMatrix should have a unique name.
    * @param attrType The type of AttributeMatrix, one of
-   * @li const unsigned int Vertex = 0, //!<
-   * @li const unsigned int Edge = 1, //!<
-   * @li const unsigned int Face = 2, //!<
-   * @li const unsigned int Cell = 3, //!<
-   * @li const unsigned int VertexFeature = 4, //!<
-   * @li const unsigned int EdgeFeature = 5, //!<
-   * @li const unsigned int FaceFeature = 6, //!<
-   * @li const unsigned int CellFeature = 7, //!<
-   * @li const unsigned int VertexEnsemble = 8, //!<
-   * @li const unsigned int EdgeEnsemble = 9, //!<
-   * @li const unsigned int FaceEnsemble = 10, //!<
-   * @li const unsigned int CellEnsemble = 11, //!<
-   * @li const unsigned int Unknown = 999, //!<
-   *
-   * @see SIMPLib/Common/Constants.h file.
    * @return
    */
-  static Pointer New(QVector<size_t> tupleDims, const QString& name, AttributeMatrix::Type attrType)
+  static Pointer New(const QVector<size_t> &tupleDims, const QString& name, AttributeMatrix::Type attrType)
   {
     Pointer sharedPtr(new AttributeMatrix(tupleDims, name, attrType));
     return sharedPtr;
-    }
+  }
+
+  /**
+   * @brief New Creates an AttributeMatrix with the give name
+   * @param tupleDims The dimensions of the Attribute matrix given in the order fastest moving to slowest moving (XYZ)
+   * @param name The name of the AttributeMatrix. Each AttributeMatrix should have a unique name.
+   * @param attrType The type of AttributeMatrix, one of
+   * @return
+   */
+  static Pointer Create(const std::vector<size_t> &tupleDims, const QString& name, AttributeMatrix::Type attrType)
+  {
+    Pointer sharedPtr(new AttributeMatrix(QVector<size_t>::fromStdVector(tupleDims), name, static_cast<AttributeMatrix::Type>(attrType)));
+    return sharedPtr;
+  }
 
     /**
      * @brief ReadAttributeMatrixStructure
@@ -195,20 +199,12 @@ public:
     static void ReadAttributeMatrixStructure(hid_t containerId, DataContainerProxy* dcProxy, SIMPLH5DataReaderRequirements* req, const QString& h5InternalPath);
 
     /**
-     * @brief setType
-     * @param value
-     */
-    void setType(Type value);
+    * @brief Type
+    */
+    SIMPL_INSTANCE_PROPERTY(AttributeMatrix::Type, Type)
 
     /**
-     * @brief getType
-     * @return
-     */
-    AttributeMatrix::Type getType() const;
-
-
-    /**
-    * @param name
+    * @brief Name
     */
     SIMPL_INSTANCE_PROPERTY(QString, Name)
 
@@ -681,7 +677,6 @@ public:
   private:
     QVector<size_t> m_TupleDims;
     QMap<QString, IDataArray::Pointer> m_AttributeArrays;
-    Type m_Type;
 
     AttributeMatrix(const AttributeMatrix&);
     void operator =(const AttributeMatrix&);

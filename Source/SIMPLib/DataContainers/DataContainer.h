@@ -67,8 +67,18 @@ class SIMPLib_EXPORT DataContainer : public Observable
 
   // This line MUST be first when exposing a class and properties to Python
   PYB11_CREATE_BINDINGS(DataContainer)
-  PYB11_STATIC_NEW(New ARGS QString)
+  PYB11_STATIC_CREATION(New ARGS QString)
+  
+  PYB11_PROPERTY(QString Name READ getName WRITE setName)
+//  PYB11_PROPERTY(IGeometry Geometry READ getGeometry WRITE setGeometry)
+  
+  PYB11_METHOD(QString getInfoString ARGS InfoStringFormat)
+  PYB11_METHOD(void addAttributeMatrix ARGS Name AttributeMatrix)
+  //PYB11_METHOD(AttributeMatrix getAttributeMatrix ARGS Name)
+//  PYB11_METHOD(AttributeMatrix removeAttributeMatrix ARGS Name)
+  PYB11_METHOD(bool renameAttributeMatrix ARGS OldName NewName OverWrite)
 
+  PYB11_METHOD(bool doesAttributeMatrixExist ARGS Name)
 public:
   SIMPL_SHARED_POINTERS(DataContainer)
   SIMPL_TYPE_MACRO_SUPER_OVERRIDE(DataContainer, Observable)

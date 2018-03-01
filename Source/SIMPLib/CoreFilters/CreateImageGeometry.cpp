@@ -136,7 +136,7 @@ void CreateImageGeometry::dataCheck()
     notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
     return;
   }
-  DataContainer::Pointer m = getDataContainerArray()->getPrereqDataContainer<AbstractFilter>(this, getSelectedDataContainer());
+  DataContainer::Pointer m = getDataContainerArray()->getPrereqDataContainer(this, getSelectedDataContainer());
   if(getErrorCondition() < 0)
   {
     return;

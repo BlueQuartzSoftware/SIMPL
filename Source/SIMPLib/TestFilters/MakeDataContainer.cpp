@@ -123,7 +123,7 @@ void MakeDataContainer::dataCheck()
   }
   //  tDims.resize(1);
   //  tDims[0] = 0;
-  //  AttributeMatrix::Pointer cellEnsembleAttrMat = m->createNonPrereqAttributeMatrix<AbstractFilter>(this, getCellEnsembleAttributeMatrixName(), tDims, AttributeMatrix::Type::CellEnsemble);
+  //  AttributeMatrix::Pointer cellEnsembleAttrMat = m->createNonPrereqAttributeMatrix(this, getCellEnsembleAttributeMatrixName(), tDims, AttributeMatrix::Type::CellEnsemble);
   //  if(getErrorCondition() < 0)
   //  {
   //    return;

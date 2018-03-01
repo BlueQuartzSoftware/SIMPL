@@ -1,13 +1,24 @@
 # PyBind 11 Notes #
 
 
+## Install Python 3 if needed ##
+
+Went to [python.org](http://www.python.org) and downloaded the python 3 installer for my operating system. Be sure to get the correct 64 bit installer.
+
+After installation I needed to run
+    
+    pip3 install numpy
+
+at least on macOS.
+
+## Get Pybind11 from its Repository ##
 
 clone from PyBin11 Repository:
 
     git clone -b v2.2.1 ssh://git@github.com/pybind/pybind11 pybind11-2.2.1
 
 
-## Run CMake to installe ##
+## Run CMake to install ##
 
 Note on macOS 10.12 I had an issue with this error
 

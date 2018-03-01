@@ -41,10 +41,7 @@ namespace SIMPL
        * @brief GetSIMPLPyBind11_TemplatesDir
        * @return 
        */
-      QString GetSIMPLPyBind11_TemplatesDir()
-      {
-        return QString("@SIMPLPyBind11_SOURCE_DIR_NORM@/Templates");
-      }
+      static const QString TemplateDir("@SIMPLPyBind11_SOURCE_DIR_NORM@/Templates");
 
   }
   

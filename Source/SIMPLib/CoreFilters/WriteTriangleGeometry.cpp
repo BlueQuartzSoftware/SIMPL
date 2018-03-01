@@ -123,7 +123,7 @@ void WriteTriangleGeometry::dataCheck()
     notifyErrorMessage(getHumanLabel(), "The output Triangles file needs to be set", getErrorCondition());
   }
 
-  DataContainer::Pointer dataContainer = getDataContainerArray()->getPrereqDataContainer<AbstractFilter>(this, getDataContainerSelection());
+  DataContainer::Pointer dataContainer = getDataContainerArray()->getPrereqDataContainer(this, getDataContainerSelection());
   if(getErrorCondition() < 0)
   {
     return;
@@ -175,7 +175,7 @@ void WriteTriangleGeometry::execute()
   {
     return;
   }
-  DataContainer::Pointer dataContainer = getDataContainerArray()->getPrereqDataContainer<AbstractFilter>(this, getDataContainerSelection());
+  DataContainer::Pointer dataContainer = getDataContainerArray()->getPrereqDataContainer(this, getDataContainerSelection());
 
   TriangleGeom::Pointer triangleGeom = dataContainer->getGeometryAs<TriangleGeom>();
   QString geometryType = triangleGeom->getGeometryTypeAsString();

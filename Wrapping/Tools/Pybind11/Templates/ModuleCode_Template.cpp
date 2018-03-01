@@ -1,4 +1,22 @@
 #include <pybind11/pybind11.h>
+#include <pybind11/stl_bind.h>
+#include <pybind11/numpy.h>
+
+
+PYBIND11_MAKE_OPAQUE(std::vector<int8_t>);
+PYBIND11_MAKE_OPAQUE(std::vector<uint8_t>);
+PYBIND11_MAKE_OPAQUE(std::vector<int16_t>);
+PYBIND11_MAKE_OPAQUE(std::vector<uint16_t>);
+PYBIND11_MAKE_OPAQUE(std::vector<int32_t>);
+PYBIND11_MAKE_OPAQUE(std::vector<uint32_t>);
+PYBIND11_MAKE_OPAQUE(std::vector<int64_t>);
+PYBIND11_MAKE_OPAQUE(std::vector<uint64_t>);
+
+PYBIND11_MAKE_OPAQUE(std::vector<float>);
+PYBIND11_MAKE_OPAQUE(std::vector<double>);
+
+PYBIND11_MAKE_OPAQUE(std::vector<size_t>);
+
 #include <utility>
 
 #include <QtCore/QString>
@@ -90,31 +108,36 @@ public:
 template <typename T> using PySharedPtrClass = py::class_<T, std::shared_ptr<T>>;
 #endif
 
-#include "SIMPLib/Filtering/pybind11/AbstractFilter_PY11.h"
-#include "SIMPLib/Filtering/pybind11/FilterPipeline_PY11.h"
-#include "SIMPLib/DataContainers/pybind11/DataContainerArray_PY11.h"
-#include "SIMPLib/DataContainers/pybind11/DataContainerArrayProxy_PY11.h"
-
-#include "SIMPLib/CoreFilters/pybind11/DataContainerReader_PY11.h"
-#include "SIMPLib/CoreFilters/pybind11/DataContainerWriter_PY11.h"
+@HEADER_PATH@
 
 /**
  * @brief PYBIND11_MODULE This section declares our python module, its name and
  * what classes are available within the module.
  *
- * We should figure out how to auto generate this section if possible.
  */
-PYBIND11_MODULE(SIMPLPy, m)
+PYBIND11_MODULE(@LIB_NAME@Py, m)
 {
-  py::module simpl = m.def_submodule("SIMPLPy", "Python wrapping for SIMPLib");
+  py::module mod = m.def_submodule("@LIB_NAME@Py", "Python wrapping for @LIB_NAME@");
+  
+  /* STL Binding code */
+  py::bind_vector<std::vector<int8_t>>(mod, "VectorInt8");
+  py::bind_vector<std::vector<uint8_t>>(mod, "VectorUInt8");
 
-  PySharedPtrClass<AbstractFilter> SIMPL_AbstractFilter= pybind11_init_SIMPLib_AbstractFilter(simpl);
-  PySharedPtrClass<FilterPipeline> SIMPL_FilterPipeline = pybind11_init_SIMPLib_FilterPipeline(simpl);
-  PySharedPtrClass<DataContainerArray> SIMPL_DataContainerArray = pybind11_init_SIMPLib_DataContainerArray(simpl);
-  PySharedPtrClass<DataContainerReader> SIMPL_DataContainerReader = pybind11_init_SIMPLib_DataContainerReader(simpl, SIMPL_AbstractFilter);
-  PySharedPtrClass<DataContainerReader> SIMPL_DataContainerWriter = pybind11_init_SIMPLib_DataContainerWriter(simpl, SIMPL_AbstractFilter);
-  PySharedPtrClass<DataContainerArrayProxy> SIMPL_DataContainerArrayProxy = pybind11_init_SIMPLib_DataContainerArrayProxy(simpl);
+  py::bind_vector<std::vector<int16_t>>(mod, "VectorInt16");
+  py::bind_vector<std::vector<uint16_t>>(mod, "VectorUInt16");
 
+  py::bind_vector<std::vector<int32_t>>(mod, "VectorInt32");
+  py::bind_vector<std::vector<uint32_t>>(mod, "VectorUInt32");
 
+  py::bind_vector<std::vector<int64_t>>(mod, "VectorInt64");
+  py::bind_vector<std::vector<uint64_t>>(mod, "VectorUInt64");
+
+  py::bind_vector<std::vector<float>>(mod, "VectorFloat");
+  py::bind_vector<std::vector<double>>(mod, "VectorDouble");
+
+  py::bind_vector<std::vector<size_t>>(mod, "VectorSizeT");
+
+  /* Init codes for classes in the Module */
+  @MODULE_INIT_CODE@
 
 }

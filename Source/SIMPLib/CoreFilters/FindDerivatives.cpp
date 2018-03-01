@@ -202,7 +202,7 @@ void FindDerivatives::dataCheck()
   setErrorCondition(0);
   setWarningCondition(0);
   initialize();
-  DataContainer::Pointer m = getDataContainerArray()->getPrereqDataContainer<AbstractFilter>(this, m_SelectedArrayPath.getDataContainerName(), false);
+  DataContainer::Pointer m = getDataContainerArray()->getPrereqDataContainer(this, m_SelectedArrayPath.getDataContainerName(), false);
   if(getErrorCondition() < 0 || nullptr == m.get())
   {
     return;

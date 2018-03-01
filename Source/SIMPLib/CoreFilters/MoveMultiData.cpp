@@ -155,12 +155,12 @@ void MoveMultiData::dataCheck()
 
   if(getWhatToMove() == k_MoveAttributeMatrix)
   {
-    DataContainer::Pointer amDestDataContainer = getDataContainerArray()->getPrereqDataContainer<AbstractFilter>(this, getDataContainerDestination());
+    DataContainer::Pointer amDestDataContainer = getDataContainerArray()->getPrereqDataContainer(this, getDataContainerDestination());
 
     // Repeat for each AttributeMatrix
     for(int i = 0; i < amSrcPaths.size(); i++)
     {
-      DataContainer::Pointer amSrcDataContainer = getDataContainerArray()->getPrereqDataContainer<AbstractFilter>(this, amSrcPaths[i].getDataContainerName());
+      DataContainer::Pointer amSrcDataContainer = getDataContainerArray()->getPrereqDataContainer(this, amSrcPaths[i].getDataContainerName());
       AttributeMatrix::Pointer amSrcAttributeMatrix = getDataContainerArray()->getPrereqAttributeMatrixFromPath<AbstractFilter>(this, amSrcPaths[i], -301);
 
       if(getErrorCondition() < 0)

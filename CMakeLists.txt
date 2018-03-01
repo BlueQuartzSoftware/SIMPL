@@ -387,7 +387,7 @@ add_subdirectory( ${SIMPLProj_SOURCE_DIR}/Source/H5Support ${PROJECT_BINARY_DIR}
 # -----------------------------------------------------------------------
 # Add in the support to host the documentation over a thin-http server
 # -----------------------------------------------------------------------
-add_subdirectory(${SIMPLProj_SOURCE_DIR}/3rdParty/QtWebApp )
+add_subdirectory(${SIMPLProj_SOURCE_DIR}/ThirdParty/QtWebApp )
 
 
 # -----------------------------------------------------------------------
@@ -420,8 +420,8 @@ include(${PROJECT_RESOURCES_DIR}/CPack/PackageProject.cmake)
 
 
 # --------------------------------------------------------------------
-# add the PyBind11 Python Wrapping
+# add the Pybind11 Python Wrapping
 # Figure out here if we are going to build the command line tools
-add_subdirectory(${SIMPLProj_SOURCE_DIR}/PyBind11 ${PROJECT_BINARY_DIR}/PyBind11)
+add_subdirectory(${SIMPLProj_SOURCE_DIR}/Wrapping/Tools/Pybind11 ${PROJECT_BINARY_DIR}/Pybind11)
 
 

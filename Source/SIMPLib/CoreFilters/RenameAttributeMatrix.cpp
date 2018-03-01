@@ -110,7 +110,7 @@ void RenameAttributeMatrix::dataCheck()
 
   QString amName = getSelectedAttributeMatrixPath().getAttributeMatrixName();
 
-  DataContainer::Pointer dc = getDataContainerArray()->getPrereqDataContainer<AbstractFilter>(this, getSelectedAttributeMatrixPath().getDataContainerName());
+  DataContainer::Pointer dc = getDataContainerArray()->getPrereqDataContainer(this, getSelectedAttributeMatrixPath().getDataContainerName());
   getDataContainerArray()->getPrereqAttributeMatrixFromPath<AbstractFilter>(this, getSelectedAttributeMatrixPath(), -301);
 
   if(getErrorCondition() < 0)

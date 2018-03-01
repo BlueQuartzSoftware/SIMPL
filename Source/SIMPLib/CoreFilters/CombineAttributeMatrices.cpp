@@ -158,7 +158,7 @@ void CombineAttributeMatrices::dataCheck()
   setWarningCondition(0);
   DataArrayPath tempPath;
 
-  DataContainer::Pointer m = getDataContainerArray()->getPrereqDataContainer<AbstractFilter>(this, getFirstAttributeMatrixPath().getDataContainerName(), false);
+  DataContainer::Pointer m = getDataContainerArray()->getPrereqDataContainer(this, getFirstAttributeMatrixPath().getDataContainerName(), false);
   if(getErrorCondition() < 0 || nullptr == m.get())
   {
     return;

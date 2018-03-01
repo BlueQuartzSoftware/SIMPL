@@ -60,9 +60,9 @@
 //
 // -----------------------------------------------------------------------------
 AttributeMatrix::AttributeMatrix(QVector<size_t> tDims, const QString& name, AttributeMatrix::Type attrType)
-: m_Name(name)
+: m_Type(attrType)
+, m_Name(name)
 , m_TupleDims(tDims)
-, m_Type(attrType)
 {
 }
 
@@ -286,20 +286,6 @@ void AttributeMatrix::ReadAttributeMatrixStructure(hid_t containerId, DataContai
   }
 }
 
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-void AttributeMatrix::setType(AttributeMatrix::Type value)
-{
-  m_Type = value;
-}
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-AttributeMatrix::Type AttributeMatrix::getType() const
-{
-  return m_Type;
-}
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------

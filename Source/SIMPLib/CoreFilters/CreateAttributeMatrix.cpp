@@ -122,7 +122,7 @@ void CreateAttributeMatrix::dataCheck()
   setErrorCondition(0);
   setWarningCondition(0);
 
-  DataContainer::Pointer m = getDataContainerArray()->getPrereqDataContainer<AbstractFilter>(this, getCreatedAttributeMatrix().getDataContainerName());
+  DataContainer::Pointer m = getDataContainerArray()->getPrereqDataContainer(this, getCreatedAttributeMatrix().getDataContainerName());
   if(getErrorCondition() < 0)
   {
     return;

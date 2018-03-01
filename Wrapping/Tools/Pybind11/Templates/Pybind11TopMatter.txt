@@ -1,5 +1,4 @@
-#ifndef pybind_@CLASS_NAME@_H_
-#define pybind_@CLASS_NAME@_H_
+#pragma once
 
 /**
 * @brief This header file is genererate from a program. Make changes with caution.
