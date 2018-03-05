@@ -1,4 +1,4 @@
-TESTCLASSNAME {#TESTCLASSNAME}
+TESTCLASSNAME 
 =============
 
 ## Group (Subgroup) ##
