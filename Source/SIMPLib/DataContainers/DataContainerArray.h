@@ -66,6 +66,8 @@ class SIMPLib_EXPORT DataContainerArray : public QObject
     Q_OBJECT
     // This line MUST be first when exposing a class and properties to Python
     PYB11_CREATE_BINDINGS(DataContainerArray)
+
+    PYB11_METHOD(void addDataContainer ARGS data_container)
     
   public:
     SIMPL_SHARED_POINTERS(DataContainerArray)

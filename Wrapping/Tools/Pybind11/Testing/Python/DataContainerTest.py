@@ -32,4 +32,4 @@ Main entry point for python script
 """
 if __name__ == "__main__":
   DataContainerTest()
-  print("Test Complete")
+  print("DataContainerTest Test Complete")

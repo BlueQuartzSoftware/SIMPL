@@ -40,6 +40,9 @@
 */
 class SIMPLib_EXPORT IDataArray
 {
+  PYB11_CREATE_BINDINGS(IDataArray)
+  PYB11_PROPERTY(QString Name READ getName WRITE setName)
+
   public:
     SIMPL_SHARED_POINTERS(IDataArray)
     SIMPL_TYPE_MACRO(IDataArray)

@@ -41,6 +41,11 @@ PySharedPtrClass<AttributeMatrix> pybind11_init_SIMPLib_AttributeMatrix(py::modu
   .def_static("Create", &AttributeMatrix::Create)
   /* Property accessors for Name */
   .def_property("Name", &AttributeMatrix::getName, &AttributeMatrix::setName)
+  /* Class instance method addAttributeArray */
+  .def("addAttributeArray", &AttributeMatrix::addAttributeArray, 
+        py::arg("Name"), 
+        py::arg("Array")
+      )
   /* Class instance method doesAttributeArrayExist */
   .def("doesAttributeArrayExist", &AttributeMatrix::doesAttributeArrayExist, 
         py::arg("Name")

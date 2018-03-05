@@ -92,7 +92,7 @@ class SIMPLib_EXPORT AbstractFilter : public Observable
   PYB11_METHOD(void generateHtmlSummary)
   PYB11_METHOD(void execute)
   PYB11_METHOD(void preflight)
-  
+  PYB11_METHOD(void setDataContainerArray)
   
 public:
   SIMPL_SHARED_POINTERS(AbstractFilter)

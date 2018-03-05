@@ -92,6 +92,7 @@ class SIMPLib_EXPORT AttributeMatrix : public Observable
  
   PYB11_PROPERTY(QString Name READ getName WRITE setName)
 
+  PYB11_METHOD(int addAttributeArray ARGS Name Array)
   PYB11_METHOD(bool doesAttributeArrayExist ARGS Name)
   PYB11_METHOD(IDataArray removeAttributeArray ARGS Name)
   PYB11_METHOD(int renameAttributeArray ARGS OldName NewName OverWrite)

@@ -110,6 +110,8 @@ template <typename T> using PySharedPtrClass = py::class_<T, std::shared_ptr<T>>
 
 @HEADER_PATH@
 
+#include "SIMPLib/DataArrays/DataArray_PY11.h"
+
 /**
  * @brief PYBIND11_MODULE This section declares our python module, its name and
  * what classes are available within the module.
@@ -137,7 +139,16 @@ PYBIND11_MODULE(@LIB_NAME@Py, m)
 
   py::bind_vector<std::vector<size_t>>(mod, "VectorSizeT");
 
+
   /* Init codes for classes in the Module */
   @MODULE_INIT_CODE@
 
+
+  /* Init codes for the DataArray<T> classes */
+  PySharedPtrClass<Int8ArrayType> SIMPLib_Int8ArrayType = pybind11_init_SIMPLib_Int8ArrayType(mod, SIMPLib_IDataArray);
+  PySharedPtrClass<Int16ArrayType> SIMPLib_Int16ArrayType = pybind11_init_SIMPLib_Int16ArrayType(mod, SIMPLib_IDataArray);
+  PySharedPtrClass<Int32ArrayType> SIMPLib_Int32ArrayType = pybind11_init_SIMPLib_Int32ArrayType(mod, SIMPLib_IDataArray);
+  PySharedPtrClass<Int64ArrayType> SIMPLib_Int64ArrayType = pybind11_init_SIMPLib_Int64ArrayType(mod, SIMPLib_IDataArray);
+
+  
 }

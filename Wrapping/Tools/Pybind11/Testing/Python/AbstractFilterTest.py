@@ -42,4 +42,4 @@ Main entry point for python script
 """
 if __name__ == "__main__":
   BasicTest()
-  print("Test Complete")
+  print("AbstractFilter Test Complete")

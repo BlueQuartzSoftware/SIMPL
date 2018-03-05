@@ -18,4 +18,4 @@ Main entry point for python script
 """
 if __name__ == "__main__":
   AttributeMatrixTest()
-  print("Test Complete")
+  print("AttributeMatrixTest Test Complete")
