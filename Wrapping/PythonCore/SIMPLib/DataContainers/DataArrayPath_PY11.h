@@ -1,11 +1,13 @@
 #pragma once
 
 /**
-* @brief This header file is genererate from a program. Make changes with caution.
+* @brief This header file is genererated from a program. Make changes with caution.
+* 
 * 
 * This header file wraps the SIMPL class DataArrayPath located at
 * SIMPLib/DataContainers/DataArrayPath.h. 
 * The Python bindings are created using Pybind11.
+* @date Tue Mar 6 17:07:40 2018
 */
 
 #include <pybind11/pybind11.h>
@@ -37,6 +39,24 @@ PySharedPtrClass<DataArrayPath> pybind11_init_SIMPLib_DataArrayPath(py::module &
   instance
   .def(py::init<DataArrayPath>())
   .def(py::init<DataArrayPath const &>())
+  /* Number of costructors: 1*/
+  .def(py::init<const QString &, const QString &, const QString &>())
+  /* Property accessors for DataContainerName */
+  .def_property("DataContainerName", &DataArrayPath::getDataContainerName, &DataArrayPath::setDataContainerName)
+  /* Property accessors for AttributeMatrixName */
+  .def_property("AttributeMatrixName", &DataArrayPath::getAttributeMatrixName, &DataArrayPath::setAttributeMatrixName)
+  /* Property accessors for DataArrayName */
+  .def_property("DataArrayName", &DataArrayPath::getDataArrayName, &DataArrayPath::setDataArrayName)
+  /* Class instance method isEmpty */
+  .def("isEmpty", &DataArrayPath::isEmpty)
+  /* Class instance method isValid */
+  .def("isValid", &DataArrayPath::isValid)
+  /* Class instance method update */
+  .def("update", &DataArrayPath::update, 
+        py::arg("dcName"), 
+        py::arg("amName"), 
+        py::arg("daName")
+      )
   ;
   return instance;
 }

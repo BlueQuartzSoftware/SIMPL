@@ -163,7 +163,12 @@ void PyBind11Generator::generatePybind11Header(const QString& hFile)
       line = line.trimmed();
       bindingClass.addStaticCreation(line);
     }
-    
+    else if(bindingClass.getNeedsWrapping() && line.contains(::kPYB11_CREATION))
+    {
+      line = line.trimmed();
+      bindingClass.addConstructor(line);
+    }
+
     if(enumerations.size() != 0)
     { 
       bool foundEnumerationCode = false;

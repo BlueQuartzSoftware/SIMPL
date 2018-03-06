@@ -1,11 +1,13 @@
 #pragma once
 
 /**
-* @brief This header file is genererate from a program. Make changes with caution.
+* @brief This header file is genererated from a program. Make changes with caution.
+* 
 * 
 * This header file wraps the SIMPL class DataContainerArray located at
 * SIMPLib/DataContainers/DataContainerArray.h. 
 * The Python bindings are created using Pybind11.
+* @date Tue Mar 6 17:07:40 2018
 */
 
 #include <pybind11/pybind11.h>
@@ -44,6 +46,40 @@ PySharedPtrClass<DataContainerArray> pybind11_init_SIMPLib_DataContainerArray(py
   /* Class instance method addDataContainer */
   .def("addDataContainer", &DataContainerArray::addDataContainer, 
         py::arg("data_container")
+      )
+  /* Class instance method doesDataContainerExist */
+  .def("doesDataContainerExist", &DataContainerArray::doesDataContainerExist, 
+        py::arg("name")
+      )
+  /* Class instance method removeDataContainer */
+  .def("removeDataContainer", &DataContainerArray::removeDataContainer, 
+        py::arg("name")
+      )
+  /* Class instance method renameDataContainer */
+  .def("renameDataContainer", &DataContainerArray::renameDataContainer, 
+        py::arg("oldName"), 
+        py::arg("newName")
+      )
+  /* Class instance method clearDataContainers */
+  .def("clearDataContainers", &DataContainerArray::clearDataContainers)
+  /* Class instance method getNumDataContainers */
+  .def("getNumDataContainers", &DataContainerArray::getNumDataContainers)
+  /* Class instance method duplicateDataContainer */
+  .def("duplicateDataContainer", &DataContainerArray::duplicateDataContainer, 
+        py::arg("oldName,"), 
+        py::arg("newName")
+      )
+  /* Class instance method getAttributeMatrix */
+  .def("getAttributeMatrix", &DataContainerArray::getAttributeMatrix, 
+        py::arg("dataArrayPath")
+      )
+  /* Class instance method doesAttributeMatrixExist */
+  .def("doesAttributeMatrixExist", &DataContainerArray::doesAttributeMatrixExist, 
+        py::arg("dataArrayPath")
+      )
+  /* Class instance method doesAttributeArrayExist */
+  .def("doesAttributeArrayExist", &DataContainerArray::doesAttributeArrayExist, 
+        py::arg("dataArrayPath")
       )
   ;
   return instance;

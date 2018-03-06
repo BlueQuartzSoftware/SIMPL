@@ -10,6 +10,7 @@ def AttributeMatrixTest() :
   amName = am.Name
   print("Name: %s" % amName)
   arrayExist = am.doesAttributeArrayExist("Test Data Array")
+  assert arrayExist == True
   print("arrayExist: %s" % arrayExist)
 
 

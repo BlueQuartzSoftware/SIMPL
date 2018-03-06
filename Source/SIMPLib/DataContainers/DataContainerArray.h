@@ -68,7 +68,20 @@ class SIMPLib_EXPORT DataContainerArray : public QObject
     PYB11_CREATE_BINDINGS(DataContainerArray)
 
     PYB11_METHOD(void addDataContainer ARGS data_container)
+    //PYB11_METHOD(DataContainer::Pointer getDataContainer ARGS name)
+    PYB11_METHOD(bool doesDataContainerExist ARGS name)
+    PYB11_METHOD(DataContainer::Pointer removeDataContainer ARGS name)
+    PYB11_METHOD(bool renameDataContainer ARGS oldName newName)
+    PYB11_METHOD(void clearDataContainers)
+    //PYB11_METHOD(XXXX getDataContainerNames)
+    PYB11_METHOD(int getNumDataContainers)
+    PYB11_METHOD(void duplicateDataContainer ARGS oldName, newName)
     
+    PYB11_METHOD(AttributeMatrix::Pointer getAttributeMatrix ARGS dataArrayPath)
+    PYB11_METHOD(bool doesAttributeMatrixExist ARGS dataArrayPath)
+    
+    PYB11_METHOD(bool doesAttributeArrayExist ARGS dataArrayPath)
+
   public:
     SIMPL_SHARED_POINTERS(DataContainerArray)
     SIMPL_STATIC_NEW_MACRO(DataContainerArray)

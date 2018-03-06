@@ -28,5 +28,6 @@ namespace
   static const QString kPYB11_PROPERTY("PYB11_PROPERTY");
   static const QString kPYB11_METHOD("PYB11_METHOD");
   static const QString kPYB11_STATIC_CREATION("PYB11_STATIC_CREATION");
+  static const QString kPYB11_CREATION("PYB11_CREATION");
   static const QString kPYB11_ENUMERATION("PYB11_ENUMERATION");
 }

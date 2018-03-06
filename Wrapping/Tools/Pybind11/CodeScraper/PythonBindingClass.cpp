@@ -1,5 +1,7 @@
 #include "PythonBindingClass.h"
 
+#include <QtCore/QDateTime>
+
 #include "CodeScraper/CodeScraperConstants.h"
 #include "CodeScraper/SIMPLPyBind11Config.h"
 #include "PythonBindingsModule.h"
@@ -43,6 +45,14 @@ void PythonBindingClass::clearStaticCreation()
   m_StaticNewMethods.clear();
 }
 
+void PythonBindingClass::addConstructor(const QString& constructor)
+{
+  m_Constructors.push_back(constructor);
+}
+void PythonBindingClass::clearConstructors()
+{
+  m_Constructors.clear();
+}
 
 void PythonBindingClass::addEnumeration(const QString& name, const QStringList& values)
 {
@@ -156,6 +166,7 @@ QString PythonBindingClass::generateTopMatterCode()
 
   headerTemplate = headerTemplate.replace(HEADER_PATH, headerPath);
   headerTemplate = headerTemplate.replace(LIB_NAME, m_LibName);
+  headerTemplate = headerTemplate.replace("@DATE_TIME_GENERATED@", QDateTime::currentDateTime().toString());
   return headerTemplate;
 }
 
@@ -287,7 +298,22 @@ QString PythonBindingClass::generateConstructorsCodes()
   constructors << TAB << ".def(py::init<" << getClassName() << ">())" << NEWLINE_SIMPL;
   constructors << TAB << ".def(py::init<" << getClassName() << " const &>())" << NEWLINE_SIMPL;
 
-//  QString pybind11HeaderPath = QString("%1/pybind11/%2_PY11.h").arg(subPath).arg(getClassName());
+  constructors << TAB << "/* Number of costructors: " <<  m_Constructors.size()  << "*/" << NEWLINE_SIMPL;
+  for(auto line : m_Constructors)
+  {
+    QStringList tokens = line.split("(");
+    tokens = tokens[1].replace(")", "").trimmed().split(" ");
+    QString keyword = tokens[0];
+    //.def(py::init<const std::string &>())
+    constructors << TAB << ".def(py::init<";
+    for(int i = 1; i < tokens.size(); i++)
+    {
+      constructors << "const " << tokens[i] << " &";
+      if(i != tokens.size() - 1) { constructors << ", "; }
+    }
+    constructors << ">())" << NEWLINE_SIMPL;
+  }
+
   QString pybind11HeaderPath = QString("%1/%2_PY11.h").arg(subPath).arg(getClassName());
   if(!m_CharsToStrip.isEmpty())
   {

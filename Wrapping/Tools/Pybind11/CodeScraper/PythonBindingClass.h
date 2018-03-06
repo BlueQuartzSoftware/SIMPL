@@ -42,7 +42,11 @@ public:
   SIMPL_INSTANCE_PROPERTY(QVector<QString>, StaticNewMethods)
   void addStaticCreation(const QString& method);
   void clearStaticCreation();
-  
+ 
+  SIMPL_INSTANCE_PROPERTY(QVector<QString>, Constructors)
+  void addConstructor(const QString& constructor);
+  void clearConstructors();
+
   using EnumerationType = QMap<QString, QStringList>;
   SIMPL_INSTANCE_PROPERTY(EnumerationType, Enumerations)
   void addEnumeration(const QString& name, const QStringList& values);

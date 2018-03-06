@@ -9,6 +9,17 @@ except ImportError:
     raise RuntimeError("This module depends on the numpy module. Please make\
 sure that it is installed properly.")
 
+def CreateDataContainerArray(name)
+    dca = SIMPLibPy.DataContainerArray.New()
+    dca.Name = name
+    return dca
+
+def CreateDataContainer():
+
+
+
+
+
 # Create a DataContainerArray
 dca = SIMPLibPy.DataContainerArray.New()
 
@@ -81,7 +92,7 @@ writer.execute()
 
 
 
-intArray.setValue(0, 24)
+#intArray.setValue(0, 24)
 print("num_array: %s" % num_array)
 writer.OutputFile = ("/tmp/DataArrayTest_alt.dream3d")
 writer.execute()
