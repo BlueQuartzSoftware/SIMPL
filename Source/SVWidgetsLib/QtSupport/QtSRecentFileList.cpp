@@ -44,8 +44,9 @@
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-QtSRecentFileList::QtSRecentFileList(QObject* parent)
+QtSRecentFileList::QtSRecentFileList(int maxListSize, QObject* parent)
 : QObject(parent)
+, m_MaxListSize(maxListSize)
 , m_Watcher(new QFileSystemWatcher(this))
 {
   connect(m_Watcher, SIGNAL(fileChanged(const QString&)), this, SLOT(removeFile(const QString&)));
@@ -63,14 +64,14 @@ QtSRecentFileList::~QtSRecentFileList()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-QtSRecentFileList* QtSRecentFileList::instance()
+QtSRecentFileList* QtSRecentFileList::instance(int maxListSize, QObject* parent)
 {
   // qDebug() << "QtSRecentFileList::instance()" << "\n";
   static QtSRecentFileList* singleton;
 
   if(singleton == nullptr)
   {
-    singleton = new QtSRecentFileList();
+    singleton = new QtSRecentFileList(maxListSize, parent);
   }
   return singleton;
 }
@@ -90,10 +91,13 @@ void QtSRecentFileList::addFile(const QString& file, AddType type)
 {
   if(QFile::exists(file) == true)
   {
-    // Remove the file from wherever it is in the list
-    removeFile(file);
+    if(recentFiles.contains(file))
+    {
+      // Remove the file from wherever it is in the list
+      removeFile(file);
+    }
 
-    if(recentFiles.size() == 7)
+    if(recentFiles.size() == m_MaxListSize)
     {
       recentFiles.pop_back();
     }

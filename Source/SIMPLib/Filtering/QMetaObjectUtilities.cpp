@@ -147,6 +147,7 @@ QMetaObjectUtilities::~QMetaObjectUtilities() = default;
 // -----------------------------------------------------------------------------
 void QMetaObjectUtilities::RegisterMetaTypes()
 {
+  qRegisterMetaType<DataContainerArrayProxy>("DataContainerArrayProxy");
   qRegisterMetaType<DataArrayPath>("DataArrayPath");
   qRegisterMetaType<AxisAngleInput_t>("AxisAngleInput_t");
   qRegisterMetaType<ComparisonInput_t>("ComparisonInput_t");
