@@ -265,7 +265,7 @@ QString QtSStyles::QToolSelectionButtonStyle(bool exists)
   ss << "}\n";
 
   ss << "QToolButton::menu-indicator {\n";
-  ss << " subcontrol-origin: padding;\n";
+  ss << " subcontrol-origin: content;\n";
   ss << " subcontrol-position:  right; /* */\n";
   ss << "}\n";
 
