@@ -32,7 +32,7 @@ using PySharedPtrClass = py::class_<T, std::shared_ptr<T> >;
 * @return A std::shared_ptr<T> wrapped instance of the wrapped class properly 
 * initialized.
 */
-PySharedPtrClass<MoveMultiData> pybind11_init_SIMPLib_MoveMultiData(py::module &m, PySharedPtrClass<AbstractFilter>& parent)
+PySharedPtrClass<MoveMultiData> pybind11_init_simpl_MoveMultiData(py::module &m, PySharedPtrClass<AbstractFilter>& parent)
 {
   PySharedPtrClass<MoveMultiData> instance(m, "MoveMultiData", parent);
   instance

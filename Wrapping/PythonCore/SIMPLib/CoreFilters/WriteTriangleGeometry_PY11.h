@@ -32,7 +32,7 @@ using PySharedPtrClass = py::class_<T, std::shared_ptr<T> >;
 * @return A std::shared_ptr<T> wrapped instance of the wrapped class properly 
 * initialized.
 */
-PySharedPtrClass<WriteTriangleGeometry> pybind11_init_SIMPLib_WriteTriangleGeometry(py::module &m, PySharedPtrClass<AbstractFilter>& parent)
+PySharedPtrClass<WriteTriangleGeometry> pybind11_init_simpl_WriteTriangleGeometry(py::module &m, PySharedPtrClass<AbstractFilter>& parent)
 {
   PySharedPtrClass<WriteTriangleGeometry> instance(m, "WriteTriangleGeometry", parent);
   instance

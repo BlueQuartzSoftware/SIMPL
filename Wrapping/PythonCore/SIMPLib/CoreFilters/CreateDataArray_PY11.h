@@ -32,7 +32,7 @@ using PySharedPtrClass = py::class_<T, std::shared_ptr<T> >;
 * @return A std::shared_ptr<T> wrapped instance of the wrapped class properly 
 * initialized.
 */
-PySharedPtrClass<CreateDataArray> pybind11_init_SIMPLib_CreateDataArray(py::module &m, PySharedPtrClass<AbstractFilter>& parent)
+PySharedPtrClass<CreateDataArray> pybind11_init_simpl_CreateDataArray(py::module &m, PySharedPtrClass<AbstractFilter>& parent)
 {
   PySharedPtrClass<CreateDataArray> instance(m, "CreateDataArray", parent);
   instance

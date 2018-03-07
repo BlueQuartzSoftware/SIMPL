@@ -32,7 +32,7 @@ using PySharedPtrClass = py::class_<T, std::shared_ptr<T> >;
 * @return A std::shared_ptr<T> wrapped instance of the wrapped class properly 
 * initialized.
 */
-PySharedPtrClass<ReplaceValueInArray> pybind11_init_SIMPLib_ReplaceValueInArray(py::module &m, PySharedPtrClass<AbstractFilter>& parent)
+PySharedPtrClass<ReplaceValueInArray> pybind11_init_simpl_ReplaceValueInArray(py::module &m, PySharedPtrClass<AbstractFilter>& parent)
 {
   PySharedPtrClass<ReplaceValueInArray> instance(m, "ReplaceValueInArray", parent);
   instance

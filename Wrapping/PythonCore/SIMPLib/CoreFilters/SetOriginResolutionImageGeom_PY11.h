@@ -32,7 +32,7 @@ using PySharedPtrClass = py::class_<T, std::shared_ptr<T> >;
 * @return A std::shared_ptr<T> wrapped instance of the wrapped class properly 
 * initialized.
 */
-PySharedPtrClass<SetOriginResolutionImageGeom> pybind11_init_SIMPLib_SetOriginResolutionImageGeom(py::module &m, PySharedPtrClass<AbstractFilter>& parent)
+PySharedPtrClass<SetOriginResolutionImageGeom> pybind11_init_simpl_SetOriginResolutionImageGeom(py::module &m, PySharedPtrClass<AbstractFilter>& parent)
 {
   PySharedPtrClass<SetOriginResolutionImageGeom> instance(m, "SetOriginResolutionImageGeom", parent);
   instance

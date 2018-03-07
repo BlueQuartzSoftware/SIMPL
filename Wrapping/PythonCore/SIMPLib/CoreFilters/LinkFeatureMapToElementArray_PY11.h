@@ -32,7 +32,7 @@ using PySharedPtrClass = py::class_<T, std::shared_ptr<T> >;
 * @return A std::shared_ptr<T> wrapped instance of the wrapped class properly 
 * initialized.
 */
-PySharedPtrClass<LinkFeatureMapToElementArray> pybind11_init_SIMPLib_LinkFeatureMapToElementArray(py::module &m, PySharedPtrClass<AbstractFilter>& parent)
+PySharedPtrClass<LinkFeatureMapToElementArray> pybind11_init_simpl_LinkFeatureMapToElementArray(py::module &m, PySharedPtrClass<AbstractFilter>& parent)
 {
   PySharedPtrClass<LinkFeatureMapToElementArray> instance(m, "LinkFeatureMapToElementArray", parent);
   instance

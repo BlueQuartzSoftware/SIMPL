@@ -32,7 +32,7 @@ using PySharedPtrClass = py::class_<T, std::shared_ptr<T> >;
 * @return A std::shared_ptr<T> wrapped instance of the wrapped class properly 
 * initialized.
 */
-PySharedPtrClass<CopyFeatureArrayToElementArray> pybind11_init_SIMPLib_CopyFeatureArrayToElementArray(py::module &m, PySharedPtrClass<AbstractFilter>& parent)
+PySharedPtrClass<CopyFeatureArrayToElementArray> pybind11_init_simpl_CopyFeatureArrayToElementArray(py::module &m, PySharedPtrClass<AbstractFilter>& parent)
 {
   PySharedPtrClass<CopyFeatureArrayToElementArray> instance(m, "CopyFeatureArrayToElementArray", parent);
   instance

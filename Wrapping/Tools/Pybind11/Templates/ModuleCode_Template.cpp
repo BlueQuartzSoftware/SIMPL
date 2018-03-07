@@ -110,16 +110,75 @@ template <typename T> using PySharedPtrClass = py::class_<T, std::shared_ptr<T>>
 
 @HEADER_PATH@
 
-#include "SIMPLib/DataArrays/DataArray_PY11.h"
+/******************************************************************************
+*
+******************************************************************************/
+
+#include "SIMPLib/DataArrays/DataArray.hpp"
+
+#define PYB11_DEFINE_DATAARRAY_INIT(T, NAME)\
+PySharedPtrClass<DataArray<T>> pybind11_init_@LIB_NAME@_##NAME(py::module &m, PySharedPtrClass<IDataArray>& parent)\
+{\
+  using DataArrayType = DataArray<T>;\
+  PySharedPtrClass<DataArrayType> instance(m, #NAME, parent, py::buffer_protocol());\
+  instance\
+  .def(py::init([](size_t numElements, QString name, bool allocate) {\
+    return DataArrayType::CreateArray(numElements, name, allocate);\
+    }))\
+  .def(py::init([](T* ptr, size_t numElements, std::vector<size_t> cDims, QString name, bool ownsData) {\
+    return DataArrayType::WrapPointer(ptr, numElements, QVector<size_t>::fromStdVector(cDims), name, ownsData);\
+  }))\
+  .def(py::init([](py::array_t<T, py::array::c_style> b, std::vector<size_t> cDims, QString name, bool ownsData) {\
+      ssize_t numElements = 1;\
+      ssize_t nDims = b.ndim();\
+     for(ssize_t e = 0; e < nDims; e++) { numElements *= b.shape(e);}\
+      return DataArrayType::WrapPointer(reinterpret_cast<T*>(b.mutable_data(0)), \
+                                        static_cast<size_t>(numElements), \
+                                        QVector<size_t>::fromStdVector(cDims), \
+                                        name,\
+                                        ownsData);\
+  }))\
+  /* Class instance method setValue */\
+  .def("setValue", &DataArrayType::setValue, \
+        py::arg("index"), \
+        py::arg("value")\
+      )\
+  .def("getValue", &DataArrayType::getValue, \
+        py::arg("index")\
+      )\
+  .def_property("Name", &DataArrayType::getName, &DataArrayType::setName);\
+  ;\
+  return instance;\
+}
+
+PYB11_DEFINE_DATAARRAY_INIT(int8_t, Int8ArrayType);
+PYB11_DEFINE_DATAARRAY_INIT(uint8_t, UInt8ArrayType);
+
+PYB11_DEFINE_DATAARRAY_INIT(int16_t, Int16ArrayType);
+PYB11_DEFINE_DATAARRAY_INIT(uint16_t, UInt16ArrayType);
+
+PYB11_DEFINE_DATAARRAY_INIT(int32_t, Int32ArrayType);
+PYB11_DEFINE_DATAARRAY_INIT(uint32_t, UInt32ArrayType);
+
+PYB11_DEFINE_DATAARRAY_INIT(int64_t, Int64ArrayType);
+PYB11_DEFINE_DATAARRAY_INIT(uint64_t, UInt64ArrayType);
+
+PYB11_DEFINE_DATAARRAY_INIT(float, FloatArrayType);
+PYB11_DEFINE_DATAARRAY_INIT(double, DoubleArrayType);
+
+/******************************************************************************
+*
+******************************************************************************/
+
 
 /**
  * @brief PYBIND11_MODULE This section declares our python module, its name and
  * what classes are available within the module.
  *
  */
-PYBIND11_MODULE(@LIB_NAME@Py, m)
+PYBIND11_MODULE(@LIB_NAME@, m)
 {
-  py::module mod = m.def_submodule("@LIB_NAME@Py", "Python wrapping for @LIB_NAME@");
+  py::module mod = m.def_submodule("@LIB_NAME@", "  Python wrapping for @LIB_NAME@");
   
   /* STL Binding code */
   py::bind_vector<std::vector<int8_t>>(mod, "VectorInt8");
@@ -145,20 +204,20 @@ PYBIND11_MODULE(@LIB_NAME@Py, m)
 
 
   /* Init codes for the DataArray<T> classes */
-  PySharedPtrClass<Int8ArrayType> SIMPLib_Int8ArrayType = pybind11_init_SIMPLib_Int8ArrayType(mod, SIMPLib_IDataArray);
-  PySharedPtrClass<UInt8ArrayType> SIMPLib_UInt8ArrayType = pybind11_init_SIMPLib_UInt8ArrayType(mod, SIMPLib_IDataArray);
+  PySharedPtrClass<Int8ArrayType> @LIB_NAME@_Int8ArrayType = pybind11_init_@LIB_NAME@_Int8ArrayType(mod, @LIB_NAME@_IDataArray);
+  PySharedPtrClass<UInt8ArrayType> @LIB_NAME@_UInt8ArrayType = pybind11_init_@LIB_NAME@_UInt8ArrayType(mod, @LIB_NAME@_IDataArray);
 
-  PySharedPtrClass<Int16ArrayType> SIMPLib_Int16ArrayType = pybind11_init_SIMPLib_Int16ArrayType(mod, SIMPLib_IDataArray);
-  PySharedPtrClass<UInt16ArrayType> SIMPLib_UInt16ArrayType = pybind11_init_SIMPLib_UInt16ArrayType(mod, SIMPLib_IDataArray);
+  PySharedPtrClass<Int16ArrayType> @LIB_NAME@_Int16ArrayType = pybind11_init_@LIB_NAME@_Int16ArrayType(mod, @LIB_NAME@_IDataArray);
+  PySharedPtrClass<UInt16ArrayType> @LIB_NAME@_UInt16ArrayType = pybind11_init_@LIB_NAME@_UInt16ArrayType(mod, @LIB_NAME@_IDataArray);
 
-  PySharedPtrClass<Int32ArrayType> SIMPLib_Int32ArrayType = pybind11_init_SIMPLib_Int32ArrayType(mod, SIMPLib_IDataArray);
-  PySharedPtrClass<UInt32ArrayType> SIMPLib_UInt32ArrayType = pybind11_init_SIMPLib_UInt32ArrayType(mod, SIMPLib_IDataArray);
+  PySharedPtrClass<Int32ArrayType> @LIB_NAME@_Int32ArrayType = pybind11_init_@LIB_NAME@_Int32ArrayType(mod, @LIB_NAME@_IDataArray);
+  PySharedPtrClass<UInt32ArrayType> @LIB_NAME@_UInt32ArrayType = pybind11_init_@LIB_NAME@_UInt32ArrayType(mod, @LIB_NAME@_IDataArray);
 
-  PySharedPtrClass<Int64ArrayType> SIMPLib_Int64ArrayType = pybind11_init_SIMPLib_Int64ArrayType(mod, SIMPLib_IDataArray);
-  PySharedPtrClass<UInt64ArrayType> SIMPLib_UInt64ArrayType = pybind11_init_SIMPLib_UInt64ArrayType(mod, SIMPLib_IDataArray);
+  PySharedPtrClass<Int64ArrayType> @LIB_NAME@_Int64ArrayType = pybind11_init_@LIB_NAME@_Int64ArrayType(mod, @LIB_NAME@_IDataArray);
+  PySharedPtrClass<UInt64ArrayType> @LIB_NAME@_UInt64ArrayType = pybind11_init_@LIB_NAME@_UInt64ArrayType(mod, @LIB_NAME@_IDataArray);
 
-  PySharedPtrClass<FloatArrayType> SIMPLib_FloatArrayType = pybind11_init_SIMPLib_FloatArrayType(mod, SIMPLib_IDataArray);
-  PySharedPtrClass<DoubleArrayType> SIMPLib_DoubleArrayType = pybind11_init_SIMPLib_DoubleArrayType(mod, SIMPLib_IDataArray);
+  PySharedPtrClass<FloatArrayType> @LIB_NAME@_FloatArrayType = pybind11_init_@LIB_NAME@_FloatArrayType(mod, @LIB_NAME@_IDataArray);
+  PySharedPtrClass<DoubleArrayType> @LIB_NAME@_DoubleArrayType = pybind11_init_@LIB_NAME@_DoubleArrayType(mod, @LIB_NAME@_IDataArray);
 
 
 }

@@ -1,16 +1,16 @@
 
-from SIMPLibPy import *
+from simpl import *
 
 
 def AttributeMatrixTest() :
   # Create an AttributeMatrix
-  amType = SIMPLibPy.AttributeMatrix.Type.Cell
-  tupleDims = SIMPLibPy.VectorSizeT([5,4,3])
-  am = SIMPLibPy.AttributeMatrix.Create(tupleDims, "CellAttributeMatrix", amType)
+  amType = simpl.AttributeMatrix.Type.Cell
+  tupleDims = simpl.VectorSizeT([5,4,3])
+  am = simpl.AttributeMatrix.Create(tupleDims, "CellAttributeMatrix", amType)
   amName = am.Name
   print("Name: %s" % amName)
   arrayExist = am.doesAttributeArrayExist("Test Data Array")
-  assert arrayExist == True
+  assert arrayExist == False
   print("arrayExist: %s" % arrayExist)
 
 

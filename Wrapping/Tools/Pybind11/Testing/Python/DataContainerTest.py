@@ -1,14 +1,14 @@
 
-from SIMPLibPy import *
+from simpl import *
 
 
 def CreateAttributeMatrix():
   """
   Creates a Cell AttributeMatrix and returns it.
   """
-  amType = SIMPLibPy.AttributeMatrix.Type.Cell
-  tupleDims = SIMPLibPy.VectorSizeT([5,4,3])
-  am = SIMPLibPy.AttributeMatrix.Create(tupleDims, "CellAttributeMatrix", amType)
+  amType = simpl.AttributeMatrix.Type.Cell
+  tupleDims = simpl.VectorSizeT([5,4,3])
+  am = simpl.AttributeMatrix.Create(tupleDims, "CellAttributeMatrix", amType)
   return am
 
 def DataContainerTest() :
@@ -16,7 +16,7 @@ def DataContainerTest() :
   Tests various methods of the DataContainer Class
   """
   # Create a DataContainer
-  dc = SIMPLibPy.DataContainer.New("Default Name")
+  dc = simpl.DataContainer.New("Default Name")
   dc.Name = "ImageDataContainer"
   
   am = CreateAttributeMatrix()

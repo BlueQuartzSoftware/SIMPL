@@ -32,7 +32,7 @@ using PySharedPtrClass = py::class_<T, std::shared_ptr<T> >;
 * @return A std::shared_ptr<T> wrapped instance of the wrapped class properly 
 * initialized.
 */
-PySharedPtrClass<MaskCountDecision> pybind11_init_SIMPLib_MaskCountDecision(py::module &m, PySharedPtrClass<AbstractFilter>& parent)
+PySharedPtrClass<MaskCountDecision> pybind11_init_simpl_MaskCountDecision(py::module &m, PySharedPtrClass<AbstractFilter>& parent)
 {
   PySharedPtrClass<MaskCountDecision> instance(m, "MaskCountDecision", parent);
   instance

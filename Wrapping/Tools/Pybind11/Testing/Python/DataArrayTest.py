@@ -1,7 +1,9 @@
 
 import time
 
-from SIMPLibPy import *
+from simpl import *
+
+
 try:
     import numpy as np
 except ImportError:
@@ -12,14 +14,14 @@ def CreateDataContainerArray():
     """
     Creates a Top level Data Container Array object. Everything will get packed in this
     """
-    dca = SIMPLibPy.DataContainerArray.New()
+    dca = simpl.DataContainerArray.New()
     return dca
 
 def CreateDataContainer(name):
     """
     Creates a DataContainer object
     """
-    dc = SIMPLibPy.DataContainer.New(name)
+    dc = simpl.DataContainer.New(name)
     return dc
 
 
@@ -27,14 +29,14 @@ def CreateAttributeMatrix(name, type, dims):
     """
     Creates an AttriuteMatrix of the given type
     """
-    am = SIMPLibPy.AttributeMatrix.Create(dims, name, type)
+    am = simpl.AttributeMatrix.Create(dims, name, type)
     return am
 
 
 def WriteDREAM3DFile(path, dca):
     # Lets write out the whole Heirarchy to a .dream3d file
     print("Creating DREAM3D Writer filter....")
-    writer = SIMPLibPy.DataContainerWriter.New()
+    writer = simpl.DataContainerWriter.New()
     writer.OutputFile = (path)
     writer.setDataContainerArray(dca)
     writer.execute()
@@ -65,25 +67,25 @@ def CreateDataArray(name, shape, cDims, type):
     z_flat = np.ravel(z)
     # Declare the number of components for the array
     if type == np.int8:
-        array = SIMPLibPy.Int8ArrayType(z_flat, cDims, name, False)
+        array = simpl.Int8ArrayType(z_flat, cDims, name, False)
     elif type == np.uint8:
-        array = SIMPLibPy.UInt8ArrayType(z_flat, cDims, name, False)
+        array = simpl.UInt8ArrayType(z_flat, cDims, name, False)
     elif type == np.int16:
-        array = SIMPLibPy.Int16ArrayType(z_flat, cDims, name, False)
+        array = simpl.Int16ArrayType(z_flat, cDims, name, False)
     elif type == np.uint16:
-        array = SIMPLibPy.UInt16ArrayType(z_flat, cDims, name, False)
+        array = simpl.UInt16ArrayType(z_flat, cDims, name, False)
     elif type == np.int32:
-        array = SIMPLibPy.Int32ArrayType(z_flat, cDims, name, False)
+        array = simpl.Int32ArrayType(z_flat, cDims, name, False)
     elif type == np.uint32:
-        array = SIMPLibPy.UInt32ArrayType(z_flat, cDims, name, False)
+        array = simpl.UInt32ArrayType(z_flat, cDims, name, False)
     elif type == np.int64:
-        array = SIMPLibPy.Int64ArrayType(z_flat, cDims, name, False)
+        array = simpl.Int64ArrayType(z_flat, cDims, name, False)
     elif type == np.uint64:
-        array = SIMPLibPy.UInt64ArrayType(z_flat, cDims, name, False)
+        array = simpl.UInt64ArrayType(z_flat, cDims, name, False)
     elif type == np.float32:
-        array = SIMPLibPy.FloatArrayType(z_flat, cDims, name, False)
+        array = simpl.FloatArrayType(z_flat, cDims, name, False)
     elif type == np.double:
-        array = SIMPLibPy.DoubleArrayType(z_flat, cDims, name, False)        
+        array = simpl.DoubleArrayType(z_flat, cDims, name, False)        
     return array
 
 def DataArrayTest():
@@ -96,12 +98,12 @@ def DataArrayTest():
     dc = CreateDataContainer("ImageDataContainer")
     dca.addDataContainer(dc)
 
-    shape = SIMPLibPy.VectorSizeT([4,5,2])
-    cellAm = CreateAttributeMatrix("CellAttributeMatrix", SIMPLibPy.AttributeMatrix.Type.Cell, shape)
+    shape = simpl.VectorSizeT([4,5,2])
+    cellAm = CreateAttributeMatrix("CellAttributeMatrix", simpl.AttributeMatrix.Type.Cell, shape)
     dc.addAttributeMatrix(cellAm.Name, cellAm)
 
     # Create the Component Dimensions for the Array, 1 Component in this case
-    cDims = SIMPLibPy.VectorSizeT([1])
+    cDims = simpl.VectorSizeT([1])
 
     arrayTypes = [np.int8, np.uint8, np.int16, np.uint16, np.int32, np.uint32, np.int64, np.uint64, np.float32, np.double]
     for index, item in enumerate(arrayTypes):

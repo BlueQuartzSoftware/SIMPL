@@ -32,7 +32,7 @@ using PySharedPtrClass = py::class_<T, std::shared_ptr<T> >;
 * @return A std::shared_ptr<T> wrapped instance of the wrapped class properly 
 * initialized.
 */
-PySharedPtrClass<DataContainerArray> pybind11_init_SIMPLib_DataContainerArray(py::module &m)
+PySharedPtrClass<DataContainerArray> pybind11_init_simpl_DataContainerArray(py::module &m)
 {
   PySharedPtrClass<DataContainerArray> instance(m, "DataContainerArray");
   instance

@@ -32,7 +32,7 @@ using PySharedPtrClass = py::class_<T, std::shared_ptr<T> >;
 * @return A std::shared_ptr<T> wrapped instance of the wrapped class properly 
 * initialized.
 */
-PySharedPtrClass<SIMPLH5DataReaderRequirements> pybind11_init_SIMPLib_SIMPLH5DataReaderRequirements(py::module &m)
+PySharedPtrClass<SIMPLH5DataReaderRequirements> pybind11_init_simpl_SIMPLH5DataReaderRequirements(py::module &m)
 {
   PySharedPtrClass<SIMPLH5DataReaderRequirements> instance(m, "SIMPLH5DataReaderRequirements");
   instance

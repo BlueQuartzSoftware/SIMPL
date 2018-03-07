@@ -31,7 +31,7 @@ void PyBind11Generator::execute()
   // QFileInfo fi(m_TopLevelDir);
   QString genHeaderPath;
   QTextStream ss(&genHeaderPath);
-  ss << m_GenDir << "/Py" << m_LibName << ".cxx";
+  ss << m_GenDir << "/" << m_LibName << "_pybind11_module.cxx";
 
   m_ModuleCode.generateModuleFile(genHeaderPath);
 }

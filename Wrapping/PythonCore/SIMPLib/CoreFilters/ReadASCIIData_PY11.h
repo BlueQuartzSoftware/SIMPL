@@ -32,7 +32,7 @@ using PySharedPtrClass = py::class_<T, std::shared_ptr<T> >;
 * @return A std::shared_ptr<T> wrapped instance of the wrapped class properly 
 * initialized.
 */
-PySharedPtrClass<ReadASCIIData> pybind11_init_SIMPLib_ReadASCIIData(py::module &m, PySharedPtrClass<AbstractFilter>& parent)
+PySharedPtrClass<ReadASCIIData> pybind11_init_simpl_ReadASCIIData(py::module &m, PySharedPtrClass<AbstractFilter>& parent)
 {
   PySharedPtrClass<ReadASCIIData> instance(m, "ReadASCIIData", parent);
   instance

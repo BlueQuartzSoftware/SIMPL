@@ -32,7 +32,7 @@ using PySharedPtrClass = py::class_<T, std::shared_ptr<T> >;
 * @return A std::shared_ptr<T> wrapped instance of the wrapped class properly 
 * initialized.
 */
-PySharedPtrClass<FilterPipeline> pybind11_init_SIMPLib_FilterPipeline(py::module &m)
+PySharedPtrClass<FilterPipeline> pybind11_init_simpl_FilterPipeline(py::module &m)
 {
   PySharedPtrClass<FilterPipeline> instance(m, "FilterPipeline");
   instance

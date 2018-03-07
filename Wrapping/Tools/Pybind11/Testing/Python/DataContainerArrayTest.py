@@ -1,12 +1,12 @@
 
-from SIMPLibPy import *
+from simpl import *
 
 
 def CreateDataContainerArray():
   """
   This method creates a DataContainerArray
   """
-  dca = SIMPLibPy.DataContainerArray.New()
+  dca = simpl.DataContainerArray.New()
   return dca
 
 
@@ -14,7 +14,7 @@ def CreateDataContainer(name):
   """
   This method creates a DataContainer with a supplied name
   """
-  dc = SIMPLibPy.DataContainer.New(name)
+  dc = simpl.DataContainer.New(name)
   return dc
 
 def AttributeMatrixAccessTest():
@@ -27,13 +27,13 @@ def AttributeMatrixAccessTest():
   dc = CreateDataContainer("AM Test")
   dca.addDataContainer(dc)
   
-  amType = SIMPLibPy.AttributeMatrix.Type.Cell
-  tupleDims = SIMPLibPy.VectorSizeT([5,4,3])
-  am = SIMPLibPy.AttributeMatrix.Create(tupleDims, "CellAttributeMatrix", amType)
+  amType = simpl.AttributeMatrix.Type.Cell
+  tupleDims = simpl.VectorSizeT([5,4,3])
+  am = simpl.AttributeMatrix.Create(tupleDims, "CellAttributeMatrix", amType)
   dc.addAttributeMatrix(am.Name, am)
 
   # See if we can get the AttributeMatrix based on a DataArrayPath object
-  dap = SIMPLibPy.DataArrayPath("AM Test", "CellAttributeMatrix", "")
+  dap = simpl.DataArrayPath("AM Test", "CellAttributeMatrix", "")
   am0 = dca.getAttributeMatrix(dap)
   assert am0 == am
   assert True == dca.doesAttributeMatrixExist(dap)

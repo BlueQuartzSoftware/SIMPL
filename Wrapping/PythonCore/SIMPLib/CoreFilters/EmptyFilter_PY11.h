@@ -32,7 +32,7 @@ using PySharedPtrClass = py::class_<T, std::shared_ptr<T> >;
 * @return A std::shared_ptr<T> wrapped instance of the wrapped class properly 
 * initialized.
 */
-PySharedPtrClass<EmptyFilter> pybind11_init_SIMPLib_EmptyFilter(py::module &m, PySharedPtrClass<AbstractFilter>& parent)
+PySharedPtrClass<EmptyFilter> pybind11_init_simpl_EmptyFilter(py::module &m, PySharedPtrClass<AbstractFilter>& parent)
 {
   PySharedPtrClass<EmptyFilter> instance(m, "EmptyFilter", parent);
   instance

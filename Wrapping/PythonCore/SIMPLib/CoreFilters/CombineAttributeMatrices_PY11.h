@@ -32,7 +32,7 @@ using PySharedPtrClass = py::class_<T, std::shared_ptr<T> >;
 * @return A std::shared_ptr<T> wrapped instance of the wrapped class properly 
 * initialized.
 */
-PySharedPtrClass<CombineAttributeMatrices> pybind11_init_SIMPLib_CombineAttributeMatrices(py::module &m, PySharedPtrClass<AbstractFilter>& parent)
+PySharedPtrClass<CombineAttributeMatrices> pybind11_init_simpl_CombineAttributeMatrices(py::module &m, PySharedPtrClass<AbstractFilter>& parent)
 {
   PySharedPtrClass<CombineAttributeMatrices> instance(m, "CombineAttributeMatrices", parent);
   instance

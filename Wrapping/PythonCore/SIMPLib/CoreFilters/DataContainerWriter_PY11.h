@@ -32,7 +32,7 @@ using PySharedPtrClass = py::class_<T, std::shared_ptr<T> >;
 * @return A std::shared_ptr<T> wrapped instance of the wrapped class properly 
 * initialized.
 */
-PySharedPtrClass<DataContainerWriter> pybind11_init_SIMPLib_DataContainerWriter(py::module &m, PySharedPtrClass<AbstractFilter>& parent)
+PySharedPtrClass<DataContainerWriter> pybind11_init_simpl_DataContainerWriter(py::module &m, PySharedPtrClass<AbstractFilter>& parent)
 {
   PySharedPtrClass<DataContainerWriter> instance(m, "DataContainerWriter", parent);
   instance

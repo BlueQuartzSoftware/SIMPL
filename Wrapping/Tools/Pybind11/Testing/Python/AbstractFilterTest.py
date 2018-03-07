@@ -1,13 +1,13 @@
 import time
 
-from SIMPLibPy import *
+from simpl import *
 
 
 def BasicTest () :
   """
   This will test the basic AbstractFilter methods
   """
-  filter = SIMPLibPy.AbstractFilter.New()
+  filter = simpl.AbstractFilter.New()
 
   groupName = filter.GroupName
   print("groupName: %s " % groupName)

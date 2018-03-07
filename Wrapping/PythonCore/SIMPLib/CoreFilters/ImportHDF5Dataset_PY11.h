@@ -32,7 +32,7 @@ using PySharedPtrClass = py::class_<T, std::shared_ptr<T> >;
 * @return A std::shared_ptr<T> wrapped instance of the wrapped class properly 
 * initialized.
 */
-PySharedPtrClass<ImportHDF5Dataset> pybind11_init_SIMPLib_ImportHDF5Dataset(py::module &m, PySharedPtrClass<AbstractFilter>& parent)
+PySharedPtrClass<ImportHDF5Dataset> pybind11_init_simpl_ImportHDF5Dataset(py::module &m, PySharedPtrClass<AbstractFilter>& parent)
 {
   PySharedPtrClass<ImportHDF5Dataset> instance(m, "ImportHDF5Dataset", parent);
   instance

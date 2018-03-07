@@ -32,7 +32,7 @@ using PySharedPtrClass = py::class_<T, std::shared_ptr<T> >;
 * @return A std::shared_ptr<T> wrapped instance of the wrapped class properly 
 * initialized.
 */
-PySharedPtrClass<RawBinaryReader> pybind11_init_SIMPLib_RawBinaryReader(py::module &m, PySharedPtrClass<AbstractFilter>& parent)
+PySharedPtrClass<RawBinaryReader> pybind11_init_simpl_RawBinaryReader(py::module &m, PySharedPtrClass<AbstractFilter>& parent)
 {
   PySharedPtrClass<RawBinaryReader> instance(m, "RawBinaryReader", parent);
   instance

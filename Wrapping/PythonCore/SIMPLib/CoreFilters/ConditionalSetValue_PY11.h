@@ -32,7 +32,7 @@ using PySharedPtrClass = py::class_<T, std::shared_ptr<T> >;
 * @return A std::shared_ptr<T> wrapped instance of the wrapped class properly 
 * initialized.
 */
-PySharedPtrClass<ConditionalSetValue> pybind11_init_SIMPLib_ConditionalSetValue(py::module &m, PySharedPtrClass<AbstractFilter>& parent)
+PySharedPtrClass<ConditionalSetValue> pybind11_init_simpl_ConditionalSetValue(py::module &m, PySharedPtrClass<AbstractFilter>& parent)
 {
   PySharedPtrClass<ConditionalSetValue> instance(m, "ConditionalSetValue", parent);
   instance

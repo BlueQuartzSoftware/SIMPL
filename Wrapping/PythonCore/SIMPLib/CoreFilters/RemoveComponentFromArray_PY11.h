@@ -32,7 +32,7 @@ using PySharedPtrClass = py::class_<T, std::shared_ptr<T> >;
 * @return A std::shared_ptr<T> wrapped instance of the wrapped class properly 
 * initialized.
 */
-PySharedPtrClass<RemoveComponentFromArray> pybind11_init_SIMPLib_RemoveComponentFromArray(py::module &m, PySharedPtrClass<AbstractFilter>& parent)
+PySharedPtrClass<RemoveComponentFromArray> pybind11_init_simpl_RemoveComponentFromArray(py::module &m, PySharedPtrClass<AbstractFilter>& parent)
 {
   PySharedPtrClass<RemoveComponentFromArray> instance(m, "RemoveComponentFromArray", parent);
   instance

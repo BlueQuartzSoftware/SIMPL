@@ -1,11 +1,11 @@
 import time
 
-from SIMPLibPy import *
+from simpl import *
 
 
 def PipelineTest():
   inputPath = "/Users/mjackson/DREAM3D-Dev/DREAM3D-Build/Debug/Bin/Data/Output/SmallIN100.dream3d"
-  reader = SIMPLibPy.DataContainerReader.New()
+  reader = simpl.DataContainerReader.New()
   reader.InputFile = (inputPath)
   reader.OverwriteExistingDataContainers = (True)
   print("Reading data structure from input file.....")
@@ -21,7 +21,7 @@ def PipelineTest():
   print("compiledLibraryName: %s " % reader.CompiledLibraryName)
 
   print("Creating DREAM3D Writer filter....")
-  writer = SIMPLibPy.DataContainerWriter.New()
+  writer = simpl.DataContainerWriter.New()
   writer.OutputFile = ("/tmp/PipelineTest.dream3d")
   print("humanLabel: %s " % writer.HumanLabel)
   print("groupName: %s " % writer.GroupName)
@@ -30,7 +30,7 @@ def PipelineTest():
   print("compiledLibraryName: %s " % writer.CompiledLibraryName)
 
 
-  pipeline = SIMPLibPy.FilterPipeline.New()
+  pipeline = simpl.FilterPipeline.New()
   pipeline.Name = ("New Pipeline")
   print("Pipeline Name: %s " % pipeline.Name)
 
@@ -50,10 +50,10 @@ def PipelineTest():
   filterCount = pipeline.size()
   print("Filter Count: %d" % filterCount)
 
-  pipeline = SIMPLibPy.FilterPipeline.New()
+  pipeline = simpl.FilterPipeline.New()
   print("Pipeline to Null")
-  reader = SIMPLibPy.AbstractFilter.New()
-  writer = SIMPLibPy.AbstractFilter.New()
+  reader = simpl.AbstractFilter.New()
+  writer = simpl.AbstractFilter.New()
   print("Filter to null")
 
   time.sleep(2)

@@ -32,7 +32,7 @@ using PySharedPtrClass = py::class_<T, std::shared_ptr<T> >;
 * @return A std::shared_ptr<T> wrapped instance of the wrapped class properly 
 * initialized.
 */
-PySharedPtrClass<ArraySelectionExample> pybind11_init_SIMPLib_ArraySelectionExample(py::module &m, PySharedPtrClass<AbstractFilter>& parent)
+PySharedPtrClass<ArraySelectionExample> pybind11_init_simpl_ArraySelectionExample(py::module &m, PySharedPtrClass<AbstractFilter>& parent)
 {
   PySharedPtrClass<ArraySelectionExample> instance(m, "ArraySelectionExample", parent);
   instance

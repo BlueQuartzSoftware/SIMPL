@@ -32,7 +32,7 @@ using PySharedPtrClass = py::class_<T, std::shared_ptr<T> >;
 * @return A std::shared_ptr<T> wrapped instance of the wrapped class properly 
 * initialized.
 */
-PySharedPtrClass<DynamicTableExample> pybind11_init_SIMPLib_DynamicTableExample(py::module &m, PySharedPtrClass<AbstractFilter>& parent)
+PySharedPtrClass<DynamicTableExample> pybind11_init_simpl_DynamicTableExample(py::module &m, PySharedPtrClass<AbstractFilter>& parent)
 {
   PySharedPtrClass<DynamicTableExample> instance(m, "DynamicTableExample", parent);
   instance

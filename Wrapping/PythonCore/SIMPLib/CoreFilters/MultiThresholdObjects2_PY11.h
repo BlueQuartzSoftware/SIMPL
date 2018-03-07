@@ -32,7 +32,7 @@ using PySharedPtrClass = py::class_<T, std::shared_ptr<T> >;
 * @return A std::shared_ptr<T> wrapped instance of the wrapped class properly 
 * initialized.
 */
-PySharedPtrClass<MultiThresholdObjects2> pybind11_init_SIMPLib_MultiThresholdObjects2(py::module &m, PySharedPtrClass<AbstractFilter>& parent)
+PySharedPtrClass<MultiThresholdObjects2> pybind11_init_simpl_MultiThresholdObjects2(py::module &m, PySharedPtrClass<AbstractFilter>& parent)
 {
   PySharedPtrClass<MultiThresholdObjects2> instance(m, "MultiThresholdObjects2", parent);
   instance
