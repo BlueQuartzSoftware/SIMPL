@@ -116,13 +116,6 @@ def DataArrayTest():
 
 
 
-def Misc():
-    """
-
-    """
-
-
-
 """
 Main entry point for python script
 """
