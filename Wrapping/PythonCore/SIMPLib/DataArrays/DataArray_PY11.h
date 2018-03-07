@@ -5,6 +5,8 @@
 */
 
 #include <pybind11/pybind11.h>
+#include <pybind11/numpy.h>
+#include <pybind11/stl.h>
 
 namespace py = pybind11;
 
@@ -39,18 +41,15 @@ PySharedPtrClass<DataArray<T>> pybind11_init_SIMPLib_##NAME(py::module &m, PySha
   .def(py::init([](T* ptr, size_t numElements, std::vector<size_t> cDims, QString name, bool ownsData) {\
     return DataArrayType::WrapPointer(ptr, numElements, QVector<size_t>::fromStdVector(cDims), name, ownsData);\
   }))\
-  .def(py::init([](py::buffer b, std::vector<size_t> cDims, QString name, bool ownsData) {\
-    py::buffer_info info = b.request();\
-    if(info.format != py::format_descriptor<T>::format())\
-    {\
-      std::stringstream ss;\
-      ss << "Incompatible buffer format. Needed '" << py::format_descriptor<T>::format()\
-      << "' but got '" << info.format << "'";\
-      throw std::runtime_error(ss.str());\
-    }\
+  .def(py::init([](py::array_t<T, py::array::c_style> b, std::vector<size_t> cDims, QString name, bool ownsData) {\
       ssize_t numElements = 1;\
-      for(auto e: info.shape) {numElements *= e;}\
-      return DataArrayType::WrapPointer(reinterpret_cast<T*>(info.ptr), static_cast<size_t>(numElements), QVector<size_t>::fromStdVector(cDims), name,ownsData);\
+      ssize_t nDims = b.ndim();\
+     for(ssize_t e = 0; e < nDims; e++) { numElements *= b.shape(e);}\
+      return DataArrayType::WrapPointer(reinterpret_cast<T*>(b.mutable_data(0)), \
+                                        static_cast<size_t>(numElements), \
+                                        QVector<size_t>::fromStdVector(cDims), \
+                                        name,\
+                                        ownsData);\
   }))\
   /* Class instance method setValue */\
   .def("setValue", &DataArrayType::setValue, \
@@ -66,9 +65,56 @@ PySharedPtrClass<DataArray<T>> pybind11_init_SIMPLib_##NAME(py::module &m, PySha
 }
 
 PYB11_DEFINE_DATAARRAY_INIT(int8_t, Int8ArrayType);
+PYB11_DEFINE_DATAARRAY_INIT(uint8_t, UInt8ArrayType);
+
 PYB11_DEFINE_DATAARRAY_INIT(int16_t, Int16ArrayType);
+PYB11_DEFINE_DATAARRAY_INIT(uint16_t, UInt16ArrayType);
+
 PYB11_DEFINE_DATAARRAY_INIT(int32_t, Int32ArrayType);
+PYB11_DEFINE_DATAARRAY_INIT(uint32_t, UInt32ArrayType);
+
 PYB11_DEFINE_DATAARRAY_INIT(int64_t, Int64ArrayType);
+
+#if 0
+PySharedPtrClass<DataArray<int64_t>> pybind11_init_SIMPLib_Int64ArrayType(py::module &m, PySharedPtrClass<IDataArray>& parent)
+{
+  using DataArrayType = DataArray<int64_t>;
+  PySharedPtrClass<DataArrayType> instance(m, "Int64ArrayType", parent, py::buffer_protocol());
+  instance
+  .def(py::init([](size_t numElements, QString name, bool allocate) {
+    return DataArrayType::CreateArray(numElements, name, allocate);
+    }))
+  .def(py::init([](int64_t* ptr, size_t numElements, std::vector<size_t> cDims, QString name, bool ownsData) {
+    return DataArrayType::WrapPointer(ptr, numElements, QVector<size_t>::fromStdVector(cDims), name, ownsData);
+  }))
+  .def(py::init([](py::array_t<int64_t, py::array::c_style> b, std::vector<size_t> cDims, QString name, bool ownsData) {
+      ssize_t numElements = 1;
+      ssize_t nDims = b.ndim();
+     for(ssize_t e = 0; e < nDims; e++) { numElements *= b.shape(e);}
+      return DataArrayType::WrapPointer(reinterpret_cast<int64_t*>(b.mutable_data(0)), 
+                                        static_cast<size_t>(numElements), 
+                                        QVector<size_t>::fromStdVector(cDims), 
+                                        name,
+                                        ownsData);
+  }))
+  /* Class instance method setValue */
+  .def("setValue", &DataArrayType::setValue, 
+        py::arg("index"), 
+        py::arg("value")
+      )
+  .def("getValue", &DataArrayType::getValue, 
+        py::arg("index")
+      )
+  .def_property("Name", &DataArrayType::getName, &DataArrayType::setName);
+  ;
+  return instance;
+}
+#endif
+
+PYB11_DEFINE_DATAARRAY_INIT(uint64_t, UInt64ArrayType);
+
+PYB11_DEFINE_DATAARRAY_INIT(float, FloatArrayType);
+PYB11_DEFINE_DATAARRAY_INIT(double, DoubleArrayType);
 
 #if 0
 PySharedPtrClass<Int32ArrayType> pybind11_init_SIMPLib_Int32ArrayType(py::module &m)
@@ -143,14 +189,6 @@ PySharedPtrClass<Int8ArrayType> pybind11_init_SIMPLib_Int8ArrayType(py::module &
       )
   ;
 
-  /*
-  clsExampleOne.def("computeSomethingElse",
-                  (double (ExampleOne::*)(int, double) const) & ExampleOne::computeSomethingElse,
-                  "myFirstParam"_a, "mySecondParam"_a);
-  clsExampleOne.def("computeSomethingElse",
-                  (double (ExampleOne::*)(int, std::string) const) &ExampleOne::computeSomethingElse,
-                  "myFirstParam"_a, "anotherParam"_a="foo");
-                  */
   return instance;
 }
 #endif
@@ -179,23 +217,6 @@ typedef DataArray<size_t>  SizeTArrayType;
 
 
 
-    // std::cout << "int8: " << py::format_descriptor<int8_t>::format() << std::endl;
-    // std::cout << "uint8: " << py::format_descriptor<uint8_t>::format() << std::endl;
-    // std::cout << "int16: " << py::format_descriptor<int16_t>::format() << std::endl;
-    // std::cout << "uint16: " << py::format_descriptor<uint16_t>::format() << std::endl;
-    // std::cout << "int32: " << py::format_descriptor<int32_t>::format() << std::endl;
-    // std::cout << "uint32: " << py::format_descriptor<uint32_t>::format() << std::endl;
-    // std::cout << "int64: " << py::format_descriptor<int64_t>::format() << std::endl;
-    // std::cout << "uint64: " << py::format_descriptor<uint64_t>::format() << std::endl;
-    // std::cout << "float: " << py::format_descriptor<float>::format() << std::endl;
-    // std::cout << "double: " << py::format_descriptor<double>::format() << std::endl;
-
-    // std::cout << "int: " << py::format_descriptor<int>::format() << std::endl;
-    // std::cout << "unsigned int: " << py::format_descriptor<unsigned int>::format() << std::endl;
-    // std::cout << "long: " << py::format_descriptor<long>::format() << std::endl;
-    // std::cout << "unsigned long: " << py::format_descriptor<unsigned long>::format() << std::endl;
-    // std::cout << "long long int: " << py::format_descriptor<long long int>::format() << std::endl;
-    // std::cout << "unsigned long long int: " << py::format_descriptor<unsigned long long int>::format() << std::endl;
 
 
 

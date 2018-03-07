@@ -7,7 +7,6 @@
 * This header file wraps the SIMPL class ImportHDF5Dataset located at
 * SIMPLib/CoreFilters/ImportHDF5Dataset.h. 
 * The Python bindings are created using Pybind11.
-* @date Tue Mar 6 17:07:40 2018
 */
 
 #include <pybind11/pybind11.h>

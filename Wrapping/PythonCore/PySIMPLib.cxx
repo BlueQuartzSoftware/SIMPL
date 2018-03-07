@@ -289,9 +289,19 @@ PYBIND11_MODULE(SIMPLibPy, m)
 
   /* Init codes for the DataArray<T> classes */
   PySharedPtrClass<Int8ArrayType> SIMPLib_Int8ArrayType = pybind11_init_SIMPLib_Int8ArrayType(mod, SIMPLib_IDataArray);
-  PySharedPtrClass<Int16ArrayType> SIMPLib_Int16ArrayType = pybind11_init_SIMPLib_Int16ArrayType(mod, SIMPLib_IDataArray);
-  PySharedPtrClass<Int32ArrayType> SIMPLib_Int32ArrayType = pybind11_init_SIMPLib_Int32ArrayType(mod, SIMPLib_IDataArray);
-  PySharedPtrClass<Int64ArrayType> SIMPLib_Int64ArrayType = pybind11_init_SIMPLib_Int64ArrayType(mod, SIMPLib_IDataArray);
+  PySharedPtrClass<UInt8ArrayType> SIMPLib_UInt8ArrayType = pybind11_init_SIMPLib_UInt8ArrayType(mod, SIMPLib_IDataArray);
 
-  
+  PySharedPtrClass<Int16ArrayType> SIMPLib_Int16ArrayType = pybind11_init_SIMPLib_Int16ArrayType(mod, SIMPLib_IDataArray);
+  PySharedPtrClass<UInt16ArrayType> SIMPLib_UInt16ArrayType = pybind11_init_SIMPLib_UInt16ArrayType(mod, SIMPLib_IDataArray);
+
+  PySharedPtrClass<Int32ArrayType> SIMPLib_Int32ArrayType = pybind11_init_SIMPLib_Int32ArrayType(mod, SIMPLib_IDataArray);
+  PySharedPtrClass<UInt32ArrayType> SIMPLib_UInt32ArrayType = pybind11_init_SIMPLib_UInt32ArrayType(mod, SIMPLib_IDataArray);
+
+  PySharedPtrClass<Int64ArrayType> SIMPLib_Int64ArrayType = pybind11_init_SIMPLib_Int64ArrayType(mod, SIMPLib_IDataArray);
+  PySharedPtrClass<UInt64ArrayType> SIMPLib_UInt64ArrayType = pybind11_init_SIMPLib_UInt64ArrayType(mod, SIMPLib_IDataArray);
+
+  PySharedPtrClass<FloatArrayType> SIMPLib_FloatArrayType = pybind11_init_SIMPLib_FloatArrayType(mod, SIMPLib_IDataArray);
+  PySharedPtrClass<DoubleArrayType> SIMPLib_DoubleArrayType = pybind11_init_SIMPLib_DoubleArrayType(mod, SIMPLib_IDataArray);
+
+
 }
