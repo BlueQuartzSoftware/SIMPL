@@ -76,7 +76,7 @@ set_target_properties(${pybind_module_name} PROPERTIES LINKER_LANGUAGE CXX)
 target_include_directories(${pybind_module_name} PUBLIC
   #$<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}>
   $<BUILD_INTERFACE:${SIMPLib_SOURCE_DIR}
-  $<BUILD_INTERFACE:${SIMPLib_BINARY_DIR}
+  $<BUILD_INTERFACE:${${pybind_module_name}_BINARY_DIR}
   )
 target_link_libraries(${pybind_module_name} LINK_PUBLIC SIMPLib 
                                 LINK_PRIVATE pybind11::module)
