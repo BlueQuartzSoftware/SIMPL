@@ -21,7 +21,8 @@
 
 #include "SIMPLib/Common/SIMPLibSetGetMacros.h"
 
-#include "SIMPLPyBind11Config.h"
+// This file is our generated header file.
+#include "CodeScraper/SIMPLPyBind11Config.h"
 
 #include "PyBind11Generator.h"
 #include "PythonBindingClass.h"
