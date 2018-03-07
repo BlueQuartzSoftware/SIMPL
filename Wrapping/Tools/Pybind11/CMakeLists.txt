@@ -54,9 +54,9 @@ target_link_libraries(GeneratePythonBindings Qt5::Core)
 set(pybind_module_name "simpl")
 
 add_custom_target(SIMPLCreatePythonBindings ALL
-    COMMAND GeneratePythonBindings "${SIMPLProj_SOURCE_DIR_NORM}/Source/SIMPLib" "SIMPL/Source/" "${pybind_module_name}" "${SIMPLProj_SOURCE_DIR_NORM}/Wrapping/PythonCore"
+    COMMAND GeneratePythonBindings "${SIMPLProj_SOURCE_DIR_NORM}/Source/SIMPLib" "SIMPL/Source/" "${pybind_module_name}" "${SIMPLProj_BINARY_DIR}/Wrapping/PythonCore"
     DEPENDS ${COPY_LIBRARY_TARGETS} GeneratePythonBindings
-    COMMENT "Creating Python Bindings for SIMPL"
+    COMMENT "Pybind11: Creating Python Bindings for SIMPL"
   )
 
 
@@ -68,14 +68,15 @@ find_package(PyBind11)
 
 # --------------------------------------------------------------------------
 # Now compile the Python module
-pybind11_add_module(${pybind_module_name} ${SIMPLProj_SOURCE_DIR}/Wrapping/PythonCore/${pybind_module_name}_pybind11_module.cxx)
-set_source_files_properties(${SIMPLProj_SOURCE_DIR}/Wrapping/PythonCore/${pybind_module_name}_pybind11_module.cxx
+pybind11_add_module(${pybind_module_name} ${SIMPLProj_BINARY_DIR}/Wrapping/PythonCore/${pybind_module_name}_pybind11_module.cxx)
+set_source_files_properties(${SIMPLProj_BINARY_DIR}/Wrapping/PythonCore/${pybind_module_name}_pybind11_module.cxx
                               PROPERTIES  GENERATED TRUE
                                           SKIP_AUTOMOC ON)
 set_target_properties(${pybind_module_name} PROPERTIES LINKER_LANGUAGE CXX)
 target_include_directories(${pybind_module_name} PUBLIC
   #$<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}>
   $<BUILD_INTERFACE:${SIMPLib_SOURCE_DIR}
+  $<BUILD_INTERFACE:${SIMPLib_BINARY_DIR}
   )
 target_link_libraries(${pybind_module_name} LINK_PUBLIC SIMPLib 
                                 LINK_PRIVATE pybind11::module)
