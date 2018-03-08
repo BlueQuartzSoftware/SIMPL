@@ -468,41 +468,6 @@ void ImageGeom::getBoundingBox(float boundingBox[6])
     boundingBox[5] = m_Origin[2] + (m_Dimensions[2] * m_Resolution[2]);
 }
 
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-void ImageGeom::setDimensions(size_t dims[3])
-{
-  std::copy(dims, dims + 3, m_Dimensions); 
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-void ImageGeom::setDimensions(size_t xDim, size_t yDim, size_t zDim) 
-{
-  m_Dimensions[0] = xDim;
-  m_Dimensions[1] = yDim;
-  m_Dimensions[2] = zDim;
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-void ImageGeom::getDimensions(size_t dims[3])
-{
-  std::copy(m_Dimensions, m_Dimensions + 3, dims);
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-void ImageGeom::getDimensions(size_t& xDim, size_t& yDim, size_t& zDim) 
-{
-  xDim = m_Dimensions[0];
-  yDim = m_Dimensions[1];
-  zDim = m_Dimensions[2];
-}
 
 // -----------------------------------------------------------------------------
 //
@@ -944,7 +909,7 @@ int ImageGeom::writeGeometryToHDF5(hid_t parentId, bool SIMPL_NOT_USED(writeXdmf
   int64_t volDims[3] = {static_cast<int64_t>(getXPoints()), static_cast<int64_t>(getYPoints()), static_cast<int64_t>(getZPoints())};
   float spacing[3] = {getXRes(), getYRes(), getZRes()};
   float origin[3] = {0.0f, 0.0f, 0.0f};
-  getOrigin(origin);
+  std::tie(origin[0], origin[1], origin[2]) = getOrigin();
 
   int32_t rank = 1;
   hsize_t dims[1] = {3};
@@ -988,7 +953,7 @@ int ImageGeom::writeXdmf(QTextStream& out, QString dcName, QString hdfFileName)
   int64_t volDims[3] = {static_cast<int64_t>(getXPoints()), static_cast<int64_t>(getYPoints()), static_cast<int64_t>(getZPoints())};
   float spacing[3] = {getXRes(), getYRes(), getZRes()};
   float origin[3] = {0.0f, 0.0f, 0.0f};
-  getOrigin(origin);
+  std::tie(origin[0], origin[1], origin[2]) = getOrigin();
 
   out << "  <!-- *************** START OF " << dcName << " *************** -->"
       << "\n";
@@ -1027,7 +992,7 @@ QString ImageGeom::getInfoString(SIMPL::InfoStringFormat format)
   int64_t volDims[3] = {static_cast<int64_t>(getXPoints()), static_cast<int64_t>(getYPoints()), static_cast<int64_t>(getZPoints())};
   float spacing[3] = {getXRes(), getYRes(), getZRes()};
   float origin[3] = {0.0f, 0.0f, 0.0f};
-  getOrigin(origin);
+  std::tie(origin[0], origin[1], origin[2]) = getOrigin();
 
   if(format == SIMPL::HtmlFormat)
   {
@@ -1070,12 +1035,12 @@ IGeometry::Pointer ImageGeom::deepCopy(bool forceNoAllocate)
 {
   ImageGeom::Pointer imageCopy = ImageGeom::CreateGeometry(getName());
 
-  size_t volDims[3] = {0, 0, 0};
-  float spacing[3] = {1.0f, 1.0f, 1.0f};
-  float origin[3] = {0.0f, 0.0f, 0.0f};
-  getDimensions(volDims);
-  getResolution(spacing);
-  getOrigin(origin);
+  std::tuple<size_t, size_t, size_t> volDims = std::make_tuple(static_cast<size_t>(0), static_cast<size_t>(0), static_cast<size_t>(0));
+  std::tuple<float, float, float> spacing = std::make_tuple(1.0f, 1.0f, 1.0f);
+  std::tuple<float, float, float> origin = std::make_tuple(0.0f, 0.0f, 0.0f);
+  volDims = getDimensions();
+  spacing = getResolution();
+  origin = getOrigin();
   imageCopy->setDimensions(volDims);
   imageCopy->setResolution(spacing);
   imageCopy->setOrigin(origin);
@@ -1111,7 +1076,7 @@ int ImageGeom::gatherMetaData(hid_t parentId, size_t volDims[3], float spacing[3
   {
     return -1;
   }
-  setDimensions(volDims[0], volDims[1], volDims[2]);
+  setDimensions(volDims);
   setResolution(spacing);
   setOrigin(origin);
   setElementSizes(voxelSizes);

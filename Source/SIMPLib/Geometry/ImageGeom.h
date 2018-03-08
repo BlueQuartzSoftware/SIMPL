@@ -247,11 +247,8 @@ class SIMPLib_EXPORT ImageGeom : public IGeometryGrid
 // -----------------------------------------------------------------------------
 // Inherited from IGeometryGrid
 // -----------------------------------------------------------------------------
-
-    virtual void setDimensions(size_t dims[3]) override;
-    virtual void setDimensions(size_t xDim, size_t yDim, size_t zDim) override;
-    virtual void getDimensions(size_t dims[3]) override;
-    virtual void getDimensions(size_t& xDim, size_t& yDim, size_t& zDim) override;
+    
+    SIMPL_INSTANCE_VEC3_PROPERTY_VO(size_t, Dimensions)
 
     virtual size_t getXPoints() override;
     virtual size_t getYPoints() override;
@@ -260,6 +257,7 @@ class SIMPLib_EXPORT ImageGeom : public IGeometryGrid
     virtual void getPlaneCoords(size_t idx[3], float coords[3]) override;
     virtual void getPlaneCoords(size_t x, size_t y, size_t z, float coords[3]) override;
     virtual void getPlaneCoords(size_t idx, float coords[3]) override;
+    
     virtual void getPlaneCoords(size_t idx[3], double coords[3]) override;
     virtual void getPlaneCoords(size_t x, size_t y, size_t z, double coords[3]) override;
     virtual void getPlaneCoords(size_t idx, double coords[3]) override;
@@ -267,6 +265,7 @@ class SIMPLib_EXPORT ImageGeom : public IGeometryGrid
     virtual void getCoords(size_t idx[3], float coords[3]) override;
     virtual void getCoords(size_t x, size_t y, size_t z, float coords[3]) override;
     virtual void getCoords(size_t idx, float coords[3]) override;
+    
     virtual void getCoords(size_t idx[3], double coords[3]) override;
     virtual void getCoords(size_t x, size_t y, size_t z, double coords[3]) override;
     virtual void getCoords(size_t idx, double coords[3]) override;
@@ -278,7 +277,7 @@ class SIMPLib_EXPORT ImageGeom : public IGeometryGrid
      * @brief computeCellIndex This method will compute the X, Y & Z Index based
      * on a given set of coordinates.
      *
-     * @example If an ImageGeometry has dimensions 10x20x30 with a resolution of
+     * If an ImageGeometry has dimensions 10x20x30 with a resolution of
      * 0.5 x 0.5 x 0.5 and an Origin of 4.0, 6.0, 10.0 then following examples
      * are calculated:
      *
@@ -302,7 +301,7 @@ class SIMPLib_EXPORT ImageGeom : public IGeometryGrid
     * @brief computeCellIndex This method will compute the X, Y & Z Index based
     * on a given set of coordinates.
     *
-    * @example If an ImageGeometry has dimensions 10x20x30 with a resolution of
+    * If an ImageGeometry has dimensions 10x20x30 with a resolution of
     * 0.5 x 0.5 x 0.5 and an Origin of 4.0, 6.0, 10.0 then following examples
     * are calculated:
     *
@@ -364,7 +363,6 @@ class SIMPLib_EXPORT ImageGeom : public IGeometryGrid
     virtual void setElementSizes(FloatArrayType::Pointer elementSizes) override;
 
   private:
-    size_t m_Dimensions[3];
     FloatArrayType::Pointer m_VoxelSizes;
 
     friend class FindImageDerivativesImpl;

@@ -104,8 +104,8 @@
  * reference the class.
  */
 #define QT_SHARED_POINTERS(thisClass)\
-  typedef thisClass                      Self;\
-  typedef QSharedPointer< Self >        Pointer;\
+  typedef thisClass    Self;\
+  typedef QSharedPointer< Self > Pointer;\
   typedef QSharedPointer<const Self >  ConstPointer;\
   SIMPL_NULL_SHARED_POINTER(thisClass)
 
@@ -116,8 +116,8 @@
  * reference the class.
  */
 #define SIMPL_SHARED_POINTERS(thisClass)\
-  typedef thisClass                      Self;\
-  typedef std::shared_ptr<Self >        Pointer;\
+  typedef thisClass    Self;\
+  typedef std::shared_ptr<Self > Pointer;\
   typedef std::shared_ptr<const Self >  ConstPointer;\
   typedef std::weak_ptr<thisClass > WeakPointer;\
   typedef std::weak_ptr<thisClass > ConstWeakPointer;\
@@ -169,57 +169,57 @@
 
 /** Macro used to add standard methods to all classes, mainly type
  * information. */
-#define SIMPL_TYPE_MACRO(thisClass)                                                                                                                                                                    \
-public:                                                                                                                                                                                                \
-  virtual const QString getNameOfClass() const                                                                                                                                                         \
-  {                                                                                                                                                                                                    \
-    return QString(#thisClass);                                                                                                                                                                        \
-  }                                                                                                                                                                                                    \
-  static int IsTypeOf(const char* type)                                                                                                                                                                \
-  {                                                                                                                                                                                                    \
-    if(!strcmp(#thisClass, type))                                                                                                                                                                      \
-    {                                                                                                                                                                                                  \
-      return 1;                                                                                                                                                                                        \
-    }                                                                                                                                                                                                  \
-    return 0;                                                                                                                                                                                          \
+#define SIMPL_TYPE_MACRO(thisClass)\
+public:     \
+  virtual const QString getNameOfClass() const\
+  {  \
+    return QString(#thisClass);    \
+  }  \
+  static int IsTypeOf(const char* type)\
+  {  \
+    if(!strcmp(#thisClass, type))  \
+    {\
+      return 1;    \
+    }\
+    return 0;      \
   }
 
-#define SIMPL_TYPE_MACRO_SUPER(thisClass, superclass)                                                                                                                                                  \
-public:                                                                                                                                                                                                \
-  virtual const QString getNameOfClass() const                                                                                                                                                         \
-  {                                                                                                                                                                                                    \
-    return QString(#thisClass);                                                                                                                                                                        \
-  }                                                                                                                                                                                                    \
-  static QString ClassName()                                                                                                                                                                           \
-  {                                                                                                                                                                                                    \
-    return QString(#thisClass);                                                                                                                                                                        \
-  }                                                                                                                                                                                                    \
-  static int IsTypeOf(const char* type)                                                                                                                                                                \
-  {                                                                                                                                                                                                    \
-    if(!strcmp(#thisClass, type))                                                                                                                                                                      \
-    {                                                                                                                                                                                                  \
-      return 1;                                                                                                                                                                                        \
-    }                                                                                                                                                                                                  \
-    return superclass::IsTypeOf(type);                                                                                                                                                                 \
+#define SIMPL_TYPE_MACRO_SUPER(thisClass, superclass)    \
+public:     \
+  virtual const QString getNameOfClass() const\
+  {  \
+    return QString(#thisClass);    \
+  }  \
+  static QString ClassName()\
+  {  \
+    return QString(#thisClass);    \
+  }  \
+  static int IsTypeOf(const char* type)\
+  {  \
+    if(!strcmp(#thisClass, type))  \
+    {\
+      return 1;    \
+    }\
+    return superclass::IsTypeOf(type); \
   }
 
-#define SIMPL_TYPE_MACRO_SUPER_OVERRIDE(thisClass, superclass)                                                                                                                                         \
-public:                                                                                                                                                                                                \
-  virtual const QString getNameOfClass() const override                                                                                                                                                \
-  {                                                                                                                                                                                                    \
-    return QString(#thisClass);                                                                                                                                                                        \
-  }                                                                                                                                                                                                    \
-  static QString ClassName()                                                                                                                                                                           \
-  {                                                                                                                                                                                                    \
-    return QString(#thisClass);                                                                                                                                                                        \
-  }                                                                                                                                                                                                    \
-  static int IsTypeOf(const char* type)                                                                                                                                                                \
-  {                                                                                                                                                                                                    \
-    if(!strcmp(#thisClass, type))                                                                                                                                                                      \
-    {                                                                                                                                                                                                  \
-      return 1;                                                                                                                                                                                        \
-    }                                                                                                                                                                                                  \
-    return superclass::IsTypeOf(type);                                                                                                                                                                 \
+#define SIMPL_TYPE_MACRO_SUPER_OVERRIDE(thisClass, superclass)  \
+public:     \
+  virtual const QString getNameOfClass() const override  \
+  {  \
+    return QString(#thisClass);    \
+  }  \
+  static QString ClassName()\
+  {  \
+    return QString(#thisClass);    \
+  }  \
+  static int IsTypeOf(const char* type)\
+  {  \
+    if(!strcmp(#thisClass, type))  \
+    {\
+      return 1;    \
+    }\
+    return superclass::IsTypeOf(type); \
   }
 
 #define SIMPL_CLASS_VERSION(vers)\
@@ -373,18 +373,24 @@ public:                                                                         
   SIMPL_SET_PROPERTY(type, prpty)\
   SIMPL_GET_PROPERTY(type, prpty)
 
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
 #define SIMPL_SET_2DVECTOR_PROPERTY(type, prpty, varname)\
   void set##prpty(type value[2]) {\
     varname[0] = value[0]; varname[1] = value[1]; }\
   void set##prpty(type value_0, type value_1) {\
-    varname[0] = value_0; varname[1] = value_1; }
+    varname[0] = value_0; varname[1] = value_1; }\
+  void set##prpty(const std::tuple<type, type> &var) {\
+    varname[0] = std::get<0>(var); varname[1] = std::get<1>(var); }
 
 #define SIMPL_GET_2DVECTOR_PROPERTY(type, prpty, varname)\
   void get##prpty(type value[2]) {\
     value[0] = varname[0]; value[1] = varname[1]; }\
   void get##prpty(type &value_0, type &value_1) {\
-    value_0 = varname[0]; value_1 = varname[1]; }
-
+    value_0 = varname[0]; value_1 = varname[1]; }\
+  std::tuple<type, type> get##prpty() const {\
+    return std::make_tuple(varname[0], varname[1]); }
 
 #define SIMPL_INSTANCE_VEC2_PROPERTY(type, prpty)\
   private:\
@@ -394,18 +400,24 @@ public:                                                                         
   SIMPL_GET_2DVECTOR_PROPERTY(type, prpty, m_##prpty)
 
 
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
 #define SIMPL_SET_VEC3_PROPERTY(type, prpty, varname)\
   void set##prpty(type value[3]) {\
     varname[0] = value[0]; varname[1] = value[1]; varname[2] = value[2]; }\
   void set##prpty(type value_0, type value_1, type value_2) {\
-    varname[0] = value_0; varname[1] = value_1; varname[2] = value_2; }
-
+    varname[0] = value_0; varname[1] = value_1; varname[2] = value_2; }\
+  void set##prpty(const std::tuple<type, type, type> &var) {\
+    varname[0] = std::get<0>(var); varname[1] = std::get<1>(var); varname[2] = std::get<2>(var); }
+        
 #define SIMPL_GET_VEC3_PROPERTY(type, prpty, varname)\
   void get##prpty(type value[3]) {\
     value[0] = varname[0]; value[1] = varname[1]; value[2] = varname[2]; }\
   void get##prpty(type &value_0, type &value_1, type &value_2) {\
-    value_0 = varname[0]; value_1 = varname[1]; value_2 = varname[2]; }
-
+    value_0 = varname[0]; value_1 = varname[1]; value_2 = varname[2]; }\
+  std::tuple<type, type, type> get##prpty() const {\
+    return std::make_tuple(varname[0], varname[1], varname[2]); }
 
 #define SIMPL_INSTANCE_VEC3_PROPERTY(type, prpty)\
   private:\
@@ -414,8 +426,37 @@ public:                                                                         
   SIMPL_SET_VEC3_PROPERTY(type, prpty, m_##prpty)\
   SIMPL_GET_VEC3_PROPERTY(type, prpty, m_##prpty)
 
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+#define SIMPL_SET_VEC3_PROPERTY_VO(type, prpty, varname)\
+  virtual void set##prpty(type value[3]) override {\
+    varname[0] = value[0]; varname[1] = value[1]; varname[2] = value[2]; }\
+   virtual void set##prpty(type value_0, type value_1, type value_2) override {\
+    varname[0] = value_0; varname[1] = value_1; varname[2] = value_2; }\
+  virtual void set##prpty(const std::tuple<type, type, type> &var) override {\
+    varname[0] = std::get<0>(var); varname[1] = std::get<1>(var); varname[2] = std::get<2>(var);}
+    
+    
+#define SIMPL_GET_VEC3_PROPERTY_VO(type, prpty, varname)\
+  virtual void get##prpty(type value[3]) override {\
+    value[0] = varname[0]; value[1] = varname[1]; value[2] = varname[2]; }\
+  virtual void get##prpty(type &value_0, type &value_1, type &value_2) override {\
+    value_0 = varname[0]; value_1 = varname[1]; value_2 = varname[2]; }\
+  virtual std::tuple<type, type, type> get##prpty() override {\
+    return std::make_tuple(varname[0], varname[1], varname[2]); }
 
 
+#define SIMPL_INSTANCE_VEC3_PROPERTY_VO(type, prpty)\
+  private:\
+  type   m_##prpty[3];\
+  public:\
+  SIMPL_SET_VEC3_PROPERTY_VO(type, prpty, m_##prpty)\
+  SIMPL_GET_VEC3_PROPERTY_VO(type, prpty, m_##prpty)
+  
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
 #define SIMPL_CONTAINER_TYPE(thisClass, container) \
   typedef container<thisClass >     ContainerT; \
   typedef std::shared_ptr< container<thisClass > > ContainerPType;
@@ -436,19 +477,19 @@ public:                                                                         
 /**
 * @brief Creates a "setter" method to set the property.
 */
-#define SIMPL_SET_STRING_PROPERTY_OVERRIDE(prpty, varname)                                                                                                                                             \
-  void set##prpty(const QString& value) override                                                                                                                                                       \
-  {                                                                                                                                                                                                    \
-    this->varname = value;                                                                                                                                                                             \
+#define SIMPL_SET_STRING_PROPERTY_OVERRIDE(prpty, varname)      \
+  void set##prpty(const QString& value) override  \
+  {  \
+    this->varname = value;  \
   }
 
 /**
 * @brief Creates a "getter" method to retrieve the value of the property.
 */
-#define SIMPL_GET_STRING_PROPERTY_OVERRIDE(prpty, varname)                                                                                                                                             \
-  QString get##prpty() const override                                                                                                                                                                  \
-  {                                                                                                                                                                                                    \
-    return varname;                                                                                                                                                                                    \
+#define SIMPL_GET_STRING_PROPERTY_OVERRIDE(prpty, varname)      \
+  QString get##prpty() const override  \
+  {  \
+    return varname;\
   }
 
 /**
@@ -464,12 +505,11 @@ public:                                                                         
 /**
 * @brief
 */
-#define SIMPL_INSTANCE_STRING_PROPERTY_OVERRIDE(prpty)                                                                                                                                                 \
-private:                                                                                                                                                                                               \
-  QString m_##prpty;                                                                                                                                                                                   \
-                                                                                                                                                                                                       \
-public:                                                                                                                                                                                                \
-  SIMPL_SET_STRING_PROPERTY_OVERRIDE(prpty, m_##prpty)                                                                                                                                                 \
+#define SIMPL_INSTANCE_STRING_PROPERTY_OVERRIDE(prpty)\
+private:\
+  QString m_##prpty;\
+public:\
+  SIMPL_SET_STRING_PROPERTY_OVERRIDE(prpty, m_##prpty)\
   SIMPL_GET_STRING_PROPERTY_OVERRIDE(prpty, m_##prpty)
 
 #define SIMPL_VIRTUAL_INSTANCE_STRING_PROPERTY(prpty)\
@@ -554,8 +594,8 @@ public:                                                                         
   DataArray<type>::WeakPointer m_##name##Ptr;\
   type* m_##name = nullptr;
 
-#define DEFINE_DATAARRAY_WEAKPTR(type, name)                                                                                                                                                           \
-private:                                                                                                                                                                                               \
+#define DEFINE_DATAARRAY_WEAKPTR(type, name)  \
+private:    \
   DataArray<type>::WeakPointer m_##name##Ptr;
 
 #define DEFINE_STRINGARRAY_VARIABLE(name)\
@@ -574,8 +614,8 @@ private:                                                                        
   IDataArray::WeakPointer m_##varName##Ptr;\
   void* m_##varName = nullptr;
 
-#define DEFINE_IDATAARRAY_WEAKPTR(varName)                                                                                                                                                             \
-private:                                                                                                                                                                                               \
+#define DEFINE_IDATAARRAY_WEAKPTR(varName)    \
+private:    \
   IDataArray::WeakPointer m_##varName##Ptr;
 
 #define SIMPL_COPY_INSTANCEVAR(name)\
@@ -633,17 +673,17 @@ private:                                                                        
     class bad_lexical_cast : public std::runtime_error
     {
       public:
-        bad_lexical_cast(const QString& s)
-          : std::runtime_error(s.toStdString())
-        { }
+ bad_lexical_cast(const QString& s)
+   : std::runtime_error(s.toStdString())
+ { }
     };
 
     class bad_any_cast : public std::runtime_error
     {
       public:
-        bad_any_cast(const QString& s)
-          : std::runtime_error(s.toStdString())
-        { }
+ bad_any_cast(const QString& s)
+   : std::runtime_error(s.toStdString())
+ { }
     };
 
     template<typename T>

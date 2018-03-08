@@ -1152,7 +1152,7 @@ int RectGridGeom::gatherMetaData(hid_t parentId, size_t volDims[3], bool preflig
   {
     return -1;
   }
-  setDimensions(volDims[0], volDims[1], volDims[2]);
+  setDimensions(volDims);
   setXBounds(xBnds);
   setYBounds(yBnds);
   setZBounds(zBnds);
