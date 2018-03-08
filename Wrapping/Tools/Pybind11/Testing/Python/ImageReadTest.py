@@ -54,8 +54,15 @@ def ImageReadTest():
     array = simpl.UInt8ArrayType(z_flat, cDims, name, False)
     cellAm.addAttributeArray(array.Name, array)
 
+    # Create a Geometry Object and store it in the DataContainer
+    imageGeom = simpl.ImageGeom.CreateGeometry("ImageGeometry")
+    imageGeom.setDimensions(shape[1], shape[0], 1)
+    imageGeom.setResolution(1.0, 1.0, 1.0)
+    imageGeom.setOrigin(20, 45, 70)
+    dc.setGeometry(imageGeom)
+
     # Write the file out
-    err = sc.WriteDREAM3DFile( sd.GetTestTempDirectory() + "/ImageReadTest.dream3d", dca)
+    err = sc.WriteDREAM3DFile( sd.GetTestTempDirectory() + "/ImageReadTest.dream3d", dca, True)
     assert err == 0
 
 

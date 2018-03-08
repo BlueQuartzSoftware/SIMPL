@@ -36,23 +36,22 @@
 #ifndef _igeometrygrid_h_
 #define _igeometrygrid_h_
 
+#include <tuple>
 
 #include "SIMPLib/Common/SIMPLibSetGetMacros.h"
 #include "SIMPLib/Geometry/IGeometry.h"
 
+
+    using Tuple3FV_Type = std::tuple<float, float, float>;
+    using Tuple3DV_Type = std::tuple<double, double, double>;
+    using Tuple3SV_Type = std::tuple<size_t, size_t, size_t>;
 /**
  * @brief The IGeometryGrid class extends IGeometry for grid type geometries
  */
 class SIMPLib_EXPORT IGeometryGrid : public IGeometry
 {
-
+  // This class needs to be wrapped so Python/Pybind11 can do the proper casting
   PYB11_CREATE_BINDINGS(IGeometryGrid SUPERCLASS IGeometry)
-  PYB11_METHOD(void setDimensions OVERLOAD size_t,xDim size_t,yDim size_t,zDim)
-  PYB11_METHOD(void getDimensions OVERLOAD size_t&,xDim size_t&,yDim size_t&,zDim)
-  
-  PYB11_METHOD(size_t getXPoints)
-  PYB11_METHOD(size_t getYPoints)
-  PYB11_METHOD(size_t getZPoints)
 
   public:
     SIMPL_SHARED_POINTERS(IGeometryGrid)
@@ -62,17 +61,21 @@ class SIMPLib_EXPORT IGeometryGrid : public IGeometry
     virtual ~IGeometryGrid();
     
     virtual void setDimensions(size_t dims[3]) = 0;
-    virtual void setDimensions(size_t xDim, size_t yDim, size_t zDim) = 0;
+    virtual void setDimensions(size_t a, size_t b, size_t c) = 0;
+    virtual void setDimensions(const std::tuple<size_t, size_t, size_t> &dims) = 0;
+    
     virtual void getDimensions(size_t dims[3]) = 0;
-    virtual void getDimensions(size_t& xDim, size_t& yDim, size_t& zDim) = 0;
+    virtual void getDimensions(size_t &a, size_t &b, size_t &c) = 0;
+    virtual std::tuple<size_t, size_t, size_t> getDimensions() = 0;
     
     virtual size_t getXPoints() = 0;
     virtual size_t getYPoints() = 0;
     virtual size_t getZPoints() = 0;
-
+    
     virtual void getPlaneCoords(size_t idx[3], float coords[3]) = 0;
     virtual void getPlaneCoords(size_t x, size_t y, size_t z, float coords[3]) = 0;
     virtual void getPlaneCoords(size_t idx, float coords[3]) = 0;
+    
     virtual void getPlaneCoords(size_t idx[3], double coords[3]) = 0;
     virtual void getPlaneCoords(size_t x, size_t y, size_t z, double coords[3]) = 0;
     virtual void getPlaneCoords(size_t idx, double coords[3]) = 0;
@@ -80,6 +83,7 @@ class SIMPLib_EXPORT IGeometryGrid : public IGeometry
     virtual void getCoords(size_t idx[3], float coords[3]) = 0;
     virtual void getCoords(size_t x, size_t y, size_t z, float coords[3]) = 0;
     virtual void getCoords(size_t idx, float coords[3]) = 0;
+    
     virtual void getCoords(size_t idx[3], double coords[3]) = 0;
     virtual void getCoords(size_t x, size_t y, size_t z, double coords[3]) = 0;
     virtual void getCoords(size_t idx, double coords[3]) = 0;

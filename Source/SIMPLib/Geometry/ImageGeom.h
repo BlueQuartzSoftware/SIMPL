@@ -39,6 +39,12 @@
 #include "SIMPLib/Common/SIMPLibSetGetMacros.h"
 #include "SIMPLib/Geometry/IGeometryGrid.h"
 
+namespace SIMPL {
+  using Tuple3FVec = std::tuple<float,float,float>;
+  using Tuple6FVec = std::tuple<float,float,float,float,float,float>;
+  using Tuple3SVec = std::tuple<size_t,size_t,size_t>;
+}
+
 /**
  * @brief The ImageGeom class represents a structured rectlinear grid
  */
@@ -48,14 +54,21 @@ class SIMPLib_EXPORT ImageGeom : public IGeometryGrid
   PYB11_STATIC_CREATION(CreateGeometry ARGS QString)
   
   PYB11_ENUMERATION(ErrorType)
+
+  PYB11_METHOD(void setDimensions OVERLOAD size_t,x size_t,y size_t,z)
+  PYB11_METHOD(SIMPL::Tuple3SVec getDimensions)
+
   PYB11_METHOD(void setResolution OVERLOAD float,x float,y float,z)
-  PYB11_METHOD(std::tuple<float,float,float> getRes)
-  PYB11_METHOD(float getXRes)
-  PYB11_METHOD(float getYRes)
-  PYB11_METHOD(float getZRes)
+  PYB11_METHOD(SIMPL::Tuple3FVec getResolution OVERLOAD)
+
+  PYB11_METHOD(size_t getXPoints)
+  PYB11_METHOD(size_t getYPoints)
+  PYB11_METHOD(size_t getZPoints)
+  
   PYB11_METHOD(void setOrigin OVERLOAD float,x float,y float,z)
-  PYB11_METHOD(void getOrigin OVERLOAD float.&,x float.&,y float.&,z)
-  PYB11_METHOD(void getBoundingBox OVERLOAD float.&,xMin float.&,xMax float.&,yMin float.&,yMax float.&,zMin float.&,zMax)
+  PYB11_METHOD(SIMPL::Tuple3FVec getOrigin OVERLOAD)
+
+  PYB11_METHOD(SIMPL::Tuple6FVec getBoundingBox OVERLOAD)
 
 
   public:
@@ -86,10 +99,6 @@ class SIMPLib_EXPORT ImageGeom : public IGeometryGrid
     static Pointer CreateGeometry(const QString& name);
 
     SIMPL_INSTANCE_VEC3_PROPERTY(float, Resolution)
-    std::tuple<float, float, float> getRes() const
-    {
-      return std::make_tuple(m_Resolution[0], m_Resolution[1], m_Resolution[2]);
-    }
 
     inline float getXRes() { return m_Resolution[0]; }
     inline float getYRes() { return m_Resolution[1]; }
@@ -97,24 +106,20 @@ class SIMPLib_EXPORT ImageGeom : public IGeometryGrid
 
     SIMPL_INSTANCE_VEC3_PROPERTY(float, Origin)
 
-    /**
-     * @brief Returns the bounding box for this geometry
-     * @param xMin
-     * @param xMax
-     * @param yMin
-     * @param yMax
-     * @param zMin
-     * @param zMax
-     */
-    void getBoundingBox(float &xMin, float &xMax, float &yMin, float &yMax, float &zMin, float &zMax);
-
+    
     /**
      * @brief getBoundingBox
      * @param boundingBox The bounding box will be stored in the input argument in the following order:
      * xMin, xMax, yMin, yMax, zMin, zMax
      */
-    void getBoundingBox(float boundingBox[6]);
-
+    void getBoundingBox(float* boundingBox);
+    
+    /**
+     * @brief getBoundingBox
+     * @param boundingBox The bounding box will be stored in the input argument in the following order:
+     * xMin, xMax, yMin, yMax, zMin, zMax
+     */
+    SIMPL::Tuple6FVec getBoundingBox();
 
 // -----------------------------------------------------------------------------
 // Inherited from IGeometry
@@ -265,11 +270,8 @@ class SIMPLib_EXPORT ImageGeom : public IGeometryGrid
 // -----------------------------------------------------------------------------
 // Inherited from IGeometryGrid
 // -----------------------------------------------------------------------------
-
-    virtual void setDimensions(size_t dims[3]) override;
-    virtual void setDimensions(size_t xDim, size_t yDim, size_t zDim) override;
-    virtual void getDimensions(size_t dims[3]) override;
-    virtual void getDimensions(size_t& xDim, size_t& yDim, size_t& zDim) override;
+    
+    SIMPL_INSTANCE_VEC3_PROPERTY_VO(size_t, Dimensions)
 
     virtual size_t getXPoints() override;
     virtual size_t getYPoints() override;
@@ -278,6 +280,7 @@ class SIMPLib_EXPORT ImageGeom : public IGeometryGrid
     virtual void getPlaneCoords(size_t idx[3], float coords[3]) override;
     virtual void getPlaneCoords(size_t x, size_t y, size_t z, float coords[3]) override;
     virtual void getPlaneCoords(size_t idx, float coords[3]) override;
+    
     virtual void getPlaneCoords(size_t idx[3], double coords[3]) override;
     virtual void getPlaneCoords(size_t x, size_t y, size_t z, double coords[3]) override;
     virtual void getPlaneCoords(size_t idx, double coords[3]) override;
@@ -285,6 +288,7 @@ class SIMPLib_EXPORT ImageGeom : public IGeometryGrid
     virtual void getCoords(size_t idx[3], float coords[3]) override;
     virtual void getCoords(size_t x, size_t y, size_t z, float coords[3]) override;
     virtual void getCoords(size_t idx, float coords[3]) override;
+    
     virtual void getCoords(size_t idx[3], double coords[3]) override;
     virtual void getCoords(size_t x, size_t y, size_t z, double coords[3]) override;
     virtual void getCoords(size_t idx, double coords[3]) override;
@@ -382,7 +386,6 @@ class SIMPLib_EXPORT ImageGeom : public IGeometryGrid
     virtual void setElementSizes(FloatArrayType::Pointer elementSizes) override;
 
   private:
-    size_t m_Dimensions[3];
     FloatArrayType::Pointer m_VoxelSizes;
 
     friend class FindImageDerivativesImpl;

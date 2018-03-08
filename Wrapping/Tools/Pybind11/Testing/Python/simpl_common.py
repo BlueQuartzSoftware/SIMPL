@@ -51,6 +51,8 @@ def WriteDREAM3DFile(path, dca, verbose=False):
         print("Creating DREAM3D Writer filter....")
     writer = simpl.DataContainerWriter.New()
     writer.OutputFile = (path)
+    if verbose:
+        print("Writing to file:", path)
     writer.setDataContainerArray(dca)
     writer.execute()
     if(writer.ErrorCondition != 0):

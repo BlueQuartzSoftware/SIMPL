@@ -20,14 +20,34 @@ import simpl_common as sc
 def GeometryTest():
   imageGeom = simpl.ImageGeom.CreateGeometry("ImageGeometry")
   assert imageGeom.Name == "ImageGeometry"
-  imageGeom.Name = "Foo"
-  imageRes = imageGeom.getRes()
-  print("ImageRes: ", imageRes)
-  imageGeom.getDimensions(xDim, yDim, zDim)
-  print("ImageGeom: ", imageGeom)
-  print("Dims: " ,xDim, yDim, zDim, sep=" ")
+
+  imageGeom.setDimensions(100, 1001, 200)
+  dims = imageGeom.getDimensions()
+  assert dims[0] == 100
+  assert dims[1] == 1001
+  assert dims[2] == 200
+
+  imageGeom.setResolution(1.0, 2.0, 3.0)
+  imageRes = imageGeom.getResolution()
+  assert imageRes[0] == 1.0
+  assert imageRes[1] == 2.0
+  assert imageRes[2] == 3.0
+
+  imageGeom.setOrigin(20, 45, 70)
+  origin = imageGeom.getOrigin()
+  assert origin[0] == 20
+  assert origin[1] == 45
+  assert origin[2] == 70
+  
   infoString = imageGeom.getInfoString(simpl.HtmlFormat)
-  print(infoString)
+
+  boundingBox = imageGeom.getBoundingBox()
+  assert boundingBox[0] == 20
+  assert boundingBox[1] == 120
+  assert boundingBox[2] == 45
+  assert boundingBox[3] == 2047
+  assert boundingBox[4] == 70
+  assert boundingBox[5] == 670
 
 """
 Main entry point for python script

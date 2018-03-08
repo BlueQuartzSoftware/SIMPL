@@ -380,19 +380,19 @@ QString PythonBindingClass::generateMethodCode()
     {
       out << TAB << ".def(\"" << methodName << "\", &" << getClassName() << "::" << methodName << ")" << NEWLINE_SIMPL;
     }
-    else if(tokens.size() > 3 && tokens[2] == ::kOverload)
+    else if(tokens.size() >= 3 && tokens[2] == ::kOverload)
     {
       /*
        * C++14 style
       .def("set", py::overload_cast<int>(&Pet::set), "Set the pet's age")
       .def("set", py::overload_cast<const std::string &>(&Pet::set), "Set the pet's name");
       */
-      #if 0  /* C++14 style */
+#if 1 /* C++14 style */
       out << TAB << ".def(\"" << methodName << "\", py::overload_cast<";
       for(int32_t i = 3; i < tokens.size(); i++)
       {
         QStringList varPair = tokens[i].split(","); // Split the var,type pair using a comma
-        out << varPair[0];
+        out << varPair[0].replace('.', ' ');
         if(i != tokens.size()-1)
         {
           out << ", ";
@@ -400,10 +400,10 @@ QString PythonBindingClass::generateMethodCode()
       }
       out << ">(&" << getClassName() << "::" << methodName << ")";
       
-      #else
-      /* C++11 Style
-       .def("getAttributeMatrix", (AttributeMatrix::Pointer (DataContainer::*)(const QString &)) &DataContainer::getAttributeMatrix, "Set the pet's age")
-       .def("getAttributeMatrix", (AttributeMatrix::Pointer (DataContainer::*)(const DataArrayPath &)) &DataContainer::getAttributeMatrix, "Set the pet's name")
+      #else /* C++11 Style */
+      /*
+      * .def("getAttributeMatrix", (AttributeMatrix::Pointer (DataContainer::*)(const QString &)) &DataContainer::getAttributeMatrix, "Set the pet's age")
+      * .def("getAttributeMatrix", (AttributeMatrix::Pointer (DataContainer::*)(const DataArrayPath &)) &DataContainer::getAttributeMatrix, "Set the pet's name")
       */
       out << TAB << ".def(\"" << methodName << "\", (" << tokens[0] << " (" << getClassName() << "::*)(";
       for(int32_t i = 3; i < tokens.size(); i++)

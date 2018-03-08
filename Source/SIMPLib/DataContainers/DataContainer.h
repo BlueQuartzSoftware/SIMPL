@@ -82,6 +82,9 @@ class SIMPLib_EXPORT DataContainer : public Observable
   PYB11_METHOD(bool renameAttributeMatrix ARGS OldName NewName OverWrite)
 
   PYB11_METHOD(bool doesAttributeMatrixExist ARGS Name)
+  PYB11_METHOD(void setGeometry ARGS Geometry)
+
+  
 public:
   SIMPL_SHARED_POINTERS(DataContainer)
   SIMPL_TYPE_MACRO_SUPER_OVERRIDE(DataContainer, Observable)

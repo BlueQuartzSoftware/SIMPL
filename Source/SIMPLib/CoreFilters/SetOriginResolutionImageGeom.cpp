@@ -175,11 +175,11 @@ void SetOriginResolutionImageGeom::dataCheck()
   }
   if(getChangeOrigin())
   {
-    image->setOrigin(m_Origin.x, m_Origin.y, m_Origin.z);
+    image->setOrigin(std::make_tuple(m_Origin.x, m_Origin.y, m_Origin.z));
   }
   if(getChangeResolution())
   {
-    image->setResolution(m_Resolution.x, m_Resolution.y, m_Resolution.z);
+    image->setResolution(std::make_tuple(m_Resolution.x, m_Resolution.y, m_Resolution.z));
   }
 }
 
