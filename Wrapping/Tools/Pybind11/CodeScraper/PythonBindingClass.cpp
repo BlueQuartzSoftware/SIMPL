@@ -166,7 +166,7 @@ QString PythonBindingClass::generateTopMatterCode()
 
   headerTemplate = headerTemplate.replace(HEADER_PATH, headerPath);
   headerTemplate = headerTemplate.replace(LIB_NAME, m_LibName);
-  headerTemplate = headerTemplate.replace("@DATE_TIME_GENERATED@", QDateTime::currentDateTime().toString());
+  headerTemplate = headerTemplate.replace(DATE_TIME_GENERATED, QDateTime::currentDateTime().toString("yyyy:MM:dd hh::mm::ss.zzz"));
   return headerTemplate;
 }
 
@@ -231,7 +231,7 @@ QString PythonBindingClass::generateStaticNewCode()
 
   if(getHasStaticNewMacro())
   {
-    constructors << TAB << ".def(py::init([]()\n    { \n      return " << getClassName() << "::New();\n    }\n))" << NEWLINE_SIMPL;
+    constructors << TAB << ".def(py::init([]()\n    { \n      return " << getClassName() << "::New();\n    }))" << NEWLINE_SIMPL;
     constructors << TAB << ".def_static(\"New\", &" << getClassName() << "::New)" << NEWLINE_SIMPL;
   }
 
@@ -380,6 +380,53 @@ QString PythonBindingClass::generateMethodCode()
     {
       out << TAB << ".def(\"" << methodName << "\", &" << getClassName() << "::" << methodName << ")" << NEWLINE_SIMPL;
     }
+    else if(tokens.size() > 3 && tokens[2] == ::kOverload)
+    {
+      /*
+       * C++14 style
+      .def("set", py::overload_cast<int>(&Pet::set), "Set the pet's age")
+      .def("set", py::overload_cast<const std::string &>(&Pet::set), "Set the pet's name");
+      */
+      #if 0  /* C++14 style */
+      out << TAB << ".def(\"" << methodName << "\", py::overload_cast<";
+      for(int32_t i = 3; i < tokens.size(); i++)
+      {
+        QStringList varPair = tokens[i].split(","); // Split the var,type pair using a comma
+        out << varPair[0];
+        if(i != tokens.size()-1)
+        {
+          out << ", ";
+        }
+      }
+      out << ">(&" << getClassName() << "::" << methodName << ")";
+      
+      #else
+      /* C++11 Style
+       .def("getAttributeMatrix", (AttributeMatrix::Pointer (DataContainer::*)(const QString &)) &DataContainer::getAttributeMatrix, "Set the pet's age")
+       .def("getAttributeMatrix", (AttributeMatrix::Pointer (DataContainer::*)(const DataArrayPath &)) &DataContainer::getAttributeMatrix, "Set the pet's name")
+      */
+      out << TAB << ".def(\"" << methodName << "\", (" << tokens[0] << " (" << getClassName() << "::*)(";
+      for(int32_t i = 3; i < tokens.size(); i++)
+      {  
+        QStringList varPair = tokens[i].split(","); // Split the var,type pair using a comma
+        
+        out << varPair[0].replace('.', ' ');
+        if(i != tokens.size()-1)
+        {
+          out << ", ";
+        }
+      }
+      out << ")) &"<<getClassName()<<"::"<<tokens[1];
+      #endif
+      
+      for(int32_t i = 3; i < tokens.size(); i++)
+      {
+        QStringList varPair = tokens[i].split(","); // Split the var,type pair using a comma
+        out << ", \n" << TAB << TAB << TAB << TAB << "py::arg(\"" << varPair[1] << "\")";
+      }
+      out << NEWLINE_SIMPL << TAB << TAB << TAB << ")" << NEWLINE_SIMPL;
+           
+    }
     else if(tokens.size() > 3 && tokens[2] == ::kArgs)
     {
       out << TAB << ".def(\"" << methodName << "\", &" << getClassName() << "::" << methodName;
@@ -410,7 +457,11 @@ QString PythonBindingClass::generateEnumerationCode()
     out << "  py::enum_<" << getClassName() << "::" << n << ">(instance, \"" << n << "\")\n";
     QStringList values = iter.value();
     for(auto v : values)
-    {
+    { 
+      if(v.endsWith(',')) // For those enumerations that do not have an actual value.
+      {
+        v = v.remove(',');
+      }
       out << "    .value(\"" << v << "\", " << getClassName() << "::" << n << "::" << v << ")\n";
     }
     out << "    .export_values();\n";
@@ -427,6 +478,7 @@ QString PythonBindingClass::generateFooterCode()
   QString code;
   QTextStream out(&code);
   //out << TAB << ";" << NEWLINE_SIMPL;
+  out << NEWLINE_SIMPL << "  /* Return the instance */" << NEWLINE_SIMPL;
   out << TAB << "return instance;" << NEWLINE_SIMPL;
   out << "}" << NEWLINE_SIMPL;
   out << "\n\n";

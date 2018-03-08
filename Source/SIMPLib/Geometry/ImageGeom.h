@@ -44,6 +44,20 @@
  */
 class SIMPLib_EXPORT ImageGeom : public IGeometryGrid
 {
+  PYB11_CREATE_BINDINGS(ImageGeom SUPERCLASS IGeometryGrid)
+  PYB11_STATIC_CREATION(CreateGeometry ARGS QString)
+  
+  PYB11_ENUMERATION(ErrorType)
+  PYB11_METHOD(void setResolution OVERLOAD float,x float,y float,z)
+  PYB11_METHOD(std::tuple<float,float,float> getRes)
+  PYB11_METHOD(float getXRes)
+  PYB11_METHOD(float getYRes)
+  PYB11_METHOD(float getZRes)
+  PYB11_METHOD(void setOrigin OVERLOAD float,x float,y float,z)
+  PYB11_METHOD(void getOrigin OVERLOAD float.&,x float.&,y float.&,z)
+  PYB11_METHOD(void getBoundingBox OVERLOAD float.&,xMin float.&,xMax float.&,yMin float.&,yMax float.&,zMin float.&,zMax)
+
+
   public:
     SIMPL_SHARED_POINTERS(ImageGeom)
     SIMPL_STATIC_NEW_MACRO(ImageGeom)
@@ -72,6 +86,10 @@ class SIMPLib_EXPORT ImageGeom : public IGeometryGrid
     static Pointer CreateGeometry(const QString& name);
 
     SIMPL_INSTANCE_VEC3_PROPERTY(float, Resolution)
+    std::tuple<float, float, float> getRes() const
+    {
+      return std::make_tuple(m_Resolution[0], m_Resolution[1], m_Resolution[2]);
+    }
 
     inline float getXRes() { return m_Resolution[0]; }
     inline float getYRes() { return m_Resolution[1]; }
@@ -278,7 +296,7 @@ class SIMPLib_EXPORT ImageGeom : public IGeometryGrid
      * @brief computeCellIndex This method will compute the X, Y & Z Index based
      * on a given set of coordinates.
      *
-     * @example If an ImageGeometry has dimensions 10x20x30 with a resolution of
+     * If an ImageGeometry has dimensions 10x20x30 with a resolution of
      * 0.5 x 0.5 x 0.5 and an Origin of 4.0, 6.0, 10.0 then following examples
      * are calculated:
      *
@@ -302,7 +320,7 @@ class SIMPLib_EXPORT ImageGeom : public IGeometryGrid
     * @brief computeCellIndex This method will compute the X, Y & Z Index based
     * on a given set of coordinates.
     *
-    * @example If an ImageGeometry has dimensions 10x20x30 with a resolution of
+    * If an ImageGeometry has dimensions 10x20x30 with a resolution of
     * 0.5 x 0.5 x 0.5 and an Origin of 4.0, 6.0, 10.0 then following examples
     * are calculated:
     *

@@ -1,10 +1,12 @@
 import time
 
 from simpl import *
+import simpl_dirs as sd
+import simpl_common as sc
 
 
 def PipelineTest():
-  inputPath = "/Users/mjackson/DREAM3D-Dev/DREAM3D-Build/Debug/Bin/Data/Output/SmallIN100.dream3d"
+  inputPath = sd.GetTestTempDirectory() + "/SmallIN100.dream3d"
   reader = simpl.DataContainerReader.New()
   reader.InputFile = (inputPath)
   reader.OverwriteExistingDataContainers = (True)
@@ -22,7 +24,7 @@ def PipelineTest():
 
   print("Creating DREAM3D Writer filter....")
   writer = simpl.DataContainerWriter.New()
-  writer.OutputFile = ("/tmp/PipelineTest.dream3d")
+  writer.OutputFile = (sd.GetTestTempDirectory() + "/PipelineTest.dream3d")
   print("humanLabel: %s " % writer.HumanLabel)
   print("groupName: %s " % writer.GroupName)
   print("subGroupName: %s " % writer.SubGroupName)

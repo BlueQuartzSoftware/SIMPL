@@ -1,3 +1,9 @@
+/* This file is auto-genereated from a template file. If you want changes
+* then edit the template file.
+*
+* Generated on: @DATE_TIME_GENERATED@
+*/
+
 #include <pybind11/pybind11.h>
 #include <pybind11/stl_bind.h>
 #include <pybind11/numpy.h>
@@ -218,6 +224,12 @@ PYBIND11_MODULE(@LIB_NAME@, m)
 
   PySharedPtrClass<FloatArrayType> @LIB_NAME@_FloatArrayType = pybind11_init_@LIB_NAME@_FloatArrayType(mod, @LIB_NAME@_IDataArray);
   PySharedPtrClass<DoubleArrayType> @LIB_NAME@_DoubleArrayType = pybind11_init_@LIB_NAME@_DoubleArrayType(mod, @LIB_NAME@_IDataArray);
+
+
+  py::enum_<SIMPL::InfoStringFormat>(mod, "InfoStringFormat")
+  .value("HtmlFormat", SIMPL::InfoStringFormat::HtmlFormat)
+  .value("UnknownFormat", SIMPL::InfoStringFormat::UnknownFormat)
+  .export_values();
 
 
 }

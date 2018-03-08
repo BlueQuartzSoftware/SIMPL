@@ -1,33 +1,52 @@
 #include "PythonBindingsModule.h"
 
+#include <QtCore/QDateTime>
+
 #include "CodeScraper/CodeScraperConstants.h"
 #include "CodeScraper/SIMPLPyBind11Config.h"
-
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
 PythonBindingsModule::PythonBindingsModule()
 {
 }
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
 PythonBindingsModule::~PythonBindingsModule()
 {
 }
-
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
 void PythonBindingsModule::addHeader(const QString& className, const QString& header)
 {
   m_Headers[className] = header;
 }
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
 void PythonBindingsModule::clearHeaders()
 {
   m_Headers.clear();
 }
-
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
 void PythonBindingsModule::addInitCode(const QString& className, const QString& initCode)
 {
   m_InitCodes[className] = initCode;
 }
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
 void PythonBindingsModule::clearInitCodes()
 {
   m_InitCodes.clear();
 }
-
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
 void PythonBindingsModule::addDependency(QString superClassName, QString className)
 {
   // qDebug() << "SuperClassName: " << superClassName << "  ClassName: " << className;
@@ -87,7 +106,9 @@ void PythonBindingsModule::addDependency(QString superClassName, QString classNa
     m_ClassVector.push_back(obj);
   }
 }
-
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
 void PythonBindingsModule::writeOutput(bool didReplace, const QString& outLines, QString filename)
 {
   if(didReplace == true)
@@ -116,7 +137,9 @@ void PythonBindingsModule::writeOutput(bool didReplace, const QString& outLines,
     qDebug() << "Pybind11 Module Generated for: " << fi2.absoluteFilePath();
   }
 }
-
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
 void PythonBindingsModule::generateModuleFile(const QString& outputPath)
 {
   // Create the Top part of the file from a template file
@@ -146,10 +169,13 @@ void PythonBindingsModule::generateModuleFile(const QString& outputPath)
   }
   out << "\n";
   headerTemplate = headerTemplate.replace(MODULE_INIT_CODE, code);
+  headerTemplate = headerTemplate.replace(DATE_TIME_GENERATED, QDateTime::currentDateTime().toString("yyyy:MM:dd hh::mm::ss.zzz"));
 
   writeOutput(true, headerTemplate, outputPath);
 }
-
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
 void PythonBindingsModule::dumpRecursiveIncludeList(int level, const QObject* object, QTextStream& out)
 {
   if(object)
@@ -175,7 +201,9 @@ void PythonBindingsModule::dumpRecursiveIncludeList(int level, const QObject* ob
     }
   }
 }
-
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
 void PythonBindingsModule::dumpRecursiveInitCode(int level, const QObject* object, QTextStream& out)
 {
   if(object)

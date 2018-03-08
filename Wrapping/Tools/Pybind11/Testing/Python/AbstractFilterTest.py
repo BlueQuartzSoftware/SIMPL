@@ -10,32 +10,33 @@ def BasicTest () :
   filter = simpl.AbstractFilter.New()
 
   groupName = filter.GroupName
-  print("groupName: %s " % groupName)
+  assert groupName == "YOUR CLASS SHOULD IMPLEMENT THIS"
 
   subGroupName = filter.SubGroupName
-  print("subGroupName: %s " % subGroupName)
+  assert subGroupName == "YOUR CLASS SHOULD IMPLEMENT THIS"
+
 
   humanLabel = filter.HumanLabel
-  print("humanLabel: %s " % humanLabel)
+  assert humanLabel == "YOUR CLASS SHOULD IMPLEMENT THIS"
 
   filterVersion = filter.FilterVersion
-  print("filterVersion: %s " % filterVersion)
+  assert filterVersion == "0.0.0"
 
   compiledLibraryName = filter.CompiledLibraryName
-  print("compiledLibraryName: %s " % compiledLibraryName)
+  assert compiledLibraryName == ""
 
 
   filter.Cancel = False
   b = filter.Cancel
-  print("Cancel: %s " % b)
+  assert b == False
 
   filter.Enabled = True
   b = filter.Enabled
-  print("Enabled: %s " % b)
+  assert b == True
 
   filter.ErrorCondition = -1000
   e = filter.ErrorCondition
-  print("ErrorCondition: %s " % e)
+  assert e == -1000
 
 """
 Main entry point for python script

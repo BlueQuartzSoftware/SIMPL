@@ -65,9 +65,31 @@ typedef UInt16Int64DynamicListArray ElementDynamicList;
  */
 class SIMPLib_EXPORT IGeometry : public Observable
 {
+  // This line MUST be first when exposing a class and properties to Python
+  PYB11_CREATE_BINDINGS(IGeometry)
+
+  PYB11_ENUMERATION(Type)
+  PYB11_ENUMERATION(VtkCellType)
+
+  PYB11_PROPERTY(QString Name READ getName WRITE setName)
+  PYB11_METHOD(Type getGeometryType)
+  PYB11_METHOD(QString getGeometryTypeAsString)
+  PYB11_METHOD(QString getInfoString ARGS formatType)
+  PYB11_PROPERTY(QString MessagePrefix READ getMessagePrefix WRITE setMessagePrefix)
+  PYB11_PROPERTY(QString MessageTitle READ getMessageTitle WRITE setMessageTitle)
+  PYB11_PROPERTY(QString MessageLabel READ getMessageLabel WRITE setMessageLabel)
+  PYB11_METHOD(uint32_t getXdmfGridType)
+  PYB11_METHOD(uint32_t getUnitDimensionality)
+  PYB11_PROPERTY(uint32_t SpatialDimensionality READ getSpatialDimensionality WRITE setSpatialDimensionality)
+  PYB11_METHOD(Pointer deepCopy ARGS forceNoAllocate)
+  PYB11_METHOD(void initializeWithZeros)
+  PYB11_METHOD(void addAttributeMatrix ARGS Name AttributeMatrix)
+  PYB11_METHOD(AttributeMatrix getAttributeMatrix ARGS Name)
+  PYB11_METHOD(AttributeMatrix removeAttributeMatrix ARGS Name)
+
   public:
     SIMPL_SHARED_POINTERS(IGeometry)
-     SIMPL_TYPE_MACRO_SUPER_OVERRIDE(IGeometry, Observable)
+    SIMPL_TYPE_MACRO_SUPER_OVERRIDE(IGeometry, Observable)
 
     IGeometry();
     virtual ~IGeometry();

@@ -45,9 +45,18 @@
  */
 class SIMPLib_EXPORT IGeometryGrid : public IGeometry
 {
+
+  PYB11_CREATE_BINDINGS(IGeometryGrid SUPERCLASS IGeometry)
+  PYB11_METHOD(void setDimensions OVERLOAD size_t,xDim size_t,yDim size_t,zDim)
+  PYB11_METHOD(void getDimensions OVERLOAD size_t&,xDim size_t&,yDim size_t&,zDim)
+  
+  PYB11_METHOD(size_t getXPoints)
+  PYB11_METHOD(size_t getYPoints)
+  PYB11_METHOD(size_t getZPoints)
+
   public:
     SIMPL_SHARED_POINTERS(IGeometryGrid)
-     SIMPL_TYPE_MACRO_SUPER_OVERRIDE(IGeometryGrid, Observable)
+    SIMPL_TYPE_MACRO_SUPER_OVERRIDE(IGeometryGrid, Observable)
 
     IGeometryGrid();
     virtual ~IGeometryGrid();

@@ -1,105 +1,30 @@
 
 import time
 
-from simpl import *
-
-
 try:
     import numpy as np
 except ImportError:
     raise RuntimeError("This module depends on the numpy module. Please make\
 sure that it is installed properly.")
 
-def CreateDataContainerArray():
-    """
-    Creates a Top level Data Container Array object. Everything will get packed in this
-    """
-    dca = simpl.DataContainerArray.New()
-    return dca
+# These are the SIMPL python modules
+from simpl import *
+import simpl_dirs as sd
+import simpl_common as sc
 
-def CreateDataContainer(name):
-    """
-    Creates a DataContainer object
-    """
-    dc = simpl.DataContainer.New(name)
-    return dc
-
-
-def CreateAttributeMatrix(name, type, dims):
-    """
-    Creates an AttriuteMatrix of the given type
-    """
-    am = simpl.AttributeMatrix.Create(dims, name, type)
-    return am
-
-
-def WriteDREAM3DFile(path, dca):
-    # Lets write out the whole Heirarchy to a .dream3d file
-    print("Creating DREAM3D Writer filter....")
-    writer = simpl.DataContainerWriter.New()
-    writer.OutputFile = (path)
-    writer.setDataContainerArray(dca)
-    writer.execute()
-    if(writer.ErrorCondition == 0):
-        print("DREAM.3D File written to %s" % path)
-    return writer.ErrorCondition
-
-
-def CreateDataArray(name, shape, cDims, type):
-    """
-    Creates a data array with the attributes listed
-    """
-    # Create a numpy array of ones to hold our data
-    num_array = np.ndarray(shape, dtype=type, order="C")
-
-    z = np.asarray(num_array)
-    if not z.flags.contiguous:
-        z = np.ascontiguousarray(z)
-
-    shape = z.shape
-    assert z.flags.contiguous, 'Only contiguous arrays are supported.'
-    assert not np.issubdtype(z.dtype, np.complex128), \
-            "Complex numpy arrays cannot be converted to vtk arrays."\
-            "Use real() or imag() to get a component of the array before"\
-            " passing it to vtk."
-
-    # Get the Pointer to the numpy array
-    z_flat = np.ravel(z)
-    # Declare the number of components for the array
-    if type == np.int8:
-        array = simpl.Int8ArrayType(z_flat, cDims, name, False)
-    elif type == np.uint8:
-        array = simpl.UInt8ArrayType(z_flat, cDims, name, False)
-    elif type == np.int16:
-        array = simpl.Int16ArrayType(z_flat, cDims, name, False)
-    elif type == np.uint16:
-        array = simpl.UInt16ArrayType(z_flat, cDims, name, False)
-    elif type == np.int32:
-        array = simpl.Int32ArrayType(z_flat, cDims, name, False)
-    elif type == np.uint32:
-        array = simpl.UInt32ArrayType(z_flat, cDims, name, False)
-    elif type == np.int64:
-        array = simpl.Int64ArrayType(z_flat, cDims, name, False)
-    elif type == np.uint64:
-        array = simpl.UInt64ArrayType(z_flat, cDims, name, False)
-    elif type == np.float32:
-        array = simpl.FloatArrayType(z_flat, cDims, name, False)
-    elif type == np.double:
-        array = simpl.DoubleArrayType(z_flat, cDims, name, False)        
-    return array
 
 def DataArrayTest():
     """
     This is the Top level to test the creation of Data Arrays from numpy and placing those
     arrays into a DREAM3D DataContainer heirarchy.
     """
-    dca = CreateDataContainerArray()
+    dca = sc.CreateDataContainerArray()
 
-    dc = CreateDataContainer("ImageDataContainer")
+    dc = sc.CreateDataContainer("ImageDataContainer")
     dca.addDataContainer(dc)
 
     shape = simpl.VectorSizeT([4,5,2])
-    cellAm = CreateAttributeMatrix("CellAttributeMatrix", simpl.AttributeMatrix.Type.Cell, shape)
+    cellAm = sc.CreateAttributeMatrix(shape, "CellAttributeMatrix", simpl.AttributeMatrix.Type.Cell )
     dc.addAttributeMatrix(cellAm.Name, cellAm)
 
     # Create the Component Dimensions for the Array, 1 Component in this case
@@ -108,10 +33,10 @@ def DataArrayTest():
     arrayTypes = [np.int8, np.uint8, np.int16, np.uint16, np.int32, np.uint32, np.int64, np.uint64, np.float32, np.double]
     for index, item in enumerate(arrayTypes):
         print("Creating Array: %s" % item)
-        array = CreateDataArray(arrayTypes[index].__name__, shape, cDims, item)
+        array = sc.CreateDataArray(arrayTypes[index].__name__, shape, cDims, item)
         cellAm.addAttributeArray(array.Name, array)
 
-    err = WriteDREAM3DFile("/tmp/DataArrayTest.dream3d", dca)
+    err = sc.WriteDREAM3DFile(sd.GetTestTempDirectory() + "/DataArrayTest.dream3d", dca)
     assert err == 0
 
 

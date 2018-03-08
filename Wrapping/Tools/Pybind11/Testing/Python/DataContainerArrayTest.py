@@ -1,21 +1,9 @@
 
 from simpl import *
+import simpl_dirs as sd
+import simpl_common as sc
 
 
-def CreateDataContainerArray():
-  """
-  This method creates a DataContainerArray
-  """
-  dca = simpl.DataContainerArray.New()
-  return dca
-
-
-def CreateDataContainer(name):
-  """
-  This method creates a DataContainer with a supplied name
-  """
-  dc = simpl.DataContainer.New(name)
-  return dc
 
 def AttributeMatrixAccessTest():
   """
@@ -23,8 +11,8 @@ def AttributeMatrixAccessTest():
   and DataContainerArray
   """
   print("Starting AttributeMatrixAccessTest....")
-  dca = CreateDataContainerArray()
-  dc = CreateDataContainer("AM Test")
+  dca = sc.CreateDataContainerArray()
+  dc = sc.CreateDataContainer("AM Test")
   dca.addDataContainer(dc)
   
   amType = simpl.AttributeMatrix.Type.Cell
@@ -51,9 +39,9 @@ def DataContainerTest():
   This needs to be updated as more methods are exposed to Python
   """
   print("Starting DataContainerTest....")
-  dca = CreateDataContainerArray()
-  dc0 = CreateDataContainer("dc0")
-  dc1 = CreateDataContainer("dc1")
+  dca = sc.CreateDataContainerArray()
+  dc0 = sc.CreateDataContainer("dc0")
+  dc1 = sc.CreateDataContainer("dc1")
 
   dca.addDataContainer(dc0)
   dca.addDataContainer(dc1)

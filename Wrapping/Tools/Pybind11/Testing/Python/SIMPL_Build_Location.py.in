@@ -1,4 +1,0 @@
-
-
-def GetBuildDirectory():
-  return "@SIMPLProj_BINARY_DIR@"

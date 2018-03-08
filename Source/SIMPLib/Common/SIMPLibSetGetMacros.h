@@ -333,6 +333,36 @@ public:                                                                         
 #define PYB11_CREATION(...)
 #define PYB11_ENUMERATION(...)
 #define PYB11_PROPERTY(...)
+/**
+* @brief This macro is used to expose a method to the Python bindings. The signature
+* of the macro should be the following:
+* PYB11_METHOD( _return_type_ _name_of_method_ [ARGS|OVERLOAD] ....)
+* If the ARGS command is used the simply list the variable names for each argument.
+* For example if you have a method "void getFoo(const QString &foo)" that you want
+* to expose:
+* @code
+* PYB11_METHOD(void getFoo ARGS Foo)
+* @endcode
+* 
+* If your method does not take any arguments then leave out the ARGS keyword.
+* 
+* If you are have overloads of the method that you want to expose to Python then
+* the "OVERLOAD" version of the method should be used. Again, say we have two 
+* methods that we want to expose.
+* @code
+* void setPath(const QString &name)
+* void setPath(const DataArrayPath &path)
+* @endcode
+* 
+* then we would use the following set of invocations:
+* @code
+* PYB11_METHOD(void setPath OVERLOAD const.QString.&,Name)
+* PYB11_METHOD(void setPath OVERLOAD const.DataArrayPath.&,Path)
+* @endcode
+* Note that in order to get the (const QString &) correct we used the '.' charater
+* to declare the type. This is required as the macro is split using spaces. When
+* then end code is generated the '.' characters will be replaced with spaces.
+*/ 
 #define PYB11_METHOD(...)
 
 

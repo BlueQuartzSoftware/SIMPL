@@ -13,6 +13,7 @@
 #define SUPERCLASS_NAME "@SUPERCLASS_NAME@"
 #define LIB_NAME "@LIB_NAME@"
 #define MODULE_INIT_CODE "@MODULE_INIT_CODE@"
+#define DATE_TIME_GENERATED "@DATE_TIME_GENERATED@"
 
 namespace
 {
@@ -20,6 +21,7 @@ namespace
   static const QString kWrite("WRITE");
   static const QString kArgs("ARGS");
   static const QString kSuperClass("SUPERCLASS");
+  static const QString kOverload("OVERLOAD");
 
   /* These are for the macros that appear in the header files */
   static const QString kPYB11_CREATE_BINDINGS("PYB11_CREATE_BINDINGS");

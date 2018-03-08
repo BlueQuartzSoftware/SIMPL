@@ -3,6 +3,8 @@
 import time
 
 from simpl import *
+import simpl_dirs as sd
+import simpl_common as sc
 
 def Test():
 
@@ -23,7 +25,7 @@ def Test():
 #simplH5Reader.closeFile()
 
 def PipelineTest():
-  inputPath = "/Users/mjackson/DREAM3D-Dev/DREAM3D-Build/Debug/Bin/Data/Output/SmallIN100.dream3d"
+  inputPath = sd.GetTestTempDirectory() + "/SmallIN100.dream3d"
   reader = simpl.DataContainerReader.New()
   reader.InputFile = (inputPath)
   reader.OverwriteExistingDataContainers = (True)
@@ -40,7 +42,7 @@ def PipelineTest():
 
 
   writer = simpl.DataContainerWriter.New()
-  writer.OutputFile = ("/tmp/SmallIN100Mesh_GBCD.dream3d")
+  writer.OutputFile = (sd.GetTestTempDirectory() + "/TestBindings.dream3d")
   print("humanLabel: %s " % writer.HumanLabel)
   print("groupName: %s " % writer.GroupName)
   print("subGroupName: %s " % writer.SubGroupName)
