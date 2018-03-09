@@ -1,6 +1,7 @@
 #include "PythonBindingsModule.h"
 
 #include <QtCore/QDateTime>
+#include <iostream>
 
 #include "CodeScraper/CodeScraperConstants.h"
 #include "CodeScraper/SIMPLPyBind11Config.h"
@@ -49,9 +50,23 @@ void PythonBindingsModule::clearInitCodes()
 // -----------------------------------------------------------------------------
 void PythonBindingsModule::addDependency(QString superClassName, QString className)
 {
-  // qDebug() << "SuperClassName: " << superClassName << "  ClassName: " << className;
+  // qDebug() << "--- SuperClassName: " << superClassName << "  ClassName: " << className;
   bool superClassAdded = false;
   bool classNameAdded = false;
+
+  // First check to see if the class has been added as a superclass at some point.
+  for(auto object : m_ClassVector)
+  {
+    if(object->objectName().compare(className) == 0)
+    {
+      classNameAdded = true;
+    }
+  }
+  // If it has been added, then just bail now.
+  if(classNameAdded)
+  {
+    return;
+  }
 
   for(auto object : m_ClassVector)
   {
@@ -143,14 +158,16 @@ void PythonBindingsModule::writeOutput(bool didReplace, const QString& outLines,
 void PythonBindingsModule::generateModuleFile(const QString& outputPath)
 {
   // Create the Top part of the file from a template file
-  QFile source(SIMPL::PyBind11::TemplateDir + "/ModuleCode_Template.cpp");
+  //  QFile source(SIMPL::PyBind11::TemplateDir + "/ModuleCode_Template.cpp");
+  QFile source(m_TemplatePath);
+
   source.open(QFile::ReadOnly);
   QString headerTemplate = source.readAll();
   source.close();
 
   QString code;
   QTextStream out(&code);
-  out << "/* These are all the pybind11 headers for each for each of the exported classes */\n";
+  out << "/* These are all the pybind11 headers for each for each of the exported classes */";
 
   for(auto object : m_ClassVector)
   {
@@ -161,13 +178,13 @@ void PythonBindingsModule::generateModuleFile(const QString& outputPath)
   headerTemplate = headerTemplate.replace(LIB_NAME, m_LibName);
 
   code.clear();
-  out << "/* These are all the pybind11 instantiations for each of the exported classes */\n";
+  out << "/* These are all the pybind11 instantiations for each of the exported classes */";
   for(auto object : m_ClassVector)
   {
     out << "\n";
     dumpRecursiveInitCode(0, object, out);
   }
-  out << "\n";
+
   headerTemplate = headerTemplate.replace(MODULE_INIT_CODE, code);
   headerTemplate = headerTemplate.replace(DATE_TIME_GENERATED, QDateTime::currentDateTime().toString("yyyy:MM:dd hh::mm::ss.zzz"));
 
@@ -189,10 +206,12 @@ void PythonBindingsModule::dumpRecursiveIncludeList(int level, const QObject* ob
     QString header = m_Headers[object->objectName()];
     if(header.isEmpty())
     {
-      qDebug() << "Header was empty: " << object->objectName();
+      // qDebug() << "##### Header was empty: " << object->objectName();
     }
-    out << "#include \"" << header << "\"\n";
-
+    else
+    {
+      out << "#include \"" << header << "\"\n";
+    }
     QObjectList children = object->children();
     if(!children.isEmpty())
     {
@@ -220,7 +239,7 @@ void PythonBindingsModule::dumpRecursiveInitCode(int level, const QObject* objec
     QObjectList children = object->children();
     if(!children.isEmpty())
     {
-      out << "\n";
+      // out << "\n";
       for(int i = 0; i < children.size(); ++i)
         dumpRecursiveInitCode(level + 1, children.at(i), out);
     }

@@ -41,13 +41,20 @@ int main(int argc, char* argv[])
   QCoreApplication::setOrganizationDomain("bluequartz.net");
   QCoreApplication::setApplicationName("GeneratePythonBindings");
 
-  if(argc != 5)
+  if(argc != 6)
   {
-    std::cout << "GeneratePythonBindings needs 2 arguments:" << std::endl;
+    std::cout << "GeneratePythonBindings needs 5 arguments:" << std::endl;
     std::cout << "   [1] Path to the source directory to recursively search" << std::endl;
     std::cout << "   [2] Characters to strip from the path. '-' means do not strip anything" << std::endl;
     std::cout << "   [3] Name of the Library/Plugin" << std::endl;
     std::cout << "   [4] Top Level Directory where to write the generated files" << std::endl;
+    std::cout << "   [5] Path to the module template file" << std::endl;
+    std::cout << "Arguments were:" << std::endl;
+    for(int i = 0; i < argc; i++)
+    {
+      std::cout << "  " << argv[i] << std::endl;
+    }
+
     return EXIT_FAILURE;
   }
 
@@ -63,8 +70,9 @@ int main(int argc, char* argv[])
   }
   QString libName = QString::fromLatin1(argv[3]);
   QString genDir = QString::fromLatin1(argv[4]);
+  QString modTemplateFile = QString::fromLatin1(argv[5]);
 
-  PyBind11Generator bindingsGenerator(QDir(QString::fromLatin1(argv[1])), charsToStrip, libName, genDir);
+  PyBind11Generator bindingsGenerator(QDir(QString::fromLatin1(argv[1])), charsToStrip, libName, genDir, modTemplateFile);
 
   bindingsGenerator.execute();
 

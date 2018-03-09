@@ -7,17 +7,18 @@
 #include "CodeScraper/CodeScraperConstants.h"
 
 //-----------------------------------------------------------------------------
-PyBind11Generator::PyBind11Generator(const QDir& topLevelDir, const QString& charsToStrip, 
-  const QString& libName, const QString &genDir)
+PyBind11Generator::PyBind11Generator(const QDir& topLevelDir, const QString& charsToStrip, const QString& libName, const QString& genDir, const QString& moduleTemplatePath)
 : m_TopLevelDir(topLevelDir)
 , m_CharsToStrip(charsToStrip)
 , m_LibName(libName)
 , m_GenDir(genDir)
+, m_ModuleTemplatePath(moduleTemplatePath)
 {
   m_SourceDir = m_TopLevelDir;
   m_SourceDir.cdUp();
 
   m_ModuleCode.setLibName(m_LibName);
+  m_ModuleCode.setTemplatePath(moduleTemplatePath);
 }
 
 //-----------------------------------------------------------------------------

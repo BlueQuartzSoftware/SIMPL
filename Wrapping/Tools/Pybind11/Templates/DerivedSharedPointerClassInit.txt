@@ -9,6 +9,17 @@ template <typename T>
 using PySharedPtrClass = py::class_<T, std::shared_ptr<T> >;
 #endif
 
+
+/**
+* @brief This allows filters declared in a plugin to be wrapped
+*/
+#ifndef PyAbstractFilterSharedPtrClass_TEMPLATE
+#define PyAbstractFilterSharedPtrClass_TEMPLATE
+template<typename T>
+using PyAbstractFilterSharedPtrClass = py::class_<T, AbstractFilter, std::shared_ptr<T>>;
+#endif
+
+
 /**
 * @brief
 * @param m The Python module
@@ -16,7 +27,17 @@ using PySharedPtrClass = py::class_<T, std::shared_ptr<T> >;
 * @return A std::shared_ptr<T> wrapped instance of the wrapped class properly 
 * initialized.
 */
-PySharedPtrClass<@CLASS_NAME@> pybind11_init_@LIB_NAME@_@CLASS_NAME@(py::module &m, PySharedPtrClass<@SUPERCLASS_NAME@>& parent)
+PySharedPtrClass<@CLASS_NAME@> pybind11_init_@LIB_NAME@_@CLASS_NAME@(py::module &m
+#ifdef simpl_EXPORTS
+                                    , PySharedPtrClass<@SUPERCLASS_NAME@>& parent
+#endif
+)
 {
+#ifdef simpl_EXPORTS
   PySharedPtrClass<@CLASS_NAME@> instance(m, "@CLASS_NAME@", parent);
+#else
+  py::module::import("simpl");
+  PyAbstractFilterSharedPtrClass<@CLASS_NAME@> instance(m, "@CLASS_NAME@");
+#endif
+
   instance

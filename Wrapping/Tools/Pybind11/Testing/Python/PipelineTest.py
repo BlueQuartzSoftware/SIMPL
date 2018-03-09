@@ -3,7 +3,7 @@ import time
 from simpl import *
 import simpl_dirs as sd
 import simpl_common as sc
-
+from generic import *
 
 def PipelineTest():
   inputPath = sd.GetTestTempDirectory() + "/SmallIN100.dream3d"
@@ -57,6 +57,11 @@ def PipelineTest():
   reader = simpl.AbstractFilter.New()
   writer = simpl.AbstractFilter.New()
   print("Filter to null")
+
+  fbc = generic.FindBoundaryCells.New()
+  pipeline.pushBack(fbc)
+  err = pipeline.preflightPipeline()
+  print("FBC: err %s" % err)
 
   time.sleep(2)
 

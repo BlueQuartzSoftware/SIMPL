@@ -335,6 +335,8 @@ endif()
 file(WRITE ${SIMPLProj_BINARY_DIR}/DREAM3DDocGroupList "")
 
 # ------- Enable the CTest testing. Use make test to run all tests ---------------
+# -------------------------------------------------------------------- 
+# If Testing is enabled, turn on the Unit Tests 
 if(SIMPL_BUILD_TESTING)
     #ENABLE_TESTING()
     include( CTest )

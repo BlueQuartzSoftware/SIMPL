@@ -91,7 +91,11 @@ void PythonBindingClass::writeBindingFile(const QString& outputFilePath)
     init << getLibName() << "_" << getClassName() << " = ";
     if(getHasSuperClass())
     {
-      init << "pybind11_init_" << getLibName() << "_" << getClassName() << "(mod, " << getLibName() << "_" << getSuperClass() << ");";
+      init << "pybind11_init_" << getLibName() << "_" << getClassName() << "(mod\n"
+           << "#ifdef simpl_EXPORTS\n"
+           << "        , " << getLibName() << "_" << getSuperClass() << "\n"
+           << "#endif\n"
+           << ");\n";
     }
     else
     {

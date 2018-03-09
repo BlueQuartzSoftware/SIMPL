@@ -20,8 +20,7 @@ public:
  * @param charsToStrip
  * @param libName
  */
-  PyBind11Generator(const QDir& topLevelDir, const QString& charsToStrip, 
-                    const QString& libName, const QString &genDir);
+  PyBind11Generator(const QDir& topLevelDir, const QString& charsToStrip, const QString& libName, const QString& genDir, const QString& moduleTemplatePath);
 
   ~PyBind11Generator();
 
@@ -48,6 +47,7 @@ private:
   QString m_CharsToStrip;
   QString m_LibName;
   QString m_GenDir;
+  QString m_ModuleTemplatePath;
   PythonBindingsModule m_ModuleCode;
 
   PyBind11Generator(const PyBind11Generator&) = delete; // Copy Constructor Not Implemented

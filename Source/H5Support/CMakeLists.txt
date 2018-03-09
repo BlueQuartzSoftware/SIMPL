@@ -231,6 +231,8 @@ endif()
 
 
 # ------- Enable the CTest testing. ---------------
+# -------------------------------------------------------------------- 
+# If Testing is enabled, turn on the Unit Tests 
 if(SIMPL_BUILD_TESTING)
     include(${H5Support_SOURCE_DIR}/Test/CMakeLists.txt)
 endif()

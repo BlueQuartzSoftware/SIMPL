@@ -18,6 +18,7 @@ public:
   ~PythonBindingsModule();
 
   SIMPL_INSTANCE_PROPERTY(QString, LibName)
+  SIMPL_INSTANCE_PROPERTY(QString, TemplatePath)
 
   using MapperType = QMap<QString, QString>;
 

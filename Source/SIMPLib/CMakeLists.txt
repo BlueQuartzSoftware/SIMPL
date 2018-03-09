@@ -283,6 +283,8 @@ endif()
 
 
 # ------- Enable the CTest testing. ---------------
+# -------------------------------------------------------------------- 
+# If Testing is enabled, turn on the Unit Tests 
 if(SIMPL_BUILD_TESTING)
     include(${SIMPLib_SOURCE_DIR}/Testing/CMakeLists.txt)
 endif()

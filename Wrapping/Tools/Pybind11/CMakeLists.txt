@@ -2,16 +2,6 @@
 # Create the Top level Project
 #
 project(SIMPLPyBind11 VERSION 0.0.1.0)
-
-
-# --------------------------------------------------------------------------
-# Find the Pybind11 installation
-set(PYBIND11_PYTHON_VERSION "3.6")
-find_package(pybind11)
-if(NOT pybind11_FOUND)
-  message(FATAL_ERROR "pybind11 is REQUIRED to build the SIMPL Python bindings")
-endif()
-message(STATUS "pybind11_VERSION: ${pybind11_VERSION}")
 #message(STATUS "pybind11_INCLUDE_DIRS: ${pybind11_INCLUDE_DIRS}")
 
 # --------------------------------------------------------------------------
@@ -76,52 +66,16 @@ configure_file( ${SIMPLPyBind11_SOURCE_DIR}/Testing/Python/setup.py
 
 # --------------------------------------------------------------------------
 # This section starts the main pybind11 code
+include("${SIMPLProj_SOURCE_DIR}/Wrapping/Tools/Pybind11/cmake/WrappingFunctions.cmake")
 
-# Give our module a name. Python standards dictate ALL lowercase for the module name
-set(pybind_module_name "simpl")
+CreatePybind11Module(MODULE_NAME simpl
+                    SOURCE_DIR "${SIMPLProj_SOURCE_DIR_NORM}/Source/SIMPLib"
+                    PATH_TO_STRIP "SIMPL/Source/"
+                    OUTPUT_PATH "${SIMPLProj_BINARY_DIR}/Wrapping/PythonCore"
+                    BINARY_DIR "${SIMPLProj_BINARY_DIR}"
+                    MODULE_TEMPLATE_FILE "${SIMPLPyBind11_SOURCE_DIR}/Templates/SIMPLModuleCodeTemplate.cpp"
+                    MODULE_LINK_LIBRARIES SIMPLib
+)
 
-if(1)
-# Now create a custom task to scrape through our code and generate all the binding sources
-add_custom_target(SIMPLCreatePythonBindings ALL
-    COMMAND GeneratePythonBindings "${SIMPLProj_SOURCE_DIR_NORM}/Source/SIMPLib" "SIMPL/Source/" "${pybind_module_name}" "${SIMPLProj_BINARY_DIR}/Wrapping/PythonCore"
-    DEPENDS GeneratePythonBindings ${COPY_LIBRARY_TARGETS}
-    COMMENT "GeneratePythonBindings: Creating Python Bindings for SIMPL using pybind11"
-  )
-endif()
-
-# --------------------------------------------------------------------------
-# Now compile the Python module using pybind11 cmake functions
-# Note the name of source file is also explicitly used in the CodeScraper program. If you change
-# the name below you need to update the CodeScraper program
-pybind11_add_module(${pybind_module_name}
-    "${SIMPLProj_BINARY_DIR}/Wrapping/PythonCore/${pybind_module_name}_pybind11_module.cxx"
-    )
-if(NOT EXISTS ${SIMPLProj_BINARY_DIR}/Wrapping/PythonCore/${pybind_module_name}_pybind11_module.cxx)
-  FILE(WRITE "${SIMPLProj_BINARY_DIR}/Wrapping/PythonCore/${pybind_module_name}_pybind11_module.cxx" "/* SOMETHING */\n")
-endif()
-
-set_source_files_properties(${SIMPLProj_BINARY_DIR}/Wrapping/PythonCore/${pybind_module_name}_pybind11_module.cxx
-                              PROPERTIES  
-                                  #GENERATED TRUE
-                                  SKIP_AUTOMOC ON)
-set_target_properties(${pybind_module_name} PROPERTIES LINKER_LANGUAGE CXX)
-target_include_directories(${pybind_module_name} PUBLIC
-  #$<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}>
-  $<BUILD_INTERFACE:${SIMPLib_SOURCE_DIR}
-  $<BUILD_INTERFACE:${${pybind_module_name}_BINARY_DIR}
-  )
-target_link_libraries(${pybind_module_name} 
-                        LINK_PUBLIC SIMPLib 
-                        LINK_PRIVATE pybind11::module)
-target_compile_features(${pybind_module_name} PRIVATE cxx_local_type_template_args)
-set_target_properties(${pybind_module_name} PROPERTIES PREFIX "${PYTHON_MODULE_PREFIX}"
-                                          SUFFIX "${PYTHON_MODULE_EXTENSION}"
-                                          LIBRARY_OUTPUT_DIRECTORY ${CMAKE_LIBRARY_OUTPUT_DIRECTORY}/python/site-packages
-                                          )
-add_dependencies(${pybind_module_name} SIMPLCreatePythonBindings)                                         
-
-                                          
-install (TARGETS ${pybind_module_name} 
-          DESTINATION ${CMAKE_INSTALL_PREFIX}/lib/python${PYTHON_VERSION_MAJOR}.${PYTHON_VERSION_MINOR}/site-packages)
 
 
