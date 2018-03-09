@@ -275,9 +275,14 @@ public:
 
     DREAM3D_REQUIRE(imgGeom != nullptr);
 
-    DREAM3D_REQUIRE_EQUAL(imgGeom->getXRes(), SetOriginResolutionImageGeometryTest::RESOLUTION.x);
-    DREAM3D_REQUIRE_EQUAL(imgGeom->getYRes(), SetOriginResolutionImageGeometryTest::RESOLUTION.y);
-    DREAM3D_REQUIRE_EQUAL(imgGeom->getZRes(), SetOriginResolutionImageGeometryTest::RESOLUTION.z);
+    float xRes = 0.0f;
+    float yRes = 0.0f;
+    float zRes = 0.0f;
+    std::tie(xRes, yRes, zRes) = imgGeom->getResolution();
+
+    DREAM3D_REQUIRE_EQUAL(xRes, SetOriginResolutionImageGeometryTest::RESOLUTION.x);
+    DREAM3D_REQUIRE_EQUAL(yRes, SetOriginResolutionImageGeometryTest::RESOLUTION.y);
+    DREAM3D_REQUIRE_EQUAL(zRes, SetOriginResolutionImageGeometryTest::RESOLUTION.z);
   }
 
   // -----------------------------------------------------------------------------

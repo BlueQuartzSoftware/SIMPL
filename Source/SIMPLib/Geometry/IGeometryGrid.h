@@ -41,10 +41,13 @@
 #include "SIMPLib/Common/SIMPLibSetGetMacros.h"
 #include "SIMPLib/Geometry/IGeometry.h"
 
+namespace SIMPL
+{
+using Tuple3FVec = std::tuple<float, float, float>;
+using Tuple6FVec = std::tuple<float, float, float, float, float, float>;
+using Tuple3SVec = std::tuple<size_t, size_t, size_t>;
+}
 
-    using Tuple3FV_Type = std::tuple<float, float, float>;
-    using Tuple3DV_Type = std::tuple<double, double, double>;
-    using Tuple3SV_Type = std::tuple<size_t, size_t, size_t>;
 /**
  * @brief The IGeometryGrid class extends IGeometry for grid type geometries
  */
@@ -62,12 +65,10 @@ class SIMPLib_EXPORT IGeometryGrid : public IGeometry
     
     virtual void setDimensions(size_t dims[3]) = 0;
     virtual void setDimensions(size_t a, size_t b, size_t c) = 0;
-    virtual void setDimensions(const std::tuple<size_t, size_t, size_t> &dims) = 0;
-    
-    virtual void getDimensions(size_t dims[3]) = 0;
-    virtual void getDimensions(size_t &a, size_t &b, size_t &c) = 0;
-    virtual std::tuple<size_t, size_t, size_t> getDimensions() = 0;
-    
+    virtual void setDimensions(const SIMPL::Tuple3SVec& dims) = 0;
+
+    virtual SIMPL::Tuple3SVec getDimensions() const = 0;
+
     virtual size_t getXPoints() = 0;
     virtual size_t getYPoints() = 0;
     virtual size_t getZPoints() = 0;

@@ -485,16 +485,12 @@ public:     \
     varname[0] = value_0; varname[1] = value_1; varname[2] = value_2; }\
   virtual void set##prpty(const std::tuple<type, type, type> &var) override {\
     varname[0] = std::get<0>(var); varname[1] = std::get<1>(var); varname[2] = std::get<2>(var);}
-    
-    
-#define SIMPL_GET_VEC3_PROPERTY_VO(type, prpty, varname)\
-  virtual void get##prpty(type value[3]) override {\
-    value[0] = varname[0]; value[1] = varname[1]; value[2] = varname[2]; }\
-  virtual void get##prpty(type &value_0, type &value_1, type &value_2) override {\
-    value_0 = varname[0]; value_1 = varname[1]; value_2 = varname[2]; }\
-  virtual std::tuple<type, type, type> get##prpty() override {\
-    return std::make_tuple(varname[0], varname[1], varname[2]); }
 
+#define SIMPL_GET_VEC3_PROPERTY_VO(type, prpty, varname)                                                                                                                                               \
+  virtual std::tuple<type, type, type> get##prpty() const override                                                                                                                                     \
+  {                                                                                                                                                                                                    \
+    return std::make_tuple(varname[0], varname[1], varname[2]);                                                                                                                                        \
+  }
 
 #define SIMPL_INSTANCE_VEC3_PROPERTY_VO(type, prpty)\
   private:\

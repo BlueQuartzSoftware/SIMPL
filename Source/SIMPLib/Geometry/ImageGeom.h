@@ -98,12 +98,14 @@ class SIMPLib_EXPORT ImageGeom : public IGeometryGrid
      */
     static Pointer CreateGeometry(const QString& name);
 
+    /**
+    * @brief Sets/Gets the Resolution property
+    */
     SIMPL_INSTANCE_VEC3_PROPERTY(float, Resolution)
 
-    inline float getXRes() { return m_Resolution[0]; }
-    inline float getYRes() { return m_Resolution[1]; }
-    inline float getZRes() { return m_Resolution[2]; }
-
+    /**
+    * @brief Sets/Gets the Origin property
+    */
     SIMPL_INSTANCE_VEC3_PROPERTY(float, Origin)
 
     

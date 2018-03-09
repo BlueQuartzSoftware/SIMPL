@@ -247,9 +247,14 @@ public:
 
     DREAM3D_REQUIRE(imgGeom != nullptr);
 
-    DREAM3D_REQUIRE_EQUAL(imgGeom->getXRes(), ScaleVolumeTestConsts::SCALE.x);
-    DREAM3D_REQUIRE_EQUAL(imgGeom->getYRes(), ScaleVolumeTestConsts::SCALE.y);
-    DREAM3D_REQUIRE_EQUAL(imgGeom->getZRes(), ScaleVolumeTestConsts::SCALE.z);
+    float xRes = 0.0f;
+    float yRes = 0.0f;
+    float zRes = 0.0f;
+    std::tie(xRes, yRes, zRes) = imgGeom->getResolution();
+
+    DREAM3D_REQUIRE_EQUAL(xRes, ScaleVolumeTestConsts::SCALE.x);
+    DREAM3D_REQUIRE_EQUAL(yRes, ScaleVolumeTestConsts::SCALE.y);
+    DREAM3D_REQUIRE_EQUAL(zRes, ScaleVolumeTestConsts::SCALE.z);
   }
 
   // -----------------------------------------------------------------------------

@@ -190,7 +190,7 @@ void MakeDataContainer::execute()
 
   // size_t index;
   // size_t iDims[3] = {0, 0, 0};
-  // image->getDimensions(iDims);
+  // std::tie(iDims[0], iDims[1], iDims[2]) = image->getDimensions();
 
   // for (size_t z=0;z<image->getZPoints();z++)
   //{

@@ -93,7 +93,7 @@ public:
     std::vector<double> dValuesdZeta(numComps);
 
     size_t dims[3] = {0, 0, 0};
-    m_RectGrid->getDimensions(dims);
+    std::tie(dims[0], dims[1], dims[2]) = m_RectGrid->getDimensions();
 
     int64_t counter = 0;
     size_t totalElements = m_RectGrid->getNumberOfElements();
@@ -930,7 +930,7 @@ void RectGridGeom::findDerivatives(DoubleArrayType::Pointer field, DoubleArrayTy
 {
   m_ProgressCounter = 0;
   size_t dims[3] = {0, 0, 0};
-  getDimensions(dims);
+  std::tie(dims[0], dims[1], dims[2]) = getDimensions();
 
   if(observable)
   {
@@ -1111,7 +1111,7 @@ IGeometry::Pointer RectGridGeom::deepCopy(bool forceNoAllocate)
   RectGridGeom::Pointer copy = RectGridGeom::CreateGeometry(getName());
 
   size_t volDims[3] = { 0, 0, 0 };
-  getDimensions(volDims);
+  std::tie(volDims[0], volDims[1], volDims[2]) = getDimensions();
   copy->setDimensions(volDims);
   copy->setXBounds(xBounds);
   copy->setYBounds(yBounds);
