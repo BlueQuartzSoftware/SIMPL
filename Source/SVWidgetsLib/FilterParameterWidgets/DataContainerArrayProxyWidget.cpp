@@ -757,7 +757,7 @@ void DataContainerArrayProxyWidget::beforePreflight()
     // to select from.
     DataContainerArray::Pointer dca = getFilter()->getDataContainerArray();
     DataContainerArrayProxy incomingProxy = DataContainerArrayProxy(dca.get());
-    incomingProxy.setAllFlags(m_FilterParameter->getDefaultFlagValue());
+    incomingProxy.setFlags(m_FilterParameter->getDefaultFlagValue());
     // incomingProxy.print("BeforePreflight INCOMING");
     // Now the idea becomes to save the selections that the user has made and transfer those changes to the incoming
     // proxy object
