@@ -197,7 +197,7 @@ int TestVtkGrainIdReader()
     std::cout << reader->getErrorMessage() << std::endl;
   }
   DREAM3D_REQUIRE_EQUAL(err, 0);
-  m->getDimensions(nx, ny, nz);
+  std::tie(nx, ny, nz) = m->getDimensions();
 
   IDataArray::Pointer mdata = reader->getVoxelDataContainer()->getCellData(SIMPL::CellData::GrainIds);
 

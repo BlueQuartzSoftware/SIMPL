@@ -93,7 +93,7 @@ public:
     std::vector<double> dValuesdZeta(numComps);
 
     size_t dims[3] = {0, 0, 0};
-    m_Image->getDimensions(dims);
+    std::tie(dims[0], dims[1], dims[2]) = m_Image->getDimensions();
 
     int64_t counter = 0;
     size_t totalElements = m_Image->getNumberOfElements();
@@ -772,12 +772,15 @@ void ImageGeom::deleteElementCentroids()
 // -----------------------------------------------------------------------------
 int ImageGeom::findElementSizes()
 {
-  if (getXRes() <= 0.0f || getYRes() <= 0.0f || getZRes() <= 0.0f)
+  float res[3] = {0.0f, 0.0f, 0.0f};
+  std::tie(res[0], res[1], res[2]) = getResolution();
+
+  if(res[0] <= 0.0f || res[1] <= 0.0f || res[2] <= 0.0f)
   {
     return -1;
   }
   m_VoxelSizes = FloatArrayType::CreateArray(getNumberOfElements(), SIMPL::StringConstants::VoxelSizes);
-  m_VoxelSizes->initializeWithValue(getXRes() * getYRes() * getZRes());
+  m_VoxelSizes->initializeWithValue(res[0] * res[1] * res[2]);
   return 1;
 }
 
@@ -866,7 +869,7 @@ void ImageGeom::findDerivatives(DoubleArrayType::Pointer field, DoubleArrayType:
 {
   m_ProgressCounter = 0;
   size_t dims[3] = {0, 0, 0};
-  getDimensions(dims);
+  std::tie(dims[0], dims[1], dims[2]) = getDimensions();
 
   if(observable)
   {
@@ -907,7 +910,8 @@ int ImageGeom::writeGeometryToHDF5(hid_t parentId, bool SIMPL_NOT_USED(writeXdmf
 {
   herr_t err = 0;
   int64_t volDims[3] = {static_cast<int64_t>(getXPoints()), static_cast<int64_t>(getYPoints()), static_cast<int64_t>(getZPoints())};
-  float spacing[3] = {getXRes(), getYRes(), getZRes()};
+  float spacing[3] = {0.0f, 0.0f, 0.0f};
+  std::tie(spacing[0], spacing[1], spacing[2]) = getResolution();
   float origin[3] = {0.0f, 0.0f, 0.0f};
   std::tie(origin[0], origin[1], origin[2]) = getOrigin();
 
@@ -951,7 +955,8 @@ int ImageGeom::writeXdmf(QTextStream& out, QString dcName, QString hdfFileName)
   herr_t err = 0;
 
   int64_t volDims[3] = {static_cast<int64_t>(getXPoints()), static_cast<int64_t>(getYPoints()), static_cast<int64_t>(getZPoints())};
-  float spacing[3] = {getXRes(), getYRes(), getZRes()};
+  float spacing[3] = {0.0f, 0.0f, 0.0f};
+  std::tie(spacing[0], spacing[1], spacing[2]) = getResolution();
   float origin[3] = {0.0f, 0.0f, 0.0f};
   std::tie(origin[0], origin[1], origin[2]) = getOrigin();
 
@@ -990,7 +995,9 @@ QString ImageGeom::getInfoString(SIMPL::InfoStringFormat format)
   QTextStream ss(&info);
 
   int64_t volDims[3] = {static_cast<int64_t>(getXPoints()), static_cast<int64_t>(getYPoints()), static_cast<int64_t>(getZPoints())};
-  float spacing[3] = {getXRes(), getYRes(), getZRes()};
+  float spacing[3] = {0.0f, 0.0f, 0.0f};
+  std::tie(spacing[0], spacing[1], spacing[2]) = getResolution();
+  std::tie(spacing[0], spacing[1], spacing[2]) = getResolution();
   float origin[3] = {0.0f, 0.0f, 0.0f};
   std::tie(origin[0], origin[1], origin[2]) = getOrigin();
 
