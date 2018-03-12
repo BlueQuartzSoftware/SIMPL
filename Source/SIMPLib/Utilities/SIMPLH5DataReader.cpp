@@ -115,6 +115,8 @@ DataContainerArray::Pointer SIMPLH5DataReader::readSIMPLDataUsingProxy(const Dat
 {
   if (m_FileId < 0)
   {
+    QString ss = QObject::tr("File data unable to be read - file was not properly opened");
+    emit errorGenerated(Title, ss, -249);
     return DataContainerArray::NullPointer();
   }
 
