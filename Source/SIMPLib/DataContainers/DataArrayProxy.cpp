@@ -235,3 +235,11 @@ QVector<size_t> DataArrayProxy::readVector(QJsonArray jsonArray)
   }
   return vector;
 }
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void DataArrayProxy::setFlag(uint8_t flag)
+{
+  this->flag = flag;
+}

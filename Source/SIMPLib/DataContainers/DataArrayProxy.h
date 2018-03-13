@@ -107,6 +107,13 @@ public:
   */
   bool operator==(const DataArrayProxy& rhs) const;
 
+  /**
+   * @brief setFlag
+   * @param checkState
+   * @param recursive
+   */
+  void setFlag(uint8_t flag);
+
   //----- Our variables, publicly available
   uint8_t flag;
   int version;

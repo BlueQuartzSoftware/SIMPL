@@ -96,6 +96,13 @@ class SIMPLib_EXPORT DataContainerProxy
     */
     bool readJson(QJsonObject& json);
 
+    /**
+     * @brief setFlag
+     * @param checkState
+     * @param recursive
+     */
+    void setFlag(uint8_t flag, bool recursive = false);
+
     //----- Our variables, publicly available
     uint8_t flag;
     QString name;

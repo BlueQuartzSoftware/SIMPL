@@ -191,7 +191,9 @@ class SIMPLib_EXPORT DataContainerArrayProxy
     void print(const QString header = QString(""));
 
     /**
-     * @brief Sets the flags of the proxy items that match the geometry, attribute matrix type, primitive type, and number of components flags that are input as parameters
+     * @brief Sets the flags of the proxy items that match the geometry, attribute matrix type, primitive type, and number of components flags that are input as parameters.
+     * Flags are only set if their parent flag has been set as well.  For example: a matching attribute matrix's flag will be set if its data container flag has also been set.
+     * But its flag won't be set if its data container flag has not been set.
      * @param flagValue Whether to flag or unflag the matched data containers, attribute matrices, and data arrays
      * @param dcGeoms Data containers with the geometries specified with this flag combination will be flagged/unflagged in the proxy
      * @param amTypes Attribute matrices with the attribute matrix types specified with this flag combination will be flagged/unflagged in the proxy

@@ -91,6 +91,13 @@ class SIMPLib_EXPORT AttributeMatrixProxy
     */
     bool readJson(QJsonObject& json);
 
+    /**
+     * @brief setCheckState
+     * @param checkState
+     * @param recursive
+     */
+    void setFlag(uint8_t flag, bool recursive = false);
+
     //----- Our variables, publicly available
     uint8_t flag;
     QString name;

@@ -252,7 +252,11 @@ void DataContainerArrayProxy::setFlags(Qt::CheckState flagValue, DCGeometryTypeF
     DCGeometryTypeFlag dcGeomFlag = geometryTypeToFlag(static_cast<IGeometry::Type>(dcProxy.dcType));
     if ((dcGeoms & dcGeomFlag) > 0)
     {
-      dcProxy.flag = flagValue;
+      dcProxy.setFlag(flagValue);
+    }
+    else
+    {
+      continue;
     }
 
     QMap<QString, AttributeMatrixProxy>& amProxies = dcProxy.attributeMatricies;
@@ -262,7 +266,11 @@ void DataContainerArrayProxy::setFlags(Qt::CheckState flagValue, DCGeometryTypeF
       AMTypeFlag amTypeFlag = attributeMatrixTypeToFlag(static_cast<AttributeMatrix::Type>(amProxy.amType));
       if ((amTypes & amTypeFlag) > 0)
       {
-        amProxy.flag = flagValue;
+        amProxy.setFlag(flagValue);
+      }
+      else
+      {
+        continue;
       }
 
       QMap<QString, DataArrayProxy>& daProxies = amProxy.dataArrays;
@@ -276,9 +284,17 @@ void DataContainerArrayProxy::setFlags(Qt::CheckState flagValue, DCGeometryTypeF
           {
             if (compDimsVector[i] == daProxy.compDims || compDimsVector.size() <= 0)
             {
-              daProxy.flag = flagValue;
+              daProxy.setFlag(flagValue);
+            }
+            else
+            {
+              continue;
             }
           }
+        }
+        else
+        {
+          continue;
         }
       }
     }

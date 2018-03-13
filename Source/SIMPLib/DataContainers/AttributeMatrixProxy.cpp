@@ -161,3 +161,23 @@ QMap<QString, DataArrayProxy> AttributeMatrixProxy::readMap(QJsonArray jsonArray
   }
   return map;
 }
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void AttributeMatrixProxy::setFlag(uint8_t flag, bool recursive)
+{
+  this->flag = flag;
+
+  if (recursive)
+  {
+    for (QMap<QString, DataArrayProxy>::iterator iter = dataArrays.begin(); iter != dataArrays.end(); iter++)
+    {
+      DataArrayProxy daProxy = iter.value();
+      QString daName = iter.key();
+
+      daProxy.setFlag(flag);
+      dataArrays[daName] = daProxy;
+    }
+  }
+}
