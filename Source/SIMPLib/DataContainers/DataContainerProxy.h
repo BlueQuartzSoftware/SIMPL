@@ -47,13 +47,31 @@
 #include "SIMPLib/DataContainers/AttributeMatrixProxy.h"
 #include "SIMPLib/Geometry/IGeometry.h"
 
-
 /**
  * @brief The DataContainerProxy class
  */
 class SIMPLib_EXPORT DataContainerProxy
 {
   public:
+
+    // This enumeration is not a class enumeration because it is not possible to
+    // do a bit-wise NOT operation on a class enumeration value.  We need to be
+    // able to do a bit-wise NOT operation so that we can turn off certain flags.
+    // This enumeration allows us to flip integer bits to turn on/off various types.
+    enum DCGeometryTypeFlag : unsigned int {
+      None_DCGeomType = 0x0,
+      Image_DCGeomType = 0x1,
+      RectGrid_DCGeomType = 0x2,
+      Vertex_DCGeomType = 0x4,
+      Edge_DCGeomType = 0x8,
+      Triangle_DCGeomType = 0x10,
+      Quad_DCGeomType = 0x20,
+      Tetrahedral_DCGeomType = 0x40,
+      Unknown_DCGeomType = 0x80,
+      Any_DCGeomType = 0xFF
+    };
+    Q_DECLARE_FLAGS(DCGeometryTypeFlags, DCGeometryTypeFlag)
+
     /**
      * @brief DataContainerProxy
      */
@@ -71,6 +89,13 @@ class SIMPLib_EXPORT DataContainerProxy
     * @brief Copy Constructor
     */
     DataContainerProxy(const DataContainerProxy& amp);
+
+    /**
+     * @brief Returns the appropriate flag for the geometry type
+     * @param geoType The data container geometry type
+     * @return
+     */
+    static DataContainerProxy::DCGeometryTypeFlag GeometryTypeToFlag(IGeometry::Type geoType);
 
     /**
     * @brief operator = method
@@ -97,11 +122,14 @@ class SIMPLib_EXPORT DataContainerProxy
     bool readJson(QJsonObject& json);
 
     /**
-     * @brief setFlag
-     * @param checkState
-     * @param recursive
+     * @brief setFlags
+     * @param flag
+     * @param amTypes
+     * @param primitiveTypes
+     * @param compDimsVector
      */
-    void setFlag(uint8_t flag, bool recursive = false);
+    void setFlags(uint8_t flag, AttributeMatrixProxy::AMTypeFlags amTypes = AttributeMatrixProxy::Any_AMType,
+                  DataArrayProxy::PrimitiveTypeFlags primitiveTypes = DataArrayProxy::Any_PType, DataArrayProxy::CompDimsVector compDimsVector = DataArrayProxy::CompDimsVector());
 
     //----- Our variables, publicly available
     uint8_t flag;
@@ -126,6 +154,7 @@ class SIMPLib_EXPORT DataContainerProxy
     QMap<QString, AttributeMatrixProxy> readMap(QJsonArray jsonArray);
 
 };
+Q_DECLARE_OPERATORS_FOR_FLAGS(DataContainerProxy::DCGeometryTypeFlags)
 
 Q_DECLARE_METATYPE(DataContainerProxy)
 

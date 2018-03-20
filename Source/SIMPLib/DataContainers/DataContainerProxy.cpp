@@ -32,8 +32,8 @@
 *    United States Prime Contract Navy N00173-07-C-2068
 *
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
-#include "DataContainerProxy.h"
 
+#include "DataContainerProxy.h"
 
 // -----------------------------------------------------------------------------
 //
@@ -158,19 +158,63 @@ QMap<QString, AttributeMatrixProxy> DataContainerProxy::readMap(QJsonArray jsonA
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void DataContainerProxy::setFlag(uint8_t flag, bool recursive)
+DataContainerProxy::DCGeometryTypeFlag DataContainerProxy::GeometryTypeToFlag(IGeometry::Type geoType)
+{
+  switch (geoType)
+  {
+    case IGeometry::Type::Any:
+    {
+      return Any_DCGeomType;
+    }
+    case IGeometry::Type::Edge:
+    {
+      return Edge_DCGeomType;
+    }
+    case IGeometry::Type::Image:
+    {
+      return Image_DCGeomType;
+    }
+    case IGeometry::Type::Quad:
+    {
+      return Quad_DCGeomType;
+    }
+    case IGeometry::Type::RectGrid:
+    {
+      return RectGrid_DCGeomType;
+    }
+    case IGeometry::Type::Tetrahedral:
+    {
+      return Tetrahedral_DCGeomType;
+    }
+    case IGeometry::Type::Triangle:
+    {
+      return Triangle_DCGeomType;
+    }
+    case IGeometry::Type::Vertex:
+    {
+      return Vertex_DCGeomType;
+    }
+    case IGeometry::Type::Unknown:
+    {
+      return Unknown_DCGeomType;
+    }
+  }
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void DataContainerProxy::setFlags(uint8_t flag, AttributeMatrixProxy::AMTypeFlags amTypes, DataArrayProxy::PrimitiveTypeFlags primitiveTypes, DataArrayProxy::CompDimsVector compDimsVector)
 {
   this->flag = flag;
 
-  if (recursive)
+  for(QMap<QString, AttributeMatrixProxy>::iterator amIter = attributeMatricies.begin(); amIter != attributeMatricies.end(); ++amIter) // AttributeMatrix Level
   {
-    for (QMap<QString, AttributeMatrixProxy>::iterator iter = attributeMatricies.begin(); iter != attributeMatricies.end(); iter++)
+    AttributeMatrixProxy& amProxy = amIter.value();
+    AttributeMatrixProxy::AMTypeFlag amTypeFlag = AttributeMatrixProxy::AttributeMatrixTypeToFlag(static_cast<AttributeMatrix::Type>(amProxy.amType));
+    if ((amTypes & amTypeFlag) > 0 || amTypes == AttributeMatrixProxy::AMTypeFlag::Any_AMType)
     {
-      AttributeMatrixProxy amProxy = iter.value();
-      QString amName = iter.key();
-
-      amProxy.setFlag(flag, recursive);
-      attributeMatricies[amName] = amProxy;
+      amProxy.setFlags(flag, primitiveTypes, compDimsVector);
     }
   }
 }

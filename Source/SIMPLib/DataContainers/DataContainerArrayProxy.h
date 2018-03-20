@@ -54,8 +54,6 @@ class DataContainerArray;
  */
 class SIMPLib_EXPORT DataContainerArrayProxy
 {
-  typedef QVector<QVector<size_t> > CompDimsVector;
-
   public:
 
     /**
@@ -79,75 +77,6 @@ class SIMPLib_EXPORT DataContainerArrayProxy
      * @brief ~DataContainerArrayProxy
      */
     virtual ~DataContainerArrayProxy();
-
-    // This enumeration is not a class enumeration because it is not possible to
-    // do a bit-wise NOT operation on a class enumeration value.  We need to be
-    // able to do a bit-wise NOT operation so that we can turn off certain flags.
-    // This enumeration allows us to flip integer bits to turn on/off various types.
-    enum PrimitiveTypeFlag : unsigned int {
-      None_PType = 0x0,
-      Bool_PType = 0x1,
-      Float_PType = 0x2,
-      Double_PType = 0x4,
-      Int8_PType = 0x8,
-      UInt8_PType = 0x10,
-      Int16_PType = 0x20,
-      UInt16_PType = 0x40,
-      Int32_PType = 0x80,
-      UInt32_PType = 0x100,
-      Int64_PType = 0x200,
-      UInt64_PType = 0x400,
-      StatsDataArray_PType = 0x800,
-      NeighborList_PType = 0x1000,
-      StringArray_PType = 0x2000,
-      Unknown_PType = 0x4000,
-      NumericalPrimitives_PType = 0x07FE,
-      Any_PType = 0x7FFF
-    };
-    Q_DECLARE_FLAGS(PrimitiveTypeFlags, PrimitiveTypeFlag)
-
-    // This enumeration is not a class enumeration because it is not possible to
-    // do a bit-wise NOT operation on a class enumeration value.  We need to be
-    // able to do a bit-wise NOT operation so that we can turn off certain flags.
-    // This enumeration allows us to flip integer bits to turn on/off various types.
-    enum AMTypeFlag : unsigned int {
-      None_AMType = 0x0,
-      Vertex_AMType = 0x1,
-      Face_AMType = 0x2,
-      Cell_AMType = 0x4,
-      VertexFeature_AMType = 0x8,
-      Edge_AMType = 0x10,
-      EdgeFeature_AMType = 0x20,
-      FaceFeature_AMType = 0x40,
-      CellFeature_AMType = 0x80,
-      VertexEnsemble_AMType = 0x100,
-      EdgeEnsemble_AMType = 0x200,
-      FaceEnsemble_AMType = 0x400,
-      CellEnsemble_AMType = 0x800,
-      MetaData_AMType = 0x1000,
-      Generic_AMType = 0x2000,
-      Unknown_AMType = 0x4000,
-      Any_AMType = 0x7FFF
-    };
-    Q_DECLARE_FLAGS(AMTypeFlags, AMTypeFlag)
-
-    // This enumeration is not a class enumeration because it is not possible to
-    // do a bit-wise NOT operation on a class enumeration value.  We need to be
-    // able to do a bit-wise NOT operation so that we can turn off certain flags.
-    // This enumeration allows us to flip integer bits to turn on/off various types.
-    enum DCGeometryTypeFlag : unsigned int {
-      None_DCGeomType = 0x0,
-      Image_DCGeomType = 0x1,
-      RectGrid_DCGeomType = 0x2,
-      Vertex_DCGeomType = 0x4,
-      Edge_DCGeomType = 0x8,
-      Triangle_DCGeomType = 0x10,
-      Quad_DCGeomType = 0x20,
-      Tetrahedral_DCGeomType = 0x40,
-      Unknown_DCGeomType = 0x80,
-      Any_DCGeomType = 0xFF
-    };
-    Q_DECLARE_FLAGS(DCGeometryTypeFlags, DCGeometryTypeFlag)
 
     /**
      * @brief MergeProxies
@@ -194,14 +123,16 @@ class SIMPLib_EXPORT DataContainerArrayProxy
      * @brief Sets the flags of the proxy items that match the geometry, attribute matrix type, primitive type, and number of components flags that are input as parameters.
      * Flags are only set if their parent flag has been set as well.  For example: a matching attribute matrix's flag will be set if its data container flag has also been set.
      * But its flag won't be set if its data container flag has not been set.
-     * @param flagValue Whether to flag or unflag the matched data containers, attribute matrices, and data arrays
+     * @param flag Whether to flag or unflag the matched data containers, attribute matrices, and data arrays
      * @param dcGeoms Data containers with the geometries specified with this flag combination will be flagged/unflagged in the proxy
      * @param amTypes Attribute matrices with the attribute matrix types specified with this flag combination will be flagged/unflagged in the proxy
      * @param primitiveTypes Data arrays with the primitive types specified with this flag combination will be flagged/unflagged in the proxy
      * @param compDimsVector Data arrays with component dimensions in this vector will be flagged/unflagged in the proxy.  If the vector is empty,
      * then any component dimensions are flagged/unflagged.
      */
-    void setFlags(Qt::CheckState flagValue, DCGeometryTypeFlags dcGeoms = Any_DCGeomType, AMTypeFlags amTypes = Any_AMType, PrimitiveTypeFlags primitiveTypes = Any_PType, CompDimsVector compDimsVector = CompDimsVector());
+    void setFlags(uint8_t flag, DataContainerProxy::DCGeometryTypeFlags dcGeoms = DataContainerProxy::Any_DCGeomType,
+                  AttributeMatrixProxy::AMTypeFlags amTypes = AttributeMatrixProxy::Any_AMType, DataArrayProxy::PrimitiveTypeFlags primitiveTypes = DataArrayProxy::Any_PType,
+                  DataArrayProxy::CompDimsVector compDimsVector = DataArrayProxy::CompDimsVector());
 
     /**
      * @brief reverseFlags
@@ -265,32 +196,7 @@ class SIMPLib_EXPORT DataContainerArrayProxy
     * @return
     */
     QMap<QString, DataContainerProxy> readMap(QJsonArray jsonArray);
-
-    /**
-     * @brief Returns the appropriate flag for the geometry type
-     * @param geoType The data container geometry type
-     * @return
-     */
-    DCGeometryTypeFlag geometryTypeToFlag(IGeometry::Type geoType);
-
-    /**
-     * @brief Returns the appropriate flag for the attribute matrix type
-     * @param amType The attribute matrix type
-     * @return
-     */
-    AMTypeFlag attributeMatrixTypeToFlag(AttributeMatrix::Type amType);
-
-    /**
-     * @brief Returns the appropriate flag for the primitive type
-     * @param pType The primitive type
-     * @return
-     */
-    PrimitiveTypeFlag primitiveTypeToFlag(const QString &pType);
 };
-
-Q_DECLARE_OPERATORS_FOR_FLAGS(DataContainerArrayProxy::PrimitiveTypeFlags)
-Q_DECLARE_OPERATORS_FOR_FLAGS(DataContainerArrayProxy::AMTypeFlags)
-Q_DECLARE_OPERATORS_FOR_FLAGS(DataContainerArrayProxy::DCGeometryTypeFlags)
 
 Q_DECLARE_METATYPE(DataContainerArrayProxy)
 

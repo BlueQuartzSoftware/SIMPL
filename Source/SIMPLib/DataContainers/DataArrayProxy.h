@@ -53,8 +53,35 @@ class SIMPLH5DataReaderRequirements;
  */
 class SIMPLib_EXPORT DataArrayProxy
 {
-
 public:
+    typedef QVector<QVector<size_t> > CompDimsVector;
+
+    // This enumeration is not a class enumeration because it is not possible to
+    // do a bit-wise NOT operation on a class enumeration value.  We need to be
+    // able to do a bit-wise NOT operation so that we can turn off certain flags.
+    // This enumeration allows us to flip integer bits to turn on/off various types.
+    enum PrimitiveTypeFlag : unsigned int {
+      None_PType = 0x0,
+      Bool_PType = 0x1,
+      Float_PType = 0x2,
+      Double_PType = 0x4,
+      Int8_PType = 0x8,
+      UInt8_PType = 0x10,
+      Int16_PType = 0x20,
+      UInt16_PType = 0x40,
+      Int32_PType = 0x80,
+      UInt32_PType = 0x100,
+      Int64_PType = 0x200,
+      UInt64_PType = 0x400,
+      StatsDataArray_PType = 0x800,
+      NeighborList_PType = 0x1000,
+      StringArray_PType = 0x2000,
+      Unknown_PType = 0x4000,
+      NumericalPrimitives_PType = 0x07FE,
+      Any_PType = 0x7FFF
+    };
+    Q_DECLARE_FLAGS(PrimitiveTypeFlags, PrimitiveTypeFlag)
+
   /**
    * @brief DataArrayProxy
    */
@@ -74,6 +101,13 @@ public:
   * @brief Copy Constructor
   */
   DataArrayProxy(const DataArrayProxy& rhs);
+
+  /**
+   * @brief Returns the appropriate flag for the primitive type
+   * @param pType The primitive type
+   * @return
+   */
+  static DataArrayProxy::PrimitiveTypeFlag PrimitiveTypeToFlag(const QString &pType);
 
   /**
   * @brief Writes the contents of the proxy to the json object 'json'
@@ -107,13 +141,6 @@ public:
   */
   bool operator==(const DataArrayProxy& rhs) const;
 
-  /**
-   * @brief setFlag
-   * @param checkState
-   * @param recursive
-   */
-  void setFlag(uint8_t flag);
-
   //----- Our variables, publicly available
   uint8_t flag;
   int version;
@@ -128,6 +155,7 @@ private:
 
   QVector<size_t> readVector(QJsonArray jsonArray);
 };
+Q_DECLARE_OPERATORS_FOR_FLAGS(DataArrayProxy::PrimitiveTypeFlags)
 
 Q_DECLARE_METATYPE(DataArrayProxy)
 

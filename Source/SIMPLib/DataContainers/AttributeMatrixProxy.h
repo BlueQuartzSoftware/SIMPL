@@ -47,6 +47,32 @@
 class SIMPLib_EXPORT AttributeMatrixProxy
 {
   public:
+
+    // This enumeration is not a class enumeration because it is not possible to
+    // do a bit-wise NOT operation on a class enumeration value.  We need to be
+    // able to do a bit-wise NOT operation so that we can turn off certain flags.
+    // This enumeration allows us to flip integer bits to turn on/off various types.
+    enum AMTypeFlag : unsigned int {
+      None_AMType = 0x0,
+      Vertex_AMType = 0x1,
+      Face_AMType = 0x2,
+      Cell_AMType = 0x4,
+      VertexFeature_AMType = 0x8,
+      Edge_AMType = 0x10,
+      EdgeFeature_AMType = 0x20,
+      FaceFeature_AMType = 0x40,
+      CellFeature_AMType = 0x80,
+      VertexEnsemble_AMType = 0x100,
+      EdgeEnsemble_AMType = 0x200,
+      FaceEnsemble_AMType = 0x400,
+      CellEnsemble_AMType = 0x800,
+      MetaData_AMType = 0x1000,
+      Generic_AMType = 0x2000,
+      Unknown_AMType = 0x4000,
+      Any_AMType = 0x7FFF
+    };
+    Q_DECLARE_FLAGS(AMTypeFlags, AMTypeFlag)
+
     /**
      * @brief AttributeMatrixProxy
      */
@@ -66,6 +92,13 @@ class SIMPLib_EXPORT AttributeMatrixProxy
     AttributeMatrixProxy(const AttributeMatrixProxy& amp);
 
     virtual ~AttributeMatrixProxy();
+
+    /**
+     * @brief Returns the appropriate flag for the attribute matrix type
+     * @param amType The attribute matrix type
+     * @return
+     */
+    static AMTypeFlag AttributeMatrixTypeToFlag(AttributeMatrix::Type amType);
 
     /**
     * @brief operator = method
@@ -90,13 +123,14 @@ class SIMPLib_EXPORT AttributeMatrixProxy
     * @return
     */
     bool readJson(QJsonObject& json);
-
+    
     /**
-     * @brief setCheckState
-     * @param checkState
-     * @param recursive
+     * @brief setFlags
+     * @param flag
+     * @param primitiveTypes
+     * @param compDimsVector
      */
-    void setFlag(uint8_t flag, bool recursive = false);
+    void setFlags(uint8_t flag, DataArrayProxy::PrimitiveTypeFlags primitiveTypes = DataArrayProxy::Any_PType, DataArrayProxy::CompDimsVector compDimsVector = DataArrayProxy::CompDimsVector());
 
     //----- Our variables, publicly available
     uint8_t flag;
@@ -121,6 +155,8 @@ class SIMPLib_EXPORT AttributeMatrixProxy
     QMap<QString, DataArrayProxy> readMap(QJsonArray jsonArray);
 
 };
+Q_DECLARE_OPERATORS_FOR_FLAGS(AttributeMatrixProxy::AMTypeFlags)
+
 Q_DECLARE_METATYPE(AttributeMatrixProxy)
 
 #endif /* _AttributeMatrixProxy_H_ */

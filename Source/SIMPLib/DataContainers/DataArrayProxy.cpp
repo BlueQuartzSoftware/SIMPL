@@ -239,7 +239,72 @@ QVector<size_t> DataArrayProxy::readVector(QJsonArray jsonArray)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void DataArrayProxy::setFlag(uint8_t flag)
+DataArrayProxy::PrimitiveTypeFlag DataArrayProxy::PrimitiveTypeToFlag(const QString &pType)
 {
-  this->flag = flag;
+  if (pType == SIMPL::Defaults::AnyPrimitive)
+  {
+    return Any_PType;
+  }
+  else if (pType == SIMPL::TypeNames::Bool)
+  {
+    return Bool_PType;
+  }
+  else if (pType == SIMPL::TypeNames::Double)
+  {
+    return Double_PType;
+  }
+  else if (pType == SIMPL::TypeNames::Float)
+  {
+    return Float_PType;
+  }
+  else if (pType == SIMPL::TypeNames::Int8)
+  {
+    return Int8_PType;
+  }
+  else if (pType == SIMPL::TypeNames::Int16)
+  {
+    return Int16_PType;
+  }
+  else if (pType == SIMPL::TypeNames::Int32)
+  {
+    return Int32_PType;
+  }
+  else if (pType == SIMPL::TypeNames::Int64)
+  {
+    return Int64_PType;
+  }
+  else if (pType == SIMPL::TypeNames::NeighborList)
+  {
+    return NeighborList_PType;
+  }
+  else if (pType == SIMPL::TypeNames::StatsDataArray)
+  {
+    return StatsDataArray_PType;
+  }
+  else if (pType == SIMPL::TypeNames::String)
+  {
+    return StringArray_PType;
+  }
+  else if (pType == SIMPL::TypeNames::UInt8)
+  {
+    return UInt8_PType;
+  }
+  else if (pType == SIMPL::TypeNames::UInt16)
+  {
+    return UInt16_PType;
+  }
+  else if (pType == SIMPL::TypeNames::UInt32)
+  {
+    return UInt32_PType;
+  }
+  else if (pType == SIMPL::TypeNames::UInt64)
+  {
+    return UInt64_PType;
+  }
+  else if (pType == SIMPL::TypeNames::Unknown)
+  {
+    return Unknown_PType;
+  }
+
+  return None_PType;
 }
