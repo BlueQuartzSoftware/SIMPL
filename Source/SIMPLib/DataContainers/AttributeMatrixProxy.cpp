@@ -234,6 +234,8 @@ AttributeMatrixProxy::AMTypeFlag AttributeMatrixProxy::AttributeMatrixTypeToFlag
       return Unknown_AMType;
     }
   }
+
+  return Unknown_AMType;
 }
 
 // -----------------------------------------------------------------------------

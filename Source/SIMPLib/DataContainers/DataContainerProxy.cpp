@@ -199,6 +199,8 @@ DataContainerProxy::DCGeometryTypeFlag DataContainerProxy::GeometryTypeToFlag(IG
       return Unknown_DCGeomType;
     }
   }
+
+  return Unknown_DCGeomType;
 }
 
 // -----------------------------------------------------------------------------
