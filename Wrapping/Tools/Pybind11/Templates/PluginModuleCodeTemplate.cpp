@@ -99,23 +99,17 @@ template <typename T> using PySharedPtrClass = py::class_<T, std::shared_ptr<T>>
 
 #include "SIMPLib/Filtering/AbstractFilter_PY11.h"
 
-@HEADER_PATH @
+@HEADER_PATH@
 
-    /**
-     * @brief PYBIND11_MODULE This section declares our python module, its name and
-     * what classes are available within the module.
-     *
-     */
-    PYBIND11_MODULE(@LIB_NAME @, m)
+/**
+  * @brief PYBIND11_MODULE This section declares our python module, its name and
+  * what classes are available within the module.
+  *
+  */
+PYBIND11_MODULE(@LIB_NAME@, m)
 {
   py::module mod = m.def_submodule("@LIB_NAME@", "  Python wrapping for @LIB_NAME@");
 
-#if 0
-  // Example of working code
-  PySharedPtrClass<FindBoundaryCells> generic_FindBoundaryCells 
-        = pybind11_init_generic_FindBoundaryCells(mod);
-#endif
-
   /* Init codes for classes in the Module */
-  @MODULE_INIT_CODE @
+  @MODULE_INIT_CODE@
 }

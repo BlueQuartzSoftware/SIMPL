@@ -1,25 +1,35 @@
 
 
 function(CreatePybind11Module)
-
-  set(options)
+  set(options VERBOSE)
   set(oneValueArgs MODULE_NAME SOURCE_DIR PATH_TO_STRIP OUTPUT_PATH BINARY_DIR MODULE_TEMPLATE_FILE MODULE_LINK_LIBRARIES)
   set(multiValueArgs )
   cmake_parse_arguments(ARGS "${options}" "${oneValueArgs}" "${multiValueArgs}" ${ARGN})
-
+  if(ARGS_VERBOSE)
+    message(STATUS "## START CreatePybind11Module")
+  endif()
   # --------------------------------------------------------------------------
   # Find the Pybind11 installation
-  set(PYBIND11_PYTHON_VERSION "3.6")
-  find_package(pybind11)
+  set(PYBIND11_PYTHON_VERSION "3")
+  find_package(pybind11 CONFIG REQUIRED)
+  if(ARGS_VERBOSE)
+    message(STATUS "PYTHON_EXECUTABLE: ${PYTHON_EXECUTABLE}")
+    message(STATUS "Found pybind11 v${pybind11_VERSION}: ${pybind11_INCLUDE_DIRS}")
+    message(STATUS "PYTHONLIBS_FOUND: ${PYTHONLIBS_FOUND}")
+    message(STATUS "PYTHON_PREFIX: ${PYTHON_PREFIX}")
+    message(STATUS "PYTHON_LIBRARIES: ${PYTHON_LIBRARIES}")
+    message(STATUS "PYTHON_INCLUDE_DIRS: ${PYTHON_INCLUDE_DIRS}")
+    message(STATUS "PYTHON_MODULE_EXTENSION: ${PYTHON_MODULE_EXTENSION}")
+    message(STATUS "PYTHON_MODULE_PREFIX: ${PYTHON_MODULE_PREFIX}")
+    message(STATUS "PYTHON_SITE_PACKAGES: ${PYTHON_SITE_PACKAGES}")
+    message(STATUS "PYTHON_IS_DEBUG: ${PYTHON_IS_DEBUG}")
+  endif()
   if(NOT pybind11_FOUND)
     message(FATAL_ERROR "pybind11 is REQUIRED to build the SIMPL Python bindings")
   endif()
-  #message(STATUS "pybind11_VERSION: ${pybind11_VERSION}")
 
   # Give our module a name. Python standards dictate ALL lowercase for the module name
   set(pybind_module_name "${ARGS_MODULE_NAME}")
-  #message(STATUS "pybind_module_name: ${pybind_module_name}")
-  #//message(STATUS "ARGS_MODULE_LINK_LIBRARIES: ${ARGS_MODULE_LINK_LIBRARIES}")
 
   if(1)
   # Now create a custom task to scrape through our code and generate all the binding sources
@@ -65,15 +75,18 @@ function(CreatePybind11Module)
                                             SUFFIX "${PYTHON_MODULE_EXTENSION}"
                                             LIBRARY_OUTPUT_DIRECTORY ${CMAKE_LIBRARY_OUTPUT_DIRECTORY}/python/site-packages
                                             )
-if(TARGET ${pybind_module_name}CreatePythonBindings)                                            
-  add_dependencies(${pybind_module_name} ${pybind_module_name}CreatePythonBindings)
-endif()
+  if(TARGET ${pybind_module_name}CreatePythonBindings)                                            
+    add_dependencies(${pybind_module_name} ${pybind_module_name}CreatePythonBindings)
+  endif()
 
                                             
   install (TARGETS ${pybind_module_name} 
-            DESTINATION ${CMAKE_INSTALL_PREFIX}/lib/python${PYTHON_VERSION_MAJOR}.${PYTHON_VERSION_MINOR}/site-packages)
-
-
+            DESTINATION ${CMAKE_INSTALL_PREFIX}/lib/python${PYTHON_VERSION_MAJOR}.${PYTHON_VERSION_MINOR}/site-packages
+          )
+  
+  if(ARGS_VERBOSE)
+    message(STATUS "## END CreatePybind11Module")
+  endif()
 
 endfunction()
 

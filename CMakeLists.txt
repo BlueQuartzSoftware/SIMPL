@@ -417,9 +417,14 @@ endif()
 include(${PROJECT_RESOURCES_DIR}/CPack/PackageProject.cmake)
 
 
-# --------------------------------------------------------------------
-# add the Pybind11 Python Wrapping
-# Figure out here if we are going to build the command line tools
-add_subdirectory(${SIMPLProj_SOURCE_DIR}/Wrapping/Tools/Pybind11 ${PROJECT_BINARY_DIR}/Pybind11)
+# --------------------------------------------------------------------------
+# Find the Pybind11 installation
+option(SIMPL_WRAP_PYTHON "Generate and/or compile Python wrapping codes" OFF)
+message(STATUS "SIMPL_WRAP_PYTHON: ${SIMPL_WRAP_PYTHON}")
+if(SIMPL_WRAP_PYTHON)
+  # --------------------------------------------------------------------
+  # add the Pybind11 Python Wrapping
+  add_subdirectory(${SIMPLProj_SOURCE_DIR}/Wrapping/Tools/Pybind11 ${PROJECT_BINARY_DIR}/Pybind11)
 
+endif()
 
