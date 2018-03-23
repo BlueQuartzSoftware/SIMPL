@@ -46,7 +46,7 @@
 typedef struct
 {
   qint32 PaddingDigits;
-  quint32 Ordering;
+  quint32 Ordering; /* Ordering=0 = Ascending, Ordering=1 = Descending */
   qint32 StartIndex;
   qint32 EndIndex;
   QString InputPath;
