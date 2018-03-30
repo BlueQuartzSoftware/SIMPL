@@ -75,33 +75,33 @@ public:
   * a different group if you want. The string returned here will be displayed
   * in the GUI for the filter
   */
-  virtual const QString getCompiledLibraryName() const override;
-  virtual AbstractFilter::Pointer newFilterInstance(bool copyFilterParameters) const override;
-  virtual const QString getGroupName() const override;
+  const QString getCompiledLibraryName() const override;
+  AbstractFilter::Pointer newFilterInstance(bool copyFilterParameters) const override;
+  const QString getGroupName() const override;
 
   /**
   * @brief This returns a string that is displayed in the GUI. It should be readable
   * and understandable by humans.
   */
-  virtual const QString getHumanLabel() const override;
+  const QString getHumanLabel() const override;
 
   /**
   * @brief This returns a string that is displayed in the GUI and helps to sort the filters into
   * a subgroup. It should be readable and understandable by humans.
   */
-  virtual const QString getSubGroupName() const override;
+  const QString getSubGroupName() const override;
 
   /**
    * @brief getUuid Return the unique identifier for this filter.
    * @return A QUuid object.
    */
-  virtual const QUuid getUuid() override;
+  const QUuid getUuid() override;
 
   /**
   * @brief This method will instantiate all the end user settable options/parameters
   * for this filter
   */
-  virtual void setupFilterParameters() override;
+  void setupFilterParameters() override;
 
   /**
   * @brief This method will read the options from a file
@@ -112,13 +112,13 @@ public:
   /**
    * @brief Reimplemented from @see AbstractFilter class
    */
-  virtual void execute() override;
+  void execute() override;
 
   /**
   * @brief This function runs some sanity checks on the DataContainer and inputs
   * in an attempt to ensure the filter can process the inputs.
   */
-  virtual void preflight() override;
+  void preflight() override;
 
 signals:
   void updateFilterParameters(AbstractFilter* filter);

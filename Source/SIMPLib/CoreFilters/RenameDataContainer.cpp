@@ -45,8 +45,7 @@
 //
 // -----------------------------------------------------------------------------
 RenameDataContainer::RenameDataContainer()
-: AbstractFilter()
-, m_SelectedDataContainerName("")
+: m_SelectedDataContainerName("")
 , m_NewDataContainerName("")
 {
   setupFilterParameters();

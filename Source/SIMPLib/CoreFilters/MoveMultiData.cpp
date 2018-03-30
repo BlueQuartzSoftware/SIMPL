@@ -56,8 +56,7 @@ static const int32_t k_MoveMultiDataArray = 1;
 //
 // -----------------------------------------------------------------------------
 MoveMultiData::MoveMultiData()
-: AbstractFilter()
-, m_WhatToMove(k_MoveAttributeMatrix)
+: m_WhatToMove(k_MoveAttributeMatrix)
 , m_DataContainerDestination("")
 , m_AttributeMatrixSources()
 , m_AttributeMatrixDestination()

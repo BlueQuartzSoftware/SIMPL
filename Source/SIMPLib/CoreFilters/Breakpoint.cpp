@@ -45,7 +45,6 @@
 //
 // -----------------------------------------------------------------------------
 Breakpoint::Breakpoint()
-: AbstractFilter()
 {
   setupFilterParameters();
 }

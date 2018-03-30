@@ -71,7 +71,6 @@ template <typename T> IDataArray::Pointer readH5Dataset(hid_t locId, const QStri
 //
 // -----------------------------------------------------------------------------
 ImportHDF5Dataset::ImportHDF5Dataset()
-: AbstractFilter()
 {
   initialize();
   setupFilterParameters();

@@ -56,8 +56,7 @@
 //
 // -----------------------------------------------------------------------------
 DataContainerReader::DataContainerReader()
-: AbstractFilter()
-, m_InputFile("")
+: m_InputFile("")
 , m_OverwriteExistingDataContainers(false)
 , m_LastFileRead("")
 , m_LastRead(QDateTime::currentDateTime())

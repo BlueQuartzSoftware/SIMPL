@@ -54,8 +54,7 @@ static const int32_t k_MoveDataArray = 1;
 //
 // -----------------------------------------------------------------------------
 MoveData::MoveData()
-: AbstractFilter()
-, m_WhatToMove(k_MoveAttributeMatrix)
+: m_WhatToMove(k_MoveAttributeMatrix)
 , m_DataContainerDestination("")
 , m_AttributeMatrixSource()
 , m_AttributeMatrixDestination()

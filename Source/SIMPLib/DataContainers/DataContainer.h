@@ -454,7 +454,7 @@ class SIMPLib_EXPORT DataContainer : public Observable
     virtual void writeXdmfFooter(QTextStream& xdmf);
 
     DataContainer();
-    explicit DataContainer(const QString name);
+    explicit DataContainer(const QString& name);
 
   private:
 

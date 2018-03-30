@@ -22,7 +22,6 @@
 //
 // -----------------------------------------------------------------------------
 ReadASCIIData::ReadASCIIData()
-: AbstractFilter()
 {
   setupFilterParameters();
 }

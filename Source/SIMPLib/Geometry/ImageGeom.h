@@ -253,9 +253,9 @@ class SIMPLib_EXPORT ImageGeom : public IGeometryGrid
     
     SIMPL_INSTANCE_VEC3_PROPERTY_VO(size_t, Dimensions)
 
-    virtual size_t getXPoints() override;
-    virtual size_t getYPoints() override;
-    virtual size_t getZPoints() override;
+    size_t getXPoints() override;
+    size_t getYPoints() override;
+    size_t getZPoints() override;
 
     virtual void getPlaneCoords(size_t idx[3], float coords[3]) override;
     virtual void getPlaneCoords(size_t x, size_t y, size_t z, float coords[3]) override;

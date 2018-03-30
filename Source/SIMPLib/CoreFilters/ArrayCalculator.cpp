@@ -134,8 +134,7 @@
 //
 // -----------------------------------------------------------------------------
 ArrayCalculator::ArrayCalculator()
-: AbstractFilter()
-, m_SelectedAttributeMatrix("", "", "")
+: m_SelectedAttributeMatrix("", "", "")
 , m_InfixEquation(QString())
 , m_CalculatedArray("", "", "Output")
 , m_Units(Radians)

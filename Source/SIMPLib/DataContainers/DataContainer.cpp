@@ -65,7 +65,7 @@ DataContainer::DataContainer()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-DataContainer::DataContainer(const QString name)
+DataContainer::DataContainer(const QString& name)
 : Observable()
 , m_Name(name)
 {
@@ -117,7 +117,7 @@ void DataContainer::ReadDataContainerStructure(hid_t dcArrayGroupId, DataContain
       if (req != nullptr)
       {
         IGeometry::Types geomTypes = req->getDCGeometryTypes();
-        if (geomTypes.size() <= 0 || geomTypes.contains(static_cast<IGeometry::Type>(geometryType)))
+        if(geomTypes.empty() || geomTypes.contains(static_cast<IGeometry::Type>(geometryType)))
         {
 
         }

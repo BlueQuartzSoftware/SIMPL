@@ -172,8 +172,7 @@ private:
 //
 // -----------------------------------------------------------------------------
 CombineAttributeArrays::CombineAttributeArrays()
-: AbstractFilter()
-, m_SelectedDataArrayPaths(QVector<DataArrayPath>())
+: m_SelectedDataArrayPaths(QVector<DataArrayPath>())
 , m_StackedDataArrayName(SIMPL::GeneralData::CombinedData)
 , m_NormalizeData(false)
 {
@@ -269,7 +268,7 @@ void CombineAttributeArrays::dataCheck()
   {
     DataArrayPath path = paths.at(i);
     IDataArray::WeakPointer ptr = getDataContainerArray()->getPrereqIDataArrayFromPath<IDataArray, AbstractFilter>(this, path);
-    if(nullptr != ptr.lock().get())
+    if(nullptr != ptr.lock())
     {
       m_SelectedWeakPtrVector.push_back(ptr);
       int32_t numComps = ptr.lock()->getNumberOfComponents();

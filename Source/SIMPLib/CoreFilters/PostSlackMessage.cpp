@@ -50,8 +50,7 @@
 //
 // -----------------------------------------------------------------------------
 PostSlackMessage::PostSlackMessage()
-: AbstractFilter()
-, m_SlackUser("")
+: m_SlackUser("")
 , m_SlackUrl("")
 , m_SlackMessage("")
 , m_WarningsAsError(false)

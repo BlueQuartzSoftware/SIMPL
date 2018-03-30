@@ -62,7 +62,7 @@ public:
   * @brief This method will instantiate all the end user settable options/parameters
   * for this filter
   */
-  virtual void setupFilterParameters() override;
+  void setupFilterParameters() override;
 
   /**
   * @brief This method will read the options from a file
@@ -73,13 +73,13 @@ public:
   /**
    * @brief Reimplemented from @see AbstractFilter class
    */
-  virtual void execute() override;
+  void execute() override;
 
   /**
   * @brief This function runs some sanity checks on the DataContainer and inputs
   * in an attempt to ensure the filter can process the inputs.
   */
-  virtual void preflight() override;
+  void preflight() override;
 
 signals:
   void updateFilterParameters(AbstractFilter* filter);
@@ -154,7 +154,7 @@ public:
   * @brief This method will instantiate all the end user settable options/parameters
   * for this filter
   */
-  virtual void setupFilterParameters() override;
+  void setupFilterParameters() override;
 
   /**
   * @brief This method will read the options from a file
@@ -165,13 +165,13 @@ public:
   /**
    * @brief Reimplemented from @see AbstractFilter class
    */
-  virtual void execute() override;
+  void execute() override;
 
   /**
   * @brief This function runs some sanity checks on the DataContainer and inputs
   * in an attempt to ensure the filter can process the inputs.
   */
-  virtual void preflight() override;
+  void preflight() override;
 
 signals:
   void updateFilterParameters(AbstractFilter* filter);

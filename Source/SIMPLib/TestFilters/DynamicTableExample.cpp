@@ -41,7 +41,6 @@
 //
 // -----------------------------------------------------------------------------
 DynamicTableExample::DynamicTableExample()
-: AbstractFilter()
 {
   setupFilterParameters();
 }

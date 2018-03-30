@@ -43,7 +43,6 @@
 //
 // -----------------------------------------------------------------------------
 ChangeGlobalValue::ChangeGlobalValue()
-: AbstractFilter()
 {
 }
 

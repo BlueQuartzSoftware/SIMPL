@@ -71,8 +71,7 @@
 //
 // -----------------------------------------------------------------------------
 GenericExample::GenericExample()
-: AbstractFilter()
-, m_StlFilePrefix("Some Prefix")
+: m_StlFilePrefix("Some Prefix")
 , m_ShowPrefix(false)
 , m_MaxIterations(0)
 , m_MisorientationTolerance(0)

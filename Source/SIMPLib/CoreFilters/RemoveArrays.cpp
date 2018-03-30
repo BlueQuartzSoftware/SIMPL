@@ -44,7 +44,6 @@
 //
 // -----------------------------------------------------------------------------
 RemoveArrays::RemoveArrays()
-: AbstractFilter()
 {
   setupFilterParameters();
 }

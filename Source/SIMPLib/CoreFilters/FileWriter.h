@@ -56,7 +56,7 @@ class SIMPLib_EXPORT FileWriter : public AbstractFilter
     SIMPL_FILTER_PARAMETER(QString, OutputFile)
     Q_PROPERTY(QString OutputFile READ getOutputFile WRITE setOutputFile)
 
-    virtual void execute() override;
+    void execute() override;
 
   signals:
     /**

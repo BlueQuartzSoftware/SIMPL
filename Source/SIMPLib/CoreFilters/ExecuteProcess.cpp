@@ -49,7 +49,6 @@
 //
 // -----------------------------------------------------------------------------
 ExecuteProcess::ExecuteProcess()
-: AbstractFilter()
 {
   setupFilterParameters();
 }

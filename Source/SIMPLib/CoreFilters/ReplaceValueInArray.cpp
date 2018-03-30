@@ -46,8 +46,7 @@
 //
 // -----------------------------------------------------------------------------
 ReplaceValueInArray::ReplaceValueInArray()
-: AbstractFilter()
-, m_SelectedArray("", "", "")
+: m_SelectedArray("", "", "")
 , m_RemoveValue(0.0)
 , m_ReplaceValue(0.0)
 {

@@ -41,7 +41,6 @@
 //
 // -----------------------------------------------------------------------------
 AbstractDecisionFilter::AbstractDecisionFilter()
-: AbstractFilter()
 {
   setupFilterParameters();
 }

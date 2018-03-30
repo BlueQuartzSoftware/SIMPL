@@ -38,7 +38,6 @@
 //
 // -----------------------------------------------------------------------------
 FilterGroup12::FilterGroup12()
-: AbstractFilter()
 {
   initialize();
   setupFilterParameters();

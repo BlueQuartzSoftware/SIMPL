@@ -74,8 +74,7 @@ void initializeArray(IDataArray::Pointer outputArrayPtr, const QString& initiali
 //
 // -----------------------------------------------------------------------------
 CreateStringArray::CreateStringArray()
-: AbstractFilter()
-, m_NumberOfComponents(0)
+: m_NumberOfComponents(0)
 , m_NewArray("", "", "")
 , m_InitializationValue("Text")
 {

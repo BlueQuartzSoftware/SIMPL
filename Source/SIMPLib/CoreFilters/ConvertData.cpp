@@ -186,8 +186,7 @@ void ConvertData(AbstractFilter* filter, T* ptr, QVector<size_t> dims, DataConta
 //
 // -----------------------------------------------------------------------------
 ConvertData::ConvertData()
-: AbstractFilter()
-, m_ScalarType(SIMPL::NumericTypes::Type::Int8)
+: m_ScalarType(SIMPL::NumericTypes::Type::Int8)
 , m_OutputArrayName("")
 , m_SelectedCellArrayPath("", "", "")
 {

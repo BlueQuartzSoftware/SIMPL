@@ -68,52 +68,52 @@ class SIMPLib_EXPORT FindDerivatives : public AbstractFilter
     /**
      * @brief getCompiledLibraryName Reimplemented from @see AbstractFilter class
      */
-    virtual const QString getCompiledLibraryName() const override;
+    const QString getCompiledLibraryName() const override;
 
     /**
      * @brief getBrandingString Returns the branding string for the filter, which is a tag
      * used to denote the filter's association with specific plugins
      * @return Branding string
     */
-    virtual const QString getBrandingString() const override;
+    const QString getBrandingString() const override;
 
     /**
      * @brief getFilterVersion Returns a version string for this filter. Default
      * value is an empty string.
      * @return
      */
-    virtual const QString getFilterVersion() const override;
+    const QString getFilterVersion() const override;
 
     /**
      * @brief newFilterInstance Reimplemented from @see AbstractFilter class
      */
-    virtual AbstractFilter::Pointer newFilterInstance(bool copyFilterParameters) const override;
+    AbstractFilter::Pointer newFilterInstance(bool copyFilterParameters) const override;
 
     /**
      * @brief getGroupName Reimplemented from @see AbstractFilter class
      */
-    virtual const QString getGroupName() const override;
+    const QString getGroupName() const override;
 
     /**
      * @brief getSubGroupName Reimplemented from @see AbstractFilter class
      */
-    virtual const QString getSubGroupName() const override;
+    const QString getSubGroupName() const override;
 
     /**
      * @brief getUuid Return the unique identifier for this filter.
      * @return A QUuid object.
      */
-    virtual const QUuid getUuid() override;
+    const QUuid getUuid() override;
 
     /**
      * @brief getHumanLabel Reimplemented from @see AbstractFilter class
      */
-    virtual const QString getHumanLabel() const override;
+    const QString getHumanLabel() const override;
 
     /**
      * @brief setupFilterParameters Reimplemented from @see AbstractFilter class
      */
-    virtual void setupFilterParameters() override;
+    void setupFilterParameters() override;
 
     /**
     * @brief This method will read the options from a file
@@ -125,13 +125,13 @@ class SIMPLib_EXPORT FindDerivatives : public AbstractFilter
     /**
      * @brief Reimplemented from @see AbstractFilter class
      */
-    virtual void execute() override;
+    void execute() override;
 
     /**
     * @brief This function runs some sanity checks on the DataContainer and inputs
     * in an attempt to ensure the filter can process the inputs.
     */
-    virtual void preflight() override;
+    void preflight() override;
 
   signals:
     /**

@@ -48,8 +48,7 @@
 //
 // -----------------------------------------------------------------------------
 ExtractComponentAsArray::ExtractComponentAsArray()
-: AbstractFilter()
-, m_SelectedArrayPath("", "", "")
+: m_SelectedArrayPath("", "", "")
 , m_CompNumber(0)
 , m_NewArrayArrayName("")
 {

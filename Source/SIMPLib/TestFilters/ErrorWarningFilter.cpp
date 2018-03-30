@@ -39,8 +39,7 @@
 //
 // -----------------------------------------------------------------------------
 ErrorWarningFilter::ErrorWarningFilter()
-: AbstractFilter()
-, m_PreflightWarning(false)
+: m_PreflightWarning(false)
 , m_PreflightError(false)
 , m_ExecuteWarning(false)
 , m_ExecuteError(false)

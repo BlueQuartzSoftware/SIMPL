@@ -95,8 +95,7 @@ public:
 //
 // -----------------------------------------------------------------------------
 ScaleVolume::ScaleVolume()
-: AbstractFilter()
-, m_DataContainerName("")
+: m_DataContainerName("")
 , m_SurfaceDataContainerName("")
 , m_ApplyToVoxelVolume(true)
 , m_ApplyToSurfaceMesh(true)

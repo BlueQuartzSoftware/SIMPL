@@ -59,7 +59,7 @@ class SIMPLib_EXPORT FileReader : public AbstractFilter
      * error checkes after each one. Subclasses should just implement the readHeader
      * and readFile methods unless special setups are needed.
      */
-    virtual void execute() override;
+    void execute() override;
 
   signals:
     /**

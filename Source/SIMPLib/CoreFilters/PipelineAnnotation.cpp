@@ -42,7 +42,6 @@
 //
 // -----------------------------------------------------------------------------
 PipelineAnnotation::PipelineAnnotation()
-: AbstractFilter()
 {
   setupFilterParameters();
 }

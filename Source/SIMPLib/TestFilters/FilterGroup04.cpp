@@ -38,7 +38,6 @@
 //
 // -----------------------------------------------------------------------------
 FilterGroup04::FilterGroup04()
-: AbstractFilter()
 {
   initialize();
   setupFilterParameters();
