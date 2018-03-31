@@ -49,10 +49,10 @@ class SIMPLib_EXPORT ConvertData : public AbstractFilter
     Q_OBJECT
   public:
     SIMPL_SHARED_POINTERS(ConvertData)
-    SIMPL_STATIC_NEW_MACRO(ConvertData)
-     SIMPL_TYPE_MACRO_SUPER_OVERRIDE(ConvertData, AbstractFilter)
+    SIMPL_FILTER_NEW_MACRO(ConvertData)
+    SIMPL_TYPE_MACRO_SUPER_OVERRIDE(ConvertData, AbstractFilter)
 
-    virtual ~ConvertData();
+    ~ConvertData() override;
 
     SIMPL_FILTER_PARAMETER(SIMPL::NumericTypes::Type, ScalarType)
     Q_PROPERTY(SIMPL::NumericTypes::Type ScalarType READ getScalarType WRITE setScalarType)
@@ -116,7 +116,7 @@ class SIMPLib_EXPORT ConvertData : public AbstractFilter
     /**
      * @brief readFilterParameters Reimplemented from @see AbstractFilter class
      */
-    virtual void readFilterParameters(AbstractFilterParametersReader* reader, int index) override;
+    void readFilterParameters(AbstractFilterParametersReader* reader, int index) override;
 
     /**
      * @brief execute Reimplemented from @see AbstractFilter class
@@ -165,8 +165,11 @@ class SIMPLib_EXPORT ConvertData : public AbstractFilter
 
 
   private:
+  public:
     ConvertData(const ConvertData&) = delete;    // Copy Constructor Not Implemented
-    void operator=(const ConvertData&) = delete; // Operator '=' Not Implemented
+    ConvertData(ConvertData&&) = delete;         // Move Constructor
+    ConvertData& operator=(const ConvertData&) = delete; // Copy Assignment
+    ConvertData& operator=(ConvertData&&) = delete;      // Move Assignment
 };
 
 #endif /* _ConvertData_H_ */

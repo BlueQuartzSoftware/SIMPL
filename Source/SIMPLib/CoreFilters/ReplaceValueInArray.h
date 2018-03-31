@@ -50,10 +50,10 @@ class SIMPLib_EXPORT ReplaceValueInArray : public AbstractFilter
   public:
 
     SIMPL_SHARED_POINTERS(ReplaceValueInArray)
-    SIMPL_STATIC_NEW_MACRO(ReplaceValueInArray)
-     SIMPL_TYPE_MACRO_SUPER_OVERRIDE(ReplaceValueInArray, AbstractFilter)
+    SIMPL_FILTER_NEW_MACRO(ReplaceValueInArray)
+    SIMPL_TYPE_MACRO_SUPER_OVERRIDE(ReplaceValueInArray, AbstractFilter)
 
-    virtual ~ReplaceValueInArray();
+    ~ReplaceValueInArray() override;
 
     SIMPL_FILTER_PARAMETER(DataArrayPath, SelectedArray)
     Q_PROPERTY(DataArrayPath SelectedArray READ getSelectedArray WRITE setSelectedArray)
@@ -117,7 +117,7 @@ class SIMPLib_EXPORT ReplaceValueInArray : public AbstractFilter
     /**
      * @brief readFilterParameters Reimplemented from @see AbstractFilter class
      */
-    virtual void readFilterParameters(AbstractFilterParametersReader* reader, int index) override;
+    void readFilterParameters(AbstractFilterParametersReader* reader, int index) override;
 
     /**
      * @brief execute Reimplemented from @see AbstractFilter class
@@ -168,8 +168,11 @@ class SIMPLib_EXPORT ReplaceValueInArray : public AbstractFilter
   private:
     DEFINE_IDATAARRAY_WEAKPTR(Array)
 
+  public:
     ReplaceValueInArray(const ReplaceValueInArray&) = delete; // Copy Constructor Not Implemented
-    void operator=(const ReplaceValueInArray&) = delete;      // Operator '=' Not Implemented
+    ReplaceValueInArray(ReplaceValueInArray&&) = delete;      // Move Constructor
+    ReplaceValueInArray& operator=(const ReplaceValueInArray&) = delete; // Copy Assignment
+    ReplaceValueInArray& operator=(ReplaceValueInArray&&) = delete;      // Move Assignment
 };
 
 #endif /* _ReplaceValueInArray_H_ */

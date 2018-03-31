@@ -46,10 +46,10 @@ class SIMPLib_EXPORT ChangeGlobalValue : public AbstractFilter
 
 public:
   SIMPL_SHARED_POINTERS(ChangeGlobalValue)
-  SIMPL_STATIC_NEW_MACRO(ChangeGlobalValue)
-   SIMPL_TYPE_MACRO_SUPER_OVERRIDE(ChangeGlobalValue, AbstractFilter)
+  SIMPL_FILTER_NEW_MACRO(ChangeGlobalValue)
+  SIMPL_TYPE_MACRO_SUPER_OVERRIDE(ChangeGlobalValue, AbstractFilter)
 
-  virtual ~ChangeGlobalValue();
+  ~ChangeGlobalValue() override;
 
   SIMPL_FILTER_PARAMETER(int, Value)
   Q_PROPERTY(int Value READ getValue WRITE setValue)
@@ -76,7 +76,9 @@ protected:
   ChangeGlobalValue();
 
 private:
+public:
   ChangeGlobalValue(const ChangeGlobalValue&) = delete; // Copy Constructor Not Implemented
+  ChangeGlobalValue(ChangeGlobalValue&&) = delete;      // Move Constructor
   void operator=(const ChangeGlobalValue&);    // Operator '=' Not Implemented
 };
 

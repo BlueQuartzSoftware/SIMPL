@@ -45,10 +45,10 @@ class ErrorWarningFilter : public AbstractFilter
 
 public:
   SIMPL_SHARED_POINTERS(ErrorWarningFilter)
-  SIMPL_STATIC_NEW_MACRO(ErrorWarningFilter)
-   SIMPL_TYPE_MACRO_SUPER_OVERRIDE(ErrorWarningFilter, AbstractFilter)
+  SIMPL_FILTER_NEW_MACRO(ErrorWarningFilter)
+  SIMPL_TYPE_MACRO_SUPER_OVERRIDE(ErrorWarningFilter, AbstractFilter)
 
-  virtual ~ErrorWarningFilter();
+  ~ErrorWarningFilter() override;
 
   SIMPL_FILTER_PARAMETER(bool, PreflightWarning)
   Q_PROPERTY(bool PreflightWarning READ getPreflightWarning WRITE setPreflightWarning)
@@ -162,7 +162,9 @@ protected:
   void initialize();
 
 private:
+public:
   ErrorWarningFilter(const ErrorWarningFilter&) = delete; // Copy Constructor Not Implemented
+  ErrorWarningFilter(ErrorWarningFilter&&) = delete;      // Move Constructor
   void operator=(const ErrorWarningFilter&);     // Operator '=' Not Implemented
 };
 

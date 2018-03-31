@@ -49,10 +49,10 @@ class SIMPLib_EXPORT WriteASCIIData : public AbstractFilter
     Q_OBJECT
   public:
     SIMPL_SHARED_POINTERS(WriteASCIIData)
-    SIMPL_STATIC_NEW_MACRO(WriteASCIIData)
-     SIMPL_TYPE_MACRO_SUPER_OVERRIDE(WriteASCIIData, AbstractFilter)
+    SIMPL_FILTER_NEW_MACRO(WriteASCIIData)
+    SIMPL_TYPE_MACRO_SUPER_OVERRIDE(WriteASCIIData, AbstractFilter)
 
-    virtual ~WriteASCIIData();
+    ~WriteASCIIData() override;
 
     SIMPL_FILTER_PARAMETER(QVector<DataArrayPath>, SelectedDataArrayPaths)
     Q_PROPERTY(QVector<DataArrayPath> SelectedDataArrayPaths READ getSelectedDataArrayPaths WRITE setSelectedDataArrayPaths)
@@ -131,7 +131,7 @@ class SIMPLib_EXPORT WriteASCIIData : public AbstractFilter
     /**
      * @brief readFilterParameters Reimplemented from @see AbstractFilter class
      */
-    virtual void readFilterParameters(AbstractFilterParametersReader* reader, int index) override;
+    void readFilterParameters(AbstractFilterParametersReader* reader, int index) override;
 
     /**
      * @brief execute Reimplemented from @see AbstractFilter class
@@ -195,8 +195,11 @@ class SIMPLib_EXPORT WriteASCIIData : public AbstractFilter
 
     QVector<IDataArray::WeakPointer> m_SelectedWeakPtrVector;
 
+  public:
     WriteASCIIData(const WriteASCIIData&) = delete; // Copy Constructor Not Implemented
-    void operator=(const WriteASCIIData&) = delete; // Operator '=' Not Implemented
+    WriteASCIIData(WriteASCIIData&&) = delete;      // Move Constructor
+    WriteASCIIData& operator=(const WriteASCIIData&) = delete; // Copy Assignment
+    WriteASCIIData& operator=(WriteASCIIData&&) = delete;      // Move Assignment
 };
 
 #endif /* _writeasciidata_h_ */

@@ -50,10 +50,10 @@ class SIMPLib_EXPORT CreateDataArray : public AbstractFilter
     Q_OBJECT
   public:
     SIMPL_SHARED_POINTERS(CreateDataArray)
-    SIMPL_STATIC_NEW_MACRO(CreateDataArray)
-     SIMPL_TYPE_MACRO_SUPER_OVERRIDE(CreateDataArray, AbstractFilter)
+    SIMPL_FILTER_NEW_MACRO(CreateDataArray)
+    SIMPL_TYPE_MACRO_SUPER_OVERRIDE(CreateDataArray, AbstractFilter)
 
-    virtual ~CreateDataArray();
+    ~CreateDataArray() override;
 
     enum InitializationChoices
     {
@@ -132,7 +132,7 @@ class SIMPLib_EXPORT CreateDataArray : public AbstractFilter
     /**
      * @brief readFilterParameters Reimplemented from @see AbstractFilter class
      */
-    virtual void readFilterParameters(AbstractFilterParametersReader* reader, int index) override;
+    void readFilterParameters(AbstractFilterParametersReader* reader, int index) override;
 
     /**
      * @brief execute Reimplemented from @see AbstractFilter class
@@ -202,8 +202,11 @@ class SIMPLib_EXPORT CreateDataArray : public AbstractFilter
     const QString Double = "      Double 64 bit";
     const QString Bool = "bool";
 
+  public:
     CreateDataArray(const CreateDataArray&) = delete; // Copy Constructor Not Implemented
-    void operator=(const CreateDataArray&) = delete;  // Operator '=' Not Implemented
+    CreateDataArray(CreateDataArray&&) = delete;      // Move Constructor
+    CreateDataArray& operator=(const CreateDataArray&) = delete; // Copy Assignment
+    CreateDataArray& operator=(CreateDataArray&&) = delete;      // Move Assignment
 };
 
 

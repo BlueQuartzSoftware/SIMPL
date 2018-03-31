@@ -64,7 +64,6 @@ MakeDataContainer::MakeDataContainer()
 , m_LatticeConstants(nullptr)
 {
 
-  setupFilterParameters();
 }
 
 // -----------------------------------------------------------------------------

@@ -49,10 +49,10 @@ class FeatureDataCSVWriter : public AbstractFilter
     Q_OBJECT
   public:
     SIMPL_SHARED_POINTERS(FeatureDataCSVWriter)
-    SIMPL_STATIC_NEW_MACRO(FeatureDataCSVWriter)
-     SIMPL_TYPE_MACRO_SUPER_OVERRIDE(FeatureDataCSVWriter, AbstractFilter)
+    SIMPL_FILTER_NEW_MACRO(FeatureDataCSVWriter)
+    SIMPL_TYPE_MACRO_SUPER_OVERRIDE(FeatureDataCSVWriter, AbstractFilter)
 
-    virtual ~FeatureDataCSVWriter();
+    ~FeatureDataCSVWriter() override;
 
     SIMPL_FILTER_PARAMETER(DataArrayPath, CellFeatureAttributeMatrixPath)
     Q_PROPERTY(DataArrayPath CellFeatureAttributeMatrixPath READ getCellFeatureAttributeMatrixPath WRITE setCellFeatureAttributeMatrixPath)
@@ -124,7 +124,7 @@ class FeatureDataCSVWriter : public AbstractFilter
     /**
      * @brief readFilterParameters Reimplemented from @see AbstractFilter class
      */
-    virtual void readFilterParameters(AbstractFilterParametersReader* reader, int index) override;
+    void readFilterParameters(AbstractFilterParametersReader* reader, int index) override;
 
     /**
      * @brief execute Reimplemented from @see AbstractFilter class
@@ -181,8 +181,11 @@ class FeatureDataCSVWriter : public AbstractFilter
     };
 
   private:
+  public:
     FeatureDataCSVWriter(const FeatureDataCSVWriter&) = delete; // Copy Constructor Not Implemented
-    void operator=(const FeatureDataCSVWriter&) = delete;       // Operator '=' Not Implemented
+    FeatureDataCSVWriter(FeatureDataCSVWriter&&) = delete;      // Move Constructor
+    FeatureDataCSVWriter& operator=(const FeatureDataCSVWriter&) = delete; // Copy Assignment
+    FeatureDataCSVWriter& operator=(FeatureDataCSVWriter&&) = delete;      // Move Assignment
 };
 
 #endif /* FeatureDataCSVWriter_H_ */

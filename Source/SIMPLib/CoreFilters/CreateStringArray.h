@@ -49,11 +49,10 @@ class SIMPLib_EXPORT CreateStringArray : public AbstractFilter
     Q_OBJECT
   public:
     SIMPL_SHARED_POINTERS(CreateStringArray)
-    SIMPL_STATIC_NEW_MACRO(CreateStringArray)
-     SIMPL_TYPE_MACRO_SUPER_OVERRIDE(CreateStringArray, AbstractFilter)
+    SIMPL_FILTER_NEW_MACRO(CreateStringArray)
+    SIMPL_TYPE_MACRO_SUPER_OVERRIDE(CreateStringArray, AbstractFilter)
 
-    virtual ~CreateStringArray();
-
+    ~CreateStringArray() override;
 
     SIMPL_FILTER_PARAMETER(int, NumberOfComponents)
     Q_PROPERTY(int NumberOfComponents READ getNumberOfComponents WRITE setNumberOfComponents)
@@ -117,7 +116,7 @@ class SIMPLib_EXPORT CreateStringArray : public AbstractFilter
     /**
      * @brief readFilterParameters Reimplemented from @see AbstractFilter class
      */
-    virtual void readFilterParameters(AbstractFilterParametersReader* reader, int index) override;
+    void readFilterParameters(AbstractFilterParametersReader* reader, int index) override;
 
     /**
      * @brief execute Reimplemented from @see AbstractFilter class
@@ -168,8 +167,11 @@ class SIMPLib_EXPORT CreateStringArray : public AbstractFilter
   private:
     IDataArray::WeakPointer m_OutputArrayPtr;
 
+  public:
     CreateStringArray(const CreateStringArray&) = delete; // Copy Constructor Not Implemented
-    void operator=(const CreateStringArray&) = delete;    // Operator '=' Not Implemented
+    CreateStringArray(CreateStringArray&&) = delete;      // Move Constructor
+    CreateStringArray& operator=(const CreateStringArray&) = delete; // Copy Assignment
+    CreateStringArray& operator=(CreateStringArray&&) = delete;      // Move Assignment
 };
 
 #endif /* _CreateStringArray_H_ */

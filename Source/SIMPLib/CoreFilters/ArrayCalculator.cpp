@@ -139,7 +139,6 @@ ArrayCalculator::ArrayCalculator()
 , m_CalculatedArray("", "", "Output")
 , m_Units(Radians)
 {
-  setupFilterParameters();
 
   createSymbolMap();
 }

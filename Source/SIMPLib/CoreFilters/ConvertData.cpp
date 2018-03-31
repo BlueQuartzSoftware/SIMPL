@@ -190,7 +190,6 @@ ConvertData::ConvertData()
 , m_OutputArrayName("")
 , m_SelectedCellArrayPath("", "", "")
 {
-  setupFilterParameters();
 }
 
 // -----------------------------------------------------------------------------

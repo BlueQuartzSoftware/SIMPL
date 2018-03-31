@@ -57,7 +57,6 @@ WriteTriangleGeometry::WriteTriangleGeometry()
 , m_OutputNodesFile("")
 , m_OutputTrianglesFile("")
 {
-  setupFilterParameters();
 }
 
 // -----------------------------------------------------------------------------

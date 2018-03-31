@@ -131,7 +131,6 @@ WriteASCIIData::WriteASCIIData()
 , m_FileExtension(".txt")
 , m_MaxValPerLine(-1)
 {
-  setupFilterParameters();
 }
 
 // -----------------------------------------------------------------------------

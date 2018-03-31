@@ -54,10 +54,10 @@ class SIMPLib_EXPORT FindDerivatives : public AbstractFilter
 
   public:
     SIMPL_SHARED_POINTERS(FindDerivatives)
-    SIMPL_STATIC_NEW_MACRO(FindDerivatives)
-     SIMPL_TYPE_MACRO_SUPER_OVERRIDE(FindDerivatives, AbstractFilter)
+    SIMPL_FILTER_NEW_MACRO(FindDerivatives)
+    SIMPL_TYPE_MACRO_SUPER_OVERRIDE(FindDerivatives, AbstractFilter)
 
-    virtual ~FindDerivatives();
+    ~FindDerivatives() override;
 
     SIMPL_FILTER_PARAMETER(DataArrayPath, SelectedArrayPath)
     Q_PROPERTY(DataArrayPath SelectedArrayPath READ getSelectedArrayPath WRITE setSelectedArrayPath)
@@ -120,7 +120,7 @@ class SIMPLib_EXPORT FindDerivatives : public AbstractFilter
     * @param reader The reader that is used to read the options from a file
     * @param index The index to read the information from
     */
-    virtual void readFilterParameters(AbstractFilterParametersReader* reader, int index) override;
+    void readFilterParameters(AbstractFilterParametersReader* reader, int index) override;
 
     /**
      * @brief Reimplemented from @see AbstractFilter class
@@ -176,8 +176,11 @@ class SIMPLib_EXPORT FindDerivatives : public AbstractFilter
 
     bool m_Interpolate;
 
+  public:
     FindDerivatives(const FindDerivatives&) = delete; // Copy Constructor Not Implemented
-    void operator=(const FindDerivatives&) = delete;  // Operator '=' Not Implemented
+    FindDerivatives(FindDerivatives&&) = delete;      // Move Constructor
+    FindDerivatives& operator=(const FindDerivatives&) = delete; // Copy Assignment
+    FindDerivatives& operator=(FindDerivatives&&) = delete;      // Move Assignment
 };
 
 #endif /* _FindDerivatives_H_ */

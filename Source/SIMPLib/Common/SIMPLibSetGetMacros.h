@@ -359,9 +359,19 @@ public:     \
   virtual SIMPL_SET_PROPERTY(bool, prpty)\
   virtual bool is##prpty() { return m_##prpty; }
 
-
-
-
+/**
+ * @brief
+ */
+#define SIMPL_FILTER_NEW_MACRO(Class)                                                                                                                                                                  \
+  static std::shared_ptr<Class> New()                                                                                                                                                                  \
+  {                                                                                                                                                                                                    \
+    struct make_shared_enabler : public Class                                                                                                                                                          \
+    {                                                                                                                                                                                                  \
+    };                                                                                                                                                                                                 \
+    std::shared_ptr<make_shared_enabler> val = std::make_shared<make_shared_enabler>();                                                                                                                \
+    val->setupFilterParameters();                                                                                                                                                                      \
+    return val;                                                                                                                                                                                        \
+  }
 
 /**
 * @brief

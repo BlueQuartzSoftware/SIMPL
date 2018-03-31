@@ -49,10 +49,10 @@ class SIMPLib_EXPORT MoveMultiData : public AbstractFilter
     Q_OBJECT
   public:
     SIMPL_SHARED_POINTERS(MoveMultiData)
-    SIMPL_STATIC_NEW_MACRO(MoveMultiData)
-     SIMPL_TYPE_MACRO_SUPER_OVERRIDE(MoveMultiData, AbstractFilter)
+    SIMPL_FILTER_NEW_MACRO(MoveMultiData)
+    SIMPL_TYPE_MACRO_SUPER_OVERRIDE(MoveMultiData, AbstractFilter)
 
-    virtual ~MoveMultiData();
+    ~MoveMultiData() override;
 
     SIMPL_FILTER_PARAMETER(int, WhatToMove)
     Q_PROPERTY(int WhatToMove READ getWhatToMove WRITE setWhatToMove)
@@ -122,7 +122,7 @@ class SIMPLib_EXPORT MoveMultiData : public AbstractFilter
     /**
      * @brief readFilterParameters Reimplemented from @see AbstractFilter class
      */
-    virtual void readFilterParameters(AbstractFilterParametersReader* reader, int index) override;
+    void readFilterParameters(AbstractFilterParametersReader* reader, int index) override;
 
     /**
      * @brief execute Reimplemented from @see AbstractFilter class
@@ -170,8 +170,11 @@ class SIMPLib_EXPORT MoveMultiData : public AbstractFilter
      */
     void initialize();
 
+  public:
     MoveMultiData(const MoveMultiData&) = delete;  // Copy Constructor Not Implemented
-    void operator=(const MoveMultiData&) = delete; // Operator '=' Not Implemented
+    MoveMultiData(MoveMultiData&&) = delete;       // Move Constructor
+    MoveMultiData& operator=(const MoveMultiData&) = delete; // Copy Assignment
+    MoveMultiData& operator=(MoveMultiData&&) = delete;      // Move Assignment
 };
 
 #endif /* _MoveMultiData_H_ */

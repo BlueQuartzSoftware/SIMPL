@@ -110,7 +110,6 @@ GenericExample::GenericExample()
   flInfo.FileExtension = ".png";
   setInputFileListInfo(flInfo);
 
-  setupFilterParameters();
 }
 
 // -----------------------------------------------------------------------------

@@ -49,10 +49,10 @@ class SIMPLib_EXPORT ExtractComponentAsArray : public AbstractFilter
     Q_OBJECT
   public:
     SIMPL_SHARED_POINTERS(ExtractComponentAsArray)
-    SIMPL_STATIC_NEW_MACRO(ExtractComponentAsArray)
-     SIMPL_TYPE_MACRO_SUPER_OVERRIDE(ExtractComponentAsArray, AbstractFilter)
+    SIMPL_FILTER_NEW_MACRO(ExtractComponentAsArray)
+    SIMPL_TYPE_MACRO_SUPER_OVERRIDE(ExtractComponentAsArray, AbstractFilter)
 
-    virtual ~ExtractComponentAsArray();
+    ~ExtractComponentAsArray() override;
 
     SIMPL_FILTER_PARAMETER(DataArrayPath, SelectedArrayPath)
     Q_PROPERTY(DataArrayPath SelectedArrayPath READ getSelectedArrayPath WRITE setSelectedArrayPath)
@@ -116,7 +116,7 @@ class SIMPLib_EXPORT ExtractComponentAsArray : public AbstractFilter
     /**
      * @brief readFilterParameters Reimplemented from @see AbstractFilter class
      */
-    virtual void readFilterParameters(AbstractFilterParametersReader* reader, int index) override;
+    void readFilterParameters(AbstractFilterParametersReader* reader, int index) override;
 
     /**
      * @brief execute Reimplemented from @see AbstractFilter class
@@ -168,8 +168,11 @@ class SIMPLib_EXPORT ExtractComponentAsArray : public AbstractFilter
     DEFINE_IDATAARRAY_WEAKPTR(InArray)
     DEFINE_IDATAARRAY_WEAKPTR(NewArray)
 
+  public:
     ExtractComponentAsArray(const ExtractComponentAsArray&) = delete; // Copy Constructor Not Implemented
-    void operator=(const ExtractComponentAsArray&) = delete;          // Operator '=' Not Implemented
+    ExtractComponentAsArray(ExtractComponentAsArray&&) = delete;      // Move Constructor
+    ExtractComponentAsArray& operator=(const ExtractComponentAsArray&) = delete; // Copy Assignment
+    ExtractComponentAsArray& operator=(ExtractComponentAsArray&&) = delete;      // Move Assignment
 };
 
 #endif /* ExtractComponentAsArray_H_ */

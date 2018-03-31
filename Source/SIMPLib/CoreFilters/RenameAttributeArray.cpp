@@ -48,7 +48,6 @@ RenameAttributeArray::RenameAttributeArray()
 : m_SelectedArrayPath("", "", "")
 , m_NewArrayName("")
 {
-  setupFilterParameters();
 }
 
 // -----------------------------------------------------------------------------

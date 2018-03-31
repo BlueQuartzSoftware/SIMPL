@@ -62,7 +62,6 @@ MoveMultiData::MoveMultiData()
 , m_AttributeMatrixDestination()
 , m_DataArraySources()
 {
-  setupFilterParameters();
 }
 
 // -----------------------------------------------------------------------------

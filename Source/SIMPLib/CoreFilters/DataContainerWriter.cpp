@@ -68,7 +68,6 @@ DataContainerWriter::DataContainerWriter()
 , m_AppendToExisting(false)
 , m_FileId(-1)
 {
-  setupFilterParameters();
 }
 
 // -----------------------------------------------------------------------------

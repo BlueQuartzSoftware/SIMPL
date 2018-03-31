@@ -63,8 +63,8 @@ class SIMPLib_EXPORT ArrayCalculator : public AbstractFilter
     Q_ENUMS(AngleUnits)
 
     SIMPL_SHARED_POINTERS(ArrayCalculator)
-    SIMPL_STATIC_NEW_MACRO(ArrayCalculator)
-     SIMPL_TYPE_MACRO_SUPER_OVERRIDE(ArrayCalculator, AbstractFilter)
+    SIMPL_FILTER_NEW_MACRO(ArrayCalculator)
+    SIMPL_TYPE_MACRO_SUPER_OVERRIDE(ArrayCalculator, AbstractFilter)
 
     SIMPL_FILTER_PARAMETER(DataArrayPath, SelectedAttributeMatrix)
     Q_PROPERTY(DataArrayPath SelectedAttributeMatrix READ getSelectedAttributeMatrix WRITE setSelectedAttributeMatrix)
@@ -78,7 +78,7 @@ class SIMPLib_EXPORT ArrayCalculator : public AbstractFilter
     SIMPL_FILTER_PARAMETER(AngleUnits, Units)
     Q_PROPERTY(AngleUnits Units READ getUnits WRITE setUnits)
 
-    virtual ~ArrayCalculator();
+    ~ArrayCalculator() override;
 
     /**
      * @brief getCompiledLibraryName Reimplemented from @see AbstractFilter class
@@ -133,7 +133,7 @@ class SIMPLib_EXPORT ArrayCalculator : public AbstractFilter
     /**
      * @brief readFilterParameters Reimplemented from @see AbstractFilter class
      */
-    virtual void readFilterParameters(AbstractFilterParametersReader* reader, int index) override;
+    void readFilterParameters(AbstractFilterParametersReader* reader, int index) override;
 
     /**
     * @brief readFilterParametersFromJson Reads the filter parameters from a file
@@ -250,8 +250,11 @@ class SIMPLib_EXPORT ArrayCalculator : public AbstractFilter
      */
     bool parseArray(QString token, QVector<CalculatorItem::Pointer>& parsedInfix, AttributeMatrix::Pointer selectedAM);
 
+  public:
     ArrayCalculator(const ArrayCalculator&) = delete; // Copy Constructor Not Implemented
-    void operator=(const ArrayCalculator&) = delete;  // Operator '=' Not Implemented
+    ArrayCalculator(ArrayCalculator&&) = delete;      // Move Constructor
+    ArrayCalculator& operator=(const ArrayCalculator&) = delete; // Copy Assignment
+    ArrayCalculator& operator=(ArrayCalculator&&) = delete;      // Move Assignment
 };
 
 #endif /* _ArrayCalculator_H_ */

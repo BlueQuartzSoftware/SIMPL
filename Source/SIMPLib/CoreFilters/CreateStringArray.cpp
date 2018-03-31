@@ -78,7 +78,6 @@ CreateStringArray::CreateStringArray()
 , m_NewArray("", "", "")
 , m_InitializationValue("Text")
 {
-  setupFilterParameters();
 }
 
 // -----------------------------------------------------------------------------

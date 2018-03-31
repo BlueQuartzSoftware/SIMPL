@@ -52,10 +52,10 @@ class SIMPLib_EXPORT DynamicTableExample : public AbstractFilter
   Q_OBJECT
 public:
   SIMPL_SHARED_POINTERS(DynamicTableExample)
-  SIMPL_STATIC_NEW_MACRO(DynamicTableExample)
-   SIMPL_TYPE_MACRO_SUPER_OVERRIDE(DynamicTableExample, AbstractFilter)
+  SIMPL_FILTER_NEW_MACRO(DynamicTableExample)
+  SIMPL_TYPE_MACRO_SUPER_OVERRIDE(DynamicTableExample, AbstractFilter)
 
-  virtual ~DynamicTableExample();
+  ~DynamicTableExample() override;
 
   /* Place your input parameters here. You can use some of the DREAM3D Macros if you want to */
   SIMPL_FILTER_PARAMETER(DynamicTableData, DynamicData1)
@@ -105,7 +105,7 @@ public:
   * @brief This method will read the options from a file
   * @param reader The reader that is used to read the options from a file
   */
-  virtual void readFilterParameters(AbstractFilterParametersReader* reader, int index) override;
+  void readFilterParameters(AbstractFilterParametersReader* reader, int index) override;
 
   /**
   * @brief Reimplemented from @see AbstractFilter class
@@ -138,7 +138,9 @@ protected:
   void initialize();
 
 private:
+public:
   DynamicTableExample(const DynamicTableExample&) = delete; // Copy Constructor Not Implemented
+  DynamicTableExample(DynamicTableExample&&) = delete;      // Move Constructor
   void operator=(const DynamicTableExample&);      // Operator '=' Not Implemented
 };
 

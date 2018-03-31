@@ -49,10 +49,10 @@ class SIMPLib_EXPORT RenameAttributeMatrix : public AbstractFilter
     Q_OBJECT
   public:
     SIMPL_SHARED_POINTERS(RenameAttributeMatrix)
-    SIMPL_STATIC_NEW_MACRO(RenameAttributeMatrix)
-     SIMPL_TYPE_MACRO_SUPER_OVERRIDE(RenameAttributeMatrix, AbstractFilter)
+    SIMPL_FILTER_NEW_MACRO(RenameAttributeMatrix)
+    SIMPL_TYPE_MACRO_SUPER_OVERRIDE(RenameAttributeMatrix, AbstractFilter)
 
-    virtual ~RenameAttributeMatrix();
+    ~RenameAttributeMatrix() override;
 
     SIMPL_FILTER_PARAMETER(DataArrayPath, SelectedAttributeMatrixPath)
     Q_PROPERTY(DataArrayPath SelectedAttributeMatrixPath READ getSelectedAttributeMatrixPath WRITE setSelectedAttributeMatrixPath)
@@ -113,7 +113,7 @@ class SIMPLib_EXPORT RenameAttributeMatrix : public AbstractFilter
     /**
      * @brief readFilterParameters Reimplemented from @see AbstractFilter class
      */
-    virtual void readFilterParameters(AbstractFilterParametersReader* reader, int index) override;
+    void readFilterParameters(AbstractFilterParametersReader* reader, int index) override;
 
     /**
      * @brief execute Reimplemented from @see AbstractFilter class
@@ -162,8 +162,11 @@ class SIMPLib_EXPORT RenameAttributeMatrix : public AbstractFilter
 
 
   private:
+  public:
     RenameAttributeMatrix(const RenameAttributeMatrix&) = delete; // Copy Constructor Not Implemented
-    void operator=(const RenameAttributeMatrix&) = delete;        // Operator '=' Not Implemented
+    RenameAttributeMatrix(RenameAttributeMatrix&&) = delete;      // Move Constructor
+    RenameAttributeMatrix& operator=(const RenameAttributeMatrix&) = delete; // Copy Assignment
+    RenameAttributeMatrix& operator=(RenameAttributeMatrix&&) = delete;      // Move Assignment
 };
 
 #endif /* _RenameAttributeMatrix_H_ */

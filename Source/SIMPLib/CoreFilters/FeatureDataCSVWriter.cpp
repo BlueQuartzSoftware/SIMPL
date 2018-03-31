@@ -58,7 +58,6 @@ FeatureDataCSVWriter::FeatureDataCSVWriter()
 , m_WriteNumFeaturesLine(true)
 , m_Delimiter(',')
 {
-  setupFilterParameters();
 }
 
 // -----------------------------------------------------------------------------

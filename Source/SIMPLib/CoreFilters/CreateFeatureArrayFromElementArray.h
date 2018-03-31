@@ -49,10 +49,10 @@ class SIMPLib_EXPORT CreateFeatureArrayFromElementArray : public AbstractFilter
     Q_OBJECT
   public:
     SIMPL_SHARED_POINTERS(CreateFeatureArrayFromElementArray)
-    SIMPL_STATIC_NEW_MACRO(CreateFeatureArrayFromElementArray)
-     SIMPL_TYPE_MACRO_SUPER_OVERRIDE(CreateFeatureArrayFromElementArray, AbstractFilter)
+    SIMPL_FILTER_NEW_MACRO(CreateFeatureArrayFromElementArray)
+    SIMPL_TYPE_MACRO_SUPER_OVERRIDE(CreateFeatureArrayFromElementArray, AbstractFilter)
 
-    virtual ~CreateFeatureArrayFromElementArray();
+    ~CreateFeatureArrayFromElementArray() override;
 
     SIMPL_FILTER_PARAMETER(DataArrayPath, CellFeatureAttributeMatrixName)
     Q_PROPERTY(DataArrayPath CellFeatureAttributeMatrixName READ getCellFeatureAttributeMatrixName WRITE setCellFeatureAttributeMatrixName)
@@ -119,7 +119,7 @@ class SIMPLib_EXPORT CreateFeatureArrayFromElementArray : public AbstractFilter
     /**
      * @brief readFilterParameters Reimplemented from @see AbstractFilter class
      */
-    virtual void readFilterParameters(AbstractFilterParametersReader* reader, int index) override;
+    void readFilterParameters(AbstractFilterParametersReader* reader, int index) override;
 
     /**
      * @brief execute Reimplemented from @see AbstractFilter class
@@ -171,8 +171,11 @@ class SIMPLib_EXPORT CreateFeatureArrayFromElementArray : public AbstractFilter
     DEFINE_DATAARRAY_VARIABLE(int32_t, FeatureIds)
     DEFINE_IDATAARRAY_WEAKPTR(InArray)
 
+  public:
     CreateFeatureArrayFromElementArray(const CreateFeatureArrayFromElementArray&) = delete; // Copy Constructor Not Implemented
-    void operator=(const CreateFeatureArrayFromElementArray&) = delete;                     // Operator '=' Not Implemented
+    CreateFeatureArrayFromElementArray(CreateFeatureArrayFromElementArray&&) = delete;      // Move Constructor
+    CreateFeatureArrayFromElementArray& operator=(const CreateFeatureArrayFromElementArray&) = delete; // Copy Assignment
+    CreateFeatureArrayFromElementArray& operator=(CreateFeatureArrayFromElementArray&&) = delete;      // Move Assignment
 };
 
 #endif /* CreateFeatureArrayFromElementArray_H_ */

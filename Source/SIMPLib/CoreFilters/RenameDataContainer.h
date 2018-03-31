@@ -49,10 +49,10 @@ class SIMPLib_EXPORT RenameDataContainer : public AbstractFilter
     Q_OBJECT
   public:
     SIMPL_SHARED_POINTERS(RenameDataContainer)
-    SIMPL_STATIC_NEW_MACRO(RenameDataContainer)
-     SIMPL_TYPE_MACRO_SUPER_OVERRIDE(RenameDataContainer, AbstractFilter)
+    SIMPL_FILTER_NEW_MACRO(RenameDataContainer)
+    SIMPL_TYPE_MACRO_SUPER_OVERRIDE(RenameDataContainer, AbstractFilter)
 
-    virtual ~RenameDataContainer();
+    ~RenameDataContainer() override;
 
     SIMPL_FILTER_PARAMETER(QString, SelectedDataContainerName)
     Q_PROPERTY(QString SelectedDataContainerName READ getSelectedDataContainerName WRITE setSelectedDataContainerName)
@@ -113,7 +113,7 @@ class SIMPLib_EXPORT RenameDataContainer : public AbstractFilter
     /**
      * @brief readFilterParameters Reimplemented from @see AbstractFilter class
      */
-    virtual void readFilterParameters(AbstractFilterParametersReader* reader, int index) override;
+    void readFilterParameters(AbstractFilterParametersReader* reader, int index) override;
 
     /**
      * @brief execute Reimplemented from @see AbstractFilter class
@@ -162,8 +162,11 @@ class SIMPLib_EXPORT RenameDataContainer : public AbstractFilter
 
 
   private:
+  public:
     RenameDataContainer(const RenameDataContainer&) = delete; // Copy Constructor Not Implemented
-    void operator=(const RenameDataContainer&) = delete;      // Operator '=' Not Implemented
+    RenameDataContainer(RenameDataContainer&&) = delete;      // Move Constructor
+    RenameDataContainer& operator=(const RenameDataContainer&) = delete; // Copy Assignment
+    RenameDataContainer& operator=(RenameDataContainer&&) = delete;      // Move Assignment
 };
 
 #endif /* _RenameDataContainer_H_ */

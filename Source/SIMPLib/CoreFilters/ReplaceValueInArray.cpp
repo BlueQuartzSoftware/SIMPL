@@ -50,7 +50,6 @@ ReplaceValueInArray::ReplaceValueInArray()
 , m_RemoveValue(0.0)
 , m_ReplaceValue(0.0)
 {
-  setupFilterParameters();
 }
 
 // -----------------------------------------------------------------------------

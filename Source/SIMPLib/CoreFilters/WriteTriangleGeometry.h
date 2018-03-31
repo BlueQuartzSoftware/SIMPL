@@ -58,10 +58,10 @@ class WriteTriangleGeometry : public AbstractFilter
     Q_OBJECT
   public:
     SIMPL_SHARED_POINTERS(WriteTriangleGeometry)
-    SIMPL_STATIC_NEW_MACRO(WriteTriangleGeometry)
-     SIMPL_TYPE_MACRO_SUPER_OVERRIDE(WriteTriangleGeometry, AbstractFilter)
+    SIMPL_FILTER_NEW_MACRO(WriteTriangleGeometry)
+    SIMPL_TYPE_MACRO_SUPER_OVERRIDE(WriteTriangleGeometry, AbstractFilter)
 
-    virtual ~WriteTriangleGeometry();
+    ~WriteTriangleGeometry() override;
 
     SIMPL_FILTER_PARAMETER(QString, DataContainerSelection)
     Q_PROPERTY(QString DataContainerSelection READ getDataContainerSelection WRITE setDataContainerSelection)
@@ -125,7 +125,7 @@ class WriteTriangleGeometry : public AbstractFilter
     /**
      * @brief readFilterParameters Reimplemented from @see AbstractFilter class
      */
-    virtual void readFilterParameters(AbstractFilterParametersReader* reader, int index) override;
+    void readFilterParameters(AbstractFilterParametersReader* reader, int index) override;
 
     /**
      * @brief execute Reimplemented from @see AbstractFilter class
@@ -175,8 +175,11 @@ class WriteTriangleGeometry : public AbstractFilter
 
 
   private:
+  public:
     WriteTriangleGeometry(const WriteTriangleGeometry&) = delete; // Copy Constructor Not Implemented
-    void operator=(const WriteTriangleGeometry&) = delete;        // Operator '=' Not Implemented
+    WriteTriangleGeometry(WriteTriangleGeometry&&) = delete;      // Move Constructor
+    WriteTriangleGeometry& operator=(const WriteTriangleGeometry&) = delete; // Copy Assignment
+    WriteTriangleGeometry& operator=(WriteTriangleGeometry&&) = delete;      // Move Assignment
 };
 
 #endif /* _WriteTriangleGeometry_H_ */

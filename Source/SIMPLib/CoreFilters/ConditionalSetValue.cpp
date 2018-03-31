@@ -52,7 +52,6 @@ ConditionalSetValue::ConditionalSetValue()
 //, m_Array(nullptr)
 , m_ConditionalArray(nullptr)
 {
-  setupFilterParameters();
 }
 
 // -----------------------------------------------------------------------------

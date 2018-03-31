@@ -56,10 +56,10 @@ class SIMPLib_EXPORT DataContainerReader : public AbstractFilter
     Q_OBJECT
   public:
     SIMPL_SHARED_POINTERS(DataContainerReader)
-    SIMPL_STATIC_NEW_MACRO(DataContainerReader)
-     SIMPL_TYPE_MACRO_SUPER_OVERRIDE(DataContainerReader, AbstractFilter)
+    SIMPL_FILTER_NEW_MACRO(DataContainerReader)
+    SIMPL_TYPE_MACRO_SUPER_OVERRIDE(DataContainerReader, AbstractFilter)
 
-    virtual ~DataContainerReader();
+    ~DataContainerReader() override;
 
     SIMPL_FILTER_PARAMETER(QString, InputFile)
     Q_PROPERTY(QString InputFile READ getInputFile WRITE setInputFile)
@@ -141,7 +141,7 @@ class SIMPLib_EXPORT DataContainerReader : public AbstractFilter
     /**
      * @brief readFilterParameters Reimplemented from @see AbstractFilter class
      */
-    virtual void readFilterParameters(AbstractFilterParametersReader* reader, int index) override;
+    void readFilterParameters(AbstractFilterParametersReader* reader, int index) override;
 
     /**
      * @brief readFilterParameters Reimplemented from @see AbstractFilter class
@@ -240,8 +240,11 @@ class SIMPLib_EXPORT DataContainerReader : public AbstractFilter
   private:
     FilterPipeline::Pointer                     m_PipelineFromFile;
 
+  public:
     DataContainerReader(const DataContainerReader&) = delete; // Copy Constructor Not Implemented
-    void operator=(const DataContainerReader&) = delete;      // Operator '=' Not Implemented
+    DataContainerReader(DataContainerReader&&) = delete;      // Move Constructor
+    DataContainerReader& operator=(const DataContainerReader&) = delete; // Copy Assignment
+    DataContainerReader& operator=(DataContainerReader&&) = delete;      // Move Assignment
 };
 
 #endif /* _DataContainerReader_H_ */

@@ -44,7 +44,6 @@ ThresholdExample::ThresholdExample()
 : m_DataContainerName(SIMPL::Defaults::DataContainerName)
 , m_CellAttributeMatrixName(SIMPL::Defaults::CellAttributeMatrixName)
 {
-  setupFilterParameters();
 }
 
 // -----------------------------------------------------------------------------

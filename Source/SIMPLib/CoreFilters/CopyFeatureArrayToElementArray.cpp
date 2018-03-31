@@ -53,7 +53,6 @@ CopyFeatureArrayToElementArray::CopyFeatureArrayToElementArray()
 , m_CreatedArrayName("")
 , m_FeatureIds(nullptr)
 {
-  setupFilterParameters();
 }
 
 // -----------------------------------------------------------------------------

@@ -22,10 +22,10 @@ class RawBinaryWriter : public AbstractFilter
 
   public:
     SIMPL_SHARED_POINTERS(RawBinaryWriter)
-    SIMPL_STATIC_NEW_MACRO(RawBinaryWriter)
-     SIMPL_TYPE_MACRO_SUPER_OVERRIDE(RawBinaryWriter, AbstractFilter)
+    SIMPL_FILTER_NEW_MACRO(RawBinaryWriter)
+    SIMPL_TYPE_MACRO_SUPER_OVERRIDE(RawBinaryWriter, AbstractFilter)
 
-    virtual ~RawBinaryWriter();
+    ~RawBinaryWriter() override;
 
     /* Place your input parameters here using the DREAM3D macros to declare the Filter Parameters
      * or other instance variables
@@ -82,7 +82,7 @@ class RawBinaryWriter : public AbstractFilter
     * @param reader The reader that is used to read the options from a file
     * @param index The index to read the information from
     */
-    virtual void readFilterParameters(AbstractFilterParametersReader* reader, int index) override;
+    void readFilterParameters(AbstractFilterParametersReader* reader, int index) override;
 
     /**
      * @brief Reimplemented from @see AbstractFilter class
@@ -146,8 +146,11 @@ class RawBinaryWriter : public AbstractFilter
      * and  DEFINE_DATAARRAY_VARIABLE() which are defined in DREAM3DGetSetMacros.h
      */
 
+  public:
     RawBinaryWriter(const RawBinaryWriter&) = delete; // Copy Constructor Not Implemented
-    void operator=(const RawBinaryWriter&) = delete;  // Operator '=' Not Implemented
+    RawBinaryWriter(RawBinaryWriter&&) = delete;      // Move Constructor
+    RawBinaryWriter& operator=(const RawBinaryWriter&) = delete; // Copy Assignment
+    RawBinaryWriter& operator=(RawBinaryWriter&&) = delete;      // Move Assignment
 };
 
 #endif /* _RawBinaryWriter_H_ */

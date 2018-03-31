@@ -55,10 +55,10 @@ class SIMPLib_EXPORT ImportAsciDataArray : public AbstractFilter
 
   public:
     SIMPL_SHARED_POINTERS(ImportAsciDataArray)
-    SIMPL_STATIC_NEW_MACRO(ImportAsciDataArray)
-     SIMPL_TYPE_MACRO_SUPER_OVERRIDE(ImportAsciDataArray, AbstractFilter)
+    SIMPL_FILTER_NEW_MACRO(ImportAsciDataArray)
+    SIMPL_TYPE_MACRO_SUPER_OVERRIDE(ImportAsciDataArray, AbstractFilter)
 
-    virtual ~ImportAsciDataArray();
+    ~ImportAsciDataArray() override;
 
     SIMPL_FILTER_PARAMETER(DataArrayPath, CreatedAttributeArrayPath)
     Q_PROPERTY(DataArrayPath CreatedAttributeArrayPath READ getCreatedAttributeArrayPath WRITE setCreatedAttributeArrayPath)
@@ -208,8 +208,11 @@ class SIMPLib_EXPORT ImportAsciDataArray : public AbstractFilter
 
     IDataArray::Pointer m_Array;
 
+  public:
     ImportAsciDataArray(const ImportAsciDataArray&) = delete; // Copy Constructor Not Implemented
-    void operator=(const ImportAsciDataArray&) = delete;      // Operator '=' Not Implemented
+    ImportAsciDataArray(ImportAsciDataArray&&) = delete;      // Move Constructor
+    ImportAsciDataArray& operator=(const ImportAsciDataArray&) = delete; // Copy Assignment
+    ImportAsciDataArray& operator=(ImportAsciDataArray&&) = delete;      // Move Assignment
 };
 
 #endif /* _importascidataarray_h_ */

@@ -51,8 +51,7 @@
 //
 // -----------------------------------------------------------------------------
 VTKFileReader::VTKFileReader()
-: FileReader()
-, m_DataContainerName(SIMPL::Defaults::DataContainerName)
+: m_DataContainerName(SIMPL::Defaults::DataContainerName)
 , m_InputFile("")
 {
 }

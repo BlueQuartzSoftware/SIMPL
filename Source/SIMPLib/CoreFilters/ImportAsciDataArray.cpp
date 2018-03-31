@@ -262,7 +262,6 @@ ImportAsciDataArray::ImportAsciDataArray()
 , d_ptr(new ImportAsciDataArrayPrivate(this))
 
 {
-  setupFilterParameters();
 }
 
 // -----------------------------------------------------------------------------

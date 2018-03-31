@@ -49,10 +49,10 @@ class SIMPLib_EXPORT CopyFeatureArrayToElementArray : public AbstractFilter
     Q_OBJECT
   public:
     SIMPL_SHARED_POINTERS(CopyFeatureArrayToElementArray)
-    SIMPL_STATIC_NEW_MACRO(CopyFeatureArrayToElementArray)
-     SIMPL_TYPE_MACRO_SUPER_OVERRIDE(CopyFeatureArrayToElementArray, AbstractFilter)
+    SIMPL_FILTER_NEW_MACRO(CopyFeatureArrayToElementArray)
+    SIMPL_TYPE_MACRO_SUPER_OVERRIDE(CopyFeatureArrayToElementArray, AbstractFilter)
 
-    virtual ~CopyFeatureArrayToElementArray();
+    ~CopyFeatureArrayToElementArray() override;
 
     SIMPL_FILTER_PARAMETER(DataArrayPath, SelectedFeatureArrayPath)
     Q_PROPERTY(DataArrayPath SelectedFeatureArrayPath READ getSelectedFeatureArrayPath WRITE setSelectedFeatureArrayPath)
@@ -116,7 +116,7 @@ class SIMPLib_EXPORT CopyFeatureArrayToElementArray : public AbstractFilter
     /**
      * @brief readFilterParameters Reimplemented from @see AbstractFilter class
      */
-    virtual void readFilterParameters(AbstractFilterParametersReader* reader, int index) override;
+    void readFilterParameters(AbstractFilterParametersReader* reader, int index) override;
 
     /**
      * @brief execute Reimplemented from @see AbstractFilter class
@@ -168,8 +168,11 @@ class SIMPLib_EXPORT CopyFeatureArrayToElementArray : public AbstractFilter
     DEFINE_DATAARRAY_VARIABLE(int32_t, FeatureIds)
     DEFINE_IDATAARRAY_WEAKPTR(InArray)
 
+  public:
     CopyFeatureArrayToElementArray(const CopyFeatureArrayToElementArray&) = delete; // Copy Constructor Not Implemented
-    void operator=(const CopyFeatureArrayToElementArray&) = delete;                 // Operator '=' Not Implemented
+    CopyFeatureArrayToElementArray(CopyFeatureArrayToElementArray&&) = delete;      // Move Constructor
+    CopyFeatureArrayToElementArray& operator=(const CopyFeatureArrayToElementArray&) = delete; // Copy Assignment
+    CopyFeatureArrayToElementArray& operator=(CopyFeatureArrayToElementArray&&) = delete;      // Move Assignment
 };
 
 #endif /* _CopyFeatureArrayToElementArray_H_ */

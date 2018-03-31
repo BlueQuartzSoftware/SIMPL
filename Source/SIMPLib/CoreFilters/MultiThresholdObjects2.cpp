@@ -51,7 +51,6 @@ MultiThresholdObjects2::MultiThresholdObjects2()
 , m_SelectedThresholds()
 , m_Destination(nullptr)
 {
-  setupFilterParameters();
 }
 
 // -----------------------------------------------------------------------------

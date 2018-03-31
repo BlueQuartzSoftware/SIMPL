@@ -51,10 +51,10 @@ class SIMPLib_EXPORT CreateAttributeMatrix : public AbstractFilter
 
   public:
     SIMPL_SHARED_POINTERS(CreateAttributeMatrix)
-    SIMPL_STATIC_NEW_MACRO(CreateAttributeMatrix)
-     SIMPL_TYPE_MACRO_SUPER_OVERRIDE(CreateAttributeMatrix, AbstractFilter)
+    SIMPL_FILTER_NEW_MACRO(CreateAttributeMatrix)
+    SIMPL_TYPE_MACRO_SUPER_OVERRIDE(CreateAttributeMatrix, AbstractFilter)
 
-    virtual ~CreateAttributeMatrix();
+    ~CreateAttributeMatrix() override;
 
     SIMPL_FILTER_PARAMETER(DataArrayPath, CreatedAttributeMatrix)
     Q_PROPERTY(DataArrayPath CreatedAttributeMatrix READ getCreatedAttributeMatrix WRITE setCreatedAttributeMatrix)
@@ -118,7 +118,7 @@ class SIMPLib_EXPORT CreateAttributeMatrix : public AbstractFilter
     /**
      * @brief readFilterParameters Reimplemented from @see AbstractFilter class
      */
-    virtual void readFilterParameters(AbstractFilterParametersReader* reader, int index) override;
+    void readFilterParameters(AbstractFilterParametersReader* reader, int index) override;
 
     /**
      * @brief execute Reimplemented from @see AbstractFilter class
@@ -167,8 +167,11 @@ class SIMPLib_EXPORT CreateAttributeMatrix : public AbstractFilter
 
 
   private:
+  public:
     CreateAttributeMatrix(const CreateAttributeMatrix&) = delete; // Copy Constructor Not Implemented
-    void operator=(const CreateAttributeMatrix&) = delete;        // Operator '=' Not Implemented
+    CreateAttributeMatrix(CreateAttributeMatrix&&) = delete;      // Move Constructor
+    CreateAttributeMatrix& operator=(const CreateAttributeMatrix&) = delete; // Copy Assignment
+    CreateAttributeMatrix& operator=(CreateAttributeMatrix&&) = delete;      // Move Assignment
 };
 
 #endif /* _CreateAttributeMatrix_H_ */

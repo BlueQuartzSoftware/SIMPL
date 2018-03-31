@@ -50,10 +50,10 @@ class SIMPLib_EXPORT SetOriginResolutionImageGeom : public AbstractFilter
     Q_OBJECT
   public:
     SIMPL_SHARED_POINTERS(SetOriginResolutionImageGeom)
-    SIMPL_STATIC_NEW_MACRO(SetOriginResolutionImageGeom)
-     SIMPL_TYPE_MACRO_SUPER_OVERRIDE(SetOriginResolutionImageGeom, AbstractFilter)
+    SIMPL_FILTER_NEW_MACRO(SetOriginResolutionImageGeom)
+    SIMPL_TYPE_MACRO_SUPER_OVERRIDE(SetOriginResolutionImageGeom, AbstractFilter)
 
-    virtual ~SetOriginResolutionImageGeom();
+    ~SetOriginResolutionImageGeom() override;
 
     SIMPL_FILTER_PARAMETER(QString, DataContainerName)
     Q_PROPERTY(QString DataContainerName READ getDataContainerName WRITE setDataContainerName)
@@ -129,7 +129,7 @@ class SIMPLib_EXPORT SetOriginResolutionImageGeom : public AbstractFilter
     /**
      * @brief readFilterParameters Reimplemented from @see AbstractFilter class
      */
-    virtual void readFilterParameters(AbstractFilterParametersReader* reader, int index) override;
+    void readFilterParameters(AbstractFilterParametersReader* reader, int index) override;
 
     /**
      * @brief execute Reimplemented from @see AbstractFilter class
@@ -183,8 +183,11 @@ class SIMPLib_EXPORT SetOriginResolutionImageGeom : public AbstractFilter
     void updateSurfaceMesh();
 
   private:
+  public:
     SetOriginResolutionImageGeom(const SetOriginResolutionImageGeom&) = delete; // Copy Constructor Not Implemented
-    void operator=(const SetOriginResolutionImageGeom&) = delete;               // Operator '=' Not Implemented
+    SetOriginResolutionImageGeom(SetOriginResolutionImageGeom&&) = delete;      // Move Constructor
+    SetOriginResolutionImageGeom& operator=(const SetOriginResolutionImageGeom&) = delete; // Copy Assignment
+    SetOriginResolutionImageGeom& operator=(SetOriginResolutionImageGeom&&) = delete;      // Move Assignment
 };
 
 #endif /* _SetOriginResolutionImageGeom_H_ */

@@ -56,10 +56,10 @@ class SIMPLib_EXPORT ArraySelectionExample : public AbstractFilter
   Q_OBJECT
 public:
   SIMPL_SHARED_POINTERS(ArraySelectionExample)
-  SIMPL_STATIC_NEW_MACRO(ArraySelectionExample)
-   SIMPL_TYPE_MACRO_SUPER_OVERRIDE(ArraySelectionExample, AbstractFilter)
+  SIMPL_FILTER_NEW_MACRO(ArraySelectionExample)
+  SIMPL_TYPE_MACRO_SUPER_OVERRIDE(ArraySelectionExample, AbstractFilter)
 
-  virtual ~ArraySelectionExample();
+  ~ArraySelectionExample() override;
 
   /* Place your input parameters here. You can use some of the DREAM3D Macros if you want to */
   /* this class is sort of special in that we are going to directly use the DataContainerName and the AttributeMatrix name
@@ -106,7 +106,7 @@ public:
   * @brief This method will read the options from a file
   * @param reader The reader that is used to read the options from a file
   */
-  virtual void readFilterParameters(AbstractFilterParametersReader* reader, int index) override;
+  void readFilterParameters(AbstractFilterParametersReader* reader, int index) override;
 
   /**
    * @brief Reimplemented from @see AbstractFilter class
@@ -139,7 +139,9 @@ protected:
   void initialize();
 
 private:
+public:
   ArraySelectionExample(const ArraySelectionExample&) = delete; // Copy Constructor Not Implemented
+  ArraySelectionExample(ArraySelectionExample&&) = delete;      // Move Constructor
   void operator=(const ArraySelectionExample&);        // Operator '=' Not Implemented
 };
 

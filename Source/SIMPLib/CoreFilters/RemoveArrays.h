@@ -50,10 +50,10 @@ class SIMPLib_EXPORT RemoveArrays : public AbstractFilter
     Q_OBJECT
   public:
     SIMPL_SHARED_POINTERS(RemoveArrays)
-    SIMPL_STATIC_NEW_MACRO(RemoveArrays)
-     SIMPL_TYPE_MACRO_SUPER_OVERRIDE(RemoveArrays, AbstractFilter)
+    SIMPL_FILTER_NEW_MACRO(RemoveArrays)
+    SIMPL_TYPE_MACRO_SUPER_OVERRIDE(RemoveArrays, AbstractFilter)
 
-    virtual ~RemoveArrays();
+    ~RemoveArrays() override;
 
     SIMPL_FILTER_PARAMETER(DataContainerArrayProxy, DataArraysToRemove)
     Q_PROPERTY(DataContainerArrayProxy DataArraysToRemove READ getDataArraysToRemove WRITE setDataArraysToRemove)
@@ -111,7 +111,7 @@ class SIMPLib_EXPORT RemoveArrays : public AbstractFilter
     /**
      * @brief readFilterParameters Reimplemented from @see AbstractFilter class
      */
-    virtual void readFilterParameters(AbstractFilterParametersReader* reader, int index) override;
+    void readFilterParameters(AbstractFilterParametersReader* reader, int index) override;
 
     /**
      * @brief execute Reimplemented from @see AbstractFilter class
@@ -172,8 +172,11 @@ class SIMPLib_EXPORT RemoveArrays : public AbstractFilter
     */
     void markSelectionsForDeletion(DataContainerArray* dca, Qt::CheckState state);
 
+  public:
     RemoveArrays(const RemoveArrays&) = delete;   // Copy Constructor Not Implemented
-    void operator=(const RemoveArrays&) = delete; // Operator '=' Not Implemented
+    RemoveArrays(RemoveArrays&&) = delete;        // Move Constructor
+    RemoveArrays& operator=(const RemoveArrays&) = delete; // Copy Assignment
+    RemoveArrays& operator=(RemoveArrays&&) = delete;      // Move Assignment
 };
 
 #endif /* _RemoveArrays_H_ */

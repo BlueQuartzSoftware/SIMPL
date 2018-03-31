@@ -49,10 +49,10 @@ class SIMPLib_EXPORT LinkFeatureMapToElementArray : public AbstractFilter
     Q_OBJECT
   public:
     SIMPL_SHARED_POINTERS(LinkFeatureMapToElementArray)
-    SIMPL_STATIC_NEW_MACRO(LinkFeatureMapToElementArray)
-     SIMPL_TYPE_MACRO_SUPER_OVERRIDE(LinkFeatureMapToElementArray, AbstractFilter)
+    SIMPL_FILTER_NEW_MACRO(LinkFeatureMapToElementArray)
+    SIMPL_TYPE_MACRO_SUPER_OVERRIDE(LinkFeatureMapToElementArray, AbstractFilter)
 
-    virtual ~LinkFeatureMapToElementArray();
+    ~LinkFeatureMapToElementArray() override;
 
     SIMPL_FILTER_PARAMETER(QString, CellFeatureAttributeMatrixName)
     Q_PROPERTY(QString CellFeatureAttributeMatrixName READ getCellFeatureAttributeMatrixName WRITE setCellFeatureAttributeMatrixName)
@@ -116,7 +116,7 @@ class SIMPLib_EXPORT LinkFeatureMapToElementArray : public AbstractFilter
     /**
      * @brief readFilterParameters Reimplemented from @see AbstractFilter class
      */
-    virtual void readFilterParameters(AbstractFilterParametersReader* reader, int index) override;
+    void readFilterParameters(AbstractFilterParametersReader* reader, int index) override;
 
     /**
      * @brief execute Reimplemented from @see AbstractFilter class
@@ -173,8 +173,11 @@ class SIMPLib_EXPORT LinkFeatureMapToElementArray : public AbstractFilter
     DEFINE_DATAARRAY_VARIABLE(int32_t, SelectedCellData)
     DEFINE_DATAARRAY_VARIABLE(bool, Active)
 
+  public:
     LinkFeatureMapToElementArray(const LinkFeatureMapToElementArray&) = delete; // Copy Constructor Not Implemented
-    void operator=(const LinkFeatureMapToElementArray&) = delete;               // Operator '=' Not Implemented
+    LinkFeatureMapToElementArray(LinkFeatureMapToElementArray&&) = delete;      // Move Constructor
+    LinkFeatureMapToElementArray& operator=(const LinkFeatureMapToElementArray&) = delete; // Copy Assignment
+    LinkFeatureMapToElementArray& operator=(LinkFeatureMapToElementArray&&) = delete;      // Move Assignment
 };
 
 #endif /* _LinkFeatureMapToElementArray_H_ */

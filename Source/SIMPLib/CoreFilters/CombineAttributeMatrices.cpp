@@ -58,7 +58,6 @@ CombineAttributeMatrices::CombineAttributeMatrices()
 , m_SecondIndex(nullptr)
 , m_NewIndex(nullptr)
 {
-  setupFilterParameters();
 }
 
 // -----------------------------------------------------------------------------

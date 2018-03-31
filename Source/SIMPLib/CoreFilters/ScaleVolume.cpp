@@ -104,7 +104,6 @@ ScaleVolume::ScaleVolume()
   m_ScaleFactor.y = 1.0f;
   m_ScaleFactor.z = 1.0f;
 
-  setupFilterParameters();
 }
 
 // -----------------------------------------------------------------------------

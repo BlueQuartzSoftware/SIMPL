@@ -21,10 +21,10 @@ class SIMPLib_EXPORT GenerateColorTable : public AbstractFilter
 
   public:
     SIMPL_SHARED_POINTERS(GenerateColorTable)
-    SIMPL_STATIC_NEW_MACRO(GenerateColorTable)
-     SIMPL_TYPE_MACRO_SUPER_OVERRIDE(GenerateColorTable, AbstractFilter)
+    SIMPL_FILTER_NEW_MACRO(GenerateColorTable)
+    SIMPL_TYPE_MACRO_SUPER_OVERRIDE(GenerateColorTable, AbstractFilter)
 
-    virtual ~GenerateColorTable();
+    ~GenerateColorTable() override;
 
     SIMPL_INSTANCE_PROPERTY(QString, SelectedPresetName)
     Q_PROPERTY(QString SelectedPresetName READ getSelectedPresetName WRITE setSelectedPresetName)
@@ -135,8 +135,11 @@ class SIMPLib_EXPORT GenerateColorTable : public AbstractFilter
     void initialize();
 
   private:
+  public:
     GenerateColorTable(const GenerateColorTable&) = delete; // Copy Constructor Not Implemented
-    void operator=(const GenerateColorTable&) = delete;     // Operator '=' Not Implemented
+    GenerateColorTable(GenerateColorTable&&) = delete;      // Move Constructor
+    GenerateColorTable& operator=(const GenerateColorTable&) = delete; // Copy Assignment
+    GenerateColorTable& operator=(GenerateColorTable&&) = delete;      // Move Assignment
 };
 
 #endif /* _GenerateColorTable_H_ */

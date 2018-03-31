@@ -50,10 +50,10 @@ class MultiThresholdObjects : public AbstractFilter
     Q_OBJECT
   public:
     SIMPL_SHARED_POINTERS(MultiThresholdObjects)
-    SIMPL_STATIC_NEW_MACRO(MultiThresholdObjects)
-     SIMPL_TYPE_MACRO_SUPER_OVERRIDE(MultiThresholdObjects, AbstractFilter)
+    SIMPL_FILTER_NEW_MACRO(MultiThresholdObjects)
+    SIMPL_TYPE_MACRO_SUPER_OVERRIDE(MultiThresholdObjects, AbstractFilter)
 
-    virtual ~MultiThresholdObjects();
+    ~MultiThresholdObjects() override;
 
     SIMPL_FILTER_PARAMETER(QString, DestinationArrayName)
     Q_PROPERTY(QString DestinationArrayName READ getDestinationArrayName WRITE setDestinationArrayName)
@@ -114,7 +114,7 @@ class MultiThresholdObjects : public AbstractFilter
     /**
      * @brief readFilterParameters Reimplemented from @see AbstractFilter class
      */
-    virtual void readFilterParameters(AbstractFilterParametersReader* reader, int index) override;
+    void readFilterParameters(AbstractFilterParametersReader* reader, int index) override;
 
     /**
      * @brief execute Reimplemented from @see AbstractFilter class
@@ -165,8 +165,11 @@ class MultiThresholdObjects : public AbstractFilter
   private:
     DEFINE_DATAARRAY_VARIABLE(bool, Destination)
 
+  public:
     MultiThresholdObjects(const MultiThresholdObjects&) = delete; // Copy Constructor Not Implemented
-    void operator=(const MultiThresholdObjects&) = delete;        // Operator '=' Not Implemented
+    MultiThresholdObjects(MultiThresholdObjects&&) = delete;      // Move Constructor
+    MultiThresholdObjects& operator=(const MultiThresholdObjects&) = delete; // Copy Assignment
+    MultiThresholdObjects& operator=(MultiThresholdObjects&&) = delete;      // Move Assignment
 };
 
 #endif /* _MultiThresholdObjects_H_ */

@@ -47,13 +47,13 @@ class SIMPLib_EXPORT PipelineAnnotation : public AbstractFilter
 
 public:
   SIMPL_SHARED_POINTERS(PipelineAnnotation)
-  SIMPL_STATIC_NEW_MACRO(PipelineAnnotation)
-   SIMPL_TYPE_MACRO_SUPER_OVERRIDE(PipelineAnnotation, AbstractFilter)
+  SIMPL_FILTER_NEW_MACRO(PipelineAnnotation)
+  SIMPL_TYPE_MACRO_SUPER_OVERRIDE(PipelineAnnotation, AbstractFilter)
 
   SIMPL_FILTER_PARAMETER(QString, Summary)
   Q_PROPERTY(QString Summary READ getSummary WRITE setSummary)
 
-  virtual ~PipelineAnnotation();
+  ~PipelineAnnotation() override;
 
   /**
    * @brief getCompiledLibraryName Reimplemented from @see AbstractFilter class
@@ -151,7 +151,9 @@ protected:
   void initialize();
 
 private:
+public:
   PipelineAnnotation(const PipelineAnnotation&) = delete; // Copy Constructor Not Implemented
+  PipelineAnnotation(PipelineAnnotation&&) = delete;      // Move Constructor
   void operator=(const PipelineAnnotation&);  // Operator '=' Not Implemented
 };
 

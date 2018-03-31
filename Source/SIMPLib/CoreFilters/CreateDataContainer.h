@@ -50,10 +50,10 @@ class SIMPLib_EXPORT CreateDataContainer : public AbstractFilter
 
   public:
     SIMPL_SHARED_POINTERS(CreateDataContainer)
-    SIMPL_STATIC_NEW_MACRO(CreateDataContainer)
-     SIMPL_TYPE_MACRO_SUPER_OVERRIDE(CreateDataContainer, AbstractFilter)
+    SIMPL_FILTER_NEW_MACRO(CreateDataContainer)
+    SIMPL_TYPE_MACRO_SUPER_OVERRIDE(CreateDataContainer, AbstractFilter)
 
-    virtual ~CreateDataContainer();
+    ~CreateDataContainer() override;
 
     SIMPL_FILTER_PARAMETER(QString, CreatedDataContainer)
     Q_PROPERTY(QString CreatedDataContainer READ getCreatedDataContainer WRITE setCreatedDataContainer)
@@ -111,7 +111,7 @@ class SIMPLib_EXPORT CreateDataContainer : public AbstractFilter
     /**
      * @brief readFilterParameters Reimplemented from @see AbstractFilter class
      */
-    virtual void readFilterParameters(AbstractFilterParametersReader* reader, int index) override;
+    void readFilterParameters(AbstractFilterParametersReader* reader, int index) override;
 
     /**
      * @brief execute Reimplemented from @see AbstractFilter class
@@ -160,8 +160,11 @@ class SIMPLib_EXPORT CreateDataContainer : public AbstractFilter
 
 
   private:
+  public:
     CreateDataContainer(const CreateDataContainer&) = delete; // Copy Constructor Not Implemented
-    void operator=(const CreateDataContainer&) = delete;      // Operator '=' Not Implemented
+    CreateDataContainer(CreateDataContainer&&) = delete;      // Move Constructor
+    CreateDataContainer& operator=(const CreateDataContainer&) = delete; // Copy Assignment
+    CreateDataContainer& operator=(CreateDataContainer&&) = delete;      // Move Assignment
 };
 
 #endif /* _CreateDataContainer_H_ */

@@ -46,10 +46,10 @@ class SIMPLib_EXPORT ImportHDF5Dataset : public AbstractFilter
 
 public:
   SIMPL_SHARED_POINTERS(ImportHDF5Dataset)
-  SIMPL_STATIC_NEW_MACRO(ImportHDF5Dataset)
-   SIMPL_TYPE_MACRO_SUPER_OVERRIDE(ImportHDF5Dataset, AbstractFilter)
+  SIMPL_FILTER_NEW_MACRO(ImportHDF5Dataset)
+  SIMPL_TYPE_MACRO_SUPER_OVERRIDE(ImportHDF5Dataset, AbstractFilter)
 
-  virtual ~ImportHDF5Dataset();
+  ~ImportHDF5Dataset() override;
 
   SIMPL_INSTANCE_PROPERTY(QString, HDF5FilePath)
   Q_PROPERTY(QString HDF5FilePath READ getHDF5FilePath WRITE setHDF5FilePath)
@@ -173,7 +173,9 @@ private:
    */
   QVector<size_t> createComponentDimensions();
 
+public:
   ImportHDF5Dataset(const ImportHDF5Dataset&) = delete; // Copy Constructor Not Implemented
+  ImportHDF5Dataset(ImportHDF5Dataset&&) = delete;      // Move Constructor
   void operator=(const ImportHDF5Dataset&);    // Operator '=' Not Implemented
 };
 

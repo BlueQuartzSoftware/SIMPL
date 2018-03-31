@@ -20,10 +20,10 @@ class ReadASCIIData : public AbstractFilter
 
   public:
     SIMPL_SHARED_POINTERS(ReadASCIIData)
-    SIMPL_STATIC_NEW_MACRO(ReadASCIIData)
-     SIMPL_TYPE_MACRO_SUPER_OVERRIDE(ReadASCIIData, AbstractFilter)
+    SIMPL_FILTER_NEW_MACRO(ReadASCIIData)
+    SIMPL_TYPE_MACRO_SUPER_OVERRIDE(ReadASCIIData, AbstractFilter)
 
-    virtual ~ReadASCIIData();
+    ~ReadASCIIData() override;
 
     SIMPL_FILTER_PARAMETER(ASCIIWizardData, WizardData)
     Q_PROPERTY(ASCIIWizardData WizardData READ getWizardData WRITE setWizardData)
@@ -92,7 +92,7 @@ class ReadASCIIData : public AbstractFilter
     /**
      * @brief readFilterParameters Reimplemented from @see AbstractFilter class
      */
-    virtual void readFilterParameters(AbstractFilterParametersReader* reader, int index) override;
+    void readFilterParameters(AbstractFilterParametersReader* reader, int index) override;
 
     /**
     * @brief readFilterParametersFromJson Reads the filter parameters from a file
@@ -155,8 +155,11 @@ class ReadASCIIData : public AbstractFilter
   private:
     QMap<int, IDataArray::Pointer>        m_ASCIIArrayMap;
 
+  public:
     ReadASCIIData(const ReadASCIIData&) = delete;  // Copy Constructor Not Implemented
-    void operator=(const ReadASCIIData&) = delete; // Operator '=' Not Implemented
+    ReadASCIIData(ReadASCIIData&&) = delete;       // Move Constructor
+    ReadASCIIData& operator=(const ReadASCIIData&) = delete; // Copy Assignment
+    ReadASCIIData& operator=(ReadASCIIData&&) = delete;      // Move Assignment
 };
 
 #endif /* _readasciidata_h_ */

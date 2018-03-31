@@ -64,7 +64,6 @@ DataContainerReader::DataContainerReader()
 {
   m_PipelineFromFile = FilterPipeline::New();
 
-  setupFilterParameters();
 }
 
 // -----------------------------------------------------------------------------

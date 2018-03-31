@@ -51,10 +51,10 @@ class SIMPLib_EXPORT CreateImageGeometry : public AbstractFilter
     Q_OBJECT
   public:
     SIMPL_SHARED_POINTERS(CreateImageGeometry)
-    SIMPL_STATIC_NEW_MACRO(CreateImageGeometry)
-     SIMPL_TYPE_MACRO_SUPER_OVERRIDE(CreateImageGeometry, AbstractFilter)
+    SIMPL_FILTER_NEW_MACRO(CreateImageGeometry)
+    SIMPL_TYPE_MACRO_SUPER_OVERRIDE(CreateImageGeometry, AbstractFilter)
 
-    virtual ~CreateImageGeometry();
+    ~CreateImageGeometry() override;
 
     SIMPL_FILTER_PARAMETER(QString, SelectedDataContainer)
     Q_PROPERTY(QString SelectedDataContainer READ getSelectedDataContainer WRITE setSelectedDataContainer)
@@ -124,7 +124,7 @@ class SIMPLib_EXPORT CreateImageGeometry : public AbstractFilter
     /**
      * @brief readFilterParameters Reimplemented from @see AbstractFilter class
      */
-    virtual void readFilterParameters(AbstractFilterParametersReader* reader, int index) override;
+    void readFilterParameters(AbstractFilterParametersReader* reader, int index) override;
 
     /**
      * @brief execute Reimplemented from @see AbstractFilter class
@@ -179,8 +179,11 @@ class SIMPLib_EXPORT CreateImageGeometry : public AbstractFilter
     void updateSurfaceMesh();
 
   private:
+  public:
     CreateImageGeometry(const CreateImageGeometry&) = delete; // Copy Constructor Not Implemented
-    void operator=(const CreateImageGeometry&) = delete;      // Operator '=' Not Implemented
+    CreateImageGeometry(CreateImageGeometry&&) = delete;      // Move Constructor
+    CreateImageGeometry& operator=(const CreateImageGeometry&) = delete; // Copy Assignment
+    CreateImageGeometry& operator=(CreateImageGeometry&&) = delete;      // Move Assignment
 };
 
 #endif /* _CreateImageGeometry_H_ */

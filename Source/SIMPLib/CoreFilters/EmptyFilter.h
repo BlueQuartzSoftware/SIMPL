@@ -49,10 +49,10 @@ class SIMPLib_EXPORT EmptyFilter : public AbstractFilter
     Q_OBJECT
   public:
     SIMPL_SHARED_POINTERS(EmptyFilter)
-    SIMPL_STATIC_NEW_MACRO(EmptyFilter)
-     SIMPL_TYPE_MACRO_SUPER_OVERRIDE(EmptyFilter, AbstractFilter)
+    SIMPL_FILTER_NEW_MACRO(EmptyFilter)
+    SIMPL_TYPE_MACRO_SUPER_OVERRIDE(EmptyFilter, AbstractFilter)
 
-    virtual ~EmptyFilter();
+    ~EmptyFilter() override;
 
     SIMPL_INSTANCE_STRING_PROPERTY(OriginalFilterName)
 
@@ -109,7 +109,7 @@ class SIMPLib_EXPORT EmptyFilter : public AbstractFilter
     /**
      * @brief readFilterParameters Reimplemented from @see AbstractFilter class
      */
-    virtual void readFilterParameters(AbstractFilterParametersReader* reader, int index) override;
+    void readFilterParameters(AbstractFilterParametersReader* reader, int index) override;
 
     /**
      * @brief execute Reimplemented from @see AbstractFilter class
@@ -167,8 +167,11 @@ class SIMPLib_EXPORT EmptyFilter : public AbstractFilter
   private:
     QString m_HumanLabel;
 
+  public:
     EmptyFilter(const EmptyFilter&) = delete;    // Copy Constructor Not Implemented
-    void operator=(const EmptyFilter&) = delete; // Operator '=' Not Implemented
+    EmptyFilter(EmptyFilter&&) = delete;         // Move Constructor
+    EmptyFilter& operator=(const EmptyFilter&) = delete; // Copy Assignment
+    EmptyFilter& operator=(EmptyFilter&&) = delete;      // Move Assignment
 };
 
 #endif /* _EmptyFilter_H_ */

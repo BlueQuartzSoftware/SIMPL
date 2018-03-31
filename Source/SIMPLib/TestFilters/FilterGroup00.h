@@ -45,10 +45,10 @@ class TESTCLASSNAME : public AbstractFilter
 
 public:
   SIMPL_SHARED_POINTERS(TESTCLASSNAME)
-  SIMPL_STATIC_NEW_MACRO(TESTCLASSNAME)
-   SIMPL_TYPE_MACRO_SUPER_OVERRIDE(TESTCLASSNAME, AbstractFilter)
+  SIMPL_FILTER_NEW_MACRO(TESTCLASSNAME)
+  SIMPL_TYPE_MACRO_SUPER_OVERRIDE(TESTCLASSNAME, AbstractFilter)
 
-  virtual ~TESTCLASSNAME();
+  ~TESTCLASSNAME() override;
 
   /**
    * @brief getCompiledLibraryName Reimplemented from @see AbstractFilter class

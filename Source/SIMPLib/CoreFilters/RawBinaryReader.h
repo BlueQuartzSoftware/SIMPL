@@ -48,11 +48,10 @@ class SIMPLib_EXPORT RawBinaryReader : public AbstractFilter
     Q_OBJECT
   public:
     SIMPL_SHARED_POINTERS(RawBinaryReader)
-    SIMPL_STATIC_NEW_MACRO(RawBinaryReader)
-     SIMPL_TYPE_MACRO_SUPER_OVERRIDE(RawBinaryReader, AbstractFilter)
+    SIMPL_FILTER_NEW_MACRO(RawBinaryReader)
+    SIMPL_TYPE_MACRO_SUPER_OVERRIDE(RawBinaryReader, AbstractFilter)
 
-    virtual ~RawBinaryReader();
-
+    ~RawBinaryReader() override;
 
     SIMPL_FILTER_PARAMETER(DataArrayPath, CreatedAttributeArrayPath)
     Q_PROPERTY(DataArrayPath CreatedAttributeArrayPath READ getCreatedAttributeArrayPath WRITE setCreatedAttributeArrayPath)
@@ -126,7 +125,7 @@ class SIMPLib_EXPORT RawBinaryReader : public AbstractFilter
     /**
      * @brief readFilterParameters Reimplemented from @see AbstractFilter class
      */
-    virtual void readFilterParameters(AbstractFilterParametersReader* reader, int index) override;
+    void readFilterParameters(AbstractFilterParametersReader* reader, int index) override;
 
     /**
      * @brief execute Reimplemented from @see AbstractFilter class
@@ -178,8 +177,11 @@ class SIMPLib_EXPORT RawBinaryReader : public AbstractFilter
   private:
     IDataArray::Pointer m_Array;
 
+  public:
     RawBinaryReader(const RawBinaryReader&) = delete; // Copy Constructor Not Implemented
-    void operator=(const RawBinaryReader&) = delete;  // Operator '=' Not Implemented
+    RawBinaryReader(RawBinaryReader&&) = delete;      // Move Constructor
+    RawBinaryReader& operator=(const RawBinaryReader&) = delete; // Copy Assignment
+    RawBinaryReader& operator=(RawBinaryReader&&) = delete;      // Move Assignment
 };
 
 #endif /* _RawBinaryReader_H_ */

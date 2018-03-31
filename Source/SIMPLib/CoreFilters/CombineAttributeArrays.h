@@ -49,10 +49,10 @@ class SIMPLib_EXPORT CombineAttributeArrays : public AbstractFilter
 
   public:
     SIMPL_SHARED_POINTERS(CombineAttributeArrays)
-    SIMPL_STATIC_NEW_MACRO(CombineAttributeArrays)
-     SIMPL_TYPE_MACRO_SUPER_OVERRIDE(CombineAttributeArrays, AbstractFilter)
+    SIMPL_FILTER_NEW_MACRO(CombineAttributeArrays)
+    SIMPL_TYPE_MACRO_SUPER_OVERRIDE(CombineAttributeArrays, AbstractFilter)
 
-    virtual ~CombineAttributeArrays();
+    ~CombineAttributeArrays() override;
 
     SIMPL_FILTER_PARAMETER(QVector<DataArrayPath>, SelectedDataArrayPaths)
     Q_PROPERTY(QVector<DataArrayPath> SelectedDataArrayPaths READ getSelectedDataArrayPaths WRITE setSelectedDataArrayPaths)
@@ -116,7 +116,7 @@ class SIMPLib_EXPORT CombineAttributeArrays : public AbstractFilter
     /**
      * @brief readFilterParameters Reimplemented from @see AbstractFilter class
      */
-    virtual void readFilterParameters(AbstractFilterParametersReader* reader, int index) override;
+    void readFilterParameters(AbstractFilterParametersReader* reader, int index) override;
 
     /**
      * @brief execute Reimplemented from @see AbstractFilter class
@@ -169,8 +169,11 @@ class SIMPLib_EXPORT CombineAttributeArrays : public AbstractFilter
 
     QVector<IDataArray::WeakPointer> m_SelectedWeakPtrVector;
 
+  public:
     CombineAttributeArrays(const CombineAttributeArrays&) = delete; // Copy Constructor Not Implemented
-    void operator=(const CombineAttributeArrays&) = delete;         // Operator '=' Not Implemented
+    CombineAttributeArrays(CombineAttributeArrays&&) = delete;      // Move Constructor
+    CombineAttributeArrays& operator=(const CombineAttributeArrays&) = delete; // Copy Assignment
+    CombineAttributeArrays& operator=(CombineAttributeArrays&&) = delete;      // Move Assignment
 };
 
 #endif /* _CombineAttributeArrays_H_ */

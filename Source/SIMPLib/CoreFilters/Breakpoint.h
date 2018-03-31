@@ -51,12 +51,10 @@ class SIMPLib_EXPORT Breakpoint : public AbstractFilter
 
   public:
     SIMPL_SHARED_POINTERS(Breakpoint)
-    SIMPL_STATIC_NEW_MACRO(Breakpoint)
-     SIMPL_TYPE_MACRO_SUPER_OVERRIDE(Breakpoint, AbstractFilter)
+    SIMPL_FILTER_NEW_MACRO(Breakpoint)
+    SIMPL_TYPE_MACRO_SUPER_OVERRIDE(Breakpoint, AbstractFilter)
 
-    virtual ~Breakpoint();
-
-
+    ~Breakpoint() override;
 
     /**
      * @brief getCompiledLibraryName Reimplemented from @see AbstractFilter class
@@ -111,7 +109,7 @@ class SIMPLib_EXPORT Breakpoint : public AbstractFilter
     /**
      * @brief readFilterParameters Reimplemented from @see AbstractFilter class
      */
-    virtual void readFilterParameters(AbstractFilterParametersReader* reader, int index) override;
+    void readFilterParameters(AbstractFilterParametersReader* reader, int index) override;
 
     /**
      * @brief execute Reimplemented from @see AbstractFilter class
@@ -184,8 +182,11 @@ class SIMPLib_EXPORT Breakpoint : public AbstractFilter
     QWaitCondition                          m_WaitCondition;
     QMutex                                  m_Mutex;
 
+  public:
     Breakpoint(const Breakpoint&) = delete;     // Copy Constructor Not Implemented
-    void operator=(const Breakpoint&) = delete; // Operator '=' Not Implemented
+    Breakpoint(Breakpoint&&) = delete;          // Move Constructor
+    Breakpoint& operator=(const Breakpoint&) = delete; // Copy Assignment
+    Breakpoint& operator=(Breakpoint&&) = delete;      // Move Assignment
 };
 
 #endif /* _Breakpoint_H_ */

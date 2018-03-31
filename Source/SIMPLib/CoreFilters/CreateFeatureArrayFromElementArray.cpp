@@ -55,7 +55,6 @@ CreateFeatureArrayFromElementArray::CreateFeatureArrayFromElementArray()
 , m_FeatureIdsArrayPath("", "", "")
 , m_FeatureIds(nullptr)
 {
-  setupFilterParameters();
 }
 
 // -----------------------------------------------------------------------------

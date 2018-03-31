@@ -53,7 +53,6 @@ FeatureCountDecision::FeatureCountDecision()
 , m_MaxGrains(0)
 , m_FeatureIds(nullptr)
 {
-  setupFilterParameters();
 }
 
 // -----------------------------------------------------------------------------

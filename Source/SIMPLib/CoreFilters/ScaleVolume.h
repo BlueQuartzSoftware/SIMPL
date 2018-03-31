@@ -50,10 +50,10 @@ class SIMPLib_EXPORT ScaleVolume : public AbstractFilter
     Q_OBJECT
   public:
     SIMPL_SHARED_POINTERS(ScaleVolume)
-    SIMPL_STATIC_NEW_MACRO(ScaleVolume)
-     SIMPL_TYPE_MACRO_SUPER_OVERRIDE(ScaleVolume, AbstractFilter)
+    SIMPL_FILTER_NEW_MACRO(ScaleVolume)
+    SIMPL_TYPE_MACRO_SUPER_OVERRIDE(ScaleVolume, AbstractFilter)
 
-    virtual ~ScaleVolume();
+    ~ScaleVolume() override;
 
     SIMPL_FILTER_PARAMETER(QString, DataContainerName)
     Q_PROPERTY(QString DataContainerName READ getDataContainerName WRITE setDataContainerName)
@@ -123,7 +123,7 @@ class SIMPLib_EXPORT ScaleVolume : public AbstractFilter
     /**
      * @brief readFilterParameters Reimplemented from @see AbstractFilter class
      */
-    virtual void readFilterParameters(AbstractFilterParametersReader* reader, int index) override;
+    void readFilterParameters(AbstractFilterParametersReader* reader, int index) override;
 
     /**
      * @brief execute Reimplemented from @see AbstractFilter class
@@ -177,8 +177,11 @@ class SIMPLib_EXPORT ScaleVolume : public AbstractFilter
     void updateSurfaceMesh();
 
   private:
+  public:
     ScaleVolume(const ScaleVolume&) = delete;    // Copy Constructor Not Implemented
-    void operator=(const ScaleVolume&) = delete; // Operator '=' Not Implemented
+    ScaleVolume(ScaleVolume&&) = delete;         // Move Constructor
+    ScaleVolume& operator=(const ScaleVolume&) = delete; // Copy Assignment
+    ScaleVolume& operator=(ScaleVolume&&) = delete;      // Move Assignment
 };
 
 #endif /* _ScaleVolume_H_ */

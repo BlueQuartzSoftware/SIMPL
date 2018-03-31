@@ -53,7 +53,6 @@ LinkFeatureMapToElementArray::LinkFeatureMapToElementArray()
 , m_SelectedCellData(nullptr)
 , m_Active(nullptr)
 {
-  setupFilterParameters();
 }
 
 // -----------------------------------------------------------------------------

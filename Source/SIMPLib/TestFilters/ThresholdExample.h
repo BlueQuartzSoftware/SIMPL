@@ -56,10 +56,10 @@ class SIMPLib_EXPORT ThresholdExample : public AbstractFilter
   Q_OBJECT
 public:
   SIMPL_SHARED_POINTERS(ThresholdExample)
-  SIMPL_STATIC_NEW_MACRO(ThresholdExample)
-   SIMPL_TYPE_MACRO_SUPER_OVERRIDE(ThresholdExample, AbstractFilter)
+  SIMPL_FILTER_NEW_MACRO(ThresholdExample)
+  SIMPL_TYPE_MACRO_SUPER_OVERRIDE(ThresholdExample, AbstractFilter)
 
-  virtual ~ThresholdExample();
+  ~ThresholdExample() override;
   SIMPL_INSTANCE_STRING_PROPERTY(DataContainerName)
   SIMPL_INSTANCE_STRING_PROPERTY(CellAttributeMatrixName)
 
@@ -107,7 +107,7 @@ public:
   * @brief This method will read the options from a file
   * @param reader The reader that is used to read the options from a file
   */
-  virtual void readFilterParameters(AbstractFilterParametersReader* reader, int index) override;
+  void readFilterParameters(AbstractFilterParametersReader* reader, int index) override;
 
   /**
    * @brief Reimplemented from @see AbstractFilter class
@@ -140,7 +140,9 @@ protected:
   void initialize();
 
 private:
+public:
   ThresholdExample(const ThresholdExample&) = delete; // Copy Constructor Not Implemented
+  ThresholdExample(ThresholdExample&&) = delete;      // Move Constructor
   void operator=(const ThresholdExample&);   // Operator '=' Not Implemented
 };
 

@@ -40,7 +40,6 @@
 FilterGroup04::FilterGroup04()
 {
   initialize();
-  setupFilterParameters();
 }
 
 // -----------------------------------------------------------------------------

@@ -62,7 +62,6 @@ CreateImageGeometry::CreateImageGeometry()
   m_Resolution.y = 1.0f;
   m_Resolution.z = 1.0f;
 
-  setupFilterParameters();
 }
 
 // -----------------------------------------------------------------------------

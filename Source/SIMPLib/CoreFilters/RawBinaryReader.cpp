@@ -167,7 +167,6 @@ RawBinaryReader::RawBinaryReader()
 , m_InputFile("")
 {
 
-  setupFilterParameters();
 }
 
 // -----------------------------------------------------------------------------

@@ -54,7 +54,6 @@ RemoveComponentFromArray::RemoveComponentFromArray()
 , m_SaveRemovedComponent(false)
 , m_NewArrayArrayName("")
 {
-  setupFilterParameters();
 }
 
 // -----------------------------------------------------------------------------

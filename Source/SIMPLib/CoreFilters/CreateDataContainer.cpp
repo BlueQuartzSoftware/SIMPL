@@ -46,7 +46,6 @@
 CreateDataContainer::CreateDataContainer()
 : m_CreatedDataContainer("DataContainer")
 {
-  setupFilterParameters();
 }
 
 // -----------------------------------------------------------------------------

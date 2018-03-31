@@ -53,10 +53,10 @@ class SIMPLib_EXPORT MakeDataContainer : public AbstractFilter
   Q_OBJECT
 public:
   SIMPL_SHARED_POINTERS(MakeDataContainer)
-  SIMPL_STATIC_NEW_MACRO(MakeDataContainer)
-   SIMPL_TYPE_MACRO_SUPER_OVERRIDE(MakeDataContainer, AbstractFilter)
+  SIMPL_FILTER_NEW_MACRO(MakeDataContainer)
+  SIMPL_TYPE_MACRO_SUPER_OVERRIDE(MakeDataContainer, AbstractFilter)
 
-  virtual ~MakeDataContainer();
+  ~MakeDataContainer() override;
   SIMPL_INSTANCE_STRING_PROPERTY(DataContainerName)
   SIMPL_INSTANCE_STRING_PROPERTY(CellEnsembleAttributeMatrixName)
   SIMPL_INSTANCE_STRING_PROPERTY(CellAttributeMatrixName)
@@ -113,7 +113,7 @@ public:
   * @brief This method will read the options from a file
   * @param reader The reader that is used to read the options from a file
   */
-  virtual void readFilterParameters(AbstractFilterParametersReader* reader, int index) override;
+  void readFilterParameters(AbstractFilterParametersReader* reader, int index) override;
 
   /**
   * @brief Reimplemented from @see AbstractFilter class
@@ -152,7 +152,9 @@ private:
   DEFINE_DATAARRAY_VARIABLE(uint32_t, CrystalStructures)
   DEFINE_DATAARRAY_VARIABLE(float, LatticeConstants)
 
+public:
   MakeDataContainer(const MakeDataContainer&) = delete; // Copy Constructor Not Implemented
+  MakeDataContainer(MakeDataContainer&&) = delete;      // Move Constructor
   void operator=(const MakeDataContainer&);    // Operator '=' Not Implemented
 };
 

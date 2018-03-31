@@ -60,7 +60,6 @@ MoveData::MoveData()
 , m_AttributeMatrixDestination()
 , m_DataArraySource()
 {
-  setupFilterParameters();
 }
 
 // -----------------------------------------------------------------------------

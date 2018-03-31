@@ -49,10 +49,10 @@ class AbstractDecisionFilter : public AbstractFilter
   Q_OBJECT
 public:
   SIMPL_SHARED_POINTERS(AbstractDecisionFilter)
-  SIMPL_STATIC_NEW_MACRO(AbstractDecisionFilter)
-   SIMPL_TYPE_MACRO_SUPER_OVERRIDE(AbstractDecisionFilter, AbstractFilter)
+  SIMPL_FILTER_NEW_MACRO(AbstractDecisionFilter)
+  SIMPL_TYPE_MACRO_SUPER_OVERRIDE(AbstractDecisionFilter, AbstractFilter)
 
-  virtual ~AbstractDecisionFilter();
+  ~AbstractDecisionFilter() override;
 
   /**
   * @brief
@@ -99,7 +99,7 @@ public:
   /**
    * @brief readFilterParameters Reimplemented from @see AbstractFilter class
    */
-  virtual void readFilterParameters(AbstractFilterParametersReader* reader, int index) override;
+  void readFilterParameters(AbstractFilterParametersReader* reader, int index) override;
 
   /**
    * @brief execute Reimplemented from @see AbstractFilter class
@@ -150,7 +150,9 @@ protected:
   void initialize();
 
 private:
+public:
   AbstractDecisionFilter(const AbstractDecisionFilter&) = delete; // Copy Constructor Not Implemented
+  AbstractDecisionFilter(AbstractDecisionFilter&&) = delete;      // Move Constructor
   void operator=(const AbstractDecisionFilter&);         // Operator '=' Not Implemented
 };
 

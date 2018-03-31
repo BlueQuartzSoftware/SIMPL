@@ -55,7 +55,6 @@ FindDerivatives::FindDerivatives()
 , m_DerivativesArrayPath(SIMPL::Defaults::DataContainerName, SIMPL::Defaults::CellAttributeMatrixName, "Derivatives")
 , m_Interpolate(false)
 {
-  setupFilterParameters();
 }
 
 // -----------------------------------------------------------------------------

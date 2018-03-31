@@ -45,10 +45,10 @@ class FilterGroup13 : public AbstractFilter
 
 public:
   SIMPL_SHARED_POINTERS(FilterGroup13)
-  SIMPL_STATIC_NEW_MACRO(FilterGroup13)
-   SIMPL_TYPE_MACRO_SUPER_OVERRIDE(FilterGroup13, AbstractFilter)
+  SIMPL_FILTER_NEW_MACRO(FilterGroup13)
+  SIMPL_TYPE_MACRO_SUPER_OVERRIDE(FilterGroup13, AbstractFilter)
 
-  virtual ~FilterGroup13();
+  ~FilterGroup13() override;
 
   /**
    * @brief getCompiledLibraryName Reimplemented from @see AbstractFilter class
@@ -148,7 +148,8 @@ protected:
 
 private:
   FilterGroup13(const FilterGroup13&);  // Copy Constructor Not Implemented
-  void operator=(const FilterGroup13&) = delete; // Operator '=' Not Implemented
+  FilterGroup13& operator=(const FilterGroup13&) = delete; // Copy Assignment
+  FilterGroup13& operator=(FilterGroup13&&) = delete;      // Move Assignment
 };
 
 #endif /* _FilterGroup13_H_ */

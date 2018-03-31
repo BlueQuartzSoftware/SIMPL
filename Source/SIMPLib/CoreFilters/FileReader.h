@@ -50,10 +50,10 @@ class SIMPLib_EXPORT FileReader : public AbstractFilter
     Q_OBJECT
   public:
     SIMPL_SHARED_POINTERS(FileReader)
-    SIMPL_STATIC_NEW_MACRO(FileReader)
-     SIMPL_TYPE_MACRO_SUPER_OVERRIDE(FileReader, AbstractFilter)
+    SIMPL_FILTER_NEW_MACRO(FileReader)
+    SIMPL_TYPE_MACRO_SUPER_OVERRIDE(FileReader, AbstractFilter)
 
-    virtual ~FileReader();
+    ~FileReader() override;
 
     /* This will internally call readHeader() and readFile() with appropriate
      * error checkes after each one. Subclasses should just implement the readHeader
@@ -110,8 +110,11 @@ class SIMPLib_EXPORT FileReader : public AbstractFilter
     void initialize();
 
   private:
+  public:
     FileReader(const FileReader&) = delete;     // Copy Constructor Not Implemented
-    void operator=(const FileReader&) = delete; // Operator '=' Not Implemented
+    FileReader(FileReader&&) = delete;          // Move Constructor
+    FileReader& operator=(const FileReader&) = delete; // Copy Assignment
+    FileReader& operator=(FileReader&&) = delete;      // Move Assignment
 };
 
 #endif /* FileReader_H_ */

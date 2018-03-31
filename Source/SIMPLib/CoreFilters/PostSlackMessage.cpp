@@ -57,7 +57,6 @@ PostSlackMessage::PostSlackMessage()
 {
   m_SlackUser = "[DREAM.3D@" + QSysInfo::machineHostName() + "]";
   initialize();
-  setupFilterParameters();
   m_NetworkManager = new QNetworkAccessManager(this);
 }
 

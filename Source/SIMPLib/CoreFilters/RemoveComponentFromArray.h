@@ -49,10 +49,10 @@ class SIMPLib_EXPORT RemoveComponentFromArray : public AbstractFilter
     Q_OBJECT
   public:
     SIMPL_SHARED_POINTERS(RemoveComponentFromArray)
-    SIMPL_STATIC_NEW_MACRO(RemoveComponentFromArray)
-     SIMPL_TYPE_MACRO_SUPER_OVERRIDE(RemoveComponentFromArray, AbstractFilter)
+    SIMPL_FILTER_NEW_MACRO(RemoveComponentFromArray)
+    SIMPL_TYPE_MACRO_SUPER_OVERRIDE(RemoveComponentFromArray, AbstractFilter)
 
-    virtual ~RemoveComponentFromArray();
+    ~RemoveComponentFromArray() override;
 
     SIMPL_FILTER_PARAMETER(DataArrayPath, SelectedArrayPath)
     Q_PROPERTY(DataArrayPath SelectedArrayPath READ getSelectedArrayPath WRITE setSelectedArrayPath)
@@ -122,7 +122,7 @@ class SIMPLib_EXPORT RemoveComponentFromArray : public AbstractFilter
     /**
      * @brief readFilterParameters Reimplemented from @see AbstractFilter class
      */
-    virtual void readFilterParameters(AbstractFilterParametersReader* reader, int index) override;
+    void readFilterParameters(AbstractFilterParametersReader* reader, int index) override;
 
     /**
      * @brief execute Reimplemented from @see AbstractFilter class
@@ -175,8 +175,11 @@ class SIMPLib_EXPORT RemoveComponentFromArray : public AbstractFilter
     DEFINE_IDATAARRAY_WEAKPTR(NewArray)
     DEFINE_IDATAARRAY_WEAKPTR(ReducedArray)
 
+  public:
     RemoveComponentFromArray(const RemoveComponentFromArray&) = delete; // Copy Constructor Not Implemented
-    void operator=(const RemoveComponentFromArray&) = delete;           // Operator '=' Not Implemented
+    RemoveComponentFromArray(RemoveComponentFromArray&&) = delete;      // Move Constructor
+    RemoveComponentFromArray& operator=(const RemoveComponentFromArray&) = delete; // Copy Assignment
+    RemoveComponentFromArray& operator=(RemoveComponentFromArray&&) = delete;      // Move Assignment
 };
 
 #endif /* RemoveComponentFromArray_H_ */

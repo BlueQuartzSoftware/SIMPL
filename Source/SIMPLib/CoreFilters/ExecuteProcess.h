@@ -56,13 +56,13 @@ class SIMPLib_EXPORT ExecuteProcess : public AbstractFilter
 
   public:
     SIMPL_SHARED_POINTERS(ExecuteProcess)
-    SIMPL_STATIC_NEW_MACRO(ExecuteProcess)
-     SIMPL_TYPE_MACRO_SUPER_OVERRIDE(ExecuteProcess, AbstractFilter)
+    SIMPL_FILTER_NEW_MACRO(ExecuteProcess)
+    SIMPL_TYPE_MACRO_SUPER_OVERRIDE(ExecuteProcess, AbstractFilter)
 
     SIMPL_FILTER_PARAMETER(QString, Arguments)
     Q_PROPERTY(QString Arguments READ getArguments WRITE setArguments)
 
-    virtual ~ExecuteProcess();
+    ~ExecuteProcess() override;
 
     /**
      * @brief getCompiledLibraryName Reimplemented from @see AbstractFilter class
@@ -117,7 +117,7 @@ class SIMPLib_EXPORT ExecuteProcess : public AbstractFilter
     /**
      * @brief readFilterParameters Reimplemented from @see AbstractFilter class
      */
-    virtual void readFilterParameters(AbstractFilterParametersReader* reader, int index) override;
+    void readFilterParameters(AbstractFilterParametersReader* reader, int index) override;
 
     /**
      * @brief execute Reimplemented from @see AbstractFilter class
@@ -184,8 +184,11 @@ class SIMPLib_EXPORT ExecuteProcess : public AbstractFilter
      */
     QStringList splitArgumentsString(QString arguments);
 
+  public:
     ExecuteProcess(const ExecuteProcess&) = delete; // Copy Constructor Not Implemented
-    void operator=(const ExecuteProcess&) = delete; // Operator '=' Not Implemented
+    ExecuteProcess(ExecuteProcess&&) = delete;      // Move Constructor
+    ExecuteProcess& operator=(const ExecuteProcess&) = delete; // Copy Assignment
+    ExecuteProcess& operator=(ExecuteProcess&&) = delete;      // Move Assignment
 };
 
 #endif /* _ExecuteProcess_H_ */

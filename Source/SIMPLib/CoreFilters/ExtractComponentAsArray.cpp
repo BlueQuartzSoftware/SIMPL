@@ -52,7 +52,6 @@ ExtractComponentAsArray::ExtractComponentAsArray()
 , m_CompNumber(0)
 , m_NewArrayArrayName("")
 {
-  setupFilterParameters();
 }
 
 // -----------------------------------------------------------------------------

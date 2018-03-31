@@ -50,10 +50,10 @@ class SIMPLib_EXPORT ConditionalSetValue : public AbstractFilter
   public:
 
     SIMPL_SHARED_POINTERS(ConditionalSetValue)
-    SIMPL_STATIC_NEW_MACRO(ConditionalSetValue)
-     SIMPL_TYPE_MACRO_SUPER_OVERRIDE(ConditionalSetValue, AbstractFilter)
+    SIMPL_FILTER_NEW_MACRO(ConditionalSetValue)
+    SIMPL_TYPE_MACRO_SUPER_OVERRIDE(ConditionalSetValue, AbstractFilter)
 
-    virtual ~ConditionalSetValue();
+    ~ConditionalSetValue() override;
 
     SIMPL_FILTER_PARAMETER(DataArrayPath, SelectedArrayPath)
     Q_PROPERTY(DataArrayPath SelectedArrayPath READ getSelectedArrayPath WRITE setSelectedArrayPath)
@@ -117,7 +117,7 @@ class SIMPLib_EXPORT ConditionalSetValue : public AbstractFilter
     /**
      * @brief readFilterParameters Reimplemented from @see AbstractFilter class
      */
-    virtual void readFilterParameters(AbstractFilterParametersReader* reader, int index) override;
+    void readFilterParameters(AbstractFilterParametersReader* reader, int index) override;
 
     /**
      * @brief execute Reimplemented from @see AbstractFilter class
@@ -169,8 +169,11 @@ class SIMPLib_EXPORT ConditionalSetValue : public AbstractFilter
     IDataArray::WeakPointer m_ArrayPtr;
     DEFINE_DATAARRAY_VARIABLE(bool, ConditionalArray)
 
+  public:
     ConditionalSetValue(const ConditionalSetValue&) = delete; // Copy Constructor Not Implemented
-    void operator=(const ConditionalSetValue&) = delete;      // Operator '=' Not Implemented
+    ConditionalSetValue(ConditionalSetValue&&) = delete;      // Move Constructor
+    ConditionalSetValue& operator=(const ConditionalSetValue&) = delete; // Copy Assignment
+    ConditionalSetValue& operator=(ConditionalSetValue&&) = delete;      // Move Assignment
 };
 
 #endif /* _ConditionalSetValue_H_ */

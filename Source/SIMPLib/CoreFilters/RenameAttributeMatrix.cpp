@@ -48,7 +48,6 @@ RenameAttributeMatrix::RenameAttributeMatrix()
 : m_SelectedAttributeMatrixPath("", "", "")
 , m_NewAttributeMatrix("")
 {
-  setupFilterParameters();
 }
 
 // -----------------------------------------------------------------------------

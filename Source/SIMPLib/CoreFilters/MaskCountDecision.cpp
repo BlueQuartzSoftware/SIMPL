@@ -51,7 +51,6 @@ MaskCountDecision::MaskCountDecision()
 , m_NumberOfTrues(0)
 , m_Mask(nullptr)
 {
-  setupFilterParameters();
 }
 
 // -----------------------------------------------------------------------------

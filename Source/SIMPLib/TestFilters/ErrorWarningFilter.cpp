@@ -46,7 +46,6 @@ ErrorWarningFilter::ErrorWarningFilter()
 , m_PropertyError(false)
 {
   initialize();
-  setupFilterParameters();
 }
 
 // -----------------------------------------------------------------------------

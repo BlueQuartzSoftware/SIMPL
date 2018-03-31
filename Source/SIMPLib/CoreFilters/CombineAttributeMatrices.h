@@ -49,10 +49,10 @@ class SIMPLib_EXPORT CombineAttributeMatrices : public AbstractFilter
     Q_OBJECT
   public:
     SIMPL_SHARED_POINTERS(CombineAttributeMatrices)
-    SIMPL_STATIC_NEW_MACRO(CombineAttributeMatrices)
-     SIMPL_TYPE_MACRO_SUPER_OVERRIDE(CombineAttributeMatrices, AbstractFilter)
+    SIMPL_FILTER_NEW_MACRO(CombineAttributeMatrices)
+    SIMPL_TYPE_MACRO_SUPER_OVERRIDE(CombineAttributeMatrices, AbstractFilter)
 
-    virtual ~CombineAttributeMatrices();
+    ~CombineAttributeMatrices() override;
 
     SIMPL_FILTER_PARAMETER(DataArrayPath, FirstAttributeMatrixPath)
     Q_PROPERTY(DataArrayPath FirstAttributeMatrixPath READ getFirstAttributeMatrixPath WRITE setFirstAttributeMatrixPath)
@@ -125,7 +125,7 @@ class SIMPLib_EXPORT CombineAttributeMatrices : public AbstractFilter
     /**
      * @brief readFilterParameters Reimplemented from @see AbstractFilter class
      */
-    virtual void readFilterParameters(AbstractFilterParametersReader* reader, int index) override;
+    void readFilterParameters(AbstractFilterParametersReader* reader, int index) override;
 
     /**
      * @brief execute Reimplemented from @see AbstractFilter class
@@ -183,8 +183,11 @@ class SIMPLib_EXPORT CombineAttributeMatrices : public AbstractFilter
     DEFINE_DATAARRAY_VARIABLE(int32_t, SecondIndex)
     DEFINE_DATAARRAY_VARIABLE(int32_t, NewIndex)
 
+  public:
     CombineAttributeMatrices(const CombineAttributeMatrices&) = delete; // Copy Constructor Not Implemented
-    void operator=(const CombineAttributeMatrices&) = delete;           // Operator '=' Not Implemented
+    CombineAttributeMatrices(CombineAttributeMatrices&&) = delete;      // Move Constructor
+    CombineAttributeMatrices& operator=(const CombineAttributeMatrices&) = delete; // Copy Assignment
+    CombineAttributeMatrices& operator=(CombineAttributeMatrices&&) = delete;      // Move Assignment
 };
 
 #endif /* _CombineAttributeMatrices_H_ */

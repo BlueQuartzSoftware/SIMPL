@@ -46,7 +46,6 @@
 EmptyFilter::EmptyFilter()
 : m_HumanLabel("Unknown Filter")
 {
-  setupFilterParameters();
 }
 
 // -----------------------------------------------------------------------------

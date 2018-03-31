@@ -65,10 +65,10 @@ class SIMPLib_EXPORT GenericExample : public AbstractFilter
   Q_OBJECT
 public:
   SIMPL_SHARED_POINTERS(GenericExample)
-  SIMPL_STATIC_NEW_MACRO(GenericExample)
-   SIMPL_TYPE_MACRO_SUPER_OVERRIDE(GenericExample, AbstractFilter)
+  SIMPL_FILTER_NEW_MACRO(GenericExample)
+  SIMPL_TYPE_MACRO_SUPER_OVERRIDE(GenericExample, AbstractFilter)
 
-  virtual ~GenericExample();
+  ~GenericExample() override;
 
   /* Place your input parameters here. You can use some of the DREAM3D Macros if you want to */
   SIMPL_FILTER_PARAMETER(QString, StlFilePrefix)
@@ -224,7 +224,7 @@ public:
   * @brief This method will read the options from a file
   * @param reader The reader that is used to read the options from a file
   */
-  virtual void readFilterParameters(AbstractFilterParametersReader* reader, int index) override;
+  void readFilterParameters(AbstractFilterParametersReader* reader, int index) override;
 
   /**
   * @brief readFilterParametersFromJson Reads the filter parameters from a file
@@ -269,8 +269,11 @@ protected:
   void initialize();
 
 private:
+public:
   GenericExample(const GenericExample&) = delete; // Copy Constructor Not Implemented
-  void operator=(const GenericExample&) = delete; // Operator '=' Not Implemented
+  GenericExample(GenericExample&&) = delete;      // Move Constructor
+  GenericExample& operator=(const GenericExample&) = delete; // Copy Assignment
+  GenericExample& operator=(GenericExample&&) = delete;      // Move Assignment
 };
 
 #endif /* _GenericExample_H_ */

@@ -176,7 +176,6 @@ CombineAttributeArrays::CombineAttributeArrays()
 , m_StackedDataArrayName(SIMPL::GeneralData::CombinedData)
 , m_NormalizeData(false)
 {
-  setupFilterParameters();
 }
 
 // -----------------------------------------------------------------------------

@@ -251,7 +251,6 @@ CreateDataArray::CreateDataArray()
 , m_InitializationType(Manual)
 , m_InitializationValue("0")
 {
-  setupFilterParameters();
 }
 
 // -----------------------------------------------------------------------------

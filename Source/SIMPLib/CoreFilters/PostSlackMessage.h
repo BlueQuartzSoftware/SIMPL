@@ -51,10 +51,10 @@ class PostSlackMessage : public AbstractFilter
 
   public:
     SIMPL_SHARED_POINTERS(PostSlackMessage)
-    SIMPL_STATIC_NEW_MACRO(PostSlackMessage)
-     SIMPL_TYPE_MACRO_SUPER_OVERRIDE(PostSlackMessage, AbstractFilter)
+    SIMPL_FILTER_NEW_MACRO(PostSlackMessage)
+    SIMPL_TYPE_MACRO_SUPER_OVERRIDE(PostSlackMessage, AbstractFilter)
 
-    virtual ~PostSlackMessage();
+    ~PostSlackMessage() override;
 
     SIMPL_INSTANCE_STRING_PROPERTY(SlackUser)
     Q_PROPERTY(QString SlackUser READ getSlackUser WRITE setSlackUser)
@@ -169,8 +169,11 @@ class PostSlackMessage : public AbstractFilter
     QMutex                                  m_Mutex;
     QNetworkAccessManager* m_NetworkManager;
 
+  public:
     PostSlackMessage(const PostSlackMessage&) = delete; // Copy Constructor Not Implemented
-    void operator=(const PostSlackMessage&) = delete;   // Operator '=' Not Implemented
+    PostSlackMessage(PostSlackMessage&&) = delete;      // Move Constructor
+    PostSlackMessage& operator=(const PostSlackMessage&) = delete; // Copy Assignment
+    PostSlackMessage& operator=(PostSlackMessage&&) = delete;      // Move Assignment
 };
 
 #endif /* _PostSlackMessage_H_ */
