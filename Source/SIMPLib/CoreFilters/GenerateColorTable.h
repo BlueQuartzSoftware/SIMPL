@@ -134,7 +134,6 @@ class SIMPLib_EXPORT GenerateColorTable : public AbstractFilter
     */
     void initialize();
 
-  private:
   public:
     GenerateColorTable(const GenerateColorTable&) = delete; // Copy Constructor Not Implemented
     GenerateColorTable(GenerateColorTable&&) = delete;      // Move Constructor

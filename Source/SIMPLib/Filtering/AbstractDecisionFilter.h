@@ -153,7 +153,8 @@ private:
 public:
   AbstractDecisionFilter(const AbstractDecisionFilter&) = delete; // Copy Constructor Not Implemented
   AbstractDecisionFilter(AbstractDecisionFilter&&) = delete;      // Move Constructor
-  void operator=(const AbstractDecisionFilter&);                  // Move assignment Not Implemented
+  AbstractDecisionFilter& operator=(const AbstractDecisionFilter&) = delete; // Copy Assignment Not Implemented
+  AbstractDecisionFilter& operator=(AbstractDecisionFilter&&) = delete;      // Move Assignment Not Implemented
 };
 
 #endif /* _ABSTRACTDECISIONFILTER_H_ */

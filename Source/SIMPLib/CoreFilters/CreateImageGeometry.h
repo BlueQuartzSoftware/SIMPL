@@ -178,7 +178,6 @@ class SIMPLib_EXPORT CreateImageGeometry : public AbstractFilter
      */
     void updateSurfaceMesh();
 
-  private:
   public:
     CreateImageGeometry(const CreateImageGeometry&) = delete; // Copy Constructor Not Implemented
     CreateImageGeometry(CreateImageGeometry&&) = delete;      // Move Constructor

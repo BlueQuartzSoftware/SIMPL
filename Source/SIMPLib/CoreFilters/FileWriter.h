@@ -96,7 +96,6 @@ class SIMPLib_EXPORT FileWriter : public AbstractFilter
      */
     virtual int32_t writeFile();
 
-  private:
   public:
     FileWriter(const FileWriter&) = delete;     // Copy Constructor Not Implemented
     FileWriter(FileWriter&&) = delete;          // Move Constructor

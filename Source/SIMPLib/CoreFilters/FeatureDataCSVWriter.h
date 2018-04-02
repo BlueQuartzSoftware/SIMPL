@@ -180,7 +180,6 @@ class FeatureDataCSVWriter : public AbstractFilter
       TAB = 3
     };
 
-  private:
   public:
     FeatureDataCSVWriter(const FeatureDataCSVWriter&) = delete; // Copy Constructor Not Implemented
     FeatureDataCSVWriter(FeatureDataCSVWriter&&) = delete;      // Move Constructor

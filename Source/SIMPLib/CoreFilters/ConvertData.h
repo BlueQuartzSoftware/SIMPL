@@ -164,7 +164,6 @@ class SIMPLib_EXPORT ConvertData : public AbstractFilter
     void initialize();
 
 
-  private:
   public:
     ConvertData(const ConvertData&) = delete;    // Copy Constructor Not Implemented
     ConvertData(ConvertData&&) = delete;         // Move Constructor

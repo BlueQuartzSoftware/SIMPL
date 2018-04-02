@@ -69,9 +69,7 @@ public:
   , m_ScaleFactor(scale)
   {
   }
-  virtual ~ScaleVolumeUpdateVerticesImpl()
-  {
-  }
+  ~ScaleVolumeUpdateVerticesImpl() = default;
 
   void generate(size_t start, size_t end) const
   {
