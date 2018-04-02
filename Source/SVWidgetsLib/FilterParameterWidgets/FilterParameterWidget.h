@@ -158,7 +158,7 @@ class SVWidgetsLib_EXPORT FilterParameterWidget : public QFrame
     QString                       m_CurrentlyValidPath;
 
     FilterParameterWidget(const FilterParameterWidget&) = delete; // Copy Constructor Not Implemented
-    void operator=(const FilterParameterWidget&) = delete;        // Operator '=' Not Implemented
+    void operator=(const FilterParameterWidget&) = delete;        // Move assignment Not Implemented
 };
 
 // -----------------------------------------------------------------------------

@@ -272,5 +272,5 @@ public:
 
 private:
   RenameAttributeMatrixTest(const RenameAttributeMatrixTest&); // Copy Constructor Not Implemented
-  void operator=(const RenameAttributeMatrixTest&);            // Operator '=' Not Implemented
+  void operator=(const RenameAttributeMatrixTest&);            // Move assignment Not Implemented
 };

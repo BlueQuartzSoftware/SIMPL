@@ -480,7 +480,7 @@ class SIMPLib_EXPORT QuadGeom : public IGeometry2D
     friend class FindQuadDerivativesImpl;
 
     QuadGeom(const QuadGeom&) = delete;       // Copy Constructor Not Implemented
-    void operator=(const QuadGeom&) = delete; // Operator '=' Not Implemented
+    void operator=(const QuadGeom&) = delete; // Move assignment Not Implemented
 };
 
 

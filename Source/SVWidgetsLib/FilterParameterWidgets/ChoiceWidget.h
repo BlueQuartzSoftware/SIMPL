@@ -98,7 +98,7 @@ class SVWidgetsLib_EXPORT ChoiceWidget : public FilterParameterWidget, private U
     ChoiceFilterParameter* m_FilterParameter;
 
     ChoiceWidget(const ChoiceWidget&) = delete;   // Copy Constructor Not Implemented
-    void operator=(const ChoiceWidget&) = delete; // Operator '=' Not Implemented
+    void operator=(const ChoiceWidget&) = delete; // Move assignment Not Implemented
 };
 
 #endif /* _ChoiceWidget_H_ */

@@ -345,7 +345,7 @@ class SVWidgetsLib_EXPORT SVPipelineFilterWidget : public QFrame, public Pipelin
     void initialize();
 
     SVPipelineFilterWidget(const SVPipelineFilterWidget&) = delete; // Copy Constructor Not Implemented
-    void operator=(const SVPipelineFilterWidget&) = delete;         // Operator '=' Not Implemented
+    void operator=(const SVPipelineFilterWidget&) = delete;         // Move assignment Not Implemented
 };
 
 #endif /* _svpipelinefilterwidget_h_ */

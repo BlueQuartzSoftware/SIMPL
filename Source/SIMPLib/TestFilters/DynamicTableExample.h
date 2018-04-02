@@ -141,7 +141,7 @@ private:
 public:
   DynamicTableExample(const DynamicTableExample&) = delete; // Copy Constructor Not Implemented
   DynamicTableExample(DynamicTableExample&&) = delete;      // Move Constructor
-  void operator=(const DynamicTableExample&);      // Operator '=' Not Implemented
+  void operator=(const DynamicTableExample&);               // Move assignment Not Implemented
 };
 
 #endif /* _DynamicTableExample_H_ */

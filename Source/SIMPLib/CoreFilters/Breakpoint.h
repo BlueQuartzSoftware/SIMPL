@@ -185,7 +185,7 @@ class SIMPLib_EXPORT Breakpoint : public AbstractFilter
   public:
     Breakpoint(const Breakpoint&) = delete;     // Copy Constructor Not Implemented
     Breakpoint(Breakpoint&&) = delete;          // Move Constructor
-    Breakpoint& operator=(const Breakpoint&) = delete; // Copy Assignment
+    Breakpoint& operator=(const Breakpoint&) = delete; // Copy Assignment Not Implemented
     Breakpoint& operator=(Breakpoint&&) = delete;      // Move Assignment
 };
 

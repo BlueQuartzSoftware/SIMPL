@@ -170,7 +170,7 @@ class SIMPLib_EXPORT EmptyFilter : public AbstractFilter
   public:
     EmptyFilter(const EmptyFilter&) = delete;    // Copy Constructor Not Implemented
     EmptyFilter(EmptyFilter&&) = delete;         // Move Constructor
-    EmptyFilter& operator=(const EmptyFilter&) = delete; // Copy Assignment
+    EmptyFilter& operator=(const EmptyFilter&) = delete; // Copy Assignment Not Implemented
     EmptyFilter& operator=(EmptyFilter&&) = delete;      // Move Assignment
 };
 

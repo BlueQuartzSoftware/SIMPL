@@ -77,7 +77,7 @@ private:
   mutable QList<QPixmap> Pixmaps;
 
   ColorPresetsDialogTableModel(const ColorPresetsDialogTableModel&) = delete; // Copy Constructor Not Implemented
-  void operator=(const ColorPresetsDialogTableModel&) = delete;               // Operator '=' Not Implemented
+  void operator=(const ColorPresetsDialogTableModel&) = delete;               // Move assignment Not Implemented
 };
 
 #endif /* _colorpresetsdialogtablemodel_h */

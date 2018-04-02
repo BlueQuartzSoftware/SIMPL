@@ -50,7 +50,7 @@ class ScopedFileMonitor
   private:
     FILE* m_File;
     ScopedFileMonitor(const ScopedFileMonitor&); // Copy Constructor Not Implemented
-    void operator=(const ScopedFileMonitor&); // Operator '=' Not Implemented
+    void operator=(const ScopedFileMonitor&);    // Move assignment Not Implemented
 };
 
 #endif /* _ScopedFilePointer_H_ */

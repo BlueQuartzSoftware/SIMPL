@@ -178,7 +178,7 @@ class WriteTriangleGeometry : public AbstractFilter
   public:
     WriteTriangleGeometry(const WriteTriangleGeometry&) = delete; // Copy Constructor Not Implemented
     WriteTriangleGeometry(WriteTriangleGeometry&&) = delete;      // Move Constructor
-    WriteTriangleGeometry& operator=(const WriteTriangleGeometry&) = delete; // Copy Assignment
+    WriteTriangleGeometry& operator=(const WriteTriangleGeometry&) = delete; // Copy Assignment Not Implemented
     WriteTriangleGeometry& operator=(WriteTriangleGeometry&&) = delete;      // Move Assignment
 };
 

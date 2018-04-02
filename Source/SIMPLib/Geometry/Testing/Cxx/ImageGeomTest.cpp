@@ -107,5 +107,5 @@ public:
 
 private:
   ImageGeomTest(const ImageGeomTest&) = delete;  // Copy Constructor Not Implemented
-  void operator=(const ImageGeomTest&) = delete; // Operator '=' Not Implemented
+  void operator=(const ImageGeomTest&) = delete; // Move assignment Not Implemented
 };

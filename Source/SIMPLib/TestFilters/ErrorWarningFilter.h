@@ -165,7 +165,7 @@ private:
 public:
   ErrorWarningFilter(const ErrorWarningFilter&) = delete; // Copy Constructor Not Implemented
   ErrorWarningFilter(ErrorWarningFilter&&) = delete;      // Move Constructor
-  void operator=(const ErrorWarningFilter&);     // Operator '=' Not Implemented
+  void operator=(const ErrorWarningFilter&);              // Move assignment Not Implemented
 };
 
 #endif /* _ErrorWarningFilter_H_ */

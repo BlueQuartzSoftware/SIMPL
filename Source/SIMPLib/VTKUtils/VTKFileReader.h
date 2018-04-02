@@ -217,7 +217,7 @@ class SIMPLib_EXPORT VTKFileReader : public FileReader
 
   private:
     VTKFileReader(const VTKFileReader&) = delete;  // Copy Constructor Not Implemented
-    void operator=(const VTKFileReader&) = delete; // Operator '=' Not Implemented
+    void operator=(const VTKFileReader&) = delete; // Move assignment Not Implemented
 };
 
 #endif /* VTKFILEREADER_H_ */

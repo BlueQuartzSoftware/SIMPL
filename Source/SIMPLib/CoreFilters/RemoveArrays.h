@@ -175,7 +175,7 @@ class SIMPLib_EXPORT RemoveArrays : public AbstractFilter
   public:
     RemoveArrays(const RemoveArrays&) = delete;   // Copy Constructor Not Implemented
     RemoveArrays(RemoveArrays&&) = delete;        // Move Constructor
-    RemoveArrays& operator=(const RemoveArrays&) = delete; // Copy Assignment
+    RemoveArrays& operator=(const RemoveArrays&) = delete; // Copy Assignment Not Implemented
     RemoveArrays& operator=(RemoveArrays&&) = delete;      // Move Assignment
 };
 

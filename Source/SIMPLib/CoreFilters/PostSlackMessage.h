@@ -172,7 +172,7 @@ class PostSlackMessage : public AbstractFilter
   public:
     PostSlackMessage(const PostSlackMessage&) = delete; // Copy Constructor Not Implemented
     PostSlackMessage(PostSlackMessage&&) = delete;      // Move Constructor
-    PostSlackMessage& operator=(const PostSlackMessage&) = delete; // Copy Assignment
+    PostSlackMessage& operator=(const PostSlackMessage&) = delete; // Copy Assignment Not Implemented
     PostSlackMessage& operator=(PostSlackMessage&&) = delete;      // Move Assignment
 };
 

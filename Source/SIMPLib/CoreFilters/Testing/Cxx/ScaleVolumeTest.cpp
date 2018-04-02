@@ -371,5 +371,5 @@ public:
 
 private:
   ScaleVolumeTest(const ScaleVolumeTest&); // Copy Constructor Not Implemented
-  void operator=(const ScaleVolumeTest&);  // Operator '=' Not Implemented
+  void operator=(const ScaleVolumeTest&);  // Move assignment Not Implemented
 };

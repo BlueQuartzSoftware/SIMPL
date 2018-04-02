@@ -137,7 +137,7 @@ class SIMPLib_EXPORT CalculatorArray : public ICalculatorArray
     ValueType                                                 m_Type;
 
     CalculatorArray(const CalculatorArray&); // Copy Constructor Not Implemented
-    void operator=(const CalculatorArray&); // Operator '=' Not Implemented
+    void operator=(const CalculatorArray&);  // Move assignment Not Implemented
 };
 
 #endif /* _CalculatorArray_H_ */

@@ -94,7 +94,7 @@ private:
   int m_NumOfLines;
 
   LineCounterObject(const LineCounterObject&) = delete; // Copy Constructor Not Implemented
-  void operator=(const LineCounterObject&);    // Operator '=' Not Implemented
+  void operator=(const LineCounterObject&);             // Move assignment Not Implemented
 };
 
 #endif /* _linecounterobject_h_ */

@@ -472,7 +472,7 @@ class SVWidgetsLib_EXPORT SVPipelineViewWidget : public QFrame, public PipelineV
     void createPipelineViewWidgetMenu();
 
     SVPipelineViewWidget(const SVPipelineViewWidget&) = delete; // Copy Constructor Not Implemented
-    void operator=(const SVPipelineViewWidget&) = delete;       // Operator '=' Not Implemented
+    void operator=(const SVPipelineViewWidget&) = delete;       // Move assignment Not Implemented
 };
 
 #endif /* _svpipelineviewwidget_H */

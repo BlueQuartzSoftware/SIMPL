@@ -247,5 +247,5 @@ private:
   std::string m_FilePath = UnitTest::TestTempDir.toStdString() + "/ImportAsciDataArrayTest.txt";
 
   ImportAsciDataArrayTest(const ImportAsciDataArrayTest&); // Copy Constructor Not Implemented
-  void operator=(const ImportAsciDataArrayTest&);          // Operator '=' Not Implemented
+  void operator=(const ImportAsciDataArrayTest&);          // Move assignment Not Implemented
 };

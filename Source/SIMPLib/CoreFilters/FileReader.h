@@ -113,7 +113,7 @@ class SIMPLib_EXPORT FileReader : public AbstractFilter
   public:
     FileReader(const FileReader&) = delete;     // Copy Constructor Not Implemented
     FileReader(FileReader&&) = delete;          // Move Constructor
-    FileReader& operator=(const FileReader&) = delete; // Copy Assignment
+    FileReader& operator=(const FileReader&) = delete; // Copy Assignment Not Implemented
     FileReader& operator=(FileReader&&) = delete;      // Move Assignment
 };
 

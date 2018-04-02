@@ -79,7 +79,7 @@ private:
 public:
   ChangeGlobalValue(const ChangeGlobalValue&) = delete; // Copy Constructor Not Implemented
   ChangeGlobalValue(ChangeGlobalValue&&) = delete;      // Move Constructor
-  void operator=(const ChangeGlobalValue&);    // Operator '=' Not Implemented
+  void operator=(const ChangeGlobalValue&);             // Move assignment Not Implemented
 };
 
 #endif /* _changeglobalvalue_h_ */

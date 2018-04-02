@@ -647,5 +647,5 @@ public:
 
 private:
   ConvertDataTest(const ConvertDataTest&); // Copy Constructor Not Implemented
-  void operator=(const ConvertDataTest&);  // Operator '=' Not Implemented
+  void operator=(const ConvertDataTest&);  // Move assignment Not Implemented
 };

@@ -172,7 +172,7 @@ class SIMPLib_EXPORT CombineAttributeArrays : public AbstractFilter
   public:
     CombineAttributeArrays(const CombineAttributeArrays&) = delete; // Copy Constructor Not Implemented
     CombineAttributeArrays(CombineAttributeArrays&&) = delete;      // Move Constructor
-    CombineAttributeArrays& operator=(const CombineAttributeArrays&) = delete; // Copy Assignment
+    CombineAttributeArrays& operator=(const CombineAttributeArrays&) = delete; // Copy Assignment Not Implemented
     CombineAttributeArrays& operator=(CombineAttributeArrays&&) = delete;      // Move Assignment
 };
 

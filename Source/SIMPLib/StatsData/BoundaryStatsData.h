@@ -171,7 +171,7 @@ class SIMPLib_EXPORT BoundaryStatsData : public StatsData
 
   private:
     BoundaryStatsData(const BoundaryStatsData&) = delete; // Copy Constructor Not Implemented
-    void operator=(const BoundaryStatsData&) = delete;    // Operator '=' Not Implemented
+    void operator=(const BoundaryStatsData&) = delete;    // Move assignment Not Implemented
 };
 
 #endif /* _BoundaryStatsDataTUPLE_H_ */

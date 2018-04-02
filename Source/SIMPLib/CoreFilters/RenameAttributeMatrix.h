@@ -165,7 +165,7 @@ class SIMPLib_EXPORT RenameAttributeMatrix : public AbstractFilter
   public:
     RenameAttributeMatrix(const RenameAttributeMatrix&) = delete; // Copy Constructor Not Implemented
     RenameAttributeMatrix(RenameAttributeMatrix&&) = delete;      // Move Constructor
-    RenameAttributeMatrix& operator=(const RenameAttributeMatrix&) = delete; // Copy Assignment
+    RenameAttributeMatrix& operator=(const RenameAttributeMatrix&) = delete; // Copy Assignment Not Implemented
     RenameAttributeMatrix& operator=(RenameAttributeMatrix&&) = delete;      // Move Assignment
 };
 

@@ -125,7 +125,7 @@ class SVWidgetsLib_EXPORT BookmarksModel : public QAbstractItemModel
     QModelIndexList findIndexByPath(const QModelIndex& index, QString filePath);
 
     BookmarksModel(const BookmarksModel&);    // Copy Constructor Not Implemented
-    void operator=(const BookmarksModel&);  // Operator '=' Not Implemented
+    void operator=(const BookmarksModel&);    // Move assignment Not Implemented
 };
 
 #endif // BookmarksModel_H

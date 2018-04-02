@@ -409,5 +409,5 @@ public:
 
 private:
   StringDataArrayTest(const StringDataArrayTest&); // Copy Constructor Not Implemented
-  void operator=(const StringDataArrayTest&);      // Operator '=' Not Implemented
+  void operator=(const StringDataArrayTest&);      // Move assignment Not Implemented
 };

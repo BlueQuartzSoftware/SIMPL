@@ -165,7 +165,7 @@ class SIMPLib_EXPORT RenameDataContainer : public AbstractFilter
   public:
     RenameDataContainer(const RenameDataContainer&) = delete; // Copy Constructor Not Implemented
     RenameDataContainer(RenameDataContainer&&) = delete;      // Move Constructor
-    RenameDataContainer& operator=(const RenameDataContainer&) = delete; // Copy Assignment
+    RenameDataContainer& operator=(const RenameDataContainer&) = delete; // Copy Assignment Not Implemented
     RenameDataContainer& operator=(RenameDataContainer&&) = delete;      // Move Assignment
 };
 

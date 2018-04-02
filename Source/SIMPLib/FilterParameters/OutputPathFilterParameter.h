@@ -143,7 +143,7 @@ public:
 
 private:
   OutputPathFilterParameter(const OutputPathFilterParameter&) = delete; // Copy Constructor Not Implemented
-  void operator=(const OutputPathFilterParameter&) = delete;            // Operator '=' Not Implemented
+  void operator=(const OutputPathFilterParameter&) = delete;            // Move assignment Not Implemented
 };
 
 #endif /* _OutputPathFilterParameter_H_ */

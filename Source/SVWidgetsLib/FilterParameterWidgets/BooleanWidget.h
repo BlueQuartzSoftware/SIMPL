@@ -95,7 +95,7 @@ class SVWidgetsLib_EXPORT BooleanWidget : public FilterParameterWidget, private 
     BooleanFilterParameter* m_FilterParameter;
 
     BooleanWidget(const BooleanWidget&) = delete;  // Copy Constructor Not Implemented
-    void operator=(const BooleanWidget&) = delete; // Operator '=' Not Implemented
+    void operator=(const BooleanWidget&) = delete; // Move assignment Not Implemented
 };
 
 #endif /* _BooleanWidget_H_ */

@@ -452,5 +452,5 @@ public:
 
 private:
   ReadASCIIDataTest(const ReadASCIIDataTest&); // Copy Constructor Not Implemented
-  void operator=(const ReadASCIIDataTest&);    // Operator '=' Not Implemented
+  void operator=(const ReadASCIIDataTest&);    // Move assignment Not Implemented
 };

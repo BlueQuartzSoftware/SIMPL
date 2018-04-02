@@ -70,7 +70,7 @@ private:
   QVector<QString>                                          m_Headers;
   QSharedPointer<ASCIIDataModel> m_ASCIIDataModel;
   EditHeadersDialog(const EditHeadersDialog&) = delete; // Copy Constructor Not Implemented
-  void operator=(const EditHeadersDialog&) = delete;    // Operator '=' Not Implemented
+  void operator=(const EditHeadersDialog&) = delete;    // Move assignment Not Implemented
 };
 
 #endif /* EditHeadersDialog_H_ */

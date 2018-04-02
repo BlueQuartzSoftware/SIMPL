@@ -109,7 +109,7 @@ class SIMPLib_EXPORT PluginManager
     static PluginManager* self;
 
     PluginManager(const PluginManager&) = delete;  // Copy Constructor Not Implemented
-    void operator=(const PluginManager&) = delete; // Operator '=' Not Implemented
+    void operator=(const PluginManager&) = delete; // Move assignment Not Implemented
 };
 
 #endif /* _PluginManager_H_ */

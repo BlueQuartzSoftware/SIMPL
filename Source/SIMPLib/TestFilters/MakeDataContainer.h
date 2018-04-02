@@ -155,7 +155,7 @@ private:
 public:
   MakeDataContainer(const MakeDataContainer&) = delete; // Copy Constructor Not Implemented
   MakeDataContainer(MakeDataContainer&&) = delete;      // Move Constructor
-  void operator=(const MakeDataContainer&);    // Operator '=' Not Implemented
+  void operator=(const MakeDataContainer&);             // Move assignment Not Implemented
 };
 
 #endif /*    */

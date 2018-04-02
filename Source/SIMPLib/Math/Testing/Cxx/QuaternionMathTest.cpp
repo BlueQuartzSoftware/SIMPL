@@ -360,5 +360,5 @@ public:
 
 private:
   QuaternionMathTest(const QuaternionMathTest&); // Copy Constructor Not Implemented
-  void operator=(const QuaternionMathTest&);     // Operator '=' Not Implemented
+  void operator=(const QuaternionMathTest&);     // Move assignment Not Implemented
 };

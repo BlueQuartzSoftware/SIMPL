@@ -184,7 +184,7 @@ class FeatureDataCSVWriter : public AbstractFilter
   public:
     FeatureDataCSVWriter(const FeatureDataCSVWriter&) = delete; // Copy Constructor Not Implemented
     FeatureDataCSVWriter(FeatureDataCSVWriter&&) = delete;      // Move Constructor
-    FeatureDataCSVWriter& operator=(const FeatureDataCSVWriter&) = delete; // Copy Assignment
+    FeatureDataCSVWriter& operator=(const FeatureDataCSVWriter&) = delete; // Copy Assignment Not Implemented
     FeatureDataCSVWriter& operator=(FeatureDataCSVWriter&&) = delete;      // Move Assignment
 };
 

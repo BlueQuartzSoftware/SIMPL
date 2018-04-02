@@ -105,7 +105,7 @@ class SVWidgetsLib_EXPORT BookmarksItem
     QIcon                               m_Icon;
 
     BookmarksItem(const BookmarksItem&);    // Copy Constructor Not Implemented
-    void operator=(const BookmarksItem&);  // Operator '=' Not Implemented
+    void operator=(const BookmarksItem&);   // Move assignment Not Implemented
 };
 
 #endif // BookmarksItem_H

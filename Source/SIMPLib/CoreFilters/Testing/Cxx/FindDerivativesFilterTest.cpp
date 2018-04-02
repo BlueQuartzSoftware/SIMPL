@@ -549,5 +549,5 @@ public:
 
 private:
   FindDerivativesFilterTest(const FindDerivativesFilterTest&); // Copy Constructor Not Implemented
-  void operator=(const FindDerivativesFilterTest&);            // Operator '=' Not Implemented
+  void operator=(const FindDerivativesFilterTest&);            // Move assignment Not Implemented
 };

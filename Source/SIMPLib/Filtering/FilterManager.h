@@ -160,7 +160,7 @@ private:
   static FilterManager* self;
 
   FilterManager(const FilterManager&);  // Copy Constructor Not Implemented
-  void operator=(const FilterManager&) = delete; // Operator '=' Not Implemented
+  void operator=(const FilterManager&) = delete; // Move assignment Not Implemented
 };
 
 #endif /* _FilterManager_H_ */

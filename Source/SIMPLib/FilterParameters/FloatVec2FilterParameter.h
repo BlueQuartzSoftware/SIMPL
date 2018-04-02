@@ -158,7 +158,7 @@ public:
 
 private:
   FloatVec2FilterParameter(const FloatVec2FilterParameter&) = delete; // Copy Constructor Not Implemented
-  void operator=(const FloatVec2FilterParameter&) = delete;           // Operator '=' Not Implemented
+  void operator=(const FloatVec2FilterParameter&) = delete;           // Move assignment Not Implemented
 };
 
 #endif /* _floatvec3filterparameter_h_ */

@@ -143,7 +143,7 @@ private:
 public:
   ThresholdExample(const ThresholdExample&) = delete; // Copy Constructor Not Implemented
   ThresholdExample(ThresholdExample&&) = delete;      // Move Constructor
-  void operator=(const ThresholdExample&);   // Operator '=' Not Implemented
+  void operator=(const ThresholdExample&);            // Move assignment Not Implemented
 };
 
 #endif /* _ThresholdExample_H_ */

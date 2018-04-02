@@ -396,5 +396,5 @@ public:
 
 private:
   CreateAttributeMatrixTest(const CreateAttributeMatrixTest&); // Copy Constructor Not Implemented
-  void operator=(const CreateAttributeMatrixTest&);            // Operator '=' Not Implemented
+  void operator=(const CreateAttributeMatrixTest&);            // Move assignment Not Implemented
 };

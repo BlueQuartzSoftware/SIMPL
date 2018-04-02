@@ -148,7 +148,7 @@ protected:
 
 private:
   FilterGroup09(const FilterGroup09&);  // Copy Constructor Not Implemented
-  FilterGroup09& operator=(const FilterGroup09&) = delete; // Copy Assignment
+  FilterGroup09& operator=(const FilterGroup09&) = delete; // Copy Assignment Not Implemented
   FilterGroup09& operator=(FilterGroup09&&) = delete;      // Move Assignment
 };
 

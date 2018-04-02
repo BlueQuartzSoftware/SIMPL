@@ -99,7 +99,7 @@ class SVWidgetsLib_EXPORT SeparatorWidget : public FilterParameterWidget, privat
     SeparatorFilterParameter* m_FilterParameter;
 
     SeparatorWidget(const SeparatorWidget&) = delete; // Copy Constructor Not Implemented
-    void operator=(const SeparatorWidget&) = delete;  // Operator '=' Not Implemented
+    void operator=(const SeparatorWidget&) = delete;  // Move assignment Not Implemented
 };
 
 #endif /* _SeparatorWidget_H_ */

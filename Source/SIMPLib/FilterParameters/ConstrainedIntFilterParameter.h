@@ -136,7 +136,7 @@ class SIMPLib_EXPORT ConstrainedIntFilterParameter : public FilterParameter
 
   private:
     ConstrainedIntFilterParameter(const ConstrainedIntFilterParameter&) = delete; // Copy Constructor Not Implemented
-    void operator=(const ConstrainedIntFilterParameter&) = delete;                // Operator '=' Not Implemented
+    void operator=(const ConstrainedIntFilterParameter&) = delete;                // Move assignment Not Implemented
 };
 
 #endif /* _constrainedintfilterparameter_h_ */

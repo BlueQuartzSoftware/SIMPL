@@ -419,7 +419,7 @@ class SIMPLib_EXPORT IGeometry : public Observable
 
   private:
     IGeometry(const IGeometry&) = delete;      // Copy Constructor Not Implemented
-    void operator=(const IGeometry&) = delete; // Operator '=' Not Implemented
+    void operator=(const IGeometry&) = delete; // Move assignment Not Implemented
 };
 
 #endif /* _IGeometry_H_ */

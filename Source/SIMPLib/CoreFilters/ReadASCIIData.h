@@ -158,7 +158,7 @@ class ReadASCIIData : public AbstractFilter
   public:
     ReadASCIIData(const ReadASCIIData&) = delete;  // Copy Constructor Not Implemented
     ReadASCIIData(ReadASCIIData&&) = delete;       // Move Constructor
-    ReadASCIIData& operator=(const ReadASCIIData&) = delete; // Copy Assignment
+    ReadASCIIData& operator=(const ReadASCIIData&) = delete; // Copy Assignment Not Implemented
     ReadASCIIData& operator=(ReadASCIIData&&) = delete;      // Move Assignment
 };
 

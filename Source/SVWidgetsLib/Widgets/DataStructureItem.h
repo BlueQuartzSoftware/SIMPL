@@ -130,7 +130,7 @@ class SVWidgetsLib_EXPORT DataStructureItem
     ItemType                            m_ItemType;
 
     DataStructureItem(const DataStructureItem&);    // Copy Constructor Not Implemented
-    void operator=(const DataStructureItem&);  // Operator '=' Not Implemented
+    void operator=(const DataStructureItem&);       // Move assignment Not Implemented
 };
 
 #endif // DataStructureItem_H

@@ -142,7 +142,7 @@ private:
 public:
   ArraySelectionExample(const ArraySelectionExample&) = delete; // Copy Constructor Not Implemented
   ArraySelectionExample(ArraySelectionExample&&) = delete;      // Move Constructor
-  void operator=(const ArraySelectionExample&);        // Operator '=' Not Implemented
+  void operator=(const ArraySelectionExample&);                 // Move assignment Not Implemented
 };
 
 #endif /* _ArraySelectionExample_H_ */

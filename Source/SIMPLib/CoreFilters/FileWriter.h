@@ -100,7 +100,7 @@ class SIMPLib_EXPORT FileWriter : public AbstractFilter
   public:
     FileWriter(const FileWriter&) = delete;     // Copy Constructor Not Implemented
     FileWriter(FileWriter&&) = delete;          // Move Constructor
-    FileWriter& operator=(const FileWriter&) = delete; // Copy Assignment
+    FileWriter& operator=(const FileWriter&) = delete; // Copy Assignment Not Implemented
     FileWriter& operator=(FileWriter&&) = delete;      // Move Assignment
 };
 

@@ -149,7 +149,7 @@ class RawBinaryWriter : public AbstractFilter
   public:
     RawBinaryWriter(const RawBinaryWriter&) = delete; // Copy Constructor Not Implemented
     RawBinaryWriter(RawBinaryWriter&&) = delete;      // Move Constructor
-    RawBinaryWriter& operator=(const RawBinaryWriter&) = delete; // Copy Assignment
+    RawBinaryWriter& operator=(const RawBinaryWriter&) = delete; // Copy Assignment Not Implemented
     RawBinaryWriter& operator=(RawBinaryWriter&&) = delete;      // Move Assignment
 };
 

@@ -253,7 +253,7 @@ class SIMPLib_EXPORT ArrayCalculator : public AbstractFilter
   public:
     ArrayCalculator(const ArrayCalculator&) = delete; // Copy Constructor Not Implemented
     ArrayCalculator(ArrayCalculator&&) = delete;      // Move Constructor
-    ArrayCalculator& operator=(const ArrayCalculator&) = delete; // Copy Assignment
+    ArrayCalculator& operator=(const ArrayCalculator&) = delete; // Copy Assignment Not Implemented
     ArrayCalculator& operator=(ArrayCalculator&&) = delete;      // Move Assignment
 };
 

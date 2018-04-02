@@ -29,7 +29,7 @@ class H5Support_EXPORT H5ScopedErrorHandler
     
     
     H5ScopedErrorHandler(const H5ScopedErrorHandler&) = delete; // Copy Constructor Not Implemented
-    void operator=(const H5ScopedErrorHandler&) = delete; // Operator '=' Not Implemented
+    void operator=(const H5ScopedErrorHandler&) = delete;       // Move assignment Not Implemented
 };
 
 

@@ -74,7 +74,7 @@ class SVWidgetsLib_EXPORT BreakpointFilterWidget : public SVPipelineFilterWidget
     QPushButton*                                            m_ResumeBtn;
 
     BreakpointFilterWidget(const BreakpointFilterWidget&) = delete; // Copy Constructor Not Implemented
-    void operator=(const BreakpointFilterWidget&) = delete;         // Operator '=' Not Implemented
+    void operator=(const BreakpointFilterWidget&) = delete;         // Move assignment Not Implemented
 };
 
 #endif /* _breakpointfilterwidget_h_ */

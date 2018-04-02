@@ -163,7 +163,7 @@ class SIMPLib_EXPORT CreateDataContainer : public AbstractFilter
   public:
     CreateDataContainer(const CreateDataContainer&) = delete; // Copy Constructor Not Implemented
     CreateDataContainer(CreateDataContainer&&) = delete;      // Move Constructor
-    CreateDataContainer& operator=(const CreateDataContainer&) = delete; // Copy Assignment
+    CreateDataContainer& operator=(const CreateDataContainer&) = delete; // Copy Assignment Not Implemented
     CreateDataContainer& operator=(CreateDataContainer&&) = delete;      // Move Assignment
 };
 

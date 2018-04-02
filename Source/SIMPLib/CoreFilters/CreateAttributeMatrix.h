@@ -170,7 +170,7 @@ class SIMPLib_EXPORT CreateAttributeMatrix : public AbstractFilter
   public:
     CreateAttributeMatrix(const CreateAttributeMatrix&) = delete; // Copy Constructor Not Implemented
     CreateAttributeMatrix(CreateAttributeMatrix&&) = delete;      // Move Constructor
-    CreateAttributeMatrix& operator=(const CreateAttributeMatrix&) = delete; // Copy Assignment
+    CreateAttributeMatrix& operator=(const CreateAttributeMatrix&) = delete; // Copy Assignment Not Implemented
     CreateAttributeMatrix& operator=(CreateAttributeMatrix&&) = delete;      // Move Assignment
 };
 

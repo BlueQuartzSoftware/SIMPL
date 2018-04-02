@@ -248,5 +248,5 @@ public:
 
 private:
   RenameDataContainerTest(const RenameDataContainerTest&); // Copy Constructor Not Implemented
-  void operator=(const RenameDataContainerTest&);          // Operator '=' Not Implemented
+  void operator=(const RenameDataContainerTest&);          // Move assignment Not Implemented
 };

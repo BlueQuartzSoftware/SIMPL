@@ -189,7 +189,7 @@ public:
 
 private:
   FourthOrderPolynomialFilterParameter(const FourthOrderPolynomialFilterParameter&) = delete; // Copy Constructor Not Implemented
-  void operator=(const FourthOrderPolynomialFilterParameter&) = delete;                       // Operator '=' Not Implemented
+  void operator=(const FourthOrderPolynomialFilterParameter&) = delete;                       // Move assignment Not Implemented
 };
 
 #endif /* _FourthOrderPolynomialFilterParameter_H_ */

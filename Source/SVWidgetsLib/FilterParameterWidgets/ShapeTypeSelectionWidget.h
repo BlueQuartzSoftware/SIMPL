@@ -108,7 +108,7 @@ class SVWidgetsLib_EXPORT ShapeTypeSelectionWidget : public FilterParameterWidge
     ShapeTypeSelectionFilterParameter* m_FilterParameter;
 
     ShapeTypeSelectionWidget(const ShapeTypeSelectionWidget&) = delete; // Copy Constructor Not Implemented
-    void operator=(const ShapeTypeSelectionWidget&) = delete;           // Operator '=' Not Implemented
+    void operator=(const ShapeTypeSelectionWidget&) = delete;           // Move assignment Not Implemented
 };
 
 #endif /* _ShapeTypeSelectionWidget_H_ */

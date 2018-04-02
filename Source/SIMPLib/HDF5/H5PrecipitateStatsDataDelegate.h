@@ -126,7 +126,7 @@ class SIMPLib_EXPORT H5PrecipitateStatsDataDelegate : public H5StatsDataDelegate
 
   private:
     H5PrecipitateStatsDataDelegate(const H5PrecipitateStatsDataDelegate&) = delete; // Copy Constructor Not Implemented
-    void operator=(const H5PrecipitateStatsDataDelegate&) = delete;                 // Operator '=' Not Implemented
+    void operator=(const H5PrecipitateStatsDataDelegate&) = delete;                 // Move assignment Not Implemented
 };
 
 #endif /* _H5PrecipitateStatsData_DELEGATE_H_ */

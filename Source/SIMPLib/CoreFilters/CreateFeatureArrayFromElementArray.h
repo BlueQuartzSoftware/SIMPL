@@ -174,7 +174,7 @@ class SIMPLib_EXPORT CreateFeatureArrayFromElementArray : public AbstractFilter
   public:
     CreateFeatureArrayFromElementArray(const CreateFeatureArrayFromElementArray&) = delete; // Copy Constructor Not Implemented
     CreateFeatureArrayFromElementArray(CreateFeatureArrayFromElementArray&&) = delete;      // Move Constructor
-    CreateFeatureArrayFromElementArray& operator=(const CreateFeatureArrayFromElementArray&) = delete; // Copy Assignment
+    CreateFeatureArrayFromElementArray& operator=(const CreateFeatureArrayFromElementArray&) = delete; // Copy Assignment Not Implemented
     CreateFeatureArrayFromElementArray& operator=(CreateFeatureArrayFromElementArray&&) = delete;      // Move Assignment
 };
 

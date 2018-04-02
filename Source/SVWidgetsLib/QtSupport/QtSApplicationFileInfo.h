@@ -53,7 +53,7 @@ class SVWidgetsLib_EXPORT QtSApplicationFileInfo
   private:
 
     QtSApplicationFileInfo(const QtSApplicationFileInfo&);    // Copy Constructor Not Implemented
-    void operator=(const QtSApplicationFileInfo&);  // Operator '=' Not Implemented
+    void operator=(const QtSApplicationFileInfo&);            // Move assignment Not Implemented
 };
 
 #endif /* _ApplicationFileInfo_H */

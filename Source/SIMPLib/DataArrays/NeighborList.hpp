@@ -1052,7 +1052,7 @@ class NeighborList : public IDataArray
 
 
     NeighborList(const NeighborList&); // Copy Constructor Not Implemented
-    void operator=(const NeighborList&); // Operator '=' Not Implemented
+    void operator=(const NeighborList&); // Move assignment Not Implemented
 };
 
 typedef NeighborList<int32_t> Int32NeighborListType;

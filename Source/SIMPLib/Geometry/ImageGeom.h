@@ -371,7 +371,7 @@ class SIMPLib_EXPORT ImageGeom : public IGeometryGrid
     friend class FindImageDerivativesImpl;
 
     ImageGeom(const ImageGeom&) = delete;      // Copy Constructor Not Implemented
-    void operator=(const ImageGeom&) = delete; // Operator '=' Not Implemented
+    void operator=(const ImageGeom&) = delete; // Move assignment Not Implemented
 };
 
 

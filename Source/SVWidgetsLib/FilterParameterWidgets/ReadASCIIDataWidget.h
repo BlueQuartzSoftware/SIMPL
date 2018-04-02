@@ -101,7 +101,7 @@ class SVWidgetsLib_EXPORT ReadASCIIDataWidget : public FilterParameterWidget, pr
     LineCounterObject*                                m_LineCounter;
 
     ReadASCIIDataWidget(const ReadASCIIDataWidget&) = delete; // Copy Constructor Not Implemented
-    void operator=(const ReadASCIIDataWidget&) = delete;      // Operator '=' Not Implemented
+    void operator=(const ReadASCIIDataWidget&) = delete;      // Move assignment Not Implemented
 };
 
 #endif /* ImportASCIIDataWidget_H_ */

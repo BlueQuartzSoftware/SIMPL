@@ -264,7 +264,7 @@ class SVWidgetsLib_EXPORT PipelineView
 
   private:
     PipelineView(const PipelineView&) = delete;   // Copy Constructor Not Implemented
-    void operator=(const PipelineView&) = delete; // Operator '=' Not Implemented
+    void operator=(const PipelineView&) = delete; // Move assignment Not Implemented
 };
 
 #endif /* _PipelineView_H */

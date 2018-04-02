@@ -628,5 +628,5 @@ private:
   QString m_FilePath = UnitTest::TestTempDir + "/ImportHDF5DatasetTest.h5";
 
   ImportHDF5DatasetTest(const ImportHDF5DatasetTest&); // Copy Constructor Not Implemented
-  void operator=(const ImportHDF5DatasetTest&);        // Operator '=' Not Implemented
+  void operator=(const ImportHDF5DatasetTest&);        // Move assignment Not Implemented
 };

@@ -154,7 +154,7 @@ private:
 public:
   PipelineAnnotation(const PipelineAnnotation&) = delete; // Copy Constructor Not Implemented
   PipelineAnnotation(PipelineAnnotation&&) = delete;      // Move Constructor
-  void operator=(const PipelineAnnotation&);  // Operator '=' Not Implemented
+  void operator=(const PipelineAnnotation&);              // Move assignment Not Implemented
 };
 
 #endif /* _pipelineAnnotation_h_ */

@@ -156,7 +156,7 @@ class SIMPLib_EXPORT AttributeMatrixCreationFilterParameter : public FilterParam
 
   private:
     AttributeMatrixCreationFilterParameter(const AttributeMatrixCreationFilterParameter&) = delete; // Copy Constructor Not Implemented
-    void operator=(const AttributeMatrixCreationFilterParameter&) = delete;                         // Operator '=' Not Implemented
+    void operator=(const AttributeMatrixCreationFilterParameter&) = delete;                         // Move assignment Not Implemented
 };
 
 #endif /* _AttributeMatrixCreationFilterParameter_H_ */

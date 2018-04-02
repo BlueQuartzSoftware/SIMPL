@@ -136,7 +136,7 @@ protected:
 
 private:
   ScalarTypeFilterParameter(const ScalarTypeFilterParameter&) = delete; // Copy Constructor Not Implemented
-  void operator=(const ScalarTypeFilterParameter&);                    // Operator '=' Not Implemented
+  void operator=(const ScalarTypeFilterParameter&);                     // Move assignment Not Implemented
 };
 
 #endif /* _ScalarTypeFilterParameter_H_ */

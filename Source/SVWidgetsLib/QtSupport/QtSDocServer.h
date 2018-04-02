@@ -86,5 +86,5 @@ private:
   static QtSDocServer* self;
 
   QtSDocServer(const QtSDocServer&) = delete;   // Copy Constructor Not Implemented
-  void operator=(const QtSDocServer&) = delete; // Operator '=' Not Implemented
+  void operator=(const QtSDocServer&) = delete; // Move assignment Not Implemented
 };

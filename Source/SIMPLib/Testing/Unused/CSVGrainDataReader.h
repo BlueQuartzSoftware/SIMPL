@@ -196,7 +196,7 @@ private:
   void readData(const QString& line, int row, size_t i);
 
   CSVGrainDataReader(const CSVGrainDataReader&) = delete; // Copy Constructor Not Implemented
-  void operator=(const CSVGrainDataReader&);     // Operator '=' Not Implemented
+  void operator=(const CSVGrainDataReader&);              // Move assignment Not Implemented
 };
 
 #endif /* CSVGRAINDATAREADER_H_ */

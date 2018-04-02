@@ -58,7 +58,7 @@ class BookmarksItemDelegate : public QStyledItemDelegate
 
   private:
     BookmarksItemDelegate(const BookmarksItemDelegate&) = delete; // Copy Constructor Not Implemented
-    void operator=(const BookmarksItemDelegate&) = delete;        // Operator '=' Not Implemented
+    void operator=(const BookmarksItemDelegate&) = delete;        // Move assignment Not Implemented
 };
 
 #endif // _BookmarksItemDelegate_H

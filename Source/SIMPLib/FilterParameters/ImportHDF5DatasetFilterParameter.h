@@ -102,7 +102,7 @@ protected:
 
 private:
   ImportHDF5DatasetFilterParameter(const ImportHDF5DatasetFilterParameter&) = delete; // Copy Constructor Not Implemented
-  void operator=(const ImportHDF5DatasetFilterParameter&);                   // Operator '=' Not Implemented
+  void operator=(const ImportHDF5DatasetFilterParameter&);                            // Move assignment Not Implemented
 };
 
 #endif /* _importhdf5datasetfilterparameter_h_ */

@@ -180,7 +180,7 @@ class SIMPLib_EXPORT ScaleVolume : public AbstractFilter
   public:
     ScaleVolume(const ScaleVolume&) = delete;    // Copy Constructor Not Implemented
     ScaleVolume(ScaleVolume&&) = delete;         // Move Constructor
-    ScaleVolume& operator=(const ScaleVolume&) = delete; // Copy Assignment
+    ScaleVolume& operator=(const ScaleVolume&) = delete; // Copy Assignment Not Implemented
     ScaleVolume& operator=(ScaleVolume&&) = delete;      // Move Assignment
 };
 

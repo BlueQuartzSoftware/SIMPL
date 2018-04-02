@@ -172,7 +172,7 @@ class SIMPLib_EXPORT ConditionalSetValue : public AbstractFilter
   public:
     ConditionalSetValue(const ConditionalSetValue&) = delete; // Copy Constructor Not Implemented
     ConditionalSetValue(ConditionalSetValue&&) = delete;      // Move Constructor
-    ConditionalSetValue& operator=(const ConditionalSetValue&) = delete; // Copy Assignment
+    ConditionalSetValue& operator=(const ConditionalSetValue&) = delete; // Copy Assignment Not Implemented
     ConditionalSetValue& operator=(ConditionalSetValue&&) = delete;      // Move Assignment
 };
 

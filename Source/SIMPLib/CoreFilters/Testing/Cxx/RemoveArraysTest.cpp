@@ -259,5 +259,5 @@ public:
 
 private:
   RemoveArraysTest(const RemoveArraysTest&); // Copy Constructor Not Implemented
-  void operator=(const RemoveArraysTest&);   // Operator '=' Not Implemented
+  void operator=(const RemoveArraysTest&);   // Move assignment Not Implemented
 };

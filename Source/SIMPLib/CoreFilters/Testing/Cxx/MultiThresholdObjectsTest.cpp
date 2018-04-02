@@ -219,5 +219,5 @@ public:
 
 private:
   MultiThresholdObjectsTest(const MultiThresholdObjectsTest&); // Copy Constructor Not Implemented
-  void operator=(const MultiThresholdObjectsTest&);            // Operator '=' Not Implemented
+  void operator=(const MultiThresholdObjectsTest&);            // Move assignment Not Implemented
 };

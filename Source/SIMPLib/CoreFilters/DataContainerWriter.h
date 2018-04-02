@@ -212,7 +212,7 @@ class SIMPLib_EXPORT DataContainerWriter : public AbstractFilter
   public:
     DataContainerWriter(const DataContainerWriter&) = delete; // Copy Constructor Not Implemented
     DataContainerWriter(DataContainerWriter&&) = delete;      // Move Constructor
-    DataContainerWriter& operator=(const DataContainerWriter&) = delete; // Copy Assignment
+    DataContainerWriter& operator=(const DataContainerWriter&) = delete; // Copy Assignment Not Implemented
     DataContainerWriter& operator=(DataContainerWriter&&) = delete;      // Move Assignment
 };
 

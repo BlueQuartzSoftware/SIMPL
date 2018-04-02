@@ -62,7 +62,7 @@ class SIMPLib_EXPORT SubtractionOperator : public BinaryOperator
 
   private:
     SubtractionOperator(const SubtractionOperator&) = delete; // Copy Constructor Not Implemented
-    void operator=(const SubtractionOperator&) = delete;      // Operator '=' Not Implemented
+    void operator=(const SubtractionOperator&) = delete;      // Move assignment Not Implemented
 };
 
 #endif /* _SubtractionOperator_H_ */

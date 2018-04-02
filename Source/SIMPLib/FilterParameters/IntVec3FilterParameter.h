@@ -160,7 +160,7 @@ public:
 
 private:
   IntVec3FilterParameter(const IntVec3FilterParameter&) = delete; // Copy Constructor Not Implemented
-  void operator=(const IntVec3FilterParameter&) = delete;         // Operator '=' Not Implemented
+  void operator=(const IntVec3FilterParameter&) = delete;         // Move assignment Not Implemented
 };
 
 #endif /* _IntVec3FilterParameter_H_ */

@@ -100,7 +100,7 @@ private:
   QAction* m_CloseAction = nullptr;
 
   SVUserManualDialog(const SVUserManualDialog&) = delete; // Copy Constructor Not Implemented
-  void operator=(const SVUserManualDialog&) = delete;     // Operator '=' Not Implemented
+  void operator=(const SVUserManualDialog&) = delete;     // Move assignment Not Implemented
 };
 
 #endif /* _svusermanualdialog_h_ */

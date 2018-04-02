@@ -203,7 +203,7 @@ class SIMPLib_EXPORT PrimaryStatsData : public StatsData
 
   private:
     PrimaryStatsData(const PrimaryStatsData&) = delete; // Copy Constructor Not Implemented
-    void operator=(const PrimaryStatsData&) = delete;   // Operator '=' Not Implemented
+    void operator=(const PrimaryStatsData&) = delete;   // Move assignment Not Implemented
 };
 
 #endif /* _PrimaryStatsDataTUPLE_H_ */

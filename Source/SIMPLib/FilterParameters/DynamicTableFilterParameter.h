@@ -147,7 +147,7 @@ class SIMPLib_EXPORT DynamicTableFilterParameter : public FilterParameter
 
   private:
     DynamicTableFilterParameter(const DynamicTableFilterParameter&) = delete; // Copy Constructor Not Implemented
-    void operator=(const DynamicTableFilterParameter&) = delete;              // Operator '=' Not Implemented
+    void operator=(const DynamicTableFilterParameter&) = delete;              // Move assignment Not Implemented
 };
 
 #endif /* _DynamicTableFilterParameter_H_ */

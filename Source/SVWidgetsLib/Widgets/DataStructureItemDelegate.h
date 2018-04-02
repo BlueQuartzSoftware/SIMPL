@@ -58,7 +58,7 @@ class DataStructureItemDelegate : public QStyledItemDelegate
 
   private:
     DataStructureItemDelegate(const DataStructureItemDelegate&) = delete; // Copy Constructor Not Implemented
-    void operator=(const DataStructureItemDelegate&) = delete;            // Operator '=' Not Implemented
+    void operator=(const DataStructureItemDelegate&) = delete;            // Move assignment Not Implemented
 };
 
 #endif // _DataStructureItemDelegate_H

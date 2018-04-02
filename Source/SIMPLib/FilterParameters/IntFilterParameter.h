@@ -136,7 +136,7 @@ class SIMPLib_EXPORT IntFilterParameter : public FilterParameter
 
   private:
     IntFilterParameter(const IntFilterParameter&) = delete; // Copy Constructor Not Implemented
-    void operator=(const IntFilterParameter&) = delete;     // Operator '=' Not Implemented
+    void operator=(const IntFilterParameter&) = delete;     // Move assignment Not Implemented
 };
 
 #endif /* _IntFilterParameter_H_ */

@@ -373,7 +373,7 @@ private:
   QUuid m_Uuid;
 
   AbstractFilter(const AbstractFilter&) = delete; // Copy Constructor Not Implemented
-  void operator=(const AbstractFilter&) = delete; // Operator '=' Not Implemented
+  void operator=(const AbstractFilter&) = delete; // Move assignment Not Implemented
 };
 
 #endif /* _AbstractFilter_H_  */

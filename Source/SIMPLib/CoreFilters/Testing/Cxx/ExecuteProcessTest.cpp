@@ -96,7 +96,7 @@ private:
   QString m_StdOutput;
 
   ExecuteProcessObserver(const ExecuteProcessObserver&); // Copy Constructor Not Implemented
-  void operator=(const ExecuteProcessObserver&);         // Operator '=' Not Implemented
+  void operator=(const ExecuteProcessObserver&);         // Move assignment Not Implemented
 };
 
 #include "ExecuteProcessTest.moc"
@@ -206,5 +206,5 @@ public:
 
 private:
   ExecuteProcessTest(const ExecuteProcessTest&); // Copy Constructor Not Implemented
-  void operator=(const ExecuteProcessTest&);     // Operator '=' Not Implemented
+  void operator=(const ExecuteProcessTest&);     // Move assignment Not Implemented
 };

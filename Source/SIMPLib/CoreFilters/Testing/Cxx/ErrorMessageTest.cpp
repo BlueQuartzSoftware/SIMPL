@@ -112,7 +112,7 @@ public:
 
 private:
   ErrorMessageTest(const ErrorMessageTest&); // Copy Constructor Not Implemented
-  void operator=(const ErrorMessageTest&);   // Operator '=' Not Implemented
+  void operator=(const ErrorMessageTest&);   // Move assignment Not Implemented
 };
 
 // -----------------------------------------------------------------------------

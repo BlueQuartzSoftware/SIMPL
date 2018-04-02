@@ -90,7 +90,7 @@ class SVWidgetsLib_EXPORT PopUpWidget : public QWidget, private Ui::PopUpWidget
     ArrowOrientation                    m_ArrowOrientation;
 
     PopUpWidget(const PopUpWidget&); // Copy Constructor Not Implemented
-    void operator=(const PopUpWidget&); // Operator '=' Not Implemented
+    void operator=(const PopUpWidget&); // Move assignment Not Implemented
 };
 
 #endif /* _progress_dialog_H_ */

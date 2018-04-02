@@ -270,5 +270,5 @@ public:
 
 private:
   RequiredZThicknessTest(const RequiredZThicknessTest&); // Copy Constructor Not Implemented
-  void operator=(const RequiredZThicknessTest&);         // Operator '=' Not Implemented
+  void operator=(const RequiredZThicknessTest&);         // Move assignment Not Implemented
 };

@@ -141,7 +141,7 @@ public:
 
 private:
   RangeFilterParameter(const RangeFilterParameter&) = delete; // Copy Constructor Not Implemented
-  void operator=(const RangeFilterParameter&) = delete;       // Operator '=' Not Implemented
+  void operator=(const RangeFilterParameter&) = delete;       // Move assignment Not Implemented
 };
 
 #endif /* _RangeFilterParameter_H_ */

@@ -75,7 +75,7 @@ class SVWidgetsLib_EXPORT OutputFileWidget : public AbstractIOFileWidget
     OutputFileFilterParameter*  m_FilterParameter;
 
     OutputFileWidget(const OutputFileWidget&) = delete; // Copy Constructor Not Implemented
-    void operator=(const OutputFileWidget&) = delete;   // Operator '=' Not Implemented
+    void operator=(const OutputFileWidget&) = delete;   // Move assignment Not Implemented
 };
 
 #endif /* _OutputFileWidget_H_ */

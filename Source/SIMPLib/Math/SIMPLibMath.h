@@ -256,7 +256,7 @@ class SIMPLibMath
 
   private:
     SIMPLibMath(const SIMPLibMath&) = delete;    // Copy Constructor Not Implemented
-    void operator=(const SIMPLibMath&) = delete; // Operator '=' Not Implemented
+    void operator=(const SIMPLibMath&) = delete; // Move assignment Not Implemented
 };
 
 #endif /* _EMMATH_H_ */

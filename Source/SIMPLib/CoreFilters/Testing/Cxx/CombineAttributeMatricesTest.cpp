@@ -476,5 +476,5 @@ public:
 
 private:
   CombineAttributeMatricesTest(const CombineAttributeMatricesTest&); // Copy Constructor Not Implemented
-  void operator=(const CombineAttributeMatricesTest&);               // Operator '=' Not Implemented
+  void operator=(const CombineAttributeMatricesTest&);               // Move assignment Not Implemented
 };

@@ -167,7 +167,7 @@ class SIMPLib_EXPORT DataContainerBundle : public IDataContainerBundle
     QString m_MetaDataAMName;
 
     DataContainerBundle(const DataContainerBundle&) = delete; // Copy Constructor Not Implemented
-    void operator=(const DataContainerBundle&) = delete;      // Operator '=' Not Implemented
+    void operator=(const DataContainerBundle&) = delete;      // Move assignment Not Implemented
 };
 
 #endif /* _DataContainerBundle_H_ */

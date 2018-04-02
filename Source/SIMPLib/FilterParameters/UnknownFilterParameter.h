@@ -83,7 +83,7 @@ public:
 
   private:
     UnknownFilterParameter(const UnknownFilterParameter&) = delete; // Copy Constructor Not Implemented
-    void operator=(const UnknownFilterParameter&) = delete;         // Operator '=' Not Implemented
+    void operator=(const UnknownFilterParameter&) = delete;         // Move assignment Not Implemented
 };
 
 #endif /* _UnknownFilterParameter_H_ */
