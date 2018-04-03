@@ -32,8 +32,8 @@
 
 #include "ImportHDF5DatasetFilterParameter.h"
 
+#include <QtCore/QJsonArray>
 #include <QtCore/QJsonObject>
-
 
 #include "SIMPLib/CoreFilters/ImportHDF5Dataset.h"
 
@@ -54,9 +54,9 @@ ImportHDF5DatasetFilterParameter::~ImportHDF5DatasetFilterParameter() = default;
 //
 // -----------------------------------------------------------------------------
 ImportHDF5DatasetFilterParameter::Pointer ImportHDF5DatasetFilterParameter::New(const QString& humanLabel, const QString& propertyName, const QVariant& filePathDefaultValue,
-                                                                                const QVariant& datasetDefaultValue, Category category, SetterCallbackType filePathSetterCallback,
-                                                                                GetterCallbackType filePathGetterCallback, SetterCallbackType dataSetSetterCallback,
-                                                                                GetterCallbackType dataSetGetterCallback, int groupIndex)
+                                                                                const QVariant& datasetDefaultValue, Category category, FilePathSetterCallbackType filePathSetterCallback,
+                                                                                FilePathGetterCallbackType filePathGetterCallback, DatasetSetterCallbackType dataSetSetterCallback,
+                                                                                DatasetGetterCallbackType dataSetGetterCallback, int groupIndex)
 {
   ImportHDF5DatasetFilterParameter::Pointer ptr = ImportHDF5DatasetFilterParameter::New();
   ptr->setHumanLabel(humanLabel);
@@ -94,10 +94,17 @@ void ImportHDF5DatasetFilterParameter::readJson(const QJsonObject& json)
   {
     m_FilePathSetterCallback(jsonValue.toString(""));
   }
-  jsonValue = json["DatasetPath"];
+  jsonValue = json["DatasetPaths"];
   if(!jsonValue.isUndefined() && m_DataSetSetterCallback)
   {
-    m_DataSetSetterCallback(jsonValue.toString(""));
+    QJsonArray dsetArray = jsonValue.toArray();
+    QStringList datasetPaths;
+    for(int i = 0; i < dsetArray.size(); i++)
+    {
+      datasetPaths.push_back(dsetArray[i].toString());
+    }
+
+    m_DataSetSetterCallback(datasetPaths);
   }
 }
 
@@ -112,6 +119,13 @@ void ImportHDF5DatasetFilterParameter::writeJson(QJsonObject& json)
   }
   if(m_DataSetGetterCallback)
   {
-    json["DatasetPath"] = m_DataSetGetterCallback();
+    QStringList datasetPaths = m_DataSetGetterCallback();
+    QJsonArray dsetArray;
+    for(int i = 0; i < datasetPaths.size(); i++)
+    {
+      dsetArray.push_back(datasetPaths[i]);
+    }
+
+    json["DatasetPaths"] = dsetArray;
   }
 }
