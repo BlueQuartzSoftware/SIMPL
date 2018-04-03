@@ -33,7 +33,7 @@ void ComparisonSetWidget::setupGui()
 {
   conditionalLayout->setAlignment(Qt::AlignTop);
   conditionalLayout->setDirection(QBoxLayout::Direction::TopToBottom);
-
+  conditionalLayout->setSpacing(0);
   setContextMenuPolicy(Qt::CustomContextMenu);
 
   connect(this, SIGNAL(customContextMenuRequested(QPoint)),

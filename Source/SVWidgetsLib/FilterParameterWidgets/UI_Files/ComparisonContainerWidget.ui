@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>524</width>
-    <height>25</height>
+    <width>541</width>
+    <height>42</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -47,6 +47,9 @@
    <property name="bottomMargin">
     <number>0</number>
    </property>
+   <property name="spacing">
+    <number>5</number>
+   </property>
    <item row="0" column="0">
     <widget class="QWidget" name="unionWidget" native="true">
      <property name="sizePolicy">
@@ -63,7 +66,7 @@
      </property>
      <property name="maximumSize">
       <size>
-       <width>45</width>
+       <width>16777215</width>
        <height>16777215</height>
       </size>
      </property>
@@ -97,22 +100,6 @@
         </item>
        </widget>
       </item>
-      <item>
-       <spacer name="verticalSpacer">
-        <property name="orientation">
-         <enum>Qt::Vertical</enum>
-        </property>
-        <property name="sizeType">
-         <enum>QSizePolicy::MinimumExpanding</enum>
-        </property>
-        <property name="sizeHint" stdset="0">
-         <size>
-          <width>20</width>
-          <height>0</height>
-         </size>
-        </property>
-       </spacer>
-      </item>
      </layout>
     </widget>
    </item>
@@ -124,7 +111,10 @@
        <verstretch>1</verstretch>
       </sizepolicy>
      </property>
-     <layout class="QVBoxLayout" name="contentsLayout">
+     <layout class="QHBoxLayout" name="contentsLayout" stretch="">
+      <property name="spacing">
+       <number>0</number>
+      </property>
       <property name="leftMargin">
        <number>0</number>
       </property>
@@ -208,8 +198,8 @@
         </property>
         <property name="iconSize">
          <size>
-          <width>14</width>
-          <height>14</height>
+          <width>24</width>
+          <height>24</height>
          </size>
         </property>
         <property name="flat">

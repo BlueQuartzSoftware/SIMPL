@@ -91,7 +91,7 @@ int ComparisonContainerWidget::getUnionOperator()
 // -----------------------------------------------------------------------------
 void ComparisonContainerWidget::setUnionOperator(int unionOperator)
 {
-  if (m_comparisonWidget)
+  if (nullptr != m_comparisonWidget)
   {
     m_comparisonWidget->getComparison()->setUnionOperator(unionOperator);
   }
@@ -103,7 +103,7 @@ void ComparisonContainerWidget::setUnionOperator(int unionOperator)
 // -----------------------------------------------------------------------------
 void ComparisonContainerWidget::unionOperatorChanged(int unionOp)
 {
-  if (m_comparisonWidget)
+  if (nullptr != m_comparisonWidget)
   {
     m_comparisonWidget->getComparison()->setUnionOperator(unionOp);
     emit comparisonChanged();
