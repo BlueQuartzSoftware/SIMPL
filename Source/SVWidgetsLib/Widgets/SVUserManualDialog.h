@@ -38,7 +38,7 @@
 
 #include "SVWidgetsLib/SVWidgetsLib.h"
 
-#include <QtWidgets/QDialog>
+#include <QtWidgets/QWidget>
 
 #include <QtWebEngineWidgets/QWebEngineView>
 
@@ -47,7 +47,7 @@
 /**
  * @brief The SVUserManualDialog class
  */
-class SVWidgetsLib_EXPORT SVUserManualDialog : public QDialog, public Ui::SVUserManualDialog
+class SVWidgetsLib_EXPORT SVUserManualDialog : public QWidget, public Ui::SVUserManualDialog
 {
   Q_OBJECT
 
@@ -82,15 +82,24 @@ public:
   * @return QWebEngineView*
   */
   QWebEngineView* getWebView();
+  
+  /**
+   * @brief loadWebPage
+   * @param url
+   */
+  void loadWebPage(const QUrl &url);
 
 protected:
-  SVUserManualDialog(QWidget* parent = nullptr);
+  explicit SVUserManualDialog(QWidget* parent = nullptr);
 
 protected slots:
   void on_backBtn_clicked();
   void on_forwardBtn_clicked();
   void on_refreshBtn_clicked();
   void updateButtons(bool ok);
+  void on_urlLineEdit_returnPressed();
+  void updateUrlLineEdit(QUrl url);
+  void webViewTitleChanged(QString title);
 
 private:
   static SVUserManualDialog* self;
@@ -99,6 +108,7 @@ private:
 
   QAction* m_CloseAction = nullptr;
 
+public:
   SVUserManualDialog(const SVUserManualDialog&) = delete; // Copy Constructor Not Implemented
   void operator=(const SVUserManualDialog&) = delete;     // Move assignment Not Implemented
 };

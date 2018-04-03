@@ -43,7 +43,7 @@ public:
   // SIMPL_SHARED_POINTERS(QtSDocServer)
   SIMPL_TYPE_MACRO(QtSDocServer)
 
-  virtual ~QtSDocServer();
+  ~QtSDocServer() override;
 
   /**
    * @brief Static instance to retrieve the global instance of this class
@@ -72,10 +72,10 @@ public:
   * @brief Generates a help URL from the given lowercase name.
   * @param className The name of the filter class that we are generating a URL
   */
-  static QUrl GenerateHTMLUrl(QString className);
+  static QUrl GenerateHTMLUrl(const QString &className);
 
 protected:
-  QtSDocServer(QObject* parent = nullptr);
+  explicit QtSDocServer(QObject* parent = nullptr);
 
   /**
    * @brief initializeDocServer
@@ -85,6 +85,7 @@ protected:
 private:
   static QtSDocServer* self;
 
+public:
   QtSDocServer(const QtSDocServer&) = delete;   // Copy Constructor Not Implemented
   void operator=(const QtSDocServer&) = delete; // Move assignment Not Implemented
 };
