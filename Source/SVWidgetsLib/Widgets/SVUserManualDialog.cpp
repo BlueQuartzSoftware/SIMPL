@@ -62,7 +62,7 @@ SVUserManualDialog* SVUserManualDialog::self = nullptr;
 //
 // -----------------------------------------------------------------------------
 SVUserManualDialog::SVUserManualDialog(QWidget* parent)
-: QDialog(parent)
+: QWidget(parent)
 {
   Q_ASSERT_X(!self, "SVUserManualDialog", "There should be only one SVUserManualDialog object");
 
@@ -78,6 +78,7 @@ SVUserManualDialog::SVUserManualDialog(QWidget* parent)
   sizePolicy1.setHeightForWidth(m_WebView->sizePolicy().hasHeightForWidth());
   m_WebView->setSizePolicy(sizePolicy1);
   m_WebView->setUrl(QUrl(QStringLiteral("about:blank")));
+  m_WebView->setMinimumHeight(500);
   gridLayout->addWidget(m_WebView, 2, 0, 1, 1);
 
   self->setWindowFlags(this->windowFlags() & ~Qt::WindowContextHelpButtonHint);
@@ -90,6 +91,9 @@ SVUserManualDialog::SVUserManualDialog(QWidget* parent)
 #endif
 
   connect(m_WebView, SIGNAL(loadFinished(bool)), this, SLOT(updateButtons(bool)));
+  connect(m_WebView, SIGNAL(urlChanged(QUrl)), this, SLOT(updateUrlLineEdit(QUrl)));
+  connect(m_WebView, SIGNAL(titleChanged(QString)), this, SLOT(webViewTitleChanged(QString)));
+  
 }
 
 // -----------------------------------------------------------------------------
@@ -98,12 +102,8 @@ SVUserManualDialog::SVUserManualDialog(QWidget* parent)
 SVUserManualDialog::~SVUserManualDialog()
 {
   delete m_WebView;
-
 #if defined(Q_OS_MAC)
-  if(m_CloseAction != nullptr)
-  {
-    delete m_CloseAction;
-  }
+  delete m_CloseAction;
 #endif
 }
 
@@ -112,7 +112,7 @@ SVUserManualDialog::~SVUserManualDialog()
 // -----------------------------------------------------------------------------
 SVUserManualDialog* SVUserManualDialog::Instance(QWidget* parent)
 {
-  if(self == nullptr)
+  if(!self)
   {
     self = new SVUserManualDialog(parent);
   }
@@ -133,9 +133,9 @@ QWebEngineView* SVUserManualDialog::getWebView()
 void SVUserManualDialog::LaunchHelpDialog(QUrl url)
 {
   SVUserManualDialog* dialog = SVUserManualDialog::Instance();
-  dialog->getWebView()->load(url);
-
-  if(dialog->isVisible() == false)
+  dialog->loadWebPage(url);
+  
+  if(!dialog->isVisible())
   {
     dialog->show();
   }
@@ -146,10 +146,32 @@ void SVUserManualDialog::LaunchHelpDialog(QUrl url)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
+void SVUserManualDialog::loadWebPage(const QUrl &url)
+{
+  urlLineEdit->setText(url.toString());
+  getWebView()->load(url);
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
 void SVUserManualDialog::LaunchHelpDialog(QString className)
 {
   QUrl helpURL = URL_GENERATOR::GenerateHTMLUrl(className);
   SVUserManualDialog::LaunchHelpDialog(helpURL);
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void SVUserManualDialog::on_urlLineEdit_returnPressed()
+{
+  QString url = urlLineEdit->text();
+  if(!url.startsWith("http://"))
+  {
+    url = QString("http://") + url;
+  }
+  loadWebPage(QUrl(url));
 }
 
 // -----------------------------------------------------------------------------
@@ -174,6 +196,24 @@ void SVUserManualDialog::on_forwardBtn_clicked()
 void SVUserManualDialog::on_refreshBtn_clicked()
 {
   m_WebView->reload();
+}
+
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void SVUserManualDialog::updateUrlLineEdit(QUrl url)
+{
+  
+  urlLineEdit->setText(url.toString());
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void SVUserManualDialog::webViewTitleChanged(QString title)
+{
+  this->setWindowTitle(title);
 }
 
 // -----------------------------------------------------------------------------

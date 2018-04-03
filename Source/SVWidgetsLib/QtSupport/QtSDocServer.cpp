@@ -198,7 +198,7 @@ int QtSDocServer::GetPort()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-QUrl QtSDocServer::GenerateHTMLUrl(QString className)
+QUrl QtSDocServer::GenerateHTMLUrl(const QString &className)
 {
 
   QString s = QString("http://%1:%2").arg(QtSDocServer::GetIPAddress()).arg(QtSDocServer::GetPort());
@@ -209,7 +209,7 @@ QUrl QtSDocServer::GenerateHTMLUrl(QString className)
 
     IFilterFactory::Pointer factory = fm->getFactoryFromClassName(className);
     QString pluginName;
-    if(factory.get())
+    if(factory)
     {
       pluginName = "/Filters/" + factory->getCompiledLibraryName() + "Filters";
     }
