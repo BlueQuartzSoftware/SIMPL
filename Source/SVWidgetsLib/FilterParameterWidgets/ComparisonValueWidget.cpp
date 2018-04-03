@@ -30,7 +30,7 @@ ComparisonValue::Pointer ComparisonValueWidget::getComparisonValue()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void ComparisonValueWidget::setComparisonValue(ComparisonValue::Pointer value)
+void ComparisonValueWidget::setComparisonValue(const ComparisonValue::Pointer &value)
 {
   if (nullptr == value)
   {
@@ -46,7 +46,8 @@ void ComparisonValueWidget::setComparisonValue(ComparisonValue::Pointer value)
   // Set Widget contents to ComparisonValue
   arrayNameComboBox->setCurrentText(m_comparisonValue->getAttributeArrayName());
   operatorComboBox->setCurrentIndex(m_comparisonValue->getCompOperator());
-  valueSpinBox->setValue(m_comparisonValue->getCompValue());
+  double compValue = m_comparisonValue->getCompValue();
+  valueSpinBox->setText(QString::number(compValue));
 }
 
 // -----------------------------------------------------------------------------
@@ -110,9 +111,12 @@ void ComparisonValueWidget::comparisonOperatorChanged(int index)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void ComparisonValueWidget::comparisonValueChanged(double value)
+void ComparisonValueWidget::comparisonValueChanged()
 {
-  m_comparisonValue->setCompValue(value);
+  
+  bool ok = false;
+  double d = valueSpinBox->text().toDouble(&ok);
+  m_comparisonValue->setCompValue(d);
 
   emit comparisonChanged();
 }
@@ -126,8 +130,8 @@ void ComparisonValueWidget::setupGui()
     this, SLOT(dataArrayChanged(int)));
   connect(operatorComboBox, SIGNAL(currentIndexChanged(int)),
     this, SLOT(comparisonOperatorChanged(int)));
-  connect(valueSpinBox, SIGNAL(valueChanged(double)),
-    this, SLOT(comparisonValueChanged(double)));
+  connect(valueSpinBox, SIGNAL(editingFinished()),
+    this, SLOT(comparisonValueChanged()));
 }
 
 // -----------------------------------------------------------------------------
