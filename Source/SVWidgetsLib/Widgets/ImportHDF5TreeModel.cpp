@@ -295,7 +295,6 @@ QModelIndex ImportHDF5TreeModel::hdf5PathToIndex(const QString& hdf5Path)
   {
     QModelIndex rootIndex = index(0, 0);
     QModelIndex currentIndex = index(0, 0, rootIndex);
-    ImportHDF5TreeModelItem* currentItem = getItem(currentIndex);
     for(int i = 0; i < hdf5PathTokens.size(); i++)
     {
       QString hdf5PathToken = hdf5PathTokens[i];
