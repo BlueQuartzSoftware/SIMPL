@@ -52,13 +52,8 @@ class QDockWidget;
 class ImportHDF5DatasetFilterParameter;
 class ImportHDF5Dataset;
 
-/* Uses the 'Private Inheritance' method from the *.ui file */
 /**
- * @brief Main Window for the Qt based HDF5 Data Viewer
- * @author Mike Jackson
- * @date June 2008
- * @version $Revision: 1.7 $
- * @class ImportHDF5DatasetWidget ImportHDF5DatasetWidget.h ImportHDF5DatasetWidget.h
+ * @brief The ImportHDF5DatasetWidget class
  */
 class SVWidgetsLib_EXPORT ImportHDF5DatasetWidget : public FilterParameterWidget, private Ui::ImportHDF5DatasetWidget
 {
@@ -105,7 +100,7 @@ public slots:
    * @brief on_selectBtn_clicked
    */
   void on_selectBtn_clicked();
-  
+
   /**
    * @brief on_showLocationBtn_clicked
    */
@@ -166,7 +161,7 @@ private:
 
   ~ImportHDF5DatasetWidget();
   ImportHDF5DatasetWidget(const ImportHDF5DatasetWidget&) = delete; // Copy Constructor Not Implemented
-  void operator=(const ImportHDF5DatasetWidget&);          // Copy Assignment Not Implemented
+  void operator=(const ImportHDF5DatasetWidget&);                   // Copy Assignment Not Implemented
 };
 
 #endif /* _importhdf5datasetwidget_h_ */
