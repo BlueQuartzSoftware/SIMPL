@@ -20,6 +20,8 @@ namespace
   static const QString kRead("READ");
   static const QString kWrite("WRITE");
   static const QString kArgs("ARGS");
+  static const QString kConst("CONST");
+  static const QString kConstMethod("CONST_METHOD");
   static const QString kSuperClass("SUPERCLASS");
   static const QString kOverload("OVERLOAD");
 

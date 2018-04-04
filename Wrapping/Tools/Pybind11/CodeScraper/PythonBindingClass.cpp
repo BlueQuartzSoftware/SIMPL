@@ -1,6 +1,6 @@
 #include "PythonBindingClass.h"
-
 #include <QtCore/QDateTime>
+#include <iostream>
 
 #include "CodeScraper/CodeScraperConstants.h"
 #include "CodeScraper/SIMPLPyBind11Config.h"
@@ -372,6 +372,7 @@ QString PythonBindingClass::generateMethodCode()
 {
   QString code;
   QTextStream out(&code);
+
   for(auto line : m_Methods)
   {
     QStringList tokens = line.split("(");
@@ -379,7 +380,12 @@ QString PythonBindingClass::generateMethodCode()
     QString returnType = tokens[0];
     QString methodName = tokens[1];
     out << TAB << "/* Class instance method " << methodName << " */" << NEWLINE_SIMPL;
-
+    bool methodIsConst = false;
+    if(tokens.last().compare(::kConstMethod) == 0)
+    {
+      methodIsConst = true;
+      tokens.pop_back();
+    }
     if(tokens.size() == 2)
     {
       out << TAB << ".def(\"" << methodName << "\", &" << getClassName() << "::" << methodName << ")" << NEWLINE_SIMPL;
@@ -402,9 +408,14 @@ QString PythonBindingClass::generateMethodCode()
           out << ", ";
         }
       }
-      out << ">(&" << getClassName() << "::" << methodName << ")";
-      
-      #else /* C++11 Style */
+      out << ">(&" << getClassName() << "::" << methodName;
+      if(methodIsConst)
+      {
+        out << ", py::const_";
+      }
+      out << ")";
+
+#else /* C++11 Style */
       /*
       * .def("getAttributeMatrix", (AttributeMatrix::Pointer (DataContainer::*)(const QString &)) &DataContainer::getAttributeMatrix, "Set the pet's age")
       * .def("getAttributeMatrix", (AttributeMatrix::Pointer (DataContainer::*)(const DataArrayPath &)) &DataContainer::getAttributeMatrix, "Set the pet's name")
@@ -421,7 +432,7 @@ QString PythonBindingClass::generateMethodCode()
         }
       }
       out << ")) &"<<getClassName()<<"::"<<tokens[1];
-      #endif
+#endif
       
       for(int32_t i = 3; i < tokens.size(); i++)
       {

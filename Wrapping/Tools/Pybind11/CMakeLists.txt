@@ -68,6 +68,7 @@ configure_file( ${SIMPLPyBind11_SOURCE_DIR}/Testing/Python/setup.py
 # This section starts the main pybind11 code
 include("${SIMPLProj_SOURCE_DIR}/Wrapping/Tools/Pybind11/cmake/WrappingFunctions.cmake")
 
+if(1)
 CreatePybind11Module(MODULE_NAME simpl
                     SOURCE_DIR "${SIMPLProj_SOURCE_DIR_NORM}/Source/SIMPLib"
                     PATH_TO_STRIP "SIMPL/Source/"
@@ -76,6 +77,6 @@ CreatePybind11Module(MODULE_NAME simpl
                     MODULE_TEMPLATE_FILE "${SIMPLPyBind11_SOURCE_DIR}/Templates/SIMPLModuleCodeTemplate.cpp"
                     MODULE_LINK_LIBRARIES SIMPLib
 )
-
+endif()
 
 

@@ -71,7 +71,6 @@ class SIMPLib_EXPORT DataContainerReader : public AbstractFilter
     PYB11_METHOD(DataContainerArrayProxy readDataContainerArrayStructure ARGS path)
   
   public:
-    SIMPL_TYPE_MACRO_SUPER_OVERRIDE(DataContainerReader, AbstractFilter)
     SIMPL_SHARED_POINTERS(DataContainerReader)
     SIMPL_FILTER_NEW_MACRO(DataContainerReader)
     SIMPL_TYPE_MACRO_SUPER_OVERRIDE(DataContainerReader, AbstractFilter)

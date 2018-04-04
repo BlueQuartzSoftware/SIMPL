@@ -59,14 +59,14 @@ class SIMPLib_EXPORT ImageGeom : public IGeometryGrid
   PYB11_METHOD(SIMPL::Tuple3SVec getDimensions)
 
   PYB11_METHOD(void setResolution OVERLOAD float,x float,y float,z)
-  PYB11_METHOD(SIMPL::Tuple3FVec getResolution OVERLOAD)
+  PYB11_METHOD(SIMPL::Tuple3FVec getResolution OVERLOAD CONST_METHOD)
 
   PYB11_METHOD(size_t getXPoints)
   PYB11_METHOD(size_t getYPoints)
   PYB11_METHOD(size_t getZPoints)
   
   PYB11_METHOD(void setOrigin OVERLOAD float,x float,y float,z)
-  PYB11_METHOD(SIMPL::Tuple3FVec getOrigin OVERLOAD)
+  PYB11_METHOD(SIMPL::Tuple3FVec getOrigin OVERLOAD CONST_METHOD)
 
   PYB11_METHOD(SIMPL::Tuple6FVec getBoundingBox OVERLOAD)
 
@@ -76,7 +76,7 @@ class SIMPLib_EXPORT ImageGeom : public IGeometryGrid
     SIMPL_STATIC_NEW_MACRO(ImageGeom)
     SIMPL_TYPE_MACRO_SUPER_OVERRIDE(ImageGeom, Observable)
 
-    virtual ~ImageGeom();
+    ~ImageGeom() override;
 
     using EnumType = unsigned int;
     enum class ErrorType : EnumType
@@ -107,7 +107,6 @@ class SIMPLib_EXPORT ImageGeom : public IGeometryGrid
     * @brief Sets/Gets the Origin property
     */
     SIMPL_INSTANCE_VEC3_PROPERTY(float, Origin)
-
     
     /**
      * @brief getBoundingBox
