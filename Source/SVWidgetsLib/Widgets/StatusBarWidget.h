@@ -127,7 +127,7 @@ class SVWidgetsLib_EXPORT StatusBarWidget : public QFrame, private Ui::StatusBar
 
   private:
     StatusBarWidget(const StatusBarWidget&) = delete; // Copy Constructor Not Implemented
-    void operator=(const StatusBarWidget&) = delete;  // Operator '=' Not Implemented
+    void operator=(const StatusBarWidget&) = delete;  // Move assignment Not Implemented
 };
 
 #endif /* _statusBarWidget_H_ */

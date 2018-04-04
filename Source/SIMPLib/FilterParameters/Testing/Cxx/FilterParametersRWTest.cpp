@@ -971,5 +971,5 @@ public:
 
 private:
   FilterParametersRWTest(const FilterParametersRWTest&); // Copy Constructor Not Implemented
-  void operator=(const FilterParametersRWTest&);         // Operator '=' Not Implemented
+  void operator=(const FilterParametersRWTest&);         // Move assignment Not Implemented
 };

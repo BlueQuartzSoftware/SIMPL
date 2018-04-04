@@ -388,5 +388,5 @@ public:
 
 private:
   CombineAttributeArraysTest(const CombineAttributeArraysTest&); // Copy Constructor Not Implemented
-  void operator=(const CombineAttributeArraysTest&);             // Operator '=' Not Implemented
+  void operator=(const CombineAttributeArraysTest&);             // Move assignment Not Implemented
 };

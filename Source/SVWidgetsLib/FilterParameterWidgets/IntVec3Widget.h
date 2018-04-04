@@ -96,7 +96,7 @@ class SVWidgetsLib_EXPORT IntVec3Widget : public FilterParameterWidget, private 
     IntVec3FilterParameter* m_FilterParameter;
 
     IntVec3Widget(const IntVec3Widget&) = delete;  // Copy Constructor Not Implemented
-    void operator=(const IntVec3Widget&) = delete; // Operator '=' Not Implemented
+    void operator=(const IntVec3Widget&) = delete; // Move assignment Not Implemented
 };
 
 #endif /* _IntVec3Widget_H_ */

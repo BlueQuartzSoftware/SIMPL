@@ -144,7 +144,7 @@ class SIMPLib_EXPORT OutputFileFilterParameter : public FilterParameter
 
   private:
     OutputFileFilterParameter(const OutputFileFilterParameter&) = delete; // Copy Constructor Not Implemented
-    void operator=(const OutputFileFilterParameter&) = delete;            // Operator '=' Not Implemented
+    void operator=(const OutputFileFilterParameter&) = delete;            // Move assignment Not Implemented
 };
 
 #endif /* _OutputFileFilterParameter_H_ */

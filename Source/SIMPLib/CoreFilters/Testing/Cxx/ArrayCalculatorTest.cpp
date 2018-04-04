@@ -75,7 +75,7 @@ public:
 
 private:
   DummyObserver(const DummyObserver&);  // Copy Constructor Not Implemented
-  void operator=(const DummyObserver&); // Operator '=' Not Implemented
+  void operator=(const DummyObserver&); // Move assignment Not Implemented
 };
 
 class ArrayCalculatorTest
@@ -937,5 +937,5 @@ public:
 
 private:
   ArrayCalculatorTest(const ArrayCalculatorTest&); // Copy Constructor Not Implemented
-  void operator=(const ArrayCalculatorTest&);      // Operator '=' Not Implemented
+  void operator=(const ArrayCalculatorTest&);      // Move assignment Not Implemented
 };

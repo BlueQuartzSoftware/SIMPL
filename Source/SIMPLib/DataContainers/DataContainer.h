@@ -377,7 +377,7 @@ public:
     virtual void writeXdmfFooter(QTextStream& xdmf);
 
     DataContainer();
-    explicit DataContainer(const QString name);
+    explicit DataContainer(const QString& name);
 
   private:
 
@@ -386,7 +386,7 @@ public:
     QString m_Name;
 
     DataContainer(const DataContainer&) = delete;  // Copy Constructor Not Implemented
-    void operator=(const DataContainer&) = delete; // Operator '=' Not Implemented
+    void operator=(const DataContainer&) = delete; // Move assignment Not Implemented
 };
 
 #endif /* _DataContainer_H_ */

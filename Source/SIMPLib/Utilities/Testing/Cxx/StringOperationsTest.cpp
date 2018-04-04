@@ -144,5 +144,5 @@ public:
 
 private:
   StringOperationsTest(const StringOperationsTest&); // Copy Constructor Not Implemented
-  void operator=(const StringOperationsTest&);       // Operator '=' Not Implemented
+  void operator=(const StringOperationsTest&);       // Move assignment Not Implemented
 };

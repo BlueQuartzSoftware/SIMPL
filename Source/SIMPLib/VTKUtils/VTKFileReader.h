@@ -90,29 +90,29 @@ class SIMPLib_EXPORT VTKFileReader : public FileReader
   public:
     SIMPL_SHARED_POINTERS(VTKFileReader)
      SIMPL_TYPE_MACRO_SUPER_OVERRIDE(VTKFileReader, FileReader)
-    SIMPL_STATIC_NEW_MACRO(VTKFileReader)
+     SIMPL_FILTER_NEW_MACRO(VTKFileReader)
 
-    virtual ~VTKFileReader();
+     virtual ~VTKFileReader();
 
-    SIMPL_INSTANCE_STRING_PROPERTY(DataContainerName)
+     SIMPL_INSTANCE_STRING_PROPERTY(DataContainerName)
 
-    SIMPL_INSTANCE_STRING_PROPERTY(InputFile)
-    SIMPL_INSTANCE_STRING_PROPERTY(Comment)
-    SIMPL_INSTANCE_STRING_PROPERTY(DatasetType)
-    SIMPL_INSTANCE_PROPERTY(bool, FileIsBinary)
+     SIMPL_INSTANCE_STRING_PROPERTY(InputFile)
+     SIMPL_INSTANCE_STRING_PROPERTY(Comment)
+     SIMPL_INSTANCE_STRING_PROPERTY(DatasetType)
+     SIMPL_INSTANCE_PROPERTY(bool, FileIsBinary)
 
-    /**
-     * @brief Reads the VTK header and sets the values that are described in the header
-     * @return Error Condition. Negative is Error.
-     */
-    int readHeader();
+     /**
+      * @brief Reads the VTK header and sets the values that are described in the header
+      * @return Error Condition. Negative is Error.
+      */
+     int readHeader();
 
-    /**
-     * @brief This method should be re-implemented in a subclass
-     */
-    virtual int readFile()
-    {
-      return -1;
+     /**
+      * @brief This method should be re-implemented in a subclass
+      */
+     virtual int readFile()
+     {
+       return -1;
     }
 
     /**
@@ -217,7 +217,7 @@ class SIMPLib_EXPORT VTKFileReader : public FileReader
 
   private:
     VTKFileReader(const VTKFileReader&) = delete;  // Copy Constructor Not Implemented
-    void operator=(const VTKFileReader&) = delete; // Operator '=' Not Implemented
+    void operator=(const VTKFileReader&) = delete; // Move assignment Not Implemented
 };
 
 #endif /* VTKFILEREADER_H_ */

@@ -154,7 +154,7 @@ class ImportASCIIDataWizard : public QWizard
     QSharedPointer<ASCIIDataModel> m_ASCIIDataModel;
 
     ImportASCIIDataWizard(const ImportASCIIDataWizard&) = delete; // Copy Constructor Not Implemented
-    void operator=(const ImportASCIIDataWizard&) = delete;        // Operator '=' Not Implemented
+    void operator=(const ImportASCIIDataWizard&) = delete;        // Move assignment Not Implemented
 };
 
 #endif /* ImportASCIIDataWizard_H_ */

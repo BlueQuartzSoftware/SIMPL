@@ -67,7 +67,7 @@ protected:
 
 private:
   AbstractDataParser(const AbstractDataParser&); // Copy Constructor Not Implemented
-  void operator=(const AbstractDataParser&);     // Operator '=' Not Implemented
+  void operator=(const AbstractDataParser&);     // Move assignment Not Implemented
 };
 
 // -----------------------------------------------------------------------------
@@ -128,7 +128,7 @@ private:
   typename ArrayType::Pointer m_Ptr;
 
   Parser(const Parser&);         // Copy Constructor Not Implemented
-  void operator=(const Parser&); // Operator '=' Not Implemented
+  void operator=(const Parser&); // Move assignment Not Implemented
 };
 
 typedef Parser<Int8ArrayType, Int8Functor> Int8ParserType;

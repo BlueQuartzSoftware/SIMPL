@@ -161,3 +161,110 @@ QMap<QString, DataArrayProxy> AttributeMatrixProxy::readMap(QJsonArray jsonArray
   }
   return map;
 }
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+AttributeMatrixProxy::AMTypeFlag AttributeMatrixProxy::AttributeMatrixTypeToFlag(AttributeMatrix::Type amType)
+{
+  switch (amType)
+  {
+    case AttributeMatrix::Type::Any:
+    {
+      return Any_AMType;
+    }
+    case AttributeMatrix::Type::Cell:
+    {
+      return Cell_AMType;
+    }
+    case AttributeMatrix::Type::CellEnsemble:
+    {
+      return CellEnsemble_AMType;
+    }
+    case AttributeMatrix::Type::CellFeature:
+    {
+      return CellFeature_AMType;
+    }
+    case AttributeMatrix::Type::Edge:
+    {
+      return Edge_AMType;
+    }
+    case AttributeMatrix::Type::EdgeEnsemble:
+    {
+      return EdgeEnsemble_AMType;
+    }
+    case AttributeMatrix::Type::EdgeFeature:
+    {
+      return EdgeFeature_AMType;
+    }
+    case AttributeMatrix::Type::Face:
+    {
+      return Face_AMType;
+    }
+    case AttributeMatrix::Type::FaceEnsemble:
+    {
+      return FaceEnsemble_AMType;
+    }
+    case AttributeMatrix::Type::FaceFeature:
+    {
+      return FaceFeature_AMType;
+    }
+    case AttributeMatrix::Type::Generic:
+    {
+      return Generic_AMType;
+    }
+    case AttributeMatrix::Type::MetaData:
+    {
+      return MetaData_AMType;
+    }
+    case AttributeMatrix::Type::Vertex:
+    {
+      return Vertex_AMType;
+    }
+    case AttributeMatrix::Type::VertexEnsemble:
+    {
+      return VertexEnsemble_AMType;
+    }
+    case AttributeMatrix::Type::VertexFeature:
+    {
+      return VertexFeature_AMType;
+    }
+    case AttributeMatrix::Type::Unknown:
+    {
+      return Unknown_AMType;
+    }
+  }
+
+  return Unknown_AMType;
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void AttributeMatrixProxy::setFlags(uint8_t flag, DataArrayProxy::PrimitiveTypeFlags primitiveTypes, DataArrayProxy::CompDimsVector compDimsVector)
+{
+  this->flag = flag;
+
+  for(QMap<QString, DataArrayProxy>::iterator daIter = dataArrays.begin(); daIter != dataArrays.end(); ++daIter) // DataArray Level
+  {
+    DataArrayProxy& daProxy = daIter.value();
+    DataArrayProxy::PrimitiveTypeFlag pTypeFlag = DataArrayProxy::PrimitiveTypeToFlag(daProxy.objectType);
+    if ((primitiveTypes & pTypeFlag) > 0 || primitiveTypes == DataArrayProxy::PrimitiveTypeFlag::Any_PType)
+    {
+      if (compDimsVector.size() <= 0)
+      {
+        daProxy.flag = flag;
+      }
+      else
+      {
+        for (int i = 0; i < compDimsVector.size(); i++)
+        {
+          if (compDimsVector[i] == daProxy.compDims)
+          {
+            daProxy.flag = flag;
+          }
+        }
+      }
+    }
+  }
+}

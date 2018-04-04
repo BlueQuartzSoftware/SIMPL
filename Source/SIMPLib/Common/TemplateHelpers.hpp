@@ -570,7 +570,7 @@ namespace TemplateHelpers
 
     private:
       GetPrereqArrayFromPath(const GetPrereqArrayFromPath&); // Copy Constructor Not Implemented
-      void operator=(const GetPrereqArrayFromPath&); // Operator '=' Not Implemented
+      void operator=(const GetPrereqArrayFromPath&);         // Move assignment Not Implemented
   };
 
 }

@@ -135,7 +135,7 @@ public:
 
 private:
   CalculatorFilterParameter(const CalculatorFilterParameter&) = delete; // Copy Constructor Not Implemented
-  void operator=(const CalculatorFilterParameter&) = delete;            // Operator '=' Not Implemented
+  void operator=(const CalculatorFilterParameter&) = delete;            // Move assignment Not Implemented
 };
 
 #endif /* _CalculatorFilterParameter_H_ */

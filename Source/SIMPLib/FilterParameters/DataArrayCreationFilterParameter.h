@@ -178,7 +178,7 @@ class SIMPLib_EXPORT DataArrayCreationFilterParameter : public FilterParameter
 
   private:
     DataArrayCreationFilterParameter(const DataArrayCreationFilterParameter&) = delete; // Copy Constructor Not Implemented
-    void operator=(const DataArrayCreationFilterParameter&) = delete;                   // Operator '=' Not Implemented
+    void operator=(const DataArrayCreationFilterParameter&) = delete;                   // Move assignment Not Implemented
 };
 
 

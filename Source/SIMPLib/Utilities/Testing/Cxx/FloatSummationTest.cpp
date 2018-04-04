@@ -147,5 +147,5 @@ public:
 
 private:
   FloatSummationTest(const FloatSummationTest&); // Copy Constructor Not Implemented
-  void operator=(const FloatSummationTest&);     // Operator '=' Not Implemented
+  void operator=(const FloatSummationTest&);     // Move assignment Not Implemented
 };

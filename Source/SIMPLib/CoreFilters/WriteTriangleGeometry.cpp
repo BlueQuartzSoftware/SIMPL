@@ -53,12 +53,10 @@
 //
 // -----------------------------------------------------------------------------
 WriteTriangleGeometry::WriteTriangleGeometry()
-: AbstractFilter()
-, m_DataContainerSelection("")
+: m_DataContainerSelection("")
 , m_OutputNodesFile("")
 , m_OutputTrianglesFile("")
 {
-  setupFilterParameters();
 }
 
 // -----------------------------------------------------------------------------

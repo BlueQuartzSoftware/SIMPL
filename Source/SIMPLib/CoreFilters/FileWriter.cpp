@@ -44,8 +44,7 @@
 //
 // -----------------------------------------------------------------------------
 FileWriter::FileWriter()
-: AbstractFilter()
-, m_OutputFile("")
+: m_OutputFile("")
 {
 }
 

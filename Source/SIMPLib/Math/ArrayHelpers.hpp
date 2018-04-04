@@ -170,7 +170,7 @@ class ArrayHelpers
 
   private:
     ArrayHelpers(const ArrayHelpers&); // Copy Constructor Not Implemented
-    void operator=(const ArrayHelpers&); // Operator '=' Not Implemented
+    void operator=(const ArrayHelpers&); // Move assignment Not Implemented
 };
 
 #endif /* _ArrayHelpers_H_ */

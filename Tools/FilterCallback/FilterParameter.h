@@ -141,7 +141,7 @@ class IFilterParameter
     
   private:
     IFilterParameter(const IFilterParameter&) = delete; // Copy Constructor Not Implemented
-    void operator=(const IFilterParameter&) = delete; // Operator '=' Not Implemented
+    void operator=(const IFilterParameter&) = delete;   // Move assignment Not Implemented
 };
 
 
@@ -181,8 +181,8 @@ class Int32Parameter : public IFilterParameter
     
   private:
     Int32Parameter(const Int32Parameter&) = delete; // Copy Constructor Not Implemented
-    void operator=(const Int32Parameter&) = delete; // Operator '=' Not Implemented
-    
+    void operator=(const Int32Parameter&) = delete; // Move assignment Not Implemented
+
     SetterCallbackType m_SetterCallback;
     GetterCallbackType m_GetterCallback;
 };
@@ -222,8 +222,8 @@ class DoubleParameter : public IFilterParameter
     
   private:
     DoubleParameter(const DoubleParameter&) = delete; // Copy Constructor Not Implemented
-    void operator=(const DoubleParameter&) = delete; // Operator '=' Not Implemented
-    
+    void operator=(const DoubleParameter&) = delete;  // Move assignment Not Implemented
+
     SetterCallbackType m_SetterCallback;
     GetterCallbackType m_GetterCallback;
 };
@@ -264,8 +264,8 @@ class DataArrayPathParameter : public IFilterParameter
     
   private:
     DataArrayPathParameter(const DataArrayPathParameter&) = delete; // Copy Constructor Not Implemented
-    void operator=(const DataArrayPathParameter&) = delete; // Operator '=' Not Implemented
-    
+    void operator=(const DataArrayPathParameter&) = delete;         // Move assignment Not Implemented
+
     SetterCallbackType m_SetterCallback;
     GetterCallbackType m_GetterCallback;
 };

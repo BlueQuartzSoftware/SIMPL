@@ -89,7 +89,7 @@ private:
   ParagraphFilterParameter* m_FilterParameter;
 
   ParagraphWidget(const ParagraphWidget&) = delete; // Copy Constructor Not Implemented
-  void operator=(const ParagraphWidget&);  // Operator '=' Not Implemented
+  void operator=(const ParagraphWidget&);           // Move assignment Not Implemented
 };
 
 #endif /* _ParagraphWidget_H_ */

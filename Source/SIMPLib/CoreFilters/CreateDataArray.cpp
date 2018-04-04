@@ -245,14 +245,12 @@ template <typename T> void initializeArrayWithReals(IDataArray::Pointer outputAr
 //
 // -----------------------------------------------------------------------------
 CreateDataArray::CreateDataArray()
-: AbstractFilter()
-, m_ScalarType(SIMPL::ScalarTypes::Type::Int8)
+: m_ScalarType(SIMPL::ScalarTypes::Type::Int8)
 , m_NumberOfComponents(0)
 , m_NewArray("", "", "")
 , m_InitializationType(Manual)
 , m_InitializationValue("0")
 {
-  setupFilterParameters();
 }
 
 // -----------------------------------------------------------------------------

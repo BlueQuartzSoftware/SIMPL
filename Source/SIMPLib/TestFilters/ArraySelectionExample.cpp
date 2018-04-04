@@ -38,11 +38,7 @@
 //
 // -----------------------------------------------------------------------------
 ArraySelectionExample::ArraySelectionExample()
-: AbstractFilter()
-//  m_SelectedArrayName(""),
-//  m_DataContainerName(SIMPL::Defaults::DataContainerName)
 {
-  setupFilterParameters();
 }
 
 // -----------------------------------------------------------------------------

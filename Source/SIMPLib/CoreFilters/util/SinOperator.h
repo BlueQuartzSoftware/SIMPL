@@ -64,7 +64,7 @@ class SIMPLib_EXPORT SinOperator : public UnaryOperator
 
   private:
     SinOperator(const SinOperator&) = delete;    // Copy Constructor Not Implemented
-    void operator=(const SinOperator&) = delete; // Operator '=' Not Implemented
+    void operator=(const SinOperator&) = delete; // Move assignment Not Implemented
 };
 
 #endif /* _SinOperator_H_ */

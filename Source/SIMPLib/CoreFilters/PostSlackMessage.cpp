@@ -50,15 +50,13 @@
 //
 // -----------------------------------------------------------------------------
 PostSlackMessage::PostSlackMessage()
-: AbstractFilter()
-, m_SlackUser("")
+: m_SlackUser("")
 , m_SlackUrl("")
 , m_SlackMessage("")
 , m_WarningsAsError(false)
 {
   m_SlackUser = "[DREAM.3D@" + QSysInfo::machineHostName() + "]";
   initialize();
-  setupFilterParameters();
   m_NetworkManager = new QNetworkAccessManager(this);
 }
 

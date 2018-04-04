@@ -253,8 +253,7 @@ ImportAsciDataArrayPrivate::ImportAsciDataArrayPrivate(ImportAsciDataArray* ptr)
 //
 // -----------------------------------------------------------------------------
 ImportAsciDataArray::ImportAsciDataArray()
-: AbstractFilter()
-, m_CreatedAttributeArrayPath("")
+: m_CreatedAttributeArrayPath("")
 , m_ScalarType(SIMPL::NumericTypes::Type::Int8)
 , m_NumberOfComponents(0)
 , m_SkipHeaderLines(0)
@@ -263,7 +262,6 @@ ImportAsciDataArray::ImportAsciDataArray()
 , d_ptr(new ImportAsciDataArrayPrivate(this))
 
 {
-  setupFilterParameters();
 }
 
 // -----------------------------------------------------------------------------

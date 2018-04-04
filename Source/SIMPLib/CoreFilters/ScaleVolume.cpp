@@ -69,9 +69,7 @@ public:
   , m_ScaleFactor(scale)
   {
   }
-  virtual ~ScaleVolumeUpdateVerticesImpl()
-  {
-  }
+  ~ScaleVolumeUpdateVerticesImpl() = default;
 
   void generate(size_t start, size_t end) const
   {
@@ -95,8 +93,7 @@ public:
 //
 // -----------------------------------------------------------------------------
 ScaleVolume::ScaleVolume()
-: AbstractFilter()
-, m_DataContainerName("")
+: m_DataContainerName("")
 , m_SurfaceDataContainerName("")
 , m_ApplyToVoxelVolume(true)
 , m_ApplyToSurfaceMesh(true)
@@ -105,7 +102,6 @@ ScaleVolume::ScaleVolume()
   m_ScaleFactor.y = 1.0f;
   m_ScaleFactor.z = 1.0f;
 
-  setupFilterParameters();
 }
 
 // -----------------------------------------------------------------------------

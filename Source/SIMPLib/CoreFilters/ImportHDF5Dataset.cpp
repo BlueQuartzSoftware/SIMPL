@@ -40,9 +40,9 @@
 #include "SIMPLib/FilterParameters/StringFilterParameter.h"
 #include "SIMPLib/SIMPLibVersion.h"
 
+#include "H5Support/H5ScopedSentinel.h"
 #include "H5Support/H5Utilities.h"
 #include "H5Support/QH5Utilities.h"
-#include "H5Support/H5ScopedSentinel.h"
 
 namespace Detail
 {
@@ -65,16 +65,14 @@ template <typename T> IDataArray::Pointer readH5Dataset(hid_t locId, const QStri
   }
   return ptr;
 }
-}
+} // namespace Detail
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
 ImportHDF5Dataset::ImportHDF5Dataset()
-: AbstractFilter()
 {
   initialize();
-  setupFilterParameters();
 }
 
 // -----------------------------------------------------------------------------
@@ -105,7 +103,7 @@ void ImportHDF5Dataset::setupFilterParameters()
                                             QString(""),                 // Dataset Default value
                                             FilterParameter::Parameter,  // Category
                                             SIMPL_BIND_SETTER(ImportHDF5Dataset, this, HDF5FilePath), SIMPL_BIND_GETTER(ImportHDF5Dataset, this, HDF5FilePath),
-                                            SIMPL_BIND_SETTER(ImportHDF5Dataset, this, DatasetPath), SIMPL_BIND_GETTER(ImportHDF5Dataset, this, DatasetPath), -1);
+                                            SIMPL_BIND_SETTER(ImportHDF5Dataset, this, DatasetPaths), SIMPL_BIND_GETTER(ImportHDF5Dataset, this, DatasetPaths), -1);
   parameters.push_back(parameter);
 
   parameters.push_back(SIMPL_NEW_STRING_FP("Component Dimensions", ComponentDimensions, FilterParameter::Parameter, ImportHDF5Dataset));
@@ -151,13 +149,22 @@ void ImportHDF5Dataset::dataCheck()
     return;
   }
 
-  if(m_DatasetPath.isEmpty())
+  if(m_DatasetPaths.isEmpty())
   {
-    QString ss = tr("The dataset path is empty.  Please enter a dataset path.");
+    QString ss = tr("No dataset has been checked.  Please check a dataset.");
     setErrorCondition(-20004);
     notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
     return;
   }
+  else if(m_DatasetPaths.size() > 1)
+  {
+    QString ss = tr("Only one dataset can be checked at a time.  Please check one dataset.");
+    setErrorCondition(-20004);
+    notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
+    return;
+  }
+
+  QString datasetPath = m_DatasetPaths[0];
 
   int err = 0;
   AttributeMatrix::Pointer am = getDataContainerArray()->getPrereqAttributeMatrixFromPath<AbstractFilter>(this, m_SelectedAttributeMatrix, err);
@@ -174,7 +181,7 @@ void ImportHDF5Dataset::dataCheck()
   }
   H5ScopedFileSentinel sentinel(&fileId, true);
 
-  QString parentPath = QH5Utilities::getParentPath(m_DatasetPath);
+  QString parentPath = QH5Utilities::getParentPath(datasetPath);
   hid_t parentId;
   if(parentPath.isEmpty())
   {
@@ -187,7 +194,7 @@ void ImportHDF5Dataset::dataCheck()
   }
 
   // Read dataset into DREAM.3D structure
-  QString objectName = QH5Utilities::getObjectNameFromPath(m_DatasetPath);
+  QString objectName = QH5Utilities::getObjectNameFromPath(datasetPath);
 
   QVector<hsize_t> dims;
   H5T_class_t type_class;
@@ -195,7 +202,7 @@ void ImportHDF5Dataset::dataCheck()
   err = QH5Lite::getDatasetInfo(parentId, objectName, dims, type_class, type_size);
   if(err < 0)
   {
-    QString ss = tr("Error reading type info from dataset with path '%1'").arg(m_DatasetPath);
+    QString ss = tr("Error reading type info from dataset with path '%1'").arg(datasetPath);
     setErrorCondition(-20005);
     notifyErrorMessage(getHumanLabel(), ss, getErrorCondition());
     return;
@@ -225,7 +232,7 @@ void ImportHDF5Dataset::dataCheck()
   QTextStream stream(&ss);
 
   stream << tr("HDF5 File Path: %1\n").arg(m_HDF5FilePath);
-  stream << tr("HDF5 Dataset Path: %1\n").arg(m_DatasetPath);
+  stream << tr("HDF5 Dataset Path: %1\n").arg(datasetPath);
 
   size_t cDimsProduct = 1;
   stream << tr("Component Dimensions: (");
@@ -525,7 +532,7 @@ AbstractFilter::Pointer ImportHDF5Dataset::newFilterInstance(bool copyFilterPara
   {
     filter->setFilterParameters(getFilterParameters());
     filter->setHDF5FilePath(getHDF5FilePath());
-    filter->setDatasetPath(getDatasetPath());
+    filter->setDatasetPaths(getDatasetPaths());
     filter->setComponentDimensions(getComponentDimensions());
     filter->setSelectedAttributeMatrix(getSelectedAttributeMatrix());
   }

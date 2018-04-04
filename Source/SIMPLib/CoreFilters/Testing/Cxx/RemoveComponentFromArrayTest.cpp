@@ -454,5 +454,5 @@ public:
 
 private:
   RemoveComponentFromArrayTest(const RemoveComponentFromArrayTest&); // Copy Constructor Not Implemented
-  void operator=(const RemoveComponentFromArrayTest&);               // Operator '=' Not Implemented
+  void operator=(const RemoveComponentFromArrayTest&);               // Move assignment Not Implemented
 };

@@ -72,7 +72,7 @@ class SVWidgetsLib_EXPORT QtSHelpUrlGenerator
 
   private:
     QtSHelpUrlGenerator(const QtSHelpUrlGenerator&) = delete; // Copy Constructor Not Implemented
-    void operator=(const QtSHelpUrlGenerator&) = delete;      // Operator '=' Not Implemented
+    void operator=(const QtSHelpUrlGenerator&) = delete;      // Move assignment Not Implemented
 };
 
 #endif /* _SIMPLViewHelpUrlGenerator_H */

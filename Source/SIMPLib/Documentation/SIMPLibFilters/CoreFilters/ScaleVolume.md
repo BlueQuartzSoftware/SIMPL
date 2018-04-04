@@ -1,5 +1,5 @@
-Scale Volume 
-=============
+# Scale Volume #
+
 
 ## Group (Subgroup) ##
 
@@ -7,7 +7,9 @@ Core (Spatial)
 
 ## Description ##
 
-This **Filter** scales a volume by the factors entered by the user. For example, if a volume has a range of 10 to 30 in the X direction and the user enters a _Scale Factor_ for X of 3, then the new range will be 30 to 90. Note that the origin will **note** change with this **Filter**. 
+This **Filter** scales a volume by the factors entered by the user. For example, if a volume has a range of 10 to 30 in the X direction and the user enters a _Scale Factor_ for X of 3, then the new range will be 30 to 90. 
+
+**Note that the origin will _NOT_ change with this Filter.**
 
 ## Parameters ##
 
@@ -34,8 +36,6 @@ None
 
 ## Example Pipelines ##
 
-
-
 ## License & Copyright ##
 
 Please see the description file distributed with this **Plugin**
@@ -43,5 +43,3 @@ Please see the description file distributed with this **Plugin**
 ## DREAM.3D Mailing Lists ##
 
 If you need more help with a **Filter**, please consider asking your question on the [DREAM.3D Users Google group!](https://groups.google.com/forum/?hl=en#!forum/dream3d-users)
-
-

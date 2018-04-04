@@ -59,7 +59,7 @@ class DynamicTableItemDelegate : public QStyledItemDelegate
 
   private:
     DynamicTableItemDelegate(const DynamicTableItemDelegate&) = delete; // Copy Constructor Not Implemented
-    void operator=(const DynamicTableItemDelegate&) = delete;           // Operator '=' Not Implemented
+    void operator=(const DynamicTableItemDelegate&) = delete;           // Move assignment Not Implemented
 };
 
 #endif // _DynamicTableItemDelegate_H

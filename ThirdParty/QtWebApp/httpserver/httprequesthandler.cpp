@@ -16,9 +16,7 @@ HttpRequestHandler::HttpRequestHandler(QObject* parent)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-HttpRequestHandler::~HttpRequestHandler()
-{
-}
+HttpRequestHandler::~HttpRequestHandler() = default;
 
 // -----------------------------------------------------------------------------
 //

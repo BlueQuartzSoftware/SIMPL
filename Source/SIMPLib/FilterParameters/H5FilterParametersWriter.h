@@ -71,8 +71,7 @@ class SIMPLib_EXPORT H5FilterParametersWriter : public AbstractFilterParametersW
 
     SIMPL_INSTANCE_PROPERTY(hid_t, PipelineGroupId)
 
-
-    virtual ~H5FilterParametersWriter();
+    ~H5FilterParametersWriter() override;
 
     SIMPL_INSTANCE_PROPERTY(hid_t, GroupId)
     hid_t getCurrentGroupId() const;
@@ -140,8 +139,11 @@ class SIMPLib_EXPORT H5FilterParametersWriter : public AbstractFilterParametersW
   private:
     hid_t                                 m_CurrentGroupId;
 
+  public:
     H5FilterParametersWriter(const H5FilterParametersWriter&) = delete; // Copy Constructor Not Implemented
-    void operator=(const H5FilterParametersWriter&) = delete;           // Operator '=' Not Implemented
+    H5FilterParametersWriter(H5FilterParametersWriter&&) = delete;      // Move Constructor
+    H5FilterParametersWriter& operator=(const H5FilterParametersWriter&) = delete; // Copy Assignment Not Implemented
+    H5FilterParametersWriter& operator=(H5FilterParametersWriter&&) = delete;      // Move Assignment
 };
 
 #endif /* _H5FilterParametersWRITER_H_ */

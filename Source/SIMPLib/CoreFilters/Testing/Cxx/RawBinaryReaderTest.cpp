@@ -899,5 +899,5 @@ public:
 
 private:
   RawBinaryReaderTest(const RawBinaryReaderTest&); // Copy Constructor Not Implemented
-  void operator=(const RawBinaryReaderTest&);      // Operator '=' Not Implemented
+  void operator=(const RawBinaryReaderTest&);      // Move assignment Not Implemented
 };

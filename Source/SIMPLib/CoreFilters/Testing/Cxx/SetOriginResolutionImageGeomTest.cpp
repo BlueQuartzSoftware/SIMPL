@@ -331,5 +331,5 @@ public:
 
 private:
   SetOriginResolutionImageGeomTest(const SetOriginResolutionImageGeomTest&); // Copy Constructor Not Implemented
-  void operator=(const SetOriginResolutionImageGeomTest&);                   // Operator '=' Not Implemented
+  void operator=(const SetOriginResolutionImageGeomTest&);                   // Move assignment Not Implemented
 };

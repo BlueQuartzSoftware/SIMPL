@@ -20,12 +20,12 @@ class SIMPLib_EXPORT ReadASCIIData : public AbstractFilter
   PYB11_CREATE_BINDINGS(ReadASCIIData SUPERCLASS AbstractFilter)
   PYB11_PROPERTY(ASCIIWizardData WizardData READ getWizardData WRITE setWizardData)
 
-public:
-  SIMPL_SHARED_POINTERS(ReadASCIIData)
-  SIMPL_STATIC_NEW_MACRO(ReadASCIIData)
-  SIMPL_TYPE_MACRO_SUPER_OVERRIDE(ReadASCIIData, AbstractFilter)
+  public:
+    SIMPL_SHARED_POINTERS(ReadASCIIData)
+    SIMPL_FILTER_NEW_MACRO(ReadASCIIData)
+    SIMPL_TYPE_MACRO_SUPER_OVERRIDE(ReadASCIIData, AbstractFilter)
 
-  virtual ~ReadASCIIData();
+    ~ReadASCIIData() override;
 
   SIMPL_FILTER_PARAMETER(ASCIIWizardData, WizardData)
   Q_PROPERTY(ASCIIWizardData WizardData READ getWizardData WRITE setWizardData)
@@ -41,60 +41,60 @@ public:
     INVALID_ARRAY_TYPE = -106
   };
 
-  /**
-   * @brief getCompiledLibraryName Reimplemented from @see AbstractFilter class
-   */
-  virtual const QString getCompiledLibraryName() const override;
+    /**
+     * @brief getCompiledLibraryName Reimplemented from @see AbstractFilter class
+     */
+    const QString getCompiledLibraryName() const override;
 
-  /**
-   * @brief getBrandingString Returns the branding string for the filter, which is a tag
-   * used to denote the filter's association with specific plugins
-   * @return Branding string
-  */
-  virtual const QString getBrandingString() const override;
+    /**
+     * @brief getBrandingString Returns the branding string for the filter, which is a tag
+     * used to denote the filter's association with specific plugins
+     * @return Branding string
+    */
+    const QString getBrandingString() const override;
 
-  /**
-   * @brief getFilterVersion Returns a version string for this filter. Default
-   * value is an empty string.
-   * @return
-   */
-  virtual const QString getFilterVersion() const override;
+    /**
+     * @brief getFilterVersion Returns a version string for this filter. Default
+     * value is an empty string.
+     * @return
+     */
+    const QString getFilterVersion() const override;
 
-  /**
-   * @brief newFilterInstance Reimplemented from @see AbstractFilter class
-   */
-  virtual AbstractFilter::Pointer newFilterInstance(bool copyFilterParameters) const override;
+    /**
+     * @brief newFilterInstance Reimplemented from @see AbstractFilter class
+     */
+    AbstractFilter::Pointer newFilterInstance(bool copyFilterParameters) const override;
 
-  /**
-   * @brief getGroupName Reimplemented from @see AbstractFilter class
-   */
-  virtual const QString getGroupName() const override;
+    /**
+     * @brief getGroupName Reimplemented from @see AbstractFilter class
+     */
+    const QString getGroupName() const override;
 
-  /**
-   * @brief getSubGroupName Reimplemented from @see AbstractFilter class
-   */
-  virtual const QString getSubGroupName() const override;
+    /**
+     * @brief getSubGroupName Reimplemented from @see AbstractFilter class
+     */
+    const QString getSubGroupName() const override;
 
-  /**
-   * @brief getUuid Return the unique identifier for this filter.
-   * @return A QUuid object.
-   */
-  virtual const QUuid getUuid() override;
+    /**
+     * @brief getUuid Return the unique identifier for this filter.
+     * @return A QUuid object.
+     */
+    const QUuid getUuid() override;
 
-  /**
-   * @brief getHumanLabel Reimplemented from @see AbstractFilter class
-   */
-  virtual const QString getHumanLabel() const override;
+    /**
+     * @brief getHumanLabel Reimplemented from @see AbstractFilter class
+     */
+    const QString getHumanLabel() const override;
 
-  /**
-   * @brief setupFilterParameters Reimplemented from @see AbstractFilter class
-   */
-  virtual void setupFilterParameters() override;
+    /**
+     * @brief setupFilterParameters Reimplemented from @see AbstractFilter class
+     */
+    void setupFilterParameters() override;
 
-  /**
-   * @brief readFilterParameters Reimplemented from @see AbstractFilter class
-   */
-  virtual void readFilterParameters(AbstractFilterParametersReader* reader, int index) override;
+    /**
+     * @brief readFilterParameters Reimplemented from @see AbstractFilter class
+     */
+    void readFilterParameters(AbstractFilterParametersReader* reader, int index) override;
 
   /**
   * @brief readFilterParametersFromJson Reads the filter parameters from a file
@@ -108,15 +108,15 @@ public:
   */
   virtual void writeFilterParameters(QJsonObject& obj);
 
-  /**
-   * @brief execute Reimplemented from @see AbstractFilter class
-   */
-  virtual void execute() override;
+   /**
+    * @brief execute Reimplemented from @see AbstractFilter class
+    */
+    void execute() override;
 
-  /**
-  * @brief preflight Reimplemented from @see AbstractFilter class
-  */
-  virtual void preflight() override;
+    /**
+    * @brief preflight Reimplemented from @see AbstractFilter class
+    */
+    void preflight() override;
 
 signals:
   /**
@@ -156,8 +156,11 @@ protected:
 private:
   QMap<int, IDataArray::Pointer> m_ASCIIArrayMap;
 
-  ReadASCIIData(const ReadASCIIData&) = delete;  // Copy Constructor Not Implemented
-  void operator=(const ReadASCIIData&) = delete; // Operator '=' Not Implemented
+  public:
+    ReadASCIIData(const ReadASCIIData&) = delete;  // Copy Constructor Not Implemented
+    ReadASCIIData(ReadASCIIData&&) = delete;       // Move Constructor
+    ReadASCIIData& operator=(const ReadASCIIData&) = delete; // Copy Assignment Not Implemented
+    ReadASCIIData& operator=(ReadASCIIData&&) = delete;      // Move Assignment
 };
 
 #endif /* _readasciidata_h_ */

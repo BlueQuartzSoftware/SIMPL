@@ -46,7 +46,7 @@
 typedef struct
 {
   qint32 PaddingDigits;
-  quint32 Ordering;
+  quint32 Ordering; /* Ordering=0 = Ascending, Ordering=1 = Descending */
   qint32 StartIndex;
   qint32 EndIndex;
   QString InputPath;
@@ -183,7 +183,7 @@ class SIMPLib_EXPORT FileListInfoFilterParameter : public FilterParameter
 
   private:
     FileListInfoFilterParameter(const FileListInfoFilterParameter&) = delete; // Copy Constructor Not Implemented
-    void operator=(const FileListInfoFilterParameter&) = delete;              // Operator '=' Not Implemented
+    void operator=(const FileListInfoFilterParameter&) = delete;              // Move assignment Not Implemented
 };
 
 #endif /* _FileListInfoFilterParameter_H_ */

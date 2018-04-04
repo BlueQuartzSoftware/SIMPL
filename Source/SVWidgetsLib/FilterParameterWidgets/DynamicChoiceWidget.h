@@ -100,7 +100,7 @@ class SVWidgetsLib_EXPORT DynamicChoiceWidget : public FilterParameterWidget, pr
     bool m_DidCausePreflight;
 
     DynamicChoiceWidget(const DynamicChoiceWidget&) = delete; // Copy Constructor Not Implemented
-    void operator=(const DynamicChoiceWidget&) = delete;      // Operator '=' Not Implemented
+    void operator=(const DynamicChoiceWidget&) = delete;      // Move assignment Not Implemented
 };
 
 #endif /* _DynamicChoiceWidget_H_ */

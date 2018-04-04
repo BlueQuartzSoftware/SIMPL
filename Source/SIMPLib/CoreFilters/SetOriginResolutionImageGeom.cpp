@@ -94,8 +94,7 @@ public:
 //
 // -----------------------------------------------------------------------------
 SetOriginResolutionImageGeom::SetOriginResolutionImageGeom()
-: AbstractFilter()
-, m_DataContainerName("")
+: m_DataContainerName("")
 , m_ChangeOrigin(false)
 , m_ChangeResolution(false)
 {
@@ -107,7 +106,6 @@ SetOriginResolutionImageGeom::SetOriginResolutionImageGeom()
   m_Resolution.y = 1.0f;
   m_Resolution.z = 1.0f;
 
-  setupFilterParameters();
 }
 
 // -----------------------------------------------------------------------------

@@ -320,5 +320,5 @@ public:
 
 private:
   ReplaceValueTest(const ReplaceValueTest&); // Copy Constructor Not Implemented
-  void operator=(const ReplaceValueTest&);   // Operator '=' Not Implemented
+  void operator=(const ReplaceValueTest&);   // Move assignment Not Implemented
 };

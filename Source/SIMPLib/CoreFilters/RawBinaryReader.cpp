@@ -159,8 +159,7 @@ template <typename T> int32_t readBinaryFile(typename DataArray<T>::Pointer p, c
 //
 // -----------------------------------------------------------------------------
 RawBinaryReader::RawBinaryReader()
-: AbstractFilter()
-, m_CreatedAttributeArrayPath("")
+: m_CreatedAttributeArrayPath("")
 , m_ScalarType(SIMPL::NumericTypes::Type::Int8)
 , m_Endian(0)
 , m_NumberOfComponents(0)
@@ -168,7 +167,6 @@ RawBinaryReader::RawBinaryReader()
 , m_InputFile("")
 {
 
-  setupFilterParameters();
 }
 
 // -----------------------------------------------------------------------------

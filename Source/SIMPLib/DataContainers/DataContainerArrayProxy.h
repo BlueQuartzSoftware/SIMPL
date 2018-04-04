@@ -123,10 +123,19 @@ class SIMPLib_EXPORT DataContainerArrayProxy
     void print(const QString header = QString(""));
 
     /**
-     * @brief setAllFlags
-     * @param state
+     * @brief Sets the flags of the proxy items that match the geometry, attribute matrix type, primitive type, and number of components flags that are input as parameters.
+     * Flags are only set if their parent flag has been set as well.  For example: a matching attribute matrix's flag will be set if its data container flag has also been set.
+     * But its flag won't be set if its data container flag has not been set.
+     * @param flag Whether to flag or unflag the matched data containers, attribute matrices, and data arrays
+     * @param dcGeoms Data containers with the geometries specified with this flag combination will be flagged/unflagged in the proxy
+     * @param amTypes Attribute matrices with the attribute matrix types specified with this flag combination will be flagged/unflagged in the proxy
+     * @param primitiveTypes Data arrays with the primitive types specified with this flag combination will be flagged/unflagged in the proxy
+     * @param compDimsVector Data arrays with component dimensions in this vector will be flagged/unflagged in the proxy.  If the vector is empty,
+     * then any component dimensions are flagged/unflagged.
      */
-    void setAllFlags(Qt::CheckState state);
+    void setFlags(uint8_t flag, DataContainerProxy::DCGeometryTypeFlags dcGeoms = DataContainerProxy::Any_DCGeomType,
+                  AttributeMatrixProxy::AMTypeFlags amTypes = AttributeMatrixProxy::Any_AMType, DataArrayProxy::PrimitiveTypeFlags primitiveTypes = DataArrayProxy::Any_PType,
+                  DataArrayProxy::CompDimsVector compDimsVector = DataArrayProxy::CompDimsVector());
 
     /**
      * @brief reverseFlags

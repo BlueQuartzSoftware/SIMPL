@@ -67,7 +67,7 @@ class PluginDetails : public QDialog, private Ui::PluginDetails
 
   private:
     PluginDetails(const PluginDetails&) = delete;  // Copy Constructor Not Implemented
-    void operator=(const PluginDetails&) = delete; // Operator '=' Not Implemented
+    void operator=(const PluginDetails&) = delete; // Move assignment Not Implemented
 };
 
 #endif // PLUGINDETAILS_H

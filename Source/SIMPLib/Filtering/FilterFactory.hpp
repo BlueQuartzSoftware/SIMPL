@@ -117,6 +117,6 @@ private:
   QUuid m_Uuid;
 
   FilterFactory(const FilterFactory&);  // Copy Constructor Not Implemented
-  void operator=(const FilterFactory&); // Operator '=' Not Implemented
+  void operator=(const FilterFactory&); // Move assignment Not Implemented
 };
 #endif /* FilterFACTORY_H_ */

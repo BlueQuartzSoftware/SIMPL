@@ -180,5 +180,5 @@ public:
 
 private:
   FilterPipelineTest(const FilterPipelineTest&); // Copy Constructor Not Implemented
-  void operator=(const FilterPipelineTest&);     // Operator '=' Not Implemented
+  void operator=(const FilterPipelineTest&);     // Move assignment Not Implemented
 };

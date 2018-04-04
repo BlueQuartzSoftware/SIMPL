@@ -48,8 +48,7 @@
 //
 // -----------------------------------------------------------------------------
 CreateImageGeometry::CreateImageGeometry()
-: AbstractFilter()
-, m_SelectedDataContainer("ImageGeomDataContainer")
+: m_SelectedDataContainer("ImageGeomDataContainer")
 {
   m_Dimensions.x = 0;
   m_Dimensions.y = 0;
@@ -63,7 +62,6 @@ CreateImageGeometry::CreateImageGeometry()
   m_Resolution.y = 1.0f;
   m_Resolution.z = 1.0f;
 
-  setupFilterParameters();
 }
 
 // -----------------------------------------------------------------------------

@@ -44,12 +44,15 @@ public:
   SIMPL_STATIC_NEW_MACRO(ImportHDF5DatasetFilterParameter)
   SIMPL_TYPE_MACRO(ImportHDF5DatasetFilterParameter)
 
-  typedef std::function<void(QString)> SetterCallbackType;
-  typedef std::function<QString(void)> GetterCallbackType;
+  typedef std::function<void(QString)> FilePathSetterCallbackType;
+  typedef std::function<QString(void)> FilePathGetterCallbackType;
+
+  typedef std::function<void(QStringList)> DatasetSetterCallbackType;
+  typedef std::function<QStringList(void)> DatasetGetterCallbackType;
 
   static Pointer New(const QString& humanLabel, const QString& propertyName, const QVariant& filePathDefaultValue, const QVariant& datasetDefaultValue, Category category,
-                     SetterCallbackType filePathSetterCallback, GetterCallbackType filePathGetterCallback, SetterCallbackType dataSetSetterCallback, GetterCallbackType dataSetGetterCallback,
-                     int groupIndex = -1);
+                     FilePathSetterCallbackType filePathSetterCallback, FilePathGetterCallbackType filePathGetterCallback, DatasetSetterCallbackType dataSetSetterCallback,
+                     DatasetGetterCallbackType dataSetGetterCallback, int groupIndex = -1);
 
   virtual ~ImportHDF5DatasetFilterParameter();
 
@@ -58,51 +61,51 @@ public:
   QString getWidgetType() const override;
 
   /**
- * @brief readJson Reads this filter parameter's corresponding property out of a QJsonObject.
- * @param json The QJsonObject that the filter parameter reads from.
- */
+   * @brief readJson Reads this filter parameter's corresponding property out of a QJsonObject.
+   * @param json The QJsonObject that the filter parameter reads from.
+   */
   void readJson(const QJsonObject& json);
 
   /**
- * @brief writeJson Writes this filter parameter's corresponding property to a QJsonObject.
- * @param json The QJsonObject that the filter parameter writes to.
- */
+   * @brief writeJson Writes this filter parameter's corresponding property to a QJsonObject.
+   * @param json The QJsonObject that the filter parameter writes to.
+   */
   void writeJson(QJsonObject& json);
 
   /**
-  * @param SetterCallback The method in the AbstractFilter subclass that <i>sets</i> the value of the property
-  * that this FilterParameter subclass represents.
-  * from the filter parameter.
-  */
-  SIMPL_INSTANCE_PROPERTY(SetterCallbackType, FilePathSetterCallback)
+   * @param SetterCallback The method in the AbstractFilter subclass that <i>sets</i> the value of the property
+   * that this FilterParameter subclass represents.
+   * from the filter parameter.
+   */
+  SIMPL_INSTANCE_PROPERTY(FilePathSetterCallbackType, FilePathSetterCallback)
 
   /**
-  * @param GetterCallback The method in the AbstractFilter subclass that <i>gets</i> the value of the property
-  * that this FilterParameter subclass represents.
-  * @return The GetterCallback
-  */
-  SIMPL_INSTANCE_PROPERTY(GetterCallbackType, FilePathGetterCallback)
+   * @param GetterCallback The method in the AbstractFilter subclass that <i>gets</i> the value of the property
+   * that this FilterParameter subclass represents.
+   * @return The GetterCallback
+   */
+  SIMPL_INSTANCE_PROPERTY(FilePathGetterCallbackType, FilePathGetterCallback)
 
   /**
-  * @param SetterCallback The method in the AbstractFilter subclass that <i>sets</i> the value of the property
-  * that this FilterParameter subclass represents.
-  * from the filter parameter.
-  */
-  SIMPL_INSTANCE_PROPERTY(SetterCallbackType, DataSetSetterCallback)
+   * @param SetterCallback The method in the AbstractFilter subclass that <i>sets</i> the value of the property
+   * that this FilterParameter subclass represents.
+   * from the filter parameter.
+   */
+  SIMPL_INSTANCE_PROPERTY(DatasetSetterCallbackType, DataSetSetterCallback)
 
   /**
-  * @param GetterCallback The method in the AbstractFilter subclass that <i>gets</i> the value of the property
-  * that this FilterParameter subclass represents.
-  * @return The GetterCallback
-  */
-  SIMPL_INSTANCE_PROPERTY(GetterCallbackType, DataSetGetterCallback)
+   * @param GetterCallback The method in the AbstractFilter subclass that <i>gets</i> the value of the property
+   * that this FilterParameter subclass represents.
+   * @return The GetterCallback
+   */
+  SIMPL_INSTANCE_PROPERTY(DatasetGetterCallbackType, DataSetGetterCallback)
 
 protected:
   ImportHDF5DatasetFilterParameter();
 
 private:
   ImportHDF5DatasetFilterParameter(const ImportHDF5DatasetFilterParameter&) = delete; // Copy Constructor Not Implemented
-  void operator=(const ImportHDF5DatasetFilterParameter&);                   // Operator '=' Not Implemented
+  void operator=(const ImportHDF5DatasetFilterParameter&);                            // Move assignment Not Implemented
 };
 
 #endif /* _importhdf5datasetfilterparameter_h_ */

@@ -74,7 +74,7 @@ class SVWidgetsLib_EXPORT SVPipelineFilterOutlineWidget : public QFrame, public 
     AbstractFilter*   m_Filter = nullptr;
 
     SVPipelineFilterOutlineWidget(const SVPipelineFilterOutlineWidget&) = delete; // Copy Constructor Not Implemented
-    void operator=(const SVPipelineFilterOutlineWidget&) = delete;                // Operator '=' Not Implemented
+    void operator=(const SVPipelineFilterOutlineWidget&) = delete;                // Move assignment Not Implemented
 };
 
 #endif /* _sVPipelineFilterOutlineWidget_H */

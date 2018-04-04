@@ -66,6 +66,8 @@
 #define PACK_GRAINS_ERROR_TXT_OUT 1
 #define PACK_GRAINS_VTK_FILE_OUT 1
 
+#define MAKE_OUTPUT_FILE_PATH(outpath, filename) QString outpath = m_OutputDirectory + "/" + m_OutputFilePrefix + filename;
+
 QString m_H5StatsFile("");
 QString m_OutputDirectory = UnitTest::SyntheticBuilderTest::TestDir;
 QString m_OutputFilePrefix("");

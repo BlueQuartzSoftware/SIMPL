@@ -346,5 +346,5 @@ public:
 
 private:
   ConditionalSetValueTest(const ConditionalSetValueTest&); // Copy Constructor Not Implemented
-  void operator=(const ConditionalSetValueTest&);          // Operator '=' Not Implemented
+  void operator=(const ConditionalSetValueTest&);          // Move assignment Not Implemented
 };

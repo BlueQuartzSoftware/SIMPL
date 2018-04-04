@@ -74,7 +74,7 @@ class PipelineFilterWidgetFactory : public IFilterWidgetFactory
 
   private:
     PipelineFilterWidgetFactory(const PipelineFilterWidgetFactory&); // Copy Constructor Not Implemented
-    void operator=(const PipelineFilterWidgetFactory&); // Operator '=' Not Implemented
+    void operator=(const PipelineFilterWidgetFactory&);              // Move assignment Not Implemented
 };
 #endif /* PipelineFilterWidgetFACTORY_H_ */
 

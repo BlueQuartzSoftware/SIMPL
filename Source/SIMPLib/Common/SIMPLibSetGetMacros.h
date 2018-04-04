@@ -35,8 +35,8 @@
 #ifndef _simplibsetgetmacros_h_
 #define _simplibsetgetmacros_h_
 
-#include <string.h>
 
+#include <cstring>
 #include <sstream>
 #include <stdexcept>
 
@@ -47,9 +47,9 @@
  */
 
 #if defined(QT_CORE_LIB)
+#include <QtCore/QSharedPointer>
 #include <QtCore/QString>
 #include <QtCore/QtDebug>
-#include <QtCore/QSharedPointer>
 #endif
 
 //-- C++11 Includes
@@ -57,16 +57,16 @@
 
 
 #define COPY_ARRAY_3(var, obj)\
-  var[0] = obj->var[0];var[1] = obj->var[1];var[2] = obj->var[2];
+  (var)[0] = (obj)->(var)[0]; (var)[1] = (obj)->(var)[1]; (var)[2] = (obj)->(var)[2];
 
 #define COPY_ARRAY_4(var, obj)\
-  var[0] = obj->var[0];var[1] = obj->var[1];\
-  var[2] = obj->var[2]; var[3] = obj->var[3];
+  (var)[0] = (obj)->(var)[0]; (var)[1] = (obj)->(var)[1];\
+  (var)[2] = (obj)->(var)[2]; (var)[3] = (obj)->(var)[3];
 
 #define COPY_ARRAY_5(var, obj)\
-  var[0] = obj->var[0];var[1] = obj->var[1];\
-  var[2] = obj->var[2]; var[3] = obj->var[3];\
-  var[4] = obj->var[4];
+  (var)[0] = (obj)->(var)[0]; (var)[1] = (obj)->(var)[1];\
+  (var)[2] = (obj)->(var)[2]; (var)[3] = (obj)->(var)[3];\
+  (var)[4] = (obj)->(var)[4];
 
 
 /**
@@ -74,13 +74,13 @@
  * target to destination. This is NOT just a simple pointer copy.
  */
 #define DEEP_COPY_SHARED_VECTOR(sharedPtr, obj, VType, m_msgType)\
-  if (nullptr != sharedPtr.get())\
+  if (nullptr != (sharedPtr))\
   {\
-    sharedPtr = VType(static_cast<std::vector<m_msgType>*>(nullptr));\
+    (sharedPtr) = VType(static_cast<std::vector<m_msgType>*>(nullptr));\
   }\
-  if (nullptr != obj->sharedPtr.get())\
+  if (nullptr != (obj)->(sharedPtr).get())\
   {\
-    sharedPtr = VType(new std::vector<m_msgType>(*(obj->sharedPtr.get())));\
+    (sharedPtr) = VType(new std::vector<m_msgType>(*((obj)->(sharedPtr).get())));\
   }
 
 
@@ -146,7 +146,7 @@
   typedef SuperClass::Pointer SuperClass##Type;\
   static SuperClass##Type New##SuperClass(void) \
   { \
-    SuperClass##Type sharedPtr (new thisClass); \
+    SuperClass##Type sharedPtr (new (thisClass)); \
     return sharedPtr; \
   }
 
@@ -156,14 +156,14 @@
 #define SIMPL_STATIC_NEW_MACRO(thisClass) \
   static Pointer New(void) \
   { \
-    Pointer sharedPtr (new thisClass); \
+    Pointer sharedPtr (new (thisClass)); \
     return sharedPtr; \
   }
 
 #define SIMPL_STATIC_NEW_MACRO_WITH_ARGS(thisClass, args) \
   static Pointer New args \
   { \
-    Pointer sharedPtr (new thisClass); \
+    Pointer sharedPtr (new (thisClass)); \
     return sharedPtr; \
   }
 
@@ -406,9 +406,19 @@ public:     \
   virtual SIMPL_SET_PROPERTY(bool, prpty)\
   virtual bool is##prpty() { return m_##prpty; }
 
-
-
-
+/**
+ * @brief
+ */
+#define SIMPL_FILTER_NEW_MACRO(Class)                                                                                                                                                                  \
+  static std::shared_ptr<Class> New()                                                                                                                                                                  \
+  {                                                                                                                                                                                                    \
+    struct make_shared_enabler : public Class                                                                                                                                                          \
+    {                                                                                                                                                                                                  \
+    };                                                                                                                                                                                                 \
+    std::shared_ptr<make_shared_enabler> val = std::make_shared<make_shared_enabler>();                                                                                                                \
+    val->setupFilterParameters();                                                                                                                                                                      \
+    return val;                                                                                                                                                                                        \
+  }
 
 /**
 * @brief
@@ -427,19 +437,19 @@ public:     \
 // -----------------------------------------------------------------------------
 #define SIMPL_SET_2DVECTOR_PROPERTY(type, prpty, varname)\
   void set##prpty(type value[2]) {\
-    varname[0] = value[0]; varname[1] = value[1]; }\
+    (varname)[0] = value[0]; (varname)[1] = value[1]; }\
   void set##prpty(type value_0, type value_1) {\
-    varname[0] = value_0; varname[1] = value_1; }\
+    (varname)[0] = value_0; (varname)[1] = value_1; }\
   void set##prpty(const std::tuple<type, type> &var) {\
-    varname[0] = std::get<0>(var); varname[1] = std::get<1>(var); }
+    (varname)[0] = std::get<0>(var); (varname)[1] = std::get<1>(var); }
 
 #define SIMPL_GET_2DVECTOR_PROPERTY(type, prpty, varname)\
   void get##prpty(type value[2]) {\
-    value[0] = varname[0]; value[1] = varname[1]; }\
-  void get##prpty(type &value_0, type &value_1) {\
-    value_0 = varname[0]; value_1 = varname[1]; }\
-  std::tuple<type, type> get##prpty() {\
-    return std::make_tuple(varname[0], varname[1]); }
+    value[0] = (varname)[0]; value[1] = (varname)[1]; }\
+  void get##prpty((type) &value_0, (type) &value_1) {\
+    value_0 = (varname)[0]; value_1 = (varname)[1]; }\
+  std::tuple<type, type> get##prpty() const {\
+    return std::make_tuple((varname)[0], (varname)[1]); }
 
 #define SIMPL_INSTANCE_VEC2_PROPERTY(type, prpty)\
   private:\
@@ -454,19 +464,19 @@ public:     \
 // -----------------------------------------------------------------------------
 #define SIMPL_SET_VEC3_PROPERTY(type, prpty, varname)\
   void set##prpty(type value[3]) {\
-    varname[0] = value[0]; varname[1] = value[1]; varname[2] = value[2]; }\
+    (varname)[0] = value[0]; (varname)[1] = value[1]; (varname)[2] = value[2]; }\
   void set##prpty(type value_0, type value_1, type value_2) {\
-    varname[0] = value_0; varname[1] = value_1; varname[2] = value_2; }\
+    (varname)[0] = value_0; (varname)[1] = value_1; (varname)[2] = value_2; }\
   void set##prpty(const std::tuple<type, type, type> &var) {\
-    varname[0] = std::get<0>(var); varname[1] = std::get<1>(var); varname[2] = std::get<2>(var); }
+    (varname)[0] = std::get<0>(var); (varname)[1] = std::get<1>(var); (varname)[2] = std::get<2>(var); }
         
 #define SIMPL_GET_VEC3_PROPERTY(type, prpty, varname)\
   void get##prpty(type value[3]) {\
-    value[0] = varname[0]; value[1] = varname[1]; value[2] = varname[2]; }\
+    value[0] = (varname)[0]; value[1] = (varname)[1]; value[2] = (varname)[2]; }\
   void get##prpty(type &value_0, type &value_1, type &value_2) {\
-    value_0 = varname[0]; value_1 = varname[1]; value_2 = varname[2]; }\
-  std::tuple<type, type, type> get##prpty() {\
-    return std::make_tuple(varname[0], varname[1], varname[2]); }
+    value_0 = (varname)[0]; value_1 = (varname)[1]; value_2 = (varname)[2]; }\
+  std::tuple<type, type, type> get##prpty() const {\
+    return std::make_tuple((varname)[0], (varname)[1], (varname)[2]); }
 
 #define SIMPL_INSTANCE_VEC3_PROPERTY(type, prpty)\
   private:\
@@ -479,17 +489,17 @@ public:     \
 //
 // -----------------------------------------------------------------------------
 #define SIMPL_SET_VEC3_PROPERTY_VO(type, prpty, varname)\
-  virtual void set##prpty(type value[3]) override {\
-    varname[0] = value[0]; varname[1] = value[1]; varname[2] = value[2]; }\
-   virtual void set##prpty(type value_0, type value_1, type value_2) override {\
-    varname[0] = value_0; varname[1] = value_1; varname[2] = value_2; }\
-  virtual void set##prpty(const std::tuple<type, type, type> &var) override {\
-    varname[0] = std::get<0>(var); varname[1] = std::get<1>(var); varname[2] = std::get<2>(var);}
+   void set##prpty(type value[3]) override {\
+    (varname)[0] = value[0]; (varname)[1] = value[1]; (varname)[2] = value[2]; }\
+   void set##prpty(type value_0, type value_1, type value_2) override {\
+    (varname)[0] = value_0; (varname)[1] = value_1; (varname)[2] = value_2; }\
+   void set##prpty(const std::tuple<type, type, type> &var) override {\
+    (varname)[0] = std::get<0>(var); (varname)[1] = std::get<1>(var); (varname)[2] = std::get<2>(var);}
 
-#define SIMPL_GET_VEC3_PROPERTY_VO(type, prpty, varname)                                                                                                                                               \
-  virtual std::tuple<type, type, type> get##prpty() const override                                                                                                                                     \
-  {                                                                                                                                                                                                    \
-    return std::make_tuple(varname[0], varname[1], varname[2]);                                                                                                                                        \
+#define SIMPL_GET_VEC3_PROPERTY_VO(type, prpty, varname)\
+  virtual std::tuple<type, type, type> get##prpty() const override\
+  {\
+    return std::make_tuple((varname)[0], (varname)[1], (varname)[2]);\
   }
 
 #define SIMPL_INSTANCE_VEC3_PROPERTY_VO(type, prpty)\
@@ -503,8 +513,8 @@ public:     \
 //
 // -----------------------------------------------------------------------------
 #define SIMPL_CONTAINER_TYPE(thisClass, container) \
-  typedef container<thisClass >     ContainerT; \
-  typedef std::shared_ptr< container<thisClass > > ContainerPType;
+  typedef (container)<thisClass>     ContainerT; \
+  typedef std::shared_ptr<(container)<(thisClass)>> ContainerPType;
 
 
 /**
@@ -571,47 +581,18 @@ public:\
 #define SIMPL_DECLARE_ARRAY(Type, ptr, prpty )\
   private:\
   DataArray<Type>::Pointer m_##prpty;\
-  Type* ptr = nullptr;\
+  Type* (ptr) = nullptr;\
   public:\
   SIMPL_SET_PROPERTY(DataArray<Type>::Pointer, prpty)\
   SIMPL_GET_PROPERTY(DataArray<Type>::Pointer, prpty)
 
 
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-/**
- * @brief Creates a "setter" method to set the property.
- */
-#define SIMPL_Header_SET_PROPERTY( HeaderType, type, prpty, key) \
-  void set##prpty(type value) { \
-    HeaderType* p = dynamic_cast<HeaderType*>(m_Headermap[key].get()); \
-    if (nullptr != p) { p->setValue(value); } else {\
-      qDebug() << "Value for Key: " << key << " was null." ;} }
-
-/**
- * @brief Creates a "getter" method to retrieve the value of the property.
- */
-#define SIMPL_Header_GET_PROPERTY(HeaderType, type, prpty, key) \
-  type get##prpty() { \
-    HeaderType* p = dynamic_cast<HeaderType*>(m_Headermap[key].get());\
-    if (nullptr != p) { return p->getValue(); } else {\
-      qDebug() << "Value for Key: " << key << " was null." ; return 0;} }
-
-
-#define SIMPL_Header_INSTANCE_PROPERTY(HeaderType, type, prpty, key)\
-  public:\
-  SIMPL_Header_SET_PROPERTY(HeaderType, type, prpty, key)\
-  SIMPL_Header_GET_PROPERTY(HeaderType, type, prpty, key)
-
-
 #define SIMPL_POINTER_PROPERTY(name, var, type)\
   private:\
-  type* m_##var;\
+    (type)* m_##var;\
   public:\
-  type* get##name##Pointer() { return m_##var; }\
-  void set##name##Pointer(type* f)\
+  (type)* get##name##Pointer() { return m_##var; }\
+  void set##name##Pointer((type)* f)\
   {\
     if (m_##var != nullptr && m_##var != f)\
     {\
@@ -620,16 +601,6 @@ public:\
     }\
     m_##var = f;\
   }
-
-
-/**
-*
-* */
-#define SIMPL_FILTER_WRITE_PARAMETER(property)\
-  writer->writeValue(#property, get##property() );
-
-
-
 
 // -----------------------------------------------------------------------------
 //
@@ -651,7 +622,7 @@ private:    \
   SIMPL_INSTANCE_STRING_PROPERTY(name##ArrayName);\
   private:\
   type::WeakPointer m_##name##Ptr;\
-  type* m_##name = nullptr;
+  (type)* m_##name = nullptr;
 
 //used in place of 'DEFINE_DATAARRAY_VARIABLE' in filter header
 #define DEFINE_IDATAARRAY_VARIABLE(varName)\
@@ -670,81 +641,49 @@ private:    \
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-#define CREATE_INPUT_FILENAME(f, n)\
-  QString f = m_InputDirectory + QDir::Separator + n;\
-  f = QDir::toNativeSeparators(f);
-
-#define CREATE_OUTPUT_FILENAME(f, n)\
-  QString f = m_InputDirectory + QDir::Separator + n;\
-  f = QDir::toNativeSeparators(f);
-
-#define CHECK_FOR_CANCELED(FuncClass, Message, name)\
-  if (this->getCancel() ) { \
-    updatePipelineMessage(#Message);\
-    updatePipelineProgress(0);\
-    pipelineFinished();\
-    return;}\
-
-
-#define CHECK_FOR_ERROR(FuncClass, Message, err)\
-  if(err < 0) {\
-    setErrorCondition(err);\
-    QString msg = QString(Message);\
-    pipelineErrorMessage(msg.toLatin1().data());\
-    updatePipelineProgress(0);\
-    pipelineFinished();\
-    return;   }
-
-
-#define MAKE_OUTPUT_FILE_PATH(outpath, filename)\
-  QString outpath = m_OutputDirectory + "/" + m_OutputFilePrefix + filename;
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-  /**
-    * @brief Macro to silence compiler warnings for unused parameters in methods.
-    */
+/**
+* @brief Macro to silence compiler warnings for unused parameters in methods.
+*/
 #define SIMPL_NOT_USED(x)
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
 
-// These are simple over-rides from the boost distribution because we don't want the entire boost distribution just
-// for a few boost headers
-  namespace SIMPL_
+
+namespace SIMPLTesting
+{
+class bad_lexical_cast : public std::runtime_error
+{
+public:
+  explicit bad_lexical_cast(const QString& s)
+  : std::runtime_error(s.toStdString())
   {
-    class bad_lexical_cast : public std::runtime_error
-    {
-      public:
- bad_lexical_cast(const QString& s)
-   : std::runtime_error(s.toStdString())
- { }
-    };
+  }
+};
 
-    class bad_any_cast : public std::runtime_error
-    {
-      public:
- bad_any_cast(const QString& s)
-   : std::runtime_error(s.toStdString())
- { }
-    };
+class bad_any_cast : public std::runtime_error
+{
+public:
+  explicit bad_any_cast(const QString& s)
+  : std::runtime_error(s.toStdString())
+  {
+  }
+};
 
-    template<typename T>
-    T lexical_cast(const QString& s)
-    {
-      std::istringstream i(s.toStdString());
-      T x;
-      if (!(i >> x))
-      { throw bad_lexical_cast("convertToDouble(\"" + s + "\")"); }
-
-      return x;
-    }
+template <typename T> T lexical_cast(const QString& s)
+{
+  std::istringstream i(s.toStdString());
+  T x;
+  if(!(i >> x))
+  {
+    throw bad_lexical_cast("convertToDouble(\"" + s + "\")");
   }
 
+  return x;
+}
+} // namespace SIMPLTesting
 
 
 
 #endif /* SIMPL_SETGETMACROS_H_ */
-

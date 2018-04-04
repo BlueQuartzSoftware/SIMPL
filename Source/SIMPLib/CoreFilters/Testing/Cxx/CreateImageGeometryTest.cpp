@@ -241,5 +241,5 @@ public:
 
 private:
   CreateImageGeometryTest(const CreateImageGeometryTest&); // Copy Constructor Not Implemented
-  void operator=(const CreateImageGeometryTest&);          // Operator '=' Not Implemented
+  void operator=(const CreateImageGeometryTest&);          // Move assignment Not Implemented
 };

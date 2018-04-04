@@ -54,7 +54,6 @@ AbstractFilter::AbstractFilter()
 
 {
   m_DataContainerArray = DataContainerArray::New();
-  setupFilterParameters();
   m_PreviousFilter = NullPointer();
   m_NextFilter = NullPointer();
 }
@@ -82,12 +81,12 @@ AbstractFilter::~AbstractFilter()
 AbstractFilter::Pointer AbstractFilter::CreateFilterFromClassName(const QString& className)
 {
   FilterManager* fm = FilterManager::Instance();
-  if(NULL == fm)
+  if(nullptr == fm)
   {
     return AbstractFilter::NullPointer();
   }
   IFilterFactory::Pointer wf = fm->getFactoryFromClassName(className);
-  if(NULL == wf.get())
+  if(nullptr == wf)
   {
     return AbstractFilter::NullPointer();
   }
@@ -181,7 +180,6 @@ void AbstractFilter::readFilterParameters(AbstractFilterParametersReader* reader
   Q_ASSERT(reader != nullptr);
   qDebug() << "AbstractFilter::readFilterParameters() -> Writing Filter Options"
            << "\n";
-  return;
 }
 
 // -----------------------------------------------------------------------------
@@ -212,9 +210,8 @@ void AbstractFilter::preWriteFilterParameters(QJsonObject& obj, QJsonObject& roo
 void AbstractFilter::writeFilterParameters(QJsonObject& obj)
 {
   QVector<FilterParameter::Pointer> filterParameters = getFilterParameters();
-  for(int i = 0; i < filterParameters.size(); i++)
+  for(auto const fp : filterParameters)
   {
-    FilterParameter::Pointer fp = filterParameters[i];
     fp->writeJson(obj);
   }
   obj[SIMPL::Settings::FilterVersion] = getFilterVersion();

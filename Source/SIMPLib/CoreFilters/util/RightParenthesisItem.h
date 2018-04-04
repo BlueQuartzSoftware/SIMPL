@@ -59,7 +59,7 @@ class SIMPLib_EXPORT RightParenthesisItem : public CalculatorItem
 
   private:
     RightParenthesisItem(const RightParenthesisItem&) = delete; // Copy Constructor Not Implemented
-    void operator=(const RightParenthesisItem&) = delete;       // Operator '=' Not Implemented
+    void operator=(const RightParenthesisItem&) = delete;       // Move assignment Not Implemented
 };
 
 #endif /* _RightParenthesisItem_H_ */

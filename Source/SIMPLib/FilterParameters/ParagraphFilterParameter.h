@@ -130,7 +130,7 @@ protected:
 
 private:
   ParagraphFilterParameter(const ParagraphFilterParameter&) = delete; // Copy Constructor Not Implemented
-  void operator=(const ParagraphFilterParameter&);           // Operator '=' Not Implemented
+  void operator=(const ParagraphFilterParameter&);                    // Move assignment Not Implemented
 };
 
 #endif /* _paragraphfilterparameter_h_ */

@@ -186,7 +186,7 @@ class SVWidgetsLib_EXPORT FileListInfoWidget : public FilterParameterWidget, pri
     bool     m_DidCausePreflight = false;
 
     FileListInfoWidget(const FileListInfoWidget&) = delete; // Copy Constructor Not Implemented
-    void operator=(const FileListInfoWidget&) = delete;     // Operator '=' Not Implemented
+    void operator=(const FileListInfoWidget&) = delete;     // Move assignment Not Implemented
 };
 
 #endif /* EbsdImportWIDGET_H_ */

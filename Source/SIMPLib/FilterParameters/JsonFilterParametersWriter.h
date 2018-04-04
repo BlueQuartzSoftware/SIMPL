@@ -66,7 +66,7 @@ class SIMPLib_EXPORT JsonFilterParametersWriter : public AbstractFilterParameter
 
     JsonFilterParametersWriter(QString& fileName, QString& pipelineName, int& numFilters);
 
-    virtual ~JsonFilterParametersWriter();
+    ~JsonFilterParametersWriter() override;
 
     /**
     * @brief WritePipelineToFile This function will write a pipeline to a
@@ -134,8 +134,11 @@ class SIMPLib_EXPORT JsonFilterParametersWriter : public AbstractFilterParameter
      */
     QString generateIndexString(int currentIndex);
 
+  public:
     JsonFilterParametersWriter(const JsonFilterParametersWriter&) = delete; // Copy Constructor Not Implemented
-    void operator=(const JsonFilterParametersWriter&) = delete;             // Operator '=' Not Implemented
+    JsonFilterParametersWriter(JsonFilterParametersWriter&&) = delete;      // Move Constructor
+    JsonFilterParametersWriter& operator=(const JsonFilterParametersWriter&) = delete; // Copy Assignment Not Implemented
+    JsonFilterParametersWriter& operator=(JsonFilterParametersWriter&&) = delete;      // Move Assignment
 };
 
 #endif /* JsonFilterParametersWriter_H_ */

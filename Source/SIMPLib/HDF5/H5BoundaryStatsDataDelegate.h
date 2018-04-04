@@ -82,7 +82,7 @@ class SIMPLib_EXPORT H5BoundaryStatsDataDelegate : public H5StatsDataDelegate
 
   private:
     H5BoundaryStatsDataDelegate(const H5BoundaryStatsDataDelegate&) = delete; // Copy Constructor Not Implemented
-    void operator=(const H5BoundaryStatsDataDelegate&) = delete;              // Operator '=' Not Implemented
+    void operator=(const H5BoundaryStatsDataDelegate&) = delete;              // Move assignment Not Implemented
 };
 
 #endif /* _H5STATSDATA_DELEGATE_H_ */

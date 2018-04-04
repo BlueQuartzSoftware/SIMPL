@@ -88,7 +88,7 @@ class SVWidgetsLib_EXPORT UpdateCheck : public QObject
     UpdateCheck::SIMPLVersionData_t m_VersionData;
 
     UpdateCheck(const UpdateCheck&);    // Copy Constructor Not Implemented
-    void operator=(const UpdateCheck&);  // Operator '=' Not Implemented
+    void operator=(const UpdateCheck&); // Move assignment Not Implemented
 };
 
 #endif /* _UPDATECHECK_H_ */

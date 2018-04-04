@@ -54,12 +54,12 @@ class SIMPLib_EXPORT PostSlackMessage : public AbstractFilter
   PYB11_PROPERTY(QString SlackMessage READ getSlackMessage WRITE setSlackMessage)
   PYB11_PROPERTY(bool WarningsAsError READ getWarningsAsError WRITE setWarningsAsError)
 
-public:
-  SIMPL_SHARED_POINTERS(PostSlackMessage)
-  SIMPL_STATIC_NEW_MACRO(PostSlackMessage)
-  SIMPL_TYPE_MACRO_SUPER_OVERRIDE(PostSlackMessage, AbstractFilter)
+  public:
+    SIMPL_SHARED_POINTERS(PostSlackMessage)
+    SIMPL_FILTER_NEW_MACRO(PostSlackMessage)
+    SIMPL_TYPE_MACRO_SUPER_OVERRIDE(PostSlackMessage, AbstractFilter)
 
-  virtual ~PostSlackMessage();
+    ~PostSlackMessage() override;
 
   SIMPL_FILTER_PARAMETER(QString, SlackUser)
   Q_PROPERTY(QString SlackUser READ getSlackUser WRITE setSlackUser)
@@ -73,65 +73,65 @@ public:
   SIMPL_FILTER_PARAMETER(bool, WarningsAsError)
   Q_PROPERTY(bool WarningsAsError READ getWarningsAsError WRITE setWarningsAsError)
 
-  /**
-   * @brief getCompiledLibraryName Reimplemented from @see AbstractFilter class
-   */
-  virtual const QString getCompiledLibraryName() const override;
+    /**
+     * @brief getCompiledLibraryName Reimplemented from @see AbstractFilter class
+     */
+    const QString getCompiledLibraryName() const override;
 
-  /**
-   * @brief getBrandingString Returns the branding string for the filter, which is a tag
-   * used to denote the filter's association with specific plugins
-   * @return Branding string
-  */
-  virtual const QString getBrandingString() const override;
+    /**
+     * @brief getBrandingString Returns the branding string for the filter, which is a tag
+     * used to denote the filter's association with specific plugins
+     * @return Branding string
+    */
+    const QString getBrandingString() const override;
 
-  /**
-   * @brief getFilterVersion Returns a version string for this filter. Default
-   * value is an empty string.
-   * @return
-   */
-  virtual const QString getFilterVersion() const override;
+    /**
+     * @brief getFilterVersion Returns a version string for this filter. Default
+     * value is an empty string.
+     * @return
+     */
+    const QString getFilterVersion() const override;
 
-  /**
-   * @brief newFilterInstance Reimplemented from @see AbstractFilter class
-   */
-  virtual AbstractFilter::Pointer newFilterInstance(bool copyFilterParameters) const override;
+    /**
+     * @brief newFilterInstance Reimplemented from @see AbstractFilter class
+     */
+    AbstractFilter::Pointer newFilterInstance(bool copyFilterParameters) const override;
 
-  /**
-   * @brief getGroupName Reimplemented from @see AbstractFilter class
-   */
-  virtual const QString getGroupName() const override;
+    /**
+     * @brief getGroupName Reimplemented from @see AbstractFilter class
+     */
+    const QString getGroupName() const override;
 
-  /**
-   * @brief getSubGroupName Reimplemented from @see AbstractFilter class
-   */
-  virtual const QString getSubGroupName() const override;
+    /**
+     * @brief getSubGroupName Reimplemented from @see AbstractFilter class
+     */
+    const QString getSubGroupName() const override;
 
-  /**
-   * @brief getUuid Return the unique identifier for this filter.
-   * @return A QUuid object.
-   */
-  virtual const QUuid getUuid() override;
+    /**
+     * @brief getUuid Return the unique identifier for this filter.
+     * @return A QUuid object.
+     */
+    const QUuid getUuid() override;
 
-  /**
-   * @brief getHumanLabel Reimplemented from @see AbstractFilter class
-   */
-  virtual const QString getHumanLabel() const override;
+    /**
+     * @brief getHumanLabel Reimplemented from @see AbstractFilter class
+     */
+    const QString getHumanLabel() const override;
 
-  /**
-   * @brief setupFilterParameters Reimplemented from @see AbstractFilter class
-   */
-  virtual void setupFilterParameters() override;
+    /**
+     * @brief setupFilterParameters Reimplemented from @see AbstractFilter class
+     */
+    void setupFilterParameters() override;
 
-  /**
-   * @brief execute Reimplemented from @see AbstractFilter class
-   */
-  virtual void execute() override;
+    /**
+     * @brief execute Reimplemented from @see AbstractFilter class
+     */
+    void execute() override;
 
-  /**
-  * @brief preflight Reimplemented from @see AbstractFilter class
-  */
-  virtual void preflight() override;
+    /**
+    * @brief preflight Reimplemented from @see AbstractFilter class
+    */
+    void preflight() override;
 
 signals:
   /**
@@ -174,8 +174,11 @@ private:
   QMutex m_Mutex;
   QNetworkAccessManager* m_NetworkManager;
 
-  PostSlackMessage(const PostSlackMessage&) = delete; // Copy Constructor Not Implemented
-  void operator=(const PostSlackMessage&) = delete;   // Operator '=' Not Implemented
+  public:
+    PostSlackMessage(const PostSlackMessage&) = delete; // Copy Constructor Not Implemented
+    PostSlackMessage(PostSlackMessage&&) = delete;      // Move Constructor
+    PostSlackMessage& operator=(const PostSlackMessage&) = delete; // Copy Assignment Not Implemented
+    PostSlackMessage& operator=(PostSlackMessage&&) = delete;      // Move Assignment
 };
 
 #endif /* _PostSlackMessage_H_ */

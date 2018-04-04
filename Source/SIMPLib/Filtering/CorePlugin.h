@@ -182,7 +182,7 @@ class CorePlugin : public QObject, public ISIMPLibPlugin
     bool                m_DidLoad;
 
     CorePlugin(const CorePlugin&) = delete; // Copy Constructor Not Implemented
-    void operator=(const CorePlugin&) = delete;   // Operator '=' Not Implemented
+    void operator=(const CorePlugin&) = delete; // Move assignment Not Implemented
 };
 
 #endif /* _simplib_core_H_ */

@@ -1189,5 +1189,5 @@ public:
 
 private:
   DataArrayTest(const DataArrayTest&);  // Copy Constructor Not Implemented
-  void operator=(const DataArrayTest&); // Operator '=' Not Implemented
+  void operator=(const DataArrayTest&); // Move assignment Not Implemented
 };

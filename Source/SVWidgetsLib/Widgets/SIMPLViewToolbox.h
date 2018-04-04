@@ -62,7 +62,7 @@ class SVWidgetsLib_EXPORT SIMPLViewToolbox : public QMainWindow, private Ui::SIM
 
     virtual ~SIMPLViewToolbox();
 
-    static SIMPLViewToolbox* Instance(QWidget* parent = 0, Qt::WindowFlags flags = 0);
+    static SIMPLViewToolbox* Instance(QWidget* parent = nullptr, Qt::WindowFlags flags = nullptr);
 
     enum ToolboxTabs
     {
@@ -102,7 +102,7 @@ class SVWidgetsLib_EXPORT SIMPLViewToolbox : public QMainWindow, private Ui::SIM
     static SIMPLViewToolbox*                              self;
 
     SIMPLViewToolbox(const SIMPLViewToolbox&) = delete; // Copy Constructor Not Implemented
-    void operator=(const SIMPLViewToolbox&) = delete;   // Operator '=' Not Implemented
+    void operator=(const SIMPLViewToolbox&) = delete;   // Move assignment Not Implemented
 };
 
 #endif // SIMPLViewToolbox_H

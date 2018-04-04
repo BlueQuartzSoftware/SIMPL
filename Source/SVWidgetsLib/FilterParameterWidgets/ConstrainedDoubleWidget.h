@@ -93,7 +93,7 @@ class SVWidgetsLib_EXPORT ConstrainedDoubleWidget : public FilterParameterWidget
     ConstrainedDoubleFilterParameter* m_FilterParameter;
 
     ConstrainedDoubleWidget(const ConstrainedDoubleWidget&) = delete; // Copy Constructor Not Implemented
-    void operator=(const ConstrainedDoubleWidget&) = delete;          // Operator '=' Not Implemented
+    void operator=(const ConstrainedDoubleWidget&) = delete;          // Move assignment Not Implemented
 };
 
 #endif /* _constraineddoublewidget_h_ */

@@ -147,7 +147,7 @@ class SIMPLib_EXPORT AbstractFilterParametersWriter
 
   private:
     AbstractFilterParametersWriter(const AbstractFilterParametersWriter&) = delete; // Copy Constructor Not Implemented
-    void operator=(const AbstractFilterParametersWriter&) = delete;                 // Operator '=' Not Implemented
+    void operator=(const AbstractFilterParametersWriter&) = delete;                 // Move assignment Not Implemented
 };
 
 #endif /* _AbstractFilterParametersWriter_H_ */

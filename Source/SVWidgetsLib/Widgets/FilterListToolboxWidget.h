@@ -187,7 +187,7 @@ class SVWidgetsLib_EXPORT FilterListToolboxWidget : public QWidget, private Ui::
     QMap<QString, AbstractFilter::Pointer> getHumanNameMap(QList<AbstractFilter::Pointer> list);
 
     FilterListToolboxWidget(const FilterListToolboxWidget&) = delete; // Copy Constructor Not Implemented
-    void operator=(const FilterListToolboxWidget&) = delete;          // Operator '=' Not Implemented
+    void operator=(const FilterListToolboxWidget&) = delete;          // Move assignment Not Implemented
 };
 
 

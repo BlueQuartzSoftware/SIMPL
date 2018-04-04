@@ -83,7 +83,7 @@ class IFilter
     std::vector<IFilterParameter::Pointer> m_FilterParameters;
     
     IFilter(const IFilter&) = delete; // Copy Constructor Not Implemented
-    void operator=(const IFilter&) = delete; // Operator '=' Not Implemented
+    void operator=(const IFilter&) = delete; // Move assignment Not Implemented
 };
 
 

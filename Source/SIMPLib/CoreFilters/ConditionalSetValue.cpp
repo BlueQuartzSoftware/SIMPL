@@ -46,14 +46,12 @@
 //
 // -----------------------------------------------------------------------------
 ConditionalSetValue::ConditionalSetValue()
-: AbstractFilter()
-, m_SelectedArrayPath("", "", "")
+: m_SelectedArrayPath("", "", "")
 , m_ConditionalArrayPath("", "", "")
 , m_ReplaceValue(0.0)
 //, m_Array(nullptr)
 , m_ConditionalArray(nullptr)
 {
-  setupFilterParameters();
 }
 
 // -----------------------------------------------------------------------------
@@ -185,7 +183,7 @@ void ConditionalSetValue::dataCheck()
   QVector<size_t> cDims(1, 1);
   m_ConditionalArrayPtr = getDataContainerArray()->getPrereqArrayFromPath<DataArray<bool>, AbstractFilter>(this, getConditionalArrayPath(),
                                                                                                            cDims); /* Assigns the shared_ptr<> to an instance variable that is a weak_ptr<> */
-  if(nullptr != m_ConditionalArrayPtr.lock().get())                                                                /* Validate the Weak Pointer wraps a non-nullptr pointer to a DataArray<T> object */
+  if(nullptr != m_ConditionalArrayPtr.lock())                                                                      /* Validate the Weak Pointer wraps a non-nullptr pointer to a DataArray<T> object */
   {
     m_ConditionalArray = m_ConditionalArrayPtr.lock()->getPointer(0);
   } /* Now assign the raw pointer to data from the DataArray<T> object */

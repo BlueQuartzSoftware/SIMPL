@@ -70,7 +70,7 @@ class SIMPLib_EXPORT Observer : public QObject, public IObserver
 
   private:
     Observer(const Observer&) = delete;       // Copy Constructor Not Implemented
-    void operator=(const Observer&) = delete; // Operator '=' Not Implemented
+    void operator=(const Observer&) = delete; // Move assignment Not Implemented
 };
 
 #endif /* OBSERVER_H_ */

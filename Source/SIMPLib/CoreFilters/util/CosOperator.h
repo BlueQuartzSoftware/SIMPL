@@ -64,7 +64,7 @@ class SIMPLib_EXPORT CosOperator : public UnaryOperator
 
   private:
     CosOperator(const CosOperator&) = delete;    // Copy Constructor Not Implemented
-    void operator=(const CosOperator&) = delete; // Operator '=' Not Implemented
+    void operator=(const CosOperator&) = delete; // Move assignment Not Implemented
 };
 
 #endif /* _CosOperator_H_ */

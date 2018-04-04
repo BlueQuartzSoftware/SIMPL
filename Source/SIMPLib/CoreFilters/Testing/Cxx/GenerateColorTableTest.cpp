@@ -300,5 +300,5 @@ private:
   QMap<QString, QJsonArray> m_PresetMap;
 
   GenerateColorTableTest(const GenerateColorTableTest&); // Copy Constructor Not Implemented
-  void operator=(const GenerateColorTableTest&);         // Operator '=' Not Implemented
+  void operator=(const GenerateColorTableTest&);         // Move assignment Not Implemented
 };

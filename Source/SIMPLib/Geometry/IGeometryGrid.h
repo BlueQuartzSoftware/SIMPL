@@ -91,7 +91,7 @@ class SIMPLib_EXPORT IGeometryGrid : public IGeometry
 
   private:
     IGeometryGrid(const IGeometryGrid&) = delete;  // Copy Constructor Not Implemented
-    void operator=(const IGeometryGrid&) = delete; // Operator '=' Not Implemented
+    void operator=(const IGeometryGrid&) = delete; // Move assignment Not Implemented
 };
 
 #endif /* _igeometrygrid_h_ */

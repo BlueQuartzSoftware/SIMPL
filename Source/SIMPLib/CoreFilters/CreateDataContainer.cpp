@@ -44,10 +44,8 @@
 //
 // -----------------------------------------------------------------------------
 CreateDataContainer::CreateDataContainer()
-: AbstractFilter()
-, m_CreatedDataContainer("DataContainer")
+: m_CreatedDataContainer("DataContainer")
 {
-  setupFilterParameters();
 }
 
 // -----------------------------------------------------------------------------

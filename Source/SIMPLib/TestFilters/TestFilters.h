@@ -20,10 +20,10 @@ class SIMPLib_EXPORT Filt0 : public AbstractFilter
   Q_OBJECT
 public:
   SIMPL_SHARED_POINTERS(Filt0)
-  SIMPL_STATIC_NEW_MACRO(Filt0)
-   SIMPL_TYPE_MACRO_SUPER_OVERRIDE(Filt0, AbstractFilter)
+  SIMPL_FILTER_NEW_MACRO(Filt0)
+  SIMPL_TYPE_MACRO_SUPER_OVERRIDE(Filt0, AbstractFilter)
 
-  virtual ~Filt0();
+  ~Filt0() override;
   SIMPL_INSTANCE_STRING_PROPERTY(DataContainerName)
   SIMPL_INSTANCE_STRING_PROPERTY(CellAttributeMatrixName)
 
@@ -62,24 +62,24 @@ public:
   * @brief This method will instantiate all the end user settable options/parameters
   * for this filter
   */
-  virtual void setupFilterParameters() override;
+  void setupFilterParameters() override;
 
   /**
   * @brief This method will read the options from a file
   * @param reader The reader that is used to read the options from a file
   */
-  virtual void readFilterParameters(AbstractFilterParametersReader* reader, int index) override;
+  void readFilterParameters(AbstractFilterParametersReader* reader, int index) override;
 
   /**
    * @brief Reimplemented from @see AbstractFilter class
    */
-  virtual void execute() override;
+  void execute() override;
 
   /**
   * @brief This function runs some sanity checks on the DataContainer and inputs
   * in an attempt to ensure the filter can process the inputs.
   */
-  virtual void preflight() override;
+  void preflight() override;
 
 signals:
   void updateFilterParameters(AbstractFilter* filter);
@@ -102,7 +102,7 @@ protected:
 
 private:
   Filt0(const Filt0&);          // Copy Constructor Not Implemented
-  void operator=(const Filt0&) = delete; // Operator '=' Not Implemented
+  void operator=(const Filt0&) = delete; // Move assignment Not Implemented
 };
 
 // -----------------------------------------------------------------------------
@@ -113,10 +113,10 @@ class SIMPLib_EXPORT Filt1 : public AbstractFilter
   Q_OBJECT
 public:
   SIMPL_SHARED_POINTERS(Filt1)
-  SIMPL_STATIC_NEW_MACRO(Filt1)
-   SIMPL_TYPE_MACRO_SUPER_OVERRIDE(Filt1, AbstractFilter)
+  SIMPL_FILTER_NEW_MACRO(Filt1)
+  SIMPL_TYPE_MACRO_SUPER_OVERRIDE(Filt1, AbstractFilter)
 
-  virtual ~Filt1();
+  ~Filt1() override;
   SIMPL_INSTANCE_STRING_PROPERTY(DataContainerName)
 
   SIMPL_INSTANCE_PROPERTY(float, Filt1_Float)
@@ -154,24 +154,24 @@ public:
   * @brief This method will instantiate all the end user settable options/parameters
   * for this filter
   */
-  virtual void setupFilterParameters() override;
+  void setupFilterParameters() override;
 
   /**
   * @brief This method will read the options from a file
   * @param reader The reader that is used to read the options from a file
   */
-  virtual void readFilterParameters(AbstractFilterParametersReader* reader, int index) override;
+  void readFilterParameters(AbstractFilterParametersReader* reader, int index) override;
 
   /**
    * @brief Reimplemented from @see AbstractFilter class
    */
-  virtual void execute() override;
+  void execute() override;
 
   /**
   * @brief This function runs some sanity checks on the DataContainer and inputs
   * in an attempt to ensure the filter can process the inputs.
   */
-  virtual void preflight() override;
+  void preflight() override;
 
 signals:
   void updateFilterParameters(AbstractFilter* filter);
@@ -194,7 +194,7 @@ protected:
 
 private:
   Filt1(const Filt1&);          // Copy Constructor Not Implemented
-  void operator=(const Filt1&) = delete; // Operator '=' Not Implemented
+  void operator=(const Filt1&) = delete; // Move assignment Not Implemented
 };
 
 #endif /* _Filt0_H_ */

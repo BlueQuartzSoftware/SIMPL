@@ -54,7 +54,7 @@ class SVWidgetsLib_EXPORT PipelineViewPtrMimeData : public QMimeData
 
   private:
     PipelineViewPtrMimeData(const PipelineViewPtrMimeData&) = delete; // Copy Constructor Not Implemented
-    void operator=(const PipelineViewPtrMimeData&) = delete;          // Operator '=' Not Implemented
+    void operator=(const PipelineViewPtrMimeData&) = delete;          // Move assignment Not Implemented
 };
 
 #endif /* _pipelineviewptrmimedata_h_ */

@@ -68,7 +68,7 @@ class SIMPLib_EXPORT SIMPLibPluginLoader
 
   private:
     SIMPLibPluginLoader(const SIMPLibPluginLoader&) = delete; // Copy Constructor Not Implemented
-    void operator=(const SIMPLibPluginLoader&) = delete;      // Operator '=' Not Implemented
+    void operator=(const SIMPLibPluginLoader&) = delete;      // Move assignment Not Implemented
 };
 
 #endif /* _DREAM3D_PluginLoader_H_ */

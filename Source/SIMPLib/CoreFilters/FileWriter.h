@@ -50,15 +50,15 @@ class SIMPLib_EXPORT FileWriter : public AbstractFilter
 
   public:
     SIMPL_SHARED_POINTERS(FileWriter)
-    SIMPL_STATIC_NEW_MACRO(FileWriter)
-     SIMPL_TYPE_MACRO_SUPER_OVERRIDE(FileWriter, AbstractFilter)
+    SIMPL_FILTER_NEW_MACRO(FileWriter)
+    SIMPL_TYPE_MACRO_SUPER_OVERRIDE(FileWriter, AbstractFilter)
 
-    virtual ~FileWriter();
+    ~FileWriter() override;
 
     SIMPL_FILTER_PARAMETER(QString, OutputFile)
     Q_PROPERTY(QString OutputFile READ getOutputFile WRITE setOutputFile)
 
-    virtual void execute() override;
+    void execute() override;
 
   signals:
     /**
@@ -98,9 +98,11 @@ class SIMPLib_EXPORT FileWriter : public AbstractFilter
      */
     virtual int32_t writeFile();
 
-  private:
+  public:
     FileWriter(const FileWriter&) = delete;     // Copy Constructor Not Implemented
-    void operator=(const FileWriter&) = delete; // Operator '=' Not Implemented
+    FileWriter(FileWriter&&) = delete;          // Move Constructor
+    FileWriter& operator=(const FileWriter&) = delete; // Copy Assignment Not Implemented
+    FileWriter& operator=(FileWriter&&) = delete;      // Move Assignment
 };
 
 #endif /* FileWriter_H_ */

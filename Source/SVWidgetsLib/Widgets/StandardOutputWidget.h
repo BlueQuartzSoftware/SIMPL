@@ -79,7 +79,7 @@ class SVWidgetsLib_EXPORT StandardOutputWidget : public QWidget, public IObserve
     QString             m_LastPathOpened = "";
 
     StandardOutputWidget(const StandardOutputWidget&) = delete; // Copy Constructor Not Implemented
-    void operator=(const StandardOutputWidget&) = delete;       // Operator '=' Not Implemented
+    void operator=(const StandardOutputWidget&) = delete;       // Move assignment Not Implemented
 };
 
 #endif // _StandardOutputWidget_h_

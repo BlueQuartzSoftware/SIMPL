@@ -73,56 +73,56 @@ class SIMPLib_EXPORT RequiredZThickness : public AbstractDecisionFilter
     /**
      * @brief getCompiledLibraryName Reimplemented from @see AbstractFilter class
      */
-    virtual const QString getCompiledLibraryName() const override;
+    const QString getCompiledLibraryName() const override;
 
     /**
      * @brief newFilterInstance Reimplemented from @see AbstractFilter class
      */
-    virtual AbstractFilter::Pointer newFilterInstance(bool copyFilterParameters) const override;
+    AbstractFilter::Pointer newFilterInstance(bool copyFilterParameters) const override;
 
     /**
      * @brief getGroupName Reimplemented from @see AbstractFilter class
      */
-    virtual const QString getGroupName() const override;
+    const QString getGroupName() const override;
 
     /**
      * @brief getSubGroupName Reimplemented from @see AbstractFilter class
      */
-    virtual const QString getSubGroupName() const override;
+    const QString getSubGroupName() const override;
 
     /**
      * @brief getUuid Return the unique identifier for this filter.
      * @return A QUuid object.
      */
-    virtual const QUuid getUuid() override;
+    const QUuid getUuid() override;
 
     /**
      * @brief getHumanLabel Reimplemented from @see AbstractFilter class
      */
-    virtual const QString getHumanLabel() const override;
+    const QString getHumanLabel() const override;
 
     /**
      * @brief setupFilterParameters Reimplemented from @see AbstractFilter class
      */
-    virtual void setupFilterParameters() override;
+    void setupFilterParameters() override;
 
     /**
      * @brief readFilterParameters Reimplemented from @see AbstractFilter class
      */
-    virtual void readFilterParameters(AbstractFilterParametersReader* reader, int index) override;
+    void readFilterParameters(AbstractFilterParametersReader* reader, int index) override;
 
     /**
      * @brief execute Reimplemented from @see AbstractFilter class
      */
-    virtual void execute() override;
+    void execute() override;
 
     /**
     * @brief preflight Reimplemented from @see AbstractFilter class
     */
-    virtual void preflight() override;
+    void preflight() override;
 
-//  signals:
-//    void decisionMade(bool& dm);
+    //  signals:
+    //    void decisionMade(bool& dm);
 
   protected:
     RequiredZThickness();
@@ -141,7 +141,7 @@ class SIMPLib_EXPORT RequiredZThickness : public AbstractDecisionFilter
     DEFINE_DATAARRAY_WEAKPTR(int32_t, FeatureIds)
 
     RequiredZThickness(const RequiredZThickness&) = delete; // Copy Constructor Not Implemented
-    void operator=(const RequiredZThickness&) = delete;     // Operator '=' Not Implemented
+    void operator=(const RequiredZThickness&) = delete;     // Move assignment Not Implemented
 };
 
 #endif /* _RequiredZThickness_H_ */

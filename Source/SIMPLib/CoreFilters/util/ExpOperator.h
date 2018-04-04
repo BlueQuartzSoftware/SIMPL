@@ -64,7 +64,7 @@ class SIMPLib_EXPORT ExpOperator : public UnaryOperator
 
   private:
     ExpOperator(const ExpOperator&) = delete;    // Copy Constructor Not Implemented
-    void operator=(const ExpOperator&) = delete; // Operator '=' Not Implemented
+    void operator=(const ExpOperator&) = delete; // Move assignment Not Implemented
 };
 
 #endif /* _ExpOperator_H_ */

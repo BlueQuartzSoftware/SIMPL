@@ -114,7 +114,7 @@ class SVWidgetsLib_EXPORT GenerateColorTableWidget : public FilterParameterWidge
     bool                                      m_DidCausePreflight;
 
     GenerateColorTableWidget(const GenerateColorTableWidget&) = delete; // Copy Constructor Not Implemented
-    void operator=(const GenerateColorTableWidget&) = delete;           // Operator '=' Not Implemented
+    void operator=(const GenerateColorTableWidget&) = delete;           // Move assignment Not Implemented
 };
 
 #endif /* _generatecolortablewidget_h_ */

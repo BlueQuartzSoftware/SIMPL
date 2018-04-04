@@ -126,7 +126,7 @@ private:
   BoolArrayType* m_Output;
 
   ThresholdFilterHelper(const ThresholdFilterHelper&) = delete; // Copy Constructor Not Implemented
-  void operator=(const ThresholdFilterHelper&);        // Operator '=' Not Implemented
+  void operator=(const ThresholdFilterHelper&);                 // Move assignment Not Implemented
 };
 
 #endif /* _ThresholdFilterHelperHelper_H_ */

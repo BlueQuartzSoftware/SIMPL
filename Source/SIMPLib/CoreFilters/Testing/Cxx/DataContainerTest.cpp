@@ -918,5 +918,5 @@ public:
 
 private:
   DataContainerTest(const DataContainerTest&); // Copy Constructor Not Implemented
-  void operator=(const DataContainerTest&);    // Operator '=' Not Implemented
+  void operator=(const DataContainerTest&);    // Move assignment Not Implemented
 };

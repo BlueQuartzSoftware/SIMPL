@@ -76,7 +76,7 @@ class SVWidgetsLib_EXPORT AddFilterCommand : public QUndoCommand
     QUuid                                               m_NextNodeId;
 
     AddFilterCommand(const AddFilterCommand&) = delete; // Copy Constructor Not Implemented
-    void operator=(const AddFilterCommand&) = delete;   // Operator '=' Not Implemented
+    void operator=(const AddFilterCommand&) = delete;   // Move assignment Not Implemented
 };
 
 #endif /* _addfilterscommand_h_ */

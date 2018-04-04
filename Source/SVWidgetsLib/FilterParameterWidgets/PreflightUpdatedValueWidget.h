@@ -94,7 +94,7 @@ class SVWidgetsLib_EXPORT PreflightUpdatedValueWidget : public FilterParameterWi
     PreflightUpdatedValueFilterParameter* m_FilterParameter;
 
     PreflightUpdatedValueWidget(const PreflightUpdatedValueWidget&) = delete; // Copy Constructor Not Implemented
-    void operator=(const PreflightUpdatedValueWidget&) = delete;              // Operator '=' Not Implemented
+    void operator=(const PreflightUpdatedValueWidget&) = delete;              // Move assignment Not Implemented
 };
 
 #endif /* _PreflightUpdatedValueWidget_H_ */

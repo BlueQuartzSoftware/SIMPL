@@ -39,9 +39,7 @@ TemplateLoader::TemplateLoader(QSettings* settings, QObject* parent)
   qDebug("TemplateLoader: path=%s, codec=%s", qPrintable(templatePath), textCodec->name().data());
 }
 
-TemplateLoader::~TemplateLoader()
-{
-}
+TemplateLoader::~TemplateLoader() = default;
 
 QString TemplateLoader::tryFile(QString localizedName)
 {

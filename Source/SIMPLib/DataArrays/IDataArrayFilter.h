@@ -53,7 +53,7 @@ public:
 
 private:
   IDataArrayFilter(const IDataArrayFilter&) = delete; // Copy Constructor Not Implemented
-  void operator=(const IDataArrayFilter&);   // Operator '=' Not Implemented
+  void operator=(const IDataArrayFilter&);            // Move assignment Not Implemented
 };
 
 #endif /* _IDataArrayFilter_H_ */

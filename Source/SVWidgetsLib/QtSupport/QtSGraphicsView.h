@@ -177,7 +177,7 @@ class SVWidgetsLib_EXPORT QtSGraphicsView : public QGraphicsView
     QVector<QRgb> m_OriginalColorTable;
 
     QtSGraphicsView(const QtSGraphicsView&) = delete; // Copy Constructor Not Implemented
-    void operator=(const QtSGraphicsView&) = delete;  // Operator '=' Not Implemented
+    void operator=(const QtSGraphicsView&) = delete;  // Move assignment Not Implemented
 };
 
 #endif /* _EMMPM_GRAPHICS_VIEW_H_ */

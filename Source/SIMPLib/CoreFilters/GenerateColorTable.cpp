@@ -208,15 +208,13 @@ void generateColorArray(typename DataArray<T>::Pointer arrayPtr, QJsonArray pres
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-GenerateColorTable::GenerateColorTable() :
-  AbstractFilter(),
-  m_SelectedPresetName(""),
-  m_SelectedPresetControlPoints(QJsonArray()),
-  m_SelectedDataArrayPath(DataArrayPath("", "", "")),
-  m_RGB_ArrayName("")
+GenerateColorTable::GenerateColorTable()
+: m_SelectedPresetName("")
+, m_SelectedPresetControlPoints(QJsonArray())
+, m_SelectedDataArrayPath(DataArrayPath("", "", ""))
+, m_RGB_ArrayName("")
 {
   initialize();
-  setupFilterParameters();
 }
 
 // -----------------------------------------------------------------------------

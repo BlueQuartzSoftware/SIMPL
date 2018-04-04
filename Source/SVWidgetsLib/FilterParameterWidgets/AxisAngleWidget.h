@@ -93,7 +93,7 @@ class SVWidgetsLib_EXPORT AxisAngleWidget : public FilterParameterWidget, privat
     AxisAngleFilterParameter*  m_FilterParameter;
 
     AxisAngleWidget(const AxisAngleWidget&) = delete; // Copy Constructor Not Implemented
-    void operator=(const AxisAngleWidget&) = delete;  // Operator '=' Not Implemented
+    void operator=(const AxisAngleWidget&) = delete;  // Move assignment Not Implemented
 };
 
 #endif /* _AxisAngleWidget_H_ */

@@ -360,5 +360,5 @@ public:
 
 private:
   CreateFeatureArrayFromElementArrayTest(const CreateFeatureArrayFromElementArrayTest&); // Copy Constructor Not Implemented
-  void operator=(const CreateFeatureArrayFromElementArrayTest&);                         // Operator '=' Not Implemented
+  void operator=(const CreateFeatureArrayFromElementArrayTest&);                         // Move assignment Not Implemented
 };

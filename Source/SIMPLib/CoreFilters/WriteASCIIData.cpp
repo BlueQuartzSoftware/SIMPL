@@ -125,14 +125,12 @@ public:
 //
 // -----------------------------------------------------------------------------
 WriteASCIIData::WriteASCIIData()
-: AbstractFilter()
-, m_SelectedDataArrayPaths(QVector<DataArrayPath>())
+: m_SelectedDataArrayPaths(QVector<DataArrayPath>())
 , m_OutputPath("")
 , m_Delimiter(0)
 , m_FileExtension(".txt")
 , m_MaxValPerLine(-1)
 {
-  setupFilterParameters();
 }
 
 // -----------------------------------------------------------------------------

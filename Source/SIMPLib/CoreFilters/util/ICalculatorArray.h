@@ -68,7 +68,7 @@ class SIMPLib_EXPORT ICalculatorArray : public CalculatorItem
 
   private:
     ICalculatorArray(const ICalculatorArray&) = delete; // Copy Constructor Not Implemented
-    void operator=(const ICalculatorArray&) = delete;   // Operator '=' Not Implemented
+    void operator=(const ICalculatorArray&) = delete;   // Move assignment Not Implemented
 };
 
 #endif /* _ICalculatorArray_H_ */

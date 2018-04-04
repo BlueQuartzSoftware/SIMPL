@@ -156,5 +156,5 @@ public:
 
 private:
   RecursivePipelineTest(const RecursivePipelineTest&); // Copy Constructor Not Implemented
-  void operator=(const RecursivePipelineTest&);        // Operator '=' Not Implemented
+  void operator=(const RecursivePipelineTest&);        // Move assignment Not Implemented
 };

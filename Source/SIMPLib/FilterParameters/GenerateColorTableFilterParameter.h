@@ -100,7 +100,7 @@ class SIMPLib_EXPORT GenerateColorTableFilterParameter : public FilterParameter
 
   private:
     GenerateColorTableFilterParameter(const GenerateColorTableFilterParameter&) = delete; // Copy Constructor Not Implemented
-    void operator=(const GenerateColorTableFilterParameter&) = delete;                    // Operator '=' Not Implemented
+    void operator=(const GenerateColorTableFilterParameter&) = delete;                    // Move assignment Not Implemented
 };
 
 #endif /* _generatecolortablefilterparameter_h_ */

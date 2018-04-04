@@ -11,8 +11,7 @@
 //
 // -----------------------------------------------------------------------------
 Filt0::Filt0()
-: AbstractFilter()
-, m_DataContainerName(SIMPL::Defaults::DataContainerName)
+: m_DataContainerName(SIMPL::Defaults::DataContainerName)
 , m_Filt0_Float(6.6f)
 , m_Filt0_Integer(15)
 {
@@ -111,8 +110,7 @@ void Filt0::execute()
 //
 // -----------------------------------------------------------------------------
 Filt1::Filt1()
-: AbstractFilter()
-, m_DataContainerName(SIMPL::Defaults::DataContainerName)
+: m_DataContainerName(SIMPL::Defaults::DataContainerName)
 , m_Filt1_Float(9.9f)
 , m_Filt1_Integer(123)
 {

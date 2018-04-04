@@ -37,7 +37,6 @@
 //
 // -----------------------------------------------------------------------------
 TESTCLASSNAME::TESTCLASSNAME()
-: AbstractFilter()
 {
   initialize();
   setupFilterParameters();

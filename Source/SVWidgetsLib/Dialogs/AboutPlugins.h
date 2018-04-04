@@ -96,7 +96,7 @@ class SVWidgetsLib_EXPORT AboutPlugins : public QDialog, private Ui::AboutPlugin
     QAction* m_CloseAction = nullptr;
 
     AboutPlugins(const AboutPlugins&) = delete;   // Copy Constructor Not Implemented
-    void operator=(const AboutPlugins&) = delete; // Operator '=' Not Implemented
+    void operator=(const AboutPlugins&) = delete; // Move assignment Not Implemented
 };
 
 #endif // ABOUTPLUGINS_H

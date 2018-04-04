@@ -61,15 +61,13 @@ extern Q_CORE_EXPORT int qt_ntfs_permission_lookup;
 //
 // -----------------------------------------------------------------------------
 DataContainerWriter::DataContainerWriter()
-: AbstractFilter()
-, m_OutputFile(QDir::toNativeSeparators(QDir::homePath() + "/Desktop/Untitled.dream3d"))
+: m_OutputFile(QDir::toNativeSeparators(QDir::homePath() + "/Desktop/Untitled.dream3d"))
 , m_WritePipeline(true)
 , m_WriteXdmfFile(true)
 , m_WriteTimeSeries(false)
 , m_AppendToExisting(false)
 , m_FileId(-1)
 {
-  setupFilterParameters();
 }
 
 // -----------------------------------------------------------------------------

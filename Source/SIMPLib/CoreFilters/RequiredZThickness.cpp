@@ -53,7 +53,6 @@ RequiredZThickness::RequiredZThickness()
 , m_NumZVoxels(-1)
 , m_PreflightCheck(false)
 {
-  setupFilterParameters();
 }
 
 // -----------------------------------------------------------------------------

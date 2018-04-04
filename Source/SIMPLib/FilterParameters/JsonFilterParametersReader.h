@@ -57,118 +57,121 @@ class SIMPLib_EXPORT JsonFilterParametersReader : public AbstractFilterParameter
     SIMPL_STATIC_NEW_MACRO(JsonFilterParametersReader)
      SIMPL_TYPE_MACRO_SUPER_OVERRIDE(JsonFilterParametersReader, AbstractFilterParametersReader)
 
-    virtual ~JsonFilterParametersReader();
+     ~JsonFilterParametersReader() override;
 
-    SIMPL_INSTANCE_PROPERTY(QString, FileName)
-    SIMPL_INSTANCE_PROPERTY(int, MaxFilterIndex)
+     SIMPL_INSTANCE_PROPERTY(QString, FileName)
+     SIMPL_INSTANCE_PROPERTY(int, MaxFilterIndex)
 
-    /**
-    * @brief ReadPipelineFromFile Reads the Json formatted file and returns a FilterPipeline object
-    * that contains all the filters that could be found. If a filter can not be found then that filter is simply skipped.
-    * If the IObserver is NON-Null then an error message will be passed to it with an error message
-    * @param filePath The path to the INI formatted file
-    * @param format The format of the file which is anything that QSettings understands
-    * @param obs An IObserver object to report errors.
-    * @return Shared Pointer to a FilterPipeline Instance
-    */
-    FilterPipeline::Pointer readPipelineFromFile(QString filePath, IObserver* obs = nullptr);
+     /**
+      * @brief ReadPipelineFromFile Reads the Json formatted file and returns a FilterPipeline object
+      * that contains all the filters that could be found. If a filter can not be found then that filter is simply skipped.
+      * If the IObserver is NON-Null then an error message will be passed to it with an error message
+      * @param filePath The path to the INI formatted file
+      * @param format The format of the file which is anything that QSettings understands
+      * @param obs An IObserver object to report errors.
+      * @return Shared Pointer to a FilterPipeline Instance
+      */
+     FilterPipeline::Pointer readPipelineFromFile(QString filePath, IObserver* obs = nullptr);
 
-    /**
-    * @brief getJsonFromFile Reads the Json formatted file and returns a json string
-    * that contains all the filters that could be found. If a filter can not be found then that filter is simply skipped.
-    * If the IObserver is NON-Null then an error message will be passed to it with an error message
-    * @param filePath The path to the INI formatted file
-    * @param format The format of the file which is anything that QSettings understands
-    * @param obs An IObserver object to report errors.
-    * @return Shared Pointer to a FilterPipeline Instance
-    */
-    QString getJsonFromFile(QString filePath, IObserver* obs = nullptr);
+     /**
+      * @brief getJsonFromFile Reads the Json formatted file and returns a json string
+      * that contains all the filters that could be found. If a filter can not be found then that filter is simply skipped.
+      * If the IObserver is NON-Null then an error message will be passed to it with an error message
+      * @param filePath The path to the INI formatted file
+      * @param format The format of the file which is anything that QSettings understands
+      * @param obs An IObserver object to report errors.
+      * @return Shared Pointer to a FilterPipeline Instance
+      */
+     QString getJsonFromFile(QString filePath, IObserver* obs = nullptr);
 
-    /**
-    * @brief ReadPipelineFromString Reads the Json formatted file and returns a FilterPipeline object
-    * that contains all the filters that could be found. If a filter can not be found then that filter is simply skipped.
-    * If the IObserver is NON-Null then an error message will be passed to it with an error message
-    * @param filePath The path to the INI formatted file
-    * @param format The format of the file which is anything that QSettings understands
-    * @param obs An IObserver object to report errors.
-    * @return Shared Pointer to a FilterPipeline Instance
-    */
-    FilterPipeline::Pointer readPipelineFromString(QString contents, IObserver* obs = nullptr);
+     /**
+      * @brief ReadPipelineFromString Reads the Json formatted file and returns a FilterPipeline object
+      * that contains all the filters that could be found. If a filter can not be found then that filter is simply skipped.
+      * If the IObserver is NON-Null then an error message will be passed to it with an error message
+      * @param filePath The path to the INI formatted file
+      * @param format The format of the file which is anything that QSettings understands
+      * @param obs An IObserver object to report errors.
+      * @return Shared Pointer to a FilterPipeline Instance
+      */
+     FilterPipeline::Pointer readPipelineFromString(QString contents, IObserver* obs = nullptr);
 
-    /**
-     * @brief Gets the name of the pipeline from a pipeline file
-     * @param filePath The absolute path to the pipeline file.
-     * @param name Sets the name of the pipeline into this variable
-     * @param version Sets the DREAM3D Version into this variable.
-     * @param obs Any observer that needs to know about errors.
-     * @return
-     */
-    void readNameOfPipelineFromFile(QString filePath, QString& name, QString& version, IObserver* obs = nullptr);
+     /**
+      * @brief Gets the name of the pipeline from a pipeline file
+      * @param filePath The absolute path to the pipeline file.
+      * @param name Sets the name of the pipeline into this variable
+      * @param version Sets the DREAM3D Version into this variable.
+      * @param obs Any observer that needs to know about errors.
+      * @return
+      */
+     void readNameOfPipelineFromFile(QString filePath, QString& name, QString& version, IObserver* obs = nullptr);
 
-    /**
-     * @brief Generate an html formatted string that summarizes the pipeline file by listing
-     * each filter by it's human name and C++ class name.
-     * @param filePath The path to the pipeline file
-     * @param obs Any observer that needs to know about errors.
-     * @return html formatted string
-     */
-    static QString HtmlSummaryFromFile(QString filePath, IObserver* obs);
+     /**
+      * @brief Generate an html formatted string that summarizes the pipeline file by listing
+      * each filter by it's human name and C++ class name.
+      * @param filePath The path to the pipeline file
+      * @param obs Any observer that needs to know about errors.
+      * @return html formatted string
+      */
+     static QString HtmlSummaryFromFile(QString filePath, IObserver* obs);
 
-    /**
-     * @brief Opens the pipeline file for operations
-     * @param filePath The path to the pipeline file
-     * @return
-     */
-    int openFile(QString filePath);
+     /**
+      * @brief Opens the pipeline file for operations
+      * @param filePath The path to the pipeline file
+      * @return
+      */
+     int openFile(QString filePath);
 
-    /**
-    * @brief setPipelineContents
-    * @param contents
-    * @return
-    */
-    int setPipelineContents(QString contents);
+     /**
+      * @brief setPipelineContents
+      * @param contents
+      * @return
+      */
+     int setPipelineContents(QString contents);
 
-    /**
-     * @brief closeFile
-     */
-    void closeFile();
+     /**
+      * @brief closeFile
+      */
+     void closeFile();
 
-    /**
-     * @brief openFilterGroup
-     * @param unused
-     * @param index
-     * @return
-     */
-    virtual int openFilterGroup(AbstractFilter* unused, int index);
+     /**
+      * @brief openFilterGroup
+      * @param unused
+      * @param index
+      * @return
+      */
+     virtual int openFilterGroup(AbstractFilter* unused, int index);
 
-    /**
-     * @brief closeFilterGroup
-     * @return
-     */
-    virtual int closeFilterGroup();
+     /**
+      * @brief closeFilterGroup
+      * @return
+      */
+     virtual int closeFilterGroup();
 
-    /*
-     * @brief getCurrentGroupObject
-     * @return
-     */
-    QJsonObject& getCurrentGroupObject();
+     /*
+      * @brief getCurrentGroupObject
+      * @return
+      */
+     QJsonObject& getCurrentGroupObject();
 
-    bool containsGroup(QString key);
+     bool containsGroup(QString key);
 
-    int openGroup(QString key);
-    int closeGroup();
+     int openGroup(QString key);
+     int closeGroup();
 
-  protected:
-    JsonFilterParametersReader();
+   protected:
+     JsonFilterParametersReader();
 
-  private:
-    QJsonObject m_Root;
-    QJsonObject m_CurrentFilterIndex;
+   private:
+     QJsonObject m_Root;
+     QJsonObject m_CurrentFilterIndex;
 
-    FilterPipeline::Pointer readPipeline(IObserver* obs);
+     FilterPipeline::Pointer readPipeline(IObserver* obs);
 
-    JsonFilterParametersReader(const JsonFilterParametersReader&) = delete; // Copy Constructor Not Implemented
-    void operator=(const JsonFilterParametersReader&) = delete;             // Operator '=' Not Implemented
+   public:
+     JsonFilterParametersReader(const JsonFilterParametersReader&) = delete;            // Copy Constructor Not Implemented
+     JsonFilterParametersReader(JsonFilterParametersReader&&) = delete;                 // Move Constructor
+     JsonFilterParametersReader& operator=(const JsonFilterParametersReader&) = delete; // Copy Assignment Not Implemented
+     JsonFilterParametersReader& operator=(JsonFilterParametersReader&&) = delete;      // Move Assignment
 };
 
 #endif /* _QFilterParametersReader_H_ */

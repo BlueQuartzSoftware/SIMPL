@@ -169,7 +169,7 @@ public:
 
 private:
   SecondOrderPolynomialFilterParameter(const SecondOrderPolynomialFilterParameter&) = delete; // Copy Constructor Not Implemented
-  void operator=(const SecondOrderPolynomialFilterParameter&) = delete;                       // Operator '=' Not Implemented
+  void operator=(const SecondOrderPolynomialFilterParameter&) = delete;                       // Move assignment Not Implemented
 };
 
 #endif /* _SecondOrderPolynomialFilterParameter_H_ */

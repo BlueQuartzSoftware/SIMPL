@@ -135,7 +135,7 @@ class SVWidgetsLib_EXPORT DataArrayCreationWidget : public FilterParameterWidget
     void setSelectedPath(DataArrayPath amPath);
 
     DataArrayCreationWidget(const DataArrayCreationWidget&) = delete; // Copy Constructor Not Implemented
-    void operator=(const DataArrayCreationWidget&) = delete;          // Operator '=' Not Implemented
+    void operator=(const DataArrayCreationWidget&) = delete;          // Move assignment Not Implemented
 };
 
 #endif /* _DataArrayCreationWidget_H_ */

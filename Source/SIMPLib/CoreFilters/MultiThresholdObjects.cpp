@@ -47,12 +47,10 @@
 //
 // -----------------------------------------------------------------------------
 MultiThresholdObjects::MultiThresholdObjects()
-: AbstractFilter()
-, m_DestinationArrayName(SIMPL::GeneralData::Mask)
+: m_DestinationArrayName(SIMPL::GeneralData::Mask)
 , m_SelectedThresholds()
 , m_Destination(nullptr)
 {
-  setupFilterParameters();
 }
 
 // -----------------------------------------------------------------------------
@@ -145,7 +143,7 @@ void MultiThresholdObjects::dataCheck()
     DataArrayPath tempPath(comp.dataContainerName, comp.attributeMatrixName, getDestinationArrayName());
     m_DestinationPtr = getDataContainerArray()->createNonPrereqArrayFromPath<DataArray<bool>, AbstractFilter, bool>(this, tempPath, true,
                                                                                                                     cDims); /* Assigns the shared_ptr<> to an instance variable that is a weak_ptr<> */
-    if(nullptr != m_DestinationPtr.lock().get()) /* Validate the Weak Pointer wraps a non-nullptr pointer to a DataArray<T> object */
+    if(nullptr != m_DestinationPtr.lock()) /* Validate the Weak Pointer wraps a non-nullptr pointer to a DataArray<T> object */
     {
       m_Destination = m_DestinationPtr.lock()->getPointer(0);
     } /* Now assign the raw pointer to data from the DataArray<T> object */

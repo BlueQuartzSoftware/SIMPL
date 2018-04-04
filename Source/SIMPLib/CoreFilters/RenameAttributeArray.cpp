@@ -45,11 +45,9 @@
 //
 // -----------------------------------------------------------------------------
 RenameAttributeArray::RenameAttributeArray()
-: AbstractFilter()
-, m_SelectedArrayPath("", "", "")
+: m_SelectedArrayPath("", "", "")
 , m_NewArrayName("")
 {
-  setupFilterParameters();
 }
 
 // -----------------------------------------------------------------------------

@@ -59,7 +59,7 @@ class SIMPLib_EXPORT CommaSeparator : public CalculatorSeparator
 
   private:
     CommaSeparator(const CommaSeparator&) = delete; // Copy Constructor Not Implemented
-    void operator=(const CommaSeparator&) = delete; // Operator '=' Not Implemented
+    void operator=(const CommaSeparator&) = delete; // Move assignment Not Implemented
 };
 
 #endif /* _CommaSeparator_H_ */

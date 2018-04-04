@@ -29,7 +29,7 @@ private:
   Int32Parameter* m_FilterParameter = nullptr;
 
   IntFilterParameterWidget(const IntFilterParameterWidget&) = delete; // Copy Constructor Not Implemented
-  void operator=(const IntFilterParameterWidget&) = delete; // Operator '=' Not Implemented
+  void operator=(const IntFilterParameterWidget&) = delete;           // Move assignment Not Implemented
 };
 
 

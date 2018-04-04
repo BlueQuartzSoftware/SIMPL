@@ -375,7 +375,7 @@ class SIMPLib_EXPORT EdgeGeom : public IGeometry
     friend class FindEdgeDerivativesImpl;
 
     EdgeGeom(const EdgeGeom&) = delete;       // Copy Constructor Not Implemented
-    void operator=(const EdgeGeom&) = delete; // Operator '=' Not Implemented
+    void operator=(const EdgeGeom&) = delete; // Move assignment Not Implemented
 };
 
 

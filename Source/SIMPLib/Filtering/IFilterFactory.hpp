@@ -142,7 +142,7 @@ protected:
 
 private:
   IFilterFactory(const IFilterFactory&); // Copy Constructor Not Implemented
-  void operator=(const IFilterFactory&); // Operator '=' Not Implemented
+  void operator=(const IFilterFactory&); // Move assignment Not Implemented
 };
 
 #endif /* _IFilterFactory_H_ */

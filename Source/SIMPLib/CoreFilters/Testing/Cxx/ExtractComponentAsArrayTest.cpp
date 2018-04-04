@@ -238,5 +238,5 @@ public:
 
 private:
   ExtractComponentAsArrayTest(const ExtractComponentAsArrayTest&); // Copy Constructor Not Implemented
-  void operator=(const ExtractComponentAsArrayTest&);              // Operator '=' Not Implemented
+  void operator=(const ExtractComponentAsArrayTest&);              // Move assignment Not Implemented
 };

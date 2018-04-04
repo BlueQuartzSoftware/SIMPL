@@ -140,7 +140,7 @@ class SIMPLib_EXPORT LinkedBooleanFilterParameter : public FilterParameter
 
   private:
     LinkedBooleanFilterParameter(const LinkedBooleanFilterParameter&) = delete; // Copy Constructor Not Implemented
-    void operator=(const LinkedBooleanFilterParameter&) = delete;               // Operator '=' Not Implemented
+    void operator=(const LinkedBooleanFilterParameter&) = delete;               // Move assignment Not Implemented
 };
 
 #endif /* _LinkedBooleanFilterParameter_H_ */

@@ -92,7 +92,7 @@ class SVWidgetsLib_EXPORT StringWidget : public FilterParameterWidget, private U
     StringFilterParameter* m_FilterParameter;
 
     StringWidget(const StringWidget&) = delete;   // Copy Constructor Not Implemented
-    void operator=(const StringWidget&) = delete; // Operator '=' Not Implemented
+    void operator=(const StringWidget&) = delete; // Move assignment Not Implemented
 };
 
 #endif /* _StringWidget_H_ */

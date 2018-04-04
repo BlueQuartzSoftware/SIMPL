@@ -122,7 +122,7 @@ class SIMPLib_EXPORT SIMPLColorTable
 
   private:
     SIMPLColorTable(const SIMPLColorTable&) = delete; // Copy Constructor Not Implemented
-    void operator=(const SIMPLColorTable&) = delete;  // Operator '=' Not Implemented
+    void operator=(const SIMPLColorTable&) = delete;  // Move assignment Not Implemented
 };
 #endif /* _ColorTable_H_ */
 

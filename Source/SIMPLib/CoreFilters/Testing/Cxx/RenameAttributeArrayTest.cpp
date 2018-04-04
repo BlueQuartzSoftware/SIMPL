@@ -330,5 +330,5 @@ public:
 
 private:
   RenameAttributeArrayTest(const RenameAttributeArrayTest&); // Copy Constructor Not Implemented
-  void operator=(const RenameAttributeArrayTest&);           // Operator '=' Not Implemented
+  void operator=(const RenameAttributeArrayTest&);           // Move assignment Not Implemented
 };
