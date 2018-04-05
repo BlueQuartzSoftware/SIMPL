@@ -154,7 +154,7 @@ public:
     // Apply Preset
     {
       GenerateColorTable::Pointer filter = GenerateColorTable::New();
-      filter->setRGB_ArrayName("CI_RGB");
+      filter->setRgbArrayName("CI_RGB");
       filter->setSelectedDataArrayPath(DataArrayPath(SIMPL::Defaults::ImageDataContainerName, SIMPL::Defaults::CellAttributeMatrixName, SIMPL::CellData::ConfidenceIndex));
       filter->setSelectedPresetName(presetName);
 

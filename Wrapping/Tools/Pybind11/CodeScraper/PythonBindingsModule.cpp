@@ -167,7 +167,7 @@ void PythonBindingsModule::generateModuleFile(const QString& outputPath)
 
   QString code;
   QTextStream out(&code);
-  out << "/* These are all the pybind11 headers for each for each of the exported classes */";
+  out << "/* These are all the pybind11 headers for each for each of the exported classes */\n";
 
   for(auto object : m_ClassVector)
   {
