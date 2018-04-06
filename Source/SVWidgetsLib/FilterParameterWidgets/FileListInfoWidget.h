@@ -53,7 +53,6 @@
 #include "SVWidgetsLib/Widgets/SVPipelineFilterWidget.h"
 #include "SVWidgetsLib/FilterParameterWidgets/FilterParameterWidget.h"
 
-
 #include "ui_FileListInfoWidget.h"
 
 
@@ -68,7 +67,7 @@
  * @date Jan 30, 2011
  * @version 1.0
  */
-class SVWidgetsLib_EXPORT FileListInfoWidget : public FilterParameterWidget, private Ui::FileListInfoWidget
+class SVWidgetsLib_EXPORT FileListInfoWidget : public FilterParameterWidget
 {
     Q_OBJECT
 
@@ -101,19 +100,9 @@ class SVWidgetsLib_EXPORT FileListInfoWidget : public FilterParameterWidget, pri
 
   protected slots:
 
-    void on_m_InputDirBtn_clicked();
-    // slots to catch signals emittd by the various QLineEdit widgets
-    void on_m_LineEdit_textChanged(const QString& text);
-
-
-    void on_m_FilePrefix_textChanged(const QString& string);
-    void on_m_FileSuffix_textChanged(const QString& string);
-    void on_m_FileExt_textChanged(const QString& string);
-    void on_m_TotalDigits_valueChanged(int value);
-    void on_m_StartIndex_valueChanged(int value);
-    void on_m_EndIndex_valueChanged(int value);
-
-    void orderingChanged(bool checked);
+    // Slots to catch signals emitted by the various ui widgets
+    void inputDirBtn_clicked();
+    void inputDir_textChanged(const QString& text);
 
   protected:
 
@@ -176,6 +165,8 @@ class SVWidgetsLib_EXPORT FileListInfoWidget : public FilterParameterWidget, pri
 
 
   private:
+    QSharedPointer<Ui::FileListInfoWidget>  m_Ui;
+
     QList<QWidget*>             m_WidgetList;
     QButtonGroup*               m_OrderingGroup = nullptr;
     static QString               m_OpenDialogLastFilePath;
@@ -184,6 +175,11 @@ class SVWidgetsLib_EXPORT FileListInfoWidget : public FilterParameterWidget, pri
     QString  m_CurrentlyValidPath = "";
     QString  m_CurrentText = "";
     bool     m_DidCausePreflight = false;
+
+    /**
+     * @brief connectSignalsSlots
+     */
+    void connectSignalsSlots();
 
     FileListInfoWidget(const FileListInfoWidget&) = delete; // Copy Constructor Not Implemented
     void operator=(const FileListInfoWidget&) = delete;     // Move assignment Not Implemented

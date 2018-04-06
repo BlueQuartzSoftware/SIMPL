@@ -53,12 +53,13 @@ class SIMPLib_EXPORT FilePathGenerator
      * be imported into an h5ebsd file
      * @param start Z Slice Start
      * @param end S Slice End
+     * @param increment How much to increment each item
      * @param hasMissingFiles Are any files missing
      * @param stackLowToHigh Is the Slice order low to high
      * @param filename Example File Name
      * @return
      */
-    static QVector<QString> GenerateFileList(int start, int end, bool& hasMissingFiles,
+    static QVector<QString> GenerateFileList(int start, int end, int increment, bool& hasMissingFiles,
                                              bool stackLowToHigh, const QString& inputPath,
                                              const QString& filePrefix,
                                              const QString& fileSuffix, const QString& fileExtension,

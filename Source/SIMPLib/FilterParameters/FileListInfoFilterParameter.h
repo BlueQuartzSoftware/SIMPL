@@ -49,6 +49,7 @@ typedef struct
   quint32 Ordering; /* Ordering=0 = Ascending, Ordering=1 = Descending */
   qint32 StartIndex;
   qint32 EndIndex;
+  qint32 IncrementIndex;
   QString InputPath;
   QString FilePrefix;
   QString FileSuffix;
@@ -60,6 +61,7 @@ typedef struct
     json["Ordering"] = static_cast<double>(Ordering);
     json["StartIndex"] = static_cast<double>(StartIndex);
     json["EndIndex"] = static_cast<double>(EndIndex);
+    json["IncrementIndex"] = static_cast<double>(IncrementIndex);
     json["InputPath"] = InputPath;
     json["FilePrefix"] = FilePrefix;
     json["FileSuffix"] = FileSuffix;
@@ -68,13 +70,14 @@ typedef struct
 
   bool readJson(QJsonObject& json)
   {
-    if (json["PaddingDigits"].isDouble() && json["Ordering"].isDouble() && json["StartIndex"].isDouble() && json["EndIndex"].isDouble()
+    if (json["PaddingDigits"].isDouble() && json["Ordering"].isDouble() && json["StartIndex"].isDouble() && json["EndIndex"].isDouble() && json["IncrementIndex"].isDouble()
         && json["InputPath"].isString() && json["FilePrefix"].isString() && json["FileSuffix"].isString() && json["FileExtension"].isString())
     {
       PaddingDigits = static_cast<qint32>(json["PaddingDigits"].toDouble());
       Ordering = static_cast<quint32>(json["Ordering"].toDouble());
       StartIndex = static_cast<qint32>(json["StartIndex"].toDouble());
       EndIndex = static_cast<qint32>(json["EndIndex"].toDouble());
+      IncrementIndex = static_cast<qint32>(json["IncrementIndex"].toDouble());
       InputPath = json["InputPath"].toString();
       FilePrefix = json["FilePrefix"].toString();
       FileSuffix = json["FileSuffix"].toString();
