@@ -1,48 +1,46 @@
 /* ============================================================================
-* Copyright (c) 2009-2016 BlueQuartz Software, LLC
-*
-* Redistribution and use in source and binary forms, with or without modification,
-* are permitted provided that the following conditions are met:
-*
-* Redistributions of source code must retain the above copyright notice, this
-* list of conditions and the following disclaimer.
-*
-* Redistributions in binary form must reproduce the above copyright notice, this
-* list of conditions and the following disclaimer in the documentation and/or
-* other materials provided with the distribution.
-*
-* Neither the name of BlueQuartz Software, the US Air Force, nor the names of its
-* contributors may be used to endorse or promote products derived from this software
-* without specific prior written permission.
-*
-* THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
-* AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
-* IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
-* DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE
-* FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
-* DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
-* SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
-* CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
-* OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE
-* USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-*
-* The code contained herein was partially funded by the followig contracts:
-*    United States Air Force Prime Contract FA8650-07-D-5800
-*    United States Air Force Prime Contract FA8650-10-D-5210
-*    United States Prime Contract Navy N00173-07-C-2068
-*
-* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
+ * Copyright (c) 2009-2016 BlueQuartz Software, LLC
+ *
+ * Redistribution and use in source and binary forms, with or without modification,
+ * are permitted provided that the following conditions are met:
+ *
+ * Redistributions of source code must retain the above copyright notice, this
+ * list of conditions and the following disclaimer.
+ *
+ * Redistributions in binary form must reproduce the above copyright notice, this
+ * list of conditions and the following disclaimer in the documentation and/or
+ * other materials provided with the distribution.
+ *
+ * Neither the name of BlueQuartz Software, the US Air Force, nor the names of its
+ * contributors may be used to endorse or promote products derived from this software
+ * without specific prior written permission.
+ *
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+ * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+ * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+ * DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE
+ * FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
+ * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
+ * SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
+ * CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
+ * OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE
+ * USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ *
+ * The code contained herein was partially funded by the followig contracts:
+ *    United States Air Force Prime Contract FA8650-07-D-5800
+ *    United States Air Force Prime Contract FA8650-10-D-5210
+ *    United States Prime Contract Navy N00173-07-C-2068
+ *
+ * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
 #include "FileListInfoWidget.h"
 
 //-- Qt Includes
 #include <QtCore/QDir>
-#include <QtWidgets/QFileDialog>
-#include <QtGui/QPainter>
 #include <QtGui/QKeyEvent>
+#include <QtGui/QPainter>
 #include <QtWidgets/QFileDialog>
 #include <QtWidgets/QMenu>
-
 
 #include "SIMPLib/Common/Constants.h"
 #include "SIMPLib/FilterParameters/FileListInfoFilterParameter.h"
@@ -192,7 +190,7 @@ void FileListInfoWidget::connectSignalsSlots()
 // -----------------------------------------------------------------------------
 void FileListInfoWidget::keyPressEvent(QKeyEvent* event)
 {
-  if (event->key() == Qt::Key_Escape)
+  if(event->key() == Qt::Key_Escape)
   {
     m_Ui->inputDir->setText(m_CurrentText);
     m_Ui->inputDir->setStyleSheet("");
@@ -224,18 +222,17 @@ void FileListInfoWidget::setupMenuField()
     m_ShowFileAction = new QAction(lineEditMenu);
     m_ShowFileAction->setObjectName(QString::fromUtf8("showFileAction"));
 #if defined(Q_OS_WIN)
-  m_ShowFileAction->setText("Show in Windows Explorer");
+    m_ShowFileAction->setText("Show in Windows Explorer");
 #elif defined(Q_OS_MAC)
-  m_ShowFileAction->setText("Show in Finder");
+    m_ShowFileAction->setText("Show in Finder");
 #else
-  m_ShowFileAction->setText("Show in File System");
+    m_ShowFileAction->setText("Show in File System");
 #endif
     lineEditMenu->addAction(m_ShowFileAction);
     connect(m_ShowFileAction, SIGNAL(triggered()), this, SLOT(showFileInFileSystem()));
   }
 
-
-  if (m_Ui->inputDir->text().isEmpty() == false && fi.exists())
+  if(m_Ui->inputDir->text().isEmpty() == false && fi.exists())
   {
     m_ShowFileAction->setEnabled(true);
   }
@@ -243,8 +240,6 @@ void FileListInfoWidget::setupMenuField()
   {
     m_ShowFileAction->setDisabled(true);
   }
-
-
 }
 
 // -----------------------------------------------------------------------------
@@ -308,7 +303,6 @@ void FileListInfoWidget::validateInputFile()
     }
   }
 }
-
 
 // -----------------------------------------------------------------------------
 //
@@ -411,8 +405,8 @@ void FileListInfoWidget::generateExampleInputFile()
   bool hasMissingFiles = false;
 
   // Now generate all the file names the user is asking for and populate the table
-  QVector<QString> fileList = FilePathGenerator::GenerateFileList(start, end, increment, hasMissingFiles, m_Ui->orderAscending->isChecked(), m_Ui->inputDir->text(), m_Ui->filePrefix->text(), m_Ui->fileSuffix->text(),
-                                                                  m_Ui->fileExt->text(), m_Ui->totalDigits->value());
+  QVector<QString> fileList = FilePathGenerator::GenerateFileList(start, end, increment, hasMissingFiles, m_Ui->orderAscending->isChecked(), m_Ui->inputDir->text(), m_Ui->filePrefix->text(),
+                                                                  m_Ui->fileSuffix->text(), m_Ui->fileExt->text(), m_Ui->totalDigits->value());
   m_Ui->fileListView->clear();
   QIcon greenDot = QIcon(QString(":/bullet_ball_green.png"));
   QIcon redDot = QIcon(QString(":/bullet_ball_red.png"));
@@ -602,7 +596,7 @@ void FileListInfoWidget::afterPreflight()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void FileListInfoWidget::setInputDirectory(QString val) 
+void FileListInfoWidget::setInputDirectory(QString val)
 {
   m_Ui->inputDir->setText(val);
 }
@@ -610,7 +604,7 @@ void FileListInfoWidget::setInputDirectory(QString val)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-QString FileListInfoWidget::getInputDirectory() 
+QString FileListInfoWidget::getInputDirectory()
 {
   return m_Ui->inputDir->text();
 }
