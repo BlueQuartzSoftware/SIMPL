@@ -1,6 +1,10 @@
 #include "PythonBindingClass.h"
-#include <QtCore/QDateTime>
+
 #include <iostream>
+
+#include <QtCore/QDateTime>
+#include <QtCore/QTemporaryFile>
+#include <QtCore/QCryptographicHash>
 
 #include "CodeScraper/CodeScraperConstants.h"
 #include "CodeScraper/SIMPLPyBind11Config.h"
@@ -131,6 +135,64 @@ void PythonBindingClass::writeOutput(bool didReplace, const QString& outLines, Q
       qDebug() << ss;
       return;
     }
+    
+    QTemporaryFile tempfile;
+    QString tempFileName;
+    if (tempfile.open()) {
+      tempFileName = tempfile.fileName(); // returns the unique file name
+      QTextStream stream(&tempfile);
+      stream << outLines;
+      tempfile.close();
+      //qDebug() << "Wrote " << tempFileName;
+    }
+    
+    if(!fi2.exists())
+    { 
+      //qDebug() << "DOES NOT EXIST: " << filename;
+      if(!tempfile.copy(filename))
+      {
+        std::cout << "Temp file '" << tempFileName.toStdString() << "' could not be copied to '"
+                  << filename.toStdString() << "'" << std::endl;
+      }
+      else
+      {
+        qDebug() << "Pybind11 Module Generated for: " << fi2.absoluteFilePath();
+      }
+    }
+    else
+    {
+      //qDebug() << "DOES EXIST    : " << filename;
+      QFile source(filename);
+
+      QCryptographicHash origHash(QCryptographicHash::Md5);
+      origHash.addData(&source);
+      QByteArray oHashResult = origHash.result();
+      
+      origHash.reset();
+      origHash.addData(&tempfile);
+      QByteArray nHasResult = origHash.result();
+      
+      // The hashes are different so copy the file over.
+      if(oHashResult != nHasResult)
+      {
+        if(!tempfile.copy(filename))
+        {
+          std::cout << "Temp file '" << tempFileName.toStdString() << "' could not be copied to '"
+                    << filename.toStdString() << "'" << std::endl;
+        }
+        else
+        {
+            qDebug() << "Pybind11 Module Generated for: " << fi2.absoluteFilePath();
+        }
+      }
+//      else
+//      {
+//        qDebug() << "Hashes are EQUAL";
+//      }
+    }
+    
+    
+    #if 0
 #if OVERWRITE_SOURCE_FILE
     QFile hOut(filename);
 #else
@@ -141,8 +203,8 @@ void PythonBindingClass::writeOutput(bool didReplace, const QString& outLines, Q
     QTextStream stream(&hOut);
     stream << outLines;
     hOut.close();
+#endif
 
-   // qDebug() << "Pybind11 Generated for: " << fi2.absoluteFilePath();
   }
 }
 
