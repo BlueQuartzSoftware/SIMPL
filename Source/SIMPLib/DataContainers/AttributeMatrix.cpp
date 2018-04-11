@@ -813,7 +813,7 @@ QString AttributeMatrix::getInfoString(SIMPL::InfoStringFormat format)
       tupleStr = tupleStr + numStr;
       if(i < m_TupleDims.size() - 1)
       {
-        tupleStr = tupleStr + QString(", ");
+        tupleStr = tupleStr + QString(" x ");
       }
     }
     tupleStr = tupleStr + ")";
