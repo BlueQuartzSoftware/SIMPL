@@ -175,6 +175,7 @@ CombineAttributeArrays::CombineAttributeArrays()
 : m_SelectedDataArrayPaths(QVector<DataArrayPath>())
 , m_StackedDataArrayName(SIMPL::GeneralData::CombinedData)
 , m_NormalizeData(false)
+, m_MoveValues(false)
 {
 }
 
@@ -190,6 +191,7 @@ void CombineAttributeArrays::setupFilterParameters()
 {
   FilterParameterVector parameters;
   parameters.push_back(SIMPL_NEW_BOOL_FP("Normalize Data", NormalizeData, FilterParameter::Parameter, CombineAttributeArrays));
+  parameters.push_back(SIMPL_NEW_BOOL_FP("Move Data", MoveValues, FilterParameter::Parameter, CombineAttributeArrays));
   {
     MultiDataArraySelectionFilterParameter::RequirementType req =
         MultiDataArraySelectionFilterParameter::CreateRequirement(SIMPL::Defaults::AnyPrimitive, SIMPL::Defaults::AnyComponentSize, AttributeMatrix::Type::Any, IGeometry::Type::Any);
@@ -208,6 +210,7 @@ void CombineAttributeArrays::readFilterParameters(AbstractFilterParametersReader
   setSelectedDataArrayPaths(reader->readDataArrayPathVector("SelectedDataArrayPaths", getSelectedDataArrayPaths()));
   setStackedDataArrayName(reader->readString("StackedDataArrayName", getStackedDataArrayName()));
   setNormalizeData(reader->readValue("NormalizeData", getNormalizeData()));
+  setMoveValues(reader->readValue("MoveValues", getMoveValues()));
   reader->closeFilterGroup();
 }
 
@@ -287,6 +290,16 @@ void CombineAttributeArrays::dataCheck()
 
   DataArrayPath tempPath(getSelectedDataArrayPaths()[0].getDataContainerName(), getSelectedDataArrayPaths()[0].getAttributeMatrixName(), getStackedDataArrayName());
   m_StackedDataPtr = TemplateHelpers::CreateNonPrereqArrayFromArrayType()(this, tempPath, cDims, m_SelectedWeakPtrVector[0].lock());
+
+  if(getMoveValues() && getInPreflight())
+  {
+    QVector<DataArrayPath> paths = getSelectedDataArrayPaths();
+    for(DataArrayPath path : paths)
+    {
+      AttributeMatrix::Pointer attrMat = getDataContainerArray()->getAttributeMatrix(path);
+      attrMat->removeAttributeArray(path.getDataArrayName());
+    }
+  }
 }
 
 // -----------------------------------------------------------------------------
@@ -316,6 +329,16 @@ void CombineAttributeArrays::execute()
   }
 
   EXECUTE_TEMPLATE(this, CombineAttributeArraysTemplatePrivate, m_SelectedWeakPtrVector, this, m_SelectedWeakPtrVector, m_StackedDataPtr.lock())
+
+  if(getMoveValues())
+  {
+    QVector<DataArrayPath> paths = getSelectedDataArrayPaths();
+    for(DataArrayPath path : paths)
+    {
+      AttributeMatrix::Pointer attrMat = getDataContainerArray()->getAttributeMatrix(path);
+      attrMat->removeAttributeArray(path.getDataArrayName());
+    }
+  }
 
   /* Let the GUI know we are done with this filter */
   notifyStatusMessage(getHumanLabel(), "Complete");
