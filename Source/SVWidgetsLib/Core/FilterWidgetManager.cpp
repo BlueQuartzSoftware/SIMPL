@@ -118,13 +118,13 @@ void FilterWidgetManager::RegisterKnownFilterWidgets()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-QWidget* FilterWidgetManager::createWidget(FilterParameter* parameter, AbstractFilter* filter)
+QWidget* FilterWidgetManager::createWidget(FilterParameter* parameter, AbstractFilter* filter, QWidget* parent)
 {
   IFilterWidgetFactory::Pointer factory = m_Factories.value(parameter->getWidgetType());
-  if(nullptr != factory.get())
+  if(nullptr != factory)
   {
-    return factory->createWidget(parameter, filter, nullptr);
+    return factory->createWidget(parameter, filter, parent);
   }
-  UnknownWidget* unknownWidget = new UnknownWidget(parameter, filter, nullptr);
+  UnknownWidget* unknownWidget = new UnknownWidget(parameter, filter, parent);
   return unknownWidget;
 }

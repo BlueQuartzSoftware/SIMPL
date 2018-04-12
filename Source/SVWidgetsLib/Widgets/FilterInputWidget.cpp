@@ -290,7 +290,7 @@ void FilterInputWidget::layoutWidgets(AbstractFilter::Pointer filter)
       validateFileSystemFilterParameter(parameter, filter);
     }
 
-    QWidget* filterParameterWidget = fwm->createWidget(parameter, filter.get());
+    QWidget* filterParameterWidget = fwm->createWidget(parameter, filter.get(), this);
     m_PropertyToWidget.insert(parameter->getPropertyName(), filterParameterWidget); // Update our Map of Filter Parameter Properties to the Widget
 
     if(nullptr == filterParameterWidget)
@@ -404,7 +404,7 @@ void FilterInputWidget::validateFileSystemFilterParameter(FilterParameter* param
 
   QString currentPath = fi.absoluteFilePath();
 
-  if(currentPath.isEmpty() == false && fi.exists() == false)
+  if(!currentPath.isEmpty()  && !fi.exists())
   {
 
     QString s = fType + QString(" Files (*") + ext + QString(");;All Files (*.*)");
@@ -414,10 +414,10 @@ void FilterInputWidget::validateFileSystemFilterParameter(FilterParameter* param
     {
       InputFileFilterParameter* fsParam = dynamic_cast<InputFileFilterParameter*>(parameter);
 
-      QString title = QObject::tr("Select a replacement input file for parameter '%1' in filter '%2'").arg(fsParam->getHumanLabel()).arg(filter->getHumanLabel());
+      QString title = QObject::tr("%2::%1 Select File...").arg(fsParam->getHumanLabel()).arg(filter->getHumanLabel());
 
       QString file = QFileDialog::getOpenFileName(this, title, defaultName, s);
-      if(true == file.isEmpty())
+      if(file.isEmpty())
       {
         file = currentPath;
       }
@@ -432,11 +432,11 @@ void FilterInputWidget::validateFileSystemFilterParameter(FilterParameter* param
     {
       InputPathFilterParameter* fsParam = dynamic_cast<InputPathFilterParameter*>(parameter);
 
-      QString title = QObject::tr("Select a replacement input folder for parameter '%1' in filter '%2'").arg(fsParam->getHumanLabel()).arg(filter->getHumanLabel());
+      QString title = QObject::tr("%2::%1 Select Folder...").arg(fsParam->getHumanLabel()).arg(filter->getHumanLabel());
 
       QString file = QFileDialog::getExistingDirectory(this, title, defaultName, QFileDialog::ShowDirsOnly);
       file = QDir::toNativeSeparators(file);
-      if(true == file.isEmpty())
+      if(file.isEmpty())
       {
         file = currentPath;
       }
@@ -450,10 +450,10 @@ void FilterInputWidget::validateFileSystemFilterParameter(FilterParameter* param
     {
       DataContainerReaderFilterParameter* fsParam = dynamic_cast<DataContainerReaderFilterParameter*>(parameter);
 
-      QString title = QObject::tr("Select a replacement input file for parameter '%1' in filter '%2'").arg(fsParam->getHumanLabel()).arg(filter->getHumanLabel());
+      QString title = QObject::tr("%2::%1 Select File...").arg(fsParam->getHumanLabel()).arg(filter->getHumanLabel());
 
       QString file = QFileDialog::getOpenFileName(this, title, defaultName, s);
-      if(true == file.isEmpty())
+      if(file.isEmpty())
       {
         file = currentPath;
       }
