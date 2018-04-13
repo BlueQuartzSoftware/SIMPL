@@ -69,8 +69,6 @@
 SVPipelineFilterWidget::SVPipelineFilterWidget(QWidget* parent)
 : QFrame(parent)
 , PipelineFilterObject(AbstractFilter::NullPointer())
-, m_Observer(nullptr)
-, m_HasRightClickTarget(false)
 {
   initialize();
 }
@@ -82,7 +80,6 @@ SVPipelineFilterWidget::SVPipelineFilterWidget(AbstractFilter::Pointer filter, I
 : QFrame(parent)
 , PipelineFilterObject(filter)
 , m_Observer(observer)
-, m_HasRightClickTarget(false)
 {
   initialize();
 }
@@ -130,7 +127,7 @@ void SVPipelineFilterWidget::initialize()
     groupStream << "Subgroup: " << filter->getSubGroupName();
     setToolTip(filterGroup);
 
-    if(false == filter->getEnabled())
+    if(!filter->getEnabled())
     {
       toDisabledState();
     }
@@ -224,7 +221,7 @@ void SVPipelineFilterWidget::adjustLayout(QWidget* w, int state)
 // -----------------------------------------------------------------------------
 void SVPipelineFilterWidget::displayFilterParameterWidgetError(const QString& msg)
 {
-  if(m_Observer)
+  if(nullptr != m_Observer)
   {
     PipelineMessage pm("Filter Paramter Widget", msg, -1, PipelineMessage::MessageType::Error);
     m_Observer->processPipelineMessage(pm);
@@ -234,7 +231,7 @@ void SVPipelineFilterWidget::displayFilterParameterWidgetError(const QString& ms
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void SVPipelineFilterWidget::setFilterTitle(const QString title)
+void SVPipelineFilterWidget::setFilterTitle(const QString &title)
 {
   m_FilterHumanLabel = title;
 }
@@ -269,14 +266,22 @@ void SVPipelineFilterWidget::setFilterIndex(int i, int numFilters)
     ss.setPadChar('0');
     ss << i;
     m_MaxFilterCount -= 1;
+    m_FilterIndex = i;
   }
   m_PaddedIndex = numStr;
+  
+  FilterInputWidget* fiw = getFilterInputWidget();
+  if(nullptr != fiw)
+  {
+    fiw->setFilterIndex(m_PaddedIndex);
+  }
+  
 }
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void SVPipelineFilterWidget::paintEvent(QPaintEvent*)
+void SVPipelineFilterWidget::paintEvent(QPaintEvent* /* evt */)
 {
   QStyleOption opt;
   opt.init(this);
