@@ -66,7 +66,7 @@ class SIMPLib_EXPORT LinkedBooleanFilterParameter : public FilterParameter
   public:
     SIMPL_SHARED_POINTERS(LinkedBooleanFilterParameter)
     SIMPL_STATIC_NEW_MACRO(LinkedBooleanFilterParameter)
-    SIMPL_TYPE_MACRO_SUPER(LinkedBooleanFilterParameter, FilterParameter)
+     SIMPL_TYPE_MACRO_SUPER_OVERRIDE(LinkedBooleanFilterParameter, FilterParameter)
 
     typedef std::function<void(bool)> SetterCallbackType;
     typedef std::function<bool(void)> GetterCallbackType;
@@ -102,19 +102,19 @@ class SIMPLib_EXPORT LinkedBooleanFilterParameter : public FilterParameter
      * this FilterParameter subclass
      * @return
      */
-    QString getWidgetType();
+    QString getWidgetType() const override;
 
     /**
      * @brief readJson Reads this filter parameter's corresponding property out of a QJsonObject.
      * @param json The QJsonObject that the filter parameter reads from.
      */
-    void readJson(const QJsonObject &json);
+    void readJson(const QJsonObject& json) override;
 
     /**
      * @brief writeJson Writes this filter parameter's corresponding property to a QJsonObject.
      * @param json The QJsonObject that the filter parameter writes to.
      */
-    void writeJson(QJsonObject &json);
+    void writeJson(QJsonObject& json) override;
 
     /**
     * @param SetterCallback The method in the AbstractFilter subclass that <i>sets</i> the value of the property
@@ -140,7 +140,7 @@ class SIMPLib_EXPORT LinkedBooleanFilterParameter : public FilterParameter
 
   private:
     LinkedBooleanFilterParameter(const LinkedBooleanFilterParameter&) = delete; // Copy Constructor Not Implemented
-    void operator=(const LinkedBooleanFilterParameter&) = delete;               // Operator '=' Not Implemented
+    void operator=(const LinkedBooleanFilterParameter&) = delete;               // Move assignment Not Implemented
 };
 
 #endif /* _LinkedBooleanFilterParameter_H_ */

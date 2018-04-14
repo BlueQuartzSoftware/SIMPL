@@ -77,7 +77,7 @@ DataArrayCreationFilterParameter::Pointer DataArrayCreationFilterParameter::New(
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-QString DataArrayCreationFilterParameter::getWidgetType()
+QString DataArrayCreationFilterParameter::getWidgetType() const
 {
   return QString("DataArrayCreationWidget");
 }

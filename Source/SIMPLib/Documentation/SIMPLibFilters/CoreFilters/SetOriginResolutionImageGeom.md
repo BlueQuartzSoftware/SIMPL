@@ -1,10 +1,12 @@
-Set Origin & Resolution (Image)  {#setoriginresolutionimagegeom}
+Set Origin & Resolution (Image)  
 =============
 
 ## Group (Subgroup) ##
+
 Core (Spatial)
 
 ## Description ##
+
 This **Filter** changes the origin and/or the resolution of an **Image Geometry**. For example, if the current origin is at (0, 0, 0) and the user would like the origin to be (10, 4, 8), then the user should enter the following input values:
 
 + X Origin: 10
@@ -21,6 +23,7 @@ This **Filter** changes the origin and/or the resolution of an **Image Geometry*
 | Change Resolution | bool | Whether a new resolution should be applied to the **Image Geometry** |
 
 ## Required Geometry ##
+
 Image
 
 ## Required Objects ##
@@ -30,7 +33,12 @@ Image
 | **Data Container** | None | N/A | N/A | **Data Container** with an **Image Geometry** to modify |
 
 ## Created Objects ##
+
 None
+
+## Example Pipelines ##
+
+
 
 ## License & Copyright ##
 

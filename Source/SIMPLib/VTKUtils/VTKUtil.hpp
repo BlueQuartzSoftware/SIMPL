@@ -84,7 +84,7 @@ class SIMPLib_EXPORT VTKUtil
 
   private:
     VTKUtil(const VTKUtil&); // Copy Constructor Not Implemented
-    void operator=(const VTKUtil&); // Operator '=' Not Implemented
+    void operator=(const VTKUtil&); // Move assignment Not Implemented
 };
 
 

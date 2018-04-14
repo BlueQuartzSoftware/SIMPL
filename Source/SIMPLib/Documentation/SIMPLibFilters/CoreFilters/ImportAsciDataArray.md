@@ -1,11 +1,13 @@
-Import ASCII Attribute Array {#importascidataarray}
+Import ASCII Attribute Array 
 =============
 
 ## Group (Subgroup) ##
+
 Core (IO/Read)
 
 
 ## Description ##
+
 This **Filter** allows the user to import a plain text file containing the contents of a single Attribute Array. The delimeters can be one of the following:
 
 	+ comma
@@ -61,6 +63,7 @@ The example data below has 50 elements. This means that it could successfully be
 
 
 ## Parameters ##
+
 | Name | Type | Description |
 |------|------| ----------- |
 | InputFile | String | The path to the input file including the filename |
@@ -85,6 +88,10 @@ Not Applicable
 | Kind | Default Name | Type | Component Dimensions | Description |
 |------|--------------|------|----------------------|-------------|
 | **Attribute Array** | N/A | See Table above | based on number of components | The created Attribute Array |
+
+## Example Pipelines ##
+
+
 
 ## License & Copyright ##
 

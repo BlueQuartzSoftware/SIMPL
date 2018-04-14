@@ -49,11 +49,10 @@ class SIMPLib_EXPORT CreateStringArray : public AbstractFilter
     Q_OBJECT
   public:
     SIMPL_SHARED_POINTERS(CreateStringArray)
-    SIMPL_STATIC_NEW_MACRO(CreateStringArray)
-    SIMPL_TYPE_MACRO_SUPER(CreateStringArray, AbstractFilter)
+    SIMPL_FILTER_NEW_MACRO(CreateStringArray)
+    SIMPL_TYPE_MACRO_SUPER_OVERRIDE(CreateStringArray, AbstractFilter)
 
-    virtual ~CreateStringArray();
-
+    ~CreateStringArray() override;
 
     SIMPL_FILTER_PARAMETER(int, NumberOfComponents)
     Q_PROPERTY(int NumberOfComponents READ getNumberOfComponents WRITE setNumberOfComponents)
@@ -67,61 +66,67 @@ class SIMPLib_EXPORT CreateStringArray : public AbstractFilter
     /**
      * @brief getCompiledLibraryName Reimplemented from @see AbstractFilter class
      */
-    virtual const QString getCompiledLibraryName();
+    const QString getCompiledLibraryName() const override;
 
     /**
      * @brief getBrandingString Returns the branding string for the filter, which is a tag
      * used to denote the filter's association with specific plugins
      * @return Branding string
      */
-    virtual const QString getBrandingString();
+    const QString getBrandingString() const override;
 
     /**
      * @brief getFilterVersion Returns a version string for this filter. Default
      * value is an empty string.
      * @return
      */
-    virtual const QString getFilterVersion();
+    const QString getFilterVersion() const override;
 
     /**
      * @brief newFilterInstance Reimplemented from @see AbstractFilter class
      */
-    virtual AbstractFilter::Pointer newFilterInstance(bool copyFilterParameters);
+    AbstractFilter::Pointer newFilterInstance(bool copyFilterParameters) const override;
 
     /**
      * @brief getGroupName Reimplemented from @see AbstractFilter class
      */
-    virtual const QString getGroupName();
+    const QString getGroupName() const override;
 
     /**
      * @brief getSubGroupName Reimplemented from @see AbstractFilter class
      */
-    virtual const QString getSubGroupName();
+    const QString getSubGroupName() const override;
+
+    /**
+     * @brief getUuid Return the unique identifier for this filter.
+     * @return A QUuid object.
+     */
+    const QUuid getUuid() override;
 
     /**
      * @brief getHumanLabel Reimplemented from @see AbstractFilter class
      */
-    virtual const QString getHumanLabel();
+    const QString getHumanLabel() const override;
 
     /**
      * @brief setupFilterParameters Reimplemented from @see AbstractFilter class
      */
-    virtual void setupFilterParameters();
+    void setupFilterParameters() override;
 
     /**
      * @brief readFilterParameters Reimplemented from @see AbstractFilter class
      */
-    virtual void readFilterParameters(AbstractFilterParametersReader* reader, int index);
+    void readFilterParameters(AbstractFilterParametersReader* reader, int index) override;
 
     /**
      * @brief execute Reimplemented from @see AbstractFilter class
      */
-    virtual void execute();
+    void execute() override;
 
     /**
     * @brief preflight Reimplemented from @see AbstractFilter class
     */
-    virtual void preflight();
+    void preflight() override;
 
   signals:
     /**
@@ -162,8 +167,11 @@ class SIMPLib_EXPORT CreateStringArray : public AbstractFilter
   private:
     IDataArray::WeakPointer m_OutputArrayPtr;
 
+  public:
     CreateStringArray(const CreateStringArray&) = delete; // Copy Constructor Not Implemented
-    void operator=(const CreateStringArray&) = delete;    // Operator '=' Not Implemented
+    CreateStringArray(CreateStringArray&&) = delete;      // Move Constructor
+    CreateStringArray& operator=(const CreateStringArray&) = delete; // Copy Assignment Not Implemented
+    CreateStringArray& operator=(CreateStringArray&&) = delete;      // Move Assignment
 };
 
 #endif /* _CreateStringArray_H_ */

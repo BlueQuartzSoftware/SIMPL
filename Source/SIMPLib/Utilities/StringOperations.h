@@ -77,7 +77,7 @@ class SIMPLib_EXPORT StringOperations
 
   private:
     StringOperations(const StringOperations&) = delete; // Copy Constructor Not Implemented
-    void operator=(const StringOperations&) = delete;   // Operator '=' Not Implemented
+    void operator=(const StringOperations&) = delete;   // Move assignment Not Implemented
 };
 
 

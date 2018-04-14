@@ -51,12 +51,10 @@
 //
 // -----------------------------------------------------------------------------
 FindDerivatives::FindDerivatives()
-: AbstractFilter()
-, m_SelectedArrayPath("", "", "")
+: m_SelectedArrayPath("", "", "")
 , m_DerivativesArrayPath(SIMPL::Defaults::DataContainerName, SIMPL::Defaults::CellAttributeMatrixName, "Derivatives")
 , m_Interpolate(false)
 {
-  setupFilterParameters();
 }
 
 // -----------------------------------------------------------------------------
@@ -313,7 +311,7 @@ void FindDerivatives::dataCheck()
 
   m_DerivativesArrayPtr = getDataContainerArray()->createNonPrereqArrayFromPath<DataArray<double>, AbstractFilter, double>(
       this, getDerivativesArrayPath(), 0, dims);    /* Assigns the shared_ptr<> to an instance variable that is a weak_ptr<> */
-  if(nullptr != m_DerivativesArrayPtr.lock().get()) /* Validate the Weak Pointer wraps a non-nullptr pointer to a DataArray<T> object */
+  if(nullptr != m_DerivativesArrayPtr.lock())       /* Validate the Weak Pointer wraps a non-nullptr pointer to a DataArray<T> object */
   {
     m_DerivativesArray = m_DerivativesArrayPtr.lock()->getPointer(0);
   } /* Now assign the raw pointer to data from the DataArray<T> object */
@@ -373,7 +371,7 @@ void FindDerivatives::execute()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-AbstractFilter::Pointer FindDerivatives::newFilterInstance(bool copyFilterParameters)
+AbstractFilter::Pointer FindDerivatives::newFilterInstance(bool copyFilterParameters) const
 {
   FindDerivatives::Pointer filter = FindDerivatives::New();
   if(true == copyFilterParameters)
@@ -386,7 +384,7 @@ AbstractFilter::Pointer FindDerivatives::newFilterInstance(bool copyFilterParame
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString FindDerivatives::getCompiledLibraryName()
+const QString FindDerivatives::getCompiledLibraryName() const
 {
   return Core::CoreBaseName;
 }
@@ -394,7 +392,7 @@ const QString FindDerivatives::getCompiledLibraryName()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString FindDerivatives::getBrandingString()
+const QString FindDerivatives::getBrandingString() const
 {
   return "SIMPLib Core Filter";
 }
@@ -402,7 +400,7 @@ const QString FindDerivatives::getBrandingString()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString FindDerivatives::getFilterVersion()
+const QString FindDerivatives::getFilterVersion() const
 {
   QString version;
   QTextStream vStream(&version);
@@ -413,7 +411,7 @@ const QString FindDerivatives::getFilterVersion()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString FindDerivatives::getGroupName()
+const QString FindDerivatives::getGroupName() const
 {
   return SIMPL::FilterGroups::CoreFilters;
 }
@@ -421,7 +419,15 @@ const QString FindDerivatives::getGroupName()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString FindDerivatives::getSubGroupName()
+const QUuid FindDerivatives::getUuid()
+{
+  return QUuid("{8ec1fc8e-6484-5412-a898-8079986c0a26}");
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+const QString FindDerivatives::getSubGroupName() const
 {
   return SIMPL::FilterSubGroups::GeometryFilters;
 }
@@ -429,7 +435,7 @@ const QString FindDerivatives::getSubGroupName()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString FindDerivatives::getHumanLabel()
+const QString FindDerivatives::getHumanLabel() const
 {
   return "Find Derivatives";
 }

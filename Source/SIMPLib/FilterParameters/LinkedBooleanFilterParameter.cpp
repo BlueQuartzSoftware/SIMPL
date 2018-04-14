@@ -70,7 +70,7 @@ LinkedBooleanFilterParameter::Pointer LinkedBooleanFilterParameter::New(const QS
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-QString LinkedBooleanFilterParameter::getWidgetType()
+QString LinkedBooleanFilterParameter::getWidgetType() const
 {
   return QString("LinkedBooleanWidget");
 }

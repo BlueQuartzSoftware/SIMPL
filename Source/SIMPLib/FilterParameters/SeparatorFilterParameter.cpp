@@ -65,7 +65,7 @@ SeparatorFilterParameter::Pointer SeparatorFilterParameter::New(const QString& h
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-QString SeparatorFilterParameter::getWidgetType()
+QString SeparatorFilterParameter::getWidgetType() const
 {
   return QString("SeparatorWidget");
 }

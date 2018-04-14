@@ -43,6 +43,7 @@
 #include "SIMPLib/DataContainers/DataContainer.h"
 #include "SIMPLib/DataContainers/DataContainerArray.h"
 #include "SIMPLib/DataContainers/DataContainerProxy.h"
+#include "SIMPLib/Utilities/SIMPLH5DataReaderRequirements.h"
 
 // -----------------------------------------------------------------------------
 //
@@ -74,7 +75,17 @@ DataContainerArrayProxy::DataContainerArrayProxy(DataContainerArray* dca)
   for(int i = 0; i < containers.size(); i++) // Loop on each Data Container
   {
     DataContainer::Pointer container = containers.at(i);
-    DataContainerProxy dcProxy(container->getName(), Qt::Checked); // Create a new DataContainerProxy
+    IGeometry::Pointer geo = container->getGeometry();
+    IGeometry::Type dcType;
+    if (geo != IGeometry::NullPointer())
+    {
+      dcType = geo->getGeometryType();
+    }
+    else
+    {
+      dcType = IGeometry::Type::Unknown;
+    }
+    DataContainerProxy dcProxy(container->getName(), Qt::Checked, dcType); // Create a new DataContainerProxy
 
     // Now loop over each AttributeMatrix in the data container that was selected
     DataContainer::AttributeMatrixMap_t attrMats = container->getAttributeMatrices();
@@ -94,6 +105,9 @@ DataContainerArrayProxy::DataContainerArrayProxy(DataContainerArray* dca)
         QString daPath = container->getName() + "/" + amName + "/";
         IDataArray::Pointer attrArray = attrMat->getAttributeArray(aaName);
         DataArrayProxy daProxy(daPath, aaName, Qt::Checked, attrArray->getTypeAsString(), attrArray->getClassVersion());
+        daProxy.compDims = attrArray->getComponentDimensions();
+        daProxy.tupleDims = attrMat->getTupleDimensions();
+
         amProxy.dataArrays.insert(aaName, daProxy);
       }
       dcProxy.attributeMatricies.insert(amName, amProxy); // Add the new AttributeMatrix to the DataContainerProxy
@@ -230,25 +244,16 @@ void DataContainerArrayProxy::print(const QString header)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void DataContainerArrayProxy::setAllFlags(Qt::CheckState state)
+void DataContainerArrayProxy::setFlags(uint8_t flag, DataContainerProxy::DCGeometryTypeFlags dcGeoms, AttributeMatrixProxy::AMTypeFlags amTypes,
+                                       DataArrayProxy::PrimitiveTypeFlags primitiveTypes, DataArrayProxy::CompDimsVector compDimsVector)
 {
   for(QMap<QString, DataContainerProxy>::iterator dcIter = dataContainers.begin(); dcIter != dataContainers.end(); ++dcIter) // DataContainer Level
   {
     DataContainerProxy& dcProxy = dcIter.value();
-    dcProxy.flag = state;
-
-    QMap<QString, AttributeMatrixProxy>& amProxies = dcProxy.attributeMatricies;
-    for(QMap<QString, AttributeMatrixProxy>::iterator amIter = amProxies.begin(); amIter != amProxies.end(); ++amIter) // AttributeMatrix Level
+    DataContainerProxy::DCGeometryTypeFlag dcGeomFlag = DataContainerProxy::GeometryTypeToFlag(static_cast<IGeometry::Type>(dcProxy.dcType));
+    if ((dcGeoms & dcGeomFlag) > 0 || dcGeoms == DataContainerProxy::DCGeometryTypeFlag::Any_DCGeomType)
     {
-      AttributeMatrixProxy& amProxy = amIter.value();
-      amProxy.flag = state;
-
-      QMap<QString, DataArrayProxy>& daProxies = amProxy.dataArrays;
-      for(QMap<QString, DataArrayProxy>::iterator daIter = daProxies.begin(); daIter != daProxies.end(); ++daIter) // DataArray Level
-      {
-        DataArrayProxy& daProxy = daIter.value();
-        daProxy.flag = state;
-      }
+      dcProxy.setFlags(flag, amTypes, primitiveTypes, compDimsVector);
     }
   }
 }

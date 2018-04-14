@@ -43,7 +43,7 @@
 #include <QtGui/QDrag>
 #include <QtGui/QDropEvent>
 
-// Include the MOC generated CPP file which has all the QMetaObject methods/data
+
 
 // -----------------------------------------------------------------------------
 //

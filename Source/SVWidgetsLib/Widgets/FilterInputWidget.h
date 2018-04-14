@@ -54,16 +54,17 @@ class PipelineFilterObject;
 /**
  * @brief The FilterInputWidget class
  */
-class SVWidgetsLib_EXPORT FilterInputWidget : public QWidget, private Ui::FilterInputWidget
+class SVWidgetsLib_EXPORT FilterInputWidget : public QWidget
 {
     Q_OBJECT
 
   public:
-    FilterInputWidget(QString filterClassName, PipelineFilterObject *filterObj, QWidget* parent = nullptr);
-    FilterInputWidget(AbstractFilter::Pointer filter, QWidget* parent = nullptr);
+    FilterInputWidget(const QString &filterClassName, PipelineFilterObject *filterObj, QWidget* parent = nullptr);
     virtual ~FilterInputWidget();
 
     virtual void setupGui();
+    
+    void setFilterIndex(const QString &index);
 
     bool eventFilter(QObject* o, QEvent* e);
 
@@ -88,6 +89,7 @@ class SVWidgetsLib_EXPORT FilterInputWidget : public QWidget, private Ui::Filter
     void fadeOutWidget(QWidget* widget);
 
   private:
+    QSharedPointer<Ui::FilterInputWidget> m_Ui;
     QString                           m_FilterClassName;
     QPointer<QtSFaderWidget>          m_FaderWidget;
     bool                              m_AdvFadedOut;
@@ -101,22 +103,23 @@ class SVWidgetsLib_EXPORT FilterInputWidget : public QWidget, private Ui::Filter
     /**
      * @brief layoutWidgets
      */
-    void layoutWidgets(AbstractFilter::Pointer filter);
+    void layoutWidgets(AbstractFilter *filter);
 
     /**
      * @brief validateFileSystemFilterParameter
      * @param option
      */
-    void validateFileSystemFilterParameter(FilterParameter* parameter, AbstractFilter::Pointer filter);
+    void validateFileSystemFilterParameter(FilterParameter* parameter, AbstractFilter *filter);
 
     /**
      * @brief linkConditionalWidgets
      * @param filterParameters
      */
     void linkConditionalWidgets(QVector<FilterParameter::Pointer>& filterParameters);
-
+  
+  public:
     FilterInputWidget(const FilterInputWidget&) = delete; // Copy Constructor Not Implemented
-    void operator=(const FilterInputWidget&) = delete;    // Operator '=' Not Implemented
+    void operator=(const FilterInputWidget&) = delete;    // Move assignment Not Implemented
 };
 
 #endif /* end FilterInputWidget */

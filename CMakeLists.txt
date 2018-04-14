@@ -14,15 +14,11 @@ set(CMAKE_CXX_STANDARD_REQUIRED True)
 set(CMAKE_CXX_EXTENSIONS False)
 
 if(${CMAKE_MAJOR_VERSION} STREQUAL "3")
-  # CMake 3.0 introduces VERSION variables for each Project.
-  cmake_policy(SET CMP0048 NEW)
-  # CMake 3.0 introduces some OS X RPath policies
-  cmake_policy(SET CMP0042 OLD)
   # CMake 3.1 introduces if() policies on dereferencing variables in quotes
   cmake_policy(SET CMP0054 NEW)
 endif()
 
-cmake_minimum_required(VERSION 3.6.0)
+cmake_minimum_required(VERSION 3.8.0)
 
 #------------------------------------------------------------------------------
 # Create the Top level Project
@@ -225,30 +221,6 @@ SIMPL_ENABLE_GROUP(GROUP_NAME WIDGETS
 
 OPTION(SIMPL_BUILD_TESTING "Compile the test programs" ON)
 
-if(0)
-  option(SIMPL_Group_BASE "Compile the base functionality" ON)
-
-
-  option(SIMPL_Group_FILTERS "Compile the Filtering functionality" OFF)
-  if(SIMPL_Group_FILTERS AND NOT SIMPL_Group_BASE)
-    message(STATUS "SIMPL_Group_FILTERS is ON, SIMPL_Group_BASE is being Enabled")
-    set(SIMPL_Group_BASE ON)
-  endif()
-
-  option(SIMPL_Group_PLUGIN "Compile the Plugin functionality that allows the loading of SIMPL Plugins" OFF)
-  if(SIMPL_Group_PLUGIN AND NOT SIMPL_Group_FILTERS)
-    message(STATUS "SIMPL_Group_PLUGIN is ON, SIMPL_Group_FILTERS is being Enabled")
-    set(SIMPL_Group_FILTERS ON)
-  endif()
-
-  option(SIMPL_Group_WIDGETS "Build the QtWidgets that are needed for GUI Applications" OFF)
-  if(SIMPL_Group_PLUGIN AND NOT SIMPL_Group_BASE)
-    message(STATUS "SIMPL_Group_PLUGIN is ON, SIMPL_Group_BASE is being Enabled")
-    set(SIMPL_Group_BASE ON)
-  endif()
-
-endif()
-
 # --------------------------------------------------------------------
 # Find HDF5 Headers/Libraries
 # HDF5 now comes with everything that is needed for CMake to load
@@ -259,7 +231,7 @@ include(${CMP_SOURCE_DIR}/ExtLib/HDF5Support.cmake)
 # --------------------------------------------------------------------
 # Should we use Intel Threading Building Blocks
 # --------------------------------------------------------------------
-set(SIMPLib_USE_PARALLEL_ALGORITHMS "")
+set(SIMPL_USE_PARALLEL_ALGORITHMS "")
 option(SIMPL_USE_MULTITHREADED_ALGOS "Use MultiThreaded Algorithms" OFF)
 if(SIMPL_USE_MULTITHREADED_ALGOS)
   find_package(TBB)
@@ -274,16 +246,16 @@ if(SIMPL_USE_MULTITHREADED_ALGOS)
   else()
       message(FATAL_ERROR "The Intel Threading Building Blocks library is needed to enable the multithreaded algorithms. Please make sure it is installed properly")
   endif()
-  set(SIMPLib_USE_PARALLEL_ALGORITHMS "1")
+  set(SIMPL_USE_PARALLEL_ALGORITHMS "1")
 endif()
 
 # --------------------------------------------------------------------
 # SIMPL needs the Eigen library for Least Squares fit and Eigen value/vector calculations.
-set(SIMPLib_USE_EIGEN "")
+set(SIMPL_USE_EIGEN "")
 Find_Package(Eigen REQUIRED)
 if(EIGEN_FOUND)
   message(STATUS "Found Eigen Library")
-  set(SIMPLib_USE_EIGEN "1")
+  set(SIMPL_USE_EIGEN "1")
 else()
   message(WARNING "The Eigen Library is required for some algorithms to execute. These algorithms will be disabled.")
 endif()
@@ -299,26 +271,13 @@ set(USE_QtWebEngine FALSE)
 CMP_AddQt5Support( "${SIMPL_Qt5_COMPONENTS}" "${USE_QtWebEngine}" "${SIMPLProj_BINARY_DIR}" "SIMPL")
 
 # --------------------------------------------------------------------
-# Find the Doxygen package
-FIND_PACKAGE(Doxygen)
-if(DOXYGEN_FOUND)
-  get_property(Doxygen_STATUS_PRINTED GLOBAL PROPERTY Doxygen_STATUS_PRINTED)
-  if(NOT Doxygen_STATUS_PRINTED)
-    message(STATUS "Doxygen Found at ${DOXYGEN_EXECUTABLE}")
-    set_property(GLOBAL PROPERTY Doxygen_STATUS_PRINTED TRUE)
-  endif()
-else()
-  message(FATAL_ERROR "Doxygen is needed to build the documentation. Please install it correctly")
-endif()
-
-# --------------------------------------------------------------------
 # Should we use enable NTFS file checking on Windows
 # --------------------------------------------------------------------
 if(WIN32)
-  set(SIMPLib_NTFS_FILE_CHECK "")
+  set(SIMPL_NTFS_FILE_CHECK "")
   option(SIMPL_ENABLE_NTFS_FILE_CHECKING "Enable NTFS File Permissions Checking" ON)
   if(SIMPL_ENABLE_NTFS_FILE_CHECKING)
-      set(SIMPLib_NTFS_FILE_CHECK "1")
+      set(SIMPL_NTFS_FILE_CHECK "1")
   endif()
 endif()
 
@@ -329,7 +288,7 @@ endif()
 # set_property(GLOBAL PROPERTY DREAM3D_PACKAGE_DEST_PREFIX ".")
 get_property(DREAM3D_PACKAGE_DEST_PREFIX GLOBAL PROPERTY DREAM3D_PACKAGE_DEST_PREFIX)
 if("${DREAM3D_PACKAGE_DEST_PREFIX}" STREQUAL "")
-  set_property(GLOBAL PROPERTY DREAM3D_PACKAGE_DEST_PREFIX "")
+  set_property(GLOBAL PROPERTY DREAM3D_PACKAGE_DEST_PREFIX ".")
   get_property(DREAM3D_PACKAGE_DEST_PREFIX GLOBAL PROPERTY DREAM3D_PACKAGE_DEST_PREFIX)
   set(APPLE_RESOURCES_DIR "share/SIMPL")
 else ()
@@ -409,18 +368,19 @@ install(
 
 
 # --------------------------------------------------------------------
-# Build the SimpleITKExplicit Library.
+# Use ITK
 option(SIMPL_USE_ITK "Use ITK For Image Processing" ON)
-if(SIMPL_USE_ITK)
-  add_subdirectory( ${SIMPLProj_SOURCE_DIR}/Source/SimpleITKExplicit ${PROJECT_BINARY_DIR}/SimpleITKExplicit)
-  get_property(SimpleITKExplicit_LIB_NAME TARGET SimpleITKExplicit PROPERTY OUTPUT_NAME)
-endif()
-
 
 # -----------------------------------------------------------------------
 # Add in the Necessary HDF5 Support Sources into a library
 # -----------------------------------------------------------------------
 add_subdirectory( ${SIMPLProj_SOURCE_DIR}/Source/H5Support ${PROJECT_BINARY_DIR}/H5Support)
+
+# -----------------------------------------------------------------------
+# Add in the support to host the documentation over a thin-http server
+# -----------------------------------------------------------------------
+add_subdirectory(${SIMPLProj_SOURCE_DIR}/3rdParty/QtWebApp )
+
 
 # -----------------------------------------------------------------------
 # This needs to be set here as we are going to look for files in this directory
@@ -430,7 +390,7 @@ if("${FilterWidgetsLib_BINARY_DIR}" STREQUAL "")
 endif()
 
 # -----------------------------------------------------------------------
-# -- Add in the DREAM3D Sources into a library
+# -- Add in the SIMPL Sources into a library
 add_subdirectory( ${SIMPLProj_SOURCE_DIR}/Source/SIMPLib ${PROJECT_BINARY_DIR}/SIMPLib)
 
 # add the Command line utilities
@@ -444,48 +404,6 @@ add_subdirectory(${SIMPLProj_SOURCE_DIR}/Tools ${PROJECT_BINARY_DIR}/Tools)
 if(SIMPL_Group_WIDGETS)
   add_subdirectory( ${SIMPLProj_SOURCE_DIR}/Source/SVWidgetsLib ${PROJECT_BINARY_DIR}/SVWidgetsLib)
 endif()
-
-
-if(0)
-#-------------------------------------------------------------------------------
-# Should we build the documentation using DOxygen
-option(SIMPLView_BUILD_DOCUMENTATION "Build the DREAM3D documentation" ON)
-if(SIMPLView_BUILD_DOCUMENTATION)
-  set(DOCUMENTATION_RESOURCES_DIR ${PROJECT_RESOURCES_DIR}/DocConfigFiles)
-
-  set(DOX_GENERATE_RTF "NO")
-  option(SIMPLView_GENERATE_RTF "Generate RTF Documentation" OFF)
-  if(SIMPLView_GENERATE_RTF STREQUAL "ON")
-    set(DOX_GENERATE_RTF "YES")
-  endif()
-
-  # By default we generate the Documentation in HTML format
-  set(DOX_GENERATE_HTML "NO")
-  option(SIMPLView_GENERATE_HTML "Generate HTML Documentation" ON)
-  if(SIMPLView_GENERATE_HTML STREQUAL "ON")
-    set(DOX_GENERATE_HTML "YES")
-  endif()
-
-  #most windows machines do NOT have LATEX built in so default this to OFF
-  set(DOX_GENERATE_LATEX "NO")
-  option(SIMPLView_GENERATE_LATEX "Generate PDF Documentation" OFF)
-  if(SIMPLView_GENERATE_LATEX STREQUAL "ON")
-    set(DOX_GENERATE_LATEX "YES")
-    # Check for existence of LaTex executable files
-    INCLUDE( ${DOCUMENTATION_RESOURCES_DIR}/CMake/UseLATEX.cmake)
-    if(APPLE)
-      option(AUTO_OPEN_PDF "Automatically open generated PDF files with default PDF reading application" ON)
-    endif()
-  endif()
-
-
-  # Now add each subdirectory that holds our documentation files
-  add_subdirectory(${PROJECT_SOURCE_DIR}/Documentation/ReferenceManual ${PROJECT_BINARY_DIR}/Documentation/ReferenceManual)
-  add_subdirectory(${PROJECT_SOURCE_DIR}/Documentation/APIDocs ${PROJECT_BINARY_DIR}/Documentation/APIDocs)
-endif()
-
-endif()
-
 
 # This should be the last line in this file:
 include(${PROJECT_RESOURCES_DIR}/CPack/PackageProject.cmake)

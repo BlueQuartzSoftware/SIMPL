@@ -69,7 +69,7 @@ DynamicChoiceFilterParameter::Pointer DynamicChoiceFilterParameter::New(const QS
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-QString DynamicChoiceFilterParameter::getWidgetType()
+QString DynamicChoiceFilterParameter::getWidgetType() const
 {
   return QString("DynamicChoiceWidget");
 }

@@ -53,42 +53,70 @@ public:
    * a parent  OR take responsibility for deleting this object.
    * @return
    */
-  AbstractFilter::Pointer create()
+  AbstractFilter::Pointer create() const
   {
     typename T::Pointer w = T::New();
     return w;
   }
 
-  QString getFilterGroup()
+  QString getFilterClassName() const
+  {
+    return m_FilterClassName;
+  }
+
+  QString getFilterGroup() const
   {
     return m_GroupName;
   }
 
-  QString getFilterSubGroup()
+  QString getFilterSubGroup() const
   {
     return m_SubGroupName;
   }
 
-  QString getFilterHumanLabel()
+  QString getFilterHumanLabel() const
   {
     return m_HumanName;
+  }
+
+  QString getBrandingString() const
+  {
+    return m_BrandingString;
+  }
+
+  QString getCompiledLibraryName() const
+  {
+    return m_CompiledLibraryName;
+  }
+  
+  QUuid getUuid() const
+  {
+    return m_Uuid;
   }
 
 protected:
   FilterFactory()
   {
     typename T::Pointer w = T::New();
+    m_FilterClassName = w->getNameOfClass();
     m_GroupName = w->getGroupName();
     m_SubGroupName = w->getSubGroupName();
     m_HumanName = w->getHumanLabel();
+    m_BrandingString = w->getBrandingString();
+    m_CompiledLibraryName = w->getCompiledLibraryName();
+    m_Uuid = w->getUuid();
   }
 
 private:
+  QString m_FilterClassName;
   QString m_GroupName;
   QString m_SubGroupName;
   QString m_HumanName;
+  QString m_BrandingString;
+  QString m_CompiledLibraryName;
+  QUuid m_Uuid;
 
   FilterFactory(const FilterFactory&);  // Copy Constructor Not Implemented
-  void operator=(const FilterFactory&); // Operator '=' Not Implemented
+  void operator=(const FilterFactory&); // Move assignment Not Implemented
 };
 #endif /* FilterFACTORY_H_ */

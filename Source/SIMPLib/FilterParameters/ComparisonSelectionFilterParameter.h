@@ -69,7 +69,7 @@ class SIMPLib_EXPORT ComparisonSelectionFilterParameter : public FilterParameter
   public:
     SIMPL_SHARED_POINTERS(ComparisonSelectionFilterParameter)
     SIMPL_STATIC_NEW_MACRO(ComparisonSelectionFilterParameter)
-    SIMPL_TYPE_MACRO_SUPER(ComparisonSelectionFilterParameter, FilterParameter)
+     SIMPL_TYPE_MACRO_SUPER_OVERRIDE(ComparisonSelectionFilterParameter, FilterParameter)
 
     typedef std::function<void(ComparisonInputs)> SetterCallbackType;
     typedef std::function<ComparisonInputs(void)> GetterCallbackType;
@@ -110,19 +110,19 @@ class SIMPLib_EXPORT ComparisonSelectionFilterParameter : public FilterParameter
    * this FilterParameter subclass
    * @return
    */
-    QString getWidgetType();
+    QString getWidgetType() const override;
 
     /**
      * @brief readJson Reads this filter parameter's corresponding property out of a QJsonObject.
      * @param json The QJsonObject that the filter parameter reads from.
      */
-    void readJson(const QJsonObject &json);
+    void readJson(const QJsonObject& json) override;
 
     /**
      * @brief writeJson Writes this filter parameter's corresponding property to a QJsonObject.
      * @param json The QJsonObject that the filter parameter writes to.
      */
-    void writeJson(QJsonObject &json);
+    void writeJson(QJsonObject& json) override;
 
     /**
     * @param SetterCallback The method in the AbstractFilter subclass that <i>sets</i> the value of the property
@@ -147,7 +147,7 @@ class SIMPLib_EXPORT ComparisonSelectionFilterParameter : public FilterParameter
 
   private:
     ComparisonSelectionFilterParameter(const ComparisonSelectionFilterParameter&) = delete; // Copy Constructor Not Implemented
-    void operator=(const ComparisonSelectionFilterParameter&) = delete;                     // Operator '=' Not Implemented
+    void operator=(const ComparisonSelectionFilterParameter&) = delete;                     // Move assignment Not Implemented
 };
 
 #endif /* _ComparisonSelectionFilterParameter_H_ */

@@ -69,7 +69,7 @@ GenerateColorTableFilterParameter::Pointer GenerateColorTableFilterParameter::Ne
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-QString GenerateColorTableFilterParameter::getWidgetType()
+QString GenerateColorTableFilterParameter::getWidgetType() const
 {
   return QString("GenerateColorTableWidget");
 }

@@ -61,7 +61,7 @@ class SIMPLib_EXPORT H5PrimaryStatsDataDelegate : public H5StatsDataDelegate
 
     SIMPL_SHARED_POINTERS(H5PrimaryStatsDataDelegate)
     SIMPL_STATIC_NEW_MACRO(H5PrimaryStatsDataDelegate)
-    SIMPL_TYPE_MACRO_SUPER(H5PrimaryStatsDataDelegate, H5StatsDataDelegate)
+     SIMPL_TYPE_MACRO_SUPER_OVERRIDE(H5PrimaryStatsDataDelegate, H5StatsDataDelegate)
     virtual ~H5PrimaryStatsDataDelegate();
 
     int writePrimaryStatsData(PrimaryStatsData* data, hid_t groupId);
@@ -114,7 +114,7 @@ class SIMPLib_EXPORT H5PrimaryStatsDataDelegate : public H5StatsDataDelegate
 
   private:
     H5PrimaryStatsDataDelegate(const H5PrimaryStatsDataDelegate&) = delete; // Copy Constructor Not Implemented
-    void operator=(const H5PrimaryStatsDataDelegate&) = delete;             // Operator '=' Not Implemented
+    void operator=(const H5PrimaryStatsDataDelegate&) = delete;             // Move assignment Not Implemented
 };
 
 #endif /* _H5PrimaryStatsData_DELEGATE_H_ */

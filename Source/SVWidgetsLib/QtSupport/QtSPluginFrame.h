@@ -193,7 +193,7 @@ class SVWidgetsLib_EXPORT QtSPluginFrame : public QFrame
     QStatusBar*    m_StatusBar;
 
     QtSPluginFrame(const QtSPluginFrame&) = delete; // Copy Constructor Not Implemented
-    void operator=(const QtSPluginFrame&) = delete; // Operator '=' Not Implemented
+    void operator=(const QtSPluginFrame&) = delete; // Move assignment Not Implemented
 };
 
 #endif /* _AIM_PLUGIN_FRAME_H_ */

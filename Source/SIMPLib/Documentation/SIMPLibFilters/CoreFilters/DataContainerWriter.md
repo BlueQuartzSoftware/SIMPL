@@ -1,7 +1,8 @@
-Write DREAM.3D Data File {#datacontainerwriter}
+Write DREAM.3D Data File 
 =============
 
 ## Group (Subgroup) ##
+
 IO (Output)
 
 ## Description ##
@@ -20,14 +21,21 @@ For more information on these outputs, see the [file formats](@ref supportedfile
  
 
 ## Required Geometry ##
+
 Not Applicable
 
 ## Required Objects ##
+
 None
 
 
 ## Created Objects ##
+
 None
+
+
+
+## Example Pipelines ##
 
 
 

@@ -34,8 +34,8 @@
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
 
-#ifndef _PipelineFilterWidgetFACTORY_H_
-#define _PipelineFilterWidgetFACTORY_H_
+#ifndef _pipelineFilterWidgetFACTORY_H_
+#define _pipelineFilterWidgetFACTORY_H_
 
 
 #include "SIMPLib/Common/SIMPLibSetGetMacros.h"
@@ -51,9 +51,7 @@ class PipelineFilterWidgetFactory : public IFilterWidgetFactory
     SIMPL_TYPE_MACRO_SUPER(PipelineFilterWidgetFactory<Widget>, IFilterWidgetFactory)
     SIMPL_STATIC_NEW_MACRO(PipelineFilterWidgetFactory<Widget>)
 
-    virtual ~PipelineFilterWidgetFactory()
-    {
-    }
+    ~PipelineFilterWidgetFactory() override = default;
 
     /**
      * @brief Creates a new widget for this filter. The Calling method MUST set
@@ -62,19 +60,24 @@ class PipelineFilterWidgetFactory : public IFilterWidgetFactory
      */
     QWidget* createWidget(FilterParameter* parameter, AbstractFilter* filter = nullptr, QWidget* parent = nullptr)
     {
-      Widget* w = new Widget(parameter, filter, parent);
+      auto* w = new Widget(parameter, filter, parent);
       QString str = QString("%1_FilterParameter").arg(parameter->getPropertyName());
       w->setObjectName(str);
+      w->loadData();
       return w;
     }
 
 
   protected:
-    PipelineFilterWidgetFactory() {}
+    PipelineFilterWidgetFactory() = default;
 
-  private:
-    PipelineFilterWidgetFactory(const PipelineFilterWidgetFactory&); // Copy Constructor Not Implemented
-    void operator=(const PipelineFilterWidgetFactory&); // Operator '=' Not Implemented
+    
+  public:
+    PipelineFilterWidgetFactory(const PipelineFilterWidgetFactory&) = delete; // Copy Constructor Not Implemented
+    PipelineFilterWidgetFactory(PipelineFilterWidgetFactory&&) = delete;      // Move Constructor
+    PipelineFilterWidgetFactory& operator=(const PipelineFilterWidgetFactory&) = delete; // Copy Assignment Not Implemented
+    PipelineFilterWidgetFactory& operator=(PipelineFilterWidgetFactory&&) = delete;      // Move Assignment Not Implemented
+    
 };
-#endif /* PipelineFilterWidgetFACTORY_H_ */
 
+#endif /* _pipelineFilterWidgetFACTORY_H_ */

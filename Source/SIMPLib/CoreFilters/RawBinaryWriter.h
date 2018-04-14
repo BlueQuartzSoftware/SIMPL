@@ -22,10 +22,10 @@ class RawBinaryWriter : public AbstractFilter
 
   public:
     SIMPL_SHARED_POINTERS(RawBinaryWriter)
-    SIMPL_STATIC_NEW_MACRO(RawBinaryWriter)
-    SIMPL_TYPE_MACRO_SUPER(RawBinaryWriter, AbstractFilter)
+    SIMPL_FILTER_NEW_MACRO(RawBinaryWriter)
+    SIMPL_TYPE_MACRO_SUPER_OVERRIDE(RawBinaryWriter, AbstractFilter)
 
-    virtual ~RawBinaryWriter();
+    ~RawBinaryWriter() override;
 
     /* Place your input parameters here using the DREAM3D macros to declare the Filter Parameters
      * or other instance variables
@@ -44,50 +44,56 @@ class RawBinaryWriter : public AbstractFilter
      * @brief getCompiledLibraryName Returns the name of the Library that this filter is a part of
      * @return
      */
-    virtual const QString getCompiledLibraryName();
+    const QString getCompiledLibraryName() const override;
 
     /**
     * @brief This returns a string that is displayed in the GUI. It should be readable
     * and understandable by humans.
     */
-    virtual const QString getHumanLabel();
+    const QString getHumanLabel() const override;
 
     /**
     * @brief This returns the group that the filter belonds to. You can select
     * a different group if you want. The string returned here will be displayed
     * in the GUI for the filter
     */
-    virtual const QString getGroupName();
+    const QString getGroupName() const override;
 
     /**
     * @brief This returns a string that is displayed in the GUI and helps to sort the filters into
     * a subgroup. It should be readable and understandable by humans.
     */
-    virtual const QString getSubGroupName();
+    const QString getSubGroupName() const override;
+
+    /**
+     * @brief getUuid Return the unique identifier for this filter.
+     * @return A QUuid object.
+     */
+    const QUuid getUuid() override;
 
     /**
     * @brief This method will instantiate all the end user settable options/parameters
     * for this filter
     */
-    virtual void setupFilterParameters();
+    void setupFilterParameters() override;
 
     /**
     * @brief This method will read the options from a file
     * @param reader The reader that is used to read the options from a file
     * @param index The index to read the information from
     */
-    virtual void readFilterParameters(AbstractFilterParametersReader* reader, int index);
+    void readFilterParameters(AbstractFilterParametersReader* reader, int index) override;
 
     /**
      * @brief Reimplemented from @see AbstractFilter class
      */
-    virtual void execute();
+    void execute() override;
 
     /**
     * @brief This function runs some sanity checks on the DataContainer and inputs
     * in an attempt to ensure the filter can process the inputs.
     */
-    virtual void preflight();
+    void preflight() override;
 
     /**
      * @brief newFilterInstance Returns a new instance of the filter optionally copying the filter parameters from the
@@ -95,7 +101,7 @@ class RawBinaryWriter : public AbstractFilter
      * @param copyFilterParameters
      * @return
      */
-    virtual AbstractFilter::Pointer newFilterInstance(bool copyFilterParameters);
+    AbstractFilter::Pointer newFilterInstance(bool copyFilterParameters) const override;
 
   signals:
     /**
@@ -140,8 +146,11 @@ class RawBinaryWriter : public AbstractFilter
      * and  DEFINE_DATAARRAY_VARIABLE() which are defined in DREAM3DGetSetMacros.h
      */
 
+  public:
     RawBinaryWriter(const RawBinaryWriter&) = delete; // Copy Constructor Not Implemented
-    void operator=(const RawBinaryWriter&) = delete;  // Operator '=' Not Implemented
+    RawBinaryWriter(RawBinaryWriter&&) = delete;      // Move Constructor
+    RawBinaryWriter& operator=(const RawBinaryWriter&) = delete; // Copy Assignment Not Implemented
+    RawBinaryWriter& operator=(RawBinaryWriter&&) = delete;      // Move Assignment
 };
 
 #endif /* _RawBinaryWriter_H_ */

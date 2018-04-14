@@ -126,7 +126,7 @@ private:
   QSharedPointer<Ui::DataStructureWidget>       m_Ui;
 
   DataStructureWidget(const DataStructureWidget&) = delete; // Copy Constructor Not Implemented
-  void operator=(const DataStructureWidget&);    // Operator '=' Not Implemented
+  void operator=(const DataStructureWidget&);               // Move assignment Not Implemented
 };
 
 #endif /* _dataBrowserWidget_h_   */

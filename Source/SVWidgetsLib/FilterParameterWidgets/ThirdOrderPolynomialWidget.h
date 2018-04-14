@@ -92,7 +92,7 @@ class SVWidgetsLib_EXPORT ThirdOrderPolynomialWidget : public FilterParameterWid
     ThirdOrderPolynomialFilterParameter* m_FilterParameter;
 
     ThirdOrderPolynomialWidget(const ThirdOrderPolynomialWidget&) = delete; // Copy Constructor Not Implemented
-    void operator=(const ThirdOrderPolynomialWidget&) = delete;             // Operator '=' Not Implemented
+    void operator=(const ThirdOrderPolynomialWidget&) = delete;             // Move assignment Not Implemented
 };
 
 #endif /* _ThirdOrderPolynomialWidget_H_ */

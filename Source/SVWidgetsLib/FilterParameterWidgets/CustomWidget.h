@@ -80,7 +80,7 @@ class FilterWidgetsLib_EXPORT CustomWidget : public QWidget, private Ui::CustomW
 
   private:
     CustomWidget(const CustomWidget&) = delete;   // Copy Constructor Not Implemented
-    void operator=(const CustomWidget&) = delete; // Operator '=' Not Implemented
+    void operator=(const CustomWidget&) = delete; // Move assignment Not Implemented
 };
 
 #endif /* _CustomWidget_H_ */

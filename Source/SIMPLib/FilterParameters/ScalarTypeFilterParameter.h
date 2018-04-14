@@ -66,7 +66,7 @@ class SIMPLib_EXPORT ScalarTypeFilterParameter : public FilterParameter
 public:
   SIMPL_SHARED_POINTERS(ScalarTypeFilterParameter)
   SIMPL_STATIC_NEW_MACRO(ScalarTypeFilterParameter)
-  SIMPL_TYPE_MACRO_SUPER(ScalarTypeFilterParameter, FilterParameter)
+   SIMPL_TYPE_MACRO_SUPER_OVERRIDE(ScalarTypeFilterParameter, FilterParameter)
 
   typedef std::function<void(SIMPL::ScalarTypes::Type)> SetterCallbackType;
   typedef std::function<SIMPL::ScalarTypes::Type(void)> GetterCallbackType;
@@ -99,7 +99,7 @@ public:
   * this FilterParameter subclass
   * @return
   */
-  QString getWidgetType();
+  QString getWidgetType() const override;
 
   /**
   * @brief readJson Reads this filter parameter's corresponding property out of a QJsonObject.
@@ -136,7 +136,7 @@ protected:
 
 private:
   ScalarTypeFilterParameter(const ScalarTypeFilterParameter&) = delete; // Copy Constructor Not Implemented
-  void operator=(const ScalarTypeFilterParameter&);                    // Operator '=' Not Implemented
+  void operator=(const ScalarTypeFilterParameter&);                     // Move assignment Not Implemented
 };
 
 #endif /* _ScalarTypeFilterParameter_H_ */

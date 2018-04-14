@@ -85,8 +85,8 @@ class SVWidgetsLib_EXPORT SVPipelineFilterWidget : public QFrame, public Pipelin
     bool hasRightClickTarget();
     void setHasRightClickTarget(bool value);
 
-    void setFilterTitle(const QString title) override;
-    void setFilterIndex(int i, int max) override;
+    void setFilterTitle(const QString &title) override;
+    void setFilterIndex(int i, int numFilters) override;
 
     virtual void getGuiParametersFromFilter(AbstractFilter* filt);
 
@@ -330,7 +330,7 @@ class SVWidgetsLib_EXPORT SVPipelineFilterWidget : public QFrame, public Pipelin
     int m_IndexBoxWidth = 35;
     int m_TextMargin = 6;
     qreal m_SelectionBorderWidth = 4.0;
-
+    int m_FilterIndex = 0;
     QString m_PaddedIndex;
     QString m_FilterHumanLabel;
 
@@ -345,7 +345,7 @@ class SVWidgetsLib_EXPORT SVPipelineFilterWidget : public QFrame, public Pipelin
     void initialize();
 
     SVPipelineFilterWidget(const SVPipelineFilterWidget&) = delete; // Copy Constructor Not Implemented
-    void operator=(const SVPipelineFilterWidget&) = delete;         // Operator '=' Not Implemented
+    void operator=(const SVPipelineFilterWidget&) = delete;         // Move assignment Not Implemented
 };
 
 #endif /* _svpipelinefilterwidget_h_ */

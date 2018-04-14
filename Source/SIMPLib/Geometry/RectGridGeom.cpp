@@ -45,7 +45,7 @@
 
 #include "SIMPLib/Geometry/RectGridGeom.h"
 
-#ifdef SIMPLib_USE_PARALLEL_ALGORITHMS
+#ifdef SIMPL_USE_PARALLEL_ALGORITHMS
 #include <tbb/blocked_range3d.h>
 #include <tbb/parallel_for.h>
 #include <tbb/partitioner.h>
@@ -93,7 +93,7 @@ public:
     std::vector<double> dValuesdZeta(numComps);
 
     size_t dims[3] = {0, 0, 0};
-    m_RectGrid->getDimensions(dims);
+    std::tie(dims[0], dims[1], dims[2]) = m_RectGrid->getDimensions();
 
     int64_t counter = 0;
     size_t totalElements = m_RectGrid->getNumberOfElements();
@@ -230,7 +230,7 @@ public:
     }
   }
 
-#ifdef SIMPLib_USE_PARALLEL_ALGORITHMS
+#ifdef SIMPL_USE_PARALLEL_ALGORITHMS
   void operator()(const tbb::blocked_range3d<size_t, size_t, size_t>& r) const
   {
     compute(r.pages().begin(), r.pages().end(), r.rows().begin(), r.rows().end(), r.cols().begin(), r.cols().end());
@@ -930,19 +930,19 @@ void RectGridGeom::findDerivatives(DoubleArrayType::Pointer field, DoubleArrayTy
 {
   m_ProgressCounter = 0;
   size_t dims[3] = {0, 0, 0};
-  getDimensions(dims);
+  std::tie(dims[0], dims[1], dims[2]) = getDimensions();
 
   if(observable)
   {
     connect(this, SIGNAL(filterGeneratedMessage(const PipelineMessage&)), observable, SLOT(broadcastPipelineMessage(const PipelineMessage&)));
   }
 
-#ifdef SIMPLib_USE_PARALLEL_ALGORITHMS
+#ifdef SIMPL_USE_PARALLEL_ALGORITHMS
   tbb::task_scheduler_init init;
   bool doParallel = true;
 #endif
 
-#ifdef SIMPLib_USE_PARALLEL_ALGORITHMS
+#ifdef SIMPL_USE_PARALLEL_ALGORITHMS
   size_t grain = dims[2] == 1 ? 1 : dims[2] / init.default_num_threads();
   if(grain == 0)
   {
@@ -1111,7 +1111,7 @@ IGeometry::Pointer RectGridGeom::deepCopy(bool forceNoAllocate)
   RectGridGeom::Pointer copy = RectGridGeom::CreateGeometry(getName());
 
   size_t volDims[3] = { 0, 0, 0 };
-  getDimensions(volDims);
+  std::tie(volDims[0], volDims[1], volDims[2]) = getDimensions();
   copy->setDimensions(volDims);
   copy->setXBounds(xBounds);
   copy->setYBounds(yBounds);
@@ -1152,7 +1152,7 @@ int RectGridGeom::gatherMetaData(hid_t parentId, size_t volDims[3], bool preflig
   {
     return -1;
   }
-  setDimensions(volDims[0], volDims[1], volDims[2]);
+  setDimensions(volDims);
   setXBounds(xBnds);
   setYBounds(yBnds);
   setZBounds(zBnds);

@@ -527,5 +527,5 @@ public:
 
 private:
   StructArrayTest(const StructArrayTest&); // Copy Constructor Not Implemented
-  void operator=(const StructArrayTest&);  // Operator '=' Not Implemented
+  void operator=(const StructArrayTest&);  // Move assignment Not Implemented
 };

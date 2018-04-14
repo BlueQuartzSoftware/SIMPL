@@ -74,7 +74,7 @@ LinkedDataContainerSelectionFilterParameter::Pointer LinkedDataContainerSelectio
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-QString LinkedDataContainerSelectionFilterParameter::getWidgetType()
+QString LinkedDataContainerSelectionFilterParameter::getWidgetType() const
 {
   return QString("LinkedDataContainerSelectionWidget");
 }

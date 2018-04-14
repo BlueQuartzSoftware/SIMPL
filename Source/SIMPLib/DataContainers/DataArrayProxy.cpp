@@ -31,7 +31,7 @@
  * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 #include "DataArrayProxy.h"
 
-#include "H5Support/HDF5ScopedFileSentinel.h"
+#include "H5Support/H5ScopedSentinel.h"
 #include "H5Support/QH5Lite.h"
 #include "H5Support/QH5Utilities.h"
 
@@ -141,11 +141,14 @@ void DataArrayProxy::ReadDataArrayStructure(hid_t attrMatGid, QMap<QString, Data
       std::cout << "Error Reading the Component Dimensions for DataArray " << dataArrayName.toStdString() << std::endl;
     }
 
-    QVector<QVector<size_t>> cDims = req->getComponentDimensions();
     bool cDimsResult = false;
-    if(cDims.size() <= 0 || cDims.contains(proxy.compDims))
+    if (req != nullptr)
     {
-      cDimsResult = true;
+      QVector<QVector<size_t>> cDims = req->getComponentDimensions();
+      if(cDims.size() <= 0 || cDims.contains(proxy.compDims))
+      {
+        cDimsResult = true;
+      }
     }
 
     err = QH5Lite::readScalarAttribute(attrMatGid, dataArrayName, SIMPL::HDF5::DataArrayVersion, proxy.version);
@@ -160,10 +163,13 @@ void DataArrayProxy::ReadDataArrayStructure(hid_t attrMatGid, QMap<QString, Data
       std::cout << "Error Reading the Object Type for DataArray " << dataArrayName.toStdString() << std::endl;
     }
 
-    QVector<QString> daTypes = req->getDATypes();
-    if((daTypes.size() <= 0 || daTypes.contains(proxy.objectType)) && cDimsResult == true)
+    if (req != nullptr)
     {
-      proxy.flag = Qt::Checked;
+      QVector<QString> daTypes = req->getDATypes();
+      if((daTypes.size() <= 0 || daTypes.contains(proxy.objectType)) && cDimsResult == true)
+      {
+        proxy.flag = Qt::Checked;
+      }
     }
 
     dataArrays.insert(dataArrayName, proxy);
@@ -228,4 +234,77 @@ QVector<size_t> DataArrayProxy::readVector(QJsonArray jsonArray)
     }
   }
   return vector;
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+DataArrayProxy::PrimitiveTypeFlag DataArrayProxy::PrimitiveTypeToFlag(const QString &pType)
+{
+  if (pType == SIMPL::Defaults::AnyPrimitive)
+  {
+    return Any_PType;
+  }
+  else if (pType == SIMPL::TypeNames::Bool)
+  {
+    return Bool_PType;
+  }
+  else if (pType == SIMPL::TypeNames::Double)
+  {
+    return Double_PType;
+  }
+  else if (pType == SIMPL::TypeNames::Float)
+  {
+    return Float_PType;
+  }
+  else if (pType == SIMPL::TypeNames::Int8)
+  {
+    return Int8_PType;
+  }
+  else if (pType == SIMPL::TypeNames::Int16)
+  {
+    return Int16_PType;
+  }
+  else if (pType == SIMPL::TypeNames::Int32)
+  {
+    return Int32_PType;
+  }
+  else if (pType == SIMPL::TypeNames::Int64)
+  {
+    return Int64_PType;
+  }
+  else if (pType == SIMPL::TypeNames::NeighborList)
+  {
+    return NeighborList_PType;
+  }
+  else if (pType == SIMPL::TypeNames::StatsDataArray)
+  {
+    return StatsDataArray_PType;
+  }
+  else if (pType == SIMPL::TypeNames::String)
+  {
+    return StringArray_PType;
+  }
+  else if (pType == SIMPL::TypeNames::UInt8)
+  {
+    return UInt8_PType;
+  }
+  else if (pType == SIMPL::TypeNames::UInt16)
+  {
+    return UInt16_PType;
+  }
+  else if (pType == SIMPL::TypeNames::UInt32)
+  {
+    return UInt32_PType;
+  }
+  else if (pType == SIMPL::TypeNames::UInt64)
+  {
+    return UInt64_PType;
+  }
+  else if (pType == SIMPL::TypeNames::Unknown)
+  {
+    return Unknown_PType;
+  }
+
+  return None_PType;
 }

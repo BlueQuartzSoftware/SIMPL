@@ -48,7 +48,7 @@ class SIMPLib_EXPORT IGeometry3D : public IGeometry
 {
   public:
     SIMPL_SHARED_POINTERS(IGeometry3D)
-    SIMPL_TYPE_MACRO_SUPER(IGeometry3D, Observable)
+     SIMPL_TYPE_MACRO_SUPER_OVERRIDE(IGeometry3D, Observable)
 
     IGeometry3D();
     virtual ~IGeometry3D();
@@ -238,7 +238,7 @@ class SIMPLib_EXPORT IGeometry3D : public IGeometry
 
   private:
     IGeometry3D(const IGeometry3D&) = delete;    // Copy Constructor Not Implemented
-    void operator=(const IGeometry3D&) = delete; // Operator '=' Not Implemented
+    void operator=(const IGeometry3D&) = delete; // Move assignment Not Implemented
 };
 
 #endif /* _IGeometry3D_H_ */

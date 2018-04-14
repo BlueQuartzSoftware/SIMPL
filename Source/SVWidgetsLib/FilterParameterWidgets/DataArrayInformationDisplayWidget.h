@@ -90,7 +90,7 @@ class SVWidgetsLib_EXPORT DataArrayInformationDisplayWidget : public FilterParam
 
   private:
     DataArrayInformationDisplayWidget(const DataArrayInformationDisplayWidget&) = delete; // Copy Constructor Not Implemented
-    void operator=(const DataArrayInformationDisplayWidget&) = delete;                    // Operator '=' Not Implemented
+    void operator=(const DataArrayInformationDisplayWidget&) = delete;                    // Move assignment Not Implemented
 };
 
 #endif /* _DataArrayCreationWidget_H_ */

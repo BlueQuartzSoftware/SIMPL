@@ -203,7 +203,7 @@ public:
     // Now instantiate the FindDifferenceMapTest Filter from the FilterManager
     QString filtName = "CombineAttributeMatrices";
     FilterManager* fm = FilterManager::Instance();
-    IFilterFactory::Pointer filterFactory = fm->getFactoryForFilter(filtName);
+    IFilterFactory::Pointer filterFactory = fm->getFactoryFromClassName(filtName);
     if(nullptr == filterFactory.get())
     {
       std::stringstream ss;
@@ -448,7 +448,7 @@ public:
 
     QString filtName = "CombineAttributeMatrices";
     FilterManager* fm = FilterManager::Instance();
-    IFilterFactory::Pointer factory = fm->getFactoryForFilter(filtName);
+    IFilterFactory::Pointer factory = fm->getFactoryFromClassName(filtName);
     DREAM3D_REQUIRE(factory.get() != nullptr)
 
     AbstractFilter::Pointer combineAttributeMatricesFilter = factory->create();
@@ -476,5 +476,5 @@ public:
 
 private:
   CombineAttributeMatricesTest(const CombineAttributeMatricesTest&); // Copy Constructor Not Implemented
-  void operator=(const CombineAttributeMatricesTest&);               // Operator '=' Not Implemented
+  void operator=(const CombineAttributeMatricesTest&);               // Move assignment Not Implemented
 };

@@ -135,7 +135,7 @@ public:
     // Now instantiate the ScaleVolume Filter from the FilterManager
     QString filtName = "ScaleVolume";
     FilterManager* fm = FilterManager::Instance();
-    IFilterFactory::Pointer filterFactory = fm->getFactoryForFilter(filtName);
+    IFilterFactory::Pointer filterFactory = fm->getFactoryFromClassName(filtName);
     if(nullptr == filterFactory.get())
     {
       std::stringstream ss;
@@ -251,9 +251,14 @@ public:
 
     DREAM3D_REQUIRE(imgGeom != nullptr);
 
-    DREAM3D_REQUIRE_EQUAL(imgGeom->getXRes(), ScaleVolumeTestConsts::SCALE.x);
-    DREAM3D_REQUIRE_EQUAL(imgGeom->getYRes(), ScaleVolumeTestConsts::SCALE.y);
-    DREAM3D_REQUIRE_EQUAL(imgGeom->getZRes(), ScaleVolumeTestConsts::SCALE.z);
+    float xRes = 0.0f;
+    float yRes = 0.0f;
+    float zRes = 0.0f;
+    std::tie(xRes, yRes, zRes) = imgGeom->getResolution();
+
+    DREAM3D_REQUIRE_EQUAL(xRes, ScaleVolumeTestConsts::SCALE.x);
+    DREAM3D_REQUIRE_EQUAL(yRes, ScaleVolumeTestConsts::SCALE.y);
+    DREAM3D_REQUIRE_EQUAL(zRes, ScaleVolumeTestConsts::SCALE.z);
   }
 
   // -----------------------------------------------------------------------------
@@ -366,5 +371,5 @@ public:
 
 private:
   ScaleVolumeTest(const ScaleVolumeTest&); // Copy Constructor Not Implemented
-  void operator=(const ScaleVolumeTest&);  // Operator '=' Not Implemented
+  void operator=(const ScaleVolumeTest&);  // Move assignment Not Implemented
 };

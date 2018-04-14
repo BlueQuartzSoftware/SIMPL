@@ -67,7 +67,7 @@ FloatFilterParameter::Pointer FloatFilterParameter::New(const QString& humanLabe
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-QString FloatFilterParameter::getWidgetType()
+QString FloatFilterParameter::getWidgetType() const
 {
   return QString("FloatWidget");
 }

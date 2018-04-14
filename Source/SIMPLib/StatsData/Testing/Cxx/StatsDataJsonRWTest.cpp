@@ -564,5 +564,5 @@ public:
 
 private:
   StatsDataJsonRWTest(const StatsDataJsonRWTest&); // Copy Constructor Not Implemented
-  void operator=(const StatsDataJsonRWTest&);      // Operator '=' Not Implemented
+  void operator=(const StatsDataJsonRWTest&);      // Move assignment Not Implemented
 };

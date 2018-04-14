@@ -41,6 +41,13 @@
 #include <QtWidgets/QApplication>
 #include <QtWidgets/QMessageBox>
 
+#include "SIMPLib/Filtering/FilterManager.h"
+#include "SIMPLib/Filtering/IFilterFactory.hpp"
+
+#include "SVWidgetsLib/SVWidgetsLib.h"
+
+
+
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
@@ -56,7 +63,7 @@ QtSHelpUrlGenerator::~QtSHelpUrlGenerator() = default;
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-QUrl QtSHelpUrlGenerator::generateHTMLUrl(QString htmlName)
+QUrl QtSHelpUrlGenerator::GenerateHTMLUrl(QString htmlName)
 {
   QString appPath = QApplication::applicationDirPath();
 
@@ -84,20 +91,63 @@ QUrl QtSHelpUrlGenerator::generateHTMLUrl(QString htmlName)
   }
 #endif
 
-#if defined(Q_OS_WIN) || defined(Q_OS_MAC) || defined(Q_OS_LINUX)
-  QString helpFilePath = QString("%1/Help/%2/%3.html").arg(helpDir.absolutePath()).arg(QCoreApplication::instance()->applicationName()).arg(htmlName);
-  QFileInfo fi(helpFilePath);
-  if(fi.exists() == false)
+#ifdef SIMPL_USE_MKDOCS
   {
-    // The help file does not exist at the default location because we are probably running from Visual Studio or Xcode
-    // Try up one more directory
-    helpDir.cdUp();
+    FilterManager* fm = FilterManager::Instance();
+    
+    IFilterFactory::Pointer factory = fm->getFactoryFromClassName(htmlName);
+    QString pluginName;
+    if(factory.get())
+    {
+      pluginName = "/Filters/" + factory->getCompiledLibraryName();
+    }
+
+    QString helpFilePath = QString("/%2%3Filters/%4/index.html")
+            .arg(helpDir.absolutePath())
+            .arg(QCoreApplication::instance()->applicationName())
+            .arg(pluginName)
+            .arg(htmlName);
+    QFileInfo fi(helpFilePath);
+    if(fi.exists() == false)
+    {
+      // The help file does not exist at the default location because we are probably running from Visual Studio or Xcode
+      // Try up one more directory
+      helpDir.cdUp();
+      helpFilePath = QString("%1/Help/%2%3/%4/%4.html").arg(helpDir.absolutePath()).arg(QCoreApplication::instance()->applicationName()).arg(pluginName).arg(htmlName);
+    }
+    
+    s = s + helpFilePath;
   }
 #endif
 
-  s = s + helpDir.absolutePath() + "/Help/" + QCoreApplication::instance()->applicationName() + "/" + htmlName + ".html";
+#ifdef SIMPL_USE_DISCOUNT
+  {
+    FilterManager* fm = FilterManager::Instance();
+    
+    IFilterFactory::Pointer factory = fm->getFactoryFromClassName(htmlName);
+    QString pluginName;
+    if(factory.get())
+    {
+      pluginName = "/Plugins/" + factory->getCompiledLibraryName();
+    }
+
+    QString helpFilePath = QString("%1/Help/%2%3/%4.html").arg(helpDir.absolutePath()).arg(QCoreApplication::instance()->applicationName()).arg(pluginName).arg(htmlName);
+    QFileInfo fi(helpFilePath);
+    if(fi.exists() == false)
+    {
+      // The help file does not exist at the default location because we are probably running from Visual Studio or Xcode
+      // Try up one more directory
+      helpDir.cdUp();
+      helpFilePath = QString("%1/Help/%2%3/%4.html").arg(helpDir.absolutePath()).arg(QCoreApplication::instance()->applicationName()).arg(pluginName).arg(htmlName);
+    }
+    
+    s = s + helpFilePath;
+  }
+#endif 
+  
   return QUrl(s);
 }
+
 
 // -----------------------------------------------------------------------------
 //
@@ -117,6 +167,6 @@ void QtSHelpUrlGenerator::openHTMLUrl(QUrl URL, QWidget* parent)
 // -----------------------------------------------------------------------------
 void QtSHelpUrlGenerator::generateAndOpenHTMLUrl(QString helpName, QWidget* parent)
 {
-  QUrl URL = generateHTMLUrl(helpName);
+  QUrl URL = GenerateHTMLUrl(helpName);
   openHTMLUrl(URL, parent);
 }

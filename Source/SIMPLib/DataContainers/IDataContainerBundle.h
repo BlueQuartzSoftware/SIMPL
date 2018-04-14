@@ -80,7 +80,7 @@ class SIMPLib_EXPORT IDataContainerBundle : public QObject
 
   private:
     IDataContainerBundle(const IDataContainerBundle&) = delete; // Copy Constructor Not Implemented
-    void operator=(const IDataContainerBundle&) = delete;       // Operator '=' Not Implemented
+    void operator=(const IDataContainerBundle&) = delete;       // Move assignment Not Implemented
 };
 
 #endif /* _IDataContainerBundle_H_ */

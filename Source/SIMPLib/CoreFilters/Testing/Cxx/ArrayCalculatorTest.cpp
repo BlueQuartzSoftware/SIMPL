@@ -75,7 +75,7 @@ public:
 
 private:
   DummyObserver(const DummyObserver&);  // Copy Constructor Not Implemented
-  void operator=(const DummyObserver&); // Operator '=' Not Implemented
+  void operator=(const DummyObserver&); // Move assignment Not Implemented
 };
 
 class ArrayCalculatorTest
@@ -148,7 +148,7 @@ public:
   {
     QString filtName = "ArrayCalculator";
     FilterManager* fm = FilterManager::Instance();
-    IFilterFactory::Pointer factory = fm->getFactoryForFilter(filtName);
+    IFilterFactory::Pointer factory = fm->getFactoryFromClassName(filtName);
     DREAM3D_REQUIRE(factory.get() != nullptr);
 
     AbstractFilter::Pointer filter = factory->create();
@@ -937,5 +937,5 @@ public:
 
 private:
   ArrayCalculatorTest(const ArrayCalculatorTest&); // Copy Constructor Not Implemented
-  void operator=(const ArrayCalculatorTest&);      // Operator '=' Not Implemented
+  void operator=(const ArrayCalculatorTest&);      // Move assignment Not Implemented
 };

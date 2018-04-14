@@ -62,7 +62,7 @@ class SIMPLib_EXPORT ParagraphFilterParameter : public FilterParameter
 public:
   SIMPL_SHARED_POINTERS(ParagraphFilterParameter)
   SIMPL_STATIC_NEW_MACRO(ParagraphFilterParameter)
-  SIMPL_TYPE_MACRO(ParagraphFilterParameter)
+  SIMPL_TYPE_MACRO_SUPER_OVERRIDE(ParagraphFilterParameter, FilterParameter)
 
   typedef std::function<void(QString)> SetterCallbackType;
   typedef std::function<QString(void)> GetterCallbackType;
@@ -93,7 +93,7 @@ public:
  * this FilterParameter subclass
  * @return
  */
-  QString getWidgetType();
+  QString getWidgetType() const override;
 
   /**
    * @brief readJson Reads this filter parameter's corresponding property out of a QJsonObject.
@@ -130,7 +130,7 @@ protected:
 
 private:
   ParagraphFilterParameter(const ParagraphFilterParameter&) = delete; // Copy Constructor Not Implemented
-  void operator=(const ParagraphFilterParameter&);           // Operator '=' Not Implemented
+  void operator=(const ParagraphFilterParameter&);                    // Move assignment Not Implemented
 };
 
 #endif /* _paragraphfilterparameter_h_ */

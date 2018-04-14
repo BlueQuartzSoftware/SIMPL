@@ -106,7 +106,7 @@ class SIMPLib_EXPORT SIMPLH5DataReader : public Observable
     void notifyErrorMessage(const QString& humanLabel, const QString& str, int code);
 
   signals:
-    void errorGenerated(const QString &msg, const int &code);
+    void errorGenerated(const QString &title, const QString &msg, const int &code);
 
   private:
     QString                           m_CurrentFilePath = "";
@@ -121,7 +121,7 @@ class SIMPLib_EXPORT SIMPLH5DataReader : public Observable
     bool readDataContainerBundles(hid_t fileId, DataContainerArray::Pointer dca);
 
     SIMPLH5DataReader(const SIMPLH5DataReader&) = delete; // Copy Constructor Not Implemented
-    void operator=(const SIMPLH5DataReader&) = delete;    // Operator '=' Not Implemented
+    void operator=(const SIMPLH5DataReader&) = delete;    // Move assignment Not Implemented
 };
 
 

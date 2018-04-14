@@ -66,7 +66,7 @@ class SIMPLib_EXPORT PreflightUpdatedValueFilterParameter : public FilterParamet
   public:
     SIMPL_SHARED_POINTERS(PreflightUpdatedValueFilterParameter)
     SIMPL_STATIC_NEW_MACRO(PreflightUpdatedValueFilterParameter)
-    SIMPL_TYPE_MACRO_SUPER(PreflightUpdatedValueFilterParameter, FilterParameter)
+     SIMPL_TYPE_MACRO_SUPER_OVERRIDE(PreflightUpdatedValueFilterParameter, FilterParameter)
 
     typedef std::function<void(QString)> SetterCallbackType;
     typedef std::function<QString(void)> GetterCallbackType;
@@ -97,13 +97,13 @@ class SIMPLib_EXPORT PreflightUpdatedValueFilterParameter : public FilterParamet
      * this FilterParameter subclass
      * @return
      */
-    QString getWidgetType();
+    QString getWidgetType() const override;
 
     /**
      * @brief writeJson Writes this filter parameter's corresponding property to a QJsonObject.
      * @param json The QJsonObject that the filter parameter writes to.
      */
-    void writeJson(QJsonObject &json);
+    void writeJson(QJsonObject& json) override;
 
     /**
     * @param GetterCallback The method in the AbstractFilter subclass that <i>gets</i> the value of the property
@@ -122,7 +122,7 @@ class SIMPLib_EXPORT PreflightUpdatedValueFilterParameter : public FilterParamet
 
   private:
     PreflightUpdatedValueFilterParameter(const PreflightUpdatedValueFilterParameter&) = delete; // Copy Constructor Not Implemented
-    void operator=(const PreflightUpdatedValueFilterParameter&) = delete;                       // Operator '=' Not Implemented
+    void operator=(const PreflightUpdatedValueFilterParameter&) = delete;                       // Move assignment Not Implemented
 };
 
 #endif /* _PreflightUpdatedValueFilterParameter_H_ */

@@ -45,11 +45,9 @@
 //
 // -----------------------------------------------------------------------------
 RenameAttributeArray::RenameAttributeArray()
-: AbstractFilter()
-, m_SelectedArrayPath("", "", "")
+: m_SelectedArrayPath("", "", "")
 , m_NewArrayName("")
 {
-  setupFilterParameters();
 }
 
 // -----------------------------------------------------------------------------
@@ -171,7 +169,7 @@ void RenameAttributeArray::execute()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-AbstractFilter::Pointer RenameAttributeArray::newFilterInstance(bool copyFilterParameters)
+AbstractFilter::Pointer RenameAttributeArray::newFilterInstance(bool copyFilterParameters) const
 {
   RenameAttributeArray::Pointer filter = RenameAttributeArray::New();
   if(true == copyFilterParameters)
@@ -184,7 +182,7 @@ AbstractFilter::Pointer RenameAttributeArray::newFilterInstance(bool copyFilterP
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString RenameAttributeArray::getCompiledLibraryName()
+const QString RenameAttributeArray::getCompiledLibraryName() const
 {
   return Core::CoreBaseName;
 }
@@ -192,7 +190,7 @@ const QString RenameAttributeArray::getCompiledLibraryName()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString RenameAttributeArray::getBrandingString()
+const QString RenameAttributeArray::getBrandingString() const
 {
   return "SIMPLib Core Filter";
 }
@@ -200,7 +198,7 @@ const QString RenameAttributeArray::getBrandingString()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString RenameAttributeArray::getFilterVersion()
+const QString RenameAttributeArray::getFilterVersion() const
 {
   QString version;
   QTextStream vStream(&version);
@@ -211,7 +209,7 @@ const QString RenameAttributeArray::getFilterVersion()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString RenameAttributeArray::getGroupName()
+const QString RenameAttributeArray::getGroupName() const
 {
   return SIMPL::FilterGroups::CoreFilters;
 }
@@ -219,7 +217,15 @@ const QString RenameAttributeArray::getGroupName()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString RenameAttributeArray::getSubGroupName()
+const QUuid RenameAttributeArray::getUuid()
+{
+  return QUuid("{53a5f731-2858-5e3e-bd43-8f2cf45d90ec}");
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+const QString RenameAttributeArray::getSubGroupName() const
 {
   return SIMPL::FilterSubGroups::MemoryManagementFilters;
 }
@@ -227,7 +233,7 @@ const QString RenameAttributeArray::getSubGroupName()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString RenameAttributeArray::getHumanLabel()
+const QString RenameAttributeArray::getHumanLabel() const
 {
   return "Rename Attribute Array";
 }

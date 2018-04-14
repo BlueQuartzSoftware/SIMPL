@@ -52,7 +52,7 @@ class SIMPLib_EXPORT IObserver
 
   private:
     IObserver(const IObserver&) = delete;      // Copy Constructor Not Implemented
-    void operator=(const IObserver&) = delete; // Operator '=' Not Implemented
+    void operator=(const IObserver&) = delete; // Move assignment Not Implemented
 };
 
 #endif /* _IObserver_H_ */

@@ -70,7 +70,7 @@ class SIMPLib_EXPORT PluginProxy
     bool m_Enabled;
 
     PluginProxy(const PluginProxy&) = delete;    // Copy Constructor Not Implemented
-    void operator=(const PluginProxy&) = delete; // Operator '=' Not Implemented
+    void operator=(const PluginProxy&) = delete; // Move assignment Not Implemented
 };
 
 #endif /* _PluginProxy_H_ */

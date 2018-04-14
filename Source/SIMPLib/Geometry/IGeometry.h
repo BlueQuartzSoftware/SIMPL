@@ -67,7 +67,7 @@ class SIMPLib_EXPORT IGeometry : public Observable
 {
   public:
     SIMPL_SHARED_POINTERS(IGeometry)
-    SIMPL_TYPE_MACRO_SUPER(IGeometry, Observable)
+     SIMPL_TYPE_MACRO_SUPER_OVERRIDE(IGeometry, Observable)
 
     IGeometry();
     virtual ~IGeometry();
@@ -419,7 +419,7 @@ class SIMPLib_EXPORT IGeometry : public Observable
 
   private:
     IGeometry(const IGeometry&) = delete;      // Copy Constructor Not Implemented
-    void operator=(const IGeometry&) = delete; // Operator '=' Not Implemented
+    void operator=(const IGeometry&) = delete; // Move assignment Not Implemented
 };
 
 #endif /* _IGeometry_H_ */

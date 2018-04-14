@@ -64,7 +64,7 @@ class SIMPLib_EXPORT PhaseTypeSelectionFilterParameter : public FilterParameter
 public:
   SIMPL_SHARED_POINTERS(PhaseTypeSelectionFilterParameter)
   SIMPL_STATIC_NEW_MACRO(PhaseTypeSelectionFilterParameter)
-  SIMPL_TYPE_MACRO_SUPER(PhaseTypeSelectionFilterParameter, FilterParameter)
+   SIMPL_TYPE_MACRO_SUPER_OVERRIDE(PhaseTypeSelectionFilterParameter, FilterParameter)
 
   typedef std::function<void(PhaseType::Types)> SetterCallbackType;
   typedef std::function<PhaseType::Types(void)> GetterCallbackType;
@@ -106,19 +106,19 @@ public:
   * this FilterParameter subclass
   * @return
   */
-  QString getWidgetType();
+  QString getWidgetType() const override;
 
   /**
   * @brief readJson Reads this filter parameter's corresponding property out of a QJsonObject.
   * @param json The QJsonObject that the filter parameter reads from.
   */
-  void readJson(const QJsonObject& json);
+  void readJson(const QJsonObject& json) override;
 
   /**
   * @brief writeJson Writes this filter parameter's corresponding property to a QJsonObject.
   * @param json The QJsonObject that the filter parameter writes to.
   */
-  void writeJson(QJsonObject& json);
+  void writeJson(QJsonObject& json) override;
 
   SIMPL_INSTANCE_PROPERTY(IGeometry::Types, DefaultGeometryTypes)
   SIMPL_INSTANCE_PROPERTY(AttributeMatrix::Types, DefaultAttributeMatrixTypes)
@@ -146,7 +146,7 @@ protected:
 
 private:
   PhaseTypeSelectionFilterParameter(const PhaseTypeSelectionFilterParameter&) = delete; // Copy Constructor Not Implemented
-  void operator=(const PhaseTypeSelectionFilterParameter&);                    // Operator '=' Not Implemented
+  void operator=(const PhaseTypeSelectionFilterParameter&);                             // Move assignment Not Implemented
 };
 
 #endif /* _PhaseTypeSelectionFilterParameter_H_ */

@@ -71,8 +71,7 @@
 //
 // -----------------------------------------------------------------------------
 GenericExample::GenericExample()
-: AbstractFilter()
-, m_StlFilePrefix("Some Prefix")
+: m_StlFilePrefix("Some Prefix")
 , m_ShowPrefix(false)
 , m_MaxIterations(0)
 , m_MisorientationTolerance(0)
@@ -111,7 +110,6 @@ GenericExample::GenericExample()
   flInfo.FileExtension = ".png";
   setInputFileListInfo(flInfo);
 
-  setupFilterParameters();
 }
 
 // -----------------------------------------------------------------------------
@@ -423,7 +421,7 @@ void GenericExample::execute()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-AbstractFilter::Pointer GenericExample::newFilterInstance(bool copyFilterParameters)
+AbstractFilter::Pointer GenericExample::newFilterInstance(bool copyFilterParameters) const
 {
   GenericExample::Pointer filter = GenericExample::New();
   if(true == copyFilterParameters)
@@ -436,7 +434,7 @@ AbstractFilter::Pointer GenericExample::newFilterInstance(bool copyFilterParamet
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString GenericExample::getCompiledLibraryName()
+const QString GenericExample::getCompiledLibraryName() const
 {
   return Core::CoreBaseName;
 }
@@ -444,7 +442,7 @@ const QString GenericExample::getCompiledLibraryName()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString GenericExample::getGroupName()
+const QString GenericExample::getGroupName() const
 {
   return SIMPL::FilterGroups::Generic;
 }
@@ -452,7 +450,15 @@ const QString GenericExample::getGroupName()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString GenericExample::getSubGroupName()
+const QUuid GenericExample::getUuid()
+{
+  return QUuid("{b1b9da5c-4ad8-5b61-9615-2a3e17b38970}");
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+const QString GenericExample::getSubGroupName() const
 {
   return "Test";
 }
@@ -460,7 +466,7 @@ const QString GenericExample::getSubGroupName()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString GenericExample::getHumanLabel()
+const QString GenericExample::getHumanLabel() const
 {
   return "Generic Example";
 }

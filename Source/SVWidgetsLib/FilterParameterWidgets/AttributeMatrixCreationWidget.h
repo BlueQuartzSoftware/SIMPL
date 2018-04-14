@@ -149,7 +149,7 @@ private:
   void setSelectedPath(DataArrayPath dcPath);
 
   AttributeMatrixCreationWidget(const AttributeMatrixCreationWidget&) = delete; // Copy Constructor Not Implemented
-  void operator=(const AttributeMatrixCreationWidget&) = delete;                // Operator '=' Not Implemented
+  void operator=(const AttributeMatrixCreationWidget&) = delete;                // Move assignment Not Implemented
 };
 
 #endif /* _AttributeMatrixCreationWidget_H_ */

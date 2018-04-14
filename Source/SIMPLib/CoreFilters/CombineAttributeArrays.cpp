@@ -165,19 +165,18 @@ public:
 
 private:
   CombineAttributeArraysTemplatePrivate(const CombineAttributeArraysTemplatePrivate&); // Copy Constructor Not Implemented
-  void operator=(const CombineAttributeArraysTemplatePrivate&);                        // Operator '=' Not Implemented
+  void operator=(const CombineAttributeArraysTemplatePrivate&);                        // Move assignment Not Implemented
 };
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
 CombineAttributeArrays::CombineAttributeArrays()
-: AbstractFilter()
-, m_SelectedDataArrayPaths(QVector<DataArrayPath>())
+: m_SelectedDataArrayPaths(QVector<DataArrayPath>())
 , m_StackedDataArrayName(SIMPL::GeneralData::CombinedData)
 , m_NormalizeData(false)
+, m_MoveValues(false)
 {
-  setupFilterParameters();
 }
 
 // -----------------------------------------------------------------------------
@@ -192,6 +191,7 @@ void CombineAttributeArrays::setupFilterParameters()
 {
   FilterParameterVector parameters;
   parameters.push_back(SIMPL_NEW_BOOL_FP("Normalize Data", NormalizeData, FilterParameter::Parameter, CombineAttributeArrays));
+  parameters.push_back(SIMPL_NEW_BOOL_FP("Move Data", MoveValues, FilterParameter::Parameter, CombineAttributeArrays));
   {
     MultiDataArraySelectionFilterParameter::RequirementType req =
         MultiDataArraySelectionFilterParameter::CreateRequirement(SIMPL::Defaults::AnyPrimitive, SIMPL::Defaults::AnyComponentSize, AttributeMatrix::Type::Any, IGeometry::Type::Any);
@@ -210,6 +210,7 @@ void CombineAttributeArrays::readFilterParameters(AbstractFilterParametersReader
   setSelectedDataArrayPaths(reader->readDataArrayPathVector("SelectedDataArrayPaths", getSelectedDataArrayPaths()));
   setStackedDataArrayName(reader->readString("StackedDataArrayName", getStackedDataArrayName()));
   setNormalizeData(reader->readValue("NormalizeData", getNormalizeData()));
+  setMoveValues(reader->readValue("MoveValues", getMoveValues()));
   reader->closeFilterGroup();
 }
 
@@ -269,7 +270,7 @@ void CombineAttributeArrays::dataCheck()
   {
     DataArrayPath path = paths.at(i);
     IDataArray::WeakPointer ptr = getDataContainerArray()->getPrereqIDataArrayFromPath<IDataArray, AbstractFilter>(this, path);
-    if(nullptr != ptr.lock().get())
+    if(nullptr != ptr.lock())
     {
       m_SelectedWeakPtrVector.push_back(ptr);
       int32_t numComps = ptr.lock()->getNumberOfComponents();
@@ -289,6 +290,16 @@ void CombineAttributeArrays::dataCheck()
 
   DataArrayPath tempPath(getSelectedDataArrayPaths()[0].getDataContainerName(), getSelectedDataArrayPaths()[0].getAttributeMatrixName(), getStackedDataArrayName());
   m_StackedDataPtr = TemplateHelpers::CreateNonPrereqArrayFromArrayType()(this, tempPath, cDims, m_SelectedWeakPtrVector[0].lock());
+
+  if(getMoveValues() && getInPreflight())
+  {
+    QVector<DataArrayPath> paths = getSelectedDataArrayPaths();
+    for(DataArrayPath path : paths)
+    {
+      AttributeMatrix::Pointer attrMat = getDataContainerArray()->getAttributeMatrix(path);
+      attrMat->removeAttributeArray(path.getDataArrayName());
+    }
+  }
 }
 
 // -----------------------------------------------------------------------------
@@ -319,6 +330,16 @@ void CombineAttributeArrays::execute()
 
   EXECUTE_TEMPLATE(this, CombineAttributeArraysTemplatePrivate, m_SelectedWeakPtrVector, this, m_SelectedWeakPtrVector, m_StackedDataPtr.lock())
 
+  if(getMoveValues())
+  {
+    QVector<DataArrayPath> paths = getSelectedDataArrayPaths();
+    for(DataArrayPath path : paths)
+    {
+      AttributeMatrix::Pointer attrMat = getDataContainerArray()->getAttributeMatrix(path);
+      attrMat->removeAttributeArray(path.getDataArrayName());
+    }
+  }
+
   /* Let the GUI know we are done with this filter */
   notifyStatusMessage(getHumanLabel(), "Complete");
 }
@@ -326,7 +347,7 @@ void CombineAttributeArrays::execute()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-AbstractFilter::Pointer CombineAttributeArrays::newFilterInstance(bool copyFilterParameters)
+AbstractFilter::Pointer CombineAttributeArrays::newFilterInstance(bool copyFilterParameters) const
 {
   CombineAttributeArrays::Pointer filter = CombineAttributeArrays::New();
   if(true == copyFilterParameters)
@@ -339,7 +360,7 @@ AbstractFilter::Pointer CombineAttributeArrays::newFilterInstance(bool copyFilte
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString CombineAttributeArrays::getCompiledLibraryName()
+const QString CombineAttributeArrays::getCompiledLibraryName() const
 {
   return Core::CoreBaseName;
 }
@@ -347,7 +368,7 @@ const QString CombineAttributeArrays::getCompiledLibraryName()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString CombineAttributeArrays::getBrandingString()
+const QString CombineAttributeArrays::getBrandingString() const
 {
   return "SIMPLib Core Filter";
 }
@@ -355,7 +376,7 @@ const QString CombineAttributeArrays::getBrandingString()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString CombineAttributeArrays::getFilterVersion()
+const QString CombineAttributeArrays::getFilterVersion() const
 {
   QString version;
   QTextStream vStream(&version);
@@ -366,7 +387,7 @@ const QString CombineAttributeArrays::getFilterVersion()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString CombineAttributeArrays::getGroupName()
+const QString CombineAttributeArrays::getGroupName() const
 {
   return SIMPL::FilterGroups::CoreFilters;
 }
@@ -374,7 +395,15 @@ const QString CombineAttributeArrays::getGroupName()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString CombineAttributeArrays::getSubGroupName()
+const QUuid CombineAttributeArrays::getUuid()
+{
+  return QUuid("{a6b50fb0-eb7c-5d9b-9691-825d6a4fe772}");
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+const QString CombineAttributeArrays::getSubGroupName() const
 {
   return SIMPL::FilterSubGroups::MemoryManagementFilters;
 }
@@ -382,7 +411,7 @@ const QString CombineAttributeArrays::getSubGroupName()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString CombineAttributeArrays::getHumanLabel()
+const QString CombineAttributeArrays::getHumanLabel() const
 {
   return "Combine Attribute Arrays";
 }

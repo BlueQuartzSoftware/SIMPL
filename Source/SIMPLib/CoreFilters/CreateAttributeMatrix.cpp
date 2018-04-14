@@ -46,12 +46,10 @@
 //
 // -----------------------------------------------------------------------------
 CreateAttributeMatrix::CreateAttributeMatrix()
-: AbstractFilter()
-, m_CreatedAttributeMatrix("", "AttributeMatrix", "")
+: m_CreatedAttributeMatrix("", "AttributeMatrix", "")
 , m_AttributeMatrixType(static_cast<int32_t>(AttributeMatrix::Type::Generic))
 , m_TupleDimensions()
 {
-  setupFilterParameters();
 }
 
 // -----------------------------------------------------------------------------
@@ -192,7 +190,7 @@ void CreateAttributeMatrix::execute()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-AbstractFilter::Pointer CreateAttributeMatrix::newFilterInstance(bool copyFilterParameters)
+AbstractFilter::Pointer CreateAttributeMatrix::newFilterInstance(bool copyFilterParameters) const
 {
   CreateAttributeMatrix::Pointer filter = CreateAttributeMatrix::New();
   if(true == copyFilterParameters)
@@ -205,7 +203,7 @@ AbstractFilter::Pointer CreateAttributeMatrix::newFilterInstance(bool copyFilter
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString CreateAttributeMatrix::getCompiledLibraryName()
+const QString CreateAttributeMatrix::getCompiledLibraryName() const
 {
   return Core::CoreBaseName;
 }
@@ -213,7 +211,7 @@ const QString CreateAttributeMatrix::getCompiledLibraryName()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString CreateAttributeMatrix::getBrandingString()
+const QString CreateAttributeMatrix::getBrandingString() const
 {
   return "SIMPLib Core Filter";
 }
@@ -221,7 +219,7 @@ const QString CreateAttributeMatrix::getBrandingString()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString CreateAttributeMatrix::getFilterVersion()
+const QString CreateAttributeMatrix::getFilterVersion() const
 {
   QString version;
   QTextStream vStream(&version);
@@ -232,7 +230,7 @@ const QString CreateAttributeMatrix::getFilterVersion()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString CreateAttributeMatrix::getGroupName()
+const QString CreateAttributeMatrix::getGroupName() const
 {
   return SIMPL::FilterGroups::CoreFilters;
 }
@@ -240,7 +238,7 @@ const QString CreateAttributeMatrix::getGroupName()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString CreateAttributeMatrix::getHumanLabel()
+const QString CreateAttributeMatrix::getHumanLabel() const
 {
   return "Create Attribute Matrix";
 }
@@ -248,7 +246,15 @@ const QString CreateAttributeMatrix::getHumanLabel()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString CreateAttributeMatrix::getSubGroupName()
+const QUuid CreateAttributeMatrix::getUuid()
+{
+  return QUuid("{93375ef0-7367-5372-addc-baa019b1b341}");
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+const QString CreateAttributeMatrix::getSubGroupName() const
 {
   return SIMPL::FilterSubGroups::GenerationFilters;
 }

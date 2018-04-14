@@ -72,7 +72,7 @@ ThirdOrderPolynomialFilterParameter::Pointer ThirdOrderPolynomialFilterParameter
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-QString ThirdOrderPolynomialFilterParameter::getWidgetType()
+QString ThirdOrderPolynomialFilterParameter::getWidgetType() const
 {
   return QString("ThirdOrderPolynomialWidget");
 }

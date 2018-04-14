@@ -85,7 +85,7 @@ class SIMPLib_EXPORT AttributeMatrix : public Observable
   public:
     SIMPL_SHARED_POINTERS(AttributeMatrix)
     //   SIMPL_STATIC_NEW_MACRO(AttributeMatrix)
-    SIMPL_TYPE_MACRO_SUPER(AttributeMatrix, Observable)
+     SIMPL_TYPE_MACRO_SUPER_OVERRIDE(AttributeMatrix, Observable)
 
     virtual ~AttributeMatrix();
 

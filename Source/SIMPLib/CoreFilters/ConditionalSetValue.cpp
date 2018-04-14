@@ -46,14 +46,12 @@
 //
 // -----------------------------------------------------------------------------
 ConditionalSetValue::ConditionalSetValue()
-: AbstractFilter()
-, m_SelectedArrayPath("", "", "")
+: m_SelectedArrayPath("", "", "")
 , m_ConditionalArrayPath("", "", "")
 , m_ReplaceValue(0.0)
 //, m_Array(nullptr)
 , m_ConditionalArray(nullptr)
 {
-  setupFilterParameters();
 }
 
 // -----------------------------------------------------------------------------
@@ -185,7 +183,7 @@ void ConditionalSetValue::dataCheck()
   QVector<size_t> cDims(1, 1);
   m_ConditionalArrayPtr = getDataContainerArray()->getPrereqArrayFromPath<DataArray<bool>, AbstractFilter>(this, getConditionalArrayPath(),
                                                                                                            cDims); /* Assigns the shared_ptr<> to an instance variable that is a weak_ptr<> */
-  if(nullptr != m_ConditionalArrayPtr.lock().get())                                                                /* Validate the Weak Pointer wraps a non-nullptr pointer to a DataArray<T> object */
+  if(nullptr != m_ConditionalArrayPtr.lock())                                                                      /* Validate the Weak Pointer wraps a non-nullptr pointer to a DataArray<T> object */
   {
     m_ConditionalArray = m_ConditionalArrayPtr.lock()->getPointer(0);
   } /* Now assign the raw pointer to data from the DataArray<T> object */
@@ -287,7 +285,7 @@ void ConditionalSetValue::execute()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-AbstractFilter::Pointer ConditionalSetValue::newFilterInstance(bool copyFilterParameters)
+AbstractFilter::Pointer ConditionalSetValue::newFilterInstance(bool copyFilterParameters) const
 {
   ConditionalSetValue::Pointer filter = ConditionalSetValue::New();
   if(true == copyFilterParameters)
@@ -300,7 +298,7 @@ AbstractFilter::Pointer ConditionalSetValue::newFilterInstance(bool copyFilterPa
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString ConditionalSetValue::getCompiledLibraryName()
+const QString ConditionalSetValue::getCompiledLibraryName() const
 {
   return Core::CoreBaseName;
 }
@@ -308,7 +306,7 @@ const QString ConditionalSetValue::getCompiledLibraryName()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString ConditionalSetValue::getBrandingString()
+const QString ConditionalSetValue::getBrandingString() const
 {
   return "SIMPLib Core Filter";
 }
@@ -316,7 +314,7 @@ const QString ConditionalSetValue::getBrandingString()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString ConditionalSetValue::getFilterVersion()
+const QString ConditionalSetValue::getFilterVersion() const
 {
   QString version;
   QTextStream vStream(&version);
@@ -327,7 +325,7 @@ const QString ConditionalSetValue::getFilterVersion()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString ConditionalSetValue::getGroupName()
+const QString ConditionalSetValue::getGroupName() const
 {
   return SIMPL::FilterGroups::CoreFilters;
 }
@@ -335,7 +333,15 @@ const QString ConditionalSetValue::getGroupName()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString ConditionalSetValue::getSubGroupName()
+const QUuid ConditionalSetValue::getUuid()
+{
+  return QUuid("{47cafe63-83cc-5826-9521-4fb5bea684ef}");
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+const QString ConditionalSetValue::getSubGroupName() const
 {
   return SIMPL::FilterSubGroups::MemoryManagementFilters;
 }
@@ -343,7 +349,7 @@ const QString ConditionalSetValue::getSubGroupName()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString ConditionalSetValue::getHumanLabel()
+const QString ConditionalSetValue::getHumanLabel() const
 {
   return "Replace Value in Array (Conditional)";
 }

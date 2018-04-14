@@ -93,7 +93,7 @@ class SIMPLib_EXPORT CalculatorOperator : public CalculatorItem
     OperatorType                                    m_OperatorType;
 
     CalculatorOperator(const CalculatorOperator&) = delete; // Copy Constructor Not Implemented
-    void operator=(const CalculatorOperator&) = delete;     // Operator '=' Not Implemented
+    void operator=(const CalculatorOperator&) = delete;     // Move assignment Not Implemented
 };
 
 #define CREATE_NEW_ARRAY_TWO_ARGUMENTS(filter, calculatedArrayPath, executionStack, func)                                                                                                              \

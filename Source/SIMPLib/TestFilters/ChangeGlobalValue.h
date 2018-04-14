@@ -46,10 +46,10 @@ class SIMPLib_EXPORT ChangeGlobalValue : public AbstractFilter
 
 public:
   SIMPL_SHARED_POINTERS(ChangeGlobalValue)
-  SIMPL_STATIC_NEW_MACRO(ChangeGlobalValue)
-  SIMPL_TYPE_MACRO_SUPER(ChangeGlobalValue, AbstractFilter)
+  SIMPL_FILTER_NEW_MACRO(ChangeGlobalValue)
+  SIMPL_TYPE_MACRO_SUPER_OVERRIDE(ChangeGlobalValue, AbstractFilter)
 
-  virtual ~ChangeGlobalValue();
+  ~ChangeGlobalValue() override;
 
   SIMPL_FILTER_PARAMETER(int, Value)
   Q_PROPERTY(int Value READ getValue WRITE setValue)
@@ -60,24 +60,27 @@ public:
   /**
   * @brief newFilterInstance Reimplemented from @see AbstractFilter class
   */
-  virtual AbstractFilter::Pointer newFilterInstance(bool copyFilterParameters);
+  AbstractFilter::Pointer newFilterInstance(bool copyFilterParameters) const override;
 
   /**
   * @brief execute Reimplemented from @see AbstractFilter class
   */
-  virtual void execute();
+  void execute() override;
 
   /**
   * @brief preflight Reimplemented from @see AbstractFilter class
   */
-  virtual void preflight();
+  void preflight() override;
 
 protected:
   ChangeGlobalValue();
 
 private:
+public:
   ChangeGlobalValue(const ChangeGlobalValue&) = delete; // Copy Constructor Not Implemented
-  void operator=(const ChangeGlobalValue&);    // Operator '=' Not Implemented
+  ChangeGlobalValue(ChangeGlobalValue&&) = delete;      // Move Constructor
+  ChangeGlobalValue& operator=(const ChangeGlobalValue&) = delete; // Copy Assignment Not Implemented
+  ChangeGlobalValue& operator=(ChangeGlobalValue&&) = delete;      // Move Assignment Not Implemented
 };
 
 #endif /* _changeglobalvalue_h_ */

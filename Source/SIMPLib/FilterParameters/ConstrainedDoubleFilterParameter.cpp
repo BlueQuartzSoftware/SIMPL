@@ -70,7 +70,7 @@ ConstrainedDoubleFilterParameter::Pointer ConstrainedDoubleFilterParameter::New(
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-QString ConstrainedDoubleFilterParameter::getWidgetType()
+QString ConstrainedDoubleFilterParameter::getWidgetType() const
 {
   return QString("ConstrainedDoubleWidget");
 }

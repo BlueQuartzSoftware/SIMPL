@@ -30,16 +30,13 @@
  *
  * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-#include <QIcon>
-#include <QPixmap>
-#include <QtGui>
+#include <QtGui/QIcon>
+#include <QtGui/QPixmap>
 
 #include "H5Support/H5Utilities.h"
 
 #include "ImportHDF5TreeModel.h"
 #include "ImportHDF5TreeModelItem.h"
-
-// Include the MOC generated CPP file which has all the QMetaObject methods/data
 
 // -----------------------------------------------------------------------------
 //
@@ -88,10 +85,10 @@ QVariant ImportHDF5TreeModel::data(const QModelIndex& index, int role) const
   {
     return item->data(index.column());
   }
-  //  else if (role == Qt::CheckStateRole && index.column() == 0 && item->isGroup() == false)
-  //  {
-  //    return item->getCheckState();
-  //  }
+  else if(role == Qt::CheckStateRole && item->isGroup() == false)
+  {
+    return item->getCheckState();
+  }
 
   return QVariant();
 }
@@ -106,24 +103,37 @@ bool ImportHDF5TreeModel::setData(const QModelIndex& index, const QVariant& valu
     return false;
   }
 
-  //  ImportHDF5TreeModelItem *item = static_cast<ImportHDF5TreeModelItem*>(index.internalPointer());
+  ImportHDF5TreeModelItem* item = static_cast<ImportHDF5TreeModelItem*>(index.internalPointer());
 
-  //  if (role == Qt::CheckStateRole)
-  //  {
-  //    Qt::CheckState checkState = static_cast<Qt::CheckState>(value.toInt());
-  //    item->setCheckState(checkState);
-  //    QString hdf5Path = item->generateHDFPath();
-  //    if (checkState == Qt::Checked)
-  //    {
-  //      m_SelectedHDF5Paths.push_back(hdf5Path);
-  //    }
-  //    else if (checkState == Qt::Unchecked)
-  //    {
-  //      m_SelectedHDF5Paths.removeAll(hdf5Path);
-  //    }
+  if(role == Qt::CheckStateRole && item->isGroup() == false)
+  {
+    Qt::CheckState checkState = static_cast<Qt::CheckState>(value.toInt());
+    if(checkState == Qt::Checked)
+    {
+      while(m_SelectedHDF5Paths.size() > 0)
+      {
+        QString selectedHDF5Path = m_SelectedHDF5Paths.front();
+        QModelIndex checkedIndex = hdf5PathToIndex(selectedHDF5Path);
+        setData(checkedIndex, Qt::Unchecked, Qt::CheckStateRole);
+        m_SelectedHDF5Paths.removeAll(selectedHDF5Path);
+        emit dataChanged(checkedIndex, checkedIndex);
+      }
+    }
 
-  //    emit modelChanged();
-  //  }
+    item->setCheckState(checkState);
+    QString hdf5Path = item->generateHDFPath();
+    if(checkState == Qt::Checked)
+    {
+      m_SelectedHDF5Paths.push_back(hdf5Path);
+    }
+    else if(checkState == Qt::Unchecked)
+    {
+      m_SelectedHDF5Paths.removeAll(hdf5Path);
+    }
+  }
+
+  emit dataChanged(index, index);
+  emit modelChanged();
 
   return true;
 }
@@ -137,21 +147,15 @@ Qt::ItemFlags ImportHDF5TreeModel::flags(const QModelIndex& index) const
   {
     return 0;
   }
-  // ImportHDF5TreeModelItem* item = static_cast<ImportHDF5TreeModelItem*>(index.internalPointer());
+
+  ImportHDF5TreeModelItem* item = static_cast<ImportHDF5TreeModelItem*>(index.internalPointer());
 
   Qt::ItemFlags flags = Qt::ItemIsEnabled | Qt::ItemIsSelectable;
 
-  //  if (index.column() == 0)
-  //  {
-  //    if (item->isGroup())
-  //    {
-  //      flags = flags | Qt::ItemIsUserTristate;
-  //    }
-  //    else
-  //    {
-  //      flags = flags | Qt::ItemIsUserCheckable;
-  //    }
-  //  }
+  if(item->isGroup() == false)
+  {
+    flags = flags | Qt::ItemIsUserCheckable;
+  }
 
   return flags;
 }
@@ -275,7 +279,7 @@ void ImportHDF5TreeModel::setupModelData()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-QString ImportHDF5TreeModel::hdfPathForIndex(const QModelIndex& index)
+QString ImportHDF5TreeModel::indexToHDF5Path(const QModelIndex& index)
 {
   ImportHDF5TreeModelItem* item = static_cast<ImportHDF5TreeModelItem*>(index.internalPointer());
   return item->generateHDFPath();
@@ -284,7 +288,53 @@ QString ImportHDF5TreeModel::hdfPathForIndex(const QModelIndex& index)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-QList<QString> ImportHDF5TreeModel::getSelectedHDF5Paths()
+QModelIndex ImportHDF5TreeModel::hdf5PathToIndex(const QString& hdf5Path)
+{
+  QStringList hdf5PathTokens = hdf5Path.split("/", QString::SplitBehavior::SkipEmptyParts);
+  if(hdf5PathTokens.size() > 0)
+  {
+    QModelIndex rootIndex = index(0, 0);
+    QModelIndex currentIndex = index(0, 0, rootIndex);
+    for(int i = 0; i < hdf5PathTokens.size(); i++)
+    {
+      QString hdf5PathToken = hdf5PathTokens[i];
+      QModelIndexList indexList = match(currentIndex, Qt::DisplayRole, hdf5PathToken);
+      if(indexList.size() == 1)
+      {
+        currentIndex = indexList[0];
+      }
+      else
+      {
+        return QModelIndex();
+      }
+    }
+
+    return currentIndex;
+  }
+
+  return QModelIndex();
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+ImportHDF5TreeModelItem* ImportHDF5TreeModel::getItem(const QModelIndex& index) const
+{
+  if(index.isValid())
+  {
+    ImportHDF5TreeModelItem* item = static_cast<ImportHDF5TreeModelItem*>(index.internalPointer());
+    if(item)
+    {
+      return item;
+    }
+  }
+  return m_RootItem;
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+QStringList ImportHDF5TreeModel::getSelectedHDF5Paths()
 {
   return m_SelectedHDF5Paths;
 }

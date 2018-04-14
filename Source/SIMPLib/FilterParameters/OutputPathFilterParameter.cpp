@@ -72,7 +72,7 @@ OutputPathFilterParameter::Pointer OutputPathFilterParameter::New(const QString&
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-QString OutputPathFilterParameter::getWidgetType()
+QString OutputPathFilterParameter::getWidgetType() const
 {
   return QString("OutputPathWidget");
 }

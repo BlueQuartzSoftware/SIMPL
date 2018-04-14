@@ -92,7 +92,7 @@ class SVWidgetsLib_EXPORT NumericTypeWidget : public FilterParameterWidget, priv
     NumericTypeFilterParameter* m_FilterParameter;
 
     NumericTypeWidget(const NumericTypeWidget&) = delete; // Copy Constructor Not Implemented
-    void operator=(const NumericTypeWidget&) = delete;    // Operator '=' Not Implemented
+    void operator=(const NumericTypeWidget&) = delete;    // Move assignment Not Implemented
 };
 
 #endif /* _NumericTypeWidget_H_ */

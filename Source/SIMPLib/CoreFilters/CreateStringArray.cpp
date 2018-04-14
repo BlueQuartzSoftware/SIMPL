@@ -74,12 +74,10 @@ void initializeArray(IDataArray::Pointer outputArrayPtr, const QString& initiali
 //
 // -----------------------------------------------------------------------------
 CreateStringArray::CreateStringArray()
-: AbstractFilter()
-, m_NumberOfComponents(0)
+: m_NumberOfComponents(0)
 , m_NewArray("", "", "")
 , m_InitializationValue("Text")
 {
-  setupFilterParameters();
 }
 
 // -----------------------------------------------------------------------------
@@ -207,7 +205,7 @@ void CreateStringArray::execute()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-AbstractFilter::Pointer CreateStringArray::newFilterInstance(bool copyFilterParameters)
+AbstractFilter::Pointer CreateStringArray::newFilterInstance(bool copyFilterParameters) const
 {
   CreateStringArray::Pointer filter = CreateStringArray::New();
   if(true == copyFilterParameters)
@@ -220,7 +218,7 @@ AbstractFilter::Pointer CreateStringArray::newFilterInstance(bool copyFilterPara
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString CreateStringArray::getCompiledLibraryName()
+const QString CreateStringArray::getCompiledLibraryName() const
 {
   return Core::CoreBaseName;
 }
@@ -228,7 +226,7 @@ const QString CreateStringArray::getCompiledLibraryName()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString CreateStringArray::getBrandingString()
+const QString CreateStringArray::getBrandingString() const
 {
   return "SIMPLib Core Filter";
 }
@@ -236,7 +234,7 @@ const QString CreateStringArray::getBrandingString()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString CreateStringArray::getFilterVersion()
+const QString CreateStringArray::getFilterVersion() const
 {
   QString version;
   QTextStream vStream(&version);
@@ -247,7 +245,7 @@ const QString CreateStringArray::getFilterVersion()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString CreateStringArray::getGroupName()
+const QString CreateStringArray::getGroupName() const
 {
   return SIMPL::FilterGroups::CoreFilters;
 }
@@ -255,7 +253,15 @@ const QString CreateStringArray::getGroupName()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString CreateStringArray::getSubGroupName()
+const QUuid CreateStringArray::getUuid()
+{
+  return QUuid("{e6b9a566-c5eb-5e3a-87de-7fe65d1d12b6}");
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+const QString CreateStringArray::getSubGroupName() const
 {
   return SIMPL::FilterSubGroups::GenerationFilters;
 }
@@ -263,7 +269,7 @@ const QString CreateStringArray::getSubGroupName()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString CreateStringArray::getHumanLabel()
+const QString CreateStringArray::getHumanLabel() const
 {
   return "Create String Array";
 }

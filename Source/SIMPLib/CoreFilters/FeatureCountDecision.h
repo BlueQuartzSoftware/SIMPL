@@ -52,7 +52,7 @@ class SIMPLib_EXPORT FeatureCountDecision : public AbstractDecisionFilter
   public:
     SIMPL_SHARED_POINTERS(FeatureCountDecision)
     SIMPL_STATIC_NEW_MACRO(FeatureCountDecision)
-    SIMPL_TYPE_MACRO_SUPER(FeatureCountDecision, AbstractDecisionFilter)
+     SIMPL_TYPE_MACRO_SUPER_OVERRIDE(FeatureCountDecision, AbstractDecisionFilter)
 
     virtual ~FeatureCountDecision();
 
@@ -71,47 +71,53 @@ class SIMPLib_EXPORT FeatureCountDecision : public AbstractDecisionFilter
     /**
      * @brief getCompiledLibraryName Reimplemented from @see AbstractFilter class
      */
-    virtual const QString getCompiledLibraryName();
+    const QString getCompiledLibraryName() const override;
 
     /**
      * @brief newFilterInstance Reimplemented from @see AbstractFilter class
      */
-    virtual AbstractFilter::Pointer newFilterInstance(bool copyFilterParameters);
+    AbstractFilter::Pointer newFilterInstance(bool copyFilterParameters) const override;
 
     /**
      * @brief getGroupName Reimplemented from @see AbstractFilter class
      */
-    virtual const QString getGroupName();
+    const QString getGroupName() const override;
 
     /**
      * @brief getSubGroupName Reimplemented from @see AbstractFilter class
      */
-    virtual const QString getSubGroupName();
+    const QString getSubGroupName() const override;
+
+    /**
+     * @brief getUuid Return the unique identifier for this filter.
+     * @return A QUuid object.
+     */
+    const QUuid getUuid() override;
 
     /**
      * @brief getHumanLabel Reimplemented from @see AbstractFilter class
      */
-    virtual const QString getHumanLabel();
+    const QString getHumanLabel() const override;
 
     /**
      * @brief setupFilterParameters Reimplemented from @see AbstractFilter class
      */
-    virtual void setupFilterParameters();
+    void setupFilterParameters() override;
 
     /**
      * @brief readFilterParameters Reimplemented from @see AbstractFilter class
      */
-    virtual void readFilterParameters(AbstractFilterParametersReader* reader, int index);
+    void readFilterParameters(AbstractFilterParametersReader* reader, int index) override;
 
     /**
      * @brief execute Reimplemented from @see AbstractFilter class
      */
-    virtual void execute();
+    void execute() override;
 
     /**
     * @brief preflight Reimplemented from @see AbstractFilter class
     */
-    virtual void preflight();
+    void preflight() override;
 
   protected:
     FeatureCountDecision();
@@ -130,7 +136,7 @@ class SIMPLib_EXPORT FeatureCountDecision : public AbstractDecisionFilter
     DEFINE_DATAARRAY_VARIABLE(int32_t, FeatureIds)
 
     FeatureCountDecision(const FeatureCountDecision&) = delete; // Copy Constructor Not Implemented
-    void operator=(const FeatureCountDecision&) = delete;       // Operator '=' Not Implemented
+    void operator=(const FeatureCountDecision&) = delete;       // Move assignment Not Implemented
 };
 
 #endif /* _FeatureCountDecision_H_ */

@@ -40,6 +40,7 @@
 #include <QtCore/QString>
 
 #include "H5Support/QH5Lite.h"
+#include "H5Support/H5ScopedErrorHandler.h"
 
 #include "SIMPLib/Common/Constants.h"
 #include "SIMPLib/DataArrays/DataArray.hpp"
@@ -107,6 +108,7 @@ public:
     H5T_class_t type_class;
     size_t type_size;
     IDataArray::Pointer mesh = IDataArray::NullPointer();
+    H5ScopedErrorHandler errorHandler;
     err = QH5Lite::getDatasetInfo(parentId, listName, dims, type_class, type_size);
     if(err < 0)
     {
@@ -182,6 +184,7 @@ public:
     H5T_class_t type_class;
     size_t type_size;
     typename DynamicListArray<T, K>::Pointer dynamicList = DynamicListArray<T, K>::New();
+    H5ScopedErrorHandler errorHandler;
     err = QH5Lite::getDatasetInfo(parentId, dynamicListName, dims, type_class, type_size);
     if(err < 0)
     {

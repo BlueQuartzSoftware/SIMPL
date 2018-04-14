@@ -38,11 +38,7 @@
 //
 // -----------------------------------------------------------------------------
 ArraySelectionExample::ArraySelectionExample()
-: AbstractFilter()
-//  m_SelectedArrayName(""),
-//  m_DataContainerName(SIMPL::Defaults::DataContainerName)
 {
-  setupFilterParameters();
 }
 
 // -----------------------------------------------------------------------------
@@ -137,7 +133,7 @@ void ArraySelectionExample::execute()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-AbstractFilter::Pointer ArraySelectionExample::newFilterInstance(bool copyFilterParameters)
+AbstractFilter::Pointer ArraySelectionExample::newFilterInstance(bool copyFilterParameters) const
 {
   /*
   * DataContainerArrayProxy
@@ -153,7 +149,7 @@ AbstractFilter::Pointer ArraySelectionExample::newFilterInstance(bool copyFilter
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString ArraySelectionExample::getCompiledLibraryName()
+const QString ArraySelectionExample::getCompiledLibraryName() const
 {
   return Core::CoreBaseName;
 }
@@ -161,7 +157,7 @@ const QString ArraySelectionExample::getCompiledLibraryName()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString ArraySelectionExample::getGroupName()
+const QString ArraySelectionExample::getGroupName() const
 {
   return SIMPL::FilterGroups::Generic;
 }
@@ -169,7 +165,15 @@ const QString ArraySelectionExample::getGroupName()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString ArraySelectionExample::getSubGroupName()
+const QUuid ArraySelectionExample::getUuid()
+{
+  return QUuid("{1a9b7e20-6f6f-50b8-bbfa-8117450919a5}");
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+const QString ArraySelectionExample::getSubGroupName() const
 {
   return "Test";
 }
@@ -177,7 +181,7 @@ const QString ArraySelectionExample::getSubGroupName()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString ArraySelectionExample::getHumanLabel()
+const QString ArraySelectionExample::getHumanLabel() const
 {
   return "DataContainerArrayProxy Example";
 }

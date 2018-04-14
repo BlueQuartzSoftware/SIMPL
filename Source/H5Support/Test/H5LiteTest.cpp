@@ -1459,5 +1459,5 @@ public:
 
 private:
   H5LiteTest(const H5LiteTest&);     // Copy Constructor Not Implemented
-  void operator=(const H5LiteTest&); // Operator '=' Not Implemented
+  void operator=(const H5LiteTest&); // Move assignment Not Implemented
 };

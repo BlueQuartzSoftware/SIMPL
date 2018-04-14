@@ -51,7 +51,7 @@ class SIMPLib_EXPORT DataContainerReaderFilterParameter : public FilterParameter
   public:
     SIMPL_SHARED_POINTERS(DataContainerReaderFilterParameter)
     SIMPL_STATIC_NEW_MACRO(DataContainerReaderFilterParameter)
-    SIMPL_TYPE_MACRO_SUPER(DataContainerReaderFilterParameter, FilterParameter)
+     SIMPL_TYPE_MACRO_SUPER_OVERRIDE(DataContainerReaderFilterParameter, FilterParameter)
 
     /**
      * @brief New This function instantiates an instance of the DataContainerCreationFilterParameter.
@@ -81,19 +81,19 @@ class SIMPLib_EXPORT DataContainerReaderFilterParameter : public FilterParameter
      * this FilterParameter subclass
      * @return
      */
-    QString getWidgetType();
+    QString getWidgetType() const override;
 
     /**
      * @brief readJson Reads this filter parameter's corresponding property out of a QJsonObject.
      * @param json The QJsonObject that the filter parameter reads from.
      */
-    void readJson(const QJsonObject &json);
+    void readJson(const QJsonObject& json) override;
 
     /**
      * @brief writeJson Writes this filter parameter's corresponding property to a QJsonObject.
      * @param json The QJsonObject that the filter parameter writes to.
      */
-    void writeJson(QJsonObject &json);
+    void writeJson(QJsonObject& json) override;
 
   protected:
     /**
@@ -104,7 +104,7 @@ class SIMPLib_EXPORT DataContainerReaderFilterParameter : public FilterParameter
 
   private:
     DataContainerReaderFilterParameter(const DataContainerReaderFilterParameter&) = delete; // Copy Constructor Not Implemented
-    void operator=(const DataContainerReaderFilterParameter&) = delete;                     // Operator '=' Not Implemented
+    void operator=(const DataContainerReaderFilterParameter&) = delete;                     // Move assignment Not Implemented
 };
 
 #endif /* _DataContainerReaderFilterParameter_H_ */

@@ -68,7 +68,7 @@ ParagraphFilterParameter::Pointer ParagraphFilterParameter::New(const QString& h
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-QString ParagraphFilterParameter::getWidgetType()
+QString ParagraphFilterParameter::getWidgetType() const
 {
   return QString("ParagraphWidget");
 }

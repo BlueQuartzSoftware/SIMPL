@@ -1,10 +1,12 @@
-Import HDF5 Dataset {#importhdf5dataset}
+Import HDF5 Dataset 
 =============
 
 ## Group (Subgroup) ##
+
 Core (IO/Read)
 
 ## Description ##
+
 This **Filter** allows the user to import a dataset from an HDF5 file and store it as an attribute array in DREAM.3D.  This filter supports importing datasets with any number of dimensions, as long as the component dimensions parameter and the tuple dimensions of the destination attribute matrix work with the dataset dimensions to satisfy this equation:
 
 (Product of Dataset Dimensions) / (Product of Component Dimensions) = (Destination Attribute Matrix Tuple Dimensions)
@@ -39,6 +41,7 @@ The component dimensions are input as a comma-delimited list of dimensional valu
 ![](Images/ImportHDF5Dataset_ui.png)
 
 ## Parameters ##
+
 | Name | Type | Description |
 |------|------| ----------- |
 | HDF5 File | QString | The path to the HDF5 file |
@@ -62,10 +65,13 @@ Not Applicable
 |------|--------------|------|----------------------|-------------|
 | **Attribute Array** | Name of dataset from HDF5 file | Type from HDF5 file | Input as a filter parameter | The created Attribute Array |
 
+## Example Pipelines ##
+
+
+
 ## License & Copyright ##
 
 Please see the description file distributed with this **Plugin**
 
 ## DREAM.3D Mailing Lists ##
 
-If you need more help with a **Filter**, please consider asking your question on the [DREAM.3D Users Google group!](https://groups.google.com/forum/?hl=en#!forum/dream3d-users)

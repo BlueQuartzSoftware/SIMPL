@@ -66,7 +66,7 @@ private:
   QString                                                       m_OriginalString;
 
   ASCIIDataItem(const ASCIIDataItem&);    // Copy Constructor Not Implemented
-  void operator=(const ASCIIDataItem&);  // Operator '=' Not Implemented
+  void operator=(const ASCIIDataItem&);   // Move assignment Not Implemented
 };
 
 #endif // ASCIIDataItem_H

@@ -48,7 +48,7 @@ class SIMPLib_EXPORT EdgeGeom : public IGeometry
 
     SIMPL_SHARED_POINTERS(EdgeGeom)
     SIMPL_STATIC_NEW_MACRO(EdgeGeom)
-    SIMPL_TYPE_MACRO_SUPER(EdgeGeom, Observable)
+     SIMPL_TYPE_MACRO_SUPER_OVERRIDE(EdgeGeom, Observable)
 
     virtual ~EdgeGeom();
 
@@ -375,7 +375,7 @@ class SIMPLib_EXPORT EdgeGeom : public IGeometry
     friend class FindEdgeDerivativesImpl;
 
     EdgeGeom(const EdgeGeom&) = delete;       // Copy Constructor Not Implemented
-    void operator=(const EdgeGeom&) = delete; // Operator '=' Not Implemented
+    void operator=(const EdgeGeom&) = delete; // Move assignment Not Implemented
 };
 
 

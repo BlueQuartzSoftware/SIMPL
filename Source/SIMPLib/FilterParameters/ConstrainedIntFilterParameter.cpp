@@ -71,7 +71,7 @@ ConstrainedIntFilterParameter::Pointer ConstrainedIntFilterParameter::New(const 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-QString ConstrainedIntFilterParameter::getWidgetType()
+QString ConstrainedIntFilterParameter::getWidgetType() const
 {
   return QString("ConstrainedIntWidget");
 }

@@ -101,7 +101,7 @@ private:
   ASCIIDataItem* getItem(const QModelIndex& index) const;
 
   ASCIIDataModel(const ASCIIDataModel&);    // Copy Constructor Not Implemented
-  void operator=(const ASCIIDataModel&);  // Operator '=' Not Implemented
+  void operator=(const ASCIIDataModel&);    // Move assignment Not Implemented
 };
 
 #endif // ASCIIDataModel_H

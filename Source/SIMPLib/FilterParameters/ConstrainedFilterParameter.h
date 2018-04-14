@@ -44,7 +44,7 @@ class SIMPLib_EXPORT ConstrainedFilterParameter : public FilterParameter
   public:
     SIMPL_SHARED_POINTERS(ConstrainedFilterParameter<T>)
     SIMPL_STATIC_NEW_MACRO(ConstrainedFilterParameter<T>)
-    SIMPL_TYPE_MACRO_SUPER(ConstrainedFilterParameter<T>, FilterParameter)
+     SIMPL_TYPE_MACRO_SUPER_OVERRIDE(ConstrainedFilterParameter<T>, FilterParameter)
 
     virtual ~ConstrainedFilterParameter() {}
 
@@ -56,13 +56,14 @@ class SIMPLib_EXPORT ConstrainedFilterParameter : public FilterParameter
      * this FilterParameter subclass
      * @return
      */
-    QString getWidgetType();
+    QString getWidgetType() const override;
+
   protected:
     ConstrainedFilterParameter() {}
 
   private:
     ConstrainedFilterParameter(const ConstrainedFilterParameter&) = delete; // Copy Constructor Not Implemented
-    void operator=(const ConstrainedFilterParameter&) = delete;             // Operator '=' Not Implemented
+    void operator=(const ConstrainedFilterParameter&) = delete;             // Move assignment Not Implemented
 };
 
 #endif /* _ConstrainedFilterParameter_H_ */

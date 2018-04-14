@@ -33,10 +33,10 @@
 #ifndef _importhdf5treemodel_h_
 #define _importhdf5treemodel_h_
 
-#include <QAbstractItemModel>
-#include <QFileIconProvider>
-#include <QModelIndex>
-#include <QVariant>
+#include <QtCore/QAbstractItemModel>
+#include <QtCore/QModelIndex>
+#include <QtCore/QVariant>
+#include <QtWidgets/QFileIconProvider>
 
 #include <hdf5.h>
 
@@ -116,11 +116,18 @@ public:
   int columnCount(const QModelIndex& parent = QModelIndex()) const;
 
   /**
-   * @brief hdfPathForIndex
+   * @brief indexToHDF5Path
    * @param index
    * @return
    */
-  QString hdfPathForIndex(const QModelIndex& index);
+  QString indexToHDF5Path(const QModelIndex& index);
+
+  /**
+   * @brief hdf5PathToIndex
+   * @param hdf5Path
+   * @return
+   */
+  QModelIndex hdf5PathToIndex(const QString& hdf5Path);
 
   /**
    * @brief hasChildren
@@ -133,7 +140,7 @@ public:
    * @brief getSelectedHDF5Paths
    * @return
    */
-  QList<QString> getSelectedHDF5Paths();
+  QStringList getSelectedHDF5Paths();
 
 signals:
   void modelChanged();
@@ -143,6 +150,13 @@ private:
   hid_t m_FileId;
   QFileIconProvider m_IconProvider;
   QList<QString> m_SelectedHDF5Paths;
+
+  /**
+   * @brief getItem
+   * @param index
+   * @return
+   */
+  ImportHDF5TreeModelItem* getItem(const QModelIndex& index) const;
 
   /**
    * @brief setupModelData

@@ -64,7 +64,7 @@ class SIMPLib_EXPORT SqrtOperator : public UnaryOperator
 
   private:
     SqrtOperator(const SqrtOperator&) = delete;   // Copy Constructor Not Implemented
-    void operator=(const SqrtOperator&) = delete; // Operator '=' Not Implemented
+    void operator=(const SqrtOperator&) = delete; // Move assignment Not Implemented
 };
 
 #endif /* _SqrtOperator_H_ */

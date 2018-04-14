@@ -41,11 +41,9 @@
 //
 // -----------------------------------------------------------------------------
 ThresholdExample::ThresholdExample()
-: AbstractFilter()
-, m_DataContainerName(SIMPL::Defaults::DataContainerName)
+: m_DataContainerName(SIMPL::Defaults::DataContainerName)
 , m_CellAttributeMatrixName(SIMPL::Defaults::CellAttributeMatrixName)
 {
-  setupFilterParameters();
 }
 
 // -----------------------------------------------------------------------------
@@ -192,7 +190,7 @@ void ThresholdExample::execute()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-AbstractFilter::Pointer ThresholdExample::newFilterInstance(bool copyFilterParameters)
+AbstractFilter::Pointer ThresholdExample::newFilterInstance(bool copyFilterParameters) const
 {
   /*
   * CellComparisonInputs
@@ -213,7 +211,7 @@ AbstractFilter::Pointer ThresholdExample::newFilterInstance(bool copyFilterParam
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString ThresholdExample::getCompiledLibraryName()
+const QString ThresholdExample::getCompiledLibraryName() const
 {
   return Core::CoreBaseName;
 }
@@ -221,7 +219,7 @@ const QString ThresholdExample::getCompiledLibraryName()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString ThresholdExample::getGroupName()
+const QString ThresholdExample::getGroupName() const
 {
   return SIMPL::FilterGroups::Generic;
 }
@@ -229,7 +227,15 @@ const QString ThresholdExample::getGroupName()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString ThresholdExample::getSubGroupName()
+const QUuid ThresholdExample::getUuid()
+{
+  return QUuid("{bd013013-ba0f-52be-a7b7-187665c92a9e}");
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+const QString ThresholdExample::getSubGroupName() const
 {
   return "Test";
 }
@@ -237,7 +243,7 @@ const QString ThresholdExample::getSubGroupName()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString ThresholdExample::getHumanLabel()
+const QString ThresholdExample::getHumanLabel() const
 {
   return "Threshold Example";
 }

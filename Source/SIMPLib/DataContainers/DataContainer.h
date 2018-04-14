@@ -66,7 +66,7 @@ class SIMPLib_EXPORT DataContainer : public Observable
   public:
     SIMPL_SHARED_POINTERS(DataContainer)
     SIMPL_STATIC_NEW_MACRO(DataContainer)
-    SIMPL_TYPE_MACRO_SUPER(DataContainer, Observable)
+     SIMPL_TYPE_MACRO_SUPER_OVERRIDE(DataContainer, Observable)
 
     virtual ~DataContainer();
 
@@ -454,7 +454,7 @@ class SIMPLib_EXPORT DataContainer : public Observable
     virtual void writeXdmfFooter(QTextStream& xdmf);
 
     DataContainer();
-    explicit DataContainer(const QString name);
+    explicit DataContainer(const QString& name);
 
   private:
 
@@ -463,7 +463,7 @@ class SIMPLib_EXPORT DataContainer : public Observable
     QString m_Name;
 
     DataContainer(const DataContainer&) = delete;  // Copy Constructor Not Implemented
-    void operator=(const DataContainer&) = delete; // Operator '=' Not Implemented
+    void operator=(const DataContainer&) = delete; // Move assignment Not Implemented
 };
 
 #endif /* _DataContainer_H_ */

@@ -112,7 +112,7 @@ class SVWidgetsLib_EXPORT QtSSettings : public QObject
     };
 
     QtSSettings(const QtSSettings&);    // Copy Constructor Not Implemented
-    void operator=(const QtSSettings&);  // Operator '=' Not Implemented
+    void operator=(const QtSSettings&); // Move assignment Not Implemented
 };
 
 #endif /* _SIMPLViewSettings_H */

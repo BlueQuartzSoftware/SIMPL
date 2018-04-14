@@ -1,10 +1,12 @@
-Import ASCII Data {#readasciidata}
+Import ASCII Data 
 =============
 
 ## Group (Subgroup) ##
+
 IO (Input)
 
 ## Description ##
+
 This **Filter** reads ASCII data from any text-based file and imports the data into DREAM.3D-style arrays.  The user uses the **Filter's** wizard to specify which file to import, how the data is formatted, what to call each array, and what type each array should be.
 
 *Note:* This **Filter** is intended to read data that is column-oriented, such that each created DREAM.3D array corresponds to a column of data in the ASCII file. Therefore, this **Filter** will only import scalar arrays. If multiple columns are in fact different components of the same array, then the columns may be imported as separate arrays and then combined in the correct order using the [Combine Attribute Arrays](@ref combineattributearrays) **Filter**.
@@ -42,6 +44,7 @@ If the data does not have any headers, the user can set a string value for each 
 | Wizard Data Object | ASCIIWizardData | The object that holds all relevant data collected from the wizard |
 
 ## Required Geometry ##
+
 Not Applicable
 
 ## Required Objects ##
@@ -56,6 +59,10 @@ Not Applicable
 |------|--------------|------|----------------------|-------------|
 | One or more **Element/Feature/Ensemble/etc. Attribute Array** | None | Any | 1 | One or more arrays that are created due to importing ASCII data via the wizard |
 
+## Example Pipelines ##
+
+
+
 ## License & Copyright ##
 
 Please see the description file distributed with this plugin.
@@ -63,4 +70,3 @@ Please see the description file distributed with this plugin.
 ## DREAM3D Mailing Lists ##
 
 If you need more help with a filter, please consider asking your question on the DREAM3D Users mailing list:
-https://groups.google.com/forum/?hl=en#!forum/dream3d-users

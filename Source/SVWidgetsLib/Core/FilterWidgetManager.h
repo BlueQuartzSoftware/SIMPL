@@ -95,7 +95,14 @@ class SVWidgetsLib_EXPORT FilterWidgetManager
        */
     void addFilterWidgetFactory(const QString& widgetType, IFilterWidgetFactory::Pointer factory);
 
-    QWidget* createWidget(FilterParameter* parameter, AbstractFilter* filter);
+    /**
+     * @brief createWidget
+     * @param parameter
+     * @param filter
+     * @param parent
+     * @return 
+     */
+    QWidget* createWidget(FilterParameter* parameter, AbstractFilter* filter, QWidget *parent);
 
   protected:
     FilterWidgetManager();
@@ -107,7 +114,7 @@ class SVWidgetsLib_EXPORT FilterWidgetManager
     static FilterWidgetManager* self;
 
     FilterWidgetManager(const FilterWidgetManager&) = delete; // Copy Constructor Not Implemented
-    void operator=(const FilterWidgetManager&) = delete;      // Operator '=' Not Implemented
+    void operator=(const FilterWidgetManager&) = delete;      // Move assignment Not Implemented
 };
 
 #endif /* PipelineFilterWidgetMANAGER_H_ */

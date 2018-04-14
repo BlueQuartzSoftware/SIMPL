@@ -1,7 +1,8 @@
-Export Triangle Geometry {#writetrianglegeometry}
+Export Triangle Geometry 
 ======
 
 ## Group (Subgroup) ##
+
 IO (Output)
 
 ## Description ##
@@ -19,7 +20,7 @@ This filter creates 2 files from the Vertices and Triangles from a Triangle Geom
 	 0.00000  0.50000  0.00000
 	 0.00000  0.00000  0.50000
 	 0.00000  0.50000  0.50000
-	 …………..
+	             ..
 
 **Example Triangles File**
 
@@ -63,6 +64,10 @@ Triangle
 ## Created Objects ##
 
 None
+
+## Example Pipelines ##
+
+
 
 ## License & Copyright ##
 

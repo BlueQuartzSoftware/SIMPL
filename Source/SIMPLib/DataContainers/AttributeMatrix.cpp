@@ -42,7 +42,7 @@
 #include <iostream>
 
 // HDF5 Includes
-#include "H5Support/HDF5ScopedFileSentinel.h"
+#include "H5Support/H5ScopedSentinel.h"
 #include "H5Support/QH5Lite.h"
 #include "H5Support/QH5Utilities.h"
 
@@ -249,7 +249,7 @@ void AttributeMatrix::ReadAttributeMatrixStructure(hid_t containerId, DataContai
       {
         continue;
       }
-      HDF5ScopedGroupSentinel sentinel(&attrMatGid, true);
+      H5ScopedGroupSentinel sentinel(&attrMatGid, true);
 
       AttributeMatrixProxy amProxy(attributeMatrixName);
       amProxy.name = attributeMatrixName;
@@ -259,10 +259,13 @@ void AttributeMatrix::ReadAttributeMatrixStructure(hid_t containerId, DataContai
       herr_t err = QH5Lite::readScalarAttribute(containerId, attributeMatrixName, SIMPL::StringConstants::AttributeMatrixType, amTypeTmp);
       if(err >= 0)
       {
-        AttributeMatrix::Types amTypes = req->getAMTypes();
-        if (amTypes.size() <= 0 || amTypes.contains(static_cast<AttributeMatrix::Type>(amTypeTmp)))
+        if (req != nullptr)
         {
-          amProxy.flag = Qt::Checked;
+          AttributeMatrix::Types amTypes = req->getAMTypes();
+          if (amTypes.size() <= 0 || amTypes.contains(static_cast<AttributeMatrix::Type>(amTypeTmp)))
+          {
+            amProxy.flag = Qt::Checked;
+          }
         }
         amProxy.amType = static_cast<AttributeMatrix::Type>(amTypeTmp);
       }
@@ -810,7 +813,7 @@ QString AttributeMatrix::getInfoString(SIMPL::InfoStringFormat format)
       tupleStr = tupleStr + numStr;
       if(i < m_TupleDims.size() - 1)
       {
-        tupleStr = tupleStr + QString(", ");
+        tupleStr = tupleStr + QString(" x ");
       }
     }
     tupleStr = tupleStr + ")";

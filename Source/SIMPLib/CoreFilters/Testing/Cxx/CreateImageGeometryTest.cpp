@@ -202,7 +202,7 @@ public:
 
     {
       size_t* dims = new size_t[3];
-      geometry->getDimensions(dims);
+      std::tie(dims[0], dims[1], dims[2]) = geometry->getDimensions();
 
       DREAM3D_REQUIRE_EQUAL(dims[0], numDimensions.x);
       DREAM3D_REQUIRE_EQUAL(dims[1], numDimensions.y);
@@ -242,5 +242,5 @@ public:
 
 private:
   CreateImageGeometryTest(const CreateImageGeometryTest&); // Copy Constructor Not Implemented
-  void operator=(const CreateImageGeometryTest&);          // Operator '=' Not Implemented
+  void operator=(const CreateImageGeometryTest&);          // Move assignment Not Implemented
 };

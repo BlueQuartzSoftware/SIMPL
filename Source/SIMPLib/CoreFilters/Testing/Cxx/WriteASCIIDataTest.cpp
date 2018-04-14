@@ -184,5 +184,5 @@ public:
 
 private:
   WriteASCIIDataTest(const WriteASCIIDataTest&); // Copy Constructor Not Implemented
-  void operator=(const WriteASCIIDataTest&);     // Operator '=' Not Implemented
+  void operator=(const WriteASCIIDataTest&);     // Move assignment Not Implemented
 };

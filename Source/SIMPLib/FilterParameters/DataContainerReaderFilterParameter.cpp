@@ -73,7 +73,7 @@ DataContainerReaderFilterParameter::Pointer DataContainerReaderFilterParameter::
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-QString DataContainerReaderFilterParameter::getWidgetType()
+QString DataContainerReaderFilterParameter::getWidgetType() const
 {
   return QString("DataContainerReaderWidget");
 }

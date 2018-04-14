@@ -38,10 +38,8 @@
 //
 // -----------------------------------------------------------------------------
 FilterGroup09::FilterGroup09()
-: AbstractFilter()
 {
   initialize();
-  setupFilterParameters();
 }
 
 // -----------------------------------------------------------------------------
@@ -123,7 +121,7 @@ void FilterGroup09::execute()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-AbstractFilter::Pointer FilterGroup09::newFilterInstance(bool copyFilterParameters)
+AbstractFilter::Pointer FilterGroup09::newFilterInstance(bool copyFilterParameters) const
 {
   FilterGroup09::Pointer filter = FilterGroup09::New();
   if(true == copyFilterParameters)
@@ -136,7 +134,7 @@ AbstractFilter::Pointer FilterGroup09::newFilterInstance(bool copyFilterParamete
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString FilterGroup09::getCompiledLibraryName()
+const QString FilterGroup09::getCompiledLibraryName() const
 {
   return Core::CoreBaseName;
 }
@@ -144,7 +142,7 @@ const QString FilterGroup09::getCompiledLibraryName()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString FilterGroup09::getBrandingString()
+const QString FilterGroup09::getBrandingString() const
 {
   return "SIMPLib Core Filter";
 }
@@ -152,7 +150,7 @@ const QString FilterGroup09::getBrandingString()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString FilterGroup09::getFilterVersion()
+const QString FilterGroup09::getFilterVersion() const
 {
   QString version;
   QTextStream vStream(&version);
@@ -163,7 +161,7 @@ const QString FilterGroup09::getFilterVersion()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString FilterGroup09::getGroupName()
+const QString FilterGroup09::getGroupName() const
 {
   return SIMPL::FilterGroups::SurfaceMeshingFilters;
 }
@@ -171,7 +169,15 @@ const QString FilterGroup09::getGroupName()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString FilterGroup09::getSubGroupName()
+const QUuid FilterGroup09::getUuid()
+{
+  return QUuid("{30b7d2a0-6e92-506c-bbbe-3d4c948679b8}");
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+const QString FilterGroup09::getSubGroupName() const
 {
   return "Test";
 }
@@ -179,7 +185,7 @@ const QString FilterGroup09::getSubGroupName()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString FilterGroup09::getHumanLabel()
+const QString FilterGroup09::getHumanLabel() const
 {
   return "SurfaceMeshingFilters Test Filter";
 }

@@ -46,7 +46,7 @@
 #include "SIMPLib/Filtering/FilterManager.h"
 #include "SVWidgetsLib/QtSupport/QtSStyles.h"
 
-// Include the MOC generated CPP file which has all the QMetaObject methods/data
+
 
 // -----------------------------------------------------------------------------
 //
@@ -180,7 +180,7 @@ void FilterListToolboxWidget::launchHelpForItem(QString humanLabel)
   {
     return;
   }
-  IFilterFactory::Pointer factory = fm->getFactoryForFilterHumanName(humanLabel);
+  IFilterFactory::Pointer factory = fm->getFactoryFromHumanName(humanLabel);
   if(nullptr == factory.get())
   {
     return;
@@ -241,24 +241,12 @@ void FilterListToolboxWidget::updateFilterList(bool sortItems)
 // -----------------------------------------------------------------------------
 void FilterListToolboxWidget::addItemToList(AbstractFilter::Pointer filter)
 {
-
   QString humanName = filter->getHumanLabel();
   QString iconName(":/Groups/");
   iconName.append(filter->getGroupName());
 
   QIcon icon = QtSStyles::IconForGroup(filter->getGroupName());
-#if 0
-  iconName.append("_Icon.png");
 
-  // Validate the icon is in the resource system
-  QFileInfo iconInfo(iconName);
-  if(iconInfo.exists() == false)
-  {
-    iconName = ":/Groups/Plugin_Icon.png"; // Switch to our generic icon for Plugins that do not provide their own
-  }
-
-  QIcon icon(iconName);
-#endif
   // Create the QListWidgetItem and add it to the filterList
   QListWidgetItem* filterItem = new QListWidgetItem(icon, humanName, filterList);
   // Set an "internal" QString that is the name of the filter. We need this value
@@ -268,21 +256,6 @@ void FilterListToolboxWidget::addItemToList(AbstractFilter::Pointer filter)
   // Allow a basic mouse hover tool tip that gives some summary information on the filter.
   filterItem->setToolTip(filter->generateHtmlSummary());
 
-#if 0
-  // This chunk of code would load up the html help file for the filter into the QToolTip
-  // This is a problem because everytime this function ran it would involve file IO and
-  // that is very bad. And the currently Doxygen generated html files do not look very
-  // good in the QToolTip, and there is no Scrolling in the QToolTip window. We really
-  // need a more custom solution for this
-  QUrl url = QtSHelpUrlGenerator::generateHTMLUrl( filter->getNameOfClass().toLower() );
-  QString filePath = url.toLocalFile();
-  QFileInfo fi(filePath);
-  QFile source(filePath);
-  source.open(QFile::ReadOnly);
-  QString html = source.readAll();
-  source.close();
-  filterItem->setToolTip(html);
-#endif
 }
 
 // -----------------------------------------------------------------------------

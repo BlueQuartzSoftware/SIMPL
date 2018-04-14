@@ -47,12 +47,10 @@
 //
 // -----------------------------------------------------------------------------
 MultiThresholdObjects2::MultiThresholdObjects2()
-: AbstractFilter()
-, m_DestinationArrayName(SIMPL::GeneralData::Mask)
+: m_DestinationArrayName(SIMPL::GeneralData::Mask)
 , m_SelectedThresholds()
 , m_Destination(nullptr)
 {
-  setupFilterParameters();
 }
 
 // -----------------------------------------------------------------------------
@@ -139,7 +137,7 @@ void MultiThresholdObjects2::dataCheck()
     DataArrayPath tempPath(dcName, amName, getDestinationArrayName());
     m_DestinationPtr = getDataContainerArray()->createNonPrereqArrayFromPath<DataArray<bool>, AbstractFilter, bool>(this, tempPath, true,
                                                                                                                     cDims); /* Assigns the shared_ptr<> to an instance variable that is a weak_ptr<> */
-    if(nullptr != m_DestinationPtr.lock().get()) /* Validate the Weak Pointer wraps a non-nullptr pointer to a DataArray<T> object */
+    if(nullptr != m_DestinationPtr.lock()) /* Validate the Weak Pointer wraps a non-nullptr pointer to a DataArray<T> object */
     {
       m_Destination = m_DestinationPtr.lock()->getPointer(0);
     } /* Now assign the raw pointer to data from the DataArray<T> object */
@@ -442,7 +440,7 @@ void MultiThresholdObjects2::thresholdValue(ComparisonValue::Pointer comparisonV
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-AbstractFilter::Pointer MultiThresholdObjects2::newFilterInstance(bool copyFilterParameters)
+AbstractFilter::Pointer MultiThresholdObjects2::newFilterInstance(bool copyFilterParameters) const
 {
   MultiThresholdObjects2::Pointer filter = MultiThresholdObjects2::New();
   if(true == copyFilterParameters)
@@ -455,7 +453,7 @@ AbstractFilter::Pointer MultiThresholdObjects2::newFilterInstance(bool copyFilte
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString MultiThresholdObjects2::getCompiledLibraryName()
+const QString MultiThresholdObjects2::getCompiledLibraryName() const
 {
   return Core::CoreBaseName;
 }
@@ -463,7 +461,7 @@ const QString MultiThresholdObjects2::getCompiledLibraryName()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString MultiThresholdObjects2::getBrandingString()
+const QString MultiThresholdObjects2::getBrandingString() const
 {
   return "SIMPLib Core Filter";
 }
@@ -471,7 +469,7 @@ const QString MultiThresholdObjects2::getBrandingString()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString MultiThresholdObjects2::getFilterVersion()
+const QString MultiThresholdObjects2::getFilterVersion() const
 {
   QString version;
   QTextStream vStream(&version);
@@ -481,7 +479,7 @@ const QString MultiThresholdObjects2::getFilterVersion()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString MultiThresholdObjects2::getGroupName()
+const QString MultiThresholdObjects2::getGroupName() const
 {
   return SIMPL::FilterGroups::ProcessingFilters;
 }
@@ -489,7 +487,15 @@ const QString MultiThresholdObjects2::getGroupName()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString MultiThresholdObjects2::getSubGroupName()
+const QUuid MultiThresholdObjects2::getUuid()
+{
+  return QUuid("{686d5393-2b02-5c86-b887-dd81a8ae80f2}");
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+const QString MultiThresholdObjects2::getSubGroupName() const
 {
   return SIMPL::FilterSubGroups::ThresholdFilters;
 }
@@ -497,7 +503,7 @@ const QString MultiThresholdObjects2::getSubGroupName()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString MultiThresholdObjects2::getHumanLabel()
+const QString MultiThresholdObjects2::getHumanLabel() const
 {
   return "Threshold Objects 2";
 }

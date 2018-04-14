@@ -50,7 +50,7 @@ public:
     // Now instantiate the PostSlackMessageTest Filter from the FilterManager
     QString filtName = "PostSlackMessage";
     FilterManager* fm = FilterManager::Instance();
-    IFilterFactory::Pointer filterFactory = fm->getFactoryForFilter(filtName);
+    IFilterFactory::Pointer filterFactory = fm->getFactoryFromClassName(filtName);
     if(nullptr == filterFactory.get())
     {
       std::stringstream ss;

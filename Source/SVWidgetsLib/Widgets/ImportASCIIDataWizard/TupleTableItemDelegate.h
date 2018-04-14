@@ -38,7 +38,7 @@
 
 #include <QtCore/QModelIndex>
 
-#include <QStyledItemDelegate>
+#include <QtWidgets/QStyledItemDelegate>
 
 #include "SIMPLib/Common/Constants.h"
 
@@ -59,7 +59,7 @@ class TupleTableItemDelegate : public QStyledItemDelegate
 
   private:
     TupleTableItemDelegate(const TupleTableItemDelegate&) = delete; // Copy Constructor Not Implemented
-    void operator=(const TupleTableItemDelegate&) = delete;         // Operator '=' Not Implemented
+    void operator=(const TupleTableItemDelegate&) = delete;         // Move assignment Not Implemented
 };
 
 #endif // _TupleTableItemDelegate_H

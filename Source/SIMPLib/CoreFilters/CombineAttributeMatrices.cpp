@@ -48,8 +48,7 @@
 //
 // -----------------------------------------------------------------------------
 CombineAttributeMatrices::CombineAttributeMatrices()
-: AbstractFilter()
-, m_FirstAttributeMatrixPath("", "", "")
+: m_FirstAttributeMatrixPath("", "", "")
 , m_SecondAttributeMatrixPath("", "", "")
 , m_FirstIndexArrayPath("", "", "")
 , m_SecondIndexArrayPath("", "", "")
@@ -59,7 +58,6 @@ CombineAttributeMatrices::CombineAttributeMatrices()
 , m_SecondIndex(nullptr)
 , m_NewIndex(nullptr)
 {
-  setupFilterParameters();
 }
 
 // -----------------------------------------------------------------------------
@@ -211,7 +209,7 @@ void CombineAttributeMatrices::dataCheck()
   QVector<size_t> cDims(1, 1);
   m_FirstIndexPtr = getDataContainerArray()->getPrereqArrayFromPath<DataArray<int32_t>, AbstractFilter>(this, getFirstIndexArrayPath(),
                                                                                                         cDims); /* Assigns the shared_ptr<> to an instance variable that is a weak_ptr<> */
-  if(nullptr != m_FirstIndexPtr.lock().get())                                                                   /* Validate the Weak Pointer wraps a non-nullptr pointer to a DataArray<T> object */
+  if(nullptr != m_FirstIndexPtr.lock())                                                                         /* Validate the Weak Pointer wraps a non-nullptr pointer to a DataArray<T> object */
   {
     m_FirstIndex = m_FirstIndexPtr.lock()->getPointer(0);
   } /* Now assign the raw pointer to data from the DataArray<T> object */
@@ -222,7 +220,7 @@ void CombineAttributeMatrices::dataCheck()
 
   m_SecondIndexPtr = getDataContainerArray()->getPrereqArrayFromPath<DataArray<int32_t>, AbstractFilter>(this, getSecondIndexArrayPath(),
                                                                                                          cDims); /* Assigns the shared_ptr<> to an instance variable that is a weak_ptr<> */
-  if(nullptr != m_SecondIndexPtr.lock().get())                                                                   /* Validate the Weak Pointer wraps a non-nullptr pointer to a DataArray<T> object */
+  if(nullptr != m_SecondIndexPtr.lock())                                                                         /* Validate the Weak Pointer wraps a non-nullptr pointer to a DataArray<T> object */
   {
     m_SecondIndex = m_SecondIndexPtr.lock()->getPointer(0);
   } /* Now assign the raw pointer to data from the DataArray<T> object */
@@ -261,7 +259,7 @@ void CombineAttributeMatrices::dataCheck()
   tempPath.update(getFirstIndexArrayPath().getDataContainerName(), getFirstIndexArrayPath().getAttributeMatrixName(), getNewIndexArrayName());
   m_NewIndexPtr = getDataContainerArray()->createNonPrereqArrayFromPath<DataArray<int32_t>, AbstractFilter, int32_t>(this, tempPath, 0,
                                                                                                                      cDims); /* Assigns the shared_ptr<> to an instance variable that is a weak_ptr<> */
-  if(nullptr != m_NewIndexPtr.lock().get()) /* Validate the Weak Pointer wraps a non-nullptr pointer to a DataArray<T> object */
+  if(nullptr != m_NewIndexPtr.lock()) /* Validate the Weak Pointer wraps a non-nullptr pointer to a DataArray<T> object */
   {
     m_NewIndex = m_NewIndexPtr.lock()->getPointer(0);
   } /* Now assign the raw pointer to data from the DataArray<T> object */
@@ -363,7 +361,7 @@ void CombineAttributeMatrices::execute()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-AbstractFilter::Pointer CombineAttributeMatrices::newFilterInstance(bool copyFilterParameters)
+AbstractFilter::Pointer CombineAttributeMatrices::newFilterInstance(bool copyFilterParameters) const
 {
   CombineAttributeMatrices::Pointer filter = CombineAttributeMatrices::New();
   if(true == copyFilterParameters)
@@ -376,7 +374,7 @@ AbstractFilter::Pointer CombineAttributeMatrices::newFilterInstance(bool copyFil
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString CombineAttributeMatrices::getCompiledLibraryName()
+const QString CombineAttributeMatrices::getCompiledLibraryName() const
 {
   return Core::CoreBaseName;
 }
@@ -384,7 +382,7 @@ const QString CombineAttributeMatrices::getCompiledLibraryName()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString CombineAttributeMatrices::getBrandingString()
+const QString CombineAttributeMatrices::getBrandingString() const
 {
   return "SIMPLib Core Filter";
 }
@@ -392,7 +390,7 @@ const QString CombineAttributeMatrices::getBrandingString()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString CombineAttributeMatrices::getFilterVersion()
+const QString CombineAttributeMatrices::getFilterVersion() const
 {
   QString version;
   QTextStream vStream(&version);
@@ -403,7 +401,7 @@ const QString CombineAttributeMatrices::getFilterVersion()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString CombineAttributeMatrices::getGroupName()
+const QString CombineAttributeMatrices::getGroupName() const
 {
   return SIMPL::FilterGroups::CoreFilters;
 }
@@ -411,7 +409,15 @@ const QString CombineAttributeMatrices::getGroupName()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString CombineAttributeMatrices::getSubGroupName()
+const QUuid CombineAttributeMatrices::getUuid()
+{
+  return QUuid("{334034e9-405f-51a3-9c3c-8d9c955835d9}");
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+const QString CombineAttributeMatrices::getSubGroupName() const
 {
   return SIMPL::FilterSubGroups::MemoryManagementFilters;
 }
@@ -419,7 +425,7 @@ const QString CombineAttributeMatrices::getSubGroupName()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString CombineAttributeMatrices::getHumanLabel()
+const QString CombineAttributeMatrices::getHumanLabel() const
 {
   return "Combine Feature/Ensemble Attribute Matrices";
 }

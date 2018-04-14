@@ -1,18 +1,22 @@
-RequiredZThickness {#requiredzthickness}
+RequiredZThickness 
 =====
 
 ## Group (Subgroup) ##
+
 Core (Misc)
 
 ## Description ##
+
 This filter makes a decision on the number of Z voxels. 
 
 ## Parameters ##
+
 | Name             | Type | Description |
 |------------------|------| ------------|
 | Max Grains | int32_t | The number of grains for comparison |
  
 ## Required Geometry ##
+
 Any
 
 ## Required Objects ##
@@ -22,7 +26,12 @@ Any
 | **Cell Ensemble Attribute Array** | Number_of_grains | int32_t | (1) | FeatureIds |
 
 ## Created Objects ##
+
 None
+
+## Example Pipelines ##
+
+
 
 ## License & Copyright ##
 

@@ -72,7 +72,7 @@ InputPathFilterParameter::Pointer InputPathFilterParameter::New(const QString& h
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-QString InputPathFilterParameter::getWidgetType()
+QString InputPathFilterParameter::getWidgetType() const
 {
   return QString("InputPathWidget");
 }

@@ -44,7 +44,7 @@
 #include "SIMPLib/StatsData/PrimaryStatsData.h"
 #include "SIMPLib/StatsData/TransformationStatsData.h"
 
-#include "H5Support/HDF5ScopedFileSentinel.h"
+#include "H5Support/H5ScopedSentinel.h"
 #include "H5Support/QH5Utilities.h"
 
 // -----------------------------------------------------------------------------
@@ -477,7 +477,7 @@ int StatsDataArray::writeH5Data(hid_t parentId, QVector<size_t> tDims)
   {
     return -1;
   }
-  HDF5ScopedGroupSentinel scopedFileSentinel(&gid, false); // This makes sure our H5Group is closed up as we exit this function
+  H5ScopedGroupSentinel scopedFileSentinel(&gid, false); // This makes sure our H5Group is closed up as we exit this function
 
   // We start numbering our phases at 1. Anything in slot 0 is considered "Dummy" or invalid
   for(qint32 i = 1; i < m_StatsDataArray.size(); ++i)

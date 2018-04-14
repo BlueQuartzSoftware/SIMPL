@@ -70,7 +70,7 @@ class SIMPLib_EXPORT MultiDataArraySelectionFilterParameter : public FilterParam
   public:
     SIMPL_SHARED_POINTERS(MultiDataArraySelectionFilterParameter)
     SIMPL_STATIC_NEW_MACRO(MultiDataArraySelectionFilterParameter)
-    SIMPL_TYPE_MACRO_SUPER(MultiDataArraySelectionFilterParameter, FilterParameter)
+     SIMPL_TYPE_MACRO_SUPER_OVERRIDE(MultiDataArraySelectionFilterParameter, FilterParameter)
 
     typedef std::function<void(QVector<DataArrayPath>)> SetterCallbackType;
     typedef std::function<QVector<DataArrayPath>(void)> GetterCallbackType;
@@ -141,19 +141,19 @@ class SIMPLib_EXPORT MultiDataArraySelectionFilterParameter : public FilterParam
      * this FilterParameter subclass
      * @return
      */
-    QString getWidgetType();
+    QString getWidgetType() const override;
 
     /**
      * @brief readJson Reads this filter parameter's corresponding property out of a QJsonObject.
      * @param json The QJsonObject that the filter parameter reads from.
      */
-    void readJson(const QJsonObject &json);
+    void readJson(const QJsonObject& json) override;
 
     /**
      * @brief writeJson Writes this filter parameter's corresponding property to a QJsonObject.
      * @param json The QJsonObject that the filter parameter writes to.
      */
-    void writeJson(QJsonObject &json);
+    void writeJson(QJsonObject& json) override;
 
     SIMPL_INSTANCE_PROPERTY(IGeometry::Types, DefaultGeometryTypes)
     SIMPL_INSTANCE_PROPERTY(QVector<AttributeMatrix::Type>, DefaultAttributeMatrixTypes)
@@ -183,7 +183,7 @@ class SIMPLib_EXPORT MultiDataArraySelectionFilterParameter : public FilterParam
 
   private:
     MultiDataArraySelectionFilterParameter(const MultiDataArraySelectionFilterParameter&) = delete; // Copy Constructor Not Implemented
-    void operator=(const MultiDataArraySelectionFilterParameter&) = delete;                         // Operator '=' Not Implemented
+    void operator=(const MultiDataArraySelectionFilterParameter&) = delete;                         // Move assignment Not Implemented
 };
 
 #endif /* _MultiDataArraySelectionFilterParameter_H_ */

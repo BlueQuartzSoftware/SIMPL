@@ -159,8 +159,7 @@ template <typename T> int32_t readBinaryFile(typename DataArray<T>::Pointer p, c
 //
 // -----------------------------------------------------------------------------
 RawBinaryReader::RawBinaryReader()
-: AbstractFilter()
-, m_CreatedAttributeArrayPath("")
+: m_CreatedAttributeArrayPath("")
 , m_ScalarType(SIMPL::NumericTypes::Type::Int8)
 , m_Endian(0)
 , m_NumberOfComponents(0)
@@ -168,7 +167,6 @@ RawBinaryReader::RawBinaryReader()
 , m_InputFile("")
 {
 
-  setupFilterParameters();
 }
 
 // -----------------------------------------------------------------------------
@@ -509,7 +507,7 @@ void RawBinaryReader::execute()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-AbstractFilter::Pointer RawBinaryReader::newFilterInstance(bool copyFilterParameters)
+AbstractFilter::Pointer RawBinaryReader::newFilterInstance(bool copyFilterParameters) const
 {
   RawBinaryReader::Pointer filter = RawBinaryReader::New();
   if(true == copyFilterParameters)
@@ -522,7 +520,7 @@ AbstractFilter::Pointer RawBinaryReader::newFilterInstance(bool copyFilterParame
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString RawBinaryReader::getCompiledLibraryName()
+const QString RawBinaryReader::getCompiledLibraryName() const
 {
   return Core::CoreBaseName;
 }
@@ -530,7 +528,7 @@ const QString RawBinaryReader::getCompiledLibraryName()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString RawBinaryReader::getBrandingString()
+const QString RawBinaryReader::getBrandingString() const
 {
   return "SIMPLib Core Filter";
 }
@@ -538,7 +536,7 @@ const QString RawBinaryReader::getBrandingString()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString RawBinaryReader::getFilterVersion()
+const QString RawBinaryReader::getFilterVersion() const
 {
   QString version;
   QTextStream vStream(&version);
@@ -549,7 +547,7 @@ const QString RawBinaryReader::getFilterVersion()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString RawBinaryReader::getGroupName()
+const QString RawBinaryReader::getGroupName() const
 {
   return SIMPL::FilterGroups::IOFilters;
 }
@@ -557,7 +555,15 @@ const QString RawBinaryReader::getGroupName()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString RawBinaryReader::getSubGroupName()
+const QUuid RawBinaryReader::getUuid()
+{
+  return QUuid("{0791f556-3d73-5b1e-b275-db3f7bb6850d}");
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+const QString RawBinaryReader::getSubGroupName() const
 {
   return SIMPL::FilterSubGroups::InputFilters;
 }
@@ -565,7 +571,7 @@ const QString RawBinaryReader::getSubGroupName()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString RawBinaryReader::getHumanLabel()
+const QString RawBinaryReader::getHumanLabel() const
 {
   return "Raw Binary Importer";
 }

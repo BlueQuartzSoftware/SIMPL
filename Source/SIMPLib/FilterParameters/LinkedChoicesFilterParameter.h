@@ -50,7 +50,7 @@ class SIMPLib_EXPORT LinkedChoicesFilterParameter : public ChoiceFilterParameter
   public:
     SIMPL_SHARED_POINTERS(LinkedChoicesFilterParameter)
     SIMPL_STATIC_NEW_MACRO(LinkedChoicesFilterParameter)
-    SIMPL_TYPE_MACRO_SUPER(LinkedChoicesFilterParameter, FilterParameter)
+     SIMPL_TYPE_MACRO_SUPER_OVERRIDE(LinkedChoicesFilterParameter, FilterParameter)
 
     typedef std::function<void(int)> SetterCallbackType;
     typedef std::function<int(void)> GetterCallbackType;
@@ -88,19 +88,19 @@ class SIMPLib_EXPORT LinkedChoicesFilterParameter : public ChoiceFilterParameter
      * this FilterParameter subclass
      * @return
      */
-    QString getWidgetType();
+    QString getWidgetType() const override;
 
     /**
      * @brief readJson Reads this filter parameter's corresponding property out of a QJsonObject.
      * @param json The QJsonObject that the filter parameter reads from.
      */
-    void readJson(const QJsonObject &json);
+    void readJson(const QJsonObject& json) override;
 
     /**
      * @brief writeJson Writes this filter parameter's corresponding property to a QJsonObject.
      * @param json The QJsonObject that the filter parameter writes to.
      */
-    void writeJson(QJsonObject &json);
+    void writeJson(QJsonObject& json) override;
 
     /**
     * @param SetterCallback The method in the AbstractFilter subclass that <i>sets</i> the value of the property
@@ -126,7 +126,7 @@ class SIMPLib_EXPORT LinkedChoicesFilterParameter : public ChoiceFilterParameter
 
   private:
     LinkedChoicesFilterParameter(const LinkedChoicesFilterParameter&) = delete; // Copy Constructor Not Implemented
-    void operator=(const LinkedChoicesFilterParameter&) = delete;               // Operator '=' Not Implemented
+    void operator=(const LinkedChoicesFilterParameter&) = delete;               // Move assignment Not Implemented
 };
 
 #endif /* _LinkedChoicesFilterParameter_H_ */

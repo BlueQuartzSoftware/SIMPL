@@ -53,10 +53,10 @@ class SIMPLib_EXPORT MakeDataContainer : public AbstractFilter
   Q_OBJECT
 public:
   SIMPL_SHARED_POINTERS(MakeDataContainer)
-  SIMPL_STATIC_NEW_MACRO(MakeDataContainer)
-  SIMPL_TYPE_MACRO_SUPER(MakeDataContainer, AbstractFilter)
+  SIMPL_FILTER_NEW_MACRO(MakeDataContainer)
+  SIMPL_TYPE_MACRO_SUPER_OVERRIDE(MakeDataContainer, AbstractFilter)
 
-  virtual ~MakeDataContainer();
+  ~MakeDataContainer() override;
   SIMPL_INSTANCE_STRING_PROPERTY(DataContainerName)
   SIMPL_INSTANCE_STRING_PROPERTY(CellEnsembleAttributeMatrixName)
   SIMPL_INSTANCE_STRING_PROPERTY(CellAttributeMatrixName)
@@ -83,42 +83,48 @@ public:
   SIMPL_FILTER_PARAMETER(QString, LatticeConstantsArrayName)
   Q_PROPERTY(QString LatticeConstantsArrayName READ getLatticeConstantsArrayName WRITE setLatticeConstantsArrayName)
 
-  virtual const QString getCompiledLibraryName();
-  virtual AbstractFilter::Pointer newFilterInstance(bool copyFilterParameters);
-  virtual const QString getGroupName();
+  const QString getCompiledLibraryName() const override;
+  AbstractFilter::Pointer newFilterInstance(bool copyFilterParameters) const override;
+  const QString getGroupName() const override;
 
   /**
   * @brief This returns a string that is displayed in the GUI. It should be readable
   * and understandable by humans.
   */
-  virtual const QString getHumanLabel();
+  const QString getHumanLabel() const override;
 
   /**
   * @brief This method will instantiate all the end user settable options/parameters
   * for this filter
   */
-  virtual void setupFilterParameters(); /**
+  void setupFilterParameters() override; /**
 *@brief This returns a string that is displayed in the GUI and helps to sort the filters into
 *a subgroup. It should be readable and understandable by humans.
 */
-  virtual const QString getSubGroupName();
+  const QString getSubGroupName() const override;
+
+  /**
+   * @brief getUuid Return the unique identifier for this filter.
+   * @return A QUuid object.
+   */
+  const QUuid getUuid() override;
 
   /**
   * @brief This method will read the options from a file
   * @param reader The reader that is used to read the options from a file
   */
-  virtual void readFilterParameters(AbstractFilterParametersReader* reader, int index);
+  void readFilterParameters(AbstractFilterParametersReader* reader, int index) override;
 
   /**
   * @brief Reimplemented from @see AbstractFilter class
   */
-  virtual void execute();
+  void execute() override;
 
   /**
   * @brief This function runs some sanity checks on the DataContainer and inputs
   * in an attempt to ensure the filter can process the inputs.
   */
-  virtual void preflight();
+  void preflight() override;
 
 signals:
   void updateFilterParameters(AbstractFilter* filter);
@@ -146,8 +152,11 @@ private:
   DEFINE_DATAARRAY_VARIABLE(uint32_t, CrystalStructures)
   DEFINE_DATAARRAY_VARIABLE(float, LatticeConstants)
 
+public:
   MakeDataContainer(const MakeDataContainer&) = delete; // Copy Constructor Not Implemented
-  void operator=(const MakeDataContainer&);    // Operator '=' Not Implemented
+  MakeDataContainer(MakeDataContainer&&) = delete;      // Move Constructor
+  MakeDataContainer& operator=(const MakeDataContainer&) = delete; // Copy Assignment Not Implemented
+  MakeDataContainer& operator=(MakeDataContainer&&) = delete;      // Move Assignment Not Implemented
 };
 
 #endif /*    */

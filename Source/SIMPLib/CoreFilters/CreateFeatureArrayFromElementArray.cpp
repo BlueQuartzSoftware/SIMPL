@@ -49,14 +49,12 @@
 //
 // -----------------------------------------------------------------------------
 CreateFeatureArrayFromElementArray::CreateFeatureArrayFromElementArray()
-: AbstractFilter()
-, m_CellFeatureAttributeMatrixName("", "", "")
+: m_CellFeatureAttributeMatrixName("", "", "")
 , m_SelectedCellArrayPath("", "", "")
 , m_CreatedArrayName("")
 , m_FeatureIdsArrayPath("", "", "")
 , m_FeatureIds(nullptr)
 {
-  setupFilterParameters();
 }
 
 // -----------------------------------------------------------------------------
@@ -127,7 +125,7 @@ void CreateFeatureArrayFromElementArray::dataCheck()
   QVector<size_t> cDims(1, 1);
   m_FeatureIdsPtr = getDataContainerArray()->getPrereqArrayFromPath<DataArray<int32_t>, AbstractFilter>(this, getFeatureIdsArrayPath(),
                                                                                                         cDims); /* Assigns the shared_ptr<> to an instance variable that is a weak_ptr<> */
-  if(nullptr != m_FeatureIdsPtr.lock().get())                                                                   /* Validate the Weak Pointer wraps a non-nullptr pointer to a DataArray<T> object */
+  if(nullptr != m_FeatureIdsPtr.lock())                                                                         /* Validate the Weak Pointer wraps a non-nullptr pointer to a DataArray<T> object */
   {
     m_FeatureIds = m_FeatureIdsPtr.lock()->getPointer(0);
   } /* Now assign the raw pointer to data from the DataArray<T> object */
@@ -336,7 +334,7 @@ void CreateFeatureArrayFromElementArray::execute()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-AbstractFilter::Pointer CreateFeatureArrayFromElementArray::newFilterInstance(bool copyFilterParameters)
+AbstractFilter::Pointer CreateFeatureArrayFromElementArray::newFilterInstance(bool copyFilterParameters) const
 {
   CreateFeatureArrayFromElementArray::Pointer filter = CreateFeatureArrayFromElementArray::New();
   if(true == copyFilterParameters)
@@ -349,7 +347,7 @@ AbstractFilter::Pointer CreateFeatureArrayFromElementArray::newFilterInstance(bo
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString CreateFeatureArrayFromElementArray::getCompiledLibraryName()
+const QString CreateFeatureArrayFromElementArray::getCompiledLibraryName() const
 {
   return Core::CoreBaseName;
 }
@@ -357,7 +355,7 @@ const QString CreateFeatureArrayFromElementArray::getCompiledLibraryName()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString CreateFeatureArrayFromElementArray::getBrandingString()
+const QString CreateFeatureArrayFromElementArray::getBrandingString() const
 {
   return "SIMPLib Core Filter";
 }
@@ -365,7 +363,7 @@ const QString CreateFeatureArrayFromElementArray::getBrandingString()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString CreateFeatureArrayFromElementArray::getFilterVersion()
+const QString CreateFeatureArrayFromElementArray::getFilterVersion() const
 {
   QString version;
   QTextStream vStream(&version);
@@ -376,7 +374,7 @@ const QString CreateFeatureArrayFromElementArray::getFilterVersion()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString CreateFeatureArrayFromElementArray::getGroupName()
+const QString CreateFeatureArrayFromElementArray::getGroupName() const
 {
   return SIMPL::FilterGroups::CoreFilters;
 }
@@ -384,7 +382,15 @@ const QString CreateFeatureArrayFromElementArray::getGroupName()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString CreateFeatureArrayFromElementArray::getSubGroupName()
+const QUuid CreateFeatureArrayFromElementArray::getUuid()
+{
+  return QUuid("{94438019-21bb-5b61-a7c3-66974b9a34dc}");
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+const QString CreateFeatureArrayFromElementArray::getSubGroupName() const
 {
   return SIMPL::FilterSubGroups::MemoryManagementFilters;
 }
@@ -392,7 +398,7 @@ const QString CreateFeatureArrayFromElementArray::getSubGroupName()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString CreateFeatureArrayFromElementArray::getHumanLabel()
+const QString CreateFeatureArrayFromElementArray::getHumanLabel() const
 {
   return "Create Feature Array from Element Array";
 }

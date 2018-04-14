@@ -1,3 +1,106 @@
+#-------------------------------------------------------------------------------
+# Add Unit Test for Plugins and Filters
+# 
+function(SIMPL_GenerateUnitTestFile)
+  set(options)
+  set(oneValueArgs PLUGIN_NAME TEST_DATA_DIR)
+  set(multiValueArgs SOURCES LINK_LIBRARIES INCLUDE_DIRS EXTRA_SOURCES)
+  cmake_parse_arguments(P "${options}" "${oneValueArgs}" "${multiValueArgs}" ${ARGN})
+
+  set(TEST_TEMP_DIR ${${P_PLUGIN_NAME}_BINARY_DIR}/Test/Temp)
+  # Make sure the directory is created during CMake time
+  file(MAKE_DIRECTORY ${TEST_TEMP_DIR})
+  
+  set(TESTFILES_SOURCE_DIR "${${P_PLUGIN_NAME}_SOURCE_DIR}/Test/TestFiles")
+
+
+  configure_file(${${P_PLUGIN_NAME}Test_SOURCE_DIR}/TestFileLocations.h.in
+                 ${${P_PLUGIN_NAME}Test_BINARY_DIR}/${P_PLUGIN_NAME}TestFileLocations.h @ONLY IMMEDIATE)
+
+  configure_file(${SIMPLProj_SOURCE_DIR}/Resources/UnitTestSupport.hpp
+                 ${${P_PLUGIN_NAME}Test_BINARY_DIR}/UnitTestSupport.hpp COPYONLY IMMEDIATE)
+
+
+  set( ${P_PLUGIN_NAME}_TEST_SRCS )
+  set(FilterTestIncludes "")
+  set(TestMainFunctors "")
+
+  foreach(name  ${TEST_NAMES})
+    set( ${P_PLUGIN_NAME}_TEST_SRCS
+      ${${P_PLUGIN_NAME}_TEST_SRCS}
+      "${${P_PLUGIN_NAME}_SOURCE_DIR}/Test/${name}.cpp"
+      )
+    string(CONCAT
+      FilterTestIncludes
+      ${FilterTestIncludes}
+      "#include \"${${P_PLUGIN_NAME}_SOURCE_DIR}/Test/${name}.cpp\"\n"
+      )
+
+    string(CONCAT
+      TestMainFunctors
+     ${TestMainFunctors}
+     "  ${name}()()|\n")
+  endforeach()
+
+  if(NOT "${TestMainFunctors}" STREQUAL "")
+    STRING(REPLACE "|" ";" TestMainFunctors ${TestMainFunctors}   )
+  endif()
+
+  configure_file(${SIMPLProj_SOURCE_DIR}/Source/SIMPLib/Testing/TestMain.cpp.in
+                 ${${P_PLUGIN_NAME}Test_BINARY_DIR}/${P_PLUGIN_NAME}UnitTest.cpp @ONLY)
+
+
+  # Set the source files properties on each source file.
+  foreach(f ${${P_PLUGIN_NAME}_TEST_SRCS})
+    set_source_files_properties( ${f} PROPERTIES HEADER_FILE_ONLY TRUE)
+  endforeach()
+
+
+  AddSIMPLUnitTest(TESTNAME ${P_PLUGIN_NAME}UnitTest
+    SOURCES 
+      ${${P_PLUGIN_NAME}Test_BINARY_DIR}/${P_PLUGIN_NAME}UnitTest.cpp 
+      ${${P_PLUGIN_NAME}_TEST_SRCS}
+      ${P_EXTRA_SOURCES}
+    FOLDER "${P_PLUGIN_NAME}Plugin/Test"
+    LINK_LIBRARIES ${P_LINK_LIBRARIES}
+    INCLUDE_DIRS ${P_INCLUDE_DIRS}
+    )
+
+  if(MSVC)
+    set_source_files_properties(${${P_PLUGIN_NAME}Test_BINARY_DIR}/${P_PLUGIN_NAME}UnitTest.cpp PROPERTIES COMPILE_FLAGS /bigobj)
+  endif()
+
+  set(AllFilters ${_PublicFilters} ${_PrivateFilters})
+  list(LENGTH AllFilters totalFilters)
+  list(LENGTH P_SOURCES totalTests)
+  set(numTests "0")
+
+  file(APPEND ${UnitTestAnalysisFile} "\n## ${P_PLUGIN_NAME} ##\n\n")
+  file(APPEND ${UnitTestAnalysisFile} "| Filter Name | Unit Test |\n")
+  file(APPEND ${UnitTestAnalysisFile} "| ----------- | --------- |\n")
+  foreach(ut ${AllFilters})
+    list(FIND P_SOURCES ${ut}Test TestFound)
+    set(MDTestFound "TRUE")
+    if(TestFound STREQUAL "-1")
+      set(MDTestFound "**FALSE**")
+    else()
+      list(REMOVE_ITEM P_SOURCES ${ut}Test)
+      math(EXPR numTests "${numTests} + 1")
+    endif()
+    file(APPEND ${UnitTestAnalysisFile} "| ${ut} | ${MDTestFound} |\n")
+  endforeach()
+  file(APPEND ${UnitTestAnalysisFile} "| TotalFilters: ${totalFilters} | Num Tested: ${numTests} |\n")
+
+  file(APPEND ${UnitTestAnalysisFile} "\n### Non-Matching Unit Test Names ###\n")
+  foreach(ut ${P_SOURCES})
+    file(APPEND ${UnitTestAnalysisFile} "+ ${ut}\n")
+  endforeach()
+
+
+
+endfunction()
+
+
 
 
 #-------------------------------------------------------------------------------
@@ -57,7 +160,8 @@ function(SIMPL_START_FILTER_GROUP)
 
   set_property(GLOBAL APPEND_STRING PROPERTY ${P_FILTER_GROUP}_ALL_FILTERS_HEADER "\n/* ------ ${P_FILTER_GROUP} --------- */\n")
   set_property(GLOBAL APPEND_STRING PROPERTY ${P_FILTER_GROUP}_REGISTER_KNOWN_FILTERS "\n    /* ------ ${P_FILTER_GROUP} --------- */\n")
-
+  STRING(REPLACE "Filters" "" P_FILTER_GROUP ${P_FILTER_GROUP})
+  
   set_property(GLOBAL APPEND PROPERTY DREAM3DDoc_GROUPS ${P_FILTER_GROUP})
 endfunction()
 
@@ -81,12 +185,13 @@ endmacro()
 # Macro ADD_SIMPL_SUPPORT_MOC_HEADER
 macro(ADD_SIMPL_SUPPORT_MOC_HEADER SourceDir filterGroup headerFileName)
   # QT5_WRAP_CPP( _moc_filter_source  ${SourceDir}/${filterGroup}/${headerFileName})
-  set_source_files_properties( ${_moc_filter_source} PROPERTIES GENERATED TRUE)
-  set_source_files_properties( ${_moc_filter_source} PROPERTIES HEADER_FILE_ONLY TRUE)
+  # set_source_files_properties( ${_moc_filter_source} PROPERTIES GENERATED TRUE)
+  # set_source_files_properties( ${_moc_filter_source} PROPERTIES HEADER_FILE_ONLY TRUE)
 
   set(Project_SRCS ${Project_SRCS}
                     ${SourceDir}/${filterGroup}/${headerFileName}
-                    ${_moc_filter_source})
+  #                  ${_moc_filter_source}
+  )
   cmp_IDE_SOURCE_PROPERTIES( "${filterGroup}" "${SourceDir}/${filterGroup}/${headerFileName}" "" "0")
 endmacro()
 
@@ -157,9 +262,7 @@ macro(ADD_SIMPL_FILTER FilterLib WidgetLib filterGroup filterName filterDocPath 
       endif()
 
       get_property(DREAM3DDocRoot GLOBAL PROPERTY DREAM3DDocRoot)
-      #file(APPEND ${DREAM3DDocRoot}/DREAM3DDoc_${filterGroup} "${filterDocPath}\n")
       set_property(GLOBAL APPEND PROPERTY DREAM3DDoc_${filterGroup} ${filterDocPath})
-
   endif()
 endmacro()
 
@@ -167,12 +270,12 @@ endmacro()
 # Macro ADD_FILTER_LIST
 macro(ADD_FILTER_LIST)
 
-        file(APPEND ${RegisterKnownFiltersFile} "\tQList<QString> pluginList;\n\n")
+  file(APPEND ${RegisterKnownFiltersFile} "    QList<QString> pluginList;\n\n")
 
-    foreach(f ${_PublicFilters} )
-        file(APPEND ${RegisterKnownFiltersFile} "\tpluginList.append(\"${f}\");\n")
-    endforeach()
+  foreach(f ${_PublicFilters} )
+    file(APPEND ${RegisterKnownFiltersFile} "    pluginList.append(\"${f}\");\n")
+  endforeach()
 
-    file(APPEND ${RegisterKnownFiltersFile} "\n\treturn pluginList;")
+  file(APPEND ${RegisterKnownFiltersFile} "\n    return pluginList;")
 
 endmacro()

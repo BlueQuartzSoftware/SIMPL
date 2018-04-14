@@ -125,14 +125,12 @@ public:
 //
 // -----------------------------------------------------------------------------
 WriteASCIIData::WriteASCIIData()
-: AbstractFilter()
-, m_SelectedDataArrayPaths(QVector<DataArrayPath>())
+: m_SelectedDataArrayPaths(QVector<DataArrayPath>())
 , m_OutputPath("")
 , m_Delimiter(0)
 , m_FileExtension(".txt")
 , m_MaxValPerLine(-1)
 {
-  setupFilterParameters();
 }
 
 // -----------------------------------------------------------------------------
@@ -438,7 +436,7 @@ char WriteASCIIData::lookupDelimiter()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-AbstractFilter::Pointer WriteASCIIData::newFilterInstance(bool copyFilterParameters)
+AbstractFilter::Pointer WriteASCIIData::newFilterInstance(bool copyFilterParameters) const
 {
   WriteASCIIData::Pointer filter = WriteASCIIData::New();
   if(true == copyFilterParameters)
@@ -451,7 +449,7 @@ AbstractFilter::Pointer WriteASCIIData::newFilterInstance(bool copyFilterParamet
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString WriteASCIIData::getCompiledLibraryName()
+const QString WriteASCIIData::getCompiledLibraryName() const
 {
   return Core::CoreBaseName;
 }
@@ -459,7 +457,7 @@ const QString WriteASCIIData::getCompiledLibraryName()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString WriteASCIIData::getBrandingString()
+const QString WriteASCIIData::getBrandingString() const
 {
   return "SIMPLib Core Filter";
 }
@@ -467,7 +465,7 @@ const QString WriteASCIIData::getBrandingString()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString WriteASCIIData::getFilterVersion()
+const QString WriteASCIIData::getFilterVersion() const
 {
   QString version;
   QTextStream vStream(&version);
@@ -478,7 +476,7 @@ const QString WriteASCIIData::getFilterVersion()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString WriteASCIIData::getGroupName()
+const QString WriteASCIIData::getGroupName() const
 {
   return SIMPL::FilterGroups::CoreFilters;
 }
@@ -486,7 +484,15 @@ const QString WriteASCIIData::getGroupName()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString WriteASCIIData::getSubGroupName()
+const QUuid WriteASCIIData::getUuid()
+{
+  return QUuid("{5fbf9204-2c6c-597b-856a-f4612adbac38}");
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+const QString WriteASCIIData::getSubGroupName() const
 {
   return SIMPL::FilterSubGroups::OutputFilters;
 }
@@ -494,7 +500,7 @@ const QString WriteASCIIData::getSubGroupName()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString WriteASCIIData::getHumanLabel()
+const QString WriteASCIIData::getHumanLabel() const
 {
   return "Export ASCII Data";
 }

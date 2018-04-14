@@ -87,7 +87,7 @@ class SIMPLib_EXPORT PrecipitateStatsData : public StatsData
   public:
     SIMPL_SHARED_POINTERS(PrecipitateStatsData)
     SIMPL_STATIC_NEW_MACRO(PrecipitateStatsData)
-    SIMPL_TYPE_MACRO_SUPER(PrecipitateStatsData, StatsData)
+     SIMPL_TYPE_MACRO_SUPER_OVERRIDE(PrecipitateStatsData, StatsData)
 
     virtual ~PrecipitateStatsData();
 
@@ -193,20 +193,20 @@ class SIMPLib_EXPORT PrecipitateStatsData : public StatsData
      * @brief writeJson
      * @param json
      */
-    virtual void writeJson(QJsonObject &json);
+    virtual void writeJson(QJsonObject& json) override;
 
     /**
      * @brief readJson
      * @param json
      */
-    virtual void readJson(const QJsonObject &json);
+    virtual void readJson(const QJsonObject& json) override;
 
   protected:
     PrecipitateStatsData();
 
   private:
     PrecipitateStatsData(const PrecipitateStatsData&) = delete; // Copy Constructor Not Implemented
-    void operator=(const PrecipitateStatsData&) = delete;       // Operator '=' Not Implemented
+    void operator=(const PrecipitateStatsData&) = delete;       // Move assignment Not Implemented
 };
 
 #endif /* _PrecipitateStatsDataTUPLE_H_ */

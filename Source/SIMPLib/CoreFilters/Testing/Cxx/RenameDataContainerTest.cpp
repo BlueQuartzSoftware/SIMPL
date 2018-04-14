@@ -69,7 +69,7 @@ public:
     // Now instantiate the RenameAttributeArray Filter from the FilterManager
     QString filtName = "RenameDataContainer";
     FilterManager* fm = FilterManager::Instance();
-    IFilterFactory::Pointer filterFactory = fm->getFactoryForFilter(filtName);
+    IFilterFactory::Pointer filterFactory = fm->getFactoryFromClassName(filtName);
     if(nullptr == filterFactory.get())
     {
       std::stringstream ss;
@@ -248,5 +248,5 @@ public:
 
 private:
   RenameDataContainerTest(const RenameDataContainerTest&); // Copy Constructor Not Implemented
-  void operator=(const RenameDataContainerTest&);          // Operator '=' Not Implemented
+  void operator=(const RenameDataContainerTest&);          // Move assignment Not Implemented
 };

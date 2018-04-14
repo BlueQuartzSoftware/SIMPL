@@ -59,7 +59,8 @@ class SVWidgetsLib_EXPORT StatusBarWidget : public QFrame, private Ui::StatusBar
       Issues = 0,
       Console = 1,
       DataStructure = 2,
-      Toolbox = 3
+      Toolbox = 3,
+      Pipeline = 4
     };
 
 
@@ -106,6 +107,12 @@ class SVWidgetsLib_EXPORT StatusBarWidget : public QFrame, private Ui::StatusBar
     void toolboxVisibilityChanged(bool b);
 
     /**
+     * @brief pipelineVisibilityChanged
+     * @param b
+     */
+    void pipelineVisibilityChanged(bool b);
+    
+    /**
      * @brief issuesTableHasErrors
      * @param b
      */
@@ -120,7 +127,7 @@ class SVWidgetsLib_EXPORT StatusBarWidget : public QFrame, private Ui::StatusBar
 
   private:
     StatusBarWidget(const StatusBarWidget&) = delete; // Copy Constructor Not Implemented
-    void operator=(const StatusBarWidget&) = delete;  // Operator '=' Not Implemented
+    void operator=(const StatusBarWidget&) = delete;  // Move assignment Not Implemented
 };
 
 #endif /* _statusBarWidget_H_ */

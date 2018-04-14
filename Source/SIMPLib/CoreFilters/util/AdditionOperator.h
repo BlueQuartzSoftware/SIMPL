@@ -64,7 +64,7 @@ class SIMPLib_EXPORT AdditionOperator : public BinaryOperator
 
   private:
     AdditionOperator(const AdditionOperator&) = delete; // Copy Constructor Not Implemented
-    void operator=(const AdditionOperator&) = delete;   // Operator '=' Not Implemented
+    void operator=(const AdditionOperator&) = delete;   // Move assignment Not Implemented
 };
 
 #endif /* _AdditionOperator_H_ */

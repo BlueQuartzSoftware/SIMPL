@@ -282,7 +282,7 @@ public:
 
     DataContainer::Pointer dc = DataContainer::New("DataContainer_TEST");
     ImageGeom::Pointer image = ImageGeom::CreateGeometry("ImageGeom_TEST");
-    image->setDimensions(nx, ny, nz);
+    image->setDimensions(std::make_tuple(nx, ny, nz));
     dc->setGeometry(image);
 
     // 1D VolumeDataContainer
@@ -918,5 +918,5 @@ public:
 
 private:
   DataContainerTest(const DataContainerTest&); // Copy Constructor Not Implemented
-  void operator=(const DataContainerTest&);    // Operator '=' Not Implemented
+  void operator=(const DataContainerTest&);    // Move assignment Not Implemented
 };

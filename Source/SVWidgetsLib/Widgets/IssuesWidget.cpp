@@ -41,15 +41,21 @@
 #include <QtWidgets/QMainWindow>
 #include <QtWidgets/QTableWidgetItem>
 
-#include "SVWidgetsLib/QtSupport/QtSSettings.h"
-
 #include "SIMPLib/Common/DocRequestManager.h"
 
+#include "SVWidgetsLib/SVWidgetsLib.h"
+#include "SVWidgetsLib/QtSupport/QtSSettings.h"
+
+#ifdef SIMPL_USE_MKDOCS
+#define URL_GENERATOR QtSDocServer
+#include "SVWidgetsLib/QtSupport/QtSDocServer.h"
+#else
+#define URL_GENERATOR QtSHelpUrlGenerator
 #include "SVWidgetsLib/QtSupport/QtSHelpUrlGenerator.h"
+#endif
 
 #include "ui_IssuesWidget.h"
 
-// Include the MOC generated CPP file which has all the QMetaObject methods/data
 
 // -----------------------------------------------------------------------------
 //
@@ -137,7 +143,7 @@ void IssuesWidget::displayCachedMessages()
     }
   }
 
-  emit tableHasErrors(false, errCount, warnCount);
+  emit tableHasErrors(errCount > 0, errCount, warnCount);
 
   // Now create the correct number of table rows.
   ui->errorTableWidget->setRowCount(count);
@@ -239,7 +245,7 @@ QLabel* IssuesWidget::createHyperlinkLabel(PipelineMessage msg)
     return new QLabel("Unknown Filter Class");
   }
 
-  QUrl filterURL = QtSHelpUrlGenerator::generateHTMLUrl(filterClassName.toLower());
+  QUrl filterURL = URL_GENERATOR::GenerateHTMLUrl(filterClassName);
   QString filterHTMLText("<a href=\"");
   filterHTMLText.append(filterURL.toString()).append("\">").append(filterHumanLabel).append("</a>");
 

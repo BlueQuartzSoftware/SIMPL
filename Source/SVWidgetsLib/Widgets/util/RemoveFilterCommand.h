@@ -65,7 +65,7 @@ private:
   QUuid                                   m_NextNodeId;
 
   RemoveFilterCommand(const RemoveFilterCommand&) = delete; // Copy Constructor Not Implemented
-  void operator=(const RemoveFilterCommand&) = delete;      // Operator '=' Not Implemented
+  void operator=(const RemoveFilterCommand&) = delete;      // Move assignment Not Implemented
 };
 
 #endif /* _removefiltercommand_h_ */

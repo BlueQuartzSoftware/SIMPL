@@ -65,10 +65,10 @@ class SIMPLib_EXPORT GenericExample : public AbstractFilter
   Q_OBJECT
 public:
   SIMPL_SHARED_POINTERS(GenericExample)
-  SIMPL_STATIC_NEW_MACRO(GenericExample)
-  SIMPL_TYPE_MACRO_SUPER(GenericExample, AbstractFilter)
+  SIMPL_FILTER_NEW_MACRO(GenericExample)
+  SIMPL_TYPE_MACRO_SUPER_OVERRIDE(GenericExample, AbstractFilter)
 
-  virtual ~GenericExample();
+  ~GenericExample() override;
 
   /* Place your input parameters here. You can use some of the DREAM3D Macros if you want to */
   SIMPL_FILTER_PARAMETER(QString, StlFilePrefix)
@@ -192,33 +192,39 @@ public:
   SIMPL_FILTER_PARAMETER(int, DistanceMetric)
   Q_PROPERTY(int DistanceMetric READ getDistanceMetric WRITE setDistanceMetric)
 
-  virtual const QString getCompiledLibraryName();
-  virtual AbstractFilter::Pointer newFilterInstance(bool copyFilterParameters);
-  virtual const QString getGroupName();
+  const QString getCompiledLibraryName() const override;
+  AbstractFilter::Pointer newFilterInstance(bool copyFilterParameters) const override;
+  const QString getGroupName() const override;
 
   /**
   * @brief This returns a string that is displayed in the GUI. It should be readable
   * and understandable by humans.
   */
-  virtual const QString getHumanLabel();
+  const QString getHumanLabel() const override;
 
   /**
   * @brief This returns a string that is displayed in the GUI and helps to sort the filters into
   * a subgroup. It should be readable and understandable by humans.
   */
-  virtual const QString getSubGroupName();
+  const QString getSubGroupName() const override;
+
+  /**
+   * @brief getUuid Return the unique identifier for this filter.
+   * @return A QUuid object.
+   */
+  const QUuid getUuid() override;
 
   /**
   * @brief This method will instantiate all the end user settable options/parameters
   * for this filter
   */
-  virtual void setupFilterParameters();
+  void setupFilterParameters() override;
 
   /**
   * @brief This method will read the options from a file
   * @param reader The reader that is used to read the options from a file
   */
-  virtual void readFilterParameters(AbstractFilterParametersReader* reader, int index);
+  void readFilterParameters(AbstractFilterParametersReader* reader, int index) override;
 
   /**
   * @brief readFilterParametersFromJson Reads the filter parameters from a file
@@ -235,13 +241,13 @@ public:
   /**
    * @brief Reimplemented from @see AbstractFilter class
    */
-  virtual void execute();
+  void execute() override;
 
   /**
   * @brief This function runs some sanity checks on the DataContainer and inputs
   * in an attempt to ensure the filter can process the inputs.
   */
-  virtual void preflight();
+  void preflight() override;
 
 signals:
   void updateFilterParameters(AbstractFilter* filter);
@@ -263,8 +269,11 @@ protected:
   void initialize();
 
 private:
+public:
   GenericExample(const GenericExample&) = delete; // Copy Constructor Not Implemented
-  void operator=(const GenericExample&) = delete; // Operator '=' Not Implemented
+  GenericExample(GenericExample&&) = delete;      // Move Constructor
+  GenericExample& operator=(const GenericExample&) = delete; // Copy Assignment Not Implemented
+  GenericExample& operator=(GenericExample&&) = delete;      // Move Assignment
 };
 
 #endif /* _GenericExample_H_ */

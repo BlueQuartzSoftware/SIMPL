@@ -219,7 +219,7 @@ class H5DataArrayWriter
 
   private:
     H5DataArrayWriter(const H5DataArrayWriter&); // Copy Constructor Not Implemented
-    void operator=(const H5DataArrayWriter&); // Operator '=' Not Implemented
+    void operator=(const H5DataArrayWriter&);    // Move assignment Not Implemented
 };
 
 
@@ -266,7 +266,7 @@ class H5GBCDArrayWriter
 
   private:
     H5GBCDArrayWriter(const H5GBCDArrayWriter&); // Copy Constructor Not Implemented
-    void operator=(const H5GBCDArrayWriter&); // Operator '=' Not Implemented
+    void operator=(const H5GBCDArrayWriter&);    // Move assignment Not Implemented
 };
 
 

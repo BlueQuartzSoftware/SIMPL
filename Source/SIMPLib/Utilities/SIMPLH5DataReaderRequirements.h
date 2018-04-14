@@ -45,7 +45,9 @@
 class SIMPLib_EXPORT SIMPLH5DataReaderRequirements
 {
   public:
+    SIMPLH5DataReaderRequirements();
     SIMPLH5DataReaderRequirements(const QString &primitiveType, size_t allowedCompDim, AttributeMatrix::Type attributeMatrixType, IGeometry::Type geometryType);
+    
     virtual ~SIMPLH5DataReaderRequirements();
 
     typedef QVector< QVector<size_t> > QVectorSizeT;

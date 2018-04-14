@@ -66,7 +66,7 @@ class SIMPLib_EXPORT ShapeTypeSelectionFilterParameter : public FilterParameter
 public:
   SIMPL_SHARED_POINTERS(ShapeTypeSelectionFilterParameter)
   SIMPL_STATIC_NEW_MACRO(ShapeTypeSelectionFilterParameter)
-  SIMPL_TYPE_MACRO_SUPER(ShapeTypeSelectionFilterParameter, FilterParameter)
+   SIMPL_TYPE_MACRO_SUPER_OVERRIDE(ShapeTypeSelectionFilterParameter, FilterParameter)
 
   typedef std::function<void(ShapeType::Types)> SetterCallbackType;
   typedef std::function<ShapeType::Types(void)> GetterCallbackType;
@@ -102,7 +102,7 @@ public:
   * this FilterParameter subclass
   * @return
   */
-  QString getWidgetType();
+  QString getWidgetType() const override;
 
   /**
   * @brief readJson Reads this filter parameter's corresponding property out of a QJsonObject.
@@ -139,7 +139,7 @@ protected:
 
 private:
   ShapeTypeSelectionFilterParameter(const ShapeTypeSelectionFilterParameter&) = delete; // Copy Constructor Not Implemented
-  void operator=(const ShapeTypeSelectionFilterParameter&);                    // Operator '=' Not Implemented
+  void operator=(const ShapeTypeSelectionFilterParameter&);                             // Move assignment Not Implemented
 };
 
 #endif /* _ShapeTypeSelectionFilterParameter_H_ */

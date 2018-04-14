@@ -50,15 +50,13 @@
 //
 // -----------------------------------------------------------------------------
 PostSlackMessage::PostSlackMessage()
-: AbstractFilter()
-, m_SlackUser("")
+: m_SlackUser("")
 , m_SlackUrl("")
 , m_SlackMessage("")
 , m_WarningsAsError(false)
 {
   m_SlackUser = "[DREAM.3D@" + QSysInfo::machineHostName() + "]";
   initialize();
-  setupFilterParameters();
   m_NetworkManager = new QNetworkAccessManager(this);
 }
 
@@ -185,7 +183,7 @@ void PostSlackMessage::execute()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-AbstractFilter::Pointer PostSlackMessage::newFilterInstance(bool copyFilterParameters)
+AbstractFilter::Pointer PostSlackMessage::newFilterInstance(bool copyFilterParameters) const
 {
   PostSlackMessage::Pointer filter = PostSlackMessage::New();
   if(true == copyFilterParameters)
@@ -198,7 +196,7 @@ AbstractFilter::Pointer PostSlackMessage::newFilterInstance(bool copyFilterParam
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString PostSlackMessage::getCompiledLibraryName()
+const QString PostSlackMessage::getCompiledLibraryName() const
 {
   return Core::CoreBaseName;
 }
@@ -206,7 +204,7 @@ const QString PostSlackMessage::getCompiledLibraryName()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString PostSlackMessage::getBrandingString()
+const QString PostSlackMessage::getBrandingString() const
 {
   return "SIMPLib Core Filter";
 }
@@ -214,7 +212,7 @@ const QString PostSlackMessage::getBrandingString()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString PostSlackMessage::getFilterVersion()
+const QString PostSlackMessage::getFilterVersion() const
 {
   QString version;
   QTextStream vStream(&version);
@@ -225,7 +223,7 @@ const QString PostSlackMessage::getFilterVersion()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString PostSlackMessage::getGroupName()
+const QString PostSlackMessage::getGroupName() const
 {
   return SIMPL::FilterGroups::CoreFilters;
 }
@@ -233,7 +231,15 @@ const QString PostSlackMessage::getGroupName()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString PostSlackMessage::getSubGroupName()
+const QUuid PostSlackMessage::getUuid()
+{
+  return QUuid("{0ca83462-8564-54ea-9f4e-e5141974f30b}");
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+const QString PostSlackMessage::getSubGroupName() const
 {
   return SIMPL::FilterSubGroups::MiscFilters;
 }
@@ -241,7 +247,7 @@ const QString PostSlackMessage::getSubGroupName()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString PostSlackMessage::getHumanLabel()
+const QString PostSlackMessage::getHumanLabel() const
 {
   return "Post Slack Message";
 }

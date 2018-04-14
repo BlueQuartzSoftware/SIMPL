@@ -36,7 +36,7 @@ public slots:
 
 private:
   RemoveArraysObserver(const RemoveArraysObserver&) = delete; // Copy Constructor Not Implemented
-  void operator=(const RemoveArraysObserver&);       // Operator '=' Not Implemented
+  void operator=(const RemoveArraysObserver&);                // Move assignment Not Implemented
 };
 
 #endif /* _RemoveArraysObserver_H_ */

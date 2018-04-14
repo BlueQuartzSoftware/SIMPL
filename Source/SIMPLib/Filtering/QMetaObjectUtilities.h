@@ -53,7 +53,7 @@ protected:
 
 private:
   QMetaObjectUtilities(const QMetaObjectUtilities&) = delete; // Copy Constructor Not Implemented
-  void operator=(const QMetaObjectUtilities&);       // Operator '=' Not Implemented
+  void operator=(const QMetaObjectUtilities&);                // Move assignment Not Implemented
 };
 
 #endif /* _QMetaObjectUtilities_H_ */

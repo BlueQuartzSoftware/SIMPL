@@ -1,18 +1,22 @@
-Rename Data Container {#renamedatacontainer}
+Rename Data Container 
 =============
 
 ## Group (Subgroup) ##
+
 Core (Memory/Management)
 
 ## Description ##
+
 This **Filter** renames a user chosen **Data Container**.
 
 ## Parameters ##
+
 | Name | Type | Description |
 |------|------| ----------- |
 | New Data Container Name| String | New name for the selected **Data Container** |
 
 ## Required Geometry ##
+
 Not Applicable
 
 ## Required Objects ##
@@ -22,7 +26,12 @@ Not Applicable
 | **Data Container** | None | N/A | N/A | **Data Container** to rename |
 
 ## Created Objects ##
+
 None
+
+## Example Pipelines ##
+
+
 
 ## License & Copyright ##
 

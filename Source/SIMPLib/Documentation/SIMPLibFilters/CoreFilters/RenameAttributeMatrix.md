@@ -1,18 +1,22 @@
-Rename Attribute Matrix {#renameattributematrix}
+Rename Attribute Matrix 
 =============
 
 ## Group (Subgroup) ##
+
 Core (Memory/Management)
 
 ## Description ##
+
 This **Filter** renames a user chosen **Attribute Matrix**.
 
 ## Parameters ##
+
 | Name | Type | Description |
 |------|------| ----------- |
 | New Attribute Matrix Name | String | New name for the selected **Attribute Matrix** |
 
 ## Required Geometry ##
+
 Not Applicable
 
 ## Required Objects ##
@@ -22,7 +26,12 @@ Not Applicable
 | **Attribute Matrix** | None | Any | N/A | **Attribute Matrix** to rename |
 
 ## Created Objects ##
+
 None
+
+## Example Pipelines ##
+
+
 
 ## License & Copyright ##
 

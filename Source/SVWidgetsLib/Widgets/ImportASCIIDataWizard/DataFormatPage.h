@@ -290,7 +290,7 @@ class DataFormatPage : public AbstractWizardPage, private Ui::DataFormatPage
     bool validateTupleDimensions(QVector<size_t> tupleDims);
 
     DataFormatPage(const DataFormatPage&) = delete; // Copy Constructor Not Implemented
-    void operator=(const DataFormatPage&) = delete; // Operator '=' Not Implemented
+    void operator=(const DataFormatPage&) = delete; // Move assignment Not Implemented
 };
 
 #endif /* DataFormatPage_H_ */

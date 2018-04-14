@@ -385,7 +385,7 @@ void DynamicTableWidget::populateTable()
     if(m_FilterParameter->getErrorCondition() < 0)
     {
       QString errorMessage = m_FilterParameter->getErrorMessage();
-      QString pluginName = getFilter()->getPluginInstance()->getPluginName();
+      QString pluginName = getFilter()->getPluginInstance()->getPluginBaseName();
       QString filterName = getFilter()->getHumanLabel();
       QString filterParameterName = m_FilterParameter->getPropertyName();
       QString vendorName = getFilter()->getPluginInstance()->getVendor();

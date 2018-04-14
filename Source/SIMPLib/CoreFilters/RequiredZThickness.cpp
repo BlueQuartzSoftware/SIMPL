@@ -53,7 +53,6 @@ RequiredZThickness::RequiredZThickness()
 , m_NumZVoxels(-1)
 , m_PreflightCheck(false)
 {
-  setupFilterParameters();
 }
 
 // -----------------------------------------------------------------------------
@@ -124,7 +123,7 @@ void RequiredZThickness::dataCheck()
   }
 
   size_t dims[3] = {0, 0, 0};
-  image->getDimensions(dims);
+  std::tie(dims[0], dims[1], dims[2]) = image->getDimensions();
 
   if(dims[2] < getNumZVoxels() && m_PreflightCheck)
   {
@@ -185,7 +184,7 @@ void RequiredZThickness::execute()
   ImageGeom::Pointer image = dataContainer->getGeometryAs<ImageGeom>();
 
   size_t dims[3] = {0, 0, 0};
-  image->getDimensions(dims);
+  std::tie(dims[0], dims[1], dims[2]) = image->getDimensions();
 
   if(dims[2] < getNumZVoxels())
   {
@@ -207,7 +206,7 @@ void RequiredZThickness::execute()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-AbstractFilter::Pointer RequiredZThickness::newFilterInstance(bool copyFilterParameters)
+AbstractFilter::Pointer RequiredZThickness::newFilterInstance(bool copyFilterParameters) const
 {
   RequiredZThickness::Pointer filter = RequiredZThickness::New();
   if(true == copyFilterParameters)
@@ -220,7 +219,7 @@ AbstractFilter::Pointer RequiredZThickness::newFilterInstance(bool copyFilterPar
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString RequiredZThickness::getCompiledLibraryName()
+const QString RequiredZThickness::getCompiledLibraryName() const
 {
   return Core::CoreBaseName;
 }
@@ -228,7 +227,7 @@ const QString RequiredZThickness::getCompiledLibraryName()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString RequiredZThickness::getGroupName()
+const QString RequiredZThickness::getGroupName() const
 {
   return SIMPL::FilterGroups::CoreFilters;
 }
@@ -236,7 +235,15 @@ const QString RequiredZThickness::getGroupName()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString RequiredZThickness::getSubGroupName()
+const QUuid RequiredZThickness::getUuid()
+{
+  return QUuid("{1fe19578-6856-55f2-adc8-2236fac22c25}");
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+const QString RequiredZThickness::getSubGroupName() const
 {
   return SIMPL::FilterSubGroups::MiscFilters;
 }
@@ -244,7 +251,7 @@ const QString RequiredZThickness::getSubGroupName()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString RequiredZThickness::getHumanLabel()
+const QString RequiredZThickness::getHumanLabel() const
 {
   return "Required Z Dimension (Image Geometry)";
 }

@@ -39,15 +39,13 @@
 //
 // -----------------------------------------------------------------------------
 ErrorWarningFilter::ErrorWarningFilter()
-: AbstractFilter()
-, m_PreflightWarning(false)
+: m_PreflightWarning(false)
 , m_PreflightError(false)
 , m_ExecuteWarning(false)
 , m_ExecuteError(false)
 , m_PropertyError(false)
 {
   initialize();
-  setupFilterParameters();
 }
 
 // -----------------------------------------------------------------------------
@@ -155,7 +153,7 @@ void ErrorWarningFilter::execute()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-AbstractFilter::Pointer ErrorWarningFilter::newFilterInstance(bool copyFilterParameters)
+AbstractFilter::Pointer ErrorWarningFilter::newFilterInstance(bool copyFilterParameters) const
 {
   ErrorWarningFilter::Pointer filter = ErrorWarningFilter::New();
   if(true == copyFilterParameters)
@@ -168,7 +166,7 @@ AbstractFilter::Pointer ErrorWarningFilter::newFilterInstance(bool copyFilterPar
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString ErrorWarningFilter::getCompiledLibraryName()
+const QString ErrorWarningFilter::getCompiledLibraryName() const
 {
   return Core::CoreBaseName;
 }
@@ -176,7 +174,7 @@ const QString ErrorWarningFilter::getCompiledLibraryName()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString ErrorWarningFilter::getBrandingString()
+const QString ErrorWarningFilter::getBrandingString() const
 {
   return "SIMPLib Core Filter";
 }
@@ -184,7 +182,7 @@ const QString ErrorWarningFilter::getBrandingString()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString ErrorWarningFilter::getFilterVersion()
+const QString ErrorWarningFilter::getFilterVersion() const
 {
   QString version;
   QTextStream vStream(&version);
@@ -195,7 +193,7 @@ const QString ErrorWarningFilter::getFilterVersion()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString ErrorWarningFilter::getGroupName()
+const QString ErrorWarningFilter::getGroupName() const
 {
   return SIMPL::FilterGroups::Generic;
 }
@@ -203,7 +201,15 @@ const QString ErrorWarningFilter::getGroupName()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString ErrorWarningFilter::getSubGroupName()
+const QUuid ErrorWarningFilter::getUuid()
+{
+  return QUuid("{c367f998-3cc8-5a24-8616-70b659c5ce46}");
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+const QString ErrorWarningFilter::getSubGroupName() const
 {
   return "Test";
 }
@@ -211,7 +217,7 @@ const QString ErrorWarningFilter::getSubGroupName()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString ErrorWarningFilter::getHumanLabel()
+const QString ErrorWarningFilter::getHumanLabel() const
 {
   return "Error Warning and Test Filter";
 }

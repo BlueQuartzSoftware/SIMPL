@@ -1,4 +1,4 @@
-Create Data Container {#createdatacontainer}
+Create Data Container 
 =============
 
 ## Group (Subgroup) ##
@@ -10,6 +10,7 @@ Core (Generation)
 This **Filter** creates a new **Data Container**.
 
 ## Parameters ##
+
 None
 
 ## Required Geometry ##
@@ -21,9 +22,14 @@ Not Applicable
 Not Applicable
 
 ## Created Objects ##
+
 | Kind | Default Name | Type | Component Dimensions | Description |
 |------|--------------|-------------|---------|----------------|
 | **Data Container** | DataContainer | N/A | N/A | Created **Data Container** name |
+
+
+## Example Pipelines ##
+
 
 
 ## License & Copyright ##

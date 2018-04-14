@@ -63,7 +63,7 @@ class AbstractWizardPage : public QWizardPage
 
   private:
     AbstractWizardPage(const AbstractWizardPage&) = delete; // Copy Constructor Not Implemented
-    void operator=(const AbstractWizardPage&) = delete;     // Operator '=' Not Implemented
+    void operator=(const AbstractWizardPage&) = delete;     // Move assignment Not Implemented
 };
 
 #endif /* AbstractWizardPage_H_ */

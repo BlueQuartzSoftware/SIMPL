@@ -41,7 +41,7 @@
 
 #include "H5Support/QH5Lite.h"
 #include "H5Support/QH5Utilities.h"
-#include "H5Support/HDF5ScopedFileSentinel.h"
+#include "H5Support/H5ScopedSentinel.h"
 
 
 #include "SIMPLib/Common/Constants.h"
@@ -124,7 +124,7 @@ int H5FilterParametersWriter::writePipelineToFile(FilterPipeline::Pointer pipeli
   // This will make sure if we return early from this method that the HDF5 File is properly closed.
   // This will also take care of making sure all groups and file ids are closed
   // before this method returns.
-  HDF5ScopedFileSentinel scopedFileSentinel(&fileId, true);
+  H5ScopedFileSentinel scopedFileSentinel(&fileId, true);
 
   // Write our File Version string to the Root "/" group
   QH5Lite::writeStringAttribute(fileId, "/", SIMPL::HDF5::FileVersionName, SIMPL::HDF5::FileVersion);

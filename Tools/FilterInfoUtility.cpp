@@ -89,7 +89,7 @@ int main(int argc, char** argv)
       QJsonObject parameters;
       JsonFilterParametersWriter::Pointer writer = JsonFilterParametersWriter::New();
 
-      AbstractFilter::Pointer fPtr = FilterManager::Instance()->getFactoryForFilter(filter)->create();
+      AbstractFilter::Pointer fPtr = FilterManager::Instance()->getFactoryFromClassName(filter)->create();
       fPtr->writeFilterParameters(parameters);
 
       jobj[filter] = writer->getCurrentGroupObject();

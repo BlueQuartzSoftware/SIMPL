@@ -245,14 +245,12 @@ template <typename T> void initializeArrayWithReals(IDataArray::Pointer outputAr
 //
 // -----------------------------------------------------------------------------
 CreateDataArray::CreateDataArray()
-: AbstractFilter()
-, m_ScalarType(SIMPL::ScalarTypes::Type::Int8)
+: m_ScalarType(SIMPL::ScalarTypes::Type::Int8)
 , m_NumberOfComponents(0)
 , m_NewArray("", "", "")
 , m_InitializationType(Manual)
 , m_InitializationValue("0")
 {
-  setupFilterParameters();
 }
 
 // -----------------------------------------------------------------------------
@@ -549,7 +547,7 @@ template <typename T> void CreateDataArray::checkInitialization(QString dataArra
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-AbstractFilter::Pointer CreateDataArray::newFilterInstance(bool copyFilterParameters)
+AbstractFilter::Pointer CreateDataArray::newFilterInstance(bool copyFilterParameters) const
 {
   CreateDataArray::Pointer filter = CreateDataArray::New();
   if(true == copyFilterParameters)
@@ -562,7 +560,7 @@ AbstractFilter::Pointer CreateDataArray::newFilterInstance(bool copyFilterParame
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString CreateDataArray::getCompiledLibraryName()
+const QString CreateDataArray::getCompiledLibraryName() const
 {
   return Core::CoreBaseName;
 }
@@ -570,7 +568,7 @@ const QString CreateDataArray::getCompiledLibraryName()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString CreateDataArray::getBrandingString()
+const QString CreateDataArray::getBrandingString() const
 {
   return "SIMPLib Core Filter";
 }
@@ -578,7 +576,7 @@ const QString CreateDataArray::getBrandingString()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString CreateDataArray::getFilterVersion()
+const QString CreateDataArray::getFilterVersion() const
 {
   QString version;
   QTextStream vStream(&version);
@@ -589,7 +587,7 @@ const QString CreateDataArray::getFilterVersion()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString CreateDataArray::getGroupName()
+const QString CreateDataArray::getGroupName() const
 {
   return SIMPL::FilterGroups::CoreFilters;
 }
@@ -597,7 +595,15 @@ const QString CreateDataArray::getGroupName()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString CreateDataArray::getSubGroupName()
+const QUuid CreateDataArray::getUuid()
+{
+  return QUuid("{77f392fb-c1eb-57da-a1b1-e7acf9239fb8}");
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+const QString CreateDataArray::getSubGroupName() const
 {
   return SIMPL::FilterSubGroups::GenerationFilters;
 }
@@ -605,7 +611,7 @@ const QString CreateDataArray::getSubGroupName()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString CreateDataArray::getHumanLabel()
+const QString CreateDataArray::getHumanLabel() const
 {
   return "Create Data Array";
 }

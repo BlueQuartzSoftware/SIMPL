@@ -47,7 +47,7 @@ class SIMPLib_EXPORT RectGridGeom : public IGeometryGrid
   public:
     SIMPL_SHARED_POINTERS(RectGridGeom)
     SIMPL_STATIC_NEW_MACRO(RectGridGeom)
-    SIMPL_TYPE_MACRO_SUPER(RectGridGeom, Observable)
+     SIMPL_TYPE_MACRO_SUPER_OVERRIDE(RectGridGeom, Observable)
 
     virtual ~RectGridGeom();
 
@@ -216,14 +216,8 @@ class SIMPLib_EXPORT RectGridGeom : public IGeometryGrid
 // Inherited from IGeometryGrid
 // -----------------------------------------------------------------------------
 
-    virtual void setDimensions(size_t dims[3]) { std::copy(dims, dims + 3, m_Dimensions); }
-    virtual void setDimensions(size_t xDim, size_t yDim, size_t zDim) { m_Dimensions[0] = xDim;
-                                                                        m_Dimensions[1] = yDim;
-                                                                        m_Dimensions[2] = zDim; }
-    virtual void getDimensions(size_t dims[3]) { std::copy(m_Dimensions, m_Dimensions + 3, dims); }
-    virtual void getDimensions(size_t& xDim, size_t& yDim, size_t& zDim) { xDim = m_Dimensions[0];
-                                                                           yDim = m_Dimensions[1];
-                                                                           zDim = m_Dimensions[2]; }
+    SIMPL_INSTANCE_VEC3_PROPERTY_VO(size_t, Dimensions)
+
     
     virtual size_t getXPoints() { return m_Dimensions[0]; }
     virtual size_t getYPoints() { return m_Dimensions[1]; }
@@ -282,7 +276,6 @@ class SIMPLib_EXPORT RectGridGeom : public IGeometryGrid
     virtual void setElementSizes(FloatArrayType::Pointer elementSizes);
 
   private:
-    size_t m_Dimensions[3];
     FloatArrayType::Pointer m_xBounds;
     FloatArrayType::Pointer m_yBounds;
     FloatArrayType::Pointer m_zBounds;
@@ -291,7 +284,7 @@ class SIMPLib_EXPORT RectGridGeom : public IGeometryGrid
     friend class FindRectGridDerivativesImpl;
 
     RectGridGeom(const RectGridGeom&) = delete;   // Copy Constructor Not Implemented
-    void operator=(const RectGridGeom&) = delete; // Operator '=' Not Implemented
+    void operator=(const RectGridGeom&) = delete; // Move assignment Not Implemented
 };
 
 

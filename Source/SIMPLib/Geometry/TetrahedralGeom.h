@@ -48,7 +48,7 @@ class SIMPLib_EXPORT TetrahedralGeom : public IGeometry3D
 
     SIMPL_SHARED_POINTERS(TetrahedralGeom)
     SIMPL_STATIC_NEW_MACRO(TetrahedralGeom)
-    SIMPL_TYPE_MACRO_SUPER(TetrahedralGeom, Observable)
+     SIMPL_TYPE_MACRO_SUPER_OVERRIDE(TetrahedralGeom, Observable)
 
     virtual ~TetrahedralGeom();
 
@@ -579,7 +579,7 @@ class SIMPLib_EXPORT TetrahedralGeom : public IGeometry3D
     friend class FindTetDerivativesImpl;
 
     TetrahedralGeom(const TetrahedralGeom&) = delete; // Copy Constructor Not Implemented
-    void operator=(const TetrahedralGeom&) = delete;  // Operator '=' Not Implemented
+    void operator=(const TetrahedralGeom&) = delete;  // Move assignment Not Implemented
 };
 
 

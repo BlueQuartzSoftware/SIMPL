@@ -129,19 +129,19 @@ class SIMPLib_EXPORT AttributeMatrixSelectionFilterParameter : public FilterPara
      * this FilterParameter subclass
      * @return
      */
-    QString getWidgetType();
+    QString getWidgetType() const override;
 
     /**
      * @brief readJson Reads this filter parameter's corresponding property out of a QJsonObject.
      * @param json The QJsonObject that the filter parameter reads from.
      */
-    void readJson(const QJsonObject &json);
+    void readJson(const QJsonObject& json) override;
 
     /**
      * @brief writeJson Writes this filter parameter's corresponding property to a QJsonObject.
      * @param json The QJsonObject that the filter parameter writes to.
      */
-    void writeJson(QJsonObject &json);
+    void writeJson(QJsonObject& json) override;
 
     /**
     * @param DefaultGeometryTypes Default geometry types required for Data Container selections
@@ -178,7 +178,7 @@ class SIMPLib_EXPORT AttributeMatrixSelectionFilterParameter : public FilterPara
 
   private:
     AttributeMatrixSelectionFilterParameter(const AttributeMatrixSelectionFilterParameter&) = delete; // Copy Constructor Not Implemented
-    void operator=(const AttributeMatrixSelectionFilterParameter&) = delete;                          // Operator '=' Not Implemented
+    void operator=(const AttributeMatrixSelectionFilterParameter&) = delete;                          // Move assignment Not Implemented
 };
 
 #endif /* _AttributeMatrixSelectionFilterParameter_H_ */

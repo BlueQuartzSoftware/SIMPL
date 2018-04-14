@@ -210,10 +210,10 @@ public:
     QuadGeom::Pointer quads = QuadGeom::CreateGeometry(1, vertices4, "QuadGeom");
     TetrahedralGeom::Pointer tets = TetrahedralGeom::CreateGeometry(1, vertices5, "TetrahedralGeom");
 
-    image->setDimensions(10, 10, 10);
-    image->setOrigin(0.0f, 0.0f, 0.0f);
-    image->setResolution(1.0f, 1.0f, 1.0f);
-    rectGrid->setDimensions(10, 10, 10);
+    image->setDimensions(std::make_tuple(10, 10, 10));
+    image->setOrigin(std::make_tuple(0.0f, 0.0f, 0.0f));
+    image->setResolution(std::make_tuple(1.0f, 1.0f, 1.0f));
+    rectGrid->setDimensions(std::make_tuple(10, 10, 10));
     FloatArrayType::Pointer xBounds = FloatArrayType::CreateArray(11, SIMPL::Geometry::xBoundsList);
     FloatArrayType::Pointer yBounds = FloatArrayType::CreateArray(11, SIMPL::Geometry::yBoundsList);
     FloatArrayType::Pointer zBounds = FloatArrayType::CreateArray(11, SIMPL::Geometry::zBoundsList);
@@ -500,7 +500,7 @@ public:
     // Now instantiate the FindDerivatives Filter from the FilterManager
     QString filtName = "FindDerivatives";
     FilterManager* fm = FilterManager::Instance();
-    IFilterFactory::Pointer filterFactory = fm->getFactoryForFilter(filtName);
+    IFilterFactory::Pointer filterFactory = fm->getFactoryFromClassName(filtName);
     if(nullptr == filterFactory.get())
     {
       std::stringstream ss;
@@ -520,7 +520,7 @@ public:
 
     QString filtName = "FindDerivatives";
     FilterManager* fm = FilterManager::Instance();
-    IFilterFactory::Pointer factory = fm->getFactoryForFilter(filtName);
+    IFilterFactory::Pointer factory = fm->getFactoryFromClassName(filtName);
     DREAM3D_REQUIRE(factory.get() != nullptr);
 
     AbstractFilter::Pointer findDerivsFilter = factory->create();
@@ -549,5 +549,5 @@ public:
 
 private:
   FindDerivativesFilterTest(const FindDerivativesFilterTest&); // Copy Constructor Not Implemented
-  void operator=(const FindDerivativesFilterTest&);            // Operator '=' Not Implemented
+  void operator=(const FindDerivativesFilterTest&);            // Move assignment Not Implemented
 };

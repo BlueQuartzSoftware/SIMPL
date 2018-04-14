@@ -75,7 +75,7 @@ public:
 
 private:
   FloatSummation(const FloatSummation&) = delete; // Copy Constructor Not Implemented
-  void operator=(const FloatSummation&) = delete; // Operator '=' Not Implemented
+  void operator=(const FloatSummation&) = delete; // Move assignment Not Implemented
 };
 
 #endif

@@ -58,8 +58,9 @@ class SIMPLib_EXPORT SIMPLibPluginLoader
      * @brief LoadPluginFilters
      * @param filterManager The FilterManager object to load the filters into when
      * a plugin is loaded
+     * @param quiet Dump progress to std::cout
      */
-    static void LoadPluginFilters(FilterManager* filterManager);
+    static void LoadPluginFilters(FilterManager* filterManager, bool quiet = false);
 
 
   protected:
@@ -67,7 +68,7 @@ class SIMPLib_EXPORT SIMPLibPluginLoader
 
   private:
     SIMPLibPluginLoader(const SIMPLibPluginLoader&) = delete; // Copy Constructor Not Implemented
-    void operator=(const SIMPLibPluginLoader&) = delete;      // Operator '=' Not Implemented
+    void operator=(const SIMPLibPluginLoader&) = delete;      // Move assignment Not Implemented
 };
 
 #endif /* _DREAM3D_PluginLoader_H_ */

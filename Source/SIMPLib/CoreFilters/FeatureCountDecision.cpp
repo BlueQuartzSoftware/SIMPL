@@ -53,7 +53,6 @@ FeatureCountDecision::FeatureCountDecision()
 , m_MaxGrains(0)
 , m_FeatureIds(nullptr)
 {
-  setupFilterParameters();
 }
 
 // -----------------------------------------------------------------------------
@@ -110,7 +109,7 @@ void FeatureCountDecision::dataCheck()
 
   m_FeatureIdsPtr = getDataContainerArray()->getPrereqArrayFromPath<DataArray<int32_t>, AbstractFilter>(this, getFeatureIdsArrayPath(),
                                                                                                         cDims); /* Assigns the shared_ptr<> to an instance variable that is a weak_ptr<> */
-  if(nullptr != m_FeatureIdsPtr.lock().get())                                                                   /* Validate the Weak Pointer wraps a non-nullptr pointer to a DataArray<T> object */
+  if(nullptr != m_FeatureIdsPtr.lock())                                                                         /* Validate the Weak Pointer wraps a non-nullptr pointer to a DataArray<T> object */
   {
     m_FeatureIds = m_FeatureIdsPtr.lock()->getPointer(0);
   } /* Now assign the raw pointer to data from the DataArray<T> object */
@@ -192,7 +191,7 @@ void FeatureCountDecision::extractProperties(const QJsonDocument& jsonDoc)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-AbstractFilter::Pointer FeatureCountDecision::newFilterInstance(bool copyFilterParameters)
+AbstractFilter::Pointer FeatureCountDecision::newFilterInstance(bool copyFilterParameters) const
 {
   FeatureCountDecision::Pointer filter = FeatureCountDecision::New();
   if(true == copyFilterParameters)
@@ -205,7 +204,7 @@ AbstractFilter::Pointer FeatureCountDecision::newFilterInstance(bool copyFilterP
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString FeatureCountDecision::getCompiledLibraryName()
+const QString FeatureCountDecision::getCompiledLibraryName() const
 {
   return Core::CoreBaseName;
 }
@@ -213,7 +212,7 @@ const QString FeatureCountDecision::getCompiledLibraryName()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString FeatureCountDecision::getGroupName()
+const QString FeatureCountDecision::getGroupName() const
 {
   return SIMPL::FilterGroups::CoreFilters;
 }
@@ -221,7 +220,15 @@ const QString FeatureCountDecision::getGroupName()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString FeatureCountDecision::getSubGroupName()
+const QUuid FeatureCountDecision::getUuid()
+{
+  return QUuid("{64d1df13-17a2-56a2-90a5-4dfda442b144}");
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+const QString FeatureCountDecision::getSubGroupName() const
 {
   return SIMPL::FilterSubGroups::MiscFilters;
 }
@@ -229,7 +236,7 @@ const QString FeatureCountDecision::getSubGroupName()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString FeatureCountDecision::getHumanLabel()
+const QString FeatureCountDecision::getHumanLabel() const
 {
   return "Feature Count Decision";
 }

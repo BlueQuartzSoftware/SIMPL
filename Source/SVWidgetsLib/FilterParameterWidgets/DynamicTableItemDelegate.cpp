@@ -34,10 +34,8 @@
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
 #include "DynamicTableItemDelegate.h"
-#include <QIntValidator>
-#include <QLineEdit>
-
-// Include the MOC generated CPP file which has all the QMetaObject methods/data
+#include <QtGui/QIntValidator>
+#include <QtWidgets/QLineEdit>
 
 // -----------------------------------------------------------------------------
 //

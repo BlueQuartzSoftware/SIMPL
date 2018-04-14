@@ -101,7 +101,7 @@ class SIMPLib_EXPORT H5DataArrayReader
 
   private:
     H5DataArrayReader(const H5DataArrayReader&) = delete; // Copy Constructor Not Implemented
-    void operator=(const H5DataArrayReader&) = delete;    // Operator '=' Not Implemented
+    void operator=(const H5DataArrayReader&) = delete;    // Move assignment Not Implemented
 };
 
 #endif /* H5DATAARRAYREADER_HPP_ */

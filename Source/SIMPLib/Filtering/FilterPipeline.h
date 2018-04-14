@@ -221,7 +221,7 @@ private:
   void disconnectSignalsSlots();
 
   FilterPipeline(const FilterPipeline&) = delete; // Copy Constructor Not Implemented
-  void operator=(const FilterPipeline&) = delete; // Operator '=' Not Implemented
+  void operator=(const FilterPipeline&) = delete; // Move assignment Not Implemented
 };
 
 #endif /* FILTERPIPELINE_H_ */

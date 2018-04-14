@@ -94,7 +94,7 @@ class SVWidgetsLib_EXPORT DataContainerCreationWidget : public FilterParameterWi
     DataContainerCreationFilterParameter*                 m_FilterParameter;
 
     DataContainerCreationWidget(const DataContainerCreationWidget&) = delete; // Copy Constructor Not Implemented
-    void operator=(const DataContainerCreationWidget&) = delete;              // Operator '=' Not Implemented
+    void operator=(const DataContainerCreationWidget&) = delete;              // Move assignment Not Implemented
 };
 
 #endif /* _DataContainerCreationWidget_H_ */

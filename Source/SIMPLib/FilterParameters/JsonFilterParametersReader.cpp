@@ -298,86 +298,85 @@ FilterPipeline::Pointer JsonFilterParametersReader::readPipeline(IObserver* obs)
   FilterManager* filtManager = FilterManager::Instance();
   FilterFactory<EmptyFilter>::Pointer emptyFilterFactory = FilterFactory<EmptyFilter>::New();
   filtManager->addFilterFactory("EmptyFilter", emptyFilterFactory);
-
+  
   if(containsGroup(SIMPL::Settings::PipelineBuilderGroup) == false)
   {
     return FilterPipeline::NullPointer();
   }
-
+  
   QJsonObject builderObj = m_Root[SIMPL::Settings::PipelineBuilderGroup].toObject();
   int filterCount = builderObj[SIMPL::Settings::NumFilters].toInt();
   m_MaxFilterIndex = filterCount - 1; // Zero based indexing
-
+  
   FilterPipeline::Pointer pipeline;
+  
   if(filterCount >= 0)
   {
     pipeline = FilterPipeline::New();
+    QString pipelineName = builderObj[SIMPL::Settings::PipelineName].toString("Empty Pipeline Name");
+    pipeline->setName(pipelineName);
   }
   else
   {
     pipeline = FilterPipeline::NullPointer();
   }
-
+  
   for(int i = 0; i < filterCount; ++i)
   {
     openFilterGroup(nullptr, i);
-
+    
+    IFilterFactory::Pointer factory = IFilterFactory::NullPointer();
     QString filterName = m_CurrentFilterIndex[SIMPL::Settings::FilterName].toString();
     bool filterEnabled = m_CurrentFilterIndex[SIMPL::Settings::FilterEnabled].toBool(true);
-
-    if(filterName.isEmpty() == false)
+    // First try the UUID for the filter and see what we get.
+    QUuid uuid = QUuid(m_CurrentFilterIndex[SIMPL::Settings::FilterUuid].toString(""));
+    if(!uuid.isNull())
     {
-      IFilterFactory::Pointer factory = filtManager->getFactoryForFilter(filterName);
-      if(factory.get() != nullptr)
+      factory = filtManager->getFactoryFromUuid(uuid);
+    }
+    // If the UUID was not available, then try the filter class name
+    if(nullptr == factory.get())
+    {
+      QJsonValue jsValue = m_CurrentFilterIndex[SIMPL::Settings::FilterName];
+      if(jsValue.isString())
       {
-        AbstractFilter::Pointer filter = factory->create();
-
-        if(nullptr != filter.get())
-        {
-          filter->setEnabled(filterEnabled);
-          filter->readFilterParameters(m_CurrentFilterIndex);
-          pipeline->pushBack(filter);
-        }
-      }
-      else // Could not find the filter because the specific name has not been registered. This could
-      // be due to a name change for the filter.
-      {
-        EmptyFilter::Pointer filter = EmptyFilter::New();
-        QString humanLabel = QString("UNKNOWN FILTER: ") + filterName;
-        filter->setHumanLabel(humanLabel);
-        filter->setOriginalFilterName(filterName);
-        filter->setEnabled(filterEnabled);
-        pipeline->pushBack(filter);
-
-        if(nullptr != obs)
-        {
-          QString ss = QObject::tr("An implementation for filter '%1' could not be located. Possible reasons include a name change of the filter, plugin not loading or a simple spelling mistake? A "
-                                   "blank filter has been inserted in its place.")
-                           .arg(filterName);
-          PipelineMessage pm(filterName, ss, -66066, PipelineMessage::MessageType::Error);
-          pm.setPrefix("JsonFilterParametersReader::ReadPipelineFromFile()");
-          obs->processPipelineMessage(pm);
-        }
+        filterName = jsValue.toString("JSON Key 'Filter_Name' missing.");
+        factory = filtManager->getFactoryFromClassName(filterName);
       }
     }
-    else
+    
+    if(nullptr != factory.get())
+    {
+      AbstractFilter::Pointer filter = factory->create();
+      
+      if(nullptr != filter.get())
+      {
+        filter->setEnabled(filterEnabled);
+        filter->readFilterParameters(m_CurrentFilterIndex);
+        pipeline->pushBack(filter);
+      }
+    }
+    else // Could not find the filter because the specific name has not been registered. This could
+      // be due to a name change for the filter.
     {
       EmptyFilter::Pointer filter = EmptyFilter::New();
-      QString humanLabel = QString("MISSING FILTER: ") + filterName;
+      QString humanLabel = QString("UNKNOWN FILTER: ") + filterName;
       filter->setHumanLabel(humanLabel);
       filter->setOriginalFilterName(filterName);
+      filter->setEnabled(filterEnabled);
       pipeline->pushBack(filter);
-
+      
       if(nullptr != obs)
       {
-        QString gName = QString::number(i);
-        QString ss = QObject::tr("A filter for index '%1' is missing in the file. Is the numbering of the filters correct in the pipeline file?").arg(gName);
-        PipelineMessage pm(filterName, ss, -66067, PipelineMessage::MessageType::Error);
+        QString ss = QObject::tr("An attempt to instantiate a filter from the pipeline file resulted in an error.\
+                                 Possible reasons include a name change of the filter, plugin not loading or a simple spelling mistake? A \
+                                                                                                                                        blank filter has been inserted in its place. Possible error message is: %1")
+                                                                                                                                        .arg(filterName);
+            PipelineMessage pm(filterName, ss, -66066, PipelineMessage::MessageType::Error);
         pm.setPrefix("JsonFilterParametersReader::ReadPipelineFromFile()");
         obs->processPipelineMessage(pm);
       }
     }
-
     closeFilterGroup();
   }
   return pipeline;

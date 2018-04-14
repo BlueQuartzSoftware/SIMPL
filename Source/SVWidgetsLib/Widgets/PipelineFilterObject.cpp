@@ -115,7 +115,7 @@ void PipelineFilterObject::setupFilterInputWidget()
   m_GroupIcon = QtSStyles::IconForGroup(grpName);
 
   // Instantiate the filter input widget object
-  if(m_FilterInputWidget)
+  if(nullptr != m_FilterInputWidget)
   {
     m_FilterInputWidget->deleteLater();
   }
@@ -253,23 +253,21 @@ QString PipelineFilterObject::getFilterSubGroup()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void PipelineFilterObject::setFilterTitle(const QString title)
+void PipelineFilterObject::setFilterTitle(const QString &title)
 {
   Q_UNUSED(title)
 
   // This should be implemented in the subclasses
-  return;
 }
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void PipelineFilterObject::setFilterIndex(int i, int max)
+void PipelineFilterObject::setFilterIndex(int i, int numFilters)
 {
   Q_UNUSED(i)
 
   // This should be implemented in the subclasses
-  return;
 }
 
 // -----------------------------------------------------------------------------

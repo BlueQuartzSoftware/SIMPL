@@ -176,7 +176,7 @@ private:
   int m_LineNumber;
 
   char m_What[2048];
-  void operator=(const TestException&); // Operator '=' Not Implemented
+  void operator=(const TestException&); // Move assignment Not Implemented
 };
 
 // -----------------------------------------------------------------------------

@@ -66,7 +66,7 @@ class SIMPLib_EXPORT NumericTypeFilterParameter : public FilterParameter
 public:
   SIMPL_SHARED_POINTERS(NumericTypeFilterParameter)
   SIMPL_STATIC_NEW_MACRO(NumericTypeFilterParameter)
-  SIMPL_TYPE_MACRO_SUPER(NumericTypeFilterParameter, FilterParameter)
+   SIMPL_TYPE_MACRO_SUPER_OVERRIDE(NumericTypeFilterParameter, FilterParameter)
 
   typedef std::function<void(SIMPL::NumericTypes::Type)> SetterCallbackType;
   typedef std::function<SIMPL::NumericTypes::Type(void)> GetterCallbackType;
@@ -99,7 +99,7 @@ public:
   * this FilterParameter subclass
   * @return
   */
-  QString getWidgetType();
+  QString getWidgetType() const override;
 
   /**
   * @brief readJson Reads this filter parameter's corresponding property out of a QJsonObject.
@@ -136,7 +136,7 @@ protected:
 
 private:
   NumericTypeFilterParameter(const NumericTypeFilterParameter&) = delete; // Copy Constructor Not Implemented
-  void operator=(const NumericTypeFilterParameter&);                    // Operator '=' Not Implemented
+  void operator=(const NumericTypeFilterParameter&);                      // Move assignment Not Implemented
 };
 
 #endif /* _NumericTypeFilterParameter_H_ */

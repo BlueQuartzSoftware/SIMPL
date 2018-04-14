@@ -86,7 +86,7 @@ class SIMPLib_EXPORT PrimaryStatsData : public StatsData
   public:
     SIMPL_SHARED_POINTERS(PrimaryStatsData)
     SIMPL_STATIC_NEW_MACRO(PrimaryStatsData)
-    SIMPL_TYPE_MACRO_SUPER(PrimaryStatsData, StatsData)
+     SIMPL_TYPE_MACRO_SUPER_OVERRIDE(PrimaryStatsData, StatsData)
 
     virtual ~PrimaryStatsData();
 
@@ -190,20 +190,20 @@ class SIMPLib_EXPORT PrimaryStatsData : public StatsData
      * @brief writeJson
      * @param json
      */
-    virtual void writeJson(QJsonObject &json);
+    virtual void writeJson(QJsonObject& json) override;
 
     /**
      * @brief readJson
      * @param json
      */
-    virtual void readJson(const QJsonObject &json);
+    virtual void readJson(const QJsonObject& json) override;
 
   protected:
     PrimaryStatsData();
 
   private:
     PrimaryStatsData(const PrimaryStatsData&) = delete; // Copy Constructor Not Implemented
-    void operator=(const PrimaryStatsData&) = delete;   // Operator '=' Not Implemented
+    void operator=(const PrimaryStatsData&) = delete;   // Move assignment Not Implemented
 };
 
 #endif /* _PrimaryStatsDataTUPLE_H_ */

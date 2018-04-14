@@ -31,6 +31,25 @@
    </property>
    <item row="6" column="0">
     <layout class="QGridLayout" name="gridLayout_20">
+     <item row="1" column="3">
+      <widget class="QSpinBox" name="endIndex">
+       <property name="minimumSize">
+        <size>
+         <width>75</width>
+         <height>0</height>
+        </size>
+       </property>
+       <property name="toolTip">
+        <string>The file index to stop the import at. (Inclusive)</string>
+       </property>
+       <property name="maximum">
+        <number>1000000</number>
+       </property>
+       <property name="value">
+        <number>99</number>
+       </property>
+      </widget>
+     </item>
      <item row="1" column="0">
       <widget class="QLabel" name="label_50">
        <property name="styleSheet">
@@ -43,12 +62,12 @@ font-size: 11px;
         <string>Start Index:</string>
        </property>
        <property name="alignment">
-        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+        <set>Qt::AlignCenter</set>
        </property>
       </widget>
      </item>
      <item row="1" column="1">
-      <widget class="QSpinBox" name="m_StartIndex">
+      <widget class="QSpinBox" name="startIndex">
        <property name="minimumSize">
         <size>
          <width>75</width>
@@ -78,31 +97,12 @@ font-size: 11px;
         <string>End Index:</string>
        </property>
        <property name="alignment">
-        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+        <set>Qt::AlignCenter</set>
        </property>
       </widget>
      </item>
-     <item row="1" column="3">
-      <widget class="QSpinBox" name="m_EndIndex">
-       <property name="minimumSize">
-        <size>
-         <width>75</width>
-         <height>0</height>
-        </size>
-       </property>
-       <property name="toolTip">
-        <string>The file index to stop the import at. (Inclusive)</string>
-       </property>
-       <property name="maximum">
-        <number>1000000</number>
-       </property>
-       <property name="value">
-        <number>99</number>
-       </property>
-      </widget>
-     </item>
-     <item row="1" column="4">
-      <widget class="QLabel" name="label_21">
+     <item row="0" column="4">
+      <widget class="QLabel" name="label_56">
        <property name="styleSheet">
         <string notr="true">QLabel {
 font-weight: bold;
@@ -110,20 +110,27 @@ font-size: 11px;
 }</string>
        </property>
        <property name="text">
-        <string>Padding Digits:</string>
+        <string>File Extension:</string>
        </property>
        <property name="alignment">
-        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+        <set>Qt::AlignCenter</set>
        </property>
       </widget>
      </item>
-     <item row="1" column="5">
-      <widget class="QSpinBox" name="m_TotalDigits">
+     <item row="0" column="3">
+      <widget class="QLineEdit" name="fileSuffix">
        <property name="toolTip">
-        <string>The number of digits to allow for the slice index.</string>
+        <string>The part of the filename that comes AFTER the slice index</string>
        </property>
-       <property name="value">
-        <number>4</number>
+      </widget>
+     </item>
+     <item row="0" column="5">
+      <widget class="QLineEdit" name="fileExt">
+       <property name="toolTip">
+        <string>The file extension of the input files</string>
+       </property>
+       <property name="text">
+        <string>tif</string>
        </property>
       </widget>
      </item>
@@ -139,12 +146,12 @@ font-size: 11px;
         <string>File Prefix:</string>
        </property>
        <property name="alignment">
-        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+        <set>Qt::AlignCenter</set>
        </property>
       </widget>
      </item>
      <item row="0" column="1">
-      <widget class="QLineEdit" name="m_FilePrefix">
+      <widget class="QLineEdit" name="filePrefix">
        <property name="toolTip">
         <string>The front part of the input file name</string>
        </property>
@@ -165,19 +172,12 @@ font-size: 11px;
         <string>File Suffix:</string>
        </property>
        <property name="alignment">
-        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+        <set>Qt::AlignCenter</set>
        </property>
       </widget>
      </item>
-     <item row="0" column="3">
-      <widget class="QLineEdit" name="m_FileSuffix">
-       <property name="toolTip">
-        <string>The part of the filename that comes AFTER the slice index</string>
-       </property>
-      </widget>
-     </item>
-     <item row="0" column="4">
-      <widget class="QLabel" name="label_56">
+     <item row="3" column="4">
+      <widget class="QLabel" name="label_21">
        <property name="styleSheet">
         <string notr="true">QLabel {
 font-weight: bold;
@@ -185,20 +185,58 @@ font-size: 11px;
 }</string>
        </property>
        <property name="text">
-        <string>File Extension:</string>
+        <string>Padding Digits:</string>
        </property>
        <property name="alignment">
-        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+        <set>Qt::AlignCenter</set>
        </property>
       </widget>
      </item>
-     <item row="0" column="5">
-      <widget class="QLineEdit" name="m_FileExt">
+     <item row="3" column="5">
+      <widget class="QSpinBox" name="totalDigits">
        <property name="toolTip">
-        <string>The file extension of the input files</string>
+        <string>The number of digits to allow for the slice index.</string>
+       </property>
+       <property name="value">
+        <number>4</number>
+       </property>
+      </widget>
+     </item>
+     <item row="1" column="4">
+      <widget class="QLabel" name="label_52">
+       <property name="styleSheet">
+        <string notr="true">QLabel {
+font-weight: bold;
+font-size: 11px;
+}</string>
        </property>
        <property name="text">
-        <string>tif</string>
+        <string>Increment Index:</string>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignCenter</set>
+       </property>
+      </widget>
+     </item>
+     <item row="1" column="5">
+      <widget class="QSpinBox" name="increment">
+       <property name="minimumSize">
+        <size>
+         <width>75</width>
+         <height>0</height>
+        </size>
+       </property>
+       <property name="toolTip">
+        <string>Which file index to start the import at.</string>
+       </property>
+       <property name="minimum">
+        <number>1</number>
+       </property>
+       <property name="maximum">
+        <number>1000000</number>
+       </property>
+       <property name="value">
+        <number>1</number>
        </property>
       </widget>
      </item>
@@ -267,13 +305,16 @@ font-size: 11px;
        <property name="text">
         <string>Input Directory:</string>
        </property>
+       <property name="alignment">
+        <set>Qt::AlignCenter</set>
+       </property>
       </widget>
      </item>
      <item row="1" column="1">
-      <widget class="QtSLineEdit" name="m_LineEdit"/>
+      <widget class="QtSLineEdit" name="inputDir"/>
      </item>
      <item row="1" column="2">
-      <widget class="QPushButton" name="m_InputDirBtn">
+      <widget class="QPushButton" name="inputDirBtn">
        <property name="text">
         <string>Select</string>
        </property>
@@ -290,10 +331,13 @@ font-size: 11px;
        <property name="text">
         <string>Total Files Found:</string>
        </property>
+       <property name="alignment">
+        <set>Qt::AlignCenter</set>
+       </property>
       </widget>
      </item>
      <item row="2" column="1">
-      <widget class="QLabel" name="m_TotalSlices">
+      <widget class="QLabel" name="totalSlices">
        <property name="text">
         <string>0</string>
        </property>
@@ -302,14 +346,14 @@ font-size: 11px;
     </layout>
    </item>
    <item row="10" column="0">
-    <widget class="QLabel" name="m_ErrorMessage">
+    <widget class="QLabel" name="errorMessage">
      <property name="text">
       <string>Error Messages</string>
      </property>
     </widget>
    </item>
    <item row="9" column="0">
-    <widget class="QListWidget" name="m_FileListView">
+    <widget class="QListWidget" name="fileListView">
      <property name="sizePolicy">
       <sizepolicy hsizetype="Expanding" vsizetype="MinimumExpanding">
        <horstretch>0</horstretch>
@@ -367,7 +411,7 @@ font-size: 11px;
       </spacer>
      </item>
      <item>
-      <widget class="QLabel" name="m_GeneratedFileNameExample">
+      <widget class="QLabel" name="generatedFileNameExample">
        <property name="font">
         <font>
          <italic>true</italic>
@@ -412,14 +456,14 @@ font-size: 11px;
       </spacer>
      </item>
      <item row="0" column="2">
-      <widget class="QRadioButton" name="m_OrderDescending">
+      <widget class="QRadioButton" name="orderDescending">
        <property name="text">
         <string>Descending</string>
        </property>
       </widget>
      </item>
      <item row="0" column="1">
-      <widget class="QRadioButton" name="m_OrderAscending">
+      <widget class="QRadioButton" name="orderAscending">
        <property name="text">
         <string>Ascending</string>
        </property>
@@ -439,6 +483,9 @@ font-size: 11px;
        <property name="text">
         <string>File Ordering:</string>
        </property>
+       <property name="alignment">
+        <set>Qt::AlignCenter</set>
+       </property>
       </widget>
      </item>
     </layout>
@@ -453,15 +500,14 @@ font-size: 11px;
   </customwidget>
  </customwidgets>
  <tabstops>
-  <tabstop>m_LineEdit</tabstop>
-  <tabstop>m_InputDirBtn</tabstop>
-  <tabstop>m_FilePrefix</tabstop>
-  <tabstop>m_FileSuffix</tabstop>
-  <tabstop>m_FileExt</tabstop>
-  <tabstop>m_StartIndex</tabstop>
-  <tabstop>m_EndIndex</tabstop>
-  <tabstop>m_TotalDigits</tabstop>
-  <tabstop>m_FileListView</tabstop>
+  <tabstop>inputDir</tabstop>
+  <tabstop>inputDirBtn</tabstop>
+  <tabstop>filePrefix</tabstop>
+  <tabstop>fileSuffix</tabstop>
+  <tabstop>fileExt</tabstop>
+  <tabstop>startIndex</tabstop>
+  <tabstop>endIndex</tabstop>
+  <tabstop>fileListView</tabstop>
  </tabstops>
  <resources/>
  <connections/>

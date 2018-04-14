@@ -44,9 +44,7 @@
 //
 // -----------------------------------------------------------------------------
 RemoveArrays::RemoveArrays()
-: AbstractFilter()
 {
-  setupFilterParameters();
 }
 
 // -----------------------------------------------------------------------------
@@ -223,7 +221,7 @@ void RemoveArrays::execute()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-AbstractFilter::Pointer RemoveArrays::newFilterInstance(bool copyFilterParameters)
+AbstractFilter::Pointer RemoveArrays::newFilterInstance(bool copyFilterParameters) const
 {
   RemoveArrays::Pointer filter = RemoveArrays::New();
   if(true == copyFilterParameters)
@@ -236,7 +234,7 @@ AbstractFilter::Pointer RemoveArrays::newFilterInstance(bool copyFilterParameter
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString RemoveArrays::getCompiledLibraryName()
+const QString RemoveArrays::getCompiledLibraryName() const
 {
   return Core::CoreBaseName;
 }
@@ -244,7 +242,7 @@ const QString RemoveArrays::getCompiledLibraryName()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString RemoveArrays::getBrandingString()
+const QString RemoveArrays::getBrandingString() const
 {
   return "SIMPLib Core Filter";
 }
@@ -252,7 +250,7 @@ const QString RemoveArrays::getBrandingString()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString RemoveArrays::getFilterVersion()
+const QString RemoveArrays::getFilterVersion() const
 {
   QString version;
   QTextStream vStream(&version);
@@ -263,7 +261,7 @@ const QString RemoveArrays::getFilterVersion()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString RemoveArrays::getGroupName()
+const QString RemoveArrays::getGroupName() const
 {
   return SIMPL::FilterGroups::CoreFilters;
 }
@@ -271,7 +269,15 @@ const QString RemoveArrays::getGroupName()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString RemoveArrays::getSubGroupName()
+const QUuid RemoveArrays::getUuid()
+{
+  return QUuid("{7b1c8f46-90dd-584a-b3ba-34e16958a7d0}");
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+const QString RemoveArrays::getSubGroupName() const
 {
   return SIMPL::FilterSubGroups::MemoryManagementFilters;
 }
@@ -279,7 +285,7 @@ const QString RemoveArrays::getSubGroupName()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString RemoveArrays::getHumanLabel()
+const QString RemoveArrays::getHumanLabel() const
 {
   return "Delete Data";
 }

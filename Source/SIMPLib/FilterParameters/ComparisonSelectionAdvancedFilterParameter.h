@@ -69,7 +69,7 @@ class SIMPLib_EXPORT ComparisonSelectionAdvancedFilterParameter : public FilterP
   public:
     SIMPL_SHARED_POINTERS(ComparisonSelectionAdvancedFilterParameter)
     SIMPL_STATIC_NEW_MACRO(ComparisonSelectionAdvancedFilterParameter)
-    SIMPL_TYPE_MACRO_SUPER(ComparisonSelectionAdvancedFilterParameter, FilterParameter)
+     SIMPL_TYPE_MACRO_SUPER_OVERRIDE(ComparisonSelectionAdvancedFilterParameter, FilterParameter)
 
     typedef std::function<void(ComparisonInputsAdvanced)> SetterCallbackType;
     typedef std::function<ComparisonInputsAdvanced(void)> GetterCallbackType;
@@ -110,19 +110,19 @@ class SIMPLib_EXPORT ComparisonSelectionAdvancedFilterParameter : public FilterP
    * this FilterParameter subclass
    * @return
    */
-    QString getWidgetType();
+    QString getWidgetType() const override;
 
     /**
      * @brief readJson Reads this filter parameter's corresponding property out of a QJsonObject.
      * @param json The QJsonObject that the filter parameter reads from.
      */
-    void readJson(const QJsonObject &json);
+    void readJson(const QJsonObject& json) override;
 
     /**
      * @brief writeJson Writes this filter parameter's corresponding property to a QJsonObject.
      * @param json The QJsonObject that the filter parameter writes to.
      */
-    void writeJson(QJsonObject &json);
+    void writeJson(QJsonObject& json) override;
 
     /**
     * @param SetterCallback The method in the AbstractFilter subclass that <i>sets</i> the value of the property
@@ -147,7 +147,7 @@ class SIMPLib_EXPORT ComparisonSelectionAdvancedFilterParameter : public FilterP
 
   private:
     ComparisonSelectionAdvancedFilterParameter(const ComparisonSelectionAdvancedFilterParameter&) = delete; // Copy Constructor Not Implemented
-    void operator=(const ComparisonSelectionAdvancedFilterParameter&) = delete;                             // Operator '=' Not Implemented
+    void operator=(const ComparisonSelectionAdvancedFilterParameter&) = delete;                             // Move assignment Not Implemented
 };
 
 #endif /* _ComparisonSelectionAdvancedFilterParameter_H_ */

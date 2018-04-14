@@ -70,7 +70,7 @@ class SIMPLib_EXPORT MultiAttributeMatrixSelectionFilterParameter : public Filte
   public:
     SIMPL_SHARED_POINTERS(MultiAttributeMatrixSelectionFilterParameter)
     SIMPL_STATIC_NEW_MACRO(MultiAttributeMatrixSelectionFilterParameter)
-    SIMPL_TYPE_MACRO_SUPER(MultiAttributeMatrixSelectionFilterParameter, FilterParameter)
+     SIMPL_TYPE_MACRO_SUPER_OVERRIDE(MultiAttributeMatrixSelectionFilterParameter, FilterParameter)
 
     typedef std::function<void(QVector<DataArrayPath>)> SetterCallbackType;
     typedef std::function<QVector<DataArrayPath>(void)> GetterCallbackType;
@@ -141,19 +141,19 @@ class SIMPLib_EXPORT MultiAttributeMatrixSelectionFilterParameter : public Filte
      * this FilterParameter subclass
      * @return
      */
-    QString getWidgetType();
+    QString getWidgetType() const override;
 
     /**
      * @brief readJson Reads this filter parameter's corresponding property out of a QJsonObject.
      * @param json The QJsonObject that the filter parameter reads from.
      */
-    void readJson(const QJsonObject &json);
+    void readJson(const QJsonObject& json) override;
 
     /**
      * @brief writeJson Writes this filter parameter's corresponding property to a QJsonObject.
      * @param json The QJsonObject that the filter parameter writes to.
      */
-    void writeJson(QJsonObject &json);
+    void writeJson(QJsonObject& json) override;
 
     SIMPL_INSTANCE_PROPERTY(IGeometry::Types, DefaultGeometryTypes)
     SIMPL_INSTANCE_PROPERTY(QVector<AttributeMatrix::Type>, DefaultAttributeMatrixTypes)
@@ -183,7 +183,7 @@ class SIMPLib_EXPORT MultiAttributeMatrixSelectionFilterParameter : public Filte
 
   private:
     MultiAttributeMatrixSelectionFilterParameter(const MultiAttributeMatrixSelectionFilterParameter&) = delete; // Copy Constructor Not Implemented
-    void operator=(const MultiAttributeMatrixSelectionFilterParameter&) = delete;                               // Operator '=' Not Implemented
+    void operator=(const MultiAttributeMatrixSelectionFilterParameter&) = delete;                               // Move assignment Not Implemented
 };
 
 #endif /* _MultiAttributeMatrixSelectionFilterParameter_H_ */

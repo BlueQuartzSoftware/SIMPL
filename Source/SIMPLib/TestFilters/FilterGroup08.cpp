@@ -38,10 +38,8 @@
 //
 // -----------------------------------------------------------------------------
 FilterGroup08::FilterGroup08()
-: AbstractFilter()
 {
   initialize();
-  setupFilterParameters();
 }
 
 // -----------------------------------------------------------------------------
@@ -123,7 +121,7 @@ void FilterGroup08::execute()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-AbstractFilter::Pointer FilterGroup08::newFilterInstance(bool copyFilterParameters)
+AbstractFilter::Pointer FilterGroup08::newFilterInstance(bool copyFilterParameters) const
 {
   FilterGroup08::Pointer filter = FilterGroup08::New();
   if(true == copyFilterParameters)
@@ -136,7 +134,7 @@ AbstractFilter::Pointer FilterGroup08::newFilterInstance(bool copyFilterParamete
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString FilterGroup08::getCompiledLibraryName()
+const QString FilterGroup08::getCompiledLibraryName() const
 {
   return Core::CoreBaseName;
 }
@@ -144,7 +142,7 @@ const QString FilterGroup08::getCompiledLibraryName()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString FilterGroup08::getBrandingString()
+const QString FilterGroup08::getBrandingString() const
 {
   return "SIMPLib Core Filter";
 }
@@ -152,7 +150,7 @@ const QString FilterGroup08::getBrandingString()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString FilterGroup08::getFilterVersion()
+const QString FilterGroup08::getFilterVersion() const
 {
   QString version;
   QTextStream vStream(&version);
@@ -163,7 +161,7 @@ const QString FilterGroup08::getFilterVersion()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString FilterGroup08::getGroupName()
+const QString FilterGroup08::getGroupName() const
 {
   return SIMPL::FilterGroups::SyntheticBuildingFilters;
 }
@@ -171,7 +169,15 @@ const QString FilterGroup08::getGroupName()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString FilterGroup08::getSubGroupName()
+const QUuid FilterGroup08::getUuid()
+{
+  return QUuid("{13961f3a-a66e-5949-a656-77af0234c336}");
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+const QString FilterGroup08::getSubGroupName() const
 {
   return "Test";
 }
@@ -179,7 +185,7 @@ const QString FilterGroup08::getSubGroupName()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString FilterGroup08::getHumanLabel()
+const QString FilterGroup08::getHumanLabel() const
 {
   return "SyntheticBuildingFilters Test Filter";
 }

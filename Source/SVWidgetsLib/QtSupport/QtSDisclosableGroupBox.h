@@ -85,7 +85,7 @@ protected:
 
 private:
   QtSDisclosableGroupBox(const QtSDisclosableGroupBox&) = delete; // Copy Constructor Not Implemented
-  void operator=(const QtSDisclosableGroupBox&) = delete;         // Operator '=' Not Implemented
+  void operator=(const QtSDisclosableGroupBox&) = delete;         // Move assignment Not Implemented
 };
 
 #endif /* _qtsdisclosablegroupbox_H_ */

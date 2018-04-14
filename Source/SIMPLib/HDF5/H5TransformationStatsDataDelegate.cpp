@@ -609,8 +609,8 @@ int H5TransformationStatsDataDelegate::writeFeatureDiameterInfo(TransformationSt
   /*
    * Feature Diameter Info is encode as 3 floats: BinStepSize, MaxDiameter, MinDiameter
    */
-  float featureDiameterInfo[3];
-  data->getFeatureDiameterInfo(featureDiameterInfo);
+  float featureDiameterInfo[3] = {0.0f, 0.0f, 0.0f};
+  std::tie(featureDiameterInfo[0], featureDiameterInfo[1], featureDiameterInfo[2]) = data->getFeatureDiameterInfo();
 
   return QH5Lite::writePointerDataset(pid, SIMPL::StringConstants::Feature_Diameter_Info, rank, dims, featureDiameterInfo);
 }
@@ -627,7 +627,7 @@ int H5TransformationStatsDataDelegate::readFeatureDiameterInfo(TransformationSta
   float featureDiameterInfo[3] = {0.0f, 0.0f, 0.0f};
 
   err = QH5Lite::readPointerDataset(groupId, SIMPL::StringConstants::Feature_Diameter_Info, featureDiameterInfo);
-  data->setFeatureDiameterInfo(featureDiameterInfo);
+  data->setFeatureDiameterInfo(std::make_tuple(featureDiameterInfo[0], featureDiameterInfo[1], featureDiameterInfo[1]));
   return err;
 }
 

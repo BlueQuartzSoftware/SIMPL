@@ -103,7 +103,7 @@ private:
   bool m_FirstRun;
 
   MoveFilterCommand(const MoveFilterCommand&) = delete; // Copy Constructor Not Implemented
-  void operator=(const MoveFilterCommand&);    // Operator '=' Not Implemented
+  void operator=(const MoveFilterCommand&);             // Move assignment Not Implemented
 };
 
 #endif /* _movefiltercommand_h_ */

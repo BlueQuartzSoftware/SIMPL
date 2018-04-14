@@ -148,7 +148,7 @@ class SVWidgetsLib_EXPORT UpdateCheckDialog : public QDialog, private Ui::Update
     QAction*            m_CloseAction = nullptr;
 
     UpdateCheckDialog(const UpdateCheckDialog&) = delete; // Copy Constructor Not Implemented
-    void operator=(const UpdateCheckDialog&) = delete;    // Operator '=' Not Implemented
+    void operator=(const UpdateCheckDialog&) = delete;    // Move assignment Not Implemented
 };
 
 

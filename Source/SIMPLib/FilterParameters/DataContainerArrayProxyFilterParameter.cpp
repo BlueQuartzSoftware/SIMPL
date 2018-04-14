@@ -75,7 +75,7 @@ DataContainerArrayProxyFilterParameter::Pointer DataContainerArrayProxyFilterPar
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-QString DataContainerArrayProxyFilterParameter::getWidgetType()
+QString DataContainerArrayProxyFilterParameter::getWidgetType() const
 {
   return QString("DataContainerArrayProxyWidget");
 }

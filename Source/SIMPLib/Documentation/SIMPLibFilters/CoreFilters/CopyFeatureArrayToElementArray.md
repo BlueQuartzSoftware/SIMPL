@@ -1,4 +1,4 @@
-Create Element Array from Feature Array {#copyfeaturearraytoelementarray}
+Create Element Array from Feature Array 
 =============
 
 ## Group (Subgroup) ##
@@ -6,12 +6,15 @@ Create Element Array from Feature Array {#copyfeaturearraytoelementarray}
 Core (Memory/Management)
 
 ## Description ##
+
 This **Filter** copies the values associated with a **Feature** to all the **Elements** that belong to that **Feature**.  Xmdf visualization files write only the **Element** attributes, so if the user wants to display a spatial map of a **Feature** level attribute, this **Filter** will transfer that information down to the **Element** level.
 
 ## Parameters ##
+
 None
 
 ## Required Geometry ##
+
 Not Applicable
 
 ## Required Objects ##
@@ -27,6 +30,10 @@ Not Applicable
 | Kind | Default Name | Type | Component Dimensions | Description |
 |------|--------------|------|----------------------|-------------|
 | Element **Attribute Array** | None | Any | Any | Copied **Attribute Array**  |
+
+
+## Example Pipelines ##
+
 
 
 ## License & Copyright ##

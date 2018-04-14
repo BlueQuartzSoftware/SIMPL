@@ -73,7 +73,7 @@ LinkedChoicesFilterParameter::Pointer LinkedChoicesFilterParameter::New(const QS
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-QString LinkedChoicesFilterParameter::getWidgetType()
+QString LinkedChoicesFilterParameter::getWidgetType() const
 {
   return QString("ChoiceWidget");
 }

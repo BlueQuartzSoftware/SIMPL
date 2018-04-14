@@ -51,7 +51,7 @@
 #include "SIMPLib/Geometry/VertexGeom.h"
 
 #include "H5Support/QH5Utilities.h"
-#include "H5Support/HDF5ScopedFileSentinel.h"
+#include "H5Support/H5ScopedSentinel.h"
 
 
 // -----------------------------------------------------------------------------
@@ -65,7 +65,7 @@ DataContainer::DataContainer()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-DataContainer::DataContainer(const QString name)
+DataContainer::DataContainer(const QString& name)
 : Observable()
 , m_Name(name)
 {
@@ -103,7 +103,7 @@ void DataContainer::ReadDataContainerStructure(hid_t dcArrayGroupId, DataContain
     {
       continue;
     }
-    HDF5ScopedGroupSentinel sentinel(&containerGid, false);
+    H5ScopedGroupSentinel sentinel(&containerGid, false);
 
     DataContainerProxy dcProxy(dataContainerName);
     dcProxy.name = dataContainerName;
@@ -113,9 +113,15 @@ void DataContainer::ReadDataContainerStructure(hid_t dcArrayGroupId, DataContain
     herr_t err = QH5Lite::readScalarAttribute(containerGid, SIMPL::Geometry::Geometry, SIMPL::Geometry::GeometryType, geometryType);
     if (err >= 0)
     {
-      IGeometry::Types geomTypes = req->getDCGeometryTypes();
-      if (geomTypes.size() <= 0 || geomTypes.contains(static_cast<IGeometry::Type>(geometryType)))
+      dcProxy.dcType = static_cast<unsigned int>(geometryType);
+      if (req != nullptr)
       {
+        IGeometry::Types geomTypes = req->getDCGeometryTypes();
+        if(geomTypes.empty() || geomTypes.contains(static_cast<IGeometry::Type>(geometryType)))
+        {
+
+        }
+
         dcProxy.flag = Qt::Checked;
       }
     }
@@ -327,7 +333,7 @@ int DataContainer::writeAttributeMatricesToHDF5(hid_t parentId)
       return err;
     }
     attributeMatrixId = H5Gopen(parentId, iter.key().toLatin1().data(), H5P_DEFAULT);
-    HDF5ScopedGroupSentinel gSentinel(&attributeMatrixId, false);
+    H5ScopedGroupSentinel gSentinel(&attributeMatrixId, false);
 
     AttributeMatrix::EnumType attrMatType = static_cast<AttributeMatrix::EnumType>(attrMat->getType());
     err = QH5Lite::writeScalarAttribute(parentId, iter.key(), SIMPL::StringConstants::AttributeMatrixType, attrMatType);
@@ -450,7 +456,7 @@ int DataContainer::writeMeshToHDF5(hid_t dcGid, bool writeXdmf)
   {
     return -1;
   }
-  HDF5ScopedGroupSentinel gSentinel(&geometryId, false);
+  H5ScopedGroupSentinel gSentinel(&geometryId, false);
 
   if(nullptr == m_Geometry.get())
   {
@@ -699,7 +705,7 @@ int DataContainer::readMeshDataFromHDF5(hid_t dcGid, bool preflight)
   {
     return -1;
   }
-  HDF5ScopedGroupSentinel gSentinel(&geometryId, false);
+  H5ScopedGroupSentinel gSentinel(&geometryId, false);
 
   IGeometry::Pointer geomPtr = IGeometry::NullPointer();
 

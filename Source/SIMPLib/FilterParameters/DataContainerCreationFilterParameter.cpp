@@ -70,7 +70,7 @@ DataContainerCreationFilterParameter::Pointer DataContainerCreationFilterParamet
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-QString DataContainerCreationFilterParameter::getWidgetType()
+QString DataContainerCreationFilterParameter::getWidgetType() const
 {
   return QString("DataContainerCreationWidget");
 }

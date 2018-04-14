@@ -52,7 +52,7 @@ class SIMPLib_EXPORT CalculatorSeparator : public CalculatorItem
 
   private:
     CalculatorSeparator(const CalculatorSeparator&) = delete; // Copy Constructor Not Implemented
-    void operator=(const CalculatorSeparator&) = delete;      // Operator '=' Not Implemented
+    void operator=(const CalculatorSeparator&) = delete;      // Move assignment Not Implemented
 };
 
 #endif /* _CalculatorSeparator_H_ */

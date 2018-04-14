@@ -73,7 +73,7 @@ DataContainerSelectionFilterParameter::Pointer DataContainerSelectionFilterParam
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-QString DataContainerSelectionFilterParameter::getWidgetType()
+QString DataContainerSelectionFilterParameter::getWidgetType() const
 {
   return QString("DataContainerSelectionWidget");
 }

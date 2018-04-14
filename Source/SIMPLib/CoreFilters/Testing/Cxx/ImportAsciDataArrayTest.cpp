@@ -77,7 +77,7 @@ public:
 
     FilterManager* fm = FilterManager::Instance();
 
-    IFilterFactory::Pointer ff = fm->getFactoryForFilter(QString("ImportAsciDataArray"));
+    IFilterFactory::Pointer ff = fm->getFactoryFromClassName(QString("ImportAsciDataArray"));
 
     AbstractFilter::Pointer filter = ff->create();
 
@@ -144,7 +144,8 @@ public:
         else // Bool type
         {
           bool value = (index != 0);
-          DREAM3D_REQUIRE_EQUAL(value, ptr[index])
+		  //DREAM3D_REQUIRE_EQUAL(value, (ptr[index]))
+          DREAM3D_REQUIRE_EQUAL(value, static_cast<bool>(ptr[index]))
           index++;
         }
       }
@@ -246,5 +247,5 @@ private:
   std::string m_FilePath = UnitTest::TestTempDir.toStdString() + "/ImportAsciDataArrayTest.txt";
 
   ImportAsciDataArrayTest(const ImportAsciDataArrayTest&); // Copy Constructor Not Implemented
-  void operator=(const ImportAsciDataArrayTest&);          // Operator '=' Not Implemented
+  void operator=(const ImportAsciDataArrayTest&);          // Move assignment Not Implemented
 };

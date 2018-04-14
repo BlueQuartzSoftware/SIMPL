@@ -51,7 +51,7 @@ class SIMPLib_EXPORT StatsDataArray : public IDataArray
   public:
     SIMPL_SHARED_POINTERS(StatsDataArray)
     SIMPL_STATIC_NEW_MACRO(StatsDataArray)
-    SIMPL_TYPE_MACRO_SUPER(StatsDataArray, IDataArray)
+     SIMPL_TYPE_MACRO_SUPER_OVERRIDE(StatsDataArray, IDataArray)
     SIMPL_CLASS_VERSION(2)
 
     virtual ~StatsDataArray();
@@ -377,7 +377,7 @@ class SIMPLib_EXPORT StatsDataArray : public IDataArray
     bool m_IsAllocated;
 
     StatsDataArray(const StatsDataArray&) = delete; // Copy Constructor Not Implemented
-    void operator=(const StatsDataArray&) = delete; // Operator '=' Not Implemented
+    void operator=(const StatsDataArray&) = delete; // Move assignment Not Implemented
 };
 
 #endif /* _STATSDATAARRAY_H_ */

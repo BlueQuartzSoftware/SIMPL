@@ -1,19 +1,23 @@
-Extract Component as Attribute Array {#extractcomponentasarray}
+Extract Component as Attribute Array 
 =============
 
 ## Group (Subgroup) ##
+
 Core (Memory/Management)
 
 ## Description ##
+
 This **Filter** will create an **Attribute Array** from a single component of a user chosen array multicomponent array.
 
 ## Parameters ##
+
 | Name | Type | Description |
 |------|------| ----------- |
 | Component Number to Extract | int32_t | The index of which component to extract |
 
 
 ## Required Geometry ##
+
 Not Applicable
 
 ## Required Objects ##
@@ -28,6 +32,10 @@ Not Applicable
 | Kind | Default Name | Type | Component Dimensions | Description |
 |------|--------------|------|----------------------|-------------|
 | Any **Attribute Array** | None | Any | (1) | Scalar **Attribute Array** name |
+
+## Example Pipelines ##
+
+
 
 ## License & Copyright ##
 

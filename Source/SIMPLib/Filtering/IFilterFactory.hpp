@@ -36,6 +36,8 @@
 #ifndef _IFilterFactory_H_
 #define _IFilterFactory_H_
 
+#include <QtCore/QUuid>
+
 #include "SIMPLib/Common/SIMPLibSetGetMacros.h"
 #include "SIMPLib/Filtering/AbstractFilter.h"
 #include "SIMPLib/SIMPLib.h"
@@ -57,25 +59,80 @@ public:
   /** @brief This function should NEVER get called. The subclass should ALWAYS implement
    * this method so we are going to crash the program.
    */
-  virtual AbstractFilter::Pointer create()
+  virtual AbstractFilter::Pointer create() const
   {
     Q_ASSERT(false);
     return AbstractFilter::NullPointer();
   }
-  virtual QString getFilterGroup()
+
+  /**
+   * @brief getFilterClassName
+   * @return 
+   */
+  virtual QString getFilterClassName() const
   {
     Q_ASSERT(false);
     return "";
   }
-  virtual QString getFilterSubGroup()
+  
+  /**
+   * @brief getFilterGroup
+   * @return 
+   */
+  virtual QString getFilterGroup() const
   {
     Q_ASSERT(false);
     return "";
   }
-  virtual QString getFilterHumanLabel()
+  
+  /**
+   * @brief getFilterSubGroup
+   * @return 
+   */
+  virtual QString getFilterSubGroup() const
   {
     Q_ASSERT(false);
     return "";
+  }
+  
+  /**
+   * @brief getFilterHumanLabel
+   * @return 
+   */
+  virtual QString getFilterHumanLabel() const
+  {
+    Q_ASSERT(false);
+    return "";
+  }
+
+  /**
+   * @brief getBrandingString
+   * @return 
+   */
+  virtual QString getBrandingString() const
+  {
+    Q_ASSERT(false);
+    return "";
+  }
+
+  /**
+   * @brief getCompiledLibraryName
+   * @return 
+   */
+  virtual QString getCompiledLibraryName() const
+  {
+    Q_ASSERT(false);
+    return "";
+  }
+  
+  /**
+   * @brief getUuid
+   * @return 
+   */
+  virtual QUuid getUuid() const
+  {
+    Q_ASSERT(false);
+    return QUuid();
   }
 
 protected:
@@ -85,7 +142,7 @@ protected:
 
 private:
   IFilterFactory(const IFilterFactory&); // Copy Constructor Not Implemented
-  void operator=(const IFilterFactory&); // Operator '=' Not Implemented
+  void operator=(const IFilterFactory&); // Move assignment Not Implemented
 };
 
 #endif /* _IFilterFactory_H_ */

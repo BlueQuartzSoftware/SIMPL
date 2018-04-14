@@ -96,7 +96,7 @@ class SVWidgetsLib_EXPORT RangeWidget : public FilterParameterWidget, private Ui
     RangeFilterParameter* m_FilterParameter;
 
     RangeWidget(const RangeWidget&) = delete;    // Copy Constructor Not Implemented
-    void operator=(const RangeWidget&) = delete; // Operator '=' Not Implemented
+    void operator=(const RangeWidget&) = delete; // Move assignment Not Implemented
 };
 
 #endif /* _RangeWidget_H_ */

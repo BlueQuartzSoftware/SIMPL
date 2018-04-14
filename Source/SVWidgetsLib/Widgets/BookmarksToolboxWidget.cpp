@@ -59,7 +59,7 @@
 #include "SVWidgetsLib/Widgets/BookmarksModel.h"
 #include "SVWidgetsLib/Widgets/FilterListToolboxWidget.h"
 
-// Include the MOC generated CPP file which has all the QMetaObject methods/data
+
 
 #define PREBUILT_PIPELINES_DIR "PrebuiltPipelines"
 enum ErrorCodes
@@ -324,7 +324,7 @@ QDir BookmarksToolboxWidget::findPipelinesDirectory()
 #else
   // We are on Linux - I think
   QFileInfo fi(pipelinesDir.absolutePath() + QDir::separator() + dirName);
-   qDebug() << fi.absolutePath();
+  // qDebug() << fi.absolutePath();
   // Look for the PREBUILT_PIPELINES_DIR directory in the current app directory
   if(fi.exists() == false)
   {

@@ -275,7 +275,7 @@ class SIMPLib_EXPORT StatsData
 
   private:
     StatsData(const StatsData&) = delete;      // Copy Constructor Not Implemented
-    void operator=(const StatsData&) = delete; // Operator '=' Not Implemented
+    void operator=(const StatsData&) = delete; // Move assignment Not Implemented
 };
 
 #endif /* _STATSDATA_H_ */

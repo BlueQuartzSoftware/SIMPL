@@ -64,7 +64,7 @@ class SIMPLib_EXPORT TanOperator : public UnaryOperator
 
   private:
     TanOperator(const TanOperator&) = delete;    // Copy Constructor Not Implemented
-    void operator=(const TanOperator&) = delete; // Operator '=' Not Implemented
+    void operator=(const TanOperator&) = delete; // Move assignment Not Implemented
 };
 
 #endif /* _TanOperator_H_ */

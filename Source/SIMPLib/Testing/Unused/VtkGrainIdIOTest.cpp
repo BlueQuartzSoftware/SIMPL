@@ -105,8 +105,7 @@ public:
 
 protected:
   GenerateGrainIds()
-  : AbstractFilter()
-  , m_GrainIdsArrayName(SIMPL::CellData::GrainIds)
+  : m_GrainIdsArrayName(SIMPL::CellData::GrainIds)
   , m_GrainIds(nullptr)
   {
   }
@@ -121,7 +120,7 @@ private:
     VoxelDataContainer* m = getVoxelDataContainer();
     m_GrainIdsPtr = attrMat->createNonPrereqArray<DataArray<int32_t>, AbstractFilter, int32_t>(this, m_CellAttributeMatrixName, m_GrainIdsArrayName, 0, voxels,
                                                                                                1); /* Assigns the shared_ptr<> to an instance variable that is a weak_ptr<> */
-    if(nullptr != m_GrainIdsPtr.lock().get())                                                      /* Validate the Weak Pointer wraps a non-nullptr pointer to a DataArray<T> object */
+    if(nullptr != m_GrainIdsPtr.lock())                                                            /* Validate the Weak Pointer wraps a non-nullptr pointer to a DataArray<T> object */
     {
       m_GrainIds = m_GrainIdsPtr.lock()->getPointer(0);
     } /* Now assign the raw pointer to data from the DataArray<T> object */
@@ -197,7 +196,7 @@ int TestVtkGrainIdReader()
     std::cout << reader->getErrorMessage() << std::endl;
   }
   DREAM3D_REQUIRE_EQUAL(err, 0);
-  m->getDimensions(nx, ny, nz);
+  std::tie(nx, ny, nz) = m->getDimensions();
 
   IDataArray::Pointer mdata = reader->getVoxelDataContainer()->getCellData(SIMPL::CellData::GrainIds);
 

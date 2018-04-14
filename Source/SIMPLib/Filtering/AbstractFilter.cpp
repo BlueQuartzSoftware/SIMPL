@@ -48,13 +48,12 @@ AbstractFilter::AbstractFilter()
 , m_ErrorCondition(0)
 , m_WarningCondition(0)
 , m_InPreflight(false)
-, m_PipelineIndex(0)
 , m_Enabled(true)
+, m_PipelineIndex(0)
 , m_Cancel(false)
 
 {
   m_DataContainerArray = DataContainerArray::New();
-  setupFilterParameters();
   m_PreviousFilter = NullPointer();
   m_NextFilter = NullPointer();
 }
@@ -82,12 +81,12 @@ AbstractFilter::~AbstractFilter()
 AbstractFilter::Pointer AbstractFilter::CreateFilterFromClassName(const QString& className)
 {
   FilterManager* fm = FilterManager::Instance();
-  if(NULL == fm)
+  if(nullptr == fm)
   {
     return AbstractFilter::NullPointer();
   }
-  IFilterFactory::Pointer wf = fm->getFactoryForFilter(className);
-  if(NULL == wf.get())
+  IFilterFactory::Pointer wf = fm->getFactoryFromClassName(className);
+  if(nullptr == wf)
   {
     return AbstractFilter::NullPointer();
   }
@@ -181,7 +180,6 @@ void AbstractFilter::readFilterParameters(AbstractFilterParametersReader* reader
   Q_ASSERT(reader != nullptr);
   qDebug() << "AbstractFilter::readFilterParameters() -> Writing Filter Options"
            << "\n";
-  return;
 }
 
 // -----------------------------------------------------------------------------
@@ -212,9 +210,8 @@ void AbstractFilter::preWriteFilterParameters(QJsonObject& obj, QJsonObject& roo
 void AbstractFilter::writeFilterParameters(QJsonObject& obj)
 {
   QVector<FilterParameter::Pointer> filterParameters = getFilterParameters();
-  for(int i = 0; i < filterParameters.size(); i++)
+  for(auto const fp : filterParameters)
   {
-    FilterParameter::Pointer fp = filterParameters[i];
     fp->writeJson(obj);
   }
   obj[SIMPL::Settings::FilterVersion] = getFilterVersion();
@@ -239,6 +236,7 @@ QJsonObject AbstractFilter::toJson()
   json[SIMPL::Settings::FilterName] = getNameOfClass();
   json[SIMPL::Settings::HumanLabel] = getHumanLabel();
   json[SIMPL::Settings::FilterEnabled] = getEnabled();
+  json[SIMPL::Settings::FilterUuid] = getUuid().toString();
 
   writeFilterParameters(json);
 
@@ -267,7 +265,7 @@ ISIMPLibPlugin* AbstractFilter::getPluginInstance()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-AbstractFilter::Pointer AbstractFilter::newFilterInstance(bool copyFilterParameters)
+AbstractFilter::Pointer AbstractFilter::newFilterInstance(bool copyFilterParameters) const
 {
   return NullPointer();
 }
@@ -275,7 +273,7 @@ AbstractFilter::Pointer AbstractFilter::newFilterInstance(bool copyFilterParamet
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void AbstractFilter::copyFilterParameterInstanceVariables(AbstractFilter* filter)
+void AbstractFilter::copyFilterParameterInstanceVariables(AbstractFilter* filter) const
 {
   filter->setFilterParameters(getFilterParameters());
 
@@ -311,7 +309,7 @@ void AbstractFilter::copyFilterParameterInstanceVariables(AbstractFilter* filter
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString AbstractFilter::getGroupName()
+const QString AbstractFilter::getGroupName() const
 {
   return "YOUR CLASS SHOULD IMPLEMENT THIS";
 }
@@ -319,7 +317,7 @@ const QString AbstractFilter::getGroupName()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString AbstractFilter::getSubGroupName()
+const QString AbstractFilter::getSubGroupName() const
 {
   return "YOUR CLASS SHOULD IMPLEMENT THIS";
 }
@@ -327,7 +325,7 @@ const QString AbstractFilter::getSubGroupName()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString AbstractFilter::getHumanLabel()
+const QString AbstractFilter::getHumanLabel() const
 {
   return "YOUR CLASS SHOULD IMPLEMENT THIS";
 }
@@ -335,7 +333,7 @@ const QString AbstractFilter::getHumanLabel()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString AbstractFilter::getBrandingString()
+const QString AbstractFilter::getBrandingString() const
 {
   return "";
 }
@@ -343,7 +341,7 @@ const QString AbstractFilter::getBrandingString()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString AbstractFilter::getCompiledLibraryName()
+const QString AbstractFilter::getCompiledLibraryName() const
 {
   return "";
 }
@@ -351,7 +349,7 @@ const QString AbstractFilter::getCompiledLibraryName()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString AbstractFilter::getFilterVersion()
+const QString AbstractFilter::getFilterVersion() const
 {
   return QString("0.0.0");
 }
@@ -359,7 +357,35 @@ const QString AbstractFilter::getFilterVersion()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString AbstractFilter::generateHtmlSummary()
+const QUuid AbstractFilter::getUuid()
+{
+  if(m_Uuid.isNull())
+  {
+    uint l = 100;
+    ushort w1 = 200;
+    ushort w2 = 300;
+    
+    QString libName = getCompiledLibraryName();
+    uchar b[8] = { 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 };
+    int32_t i = 0;
+    while(i < 8 && i < libName.size())
+    {
+      b[i] = static_cast<uint8_t>(libName.at(i).toLatin1());
+      i++;
+    }
+    QUuid uuid = QUuid(l, w1, w2, b[0], b[1], b[2], b[3], b[4], b[5], b[6], b[7]);
+    QString nameSpace = QString("%1 %2").arg(getNameOfClass()).arg(getHumanLabel());
+    QUuid p1 = QUuid::createUuidV5(uuid, nameSpace);
+    m_Uuid = p1;
+  }
+  return m_Uuid;
+}
+
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+const QString AbstractFilter::generateHtmlSummary() const
 {
   QString html;
   QTextStream ss(&html);

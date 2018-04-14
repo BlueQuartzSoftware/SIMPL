@@ -83,7 +83,7 @@ DataArraySelectionFilterParameter::Pointer DataArraySelectionFilterParameter::Ne
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-QString DataArraySelectionFilterParameter::getWidgetType()
+QString DataArraySelectionFilterParameter::getWidgetType() const
 {
   return QString("DataArraySelectionWidget");
 }

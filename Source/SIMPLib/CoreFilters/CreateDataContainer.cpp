@@ -44,10 +44,8 @@
 //
 // -----------------------------------------------------------------------------
 CreateDataContainer::CreateDataContainer()
-: AbstractFilter()
-, m_CreatedDataContainer("DataContainer")
+: m_CreatedDataContainer("DataContainer")
 {
-  setupFilterParameters();
 }
 
 // -----------------------------------------------------------------------------
@@ -139,7 +137,7 @@ void CreateDataContainer::execute()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-AbstractFilter::Pointer CreateDataContainer::newFilterInstance(bool copyFilterParameters)
+AbstractFilter::Pointer CreateDataContainer::newFilterInstance(bool copyFilterParameters) const
 {
   CreateDataContainer::Pointer filter = CreateDataContainer::New();
   if(true == copyFilterParameters)
@@ -152,7 +150,7 @@ AbstractFilter::Pointer CreateDataContainer::newFilterInstance(bool copyFilterPa
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString CreateDataContainer::getCompiledLibraryName()
+const QString CreateDataContainer::getCompiledLibraryName() const
 {
   return Core::CoreBaseName;
 }
@@ -160,7 +158,7 @@ const QString CreateDataContainer::getCompiledLibraryName()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString CreateDataContainer::getBrandingString()
+const QString CreateDataContainer::getBrandingString() const
 {
   return "SIMPLib Core Filter";
 }
@@ -168,7 +166,7 @@ const QString CreateDataContainer::getBrandingString()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString CreateDataContainer::getFilterVersion()
+const QString CreateDataContainer::getFilterVersion() const
 {
   QString version;
   QTextStream vStream(&version);
@@ -179,7 +177,7 @@ const QString CreateDataContainer::getFilterVersion()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString CreateDataContainer::getGroupName()
+const QString CreateDataContainer::getGroupName() const
 {
   return SIMPL::FilterGroups::CoreFilters;
 }
@@ -187,7 +185,7 @@ const QString CreateDataContainer::getGroupName()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString CreateDataContainer::getHumanLabel()
+const QString CreateDataContainer::getHumanLabel() const
 {
   return "Create Data Container";
 }
@@ -195,7 +193,15 @@ const QString CreateDataContainer::getHumanLabel()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString CreateDataContainer::getSubGroupName()
+const QUuid CreateDataContainer::getUuid()
+{
+  return QUuid("{816fbe6b-7c38-581b-b149-3f839fb65b93}");
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+const QString CreateDataContainer::getSubGroupName() const
 {
   return SIMPL::FilterSubGroups::GenerationFilters;
 }

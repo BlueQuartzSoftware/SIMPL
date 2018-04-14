@@ -62,7 +62,7 @@ class SIMPLib_EXPORT MultiplicationOperator : public BinaryOperator
 
   private:
     MultiplicationOperator(const MultiplicationOperator&) = delete; // Copy Constructor Not Implemented
-    void operator=(const MultiplicationOperator&) = delete;         // Operator '=' Not Implemented
+    void operator=(const MultiplicationOperator&) = delete;         // Move assignment Not Implemented
 };
 
 #endif /* _MultiplicationOperator_H_ */

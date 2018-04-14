@@ -69,9 +69,19 @@ class SVWidgetsLib_EXPORT PipelineFilterObject
     QColor getGroupColor();
     QIcon getGroupIcon();
 
-
-    virtual void setFilterTitle(const QString title);
-    virtual void setFilterIndex(int i, int max);
+    /**
+     * @brief setFilterTitle
+     * @param title
+     */
+    virtual void setFilterTitle(const QString &title);
+    
+    /**
+     * @brief setFilterIndex
+     * @param i
+     * @param numFilters
+     */
+    virtual void setFilterIndex(int i, int numFilters);
+    
 
     FilterInputWidget* getFilterInputWidget();
 
@@ -183,14 +193,14 @@ class SVWidgetsLib_EXPORT PipelineFilterObject
     bool                              m_HasPreflightWarnings;
     QColor                            m_GroupColor;
     QIcon                             m_GroupIcon;
-
+    int                               m_FilterIndex;
     /**
     * @brief setupFilterInputWidget Creates and initializes the filter input widget.
     */
     void setupFilterInputWidget();
 
     PipelineFilterObject(const PipelineFilterObject&) = delete; // Copy Constructor Not Implemented
-    void operator=(const PipelineFilterObject&) = delete;       // Operator '=' Not Implemented
+    void operator=(const PipelineFilterObject&) = delete;       // Move assignment Not Implemented
 };
 
 #endif /* _pipelinefilterobject_h_ */

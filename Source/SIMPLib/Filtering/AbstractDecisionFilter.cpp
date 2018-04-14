@@ -41,9 +41,7 @@
 //
 // -----------------------------------------------------------------------------
 AbstractDecisionFilter::AbstractDecisionFilter()
-: AbstractFilter()
 {
-  setupFilterParameters();
 }
 
 // -----------------------------------------------------------------------------
@@ -124,7 +122,7 @@ void AbstractDecisionFilter::extractProperties(const QJsonDocument& jsonDoc)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-AbstractFilter::Pointer AbstractDecisionFilter::newFilterInstance(bool copyFilterParameters)
+AbstractFilter::Pointer AbstractDecisionFilter::newFilterInstance(bool copyFilterParameters) const
 {
   AbstractDecisionFilter::Pointer filter = AbstractDecisionFilter::New();
   if(true == copyFilterParameters)
@@ -137,7 +135,7 @@ AbstractFilter::Pointer AbstractDecisionFilter::newFilterInstance(bool copyFilte
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString AbstractDecisionFilter::getCompiledLibraryName()
+const QString AbstractDecisionFilter::getCompiledLibraryName() const
 {
   return "";
 }
@@ -145,7 +143,7 @@ const QString AbstractDecisionFilter::getCompiledLibraryName()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString AbstractDecisionFilter::getGroupName()
+const QString AbstractDecisionFilter::getGroupName() const
 {
   return "";
 }
@@ -153,7 +151,15 @@ const QString AbstractDecisionFilter::getGroupName()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString AbstractDecisionFilter::getSubGroupName()
+const QUuid AbstractDecisionFilter::getUuid()
+{
+  return QUuid("{e4fcd394-6ac6-5559-98a1-1945a0da3427}");
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+const QString AbstractDecisionFilter::getSubGroupName() const
 {
   return "";
 }
@@ -161,7 +167,7 @@ const QString AbstractDecisionFilter::getSubGroupName()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString AbstractDecisionFilter::getHumanLabel()
+const QString AbstractDecisionFilter::getHumanLabel() const
 {
   return "";
 }

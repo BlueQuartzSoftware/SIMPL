@@ -65,7 +65,7 @@ class SIMPLib_EXPORT UnaryOperator : public CalculatorOperator
     int                                           m_NumOfArguments;
 
     UnaryOperator(const UnaryOperator&) = delete;  // Copy Constructor Not Implemented
-    void operator=(const UnaryOperator&) = delete; // Operator '=' Not Implemented
+    void operator=(const UnaryOperator&) = delete; // Move assignment Not Implemented
 };
 
 #define CREATE_NEW_ARRAY_STANDARD_UNARY(filter, calculatedArrayPath, executionStack, func)                                                                                                             \

@@ -1,14 +1,17 @@
-Threshold Example {#thresholdexample}
+Threshold Example 
 =====
 
 ## Group (Subgroup) ##
+
 ExamplePlugin (ExamplePlugin)
 
 
 ## Description ##
+
 This filter does the following...
 
 ## Parameters ##
+
 | Name             | Type |
 |------------------|------|
 | Feature Array Name | String |

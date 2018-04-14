@@ -36,9 +36,17 @@
 #ifndef _igeometrygrid_h_
 #define _igeometrygrid_h_
 
+#include <tuple>
 
 #include "SIMPLib/Common/SIMPLibSetGetMacros.h"
 #include "SIMPLib/Geometry/IGeometry.h"
+
+namespace SIMPL
+{
+using Tuple3FVec = std::tuple<float, float, float>;
+using Tuple6FVec = std::tuple<float, float, float, float, float, float>;
+using Tuple3SVec = std::tuple<size_t, size_t, size_t>;
+}
 
 /**
  * @brief The IGeometryGrid class extends IGeometry for grid type geometries
@@ -47,23 +55,25 @@ class SIMPLib_EXPORT IGeometryGrid : public IGeometry
 {
   public:
     SIMPL_SHARED_POINTERS(IGeometryGrid)
-    SIMPL_TYPE_MACRO_SUPER(IGeometryGrid, Observable)
+     SIMPL_TYPE_MACRO_SUPER_OVERRIDE(IGeometryGrid, Observable)
 
     IGeometryGrid();
     virtual ~IGeometryGrid();
     
     virtual void setDimensions(size_t dims[3]) = 0;
-    virtual void setDimensions(size_t xDim, size_t yDim, size_t zDim) = 0;
-    virtual void getDimensions(size_t dims[3]) = 0;
-    virtual void getDimensions(size_t& xDim, size_t& yDim, size_t& zDim) = 0;
-    
+    virtual void setDimensions(size_t a, size_t b, size_t c) = 0;
+    virtual void setDimensions(const SIMPL::Tuple3SVec& dims) = 0;
+
+    virtual SIMPL::Tuple3SVec getDimensions() const = 0;
+
     virtual size_t getXPoints() = 0;
     virtual size_t getYPoints() = 0;
     virtual size_t getZPoints() = 0;
-
+    
     virtual void getPlaneCoords(size_t idx[3], float coords[3]) = 0;
     virtual void getPlaneCoords(size_t x, size_t y, size_t z, float coords[3]) = 0;
     virtual void getPlaneCoords(size_t idx, float coords[3]) = 0;
+    
     virtual void getPlaneCoords(size_t idx[3], double coords[3]) = 0;
     virtual void getPlaneCoords(size_t x, size_t y, size_t z, double coords[3]) = 0;
     virtual void getPlaneCoords(size_t idx, double coords[3]) = 0;
@@ -71,13 +81,14 @@ class SIMPLib_EXPORT IGeometryGrid : public IGeometry
     virtual void getCoords(size_t idx[3], float coords[3]) = 0;
     virtual void getCoords(size_t x, size_t y, size_t z, float coords[3]) = 0;
     virtual void getCoords(size_t idx, float coords[3]) = 0;
+    
     virtual void getCoords(size_t idx[3], double coords[3]) = 0;
     virtual void getCoords(size_t x, size_t y, size_t z, double coords[3]) = 0;
     virtual void getCoords(size_t idx, double coords[3]) = 0;
 
   private:
     IGeometryGrid(const IGeometryGrid&) = delete;  // Copy Constructor Not Implemented
-    void operator=(const IGeometryGrid&) = delete; // Operator '=' Not Implemented
+    void operator=(const IGeometryGrid&) = delete; // Move assignment Not Implemented
 };
 
 #endif /* _igeometrygrid_h_ */

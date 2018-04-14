@@ -35,7 +35,7 @@
 
 #include "ScaleVolume.h"
 
-#ifdef SIMPLib_USE_PARALLEL_ALGORITHMS
+#ifdef SIMPL_USE_PARALLEL_ALGORITHMS
 #include <tbb/blocked_range.h>
 #include <tbb/parallel_for.h>
 #include <tbb/partitioner.h>
@@ -69,9 +69,7 @@ public:
   , m_ScaleFactor(scale)
   {
   }
-  virtual ~ScaleVolumeUpdateVerticesImpl()
-  {
-  }
+  ~ScaleVolumeUpdateVerticesImpl() = default;
 
   void generate(size_t start, size_t end) const
   {
@@ -83,7 +81,7 @@ public:
     }
   }
 
-#ifdef SIMPLib_USE_PARALLEL_ALGORITHMS
+#ifdef SIMPL_USE_PARALLEL_ALGORITHMS
   void operator()(const tbb::blocked_range<size_t>& r) const
   {
     generate(r.begin(), r.end());
@@ -95,8 +93,7 @@ public:
 //
 // -----------------------------------------------------------------------------
 ScaleVolume::ScaleVolume()
-: AbstractFilter()
-, m_DataContainerName("")
+: m_DataContainerName("")
 , m_SurfaceDataContainerName("")
 , m_ApplyToVoxelVolume(true)
 , m_ApplyToSurfaceMesh(true)
@@ -105,7 +102,6 @@ ScaleVolume::ScaleVolume()
   m_ScaleFactor.y = 1.0f;
   m_ScaleFactor.z = 1.0f;
 
-  setupFilterParameters();
 }
 
 // -----------------------------------------------------------------------------
@@ -205,7 +201,7 @@ void ScaleVolume::updateSurfaceMesh()
   setErrorCondition(0);
   setWarningCondition(0);
 
-#ifdef SIMPLib_USE_PARALLEL_ALGORITHMS
+#ifdef SIMPL_USE_PARALLEL_ALGORITHMS
   tbb::task_scheduler_init init;
   bool doParallel = true;
 #endif
@@ -248,7 +244,7 @@ void ScaleVolume::updateSurfaceMesh()
     }
   }
 
-#ifdef SIMPLib_USE_PARALLEL_ALGORITHMS
+#ifdef SIMPL_USE_PARALLEL_ALGORITHMS
   if(doParallel == true)
   {
     tbb::parallel_for(tbb::blocked_range<size_t>(0, count), ScaleVolumeUpdateVerticesImpl(nodes, min, m_ScaleFactor), tbb::auto_partitioner());
@@ -298,7 +294,7 @@ void ScaleVolume::execute()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-AbstractFilter::Pointer ScaleVolume::newFilterInstance(bool copyFilterParameters)
+AbstractFilter::Pointer ScaleVolume::newFilterInstance(bool copyFilterParameters) const
 {
   ScaleVolume::Pointer filter = ScaleVolume::New();
   if(true == copyFilterParameters)
@@ -311,7 +307,7 @@ AbstractFilter::Pointer ScaleVolume::newFilterInstance(bool copyFilterParameters
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString ScaleVolume::getCompiledLibraryName()
+const QString ScaleVolume::getCompiledLibraryName() const
 {
   return Core::CoreBaseName;
 }
@@ -319,7 +315,7 @@ const QString ScaleVolume::getCompiledLibraryName()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString ScaleVolume::getBrandingString()
+const QString ScaleVolume::getBrandingString() const
 {
   return "SIMPLib Core Filter";
 }
@@ -327,7 +323,7 @@ const QString ScaleVolume::getBrandingString()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString ScaleVolume::getFilterVersion()
+const QString ScaleVolume::getFilterVersion() const
 {
   QString version;
   QTextStream vStream(&version);
@@ -338,7 +334,7 @@ const QString ScaleVolume::getFilterVersion()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString ScaleVolume::getGroupName()
+const QString ScaleVolume::getGroupName() const
 {
   return SIMPL::FilterGroups::CoreFilters;
 }
@@ -346,7 +342,15 @@ const QString ScaleVolume::getGroupName()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString ScaleVolume::getSubGroupName()
+const QUuid ScaleVolume::getUuid()
+{
+  return QUuid("{3cf44c27-9149-5548-945a-deef1dc994a8}");
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+const QString ScaleVolume::getSubGroupName() const
 {
   return SIMPL::FilterSubGroups::SpatialFilters;
 }
@@ -354,7 +358,7 @@ const QString ScaleVolume::getSubGroupName()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString ScaleVolume::getHumanLabel()
+const QString ScaleVolume::getHumanLabel() const
 {
   return "Change Scaling of Volume";
 }

@@ -97,7 +97,7 @@ public:
     // Now instantiate the ExtractComponentAsArray Filter from the FilterManager
     QString filtName = "ExtractComponentAsArray";
     FilterManager* fm = FilterManager::Instance();
-    IFilterFactory::Pointer filterFactory = fm->getFactoryForFilter(filtName);
+    IFilterFactory::Pointer filterFactory = fm->getFactoryFromClassName(filtName);
     if(nullptr == filterFactory.get())
     {
       std::stringstream ss;
@@ -238,5 +238,5 @@ public:
 
 private:
   ExtractComponentAsArrayTest(const ExtractComponentAsArrayTest&); // Copy Constructor Not Implemented
-  void operator=(const ExtractComponentAsArrayTest&);              // Operator '=' Not Implemented
+  void operator=(const ExtractComponentAsArrayTest&);              // Move assignment Not Implemented
 };

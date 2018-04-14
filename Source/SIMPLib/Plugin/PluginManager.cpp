@@ -35,6 +35,8 @@
 
 #include "PluginManager.h"
 
+#include "SIMPLib/Filtering/CorePlugin.h"
+
 PluginManager* PluginManager::self = nullptr;
 
 // -----------------------------------------------------------------------------
@@ -65,6 +67,8 @@ PluginManager* PluginManager::Instance()
   {
     //  qDebug() << "PluginManager::Instance self was nullptr" << "\n";
     self = new PluginManager();
+    CorePlugin* corePlug = new CorePlugin;
+    self->addPlugin(corePlug);
   }
   return self;
 }
@@ -99,7 +103,7 @@ QList<QString> PluginManager::getPluginNames()
     ISIMPLibPlugin* plugin = *iter;
     if(nullptr != plugin)
     {
-      pluginNames.push_back(plugin->getPluginName());
+      pluginNames.push_back(plugin->getPluginBaseName());
     }
   }
   return pluginNames;
@@ -117,7 +121,7 @@ QString PluginManager::getPluginName(QString filtName)
 
     if(plugin->getFilters().contains(filtName))
     {
-      return plugin->getPluginName();
+      return plugin->getPluginBaseName();
     }
   }
 
@@ -140,7 +144,7 @@ ISIMPLibPlugin* PluginManager::findPlugin(QString pluginName)
   for(QVector<ISIMPLibPlugin*>::iterator iter = plugins.begin(); iter != plugins.end(); iter++)
   {
     ISIMPLibPlugin* plugin = *iter;
-    if(plugin->getPluginName() == pluginName)
+    if(plugin->getPluginBaseName() == pluginName)
     {
       return plugin;
     }

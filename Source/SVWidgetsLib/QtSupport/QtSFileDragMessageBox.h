@@ -37,8 +37,7 @@
 #ifndef _filedragmessagebox_h_
 #define _filedragmessagebox_h_
 
-
-#include <QDialog>
+#include <QtWidgets/QDialog>
 
 #include "SVWidgetsLib/SVWidgetsLib.h"
 

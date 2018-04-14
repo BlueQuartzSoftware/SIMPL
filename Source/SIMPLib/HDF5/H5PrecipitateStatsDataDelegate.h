@@ -61,7 +61,7 @@ class SIMPLib_EXPORT H5PrecipitateStatsDataDelegate : public H5StatsDataDelegate
 
     SIMPL_SHARED_POINTERS(H5PrecipitateStatsDataDelegate)
     SIMPL_STATIC_NEW_MACRO(H5PrecipitateStatsDataDelegate)
-    SIMPL_TYPE_MACRO_SUPER(H5PrecipitateStatsDataDelegate, H5StatsDataDelegate)
+     SIMPL_TYPE_MACRO_SUPER_OVERRIDE(H5PrecipitateStatsDataDelegate, H5StatsDataDelegate)
     virtual ~H5PrecipitateStatsDataDelegate();
 
     int writePrecipitateStatsData(PrecipitateStatsData* data, hid_t groupId);
@@ -126,7 +126,7 @@ class SIMPLib_EXPORT H5PrecipitateStatsDataDelegate : public H5StatsDataDelegate
 
   private:
     H5PrecipitateStatsDataDelegate(const H5PrecipitateStatsDataDelegate&) = delete; // Copy Constructor Not Implemented
-    void operator=(const H5PrecipitateStatsDataDelegate&) = delete;                 // Operator '=' Not Implemented
+    void operator=(const H5PrecipitateStatsDataDelegate&) = delete;                 // Move assignment Not Implemented
 };
 
 #endif /* _H5PrecipitateStatsData_DELEGATE_H_ */

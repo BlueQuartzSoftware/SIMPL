@@ -54,14 +54,12 @@ static const int32_t k_MoveDataArray = 1;
 //
 // -----------------------------------------------------------------------------
 MoveData::MoveData()
-: AbstractFilter()
-, m_WhatToMove(k_MoveAttributeMatrix)
+: m_WhatToMove(k_MoveAttributeMatrix)
 , m_DataContainerDestination("")
 , m_AttributeMatrixSource()
 , m_AttributeMatrixDestination()
 , m_DataArraySource()
 {
-  setupFilterParameters();
 }
 
 // -----------------------------------------------------------------------------
@@ -246,7 +244,7 @@ void MoveData::execute()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-AbstractFilter::Pointer MoveData::newFilterInstance(bool copyFilterParameters)
+AbstractFilter::Pointer MoveData::newFilterInstance(bool copyFilterParameters) const
 {
   MoveData::Pointer filter = MoveData::New();
   if(true == copyFilterParameters)
@@ -259,7 +257,7 @@ AbstractFilter::Pointer MoveData::newFilterInstance(bool copyFilterParameters)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString MoveData::getCompiledLibraryName()
+const QString MoveData::getCompiledLibraryName() const
 {
   return Core::CoreBaseName;
 }
@@ -267,7 +265,7 @@ const QString MoveData::getCompiledLibraryName()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString MoveData::getBrandingString()
+const QString MoveData::getBrandingString() const
 {
   return "SIMPLib Core Filter";
 }
@@ -275,7 +273,7 @@ const QString MoveData::getBrandingString()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString MoveData::getFilterVersion()
+const QString MoveData::getFilterVersion() const
 {
   QString version;
   QTextStream vStream(&version);
@@ -286,7 +284,7 @@ const QString MoveData::getFilterVersion()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString MoveData::getGroupName()
+const QString MoveData::getGroupName() const
 {
   return SIMPL::FilterGroups::CoreFilters;
 }
@@ -294,7 +292,15 @@ const QString MoveData::getGroupName()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString MoveData::getSubGroupName()
+const QUuid MoveData::getUuid()
+{
+  return QUuid("{fe2cbe09-8ae1-5bea-9397-fd5741091fdb}");
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+const QString MoveData::getSubGroupName() const
 {
   return SIMPL::FilterSubGroups::MemoryManagementFilters;
 }
@@ -302,7 +308,7 @@ const QString MoveData::getSubGroupName()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString MoveData::getHumanLabel()
+const QString MoveData::getHumanLabel() const
 {
   return "Move Data";
 }

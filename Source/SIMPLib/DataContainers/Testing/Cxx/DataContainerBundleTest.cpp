@@ -153,5 +153,5 @@ public:
 
 private:
   DataContainerBundleTest(const DataContainerBundleTest&); // Copy Constructor Not Implemented
-  void operator=(const DataContainerBundleTest&);          // Operator '=' Not Implemented
+  void operator=(const DataContainerBundleTest&);          // Move assignment Not Implemented
 };

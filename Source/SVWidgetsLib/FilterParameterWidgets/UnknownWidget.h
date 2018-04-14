@@ -93,7 +93,7 @@ class SVWidgetsLib_EXPORT UnknownWidget : public FilterParameterWidget, private 
     UnknownFilterParameter* m_FilterParameter;
 
     UnknownWidget(const UnknownWidget&) = delete;  // Copy Constructor Not Implemented
-    void operator=(const UnknownWidget&) = delete; // Operator '=' Not Implemented
+    void operator=(const UnknownWidget&) = delete; // Move assignment Not Implemented
 };
 
 #endif /* _UnknownWidget_H_ */

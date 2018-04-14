@@ -72,7 +72,7 @@ FourthOrderPolynomialFilterParameter::Pointer FourthOrderPolynomialFilterParamet
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-QString FourthOrderPolynomialFilterParameter::getWidgetType()
+QString FourthOrderPolynomialFilterParameter::getWidgetType() const
 {
   return QString("FourthOrderPolynomialWidget");
 }

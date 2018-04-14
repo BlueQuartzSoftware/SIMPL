@@ -41,9 +41,7 @@
 //
 // -----------------------------------------------------------------------------
 DynamicTableExample::DynamicTableExample()
-: AbstractFilter()
 {
-  setupFilterParameters();
 }
 
 // -----------------------------------------------------------------------------
@@ -194,7 +192,7 @@ void DynamicTableExample::execute()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-AbstractFilter::Pointer DynamicTableExample::newFilterInstance(bool copyFilterParameters)
+AbstractFilter::Pointer DynamicTableExample::newFilterInstance(bool copyFilterParameters) const
 {
   DynamicTableExample::Pointer filter = DynamicTableExample::New();
   if(true == copyFilterParameters)
@@ -207,7 +205,7 @@ AbstractFilter::Pointer DynamicTableExample::newFilterInstance(bool copyFilterPa
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString DynamicTableExample::getCompiledLibraryName()
+const QString DynamicTableExample::getCompiledLibraryName() const
 {
   return Core::CoreBaseName;
 }
@@ -215,7 +213,7 @@ const QString DynamicTableExample::getCompiledLibraryName()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString DynamicTableExample::getGroupName()
+const QString DynamicTableExample::getGroupName() const
 {
   return SIMPL::FilterGroups::Generic;
 }
@@ -223,7 +221,15 @@ const QString DynamicTableExample::getGroupName()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString DynamicTableExample::getSubGroupName()
+const QUuid DynamicTableExample::getUuid()
+{
+  return QUuid("{7baae579-69bf-5559-a876-d0ef1cab77eb}");
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+const QString DynamicTableExample::getSubGroupName() const
 {
   return "Test";
 }
@@ -231,7 +237,7 @@ const QString DynamicTableExample::getSubGroupName()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString DynamicTableExample::getHumanLabel()
+const QString DynamicTableExample::getHumanLabel() const
 {
   return "Dynamic Table Example";
 }

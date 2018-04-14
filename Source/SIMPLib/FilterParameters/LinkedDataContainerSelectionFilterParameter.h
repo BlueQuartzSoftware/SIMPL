@@ -63,7 +63,7 @@ class SIMPLib_EXPORT LinkedDataContainerSelectionFilterParameter : public Filter
   public:
     SIMPL_SHARED_POINTERS(LinkedDataContainerSelectionFilterParameter)
     SIMPL_STATIC_NEW_MACRO(LinkedDataContainerSelectionFilterParameter)
-    SIMPL_TYPE_MACRO_SUPER(LinkedDataContainerSelectionFilterParameter, FilterParameter)
+     SIMPL_TYPE_MACRO_SUPER_OVERRIDE(LinkedDataContainerSelectionFilterParameter, FilterParameter)
 
     typedef std::function<void(QString)> SetterCallbackType;
     typedef std::function<QString(void)> GetterCallbackType;
@@ -107,19 +107,19 @@ class SIMPLib_EXPORT LinkedDataContainerSelectionFilterParameter : public Filter
      * this FilterParameter subclass
      * @return
      */
-    QString getWidgetType();
+    QString getWidgetType() const override;
 
     /**
      * @brief readJson Reads this filter parameter's corresponding property out of a QJsonObject.
      * @param json The QJsonObject that the filter parameter reads from.
      */
-    void readJson(const QJsonObject &json);
+    void readJson(const QJsonObject& json) override;
 
     /**
      * @brief writeJson Writes this filter parameter's corresponding property to a QJsonObject.
      * @param json The QJsonObject that the filter parameter writes to.
      */
-    void writeJson(QJsonObject &json);
+    void writeJson(QJsonObject& json) override;
 
     /**
     * @param SetterCallback The method in the AbstractFilter subclass that <i>sets</i> the value of the property
@@ -145,7 +145,7 @@ class SIMPLib_EXPORT LinkedDataContainerSelectionFilterParameter : public Filter
 
   private:
     LinkedDataContainerSelectionFilterParameter(const LinkedDataContainerSelectionFilterParameter&) = delete; // Copy Constructor Not Implemented
-    void operator=(const LinkedDataContainerSelectionFilterParameter&) = delete;                              // Operator '=' Not Implemented
+    void operator=(const LinkedDataContainerSelectionFilterParameter&) = delete;                              // Move assignment Not Implemented
 };
 
 #endif /* _linkeddatacontainerselectionfilterparameter_h_ */

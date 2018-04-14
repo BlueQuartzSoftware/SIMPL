@@ -48,13 +48,11 @@
 //
 // -----------------------------------------------------------------------------
 CopyFeatureArrayToElementArray::CopyFeatureArrayToElementArray()
-: AbstractFilter()
-, m_SelectedFeatureArrayPath("", "", "")
+: m_SelectedFeatureArrayPath("", "", "")
 , m_FeatureIdsArrayPath("", "", "")
 , m_CreatedArrayName("")
 , m_FeatureIds(nullptr)
 {
-  setupFilterParameters();
 }
 
 // -----------------------------------------------------------------------------
@@ -124,7 +122,7 @@ void CopyFeatureArrayToElementArray::dataCheck()
   QVector<size_t> cDims(1, 1);
   m_FeatureIdsPtr = getDataContainerArray()->getPrereqArrayFromPath<DataArray<int32_t>, AbstractFilter>(this, getFeatureIdsArrayPath(),
                                                                                                         cDims); /* Assigns the shared_ptr<> to an instance variable that is a weak_ptr<> */
-  if(nullptr != m_FeatureIdsPtr.lock().get())                                                                   /* Validate the Weak Pointer wraps a non-nullptr pointer to a DataArray<T> object */
+  if(nullptr != m_FeatureIdsPtr.lock())                                                                         /* Validate the Weak Pointer wraps a non-nullptr pointer to a DataArray<T> object */
   {
     m_FeatureIds = m_FeatureIdsPtr.lock()->getPointer(0);
   } /* Now assign the raw pointer to data from the DataArray<T> object */
@@ -310,7 +308,7 @@ void CopyFeatureArrayToElementArray::execute()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-AbstractFilter::Pointer CopyFeatureArrayToElementArray::newFilterInstance(bool copyFilterParameters)
+AbstractFilter::Pointer CopyFeatureArrayToElementArray::newFilterInstance(bool copyFilterParameters) const
 {
   CopyFeatureArrayToElementArray::Pointer filter = CopyFeatureArrayToElementArray::New();
   if(true == copyFilterParameters)
@@ -323,7 +321,7 @@ AbstractFilter::Pointer CopyFeatureArrayToElementArray::newFilterInstance(bool c
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString CopyFeatureArrayToElementArray::getCompiledLibraryName()
+const QString CopyFeatureArrayToElementArray::getCompiledLibraryName() const
 {
   return Core::CoreBaseName;
 }
@@ -331,7 +329,7 @@ const QString CopyFeatureArrayToElementArray::getCompiledLibraryName()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString CopyFeatureArrayToElementArray::getBrandingString()
+const QString CopyFeatureArrayToElementArray::getBrandingString() const
 {
   return "SIMPLib Core Filter";
 }
@@ -339,7 +337,7 @@ const QString CopyFeatureArrayToElementArray::getBrandingString()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString CopyFeatureArrayToElementArray::getFilterVersion()
+const QString CopyFeatureArrayToElementArray::getFilterVersion() const
 {
   QString version;
   QTextStream vStream(&version);
@@ -350,7 +348,7 @@ const QString CopyFeatureArrayToElementArray::getFilterVersion()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString CopyFeatureArrayToElementArray::getGroupName()
+const QString CopyFeatureArrayToElementArray::getGroupName() const
 {
   return SIMPL::FilterGroups::CoreFilters;
 }
@@ -358,7 +356,15 @@ const QString CopyFeatureArrayToElementArray::getGroupName()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString CopyFeatureArrayToElementArray::getSubGroupName()
+const QUuid CopyFeatureArrayToElementArray::getUuid()
+{
+  return QUuid("{99836b75-144b-5126-b261-b411133b5e8a}");
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+const QString CopyFeatureArrayToElementArray::getSubGroupName() const
 {
   return SIMPL::FilterSubGroups::MemoryManagementFilters;
 }
@@ -366,7 +372,7 @@ const QString CopyFeatureArrayToElementArray::getSubGroupName()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString CopyFeatureArrayToElementArray::getHumanLabel()
+const QString CopyFeatureArrayToElementArray::getHumanLabel() const
 {
   return "Create Element Array from Feature Array";
 }

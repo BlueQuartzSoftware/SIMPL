@@ -1,4 +1,4 @@
-Create Geometry (Image)  {#createimagegeometry}
+Create Geometry (Image)  
 =============
 
 ## Group (Subgroup) ##
@@ -17,6 +17,7 @@ If you are reading in raw binary data that represents data on a rectilinear grid
 filter first to create a description of the **Geometry**.
 
 ## Parameters ##
+
 | Name             | Type | Description |
 |------------------|------|-------------|
 | Dimensions | size_t (3x) | The number of cells in each of the X, Y, Z directions |
@@ -35,7 +36,12 @@ Not Applicable
 
 
 ## Created Objects ##
+
 Not Applicable
+
+## Example Pipelines ##
+
+
 
 ## License & Copyright ##
 

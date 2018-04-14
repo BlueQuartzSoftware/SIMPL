@@ -126,7 +126,7 @@ void StatusBarButton::paintEvent(QPaintEvent* event)
   int maxHeight = maximumHeight();
   QFontMetrics fontMetrics(font);
   int fontHeight = fontMetrics.height();
-  int fontMargin = ((maxHeight - fontHeight) / 2) - 1;
+  int fontMargin = ((maxHeight - fontHeight) / 2) - 2;
 
   painter.setFont(font);
 

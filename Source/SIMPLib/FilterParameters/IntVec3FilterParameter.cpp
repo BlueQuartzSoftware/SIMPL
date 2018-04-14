@@ -72,7 +72,7 @@ IntVec3FilterParameter::Pointer IntVec3FilterParameter::New(const QString& human
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-QString IntVec3FilterParameter::getWidgetType()
+QString IntVec3FilterParameter::getWidgetType() const
 {
   return QString("IntVec3Widget");
 }

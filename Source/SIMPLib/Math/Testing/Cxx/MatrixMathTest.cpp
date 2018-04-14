@@ -699,5 +699,5 @@ public:
 
 private:
   MatrixMathTest(const MatrixMathTest&); // Copy Constructor Not Implemented
-  void operator=(const MatrixMathTest&); // Operator '=' Not Implemented
+  void operator=(const MatrixMathTest&); // Move assignment Not Implemented
 };

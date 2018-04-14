@@ -66,7 +66,7 @@ class SIMPLib_EXPORT DynamicChoiceFilterParameter : public FilterParameter
   public:
     SIMPL_SHARED_POINTERS(DynamicChoiceFilterParameter)
     SIMPL_STATIC_NEW_MACRO(DynamicChoiceFilterParameter)
-    SIMPL_TYPE_MACRO_SUPER(DynamicChoiceFilterParameter, FilterParameter)
+     SIMPL_TYPE_MACRO_SUPER_OVERRIDE(DynamicChoiceFilterParameter, FilterParameter)
 
     typedef std::function<void(QString)> SetterCallbackType;
     typedef std::function<QString(void)> GetterCallbackType;
@@ -104,19 +104,19 @@ class SIMPLib_EXPORT DynamicChoiceFilterParameter : public FilterParameter
      * this FilterParameter subclass
      * @return
      */
-    QString getWidgetType();
+    QString getWidgetType() const override;
 
     /**
      * @brief readJson Reads this filter parameter's corresponding property out of a QJsonObject.
      * @param json The QJsonObject that the filter parameter reads from.
      */
-    void readJson(const QJsonObject &json);
+    void readJson(const QJsonObject& json) override;
 
     /**
      * @brief writeJson Writes this filter parameter's corresponding property to a QJsonObject.
      * @param json The QJsonObject that the filter parameter writes to.
      */
-    void writeJson(QJsonObject &json);
+    void writeJson(QJsonObject& json) override;
 
     /**
     * @param SetterCallback The method in the AbstractFilter subclass that <i>sets</i> the value of the property
@@ -142,7 +142,7 @@ class SIMPLib_EXPORT DynamicChoiceFilterParameter : public FilterParameter
 
   private:
     DynamicChoiceFilterParameter(const DynamicChoiceFilterParameter&) = delete; // Copy Constructor Not Implemented
-    void operator=(const DynamicChoiceFilterParameter&) = delete;               // Operator '=' Not Implemented
+    void operator=(const DynamicChoiceFilterParameter&) = delete;               // Move assignment Not Implemented
 };
 
 #endif /* _DynamicChoiceFilterParameter_H_ */

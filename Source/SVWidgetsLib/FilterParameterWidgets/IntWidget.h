@@ -93,7 +93,7 @@ class SVWidgetsLib_EXPORT IntWidget : public FilterParameterWidget, private Ui::
     IntFilterParameter* m_FilterParameter;
 
     IntWidget(const IntWidget&) = delete;      // Copy Constructor Not Implemented
-    void operator=(const IntWidget&) = delete; // Operator '=' Not Implemented
+    void operator=(const IntWidget&) = delete; // Move assignment Not Implemented
 };
 
 #endif /* _IntWidget_H_ */

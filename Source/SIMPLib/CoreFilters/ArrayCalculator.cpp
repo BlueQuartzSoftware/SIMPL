@@ -134,13 +134,11 @@
 //
 // -----------------------------------------------------------------------------
 ArrayCalculator::ArrayCalculator()
-: AbstractFilter()
-, m_SelectedAttributeMatrix("", "", "")
+: m_SelectedAttributeMatrix("", "", "")
 , m_InfixEquation(QString())
 , m_CalculatedArray("", "", "Output")
 , m_Units(Radians)
 {
-  setupFilterParameters();
 
   createSymbolMap();
 }
@@ -928,7 +926,7 @@ void ArrayCalculator::checkForAmbiguousArrayName(QString strItem, QString warnin
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-AbstractFilter::Pointer ArrayCalculator::newFilterInstance(bool copyFilterParameters)
+AbstractFilter::Pointer ArrayCalculator::newFilterInstance(bool copyFilterParameters) const
 {
   ArrayCalculator::Pointer filter = ArrayCalculator::New();
   if(true == copyFilterParameters)
@@ -942,7 +940,7 @@ AbstractFilter::Pointer ArrayCalculator::newFilterInstance(bool copyFilterParame
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString ArrayCalculator::getCompiledLibraryName()
+const QString ArrayCalculator::getCompiledLibraryName() const
 {
   return Core::CoreBaseName;
 }
@@ -950,7 +948,7 @@ const QString ArrayCalculator::getCompiledLibraryName()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString ArrayCalculator::getBrandingString()
+const QString ArrayCalculator::getBrandingString() const
 {
   return "SIMPLib Core Filter";
 }
@@ -958,7 +956,7 @@ const QString ArrayCalculator::getBrandingString()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString ArrayCalculator::getFilterVersion()
+const QString ArrayCalculator::getFilterVersion() const
 {
   QString version;
   QTextStream vStream(&version);
@@ -969,7 +967,7 @@ const QString ArrayCalculator::getFilterVersion()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString ArrayCalculator::getGroupName()
+const QString ArrayCalculator::getGroupName() const
 {
   return SIMPL::FilterGroups::CoreFilters;
 }
@@ -977,7 +975,15 @@ const QString ArrayCalculator::getGroupName()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString ArrayCalculator::getSubGroupName()
+const QUuid ArrayCalculator::getUuid()
+{
+  return QUuid("{7ff0ebb3-7b0d-5ff7-b9d8-5147031aca10}");
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+const QString ArrayCalculator::getSubGroupName() const
 {
   return SIMPL::FilterSubGroups::GenerationFilters;
 }
@@ -985,7 +991,7 @@ const QString ArrayCalculator::getSubGroupName()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString ArrayCalculator::getHumanLabel()
+const QString ArrayCalculator::getHumanLabel() const
 {
   return "Attribute Array Calculator";
 }

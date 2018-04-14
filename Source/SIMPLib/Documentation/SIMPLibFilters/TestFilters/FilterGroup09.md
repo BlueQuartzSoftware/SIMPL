@@ -1,4 +1,4 @@
-FilterGroup09 {#filtergroup09}
+FilterGroup09 
 =============
 
 ## Group (Subgroup) ##
@@ -19,6 +19,10 @@ This filter is a test filter used in the unit test suite.
 
 
 ## Created Objects ##
+
+
+## Example Pipelines ##
+
 
 
 ## License & Copyright ##

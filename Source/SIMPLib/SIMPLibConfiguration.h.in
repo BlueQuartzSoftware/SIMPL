@@ -2,23 +2,39 @@
 * again to regenerate this file.
 */
 
-#ifndef _SIMPLib_H_
-#define _SIMPLib_H_
+#ifndef _simplib_H_
+#define _simplib_H_
 
 /* Define to 1 if SIMPLib was built as a dynamic library */
 #cmakedefine SIMPLib_BUILT_AS_DYNAMIC_LIB @SIMPLib_BUILT_AS_DYNAMIC_LIB@
 
+/* ****************************************************************************
+* These define what libraries SIMPL is using.
+**************************************************************************** */
+
 /* Did we compile with HDF5 support */
-#define SIMPLib_HDF5_SUPPORT @SIMPLib_HDF5_SUPPORT@
+#define SIMPL_HDF5_SUPPORT @SIMPL_HDF5_SUPPORT@
 
 /* define to 1 if we are using parallel algorithms */
-#cmakedefine SIMPLib_USE_PARALLEL_ALGORITHMS @SIMPLib_USE_PARALLEL_ALGORITHMS@
-
-/* define to 1 if we are enabling NTFS file checking */
-#cmakedefine SIMPLib_NTFS_FILE_CHECK @SIMPLib_NTFS_FILE_CHECK@
+#cmakedefine SIMPL_USE_PARALLEL_ALGORITHMS @SIMPL_USE_PARALLEL_ALGORITHMS@
 
 /* define to 1 if we are using the Eigen Library*/
-#cmakedefine SIMPLib_USE_EIGEN @EIGEN_FOUND@
+#cmakedefine SIMPL_USE_EIGEN @EIGEN_FOUND@
+
+/* define to 1 if we are supporting ITK Filters */
+#cmakedefine SIMPL_USE_ITK
+
+/* ****************************************************************************
+* These define features that SIMPL will have when compiled.
+**************************************************************************** */
+
+/* define to 1 if we are enabling NTFS file checking */
+#cmakedefine SIMPL_NTFS_FILE_CHECK @SIMPL_NTFS_FILE_CHECK@
+
+
+/* ****************************************************************************
+* These define what source groups are being compiled
+**************************************************************************** */
 
 /* define to 1 if we are using the SIMPL_Group_BASE*/
 #cmakedefine SIMPL_Group_BASE @SIMPL_Group_BASE@
@@ -33,10 +49,11 @@
 #cmakedefine SIMPL_Group_WIDGETS @SIMPL_Group_WIDGETS@
 
 /* define to 1 if we are building the Test Filters */
-#cmakedefine SIMPLib_BUILD_TEST_FILTERS
+#cmakedefine SIMPL_BUILD_TEST_FILTERS
 
-/* define to 1 if we are supporting ITK Filters */
-#cmakedefine SIMPLib_USE_ITK
+/* ****************************************************************************
+* These define misc items from the build
+**************************************************************************** */
 
 /* Defines the type of Release that is being built */
 #define SIMPLProj_RELEASE_TYPE "@SIMPLProj_RELEASE_TYPE@"
@@ -56,6 +73,10 @@
 
 #define __SHOW_DEBUG_MSG__ false
 
+#ifdef __clang__
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Winconsistent-missing-override"
+#endif
 
 #if (_MSC_VER >= 1)
 
@@ -82,4 +103,4 @@ Q_DECLARE_METATYPE(int64_t)
 #endif
 
 
-#endif /* _SIMPLib_H_ */
+#endif /* _simplib_H_ */

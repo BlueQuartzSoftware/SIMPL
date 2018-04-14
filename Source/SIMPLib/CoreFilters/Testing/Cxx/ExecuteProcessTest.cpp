@@ -96,7 +96,7 @@ private:
   QString m_StdOutput;
 
   ExecuteProcessObserver(const ExecuteProcessObserver&); // Copy Constructor Not Implemented
-  void operator=(const ExecuteProcessObserver&);         // Operator '=' Not Implemented
+  void operator=(const ExecuteProcessObserver&);         // Move assignment Not Implemented
 };
 
 #include "ExecuteProcessTest.moc"
@@ -120,7 +120,7 @@ public:
     // Now instantiate the ExecuteProcess Filter from the FilterManager
     QString filtName = "ExecuteProcess";
     FilterManager* fm = FilterManager::Instance();
-    IFilterFactory::Pointer filterFactory = fm->getFactoryForFilter(filtName);
+    IFilterFactory::Pointer filterFactory = fm->getFactoryFromClassName(filtName);
     if(nullptr == filterFactory.get())
     {
       std::stringstream ss;
@@ -206,5 +206,5 @@ public:
 
 private:
   ExecuteProcessTest(const ExecuteProcessTest&); // Copy Constructor Not Implemented
-  void operator=(const ExecuteProcessTest&);     // Operator '=' Not Implemented
+  void operator=(const ExecuteProcessTest&);     // Move assignment Not Implemented
 };

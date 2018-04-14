@@ -1,10 +1,12 @@
-GenerateColorTable {#generatecolortable}
+GenerateColorTable 
 =============
 
 ## Group (Subgroup) ##
+
 MASSIFUtilities (MASSIFUtilities)
 
 ## Description ##
+
 This **Filter** does the following...
 
 ## Parameters ##
@@ -33,6 +35,10 @@ Required Geometry Type -or- Not Applicable
 | **Attribute Matrix** | Attribute Matrix Name | Element/Feature/Ensemble/etc. | N/A | Description of object... |
 | **Element/Feature/Ensemble/etc. Attribute Array** | AttributeArray Name | int32_t/float/etc. | (1)/(3)/etc. | Description of object... |
 
+## Example Pipelines ##
+
+
+
 ## License & Copyright ##
 
 Please see the description file distributed with this plugin.
@@ -40,4 +46,3 @@ Please see the description file distributed with this plugin.
 ## DREAM3D Mailing Lists ##
 
 If you need more help with a filter, please consider asking your question on the DREAM3D Users mailing list:
-https://groups.google.com/forum/?hl=en#!forum/dream3d-users

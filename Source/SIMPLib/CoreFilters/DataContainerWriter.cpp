@@ -39,7 +39,7 @@
 
 #include "H5Support/H5Utilities.h"
 #include "H5Support/QH5Utilities.h"
-#include "H5Support/HDF5ScopedFileSentinel.h"
+#include "H5Support/H5ScopedSentinel.h"
 
 #include "SIMPLib/Common/Constants.h"
 #include "SIMPLib/FilterParameters/AbstractFilterParametersReader.h"
@@ -61,15 +61,13 @@ extern Q_CORE_EXPORT int qt_ntfs_permission_lookup;
 //
 // -----------------------------------------------------------------------------
 DataContainerWriter::DataContainerWriter()
-: AbstractFilter()
-, m_OutputFile(QDir::toNativeSeparators(QDir::homePath() + "/Desktop/Untitled.dream3d"))
+: m_OutputFile(QDir::toNativeSeparators(QDir::homePath() + "/Desktop/Untitled.dream3d"))
 , m_WritePipeline(true)
 , m_WriteXdmfFile(true)
 , m_WriteTimeSeries(false)
 , m_AppendToExisting(false)
 , m_FileId(-1)
 {
-  setupFilterParameters();
 }
 
 // -----------------------------------------------------------------------------
@@ -150,9 +148,9 @@ void DataContainerWriter::dataCheck()
 
 #ifdef _WIN32
   // Turn file permission checking on, if requested
-  #ifdef SIMPLib_NTFS_FILE_CHECK
-  //qt_ntfs_permission_lookup++;
-  #endif
+#ifdef SIMPL_NTFS_FILE_CHECK
+// qt_ntfs_permission_lookup++;
+#endif
 #endif
 
   QFileInfo dirInfo(fi.path());
@@ -166,9 +164,9 @@ void DataContainerWriter::dataCheck()
 
 #ifdef _WIN32
   // Turn file permission checking off, if requested
-  #ifdef SIMPLib_NTFS_FILE_CHECK
-  //qt_ntfs_permission_lookup--;
-  #endif
+#ifdef SIMPL_NTFS_FILE_CHECK
+// qt_ntfs_permission_lookup--;
+#endif
 #endif
 }
 
@@ -224,7 +222,7 @@ void DataContainerWriter::execute()
   // qDebug() << "DREAM3D File: " << m_OutputFile;
 
   // This will make sure if we return early from this method that the HDF5 File is properly closed.
-  HDF5ScopedFileSentinel scopedFileSentinel(&m_FileId, true);
+  H5ScopedFileSentinel scopedFileSentinel(&m_FileId, true);
 
   // Write our File Version string to the Root "/" group
   QH5Lite::writeStringAttribute(m_FileId, "/", SIMPL::HDF5::FileVersionName, SIMPL::HDF5::FileVersion);
@@ -234,7 +232,7 @@ void DataContainerWriter::execute()
   if(m_WriteXdmfFile == true)
   {
     QFileInfo ofFi(m_OutputFile);
-    QString name = ofFi.baseName();
+    QString name = ofFi.completeBaseName();
     if(parentPath.isEmpty() == true)
     {
       name = name + ".xdmf";
@@ -279,7 +277,7 @@ void DataContainerWriter::execute()
     }
 
     hid_t dcGid = H5Gopen(dcaGid, dcNames[iter].toLatin1().data(), H5P_DEFAULT);
-    HDF5ScopedGroupSentinel groupSentinel(&dcGid, false);
+    H5ScopedGroupSentinel groupSentinel(&dcGid, false);
     // QString ss = QObject::tr("%1 |--> Writing %2 DataContainer ").arg(getMessagePrefix()).arg(dcNames[iter]);
 
     // Have the DataContainer write all of its Attribute Matrices and its Mesh
@@ -481,7 +479,7 @@ herr_t DataContainerWriter::closeFile()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-AbstractFilter::Pointer DataContainerWriter::newFilterInstance(bool copyFilterParameters)
+AbstractFilter::Pointer DataContainerWriter::newFilterInstance(bool copyFilterParameters) const
 {
   DataContainerWriter::Pointer filter = DataContainerWriter::New();
   if(true == copyFilterParameters)
@@ -494,7 +492,7 @@ AbstractFilter::Pointer DataContainerWriter::newFilterInstance(bool copyFilterPa
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString DataContainerWriter::getCompiledLibraryName()
+const QString DataContainerWriter::getCompiledLibraryName() const
 {
   return Core::CoreBaseName;
 }
@@ -502,7 +500,7 @@ const QString DataContainerWriter::getCompiledLibraryName()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString DataContainerWriter::getBrandingString()
+const QString DataContainerWriter::getBrandingString() const
 {
   return "SIMPLib Core Filter";
 }
@@ -510,7 +508,7 @@ const QString DataContainerWriter::getBrandingString()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString DataContainerWriter::getFilterVersion()
+const QString DataContainerWriter::getFilterVersion() const
 {
   QString version;
   QTextStream vStream(&version);
@@ -521,7 +519,7 @@ const QString DataContainerWriter::getFilterVersion()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString DataContainerWriter::getGroupName()
+const QString DataContainerWriter::getGroupName() const
 {
   return SIMPL::FilterGroups::IOFilters;
 }
@@ -529,7 +527,15 @@ const QString DataContainerWriter::getGroupName()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString DataContainerWriter::getSubGroupName()
+const QUuid DataContainerWriter::getUuid()
+{
+  return QUuid("{3fcd4c43-9d75-5b86-aad4-4441bc914f37}");
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+const QString DataContainerWriter::getSubGroupName() const
 {
   return SIMPL::FilterSubGroups::OutputFilters;
 }
@@ -537,7 +543,7 @@ const QString DataContainerWriter::getSubGroupName()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-const QString DataContainerWriter::getHumanLabel()
+const QString DataContainerWriter::getHumanLabel() const
 {
   return "Write DREAM.3D Data File";
 }

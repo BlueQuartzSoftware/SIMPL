@@ -81,7 +81,7 @@ public:
     // Now instantiate the CreateDataContainer Filter from the FilterManager
     QString filtName = "CreateDataContainer";
     FilterManager* fm = FilterManager::Instance();
-    IFilterFactory::Pointer filterFactory = fm->getFactoryForFilter(filtName);
+    IFilterFactory::Pointer filterFactory = fm->getFactoryFromClassName(filtName);
     if(nullptr == filterFactory.get())
     {
       std::stringstream ss;
@@ -184,5 +184,5 @@ public:
 
 private:
   CreateDataContainerTest(const CreateDataContainerTest&); // Copy Constructor Not Implemented
-  void operator=(const CreateDataContainerTest&);          // Operator '=' Not Implemented
+  void operator=(const CreateDataContainerTest&);          // Move assignment Not Implemented
 };

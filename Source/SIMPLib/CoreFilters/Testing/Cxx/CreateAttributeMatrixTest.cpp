@@ -85,7 +85,7 @@ public:
     // Now instantiate the CreateAttributeMatrix Filter from the FilterManager
     QString filtName = "CreateAttributeMatrix";
     FilterManager* fm = FilterManager::Instance();
-    IFilterFactory::Pointer filterFactory = fm->getFactoryForFilter(filtName);
+    IFilterFactory::Pointer filterFactory = fm->getFactoryFromClassName(filtName);
     if(nullptr == filterFactory.get())
     {
       std::stringstream ss;
@@ -396,5 +396,5 @@ public:
 
 private:
   CreateAttributeMatrixTest(const CreateAttributeMatrixTest&); // Copy Constructor Not Implemented
-  void operator=(const CreateAttributeMatrixTest&);            // Operator '=' Not Implemented
+  void operator=(const CreateAttributeMatrixTest&);            // Move assignment Not Implemented
 };

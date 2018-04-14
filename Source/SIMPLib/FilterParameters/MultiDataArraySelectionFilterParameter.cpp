@@ -82,7 +82,7 @@ MultiDataArraySelectionFilterParameter::Pointer MultiDataArraySelectionFilterPar
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-QString MultiDataArraySelectionFilterParameter::getWidgetType()
+QString MultiDataArraySelectionFilterParameter::getWidgetType() const
 {
   return QString("MultiDataArraySelectionWidget");
 }

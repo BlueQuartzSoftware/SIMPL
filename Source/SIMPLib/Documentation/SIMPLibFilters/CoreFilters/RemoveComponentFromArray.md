@@ -1,13 +1,16 @@
-Remove Component From Array {#removecomponentfromarray}
+Remove Component From Array 
 =============
 
 ## Group (Subgroup) ##
+
 Core (Memory/Management)
 
 ## Description ##
+
 This **Filter** will remove a single component of a multicomponent array and put it in a new **Attribute Array**.
 
 ## Parameters ##
+
 | Name | Type | Description |
 |------|------| ----------- |
 | Component Number to Extract | int32_t | The index of which component to extract |
@@ -15,6 +18,7 @@ This **Filter** will remove a single component of a multicomponent array and put
 
 
 ## Required Geometry ##
+
 Not Applicable
 
 ## Required Objects ##
@@ -30,6 +34,10 @@ Not Applicable
 |------|--------------|------|----------------------|-------------|
 | Any **Attribute Array** | None | Any | 1 less than the required Multicomponent **Attribute Array**   | Reduced **Attribute Array** name |
 | Any **Attribute Array** | None | Any | (1)  | Removed Component (Scalar) **Attribute Array** name |
+
+## Example Pipelines ##
+
+
 
 ## License & Copyright ##
 

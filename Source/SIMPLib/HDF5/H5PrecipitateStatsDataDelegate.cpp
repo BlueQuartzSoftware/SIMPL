@@ -35,7 +35,7 @@
 
 #include "H5PrecipitateStatsDataDelegate.h"
 
-#include "H5Support/HDF5ScopedFileSentinel.h"
+#include "H5Support/H5ScopedSentinel.h"
 #include "H5Support/QH5Lite.h"
 #include "H5Support/QH5Utilities.h"
 
@@ -551,7 +551,7 @@ int H5PrecipitateStatsDataDelegate::writeRDFDistributionData(hid_t pid, RdfData:
     hid_t disId = QH5Utilities::createGroup(pid, hdf5GroupName);
     if(disId > 0)
     {
-      HDF5ScopedGroupSentinel sentinel(&disId, false);
+      H5ScopedGroupSentinel sentinel(&disId, false);
       std::vector<hsize_t> dims(1);
       // Write the Frequencies
       std::vector<float> freqs = rdfData->getFrequencies();
@@ -579,7 +579,7 @@ int H5PrecipitateStatsDataDelegate::writeRDFDistributionData(hid_t pid, RdfData:
       int32_t rank = 1;
       dims[0] = 3;
       float boxRes[3] = {0.0f, 0.0f, 0.0f};
-      rdfData->getBoxResolution(boxRes);
+      std::tie(boxRes[0], boxRes[1], boxRes[2]) = rdfData->getBoxResolution();
       err = H5Lite::writePointerDataset(disId, SIMPL::StringConstants::RdfBoxRes.toStdString(), rank, dims.data(), boxRes);
       if(err < 0)
       {
@@ -587,7 +587,7 @@ int H5PrecipitateStatsDataDelegate::writeRDFDistributionData(hid_t pid, RdfData:
       }
 
       float boxDims[3] = {0.0f, 0.0f, 0.0f};
-      rdfData->getBoxSize(boxDims);
+      std::tie(boxDims[0], boxDims[1], boxDims[2]) = rdfData->getBoxSize();
       err = H5Lite::writePointerDataset(disId, SIMPL::StringConstants::RdfBoxDims.toStdString(), rank, dims.data(), boxDims);
       if(err < 0)
       {
@@ -668,7 +668,7 @@ int H5PrecipitateStatsDataDelegate::readRDFDistributionData(hid_t pid, const QSt
   {
     return -1;
   }
-  HDF5ScopedGroupSentinel sentinel(&disId, false);
+  H5ScopedGroupSentinel sentinel(&disId, false);
 
   std::vector<float> freqs;
   err = H5Lite::readVectorDataset(disId, SIMPL::StringConstants::Frequencies.toStdString(), freqs);
@@ -699,7 +699,7 @@ int H5PrecipitateStatsDataDelegate::readRDFDistributionData(hid_t pid, const QSt
   {
     return err;
   }
-  rdfData->setBoxSize(boxDims);
+  rdfData->setBoxSize(std::make_tuple(boxDims[0], boxDims[1], boxDims[2]));
 
   float boxRes[3] = {0.0f, 0.0f, 0.0f};
   err = QH5Lite::readPointerDataset(disId, SIMPL::StringConstants::RdfBoxRes, boxRes);
@@ -707,7 +707,7 @@ int H5PrecipitateStatsDataDelegate::readRDFDistributionData(hid_t pid, const QSt
   {
     return err;
   }
-  rdfData->setBoxResolution(boxRes);
+  rdfData->setBoxResolution(std::make_tuple(boxRes[0], boxRes[1], boxRes[2]));
 
   err = QH5Utilities::closeHDF5Object(disId);
   return err;
@@ -784,7 +784,7 @@ int H5PrecipitateStatsDataDelegate::writeFeatureDiameterInfo(PrecipitateStatsDat
    * Feature Diameter Info is encode as 3 floats: BinStepSize, MaxDiameter, MinDiameter
    */
   float featureDiameterInfo[3];
-  data->getFeatureDiameterInfo(featureDiameterInfo);
+  std::tie(featureDiameterInfo[0], featureDiameterInfo[1], featureDiameterInfo[2]) = data->getFeatureDiameterInfo();
 
   return QH5Lite::writePointerDataset(pid, SIMPL::StringConstants::Feature_Diameter_Info, rank, dims, featureDiameterInfo);
 }
@@ -801,7 +801,7 @@ int H5PrecipitateStatsDataDelegate::readFeatureDiameterInfo(PrecipitateStatsData
   float featureDiameterInfo[3] = {0.0f, 0.0f, 0.0f};
 
   err = QH5Lite::readPointerDataset(groupId, SIMPL::StringConstants::Feature_Diameter_Info, featureDiameterInfo);
-  data->setFeatureDiameterInfo(featureDiameterInfo);
+  data->setFeatureDiameterInfo(std::make_tuple(featureDiameterInfo[0], featureDiameterInfo[1], featureDiameterInfo[2]));
   return err;
 }
 

@@ -95,13 +95,15 @@ MARK_AS_ADVANCED(H5Support_USE_QT)
 set(H5Support_SRCS
     ${H5Support_SOURCE_DIR}/H5Lite.cpp
     ${H5Support_SOURCE_DIR}/H5Utilities.cpp
-    ${H5Support_SOURCE_DIR}/HDF5ScopedFileSentinel.cpp
- )
+    ${H5Support_SOURCE_DIR}/H5ScopedSentinel.cpp
+    ${H5Support_SOURCE_DIR}/H5ScopedErrorHandler.cpp
+  )
 
 set(H5Support_HDRS
     ${H5Support_SOURCE_DIR}/H5Lite.h
     ${H5Support_SOURCE_DIR}/H5Utilities.h
-    ${H5Support_SOURCE_DIR}/HDF5ScopedFileSentinel.h
+    ${H5Support_SOURCE_DIR}/H5ScopedSentinel.h
+    ${H5Support_SOURCE_DIR}/H5ScopedErrorHandler.h
     ${H5Support_SOURCE_DIR}/H5Macros.h
     ${H5Support_SOURCE_DIR}/H5SupportDLLExport.h
 )

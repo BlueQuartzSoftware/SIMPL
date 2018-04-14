@@ -51,7 +51,7 @@ class SIMPLib_EXPORT GenerateColorTableFilterParameter : public FilterParameter
   public:
     SIMPL_SHARED_POINTERS(GenerateColorTableFilterParameter)
     SIMPL_STATIC_NEW_MACRO(GenerateColorTableFilterParameter)
-    SIMPL_TYPE_MACRO_SUPER(GenerateColorTableFilterParameter, FilterParameter)
+     SIMPL_TYPE_MACRO_SUPER_OVERRIDE(GenerateColorTableFilterParameter, FilterParameter)
 
     /**
      * @brief New This function instantiates an instance of the DataContainerCreationFilterParameter.
@@ -77,19 +77,19 @@ class SIMPLib_EXPORT GenerateColorTableFilterParameter : public FilterParameter
      * this FilterParameter subclass
      * @return
      */
-    QString getWidgetType();
+    QString getWidgetType() const override;
 
     /**
      * @brief readJson Reads this filter parameter's corresponding property out of a QJsonObject.
      * @param json The QJsonObject that the filter parameter reads from.
      */
-    void readJson(const QJsonObject &json);
+    void readJson(const QJsonObject& json) override;
 
     /**
      * @brief writeJson Writes this filter parameter's corresponding property to a QJsonObject.
      * @param json The QJsonObject that the filter parameter writes to.
      */
-    void writeJson(QJsonObject &json);
+    void writeJson(QJsonObject& json) override;
 
   protected:
     /**
@@ -100,7 +100,7 @@ class SIMPLib_EXPORT GenerateColorTableFilterParameter : public FilterParameter
 
   private:
     GenerateColorTableFilterParameter(const GenerateColorTableFilterParameter&) = delete; // Copy Constructor Not Implemented
-    void operator=(const GenerateColorTableFilterParameter&) = delete;                    // Operator '=' Not Implemented
+    void operator=(const GenerateColorTableFilterParameter&) = delete;                    // Move assignment Not Implemented
 };
 
 #endif /* _generatecolortablefilterparameter_h_ */
