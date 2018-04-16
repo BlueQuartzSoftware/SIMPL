@@ -54,14 +54,8 @@ class SVWidgetsLib_EXPORT SIMPLViewMenuItems : public QObject
 
     static SIMPLViewMenuItems* Instance();
 
-  public slots:
-    void updatePasteAvailability();
-
   protected:
     SIMPLViewMenuItems(QObject* parent = 0);
-
-  signals:
-    void clipboardHasChanged(bool canPaste);
 
   private:
     static SIMPLViewMenuItems*          self;

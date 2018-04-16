@@ -65,8 +65,6 @@ PipelineTreeView::PipelineTreeView(QWidget* parent)
 {
   setContextMenuPolicy(Qt::CustomContextMenu);
 
-  connect(this, SIGNAL(customContextMenuRequested(const QPoint&)), this, SLOT(requestContextMenu(const QPoint&)));
-
   connect(this, SIGNAL(collapsed(const QModelIndex&)), SLOT(collapseIndex(const QModelIndex&)));
   connect(this, SIGNAL(expanded(const QModelIndex&)), SLOT(expandIndex(const QModelIndex&)));
 
@@ -99,37 +97,6 @@ void PipelineTreeView::addActionList(QList<QAction*> actionList)
   for(int i = 0; i < actionList.size(); i++)
   {
     m_Menu.addAction(actionList[i]);
-  }
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-void PipelineTreeView::requestContextMenu(const QPoint& pos)
-{
-  activateWindow();
-
-  QModelIndex index = indexAt(pos);
-
-  PipelineModel* model = getPipelineTreeModel();
-
-  QPoint mapped;
-  if(model->itemType(index) == PipelineItem::ItemType::Filter)
-  {
-    mapped = viewport()->mapToGlobal(pos);
-
-    requestFilterContextMenu(mapped, index);
-  }
-  else if (model->itemType(index) == PipelineItem::ItemType::Pipeline)
-  {
-    mapped = viewport()->mapToGlobal(pos);
-
-    requestPipelineContextMenu(mapped, index);
-  }
-  else
-  {
-    mapped = mapToGlobal(pos);
-    requestDefaultContextMenu(mapped);
   }
 }
 

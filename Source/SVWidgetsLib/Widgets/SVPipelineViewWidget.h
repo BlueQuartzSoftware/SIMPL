@@ -113,12 +113,6 @@ class SVWidgetsLib_EXPORT SVPipelineViewWidget : public QFrame, public PipelineV
     QVariant valueOfFilterWidget(PipelineFilterObject* filterObject) override;
 
     /**
-     * @brief getFilterPipeline
-     * @return
-     */
-    FilterPipeline::Pointer getFilterPipeline(QUuid startId = QUuid()) override;
-
-    /**
      * @brief Returns a FilterPipeline Object with a new filter instance that has the input parameters copied
      * from the filter instance that is embedded in the SVPipelineFilterWidget instance. This function does NOT perform
      * a DEEP copy of the filter.
@@ -352,7 +346,7 @@ class SVWidgetsLib_EXPORT SVPipelineViewWidget : public QFrame, public PipelineV
 
     void filterEnabledStateChanged();
 
-    void deleteKeyPressed(SVPipelineViewWidget* viewWidget);
+    void deleteKeyPressed();
 
     void contextMenuRequested(SVPipelineViewWidget* widget, const QPoint &pos);
 

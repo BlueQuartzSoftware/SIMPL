@@ -119,7 +119,7 @@ void PipelineFilterObject::setupFilterInputWidget()
   {
     m_FilterInputWidget->deleteLater();
   }
-  m_FilterInputWidget = new FilterInputWidget(m_Filter->getNameOfClass(), this, nullptr);
+  m_FilterInputWidget = new FilterInputWidget(m_Filter, nullptr);
 
   // Initialize the filter input widget with values
   m_FilterInputWidget->displayFilterParameters(m_Filter);

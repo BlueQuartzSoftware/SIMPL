@@ -123,9 +123,6 @@ class SVWidgetsLib_EXPORT PipelineTreeView : public QTreeView
     void needsPreflight(const QModelIndex &pipelineIndex, PipelineModel* model);
     void activePipelineChanged(const QModelIndex &pipelineIdx, PipelineModel* model);
 
-  private slots:
-    void requestContextMenu(const QPoint &pos);
-
   private:
     QPoint                                        m_StartPos;
     QMenu                                         m_Menu;

@@ -144,8 +144,6 @@ void SVPipelineViewWidget::setupGui()
   m_ActionEnableFilter->setChecked(true);
   m_ActionEnableFilter->setEnabled(false);
 
-  // connect(this, SIGNAL(deleteKeyPressed(PipelineView*)), dream3dApp, SLOT(on_pipelineViewWidget_deleteKeyPressed(PipelineView*)));
-
   m_FilterOutlineWidget = new SVPipelineFilterOutlineWidget(nullptr);
   m_FilterOutlineWidget->setObjectName("m_DropBox");
 
@@ -565,39 +563,6 @@ void SVPipelineViewWidget::reindexWidgetTitles()
       }
     }
   }
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-FilterPipeline::Pointer SVPipelineViewWidget::getFilterPipeline(QUuid startId)
-{
-  Q_UNUSED(startId)
-
-  // Create a Pipeline Object and fill it with the filters from this View
-  FilterPipeline::Pointer pipeline = FilterPipeline::New();
-
-  qint32 count = filterCount();
-  for(qint32 i = 0; i < count; ++i)
-  {
-    PipelineFilterObject* fw = filterObjectAt(i);
-    if(fw)
-    {
-      AbstractFilter::Pointer filter = fw->getFilter();
-      Breakpoint::Pointer breakpoint = std::dynamic_pointer_cast<Breakpoint>(filter);
-      if(nullptr != breakpoint)
-      {
-        connect(pipeline.get(), SIGNAL(pipelineCanceled()), breakpoint.get(), SLOT(resumePipeline()));
-      }
-
-      pipeline->pushBack(filter);
-    }
-  }
-  for (int i = 0; i < m_PipelineMessageObservers.size(); i++)
-  {
-    pipeline->addMessageReceiver(m_PipelineMessageObservers[i]);
-  }
-  return pipeline;
 }
 
 // -----------------------------------------------------------------------------
@@ -1325,7 +1290,7 @@ void SVPipelineViewWidget::keyPressEvent(QKeyEvent* event)
     bool isRunning = getPipelineIsRunning();
     if(isRunning == false)
     {
-      emit deleteKeyPressed(this);
+      emit deleteKeyPressed();
     }
   }
   else if(event->key() == Qt::Key_A && qApp->queryKeyboardModifiers() == Qt::ControlModifier)
@@ -1627,7 +1592,7 @@ void SVPipelineViewWidget::dragMoveEvent(QDragMoveEvent* event)
       if(qApp->queryKeyboardModifiers() != Qt::AltModifier)
       {
         QList<IndexedFilterObject> draggedFilterObjects = getDraggedFilterObjects();
-        
+
         for(int i = 0; i < draggedFilterObjects.size(); i++)
         {
           // Remove the filter widget
@@ -1697,7 +1662,7 @@ void SVPipelineViewWidget::dragMoveEvent(QDragMoveEvent* event)
       {
         QList<IndexedFilterObject> draggedObjects = origin->getDraggedFilterObjects();
         if (draggedObjects.size() == 1)
-        {          
+        {
           m_FilterOutlineWidget->setFilter(draggedObjects[0].second->getFilter().get());
           m_FilterOutlineWidget->setFilterIndex(i + 1, count);
           m_FilterOutlineWidget->setFilterTitle(draggedObjects[0].second->getHumanLabel());
@@ -1766,7 +1731,7 @@ void SVPipelineViewWidget::dragMoveEvent(QDragMoveEvent* event)
       // This path is taken if a filter is dragged from the list of filters
 
       int i = getIndexAtPoint(event->pos());
-      
+
       if(i < 0 || i > filterCount())
       {
         return;
@@ -1806,7 +1771,7 @@ void SVPipelineViewWidget::dragMoveEvent(QDragMoveEvent* event)
       m_FilterWidgetLayout->insertWidget(i, m_FilterOutlineWidget);
       m_FilterOutlineWidget->show();
       reindexWidgetTitles();
-      
+
       event->accept();
     }
     else

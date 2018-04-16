@@ -139,8 +139,6 @@ void BookmarksTreeView::requestContextMenu(const QPoint& pos)
 {
   activateWindow();
 
-  SIMPLViewMenuItems* menuItems = SIMPLViewMenuItems::Instance();
-
   QModelIndex index = indexAt(pos);
 
   QPoint mapped;

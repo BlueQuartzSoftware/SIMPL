@@ -130,7 +130,7 @@ SIMPLViewMenuItems* SIMPLViewMenuItems::Instance()
 // -----------------------------------------------------------------------------
 void SIMPLViewMenuItems::createMenus()
 {
-  m_MenuRecentFiles = new QMenu("Recent Files");
+
 }
 
 // -----------------------------------------------------------------------------
@@ -144,15 +144,11 @@ void SIMPLViewMenuItems::createActions()
   m_ActionClearPipeline = new QAction("Clear Pipeline", this);
   m_ActionShowBookmarkInFileSystem = new QAction(this);
   m_ActionExit = new QAction("Exit " + QApplication::applicationName(), this);
-  m_ActionOpen = new QAction("Open...", this);
-  m_ActionNew = new QAction("New...", this);
   m_ActionClearRecentFiles = new QAction("Clear Recent Files", this);
   m_ActionShowSIMPLViewHelp = new QAction(QApplication::applicationName() + " Help", this);
   m_ActionAboutSIMPLView = new QAction("About " + QApplication::applicationName(), this);
   m_ActionCheckForUpdates = new QAction("Check For Updates", this);
   m_ActionPluginInformation = new QAction("Plugin Information", this);
-  m_ActionSave = new QAction("Save", this);
-  m_ActionSaveAs = new QAction("Save As...", this);
   m_ActionClearCache = new QAction("Clear Cache", this);
   m_ActionClearBookmarks = new QAction("Clear Bookmarks", this);
   m_ActionShowFilterLibrary = new QAction("Show Filter Library", this);
@@ -198,32 +194,4 @@ void SIMPLViewMenuItems::createActions()
   m_ActionCut->setShortcut(QKeySequence(Qt::CTRL + Qt::Key_X));
   m_ActionCopy->setShortcut(QKeySequence(Qt::CTRL + Qt::Key_C));
   m_ActionPaste->setShortcut(QKeySequence(Qt::CTRL + Qt::Key_V));
-
-  QClipboard* clipboard = QApplication::clipboard();
-  connect(clipboard, SIGNAL(dataChanged()), this, SLOT(updatePasteAvailability()));
-
-  // Run this once, so that the Paste button availability is updated for what is currently on the system clipboard
-  updatePasteAvailability();
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------s
-void SIMPLViewMenuItems::updatePasteAvailability()
-{
-  QClipboard* clipboard = QApplication::clipboard();
-  QString text = clipboard->text();
-
-  JsonFilterParametersReader::Pointer jsonReader = JsonFilterParametersReader::New();
-  FilterPipeline::Pointer pipeline = jsonReader->readPipelineFromString(text);
-  if(text.isEmpty() || FilterPipeline::NullPointer() == pipeline)
-  {
-    m_CanPaste = false;
-  }
-  else
-  {
-    m_CanPaste = true;
-  }
-
-  emit clipboardHasChanged(m_CanPaste);
 }
