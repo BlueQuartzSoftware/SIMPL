@@ -76,23 +76,6 @@ class SVWidgetsLib_EXPORT SIMPLController : public QObject
     void addPipelineMessageObserver(QObject* pipelineMessageObserver);
 
     /**
-     * @brief addFilterToModel
-     * @param filter
-     * @param model
-     * @param parentIndex
-     */
-    void addFilterToModel(AbstractFilter::Pointer filter, PipelineModel* model, const QModelIndex &parentIndex = QModelIndex(), int insertionIndex = -1);
-
-    /**
-     * @brief addPipelineToModel
-     * @param pipelineName
-     * @param pipeline
-     * @param model
-     * @param setAsActive
-     */
-    void addPipelineToModel(const QString &pipelineName, FilterPipeline::Pointer pipeline, PipelineModel *model, bool setAsActive = false, QModelIndex parentIndex = QModelIndex(), int insertionIndex = -1);
-
-    /**
      * @brief fromJsonObject
      * @param modelObject
      * @param model
@@ -112,6 +95,13 @@ class SVWidgetsLib_EXPORT SIMPLController : public QObject
      * @return
      */
     QModelIndex getActivePipelineIndex();
+
+    /**
+     * @brief Determines whether or not the pipeline that begins at the specified index is currently running
+     * @param pipelineIndex
+     * @return
+     */
+    bool isPipelineCurrentlyRunning(const QModelIndex &pipelineIndex);
 
   public slots:
 
@@ -151,13 +141,6 @@ class SVWidgetsLib_EXPORT SIMPLController : public QObject
     void finishPipeline(const QModelIndex &pipelineIndex);
 
     /**
-     * @brief updateActivePipeline
-     * @param pipelineIdx
-     * @param model
-     */
-    void updateActivePipeline(const QModelIndex &pipelineIdx, PipelineModel *model);
-
-    /**
      * @brief Should be block this class from either emitting a preflight signal or otherwise running a preflight.
      * @param b
      */
@@ -193,7 +176,6 @@ class SVWidgetsLib_EXPORT SIMPLController : public QObject
     void undoActionGenerated(QAction* actionUndo);
     void redoActionGenerated(QAction* actionRedo);
 
-    void clearIssuesTriggered();
     void displayIssuesTriggered();
 
     void writeSIMPLViewSettingsTriggered();
@@ -213,6 +195,7 @@ class SVWidgetsLib_EXPORT SIMPLController : public QObject
 
   private:
     QThread*                                          m_WorkerThread = nullptr;
+    QModelIndexList                                   m_CurrentlyRunningPipelines;
     FilterPipeline::Pointer                           m_PipelineInFlight;
     QVector<DataContainerArray::Pointer>              m_PreflightDataContainerArrays;
     QSignalMapper*                                    m_PipelineSignalMapper;
@@ -225,8 +208,6 @@ class SVWidgetsLib_EXPORT SIMPLController : public QObject
     QString                                           m_CurrentRedoText = "";
     QString                                           m_PreviousUndoText = "";
     QString                                           m_PreviousRedoText = "";
-
-    QPersistentModelIndex                             m_ActivePipelineIndex;
 
     /**
      * @brief getPipelineFromFile

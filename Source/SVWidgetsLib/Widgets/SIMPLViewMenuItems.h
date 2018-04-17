@@ -50,19 +50,11 @@ class SVWidgetsLib_EXPORT SIMPLViewMenuItems : public QObject
     Q_OBJECT
 
   public:
+    SIMPLViewMenuItems(QObject* parent = 0);
     virtual ~SIMPLViewMenuItems();
 
-    static SIMPLViewMenuItems* Instance();
-
-  protected:
-    SIMPLViewMenuItems(QObject* parent = 0);
-
-  private:
-    static SIMPLViewMenuItems*          self;
-
-    SIMPL_INSTANCE_PROPERTY(bool, CanPaste)
-
     // File Menu
+    SIMPL_INSTANCE_PROPERTY(QMenu*, MenuFile)
     SIMPL_INSTANCE_PROPERTY(QMenu*, MenuRecentFiles)
     SIMPL_INSTANCE_PROPERTY(QAction*, ActionNew)
     SIMPL_INSTANCE_PROPERTY(QAction*, ActionOpen)
@@ -74,26 +66,29 @@ class SVWidgetsLib_EXPORT SIMPLViewMenuItems : public QObject
     SIMPL_INSTANCE_PROPERTY(QAction*, ActionExit)
 
     // Edit Menu
-    SIMPL_INSTANCE_PROPERTY(QAction*, ActionCut)
-    SIMPL_INSTANCE_PROPERTY(QAction*, ActionCopy)
-    SIMPL_INSTANCE_PROPERTY(QAction*, ActionPaste)
+    SIMPL_INSTANCE_PROPERTY(QMenu*, MenuEdit)
 
     // View Menu
+    SIMPL_INSTANCE_PROPERTY(QMenu*, MenuView)
     SIMPL_INSTANCE_PROPERTY(QAction*, ActionShowFilterLibrary)
     SIMPL_INSTANCE_PROPERTY(QAction*, ActionShowFilterList)
     SIMPL_INSTANCE_PROPERTY(QAction*, ActionShowBookmarks)
     SIMPL_INSTANCE_PROPERTY(QAction*, ActionShowToolbox)
 
     // Bookmarks Menu
+    SIMPL_INSTANCE_PROPERTY(QMenu*, MenuBookmarks)
     SIMPL_INSTANCE_PROPERTY(QAction*, ActionAddBookmark)
     SIMPL_INSTANCE_PROPERTY(QAction*, ActionNewFolder)
     SIMPL_INSTANCE_PROPERTY(QAction*, ActionLocateFile)
 
     // Pipeline Menu
+    SIMPL_INSTANCE_PROPERTY(QMenu*, MenuPipeline)
     SIMPL_INSTANCE_PROPERTY(QAction*, ActionNewPipeline)
     SIMPL_INSTANCE_PROPERTY(QAction*, ActionClearPipeline)
 
     // Help Menu
+    SIMPL_INSTANCE_PROPERTY(QMenu*, MenuHelp)
+    SIMPL_INSTANCE_PROPERTY(QMenu*, MenuAdvanced)
     SIMPL_INSTANCE_PROPERTY(QAction*, ActionClearCache)
     SIMPL_INSTANCE_PROPERTY(QAction*, ActionClearBookmarks)
     SIMPL_INSTANCE_PROPERTY(QAction*, ActionShowSIMPLViewHelp)
@@ -107,6 +102,8 @@ class SVWidgetsLib_EXPORT SIMPLViewMenuItems : public QObject
     SIMPL_INSTANCE_PROPERTY(QAction*, ActionShowBookmarkInFileSystem)
     SIMPL_INSTANCE_PROPERTY(QAction*, ActionOpenBookmark)
     SIMPL_INSTANCE_PROPERTY(QAction*, ActionOpenExecuteBookmark)
+
+  private:
 
     void createMenus();
     void createActions();

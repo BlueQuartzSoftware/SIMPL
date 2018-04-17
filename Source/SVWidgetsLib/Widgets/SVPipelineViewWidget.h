@@ -255,7 +255,7 @@ class SVWidgetsLib_EXPORT SVPipelineViewWidget : public QFrame, public PipelineV
      * @brief getPipelineTreeModel
      * @return
      */
-    PipelineModel* getPipelineTreeModel();
+    PipelineModel* getPipelineModel();
 
   public slots:
     /**

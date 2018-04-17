@@ -217,81 +217,79 @@ void SVPipelineViewWidget::updateActionEnableFilter()
 // -----------------------------------------------------------------------------
 QMenu* SVPipelineViewWidget::createPipelineFilterWidgetMenu(SVPipelineFilterWidget* filterWidget)
 {
-  // Creating Pipeline Filter Widget Menu
-  SIMPLViewMenuItems* menuItems = SIMPLViewMenuItems::Instance();
+//  // Creating Pipeline Filter Widget Menu
+//  QList<PipelineFilterObject*> selectedObjs = getSelectedFilterObjects();
 
-  QList<PipelineFilterObject*> selectedObjs = getSelectedFilterObjects();
+//  QMenu* contextMenu = new QMenu(this);
 
-  QMenu* contextMenu = new QMenu(this);
+//  contextMenu->addAction(m_MenuItems->getActionCut());
+//  contextMenu->addAction(m_MenuItems->getActionCopy());
 
-  contextMenu->addAction(menuItems->getActionCut());
-  contextMenu->addAction(menuItems->getActionCopy());
+//  contextMenu->addSeparator();
 
-  contextMenu->addSeparator();
+//  int count = selectedObjs.size();
+//  bool widgetEnabled = true;
+//  for(int i = 0; i < count && widgetEnabled; i++)
+//  {
+//    widgetEnabled = selectedObjs[i]->getFilter()->getEnabled();
+//  }
 
-  int count = selectedObjs.size();
-  bool widgetEnabled = true;
-  for(int i = 0; i < count && widgetEnabled; i++)
-  {
-    widgetEnabled = selectedObjs[i]->getFilter()->getEnabled();
-  }
+//  if(selectedObjs.contains(filterWidget) == false)
+//  {
+//    // Only toggle the target filter widget if it is not in the selected objects
+//    QList<PipelineFilterObject*> toggledObjects = QList<PipelineFilterObject*>();
+//    toggledObjects.push_back(filterWidget);
 
-  if(selectedObjs.contains(filterWidget) == false)
-  {
-    // Only toggle the target filter widget if it is not in the selected objects
-    QList<PipelineFilterObject*> toggledObjects = QList<PipelineFilterObject*>();
-    toggledObjects.push_back(filterWidget);
+//    QAction* actionEnableFilter = new QAction("Enable", this);
+//    actionEnableFilter->setCheckable(true);
 
-    QAction* actionEnableFilter = new QAction("Enable", this);
-    actionEnableFilter->setCheckable(true);
+//    widgetEnabled = filterWidget->getFilter()->getEnabled();
+//    actionEnableFilter->setChecked(widgetEnabled);
 
-    widgetEnabled = filterWidget->getFilter()->getEnabled();
-    actionEnableFilter->setChecked(widgetEnabled);
+//    connect(actionEnableFilter, &QAction::toggled, [=] { setFiltersEnabled(toggledObjects, actionEnableFilter->isChecked()); });
+//    contextMenu->addAction(actionEnableFilter);
+//  }
+//  else
+//  {
+//    disconnect(m_ActionEnableFilter, &QAction::toggled, 0, 0);
+//    m_ActionEnableFilter->setChecked(widgetEnabled);
 
-    connect(actionEnableFilter, &QAction::toggled, [=] { setFiltersEnabled(toggledObjects, actionEnableFilter->isChecked()); });
-    contextMenu->addAction(actionEnableFilter);
-  }
-  else
-  {
-    disconnect(m_ActionEnableFilter, &QAction::toggled, 0, 0);
-    m_ActionEnableFilter->setChecked(widgetEnabled);
+//    connect(m_ActionEnableFilter, &QAction::toggled, [=] { setSelectedFiltersEnabled(m_ActionEnableFilter->isChecked()); });
+//    contextMenu->addAction(m_ActionEnableFilter);
+//  }
 
-    connect(m_ActionEnableFilter, &QAction::toggled, [=] { setSelectedFiltersEnabled(m_ActionEnableFilter->isChecked()); });
-    contextMenu->addAction(m_ActionEnableFilter);
-  }
+//  contextMenu->addSeparator();
 
-  contextMenu->addSeparator();
+//  QAction* removeAction;
+//  QList<QKeySequence> shortcutList;
+//  shortcutList.push_back(QKeySequence(Qt::Key_Backspace));
+//  shortcutList.push_back(QKeySequence(Qt::Key_Delete));
 
-  QAction* removeAction;
-  QList<QKeySequence> shortcutList;
-  shortcutList.push_back(QKeySequence(Qt::Key_Backspace));
-  shortcutList.push_back(QKeySequence(Qt::Key_Delete));
+//  if (selectedObjs.contains(filterWidget) == false || selectedObjs.size() == 1)
+//  {
+//    removeAction = new QAction("Delete", contextMenu);
+//    connect(removeAction, &QAction::triggered, [=] { removeFilterObject(filterWidget); });
+//  }
+//  else
+//  {
+//    removeAction = new QAction(tr("Delete %1 Filters").arg(selectedObjs.size()), contextMenu);
+//    connect(removeAction, &QAction::triggered, [=] { removeFilterObjects(selectedObjs); });
+//  }
+//  removeAction->setShortcuts(shortcutList);
+//  if (getPipelineIsRunning() == true)
+//  {
+//    removeAction->setDisabled(true);
+//  }
 
-  if (selectedObjs.contains(filterWidget) == false || selectedObjs.size() == 1)
-  {
-    removeAction = new QAction("Delete", contextMenu);
-    connect(removeAction, &QAction::triggered, [=] { removeFilterObject(filterWidget); });
-  }
-  else
-  {
-    removeAction = new QAction(tr("Delete %1 Filters").arg(selectedObjs.size()), contextMenu);
-    connect(removeAction, &QAction::triggered, [=] { removeFilterObjects(selectedObjs); });
-  }
-  removeAction->setShortcuts(shortcutList);
-  if (getPipelineIsRunning() == true)
-  {
-    removeAction->setDisabled(true);
-  }
+//  contextMenu->addAction(removeAction);
 
-  contextMenu->addAction(removeAction);
+//  contextMenu->addSeparator();
 
-  contextMenu->addSeparator();
+//  QAction* actionLaunchHelp = new QAction("Filter Help", this);
+//  connect(actionLaunchHelp, SIGNAL(triggered()), filterWidget, SLOT(launchHelpForItem()));
 
-  QAction* actionLaunchHelp = new QAction("Filter Help", this);
-  connect(actionLaunchHelp, SIGNAL(triggered()), filterWidget, SLOT(launchHelpForItem()));
-
-  contextMenu->addAction(actionLaunchHelp);
-  return contextMenu;
+//  contextMenu->addAction(actionLaunchHelp);
+//  return contextMenu;
 }
 
 // -----------------------------------------------------------------------------
@@ -299,14 +297,14 @@ QMenu* SVPipelineViewWidget::createPipelineFilterWidgetMenu(SVPipelineFilterWidg
 // -----------------------------------------------------------------------------
 void SVPipelineViewWidget::createPipelineViewWidgetMenu()
 {
-  // Creating Pipeline View Widget Menu
-  SIMPLViewMenuItems* menuItems = SIMPLViewMenuItems::Instance();
+//  // Creating Pipeline View Widget Menu
+//  SIMPLViewMenuItems* menuItems = SIMPLViewMenuItems::Instance();
 
-  m_ContextMenu = new QMenu(this);
+//  m_ContextMenu = new QMenu(this);
 
-  m_ContextMenu->addAction(menuItems->getActionPaste());
-  m_ContextMenu->addSeparator();
-  m_ContextMenu->addAction(menuItems->getActionClearPipeline());
+//  m_ContextMenu->addAction(menuItems->getActionPaste());
+//  m_ContextMenu->addSeparator();
+//  m_ContextMenu->addAction(menuItems->getActionClearPipeline());
 }
 
 // -----------------------------------------------------------------------------
@@ -1254,7 +1252,7 @@ void SVPipelineViewWidget::addFiltersFromIndices(QModelIndexList filterIndices)
 
   m_LoadingJson = true;
 
-  PipelineModel* model = getPipelineTreeModel();
+  PipelineModel* model = getPipelineModel();
 
   QList<AbstractFilter::Pointer> filters;
   for (int i = 0; i < filterIndices.size(); i++)
@@ -1877,7 +1875,7 @@ void SVPipelineViewWidget::dropEvent(QDropEvent* event)
         return;
       }
 
-      PipelineModel* model = getPipelineTreeModel();
+      PipelineModel* model = getPipelineModel();
       QModelIndex parentIndex;
       if (model->rowCount() > 0)
       {
@@ -1900,7 +1898,7 @@ void SVPipelineViewWidget::dropEvent(QDropEvent* event)
         {
           if(msgBox->isExtractPipelineBtnChecked() == true)
           {
-            emit pipelineDropped(data, getPipelineTreeModel(), parentIndex, index);
+            emit pipelineDropped(data, getPipelineModel(), parentIndex, index);
           }
           else
           {
@@ -2297,7 +2295,7 @@ void SVPipelineViewWidget::setModel(PipelineModel* model)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-PipelineModel* SVPipelineViewWidget::getPipelineTreeModel()
+PipelineModel* SVPipelineViewWidget::getPipelineModel()
 {
   return m_PipelineModel;
 }

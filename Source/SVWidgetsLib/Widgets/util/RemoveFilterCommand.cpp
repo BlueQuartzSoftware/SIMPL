@@ -123,8 +123,8 @@ void RemoveFilterCommand::undo()
   m_PipelineView->recheckWindowTitleAndModification();
   m_PipelineView->preflightPipeline();
 
-  SIMPLViewMenuItems* menuItems = SIMPLViewMenuItems::Instance();
-  menuItems->getActionClearPipeline()->setEnabled(true);
+//  SIMPLViewMenuItems* menuItems = SIMPLViewMenuItems::Instance();
+//  menuItems->getActionClearPipeline()->setEnabled(true);
 }
 
 // -----------------------------------------------------------------------------
@@ -155,7 +155,7 @@ void RemoveFilterCommand::redo()
 
   if (m_PipelineView->getFilterPipeline()->getFilterContainer().size() <= 0)
   {
-    SIMPLViewMenuItems* menuItems = SIMPLViewMenuItems::Instance();
-    menuItems->getActionClearPipeline()->setDisabled(true);
+//    SIMPLViewMenuItems* menuItems = SIMPLViewMenuItems::Instance();
+//    menuItems->getActionClearPipeline()->setDisabled(true);
   }
 }

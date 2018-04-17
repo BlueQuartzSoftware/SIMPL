@@ -283,6 +283,7 @@ void SIMPLController::runPipeline(const QModelIndex &pipelineIndex, PipelineMode
   connect(m_WorkerThread, SIGNAL(finished()), this, SLOT(finishPipeline()));
 
   emit pipelineEnteringRunningState(pipelineIndex);
+  m_CurrentlyRunningPipelines.push_back(pipelineIndex);
   m_WorkerThread->start();
   standardOutputMessageGenerated("");
   standardOutputMessageGenerated("<b>*************** PIPELINE STARTED ***************</b>");
@@ -294,6 +295,7 @@ void SIMPLController::runPipeline(const QModelIndex &pipelineIndex, PipelineMode
 void SIMPLController::cancelPipeline(const QModelIndex &pipelineIndex)
 {
   m_PipelineInFlight->cancelPipeline();
+  m_CurrentlyRunningPipelines.removeAll(pipelineIndex);
   emit displayIssuesTriggered();
   emit pipelineEnteringStoppedState(pipelineIndex);
   emit pipelineCanceled();
@@ -323,6 +325,8 @@ void SIMPLController::finishPipeline(const QModelIndex &pipelineIndex)
   }
 
   m_PipelineInFlight = FilterPipeline::NullPointer(); // This _should_ remove all the filters and deallocate them
+
+  m_CurrentlyRunningPipelines.removeAll(pipelineIndex);
 
   emit displayIssuesTriggered();
   emit pipelineEnteringStoppedState(pipelineIndex);
@@ -366,90 +370,6 @@ FilterPipeline::Pointer SIMPLController::getFilterPipeline(const QModelIndex &pi
     pipeline->addMessageReceiver(m_PipelineMessageObservers[i]);
   }
   return pipeline;
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-void SIMPLController::addFilterToModel(AbstractFilter::Pointer filter, PipelineModel* model, const QModelIndex &parentIndex, int insertionIndex)
-{
-  QModelIndex pipelineIndex = parentIndex;
-  if (pipelineIndex.isValid() == false)
-  {
-    pipelineIndex = m_ActivePipelineIndex;
-    if (pipelineIndex.isValid() == false)
-    {
-      FilterPipeline::Pointer pipeline = FilterPipeline::New();
-      pipeline->pushBack(filter);
-      addPipelineToModel("Untitled Pipeline", pipeline, model, true);
-    }
-  }
-
-  model->insertRow(insertionIndex, pipelineIndex);
-  QModelIndex filterIndex = model->index(insertionIndex, PipelineItem::Name, pipelineIndex);
-  model->setData(filterIndex, filter->getHumanLabel(), Qt::DisplayRole);
-  model->setItemType(filterIndex, PipelineItem::ItemType::Filter);
-  model->setFilter(filterIndex, filter);
-
-  if (m_ActivePipelineIndex.isValid() == false)
-  {
-    updateActivePipeline(pipelineIndex, model);
-  }
-
-  QModelIndexList list;
-  list.push_back(filterIndex);
-  emit filtersAddedToModel(list);
-
-  preflightPipeline(m_ActivePipelineIndex, model);
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-void SIMPLController::addPipelineToModel(const QString &pipelineName, FilterPipeline::Pointer pipeline, PipelineModel* model, bool setAsActive, QModelIndex parentIndex, int insertionIndex)
-{
-  if (parentIndex == QModelIndex())
-  {
-    if (model->getMaxNumberOfPipelines() == 1)
-    {
-      updateActivePipeline(QModelIndex(), model);
-      model->removeRow(0);
-    }
-
-    int row = model->rowCount();
-    model->insertRow(row);
-    QModelIndex pipelineIndex = model->index(row, PipelineItem::Name);
-    model->setData(pipelineIndex, pipelineName, Qt::DisplayRole);
-    model->setItemType(pipelineIndex, PipelineItem::ItemType::Pipeline);
-    parentIndex = pipelineIndex;
-  }
-
-  if (insertionIndex == -1)
-  {
-    insertionIndex = model->rowCount(parentIndex);
-  }
-
-  FilterPipeline::FilterContainerType filters = pipeline->getFilterContainer();
-  QModelIndexList list;
-  for (int i = 0; i < filters.size(); i++)
-  {
-    AbstractFilter::Pointer filter = filters[i];
-    blockSignals(true);
-    addFilterToModel(filter, model, parentIndex, insertionIndex);
-    blockSignals(false);
-
-    QModelIndex filterIndex = model->index(insertionIndex, PipelineItem::Name, parentIndex);
-    list.push_back(filterIndex);
-
-    insertionIndex++;
-  }
-
-  if (setAsActive == true)
-  {
-    updateActivePipeline(parentIndex, model);
-  }
-
-  emit filtersAddedToModel(list);
 }
 
 // -----------------------------------------------------------------------------
@@ -510,24 +430,6 @@ FilterPipeline::Pointer SIMPLController::getPipelineFromFile(const QString& file
   }
 
   return pipeline;
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-void SIMPLController::updateActivePipeline(const QModelIndex &pipelineIdx, PipelineModel* model)
-{
-  emit clearIssuesTriggered();
-
-  model->setActivePipeline(m_ActivePipelineIndex, false);
-  model->setActivePipeline(pipelineIdx, true);
-
-  m_ActivePipelineIndex = pipelineIdx;
-
-  if (m_ActivePipelineIndex.isValid() == true)
-  {
-    preflightPipeline(m_ActivePipelineIndex, model);
-  }
 }
 
 // -----------------------------------------------------------------------------
@@ -669,6 +571,14 @@ void SIMPLController::unwrapModel(QString objectName, QJsonObject object, Pipeli
       unwrapModel(keys[i], val.toObject(), model, nameIndex);
     }
   }
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+bool SIMPLController::isPipelineCurrentlyRunning(const QModelIndex &pipelineIndex)
+{
+  return m_CurrentlyRunningPipelines.contains(pipelineIndex);
 }
 
 // -----------------------------------------------------------------------------

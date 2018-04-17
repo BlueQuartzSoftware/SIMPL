@@ -126,7 +126,7 @@ class SVWidgetsLib_EXPORT BookmarksTreeView : public QTreeView
     void itemWasDropped(QModelIndex parent, QString& title, QIcon icon, QString path, int index, bool allowEditing, bool editState, bool isExpanding);
     void currentIndexChanged(const QModelIndex& current, const QModelIndex& previous);
     void folderChangedState(const QModelIndex& index, bool expand);
-    void contextMenuRequested(const QPoint& pos);
+    void contextMenuRequested(QModelIndex index, QModelIndexList selectedIndexes, const QPoint &mappedPos);
 
   private slots:
 

@@ -188,8 +188,8 @@ void AddFilterCommand::undo()
 
   if (m_Destination->getFilterPipeline()->getFilterContainer().size() <= 0)
   {
-    SIMPLViewMenuItems* menuItems = SIMPLViewMenuItems::Instance();
-    menuItems->getActionClearPipeline()->setDisabled(true);
+//    SIMPLViewMenuItems* menuItems = SIMPLViewMenuItems::Instance();
+//    menuItems->getActionClearPipeline()->setDisabled(true);
   }
 }
 
@@ -245,6 +245,6 @@ void AddFilterCommand::redo()
     emit filterWidget->filterWidgetPressed(filterObject, qApp->queryKeyboardModifiers());
   }
 
-  SIMPLViewMenuItems* menuItems = SIMPLViewMenuItems::Instance();
-  menuItems->getActionClearPipeline()->setEnabled(true);
+//  SIMPLViewMenuItems* menuItems = SIMPLViewMenuItems::Instance();
+//  menuItems->getActionClearPipeline()->setEnabled(true);
 }

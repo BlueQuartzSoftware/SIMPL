@@ -65,7 +65,7 @@ void PipelineListWidget::setupGui()
 // -----------------------------------------------------------------------------
 void PipelineListWidget::on_startPipelineBtn_clicked()
 {
-  PipelineModel* model = pipelineViewWidget->getPipelineTreeModel();
+  PipelineModel* model = pipelineViewWidget->getPipelineModel();
   if(startPipelineBtn->text().compare("Cancel Pipeline") == 0)
   {
     QModelIndex pipelineIndex = model->index(0, PipelineItem::Name);

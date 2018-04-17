@@ -94,13 +94,45 @@ class SVWidgetsLib_EXPORT PipelineTreeView : public QTreeView
      * @brief getPipelineTreeModel Gets the PipelineModel instance that is currently set into this view
      * @return
      */
-    PipelineModel* getPipelineTreeModel();
+    PipelineModel* getPipelineModel();
+
+    /**
+     * @brief Returns the "New Pipeline" action specific to this view
+     * @return
+     */
+    QAction* getNewPipelineAction();
+
+    /**
+     * @brief Returns the "Cut" action specific to this view
+     * @return
+     */
+    QAction* getCutAction();
+
+    /**
+     * @brief Returns the "Copy" action specific to this view
+     * @return
+     */
+    QAction* getCopyAction();
+
+    /**
+     * @brief Returns the "Paste" action specific to this view
+     * @return
+     */
+    QAction* getPasteAction();
+
+    /**
+     * @brief Returns the "Clear Pipeline" action specific to this view
+     * @return
+     */
+    QAction* getClearPipelineAction();
 
   public slots:
     void collapseIndex(const QModelIndex& index);
     void expandIndex(const QModelIndex& index);
 
   protected:
+    void setupGui();
+
     void currentChanged(const QModelIndex& current, const QModelIndex& previous) Q_DECL_OVERRIDE;
 
     void setFiltersEnabled(QModelIndexList indices, bool enabled);
@@ -113,25 +145,90 @@ class SVWidgetsLib_EXPORT PipelineTreeView : public QTreeView
     */
     void addActionList(QList<QAction*> actionList);
 
+  protected slots:
+    void contextMenuRequested(const QPoint &pos);
+
+    void listenCutTriggered();
+    void listenCopyTriggered();
+    void listenPasteTriggered();
+    void listenNewPipelineTriggered();
+    void listenClearPipelineTriggered();
+
   signals:
     void itemWasDropped(QModelIndex parent, QString& title, QIcon icon, QString path, int index, bool allowEditing, bool editState, bool isExpanding);
     void currentIndexChanged(const QModelIndex& current, const QModelIndex& previous);
     void folderChangedState(const QModelIndex& index, bool expand);
-    void contextMenuRequested(const QPoint& pos);
     void filterEnabledStateChanged();
 
     void needsPreflight(const QModelIndex &pipelineIndex, PipelineModel* model);
-    void activePipelineChanged(const QModelIndex &pipelineIdx, PipelineModel* model);
+    void clearIssuesTriggered();
+
+    void needsNewPipeline(const QString &pipelineName, bool setAsActive);
 
   private:
     QPoint                                        m_StartPos;
     QMenu                                         m_Menu;
-    QAction*                                      m_ActionEnableFilter;
+
+    QAction*                                      m_ActionEnableFilter = nullptr;
+    QAction*                                      m_ActionNewPipeline = nullptr;
+    QAction*                                      m_ActionCut = nullptr;
+    QAction*                                      m_ActionCopy = nullptr;
+    QAction*                                      m_ActionPaste = nullptr;
+    QAction*                                      m_ActionClearFilters = nullptr;
+
+    QPersistentModelIndex                         m_ActivePipelineIndex;
+
     QList<QPersistentModelIndex>                  m_IndexesBeingDragged;
     QPersistentModelIndex                         m_ActiveIndexBeingDragged;
     QModelIndex                                   m_TopLevelItemPlaceholder;
 
-    void expandChildren(const QModelIndex& parent, PipelineModel* model);
+    /**
+     * @brief connectSignalsSlots
+     */
+    void connectSignalsSlots();
+
+    /**
+     * @brief addPipeline
+     * @param pipelineName
+     * @param pipeline
+     * @param setAsActive
+     */
+    void addPipeline(const QString &pipelineName, FilterPipeline::Pointer pipeline, bool setAsActive = false, QModelIndex parentIndex = QModelIndex(), int insertionIndex = -1);
+
+    /**
+     * @brief removePipeline
+     * @param pipelineName
+     * @param pipeline
+     * @param setAsActive
+     */
+    void removePipeline(int pipelineIndex, QModelIndex parentIndex = QModelIndex());
+
+    /**
+     * @brief addFilterToModel
+     * @param filter
+     * @param parentIndex
+     */
+    void addFilterToModel(AbstractFilter::Pointer filter, const QModelIndex &parentIndex = QModelIndex(), int insertionIndex = -1);
+
+    /**
+     * @brief updateActivePipeline
+     * @param pipelineIdx
+     */
+    void updateActivePipeline(const QModelIndex &pipelineIdx);
+
+    /**
+     * @brief requestFilterContextMenu
+     * @param pos
+     * @param index
+     */
+    void requestFilterItemContextMenu(const QPoint &pos, const QModelIndex &index);
+
+    /**
+     * @brief requestPipelineContextMenu
+     * @param pos
+     * @param index
+     */
+    void requestPipelineItemContextMenu(const QPoint &pos, const QModelIndex &index);
 
     /**
      * @brief requestSinglePipelineContextMenu
@@ -148,31 +245,19 @@ class SVWidgetsLib_EXPORT PipelineTreeView : public QTreeView
     void requestMultiplePipelineContextMenu(QMenu &menu, QModelIndexList pipelineIndices);
 
     /**
+     * @brief requestDefaultContextMenu
+     * @param pos
+     */
+    void requestDefaultContextMenu(const QPoint &pos);
+
+    /**
      * @brief findNewActivePipeline
      * @param oldActivePipeline
      * @return
      */
     QModelIndex findNewActivePipeline(const QModelIndex &oldActivePipeline);
 
-    /**
-     * @brief requestFilterContextMenu
-     * @param pos
-     * @param index
-     */
-    void requestFilterContextMenu(const QPoint &pos, const QModelIndex &index);
-
-    /**
-     * @brief requestPipelineContextMenu
-     * @param pos
-     * @param index
-     */
-    void requestPipelineContextMenu(const QPoint &pos, const QModelIndex &index);
-
-    /**
-     * @brief requestDefaultContextMenu
-     * @param pos
-     */
-    void requestDefaultContextMenu(const QPoint &pos);
+    void expandChildren(const QModelIndex& parent, PipelineModel* model);
 };
 
 #endif /* _PipelineTreeView_H_ */

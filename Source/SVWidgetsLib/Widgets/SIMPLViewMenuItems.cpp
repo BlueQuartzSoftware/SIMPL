@@ -46,10 +46,6 @@
 
 #include "SVWidgetsLib/Widgets/SIMPLViewToolbox.h"
 
-
-
-SIMPLViewMenuItems* SIMPLViewMenuItems::self = nullptr;
-
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
@@ -65,6 +61,7 @@ SIMPLViewMenuItems::SIMPLViewMenuItems(QObject* parent)
 // -----------------------------------------------------------------------------
 SIMPLViewMenuItems::~SIMPLViewMenuItems()
 {
+  delete m_MenuFile;
   delete m_MenuRecentFiles;
   delete m_ActionNew;
   delete m_ActionOpen;
@@ -76,26 +73,29 @@ SIMPLViewMenuItems::~SIMPLViewMenuItems()
   delete m_ActionExit;
 
   // Edit Menu
-  delete m_ActionCut;
-  delete m_ActionCopy;
-  delete m_ActionPaste;
+  delete m_MenuEdit;
 
   // View Menu
+  delete m_MenuView;
   delete m_ActionShowFilterLibrary;
   delete m_ActionShowFilterList;
   delete m_ActionShowBookmarks;
   delete m_ActionShowToolbox;
 
   // Bookmarks Menu
+  delete m_MenuBookmarks;
   delete m_ActionAddBookmark;
   delete m_ActionNewFolder;
   delete m_ActionLocateFile;
 
   // Pipeline Menu
+  delete m_MenuPipeline;
   delete m_ActionNewPipeline;
   delete m_ActionClearPipeline;
 
   // Help Menu
+  delete m_MenuHelp;
+  delete m_MenuAdvanced;
   delete m_ActionClearCache;
   delete m_ActionClearBookmarks;
   delete m_ActionShowSIMPLViewHelp;
@@ -107,7 +107,6 @@ SIMPLViewMenuItems::~SIMPLViewMenuItems()
   delete m_ActionRenameBookmark;
   delete m_ActionRemoveBookmark;
   delete m_ActionShowBookmarkInFileSystem;
-
   delete m_ActionOpenBookmark;
   delete m_ActionOpenExecuteBookmark;
 }
@@ -115,22 +114,16 @@ SIMPLViewMenuItems::~SIMPLViewMenuItems()
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-SIMPLViewMenuItems* SIMPLViewMenuItems::Instance()
-{
-  if(nullptr == self)
-  {
-    self = new SIMPLViewMenuItems();
-  }
-
-  return self;
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
 void SIMPLViewMenuItems::createMenus()
 {
-
+  m_MenuFile = new QMenu("File");
+  m_MenuEdit = new QMenu("Edit");
+  m_MenuView = new QMenu("View");
+  m_MenuBookmarks = new QMenu("Bookmarks");
+  m_MenuPipeline = new QMenu("Pipeline");
+  m_MenuRecentFiles = new QMenu("Recent Files");
+  m_MenuHelp = new QMenu("Help");
+  m_MenuAdvanced = new QMenu("Advanced");
 }
 
 // -----------------------------------------------------------------------------
@@ -140,15 +133,18 @@ void SIMPLViewMenuItems::createActions()
 {
   m_ActionRenameBookmark = new QAction("Rename Pipeline", this);
   m_ActionRemoveBookmark = new QAction("Remove Bookmark", this);
-  m_ActionNewPipeline = new QAction("New Pipeline", this);
   m_ActionClearPipeline = new QAction("Clear Pipeline", this);
   m_ActionShowBookmarkInFileSystem = new QAction(this);
   m_ActionExit = new QAction("Exit " + QApplication::applicationName(), this);
+  m_ActionOpen = new QAction("Open...", this);
+  m_ActionNew = new QAction("New...", this);
   m_ActionClearRecentFiles = new QAction("Clear Recent Files", this);
   m_ActionShowSIMPLViewHelp = new QAction(QApplication::applicationName() + " Help", this);
   m_ActionAboutSIMPLView = new QAction("About " + QApplication::applicationName(), this);
   m_ActionCheckForUpdates = new QAction("Check For Updates", this);
   m_ActionPluginInformation = new QAction("Plugin Information", this);
+  m_ActionSave = new QAction("Save", this);
+  m_ActionSaveAs = new QAction("Save As...", this);
   m_ActionClearCache = new QAction("Clear Cache", this);
   m_ActionClearBookmarks = new QAction("Clear Bookmarks", this);
   m_ActionShowFilterLibrary = new QAction("Show Filter Library", this);
@@ -161,9 +157,6 @@ void SIMPLViewMenuItems::createActions()
   m_ActionShowToolbox->setCheckable(true);
   m_ActionAddBookmark = new QAction("Add Bookmark", this);
   m_ActionNewFolder = new QAction("New Folder", this);
-  m_ActionCut = new QAction("Cut", this);
-  m_ActionCopy = new QAction("Copy", this);
-  m_ActionPaste = new QAction("Paste", this);
   m_ActionLoadTheme = new QAction("Load Theme", this);
   m_ActionSaveTheme = new QAction("Save Theme", this);
   m_ActionLocateFile = new QAction("Locate File", this);
@@ -191,7 +184,4 @@ void SIMPLViewMenuItems::createActions()
   m_ActionSaveAs->setShortcut(QKeySequence(Qt::CTRL + Qt::SHIFT + Qt::Key_S));
   m_ActionAddBookmark->setShortcut(QKeySequence(Qt::CTRL + Qt::Key_B));
   m_ActionNewFolder->setShortcut(QKeySequence(Qt::CTRL + Qt::Key_F));
-  m_ActionCut->setShortcut(QKeySequence(Qt::CTRL + Qt::Key_X));
-  m_ActionCopy->setShortcut(QKeySequence(Qt::CTRL + Qt::Key_C));
-  m_ActionPaste->setShortcut(QKeySequence(Qt::CTRL + Qt::Key_V));
 }
