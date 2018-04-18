@@ -35,6 +35,8 @@
 
 #include "DataContainerSelectionFilterParameter.h"
 
+#include "SIMPLib/Filtering/AbstractFilter.h"
+
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
@@ -98,5 +100,17 @@ void DataContainerSelectionFilterParameter::writeJson(QJsonObject& json)
   if(m_GetterCallback)
   {
     json[getPropertyName()] = m_GetterCallback();
+  }
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void DataContainerSelectionFilterParameter::dataArrayPathRenamed(AbstractFilter* filter, DataArrayPath oldPath, DataArrayPath newPath)
+{
+  if(m_GetterCallback() == oldPath.getDataContainerName())
+  {
+    m_SetterCallback(newPath.getDataContainerName());
+    emit filter->dataArrayPathUpdated(getPropertyName(), oldPath, newPath);
   }
 }

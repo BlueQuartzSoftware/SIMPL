@@ -132,6 +132,7 @@ class SVWidgetsLib_EXPORT DataContainerArrayProxyWidget : public FilterParameter
     void selectAllDataContainersClicked(bool checked);
     void selectAllAttributeMatricesClicked(bool checked);
     void selectAllDataArraysClicked(bool checked);
+    void updateDataArrayPath(QString propertyName, DataArrayPath oldPath, DataArrayPath newPath);
 
   private:
 

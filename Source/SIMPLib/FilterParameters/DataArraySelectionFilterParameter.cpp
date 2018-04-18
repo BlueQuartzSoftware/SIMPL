@@ -35,6 +35,7 @@
 
 #include "DataArraySelectionFilterParameter.h"
 #include "SIMPLib/Common/Constants.h"
+#include "SIMPLib/Filtering/AbstractFilter.h"
 
 // -----------------------------------------------------------------------------
 //
@@ -191,5 +192,17 @@ void DataArraySelectionFilterParameter::writeJson(QJsonObject& json)
     QJsonObject obj;
     dap.writeJson(obj);
     json[getPropertyName()] = obj;
+  }
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void DataArraySelectionFilterParameter::dataArrayPathRenamed(AbstractFilter* filter, DataArrayPath oldPath, DataArrayPath newPath)
+{
+  if(m_GetterCallback() == oldPath)
+  {
+    m_SetterCallback(newPath);
+    emit filter->dataArrayPathUpdated(getPropertyName(), oldPath, newPath);
   }
 }

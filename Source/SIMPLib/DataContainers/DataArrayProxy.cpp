@@ -308,3 +308,20 @@ DataArrayProxy::PrimitiveTypeFlag DataArrayProxy::PrimitiveTypeToFlag(const QStr
 
   return None_PType;
 }
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void DataArrayProxy::updatePath(DataArrayPath oldPath, DataArrayPath newPath)
+{
+  if(oldPath.getDataArrayName().isEmpty())
+  {
+    return;
+  }
+
+  if(oldPath.getDataArrayName() != newPath.getDataArrayName())
+  {
+    name = newPath.getDataArrayName();
+    path = newPath.serialize();
+  }
+}

@@ -35,6 +35,8 @@
 
 #include "AbstractFilter.h"
 
+#include <QtCore/QMetaProperty>
+
 #include "SIMPLib/Common/PipelineMessage.h"
 #include "SIMPLib/Filtering/FilterManager.h"
 #include "SIMPLib/Filtering/IFilterFactory.hpp"
@@ -109,6 +111,99 @@ void AbstractFilter::setCancel(bool value)
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
+void AbstractFilter::renameDataArrayPath(DataArrayPath oldPath, DataArrayPath newPath)
+{
+  // Updates any DataArrayPath or proxy property assigned to this filter.
+  // A signal is emitted if a change was required stating the property name, old path, and new path.
+  // No additional methods are required aside from a connecting slot in filter parameter widgets to update their UI.
+  // If all filters stored their data paths as DataArrayPaths instead of QString without delimiters,
+  // this would handle all required updates.  This was moved to FilterParameter::dataArrayRenamed.
+  // However, moving this to FilterParameter does not update any private properties that do not 
+  // have a FilterParameter assigned.
+#if 0
+  const QMetaObject* metaobject = metaObject();
+  int count = metaobject->propertyCount();
+  for(int i = 0; i < count; i++)
+  {
+    QMetaProperty metaproperty = metaobject->property(i);
+    const char* name = metaproperty.name();
+    QVariant var = property(name);
+    if(var.isValid() && var.canConvert<DataArrayPath>())
+    {
+      DataArrayPath path = var.value<DataArrayPath>();
+      if(path.updatePath(oldPath, newPath))
+      {
+        //QString ss = QString("Updated property '%1' in %2").arg(name).arg(getHumanLabel());
+        //notifyStandardOutputMessage(getHumanLabel(), getPipelineIndex(), ss);
+        //notifyStatusMessage(getHumanLabel(), ss);
+        var.setValue(path);
+        this->setProperty(name, var);
+        emit dataArrayPathUpdated(name, oldPath, newPath);
+      }
+    }
+    else if(var.isValid() && var.canConvert<DataContainerArrayProxy>())
+    {
+      DataContainerArrayProxy proxy = var.value<DataContainerArrayProxy>();
+      proxy.updatePath(oldPath, newPath);
+      var.setValue(proxy);
+      this->setProperty(name, var);
+      emit dataArrayPathUpdated(name, oldPath, newPath);
+    }
+    else if(var.isValid() && var.canConvert<DataContainerProxy>())
+    {
+      DataContainerProxy proxy = var.value<DataContainerProxy>();
+      proxy.updatePath(oldPath, newPath);
+      var.setValue(proxy);
+      this->setProperty(name, var);
+      emit dataArrayPathUpdated(name, oldPath, newPath);
+    }
+    else if(var.isValid() && var.canConvert<AttributeMatrixProxy>())
+    {
+      AttributeMatrixProxy proxy = var.value<AttributeMatrixProxy>();
+      proxy.updatePath(oldPath, newPath);
+      var.setValue(proxy);
+      this->setProperty(name, var);
+      emit dataArrayPathUpdated(name, oldPath, newPath);
+    }
+    else if(var.isValid() && var.canConvert<DataArrayProxy>())
+    {
+      DataArrayProxy proxy = var.value<DataArrayProxy>();
+      proxy.updatePath(oldPath, newPath);
+      var.setValue(proxy);
+      this->setProperty(name, var);
+      emit dataArrayPathUpdated(name, oldPath, newPath);
+    }
+  }
+#endif
+
+  // Some filter parameters handle paths as nothing but a QString (i.e. DataContainerSelectionFilterParameter)
+  // This does not store data in a way that represents what is stored or in a consistent manner with anything else.
+  // Because this format cannot be quieried nicely like the above code, filter parameters have to be able to update
+  // their own paths in these cases.  In cases where private properties need to be updated but do not have
+  // assigned filter parameters, although this should not be the case, this code, unlike the above snippet, will not update them.
+  FilterParameterVector filterParams = getFilterParameters();
+  for(FilterParameter::Pointer filterParam : filterParams)
+  {
+    filterParam->dataArrayPathRenamed(this, oldPath, newPath);
+  }
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void AbstractFilter::renameDataArrayPaths(DataArrayPath::RenameContainer renamedPaths)
+{
+  for(DataArrayPath::RenameType rename : renamedPaths)
+  {
+    DataArrayPath first, second;
+    std::tie(first, second) = rename;
+    renameDataArrayPath(first, second);
+  }
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
 void AbstractFilter::setupFilterParameters()
 {
 }
@@ -170,6 +265,102 @@ bool AbstractFilter::doesPipelineContainFilterAfterThis(const QString& name)
     next = next->getNextFilter().lock();
   }
   return contains;
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void insertAttributeMatrixPaths(DataContainer::Pointer dc, AttributeMatrix::Pointer am, std::list<DataArrayPath>& paths)
+{
+  paths.push_back(DataArrayPath(dc->getName(), am->getName(), ""));
+  // Insert all DataArrayPaths
+  for(QString daName : am->getAttributeArrayNames())
+  {
+    DataArrayPath daPath(dc->getName(), am->getName(), daName);
+    paths.push_back(daPath);
+  }
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void insertDataContainerPaths(DataContainer::Pointer dc, std::list<DataArrayPath>& paths)
+{
+  paths.push_back(DataArrayPath(dc->getName(), "", ""));
+  // Insert all AttributeMatrix paths
+  for(AttributeMatrix::Pointer am : dc->getAttributeMatrices())
+  {
+    insertAttributeMatrixPaths(dc, am, paths);
+  }
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+std::list<DataArrayPath> AbstractFilter::getCreatedPaths()
+{
+  std::list<DataArrayPath> createdPaths;
+  // Check if the DataContainerArray is valid
+  if(nullptr == getDataContainerArray())
+  {
+    return createdPaths;
+  }
+
+  AbstractFilter::Pointer previousFilter = getPreviousFilter().lock();
+  if(previousFilter && nullptr != previousFilter->getDataContainerArray())
+  {
+    DataContainerArray::Pointer prevDca = previousFilter->getDataContainerArray();
+    DataContainerArray::Pointer dca = getDataContainerArray();
+
+    // Check DataContainers
+    for(DataContainer::Pointer dc : dca->getDataContainers())
+    {
+      if(false == prevDca->doesDataContainerExist(dc->getName()))
+      {
+        insertDataContainerPaths(dc, createdPaths);
+      }
+      else
+      {
+        // Check AttributeMatrices
+        for(AttributeMatrix::Pointer am : dc->getAttributeMatrices())
+        {
+          DataArrayPath amPath(dc->getName(), am->getName(), "");
+          if(false == prevDca->doesAttributeMatrixExist(amPath))
+          {
+            insertAttributeMatrixPaths(dc, am, createdPaths);
+          }
+          else
+          {
+            // Check DataArrays
+            for(QString daName : am->getAttributeArrayNames())
+            {
+              DataArrayPath daPath(dc->getName(), am->getName(), daName);
+              if(false == prevDca->doesAttributeArrayExist(daPath))
+              {
+                createdPaths.push_back(daPath);
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+  else
+  {
+    DataContainerArray::Pointer dca = getDataContainerArray();
+
+    // Check if the DataContainerArray is valid
+    if(dca)
+    {
+      // Add all paths if there is no previous filter to compare to
+      for(DataContainer::Pointer dc : dca->getDataContainers())
+      {
+        insertDataContainerPaths(dc, createdPaths);
+      }
+    }
+  }
+
+  return createdPaths;
 }
 
 // -----------------------------------------------------------------------------

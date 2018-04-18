@@ -105,6 +105,10 @@ void DataContainerArrayProxyWidget::setupGui()
 
   connect(getFilter(), SIGNAL(updateFilterParameters(AbstractFilter*)), this, SLOT(filterNeedsInputParameters(AbstractFilter*)));
 
+  // If the DataArrayPath is updated in the filter, update the widget
+  connect(getFilter(), SIGNAL(dataArrayPathUpdated(QString, DataArrayPath, DataArrayPath)),
+    this, SLOT(updateDataArrayPath(QString, DataArrayPath, DataArrayPath)));
+
   // setStyleSheet("QColumnView { text-decoration-color: red; }");
 
   connect(dataContainerList, SIGNAL(itemChanged(QListWidgetItem*)), this, SLOT(itemChanged(QListWidgetItem*)));
@@ -341,6 +345,45 @@ void DataContainerArrayProxyWidget::toggleStrikeOutFont(QListWidgetItem* item, Q
     item->setBackground(defaultBrush);
   }
   item->setFont(font);
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void DataContainerArrayProxyWidget::updateDataArrayPath(QString propertyName, DataArrayPath oldPath, DataArrayPath newPath)
+{
+  blockSignals(true);
+  
+  // Attribute Matrix and Data Array lists are dependent on the current Data Container item
+  if(dataContainerList->currentItem()->text() == oldPath.getDataContainerName())
+  {
+    // Data Array list is dependent on the current Attribute Matrix item
+    if(attributeMatrixList->currentItem()->text() == oldPath.getAttributeMatrixName())
+    {
+      // Data Array
+      QList<QListWidgetItem*> daItems = dataArrayList->findItems(oldPath.getDataArrayName(), Qt::MatchExactly);
+      for(QListWidgetItem* daItem : daItems)
+      {
+        daItem->setText(newPath.getDataContainerName());
+      }
+    }
+
+    // Attribute Matrix
+    QList<QListWidgetItem*> amItems = attributeMatrixList->findItems(oldPath.getAttributeMatrixName(), Qt::MatchExactly);
+    for(QListWidgetItem* amItem : amItems)
+    {
+      amItem->setText(newPath.getAttributeMatrixName());
+    }
+  }
+
+  // Data Container
+  QList<QListWidgetItem*> dcItems = dataContainerList->findItems(oldPath.getDataContainerName(), Qt::MatchExactly);
+  for(QListWidgetItem* dcItem : dcItems)
+  {
+    dcItem->setText(newPath.getDataContainerName());
+  }
+
+  blockSignals(false);
 }
 
 // -----------------------------------------------------------------------------

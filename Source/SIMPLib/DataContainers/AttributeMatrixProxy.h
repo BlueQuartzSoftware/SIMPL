@@ -132,6 +132,13 @@ class SIMPLib_EXPORT AttributeMatrixProxy
      */
     void setFlags(uint8_t flag, DataArrayProxy::PrimitiveTypeFlags primitiveTypes = DataArrayProxy::Any_PType, DataArrayProxy::CompDimsVector compDimsVector = DataArrayProxy::CompDimsVector());
 
+    /**
+     * @brief Updates the proxy to match a renamed DataArrayPath
+     * @param oldPath
+     * @param newPath
+     */
+    void updatePath(DataArrayPath oldPath, DataArrayPath newPath);
+
     //----- Our variables, publicly available
     uint8_t flag;
     QString name;

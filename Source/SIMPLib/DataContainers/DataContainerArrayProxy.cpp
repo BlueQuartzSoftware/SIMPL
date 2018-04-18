@@ -488,6 +488,22 @@ DataContainerProxy& DataContainerArrayProxy::getDataContainerProxy(const QString
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
+void DataContainerArrayProxy::updatePath(DataArrayPath oldPath, DataArrayPath newPath)
+{
+  DataContainerProxy dcProxy = dataContainers[oldPath.getDataContainerName()];
+
+  if(oldPath.getDataContainerName() != newPath.getDataContainerName())
+  {
+    dataContainers.insert(newPath.getDataContainerName(), dcProxy);
+    dataContainers.remove(oldPath.getDataContainerName());
+  }
+
+  dcProxy.updatePath(oldPath, newPath);
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
 void DataContainerArrayProxy::writeJson(QJsonObject& json) const
 {
   json["Data Containers"] = writeMap(dataContainers);

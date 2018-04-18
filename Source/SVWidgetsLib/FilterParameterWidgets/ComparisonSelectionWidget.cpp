@@ -121,6 +121,10 @@ void ComparisonSelectionWidget::setupGui()
   // Catch when the filter wants its values updated
   connect(getFilter(), SIGNAL(updateFilterParameters(AbstractFilter*)), this, SLOT(filterNeedsInputParameters(AbstractFilter*)));
 
+  // If the DataArrayPath is updated in the filter, update the widget
+  connect(getFilter(), SIGNAL(dataArrayPathUpdated(QString, DataArrayPath, DataArrayPath)),
+    this, SLOT(updateDataArrayPath(QString, DataArrayPath, DataArrayPath)));
+
   // Create the table model
   m_ComparisonSelectionTableModel = createComparisonModel();
 
@@ -627,5 +631,50 @@ void ComparisonSelectionWidget::createSelectionMenu()
         action->setDisabled(true);
       }
     }
+  }
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void ComparisonSelectionWidget::updateDataArrayPath(QString propertyName, DataArrayPath oldPath, DataArrayPath newPath)
+{
+  if(propertyName.compare(getFilterParameter()->getPropertyName()) == 0)
+  {
+    QVariant var = getFilter()->property(PROPERTY_NAME_AS_CHAR);
+    DataArrayPath amPath = newPath;
+    QString dataArrayName = amPath.getDataArrayName();
+    amPath.setDataArrayName("");
+
+    blockSignals(true);
+    // Update the AttributeMatrix path
+    {
+      DataContainerArray::Pointer dca = getFilter()->getDataContainerArray();
+      if(nullptr == dca.get())
+      {
+        return;
+      }
+
+      if(dca->doesAttributeMatrixExist(amPath))
+      {
+        AttributeMatrix::Pointer am = dca->getAttributeMatrix(amPath);
+        QString html = am->getInfoString(SIMPL::HtmlFormat);
+        m_SelectedAttributeMatrixPath->setToolTip(html);
+        m_SelectedAttributeMatrixPath->setText(amPath.serialize(Detail::Delimiter));
+      }
+    }
+
+    // Update the DataArray choices
+    {
+      QAbstractItemModel* model = comparisonSelectionTableView->model();
+      ComparisonSelectionTableModel* compModel = dynamic_cast<ComparisonSelectionTableModel*>(model);
+      if(compModel)
+      {
+        compModel->blockSignals(true);
+        compModel->updateFeatureName(oldPath.getDataArrayName(), newPath.getDataArrayName());
+        compModel->blockSignals(false);
+      }
+    }
+    blockSignals(false);
   }
 }

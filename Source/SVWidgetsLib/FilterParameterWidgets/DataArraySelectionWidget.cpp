@@ -130,6 +130,10 @@ void DataArraySelectionWidget::setupGui()
   // Catch when the filter wants its values updated
   connect(getFilter(), SIGNAL(updateFilterParameters(AbstractFilter*)), this, SLOT(filterNeedsInputParameters(AbstractFilter*)));
 
+  // If the DataArrayPath is updated in the filter, update the widget
+  connect(getFilter(), SIGNAL(dataArrayPathUpdated(QString, DataArrayPath, DataArrayPath)), 
+    this, SLOT(updateDataArrayPath(QString, DataArrayPath, DataArrayPath)));
+
   DataArrayPath defaultPath = getFilter()->property(PROPERTY_NAME_AS_CHAR).value<DataArrayPath>();
   m_SelectedDataArrayPath->setText(defaultPath.serialize(Detail::Delimiter));
 
@@ -282,6 +286,22 @@ bool DataArraySelectionWidget::eventFilter(QObject* obj, QEvent* event)
     return true;
   }
   return false;
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void DataArraySelectionWidget::updateDataArrayPath(QString propertyName, DataArrayPath oldPath, DataArrayPath newPath)
+{
+  if(propertyName.compare(PROPERTY_NAME_AS_CHAR) == 0)
+  {
+    QVariant var = getFilter()->property(PROPERTY_NAME_AS_CHAR);
+    DataArrayPath updatedPath = var.value<DataArrayPath>();
+
+    blockSignals(true);
+    setSelectedPath(updatedPath);
+    blockSignals(false);
+  }
 }
 
 // -----------------------------------------------------------------------------

@@ -91,6 +91,32 @@ bool DataContainerProxy::operator==(const DataContainerProxy& amp) const
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
+void DataContainerProxy::updatePath(DataArrayPath oldPath, DataArrayPath newPath)
+{
+  if(oldPath.getDataContainerName() != newPath.getDataContainerName())
+  {
+    name = newPath.getDataContainerName();
+  }
+
+  if(oldPath.getAttributeMatrixName().isEmpty())
+  {
+    return;
+  }
+
+  AttributeMatrixProxy amProxy = attributeMatricies[oldPath.getAttributeMatrixName()];
+
+  if(oldPath.getAttributeMatrixName() != newPath.getAttributeMatrixName())
+  {
+    attributeMatricies.insert(newPath.getAttributeMatrixName(), amProxy);
+    attributeMatricies.remove(oldPath.getAttributeMatrixName());
+  }
+
+  amProxy.updatePath(oldPath, newPath);
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
 void DataContainerProxy::writeJson(QJsonObject& json)
 {
   json["Flag"] = static_cast<double>(flag);

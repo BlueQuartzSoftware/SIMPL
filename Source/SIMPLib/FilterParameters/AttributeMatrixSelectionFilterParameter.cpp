@@ -37,6 +37,7 @@
 
 #include "SIMPLib/Common/Constants.h"
 #include "SIMPLib/DataContainers/AttributeMatrix.h"
+#include "SIMPLib/Filtering/AbstractFilter.h"
 
 // -----------------------------------------------------------------------------
 //
@@ -159,5 +160,17 @@ void AttributeMatrixSelectionFilterParameter::writeJson(QJsonObject& json)
     QJsonObject obj;
     dap.writeJson(obj);
     json[getPropertyName()] = obj;
+  }
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void AttributeMatrixSelectionFilterParameter::dataArrayPathRenamed(AbstractFilter* filter, DataArrayPath oldPath, DataArrayPath newPath)
+{
+  if(m_GetterCallback() == oldPath)
+  {
+    m_SetterCallback(newPath);
+    emit filter->dataArrayPathUpdated(getPropertyName(), oldPath, newPath);
   }
 }

@@ -260,6 +260,13 @@ public:
    */
   virtual bool doesPipelineContainFilterAfterThis(const QString& name);
 
+  /**
+   * @brief Returns a set of DataArrayPaths created by this filter.
+   * This method requires preflight() or execute() to have already run.
+   * @return
+   */
+  std::list<DataArrayPath> getCreatedPaths();
+
   // ------------------------------
   // These methods are over ridden from the superclass in order to add the
   // pipeline index to the PipelineMessage Object.
@@ -351,12 +358,33 @@ signals:
    */
   void filterInProgress();
 
+  /**
+  * @brief Signal is emitted when a DataArrayPath property is updated
+  * @param name
+  */
+  void dataArrayPathUpdated(QString propertyName, DataArrayPath oldPath, DataArrayPath newPath);
+
 public slots:
 
   /**
     * @brief Cancel the operation
     */
   virtual void setCancel(bool value);
+
+  /**
+   * @brief Updates any DataArrayPath properties from the old path to a new path
+   * For DataArrayPaths longer than the given path, only the specified values are modified
+   * @param oldPath
+   * @param newPath
+   */
+  virtual void renameDataArrayPath(DataArrayPath oldPath, DataArrayPath newPath);
+
+  /**
+  * @brief Updates any DataArrayPath properties from the old paths to their corresponding new paths.
+  * For DataArrayPaths longer than the new path, only the values provided by the new path are modified
+  * @param renamedPaths
+  */
+  virtual void renameDataArrayPaths(DataArrayPath::RenameContainer renamedPaths);
 
 protected:
   AbstractFilter();

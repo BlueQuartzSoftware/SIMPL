@@ -268,3 +268,29 @@ void AttributeMatrixProxy::setFlags(uint8_t flag, DataArrayProxy::PrimitiveTypeF
     }
   }
 }
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void AttributeMatrixProxy::updatePath(DataArrayPath oldPath, DataArrayPath newPath)
+{
+  if(oldPath.getAttributeMatrixName() != newPath.getAttributeMatrixName())
+  {
+    name = newPath.getAttributeMatrixName();
+  }
+
+  if(oldPath.getDataArrayName().isEmpty())
+  {
+    return;
+  }
+
+  DataArrayProxy daProxy = dataArrays[oldPath.getDataArrayName()];
+
+  if(oldPath.getDataArrayName() != newPath.getDataArrayName())
+  {
+    dataArrays.insert(newPath.getDataArrayName(), daProxy);
+    dataArrays.remove(oldPath.getDataArrayName());
+  }
+
+  daProxy.updatePath(oldPath, newPath);
+}
